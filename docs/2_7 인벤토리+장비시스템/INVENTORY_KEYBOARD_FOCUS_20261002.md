@@ -42,3 +42,14 @@
 현재 생산 실제 함수/조합 검수34+기존filter32=66그룹 PASS, 전체 inline12개/importmap2 구문 통과. 유골함34는 renderOssPanel 원문을 실행했고 filter32의 renderOssPanel 대역 한계를 분리한다. 실제 키보드·패드·픽셀·전체게임·실저장은 미검수로 UI-04 전체 완료가 아니다. 과거 filter-only exact-byte 표는 이력이며 현재는 connectOssuary(connectFilter(original))와 정확 일치. root-review/four-candidate-acceptance.mjs ui --production 및 four-filter-adjacent.mjs --production으로 재현한다.
 
 2026-10-02 독립 후속 인수 완료: UIUX 현행 factory/renderOssPanel과 승인 후보 byte 일치, 보호 저장10함수 SHA 동일, 담당 독립15 PASS를 root가 하니스·원자료로 검토했다. 기존 root34+32와 구분하며 생산 추가 수정0·native/패드/레이아웃 미검수다. BUILD 후속13도 완료했고 네 Codex 팀 모두 현재 배정의 실제 Read·완료를 확인했다. 다른7팀은 전달0/Read0 보류다. GitHub 601a0574 체크포인트 SHA를 재확인했으며 이 최종 기록의 원격 확인은 다음 checkpoint로 수행한다.
+
+
+## 2026-10-02 필터 카드 Y 장착 identity 보충
+
+| 경로 | 현행 계약 |
+|---|---|
+| 가방 카드 생성 | 양판 실제 가방 인덱스 `i`를 `dataset.inventoryBagIndex`의 문자열로 보관한다(`data-inventory-bag-index`) |
+| global `KeyY` | `_jfIdx`는 가방 인덱스다. 현재 `_xi` 카드 목록에서 같은 dataset 값을 찾은 경우에만 우클릭 이벤트를 전달한다. 필터된 visible 순번과 가방 인덱스를 혼용하지 않으며 숨겨진 selection/대응 카드 누락은 전달0 |
+| 보존 범위 | 기존 hover/selection, Enter/Space, 초점 복구, Ctrl prefix 거절, GPB 경로·장착/경제/저장 정책은 변경하지 않았다. 전체 초점/물리 입력 수락을 뜻하지 않는다 |
+
+최종 source24/24(18시나리오+정상대조6), 별도 baseline14PASS/10FAIL 및 구문JS12/JSON2 1회 PASS는 이번 Y 경로의 인수다. 위55/66/독립15는 각 이전 초점 인수 이력으로 더하지 않는다. `renderInv`는 실제 가방 카드 loop 부분, R은 selection 부분이며 DOM/MouseEvent·detail/focus·stat/SFX/save/lesson은 대역이다. 전체 renderer/실게임/native/패드/실저장은 UNKNOWN. [장착 identity 인수 보고서](INVENTORY_FILTERED_EQUIP_IDENTITY_20261002.md).

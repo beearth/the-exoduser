@@ -12165,7 +12165,7 @@ addEventListener('keydown',e=>{
       if(_jfIt){
         if(e.code==='Space'||e.code==='KeyX'){e.preventDefault();_jfIt.junk=!_jfIt.junk;if(_jfIt.junk)_jfIt.fav=false;renderInv();_invRenderDetail(_jfIdx,'bag');return}
         if(e.code==='KeyF'){_jfIt.fav=!_jfIt.fav;if(_jfIt.fav)_jfIt.junk=false;renderInv();_invRenderDetail(_jfIdx,'bag');return}
-        if(e.code==='KeyY'){e.preventDefault();const _xg=$('invGrid');if(_xg){const _xi=_xg.querySelectorAll('.inv-item');if(_xi[_jfIdx])_xi[_jfIdx].dispatchEvent(new MouseEvent('contextmenu',{bubbles:true,cancelable:true}))}return}
+        if(e.code==='KeyY'){e.preventDefault();const _xg=$('invGrid');if(_xg){const _xi=_xg.querySelectorAll('.inv-item');const _card=[..._xi].find(card=>card.dataset.inventoryBagIndex===String(_jfIdx));if(_card)_card.dispatchEvent(new MouseEvent('contextmenu',{bubbles:true,cancelable:true}))}return}
       }
     }
   }
@@ -47286,6 +47286,7 @@ function renderInv(){
     const isJunk=!!item.junk;const isFav=!!item.fav;
     const isSelected=INV.selected===i;
     const div=document.createElement('div');div.className='inv-item';
+    div.dataset.inventoryBagIndex=String(i);
     div.dataset.uiSelected=String(isSelected);div.dataset.uiLocked=String(isFav);div.dataset.uiJunk=String(isJunk);div.dataset.uiSalvage=String(isSal);
     div.style.left=item._gx*_GC+'px';div.style.top=item._gy*_GC+'px';
     div.style.width=w*_GC+'px';div.style.height=h*_GC+'px';

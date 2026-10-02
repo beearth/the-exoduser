@@ -52446,3 +52446,16 @@ CH1-1 목표 actual전체Read13/13(기존MAP미소비/ENEMY실거부제외)을�
 | 실제 앱 | c927 Mac 앱은 dd333 snapshot/기존 backend88f298 그대로이며 이번 SOUND 수정은 미포함. Mac locked 기동 Gate로 실제6단계/visual/청취 미인수. 잠금해제 질문은 이미 전달됐고 반복/우회0; 독립 source/팀작업 계속 |
 
 [생산 SOUND 계약과 정확 SHA](6사운드디자인/SOUND_SPATIAL_CONNECT_CLEANUP_20261002.md) 및 ignored source final receipt SHA771e38488d9a41c9cb6175f7010d199348632d9461855e53ae89796f13f101e6 참조. 실패 정리는 pan.value 완전회수·실장치·전체 RAF 회복 인수가 아니다. 실제 목표는 CH1-1 연결 플레이이며 계속 active다.
+
+## 2026-10-02 필터 뒤 Y 장착 대상 identity 생산 인수
+
+현재 양판은 실제 인벤토리 카드에 `dataset.inventoryBagIndex`를 기록하고 KeyY가 현재 카드의 실제 가방 위치로 장착 대상을 찾는다. visible ordinal을 가방 index로 읽어 A 대신 B를 장착·강화/결정 전승하거나 숨긴 선택·레벨제한을 잘못 처리하던 결함을 2접점/각+114B로 수정했다.
+
+| 범위 | 현재 결과·보존·미인수 |
+|---|---|
+| 실제 신규 회귀 | 실제 전체 globalkeydown·render bag loop·R선택→전체 equipItem/비용 접점. baseline24=14PASS/10identityFAIL, 최종24/24PASS·fixture0(18시나리오+정상대조6 포함). 추출 anchor 초기 fixture오류는 실제case0으로 별도 보존하며 제품 실패/완료수로 계산0 |
+| 정상 보존 | 비필터 정상4+양판 빈boots 픽업차이2의 옛source대조6 동등. 강화3/결정1 전승·악의1500와1499거절·reqLv11·Ctrl prefix 검수, old장비 배낭 반환·main/easy기존슬롯/픽업차이 보존 |
+| 검사 | 신규 최종1회·inline JS12/importmapJSON2 구문1회. 과거 검사·GPB후속후보 혼합0. source밖bytes/역치환/개행과SOUND현재3b548b06 수정 보존 |
+| 시연 경계 | DOM/stat/audio/storage는 명시 대역이고 native/실입력/저장/청취/6단계 플레이 미인수. immutable c927 앱은 dd333 snapshot이며 이번ITEM수정 미포함 |
+
+관련 inventory 정본은 적용 후 whole docs 키워드 검색과 현재 코드 대조를 거쳐 동기화한다. production receipt `tmp/mac-migration-runtime/continued-review-20261002/inventory-filtered-equip-acceptance/receipt.json` SHAa989e216254717a5d7339806aa33352e83fd70f209f5dfc95cb64405eee26b31이 정확한 source/test/검수 경계다. 원팀완료01a0fc89-726f-7f52-8929-74b24956bbee의 원자료는 앞3b548b06에서 이미보존됐고 반복실행0. 감독은 종료된 기존팀의 새turn을 재개하고 root는 source·docs·Git인수를 이어간다.
