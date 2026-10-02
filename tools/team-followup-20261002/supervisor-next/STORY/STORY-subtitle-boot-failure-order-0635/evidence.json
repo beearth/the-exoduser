@@ -1,0 +1,91 @@
+{
+  "taskId": "STORY-subtitle-boot-failure-order-0635",
+  "provider": "Claude Code (Opus 4.8)",
+  "role": "STORY",
+  "sessionUUID": "3ed6e74d-5552-4d7b-a04b-dc5945e0f3d7",
+  "chatSessionId": null,
+  "timestamps": {
+    "readWriteUTC": "2026-10-02T06:38:16Z",
+    "readWriteKST": "2026-10-02T15:38:16+0900",
+    "note": "조사·작성 구간 시각. actual 수신/완료 정밀 타임스탬프는 세션 로그 소유 — approximate로 대체·확대 안 함"
+  },
+  "env": {
+    "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "cwdMatchesTask": true,
+    "gitQueried": false,
+    "providedCheckpoint": {
+      "sha": "b72f3f0634f78829df0f227897a1e7555488f103",
+      "source": "TASK 제공 — root 06:10 전후 push·exact remote 보고값. 독립 현재 HEAD 아님",
+      "globalChangesObserved": "감독 06:29:03Z -uall 54개(제공값; compact44/worker47/53 관측 이력). 본인 신규 파일 수로 80/100 판단 안 함"
+    }
+  },
+  "ownedOutputs": [
+    "tools/team-followup-20261002/supervisor-next/STORY/STORY-subtitle-boot-failure-order-0635/result.md",
+    "tools/team-followup-20261002/supervisor-next/STORY/STORY-subtitle-boot-failure-order-0635/evidence.json"
+  ],
+  "scope": "정적 초기화 순서 검토만. checks/fixture/새 테스트·Node 실행·UI/DOM/미디어/타이머 실행 0. 이전 0621/0553 산출 반복 0",
+  "contentSHA256_shasum_not_git": {
+    "world-intro-player.js": "77eddd9269172ab9c27ae7a3a5f717cdcb2fb901cd9c9a09d7a0216e36f57b50",
+    "world-intro-subtitles.js": "9e3ac2207ece4cf5591ef7eee5d3296f4024c0e5ecfdfcaeda19bd2918dbc92b",
+    "index.html": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8 (0553/0621과 동일, 변동 없음)",
+    "world-intro-subtitles-data.js": "Read만(해시 생략); globalThis.WorldIntroSubtitleData={version:'v13',...} 존재"
+  },
+  "readPaths": [
+    {"path": "tools/team-followup-20261002/supervisor-next/STORY/STORY-subtitle-boot-failure-order-0635/TASK.md", "scope": "전문"},
+    {"path": "tools/team-followup-20261002/continuous/COMMON.md", "scope": "전문(이전 세션 Read, 재적용)"},
+    {"path": "AGENTS.md", "scope": "전문(이전 세션 Read)"},
+    {"path": "docs/cinematic/WORLD_INTRO_INGAME_20260907.md", "scope": "재생/자막 계약 인수(이전 0621 Read): 흐름 18, showLine(0) 중지 24-26, 플레이어 27"},
+    {"path": "world-intro-player.js", "scope": "전문. create 5-82, listen=video.addEventListener 9, listen 등록 44-50(반환 전), return 51"},
+    {"path": "world-intro-subtitles.js", "scope": "전문. data 캡처 4, resolveLanguage 6-14(비문자열 null 7/early-return 8-10/data.languages 13), attach 16-41, setLanguage addTextTrack 21/new VTTCue 27"},
+    {"path": "index.html", "scope": "외부 script 순서 5-6,994-999; 인라인 블록 1134-4320; getUserSelectedLanguage 2036/detectSteamLanguage 2037/detectBrowserLanguage 2038/getCurrentLanguage 2040/_applyLobbyLang 2045; boot IIFE 2119; playCinematic 2231(입력 등록 2449-2503); startWorldIntro 2405-2427(_cinReady 2400/attach 2411/setLanguage 2412/create 2416); _goCinematic 2703; 진입 결정 2827/2844-2845"},
+    {"path": "world-intro-subtitles-data.js", "scope": "top shape 확인(globalThis.WorldIntroSubtitleData v13)"}
+  ],
+  "commands": [
+    {"cmd": "cat world-intro-player.js (Read)", "exit": 0},
+    {"cmd": "grep -n <script>/</script> index.html (1134-4320 블록 확인)", "exit": 0},
+    {"cmd": "grep -n getUserSelectedLanguage|detectBrowserLanguage|_applyLobbyLang index.html", "exit": 0},
+    {"cmd": "sed 2100-2121,2825-2846 index.html (boot IIFE + 진입 결정)", "exit": 0},
+    {"cmd": "grep -rln WorldIntroSubtitleData|VTTCue|data.languages|TextTrack docs/ (백업제외)", "exit": 0},
+    {"cmd": "head -c 160 world-intro-subtitles-data.js", "exit": 0},
+    {"cmd": "shasum -a 256 world-intro-player.js world-intro-subtitles.js", "exit": 0, "note": "git 아님"}
+  ],
+  "failureOrderTable": [
+    {
+      "case": "A) WorldIntroSubtitleData(998) 미로드",
+      "firstThrowLocation": "world-intro-subtitles.js:13 (Object.hasOwn(data.languages,code))",
+      "firstCaller": "index.html:2119 boot IIFE → getCurrentLanguage(2040) → getUserSelectedLanguage(2036, hellLang 문자열) 또는 detectBrowserLanguage(2038, navigator 코드) → resolveLanguage(문자열)",
+      "timing": "page boot (ENTER/cinematic 이전)",
+      "propagationBoundary": "인라인 블록 1134-4320 실행이 2119에서 중단",
+      "stateAtThrow": "_cinReady=false, _worldIntroPlayer=null (초기값 유지); 진입 결정 2827/2844-2845 및 playCinematic 입력 등록은 2119 이후라 미실행",
+      "onSubSkipResolverReach": "불가능 (cinematic 미진입/입력 미등록)",
+      "conditionsUnknown": "해석 언어 문자열이 line13 도달 시에만 throw(비문자열/zht/ptbr/no early-return 미발생→이연); 함수 hoist되나 wiring 2119 이후 미연결; 2119 이전 resolveLanguage caller 유무 UNKNOWN"
+    },
+    {
+      "case": "B) VTTCue 부재 (data 정상)",
+      "firstThrowLocation": "world-intro-subtitles.js:27 (new root.VTTCue(...))",
+      "firstCaller": "index.html:2412 setLanguage (startWorldIntro 내), attach 2411 후",
+      "timing": "startWorldIntro (문 완료 후, _cinReady=true(2400) 직후, create(2416) 이전)",
+      "propagationBoundary": "setLanguage(2412)에서 throw 전파 → create(2416) 미도달",
+      "stateAtThrow": "_cinReady=true, _worldIntroPlayer=null, 입력 핸들러(keyHandler 2476/overlay.onclick 2472/_GP cinSub 2486)는 playCinematic에서 이미 등록",
+      "onSubSkipResolverReach": "조건부 도달 가능 (null-player 창); 단 첫 showLine=cue1(nonempty), 빈 cue13/18은 자동진행 없어 수동 탭 13~18회 필요",
+      "conditionsUnknown": "addTextTrack(line21)가 VTTCue(27)보다 먼저라 미지원 시 line21 선행 throw(같은 setLanguage, 다른 연산); VTTCue 실제 부재·throw는 런타임 UNKNOWN"
+    }
+  ],
+  "keyFindings": [
+    {"id": "OPPOSITE-REACHABILITY", "detail": "(A)는 boot 조기 실패→cinematic 미진입→resolver 도달 불가; (B)는 boot 통과·입력 등록 후 setLanguage throw→null-player 창→조건부 도달. 두 누락을 같은 setLanguage 시점으로 묶을 수 없음(0621 오류 정정)"},
+    {"id": "CREATE-NOT-THROWFREE", "detail": "WorldIntroPlayer.create는 반환 전 video.addEventListener(listen, world-intro-player.js:9,44-50) 호출 → video falsy 시 throw. 'throw-free' 주장 정정"},
+    {"id": "SINGLE-SCRIPT-BLOCK", "detail": "getCurrentLanguage(2040)·boot IIFE(2119)·playCinematic(2231)·_goCinematic(2703)·진입결정(2827/2844)이 모두 인라인 블록 1134-4320. 2119 throw는 이후 실행 wiring을 중단(함수 선언은 hoist)"},
+    {"id": "RESOLVE-EARLY-RETURN", "detail": "resolveLanguage는 비문자열(line7)·zht/ptbr/no(line8-10)에서 data 미접근 early-return. data 부재 throw는 그 외 문자열이 line13 도달 시에만"},
+    {"id": "LOAD-ORDER", "detail": "world-intro-subtitles-data.js(998)가 world-intro-subtitles.js(999) 앞에서 로드되어야 data 캡처(line4) 유효. 순서 역전/누락이 (A) boot throw 전제"}
+  ],
+  "canonicalHandoffForRoot": [
+    "0621 '유일 조건=setLanguage throw / create throw-free / 정상load 보장'을 조건부로 정정: (A) world-intro-subtitles.js:13 boot throw→도달불가, (B) world-intro-subtitles.js:27 setLanguage throw→조건부 도달; create는 video falsy 시 throw",
+    "데이터 로드 순서 가드: world-intro-subtitles-data.js(998)→world-intro-subtitles.js(999) 순서/존재 보장 문안(index.html/빌드)",
+    "WORLD_INTRO_INGAME_20260907.md에 데이터/VTTCue 결손 분기 미문서화 → 보강 후보(현행 재생계약은 인수만)",
+    "CAT-68:2202 / CAT-96:3376 는 0621 문안 유지, 본 과제는 의존성 결손 분기만 추가"
+  ],
+  "contractTableIncompleteness": "setLanguage 전후 attach/addTextTrack/getCurrentLanguage/DOM 변수쓰기/create의 video.addEventListener 등 다른 precreate throw 가능. 본 표는 두 지정 누락만 다루며 모든 API 오류를 열거하지 않음(의도적 비완전)",
+  "productionApplied": false,
+  "verificationLimits": "정적 초기화 순서·호출 대조만. UI/DOM/미디어/타이머/Node 실행 0. 실게임·GPU·청취·저장 미검수. VTTCue/addTextTrack/데이터JS 실제 throw·브라우저 동작 미실행→UNKNOWN. 함수 hoisting·2119 이전 caller 잔여 UNKNOWN. 수동 주입/직접 호출을 도달 증거로 쓰지 않음. Git 조회 0. 과거 문서 PASS 미원용",
+  "notRun": ["생산 코드", "공유 docs 수정", "이전 산출/기존 테스트 수정", "checks.mjs/새 fixture/새 테스트", "Node/UI/DOM/미디어/타이머 실행", "Git 조회/stage/commit/push", "실게임/UI/세이브/서버/빌드/설치/권한/인증", "미디어 생성/편집/재생", "외부메시지/새세션/하위팀", "삭제/이동/cleanup", "맵 geometry/collision/camera QA", "CH1-1 사망/필드리셋 조사(root 단독)"]
+}

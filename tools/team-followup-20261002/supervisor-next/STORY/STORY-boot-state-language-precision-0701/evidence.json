@@ -1,0 +1,85 @@
+{
+  "taskId": "STORY-boot-state-language-precision-0701",
+  "provider": "Claude Code (Opus 4.8)",
+  "role": "STORY",
+  "sessionUUID": "3ed6e74d-5552-4d7b-a04b-dc5945e0f3d7",
+  "chatSessionId": null,
+  "timestamps": {
+    "sourceReadWriteUTC": "2026-10-02T07:04:01Z",
+    "sourceReadWriteKST": "2026-10-02T16:04:01+0900",
+    "priorTaskTimesFromSupervisor": {
+      "note": "직전 0635 시각(감독 대조). 본 과제 SOURCE 읽기 시각과 혼합 금지",
+      "peer": "2026-10-02T06:35:02.419Z",
+      "read": "2026-10-02T06:35:08.513Z",
+      "endTurnId": "ef19701d-1866-495b-a515-a512224b79e0",
+      "endTurn": "2026-10-02T06:50:19.275Z"
+    },
+    "timeSeparationRule": "SOURCE 전체SHA/읽기시각 ≠ task Read/최종 end_turn 시각 — 분리 기록"
+  },
+  "env": {
+    "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "cwdMatchesTask": true,
+    "gitQueried": false,
+    "providedCheckpoint": {
+      "sha": "b72f3f0634f78829df0f227897a1e7555488f103",
+      "source": "TASK 제공 — root 06:10 전후 push 보고값. 독립 현재 HEAD 아님",
+      "globalChangesObserved": "감독 직전 06:29:03Z -uall 54(제공값). 본인 2파일로 전역 임계 판단 안 함"
+    }
+  },
+  "ownedOutputs": [
+    "tools/team-followup-20261002/supervisor-next/STORY/STORY-boot-state-language-precision-0701/result.md",
+    "tools/team-followup-20261002/supervisor-next/STORY/STORY-boot-state-language-precision-0701/evidence.json"
+  ],
+  "scope": "읽기 전용 정적 정정. 이전 산출/TASK/checks 수정 0. 검사/Node/fixture/새tests/UI/DOM/미디어/타이머 실행 0",
+  "contentSHA256_shasum_not_git": {
+    "index.html": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8 (0635과 동일, 변동 없음)",
+    "world-intro-subtitles.js": "9e3ac2207ece4cf5591ef7eee5d3296f4024c0e5ecfdfcaeda19bd2918dbc92b (0635과 동일)"
+  },
+  "readPaths": [
+    {"path": "tools/team-followup-20261002/supervisor-next/STORY/STORY-boot-state-language-precision-0701/TASK.md", "scope": "전문"},
+    {"path": "tools/team-followup-20261002/continuous/COMMON.md", "scope": "전문(이전 세션 Read, 재적용)"},
+    {"path": "AGENTS.md", "scope": "전문(이전 세션 Read)"},
+    {"path": "world-intro-subtitles.js", "scope": "6-30 재확인(행번호): resolveLanguage 7(non-string)/9-11(regex 별칭)/12-13(data.languages), normalizeLanguage 15, setLanguage 20-27(normalize 21/track 22/addTextTrack 24/data.timings 26/new VTTCue 27)"},
+    {"path": "index.html", "scope": "getUserSelectedLanguage 2036/detectSteamLanguage 2037(_STEAM_LANG_MAP only)/detectBrowserLanguage 2038/getCurrentLanguage 2040; lang-select onchange 2114-2117; boot IIFE 2119; let _worldIntroPlayer 2156; let _cinIdx/_cinReady 2225; attach 2411/setLanguage(getCurrentLanguage()) 2412"},
+    {"path": "tools/team-followup-20261002/supervisor-next/STORY/STORY-subtitle-boot-failure-order-0635/{result.md,evidence.json}", "scope": "정정 대상(미수정, Read만)"}
+  ],
+  "commands": [
+    {"cmd": "awk 6-30 world-intro-subtitles.js (행번호 확인)", "exit": 0},
+    {"cmd": "awk 2156/2225 index.html (let 초기화문 위치)", "exit": 0},
+    {"cmd": "awk 2410-2413 index.html (attach/setLanguage/getCurrentLanguage 순서)", "exit": 0},
+    {"cmd": "awk 2037 index.html | grep _STEAM_LANG_MAP|resolveLanguage", "exit": 0, "result": "_STEAM_LANG_MAP x2, resolveLanguage 0 (Steam 직접 매핑)"},
+    {"cmd": "awk 2114-2119 index.html (onchange 2114-2117 < boot 2119)", "exit": 0},
+    {"cmd": "grep -rln getCurrentLanguage|resolveLanguage|normalizeLanguage|addTextTrack|_STEAM_LANG_MAP docs/ (백업제외)", "exit": 0}
+  ],
+  "corrections": [
+    {"id": "1-TDZ", "detail": "2119 throw 시 let _worldIntroPlayer(2156)/let _cinIdx,_cinReady(2225) 초기화문 미실행=TDZ('false/null 유지' 아님). 함수 hoist≠wiring 실행. 언어 select onchange(2114-2117)는 2119 이전 등록→'모든 입력 미등록' 아니라 시네마틱 전용 핸들러만 미등록"},
+    {"id": "2-LANG-ORDER", "detail": "getCurrentLanguage(2040) 순서=?lang query→hellLang→Steam→browser→en. 0635의 query 누락 보정. '첫 throw'는 확인 입력 조건 한정, 이전 미확인 caller UNKNOWN"},
+    {"id": "3-EARLY-RETURN-REGEX", "detail": "early-return(9-11)은 정규식 별칭(zh-(tw|hk|mo|hant)→zht / ptbr·pt·pt-*→ptbr / nb·nn→no). raw 'zht'/'no'는 line13 data.languages. Steam=_STEAM_LANG_MAP 직접(resolveLanguage·data 미접근). data 누락=boot 실패로 일반화 금지(별칭/Steam/미설정은 boot 통과 후 더 늦게 실패 가능); 두 누락 반대 reachability 단정 금지"},
+    {"id": "4-SETLANGUAGE-ORDER", "detail": "addTextTrack=24(21=normalizeLanguage). setLanguage 인자 getCurrentLanguage는 attach(2411) 이후 2412 평가. 순서 normalize21(→13)→track22→addTextTrack24→timings26→VTTCue27. data 부재 첫 접근=비별칭 21(→13)/별칭 26. VTTCue 부재=27. native 재현 주장 안 함"},
+    {"id": "5-ONSUBSKIP-ARITH", "detail": "showLine(0,false) 미기동→updateVoiceSync 미작동; onSubSkip 성공 호출당 _cinIdx+1. cue13/18=성공 onSubSkip 13/18회의 조건부 산술(초기 _cinIdx=0). touch/click/keyboard/gamepad 물리 입력 횟수 검수값 아님"}
+  ],
+  "resolveLanguageTable": [
+    {"line": 7, "cond": "typeof value!=='string'", "dataAccess": false, "ret": "null"},
+    {"line": 9, "cond": "/^zh-(tw|hk|mo|hant)(-|$)/", "dataAccess": false, "ret": "zht"},
+    {"line": 10, "cond": "raw==='ptbr'||raw==='pt'||startsWith('pt-')", "dataAccess": false, "ret": "ptbr"},
+    {"line": 11, "cond": "/^(nb|nn)(-|$)/", "dataAccess": false, "ret": "no"},
+    {"line": 13, "cond": "Object.hasOwn(data.languages,code) — raw zht/no/en/ko/zh 등", "dataAccess": true, "ret": "code|null (data 부재 시 throw)"}
+  ],
+  "setLanguageTable": [
+    {"line": 21, "op": "normalizeLanguage(value)=resolveLanguage||'en'", "dataAccessIf": "비별칭이면 line13"},
+    {"line": 22, "op": "tracks.get(code)", "dataAccess": false},
+    {"line": 24, "op": "video.addTextTrack(...)", "dataAccess": false},
+    {"line": 26, "op": "data.timings.forEach", "dataAccess": true},
+    {"line": 27, "op": "new root.VTTCue(...,data.languages[code][i])", "dataAccess": "VTTCue API + data.languages"}
+  ],
+  "canonicalHandoffForRoot": [
+    "0635 '초기 false/null 유지'→TDZ(2156/2225 초기화 미실행); '모든 입력 미등록'→시네마틱 전용 핸들러만(2114-2117 onchange 선등록)",
+    "getCurrentLanguage 순서에 ?lang query 포함(2040). Steam은 _STEAM_LANG_MAP 직접, data 미접근(2037)",
+    "early-return은 정규식 별칭만(9-11); raw zht/no는 line13 data; data 누락=boot 실패 일반화 금지, 두 누락 반대 reachability 단정 금지",
+    "addTextTrack=24(21=normalize); data 부재 첫 접근은 별칭 여부로 21(→13) 또는 26; VTTCue 부재=27",
+    "cue13/18 도달=성공 onSubSkip 호출 13/18회의 조건부 산술(물리 입력 아님)"
+  ],
+  "productionApplied": false,
+  "verificationLimits": "원문 정적 대조만. Node/UI/DOM/미디어/타이머/검사 실행 0. native API(addTextTrack/VTTCue)·boot throw·물리 입력 미실행→UNKNOWN. 초기화 전 값 직접 읽지 않음. Git 조회 0. SOURCE 읽기시각과 task Read/end_turn 시각 분리. 29×32 영화·28키 CIN·KO/비KO·언어목록·미디어·DOM 불변",
+  "notRun": ["생산 코드", "공유 docs 수정", "이전 산출/TASK/checks 수정", "기존 tests 수정", "검사/Node/fixture/새tests/UI/DOM/미디어/타이머 실행", "Git 조회/쓰기/index/stage/commit/push", "실게임/사용자게임/세이브/서버/빌드/삭제/이동/cleanup/권한/인증/설치", "외부메시지/새세션/하위팀", "SendMessage/주소요청/relay", "CH1-1 복귀/SOUND 통합(root 소유)", "맵 제작"]
+}

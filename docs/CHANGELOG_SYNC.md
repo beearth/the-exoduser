@@ -52136,3 +52136,12 @@ EXP 30% 차감·사망 횟수/현재 인벤토리·stageTime·최종 HP/MP/신�
 새 actual-source 회귀 `test/audioSampleStartFailure.test.cjs`는 양판 각9, 최종18/18 PASS; inline JS12/importmap2 구문 PASS. guarded/unguarded 정상 전체 trace 동등, plain/panned 즉시 실패 회수·원 Error·중복 종료/타이머 회계·기존 active 노드 보존·disconnect 예외의 기존 처리·부모 flush의 queue1 유지·정상 큐 drain을 확인했다. baseline18의 8PASS/10FAIL은 역사이며 최종18과 합산하지 않는다. WebAudio/clock/timer/buffer/voice map 대역이므로 실제 장치·청취·전체게임·실제품 인수를 주장하지 않는다. 기존 전문팀/보스/mortar 검사는 재실행하지 않았고, 보스 수정 구간과 그 밖 HTML 바이트를 보존했다.
 
 사운드/성능 정본과 `6사운드디자인/SOUND_SAMPLE_START_FAILURE_20261002.md`를 정확 동기화했다. root source 영수증은 `tmp/mac-migration-runtime/continued-review-20261002/sound-start-backup/receipt.json`; 별도 `sound-start-checkpoint/receipt.json`에 변경전 백업·소유 SHA·원격 exact SHA를 기록한다. ENEMY3/STORY5의 새 완료8파일은 검토/실행 소스 원문 보존이며 후보 생산 채택이 아니다. ENEMY idx60의 실제 phase reset/전체무브 동등성, STORY boot 최초 실패/보존 resolver 제품 노출은 검수 중인 Gate로 유지한다. 기존 사용자23항목·감독 mutable STATE/LOG·진행 중 TASK/산출·사용자 게임/세이브 보존, 전문팀 중복 지시0이다.
+
+
+## 2026-10-02 Mac helper payload SHA 검증 인수
+
+`tools/team-followup-20261001/BUILD/mac-packager/packager.mjs`의 `verifyOutput` helper 읽기 접점만 보강했다. 기본/Alerts/GPU/Renderer 네 helper의 rename 출력 payload를 한 번 읽고 기존 비어있지 않음 확인 뒤, 원 `nwjs Helper{suffix}` runtimeFiles pin의 소문자64hex 형식과 SHA-256 일치를 확인한다. 누락/잘못된 pin은 `MAC_HELPER_PIN_MISSING_OR_INVALID`, 손상은 `MAC_HELPER_SHA_MISMATCH:nwjs Helper{suffix}`로 거부한다. 기존 plist executable·main/derived package/server/선택 input 검증은 바이트 그대로 유지한다.
+
+새 actual-source 회귀 `test/macPackagerHelperIntegrity.test.cjs` 최종30/30 PASS, 모듈 구문검사1회 PASS. 네 suffix 1바이트 손상·missing pin·7가지 invalid pin 형식과 기존 empty/plist/descriptor 실패 계약, 정상 legacy 읽기 trace 동등을 검수했다. baseline30의17PASS/13FAIL은 별도 이력이며 최종30에 합산하지 않는다. 실제 verifyOutput/readFile/safeAncestors/digest/requireValue 및 설치 plist parser를 추출했고 VM용 import.meta.url literal 치환1곳을 공개했다. memory fs/payload 대역이며 실앱/native fs/Mach-O/서명/재빌드/배포 인수0이다. 기존 close 실패 대역의 descriptor1잔류를 정상 회수로 계산하지 않는다.
+
+BUILD master/백업 정책과 `13출시·마케팅/MAC_HELPER_PAYLOAD_INTEGRITY_20261002.md`를 동기화했다. 수정 구역 밖 packager byte와 game/easy/node-main/보호2_3/SOUNDtest/원자료 SHA를 보존했고 기존 검사/전수/빌드 반복0이다. `tmp/mac-migration-runtime/continued-review-20261002/build-helper-backup/receipt.json` 및 별도 `build-helper-checkpoint/receipt.json`에 source·백업·검수·소유·원격 정확SHA를 기록한다. 새 ENEMY3/STORY4 완료원문7을 제한 검토 상태로 함께 보존하며 후보 생산채택과 구분한다. STORY 추가2는 supervisor가 인수한 TDZ·query 우선·raw 별칭/정규식·addTextTrack24행 정정이며 원문만 보존한다. 기존 boot 보고의 오류 문구는 과거 원문으로 유지하고, source fidelity/전수 docs 검색·실앱·제품노출·후보채택은 HOLD다. 기존 사용자23·감독 mutable STATE/LOG·active TASK/산출·게임/세이브는 이번 stage에서 제외한다.

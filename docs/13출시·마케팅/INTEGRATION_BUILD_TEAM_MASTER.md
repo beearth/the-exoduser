@@ -120,3 +120,18 @@ matchesIfNoneMatch helper와 조건식1곳만 반영했다. exact 후보 byte �
 | 미검수 | 성공 저장은 메모리 fs, 실제 OS 검수는 ENOENT 파일 열기 실패만이다. 실제 HTTP/socket·NW.js 앱·저장→종료→재시작·Windows·fsync/crash/concurrency·서명/배포 미검수. 원자쓰기 후보·cleanup 정책 채택0, 새 서버/게임/빌드/삭제0 |
 
 응답 계약의 상세 정본은 [저장 SSOT의 최신 보강](../15%20세이브+데이터구조/15%20세이브+데이터구조.md#2026-10-02-nwjs-공유-악의-post-실패-응답-생산-보강)이다. 개발 `server.cjs`는 기존 text/plain 500을 유지하므로 NW.js JSON 응답과 wire 형식이 같다고 기록하지 않는다. source 회귀 PASS를 실앱/패키지 품질 인수로 집계하지 않는다.
+
+### 2026-10-02 Mac helper 출력 payload SHA 보존 검증
+
+Mac 패키저 `tools/team-followup-20261001/BUILD/mac-packager/packager.mjs`의 `verifyOutput` helper 검증 접점 1곳에 원 runtime pin과 rename 출력 payload SHA-256 대조를 적용했다. 전문팀 GPU helper 1바이트 반례의 미적용 후보 기록은 제출 당시 이력이다. 이번 인수는 패키저 소스 경계이며 실제 앱 재빌드·실행·Mach-O·서명 인수는 수행하지 않았다.
+
+| 대상 / 계약 | 현재 소스와 검수 범위 |
+|---|---|
+| helper 4종 | suffix `''`, `' (Alerts)'`, `' (GPU)'`, `' (Renderer)'`. 원 `nwjs Helper{suffix}` 실행 파일의 `proposal.runtimeFiles` pin을 `proposal.args.app.name+' Helper'+suffix`로 이름이 바뀐 출력 실행 payload와 비교. Chromium 경로는 `proposal.args.releaseInfo.components.chromium`을 사용. Plugin 추가 0 |
+| 순서 / 오류 | 출력 helper를 기존처럼 1회 읽어 length>0 검사 → 원 경로 pin 존재와 `/^[a-f0-9]{64}$/` 검사 → payload SHA 일치 → 기존 `CFBundleExecutable` rename 검사. pin 누락/무효는 `MAC_HELPER_PIN_MISSING_OR_INVALID`, 불일치는 `MAC_HELPER_SHA_MISMATCH:nwjs Helper{suffix}`. 빈 payload·plist 오류 계약 유지 |
+| 보존 | 본체 원 pin SHA/실행명 plist, 파생 package/server, 입력 SHA loop, `safeAncestors/readFile`, plan/execute 원문 동일. 정상 fixture의 return·전체 파일 읽기/descriptor trace는 옛 verifier와 동일. `inputs=[]`로 packaged-input loop 동적검수 0; 보존은 접점 밖 byte 동일 근거 |
+| 새 검수 | 실제 소스 5함수 추출+설치 plist parser+메모리 fs/payload: baseline 30개 17 PASS·13 FAIL → 반영본 30/30 PASS. 네 helper 각각 1바이트 변형·누락 pin·무효 pin·빈 payload·잘못된 실행명 plist, 정상/경로/descriptor 경계 포함. 모듈 구문 검사 1회 PASS. 기존 전문팀·대형 전수·게임 검수 재실행 0 |
+| source ID / 영수증 | packager `1975f899fe62559b96674a811604fb24cee873cd1e1b6da170814a1ffa0e7f0c` → `289bf3a1bec9f2a8b06d9309d5fbdcbc672b6a46aeb20e85fb441dd2df45dc65`; old fragment 125 → 666 bytes, +541 bytes, 접점 밖 원문 동일. `tmp/mac-migration-runtime/continued-review-20261002/build-helper-backup/receipt.json` SHA `11d5519d2992a099e7df7d3478e6fecfcf1b16385e12dd7a63c0429859483f46` |
+| 한계 / 후속 Gate | pin 일치는 opaque 비 Mach-O payload도 인수한다. 실 runtime/app 재관측·파일 생성·앱 실행·서명·배포 0. 기존 close 실패는 close 1시도/descriptor 1잔류 대역으로 그대로 전달하며 모두 닫힘을 보장하지 않는다. 소스+docs 원격 checkpoint는 총괄 별도; 새 빌드와 native QA는 별도 |
+
+정확한 helper 경로·pin 기준·30개 검사 분류와 미검수 항목은 [Mac helper payload 무결성 인수](MAC_HELPER_PAYLOAD_INTEGRITY_20261002.md)를 따른다. 과거 앱 생성·8,258항목 및 7,918입력 검수·historical runtime pin은 해당 시점 증거로 보존하며 이번에 다시 관측한 실물 검수로 집계하지 않는다.

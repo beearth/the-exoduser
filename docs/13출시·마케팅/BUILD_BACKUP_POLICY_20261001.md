@@ -59,3 +59,18 @@
 ### BUILD 소스 누락 방지 (2026-10-02)
 
 Mac core.ignorecase=true에서 기존 build/ 규칙이 tools/team-followup-20261001/BUILD 담당 폴더까지 가렸다. 이 정확 디렉터리의 최상위 소스·보고서·fixture 텍스트 확장자만 예외로 공개한다. 하위 폴더·프로필·세이브·캐시·바이너리와 기존 build/ 산출 무시는 유지한다. 새 하위 fixture가 필요하면 용도를 확인해 별도 좁은 예외를 검수한다. Changes 개수만으로 백업을 판단하지 않고 담당 필수 경로의 git ls-files와 git check-ignore -v를 함께 확인한다. 기존 config-draft는 사용자 초안으로 커밋하지 않고 목록에 보존한다.
+
+### 2026-10-02 Mac helper pin과 산출물 검증 기록
+
+`verifyOutput`에 추가된 helper 원 pin SHA 대조는 패키저 소스 검증 경계다. 실제 앱 보존 위치·실행·서명·GitHub 산출물 업로드 인수는 별도이며 기존 안전 실행본을 교체하지 않는다. [정확한 계약과 새 회귀 근거](MAC_HELPER_PAYLOAD_INTEGRITY_20261002.md)를 기준으로 코드와 관련 docs를 같은 작업 단위에 보존한다.
+
+| 보존 대상 / Gate | 기록해야 하는 정확한 범위 |
+|---|---|
+| 원 pin | `proposal.runtimeFiles`에서 원 `nwjs Helper{suffix}.app/Contents/MacOS/nwjs Helper{suffix}` 경로 pin을 조회. suffix 4개는 기본/Alerts/GPU/Renderer, Chromium은 releaseInfo 값. pin 존재와 소문자 64hex SHA 형식 확인 |
+| rename 출력 | 출력 `{appName} Helper{suffix}.app/Contents/MacOS/{appName} Helper{suffix}`를 1회 읽은 바이트 SHA-256와 원 pin 비교. plist는 의도적으로 이름을 바꾸므로 원 plist SHA 비교를 추가하지 않고 기존 `CFBundleExecutable` 확인 유지 |
+| 오류 인계 | pin 누락/무효 `MAC_HELPER_PIN_MISSING_OR_INVALID`, payload 불일치 `MAC_HELPER_SHA_MISMATCH:nwjs Helper{suffix}`. main/input/파생 package/server·기존 읽기/오류/cleanup 계약 변경 0 |
+| source checkpoint 입력 | `packager.mjs` SHA `289bf3a1bec9f2a8b06d9309d5fbdcbc672b6a46aeb20e85fb441dd2df45dc65`, 신규 `test/macPackagerHelperIntegrity.test.cjs` SHA `3359cef0b9fb12d5a09f02ba34cd9b9383e6d28753c466016f26688bc203d7c9`, 관련 BUILD 정본과 신규 인수 보고서. source receipt `tmp/mac-migration-runtime/continued-review-20261002/build-helper-backup/receipt.json` SHA `11d5519d2992a099e7df7d3478e6fecfcf1b16385e12dd7a63c0429859483f46` |
+| 인수 경계 | actual-source 30/30 PASS·모듈 구문 1회 PASS는 메모리 payload/fs 및 실제 parser 검수. 과거 native pin 재관측·실앱/런타임 읽기·생성·재빌드·서명·설치·배포 0. opaque pin 일치는 Mach-O/아키텍처/실행 권한/서명을 검증하지 않음 |
+| 기존본 / 원격 | 기존 앱·manifest·전문팀 산출 유지, 과거 pin/전수검사 반복 0. 현재 소스 원격 ref·정확 SHA 대조와 범위 한정 commit/push는 총괄이 별도 완료 근거를 기록. 로컬 검수나 이 문서 갱신을 원격 백업 완료로 표시하지 않음 |
+
+기존 `readFile`의 close 예외는 회복 처리 없이 전달한다. 합성 close 실패 검수는 1시도·descriptor 1잔류이므로 실패 입력 전체에서 “descriptor 모두 닫힘”을 주장하지 않는다. 이번 인수는 일반 예외/cleanup 정책이나 실제 OS 실패 복구를 확장하지 않는다.

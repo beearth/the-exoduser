@@ -79,3 +79,31 @@ User-priority CH1-1 boss-death field progress reset is owned by root and under i
 | STORY route0621 2 | 현행 정상 v13 movie/TextTrack은 보존 CIN loop/resolver 미사용이라는 정적 경로 대조 | only-setLanguage-throw/생성절대throw없음은HOLD. boot 최초throw 경계·전체제품/native자막은추가검수중; CAT68/96의 식조건과 제품경로 분리 필요 |
 
 전문팀 후속 지시의 단일 소유자는 기존 작업감독이다. 감독 STATE/LOG/active TASK 및 원 사용자23항목은 이번 scoped commit에서 제외한다. 저장/게임탭 input·reload·close·서버·오디오 에셋·삭제·권한/설치·게시0. 원격 exact SHA는 `tmp/mac-migration-runtime/continued-review-20261002/sound-start-checkpoint/receipt.json`에 commit 이후 기록한다.
+
+
+## 2026-10-02 BUILD helper payload 검증 인수와 새 완료7 보존
+
+감독의 BUILD-helper-integrity-0543 후보를 `79f6f342569a7c590e8fe9d8962e5453685a164b` 이후 packager source에 최소 적용했다. 기존 GPU 손상2입력/5assertion은 반복하지 않고 새 actual-source 경계검수30개를 수행했다. helper 읽기/비어있음 검증 접점125→666bytes(+541)만 바뀌었고 다른 함수/주위 구역은 원문 동일하다. 최종 packager SHA-256 `289bf3a1bec9f2a8b06d9309d5fbdcbc672b6a46aeb20e85fb441dd2df45dc65`, actual verifyOutput fragmentSHA `d17222a0e1af21fc9770ea8ac9665af0e2a16140f1c7d2528aecc93cb8161030`는 승인된 최소 memory 후보와 동일하다.
+
+| 계약 | 현재 인수 범위 | 검수 한계 |
+|---|---|---|
+| 원 pin | proposal.runtimeFiles의 `nwjs.app/Contents/Frameworks/nwjs Framework.framework/Versions/{chromium}/Helpers/nwjs Helper{suffix}.app/Contents/MacOS/nwjs Helper{suffix}` | plan/execute inventory의 정적 전달과 설치 nw-builder rename source 계약 대조; actual plan/build 호출0 |
+| 출력 | app.name+Helper{suffix} rename output payload SHA를 원 pin과 대조, helper 읽기1회 재사용 | 원 NW.js runtime pin의 신뢰/아키텍처/서명을 새로 확정하지 않음 |
+| 오류 | missing/invalid→MAC_HELPER_PIN_MISSING_OR_INVALID, mismatch→MAC_HELPER_SHA_MISMATCH:nwjs Helper{suffix} | length 성공 후 pin/SHA 검사, mismatch 대상 helper plist 읽기 전 거부 |
+| 기존 계약 | empty→MAC_HELPER_RENAME_NOT_COMPLETED, plist executable→MAC_HELPER_PLIST_NOT_COMPLETED 및 main/derived/input 루프 바이트 유지 | fixture inputs=[]로 마지막 packaged input 루프의 이번 동적 검수0 |
+| 새 회귀 | final30/30, module --check 1회 PASS; 네 suffix 손상/missing/invalid·empty/plist·descriptor·정상전체읽기trace 검수 | baseline30(17PASS/13FAIL) 합산0; memory fs/opaque payload·descriptor 대역 |
+| 실제 fragment | verifyOutput/readFile/safeAncestors/digest/requireValue + 실제 설치 plist parse/build | VM 구문을 위한 import.meta.url만 sourceURL literal 치환, packager module 평가/운영호출0 |
+| 미인수 | 실제 파일시스템/앱/재빌드/Mach-O/권한/codesign/notarization/배포 | opaque non-Mach-O payload도 신뢰 pin과 같으면 source검증 통과; SHA동일성이 실행/서명 PASS는 아님 |
+| 수명 예외 | read/nonregular/sourceChanged 등의 기존 finally close 인수 | close 자체 throw 대역은 attempt1/outstanding1, 닫힘으로 계산하지 않음; 새 복구정책 추가0 |
+
+game.html/easy/node-main/보호2_3/SOUNDtest·전문팀 원자료16 SHA 보존을 확인했다. 사운드와 보스 기존 검사는 다시 실행하지 않는다. source receipt `tmp/mac-migration-runtime/continued-review-20261002/build-helper-backup/receipt.json` SHA-256 `11d5519d2992a099e7df7d3478e6fecfcf1b16385e12dd7a63c0429859483f46`, 상세 정본 `docs/13출시·마케팅/MAC_HELPER_PAYLOAD_INTEGRITY_20261002.md`를 따른다. 현재 helper source 인수와 과거 blocked plan/앱 snapshot/native historical pin을 구분한다.
+
+감독이 추가 pin·인계한 새 완료7파일(ENEMY-phase-reset-cd60-0635 3, STORY-subtitle-boot-failure-order-0635 2, STORY-boot-state-language-precision-0701 2)만 이번 원문 보존 대상이다. 직전79f6f3 완료8은 이미 동일 HEAD에 보존되어 재stage하지 않는다. 원문과 미인수/정정 경계를 아래처럼 분리한다.
+
+| 새 완료 | 제한 인수 | 정정·HOLD |
+|---|---|---|
+| ENEMY phase reset3 | 실제 선택 CD60=64→실제 phaseCheck phase1→2에서 현행64생존/idx기준 reset후보0. 8PASS+6witness는 defect2/normal2/candidate2 | fixture P.iframes=1이라 hurtP0이며 ‘충격파 hurtP발생’ 문구는오류. P5일부field/counter만비교, P3현행만, P6score 직접호출은recover→idle 재선택실행아님. 오래된행번호/KST approx 정정필요. 설계반복형/전체무브/실게임/후보채택UNKNOWN |
+| STORY boot failure2 | data.languages 부팅실패와 VTTCue precreate 실패/입력등록 시점의 조건부 구분, 정적 source 대조 | boot2119 throw는 let 초기화2156/2225전이라 false/null 유지주장은오류(TDZ). query우선·별칭정규식 조건·addTextTrack24행·모든언어reachability 오류였으며 아래 정정2에서 정적 조건을 보완했다. native/API/제품노출/후보채택UNKNOWN |
+| STORY boot precision2 | supervisor actualRead07:02:18.466Z/end e3a3d332-1df6-4019-a373-e2079b5fb8c3 07:06:45.870Z. boot2119 이전 language onchange2114~2117 등록, let2156/2225 미초기화 TDZ. query→hellLang→Steam→browser→en. Steam 직접매핑, raw zht/no는 data.languages 접근, 정규식 별칭만 early return. addTextTrack24→timings26→VTTCue27, 성공 onSubSkip 호출당+1 조건부 산술 | 원문 정적 조건 정정만 인수. data누락의 모든언어 boot실패/항상 반대 reachability 일반화0. 물리 입력·실영화/DOM·native/제품노출/후보채택HOLD. 감독이 source-fidelity-0710만 기존세션에1회 지시·actualRead07:12:58.019Z 확인. 전수 docs 검색 보완도 해당 TASK 범위이며 root중복지시0 |
+
+전문팀은 감독이 기존세션에 새 범위정정 한건씩 송신·실제Read를 관리한다. root는 같은 TASK/검사/전문팀 지시를 중복하지 않는다. supervisor STATE/LOG, active TASK/partial 산출, 원 사용자23항목, 게임/세이브·기존앱/바이너리는 보존한다. 삭제/cleanup·설치·권한·인증·결제·게시·새채팅/팀·PC/Windows 작업0. 이번 core+완료소유 경로만 commit/push하고 원격 정확SHA는 별도 `build-helper-checkpoint/receipt.json`에 기록한다.
