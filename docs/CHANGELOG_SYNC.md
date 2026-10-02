@@ -52145,3 +52145,17 @@ EXP 30% 차감·사망 횟수/현재 인벤토리·stageTime·최종 HP/MP/신�
 새 actual-source 회귀 `test/macPackagerHelperIntegrity.test.cjs` 최종30/30 PASS, 모듈 구문검사1회 PASS. 네 suffix 1바이트 손상·missing pin·7가지 invalid pin 형식과 기존 empty/plist/descriptor 실패 계약, 정상 legacy 읽기 trace 동등을 검수했다. baseline30의17PASS/13FAIL은 별도 이력이며 최종30에 합산하지 않는다. 실제 verifyOutput/readFile/safeAncestors/digest/requireValue 및 설치 plist parser를 추출했고 VM용 import.meta.url literal 치환1곳을 공개했다. memory fs/payload 대역이며 실앱/native fs/Mach-O/서명/재빌드/배포 인수0이다. 기존 close 실패 대역의 descriptor1잔류를 정상 회수로 계산하지 않는다.
 
 BUILD master/백업 정책과 `13출시·마케팅/MAC_HELPER_PAYLOAD_INTEGRITY_20261002.md`를 동기화했다. 수정 구역 밖 packager byte와 game/easy/node-main/보호2_3/SOUNDtest/원자료 SHA를 보존했고 기존 검사/전수/빌드 반복0이다. `tmp/mac-migration-runtime/continued-review-20261002/build-helper-backup/receipt.json` 및 별도 `build-helper-checkpoint/receipt.json`에 source·백업·검수·소유·원격 정확SHA를 기록한다. 새 ENEMY3/STORY4 완료원문7을 제한 검토 상태로 함께 보존하며 후보 생산채택과 구분한다. STORY 추가2는 supervisor가 인수한 TDZ·query 우선·raw 별칭/정규식·addTextTrack24행 정정이며 원문만 보존한다. 기존 boot 보고의 오류 문구는 과거 원문으로 유지하고, source fidelity/전수 docs 검색·실앱·제품노출·후보채택은 HOLD다. 기존 사용자23·감독 mutable STATE/LOG·active TASK/산출·게임/세이브는 이번 stage에서 제외한다.
+
+
+## 2026-10-02 악의폭풍 focus 취소 인수
+
+`game.html`·`game-easy-test.html`의 `_clearHeldInput` 기존 P guard에 `P._msAiming=false;P._msCharging=false`만 추가했다. 각 접점86→124bytes(+38), 기존 beam/박격포·held key/button·dash·cut skip 취소 및 모든 접점 밖 코드 바이트는 그대로 유지한다. 실제 등록 blur/hidden callback이 조준·충전을 끝내 다음 추출 Storm update에서 ghost placement를 막는다. visible 알림은 취소를 호출하지 않으며 aimKey/dist·자원/CD·이미 생성된 zone/wall을 되돌리지 않는다.
+
+새 `test/maliceStormFocusCancellation.test.cjs` actual-source 회귀48/48 PASS, inline12JS/2JSON 구문 PASS. 일반/boneStorm/elecRepent×키보드/GP LT 대역×blur/hidden, 네 aim-charge 조합·null/undefined P·fresh rearm·정상12trace·MP49 거절 경계를 검수했다. baseline48의20PASS/28FAIL·guard제거 memory ghost12는 별도 음성 근거이며 최종검수48에 합산하지 않는다. 전체poll/update·native 이벤트·실패드·실게임·DOM·시각·청취·빌드·저장 검수는0이다.
+
+정상 소비/쿨다운 소스는 변경0이다. 일반 release는 MP/mats 차감0·`_msCd=1200`; fused host는 MP50→zone/wall 생성→mats raw12 clamped 차감→`_bnsCd=1500`, 악의 충분량 gate와 `malCost` 보정이 없다. elecRepent의 추가 hellRay는 해당 branch에서 별도 MP100 차감0이다. MP49 거절 시 charging false/aim true의 기존 부분 상태·메시지 동작도 보존한다. 관측 RNG5/2/5는 명시한 seed/Lv1 fixture만의 수치다. 4월 기준 DPS/비용표의 추정 기획 수치와 이번 현행 source 관측을 구분해 관련8정본 및 `2_1 스킬관리+합체시스템+자원/MALICE_STORM_FOCUS_CANCELLATION_20261002.md`를 동기화한다.
+
+source receipt `tmp/mac-migration-runtime/continued-review-20261002/storm-focus-backup/receipt.json` SHA `a600eb07bd3d9c87c22d8362a73688270ab52f6329b2678368e3cea4a40f1227`과 별도 `storm-focus-checkpoint/receipt.json`에 raw 백업/정확byte/source검수/docs검색/범위commit·원격SHA를 보존한다. 전문팀 이전 검사/지시/원문 반복·수정0, 기존 사용자23/감독 mutable/active TASK·partial/게임·세이브·앱 보존이다.
+
+
+추가 정적 인수: STORY legacy `_CIN_I18N` 실제23키와 index2317의 truthy/falsy 조건부 fallback에 맞춰 번역 가이드/전체목록의 오래된 설명3접점을 정확 동기화했다. 과거26언어·442번역값·CAT68 21/22·CIN20cue/28필드·영화29×32를 각분모로 보존했다. 새ENEMY 정정2/STORY 실제source3 완료원문5는 SHA 그대로 보존하며 두 후보의 생산/실게임채택은HOLD다. 이전checkpoint5420819d의 완료7은재stage0이다. 코드변경은위focusguard2접점뿐이며 index/lobby/AI source변경0, STORY5probe/8assert 이전검사반복0이다.

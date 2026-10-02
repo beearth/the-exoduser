@@ -1,0 +1,77 @@
+{
+  "taskId": "ENEMY-phase-reset-scope-0655",
+  "type": "read-only-correction",
+  "provider": "VS Code Claude Code (supervisor-next/ENEMY), peer-dispatched",
+  "sessionUUID": "UNKNOWN (감독이 기존 JSONL end_turn·소유파일 직접 열람; SendMessage/주소추정 0)",
+  "method": "직전 result/evidence/checks + 현행 원문을 읽기만 하여 정정. Node/검사/fixture 재실행 0, 새 checks.mjs 0.",
+  "times": {
+    "correctionReadUTC": "2026-10-02T06:57:13Z",
+    "correctionReadKST": "2026-10-02T15:57:13+09:00",
+    "priorFixtureExecUTC": "2026-10-02T06:41:58.909Z",
+    "priorFixtureExecKST": "2026-10-02T15:41:58.909+09:00",
+    "note": "직전 evidence의 kst '2026-10-02T15:42:30+09:00 (approx)'는 별도 작성 추정값이지 실행 시각이 아님. 실행 시각은 06:41:58.909Z=15:41:58.909+09:00으로 정정."
+  },
+  "sourceSHA": {
+    "priorFixtureReadFull": { "game.html": "7d579cd6…de5d27c3", "game-easy-test.html": "1099267636…" },
+    "correctionReadFull": { "game.html": "06880824…90ba8bc3", "game-easy-test.html": "482ec94f…6649bd27" },
+    "note": "root 사운드 통합으로 전체 SHA가 7d579/109926(직전 실행 SHA, 보존) → 06880824/482ec94f(이번 읽기시점)로 전진. 과거 실행 SHA는 pin으로 보존하고 읽기시각/현재값을 구분. Git 직접조회 0. b72f3f06…(06:10 push 보고)는 독립 현재HEAD/원격검증값으로 미사용.",
+    "currentActualLines": {
+      "_bossAI_decl": { "game.html": 37059, "game-easy-test.html": 35864 },
+      "decrement_stmt (_bossAI 내)": { "game.html": 37063, "game-easy-test.html": 35868, "priorHistoryCited": "37031/35834 (continuous result/final 역사값 — 현행 아님)" },
+      "_bossPhaseCheck_decl": { "game.html": 36922, "game-easy-test.html": 35727 },
+      "reset_stmt (_bossPhaseCheck 내)": { "game.html": 36945, "game-easy-test.html": 35750 },
+      "shockwave_hurtP_gate": { "game.html": 36973, "game-easy-test.html": 35778, "cond": "dst(P,e)<_waveR && P.iframes<=0 && P.s!=='charge'" },
+      "redBean_count": { "game.html": 36980, "game-easy-test.html": 35785, "expr": "_bCnt=8+_bp*4" }
+    }
+  },
+  "corrections": [
+    {
+      "id": "C1-hurtP-claim",
+      "target": "직전 result.md §3 추적표 P2 '부수호출' = '빨간콩 spawn·충격파 hurtP 발생'",
+      "error": "harness P.iframes=1인데 원문 충격파 조건은 P.iframes<=0(36973/35778). 따라서 hurtP는 호출되지 않음(calls.hurtP=0). '충격파 hurtP 발생' 주장은 틀림.",
+      "corrected": "fixture에서 hurtP 호출=0(iframes=1로 게이트 차단). 충격파 '발생'은 거짓. _spawnBossProjectile는 _bp=2에서 _bCnt=8+2*4=16회 호출(정적 계산/대조값)이나, 이는 stub 기록 횟수일 뿐 실제 탄 실체/피해/parry/teleport 좌표/실제 충돌 PASS가 아님."
+    },
+    {
+      "id": "C2-P5-scope",
+      "target": "직전 'CD60만 차이/그 외 전부 동일' 주장",
+      "comparedFields": ["phase","hp","cd60(차이)","cd13","reviveIframes(revive)","s","atk","stunned","bossPatT","spawnProj(stub 호출수)","hurtP(=0)","speed","maxPoise","bossPatCd"],
+      "notCompared": ["projectile 인자/el 종류·순서","VFX/SFX 파라미터·호출 순서","RNG 소비 횟수","P.kb(넉백 벡터)","P/G 전체 필드","엔티티 전체 필드(x,y,r,el,_combatSt,_comboSeq,_comboIdx,_meleeStreak,_dbgScores,_feinting,_delaying 등)","텔레포트 좌표·이펙트 상태"],
+      "corrected": "'CD60만 차이, 그 외 동일'은 위 comparedFields 범위로 한정. notCompared 항목은 미비교 — 전면 동등 보증 아님."
+    },
+    {
+      "id": "C3-P3-P6-scope",
+      "corrected": "P3(전환없음, HP .70)은 현행 _bossPhaseCheck만 실행한 증거다. '후보와 비전환 양쪽 비교'가 아님. P6은 e.s==='recover' 확인 + _bossScore 직접 gate 결과이며, 실제 recover→idle 복귀·후속 _bossAI 재선택·실제 패턴 실행은 미실행. 반복형/1회성 설계 UNKNOWN 유지, productionApplied=false 유지."
+    },
+    {
+      "id": "C4-lines-and-idx-table",
+      "corrected": "감소문은 현행 37063/35868(_bossAI 선언 37059/35864 직후)이며, continuous result/final의 37031/35834는 역사값. reset문은 36945/35750. 아래 idx 정적표 참조.",
+      "idxStaticTable": {
+        "definedCount": 59,
+        "idxSequence": "0..29, 31..58, 60 (단순 0..58 아님)",
+        "gaps": [30, 59],
+        "idx60": { "move": "burstCounter", "reset(i<length=59)": "제외(미초기화)", "score허용": "O (무브셋 포함 시)" },
+        "idx41": { "move": "cageTrap", "reset(i<length=59)": "포함(정상 초기화)", "score허용": "X (_bossScore 36339: return -1, 모든 보스 금지)" },
+        "contrast": "idx41은 reset O/score X, idx60은 reset X/score O → reset 범위와 score 허용은 서로 다른 기준. idx 재번호/설계라벨/수치 변경 0."
+      }
+    }
+  ],
+  "inheritedLimits": {
+    "priorResult": "8PASS+6REPRODUCED는 정의된 assertion/witness 집계(결함 6개 아님). 6=양판 P2 2 + 정상 비전환 P3 2 + 후보 P4 2. 실패로 쓰지 않음.",
+    "spawn": "전체 spawn/mkEn 미실행. 인용 초기화식 new Array(BOSS_MOVES.length).fill(0)만 VM에서 실행.",
+    "scope": "실게임/GPU/청취/저장/실제 전환·재공격 PASS 아님. '두 곳(감소+reset) 모두 정의 idx 기준' 후보는 두 계약 범위로만 쓰며 실게임 완전성·모든 무브 동등 보증 아님."
+  },
+  "productionApplied": false,
+  "designIntent": "반복형/1회성 UNKNOWN (문서 부재) 유지",
+  "ownedFiles": [
+    "tools/team-followup-20261002/supervisor-next/ENEMY/ENEMY-phase-reset-scope-0655/result.md",
+    "tools/team-followup-20261002/supervisor-next/ENEMY/ENEMY-phase-reset-scope-0655/evidence.json"
+  ],
+  "safetyContract": {
+    "writesOutsideOwned": 0, "modifiedPriorOutputsOrChecks": 0, "nodeOrFixtureReRun": 0, "newChecks": 0,
+    "git": 0, "production": 0, "sharedDocs": 0, "existingTests": 0, "media": 0, "externalMsg": 0,
+    "delete_move_cleanup": 0, "newSession_subteam": 0, "UI_server_build_install": 0,
+    "ch1_1_death_return": "root 단독 소유 — 중복 조사 0", "map_geometry_collision_camera": "범위 밖",
+    "protected_2_3": "불변", "attackTicket": "불변", "blackBean_Q_only_magic_parry": "불변", "characterLOCK": "불변"
+  },
+  "changeCounts": { "observed": 67, "note": "전역 -uall 관측(타팀 병행 포함). 자신의 2파일로 80/100 판단 안 함. 80 미만. 본인 Git 미수행." }
+}

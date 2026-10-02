@@ -107,3 +107,34 @@ game.html/easy/node-main/보호2_3/SOUNDtest·전문팀 원자료16 SHA 보존�
 | STORY boot precision2 | supervisor actualRead07:02:18.466Z/end e3a3d332-1df6-4019-a373-e2079b5fb8c3 07:06:45.870Z. boot2119 이전 language onchange2114~2117 등록, let2156/2225 미초기화 TDZ. query→hellLang→Steam→browser→en. Steam 직접매핑, raw zht/no는 data.languages 접근, 정규식 별칭만 early return. addTextTrack24→timings26→VTTCue27, 성공 onSubSkip 호출당+1 조건부 산술 | 원문 정적 조건 정정만 인수. data누락의 모든언어 boot실패/항상 반대 reachability 일반화0. 물리 입력·실영화/DOM·native/제품노출/후보채택HOLD. 감독이 source-fidelity-0710만 기존세션에1회 지시·actualRead07:12:58.019Z 확인. 전수 docs 검색 보완도 해당 TASK 범위이며 root중복지시0 |
 
 전문팀은 감독이 기존세션에 새 범위정정 한건씩 송신·실제Read를 관리한다. root는 같은 TASK/검사/전문팀 지시를 중복하지 않는다. supervisor STATE/LOG, active TASK/partial 산출, 원 사용자23항목, 게임/세이브·기존앱/바이너리는 보존한다. 삭제/cleanup·설치·권한·인증·결제·게시·새채팅/팀·PC/Windows 작업0. 이번 core+완료소유 경로만 commit/push하고 원격 정확SHA는 별도 `build-helper-checkpoint/receipt.json`에 기록한다.
+
+
+## 2026-10-02 악의폭풍 focus 취소 생산 소스 인수
+
+감독의 SKILL-storm-blur-0548 후보를 원격보존 `5420819d7b406590578b1bae57eabad071e754e1` 이후 두 게임의 기존 focus 취소 접점에 최소 적용했다. 전문팀 task/checks 원문은 제출 당시 snapshot 그대로 유지하며 재실행하지 않았다. `_clearHeldInput` P guard86→124bytes(+38)만 각 파일에 바뀌었고, 역치환 전체원문/접점 밖 rawbyte 동일 근거를 보존했다.
+
+| 항목 | 현재 source 인수 | 실제 한계 / 보존 |
+|---|---|---|
+| focus 취소 | `P._msAiming=false;P._msCharging=false`를 기존 P guard에 추가. blur·document.hidden true의 등록callback→actual clear→다음 Storm fragment에서 ghostfire0 | visible callback 무변경; native 이벤트/OS Alt-Tab/숨김 rAF/실기기 전달 미검수 |
+| 입력 경계 | 등록 gameplay keydown/keyup·router·actual GP LT/ABXY block·_gpInjectKey 원문 추출 | KeyboardEvent/DOM/document.hidden/pad/eligibility/damage/audio 대역, 전체poll/update 미실행 |
+| 수명 | 네 aim/charge 조합·반복취소·null/undefined P binding·visible/fresh rearm 및 기존 beam/mm/dash cleanup 보존 | aimKey/dist·자원/CD·이미 생성된 zone/wall 리셋0, pause/death/stage/저장 확장0 |
+| 새 회귀 | 양판합계48/48, 정상 plain/boneStorm/elecRepent×KBM/GP 대역12 normalized trace가 이전/source guard제거 control과 동일 | baseline같은48의20PASS/28FAIL·memory ghost12 별도; VM wrapping/Set직렬화 한계 공개. runtimeExecuted는실게임을뜻하지않음 |
+| 일반 release | MP/mats gate·차감0, `_msCd=1200`, storm zone1 maxT600 r200+(Lv-1)*22 소스 보존 | Lv1/seed0x5EED fixture RNG5만 관측, 피해/DPS/범용RNG 인수0 |
+| fused host | MP50 gate/차감→wall/boneStorm zone→skull SFX RNG→mats raw12 clamped차감→optional elecRepent→voice RNG→`_bnsCd=1500` | mmp%/malCost 보정·mats 충분량 gate 추가0. boneStorm fixture RNG2, elecRepent RNG5. 추가 hellRay MP100 별도차감0은 이 branch만의 계약 |
+| MP 거절 | MP49/키보드·두 fused모드·양판에서 zone/wall/차감/CD/RNG0, charging false/aim true 부분상태와 메시지 trace 동등 | 모든 MP/mats 경계/패드거절/전체resource공식 검수로 확장0 |
+| 정본 수치 | 현재 취소계약 5canonical과 날짜가명시된4월 자원/DPS3표에 현행source 관측을 분리해 총8개 동기화 | 과거추정90/mmp30%를 현재코드로 확정하지않음; 피해/DPS 재산정0·비용설계변경0 |
+
+현재 main source SHA-256 `275929250b83c0c131b0183edd58fc69d364b06b63f478be79c58320a70e071e`, easy `12343b045b5b66c42559c74b2db3ff3f1c403853d9bfb316d98f4fe4950352b3`. test SHA-256 `d340c1133fdd07c621c47d7f51afb4af4f9abe7ad55df0044668b710de000b18`, P guard fragmentSHA `0ef6f6897ec8c46b66ad742507a35fe332f4568a87044d11291946004f3f4046`. inline12JS/importmap2JSON 구문 PASS는 이번변경의1회검사이며 기존 보스/사운드/빌드/전문팀/대형검사 반복0이다.
+
+node-main/보호2_3/BUILD/SOUND·boss tests/팀 raw 등22 SHA pin을 유지했다. 이전 상태목록 pending7은 모두5420819d의동일SHA 원문보존이므로 이번 재stage0이다. root는 전문팀에 같은TASK/지시를 보내지 않고 감독이 새완료/피드백/actualRead를 단일 관리한다. source receipt `tmp/mac-migration-runtime/continued-review-20261002/storm-focus-backup/receipt.json` SHA `a600eb07bd3d9c87c22d8362a73688270ab52f6329b2678368e3cea4a40f1227`, 상세정본 `docs/2_1 스킬관리+합체시스템+자원/MALICE_STORM_FOCUS_CANCELLATION_20261002.md`, 원격보존은 별도 `storm-focus-checkpoint/receipt.json`을 따른다. native/실게임/시각/오디오/저장/패키지/서명/배포는 이번 미인수다. 사용자 실행 탭·기존 앱·서버·세이브·원래23변경·타인WIP는 보존한다.
+
+
+### 새 감독 인계의 제한 인수와 완료원문5 보존
+
+| 인계 | 이번 인수 / 동기화 | 미인수 / 다음경계 |
+|---|---|---|
+| ENEMY phase-reset-scope0655, end420e7721-2aa7-48e1-912b-90db40234963 07:16:30.163Z | hurtP0(P.iframes1)/phase2 projectile16 대역호출·P5지정필드/P3현행만/P6직접score·현재감소행/시간·idx집합0..29,31..58,60 및30/59공백·41예약 관측범위정정 인수. result/evidence2원문SHA보존 | sorted집합≠정의순서, fullRNG/부작용/실전투/후보채택HOLD. sparse/negative overshoot 신규단일TASK는감독기존세션 actualRead07:35:21.265Z 확인, root재검사/재송신0 |
+| STORY source-fidelity0710, end86007d00-9569-458b-88c4-9383a9377468 07:19:29.743Z | actual index/lobby 및 resolver/CIN/I18N3fragmentSHA일치, top-level23key. 실제기존Node5probe/8assert exit0(07:15:34.292~34.980Z)을감독이인수. result/evidence/checks3원문보존 | de18 loggedprobe 개별assert0, 23은coverage아님. 현재영화/normal제품노출/모든언어/native미인수. typeofstring 후보가truthy비문자열도바꿔HOLD. 다음empty-only TASK exactRead07:35:24.703Z, root기존5probe/8assert반복0 |
+| 번역정본2 | 번역_가이드Phase36 footnote·전체목록CAT68/CAT96의현재23key/resolver2317·non-KO truthy/falsy fallback 설명3접점최소수정+근거표append | 역사26/442/CAT68 21/22·CIN20cue/28언어필드·영화29×32 보존. sourceindex/lobby·translation값·영화/자막변경0 |
+
+늦은인계의완료원문5만 exactSHA/rawbyte백업 후추가stage하며, 직전5420819d 완료7은이미원격에같은SHA로보존되어다시stage하지않는다. 총괄정적대조영수증 `tmp/mac-migration-runtime/continued-review-20261002/storm-focus-checkpoint/story-static/receipt.json` SHA `8708637c1aa7847badf3437a62929f17caa4e9a3e10eae6d861412989d729576`의47행/16docs 무절단검색·정확old/new·정적대조 당시11readpin 동일을 확인했고 이후 번역2정본만 위3접점으로 동기화했다. 이번 code/docs commit은focus core14+번역2+완료raw5=21소유경로, source패치와후속영수증의실제원격SHA는checkpointreceipt에기록한다. 전문팀단일송신/완료감시는기존감독이유지하며 root는동일업무를중복배정하지않는다.

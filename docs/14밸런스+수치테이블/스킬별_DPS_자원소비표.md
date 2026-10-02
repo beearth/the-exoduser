@@ -274,3 +274,19 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 `2_3 돌진+패링+방패시스템` 문서는 수정 금지이므로 보존한다. 그 문서의 이전 E 습득·충전·범위 수치는 이 최신 사용자 계약을 우선한다. 검증: `test/baseWingStrike.test.js` 8개와 모션·패링·슬롯·클라우드 저장·테스트 캐릭터 관련42개 PASS. 실제 상태머신의 sDraw→kiGather→자동릴리즈, 원본 doParry 연결, 기존 저장 상태 보존 및 반복 초기화 환불을 독립 실행했다. 장시간 전투 밸런스 검수는 미실시.
 
 전체 메뉴와 로비의 최신 재질·제목·문양·선택·초점·스크롤 스타일은 UI_COMPOSITION_20260925.md의 **2026-09-26 유니크 분해 NaN 수정과 상세창 마감 절**을 따른다.
+
+## 2026-10-02 악의폭풍 현재 비용과 4월 DPS 기준 구분
+
+본문은 헤더에 명시한 2026-04-18 코드 분석 기준이며, maliceStorm 행의 MP `90 추정`은 당시 추정값이다. 원문 피해·DPS·계수·사거리·그 시점의 비용 행을 보존한다. MP90을 현재 2026-10-02 구현 비용으로 적용하지 않는다.
+
+| id / 모드 | 정상 릴리스 MP | 정상 릴리스 악의 | 현재 CD 필드 / 값 | 현재 소스 경계 |
+|---|---:|---:|---|---|
+| `maliceStorm` / 악의폭풍 | 0 | 0 | `P._msCd=1200f` | 라우터·일반 릴리스에 MP/악의 게이트·차감 없음 |
+| `boneStorm` / 뼈폭풍 합체 | 50 고정 | raw 12 | `P._bnsCd=1500f` | MP50 미만 거절; MP 직접 차감; `G.mats=Math.max(0,G.mats-12)` |
+| `elecRepent` / 해골번개·참회 귀환 합체 | 50 고정 | raw 12 | `P._bnsCd=1500f` | 같은 합체 호스트 분기; `_erF&&P.skills.hellRay>=1`이면 hellRay 추가, 해당 분기의 별도 MP100 차감 없음 |
+
+현재 일반 release는 MP/악의 0, 합체는 MP50 고정과 raw 악의12를 사용한다. 정상 Lv1/MP100/mats30 fixture에서 일반 100/30, 합체 50/18을 양판·keyboard/GP LT 대역으로 관측했다. 합체 MP는 직접 차감하며, 악의는 생성·skull sound 뒤 clamp 차감하고 `_malCost`를 호출하지 않는다. 이번 변경의 피해·DPS 수치 수정은 0이며 이 관측으로 기존 DPS 계산을 다시 확정하지 않는다.
+
+blur/hidden에서는 `_msAiming`·`_msCharging` 취소 후 다음 추출 프레임의 추가 설치·자원·CD 0을 검수했다. 양판 actual-source 새 검수 48/48 PASS(HTML별 24), 구문 12 inline JS + 2 importmap JSON PASS. 생산 전 같은 새 하니스의 20 PASS / 28 FAIL은 역사 baseline이다. 최종 검수에는 가드를 메모리에서 제거했을 때 옛 ghost-release가 재현됨을 확인하는 음성대조 2그룹(내부 12관측)이 포함된다. 실제 게임·native 입력·렌더·청취 PASS로 확대하지 않는다.
+
+최종 소스 영수증: `tmp/mac-migration-runtime/continued-review-20261002/storm-focus-backup/receipt.json` (SHA-256 `a600eb07bd3d9c87c22d8362a73688270ab52f6329b2678368e3cea4a40f1227`). 현재 순서·미검수 Gate는 [악의폭풍 포커스 취소 인수 보고서](../2_1%20스킬관리+합체시스템+자원/MALICE_STORM_FOCUS_CANCELLATION_20261002.md) 참조.
