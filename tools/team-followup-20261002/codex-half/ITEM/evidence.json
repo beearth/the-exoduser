@@ -1,0 +1,542 @@
+{
+  "task": "d13-binding-data-review",
+  "status": "data-only VM 후보 검수 완료 / 생산 미채택",
+  "flags": {
+    "status": "proposal",
+    "runtimeReady": false,
+    "enabled": false,
+    "schemaAdopted": false,
+    "productionApplied": false
+  },
+  "preparationFailures": [
+    {
+      "phase": "첫 Node 명령의 module parse",
+      "exitCode": 1,
+      "error": "SyntaxError: Unexpected identifier rawReadOnly",
+      "cause": "보고서 template literal 안의 미이스케이프 backtick",
+      "vmExecuted": false,
+      "repair": "본인 checks.mjs의 보고서 문자열만 수정",
+      "productionChanged": false
+    }
+  ],
+  "events": [
+    {
+      "phase": "TASK 전체 Read 및 수신 관찰",
+      "at": "2026-10-02T04:30:52Z",
+      "limit": "도구 완료 뒤 실제 clock 관찰, 정확한 메시지 도착시각 아님"
+    },
+    {
+      "phase": "VM 실행 시작",
+      "at": "2026-10-02T04:34:12.316Z"
+    },
+    {
+      "phase": "VM/JSON/보존/docs 검수 완료",
+      "at": "2026-10-02T04:34:12.408Z"
+    },
+    {
+      "phase": "최종 산출/읽기전용 SHA 보존 확인",
+      "at": "2026-10-02T04:34:54.907337+00:00"
+    }
+  ],
+  "head": null,
+  "changes": null,
+  "headChangesSource": "TASK의 Git 명령 금지 확인 이후 재조회0. 최종 HEAD/Changes는 총괄 인수 대상",
+  "protocolException": {
+    "phase": "TASK Read와 병렬 초기 상태 조회",
+    "readOnlyGitCommands": [
+      "GIT_OPTIONAL_LOCKS=0 git status --short --untracked-files=all | wc -l",
+      "git rev-parse HEAD"
+    ],
+    "observedChanges": 63,
+    "observedHead": "8fd5b7ecf7bb9caebf4a1c2cadb844e0986f8c82",
+    "time": "2026-10-02T04:30:52Z",
+    "gitWrites": 0,
+    "afterTaskReadGitCommands": 0,
+    "reportedInCommentary": true
+  },
+  "pathBoundary": {
+    "root": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "owned": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/codex-half/ITEM",
+    "rootRealpath": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "ownedRealpath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/codex-half/ITEM",
+    "symlink": false,
+    "outputs": [
+      "checks.mjs",
+      "result.md",
+      "evidence.json"
+    ]
+  },
+  "inheritedCompleted": {
+    "callback32": "인수만, 재실행0",
+    "callerLifecycle22": "project-teams/ITEM/result.md 및 evidence 인수만, 재실행0",
+    "d10AndRollAudit": "기존 D10 검사/698롤 감사 재실행0"
+  },
+  "reads": [
+    "AGENTS.md",
+    "docs/7아이템디자인/유니크_어픽스_리스트.md D절/D13",
+    "docs/7아이템디자인/UNIQUE_TOP8_HOOK_REVIEW_20261001.md",
+    "docs/15 세이브+데이터구조/15 세이브+데이터구조.md 컬렉션/주의/D10binding",
+    "tools/team-followup-20261002/project-teams/ITEM/result.md",
+    "tools/team-followup-20261002/project-teams/ITEM/evidence.json",
+    "unique-item-project/definitions.js",
+    "unique-item-project/roll-values.js",
+    "tools/team-followup-20261001/ITEM/binding-d10.mjs"
+  ],
+  "lookup": {
+    "definition": {
+      "uniqueId": "UI-13",
+      "effectId": "U-D13",
+      "catalogName": "번지는 뿌리의 띠",
+      "slots": [
+        "belt"
+      ],
+      "wtype": null,
+      "btype": null,
+      "status": "proposal",
+      "enabled": false,
+      "nameKey": null,
+      "translationStatus": "unregistered",
+      "art": {
+        "originalPath": "assets/unique-items/ui-13.png",
+        "candidatePath": "assets/unique-items/ui-13-seedream-candidate.png",
+        "runtimePath": null,
+        "accepted": false
+      },
+      "effectStatus": "unimplemented"
+    },
+    "slotLookup": {
+      "uniqueId": "UI-13",
+      "effectId": "U-D13",
+      "catalogName": "번지는 뿌리의 띠",
+      "slots": [
+        "belt"
+      ],
+      "wtype": null,
+      "btype": null,
+      "status": "proposal",
+      "enabled": false,
+      "nameKey": null,
+      "translationStatus": "unregistered",
+      "art": {
+        "originalPath": "assets/unique-items/ui-13.png",
+        "candidatePath": "assets/unique-items/ui-13-seedream-candidate.png",
+        "runtimePath": null,
+        "accepted": false
+      },
+      "effectStatus": "unimplemented"
+    },
+    "activeLookup": null,
+    "roll": {
+      "uniqueId": "UI-13",
+      "effectId": "U-D13",
+      "stat": "_uTrapOffshoot",
+      "unit": "percent",
+      "min": 20,
+      "max": 40,
+      "status": "proposal",
+      "runtimeReady": false,
+      "bands": [
+        {
+          "label": "하옵",
+          "min": 20,
+          "max": 26
+        },
+        {
+          "label": "중옵",
+          "min": 27,
+          "max": 33
+        },
+        {
+          "label": "상옵",
+          "min": 34,
+          "max": 40
+        }
+      ]
+    }
+  },
+  "vm": {
+    "candidateSha256": "d8eabd0b6f207ee4622e76d43e1a1dacd0c7473d2ada55833b3bab46fa5dc202",
+    "inputs": 12,
+    "passed": 12,
+    "failed": 0,
+    "rows": [
+      {
+        "id": "minimum",
+        "label": "하한0.20",
+        "status": "PASS",
+        "classification": "valid",
+        "reason": null,
+        "storedValue": 0.2,
+        "rawReadOnly": 20,
+        "restoreSameIdentity": true,
+        "nestedSameIdentity": true,
+        "inputDescriptorChanges": 0,
+        "nestedDescriptorChanges": 0,
+        "repairs": 0,
+        "rngCalls": 0,
+        "getterCalls": 0
+      },
+      {
+        "id": "maximum",
+        "label": "상한0.40",
+        "status": "PASS",
+        "classification": "valid",
+        "reason": null,
+        "storedValue": 0.4,
+        "rawReadOnly": 40,
+        "restoreSameIdentity": true,
+        "nestedSameIdentity": true,
+        "inputDescriptorChanges": 0,
+        "nestedDescriptorChanges": 0,
+        "repairs": 0,
+        "rngCalls": 0,
+        "getterCalls": 0
+      },
+      {
+        "id": "missing",
+        "label": "UI-13 binding 누락",
+        "status": "PASS",
+        "classification": "missing",
+        "reason": "missing_binding",
+        "storedValue": null,
+        "rawReadOnly": null,
+        "restoreSameIdentity": true,
+        "nestedSameIdentity": true,
+        "inputDescriptorChanges": 0,
+        "nestedDescriptorChanges": 0,
+        "repairs": 0,
+        "rngCalls": 0,
+        "getterCalls": 0
+      },
+      {
+        "id": "legacy",
+        "label": "uniqueId 없는 legacy",
+        "status": "PASS",
+        "classification": "legacy",
+        "reason": "no_unique_id",
+        "storedValue": null,
+        "rawReadOnly": null,
+        "restoreSameIdentity": true,
+        "nestedSameIdentity": true,
+        "inputDescriptorChanges": 0,
+        "nestedDescriptorChanges": 0,
+        "repairs": 0,
+        "rngCalls": 0,
+        "getterCalls": 0
+      },
+      {
+        "id": "wrong-slot",
+        "label": "잘못된 armor 슬롯",
+        "status": "PASS",
+        "classification": "invalid",
+        "reason": "wrong_definition_or_slot",
+        "storedValue": null,
+        "rawReadOnly": null,
+        "restoreSameIdentity": true,
+        "nestedSameIdentity": true,
+        "inputDescriptorChanges": 0,
+        "nestedDescriptorChanges": 0,
+        "repairs": 0,
+        "rngCalls": 0,
+        "getterCalls": 0
+      },
+      {
+        "id": "wrong-effect",
+        "label": "잘못된 effectId",
+        "status": "PASS",
+        "classification": "invalid",
+        "reason": "schema_mismatch",
+        "storedValue": null,
+        "rawReadOnly": null,
+        "restoreSameIdentity": true,
+        "nestedSameIdentity": true,
+        "inputDescriptorChanges": 0,
+        "nestedDescriptorChanges": 0,
+        "repairs": 0,
+        "rngCalls": 0,
+        "getterCalls": 0
+      },
+      {
+        "id": "wrong-stat",
+        "label": "잘못된 stat",
+        "status": "PASS",
+        "classification": "invalid",
+        "reason": "schema_mismatch",
+        "storedValue": null,
+        "rawReadOnly": null,
+        "restoreSameIdentity": true,
+        "nestedSameIdentity": true,
+        "inputDescriptorChanges": 0,
+        "nestedDescriptorChanges": 0,
+        "repairs": 0,
+        "rngCalls": 0,
+        "getterCalls": 0
+      },
+      {
+        "id": "wrong-unit",
+        "label": "잘못된 percent 단위",
+        "status": "PASS",
+        "classification": "invalid",
+        "reason": "schema_mismatch",
+        "storedValue": null,
+        "rawReadOnly": null,
+        "restoreSameIdentity": true,
+        "nestedSameIdentity": true,
+        "inputDescriptorChanges": 0,
+        "nestedDescriptorChanges": 0,
+        "repairs": 0,
+        "rngCalls": 0,
+        "getterCalls": 0
+      },
+      {
+        "id": "wrong-version",
+        "label": "잘못된 version2",
+        "status": "PASS",
+        "classification": "invalid",
+        "reason": "schema_mismatch",
+        "storedValue": null,
+        "rawReadOnly": null,
+        "restoreSameIdentity": true,
+        "nestedSameIdentity": true,
+        "inputDescriptorChanges": 0,
+        "nestedDescriptorChanges": 0,
+        "repairs": 0,
+        "rngCalls": 0,
+        "getterCalls": 0
+      },
+      {
+        "id": "noncanonical",
+        "label": "비정규0.205",
+        "status": "PASS",
+        "classification": "invalid",
+        "reason": "invalid_stored_value",
+        "storedValue": null,
+        "rawReadOnly": null,
+        "restoreSameIdentity": true,
+        "nestedSameIdentity": true,
+        "inputDescriptorChanges": 0,
+        "nestedDescriptorChanges": 0,
+        "repairs": 0,
+        "rngCalls": 0,
+        "getterCalls": 0
+      },
+      {
+        "id": "nonnumeric",
+        "label": "문자열0.20",
+        "status": "PASS",
+        "classification": "invalid",
+        "reason": "invalid_stored_value",
+        "storedValue": null,
+        "rawReadOnly": null,
+        "restoreSameIdentity": true,
+        "nestedSameIdentity": true,
+        "inputDescriptorChanges": 0,
+        "nestedDescriptorChanges": 0,
+        "repairs": 0,
+        "rngCalls": 0,
+        "getterCalls": 0
+      },
+      {
+        "id": "accessor",
+        "label": "own enumerable getter1개",
+        "status": "PASS",
+        "classification": "invalid",
+        "reason": "invalid_stored_value",
+        "storedValue": null,
+        "rawReadOnly": null,
+        "restoreSameIdentity": true,
+        "nestedSameIdentity": true,
+        "inputDescriptorChanges": 0,
+        "nestedDescriptorChanges": 0,
+        "repairs": 0,
+        "rngCalls": 0,
+        "getterCalls": 0
+      }
+    ],
+    "trace": {
+      "rngCalls": 0,
+      "getterCalls": 0,
+      "storedReaderCalls": 6,
+      "creationApiCalls": 0
+    },
+    "jsonRoundTrip": {
+      "count": 1,
+      "status": "PASS",
+      "serialized": "{\"uniqueId\":\"UI-13\",\"slot\":\"belt\",\"uniqueRoll\":{\"version\":1,\"effectId\":\"U-D13\",\"stat\":\"_uTrapOffshoot\",\"unit\":\"fraction\",\"storedValue\":0.2}}",
+      "identityInformationPreserved": true,
+      "restoreSameObject": true,
+      "realm": "VM 생성→host JSON parse→VM inspect/restore. native plain Object prototype을 허용하는 D10 방식 참고. 임의 realm/Proxy 감사0"
+    }
+  },
+  "preservation": [
+    {
+      "path": "unique-item-project/definitions.js",
+      "sha256": "3f04bcc5ac90b039454f32dc9323e60bbe44dda27be7fd439a97633d1f25118a",
+      "afterSha256": "3f04bcc5ac90b039454f32dc9323e60bbe44dda27be7fd439a97633d1f25118a",
+      "unchanged": true
+    },
+    {
+      "path": "unique-item-project/roll-values.js",
+      "sha256": "103d0460c738c117840586780eaaed7be7ebe0aba61fa50464db9d004b094975",
+      "afterSha256": "103d0460c738c117840586780eaaed7be7ebe0aba61fa50464db9d004b094975",
+      "unchanged": true
+    },
+    {
+      "path": "tools/team-followup-20261001/ITEM/binding-d10.mjs",
+      "sha256": "b16bb29314e64cc2161f4eadd921678af2303a164e95080fdf879042fa4303f1",
+      "afterSha256": "b16bb29314e64cc2161f4eadd921678af2303a164e95080fdf879042fa4303f1",
+      "unchanged": true
+    },
+    {
+      "path": "tools/team-followup-20261001/ITEM/d13-deferred-contract-candidate.mjs",
+      "sha256": "89ad082ac6c1b62159b0cceeabbd378367e589feff7ccbce1fd08e5035c4a632",
+      "afterSha256": "89ad082ac6c1b62159b0cceeabbd378367e589feff7ccbce1fd08e5035c4a632",
+      "unchanged": true
+    },
+    {
+      "path": "tools/team-followup-20261002/project-teams/ITEM/result.md",
+      "sha256": "60d90da2b645915177f23fc3299a6837813bc581fd9b72afe8ba3477d33c7241",
+      "afterSha256": "60d90da2b645915177f23fc3299a6837813bc581fd9b72afe8ba3477d33c7241",
+      "unchanged": true
+    },
+    {
+      "path": "tools/team-followup-20261002/project-teams/ITEM/evidence.json",
+      "sha256": "fea98d90a8119f48b1f90dfa6de2617cd1d77fba19627c221392d48c6348a06c",
+      "afterSha256": "fea98d90a8119f48b1f90dfa6de2617cd1d77fba19627c221392d48c6348a06c",
+      "unchanged": true
+    },
+    {
+      "path": "tools/team-followup-20261002/codex-half/ITEM/TASK.md",
+      "sha256": "9773d545a0299efac40b8b914888701a40ce43c16b7dc3b90a676ff4a7a4680e",
+      "afterSha256": "9773d545a0299efac40b8b914888701a40ce43c16b7dc3b90a676ff4a7a4680e",
+      "unchanged": true
+    },
+    {
+      "path": "game.html",
+      "sha256": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+      "afterSha256": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+      "unchanged": true
+    },
+    {
+      "path": "game-easy-test.html",
+      "sha256": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+      "afterSha256": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+      "unchanged": true
+    },
+    {
+      "path": "server.cjs",
+      "sha256": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d",
+      "afterSha256": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d",
+      "unchanged": true
+    },
+    {
+      "path": "node-main.js",
+      "sha256": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce",
+      "afterSha256": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce",
+      "unchanged": true
+    },
+    {
+      "path": "index.html",
+      "sha256": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8",
+      "afterSha256": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8",
+      "unchanged": true
+    }
+  ],
+  "docsSearch": {
+    "command": [
+      "rg",
+      "-n",
+      "--",
+      "U-D13|_uTrapOffshoot|UI-13|uniqueRoll|fromStoredValue|재롤",
+      "docs/"
+    ],
+    "lines": 89,
+    "files": 27,
+    "paths": [
+      "docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-binding-result.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-roll-receipt.json",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-roll-result.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BINDING-root-review.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FOUR-NEXT-20261002.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FOUR-TEAM-FOLLOWUP-20261002.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-binding-receipt.json",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-binding-result.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-d10-result.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-definition-result.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-definition-root-review.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-unique-save-result.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/POST-INTEGRATION-PACKAGE-20261002.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-binding-result.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-review-result.md",
+      "docs/14밸런스+수치테이블/BALANCE_ECONOMY_TEAM_MASTER.md",
+      "docs/15 세이브+데이터구조/15 세이브+데이터구조.md",
+      "docs/3.1 ui hud 디자인/SETTINGS_HUD_DETAIL_20260930.md",
+      "docs/7아이템디자인/ITEM_TEAM_MASTER.md",
+      "docs/7아이템디자인/UNIQUE_ITEM_GAME_INTEGRATION_CONTRACT_20261001.md",
+      "docs/7아이템디자인/UNIQUE_TOP8_HOOK_REVIEW_20261001.md",
+      "docs/7아이템디자인/고유아이템_모델_어픽스_밸런싱_프로젝트_20260930.md",
+      "docs/7아이템디자인/보라색_고유아이템_카탈로그_20260930.md",
+      "docs/7아이템디자인/유니크_어픽스_리스트.md",
+      "docs/CHANGELOG_SYNC.md"
+    ],
+    "outputSha256": "4756017a2eeb0cc3150e0908f2ae044660bfed6a305f0cf1548b12695f976263"
+  },
+  "limitations": [
+    "검토 shape 미채택. same/native Object prototype 또는 null prototype의 plain record만 허용.",
+    "plainRecord/descriptor는 Proxy trap을 실행할 수 있으므로 실행 격리 경계가 아님.",
+    "own toJSON 정적 거부가 임의 직렬화 hook/Proxy 실행 격리를 입증하지 않으며 해당 감사0.",
+    "JSON 왕복은 valid plain1입력만. getter 입력은 JSON화하지 않음.",
+    "rawReadOnly는 조회 결과만이며 저장 필드가 아님.",
+    "RNG0은 이 데이터 VM과 pure stored reader 범위이며 게임 전체의 RNG 판정이 아님.",
+    "실제 생산 생성/장착/저장라우터/브라우저/전투/child payload/runtime/visual 미검수."
+  ],
+  "counters": {
+    "schemaAdopted": false,
+    "productionApplied": false,
+    "repairs": 0,
+    "inputMutations": 0,
+    "rawStoredCopies": 0,
+    "newGenerationApiCalls": 0,
+    "rngCalls": 0,
+    "getterCalls": 0,
+    "productionImports": 0,
+    "combatCalls": 0,
+    "gitWrites": 0,
+    "afterTaskReadGitCommands": 0,
+    "server": 0,
+    "ui": 0,
+    "game": 0,
+    "build": 0,
+    "deletes": 0,
+    "outsideWrites": 0,
+    "newSessions": 0,
+    "subteams": 0
+  },
+  "outputs": [
+    {
+      "path": "tools/team-followup-20261002/codex-half/ITEM/checks.mjs",
+      "sha256": "dfd07e60f0edf59a463d230d5b3cefb7ffe59a59cfbbc26de81c980b7d9d3256",
+      "bytes": 19798
+    },
+    {
+      "path": "tools/team-followup-20261002/codex-half/ITEM/result.md",
+      "sha256": "4c5e447cb3b548a491a230bceca48da7fb8239f536f2989f049d7b726eff8d3e",
+      "bytes": 7209
+    }
+  ],
+  "artifactVerification": {
+    "at": "2026-10-02T04:34:54.907337+00:00",
+    "status": "PASS",
+    "checks": [
+      "소유 정확3산출 및 immutable TASK 존재/realpath",
+      "12입력/JSON1/flags/0변이 trace JSON 내용",
+      "원문12경로 최종 SHA 보존",
+      "checks/result manifest SHA 일치",
+      "보고서 미채택/제품 Gate/운영예외 및 준비실패 표기"
+    ],
+    "vmRerun": false,
+    "gitCommands": 0
+  }
+}

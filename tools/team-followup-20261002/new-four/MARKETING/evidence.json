@@ -1,0 +1,1637 @@
+{
+  "schemaVersion": 1,
+  "taskId": "MARKETING-INITIAL-CHANNEL-STEAM-20261002",
+  "provider": "Codex",
+  "role": "MARKETING",
+  "status": "INITIAL_HANDOFF_AND_COPY_PROPOSALS_COMPLETE",
+  "chatId": "01a0fae0-cff3-78f0-aa73-32b08c6d6055",
+  "sessionId": null,
+  "identityEvidence": {
+    "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROVIDER-HALVES-20261002.md",
+    "line": 17,
+    "sessionIdReason": "No independent runtime session-ID lookup was performed"
+  },
+  "receivedAt": "2026-10-02T04:34:53Z",
+  "receivedAtMeaning": "First clock observation after TASK receipt; exact transport arrival time unavailable",
+  "startedAt": "2026-10-02T04:34:53Z",
+  "completedAt": "2026-10-02T04:42:34Z",
+  "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+  "cwdCommandExit": 0,
+  "taskBaselineHead": "8fd5b7ecf7bb9caebf4a1c2cadb844e0986f8c82",
+  "headStart": "4cd0cb4906daee2b7953af7284f9ecc3ef96dd49",
+  "headCompletion": "4cd0cb4906daee2b7953af7284f9ecc3ef96dd49",
+  "headBeforeReport": "4cd0cb4906daee2b7953af7284f9ecc3ef96dd49",
+  "ownedPaths": [
+    "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/new-four/MARKETING/result.md",
+    "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/new-four/MARKETING/evidence.json"
+  ],
+  "operatingRoles": {
+    "total": 16,
+    "manager": 1,
+    "specialists": 15,
+    "Claude": 8,
+    "Codex": 8
+  },
+  "reads": [
+    {
+      "id": "TASK",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/new-four/MARKETING/TASK.md",
+      "lineRanges": [
+        [
+          1,
+          38
+        ]
+      ],
+      "identifiers": [
+        "MARKETING-INITIAL-CHANNEL-STEAM-20261002",
+        "ownership"
+      ],
+      "readType": "file content or bounded excerpts",
+      "initialSha256": "397dfc03ad1f84a27df8a7942f0ca0347331ada0c9a8f583a05fcef1893fc5a8",
+      "fullFileReadClaim": false
+    },
+    {
+      "id": "RULES",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/AGENTS.md",
+      "lineRanges": [
+        [
+          1,
+          233
+        ]
+      ],
+      "identifiers": [
+        "docs synchronization",
+        "ownership",
+        "80/100 policy"
+      ],
+      "readType": "file content or bounded excerpts",
+      "initialSha256": "fd59bef70960bcaf1ab9910051faa860362884e574ac2869fad05c6872ae04e4",
+      "fullFileReadClaim": false
+    },
+    {
+      "id": "POLICY",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/TEAM_CONTINUATION_POLICY_20261001.md",
+      "lineRanges": [
+        [
+          1,
+          141
+        ]
+      ],
+      "identifiers": [
+        "한국어",
+        "총괄1+전문15",
+        "Claude8/Codex8"
+      ],
+      "readType": "file content or bounded excerpts",
+      "initialSha256": "38051adf1efbe8cb297b5311131d78aa4281a3f3afb7862ac47a23779f594739",
+      "fullFileReadClaim": false
+    },
+    {
+      "id": "PM",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md",
+      "lineRanges": [
+        [
+          1,
+          95
+        ],
+        [
+          96,
+          125
+        ],
+        [
+          126,
+          260
+        ],
+        [
+          721,
+          775
+        ]
+      ],
+      "identifiers": [
+        "status layers",
+        "shared code",
+        "latest 16 roles"
+      ],
+      "readType": "file content or bounded excerpts",
+      "initialSha256": "c51d0479fb6e8645a724e8c7db85fd555199f4d9f26c905c745f2a15feb19c1b",
+      "fullFileReadClaim": false
+    },
+    {
+      "id": "POSITION",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/시장포지셔닝_정통루팅ARPG.md",
+      "lineRanges": [
+        [
+          1,
+          71
+        ]
+      ],
+      "identifiers": [
+        "global hack-and-slash",
+        "loot/build/parry/mobility"
+      ],
+      "readType": "file content or bounded excerpts",
+      "initialSha256": "6e85186bdee9319027882bd8e03996e41b20d58511e023478f356a709c9fb278",
+      "fullFileReadClaim": false
+    },
+    {
+      "id": "MARKET",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/MARKET_EVIDENCE_20260930.md",
+      "lineRanges": [
+        [
+          1,
+          36
+        ]
+      ],
+      "identifiers": [
+        "market assumptions",
+        "no invented metrics"
+      ],
+      "readType": "file content or bounded excerpts",
+      "initialSha256": "808aa666625f2eac7e36414e427282f037ab3d0bde5412b6408d98306bba58b0",
+      "fullFileReadClaim": false
+    },
+    {
+      "id": "REVIEW",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/STEAM_REVIEW_20260926.md",
+      "lineRanges": [
+        [
+          1,
+          101
+        ]
+      ],
+      "identifiers": [
+        "AppID4749590",
+        "AppID5337590",
+        "29 regions",
+        "demo stage0"
+      ],
+      "readType": "file content or bounded excerpts",
+      "initialSha256": "e1ce6d97671250bdd646c7dba8d26ffd69b962b2bdb6aba0820fcc289e2661f2",
+      "fullFileReadClaim": false
+    },
+    {
+      "id": "STORE_LANG",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/STEAM_STORE_LOCALIZATION_20260909.md",
+      "lineRanges": [
+        [
+          1,
+          116
+        ]
+      ],
+      "identifiers": [
+        "30 description languages",
+        "saved not published",
+        "source copy discrepancies"
+      ],
+      "readType": "file content or bounded excerpts",
+      "initialSha256": "ed74773dbe6dc2e9660f1782887ccd41b98fb85098873990d5468b6a70ef1202",
+      "fullFileReadClaim": false
+    },
+    {
+      "id": "LANG_UPLOAD",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/STEAM_LANGUAGE_UPLOAD_20260923.md",
+      "lineRanges": [
+        [
+          1,
+          61
+        ]
+      ],
+      "identifiers": [
+        "historical 31 support entries",
+        "Build25482996"
+      ],
+      "readType": "file content or bounded excerpts",
+      "initialSha256": "210f7f867c97afb6da6b2a8a62654a8a5210e0ebbdc8597727daa6da2fe720f6",
+      "fullFileReadClaim": false
+    },
+    {
+      "id": "TRAILER_PLAN",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/GAMEPLAY_TRAILER_20260908_PLAN.md",
+      "lineRanges": [
+        [
+          1,
+          61
+        ]
+      ],
+      "identifiers": [
+        "historical draft vs70s completed"
+      ],
+      "readType": "file content or bounded excerpts",
+      "initialSha256": "ea4f8fc88438ed4b67b130ff5ffd86e1dc65e0ede6849a7188ede2c3fa72af98",
+      "fullFileReadClaim": false
+    },
+    {
+      "id": "V22",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/GAMEPLAY_TRAILER_V22_20260909.md",
+      "lineRanges": [
+        [
+          1,
+          100
+        ]
+      ],
+      "identifiers": [
+        "skill trailer user-approved purpose",
+        "capture conditions",
+        "98s"
+      ],
+      "readType": "file content or bounded excerpts",
+      "initialSha256": "fac01930f741959d713a208a2e52ed5c2ad588c051ba98d04620b9cbfda6bb7b",
+      "fullFileReadClaim": false
+    },
+    {
+      "id": "EXPO",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/INDIE_LIVE_EXPO_20261201_SUBMISSION_20260928.md",
+      "lineRanges": [
+        [
+          145,
+          209
+        ],
+        [
+          259,
+          289
+        ],
+        [
+          311,
+          321
+        ]
+      ],
+      "identifiers": [
+        "15s/30s",
+        "approved slogan",
+        "event-specific consent"
+      ],
+      "readType": "file content or bounded excerpts",
+      "initialSha256": "efd0663f22f22413507c6867cb3357d5aa5fb1294ae7e9eda796f9f2624bec75",
+      "fullFileReadClaim": false
+    },
+    {
+      "id": "MARKETING_MAIN",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/13출시·마케팅.md",
+      "lineRanges": [
+        [
+          31,
+          111
+        ],
+        [
+          333,
+          397
+        ]
+      ],
+      "identifiers": [
+        "old build history",
+        "market positioning",
+        "Steam historical trailer"
+      ],
+      "readType": "file content or bounded excerpts",
+      "initialSha256": "856eac0abbf6bfbdca46da11de682f24f3b31be81f8b58c69cc7212ca8063832",
+      "fullFileReadClaim": false
+    },
+    {
+      "id": "GAME_MAIN",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+      "lineRanges": [
+        [
+          10120,
+          10165
+        ],
+        [
+          15815,
+          15870
+        ],
+        [
+          33655,
+          33685
+        ],
+        [
+          42972,
+          43005
+        ],
+        [
+          43127,
+          43142
+        ]
+      ],
+      "identifiers": [
+        "CHAR_LIST",
+        "_DEMO_MODE",
+        "_DEMO_LAST_STAGE",
+        "_FUSE_PAIRS",
+        "_canFuse",
+        "_bkQParry",
+        "rollAffixes:14570",
+        "renderInv:48527"
+      ],
+      "readType": "source excerpts and rg",
+      "initialSha256": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+      "fullFileReadClaim": false
+    },
+    {
+      "id": "GAME_EASY",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game-easy-test.html",
+      "lineRanges": [
+        [
+          14943,
+          14945
+        ]
+      ],
+      "identifiers": [
+        "_DEMO_MODE",
+        "_DEMO_LAST_STAGE",
+        "nextStage:41212"
+      ],
+      "readType": "source excerpts and rg",
+      "initialSha256": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+      "fullFileReadClaim": false
+    },
+    {
+      "id": "LOBBY",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/index.html",
+      "lineRanges": [
+        [
+          3060,
+          3120
+        ]
+      ],
+      "identifiers": [
+        "_LOBBY_BUILD:1140",
+        "CHAR_VISUALS",
+        "comingSoon"
+      ],
+      "readType": "file content or bounded excerpts",
+      "initialSha256": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8",
+      "fullFileReadClaim": false
+    },
+    {
+      "id": "PACKAGE",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/package.json",
+      "lineRanges": [
+        [
+          1,
+          50
+        ]
+      ],
+      "identifiers": [
+        "main",
+        "node-main",
+        "version",
+        "window"
+      ],
+      "readType": "file content or bounded excerpts",
+      "initialSha256": "58d101ca053f29d36d0f9bd8d63639753fde807064d3c957e0bb6db17d4be0e8",
+      "fullFileReadClaim": false
+    },
+    {
+      "id": "BUILD_GATE",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/codex-half/BUILD/result.md",
+      "lineRanges": [
+        [
+          1,
+          69
+        ]
+      ],
+      "identifiers": [
+        "acceptanceManifestReady",
+        "runtimeAccepted=false",
+        "known HTML delta"
+      ],
+      "readType": "file content or bounded excerpts",
+      "initialSha256": "d95654bade1981d3a2d9c57be9299584ef15c836cac187ff03e972ab31761016",
+      "fullFileReadClaim": false
+    },
+    {
+      "id": "QA_GATE",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/QA/result.md",
+      "lineRanges": [
+        [
+          1,
+          68
+        ]
+      ],
+      "identifiers": [
+        "source fixture vs actual host",
+        "no runtime acceptance"
+      ],
+      "readType": "file content or bounded excerpts",
+      "initialSha256": "6e4c1c8d9cbd4a68a4cbeac6ce52a993ea5344220ac0106fa05034f8eb667052",
+      "fullFileReadClaim": false
+    },
+    {
+      "id": "YOUTUBE_HISTORY",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/STEAM_DASHBOARD_AUDIT_20260909.md",
+      "lineRanges": [
+        [
+          49,
+          61
+        ]
+      ],
+      "identifiers": [
+        "YouTube URL input existed, no literal URL"
+      ],
+      "readType": "file content or bounded excerpts",
+      "initialSha256": "846af98f6fbd12f4565c862536d8750b0263595c0f2aebee9fffa129ec87306e",
+      "fullFileReadClaim": false
+    },
+    {
+      "id": "PROVIDER",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROVIDER-HALVES-20261002.md",
+      "lineRanges": [
+        [
+          1,
+          27
+        ]
+      ],
+      "identifiers": [
+        "MARKETING row17",
+        "confirmed chat ID"
+      ],
+      "readType": "file content or bounded excerpts",
+      "initialSha256": "883fa605533b64f1b6c2b2553894085e2a7fdcfdadf8fb2fe9e60cf27e2aad23",
+      "fullFileReadClaim": false
+    }
+  ],
+  "hashOnlyReads": [
+    "/Users/fordeargamers/Projects/exoduser-migration-20261001/server.cjs",
+    "/Users/fordeargamers/Projects/exoduser-migration-20261001/node-main.js",
+    "/Users/fordeargamers/Projects/exoduser-migration-20261001/test/nodeMainMats.test.js"
+  ],
+  "preservation": [
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+      "initialSha256": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+      "completionSha256": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+      "beforeReportSha256": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+      "unchangedBeforeReport": true,
+      "snapshotKind": "task-start or initial SSOT snapshot",
+      "unchangedAtCompletion": true
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game-easy-test.html",
+      "initialSha256": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+      "completionSha256": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+      "beforeReportSha256": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+      "unchangedBeforeReport": true,
+      "snapshotKind": "task-start or initial SSOT snapshot",
+      "unchangedAtCompletion": true
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/server.cjs",
+      "initialSha256": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d",
+      "completionSha256": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d",
+      "beforeReportSha256": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d",
+      "unchangedBeforeReport": true,
+      "snapshotKind": "task-start or initial SSOT snapshot",
+      "unchangedAtCompletion": true
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/node-main.js",
+      "initialSha256": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce",
+      "completionSha256": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce",
+      "beforeReportSha256": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce",
+      "unchangedBeforeReport": true,
+      "snapshotKind": "task-start or initial SSOT snapshot",
+      "unchangedAtCompletion": true
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/index.html",
+      "initialSha256": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8",
+      "completionSha256": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8",
+      "beforeReportSha256": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8",
+      "unchangedBeforeReport": true,
+      "snapshotKind": "task-start or initial SSOT snapshot",
+      "unchangedAtCompletion": true
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/test/nodeMainMats.test.js",
+      "initialSha256": "4b571385a2c20d84f5589fbd54434dd78e73fe3415c768047a524f9d3d94e934",
+      "completionSha256": "4b571385a2c20d84f5589fbd54434dd78e73fe3415c768047a524f9d3d94e934",
+      "beforeReportSha256": "4b571385a2c20d84f5589fbd54434dd78e73fe3415c768047a524f9d3d94e934",
+      "unchangedBeforeReport": true,
+      "snapshotKind": "task-start or initial SSOT snapshot",
+      "unchangedAtCompletion": true
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/AGENTS.md",
+      "initialSha256": "fd59bef70960bcaf1ab9910051faa860362884e574ac2869fad05c6872ae04e4",
+      "completionSha256": "fd59bef70960bcaf1ab9910051faa860362884e574ac2869fad05c6872ae04e4",
+      "beforeReportSha256": "fd59bef70960bcaf1ab9910051faa860362884e574ac2869fad05c6872ae04e4",
+      "unchangedBeforeReport": true,
+      "snapshotKind": "task-start or initial SSOT snapshot",
+      "unchangedAtCompletion": true
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/TEAM_CONTINUATION_POLICY_20261001.md",
+      "initialSha256": "38051adf1efbe8cb297b5311131d78aa4281a3f3afb7862ac47a23779f594739",
+      "completionSha256": "38051adf1efbe8cb297b5311131d78aa4281a3f3afb7862ac47a23779f594739",
+      "beforeReportSha256": "38051adf1efbe8cb297b5311131d78aa4281a3f3afb7862ac47a23779f594739",
+      "unchangedBeforeReport": true,
+      "snapshotKind": "task-start or initial SSOT snapshot",
+      "unchangedAtCompletion": true
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md",
+      "initialSha256": "c51d0479fb6e8645a724e8c7db85fd555199f4d9f26c905c745f2a15feb19c1b",
+      "completionSha256": "c51d0479fb6e8645a724e8c7db85fd555199f4d9f26c905c745f2a15feb19c1b",
+      "beforeReportSha256": "c51d0479fb6e8645a724e8c7db85fd555199f4d9f26c905c745f2a15feb19c1b",
+      "unchangedBeforeReport": true,
+      "snapshotKind": "task-start or initial SSOT snapshot",
+      "unchangedAtCompletion": true
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/시장포지셔닝_정통루팅ARPG.md",
+      "initialSha256": "6e85186bdee9319027882bd8e03996e41b20d58511e023478f356a709c9fb278",
+      "completionSha256": "6e85186bdee9319027882bd8e03996e41b20d58511e023478f356a709c9fb278",
+      "beforeReportSha256": "6e85186bdee9319027882bd8e03996e41b20d58511e023478f356a709c9fb278",
+      "unchangedBeforeReport": true,
+      "snapshotKind": "task-start or initial SSOT snapshot",
+      "unchangedAtCompletion": true
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/MARKET_EVIDENCE_20260930.md",
+      "initialSha256": "808aa666625f2eac7e36414e427282f037ab3d0bde5412b6408d98306bba58b0",
+      "completionSha256": "808aa666625f2eac7e36414e427282f037ab3d0bde5412b6408d98306bba58b0",
+      "beforeReportSha256": "808aa666625f2eac7e36414e427282f037ab3d0bde5412b6408d98306bba58b0",
+      "unchangedBeforeReport": true,
+      "snapshotKind": "task-start or initial SSOT snapshot",
+      "unchangedAtCompletion": true
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/STEAM_REVIEW_20260926.md",
+      "initialSha256": "e1ce6d97671250bdd646c7dba8d26ffd69b962b2bdb6aba0820fcc289e2661f2",
+      "completionSha256": "e1ce6d97671250bdd646c7dba8d26ffd69b962b2bdb6aba0820fcc289e2661f2",
+      "beforeReportSha256": "e1ce6d97671250bdd646c7dba8d26ffd69b962b2bdb6aba0820fcc289e2661f2",
+      "unchangedBeforeReport": true,
+      "snapshotKind": "task-start or initial SSOT snapshot",
+      "unchangedAtCompletion": true
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/STEAM_STORE_LOCALIZATION_20260909.md",
+      "initialSha256": "ed74773dbe6dc2e9660f1782887ccd41b98fb85098873990d5468b6a70ef1202",
+      "completionSha256": "ed74773dbe6dc2e9660f1782887ccd41b98fb85098873990d5468b6a70ef1202",
+      "beforeReportSha256": "ed74773dbe6dc2e9660f1782887ccd41b98fb85098873990d5468b6a70ef1202",
+      "unchangedBeforeReport": true,
+      "snapshotKind": "task-start or initial SSOT snapshot",
+      "unchangedAtCompletion": true
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/STEAM_LANGUAGE_UPLOAD_20260923.md",
+      "initialSha256": "210f7f867c97afb6da6b2a8a62654a8a5210e0ebbdc8597727daa6da2fe720f6",
+      "completionSha256": "210f7f867c97afb6da6b2a8a62654a8a5210e0ebbdc8597727daa6da2fe720f6",
+      "beforeReportSha256": "210f7f867c97afb6da6b2a8a62654a8a5210e0ebbdc8597727daa6da2fe720f6",
+      "unchangedBeforeReport": true,
+      "snapshotKind": "task-start or initial SSOT snapshot",
+      "unchangedAtCompletion": true
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/GAMEPLAY_TRAILER_20260908_PLAN.md",
+      "initialSha256": "ea4f8fc88438ed4b67b130ff5ffd86e1dc65e0ede6849a7188ede2c3fa72af98",
+      "completionSha256": "ea4f8fc88438ed4b67b130ff5ffd86e1dc65e0ede6849a7188ede2c3fa72af98",
+      "beforeReportSha256": "ea4f8fc88438ed4b67b130ff5ffd86e1dc65e0ede6849a7188ede2c3fa72af98",
+      "unchangedBeforeReport": true,
+      "snapshotKind": "task-start or initial SSOT snapshot",
+      "unchangedAtCompletion": true
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/GAMEPLAY_TRAILER_V22_20260909.md",
+      "initialSha256": "fac01930f741959d713a208a2e52ed5c2ad588c051ba98d04620b9cbfda6bb7b",
+      "completionSha256": "fac01930f741959d713a208a2e52ed5c2ad588c051ba98d04620b9cbfda6bb7b",
+      "beforeReportSha256": "fac01930f741959d713a208a2e52ed5c2ad588c051ba98d04620b9cbfda6bb7b",
+      "unchangedBeforeReport": true,
+      "snapshotKind": "task-start or initial SSOT snapshot",
+      "unchangedAtCompletion": true
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/INDIE_LIVE_EXPO_20261201_SUBMISSION_20260928.md",
+      "initialSha256": "efd0663f22f22413507c6867cb3357d5aa5fb1294ae7e9eda796f9f2624bec75",
+      "completionSha256": "efd0663f22f22413507c6867cb3357d5aa5fb1294ae7e9eda796f9f2624bec75",
+      "beforeReportSha256": "efd0663f22f22413507c6867cb3357d5aa5fb1294ae7e9eda796f9f2624bec75",
+      "unchangedBeforeReport": true,
+      "snapshotKind": "task-start or initial SSOT snapshot",
+      "unchangedAtCompletion": true
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/13출시·마케팅.md",
+      "initialSha256": "856eac0abbf6bfbdca46da11de682f24f3b31be81f8b58c69cc7212ca8063832",
+      "completionSha256": "856eac0abbf6bfbdca46da11de682f24f3b31be81f8b58c69cc7212ca8063832",
+      "beforeReportSha256": "856eac0abbf6bfbdca46da11de682f24f3b31be81f8b58c69cc7212ca8063832",
+      "unchangedBeforeReport": true,
+      "snapshotKind": "task-start or initial SSOT snapshot",
+      "unchangedAtCompletion": true
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/new-four/MARKETING/TASK.md",
+      "initialSha256": "397dfc03ad1f84a27df8a7942f0ca0347331ada0c9a8f583a05fcef1893fc5a8",
+      "completionSha256": "397dfc03ad1f84a27df8a7942f0ca0347331ada0c9a8f583a05fcef1893fc5a8",
+      "beforeReportSha256": "397dfc03ad1f84a27df8a7942f0ca0347331ada0c9a8f583a05fcef1893fc5a8",
+      "unchangedBeforeReport": true,
+      "snapshotKind": "task-start or initial SSOT snapshot",
+      "unchangedAtCompletion": true
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/package.json",
+      "initialSha256": "58d101ca053f29d36d0f9bd8d63639753fde807064d3c957e0bb6db17d4be0e8",
+      "completionSha256": "58d101ca053f29d36d0f9bd8d63639753fde807064d3c957e0bb6db17d4be0e8",
+      "beforeReportSha256": "58d101ca053f29d36d0f9bd8d63639753fde807064d3c957e0bb6db17d4be0e8",
+      "unchangedBeforeReport": true,
+      "snapshotKind": "task-start or initial SSOT snapshot",
+      "unchangedAtCompletion": true
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/codex-half/BUILD/result.md",
+      "initialSha256": "d95654bade1981d3a2d9c57be9299584ef15c836cac187ff03e972ab31761016",
+      "completionSha256": "d95654bade1981d3a2d9c57be9299584ef15c836cac187ff03e972ab31761016",
+      "beforeReportSha256": "d95654bade1981d3a2d9c57be9299584ef15c836cac187ff03e972ab31761016",
+      "unchangedBeforeReport": true,
+      "snapshotKind": "first SHA snapshot after content read",
+      "unchangedAtCompletion": true
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/QA/result.md",
+      "initialSha256": "6e4c1c8d9cbd4a68a4cbeac6ce52a993ea5344220ac0106fa05034f8eb667052",
+      "completionSha256": "6e4c1c8d9cbd4a68a4cbeac6ce52a993ea5344220ac0106fa05034f8eb667052",
+      "beforeReportSha256": "6e4c1c8d9cbd4a68a4cbeac6ce52a993ea5344220ac0106fa05034f8eb667052",
+      "unchangedBeforeReport": true,
+      "snapshotKind": "first SHA snapshot after content read",
+      "unchangedAtCompletion": true
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROVIDER-HALVES-20261002.md",
+      "initialSha256": "883fa605533b64f1b6c2b2553894085e2a7fdcfdadf8fb2fe9e60cf27e2aad23",
+      "completionSha256": "883fa605533b64f1b6c2b2553894085e2a7fdcfdadf8fb2fe9e60cf27e2aad23",
+      "beforeReportSha256": "883fa605533b64f1b6c2b2553894085e2a7fdcfdadf8fb2fe9e60cf27e2aad23",
+      "unchangedBeforeReport": true,
+      "snapshotKind": "first SHA snapshot after content read",
+      "unchangedAtCompletion": true
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/STEAM_DASHBOARD_AUDIT_20260909.md",
+      "initialSha256": "846af98f6fbd12f4565c862536d8750b0263595c0f2aebee9fffa129ec87306e",
+      "completionSha256": "846af98f6fbd12f4565c862536d8750b0263595c0f2aebee9fffa129ec87306e",
+      "beforeReportSha256": "846af98f6fbd12f4565c862536d8750b0263595c0f2aebee9fffa129ec87306e",
+      "unchangedBeforeReport": true,
+      "snapshotKind": "first SHA snapshot after content read",
+      "unchangedAtCompletion": true
+    }
+  ],
+  "officialReads": [
+    {
+      "id": "WEB-01",
+      "url": "https://store.steampowered.com/app/4749590/",
+      "method": "web.run.open, anonymous text extraction",
+      "acquiredBetweenUTC": [
+        "2026-10-02T04:34:53Z",
+        "2026-10-02T04:36:09Z"
+      ],
+      "acquiredBetweenKST": [
+        "2026-10-02T13:34:53+09:00",
+        "2026-10-02T13:36:09+09:00"
+      ],
+      "result": "success",
+      "observed": {
+        "title": "EXODUSER: HELL LORD",
+        "developerPublisher": "FOR DEAR GAMERS",
+        "storeAccessible": true,
+        "releaseDisplay": "Coming soon",
+        "interfacesAndSubtitlesDisplayed": 29,
+        "fullAudioMarksDisplayed": 0
+      },
+      "sourceLocator": {
+        "titleLines": [
+          8,
+          22
+        ],
+        "releaseLines": [
+          113,
+          126
+        ],
+        "languageLines": [
+          65,
+          97
+        ]
+      },
+      "currentReviewBuildWishlistMetrics": "UNKNOWN",
+      "limitations": "Store declarations are not source/runtime/shipping QA acceptance. No login/UI/video playback."
+    },
+    {
+      "id": "WEB-02",
+      "url": "https://store.steampowered.com/app/4749590/?l=koreana",
+      "method": "web.run.open",
+      "acquiredBetweenUTC": [
+        "2026-10-02T04:36:09Z",
+        "2026-10-02T04:37:05Z"
+      ],
+      "acquiredBetweenKST": [
+        "2026-10-02T13:36:09+09:00",
+        "2026-10-02T13:37:05+09:00"
+      ],
+      "result": "tool_internal_error_url_inaccessible",
+      "observed": null,
+      "limitations": "Current Korean-language public copy was not observed. Failure is not page absence."
+    },
+    {
+      "id": "WEB-03",
+      "url": "https://store.steampowered.com/app/4749590/",
+      "method": "web.run.find Demo within WEB-01 page",
+      "acquiredBetweenUTC": [
+        "2026-10-02T04:36:09Z",
+        "2026-10-02T04:37:05Z"
+      ],
+      "acquiredBetweenKST": [
+        "2026-10-02T13:36:09+09:00",
+        "2026-10-02T13:37:05+09:00"
+      ],
+      "result": "no matching text",
+      "observed": {
+        "demoButtonObservedInExtraction": false
+      },
+      "limitations": "No declaration that demo is unpublished/unreleased; dynamic, regional and authenticated view not inspected. App5337590 standalone URL not inferred/opened."
+    }
+  ],
+  "platformIdentity": {
+    "mainSteam": {
+      "appId": 4749590,
+      "url": "https://store.steampowered.com/app/4749590/",
+      "basis": "REVIEW lines11/18 and EXPO317 + official page identity"
+    },
+    "demo": {
+      "appId": 5337590,
+      "parentAppId": 4749590,
+      "separatePublicUrl": null,
+      "currentReviewStatus": "UNKNOWN",
+      "currentDownloadAvailability": "UNKNOWN",
+      "historicalStatusDate": "2026-09-30",
+      "historicalStatus": "review queue/private demo package; standalone page disabled"
+    },
+    "youtube": {
+      "url": null,
+      "handle": null,
+      "channelName": null,
+      "ownership": null,
+      "existingVideoUrls": null,
+      "existingPublicStatus": null,
+      "draftLanguageDecision": null,
+      "approvalOwner": null,
+      "reason": "No YouTube-domain URLs found by docs text search; historical dashboard says input existed without literal value"
+    }
+  },
+  "docsSearch": {
+    "keywordCommand": "rg -l -i 'YouTube|youtu\\.be|유튜브|Steam|스팀|위시리스트|트레일러' docs/",
+    "keywordExit": 0,
+    "keywordFileCount": 133,
+    "keywordFiles": [
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/8.1보스디자인바이블/DARK_DRUID_FINALE_QA_20260909.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/3.3 키바인딩+설정/GAMEPAD_HUD_LABEL_FIX_20260910.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/7아이템디자인/ON_CRIT_RECURSION_OBSERVATION_20260910.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/17게임아트팀/ART_TEAM_MASTER.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/8.1보스디자인바이블/BOSS_00_FOREST_NORMAL_EYE_SENTINEL.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/2게임디자인레벨디자인/RESOURCE_PRACTICE_20260912.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/15 세이브+데이터구조/15 세이브+데이터구조.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/3.3 키바인딩+설정/3.3 키바인딩+설정.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/6사운드디자인/주제가_SUNO_프롬프트.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/7아이템디자인/유니크_어픽스_리스트.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/4.0케릭터스프라이트 디자인/refs/2026-08-02_keyart/README.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/2게임디자인레벨디자인/SYSTEM_TUTORIAL_20260912.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/3.3 키바인딩+설정/게임패드_트러블슈팅.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/2게임디자인레벨디자인/PARRY_TUTORIAL_20260912.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/2게임디자인레벨디자인/TUTORIAL_BADGES_20260912.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/6사운드디자인/TRAILER_CHARACTER_VOICE_FIX_20260909.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/CHANGELOG_SYNC.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/6사운드디자인/6사운드디자인.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/최종기획서/build_document.py",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/CHANGELOG_DAILY_20260520.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/4.1맵디자인+설정/reference/dimraeth_20260916/evidence.json",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/3.1 ui hud 디자인/LOBBY_ANCESTOR_ART_20260928.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/1전체그래픽세팅/GODDESS_INTRO_REMASTER_20260930.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/1전체그래픽세팅/1전체그래픽세팅_MASTER.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/3.1 ui hud 디자인/exoduser-ui-phase2 (1).md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/9적ai패턴디자인/exoduser-ai-first-pipeline-v3.1.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/3.1 ui hud 디자인/TITLE_CLARITY_20260910.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/4.0케릭터스프라이트 디자인/캐릭터_몬스터_보스_최적화디자인_v1.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/3.1 ui hud 디자인/UI_SCALING_20260929.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/12퍼포먼스·최적화/QA_PERFORMANCE_TEAM_MASTER.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/4.1맵디자인+설정/DIMRAETH_MAP_RESEARCH_20260916.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/16영문화(i18n)/영문화_진행현황.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/2_4 펫시스템/2_4 펫시스템.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/16번역·로컬라이제이션/언어추가_우선순위.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/TEAM_STRUCTURE_PROPOSAL_20260930.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/16번역·로컬라이제이션/STEAM_LANGUAGE_SCOPE_20260909.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/12퍼포먼스·최적화/12퍼포먼스·최적화.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/16번역·로컬라이제이션/UI_TRANSLATIONS_20260909.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/12퍼포먼스·최적화/FRAME_DROP_HUD_TEXT_20260928.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/16번역·로컬라이제이션/ENGLISH_CHARACTER_BADGE_HUD_20260922.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/3.1 ui hud 디자인/exoduser-hud-redesign.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/16번역·로컬라이제이션/CHARACTER_STORY_TRANSLATIONS_20260909.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/2_4 펫시스템/대사_스크립트.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/12퍼포먼스·최적화/FRAME_SYSTEM_COMMIT_20260929.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/16번역·로컬라이제이션/UI_EUROPE_BATCH2_20260909.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/3.1 ui hud 디자인/lobby_full_patch.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/3.1 ui hud 디자인/PASSIVE_CODEX_DESIGN_RESEARCH_20260909.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/3.1 ui hud 디자인/스플래시_인트로_시퀀스.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/3.1 ui hud 디자인/능력치_패시브_개편_20260909.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/16번역·로컬라이제이션/번역대상_전체목록.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/12퍼포먼스·최적화/COMBAT_TEXTURE_WARMUP_20260929.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/16번역·로컬라이제이션/FINISH_TRANSLATIONS_20260923.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/12퍼포먼스·최적화/성능최적화_보고서_2026-05-23.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/16번역·로컬라이제이션/LANGUAGE_PACKAGE_20260923.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/16번역·로컬라이제이션/UI_NORTHERN_EUROPE_20260909.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/12퍼포먼스·최적화/MAP_STARTUP_READY_20260929.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/16번역·로컬라이제이션/STEAM_LANGUAGE_FINISH_20260923.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/16번역·로컬라이제이션/STEAM_LANGUAGE_RESUME_20260921.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/16번역·로컬라이제이션/UI_ASIA_TRANSLATIONS_20260909.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/EA/HELL_EA_BUILD_CHECKLIST.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/3.1 ui hud 디자인/SETTINGS_UI_WORKSPACE_20260929.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/12퍼포먼스·최적화/COMBAT_PRESENTATION_20260909.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/16번역·로컬라이제이션/번역_가이드.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/12퍼포먼스·최적화/THREE_LOCAL_SINGLE_RUNTIME_20260929.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/TEAM_CONTINUATION_POLICY_20261001.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/16번역·로컬라이제이션/LOCALIZATION_RUNTIME_20260909.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/16번역·로컬라이제이션/UI_EUROPE_TRANSLATIONS_20260909.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/16번역·로컬라이제이션/RESUME_LANGUAGE_INTEGRATION_20260923.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/EXODUSER_MASTER_BIBLE_v2_2 (2).md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/8.0몬스터디자인/PHYSICAL_PROJECTILE_VISIBILITY_20260914.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/STEAM_DASHBOARD_AUDIT_20260909.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/cinematic/WORLD_INTRO_INGAME_20260907.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/FULL_SOURCE_CHECKPOINT_20260909.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/cinematic/WORLD_INTRO_V6_SUBTITLES_20260907.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/STEAM_REVIEW_REMEDIATION_20260916.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/STEAM_EARLYACCESS_LOCALIZATION_20260910.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/cinematic/STEAM_TRAILER_02_20260907.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/SKILL_TRAILER_V25_DAMAGE_TEXT_20260910.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/cinematic/PROLOGUE_STORYBOARD_v1.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/GWANGJU_VIDEO_IR_APPLICATIONS_20260930.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/PUBLISH_20260928_LFS_HISTORY.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/USB_WEB_RELEASE_20260910.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/GAMEPLAY_TRAILER_V22_20260909.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/STEAM_REVIEW_READY_CHECKLIST_20260918.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/MAP_INTRO_20260909.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/PUBLISHER_DELIVERY_RESUME_20260929.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/PC_PACKAGING_20260910.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/STEAM_REVIEW_20260926.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/SOURCE_CONTROL_HYGIENE_20260916.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/LATEST_WINDOWS_BUILD_20260929.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/LATEST_WEB_RELEASE_20260910.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/HELL_DIROI_종합확장전략기획서_v2_0.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/시장포지셔닝_정통루팅ARPG.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/SKILL_TRAILER_V23_20260909.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/MARKET_EVIDENCE_20260930.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/STEAM_DECK_PREPARATION_20260914.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/STEAM_LANGUAGE_UPLOAD_20260923.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/GAMEPLAY_TRAILER_V2_20260909.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/STEAM_INSTALL_REVIEW_20260916.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/STEAM_REVIEW_FINAL_CHECK_20260918.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/정식/HELL_RELEASE_BUILD_NOTES.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/GAMEPLAY_TRAILER_20260909_PRODUCTION.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/STEAM_REVIEW_SUBMISSION_20260920.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/PUBLISHER_REVIEW_20260929.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/STEAM_LATEST_DEPLOY_20260909.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/SKILL_TRAILER_V24_DAMAGE_TEXT_20260910.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/STEAM_STORE_LOCALIZATION_20260909.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/INDIE_LIVE_EXPO_20261201_SUBMISSION_20260928.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/EXODUSER_PRODUCT_MARKET_STRATEGY.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/PUBLISHER_EMAIL_SCHEDULE_20260929.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/STEAM_REVIEW_NOTES_20260916.txt",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/GAMEPLAY_TRAILER_20260908_PLAN.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/FDG_HOMEPAGE_CHARACTERS_20260928.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/13출시·마케팅.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/4.1맵디자인+설정/CH1_ORGANIC_CACHE_BUDGET_PASS86_20260929.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/4.1맵디자인+설정/CH1_1_PRODUCTION_FINISH_20260916.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-binding-receipt.json",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROVIDER-HALVES-20261002.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROVIDER-HALVES-20261002.json",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/4.1맵디자인+설정/MAP_RUNTIME_ARCHITECTURE.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/MAP-ART-인수검토.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-CHATS-20261002.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-CHATS-20261002.json",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/4.1맵디자인+설정/DEPTH_2_5D_BENCHMARK_20260930.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/4.1맵디자인+설정/CH1_1_GROUND_STRUCTURE_20260916.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/4.1맵디자인+설정/CH1_1_FINAL_REVIEW_20260916.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/4.1맵디자인+설정/CH1_1_DEPTH_RETOUCH_20260917.md"
+    ],
+    "youtubeMentionCommand": "rg -n -i --max-columns 200 --max-columns-preview 'youtube|youtu\\.be|유튜브' docs/",
+    "youtubeMentionExit": 0,
+    "youtubeMentionLineCount": 16,
+    "youtubeMentions": [
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/CHANGELOG_SYNC.md",
+        "line": 52079
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/TEAM_CONTINUATION_POLICY_20261001.md",
+        "line": 139
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/최종기획서/build_document.py",
+        "line": 563
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/STEAM_DASHBOARD_AUDIT_20260909.md",
+        "line": 56
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/GWANGJU_VIDEO_IR_APPLICATIONS_20260930.md",
+        "line": 38
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/HELL_DIROI_종합확장전략기획서_v2_0.md",
+        "line": 722
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/cinematic/PROLOGUE_STORYBOARD_v1.md",
+        "line": 72
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/cinematic/PROLOGUE_STORYBOARD_v1.md",
+        "line": 194
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/INDIE_LIVE_EXPO_20261201_SUBMISSION_20260928.md",
+        "line": 244
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md",
+        "line": 775
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-CHATS-20261002.md",
+        "line": 88
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROVIDER-HALVES-20261002.json",
+        "line": 4
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROVIDER-HALVES-20261002.json",
+        "line": 664
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROVIDER-HALVES-20261002.md",
+        "line": 3
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROVIDER-HALVES-20261002.md",
+        "line": 17
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-CHATS-20261002.json",
+        "line": 407
+      }
+    ],
+    "urlCommand": "rg -n -i -o '(https?://)?([A-Za-z0-9.-]+\\.)?(youtube\\.com|youtu\\.be)/[^[:space:]<>)]*' docs/",
+    "urlExit": 1,
+    "urlMatches": 0,
+    "initialMdTxtUrlExit": 1,
+    "initialMdTxtUrlMatches": 0,
+    "scope": "rg default text/indexed docs paths; ignored/binary/external account data not included",
+    "allKeywordFilesReadInFull": false,
+    "privateContactCopies": 0,
+    "supplementLocation": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/new-four/MARKETING/result.md section8",
+    "sharedDocsWritten": false
+  },
+  "materials": {
+    "method": "read-only metadata of 8 exact documented checkout paths",
+    "rows": [
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/output/indie-live-expo-20261201/submission/EXODUSER_HELL_LORD.mp4",
+        "exists": false
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/output/indie-live-expo-20261201/submission/EXODUSER_HELL_LORD_full.mp4",
+        "exists": false
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/output/indie-live-expo-20261201/submission/main.jpg",
+        "exists": false
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/output/indie-live-expo-20261201/submission/ss1.jpg",
+        "exists": false
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/output/indie-live-expo-20261201/submission/ss2.jpg",
+        "exists": false
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/output/indie-live-expo-20261201/submission/ss3.jpg",
+        "exists": false
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/captures/gameplay_trailer_20260909/EXODUSER_GAMEPLAY_TRAILER_V22_SKILL_MONTAGE_1080P60.mp4",
+        "exists": false
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/captures/trailer_steam_bossfix_20260902/EXODUSER_STEAM_TRAILER_BOSSFIX_20260902.mp4",
+        "exists": false
+      }
+    ],
+    "mediaPlayed": 0,
+    "downloads": 0,
+    "driveCurrentAccess": "UNKNOWN",
+    "entireDiskLossClaim": false,
+    "rightsCurrentAcceptance": "UNKNOWN"
+  },
+  "proposals": {
+    "steamShortDescriptionKO": "지옥의 군세를 베어내고, 전리품으로 나만의 빌드를 만드세요. EXODUSER: HELL LORD는 거대검 전투, 탄막 패링, 사슬 기동과 스킬 합체를 결합한 다크 판타지 핵앤슬래시 ARPG입니다.",
+    "steamShortDescriptionEN": "Cut through demonic hordes and turn loot into your own build. EXODUSER: HELL LORD is a dark fantasy hack-and-slash ARPG combining greatsword combat, projectile parries, chain mobility, and skill fusion.",
+    "shortDescriptionCodePointCounts": {
+      "ko": 109,
+      "en": 202
+    },
+    "steamDetailedCopyLanguages": [
+      "ko",
+      "en"
+    ],
+    "trailerPlanSeconds": 30,
+    "youtubeTitlesAndDescriptions": true,
+    "schedule": {
+      "baseDay": "D is UNKNOWN until channel/material/build/play/copy/rights acceptance and publishing assignment",
+      "offsetDays": [
+        0,
+        1,
+        4,
+        8,
+        10
+      ],
+      "actualDates": null
+    },
+    "published": false
+  },
+  "gates": {
+    "channel": "UNKNOWN",
+    "languageAndApprover": "UNKNOWN",
+    "steamDemoReviewDownload": "UNKNOWN",
+    "materials": "8 documented exact local paths absent; obtain existing owner-approved originals",
+    "build": "source pins report accepted only as team evidence; runtimeAccepted=false/visualAccepted=false",
+    "qa": "source fixture result is not actual product acceptance",
+    "artStorySoundRights": "current production/media/rights acceptance pending",
+    "copy": "proposal only",
+    "publish": "not assigned"
+  },
+  "changes": {
+    "command": "git status --short --untracked-files=all",
+    "start": 53,
+    "middle": 58,
+    "beforeReport": 59,
+    "completion": 64,
+    "startEntries": [
+      " M docs/CHANGELOG_SYNC.md",
+      " M \"docs_backup_before_normalize_20260726/12\\341\\204\\221\\341\\205\\245\\341\\204\\221\\341\\205\\251\\341\\204\\206\\341\\205\\245\\341\\206\\253\\341\\204\\211\\341\\205\\263\\302\\267\\341\\204\\216\\341\\205\\254\\341\\204\\214\\341\\205\\245\\341\\206\\250\\341\\204\\222\\341\\205\\252/12\\341\\204\\221\\341\\205\\245\\341\\204\\221\\341\\205\\251\\341\\204\\206\\341\\205\\245\\341\\206\\253\\341\\204\\211\\341\\205\\263\\302\\267\\341\\204\\216\\341\\205\\254\\341\\204\\214\\341\\205\\245\\341\\206\\250\\341\\204\\222\\341\\205\\252.md\"",
+      " M \"docs_backup_before_normalize_20260726/14\\341\\204\\207\\341\\205\\242\\341\\206\\257\\341\\204\\205\\341\\205\\245\\341\\206\\253\\341\\204\\211\\341\\205\\263+\\341\\204\\211\\341\\205\\256\\341\\204\\216\\341\\205\\265\\341\\204\\220\\341\\205\\246\\341\\204\\213\\341\\205\\265\\341\\204\\207\\341\\205\\263\\341\\206\\257/\\341\\204\\211\\341\\205\\263\\341\\204\\217\\341\\205\\265\\341\\206\\257_\\341\\204\\207\\341\\205\\242\\341\\206\\257\\341\\204\\205\\341\\205\\245\\341\\206\\253\\341\\204\\211\\341\\205\\263_\\341\\204\\205\\341\\205\\265\\341\\204\\221\\341\\205\\251\\341\\204\\220\\341\\205\\263.md\"",
+      " M \"docs_backup_before_normalize_20260726/14\\341\\204\\207\\341\\205\\242\\341\\206\\257\\341\\204\\205\\341\\205\\245\\341\\206\\253\\341\\204\\211\\341\\205\\263+\\341\\204\\211\\341\\205\\256\\341\\204\\216\\341\\205\\265\\341\\204\\220\\341\\205\\246\\341\\204\\213\\341\\205\\265\\341\\204\\207\\341\\205\\263\\341\\206\\257/\\341\\204\\211\\341\\205\\263\\341\\204\\217\\341\\205\\265\\341\\206\\257\\341\\204\\203\\341\\205\\246\\341\\204\\206\\341\\205\\265\\341\\204\\214\\341\\205\\265\\341\\204\\200\\341\\205\\251\\341\\206\\274\\341\\204\\211\\341\\205\\265\\341\\206\\250\\341\\204\\221\\341\\205\\255.md\"",
+      " M \"docs_backup_before_normalize_20260726/14\\341\\204\\207\\341\\205\\242\\341\\206\\257\\341\\204\\205\\341\\205\\245\\341\\206\\253\\341\\204\\211\\341\\205\\263+\\341\\204\\211\\341\\205\\256\\341\\204\\216\\341\\205\\265\\341\\204\\220\\341\\205\\246\\341\\204\\213\\341\\205\\265\\341\\204\\207\\341\\205\\263\\341\\206\\257/\\341\\204\\211\\341\\205\\263\\341\\204\\217\\341\\205\\265\\341\\206\\257\\341\\204\\207\\341\\205\\247\\341\\206\\257_DPS_\\341\\204\\214\\341\\205\\241\\341\\204\\213\\341\\205\\257\\341\\206\\253\\341\\204\\211\\341\\205\\251\\341\\204\\207\\341\\205\\265\\341\\204\\221\\341\\205\\255.md\"",
+      " M \"docs_backup_before_normalize_20260726/16\\341\\204\\207\\341\\205\\245\\341\\206\\253\\341\\204\\213\\341\\205\\247\\341\\206\\250\\302\\267\\341\\204\\205\\341\\205\\251\\341\\204\\217\\341\\205\\245\\341\\206\\257\\341\\204\\205\\341\\205\\241\\341\\204\\213\\341\\205\\265\\341\\204\\214\\341\\205\\246\\341\\204\\213\\341\\205\\265\\341\\204\\211\\341\\205\\247\\341\\206\\253/\\341\\204\\207\\341\\205\\245\\341\\206\\253\\341\\204\\213\\341\\205\\247\\341\\206\\250_\\341\\204\\200\\341\\205\\241\\341\\204\\213\\341\\205\\265\\341\\204\\203\\341\\205\\263.md\"",
+      " M \"docs_backup_before_normalize_20260726/16\\341\\204\\207\\341\\205\\245\\341\\206\\253\\341\\204\\213\\341\\205\\247\\341\\206\\250\\302\\267\\341\\204\\205\\341\\205\\251\\341\\204\\217\\341\\205\\245\\341\\206\\257\\341\\204\\205\\341\\205\\241\\341\\204\\213\\341\\205\\265\\341\\204\\214\\341\\205\\246\\341\\204\\213\\341\\205\\265\\341\\204\\211\\341\\205\\247\\341\\206\\253/\\341\\204\\207\\341\\205\\245\\341\\206\\253\\341\\204\\213\\341\\205\\247\\341\\206\\250\\341\\204\\203\\341\\205\\242\\341\\204\\211\\341\\205\\241\\341\\206\\274_\\341\\204\\214\\341\\205\\245\\341\\206\\253\\341\\204\\216\\341\\205\\246\\341\\204\\206\\341\\205\\251\\341\\206\\250\\341\\204\\205\\341\\205\\251\\341\\206\\250.md\"",
+      " M \"docs_backup_before_normalize_20260726/16\\341\\204\\207\\341\\205\\245\\341\\206\\253\\341\\204\\213\\341\\205\\247\\341\\206\\250\\302\\267\\341\\204\\205\\341\\205\\251\\341\\204\\217\\341\\205\\245\\341\\206\\257\\341\\204\\205\\341\\205\\241\\341\\204\\213\\341\\205\\265\\341\\204\\214\\341\\205\\246\\341\\204\\213\\341\\205\\265\\341\\204\\211\\341\\205\\247\\341\\206\\253/\\341\\204\\207\\341\\205\\245\\341\\206\\253\\341\\204\\213\\341\\205\\247\\341\\206\\250\\341\\204\\203\\341\\205\\242\\341\\204\\211\\341\\205\\241\\341\\206\\274_\\341\\204\\221\\341\\205\\246\\341\\206\\272\\341\\204\\203\\341\\205\\242\\341\\204\\211\\341\\205\\241.md\"",
+      " M \"docs_backup_before_normalize_20260726/2_1 \\341\\204\\211\\341\\205\\263\\341\\204\\217\\341\\205\\265\\341\\206\\257\\341\\204\\200\\341\\205\\252\\341\\206\\253\\341\\204\\205\\341\\205\\265+\\341\\204\\222\\341\\205\\241\\341\\206\\270\\341\\204\\216\\341\\205\\246\\341\\204\\211\\341\\205\\265\\341\\204\\211\\341\\205\\263\\341\\204\\220\\341\\205\\246\\341\\206\\267+\\341\\204\\214\\341\\205\\241\\341\\204\\213\\341\\205\\257\\341\\206\\253/2_1 \\341\\204\\211\\341\\205\\263\\341\\204\\217\\341\\205\\265\\341\\206\\257\\341\\204\\200\\341\\205\\252\\341\\206\\253\\341\\204\\205\\341\\205\\265+\\341\\204\\222\\341\\205\\241\\341\\206\\270\\341\\204\\216\\341\\205\\246\\341\\204\\211\\341\\205\\265\\341\\204\\211\\341\\205\\263\\341\\204\\220\\341\\205\\246\\341\\206\\267.md\"",
+      " M \"docs_backup_before_normalize_20260726/2_1 \\341\\204\\211\\341\\205\\263\\341\\204\\217\\341\\205\\265\\341\\206\\257\\341\\204\\200\\341\\205\\252\\341\\206\\253\\341\\204\\205\\341\\205\\265+\\341\\204\\222\\341\\205\\241\\341\\206\\270\\341\\204\\216\\341\\205\\246\\341\\204\\211\\341\\205\\265\\341\\204\\211\\341\\205\\263\\341\\204\\220\\341\\205\\246\\341\\206\\267+\\341\\204\\214\\341\\205\\241\\341\\204\\213\\341\\205\\257\\341\\206\\253/\\341\\204\\214\\341\\205\\241\\341\\204\\213\\341\\205\\257\\341\\206\\253\\341\\204\\205\\341\\205\\265\\341\\204\\214\\341\\205\\246\\341\\206\\253+\\341\\204\\211\\341\\205\\251\\341\\204\\206\\341\\205\\251\\341\\204\\200\\341\\205\\251\\341\\206\\274\\341\\204\\211\\341\\205\\265\\341\\206\\250.md\"",
+      " M \"docs_backup_before_normalize_20260726/2_1 \\341\\204\\211\\341\\205\\263\\341\\204\\217\\341\\205\\265\\341\\206\\257\\341\\204\\200\\341\\205\\252\\341\\206\\253\\341\\204\\205\\341\\205\\265+\\341\\204\\222\\341\\205\\241\\341\\206\\270\\341\\204\\216\\341\\205\\246\\341\\204\\211\\341\\205\\265\\341\\204\\211\\341\\205\\263\\341\\204\\220\\341\\205\\246\\341\\206\\267+\\341\\204\\214\\341\\205\\241\\341\\204\\213\\341\\205\\257\\341\\206\\253/\\341\\204\\216\\341\\205\\256\\341\\204\\216\\341\\205\\245\\341\\206\\253\\341\\204\\207\\341\\205\\265\\341\\206\\257\\341\\204\\203\\341\\205\\263_SKILL_REC_PATH.md\"",
+      " M \"docs_backup_before_normalize_20260726/2_2 \\341\\204\\206\\341\\205\\256\\341\\204\\200\\341\\205\\265+\\341\\204\\222\\341\\205\\252\\341\\206\\257+\\341\\204\\211\\341\\205\\251\\341\\206\\250\\341\\204\\211\\341\\205\\245\\341\\206\\274\\341\\204\\211\\341\\205\\265\\341\\204\\211\\341\\205\\263\\341\\204\\220\\341\\205\\246\\341\\206\\267/2_2 \\341\\204\\206\\341\\205\\256\\341\\204\\200\\341\\205\\265+\\341\\204\\222\\341\\205\\252\\341\\206\\257+\\341\\204\\211\\341\\205\\251\\341\\206\\250\\341\\204\\211\\341\\205\\245\\341\\206\\274\\341\\204\\211\\341\\205\\265\\341\\204\\211\\341\\205\\263\\341\\204\\220\\341\\205\\246\\341\\206\\267.md\"",
+      " M \"docs_backup_before_normalize_20260726/2_4 \\341\\204\\221\\341\\205\\246\\341\\206\\272\\341\\204\\211\\341\\205\\265\\341\\204\\211\\341\\205\\263\\341\\204\\220\\341\\205\\246\\341\\206\\267/\\341\\204\\203\\341\\205\\242\\341\\204\\211\\341\\205\\241_\\341\\204\\211\\341\\205\\263\\341\\204\\217\\341\\205\\263\\341\\204\\205\\341\\205\\265\\341\\206\\270\\341\\204\\220\\341\\205\\263.md\"",
+      " M \"docs_backup_before_normalize_20260726/2\\341\\204\\200\\341\\205\\246\\341\\204\\213\\341\\205\\265\\341\\206\\267\\341\\204\\203\\341\\205\\265\\341\\204\\214\\341\\205\\241\\341\\204\\213\\341\\205\\265\\341\\206\\253\\341\\204\\205\\341\\205\\246\\341\\204\\207\\341\\205\\246\\341\\206\\257\\341\\204\\203\\341\\205\\265\\341\\204\\214\\341\\205\\241\\341\\204\\213\\341\\205\\265\\341\\206\\253/2\\341\\204\\200\\341\\205\\246\\341\\204\\213\\341\\205\\265\\341\\206\\267\\341\\204\\203\\341\\205\\265\\341\\204\\214\\341\\205\\241\\341\\204\\213\\341\\205\\265\\341\\206\\253\\341\\204\\205\\341\\205\\246\\341\\204\\207\\341\\205\\246\\341\\206\\257\\341\\204\\203\\341\\205\\265\\341\\204\\214\\341\\205\\241\\341\\204\\213\\341\\205\\265\\341\\206\\253.md\"",
+      " M \"docs_backup_before_normalize_20260726/3.1 ui hud \\341\\204\\203\\341\\205\\265\\341\\204\\214\\341\\205\\241\\341\\204\\213\\341\\205\\265\\341\\206\\253/exoduser-ui-phase2 (1).md\"",
+      " M \"docs_backup_before_normalize_20260726/3.3 \\341\\204\\217\\341\\205\\265\\341\\204\\207\\341\\205\\241\\341\\204\\213\\341\\205\\265\\341\\206\\253\\341\\204\\203\\341\\205\\265\\341\\206\\274+\\341\\204\\211\\341\\205\\245\\341\\206\\257\\341\\204\\214\\341\\205\\245\\341\\206\\274/3.3 \\341\\204\\217\\341\\205\\265\\341\\204\\207\\341\\205\\241\\341\\204\\213\\341\\205\\265\\341\\206\\253\\341\\204\\203\\341\\205\\265\\341\\206\\274+\\341\\204\\211\\341\\205\\245\\341\\206\\257\\341\\204\\214\\341\\205\\245\\341\\206\\274.md\"",
+      " M \"docs_backup_before_normalize_20260726/5.1\\341\\204\\213\\341\\205\\265\\341\\206\\267\\341\\204\\221\\341\\205\\246\\341\\206\\250\\341\\204\\220\\341\\205\\263\\341\\204\\203\\341\\205\\265\\341\\204\\214\\341\\205\\241\\341\\204\\213\\341\\205\\265\\341\\206\\253/VFX_\\341\\204\\200\\341\\205\\256\\341\\204\\222\\341\\205\\247\\341\\206\\253\\341\\204\\200\\341\\205\\241\\341\\204\\213\\341\\205\\265\\341\\204\\203\\341\\205\\263.md\"",
+      " M \"docs_backup_before_normalize_20260726/8.0\\341\\204\\206\\341\\205\\251\\341\\206\\253\\341\\204\\211\\341\\205\\263\\341\\204\\220\\341\\205\\245\\341\\204\\203\\341\\205\\265\\341\\204\\214\\341\\205\\241\\341\\204\\213\\341\\205\\265\\341\\206\\253/\\341\\204\\206\\341\\205\\251\\341\\206\\253\\341\\204\\211\\341\\205\\263\\341\\204\\220\\341\\205\\245_\\341\\204\\200\\341\\205\\251\\341\\206\\274\\341\\204\\200\\341\\205\\247\\341\\206\\250\\341\\204\\211\\341\\205\\265\\341\\204\\211\\341\\205\\263\\341\\204\\220\\341\\205\\246\\341\\206\\267.md\"",
+      " M \"docs_backup_before_normalize_20260726/8.0\\341\\204\\206\\341\\205\\251\\341\\206\\253\\341\\204\\211\\341\\205\\263\\341\\204\\220\\341\\205\\245\\341\\204\\203\\341\\205\\265\\341\\204\\214\\341\\205\\241\\341\\204\\213\\341\\205\\265\\341\\206\\253/\\341\\204\\206\\341\\205\\251\\341\\206\\253\\341\\204\\211\\341\\205\\263\\341\\204\\220\\341\\205\\245_\\341\\204\\216\\341\\205\\251\\341\\206\\274\\341\\204\\200\\341\\205\\252\\341\\206\\253\\341\\204\\205\\341\\205\\265.md\"",
+      " M \"docs_backup_before_normalize_20260726/8.0\\341\\204\\206\\341\\205\\251\\341\\206\\253\\341\\204\\211\\341\\205\\263\\341\\204\\220\\341\\205\\245\\341\\204\\203\\341\\205\\265\\341\\204\\214\\341\\205\\241\\341\\204\\213\\341\\205\\265\\341\\206\\253/\\341\\204\\220\\341\\205\\241\\341\\206\\253\\341\\204\\206\\341\\205\\241\\341\\206\\250\\341\\204\\211\\341\\205\\265\\341\\204\\211\\341\\205\\263\\341\\204\\220\\341\\205\\246\\341\\206\\267_\\341\\204\\216\\341\\205\\251\\341\\206\\274\\341\\204\\214\\341\\205\\245\\341\\206\\274\\341\\204\\205\\341\\205\\265.md\"",
+      " M \"docs_backup_before_normalize_20260726/8.1\\341\\204\\207\\341\\205\\251\\341\\204\\211\\341\\205\\263\\341\\204\\203\\341\\205\\265\\341\\204\\214\\341\\205\\241\\341\\204\\213\\341\\205\\265\\341\\206\\253\\341\\204\\207\\341\\205\\241\\341\\204\\213\\341\\205\\265\\341\\204\\207\\341\\205\\263\\341\\206\\257/BOSS_BATTLE_SETTINGS.md\"",
+      " M \"docs_backup_before_normalize_20260726/9\\341\\204\\214\\341\\205\\245\\341\\206\\250ai\\341\\204\\221\\341\\205\\242\\341\\204\\220\\341\\205\\245\\341\\206\\253\\341\\204\\203\\341\\205\\265\\341\\204\\214\\341\\205\\241\\341\\204\\213\\341\\205\\265\\341\\206\\253/9_\\341\\204\\214\\341\\205\\245\\341\\206\\250AI\\341\\204\\221\\341\\205\\242\\341\\204\\220\\341\\205\\245\\341\\206\\253\\341\\204\\203\\341\\205\\265\\341\\204\\214\\341\\205\\241\\341\\204\\213\\341\\205\\265\\341\\206\\253.md\"",
+      "?? \"docs_backup_before_normalize_20260726/12\\355\\215\\274\\355\\217\\254\\353\\250\\274\\354\\212\\244\\302\\267\\354\\265\\234\\354\\240\\201\\355\\231\\224/\\353\\247\\245\\353\\266\\201_\\355\\224\\204\\353\\240\\210\\354\\236\\204\\355\\224\\275\\354\\212\\244_\\352\\271\\234\\353\\271\\241\\354\\236\\204.md\"",
+      "?? tools/team-followup-20261001/BUILD/runtime-acquire-config-draft.json",
+      "?? tools/team-followup-20261002/claude-native-6/ANIMVFX/checks.mjs",
+      "?? tools/team-followup-20261002/claude-native-6/ANIMVFX/evidence.json",
+      "?? tools/team-followup-20261002/claude-native-6/ANIMVFX/result.md",
+      "?? tools/team-followup-20261002/claude-native-6/ART/checks.mjs",
+      "?? tools/team-followup-20261002/claude-native-6/ART/evidence.json",
+      "?? tools/team-followup-20261002/claude-native-6/ART/result.md",
+      "?? tools/team-followup-20261002/claude-native-6/MAP/checks.mjs",
+      "?? tools/team-followup-20261002/claude-native-6/MAP/evidence.json",
+      "?? tools/team-followup-20261002/claude-native-6/MAP/result.md",
+      "?? tools/team-followup-20261002/claude-native-6/QA/checks.mjs",
+      "?? tools/team-followup-20261002/claude-native-6/QA/evidence.json",
+      "?? tools/team-followup-20261002/claude-native-6/QA/result.md",
+      "?? tools/team-followup-20261002/claude-native-6/SKILL/checks.mjs",
+      "?? tools/team-followup-20261002/claude-native-6/SKILL/evidence.json",
+      "?? tools/team-followup-20261002/claude-native-6/SKILL/result.md",
+      "?? tools/team-followup-20261002/codex-half/BALANCE/checks.mjs",
+      "?? tools/team-followup-20261002/codex-half/BALANCE/evidence.json",
+      "?? tools/team-followup-20261002/codex-half/BALANCE/result.md",
+      "?? tools/team-followup-20261002/codex-half/BUILD/checks.mjs",
+      "?? tools/team-followup-20261002/codex-half/BUILD/evidence.json",
+      "?? tools/team-followup-20261002/codex-half/BUILD/result.md",
+      "?? tools/team-followup-20261002/codex-half/ITEM/checks.mjs",
+      "?? tools/team-followup-20261002/codex-half/ITEM/evidence.json",
+      "?? tools/team-followup-20261002/codex-half/ITEM/result.md",
+      "?? tools/team-followup-20261002/codex-half/SOUND/checks.mjs",
+      "?? tools/team-followup-20261002/new-four/BOSS/TASK.md",
+      "?? tools/team-followup-20261002/new-four/MARKETING/TASK.md",
+      "?? tools/team-followup-20261002/new-four/QUESTNPC/TASK.md",
+      "?? tools/team-followup-20261002/new-four/STORY/TASK.md"
+    ],
+    "thresholds": {
+      "notifyRootAt": 80,
+      "stopNewOutputsBefore": 100
+    },
+    "checkpointRequiredAtCompletion": false,
+    "otherOwnerChangesPreserved": true,
+    "completionObservedAt": "2026-10-02T04:42:34Z",
+    "completionEntries": [
+      " M docs/CHANGELOG_SYNC.md",
+      " M \"docs_backup_before_normalize_20260726/12\\341\\204\\221\\341\\205\\245\\341\\204\\221\\341\\205\\251\\341\\204\\206\\341\\205\\245\\341\\206\\253\\341\\204\\211\\341\\205\\263\\302\\267\\341\\204\\216\\341\\205\\254\\341\\204\\214\\341\\205\\245\\341\\206\\250\\341\\204\\222\\341\\205\\252/12\\341\\204\\221\\341\\205\\245\\341\\204\\221\\341\\205\\251\\341\\204\\206\\341\\205\\245\\341\\206\\253\\341\\204\\211\\341\\205\\263\\302\\267\\341\\204\\216\\341\\205\\254\\341\\204\\214\\341\\205\\245\\341\\206\\250\\341\\204\\222\\341\\205\\252.md\"",
+      " M \"docs_backup_before_normalize_20260726/14\\341\\204\\207\\341\\205\\242\\341\\206\\257\\341\\204\\205\\341\\205\\245\\341\\206\\253\\341\\204\\211\\341\\205\\263+\\341\\204\\211\\341\\205\\256\\341\\204\\216\\341\\205\\265\\341\\204\\220\\341\\205\\246\\341\\204\\213\\341\\205\\265\\341\\204\\207\\341\\205\\263\\341\\206\\257/\\341\\204\\211\\341\\205\\263\\341\\204\\217\\341\\205\\265\\341\\206\\257_\\341\\204\\207\\341\\205\\242\\341\\206\\257\\341\\204\\205\\341\\205\\245\\341\\206\\253\\341\\204\\211\\341\\205\\263_\\341\\204\\205\\341\\205\\265\\341\\204\\221\\341\\205\\251\\341\\204\\220\\341\\205\\263.md\"",
+      " M \"docs_backup_before_normalize_20260726/14\\341\\204\\207\\341\\205\\242\\341\\206\\257\\341\\204\\205\\341\\205\\245\\341\\206\\253\\341\\204\\211\\341\\205\\263+\\341\\204\\211\\341\\205\\256\\341\\204\\216\\341\\205\\265\\341\\204\\220\\341\\205\\246\\341\\204\\213\\341\\205\\265\\341\\204\\207\\341\\205\\263\\341\\206\\257/\\341\\204\\211\\341\\205\\263\\341\\204\\217\\341\\205\\265\\341\\206\\257\\341\\204\\203\\341\\205\\246\\341\\204\\206\\341\\205\\265\\341\\204\\214\\341\\205\\265\\341\\204\\200\\341\\205\\251\\341\\206\\274\\341\\204\\211\\341\\205\\265\\341\\206\\250\\341\\204\\221\\341\\205\\255.md\"",
+      " M \"docs_backup_before_normalize_20260726/14\\341\\204\\207\\341\\205\\242\\341\\206\\257\\341\\204\\205\\341\\205\\245\\341\\206\\253\\341\\204\\211\\341\\205\\263+\\341\\204\\211\\341\\205\\256\\341\\204\\216\\341\\205\\265\\341\\204\\220\\341\\205\\246\\341\\204\\213\\341\\205\\265\\341\\204\\207\\341\\205\\263\\341\\206\\257/\\341\\204\\211\\341\\205\\263\\341\\204\\217\\341\\205\\265\\341\\206\\257\\341\\204\\207\\341\\205\\247\\341\\206\\257_DPS_\\341\\204\\214\\341\\205\\241\\341\\204\\213\\341\\205\\257\\341\\206\\253\\341\\204\\211\\341\\205\\251\\341\\204\\207\\341\\205\\265\\341\\204\\221\\341\\205\\255.md\"",
+      " M \"docs_backup_before_normalize_20260726/16\\341\\204\\207\\341\\205\\245\\341\\206\\253\\341\\204\\213\\341\\205\\247\\341\\206\\250\\302\\267\\341\\204\\205\\341\\205\\251\\341\\204\\217\\341\\205\\245\\341\\206\\257\\341\\204\\205\\341\\205\\241\\341\\204\\213\\341\\205\\265\\341\\204\\214\\341\\205\\246\\341\\204\\213\\341\\205\\265\\341\\204\\211\\341\\205\\247\\341\\206\\253/\\341\\204\\207\\341\\205\\245\\341\\206\\253\\341\\204\\213\\341\\205\\247\\341\\206\\250_\\341\\204\\200\\341\\205\\241\\341\\204\\213\\341\\205\\265\\341\\204\\203\\341\\205\\263.md\"",
+      " M \"docs_backup_before_normalize_20260726/16\\341\\204\\207\\341\\205\\245\\341\\206\\253\\341\\204\\213\\341\\205\\247\\341\\206\\250\\302\\267\\341\\204\\205\\341\\205\\251\\341\\204\\217\\341\\205\\245\\341\\206\\257\\341\\204\\205\\341\\205\\241\\341\\204\\213\\341\\205\\265\\341\\204\\214\\341\\205\\246\\341\\204\\213\\341\\205\\265\\341\\204\\211\\341\\205\\247\\341\\206\\253/\\341\\204\\207\\341\\205\\245\\341\\206\\253\\341\\204\\213\\341\\205\\247\\341\\206\\250\\341\\204\\203\\341\\205\\242\\341\\204\\211\\341\\205\\241\\341\\206\\274_\\341\\204\\214\\341\\205\\245\\341\\206\\253\\341\\204\\216\\341\\205\\246\\341\\204\\206\\341\\205\\251\\341\\206\\250\\341\\204\\205\\341\\205\\251\\341\\206\\250.md\"",
+      " M \"docs_backup_before_normalize_20260726/16\\341\\204\\207\\341\\205\\245\\341\\206\\253\\341\\204\\213\\341\\205\\247\\341\\206\\250\\302\\267\\341\\204\\205\\341\\205\\251\\341\\204\\217\\341\\205\\245\\341\\206\\257\\341\\204\\205\\341\\205\\241\\341\\204\\213\\341\\205\\265\\341\\204\\214\\341\\205\\246\\341\\204\\213\\341\\205\\265\\341\\204\\211\\341\\205\\247\\341\\206\\253/\\341\\204\\207\\341\\205\\245\\341\\206\\253\\341\\204\\213\\341\\205\\247\\341\\206\\250\\341\\204\\203\\341\\205\\242\\341\\204\\211\\341\\205\\241\\341\\206\\274_\\341\\204\\221\\341\\205\\246\\341\\206\\272\\341\\204\\203\\341\\205\\242\\341\\204\\211\\341\\205\\241.md\"",
+      " M \"docs_backup_before_normalize_20260726/2_1 \\341\\204\\211\\341\\205\\263\\341\\204\\217\\341\\205\\265\\341\\206\\257\\341\\204\\200\\341\\205\\252\\341\\206\\253\\341\\204\\205\\341\\205\\265+\\341\\204\\222\\341\\205\\241\\341\\206\\270\\341\\204\\216\\341\\205\\246\\341\\204\\211\\341\\205\\265\\341\\204\\211\\341\\205\\263\\341\\204\\220\\341\\205\\246\\341\\206\\267+\\341\\204\\214\\341\\205\\241\\341\\204\\213\\341\\205\\257\\341\\206\\253/2_1 \\341\\204\\211\\341\\205\\263\\341\\204\\217\\341\\205\\265\\341\\206\\257\\341\\204\\200\\341\\205\\252\\341\\206\\253\\341\\204\\205\\341\\205\\265+\\341\\204\\222\\341\\205\\241\\341\\206\\270\\341\\204\\216\\341\\205\\246\\341\\204\\211\\341\\205\\265\\341\\204\\211\\341\\205\\263\\341\\204\\220\\341\\205\\246\\341\\206\\267.md\"",
+      " M \"docs_backup_before_normalize_20260726/2_1 \\341\\204\\211\\341\\205\\263\\341\\204\\217\\341\\205\\265\\341\\206\\257\\341\\204\\200\\341\\205\\252\\341\\206\\253\\341\\204\\205\\341\\205\\265+\\341\\204\\222\\341\\205\\241\\341\\206\\270\\341\\204\\216\\341\\205\\246\\341\\204\\211\\341\\205\\265\\341\\204\\211\\341\\205\\263\\341\\204\\220\\341\\205\\246\\341\\206\\267+\\341\\204\\214\\341\\205\\241\\341\\204\\213\\341\\205\\257\\341\\206\\253/\\341\\204\\214\\341\\205\\241\\341\\204\\213\\341\\205\\257\\341\\206\\253\\341\\204\\205\\341\\205\\265\\341\\204\\214\\341\\205\\246\\341\\206\\253+\\341\\204\\211\\341\\205\\251\\341\\204\\206\\341\\205\\251\\341\\204\\200\\341\\205\\251\\341\\206\\274\\341\\204\\211\\341\\205\\265\\341\\206\\250.md\"",
+      " M \"docs_backup_before_normalize_20260726/2_1 \\341\\204\\211\\341\\205\\263\\341\\204\\217\\341\\205\\265\\341\\206\\257\\341\\204\\200\\341\\205\\252\\341\\206\\253\\341\\204\\205\\341\\205\\265+\\341\\204\\222\\341\\205\\241\\341\\206\\270\\341\\204\\216\\341\\205\\246\\341\\204\\211\\341\\205\\265\\341\\204\\211\\341\\205\\263\\341\\204\\220\\341\\205\\246\\341\\206\\267+\\341\\204\\214\\341\\205\\241\\341\\204\\213\\341\\205\\257\\341\\206\\253/\\341\\204\\216\\341\\205\\256\\341\\204\\216\\341\\205\\245\\341\\206\\253\\341\\204\\207\\341\\205\\265\\341\\206\\257\\341\\204\\203\\341\\205\\263_SKILL_REC_PATH.md\"",
+      " M \"docs_backup_before_normalize_20260726/2_2 \\341\\204\\206\\341\\205\\256\\341\\204\\200\\341\\205\\265+\\341\\204\\222\\341\\205\\252\\341\\206\\257+\\341\\204\\211\\341\\205\\251\\341\\206\\250\\341\\204\\211\\341\\205\\245\\341\\206\\274\\341\\204\\211\\341\\205\\265\\341\\204\\211\\341\\205\\263\\341\\204\\220\\341\\205\\246\\341\\206\\267/2_2 \\341\\204\\206\\341\\205\\256\\341\\204\\200\\341\\205\\265+\\341\\204\\222\\341\\205\\252\\341\\206\\257+\\341\\204\\211\\341\\205\\251\\341\\206\\250\\341\\204\\211\\341\\205\\245\\341\\206\\274\\341\\204\\211\\341\\205\\265\\341\\204\\211\\341\\205\\263\\341\\204\\220\\341\\205\\246\\341\\206\\267.md\"",
+      " M \"docs_backup_before_normalize_20260726/2_4 \\341\\204\\221\\341\\205\\246\\341\\206\\272\\341\\204\\211\\341\\205\\265\\341\\204\\211\\341\\205\\263\\341\\204\\220\\341\\205\\246\\341\\206\\267/\\341\\204\\203\\341\\205\\242\\341\\204\\211\\341\\205\\241_\\341\\204\\211\\341\\205\\263\\341\\204\\217\\341\\205\\263\\341\\204\\205\\341\\205\\265\\341\\206\\270\\341\\204\\220\\341\\205\\263.md\"",
+      " M \"docs_backup_before_normalize_20260726/2\\341\\204\\200\\341\\205\\246\\341\\204\\213\\341\\205\\265\\341\\206\\267\\341\\204\\203\\341\\205\\265\\341\\204\\214\\341\\205\\241\\341\\204\\213\\341\\205\\265\\341\\206\\253\\341\\204\\205\\341\\205\\246\\341\\204\\207\\341\\205\\246\\341\\206\\257\\341\\204\\203\\341\\205\\265\\341\\204\\214\\341\\205\\241\\341\\204\\213\\341\\205\\265\\341\\206\\253/2\\341\\204\\200\\341\\205\\246\\341\\204\\213\\341\\205\\265\\341\\206\\267\\341\\204\\203\\341\\205\\265\\341\\204\\214\\341\\205\\241\\341\\204\\213\\341\\205\\265\\341\\206\\253\\341\\204\\205\\341\\205\\246\\341\\204\\207\\341\\205\\246\\341\\206\\257\\341\\204\\203\\341\\205\\265\\341\\204\\214\\341\\205\\241\\341\\204\\213\\341\\205\\265\\341\\206\\253.md\"",
+      " M \"docs_backup_before_normalize_20260726/3.1 ui hud \\341\\204\\203\\341\\205\\265\\341\\204\\214\\341\\205\\241\\341\\204\\213\\341\\205\\265\\341\\206\\253/exoduser-ui-phase2 (1).md\"",
+      " M \"docs_backup_before_normalize_20260726/3.3 \\341\\204\\217\\341\\205\\265\\341\\204\\207\\341\\205\\241\\341\\204\\213\\341\\205\\265\\341\\206\\253\\341\\204\\203\\341\\205\\265\\341\\206\\274+\\341\\204\\211\\341\\205\\245\\341\\206\\257\\341\\204\\214\\341\\205\\245\\341\\206\\274/3.3 \\341\\204\\217\\341\\205\\265\\341\\204\\207\\341\\205\\241\\341\\204\\213\\341\\205\\265\\341\\206\\253\\341\\204\\203\\341\\205\\265\\341\\206\\274+\\341\\204\\211\\341\\205\\245\\341\\206\\257\\341\\204\\214\\341\\205\\245\\341\\206\\274.md\"",
+      " M \"docs_backup_before_normalize_20260726/5.1\\341\\204\\213\\341\\205\\265\\341\\206\\267\\341\\204\\221\\341\\205\\246\\341\\206\\250\\341\\204\\220\\341\\205\\263\\341\\204\\203\\341\\205\\265\\341\\204\\214\\341\\205\\241\\341\\204\\213\\341\\205\\265\\341\\206\\253/VFX_\\341\\204\\200\\341\\205\\256\\341\\204\\222\\341\\205\\247\\341\\206\\253\\341\\204\\200\\341\\205\\241\\341\\204\\213\\341\\205\\265\\341\\204\\203\\341\\205\\263.md\"",
+      " M \"docs_backup_before_normalize_20260726/8.0\\341\\204\\206\\341\\205\\251\\341\\206\\253\\341\\204\\211\\341\\205\\263\\341\\204\\220\\341\\205\\245\\341\\204\\203\\341\\205\\265\\341\\204\\214\\341\\205\\241\\341\\204\\213\\341\\205\\265\\341\\206\\253/\\341\\204\\206\\341\\205\\251\\341\\206\\253\\341\\204\\211\\341\\205\\263\\341\\204\\220\\341\\205\\245_\\341\\204\\200\\341\\205\\251\\341\\206\\274\\341\\204\\200\\341\\205\\247\\341\\206\\250\\341\\204\\211\\341\\205\\265\\341\\204\\211\\341\\205\\263\\341\\204\\220\\341\\205\\246\\341\\206\\267.md\"",
+      " M \"docs_backup_before_normalize_20260726/8.0\\341\\204\\206\\341\\205\\251\\341\\206\\253\\341\\204\\211\\341\\205\\263\\341\\204\\220\\341\\205\\245\\341\\204\\203\\341\\205\\265\\341\\204\\214\\341\\205\\241\\341\\204\\213\\341\\205\\265\\341\\206\\253/\\341\\204\\206\\341\\205\\251\\341\\206\\253\\341\\204\\211\\341\\205\\263\\341\\204\\220\\341\\205\\245_\\341\\204\\216\\341\\205\\251\\341\\206\\274\\341\\204\\200\\341\\205\\252\\341\\206\\253\\341\\204\\205\\341\\205\\265.md\"",
+      " M \"docs_backup_before_normalize_20260726/8.0\\341\\204\\206\\341\\205\\251\\341\\206\\253\\341\\204\\211\\341\\205\\263\\341\\204\\220\\341\\205\\245\\341\\204\\203\\341\\205\\265\\341\\204\\214\\341\\205\\241\\341\\204\\213\\341\\205\\265\\341\\206\\253/\\341\\204\\220\\341\\205\\241\\341\\206\\253\\341\\204\\206\\341\\205\\241\\341\\206\\250\\341\\204\\211\\341\\205\\265\\341\\204\\211\\341\\205\\263\\341\\204\\220\\341\\205\\246\\341\\206\\267_\\341\\204\\216\\341\\205\\251\\341\\206\\274\\341\\204\\214\\341\\205\\245\\341\\206\\274\\341\\204\\205\\341\\205\\265.md\"",
+      " M \"docs_backup_before_normalize_20260726/8.1\\341\\204\\207\\341\\205\\251\\341\\204\\211\\341\\205\\263\\341\\204\\203\\341\\205\\265\\341\\204\\214\\341\\205\\241\\341\\204\\213\\341\\205\\265\\341\\206\\253\\341\\204\\207\\341\\205\\241\\341\\204\\213\\341\\205\\265\\341\\204\\207\\341\\205\\263\\341\\206\\257/BOSS_BATTLE_SETTINGS.md\"",
+      " M \"docs_backup_before_normalize_20260726/9\\341\\204\\214\\341\\205\\245\\341\\206\\250ai\\341\\204\\221\\341\\205\\242\\341\\204\\220\\341\\205\\245\\341\\206\\253\\341\\204\\203\\341\\205\\265\\341\\204\\214\\341\\205\\241\\341\\204\\213\\341\\205\\265\\341\\206\\253/9_\\341\\204\\214\\341\\205\\245\\341\\206\\250AI\\341\\204\\221\\341\\205\\242\\341\\204\\220\\341\\205\\245\\341\\206\\253\\341\\204\\203\\341\\205\\265\\341\\204\\214\\341\\205\\241\\341\\204\\213\\341\\205\\265\\341\\206\\253.md\"",
+      "?? \"docs_backup_before_normalize_20260726/12\\355\\215\\274\\355\\217\\254\\353\\250\\274\\354\\212\\244\\302\\267\\354\\265\\234\\354\\240\\201\\355\\231\\224/\\353\\247\\245\\353\\266\\201_\\355\\224\\204\\353\\240\\210\\354\\236\\204\\355\\224\\275\\354\\212\\244_\\352\\271\\234\\353\\271\\241\\354\\236\\204.md\"",
+      "?? tools/team-followup-20261001/BUILD/runtime-acquire-config-draft.json",
+      "?? tools/team-followup-20261002/claude-native-6/ANIMVFX/checks.mjs",
+      "?? tools/team-followup-20261002/claude-native-6/ANIMVFX/evidence.json",
+      "?? tools/team-followup-20261002/claude-native-6/ANIMVFX/result.md",
+      "?? tools/team-followup-20261002/claude-native-6/ART/checks.mjs",
+      "?? tools/team-followup-20261002/claude-native-6/ART/evidence.json",
+      "?? tools/team-followup-20261002/claude-native-6/ART/result.md",
+      "?? tools/team-followup-20261002/claude-native-6/ENEMY/checks.mjs",
+      "?? tools/team-followup-20261002/claude-native-6/ENEMY/evidence.json",
+      "?? tools/team-followup-20261002/claude-native-6/MAP/checks.mjs",
+      "?? tools/team-followup-20261002/claude-native-6/MAP/evidence.json",
+      "?? tools/team-followup-20261002/claude-native-6/MAP/result.md",
+      "?? tools/team-followup-20261002/claude-native-6/QA/checks.mjs",
+      "?? tools/team-followup-20261002/claude-native-6/QA/evidence.json",
+      "?? tools/team-followup-20261002/claude-native-6/QA/result.md",
+      "?? tools/team-followup-20261002/claude-native-6/SKILL/checks.mjs",
+      "?? tools/team-followup-20261002/claude-native-6/SKILL/evidence.json",
+      "?? tools/team-followup-20261002/claude-native-6/SKILL/result.md",
+      "?? tools/team-followup-20261002/codex-half/BALANCE/checks.mjs",
+      "?? tools/team-followup-20261002/codex-half/BALANCE/evidence.json",
+      "?? tools/team-followup-20261002/codex-half/BALANCE/result.md",
+      "?? tools/team-followup-20261002/codex-half/BUILD/checks.mjs",
+      "?? tools/team-followup-20261002/codex-half/BUILD/evidence.json",
+      "?? tools/team-followup-20261002/codex-half/BUILD/result.md",
+      "?? tools/team-followup-20261002/codex-half/ITEM/checks.mjs",
+      "?? tools/team-followup-20261002/codex-half/ITEM/evidence.json",
+      "?? tools/team-followup-20261002/codex-half/ITEM/result.md",
+      "?? tools/team-followup-20261002/codex-half/SOUND/checks.mjs",
+      "?? tools/team-followup-20261002/codex-half/SOUND/evidence.json",
+      "?? tools/team-followup-20261002/codex-half/SOUND/result.md",
+      "?? tools/team-followup-20261002/codex-half/UIUX/checks.mjs",
+      "?? tools/team-followup-20261002/codex-half/UIUX/evidence.json",
+      "?? tools/team-followup-20261002/codex-half/UIUX/result.md",
+      "?? tools/team-followup-20261002/new-four/BOSS/TASK.md",
+      "?? tools/team-followup-20261002/new-four/BOSS/evidence.json",
+      "?? tools/team-followup-20261002/new-four/MARKETING/TASK.md",
+      "?? tools/team-followup-20261002/new-four/MARKETING/evidence.json",
+      "?? tools/team-followup-20261002/new-four/MARKETING/result.md",
+      "?? tools/team-followup-20261002/new-four/QUESTNPC/TASK.md",
+      "?? tools/team-followup-20261002/new-four/QUESTNPC/result.md",
+      "?? tools/team-followup-20261002/new-four/STORY/TASK.md"
+    ],
+    "deltaCount": 11,
+    "deltaExplanation": "Only result.md and evidence.json were written by MARKETING. Count delta +11 includes +2 owned reports and +9 net entries from shared concurrent work; attribution of those other entries is UNKNOWN. The pre-existing untracked TASK.md was preserved."
+  },
+  "commandLog": [
+    {
+      "id": "task_read",
+      "command": "cat tools/team-followup-20261002/new-four/MARKETING/TASK.md",
+      "exitCode": 0,
+      "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "mutation": false,
+      "commandRepresentation": "Exact command or grouped/abbreviated read summary; original tool input is retained in this chat"
+    },
+    {
+      "id": "start_head",
+      "command": "git rev-parse HEAD",
+      "exitCode": 0,
+      "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "mutation": false,
+      "commandRepresentation": "Exact command or grouped/abbreviated read summary; original tool input is retained in this chat"
+    },
+    {
+      "id": "start_status",
+      "command": "git status --short --untracked-files=all",
+      "exitCode": 0,
+      "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "mutation": false,
+      "commandRepresentation": "Exact command or grouped/abbreviated read summary; original tool input is retained in this chat"
+    },
+    {
+      "id": "start_core_sha",
+      "command": "shasum -a 256 game.html game-easy-test.html server.cjs node-main.js index.html test/nodeMainMats.test.js",
+      "exitCode": 0,
+      "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "mutation": false,
+      "commandRepresentation": "Exact command or grouped/abbreviated read summary; original tool input is retained in this chat"
+    },
+    {
+      "id": "policy_read",
+      "command": "cat docs/0마스터플랜/TEAM_CONTINUATION_POLICY_20261001.md",
+      "exitCode": 0,
+      "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "mutation": false,
+      "commandRepresentation": "Exact command or grouped/abbreviated read summary; original tool input is retained in this chat"
+    },
+    {
+      "id": "task_path_inventory",
+      "command": "rg --files tools/team-followup-20261002/new-four/MARKETING",
+      "exitCode": 0,
+      "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "mutation": false,
+      "commandRepresentation": "Exact command or grouped/abbreviated read summary; original tool input is retained in this chat"
+    },
+    {
+      "id": "marketing_inventory",
+      "command": "rg --files docs/13출시·마케팅 (filtered for the 9 TASK documents)",
+      "exitCode": 0,
+      "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "mutation": false,
+      "commandRepresentation": "Exact command or grouped/abbreviated read summary; original tool input is retained in this chat"
+    },
+    {
+      "id": "document_lengths",
+      "command": "wc -l (9 TASK marketing documents)",
+      "exitCode": 0,
+      "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "mutation": false,
+      "commandRepresentation": "Exact command or grouped/abbreviated read summary; original tool input is retained in this chat"
+    },
+    {
+      "id": "initial_broad_rg",
+      "command": "rg -n -i 'youtube|youtu\\.be|유튜브|채널|4749590|5337590' docs/ --glob '*.md' --glob '*.txt'",
+      "exitCode": 0,
+      "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "mutation": false,
+      "commandRepresentation": "Exact command or grouped/abbreviated read summary; original tool input is retained in this chat"
+    },
+    {
+      "id": "pm_latest",
+      "command": "tail -n 34 docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md",
+      "exitCode": 0,
+      "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "mutation": false,
+      "commandRepresentation": "Exact command or grouped/abbreviated read summary; original tool input is retained in this chat"
+    },
+    {
+      "id": "position_read",
+      "command": "nl -ba docs/13출시·마케팅/시장포지셔닝_정통루팅ARPG.md",
+      "exitCode": 0,
+      "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "mutation": false,
+      "commandRepresentation": "Exact command or grouped/abbreviated read summary; original tool input is retained in this chat"
+    },
+    {
+      "id": "market_review_languages_read",
+      "command": "nl -ba MARKET_EVIDENCE_20260930.md, STEAM_REVIEW_20260926.md, STEAM_LANGUAGE_UPLOAD_20260923.md (sequential content reads)",
+      "exitCode": 0,
+      "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "mutation": false,
+      "commandRepresentation": "Exact command or grouped/abbreviated read summary; original tool input is retained in this chat"
+    },
+    {
+      "id": "initial_youtube_url_rg",
+      "command": "rg -n -i -o 'https?://[^[:space:]<>)]*(youtube\\.com|youtu\\.be)[^[:space:]<>)]*' docs/ --glob '*.md' --glob '*.txt'",
+      "exitCode": 1,
+      "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "mutation": false,
+      "commandRepresentation": "Exact command or grouped/abbreviated read summary; original tool input is retained in this chat"
+    },
+    {
+      "id": "ssot_sha",
+      "command": "shasum -a 256 (AGENTS/policy/PM/9 marketing docs/TASK/package.json)",
+      "exitCode": 0,
+      "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "mutation": false,
+      "commandRepresentation": "Exact command or grouped/abbreviated read summary; original tool input is retained in this chat"
+    },
+    {
+      "id": "store_localization_read",
+      "command": "nl -ba docs/13출시·마케팅/STEAM_STORE_LOCALIZATION_20260909.md",
+      "exitCode": 0,
+      "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "mutation": false,
+      "commandRepresentation": "Exact command or grouped/abbreviated read summary; original tool input is retained in this chat"
+    },
+    {
+      "id": "trailer_sources_read",
+      "command": "nl -ba GAMEPLAY_TRAILER_20260908_PLAN.md; rg -n (headings/approved use/public URLs/production) V22/EXPO docs",
+      "exitCode": 0,
+      "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "mutation": false,
+      "commandRepresentation": "Exact command or grouped/abbreviated read summary; original tool input is retained in this chat"
+    },
+    {
+      "id": "v22_excerpts",
+      "command": "nl -ba docs/13출시·마케팅/GAMEPLAY_TRAILER_V22_20260909.md | sed -n '1,100p'",
+      "exitCode": 0,
+      "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "mutation": false,
+      "commandRepresentation": "Exact command or grouped/abbreviated read summary; original tool input is retained in this chat"
+    },
+    {
+      "id": "marketing_headings",
+      "command": "rg -n '^#{1,4} ' marketing main/EXPO docs",
+      "exitCode": 0,
+      "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "mutation": false,
+      "commandRepresentation": "Exact command or grouped/abbreviated read summary; original tool input is retained in this chat"
+    },
+    {
+      "id": "mode_and_character_rg",
+      "command": "rg -n (CHAR_LIST/_LOBBY_BUILD/_DEMO_MODE/_DEMO_LAST_STAGE/comingSoon) game.html game-easy-test.html index.html",
+      "exitCode": 0,
+      "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "mutation": false,
+      "commandRepresentation": "Exact command or grouped/abbreviated read summary; original tool input is retained in this chat"
+    },
+    {
+      "id": "package_read",
+      "command": "cat package.json",
+      "exitCode": 0,
+      "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "mutation": false,
+      "commandRepresentation": "Exact command or grouped/abbreviated read summary; original tool input is retained in this chat"
+    },
+    {
+      "id": "expo_excerpts",
+      "command": "nl -ba EXPO doc | sed -n '145,211p;259,289p;311,321p'",
+      "exitCode": 0,
+      "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "mutation": false,
+      "commandRepresentation": "Exact command or grouped/abbreviated read summary; original tool input is retained in this chat"
+    },
+    {
+      "id": "marketing_main_excerpts",
+      "command": "nl -ba 13출시·마케팅.md | sed -n '31,111p;333,397p'",
+      "exitCode": 0,
+      "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "mutation": false,
+      "commandRepresentation": "Exact command or grouped/abbreviated read summary; original tool input is retained in this chat"
+    },
+    {
+      "id": "parry_fuse_demo_rg",
+      "command": "rg -n (FUSE/function _fuse/Q magic/nextStage/_DEMO_LAST_STAGE) game.html game-easy-test.html",
+      "exitCode": 0,
+      "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "mutation": false,
+      "commandRepresentation": "Exact command or grouped/abbreviated read summary; original tool input is retained in this chat"
+    },
+    {
+      "id": "source_excerpts",
+      "command": "nl -ba game.html | sed -n '10120,10165p;15815,15870p;33655,33685p'",
+      "exitCode": 0,
+      "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "mutation": false,
+      "commandRepresentation": "Exact command or grouped/abbreviated read summary; original tool input is retained in this chat"
+    },
+    {
+      "id": "lobby_excerpts",
+      "command": "nl -ba index.html | sed -n '3060,3120p'; rg -n -m 6 (FUSE/chain/block/bash) game.html",
+      "exitCode": 0,
+      "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "mutation": false,
+      "commandRepresentation": "Exact command or grouped/abbreviated read summary; original tool input is retained in this chat"
+    },
+    {
+      "id": "youtube_mentions",
+      "command": "rg -n -i --max-columns 200 --max-columns-preview 'youtube|youtu\\.be|유튜브' docs/",
+      "exitCode": 0,
+      "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "mutation": false,
+      "commandRepresentation": "Exact command or grouped/abbreviated read summary; original tool input is retained in this chat"
+    },
+    {
+      "id": "docs_keywords",
+      "command": "rg -l -i 'YouTube|youtu\\.be|유튜브|Steam|스팀|위시리스트|트레일러' docs/",
+      "exitCode": 0,
+      "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "mutation": false,
+      "commandRepresentation": "Exact command or grouped/abbreviated read summary; original tool input is retained in this chat"
+    },
+    {
+      "id": "fuse_structure_rg",
+      "command": "rg -n (FUSE_PAIRS/_canFuse/fuse definitions) game.html",
+      "exitCode": 0,
+      "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "mutation": false,
+      "commandRepresentation": "Exact command or grouped/abbreviated read summary; original tool input is retained in this chat"
+    },
+    {
+      "id": "build_gate_read",
+      "command": "nl -ba tools/team-followup-20261002/codex-half/BUILD/result.md | sed -n '1,110p'",
+      "exitCode": 0,
+      "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "mutation": false,
+      "commandRepresentation": "Exact command or grouped/abbreviated read summary; original tool input is retained in this chat"
+    },
+    {
+      "id": "qa_gate_read",
+      "command": "nl -ba tools/team-followup-20261002/claude-native-6/QA/result.md | sed -n '1,110p'",
+      "exitCode": 0,
+      "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "mutation": false,
+      "commandRepresentation": "Exact command or grouped/abbreviated read summary; original tool input is retained in this chat"
+    },
+    {
+      "id": "youtube_history_read",
+      "command": "nl -ba docs/13출시·마케팅/STEAM_DASHBOARD_AUDIT_20260909.md | sed -n '49,61p'",
+      "exitCode": 0,
+      "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "mutation": false,
+      "commandRepresentation": "Exact command or grouped/abbreviated read summary; original tool input is retained in this chat"
+    },
+    {
+      "id": "provider_and_rules_read",
+      "command": "nl -ba PROVIDER-HALVES-20261002.md | sed -n '1,27p'; nl -ba AGENTS.md | tail -n 17",
+      "exitCode": 0,
+      "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "mutation": false,
+      "commandRepresentation": "Exact command or grouped/abbreviated read summary; original tool input is retained in this chat"
+    },
+    {
+      "id": "inventory_parry_chain_rg",
+      "command": "rg -n (chain/block/bash/rollAffixes/_canFuse/inventory functions) game.html",
+      "exitCode": 0,
+      "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "mutation": false,
+      "commandRepresentation": "Exact command or grouped/abbreviated read summary; original tool input is retained in this chat"
+    },
+    {
+      "id": "parry_terms_rg",
+      "command": "rg -n -m 6 'sChain|sBlock|sBash' game.html",
+      "exitCode": 0,
+      "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "mutation": false,
+      "commandRepresentation": "Exact command or grouped/abbreviated read summary; original tool input is retained in this chat"
+    },
+    {
+      "id": "fusion_and_region_excerpts",
+      "command": "nl -ba game.html | sed -n '42972,43005p;43127,43142p'; nl -ba STEAM_REVIEW_20260926.md | sed -n '49,58p'",
+      "exitCode": 0,
+      "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "mutation": false,
+      "commandRepresentation": "Exact command or grouped/abbreviated read summary; original tool input is retained in this chat"
+    },
+    {
+      "id": "mid_status",
+      "command": "git status --short --untracked-files=all",
+      "exitCode": 0,
+      "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "mutation": false,
+      "commandRepresentation": "Exact command or grouped/abbreviated read summary; original tool input is retained in this chat"
+    },
+    {
+      "id": "actual_cwd",
+      "command": "pwd",
+      "exitCode": 0,
+      "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "mutation": false,
+      "commandRepresentation": "Exact command or grouped/abbreviated read summary; original tool input is retained in this chat"
+    },
+    {
+      "id": "extra_evidence_sha",
+      "command": "shasum -a 256 (BUILD report/QA report/PROVIDER map/Steam dashboard audit)",
+      "exitCode": 0,
+      "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "mutation": false,
+      "commandRepresentation": "Exact command or grouped/abbreviated read summary; original tool input is retained in this chat"
+    },
+    {
+      "id": "material_paths",
+      "command": "python3 read-only pathlib existence/bytes/SHA check of 8 exact documented candidate paths; no files created",
+      "exitCode": 0,
+      "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "mutation": false,
+      "commandRepresentation": "Exact command or grouped/abbreviated read summary; original tool input is retained in this chat"
+    },
+    {
+      "id": "before_write_sha",
+      "command": "shasum -a 256 (24 preserved files)",
+      "exitCode": 0,
+      "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "mutation": false,
+      "commandRepresentation": "Exact command or grouped/abbreviated read summary; original tool input is retained in this chat"
+    },
+    {
+      "id": "before_write_head",
+      "command": "git rev-parse HEAD",
+      "exitCode": 0,
+      "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "mutation": false,
+      "commandRepresentation": "Exact command or grouped/abbreviated read summary; original tool input is retained in this chat"
+    },
+    {
+      "id": "before_write_status",
+      "command": "git status --short --untracked-files=all",
+      "exitCode": 0,
+      "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "mutation": false,
+      "commandRepresentation": "Exact command or grouped/abbreviated read summary; original tool input is retained in this chat"
+    },
+    {
+      "id": "all_docs_youtube_urls",
+      "command": "rg -n -i -o '(https?://)?([A-Za-z0-9.-]+\\.)?(youtube\\.com|youtu\\.be)/[^[:space:]<>)]*' docs/",
+      "exitCode": 1,
+      "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "mutation": false,
+      "commandRepresentation": "Exact command or grouped/abbreviated read summary; original tool input is retained in this chat"
+    },
+    {
+      "id": "completion_sha",
+      "command": "shasum -a 256 (24 preserved files and owned result.md)",
+      "commandRepresentation": "grouped path summary",
+      "exitCode": 0,
+      "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "mutation": false
+    },
+    {
+      "id": "completion_head",
+      "command": "git rev-parse HEAD",
+      "commandRepresentation": "exact",
+      "exitCode": 0,
+      "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "mutation": false
+    },
+    {
+      "id": "completion_status",
+      "command": "git status --short --untracked-files=all",
+      "commandRepresentation": "exact",
+      "exitCode": 0,
+      "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "mutation": false
+    },
+    {
+      "id": "line_counts",
+      "command": "wc -l AGENTS.md docs/0마스터플랜/TEAM_CONTINUATION_POLICY_20261001.md docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md tools/team-followup-20261002/new-four/MARKETING/TASK.md package.json tools/team-followup-20261002/new-four/MARKETING/result.md tools/team-followup-20261002/new-four/MARKETING/evidence.json",
+      "commandRepresentation": "exact",
+      "exitCode": 0,
+      "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "mutation": false
+    }
+  ],
+  "scopeActions": {
+    "ownedReports": 2,
+    "productionWrites": 0,
+    "sharedDocsWrites": 0,
+    "taskWrites": 0,
+    "otherOwnerWrites": 0,
+    "gitWrites": 0,
+    "deletions": 0,
+    "movesRenamesCleanup": 0,
+    "newDirectories": 0,
+    "newSessions": 0,
+    "subagents": 0,
+    "externalMessages": 0,
+    "serverStarts": 0,
+    "gameUI": 0,
+    "builds": 0,
+    "testExecutions": 0,
+    "newTestsChecks": 0,
+    "imageVideoGenerationEncoding": 0,
+    "uploadsPublicationsStoreEdits": 0,
+    "loginsAccountCreation": 0,
+    "priceDateCommitments": 0
+  },
+  "nextAction": "Wait for manager acceptance and one subsequent TASK; do not independently create new work",
+  "resultArtifact": {
+    "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/new-four/MARKETING/result.md",
+    "sha256": "3d88c76ef175d8e9f949f218a97a27edeb4b7e0f504258dff1c25a4db3230029"
+  },
+  "completionNote": "24 initial/reference SHA values equal observed completion values; 6 protected source files preserved. HEAD unchanged. Shared Changes64 at completion observation, below80. Evidence self-hash excluded to avoid recursive value. Publishing/product Gates remain pending.",
+  "completedAtMeaning": "Clock observation after both report files were written and completion SHA/HEAD/status reads returned; final evidence-field persistence follows this observation",
+  "protectedSourceFilesUnchanged": true,
+  "allObservedReferenceHashesUnchanged": true,
+  "referenceFileCount": 24,
+  "artifactVerification": {
+    "method": "Read-only post-write SHA and file-line counts",
+    "resultLines": 204,
+    "evidenceDraftLines": 1430,
+    "ownedFilesWrittenExactly": 2,
+    "validJsonByConstruction": "JSON.stringify of in-memory evidence object; no separate test/check script executed",
+    "diskReadbackPending": false,
+    "diskReadback": {
+      "method": "rg field readback, shasum of owned artifacts, and rg --files ownership inventory",
+      "allReadbackCommandsExit": 0,
+      "resultShaMatchesRecorded": true,
+      "ownedInventory": ["TASK.md (pre-existing, preserved)", "result.md", "evidence.json"],
+      "artifactEditsOutsideOwnedPaths": 0
+    }
+  }
+}

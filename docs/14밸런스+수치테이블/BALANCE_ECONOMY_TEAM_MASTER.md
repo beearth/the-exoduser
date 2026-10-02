@@ -175,3 +175,13 @@ root가 정확단일INM304 우선·If-Range 전체응답 후보를 server.cjs에
 ### 2026-10-02 공유 악의 실제 파일 후보 인수
 
 shared-mats-atomic 미적용 후보의 담당 실제 파일14 검사를 root가 출력 경로를 분리한 하니스로 현행 server.cjs/node-main.js에서 재실행하여 14 PASS를 확인했다. 양쪽 GET/POST/helper 추출, 신규/교체/반복·clamp/schema, 부분 write·rename EIO 주입 후 기존 bytes 보존, 실제 ENOENT 및 원문 손상 RED를 구분한다. 기존 memory16과 별개이며 생산 반영0이다. fsync·전원손실·동시 writer·Windows·HTTP·앱은 미검수. 근거: outputs/team-review-20261002/four-candidate-acceptance/balance-root-file14.json. 담당 증거는 덮어쓰지 않았다.
+
+
+### 2026-10-02 NW.js 공유 악의 실패 응답 생산 보강
+
+| 대상·경로 | 현재 실패 응답 | 상태·검증 |
+|---|---|---|
+| node-main.js / POST /api/mats | readBody·JSON·clamp·직접 write 실패는 HTTP500 JSON `{ok:false,error:"Internal Server Error"}`를 headers/end 각1회로 마감. 성공은 기존 `{ok:true,mats}`이며 catch 밖에서 응답 | 생산 반영; 기존 test/nodeMainMats.test.js 4PASS(정상·malformed JSON·stream rejection·실제 ENOENT) |
+| server.cjs / POST /api/mats | 기존 외부 catch의 HTTP500 text/plain 유지 | 파일 변경0. NW.js JSON과 wire 형식 차이를 보존 |
+
+직접 write·clamp·정상 저장 계약과 세이브 슬롯 형식은 유지한다. 원자쓰기 후보·close/unlink cleanup 정책 미채택. 실제 HTTP/NW.js·성공 디스크 저장·재시작·Windows·fsync/crash/concurrency는 미검수이며 실물 앱 재빌드0이다. [저장 현행 계약](../15%20세이브+데이터구조/15%20세이브+데이터구조.md).

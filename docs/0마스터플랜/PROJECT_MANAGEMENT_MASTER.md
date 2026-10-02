@@ -777,3 +777,12 @@ HEAD5b8e6ba9에서 지원3명이 11역할을 묶어 mortar38 PASS·MAP source9 P
 ### 2026-10-02 최신 역할16·Claude8/Codex8
 
 사용자6대6지시 후 보스전·스토리·퀘스트/NPC·유튜브/스팀 페이지관리4팀을 추가하여 총괄1+전문15=16역할로 확장했다. Claude는ART/MAP/SKILL/QA/ENEMY/ANIMVFX/BOSS/STORY, Codex는총괄/UIUX/ITEM/BUILD/BALANCE/SOUND/QUESTNPC/MARKETING이다. 기존Claude6 실제TASK Read6/6·기존Codex5후속send5/5를 확인했고 신규4관리채팅을생성했다. BOSS/STORY 실행은 열린Claude2창에배정준비, 해당Codex채팅은관리인수만. 기존11관리채팅삭제0, 현재관리15개와실행16역할을구분한다. 별도Claude일회7검토success완료. 모든팀생산채택/새게임/게시0, 삭제/cleanup/소유밖쓰기금지. QA20261002오타경로삭제사건과기존자료UNKNOWN도기록한다. [현재역할·수신근거](mac-resume-20261001/vscode-dispatch/PROVIDER-HALVES-20261002.md).
+
+
+### 2026-10-02 완료 인수·즉시 피드백 후속
+
+초기 전문15팀(Codex7·Claude8)이 모두 제출했다. BOSS는 오경로 쓰기와 evidence의0기록 충돌 및19/35 canonical 오독을 정정하도록05:10:08 UTC 실제수신 확인. 제출 완료와 생산 인수를 구분한다. ANIMVFX의 rollback 표시만 바꾸는 모형은 실제GL큐 rollback 검증이 아니므로 생산 채택 보류다. SOUND pri1과 mats atomic/cleanup 정책은 미채택이다.
+
+root는 양판 `_skClick` 카드 연결 수명 guard(생산2GREEN/guard제거 음성2RED)와 node-main POST /api/mats 실패500 JSON 응답(기존하니스4PASS)을 인수했다. 양판 classic4/module2/importmap1씩 구문/JSON 통과. 기존 실물 앱 재빌드·전체게임/native/실저장/시각/청취 인수는 별도 대기다. 기존 팀 원자료는 당시 source SHA·미적용/실패 상태 그대로 보존한다.
+
+완료→보고→근거 인수→수정 피드백 또는 다음 승인 업무 배정을 같은 실행에서 수행한다. 이Mac 총괄 heartbeat `exoduser-mac` ACTIVE/1분간격을 공식도구로 생성하고 실제 automation.toml로 확인했다. 진행 중에는 완료를 확인하는 대로 처리하고, 대화 종료 뒤에는 예약 점검 시 이어간다. 실시간 무지연 감지를 보장하는 설정으로 설명하지 않는다. 로컬 파일 후속은 맥북이 켜져 있고 앱이 실행 중이어야 한다. 기존 PC5분 관리 자동화는 변경0이다. 새 Mac heartbeat 금지라는 앞선 운영 이력은 이번 사용자 최신 요청으로 대체한다.

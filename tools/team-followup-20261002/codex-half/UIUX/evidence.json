@@ -1,0 +1,1614 @@
+{
+  "schemaVersion": 1,
+  "team": "UIUX",
+  "task": "detached-old-skill-plus-callback",
+  "startedUTC": "2026-10-02T04:35:59.769Z",
+  "checkout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+  "taskPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/codex-half/UIUX/TASK.md",
+  "productionApplied": false,
+  "previousAdopted": {
+    "sourceRED": 16,
+    "candidatePASS": 16,
+    "reexecuted": 0,
+    "input": "tools/team-followup-20261002/project-teams/UIUX/evidence.json",
+    "note": "이전 인벤토리 이벤트 guard 결과 인수만; 스킬 카드 수명 후보와 별개"
+  },
+  "priorBoundarySearch": {
+    "command": [
+      "rg",
+      "-n",
+      "-e",
+      "이전 스킬 카드|스킬 카드.*수명|보관된.*콜백|_skClick.*isConnected|learned.*stale",
+      "docs",
+      "tools/team-followup-20261001/UIUX",
+      "tools/team-followup-20261002/project-teams/UIUX",
+      "--glob",
+      "*.md",
+      "--glob",
+      "*.mjs",
+      "--glob",
+      "!TASK.md",
+      "--glob",
+      "!task.md"
+    ],
+    "exitCode": 1,
+    "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "lineCount": 0,
+    "output": "",
+    "stderr": ""
+  },
+  "inputsBefore": {
+    "game.html": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+    "game-easy-test.html": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+    "AGENTS.md": "fd59bef70960bcaf1ab9910051faa860362884e574ac2869fad05c6872ae04e4",
+    "docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md": "2386910936ec5c71964c0d3f25bd8bab8253c8695e198f272c117b1b7431fb6d",
+    "docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md": "60ab1760c9f8c869622c4aa1113e92ba3f22ffd92d03f74d467ef7c45e8351fe",
+    "docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md": "167309e344b95af8aa85c2be1fd4331c03d3504043826af6945fa98d556b7402",
+    "docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식.md": "34f3804123037e635fdab92fc43e7619bd211413e22004c2053203ed9446a111",
+    "docs/2_1 스킬관리+합체시스템+자원/SKILL_자원게이트_감사_20261001.md": "b5502f8cd01e6b4827096b1417b9e2e3f598c44b74be0caed6810d80c0344930",
+    "tools/team-followup-20261002/codex-half/UIUX/TASK.md": "c9cd24450384888af5c2df76fd561386d5e92c7b65ad79adf2d3fd42ca3566f8",
+    "tools/team-followup-20261002/project-teams/UIUX/result.md": "e5907b150d89703e0a7506da594c90fb7110ddbcdf52527ee991280b0f3e7b5c",
+    "tools/team-followup-20261002/project-teams/UIUX/evidence.json": "70170da4eb23ef5b362ce96c371e9aed4e2ca28b94a39018c8d4d2880100623c",
+    "tools/team-followup-20261002/project-teams/UIUX/candidate.patch": "5a00f14ffc6f9bd519ba198ff59782811d3584f1666e8ad32e9967537bf895a4",
+    "tools/team-followup-20261001/UIUX/inventory-dom/node-dom.mjs": "b3c6bb3abf74d5b9e464d1db2e5d2441645af3be8eb096f3c30788b7019cfb95"
+  },
+  "sourceFragments": {
+    "game.html": {
+      "renderDeclaration": {
+        "lineStart": 45793,
+        "lineEnd": 45793,
+        "SHA256": "ff47284bfb81597da7055c8efee85d5b2da87b7d2e28cd7e381c11d01d0a089f",
+        "text": "function renderSkillPanel(){"
+      },
+      "gridReset": {
+        "lineStart": 45804,
+        "lineEnd": 45804,
+        "SHA256": "d4c6890dd1e5a9ecc8614a17f90d55dc0132b5515b31bc40c4e53c2f444774de",
+        "text": "const grid=$('skillGrid');grid.innerHTML='';"
+      },
+      "skill": {
+        "lineStart": 42734,
+        "lineEnd": 42734,
+        "SHA256": "b50ed97a993a9f7c287b8ab13f41432b83ff49ab7ac2b42ddd839222ac6fb693",
+        "text": "  {id:'spikeTrap',name:'가시덫',cat:'phys',act:true,emoji:'🌿',desc:'[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×pMagicMul×(14+5.6×(Lv-1))×0.75. 악의 10, 쿨 10초. Lv당 범위+15',descEn:'[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×pMagicMul×(14+5.6×(Lv-1))×0.75. Malice 10, CD 10s. Per Lv range+15',spCost:10,matCost:80,cd:600,up:true,upSp:5,upMat:0},"
+      },
+      "maliceCost": {
+        "lineStart": 26867,
+        "lineEnd": 26872,
+        "SHA256": "afd7124eb44c1b3724bf31484a2a7aa2ae962ab3c3cd7728484e1c4baeff94d2",
+        "text": "const _MALICE_COST_MUL=0.5; // 악의 소비 50% 할인\nfunction _malCost(v){\n  const _n=Number(v)||0;\n  if(_n<=0)return 0;\n  return Math.max(1,Math.ceil(_n*_MALICE_COST_MUL));\n}\n"
+      },
+      "upSpCost": {
+        "lineStart": 3892,
+        "lineEnd": 3896,
+        "SHA256": "7d914171c725c0443840156cf94ea5af8c3a211991ac1247d1d2792ef7e7584a",
+        "text": "function _skillUpSpCost(curLv){\n  const _nextLv=curLv+1;\n  const _tbl=[0,1,1,1,1,1,1,1,1,1,1];\n  return _tbl[Math.max(1,Math.min(10,_nextLv))]||1;\n}\n"
+      },
+      "slotCalculations": {
+        "lineStart": 42746,
+        "lineEnd": 42764,
+        "SHA256": "a8784fdd271f7f80a8d2da45a338a327e62fdf7238146e25597b63bd17db4849",
+        "text": "function _skById(id){return _SK_MAP.get(id)||null}\n\n// 선택 슬롯 계약: 일반은 1~4, 분노 폭발(지옥강타 계열)은 Space, 영역은 F에만 1개 장착한다.\nfunction _isAreaSkillId(id){const sk=_skById(id);return !!(sk&&sk.cat==='tech'&&sk.act&&!sk.fixed)}\nfunction _isRageBurstSkillId(id){const sk=_skById(id);return id==='giantSlam'||id==='giantSlam2'||!!(sk&&sk.cat==='rage')}\nfunction _canAssignSkillSlot(id,slotIdx){\n  const sk=_skById(id);\n  if(!sk||!sk.act||sk.ult||sk.fixed)return false;\n  if(_isAreaSkillId(id))return slotIdx===5;\n  if(_isRageBurstSkillId(id))return slotIdx===4;\n  return slotIdx>=0&&slotIdx<4;\n}\nfunction _findAutoSkillSlot(id){\n  if(SKILL_SLOTS.includes(id))return -1;\n  if(_isAreaSkillId(id))return SKILL_SLOTS[5]===null&&_canAssignSkillSlot(id,5)?5:-1;\n  if(_isRageBurstSkillId(id))return SKILL_SLOTS[4]===null&&_canAssignSkillSlot(id,4)?4:-1;\n  for(let i=0;i<4;i++){if(SKILL_SLOTS[i]===null&&_canAssignSkillSlot(id,i))return i}\n  return -1;\n}\n"
+      },
+      "slotDefinitions": {
+        "lineStart": 42796,
+        "lineEnd": 42837,
+        "SHA256": "bc3584ab89e4ad656461801568bba77ca9f3421bdfbeedb73d75ab195413828c",
+        "text": "const SKILL_SLOT_DEFS={\n  charge:{name:'이동스킬',nameEn:'Movement Skill',key:'charge',skills:['charge','magicBlink'],\n    info:{charge:{name:'사슬',nameEn:'Chain',emoji:'⛓️',desc:'Shift: 사슬 발사 → 끌려감',descEn:'Shift: Fire chain → pull toward'},\n          magicBlink:{name:'사슬기동:화염',nameEn:'Chain Drive: Flame',emoji:'🔥',desc:'Shift: 화염길+화상',descEn:'Shift: Flame trail + burn'}}},\n  magic:{name:'마법스킬',nameEn:'Magic Skill',key:'magic',skills:['fireball','omniBeam','elemMissile','hellRay','blueShot','burstLoop','fireAura','fireBeam','arcLaser'],\n    info:{fireball:{name:'악의구',nameEn:'Malice Orb',emoji:'🔮',desc:'우클릭: 어둠 오브 (크기+50%/Lv, 데미지 _skMul)',descEn:'RMB: Dark orb (size+50%/Lv, DMG via _skMul)'},\n          omniBeam:{name:'멸살광선',nameEn:'Omni Beam',emoji:'☄️',desc:'우클릭: 1발 직선 레이저',descEn:'RMB: Single straight laser'},\n          elemMissile:{name:'원소추적탄',nameEn:'Elem Missile',emoji:'🎯',desc:'우클릭: 6원소 유도 미사일',descEn:'RMB: 6-element homing missiles'},\n          hellRay:{name:'참회',nameEn:'Repentance',emoji:'⚡',desc:'우클릭: 신성한 선 설치 (시계방향 회전)',descEn:'RMB: Place holy line (clockwise rotation)'},\n          blueShot:{name:'푸른비',nameEn:'Blue Rain',emoji:'💎',desc:'우클릭: 5초간 50발 파란콩 순차 발사 (MP100+1.5/Lv, 추적, 쿨5초)',descEn:'RMB: 50 blue shots over 5s (MP100+1.5/Lv, homing, cd 5s)'},\n          burstLoop:{name:'버스트루프',nameEn:'Burst Loop',emoji:'💫',desc:'우클릭 홀드: 3단계 차지 범위폭발 (Lv700 히든)',descEn:'RMB Hold: 3-stage charge AoE (Lv700 hidden)'},\n          fireAura:{name:'지옥진',nameEn:'Inferno Field',emoji:'🌋',desc:'우클릭: 10초 대지진동 (용암기둥+화상+틱뎀, MP100, 쿨12초)',descEn:'RMB: 10s ground quake (lava+burn+tick, MP100, cd 12s)'},\n          fireBeam:{name:'업화선',nameEn:'Karma Beam',emoji:'🔥',desc:'우클릭: 최대 5초 차징, 재입력 시 발사. 직선 관통+폭발+화상.',descEn:'RMB: charge up to 5s; press again to fire. Straight piercing shot + explosion + burn.'},\n          // energyShot 삭제됨 (2026-05-01)\n          arcLaser:{name:'얼음송곳',nameEn:'Ice Spike',emoji:'❄',desc:'E홀드: 직선 관통 냉기빔 채널링 (MP 8+Lv/초, 감속)',descEn:'E hold: straight piercing ice beam channel (MP 8+Lv/s, slow)'}}},\n  bow:{name:'석궁 자동(T)',nameEn:'Crossbow Auto(T)',key:'bow',skills:['normal','bladeShot','blastShot','fanShot','needleShot'],\n    info:{normal:{name:'일반사격',nameEn:'Normal Shot',emoji:'🏹',desc:'T자동: 기본 화살',descEn:'T auto: Basic arrow'},\n          bladeShot:{name:'붉은꽃',nameEn:'Red Bloom',emoji:'🌹',desc:'T자동: 붉은 꽃잎 칼날 (ST50)',descEn:'T auto: Red petal blade (ST50)'},\n          blastShot:{name:'폭산탄',nameEn:'Blast Shot',emoji:'💥',desc:'T자동: 폭탄 (악의5, 쿨0.5초)',descEn:'T auto: Bomb (malice 5, cd 0.5s)'},\n          fanShot:{name:'만화방창',nameEn:'Barrage',emoji:'✨',desc:'T자동: 물리 바늘 3방향 3발 (관통X)',descEn:'T auto: 3 physical needles 3-way (no pierce)'},\n          needleShot:{name:'만화방창 II',nameEn:'Barrage II',emoji:'✨',desc:'T자동: 초고속 바늘 2발+5렙당1 (ST8, 쿨1.5초)',descEn:'T auto: Ultra-fast 2 needles +1/5lv (ST8, cd 1.5s)'},\n          ltnChaser:{name:'뇌전추격자',nameEn:'Lightning Chaser',emoji:'⚡',desc:'전기 유도칼날 (ST40, 쿨12초). 관통+체인라이트닝',descEn:'Lightning homing blades (ST40, CD 12s). Pierce+chain lightning'},\n          ghostXbowTurret:{name:'공성쇠뇌',nameEn:'Siege Ballista',emoji:'🏹',desc:'선택스킬: 터렛 설치/철거 (Lv500, ST100, 설치 쿨20초)',descEn:'Select skill: Deploy/remove turret (Lv500, ST100, placement CD 20s)'},\n          }},\n  tech:{name:'영역 스킬',nameEn:'Area Skill',key:'tech',skills:['giantSlam'],\n    info:{giantSlam:{name:'지옥강타 1',nameEn:'Hell Slam I',emoji:'🔨',desc:'Space: 원형 진동파 (ST+악의20, 포이즈 특화, 쿨30초)',descEn:'Space: AoE shockwave (ST+malice20, poise focus, cd 30s)'},\n          }},\n  lmb:{name:'좌클 스킬',nameEn:'LMB Skill',key:'lmb',skills:['kiSlash','whirlwind'],\n    info:{kiSlash:{name:'기검참',nameEn:'Ki Slash',emoji:'⚔',desc:'좌클 3타 홀드: 2초에 최대 3단(약 0.67초당 1단). 검기 피해 2/4/8배. ST 10+Lv당2',descEn:'Hold 3rd LMB hit: up to 3 stages over 2 seconds (~0.67s each). Blade damage ×2/×4/×8. ST 10+2/Lv'},\n          whirlwind:{name:'회전참',nameEn:'Whirlwind',emoji:'🌀',desc:'좌클 홀드: 회전 베기',descEn:'LMB Hold: Spin attack'}}},\n  rmb:{name:'E 스킬',nameEn:'E Skill',key:'rmb',skills:['maliceSwipe'],\n    info:{maliceSwipe:{name:'불꽃칼날',nameEn:'Flame Blade',emoji:'🔥',desc:'E: 쿨타임 완료 시 불꽃을 두른 칼날을 크게 휘두릅니다. 일반 마법탄도 반사. 홀드 풀차지 1.5초, 스킬 Lv당 범위 +5%.',descEn:'E: Swing a flaming blade when ready; also reflects ordinary magic shots. Hold for 1.5s full charge. +5% range per skill level.'}}},\n  q:{name:'보호막 스킬',nameEn:'Shield Skill',key:'q',skills:['parry','detonate','peaceShield'],\n    info:{parry:{name:'보호막',nameEn:'Shield',emoji:'💠',desc:'Q: 피보호막 (데미지 30% 흡수, 수호신 패시브로 최대 50%)',descEn:'Q: Damage shield (absorb 30%, up to 50% with Guardian passive)'},\n          detonate:{name:'기폭팔',nameEn:'Detonate',emoji:'💥',desc:'Q 홀드: 흡수 데미지 축적 → 해제 시 광역 폭발',descEn:'Q Hold: Accumulate absorbed dmg → AoE explosion on release'},\n          peaceShield:{name:'평화의보호',nameEn:'Aegis of Peace',emoji:'🕊️',desc:'Q 홀드: 버블 보호막+힐+반사. 해제 시 충격파',descEn:'Q Hold: Bubble shield+heal+reflect. Shockwave on release'}}},\n  ct:{name:'CT 스킬',nameEn:'CT Skill',key:'ct',skills:['ghostWalk','iceOrb','timeWarp'],\n    info:{ghostWalk:{name:'뇌전걸음',nameEn:'Ghost Walk',emoji:'⚡',desc:'CT: 전류변신+뇌전걸음 (쿨4초)',descEn:'CT: Lightning shift + ghost walk (cd 4s)'},\n          iceOrb:{name:'얼음보주',nameEn:'Ice Orb',emoji:'❄️',desc:'CT: 방어구체+빙결 (재입력: 파쇄)',descEn:'CT: Defense orb + freeze (re-press: shatter)'},\n          timeWarp:{name:'시간왜곡',nameEn:'Time Warp',emoji:'⏳',desc:'CT: 3~5초 전 상태로 되돌림 (Lv500)',descEn:'CT: Rewind to 3~5s ago (Lv500)'}}}\n};\n// ── 스킬 슬롯 info 이름/설명 lang 헬퍼 ──\n"
+      },
+      "fusePairs": {
+        "lineStart": 42972,
+        "lineEnd": 43005,
+        "SHA256": "904b0768d5ba2d802224033ba21110082cf99cef93c9161daeee5de888ed349f",
+        "text": "const _FUSE_PAIRS={\n  dimBreach:['chargeBoost','magicBlink'],\n  dimSlam:['chargeBoost','magicBlink','chainAssault'],\n  dimThunder:['chargeBoost','magicBlink','chainAssault','chainSlam'],\n  dimRush:['chargeBoost','magicBlink','chainAssault','chainSlash','chainSlam'],\n  dimBlast:['chargeBoost','magicBlink','chainAssault','chainSlash','chainSlam','giantSlam'],\n  whirlDet:['whirlwind','detonate'],\n  slamStorm:['whirlwind','detonate','giantSlam'],\n  stormBeam:['whirlwind','detonate','giantSlam','fanShot','omniBeam','elemMissile'],\n  stormBurst:['whirlwind','detonate','giantSlam','fanShot','omniBeam','elemMissile','burstLoop'],\n  bladeFuse:['maliceHunt','guardian'],\n  bladeEcho:['maliceHunt','bladeDash'],\n  iceMortar:['maliceMortar','iceOrb'],\n  sixFuse:['fanShot','omniBeam'],\n  elemFuse:['fanShot','omniBeam','elemMissile'],\n  boneStorm:['maliceStorm','boneWall'],\n  elecRepent:['maliceStorm','hellRay'],\n  shieldFuse:['maliceSwipe','shieldThrow'],\n  plagueFuse:['maliceHunt','guardian','plagueBurst'],\n  plagueVenom:['maliceHunt','guardian','plagueBurst','venomBlade'],\n  holyFuse:['holyDome','holyPrison'],\n  holyIce:['holyDome','holyPrison','iceStorm'],\n  holyWeak1:['holyDome','holyPrison','iceStorm','weakPhys'],\n  holyWeak2:['holyDome','holyPrison','iceStorm','weakPhys','weakMag'],\n  holyWeak3:['holyDome','holyPrison','iceStorm','weakPhys','weakMag','weakPj'],\n  holyWeak4:['holyDome','holyPrison','iceStorm','weakPhys','weakMag','weakPj','weakRev'],\n  pillarSpike:['darkPillar','spikeTrap'],\n  pillarSlam:['giantSlam2','darkPillar'],\n  infernoSlam:['giantSlam2','fireAura'],\n  siegeGhost:['ghostXbowTurret','voidScarecrow'],\n  dualScarecrow:['voidScarecrow','explodeScarecrow'],\n  thunderGhost:['bladeDash','thunderStake'],\n  timeStep:['timeWarp','ghostWalk'],\n};\n"
+      },
+      "isFused": {
+        "lineStart": 43007,
+        "lineEnd": 43007,
+        "SHA256": "f8866059e0766a852995178775588bc7b125be3ccc09b80951527526d932307d",
+        "text": "function _isFused(key){return!!(P._fused&&P._fused[key])}"
+      },
+      "absorbed": {
+        "lineStart": 43139,
+        "lineEnd": 43147,
+        "SHA256": "666ff756943b3894af94f54c71f6eb41b7690224d78332f200aca6a34dc84e9c",
+        "text": "function _getAllAbsorbed(){\n  const out=[];\n  for(const fk of Object.keys(_FUSE_PAIRS)){\n    if(!_isFused(fk))continue;\n    const ab=_getAbsorbed(fk);\n    for(let i=0;i<ab.length;i++){if(out.indexOf(ab[i])===-1)out.push(ab[i])}\n  }\n  return out;\n}\n"
+      },
+      "capture": {
+        "lineStart": 46175,
+        "lineEnd": 46182,
+        "SHA256": "50fcfe538c3fb4b131ade8202e9f1130a09f3e33dad097f515ac52973f65d4e4",
+        "text": "    const slv=P.skills[sk.id]||0; // 0=미습득, 1+=습득(강화 횟수)\n    const learned=slv>=1;\n    const _reqMet=sk.requires?(P.skills[sk.requires]||0)>=1:true;\n    const _hasUltLearned=false; // 필살기 전부 습득 가능\n    const _lvMet=sk.reqLv?P.lv>=sk.reqLv:true;\n    const canLearn=!learned&&_reqMet&&_lvMet&&P.sp>=sk.spCost&&G.mats>=_malCost(sk.matCost||0);\n    const _skMaxLv=20;\n    const _skLvLock=Math.min(20,~~(P.lv/50)+1); // 50렙당 +1 (Lv1=1렙, Lv50=2렙, Lv100=3렙, ... Lv950=20렙)\n"
+      },
+      "eligibilityAndCard": {
+        "lineStart": 46193,
+        "lineEnd": 46196,
+        "SHA256": "5202074aacea454465252bce2a6a8b75fbb1e5afa5d05bdbff9594478bcf025d",
+        "text": "    const _singleUpSp=_skillUpSpCost(slv,false);\n    const canUp=(learned&&sk.up&&slv<_skMaxLv&&slv<_skLvLock&&P.sp>=_singleUpSp&&G.mats>=_malCost(sk.upMat||0)&&!_isFuseUp)||(_fuseCanUp&&slv<_skLvLock);\n    const d=document.createElement('div');\n    d.dataset.skId=sk.id; // 라인 연결용 식별자\n"
+      },
+      "click": {
+        "lineStart": 46747,
+        "lineEnd": 46797,
+        "SHA256": "50c5dc27b4eb86f5c9c897446ea35afc1ce35970b3b3a80057bfe0e7a5d59845",
+        "text": "    function _skClick(){\n        if(!learned){\n          // 습득\n          const _learnMat=_malCost(sk.matCost||0);\n          if(P.sp<sk.spCost||G.mats<_learnMat){showPH(_T('자원 부족!'),'#ff4444');return}\n          P.skills[sk.id]=1;P.sp-=sk.spCost;G.mats-=_learnMat;\n          // chainAssault 습득 시 chainSlam 자동 부여\n          if(sk.id==='chainAssault'&&!P.skills.chainSlam)P.skills.chainSlam=1;\n          SFX.levelup();showPH(_T(sk.name)+_L(' 습득!',' Learned!'),'#ff4400');\n          addTxt(P.x,P.y-30,_T(sk.name)+_L(' 습득!',' Learned!'),'#ff4400',80);\n          // 돌진류 스킬 습득 시 자동 세팅\n          if(SKILL_SLOT_DEFS.charge.skills.includes(sk.id)){P.activeChargeSk=sk.id;updateSkSlot()}\n          if(SKILL_SLOT_DEFS.bow&&SKILL_SLOT_DEFS.bow.skills.includes(sk.id)){if(!P.activeBowSk||P.activeBowSk==='normal')P.activeBowSk=sk.id;if(typeof updateBowSlot==='function')updateBowSlot()}\n          if(SKILL_SLOT_DEFS.tech&&SKILL_SLOT_DEFS.tech.skills.includes(sk.id)){P.activeTechSk=sk.id;if(typeof updateBowSlot==='function')updateBowSlot()}\n          if(SKILL_SLOT_DEFS.magic&&SKILL_SLOT_DEFS.magic.skills.includes(sk.id)){if(!P.activeMagicSk||P.activeMagicSk==='fireball')P.activeMagicSk=sk.id;if(typeof updateMagicSlot==='function')updateMagicSlot()}\n          if(SKILL_SLOT_DEFS.q&&SKILL_SLOT_DEFS.q.skills.includes(sk.id)&&sk.id!=='parry'){P.activeQSk=sk.id;updateQSlot()}\n          // LMB 스킬 습득 시 자동 세팅 (기검참 외 새 스킬 배우면 자동 전환)\n          if(SKILL_SLOT_DEFS.lmb&&SKILL_SLOT_DEFS.lmb.skills.includes(sk.id)&&sk.id!=='kiSlash'){P.activeLMBSk=sk.id;updateSkSlot()}\n          // 합체 흡수 스킬 슬롯 자동 해제 (통합)\n          const _fuseKick=_getAllAbsorbed();\n          for(let _fi=0;_fi<6;_fi++){if(_fuseKick.includes(SKILL_SLOTS[_fi]))SKILL_SLOTS[_fi]=null}\n          // 액티브 스킬 → 숫자 슬롯 자동 배정\n          if(sk.ult){if(!ULT_SLOT){ULT_SLOT=sk.id;addTxt(P.x,P.y-50,_T('필살기 배정!'),'#ff4444',40);_updateUltSlot()}}\n          else if(sk.act&&!_fuseKick.includes(sk.id)){\n            const _emptyIdx=_findAutoSkillSlot(sk.id);\n            if(_emptyIdx>=0&&!SKILL_SLOTS.includes(sk.id)){SKILL_SLOTS[_emptyIdx]=sk.id;const _asLbl=(_emptyIdx<4?_L('슬롯 ','Slot ')+(_emptyIdx+1):_emptyIdx===4?_L('Space 슬롯','Space Slot'):_L('F슬롯','F Slot'));addTxt(P.x,P.y-50,_asLbl+_L(' 배정!',' Assigned!'),'#ff8844',40);updateQS()}\n          }\n        } else if(_isStormBurst||_isStormBeam||_isDimBlast||_isDimRush||_isDimFuse||_isDimSlam||_isDimThunder||_isSlamStorm||_isSynth||_isElemFuse||_isSixFuse||_isBladeFuse||_isIceFuse||_isBoneStorm||_isElecRepent||_isShieldFuse||_isPlagueFuse||_isPlagueVenom||_isHolyIce||_isHolyFuse||_isHolyW1||_isHolyW2||_isHolyW3||_isHolyW4||_isPillarSlam||_isPillarSpike||_isInfernoSlam||_isSiegeGhost||_isDualScarecrow||_isThunderGhost||_isTimeStep){\n          // ═══ 통합 합체 강화: 전 스킬 동시 +1, 비용 = 구성원 upSp/upMat 합산 ═══\n          const _fuseKey=_isStormBurst?'stormBurst':_isStormBeam?'stormBeam':_isDimBlast?'dimBlast':_isDimRush?'dimRush':_isDimThunder?'dimThunder':_isDimSlam?'dimSlam':_isDimFuse?'dimBreach':_isSlamStorm?'slamStorm':_isSynth?'whirlDet':_isElemFuse?'elemFuse':_isSixFuse?'sixFuse':_isBladeFuse?'bladeFuse':_isBoneStorm?'boneStorm':_isElecRepent?'elecRepent':_isShieldFuse?'shieldFuse':_isPlagueVenom?'plagueVenom':_isPlagueFuse?'plagueFuse':_isPillarSlam?'pillarSlam':_isPillarSpike?'pillarSpike':_isInfernoSlam?'infernoSlam':_isSiegeGhost?'siegeGhost':_isDualScarecrow?'dualScarecrow':_isThunderGhost?'thunderGhost':_isTimeStep?'timeStep':_isHolyW4?'holyWeak4':_isHolyW3?'holyWeak3':_isHolyW2?'holyWeak2':_isHolyW1?'holyWeak1':_isHolyIce?'holyIce':_isHolyFuse?'holyFuse':'iceMortar';\n          const _fuseIds=_fuseKey==='stormBeam'?['whirlwind','detonate','giantSlam','fanShot','omniBeam','elemMissile']:_fuseKey==='elemFuse'?['fanShot','omniBeam','elemMissile']:_fuseKey==='slamStorm'?['whirlwind','detonate','giantSlam']:(_FUSE_PAIRS[_fuseKey]||[]);\n          const _fuseSks=_fuseIds.map(id=>_skById(id)).filter(Boolean);\n          const _fuseLv=Math.min(..._fuseIds.map(id=>P.skills[id]||1));\n          if(_fuseLv>=_skMaxLv)return;\n          const _gemC=_fuseIds.length;const _totalSp=_fuseUpSpCost(_fuseLv,_gemC);\n          if(P.sp>=_totalSp){\n            _fuseIds.forEach(id=>{P.skills[id]=Math.max(P.skills[id]||1,_fuseLv+1)});\n            P.sp-=_totalSp;\n            const _fCol=_fGrp?_fGrp.color:'#55ccff';\n            SFX.levelup();addTxt(P.x,P.y-30,_T('합체 Lv.')+(_fuseLv+1)+(_fuseLv+1>=_skMaxLv?' MAX!!':'!'),_fCol,60);\n          }\n        } else {\n          // 강화\n          if(slv>=_skMaxLv||slv>=_skLvLock){if(slv>=_skLvLock&&slv<_skMaxLv)showPH('Lv'+(_skLvLock*100)+_L(' 도달 시 해금!',' to unlock!'),'#ff8844');return;}\n          {const _upSp=_skillUpSpCost(slv,false),_upMat=_malCost(sk.upMat||0);if(P.sp<_upSp||G.mats<_upMat){showPH(_T('자원 부족!'),'#ff4444');return}\n          P.skills[sk.id]++;P.sp-=_upSp;G.mats-=_upMat;}\n          SFX.levelup();const nlv=P.skills[sk.id];\n          addTxt(P.x,P.y-30,_T(sk.name)+' Lv.'+nlv+(nlv>=_skMaxLv?' MAX!!':'!!'),'#ffaa00',60);\n        }\n        renderSkillPanel();updateSkSlot();updateQS();dbSaveForce();\n    };\n"
+      },
+      "plus": {
+        "lineStart": 46803,
+        "lineEnd": 46831,
+        "SHA256": "9b89eecee470b1eeec11cc7ac80177207c6bd0e883cfe4bb7e47f650361342d6",
+        "text": "    // 일반 카드(+/-) 버튼: compact 펼침 카드는 자체 버튼을 사용\n    if(!(_skCompact&&_isExpanded)&&(learned||canLearn||canUp)){\n      const _btnRow2=document.createElement('div');\n      _btnRow2.dataset.nodrag='1';\n      _btnRow2.style.cssText='display:flex;gap:6px;margin-top:8px;justify-content:flex-end';\n      if(learned){\n        const _bMin2=document.createElement('div');\n        _bMin2.dataset.nodrag='1';\n        _bMin2.style.cssText='padding:3px 8px;min-width:28px;background:rgba(80,30,30,0.45);border:1px solid #cc4444;border-radius:4px;color:#ff8888;font-size:.95rem;text-align:center;cursor:pointer;font-weight:700;line-height:1.1';\n        _bMin2.textContent='-';\n        _bMin2.title=_L('레벨다운 / 취소','Level down / cancel');\n        _bMin2.onmouseenter=()=>{_bMin2.style.background='rgba(120,40,40,0.7)'};\n        _bMin2.onmouseleave=()=>{_bMin2.style.background='rgba(80,30,30,0.45)'};\n        _bMin2.onclick=(ev)=>{ev.stopPropagation();_skMinusClick()};\n        _btnRow2.appendChild(_bMin2);\n      }\n      if(canLearn||canUp){\n        const _bPlus2=document.createElement('div');\n        _bPlus2.dataset.nodrag='1';\n        _bPlus2.style.cssText='padding:3px 8px;min-width:28px;background:rgba(60,40,15,0.6);border:1px solid #aa8833;border-radius:4px;color:#ffcc66;font-size:.95rem;text-align:center;cursor:pointer;font-weight:700;line-height:1.1';\n        _bPlus2.textContent='+';\n        _bPlus2.title=canLearn?( _L('습득','Learn') ):( _L('레벨업','Level up') );\n        _bPlus2.onmouseenter=()=>{_bPlus2.style.background='rgba(80,55,20,0.7)'};\n        _bPlus2.onmouseleave=()=>{_bPlus2.style.background='rgba(60,40,15,0.6)'};\n        _bPlus2.onclick=(ev)=>{ev.stopPropagation();_skClick()};\n        _btnRow2.appendChild(_bPlus2);\n      }\n      if(_btnRow2.children.length>0)d.appendChild(_btnRow2);\n    }\n"
+      },
+      "append": {
+        "lineStart": 46847,
+        "lineEnd": 46847,
+        "SHA256": "45111ca46990c19399098f8161cd3f52cbd1d0c0a663e9757eb0a2125395a355",
+        "text": "    grid.appendChild(d);"
+      },
+      "plusBinding": {
+        "lineStart": 46827,
+        "lineEnd": 46827,
+        "SHA256": "b5bfce9515f1db524b491931621686ca59041b28c7897b07571e348124be01e6",
+        "text": "        _bPlus2.onclick=(ev)=>{ev.stopPropagation();_skClick()};"
+      }
+    },
+    "game-easy-test.html": {
+      "renderDeclaration": {
+        "lineStart": 44401,
+        "lineEnd": 44401,
+        "SHA256": "ff47284bfb81597da7055c8efee85d5b2da87b7d2e28cd7e381c11d01d0a089f",
+        "text": "function renderSkillPanel(){"
+      },
+      "gridReset": {
+        "lineStart": 44412,
+        "lineEnd": 44412,
+        "SHA256": "d4c6890dd1e5a9ecc8614a17f90d55dc0132b5515b31bc40c4e53c2f444774de",
+        "text": "const grid=$('skillGrid');grid.innerHTML='';"
+      },
+      "skill": {
+        "lineStart": 41531,
+        "lineEnd": 41531,
+        "SHA256": "b50ed97a993a9f7c287b8ab13f41432b83ff49ab7ac2b42ddd839222ac6fb693",
+        "text": "  {id:'spikeTrap',name:'가시덫',cat:'phys',act:true,emoji:'🌿',desc:'[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×pMagicMul×(14+5.6×(Lv-1))×0.75. 악의 10, 쿨 10초. Lv당 범위+15',descEn:'[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×pMagicMul×(14+5.6×(Lv-1))×0.75. Malice 10, CD 10s. Per Lv range+15',spCost:10,matCost:80,cd:600,up:true,upSp:5,upMat:0},"
+      },
+      "maliceCost": {
+        "lineStart": 25742,
+        "lineEnd": 25747,
+        "SHA256": "afd7124eb44c1b3724bf31484a2a7aa2ae962ab3c3cd7728484e1c4baeff94d2",
+        "text": "const _MALICE_COST_MUL=0.5; // 악의 소비 50% 할인\nfunction _malCost(v){\n  const _n=Number(v)||0;\n  if(_n<=0)return 0;\n  return Math.max(1,Math.ceil(_n*_MALICE_COST_MUL));\n}\n"
+      },
+      "upSpCost": {
+        "lineStart": 3661,
+        "lineEnd": 3665,
+        "SHA256": "7d914171c725c0443840156cf94ea5af8c3a211991ac1247d1d2792ef7e7584a",
+        "text": "function _skillUpSpCost(curLv){\n  const _nextLv=curLv+1;\n  const _tbl=[0,1,1,1,1,1,1,1,1,1,1];\n  return _tbl[Math.max(1,Math.min(10,_nextLv))]||1;\n}\n"
+      },
+      "slotCalculations": {
+        "lineStart": 41543,
+        "lineEnd": 41561,
+        "SHA256": "a8784fdd271f7f80a8d2da45a338a327e62fdf7238146e25597b63bd17db4849",
+        "text": "function _skById(id){return _SK_MAP.get(id)||null}\n\n// 선택 슬롯 계약: 일반은 1~4, 분노 폭발(지옥강타 계열)은 Space, 영역은 F에만 1개 장착한다.\nfunction _isAreaSkillId(id){const sk=_skById(id);return !!(sk&&sk.cat==='tech'&&sk.act&&!sk.fixed)}\nfunction _isRageBurstSkillId(id){const sk=_skById(id);return id==='giantSlam'||id==='giantSlam2'||!!(sk&&sk.cat==='rage')}\nfunction _canAssignSkillSlot(id,slotIdx){\n  const sk=_skById(id);\n  if(!sk||!sk.act||sk.ult||sk.fixed)return false;\n  if(_isAreaSkillId(id))return slotIdx===5;\n  if(_isRageBurstSkillId(id))return slotIdx===4;\n  return slotIdx>=0&&slotIdx<4;\n}\nfunction _findAutoSkillSlot(id){\n  if(SKILL_SLOTS.includes(id))return -1;\n  if(_isAreaSkillId(id))return SKILL_SLOTS[5]===null&&_canAssignSkillSlot(id,5)?5:-1;\n  if(_isRageBurstSkillId(id))return SKILL_SLOTS[4]===null&&_canAssignSkillSlot(id,4)?4:-1;\n  for(let i=0;i<4;i++){if(SKILL_SLOTS[i]===null&&_canAssignSkillSlot(id,i))return i}\n  return -1;\n}\n"
+      },
+      "slotDefinitions": {
+        "lineStart": 41593,
+        "lineEnd": 41634,
+        "SHA256": "bc3584ab89e4ad656461801568bba77ca9f3421bdfbeedb73d75ab195413828c",
+        "text": "const SKILL_SLOT_DEFS={\n  charge:{name:'이동스킬',nameEn:'Movement Skill',key:'charge',skills:['charge','magicBlink'],\n    info:{charge:{name:'사슬',nameEn:'Chain',emoji:'⛓️',desc:'Shift: 사슬 발사 → 끌려감',descEn:'Shift: Fire chain → pull toward'},\n          magicBlink:{name:'사슬기동:화염',nameEn:'Chain Drive: Flame',emoji:'🔥',desc:'Shift: 화염길+화상',descEn:'Shift: Flame trail + burn'}}},\n  magic:{name:'마법스킬',nameEn:'Magic Skill',key:'magic',skills:['fireball','omniBeam','elemMissile','hellRay','blueShot','burstLoop','fireAura','fireBeam','arcLaser'],\n    info:{fireball:{name:'악의구',nameEn:'Malice Orb',emoji:'🔮',desc:'우클릭: 어둠 오브 (크기+50%/Lv, 데미지 _skMul)',descEn:'RMB: Dark orb (size+50%/Lv, DMG via _skMul)'},\n          omniBeam:{name:'멸살광선',nameEn:'Omni Beam',emoji:'☄️',desc:'우클릭: 1발 직선 레이저',descEn:'RMB: Single straight laser'},\n          elemMissile:{name:'원소추적탄',nameEn:'Elem Missile',emoji:'🎯',desc:'우클릭: 6원소 유도 미사일',descEn:'RMB: 6-element homing missiles'},\n          hellRay:{name:'참회',nameEn:'Repentance',emoji:'⚡',desc:'우클릭: 신성한 선 설치 (시계방향 회전)',descEn:'RMB: Place holy line (clockwise rotation)'},\n          blueShot:{name:'푸른비',nameEn:'Blue Rain',emoji:'💎',desc:'우클릭: 5초간 50발 파란콩 순차 발사 (MP100+1.5/Lv, 추적, 쿨5초)',descEn:'RMB: 50 blue shots over 5s (MP100+1.5/Lv, homing, cd 5s)'},\n          burstLoop:{name:'버스트루프',nameEn:'Burst Loop',emoji:'💫',desc:'우클릭 홀드: 3단계 차지 범위폭발 (Lv700 히든)',descEn:'RMB Hold: 3-stage charge AoE (Lv700 hidden)'},\n          fireAura:{name:'지옥진',nameEn:'Inferno Field',emoji:'🌋',desc:'우클릭: 10초 대지진동 (용암기둥+화상+틱뎀, MP100, 쿨12초)',descEn:'RMB: 10s ground quake (lava+burn+tick, MP100, cd 12s)'},\n          fireBeam:{name:'업화선',nameEn:'Karma Beam',emoji:'🔥',desc:'우클릭: 최대 5초 차징, 재입력 시 발사. 직선 관통+폭발+화상.',descEn:'RMB: charge up to 5s; press again to fire. Straight piercing shot + explosion + burn.'},\n          // energyShot 삭제됨 (2026-05-01)\n          arcLaser:{name:'얼음송곳',nameEn:'Ice Spike',emoji:'❄',desc:'E홀드: 직선 관통 냉기빔 채널링 (MP 8+Lv/초, 감속)',descEn:'E hold: straight piercing ice beam channel (MP 8+Lv/s, slow)'}}},\n  bow:{name:'석궁 자동(T)',nameEn:'Crossbow Auto(T)',key:'bow',skills:['normal','bladeShot','blastShot','fanShot','needleShot'],\n    info:{normal:{name:'일반사격',nameEn:'Normal Shot',emoji:'🏹',desc:'T자동: 기본 화살',descEn:'T auto: Basic arrow'},\n          bladeShot:{name:'붉은꽃',nameEn:'Red Bloom',emoji:'🌹',desc:'T자동: 붉은 꽃잎 칼날 (ST50)',descEn:'T auto: Red petal blade (ST50)'},\n          blastShot:{name:'폭산탄',nameEn:'Blast Shot',emoji:'💥',desc:'T자동: 폭탄 (악의5, 쿨0.5초)',descEn:'T auto: Bomb (malice 5, cd 0.5s)'},\n          fanShot:{name:'만화방창',nameEn:'Barrage',emoji:'✨',desc:'T자동: 물리 바늘 3방향 3발 (관통X)',descEn:'T auto: 3 physical needles 3-way (no pierce)'},\n          needleShot:{name:'만화방창 II',nameEn:'Barrage II',emoji:'✨',desc:'T자동: 초고속 바늘 2발+5렙당1 (ST8, 쿨1.5초)',descEn:'T auto: Ultra-fast 2 needles +1/5lv (ST8, cd 1.5s)'},\n          ltnChaser:{name:'뇌전추격자',nameEn:'Lightning Chaser',emoji:'⚡',desc:'전기 유도칼날 (ST40, 쿨12초). 관통+체인라이트닝',descEn:'Lightning homing blades (ST40, CD 12s). Pierce+chain lightning'},\n          ghostXbowTurret:{name:'공성쇠뇌',nameEn:'Siege Ballista',emoji:'🏹',desc:'선택스킬: 터렛 설치/철거 (Lv500, ST100, 설치 쿨20초)',descEn:'Select skill: Deploy/remove turret (Lv500, ST100, placement CD 20s)'},\n          }},\n  tech:{name:'영역 스킬',nameEn:'Area Skill',key:'tech',skills:['giantSlam'],\n    info:{giantSlam:{name:'지옥강타 1',nameEn:'Hell Slam I',emoji:'🔨',desc:'Space: 원형 진동파 (ST+악의20, 포이즈 특화, 쿨30초)',descEn:'Space: AoE shockwave (ST+malice20, poise focus, cd 30s)'},\n          }},\n  lmb:{name:'좌클 스킬',nameEn:'LMB Skill',key:'lmb',skills:['kiSlash','whirlwind'],\n    info:{kiSlash:{name:'기검참',nameEn:'Ki Slash',emoji:'⚔',desc:'좌클 3타 홀드: 2초에 최대 3단(약 0.67초당 1단). 검기 피해 2/4/8배. ST 10+Lv당2',descEn:'Hold 3rd LMB hit: up to 3 stages over 2 seconds (~0.67s each). Blade damage ×2/×4/×8. ST 10+2/Lv'},\n          whirlwind:{name:'회전참',nameEn:'Whirlwind',emoji:'🌀',desc:'좌클 홀드: 회전 베기',descEn:'LMB Hold: Spin attack'}}},\n  rmb:{name:'E 스킬',nameEn:'E Skill',key:'rmb',skills:['maliceSwipe'],\n    info:{maliceSwipe:{name:'불꽃칼날',nameEn:'Flame Blade',emoji:'🔥',desc:'E: 쿨타임 완료 시 불꽃을 두른 칼날을 크게 휘두릅니다. 일반 마법탄도 반사. 홀드 풀차지 1.5초, 스킬 Lv당 범위 +5%.',descEn:'E: Swing a flaming blade when ready; also reflects ordinary magic shots. Hold for 1.5s full charge. +5% range per skill level.'}}},\n  q:{name:'보호막 스킬',nameEn:'Shield Skill',key:'q',skills:['parry','detonate','peaceShield'],\n    info:{parry:{name:'보호막',nameEn:'Shield',emoji:'💠',desc:'Q: 피보호막 (데미지 30% 흡수, 수호신 패시브로 최대 50%)',descEn:'Q: Damage shield (absorb 30%, up to 50% with Guardian passive)'},\n          detonate:{name:'기폭팔',nameEn:'Detonate',emoji:'💥',desc:'Q 홀드: 흡수 데미지 축적 → 해제 시 광역 폭발',descEn:'Q Hold: Accumulate absorbed dmg → AoE explosion on release'},\n          peaceShield:{name:'평화의보호',nameEn:'Aegis of Peace',emoji:'🕊️',desc:'Q 홀드: 버블 보호막+힐+반사. 해제 시 충격파',descEn:'Q Hold: Bubble shield+heal+reflect. Shockwave on release'}}},\n  ct:{name:'CT 스킬',nameEn:'CT Skill',key:'ct',skills:['ghostWalk','iceOrb','timeWarp'],\n    info:{ghostWalk:{name:'뇌전걸음',nameEn:'Ghost Walk',emoji:'⚡',desc:'CT: 전류변신+뇌전걸음 (쿨4초)',descEn:'CT: Lightning shift + ghost walk (cd 4s)'},\n          iceOrb:{name:'얼음보주',nameEn:'Ice Orb',emoji:'❄️',desc:'CT: 방어구체+빙결 (재입력: 파쇄)',descEn:'CT: Defense orb + freeze (re-press: shatter)'},\n          timeWarp:{name:'시간왜곡',nameEn:'Time Warp',emoji:'⏳',desc:'CT: 3~5초 전 상태로 되돌림 (Lv500)',descEn:'CT: Rewind to 3~5s ago (Lv500)'}}}\n};\n// ── 스킬 슬롯 info 이름/설명 lang 헬퍼 ──\n"
+      },
+      "fusePairs": {
+        "lineStart": 41768,
+        "lineEnd": 41800,
+        "SHA256": "3aeed1c77303a23f9677701a66958724c5b4a9ac27f22962af29b3a42d0edafe",
+        "text": "const _FUSE_PAIRS={\n  dimBreach:['chargeBoost','magicBlink'],\n  dimSlam:['chargeBoost','magicBlink','chainAssault'],\n  dimThunder:['chargeBoost','magicBlink','chainAssault','chainSlam'],\n  dimRush:['chargeBoost','magicBlink','chainAssault','chainSlash','chainSlam'],\n  dimBlast:['chargeBoost','magicBlink','chainAssault','chainSlash','chainSlam','giantSlam'],\n  whirlDet:['whirlwind','detonate'],\n  slamStorm:['whirlwind','detonate','giantSlam'],\n  stormBeam:['whirlwind','detonate','giantSlam','fanShot','omniBeam','elemMissile'],\n  stormBurst:['whirlwind','detonate','giantSlam','fanShot','omniBeam','elemMissile','burstLoop'],\n  bladeFuse:['maliceHunt','guardian'],\n  iceMortar:['maliceMortar','iceOrb'],\n  sixFuse:['fanShot','omniBeam'],\n  elemFuse:['fanShot','omniBeam','elemMissile'],\n  boneStorm:['maliceStorm','boneWall'],\n  elecRepent:['maliceStorm','hellRay'],\n  shieldFuse:['maliceSwipe','shieldThrow'],\n  plagueFuse:['maliceHunt','guardian','plagueBurst'],\n  plagueVenom:['maliceHunt','guardian','plagueBurst','venomBlade'],\n  holyFuse:['holyDome','holyPrison'],\n  holyIce:['holyDome','holyPrison','iceStorm'],\n  holyWeak1:['holyDome','holyPrison','iceStorm','weakPhys'],\n  holyWeak2:['holyDome','holyPrison','iceStorm','weakPhys','weakMag'],\n  holyWeak3:['holyDome','holyPrison','iceStorm','weakPhys','weakMag','weakPj'],\n  holyWeak4:['holyDome','holyPrison','iceStorm','weakPhys','weakMag','weakPj','weakRev'],\n  pillarSpike:['darkPillar','spikeTrap'],\n  pillarSlam:['giantSlam2','darkPillar'],\n  infernoSlam:['giantSlam2','fireAura'],\n  siegeGhost:['ghostXbowTurret','voidScarecrow'],\n  dualScarecrow:['voidScarecrow','explodeScarecrow'],\n  thunderGhost:['bladeDash','thunderStake'],\n  timeStep:['timeWarp','ghostWalk'],\n};\n"
+      },
+      "isFused": {
+        "lineStart": 41802,
+        "lineEnd": 41802,
+        "SHA256": "f8866059e0766a852995178775588bc7b125be3ccc09b80951527526d932307d",
+        "text": "function _isFused(key){return!!(P._fused&&P._fused[key])}"
+      },
+      "absorbed": {
+        "lineStart": 41934,
+        "lineEnd": 41942,
+        "SHA256": "666ff756943b3894af94f54c71f6eb41b7690224d78332f200aca6a34dc84e9c",
+        "text": "function _getAllAbsorbed(){\n  const out=[];\n  for(const fk of Object.keys(_FUSE_PAIRS)){\n    if(!_isFused(fk))continue;\n    const ab=_getAbsorbed(fk);\n    for(let i=0;i<ab.length;i++){if(out.indexOf(ab[i])===-1)out.push(ab[i])}\n  }\n  return out;\n}\n"
+      },
+      "capture": {
+        "lineStart": 44777,
+        "lineEnd": 44784,
+        "SHA256": "50fcfe538c3fb4b131ade8202e9f1130a09f3e33dad097f515ac52973f65d4e4",
+        "text": "    const slv=P.skills[sk.id]||0; // 0=미습득, 1+=습득(강화 횟수)\n    const learned=slv>=1;\n    const _reqMet=sk.requires?(P.skills[sk.requires]||0)>=1:true;\n    const _hasUltLearned=false; // 필살기 전부 습득 가능\n    const _lvMet=sk.reqLv?P.lv>=sk.reqLv:true;\n    const canLearn=!learned&&_reqMet&&_lvMet&&P.sp>=sk.spCost&&G.mats>=_malCost(sk.matCost||0);\n    const _skMaxLv=20;\n    const _skLvLock=Math.min(20,~~(P.lv/50)+1); // 50렙당 +1 (Lv1=1렙, Lv50=2렙, Lv100=3렙, ... Lv950=20렙)\n"
+      },
+      "eligibilityAndCard": {
+        "lineStart": 44795,
+        "lineEnd": 44798,
+        "SHA256": "5202074aacea454465252bce2a6a8b75fbb1e5afa5d05bdbff9594478bcf025d",
+        "text": "    const _singleUpSp=_skillUpSpCost(slv,false);\n    const canUp=(learned&&sk.up&&slv<_skMaxLv&&slv<_skLvLock&&P.sp>=_singleUpSp&&G.mats>=_malCost(sk.upMat||0)&&!_isFuseUp)||(_fuseCanUp&&slv<_skLvLock);\n    const d=document.createElement('div');\n    d.dataset.skId=sk.id; // 라인 연결용 식별자\n"
+      },
+      "click": {
+        "lineStart": 45348,
+        "lineEnd": 45398,
+        "SHA256": "50c5dc27b4eb86f5c9c897446ea35afc1ce35970b3b3a80057bfe0e7a5d59845",
+        "text": "    function _skClick(){\n        if(!learned){\n          // 습득\n          const _learnMat=_malCost(sk.matCost||0);\n          if(P.sp<sk.spCost||G.mats<_learnMat){showPH(_T('자원 부족!'),'#ff4444');return}\n          P.skills[sk.id]=1;P.sp-=sk.spCost;G.mats-=_learnMat;\n          // chainAssault 습득 시 chainSlam 자동 부여\n          if(sk.id==='chainAssault'&&!P.skills.chainSlam)P.skills.chainSlam=1;\n          SFX.levelup();showPH(_T(sk.name)+_L(' 습득!',' Learned!'),'#ff4400');\n          addTxt(P.x,P.y-30,_T(sk.name)+_L(' 습득!',' Learned!'),'#ff4400',80);\n          // 돌진류 스킬 습득 시 자동 세팅\n          if(SKILL_SLOT_DEFS.charge.skills.includes(sk.id)){P.activeChargeSk=sk.id;updateSkSlot()}\n          if(SKILL_SLOT_DEFS.bow&&SKILL_SLOT_DEFS.bow.skills.includes(sk.id)){if(!P.activeBowSk||P.activeBowSk==='normal')P.activeBowSk=sk.id;if(typeof updateBowSlot==='function')updateBowSlot()}\n          if(SKILL_SLOT_DEFS.tech&&SKILL_SLOT_DEFS.tech.skills.includes(sk.id)){P.activeTechSk=sk.id;if(typeof updateBowSlot==='function')updateBowSlot()}\n          if(SKILL_SLOT_DEFS.magic&&SKILL_SLOT_DEFS.magic.skills.includes(sk.id)){if(!P.activeMagicSk||P.activeMagicSk==='fireball')P.activeMagicSk=sk.id;if(typeof updateMagicSlot==='function')updateMagicSlot()}\n          if(SKILL_SLOT_DEFS.q&&SKILL_SLOT_DEFS.q.skills.includes(sk.id)&&sk.id!=='parry'){P.activeQSk=sk.id;updateQSlot()}\n          // LMB 스킬 습득 시 자동 세팅 (기검참 외 새 스킬 배우면 자동 전환)\n          if(SKILL_SLOT_DEFS.lmb&&SKILL_SLOT_DEFS.lmb.skills.includes(sk.id)&&sk.id!=='kiSlash'){P.activeLMBSk=sk.id;updateSkSlot()}\n          // 합체 흡수 스킬 슬롯 자동 해제 (통합)\n          const _fuseKick=_getAllAbsorbed();\n          for(let _fi=0;_fi<6;_fi++){if(_fuseKick.includes(SKILL_SLOTS[_fi]))SKILL_SLOTS[_fi]=null}\n          // 액티브 스킬 → 숫자 슬롯 자동 배정\n          if(sk.ult){if(!ULT_SLOT){ULT_SLOT=sk.id;addTxt(P.x,P.y-50,_T('필살기 배정!'),'#ff4444',40);_updateUltSlot()}}\n          else if(sk.act&&!_fuseKick.includes(sk.id)){\n            const _emptyIdx=_findAutoSkillSlot(sk.id);\n            if(_emptyIdx>=0&&!SKILL_SLOTS.includes(sk.id)){SKILL_SLOTS[_emptyIdx]=sk.id;const _asLbl=(_emptyIdx<4?_L('슬롯 ','Slot ')+(_emptyIdx+1):_emptyIdx===4?_L('Space 슬롯','Space Slot'):_L('F슬롯','F Slot'));addTxt(P.x,P.y-50,_asLbl+_L(' 배정!',' Assigned!'),'#ff8844',40);updateQS()}\n          }\n        } else if(_isStormBurst||_isStormBeam||_isDimBlast||_isDimRush||_isDimFuse||_isDimSlam||_isDimThunder||_isSlamStorm||_isSynth||_isElemFuse||_isSixFuse||_isBladeFuse||_isIceFuse||_isBoneStorm||_isElecRepent||_isShieldFuse||_isPlagueFuse||_isPlagueVenom||_isHolyIce||_isHolyFuse||_isHolyW1||_isHolyW2||_isHolyW3||_isHolyW4||_isPillarSlam||_isPillarSpike||_isInfernoSlam||_isSiegeGhost||_isDualScarecrow||_isThunderGhost||_isTimeStep){\n          // ═══ 통합 합체 강화: 전 스킬 동시 +1, 비용 = 구성원 upSp/upMat 합산 ═══\n          const _fuseKey=_isStormBurst?'stormBurst':_isStormBeam?'stormBeam':_isDimBlast?'dimBlast':_isDimRush?'dimRush':_isDimThunder?'dimThunder':_isDimSlam?'dimSlam':_isDimFuse?'dimBreach':_isSlamStorm?'slamStorm':_isSynth?'whirlDet':_isElemFuse?'elemFuse':_isSixFuse?'sixFuse':_isBladeFuse?'bladeFuse':_isBoneStorm?'boneStorm':_isElecRepent?'elecRepent':_isShieldFuse?'shieldFuse':_isPlagueVenom?'plagueVenom':_isPlagueFuse?'plagueFuse':_isPillarSlam?'pillarSlam':_isPillarSpike?'pillarSpike':_isInfernoSlam?'infernoSlam':_isSiegeGhost?'siegeGhost':_isDualScarecrow?'dualScarecrow':_isThunderGhost?'thunderGhost':_isTimeStep?'timeStep':_isHolyW4?'holyWeak4':_isHolyW3?'holyWeak3':_isHolyW2?'holyWeak2':_isHolyW1?'holyWeak1':_isHolyIce?'holyIce':_isHolyFuse?'holyFuse':'iceMortar';\n          const _fuseIds=_fuseKey==='stormBeam'?['whirlwind','detonate','giantSlam','fanShot','omniBeam','elemMissile']:_fuseKey==='elemFuse'?['fanShot','omniBeam','elemMissile']:_fuseKey==='slamStorm'?['whirlwind','detonate','giantSlam']:(_FUSE_PAIRS[_fuseKey]||[]);\n          const _fuseSks=_fuseIds.map(id=>_skById(id)).filter(Boolean);\n          const _fuseLv=Math.min(..._fuseIds.map(id=>P.skills[id]||1));\n          if(_fuseLv>=_skMaxLv)return;\n          const _gemC=_fuseIds.length;const _totalSp=_fuseUpSpCost(_fuseLv,_gemC);\n          if(P.sp>=_totalSp){\n            _fuseIds.forEach(id=>{P.skills[id]=Math.max(P.skills[id]||1,_fuseLv+1)});\n            P.sp-=_totalSp;\n            const _fCol=_fGrp?_fGrp.color:'#55ccff';\n            SFX.levelup();addTxt(P.x,P.y-30,_T('합체 Lv.')+(_fuseLv+1)+(_fuseLv+1>=_skMaxLv?' MAX!!':'!'),_fCol,60);\n          }\n        } else {\n          // 강화\n          if(slv>=_skMaxLv||slv>=_skLvLock){if(slv>=_skLvLock&&slv<_skMaxLv)showPH('Lv'+(_skLvLock*100)+_L(' 도달 시 해금!',' to unlock!'),'#ff8844');return;}\n          {const _upSp=_skillUpSpCost(slv,false),_upMat=_malCost(sk.upMat||0);if(P.sp<_upSp||G.mats<_upMat){showPH(_T('자원 부족!'),'#ff4444');return}\n          P.skills[sk.id]++;P.sp-=_upSp;G.mats-=_upMat;}\n          SFX.levelup();const nlv=P.skills[sk.id];\n          addTxt(P.x,P.y-30,_T(sk.name)+' Lv.'+nlv+(nlv>=_skMaxLv?' MAX!!':'!!'),'#ffaa00',60);\n        }\n        renderSkillPanel();updateSkSlot();updateQS();dbSaveForce();\n    };\n"
+      },
+      "plus": {
+        "lineStart": 45404,
+        "lineEnd": 45432,
+        "SHA256": "9b89eecee470b1eeec11cc7ac80177207c6bd0e883cfe4bb7e47f650361342d6",
+        "text": "    // 일반 카드(+/-) 버튼: compact 펼침 카드는 자체 버튼을 사용\n    if(!(_skCompact&&_isExpanded)&&(learned||canLearn||canUp)){\n      const _btnRow2=document.createElement('div');\n      _btnRow2.dataset.nodrag='1';\n      _btnRow2.style.cssText='display:flex;gap:6px;margin-top:8px;justify-content:flex-end';\n      if(learned){\n        const _bMin2=document.createElement('div');\n        _bMin2.dataset.nodrag='1';\n        _bMin2.style.cssText='padding:3px 8px;min-width:28px;background:rgba(80,30,30,0.45);border:1px solid #cc4444;border-radius:4px;color:#ff8888;font-size:.95rem;text-align:center;cursor:pointer;font-weight:700;line-height:1.1';\n        _bMin2.textContent='-';\n        _bMin2.title=_L('레벨다운 / 취소','Level down / cancel');\n        _bMin2.onmouseenter=()=>{_bMin2.style.background='rgba(120,40,40,0.7)'};\n        _bMin2.onmouseleave=()=>{_bMin2.style.background='rgba(80,30,30,0.45)'};\n        _bMin2.onclick=(ev)=>{ev.stopPropagation();_skMinusClick()};\n        _btnRow2.appendChild(_bMin2);\n      }\n      if(canLearn||canUp){\n        const _bPlus2=document.createElement('div');\n        _bPlus2.dataset.nodrag='1';\n        _bPlus2.style.cssText='padding:3px 8px;min-width:28px;background:rgba(60,40,15,0.6);border:1px solid #aa8833;border-radius:4px;color:#ffcc66;font-size:.95rem;text-align:center;cursor:pointer;font-weight:700;line-height:1.1';\n        _bPlus2.textContent='+';\n        _bPlus2.title=canLearn?( _L('습득','Learn') ):( _L('레벨업','Level up') );\n        _bPlus2.onmouseenter=()=>{_bPlus2.style.background='rgba(80,55,20,0.7)'};\n        _bPlus2.onmouseleave=()=>{_bPlus2.style.background='rgba(60,40,15,0.6)'};\n        _bPlus2.onclick=(ev)=>{ev.stopPropagation();_skClick()};\n        _btnRow2.appendChild(_bPlus2);\n      }\n      if(_btnRow2.children.length>0)d.appendChild(_btnRow2);\n    }\n"
+      },
+      "append": {
+        "lineStart": 45448,
+        "lineEnd": 45448,
+        "SHA256": "45111ca46990c19399098f8161cd3f52cbd1d0c0a663e9757eb0a2125395a355",
+        "text": "    grid.appendChild(d);"
+      },
+      "plusBinding": {
+        "lineStart": 45428,
+        "lineEnd": 45428,
+        "SHA256": "b5bfce9515f1db524b491931621686ca59041b28c7897b07571e348124be01e6",
+        "text": "        _bPlus2.onclick=(ev)=>{ev.stopPropagation();_skClick()};"
+      }
+    }
+  },
+  "executions": [
+    {
+      "file": "game.html",
+      "version": "source",
+      "scenario": "connected-current + → grid rebuild → saved-detached + direct invocation",
+      "expectedNoDetachedEffect": false,
+      "desiredLifetimeVerdict": "RED",
+      "reproductionAssertions": "PASS",
+      "normalLearnCost": {
+        "sp": 10,
+        "maliceRaw": 80,
+        "maliceFinal": 40
+      },
+      "syntheticInput": {
+        "P": {
+          "lv": 1,
+          "x": 100,
+          "y": 100,
+          "sp": 20,
+          "skills": {},
+          "_fused": {}
+        },
+        "G": {
+          "mats": 80
+        },
+        "slots": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      "trace": [
+        {
+          "label": "before-connected-first",
+          "skillLv": 0,
+          "sp": 20,
+          "mats": 80,
+          "slots": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          "ultSlot": null,
+          "counts": {
+            "render": 1,
+            "save": 0,
+            "slotUpdate": 0,
+            "quickUpdate": 0,
+            "sfx": 0,
+            "stopPropagation": 0,
+            "rng": 0
+          },
+          "effects": [],
+          "currentCapture": {
+            "slv": 0,
+            "learned": false,
+            "canLearn": true,
+            "canUp": false
+          }
+        },
+        {
+          "label": "after-connected-first",
+          "skillLv": 1,
+          "sp": 10,
+          "mats": 40,
+          "slots": [
+            "spikeTrap",
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          "ultSlot": null,
+          "counts": {
+            "render": 2,
+            "save": 1,
+            "slotUpdate": 1,
+            "quickUpdate": 2,
+            "sfx": 1,
+            "stopPropagation": 1,
+            "rng": 0
+          },
+          "effects": [
+            {
+              "kind": "levelup"
+            },
+            {
+              "kind": "showPH",
+              "args": [
+                "가시덫 습득!",
+                "#ff4400"
+              ]
+            },
+            {
+              "kind": "addTxt",
+              "args": [
+                100,
+                70,
+                "가시덫 습득!",
+                "#ff4400",
+                80
+              ]
+            },
+            {
+              "kind": "addTxt",
+              "args": [
+                100,
+                50,
+                "슬롯 1 배정!",
+                "#ff8844",
+                40
+              ]
+            }
+          ],
+          "currentCapture": {
+            "slv": 1,
+            "learned": true,
+            "canLearn": false,
+            "canUp": false
+          },
+          "oldCardConnected": false,
+          "oldPlusConnected": false,
+          "oldCardInCurrentGrid": false
+        },
+        {
+          "label": "after-saved-detached-callback",
+          "skillLv": 1,
+          "sp": 0,
+          "mats": 0,
+          "slots": [
+            "spikeTrap",
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          "ultSlot": null,
+          "counts": {
+            "render": 3,
+            "save": 2,
+            "slotUpdate": 2,
+            "quickUpdate": 3,
+            "sfx": 2,
+            "stopPropagation": 2,
+            "rng": 0
+          },
+          "effects": [
+            {
+              "kind": "levelup"
+            },
+            {
+              "kind": "showPH",
+              "args": [
+                "가시덫 습득!",
+                "#ff4400"
+              ]
+            },
+            {
+              "kind": "addTxt",
+              "args": [
+                100,
+                70,
+                "가시덫 습득!",
+                "#ff4400",
+                80
+              ]
+            },
+            {
+              "kind": "addTxt",
+              "args": [
+                100,
+                50,
+                "슬롯 1 배정!",
+                "#ff8844",
+                40
+              ]
+            },
+            {
+              "kind": "levelup"
+            },
+            {
+              "kind": "showPH",
+              "args": [
+                "가시덫 습득!",
+                "#ff4400"
+              ]
+            },
+            {
+              "kind": "addTxt",
+              "args": [
+                100,
+                70,
+                "가시덫 습득!",
+                "#ff4400",
+                80
+              ]
+            }
+          ],
+          "currentCapture": {
+            "slv": 1,
+            "learned": true,
+            "canLearn": false,
+            "canUp": false
+          },
+          "oldCardConnected": false,
+          "oldPlusConnected": false,
+          "oldCardInCurrentGrid": false
+        }
+      ],
+      "detachedDelta": {
+        "skillLv": 0,
+        "sp": -10,
+        "mats": -40,
+        "calls": {
+          "render": 1,
+          "save": 1,
+          "slotUpdate": 1,
+          "quickUpdate": 1,
+          "sfx": 1,
+          "stopPropagation": 1,
+          "rng": 0
+        },
+        "newEffects": [
+          {
+            "kind": "levelup"
+          },
+          {
+            "kind": "showPH",
+            "args": [
+              "가시덫 습득!",
+              "#ff4400"
+            ]
+          },
+          {
+            "kind": "addTxt",
+            "args": [
+              100,
+              70,
+              "가시덫 습득!",
+              "#ff4400",
+              80
+            ]
+          }
+        ]
+      },
+      "captures": [
+        {
+          "slv": 0,
+          "learned": false,
+          "canLearn": true,
+          "canUp": false
+        },
+        {
+          "slv": 1,
+          "learned": true,
+          "canLearn": false,
+          "canUp": false
+        },
+        {
+          "slv": 1,
+          "learned": true,
+          "canLearn": false,
+          "canUp": false
+        }
+      ],
+      "candidateClickSHA256": "50c5dc27b4eb86f5c9c897446ea35afc1ce35970b3b3a80057bfe0e7a5d59845",
+      "rendererFragmentSHA256": "71864f148db30771f0bc219aac400a0b7e04fce9e2db1f0284903077af5aab51",
+      "helperFragmentSHA256": "241a16dd6548d3c2e317f194de782f4d53acdcd4844da1656dfe3e54723e7023",
+      "normalDirectRNGCalls": 0,
+      "detachedDirectRNGCalls": 0,
+      "nativeInput": false,
+      "fullRenderer": false,
+      "productionApplied": false
+    },
+    {
+      "file": "game.html",
+      "version": "candidate",
+      "scenario": "connected-current + → grid rebuild → saved-detached + direct invocation",
+      "expectedNoDetachedEffect": true,
+      "desiredLifetimeVerdict": "GREEN",
+      "reproductionAssertions": "PASS",
+      "normalLearnCost": {
+        "sp": 10,
+        "maliceRaw": 80,
+        "maliceFinal": 40
+      },
+      "syntheticInput": {
+        "P": {
+          "lv": 1,
+          "x": 100,
+          "y": 100,
+          "sp": 20,
+          "skills": {},
+          "_fused": {}
+        },
+        "G": {
+          "mats": 80
+        },
+        "slots": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      "trace": [
+        {
+          "label": "before-connected-first",
+          "skillLv": 0,
+          "sp": 20,
+          "mats": 80,
+          "slots": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          "ultSlot": null,
+          "counts": {
+            "render": 1,
+            "save": 0,
+            "slotUpdate": 0,
+            "quickUpdate": 0,
+            "sfx": 0,
+            "stopPropagation": 0,
+            "rng": 0
+          },
+          "effects": [],
+          "currentCapture": {
+            "slv": 0,
+            "learned": false,
+            "canLearn": true,
+            "canUp": false
+          }
+        },
+        {
+          "label": "after-connected-first",
+          "skillLv": 1,
+          "sp": 10,
+          "mats": 40,
+          "slots": [
+            "spikeTrap",
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          "ultSlot": null,
+          "counts": {
+            "render": 2,
+            "save": 1,
+            "slotUpdate": 1,
+            "quickUpdate": 2,
+            "sfx": 1,
+            "stopPropagation": 1,
+            "rng": 0
+          },
+          "effects": [
+            {
+              "kind": "levelup"
+            },
+            {
+              "kind": "showPH",
+              "args": [
+                "가시덫 습득!",
+                "#ff4400"
+              ]
+            },
+            {
+              "kind": "addTxt",
+              "args": [
+                100,
+                70,
+                "가시덫 습득!",
+                "#ff4400",
+                80
+              ]
+            },
+            {
+              "kind": "addTxt",
+              "args": [
+                100,
+                50,
+                "슬롯 1 배정!",
+                "#ff8844",
+                40
+              ]
+            }
+          ],
+          "currentCapture": {
+            "slv": 1,
+            "learned": true,
+            "canLearn": false,
+            "canUp": false
+          },
+          "oldCardConnected": false,
+          "oldPlusConnected": false,
+          "oldCardInCurrentGrid": false
+        },
+        {
+          "label": "after-saved-detached-callback",
+          "skillLv": 1,
+          "sp": 10,
+          "mats": 40,
+          "slots": [
+            "spikeTrap",
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          "ultSlot": null,
+          "counts": {
+            "render": 2,
+            "save": 1,
+            "slotUpdate": 1,
+            "quickUpdate": 2,
+            "sfx": 1,
+            "stopPropagation": 2,
+            "rng": 0
+          },
+          "effects": [
+            {
+              "kind": "levelup"
+            },
+            {
+              "kind": "showPH",
+              "args": [
+                "가시덫 습득!",
+                "#ff4400"
+              ]
+            },
+            {
+              "kind": "addTxt",
+              "args": [
+                100,
+                70,
+                "가시덫 습득!",
+                "#ff4400",
+                80
+              ]
+            },
+            {
+              "kind": "addTxt",
+              "args": [
+                100,
+                50,
+                "슬롯 1 배정!",
+                "#ff8844",
+                40
+              ]
+            }
+          ],
+          "currentCapture": {
+            "slv": 1,
+            "learned": true,
+            "canLearn": false,
+            "canUp": false
+          },
+          "oldCardConnected": false,
+          "oldPlusConnected": false,
+          "oldCardInCurrentGrid": false
+        }
+      ],
+      "detachedDelta": {
+        "skillLv": 0,
+        "sp": 0,
+        "mats": 0,
+        "calls": {
+          "render": 0,
+          "save": 0,
+          "slotUpdate": 0,
+          "quickUpdate": 0,
+          "sfx": 0,
+          "stopPropagation": 1,
+          "rng": 0
+        },
+        "newEffects": []
+      },
+      "captures": [
+        {
+          "slv": 0,
+          "learned": false,
+          "canLearn": true,
+          "canUp": false
+        },
+        {
+          "slv": 1,
+          "learned": true,
+          "canLearn": false,
+          "canUp": false
+        }
+      ],
+      "candidateClickSHA256": "cf3002143b437d6a1f84d6edd6523fe9c4d4649213ebbc818396f5283e5550e1",
+      "rendererFragmentSHA256": "5e28be505903e28d5ee16c154d398773004ae028e4dc186543f3e6e7bdc04708",
+      "helperFragmentSHA256": "241a16dd6548d3c2e317f194de782f4d53acdcd4844da1656dfe3e54723e7023",
+      "normalDirectRNGCalls": 0,
+      "detachedDirectRNGCalls": 0,
+      "nativeInput": false,
+      "fullRenderer": false,
+      "productionApplied": false
+    },
+    {
+      "file": "game-easy-test.html",
+      "version": "source",
+      "scenario": "connected-current + → grid rebuild → saved-detached + direct invocation",
+      "expectedNoDetachedEffect": false,
+      "desiredLifetimeVerdict": "RED",
+      "reproductionAssertions": "PASS",
+      "normalLearnCost": {
+        "sp": 10,
+        "maliceRaw": 80,
+        "maliceFinal": 40
+      },
+      "syntheticInput": {
+        "P": {
+          "lv": 1,
+          "x": 100,
+          "y": 100,
+          "sp": 20,
+          "skills": {},
+          "_fused": {}
+        },
+        "G": {
+          "mats": 80
+        },
+        "slots": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      "trace": [
+        {
+          "label": "before-connected-first",
+          "skillLv": 0,
+          "sp": 20,
+          "mats": 80,
+          "slots": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          "ultSlot": null,
+          "counts": {
+            "render": 1,
+            "save": 0,
+            "slotUpdate": 0,
+            "quickUpdate": 0,
+            "sfx": 0,
+            "stopPropagation": 0,
+            "rng": 0
+          },
+          "effects": [],
+          "currentCapture": {
+            "slv": 0,
+            "learned": false,
+            "canLearn": true,
+            "canUp": false
+          }
+        },
+        {
+          "label": "after-connected-first",
+          "skillLv": 1,
+          "sp": 10,
+          "mats": 40,
+          "slots": [
+            "spikeTrap",
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          "ultSlot": null,
+          "counts": {
+            "render": 2,
+            "save": 1,
+            "slotUpdate": 1,
+            "quickUpdate": 2,
+            "sfx": 1,
+            "stopPropagation": 1,
+            "rng": 0
+          },
+          "effects": [
+            {
+              "kind": "levelup"
+            },
+            {
+              "kind": "showPH",
+              "args": [
+                "가시덫 습득!",
+                "#ff4400"
+              ]
+            },
+            {
+              "kind": "addTxt",
+              "args": [
+                100,
+                70,
+                "가시덫 습득!",
+                "#ff4400",
+                80
+              ]
+            },
+            {
+              "kind": "addTxt",
+              "args": [
+                100,
+                50,
+                "슬롯 1 배정!",
+                "#ff8844",
+                40
+              ]
+            }
+          ],
+          "currentCapture": {
+            "slv": 1,
+            "learned": true,
+            "canLearn": false,
+            "canUp": false
+          },
+          "oldCardConnected": false,
+          "oldPlusConnected": false,
+          "oldCardInCurrentGrid": false
+        },
+        {
+          "label": "after-saved-detached-callback",
+          "skillLv": 1,
+          "sp": 0,
+          "mats": 0,
+          "slots": [
+            "spikeTrap",
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          "ultSlot": null,
+          "counts": {
+            "render": 3,
+            "save": 2,
+            "slotUpdate": 2,
+            "quickUpdate": 3,
+            "sfx": 2,
+            "stopPropagation": 2,
+            "rng": 0
+          },
+          "effects": [
+            {
+              "kind": "levelup"
+            },
+            {
+              "kind": "showPH",
+              "args": [
+                "가시덫 습득!",
+                "#ff4400"
+              ]
+            },
+            {
+              "kind": "addTxt",
+              "args": [
+                100,
+                70,
+                "가시덫 습득!",
+                "#ff4400",
+                80
+              ]
+            },
+            {
+              "kind": "addTxt",
+              "args": [
+                100,
+                50,
+                "슬롯 1 배정!",
+                "#ff8844",
+                40
+              ]
+            },
+            {
+              "kind": "levelup"
+            },
+            {
+              "kind": "showPH",
+              "args": [
+                "가시덫 습득!",
+                "#ff4400"
+              ]
+            },
+            {
+              "kind": "addTxt",
+              "args": [
+                100,
+                70,
+                "가시덫 습득!",
+                "#ff4400",
+                80
+              ]
+            }
+          ],
+          "currentCapture": {
+            "slv": 1,
+            "learned": true,
+            "canLearn": false,
+            "canUp": false
+          },
+          "oldCardConnected": false,
+          "oldPlusConnected": false,
+          "oldCardInCurrentGrid": false
+        }
+      ],
+      "detachedDelta": {
+        "skillLv": 0,
+        "sp": -10,
+        "mats": -40,
+        "calls": {
+          "render": 1,
+          "save": 1,
+          "slotUpdate": 1,
+          "quickUpdate": 1,
+          "sfx": 1,
+          "stopPropagation": 1,
+          "rng": 0
+        },
+        "newEffects": [
+          {
+            "kind": "levelup"
+          },
+          {
+            "kind": "showPH",
+            "args": [
+              "가시덫 습득!",
+              "#ff4400"
+            ]
+          },
+          {
+            "kind": "addTxt",
+            "args": [
+              100,
+              70,
+              "가시덫 습득!",
+              "#ff4400",
+              80
+            ]
+          }
+        ]
+      },
+      "captures": [
+        {
+          "slv": 0,
+          "learned": false,
+          "canLearn": true,
+          "canUp": false
+        },
+        {
+          "slv": 1,
+          "learned": true,
+          "canLearn": false,
+          "canUp": false
+        },
+        {
+          "slv": 1,
+          "learned": true,
+          "canLearn": false,
+          "canUp": false
+        }
+      ],
+      "candidateClickSHA256": "50c5dc27b4eb86f5c9c897446ea35afc1ce35970b3b3a80057bfe0e7a5d59845",
+      "rendererFragmentSHA256": "71864f148db30771f0bc219aac400a0b7e04fce9e2db1f0284903077af5aab51",
+      "helperFragmentSHA256": "f9f8cc2a34c95cac9d2666237b1b5ca59c4c6b30add813f30db303826e937c21",
+      "normalDirectRNGCalls": 0,
+      "detachedDirectRNGCalls": 0,
+      "nativeInput": false,
+      "fullRenderer": false,
+      "productionApplied": false
+    },
+    {
+      "file": "game-easy-test.html",
+      "version": "candidate",
+      "scenario": "connected-current + → grid rebuild → saved-detached + direct invocation",
+      "expectedNoDetachedEffect": true,
+      "desiredLifetimeVerdict": "GREEN",
+      "reproductionAssertions": "PASS",
+      "normalLearnCost": {
+        "sp": 10,
+        "maliceRaw": 80,
+        "maliceFinal": 40
+      },
+      "syntheticInput": {
+        "P": {
+          "lv": 1,
+          "x": 100,
+          "y": 100,
+          "sp": 20,
+          "skills": {},
+          "_fused": {}
+        },
+        "G": {
+          "mats": 80
+        },
+        "slots": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      "trace": [
+        {
+          "label": "before-connected-first",
+          "skillLv": 0,
+          "sp": 20,
+          "mats": 80,
+          "slots": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          "ultSlot": null,
+          "counts": {
+            "render": 1,
+            "save": 0,
+            "slotUpdate": 0,
+            "quickUpdate": 0,
+            "sfx": 0,
+            "stopPropagation": 0,
+            "rng": 0
+          },
+          "effects": [],
+          "currentCapture": {
+            "slv": 0,
+            "learned": false,
+            "canLearn": true,
+            "canUp": false
+          }
+        },
+        {
+          "label": "after-connected-first",
+          "skillLv": 1,
+          "sp": 10,
+          "mats": 40,
+          "slots": [
+            "spikeTrap",
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          "ultSlot": null,
+          "counts": {
+            "render": 2,
+            "save": 1,
+            "slotUpdate": 1,
+            "quickUpdate": 2,
+            "sfx": 1,
+            "stopPropagation": 1,
+            "rng": 0
+          },
+          "effects": [
+            {
+              "kind": "levelup"
+            },
+            {
+              "kind": "showPH",
+              "args": [
+                "가시덫 습득!",
+                "#ff4400"
+              ]
+            },
+            {
+              "kind": "addTxt",
+              "args": [
+                100,
+                70,
+                "가시덫 습득!",
+                "#ff4400",
+                80
+              ]
+            },
+            {
+              "kind": "addTxt",
+              "args": [
+                100,
+                50,
+                "슬롯 1 배정!",
+                "#ff8844",
+                40
+              ]
+            }
+          ],
+          "currentCapture": {
+            "slv": 1,
+            "learned": true,
+            "canLearn": false,
+            "canUp": false
+          },
+          "oldCardConnected": false,
+          "oldPlusConnected": false,
+          "oldCardInCurrentGrid": false
+        },
+        {
+          "label": "after-saved-detached-callback",
+          "skillLv": 1,
+          "sp": 10,
+          "mats": 40,
+          "slots": [
+            "spikeTrap",
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          "ultSlot": null,
+          "counts": {
+            "render": 2,
+            "save": 1,
+            "slotUpdate": 1,
+            "quickUpdate": 2,
+            "sfx": 1,
+            "stopPropagation": 2,
+            "rng": 0
+          },
+          "effects": [
+            {
+              "kind": "levelup"
+            },
+            {
+              "kind": "showPH",
+              "args": [
+                "가시덫 습득!",
+                "#ff4400"
+              ]
+            },
+            {
+              "kind": "addTxt",
+              "args": [
+                100,
+                70,
+                "가시덫 습득!",
+                "#ff4400",
+                80
+              ]
+            },
+            {
+              "kind": "addTxt",
+              "args": [
+                100,
+                50,
+                "슬롯 1 배정!",
+                "#ff8844",
+                40
+              ]
+            }
+          ],
+          "currentCapture": {
+            "slv": 1,
+            "learned": true,
+            "canLearn": false,
+            "canUp": false
+          },
+          "oldCardConnected": false,
+          "oldPlusConnected": false,
+          "oldCardInCurrentGrid": false
+        }
+      ],
+      "detachedDelta": {
+        "skillLv": 0,
+        "sp": 0,
+        "mats": 0,
+        "calls": {
+          "render": 0,
+          "save": 0,
+          "slotUpdate": 0,
+          "quickUpdate": 0,
+          "sfx": 0,
+          "stopPropagation": 1,
+          "rng": 0
+        },
+        "newEffects": []
+      },
+      "captures": [
+        {
+          "slv": 0,
+          "learned": false,
+          "canLearn": true,
+          "canUp": false
+        },
+        {
+          "slv": 1,
+          "learned": true,
+          "canLearn": false,
+          "canUp": false
+        }
+      ],
+      "candidateClickSHA256": "cf3002143b437d6a1f84d6edd6523fe9c4d4649213ebbc818396f5283e5550e1",
+      "rendererFragmentSHA256": "5e28be505903e28d5ee16c154d398773004ae028e4dc186543f3e6e7bdc04708",
+      "helperFragmentSHA256": "f9f8cc2a34c95cac9d2666237b1b5ca59c4c6b30add813f30db303826e937c21",
+      "normalDirectRNGCalls": 0,
+      "detachedDirectRNGCalls": 0,
+      "nativeInput": false,
+      "fullRenderer": false,
+      "productionApplied": false
+    }
+  ],
+  "failures": [],
+  "limits": {
+    "nativeClick": false,
+    "fullRenderSkillPanel": false,
+    "runtimePASS": false,
+    "visualPASS": false,
+    "statement": "source fixture PASS ≠ runtime/visual PASS",
+    "scope": "일반 가시덫 한 시나리오만. P 교체·async reset·다른 스킬·강화 호출 검수0."
+  },
+  "prohibitedActions": {
+    "productionWrites": 0,
+    "sharedDocsWrites": 0,
+    "originalArtifactWrites": 0,
+    "gitCommands": 0,
+    "gitIndexWrites": 0,
+    "commit": 0,
+    "push": 0,
+    "server": 0,
+    "http": 0,
+    "game": 0,
+    "app": 0,
+    "nativeUI": 0,
+    "audio": 0,
+    "build": 0,
+    "generation": 0,
+    "install": 0,
+    "newSessions": 0,
+    "subagents": 0,
+    "otherChatMessages": 0,
+    "fileDeletion": 0,
+    "folderDeletion": 0,
+    "moves": 0,
+    "outsideOwnershipWrites": 0
+  },
+  "changes": {
+    "current": "not-observed",
+    "parentHistorical": "TASK의 기존 사용자 변경23항목 인수",
+    "note": "Git/count 명령0. 과거52는 이전 과제 이력이며 현행 Changes로 사용하지 않음"
+  },
+  "fixtureModel": {
+    "import": "tools/team-followup-20261001/UIUX/inventory-dom/node-dom.mjs",
+    "additions": 0,
+    "realFragments": "capture/cost/slot/_skClick/plus binding/grid clear/append",
+    "renderer": "추출 원문 fragment 조립. 전체 렌더·실제 브라우저는 실행하지 않음",
+    "synthetic": "P/G·일반 카드 상태·DOM 대역·시각/저장/사운드 호출 기록",
+    "rng": "Math.random 직접 호출 기록; SFX.levelup은 사운드0 기록 대역으로 내부 오디오 RNG 미검수"
+  },
+  "candidate": {
+    "applied": false,
+    "location": "checks.mjs의 _skClick 메모리 변환만",
+    "insertion": "if(!d.isConnected||!grid.contains(d))return;",
+    "meaning": "현재 문서에 연결되고 현재 skillGrid에 속한 카드만 기존 콜백 실행"
+  },
+  "counts": {
+    "scenarios": 1,
+    "files": 2,
+    "sourceRED": 2,
+    "candidateGREEN": 2,
+    "comparisonRuns": 4,
+    "comparisonAssertions": "PASS",
+    "previous16Rerun": 0,
+    "previous16Added": 0
+  },
+  "status": "source-counterexample-reproduced-memory-candidate-verified-production-unapplied",
+  "docsSearch": {
+    "command": [
+      "rg",
+      "-n",
+      "-e",
+      "renderSkillPanel|_skClick|skillGrid|spikeTrap|가시덫|learned|_malCost|SKILL_SLOTS|_findAutoSkillSlot|spCost|matCost|분리된.*카드|detached|isConnected",
+      "docs"
+    ],
+    "exitCode": 0,
+    "outputSHA256": "4fecaf2f35224bbcbdc6e78b152b3bfcb6ab962b4d70fb6086fccda01084988e",
+    "lineCount": 293,
+    "output": "docs/7아이템디자인/UNIQUE_TOP8_HOOK_REVIEW_20261001.md:12:| 6 | U-D13 | **원본** `spikeTrap` DOT에 의한 처치 → 피해·슬로우·출혈이 제한된 자식 덫 | 현재 존에 출처 ID가 없고 `hurtE` 호출도 덫 객체를 넘기지 않는다. 사망 출처 전달과 장판 갱신 종료 뒤 생성 큐가 선행돼야 한다. |\ndocs/7아이템디자인/UNIQUE_TOP8_HOOK_REVIEW_20261001.md:20:| U-D13 출처 | `activateSpikeTrap` `game.html:43713~43723`은 일반 `spikeTrap` 장판을 만들고, `game.html:35839~35845`는 `hurtE(...,{dot:true,...})`로 피해를 준다. 존 ID·시전 ID·원본/자식 구분·사망 출처가 없다. | 장판마다 시전 ID와 원본/자식 태그를 붙이고 피해 사건에 출처를 전달해야 한다. `pillarSpike` 합체가 만든 존과 자식의 처치는 원본 트리거에서 제외한다. 원본 시전당 1개 상한은 장판이 아닌 시전 ID 기준으로 검사한다. |\ndocs/7아이템디자인/UNIQUE_TOP8_HOOK_REVIEW_20261001.md:23:| U-D17 장판 중첩 | `game.html:35792~35805`의 `spikeTrap` 적중 캡은 위치를 옮겨도 동일하다. `storm`은 `game.html:34825~34826`, 합체 전개도 `34741~34742`에서 생성한다. | `t/maxT`, 피해·레벨·원소·출처는 유지하고 위치만 변경한다. `shockField`, `holyDome`, 약화 영역, `boneStorm`과 보스 전용 장판은 제외한다. 이동 전후 같은 장판에 대한 적별 틱 리셋·중복 피해가 없는지 확인한다. |\ndocs/14밸런스+수치테이블/14밸런스+수치테이블.md:92:- 스킬 강화의 현행 악의 검사·실차감(두 게임 HTML): `cost=_malCost(sk.upMat||0)`. `upMat=0`이면 악의 비용 0이며 수동 `canUp`와 일괄 `_matGate`도 0으로 검사한다. 장비 강화 비용은 아래 식과 별개다.\ndocs/14밸런스+수치테이블/14밸런스+수치테이블.md:94:- 강화 비용(현행 `game.html`/`game-easy-test.html`): `enhCostRaw(n)=max(20000,ceil((20000+n×3500)×1.5))`, 실제 악의 `cost=_malCost(ceil(enhCostRaw(n)×등급배율))`, `_malCost(v)=max(1,ceil(v×0.5))`(양수일 때). 기존 `ceil((1+n×0.15)×1.5)` 표기는 현행 강화 비용식이 아니다.\ndocs/7아이템디자인/유니크_어픽스_리스트.md:122:| F 영역·1~4 설치 스킬 | U-D12~14 | F 회복의 영역 방어, 1~4 가시덫 증식·폭풍소환과 악의구 연동. |\ndocs/7아이템디자인/유니크_어픽스_리스트.md:158:| **U-D13** 1~4 가시덫 / 번지는 뿌리 | 원본 가시덫 DOT로 적을 처치하면 그 위치에 작은 **자식 덫** 하나를 남긴다. | 자식 덫 틱 피해 **20~40%**: 하20~26/중27~33/상34~40%; 저장 `0.20~0.40`; 지속 `180f`. | `_uTrapOffshoot`; 설치 43344~43354, 덫 틱 35300~35580, 처치 40570~. | 원본 시전당 자식 최대 1개, 반경 `150px`; 자식은 출혈·슬로우만 이어받고 자식의 처치로 추가 생성 불가. `pillarSpike` 합체로 가시덫이 흡수된 경우 원본 태그가 없으면 불발. | 원본 덫은 악의10·쿨600f·지속600f이며 즉발 피해 없음. 사망 위치에 후속 거점을 만드는 효과다. | H·U·S |\ndocs/7아이템디자인/유니크_어픽스_리스트.md:162:| **U-D17** Z 블랙 / 장판 수렴 | **피해가 없는** 블랙 궁극기가 흡인 종료 때 가까운 공격 장판을 중심으로 끌어모은다. | 장판 최대 **1~3개**: 하1/중2/상3개; 저장 정수 개; 탐색 반경 `600px`. | `_uBlackZoneGather`; 블랙 종료 44622~44643, `G._fireZones` 35298~35682. | `spikeTrap`·`fireAura`·`storm`만 이동하고 남은 시간·피해·출처 유지. 회복/약화/전류장판과 보스 전용 장판은 제외. 시전당 한 번만 탐색, 이미 같은 위치의 장판 중복 피해는 기존 규칙 유지. | 블랙은 MP 최대치30%·쿨7200f·자체 피해0. 장판 빌드의 위치 설계를 바꾸되 궁극기 자체에 `ultDmg`를 붙이지 않는다. | H·U |\ndocs/7아이템디자인/보라색_고유아이템_카탈로그_20260930.md:30:| UI-13 | 번지는 뿌리의 띠 | 허리띠 | 검은 가죽을 뚫는 자수정 뿌리, 아래로 갈라진 끝 | U-D13 가시덫 처치→자식 덫 | Higgsfield 원화 `assets/unique-items/ui-13.png` |\ndocs/15 세이브+데이터구조/15 세이브+데이터구조.md:1:## 2026-09-29 Lv1 기본 가시덫의 숫자 1번 슬롯 배정 복구\ndocs/15 세이브+데이터구조/15 세이브+데이터구조.md:5:| spikeTrap / _startDemoNew | 신규 데모: P.skills.spikeTrap=1 및 SKILL_SLOTS[0]=spikeTrap. 습득만 하고 슬롯 배정을 빠뜨린 경로 복구. game.html·game-easy-test.html 동일 |\ndocs/15 세이브+데이터구조/15 세이브+데이터구조.md:6:| 기본 키 | 숫자 1 → 가시덫 Lv1, Space → giantSlam Lv1, F → holyDome Lv1. 슬롯 인덱스0/4/5; 나머지 신규 슬롯은 기존 빈칸 유지 |\ndocs/15 세이브+데이터구조/15 세이브+데이터구조.md:7:| 저장 복원 | 배정은 !_demoLoaded 신규 분기에서만 실행. 기존 선택 배치를 강제로 바꾸지 않음. 가시덫을 2번에 옮긴 저장은 [null,spikeTrap] 유지. 이전 누락 저장의 빈 1번 슬롯은 공용 dbRestore의 기존 자동배정 경로에서 복구 |\ndocs/15 세이브+데이터구조/15 세이브+데이터구조.md:291:| `_skClick` 습득 | sk.matCost | `if(G.mats<sk.matCost)return` |\ndocs/15 세이브+데이터구조/15 세이브+데이터구조.md:292:| `_skClick` 강화 | `_malCost(sk.upMat||0)` | `if(G.mats<_upMat)return`; 수동 패널 `canUp`·일괄 강화 게이트도 같은 값을 사용 |\ndocs/15 세이브+데이터구조/15 세이브+데이터구조.md:294:- 기존 안전: maliceHunt(28647), plagueBurst(28873), blastShot, spikeTrap, 상점, 결정 등\ndocs/15 세이브+데이터구조/15 세이브+데이터구조.md:314:| `activeTechSk` | 'giantSlam' | Space 분노 폭발 (구세이브의 `spikeTrap`은 `giantSlam`으로 마이그레이션) |\ndocs/15 세이브+데이터구조/15 세이브+데이터구조.md:327:- **스킬 미소유 시 기본값 복귀**: activeMagicSk→fireball, activeTechSk→giantSlam 등 (구세이브의 activeTechSk=spikeTrap은 giantSlam으로 마이그레이션)\ndocs/15 세이브+데이터구조/15 세이브+데이터구조.md:348:- 기본 스킬 슬롯 배정 (1번=spikeTrap, Space=giantSlam, F=holyDome)\ndocs/14밸런스+수치테이블/SPIKE_TRAP_HALF_20260913.md:1:# 가시덫 피해 절반 조정 — 2026-09-13\r\ndocs/14밸런스+수치테이블/SPIKE_TRAP_HALF_20260913.md:5:| `_spikeTrapDmg` / 일반·쉬운 게임 | `floor(magicRef×statInt×pMagicMul×_skMul×1.5)` | `floor(magicRef×statInt×pMagicMul×_skMul×0.75)` — 내림 전 50% |\r\ndocs/14밸런스+수치테이블/SPIKE_TRAP_HALF_20260913.md:6:| `spikeTrap` / 일반1~4번 | 단독 설치 | 공용 피해 함수 사용, 기둥가시 합체에도 동일 적용 |\r\ndocs/14밸런스+수치테이블/SPIKE_TRAP_HALF_20260913.md:10:| 실습 적 내구도 | `max(1,_spikeTrapDmg())×(5+생성순번)` | HP·실드에 각각50% 배분, 최대치도 동일 설정. 공용 피해에 비례해 자동 감소. 실드 우선 차감하며 합계5~14틱 처치 조건 유지 |\r\ndocs/7아이템디자인/ITEM_TEAM_MASTER.md:200:| 큐 | 실제 spikeTrap DOT 호출1개를 인수식 그대로 감싼 미적용 fixture. 원본 최종 사망 에지만 기록, 동기 전체 압축 성공 뒤 FIFO callback. 원본 시전당1은 D절 그대로 |\ndocs/14밸런스+수치테이블/스킬_밸런스_리포트.md:31:| 보조/유틸 | 뇌전걸음, 가시덫, 신성한영역 | DPS 비교 면제 (유틸리티) |\ndocs/14밸런스+수치테이블/스킬_밸런스_리포트.md:310:  - guardian, voidScarecrow, spikeTrap\ndocs/14밸런스+수치테이블/스킬_밸런스_리포트.md:352:| — | 가시덫 | 장판 | 현재 Lv20 틱 계수90.3, 25f 간격, 초당 계수216.72×magicRef×statInt×pMagicMul (내림·출혈 별도, 2026-09-13 갱신) |\ndocs/5.1임펙트디자인/VFX_구현가이드.md:665:**장판 분류 추가 수정:** 공용 `G._fireZones`의 `iceStorm`은 기존 얼음빛, 그 외에는 `el===EL.F`인 원소만 프리셋 7 화염빛을 생성한다. 가시덫·치유/약화 영역·암흑/전기 장판에 잘못 붙던 넓은 주황 광원은 제거한다. [대상·수치·시각 검증](ZONE_LIGHT_CLASSIFICATION_20260910.md).\ndocs/2_5 부활+에너지쉴드시스템/2_5 부활+에너지쉴드시스템.md:218:| `spikeTrap` | 가시덫 | EL.P (물리) | 물리 | ✅ `true` | 실제 장판 DOT는 실드 우선 차감. 실습도 같은 분배 사용 |\ndocs/2_5 부활+에너지쉴드시스템/2_5 부활+에너지쉴드시스템.md:222:**현재 판정 원칙**: 속성명이 아니라 호출의 `dot`·`shieldHit`를 따른다. 비DOT 또는 `shieldHit:true`는 실드 우선 차감, `dot:true`이며 `shieldHit`가 없는 경우만 HP 직행. 가시덫 및 현재 출혈 틱도 `shieldHit:true`를 전달한다. 가시덫 실습의 실드 누락·초기화 수정은 [실습 문서](../2게임디자인레벨디자인/SPIKE_TRAP_PRACTICE_20260913.md)를 따른다.\ndocs/5.1임펙트디자인/장판_가시성_2026-09-27.md:9:| 플레이어 가시덫 | `spikeTrap` / `spike_thorn.png` | 원본 선은 보존, 이미지 알파 `(0.43±0.04)×_fzFade` (평상시 최대 0.141) | `lighter`→`screen`; 붉은 선·광휘의 중첩 과포화 억제. 피해 반경·지속·판정 불변 |\ndocs/14밸런스+수치테이블/MAGIC_ATTACK_DAMAGE_20260910.md:11:| 빔·지속 | 강화된 마법 기반 피해 사용 | 얼음송곳, 멸살광선, 참회, 지옥진, 악의폭풍, 악의기둥, 뇌전창, 가시덫 |\ndocs/14밸런스+수치테이블/MAGIC_ATTACK_DAMAGE_20260910.md:21:`test/magicAttackDamage.test.js`는 미투자/투자·유니크 배율, MP·시전속도 보존, 현행 악의구 산출식924→1848(후속5/7/1 조정으로 스킬계수10% 증가; 공통마법2배는 유지), 가시덫490→980(당시), 현행1470(2026-09-13 가시덫 직전 피해의50%), 기검참 배율 유지, Q/E반사616/501 보존을 검사한다. 기존 기본공격·빔·악의구·반사 회귀검사도 실행한다. 적용 대상은 현재 소스이며 실행파일 재패키징은 포함하지 않는다.\ndocs/5.1임펙트디자인/ZONE_LIGHT_CLASSIFICATION_20260910.md:3:사용자 스크린샷 `스크린샷 2026-09-10 144000.png`: 가시덫 주위에 넓은 황색 안개처럼 빛이 깔려 바닥·캐릭터 대비가 약해지는 현상.\ndocs/5.1임펙트디자인/ZONE_LIGHT_CLASSIFICATION_20260910.md:7:`G._fireZones`는 이름과 달리 물리 가시덫, 회복·약화 영역, 암흑기둥, 전기·얼음 장판도 보관하는 공용 배열이다. `_collectLights()`가 `iceStorm`을 제외한 모든 원소에 화염 광원을 생성해 가시덫에도 반경 `r*2.6`의 주황빛과 어둠 제거 홀이 생겼다. 앞선 [GPU 캐시 갱신 수정](../12퍼포먼스·최적화/LIGHTING_TEXTURE_FRESHNESS_20260910.md)은 조명 픽셀 전달을 복구했지만 장판 분류 문제는 남아 있었다.\ndocs/5.1임펙트디자인/ZONE_LIGHT_CLASSIFICATION_20260910.md:9:| 가시덫 예시 | 공격 반경 | 기존 잘못된 광원 반경 | 현재 추가 화염 광원 |\ndocs/5.1임펙트디자인/ZONE_LIGHT_CLASSIFICATION_20260910.md:14:| 기둥가시 합체 | 가시덫 9개 + 암흑기둥 9개까지 | 각 원소마다 잘못된 주황빛이 중첩 | 비화염 18개 모두 추가 광원 없음 |\ndocs/5.1임펙트디자인/ZONE_LIGHT_CLASSIFICATION_20260910.md:25:| `spikeTrap`, `darkPillar`, `holyDome`, `holyPrison`, `weakPhys/Mag/Pj/Rev`, `maliceDome`, `storm`, `boneStorm`, `hellRay`, `vortex`, `iceVortex`, `shockField` 등 비화염 | 생성하지 않음 | — | 각 스킬 고유 VFX만 유지 |\ndocs/5.1임펙트디자인/ZONE_LIGHT_CLASSIFICATION_20260910.md:28:실제 화염은 생성부에서 `el:EL.F`를 지정한다. 2026-09-29 사용자 요청에 따라 `assaultFlame`만 24f 착지 잔광으로 제한한다. `fireTrail`, `fireAura`, 타입 없는 불장판·얼음, 프리셋 7 색상·falloff, 모닥불·보스·펫·플레이어 조명은 기존 값을 유지한다. 상세 수치는 [사슬기동 착지 임팩트](사슬기동_착지임팩트_실사시트_20260904.md)의 기동불꽃 광량·잔광 표를 따른다. 가시덫 이미지 `sprites/spike_trap/spike_thorn.png`, 회전·배치·크기·피해·슬로우·지속·쿨다운은 변경하지 않는다.\ndocs/5.1임펙트디자인/ZONE_LIGHT_CLASSIFICATION_20260910.md:36:| 신규 `test/zoneLightClassification.test.js` | 수정 전 가시덫 시전/비화염/합체중첩 3개 FAIL, 화염·얼음 보존 2개 PASS → 수정 후 5개 PASS |\ndocs/5.1임펙트디자인/ZONE_LIGHT_CLASSIFICATION_20260910.md:39:| 브라우저 수치 | 이전 플레이어+가시덫 광원 2개, 컬러 alpha 합 7,238,564 → 현재 플레이어 광원만 1개, 컬러 alpha 합 0 (`_CENTER_GLOW=false`, 펫·정적광원 없는 비교 장면) |\ndocs/14밸런스+수치테이블/스킬별_DPS_자원소비표.md:144:## 6. 설치/영역 스킬 (spikeTrap은 cat: phys 유틸 장판)\ndocs/14밸런스+수치테이블/스킬별_DPS_자원소비표.md:148:| spikeTrap | 가시덫 (phys 탭) | 악의 | **10** | **600f (10초)** | INT×magicRef×pMagic×**_skMul('spikeTrap')×0.75** (b:14, g:11.2; `_skMul=14+(Lv-1)×11.2×0.5`), 슬로우 Lv1 91%(기존 대비 ×1.3)+Lv당2%p(최대95%)+출혈 | 25f 간격(초당2.4틱): 틱 계수10.5→90.3, 초당 계수25.2→216.72(Lv1→Lv20). 실제 DPS는 `floor(INT×magicRef×pMagic×틱계수)×2.4`, 출혈 별도. 직전 피해의50%. 범위 300→585 (Lv1→Lv20, slope +15/Lv — 코드 실측 `300+(Lv-1)*15`; 2026-05-29 밸런스로 base 200→300, slope는 +15 유지. 과거 문서/툴팁 +22 표기는 코드 불일치로 정정 2026-08-18) |\ndocs/14밸런스+수치테이블/스킬별_DPS_자원소비표.md:180:| giantSlam 지옥강타 1 | `floor(floor(meleeRef×statStr×(20+(Lv−1)×19×0.5)×_rageMul)×pAtkMul)+_atkBon`; pAtkMul은 _gSlamHit에서1회. 분노100 기본20배 | ST=stCost(giantSlam), 악의=_malCost(20) | 기본30초, 레벨당12f 감소·최소60f | 단위시간 효율은 실제 쿨/할인/명중 조건으로 측정 |\ndocs/14밸런스+수치테이블/스킬별_DPS_자원소비표.md:207:| spikeTrap 가시덫 | 10 | 10초 | **1.0** |\ndocs/14밸런스+수치테이블/스킬별_DPS_자원소비표.md:209:| giantSlam 지옥강타 1 | `floor(floor(meleeRef×statStr×(20+(Lv−1)×19×0.5)×_rageMul)×pAtkMul)+_atkBon`; pAtkMul은 _gSlamHit에서1회. 분노100 기본20배 | ST=stCost(giantSlam), 악의=_malCost(20) | 기본30초, 레벨당12f 감소·최소60f | 단위시간 효율은 실제 쿨/할인/명중 조건으로 측정 |\ndocs/16번역·로컬라이제이션/UI_TRANSLATIONS_20260909.md:44:| 가시덫 | 荆棘陷阱 | 荊棘陷阱 | 기존 스킬 이름 재사용 |\ndocs/12퍼포먼스·최적화/12퍼포먼스·최적화.md:211:| [2] | `_dpHitCap`/`_stHitCap` 리셋 | darkPillar/spikeTrap 장판 유무 무관 **전 적 매 프레임 카운터 초기화** (O(적수) 낭비) | 해당 장판 실재 시(`_hasCapZone`)에만 리셋 게이트 |\ndocs/5.1임펙트디자인/PHASE_V1_MOTION_FIREZONE_SEAL.md:79:사용자 가시덫 과광원 스크린샷과 독립 재현으로, 공용 `G._fireZones`의 비화염 원소까지 프리셋 7로 보낸 결함을 확인했다. `iceStorm` 특수 분기 다음의 화염 광원 생성은 `el===EL.F`로 제한한다. 기존 실제 화염의 색상·falloff·반경·강도 및 MOTION/bladeDash 수치는 유지한다. 위 봉인 이력은 보존하며, 현재 라우팅과 검증은 [장판 조명 분류 계약](ZONE_LIGHT_CLASSIFICATION_20260910.md)을 따른다.\ndocs/14밸런스+수치테이블/스킬데미지공식표.md:106:- **phys 탭 유틸 장판(별도)**: spikeTrap — 설치·출혈 장판, 피해 공식에 ×0.75 (2026-09-13 직전 피해의 50%)\ndocs/14밸런스+수치테이블/스킬데미지공식표.md:224:| 가시덫 (spikeTrap, phys 탭 유틸) | magicRef | INT | pMagicMul | _skMul×0.75 | 틱 계수 10.5 (Lv1) | 틱 계수 90.3 (Lv20) | 설치형 | 10초쿨. 슬로우 91%→95%+출혈 |\ndocs/14밸런스+수치테이블/스킬데미지공식표.md:232:| 가시덫 (spikeTrap, phys 탭 유틸) | magicRef | INT | pMagicMul | _skMul×0.75 | 틱 계수 10.5 (Lv1) | 틱 계수 90.3 (Lv20) | 설치형 | 슬로우 91%→95%+출혈 |\ndocs/14밸런스+수치테이블/스킬데미지공식표.md:387:| 가시덫 (spikeTrap) | 10초 | — | 20초 | 감속+출혈 지속 2배 |\ndocs/14밸런스+수치테이블/자원소비량표.md:16:- 악의를 쓰는 양수 원가의 체크/차감 경로는 최종적으로 `_malCost(v)=max(1,ceil(v×0.5))` 적용. 원가 0 이하는 비용 0.\ndocs/14밸런스+수치테이블/자원소비량표.md:111:| 가시덫 (spikeTrap) | 10 | 10초 |\ndocs/CHANGELOG_SYNC.md:160:## 2026-09-29 — 데모 Lv1 가시덫 1번 슬롯 누락 수정\ndocs/CHANGELOG_SYNC.md:164:| 원인 | _startDemoNew의 신규 분기가 spikeTrap Lv1만 습득하고 SKILL_SLOTS[0] 배정을 생략해 숫자 1번이 빈칸으로 시작 |\ndocs/CHANGELOG_SYNC.md:165:| 수정 | game.html·game-easy-test.html 신규 데모만 SKILL_SLOTS[0]=spikeTrap. Space giantSlam/F holyDome 및 저장 배치 유지 |\ndocs/CHANGELOG_SYNC.md:167:| 상세 | [스킬·저장 계약](<2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md>)의 Lv1 기본 가시덫 절 |\ndocs/CHANGELOG_SYNC.md:1167:## 2026-09-13 가시덫 실습 실드 처리 수정\r\ndocs/CHANGELOG_SYNC.md:1172:| 수정 | 실제 가시덫 DOT는 실드 먼저 흡수, 초과 피해만 HP. 실습 총 내구도 `max(1,_spikeTrapDmg())×(5+순번)`를 HP·실드에 각각50% 배분 |\r\ndocs/CHANGELOG_SYNC.md:1233:## 2026-09-13 가시덫 튜토리얼 동시 사망 수정\r\ndocs/CHANGELOG_SYNC.md:1239:| 수정 | 실습 총 내구도(현재 HP·실드 각각50%)를 생성순번0~9에 따라 `max(1,_spikeTrapDmg())×(5+순번)`으로 배분. 5~14번째 틱에 차례로 사망 |\r\ndocs/CHANGELOG_SYNC.md:1267:## 2026-09-13 가시덫 피해3배 · 초반10마리 추격 실습\r\ndocs/CHANGELOG_SYNC.md:1271:| 피해 | `_spikeTrapDmg`의 ×0.5→×1.5. 단독/기둥가시 합체에 동일 적용, 툴팁·공식·DPS 문서 동기화 |\r\ndocs/CHANGELOG_SYNC.md:1272:| 초반 실습 | 우클릭 후1번 가시덫: 몬스터10마리 추격→장판 설치→120px 후퇴+가시덫DOT10킬→Q과제 |\r\ndocs/CHANGELOG_SYNC.md:2344:## 2026-09-07 가시덫 유틸리티 밸런스 조정\r\ndocs/CHANGELOG_SYNC.md:2348:| 슬로우 | Lv1 70%, Lv당 +2%p, 최대90% | Lv1 91%(기존 대비 ×1.3), Lv당 +2%p, 최대95% | `_spikeTrapSlowPct`, 적 이동/넉백 |\r\ndocs/CHANGELOG_SYNC.md:2349:| 피해 | 기존 공식 100% | 기존 공식 ×0.5 (단독 설치 + pillarSpike) | `_spikeTrapDmg`, `activateSpikeTrap`, `activateDarkPillar` |\r\ndocs/CHANGELOG_SYNC.md:2350:| 역할 | 설치 장판인데 피해 비중이 큼 | 슬로우/출혈 중심, 피해 50% 하향 | `spikeTrap` |\r\ndocs/CHANGELOG_SYNC.md:2367:## 2026-09-07 플레이어 부활 자원 100% 복원 + 가시덫 물리 탭 이동\r\ndocs/CHANGELOG_SYNC.md:2373:| `spikeTrap` / 가시덫 | `cat:'tech'`, F 영역 슬롯, `[선택: F]` | `cat:'phys'`, 물리 탭 일반 슬롯 1~4번, 새 캐릭터 1번 기본 배정 | `SKILL_LIST`, `SKILL_SLOTS`, `SKILL_SLOT_DEFS`, 새 게임/로컬 초기화 |\r\ndocs/CHANGELOG_SYNC.md:2374:| 기존 저장 데이터 | F에 남은 가시덫과 `activeTechSk=spikeTrap` 가능 | `_repairAreaSkillSlot()`이 일반 슬롯으로 복구하고 `activeTechSk`는 `giantSlam`으로 마이그레이션 | `dbRestore()` / 슬롯 복구 |\r\ndocs/CHANGELOG_SYNC.md:2376:부활 확률 공식 `min(100, max(0, 자연부활력 + 스킬Lv×2 + 장비보너스 - 인간성Lv×10))`과 부활 확률 자체는 변경하지 않는다. 가시덫은 탭/슬롯 분류를 물리로 이동했고, 당시 `INT×magicRef×pMagicMul×_skMul×0.5` 피해 공식(2026-09-13 현재는 ×0.75)과 슬로우 91%(Lv당 +2%p, 최대95%)를 적용한다.\r\ndocs/CHANGELOG_SYNC.md:2660:| `giantSlam` | 지옥강타 1 | 특수 (`spec`) | 분노 (`rage`) | Space (`SKILL_SLOTS[4]`) 전용 | `SKILL_LIST`, `SKILL_HIER`, `_isRageBurstSkillId()` | 변경 없음: ST+악의20, 범위·포이즈·피해·쿨다운·`_rageMul` 유지 |\r\ndocs/CHANGELOG_SYNC.md:2661:| `giantSlam2` | 지옥강타 2 / 기둥강타 호스트 | 특수 (`spec`) | 분노 (`rage`) | Space (`SKILL_SLOTS[4]`) 전용 | `SKILL_LIST`, `SKILL_HIER`, `pillarSlam` | 변경 없음: `giantSlam` 복제 공식, `pillarSlam`/`infernoSlam` 호스트 유지 |\r\ndocs/CHANGELOG_SYNC.md:2662:| `skyCrusher` | 천공쇄기 | 특수 (`spec`) | 분노 (`rage`) | Space (`SKILL_SLOTS[4]`) 전용 | 기존 분노 목록 | 변경 없음: MP80, 3충전, 충전당 900f |\r\ndocs/CHANGELOG_SYNC.md:3118:| 1~4 (`SKILL_SLOTS[0~3]`) | 일반 스킬과 지옥강타 계열 혼용 가능 | 일반 액티브만 허용; 영역·분노 폭발 불가 | `_canAssignSkillSlot()` |\r\ndocs/CHANGELOG_SYNC.md:3119:| Space (`SKILL_SLOTS[4]`) | 일반 선택스킬의 다섯 번째 슬롯 | **분노 폭발 전용**: `giantSlam`, `giantSlam2`만 허용 | 팝업·드래그·카드 버튼·자동배정·게임패드 Y·런타임 방어 |\r\ndocs/CHANGELOG_SYNC.md:3121:| F (`SKILL_SLOTS[5]`) | 영역 전용 | 유지: 영역 1개만 허용 | `_isAreaSkillId()` |\r\ndocs/CHANGELOG_SYNC.md:3122:| 가시덫 (`spikeTrap`) | `[고정: Space]`, `fixed:true` | `[선택: F]` 영역기; 회복의 영역과 F에서 교체 | `SKILL_LIST`, 안내·펫 대사 |\r\ndocs/CHANGELOG_SYNC.md:3162:| F (`SKILL_SLOTS[5]`) | 모든 액티브가 자동/수동 배정 가능 | `cat:'tech' && act && !fixed` 영역 스킬만 **1개** 허용 |\r\ndocs/CHANGELOG_SYNC.md:3167:| 입력 경로 | 자동습득·합체·드래그·버튼·게임패드별 규칙 불일치 | `_canAssignSkillSlot`, `_findAutoSkillSlot` 공통 적용 |\r\ndocs/CHANGELOG_SYNC.md:4711:  - **마법**: fireball, fireBeam, fireAura, blueShot, omniBeam(2곳), hellRay(2곳), maliceStorm(2곳), darkPillar, iceOrb, maliceMortar(5곳), spikeTrap, burstLoop, plagueBurst, ghostWalk, elemMissile, magicBlink(DOT)\r\ndocs/CHANGELOG_SYNC.md:4725:  - **spikeTrap (가시덫)**: `*3*(1+Lv*0.10)` → `*(3+(Lv-1))` (2곳)\r\ndocs/CHANGELOG_SYNC.md:23098:- img/skillskin/spikeTrap.png\r\ndocs/CHANGELOG_SYNC.md:23163:- img/skillskin/spikeTrap.png\r\ndocs/CHANGELOG_SYNC.md:23262:- img/skillskin/spikeTrap.png\r\ndocs/CHANGELOG_SYNC.md:23351:- img/skillskin/spikeTrap.png\r\ndocs/CHANGELOG_SYNC.md:23393:- img/skillskin_upscaled/spikeTrap.png\r\ndocs/CHANGELOG_SYNC.md:23688:- img/skillskin/spikeTrap.png\r\ndocs/CHANGELOG_SYNC.md:23762:- img/skillskinXX/spikeTrap.png\r\ndocs/CHANGELOG_SYNC.md:48998:## 2026-09-10 — 가시덫 등 비화염 장판 과광원 수정\r\ndocs/CHANGELOG_SYNC.md:49000:- 원인: 공용 `G._fireZones`에서 iceStorm 외 모든 스킬을 화염 광원으로 처리해 Lv1 가시덫(r300)에 반경780 주황 광원 발생. 기둥가시 합체에서는 비화염 장판마다 중첩.\r\ndocs/CHANGELOG_SYNC.md:49001:- 수정: 기존 iceStorm 분기 다음 화염빛은 `el===EL.F`만 생성. 가시덫·치유/약화·암흑/전기 영역의 잘못된 화염빛 제거, 실제 화염 프리셋7 수치·얼음빛·스킬 VFX/전투 수치 유지.\r\ndocs/CHANGELOG_SYNC.md:49079:| 자원 / 충전 | `_malCost(12)` 악의, 스택1. 최대2개(Lv10부터3), 충전1500f=25초 |\r\ndocs/CHANGELOG_SYNC.md:49085:## 2026-09-10 악의기둥+가시덫 추천 순서 상향\r\ndocs/CHANGELOG_SYNC.md:49089:| 추천1단계 | darkPillar+spikeTrap → pillarSpike(기둥가시) |\r\ndocs/CHANGELOG_SYNC.md:50577:| 카테고리 | `renderSkillPanel()`이 4개 대분류 탭을 `#skillCategoryNav`에 렌더한다. 이 줄은 `.frame-inner-panel-stack` 첫 행에서 스킬 목록 스크롤 밖에 고정된다. 카테고리 전환과 강조는 기존 동작을 유지한다. |\r\ndocs/CHANGELOG_SYNC.md:50578:| 레벨·자원 정보 | `#skillInfo`(LV/SP/악의/사슬)는 `#skillGridWrap`의 첫 자식이다. 휠로 목록을 내리면 요약도 스킬 카드와 함께 위로 이동한다. |\r\ndocs/CHANGELOG_SYNC.md:50579:| 스크롤 경계 | `#skillGridWrap`과 우측 `#skillDetail`만 각각 내부 스크롤한다. 높이 620px 이하에서도 바깥 `.skill-pbox`는 스크롤하지 않고 중앙 영역이 남는 높이를 사용한다. 게임패드 기본 스크롤 대상도 `#skillGridWrap`이다. |\r\ndocs/16번역·로컬라이제이션/번역대상_전체목록.md:150:| 0083 | 가시덫 | Spike Trap |\r\ndocs/16번역·로컬라이제이션/번역대상_전체목록.md:559:| 0398 | 스킬 미습득 | No skills learned |\r\ndocs/16번역·로컬라이제이션/번역대상_전체목록.md:784:| 0588 | 🌿 가시덫! | 🌿 Spike Trap! |\r\ndocs/16번역·로컬라이제이션/번역대상_전체목록.md:1063:| 0819 | 1번! 가시덫으로 적 묶어버려! | 1! Pin them with Spike Trap! |\ndocs/16번역·로컬라이제이션/번역대상_전체목록.md:1235:| 0947 | 1번! 가시덫으로 적 묶어! | 1! Trap enemies with Spike Trap! |\ndocs/16번역·로컬라이제이션/번역대상_전체목록.md:1809:| 1319 | 적이 근접하면 1번이야! 가시덫을 활용해! | When enemies get close, use 1! Use Spike Trap! |\ndocs/16번역·로컬라이제이션/번역대상_전체목록.md:2478:| 2018 | 암흑기둥 + 가시덫 → 합체: 기둥가시 | Dark Pillar + Spike Trap → Fuse: Pillar Spike |\r\ndocs/16번역·로컬라이제이션/번역대상_전체목록.md:2527:| 2063 | spikeTrap | [1-4] Spike trap. Physical tab. Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×pMagicMul×(14+5.6×(Lv-1))×0.75. Malice 10. CD 10s |\ndocs/14밸런스+수치테이블/BALANCE_ECONOMY_TEAM_MASTER.md:45:| 강화 지출 | `enhCostRaw=max(20000,ceil((20000+3500n)×1.5))`, 실제 악의=`_malCost(ceil(raw×등급배율))`; 등급배율 0.5/0.7/1/1.3/1.8, 유니크는 경제상 전설 | 0강 희귀15,000·100강 희귀277,500·1000강 희귀2,640,000 악의. 성공률 `max(0.5,99×0.99^n)%` |\ndocs/14밸런스+수치테이블/BALANCE_ECONOMY_TEAM_MASTER.md:53:| SKILL-01 자원 | `_malCost(v)`는 원가 50% 올림. 악의구 MP Lv1/5/10=10/24/41, 지옥강타 ST는 DPS 비례·최대 ST 90% 캡과 악의 원가20, 천공쇄기 MP80 고정·최대3충전/900f | [자원표](자원소비량표.md) 기준 정적 대조. 적중 시 실소비·재생 포함 효율은 미측정 |\ndocs/14밸런스+수치테이블/BALANCE_ECONOMY_TEAM_MASTER.md:56:| SKILL-02 폭산탄 | 원가5 차감(`_malCost(5)=3`)인데 `activateBlastShot` 게이트는 원가8(`_malCost(8)=4`), 자동 석궁 라우터는 3 악의만 확인하고 발사 성공 표시. 격리 실행 시 두 HTML 모두 악의3·ST10·쿨0에서 폭탄0개/자원 변화0 | 스킬팀 함수 소유 인계 필요. 개별 함수 미수정, 확정 비용 변경 제안 아님 |\ndocs/14밸런스+수치테이블/BALANCE_ECONOMY_TEAM_MASTER.md:73:| PM-013-B | 격리 재현 완료 / **SKILL 수정 완료(2026-10-01, SKILL팀)** | `tools/balance-blast-repro.mjs`가 두 HTML의 실제 비용·발동 함수를 추출해 실행. 원가5의 실비3을 보유하고 ST10·쿨0인 Lv1에서 폭탄0개, 악의/ST/쿨 그대로. 자동 석궁 라우터는 3을 만족해 성공으로 표시함 | **→ SKILL 처리(commit 0e26bfa01)**: `activateBlastShot` 게이트 `_malCost(8)`→`_malCost(5)` 정렬(차감·T라우터·확정원가5와 일치). 수정 후 repro 두 HTML 악의3→발동(악의0/ST9/폭탄1/쿨30), 부족(악의2) 미발동. 회귀 `test/skillBlastShotGate.test.js` 6/6 GREEN. 공용 `_malCost`·강화(PM-013-C)는 미접촉 보존. 라우터는 이미 원가5라 무변경. 인게임 T-발사 실플레이는 시작플로우·클로저스코프 제약으로 유보(추출 하니스=실제 라이브 함수 실행이 권위 근거) |\ndocs/14밸런스+수치테이블/BALANCE_ECONOMY_TEAM_MASTER.md:74:| PM-013-C | 공용 계산 적용 수정·격리 검수 완료 / 실플레이·패키지 미검수 | 두 HTML의 수동 `canUp`·일괄 `_matGate`를 실제 차감 `_malCost(sk.upMat||0)`과 일치. `upMat=0`에서 게이트50·차감0 오류를 실제 코드 평가로 RED 2건 재현하고 수정 후 무료·유료 경계 4건 GREEN. 경험치 테스트 포함 8/8 통과 | QA 실측 중이므로 별도 게임/빌드 미실행. 스킬 패널 실제 클릭과 자동 강화의 본편형 패키지 검수는 후속 |\ndocs/14밸런스+수치테이블/BALANCE_ECONOMY_TEAM_MASTER.md:87:| 후속 공용 게이트 | `upMat`·`_malCost`를 docs 전체 검색하고 스킬 SSOT·메타·세이브 설명을 현재 코드와 동기화. `test/balanceSkillUpgradeCost.test.js`가 실제 `_malCost`, 수동·일괄 게이트 및 차감식을 두 HTML에서 읽어 평가. 수정 전 무료 강화 2건 RED(게이트50·차감0), 수정 후 4건 GREEN; 경험치 포함 8/8 GREEN | 실제 패널·패키지 검수와 스킬팀 폭산탄 수정은 별도. 타 팀 스테이징 파일 미접촉 |\ndocs/14밸런스+수치테이블/BALANCE_ECONOMY_TEAM_MASTER.md:88:| 다음 계산 불일치 재현 | `tools/balance-blast-repro.mjs`로 실제 `activateBlastShot`와 `_malCost`를 격리 실행. 두 HTML 모두 악의3·ST10에서 라우터 요구3 충족, 직접 게이트4로 발동 거부, 폭탄0/쿨0/자원 변화0 확인 | SKILL 개별 콘텐츠 함수 소유. 이 검수 스크립트는 저장·서버·게임 루프를 건드리지 않음. 실플레이는 QA 실측 이후 |\ndocs/16번역·로컬라이제이션/FINISH_TRANSLATIONS_20260923.md:62:| 7 | `악의기둥 + 가시덫 → 합체: 기둥가시` | game.html |\ndocs/16번역·로컬라이제이션/FINISH_TRANSLATIONS_20260923.md:68:| 13 | `[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×pMagicMul×(14+5.6×(Lv-1))×0.75. 악의 10, 쿨 10초. Lv당 범위+15` | game.html |\ndocs/16번역·로컬라이제이션/FINISH_TRANSLATIONS_20260923.md:109:| 가시덫 | 선택1~4, 현재위치, 1렙반경300/10렙435, 슬로우91%(+2%/Lv 최대95%)+출혈, INT×magicRef×pMagicMul×(14+5.6×(Lv-1))×0.75, 악의10, 쿨10초, 렙당범위+15 |\ndocs/16번역·로컬라이제이션/FINISH_TRANSLATIONS_20260923.md:129:| MP·가시덫 공식 리터럴 보존 | 27/27 PASS |\ndocs/16번역·로컬라이제이션/FINISH_TRANSLATIONS_20260923.md:133:생성된 localization-data.js의 ui 값을 우선하고, 없는 키는 lang_<code>.js 기본 사전에서 조회하여 실제 표시 이름을 재사용했다. 지옥강타의 학습 안내에는 기존 2단계 이름(대부분 II)을 그대로 쓰고, 인트로의 일반 명칭은 1단계 이름의 단계 접미사를 생략한다. tr/el의 terminology.json 1단계 덮어쓰기 및 fi의 Jätti-isku를 반영한다. de는 실제 스킬 표시 Titanenschlag/Titanenschlag II를 따르며, 과거 튜토리얼 설명의 Königsschlag를 새 명칭으로 확장하지 않는다. 악의기둥·가시덫·얼음보주·기둥강타 및 악의 자원 명칭도 실제 사전과 일치시켰다.\ndocs/14밸런스+수치테이블/EARLY_COMBAT_5_7_1_20260910.md:32:| 지옥강타 비용·쿨 | `stCost('giantSlam')`, `_malCost(20)`; 기본 `floor(max(60,1800−(slv−1)×12)×(1+_cdRed()))`f | 비용·쿨 수정 없음. 특정 giantSlam2 합체는420f 기반 예외. 범위500+(slv−1)×15, 보스 포이즈25%도 유지 |\r\ndocs/16번역·로컬라이제이션/번역대상_펫대사.md:98:| D11 | melee_trap | cat | 1번! 가시덫으로 적 묶어버려! | ❌ |\ndocs/16번역·로컬라이제이션/TUTORIAL_ENGLISH_20260921.md:14:| 기본 체크 | basicLabelText 콜백과 basicRows의 text 참조로 이동·좌클릭·우클릭·가시덫 레이블 갱신 |\ndocs/16번역·로컬라이제이션/TUTORIAL_ENGLISH_20260921.md:45:| parry-lesson.js | 1 · 가시덫 설치 후 도망 · 10마리 처치 | 1 · Place Spike Trap and retreat · Defeat 10 enemies |\ndocs/16번역·로컬라이제이션/TUTORIAL_ENGLISH_20260921.md:65:| parry-lesson.js | 전투 기본 조작을 모두 익혔습니다. | You have learned the basic combat controls. |\ndocs/16번역·로컬라이제이션/TUTORIAL_ENGLISH_20260921.md:76:| parry-lesson.js | 1 · 가시덫 | 1 · Spike Trap |\ndocs/16번역·로컬라이제이션/TUTORIAL_ENGLISH_20260921.md:101:| parry-lesson.js | 붙으면 가시덫을 깔고 도망치세요 | Place a Spike Trap and retreat when enemies close in |\ndocs/16번역·로컬라이제이션/TUTORIAL_ENGLISH_20260921.md:102:| parry-lesson.js | 몬스터 10마리가 쫓아옵니다. 가까이 붙으면 1번으로 발밑에 가시덫을 깔고, WASD / 방향키로 도망치세요. 덫 안의 적은 느려지고 지속 피해로 쓰러집니다.<br> | 10 monsters are chasing you. When they approach, press 1 to place a Spike Trap at your feet, then retreat with WASD / arrow keys. Enemies inside the trap are slowed and take damage over time.<br> |\ndocs/16번역·로컬라이제이션/TUTORIAL_ENGLISH_20260921.md:103:| parry-lesson.js | {p0} 가시덫 설치 · {p1} 설치 후 이동 · 처치 {p2}/10 | {p0} Spike Trap placed · {p1} Moved after placement · Defeated {p2}/10 |\ndocs/16번역·로컬라이제이션/STEAM_LANGUAGE_RESUME_20260921.md:64:| [{key}]로 스킬 화면을 열어 습득한 스킬과 구성을 살펴보세요. | Press [{key}] to inspect your learned skills and loadout. |\ndocs/16번역·로컬라이제이션/UI_SOUTHEAST_EUROPE_20260909.md:8:| el 그리스어 | 488 | 작성·통합 담당 검토 완료, 독립 검토 미완료 | 지옥강타1·유령허수아비·불꽃칼날·추적암전·얼음보주·아이스스톰·가시덫 7개 |\ndocs/16번역·로컬라이제이션/RESUME_LANGUAGE_INTEGRATION_20260923.md:42:| parry-lesson.js | 1 · 가시덫 설치 후 도망 · 10마리 처치 | 1 · Place Spike Trap and retreat · Defeat 10 enemies |\ndocs/16번역·로컬라이제이션/RESUME_LANGUAGE_INTEGRATION_20260923.md:62:| parry-lesson.js | 전투 기본 조작을 모두 익혔습니다. | You have learned the basic combat controls. |\ndocs/16번역·로컬라이제이션/RESUME_LANGUAGE_INTEGRATION_20260923.md:73:| parry-lesson.js | 1 · 가시덫 | 1 · Spike Trap |\ndocs/16번역·로컬라이제이션/RESUME_LANGUAGE_INTEGRATION_20260923.md:98:| parry-lesson.js | 붙으면 가시덫을 깔고 도망치세요 | Place a Spike Trap and retreat when enemies close in |\ndocs/16번역·로컬라이제이션/RESUME_LANGUAGE_INTEGRATION_20260923.md:99:| parry-lesson.js | 몬스터 10마리가 쫓아옵니다. 가까이 붙으면 1번으로 발밑에 가시덫을 깔고, WASD / 방향키로 도망치세요. 덫 안의 적은 느려지고 지속 피해로 쓰러집니다.<br> | 10 monsters are chasing you. When they approach, press 1 to place a Spike Trap at your feet, then retreat with WASD / arrow keys. Enemies inside the trap are slowed and take damage over time.<br> |\ndocs/16번역·로컬라이제이션/RESUME_LANGUAGE_INTEGRATION_20260923.md:100:| parry-lesson.js | {p0} 가시덫 설치 · {p1} 설치 후 이동 · 처치 {p2}/10 | {p0} Spike Trap placed · {p1} Moved after placement · Defeated {p2}/10 |\ndocs/16번역·로컬라이제이션/RESUME_LANGUAGE_INTEGRATION_20260923.md:214:| system-lesson.js | [{key}]로 스킬 화면을 열어 습득한 스킬과 구성을 살펴보세요. | Press [{key}] to inspect your learned skills and loadout. |\ndocs/1전체그래픽세팅/맵_화면효과_전수조사.md:145:`_collectLights()`는 플레이어 등불, 생존 보스, 적격 장판, `_buildStaticLights()`가 모은 정적 오브젝트, 켜진 iris를 수집한다. 공용 장판 배열은 `iceStorm`의 기존 얼음빛과 `el===EL.F`의 화염빛만 추가한다. 가시덫·회복/약화 영역·암흑/전기 장판은 추가 화염빛이 없다. [장판 분류·수치·검증](../5.1임펙트디자인/ZONE_LIGHT_CLASSIFICATION_20260910.md). 2026-09-27 현재 si0/si3의 2D 다크드루이드는 발밑 기존 광원(r=520, a=.62±.08)에 더해 `boss.y−boss.r×spec.dh×.62` 위치에 반경 560, 강도 .58의 **어둠 마스크 전용** 상반신 광원 1개를 둔다. `ci=-1`은 `_litColCvs` 색상 프리셋 합성에서 제외하므로 새 색 원판 없이 뿔·얼굴·가슴을 밝힌다. 다른 보스 및 전투 수치는 그대로다. 아래 표는 iris 항목이다.\ndocs/13출시·마케팅/GAMEPLAY_TRAILER_V22_20260909.md:34:`test/trailerCombatSafety.test.js`는 HP/피격 무적 보존, 렌더 후 iframes 복원, 시작 HP 계약, 교체 후 공간 인덱스 전체 재구성을 검사한다. 스킬 발동 감사는 `_addSkProf`, 슬롯 디스패치, 블랙스타 종료 이벤트를 기록하고 실제 프레임으로 보완한다. 디스패치 성공만으로 시각 PASS를 선언하지 않는다. 기둥 take는 `pillarSpike` 합체로 darkPillar와 spikeTrap을 함께 사용하며, 기둥 합체의 실제 렌더 강도를 그대로 촬영한다.\ndocs/13출시·마케팅/GAMEPLAY_TRAILER_V22_20260909.md:136:| `spikeTrap` | 가시덫 |\ndocs/13출시·마케팅/AUTO_CLEANUP_50_20260916.md:19:| 보류 | 이미 스테이징된 작업, 병합/리베이스/체리픽/리버트 진행, detached HEAD, 기존 index.lock, 검증 실패, 검증 도중 파일/HEAD 변경 |\ndocs/11내러티브·로어디자인/펫_대사_스크립트.md:63:| melee_trap (spikeTrap 보유) | 근접 적 10마리 + spikeTrap | — | 1번! 가시덫으로 적 묶어버려! | 300 |\ndocs/11내러티브·로어디자인/펫_대사_스크립트.md:64:| melee_trap (기본) | 근접 적 10마리 + spikeTrap 없음 | ...둘러싸이면 끝이야. 빠져나와. | 근접이 너무 많아! 거리 벌려! | 300 |\r\ndocs/3.2메타·진행시스템/3.2메타·진행시스템.md:13:| 악의 소비 | 양수 기준 원가에 `_malCost(v)=max(1,ceil(v×0.5))`를 적용. HP 물약은 1 악의, 강화는 단계·등급 비용식 적용 | `game.html`의 `_malCost`·`useQuickslot`·`enhCost`; [자원표](../14밸런스+수치테이블/자원소비량표.md) |\ndocs/3.2메타·진행시스템/3.2메타·진행시스템.md:14:| 강화 | 성공 확률 `max(0.5,99×0.99^n)%`; 비용 `enhCostRaw(n)=max(20000,ceil((20000+n×3500)×1.5))`에 등급배율을 곱하고 `_malCost` 적용. 유니크 경제 배율은 전설 단계(1.8)로 취급 | `game.html`의 `enhCost`·`_itemEconomyRarity`; [수치표](../14밸런스+수치테이블/14밸런스+수치테이블.md) |\ndocs/3.2메타·진행시스템/3.2메타·진행시스템.md:17:2026-10-01 스킬 강화 악의 검사 동기화: `game.html`과 `game-easy-test.html`의 수동 강화 `canUp` 및 일괄 강화 `_matGate`가 실제 차감 `_malCost(sk.upMat||0)`과 일치한다. 현행 `upMat=0` 스킬은 악의 0에서도 SP·레벨 제한을 충족하면 강화된다. 기존 게이트의 `upMat||100`은 악의 50을 요구하던 계산 적용 오류였으며, 확정 강화 비용이나 보유 악의를 변경하지 않았다.\ndocs/3.3 키바인딩+설정/3.3 키바인딩+설정.md:59:| 키보드 `Space` | `SKILL_SLOTS[4]`, 분노 전용 | MP 80과 `P._scCharges>0`이면 즉시 시전하고 충전 1회 소비 | 현재 마우스 커서의 월드 좌표, 플레이어에서 최대 1000px |\r\ndocs/3.3 키바인딩+설정/3.3 키바인딩+설정.md:169:- `#skillPanel` 내부에 `#skillGridWrap` 래퍼 + `#skillFuseLines` SVG 오버레이 추가 (`position:absolute; pointer-events:none; z-index:5`)\r\ndocs/3.3 키바인딩+설정/3.3 키바인딩+설정.md:171:- `renderSkillPanel` 끝에서 `_drawSkillFuseLines()` 호출\r\ndocs/3.3 키바인딩+설정/3.3 키바인딩+설정.md:190:- `renderSkillPanel` 끝에서 `_skExpandedId`가 있으면 `requestAnimationFrame`으로 다음 프레임에 스크롤\r\ndocs/3.3 키바인딩+설정/3.3 키바인딩+설정.md:191:- `document.querySelector('#skillGrid [data-sk-id=\"...\"]')`로 펼친 카드 찾아 `scrollIntoView({behavior:'smooth',block:'center',inline:'nearest'})` 호출\r\ndocs/3.3 키바인딩+설정/3.3 키바인딩+설정.md:200:- viewBox는 `skillGridWrap` 크기로 동적 갱신\r\ndocs/3.3 키바인딩+설정/3.3 키바인딩+설정.md:221:- **고유 수치 분기 (`_skSpecificDetails`)**: kiSlash/whirlwind/fireball/detonate/maliceHunt/giantSlam/chargeBoost/magicBlink/darkPillar/spikeTrap 등 주요 스킬은 각자 고유 표 반환\r\ndocs/3.3 키바인딩+설정/3.3 키바인딩+설정.md:237:| **+ 습득** | 미습득 + canLearn | `_skClick()` — **SP/악의 선검증**(부족 시 `자원 부족!` 후 중단) → `P.skills[sk.id]=1`, SP/악의 차감, 슬롯 자동 배정 |\r\ndocs/3.3 키바인딩+설정/3.3 키바인딩+설정.md:238:| **+ 레벨업** | 학습됨 + canUp | `_skClick()` — **SP/악의 선검증**(부족 시 `자원 부족!` 후 중단) → `P.skills[sk.id]++`, SP/악의 차감 |\r\ndocs/3.3 키바인딩+설정/3.3 키바인딩+설정.md:240:| **− 레벨** | 학습 + slv>1 | `_skUnclick()` — `P.skills[sk.id]--`, 직전 강화 비용(`_skillUpSpCost(slv-1)`) **환불**, 실제 악의 차감액 `_malCost(sk.upMat||0)` 환불 |\ndocs/3.3 키바인딩+설정/3.3 키바인딩+설정.md:241:| **− 리셋** | 학습 + slv===1 | `_skUnclick()` — `delete P.skills[sk.id]`, **학습 비용 전액 환불** (`sk.spCost` + `sk.matCost`), 모든 슬롯에서 자동 해제 (LMB/charge/bow/magic/Q/tech/ULT) |\r\ndocs/3.3 키바인딩+설정/3.3 키바인딩+설정.md:248:- **코드 위치**: game.html `_skDetailHTML`/`_skSpecificDetails` (라인 ~28049), `_renderSkillRow` (라인 ~29097), `_skUnclick` (라인 ~29503 인라인), `_skClick` (라인 ~29720)\r\ndocs/3.3 키바인딩+설정/게임패드_매핑표.md:7:| **B / ○** | Space | `SKILL_SLOTS[4]` 분노 전용 | 지옥강타 1, 지옥강타 2, **천공쇄기** | 플레이어가 바라보는 방향 650px 지점 |\ndocs/13출시·마케팅/13출시·마케팅.md:1:## 2026-09-29 Lv1 기본 가시덫의 숫자 1번 슬롯 배정 복구\ndocs/13출시·마케팅/13출시·마케팅.md:5:| spikeTrap / _startDemoNew | 신규 데모: P.skills.spikeTrap=1 및 SKILL_SLOTS[0]=spikeTrap. 습득만 하고 슬롯 배정을 빠뜨린 경로 복구. game.html·game-easy-test.html 동일 |\ndocs/13출시·마케팅/13출시·마케팅.md:6:| 기본 키 | 숫자 1 → 가시덫 Lv1, Space → giantSlam Lv1, F → holyDome Lv1. 슬롯 인덱스0/4/5; 나머지 신규 슬롯은 기존 빈칸 유지 |\ndocs/13출시·마케팅/13출시·마케팅.md:7:| 저장 복원 | 배정은 !_demoLoaded 신규 분기에서만 실행. 기존 선택 배치를 강제로 바꾸지 않음. 가시덫을 2번에 옮긴 저장은 [null,spikeTrap] 유지. 이전 누락 저장의 빈 1번 슬롯은 공용 dbRestore의 기존 자동배정 경로에서 복구 |\ndocs/13출시·마케팅/13출시·마케팅.md:265:| 스킬 | **전 스킬 53종 Lv5** | chargeBoost/magicBlink/ghostWalk/bladeDash/kiSlash/fireball/whirlwind/detonate/maliceSwipe/fanShot/omniBeam/elemMissile/guardian/maliceHunt/venomBlade/maliceMortar/boneWall/blackStar/lavaSummon/execution/iceOrb/needleShot/arcLaser/fireBeam/fireAura/plagueBurst/maliceStorm/darkPillar/holyDome/holyPrison/iceStorm/giantSlam/giantSlam2/**skyCrusher**/chainAssault/chainSlam/chainSlash/peaceShield/hellRay/shieldThrow/weakPhys/weakMag/weakPj/weakRev/spikeTrap/blueShot/burstLoop/voidScarecrow/explodeScarecrow/ghostXbowTurret/timeWarp/thunderStake/ancestorSummon |\ndocs/2_1 스킬관리+합체시스템+자원/SKILL_자원게이트_감사_20261001.md:8:`game.html`/`game-easy-test.html`에서 `function activate*` 24종 + useSkill 라우터/`_skCdMap`를 정적·소스 대조. 자원별로 **게이트 표현식 값 == 차감 표현식 값** 확인. `_malCost`(악의 50% 할인)·ST/MP는 실비 기준. 쿨다운은 게이트 변수 == 설정 변수. (경계값 실행 재현은 SKILL-02처럼 추출 하니스로 가능하나, 불일치가 발견된 경우에 한해 수행.)\ndocs/2_1 스킬관리+합체시스템+자원/SKILL_자원게이트_감사_20261001.md:13:| 악의(_malCost) | 게이트 `<_malCost(N)` vs 차감 `-=_malCost(N)` 인접쌍 | spikeTrap10·plagueBurst15·giantSlam20·maliceHunt30·boneWall(fire)12·chainBlast20·blastShot5(수정본) — **전부 N 일치** |\ndocs/2_1 스킬관리+합체시스템+자원/SKILL_자원게이트_감사_20261001.md:28:| boneWall | **MP50** | `_bwStk--`(스택1) + `_malCost(12)`(악의12), **MP 차감 0** | \"2스택 + 악의12\"(MP 언급 없음) | **팬텀 MP 게이트(표시=차감엔 없는 MP 요구)** |\ndocs/2_1 스킬관리+합체시스템+자원/SKILL_자원게이트_감사_20261001.md:36:- 본 감사 잠금 테스트 `test/skillResourceGateAudit.test.js`: 두 HTML의 각 `activate*` 소스에서 `_malCost(N)` 게이트값 == 차감값(SKILL-02 서명) 정적 검증. GREEN = 개별 activate 악의 게이트/차감 일치 유지.\ndocs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:1:## 2026-09-29 Lv1 기본 가시덫의 숫자 1번 슬롯 배정 복구\ndocs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:5:| spikeTrap / _startDemoNew | 신규 데모: P.skills.spikeTrap=1 및 SKILL_SLOTS[0]=spikeTrap. 습득만 하고 슬롯 배정을 빠뜨린 경로 복구. game.html·game-easy-test.html 동일 |\ndocs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:6:| 기본 키 | 숫자 1 → 가시덫 Lv1, Space → giantSlam Lv1, F → holyDome Lv1. 슬롯 인덱스0/4/5; 나머지 신규 슬롯은 기존 빈칸 유지 |\ndocs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:7:| 저장 복원 | 배정은 !_demoLoaded 신규 분기에서만 실행. 기존 선택 배치를 강제로 바꾸지 않음. 가시덫을 2번에 옮긴 저장은 [null,spikeTrap] 유지. 이전 누락 저장의 빈 1번 슬롯은 공용 dbRestore의 기존 자동배정 경로에서 복구 |\ndocs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:41:| `skyCrusher` | 천공쇄기 / Sky Crusher | 특수(`spec`) | **분노(`rage`)** | **Space (`SKILL_SLOTS[4]`) 전용** | MP 80 고정 | 최대 3충전, 충전당 900f = 15초 | `SKILL_LIST`, `SKILL_CATS`, `SKILL_HIER`, `_dispatchSkillSlot`, `_isRageBurstSkillId` |\ndocs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:79:- 악의를 소모하는 양수 원가의 체크/차감 경로는 최종적으로 `_malCost(v)=max(1,ceil(v×0.5))`를 적용한다. 원가 0 이하는 비용 0이다.\ndocs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:94:| **K** | 전투스킬 관리창 | 스킬 습득/강화/합체/리셋 + **일괄 레벨업** | `renderSkillPanel()` → `_renderSkillRow()` |\ndocs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:104:| 개별 스킬 | 합체 미흡수 + 습득됨 + `sk.up` 만. 비용 `_skillUpSpCost(slv)` + 악의(게이트·차감 모두 `_malCost(upMat\\|\\|0)`) — 단일 강화와 100% 동일. `upMat=0`이면 악의 0이어도 SP·레벨락이 충족될 때 강화 가능 |\ndocs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:106:| 완료 후 | `renderSkillPanel()` + `updateSkSlot()` + `updateQS()` + `dbSaveForce()`, 플로팅텍스트 `일괄 레벨업 ×N`. 강화 0건이면 `레벨업 가능한 스킬 없음` 팝업 |\ndocs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:117:| 학습 | `_learnSkillAuto(sk)` — 학습 분기(`_skClick`)의 슬롯 자동배정 로직 복제(UI 알림 없이). 이미 습득(`P.skills[id]>=1`)이면 스킵. `reqLv > P.lv`(예: 푸른비 300, 버스트루프 700)면 스킵 |\ndocs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:121:| 완료 후 | `_closeSkPop()` + `updateQS()` + `updateSkSlot()` + `renderSkillPanel()` + `dbSaveForce()`. 플로팅텍스트 `추천 자동: 습득 N / 합체 M`. 0건이면 `추천 진행할 항목 없음` 팝업 |\ndocs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:125:> **밸런스**: 추천 자동은 신규 비용/배율을 만들지 않고 기존 학습(`_learnSkillAuto`=`_skClick` 학습분기 복제)·합체(`_execFuse`) 경로만 호출. 숨은 할인/우회 없음.\ndocs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:145:| 습득/강화 후 | `renderSkillPanel()` + `updateSkSlot()` + `updateQS()` + `dbSaveForce()` |\ndocs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:146:| 합체 후 | `_syncActiveSkAfterReset(absorbed)` + `updateSkSlot()` + `updateQS()` + `renderSkillPanel()` |\ndocs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:147:| 리셋 후 | `_syncActiveSkAfterReset(resetIds)` + `updateSkSlot()` + `updateQS()` + `renderSkillPanel()` |\ndocs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:209:| spikeTrap | 가시덫 | **summon+dot** | 물리 탭의 일반 1~4번 선택 스킬. 설치·출혈 DOT이며 현재 피해 공식은 `magicRef×statInt×pMagicMul×_skMul×0.75` (2026-09-13 직전 피해의 50%) |\ndocs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:295:| giantSlam | 지옥강타 1 | SKILL_SLOTS[4] | Space | 기본 강제 장착 |\ndocs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:296:| holyDome | 회복의 영역 | SKILL_SLOTS[5] | F | 기본 강제 장착 |\ndocs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:297:| spikeTrap | 가시덫 | SKILL_SLOTS[0] (1번) | 1~4 | 기본 강제 장착 |\ndocs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:302:- 새 캐릭터의 기본 스킬 강제 장착은 난이도와 무관하게 기검참·가시덫·회복의 영역·지옥강타 1·얼음보주 5종에 적용된다.\ndocs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:305:- 시작 슬롯 기본 배정(1번=가시덫, Space=지옥강타 1, F=회복의 영역)은 **캐릭터 생성(1렙) 시에만** 실행. 가시덫은 물리 탭의 일반 선택 스킬이며, 이후 로드에서는 `_repairAreaSkillSlot()`이 일반=1~4, 분노 폭발=Space, 영역=F 계약을 복구한다(습득/레벨은 유지).\ndocs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:336:### 선택스킬 (SKILL_SLOTS[0~5], K/L키 패널에서 배정)\ndocs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:339:| 1~4 | `SKILL_SLOTS[0~3]` | 습득한 일반 액티브 선택스킬(**영역·분노 폭발 제외**) | 일반 스킬의 첫 빈칸 |\ndocs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:340:| Space | `SKILL_SLOTS[4]` | **분노 전용**: `giantSlam`, `giantSlam2`, 또는 `cat:'rage'` 액티브 | 비었을 때 대상 스킬만 자동 배정; 사용 중이면 수동 교체 |\ndocs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:341:| F | `SKILL_SLOTS[5]` | **영역 스킬 전용**: `cat:'tech' && act:true && !fixed`, 최대 1개 | F가 비었을 때만 자동 배정; 사용 중이면 미배정 후 F 팝업에서 수동 교체 |\ndocs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:348:| `_findAutoSkillSlot(id)` | 일반=1→4, 분노 폭발=Space만, 영역=F만 탐색. 전용 칸 사용 중이면 `-1`(미배정) | 습득·추천 자동·합체 호스트·로드 자동배정 |\ndocs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:385:| giantSlam2 | 지옥강타 2 | rage | **특수 탭 → Space 전용** | ST+악의20 | giantSlam 복제 스킬. 기둥강타/지옥강타 2의 Space 호스트. 동일 공식. spCost10, matCost120, 쿨10초(Lv당-0.2초) | 동일 |\ndocs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:405:| darkPillar | 악의기둥 | — | 쿨 15초 (900f) | 즉시 발동(현재 위치). 9개 기둥 순차 소환(10f 간격). 단독·합체 모두 기둥별 생성 시점부터10초간 지속. 반경 250+(Lv-1)×22. 0.5초마다 INT 스케일 암흑 DOT+감속. 가시덫과 합체→기둥가시, 지옥강타 2와 합체→기둥강타 | 뎀+1/Lv (기본×4), 범위+22/Lv |\ndocs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:424:| blackStar | 블랙 | Z | 없음 | MP 30% | 검은 오망성, 7초(+Lv당0.5초) 강력 흡인 → **폭발: INT×5배(+Lv당12%), 스턴 1.5초, 넉백**, **범위 1500+Lv×100px**, 흡인력 기본5+Lv당0.5, 거리감쇠 30%, 속성:암흑 | **120초 (7200f)** | 검은 오망성 소환 | spCost:10, matCost:100 |\ndocs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:425:| lavaSummon | **탄막블랙홀**(구 악의흡수/용암소환, 2026-09-03 개편) | Z | 없음 | MP 30% | 플레이어 위치에 **작은 특이점 코어를 즉시 설치**, 5초(300f) 동안 흡수장 `1000+(Lv-1)×25px` 안의 살아 있는 적 탄막을 코어로 끌어당긴다. 코어 반경 `24+min(24,sz×2)px` 도달 시에만 흡수 기록하며 포획 중 지형·플레이어 충돌은 건너뛴다. 종료 시 흡수 완료 탄 1발당 2발, 총 `흡수수×2`발(상한 없음)의 360° 아군 **원형 보존 반사탄**(속도11px/f, life120, 반경80px, 1발=`floor(최종 종료폭발피해/발수)`)으로 재분출하고, 범위 `900+(Lv-1)×30px` 화염 폭발도 발생한다. 각 반사탄은 흡수 전 탄의 속성·색·크기·특수 외형·유도 성질을 보존하며 유도탄은 가장 가까운 적을 다시 추적하고, 명중 때 `fire_medium` 폭발+`magic_burst` 스프라이트 임팩트를 낸다. 기본 폭발 피해=`magicRef×INT×pMagicMul×8×(1+(Lv-1)×9/19)`. 흡수 1발당 +3%(최대 +300%)이며, 흡수 탄막의 원피해 합도 기본 피해 100% 한도로 추가. 스턴 90f×거리감쇠, 최저 피해 30%. **Q로만 패링 가능한 무지개탄(`blackBean`)·대형 에너지탄 포함**, 아군탄·지뢰·함정·거미줄·독장판 제외 | 120초 (7200f) | API 생성 8프레임 검은 코어+용암 강착원반(4×2, 80ms/프레임, 화면 238→272px)+넓은 흡수장 윤곽+코어 도달 흡수 카운터→원형 보존 360° 재분출+명중 버스트. **대형 용암 폭발 시트는 재분출 시야를 가리므로 미사용.** 에셋 미로딩 시 기존 붉은 오망성 반경 92px 폴백 | spCost:10, matCost:100 |\ndocs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:426:| execution | 처형 | X | 그로기 보스 | HP/MP/ST 각 10% | 보스 최대HP 30% 순수 데미지, **근접 타겟 지정** | 20초 (1200f) | 섬광 관통 돌진 (보스 관통→뒤쪽 벽까지), 궤적 잔상 | spCost:10, matCost:100, 강화 불가 |\ndocs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:639:| pillarSpike | 기둥가시 | 2성 | darkPillar(모체) + spikeTrap | 없음 |\ndocs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:641:- **효과**: 악의기둥 설치 시 각 기둥 위치에 가시덫 자동 설치 (9개). 범위=가시덫 풀 범위(300+(Lv-1)×15). **합체 시 기둥+가시덫 모두 지속 600f(10초)** — 일반 darkPillar와 가시덫도 동일한10초. 가시덫 쿨다운 소비. 가시덫 피해는 공통 공식 `magicRef×statInt×pMagicMul×_skMul×0.75`, 슬로우는 91%(Lv당 +2%p, 최대95%)를 적용한다. 기둥 개별 범위도 ×0.5(구 ×0.35에서 상향)\ndocs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:642:- **겹침 캡**: 적당 darkPillar 1존, spikeTrap 1존만 틱당 히트 (다중 존 겹쳐도 각 타입 1회만 데미지)\ndocs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:643:- **흡수**: spikeTrap (가시덫은 물리 탭에서 독립 발동 가능하며, 기둥가시에서는 9개가 자동 설치됨)\ndocs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:652:- **효과**: 지옥강타 2 발동 시 `activateDarkPillar()` 호출 — 9개 악의기둥 순차 전개 + pillarSpike 합체 시 가시덫 자동 포함\ndocs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:756:| pillarSpike (기둥가시) | darkPillar | spikeTrap |\ndocs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:1094:| 3. `_skClick` 내 `else if` (클릭 핸들러) | 합체 강화 분기 진입 | OR 조건에 `_isXXX` 추가 |\ndocs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:1097:**검증**: `_isFuseUp`의 조건 목록과 `_skClick`의 `else if` 조건 목록이 **완전히 동일**해야 함. (2026-04-17 기준 27개 동기화 완료)\ndocs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:1101:`_sanitizeCoreState`와 로드 시 `_fMap` 싱크에서 min-level 강제를 **전면 제거**함. 하위 합체가 상위 합체 스킬을 끌어내리는 치명적 리셋 버그 방지. 합체 레벨 동기화는 **스킬 패널(`_skClick`)에서만** 처리.\ndocs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:1141:- 코드 위치: `_skClick` 내 `_fuseSelId` 분기 — `_autoAllLearned && _canFuse` 체크\ndocs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:1156:| 구성 스킬 습득비 | Σ spCost (스킬별) | 스킬 개수만큼 |\ndocs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:1165:> **장착 계약:** 영역 스킬은 F 전용 슬롯에 하나만 장착한다. 1~4/Space 장착과 다중 영역 동시 전개는 금지하며, 다른 영역을 쓰려면 L 패널의 F 탭에서 교체한다. 가시덫(`spikeTrap`)은 영역 슬롯에서 제외하고 물리 탭의 일반 1~4번 슬롯으로 분류한다.\ndocs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:1177:| spikeTrap | 가시덫 [선택:1~4번] | 물리 탭 일반 스킬. 슬로우 91%(기존 대비 ×1.3)+Lv×2%p(최대95%) + 출혈 DOT. 피해는 `magicRef×statInt×pMagicMul×(14+5.6×(Lv-1))×0.75` (직전 피해의 50%) | 300+(Lv-1)×15 (1렙300, 10렙435, 20렙585) | 10초 | 10초 | 범위+15, 틱 계수+4.2/Lv |\ndocs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:1180:- **장판 조명 (2026-09-10):** `G._fireZones`는 비화염 스킬도 보관하는 공용 배열이다. 가시덫·치유/약화 영역 등에 화염 광원을 붙이지 않으며, `iceStorm`의 기존 얼음빛 또는 `el===EL.F`의 실제 화염빛만 추가한다. 고유 스킬 VFX와 전투 수치는 유지. [현재 조명 분류](../5.1임펙트디자인/ZONE_LIGHT_CLASSIFICATION_20260910.md).\ndocs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:1250:| 14 | `_skClick` 합체 강화 조건 | `\\|\\|_isSiegeGhost){` (34124번대) | `\\|\\|_isXXX` 추가 |\ndocs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:1570:| 카테고리 | `renderSkillPanel()`이 4개 대분류 탭을 `#skillCategoryNav`에 렌더한다. 이 줄은 `.frame-inner-panel-stack` 첫 행에서 스킬 목록 스크롤 밖에 고정된다. 카테고리 전환과 강조는 기존 동작을 유지한다. |\ndocs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:1571:| 레벨·자원 정보 | `#skillInfo`(LV/SP/악의/사슬)는 `#skillGridWrap`의 첫 자식이다. 휠로 목록을 내리면 요약도 스킬 카드와 함께 위로 이동한다. |\ndocs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:1572:| 스크롤 경계 | `#skillGridWrap`과 우측 `#skillDetail`만 각각 내부 스크롤한다. 높이 620px 이하에서도 바깥 `.skill-pbox`는 스크롤하지 않고 중앙 영역이 남는 높이를 사용한다. 게임패드 기본 스크롤 대상도 `#skillGridWrap`이다. |\ndocs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식.md:21:| **악의 최종 소비량** | 양수 원가 `_malCost(v) = max(1, ceil(v × 0.5))`; 원가 0 이하는 0 | 악의 체크/차감 경로에 공통 적용 |\ndocs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식.md:232:| spikeTrap | 가시덫 | 10 | 0 | |\r\ndocs/0마스터플랜/EA/HELL_EA_BUILD_CHECKLIST.md:227:- **가시덫(spikeTrap)**: `(3+(lv-1))` → `(2+(lv-1)×0.5)` (약 50% 감소)\ndocs/0마스터플랜/EA/HELL_EA_BUILD_CHECKLIST.md:229:### 2026-09-07 가시덫 유틸리티 밸런스 조정 (이력)\ndocs/0마스터플랜/EA/HELL_EA_BUILD_CHECKLIST.md:235:| 슬로우 | Lv1 91%(기존 70% 대비 ×1.3), Lv당 +2%p, 최대95% | `_spikeTrapSlowPct(lv)`를 이동/넉백에 공통 적용 |\ndocs/0마스터플랜/EA/HELL_EA_BUILD_CHECKLIST.md:236:| 피해 | 기존 공식 ×0.5 | 단독 설치와 `pillarSpike` 합체 장판 모두 `_spikeTrapDmg` 사용 |\ndocs/2_1 스킬관리+합체시스템+자원/추천빌드_SKILL_REC_PATH.md:15:| 1 | 악의기둥+가시덫 | darkPillar, spikeTrap | pillarSpike | 기둥가시 | Pillar Spike | darkPillar + spikeTrap |\r\ndocs/2_1 스킬관리+합체시스템+자원/추천빌드_SKILL_REC_PATH.md:50:| 1단계→2단계 | 악의기둥+가시덫(기둥가시) → 해골무덤+악의폭풍(해골번개) |\r\ndocs/2_1 스킬관리+합체시스템+자원/신규캐릭_스킬프로젝트_20260930.md:66:3. **슬롯·키 배선**: 신규 캐릭 킷은 LMB/RMB/SPACE 3키. 기존 슬롯 시스템(`P.activeLMBSk`/`activeRMBSk`/`SKILL_SLOTS`) 위에 **per-캐릭터 킷 매핑** 필요 — §3-A 설계 결정 참조.\ndocs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md:229:| 실제 강화 지출 | `enhCost`: `_malCost(ceil(enhCostRaw(enh)×배율))`; `enhCostRaw(n)=max(20000,ceil((20000+n×3500)×1.5))` |\r\ndocs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식__NFD_0628_2305_백업.md:16:| **악의 최종 소비량** | `_malCost(v) = max(1, ceil(v × 0.5))` | 악의를 소모하는 모든 체크/차감 경로에 공통 적용 |\r\ndocs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식__NFD_0628_2305_백업.md:218:| spikeTrap | 가시덫 | 10 | 0 | |\r\ndocs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1112:| 렌더 표식 | game.html/game-easy-test.html renderSkillPanel의 _hierBar.className=skill-category-tabs, tb.className=skill-category-tab + 선택 시 active, --skill-category-color=h.col. 기존 SKILL_HIER/_skHierTab/번역/클릭/호버 핸들러 유지 |\ndocs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1113:| 제목 선택자 보정 | #skillGrid>div:not(.skill-recommendations):not(.skill-category-tabs)>div:first-child. 분류 첫 탭이 하위 카테고리 제목 스타일을 받던 중복 적용 제거 |\ndocs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1119:| 카드 호버 | #skillGrid [data-sk-id] brightness1.12, inset0 2px #e4c99744 및 inset0 −4px 8px #0007. 위치·크기·기존 상태 테두리는 유지 |\ndocs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1131:| 렌더 표식 |양쪽 게임 renderSkillPanel: phDiv.className=skill-rec-step, data-rec-state는 _done이면 complete,아니고 _isCur이면 current,나머지 upcoming. phHdr.className=skill-rec-title,phDesc.className=skill-rec-description |\ndocs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1837:| 카테고리 | `renderSkillPanel()`이 4개 대분류 탭을 `#skillCategoryNav`에 렌더한다. 이 줄은 `.frame-inner-panel-stack` 첫 행에서 스킬 목록 스크롤 밖에 고정된다. 카테고리 전환과 강조는 기존 동작을 유지한다. |\ndocs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1838:| 레벨·자원 정보 | `#skillInfo`(LV/SP/악의/사슬)는 `#skillGridWrap`의 첫 자식이다. 휠로 목록을 내리면 요약도 스킬 카드와 함께 위로 이동한다. |\ndocs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md:1839:| 스크롤 경계 | `#skillGridWrap`과 우측 `#skillDetail`만 각각 내부 스크롤한다. 높이 620px 이하에서도 바깥 `.skill-pbox`는 스크롤하지 않고 중앙 영역이 남는 높이를 사용한다. 게임패드 기본 스크롤 대상도 `#skillGridWrap`이다. |\ndocs/2게임디자인레벨디자인/RESOURCE_PRACTICE_20260912.md:9:| 조작 | F (`KeyF`, `SKILL_SLOTS[5]`). 실제 기존 슬롯 디스패치와 activateHolyDome 사용. 해당 과제에서만 F 허용 |\ndocs/2게임디자인레벨디자인/SPIKE_TRAP_PRACTICE_20260913.md:1:# 가시덫 초반 추격 실습 · 피해 50% 조정\r\ndocs/2게임디자인레벨디자인/SPIKE_TRAP_PRACTICE_20260913.md:3:사용자 확정: 초반에 적 약10마리가 붙으면 1번 가시덫을 깔고 도망쳐, 추격하던 적들이 덫에서 죽는 흐름을 가르친다.\r\ndocs/2게임디자인레벨디자인/SPIKE_TRAP_PRACTICE_20260913.md:7:| 순서 | 이동 → 좌클릭3킬 → 우클릭3킬 → **가시덫10킬+후퇴** → Q/E 등 기존8과제. 1단12항목 → 2단 자원8항목 → 시스템7항목. 2단은 기본 자동 연결 |\ndocs/2게임디자인레벨디자인/SPIKE_TRAP_PRACTICE_20260913.md:9:| 입력 | 가시덫 단계만 `Digit1` 허용. WASD/방향키 이동 허용. 다른 공격·스킬 입력 차단. 실제 숫자키 디스패치로 `SKILL_SLOTS[0]='spikeTrap'` 발동 |\r\ndocs/2게임디자인레벨디자인/SPIKE_TRAP_PRACTICE_20260913.md:12:| HP/처치 | 생성 당시 총 내구도 `max(1,_spikeTrapDmg())×(5+생성순번)`를 HP와 실드에 각각50% 배분(`hp=mhp=eShield=eShieldMax=총내구도×0.5`). 순번0~9이므로 실드+HP 합계5~14틱. `hurtE`의 실제 가시덫 DOT에 `_lessonAttack:'spikeTrap'` 표식. 양수 DOT 피해는 실드 우선 차감, 남는 피해만 HP 차감하여 실드0·HP0에 죽음. 타 스킬·출혈 단독·중복 사망은 집계하지 않음 |\ndocs/2게임디자인레벨디자인/SPIKE_TRAP_PRACTICE_20260913.md:13:| 연출 | 기존 가시덫 이미지·슬로우·출혈 표시 및 공용 `deathFX`, 시체, 살점, 사망 임팩트 사용. 같은 장판에 계속 적중하면25f 간격으로5번째~14번째 틱에 한 마리씩 처치(설치 후125~350f, 약2.08~5.83초). 고정 사망 타이머가 아니며 실제 피해 누적으로 판정 |\ndocs/2게임디자인레벨디자인/SPIKE_TRAP_PRACTICE_20260913.md:14:| 후퇴 판정 | 실제 생성된 가시덫 위치에서 방향 입력 중120px 이상 떨어지면 후퇴 성공. 새 장판을 설치하면 해당 장판 기준으로 다시 확인 |\r\ndocs/2게임디자인레벨디자인/SPIKE_TRAP_PRACTICE_20260913.md:15:| 완료 | `trapKills>=10 && trapEscaped`. 설치·후퇴·처치0/10 표시, `spikeTrapDone` 체크 후90틱 뒤 Q실습. 가만히 서서10킬만 하거나 키만 누르면 미완료 |\r\ndocs/2게임디자인레벨디자인/SPIKE_TRAP_PRACTICE_20260913.md:16:| 임시 자원 | 실습 중 악의를 최소 `_malCost(10)`까지 보충. 장판이 없으면 `_gcCd=0`으로 재시도 가능. 기준원가10에 _malCost(10)을 적용한 실제5악의/600f 쿨다운 공식 사용 |\r\ndocs/2게임디자인레벨디자인/SPIKE_TRAP_PRACTICE_20260913.md:17:| 복구 | 과제 진입 전 악의·1번 슬롯·스킬 객체·가시덫 쿨다운(속성 부재 포함)을 `trapSnapshot`에 저장. 다음 과제 또는 건너뛰기/종료 시 복구, 연습 가시덫 제거. 전체 연습 시작 전 월드는 기존 `saved.fields`로 복구 |\r\ndocs/2게임디자인레벨디자인/SPIKE_TRAP_PRACTICE_20260913.md:18:| 보상 | 임시 적의 전리품·경험치·실전 처치 통계 없음. `combat` 배지는 기존11개에 `spikeTrapDone`을 더한12개 모두 성공해야 신규 지급. 이미 받은 배지는 보존 |\r\ndocs/2게임디자인레벨디자인/SPIKE_TRAP_PRACTICE_20260913.md:19:| 적용 파일 | `parry-lesson.js`, `tutorial-badges.js`, `game.html`, `game-easy-test.html`. 가시덫 지속 처치 수정의 `parry-lesson.js` 캐시 버전 `20260913-resource-paused1`; 배지 버전은 `20260913-spike-trap` |\ndocs/2게임디자인레벨디자인/SPIKE_TRAP_PRACTICE_20260913.md:25:| `spikeTrap` / 가시덫 | 물리 탭 일반1~4번; 새 캐릭터 기본1번 | `floor(magicRef×statInt×pMagicMul×_skMul×1.5)` | `floor(magicRef×statInt×pMagicMul×_skMul×0.75)` — 내림 전 직전 피해의50% |\r\ndocs/2게임디자인레벨디자인/SPIKE_TRAP_PRACTICE_20260913.md:26:| `_SK_MUL.spikeTrap` | `_skMul=14+(Lv-1)×11.2×0.5` | b14/g11.2 | 동일. 최종 틱계수 Lv1=10.5, Lv20=90.3, 레벨당+4.2 |\r\ndocs/2게임디자인레벨디자인/SPIKE_TRAP_PRACTICE_20260913.md:27:| 단독/기둥가시 합체 | `activateSpikeTrap` / `activateDarkPillar` | 같은 `_spikeTrapDmg` 사용 | 모두 동일하게50% 하향 |\r\ndocs/2게임디자인레벨디자인/SPIKE_TRAP_PRACTICE_20260913.md:30:| 감속 | `_spikeTrapSlowPct` | Lv1 91%, Lv당+2%p, 최대95% | 동일. 상세 툴팁도 이 함수의 실제값 사용 |\r\ndocs/2게임디자인레벨디자인/SPIKE_TRAP_PRACTICE_20260913.md:35:`test/spikeTrapUtilityBalance.test.js`와 `test/magicAttackDamage.test.js`에서 이번 조정 전3000/2940으로 실패하고 조정 후1500/1470 통과를 확인했다. 가시덫·마법피해·슬롯·광원 관련19개 검사가 통과했다. \tools/test-spike-trap-practice.cjs는 양쪽 실제시전·비용·쿨다운·합체공식 공유, 감속 단일 적용, 건너뛰기 시 자원/슬롯/월드 복구를 추가 검사한다. `tools/test-parry-lesson.cjs`는 실제 과제 순서, 10마리 피해 누적, 다른 공격 차단, 후퇴 필수, 중복 처치 방지와 다음 단계/슬롯 복구를 검사한다. 자원 튜토리얼·마우스 입력·12개 배지 검사도 통과했다.\r\ndocs/2게임디자인레벨디자인/SPIKE_TRAP_PRACTICE_20260913.md:37:Chrome 로컬3333에서 테스트 슬롯으로 가시덫 과제에 진입해10마리 생성·추격, 실제1번 키 장판 생성, 실제DOT10킬, 게임 키 이벤트를 이용한 방향 입력 후퇴와 Q과제 전환을 확인했다. 검증용으로 앞선 세 과제만 개발 도구에서 건너뛰었으며 처치·후퇴 성공값은 조작하지 않았다.\r\ndocs/2게임디자인레벨디자인/SPIKE_TRAP_PRACTICE_20260913.md:44:| 원인 | `hurtE` 시작에서 실습이면 `hurtEnemy`로 넘기고 반환. 가시덫 분기는 `e.hp`만 차감하여 실전 실드 분배를 건너뛰었고, `mkEn`에서 받은 원래 실드도 초기화하지 않음 |\ndocs/2게임디자인레벨디자인/SPIKE_TRAP_PRACTICE_20260913.md:45:| 수정 | 가시덫 실습의 허용된 실제 DOT만 `absorbed=min(eShield,dmg)` → 실드 차감 → `dmg-=absorbed` → HP 차감. 실드가 전부 흡수하면 HP 손실·처치 없음. 초과 피해만 HP로 전달 |\ndocs/3.1 ui hud 디자인/exoduser-hud-redesign.md:852:| 3 | 이제 진짜 지옥이야 / This is real hell | Space 지옥강타, 1 가시덫, F 회복의 영역, Ctrl CT 스킬, T 석궁 자동발사 |\r\ndocs/3.1 ui hud 디자인/INTRO_FOUR_CUTS_20260914.md:9:| 3 | 이제 진짜 지옥이야 / This is real hell | 스킬 / Skills | Space 지옥강타·분노 폭발, 1 가시덫, F 회복의 영역, Ctrl CT 스킬(뇌전걸음·얼음보주), T 석궁 자동발사 | B, LT+A, LT, RB. T는 기본 패드 매핑 없음: 패드 안내에서 행 생략 |\ndocs/2_4 펫시스템/대사_스크립트.md:153:| melee_trap_yes | normal | 근접 10+, 가시덫 有 | 300 | — | 1번! 가시덫으로 적 묶어! |\ndocs/2_4 펫시스템/대사_스크립트.md:154:| melee_trap_no | normal | 근접 10+, 가시덫 無 | 300 | …둘러싸이면 끝이야. | 근접 너무 많아! 거리 벌려! |\r\ndocs/2게임디자인레벨디자인/TUTORIAL_MISSION_DETAILS_20260913.md:5:| 배치 | `placeDetails()`가 진행 중인 체크 행 바로 다음에 `.lesson-details`를 이동한다. 이동·좌/우클릭·가시덫·패링·사슬·분노 및 자원 실습에 적용 |\ndocs/3.1 ui hud 디자인/exoduser-ui-phase2 (1).md:462:스킬이 SKILL_SLOTS에 등록되면 `_skCdMap`에서 해당 스킬의 쿨다운 변수를 참조하여 HUD에 자동 표시.\r\ndocs/3.1 ui hud 디자인/exoduser-ui-phase2 (1).md:478:| spikeTrap | P._gcCd | 가시덫 |\r\ndocs/3.1 ui hud 디자인/exoduser-ui-phase2 (1).md:523:Space 슬롯(`SKILL_SLOTS[4]`)은 지옥강타 계열과 `cat:'rage'` 분노 스킬만 표시한다.\r\ndocs/3.1 ui hud 디자인/exoduser-ui-phase2 (1).md:572:| 스킬 패널 | 카테고리 헤더/스킬 카드/설명 박스를 동일한 지옥 유물 프레임 톤으로 정렬 | `#skillGrid*`, `#skillInfo`, `#skillGridWrap` |\r\ndocs/3.1 ui hud 디자인/exoduser-ui-phase2 (1).md:708:| 리스트 영역 보강 | 대장간/창고/스킬 내부 스크롤 영역에 완만한 백플레이트와 padding 추가 | `#fgGrid`, `#storageGrid`, `#skillGridWrap` |\r\ndocs/2게임디자인레벨디자인/TUTORIAL_GAP_AUDIT_20260913.md:9:| 기초 전투 | `parry-lesson.js`: 이동·좌/우클릭·1번 가시덫·Q/E 단발·Q/E 다수 홀딩·Shift·방향+Space·분노 축적/소비의 12항목 |\ndocs/2게임디자인레벨디자인/TUTORIAL_GAP_AUDIT_20260913.md:23:| 실습 구현 완료 / 슬롯 변경 안내 후보 | 1번 가시덫 | 기초4번째 과제에서 추격 적10마리에게1번 가시덫 사용 | 실제 장판DOT으로10마리 처치+설치 후120px 후퇴 필수. 슬롯 수동 변경 학습은 별도 후보 | 우클릭 과제 직후, Q 과제 전 |\ndocs/2게임디자인레벨디자인/PARRY_TUTORIAL_20260912.md:12:| 3 | 우클릭 · 적 5마리 처치 | 해당 과제의 연습 적 5마리를 기본 마법탄(`magic&&fireball`, 포탑·DOT 제외)으로 실제 처치. 동시에 최대 3마리씩 보충하며 탄 도착 시 시전 상태가 끝나도 인정 | 처치 0/5→5/5, 체크 후 90틱 뒤 가시덫 실습 |\ndocs/2게임디자인레벨디자인/PARRY_TUTORIAL_20260912.md:13:| 4 | 1번 가시덫 · 추격하는 적 10마리 처치 | 실제 가시덫 DOT으로 10마리 처치 + 설치 위치에서 방향 입력으로120px 이상 후퇴 | 설치·후퇴 체크와 처치0/10→10/10, 90틱 후Q 실습 |\ndocs/2게임디자인레벨디자인/PARRY_TUTORIAL_20260912.md:67:| 체크 | 이동 1개 + 좌/우클릭 2개 + 가시덫 1개 + 전투 8개 실제 성공 체크, 진행 바 성공 개수/12 |\ndocs/2게임디자인레벨디자인/PARRY_TUTORIAL_20260912.md:135:가시덫 초반 실습의 적·자원 복구·피해 공식은 [가시덫 추격 실습](SPIKE_TRAP_PRACTICE_20260913.md)을 따른다. 1번 슬롯 가시덫으로 배우며 F 전용 영역 슬롯과 구분한다.\ndocs/0마스터플랜/mac-resume-20261001/ui03-evidence/team-receipts.json:241:      \"text\": \"실제 소스 대조 완료. 하니스가 추출/참조하는 3개 구역 전부 라이브 `game.html`과 일치하며, **후보 정정 불필요**입니다.\\n\\n## 앵커·delimiter 대조 결과\\n| 하니스 앵커 | 코드 방식 | 라이브 위치 | 판정 |\\n|---|---|---|---|\\n| 리젠 시작 `// ═══ 아이스스톰 — 2스택 충전` | `indexOf` | **34861** | ✓ 일치 |\\n| 리젠 끝 = 확정 시작 `// ═══ 아이스스톰 — 조준 모드` | `indexOf` | **34871** | ✓ 일치 (리젠 slice=34861–34870) |\\n| 확정 시작 `^  if\\\\(P\\\\._isAiming\\\\)\\\\{$` | `search`(첫 매치) | **34872** | ✓ (아래 주의 참고) |\\n| 확정 끝 `// ═══ 독가스탄` | `indexOf(…, confStart)` | **34903** | ✓ 일치 (확정 slice=34872–34902) |\\n| `function fireBoneWall(tx,ty){` | `indexOf` | **43512** | ✓ 함수명 정확 |\\n| fireBoneWall 끝 `// ═══ 폭산탄` | `indexOf(…, boneStart)` | **43550**(`폭산탄 발동`) | ✓ boneStart 이후 첫 매치, 본체(43512–43530) 뒤 |\\n\\n**주의(정정 아님)**: `  if(P._isAiming){`는 두 곳(**34872** 확정블록, **53526** 렌더블록)에 존재합니다. 후보는 전역 스캔이 아니라 `source.search(...)`로 **첫 매치(34872)**만 잡으므로 의도대로 확정블록을 집습니다 — 기존 `skillStackConfirmGate`와 동일 방식이라 안전. `// ═══ 폭산탄`도 boneStart(43512) 이전의 34547/34585가 아닌 **이후 첫 매치 43550**이 잡혀 정확합니다.\\n\\n## 자원 필드 대조 (라이브 재확인)\\n- 아이스스톰: `P._isStk`·`P._isRech`·`P.mp`·`P._isAiming`·`G._fireZones`·`MBjust[0/2]`·`K['Escape']` — 확정블록(34872–34902) 실사용과 일치. 성공 꼬리 `if(P._isStk<_isMx2&&!P._isRech)P._isRech=1500`도 `_isRech` 초기화(newIce=1500, IceN2=10→리젠 후 1500)와 충돌 없음.\\n- 해골무덤: `P._bwStk`·`P._bwAiming`·`G.mats`·`G._boneWalls`·`_malCost(12)` 일치. `fireBoneWall`은 진입 즉시 `P._bwAiming=false` 선처리(43514) 후 `_bwStk>0`(43515)→`mats<_malCost(12)`(43516) 재검 — **MP 무접촉** 확인. → BN1/BN2(실패에도 조준 해제)·BN3(악의6+스택1 차감·MP불변) 기대값 유효.\\n\\n## 결론\\n함수명(`fireBoneWall`), 끝 delimiter(`// ═══ 독가스탄` / `// ═══ 폭산탄` / `// ═══ 아이스스톰 — 조준 모드`), 자원 필드(`_isStk/_isRech/mp/_isAiming`·`_bwStk/_bwAiming/mats`·`G._fireZones/_boneWalls`) 모두 라이브 소스와 정확히 대응 — **직전 제출 후보 코드 수정 없음**. easy판은 미대조(총괄 단일 편집 구역 침범 회피), 다만 `assert.ok(앵커 >= 0)` 가드가 easy판에서 배너/들여쓰기가 다를 경우 무음 통과 없이 즉시 실패시키므로 안전망은 유지됩니다.\\n\\n이번 턴은 Read/Grep 읽기 전용 대조만 수행했고, 파일·테스트 실행·공용코드 수정은 없습니다. 대조 완료로 종료합니다.\"\ndocs/0마스터플랜/mac-resume-20261001/map020-zoomfix-evidence/team-receipts.json:93:          \"pattern\": \"P.mp<40|P\\\\._isStk\\\\|\\\\|0\\\\)<=0|_bwStk\\\\|\\\\|0\\\\)<=0|G.mats<_malCost\\\\(12\\\\)|P.mp=Math.max\\\\(0,P.mp-40\\\\)\",\ndocs/0마스터플랜/mac-resume-20261001/map020-zoomfix-evidence/team-receipts.json:132:    \"final\": \"읽기 검토를 마쳤습니다. 아래는 SKILL03 설치 확정/취소 MP·스택 경계의 실입력 검수 최종 보고입니다. (읽기 전용 — 테스트 재실행·파일/Git 수정·게임 실행 없음, MAP draw/cull·HTML 호출부 미접촉)\\n\\n## 1. 계약 확인 (docs ↔ SSOT)\\n- **SKILL03_설치확정_자원검수_20261001.md**: 아이스스톰 `MP40+스택1`, 해골무덤 `악의 원가12(실비6)+스택1`, H-2·comingSoon은 의존성 대기 유지.\\n- **자원리젠+소모공식.md** (SSOT) 교차확인 일치: `iceStorm = MP 40 고정 + 스택1`(L246), `boneWall = 악의12 + 스택1, MP 없음`(L227). → 수치·표기 100% 일치.\\n\\n## 2. 구현 확인 — 이중 게이트 구조 (game.html / game-easy-test.html 양쪽 동일)\\n**아이스스톰** — 게이트가 두 곳:\\n- 라우터(조준 진입, game `12379–12385`): `_isStk>0` → `P.mp>=40` 통과해야 조준모드 진입. 조준 중 재입력은 취소(`12380`).\\n- 확정 블록(`34872–34902`): `MBjust[0]` 클릭 시 **재검사** 순서 = ① `_isStk>0`(실패 시 조준종료) → ② `P.mp>=40`(실패 시 조준 **유지**) → ③ 중복 지역(실패 시 조준 유지). 전부 통과 시에만 `P.mp=Math.max(0,P.mp-40)` + 존 push + `_isStk--`. 취소는 `MBjust[2]/Escape`가 우선(`34878`), **무차감**.\\n\\n**해골무덤** — \\n- 라우터(`12343–12356`): KBM은 `_bwStk>0`(`12345`)+`mats>=_malCost(12)`(`12346`) 통과 후 **즉발 fireBoneWall**, 패드는 `_bwAiming` 설정. 라우터에 **MP 게이트 없음**(계약대로 제거됨).\\n- 확정(`_bwAiming`, `34954–34963`) → `fireBoneWall`.\\n- `fireBoneWall`(`43512–43530`): 진입 즉시 ① `_bwStk>0`(`43515`) → ② `mats>=_malCost(12)`(`43516`) 재검사, 성공 시에만 `mats-=`, `_bwStk--`. `P.mp`는 절대 미접촉.\\n\\n**패리티**: easy 판본 동일 라인 확인 — 확정 재검 `11880–11881 / 33951–33955`, fireBoneWall `42479–42480`. 불일치 없음.\\n\\n## 3. diff / 16회귀 근거\\n\\\"16/16\\\"은 3개 스위트 합(각 두 HTML):\\n- `skillStackConfirmGate.test.js`: 아이스스톰 5경계(40/39/stk0/취소/중복) + 해골무덤 3경계(실비6/5/stk0+재호출) → **4테스트**\\n- `skillResourceGateAudit.test.js`: activate 악의 게이트==차감 정적검증 → **6테스트**\\n- `skillBlastShotGate.test.js`: 폭산탄 원가5 정렬 → **6테스트** → 합 **16**.\\n스택 확정 테스트는 소스에서 확정 블록/`fireBoneWall`을 **실제 추출·실행**하므로 로직 근거로 유효.\\n\\n## 4. 실제 플레이 시나리오 (초기상태 / 입력 / 기대값 / 실패조건)\\n| # | 초기상태 | 입력 | MP·스택 기대 | 판정 |\\n|---|---|---|---|---|\\n| S1 | MP40, _isStk1 | 스킬키→좌클릭(빈 지역) | MP0, stk0, 존+1, 조준종료 | 성공·정확차감 |\\n| S2 | MP39, _isStk1 | 스킬키 | 조준 진입 거부(라우터 `12382`) | MP부족, 무차감 |\\n| S3 | MP40, _isStk1 조준중 → **설치직전 MP39로 변동** | 좌클릭 | MP39, stk1, **조준 유지** | 확정 재검(`34888`) 차단·재조준 가능 |\\n| S4 | MP40, _isStk1 조준중 → **stk0으로 변동** | 좌클릭 | stk0, **조준 종료** | 확정 재검(`34887`) |\\n| S5 | MP40, _isStk1 조준중 | 우클릭/Esc | MP40, stk1, 무차감 | 취소 우선(`34878`) |\\n| S6 | MP40, _isStk1, 기존 동일존 위 | 좌클릭 | 무차감, 조준 유지 | 중복(\\\"이미 빙풍 지역!\\\") |\\n| B1 | mats=6(실비), _bwStk1, MP0 | 해골무덤키 | mats0, stk0, 벽+1 | MP0에도 성공 |\\n| B2 | mats=5, _bwStk1 | 해골무덤키 | mats5, stk1, 무벽 | 악의부족 |\\n| B3 | mats≥6, _bwStk0 | 해골무덤키 | 무차감, 무벽 | 충전중(`12345`/`43515`) |\\n| B4 | 성공 직후 | 같은키 재입력 | 추가 무차감 | stk 소진으로 재호출 차단 |\\n\\n## 5. 잠재 회귀 지점 (구체)\\n1. **하드코딩 상수 `40` 삼중 중복** — 라우터(`12382`)·확정(`34888`) + SSOT 문서. 한쪽만 바꾸면 \\\"조준은 되는데 설치 거부\\\"(또는 반대) 비대칭 발생. 상수화 미적용 상태가 회귀 취약점.\\n2. **확정 분기 순서·조준토글 계약**: stk0=조준종료, mp<40/중복=조준유지. 이 3분기 `aim` 플래그 동작을 테스트가 고정 — 순서나 `_isAiming=false` 위치를 바꾸면 S3/S4/S6 회귀.\\n3. **`MBjust[0]=false` 선소비**(`34880`, `34957`): mp부족·중복 분기에서도 클릭이 이미 소비됨 → 한 클릭 1회만 시도(의도). 분기 앞으로 옮기면 중복 설치/연타 회귀 가능.\\n4. **docs §결과2 현행 불일치(갱신 플래그)**: `SKILL_자원게이트_감사_20261001.md` L25–26이 \\\"iceStorm MP40·boneWall MP50 팬텀 게이트\\\"를 **미해결 핸드오프**로 기술하나, 현행 디스크는 iceStorm MP40이 **실차감으로 정합**(`34891`), boneWall 라우터 MP 게이트는 **이미 제거**됨. 문서가 과거 상태를 남겨둔 상태 — 수정 금지 구간이라 **보고만**, docs 상태 갱신 필요(총괄/BALANCE 소유 판단).\\n5. **holyIce 합체 상호작용**(`44898–44901`): holyDome 틱이 `type:'iceStorm'` 존을 플레이어 위치에 **무차감 자동** push. 이 존이 확정 블록 중복판정(`34885`)에 걸려, 합체 상태에서 수동 아이스스톰이 \\\"이미 빙풍 지역\\\"으로 거부될 수 있음. 회귀 아님이나 플레이 혼동·QA 오탐 소지 — 실플레이 검수 시 주의.\\n6. **조준 중 자동 리젠 미검증 경로**: 스택 리젠(`34862–34870`)·`_isRech`는 매 틱 실행되어 조준 유지 중 stk0→1, MP 리젠으로 S3가 성공 전환될 수 있음. 테스트는 단발 호출만 커버 → **리젠 경로는 실플레이 전용 미검증**.\\n7. **테스트 추출 취약성**: `skillStackConfirmGate`가 `/^  if\\\\(P\\\\._isAiming\\\\)\\\\{$/`(2칸 들여쓰기)와 주석 `// ═══ 독가스탄`을 경계로 소스 slice. 들여쓰기·주석 텍스트가 바뀌면 추출 실패(거짓 통과/에러) — 확정 블록 리팩터 시 동반 점검 필요.\\n\\nQA 종료·순차 실행 배정 대기합니다. 공용 HTML 편집권 배정 시 1·3번(상수 비대칭)만 내 소유 hunk로 좁게 다룰 수 있으나, 현재는 미실행.\"\ndocs/0마스터플랜/mac-resume-20261001/ui03-evidence/BALANCE-팀검토.md:38:### (A) 스킬 강화 — 무료축(악의, 현행 전 스킬 `upMat:0` → `_malCost(0)=0`)\ndocs/0마스터플랜/mac-resume-20261001/ui03-evidence/BALANCE-팀검토.md:41:| 잔액0 | `G.mats=0`, `P.sp≥upSp` | **허용**(게이트 `0>=_malCost(0)=0` 참), 악의 차감 0 | 옛 버그(게이트50)면 거부됐던 경계 |\ndocs/0마스터플랜/mac-resume-20261001/ui03-evidence/SKILL-팀검토.md:12:- **fireBoneWall**(`43512–43530`): 진입 즉시 `P._bwAiming=false` **선처리** 후 `_bwStk>0`→`mats>=_malCost(12)` 재검. → iceStorm과 달리 **자원 부족으로 설치 실패해도 조준이 해제**되는 비대칭이 핵심 신규 경계.\ndocs/0마스터플랜/mac-resume-20261001/ui03-evidence/SKILL-팀검토.md:61:    const a = {P, G, _malCost: n => Math.ceil(n * .5), showPH: noop, _T: x => x,\ndocs/0마스터플랜/mac-resume-20261001/ui03-evidence/SKILL-팀검토.md:159:- 해골무덤: `P._bwStk`·`P._bwAiming`·`G.mats`·`G._boneWalls`·`_malCost(12)` 일치. `fireBoneWall`은 진입 즉시 `P._bwAiming=false` 선처리(43514) 후 `_bwStk>0`(43515)→`mats<_malCost(12)`(43516) 재검 — **MP 무접촉** 확인. → BN1/BN2(실패에도 조준 해제)·BN3(악의6+스택1 차감·MP불변) 기대값 유효.\ndocs/0마스터플랜/mac-resume-20261001/BUILD-SOUND-잔여팀-인수검토.md:25:- `game.html:34886–34899`: 아이스스톰 확정 시 스택과 MP40을 다시 검사하고 성공 분기에서만 MP40·스택1을 차감한다. `:43512–43519`의 `fireBoneWall`은 스택0·악의부족을 거절하고 실비 `_malCost(12)`와 스택1을 차감한다.\ndocs/0마스터플랜/mac-resume-20261001/BUILD-SOUND-잔여팀-인수검토.md:26:- `game.html:43551–43555`: 폭산탄 게이트와 차감 모두 `_malCost(5)`이다. `:27239` 자동 라우터도 원가5를 검사한다. 과거 ‘게이트8, 차감5’ 기록은 현재 상태가 아니다.\ndocs/0마스터플랜/mac-resume-20261001/map020-zoomfix-evidence/SKILL-팀검토.md:13:- 라우터(`12343–12356`): KBM은 `_bwStk>0`(`12345`)+`mats>=_malCost(12)`(`12346`) 통과 후 **즉발 fireBoneWall**, 패드는 `_bwAiming` 설정. 라우터에 **MP 게이트 없음**(계약대로 제거됨).\ndocs/0마스터플랜/mac-resume-20261001/map020-zoomfix-evidence/SKILL-팀검토.md:15:- `fireBoneWall`(`43512–43530`): 진입 즉시 ① `_bwStk>0`(`43515`) → ② `mats>=_malCost(12)`(`43516`) 재검사, 성공 시에만 `mats-=`, `_bwStk--`. `P.mp`는 절대 미접촉.\ndocs/0마스터플랜/mac-resume-20261001/map020-evidence/팀실행-영수증.json:348:      \"result_text\": \"BALANCE 읽기·대조 **완료**. 소유 범위(무료/유료 강화 패널 경계)에서 미검수 1건을 선정해 실소스와 docs를 대조한 결과입니다. **파일/저장/수치 무변경, 환수식 미변경.**\\n\\n---\\n\\n## 선정 항목\\n장비 **강화 비용식 + 환수식(salvageVal)** 의 docs ↔ 코드 일치 검토 (유료 강화 패널의 핵심 경계, 마스터 문서 공통계산행 「강화 지출」 + ECON-01/PM-013-D).\\n\\n## 대조 결과\\n\\n**① 강화 비용식 — docs 일치 확인 (검산 완료)**\\n- 코드: `game.html:26592~26606` (`enhRate`, `_malCost`, `enhCostRaw`, `enhCost`)\\n  - `enhRate(n)=max(0.5, 99×0.99^n)%`\\n  - `_malCost(v)=v≤0?0:max(1, ceil(v×0.5))`\\n  - `enhCostRaw(n)=max(20000, ceil((20000+n×3500)×1.5))`\\n  - `enhCost`: 등급배율 `[0.5,0.7,1.0,1.3,1.8][_itemEconomyRarity(rarity)]`, 실비 `_malCost(ceil(raw×배율))`\\n- 검산: 0강 희귀 **15,000** / 100강 **277,500** / 1000강 **2,640,000** → 마스터 `BALANCE_ECONOMY_TEAM_MASTER.md:28`, SSOT `14밸런스+수치테이블.md:94~102` 와 **100% 일치**.\\n- 등급 매핑: `_itemEconomyRarity(r)` (`game.html:26700`) = `min(r,4)` → 유니크(5)→전설(4). 마스터 \\\"유니크는 경제상 전설\\\" **일치**.\\n\\n**② 불일치 후보 #1 — 코드 주석 오기 (경미, 주석만)**\\n- `game.html:26602` 주석: `1000강=533만`\\n- 실제 공식값: `(20000+1000×3500)×1.5 = 5,280,000` = **528만**\\n- docs SSOT(`14밸런스+수치테이블.md:102`)는 **5,280,000**으로 정확 → **코드 주석만 오기**.\\n- 수정후보: 주석 `533만`→`528만` (공식·수치 무변경, 주석 텍스트만). *총괄 승인 시 반영.*\\n\\n**③ 불일치 후보 #2 — 환수식 ≠ 강화지출식 (설계 대기, 변경금지 준수)**\\n- `salvageVal` (`game.html:26708`) 및 강화이전 `_enhRefund` (`game.html:15472`): 옛 단위누적식 `ceil((1+i×0.15)×1.5)×배율` 사용.\\n- 현행 강화 지출: `enhCostRaw(n)=max(20000, ceil((20000+n×3500)×1.5))` — **서로 다른 식**.\\n- `game.html:26703` 주석 \\\"실제 강화 비용 누적합의 절반\\\"과 실제 환수 **불일치**: 희귀 +10 검산 → 누적지출 268,125 대비 강화분 환수 **15**(≈0.006%). 마스터 PM-013-D 실측(268,125 / 15)과 재확인 일치.\\n- docs는 이미 사실 명시: `14밸런스+수치테이블.md:94`(\\\"기존 `(1+n×0.15)×1.5` 표기는 현행 강화 비용식이 아니다\\\"), 마스터 PM-013-D \\\"설계 결정 대기\\\".\\n\\n## 미검수 경계\\n- **환수 목표(%)** 미확정 → ITEM·총괄 설계 결정 필요. **환수식 변경 금지 지시 준수, 근거만 보고.**\\n- 후보 #1(주석)·#2(환수식) 모두 **본편 도달 빌드 실플레이 미실시** (현행 데모 Lv100 경계). 정상 성장 장비 실전 환수 표본 없음.\\n- 다른 writer(SKILL 라우터 팬텀 MP 게이트 등) 미접촉.\\n\\n수신/읽기착수와 구분하여 **읽기·대조 완료** 보고입니다. 결과 저장·docs 반영은 총괄 처리 대기합니다.\",\ndocs/0마스터플랜/mac-resume-20261001/map020-evidence/BALANCE-읽기근거.json:11:      \"pattern\": \"canUp|_matGate|upMat|_malCost\",\ndocs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FOLLOWUP_RECEIPT.md:63:ITEM/BALANCE 최신 팀 MD·완료 결과·최근 실제 채팅을 한 번 읽었다. ITEM은 native RGB 귀속 완료 뒤 실제 Chrome 동등성/생산 연결이 남았고, BALANCE는 화구 피해/자원/피해원/중첩 계약이 미확정이다. 예전 대장의 폭산탄 비용 오류는 현재 본편/easy 둘 다 gate/차감이 `_malCost(5)`로 이미 수정돼 재배정하지 않았다. 이번 한정 점검에서 다른 독립 수정 결함을 확정하지 못해 가짜 후속이나 반복 보고 과제를 만들지 않았다.\ndocs/0마스터플랜/mac-resume-20261001/vscode-dispatch/persistence-review-result.md:17:| _malCost | `b8a3fc0bf01787aa` |\ndocs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-result.md:16:| D03 | final 우하단 x865~1180/y540~625, DIROI·가시덫 안내 | 어두운 프레임의 이름/대사가 희미하며 주변 보라 효과와 섞임. 표시 중반/끝 어느 시점인지 원자료에 없음 → 저대비 위험 관찰, 버그 확정 아님 | `game.html:8929` 최대opacity .6, `game.html:9061` 전체 시간 지수.6 페이드. 펫 SSOT와 일치. CSS !important로 불투명도 강제하면 종료/페이드 훼손하므로 후보 제출 안 함 |\ndocs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-result.md:38:docs 전체 `rg -n 'UI03|UI-03|hudTop|stageClock|피해숫자|이름표|가시덫' docs/ --glob '*.md'` 실행 exit0. 펫 시스템 opacity/페이드 검색도 실행했다. 생산 코드 변경은0, 검사 도구만 추가했다. 소유권 밖 문서는 수정하지 않고 필요한 정정을 아래로 인계한다.\n",
+    "stderr": "",
+    "fileCount": 66,
+    "files": [
+      "docs/0마스터플랜/EA/HELL_EA_BUILD_CHECKLIST.md",
+      "docs/0마스터플랜/mac-resume-20261001/BUILD-SOUND-잔여팀-인수검토.md",
+      "docs/0마스터플랜/mac-resume-20261001/map020-evidence/BALANCE-읽기근거.json",
+      "docs/0마스터플랜/mac-resume-20261001/map020-evidence/팀실행-영수증.json",
+      "docs/0마스터플랜/mac-resume-20261001/map020-zoomfix-evidence/SKILL-팀검토.md",
+      "docs/0마스터플랜/mac-resume-20261001/map020-zoomfix-evidence/team-receipts.json",
+      "docs/0마스터플랜/mac-resume-20261001/ui03-evidence/BALANCE-팀검토.md",
+      "docs/0마스터플랜/mac-resume-20261001/ui03-evidence/SKILL-팀검토.md",
+      "docs/0마스터플랜/mac-resume-20261001/ui03-evidence/team-receipts.json",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FOLLOWUP_RECEIPT.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-result.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/persistence-review-result.md",
+      "docs/11내러티브·로어디자인/펫_대사_스크립트.md",
+      "docs/12퍼포먼스·최적화/12퍼포먼스·최적화.md",
+      "docs/13출시·마케팅/13출시·마케팅.md",
+      "docs/13출시·마케팅/AUTO_CLEANUP_50_20260916.md",
+      "docs/13출시·마케팅/GAMEPLAY_TRAILER_V22_20260909.md",
+      "docs/14밸런스+수치테이블/14밸런스+수치테이블.md",
+      "docs/14밸런스+수치테이블/BALANCE_ECONOMY_TEAM_MASTER.md",
+      "docs/14밸런스+수치테이블/EARLY_COMBAT_5_7_1_20260910.md",
+      "docs/14밸런스+수치테이블/MAGIC_ATTACK_DAMAGE_20260910.md",
+      "docs/14밸런스+수치테이블/SPIKE_TRAP_HALF_20260913.md",
+      "docs/14밸런스+수치테이블/스킬_밸런스_리포트.md",
+      "docs/14밸런스+수치테이블/스킬데미지공식표.md",
+      "docs/14밸런스+수치테이블/스킬별_DPS_자원소비표.md",
+      "docs/14밸런스+수치테이블/자원소비량표.md",
+      "docs/15 세이브+데이터구조/15 세이브+데이터구조.md",
+      "docs/16번역·로컬라이제이션/FINISH_TRANSLATIONS_20260923.md",
+      "docs/16번역·로컬라이제이션/RESUME_LANGUAGE_INTEGRATION_20260923.md",
+      "docs/16번역·로컬라이제이션/STEAM_LANGUAGE_RESUME_20260921.md",
+      "docs/16번역·로컬라이제이션/TUTORIAL_ENGLISH_20260921.md",
+      "docs/16번역·로컬라이제이션/UI_SOUTHEAST_EUROPE_20260909.md",
+      "docs/16번역·로컬라이제이션/UI_TRANSLATIONS_20260909.md",
+      "docs/16번역·로컬라이제이션/번역대상_전체목록.md",
+      "docs/16번역·로컬라이제이션/번역대상_펫대사.md",
+      "docs/1전체그래픽세팅/맵_화면효과_전수조사.md",
+      "docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md",
+      "docs/2_1 스킬관리+합체시스템+자원/SKILL_자원게이트_감사_20261001.md",
+      "docs/2_1 스킬관리+합체시스템+자원/신규캐릭_스킬프로젝트_20260930.md",
+      "docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식.md",
+      "docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식__NFD_0628_2305_백업.md",
+      "docs/2_1 스킬관리+합체시스템+자원/추천빌드_SKILL_REC_PATH.md",
+      "docs/2_4 펫시스템/대사_스크립트.md",
+      "docs/2_5 부활+에너지쉴드시스템/2_5 부활+에너지쉴드시스템.md",
+      "docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md",
+      "docs/2게임디자인레벨디자인/PARRY_TUTORIAL_20260912.md",
+      "docs/2게임디자인레벨디자인/RESOURCE_PRACTICE_20260912.md",
+      "docs/2게임디자인레벨디자인/SPIKE_TRAP_PRACTICE_20260913.md",
+      "docs/2게임디자인레벨디자인/TUTORIAL_GAP_AUDIT_20260913.md",
+      "docs/2게임디자인레벨디자인/TUTORIAL_MISSION_DETAILS_20260913.md",
+      "docs/3.1 ui hud 디자인/INTRO_FOUR_CUTS_20260914.md",
+      "docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md",
+      "docs/3.1 ui hud 디자인/exoduser-hud-redesign.md",
+      "docs/3.1 ui hud 디자인/exoduser-ui-phase2 (1).md",
+      "docs/3.2메타·진행시스템/3.2메타·진행시스템.md",
+      "docs/3.3 키바인딩+설정/3.3 키바인딩+설정.md",
+      "docs/3.3 키바인딩+설정/게임패드_매핑표.md",
+      "docs/5.1임펙트디자인/PHASE_V1_MOTION_FIREZONE_SEAL.md",
+      "docs/5.1임펙트디자인/VFX_구현가이드.md",
+      "docs/5.1임펙트디자인/ZONE_LIGHT_CLASSIFICATION_20260910.md",
+      "docs/5.1임펙트디자인/장판_가시성_2026-09-27.md",
+      "docs/7아이템디자인/ITEM_TEAM_MASTER.md",
+      "docs/7아이템디자인/UNIQUE_TOP8_HOOK_REVIEW_20261001.md",
+      "docs/7아이템디자인/보라색_고유아이템_카탈로그_20260930.md",
+      "docs/7아이템디자인/유니크_어픽스_리스트.md",
+      "docs/CHANGELOG_SYNC.md"
+    ],
+    "fileSHA256": {
+      "docs/0마스터플랜/EA/HELL_EA_BUILD_CHECKLIST.md": "d24b884a73ea560323a97424d2d367e26752734e616db529a29785f8b4ed90e9",
+      "docs/0마스터플랜/mac-resume-20261001/BUILD-SOUND-잔여팀-인수검토.md": "1c84e38538b376fa55e2503b796e3bf8329101e70ac5ce0782b0ac4f2959a105",
+      "docs/0마스터플랜/mac-resume-20261001/map020-evidence/BALANCE-읽기근거.json": "4145033b25631d68422ae91dc935d4da4b8e63933c46fbfc55aa949ee385b451",
+      "docs/0마스터플랜/mac-resume-20261001/map020-evidence/팀실행-영수증.json": "8a1f2febd378d78c3dc8be084f42f17f05257a192112a2117692b9ab8dcdb68b",
+      "docs/0마스터플랜/mac-resume-20261001/map020-zoomfix-evidence/SKILL-팀검토.md": "5a549557b1340c44805f50bc342f17114867aee3ba499de766544329c1384546",
+      "docs/0마스터플랜/mac-resume-20261001/map020-zoomfix-evidence/team-receipts.json": "3742d50c10d6b34c94e936877e708613cc19c5a15e3e4d70baaf230ad01dbbe1",
+      "docs/0마스터플랜/mac-resume-20261001/ui03-evidence/BALANCE-팀검토.md": "35388d4beb40ad7ba4c83c2ff7804c5baa40e313988dbff6c333252a8cc78f97",
+      "docs/0마스터플랜/mac-resume-20261001/ui03-evidence/SKILL-팀검토.md": "5e68658dd3299a6d1b6dc3da4d7174cf0f8092aabe7f1ba865b11ebeed3d4bd9",
+      "docs/0마스터플랜/mac-resume-20261001/ui03-evidence/team-receipts.json": "cb9cfc2af414a5f45f7d054b7ffc7a63d40ae7c14d570f0fc2a695b513e74ed2",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FOLLOWUP_RECEIPT.md": "a4435e45d9ad4e3591aa3aaedfcda2bde49ec91153878f498288cb260704874b",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-result.md": "2147515ad64f74e3f122de9491dd153ef00c836ece5738da27cd590726e14265",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/persistence-review-result.md": "fc0e7d6e792978fcf575fe3cdeb057c6db3d5334992a12a2e7890e98a1972e2b",
+      "docs/11내러티브·로어디자인/펫_대사_스크립트.md": "81bc579cb6b238099368511666318abf807f9614f1d7c028c03f1cecaae95921",
+      "docs/12퍼포먼스·최적화/12퍼포먼스·최적화.md": "b5072b99e3ab6c88a49a93b4ff50f1dfce68e1cd984a016f7e836edbb171a234",
+      "docs/13출시·마케팅/13출시·마케팅.md": "856eac0abbf6bfbdca46da11de682f24f3b31be81f8b58c69cc7212ca8063832",
+      "docs/13출시·마케팅/AUTO_CLEANUP_50_20260916.md": "365a57576c66c61fa24d4eec08e416d6888211db9bb12d68436d4f8fadb8133e",
+      "docs/13출시·마케팅/GAMEPLAY_TRAILER_V22_20260909.md": "fac01930f741959d713a208a2e52ed5c2ad588c051ba98d04620b9cbfda6bb7b",
+      "docs/14밸런스+수치테이블/14밸런스+수치테이블.md": "f809b60874aef760217edfb7708e2444e35bd9925f4c9a0f3a2316389d41779b",
+      "docs/14밸런스+수치테이블/BALANCE_ECONOMY_TEAM_MASTER.md": "45b679bd404d06b21feb7a80f093afefdb6c8be4d91bc096ec5245948b0c2d3b",
+      "docs/14밸런스+수치테이블/EARLY_COMBAT_5_7_1_20260910.md": "71be6319fc45a7ae209b3120cc63d8bd0dadfc72ecd966e2f7b4a040dc6e3e21",
+      "docs/14밸런스+수치테이블/MAGIC_ATTACK_DAMAGE_20260910.md": "143181ce0e2198e90cb6e82b690cf068acf52154a35dd8819d549bf989b814d3",
+      "docs/14밸런스+수치테이블/SPIKE_TRAP_HALF_20260913.md": "11c9f81266c783a5d6b7b8f61c48b60a673bead09059a3d894bcb0ad28383583",
+      "docs/14밸런스+수치테이블/스킬_밸런스_리포트.md": "25d4c2c23417d46a817bcdc7d7a516689db575ae0d5e2b6877f93024b0ba3dc3",
+      "docs/14밸런스+수치테이블/스킬데미지공식표.md": "2faaa73e427366d80e2645010d833bd22c9a43eb4130c07ad7094f2e86cfc92d",
+      "docs/14밸런스+수치테이블/스킬별_DPS_자원소비표.md": "336ca84b7581c1c512c2df511c373df9ae12f03a112ca562e6b60e918850d6ea",
+      "docs/14밸런스+수치테이블/자원소비량표.md": "5f63f98bc0522cd28ab38ca4392c258c096f2fddad132c1d51f2eb0df561f849",
+      "docs/15 세이브+데이터구조/15 세이브+데이터구조.md": "c3b74698f40a6fa0ef00c35daffa145731a2d5dc6af01d4d0a9ed8004f02f17e",
+      "docs/16번역·로컬라이제이션/FINISH_TRANSLATIONS_20260923.md": "4651eab30b57483fd50651922ca8b5b4497889f4509c8b6b9302e4607fc8fd7f",
+      "docs/16번역·로컬라이제이션/RESUME_LANGUAGE_INTEGRATION_20260923.md": "e401742d12d235e8d8d9c757e4d59f4b34f17258a8bb4874f34a586bf80b847c",
+      "docs/16번역·로컬라이제이션/STEAM_LANGUAGE_RESUME_20260921.md": "fd66783c418f7e5a1826c7bf708d47361d10c49b2f2e15612f974381eb68fbe6",
+      "docs/16번역·로컬라이제이션/TUTORIAL_ENGLISH_20260921.md": "825a0f72d6c740dbceb6181d53bd9cae85671ca861fb4b697e383657da7092d4",
+      "docs/16번역·로컬라이제이션/UI_SOUTHEAST_EUROPE_20260909.md": "4b4b784553b38fb2565ff9c45b9042106b24742ce3b8174da6360e4a298ab3db",
+      "docs/16번역·로컬라이제이션/UI_TRANSLATIONS_20260909.md": "6896173f9b23cf24e9b2ce009e2a7221927e73c43a820083416989dcac6eff21",
+      "docs/16번역·로컬라이제이션/번역대상_전체목록.md": "954626722e7c1e3c83d693ea4a6b3b0290c15b76a7a719e49875b8849b43afd7",
+      "docs/16번역·로컬라이제이션/번역대상_펫대사.md": "066cd4dd06c9a20797f9c9b295872ab98fab187415c3c6746cb54d042e6844c7",
+      "docs/1전체그래픽세팅/맵_화면효과_전수조사.md": "16a89bf9b0f3e0b1a435677c6a9e56d93d92ee45aa227d9afcd4bd2b03bf0450",
+      "docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md": "167309e344b95af8aa85c2be1fd4331c03d3504043826af6945fa98d556b7402",
+      "docs/2_1 스킬관리+합체시스템+자원/SKILL_자원게이트_감사_20261001.md": "b5502f8cd01e6b4827096b1417b9e2e3f598c44b74be0caed6810d80c0344930",
+      "docs/2_1 스킬관리+합체시스템+자원/신규캐릭_스킬프로젝트_20260930.md": "c4835c8d322186f447aa65f3637b4208be5849c81c5d174b3e9400cf25561387",
+      "docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식.md": "34f3804123037e635fdab92fc43e7619bd211413e22004c2053203ed9446a111",
+      "docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식__NFD_0628_2305_백업.md": "4a08900fae23386adad5040273b7cd4f0622cb060ad3ea576d09ff8524227448",
+      "docs/2_1 스킬관리+합체시스템+자원/추천빌드_SKILL_REC_PATH.md": "f1afb4b0d7f4c8d2c1cfc61c0b49ab79cd5dd2158a624b3e221cd03ae2179797",
+      "docs/2_4 펫시스템/대사_스크립트.md": "37da4dd1c467a17e1f873e782e35cb78ce9bea778bfcc8306e681159502e0dae",
+      "docs/2_5 부활+에너지쉴드시스템/2_5 부활+에너지쉴드시스템.md": "b6b36f780a6f2605ea11eaeced43dbe2991f5e60eb28b454f2bad7b7ea54bf07",
+      "docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md": "29e01d81a0632beb91cac804407510f322e2bd94bee505d2db33c69b82d54c3c",
+      "docs/2게임디자인레벨디자인/PARRY_TUTORIAL_20260912.md": "7c3bdc07bf5e4813b5e545cfbd7776f659f3b0c681f553e0446a776fa0001bb0",
+      "docs/2게임디자인레벨디자인/RESOURCE_PRACTICE_20260912.md": "93aa196f0fffc73c116cb2668e062bb03cc27f44e3605461ee8b0843804ff5e6",
+      "docs/2게임디자인레벨디자인/SPIKE_TRAP_PRACTICE_20260913.md": "c600837ffea4af6c5b26d9038be245691097c3584a5ba70b9b762de8400acb65",
+      "docs/2게임디자인레벨디자인/TUTORIAL_GAP_AUDIT_20260913.md": "be0339f8fa172d917e17f28e899ce20d780f0dd343dde12f0a649abcf447b184",
+      "docs/2게임디자인레벨디자인/TUTORIAL_MISSION_DETAILS_20260913.md": "fcc258e0c1b269a415458d21bcc7beb18990bbe2f54aed027ad4a6f22fdbb1fc",
+      "docs/3.1 ui hud 디자인/INTRO_FOUR_CUTS_20260914.md": "1e9eb9a3a59bd05f2c7721a5c7def28019d55af62b1eca4b971f6c5bef5b19c3",
+      "docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md": "60ab1760c9f8c869622c4aa1113e92ba3f22ffd92d03f74d467ef7c45e8351fe",
+      "docs/3.1 ui hud 디자인/exoduser-hud-redesign.md": "8154c25fab329400eb9994debee686d7e4d3af5ce3731ce3bea20c83f266abf7",
+      "docs/3.1 ui hud 디자인/exoduser-ui-phase2 (1).md": "2f847f8d6ed8d92cda48711b1eea90c63d1611e1e72a86f02dfc9baf4da1e694",
+      "docs/3.2메타·진행시스템/3.2메타·진행시스템.md": "c672fab16dae2f9b7a4993a1541250ca0b04732cc96d1554ce7856889c296496",
+      "docs/3.3 키바인딩+설정/3.3 키바인딩+설정.md": "f5c6370f096ca4971b92cda0cd16527933c2e163e9ea1d53bf55bbdfdb735e1b",
+      "docs/3.3 키바인딩+설정/게임패드_매핑표.md": "5819adecab3458bb9dda59f8bef7df4cfa44b62f4d78fda05bde62918abd5ff3",
+      "docs/5.1임펙트디자인/PHASE_V1_MOTION_FIREZONE_SEAL.md": "b7515796adf13be5f09fbb38d3bc1a45d40dbc9bd3759c3e86bdbad0c74baa9b",
+      "docs/5.1임펙트디자인/VFX_구현가이드.md": "abb5e55d53a76a267b83521fa149d8d50e97ac4b9d22f9ee6b3e095e4ba6d252",
+      "docs/5.1임펙트디자인/ZONE_LIGHT_CLASSIFICATION_20260910.md": "975ac311342fcdb3344e84ca979ee8a567e8f934757e2a7b022e4ff3da90fe4e",
+      "docs/5.1임펙트디자인/장판_가시성_2026-09-27.md": "572e336f57477f9d823e0f620710f71ac2aa43848620ff816e3b82a3f05f5e21",
+      "docs/7아이템디자인/ITEM_TEAM_MASTER.md": "b3beda374dfeaa837f8a19baa607853d705f0892accc23dad7f3532cae7f61aa",
+      "docs/7아이템디자인/UNIQUE_TOP8_HOOK_REVIEW_20261001.md": "1e86f9f484e1c4b229abc8db91ba5ce1becc7a1937c14df4224a64d37a6ca264",
+      "docs/7아이템디자인/보라색_고유아이템_카탈로그_20260930.md": "6d1303ede39e997d1eb104e00ccb6cce07dca1727df1d3bf0c690d5273f66a0c",
+      "docs/7아이템디자인/유니크_어픽스_리스트.md": "745e59d9839a5078e869987092b2352114059622f9d36cf8cb626216c0799eb0",
+      "docs/CHANGELOG_SYNC.md": "febcf3c6b739fcfd1601851b136dbfea967ede54af207030b6c2e88a3dda56f6"
+    }
+  },
+  "docsProposal": {
+    "applyProduction": false,
+    "sharedDocsEdited": false,
+    "target": "docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md",
+    "heading": "2026-10-02 분리된 스킬 카드 + 콜백 수명 — source fixture / 생산 미적용",
+    "exactRow": {
+      "id": "spikeTrap",
+      "name": "가시덫",
+      "condition": "P.lv=1, skills={}, SP20, 악의80, 빈 일반 슬롯",
+      "cost": "학습 SP10 + _malCost(80)=40; 1~4 첫 빈칸(인덱스0)",
+      "source": "현재 + 1회: Lv1/SP10/악의40. 분리된 보관 + 재호출: Lv1/SP0/악의0, save/render 각 +1",
+      "candidate": "_skClick 시작 if(!d.isConnected||!grid.contains(d))return; 연결 정상효과 동일, 분리된 재호출 비용/상태/save/render/시각/SFX/RNG0; plus stopPropagation 유지",
+      "verdict": "본편/easy source2 RED → 메모리 후보2 GREEN. source fixture PASS ≠ runtime/visual PASS. productionApplied=false"
+    },
+    "linkedTargets": [
+      {
+        "path": "docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md",
+        "action": "스킬 작업공간 조작 보존 표 옆에 위 감사 링크/미적용 상태 추가"
+      },
+      {
+        "path": "docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md",
+        "action": "두 개의 스킬 창 절에 동일 수명 현행 결함·미적용 후보 링크; 기존 비용·슬롯 수치 유지"
+      },
+      {
+        "path": "docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식.md",
+        "action": "악의 소비 절에 가시덫 학습 원가80/최종40과 시전 비용 별개 링크"
+      },
+      {
+        "path": "docs/2_1 스킬관리+합체시스템+자원/SKILL_자원게이트_감사_20261001.md",
+        "action": "시전 자원 gate 감사와 학습 UI 콜백 수명 감사 범위 구분 링크"
+      }
+    ],
+    "excluded": "2_3 돌진+패링+방패시스템 수정0. 생산 채택 전 구현 완료로 기재하지 않음.",
+    "sourceLines": "evidence.sourceFragments[file]의 현행 행/SHA를 그대로 인계"
+  },
+  "inputsAfter": {
+    "game.html": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+    "game-easy-test.html": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+    "AGENTS.md": "fd59bef70960bcaf1ab9910051faa860362884e574ac2869fad05c6872ae04e4",
+    "docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md": "2386910936ec5c71964c0d3f25bd8bab8253c8695e198f272c117b1b7431fb6d",
+    "docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md": "60ab1760c9f8c869622c4aa1113e92ba3f22ffd92d03f74d467ef7c45e8351fe",
+    "docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md": "167309e344b95af8aa85c2be1fd4331c03d3504043826af6945fa98d556b7402",
+    "docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식.md": "34f3804123037e635fdab92fc43e7619bd211413e22004c2053203ed9446a111",
+    "docs/2_1 스킬관리+합체시스템+자원/SKILL_자원게이트_감사_20261001.md": "b5502f8cd01e6b4827096b1417b9e2e3f598c44b74be0caed6810d80c0344930",
+    "tools/team-followup-20261002/codex-half/UIUX/TASK.md": "c9cd24450384888af5c2df76fd561386d5e92c7b65ad79adf2d3fd42ca3566f8",
+    "tools/team-followup-20261002/project-teams/UIUX/result.md": "e5907b150d89703e0a7506da594c90fb7110ddbcdf52527ee991280b0f3e7b5c",
+    "tools/team-followup-20261002/project-teams/UIUX/evidence.json": "70170da4eb23ef5b362ce96c371e9aed4e2ca28b94a39018c8d4d2880100623c",
+    "tools/team-followup-20261002/project-teams/UIUX/candidate.patch": "5a00f14ffc6f9bd519ba198ff59782811d3584f1666e8ad32e9967537bf895a4",
+    "tools/team-followup-20261001/UIUX/inventory-dom/node-dom.mjs": "b3c6bb3abf74d5b9e464d1db2e5d2441645af3be8eb096f3c30788b7019cfb95"
+  },
+  "inputPreservation": {
+    "game.html": true,
+    "game-easy-test.html": true,
+    "AGENTS.md": true,
+    "docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md": true,
+    "docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md": true,
+    "docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md": true,
+    "docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식.md": true,
+    "docs/2_1 스킬관리+합체시스템+자원/SKILL_자원게이트_감사_20261001.md": true,
+    "tools/team-followup-20261002/codex-half/UIUX/TASK.md": true,
+    "tools/team-followup-20261002/project-teams/UIUX/result.md": true,
+    "tools/team-followup-20261002/project-teams/UIUX/evidence.json": true,
+    "tools/team-followup-20261002/project-teams/UIUX/candidate.patch": true,
+    "tools/team-followup-20261001/UIUX/inventory-dom/node-dom.mjs": true
+  },
+  "protectedFilesAllUnchanged": true,
+  "ownedFiles": [
+    "TASK.md",
+    "checks.mjs",
+    "evidence.json",
+    "result.md"
+  ],
+  "finishedUTC": "2026-10-02T04:35:59.972Z",
+  "reproductionCommand": "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node tools/team-followup-20261002/codex-half/UIUX/checks.mjs",
+  "finalAudit": {
+    "atUTC": "2026-10-02T04:37:25.701Z",
+    "protectedHashes": {
+      "game.html": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+      "game-easy-test.html": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+      "AGENTS.md": "fd59bef70960bcaf1ab9910051faa860362884e574ac2869fad05c6872ae04e4",
+      "docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md": "2386910936ec5c71964c0d3f25bd8bab8253c8695e198f272c117b1b7431fb6d",
+      "docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md": "60ab1760c9f8c869622c4aa1113e92ba3f22ffd92d03f74d467ef7c45e8351fe",
+      "docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md": "167309e344b95af8aa85c2be1fd4331c03d3504043826af6945fa98d556b7402",
+      "docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식.md": "34f3804123037e635fdab92fc43e7619bd211413e22004c2053203ed9446a111",
+      "docs/2_1 스킬관리+합체시스템+자원/SKILL_자원게이트_감사_20261001.md": "b5502f8cd01e6b4827096b1417b9e2e3f598c44b74be0caed6810d80c0344930",
+      "tools/team-followup-20261002/codex-half/UIUX/TASK.md": "c9cd24450384888af5c2df76fd561386d5e92c7b65ad79adf2d3fd42ca3566f8",
+      "tools/team-followup-20261002/project-teams/UIUX/result.md": "e5907b150d89703e0a7506da594c90fb7110ddbcdf52527ee991280b0f3e7b5c",
+      "tools/team-followup-20261002/project-teams/UIUX/evidence.json": "70170da4eb23ef5b362ce96c371e9aed4e2ca28b94a39018c8d4d2880100623c",
+      "tools/team-followup-20261002/project-teams/UIUX/candidate.patch": "5a00f14ffc6f9bd519ba198ff59782811d3584f1666e8ad32e9967537bf895a4",
+      "tools/team-followup-20261001/UIUX/inventory-dom/node-dom.mjs": "b3c6bb3abf74d5b9e464d1db2e5d2441645af3be8eb096f3c30788b7019cfb95"
+    },
+    "protectedAllUnchanged": true,
+    "ownDirectoryFiles": [
+      "TASK.md",
+      "checks.mjs",
+      "evidence.json",
+      "result.md"
+    ],
+    "writtenOwnedFiles": [
+      "checks.mjs",
+      "result.md",
+      "evidence.json"
+    ],
+    "writtenFileCount": 3,
+    "taskUnchanged": true,
+    "checksSHA256": "4a628d06115fa8d328a3ea90309869ddca81e017f3c6c37579f85a746792d9ec",
+    "resultSHA256": "8cde8f50874d271f8a0af7f92fb1dbb68c3e4fed920d64c2b7788eec99ffa658",
+    "fixtureExecutions": 1,
+    "old16Executions": 0,
+    "gitCommands": 0,
+    "head": "not-observed",
+    "changes": "parent-historical-only"
+  },
+  "completionUTC": "2026-10-02T04:37:25.701Z"
+}

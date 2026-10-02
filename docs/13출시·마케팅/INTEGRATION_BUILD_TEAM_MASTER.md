@@ -108,3 +108,15 @@ root가 정확단일INM304 우선·If-Range 전체응답 후보를 server.cjs에
 matchesIfNoneMatch helper와 조건식1곳만 반영했다. exact 후보 byte 일치 및 현재 생산 INM40+조건부Range31+저장13=84그룹 PASS. If-Range 전부 전체응답·HTML정책·gzip·HEAD·atomicSaveJSON/저장경계 유지. RFC9110 §13.1.2의 약한 비교·별표·목록을 따르되 malformed전체무시/빈member32개 정책을 기록했다. validator강도·실HTTP·HEAD wire는 미검수, 서버 재시작0. UIUX 후보34는 반영 전 통과이며 별도 순차 통합한다. docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FOUR-CANDIDATE-ACCEPTANCE-20261002.md 참조.
 
 2026-10-02 BUILD 후속 완료: 승인 후보와 현행 server.cjs byte 일치, 실제 정적 분기 추출 독립13 PASS를 root가 하니스·증거로 검토했다. root84와 구분하며 추가 생산 수정0, 실제 HTTP/UI 미검수. 근거 production-inm-acceptance-result.md 및 build-owner-final.json.
+
+### 2026-10-02 NW.js 공유 악의 POST 오류 응답 생산 보강
+
+| 대상 / Gate | 현재 상태·근거 |
+|---|---|
+| `node-main.js` POST `/api/mats` | 요청 본문 읽기·JSON 해석·clamp·직접 파일 쓰기 예외를 HTTP500 JSON `{ok:false,error:'Internal Server Error'}`로 끝낸다. `Content-Type:application/json`·CORS `*`, 정상 쓰기 완료 후 기존 HTTP200 `{ok:true,mats:n}` 유지. 성공 응답 전송은 catch 밖에 두며 다른 route·서버·저장 정책 변경0 |
+| 최소 회귀 | `test/nodeMainMats.test.js`의 실제 전체 handler VM에서 정상 저장/조회/슬롯분리/음수 clamp, malformed JSON, stream rejection, 실제 absent-parent ENOENT 총4검사. 원본1PASS/3FAIL → 완료4PASS/0FAIL, headers/end 각1회. Node v24.15.0 구문 검사 PASS. 기존14/18/19·BUILD22 재실행0 |
+| 보존 / source ID | 원본 node-main SHA `01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce` → 완료 `541ff8e6f57db862ddbb1b148ee37a3a8e0da1e16293bc8343a0bc4144d80daf`. 원본4파일·RED/GREEN 로그는 `tmp/mac-migration-runtime/continued-review-20261002/node-main-backup/`에 보존. scoped commit/원격 checkpoint는 총괄이 별도 수행 |
+| 기존 앱 / manifest | codex-half/BUILD의 ACC-04 source pin은 수정 전 SHA이며 현재 source가 달라졌다. 선행 manifest의 `PIN_MATCHES_PRIOR_EVIDENCE`는 그 검수 당시 이력이다. 기존08cac1ce 앱 archive node-main SHA `f0f922cf4e62dd9f30282ebd37b6ef0c258f2864416e89ab125a6631fd8654c1`에 이번 오류 응답 보강은 반영되지 않았다. 기존 앱·manifest 원문을 수정하거나 재빌드하지 않았다 |
+| 미검수 | 성공 저장은 메모리 fs, 실제 OS 검수는 ENOENT 파일 열기 실패만이다. 실제 HTTP/socket·NW.js 앱·저장→종료→재시작·Windows·fsync/crash/concurrency·서명/배포 미검수. 원자쓰기 후보·cleanup 정책 채택0, 새 서버/게임/빌드/삭제0 |
+
+응답 계약의 상세 정본은 [저장 SSOT의 최신 보강](../15%20세이브+데이터구조/15%20세이브+데이터구조.md#2026-10-02-nwjs-공유-악의-post-실패-응답-생산-보강)이다. 개발 `server.cjs`는 기존 text/plain 500을 유지하므로 NW.js JSON 응답과 wire 형식이 같다고 기록하지 않는다. source 회귀 PASS를 실앱/패키지 품질 인수로 집계하지 않는다.

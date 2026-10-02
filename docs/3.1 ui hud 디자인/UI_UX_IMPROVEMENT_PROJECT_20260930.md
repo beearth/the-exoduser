@@ -107,3 +107,14 @@
 양쪽 HTML의 focus factory에 releaseOssuaryAction을 추가하고 renderOssPanel 시작의 활성요소 포착 및 take/remove 갱신 뒤 호출만 반영했다. 선택 유골·유골함 해제로 활성 행동이 disabled가 되면 invClose로 이동하고, 숨긴 닫기로 복귀할 수 없으면 내부 disabled 잔류만 blur한다. 외부/다른 활성 컨트롤 초점은 강탈하지 않는다. 저장·유골 생성/등록/해제·장착·경제·RNG·CSS/ui-panels 원문은 보존했다.
 
 현재 생산 실제 함수/조합 검수34+기존filter32=66그룹 PASS, 전체 inline12개/importmap2 구문 통과. 유골함34는 renderOssPanel 원문을 실행했고 filter32의 renderOssPanel 대역 한계를 분리한다. 실제 키보드·패드·픽셀·전체게임·실저장은 미검수로 UI-04 전체 완료가 아니다. 과거 filter-only exact-byte 표는 이력이며 현재는 connectOssuary(connectFilter(original))와 정확 일치. root-review/four-candidate-acceptance.mjs ui --production 및 four-filter-adjacent.mjs --production으로 재현한다.
+
+
+### 2026-10-02 분리된 스킬 카드 학습 콜백 수명 — 생산 반영
+
+| id·위치 | 현행 구현·수치·검수 |
+|---|---|
+| renderSkillPanel / _skClick | 본편 game.html:46747와 game-easy-test.html:45348 첫 문장에 `if(!d.isConnected||!grid.contains(d))return;` 적용. 문서에 연결되고 현재 skillGrid에 속한 카드만 원래 학습/강화 콜백을 실행한다 |
+| 가시덫 spikeTrap 일반 학습 | SP 원가10, 악의 학습 원가80→`_malCost(80)=max(1,ceil(80×0.5))=40`; P.lv1/SP20/악의80에서 첫 학습 후Lv1/SP10/악의40, 일반 슬롯index0(숫자1) 배정. 시전 비용과 별개이며 비용/성장/슬롯 수치 변경0 |
+| 무효 콜백 | 실제 grid 재생성으로 분리된 옛 callback 재호출은 추가 SP/악의 차감·저장·렌더·SFX0. 원래 이벤트 stopPropagation은 유지 |
+| 검증 | `tools/team-followup-20261002/root-integration/uiux-skill-lifetime-checks.mjs`: 현재 양판 실제 추출 함수2GREEN, guard 제거 메모리 음성대조2RED, 연결 첫 호출의 전체 효과 동일. 기존 팀 원자료는 byte 보존 |
+| 적용·한계 | 생산 코드 반영 완료. 일반 가시덫 카드 한 source fixture이며 native 입력·브라우저 자연도달·전체 렌더·compact/상세·minus/합체별 handler·P 교체·실제 저장/오디오·패드·시각은 미검수. UI 전체 완료나 runtime/visual PASS로 표시하지 않음 |

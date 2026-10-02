@@ -52087,3 +52087,9 @@ unrestricted/network-enabled 변경 뒤 원격5b8e6ba9 exactHEAD 및 지정127.0
 
 - 현재 담당표 MD/JSON에 총괄의 openai-docs·채팅 MCP·CUA·Git 실제 사용과 native Claude8 모델/도구 호출을 별도 기록했다. Claude8 전원 TASK Read·claude-opus-4-8/usage를 확인했고 Read/Bash/Write 및 일부 Edit가 관찰됐다. 이8세션의 Skill/mcp__* 호출은 미관찰, 현재 이미지·음성·영상 생성 MCP 호출0이다. 제공/활성 도구를 실제 사용으로 계산하지 않는다.
 - 후속 스킬/API/MCP는 결과물에 필요한 경우 해당 스킬과 TASK 소유권·승인 범위에 따라 적용하고 실제 호출 결과를 기록한다. 채팅 보관의 영구삭제0과 별도 QA 경로 삭제 사건의 UNKNOWN을 구분했다. 생산 코드 변경0.
+
+
+## 2026-10-02 — 카드 수명·NW.js 실패 응답 및 연속 인수
+
+- 양판 _skClick에 isConnected/skillGrid.contains guard 적용: 현재 실제함수2GREEN, 제거음성2RED. node-main POST /api/mats 실패를500 JSON/end1로 마감: 원본1PASS/3FAIL→수정4PASS, 직접write/clamp·성공계약 유지. 양판 inline12/importmap2 구문검사 통과. UI/스킬/자원 및 저장/API/BUILD/BALANCE canonical 동기화. 실제게임/HTTP/NW.js/저장/패키지/시각·청취 미검수.
+- 사용자 최신 완료→보고→피드백/다음업무 요청에 따라 Mac heartbeat exoduser-mac ACTIVE/1분 주기 생성·실제파일 확인. 초기 전문15 제출과 생산 인수 구분, BOSS outside-write/evidence 충돌 정정 피드백 실제수신, ANIM rollback 모형·SOUNDpri1·mats atomic/cleanup 후보 보류. 기존PC 자동화/사용자탭/세이브/23보존항목 변경0.

@@ -2698,3 +2698,6 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 양쪽 HTML의 focus factory에 releaseOssuaryAction을 추가하고 renderOssPanel 시작의 활성요소 포착 및 take/remove 갱신 뒤 호출만 반영했다. 선택 유골·유골함 해제로 활성 행동이 disabled가 되면 invClose로 이동하고, 숨긴 닫기로 복귀할 수 없으면 내부 disabled 잔류만 blur한다. 외부/다른 활성 컨트롤 초점은 강탈하지 않는다. 저장·유골 생성/등록/해제·장착·경제·RNG·CSS/ui-panels 원문은 보존했다.
 
 현재 생산 실제 함수/조합 검수34+기존filter32=66그룹 PASS, 전체 inline12개/importmap2 구문 통과. 유골함34는 renderOssPanel 원문을 실행했고 filter32의 renderOssPanel 대역 한계를 분리한다. 실제 키보드·패드·픽셀·전체게임·실저장은 미검수로 UI-04 전체 완료가 아니다. 과거 filter-only exact-byte 표는 이력이며 현재는 connectOssuary(connectFilter(original))와 정확 일치. root-review/four-candidate-acceptance.mjs ui --production 및 four-filter-adjacent.mjs --production으로 재현한다.
+
+
+> **2026-10-02 학습 카드 수명:** 본편/easy `renderSkillPanel._skClick`에 현재 카드의 `isConnected` 및 `skillGrid.contains(d)` guard를 생산 반영했다. 재생성으로 분리된 옛 콜백의 추가 차감/저장/SFX를 막으며 학습 비용·강화·슬롯 수치는 유지한다. 양판 실제 함수2GREEN/guard제거 음성대조2RED; 전체게임/native/시각은 미검수. [현행 수치·검증·한계](../3.1%20ui%20hud%20디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md).

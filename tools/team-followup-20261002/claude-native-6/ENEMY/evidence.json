@@ -1,0 +1,359 @@
+{
+  "task": "native-hurtE-death-shot-fixture",
+  "scope": "TCB-03/04 실제 도달경로",
+  "startedAt": "2026-10-02T04:37:25.352Z",
+  "completedAt": "2026-10-02T04:37:28.773Z",
+  "head": "4cd0cb4906daee2b7953af7284f9ecc3ef96dd49",
+  "node": "v24.15.0",
+  "sources": {
+    "game.html": {
+      "sha256": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+      "aliveFalseLine": 41235,
+      "deathBlockLines": {
+        "29": 41350,
+        "55": 41370,
+        "59": 41384
+      },
+      "eShootWindCaseLine": 39180,
+      "helpers": {
+        "_fieldEnemyCanShoot": {
+          "line": 18915,
+          "sha256": "c9e378016f0690cc0744bcd0bee67f309659d9baf8d2a8c1e9bba2fe2b547771"
+        },
+        "_prepareDarkSphere": {
+          "line": 16103,
+          "sha256": "273b34ce6616d23f40d0d2d49faf17f950146d921bb3f211f9a213835d8999f2"
+        },
+        "_projectileParryClass": {
+          "line": 16080,
+          "sha256": "c40a17df6ad601a7af98509514855bcec764d2034afb6717a90f4a9d2833d789"
+        },
+        "_emitEnemyShot": {
+          "line": 18920,
+          "sha256": "831be4b5c0630fa62c743c3789e735b519014675b1c22aeeb9f2b7346d10f3d3"
+        },
+        "_tickEnemyShotWarnings": {
+          "line": 18934,
+          "sha256": "65b42c8672b501d7925c935d855efe471fec87d90ae54e4a66b2c566ad1ac7be"
+        },
+        "_cancelProjCharge": {
+          "line": 18975,
+          "sha256": "b2255c7764a7aaa0492e8979db4daf5890fb240c1d7050bcea7248514593b6ac"
+        },
+        "_spawnBossProjectile": {
+          "line": 16107,
+          "sha256": "fda95af0aae5219f56e1f8476517926412ae25b8fb62901536ef10d382d4e3b5"
+        }
+      },
+      "hurtE": {
+        "line": 40713,
+        "sha256": "a8578d764819733816dce0ed677f5d2e2d4bae35040425c9f1762b7fd69771f2"
+      },
+      "deathBlockSha": {
+        "29": "e32d9317d16834e3241d4841d17bc3c7b92d303a6538fdf375f1b212897662ac",
+        "55": "28fb941d406d8e2ae7f591934386a585655c17bdfa64c1166c0f1131a74343a8",
+        "59": "14c588868b5573e014e7e2f9f6a7a33c7a5a84391182ae9698a03838dcb7b59b"
+      }
+    },
+    "game-easy-test.html": {
+      "sha256": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+      "aliveFalseLine": 40033,
+      "deathBlockLines": {
+        "29": 40148,
+        "55": 40168,
+        "59": 40182
+      },
+      "eShootWindCaseLine": 37979,
+      "helpers": {
+        "_fieldEnemyCanShoot": {
+          "line": 18012,
+          "sha256": "c9e378016f0690cc0744bcd0bee67f309659d9baf8d2a8c1e9bba2fe2b547771"
+        },
+        "_prepareDarkSphere": {
+          "line": 15218,
+          "sha256": "273b34ce6616d23f40d0d2d49faf17f950146d921bb3f211f9a213835d8999f2"
+        },
+        "_projectileParryClass": {
+          "line": 15195,
+          "sha256": "c40a17df6ad601a7af98509514855bcec764d2034afb6717a90f4a9d2833d789"
+        },
+        "_emitEnemyShot": {
+          "line": 18017,
+          "sha256": "df25f436002ae60add9d3f693cdbf5ceb59d635349ae51dff9e0164c7b3418f0"
+        },
+        "_tickEnemyShotWarnings": {
+          "line": 18030,
+          "sha256": "65b42c8672b501d7925c935d855efe471fec87d90ae54e4a66b2c566ad1ac7be"
+        },
+        "_cancelProjCharge": {
+          "line": 18066,
+          "sha256": "add246b7bebda31cc23e2fac1df34826022bf3bee77056dbeee596e5c5286a01"
+        },
+        "_spawnBossProjectile": {
+          "line": 15222,
+          "sha256": "fda95af0aae5219f56e1f8476517926412ae25b8fb62901536ef10d382d4e3b5"
+        }
+      },
+      "hurtE": {
+        "line": 39513,
+        "sha256": "872faefc1e74136fd04001ae4effe83dbc76060bc913584300b98056243e6c20"
+      },
+      "deathBlockSha": {
+        "29": "e32d9317d16834e3241d4841d17bc3c7b92d303a6538fdf375f1b212897662ac",
+        "55": "28fb941d406d8e2ae7f591934386a585655c17bdfa64c1166c0f1131a74343a8",
+        "59": "14c588868b5573e014e7e2f9f6a7a33c7a5a84391182ae9698a03838dcb7b59b"
+      }
+    }
+  },
+  "counts": {
+    "pass": 18,
+    "reproduced": 4,
+    "fail": 0
+  },
+  "verdict": {
+    "TCB-03": "REACHABLE(협소·흡수취소)",
+    "TCB-04": "UNREACHABLE(합성전용)"
+  },
+  "results": [
+    {
+      "file": "game.html",
+      "name": "S1 사망탄 블록은 alive=false 이후(소스 라인 순서)",
+      "status": "PASS"
+    },
+    {
+      "file": "game.html",
+      "name": "S2 TCB-03 생전예약+실제사망탄 흡수→둘다취소",
+      "status": "REPRODUCED",
+      "actual": {
+        "livePre": 1,
+        "deadPre": 0,
+        "ringsAfter": 1,
+        "anyDeadRing": false,
+        "fired": 0
+      },
+      "expected": {
+        "livePre": 1,
+        "deadPre": 0,
+        "ringsAfter": 1,
+        "anyDeadRing": false,
+        "fired": 0
+      }
+    },
+    {
+      "file": "game.html",
+      "name": "S3 사망탄 단독(생전예약 없음): dead링→정상 방출",
+      "status": "PASS"
+    },
+    {
+      "file": "game.html",
+      "name": "S4 실제 eShootWind 완료 case가 eShootWind 상태를 소진",
+      "status": "PASS"
+    },
+    {
+      "file": "game.html",
+      "name": "S5 완료후 사망한 소유자의 실제 사망탄은 즉시발사 우회 안함",
+      "status": "PASS"
+    },
+    {
+      "file": "game.html",
+      "name": "S6 합성 강제상태만 즉시발사(60f 우회)",
+      "status": "REPRODUCED",
+      "actual": {
+        "fired": 1,
+        "rings": 0
+      },
+      "expected": {
+        "fired": 1,
+        "rings": 0
+      }
+    },
+    {
+      "file": "game.html",
+      "name": "C1 후보 find.dead: 생전예약 취소·실제 사망탄 방출",
+      "status": "PASS"
+    },
+    {
+      "file": "game.html",
+      "name": "C2 후보 즉시발사가드: 실제경로 no-op·합성만 차단",
+      "status": "PASS"
+    },
+    {
+      "file": "game.html",
+      "name": "P1 blackBean Q전용 magic 패링 보존",
+      "status": "PASS"
+    },
+    {
+      "file": "game.html",
+      "name": "P2 실제 사망탄 수치·속성 불변(blackBean/redBean 분기)",
+      "status": "PASS"
+    },
+    {
+      "file": "game.html",
+      "name": "P3 후보는 지정 2라인 외 _emitEnemyShot 동일",
+      "status": "PASS"
+    },
+    {
+      "file": "game-easy-test.html",
+      "name": "S1 사망탄 블록은 alive=false 이후(소스 라인 순서)",
+      "status": "PASS"
+    },
+    {
+      "file": "game-easy-test.html",
+      "name": "S2 TCB-03 생전예약+실제사망탄 흡수→둘다취소",
+      "status": "REPRODUCED",
+      "actual": {
+        "livePre": 1,
+        "deadPre": 0,
+        "ringsAfter": 1,
+        "anyDeadRing": false,
+        "fired": 0
+      },
+      "expected": {
+        "livePre": 1,
+        "deadPre": 0,
+        "ringsAfter": 1,
+        "anyDeadRing": false,
+        "fired": 0
+      }
+    },
+    {
+      "file": "game-easy-test.html",
+      "name": "S3 사망탄 단독(생전예약 없음): dead링→정상 방출",
+      "status": "PASS"
+    },
+    {
+      "file": "game-easy-test.html",
+      "name": "S4 실제 eShootWind 완료 case가 eShootWind 상태를 소진",
+      "status": "PASS"
+    },
+    {
+      "file": "game-easy-test.html",
+      "name": "S5 완료후 사망한 소유자의 실제 사망탄은 즉시발사 우회 안함",
+      "status": "PASS"
+    },
+    {
+      "file": "game-easy-test.html",
+      "name": "S6 합성 강제상태만 즉시발사(60f 우회)",
+      "status": "REPRODUCED",
+      "actual": {
+        "fired": 1,
+        "rings": 0
+      },
+      "expected": {
+        "fired": 1,
+        "rings": 0
+      }
+    },
+    {
+      "file": "game-easy-test.html",
+      "name": "C1 후보 find.dead: 생전예약 취소·실제 사망탄 방출",
+      "status": "PASS"
+    },
+    {
+      "file": "game-easy-test.html",
+      "name": "C2 후보 즉시발사가드: 실제경로 no-op·합성만 차단",
+      "status": "PASS"
+    },
+    {
+      "file": "game-easy-test.html",
+      "name": "P1 blackBean Q전용 magic 패링 보존",
+      "status": "PASS"
+    },
+    {
+      "file": "game-easy-test.html",
+      "name": "P2 실제 사망탄 수치·속성 불변(blackBean/redBean 분기)",
+      "status": "PASS"
+    },
+    {
+      "file": "game-easy-test.html",
+      "name": "P3 후보는 지정 2라인 외 _emitEnemyShot 동일",
+      "status": "PASS"
+    }
+  ],
+  "candidateApplied": false,
+  "limits": [
+    "Node VM 소스 추출 — 실제 helper + 실제 eShootWind 완료 case + 실제 hurtE etype29/55/59 사망탄 블록만 실행",
+    "alive=false 선행은 소스 라인 순서(S1)로 정적 검증, 블록 진입상태를 그 사실대로 구성",
+    "전체 hurtE·updateE·게임루프·GPU픽셀·FPS·시각/청취 인수 미실행",
+    "기존76검사 반복0 — 본 fixture는 TCB-03/04 도달경로 전용 신규 검사",
+    "spawnProj/particles/render/geometry stub, 밸런스 수치는 사망탄 블록 원문 공식으로만 확인"
+  ],
+  "handoff": {
+    "inherits": {
+      "project-teams/ENEMY": {
+        "result": "telegraph-cancel-boundary 76 PASS / 10 REPRODUCED, candidate 미적용(12라인)",
+        "note": "본 native fixture는 그 76검사를 재실행·합산하지 않음. TCB-03/04 도달경로만 신규 검사"
+      },
+      "claude-provider/ENEMY": {
+        "result": "읽기전용 호출순서 논증 — TCB-04 합성전용 / TCB-03 도달(협소)",
+        "note": "본 fixture가 그 논증을 실제 hurtE 사망탄 블록 + 실제 완료 case 실행으로 재현·확정"
+      }
+    },
+    "distinction": "project-teams=76 경계검사(합성상태 포함), claude-provider=읽기전용 논증, claude-native-6(본건)=실제 사망탄 원문 실행 도달성 fixture. 세 산출은 별개이며 수치를 합산하지 않는다."
+  },
+  "timeline": {
+    "taskRead": "2026-10-02T04:33Z(approx)",
+    "commandRun": {
+      "started": "2026-10-02T04:37:25.352Z",
+      "completed": "2026-10-02T04:37:28.773Z",
+      "cmd": "node checks.mjs (/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node)"
+    },
+    "writeResult": "2026-10-02T04:38Z(approx)",
+    "review": "18 PASS + 4 REPRODUCED, 0 FAIL 확인(양쪽 HTML)",
+    "complete": "2026-10-02T04:39Z(approx)"
+  },
+  "changeCounts": {
+    "start": 43,
+    "mid": 59,
+    "note": "공유 체크아웃 전체 Changes(타팀 병행 포함) 읽기전용 관찰값. 본인 소유 신규는 checks.mjs/result.md/evidence.json 3개뿐. 80 미만이라 총괄 checkpoint 불필요."
+  },
+  "docsCorrections": [
+    {
+      "doc": "docs/9적ai패턴디자인/9_적AI패턴디자인.md",
+      "lines": [
+        314,
+        319
+      ],
+      "issue": "링 묶음 키에 dead(생명상태) 미기재. find가 dead를 비교하지 않아 생전예약이 동일frame 사망탄을 흡수해 함께 취소될 수 있음(TCB-03). 사망탄 \"항상 방출\"(319) 문장이 이 예외를 빠뜨림. 본편 find는 parryClass도 비교하는데 314에 누락."
+    },
+    {
+      "doc": "docs/9적ai패턴디자인/9_적AI패턴디자인.md",
+      "lines": [
+        312
+      ],
+      "issue": "eShootWind 즉시발사 항목에 불변식 미기재: 사망 소유자는 완료 case[39180/37979]가 st2<=0을 소진하므로 즉시발사 분기 도달불가(TCB-04 합성전용)."
+    },
+    {
+      "doc": "docs/8.0몬스터디자인/몬스터_공격시스템.md",
+      "lines": [
+        666,
+        668,
+        673
+      ],
+      "issue": "위와 동일(즉시발사 불변식·dead 미비교·사망탄 흡수 예외). 668 묶음키에 parryClass 누락."
+    },
+    {
+      "doc": "docs/8.0몬스터디자인/탄막시스템_총정리.md",
+      "lines": [
+        677,
+        679,
+        684
+      ],
+      "issue": "위와 동일."
+    }
+  ],
+  "candidate12LineAssessment": {
+    "scopeOfThisTask": "TCB-03/04 (find.dead 1줄 + 즉시발사 e.alive 1줄, 파일당 2줄 × 2파일 = 4줄)",
+    "TCB03_findDead": {
+      "necessity": "실효 — 도달가능(협소). 투사체/루프후 처치로 생전예약과 사망탄이 동일 키일 때 둘 다 취소되는 사망버스트 부분유실을 복구",
+      "sideEffect": "저위험. dead 분리로 링 1개 추가 가능하나 수치·속성 불변(C1/P2 PASS)",
+      "recommend": "채택 후보(저우선)"
+    },
+    "TCB04_aliveGuard": {
+      "necessity": "없음(실게임). 실제 호출순서로 도달불가=합성전용. 가드는 방어적 어서션일 뿐 재현 결함 아님(S4/S5/S6/C2 PASS)",
+      "sideEffect": "실제경로 no-op, 합성 강제상태만 차단",
+      "recommend": "보류 — 버그수정으로 기록 금지"
+    },
+    "outOfScope8Lines": "_cancelProjCharge(e,interrupt) + _hitStun/stun/freeze 분기(TCB-01/02)는 telegraph-cancel 영역으로 본 reach-path 과제 범위 밖. provider 평가(TCB-01 채택후보/중·QA필요, TCB-02 보류/경미)를 인용만 함."
+  }
+}

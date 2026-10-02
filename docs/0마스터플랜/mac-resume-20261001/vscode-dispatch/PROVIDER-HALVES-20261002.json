@@ -2171,7 +2171,8 @@
     "archiveEightOfficialResultsAndListVerified": true,
     "changelogOriginalPrefixBytesPreserved": 3260500,
     "productionRuntimeVisualAcceptance": false,
-    "userPendingItemsExcluded": 23
+    "userPendingItemsExcluded": 23,
+    "capturedBeforeRootIntegration": true
   },
   "toolUsageAudit": {
     "capturedAt": "2026-10-02T04:47:37Z",
@@ -2283,5 +2284,38 @@
     "creativeGenerationMcpInCurrentTask": "not executed; available tooling is not proof of invocation",
     "usageMeaning": "response metadata is invocation evidence; not a separate API billing or quota assertion",
     "policy": "Choose relevant skills/APIs/MCP for the assigned deliverable; read relevant SKILL.md, preserve task ownership and existing authorized scope, and record actual invocation and outcome. Do not count enabled/catalogued tools as used."
+  },
+  "latestContinuation": {
+    "recordedAt": "2026-10-02T05:15:38.215963+00:00",
+    "userInstruction": "완료 보고 후 같은 실행에서 피드백/다음 업무 배정; 독립 작업 계속",
+    "initialCodexSpecialistSubmissionsCompleted": 7,
+    "initialClaudeSpecialistSubmissionsCompleted": 8,
+    "nativeBossCorrectionFeedbackReceivedAt": "2026-10-02T05:10:08.806Z",
+    "initialBossReceiptMismatch": "outside write declared in result but evidence zero; correction required",
+    "bossCanonicalLock": "design19 and runtime35 must remain distinct",
+    "rootProductionChanges": [
+      "game.html:_skClick lifetime guard",
+      "game-easy-test.html:_skClick lifetime guard",
+      "node-main.js:POST /api/mats HTTP500 JSON failure response",
+      "test/nodeMainMats.test.js:3 failure regressions"
+    ],
+    "sourceVerification": {
+      "uiuxProductionGreen": 2,
+      "uiuxNegativeControlRed": 2,
+      "nodeMainMatsTestsPass": 4,
+      "inlineSyntaxPass": 12,
+      "importMapsJsonPass": 2
+    },
+    "runtimeVisualAudioPackageAcceptance": false,
+    "heartbeat": {
+      "id": "exoduser-mac",
+      "kind": "heartbeat",
+      "status": "ACTIVE",
+      "intervalMinutes": 1,
+      "targetThreadId": "01a0faa9-b453-7673-be39-98adedb4c2b3",
+      "actualTomlVerified": true,
+      "policy": "new completion -> evidence review -> feedback or next assigned task in same run; unchanged state quiet"
+    },
+    "nativeDeliveryMethod": "CUA typeText works; coordinate click/clipboard paste failed and not counted as delivered"
   }
 }

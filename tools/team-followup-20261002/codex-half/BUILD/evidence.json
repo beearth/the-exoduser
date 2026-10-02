@@ -1,0 +1,848 @@
+{
+  "schemaVersion": 1,
+  "team": "BUILD",
+  "task": "archive-delta-acceptance-manifest",
+  "owner": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/codex-half/BUILD",
+  "receipt": {
+    "requestReceived": true,
+    "fullTaskReadConfirmed": true,
+    "requestExactAt": null,
+    "firstReadExactAt": null,
+    "recordedAfterReadAt": "2026-10-02T04:31:10.000Z",
+    "timestampLimit": "수신/첫 cat 도구에 명령별 시각이 없어 직후 clock 기록만 사용",
+    "authority": "최신 사용자: 총괄1+전문15=16, Claude8/Codex8. 이 BUILD 과제 범위 확대0"
+  },
+  "execution": {
+    "startedAt": "2026-10-02T04:34:35.495Z",
+    "completedAt": "2026-10-02T04:34:35.573Z",
+    "nodeExecutable": "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node",
+    "nodeVersion": "v24.15.0",
+    "pathBoundaryVerified": true
+  },
+  "priorAcceptance": {
+    "referenceId": "priorEvidence",
+    "acceptedGroups": 22,
+    "previousValidationCompletedAt": "2026-10-02T03:53:45.631Z",
+    "rerunsThisTask": 0,
+    "rootAcceptedSubmission": true
+  },
+  "references": [
+    {
+      "id": "task",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/codex-half/BUILD/TASK.md",
+      "exists": true,
+      "bytes": 6060,
+      "sha256": "b52db69e91c80db9efb0f2a17b4f2dd74570df23283f0af6788fc65a0a78e123"
+    },
+    {
+      "id": "priorEvidence",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/BUILD_TEAM/evidence.json",
+      "exists": true,
+      "bytes": 56269,
+      "sha256": "f26f11e6b0f41dbc3df5cb0a48046566c8cbd397eb724e27f25c964a6b52fb78"
+    },
+    {
+      "id": "priorReport",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/BUILD_TEAM/result.md",
+      "exists": true,
+      "bytes": 13977,
+      "sha256": "778734c303ea1e2054593f092d47b8fcffe8b0bf43412206f1674b1a1cbe569d"
+    },
+    {
+      "id": "config",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/integrated-mac-build-config.json",
+      "exists": true,
+      "bytes": 3427930,
+      "sha256": "78426f539bcd5b39578353c2f6a76bfa9fa1ba7354cf1fadcdaf7a085043ee99"
+    },
+    {
+      "id": "buildResult",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/integrated-mac-build-result.json",
+      "exists": true,
+      "bytes": 1328858,
+      "sha256": "7e7955e1bfd0f71b251446d2eeec019be6feb6dfd3f4ece2ef0b6da86a0dc681"
+    }
+  ],
+  "acceptanceManifest": {
+    "schemaVersion": 1,
+    "algorithm": "SHA-256",
+    "sourceRoot": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "archiveJobPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/mac-package-ready/mac-packager-08cac1ce-21fb-4874-b4df-c136df5ac269",
+    "appPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/mac-package-ready/mac-packager-08cac1ce-21fb-4874-b4df-c136df5ac269/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app",
+    "archivePath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/mac-package-ready/mac-packager-08cac1ce-21fb-4874-b4df-c136df5ac269/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Resources/app.nw",
+    "originalBuildInputCommit": "6be3a06b4e8d03768a35f4c57d419f45c8efeb39",
+    "referencePins": [
+      {
+        "id": "task",
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/codex-half/BUILD/TASK.md",
+        "exists": true,
+        "bytes": 6060,
+        "sha256": "b52db69e91c80db9efb0f2a17b4f2dd74570df23283f0af6788fc65a0a78e123"
+      },
+      {
+        "id": "priorEvidence",
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/BUILD_TEAM/evidence.json",
+        "exists": true,
+        "bytes": 56269,
+        "sha256": "f26f11e6b0f41dbc3df5cb0a48046566c8cbd397eb724e27f25c964a6b52fb78"
+      },
+      {
+        "id": "priorReport",
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/BUILD_TEAM/result.md",
+        "exists": true,
+        "bytes": 13977,
+        "sha256": "778734c303ea1e2054593f092d47b8fcffe8b0bf43412206f1674b1a1cbe569d"
+      },
+      {
+        "id": "config",
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/integrated-mac-build-config.json",
+        "exists": true,
+        "bytes": 3427930,
+        "sha256": "78426f539bcd5b39578353c2f6a76bfa9fa1ba7354cf1fadcdaf7a085043ee99"
+      },
+      {
+        "id": "buildResult",
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/integrated-mac-build-result.json",
+        "exists": true,
+        "bytes": 1328858,
+        "sha256": "7e7955e1bfd0f71b251446d2eeec019be6feb6dfd3f4ece2ef0b6da86a0dc681"
+      }
+    ],
+    "rows": [
+      {
+        "sourceId": "ACC-01",
+        "file": "game.html",
+        "koreanName": "본편 HTML",
+        "source": {
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+          "exists": true,
+          "bytes": 4025302,
+          "sha256": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f"
+        },
+        "archive": {
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/mac-package-ready/mac-packager-08cac1ce-21fb-4874-b4df-c136df5ac269/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Resources/app.nw/game.html",
+          "exists": true,
+          "bytes": 4024167,
+          "sha256": "c868284af349c996d42087e93eba47a10614d73cb8f55f4db5ae01dde89da31a"
+        },
+        "historicalSource": {
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+          "exists": true,
+          "bytes": 4025302,
+          "sha256": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f"
+        },
+        "historicalArchive": {
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/mac-package-ready/mac-packager-08cac1ce-21fb-4874-b4df-c136df5ac269/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Resources/app.nw/game.html",
+          "exists": true,
+          "bytes": 4024167,
+          "sha256": "c868284af349c996d42087e93eba47a10614d73cb8f55f4db5ae01dde89da31a"
+        },
+        "expectedInArchive": true,
+        "expectedRelationship": {
+          "kind": "KNOWN_FUNCTIONAL_DELTA",
+          "description": "선행 당시: 필터 초점 복귀·유골 행동 비활성화 초점 회수2종이 기존 앱에 미포함",
+          "scope": "선행22 검수 당시 계약, 이번 변환/기능 검사 재실행0",
+          "proofs": [
+            {
+              "referenceId": "priorEvidence",
+              "pointer": "/checks/11",
+              "checkId": "MANIFEST-game.html",
+              "priorPassed": true
+            }
+          ]
+        },
+        "evidenceAnchor": {
+          "referenceId": "priorEvidence",
+          "pointer": "/files/0",
+          "priorDiffHunkCount": 7,
+          "priorDiffReused": true,
+          "newDiffRuns": 0
+        },
+        "sourceMatchesPrior": true,
+        "archiveMatchesPrior": true,
+        "drift": {
+          "status": "PIN_MATCHES_PRIOR_EVIDENCE",
+          "reasons": []
+        },
+        "verificationStage": "FILE_BYTE_PIN_AND_MANIFEST_DOCUMENTATION",
+        "runtimeAccepted": false,
+        "visualAccepted": false,
+        "remainingGates": [
+          "실제 키보드/패드·필터/유골 행동 초점",
+          "현행 전체입력 재검증·재빌드·실앱 저장 재실행"
+        ]
+      },
+      {
+        "sourceId": "ACC-02",
+        "file": "game-easy-test.html",
+        "koreanName": "쉬운판 HTML",
+        "source": {
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game-easy-test.html",
+          "exists": true,
+          "bytes": 3902427,
+          "sha256": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8"
+        },
+        "archive": {
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/mac-package-ready/mac-packager-08cac1ce-21fb-4874-b4df-c136df5ac269/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Resources/app.nw/game-easy-test.html",
+          "exists": true,
+          "bytes": 3901292,
+          "sha256": "11b4e97b15903b9699b296362bdd068ffed6d3a1a505d9f6eeec5482b7c085ca"
+        },
+        "historicalSource": {
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game-easy-test.html",
+          "exists": true,
+          "bytes": 3902427,
+          "sha256": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8"
+        },
+        "historicalArchive": {
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/mac-package-ready/mac-packager-08cac1ce-21fb-4874-b4df-c136df5ac269/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Resources/app.nw/game-easy-test.html",
+          "exists": true,
+          "bytes": 3901292,
+          "sha256": "11b4e97b15903b9699b296362bdd068ffed6d3a1a505d9f6eeec5482b7c085ca"
+        },
+        "expectedInArchive": true,
+        "expectedRelationship": {
+          "kind": "KNOWN_FUNCTIONAL_DELTA",
+          "description": "선행 당시: 위 초점2종이 기존 앱에 미포함; 기본 본편/easy 차이 보존",
+          "scope": "선행22 검수 당시 계약, 이번 변환/기능 검사 재실행0",
+          "proofs": [
+            {
+              "referenceId": "priorEvidence",
+              "pointer": "/checks/12",
+              "checkId": "MANIFEST-game-easy-test.html",
+              "priorPassed": true
+            }
+          ]
+        },
+        "evidenceAnchor": {
+          "referenceId": "priorEvidence",
+          "pointer": "/files/1",
+          "priorDiffHunkCount": 7,
+          "priorDiffReused": true,
+          "newDiffRuns": 0
+        },
+        "sourceMatchesPrior": true,
+        "archiveMatchesPrior": true,
+        "drift": {
+          "status": "PIN_MATCHES_PRIOR_EVIDENCE",
+          "reasons": []
+        },
+        "verificationStage": "FILE_BYTE_PIN_AND_MANIFEST_DOCUMENTATION",
+        "runtimeAccepted": false,
+        "visualAccepted": false,
+        "remainingGates": [
+          "쉬운판 실제 UI·게임",
+          "현행 전체입력 재검증·재빌드"
+        ]
+      },
+      {
+        "sourceId": "ACC-03",
+        "file": "server.cjs",
+        "koreanName": "개발 서버",
+        "source": {
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/server.cjs",
+          "exists": true,
+          "bytes": 16335,
+          "sha256": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d"
+        },
+        "archive": {
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/mac-package-ready/mac-packager-08cac1ce-21fb-4874-b4df-c136df5ac269/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Resources/app.nw/server.cjs",
+          "exists": false,
+          "bytes": null,
+          "sha256": null
+        },
+        "historicalSource": {
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/server.cjs",
+          "exists": true,
+          "bytes": 16335,
+          "sha256": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d"
+        },
+        "historicalArchive": {
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/mac-package-ready/mac-packager-08cac1ce-21fb-4874-b4df-c136df5ac269/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Resources/app.nw/server.cjs",
+          "exists": false,
+          "bytes": null,
+          "sha256": null
+        },
+        "expectedInArchive": false,
+        "expectedRelationship": {
+          "kind": "EXPECTED_EXCLUSION",
+          "description": "선행 당시: server.cjs는 기존 앱 입력에 없고 앱 서버는 node-main.js. 개발 INM/Range 인수를 앱 품질로 전달하지 않음",
+          "scope": "선행22 검수 당시 계약, 이번 변환/기능 검사 재실행0",
+          "proofs": [
+            {
+              "referenceId": "priorEvidence",
+              "pointer": "/checks/15",
+              "checkId": "DEV-SERVER-EXCLUDED",
+              "priorPassed": true
+            }
+          ]
+        },
+        "evidenceAnchor": {
+          "referenceId": "priorEvidence",
+          "pointer": "/files/2",
+          "priorDiffHunkCount": 0,
+          "priorDiffReused": true,
+          "newDiffRuns": 0
+        },
+        "sourceMatchesPrior": true,
+        "archiveMatchesPrior": true,
+        "drift": {
+          "status": "PIN_MATCHES_PRIOR_EVIDENCE",
+          "reasons": []
+        },
+        "verificationStage": "FILE_BYTE_PIN_AND_MANIFEST_DOCUMENTATION",
+        "runtimeAccepted": false,
+        "visualAccepted": false,
+        "remainingGates": [
+          "개발 HTTP/HEAD/Range와 앱 내장 서버 별도 인수",
+          "서버 기능 앱 포팅은 별도 총괄 소유권"
+        ]
+      },
+      {
+        "sourceId": "ACC-04",
+        "file": "node-main.js",
+        "koreanName": "앱 내장 서버",
+        "source": {
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/node-main.js",
+          "exists": true,
+          "bytes": 10153,
+          "sha256": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce"
+        },
+        "archive": {
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/mac-package-ready/mac-packager-08cac1ce-21fb-4874-b4df-c136df5ac269/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Resources/app.nw/node-main.js",
+          "exists": true,
+          "bytes": 10261,
+          "sha256": "f0f922cf4e62dd9f30282ebd37b6ef0c258f2864416e89ab125a6631fd8654c1"
+        },
+        "historicalSource": {
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/node-main.js",
+          "exists": true,
+          "bytes": 10153,
+          "sha256": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce"
+        },
+        "historicalArchive": {
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/mac-package-ready/mac-packager-08cac1ce-21fb-4874-b4df-c136df5ac269/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Resources/app.nw/node-main.js",
+          "exists": true,
+          "bytes": 10261,
+          "sha256": "f0f922cf4e62dd9f30282ebd37b6ef0c258f2864416e89ab125a6631fd8654c1"
+        },
+        "expectedInArchive": true,
+        "expectedRelationship": {
+          "kind": "EXPECTED_DERIVATION",
+          "description": "선행 당시: PORT3333→3383, SAVE_DIR→기존 job/user-state/saves 두 치환만",
+          "scope": "선행22 검수 당시 계약, 이번 변환/기능 검사 재실행0",
+          "proofs": [
+            {
+              "referenceId": "priorEvidence",
+              "pointer": "/checks/7",
+              "checkId": "SERVER-DERIVATION",
+              "priorPassed": true
+            }
+          ]
+        },
+        "evidenceAnchor": {
+          "referenceId": "priorEvidence",
+          "pointer": "/files/3",
+          "priorDiffHunkCount": 2,
+          "priorDiffReused": true,
+          "newDiffRuns": 0
+        },
+        "sourceMatchesPrior": true,
+        "archiveMatchesPrior": true,
+        "drift": {
+          "status": "PIN_MATCHES_PRIOR_EVIDENCE",
+          "reasons": []
+        },
+        "verificationStage": "FILE_BYTE_PIN_AND_MANIFEST_DOCUMENTATION",
+        "runtimeAccepted": false,
+        "visualAccepted": false,
+        "remainingGates": [
+          "실제 앱 HTTP·슬롯 ACK→디스크→종료→재실행→GET",
+          "저장·미디어·이동 경로 계약"
+        ]
+      },
+      {
+        "sourceId": "ACC-05",
+        "file": "ui-panels.js",
+        "koreanName": "패널 스크립트",
+        "source": {
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/ui-panels.js",
+          "exists": true,
+          "bytes": 11883,
+          "sha256": "b22c4a31141672304a15adfae3a5050cb9fde3b96601507c8f10de3ea63f4cb5"
+        },
+        "archive": {
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/mac-package-ready/mac-packager-08cac1ce-21fb-4874-b4df-c136df5ac269/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Resources/app.nw/ui-panels.js",
+          "exists": true,
+          "bytes": 11883,
+          "sha256": "b22c4a31141672304a15adfae3a5050cb9fde3b96601507c8f10de3ea63f4cb5"
+        },
+        "historicalSource": {
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/ui-panels.js",
+          "exists": true,
+          "bytes": 11883,
+          "sha256": "b22c4a31141672304a15adfae3a5050cb9fde3b96601507c8f10de3ea63f4cb5"
+        },
+        "historicalArchive": {
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/mac-package-ready/mac-packager-08cac1ce-21fb-4874-b4df-c136df5ac269/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Resources/app.nw/ui-panels.js",
+          "exists": true,
+          "bytes": 11883,
+          "sha256": "b22c4a31141672304a15adfae3a5050cb9fde3b96601507c8f10de3ea63f4cb5"
+        },
+        "expectedInArchive": true,
+        "expectedRelationship": {
+          "kind": "BYTE_IDENTICAL",
+          "description": "선행 당시: source/archive byte 동일",
+          "scope": "선행22 검수 당시 계약, 이번 변환/기능 검사 재실행0",
+          "proofs": [
+            {
+              "referenceId": "priorEvidence",
+              "pointer": "/checks/10",
+              "checkId": "UNCHANGED-ui-panels.js",
+              "priorPassed": true
+            },
+            {
+              "referenceId": "priorEvidence",
+              "pointer": "/checks/13",
+              "checkId": "MANIFEST-ui-panels.js",
+              "priorPassed": true
+            }
+          ]
+        },
+        "evidenceAnchor": {
+          "referenceId": "priorEvidence",
+          "pointer": "/files/4",
+          "priorDiffHunkCount": 0,
+          "priorDiffReused": true,
+          "newDiffRuns": 0
+        },
+        "sourceMatchesPrior": true,
+        "archiveMatchesPrior": true,
+        "drift": {
+          "status": "PIN_MATCHES_PRIOR_EVIDENCE",
+          "reasons": []
+        },
+        "verificationStage": "FILE_BYTE_PIN_AND_MANIFEST_DOCUMENTATION",
+        "runtimeAccepted": false,
+        "visualAccepted": false,
+        "remainingGates": [
+          "native 패널 초점·전체 게임·레이아웃"
+        ]
+      },
+      {
+        "sourceId": "ACC-06",
+        "file": "package.json",
+        "koreanName": "패키지 설정",
+        "source": {
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/package.json",
+          "exists": true,
+          "bytes": 2040,
+          "sha256": "58d101ca053f29d36d0f9bd8d63639753fde807064d3c957e0bb6db17d4be0e8"
+        },
+        "archive": {
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/mac-package-ready/mac-packager-08cac1ce-21fb-4874-b4df-c136df5ac269/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Resources/app.nw/package.json",
+          "exists": true,
+          "bytes": 1054,
+          "sha256": "f76006616e9c2c99b728327baf9440a01f4ef9f95d6760b64a342600e2ff9f8c"
+        },
+        "historicalSource": {
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/package.json",
+          "exists": true,
+          "bytes": 2040,
+          "sha256": "58d101ca053f29d36d0f9bd8d63639753fde807064d3c957e0bb6db17d4be0e8"
+        },
+        "historicalArchive": {
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/mac-package-ready/mac-packager-08cac1ce-21fb-4874-b4df-c136df5ac269/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Resources/app.nw/package.json",
+          "exists": true,
+          "bytes": 1054,
+          "sha256": "f76006616e9c2c99b728327baf9440a01f4ef9f95d6760b64a342600e2ff9f8c"
+        },
+        "expectedInArchive": true,
+        "expectedRelationship": {
+          "kind": "EXPECTED_DERIVATION",
+          "description": "선행 당시:3383 main/node-remote·고유job 프로필·product_string 파생. name/version/window·나머지 Chromium args 보존, private/type/scripts/devDependencies/dependencies 생략",
+          "scope": "선행22 검수 당시 계약, 이번 변환/기능 검사 재실행0",
+          "proofs": [
+            {
+              "referenceId": "priorEvidence",
+              "pointer": "/checks/8",
+              "checkId": "PACKAGE-DERIVATION",
+              "priorPassed": true
+            }
+          ]
+        },
+        "evidenceAnchor": {
+          "referenceId": "priorEvidence",
+          "pointer": "/files/5",
+          "priorDiffHunkCount": 4,
+          "priorDiffReused": true,
+          "newDiffRuns": 0
+        },
+        "sourceMatchesPrior": true,
+        "archiveMatchesPrior": true,
+        "drift": {
+          "status": "PIN_MATCHES_PRIOR_EVIDENCE",
+          "reasons": []
+        },
+        "verificationStage": "FILE_BYTE_PIN_AND_MANIFEST_DOCUMENTATION",
+        "runtimeAccepted": false,
+        "visualAccepted": false,
+        "remainingGates": [
+          "실앱 부트·코덱·서명·절대 profile/save 이동 및 배포",
+          "런타임 의존성 전체 완전성"
+        ]
+      },
+      {
+        "sourceId": "ACC-07",
+        "file": "index.html",
+        "koreanName": "로비",
+        "source": {
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/index.html",
+          "exists": true,
+          "bytes": 342046,
+          "sha256": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8"
+        },
+        "archive": {
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/mac-package-ready/mac-packager-08cac1ce-21fb-4874-b4df-c136df5ac269/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Resources/app.nw/index.html",
+          "exists": true,
+          "bytes": 342046,
+          "sha256": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8"
+        },
+        "historicalSource": {
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/index.html",
+          "exists": true,
+          "bytes": 342046,
+          "sha256": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8"
+        },
+        "historicalArchive": {
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/mac-package-ready/mac-packager-08cac1ce-21fb-4874-b4df-c136df5ac269/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Resources/app.nw/index.html",
+          "exists": true,
+          "bytes": 342046,
+          "sha256": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8"
+        },
+        "expectedInArchive": true,
+        "expectedRelationship": {
+          "kind": "BYTE_IDENTICAL",
+          "description": "선행 당시: source/archive byte 동일",
+          "scope": "선행22 검수 당시 계약, 이번 변환/기능 검사 재실행0",
+          "proofs": [
+            {
+              "referenceId": "priorEvidence",
+              "pointer": "/checks/9",
+              "checkId": "UNCHANGED-index.html",
+              "priorPassed": true
+            },
+            {
+              "referenceId": "priorEvidence",
+              "pointer": "/checks/14",
+              "checkId": "MANIFEST-index.html",
+              "priorPassed": true
+            }
+          ]
+        },
+        "evidenceAnchor": {
+          "referenceId": "priorEvidence",
+          "pointer": "/files/6",
+          "priorDiffHunkCount": 0,
+          "priorDiffReused": true,
+          "newDiffRuns": 0
+        },
+        "sourceMatchesPrior": true,
+        "archiveMatchesPrior": true,
+        "drift": {
+          "status": "PIN_MATCHES_PRIOR_EVIDENCE",
+          "reasons": []
+        },
+        "verificationStage": "FILE_BYTE_PIN_AND_MANIFEST_DOCUMENTATION",
+        "runtimeAccepted": false,
+        "visualAccepted": false,
+        "remainingGates": [
+          "실앱 로비→캐릭터 선택→게임·미디어"
+        ]
+      }
+    ],
+    "stage": "FILE_BYTE_PIN_ONLY",
+    "referenceScope": "고정 core7·archive6+예상 비포함1; 현재전체7918입력/실앱 인수 아님"
+  },
+  "acceptanceManifestSha256": "7dfcdc3512d94a179ee9171762ad163a0107b88d29291be0cab66fb259deda62",
+  "acceptanceManifestReady": true,
+  "sourcePinsMatchPrior": true,
+  "sourceStatus": "SOURCE_PINS_MATCH_PRIOR_ACCEPTANCE",
+  "rebuildExecuted": false,
+  "runtimeAccepted": false,
+  "visualAccepted": false,
+  "productionApplied": false,
+  "counts": {
+    "manifestRows": 7,
+    "sourcePins": 7,
+    "archiveFilePins": 6,
+    "expectedArchiveAbsences": 1,
+    "driftRows": 0,
+    "newFixtureCount": 0,
+    "prior22Reruns": 0,
+    "newFunctionalChecks": 0
+  },
+  "protectedInputs": [
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/codex-half/BUILD/TASK.md",
+      "exists": true,
+      "bytes": 6060,
+      "sha256": "b52db69e91c80db9efb0f2a17b4f2dd74570df23283f0af6788fc65a0a78e123"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/runtime-acquire-config-draft.json",
+      "exists": true,
+      "bytes": 3797,
+      "sha256": "0e2780f84c7d1ce8187762c5291fce450af86c7c7c2ef92ed803c94724a09616"
+    }
+  ],
+  "stability": {
+    "references": [
+      {
+        "id": "task",
+        "unchanged": true
+      },
+      {
+        "id": "priorEvidence",
+        "unchanged": true
+      },
+      {
+        "id": "priorReport",
+        "unchanged": true
+      },
+      {
+        "id": "config",
+        "unchanged": true
+      },
+      {
+        "id": "buildResult",
+        "unchanged": true
+      }
+    ],
+    "sourceArchive": [
+      {
+        "sourceId": "ACC-01",
+        "unchanged": true
+      },
+      {
+        "sourceId": "ACC-02",
+        "unchanged": true
+      },
+      {
+        "sourceId": "ACC-03",
+        "unchanged": true
+      },
+      {
+        "sourceId": "ACC-04",
+        "unchanged": true
+      },
+      {
+        "sourceId": "ACC-05",
+        "unchanged": true
+      },
+      {
+        "sourceId": "ACC-06",
+        "unchanged": true
+      },
+      {
+        "sourceId": "ACC-07",
+        "unchanged": true
+      }
+    ],
+    "protected": [
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/codex-half/BUILD/TASK.md",
+        "unchanged": true
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/runtime-acquire-config-draft.json",
+        "unchanged": true
+      }
+    ]
+  },
+  "docsSearch": {
+    "command": "rg -n -e KEYWORDS docs/",
+    "keywords": "acceptanceManifest|packaged-source-delta|08cac1ce|INTEGRATION_BUILD_TEAM_MASTER|releaseOssuaryAction|inventoryFilterKey|node-main|runtime-acquire-config-draft",
+    "exitCode": 0,
+    "matchLines": 145,
+    "matchedFiles": [
+      "docs/0마스터플랜/EA/HELL_EA_BUILD_CHECKLIST.md",
+      "docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md",
+      "docs/0마스터플랜/TEAM_CONTINUATION_POLICY_20261001.md",
+      "docs/0마스터플랜/TEAM_START_COMMANDS_20261001.md",
+      "docs/0마스터플랜/mac-resume-20261001/BUILD-SOUND-잔여팀-인수검토.md",
+      "docs/0마스터플랜/mac-resume-20261001/item-fallback-evidence/다음작업-감사.md",
+      "docs/0마스터플랜/mac-resume-20261001/ui03-evidence/BUILD-팀검토.md",
+      "docs/0마스터플랜/mac-resume-20261001/ui03-evidence/team-receipts.json",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ASYNC-BOUNDARY-20261002.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BUILD-context-followup.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BUILD-context-result.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BUILD-entry-followup.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BUILD-entry-receipt.json",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BUILD-entry-result.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BUILD-loopback-result.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BUILD-next-result.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BUILD-port-error-followup.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BUILD-port-error-result.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BUILD-result.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BUILD-task.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FOUR-CANDIDATE-ACCEPTANCE-20261002.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/INTEGRATION-REVIEW-20261002.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/MAC-COORDINATION-20261002.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PM-TEST-SUPPORT-20261002.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PM009-roll-review-root.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/POST-INTEGRATION-PACKAGE-20261002.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-CHATS-20261002.json",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-CHATS-20261002.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-WORK-DISPATCH-20261002.json",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json",
+      "docs/12퍼포먼스·최적화/12퍼포먼스·최적화.md",
+      "docs/12퍼포먼스·최적화/CLAUDE_CODE_인수인계_전체작업보고서_2026-08-10.md",
+      "docs/12퍼포먼스·최적화/코드전수조사_디버그_최적화_2026-09-03.md",
+      "docs/13출시·마케팅/13출시·마케팅.md",
+      "docs/13출시·마케팅/BUILD_BACKUP_POLICY_20261001.md",
+      "docs/13출시·마케팅/DESKTOP_LATEST_BUILD_20260929.md",
+      "docs/13출시·마케팅/HELL_DIROI_종합확장전략기획서_v2_0.md",
+      "docs/13출시·마케팅/INTEGRATION_BUILD_TEAM_MASTER.md",
+      "docs/13출시·마케팅/LAPTOP_MIGRATION_CHECKLIST_20261001.md",
+      "docs/13출시·마케팅/LATEST_WINDOWS_BUILD_20260929.md",
+      "docs/13출시·마케팅/PC_PACKAGING_20260910.md",
+      "docs/13출시·마케팅/PUBLISHER_LATEST_BUILD_DELIVERY_20260929.md",
+      "docs/13출시·마케팅/PUBLISHER_REVIEW_20260929.md",
+      "docs/13출시·마케팅/STEAM_DASHBOARD_AUDIT_20260909.md",
+      "docs/13출시·마케팅/STEAM_DECK_PREPARATION_20260914.md",
+      "docs/13출시·마케팅/STEAM_INSTALL_REVIEW_20260916.md",
+      "docs/13출시·마케팅/STEAM_LATEST_DEPLOY_20260909.md",
+      "docs/13출시·마케팅/STEAM_REVIEW_FINAL_CHECK_20260918.md",
+      "docs/13출시·마케팅/STEAM_REVIEW_REMEDIATION_20260916.md",
+      "docs/13출시·마케팅/USB_WEB_RELEASE_20260910.md",
+      "docs/14밸런스+수치테이블/BALANCE_ECONOMY_TEAM_MASTER.md",
+      "docs/15 세이브+데이터구조/15 세이브+데이터구조.md",
+      "docs/16번역·로컬라이제이션/LANGUAGE_PACKAGE_20260923.md",
+      "docs/16번역·로컬라이제이션/LOCALIZATION_RUNTIME_20260909.md",
+      "docs/16번역·로컬라이제이션/RESUME_LANGUAGE_INTEGRATION_20260923.md",
+      "docs/16번역·로컬라이제이션/WARRIOR_LANGUAGE_SUBTITLES_20260922.md",
+      "docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md",
+      "docs/2_7 인벤토리+장비시스템/INVENTORY_KEYBOARD_FOCUS_20261002.md",
+      "docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md",
+      "docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md",
+      "docs/API연결_가이드.md",
+      "docs/CHANGELOG_SYNC.md",
+      "docs/GIT_PROVENANCE_NOTES.md"
+    ],
+    "outputSha256": "42d8d4ae2a3e6b80ed48537d334d4b4d7610b87b8470fabc874d5581399036db"
+  },
+  "headAndChanges": {
+    "currentGitHead": null,
+    "currentRemoteHead": null,
+    "currentChanges": null,
+    "queriesThisTask": 0,
+    "priorHeadQuotedFromAcceptedEvidence": "31454dfa49c90bac77351273fc32f0c1eb937928",
+    "priorHeadIsNotCurrent": true,
+    "backupCompletedDeclared": false
+  },
+  "prohibitedActions": {
+    "gitCommands": 0,
+    "indexAccesses": 0,
+    "remoteQueries": 0,
+    "deletions": 0,
+    "moves": 0,
+    "cleanup": 0,
+    "outsideOwnerWrites": 0,
+    "packagerImports": 0,
+    "serverImports": 0,
+    "gameImports": 0,
+    "builds": 0,
+    "assetCopies": 0,
+    "fullAssetHashes": 0,
+    "downloads": 0,
+    "installs": 0,
+    "serverStarts": 0,
+    "httpRequests": 0,
+    "gameRuns": 0,
+    "appRuns": 0,
+    "uiActions": 0,
+    "newSessions": 0,
+    "subagents": 0,
+    "otherChatMessages": 0,
+    "saveOrProfileContentReads": 0
+  },
+  "limitations": [
+    "source/manifest PASS ≠ runtime/visual PASS",
+    "manifest 준비는 현재 재빌드 승인·7918개 전체 입력 인수·앱 품질 승인 아님",
+    "이전 변환·diff를 근거로 인수했고 이번에는 최소 pin만 실행",
+    "현재 HEAD/Changes/원격 backup은 새로 조사·선언하지 않음"
+  ],
+  "report": {
+    "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/codex-half/BUILD/result.md",
+    "bytes": 9843,
+    "sha256": "d95654bade1981d3a2d9c57be9299584ef15c836cac187ff03e972ab31761016"
+  },
+  "finalVerification": {
+    "status": "MANIFEST_STRUCTURE_AND_REFERENCES_PASS",
+    "mode": "--verify",
+    "exitCode": 0,
+    "toolResultChunk": "04c90d",
+    "exactCompletedAt": null,
+    "recordedAt": "2026-10-02T04:35:27.247Z",
+    "checks": [
+      {
+        "id": "manifest_seal",
+        "passed": true
+      },
+      {
+        "id": "seven_rows",
+        "passed": true
+      },
+      {
+        "id": "explicit_stage_flags",
+        "passed": true
+      },
+      {
+        "id": "reference_sha_stable",
+        "passed": true
+      },
+      {
+        "id": "source_archive_pins_stable",
+        "passed": true
+      },
+      {
+        "id": "task_draft_preserved",
+        "passed": true
+      },
+      {
+        "id": "report_sha",
+        "passed": true
+      },
+      {
+        "id": "owner_limit",
+        "passed": true
+      }
+    ],
+    "passed": 8,
+    "failed": 0,
+    "newFixtureCount": 0,
+    "prior22Reruns": 0,
+    "newFunctionalChecks": 0,
+    "taskSha256": "b52db69e91c80db9efb0f2a17b4f2dd74570df23283f0af6788fc65a0a78e123",
+    "ownedArtifacts": [
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/codex-half/BUILD/checks.mjs",
+        "bytes": 20007,
+        "sha256": "ab00d0fd4246dee93d6014cf7b8bc4cb78f2ad520a7a2a4ea904d97ca41527c9"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/codex-half/BUILD/result.md",
+        "bytes": 9843,
+        "sha256": "d95654bade1981d3a2d9c57be9299584ef15c836cac187ff03e972ab31761016"
+      }
+    ],
+    "ownerFiles": [
+      "TASK.md",
+      "checks.mjs",
+      "evidence.json",
+      "result.md"
+    ],
+    "recordingLimit": "도구 결과는 시각 미제공; 실제 --verify exit0/8 PASS 결과를 이 시각에 기록. manifest 본문과 report는 변경하지 않음"
+  }
+}

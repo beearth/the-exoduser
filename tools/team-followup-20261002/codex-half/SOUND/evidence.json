@@ -1,0 +1,1559 @@
+{
+  "task": "ghost-laugh-queue-rng-source-fixture",
+  "status": "SOURCE_FIXTURE_PASS_RUNTIME_PENDING",
+  "policyAdopted": false,
+  "productionApplied": false,
+  "runtimeExecuted": false,
+  "sourceFixturePassIsNotRuntimeVisualListeningPass": true,
+  "receipt": {
+    "observedAt": "2026-10-02T04:31:12.695Z",
+    "exactInboundTimestamp": null,
+    "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/codex-half/SOUND/TASK.md",
+    "firstCatExitCode": 0,
+    "initialOwnedFiles": [
+      "TASK.md"
+    ]
+  },
+  "paths": {
+    "root": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "rootReal": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "owner": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/codex-half/SOUND",
+    "ownerReal": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/codex-half/SOUND"
+  },
+  "execution": {
+    "startedAt": "2026-10-02T04:35:35.392Z",
+    "completedAt": "2026-10-02T04:35:35.540Z",
+    "node": "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node",
+    "version": "v24.15.0",
+    "uniqueBackendsExecuted": 1,
+    "sourceVariants": 2,
+    "contrasts": 7,
+    "passed": 7,
+    "failed": 0,
+    "exitCode": 0,
+    "old18Group84InputsRerun": 0,
+    "previousStatic31Rerun": 0
+  },
+  "reads": [
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/AGENTS.md",
+      "at": "2026-10-02T04:35:35.393Z",
+      "sha256": "fd59bef70960bcaf1ab9910051faa860362884e574ac2869fad05c6872ae04e4",
+      "bytes": 26076
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/codex-half/SOUND/TASK.md",
+      "at": "2026-10-02T04:35:35.393Z",
+      "sha256": "63299d90a20778ff6b198e4100d883af4258dcdc6e3ad9ff5ac7f1c48e8632ca",
+      "bytes": 6514
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/6사운드디자인/6사운드디자인.md",
+      "at": "2026-10-02T04:35:35.393Z",
+      "sha256": "39f97d11bfc34e89647e2230acaea1777d5c6654aaf6378b83135d29cb1ecea4",
+      "bytes": 73452
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md",
+      "at": "2026-10-02T04:35:35.393Z",
+      "sha256": "29e01d81a0632beb91cac804407510f322e2bd94bee505d2db33c69b82d54c3c",
+      "bytes": 102787
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/SOUND/result.md",
+      "at": "2026-10-02T04:35:35.394Z",
+      "sha256": "c4ac6147bb963eb90a6dc72b0b36147943c57b01fe078a64b8335cecd2fe0090",
+      "bytes": 14974
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-provider/SOUND/result.md",
+      "at": "2026-10-02T04:35:35.394Z",
+      "sha256": "e42f87a06d68668effba15f96e35cbfa3ee8db91d796bfc9d4926e47c4ef1cb7",
+      "bytes": 12777
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/SOUND/evidence.json",
+      "at": "2026-10-02T04:35:35.395Z",
+      "sha256": "c55d5097d170f1e6007b79f7b34dc50df2a4a7d78746bcaa6aa11b8323d1a80d",
+      "bytes": 27238
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-provider/SOUND/evidence.json",
+      "at": "2026-10-02T04:35:35.395Z",
+      "sha256": "cb074d82e220eacde4b6386899d45e00335b3ec8732ab503c47231dc4c693243",
+      "bytes": 5327
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/server.cjs",
+      "at": "2026-10-02T04:35:35.395Z",
+      "sha256": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d",
+      "bytes": 16335
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/node-main.js",
+      "at": "2026-10-02T04:35:35.395Z",
+      "sha256": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce",
+      "bytes": 10153
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/index.html",
+      "at": "2026-10-02T04:35:35.395Z",
+      "sha256": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8",
+      "bytes": 342046
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+      "at": "2026-10-02T04:35:35.396Z",
+      "sha256": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+      "bytes": 4025302
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game-easy-test.html",
+      "at": "2026-10-02T04:35:35.447Z",
+      "sha256": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+      "bytes": 3902427
+    }
+  ],
+  "sources": [
+    {
+      "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+      "sha256": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+      "fingerprint": "96f095d817cfa05ad9979e43c89b602f43264811c42c3f8441e62bf7f95441e7",
+      "blocks": [
+        {
+          "name": "_boneRegister",
+          "sha256": "be4d703b137804a12acc3264e81ccb02be3ab606e710a18f19b64a568cdbc20f",
+          "start": 2525845,
+          "end": 2526686,
+          "line": 44315,
+          "endLine": 44333,
+          "bytes": 871
+        },
+        {
+          "name": "_r",
+          "sha256": "a2ae931f0268caf75ddb17d752c77cd32960a6cf59eac23be2db7dc76dda8ab3",
+          "start": 658677,
+          "end": 658737,
+          "line": 12004,
+          "endLine": 12004,
+          "bytes": 60
+        },
+        {
+          "name": "playSample",
+          "sha256": "4305df5cdb884bda6cfe83fc670852d5d7a3d02937e4087ea3f59eebaff6bc79",
+          "start": 654736,
+          "end": 655236,
+          "line": 11899,
+          "endLine": 11911,
+          "bytes": 522
+        },
+        {
+          "name": "_sfxFrameReset",
+          "sha256": "a1e9ed017b19ea9adb736eaa53ff9f1b9f548db8b14763ed7068854a54705370",
+          "start": 649366,
+          "end": 650465,
+          "line": 11840,
+          "endLine": 11867,
+          "bytes": 1259
+        },
+        {
+          "name": "_sfxPri",
+          "sha256": "ddb3b9c901afd6dca96d917fb79dbcd164ed802b4dfea2287394c23c253738d5",
+          "start": 645740,
+          "end": 646706,
+          "line": 11778,
+          "endLine": 11792,
+          "bytes": 1026
+        },
+        {
+          "name": "_sfxCat",
+          "sha256": "b46865084a6cd213875c288681d8ddc3bd6f72446e604778c9ec9713c2695e8b",
+          "start": 653420,
+          "end": 654097,
+          "line": 11883,
+          "endLine": 11895,
+          "bytes": 747
+        },
+        {
+          "name": "_isFootstepSfx",
+          "sha256": "d3f6179e260c9264ff417dc356f789044609d495d7f9d8a70f3ce01be882f853",
+          "start": 645666,
+          "end": 645739,
+          "line": 11777,
+          "endLine": 11777,
+          "bytes": 73
+        },
+        {
+          "name": "_isSkillSfx",
+          "sha256": "1eb9ed929a4b063ee1f8f7f418a8ba92a771149482be8d3eb2ef8eb8f1d1f73a",
+          "start": 654536,
+          "end": 654715,
+          "line": 11897,
+          "endLine": 11897,
+          "bytes": 179
+        },
+        {
+          "name": "_MAX_ACTIVE_NODES",
+          "sha256": "7fc65f673a1f32ef796b08234996170426b4e5c133f37aa43452143a63ff4267",
+          "start": 645138,
+          "end": 645177,
+          "line": 11767,
+          "endLine": 11767,
+          "bytes": 40
+        },
+        {
+          "name": "_SFX_MAX",
+          "sha256": "409644afebe7967ebe57352442c4a6f0080359debd5d948c8b93e55845781470",
+          "start": 645179,
+          "end": 645207,
+          "line": 11768,
+          "endLine": 11768,
+          "bytes": 29
+        },
+        {
+          "name": "_SFX_PER_FRAME",
+          "sha256": "74b8f6406e429a980e5ba25120e30f4b8a23df18c60a945998f79759083745b9",
+          "start": 645279,
+          "end": 645313,
+          "line": 11770,
+          "endLine": 11770,
+          "bytes": 35
+        },
+        {
+          "name": "_SFX_PRI",
+          "sha256": "3d026a723da2d9ff5693b3f8486f2a8790854f0a43f84313ffc40d6836e5e965",
+          "start": 645352,
+          "end": 645432,
+          "line": 11772,
+          "endLine": 11772,
+          "bytes": 81
+        },
+        {
+          "name": "_SKILL_SFX_KEYS",
+          "sha256": "e2b7bd8e642492759d2ac39c2cab43f6f932bda35f7061269f41effaaaf71271",
+          "start": 654098,
+          "end": 654534,
+          "line": 11896,
+          "endLine": 11896,
+          "bytes": 437
+        }
+      ]
+    },
+    {
+      "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game-easy-test.html",
+      "sha256": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+      "fingerprint": "96f095d817cfa05ad9979e43c89b602f43264811c42c3f8441e62bf7f95441e7",
+      "blocks": [
+        {
+          "name": "_boneRegister",
+          "sha256": "be4d703b137804a12acc3264e81ccb02be3ab606e710a18f19b64a568cdbc20f",
+          "start": 2430569,
+          "end": 2431410,
+          "line": 42952,
+          "endLine": 42970,
+          "bytes": 871
+        },
+        {
+          "name": "_r",
+          "sha256": "a2ae931f0268caf75ddb17d752c77cd32960a6cf59eac23be2db7dc76dda8ab3",
+          "start": 617885,
+          "end": 617945,
+          "line": 11408,
+          "endLine": 11408,
+          "bytes": 60
+        },
+        {
+          "name": "playSample",
+          "sha256": "4305df5cdb884bda6cfe83fc670852d5d7a3d02937e4087ea3f59eebaff6bc79",
+          "start": 613944,
+          "end": 614444,
+          "line": 11303,
+          "endLine": 11315,
+          "bytes": 522
+        },
+        {
+          "name": "_sfxFrameReset",
+          "sha256": "a1e9ed017b19ea9adb736eaa53ff9f1b9f548db8b14763ed7068854a54705370",
+          "start": 608574,
+          "end": 609673,
+          "line": 11244,
+          "endLine": 11271,
+          "bytes": 1259
+        },
+        {
+          "name": "_sfxPri",
+          "sha256": "ddb3b9c901afd6dca96d917fb79dbcd164ed802b4dfea2287394c23c253738d5",
+          "start": 604948,
+          "end": 605914,
+          "line": 11182,
+          "endLine": 11196,
+          "bytes": 1026
+        },
+        {
+          "name": "_sfxCat",
+          "sha256": "b46865084a6cd213875c288681d8ddc3bd6f72446e604778c9ec9713c2695e8b",
+          "start": 612628,
+          "end": 613305,
+          "line": 11287,
+          "endLine": 11299,
+          "bytes": 747
+        },
+        {
+          "name": "_isFootstepSfx",
+          "sha256": "d3f6179e260c9264ff417dc356f789044609d495d7f9d8a70f3ce01be882f853",
+          "start": 604874,
+          "end": 604947,
+          "line": 11181,
+          "endLine": 11181,
+          "bytes": 73
+        },
+        {
+          "name": "_isSkillSfx",
+          "sha256": "1eb9ed929a4b063ee1f8f7f418a8ba92a771149482be8d3eb2ef8eb8f1d1f73a",
+          "start": 613744,
+          "end": 613923,
+          "line": 11301,
+          "endLine": 11301,
+          "bytes": 179
+        },
+        {
+          "name": "_MAX_ACTIVE_NODES",
+          "sha256": "7fc65f673a1f32ef796b08234996170426b4e5c133f37aa43452143a63ff4267",
+          "start": 604346,
+          "end": 604385,
+          "line": 11171,
+          "endLine": 11171,
+          "bytes": 40
+        },
+        {
+          "name": "_SFX_MAX",
+          "sha256": "409644afebe7967ebe57352442c4a6f0080359debd5d948c8b93e55845781470",
+          "start": 604387,
+          "end": 604415,
+          "line": 11172,
+          "endLine": 11172,
+          "bytes": 29
+        },
+        {
+          "name": "_SFX_PER_FRAME",
+          "sha256": "74b8f6406e429a980e5ba25120e30f4b8a23df18c60a945998f79759083745b9",
+          "start": 604487,
+          "end": 604521,
+          "line": 11174,
+          "endLine": 11174,
+          "bytes": 35
+        },
+        {
+          "name": "_SFX_PRI",
+          "sha256": "3d026a723da2d9ff5693b3f8486f2a8790854f0a43f84313ffc40d6836e5e965",
+          "start": 604560,
+          "end": 604640,
+          "line": 11176,
+          "endLine": 11176,
+          "bytes": 81
+        },
+        {
+          "name": "_SKILL_SFX_KEYS",
+          "sha256": "e2b7bd8e642492759d2ac39c2cab43f6f932bda35f7061269f41effaaaf71271",
+          "start": 613306,
+          "end": 613742,
+          "line": 11300,
+          "endLine": 11300,
+          "bytes": 437
+        }
+      ]
+    }
+  ],
+  "sourceGroups": [
+    {
+      "fingerprint": "96f095d817cfa05ad9979e43c89b602f43264811c42c3f8441e62bf7f95441e7",
+      "files": [
+        "game.html",
+        "game-easy-test.html"
+      ]
+    }
+  ],
+  "memoryEdits": [
+    {
+      "sourceFiles": [
+        "game.html",
+        "game-easy-test.html"
+      ],
+      "target": "_boneRegister",
+      "changes": 1,
+      "originalFragment": "playSample('ghost_laugh',.8,_r(1.2,.1))",
+      "replacementFragment": "playSample('ghost_laugh',.8,_r(1.2,.1),1)",
+      "originalFragmentSha256": "9e352790b6172e1c9954586ff4618b4d491151fc354fed5f7f21cb56185de99c",
+      "replacementFragmentSha256": "8decff0dac1dea20130849aa2c987f3e73556305fb0556aee4ec6539643bf155",
+      "originalFunctionSha256": "be4d703b137804a12acc3264e81ccb02be3ab606e710a18f19b64a568cdbc20f",
+      "memoryFunctionSha256": "11fc2e2507f2699689a16c3988f28fa7fd83f4a820dd864dce33d388a0c305d4",
+      "productionApplied": false
+    }
+  ],
+  "records": [
+    {
+      "id": "baseline",
+      "ko": "정상 기준",
+      "sourceFiles": [
+        "game.html",
+        "game-easy-test.html"
+      ],
+      "sourceFingerprint": "96f095d817cfa05ad9979e43c89b602f43264811c42c3f8441e62bf7f95441e7",
+      "input": {
+        "active": 0,
+        "ahead": 0,
+        "priMemoryOnly": false,
+        "clockTimesMs": [
+          100
+        ],
+        "items": [
+          {
+            "slot": "bonePart",
+            "anc": "iron_warlord",
+            "part": "skull",
+            "rarity": 0,
+            "tier": 0,
+            "name": "철갑 전대의 두개골"
+          }
+        ],
+        "buffer": "loaded assumed; not read or decoded",
+        "IS_MOBILE": false
+      },
+      "expected": {
+        "caller": 1,
+        "backend": 1,
+        "ghostReached": 1,
+        "totalReached": 1,
+        "position": 0
+      },
+      "registrations": [
+        true
+      ],
+      "collection": {
+        "iron_warlord_skull": {
+          "r": 0,
+          "t": 0
+        }
+      },
+      "notifications": 1,
+      "saveCalls": 0,
+      "prepareRng": 0,
+      "callerRng": 1,
+      "backendPitchRng": 1,
+      "beforeFlush": [
+        {
+          "key": "ghost_laugh",
+          "vol": 0.8,
+          "rate": 1.1856
+        }
+      ],
+      "queuePositions": [
+        0
+      ],
+      "afterFlushQueueLength": 0,
+      "ghostBackendReached": 1,
+      "totalBackendReached": 1,
+      "backendCalls": [
+        {
+          "key": "ghost_laugh",
+          "vol": 0.8,
+          "rate": 1.1856,
+          "startTime": 0.1,
+          "pan": 0,
+          "nodePriority": 9,
+          "activeUnchanged": 0,
+          "audibleVerified": false
+        }
+      ],
+      "rngTrace": [
+        {
+          "index": 0,
+          "clock": 100,
+          "phase": "ghost",
+          "origin": "caller_pitch",
+          "value": 0.25
+        },
+        {
+          "index": 1,
+          "clock": 100,
+          "phase": "ghost",
+          "origin": "backend_pitch",
+          "value": 0.75
+        }
+      ],
+      "priority": 9,
+      "category": "ghost_laugh",
+      "status": "PASS"
+    },
+    {
+      "id": "nodes48-current",
+      "ko": "노드48 포화·현행",
+      "sourceFiles": [
+        "game.html",
+        "game-easy-test.html"
+      ],
+      "sourceFingerprint": "96f095d817cfa05ad9979e43c89b602f43264811c42c3f8441e62bf7f95441e7",
+      "input": {
+        "active": 48,
+        "ahead": 0,
+        "priMemoryOnly": false,
+        "clockTimesMs": [
+          100
+        ],
+        "items": [
+          {
+            "slot": "bonePart",
+            "anc": "iron_warlord",
+            "part": "skull",
+            "rarity": 0,
+            "tier": 0,
+            "name": "철갑 전대의 두개골"
+          }
+        ],
+        "buffer": "loaded assumed; not read or decoded",
+        "IS_MOBILE": false
+      },
+      "expected": {
+        "caller": 1,
+        "backend": 1,
+        "ghostReached": 0,
+        "totalReached": 0,
+        "position": 0
+      },
+      "registrations": [
+        true
+      ],
+      "collection": {
+        "iron_warlord_skull": {
+          "r": 0,
+          "t": 0
+        }
+      },
+      "notifications": 1,
+      "saveCalls": 0,
+      "prepareRng": 0,
+      "callerRng": 1,
+      "backendPitchRng": 1,
+      "beforeFlush": [
+        {
+          "key": "ghost_laugh",
+          "vol": 0.8,
+          "rate": 1.1856
+        }
+      ],
+      "queuePositions": [
+        0
+      ],
+      "afterFlushQueueLength": 0,
+      "ghostBackendReached": 0,
+      "totalBackendReached": 0,
+      "backendCalls": [],
+      "rngTrace": [
+        {
+          "index": 0,
+          "clock": 100,
+          "phase": "ghost",
+          "origin": "caller_pitch",
+          "value": 0.25
+        },
+        {
+          "index": 1,
+          "clock": 100,
+          "phase": "ghost",
+          "origin": "backend_pitch",
+          "value": 0.75
+        }
+      ],
+      "priority": 9,
+      "category": "ghost_laugh",
+      "status": "PASS"
+    },
+    {
+      "id": "frame6-current",
+      "ko": "앞선 일반큐6·현행",
+      "sourceFiles": [
+        "game.html",
+        "game-easy-test.html"
+      ],
+      "sourceFingerprint": "96f095d817cfa05ad9979e43c89b602f43264811c42c3f8441e62bf7f95441e7",
+      "input": {
+        "active": 0,
+        "ahead": 6,
+        "priMemoryOnly": false,
+        "clockTimesMs": [
+          100
+        ],
+        "items": [
+          {
+            "slot": "bonePart",
+            "anc": "iron_warlord",
+            "part": "skull",
+            "rarity": 0,
+            "tier": 0,
+            "name": "철갑 전대의 두개골"
+          }
+        ],
+        "buffer": "loaded assumed; not read or decoded",
+        "IS_MOBILE": false
+      },
+      "expected": {
+        "caller": 1,
+        "backend": 1,
+        "ghostReached": 0,
+        "totalReached": 6,
+        "position": 6
+      },
+      "registrations": [
+        true
+      ],
+      "collection": {
+        "iron_warlord_skull": {
+          "r": 0,
+          "t": 0
+        }
+      },
+      "notifications": 1,
+      "saveCalls": 0,
+      "prepareRng": 6,
+      "callerRng": 1,
+      "backendPitchRng": 1,
+      "beforeFlush": [
+        {
+          "key": "fixture_warm_0",
+          "vol": 0.2,
+          "rate": 0.9600000000000001
+        },
+        {
+          "key": "fixture_warm_1",
+          "vol": 0.2,
+          "rate": 1.04
+        },
+        {
+          "key": "fixture_warm_2",
+          "vol": 0.2,
+          "rate": 1
+        },
+        {
+          "key": "fixture_warm_3",
+          "vol": 0.2,
+          "rate": 0.9400000000000001
+        },
+        {
+          "key": "fixture_warm_4",
+          "vol": 0.2,
+          "rate": 0.9600000000000001
+        },
+        {
+          "key": "fixture_warm_5",
+          "vol": 0.2,
+          "rate": 1.04
+        },
+        {
+          "key": "ghost_laugh",
+          "vol": 0.8,
+          "rate": 1.1280000000000001
+        }
+      ],
+      "queuePositions": [
+        6
+      ],
+      "afterFlushQueueLength": 0,
+      "ghostBackendReached": 0,
+      "totalBackendReached": 6,
+      "backendCalls": [
+        {
+          "key": "fixture_warm_0",
+          "vol": 0.2,
+          "rate": 0.9600000000000001,
+          "startTime": 0.1,
+          "pan": 0,
+          "nodePriority": 2,
+          "activeUnchanged": 0,
+          "audibleVerified": false
+        },
+        {
+          "key": "fixture_warm_1",
+          "vol": 0.2,
+          "rate": 1.04,
+          "startTime": 0.1,
+          "pan": 0,
+          "nodePriority": 2,
+          "activeUnchanged": 0,
+          "audibleVerified": false
+        },
+        {
+          "key": "fixture_warm_2",
+          "vol": 0.2,
+          "rate": 1,
+          "startTime": 0.1,
+          "pan": 0,
+          "nodePriority": 2,
+          "activeUnchanged": 0,
+          "audibleVerified": false
+        },
+        {
+          "key": "fixture_warm_3",
+          "vol": 0.2,
+          "rate": 0.9400000000000001,
+          "startTime": 0.1,
+          "pan": 0,
+          "nodePriority": 2,
+          "activeUnchanged": 0,
+          "audibleVerified": false
+        },
+        {
+          "key": "fixture_warm_4",
+          "vol": 0.2,
+          "rate": 0.9600000000000001,
+          "startTime": 0.1,
+          "pan": 0,
+          "nodePriority": 2,
+          "activeUnchanged": 0,
+          "audibleVerified": false
+        },
+        {
+          "key": "fixture_warm_5",
+          "vol": 0.2,
+          "rate": 1.04,
+          "startTime": 0.1,
+          "pan": 0,
+          "nodePriority": 2,
+          "activeUnchanged": 0,
+          "audibleVerified": false
+        }
+      ],
+      "rngTrace": [
+        {
+          "index": 0,
+          "clock": 100,
+          "phase": "prepare",
+          "origin": "backend_pitch",
+          "value": 0.25
+        },
+        {
+          "index": 1,
+          "clock": 100,
+          "phase": "prepare",
+          "origin": "backend_pitch",
+          "value": 0.75
+        },
+        {
+          "index": 2,
+          "clock": 100,
+          "phase": "prepare",
+          "origin": "backend_pitch",
+          "value": 0.5
+        },
+        {
+          "index": 3,
+          "clock": 100,
+          "phase": "prepare",
+          "origin": "backend_pitch",
+          "value": 0.125
+        },
+        {
+          "index": 4,
+          "clock": 100,
+          "phase": "prepare",
+          "origin": "backend_pitch",
+          "value": 0.25
+        },
+        {
+          "index": 5,
+          "clock": 100,
+          "phase": "prepare",
+          "origin": "backend_pitch",
+          "value": 0.75
+        },
+        {
+          "index": 6,
+          "clock": 100,
+          "phase": "ghost",
+          "origin": "caller_pitch",
+          "value": 0.5
+        },
+        {
+          "index": 7,
+          "clock": 100,
+          "phase": "ghost",
+          "origin": "backend_pitch",
+          "value": 0.125
+        }
+      ],
+      "priority": 9,
+      "category": "ghost_laugh",
+      "status": "PASS"
+    },
+    {
+      "id": "nodes48-pri1",
+      "ko": "노드48 포화·메모리 pri1",
+      "sourceFiles": [
+        "game.html",
+        "game-easy-test.html"
+      ],
+      "sourceFingerprint": "96f095d817cfa05ad9979e43c89b602f43264811c42c3f8441e62bf7f95441e7",
+      "input": {
+        "active": 48,
+        "ahead": 0,
+        "priMemoryOnly": true,
+        "clockTimesMs": [
+          100
+        ],
+        "items": [
+          {
+            "slot": "bonePart",
+            "anc": "iron_warlord",
+            "part": "skull",
+            "rarity": 0,
+            "tier": 0,
+            "name": "철갑 전대의 두개골"
+          }
+        ],
+        "buffer": "loaded assumed; not read or decoded",
+        "IS_MOBILE": false
+      },
+      "expected": {
+        "caller": 1,
+        "backend": 1,
+        "ghostReached": 1,
+        "totalReached": 1,
+        "position": 0
+      },
+      "registrations": [
+        true
+      ],
+      "collection": {
+        "iron_warlord_skull": {
+          "r": 0,
+          "t": 0
+        }
+      },
+      "notifications": 1,
+      "saveCalls": 0,
+      "prepareRng": 0,
+      "callerRng": 1,
+      "backendPitchRng": 1,
+      "beforeFlush": [
+        {
+          "key": "ghost_laugh",
+          "vol": 0.8,
+          "rate": 1.1856,
+          "pri": 1
+        }
+      ],
+      "queuePositions": [
+        0
+      ],
+      "afterFlushQueueLength": 0,
+      "ghostBackendReached": 1,
+      "totalBackendReached": 1,
+      "backendCalls": [
+        {
+          "key": "ghost_laugh",
+          "vol": 0.8,
+          "rate": 1.1856,
+          "startTime": 0.1,
+          "pan": 0,
+          "nodePriority": 9,
+          "activeUnchanged": 48,
+          "audibleVerified": false
+        }
+      ],
+      "rngTrace": [
+        {
+          "index": 0,
+          "clock": 100,
+          "phase": "ghost",
+          "origin": "caller_pitch",
+          "value": 0.25
+        },
+        {
+          "index": 1,
+          "clock": 100,
+          "phase": "ghost",
+          "origin": "backend_pitch",
+          "value": 0.75
+        }
+      ],
+      "priority": 9,
+      "category": "ghost_laugh",
+      "status": "PASS"
+    },
+    {
+      "id": "frame6-pri1",
+      "ko": "앞선 일반큐6·메모리 pri1",
+      "sourceFiles": [
+        "game.html",
+        "game-easy-test.html"
+      ],
+      "sourceFingerprint": "96f095d817cfa05ad9979e43c89b602f43264811c42c3f8441e62bf7f95441e7",
+      "input": {
+        "active": 0,
+        "ahead": 6,
+        "priMemoryOnly": true,
+        "clockTimesMs": [
+          100
+        ],
+        "items": [
+          {
+            "slot": "bonePart",
+            "anc": "iron_warlord",
+            "part": "skull",
+            "rarity": 0,
+            "tier": 0,
+            "name": "철갑 전대의 두개골"
+          }
+        ],
+        "buffer": "loaded assumed; not read or decoded",
+        "IS_MOBILE": false
+      },
+      "expected": {
+        "caller": 1,
+        "backend": 1,
+        "ghostReached": 1,
+        "totalReached": 6,
+        "position": 0
+      },
+      "registrations": [
+        true
+      ],
+      "collection": {
+        "iron_warlord_skull": {
+          "r": 0,
+          "t": 0
+        }
+      },
+      "notifications": 1,
+      "saveCalls": 0,
+      "prepareRng": 6,
+      "callerRng": 1,
+      "backendPitchRng": 1,
+      "beforeFlush": [
+        {
+          "key": "ghost_laugh",
+          "vol": 0.8,
+          "rate": 1.1280000000000001,
+          "pri": 1
+        },
+        {
+          "key": "fixture_warm_0",
+          "vol": 0.2,
+          "rate": 0.9600000000000001
+        },
+        {
+          "key": "fixture_warm_1",
+          "vol": 0.2,
+          "rate": 1.04
+        },
+        {
+          "key": "fixture_warm_2",
+          "vol": 0.2,
+          "rate": 1
+        },
+        {
+          "key": "fixture_warm_3",
+          "vol": 0.2,
+          "rate": 0.9400000000000001
+        },
+        {
+          "key": "fixture_warm_4",
+          "vol": 0.2,
+          "rate": 0.9600000000000001
+        },
+        {
+          "key": "fixture_warm_5",
+          "vol": 0.2,
+          "rate": 1.04
+        }
+      ],
+      "queuePositions": [
+        0
+      ],
+      "afterFlushQueueLength": 0,
+      "ghostBackendReached": 1,
+      "totalBackendReached": 6,
+      "backendCalls": [
+        {
+          "key": "ghost_laugh",
+          "vol": 0.8,
+          "rate": 1.1280000000000001,
+          "startTime": 0.1,
+          "pan": 0,
+          "nodePriority": 9,
+          "activeUnchanged": 0,
+          "audibleVerified": false
+        },
+        {
+          "key": "fixture_warm_0",
+          "vol": 0.2,
+          "rate": 0.9600000000000001,
+          "startTime": 0.1,
+          "pan": 0,
+          "nodePriority": 2,
+          "activeUnchanged": 0,
+          "audibleVerified": false
+        },
+        {
+          "key": "fixture_warm_1",
+          "vol": 0.2,
+          "rate": 1.04,
+          "startTime": 0.1,
+          "pan": 0,
+          "nodePriority": 2,
+          "activeUnchanged": 0,
+          "audibleVerified": false
+        },
+        {
+          "key": "fixture_warm_2",
+          "vol": 0.2,
+          "rate": 1,
+          "startTime": 0.1,
+          "pan": 0,
+          "nodePriority": 2,
+          "activeUnchanged": 0,
+          "audibleVerified": false
+        },
+        {
+          "key": "fixture_warm_3",
+          "vol": 0.2,
+          "rate": 0.9400000000000001,
+          "startTime": 0.1,
+          "pan": 0,
+          "nodePriority": 2,
+          "activeUnchanged": 0,
+          "audibleVerified": false
+        },
+        {
+          "key": "fixture_warm_4",
+          "vol": 0.2,
+          "rate": 0.9600000000000001,
+          "startTime": 0.1,
+          "pan": 0,
+          "nodePriority": 2,
+          "activeUnchanged": 0,
+          "audibleVerified": false
+        }
+      ],
+      "rngTrace": [
+        {
+          "index": 0,
+          "clock": 100,
+          "phase": "prepare",
+          "origin": "backend_pitch",
+          "value": 0.25
+        },
+        {
+          "index": 1,
+          "clock": 100,
+          "phase": "prepare",
+          "origin": "backend_pitch",
+          "value": 0.75
+        },
+        {
+          "index": 2,
+          "clock": 100,
+          "phase": "prepare",
+          "origin": "backend_pitch",
+          "value": 0.5
+        },
+        {
+          "index": 3,
+          "clock": 100,
+          "phase": "prepare",
+          "origin": "backend_pitch",
+          "value": 0.125
+        },
+        {
+          "index": 4,
+          "clock": 100,
+          "phase": "prepare",
+          "origin": "backend_pitch",
+          "value": 0.25
+        },
+        {
+          "index": 5,
+          "clock": 100,
+          "phase": "prepare",
+          "origin": "backend_pitch",
+          "value": 0.75
+        },
+        {
+          "index": 6,
+          "clock": 100,
+          "phase": "ghost",
+          "origin": "caller_pitch",
+          "value": 0.5
+        },
+        {
+          "index": 7,
+          "clock": 100,
+          "phase": "ghost",
+          "origin": "backend_pitch",
+          "value": 0.125
+        }
+      ],
+      "priority": 9,
+      "category": "ghost_laugh",
+      "status": "PASS"
+    },
+    {
+      "id": "dedup20-current",
+      "ko": "20ms 간격 성공등록2·현행",
+      "sourceFiles": [
+        "game.html",
+        "game-easy-test.html"
+      ],
+      "sourceFingerprint": "96f095d817cfa05ad9979e43c89b602f43264811c42c3f8441e62bf7f95441e7",
+      "input": {
+        "active": 0,
+        "ahead": 0,
+        "priMemoryOnly": false,
+        "clockTimesMs": [
+          100,
+          120
+        ],
+        "items": [
+          {
+            "slot": "bonePart",
+            "anc": "iron_warlord",
+            "part": "skull",
+            "rarity": 0,
+            "tier": 0,
+            "name": "철갑 전대의 두개골"
+          },
+          {
+            "slot": "bonePart",
+            "anc": "iron_warlord",
+            "part": "torso",
+            "rarity": 0,
+            "tier": 0,
+            "name": "철갑 전대의 몸통"
+          }
+        ],
+        "buffer": "loaded assumed; not read or decoded",
+        "IS_MOBILE": false
+      },
+      "expected": {
+        "caller": 2,
+        "backend": 1,
+        "ghostReached": 1,
+        "totalReached": 1,
+        "position": 0
+      },
+      "registrations": [
+        true,
+        true
+      ],
+      "collection": {
+        "iron_warlord_skull": {
+          "r": 0,
+          "t": 0
+        },
+        "iron_warlord_torso": {
+          "r": 0,
+          "t": 0
+        }
+      },
+      "notifications": 2,
+      "saveCalls": 0,
+      "prepareRng": 0,
+      "callerRng": 2,
+      "backendPitchRng": 1,
+      "beforeFlush": [
+        {
+          "key": "ghost_laugh",
+          "vol": 0.8,
+          "rate": 1.1856
+        }
+      ],
+      "queuePositions": [
+        0
+      ],
+      "afterFlushQueueLength": 0,
+      "ghostBackendReached": 1,
+      "totalBackendReached": 1,
+      "backendCalls": [
+        {
+          "key": "ghost_laugh",
+          "vol": 0.8,
+          "rate": 1.1856,
+          "startTime": 0.12,
+          "pan": 0,
+          "nodePriority": 9,
+          "activeUnchanged": 0,
+          "audibleVerified": false
+        }
+      ],
+      "rngTrace": [
+        {
+          "index": 0,
+          "clock": 100,
+          "phase": "ghost",
+          "origin": "caller_pitch",
+          "value": 0.25
+        },
+        {
+          "index": 1,
+          "clock": 100,
+          "phase": "ghost",
+          "origin": "backend_pitch",
+          "value": 0.75
+        },
+        {
+          "index": 2,
+          "clock": 120,
+          "phase": "ghost",
+          "origin": "caller_pitch",
+          "value": 0.5
+        }
+      ],
+      "priority": 9,
+      "category": "ghost_laugh",
+      "status": "PASS"
+    },
+    {
+      "id": "dedup20-pri1",
+      "ko": "20ms 간격 성공등록2·메모리 pri1",
+      "sourceFiles": [
+        "game.html",
+        "game-easy-test.html"
+      ],
+      "sourceFingerprint": "96f095d817cfa05ad9979e43c89b602f43264811c42c3f8441e62bf7f95441e7",
+      "input": {
+        "active": 0,
+        "ahead": 0,
+        "priMemoryOnly": true,
+        "clockTimesMs": [
+          100,
+          120
+        ],
+        "items": [
+          {
+            "slot": "bonePart",
+            "anc": "iron_warlord",
+            "part": "skull",
+            "rarity": 0,
+            "tier": 0,
+            "name": "철갑 전대의 두개골"
+          },
+          {
+            "slot": "bonePart",
+            "anc": "iron_warlord",
+            "part": "torso",
+            "rarity": 0,
+            "tier": 0,
+            "name": "철갑 전대의 몸통"
+          }
+        ],
+        "buffer": "loaded assumed; not read or decoded",
+        "IS_MOBILE": false
+      },
+      "expected": {
+        "caller": 2,
+        "backend": 2,
+        "ghostReached": 2,
+        "totalReached": 2,
+        "position": 0
+      },
+      "registrations": [
+        true,
+        true
+      ],
+      "collection": {
+        "iron_warlord_skull": {
+          "r": 0,
+          "t": 0
+        },
+        "iron_warlord_torso": {
+          "r": 0,
+          "t": 0
+        }
+      },
+      "notifications": 2,
+      "saveCalls": 0,
+      "prepareRng": 0,
+      "callerRng": 2,
+      "backendPitchRng": 2,
+      "beforeFlush": [
+        {
+          "key": "ghost_laugh",
+          "vol": 0.8,
+          "rate": 1.1280000000000001,
+          "pri": 1
+        },
+        {
+          "key": "ghost_laugh",
+          "vol": 0.8,
+          "rate": 1.1856,
+          "pri": 1
+        }
+      ],
+      "queuePositions": [
+        0,
+        1
+      ],
+      "afterFlushQueueLength": 0,
+      "ghostBackendReached": 2,
+      "totalBackendReached": 2,
+      "backendCalls": [
+        {
+          "key": "ghost_laugh",
+          "vol": 0.8,
+          "rate": 1.1280000000000001,
+          "startTime": 0.12,
+          "pan": 0,
+          "nodePriority": 9,
+          "activeUnchanged": 0,
+          "audibleVerified": false
+        },
+        {
+          "key": "ghost_laugh",
+          "vol": 0.8,
+          "rate": 1.1856,
+          "startTime": 0.12,
+          "pan": 0,
+          "nodePriority": 9,
+          "activeUnchanged": 0,
+          "audibleVerified": false
+        }
+      ],
+      "rngTrace": [
+        {
+          "index": 0,
+          "clock": 100,
+          "phase": "ghost",
+          "origin": "caller_pitch",
+          "value": 0.25
+        },
+        {
+          "index": 1,
+          "clock": 100,
+          "phase": "ghost",
+          "origin": "backend_pitch",
+          "value": 0.75
+        },
+        {
+          "index": 2,
+          "clock": 120,
+          "phase": "ghost",
+          "origin": "caller_pitch",
+          "value": 0.5
+        },
+        {
+          "index": 3,
+          "clock": 120,
+          "phase": "ghost",
+          "origin": "backend_pitch",
+          "value": 0.125
+        }
+      ],
+      "priority": 9,
+      "category": "ghost_laugh",
+      "status": "PASS"
+    }
+  ],
+  "bytePreservation": [
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/AGENTS.md",
+      "beforeSha256": "fd59bef70960bcaf1ab9910051faa860362884e574ac2869fad05c6872ae04e4",
+      "afterSha256": "fd59bef70960bcaf1ab9910051faa860362884e574ac2869fad05c6872ae04e4"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/codex-half/SOUND/TASK.md",
+      "beforeSha256": "63299d90a20778ff6b198e4100d883af4258dcdc6e3ad9ff5ac7f1c48e8632ca",
+      "afterSha256": "63299d90a20778ff6b198e4100d883af4258dcdc6e3ad9ff5ac7f1c48e8632ca"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/6사운드디자인/6사운드디자인.md",
+      "beforeSha256": "39f97d11bfc34e89647e2230acaea1777d5c6654aaf6378b83135d29cb1ecea4",
+      "afterSha256": "39f97d11bfc34e89647e2230acaea1777d5c6654aaf6378b83135d29cb1ecea4"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md",
+      "beforeSha256": "29e01d81a0632beb91cac804407510f322e2bd94bee505d2db33c69b82d54c3c",
+      "afterSha256": "29e01d81a0632beb91cac804407510f322e2bd94bee505d2db33c69b82d54c3c"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/SOUND/result.md",
+      "beforeSha256": "c4ac6147bb963eb90a6dc72b0b36147943c57b01fe078a64b8335cecd2fe0090",
+      "afterSha256": "c4ac6147bb963eb90a6dc72b0b36147943c57b01fe078a64b8335cecd2fe0090"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-provider/SOUND/result.md",
+      "beforeSha256": "e42f87a06d68668effba15f96e35cbfa3ee8db91d796bfc9d4926e47c4ef1cb7",
+      "afterSha256": "e42f87a06d68668effba15f96e35cbfa3ee8db91d796bfc9d4926e47c4ef1cb7"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/SOUND/evidence.json",
+      "beforeSha256": "c55d5097d170f1e6007b79f7b34dc50df2a4a7d78746bcaa6aa11b8323d1a80d",
+      "afterSha256": "c55d5097d170f1e6007b79f7b34dc50df2a4a7d78746bcaa6aa11b8323d1a80d"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-provider/SOUND/evidence.json",
+      "beforeSha256": "cb074d82e220eacde4b6386899d45e00335b3ec8732ab503c47231dc4c693243",
+      "afterSha256": "cb074d82e220eacde4b6386899d45e00335b3ec8732ab503c47231dc4c693243"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/server.cjs",
+      "beforeSha256": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d",
+      "afterSha256": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/node-main.js",
+      "beforeSha256": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce",
+      "afterSha256": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/index.html",
+      "beforeSha256": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8",
+      "afterSha256": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+      "beforeSha256": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+      "afterSha256": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game-easy-test.html",
+      "beforeSha256": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+      "afterSha256": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8"
+    }
+  ],
+  "allReadInputsBytePreserved": true,
+  "previousAcceptance": {
+    "staticChecks": 31,
+    "providerSuccessfulReads": 11,
+    "providerCompletedObservedAt": "2026-10-02T04:08:57.672732+00:00",
+    "providerFixtureRuns": 0,
+    "currentHead": null,
+    "currentChanges": null,
+    "gitCommands": 0,
+    "historicalOnly": {
+      "head": "96610b6546a31e882962470ea1f2164ce94edca6",
+      "changes": {
+        "at": "2026-10-02T03:49:18.389Z",
+        "count": 54,
+        "stdoutSha256": "0029d431921c0155214e4cba82fe567edcb2ce9ef2213b7711168818d9a341a9"
+      },
+      "note": "과거 제공 근거이며 이번 현재 HEAD/Changes 검증이 아님"
+    }
+  },
+  "docsSearch": {
+    "at": "2026-10-02T04:35:35.495Z",
+    "command": [
+      "rg",
+      "-n",
+      "ghost_laugh|_boneRegister|_sfxFrameReset|_SFX_PER_FRAME|_MAX_ACTIVE_NODES|30ms|playSample|_sfxPri",
+      "docs/"
+    ],
+    "matchedLines": 107,
+    "fileCount": 52,
+    "files": [
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/15 세이브+데이터구조/15 세이브+데이터구조.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/9적ai패턴디자인/exoduser-ai-first-pipeline-v3.1.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/5.1임펙트디자인/화염혜성탄_시각크기_2026-09-04.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/5.1임펙트디자인/VFX_구현가이드.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/CHANGELOG_SYNC.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/12퍼포먼스·최적화/QA_PERFORMANCE_TEAM_MASTER.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/5.1임펙트디자인/Q_SHIELD_FEEDBACK_20260913.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/6사운드디자인/BISQO_MAGIC_HIT_20260910.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/6사운드디자인/PROJECTILE_PLAYER_HIT_20260910.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/6사운드디자인/6사운드디자인.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/EXODUSER_MASTER_BIBLE_v2_2 (2).md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/12퍼포먼스·최적화/FIRST_KILL_CPU_INVESTIGATION_20261001.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/12퍼포먼스·최적화/성능최적화_보고서_2026-05-23.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/12퍼포먼스·최적화/MAP_STARTUP_READY_20260929.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/12퍼포먼스·최적화/12퍼포먼스·최적화.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/12퍼포먼스·최적화/CLAUDE_CODE_인수인계_전체작업보고서_2026-08-10.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/12퍼포먼스·최적화/코드전수조사_디버그_최적화_2026-09-03.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/12퍼포먼스·최적화/TEXTURE_ASYNC_PREWARM_20261001.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/3.1 ui hud 디자인/lobby_full_patch.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/13출시·마케팅.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/2_1 스킬관리+합체시스템+자원/KISLASH_HOLD_CHARGE_20260927.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/8.1보스디자인바이블/BOSS_00_FOREST_NORMAL_EYE_SENTINEL.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/GAMEPLAY_TRAILER_20260909_PRODUCTION.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/ui03-evidence/SKILL-팀검토.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/MAC_AGENT_DASHBOARD.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/8.0몬스터디자인/탄막시스템_총정리.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/3.3 키바인딩+설정/게임패드_트러블슈팅.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/8.0몬스터디자인/몬스터_총관리.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/8.0몬스터디자인/KRAKEN_WATER_ENERGY_20260913.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/8.0몬스터디자인/몬스터_공격시스템.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/Mac-긴간격-루프밖-귀속.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/SOUND-dedup-result.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/SOUND-howl-result.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/종합_버그리포트.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/Mac-첫처치-밀집전투-실측.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/4.1맵디자인+설정/CH1_ROTTEN_FOREST_MASS_READ_PASS96_20260930.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/API연결_가이드.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FOLLOWUP_RECEIPT.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/4.1맵디자인+설정/qa_ch1_master_16x9/QA_REPORT_INGAME.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/Mac-드롭빔-부트준비-검수.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/INTEGRATION-REVIEW-20261002.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/SOUND-dedup-receipt.json",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/SOUND-result.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/SOUND-rng-result.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-WORK-DISPATCH-20261002.json",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/4.1맵디자인+설정/CH1_ROTTEN_FOREST_FACE_LIFE_PASS97_20260930.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/4.1맵디자인+설정/MAP_RUNTIME_ARCHITECTURE.md"
+    ],
+    "outputSha256": "ef58abdc170050ecb719ad4157f840e771f29a0f2b476a3f1aec3cded8352ec2",
+    "writes": 0,
+    "synchronizationProposal": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/codex-half/SOUND/result.md"
+  },
+  "stubs": [
+    "_playSampleNow argument recorder; active count unchanged",
+    "actx plain clock object; _actx null",
+    "_silvertailVoiceKey identity",
+    "_ossSetComplete false",
+    "ANC_ROSTER one-row fixture",
+    "notify/translation/UI/save recorders",
+    "deterministic Math.random counted; _r source retained"
+  ],
+  "artifacts": [
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/codex-half/SOUND/checks.mjs",
+      "sha256": "e74ab9144b0afec8579065cffe81730f97085970bf6aa025870cd243a2a07862"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/codex-half/SOUND/result.md",
+      "sha256": "c0742455162a4a77505e7abca314df1ab571e849bcf60a93171c4895c3dc26c6"
+    }
+  ],
+  "counts": {
+    "productionWrites": 0,
+    "sharedDocsWrites": 0,
+    "ownerOutsideWrites": 0,
+    "deletions": 0,
+    "cleanup": 0,
+    "GitCommands": 0,
+    "GitWrites": 0,
+    "serverRuns": 0,
+    "HTTP": 0,
+    "gameRuns": 0,
+    "UI": 0,
+    "builds": 0,
+    "audioPlayback": 0,
+    "decode": 0,
+    "AudioContext": 0,
+    "realTimers": 0,
+    "audioGeneration": 0,
+    "encoding": 0,
+    "installs": 0,
+    "newSessions": 0,
+    "subteams": 0,
+    "messages": 0,
+    "automations": 0
+  },
+  "limits": [
+    "Backend arrival is not audible playback or successful eviction.",
+    "Synthetic desktop0/48 active counts; no mobile/negative/exhaustive mixed inputs.",
+    "Caller/backend RNG belongs to ghost segment; six preparation RNG calls are separate.",
+    "No mkItem, grant, full pickup/save flow, actual nodes, audio, or package verification."
+  ]
+}

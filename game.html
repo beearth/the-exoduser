@@ -46744,7 +46744,7 @@ function _renderSkillRow(sk,grid){
         renderSkillPanel();updateSkSlot&&updateSkSlot();updateQS&&updateQS();dbSaveForce();
     }
     // 박스 클릭 이벤트: 습득 또는 강화 (function 선언 — 호이스팅으로 compact에서도 사용)
-    function _skClick(){
+    function _skClick(){if(!d.isConnected||!grid.contains(d))return;
         if(!learned){
           // 습득
           const _learnMat=_malCost(sk.matCost||0);

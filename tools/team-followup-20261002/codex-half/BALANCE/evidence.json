@@ -1,0 +1,531 @@
+{
+  "task": "공유 악의 오류계약의 미검수 반례 1건",
+  "status": "COMPLETED_SINGLE_COUNTEREXAMPLE_SOURCE_ONLY",
+  "received": {
+    "source": "총괄 직접 배정 메시지",
+    "exactReceivedAt": null,
+    "readCompletedObservedAt": "2026-10-02 04:32:22 UTC"
+  },
+  "ownership": {
+    "root": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "directory": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/codex-half/BALANCE",
+    "allowedFiles": [
+      "checks.mjs",
+      "result.md",
+      "evidence.json"
+    ],
+    "realpathVerified": true,
+    "taskImmutable": true
+  },
+  "predecessors": {
+    "actualFile14": {
+      "accepted": true,
+      "rerun": false,
+      "coverage": "write/rename 주입·실파일/ENOENT; 지속close+unlink 복합0"
+    },
+    "handler18": {
+      "accepted": true,
+      "rerun": false,
+      "coverage": "단발 close 실패 뒤 finally 재시도 성공; unlink 오류 주입0"
+    },
+    "source19": {
+      "accepted": true,
+      "rerun": false,
+      "coverage": "atomicSaveJSON call/throw stub; cleanup 내부실행0"
+    }
+  },
+  "duplicationDecision": {
+    "newInputCount": 1,
+    "comparisonExecutionsPlanned": 2,
+    "reason": "지속close2회EIO + 소유temp unlink EACCES의 결합 입력은 기존14/18/19에 없음"
+  },
+  "instructionDeviation": {
+    "action": "최초 TASK cat과 같은 호출에서 git rev-parse HEAD 및 git status --short --untracked-files=all을 실행",
+    "gitReadCommands": 2,
+    "gitWrites": 0,
+    "acceptedCheckpointEvidence": false,
+    "correction": "TASK의 Git 명령0 확인 후 Git 명령 중단. 관측 HEAD/Changes를 승인 checkpoint/운영 근거로 인용하지 않음.",
+    "disclosedInCommentary": true,
+    "gitIndexBytePreservationMeasured": false
+  },
+  "coordinatorProvidedHead": null,
+  "coordinatorProvidedChanges": null,
+  "productionApplied": false,
+  "responsePolicyAdopted": false,
+  "constraints": {
+    "filesystemDeletes": 0,
+    "cleanupPolicyChanges": 0,
+    "outsideOwnershipWrites": 0,
+    "realOSFixtures": 0,
+    "userSaves": 0,
+    "server": 0,
+    "listen": 0,
+    "HTTP": 0,
+    "game": 0,
+    "UI": 0,
+    "build": 0,
+    "newSessions": 0,
+    "subagents": 0
+  },
+  "execution": {
+    "startedAt": "2026-10-02T04:33:28.067Z",
+    "node": "v24.15.0",
+    "platform": "darwin",
+    "arch": "arm64",
+    "command": "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node tools/team-followup-20261002/codex-half/BALANCE/checks.mjs",
+    "endedAt": "2026-10-02T04:33:28.123Z"
+  },
+  "inputs": {
+    "AGENTS.md": "fd59bef70960bcaf1ab9910051faa860362884e574ac2869fad05c6872ae04e4",
+    "server.cjs": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d",
+    "node-main.js": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce",
+    "docs/15 세이브+데이터구조/15 세이브+데이터구조.md": "c3b74698f40a6fa0ef00c35daffa145731a2d5dc6af01d4d0a9ed8004f02f17e",
+    "docs/14밸런스+수치테이블/BALANCE_ECONOMY_TEAM_MASTER.md": "45b679bd404d06b21feb7a80f093afefdb6c8be4d91bc096ec5245948b0c2d3b",
+    "tools/team-followup-20261002/codex-half/BALANCE/TASK.md": "b075dc50934300f64f43414f3bd173cf3090ff73b27d455638ad2438c91e2421",
+    "tools/team-followup-20261002/project-teams/BALANCE/result.md": "7c6d562060714c140828cb60ca20613037233f0662c1cb2868e04221244e9bc8",
+    "tools/team-followup-20261002/project-teams/BALANCE/evidence.json": "e269513abda2fe1f6a241c6674de29c35d0d892b6b01b027a96c55b176438767",
+    "tools/team-followup-20261002/project-teams/BALANCE/checks.mjs": "cced08e15614682da1e10813c6b832b1f027d05fb23922810355b6aecf7b9912",
+    "tools/team-followup-20261002/integration-review/shared-mats-file-independent.json": "f701e2792ae1ae488d7ef7dd4814fd60ef8c121e901ac35228fc07c297a46435",
+    "tools/team-followup-20261002/integration-review/shared-mats-patch-evidence.json": "35480c976f35f7a19ab71f34f4d6c36874c67711aee4dc3a7dc04874afbe2011",
+    "tools/team-followup-20261002/integration-review/node-main.js.shared-mats-candidate": "3b56932b93efabb15718394cd9116604aebcf12e60827bef5abd0d32080f218c",
+    "tools/team-followup-20261002/pm-test-support/result.json": "b31beb16c03b95a63ac379d9fd52c49ed7c15014fe592d461f2d80cbd2ffc0c0",
+    "tools/team-followup-20261002/pm-test-support/handler-regression.mjs": "d9ce683f932c68fd823bc133818195efe3b7c1406563af586dbebf0a8ac7c248"
+  },
+  "sourceDrift": [],
+  "duplicateEvidence": {
+    "previous14CaseNames": [
+      "server.cjs 신규 실제 bytes/GET/콜백ACK",
+      "server.cjs 기존 교체",
+      "server.cjs 반복 저장·clamp/schema 10입력",
+      "server.cjs write주입 실패 이전bytes/GET/temp/ACK0",
+      "server.cjs rename주입 실패 이전bytes/GET/temp/ACK0",
+      "server.cjs 실제ENOENT POST거부/GET0",
+      "server.cjs 원문 부분쓰기 실제 손상 GET0",
+      "node-main.js 신규 실제 bytes/GET/콜백ACK",
+      "node-main.js 기존 교체",
+      "node-main.js 반복 저장·clamp/schema 10입력",
+      "node-main.js write주입 실패 이전bytes/GET/temp/ACK0",
+      "node-main.js rename주입 실패 이전bytes/GET/temp/ACK0",
+      "node-main.js 실제ENOENT POST거부/GET0",
+      "node-main.js 원문 부분쓰기 실제 손상 GET0"
+    ],
+    "previous18CaseNames": [
+      "현재 소스 + 지정 patch = 후보 byte 일치",
+      "전체 핸들러 GET 없음·손상·슬롯 분리",
+      "전체 POST 값 절삭",
+      "전체 POST 값 음수",
+      "전체 POST 값 상한",
+      "전체 POST 값 문자숫자",
+      "전체 POST 값 잘못된문자",
+      "전체 POST 값 null",
+      "전체 POST 값 0",
+      "전체 POST 값 음의소수",
+      "신규 파일·연속 요청 temp 고유명과 정리",
+      "전체 POST open 실패 bytes·ACK0·temp 정리·재조회",
+      "전체 POST write 실패 bytes·ACK0·temp 정리·재조회",
+      "전체 POST close 실패 bytes·ACK0·temp 정리·재조회",
+      "전체 POST rename 실패 bytes·ACK0·temp 정리·재조회",
+      "exclusive collision 타 소유 temp 보존",
+      "잘못된 JSON 기존 handler 응답 한계",
+      "읽기 입력 SHA 전후 보존"
+    ],
+    "previous18CloseMode": "first failure only, finally close retry succeeds",
+    "previous18UnlinkErrorInjected": false,
+    "previous19AtomicStub": true,
+    "combinedScenarioPreviouslyPresent": false,
+    "predecessorsRerun": false
+  },
+  "extractedSource": {
+    "helperSequenceSha256": "3dc865c85002dcc58e2986d0bcbb069e47f6663d6c4c4ed5555370d7a1b5684a",
+    "atomicPostSha256": "513910fe84eeebd09bc9d514babb2e94a8de1bd36c642fd984bd328ee15b360e",
+    "getSha256": "478234c1293b3ce91701ea507f81f61f66246ff99af21e167bcdb65b72352b4d",
+    "readBodySha256": "c74146a60b861e66a276841997b5e30589f72938edbc099e18662d7e800c74f5",
+    "sendJSONSha256": "c09093657543e7fda7890b8848ac28dd3ae7a2ce903b26b6ed172efdc21e55d6",
+    "unadoptedResponseFragmentSha256": "e2cdcde449c72c38bd569f1ada8687186df8d038d6dbfe7b713fba5712464308",
+    "helperStub": false,
+    "wholeServerImported": false,
+    "patchApplied": false
+  },
+  "input": {
+    "id": "MATS-CLOSE2-UNLINK-DENIED-01",
+    "name": "지속 close와 temp unlink 실패 결합",
+    "target": "/synthetic/_sharedMats.json",
+    "initialTargetBytes": "{\"mats\":4567,\"ts\":99}",
+    "independentSlot": "/synthetic/hero.json",
+    "initialSlotBytes": "{\"player\":{\"lv\":7},\"game\":{\"stage\":2},\"ts\":8}",
+    "body": {
+      "mats": 100
+    },
+    "clock": 123456,
+    "pid": 12002,
+    "faults": {
+      "close": "both calls EIO; descriptor remains open in this model",
+      "unlink": "owned temp EACCES; temp remains"
+    },
+    "schema": "{mats:n,ts:Date.now()}",
+    "clamp": "Math.max(0,Math.min(Math.floor(+body.mats||0),Number.MAX_SAFE_INTEGER))"
+  },
+  "comparisons": [
+    {
+      "label": "prepared atomic POST candidate",
+      "rejected": {
+        "name": "Error",
+        "code": "EIO",
+        "message": "persistent close 1"
+      },
+      "closeAttempts": 2,
+      "unlinkAttempts": 1,
+      "renameAttempts": 0,
+      "postReply": {
+        "phase": "POST",
+        "status": null,
+        "headers": null,
+        "body": null,
+        "endCount": 0
+      },
+      "successAckCount": 0,
+      "getReply": {
+        "phase": "GET",
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "body": "{\"ok\":true,\"mats\":4567}",
+        "endCount": 1
+      },
+      "getMats": 4567,
+      "residual": {
+        "liveFdMap": [
+          {
+            "fd": 31,
+            "path": "/synthetic/_sharedMats.json.tmp-12002-1"
+          }
+        ],
+        "tempMap": [
+          {
+            "path": "/synthetic/_sharedMats.json.tmp-12002-1",
+            "bytes": "{\n  \"mats\": 100,\n  \"ts\": 123456\n}",
+            "sha256": "b05714d04480c205502403346634da2fbd36a90bf017af4f5be910d132c2e79b"
+          }
+        ],
+        "targetBytes": "{\"mats\":4567,\"ts\":99}",
+        "targetSha256": "b472d16edf4fc22e08e3400e57f75ea0ce987cffcf71da1286d2937514c1a3f2",
+        "slotBytes": "{\"player\":{\"lv\":7},\"game\":{\"stage\":2},\"ts\":8}",
+        "slotSha256": "c93d6bedd2fc75a811e382803c8f0179f96fed803a2a371e2b3ee4e8e7bdc88b"
+      },
+      "postTrace": [
+        {
+          "phase": "POST",
+          "op": "open",
+          "path": "/synthetic/_sharedMats.json.tmp-12002-1",
+          "flags": "wx"
+        },
+        {
+          "phase": "POST",
+          "op": "write",
+          "fd": 31,
+          "encoding": "utf8",
+          "bytes": "{\n  \"mats\": 100,\n  \"ts\": 123456\n}"
+        },
+        {
+          "phase": "POST",
+          "op": "close",
+          "attempt": 1,
+          "fd": 31,
+          "error": {
+            "code": "EIO",
+            "message": "persistent close 1"
+          }
+        },
+        {
+          "phase": "POST",
+          "op": "close",
+          "attempt": 2,
+          "fd": 31,
+          "error": {
+            "code": "EIO",
+            "message": "persistent close 2"
+          }
+        },
+        {
+          "phase": "POST",
+          "op": "unlink",
+          "attempt": 1,
+          "path": "/synthetic/_sharedMats.json.tmp-12002-1",
+          "error": {
+            "code": "EACCES",
+            "message": "owned temp unlink denied"
+          }
+        }
+      ],
+      "getTrace": [
+        {
+          "phase": "GET",
+          "op": "read",
+          "path": "/synthetic/_sharedMats.json"
+        },
+        {
+          "phase": "GET",
+          "op": "headers",
+          "status": 200
+        },
+        {
+          "phase": "GET",
+          "op": "end",
+          "body": "{\"ok\":true,\"mats\":4567}"
+        }
+      ]
+    },
+    {
+      "label": "unadopted 500 response fragment",
+      "rejected": null,
+      "closeAttempts": 2,
+      "unlinkAttempts": 1,
+      "renameAttempts": 0,
+      "postReply": {
+        "phase": "POST",
+        "status": 500,
+        "headers": {
+          "Content-Type": "text/plain"
+        },
+        "body": "Internal Server Error",
+        "endCount": 1
+      },
+      "successAckCount": 0,
+      "getReply": {
+        "phase": "GET",
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "body": "{\"ok\":true,\"mats\":4567}",
+        "endCount": 1
+      },
+      "getMats": 4567,
+      "residual": {
+        "liveFdMap": [
+          {
+            "fd": 31,
+            "path": "/synthetic/_sharedMats.json.tmp-12002-1"
+          }
+        ],
+        "tempMap": [
+          {
+            "path": "/synthetic/_sharedMats.json.tmp-12002-1",
+            "bytes": "{\n  \"mats\": 100,\n  \"ts\": 123456\n}",
+            "sha256": "b05714d04480c205502403346634da2fbd36a90bf017af4f5be910d132c2e79b"
+          }
+        ],
+        "targetBytes": "{\"mats\":4567,\"ts\":99}",
+        "targetSha256": "b472d16edf4fc22e08e3400e57f75ea0ce987cffcf71da1286d2937514c1a3f2",
+        "slotBytes": "{\"player\":{\"lv\":7},\"game\":{\"stage\":2},\"ts\":8}",
+        "slotSha256": "c93d6bedd2fc75a811e382803c8f0179f96fed803a2a371e2b3ee4e8e7bdc88b"
+      },
+      "postTrace": [
+        {
+          "phase": "POST",
+          "op": "open",
+          "path": "/synthetic/_sharedMats.json.tmp-12002-1",
+          "flags": "wx"
+        },
+        {
+          "phase": "POST",
+          "op": "write",
+          "fd": 31,
+          "encoding": "utf8",
+          "bytes": "{\n  \"mats\": 100,\n  \"ts\": 123456\n}"
+        },
+        {
+          "phase": "POST",
+          "op": "close",
+          "attempt": 1,
+          "fd": 31,
+          "error": {
+            "code": "EIO",
+            "message": "persistent close 1"
+          }
+        },
+        {
+          "phase": "POST",
+          "op": "close",
+          "attempt": 2,
+          "fd": 31,
+          "error": {
+            "code": "EIO",
+            "message": "persistent close 2"
+          }
+        },
+        {
+          "phase": "POST",
+          "op": "unlink",
+          "attempt": 1,
+          "path": "/synthetic/_sharedMats.json.tmp-12002-1",
+          "error": {
+            "code": "EACCES",
+            "message": "owned temp unlink denied"
+          }
+        },
+        {
+          "phase": "POST",
+          "op": "headers",
+          "status": 500
+        },
+        {
+          "phase": "POST",
+          "op": "end",
+          "body": "Internal Server Error"
+        }
+      ],
+      "getTrace": [
+        {
+          "phase": "GET",
+          "op": "read",
+          "path": "/synthetic/_sharedMats.json"
+        },
+        {
+          "phase": "GET",
+          "op": "headers",
+          "status": 200
+        },
+        {
+          "phase": "GET",
+          "op": "end",
+          "body": "{\"ok\":true,\"mats\":4567}"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "status": "PASS_NEW_SINGLE_INPUT_REPRODUCED",
+    "newInputCount": 1,
+    "comparisonExecutions": 2,
+    "failedAssertions": 0,
+    "cleanupSucceeded": false,
+    "liveFdEach": 1,
+    "tempEach": 1,
+    "productionApplied": false,
+    "responsePolicyAdopted": false,
+    "runtimePass": false,
+    "visualPass": false
+  },
+  "docsSearch": {
+    "command": "rg -n \"sharedMats|공유 악의|atomicSaveJSON|/api/mats|fsync|지속.*close|unlink\" docs/",
+    "exitCode": 0,
+    "matchCount": 64,
+    "matchedDocuments": [
+      "docs/API연결_가이드.md",
+      "docs/CHANGELOG_SYNC.md",
+      "docs/12퍼포먼스·최적화/QA_PERFORMANCE_TEAM_MASTER.md",
+      "docs/14밸런스+수치테이블/BALANCE_ECONOMY_TEAM_MASTER.md",
+      "docs/15 세이브+데이터구조/15 세이브+데이터구조.md",
+      "docs/15 세이브+데이터구조/BALANCE_DISK_SAVE_RESTART_20261002.md",
+      "docs/13출시·마케팅/STEAM_REVIEW_FINAL_CHECK_20260918.md",
+      "docs/13출시·마케팅/INTEGRATION_BUILD_TEAM_MASTER.md",
+      "docs/13출시·마케팅/STEAM_LATEST_DEPLOY_20260909.md",
+      "docs/13출시·마케팅/13출시·마케팅.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PM-TEST-SUPPORT-20261002.md",
+      "docs/4.1맵디자인+설정/CH1_1_DEPTH_RETOUCH_20260917.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/INTEGRATION-REVIEW-20261002.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/MAC-COORDINATION-20261002.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/SERVER-INTEGRATION-20261002.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/CONDITIONAL-ATOMIC-INTEGRATION-20261002.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-CHATS-20261002.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BUILD-result.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-WORK-DISPATCH-20261002.json",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-CHATS-20261002.json",
+      "docs/0마스터플랜/MAC_AGENT_DASHBOARD.md"
+    ],
+    "outputSha256": "b561991eee4c3df8cb528695753e6e9801e573965c1ad038e6b23ceffd6cc6d2",
+    "sharedDocsModified": false
+  },
+  "inputPreservation": {
+    "AGENTS.md": {
+      "before": "fd59bef70960bcaf1ab9910051faa860362884e574ac2869fad05c6872ae04e4",
+      "after": "fd59bef70960bcaf1ab9910051faa860362884e574ac2869fad05c6872ae04e4"
+    },
+    "server.cjs": {
+      "before": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d",
+      "after": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d"
+    },
+    "node-main.js": {
+      "before": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce",
+      "after": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce"
+    },
+    "docs/15 세이브+데이터구조/15 세이브+데이터구조.md": {
+      "before": "c3b74698f40a6fa0ef00c35daffa145731a2d5dc6af01d4d0a9ed8004f02f17e",
+      "after": "c3b74698f40a6fa0ef00c35daffa145731a2d5dc6af01d4d0a9ed8004f02f17e"
+    },
+    "docs/14밸런스+수치테이블/BALANCE_ECONOMY_TEAM_MASTER.md": {
+      "before": "45b679bd404d06b21feb7a80f093afefdb6c8be4d91bc096ec5245948b0c2d3b",
+      "after": "45b679bd404d06b21feb7a80f093afefdb6c8be4d91bc096ec5245948b0c2d3b"
+    },
+    "tools/team-followup-20261002/codex-half/BALANCE/TASK.md": {
+      "before": "b075dc50934300f64f43414f3bd173cf3090ff73b27d455638ad2438c91e2421",
+      "after": "b075dc50934300f64f43414f3bd173cf3090ff73b27d455638ad2438c91e2421"
+    },
+    "tools/team-followup-20261002/project-teams/BALANCE/result.md": {
+      "before": "7c6d562060714c140828cb60ca20613037233f0662c1cb2868e04221244e9bc8",
+      "after": "7c6d562060714c140828cb60ca20613037233f0662c1cb2868e04221244e9bc8"
+    },
+    "tools/team-followup-20261002/project-teams/BALANCE/evidence.json": {
+      "before": "e269513abda2fe1f6a241c6674de29c35d0d892b6b01b027a96c55b176438767",
+      "after": "e269513abda2fe1f6a241c6674de29c35d0d892b6b01b027a96c55b176438767"
+    },
+    "tools/team-followup-20261002/project-teams/BALANCE/checks.mjs": {
+      "before": "cced08e15614682da1e10813c6b832b1f027d05fb23922810355b6aecf7b9912",
+      "after": "cced08e15614682da1e10813c6b832b1f027d05fb23922810355b6aecf7b9912"
+    },
+    "tools/team-followup-20261002/integration-review/shared-mats-file-independent.json": {
+      "before": "f701e2792ae1ae488d7ef7dd4814fd60ef8c121e901ac35228fc07c297a46435",
+      "after": "f701e2792ae1ae488d7ef7dd4814fd60ef8c121e901ac35228fc07c297a46435"
+    },
+    "tools/team-followup-20261002/integration-review/shared-mats-patch-evidence.json": {
+      "before": "35480c976f35f7a19ab71f34f4d6c36874c67711aee4dc3a7dc04874afbe2011",
+      "after": "35480c976f35f7a19ab71f34f4d6c36874c67711aee4dc3a7dc04874afbe2011"
+    },
+    "tools/team-followup-20261002/integration-review/node-main.js.shared-mats-candidate": {
+      "before": "3b56932b93efabb15718394cd9116604aebcf12e60827bef5abd0d32080f218c",
+      "after": "3b56932b93efabb15718394cd9116604aebcf12e60827bef5abd0d32080f218c"
+    },
+    "tools/team-followup-20261002/pm-test-support/result.json": {
+      "before": "b31beb16c03b95a63ac379d9fd52c49ed7c15014fe592d461f2d80cbd2ffc0c0",
+      "after": "b31beb16c03b95a63ac379d9fd52c49ed7c15014fe592d461f2d80cbd2ffc0c0"
+    },
+    "tools/team-followup-20261002/pm-test-support/handler-regression.mjs": {
+      "before": "d9ce683f932c68fd823bc133818195efe3b7c1406563af586dbebf0a8ac7c248",
+      "after": "d9ce683f932c68fd823bc133818195efe3b7c1406563af586dbebf0a8ac7c248"
+    }
+  },
+  "inputsChanged": [],
+  "limits": [
+    "메모리 fs/VM 및 open descriptor가 남는 close 실패 대역; 실제OS의 close 결과를 보장하지 않음",
+    "동일 복합 입력1건을2정책에서 비교; 기존14/18/19 재실행0",
+    "finally close/unlink 예외가 삼켜져도 cleanup 성공은 아님",
+    "POST 응답과 후속GET 응답 trace를 분리; 실제HTTP/socket/프로세스생존 검수0",
+    "fsync/전원손실/crash/동시writer/Windows/앱재시작/runtime/visual 미검수"
+  ],
+  "syntaxCheck": {
+    "command": "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node --check tools/team-followup-20261002/codex-half/BALANCE/checks.mjs",
+    "exitCode": 0
+  },
+  "artifactValidation": {
+    "status": "PASS",
+    "at": "2026-10-02T04:35:14.837393+00:00",
+    "ownedNewArtifactCount": 3,
+    "immutableInputDrift": [],
+    "allPathsResolvedToAllowedDirectory": true
+  },
+  "documentationCompletedAt": "2026-10-02T04:35:14.837393+00:00",
+  "completedAt": "2026-10-02T04:35:14.837393+00:00",
+  "outputs": {
+    "checks.mjs": {
+      "sha256": "b2081833b093f0ac79e1c844e41f2baf2b7a230feed03d0254be3d2d4db6b3c5"
+    },
+    "result.md": {
+      "sha256": "b12b263a46f5c8195972648c42fb67f333886edcf9313e80a9db965874f45cb2"
+    }
+  }
+}

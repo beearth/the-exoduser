@@ -1,0 +1,107 @@
+{
+  "taskId": "STORY-INITIAL-CONSISTENCY-20261002",
+  "provider": "Claude Code (Opus 4.8)",
+  "terminal": "Mac Claude Code Terminal 21 (STORY, Claude 실행팀)",
+  "sessionId": null,
+  "report": {
+    "language": "ko",
+    "deliverables": [
+      "tools/team-followup-20261002/new-four/STORY/result.md",
+      "tools/team-followup-20261002/new-four/STORY/evidence.json"
+    ],
+    "scope": "read-only SSOT↔source 일관성표 1판 + 우선 제안 1건. 생산 patch/코드/빌드/영상/테스트 재실행 없음"
+  },
+  "timestampsUTC": {
+    "receivedAt": "2026-10-02T04:37:35Z",
+    "startedAt": "2026-10-02T04:37:35Z",
+    "completedAt": "2026-10-02T04:42:48Z"
+  },
+  "env": {
+    "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "cwdMatchesTaskPath": true,
+    "taskPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/new-four/STORY/TASK.md",
+    "branch": "codex/mac-environment-20261001",
+    "headAtTaskWrite": "8fd5b7ecf7bb9caebf4a1c2cadb844e0986f8c82",
+    "headAtStartAndComplete": "4cd0cb4906daee2b7953af7284f9ecc3ef96dd49",
+    "headNote": "TASK 기준 HEAD와 다름. 되돌리지 않고 기록만 (git 쓰기/reset/checkout 금지 준수)"
+  },
+  "ownedPaths": [
+    "tools/team-followup-20261002/new-four/STORY/result.md",
+    "tools/team-followup-20261002/new-four/STORY/evidence.json"
+  ],
+  "changesCount": {
+    "atStart": 59,
+    "atMidAndComplete": 64,
+    "threshold": "80/100 미만 — checkpoint/커밋 불필요",
+    "command": "git status --short --untracked-files=all | wc -l"
+  },
+  "preservationSHAs": {
+    "method": "git hash-object (blob). 착수=완료 동일, 변경 없음",
+    "game.html": "81bf3d45176ea614a4626f71a02a9253b7fbaba5",
+    "game-easy-test.html": "4cf9df090f717876d00f68ebe3488f1fd7716295",
+    "server.cjs": "cab33a0c6862aeb31e29be69e19f2a0ed21209b1",
+    "node-main.js": "8b0fa00bc88a659976ef4f3a32f62b50fd8caba3",
+    "index.html": "6b44d07cb14049da51f2accd6755ca80d3344cc8",
+    "test/nodeMainMats.test.js": "179fa3032c80950cb08953c1b003ccb0377d9f9e"
+  },
+  "readSSOTandSource": [
+    {"file": "CLAUDE.md", "role": "project rules"},
+    {"file": "AGENTS.md", "role": "governance (full)"},
+    {"file": "docs/0마스터플랜/TEAM_CONTINUATION_POLICY_20261001.md", "role": "팀 연속/16역할·Claude8/Codex8·STORY 배정 확인"},
+    {"file": "docs/11내러티브·로어디자인/WORLD_CORE.md", "lines": "전문", "ids": ["악의4법칙:16-22", "단일에너지:38-48", "3층구조:52-67", "35보스:134-146", "7장분배:149-160", "친구TBD:300-304/T8:399", "디로이핵터:295-298/T3:382-386", "제목스튜디오:3-5", "ASH:306-312"]},
+    {"file": "docs/11내러티브·로어디자인/11내러티브·로어디자인.md", "ids": ["v23계약머리말:2", "캐릭터자막하단:18-34", "생성후재생:50", "부분스킵:53-55", "네메시스주제가:61-63", "네메시아대사:66-68", "문법검수:71-73"]},
+    {"file": "docs/11내러티브·로어디자인/WARRIOR_DESIGN_LOCK.md", "ids": ["악당킬루:14"]},
+    {"file": "docs/11내러티브·로어디자인/NEMESIA_DESIGN_LOCK.md", "ids": ["고정사양:8-21", "디자인시트:23-27"]},
+    {"file": "docs/11내러티브·로어디자인/PETS_DESIGN_LOCK.md", "ids": ["디로이=cat/핵터=crow:1-14"]},
+    {"file": "docs/11내러티브·로어디자인/펫_대사_스크립트.md", "ids": ["까마귀진지냉소/고양이명랑직설:6", "튜토대사:13-41", "상황대사:46-73", "전투대사:79-84"]},
+    {"file": "docs/cinematic/WARINTRO_CREATION_RUNTIME_20260910.md", "ids": ["v22영상SHA:13", "규격96.4초:14", "부분스킵시작점표:84-107(wa06=킬루)", "_cutSeq=INTRO기본:112-133"]},
+    {"file": "docs/cinematic/NEMESIA_DIALOGUE_20260910.md", "ids": ["id5 4문장:5-9", "화자GODDESS표시명네메시아:16-18", "이름생사추가안함:3"]},
+    {"file": "docs/cinematic/STORY_KOREAN_GRAMMAR_20260910.md", "ids": ["적용수정id3/12/14:11-15", "전체검수표wa02~intro24:19-60"]},
+    {"file": "docs/cinematic/SPACE_HOLD_SKIP_20260914.md", "ids": ["세계관영상skipToGate:8", "전사생성스토리:9"]},
+    {"file": "docs/16번역·로컬라이제이션/WARRIOR_LANGUAGE_SUBTITLES_20260922.md", "ids": ["v23영상:6", "SHA256:7", "22큐타임라인:26-47(wa06/14/17/19=Killu)"]},
+    {"file": "docs/4.1맵디자인+설정/BOSS_CANONICAL_MAPPING.md", "ids": ["6장 Killu si33 ready:false:70"]},
+    {"file": "game.html", "ids": ["CUTSCENE_SPEAKER_STYLES GODDESS=네메시아/DIROY=디로이/HECTOR=핵터:60530-60532", "PROLOGUE_LINES:60539(wa06:60546,wa14:60554,wa17:60557,wa19:60559)", "cutscene_nemesis BGM:3976", "_forceCutscene:60850", "_startIntroCutscene:60851", "_cutSeq=_forceCutscene?PRO:INTRO:60863", "INTRO_CUTSCENE_LINES:60687(id3:60691,id5:60692,id10:60697,id11:60699,id12:60700)", "_renderIntroCutscene:60925"]},
+    {"file": "game-easy-test.html", "ids": ["동일 구조 확인(행 상이): PROLOGUE_LINES:58863, INTRO_CUTSCENE_LINES:59011, _startIntroCutscene:59184, _renderIntroCutscene:59258; _petSayCD 66회/_petTut 30회"]},
+    {"file": "index.html", "ids": ["character-story-player.js:996", "CIN_LINES세계관프롤로그:2200(주석:2197)", "_afterCharacterCreated:3279", "ExoduserCharacterStory.play:3298", "showCharGate story=warrior-v21:4176-4184", "로비 ravenLines:4189"]}
+  ],
+  "commandsRun": [
+    {"cmd": "date -u / pwd / git rev-parse HEAD / git rev-parse --abbrev-ref HEAD / git status --short", "exit": 0},
+    {"cmd": "git hash-object <6 preserve files>", "exit": 0},
+    {"cmd": "grep -n story identifiers across game.html/game-easy-test.html/index.html", "exit": 0},
+    {"cmd": "grep -rl/-rc 킬루|Killu / VOISUN / 네메시스 / ASH RAIDER / 디로이|핵터 over docs/", "exit": 0},
+    {"cmd": "grep -n 킬루 BOSS_CANONICAL_MAPPING.md", "exit": 0},
+    {"cmd": "git status --short --untracked-files=all | wc -l", "exit": 0}
+  ],
+  "changesStartComplete": {
+    "filesCreatedByThisTask": 2,
+    "filesModifiedOutsideOwned": 0,
+    "deletions": 0,
+    "gitWrites": 0
+  },
+  "keyFindings": [
+    {"id": "WA-KILLU-SSOT", "summary": "킬루는 전역 docs·source(wa06/14/17/19, BOSS_CANONICAL si33)에 확정됐으나 WORLD_CORE.md는 '친구 이름 TBD'(T8) 유지 — SSOT 불일치. 자동 정정 금지, STORY/BOSS Gate", "status": "불일치/UNKNOWN"},
+    {"id": "WA-KILLU-BOSS-TENSION", "summary": "프롤로그=킬루 이미 처단 vs 6장=Killu 스토리 보스 재등장(ready:false 미구현) + WORLD_CORE 4중비극(친구 조종당함) — 버전 긴장. 미해결 기록", "status": "UNKNOWN"},
+    {"id": "CIN-WORLD-MISSING-SSOT", "summary": "index.html CIN_LINES 세계관 29언어 내레이션이 전용 서사 SSOT 없음(11내러티브.md 언급만) — 우선 제안 대상", "status": "source만 존재"},
+    {"id": "CORE-ENERGY-TENSION", "summary": "단일에너지 로어 vs 게임 MP/ST/신성력 자원 — 로어만으로 삭제·모순 확정 안 함(TASK 명시)", "status": "UNKNOWN/긴장"},
+    {"id": "NEMESIA-NEMESIS-NAMING", "summary": "캐릭터=네메시아 vs 시퀀스/곡=네메시스 혼용, 일괄 변경 금지", "status": "부분 불일치"},
+    {"id": "PET-TONE", "summary": "펫대사 톤(까마귀진지/고양이명랑) vs PETS_LOCK·INTRO 결 차이, 근거 없이 변경 금지", "status": "부분 불일치"},
+    {"id": "META-TITLE", "summary": "WORLD_CORE 스튜디오 VOISUN/HELL:EXODUSER vs 운영 브랜딩 지옥의 길/EXODUSER — 총괄/MARKETING", "status": "불일치"},
+    {"id": "MULTI-LORE-SSOT", "summary": "WORLD_CORE vs HELL_EXODUSER_WORLDVIEW_v2 vs MASTER_BIBLE 최상위 SSOT 지정 불명", "status": "UNKNOWN"},
+    {"id": "PRO-GATE", "summary": "game.html PROLOGUE_LINES는 ?cutscene=1 미리보기에서만 재생; 일반 서사는 v23 영상+.vtt. 문자열 존재≠상시 재생", "status": "연결(게이트)"}
+  ],
+  "otherSessionChanges": {
+    "note": "working tree에 타세션 M/?? 다수(docs_backup_before_normalize, tools/team-followup-* 타팀 산출 등). 읽지도 쓰지도 스테이징도 하지 않음. 되돌리지 않음",
+    "status": "UNKNOWN(타세션 소유)"
+  },
+  "notRun": [
+    "UI/서버/실게임/빌드 실행",
+    "영상·이미지 생성/인코딩",
+    "테스트 재실행·새 테스트",
+    "실플레이/시청/청취 PASS 판정",
+    "전체 구현 수 추정",
+    "git add/commit/push/reset/checkout",
+    "파일 삭제·cleanup·이동·rename",
+    "소유 밖 쓰기"
+  ],
+  "nextStep": "완료 후 다음 일 독자 생성하지 않고 총괄 배정 대기"
+}

@@ -294,3 +294,13 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 | ElevenLabs | ~$0.30/1000자 | eleven_multilingual_v2 |
 | Grok | ~$0.07/이미지 | grok-imagine-image |
 | Supabase | Free tier | 500MB DB, 1GB 스토리지 |
+
+
+### 2026-10-02 NW.js 공유 악의 실패 응답 생산 보강
+
+| 대상·경로 | 현재 실패 응답 | 상태·검증 |
+|---|---|---|
+| node-main.js / POST /api/mats | readBody·JSON·clamp·직접 write 실패는 HTTP500 JSON `{ok:false,error:"Internal Server Error"}`를 headers/end 각1회로 마감. 성공은 기존 `{ok:true,mats}`이며 catch 밖에서 응답 | 생산 반영; 기존 test/nodeMainMats.test.js 4PASS(정상·malformed JSON·stream rejection·실제 ENOENT) |
+| server.cjs / POST /api/mats | 기존 외부 catch의 HTTP500 text/plain 유지 | 파일 변경0. NW.js JSON과 wire 형식 차이를 보존 |
+
+직접 write·clamp·정상 저장 계약과 세이브 슬롯 형식은 유지한다. 원자쓰기 후보·close/unlink cleanup 정책 미채택. 실제 HTTP/NW.js·성공 디스크 저장·재시작·Windows·fsync/crash/concurrency는 미검수이며 실물 앱 재빌드0이다. [저장 현행 계약](15%20세이브+데이터구조/15%20세이브+데이터구조.md).
