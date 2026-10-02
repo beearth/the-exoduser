@@ -39,7 +39,7 @@ idle → (거리 조건) → windup → attack → recover → idle
 | 항목 | 일반몹 | 보스 |
 |------|--------|------|
 | **idle 대기** | 15~30f (0.25~0.5초) | 3~8f |
-| **windup** | 8f (etype3: 5f) | 패턴별 가변 |
+| **windup** | 진입 경로별 `st2`; 소진 → attack(일반 8f / etype3 5f) | 패턴별 가변 |
 | **attack st2** | 8f | 8f |
 | **attack 판정** | st2≤5 && st2+sp>5 시점 | 동일 |
 | **recover** | 35f (0.58초) | 35f (max 20으로 클램프) |
@@ -344,3 +344,17 @@ atkTicketRelease(e) → 티켓 반환
 | 정상·다른 상태 | 기존60f 특수 발사 완료/일반 차징 helper/피해·패링 유지; 다른 상태의 특수 필드를 새로 변경0 | [정확 변수·수치·검수 계약](SPECIAL_SHOT_CANCELLATION_20261003.md) |
 
 앞선 `_hitStun>0` return은 기존 AI 스킵을 유지한다. 모든 피격경직에서 즉시 예약 취소된다고 확대하지 않는다. 해제 후 이전 특수 예약을 재개하지 않고 기존 idle AI가 새 행동을 결정한다.
+
+## 2026-10-03 source9 생산 동기화 — windup 시각 계약·보스 소환 예외 회복
+
+현재 핵심 수치 표의 `windup 8f (etype3:5f)`는 attack 전환 타이머를 windup 수치로 잘못 분류한 표현이어서 해당 행을 정정했다. 실제 상태 전환은 `case'windup': if(e.st2<=0){e.s='attack';e.st2=e.etype===3?5:8}`이며 일반 attack8f / etype3 attack5f를 설정한다. windup은 진입 경로별 `st2`이고 etype5=20f, etype10=10f 등 다른 etype·난수·phase 경로마다 다르다. `_telegraphT=20f`는 별도 타이머다. 이 정정은 문서 오류 동기화이며 타이머·피해·사거리·판정 코드 수치 변경이 아니다.
+
+| 함수/상태 | 현재 정확 계약 | 구현 위치·예외 |
+|---|---|---|
+| `_enemyWindupRemaining` | `!e.ib`, alive, `s==='windup'`, 스턴·빙결·피격경직 제외; 유한 `st2`의 `max(0,st2)` 또는 0 | main18982 / easy18073. 읽기 전용 helper |
+| ❗ 시각 판정 | `_enemyWindupRemaining(e)>0` | main52041 / easy50530. 기존 렌더 글꼴16·alpha0.9·`y-r-8`와 guard 유지 |
+| `bossSummonWind` 전조 | 기존 55f | 기존 보스 상태표의 수치 유지 |
+| `bossSummonWind` 회복 | 기존 `recover/70f`를 `finally`에서 보장 | main39450 / easy38252. 동일 예외 전파·부분 삽입 prefix 유지; 새 재시도/rollback 없음 |
+| 전체 변경 | 양판 각각 +246B(시각 helper187B + 소환59B) | source8 함수 변경 밖 원문 완전 일치, inverse2exact·교환 결합 exact |
+
+원 literal helper의 보스 표시 확대는 미채택했다. helper가 `!e.ib`를 보장하며 renderer의 기존 `_b3Active` continue를 전체 보스 guard로 설명하지 않는다. 공식 공동 검수46/46과 inline12JS+2JSON syntax PASS는 synthetic 의미·구문 범위이고 자연 보스·전체 AI/draw·픽셀·native/visual 검수 완료가 아니다. source9 앱 빌드·실행0. [생산 pin과 영수증](../CHANGELOG_SYNC.md)을 참조한다.

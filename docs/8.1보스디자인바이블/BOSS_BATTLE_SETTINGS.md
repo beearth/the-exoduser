@@ -629,3 +629,18 @@ X.translate(Math.round(C.width/2 - G.cam.x + sx), Math.round(C.height/2 - G.cam.
 | 생성/배치/밸런스 | arena 크기·생성기·에셋·좌표 설계·보스 수치·공격 패턴 변경 0 |
 
 맵 캐시·미니맵·적 공간 해시·조명은 현재 필드 기준으로 무효화/재빌드하고 `initMapObjects` 재생성은 제외한다. 정확한 복사 의미·플레이어 일시효과 정리·검수 경계는 [CH1-1 보스 사망 진행 보존 정본](../4.1맵디자인+설정/CH1-1_BOSS_RESPAWN_PROGRESS_20261002.md)를 따른다. 검수 영수증 `tmp/mac-migration-runtime/continued-review-20261002/boss-respawn-backup/receipt.json`: 양판 actual source 30/30 PASS(각 15), 공통 자원 인접 회귀 5/5 PASS(최종 후 1회), inline JS 12/importmap JSON 2 구문 PASS. SHA와 46개 필드·대역/미검증 범위는 전용 정본에 기록한다. 검수는 실제 source 추출 + controlled fixture에 한정한다. 실제 게임·등록 이벤트·카메라·시각·오디오·성능은 미인수이며 source PASS를 runtime/visual PASS로 대체하지 않는다.
+
+## 2026-10-03 source9 생산 동기화 — windup 시각 계약·보스 소환 예외 회복
+
+`game.html:39450` / `game-easy-test.html:38252`의 `bossSummonWind`를 root가 생산 양판에 적용했다. 최종 공동 소스와 공식 검사 pin은 [동기화 기록](../CHANGELOG_SYNC.md)의 같은 날짜 source9 절을 따른다. 원 Claude 후보·보스 단독 파생 후보와 최종 공동 생산 소스는 서로 다른 pin이다.
+
+| 상태/항목 | 현재 구현값·계약 | 변경 경계 |
+|---|---|---|
+| `bossSummonWind` 전조 | 기존 소환 전조 55f 유지 | 새 전조 시간·공격 수치 변경 없음 |
+| 완료 후 회복 | 기존 `recover`, `st2=70` | 소환 본문의 `try/finally`에서 정상 완료와 예외 모두 회복 상태 연결을 보장 |
+| 예외 | 원래 던져진 예외를 그대로 전파 | 삼키는 `catch`, 자동 재시도, 새로운 소환 정책 없음 |
+| 부분 삽입 | 실패 전에 있던 배열 prefix와 먼저 삽입된 소환수 유지 | rollback·배열 초기화·중복 소환 없음 |
+| 정상 소환 | 기존 RNG·생성 인자·HP 절반·쉴드0·효과 호출 순서 유지 | stage0/3/34 synthetic fixture로 원문과 비교; 준비 중 상태도 유지 |
+| 변경 크기 | 양판의 소환 case 각각 801→860B, +59B | 양판 전체 +246B 중 보스 변경분. 다른 함수 원문 보존 |
+
+후보 보스 검수 10/10과 최종 공동 생산 검수 46/46은 같은 변경의 파생 검수 범위를 포함하므로 별도 완제품 성과로 합산하지 않는다. 실제 `Array.prototype.push`의 Proxy index-write 실패 fixture에서 기존 prefix2개·먼저 삽입된 소환수1개 유지, 동일 예외 전파, `recover/70f`를 확인했다. 자연 보스 도달·실게임 예외 재현·보스 사망/부활·실화면/실청취 검수는 완료하지 않았다. source9 앱 빌드·실행0이며 native/visual PASS를 뜻하지 않는다.

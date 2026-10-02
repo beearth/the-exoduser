@@ -105,7 +105,7 @@
 | 후보 | 성격 | 팀 경계 판단 |
 |---|---|---|
 | 몹 사망 트랜지션(즉시 팝 소멸→경량 페이드/스쿼시) | 사망 전환(①) · VFX(②) | ANIMVFX 단독 가능(사망 판정 불변, 시각 전환만) |
-| 근접몹 공격 예고(❗ `e._atkWindup` 죽은 코드) | 예고 표시(②) | **몬스터/AI팀 협의 필요** — 공격 windup 상태는 상태·판정. 시각 예고만 조율 |
+| 근접몹 공격 예고(❗ `_enemyWindupRemaining(e)>0` 연결) | 예고 표시(②) | ENEMY pure helper의 비보스·생존·windup 및 스턴·빙결·피격경직 제외 계약을 읽음. 상태·타이머·판정은 유지. 자연 보스/native/visual 검수 미완 |
 | 몹 발 접지(중심앵커→발밑앵커, 그림자 정합) | 피벗·접지(①) | ANIMVFX, 단 다수 드로우 지점 → 신중·QA 조율 |
 | 전사 회수(recover) 전용 프레임 부재 | 프레임 전환(①) | 아트팀 에셋 의존(신규 원화 필요 시) |
 
@@ -264,3 +264,18 @@ root가 sparse8+데모2를 재실행했지만 중간 record의 draws 누락을 d
 | 유지 | 기존 hitFlash 계약·corpse fade 보류·발 앵커 UNKNOWN·스킨/프레임/좌표/전투 수치 | 이 작업 변경 0 |
 
 원팀의 ‘idle 이중 출력’은 서로 다른 sentinel-prefix/일반 body 호출의 합산 기록이며 같은 UV·좌표·알파의 가시 중복 증거가 아니다. 정확 대역·함수/행·투명 텍스처 실패 정책·검색 분류·승인한 정본 수정은 [새 body Gate](../8.0몬스터디자인/ENEMY_GL_2D_BODY_FALLBACK_GATE_20261002.md)에 기록한다. 현재 실게임/native/GL/DOM/픽셀/청취 검수는 0이다.
+
+## 2026-10-03 source9 생산 동기화 — windup 시각 계약·보스 소환 예외 회복
+
+현재 근접몹 예고 백로그 행은 root 생산 적용에 맞춰 helper 연결 상태로 정정했다. 2026-10-01 코드 조사에서 `e._atkWindup`이 죽은 예고 조건으로 관측된 사실과 당시 팀 협의 필요 판단은 과거 이력이다. 원 literal 후보는 보스까지 새 ❗ 표시를 넓혀 미채택했으며 root corrected helper가 적용됐다.
+
+| 시각 항목 | 현재 연결값 | 보존·검수 경계 |
+|---|---|---|
+| 예고 조건 | `if(_enemyWindupRemaining(e)>0){` | main52041 / easy50530. 이전 `if(e._atkWindup>0){` 조건만 교체 |
+| 비보스 제외 | helper의 `!e.ib` | renderer에 전체 `!ib` guard가 있다고 주장하지 않음; 기존 `_b3Active` continue는 별도 조건 |
+| 표시 대상 | 살아 있는 비보스의 일반 windup; 스턴·빙결·피격경직 제외 | 유한 양수 `st2`를 읽는 pure helper, AI 상태·판정·타이머 쓰기 없음 |
+| ❗ 글꼴·위치·투명도 | 기존 font16, alpha0.9, `y-r-8` | 렌더 블록·원문 guard·스타일 불변 |
+| 변경 크기 | helper174B + LF1B + 조건12B = 양판 각각187B | 기존 AI producer의 windup/attack 수치는 변경하지 않음 |
+| 검수 | root corrected 후보36/36, 최종 공동 production46/46 | helper+조건의 synthetic 의미검수; 동일 파생 범위를 별도 완제품 성과로 더하지 않음 |
+
+일반8f/etype3 5f는 windup 소진 뒤의 attack 타이머이며 windup은 진입 경로별 `st2`다. synthetic boss fixture에서 ❗ 제외를 확인한 결과를 자연 보스의 실제 렌더·픽셀 또는 native/visual PASS로 확대하지 않는다. source9 앱 빌드·실행0, 실화면·실청취 검수0. [최종 소스·공식 검사 pin](../CHANGELOG_SYNC.md)을 참조한다.

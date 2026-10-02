@@ -44,7 +44,7 @@
 ### 1-B. 일반 필드몹 (CH1-1 실제 스폰)
 
 - 풀 `HELL_SPAWN[0]` = etype 0~29 + 47 (가중치). **si0 한정 돌진몹 {2,22,30,43} 제외** → `rollEtype(0)` 필터 + `mkEn`에서 excluded etype→0 리매핑. 결과 실제 스폰 = 풀 − {2,22}(30·43는 풀에 없음).
-- 공통 AI: idle 대기 15~30f → windup 8f(etype3=5f) → attack(판정 `st2≤5 && st2+sp>5`) → recover 35f. 근접 사거리 `d<30+P.r+18≈48~50px`. 시야 어그로 `d<800 && hasLOS`. 근접 어그로 `d<100 && d>50`. 피격 즉시 반격(DOT 제외). 디어그로 없음.
+- 공통 AI: idle 대기 15~30f → windup(진입 경로별 `st2`) → attack(소진 시 일반 8f / etype3 5f 설정, 판정 `st2≤5 && st2+sp>5`) → recover 35f. 근접 사거리 `d<30+P.r+18≈48~50px`. 시야 어그로 `d<800 && hasLOS`. 근접 어그로 `d<100 && d>50`. 피격 즉시 반격(DOT 제외). 디어그로 없음.
 - 근접 접촉공격 `_meleeET`={0,2,4,5,6,10,12,18,19}, `d<e.r+P.r+8`, atk×0.8, 쿨 40~60f.
 - 비보스 탄막: `projCd=240f`(+차징 60f), 첫 `projT=180+rand×120f`. 유형별 사거리 `ETYPE_RANGE`(200/400/600/800/1000). **자폭/소환/특수AI etype {5,9,11,20,24,50~59}=projCd 9999(발사 안 함)**.
 
@@ -287,3 +287,22 @@ et3-probe.fixed.js에 검수 지원본 SHA92cbecd7…를 실제 반영하고, ro
 | 정상·다른 상태 | 기존60f 특수 발사 완료/일반 차징 helper/피해·패링 유지; 다른 상태의 특수 필드를 새로 변경0 | [정확 변수·수치·검수 계약](SPECIAL_SHOT_CANCELLATION_20261003.md) |
 
 앞선 `_hitStun>0` return은 기존 AI 스킵을 유지한다. 모든 피격경직에서 즉시 예약 취소된다고 확대하지 않는다. 해제 후 이전 특수 예약을 재개하지 않고 기존 idle AI가 새 행동을 결정한다.
+
+## 2026-10-03 source9 생산 동기화 — windup 시각 계약·보스 소환 예외 회복
+
+root corrected `_enemyWindupRemaining`을 생산 양판에 적용했다(`game.html:18982`, `game-easy-test.html:18073`). 원 literal 167B helper는 `ib`인 적까지 새 ❗ 표시를 넓히는 의미 변화가 확인되어 미채택 이력으로 보존했다. 최종 helper174B(+LF 삽입175B)는 helper 자체의 `!e.ib`로 비보스 범위를 보장한다.
+
+| 함수/필드 | 현재 계약 | 적용·미변경 범위 |
+|---|---|---|
+| `_enemyWindupRemaining(e)` 대상 | `e && !e.ib && e.alive && e.s==='windup'` | 비보스·생존·일반 windup에 한정 |
+| 중단 조건 | `stunned>0`, `_frozen>0`, `_hitStun>0`이면 0 | 스턴·빙결·피격경직 중 예고 제외 |
+| 반환값 | 유한 `e.st2`는 `Math.max(0,e.st2)`, 그 외 0 | 음수·0·비유한 타이머는 ❗ 표시 안 함 |
+| 함수 성격 | pure helper | 적 상태·타이머·공격/피해·cooldown을 쓰거나 감소시키지 않음 |
+| 일반 `windup` | 진입 경로별 `st2` | etype5=20f, etype10=10f 등 다른 etype·난수·phase별 값이 다양함; 단일 8f/5f로 규정하지 않음 |
+| `windup` 소진→`attack` | `e.s='attack'; e.st2=e.etype===3?5:8` | 일반 attack8f / etype3 attack5f. 기존 수치 유지 |
+| `_telegraphT` | 별도 20f 타이머 | windup `st2` 및 attack 타이머와 동일시하지 않음 |
+| 시각 호출 | `_enemyWindupRemaining(e)>0` | 기존 ❗ 조건만 연결. 판정·타이밍 불변 |
+
+현재 공통 AI 요약의 기존 `windup 8f(etype3=5f)` 표현은 실제 attack 타이머를 windup으로 잘못 분류한 문서 오류였다. 해당 현재 문장만 실제 흐름으로 정정했으며 새로운 수치 정책이나 전투 코드 타이머 변경이 아니다. 날짜가 명시된 과거 검수 이력은 그대로 보존했다. helper의 보스 제외를 renderer의 전체 보스 guard로 설명하지 않는다. renderer의 기존 `_b3Active` continue는 전체 보스 제외 조건이 아니다.
+
+후보 의미검수36/36은 최종 production 공동46/46의 파생 검수이며 성과 중복 합산0. 실제 helper와 ❗ 조건 분기·synthetic state를 확인한 범위다. AI producer 전체 실행·전체 draw·픽셀·자연 보스·native/visual은 미검수다. [최종 소스·공식 검사 pin](../CHANGELOG_SYNC.md)을 참조한다.

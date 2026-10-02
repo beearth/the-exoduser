@@ -18070,6 +18070,7 @@ function _drawEnemyShotWarnings(){
 }
 function radialProjs(e,count,spd,dmgMult,el,life,col,sz){count*=2;life=~~(life*1.5);const _fa=e.facing||Math.atan2(P.y-e.y,P.x-e.x);const _m=_eMouthXY(e,_fa);for(let i=0;i<count;i++){const a=Math.PI*2*i/count;const b=_beanRoll(el,col,sz,spd,dmgMult,e);_emitEnemyShot(e,{x:_m.x,y:_m.y,vx:Math.cos(a)*b.spd,vy:Math.sin(a)*b.spd,dmg:~~(e.atk*b.dmgM),el:b.el,friendly:false,life:b.blackBean?400:life,ml:b.blackBean?400:life,col:b.col,sz:b.sz,redBean:b.redBean,blackBean:b.blackBean,bwBean:b.bwBean,gbBean:b.gbBean,homing:b.homing,fireMagic:b.fireMagic,waterBean:b.waterBean})}}
 function eProjAt(e,ang,spd,dmgMult,el,life,col,sz){life=~~(life*1.5);const b=e.s==='eShootWind'?{el,col:ELC[el]||col,sz,spd,dmgM:dmgMult}:_beanRoll(el,col,sz,spd,dmgMult,e);const _m=_eMouthXY(e,ang);_emitEnemyShot(e,{x:_m.x,y:_m.y,vx:Math.cos(ang)*b.spd,vy:Math.sin(ang)*b.spd,dmg:~~(e.atk*b.dmgM),el:b.el,friendly:false,life:b.blackBean?400:life,ml:b.blackBean?400:life,col:b.col,sz:b.sz,redBean:b.redBean,blackBean:b.blackBean,bwBean:b.bwBean,gbBean:b.gbBean,homing:b.homing,fireMagic:b.fireMagic,waterBean:b.waterBean,_closeBean:b._closeBean,_commit:true})}
+function _enemyWindupRemaining(e){return (e&&!e.ib&&e.alive&&e.s==='windup'&&!(e.stunned>0)&&!(e._frozen>0)&&!(e._hitStun>0))?(Number.isFinite(e.st2)?Math.max(0,e.st2):0):0;}
 function _cancelProjCharge(e){e._projChargeT=0;e._projChargeCol=null;e._projChargeBean=null}
 function _fireChargedProj(e){
   const _aimAng=Math.atan2(P.y-e.y,P.x-e.x);
@@ -38251,19 +38252,22 @@ function updateE(e,sp){
   case'bossSummonWind':{
     if(Math.random()>.6)poolPart(e.x+(Math.random()-.5)*30,e.y+(Math.random()-.5)*30,0,-1,'#aa00ff',3,12);
     if(e.st2<=0){
-      const cnt=3+~~(G.stage*.5);
-      for(let si=0;si<cnt;si++){
-        const a=Math.PI*2*si/cnt,sd=50+Math.random()*30;
-        const sx=e.x+Math.cos(a)*sd,sy=e.y+Math.sin(a)*sd;
-        const el=[EL.P,EL.F,EL.I,EL.D,EL.L,EL.H][~~(Math.random()*6)];
-        const et=[0,2,3,3,3][~~(Math.random()*5)];
-        const ne=mkEn(sx,sy,G.stage,et,false,el,e.room);
-        ne.hp=~~(ne.hp*.5);ne.mhp=ne.hp;ne.eShield=0;ne.eShieldMax=0; // 소환수는 약함
-        ens.push(ne);
-        addParts(sx,sy,'#aa00ff',8);
-      }
-      SFX.charge();addTxt(e.x,e.y-20,cnt+_L('체 소환!',' Summoned!'),'#cc66ff',40);
+      try{
+        const cnt=3+~~(G.stage*.5);
+        for(let si=0;si<cnt;si++){
+          const a=Math.PI*2*si/cnt,sd=50+Math.random()*30;
+          const sx=e.x+Math.cos(a)*sd,sy=e.y+Math.sin(a)*sd;
+          const el=[EL.P,EL.F,EL.I,EL.D,EL.L,EL.H][~~(Math.random()*6)];
+          const et=[0,2,3,3,3][~~(Math.random()*5)];
+          const ne=mkEn(sx,sy,G.stage,et,false,el,e.room);
+          ne.hp=~~(ne.hp*.5);ne.mhp=ne.hp;ne.eShield=0;ne.eShieldMax=0; // 소환수는 약함
+          ens.push(ne);
+          addParts(sx,sy,'#aa00ff',8);
+        }
+        SFX.charge();addTxt(e.x,e.y-20,cnt+_L('체 소환!',' Summoned!'),'#cc66ff',40);
+      }finally{
       e.s='recover';e.st2=70;
+      }
     }break}
   // ── 보스: 유성우 ──
   case'bossMeteorWind':{
@@ -50523,7 +50527,7 @@ function draw(){
       }
     }
     // ═══ 근접 공격 예비동작 전조 (❗ 텍스트만, 원형 제거) ═══
-    if(e._atkWindup>0){
+    if(_enemyWindupRemaining(e)>0){
       X.globalAlpha=.9;X.fillStyle='#ff4444';X.font='bold 16px "Noto Sans KR"';X.textAlign='center';
       X.fillText('❗',e.x,e.y-e.r-8);
       X.globalAlpha=sa;

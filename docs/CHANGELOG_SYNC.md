@@ -52641,3 +52641,39 @@ source6 부활버튼 입력 반영 미확인과 coordinate noWindowsAvailable의
 root의 후속 실제 입력에서 월드 인트로 자연종료→DEMO 환영/입장→정상 전사 선택→이름 `맥검수8` 생성 UI→전사 이야기의 실제 자막·영상 재생을 관측했다. 개별 char-preview AX의 `미디어를 재생할 수 없습니다.`와 전사 story 영상의 실제 재생을 구분하며 전체 codec 불가로 확대하지 않는다. `02-warrior-story.png`는 589090B/SHA `6d2922a79c7a12256d94c7e853805ed21e22e1a50b133431358ddeaaf206604a`이며 ignored `tmp/mac-migration-runtime/continued-review-20261003/source8-native-play/`에 있다.
 
 이야기 다음 버튼50이 자연 전환 중 사라져 stale 오류1이 발생했고 root가 새 AX를 취득해 정정했다. 게임 코드 오류 확정0이며 이야기 A 단축키1 뒤 AX 변화0, 그 이후 입장은 아직 인수하지 않았다. 실제 음향 청취0/보스방·사망·부활·재도전·장착·player 저장재실행·8카메라0/연결6단계 미완을 유지한다. 포장 상태 **PACKAGED_NOT_RUNTIME_ACCEPTED**와 [정확 물리·부분 native 보고](13출시·마케팅/MAC_CH1_SOURCE8_CANDIDATE_20261003.md)를 유지하며 이 후속 관측은 문서 담당의 새 GUI 검사가 아니다. root예약6 범위·71→77예상/rootremaining0/worst85 basis는 변하지 않는다.
+
+## 2026-10-03 source9 생산 동기화 — windup 시각 계약·보스 소환 예외 회복
+
+root가 ENEMY helper·ANIM 예고 조건·BOSS 소환 예외 회복을 생산 `game.html`과 실제 easy 경로 `game-easy-test.html`에 적용했다. 원 literal helper는 보스까지 ❗ 표시를 넓혀 미채택했으며 root corrected `!e.ib` helper가 최종 공동 소스에 포함됐다. source8 code commit은 `2e3edc320fa38562c0d65b52cdec825b63981a40`, source8 문서6까지 포함한 source9 적용 전 HEAD/remote parent는 `4a9e7ecbeffc097b77808b752ed3989a16a1bf04`다. source9는 root 커밋 전 단계이며 커밋 SHA를 예측하지 않는다.
+
+| 파일 | source8 기준 bytes / SHA-256 | source9 생산 bytes / SHA-256 | 변경 |
+|---|---|---|---|
+| `game.html` | 4029496 / `794d29274331d6c2fca1d213e27ccc6e7fe0f7e5ebd2f5edfdb63540b9572842` | 4029742 / `908102e7fdbf2b1d42ebb0f4e90476124bb8dbec8d22daa6babf3246def48525` | +246B = helper/조건187 + 소환59 |
+| `game-easy-test.html` | 3906763 / `2ee66501acee9c4822152987c4904a17d84f742833458381aa234db92212c03d` | 3907009 / `fba52654d8f316a1f54b48cdcb21dc251f4e9968f59eb031572c0ab71e845af7` | +246B = helper/조건187 + 소환59 |
+| `index.html` | 342119 / `1dd28cab162a4384ad84a356eb2c719940782005d20da1312d2857bc649615a7` | 동일 | 변경0 |
+| `test/enemyWindupTelegraphAcceptance.test.cjs` | 신규 portable test | 5818 / `b5300c7294386119f874ececf23834d1feca50c49e89e6d5e91e6cabcd092096` | 실제 공동 소스 helper+조건 의미검수 |
+| `test/bossSummonRecoveryAcceptance.test.cjs` | 신규 portable test | 7415 / `835b20c096e55c18abe0d5ec0b92fa1d766f31a665d2cd722c7336508756a7c0` | 실제 공동 소스 소환 case 의미검수 |
+
+| 계약 | 적용 결과·불변값 |
+|---|---|
+| 비보스 windup 예고 | helper174B(+LF 삽입175B), 기존 조건 +12B. `!e.ib`·alive·windup·스턴/빙결/피격경직 제외, 유한 `st2`의 max0을 pure read |
+| attack 타이머 문서 정정 | 일반8f / etype3 5f는 attack 값; windup은 진입별 `st2`. canonical SSOT 및 ENEMY 현재 요약의 잘못된 분류만 정정 |
+| 기존 ❗ 외관 | font16 / alpha0.9 / `y-r-8` / 원문 guard 유지; 전체 renderer `!ib` guard 주장은 하지 않음 |
+| 보스 소환 | 전조55f·recover70f 유지. try/finally로 기존 회복 보장, 동일 예외 전파·삽입 prefix 유지, retry/rollback0 |
+| 원문 보존 | 함수 변경 밖 source8 원문 완전 일치, 양판 inverse2exact·교환 결합 exact; 보호67 exact·shared index empty는 root 적용 영수증의 관측 |
+| 문서 범위 | baseline 관련 검색329행/81파일 분류를 재사용하고 생산 코드 적용 후 필수 전체 검색356행/82파일을 root가1회 수행. 기존6문서만 동기화, 새 독립 보고서0, 날짜 이력·일반수치·보호2_3 유지 |
+
+| 공식 증빙(ignored, `tmp/mac-migration-runtime/continued-review-20261003/`) | bytes | SHA-256 | 결과 |
+|---|---:|---|---|
+| `root-joint-source9/applied.json` | 2327 | `2ea322580bb40c698886c041688c2468afdf04153fa15c6d276ceb4b0f7b44aa` | code2 + portable test2 실제 적용 |
+| `root-joint-source9/syntax.json` | 3302 | `2b64f73d2bde6b3df29de49bfc57ec6d89fd10f291d4c9bd8bbedeb0d73e1a4c` | 공동 양판 executable12JS + importmap2JSON syntax PASS, 공식1회 |
+| `root-joint-source9/test-receipt.json` | 790 | `2464596295659853296a74524187a39390fddf43300c3f23d7aebb7f9797182e` | 공동 production46/46 PASS, 공식1회, fail0 |
+| `root-source9-docs/keyword-search.txt` | 160883 | `487a2ea82a4a16f92ddd372764645a4faa241b229e321acd83a1333da776c922` | baseline 범위 감사1회, 329행/81파일 |
+| `root-joint-source9/post-code-docs-keyword-search.txt` | 164717 | `8519107affb34dcc44fdac9dd92ca4b74b03e5885733fe141cf03443e3c5fc6d` | 실제 code 적용 후 필수 전체 검색1회, 356행/82파일 |
+| `root-joint-source9/post-code-docs-search.json` | 6472 | `81b195958fb50d3a8de914de26a11a51880ac472ba7ea8d3b72d49b12f31fefe` | 적용 후 검색 시각·범위·파일 목록 및 기존6 동기화 계획 연결 |
+
+baseline 검색1회와 코드 변경 후 필수 검색1회를 구분한다. 후자는 2026-10-02 19:33:08 UTC에 root가 `_enemyWindupRemaining`을 포함한 관련 패턴으로 수행했다. 검색 matching 파일의 baseline 대비 추가는 이미 소유 범위인 `PROJECT_MANAGEMENT_MASTER.md`1개, 제거0이다. 작성 중인 최신 동기화 내용이 반영된27행 증가를 과거 이력 변경이나 신규 업무로 확대하지 않는다. 원 baseline 검색·분류 증거는 보존했고 필수 검색 이후 추가 rg 반복0이다.
+
+후보36/36·10/10은 같은 변경의 파생 검수이며 production46/46과 완제품 성과로 중복 합산하지 않는다. 이전 source7의17/17·source8의22/22 회귀는 재실행0이다. 검수는 실제 공동 helper+❗ 분기와 소환 case를 synthetic state/context 및 mkEn/effect 대역에서 확인한 범위다. 전체 AI producer/draw·픽셀·자연 보스·실게임 예외·플레이 저장·실청취 완료는 주장하지 않는다.
+
+source8 앱3388은 정상 진행으로 연습 화면까지 관측된 이력이고 이후 Mac 잠금 상태다. source9 앱 빌드·실행0이며 source8의 물리 포장/부분 native 진행을 source9 앱 인수로 옮기지 않는다. source9 네이티브·실화면·실청취·플레이 save·보스 사망 완료0, native/visual PASS0. root 총 범위는 code2 + portable test2 + 기존docs6 = 10경로, 새 보고서0이다. 예상 실제 전체 변경81경로는 기존71 + source9 10이며 외부 예약8을 보존한다. root 예상 커밋 경로는71, 외부8 포함 인계 기준79로 별도 관리하며 예약·소비를 중복 계산하지 않는다. 최종 Git 범위·커밋·원격 대조는 root가 담당한다.

@@ -1001,3 +1001,22 @@ source6 부활버튼 입력 반영 미확인과 coordinate noWindowsAvailable의
 root의 후속 실제 입력에서 월드 인트로 자연종료→DEMO 환영/입장→정상 전사 선택→이름 `맥검수8` 생성 UI→전사 이야기의 실제 자막·영상 재생을 관측했다. 개별 char-preview AX의 `미디어를 재생할 수 없습니다.`와 전사 story 영상의 실제 재생을 구분하며 전체 codec 불가로 확대하지 않는다. `02-warrior-story.png`는 589090B/SHA `6d2922a79c7a12256d94c7e853805ed21e22e1a50b133431358ddeaaf206604a`이며 ignored `tmp/mac-migration-runtime/continued-review-20261003/source8-native-play/`에 있다.
 
 이야기 다음 버튼50이 자연 전환 중 사라져 stale 오류1이 발생했고 root가 새 AX를 취득해 정정했다. 게임 코드 오류 확정0이며 이야기 A 단축키1 뒤 AX 변화0, 그 이후 입장은 아직 인수하지 않았다. 실제 음향 청취0/보스방·사망·부활·재도전·장착·player 저장재실행·8카메라0/연결6단계 미완을 유지한다. 포장 상태 **PACKAGED_NOT_RUNTIME_ACCEPTED**와 [정확 물리·부분 native 보고](../13출시·마케팅/MAC_CH1_SOURCE8_CANDIDATE_20261003.md)를 유지하며 이 후속 관측은 문서 담당의 새 GUI 검사가 아니다. root예약6 범위·71→77예상/rootremaining0/worst85 basis는 변하지 않는다.
+
+## 2026-10-03 source9 생산 동기화 — windup 시각 계약·보스 소환 예외 회복
+
+root가 source9 code2 + portable test2를 생산에 적용하고 공식 검사를 완료했다. 기존6문서만 정확 동기화하며 새 독립 보고서는 만들지 않았다. source8 code commit `2e3edc320fa38562c0d65b52cdec825b63981a40`와 문서6 포함 parent HEAD/remote `4a9e7ecbeffc097b77808b752ed3989a16a1bf04`를 구분한다. source9 커밋 전 단계이며 SHA 예측0이다. [생산 source/test·공식 영수증의 full pin](../CHANGELOG_SYNC.md)을 따른다.
+
+| 관리 항목 | 현재 인수 근거·경계 |
+|---|---|
+| source9 main | `game.html`, 4029742B, SHA-256 `908102e7fdbf2b1d42ebb0f4e90476124bb8dbec8d22daa6babf3246def48525` |
+| source9 easy | `game-easy-test.html`, 3907009B, SHA-256 `fba52654d8f316a1f54b48cdcb21dc251f4e9968f59eb031572c0ab71e845af7` |
+| 수정 의미 | root corrected 비보스 windup pure helper/기존 ❗ 조건 연결187B + 기존 소환 recover70f try/finally 보장59B = 양판 각각246B |
+| 문서 오류 동기화 | 일반8f/etype3 5f는 attack 타이머; windup은 진입별 `st2`. 현재 canonical 행·ENEMY 요약을 정정하며 다른 수치와 날짜 이력 유지 |
+| 공식 검사 | inline12JS+2JSON syntax PASS1회, production joint46/46 PASS1회; 이전17/22 회귀 재실행0 |
+| 후보와 실제 적용 | 원 literal helper 보스 표시 확대는 미채택 보존; root corrected174B를 생산 적용. 후보36/10과 생산46은 파생 검수로 중복 성과 계산0 |
+| 원문/WIP | inverse2exact·교환 결합 exact, 변경 함수 밖 source8 원문 완전 일치, index 불변·보호67 exact·shared index empty는 root 영수증 기준 |
+| source8 native 이력 | 기존3388 앱에서 정상 진행·연습까지 관측, 이후 Mac 잠금. source9 native 근거로 대체하지 않음 |
+| source9 물리·실게임 | 앱 빌드·실행0, 자연 보스/실게임 예외·실화면·실청취·플레이 save·보스 사망 완료0; native/visual PASS0 |
+| 범위·예산 | root10경로 = code2 + test2 + 기존docs6, 새 보고서0. 실제 전체81예상/커밋71예상/외부8 포함79 인계 구분, 100경로 상한 전 유지 |
+
+관련 docs baseline 전체 검색329행/81파일·분류1회와 root의 실제 코드 적용 후 필수 전체 검색356행/82파일1회를 구분한다. 필수 검색은 2026-10-02 19:33:08 UTC에 수행됐고 신규 matching 파일은 이미 소유한 이 관리 master1개뿐, 제거0이다. 작성 중 동기화 내용이 반영된27행 증가를 과거 이력 변경으로 주장하지 않는다. 증빙은 `root-joint-source9/post-code-docs-search.json`(6472B, SHA-256 `81b195958fb50d3a8de914de26a11a51880ac472ba7ea8d3b72d49b12f31fefe`)이며 원 baseline 검색·disposition은 보존한다. 문서 담당의 추가 rg·source9 분석·구문/테스트 실행0, 필수 검색 이후 반복0이다. 현재값 오류는 현재 행에서 바로잡고, 승인된 3접점 밖의 문장 byte·EOL과 기존6문서의 최신 타인 내용을 보존했다. 최종 Git 범위 검증·커밋·push 및 실제 source9 앱 검수는 root 소유다.
