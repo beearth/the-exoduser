@@ -11834,7 +11834,7 @@ function _playSampleNow(key,vol,rate,startTime,pan,priOverride){
     src.connect(gain);
     src.onended=_dn;setTimeout(_dn,(_dur+.5)*1000);
   }
-  src.start(startTime||0);
+  try{src.start(startTime||0);}catch(e){_nd._dn();throw e;}
   return src;
 }
 function _sfxFrameReset(){

@@ -1,0 +1,82 @@
+{
+  "taskId": "STORY-legacy-cin-route-gate-0621",
+  "provider": "Claude Code (Opus 4.8)",
+  "role": "STORY",
+  "sessionUUID": "3ed6e74d-5552-4d7b-a04b-dc5945e0f3d7",
+  "chatSessionId": null,
+  "timestamps": {
+    "readWriteUTC": "2026-10-02T06:24:18Z",
+    "readWriteKST": "2026-10-02T15:24:18+0900",
+    "note": "조사·작성 구간 시각. actual 수신/완료 정밀 타임스탬프는 세션 로그 소유 — approximate로 대체·확대하지 않음"
+  },
+  "env": {
+    "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "cwdMatchesTask": true,
+    "gitQueried": false,
+    "providedCheckpoint": {
+      "sha": "b72f3f0634f78829df0f227897a1e7555488f103",
+      "source": "TASK 제공 — 총괄 2026-10-02T06:10 전후 push·remote SHA 확인값. 독립 현재 HEAD 아님",
+      "globalChangesObserved": "감독 06:16:58Z 관측 44개(제공값). 본인 신규 2파일만으로 80/100 판단 안 함"
+    }
+  },
+  "ownedOutputs": [
+    "tools/team-followup-20261002/supervisor-next/STORY/STORY-legacy-cin-route-gate-0621/result.md",
+    "tools/team-followup-20261002/supervisor-next/STORY/STORY-legacy-cin-route-gate-0621/evidence.json"
+  ],
+  "checksMjsCreated": false,
+  "scope": "정적 호출/진입 계약 검토만. UI/DOM/미디어/타이머 실행 0. checks.mjs/새 테스트/fixture 미생성",
+  "contentSHA256_shasum_not_git": {
+    "world-intro-player.js": "77eddd9269172ab9c27ae7a3a5f717cdcb2fb901cd9c9a09d7a0216e36f57b50",
+    "world-intro-subtitles.js": "9e3ac2207ece4cf5591ef7eee5d3296f4024c0e5ecfdfcaeda19bd2918dbc92b",
+    "docs/cinematic/WORLD_INTRO_INGAME_20260907.md": "c50818ce8aaf8c025c31e29618f8dada018ffe2578a723ff92dc6e6b22557d5a",
+    "index.html": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8 (직전 0553과 동일, 변동 없음)",
+    "lobby_i18n.js": "aed031de1f722add233ef35ab8b37cd9cce38cc36d829858575ece841837613a (직전 0553과 동일)"
+  },
+  "readPaths": [
+    {"path": "tools/team-followup-20261002/supervisor-next/STORY/STORY-legacy-cin-route-gate-0621/TASK.md", "scope": "전문"},
+    {"path": "tools/team-followup-20261002/continuous/COMMON.md", "scope": "전문(이전 세션 Read, 재적용)"},
+    {"path": "AGENTS.md", "scope": "전문(이전 세션 Read)"},
+    {"path": "docs/cinematic/WORLD_INTRO_INGAME_20260907.md", "scope": "전문. 재생계약 13-49(흐름18, showLine(0)중지25-26, 플레이어27), 종료경로 84, 컷경계 51-73"},
+    {"path": "docs/16번역·로컬라이제이션/번역대상_전체목록.md", "scope": "CAT-68 2201-2202, CAT-96 3371-3376(3372 현행 v13 미재생, 3376 _CIN_I18N 데드 주장)"},
+    {"path": "index.html", "scope": "playCinematic 2231, updateVoiceSync 2256-2293, showLine 2295(+호출부 2289/2466), onVidClick 2366-2403(_cinReady=true;startWorldIntro 2400), startWorldIntro 2405-2428(attach 2411/setLanguage 2412/create 2416/start 2427/onError 2418), onSubSkip 2449-2467(player.next 2451), keyHandler 2476-2483, _goCinematic 2703-2735, setUserLanguage 2041, _worldIntroPlayer 2156/2161"},
+    {"path": "world-intro-player.js", "scope": "create 5(동기 객체 반환 51), start/next/toggle/stop, onError 호출 30/50, CUTS 82"},
+    {"path": "world-intro-subtitles.js", "scope": "attach 16-41(setLanguage addTextTrack/VTTCue 21-28, resolveLanguage 6-14)"}
+  ],
+  "commands": [
+    {"cmd": "grep -n startWorldIntro|showLine|_worldIntroPlayer|playCinematic|_cinReady index.html", "exit": 0},
+    {"cmd": "grep -n create|return|throw|onError|CUTS world-intro-player.js + sed attach world-intro-subtitles.js", "exit": 0},
+    {"cmd": "sed 3372/2202 전체목록.md", "exit": 0},
+    {"cmd": "grep -rln startWorldIntro|WorldIntroPlayer|showLine|world_intro_v13|CIN_LINES docs/ (백업제외)", "exit": 0},
+    {"cmd": "shasum -a 256 world-intro-player.js world-intro-subtitles.js WORLD_INTRO_INGAME_20260907.md", "exit": 0, "note": "git 아님"}
+  ],
+  "keyFindings": [
+    {"id": "SHOWLINE0-ABSENT", "detail": "showLine(0, false)(updateVoiceSync 루프 최초 기동 조건, index.html:2297-2300) 호출부가 소스에 없음 → CIN 자동 자막 루프 미기동. 문 완료는 startWorldIntro()로 직행(index.html:2400)"},
+    {"id": "NORMAL-PATH-UNREACHED", "detail": "정상 문 완료/탭·스킵(onSubSkip→player.next)/영화 실패(onError, player 유지)/재진입·언어변경 모두 showLine resolver(index.html:2317) 미도달"},
+    {"id": "CREATE-SYNC", "detail": "WorldIntroPlayer.create는 동기 객체 반환(world-intro-player.js:51), throw/null 없음. onError도 player를 null로 만들지 않음(:2418)"},
+    {"id": "CONDITIONAL-WINDOW", "detail": "유일 조건부 도달: startWorldIntro의 setLanguage(index.html:2412)가 throw하면 create 미실행→_worldIntroPlayer=null & _cinReady=true→이후 입력 onSubSkip이 showLine 호출. throw 조건=WorldIntroSubtitleData/VTTCue 부재(자산 미로드). 정상 로드 시 미발생→UNKNOWN/HOLD. 자동진행 없어 cue13/18까지 수동 13~18탭 필요"},
+    {"id": "CLASSIFY", "detail": "식 결함=보존 legacy latent(실재). 현행 제품 경로 결함=아님(경로 미사용). 조건부 창=UNKNOWN. 0553의 '16언어 노출'은 현행 제품에서 조건부로 재분류"},
+    {"id": "PRIOR-CHECKS-CORRECTION", "detail": "0553 checks.mjs 7 assertion은 손복사 식+발췌 fixture. 실행값=cue13/de·cue0/de·cue0/ms. cue18·16언어 일반화는 정적 추론(미실행)"},
+    {"id": "DEAD-VS-UNUSED", "detail": "CAT-68:2202 '20개·항상 데드'→16개·빈 cue13/18에선 식상 참조 가능. CAT-96:3376 '절대 미참조'→경로 미사용 근거로만 성립(식 조건부 선택과 분리)"}
+  ],
+  "routeTable": [
+    {"condition": "정상 문 완료", "callee": "onVidClick→_vidStartTimer→_cinReady=true;startWorldIntro()", "resolverReached": false, "moviePath": "WorldIntroSubtitles.attach+setLanguage+WorldIntroPlayer.create/start (네이티브 TextTrack)", "evidence": "index.html:2391-2402,2405-2427"},
+    {"condition": "재생 중 탭/스킵", "callee": "keyHandler/overlay.onclick→onSubSkip", "resolverReached": false, "moviePath": "_worldIntroPlayer.next() (CUTS)", "evidence": "index.html:2451, world-intro-player.js:51-67,82"},
+    {"condition": "영화 로딩/재생 실패", "callee": "onError (player 유지)", "resolverReached": false, "moviePath": "재시도 버튼, movie 유지", "evidence": "index.html:2418, world-intro-player.js:30,50"},
+    {"condition": "setLanguage throw(자산 부재)", "callee": "create 미실행→_worldIntroPlayer=null,_cinReady=true→onSubSkip→showLine", "resolverReached": "conditional/UNKNOWN", "moviePath": "없음(영화 미기동)", "evidence": "index.html:2411-2416, world-intro-subtitles.js:16-39"},
+    {"condition": "재진입/언어 변경", "callee": "_goCinematic→playCinematic(문 재생) / setUserLanguage→setLanguage", "resolverReached": false, "moviePath": "문→영화 재진입 / TextTrack 언어 교체", "evidence": "index.html:2712,2735,2041"}
+  ],
+  "canonicalHandoffForRoot": [
+    "번역대상_전체목록.md:2202(CAT-68): '20개 언어분'→실측 16(출처 0553, 미재계수); '항상 데드'→nonempty cue만 데드, 빈 cue13/18에선 '' falsy로 _CIN_I18N 식상 선택(식 결함)",
+    "번역대상_전체목록.md:3376(CAT-96): '절대 미참조'는 식 근거로 단정 불가(cue13/18 inline=''); 사용자 미노출은 '경로 미사용'(v13 영화·TextTrack, showLine(0) 중지) 근거로 성립 — 식 조건부 선택과 경로 미사용을 분리 기재",
+    "WORLD_INTRO_INGAME_20260907.md:25-26 / 전체목록 3372: 현행 v13 미재생=경로 미사용 1차 근거. 식 결함은 보존 legacy latent로 별도",
+    "29×32 영화 자막 계약과 28키 CIN_LINES 계약 혼합 금지"
+  ],
+  "rootCandidateGate": [
+    "현행 제품 경로 미도달 전제: 후보 수정의 사용자 효과는 setLanguage-throw 조건부 창에 한정 — root가 '식 정정 vs 경로 미사용' 중 닫을 문제 결정",
+    "_CIN_I18N 재사용 타 경로(?cinematic=1 미리보기/CIN 복원) 충돌 검토 → UNKNOWN/HOLD",
+    "productionApplied=false, 실게임·자막 렌더·영상·음향 Gate 미검수. cue수·v/dur/img·skip·음성·BGM·로어·언어목록·DOM 불변 전제"
+  ],
+  "productionApplied": false,
+  "verificationLimits": "정적 호출/진입 대조만. UI/DOM/미디어/타이머 실행 0. 영상·자막 렌더·음향 PASS 아님. 네이티브 TextTrack 실제 표시 미확인. setLanguage throw 실발생·브라우저 동작 미실행→UNKNOWN. Git 조회 0. 과거 문서 브라우저 PASS를 이번 PASS로 쓰지 않음. 0553 cue전표/7assertion/번역품질/Space hold/49moves 재실행·합산 0",
+  "notRun": ["생산 코드", "공유 docs 수정", "이전 산출/기존 테스트 수정", "checks.mjs/새 fixture", "Git 조회/stage/commit/push", "실게임/UI/세이브/서버/빌드/설치/권한/인증", "미디어 생성/편집/재생", "외부메시지/게시", "새 세션/하위팀", "삭제/이동/cleanup", "맵 제작/geometry/camera QA", "보스 사망/필드 리셋 조사(root 단독 소유)"]
+}

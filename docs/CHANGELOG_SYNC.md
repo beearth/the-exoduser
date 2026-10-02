@@ -52127,3 +52127,12 @@ Both HTML P guards now cancel mortar aim/charge on blur/hidden. Actual-source 2 
 EXP 30% 차감·사망 횟수/현재 인벤토리·stageTime·최종 HP/MP/신성력 회복의 기존 계약을 유지하며 P/INV를 과거 상태로 되감지 않는다. CH1-1 문 개방 전·다른 스테이지 일반 필드 사망·demo si3 직접 재시도는 기존 분기다. 새 회귀 `test/bossRespawnFieldState.test.cjs`의 실제 소스 검사 30/30(양판 각15), 기존 부활 자원 5/5, inline JavaScript12/importmap2 구문 PASS. 이전 실패·중간 검사 횟수를 최종 30건에 합산하지 않는다. 필드 fixture·factory/render/audio/DB/background 대역을 사용한 소스 검수이며 실게임·native·시각·성능 인수를 주장하지 않는다.
 
 관련 docs 전체 검색과 정확 필드·예외·캐시 표, §23 MAP PRODUCTION REPORT는 `4.1맵디자인+설정/CH1-1_BOSS_RESPAWN_PROGRESS_20261002.md`를 따른다. 맵 geometry/art/배치는 그대로이며 기존 맵 전체 `VISUAL VERDICT: RETOUCH`를 유지한다. 이번 수정의 실제 카메라/플레이 시각 검수는 미실행이다. 변경 전 백업·정확 source SHA·원문 구간 밖 바이트 보존·검사 원자료는 `tmp/mac-migration-runtime/continued-review-20261002/boss-respawn-backup/receipt.json`, scoped commit/원격 대조는 별도 `boss-respawn-checkpoint/receipt.json`에 기록한다. 원격 exact SHA 확인 전 백업 완료를 주장하지 않는다. 기존 사용자23항목·게임 탭/세이브·감독 STATE/LOG·전문팀 진행 중 산출은 이번 checkpoint에 포함하지 않는다.
+
+
+## 2026-10-02 샘플 재생 시작 실패 즉시 회수와 완료 보고 보존
+
+양판 `_playSampleNow`의 `src.start(startTime||0)` 한 접점을 `try{src.start(startTime||0);}catch(e){_nd._dn();throw e;}`로 교체했다(각 +33바이트, 원 접점24→57바이트). 시작 실패 시 등록된 노드/카운터를 즉시 회수하고 동일 Error 객체를 재전달한다. 기존 실패도 timeout 뒤 회수되므로 영구 누수로 설명하지 않는다. 기존 `_dn` 회계 guard·공유 disconnect catch·`_dnP`의 반복 panner disconnect 시도·`(_dur+.5)*1000`(`_dur=buf.duration||2`) 예약은 유지한다. queue/dedup/RNG/우선순위/상한/정상 반환 정책 변경0이다.
+
+새 actual-source 회귀 `test/audioSampleStartFailure.test.cjs`는 양판 각9, 최종18/18 PASS; inline JS12/importmap2 구문 PASS. guarded/unguarded 정상 전체 trace 동등, plain/panned 즉시 실패 회수·원 Error·중복 종료/타이머 회계·기존 active 노드 보존·disconnect 예외의 기존 처리·부모 flush의 queue1 유지·정상 큐 drain을 확인했다. baseline18의 8PASS/10FAIL은 역사이며 최종18과 합산하지 않는다. WebAudio/clock/timer/buffer/voice map 대역이므로 실제 장치·청취·전체게임·실제품 인수를 주장하지 않는다. 기존 전문팀/보스/mortar 검사는 재실행하지 않았고, 보스 수정 구간과 그 밖 HTML 바이트를 보존했다.
+
+사운드/성능 정본과 `6사운드디자인/SOUND_SAMPLE_START_FAILURE_20261002.md`를 정확 동기화했다. root source 영수증은 `tmp/mac-migration-runtime/continued-review-20261002/sound-start-backup/receipt.json`; 별도 `sound-start-checkpoint/receipt.json`에 변경전 백업·소유 SHA·원격 exact SHA를 기록한다. ENEMY3/STORY5의 새 완료8파일은 검토/실행 소스 원문 보존이며 후보 생산 채택이 아니다. ENEMY idx60의 실제 phase reset/전체무브 동등성, STORY boot 최초 실패/보존 resolver 제품 노출은 검수 중인 Gate로 유지한다. 기존 사용자23항목·감독 mutable STATE/LOG·진행 중 TASK/산출·사용자 게임/세이브 보존, 전문팀 중복 지시0이다.

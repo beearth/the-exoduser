@@ -1,0 +1,334 @@
+{
+  "task": "burstCounter-idx60-cooldown-source-path",
+  "startedAt": "2026-10-02T06:17:09.335Z",
+  "completedAt": "2026-10-02T06:17:12.568Z",
+  "node": "v24.15.0",
+  "headProvenance": "총괄 확인 HEAD 미제공 → UNKNOWN. 피어가 알린 checkpoint SHA b72f3f0634f78829df0f227897a1e7555488f103는 총괄 로컬 checkpoint로 인수만 하며 독립 원격검증값으로 쓰지 않음(원격 push 확인은 총괄 진행 중). 본 fixture 근거는 sources[].sha256 읽기시점.",
+  "sources": {
+    "game.html": {
+      "sha256": "dc711864876610a83c67a659d4f162551191b56ba11d74e1cb81f03df935368e",
+      "readAt": "2026-10-02T06:17:11.030Z",
+      "BOSS_MOVES_line": 9497,
+      "BOSS_PHASES_line": 9628,
+      "_bossScore_line": 36306,
+      "_bossAI_line": 37027,
+      "BOSS_MOVES_sha": "5726dbbc977ffad838cb40045d23c79eea872c617bf15dbe95e3a82fc499ecae",
+      "_bossAI_sha": "8b81def3eb76731d49b0e554f4c52837489529bc734e4c21dedda68a7e6209e6",
+      "decLineSha": "cac1c79844d6dab864c436a8281e6077a0d6a313cfab4198a8b216e974ce68d0",
+      "writeLineSha": "8c2252c61099fbd9358c1cac547da5ac4ab01439aecf2a4165ef258b6246cd74",
+      "resetLineSha": "3ecd10aced74431b894bdae653e1025deb71f746e59024e34b0137f034dc41ef"
+    },
+    "game-easy-test.html": {
+      "sha256": "1f139e0cd5fd898e33ba2b1c408b33e49984e106f0b46cc5b38b7d2abf2dabe1",
+      "readAt": "2026-10-02T06:17:12.564Z",
+      "BOSS_MOVES_line": 8948,
+      "BOSS_PHASES_line": 9079,
+      "_bossScore_line": 35110,
+      "_bossAI_line": 35830,
+      "BOSS_MOVES_sha": "5726dbbc977ffad838cb40045d23c79eea872c617bf15dbe95e3a82fc499ecae",
+      "_bossAI_sha": "8b81def3eb76731d49b0e554f4c52837489529bc734e4c21dedda68a7e6209e6",
+      "decLineSha": "cac1c79844d6dab864c436a8281e6077a0d6a313cfab4198a8b216e974ce68d0",
+      "writeLineSha": "8c2252c61099fbd9358c1cac547da5ac4ab01439aecf2a4165ef258b6246cd74",
+      "resetLineSha": "3ecd10aced74431b894bdae653e1025deb71f746e59024e34b0137f034dc41ef"
+    }
+  },
+  "counts": {
+    "pass": 12,
+    "reproduced": 6,
+    "fail": 0
+  },
+  "results": [
+    {
+      "file": "game.html",
+      "name": "A 정적사실: burstCounter idx60/cd160, length59, 30·59 결번",
+      "status": "PASS"
+    },
+    {
+      "file": "game.html",
+      "name": "B TCB-CD60 현행: burstCounter 최초1회·idx60 CD 영구고정",
+      "status": "REPRODUCED",
+      "actual": {
+        "bcIdx": 60,
+        "bcCd": 160,
+        "firstWrite": 64,
+        "afterCD": 64,
+        "cdHeldEqual": true,
+        "gate": 0,
+        "committed": 1
+      },
+      "expected": {
+        "bcIdx": 60,
+        "bcCd": 160,
+        "firstWrite": 64,
+        "afterCD": 64,
+        "cdHeldEqual": true,
+        "gate": 0,
+        "committed": 1
+      }
+    },
+    {
+      "file": "game.html",
+      "name": "C 정상 idx: slashCombo(idx13) 만료·재선택≥2",
+      "status": "REPRODUCED",
+      "actual": {
+        "scIdx": 13,
+        "firstWrite": 36,
+        "reselects": true
+      },
+      "expected": {
+        "scIdx": 13,
+        "firstWrite": 36,
+        "reselects": true
+      }
+    },
+    {
+      "file": "game.html",
+      "name": "D 길이 61로 늘려도 i<59 감소루프면 idx60 미해결",
+      "status": "PASS"
+    },
+    {
+      "file": "game.html",
+      "name": "E 페이즈 reset(i<length)도 idx60 미초기화(의존성 기록)",
+      "status": "PASS"
+    },
+    {
+      "file": "game.html",
+      "name": "F 후보(idx감소): burstCounter 만료·재선택≥2",
+      "status": "REPRODUCED",
+      "actual": {
+        "firstWrite": 64,
+        "reselects": true
+      },
+      "expected": {
+        "firstWrite": 64,
+        "reselects": true
+      }
+    },
+    {
+      "file": "game.html",
+      "name": "G 후보 정상 idx 동등성(slashCombo 현행=후보)",
+      "status": "PASS"
+    },
+    {
+      "file": "game.html",
+      "name": "H CD 음수 오버슛 허용·gate는 >0 기준(현행/후보 공통)",
+      "status": "PASS"
+    },
+    {
+      "file": "game.html",
+      "name": "I 후보는 감소 1줄만 치환(그 외 _bossAI 원문 동일)",
+      "status": "PASS"
+    },
+    {
+      "file": "game-easy-test.html",
+      "name": "A 정적사실: burstCounter idx60/cd160, length59, 30·59 결번",
+      "status": "PASS"
+    },
+    {
+      "file": "game-easy-test.html",
+      "name": "B TCB-CD60 현행: burstCounter 최초1회·idx60 CD 영구고정",
+      "status": "REPRODUCED",
+      "actual": {
+        "bcIdx": 60,
+        "bcCd": 160,
+        "firstWrite": 64,
+        "afterCD": 64,
+        "cdHeldEqual": true,
+        "gate": 0,
+        "committed": 1
+      },
+      "expected": {
+        "bcIdx": 60,
+        "bcCd": 160,
+        "firstWrite": 64,
+        "afterCD": 64,
+        "cdHeldEqual": true,
+        "gate": 0,
+        "committed": 1
+      }
+    },
+    {
+      "file": "game-easy-test.html",
+      "name": "C 정상 idx: slashCombo(idx13) 만료·재선택≥2",
+      "status": "REPRODUCED",
+      "actual": {
+        "scIdx": 13,
+        "firstWrite": 36,
+        "reselects": true
+      },
+      "expected": {
+        "scIdx": 13,
+        "firstWrite": 36,
+        "reselects": true
+      }
+    },
+    {
+      "file": "game-easy-test.html",
+      "name": "D 길이 61로 늘려도 i<59 감소루프면 idx60 미해결",
+      "status": "PASS"
+    },
+    {
+      "file": "game-easy-test.html",
+      "name": "E 페이즈 reset(i<length)도 idx60 미초기화(의존성 기록)",
+      "status": "PASS"
+    },
+    {
+      "file": "game-easy-test.html",
+      "name": "F 후보(idx감소): burstCounter 만료·재선택≥2",
+      "status": "REPRODUCED",
+      "actual": {
+        "firstWrite": 64,
+        "reselects": true
+      },
+      "expected": {
+        "firstWrite": 64,
+        "reselects": true
+      }
+    },
+    {
+      "file": "game-easy-test.html",
+      "name": "G 후보 정상 idx 동등성(slashCombo 현행=후보)",
+      "status": "PASS"
+    },
+    {
+      "file": "game-easy-test.html",
+      "name": "H CD 음수 오버슛 허용·gate는 >0 기준(현행/후보 공통)",
+      "status": "PASS"
+    },
+    {
+      "file": "game-easy-test.html",
+      "name": "I 후보는 감소 1줄만 치환(그 외 _bossAI 원문 동일)",
+      "status": "PASS"
+    }
+  ],
+  "verdict": {
+    "burstCounter-idx60": "REACHABLE(현행 실제경로로 1회성·영구잠김 재현)",
+    "candidate-idx-decrement": "현행 반례 실행 시에만 비교·복구 확인(G/H 정상 동등성 PASS)",
+    "phase-reset-same-range": "의존성(동일 i<length)으로 기록 — 별도 과제 확대 안 함(E)"
+  },
+  "productionApplied": false,
+  "synthBoundary": [
+    "선택 직전 e/d/phase/_BOSS_MOVESET/RNG는 SYNTH(enemy()/setup()): 무브셋 Set을 지정 무브로 좁혀 실제 선택을 유도",
+    "Math.random=()=>0.5 결정적. _bossStartPattern/_isDruidFinale/_druidFinaleAI/BOSS_COMBOS는 대역(CD gate와 무관)",
+    "_moveCDs[60] 직접 가짜대입 없음 — 모든 CD 기록은 _bossAI 원문의 _moveCDs[bestMv.idx]=bestMv.cd*ph.cdM 실행 결과",
+    "e.s는 stub로 idle 유지되어 재선택 윈도우가 bossPatT/CD gate로만 지배됨(실게임 패턴상태 전이 미실행)"
+  ],
+  "limits": [
+    "source fixture PASS ≠ runtime/visual/실제 두번째 공격 PASS",
+    "전체 _bossAI 전투루프·패턴본체·GPU·FPS·HTTP·저장 미실행",
+    "이전 BOSS 목록감사·ENEMY 전조76·사망탄22 반복0, 합산0",
+    "정의 idx 재번호·무브 추가/삭제0, 보호2_3/티켓/blackBean Q전용 패링 불변",
+    "source fixture PASS ≠ runtime/visual/실제 두번째 공격 PASS(실게임 ?bosstest 재현은 QA Gate)"
+  ],
+  "taskId": "ENEMY-burstCounter-idx60-cooldown-source-path-20261002",
+  "provider": "VS Code Claude Code (continuous/ENEMY), peer-dispatched",
+  "confirmedChatSession": "UNKNOWN (peer SendMessage, transport time 미기록)",
+  "utc": "2026-10-02T06:17:12.568Z",
+  "kst": "2026-10-02T15:17:38+09:00 (완료보고 기준, approx)",
+  "changeCounts": {
+    "startObserved": 99,
+    "capacityHold": "작업감독 capacity99-20261002로 산출 일시 보류 → 총괄 checkpoint(b72f3f06…, 45파일/56path) 후 Changes43 회복·해제 안내 수신",
+    "afterRelease": 47,
+    "note": "공유 체크아웃 전체(타팀 병행 포함) 읽기전용 관찰. 본인 소유 신규는 checks.mjs/result.md/evidence.json 3개. Git 직접 미수행."
+  },
+  "inherits": {
+    "new-four/BOSS §3-A/§4": {
+      "staticFacts": "BOSS_MOVES.length=59, burstCounter.idx=60, cd160, idx30/59 결번, CD 읽기/쓰기는 mv.idx·감소/페이즈reset은 배열위치 i<length",
+      "note": "정적 인계만. 이전 BOSS 목록감사·ENEMY 전조76·사망탄22검사 반복/합산 0."
+    }
+  },
+  "sourceSHAchange": "현행 양판 SHA(game.html 2e45ee0e…, game-easy-test.html 3e5969ca…)는 new-four/BOSS 인수시점(HEAD 4cd0cb49/f1401551, game.html 30ae8544…)과 다름. 총괄의 UI 카드수명/minus가드 등 무관 변경으로 분류·미복원. burstCounter 구조(정의9529/8980·초기화29938/28758·score36310/35114·tick37031/35834·기록37083/35886·reset36913/35716)는 현행에서도 동일 — 본 fixture가 실행으로 확인.",
+  "readFiles": [
+    "tools/team-followup-20261002/continuous/ENEMY/TASK.md",
+    "tools/team-followup-20261002/continuous/COMMON.md",
+    "AGENTS.md (CLAUDE.md 운영부)",
+    "tools/team-followup-20261002/new-four/BOSS/result.md (§3-A/§4 인수)",
+    "game.html / game-easy-test.html (BOSS_MOVES/BOSS_PHASES/_bossScore/_bossAI 추출)"
+  ],
+  "command": {
+    "node": "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node",
+    "file": "tools/team-followup-20261002/continuous/ENEMY/checks.mjs",
+    "exit": 0
+  },
+  "ownedFiles": [
+    "tools/team-followup-20261002/continuous/ENEMY/checks.mjs",
+    "tools/team-followup-20261002/continuous/ENEMY/result.md",
+    "tools/team-followup-20261002/continuous/ENEMY/evidence.json"
+  ],
+  "safetyContract": {
+    "writesOutsideOwned": 0,
+    "git": 0,
+    "production": 0,
+    "sharedDocs": 0,
+    "existingTests": 0,
+    "delete_move_cleanup": 0,
+    "newSession_subteam": 0,
+    "UI_server_build_install": 0,
+    "definitionRenumber_moveAddRemove": 0,
+    "protected_2_3": "불변",
+    "attackTicket": "불변",
+    "blackBean_Q_only_magic_parry": "불변"
+  },
+  "docsCorrections": [
+    {
+      "doc": "docs/8.1보스디자인바이블/BOSS_BATTLE_SETTINGS.md",
+      "line": 201,
+      "current": "4장 무브셋에 burstCounter 추가 해금 표기(결함 언급 없음)",
+      "handoff": "현행 동작 주석 추가: burstCounter(idx60) CD는 _bossAI 감소루프 for(i<BOSS_MOVES.length=59)와 페이즈 reset 동일범위가 idx60을 미처리 → 보스 생존 중 1회 발동 후 _moveCDs[60] 양수고정·_bossScore gate 0 → 재선택 영구불가(배정 보스 si17~20/21~25/26~31/32~34). 설계 의도(1회성/반복형)는 문서 부재=UNKNOWN. 수치(cd160·tele20·rec60·range[0,150]·phase[1~4])는 불변."
+    },
+    {
+      "doc": "docs/9적ai패턴디자인/ENEMY_AI_TEAM_MASTER.md (ENEMY canonical)",
+      "line": null,
+      "handoff": "per-move CD 계약 신설: 쓰기/읽기=mv.idx(_moveCDs[mv.idx]=cd*ph.cdM / _moveCDs[mv.idx]>0→score 0), 감소/페이즈reset=배열위치 i<BOSS_MOVES.length. idx가 length-1을 초과(burstCounter idx60, length59)하면 감소·reset 대상에서 누락됨. idx30/59는 결번(무해). 최소 후보=감소를 실제 정의 idx 기준으로(한 곳), 단 페이즈 reset도 동일 범위 의존성이므로 함께 검토(별도 과제 확대 금지)."
+    },
+    {
+      "doc": "docs/0마스터플랜/EXODUSER_MASTER_BIBLE_v2_2 (2).md",
+      "line": 912,
+      "current": "| 27 | burstCounter | ❌ | 폭발반격 | (구 순차 번호표, 런타임 idx60과 다른 체계)",
+      "handoff": "❌(미구현) 표기는 이 결함(1회성 후 재선택 불가)과 정합하나 번호(27)는 런타임 idx(60)와 불일치. new-four/BOSS §3-B \"49 원출처 부재\"와 연결해 번호체계 UNKNOWN 기록."
+    },
+    {
+      "doc": "docs/4.0케릭터스프라이트 디자인/캐릭터_몬스터_보스_최적화디자인_v1.md",
+      "line": 79,
+      "current": "\"BOSS_MOVES 57행, burstCounter.idx=60 불연속\" (행수 stale: 실제 59 정의)",
+      "handoff": "행수 57→정의 59로 정정 제안. 불연속 idx60 언급은 유지하되 \"감소/reset 범위 밖 → CD 영구잠김\" 귀결을 추가."
+    }
+  ],
+  "trackingTable": {
+    "burstCounter(현행,양판)": {
+      "idx": 60,
+      "def": "length59",
+      "firstCD": "cd160*cdM(phase1 .4)=64",
+      "decrementFrames": "300f sp1 → 미감소(i<59)",
+      "idx60Value": "64 고정",
+      "gate": "_bossScore=0(영구)",
+      "reselect": "committed=1(1회성)",
+      "verdict": "REACHABLE 결함"
+    },
+    "slashCombo(정상 idx,대조)": {
+      "idx": 13,
+      "firstCD": "cd90*.4=36",
+      "decrement": "i<59 포함→만료",
+      "gate": "만료 후 통과",
+      "reselect": "committed>=2",
+      "verdict": "정상"
+    },
+    "길이만 61 증설": {
+      "result": "idx60 여전히 미감소(i<59 유지) committed=1",
+      "verdict": "미해결"
+    },
+    "페이즈 reset(의존성)": {
+      "range": "i<BOSS_MOVES.length",
+      "idx60": "reset 후에도 64 생존",
+      "verdict": "광폭화에서도 복구 안 됨(의존성 기록)"
+    },
+    "후보(idx 감소)": {
+      "change": "감소 1줄: for(_m of BOSS_MOVES) _moveCDs[_m.idx]-=sp",
+      "idx60": "만료",
+      "reselect": "committed>=2",
+      "normalEquivalence": "slashCombo 현행=후보(G PASS), 음수오버슛/gate 동일(H PASS)",
+      "verdict": "복구"
+    }
+  },
+  "designIntentUNKNOWN": "cd:160이 반복 재사용을 전제하는 값으로 읽히나, burstCounter가 1회성인지 반복형인지 명시한 설계 문서 부재. 설계 의도와 실행 관찰을 분리 — cd160 존재만으로 반복 재선택 기획을 발명하지 않음."
+}

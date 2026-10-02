@@ -52,3 +52,30 @@ User-priority CH1-1 boss-death field progress reset is owned by root and under i
 생산 코드/test 및 canonical/CHANGELOG만 scoped commit한다. 검사 실패·중간 성공 이력은 최종 30건과 합산하지 않는다. 양판 최종 SHA-256은 game.html `7d579cd6de5d27c300bf06205a401f6e5420a149759b26c83cfaa9a815927f36`, game-easy-test.html `1099267636a1cc379bcd17db7a86f793e73b3e7aef27e707594eb7104b1d7341`이다. 자세한 표와 보고는 `docs/4.1맵디자인+설정/CH1-1_BOSS_RESPAWN_PROGRESS_20261002.md`, 소스 receipt는 `tmp/mac-migration-runtime/continued-review-20261002/boss-respawn-backup/receipt.json`(SHA-256 `dfd8f38b6e65a61ca1560ac8acddee1dc4bbcca626c656295efb808785c1cdb7`), 원격 정확 SHA 확인은 별도 `boss-respawn-checkpoint/receipt.json`에 기록한다.
 
 전문팀 후속 지시의 단일 송신 담당은 기존 작업감독이다. root의 이번 직접 소스 인수는 사용자 우선 버그 범위이며 같은 전문팀 TASK를 중복 발송하지 않는다. 현재 사용자 게임 탭에 input/reload/close/save를 수행하지 않았으므로 수정은 게임을 다음에 로드할 때 적용된다. 감독 mutable STATE/LOG·진행 중 TASK/산출·기존23보존항목은 제외한다.
+
+
+## 2026-10-02 SOUND 시작 실패 정리 인수 및 새 완료8 보존
+
+감독이 인계한 `SOUND-start-failure-0543` 최소 후보를 현재 `226348940a4dc91a87301aac88219dfadc0621a9` 이후 source로 인수했다. 양판 원 `_playSampleNow` 함수SHA는 기존 제출의 `9b0733ee9355782ea98e0e959eafec27e04544b850c8b33eb0c076d1b2459e4a`와 동일했고, 이번 검수는 양판을 각각 실행하며 panned 경계도 포함한다. 기존 담당 checks는 재실행하지 않았다.
+
+| 항목 | 현재 생산/검수 범위 | 남은 Gate |
+|---|---|---|
+| 최소 접점 | `try{src.start(startTime||0);}catch(e){_nd._dn();throw e;}` 양판 한곳씩, 각+33bytes | create/connect 등 앞선 실패·evicted 노드 복구 범위 확장0 |
+| 실패 회수 | plain/panned 동일 Error 재throw, 등록 node/count 즉시 회수 | 실제 장치 disconnect 실패 시 모든 연결 해제를 보장하지 않음; 기존 catch 범위 유지 |
+| 중복 종료 | 기존 `_dn` 회계/source/gain guard 유지; `_dnP` panner 호출은 기존처럼 반복 | callback/타이머 실시간 검수0 |
+| 정상 계약 | source return/등록 이벤트/timer/전체 trace 동등, queue/dedup/RNG/priority/cap 동일 | failed dispatcher는 기존과 같이 queue1 유지; 새 큐정책 채택0 |
+| 검증 | 새 actual source18/18(양판 각9), JS12/importmap2 parse PASS | WebAudio/buffer/clock/timer/voice identity 대역, 실게임/nativeAudio/청취/product 인수false |
+| 보스 수정 보존 | 이전 entry/helper/retry SHA 동일, 나머지 HTML 바이트 원문 동일 | 기존 30+5 보스 검사를 다시 실행하지 않았음 |
+| 문서 | 사운드·성능 정본 및 신규 SOUND_SAMPLE_START_FAILURE 보고 | 역사 QA/다른 procedural 노드 결함을 이번 소스 검수로 승격하지 않음 |
+
+최종 전체 source SHA-256은 game.html `068808244450ce2a7dc9fbb7ba7b7186dd295224dd4072a3d2402acd90ba8bc3`, game-easy-test.html `482ec94f53ba88639e09e113cf1fa15eba98567f6197d2cf88b399e86649bd27`이다. 앞선 CH1-1 보고서 전체파일 SHA는 당시 검수 입력이며 이번 바이트 보존 증명으로 보스 계약을 이어 인수한다. 최종18은 baseline18(8PASS/10FAIL)과 합산하지 않는다. duration0.2초 fixture의 예약은700ms이며 일반 식은 `((buf.duration||2)+.5)*1000`이다. 시작 예외의 기존 회수는 예약 callback 뒤에 이뤄져 영구 누수로 판정하지 않는다.
+
+이번 보존 범위는 감독이 pin한 새 완료8파일(ENEMY3/STORY5)이다. 완료 turn/소유 SHA/bytes를 검증하고 원문 backup을 확보했다. raw report의 과장·시점 충돌은 원문을 고쳐 숨기지 않고 아래와 같이 제한 인수한다.
+
+| 담당/산출 | 인정한 근거 | 아직 생산 인수하지 않은 주장/후보 |
+|---|---|---|
+| ENEMY continuous3 | actual `_bossAI/_bossScore/BOSS_MOVES/PHASES` 추출, 제한 idle·무브셋/RNG fixture에서 idx60 CD64가300f 동안 감소하지 않음; 최소 메모리 감소 후보의 복구 | 12PASS와6 witness는 B/C/F 각양판이며6결함이 아님. 직접seed/분리reset은 실제 phase전환 증명 아님; 다른58/전체RNG/음수 완전동등·실제 반복공격은HOLD. 보고2e45/3e59와 실행dc711/1f139 SHA의 시점 충돌 보존 |
+| STORY empty-cue3 | 손복사 resolver 식+하드코딩 cue13/de 등7 assertion; 빈문자열 falsy의 선택식 결함은정적 근거 | 16언어 제품노출/실제 HTML에서 추출한 실행으로 확대 금지; 생산 후보HOLD |
+| STORY route0621 2 | 현행 정상 v13 movie/TextTrack은 보존 CIN loop/resolver 미사용이라는 정적 경로 대조 | only-setLanguage-throw/생성절대throw없음은HOLD. boot 최초throw 경계·전체제품/native자막은추가검수중; CAT68/96의 식조건과 제품경로 분리 필요 |
+
+전문팀 후속 지시의 단일 소유자는 기존 작업감독이다. 감독 STATE/LOG/active TASK 및 원 사용자23항목은 이번 scoped commit에서 제외한다. 저장/게임탭 input·reload·close·서버·오디오 에셋·삭제·권한/설치·게시0. 원격 exact SHA는 `tmp/mac-migration-runtime/continued-review-20261002/sound-start-checkpoint/receipt.json`에 commit 이후 기록한다.
