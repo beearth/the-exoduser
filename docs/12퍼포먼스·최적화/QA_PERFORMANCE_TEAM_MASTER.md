@@ -507,3 +507,13 @@ UIUX 식별 결과 dry variant는 0/1/2 중 UNKNOWN이다. 기존99ms 사건을 
 
 
 BUILD 독립 검수는 15:11:30.752Z 완료: 새 경계·원자료 재산출23 PASS, 생산 회귀22 PASS. 코드/fixture 함수 SHA 일치와 모든 분포를 대조했다. 실제 cold 빈 currentSrc→주소 전환은 이번 브라우저 fixture에서 관측되지 않았고 VM 경계검사로만 검증됐다는 한계를 유지한다. ITEM은 15:09:32Z 실제 Read 후 persistence-integration-port.mjs 구현 Edit에 착수했으며 아직 생산 적용·완료 아님.
+
+## 2026-10-03 source10 생산 동기화 — 고정 MP·안개 캐시·낙하 기절 상태 보존
+
+| 별도 날짜 fog 항목 | 현재 계약·근거 | 경계 |
+|---|---|---|
+| 2D merged rebake | key 변경/rebake 즉시 `_fogMerged=null`, 양판 생산 적용 | 실제 bake+render 후보10/10 PASS1회; merged canvas1개 추가, GC비용/장기/native 未 |
+| cadence | 기존 `(_now|0)%5===0`, `_now`는 ms 시각 | 프레임 수·지연 bound 주장0 |
+| QA-B03 | 기존 `_getAtlasTxt`·`_uploadCanvasTex` 텍스트 아틀라스 | line247 원문 유지; fog 항목으로 대체/기존ID 재사용0 |
+
+원 QA 메타는 보존하되 literal cadence를 정본에 기록한다. fog10/10은 별도 후보 bake+render 검수이고 fresh 생산28/28은 resource/stun 범위다. 전체12JS+2JSON syntax PASS1회, GC비용·실게임 픽셀/native 未. [최종 소스·공식 증빙](../CHANGELOG_SYNC.md)의 source10 절을 참조한다.

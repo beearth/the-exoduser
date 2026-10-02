@@ -644,3 +644,16 @@ X.translate(Math.round(C.width/2 - G.cam.x + sx), Math.round(C.height/2 - G.cam.
 | 변경 크기 | 양판의 소환 case 각각 801→860B, +59B | 양판 전체 +246B 중 보스 변경분. 다른 함수 원문 보존 |
 
 후보 보스 검수 10/10과 최종 공동 생산 검수 46/46은 같은 변경의 파생 검수 범위를 포함하므로 별도 완제품 성과로 합산하지 않는다. 실제 `Array.prototype.push`의 Proxy index-write 실패 fixture에서 기존 prefix2개·먼저 삽입된 소환수1개 유지, 동일 예외 전파, `recover/70f`를 확인했다. 자연 보스 도달·실게임 예외 재현·보스 사망/부활·실화면/실청취 검수는 완료하지 않았다. source9 앱 빌드·실행0이며 native/visual PASS를 뜻하지 않는다.
+
+## 2026-10-03 source10 생산 동기화 — 고정 MP·안개 캐시·낙하 기절 상태 보존
+
+| bossTeleDrop 분기 | 현재 정확 계약 | 불변값·후처리 |
+|---|---|---|
+| 외부 조건·패링 | 기존 radius/iframes<=0/P.s!='charge' 및 `if(isPWin())` ordinary-parry 분기 유지 | 거리80+e.r, 피해`e.atk×1.8×elMul` 유지 |
+| 피해 후 순서 | 기존 `hurtP` → `_isFocusState()` 집중 message → B else-only | focus 분기 유지; 새 전체 case break0 |
+| B 조건 | `else if(P.s!=='fallen'&&P.s!=='dead')`에서만 기존 pStun/FX | hurtP가 만든 fallen/dead 두 상태 보존. alive/HP/다른 terminal guard로 확대0 |
+| 기절 | main300f / easy150f | [기존 보스 착지 특수 스턴](../14밸런스+수치테이블/PLAYER_GROGGY_3S_20260913.md)의 수치 유지 |
+| case 후처리 | `e.s='bossRec';e.st2=35` 그대로 | 새 predicate main39693 / easy38495 |
+| 패링 분류 | CH3+ 기존 ordinary-parry signature 불변 | teleDrop 전체Q전용 주장0. magic의 Q-only/E불가 규칙은 별도 원계약 유지 |
+
+생산 양판에 적용했다. fresh live production resource/stun handler·dispatch·completion·case28/28 PASS1회(exit0/stderr0), inline12JS+2JSON syntax PASS1회다. 후보28/28은 같은 변경의 사전 의미검수이므로 fresh 생산 결과와 완제품 성과로 중복 합산하지 않는다. 이전source9 검사 반복0. source10 패키징·실행0, CH1 보스 사망/native·실화면·실청취·플레이 save 완료0이다. [최종 소스·공식 증빙](../CHANGELOG_SYNC.md)의 source10 절을 참조한다.

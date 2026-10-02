@@ -1,0 +1,57 @@
+# CANDIDATE PATCH — CO-SKILL-1948-source9-fireAura-mp100-patch
+# scope: fireAura(지옥진) MP100 미차감 복원 (1812 확정 결함). CANDIDATE ONLY — NOT production applied.
+# evidence(기존 완료 증빙): CO-SKILL-1812 (fireAura 문서계약 MP100 vs 코드 무차감 확정); root recipe
+#   tmp/mac-migration-runtime/continued-review-20261003/root-fireaura-next/recipe.json 인수(delta +10B, inverse exact).
+#
+# base (실측 whole-file SHA-256, source9):
+#   game.html          = 908102e7fdbf2b1d42ebb0f4e90476124bb8dbec8d22daa6babf3246def48525
+#   game-easy-test.html= fba52654d8f316a1f54b48cdcb21dc251f4e9968f59eb031572c0ab71e845af7
+# candidate (예측 whole-file SHA-256, 본 패치 적용 후):
+#   game.html          = afa55d74365ffbc8558b0cad1e85fb777b0796fe4a00fd0d678d2bbe8891bb5d
+#   game-easy-test.html= e657dbf4815f923e073d208117ffe38d025fdc892413649a667d8d3f75cc047a
+# handler-block SHA-256 (recipe 기준, 306B→316B):
+#   old = be169945cb5ab73d438e40ee3a21e41f414624be6ed1d0721de4fc011dbe114c
+#   new = 7d454412b9398679af616771724c3a6df5b2f6f9111d9dfbb8252a0336250c09
+# 변경(양판 동일): _MAGIC_E_HANDLERS.fireAura 성공행(`P.s='magicCast'`) 앞에 `P.mp-=100;` 1문(+10B) 삽입.
+#   game.html L27677 / game-easy-test.html L26552. 앵커 양판 byte-identical(old block sha 일치 확인).
+#
+# 역적용(inverse): new 라인에서 선두 `P.mp-=100;` 제거 → old 라인 복원(inverse_is_exact=true, recipe 일치).
+#
+# docs 동기화 목록: 추가 docs 수정 불요 — 정본이 이미 MP100을 명시하므로 본 패치는 코드를 docs에 맞춤.
+#   - docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md: fireAura 조작표 "MP 100"(및 L864 100 MP)
+#   - game.html SKILL_LIST def(id:'fireAura') desc "MP 100" / UI def "MP100"
+#   (root: 패치 채택 시 docs 변경 없음 확인만. 수치/계약 신설 아님.)
+#
+# 미검증 한계(candidate≠생산/native/화면/청취):
+#   1) 본 파일은 candidate unified diff일 뿐 — 미적용·미플레이테스트. productionApplied=false, runtimeAccepted=false.
+#   2) 차감 시점=press(handler, magicCast 진입 직전). magicCast 윈드업 중 interrupt(사망/상태취소) 시
+#      MP100 손실은 전역 magicCast 모델(blueShot/全 캐스트 공통) — 본 패치 범위 밖, root casting Gate.
+#   3) infernoSlam(giantSlam2 합체) 자동 지옥진(game.html _doGiantSlam 경로, 45034 인근)은 본 handler를
+#      경유하지 않음 — 패치 미접촉(과제: infernoSlam 자동오라 0변경). 합체 자동오라는 그대로 무차감 유지.
+#   4) MP<100 거절(미차감)·쿨(_faCd=720 resolution)·효과시 추가차감 없음 — 전부 불변. useMp 미사용/가격·refund 불변.
+#   5) 실패학습/재시전은 기존 게이트(`_faCd`,`mp<100`) 그대로.
+#
+# 적용(참고, root 소유): `patch -p1 < SKILL-source9.patch` 또는 `git apply`. 본 세션은 미적용(제출만).
+
+--- a/game.html
++++ b/game.html
+@@ -27674,7 +27674,7 @@
+     if(P.skills.fireAura<1)return false;
+     if((P._faCd||0)>0){showPH(_T('쿨 ')+~~((P._faCd||0)/60)+_L('초','s'),'#ff6600');return true}
+     if(P.mp<100){showPH(_T('MP 부족! (100)'),'#ff4400');return true}
+-    P.s='magicCast';P.st2=~~(10/pMagicSpd());P.atkArc=P.facing;return true;
++    P.mp-=100;P.s='magicCast';P.st2=~~(10/pMagicSpd());P.atkArc=P.facing;return true;
+   },
+   elemMissile(){
+     if(P.skills.elemMissile<1)return false;
+--- a/game-easy-test.html
++++ b/game-easy-test.html
+@@ -26549,7 +26549,7 @@
+     if(P.skills.fireAura<1)return false;
+     if((P._faCd||0)>0){showPH(_T('쿨 ')+~~((P._faCd||0)/60)+_L('초','s'),'#ff6600');return true}
+     if(P.mp<100){showPH(_T('MP 부족! (100)'),'#ff4400');return true}
+-    P.s='magicCast';P.st2=~~(10/pMagicSpd());P.atkArc=P.facing;return true;
++    P.mp-=100;P.s='magicCast';P.st2=~~(10/pMagicSpd());P.atkArc=P.facing;return true;
+   },
+   elemMissile(){
+     if(P.skills.elemMissile<1)return false;

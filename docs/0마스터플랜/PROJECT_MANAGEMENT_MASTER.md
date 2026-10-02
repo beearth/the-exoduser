@@ -1,6 +1,6 @@
-# 현재 팀 배치 — Codex8·Claude8 / 총16역할
+# 현재 팀 배치 — 관리3·전문15 / 총18역할
 
-사용자 최신 확정: Codex는총괄+UIUX/ITEM/BUILD/BALANCE/SOUND/QUESTNPC/MARKETING8, Claude는ART/MAP/SKILL/QA/ENEMY/ANIMVFX/BOSS/STORY8이다. Claude TASK Read8/8·Codex전문 TASK Read7/7 확인. 중복Codex채팅8개는완료턴확인후복구가능보관했고현재Codex전문채팅7개+이총괄이다. [현재역할·실행위치·소유·상태](mac-resume-20261001/vscode-dispatch/PROVIDER-HALVES-20261002.md). 이표가최신배치이며아래11/12/15팀기록은각시각이력이다.
+사용자 최신 확정: 관리3(총괄·Codex감독·Claude오더) + 전문15(Codex7·Claude8) = 총18역할이다. Codex전문7은UIUX/ITEM/BUILD/BALANCE/SOUND/QUESTNPC/MARKETING, Claude전문8은ART/MAP/SKILL/QA/ENEMY/ANIMVFX/BOSS/STORY다. Claude TASK Read8/8·Codex전문 TASK Read7/7 확인. 중복Codex채팅8개는완료턴확인후복구가능보관했고현재Codex전문채팅7개+이총괄이다. [현재역할·실행위치·소유·상태](mac-resume-20261001/vscode-dispatch/PROVIDER-HALVES-20261002.md). 이표가최신배치이며아래11/12/15팀기록은각시각이력이다.
 
 # EXODUSER 총괄 프로젝트 관리
 
@@ -1020,3 +1020,18 @@ root가 source9 code2 + portable test2를 생산에 적용하고 공식 검사�
 | 범위·예산 | root10경로 = code2 + test2 + 기존docs6, 새 보고서0. 실제 전체81예상/커밋71예상/외부8 포함79 인계 구분, 100경로 상한 전 유지 |
 
 관련 docs baseline 전체 검색329행/81파일·분류1회와 root의 실제 코드 적용 후 필수 전체 검색356행/82파일1회를 구분한다. 필수 검색은 2026-10-02 19:33:08 UTC에 수행됐고 신규 matching 파일은 이미 소유한 이 관리 master1개뿐, 제거0이다. 작성 중 동기화 내용이 반영된27행 증가를 과거 이력 변경으로 주장하지 않는다. 증빙은 `root-joint-source9/post-code-docs-search.json`(6472B, SHA-256 `81b195958fb50d3a8de914de26a11a51880ac472ba7ea8d3b72d49b12f31fefe`)이며 원 baseline 검색·disposition은 보존한다. 문서 담당의 추가 rg·source9 분석·구문/테스트 실행0, 필수 검색 이후 반복0이다. 현재값 오류는 현재 행에서 바로잡고, 승인된 3접점 밖의 문장 byte·EOL과 기존6문서의 최신 타인 내용을 보존했다. 최종 Git 범위 검증·커밋·push 및 실제 source9 앱 검수는 root 소유다.
+
+## 2026-10-03 source10 생산 동기화 — 고정 MP·안개 캐시·낙하 기절 상태 보존
+
+| 관리 항목 | 실제 인수·未검증 |
+|---|---|
+| 생산 | source9 parent e11ed7d052d825bcaf2a041d1f28ffac7f6f63f2에서3fix 적용. main4029803/a0eab60f…·easy3907070/ebaacc36… full pin은 [동기화 기록](../CHANGELOG_SYNC.md) 참조 |
+| 계약 | fireAura 성공100MP·manual600f/inferno300f; fog key/rebake null·literal `%5` ms; teleDrop B fallen/dead 제외·300/150·atk1.8·80+e.r·bossRec35 불변 |
+| 검사 | fresh 생산28/28 PASS1회(exit0/stderr0),12JS+2JSON syntax PASS1회. 후보28과 성과중복0, source9 재검사0 |
+| fog | 별도 실제 bake+render 후보10/10 PASS1회, merged canvas1개 추가. GC비용·장기 성능·픽셀/native 未 |
+| 문서 | pre158/36 감사1 + code후 필수123/32 검색1, 합집합39파일. 기존docs6/신규보고서0, 현재fog1행·상단역할2접점만 최소 정정 |
+| 조직 | 관리3(총괄·Codex감독·Claude오더)+전문15(Codex7·Claude8)=18. 과거 팀배치·QA-B03 text-atlas·보호2_3 유지 |
+| 보존/범위 | rawMAP 미적용, rawENEMY deathfade HOLD/통합0. raw4 단독 hook거절 미커밋/우회0. root 완성scope13(code2+test1+docs6+raw4) 함께 보존. commit·원격 정확SHA는 `root-joint-source10/checkpoint-receipt.json` 실제 실행결과 참조 |
+| runtime | source8 Mac 잠금; source10 패키징·실행0, CH1 보스 사망/native/실화면/실청취/플레이 save 완료0 |
+
+실제 생산3fix·공식 semantic/syntax까지 인수하며 native/visual PASS는 주장하지 않는다. 원 QA/skill 메타는 원후보로 보존하고 정본에 cadence·fallback·정확state 사실을 기록한다. root가 recipe를 직렬 적용하고 Git/원격 검증을 담당한다.

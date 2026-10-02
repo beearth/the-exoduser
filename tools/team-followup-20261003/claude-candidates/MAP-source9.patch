@@ -1,0 +1,49 @@
+# MAP-source9 — ch1-boundary-edge.js 3접점 합성 candidate (미적용, root 통합용)
+# 생성: 2026-10-03 / 소유 산출 1파일 (production 미수정)
+# base(현재 실측) SHA-256 : e1271685ee41026e330c77dfb9c8fc83146f2d116b97512e37d82cf53798edc2
+# candidate      SHA-256 : 3625d3d5fd6889e7703d5e3533db443dc47a55221f73166f2c8009325ef87814
+# 역사 기준(STATE 제공, 현행 아님): main 908102e7fdbf2b1d42ebb0f4e90476124bb8dbec8d22daa6babf3246def48525 / easy fba52654d8f316a1f54b48cdcb21dc251f4e9968f59eb031572c0ab71e845af7 / HEAD e11ed7d052d825bcaf2a041d1f28ffac7f6f63f2  (실제 base는 위 SHA로 새 측정)
+#
+# 합성 구성 (서로 독립 접점, disjoint):
+#   1) build-finally (pending-latch)  — build예외 pending-latch finally  [build/getContext 예외 1회 후 pending latch 영구차단 해제]
+#   2) pool-retry (1904)        — CO-MAP-1904 pool실패 단1회 retry  [prop_pool.png 1회 로드실패 시 모듈런타임당 단1회 재시도]
+#   3) ctx-finally (1926)        — CO-MAP-1926 ctx save/restore finally  [스트립 draw 예외 시 restore 보장 → transform/state 누출0]
+#   변경 라인→구성: L82=build-finally (pending-latch) , L96=pool-retry (1904) , L99=ctx-finally (1926)
+#
+# 기존 완료 증빙 ID: CO-MAP-1904(pool), build-finally(latch), CO-MAP-1926(ctx) — 각 4/4·CONFIRMED (메모리 VM)
+# 합성 검증(메모리): parse=OK, 전체 역변환 원복=true, self-apply=true, 변경라인=3(disjoint), 라인수 불변
+#
+# 보존/불변: geometry/collision/좌표/color/시각수치/new asset 0. 성공조건 pool.complete&&naturalWidth>1 불변.
+#   에러 정책 불변(예외 그대로 전파, swallow 0). 재시도 카운터 draw._poolRetried=런타임 전용(저장 schema 0).
+# docs 동기화안(미적용, root): 
+#   - docs/4.1맵디자인+설정/CH1_BOUNDARY_EDGE_MAP020_20261001.md : (a) idle build 예외 latch finally 복구, (b) pool 1회 로드실패 단1회 재시도+AO fallback, (c) 스트립 예외안전 save/restore(누출0)
+#   - docs/4.1맵디자인+설정/MAP_IMPROVEMENT_PROJECT.md : MAP-020 행에 위 3 런타임 복구/방어 반영
+# 미검증 한계: productionApplied=false, runtimeAccepted=false. native6/실화면 8뷰/청취/visual PASS 미수행(root Gate).
+#   node-canvas blur 미지원 대역(법선은 raw mask) — 본 patch는 draw/build 수명주기 로직만, 픽셀/시각 수치 무관.
+# 적용(root): `cd /Users/fordeargamers/Projects/exoduser-migration-20261001 && patch -p1 < <이 파일>`  (상단 # 헤더는 patch가 자동 스킵). git apply 시 헤더 제거 후 '--- a/' 부터 적용.
+#
+diff --git a/ch1-boundary-edge.js b/ch1-boundary-edge.js
+--- a/ch1-boundary-edge.js
++++ b/ch1-boundary-edge.js
+@@ -79,7 +79,7 @@
+     if(v==='0'||!g||g.stage!==0||g._bossArena||!Array.isArray(g.map)||!g.cam)return;
+     // One-time build (~20-45ms) runs in an idle callback so stage entry never stalls a frame; nothing is drawn until it is ready.
+     if(!shade||mapRef!==g.map){
+-      if(pending!==g.map){pending=g.map;const map=g.map,run=function(){if(pending===map&&(!shade||mapRef!==map)&&g.map===map)build(g);};
++      if(pending!==g.map){pending=g.map;const map=g.map,run=function(){if(pending===map&&(!shade||mapRef!==map)&&g.map===map){try{build(g);}finally{if((!shade||mapRef!==map)&&pending===map)pending=null;}}};
+         if(typeof requestIdleCallback==='function')requestIdleCallback(run,{timeout:1500});else setTimeout(run,0);}
+       if(!shade||mapRef!==g.map)return;
+     }
+@@ -93,10 +93,10 @@
+     ctx.drawImage(shade,x0*k,y0*k,(x1-x0)*k,(y1-y0)*k,x0,y0,x1-x0,y1-y0);lastDraws++;
+     if(v!=='b')return;
+     if(!pool){pool=new Image();pool.decoding='async';pool.src=SRC_POOL;}
+-    if(!rim){if(!(pool.complete&&pool.naturalWidth>1))return;buildRim();}
++    if(!rim){if(pool.complete&&pool.naturalWidth<=1&&!draw._poolRetried){draw._poolRetried=true;pool=new Image();pool.decoding='async';pool.src=SRC_POOL;}if(!(pool.complete&&pool.naturalWidth>1))return;buildRim();}
+     for(let i=0;i<roots.length;i++){
+       const r=roots[i];if(r.x<x0-90||r.x>x1+90||r.y<y0-90||r.y>y1+90)continue;
+-      ctx.save();ctx.translate(r.x,r.y);ctx.rotate(r.rot);ctx.scale(r.flip?-r.s:r.s,r.s);ctx.drawImage(rim[rootVariant(r)],-220,-46);ctx.restore();lastDraws++;
++      ctx.save();try{ctx.translate(r.x,r.y);ctx.rotate(r.rot);ctx.scale(r.flip?-r.s:r.s,r.s);ctx.drawImage(rim[rootVariant(r)],-220,-46);}finally{ctx.restore();}lastDraws++;
+     }
+   }
+   function qa(){return{mode:mode(),built:!!shade,buildMs:Math.round(buildMs*10)/10,roots:roots?roots.length:0,lastDraws:lastDraws,texPx:shade?shade.width*shade.height:0};}

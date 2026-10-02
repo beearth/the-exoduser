@@ -1,0 +1,70 @@
+# BOSS-source9.patch — teleDrop 착지 스턴이 fallen/dead(부활 대기)을 pStun으로 덮는 결함 차단 (정본: B else-only)
+#
+# taskID      : CO-BOSS-1948-source9-teledrop-B-else-only-patch
+# epoch       : root-73620278-claude8-1530 (root 공식 신규 제작목표, 이 1건 제한해제)
+# role/by     : BOSS / Mac Claude Code (Opus 4.8)
+# node        : /Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node (v24.15.0)
+# 정본 선택   : root가 B(else-only)를 정본 채택. 외부 A(outer-gate)는 미채택·원문 보존.
+#
+# ── 결함 (CH3+ 안정성 후보; CH1 native 완료 아님) ──
+# teleDrop 착지 스턴 분기에서, 패링(isPWin)/집중(_isFocusState)이 아닌 경우 무조건
+#   `P.s='pStun';P.st2=<300|150>` 로 플레이어 상태를 덮는다. 플레이어가 grab throw 등으로
+#   fallen 무적(iframes)이 낮아진 뒤 fallen(부활 대기, P.s='fallen') 상태일 때 teleDrop 착지
+#   gate(iframes<=0 && P.s!=='charge')를 통과하면, 외부 hurtP는 fallen/dead no-op이지만
+#   `P.s='pStun'`이 `P.s='fallen'`을 덮어 부활 판정(P.s==='fallen' 키)이 중단된다.
+#
+# ── 수정 (B else-only, 최소) ──
+# 후속 else(pStun 설정)만 `else if(P.s!=='fallen'&&P.s!=='dead'){...}` 로 가드.
+#   - 외부 hurtP / iframes / parry(isPWin) / focus(_isFocusState) 분기 전부 불변.
+#   - 착지 e.x/e.y, 반경 _tsR(=80+e.r), 피해 atk*1.8, Q전용 magic / E불가 전부 불변.
+#   - main st2=300(5초) / easy st2=150(2.5초) 수치 불변. 새 수치/능력/좌표 0.
+#
+# ── 실측 SHA (source9 == 현재 working tree, 2026-10-03 측정) ──
+# game.html            base 908102e7fdbf2b1d42ebb0f4e90476124bb8dbec8d22daa6babf3246def48525
+#                      cand 203a94352a0ad84196f1f772a3f216612608dc57923269b446ddf26bea29102c
+# game-easy-test.html  base fba52654d8f316a1f54b48cdcb21dc251f4e9968f59eb031572c0ab71e845af7
+#                      cand 24ab450d062cf093e5d9816ac4566811c0dec55489c3cb8ab3e3a2106bfcbffc
+# (이력 기준 HEAD e11ed7d052d825bcaf2a041d1f28ffac7f6f63f2 — base SHA 신규 재측정, 이력과 일치)
+#
+# ── 검증 (메모리/stdin, 적용 전) ──
+# · old anchor 유니크: 양판 각 occ==1
+# · 역치환 byte-exact(cand→base 복원): 양판 true
+# · whole-script acorn parse(ecmaVersion latest, module/script 구분): game 56/0, easy 48/0, 편집 스크립트 파싱 OK
+# · 적용 지점: game.html L39693, game-easy-test.html L38495
+#
+# ── 기존 완료 증빙 ID (중복 아님, 본 patch가 재기반한 설계 근거) ──
+# · CO-BOSS-1534-teledrop-player-state-boundary (검증된 상태-오버라이트 체인, 모델 4 PASS)
+# · CO-BOSS-1804 B recipe (else-only 바이트 레시피 원안)
+# · CO-BOSS-1454 grab throw iframes 9999→30 enabling 조건 관찰
+#
+# ── docs 동기화 인계 목록 (root; 본 patch는 docs 미변경) ──
+# · docs/8.1보스디자인바이블/BOSS_BATTLE_SETTINGS.md  (teleDrop 무브 계약: 착지 스턴이 fallen/dead 시 pStun 미적용)
+# · docs/2_5 부활+에너지쉴드시스템/2_5 부활+에너지쉴드시스템.md  (fallen 상태 중 외부 CC가 부활 판정 덮지 않음)
+#
+# ── 미검증 한계 (root Gate) ──
+# sourcefixture/후보patch ≠ production 적용 / native6 / 화면 / 청취 완료.
+# 실제 게임 내 teleDrop→fallen 보존의 native 보스 죽음/부활 시연 미검증 = root/사용자 Gate.
+# 기존 21key/matrix/source4 death NOFIX 재검사 0. 적용·통합·checkpoint는 root 소유.
+#
+--- a/game.html
++++ b/game.html
+@@ -39690,7 +39690,7 @@
+         else{
+           hurtP(~~(e.atk*1.8*elMul(e.el,ar().el)));
+           if(_isFocusState()){addTxt(P.x,P.y-20,_T('집중!'),'#44ddff',20)}
+-          else{P.s='pStun';P.st2=300; // 5초 풀스턴
++          else if(P.s!=='fallen'&&P.s!=='dead'){P.s='pStun';P.st2=300; // 5초 풀스턴
+           SFX.groggy();addTxt(P.x,P.y-22,_T('💫 기절! 5초'),'#ffaa00',60);
+           G.hitStop=~~(8*OPT.hitStop/100);if(G.slowMo<=0)G.slowMo=15;
+           for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}
+--- a/game-easy-test.html
++++ b/game-easy-test.html
+@@ -38492,7 +38492,7 @@
+         else{
+           hurtP(~~(e.atk*1.8*elMul(e.el,ar().el)));
+           if(_isFocusState()){addTxt(P.x,P.y-20,_T('집중!'),'#44ddff',20)}
+-          else{P.s='pStun';P.st2=150; // 쉬운 버전: 2.5초 풀스턴
++          else if(P.s!=='fallen'&&P.s!=='dead'){P.s='pStun';P.st2=150; // 쉬운 버전: 2.5초 풀스턴
+           SFX.groggy();addTxt(P.x,P.y-22,_T('💫 기절!')+' 2.5s','#ffaa00',60);
+           G.hitStop=~~(8*OPT.hitStop/100);if(G.slowMo<=0)G.slowMo=15;
+           for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}

@@ -26549,7 +26549,7 @@ const _MAGIC_E_HANDLERS={
     if(P.skills.fireAura<1)return false;
     if((P._faCd||0)>0){showPH(_T('쿨 ')+~~((P._faCd||0)/60)+_L('초','s'),'#ff6600');return true}
     if(P.mp<100){showPH(_T('MP 부족! (100)'),'#ff4400');return true}
-    P.s='magicCast';P.st2=~~(10/pMagicSpd());P.atkArc=P.facing;return true;
+    P.mp-=100;P.s='magicCast';P.st2=~~(10/pMagicSpd());P.atkArc=P.facing;return true;
   },
   elemMissile(){
     if(P.skills.elemMissile<1)return false;
@@ -38492,7 +38492,7 @@ function updateE(e,sp){
         else{
           hurtP(~~(e.atk*1.8*elMul(e.el,ar().el)));
           if(_isFocusState()){addTxt(P.x,P.y-20,_T('집중!'),'#44ddff',20)}
-          else{P.s='pStun';P.st2=150; // 쉬운 버전: 2.5초 풀스턴
+          else if(P.s!=='fallen'&&P.s!=='dead'){P.s='pStun';P.st2=150; // 쉬운 버전: 2.5초 풀스턴
           SFX.groggy();addTxt(P.x,P.y-22,_T('💫 기절!')+' 2.5s','#ffaa00',60);
           G.hitStop=~~(8*OPT.hitStop/100);if(G.slowMo<=0)G.slowMo=15;
           for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}
@@ -52136,7 +52136,7 @@ function draw(){
   // ── 안개 레이어 (하단 지면 + 상단 대기 + 동적 입자) ──
   if(OPT.fog&&_hwTier!=='C'){
     const _flHell=SI_TO_HELL[G.stage||0];
-    if(!_fogBotCvs||_fogLayerW!==C.width||_fogLayerH!==C.height||_fogLayerHell!==_flHell)_bakeFogLayers(C.width,C.height,_flHell);
+    if(!_fogBotCvs||_fogLayerW!==C.width||_fogLayerH!==C.height||_fogLayerHell!==_flHell){_bakeFogLayers(C.width,C.height,_flHell);_fogMerged=null;}
     X.save();X.setTransform(1,0,0,1,0,0);
     // (C) 가장자리 안개 두께 sin 진동 (alpha 0.28±0.08, 주기 4초) — 2026-08-23 반감
     const _fogPulse=.28+Math.sin(_now*Math.PI/2000)*.08;

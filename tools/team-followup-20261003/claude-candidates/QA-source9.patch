@@ -1,0 +1,51 @@
+# QA-source9.patch — CO-QA-1948-source9-fog-layer-merged-invalidation-patch
+# 소유 산출(단일 파일). productionApplied=false. candidate patch ≠ 생산적용/native6/화면/청취 완료.
+#
+# 목적: _bakeFogLayers(크기/hell 키변경) rebake 직후 기존 _fogMerged=null 무효화를 추가하여
+#        같은 frame에서 새 layer ↔ 이전 merged 불일치(hell-only 전환 ≤~5프레임 틴트 지연, CO-1910) 제거.
+#        %5 평시 주기·새 필드·색·수치 변경 0. 기존 _fogMerged=null 관용구(ssaa 경로) 재사용.
+#
+# 기존 완료 증빙 ID: CO-QA-1917(원 recipe, source8 기준) → 본 patch는 source9 current base로 재기반.
+# 이력 SHA(참고): source8 main 794d2927… / easy 2ee66501… / HEAD e11ed7d0…  (※ 실제원본은 아래 재측정값)
+#
+# ── 실측 SHA256 (현재 원본→candidate) ──
+# main  game.html          base=908102e7fdbf2b1d42ebb0f4e90476124bb8dbec8d22daa6babf3246def48525
+#                          candidate=d598497f16148d28257952ba4042355a59fa5e83573094c6ade51918c7676cb3
+# easy  game-easy-test.html base=fba52654d8f316a1f54b48cdcb21dc251f4e9968f59eb031572c0ab71e845af7
+#                          candidate=0d43016a9706633383efc95b8c8f6003462371fe6654fd1825f0b49227384774
+# bytesΔ: 각 +18B | unique anchor: 양판 각 1 | 역치환==원본(byte): True/True | fragment parse(node --check): True
+#
+# ── docs 동기화 목록 (root 인계, 쓰기 0) ──
+#   docs/12퍼포먼스·최적화/QA_PERFORMANCE_TEAM_MASTER.md (QA-B03 _fogMerged 즉시 무효화 행)
+#   docs/4.1맵디자인+설정/MAP_RUNTIME_ARCHITECTURE.md (fog 레이어/merged 캐시 수명)
+#
+# ── 미검증 한계 (root Gate) ──
+#   1) 즉시 hell 전환 채택은 root 의미/visual 판정(게임 실행 필요, 본 patch 미주장). %5 지연이 의도면 미적용.
+#   2) _fogMerged=null은 다음 merge에서 canvas 객체 재생성 유발(rebake=size/hell 희소시에만, 비용 무시 가능) — native 확인 root.
+#   3) whole-file parse/런타임/화면 = root. source9 양판 동기화(DEMO/EA sed 포함) = root.
+#   4) 적용은 root 소유(production). 본 파일은 candidate, 불변 유지.
+#
+
+--- a/game.html
++++ b/game.html
+@@ -53691,7 +53691,7 @@
+   // ── 안개 레이어 (하단 지면 + 상단 대기 + 동적 입자) ──
+   if(OPT.fog&&_hwTier!=='C'){
+     const _flHell=SI_TO_HELL[G.stage||0];
+-    if(!_fogBotCvs||_fogLayerW!==C.width||_fogLayerH!==C.height||_fogLayerHell!==_flHell)_bakeFogLayers(C.width,C.height,_flHell);
++    if(!_fogBotCvs||_fogLayerW!==C.width||_fogLayerH!==C.height||_fogLayerHell!==_flHell){_bakeFogLayers(C.width,C.height,_flHell);_fogMerged=null;}
+     X.save();X.setTransform(1,0,0,1,0,0);
+     // (C) 가장자리 안개 두께 sin 진동 (alpha 0.28±0.08, 주기 4초) — 2026-08-23 반감
+     const _fogPulse=.28+Math.sin(_now*Math.PI/2000)*.08;
+
+--- a/game-easy-test.html
++++ b/game-easy-test.html
+@@ -52136,7 +52136,7 @@
+   // ── 안개 레이어 (하단 지면 + 상단 대기 + 동적 입자) ──
+   if(OPT.fog&&_hwTier!=='C'){
+     const _flHell=SI_TO_HELL[G.stage||0];
+-    if(!_fogBotCvs||_fogLayerW!==C.width||_fogLayerH!==C.height||_fogLayerHell!==_flHell)_bakeFogLayers(C.width,C.height,_flHell);
++    if(!_fogBotCvs||_fogLayerW!==C.width||_fogLayerH!==C.height||_fogLayerHell!==_flHell){_bakeFogLayers(C.width,C.height,_flHell);_fogMerged=null;}
+     X.save();X.setTransform(1,0,0,1,0,0);
+     // (C) 가장자리 안개 두께 sin 진동 (alpha 0.28±0.08, 주기 4초) — 2026-08-23 반감
+     const _fogPulse=.28+Math.sin(_now*Math.PI/2000)*.08;

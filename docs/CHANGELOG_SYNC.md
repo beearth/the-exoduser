@@ -52677,3 +52677,32 @@ baseline 검색1회와 코드 변경 후 필수 검색1회를 구분한다. 후�
 후보36/36·10/10은 같은 변경의 파생 검수이며 production46/46과 완제품 성과로 중복 합산하지 않는다. 이전 source7의17/17·source8의22/22 회귀는 재실행0이다. 검수는 실제 공동 helper+❗ 분기와 소환 case를 synthetic state/context 및 mkEn/effect 대역에서 확인한 범위다. 전체 AI producer/draw·픽셀·자연 보스·실게임 예외·플레이 저장·실청취 완료는 주장하지 않는다.
 
 source8 앱3388은 정상 진행으로 연습 화면까지 관측된 이력이고 이후 Mac 잠금 상태다. source9 앱 빌드·실행0이며 source8의 물리 포장/부분 native 진행을 source9 앱 인수로 옮기지 않는다. source9 네이티브·실화면·실청취·플레이 save·보스 사망 완료0, native/visual PASS0. root 총 범위는 code2 + portable test2 + 기존docs6 = 10경로, 새 보고서0이다. 예상 실제 전체 변경81경로는 기존71 + source9 10이며 외부 예약8을 보존한다. root 예상 커밋 경로는71, 외부8 포함 인계 기준79로 별도 관리하며 예약·소비를 중복 계산하지 않는다. 최종 Git 범위·커밋·원격 대조는 root가 담당한다.
+
+## 2026-10-03 source10 생산 동기화 — 고정 MP·안개 캐시·낙하 기절 상태 보존
+
+source9 parent HEAD는 `e11ed7d052d825bcaf2a041d1f28ffac7f6f63f2`다. source10 세 수정은 실제 양판에 적용했다. 코드2·의미검사1·기존docs6·완료원후보4의13경로를 함께 보존하며, commit·원격 정확SHA는 `root-joint-source10/checkpoint-receipt.json` 실제 실행결과를 참조한다.
+
+| 파일 | source9 기준 bytes / SHA-256 | source10 생산 bytes / SHA-256 |
+|---|---|---|
+| game.html | 4029742 / `908102e7fdbf2b1d42ebb0f4e90476124bb8dbec8d22daa6babf3246def48525` | 4029803 / `a0eab60f025654636f16668d5a9b0ab93cbe155f7e806a65d79764b1f6be2718` |
+| game-easy-test.html | 3907009 / `fba52654d8f316a1f54b48cdcb21dc251f4e9968f59eb031572c0ab71e845af7` | 3907070 / `ebaacc36f22d9ae7b7b57f7537f063783abdb74a66baa8789e32bef726b565a8` |
+| index.html | 342119 / `1dd28cab162a4384ad84a356eb2c719940782005d20da1312d2857bc649615a7` | 불변 |
+| test/resourceAndStunAcceptance.test.cjs | 신규 의미검수 | 8464 / `7f2236c9235db0af2c6d994917af05566b79613278ebf6c24e204e4c96f3618b` |
+
+| 실제 수정 | 정확 계약·불변 경계 |
+|---|---|
+| fireAura | 수동 성공100MP1회 차감, manual600f/inferno300f. 미학습 handlerfalse의 기존 fallback 유지; 전체 미학습 입력MP0 주장0 |
+| 2D fog | key/rebake 즉시merged null, 기존 literal `%5` ms cadence·색·alpha 유지. QA-B03 text-atlas 보존;5프레임 bound 주장0 |
+| bossTeleDrop | B `else if(P.s!=='fallen'&&P.s!=='dead')`, 기존 focus·main300/easy150·atk1.8·80+e.r·bossRec35·CH3+ ordinary-parry signature 유지 |
+| 원문 | 양판 각각+61B(SKILL10+QA18+BOSS33), root inverse2byte-exact, index 불변. 원 patch 메타 보존·부정확한 cadence/fallback/서명 설명은 정본에서 정정 |
+
+| 증빙(tmp/mac-migration-runtime/continued-review-20261003/) | bytes | SHA-256 | 결과 |
+|---|---:|---|---|
+| root-joint-source10/syntax.json | 3303 | `e7c34e278bd8667662114ab29ebc5ff37ca82017483bab789c51ef13c5abcda6` | 생산12JS+2JSON syntax PASS1회 |
+| root-joint-source10/test-receipt.json | 736 | `2d0ba9180678542e2df6dd8f2bb219db2380f9da293584beb1cfd3ea64fa0113` | fresh 생산resource/stun28/28 PASS1회,exit0/stderr0 |
+| root-joint-source10/post-code-docs-keyword-search.txt | 88089 | `f926bf302e8970c46eda043ad58c0074d77425fcdcff13c54e8d57b3fa08d77b` | code후 필수검색1회,123행/32파일 |
+| root-source10-docs/keyword-search.txt | 97444 | `13caeea6f114473b91801418561f441ce5861aae2c79148c6453901d3307adec` | 적용전 감사1회,158행/36파일 |
+
+관련 패턴의 합집합39파일/고유 literal191행을 분류했다. 추가 matching3파일의 보스 착지300/150·마법 피해계통·리시 텔레포트는 기존값 정확/별도 시스템이므로 보존한다. 패턴 차이를 문서 생성/삭제·역사 변경으로 확대0. 기존docs6에서 fog 현재1행·관리18역할 표기2접점 외 원문/EOL·QA-B03·보호2_3·타인 WIP를 유지한다.
+
+후보28과 fresh 생산28은 단계별 검수로 완제품 성과 합산0. fog10/10은 실제 bake+render synthetic 후보 검수, merged canvas1개 추가/GC비용 未. 이전source9 검사 반복0. source8 앱 Mac 잠금, source10 패키징·실행0, CH1 보스 사망/native/실화면/실청취/플레이 save 완료0. rawMAP 보존·미적용, rawENEMY deathfade HOLD·통합0. raw4 단독 commit 시도는 docs-sync hook 거절/미커밋/우회0이며 root가 code2+test1+기존docs6+원자료raw4 완성scope13을 함께 보존한다. commit·원격 정확SHA는 위 실제 실행 영수증으로 확인한다. 신규 tracked 문서·보고서0.
