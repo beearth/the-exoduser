@@ -26,7 +26,7 @@ SOUND 연결 실패 정리·필터 뒤 Y 장착 identity·캐릭터 입장 취�
 
 ## 실제 플레이 Gate
 
-native PID48587·3386 LISTEN·고유profile·core5를 확인했다. 정상 로비/새전사 맥검수→INTRO/안내→실습→정상skip→CH1-1 필드복귀를 관측했다. 이전 unlock대기는 실제 AX 성공으로 해소됐고, 다음 전투입력에서 잠금이 재발해 새 수동해제 질문1회가 pending이다. 같은 앱 node-main.js의 표준 Node CLI 기동2회와 HTTP·합성 저장12건은 [별도 서버 검수](MAC_CH1_SOURCE4_HTTP_SAVE_20261003.md)이며 해당 HTTP12건을 실제 플레이로 계산하지 않는다. 정상 native 관측은 [부분 보고](MAC_CH1_SOURCE4_NATIVE_PARTIAL_20261003.md)에 분리했다. 같은 고유후보에서 normal lobby/선택→전투·획득/장착→4지역현행게이트→보스사망→기존부활/필드보존→재도전6단계를 실제입력으로 관측해야 한다. 사용자기존게임/세이브와 다른app3381/3383/옛c927/b3는 보존한다. 강제stage/mapqa/testchar·P/G변경을 normal플레이근거로사용하지않는다.
+native PID48587·3386 LISTEN·고유profile·core5를 확인했다. 정상 로비/새전사 맥검수→INTRO/안내→실습→정상skip→CH1-1 필드복귀를 관측했다. 다음 전투입력에서 확인했던 잠금 이후16:54:50Z AX·화면 읽기가 다시 성공해 수동해제 대기는 해소됐다. 일반 필드에서0처치·HP0/523·몬스터 투사체 사망을 관측했으며 보스사망이 아니다. 이후 Code의 좌표/스크롤 입력은 noWindowsAvailable로 실패했고 키보드·포커스 송달도 미확인이다. 오류만으로 현재 OS잠금 재발을 단정하지 않는다. 같은 앱 node-main.js의 표준 Node CLI 기동2회와 HTTP·합성 저장12건은 [별도 서버 검수](MAC_CH1_SOURCE4_HTTP_SAVE_20261003.md)이며 해당 HTTP12건을 실제 플레이로 계산하지 않는다. 정상 native 관측은 [부분 보고](MAC_CH1_SOURCE4_NATIVE_PARTIAL_20261003.md)에 분리했다. 같은 고유후보에서 normal lobby/선택→전투·획득/장착→4지역현행게이트→보스사망→기존부활/필드보존→재도전6단계를 실제입력으로 관측해야 한다. 사용자기존게임/세이브와 다른app3381/3383/옛c927/b3는 보존한다. 강제stage/mapqa/testchar·P/G변경을 normal플레이근거로사용하지않는다.
 
 source/DOM/Audio/GL 대역PASS는 native/실입력/픽셀/청취 인수가 아니다. 맵카메라/전투QA가 시작되면 맵가이드 완독·SSOT읽기순서·§23 보고 및visual verdict가 필요하며 현재 정상 입장 한 화면과 실습 이동만 부분 관측했으며 §23 VISUAL VERDICT는 RETOUCH다. 전체8카메라/전투 검수는 미완료다. 합성 server-only QA저장의 디스크 기록·own server 재시작 후 load는 인수했다. 실제 player dbSave·DEMO localStorage·normal 게임 슬롯의 영속save재기동·codec/서명/quarantine·OAuth/crashpad 완전격리·전체동적dependency 인수는 별도다. 정확 source사본생성이 완료되어 source freeze는 해제한다. 빌드생성1건을 CH1-1목표/6단계완료로계산하지않는다.
 

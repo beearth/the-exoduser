@@ -1,0 +1,228 @@
+--- a/game.html
++++ b/game.html
+@@ -23527,55 +23527,56 @@
+-function deathFX(x,y,r,col,isBoss,noSound,et){
+-  if(!noSound){
+-    // 프레임 경계에서 동시-사망 버스트 카운터 리셋 + 이번 프레임 throttle 판정(1회)
+-    if(_deathSfxFrameMark!==_sfxFrameT){
+-      _deathSfxFrameMark=_sfxFrameT;_deathSfxFrameN=0;
+-      _deathSfxThrottled=(_deathSfxCd>0);
+-      if(!_deathSfxThrottled)_deathSfxCd=5; // 이 프레임 허용, 다음 ~0.08초 크로스-프레임 억제
+-    }
+-    // 대량 동시 사망: 같은 프레임에 최대 _maxVoices개 보이스를 좌우/피치 분산으로 겹쳐 "무리 사망" 블렌드 (보스는 1회)
+-    const _maxVoices=isBoss?1:6;
+-    if(!_deathSfxThrottled&&_deathSfxFrameN<_maxVoices){
+-      const _n=_deathSfxFrameN++;
+-      const _layV=_n===0?1:Math.max(.32,.72-(_n-1)*.16);              // 첫 보이스 풀볼륨, 이후 점감
+-      const _layPan=_n===0?0:(_n%2?-1:1)*Math.min(.6,.22+_n*.13);     // 좌우 분산
+-      const _layPit=_n===0?1:_r(1.05+_n*.03,.06);                     // 살짝 상향 피치 분산
+-      // 사망음은 큐 우회 — 직접 재생 (대량 전투에서 큐 포화로 씹히는 것 방지)
+-      const _dVol=sfxVol();
+-      if(isBoss){const _bd=_bossSfx(G.stage);_playSampleNow(_bd?_bd.die:'death_boss',.75*_dVol,_r(_bd?_bd.dieP:.7,.15))}
+-      else if(et>=100&&et<=102){const gk=_pickDeathVar(et===100?'death_ghoul1':et===101?'death_ghoul2':'death_ghoul3');_playSampleNow(gk,_r(.75,.1)*_layV*_dVol,_r(1,.1)*_layPit,0,_layPan)}
+-      else{
+-        const k=_deathSfxKey(et);
+-        const v=(_ARMOR_ET.has(et)?.525:r>=40?1.05:.825)*_layV;
+-        _playSampleNow(k,_r(v,.08)*_dVol,_r(1,.12)*_layPit,0,_layPan);
+-        if(_n===0&&r>=40&&Math.random()<.25)_playSampleNow('monster_die1',.75*_dVol,_r(.8,.15));
+-        if(_n===0&&Math.random()<.15)_playSampleNow('death_grunt',.45*_dVol,_r(1,.15));
+-      }
+-    }
+-  }
+-  // 동시 사망 과다 시 파티클 절감
+-  const _tooMany=_partCnt>300;
+-  const ec=ELC[col]||col;
+-  // 1) 방사형 스파크 tp=2 — 비활성 (고어 시스템으로 대체)
+-  // 2) 중심 플래시 링 (tp=3, 확장하는 원) — 유지
+-  poolPart(x,y,0,0,'#ffffff',r||8,isBoss?12:8,3,0,0);
+-  if(isBoss)poolPart(x,y,0,0,ec,r*1.5||12,15,3,0,0);
+-  // 3) 중심 원형 플래시 (tp=1) — 유지
+-  const fc=isBoss?3:1;
+-  for(let i=0;i<fc;i++){
+-    poolPart(x+(Math.random()-.5)*4,y+(Math.random()-.5)*4,(Math.random()-.5)*.3,(Math.random()-.5)*.3,'#ffffff',isBoss?6:4,isBoss?6:4,1,0,0);
+-  }
+-  // 4) 랜덤 파편 tp=0 — 비활성 (고어 시스템으로 대체)
+-  // 5) 피 폭발 — 비활성 (고어 시스템으로 대체)
+-  // 5) 보스 전용: 외곽 원형 불꽃 (tp=1 circle)
+-  if(isBoss){
+-    for(let i=0;i<8;i++){
+-      const a=Math.PI*2*i/8;const spd=6+Math.random()*3;
+-      poolPart(x,y,Math.cos(a)*spd,Math.sin(a)*spd,'#ffffff',4,6,1,0,0);
+-    }
+-  }
+-  // 6) 사망 피 이펙트 — 모든 몹
+-  if(!_tooMany){
+-    const _dbScale=_deathBloodScale(r);
+-    playVFXAng('death_blood',x,y,_dbScale,isBoss?6:4,Math.random()*Math.PI*2,false,1.5);
+-  }
+-}
++function _playDeathSampleNow(...args){try{return _playSampleNow(...args)}catch(_deathAudioErr){return null}}
++function deathFX(x,y,r,col,isBoss,noSound,et){
++  if(!noSound){
++    // 프레임 경계에서 동시-사망 버스트 카운터 리셋 + 이번 프레임 throttle 판정(1회)
++    if(_deathSfxFrameMark!==_sfxFrameT){
++      _deathSfxFrameMark=_sfxFrameT;_deathSfxFrameN=0;
++      _deathSfxThrottled=(_deathSfxCd>0);
++      if(!_deathSfxThrottled)_deathSfxCd=5; // 이 프레임 허용, 다음 ~0.08초 크로스-프레임 억제
++    }
++    // 대량 동시 사망: 같은 프레임에 최대 _maxVoices개 보이스를 좌우/피치 분산으로 겹쳐 "무리 사망" 블렌드 (보스는 1회)
++    const _maxVoices=isBoss?1:6;
++    if(!_deathSfxThrottled&&_deathSfxFrameN<_maxVoices){
++      const _n=_deathSfxFrameN++;
++      const _layV=_n===0?1:Math.max(.32,.72-(_n-1)*.16);              // 첫 보이스 풀볼륨, 이후 점감
++      const _layPan=_n===0?0:(_n%2?-1:1)*Math.min(.6,.22+_n*.13);     // 좌우 분산
++      const _layPit=_n===0?1:_r(1.05+_n*.03,.06);                     // 살짝 상향 피치 분산
++      // 사망음은 큐 우회 — 직접 재생 (대량 전투에서 큐 포화로 씹히는 것 방지)
++      const _dVol=sfxVol();
++      if(isBoss){const _bd=_bossSfx(G.stage);_playDeathSampleNow(_bd?_bd.die:'death_boss',.75*_dVol,_r(_bd?_bd.dieP:.7,.15))}
++      else if(et>=100&&et<=102){const gk=_pickDeathVar(et===100?'death_ghoul1':et===101?'death_ghoul2':'death_ghoul3');_playDeathSampleNow(gk,_r(.75,.1)*_layV*_dVol,_r(1,.1)*_layPit,0,_layPan)}
++      else{
++        const k=_deathSfxKey(et);
++        const v=(_ARMOR_ET.has(et)?.525:r>=40?1.05:.825)*_layV;
++        _playDeathSampleNow(k,_r(v,.08)*_dVol,_r(1,.12)*_layPit,0,_layPan);
++        if(_n===0&&r>=40&&Math.random()<.25)_playDeathSampleNow('monster_die1',.75*_dVol,_r(.8,.15));
++        if(_n===0&&Math.random()<.15)_playDeathSampleNow('death_grunt',.45*_dVol,_r(1,.15));
++      }
++    }
++  }
++  // 동시 사망 과다 시 파티클 절감
++  const _tooMany=_partCnt>300;
++  const ec=ELC[col]||col;
++  // 1) 방사형 스파크 tp=2 — 비활성 (고어 시스템으로 대체)
++  // 2) 중심 플래시 링 (tp=3, 확장하는 원) — 유지
++  poolPart(x,y,0,0,'#ffffff',r||8,isBoss?12:8,3,0,0);
++  if(isBoss)poolPart(x,y,0,0,ec,r*1.5||12,15,3,0,0);
++  // 3) 중심 원형 플래시 (tp=1) — 유지
++  const fc=isBoss?3:1;
++  for(let i=0;i<fc;i++){
++    poolPart(x+(Math.random()-.5)*4,y+(Math.random()-.5)*4,(Math.random()-.5)*.3,(Math.random()-.5)*.3,'#ffffff',isBoss?6:4,isBoss?6:4,1,0,0);
++  }
++  // 4) 랜덤 파편 tp=0 — 비활성 (고어 시스템으로 대체)
++  // 5) 피 폭발 — 비활성 (고어 시스템으로 대체)
++  // 5) 보스 전용: 외곽 원형 불꽃 (tp=1 circle)
++  if(isBoss){
++    for(let i=0;i<8;i++){
++      const a=Math.PI*2*i/8;const spd=6+Math.random()*3;
++      poolPart(x,y,Math.cos(a)*spd,Math.sin(a)*spd,'#ffffff',4,6,1,0,0);
++    }
++  }
++  // 6) 사망 피 이펙트 — 모든 몹
++  if(!_tooMany){
++    const _dbScale=_deathBloodScale(r);
++    playVFXAng('death_blood',x,y,_dbScale,isBoss?6:4,Math.random()*Math.PI*2,false,1.5);
++  }
++}
+--- a/game-easy-test.html
++++ b/game-easy-test.html
+@@ -22557,55 +22557,56 @@
+-function deathFX(x,y,r,col,isBoss,noSound,et){
+-  if(!noSound){
+-    // 프레임 경계에서 동시-사망 버스트 카운터 리셋 + 이번 프레임 throttle 판정(1회)
+-    if(_deathSfxFrameMark!==_sfxFrameT){
+-      _deathSfxFrameMark=_sfxFrameT;_deathSfxFrameN=0;
+-      _deathSfxThrottled=(_deathSfxCd>0);
+-      if(!_deathSfxThrottled)_deathSfxCd=5; // 이 프레임 허용, 다음 ~0.08초 크로스-프레임 억제
+-    }
+-    // 대량 동시 사망: 같은 프레임에 최대 _maxVoices개 보이스를 좌우/피치 분산으로 겹쳐 "무리 사망" 블렌드 (보스는 1회)
+-    const _maxVoices=isBoss?1:6;
+-    if(!_deathSfxThrottled&&_deathSfxFrameN<_maxVoices){
+-      const _n=_deathSfxFrameN++;
+-      const _layV=_n===0?1:Math.max(.32,.72-(_n-1)*.16);              // 첫 보이스 풀볼륨, 이후 점감
+-      const _layPan=_n===0?0:(_n%2?-1:1)*Math.min(.6,.22+_n*.13);     // 좌우 분산
+-      const _layPit=_n===0?1:_r(1.05+_n*.03,.06);                     // 살짝 상향 피치 분산
+-      // 사망음은 큐 우회 — 직접 재생 (대량 전투에서 큐 포화로 씹히는 것 방지)
+-      const _dVol=sfxVol();
+-      if(isBoss){const _bd=_bossSfx(G.stage);_playSampleNow(_bd?_bd.die:'death_boss',.75*_dVol,_r(_bd?_bd.dieP:.7,.15))}
+-      else if(et>=100&&et<=102){const gk=_pickDeathVar(et===100?'death_ghoul1':et===101?'death_ghoul2':'death_ghoul3');_playSampleNow(gk,_r(.75,.1)*_layV*_dVol,_r(1,.1)*_layPit,0,_layPan)}
+-      else{
+-        const k=_deathSfxKey(et);
+-        const v=(_ARMOR_ET.has(et)?.525:r>=40?1.05:.825)*_layV;
+-        _playSampleNow(k,_r(v,.08)*_dVol,_r(1,.12)*_layPit,0,_layPan);
+-        if(_n===0&&r>=40&&Math.random()<.25)_playSampleNow('monster_die1',.75*_dVol,_r(.8,.15));
+-        if(_n===0&&Math.random()<.15)_playSampleNow('death_grunt',.45*_dVol,_r(1,.15));
+-      }
+-    }
+-  }
+-  // 동시 사망 과다 시 파티클 절감
+-  const _tooMany=_partCnt>300;
+-  const ec=ELC[col]||col;
+-  // 1) 방사형 스파크 tp=2 — 비활성 (고어 시스템으로 대체)
+-  // 2) 중심 플래시 링 (tp=3, 확장하는 원) — 유지
+-  poolPart(x,y,0,0,'#ffffff',r||8,isBoss?12:8,3,0,0);
+-  if(isBoss)poolPart(x,y,0,0,ec,r*1.5||12,15,3,0,0);
+-  // 3) 중심 원형 플래시 (tp=1) — 유지
+-  const fc=isBoss?3:1;
+-  for(let i=0;i<fc;i++){
+-    poolPart(x+(Math.random()-.5)*4,y+(Math.random()-.5)*4,(Math.random()-.5)*.3,(Math.random()-.5)*.3,'#ffffff',isBoss?6:4,isBoss?6:4,1,0,0);
+-  }
+-  // 4) 랜덤 파편 tp=0 — 비활성 (고어 시스템으로 대체)
+-  // 5) 피 폭발 — 비활성 (고어 시스템으로 대체)
+-  // 5) 보스 전용: 외곽 원형 불꽃 (tp=1 circle)
+-  if(isBoss){
+-    for(let i=0;i<8;i++){
+-      const a=Math.PI*2*i/8;const spd=6+Math.random()*3;
+-      poolPart(x,y,Math.cos(a)*spd,Math.sin(a)*spd,'#ffffff',4,6,1,0,0);
+-    }
+-  }
+-  // 6) 사망 피 이펙트 — 모든 몹
+-  if(!_tooMany){
+-    const _dbScale=_deathBloodScale(r);
+-    playVFXAng('death_blood',x,y,_dbScale,isBoss?6:4,Math.random()*Math.PI*2,false,1.5);
+-  }
+-}
++function _playDeathSampleNow(...args){try{return _playSampleNow(...args)}catch(_deathAudioErr){return null}}
++function deathFX(x,y,r,col,isBoss,noSound,et){
++  if(!noSound){
++    // 프레임 경계에서 동시-사망 버스트 카운터 리셋 + 이번 프레임 throttle 판정(1회)
++    if(_deathSfxFrameMark!==_sfxFrameT){
++      _deathSfxFrameMark=_sfxFrameT;_deathSfxFrameN=0;
++      _deathSfxThrottled=(_deathSfxCd>0);
++      if(!_deathSfxThrottled)_deathSfxCd=5; // 이 프레임 허용, 다음 ~0.08초 크로스-프레임 억제
++    }
++    // 대량 동시 사망: 같은 프레임에 최대 _maxVoices개 보이스를 좌우/피치 분산으로 겹쳐 "무리 사망" 블렌드 (보스는 1회)
++    const _maxVoices=isBoss?1:6;
++    if(!_deathSfxThrottled&&_deathSfxFrameN<_maxVoices){
++      const _n=_deathSfxFrameN++;
++      const _layV=_n===0?1:Math.max(.32,.72-(_n-1)*.16);              // 첫 보이스 풀볼륨, 이후 점감
++      const _layPan=_n===0?0:(_n%2?-1:1)*Math.min(.6,.22+_n*.13);     // 좌우 분산
++      const _layPit=_n===0?1:_r(1.05+_n*.03,.06);                     // 살짝 상향 피치 분산
++      // 사망음은 큐 우회 — 직접 재생 (대량 전투에서 큐 포화로 씹히는 것 방지)
++      const _dVol=sfxVol();
++      if(isBoss){const _bd=_bossSfx(G.stage);_playDeathSampleNow(_bd?_bd.die:'death_boss',.75*_dVol,_r(_bd?_bd.dieP:.7,.15))}
++      else if(et>=100&&et<=102){const gk=_pickDeathVar(et===100?'death_ghoul1':et===101?'death_ghoul2':'death_ghoul3');_playDeathSampleNow(gk,_r(.75,.1)*_layV*_dVol,_r(1,.1)*_layPit,0,_layPan)}
++      else{
++        const k=_deathSfxKey(et);
++        const v=(_ARMOR_ET.has(et)?.525:r>=40?1.05:.825)*_layV;
++        _playDeathSampleNow(k,_r(v,.08)*_dVol,_r(1,.12)*_layPit,0,_layPan);
++        if(_n===0&&r>=40&&Math.random()<.25)_playDeathSampleNow('monster_die1',.75*_dVol,_r(.8,.15));
++        if(_n===0&&Math.random()<.15)_playDeathSampleNow('death_grunt',.45*_dVol,_r(1,.15));
++      }
++    }
++  }
++  // 동시 사망 과다 시 파티클 절감
++  const _tooMany=_partCnt>300;
++  const ec=ELC[col]||col;
++  // 1) 방사형 스파크 tp=2 — 비활성 (고어 시스템으로 대체)
++  // 2) 중심 플래시 링 (tp=3, 확장하는 원) — 유지
++  poolPart(x,y,0,0,'#ffffff',r||8,isBoss?12:8,3,0,0);
++  if(isBoss)poolPart(x,y,0,0,ec,r*1.5||12,15,3,0,0);
++  // 3) 중심 원형 플래시 (tp=1) — 유지
++  const fc=isBoss?3:1;
++  for(let i=0;i<fc;i++){
++    poolPart(x+(Math.random()-.5)*4,y+(Math.random()-.5)*4,(Math.random()-.5)*.3,(Math.random()-.5)*.3,'#ffffff',isBoss?6:4,isBoss?6:4,1,0,0);
++  }
++  // 4) 랜덤 파편 tp=0 — 비활성 (고어 시스템으로 대체)
++  // 5) 피 폭발 — 비활성 (고어 시스템으로 대체)
++  // 5) 보스 전용: 외곽 원형 불꽃 (tp=1 circle)
++  if(isBoss){
++    for(let i=0;i<8;i++){
++      const a=Math.PI*2*i/8;const spd=6+Math.random()*3;
++      poolPart(x,y,Math.cos(a)*spd,Math.sin(a)*spd,'#ffffff',4,6,1,0,0);
++    }
++  }
++  // 6) 사망 피 이펙트 — 모든 몹
++  if(!_tooMany){
++    const _dbScale=_deathBloodScale(r);
++    playVFXAng('death_blood',x,y,_dbScale,isBoss?6:4,Math.random()*Math.PI*2,false,1.5);
++  }
++}

@@ -1,0 +1,10 @@
+--- a/game.html
++++ b/game.html
+@@ -27546,1 +27546,1 @@
+-function meleeRef(){return(((wp().atk||0)+enhMulAtk(wp().enh||0))+_slotFlatAtk(wp())+P.baseAtk+(STATS.str+_eqStat('Str')+_lvB()))*(P._weaponSeal>0?.3:1)}
++function meleeRef(){return(((wp().atk||0)+enhMulAtk(wp().enh||0))+_slotFlatAtk(wp())+P.baseAtk+(STATS.str+_eqStat('Str')+_lvB()+~~_eqAffix('strFlat')))*(P._weaponSeal>0?.3:1)}
+--- a/game-easy-test.html
++++ b/game-easy-test.html
+@@ -26421,1 +26421,1 @@
+-function meleeRef(){return(((wp().atk||0)+enhMulAtk(wp().enh||0))+_slotFlatAtk(wp())+P.baseAtk+(STATS.str+_eqStat('Str')+_lvB()))*(P._weaponSeal>0?.3:1)}
++function meleeRef(){return(((wp().atk||0)+enhMulAtk(wp().enh||0))+_slotFlatAtk(wp())+P.baseAtk+(STATS.str+_eqStat('Str')+_lvB()+~~_eqAffix('strFlat')))*(P._weaponSeal>0?.3:1)}

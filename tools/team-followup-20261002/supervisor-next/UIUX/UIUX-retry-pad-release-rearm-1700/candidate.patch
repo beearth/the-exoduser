@@ -1,0 +1,46 @@
+--- a/game.html
++++ b/game.html
+@@ -13389,6 +13389,11 @@
+ 
+   // ── 3단계: 패드모드 아니면 K[]/MB[] 절대 안 건드림 ──
+   if(!_gpActive)return;
++  if(_pollGamepad._retryHeld&&_pollGamepad._retryHeld.length){
++    if(_pollGamepad._retryHeld.some(i=>_gpad.buttons[i]&&(_gpad.buttons[i].pressed||_gpad.buttons[i].value>0.5))){_gpClearAll();return;}
++    _pollGamepad._retryHeld=null;_gpBtnsPrev.kLT_held=false;_gpBtnsPrev.kLT_mod=false;
++    for(const i of [0,1,2,3])_gpBtnsPrev['kLT'+i]=false;
++  }
+   // [팬텀차단] 패드모드 재진입 첫 폴링: 이미 눌려있는(드리프트) 버튼을 prev에 스냅샷 → rising-edge 오인주입(ShiftLeft stuck) 방지
+   if(!_gpSynced){for(let _si=0;_si<_gpad.buttons.length;_si++)_gpBtnsPrev['k'+_si]=!!_gpBtns[_si];_gpSynced=true;}
+ 
+@@ -61452,6 +61457,8 @@
+   _drPlay(()=>{if($('death').classList.contains('on'))_deathDlgStart()});
+ };
+ $('retryBtn').onclick=async()=>{
++  _clearHeldInput();
++  _pollGamepad._retryHeld=_gpad?_gpad.buttons.map((b,i)=>(b&&(b.pressed||b.value>0.5))?i:-1).filter(i=>i>=0):null;
+   $('death').classList.remove('on');$('victory').classList.remove('on');_drReset();if(typeof _deathDlgStop==='function')_deathDlgStop();
+   // 경험치 30% 손실
+   const expLoss=~~(P.exp*0.3);
+--- a/game-easy-test.html
++++ b/game-easy-test.html
+@@ -12786,6 +12786,11 @@
+ 
+   // ── 3단계: 패드모드 아니면 K[]/MB[] 절대 안 건드림 ──
+   if(!_gpActive)return;
++  if(_pollGamepad._retryHeld&&_pollGamepad._retryHeld.length){
++    if(_pollGamepad._retryHeld.some(i=>_gpad.buttons[i]&&(_gpad.buttons[i].pressed||_gpad.buttons[i].value>0.5))){_gpClearAll();return;}
++    _pollGamepad._retryHeld=null;_gpBtnsPrev.kLT_held=false;_gpBtnsPrev.kLT_mod=false;
++    for(const i of [0,1,2,3])_gpBtnsPrev['kLT'+i]=false;
++  }
+   // [팬텀차단] 패드모드 재진입 첫 폴링: 이미 눌려있는(드리프트) 버튼을 prev에 스냅샷 → rising-edge 오인주입(ShiftLeft stuck) 방지
+   if(!_gpSynced){for(let _si=0;_si<_gpad.buttons.length;_si++)_gpBtnsPrev['k'+_si]=!!_gpBtns[_si];_gpSynced=true;}
+ 
+@@ -59790,6 +59795,8 @@
+   _drPlay(()=>{if($('death').classList.contains('on'))_deathDlgStart()});
+ };
+ $('retryBtn').onclick=async()=>{
++  _clearHeldInput();
++  _pollGamepad._retryHeld=_gpad?_gpad.buttons.map((b,i)=>(b&&(b.pressed||b.value>0.5))?i:-1).filter(i=>i>=0):null;
+   $('death').classList.remove('on');$('victory').classList.remove('on');_drReset();if(typeof _deathDlgStop==='function')_deathDlgStop();
+   // 경험치 30% 손실
+   const expLoss=~~(P.exp*0.3);

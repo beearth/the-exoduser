@@ -882,7 +882,7 @@ CH1-1 목표 actual전체Read13/13(기존MAP미소비/ENEMY실거부제외)을�
 | 보스 사망 Gate | 정상 same-page retry는 기존 field restore 뒤 DEMO 저장. 해금 전 초기화/페이지 재입장 재생성 계약은 그대로이며 실제 사망→버튼→복원·native6단계/화면/청취는 미인수 |
 | 보존 | source core5·protected64 exact, 기존 게임/세이브/앱/타인 WIP 보존. 생성 당시8253regular/5symlink/7043803133B는 snapshot이며 후속log1과 구분 |
 
-서버 검수는 실제 제품 후보의 전제 검증이며 게임 목표 완료 건수는 증가하지 않는다. 두 오더 담당은 Codex7/Claude8 단일 송신을 유지한다. 실제 회차3분·점검5분 초과를 각각 기록했으므로 설정만으로 주기 준수·무지연을 주장하지 않는다. UI 잠금해제 질문은 pending이며 중복질문/GUI 우회0. 상세 후보 검수와 완료 원자료 보존은 총괄 소유 범위에서 이어간다.
+서버 검수는 실제 제품 후보의 전제 검증이며 게임 목표 완료 건수는 증가하지 않는다. 두 오더 담당은 Codex7/Claude8 단일 송신을 유지한다. 실제 회차3분·점검5분 초과를 각각 기록했으므로 설정만으로 주기 준수·무지연을 주장하지 않는다. 이 서버검수 당시 UI 잠금해제 질문은 pending이었다. 후속16:54:50Z AX·화면 관측으로 그 대기는 해소됐으며 이후 실제 입력 차단과 구분한다. 중복 잠금해제 질문/GUI 우회0. 상세 후보 검수와 완료 원자료 보존은 총괄 소유 범위에서 이어간다.
 
 [실HTTP·합성 저장 정확 보고서](../13출시·마케팅/MAC_CH1_SOURCE4_HTTP_SAVE_20261003.md). 활성 CH1-1 목표는 미완료다.
 
@@ -894,10 +894,45 @@ CH1-1 목표 actual전체Read13/13(기존MAP미소비/ENEMY실거부제외)을�
 | production source5 | 양판 gameConfirm 첫 줄 `if(_gcResolve)return Promise.resolve(false);` 각47B. 첫 확인 보존/새요청false. main4028953B/fd4e55dfefad0985870dc3f6dc1633793dad22e48ddb336dda881cdd4edbfe17; easy3906400B/db6019a1027464695fcc20b509db05f301eaf23ccc517a70ff8aedeadb61529c |
 | 현재소스 인수 | 신규reentry12/12PASS+정상순차4/4동일, 총20contexts. baseline12FAIL은 별도prototype. executableJS12/importmapJSON2 구문1회. 기존28검사 반복0 |
 | native source4 | 물리 core5 고정인97bb 앱/PID48587/3386에서 정상새캐릭터맥검수→INTRO/안내→실습→정상skip→CH1-1필드 실제복귀. 실습W이동/dash 관측; 이동체크미완료/성공배지0 |
-| 현재 막힘 | 다음 전투입력에서 Mac잠금재발. 수동해제 질문1회 pending, 기존app/게임상태 유지. 고정 source4앱에는 새source5가드 포함0 |
+| 현재 입력 경계 | 16:54:50Z 후속 AX·화면 읽기 성공으로 이전 잠금해제 대기는 해소. 일반 필드 사망(0처치/HP0·몬스터 투사체)을 관측했으며 보스사망은 아님. 이후 Code 좌표/스크롤 입력은 noWindowsAvailable로 실패했고 키보드 포커스 전달도 미확인; 현재 OS잠금 재발로 단정0. 기존앱/게임상태 유지, source4앱에 source5가드 포함0 |
 | 남은 목표 | 정상전투·획득/장착·4지역게이트·보스사망/부활·기존필드/보스문보존·재도전·청취·게임save/reload·전체8카메라 미검수, goal active/완료0 |
 | native 저장 | 고유profile/정상새캐릭터생성 관측. own `_sharedMats.json`31B/악의999 생성도 관측했으나 player 전체save/reload 성공으로 확대0. 숨김합성QA312B보존 |
 | 오더 운영 | 관리3+전문15=18. Codex7/Claude8 유일오더담당2명의 actual 후속송신·새source착수 인계. ACTIVE5/5분·총괄1분 설정은 무지연/주기준수 보증이 아님. GUI대기/거절보류를 전팀active로 보고0 |
 | 보존 | source2/test1/관련docs9=12정확경로 checkpoint. 감독STATE/LOG·타인WIP·사용자23·source4앱 실물·보호2_3 유지. source/원자료 보존을 게임목표 완료건수로 계산0 |
 
 [source5 정확계약](../2_7%20인벤토리+장비시스템/INVENTORY_JUNK_CONFIRM_REVALIDATION_20261002.md), [native 부분보고](../13출시·마케팅/MAC_CH1_SOURCE4_NATIVE_PARTIAL_20261003.md).
+
+
+## 2026-10-03 현행 운영 정정·오전9시 이메일 보고
+
+| 항목 | 실제 근거와 남은 경계 |
+|---|---|
+| production 보존 | `bb0012354032d34f2a72aedb5681cbe79f7b47fe` source2/test1/docs9=12경로 commit/push·원격 정확SHA 인수. 확인창 재진입 수정은 production에 반영됐으며 고정 source4앱 native 인수와 구분 |
+| 실제 플레이 | 동일97bb 앱에서 정상입장·실습skip·CH1-1필드 이후 일반 몬스터 투사체 사망 관측. 0처치/HP0이며 보스사망·부활/필드보존·연결6단계 완료0. 이후 정상부활 버튼 시도도 복귀를 확인하지 못함 |
+| ART | 기존13:20:19.529Z 큐가17:01:55.016Z 소비→17:01:55.030Z peer 수신.17:05:23.447Z 직접 사용자 지시 요구로 종료, 해당 수신 뒤 유용한 source-tool0. 수신/busy 표시를 착수 성공으로 계산0; 큐 중복송신·새 세션0 |
+| MAP | 기존 지시 큐 미소비/입력 대기. root의 AX 선택은 가능했으나 최신본문 스크롤·키보드 전달을 확인하지 못함. 원인·복구 성공 UNKNOWN이며 기존 큐 유지 |
+| 실제 소스 작업 | Claude 담당의17:09:28Z CURRENT에서 QA 새source17:05:39→17:07:26, ANIM17:06:52→17:07:19 확인. STORY17:04:52→17:06:46 뒤17:07:41 완료, BOSS17:05:51 뒤17:07:03 완료. 완료 뒤 후속은 단일 담당 송신이며 모든 팀의 동시active/production 적용으로 계산하지 않음 |
+| 승인 거절 | ENEMY·SKILL의 감독STATE 읽기에 Auto-Mode Bypass 자동검토 거절이 남아 있다. 거절된 목적을 다른도구/대리읽기/새세션/권한변경으로 달성하지 않음. SKILL의 별도 성공 소스 작업은 과거 실제 기록으로 보존 |
+| GUI 전달 | 실제 Code AX/스크린샷 읽기는 성공했으나 좌표/스크롤 noWindowsAvailable. 터미널 선택·메뉴 Cancel은 AX에 반영됐지만 키보드 송달/작업 재개는 확인0. 현재 잠금 재발로 단정0. ART 일반 작업선택 Esc 및 MAP Jump to bottom/입력칸 클릭만 사용자에게 요청; 기존 잠금해제 질문 중복0 |
+| 매일 오전9시 보고 | 공식 heartbeat `exoduser-9` / EXODUSER 오전9시 이메일 보고 / ACTIVE / Asia/Seoul 매일09:00 / 원총괄 채팅 대상. 연결 Gmail 본인 계정(`to: me`)으로 실제 반영·미반영 후보·팀실도구시각/막힘·디자인결정 최대3개·오늘구체목표를 한국어 HTML로 발송하는 설정을 저장/읽기 대조. 개인주소를 Git에 기록하지 않음 |
+| 메일 성공 기준 | 같은날 같은제목의 Sent 중복 확인 뒤 send_email 성공/messageID만 실제발송으로 계산. 예약설정 완료는 첫메일 발송 완료가 아니며 현재 즉시 시험메일0. 실패시 본문을 채팅에 보존하고 미발송 이유 보고. 변화없어도 사용자가 요청한 매일 보고를 생성 |
+| 운영 제한 | 설정5분/회차3분은 실제준수 보증이 아니며 초과는 그대로 기록. root 생산 의미검수와 팀의 다음 독립소스 업무를 분리하고 감독STATE/LOG·타인WIP·사용자게임/세이브·2_3 보호 유지 |
+
+후속 native 부분관측과 입력 미확인은 [Mac 부분보고](../13출시·마케팅/MAC_CH1_SOURCE4_NATIVE_PARTIAL_20261003.md)의 정확 경계를 따른다. 모든 목표는 실제 게임 반영·정상 플레이·시각/청취·저장 인수로 판단하며 source 검증/보고서 건수를 게임 완성도나 AAA 품질 보증으로 계산하지 않는다.
+
+
+### 80Gate 완료 소유 보존 — 후보7 + root문서6
+
+현재 NUL84 중 root문서6은 Future8에서 사용한6이며 잔여2다. ANIM1/ITEM2/SOUND2/UIUX2 원자료7(261385B)는 이미84에 포함된 완료 소유이며 새 credit이 아니다. 이번 범위는13경로이며 실제 commit/push 성공·원격SHA·전후보존은 ignored `root-live-operating-doc-sync/receipt.json`에서 확인한다. 후보를 production에 적용하거나 기존 검사를 재실행하지 않는다.
+
+| 완료 원자료 | bytes | SHA256 |
+|---|---:|---|
+| ANIMVFX/ANIMVFX-blend-painter-combined-bp1551/result.md | 8262 | `208cf269c61b744fe2be795df41deb3663ab6d8cf1b8f08aa0c90697658e506c` |
+| ITEM/ITEM-strFlat-melee-ref-1604/result.md | 132792 | `08dba97d693c823fdd55295a6b7a66e225b9333153d721ad0f0198bf3fa491f9` |
+| ITEM/ITEM-strFlat-melee-ref-1604/candidate.patch | 796 | `c661c32846a9b0301bd5884566563ece93717c6997622e1bea334fce67e503f1` |
+| SOUND/SOUND-combat-audio-backend-audit-1700/result.md | 11978 | `c5e0798af0726683d13edc56daef56508a1353d88e65b4af66a9c126c73f2705` |
+| SOUND/SOUND-combat-audio-backend-audit-1700/candidate.patch | 12694 | `8dfb6ae80fb9be7c1b36eed970d0cb8d22817ca3df43f3f343b78c4d3dfe8aed` |
+| UIUX/UIUX-retry-pad-release-rearm-1700/result.md | 92283 | `94e87ed80d44190184f42fb7c5325b01cd4e026cca6bfafe3f4bd502c1c1f67d` |
+| UIUX/UIUX-retry-pad-release-rearm-1700/candidate.patch | 2580 | `17646a46b3d66c6338d4e9a56e708da934ab32e70d09fa7cff6447d6add50e57` |
+
+UIUX candidate.patch의4개 공백-only context행은 authentic patch 문맥이며 원문 그대로 보존한다. 문서 diff check는 PASS이고 원자료 공백을 새 production 결함으로 계산하거나 formatter로 바꾸지 않는다. ANIM 기존 hitstop 전제는 현행31358의 G.hitStop=0 강제초기화로 도달하지 않는다는 후속 정정을 인수했으므로 그 원주장을 채택하지 않는다. capreuse/blend 후보는 별도 의미 Gate, ITEM STR 후보는 수치/docs영향 Gate, SOUND 예외격리는 정책HOLD, UIUX 패드 재무장은 실제패드 Gate를 유지한다.
