@@ -830,3 +830,8 @@ CH1-1 목표 actual전체Read13/13(기존MAP미소비/ENEMY실거부제외)을�
 ### 2026-10-02 쓰레기 확인 후 잠금 보호 source 인수
 
 실제 KeyF→gameConfirm/gcOk→await bulk 연결에서 확인 중 중요잠금한A의 오분해·과지급을 재현하여 양판 `_jkBtn.onclick`의 현재bag/junk/fav/equipped/분해액을 확인 전·후 재검사했다. 초기악의500에서 old3500(A+B)→final2500(B만), A보존. callback2 각+562B 외전체bytes/EOL 동일. 신규28/28+별도정상역소스대조8/8 PASS(구검사반복0), inlineJS12/importmapJSON2 구문1회PASS. 실제native/전체renderer/청취/실저장은미인수다. [정확계약](../2_7%20인벤토리+장비시스템/INVENTORY_JUNK_CONFIRM_REVALIDATION_20261002.md). 코드+canonical2_7/UI동기화와관련docs전체검색45행20경로분류를같은범위로보존한다. b3Mac앱은이전3fixsnapshot이며후속source를포함한새앱/실제6단계는별도다. 제품source수정1건이고검수36그룹을제품36건으로계산하지않는다. root는생산인수·빌드·Git,기존감독은전문15팀단일오더전담을유지한다.
+
+
+### 2026-10-02 최신 source4 Mac 후보 생성
+
+97bb3ef9-fff2-4761-9841-e5a24a953847 앱은 codeca7e0bb0/원격backup e764ed33의 네sourcefix를포함한다. main e462f234…/easy68fa8e17…/index1dd28cab… 원문·stage·실앱동일, inputs7918/비파생7916/runtime334+메타6 exact. freshplan1/execute1 exit0/내부verify1/readinventory1, 별도verifier/재빌드0. regular8253+symlink5/7043803133B, 고유port3386/profile-save. 기존앱·user23·원자료·cache보존. 최종receipt743842ae…/20421B, configcdf9ba83…/3428980B. sourcefreeze는사본생성완료로해제한다. 실제앱기동/6단계플레이/visual/청취/영속save는0으로활성목표는미완료다. [현재후보정확계약](../13출시·마케팅/MAC_CH1_SOURCE4_CANDIDATE_20261002.md). 함께보존한BOSS철회/BALANCEGPnav원자료2는제품적용0이며readiness dee37149… exact2다. 감독단일오더전담/총괄생산·검수·Git 역할을유지한다.

@@ -52519,3 +52519,8 @@ CH1-1 목표 actual전체Read13/13(기존MAP미소비/ENEMY실거부제외)을�
 | 제품/반복 | 이번 scope source/test적용0·기존검사재실행0·native/게임제품완료0. 현재 production source4는 ca7e0bb0 잠금확인 인수이며 appb3는옛3fixsnapshot |
 
 근거 ignored `tmp/mac-migration-runtime/continued-review-20261002/ready1419-1423-raw/receipt.json`; 감독 원manifest `hb1419-native-owned-evidence.json` ca31c251… + `hb1423-additional-owned3-handoff.json` c4d7240c…. 전문15팀 오더는 기존감독단일소유, root는 정확완료소유범위만 checkpoint한다.
+
+
+### 2026-10-02 최신 source4 Mac 후보 생성
+
+97bb3ef9-fff2-4761-9841-e5a24a953847 앱은 codeca7e0bb0/원격backup e764ed33의 네sourcefix를포함한다. main e462f234…/easy68fa8e17…/index1dd28cab… 원문·stage·실앱동일, inputs7918/비파생7916/runtime334+메타6 exact. freshplan1/execute1 exit0/내부verify1/readinventory1, 별도verifier/재빌드0. regular8253+symlink5/7043803133B, 고유port3386/profile-save. 기존앱·user23·원자료·cache보존. 최종receipt743842ae…/20421B, configcdf9ba83…/3428980B. sourcefreeze는사본생성완료로해제한다. 실제앱기동/6단계플레이/visual/청취/영속save는0으로활성목표는미완료다. [현재후보정확계약](13출시·마케팅/MAC_CH1_SOURCE4_CANDIDATE_20261002.md). 함께보존한BOSS철회/BALANCEGPnav원자료2는제품적용0이며readiness dee37149… exact2다. 감독단일오더전담/총괄생산·검수·Git 역할을유지한다.

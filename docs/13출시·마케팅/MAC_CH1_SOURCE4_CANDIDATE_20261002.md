@@ -1,0 +1,37 @@
+# Mac CH1 후보 — 네 수정의 고정 source
+
+SOUND 연결 실패 정리·필터 뒤 Y 장착 identity·캐릭터 입장 취소·쓰레기 분해 확인 후 잠금 보호를 모두 포함한 새 Mac 앱을 생성했다. 포장은 완료했으며 실제 기동·연결 플레이·화면·청취는 미인수다.
+
+| 항목 | 정확 값과 인수 범위 |
+|---|---|
+| 새 job | `97bb3ef9-fff2-4761-9841-e5a24a953847` |
+| 실제 앱 | `outputs/mac-package-ready/mac-packager-97bb3ef9-fff2-4761-9841-e5a24a953847/package/EXODUSER-97bb3ef9-fff2-4761-9841-e5a24a953847.app` |
+| 코드 checkpoint | `ca7e0bb00de4aea51d59b923a1b81a0e97613f2d`; 포장전 backup/remote exact는 원자료 보존 `e764ed331c222bc7785e60a3152fe48b9a5e6f14` |
+| 생성 | fresh plan1 READY→execute1 exit0→내부verifyOutput1→새 artifact read inventory1. 별도verifier·재빌드0 |
+| 소스 main | 4028906B/SHA `e462f2345682856d24bb416a17aec763281a8dceb02f21af565db189992353ea` 현재 원문·stage·app 동일 |
+| 소스 easy | 3906353B/SHA `68fa8e17d379fdf7e9da20b153d874e2ac74544d790397b4d36edbcc1207f390` 현재 원문·stage·app 동일 |
+| 소스 index | 342119B/SHA `1dd28cab162a4384ad84a356eb2c719940782005d20da1312d2857bc649615a7` 현재 원문·stage·app 동일 |
+| 인수 근거 | 이전3 sourcefix의42그룹과 후속junk28+정상대조8의 근거 재사용. 포장하면서 이전검사 다시 실행0. 44contexts를44독립PASS 또는제품건수로세지않는다 |
+| 복사 | inputs/backup.inputs7918 coverage exact, 비파생7916 SHA동일. package/node-main2는 승인된 port/save/name 메타데이터만 파생 |
+| runtime/helper | 기존 NW.js0.111.2 osx-arm64/runtime340=334핀동일+plist/strings6메타파생. main/helper4 payload SHA·실행비트 동일, runtime cache340 보존. 기존nw-builder4.17.10, 새download/install0 |
+| 앱 실물 | regular8253·symlink5·7043803133 regularbytes |
+| bundleID | `com.exoduser.mac.97bb3ef9-fff2-4761-9841-e5a24a953847` |
+| 포트/main | `http://127.0.0.1:3386/index.html?demo=1`; nodeRemote127.0.0.1/localhost3386만. 사전/사후free는 관측snapshot이며 기동직전다시확인 |
+| profile/save | job의 `user-state/profile`, `user-state/saves` 고유절대경로. 생성후user-state부재, 실제schema변경0/서버기동0. 앱이동시절대경로파생계약다시검토 |
+| config | `outputs/team-review-20261002/ch1-playable-97bb3ef9-fff2-4761-9841-e5a24a953847/build-config.json` 3428980B/SHA `cdf9ba83b9e1796906aa948f310937dc5da9374711d229993f3cab0b8a5fc61e` |
+| output manifest | ignored `ch1-playable-source4-build-readiness/build-output-manifest.json` 4008449B/SHA `8306969ef59c5d9db11ba43010e6326b759565ab337589fbafdd011d56d2d81d` |
+| 최종 영수증 | 같은폴더 `build-final-receipt.json` 20421B/SHA `743842ae96af56b9d4fd26cec0c9a0500517ce12bee8e8b25df8e35be2a62456` |
+| 보존 | old44+c9277+b37+raw16 및 사용자23/cache/builder/configs actual 사전/사후보전, 허용source2 변경과 root문서소유범위 분리 |
+| 준비 진단 | source SHA와byte수 경계를 잘못분리한65자리 기대상수1건은 config/Node/plan 이전에발견·교정. 실제source/기존app변경0, 실제빌드실패나execute재시도가아님 |
+
+## 실제 플레이 Gate
+
+도구가 마지막으로 Mac locked를 확인했고 기존 잠금해제 질문은 아직 pending이다. 이 앱은 기동하지 않았다. 같은 고유후보에서 normal lobby/선택→전투·획득/장착→4지역현행게이트→보스사망→기존부활/필드보존→재도전6단계를 실제입력으로 관측해야 한다. 사용자기존게임/세이브와 다른app3381/3383/옛c927/b3는 보존한다. 강제stage/mapqa/testchar·P/G변경을 normal플레이근거로사용하지않는다.
+
+source/DOM/Audio/GL 대역PASS는 native/실입력/픽셀/청취 인수가 아니다. 맵카메라/전투QA가 시작되면 맵가이드 완독·SSOT읽기순서·§23 보고 및visual verdict가 필요하며 현재visual검수0다. 영속save재기동·codec/서명/quarantine·OAuth/crashpad 완전격리·전체동적dependency 인수는 별도다. 정확 source사본생성이 완료되어 source freeze는 해제한다. 빌드생성1건을 CH1-1목표/6단계완료로계산하지않는다.
+
+[이전세수정b3 snapshot](MAC_CH1_LATEST3_CANDIDATE_20261002.md), [잠금확인수정](../2_7%20인벤토리+장비시스템/INVENTORY_JUNK_CONFIRM_REVALIDATION_20261002.md), [활성목표](../0마스터플랜/mac-resume-20261001/vscode-dispatch/MILESTONE-CH1-1-PLAYABLE-20261002.md).
+
+## 함께 보존한 완료 원자료2
+
+BOSS1418 이중차감 오주장 철회 result2944B/d9620fd4…와 BALANCE1423 actual GPnav LB+A detached caller result34172B/cbc7d8a1…의 원문을 보존한다. 이전16과중복0·SHA exact2·후행공백/EOF0. 준비영수증 `ready1437-raw2/receipt.json` 7615B/SHA dee3714953be65110cb6d61694f8ddc8228b17040bbe238172a9824c6541ce49. 완료ID는 감독attestation이며 직접provider Write/endTurn검수로확대하지않는다. BOSS추가10삭제HOLD·BALANCE12source조건/물리패드0와 root동일함수합성Gate는유지, 생산적용/게임완료0이다.
