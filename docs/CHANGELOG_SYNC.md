@@ -52485,3 +52485,9 @@ CH1-1 목표 actual전체Read13/13(기존MAP미소비/ENEMY실거부제외)을�
 | 나머지 | immutable 소유pins/완료marker만 보존, 개별 source 모델 상세인수와독립. 원자료23건을제품수정23건으로계산0 |
 
 실제 생산은3b548b06 사운드 연결정리·7301b270 필터 뒤Y identity·7ccb72c0 캐릭터입장 취소의 서로다른3수정과 새검사10/24/8 PASS다. 현재 c927앱은dd333 snapshot이므로 이3수정의native/실제6단계플레이완료0. 종료팀은감독이기존세션의다음실제업무로재개하고 실제Read/새tool확인으로관리한다. actual80완료소유checkpoint/100전새산출보호와rollingcredit는유지하되상세전수검수·새epoch대기로전팀을멈추지않는다. 새원문보존으로공간을회수하고활성CH1-1목표를이어간다.
+
+## 2026-10-02 BUILD 보류 원자료1 완료 보충 보존
+
+앞 raw23 인수에서 제외했던 BUILD result.md는 첫 inventory가 저장 완료 전이었고, 공식 완료01a0fcb2-22c2-7f42-9395-a3291f1b7230(13:08:50)·mtime·현행원문pin이 supervisor supplemental manifest와 일치함을 확인했다. 해당1 원문120623B/SHA471e36cbc8dbbaa6c8da2ac62b654b40cf875a3382d007a219f7de7a73ed17ee를 root기록2와3scope로 보충 보존한다. 읽기전용 receipt SHAd75264e49942bcf092ccf3ed7bc26fe4fb6e5212812c724ecb86ceb91e359be5. 원검사 재실행·source/helper 적용·실제build 실행0, 미적용기술후보이며원문1을제품구현/빌드완료1로계산0.
+
+새 ANIMVFX packet의 easy dead `_hitFlash` 차이는 상태 잔류와 실제발광 잔상을 구분해 HOLD했다. 현재easy 소비는감소뿐이고새구울은별도객체여서피격flag를복사하지않는다. source/신규permanenttest/visualPASS0. 확정된3fix는유지하며이를포함하는다음격리Mac후보준비를진행하고기존c927 snapshot·앱/세이브·사용자23은보존한다.
