@@ -123,10 +123,15 @@ http.createServer(async (req, res) => {
   }
 
   if (pathname === '/api/save' && req.method === 'POST') {
-    const body = await readBody(req);
-    const slot = sanitizeSlot(body.slot || 'default');
+    let body, slot;
+    try {
+      body = await readBody(req);
+      slot = sanitizeSlot(body.slot || 'default');
+      if (body.data) fs.writeFileSync(path.join(SAVE_DIR, slot + '.json'), JSON.stringify(body.data, null, 2), 'utf8');
+    } catch (error) {
+      return sendJSON(res, 500, { ok: false, error: 'Internal Server Error' });
+    }
     if (!body.data) return sendJSON(res, 400, { ok: false, error: 'No data' });
-    fs.writeFileSync(path.join(SAVE_DIR, slot + '.json'), JSON.stringify(body.data, null, 2), 'utf8');
     return sendJSON(res, 200, { ok: true, slot });
   }
 

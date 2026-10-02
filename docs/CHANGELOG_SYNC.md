@@ -52159,3 +52159,48 @@ source receipt `tmp/mac-migration-runtime/continued-review-20261002/storm-focus-
 
 
 추가 정적 인수: STORY legacy `_CIN_I18N` 실제23키와 index2317의 truthy/falsy 조건부 fallback에 맞춰 번역 가이드/전체목록의 오래된 설명3접점을 정확 동기화했다. 과거26언어·442번역값·CAT68 21/22·CIN20cue/28필드·영화29×32를 각분모로 보존했다. 새ENEMY 정정2/STORY 실제source3 완료원문5는 SHA 그대로 보존하며 두 후보의 생산/실게임채택은HOLD다. 이전checkpoint5420819d의 완료7은재stage0이다. 코드변경은위focusguard2접점뿐이며 index/lobby/AI source변경0, STORY5probe/8assert 이전검사반복0이다.
+
+
+## 2026-10-02 NW.js 슬롯 저장 오류 응답 source 인수
+
+감독의 BALANCE-save-body-error-0557 후보를 기존 원격 HEAD `4f7c6cbcbbfe7f2df1bd7e3083d8c9a2755c12bd` 이후 실제 `node-main.js` 저장 분기에 최소 적용했다. 실제 이전 코드를 읽어 malformed JSON/쓰기 오류가 기존400/500이었다는 초기 가정을 정정했다. 이전은 handler rejection·응답0이며, 이번 승인 Scope B는 read/parse·sanitize·truthy data 검사·직접쓰기 오류에서 일반500 JSON을 한 번 시도하는 변경이다.
+
+| 계약 / 소유 | 현재 source 인수 | 보존·검수 한계 |
+|---|---|---|
+| 생산 접점 | POST `/api/save` 내부275→422bytes(+147),1접점; `node-main.js` SHA `09eba1c2b9aa83376b93f9d4a2f23467a1068df416d3fef2486734a27d83cfe3` | 접점 밖 rawbyte 동일·역치환 전체가 이전 raw backup과 동일. 공통 readBody/sendJSON/sanitizeSlot 변경0 |
+| 신규 catch | body 읽기·JSON 해석·body/slot 처리·data 검사·직접 write 실패→500 `{ok:false,error:'Internal Server Error'}` | request/parse/null/sanitize 실패는 메모리 write0·200ACK0. malformed JSON500, JSON body=null500; 내부 경로/code/message 비노출 |
+| 데이터 누락400 | JSON 해석·body 접근·sanitizeSlot 성공 후 `!body.data`→400 `{ok:false,error:'No data'}` | missing/null/false/0/빈 문자열5관측. `{data:null}`400이며 잘못된 slot 처리 실패는500이 먼저다 |
+| 성공200 | `body.slot||'default'`·sanitize50자·data만 pretty JSON2/utf8/끝개행0·직접 write 반환 뒤200 `{ok:true,slot}` | 정상3관측. schema·클라이언트 복원/경제/독립 mats·server.cjs 및 atomic 정책 변경0 |
+| 응답 전송 | 200/400 sendJSON은 catch 밖. 200/400/500 head/end throw는 동일 Error로 거부·500재시도0 | 열린 대역 실패 head1/end1, closed 대역 head1/end1/delivered0. 실제 wire/response error event·프로세스 생존 UNKNOWN |
+| 쓰기 오류 | 메모리 fs 시도1→500/200ACK0; rollback 추가0 | 변경 전 주입은 이전 bytes 유지, 부분 변경 후 주입은11문자 prefix 잔존. 실제 OS 부분쓰기·원자쓰기·fsync/crash/concurrency 안전성 미인수 |
+| 새 회귀 | `test/saveBodyErrorResponse.test.cjs` SHA `6fb7e42c191a4d413a24a2cdf4269eb6b37c05a5ab47e561e52f63506475315f`, final12/12 PASS·exit0 | 생산 전 같은12의4PASS/8FAIL은 별도 이력. 정상3+No-data5=8 normalized trace가 actual baseline/AST역복원 control과 동일; 내부 관측을12개에 추가 합산0 |
+| 실제 추출 | Acorn으로 현재 save if와 actual readBody/sendJSON/sanitizeSlot 추출, VM async wrapper·native EventEmitter/Buffer/JSON/path | fs/res 메모리 대역, 전체 handler/module/server/IncomingMessage/ServerResponse 실행0. AST역복원 oldbranchSHA가 실제 이전 branch와 동일 |
+| 구문 / 반복 | 명시 Node `--check node-main.js`1회 exit0·모듈 실행0 | 기존 팀4비교/mats14·18·19/boss/SOUND/BUILD/storm/abort/close-only 반복0, 문서 담당 test실행0 |
+| 문서 동기화 | 세이브 SSOT/API 가이드2에 오류표 append + `docs/15 세이브+데이터구조/SAVE_BODY_ERROR_RESPONSE_20261002.md` 신규 | 기존 정본 prefix128364/10231bytes·개행100% 보존. API가이드§4 server.cjs 기존 outer500/atomicSaveJSON과 이번 NW.js 직접쓰기 분리 |
+| 전수검색 | source후 exact29행/16docs + docs broad초기2519행/465파일·target51행/27파일·최종2534행/465파일 | head/truncation0/raw원문·SHA 보존. 465파일 전부 분류: 이번 정본2·별도/역사 보존463; 신규 매칭파일0 |
+| 미인수 | request aborted/close-only/timeout/late event/리스너cleanup·실HTTP·NW.js·실디스크·실저장/재시작·Windows | source12로 기존 EPERM 차단·native앱/패키지/서명/배포 Gate를 완료 처리하지 않는다. 기존 실행 앱/서버를 이번 source로 재빌드·재시작0 |
+
+소스 영수증 `tmp/mac-migration-runtime/continued-review-20261002/save-body-error-backup/receipt.json` SHA `c6e907a82876162eb06007cef854a1963380e5419965edfd4e70f666487c2e75`; 문서 영수증 `tmp/mac-migration-runtime/continued-review-20261002/save-body-error-docs-backup/2026-10-02T07:57:32.690Z-244eab27-34a9-41fb-a9e2-93ca9594a8bc/completion.json` SHA `e096891b2ced3d3c925fff0c2aba67cda10525328159220252d6ceae0fe079a0`를 따른다. 소스 담당20 preservation pin 중17파일 전체·이번 소유 정본2의 원문 prefix·node-main 승인접점 밖을 보존했다. readBody의 aborted/close 정책과 atomic 후보는 이번 미채택이다.
+
+### 새 완료원문6의 제한 보존
+
+| 감독 완료 인계 | 이번 원문 보존 / 제한 관측 | 후보·한계 |
+|---|---|---|
+| STORY-empty-only-type-preservation-0733, end69b01e90-6679-4a0b-9f30-ea74545f581f 07:39:14Z | result/evidence/checks3 exact SHA·raw backup. actual resolver2317 fragmentSHA `a782daf54d17fc68379a79d7c44923135f8d153bdb70d286540c684443f355f4`; 공개Node13assert/5plain probes(빈문자/1/true/objectidentity/0)1회exit0 | empty-only 표현은 기존truthy값/0fallback을 보존, 이전 typeofstring 과잉변경후보 취소. actual영화/alltypes/native/제품노출/생산 후보 미인수. nonempty cue=dead 일반화 및 freshdocs검색0 문제의 정정은 감독이 기존세션 단일TASK로 처리 |
+| ENEMY-decrement-sparse-overshoot-0733, endc5bfb4af-403a-4689-a4c1-fc361a8931ff 07:45:11.837Z | result/evidence/checks3 exact SHA·raw backup. 양판 합성cd1.25/sp2.5에서41/58 old/new=-1.25,60 old1.25→candidate-1.25, gap30 old-1.25→candidate1.25,31/59 hole유지. 8PASS+8witness 관측 | B6/B7 initializer는 handwritten VM, actualspawn 추출 아님. gap30불가능/무해·전체호환 미확정, 후보HOLD. 첫Node1회exit0 후 같은 검사 불필요 반복1·금지Git status조회1 사실 확인; Gitwrite/rollback0. 두 번째 출력의 빈PIPESTATUS로 Nodeexit을 새 확정하지 않음 |
+
+raw6는 완료 산출의 원문 보존이며 후보 생산 채택을 뜻하지 않는다. 불정확한 제출 이력도 원문을 덮어쓰지 않고 위 제한과 후속 정정에서 구분한다. STORY 정정TASK actualRead `1f694cf9-ac4d-455a-a5d4-4b991309f682`07:49:39.962Z, ENEMY 정정TASK actualRead `f0646cbb-0bae-4215-be12-8c7c7b1e4816`07:57:08.671Z은 감독이 이미 단일 송신·확인했다. root의 재실행/전문팀 중복지시0이다. 직전4f7c6cb 완료5와5420819d 완료7은 이미 동일 SHA로 HEAD에 있어 재stage0.
+
+정확 core7(source1/test1/정본2/new보고1/root기록2)+완료소유 raw 경로만 scoped commit/push한다. supervisor STATE/LOG·active TASK·partial산출·원 사용자23항목·타인WIP·보호2_3·사용자 게임탭/세이브·기존앱/서버 보존. 전문15팀 완료감시/후속의 단일 송신은 기존 감독이며 roles 총괄+감독2/Codex전문7/Claude8=17 유지. 삭제/cleanup·설치·권한·인증·결제·게시·새채팅/팀·PC/Windows 실행0. 원격 exact SHA와 최종 scope는 `tmp/mac-migration-runtime/continued-review-20261002/save-body-error-checkpoint/receipt.json`에 commit/push 이후 기록한다.
+
+
+### 감독 정정 완료4의 늦은 인계 보존
+
+감독 공식 pending 목록의 아래4파일을 정적 전용 담당이 전체 읽기·현재 SHA/크기 대조했고, 앞선 raw6와 함께 별도 raw backup 후 이번 checkpoint에 추가한다. 원문 대체·후보 생산채택·Node/checks 재실행0이다.
+
+| 정정 완료 | 인수된 정확 범위 | 남은 Gate |
+|---|---|---|
+| STORY-canonical-branch-scope-0748 result/evidence2, end82501683-809d-4265-b79a-71e539c6c71a 08:05:16.823Z | KO/nonKO·선택 inline truthiness·global/locale/idx truthiness·en/text fallback의 조건부 실제 resolver 분기 정정. 재사용 검색만 있던0733에 실제 docs 전체검색을 보완. 앞선 root 정본의20→23key/2087→2317 동기화는 이미HEAD라 재수정0 | 기존 plainSYNTH13 제한 관측만 유지. current normal movie/전체locale/getter/실제품/생산/native UNKNOWN. 현재 코드값을 새후보로 바꾼 결과 아님 |
+| ENEMY-evidence-discipline-scope-0755 result/evidence2, end913fd3f9-7f51-45d3-9331-f3c5a661926a 08:05:16.104Z | 기존 같은 검사 반복1·Git조회1·두 번째 exit 공백을 인정. 손작성 realInit/gap30호환/SOUND원인/idx60일반화 주장 제한. root 실제 수정 영수증07:34:22가07:41전이며07:50checkpoint를 수정시각으로 취급하지 않음. 검색105매칭/25경로 완전성은 감독 public audit 보완 | 기존8PASS+8witness 보존, newNode0. 실제spawn/lifecycle·gap30호환·전체RNG·적AI 생산채택/실전투 미인수. Git조회는 쓰기나 rollback으로 분류하지 않음 |
+
+late4 result/evidence SHA는 감독 공식 pin과 동일: STORY `870166cc681937fbb8d8919c52a1f19fa5ec665a80546572dc3e079e163f98ae` / `33f890873237e8ec9ff952423fdc05510c0a187c0f90ec4388f4d3ca19853ccd`, ENEMY `2b2c0c6ba67832cbb01fc5ec7ae5ab2658607edac7daa9dc6ab0a95125cf699a` / `6de8264856b65ef38c5159f44aa063bccbe949f6677aaa25321544cd9ba73ef4`다. 앞선 오류가 있는raw6도 제출당시원문 그대로 유지하고 정정4에서 의미를 좁힌다. 두 정정은 감독이 이미 제한인수·root결정 대기 피드백을 처리했으므로 root전문팀 재송신0. 이번 최종보존 소유는 core7+새완료raw10=17경로다. 감독 STATE/LOG·새 active TASK는 제외한다.

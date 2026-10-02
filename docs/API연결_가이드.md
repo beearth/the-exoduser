@@ -304,3 +304,25 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 | server.cjs / POST /api/mats | 기존 외부 catch의 HTTP500 text/plain 유지 | 파일 변경0. NW.js JSON과 wire 형식 차이를 보존 |
 
 직접 write·clamp·정상 저장 계약과 세이브 슬롯 형식은 유지한다. 원자쓰기 후보·close/unlink cleanup 정책 미채택. 실제 HTTP/NW.js·성공 디스크 저장·재시작·Windows·fsync/crash/concurrency는 미검수이며 실물 앱 재빌드0이다. [저장 현행 계약](15%20세이브+데이터구조/15%20세이브+데이터구조.md).
+
+## 2026-10-02 NW.js POST /api/save 실패 응답 계약
+
+위 §4는 개발 `server.cjs` API이며 이번 변경은 NW.js `node-main.js`의 POST 슬롯 저장 분기다. 개발 outer catch/atomicSaveJSON 및 기존 mats 응답 형식은 변경하지 않는다. NW.js 기존 save의 request/JSON/쓰기 예외는 handler rejection·응답0이었고, 이번 catch에서 신규500 JSON을 시도한다.
+
+| id / 입력·접점 | 현재 NW.js `node-main.js` 계약 | 검수·한계 |
+|---|---|---|
+| POST `/api/save` / catch 범위 | `await readBody`·JSON 해석·`sanitizeSlot`·truthy `body.data` 검사·직접 write를 catch; 실패는500 JSON `{ok:false,error:'Internal Server Error'}` | 응답 가능한 대역에서 writeHead/end 각1; 내부 code/path/message를 응답에 넣지 않음 |
+| malformed JSON / request error / null body / sanitize 실패 | 위500; 쓰기0·성공200 ACK0 | 실제 소스·합성 요청/응답/메모리 파일 경계. JSON 본문 null은500, `{data:null}`은400 |
+| JSON 해석·body 접근·sanitizeSlot 성공 + !body.data |400 JSON `{ok:false,error:'No data'}`, 쓰기0 | data missing/null/false/0/빈 문자열5입력, 이전 정규화 trace 동등 |
+| 정상 저장 | `sanitizeSlot(body.slot||'default')`; data만 `JSON.stringify(body.data,null,2)` UTF-8 직접쓰기 완료 뒤200 `{ok:true,slot}` | 정상3입력의 slot/pretty bytes/write-before200·응답 전체 trace 동등; 저장 bytes에 끝개행 추가0 |
+| 파일쓰기 예외 | 쓰기 시도1 뒤500, 성공200 ACK0; rollback 추가0 | 변경 전 메모리 오류는 이전 슬롯 유지, 부분 변경 뒤 오류는11문자 prefix 잔존. 실제 OS 부분쓰기 안전성 UNKNOWN |
+| 400/200 응답 전송 | catch 밖; writeHead/end throw는 같은 Error로 거부,500 재시도0 | head1/end0 또는1 대역; 정상200 전송 throw는 이미 쓰기 시도1 |
+| catch의500 전송 / 닫힌 response |500 전송 throw도 한 번의 시도 뒤 거부. closed 대역은 head1/end1이지만 delivered0 | 실제 wire 전달·response error event·프로세스 생존 UNKNOWN |
+| 공통 `readBody` | data/end/error 구현 그대로 | aborted/close-only/timeout/리스너 cleanup 정책 변경0, 이번 실행0 |
+| 개발 서버·저장 정책 | `server.cjs` outer500 및 atomicSaveJSON 경계 불변; NW.js 직접 write 유지 | 공용 atomic 후보·crash/fsync/동시 writer/실앱·실디스크 인수0 |
+
+`sendJSON`은 기존 application/json·CORS `*` 헤더를 쓴다. `No data`400과 정상200의 전송을 catch 밖에 두어 응답 전송 자체의 throw를500으로 재시도하지 않는다. 실패500 전송 자체도 추가 catch/재시도를 하지 않는다. 따라서 head/end 호출1은 실제 수신1 보장이 아니다. 원자쓰기·공통 readBody abort/close 정책을 채택한 변경도 아니다.
+
+새 actual-source 검수12/12 PASS, 생산 전 같은12그룹의4 PASS/8 FAIL은 별도 이력이다. `node --check node-main.js` 1회 exit0(모듈 실행0). 정상3+No data5 총8 trace는 실제 prepatch baseline 및 현재 AST로 복원한 메모리 control과 동등하다. 이8관측·내부 반례를12그룹에 추가 합산하지 않는다. 전문팀 기존4비교·mats 및 다른 검사 재실행0; 문서 담당 새·기존 test 실행0.
+
+최종 소스 영수증: `tmp/mac-migration-runtime/continued-review-20261002/save-body-error-backup/receipt.json`, SHA-256 `c6e907a82876162eb06007cef854a1963380e5419965edfd4e70f666487c2e75`. [정확한 소스·전달/저장 한계](15%20세이브+데이터구조/SAVE_BODY_ERROR_RESPONSE_20261002.md). 슬롯50자·pretty UTF-8·끝개행0·직접 write-before200·저장 schema는 유지한다. 실HTTP/native앱·실파일 성공/부분실패·재시작·패키지 검수0이다.

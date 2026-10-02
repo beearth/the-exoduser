@@ -1,0 +1,82 @@
+{
+  "taskId": "STORY-empty-only-type-preservation-0733",
+  "provider": "Claude Code (Opus 4.8)",
+  "role": "STORY",
+  "sessionUUID": "3ed6e74d-5552-4d7b-a04b-dc5945e0f3d7",
+  "chatSessionId": null,
+  "timestamps": {
+    "sourceReadUTC": "2026-10-02T07:37:01Z (checks 실행 직전 재추출)",
+    "nodeExecUTC": "2026-10-02T07:37:01Z",
+    "nodeExecKST": "2026-10-02T16:37:01+0900",
+    "separationRule": "SOURCE 읽기 시각과 실제 Node 명령 시각을 분리 기록. task Read/end_turn 시각과도 분리"
+  },
+  "env": {
+    "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "cwdMatchesTask": true,
+    "gitQueried": false,
+    "nodeBin": "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node",
+    "providedCheckpoint": {
+      "sha": "5420819d7b406590578b1bae57eabad071e754e1",
+      "source": "TASK 제공 — exact remote 확인 07:21:16.394148Z(감독 receipt·14 소유 SHA). 독립 HEAD 조회 아님",
+      "globalChangesObserved": "감독 07:30:21Z -uall 54(제공값). 본인 파일 수로 80/100 판단 안 함"
+    }
+  },
+  "ownedOutputs": [
+    "tools/team-followup-20261002/supervisor-next/STORY/STORY-empty-only-type-preservation-0733/result.md",
+    "tools/team-followup-20261002/supervisor-next/STORY/STORY-empty-only-type-preservation-0733/evidence.json",
+    "tools/team-followup-20261002/supervisor-next/STORY/STORY-empty-only-type-preservation-0733/checks.mjs"
+  ],
+  "extraction": {
+    "method": "fs.readFileSync index.html → line 2317 슬라이스 + 마커 단언 → vm 순수 평가. 손복사 아님",
+    "resolver": {"path": "index.html", "line": 2317, "fragmentSHA256": "a782daf54d17fc68379a79d7c44923135f8d153bdb70d286540c684443f355f4"},
+    "wholeFileSHA256_shasum_not_git": {"index.html": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8"}
+  },
+  "expressions": {
+    "originalVerbatim": "_cLang==='ko'?line.text:(line[_cLang]||(typeof _CIN_I18N!=='undefined'&&_CIN_I18N[_cLang]&&_CIN_I18N[_cLang][idx])||line.en||line.text)",
+    "stringGuard_0710": "_cLang==='ko'?line.text:((typeof line[_cLang]==='string'?line[_cLang]:((typeof _CIN_I18N!=='undefined'&&_CIN_I18N[_cLang]&&_CIN_I18N[_cLang][idx])||line.en||line.text)))",
+    "emptyOnly_new": "_cLang==='ko'?line.text:(line[_cLang]===''?'':(line[_cLang]||(typeof _CIN_I18N!=='undefined'&&_CIN_I18N[_cLang]&&_CIN_I18N[_cLang][idx])||line.en||line.text))",
+    "diffPoint": "non-KO 접점. empty-only는 line[_cLang]==='' 단일 삽입 + 원문 non-KO 분기 verbatim 재사용(그 외 truthiness/fallback 불변)"
+  },
+  "synthInputs": {
+    "separation": "SYNTH=lang/idx/line 값 + distinct fallback SENTINEL. 원문 추출 식/데이터와 분리",
+    "fixture": "plain object line={de:<val>, en:SENTINEL, text:SENTINEL}, _CIN_I18N={}, lang=de, idx=0",
+    "values": ["'' (빈)", "1 (truthy 숫자)", "true", "동일 참조 object", "0 (falsy)"],
+    "sentinel": "<<FALLBACK-SENTINEL>>"
+  },
+  "comparedFields": ["반환값", "typeof", "object identity(Object.is)"],
+  "run": {
+    "command": "node v24.15.0 checks.mjs",
+    "exit": 0,
+    "assertions": 13,
+    "assertionsPass": 13,
+    "probeCasesLogged": 5,
+    "resultMatrix": [
+      {"val": "''", "original": "SENTINEL(빈=falsy→fallback, 결함)", "stringGuard": "''", "emptyOnly": "''"},
+      {"val": "1", "original": "1", "stringGuard": "SENTINEL(over-reach)", "emptyOnly": "1"},
+      {"val": "true", "original": "true", "stringGuard": "SENTINEL(over-reach)", "emptyOnly": "true"},
+      {"val": "OBJ(same-ref)", "original": "OBJ(same-ref)", "stringGuard": "SENTINEL(identity 상실)", "emptyOnly": "OBJ(same-ref)"},
+      {"val": "0", "original": "SENTINEL", "stringGuard": "SENTINEL", "emptyOnly": "SENTINEL"}
+    ]
+  },
+  "metadataCorrections_0710_noRerun": [
+    "시각 혼용 정정: 0710 'SOURCE/EXEC 07:13:52'→ SOURCE 읽기(07:13:52Z)와 실제 Node 명령 분리. 감독 public JSONL Bash toolu_01N8FifemSq2CsLd6oAQNN7F command 07:15:34.292Z/tool_result 07:15:34.980Z/exit0 = 0710 Node 실행 07:15:34Z",
+    "cue18은 logged probe이지 assertion 대상 아님",
+    "_CIN_I18N 23 keys는 static top-level key 수, 전체 언어 실행 coverage 아님",
+    "소유 정정: 'root가 감독 STATE 업데이트' 제안은 오류. root=canonical docs/resolver 행(2087→2317)·20→23, 감독=STATE/LOG",
+    "canonical 영화 28/29 의미와 _CIN_I18N 23 key 수 혼합 금지"
+  ],
+  "canonicalHandoffForRoot": [
+    "번역_가이드.md:78 / 번역대상_전체목록.md:2202: '20개 언어'→23 key; index.html:2087→2317; '항상 미참조/데드'→nonempty cue 한정(빈 cue13/18 live); 후보는 empty-only(=== '')이며 string-guard 아님",
+    "번역대상_전체목록.md:3376: index.html:2087→2317; cue13/18 ''는 존재하나 falsy; 미노출은 경로 미사용(0621) 근거 분리",
+    "언어추가_우선순위.md:99: 현행 v13 영화 계약 인수; 영화 28/29 ≠ _CIN_I18N 23 key",
+    "SUPERVISOR_STATE.json은 감독 소유 — root/본 담당 미수정"
+  ],
+  "ownership": {
+    "root": "canonical 문안·생산 채택·최종 검증·Git·docs 동기화",
+    "supervisor": "STATE/LOG",
+    "self": "이 3파일만"
+  },
+  "productionApplied": false,
+  "verificationLimits": "원문식=추출 verbatim, 후보=최소 transform(원문 non-KO 재사용). SYNTH=plain object fixture('',1,true,OBJ,0)뿐. 전체 동등/모든 무브/모든 언어/실제 cue/노출/시각/청취 PASS 확장 안 함. null/undefined/getter/Proxy/side-effect property reads/전체 호출순서 동등·실제 data 비문자열 정책 미검수(data는 string 중심). DOM/movie/getCurrentLanguage/boot/native 미실행. Git 조회 0. SOURCE 기록시각≠실행시각",
+  "notRun": ["생산 코드", "공유 docs 수정", "이전 산출/TASK/checks 수정", "기존 test", "이전 cue0/13/18·KO·ms·route·boot·300f 재실행", "Git 조회/쓰기/index", "실게임/UI/DOM/영상·오디오·타이머/세이브/서버/빌드", "삭제/이동/cleanup/권한/인증/설치/미디어생성", "외부메시지/새세션/하위팀/SendMessage/주소추정", "CH1-1/SOUND/BUILD 통합(root)", "맵 제작", "null/undefined normalization 추가", "전체 동등/모든 언어 PASS 확장"]
+}
