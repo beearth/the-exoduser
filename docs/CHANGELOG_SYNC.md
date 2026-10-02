@@ -52797,3 +52797,11 @@ source11 코드 checkpoint `efb3bb7e02a9ab161e92d9ff3da7229b4cf884cd`의 원격 
 - 원본의 복귀 후 bossRef=null/bossAlive=true에서도 잔류 ORB가 이동하고 필드 적 AOE/FX를 호출하는 경계를 actual AST block으로 재현했다. OrbT0은 복귀 순간 값이며 이후tick증가 유지. [정확 분기·값·핀](4.1맵디자인+설정/CH1-1_BOSS_RESPAWN_PROGRESS_20261002.md).
 - 신규 후보 원본12RED/최종36PASS·실제 생산36PASS·12JS+2JSON PASS, 최초 fixture 실패0. 실콜백·capture/restore·si3/refill/ORB 추출, DB/피해/FX/stat/host 및 initStage/enterArena leaf는 대역. 이전 source13·30/5검사 반복0; native 보스 사망/입력/저장/시각/청취 인수0.
 - HTML2/docs7/test1 root완료10만 checkpoint. actual71→81(외부future8 포함max89)에서 80기준 완료소유만 즉시보존. 기존 검수source11앱/profile/save·타인WIP67·감독STATE/LOG 보존.
+
+
+## 2026-10-03 source15 장비 해제 거절의 HP·MP 손실 방지
+
+- 양판 actual unequipItem의 실패false/성공true와 상세·장착칸·유골함3등록 caller의 성공 가드. 실패 시 재계산·재렌더0; 기존 성공 이동/소리/저장/자원clamp·함수명/slot인자·INVschema·가방분류·개수정책 보존.
+- 두 일반caller×양판4 실제 격자 fixture에서 기존HP600/MP100손실 재현. 신규 memory 원본22/48PASS·26RED→최종48PASS; 실제production48PASS·전체12JS+2JSON PASS. 2준비 오류는0VM/숫자제외, 원팀ITEM8/4·source12/13/14·기존검사 반복0.
+- code2/docs7/test1=10, 양판각6접점+13B/전체역치환exact. 기존8 백업·신규2부재·보호67/index/감독상태4/기존게임·세이브·source11앱 보존. actual71→81에서 완료10만 즉시원격checkpoint, 예약상한89.
+- 실제source 함수·격자·stats/crystal·등록callback 추출이며 UI/FM/noise/DB는 기록 leaf. 성공해제 자원clamp는 별도 미수정. Maclocked read/input0로 native해제·보스사망/재도전·시각·청취·실저장 미인수. source15 상세정본과 ignored 영수증에 exact핀/검수/범위를 기록.

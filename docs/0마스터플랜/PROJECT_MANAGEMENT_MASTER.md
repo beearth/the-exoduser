@@ -1165,3 +1165,23 @@ Claude BOSS2215 후보를 root가 실제 `retryBtn.onclick`의 보스/해금CH1 
 | 제품 인수 | source11/3390 앱 별도 고정. 새 코드 native 사망/열린문·필드몬스터 보존/재도전·visual/청취는 아직 대기 |
 
 실제 callback/helper/ORB block을 추출하고 합성 상태로 검사했다. DB·FX·geometry·stat·damage leaf 및 initStage/enterArena sentinel은 대역이다. 미인수 실제 피해·입력·저장/소리·시각을 완료로 승격하지 않는다. 최신 Mac unlock 요청 대기 동안 코드 통합과 감독의 종료팀 후속 단일송신은 계속한다.
+
+
+## 2026-10-03 source15 장비 해제 실패의 현재 자원 보존
+
+같은 분류의 실제 가방 격자에서 공간 부족으로 해제가 거절돼도 두 일반 UI 경로가 스탯을 재계산해 HP·MP를 감소시키던 결함을 수정했다. unequipItem은 실패false/성공true, 상세·장착칸·유골함3등록 경로는 성공 때만 재계산·재렌더한다. 기존 성공 이동/효과/저장/자원clamp·slot인자·격자/분류·저장schema는 유지한다.
+
+| source15 | 실제 근거 |
+|---|---|
+| parent | source14 `8d95685814b86b824ff2f8b9fa0ee22dc3ada303` |
+| 최소 코드 | 양판6접점씩 각+13B·whole inverse byte exact·stat/grid/판별 의존성 불변 |
+| 본편 | 4030118B·SHA `4e528f8ccd65f222b6c0d108e89c1281022eb27e3c8de152c72fb7e659d7d614` |
+| Easy | 3907385B·SHA `fe3bca4e299b5aea9e08fdbd37cf3798d8085d923c013fc21d0ac74f81288a4e` |
+| 의미 검사 | memory 원본22PASS/26RED→최종48PASS, actual production48PASS/12JS+2JSON PASS. 준비 실패2는0VM/숫자 제외 |
+| 거절 fixture | mainHP1028→428/Easy1051→451·양판MP244→144 재현. 최종 현재/최대 자원4개·P/INV/G·배열/장비/좌표/결정/cache참조 유지 |
+| 성공 | 기존move/recalc/sound/save/caller순서·저자원 무료회복0 유지. 성공 HP/MPclamp 손실 별도후보는 이번 미수정 |
+| 소유/용량 | code2/docs7/test1=10, existing8/new2backup·protected67/index 보존. actual71→81·externalfuture8포함max89, 완료10만 즉시checkpoint |
+| 기록 | inventory source15 상세/test·ignored before/patch/memory/live/production/docs-search/prep2 |
+| Native | source11/3390 Maclocked read1회/input0·기존app/save 보존. 새 코드 실제UI/저장/보스재도전 미인수 |
+
+현재 생산·검사 계약은 [source15 상세](../2_7%20인벤토리+장비시스템/INVENTORY_UNEQUIP_REJECTION_20261003.md)를 따른다.

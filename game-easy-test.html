@@ -14757,17 +14757,17 @@ function equipItem(item){
 }
 function unequipItem(slot){
   const item=INV.equipped[slot];
-  if(!item)return;
+  if(!item)return false;
   const[w,h]=_itemSz(item);
   INV.bag.push(item);
   const pos=_invFindSpace(w,h,INV.bag.length-1);
-  if(!pos){INV.bag.pop();notify(_T('가방에 공간이 없습니다!'));return}
+  if(!pos){INV.bag.pop();notify(_T('가방에 공간이 없습니다!'));return false}
   item._gx=pos.x;item._gy=pos.y;
   INV.equipped[slot]=null;
   recalcSt();
   notify(_T(item.name)+_T(' 해제'));
   try{playFM(300,120,200,.04,.02,'sine',350);playNoise(.02,4000,.015,2000,.001,'bandpass')}catch(e){}
-  dbSaveForce();
+  dbSaveForce();return true;
 }
 let _dropItemLast=0;
 function dropItem(idx){
@@ -46634,7 +46634,7 @@ function _invRenderDetail(idx,source,preview=false){
       const _lbl=it.slot==='bonePart'?_T('도감 등록'):_reqFail?'⚠ '+_L('Lv.'+it.reqLv+' 필요','Req. Lv.'+it.reqLv):_fe>0?_T('장착')+' (\u2692+'+_fe+' \u2192 '+_xc.toLocaleString()+_L('악의',' Malice')+((G.mats||0)<_xc?' \u26A0':'')+')'  :_T('장착');
 _actB.innerHTML=`<div class="id-btns" style="display:flex;gap:6px"><button type="button" class="id-btn equip${_reqFail?' dis':''}" style="${_reqFail?'color:#ff4444;border-color:#ff444466':''}" onclick="equipItem(INV.bag[${idx}]);applyStats();renderInv()">${_lbl}</button><button type="button" class="id-btn" onclick="if(dropItem(${idx}))renderInv()">${_T('분해')} (${_T('악의')}+${_salV})</button></div>`;
     } else if(source==='eq'){
-      _actB.innerHTML=`<div class="id-btns"><button type="button" class="id-btn" onclick="unequipItem('${idx}');applyStats();renderInv()">${_T('해제')}</button></div>`;
+      _actB.innerHTML=`<div class="id-btns"><button type="button" class="id-btn" onclick="if(unequipItem('${idx}')){applyStats();renderInv()}">${_T('해제')}</button></div>`;
     } else if(source==='st'){
       _actB.innerHTML=`<div class="id-btns"><button type="button" class="id-btn equip" onclick="withdrawStorage(${idx})">${_T('꺼내기')}</button></div>`;
     } else _actB.innerHTML='';
@@ -47007,7 +47007,7 @@ function renderOssPanel(){
   if(oss)urn.title=urnDescription;else urn.removeAttribute('title');
   urn.setAttribute('aria-label',urnDescription);
   urn.onclick=()=>{if(oss){INV.selected='eq:ossuary';renderInv();}};
-  urn.oncontextmenu=(ev)=>{ev.preventDefault();if(!oss)return;unequipItem('ossuary');if(INV.equipped.ossuary)return;applyStats();INV.selected=null;renderInv();_invClearHover();};
+  urn.oncontextmenu=(ev)=>{ev.preventDefault();if(!oss)return;if(!unequipItem('ossuary'))return;applyStats();INV.selected=null;renderInv();_invClearHover();};
   urn.onmouseenter=()=>{if(oss){_invHover=-1;_invRenderDetail('ossuary','eq',true);}};
   urn.onmouseleave=()=>_invClearHover();
   const take=pn.querySelector('.oss-withdraw'),remove=pn.querySelector('.oss-unequip');
@@ -47108,7 +47108,7 @@ function renderInv(){
     div.oncontextmenu=(ev)=>{
       ev.preventDefault();
       // 우클릭 → 해제
-      if(item){unequipItem(slot);applyStats();renderInv();return}
+      if(item){if(unequipItem(slot)){applyStats();renderInv()}return}
     };
     if(item)_inventoryFocus.bind(div,()=>INV.equipped[slot]===item?item:null,()=>{INV.selected='eq:'+slot;renderInv();_invRenderDetail(slot,'eq');},_T(item.name));
     eqGrid.appendChild(div);
