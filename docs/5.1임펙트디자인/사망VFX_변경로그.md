@@ -277,3 +277,19 @@
 | `_goreImgs` / `_diImgs` / `void_black` | 완료 고어·피격·부활 대기 시트를 먼저 제출. 중복 Set·유휴1장·180f 재검사 유지 |
 
 시체 수·크기·수명·피해·고어 원본·부활 수치는 변경하지 않는다. [실측·검증 SSOT](../12퍼포먼스·최적화/COMBAT_TEXTURE_WARMUP_20260929.md).
+
+
+## 2026-10-03 source6 — 사망 혈흔 준비 목록
+
+| 항목 | 실제 반영 / 한계 |
+|---|---|
+| 변경 | 양판 `_queueCombatTextureWarmup()`의 VFX selector에 `death_blood` 조건만 각20B 추가. source5 공용 확인창 가드는 유지 |
+| 실제 소비 | `deathFX` → `playVFXAng('death_blood',...)`. 기존 `_partCnt<=300`, 보스 speed6/일반4, `_deathBloodScale(r)`와 판정·RNG 불변 |
+| 자산 | `assets/vfx/Blood_FBF_4x4.png` / 실제512×512 / frame128×128 /16프레임 /4열 /`source-over`. GPU RGBA 기본량1MiB, 부가 메모리·시간은 별도 미측정 |
+| 준비 | 완료된 동일 Image만 기존 큐→`_warmImageGpu`→기존 GPU texture 경로로 전달. `complete`·`naturalWidth>0`, 일반cap80·버퍼120·중복 Set·유휴1장·180f 재검사 유지 |
+| 제외 | `death_smoke`는 현재 등록만 있고 소비0이므로 추가하지 않음. 실제1024×1024/RGBA 기본4MiB의 별도 시트·기존 등록은 불변 |
+| 완료 시점 | 부트에서 준비 시작 후 완료를 기다리지 않음. 늦은 로드·큐상한·재검사 때문에 첫 처치 전 준비 완료 보장0 |
+| 검수 | 실제 적용 양판 기존 combatTextureWarmup4/4PASS 및 executable inlineJS12/importmapJSON2 구문PASS. 각20B 역치환시 source5 전체bytes/EOL exact. 신규 테스트 파일0 |
+| 실제 성능 / 품질 | 첫 처치 시간·실GPU·픽셀·CPU 폴백 회복·청취 미측정. 과거 Windows 및 머리 캡처 실측을 이번 효과로 재사용하지 않음. 이전 등록·업로드 실패 폴백의 복구 보장도 추가하지 않음 |
+
+2026-09-29 배포 스냅샷·기존 실측은 이력이며 이번 source6의 측정값이 아니다.

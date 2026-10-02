@@ -22125,7 +22125,7 @@ function _queueCombatTextureWarmup(){
   if(typeof _diImgs!=='undefined')for(const key in _diImgs)ready(_diImgs[key]);
   if(typeof _corpses!=='undefined')for(let i=0;i<Math.min(16,_corpses.length);i++)ready(_corpses[i].c);
   if(typeof _VFX_SHEETS!=='undefined')for(const id in _VFX_SHEETS){
-    if(id.startsWith('parry_impact')||id.startsWith('ki_slash_hit_')||id==='magic_burst'||id==='land_fire'||id==='fire_burst'||id==='ice_slash'||id==='void_black')ready(_VFX_SHEETS[id].img);
+    if(id.startsWith('parry_impact')||id.startsWith('ki_slash_hit_')||id==='magic_burst'||id==='land_fire'||id==='fire_burst'||id==='ice_slash'||id==='void_black'||id==='death_blood')ready(_VFX_SHEETS[id].img);
   }
 }
 // 워밍업 큐 적재

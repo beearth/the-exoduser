@@ -46,14 +46,14 @@
 
 | 실제 source/근거 | 정확 값 |
 |---|---|
-| 현재 main | 4028953B / `fd4e55dfefad0985870dc3f6dc1633793dad22e48ddb336dda881cdd4edbfe17` |
-| 현재 easy | 3906400B / `db6019a1027464695fcc20b509db05f301eaf23ccc517a70ff8aedeadb61529c` |
+| source5 인수 당시 main | 4028953B / `fd4e55dfefad0985870dc3f6dc1633793dad22e48ddb336dda881cdd4edbfe17` |
+| source5 인수 당시 easy | 3906400B / `db6019a1027464695fcc20b509db05f301eaf23ccc517a70ff8aedeadb61529c` |
 | index | 342119B / `1dd28cab162a4384ad84a356eb2c719940782005d20da1312d2857bc649615a7` 불변 |
 | 이전 함수 | 472B / `bcb5363530521e8bea78406450ddda4d09aaf302278654a3ce120a910abb1439` |
 | 현재 함수 | 양판519B / `c058a9e17835372bbb9fad878f670bf814b4fef9eb945d9f11bfafb233ddbbd2`, 공식 UIUX 후보와 exact |
 | 재진입축 | direct/direct, bulk/bulk, direct/bulk × 첫 승인/취소 × 양판 =12. 원소스12FAIL(첫 Promise 유실), 후보12PASS |
 | 정상 대조 | 양판 순차 bulk2회 및 direct3회, 총4그룹의 state·인수·요청/효과 순서 동일 |
-| 최종 실행 | `test/gameConfirmReentryAcceptance.test.cjs` 12341B/SHA `9062e04cd26c3d351dfd23aa0c2b8bd4b1f8e0dbf5c6619de1e718b2461b3a3a`. 현재 source를 읽어1회 실행, guard 재삽입0/쓰기0, 12PASS+4정상대조·fixtureErrors0 |
+| 최종 실행 | `test/gameConfirmReentryAcceptance.test.cjs` 12341B/SHA `9062e04cd26c3d351dfd23aa0c2b8bd4b1f8e0dbf5c6619de1e718b2461b3a3a`. source5 인수 당시 source를 읽어1회 실행, guard 재삽입0/쓰기0, 12PASS+4정상대조·fixtureErrors0 |
 | 구문 | 변경된 양판 executable inlineJS12/importmapJSON2 1회PASS |
 | 보존 | 각47B 역치환시 source4 백업 전체bytes/EOL exact. 분해 caller·GP·키·index·보호2_3·경제·앱 실물 core 불변 |
 | prototype 영수증 | ignored `continued-review-20261003/confirm-reentry-review/receipt.json`, 38753B/SHA `7384a2205309bcc45c16fda6885aff634e7743edbc704b4277cf18370f79c1af` |
@@ -62,3 +62,20 @@
 기초 하니스의 정상 bulk2개에 VM 배열/host 배열 prototype 비교 오류2가 있었으며 원출력을 보존했다. host 배열 비교로 교정해 해당 bulk2대조만 다시 확인했다. 생산 실패로 계산하거나 신규재진입12·기존28을 반복하지 않았다. 이후 source 변경에 따른 위 최종 live1회는 현재소스 인수다.
 
 DOM/setter 등록 전 동기 재진입, 외부 resolver 변경·옛 handler 수명·DOM 예외·다른 caller 전수·물리 패드·native focus는 검수 밖이다. 공용 Promise 수명 수정이며 전체게임 복구 불가 정지의 재현/수정으로 보고하지 않는다. 실행 중97bb 앱은 고정 source4이며 이47B source5는 포함하지 않는다. [그 앱의 실제 부분 플레이](../13출시·마케팅/MAC_CH1_SOURCE4_NATIVE_PARTIAL_20261003.md).
+
+
+## 2026-10-03 source6 — 사망 혈흔 준비 목록
+
+| 경계 | 정확 현재 값 / 근거 |
+|---|---|
+| production main | 4028973B / `1e4591caea739887ce749492db4ea72547292f583fba1f8e4fcafe88071f8bb8` |
+| production easy | 3906420B / `17f490d5d5e38b0fac39085578115acd4b35e48263e84dd542b9a2f298e3ccf5` |
+| index | 342119B / `1dd28cab162a4384ad84a356eb2c719940782005d20da1312d2857bc649615a7` 불변 |
+| 실제 반영 | ANIM 완료 후보 중 실제 소비 `death_blood`만 양판 기존 준비 selector에 각20B 추가. `death_smoke` 소비0/미채택. source5 gameConfirm519B/함수SHA c058a9e17835372bbb9fad878f670bf814b4fef9eb945d9f11bfafb233ddbbd2 유지 |
+| 검수 | 기존 combatTextureWarmup4/4PASS·양판 executableJS12/importmapJSON2 구문1회PASS·source5 전체 역치환exact. 준비 큐80/버퍼120/180f/유휴1장 및 혈흔 frame·blend·전투 수치 불변 |
+| 실물 / 미검수 | 기존97bb/PID48587/3386 source4앱은 그대로이며 source5·6 포함0. native CH1-1 연결6단계·보스사망/부활 보존·재도전·청취·첫 처치 성능 개선 미검수. source 변경 건수와 playable 완료를 구분 |
+| 최신 GUI 근거 | 본 회차 Code AX 요청에서 도구가 Mac 잠금을 명시적으로 확인. 이전 noWindowsAvailable 원인UNKNOWN 이력은 보존하되 현재 잠금 상태는 확인됨. 기존 잠금해제 질문은 대기 중이며 중복 질문0 |
+| Claude 운영 | 담당 실제17:39 관측: QA/STORY 새 source 기록, BOSS 기존 CH1 후보 인계 수신. ART 직접 입력 대기·MAP 기존 큐 미소비. SKILL/ENEMY 감독STATE 읽기와 ANIM `_b3r` 생성/load/resize 소스 읽기 자동검토 거절은 보류. 전체8동시active로 계산0 |
+| 보존 범위 | source2+관련docs10=12경로. root 예약13 이내, 새 전문팀 credit0. 감독STATE/LOG·타인WIP·사용자게임/세이브·보호2_3·고정앱 실물 변경0. 커밋/원격 성공은 별도 receipt의 exact SHA로만 판정 |
+
+상세 준비 계약은 `docs/12퍼포먼스·최적화/COMBAT_TEXTURE_WARMUP_20260929.md`의 source6 보충을 따른다. 자동검토 거절 목적은 다른 도구·세션·대리 읽기로 수행하지 않는다.
