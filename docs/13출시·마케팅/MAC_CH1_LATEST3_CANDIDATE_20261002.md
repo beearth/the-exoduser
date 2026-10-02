@@ -8,9 +8,9 @@
 | source checkpoint | `7ccb72c046db10a0082ca9b816a370d1a4b2b262` 확정 게임 코드; 이후 원자료/doc 보존commit은 game source변경0 |
 | 실제 앱 | `outputs/mac-package-ready/mac-packager-b3f52d84-90e5-4eca-ac38-bc2a874a0f43/package/EXODUSER-b3f52d84-90e5-4eca-ac38-bc2a874a0f43.app` |
 | 생성 | fresh plan1 READY, execute1 exit0·내부 verifyOutput1. 별도 verifier/execute 재시도/옛검사 재실행0 |
-| source main | SHA `ce171131cb740e85a46e04ba7cb5bc6c29a300cb2c85aa8165eca194920f4613` 현재 원문·stage·실앱 동일 |
-| source easy | SHA `8c7d82087aefb2efe8a20b9ca293ff8c55fed899222f8c0a20392b06508e0129` 현재 원문·stage·실앱 동일 |
-| source index | SHA `1dd28cab162a4384ad84a356eb2c719940782005d20da1312d2857bc649615a7` 현재 원문·stage·실앱 동일 |
+| source main | SHA `ce171131cb740e85a46e04ba7cb5bc6c29a300cb2c85aa8165eca194920f4613` 생성 당시 원문·stage·실앱 동일(고정7ccb72c0 snapshot) |
+| source easy | SHA `8c7d82087aefb2efe8a20b9ca293ff8c55fed899222f8c0a20392b06508e0129` 생성 당시 원문·stage·실앱 동일(고정7ccb72c0 snapshot) |
+| source index | SHA `1dd28cab162a4384ad84a356eb2c719940782005d20da1312d2857bc649615a7` 생성 당시 원문·stage·실앱 동일(고정7ccb72c0 snapshot) |
 | 반영/회귀 | SOUND10·ITEM24·charGate8 그룹PASS=42(각 정상대조 포함). 앞 인수3b548b06/7301b270/7ccb72c0 근거 재사용, 이번에 다시 검사실행0 |
 | 선택 복사 | 입력7918 정확coverage; 비파생7916 SHA동일·package/node-main2는 기존 port/save 계약의 고유값만 파생. c927 대비 source3만갱신·나머지7915핀 동일 |
 | runtime/helper | 기존 승인 NW.js0.111.2 osx-arm64 runtime340=출력334동일+plist/strings6정상파생. helper4/main payload·실행비트 및cache340보존. 기존nw-builder4.17.10 사용, 새download/install0 |
@@ -30,3 +30,8 @@
 source/DOM/Audio/GL 대역PASS를 native/실입력/청취/시각PASS로치환0. 실제맵 QA 시 맵가이드 완독과 SSOT읽기순서·§23 보고/visual verdict가 필요하며 이번앱생성은카메라/전투 visual검수0다. 서명/codec/quarantine·전체동적dependency·영속save재기동·OAuth/crashpad 완전metadata격리도미인수다. output이동은고유절대save/profile파생계약변경이라별도검토한다.
 
 [이전 c927 생성 근거](MAC_CH1_PLAYABLE_CANDIDATE_20261002.md)와 [활성 CH1-1 목표](../0마스터플랜/mac-resume-20261001/vscode-dispatch/MILESTONE-CH1-1-PLAYABLE-20261002.md)는 보존한다. 새앱생성1건을목표/6단계완료로계산하지않으며 source freeze는정확사본생성완료로해제한다.
+
+
+### 후속 source 수정과 후보 구분
+
+이 b3 앱은 SOUND/필터Y/charGate 세 수정의 고정 snapshot이다. 이후 양판 쓰레기 분해 확인 후 잠금·identity 재검사를 production source에 반영했으며 현재 source main SHA e462f2345682856d24bb416a17aec763281a8dceb02f21af565db189992353ea/easy68fa8e17d379fdf7e9da20b153d874e2ac74544d790397b4d36edbcc1207f390이다. b3 앱에 이 후속 수정이 들어간 것으로 계산하지 않는다. 새 source를 포함한 앱 생성/실제 기동은 별도 단계이며, 현재6단계 플레이·청취·visual 인수0을 유지한다. [후속 정확 계약](../2_7%20인벤토리+장비시스템/INVENTORY_JUNK_CONFIRM_REVALIDATION_20261002.md).

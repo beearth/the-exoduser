@@ -765,7 +765,7 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 보관함 탭 배낭 | 기존 전체 소지 아이템 표시 |
 | 전환 | 초기 UI 구성은 기본 equipment 탭과 접근성 상태만 설정한다. inventoryPage가 이미 정의되고 새 탭과 다를 때만 _invChangeCategory 호출: INV.selected=null, _invHover=-1, 분해 선택 clear, invFilter의 slot/rarity/el=null. renderInv 후 정보창 숨김. 같은 탭 재선택은 재렌더하지 않음 |
 | 개수 | invCount는 현재 분류 보유 개수. invMax/BAG_MAX는 기존 공유 용량 |
-| 일괄 조작 | 전체 쓰레기 지정/일괄분해는 filtered에 포함된 현재 표시 아이템만 대상. 분해는 확인창에 제시한 _jkItems 객체만 제거 |
+| 일괄 조작 | 전체 쓰레기 지정/일괄분해는 filtered의 원래 _jkItems 집합에서 확인 전 _pendingJunk, 확인 후 _currentJunk를 재검사한다. 현재 가방의 동일 객체·junk·중요잠금 해제·미장착·유한한 0 이상 salvageVal을 모두 만족한 객체만 제거하고 현재 보상 합계를 지급한다. 확인 뒤 새 쓰레기는 포함하지 않는다 |
 | 데이터 | INV.bag/장착/도감/창고 저장 구조와 기존 좌표·용량 유지. 실제 아이템 복제·자동등록·소모 없음 |
 | 함수/캐시 | _invCategoryMatches, _invChangeCategory. ui-panels.js?v=20260927-1 |
 
@@ -2714,3 +2714,17 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 실제 minus 함수·카드/합체 host 캡처·그룹/멤버 선택·환불 helper·grid clear/append와 wrapper를 추출했다. DOM/P/G·부분 renderer·UI/save/SFX는 대역이며 옛 callback 직접 호출은 합성 수명 반례다. 자연 더블클릭/native/gamepad/전체 렌더/compact·상세/다른 합체/리셋·합체 생성gate/P 교체·async reset/실제 저장/오디오 내부 RNG·청취/시각/실게임은 미검수다. source PASS를 runtime/visual/저장/청취 PASS로 계산하지 않는다.
 
 상세 구현·검수·한계는 [UIUX 최신 minus 수명 계약](../3.1%20ui%20hud%20디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md#2026-10-02-분리된-스킬-카드-minus-콜백-수명--생산-반영)을 따른다.
+
+
+### 2026-10-02 쓰레기 분해 확인 후 잠금·identity 재검사
+
+| 항목 | 현행 계약 |
+|---|---|
+| 양판 `_jkBtn.onclick` | 기존 렌더 당시 `_jkItems` 중 확인 직전 적격 객체만 `_pendingJunk`로 제시한다. await 뒤 그 집합을 다시 검사한 `_currentJunk`만 제거한다 |
+| local `_canJunk(it)` | 객체 존재, `it.junk`, `!it.fav`, `INV.bag.includes(it)`, `!Object.values(INV.equipped).includes(it)`, `Number.isFinite(salvageVal(it)) && salvageVal(it)>=0` 모두 필요. 전역 helper가 아니다 |
+| 금액 | 제시액 `_pendingTotal`과 지급액 `_currentTotal`은 각각 해당 집합의 현재 `salvageVal` 합계. 등급/강화/티어 환수 공식은 그대로 유지한다 |
+| 비어 있음/취소 | 확인 전 적격0이면 확인창0; 취소 또는 확인 후 적격0이면 제거·보상·선택 clear·SFX·저장·마지막 렌더0. 확인창 및 KeyF 자체 부작용은 별도 |
+| 부분 성공 | 보호되지 않은 원래 객체만 분해하고 그 보상만 지급한다. 기존 `_invSalSel.clear()`·`INV.selected=null`·`SFX.pickup()`·`dbSaveNow()`·`renderInv()` 순서 유지 |
+| 검수 | actual 전체 keyboard KeyF→실제 gameConfirm/gcOk→await bulk callback을 DOM 대역에서 연결. 신규28/28 PASS, 별도 정상 old-source 대조8/8 동일; 구검사 반복0. 자연/native 입력·패드·전체 renderer·실저장·청취는 미인수 |
+
+[실제 접점·수치·한계](../2_7%20인벤토리+장비시스템/INVENTORY_JUNK_CONFIRM_REVALIDATION_20261002.md). 2026-09-27 집합 제한 계약을 보존하면서 확인 전·후 적격성을 명시한다.

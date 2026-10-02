@@ -478,3 +478,8 @@ CH1-1 목표 actual전체Read13/13(기존MAP미소비/ENEMY실거부제외)을�
 [새 실제 후보·정확SHA·기동/검수Gate](../../../13출시·마케팅/MAC_CH1_LATEST3_CANDIDATE_20261002.md)가현행앱기준이다. 이전c927/runtime/partialfixture보고서는그시점snapshot으로보존하며source/모델PASS를제품/nativePASS로확대하지않는다. 관련docs전체rg1회47행/15문서분류를근거로현재Master/build/runtime정본·root기록과새보고서를동기화했다.
 
 동일checkpoint에새완료raw20 exact(2681653B/10역할)를원문보존한다. 합계readinessSHA00ea33fd84f674c7a22713a6fa93010fd9b1775d18a2445d518ae471e05b837d, UIUX ongoinggoal savedmessage/rawonly와ANIM비발광·STORY/SOUND/BALANCE미인수경계를유지. EOF WARN2 원문보존, source후보/은행136검사를게임20수정/제품완료로계산0·원검사재실행0. 완료원문보존으로rolling공간을회수하고80checkpoint/100전새산출보호를계속한다.
+
+
+### 2026-10-02 쓰레기 확인 후 잠금 보호 source 인수
+
+실제 KeyF→gameConfirm/gcOk→await bulk 연결에서 확인 중 중요잠금한A의 오분해·과지급을 재현하여 양판 `_jkBtn.onclick`의 현재bag/junk/fav/equipped/분해액을 확인 전·후 재검사했다. 초기악의500에서 old3500(A+B)→final2500(B만), A보존. callback2 각+562B 외전체bytes/EOL 동일. 신규28/28+별도정상역소스대조8/8 PASS(구검사반복0), inlineJS12/importmapJSON2 구문1회PASS. 실제native/전체renderer/청취/실저장은미인수다. [정확계약](../../../2_7%20인벤토리+장비시스템/INVENTORY_JUNK_CONFIRM_REVALIDATION_20261002.md). 코드+canonical2_7/UI동기화와관련docs전체검색45행20경로분류를같은범위로보존한다. b3Mac앱은이전3fixsnapshot이며후속source를포함한새앱/실제6단계는별도다. 제품source수정1건이고검수36그룹을제품36건으로계산하지않는다. root는생산인수·빌드·Git,기존감독은전문15팀단일오더전담을유지한다.

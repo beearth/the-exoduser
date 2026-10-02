@@ -47385,9 +47385,14 @@ _jkSelBtn.style.display='';_jkSelBtn.textContent=_L("전체 쓰레기 지정 ({p
       let _jkTot=0;for(const it of _jkItems)_jkTot+=salvageVal(it);
 _jkBtn.style.display='';_jkBtn.textContent=_L("쓰레기 전부 분해 ({p0}개 -> 악의 +{p1})","Salvage all junk ({p0} -> +{p1} Malice)",{p0:_jkItems.length,p1:_jkTot});
       _jkBtn.onclick=async()=>{
-        if(!await gameConfirm(_L("{p0} 쓰레기 {p1}개를 일괄 분해합니다.<br>{p2} {p3} 악의 획득.<br><br>{p4} 중요잠금 아이템은 제외됩니다.<br>{p5} 복구 불가!","{p0} Bulk salvage {p1} junk items.<br>{p2} {p3} Malice gained.<br><br>{p4} Favorited items excluded.<br>{p5} Cannot undo!",{p0:_glyph('trash','#cc9944',15),p1:_jkItems.length,p2:_glyph('demon','#cc66ff',15),p3:_jkTot,p4:_glyph('warn','#ffaa33',15),p5:_glyph('warn','#ff6644',15)}),null,null,true))return;
-        INV.bag=INV.bag.filter(it=>!_jkItems.includes(it));
-        G.mats+=_jkTot;_invSalSel.clear();INV.selected=null;
+        const _canJunk=it=>{if(!it||!it.junk||it.fav||!INV.bag.includes(it)||Object.values(INV.equipped).includes(it))return false;const _value=salvageVal(it);return Number.isFinite(_value)&&_value>=0;};
+        const _pendingJunk=_jkItems.filter(_canJunk);if(!_pendingJunk.length)return;
+        const _pendingTotal=_pendingJunk.reduce((sum,it)=>sum+salvageVal(it),0);
+        if(!await gameConfirm(_L("{p0} 쓰레기 {p1}개를 일괄 분해합니다.<br>{p2} {p3} 악의 획득.<br><br>{p4} 중요잠금 아이템은 제외됩니다.<br>{p5} 복구 불가!","{p0} Bulk salvage {p1} junk items.<br>{p2} {p3} Malice gained.<br><br>{p4} Favorited items excluded.<br>{p5} Cannot undo!",{p0:_glyph('trash','#cc9944',15),p1:_pendingJunk.length,p2:_glyph('demon','#cc66ff',15),p3:_pendingTotal,p4:_glyph('warn','#ffaa33',15),p5:_glyph('warn','#ff6644',15)}),null,null,true))return;
+        const _currentJunk=_pendingJunk.filter(_canJunk);if(!_currentJunk.length)return;
+        const _currentTotal=_currentJunk.reduce((sum,it)=>sum+salvageVal(it),0);
+        INV.bag=INV.bag.filter(it=>!_currentJunk.includes(it));
+        G.mats+=_currentTotal;_invSalSel.clear();INV.selected=null;
         SFX.pickup();dbSaveNow();renderInv();
       };
     }else{_jkBtn.style.display='none'}
