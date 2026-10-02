@@ -52253,3 +52253,25 @@ late4 result/evidence SHA는 감독 공식 pin과 동일: STORY `870166cc681937f
 상세 계약은 `docs/8.0몬스터디자인/ENEMY_GL_2D_BODY_FALLBACK_GATE_20261002.md` SHA `20b8175861def44b3a73966e8adacbf11987a167c1960465351f2c7caa65f7f2`를 따른다. 정적 영수증 `tmp/mac-migration-runtime/continued-review-20261002/anim-body-static/receipt.json` SHA `807b0f169ac5995c6a69dad510bfc792348f6a5c63fe035b7c0385984e8cf482`; 문서 completion `tmp/mac-migration-runtime/continued-review-20261002/anim-body-docs-backup/2026-10-02T09-05-06.157Z-8aa70d14-6c2d-49f5-9394-0e6106fa21e0/completion.json` SHA `117f77b5d3c5106a670024bc91596e7d8e7bdd50b00f014edd33acd818ca30f5`. 실제 GL/Canvas/DOM/native·게임 입력/재시작·저장·GPU 픽셀/청취 검수0이며 발 앵커 UNKNOWN/corpse fade 보류를 유지한다.
 
 전문15팀 완료감시/피드백/다음TASK는 기존 작업감독의 단일송신 소유이며 총괄은 이 docs-only 인수·정확 Git 보존을 맡는다. 총괄+감독2/Codex전문7/Claude8=17, Changes80 완료소유경로 checkpoint/100전 새산출중단 Gate 유지. 보호2_3/PETS_LOCK/타인WIP/원 사용자23·사용자게임탭·세이브·기존앱/서버 보존. 설치/권한/인증/삭제/cleanup/결제/게시/새채팅·새팀/PC·Windows 작업0. exact commit/push/원격SHA 및6경로 blob proof는 `tmp/mac-migration-runtime/continued-review-20261002/anim-body-checkpoint/receipt.json`에 완료 뒤 기록한다.
+
+## 2026-10-02 보스 runtime taxonomy 정본 동기화
+
+공식 `BOSS-runtime-only-count-correction-0548` 완료 `cb7c1847-d8f0-4337-899c-b8d6e1290017`의 정적 분류를 현행 양판과 대조하고 정본5의12접점만 교정했다. 이 checkpoint는 **docs-only8경로, 보스 source/배치/이름/전투 수치·설계19 정책 변경0, 기존 검사 재실행0**이다. 원설계19 목록 독립 검증·로어 보강 채택·실전투/native/visual 인수는 HOLD다.
+
+| 항목 | 정확 현재 분모·계약 | 인수 경계 / 보존 |
+|---|---|---|
+| 설계·배치·이름 | 설계19 LOCK, HELL_BOSSES si0~34 배치35, 표시명34(다크드루이드 si0/si3 중복). 7행4/6/4/7/5/6/3 | 종류19와 배치35·문자열34는 별개. 설계 종류 수 변경·독립 목록 재검증0 |
+| 매핑 표 | identity/alias 대응19행 + runtime-only 표기15행 + si0 별도1행 =35 | 옛14열거의 si4 벌레 수호자 누락 교정. runtime-only SI4/5/8/10/12/14/15/17/19/21/23/26/27/28/32. literal19⊂35 또는35−19 계산이 아님 |
+| 실제 무브 선언 | BOSS_MOVES59 고유ID, 예약 cageTrap.idx41 유지; 전역 예약 제외 eligible ID universe58 | 모든 보스가58기술을 실행했다는 뜻이 아님. 원배열/idx/기존49설계·옛57/56 관측 이력 보존 |
+| si32~34 Set | 최종 si0~34 보강 루프는 미정의 Set을59정의로 채운 뒤 cageTrap삭제, 명시적 Set58 | null/무필터/전체49이라는 현행 설명 교정. phase/거리/CD/score 선택·58실행/59case/AIupdate 미검수 |
+| 예약 정책 | 모든35 Set에서 cageTrap제외·AI score−1·강제case recover/25f 유지 | 보스 사용/배열재정렬/플레이어공용자원변경0. 정적 원문 관찰이며 새 전투·피해·음향 실험0 |
+| 현재 source | mainSHA34ba2b742523850bda8b6f204f86d216b74ce3264698277f6e6c728f9c75bdf7 / easySHA24f820a162d8ef545caf910116119cb09db6980c0f9508d48867eff5dc7d8adb, 기준HEAD892086fa527acaf12c6b83611d405e09e7ad1be3 | 양판5fragment/whole2 총12pin 및 root whole-source12 별도 보존. BOSS_MOVES9497–9557/8948–9008, MOVESET9637–9688/9088–9139 |
+| 최소 정본 | BOSS_CANONICAL_MAPPING5접점+부록, BOSS_BATTLE_SETTINGS3, WORLD_STRUCTURE_SSOT1, MAP_DESIGN_CLOSURE2, _MAP_SSOT_INDEX1 | 총12 exactold/new 역복원 원문100%. index 혼합CRLF201/LF158 포함 기존EOL·LOCK/outer/map 예외·옛si0/3 표 보존 |
+| 보고 / 전수검색 | 신규 BOSS_RUNTIME_TAXONOMY_SOURCE_SYNC_20261002.md60행. 전수검색 전183행/35문서→정본 후208행/37문서, 미분류0 | 신규 SUPERVISOR_LOG 당시 관찰은 소유자 역사로 보존. root2 추가 후 최종검색·정확 분류는 checkpoint receipt에 별도 기록 |
+| 원문·소유 | 원팀 raw2는 이미HEAD 같은SHA, 수정/재stage0; root2 원prefix100%, core8 scoped | 원 사용자23·보호2_3/PETS_LOCK·타인WIP·supervisor mutable STATE/LOG/activeTASK 보존. 신규 UIX expanded test1은 별도WIP라 이 commit제외 |
+
+원팀 보고서의 부정확한 시각은 원문 artifact로 보존하고 공식 TASK수신05:54:01.361Z/Read05:54:04.671Z/end05:58:48.391Z와 이번source read09:55:17.958Z를 구분한다. 설계49(Unity)/source57(2026-08-16)/sound56(2026-03-27)/서사·마케팅35+ 및 rootCI 초기21의14/15 충돌은 당시 분모·correction-pending 이력이며 일괄 치환하지 않는다. 부록 참조의 §3→§2 정정은 신규부록 안에서만 수행했다.
+
+정적 조사 `tmp/mac-migration-runtime/continued-review-20261002/boss-runtime-taxonomy-static/2026-10-02T09-34-21.501Z-c9a11d6d-16ed-4649-b2c4-ede31e4c6058/completion-final.json` SHA `43464cc08513dacee7569410967757d2f0b4a60f55627d0e0cc9b50f8c49abcc`, docs완료 동일폴더 `docs-sync-completion.json` SHA `31b4b829f921f99046ade8f2b76ab966228bd37549d829386d6b894434607533`. 최종8경로 blob·원격exactSHA는 `tmp/mac-migration-runtime/continued-review-20261002/boss-runtime-taxonomy-checkpoint/receipt.json`에 기록한다. 이 작업의 source/검사/실게임/native/GL/청취/geometry/카메라·맵QA0이며 기존 MAP RETOUCH를 visual PASS로 승격하지 않는다.
+
+총괄+감독2/Codex전문7/Claude8=17, 전문15팀 감시/피드백/다음TASK는 기존감독 단일송신 소유. 총괄은 승인 인수·최소 적용·문서/Git 보존을 맡으며 기존TASK·검사재송신0이다. Changes80 완료소유경로 checkpoint/100전 새산출중단, 사용자게임탭·세이브·기존앱/서버·원23변경 보존. 설치/권한/인증/결제/게시/삭제/cleanup/새채팅·팀/PC·Windows0.

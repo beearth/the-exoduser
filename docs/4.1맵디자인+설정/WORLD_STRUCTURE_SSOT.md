@@ -222,7 +222,7 @@ UD-MAP-02  보스 canonical → [RESOLVED: Lore↔Runtime 분리 매핑]
 ```
 
 ### 잔여 UD (P1 비차단, 후속) — `MAP_DESIGN_CLOSURE.md` 최종감사 참조
-- UD-A si2 명칭(지옥기형↔숲의 사냥꾼) · UD-C OUTER 렌더수단(P2) · UD-D runtime-only 14보스 로어 부여.
+- UD-A si2 명칭(지옥기형↔숲의 사냥꾼) · UD-C OUTER 렌더수단(P2) · UD-D runtime-only 15보스 로어 부여.
 
 ### MAP-P0.5 확장 문서 (이 세계구조 SSOT의 하위)
 - `STAGE_SPATIAL_GRAMMAR.md`(A) · `MAP_GRAMMAR_VARIANTS.md`(B) · `VERTICAL_ASCENT_LANGUAGE.md`(C)

@@ -72,13 +72,13 @@
 - OUTER 3계층 렌더 (수단 미확정 — 후보만)
 - 거대보스 존재감 사다리 1~4 (5는 기존 재사용)
 - 8 topology archetype 챕터 배정
-- 거대보스 융합 디자인언어 확장(runtime-only 14보스 로어 부여)
+- 거대보스 융합 디자인언어 확장(runtime-only 15보스 로어 부여)
 
 ## 사용자 결정 필요 (P1 비차단, 후속)
 - UD-A: si2 명칭 통일 — 지옥기형(runtime) vs 숲의 사냥꾼(lore/settings표)
 - UD-B: 스테이지 크기 = 200×200 유지 재확인(현 LOCK) — 대형 존은 명시 거부됨
 - UD-C: OUTER 렌더 수단 선택 시점(P2 착수 시)
-- UD-D: runtime-only 14보스에 로어 부여 여부/우선순위
+- UD-D: runtime-only 15보스에 로어 부여 여부/우선순위
 
 ## 구현 전에 빠진 것 (P1 이후 필요, P1 비차단)
 - CH2-1(si4) authored 벌레굴은 후속 구현 완료. CH2-2~CH7 잔여 에리어별 blockout 필요.

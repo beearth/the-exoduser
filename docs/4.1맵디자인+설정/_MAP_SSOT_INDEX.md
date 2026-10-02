@@ -285,7 +285,7 @@
 - **현재 상태: BLOCKED_BY_CONCURRENT_WIP** — game.html이 동시 세션에서 DIRTY. clean HEAD 확보 시 착수.
 
 ## 잔여 UD (P1 비차단)
-- si2 명칭 통일(지옥기형↔숲의 사냥꾼) · 전역 OUTER 렌더수단 선택(P2) · runtime-only 14보스 로어 부여. 실제 CH1-1 stage0은 locked outer+default smoothing의 64-chunk local 예외, CH1-2 stage1은 별도 opt-in 예외다.
+- si2 명칭 통일(지옥기형↔숲의 사냥꾼) · 전역 OUTER 렌더수단 선택(P2) · runtime-only 15보스 로어 부여. 실제 CH1-1 stage0은 locked outer+default smoothing의 64-chunk local 예외, CH1-2 stage1은 별도 opt-in 예외다.
 
 ## CH2-1 몬스터 QA 계약 — 2026-08-30
 
