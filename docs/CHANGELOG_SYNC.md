@@ -52472,3 +52472,16 @@ CH1-1 목표 actual전체Read13/13(기존MAP미소비/ENEMY실거부제외)을�
 | 범위 한계 | auth 등록은init의_testMode earlyreturn뒤여서 demo/offline SIGNED_OUT 실제서비스로확대0. DOM/timer/media/Map저장대역 검수이며 실제 overlay pointer·native·인증서비스·영속저장·시연6단계 미인수. c927앱dd333에는이번fix미포함 |
 
 [현재 계약·docs 검색 분류·정확 SHA](13출시·마케팅/CHAR_GATE_CANCELLATION_20261002.md)와 source final receipt SHA8573548814afa0dfcf19cfac1866998b19a999a4644c26615355b534b2ac1fdb 참조. source인수·관련docs4·root기록2만 scoped checkpoint하고 타팀WIP/사용자23·game현재ITEM/SOUND수정을 보존한다. 기존팀13 재개와 개별 종료 복구를 감독이 담당하며 과거Read/제출을현재active로계산0. 실제Mac연결플레이목표는미완료 active다.
+
+## 2026-10-02 새 후속 결과23 원문 분할 보존
+
+감독 hb1315-ready-partial-raw-handoff manifest SHA4b9a21d96cb38408e2ccab49dde87d029c31119b7f7055b66b8429dc34affd2d의 소유23 raw(485737B)를 exact SHA/bytes·13 역할marker 기준으로 분할 보존한다. 검수 receipt SHAbcbb150c5d1cfbc5635d7f260aa3e9ec85756f036b45f5905774795490812bbc. 새검사/후보 실행·source 추가적용0이며 원문 EOF blank WARN7건을 보존한다.
+
+| 인수 경계 | 보존·미인수 |
+|---|---|
+| ART | result/patch Write 성공만 보존. 저장 Write가 앞선 public end 뒤이므로 새 public 완료로 확대0 |
+| BUILD | 바뀐 result.md는 WIP로 제외; manifest 소유patch1만 exact보존 |
+| UIUX | activegoal 후 저장raw2이며 goal/기능완료로확대0 |
+| 나머지 | immutable 소유pins/완료marker만 보존, 개별 source 모델 상세인수와독립. 원자료23건을제품수정23건으로계산0 |
+
+실제 생산은3b548b06 사운드 연결정리·7301b270 필터 뒤Y identity·7ccb72c0 캐릭터입장 취소의 서로다른3수정과 새검사10/24/8 PASS다. 현재 c927앱은dd333 snapshot이므로 이3수정의native/실제6단계플레이완료0. 종료팀은감독이기존세션의다음실제업무로재개하고 실제Read/새tool확인으로관리한다. actual80완료소유checkpoint/100전새산출보호와rollingcredit는유지하되상세전수검수·새epoch대기로전팀을멈추지않는다. 새원문보존으로공간을회수하고활성CH1-1목표를이어간다.

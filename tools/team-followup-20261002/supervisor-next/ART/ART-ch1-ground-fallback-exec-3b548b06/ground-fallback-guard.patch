@@ -1,0 +1,27 @@
+# CH1-1 지면 fallback 가드 — ART 최소 2앵커 patch (root 적용 소유)
+# 근거: _FB64(1x1 투명) 404-fallback이 naturalWidth>0 가드를 통과 → 투명 지면(길 가독성 상실)
+#       + spacingPx:'native'로 step=1px → drawImage O(맵픽셀²) 폭주(맵 캐시 빌드 행).
+#       _gtFloorImg는 이미 naturalWidth>1 사용 → 임계 일관화.
+# 적용 방식: 라인번호는 root WIP로 이동하므로 "유니크 문자열 치환"으로 적용(두 파일 공통, 각 1회).
+# 범위: game.html + game-easy-test.html. geometry·asset·LOCK 변경 0.
+
+## 앵커 1 — Pass 0.4 지면 타일 준비 가드 (양쪽 파일 각 1곳)
+# find (unique):
+const allReady=tiles.every(tid=>_GROUND_TILES[tid]&&_GROUND_TILES[tid].complete&&_GROUND_TILES[tid].naturalWidth>0);
+# replace:
+const allReady=tiles.every(tid=>_GROUND_TILES[tid]&&_GROUND_TILES[tid].complete&&_GROUND_TILES[tid].naturalWidth>1);
+
+## 앵커 2 — Pass 0.5 맵텍스처 오버레이 가드 (방어적; 현재 _MAP_TEX_FILES={} 라 dormant)
+# find (unique):
+if(_mapTexImgs[G.stage]&&_mapTexImgs[G.stage].complete&&!_useSoftFloorEdge()){
+# replace:
+if(_mapTexImgs[G.stage]&&_mapTexImgs[G.stage].complete&&_mapTexImgs[G.stage].naturalWidth>1&&!_useSoftFloorEdge()){
+
+## 효과
+# healthy(gt_03 nw=1024): 변화 없음(no-op) — 원문 실행 draws=1 유지.
+# 404→_FB64(nw=1): 가드 실패 → Pass 0.4/0.5 skip → _gtFloorImg 소일+절차적 지면(_paintHellFloorBaseTone/Marks) 폴백.
+#   원문 실행 대조: 현행 draws=160,000(400x400 소형맵; 실제 200x200타일=8000²에서 ~64,000,000=행) → 제안 draws=0.
+
+## 비고
+# - 공용 source(game.html/game-easy-test.html) 실제 적용·Git·docs 동기화는 root 소유. 본 세션 미적용(productionApplied=false).
+# - §15/§16/§23 CAMERA-FIRST 실게임 길/적/전조 가독성 VISUAL VERDICT는 MAP/QA 미인수(별도 Gate).

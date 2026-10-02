@@ -1,0 +1,22 @@
+--- a/game.html
++++ b/game.html
+@@ -61297,7 +61297,7 @@
+     if(state.pad&&!row[1])continue;
+     const item=document.createElement('div');item.className='intro-key-row';
+     const key=document.createElement('span');key.textContent=state.pad?row[1]:_introGuideKeys(row[0]);
+-    const desc=document.createElement('div');desc.textContent=_L(row[2],row[3]);
++    const desc=document.createElement('div');desc.textContent=state.pad&&row[0]==='inventory'?_introGuideText(['인벤토리 보관함 탭','Inventory storage tab']):_L(row[2],row[3]);
+     item.appendChild(key);item.appendChild(desc);body.appendChild(item);
+   }
+   $('ikNote').textContent=step.note?_introGuideText(step.note):'';
+--- a/game-easy-test.html
++++ b/game-easy-test.html
+@@ -59635,7 +59635,7 @@
+     if(state.pad&&!row[1])continue;
+     const item=document.createElement('div');item.className='intro-key-row';
+     const key=document.createElement('span');key.textContent=state.pad?row[1]:_introGuideKeys(row[0]);
+-    const desc=document.createElement('div');desc.textContent=row[OPT.lang==='en'?3:2];
++    const desc=document.createElement('div');desc.textContent=state.pad&&row[0]==='inventory'?_introGuideText(['인벤토리 보관함 탭','Inventory storage tab']):row[OPT.lang==='en'?3:2];
+     item.appendChild(key);item.appendChild(desc);body.appendChild(item);
+   }
+   $('ikNote').textContent=step.note?_introGuideText(step.note):'';
