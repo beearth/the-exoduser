@@ -470,3 +470,11 @@ CH1-1 목표 actual전체Read13/13(기존MAP미소비/ENEMY실거부제외)을�
 앞 raw23 인수에서 제외했던 BUILD result.md는 첫 inventory가 저장 완료 전이었고, 공식 완료01a0fcb2-22c2-7f42-9395-a3291f1b7230(13:08:50)·mtime·현행원문pin이 supervisor supplemental manifest와 일치함을 확인했다. 해당1 원문120623B/SHA471e36cbc8dbbaa6c8da2ac62b654b40cf875a3382d007a219f7de7a73ed17ee를 root기록2와3scope로 보충 보존한다. 읽기전용 receipt SHAd75264e49942bcf092ccf3ed7bc26fe4fb6e5212812c724ecb86ceb91e359be5. 원검사 재실행·source/helper 적용·실제build 실행0, 미적용기술후보이며원문1을제품구현/빌드완료1로계산0.
 
 새 ANIMVFX packet의 easy dead `_hitFlash` 차이는 상태 잔류와 실제발광 잔상을 구분해 HOLD했다. 현재easy 소비는감소뿐이고새구울은별도객체여서피격flag를복사하지않는다. source/신규permanenttest/visualPASS0. 확정된3fix는유지하며이를포함하는다음격리Mac후보준비를진행하고기존c927 snapshot·앱/세이브·사용자23은보존한다.
+
+## 2026-10-02 확정3수정 포함 최신 실제 Mac 후보
+
+현재 실제앱 b3f52d84-90e5-4eca-ac38-bc2a874a0f43은 source checkpoint7ccb72c0의SOUND/ITEM/캐릭터입장취소 세 수정을모두포함한다. fresh execute1·내부verify1 exit0, main ce171131…/easy8c7d8208…/index1dd28cab… 실앱사본동일·7918입력/340runtime exact·8253regular+5symlink/7043802009B. 고유port3385·절대profile/save·bundleID를확인했고현재user-state미생성. 기존c927 dd333 snapshot·user23·기존앱/세이브보존, download/install/서명/기동0. 실제native·CH1-1 연결6단계/화면/청취/저장인수는미완료이며Mac잠금해제질문은이미남겨두었다. 소스freeze는사본확인후해제하며팀별독립후속작업과감독종료복구는계속한다.
+
+[새 실제 후보·정확SHA·기동/검수Gate](../../../13출시·마케팅/MAC_CH1_LATEST3_CANDIDATE_20261002.md)가현행앱기준이다. 이전c927/runtime/partialfixture보고서는그시점snapshot으로보존하며source/모델PASS를제품/nativePASS로확대하지않는다. 관련docs전체rg1회47행/15문서분류를근거로현재Master/build/runtime정본·root기록과새보고서를동기화했다.
+
+동일checkpoint에새완료raw20 exact(2681653B/10역할)를원문보존한다. 합계readinessSHA00ea33fd84f674c7a22713a6fa93010fd9b1775d18a2445d518ae471e05b837d, UIUX ongoinggoal savedmessage/rawonly와ANIM비발광·STORY/SOUND/BALANCE미인수경계를유지. EOF WARN2 원문보존, source후보/은행136검사를게임20수정/제품완료로계산0·원검사재실행0. 완료원문보존으로rolling공간을회수하고80checkpoint/100전새산출보호를계속한다.

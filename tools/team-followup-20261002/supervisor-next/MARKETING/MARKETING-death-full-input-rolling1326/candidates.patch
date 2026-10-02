@@ -1,0 +1,53 @@
+--- a/game.html
++++ b/game.html
+@@ -12724,8 +12724,13 @@
+   if(e.code==='F8'){e.preventDefault();if(window._v3fx&&P){const _v3keys=['fire','ice','lightning','dark','poison'];window._v3fx(_v3keys[window._v3ti||0],P.x,P.y);addTxt(P.x,P.y-30,'3D: '+_v3keys[window._v3ti||0],'#ffcc44',30);window._v3ti=((window._v3ti||0)+1)%_v3keys.length}else{_tvfx2Spawn()}return}
+   if(e.code==='F4'){e.preventDefault();const _nf=!OPT.fog;OPT.fog=_nf;OPT.bossFog=_nf;saveSettings();showPH(_nf?_L('안개 ON','Fog ON'):_L('안개 OFF','Fog OFF'),_nf?'#8899cc':'#888888');return}
+   if(window._parryLesson?.active&&!window._parryLesson.allowKey(e.code)){e.preventDefault();return;}
++  const _deathKeys=$('death');
++  if(e.code==='Tab'&&_deathKeys?.classList.contains('on')&&!$('deathReplay')?.classList.contains('on')&&!document.querySelector('.panel.on')){
++    const buttons=Array.from(_deathKeys.querySelectorAll('button:not([disabled])')).filter(button=>button.offsetParent!==null);
++    if(buttons.length){const i=buttons.indexOf(document.activeElement);buttons[i<0?(e.shiftKey?buttons.length-1:0):(i+(e.shiftKey?-1:1)+buttons.length)%buttons.length].focus({preventScroll:true});e.preventDefault();return;}
++  }
+   // Focused panel controls own activation and focus traversal keys.
+-  if(['Space','Enter','NumpadEnter','Tab'].includes(e.code)&&e.target instanceof Element&&e.target.closest('#invPanel.on button,#invPanel.on [data-inventory-detail-trigger],#crBagPop button,#settings.on button,#settings.on input,#settings.on select'))return;
++  if(['Space','Enter','NumpadEnter','Tab'].includes(e.code)&&e.target instanceof Element&&e.target.closest('#invPanel.on button,#invPanel.on [data-inventory-detail-trigger],#crBagPop button,#settings.on button,#settings.on input,#settings.on select,#death.on button'))return;
+   K[e.code]=true;KH[e.code]=true;
+   // E(shield) 탭 버퍼: 초고속 탭에서 keyup이 K를 지우기 전에 press 사실을 프레임 스탬프로 보존 (게임패드 synth 키다운도 경유)
+   if(!e.repeat&&G&&G.on&&!G.paused&&(e.code===BINDS.shield||e.code===BINDS2.shield))_sdTapBuf=G.frame;
+@@ -61446,6 +61451,8 @@
+   _drPlay(()=>{if($('death').classList.contains('on'))_deathDlgStart()});
+ };
+ $('retryBtn').onclick=async()=>{
++  if(!$('death').classList.contains('on')||$('retryBtn').disabled)return;
++  if($('death').contains(document.activeElement))document.activeElement.blur();
+   $('death').classList.remove('on');$('victory').classList.remove('on');_drReset();if(typeof _deathDlgStop==='function')_deathDlgStop();
+   // 경험치 30% 손실
+   const expLoss=~~(P.exp*0.3);
+
+--- a/game-easy-test.html
++++ b/game-easy-test.html
+@@ -12120,8 +12120,13 @@
+   if(e.code==='F8'){e.preventDefault();if(window._v3fx&&P){const _v3keys=['fire','ice','lightning','dark','poison'];window._v3fx(_v3keys[window._v3ti||0],P.x,P.y);addTxt(P.x,P.y-30,'3D: '+_v3keys[window._v3ti||0],'#ffcc44',30);window._v3ti=((window._v3ti||0)+1)%_v3keys.length}else{_tvfx2Spawn()}return}
+   if(e.code==='F4'){e.preventDefault();const _nf=!OPT.fog;OPT.fog=_nf;OPT.bossFog=_nf;saveSettings();showPH(_nf?_L('안개 ON','Fog ON'):_L('안개 OFF','Fog OFF'),_nf?'#8899cc':'#888888');return}
+   if(window._parryLesson?.active&&!window._parryLesson.allowKey(e.code)){e.preventDefault();return;}
++  const _deathKeys=$('death');
++  if(e.code==='Tab'&&_deathKeys?.classList.contains('on')&&!$('deathReplay')?.classList.contains('on')&&!document.querySelector('.panel.on')){
++    const buttons=Array.from(_deathKeys.querySelectorAll('button:not([disabled])')).filter(button=>button.offsetParent!==null);
++    if(buttons.length){const i=buttons.indexOf(document.activeElement);buttons[i<0?(e.shiftKey?buttons.length-1:0):(i+(e.shiftKey?-1:1)+buttons.length)%buttons.length].focus({preventScroll:true});e.preventDefault();return;}
++  }
+   // Focused panel controls own activation and focus traversal keys.
+-  if(['Space','Enter','NumpadEnter','Tab'].includes(e.code)&&e.target instanceof Element&&e.target.closest('#invPanel.on button,#invPanel.on [data-inventory-detail-trigger],#crBagPop button,#settings.on button,#settings.on input,#settings.on select'))return;
++  if(['Space','Enter','NumpadEnter','Tab'].includes(e.code)&&e.target instanceof Element&&e.target.closest('#invPanel.on button,#invPanel.on [data-inventory-detail-trigger],#crBagPop button,#settings.on button,#settings.on input,#settings.on select,#death.on button'))return;
+   K[e.code]=true;KH[e.code]=true;
+   // E(shield) 탭 버퍼: 초고속 탭에서 keyup이 K를 지우기 전에 press 사실을 프레임 스탬프로 보존 (게임패드 synth 키다운도 경유)
+   if(!e.repeat&&G&&G.on&&!G.paused&&(e.code===BINDS.shield||e.code===BINDS2.shield))_sdTapBuf=G.frame;
+@@ -59784,6 +59789,8 @@
+   _drPlay(()=>{if($('death').classList.contains('on'))_deathDlgStart()});
+ };
+ $('retryBtn').onclick=async()=>{
++  if(!$('death').classList.contains('on')||$('retryBtn').disabled)return;
++  if($('death').contains(document.activeElement))document.activeElement.blur();
+   $('death').classList.remove('on');$('victory').classList.remove('on');_drReset();if(typeof _deathDlgStop==='function')_deathDlgStop();
+   // 경험치 30% 손실
+   const expLoss=~~(P.exp*0.3);

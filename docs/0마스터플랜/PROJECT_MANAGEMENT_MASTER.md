@@ -819,3 +819,9 @@ CH1-1 목표 actual전체Read13/13(기존MAP미소비/ENEMY실거부제외)을�
 80Gate에서두번째분할인수한 BUILD exactraw2는완료ID 01a0fc89-7301-77a2-94ea-d62524f6a1e6 /manifestSHA0ad734c1f61985ea79b66c55ddb7ac5f1cea848ed84f1a10a26a52891f621801이며source/helper에적용0/검사반복0으로보존한다. standalone helper후보e6e73c22…의bytes↔pin/closure는source계약후보이며Acorn공급/filepin·선택계약/nativeGate 미인수; 앞서실제생성앱의helper는기존pin이다. raw2를제품수정2로계산0이다.
 
 같은 분할 보존에 MARKETING 완료01a0fc89-7574-7940-893c-4bc7cef1a761의 exactraw2를추가한다. manifestSHA 1fa2bbe624354e44d618c93c76c14d034ced927d096f38f1940cd99f6220a5ab의 실제showCharGate→_goLogin취소 뒤1200ms 옛callback 재입장/기존seqguard2줄후보이며 정상/story/활성화실패·demo slot Map trace동등근거, source0/native0/검사반복0이다. 현재생성앱에후보적용0, raw보존과게임완료합산0이다. 잠금해제요청은이미보냈으며 새사용자응답전 동일질문/기동반복·UI우회0, 독립source인수를계속한다.
+
+## 2026-10-02 확정3수정 포함 최신 실제 Mac 후보
+
+현재 실제앱 b3f52d84-90e5-4eca-ac38-bc2a874a0f43은 source checkpoint7ccb72c0의SOUND/ITEM/캐릭터입장취소 세 수정을모두포함한다. fresh execute1·내부verify1 exit0, main ce171131…/easy8c7d8208…/index1dd28cab… 실앱사본동일·7918입력/340runtime exact·8253regular+5symlink/7043802009B. 고유port3385·절대profile/save·bundleID를확인했고현재user-state미생성. 기존c927 dd333 snapshot·user23·기존앱/세이브보존, download/install/서명/기동0. 실제native·CH1-1 연결6단계/화면/청취/저장인수는미완료이며Mac잠금해제질문은이미남겨두었다. 소스freeze는사본확인후해제하며팀별독립후속작업과감독종료복구는계속한다.
+
+[새 실제 후보·정확SHA·기동/검수Gate](../13출시·마케팅/MAC_CH1_LATEST3_CANDIDATE_20261002.md)가현행앱기준이다. 이전c927/runtime/partialfixture보고서는그시점snapshot으로보존하며source/모델PASS를제품/nativePASS로확대하지않는다. 관련docs전체rg1회47행/15문서분류를근거로현재Master/build/runtime정본·root기록과새보고서를동기화했다.

@@ -135,3 +135,9 @@ Mac 패키저 `tools/team-followup-20261001/BUILD/mac-packager/packager.mjs`의 
 | 한계 / 후속 Gate | pin 일치는 opaque 비 Mach-O payload도 인수한다. 실 runtime/app 재관측·파일 생성·앱 실행·서명·배포 0. 기존 close 실패는 close 1시도/descriptor 1잔류 대역으로 그대로 전달하며 모두 닫힘을 보장하지 않는다. 소스+docs 원격 checkpoint는 총괄 별도; 새 빌드와 native QA는 별도 |
 
 정확한 helper 경로·pin 기준·30개 검사 분류와 미검수 항목은 [Mac helper payload 무결성 인수](MAC_HELPER_PAYLOAD_INTEGRITY_20261002.md)를 따른다. 과거 앱 생성·8,258항목 및 7,918입력 검수·historical runtime pin은 해당 시점 증거로 보존하며 이번에 다시 관측한 실물 검수로 집계하지 않는다.
+
+## 2026-10-02 확정3수정 포함 최신 실제 Mac 후보
+
+현재 실제앱 b3f52d84-90e5-4eca-ac38-bc2a874a0f43은 source checkpoint7ccb72c0의SOUND/ITEM/캐릭터입장취소 세 수정을모두포함한다. fresh execute1·내부verify1 exit0, main ce171131…/easy8c7d8208…/index1dd28cab… 실앱사본동일·7918입력/340runtime exact·8253regular+5symlink/7043802009B. 고유port3385·절대profile/save·bundleID를확인했고현재user-state미생성. 기존c927 dd333 snapshot·user23·기존앱/세이브보존, download/install/서명/기동0. 실제native·CH1-1 연결6단계/화면/청취/저장인수는미완료이며Mac잠금해제질문은이미남겨두었다. 소스freeze는사본확인후해제하며팀별독립후속작업과감독종료복구는계속한다.
+
+[새 실제 후보·정확SHA·기동/검수Gate](MAC_CH1_LATEST3_CANDIDATE_20261002.md)가현행앱기준이다. 이전c927/runtime/partialfixture보고서는그시점snapshot으로보존하며source/모델PASS를제품/nativePASS로확대하지않는다. 관련docs전체rg1회47행/15문서분류를근거로현재Master/build/runtime정본·root기록과새보고서를동기화했다.

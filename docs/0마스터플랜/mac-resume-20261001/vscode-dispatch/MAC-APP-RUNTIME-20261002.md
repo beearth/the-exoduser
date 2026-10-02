@@ -39,3 +39,9 @@ BALANCE immediate-drain은 기존 세션 완료 후 root 독립17PASS를 확인�
 
 BUILD 미디어 진단의 공식 turn 완료16:49:38Z를 확인했으므로 위16:48:30Z interrupted는 당시 중간 상태로만 보존한다. 파일 누락/복사손상 근거는 없지만 native media.error 원인은 미확정이다.
 UIUX는 17:01:02Z 완료·HTML 소유권 반환 후 root 생산 추출23검사/전체승인 byte 검수와 원격66998de7d0c2f25a1261825ec52957cc0464e983를 확인했다. 이후에만 BALANCE 저장 통합을 전달했다. ITEM 실제 소스 어댑터13그룹은 비활성 검토용으로 원격375aa9e4에 보존했다. 현재 소스 통합과 이전 두 패키지 앱은 버전이 다르며 앱 실행 완료로 표시하지 않는다. 상세 PRODUCTION-INTEGRATION-20261002.md.
+
+## 2026-10-02 확정3수정 포함 최신 실제 Mac 후보
+
+현재 실제앱 b3f52d84-90e5-4eca-ac38-bc2a874a0f43은 source checkpoint7ccb72c0의SOUND/ITEM/캐릭터입장취소 세 수정을모두포함한다. fresh execute1·내부verify1 exit0, main ce171131…/easy8c7d8208…/index1dd28cab… 실앱사본동일·7918입력/340runtime exact·8253regular+5symlink/7043802009B. 고유port3385·절대profile/save·bundleID를확인했고현재user-state미생성. 기존c927 dd333 snapshot·user23·기존앱/세이브보존, download/install/서명/기동0. 실제native·CH1-1 연결6단계/화면/청취/저장인수는미완료이며Mac잠금해제질문은이미남겨두었다. 소스freeze는사본확인후해제하며팀별독립후속작업과감독종료복구는계속한다.
+
+[새 실제 후보·정확SHA·기동/검수Gate](../../../13출시·마케팅/MAC_CH1_LATEST3_CANDIDATE_20261002.md)가현행앱기준이다. 이전c927/runtime/partialfixture보고서는그시점snapshot으로보존하며source/모델PASS를제품/nativePASS로확대하지않는다. 관련docs전체rg1회47행/15문서분류를근거로현재Master/build/runtime정본·root기록과새보고서를동기화했다.

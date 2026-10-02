@@ -1,0 +1,100 @@
+--- a/tools/team-followup-20261001/BUILD/mac-packager/packager.mjs
++++ b/tools/team-followup-20261001/BUILD/mac-packager/packager.mjs
+@@ -43 +43,87 @@
++function loadClosureParser(){
++  const parserRequire=createRequire(import.meta.url),entry=parserRequire.resolve('acorn');
++  const packagePath=path.resolve(path.dirname(entry),'../package.json'),packageBytes=readFile(packagePath);
++  requireValue(digest(packageBytes)==='705aa08b7b4fee1112244952b4843c40c381a3c7a9fc77101f369a172865bfac','CLOSURE_PARSER_PACKAGE_SHA');
++  requireValue(JSON.parse(packageBytes).version==='8.16.0','CLOSURE_PARSER_VERSION');
++  requireValue(digest(readFile(entry))==='2261c5f0e4abe860e889dfc67081683a4ba4d27deb7f4cbc8ad06a1b7fdd510c','CLOSURE_PARSER_SOURCE_SHA');
++  return parserRequire('acorn');
++}
++function validateRequiredClosure(sourceRoot,inputs){
++  const acorn=loadClosureParser();
++  const requiredMediaPaths=["proj_atlas.png","output/imagegen/exoduser-hell-lord-logo-api-v1.png","output/imagegen/enter-gothic-api-v1.png","output/fdg_reference_1280x720.png","output/imagegen/forge-icon-sheet-v1.png","output/imagegen/forge-icon-sheet-v3.png"];
++  const pinsByPath=new Map(inputs.map(input=>[input.path,input.sha256]));
++  function readClosureFile(absolute){const inputPath=path.relative(sourceRoot,absolute).split(path.sep).join('/');relative(inputPath);requireValue(pinsByPath.has(inputPath),'CLOSURE_INPUT_NOT_PINNED:'+inputPath);const bytes=readFile(absolute);requireValue(digest(bytes)===pinsByPath.get(inputPath),'CLOSURE_INPUT_SHA_CHANGED:'+inputPath);return bytes;}
++function directHtmlDependencies(html,file){
++ const result=[],external=[];const clean=html.replace(/<!--[\s\S]*?-->/g,'');
++ const attribute=(tag,key)=>{const escaped=key.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');const m=tag.match(new RegExp('(?:^|\\s)'+escaped+'\\s*=\\s*(?:"([^"]*)"|\'([^\']*)\'|([^\\s>]+))','i'));return m?(m[1]??m[2]??m[3]):null;};
++ for(const match of clean.matchAll(/<script\b[^>]*>[\s\S]*?<\/script\s*>|<link\b[^>]*>/gi)){
++  const tag=match[0].slice(0,match[0].indexOf('>')+1),isScript=/^<script\b/i.test(tag);if(!isScript&&!(attribute(tag,'rel')||'').toLowerCase().split(/\s+/).includes('stylesheet'))continue;
++  const value=attribute(tag,isScript?'src':'href');if(!value)continue;
++  if(/^(?:[a-z][a-z0-9+.-]*:|\/\/)/i.test(value)){external.push(value);continue;}
++  const dependency=path.posix.normalize(path.posix.join(path.posix.dirname(file),value.split(/[?#]/)[0].replace(/^\//,'')));
++  if(dependency&&dependency!=='.')result.push({file,path:dependency,url:value,kind:isScript?'script':'stylesheet'});
++ }
++ return {local:result,external};
++}
++function assertHtmlInputClosure(sourceRoot,inputs){
++ const selected=new Set(inputs.map(input=>input.path));
++ for(const input of inputs){if(!/\.html$/i.test(input.path))continue;
++  const closure=directHtmlDependencies(readClosureFile(path.join(sourceRoot,input.path)).toString(),input.path);
++  for(const dependency of closure.local){relative(dependency.path);requireValue(selected.has(dependency.path),'REQUIRED_HTML_DEPENDENCY_MISSING:'+input.path+'->'+dependency.path);}
++ }
++}
++
++function staticSpecifiers(source){return acorn.parse(source,{ecmaVersion:'latest',sourceType:'module'}).body.filter(n=>['ImportDeclaration','ExportAllDeclaration','ExportNamedDeclaration'].includes(n.type)&&n.source).map(n=>n.source.value);}
++function htmlModuleData(html){const maps=[],modules=[];const clean=html.replace(/<!--[\s\S]*?-->/g,'');const attr=(tag,name)=>{const m=tag.match(new RegExp('(?:^|\\s)'+name+'\\s*=\\s*(?:"([^"]*)"|\'([^\']*)\'|([^\\s>]+))','i'));return m?(m[1]??m[2]??m[3]):null;};for(const m of clean.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script\s*>/gi)){const type=(attr(m[1],'type')||'').toLowerCase();if(type==='importmap')maps.push(JSON.parse(m[2]));else if(type==='module')modules.push({src:attr(m[1],'src'),text:m[2]});}return {imports:Object.assign({},...maps.map(x=>x.imports||{})),modules};}
++function resolveStaticModule(specifier,parentFile,imports,htmlFile){
++ const baseOrigin='https://module-fixture.invalid/';let value=specifier,base=parentFile;
++ if(!/^(?:\.{0,2}\/|[a-z][a-z0-9+.-]*:|\/\/)/i.test(specifier)){
++  const key=Object.keys(imports).filter(k=>k===specifier||(k.endsWith('/')&&specifier.startsWith(k))).sort((a,b)=>b.length-a.length)[0];
++  if(!key)throw Error('UNMAPPED_STATIC_IMPORT:'+specifier);value=imports[key]+(key.endsWith('/')?specifier.slice(key.length):'');base=htmlFile;
++ }
++ const url=new URL(value,new URL(base,baseOrigin));if(url.origin!==new URL(baseOrigin).origin)return {external:true,url:url.href};return {external:false,path:decodeURIComponent(url.pathname.slice(1)),url:url.href};
++}
++function assertStaticModuleClosure(sourceRoot,inputs){
++ const selected=new Set(inputs.map(x=>x.path));
++ for(const input of inputs){if(!/\.html$/i.test(input.path))continue;const data=htmlModuleData(readClosureFile(path.join(sourceRoot,input.path)).toString()),visited=new Set();
++  function visit(specifier,parentFile){const resolved=resolveStaticModule(specifier,parentFile,data.imports,input.path);if(resolved.external)return;relative(resolved.path);
++   requireValue(selected.has(resolved.path),'REQUIRED_STATIC_MODULE_MISSING:'+input.path+'->'+resolved.path);
++   if(visited.has(resolved.path))return;visited.add(resolved.path);
++   for(const child of staticSpecifiers(readClosureFile(path.join(sourceRoot,resolved.path)).toString()))visit(child,resolved.path);
++  }
++  for(const module of data.modules){if(module.src)visit(module.src,input.path);else for(const specifier of staticSpecifiers(module.text))visit(specifier,input.path);}
++ }
++}
++
++function mediaReferences(html){const refs=[];const clean=html.replace(/<!--[\s\S]*?-->/g,'').replace(/<script\b[^>]*>[\s\S]*?<\/script\s*>/gi,'');for(const m of clean.matchAll(/<(img|video|source)\b([^>]*)>/gi)){for(const attribute of m[1].toLowerCase()==='video'?['src','poster']:['src']){const a=m[2].match(new RegExp('(?:^|\\s)'+attribute+'\\s*=\\s*(?:"([^"]*)"|\'([^\']*)\'|([^\\s>]+))','i'));if(!a)continue;const url=a[1]??a[2]??a[3];if(/^(?:[a-z][a-z0-9+.-]*:|\/\/)/i.test(url))continue;refs.push({tag:m[1].toLowerCase(),attribute,url,path:url.split(/[?#]/)[0].replace(/^\//,'')});}}return refs;}
++function assertExplicitMediaInputs(sourceRoot,inputs){const selected=new Set(inputs.map(x=>x.path)),required=new Set(requiredMediaPaths);for(const input of inputs){if(!/\.html$/i.test(input.path))continue;for(const media of mediaReferences(readClosureFile(path.join(sourceRoot,input.path)).toString())){const local=path.posix.normalize(path.posix.join(path.posix.dirname(input.path),media.path));if(!required.has(local))continue;relative(local);requireValue(selected.has(local),'REQUIRED_HTML_MEDIA_MISSING:'+input.path+'->'+local);}}}
++
++function assertLiteralModelInputClosure(sourceRoot,inputs){
++  const selected=new Set(inputs.map(input=>input.path)),checked=new Set(),origin='https://closure-model.invalid/';
++  for(const input of inputs){if(!/\.html$/i.test(input.path))continue;
++    const data=htmlModuleData(readClosureFile(path.join(sourceRoot,input.path)).toString());
++    function walk(node){if(!node||typeof node!=='object')return;
++      if(node.type==='Literal'&&typeof node.value==='string'&&/\.glb(?:[?#]|$)/i.test(node.value)){
++        const url=new URL(node.value,new URL(input.path,origin));if(url.origin!==new URL(origin).origin)return;
++        const model=decodeURIComponent(url.pathname.slice(1));relative(model);
++        requireValue(selected.has(model),'REQUIRED_LITERAL_MODEL_MISSING:'+input.path+'->'+model);
++        if(!checked.has(model)){readClosureFile(path.join(sourceRoot,model));checked.add(model);}
++      }
++      for(const value of Object.values(node))if(Array.isArray(value))for(const child of value)walk(child);else walk(value);
++    }
++    for(const module of data.modules)if(!module.src)walk(acorn.parse(module.text,{ecmaVersion:'latest',sourceType:'module'}));
++  }
++}
++function assertDeclaredVideoInputs(sourceRoot,inputs){
++  const selected=new Set(inputs.map(input=>input.path)),entries=new Set(['index.html','game.html','game-easy-test.html','game-guide.html']);
++  for(const input of inputs){if(!entries.has(input.path))continue;
++    for(const media of mediaReferences(readClosureFile(path.join(sourceRoot,input.path)).toString())){
++      if(!['video','source'].includes(media.tag))continue;
++      const local=path.posix.normalize(path.posix.join(path.posix.dirname(input.path),media.path));relative(local);
++      requireValue(selected.has(local),'REQUIRED_DECLARED_VIDEO_INPUT_MISSING:'+input.path+'->'+local);
++    }
++  }
++}
++  assertHtmlInputClosure(sourceRoot,inputs);assertStaticModuleClosure(sourceRoot,inputs);assertExplicitMediaInputs(sourceRoot,inputs);assertLiteralModelInputClosure(sourceRoot,inputs);assertDeclaredVideoInputs(sourceRoot,inputs);
++}
+ export function plan(config){
+@@ -53 +139,3 @@
+     sameInventory(inputs,config.backup.inputs);for(const required of ['package.json','node-main.js','index.html','game.html'])requireValue(inputs.some(entry=>entry.path===required),'REQUIRED_INPUT_MISSING:'+required);
++    validateRequiredClosure(sourceRoot,inputs);
++    const readDerivationInput=name=>{const bytes=readFile(path.join(sourceRoot,name));requireValue(digest(bytes)===inputs.find(entry=>entry.path===name).sha256,'PLAN_DERIVATION_INPUT_SHA_CHANGED:'+name);return bytes;};
+@@ -64 +152 @@
+-    const packageInfo=JSON.parse(readFile(path.join(sourceRoot,'package.json')));requireValue(packageInfo.main==='http://localhost:3333/index.html?demo=1'&&packageInfo['node-main']==='node-main.js','PACKAGE_ENTRY_CONTRACT');
++    const packageInfo=JSON.parse(readDerivationInput('package.json'));requireValue(packageInfo.main==='http://localhost:3333/index.html?demo=1'&&packageInfo['node-main']==='node-main.js','PACKAGE_ENTRY_CONTRACT');
+@@ -67 +155 @@
+-    const originalServer=readFile(path.join(sourceRoot,'node-main.js')).toString();const portNeedle='const PORT = 3333;',saveNeedle="const SAVE_DIR = path.join(APPDATA, 'EXODUSER-HELL', 'saves');";
++    const originalServer=readDerivationInput('node-main.js').toString();const portNeedle='const PORT = 3333;',saveNeedle="const SAVE_DIR = path.join(APPDATA, 'EXODUSER-HELL', 'saves');";
