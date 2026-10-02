@@ -17,3 +17,19 @@
 | 원격 완료 기준 | scoped commit의 원격 ref 일치, 새 Actions 성공, 새 Vercel READY 및 production alias 반영, 실제 공개 로비/게임·한글 음악 요청 확인 후 완료 판정. 로컬 PASS를 배포 성공으로 대신하지 않음 |
 
 원본/기존 배포 기록: [Vercel 업로드 실패 대응](VERCEL_UPLOAD_FAILURE_20260913.md), [공개 서비스 대상](PRODUCTION_TARGET_CORRECTION_20260910.md).
+
+## 실제 프로덕션 반영과 중복 경로 정리
+
+| 항목 | 2026-10-02 확인 |
+|---|---|
+| 반영 소스 | `e1960cca9e58995ba078bd3078778e79b1474be0`; 원격 main 읽기 대조 완료. 수정 전 원격 `codex/backup-web-before-repair-20261002`는 `aacc7b02bef9d5cd7db6ea5d6466d7b8e4c11a3c` |
+| Actions | [Deploy and Build #1127](https://github.com/beearth/the-exoduser/actions/runs/36971982818)의 웹 작업 SUCCESS; 태그용 Electron 작업 SKIPPED |
+| Vercel | `Df1mk3NHdPtz1A4dYVM3XscKsTwQ`, READY, Production, main/e1960cc, Deploy Logs 49초. 대기 시간과 실제 배포 시간을 구분 |
+| 공개 반영 | `https://the-exoduser.vercel.app`의 index/game SHA256이 로컬 검수 산출물과 일치. 한글 lobby/intro 음성/선택 WAV, 활성 타이틀·warrior 영상, CH1 chunk의 HTTP200 확인 |
+| 중복 원인 | 동일 GitHub 저장소가 `hell`, `hell-build`, `the-exoduser`의 기본 Git 배포 및 Actions에 연결되어 있음. e196 push에서도 별도 hell 빌드 생성·대기열 점유를 실측 |
+| 재발 방지 | 세 프로젝트의 기본 Git 연결을 해제하고 canonical `the-exoduser`의 Actions만 사용. 기존 프로젝트/배포는 보존. Mac 작업 브랜치의 중복 배포 생성도 차단 |
+| 잔여 대기열 | `hell`/`hell-build`의 이미 생성된 QUEUED/BUILDING/INITIALIZING만 취소. READY/ERROR/CANCELED와 canonical 프로젝트는 대상에서 제외 |
+| 수동 정리 도구 | `cleanup-vercel-duplicates.yml`은 workflow_dispatch/main 전용, 기존 GitHub secret으로 FDG team과 두 legacy 이름만 조회. 공식 GET `/v7/deployments`, PATCH `/v12/deployments/{id}/cancel`; 각 상태를 100개씩 조회·취소 후 빈 목록을 확인. 최대20회/상태, 작업10분. 다른 프로젝트 응답·인증 오류·취소 미확인은 즉시 중단; 토큰/응답 본문은 출력하지 않음 |
+| 정리 검증 | 범위 이탈 전 취소 금지, READY 보존·여러 배치의 대기열 비우기, 인증 오류 비밀값 비노출의 회귀3개. 실제 원격 정리 결과는 완료 후 기록 |
+
+API 근거: [배포 목록](https://vercel.com/docs/rest-api/deployments/list-deployments), [진행 중 배포 취소](https://vercel.com/docs/rest-api/deployments/cancel-a-deployment).
