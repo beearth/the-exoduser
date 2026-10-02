@@ -1,0 +1,14 @@
+--- a/game.html
++++ b/game.html
+@@ -61879,2 +61879,3 @@
++    let saveData;
+     try{
+-      const saveData={
++      saveData={
+--- a/game-easy-test.html
++++ b/game-easy-test.html
+@@ -60214,2 +60214,3 @@
++    let saveData;
+     try{
+-      const saveData={
++      saveData={

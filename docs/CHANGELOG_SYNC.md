@@ -52529,3 +52529,35 @@ CH1-1 목표 actual전체Read13/13(기존MAP미소비/ENEMY실거부제외)을�
 ### 2026-10-03 오더 담당 분담과 완료 raw18 보존
 
 사용자 요청으로 새 Claude 오더 담당 01a0fd2d-8a6f-7f01-b2da-70119654cffe를 생성하고 기존 감독은 Codex7, 새 담당은 기존 Claude8의 유일 송신으로 인계했다. 관리3+전문15=18이며 제작팀/Claude실행세션 추가0. 기존 exoduser ACTIVE5분 유지/Codex7 범위, 새 exoduser-claude8 ACTIVE5분/새 담당 대상, root exoduser-mac ACTIVE1분/18역할 통합으로 공식 저장 후 TOML 정확 매치. 먼저 실제 상태 확인·종료팀 후속 배정/3분 회차 종료, 상세 생산 검수는 root로 인계한다. 정책2/총괄·통합·목표·감독TASK4/이 기록1 총docs7을 동기화했다. ART/MAP 기존 큐 미소비와 ENEMY Auto-Mode Bypass 승인 거절은 우회0. 완료 raw18/1,203,540B의 감독attestation 핀을 읽기 검증하고 원문 EOF 경고2 보존, 기존 bc415 raw2와 중복0. source/test/production/native/visual/청취/제품 완료0. 정확24+이 기록1 범위만 체크포인트하며 감독별 STATE/LOG·타인WIP·사용자23 변경은 제외한다. 자료 보존으로 팀 파일 여유를 확보하고 상세 후보 인수와 구분한다.
+
+
+## 2026-10-03 source4 후보의 실제 HTTP·합성 서버 저장 인수
+
+| 항목 | 현행 결과와 인수 경계 |
+|---|---|
+| 고정 후보 | job97bb3ef9-fff2-4761-9841-e5a24a953847, 코드ca7e0bb0의 네 수정 포함. 같은 앱의 node-main.js를 표준 Node24.15.0 CLI로2회 실행; 새 NW.js GUI 기동0 |
+| 실HTTP | 페이지3개 GET bytes/SHA exact, index HEAD length342119/body0, 선언 assets/lobby/11_loop.wav Range206/64B exact. 파일 응답만이며 오디오 decode/청취0 |
+| 합성 저장 | slots[]·mats0 read, 숨김 _qa97bb_http_probe POST→실디스크312B JSON→load→own 서버 재시작→load exact·slots[]. 최초10+후속2=12독립PASS; 원10재실행0 |
+| 잔존·종료 | ownPID40186/40912 SIGTERM exit-15·terminal, 마지막 LISTEN없음/SO_REUSEADDR bind free. QA파일1·app.nw/oauth-debug.log258B 유지, profile0/shared mats파일0/삭제0 |
+| 원 관측 오류 | 최초 receipt success=false/Errno48은 종료 후 plain bind TIME_WAIT 메타오류. 원문 보존, 실제 서버10검수 실패로 확대0; 추가2와 종료 관측은 별도 restart-receipt |
+| 정상 DEMO | main index.html?demo=1→game.html?test=1&slot=demo&demo=1→_startDemoNew/DEMO dbSave의 hellsave_demo localStorage. 이번 server-only 합성 저장은 실제 플레이 dbSave·DEMO localStorage 인수0 |
+| 보스 사망 Gate | 정상 same-page retry는 기존 field restore 뒤 DEMO 저장. 해금 전 초기화/페이지 재입장 재생성 계약은 그대로이며 실제 사망→버튼→복원·native6단계/화면/청취는 미인수 |
+| 보존 | source core5·protected64 exact, 기존 게임/세이브/앱/타인 WIP 보존. 생성 당시8253regular/5symlink/7043803133B는 snapshot이며 후속log1과 구분 |
+
+서버 검수는 실제 제품 후보의 전제 검증이며 게임 목표 완료 건수는 증가하지 않는다. 두 오더 담당은 Codex7/Claude8 단일 송신을 유지한다. 실제 회차3분·점검5분 초과를 각각 기록했으므로 설정만으로 주기 준수·무지연을 주장하지 않는다. UI 잠금해제 질문은 pending이며 중복질문/GUI 우회0. 상세 후보 검수와 완료 원자료 보존은 총괄 소유 범위에서 이어간다.
+
+[실HTTP·합성 저장 정확 보고서](13출시·마케팅/MAC_CH1_SOURCE4_HTTP_SAVE_20261003.md). root canonical저장/총괄/목표/통합/이 기록5와 후보보고서2를 동기화한다. source/test 수정·기존검사 재실행0.
+
+
+### 2026-10-03 완료 원자료10 한정 보존
+
+| 범위 | 보존 근거·채택 한계 |
+|---|---|
+| 정확 소유 | SKILL2/QA1/BOSS1/BUILD2/BALANCE2/MARKETING2 =10파일/209141B. 현재 제출10 full SHA·bytes exact/읽기 전후 불변, 이전18+2 경로중복0 |
+| 영수증 | ignored continued-review-20261003/source4-headless-http/raw10-readiness/receipt.json 33065B/SHA d830fd0bea4b9a8eae86f690f6d2566a78acfb95c02a582769159f89bd882808. 완료ID는 담당들의 attestation이며 직접 provider Write/end 재검증0 |
+| 원문 경고 | MARKETING candidates.patch의 authentic 후행공백2 원형 유지, EOF0. root docs의 새 공백 검사와 분리, 원자료 formatter/하니스 재실행0 |
+| HOLD | BALANCE scope-only 후보는 완성 snapshot guard가 없어 채택보류. BOSS fallen/stun·QA contact·SKILL needle/fanshot·BUILD/마케팅 후보도 별도 source/전체caller/native Gate를 유지 |
+| 거절과 분리 | SKILL completed source raw의 메타보존은 거절된 STATE 읽기 대리가 아니다. 정책 목적 도구/프로그램/세션/호스트 우회0, 자동승인 거절 행동은 재실행0 |
+| 제품 | production source/test 적용0·기존 검사 재실행0·실제 native6단계/화면/청취/플레이 저장 인수0. 원문10개를 게임수정10건으로 세지 않음 |
+
+실제 Changes80 완료소유 공간 회수로 이 raw10과 HTTP/저장 보고 docs7만 보존한다. 문서7과 원자료10이 정확 소유 범위다. 감독별 STATE/LOG·활성 TASK·타인 WIP·사용자23 변경은 포함0이다.

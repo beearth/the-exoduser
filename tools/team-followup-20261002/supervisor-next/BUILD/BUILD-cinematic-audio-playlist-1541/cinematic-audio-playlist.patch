@@ -1,0 +1,32 @@
+--- a/tools/team-followup-20261001/BUILD/mac-packager/packager.mjs
++++ b/tools/team-followup-20261001/BUILD/mac-packager/packager.mjs
+@@ -186,1 +186,28 @@
+-  assertHtmlInputClosure(sourceRoot,inputs);assertStaticModuleClosure(sourceRoot,inputs);assertExplicitMediaInputs(sourceRoot,inputs);assertLiteralModelInputClosure(sourceRoot,inputs);assertDeclaredVideoInputs(sourceRoot,inputs);assertDeclaredImageInputs(sourceRoot,inputs);assertLiteralAudioInputs(sourceRoot,inputs);assertLiteralFetchAudioInputs(sourceRoot,inputs);
++
++function assertCinematicAudioPlaylistInputs(sourceRoot,inputs){
++  const selected=new Set(inputs.map(x=>x.path.normalize('NFC'))),entry=inputs.find(x=>x.path==='index.html'),origin='https://cinematic-audio-closure.invalid/';
++  requireValue(selected.size===inputs.length,'CINEMATIC_AUDIO_INPUT_UNICODE_COLLISION');
++  requireValue(entry,'CINEMATIC_AUDIO_ENTRY_MISSING');
++  const html=readClosureFile(path.join(sourceRoot,entry.path)).toString().replace(/<!--[\s\S]*?-->/g,'');
++  const bindings=[],calls=[];
++  for(const block of html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script\s*>/gi)){
++    const attrs=block[1],attr=name=>{const m=attrs.match(new RegExp('(?:^|\\s)'+name+'\\s*=\\s*(?:"([^"]*)"|\'([^\']*)\'|([^\\s>]+))','i'));return m?(m[1]??m[2]??m[3]):null;};
++    if(attr('src'))continue;const type=(attr('type')||'').toLowerCase();if(!['','module','text/javascript','application/javascript'].includes(type))continue;
++    const ast=acorn.parse(block[2],{ecmaVersion:'latest',sourceType:type==='module'?'module':'script'});
++    for(const statement of ast.body)if(statement.type==='VariableDeclaration'&&statement.kind==='const')for(const d of statement.declarations)if(d.id.type==='Identifier'&&d.id.name==='_CIN_BGM_TRACKS')bindings.push(d.init);
++    const stack=[ast];
++    while(stack.length){const node=stack.pop();if(!node||typeof node!=='object')continue;
++      const arg=node.arguments?.[0];
++      if(node.type==='NewExpression'&&node.callee?.type==='Identifier'&&node.callee.name==='Audio'&&arg?.type==='MemberExpression'&&arg.computed&&arg.object.type==='Identifier'&&arg.object.name==='_CIN_BGM_TRACKS')calls.push(node);
++      for(const value of Object.values(node))if(Array.isArray(value)){for(const child of value)if(child&&typeof child==='object')stack.push(child);}else if(value&&typeof value==='object')stack.push(value);
++    }
++  }
++  requireValue(bindings.length===1&&calls.length===1,'CINEMATIC_AUDIO_PLAYLIST_BINDING_OR_CALL_CHANGED');
++  const list=bindings[0];requireValue(list?.type==='ArrayExpression'&&list.elements.length>0&&list.elements.every(x=>x?.type==='Literal'&&typeof x.value==='string'&&x.value),'CINEMATIC_AUDIO_PLAYLIST_NON_LITERAL');
++  for(const item of list.elements){
++    const url=new URL(item.value,new URL(entry.path,origin));if(url.origin!==new URL(origin).origin)continue;
++    const dependency=decodeURIComponent(url.pathname.slice(1));relative(dependency);
++    requireValue(selected.has(dependency.normalize('NFC')),'REQUIRED_CINEMATIC_AUDIO_PLAYLIST_INPUT_MISSING:'+entry.path+'->'+dependency);
++  }
++}
++  assertHtmlInputClosure(sourceRoot,inputs);assertStaticModuleClosure(sourceRoot,inputs);assertExplicitMediaInputs(sourceRoot,inputs);assertLiteralModelInputClosure(sourceRoot,inputs);assertDeclaredVideoInputs(sourceRoot,inputs);assertDeclaredImageInputs(sourceRoot,inputs);assertLiteralAudioInputs(sourceRoot,inputs);assertLiteralFetchAudioInputs(sourceRoot,inputs);assertCinematicAudioPlaylistInputs(sourceRoot,inputs);

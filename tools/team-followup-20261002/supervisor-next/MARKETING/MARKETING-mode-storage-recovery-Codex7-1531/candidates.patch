@@ -1,0 +1,31 @@
+--- a/game.html
++++ b/game.html
+@@ -12983,10 +12983,10 @@
+   if(!_gpBootDetect._n)_gpBootDetect._n=0;
+   if(++_gpBootDetect._n<5)setTimeout(_gpBootDetect,1000);
+ })();
+-addEventListener('gamepaddisconnected',e=>{try{_gpClearAll()}catch(e3){}if(_gpConnected)try{notify('🎮 패드 연결 끊김')}catch(e4){}_gpConnected=false;_gpActive=false;_gpad=null;_gpVibRef=null;localStorage.setItem('inputMode','kbm');try{_applyCursor()}catch(e2){document.body.style.cursor=''}console.log('[GAMEPAD] 해제')});
++addEventListener('gamepaddisconnected',e=>{try{_gpClearAll()}catch(e3){}if(_gpConnected)try{notify('🎮 패드 연결 끊김')}catch(e4){}_gpConnected=false;_gpActive=false;_gpad=null;_gpVibRef=null;try{localStorage.setItem('inputMode','kbm')}catch(_modeStoreError){};try{_applyCursor()}catch(e2){document.body.style.cursor=''}console.log('[GAMEPAD] 해제')});
+ // 키보드/마우스 입력 → 패드모드 해제 + 패드 주입 키 정리
+ addEventListener('mousemove',e=>{if(_gpActive&&(Math.abs(e.movementX)+Math.abs(e.movementY)>3)){_gpActive=false;localStorage.setItem('inputMode','kbm');try{_applyCursor()}catch(e2){document.body.style.cursor=''}_gpClearAll();}},{passive:true});
+-addEventListener('keydown',e=>{if(_gpActive&&!e._fromGp){_gpActive=false;localStorage.setItem('inputMode','kbm');try{_applyCursor()}catch(e2){document.body.style.cursor=''}_gpClearAll();}},{passive:true});
++addEventListener('keydown',e=>{if(_gpActive&&!e._fromGp){_gpActive=false;try{localStorage.setItem('inputMode','kbm')}catch(_modeStoreError){};try{_applyCursor()}catch(e2){document.body.style.cursor=''}_gpClearAll();}},{passive:true});
+ 
+ // 게임패드 자동 에임: 가장 가까운 적 방향으로 facing 보정
+ function _gpAutoAim(range){
+
+--- a/game-easy-test.html
++++ b/game-easy-test.html
+@@ -12379,10 +12379,10 @@
+   if(!_gpBootDetect._n)_gpBootDetect._n=0;
+   if(++_gpBootDetect._n<5)setTimeout(_gpBootDetect,1000);
+ })();
+-addEventListener('gamepaddisconnected',e=>{try{_gpClearAll()}catch(e3){}if(_gpConnected)try{notify('🎮 패드 연결 끊김')}catch(e4){}_gpConnected=false;_gpActive=false;_gpad=null;_gpVibRef=null;localStorage.setItem('inputMode','kbm');try{_applyCursor()}catch(e2){document.body.style.cursor=''}console.log('[GAMEPAD] 해제')});
++addEventListener('gamepaddisconnected',e=>{try{_gpClearAll()}catch(e3){}if(_gpConnected)try{notify('🎮 패드 연결 끊김')}catch(e4){}_gpConnected=false;_gpActive=false;_gpad=null;_gpVibRef=null;try{localStorage.setItem('inputMode','kbm')}catch(_modeStoreError){};try{_applyCursor()}catch(e2){document.body.style.cursor=''}console.log('[GAMEPAD] 해제')});
+ // 키보드/마우스 입력 → 패드모드 해제 + 패드 주입 키 정리
+ addEventListener('mousemove',e=>{if(_gpActive&&(Math.abs(e.movementX)+Math.abs(e.movementY)>3)){_gpActive=false;localStorage.setItem('inputMode','kbm');try{_applyCursor()}catch(e2){document.body.style.cursor=''}_gpClearAll();}},{passive:true});
+-addEventListener('keydown',e=>{if(_gpActive&&!e._fromGp){_gpActive=false;localStorage.setItem('inputMode','kbm');try{_applyCursor()}catch(e2){document.body.style.cursor=''}_gpClearAll();}},{passive:true});
++addEventListener('keydown',e=>{if(_gpActive&&!e._fromGp){_gpActive=false;try{localStorage.setItem('inputMode','kbm')}catch(_modeStoreError){};try{_applyCursor()}catch(e2){document.body.style.cursor=''}_gpClearAll();}},{passive:true});
+ 
+ // 게임패드 자동 에임: 가장 가까운 적 방향으로 facing 보정
+ function _gpAutoAim(range){
