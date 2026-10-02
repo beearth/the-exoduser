@@ -1,0 +1,72 @@
+{
+  "role": "ART",
+  "task": "native-cover-source-validation",
+  "model": "claude-opus-4-8",
+  "provider": "claude-native (VS Code 직연결 Claude6)",
+  "taskFile": "tools/team-followup-20261002/claude-native-6/ART/TASK.md",
+  "taskFileSha256": "cc2a3f147d8d1af7dcd2d218201230fc525570cfbafc87aacd616439b69636fa",
+  "node": "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node (v24.15.0)",
+  "permissionMode": "default",
+  "verificationKind": "SOURCE-EXTRACTED-GEOMETRY vs INDEPENDENT-FORMULA; 읽기전용, 실런타임/시각 인수 아님",
+  "inheritedFrom": {
+    "providerResult": "tools/team-followup-20261002/claude-provider/ART/result.md",
+    "priorChecks": "tools/team-followup-20261002/project-teams/ART/checks.mjs (19검사 — 재실행 0)"
+  },
+  "timeline": {
+    "taskReadAtUTC": "2026-10-02T04:21:00Z",
+    "commandRunAtUTC": "2026-10-02T04:25:55Z",
+    "resultWrittenAtUTC": "2026-10-02T04:28:30Z",
+    "reviewedAtUTC": "2026-10-02T04:29:00Z",
+    "completedAtUTC": "2026-10-02T04:29:58Z"
+  },
+  "changesCount": { "start": 37, "mid": 39, "final": 42, "note": "읽기전용 기록; 소유 신규 3파일(checks.mjs/result.md/evidence.json)만 추가. 80/100 임계 미도달, stage/commit/push 0" },
+  "ownedNewFiles": [
+    { "path": "tools/team-followup-20261002/claude-native-6/ART/checks.mjs", "sha256": "aa6810277b7f28197c53d51ad9ab36ea4aa06d94933a65fd7ee3665d480142b3" },
+    { "path": "tools/team-followup-20261002/claude-native-6/ART/result.md", "sha256": "6d2dcb92685d001971c62ac1e715daf9166b40899638fd2551d6e24848d1720a" }
+  ],
+  "sourceSha256": {
+    "game.html": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+    "game-easy-test.html": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+    "emg1.jpg": "96e5e41900c60292488bb4cd3a2becf2e98297e522143177143f0be3b31fabf1",
+    "emg1_candidate2_retry.jpg_citedFromPriorEvidence": "ca3802be4bab276452395427eb03ca3ff422d9c478fbc5b50f4dec1fdab49ae2"
+  },
+  "extractedFragments": {
+    "letterbox": { "gameHtml": "60963-60967", "easyTest": "59296-59300", "bytesIdentical": true },
+    "cameraCover": { "gameHtml": "61003-61021", "easyTest": "59336-59354", "bytesIdentical": true },
+    "ease": { "line_gameHtml": 60534, "line_easyTest": 58858, "out": "t=>1-(1-t)*(1-t)", "bytesIdentical": true },
+    "cutShake": { "line_gameHtml": 60848, "shakeZeroReturns": { "x": 0, "y": 0 } }
+  },
+  "imageSizes": { "emg1": { "w": 1536, "h": 1024, "imgR": 1.5 }, "candidate2": { "w": 2048, "h": 1152, "imgR": 1.7777777777777777 } },
+  "harness": { "assertionCount": 55, "pass": 55, "fail": 0, "scenarios": "2 image × 3 window(16:9/16:10/32:9) × 3 zoom-stage" },
+  "keyFindings": [
+    "원본 3:2 @16:9창: else분기+dy*0.1 → 하단 크롭 z1.08 17.19% / z1.04 15.69%, 영역보존 72.34→78.01% (provider 예측과 원문 실행 일치)",
+    "후보 16:9 @16:9창: imgR=cR=16/9 → cover 크롭 0, 줌 여백만, 영역보존 85.73→92.46% (원본 대비 개선)",
+    "32:9: 측면 레터박스 lbX=960 → 스테이지 16:9화, 이미지 추가 크롭 없음 (provider 미산출, 신규 확정)",
+    "후보 16:9 @16:10창: if분기로 전환 → 좌우 각 8.33%(z1.08) 손실 이동, 최소 피사체 여유 3.20%",
+    "본편/쉬운판 renderer drawImage 좌표 완전 parity",
+    "반례후보 A(우측 악마 u≈0.90) 하드클립 미재현(여유 3.2%); 좌표 정밀도 UNKNOWN → 해소 아님, QA 유지"
+  ],
+  "docsFindings": [
+    "WARINTRO_STILLS_AUDIT_20261001.md:25,50 '3:2→16:9 변경 무관' 기술 오해소지 — 크롭 분포·영역보존 실제 변동(정정문안 result.md §5)",
+    "cam zs/ze·cover 기하: docs 전역 rg 0건 — cover/줌 기하 계약 신설 권고"
+  ],
+  "notDone": [
+    "실제 게임 실행·카메라/자막 시각 인수 0",
+    "1x 픽셀 점 계수 0",
+    "project-teams/ART 19검사 재실행 0",
+    "이미지 생성/보정/변환/채택 0",
+    "Git add/commit/push/rollback 0, 새 세션·subagent·설정/권한 변경 0",
+    "전사 얼굴·눈 LOCK 신원 — UNKNOWN 유지",
+    "원본 이미지 내 피사체 실측 위치 — UNKNOWN(겹침 참고치만)"
+  ],
+  "protectedUntouched": [
+    "game.html", "game-easy-test.html", "server.cjs", "assets/*", "output/*",
+    "docs/cinematic/WARINTRO_STILLS_AUDIT_20261001.md", "docs/17게임아트팀/ART_TEAM_MASTER.md",
+    "docs/11내러티브·로어디자인/WARRIOR_DESIGN_LOCK.md", "TASK.md(총괄 소유)",
+    "타팀 prefix(project-teams/*, claude-provider/*)"
+  ],
+  "productionApplied": false,
+  "runtimeExecuted": false,
+  "handoff": "총괄 순차 인수: §5 docs 정정 2건 + §6 카메라 QA Gate(CAM-1610 반례A 3.2% 실측 우선). 생산 채택은 3건 통과 전 보류 유지.",
+  "status": "completed"
+}

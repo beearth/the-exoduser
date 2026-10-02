@@ -52079,3 +52079,5 @@ unrestricted/network-enabled 변경 뒤 원격5b8e6ba9 exactHEAD 및 지정127.0
 사용자6대6지시 후 보스전·스토리·퀘스트/NPC·유튜브/스팀 페이지관리4팀을 추가하여 총괄1+전문15=16역할로 확장했다. Claude는ART/MAP/SKILL/QA/ENEMY/ANIMVFX/BOSS/STORY, Codex는총괄/UIUX/ITEM/BUILD/BALANCE/SOUND/QUESTNPC/MARKETING이다. 기존Claude6 실제TASK Read6/6·기존Codex5후속send5/5를 확인했고 신규4관리채팅을생성했다. BOSS/STORY 실행은 열린Claude2창에배정준비, 해당Codex채팅은관리인수만. 기존11관리채팅삭제0, 현재관리15개와실행16역할을구분한다. 별도Claude일회7검토success완료. 모든팀생산채택/새게임/게시0, 삭제/cleanup/소유밖쓰기금지. QA20261002오타경로삭제사건과기존자료UNKNOWN도기록한다. [현재역할·수신근거](0마스터플랜/mac-resume-20261001/vscode-dispatch/PROVIDER-HALVES-20261002.md).
 
 - 2026-10-02: Mac case-insensitive build/ 규칙이 새 codex-half/BUILD를 가리는 것을 확인하여 정확한TASK.md/checks.mjs/result.md/evidence.json4경로만공개. 다른출력·하위폴더·개인저장ignore유지. 기존BUILD초안보존.
+
+- 2026-10-02 최신확정: 총괄포함Codex8/Claude8. Claude TASK Read8/8·Codex전문7 TASKRead명령exit0, 신규4팀배정완료. 중복Codex8채팅완료턴확인후복구가능보관·공식archive목록8대조. 역할/실행위치/소유/제출상태/QA삭제UNKNOWN/추가삭제금지를총괄/연속정책/대시보드/등록부에동기화. CHANGELOG기존prefix줄끝바이트복원보존. source6/보호2_3보존·생산/게시0.

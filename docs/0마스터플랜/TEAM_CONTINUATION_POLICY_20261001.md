@@ -1,3 +1,7 @@
+# 현재 팀 배치 — Codex8·Claude8 / 총16역할
+
+사용자 최신 확정: Codex는총괄+UIUX/ITEM/BUILD/BALANCE/SOUND/QUESTNPC/MARKETING8, Claude는ART/MAP/SKILL/QA/ENEMY/ANIMVFX/BOSS/STORY8이다. Claude TASK Read8/8·Codex전문 TASK Read7/7 확인. 중복Codex채팅8개는완료턴확인후복구가능보관했고현재Codex전문채팅7개+이총괄이다. [현재역할·실행위치·소유·상태](mac-resume-20261001/vscode-dispatch/PROVIDER-HALVES-20261002.md). 이표가최신배치이며아래11/12/15팀기록은각시각이력이다.
+
 # 팀 연속 진행과 한국어 응대
 
 ## 현재 우선 상태 — Mac 재개 (2026-10-01 최신)

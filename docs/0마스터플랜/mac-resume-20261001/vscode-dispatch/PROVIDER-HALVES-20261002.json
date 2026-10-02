@@ -29,7 +29,7 @@
     "QUESTNPC",
     "MARKETING"
   ],
-  "roleCountMeaning": "Execution ownership; fifteen Codex specialist management chats include eight Claude roles with coordination-only Codex intake. Do not count those management intakes as duplicate executors.",
+  "roleCountMeaning": "Codex coordinator plus seven specialists; eight Claude specialists in Terminal14-21. Eight duplicate Codex chats archived recoverably; historical snapshots retained.",
   "nativeSix": {
     "schemaVersion": 1,
     "projectPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
@@ -578,20 +578,178 @@
       "roleTransitionViolationCount": 0
     }
   },
-  "nativeNewTwo": [
-    {
-      "role": "BOSS",
-      "terminal": 20,
-      "taskReadConfirmed": false,
-      "status": "task-preparation"
+  "nativeNewTwo": {
+    "schemaVersion": 1,
+    "projectPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "provider": "Claude Code",
+    "executionWave": "new-two-native-BOSS-STORY",
+    "inventoryCapturedAt": "2026-10-02T04:37:55.064511+00:00",
+    "providerRegistryContext": {
+      "nativeRolesTotal": 8,
+      "previousSixCompletionReportedByCoordinator": true,
+      "previousSixNotReinspected": true,
+      "currentWaveRoles": [
+        "BOSS",
+        "STORY"
+      ],
+      "allEightConcurrentExecutionAsserted": false
     },
-    {
-      "role": "STORY",
-      "terminal": 21,
-      "taskReadConfirmed": false,
-      "status": "task-preparation"
+    "collectionPolicy": {
+      "sessionControls": 0,
+      "uiActions": 0,
+      "rawUserPromptIncluded": false,
+      "thinkingIncluded": false,
+      "authenticationIncluded": false,
+      "writtenFileOnly": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tmp/mac-migration-runtime/claude-provider-20261002/new-two-read-receipts.json"
+    },
+    "sessions": [
+      {
+        "role": "BOSS",
+        "terminal": 20,
+        "sessionId": "74c343f4-27c8-4fce-a9e3-8df036eac78a",
+        "executionKind": "interactive",
+        "currentStatus": "busy",
+        "pid": 204,
+        "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "userReceivedAt": "2026-10-02T04:34:54.799Z",
+        "userReceiptRoleMetadata": [
+          {
+            "timestamp": "2026-10-02T04:34:54.799Z",
+            "newFourTaskPathRoles": [
+              "BOSS"
+            ]
+          }
+        ],
+        "roleTransitionViolationObserved": false,
+        "taskRead": {
+          "role": "BOSS",
+          "taskPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/new-four/BOSS/TASK.md",
+          "requestTimestamp": "2026-10-02T04:34:57.952Z",
+          "toolUseId": "toolu_01P92YpmiJgbvNwpzNx7gSQP",
+          "sourceModel": "claude-opus-4-8",
+          "resultTimestamp": "2026-10-02T04:34:57.987Z",
+          "is_error": false,
+          "success": true
+        },
+        "taskReadSucceeded": true,
+        "allNewFourTaskReads": [
+          {
+            "role": "BOSS",
+            "taskPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/new-four/BOSS/TASK.md",
+            "requestTimestamp": "2026-10-02T04:34:57.952Z",
+            "toolUseId": "toolu_01P92YpmiJgbvNwpzNx7gSQP",
+            "sourceModel": "claude-opus-4-8",
+            "resultTimestamp": "2026-10-02T04:34:57.987Z",
+            "is_error": false,
+            "success": true
+          }
+        ],
+        "pendingObservationNote": null,
+        "jsonlFilePath": "/Users/fordeargamers/.claude/projects/-Users-fordeargamers-Projects-exoduser-migration-20261001/74c343f4-27c8-4fce-a9e3-8df036eac78a.jsonl",
+        "jsonlSha256": "f774a6aff1c67190519ba09902b4a78bf3a0284413e11ec74e9eca6ad11621bb",
+        "jsonlSnapshotAt": "2026-10-02T04:37:55.068200+00:00",
+        "jsonlByteCount": 799322,
+        "jsonlParseErrors": 0,
+        "jsonlLastTimestamp": "2026-10-02T04:37:54.291Z",
+        "taskPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/new-four/BOSS/TASK.md",
+        "taskSha256": "d08e77a0e2275426d656cb19eb70c86f0078a72cae9d61dfaa0c2686fb851a02",
+        "apiModelObservations": [
+          "claude-opus-4-8"
+        ],
+        "apiUsageObservation": {
+          "assistantUsageRecordCount": 46,
+          "latestObservedUsage": {
+            "timestamp": "2026-10-02T04:37:53.801Z",
+            "model": "claude-opus-4-8",
+            "messageId": "msg_011CfcnsgMFygcoMmpmP24eU",
+            "usage": {
+              "input_tokens": 2,
+              "output_tokens": 490,
+              "cache_read_input_tokens": 144910,
+              "cache_creation_input_tokens": 2356
+            }
+          },
+          "totalsCalculated": false,
+          "interpretation": "API response metadata only, not billing; repeated streaming records may share messageId."
+        }
+      },
+      {
+        "role": "STORY",
+        "terminal": 21,
+        "sessionId": "3ed6e74d-5552-4d7b-a04b-dc5945e0f3d7",
+        "executionKind": "interactive",
+        "currentStatus": "busy",
+        "pid": 506,
+        "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "userReceivedAt": "2026-10-02T04:35:09.121Z",
+        "userReceiptRoleMetadata": [
+          {
+            "timestamp": "2026-10-02T04:35:09.121Z",
+            "newFourTaskPathRoles": [
+              "STORY"
+            ]
+          }
+        ],
+        "roleTransitionViolationObserved": false,
+        "taskRead": {
+          "role": "STORY",
+          "taskPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/new-four/STORY/TASK.md",
+          "requestTimestamp": "2026-10-02T04:37:27.304Z",
+          "toolUseId": "toolu_015PQXfvjuuhEdqsTezaVPik",
+          "sourceModel": "claude-opus-4-8",
+          "resultTimestamp": "2026-10-02T04:37:27.327Z",
+          "is_error": false,
+          "success": true
+        },
+        "taskReadSucceeded": true,
+        "allNewFourTaskReads": [
+          {
+            "role": "STORY",
+            "taskPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/new-four/STORY/TASK.md",
+            "requestTimestamp": "2026-10-02T04:37:27.304Z",
+            "toolUseId": "toolu_015PQXfvjuuhEdqsTezaVPik",
+            "sourceModel": "claude-opus-4-8",
+            "resultTimestamp": "2026-10-02T04:37:27.327Z",
+            "is_error": false,
+            "success": true
+          }
+        ],
+        "pendingObservationNote": null,
+        "jsonlFilePath": "/Users/fordeargamers/.claude/projects/-Users-fordeargamers-Projects-exoduser-migration-20261001/3ed6e74d-5552-4d7b-a04b-dc5945e0f3d7.jsonl",
+        "jsonlSha256": "25a23833a70b528952daf0242788b753ccbdc0d9c60f6313530ea4c1f099ac12",
+        "jsonlSnapshotAt": "2026-10-02T04:37:55.070361+00:00",
+        "jsonlByteCount": 350740,
+        "jsonlParseErrors": 0,
+        "jsonlLastTimestamp": "2026-10-02T04:37:51.141Z",
+        "taskPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/new-four/STORY/TASK.md",
+        "taskSha256": "6514ec34f8bc9af55ea6d15d6904871bf84d08631cfed7935fae19136310d55c",
+        "apiModelObservations": [
+          "claude-opus-4-8"
+        ],
+        "apiUsageObservation": {
+          "assistantUsageRecordCount": 11,
+          "latestObservedUsage": {
+            "timestamp": "2026-10-02T04:37:50.535Z",
+            "model": "claude-opus-4-8",
+            "messageId": "msg_011CfcnsYaRkGLPKFSk7CG2t",
+            "usage": {
+              "input_tokens": 2,
+              "output_tokens": 364,
+              "cache_read_input_tokens": 63203,
+              "cache_creation_input_tokens": 884
+            }
+          },
+          "totalsCalculated": false,
+          "interpretation": "API response metadata only, not billing; repeated streaming records may share messageId."
+        }
+      }
+    ],
+    "summary": {
+      "sessionCount": 2,
+      "successfulExpectedTaskReadCount": 2,
+      "roleTransitionViolationCount": 0
     }
-  ],
+  },
   "codexFive": [
     {
       "role": "UIUX",
@@ -599,7 +757,7 @@
       "hostId": "local",
       "task": "tools/team-followup-20261002/codex-half/UIUX/TASK.md",
       "officialSendSucceeded": true,
-      "taskReadConfirmed": false
+      "taskReadConfirmed": true
     },
     {
       "role": "ITEM",
@@ -607,7 +765,7 @@
       "hostId": "local",
       "task": "tools/team-followup-20261002/codex-half/ITEM/TASK.md",
       "officialSendSucceeded": true,
-      "taskReadConfirmed": false
+      "taskReadConfirmed": true
     },
     {
       "role": "BUILD",
@@ -615,7 +773,7 @@
       "hostId": "local",
       "task": "tools/team-followup-20261002/codex-half/BUILD/TASK.md",
       "officialSendSucceeded": true,
-      "taskReadConfirmed": false
+      "taskReadConfirmed": true
     },
     {
       "role": "BALANCE",
@@ -623,7 +781,7 @@
       "hostId": "local",
       "task": "tools/team-followup-20261002/codex-half/BALANCE/TASK.md",
       "officialSendSucceeded": true,
-      "taskReadConfirmed": false
+      "taskReadConfirmed": true
     },
     {
       "role": "SOUND",
@@ -631,7 +789,7 @@
       "hostId": "local",
       "task": "tools/team-followup-20261002/codex-half/SOUND/TASK.md",
       "officialSendSucceeded": true,
-      "taskReadConfirmed": false
+      "taskReadConfirmed": true
     }
   ],
   "createdFour": [
@@ -668,7 +826,7 @@
       "initialScope": "read-only role intake; actual execution task separate"
     }
   ],
-  "managementChatsTotal": 15,
+  "managementChatsTotal": 7,
   "historicalReadOnlyClaudeSeven": {
     "completed": 7,
     "registry": "CLAUDE-PROVIDER-DISPATCH-20261002.json",
@@ -687,7 +845,8 @@
     "productionSixShaUnchanged": true,
     "rootDeleteExecuted": false,
     "followup": "Explicit no-delete/no-cleanup correct20261001 user steering received 2026-10-02T04:31:06.038Z",
-    "constraintReceivedAt": "2026-10-02T04:31:06.038Z"
+    "constraintReceivedAt": "2026-10-02T04:31:06.038Z",
+    "postConstraintFinalReportAt": "2026-10-02T04:32:06.646Z"
   },
   "preservation": {
     "existingManagementChatsDeleted": 0,
@@ -697,5 +856,1321 @@
     "publishUpload": 0,
     "newAutomation": 0
   },
-  "completionBoundary": "Dispatch/Read and actual source outputs are separate; production/runtime/visual/listening acceptance remains pending."
+  "completionBoundary": "Dispatch/Read and actual source outputs are separate; production/runtime/visual/listening acceptance remains pending.",
+  "latestObservedAt": "2026-10-02T04:43:21.956853+00:00",
+  "codexExecutionReadReceipts": {
+    "schemaVersion": 1,
+    "observedAtUTC": "2026-10-02T04:36:28Z",
+    "timezone": "Asia/Seoul",
+    "scope": "official latest turn1 summaries plus outputs only; exact TASK read receipt audit, not source quality acceptance",
+    "executionRoot": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "method": {
+      "tool": "codex_app.read_thread",
+      "hostId": "local",
+      "turnLimit": 1,
+      "includeOutputs": true,
+      "maxOutputCharsPerItem": 3000,
+      "waitThreadsUsed": false,
+      "fullTaskBodiesPersisted": false,
+      "privateAuthenticationContentPersisted": false
+    },
+    "executionTeams": [
+      {
+        "role": "UIUX",
+        "threadId": "01a0faaf-8fd2-7083-b174-69c604bd58b0",
+        "threadTitle": "EXODUSER UIUX팀",
+        "hostId": "local",
+        "threadStatus": {
+          "type": "active",
+          "activeFlags": []
+        },
+        "threadRecordedCwd": "/Users/fordeargamers/the-exoduser",
+        "turnId": "01a0fae1-0409-7911-9576-e5ac4751fcff",
+        "turnStatus": "inProgress",
+        "startedAtUnix": 1790915445,
+        "startedAtUTC": "2026-10-02T04:30:45.000Z",
+        "completedAtUnix": null,
+        "expectedTaskPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/codex-half/UIUX/TASK.md",
+        "newTaskExactPathReadConfirmed": true,
+        "readCommands": [
+          {
+            "itemId": "exec-132a4360-a9f3-456b-8f79-728eef81d7e9",
+            "taskReadClause": "cat '/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/codex-half/UIUX/TASK.md'",
+            "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+            "status": "completed",
+            "exitCode": 0,
+            "outputPresent": true,
+            "outputContainsTaskHeading": true,
+            "outputTruncated": true
+          }
+        ],
+        "commandExecutionCount": 18,
+        "outputsInspection": true,
+        "artifactQualityAccepted": false
+      },
+      {
+        "role": "ITEM",
+        "threadId": "01a0faaf-92a3-7eb1-842d-eb4baa1a2954",
+        "threadTitle": "EXODUSER 아이템팀",
+        "hostId": "local",
+        "threadStatus": {
+          "type": "idle"
+        },
+        "threadRecordedCwd": "/Users/fordeargamers/the-exoduser",
+        "turnId": "01a0fae1-0559-70d1-83fe-11d3300f25cf",
+        "turnStatus": "completed",
+        "startedAtUnix": 1790915446,
+        "startedAtUTC": "2026-10-02T04:30:46.000Z",
+        "completedAtUnix": 1790915704,
+        "expectedTaskPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/codex-half/ITEM/TASK.md",
+        "newTaskExactPathReadConfirmed": true,
+        "readCommands": [
+          {
+            "itemId": "exec-e9c8be2e-8d70-4559-b82a-1ee06636e76e",
+            "taskReadClause": "cat /Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/codex-half/ITEM/TASK.md'",
+            "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+            "status": "completed",
+            "exitCode": 0,
+            "outputPresent": true,
+            "outputContainsTaskHeading": true,
+            "outputTruncated": true
+          }
+        ],
+        "commandExecutionCount": 10,
+        "outputsInspection": true,
+        "artifactQualityAccepted": false
+      },
+      {
+        "role": "BUILD",
+        "threadId": "01a0faaf-9dd5-7c91-ab09-ee0bcff343b0",
+        "threadTitle": "EXODUSER 통합 빌드팀",
+        "hostId": "local",
+        "threadStatus": {
+          "type": "active",
+          "activeFlags": []
+        },
+        "threadRecordedCwd": "/Users/fordeargamers/the-exoduser",
+        "turnId": "01a0fae1-05f3-71e2-a758-8c82d85c9a6d",
+        "turnStatus": "inProgress",
+        "startedAtUnix": 1790915446,
+        "startedAtUTC": "2026-10-02T04:30:46.000Z",
+        "completedAtUnix": null,
+        "expectedTaskPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/codex-half/BUILD/TASK.md",
+        "newTaskExactPathReadConfirmed": true,
+        "readCommands": [
+          {
+            "itemId": "exec-039e8d37-b9d9-4e6a-bd09-b7817cadf15e",
+            "taskReadClause": "cat tools/team-followup-20261002/codex-half/BUILD/TASK.md",
+            "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+            "resolvedTaskPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/codex-half/BUILD/TASK.md",
+            "pathResolution": "relative literal + commandExecution.cwd",
+            "status": "completed",
+            "exitCode": 0,
+            "outputPresent": true,
+            "outputContainsTaskHeading": true,
+            "outputTruncated": true,
+            "mixedCommandHasReadOnlyGit": false
+          }
+        ],
+        "commandExecutionCount": 9,
+        "outputsInspection": true,
+        "artifactQualityAccepted": false
+      },
+      {
+        "role": "BALANCE",
+        "threadId": "01a0faaf-a06a-79a2-9def-58eb8ad10d65",
+        "threadTitle": "EXODUSER 밸런스 경제팀",
+        "hostId": "local",
+        "threadStatus": {
+          "type": "idle"
+        },
+        "threadRecordedCwd": "/Users/fordeargamers/the-exoduser",
+        "turnId": "01a0fae1-0778-7380-bc2b-44cdf99c96db",
+        "turnStatus": "completed",
+        "startedAtUnix": 1790915446,
+        "startedAtUTC": "2026-10-02T04:30:46.000Z",
+        "completedAtUnix": 1790915727,
+        "expectedTaskPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/codex-half/BALANCE/TASK.md",
+        "newTaskExactPathReadConfirmed": true,
+        "readCommands": [
+          {
+            "itemId": "exec-351df843-1576-4a50-ba8c-b95f17118e41",
+            "taskReadClause": "cat tools/team-followup-20261002/codex-half/BALANCE/TASK.md",
+            "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+            "resolvedTaskPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/codex-half/BALANCE/TASK.md",
+            "pathResolution": "relative literal + commandExecution.cwd",
+            "status": "completed",
+            "exitCode": 0,
+            "outputPresent": true,
+            "outputContainsTaskHeading": true,
+            "outputTruncated": true,
+            "mixedCommandHasReadOnlyGit": true
+          }
+        ],
+        "commandExecutionCount": 7,
+        "outputsInspection": true,
+        "artifactQualityAccepted": false
+      },
+      {
+        "role": "SOUND",
+        "threadId": "01a0faaf-956a-74a3-9bf1-77032f124e2d",
+        "threadTitle": "EXODUSER 사운드팀",
+        "hostId": "local",
+        "threadStatus": {
+          "type": "active",
+          "activeFlags": []
+        },
+        "threadRecordedCwd": "/Users/fordeargamers/the-exoduser",
+        "turnId": "01a0fae1-0847-7df1-a5d1-e92a3bf7eb20",
+        "turnStatus": "inProgress",
+        "startedAtUnix": 1790915446,
+        "startedAtUTC": "2026-10-02T04:30:46.000Z",
+        "completedAtUnix": null,
+        "expectedTaskPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/codex-half/SOUND/TASK.md",
+        "newTaskExactPathReadConfirmed": true,
+        "readCommands": [
+          {
+            "itemId": "exec-cbea1f9e-7e9f-464f-82e0-cf551b5b19b6",
+            "taskReadClause": "cat /Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/codex-half/SOUND/TASK.md'",
+            "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+            "status": "completed",
+            "exitCode": 0,
+            "outputPresent": true,
+            "outputContainsTaskHeading": true,
+            "outputTruncated": true
+          }
+        ],
+        "commandExecutionCount": 11,
+        "outputsInspection": true,
+        "artifactQualityAccepted": false
+      },
+      {
+        "role": "QUESTNPC",
+        "threadId": "01a0fae0-ccb2-7572-9d58-8c3176f9afff",
+        "threadTitle": "EXODUSER 퀘스트 NPC팀",
+        "hostId": "local",
+        "threadStatus": {
+          "type": "active",
+          "activeFlags": []
+        },
+        "threadRecordedCwd": "/Users/fordeargamers/the-exoduser",
+        "turnId": "01a0fae4-8067-7e83-a1c7-5c3b9cb9f2a9",
+        "turnStatus": "inProgress",
+        "startedAtUnix": 1790915674,
+        "startedAtUTC": "2026-10-02T04:34:34.000Z",
+        "completedAtUnix": null,
+        "expectedTaskPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/new-four/QUESTNPC/TASK.md",
+        "newTaskExactPathReadConfirmed": true,
+        "readCommands": [
+          {
+            "itemId": "exec-8cb95c76-fdf8-4caf-9758-bad4ce342b1d",
+            "taskReadClause": "cat tools/team-followup-20261002/new-four/QUESTNPC/TASK.md",
+            "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+            "resolvedTaskPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/new-four/QUESTNPC/TASK.md",
+            "pathResolution": "relative literal + commandExecution.cwd",
+            "status": "completed",
+            "exitCode": 0,
+            "outputPresent": true,
+            "outputContainsTaskHeading": true,
+            "outputTruncated": true,
+            "mixedCommandHasReadOnlyGit": false
+          }
+        ],
+        "commandExecutionCount": 18,
+        "outputsInspection": true,
+        "artifactQualityAccepted": false
+      },
+      {
+        "role": "MARKETING",
+        "threadId": "01a0fae0-cff3-78f0-aa73-32b08c6d6055",
+        "threadTitle": "EXODUSER 유튜브 스팀 페이지팀",
+        "hostId": "local",
+        "threadStatus": {
+          "type": "active",
+          "activeFlags": []
+        },
+        "threadRecordedCwd": "/Users/fordeargamers/the-exoduser",
+        "turnId": "01a0fae4-80f8-7ea1-9c15-29b42bbaef7a",
+        "turnStatus": "inProgress",
+        "startedAtUnix": 1790915674,
+        "startedAtUTC": "2026-10-02T04:34:34.000Z",
+        "completedAtUnix": null,
+        "expectedTaskPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/new-four/MARKETING/TASK.md",
+        "newTaskExactPathReadConfirmed": true,
+        "readCommands": [
+          {
+            "itemId": "exec-966cc140-3ca3-4f0a-8188-2525c74ca90e",
+            "taskReadClause": "cat tools/team-followup-20261002/new-four/MARKETING/TASK.md",
+            "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+            "resolvedTaskPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/new-four/MARKETING/TASK.md",
+            "pathResolution": "relative literal + commandExecution.cwd",
+            "status": "completed",
+            "exitCode": 0,
+            "outputPresent": true,
+            "outputContainsTaskHeading": true,
+            "outputTruncated": true,
+            "mixedCommandHasReadOnlyGit": false
+          }
+        ],
+        "commandExecutionCount": 16,
+        "outputsInspection": true,
+        "artifactQualityAccepted": false
+      }
+    ],
+    "managementTeams": [
+      {
+        "role": "BOSS",
+        "threadId": "01a0fae0-c5df-70d0-9ab7-751a587bb498",
+        "threadTitle": "EXODUSER 보스전팀",
+        "hostId": "local",
+        "threadStatus": {
+          "type": "idle"
+        },
+        "turnId": "01a0fae0-c88e-7e50-99bd-3a003ea85b7a",
+        "turnStatus": "completed",
+        "startedAtUnix": 1790915430,
+        "startedAtUTC": "2026-10-02T04:30:30.000Z",
+        "completedAtUnix": 1790915473,
+        "completedAtUTC": "2026-10-02T04:31:13.000Z",
+        "recordType": "management_initial_ack_only",
+        "taskExecutionCounted": false,
+        "newProductionFixtureCounted": false,
+        "managementAckCompleted": true,
+        "ackSummary": "보스전팀 관리 인수 완료; Claude Terminal20 실행 담당과 중복 제작/검수 없음",
+        "managementReads": [
+          {
+            "itemId": "exec-d2752a84-04f5-4ef7-bad9-a0199d95d396",
+            "readReferences": [
+              "AGENTS.md"
+            ],
+            "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+            "status": "completed",
+            "exitCode": 0
+          },
+          {
+            "itemId": "exec-db212a1e-23bb-480f-bd42-da2c693806d6",
+            "readReferences": [
+              "docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md"
+            ],
+            "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+            "status": "completed",
+            "exitCode": 0
+          },
+          {
+            "itemId": "exec-1fd3e01a-fe5d-4d3d-a345-872bad04d132",
+            "readReferences": [
+              "AGENTS.md"
+            ],
+            "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+            "status": "completed",
+            "exitCode": 0
+          },
+          {
+            "itemId": "exec-b419a5d0-dfe0-4f37-a05c-e679e85eca5c",
+            "readReferences": [
+              "AGENTS.md"
+            ],
+            "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+            "status": "completed",
+            "exitCode": 0
+          },
+          {
+            "itemId": "exec-4e006c68-3dcc-4fbd-8ff7-9c455200412c",
+            "readReferences": [
+              "docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md"
+            ],
+            "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+            "status": "completed",
+            "exitCode": 0
+          },
+          {
+            "itemId": "exec-0c826336-d290-466b-b759-744cb6d10842",
+            "readReferences": [
+              "docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md"
+            ],
+            "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+            "status": "completed",
+            "exitCode": 0
+          }
+        ]
+      },
+      {
+        "role": "STORY",
+        "threadId": "01a0fae0-c9ce-7890-b125-b3da65d8b3fa",
+        "threadTitle": "EXODUSER 스토리팀",
+        "hostId": "local",
+        "threadStatus": {
+          "type": "idle"
+        },
+        "turnId": "01a0fae0-cb99-7b60-be14-c02bf49e6822",
+        "turnStatus": "completed",
+        "startedAtUnix": 1790915431,
+        "startedAtUTC": "2026-10-02T04:30:31.000Z",
+        "completedAtUnix": 1790915506,
+        "completedAtUTC": "2026-10-02T04:31:46.000Z",
+        "recordType": "management_initial_ack_only",
+        "taskExecutionCounted": false,
+        "newProductionFixtureCounted": false,
+        "managementAckCompleted": true,
+        "ackSummary": "스토리팀 관리 인수 완료; Claude Terminal21 실행 담당과 중복 제작/검수 없음",
+        "managementReads": [
+          {
+            "itemId": "exec-5c41e080-1d3c-47dd-b5ed-2a665edbb42b",
+            "readReferences": [
+              "AGENTS.md"
+            ],
+            "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+            "status": "completed",
+            "exitCode": 0
+          },
+          {
+            "itemId": "exec-0c21f667-2067-4442-9cef-a893a0861bc7",
+            "readReferences": [
+              "docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md"
+            ],
+            "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+            "status": "completed",
+            "exitCode": 0
+          },
+          {
+            "itemId": "exec-763f4510-afb5-4a48-b515-d19d17405378",
+            "readReferences": [
+              "AGENTS.md"
+            ],
+            "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+            "status": "completed",
+            "exitCode": 0
+          },
+          {
+            "itemId": "exec-4621bf62-d33a-409f-b762-1d879fc5963f",
+            "readReferences": [
+              "docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md"
+            ],
+            "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+            "status": "completed",
+            "exitCode": 0
+          },
+          {
+            "itemId": "exec-ec070551-604f-480c-a48e-0e18212313ea",
+            "readReferences": [
+              "docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md"
+            ],
+            "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+            "status": "completed",
+            "exitCode": 0
+          },
+          {
+            "itemId": "exec-27748aa1-569c-4a18-b47f-3cd385b37883",
+            "readReferences": [
+              "docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md"
+            ],
+            "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+            "status": "completed",
+            "exitCode": 0
+          },
+          {
+            "itemId": "exec-9f10ca57-4b47-4dd8-aa4c-886430b0acd9",
+            "readReferences": [
+              "docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md"
+            ],
+            "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+            "status": "completed",
+            "exitCode": 0
+          },
+          {
+            "itemId": "exec-e4037023-37aa-4dd2-93f9-e688cf07d771",
+            "readReferences": [
+              "docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md"
+            ],
+            "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+            "status": "completed",
+            "exitCode": 0
+          }
+        ]
+      }
+    ],
+    "summary": {
+      "newTaskReadsConfirmed": 7,
+      "newTaskExecutionTeamCount": 7,
+      "latestTurnCompletedRoles": [
+        "ITEM",
+        "BALANCE"
+      ],
+      "latestTurnInProgressRoles": [
+        "UIUX",
+        "BUILD",
+        "SOUND",
+        "QUESTNPC",
+        "MARKETING"
+      ],
+      "managementAckCompletedRoles": [
+        "BOSS",
+        "STORY"
+      ],
+      "qualityAccepted": false
+    },
+    "limits": [
+      "New TASK read evidence is different from prior project-teams verification completion.",
+      "Command execution statuses are a snapshot; turn completion is not source/fixture/runtime/visual quality acceptance.",
+      "read_thread command output previews can be truncated; exact cat command, resolved cwd and successful output identify the TASK read.",
+      "Thread recorded cwd can be /Users/fordeargamers/the-exoduser; actual TASK-read commandExecution.cwd is the migration checkout.",
+      "No messages, UI, Git, source/doc edits, or deletion performed by this receipt audit."
+    ]
+  },
+  "nativeSubmissionReceipts": {
+    "schemaVersion": 1,
+    "capturedAt": "2026-10-02T04:38:28.238Z",
+    "projectPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "scope": "six native UUIDs from supplied read receipts only; excludes headless-seven and new BOSS/STORY sessions",
+    "receiptSource": {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tmp/mac-migration-runtime/claude-provider-20261002/native-six-read-receipts.json",
+      "sha256": "bf11a9dadd27984ccd5e08b3e29d8368338a9eedc993ea54b9b35808dc39bea5",
+      "capturedAt": "2026-10-02T04:28:29.391536+00:00"
+    },
+    "collectionPolicy": {
+      "sourceReadsOnly": true,
+      "toolTestsExecuted": 0,
+      "sourceHashRechecks": 0,
+      "uiActions": 0,
+      "processControls": 0,
+      "sessionResumes": 0,
+      "messages": 0,
+      "rawUserTextIncluded": false,
+      "thinkingIncluded": false,
+      "authenticationIncluded": false,
+      "writtenFileOnly": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tmp/mac-migration-runtime/claude-provider-20261002/native-six-submission-receipts.json"
+    },
+    "interpretation": "Current owned artifact bytes and assistant end_turn submission metadata only. Reported PASS/FAIL/unknown counts are preserved, not independently rerun or accepted as production/runtime/visual quality.",
+    "sessions": [
+      {
+        "role": "ART",
+        "terminal": 14,
+        "sessionId": "727bc729-3d9a-43ad-9fe6-f284e54e3bb8",
+        "executionKind": "native-interactive",
+        "snapshotAt": "2026-10-02T04:38:28.242Z",
+        "taskPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/ART/TASK.md",
+        "taskReadReceipt": {
+          "role": "ART",
+          "taskPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/ART/TASK.md",
+          "requestTimestamp": "2026-10-02T04:21:44.216Z",
+          "toolUseId": "toolu_01HDHDfLbWMs89bcYr2Xh9QH",
+          "resultTimestamp": "2026-10-02T04:21:44.255Z",
+          "is_error": false,
+          "success": true
+        },
+        "initialUserReceivedAt": "2026-10-02T04:21:40.179Z",
+        "reportThreshold": "2026-10-02T04:21:40.179Z",
+        "postThresholdDirectUserTimestamps": [
+          "2026-10-02T04:21:40.179Z"
+        ],
+        "jsonl": {
+          "path": "/Users/fordeargamers/.claude/projects/-Users-fordeargamers-Projects-exoduser-migration-20261001/727bc729-3d9a-43ad-9fe6-f284e54e3bb8.jsonl",
+          "sha256": "32f97f3593d9188cbd6ec17496200a362f9b9ed5bbefddcd155093ca50d0d977",
+          "bytes": 706968,
+          "records": 199,
+          "parseErrorLines": [],
+          "lastTimestamp": "2026-10-02T04:34:14.845Z"
+        },
+        "finalReport": {
+          "line": 197,
+          "timestamp": "2026-10-02T04:31:10.607Z",
+          "stopReason": "end_turn",
+          "messageId": "msg_011CfcnLiyPq7XmG2k6n38RL",
+          "textSha256": "905f24ac606676a33c123b23452f2eba49b27a91ffc7117b7c19a96d718f361b",
+          "reportedOwnedPaths": [
+            "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/ART/checks.mjs",
+            "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/ART/result.md",
+            "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/ART/evidence.json"
+          ],
+          "wholeFinalTextStored": false
+        },
+        "latestAssistant": {
+          "line": 197,
+          "timestamp": "2026-10-02T04:31:10.607Z",
+          "stopReason": "end_turn"
+        },
+        "declaredEvidenceOwnedPaths": [
+          "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/ART/checks.mjs",
+          "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/ART/result.md"
+        ],
+        "files": [
+          {
+            "name": "checks.mjs",
+            "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/ART/checks.mjs",
+            "exists": true,
+            "bytes": 13744,
+            "sha256": "aa6810277b7f28197c53d51ad9ab36ea4aa06d94933a65fd7ee3665d480142b3",
+            "mtime": "2026-10-02T04:26:34.689Z"
+          },
+          {
+            "name": "result.md",
+            "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/ART/result.md",
+            "exists": true,
+            "bytes": 10223,
+            "sha256": "6d2dcb92685d001971c62ac1e715daf9166b40899638fd2551d6e24848d1720a",
+            "mtime": "2026-10-02T04:29:52.016Z"
+          },
+          {
+            "name": "evidence.json",
+            "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/ART/evidence.json",
+            "exists": true,
+            "bytes": 4787,
+            "sha256": "5aada824d4833657a5c6a8cd11645bd528c825f2465b9d8cff5161cc22dab017",
+            "mtime": "2026-10-02T04:30:38.924Z"
+          }
+        ],
+        "evidenceParseError": null,
+        "evidenceMetadata": {
+          "declaredStatus": "completed",
+          "checkRows": null,
+          "pass": 55,
+          "fail": 0,
+          "unknown": 0,
+          "unknownScenarioIds": [],
+          "metadataOnly": true,
+          "assertionCount": 55
+        },
+        "inventory": {
+          "lastCapturedStatus": "busy",
+          "lastCapturedAt": "2026-10-02T04:28:29.391152+00:00",
+          "pid": 91064,
+          "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+          "freshStatus": "UNKNOWN",
+          "freshInventoryRequested": false,
+          "limit": "Supplied inventory snapshot is historical; no UI/session/control or additional inventory command was performed."
+        },
+        "completion": {
+          "assistantEndTurnObserved": true,
+          "allFilesPresent": true,
+          "filesNotModifiedAfterFinal": true,
+          "finalMentionsAllExpected": true,
+          "checkpointEligible": true,
+          "preservationOnly": true,
+          "productionAcceptance": false,
+          "runtimeAcceptance": false
+        },
+        "qaCorrection": null
+      },
+      {
+        "role": "MAP",
+        "terminal": 15,
+        "sessionId": "a00bcf9b-289f-4949-a317-9634d20ac3f3",
+        "executionKind": "native-interactive",
+        "snapshotAt": "2026-10-02T04:38:28.246Z",
+        "taskPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/MAP/TASK.md",
+        "taskReadReceipt": {
+          "role": "MAP",
+          "taskPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/MAP/TASK.md",
+          "requestTimestamp": "2026-10-02T04:21:55.151Z",
+          "toolUseId": "toolu_017fam9MnpNTs1VPRtmyfCE6",
+          "resultTimestamp": "2026-10-02T04:21:55.187Z",
+          "is_error": false,
+          "success": true
+        },
+        "initialUserReceivedAt": "2026-10-02T04:21:51.101Z",
+        "reportThreshold": "2026-10-02T04:21:51.101Z",
+        "postThresholdDirectUserTimestamps": [
+          "2026-10-02T04:21:51.101Z"
+        ],
+        "jsonl": {
+          "path": "/Users/fordeargamers/.claude/projects/-Users-fordeargamers-Projects-exoduser-migration-20261001/a00bcf9b-289f-4949-a317-9634d20ac3f3.jsonl",
+          "sha256": "f400043ec7e39885bce36afae72a0d198e6640872c03582c6224f5e64ccef063",
+          "bytes": 758561,
+          "records": 185,
+          "parseErrorLines": [],
+          "lastTimestamp": "2026-10-02T04:32:30.763Z"
+        },
+        "finalReport": {
+          "line": 183,
+          "timestamp": "2026-10-02T04:29:26.414Z",
+          "stopReason": "end_turn",
+          "messageId": "msg_011CfcnCeVYrxDVB1yWfoRih",
+          "textSha256": "05b0c47da86fd66d8798d47ad53cd573209e7f8ac6abc29fc288c8a18111c868",
+          "reportedOwnedPaths": [
+            "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/MAP/checks.mjs",
+            "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/MAP/result.md",
+            "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/MAP/evidence.json"
+          ],
+          "wholeFinalTextStored": false
+        },
+        "latestAssistant": {
+          "line": 183,
+          "timestamp": "2026-10-02T04:29:26.414Z",
+          "stopReason": "end_turn"
+        },
+        "declaredEvidenceOwnedPaths": [],
+        "files": [
+          {
+            "name": "checks.mjs",
+            "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/MAP/checks.mjs",
+            "exists": true,
+            "bytes": 16458,
+            "sha256": "2c7de4fb172174d84392133326e3030e7b5b1f535ca1108cfd92283ece7999e2",
+            "mtime": "2026-10-02T04:25:52.747Z"
+          },
+          {
+            "name": "result.md",
+            "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/MAP/result.md",
+            "exists": true,
+            "bytes": 13679,
+            "sha256": "7152ff41126ae346fd8cdcd3d77a658b88759dd664e4bef37de06bed66982b35",
+            "mtime": "2026-10-02T04:28:49.090Z"
+          },
+          {
+            "name": "evidence.json",
+            "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/MAP/evidence.json",
+            "exists": true,
+            "bytes": 17209,
+            "sha256": "d90b65dbd32ecde2ba02f80e736b5468c162c36ec126fe92701389c2c7fc204a",
+            "mtime": "2026-10-02T04:26:25.159Z"
+          }
+        ],
+        "evidenceParseError": null,
+        "evidenceMetadata": {
+          "declaredStatus": null,
+          "checkRows": 11,
+          "pass": 11,
+          "fail": 0,
+          "unknown": 0,
+          "unknownScenarioIds": [],
+          "metadataOnly": true,
+          "rowVerdictCounts": {
+            "PASS": 11
+          }
+        },
+        "inventory": {
+          "lastCapturedStatus": "busy",
+          "lastCapturedAt": "2026-10-02T04:28:29.391152+00:00",
+          "pid": 91141,
+          "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+          "freshStatus": "UNKNOWN",
+          "freshInventoryRequested": false,
+          "limit": "Supplied inventory snapshot is historical; no UI/session/control or additional inventory command was performed."
+        },
+        "completion": {
+          "assistantEndTurnObserved": true,
+          "allFilesPresent": true,
+          "filesNotModifiedAfterFinal": true,
+          "finalMentionsAllExpected": true,
+          "checkpointEligible": true,
+          "preservationOnly": true,
+          "productionAcceptance": false,
+          "runtimeAcceptance": false
+        },
+        "qaCorrection": null
+      },
+      {
+        "role": "SKILL",
+        "terminal": 16,
+        "sessionId": "abd20f45-953d-47ae-870c-2ce033bbdfab",
+        "executionKind": "native-interactive",
+        "snapshotAt": "2026-10-02T04:38:28.248Z",
+        "taskPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/SKILL/TASK.md",
+        "taskReadReceipt": {
+          "role": "SKILL",
+          "taskPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/SKILL/TASK.md",
+          "requestTimestamp": "2026-10-02T04:22:52.276Z",
+          "toolUseId": "toolu_01WHRQFRrPv8gw3P3pu9Bbed",
+          "resultTimestamp": "2026-10-02T04:22:52.311Z",
+          "is_error": false,
+          "success": true
+        },
+        "initialUserReceivedAt": "2026-10-02T04:22:48.308Z",
+        "reportThreshold": "2026-10-02T04:22:48.308Z",
+        "postThresholdDirectUserTimestamps": [
+          "2026-10-02T04:22:48.308Z"
+        ],
+        "jsonl": {
+          "path": "/Users/fordeargamers/.claude/projects/-Users-fordeargamers-Projects-exoduser-migration-20261001/abd20f45-953d-47ae-870c-2ce033bbdfab.jsonl",
+          "sha256": "d9a3c5a7c8037806c3d51e184f9583121e5d07e0bcbd83615bf8f95b6226dcf4",
+          "bytes": 583624,
+          "records": 165,
+          "parseErrorLines": [],
+          "lastTimestamp": "2026-10-02T04:31:44.007Z"
+        },
+        "finalReport": {
+          "line": 163,
+          "timestamp": "2026-10-02T04:28:40.299Z",
+          "stopReason": "end_turn",
+          "messageId": "msg_011Cfcn9aZ5WYrf17UBJWcfo",
+          "textSha256": "e63f4cd5a1578f0a8ec8439ec53e7c297a84935921c24da0bbc57d4a41433cf8",
+          "reportedOwnedPaths": [
+            "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/SKILL/checks.mjs",
+            "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/SKILL/result.md",
+            "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/SKILL/evidence.json"
+          ],
+          "wholeFinalTextStored": false
+        },
+        "latestAssistant": {
+          "line": 163,
+          "timestamp": "2026-10-02T04:28:40.299Z",
+          "stopReason": "end_turn"
+        },
+        "declaredEvidenceOwnedPaths": [
+          "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/SKILL/checks.mjs",
+          "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/SKILL/result.md",
+          "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/SKILL/evidence.json"
+        ],
+        "files": [
+          {
+            "name": "checks.mjs",
+            "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/SKILL/checks.mjs",
+            "exists": true,
+            "bytes": 8136,
+            "sha256": "9f9b73942f06d3616a2e53f4635ba9732f787493ef53f79b5edf021c456395b6",
+            "mtime": "2026-10-02T04:25:20.193Z"
+          },
+          {
+            "name": "result.md",
+            "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/SKILL/result.md",
+            "exists": true,
+            "bytes": 8828,
+            "sha256": "901d0700a670f444ec0fa948083a77ee1cd2de6305137fef2d98e0e026635884",
+            "mtime": "2026-10-02T04:27:25.126Z"
+          },
+          {
+            "name": "evidence.json",
+            "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/SKILL/evidence.json",
+            "exists": true,
+            "bytes": 4744,
+            "sha256": "6c7a52ac3b4bd4f068d0bd7c37a9bdebe4690ab70b4883dccdb748a4da0fbcc3",
+            "mtime": "2026-10-02T04:28:09.041Z"
+          }
+        ],
+        "evidenceParseError": null,
+        "evidenceMetadata": {
+          "declaredStatus": "completed",
+          "checkRows": 3,
+          "pass": 1,
+          "fail": 2,
+          "unknown": 0,
+          "unknownScenarioIds": [
+            "MM-B2(alt-tab 복귀)",
+            "MM-P1(언포즈)",
+            "MM-D1/D2(사망/부활)",
+            "MM-G1/G2(패드 해제·전환)",
+            "MM-S1(스테이지 이월)",
+            "maliceStorm 동일구조"
+          ],
+          "metadataOnly": true,
+          "rowVerdictCounts": {
+            "PASS": 1,
+            "FAIL(결함 재현)": 1,
+            "FAIL(취소 무력화 확인)": 1
+          }
+        },
+        "inventory": {
+          "lastCapturedStatus": "busy",
+          "lastCapturedAt": "2026-10-02T04:28:29.391152+00:00",
+          "pid": 91209,
+          "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+          "freshStatus": "UNKNOWN",
+          "freshInventoryRequested": false,
+          "limit": "Supplied inventory snapshot is historical; no UI/session/control or additional inventory command was performed."
+        },
+        "completion": {
+          "assistantEndTurnObserved": true,
+          "allFilesPresent": true,
+          "filesNotModifiedAfterFinal": true,
+          "finalMentionsAllExpected": true,
+          "checkpointEligible": true,
+          "preservationOnly": true,
+          "productionAcceptance": false,
+          "runtimeAcceptance": false
+        },
+        "qaCorrection": null
+      },
+      {
+        "role": "QA",
+        "terminal": 17,
+        "sessionId": "f7476aa3-e002-492c-8929-48941202fe04",
+        "executionKind": "native-interactive",
+        "snapshotAt": "2026-10-02T04:38:28.251Z",
+        "taskPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/QA/TASK.md",
+        "taskReadReceipt": {
+          "role": "QA",
+          "taskPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/QA/TASK.md",
+          "requestTimestamp": "2026-10-02T04:23:24.666Z",
+          "toolUseId": "toolu_01X3yXrgon3h2d9QaVHMVb8w",
+          "resultTimestamp": "2026-10-02T04:23:24.700Z",
+          "is_error": false,
+          "success": true
+        },
+        "initialUserReceivedAt": "2026-10-02T04:23:21.299Z",
+        "reportThreshold": "2026-10-02T04:31:06.000Z",
+        "postThresholdDirectUserTimestamps": [
+          "2026-10-02T04:31:06.038Z"
+        ],
+        "jsonl": {
+          "path": "/Users/fordeargamers/.claude/projects/-Users-fordeargamers-Projects-exoduser-migration-20261001/f7476aa3-e002-492c-8929-48941202fe04.jsonl",
+          "sha256": "cdd1b959123288b3524ae0c4e7b9564c729eada590a2818c559936dc19734ca3",
+          "bytes": 668925,
+          "records": 174,
+          "parseErrorLines": [],
+          "lastTimestamp": "2026-10-02T04:35:09.698Z"
+        },
+        "finalReport": {
+          "line": 172,
+          "timestamp": "2026-10-02T04:32:06.646Z",
+          "stopReason": "end_turn",
+          "messageId": "msg_011CfcnRZS4SRXrpqTrivjkX",
+          "textSha256": "e1a28353f00af9ff2a443c4534c6f660d6ff4d08ce5d717a842e8ebed35eb719",
+          "reportedOwnedPaths": [
+            "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/QA/result.md",
+            "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/QA/evidence.json",
+            "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/QA/checks.mjs"
+          ],
+          "wholeFinalTextStored": false
+        },
+        "latestAssistant": {
+          "line": 172,
+          "timestamp": "2026-10-02T04:32:06.646Z",
+          "stopReason": "end_turn"
+        },
+        "declaredEvidenceOwnedPaths": [
+          "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/QA/checks.mjs",
+          "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/QA/result.md",
+          "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/QA/evidence.json"
+        ],
+        "files": [
+          {
+            "name": "checks.mjs",
+            "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/QA/checks.mjs",
+            "exists": true,
+            "bytes": 12757,
+            "sha256": "a5259316cae48620bcc953001994420f02b2850ece468636ead78e8c790acc25",
+            "mtime": "2026-10-02T04:26:30.707Z"
+          },
+          {
+            "name": "result.md",
+            "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/QA/result.md",
+            "exists": true,
+            "bytes": 10687,
+            "sha256": "6e4c1c8d9cbd4a68a4cbeac6ce52a993ea5344220ac0106fa05034f8eb667052",
+            "mtime": "2026-10-02T04:31:47.283Z"
+          },
+          {
+            "name": "evidence.json",
+            "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/QA/evidence.json",
+            "exists": true,
+            "bytes": 8689,
+            "sha256": "203ff7c4b5c4ad1837f242e014974a587741f986fd07f345c6e9297db0f9691d",
+            "mtime": "2026-10-02T04:31:38.342Z"
+          }
+        ],
+        "evidenceParseError": null,
+        "evidenceMetadata": {
+          "declaredStatus": null,
+          "checkRows": 6,
+          "pass": 6,
+          "fail": 0,
+          "unknown": 0,
+          "unknownScenarioIds": [],
+          "metadataOnly": true,
+          "rowVerdictCounts": {
+            "PASS": 6
+          },
+          "declaredTotal": 6
+        },
+        "inventory": {
+          "lastCapturedStatus": "busy",
+          "lastCapturedAt": "2026-10-02T04:28:29.391152+00:00",
+          "pid": 91281,
+          "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+          "freshStatus": "UNKNOWN",
+          "freshInventoryRequested": false,
+          "limit": "Supplied inventory snapshot is historical; no UI/session/control or additional inventory command was performed."
+        },
+        "completion": {
+          "assistantEndTurnObserved": true,
+          "allFilesPresent": true,
+          "filesNotModifiedAfterFinal": true,
+          "finalMentionsAllExpected": true,
+          "checkpointEligible": true,
+          "preservationOnly": true,
+          "productionAcceptance": false,
+          "runtimeAcceptance": false
+        },
+        "qaCorrection": {
+          "receiptNotBefore": "2026-10-02T04:31:06.000Z",
+          "correctionReceiptObserved": true,
+          "finalReportAfterCorrection": true,
+          "resultAfterCorrection": true,
+          "evidenceAfterCorrection": true,
+          "strayDirectoryPriorContents": "UNKNOWN",
+          "pathIncidentPreservedInSubmittedEvidence": true,
+          "incidentNotReinterpreted": true
+        }
+      },
+      {
+        "role": "ENEMY",
+        "terminal": 18,
+        "sessionId": "8f65b5e7-50e6-493c-9571-32984157cfbe",
+        "executionKind": "native-interactive",
+        "snapshotAt": "2026-10-02T04:38:28.255Z",
+        "taskPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/ENEMY/TASK.md",
+        "taskReadReceipt": {
+          "role": "ENEMY",
+          "taskPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/ENEMY/TASK.md",
+          "requestTimestamp": "2026-10-02T04:23:44.969Z",
+          "toolUseId": "toolu_01Npv4pAbMLa4pWsrXiJMWMe",
+          "resultTimestamp": "2026-10-02T04:23:45.002Z",
+          "is_error": false,
+          "success": true
+        },
+        "initialUserReceivedAt": "2026-10-02T04:23:41.763Z",
+        "reportThreshold": "2026-10-02T04:23:41.763Z",
+        "postThresholdDirectUserTimestamps": [
+          "2026-10-02T04:23:41.763Z"
+        ],
+        "jsonl": {
+          "path": "/Users/fordeargamers/.claude/projects/-Users-fordeargamers-Projects-exoduser-migration-20261001/8f65b5e7-50e6-493c-9571-32984157cfbe.jsonl",
+          "sha256": "4f32430dd89fffaa2f44a26c75d0f33326172005994176ab7b719dca85e95bd4",
+          "bytes": 806632,
+          "records": 227,
+          "parseErrorLines": [],
+          "lastTimestamp": "2026-10-02T04:38:25.299Z"
+        },
+        "finalReport": null,
+        "latestAssistant": {
+          "line": 226,
+          "timestamp": "2026-10-02T04:38:24.876Z",
+          "stopReason": "tool_use"
+        },
+        "declaredEvidenceOwnedPaths": [],
+        "files": [
+          {
+            "name": "checks.mjs",
+            "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/ENEMY/checks.mjs",
+            "exists": true,
+            "bytes": 16542,
+            "sha256": "ee4323d0ae098e327f59c6d960d77c980d43ad94803091e6fb19a24d49fb9024",
+            "mtime": "2026-10-02T04:37:18.230Z"
+          },
+          {
+            "name": "result.md",
+            "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/ENEMY/result.md",
+            "exists": false
+          },
+          {
+            "name": "evidence.json",
+            "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/ENEMY/evidence.json",
+            "exists": false
+          }
+        ],
+        "evidenceParseError": null,
+        "evidenceMetadata": {
+          "declaredStatus": null,
+          "checkRows": null,
+          "pass": null,
+          "fail": null,
+          "unknown": null,
+          "unknownScenarioIds": [],
+          "metadataOnly": true
+        },
+        "inventory": {
+          "lastCapturedStatus": "busy",
+          "lastCapturedAt": "2026-10-02T04:28:29.391152+00:00",
+          "pid": 91389,
+          "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+          "freshStatus": "UNKNOWN",
+          "freshInventoryRequested": false,
+          "limit": "Supplied inventory snapshot is historical; no UI/session/control or additional inventory command was performed."
+        },
+        "completion": {
+          "assistantEndTurnObserved": false,
+          "allFilesPresent": false,
+          "filesNotModifiedAfterFinal": false,
+          "finalMentionsAllExpected": false,
+          "checkpointEligible": false,
+          "preservationOnly": true,
+          "productionAcceptance": false,
+          "runtimeAcceptance": false
+        },
+        "qaCorrection": null
+      },
+      {
+        "role": "ANIMVFX",
+        "terminal": 19,
+        "sessionId": "43f03916-58b1-478e-a4e6-552f9d368c53",
+        "executionKind": "native-interactive",
+        "snapshotAt": "2026-10-02T04:38:28.257Z",
+        "taskPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/ANIMVFX/TASK.md",
+        "taskReadReceipt": {
+          "role": "ANIMVFX",
+          "taskPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/ANIMVFX/TASK.md",
+          "requestTimestamp": "2026-10-02T04:24:15.884Z",
+          "toolUseId": "toolu_012bKK2wagyvXphP8MRQhNo5",
+          "resultTimestamp": "2026-10-02T04:24:15.904Z",
+          "is_error": false,
+          "success": true
+        },
+        "initialUserReceivedAt": "2026-10-02T04:24:12.655Z",
+        "reportThreshold": "2026-10-02T04:24:12.655Z",
+        "postThresholdDirectUserTimestamps": [
+          "2026-10-02T04:24:12.655Z"
+        ],
+        "jsonl": {
+          "path": "/Users/fordeargamers/.claude/projects/-Users-fordeargamers-Projects-exoduser-migration-20261001/43f03916-58b1-478e-a4e6-552f9d368c53.jsonl",
+          "sha256": "a44bb29d2f78a1681aa9a8c2a4a4cfa3c0b52f23532b80f0eb6e0b0da7f52087",
+          "bytes": 888724,
+          "records": 232,
+          "parseErrorLines": [],
+          "lastTimestamp": "2026-10-02T04:37:51.941Z"
+        },
+        "finalReport": {
+          "line": 230,
+          "timestamp": "2026-10-02T04:34:48.519Z",
+          "stopReason": "end_turn",
+          "messageId": "msg_011CfcncWqqZZ25crNTdVbf4",
+          "textSha256": "9845163e2c7b61fea18122e9fef0b91bb8916a5a9351623a1a033ac634aae803",
+          "reportedOwnedPaths": [
+            "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/ANIMVFX/checks.mjs",
+            "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/ANIMVFX/result.md",
+            "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/ANIMVFX/evidence.json"
+          ],
+          "wholeFinalTextStored": false
+        },
+        "latestAssistant": {
+          "line": 230,
+          "timestamp": "2026-10-02T04:34:48.519Z",
+          "stopReason": "end_turn"
+        },
+        "declaredEvidenceOwnedPaths": [],
+        "files": [
+          {
+            "name": "checks.mjs",
+            "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/ANIMVFX/checks.mjs",
+            "exists": true,
+            "bytes": 13749,
+            "sha256": "0fa9fd399fb127b92a13c4b2d3e1b148e27e633dffd752869e706e78d94308a3",
+            "mtime": "2026-10-02T04:30:56.944Z"
+          },
+          {
+            "name": "result.md",
+            "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/ANIMVFX/result.md",
+            "exists": true,
+            "bytes": 13881,
+            "sha256": "8c7d095690c4375289688cda9321427e5b63a2516ce340c0aa76f57b7ffcb0c7",
+            "mtime": "2026-10-02T04:34:15.576Z"
+          },
+          {
+            "name": "evidence.json",
+            "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/claude-native-6/ANIMVFX/evidence.json",
+            "exists": true,
+            "bytes": 16494,
+            "sha256": "dc66800943e3f827ab04f1d9aefec6eaf5109ed114207862c257b8a8f09deffc",
+            "mtime": "2026-10-02T04:32:18.054Z"
+          }
+        ],
+        "evidenceParseError": null,
+        "evidenceMetadata": {
+          "declaredStatus": null,
+          "checkRows": 11,
+          "pass": 11,
+          "fail": 0,
+          "unknown": 0,
+          "unknownScenarioIds": [],
+          "metadataOnly": true,
+          "rowVerdictCounts": {
+            "PASS": 11
+          },
+          "declaredTotal": 11
+        },
+        "inventory": {
+          "lastCapturedStatus": "busy",
+          "lastCapturedAt": "2026-10-02T04:28:29.391152+00:00",
+          "pid": 91566,
+          "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+          "freshStatus": "UNKNOWN",
+          "freshInventoryRequested": false,
+          "limit": "Supplied inventory snapshot is historical; no UI/session/control or additional inventory command was performed."
+        },
+        "completion": {
+          "assistantEndTurnObserved": true,
+          "allFilesPresent": true,
+          "filesNotModifiedAfterFinal": true,
+          "finalMentionsAllExpected": true,
+          "checkpointEligible": true,
+          "preservationOnly": true,
+          "productionAcceptance": false,
+          "runtimeAcceptance": false
+        },
+        "qaCorrection": null
+      }
+    ],
+    "summary": {
+      "sessionCount": 6,
+      "assistantCompleted": 5,
+      "allArtifactsPresent": 5,
+      "checkpointEligibleRoles": [
+        "ART",
+        "MAP",
+        "SKILL",
+        "QA",
+        "ANIMVFX"
+      ],
+      "incompleteRoles": [
+        "ENEMY"
+      ],
+      "freshInventoryStatus": "UNKNOWN"
+    }
+  },
+  "latestDispatchSummary": {
+    "claudeSpecialistTaskReadConfirmed": 8,
+    "codexSpecialistTaskReadConfirmed": 7,
+    "codexCoordinator": 1,
+    "totalAllocatedRoles": 16,
+    "allEightClaudeSimultaneouslyRunningClaimed": false
+  },
+  "managementChatsTotalCreated": 15,
+  "activeCodexSpecialistChats": 7,
+  "activeCodexRolesIncludingCoordinator": 8,
+  "archivedDuplicateCodexChats": {
+    "recordedAt": "2026-10-02T04:42:07.671Z",
+    "archived": 8,
+    "deletedPermanently": 0,
+    "receipts": [
+      {
+        "role": "ART",
+        "threadId": "01a0faaf-479e-7143-99d6-4e1fdb5fdde5",
+        "title": "EXODUSER 아트팀",
+        "hostId": "local",
+        "preflightStatus": {
+          "type": "notLoaded"
+        },
+        "lastCompletedTurnId": "01a0fab5-c35b-7771-9141-0847624a758c",
+        "archiveResult": {
+          "threadId": "01a0faaf-479e-7143-99d6-4e1fdb5fdde5",
+          "archived": true
+        }
+      },
+      {
+        "role": "MAP",
+        "threadId": "01a0faaf-8ab1-7c81-9d2b-d17f15ba25a3",
+        "title": "EXODUSER 맵팀",
+        "hostId": "local",
+        "preflightStatus": {
+          "type": "idle"
+        },
+        "lastCompletedTurnId": "01a0fab5-c447-7583-875e-3b62c717a449",
+        "archiveResult": {
+          "threadId": "01a0faaf-8ab1-7c81-9d2b-d17f15ba25a3",
+          "archived": true
+        }
+      },
+      {
+        "role": "SKILL",
+        "threadId": "01a0faaf-8d1e-7c93-94c0-37b5df8a10eb",
+        "title": "EXODUSER 스킬팀",
+        "hostId": "local",
+        "preflightStatus": {
+          "type": "notLoaded"
+        },
+        "lastCompletedTurnId": "01a0fab5-c4d3-7552-9380-6e754466a372",
+        "archiveResult": {
+          "threadId": "01a0faaf-8d1e-7c93-94c0-37b5df8a10eb",
+          "archived": true
+        }
+      },
+      {
+        "role": "QA",
+        "threadId": "01a0faaf-9806-7cc1-8ef3-0783fd03d2f6",
+        "title": "EXODUSER QA 성능팀",
+        "hostId": "local",
+        "preflightStatus": {
+          "type": "notLoaded"
+        },
+        "lastCompletedTurnId": "01a0fab5-c770-7692-b96c-c017b743fa78",
+        "archiveResult": {
+          "threadId": "01a0faaf-9806-7cc1-8ef3-0783fd03d2f6",
+          "archived": true
+        }
+      },
+      {
+        "role": "ENEMY",
+        "threadId": "01a0faaf-9ade-74d3-8162-4261329b1ac3",
+        "title": "EXODUSER 몬스터 AI팀",
+        "hostId": "local",
+        "preflightStatus": {
+          "type": "idle"
+        },
+        "lastCompletedTurnId": "01a0fab5-c829-7030-b069-2b1d99d85ba7",
+        "archiveResult": {
+          "threadId": "01a0faaf-9ade-74d3-8162-4261329b1ac3",
+          "archived": true
+        }
+      },
+      {
+        "role": "ANIMVFX",
+        "threadId": "01a0faaf-a2e6-7262-afc1-196ae9a0ab80",
+        "title": "EXODUSER 애니메이션 VFX팀",
+        "hostId": "local",
+        "preflightStatus": {
+          "type": "idle"
+        },
+        "lastCompletedTurnId": "01a0fab5-c9c8-7203-83b9-82e85d161d5f",
+        "archiveResult": {
+          "threadId": "01a0faaf-a2e6-7262-afc1-196ae9a0ab80",
+          "archived": true
+        }
+      },
+      {
+        "role": "BOSS",
+        "threadId": "01a0fae0-c5df-70d0-9ab7-751a587bb498",
+        "title": "EXODUSER 보스전팀",
+        "hostId": "local",
+        "preflightStatus": {
+          "type": "idle"
+        },
+        "lastCompletedTurnId": "01a0fae0-c88e-7e50-99bd-3a003ea85b7a",
+        "archiveResult": {
+          "threadId": "01a0fae0-c5df-70d0-9ab7-751a587bb498",
+          "archived": true
+        }
+      },
+      {
+        "role": "STORY",
+        "threadId": "01a0fae0-c9ce-7890-b125-b3da65d8b3fa",
+        "title": "EXODUSER 스토리팀",
+        "hostId": "local",
+        "preflightStatus": {
+          "type": "idle"
+        },
+        "lastCompletedTurnId": "01a0fae0-cb99-7b60-be14-c02bf49e6822",
+        "archiveResult": {
+          "threadId": "01a0fae0-c9ce-7890-b125-b3da65d8b3fa",
+          "archived": true
+        }
+      }
+    ]
+  },
+  "currentTaskPins": [
+    {
+      "path": "tools/team-followup-20261002/new-four/BOSS/TASK.md",
+      "sha256": "d08e77a0e2275426d656cb19eb70c86f0078a72cae9d61dfaa0c2686fb851a02"
+    },
+    {
+      "path": "tools/team-followup-20261002/new-four/MARKETING/TASK.md",
+      "sha256": "397dfc03ad1f84a27df8a7942f0ca0347331ada0c9a8f583a05fcef1893fc5a8"
+    },
+    {
+      "path": "tools/team-followup-20261002/new-four/QUESTNPC/TASK.md",
+      "sha256": "bed5f3aa4c5a37ea3a2f30eb7549b65160fd724309ab227455bfeff3674e1040"
+    },
+    {
+      "path": "tools/team-followup-20261002/new-four/STORY/TASK.md",
+      "sha256": "6514ec34f8bc9af55ea6d15d6904871bf84d08631cfed7935fae19136310d55c"
+    }
+  ],
+  "preservationValidation": {
+    "productionInputsShaUnchanged": 6,
+    "completedNativeSubmissionsPreservedBytes": 15,
+    "newNativeChecksSyntaxValid": 5,
+    "jsonValid": true,
+    "archiveEightOfficialResultsAndListVerified": true,
+    "changelogOriginalPrefixBytesPreserved": 3260500,
+    "productionRuntimeVisualAcceptance": false,
+    "userPendingItemsExcluded": 23
+  }
 }

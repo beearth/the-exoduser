@@ -1,0 +1,84 @@
+{
+  "role": "SKILL",
+  "team": "claude-native-6",
+  "model": "claude-opus-4-8",
+  "taskFile": "tools/team-followup-20261002/claude-native-6/SKILL/TASK.md",
+  "inheritsFrom": "tools/team-followup-20261002/claude-provider/SKILL/result.md",
+  "scope": "입력 수명 후속검토 인수 → 실제 소스 하니스로 결함 경계 1건 재현. 기존 142 비용검사 재실행 아님.",
+  "node": "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node (v24.15.0)",
+  "tools": ["Read", "Grep", "Bash(node,git-readonly,shasum)", "Write"],
+  "permissionMode": "default",
+  "productionApplied": false,
+  "runtimeExecuted": true,
+  "gitWrites": 0,
+  "sourceSha256": {
+    "game.html": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+    "game-easy-test.html": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8"
+  },
+  "sourceSlices": [
+    {"what": "_clearHeldInput body", "game.html": "12877-12885", "game-easy-test.html": "12273-12281", "parity": "byte-identical"},
+    {"what": "blur/visibilitychange registration", "game.html": "12886-12887", "game-easy-test.html": "12282-12283", "parity": "identical"},
+    {"what": "mortar aim/charge/release block", "game.html": "35217-35228", "game-easy-test.html": "34022-34033", "parity": "byte-identical"},
+    {"what": "mortar enter/cancel dispatch", "game.html": "12456-12457"}
+  ],
+  "harnessSelfHashes": {
+    "SRC_CLEAR_sha256": "1250907f313736f3281d5e655f4d2988f22767770043d2d355a50bf14b32e7a9",
+    "SRC_AIM_sha256": "a9c5053171de43011c4c846174b9f29f69d8e1f472b59576ba0d515e1ef768bd"
+  },
+  "ownedFiles": [
+    {"path": "tools/team-followup-20261002/claude-native-6/SKILL/checks.mjs", "sha256": "9f9b73942f06d3616a2e53f4635ba9732f787493ef53f79b5edf021c456395b6"},
+    {"path": "tools/team-followup-20261002/claude-native-6/SKILL/result.md"},
+    {"path": "tools/team-followup-20261002/claude-native-6/SKILL/evidence.json"}
+  ],
+  "checks": [
+    {
+      "id": "C0",
+      "name": "정상 릴리즈(대조)",
+      "input": "조준+1프레임 홀드 후 사용자 keyup",
+      "expected": "발사 1회(정상 release)",
+      "observed": "_mmCharging(홀드후)=true, fireCalls=1",
+      "verdict": "PASS"
+    },
+    {
+      "id": "MM-B1",
+      "name": "blur 중 충전 → 다음 프레임 유령발사",
+      "input": "_mmCharging=true,KH[키]=true 상태에서 window blur→_clearHeldInput→다음 update 프레임",
+      "expected": "blur 시 조준·충전 해제·무발사 (fireCalls=0)",
+      "observed": "KH[키]after=false, _mmCharging after=true, _mmAiming after=true, fireCalls=1",
+      "verdict": "FAIL(결함 재현)"
+    },
+    {
+      "id": "MM-B1b",
+      "name": "취소입력이 blur로 소실",
+      "input": "충전 중 Escape/RMB 취소 + 동시 blur",
+      "expected": "취소가 발사 차단 (fireCalls=0)",
+      "observed": "Escape after=false, MBjust[2] after=false, fireCalls=1",
+      "verdict": "FAIL(취소 무력화 확인)"
+    }
+  ],
+  "unknownPaths": {
+    "note": "미재현 — 실입력/실 runtime Gate 필요(결함 부정 아님)",
+    "ids": ["MM-B2(alt-tab 복귀)", "MM-P1(언포즈)", "MM-D1/D2(사망/부활)", "MM-G1/G2(패드 해제·전환)", "MM-S1(스테이지 이월)", "maliceStorm 동일구조"]
+  },
+  "candidatesUnapplied": [
+    {"id": "A", "desc": "_clearHeldInput 말미에 P._mmAiming/_mmCharging=false 추가(권장,최소)", "applied": false},
+    {"id": "B", "desc": "die()/reviveOnce/스테이지리셋 동일 초기화(보강, QA 재현 후)", "applied": false},
+    {"id": "C", "desc": "_mmRel을 keyup 엣지로 전환(근본, 보류)", "applied": false}
+  ],
+  "policyChanges": {"mp": 0, "fusion": 0, "rng": 0, "cancelOrResourcePolicy": 0},
+  "docsCorrections": [
+    {"file": "docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md", "line": 227, "kind": "제약 보충(미적용)"},
+    {"file": "docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md", "line": 228, "kind": "maliceStorm 동일구조 경보(미적용)"},
+    {"file": "docs/2_1 스킬관리+합체시스템+자원/SKILL03_설치확정_자원검수_20261001.md", "kind": "수명 경계 재현 결과 추가(미적용)"}
+  ],
+  "changesCount": {"start": 37, "mid": 37, "final": 39, "note": "80 체크포인트 미도달, 100 전 완료, stage/commit/push 0"},
+  "timestampsUTC": {
+    "taskRead": "2026-10-02T04:22:00Z",
+    "harnessRun": "2026-10-02T04:25:00Z",
+    "write": "2026-10-02T04:27:00Z",
+    "review": "2026-10-02T04:27:20Z",
+    "complete": "2026-10-02T04:27:40Z"
+  },
+  "nextGate": "총괄: SHA 재검증·후보A 적용 결정·docs 반영 / QA: MM-B2 등 UNKNOWN 6경로+maliceStorm 실입력 Gate",
+  "status": "completed"
+}

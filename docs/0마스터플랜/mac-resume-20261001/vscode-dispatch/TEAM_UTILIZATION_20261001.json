@@ -1566,12 +1566,132 @@
     "plannedTotalRoles": 16,
     "plannedClaude": 8,
     "plannedCodex": 8,
-    "nativeReadConfirmed": 6,
+    "nativeReadConfirmed": 8,
     "nativeReadExpected": 8,
     "codexFiveOfficialSendSucceeded": 5,
     "newManagementChats": 4,
-    "managementChatsTotal": 15,
+    "managementChatsTotal": 7,
     "productionApplied": false,
-    "qaPathIncident": "see registry; prior contents UNKNOWN"
-  }
+    "qaPathIncident": "see registry; prior contents UNKNOWN",
+    "latestObservedAt": "2026-10-02T04:43:21.956853+00:00",
+    "codexSpecialistReadConfirmed": 7,
+    "codexCoordinator": 1,
+    "managementChatsTotalCreated": 15,
+    "archivedDuplicateCodexChats": 8,
+    "newFourTasksReadConfirmed": 4
+  },
+  "archivedDuplicateCodexTeams20261002": [
+    {
+      "role": "ART",
+      "threadId": "01a0faaf-479e-7143-99d6-4e1fdb5fdde5",
+      "title": "EXODUSER 아트팀",
+      "hostId": "local",
+      "preflightStatus": {
+        "type": "notLoaded"
+      },
+      "lastCompletedTurnId": "01a0fab5-c35b-7771-9141-0847624a758c",
+      "archiveResult": {
+        "threadId": "01a0faaf-479e-7143-99d6-4e1fdb5fdde5",
+        "archived": true
+      }
+    },
+    {
+      "role": "MAP",
+      "threadId": "01a0faaf-8ab1-7c81-9d2b-d17f15ba25a3",
+      "title": "EXODUSER 맵팀",
+      "hostId": "local",
+      "preflightStatus": {
+        "type": "idle"
+      },
+      "lastCompletedTurnId": "01a0fab5-c447-7583-875e-3b62c717a449",
+      "archiveResult": {
+        "threadId": "01a0faaf-8ab1-7c81-9d2b-d17f15ba25a3",
+        "archived": true
+      }
+    },
+    {
+      "role": "SKILL",
+      "threadId": "01a0faaf-8d1e-7c93-94c0-37b5df8a10eb",
+      "title": "EXODUSER 스킬팀",
+      "hostId": "local",
+      "preflightStatus": {
+        "type": "notLoaded"
+      },
+      "lastCompletedTurnId": "01a0fab5-c4d3-7552-9380-6e754466a372",
+      "archiveResult": {
+        "threadId": "01a0faaf-8d1e-7c93-94c0-37b5df8a10eb",
+        "archived": true
+      }
+    },
+    {
+      "role": "QA",
+      "threadId": "01a0faaf-9806-7cc1-8ef3-0783fd03d2f6",
+      "title": "EXODUSER QA 성능팀",
+      "hostId": "local",
+      "preflightStatus": {
+        "type": "notLoaded"
+      },
+      "lastCompletedTurnId": "01a0fab5-c770-7692-b96c-c017b743fa78",
+      "archiveResult": {
+        "threadId": "01a0faaf-9806-7cc1-8ef3-0783fd03d2f6",
+        "archived": true
+      }
+    },
+    {
+      "role": "ENEMY",
+      "threadId": "01a0faaf-9ade-74d3-8162-4261329b1ac3",
+      "title": "EXODUSER 몬스터 AI팀",
+      "hostId": "local",
+      "preflightStatus": {
+        "type": "idle"
+      },
+      "lastCompletedTurnId": "01a0fab5-c829-7030-b069-2b1d99d85ba7",
+      "archiveResult": {
+        "threadId": "01a0faaf-9ade-74d3-8162-4261329b1ac3",
+        "archived": true
+      }
+    },
+    {
+      "role": "ANIMVFX",
+      "threadId": "01a0faaf-a2e6-7262-afc1-196ae9a0ab80",
+      "title": "EXODUSER 애니메이션 VFX팀",
+      "hostId": "local",
+      "preflightStatus": {
+        "type": "idle"
+      },
+      "lastCompletedTurnId": "01a0fab5-c9c8-7203-83b9-82e85d161d5f",
+      "archiveResult": {
+        "threadId": "01a0faaf-a2e6-7262-afc1-196ae9a0ab80",
+        "archived": true
+      }
+    },
+    {
+      "role": "BOSS",
+      "threadId": "01a0fae0-c5df-70d0-9ab7-751a587bb498",
+      "title": "EXODUSER 보스전팀",
+      "hostId": "local",
+      "preflightStatus": {
+        "type": "idle"
+      },
+      "lastCompletedTurnId": "01a0fae0-c88e-7e50-99bd-3a003ea85b7a",
+      "archiveResult": {
+        "threadId": "01a0fae0-c5df-70d0-9ab7-751a587bb498",
+        "archived": true
+      }
+    },
+    {
+      "role": "STORY",
+      "threadId": "01a0fae0-c9ce-7890-b125-b3da65d8b3fa",
+      "title": "EXODUSER 스토리팀",
+      "hostId": "local",
+      "preflightStatus": {
+        "type": "idle"
+      },
+      "lastCompletedTurnId": "01a0fae0-cb99-7b60-be14-c02bf49e6822",
+      "archiveResult": {
+        "threadId": "01a0fae0-c9ce-7890-b125-b3da65d8b3fa",
+        "archived": true
+      }
+    }
+  ]
 }

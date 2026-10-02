@@ -1,0 +1,562 @@
+{
+  "executions": [
+    {
+      "taskId": "native-easy-hook-candidate-validation",
+      "startedAt": "2026-10-02T04:26:24.957Z",
+      "finishedAt": "2026-10-02T04:26:25.158Z",
+      "head": "8fd5b7ecf7bb9caebf4a1c2cadb844e0986f8c82",
+      "node": "v24.15.0",
+      "fixture": "production functions/data extracted into isolated Node VM; no game bootstrap; easy hook candidate injected in-memory only",
+      "candidate": {
+        "productionApplied": false,
+        "diskModified": false,
+        "injectedHookLine": "  if(typeof CH1_1_PRODUCTION!=='undefined')return CH1_1_PRODUCTION.buildRLE(mw,mh);",
+        "injectedHookLineSHA256": "6e0414cd206da409410c8dc6e40bd7ba1b3665fca3815fa241c850b5d9c36aea",
+        "injectedBytes": 84,
+        "note": "memory-only: production layout include(이미 VM 선로드) + _buildCh1StartForestRLE hook 한 줄. geometry/RLE/좌표 신규 정의 0."
+      },
+      "sourceGate": {
+        "mainLayoutInclude": true,
+        "easyLayoutInclude": false,
+        "mainForegroundInclude": true,
+        "easyForegroundInclude": false,
+        "mainEdgeInclude": true,
+        "easyEdgeInclude": false,
+        "easyHookInBuilder": false,
+        "mainHookInBuilder": true
+      },
+      "builders": {
+        "mainSHA256": "28caed8b821d9e5c30047823b039e42cc88ae25f445072f0550a0f53d16225db",
+        "legacySHA256": "8f6ad81bd9183d5e58deb99ccddac189d7a59a00cdab6b6157069f17a87d6ca8",
+        "candidateSHA256": "28caed8b821d9e5c30047823b039e42cc88ae25f445072f0550a0f53d16225db",
+        "candidateEqualsMain": true,
+        "legacyEqualsMain": false
+      },
+      "generatedMapSHA256": {
+        "main": "8a5dfe9f1a6c5a283be293a85cedb49509d1db5d317e063fde0b2cd5ff6c65a1",
+        "easyLegacy": "7c7e8d31ae37a77291cc4fda815031bdfe7b6d0d399d0333a9314d6ad94677d5",
+        "easyCandidate": "8a5dfe9f1a6c5a283be293a85cedb49509d1db5d317e063fde0b2cd5ff6c65a1"
+      },
+      "rawRLE": {
+        "mainSHA256": "719b681344bf0ab5dc07ae58cb4c01342ca85fde6386a01753d147a66e6ee78c",
+        "candidateSHA256": "719b681344bf0ab5dc07ae58cb4c01342ca85fde6386a01753d147a66e6ee78c",
+        "equal": true
+      },
+      "probePoints": {
+        "main": [
+          {
+            "world": [
+              6660,
+              6140
+            ],
+            "tileValue": 0,
+            "isW": false,
+            "canMvR15": true
+          },
+          {
+            "world": [
+              7000,
+              6900
+            ],
+            "tileValue": 1,
+            "isW": true,
+            "canMvR15": false
+          },
+          {
+            "world": [
+              7000,
+              6880
+            ],
+            "tileValue": 1,
+            "isW": true,
+            "canMvR15": false
+          },
+          {
+            "world": [
+              6660,
+              6304
+            ],
+            "tileValue": 0,
+            "isW": false,
+            "canMvR15": true
+          },
+          {
+            "world": [
+              6660,
+              6305
+            ],
+            "tileValue": 0,
+            "isW": false,
+            "canMvR15": false
+          }
+        ],
+        "easyLegacy": [
+          {
+            "world": [
+              6660,
+              6140
+            ],
+            "tileValue": 0,
+            "isW": false,
+            "canMvR15": true
+          },
+          {
+            "world": [
+              7000,
+              6900
+            ],
+            "tileValue": 1,
+            "isW": true,
+            "canMvR15": false
+          },
+          {
+            "world": [
+              7000,
+              6880
+            ],
+            "tileValue": 1,
+            "isW": true,
+            "canMvR15": false
+          },
+          {
+            "world": [
+              6660,
+              6304
+            ],
+            "tileValue": 0,
+            "isW": false,
+            "canMvR15": true
+          },
+          {
+            "world": [
+              6660,
+              6305
+            ],
+            "tileValue": 0,
+            "isW": false,
+            "canMvR15": true
+          }
+        ],
+        "easyCandidate": [
+          {
+            "world": [
+              6660,
+              6140
+            ],
+            "tileValue": 0,
+            "isW": false,
+            "canMvR15": true
+          },
+          {
+            "world": [
+              7000,
+              6900
+            ],
+            "tileValue": 1,
+            "isW": true,
+            "canMvR15": false
+          },
+          {
+            "world": [
+              7000,
+              6880
+            ],
+            "tileValue": 1,
+            "isW": true,
+            "canMvR15": false
+          },
+          {
+            "world": [
+              6660,
+              6304
+            ],
+            "tileValue": 0,
+            "isW": false,
+            "canMvR15": true
+          },
+          {
+            "world": [
+              6660,
+              6305
+            ],
+            "tileValue": 0,
+            "isW": false,
+            "canMvR15": false
+          }
+        ]
+      },
+      "inputsBefore": {
+        "game.html": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+        "game-easy-test.html": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+        "assets/map/ch1/production_finish/layout.js": "94b974df0ea090bd0cedb4f492777194e3b5938bcace6a7db2fd879b89a20dab",
+        "ch1-border-foreground.js": "7f0f3e2e373041adc9e39512b147ab535f99b89e914686ab7ff14eb602f46b22",
+        "ch1-boundary-edge.js": "e1271685ee41026e330c77dfb9c8fc83146f2d116b97512e37d82cf53798edc2",
+        "maps_data.js": "01e74466ea797227d555288592edc959545cb2e44e64e607bf181e7d64c2870e"
+      },
+      "inputsAfter": {
+        "game.html": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+        "game-easy-test.html": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+        "assets/map/ch1/production_finish/layout.js": "94b974df0ea090bd0cedb4f492777194e3b5938bcace6a7db2fd879b89a20dab",
+        "ch1-border-foreground.js": "7f0f3e2e373041adc9e39512b147ab535f99b89e914686ab7ff14eb602f46b22",
+        "ch1-boundary-edge.js": "e1271685ee41026e330c77dfb9c8fc83146f2d116b97512e37d82cf53798edc2",
+        "maps_data.js": "01e74466ea797227d555288592edc959545cb2e44e64e607bf181e7d64c2870e"
+      },
+      "layoutSSOT": {
+        "path": "assets/map/ch1/production_finish/layout.js",
+        "sha256": "94b974df0ea090bd0cedb4f492777194e3b5938bcace6a7db2fd879b89a20dab"
+      },
+      "separateVisualGate": {
+        "note": "foreground/edge 스크립트 누락은 별도 시각 Gate(생성함수 parity와 무관).",
+        "easyMissingForeground": true,
+        "easyMissingEdge": true,
+        "status": "UNMEASURED(시각/8뷰 미수행)"
+      },
+      "counts": {
+        "pass": 11,
+        "fail": 0
+      },
+      "results": [
+        {
+          "id": "C01",
+          "name": "소스 게이트: main은 production layout include·hook 보유, easy는 미보유",
+          "status": "PASS"
+        },
+        {
+          "id": "C02",
+          "name": "최소 반례: easy 빌더 == main 빌더 - hook 한 줄 (바이트 단일 차이)",
+          "status": "PASS"
+        },
+        {
+          "id": "C03",
+          "name": "legacy drift: main G.map SHA != easy(legacy) G.map SHA (S04 재현)",
+          "status": "PASS"
+        },
+        {
+          "id": "C04",
+          "name": "legacy drift: (6660,6305) canMv main=false / easy=true (M15 재현)",
+          "status": "PASS"
+        },
+        {
+          "id": "P03",
+          "name": "S03 해소: easyCandidate 빌더 == main 빌더 (바이트 동일)",
+          "status": "PASS"
+        },
+        {
+          "id": "P04",
+          "name": "S04 해소: easyCandidate G.map SHA == main G.map SHA",
+          "status": "PASS"
+        },
+        {
+          "id": "P15",
+          "name": "M15 해소: 5개 탐침점 isW/canMv main == easyCandidate",
+          "status": "PASS"
+        },
+        {
+          "id": "P06",
+          "name": "SSOT 무변경: candidate raw RLE == main raw RLE (layout.js buildRLE 그대로)",
+          "status": "PASS"
+        },
+        {
+          "id": "P07",
+          "name": "미적용·디스크 무변경: 주입은 메모리 문자열 1줄뿐, easy HTML 불변",
+          "status": "PASS"
+        },
+        {
+          "id": "G01",
+          "name": "UI/이미지 요청·그리드 가드 호출 없음(세 fixture)",
+          "status": "PASS"
+        },
+        {
+          "id": "G02",
+          "name": "보호 입력 6개 실행 전후 SHA 동일",
+          "status": "PASS"
+        }
+      ],
+      "gates": {
+        "actualEightViews": "0/8",
+        "visualVerdict": "RETOUCH",
+        "productionApplied": false,
+        "rawSHAReverify": "current input SHA는 이번 실행에서 측정; 원격 ref 대조는 총괄 단계"
+      }
+    }
+  ],
+  "latest": {
+    "taskId": "native-easy-hook-candidate-validation",
+    "startedAt": "2026-10-02T04:26:24.957Z",
+    "finishedAt": "2026-10-02T04:26:25.158Z",
+    "head": "8fd5b7ecf7bb9caebf4a1c2cadb844e0986f8c82",
+    "node": "v24.15.0",
+    "fixture": "production functions/data extracted into isolated Node VM; no game bootstrap; easy hook candidate injected in-memory only",
+    "candidate": {
+      "productionApplied": false,
+      "diskModified": false,
+      "injectedHookLine": "  if(typeof CH1_1_PRODUCTION!=='undefined')return CH1_1_PRODUCTION.buildRLE(mw,mh);",
+      "injectedHookLineSHA256": "6e0414cd206da409410c8dc6e40bd7ba1b3665fca3815fa241c850b5d9c36aea",
+      "injectedBytes": 84,
+      "note": "memory-only: production layout include(이미 VM 선로드) + _buildCh1StartForestRLE hook 한 줄. geometry/RLE/좌표 신규 정의 0."
+    },
+    "sourceGate": {
+      "mainLayoutInclude": true,
+      "easyLayoutInclude": false,
+      "mainForegroundInclude": true,
+      "easyForegroundInclude": false,
+      "mainEdgeInclude": true,
+      "easyEdgeInclude": false,
+      "easyHookInBuilder": false,
+      "mainHookInBuilder": true
+    },
+    "builders": {
+      "mainSHA256": "28caed8b821d9e5c30047823b039e42cc88ae25f445072f0550a0f53d16225db",
+      "legacySHA256": "8f6ad81bd9183d5e58deb99ccddac189d7a59a00cdab6b6157069f17a87d6ca8",
+      "candidateSHA256": "28caed8b821d9e5c30047823b039e42cc88ae25f445072f0550a0f53d16225db",
+      "candidateEqualsMain": true,
+      "legacyEqualsMain": false
+    },
+    "generatedMapSHA256": {
+      "main": "8a5dfe9f1a6c5a283be293a85cedb49509d1db5d317e063fde0b2cd5ff6c65a1",
+      "easyLegacy": "7c7e8d31ae37a77291cc4fda815031bdfe7b6d0d399d0333a9314d6ad94677d5",
+      "easyCandidate": "8a5dfe9f1a6c5a283be293a85cedb49509d1db5d317e063fde0b2cd5ff6c65a1"
+    },
+    "rawRLE": {
+      "mainSHA256": "719b681344bf0ab5dc07ae58cb4c01342ca85fde6386a01753d147a66e6ee78c",
+      "candidateSHA256": "719b681344bf0ab5dc07ae58cb4c01342ca85fde6386a01753d147a66e6ee78c",
+      "equal": true
+    },
+    "probePoints": {
+      "main": [
+        {
+          "world": [
+            6660,
+            6140
+          ],
+          "tileValue": 0,
+          "isW": false,
+          "canMvR15": true
+        },
+        {
+          "world": [
+            7000,
+            6900
+          ],
+          "tileValue": 1,
+          "isW": true,
+          "canMvR15": false
+        },
+        {
+          "world": [
+            7000,
+            6880
+          ],
+          "tileValue": 1,
+          "isW": true,
+          "canMvR15": false
+        },
+        {
+          "world": [
+            6660,
+            6304
+          ],
+          "tileValue": 0,
+          "isW": false,
+          "canMvR15": true
+        },
+        {
+          "world": [
+            6660,
+            6305
+          ],
+          "tileValue": 0,
+          "isW": false,
+          "canMvR15": false
+        }
+      ],
+      "easyLegacy": [
+        {
+          "world": [
+            6660,
+            6140
+          ],
+          "tileValue": 0,
+          "isW": false,
+          "canMvR15": true
+        },
+        {
+          "world": [
+            7000,
+            6900
+          ],
+          "tileValue": 1,
+          "isW": true,
+          "canMvR15": false
+        },
+        {
+          "world": [
+            7000,
+            6880
+          ],
+          "tileValue": 1,
+          "isW": true,
+          "canMvR15": false
+        },
+        {
+          "world": [
+            6660,
+            6304
+          ],
+          "tileValue": 0,
+          "isW": false,
+          "canMvR15": true
+        },
+        {
+          "world": [
+            6660,
+            6305
+          ],
+          "tileValue": 0,
+          "isW": false,
+          "canMvR15": true
+        }
+      ],
+      "easyCandidate": [
+        {
+          "world": [
+            6660,
+            6140
+          ],
+          "tileValue": 0,
+          "isW": false,
+          "canMvR15": true
+        },
+        {
+          "world": [
+            7000,
+            6900
+          ],
+          "tileValue": 1,
+          "isW": true,
+          "canMvR15": false
+        },
+        {
+          "world": [
+            7000,
+            6880
+          ],
+          "tileValue": 1,
+          "isW": true,
+          "canMvR15": false
+        },
+        {
+          "world": [
+            6660,
+            6304
+          ],
+          "tileValue": 0,
+          "isW": false,
+          "canMvR15": true
+        },
+        {
+          "world": [
+            6660,
+            6305
+          ],
+          "tileValue": 0,
+          "isW": false,
+          "canMvR15": false
+        }
+      ]
+    },
+    "inputsBefore": {
+      "game.html": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+      "game-easy-test.html": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+      "assets/map/ch1/production_finish/layout.js": "94b974df0ea090bd0cedb4f492777194e3b5938bcace6a7db2fd879b89a20dab",
+      "ch1-border-foreground.js": "7f0f3e2e373041adc9e39512b147ab535f99b89e914686ab7ff14eb602f46b22",
+      "ch1-boundary-edge.js": "e1271685ee41026e330c77dfb9c8fc83146f2d116b97512e37d82cf53798edc2",
+      "maps_data.js": "01e74466ea797227d555288592edc959545cb2e44e64e607bf181e7d64c2870e"
+    },
+    "inputsAfter": {
+      "game.html": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+      "game-easy-test.html": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+      "assets/map/ch1/production_finish/layout.js": "94b974df0ea090bd0cedb4f492777194e3b5938bcace6a7db2fd879b89a20dab",
+      "ch1-border-foreground.js": "7f0f3e2e373041adc9e39512b147ab535f99b89e914686ab7ff14eb602f46b22",
+      "ch1-boundary-edge.js": "e1271685ee41026e330c77dfb9c8fc83146f2d116b97512e37d82cf53798edc2",
+      "maps_data.js": "01e74466ea797227d555288592edc959545cb2e44e64e607bf181e7d64c2870e"
+    },
+    "layoutSSOT": {
+      "path": "assets/map/ch1/production_finish/layout.js",
+      "sha256": "94b974df0ea090bd0cedb4f492777194e3b5938bcace6a7db2fd879b89a20dab"
+    },
+    "separateVisualGate": {
+      "note": "foreground/edge 스크립트 누락은 별도 시각 Gate(생성함수 parity와 무관).",
+      "easyMissingForeground": true,
+      "easyMissingEdge": true,
+      "status": "UNMEASURED(시각/8뷰 미수행)"
+    },
+    "counts": {
+      "pass": 11,
+      "fail": 0
+    },
+    "results": [
+      {
+        "id": "C01",
+        "name": "소스 게이트: main은 production layout include·hook 보유, easy는 미보유",
+        "status": "PASS"
+      },
+      {
+        "id": "C02",
+        "name": "최소 반례: easy 빌더 == main 빌더 - hook 한 줄 (바이트 단일 차이)",
+        "status": "PASS"
+      },
+      {
+        "id": "C03",
+        "name": "legacy drift: main G.map SHA != easy(legacy) G.map SHA (S04 재현)",
+        "status": "PASS"
+      },
+      {
+        "id": "C04",
+        "name": "legacy drift: (6660,6305) canMv main=false / easy=true (M15 재현)",
+        "status": "PASS"
+      },
+      {
+        "id": "P03",
+        "name": "S03 해소: easyCandidate 빌더 == main 빌더 (바이트 동일)",
+        "status": "PASS"
+      },
+      {
+        "id": "P04",
+        "name": "S04 해소: easyCandidate G.map SHA == main G.map SHA",
+        "status": "PASS"
+      },
+      {
+        "id": "P15",
+        "name": "M15 해소: 5개 탐침점 isW/canMv main == easyCandidate",
+        "status": "PASS"
+      },
+      {
+        "id": "P06",
+        "name": "SSOT 무변경: candidate raw RLE == main raw RLE (layout.js buildRLE 그대로)",
+        "status": "PASS"
+      },
+      {
+        "id": "P07",
+        "name": "미적용·디스크 무변경: 주입은 메모리 문자열 1줄뿐, easy HTML 불변",
+        "status": "PASS"
+      },
+      {
+        "id": "G01",
+        "name": "UI/이미지 요청·그리드 가드 호출 없음(세 fixture)",
+        "status": "PASS"
+      },
+      {
+        "id": "G02",
+        "name": "보호 입력 6개 실행 전후 SHA 동일",
+        "status": "PASS"
+      }
+    ],
+    "gates": {
+      "actualEightViews": "0/8",
+      "visualVerdict": "RETOUCH",
+      "productionApplied": false,
+      "rawSHAReverify": "current input SHA는 이번 실행에서 측정; 원격 ref 대조는 총괄 단계"
+    }
+  }
+}

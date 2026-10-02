@@ -1,38 +1,53 @@
-# 최신 실행 역할 — 총괄1+전문15, Claude8/Codex8
+# 현재 팀 구성 — Codex8 / Claude8
 
-사용자의 6대6·총괄1+전문11 지시로12역할을 배정한 뒤, 보스전·스토리·퀘스트/NPC·유튜브/스팀 페이지관리4팀을 추가하여16역할로 확장했다. 실행 담당 배치와 관리 채팅·프로세스 존재·과거 완료를 구분한다.
+사용자 최신 확정은 총괄1+전문15=16역할이다. Codex8은 총괄1+전문7, Claude는 전문8이다. 배정 수와 현재 동시 추론 인원을 구분한다. 갱신 2026-10-02T04:43:21.956853+00:00. 상태는 각 영수증의 조회 시점이다.
 
-| 제공자 | 실행 담당8역할 | 확인 상태 |
-|---|---|---|
-| Claude Code | ART, MAP, SKILL, QA, ENEMY, ANIMVFX, BOSS, STORY | 기존 Terminal14–19의 실제 TASK Read6/6. 새 Terminal20/21의 BOSS/STORY TASK 배정 준비 |
-| Codex | 총괄, UIUX, ITEM, BUILD, BALANCE, SOUND, QUESTNPC, MARKETING | 기존5전문채팅 후속 공식send5/5. 신규 QUESTNPC/MARKETING은 역할 인수 후 실제TASK 배정 준비 |
+| 제공자 | 팀 | 실행 위치 | 현재 과제 | 진행·인수 상태 |
+|---|---|---|---|---|
+| Codex | 총괄 | 이 총괄 채팅 | 업무 배정·소유 보존·문서/후보 인수 | 배정·소유 보존·후보 인수·문서/원격 checkpoint |
+| Codex | UIUX | EXODUSER UIUX팀 / 01a0faaf-8fd2-7083-b174-69c604bd58b0 | 이전 스킬 카드 콜백 수명 | TASK 실제 읽기·진행 관찰 |
+| Codex | 아이템 | EXODUSER 아이템팀 / 01a0faaf-92a3-7eb1-842d-eb4baa1a2954 | D13 데이터 schema 검토 | 이번 한 건 제출 완료·인수 대기 |
+| Codex | 통합 빌드 | EXODUSER 통합 빌드팀 / 01a0faaf-9dd5-7c91-ab09-ee0bcff343b0 | 기존 앱 source/byte acceptance manifest | TASK 실제 읽기·진행 관찰 |
+| Codex | 밸런스·경제 | EXODUSER 밸런스 경제팀 / 01a0faaf-a06a-79a2-9def-58eb8ad10d65 | 지속 close와 unlink 이중 실패 반례 | 이번 한 건 제출 완료·인수 대기 |
+| Codex | 사운드 | EXODUSER 사운드팀 / 01a0faaf-956a-74a3-9bf1-77032f124e2d | ghost_laugh 큐 포화·dedup/RNG | TASK 실제 읽기·진행 관찰 |
+| Codex | 퀘스트·NPC | EXODUSER 퀘스트 NPC팀 / 01a0fae0-ccb2-7572-9d58-8c3176f9afff | 현행 구현 지도·기존 인물 퀘스트 초안 | TASK 실제 읽기·진행 관찰 |
+| Codex | 유튜브·스팀 페이지 | EXODUSER 유튜브 스팀 페이지팀 / 01a0fae0-cff3-78f0-aa73-32b08c6d6055 | Steam 페이지 근거·소개/영상/일정 초안 | TASK 실제 읽기·진행 관찰 |
+| Claude Code | 아트 | VS Code Terminal14 / 727bc729-3d9a-43ad-9fe6-f284e54e3bb8 | 실제 cover renderer/crop 기하 대조 | 산출 제출·생산/런타임 인수 대기 |
+| Claude Code | 맵 | VS Code Terminal15 / a00bcf9b-289f-4949-a317-9634d20ac3f3 | easy include/hook 메모리 후보 parity | 산출 제출·생산/런타임 인수 대기 |
+| Claude Code | 스킬 | VS Code Terminal16 / abd20f45-953d-47ae-870c-2ce033bbdfab | mortar 입력수명 반례 | 산출 제출·생산/런타임 인수 대기 (담당 보고1 PASS/2 FAIL) |
+| Claude Code | QA·성능 | VS Code Terminal17 / f7476aa3-e002-492c-8929-48941202fe04 | 실제 설치/해제 descriptor 계약 | 산출 제출·생산/런타임 인수 대기 |
+| Claude Code | 몬스터 AI | VS Code Terminal18 / 8f65b5e7-50e6-493c-9571-32984157cfbe | hurtE 예약→사망탄 도달경로 | TASK 읽기·산출 미완료 |
+| Claude Code | 애니메이션·VFX | VS Code Terminal19 / 43f03916-58b1-478e-a4e6-552f9d368c53 | idle 성공/walk 실패·draw 폴백 | 산출 제출·생산/런타임 인수 대기 |
+| Claude Code | 보스전 | VS Code Terminal20 / 74c343f4-27c8-4fce-a9e3-8df036eac78a | 보스/moves 설계↔source 대응 | TASK Read 성공·초기 인수 진행 |
+| Claude Code | 스토리 | VS Code Terminal21 / 3ed6e74d-5552-4d7b-a04b-dc5945e0f3d7 | 세계관·대사·컷신 일관성 | TASK Read 성공·초기 인수 진행 |
 
-## 새 관리 채팅4개
+Claude TASK Read8/8·claude-opus-4-8/API usage, Codex전문7의 TASK 읽기명령 completed/exit0을 확인했다. 첫 Claude6과 새BOSS/STORY2의 시각을 구분한다. 별도 print-mode Claude7 검토는 완료된 과거 자료이며 현재8로 대신 세지 않는다. source fixture PASS를 실제게임/GPU/시각/청취/HTTP PASS로 대체하지 않는다.
 
-| 역할 | 실제 채팅명 | threadId | 실행 소유 |
-|---|---|---|---|
-| BOSS | EXODUSER 보스전팀 | 01a0fae0-c5df-70d0-9ab7-751a587bb498 | Claude Code / 이 Codex 채팅은 관리 인수만 |
-| STORY | EXODUSER 스토리팀 | 01a0fae0-c9ce-7890-b125-b3da65d8b3fa | Claude Code / 이 Codex 채팅은 관리 인수만 |
-| QUESTNPC | EXODUSER 퀘스트 NPC팀 | 01a0fae0-ccb2-7572-9d58-8c3176f9afff | 이 Codex 채팅 |
-| MARKETING | EXODUSER 유튜브 스팀 페이지팀 | 01a0fae0-cff3-78f0-aa73-32b08c6d6055 | 이 Codex 채팅 |
+## 중복 채팅 정리
 
-기존11관리채팅을 보존하여 전문팀 관리채팅은15개다. Claude8역할의 Codex 관리채팅은 중복제작하지 않는다. 저장된 fdg 기본cwd 대신 실제 `/Users/fordeargamers/Projects/exoduser-migration-20261001` 절대경로를 사용한다. 최초 업무·쓰기 소유는 `tools/team-followup-20261002/claude-native-6/`, `codex-half/`, `new-four/`의 역할별 TASK를 따른다. 원본TASK·다른팀 WIP·생산·공유docs는 팀 읽기전용이고, 파일/폴더삭제·소유밖쓰기·임의cleanup·Git쓰기·새서버·실게임·앱·외부게시0이다. source fixture와 실화면/청취/실HTTP/GPU Gate를 분리한다.
+사용자의 불필요한 Codex팀 제거 지시에 따라 아래8채팅을 완료턴 확인 뒤 복구 가능한 보관으로 처리했고 공식 archived 목록도 대조했다. 진행 작업 강제 중단0이다.
 
-## 실제 Claude6 수신·읽기
+- EXODUSER 아트팀 / 01a0faaf-479e-7143-99d6-4e1fdb5fdde5
+- EXODUSER 맵팀 / 01a0faaf-8ab1-7c81-9d2b-d17f15ba25a3
+- EXODUSER 스킬팀 / 01a0faaf-8d1e-7c93-94c0-37b5df8a10eb
+- EXODUSER QA 성능팀 / 01a0faaf-9806-7cc1-8ef3-0783fd03d2f6
+- EXODUSER 몬스터 AI팀 / 01a0faaf-9ade-74d3-8162-4261329b1ac3
+- EXODUSER 애니메이션 VFX팀 / 01a0faaf-a2e6-7262-afc1-196ae9a0ab80
+- EXODUSER 보스전팀 / 01a0fae0-c5df-70d0-9ab7-751a587bb498
+- EXODUSER 스토리팀 / 01a0fae0-c9ce-7890-b125-b3da65d8b3fa
 
-| Terminal / 역할 | sessionId | TASK Read 성공 UTC | 도구 결과 |
-|---|---|---|---|
-| 14 / ART | 727bc729-3d9a-43ad-9fe6-f284e54e3bb8 | 2026-10-02T04:21:44.255Z | is_error=false |
-| 15 / MAP | a00bcf9b-289f-4949-a317-9634d20ac3f3 | 2026-10-02T04:21:55.187Z | is_error=false |
-| 16 / SKILL | abd20f45-953d-47ae-870c-2ce033bbdfab | 2026-10-02T04:22:52.311Z | is_error=false |
-| 17 / QA | f7476aa3-e002-492c-8929-48941202fe04 | 2026-10-02T04:23:24.700Z | is_error=false |
-| 18 / ENEMY | 8f65b5e7-50e6-493c-9571-32984157cfbe | 2026-10-02T04:23:45.002Z | is_error=false |
-| 19 / ANIMVFX | 43f03916-58b1-478e-a4e6-552f9d368c53 | 2026-10-02T04:24:15.904Z | is_error=false |
+현재 Codex전문채팅은 UIUX·아이템·통합빌드·밸런스경제·사운드·퀘스트NPC·유튜브스팀페이지7개, 이 총괄을 더해8역할이다. Claude8은 VS Code Terminal14–21이다. 이전15관리채팅 생성·완료 이력은 보존하고, 보관채팅은 새 작업 전달 대상에서 제외한다. 기존 PC팀·프로젝트·Claude 세션·대화/파일 영구삭제0이다.
 
-실제 claude-opus-4-8 API usage가 관찰됐으며 과금액/잔여한도를 뜻하지 않는다. Terminal19는 ANIMVFX team only 실제수신으로 확인했고, AX의 오래된 ART textarea 값은 대화 수신이 아니었다. ENEMY의20261002 오타 읽기는 오류 종료 후 올바른20261001 읽기 성공; 밖읽기 전역 허용을 root가 부여하지 않았다. 별도 print-mode 읽기검토7건은 전부완료이며 현재native6/8로 대신 세지 않는다.
+## 소유와 최초 업무
 
-## QA 외부 경로 오류 기록
+실제 checkout은 /Users/fordeargamers/Projects/exoduser-migration-20261001 이다. fdg의 저장 기본cwd와 구분한다. 역할별 TASK는 tools/team-followup-20261002/claude-native-6/, codex-half/, new-four/에 있다. 생산·공유docs·타인WIP·원TASK는 팀 읽기전용이다. 파일/폴더삭제·소유밖쓰기·cleanup·Git쓰기·새서버/실게임/빌드/영상생성/업로드/게시0이다. 오경로는 삭제하지 말고 총괄에 인계한다.
 
-QA가20261002 오타 경로에11자 result.md를 만든 뒤 해당 디렉터리에 rm -rf를 실행한 연결 결과를 확인했다(04:27:01→04:27:10 UTC). 활성20261001 생산·검사6파일SHA는 시작manifest와 동일하다. 오타 디렉터리의 기존 자료 유무는 UNKNOWN이고, 새 오류파일 외 삭제 영향이 없었다고 단정하지 않는다. root는 삭제를 실행하지 않았다. QA 입력창에 정확한20261001 소유·추가삭제/cleanup금지·오류인계 지시를 제출했다. 새 TASK에도 해당 제한을 명시한다.
+BOSS는 보스/moves 설계↔source 대응, STORY는 세계관·대사·컷신 일관성, QUESTNPC는 기존 인물 흐름 초안, MARKETING은 실제Steam 페이지근거와 설명·영상·일정 초안을 맡는다. YouTube 채널URL/handle은 미확보라 확인 질문을 남겼다. 승인 없는 게시·계정로그인0이다.
 
-이 문서는 업무 수신/초기 인수 기록이다. 산출 제출·생산 채택·실제 검수 완료는 후속 인수 단계다. [시각별 수신·SHA·usage·사건 근거](PROVIDER-HALVES-20261002.json).
+ART/MAP/SKILL/QA/ANIMVFX5팀은 source 산출 제출 확인 후 byte 보존 가능 상태다. SKILL의1PASS/2FAIL은 실패 기록을 포함한 제출이며 시스템 해결·생산 채택으로 인수하지 않는다. ENEMY는 제출 인수 미완료다. MAP visual RETOUCH·실제8뷰0/8, 발anchor UNKNOWN·corpse fade 보류, 보호2_3 수정0을 유지한다.
+
+## QA 경로 오류와 보존
+
+QA가20261002 오타 경로에11자 result.md를 만든 뒤 해당 디렉터리에 rm -rf를 실행한 연결결과가 있다(04:27:01→04:27:10 UTC). 활성20261001 생산·검사6파일SHA는 시작manifest와 동일하다. 오타 경로의 기존 자료 유무는 UNKNOWN이며 오류파일 외 피해가 없었다고 단정하지 않는다. root삭제실행0. 추가삭제/cleanup금지·정확한20261001 소유·오류보고 지시는04:31:06.038 UTC 실제수신됐다. QA의 그 이후 보고도 이한계를 보존한다.
+
+[실제 수신·읽기·제출/미완료·SHA·보관 영수증](PROVIDER-HALVES-20261002.json). 이 문서가 현재 팀 배치의 진실 공급원이다. 연계문서의11/12/15팀 표기는 해당날짜의 과거 기록이다.
