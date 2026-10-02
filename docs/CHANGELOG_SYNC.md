@@ -52352,3 +52352,21 @@ late4 result/evidence SHA는 감독 공식 pin과 동일: STORY `870166cc681937f
 | 미인수 | actx 선행오류·실제 browser/native audio/청취·실시간timer·실게임/RAF 회복·저장/패키지. reset은 loop crash try와 다음RAF 앞이므로 동일 예외 전파 시 후행RAF에 도달하지 못하며 이 변경은 그 회복을 수정하지 않음 |
 
 전체 HTML +23bytes 역치환으로 원백업을 재현했다. 새 test는 실제 source/backend/helper chain을 추출하며 frameCnt2/5·sbCd3 seed는 합성 fixture, 다음 reset 직접호출은 실제 게임-loop 회복 증거가 아니다. 코드와 docs를 같은 범위 commit/push하고 원격정확SHA를 확인하며 사용자23·타인WIP·활성TASK/STATE/LOG는 보존한다.
+
+## Codex7 hb1014b 완료 원자료 보존 — 2026-10-02
+
+공식검수manifest SHA `41516f2efe992f696d0e8d8302293d45af439dc798c0a95d1ba266444a421f40`의 완료7건/소유 raw14만 원SHA로 보존한다. 기존5cab hb1014 raw14 및8c Claude16과 별도 반복이며 이미보존한목록재stage0. 이14파일보존은 production수정14건이 아니다. 현production은72fe SOUND큐종료12PASS commit이며 이번은source적용/검사반복0이다.
+
+| 팀 | 완료 ID | 미인수 Gate |
+|---|---|---|
+| UIUX | `01a0fc48-070a-7c91-b69a-2702ecbb0b36` | actual full open/select/close 재진입 owner 덮어쓰기 원문RED→후보GREEN. flex일때 원owner보존, 중복open의선택/정리동작 보존,4실행. DOM/media대역이며 자연UI 재진입/native 미입증. |
+| ITEM | `01a0fc48-0799-74d2-acc4-3ff61a656ada` | NOFIX: 현행 장착은2×2, 작은 bonePart는 earlyreturn. actual grid full300/hole299 양판6그룹 성공. noSkip null만으로 preflight거부하면 정상교체를 잘못막음. 후보0. |
+| BUILD | `01a0fc48-080f-7d50-a888-be206c791e15` | 실제 fullplan vendorGLTFLoader 누락시READY, AST static import/relativeutils closure 후보BLOCKED. 정상7파일plan 동등/4호출6PASS. local HTML/importmap scopes/base/dynamic imports 전체일반화·실앱 검수0. |
+| BALANCE | `01a0fc48-088c-7a03-ac1b-09f0df2ff3b9` | 양판 actual openPanel→full renderForge Infinity80ms timeout→기존 curEnh+100 fallback 조건후보. 패널8실행+실제cost2대조, 정상DOM/state/trace동등. 실제 numberinput 유입 및 비유한 curEnh 미검증. |
+| SOUND | `01a0fc48-0902-7c11-91b2-2ce8754ef3f0` | real actx constructor throw finally scope확장 후보4실행/정상trace동등. 동일Error전파는 actual RAF loop 정지를 막는완전fix아님(root명시Gate), 초기harness prototype비교오류1후복구. root sound WIP 보존. |
+| QUESTNPC | `01a0fc48-0987-7210-9f15-25604d563faa` | actual full _checkPetDialogue→urgent→fireBid→say→SFX/oscillator throw후 flag true잔존→finallyfalse. 원Error/PB/bubble부분상태보존, 정상control동등/양판4groups. 합성lv501/timing대역/source만. |
+| MARKETING | `01a0fc48-09fa-7391-9c7a-eb55c6ece33e` | actual optLang onchange→_applyLang caller 열린demoEnd5leaf KO잔존→기존번역키 refresh memory후보. KO/EN왕복/처음표시/DOM child보존 control. extract구문실패4 기록후exit0, native/저장/게시0. |
+
+자율15팀지시 송신과13팀읽기확인은 운영영수증으로 구분한다. MAP queue/ENEMY classifier거부·API대기는 실제Read未이며 중복정책송신0, 거부outcome 우회0이다. 실제untracked전체변경80부터완료소유checkpoint/100전새산출중단을유지한다. 사용자23/타인WIP/활성TASK·STATE·LOG·자율신규산출은이번scope에서제외한다.
+
+원자료 whitespace WARN: MARKETING result.md의 taskId/provider metadata 두줄 끝 공백2는 Markdown hard-break 원문이며 QUESTNPC result.md EOF 빈줄1도 원SHA로 보존했다. 정확3경고만 authenticated raw에 한정; root2·checks.mjs·다른raw의 whitespace는 STRICT PASS. 원자료 경고제거를 위한 재작성0·production/test 입력변경0이다.
