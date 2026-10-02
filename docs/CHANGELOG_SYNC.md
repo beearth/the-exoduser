@@ -52395,3 +52395,21 @@ late4 result/evidence SHA는 감독 공식 pin과 동일: STORY `870166cc681937f
 동일 후보의 실제 Mac 빌드·6단계 플레이·카메라/청취 검수는 아직 미인수이며 source fixture/NOFIX 보고서로 대체하지 않는다. 기존 사용자23·타인WIP·활성TASK·감독STATE/LOG·live게임/세이브·보호2_3는 보존한다. 원자료 whitespace가 있으면 정확 원SHA를 보존해 해당 raw 경고만 별도로 기록하고 총괄문서·코드는 엄격 검수한다.
 
 원자료 whitespace 검수: BUILD·ITEM result EOF 각1, MARKETING metadata/목록 Markdown hard-break4·EOF1의 authenticated raw7경고는 원SHA 보존했다. 이7경고 외 source/checks/총괄문서의 엄격 whitespace PASS이며 raw 재작성0이다.
+
+## 2026-10-02 CH1-1 입력 통합 — 뼈벽 조준 포커스 취소
+
+실제 패드 LT+ABXY 구간→키 주입→등록 keydown callback→슬롯 dispatcher→뼈벽 aim/fire→실제 `_malCost` source를 연결한 새 검수에서 blur/hidden 뒤 남는 조준이 다음 확정 입력을 가로채는 결함을 재현했다. 양판 `_clearHeldInput` 기존 P guard에 `;P._bwAiming=false` 각18B만 추가했고 정상 발사/원가·수치·수명은 바꾸지 않았다. focus 자체가 발사한 결함으로 표현하지 않는다.
+
+| 항목 | 정확 인수 근거 |
+|---|---|
+| 접점 | game.html12886 / game-easy-test.html12282, 기존 P guard 내부 각18B; 전체백업·접점외 bytes 동일·역치환 whole bytes 동일 |
+| 재현→수정 | 새baseline20그룹16PASS/4FAIL/fixture0 → 같은 새test final20/20PASS/fixture0, 정상old controls4동등; 각각1회 |
+| 정상 비용 | plainboneWall 현원가12×악의비용계수0.5=악의6, 스택1, recharge1500, 벽1/RNG1. 취소 후 새확정에는 이추가소비/효과0. 비용/밸런스 변경0 |
+| 구문 | 변경양판 inlineJS12/importmapJSON2 constructor/parse PASS1회; 게임실행/import해석으로확대0 |
+| source SHA | main `391155f3700e584cebf260942a95cfd4f4bbcc2cd6d700c6db65084ab7ad35d2` / easy `21a4d3b73b6ddcf765ec1e4a9505329c9f28248828f95b5cbc8993f005f52c0a` |
+| 새test SHA | `f8b3b8c59649021b15d45024c0d50083bab2d6745578e5141acbb083c0b8f3e3`; baseline후변경0·기존검사재실행0 |
+| acceptance receipt | `tmp/mac-migration-runtime/continued-review-20261002/bonewall-focus-acceptance/receipt.json` SHA `6a01db8d718a116c38b0ac0da8f4737bfd404407282b5223e9b154f6402de980` |
+
+전체 docs 관련키워드검색223행/50경로의 실제변경분류를 근거로 관련현재SSOT3에 prefix보존 작은부록과 `BONEWALL_FOCUS_CANCELLATION_20261002.md`를 추가한다. 기존정상 원가12와 역사raw의 대역 악의12를 임의재작성0, 새실제비용근거로 구분한다. 보호2_3·Q전용패링/어택티켓금지·타인WIP·원자료는 유지한다.
+
+source 인수는 뼈벽 포커스취소에만 한정한다. 합성 패드 버튼/이벤트와 damage/presentation/audio 대역이며 전체poll/update/native/청취/피해·재충전진행은 미검수다. 같은Mac후보의6단계연결플레이는 여전히 미인수이며 활성 CH1-1목표를 이어간다. 기존 사용자게임·세이브 변경0.
