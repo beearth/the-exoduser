@@ -611,3 +611,21 @@ X.translate(Math.round(C.width/2 - G.cam.x + sx), Math.round(C.height/2 - G.cam.
 | QA 경계 | VFX 대조는 기존 mirrored Y+FrontSide culling을 제거하는 QA 전용 DoubleSide fixture. production side/카메라 변경 없음; 전체 공격 가시성·장시간 전투 QA는 별도 |
 | 배포·소스 제어 | NW.js FILES 및 web 필수 목록에 새 boot/로컬 JS 포함. MIT LICENSE·provenance도 함께 추적/배포 필요. .gitignore의 전역 build/ 예외는 assets/vendor/three-r160/build/three.module.js와 상위 디렉터리로 한정. .git 쓰기 제한으로 커밋 미완료, 실제 패키징/업로드 미실행 |
 | 세부 SSOT | [파일·숫자·SHA256·수명·검증 범위](../12퍼포먼스·최적화/THREE_LOCAL_SINGLE_RUNTIME_20260929.md) |
+
+
+---
+
+## 2026-10-02 — 보스 사망 후 필드 진행 보존 (현행 재도전 계약)
+
+기존 §2의 `_preArenaBackup`은 맵만 복원하는 경로에서 아래 필드 진행 계약으로 보강했다. 일반 arena 복원과 CH1-1 필드 사망 예외를 구분하며, 시연 si=3 직접 재도전은 맨 먼저 적용하는 기존 계약을 유지한다.
+
+| 적용 경로 | 현재 계약 |
+|---|---|
+| 일반 `G._bossArena&&_preArenaBackup` | 진입 전 `_captureBossFieldState()`의 46개 key를 `_restoreBossFieldState(b)`로 복원. ens/MAP_OBJS/worldItems·탐색·소환굴/리프트·지역/해금·특수 적 refs/flags/stage 보존 |
+| `G.stage===0&&!G._bossArena&&G._bossUnlocked` | 재도전 때 현재 필드를 capture/restore. `initStage`·방/통로 적 재스폰 없음 |
+| 해금 전 CH1-1 및 다른 일반 필드 사망 | 기존 `G._zoneState={};initStage(G.stage)` 유지 |
+| 보스 진입 격리 | CH1 앵글러/화마귀 refs 분리. 모든 일반 arena 진입 곰치 일시 `[]`, `_wmStage=G.stage`; 복귀 원 nullable refs/flags/stage 복원. easy CH1 3tick 가드 본편과 정렬; 일반 worm tick 정책 확대 없음 |
+| 복귀 위치·사망 후처리 | 기존 게이트 남쪽 `(_bossCx+.5)*T,(_gateY+6+.5)*T`→safePt. EXP 30% 손실·최대치 완충·iframes 300·화톳불 300f/r280 유지. P/INV/EXP/사망 횟수/누적 stageTime snapshot 0 |
+| 생성/배치/밸런스 | arena 크기·생성기·에셋·좌표 설계·보스 수치·공격 패턴 변경 0 |
+
+맵 캐시·미니맵·적 공간 해시·조명은 현재 필드 기준으로 무효화/재빌드하고 `initMapObjects` 재생성은 제외한다. 정확한 복사 의미·플레이어 일시효과 정리·검수 경계는 [CH1-1 보스 사망 진행 보존 정본](../4.1맵디자인+설정/CH1-1_BOSS_RESPAWN_PROGRESS_20261002.md)를 따른다. 검수 영수증 `tmp/mac-migration-runtime/continued-review-20261002/boss-respawn-backup/receipt.json`: 양판 actual source 30/30 PASS(각 15), 공통 자원 인접 회귀 5/5 PASS(최종 후 1회), inline JS 12/importmap JSON 2 구문 PASS. SHA와 46개 필드·대역/미검증 범위는 전용 정본에 기록한다. 검수는 실제 source 추출 + controlled fixture에 한정한다. 실제 게임·등록 이벤트·카메라·시각·오디오·성능은 미인수이며 source PASS를 runtime/visual PASS로 대체하지 않는다.

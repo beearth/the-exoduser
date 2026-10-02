@@ -28340,14 +28340,45 @@ function genBossArena(si){
   }
   return{map,mw,mh,rooms:[{x:il,y:it,w:ir-il,h:ib-it,cx:cx,cy:cy,type:'boss',cleared:false}],exitX,exitY,entryX:cx,entryY:entY,bossX:cx,bossY};
 }
-let _preArenaBackup=null; // 보스 진입 전 맵 백업
+let _preArenaBackup=null; // 보스 진입 전 필드 진행 백업
+function _captureBossFieldState(){
+  return {map:G.map.map(r=>r.slice()),mw:G.mw,mh:G.mh,rooms:G.rooms.slice(),exits:G.exits.slice(),curRoom:G.curRoom,
+    bossGate:G.bossGate?G.bossGate.slice():G.bossGate,bossGateOpen:G.bossGateOpen,bossSealed:G.bossSealed,
+    _bossCx:G._bossCx,_bossCy:G._bossCy,_gateY:G._gateY,_bossEntY:G._bossEntY,
+    ens:ens.slice(),mapObjs:MAP_OBJS.slice(),worldItems:worldItems.slice(),_fow:G._fow?G._fow.slice():G._fow,
+    spawnHoles:G.spawnHoles.slice(),rifts:G.rifts.slice(),_isTileRLE:G._isTileRLE,_isOpenField:G._isOpenField,
+    _bossUnlocked:G._bossUnlocked,_stageKills:G._stageKills,_totalSpawned:G._totalSpawned,
+    _gateGuardKilled:G._gateGuardKilled,_gateGuard:G._gateGuard,_deathSpawned:G._deathSpawned,
+    _regions:G._regions?G._regions.map(r=>r?{...r}:r):G._regions,
+    _regMidX:G._regMidX,_regMidY:G._regMidY,_regCurIdx:G._regCurIdx,_regBannerCd:G._regBannerCd,_regGateIdx:G._regGateIdx,
+    _fieldBoss:G._fieldBoss,_fieldBosses:G._fieldBosses?G._fieldBosses.slice():G._fieldBosses,
+    _fbDone:G._fbDone,_fbSpawned:G._fbSpawned,_fbAnnounced:G._fbAnnounced,_fbStage:G._fbStage,
+    _fireDevils:G._fireDevils?G._fireDevils.slice():G._fireDevils,
+    _fdSpawned:G._fdSpawned,_fdAnnounced:G._fdAnnounced,_fdStage:G._fdStage,
+    _worms:G._worms?G._worms.slice():G._worms,_wmStage:G._wmStage,
+    _editorEyes:G._editorEyes?G._editorEyes.slice():G._editorEyes};
+}
+function _restoreBossFieldState(b){
+  G.map=b.map.map(r=>r.slice());G.mw=b.mw;G.mh=b.mh;G.rooms=b.rooms.slice();G.exits=b.exits.slice();G.curRoom=b.curRoom;
+  G.bossGate=b.bossGate?b.bossGate.slice():b.bossGate;G.bossGateOpen=b.bossGateOpen;G.bossSealed=b.bossSealed;
+  G._bossCx=b._bossCx;G._bossCy=b._bossCy;G._gateY=b._gateY;G._bossEntY=b._bossEntY;
+  ens=b.ens.slice();MAP_OBJS=b.mapObjs.slice();worldItems=b.worldItems.slice();G._fow=b._fow?b._fow.slice():b._fow;
+  G.spawnHoles=b.spawnHoles.slice();G.rifts=b.rifts.slice();G._isTileRLE=b._isTileRLE;G._isOpenField=b._isOpenField;
+  G._bossUnlocked=b._bossUnlocked;G._stageKills=b._stageKills;G._totalSpawned=b._totalSpawned;
+  G._gateGuardKilled=b._gateGuardKilled;G._gateGuard=b._gateGuard;G._deathSpawned=b._deathSpawned;
+  G._regions=b._regions?b._regions.map(r=>r?{...r}:r):b._regions;
+  G._regMidX=b._regMidX;G._regMidY=b._regMidY;G._regCurIdx=b._regCurIdx;G._regBannerCd=b._regBannerCd;G._regGateIdx=b._regGateIdx;
+  G._fieldBoss=b._fieldBoss;G._fieldBosses=b._fieldBosses?b._fieldBosses.slice():b._fieldBosses;
+  G._fbDone=b._fbDone;G._fbSpawned=b._fbSpawned;G._fbAnnounced=b._fbAnnounced;G._fbStage=b._fbStage;
+  G._fireDevils=b._fireDevils?b._fireDevils.slice():b._fireDevils;
+  G._fdSpawned=b._fdSpawned;G._fdAnnounced=b._fdAnnounced;G._fdStage=b._fdStage;
+  G._worms=b._worms?b._worms.slice():b._worms;G._wmStage=b._wmStage;
+  G._editorEyes=b._editorEyes?b._editorEyes.slice():b._editorEyes;
+}
 function _enterBossArena(retry=false){
   G._druidVictory=null;G._druidFinaleBoss=null;G._druidActCue=null;
-  // 보스 진입 전 맵 백업 (사망 시 게이트 입구 리스폰용)
-  if(!retry)_preArenaBackup={map:G.map.map(r=>[...r]),mw:G.mw,mh:G.mh,rooms:G.rooms.slice(),exits:G.exits.slice(),
-    bossGate:G.bossGate,bossGateOpen:G.bossGateOpen,bossSealed:G.bossSealed,
-    _bossCx:G._bossCx,_bossCy:G._bossCy,_gateY:G._gateY,_bossEntY:G._bossEntY,
-    spawnHoles:G.spawnHoles.slice(),rifts:G.rifts.slice()};
+  // 적/오브젝트/탐색/지역 진행을 보존하며 P/INV/EXP/누적 시간은 되감지 않는다.
+  if(!retry)_preArenaBackup=_captureBossFieldState();
   const si=G.stage;const arena=genBossArena(si);
   // 아레나 전환: 던전 잔여 몹을 처치율에 반영 (소멸 = 킬로 카운트)
   if(!retry){let _survCnt=0;for(let _si=0;_si<ens.length;_si++){if(ens[_si].alive&&!ens[_si].ib)_survCnt++}
@@ -28359,6 +28390,9 @@ function _enterBossArena(retry=false){
   G._darkZones=[];G._mirrorClones=[];G._fissures=[];G._tideWaves=[];G._seekerMines=[];
   G._rewindMarks=[];G._gravityWells=[];G._wallPushes=[];G._poisonPools=[];G._cageTraps=[];
   G._druidOrbs=[];G._druidOrbT=0;G._druidParryT=0;G._druidParryVolley=0;
+  // 필드 특수 적의 원 참조는 백업에 두고 아레나 갱신에서 분리한다.
+  if(si===0){G._fieldBoss=null;G._fieldBosses=null;G._fireDevils=null;}
+  G._worms=[];G._wmStage=G.stage;
   if(_isDruidFinale({ib:true})){G._worms=[];G._wmStage=G.stage;}
   G._chainLights=[];G._orbWeaves=[];G._soulAnchors=[];G._chaseAoes=[];G._lavaPools=[];G._fireRains=[];G._shockGrids=[];G._donutSlams=[];G._safeCorners=[];G._crossWipes=[];G._tidalWipes=[];G._gSlamWave=[];G._skyCrushers=[];G._lavaField=null;G._gwPillar=null;_shDirty=true;
   G.spawnHoles=[];G.rifts=[];
@@ -57610,6 +57644,7 @@ function _fbMk(tx,ty,el){
 function _fbTick(){
   if(window._parryLesson?.active)return;
   if(!G.on||!P){return}
+  if(G._bossArena&&G.stage===0){_fbClear();return}
   if(_MAP_QA_MODE){_fbClear();return}
   if(G.stage!==0){_fbClear();return} // 1-1 전용
   if(G._fbStage!==G.stage){G._fbStage=G.stage;G._fbSpawned=false;G._fbAnnounced=false;_fbClear()}
@@ -57822,7 +57857,7 @@ function _wmContactHit(w,scale){
 function _wmTick(){
   if(window._parryLesson?.active)return;
   if(!G.on||!P||!G.map){return}
-  if(G._bossArena&&_DEMO_MODE&&G.stage===3&&G.stage===_DEMO_LAST_STAGE){if(G._worms)G._worms.length=0;return;}
+  if(G._bossArena&&(G.stage===0||(_DEMO_MODE&&G.stage===3&&G.stage===_DEMO_LAST_STAGE))){if(G._worms)G._worms.length=0;return;}
   if(G._wmStage!==G.stage){G._wmStage=G.stage;G._worms=null}
   if(!G._worms){
     G._worms=[];
@@ -58052,6 +58087,7 @@ function _fdDrawEmerge(frame,wx,wy,scale){
 function _fdTick(){
   if(window._parryLesson?.active)return;
   if(!G.on||!P)return;
+  if(G._bossArena&&G.stage===0){_fdClear();return}
   if(_MAP_QA_MODE){_fdClear();return}
   if(G.stage!==0){_fdClear();return}
   if(G._fdStage!==G.stage){G._fdStage=G.stage;G._fdSpawned=false;_fdClear()}
@@ -59748,8 +59784,11 @@ $('retryBtn').onclick=async()=>{
   // 보스방에서 죽었으면 → 원래 맵 복원 + 게이트 입구 리스폰
   if(_retryDruidFinale()){
     // 피날레는 새 보스를 생성하고 공통 EXP 손실/자원 완충을 적용한다.
-  }else if(G._bossArena&&_preArenaBackup){
-    const b=_preArenaBackup;
+  }else if((G._bossArena&&_preArenaBackup)||(G.stage===0&&!G._bossArena&&G._bossUnlocked)){
+    const _fieldRetry=!G._bossArena;
+    const b=_fieldRetry?_captureBossFieldState():_preArenaBackup;
+    _mmInitDone=true;_mmInitCtx=null;_mmDirty=1;
+    _bgInitQueue.length=0;_bgInitIdx=0;_bgInitDone=true;
     ens=[];for(let _i=0;_i<projs.length;_i++)_recycleProj(projs[_i]);projs.length=0;{for(let _ri=0;_ri<pProjs.length;_ri++)_recyclePProj(pProjs[_ri]);pProjs.length=0;};worldItems=[];MAP_OBJS=[];G.parts=[];G.txts=[];
     G.hitStop=0;G.slowMo=0;G._flashT=0;G._flashCol='#ffffff';G._chromaT=0;
     if(typeof _eSpCache!=='undefined')_eSpCache.clear();_impacts=[];_vfxAnims.length=0;_fireExps.length=0;G._ebBomb=null;G._mmBomb=null;G._gsBombs=[];G._bsBombs=[];G._boneWalls=[];G._fireZones=[];G._stProjs=[];G._gwLightning=null;
@@ -59758,29 +59797,22 @@ $('retryBtn').onclick=async()=>{
     G._rewindMarks=[];G._gravityWells=[];G._wallPushes=[];G._poisonPools=[];G._cageTraps=[];
     G._chainLights=[];G._orbWeaves=[];G._soulAnchors=[];G._chaseAoes=[];G._lavaPools=[];G._fireRains=[];G._shockGrids=[];G._donutSlams=[];G._safeCorners=[];G._crossWipes=[];G._tidalWipes=[];
     G._gSlamWave=[];G._lavaField=null;G._gwPillar=null;_shDirty=true;
-    G.map=b.map;G.mw=b.mw;G.mh=b.mh;G.rooms=b.rooms;G.exits=b.exits;_cacheExitCenter();    G._fow=new Uint8Array(b.mw*b.mh);G._fowDirty=true;
-    G.bossGate=b.bossGate;G.bossGateOpen=true;G.bossSealed=false;
-    G._bossCx=b._bossCx;G._bossCy=b._bossCy;G._gateY=b._gateY;G._bossEntY=b._bossEntY;
-    G.spawnHoles=b.spawnHoles;G.rifts=b.rifts;
+    _restoreBossFieldState(b);_cacheExitCenter();G._fowDirty=true;
+    _shDirty=true;shRebuild();rebuildDeadPool();
+    _mmRegOvlKey='';_raT=0;drawMM._enCnt=0;drawMM._enT=29;
+    _slDirty=true;_litCamX=1e9;_litCamY=1e9;
     G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;
-    G.bossAlive=true;G._bossRef=null;G._crT=0;G.atkTickets=0;G.stageCleared=false;G._deathSpawned=false;
-    // boss_gate_col 충돌 재생성 — 나무 상단, 하단 입구 열림
-    if(b._gateY!=null){
-      MAP_OBJS.push({type:'boss_gate_col',x:(b._bossCx+.5)*T,y:(b._gateY-1)*T});
-    }
+    G.bossAlive=true;G._bossRef=null;G._crT=0;G.atkTickets=0;G.stageCleared=false;
     // 게이트 입구 (나무 입 부분 근처) 리스폰
     const _gx=(b._bossCx+.5)*T,_gy=(b._gateY+6+.5)*T;
     const sp=safePt(_gx,_gy,P.r);
     P.x=sp?sp.x:_gx;P.y=sp?sp.y:_gy;
-    // 방 몬스터 리스폰 (보스방 제외, tileRLE: 소환굴만)
-    if(!G._isTileRLE){
-      G.rooms.forEach((room,ri)=>{if(room.type!=='boss')spawnRoomEns(ri)});
-      spawnCorridorEns(G.stage);
-    }
+    // 열린 CH1 필드 사망도 기존 initStage의 일시 상태/1회 효과 초기화를 유지한다.
+    if(_fieldRetry){P._webSlow=0;P._trapSlowT=0;P._freezeSlow=0;P.burnT=0;P.poison=0;P._rbPoison=[];P._rbBurn=[];P._ioActive=false;P._ioT=0;P._altAtk=0;P._altDef=0;P._altSpd=0;P._lastStandUsed=false;P._reviveOnceUsed=false;}
     G.cam.x=P.x;G.cam.y=P.y;
     G.pets={crow:{x:P.x,y:P.y-20,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:0},cat:{x:P.x,y:P.y+10,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:~~(Math.random()*100)},xbow:{x:P.x-30,y:P.y-28,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:25,_atkCd:0,_ang:0}};
     buildMapCache();initTorchLights();
-    _bgInitQueue=[initSwayObjects,initWallEyes,_initEyes,initGlowObjects,initMapObjects].filter(Boolean);
+    _bgInitQueue=[initSwayObjects,initWallEyes,_initEyes,initGlowObjects].filter(Boolean);
     _bgInitDone=false;_bgInitIdx=0;
     if(!(_forceCutscene||(G.stage===0&&!G._cutsceneDone)))BGM.play(BGM.stageKey(G.stage)); // 컷신 예정 시 보류 — 전쟁 서사는 보이스 전용, 스테이지 BGM은 컷신 종료 후 시작 (2026-07-27)
   }else{

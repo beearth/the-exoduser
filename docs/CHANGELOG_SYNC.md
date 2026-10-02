@@ -52118,3 +52118,12 @@ Codex7의 새 TASK 실제 read 명령/exit0를 registry에 기록했다. Claude8
 ## 2026-10-02 mortar focus lifetime and completed specialist checkpoint
 
 Both HTML P guards now cancel mortar aim/charge on blur/hidden. Actual-source 2 GREEN / 2 negative RED / 2 normal equality / 12 boundary PASS, isolated runs24, inline JS12/importmaps2 PASS. Five canonical byte prefixes preserved. Game/native/visual/audio remain unaccepted; no cost/cooldown/fusion/RNG policy changes. Next supervisor completed source/report files are SHA-pinned and preserved with pending review distinguished from production adoption. Narrow BUILD-helper-integrity text ignore exception only. Root-priority CH1-1 boss-death reset investigation continues separately. Active outputs, supervisor STATE/LOG and original23 user pending items excluded.
+
+
+## 2026-10-02 CH1-1 사망 뒤 보스문·필드 진행 보존
+
+사용자가 보고한 1-1 사망 뒤 열린 보스방이 닫히고 필드 몬스터가 초기화되는 증상에 대응했다. 양판 `_captureBossFieldState`/`_restoreBossFieldState`는 필드 상태 46개를 보존·복원한다. 보스 arena 진입 전 상태와 CH1-1 열린 문 필드 재도전을 구분하며, 후자는 `initStage`를 호출하지 않는다. 남은 몬스터의 원 참조·HP/AI, 처치/구역/문 진행, 맵 오브젝트·월드 아이템·안개·소환굴/리프트 및 특수 적 상태를 보존한다. arena의 임시 적 참조 격리, worm stage 정렬, easy CH1 특수 적 첫 tick guard 3개로 복귀 전 재생성을 막는다. 파생 minimap·공간 해시·맵·조명 캐시는 복원 상태로 갱신한다.
+
+EXP 30% 차감·사망 횟수/현재 인벤토리·stageTime·최종 HP/MP/신성력 회복의 기존 계약을 유지하며 P/INV를 과거 상태로 되감지 않는다. CH1-1 문 개방 전·다른 스테이지 일반 필드 사망·demo si3 직접 재시도는 기존 분기다. 새 회귀 `test/bossRespawnFieldState.test.cjs`의 실제 소스 검사 30/30(양판 각15), 기존 부활 자원 5/5, inline JavaScript12/importmap2 구문 PASS. 이전 실패·중간 검사 횟수를 최종 30건에 합산하지 않는다. 필드 fixture·factory/render/audio/DB/background 대역을 사용한 소스 검수이며 실게임·native·시각·성능 인수를 주장하지 않는다.
+
+관련 docs 전체 검색과 정확 필드·예외·캐시 표, §23 MAP PRODUCTION REPORT는 `4.1맵디자인+설정/CH1-1_BOSS_RESPAWN_PROGRESS_20261002.md`를 따른다. 맵 geometry/art/배치는 그대로이며 기존 맵 전체 `VISUAL VERDICT: RETOUCH`를 유지한다. 이번 수정의 실제 카메라/플레이 시각 검수는 미실행이다. 변경 전 백업·정확 source SHA·원문 구간 밖 바이트 보존·검사 원자료는 `tmp/mac-migration-runtime/continued-review-20261002/boss-respawn-backup/receipt.json`, scoped commit/원격 대조는 별도 `boss-respawn-checkpoint/receipt.json`에 기록한다. 원격 exact SHA 확인 전 백업 완료를 주장하지 않는다. 기존 사용자23항목·게임 탭/세이브·감독 STATE/LOG·전문팀 진행 중 산출은 이번 checkpoint에 포함하지 않는다.

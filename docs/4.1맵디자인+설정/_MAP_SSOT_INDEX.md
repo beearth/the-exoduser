@@ -341,3 +341,19 @@
 ## 2026-09-29 세로 리사이즈 하단 필터 경계
 
 환경광 `G._envLightCvs`·동적 비네트 `G._dvgCvs`·저체력 틴트 `G._redTintCvs`가 화면 너비만 확인하던 조건에 각 캐시의 `height!==C.height`를 추가했다. 본편/쉬운 테스트 공통, 높이 변경 직후 재작성·정지 시 캐시 재사용·색과 alpha 유지·신규 캔버스0. 두 파일 12건 RED→신규18+기존17=35 PASS, 본편2805×1206→1256→1006→1256에서 env/dvg 높이1206 고정→현재 main 높이 일치. 이전 Mac 이동/성능 문제의 해결 선언이 아니다. [정확한 계약·MAP PRODUCTION REPORT](../12퍼포먼스·최적화/POSTFX_HEIGHT_COVERAGE_20260929.md).
+
+
+---
+
+## 2026-10-02 — 보스 사망 후 필드 진행 보존 (현행 재도전 계약)
+
+| 항목 | 현행 정본/우선 경계 |
+|---|---|
+| CH1-1 보스 사망 후 진행 보존 | [CH1-1 보스 사망 진행 보존 정본](CH1-1_BOSS_RESPAWN_PROGRESS_20261002.md) — 일반 arena field backup 복원 + 해금 완료 CH1-1 현재 필드 사망 예외의 현행 계약 |
+| 기존 재시작 문장의 범위 | REGION_CLEAR_GATE/맵오브젝트/몬스터/시간 정본의 “retry initStage·재생성”은 본 날짜 부록의 분기 예외를 우선 적용. 해금 전 CH1-1·다른 일반 필드/시연 si=3는 기존 계약 |
+| 맵 SSOT 우선순위 | 공통 제작 가이드→현행 CH1-1 콘셉트/production finish→P0/P0.5 순서 유지. 이 정본은 원화·지형·배치·보스 수치·Gate 임계치 정본을 대체하지 않음 |
+| 검수 | 30/30 source PASS +5/5 인접 자원 회귀 +inline12/importmap2구문 PASS. 실게임·카메라·시각·오디오·성능 미인수 |
+| 전체맵 판정 | 기존 MAP-020 RETOUCH 역사 판정 유지, 이번 수정 새 visual PASS 0 |
+| 영수증 | `tmp/mac-migration-runtime/continued-review-20261002/boss-respawn-backup/receipt.json`; 46개 field key/양판 SHA/대역·미검증 경계는 전용 정본 |
+
+기존 이력·타 팀 산출·보호 설계 원문은 유지하고 append-only로 계약을 보강했다.

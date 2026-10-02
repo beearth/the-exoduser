@@ -117,3 +117,21 @@
 ## git provenance
 
 - 이 문서의 REGION 시스템·CLEAR-RESULT·Hell Gothic 디자인 재작업(4차) 전체는 2026-09-30 타세션 커밋 `a8d275507`("art(intro): remaster goddess and warrior intro cutscenes … sync pending session work")에 번들되어 main에 반영됐다. 전용 커밋 없음 — history rewrite 금지 규칙에 따라 재분리하지 않고 사실만 기록.
+
+
+---
+
+## 2026-10-02 — 보스 사망 후 필드 진행 보존 (현행 재도전 계약)
+
+기존 “retry도 initStage를 거쳐 자동 리셋” 문장은 **일반 재시작 분기**에 적용한다. 일반 arena 필드 복원과 해금 완료 CH1-1 필드 사망은 아래 현행 예외이며, 이전 문장은 변경 전 일반 동작 설명으로 보존한다.
+
+| 경로 | 지역/게이트 진행 |
+|---|---|
+| 일반 arena + backup | `_regions` 각 평면 객체를 capture/restore에서 얕게 clone. `_regMidX/_regMidY/_regCurIdx/_regBannerCd/_regGateIdx` 원값 복원 |
+| CH1-1 `stage===0&&!_bossArena&&_bossUnlocked` 사망 | 현재 `_regions`·`_bossUnlocked`·`_stageKills/_totalSpawned`·`_gateGuardKilled/_gateGuard`·`_fbDone` 등 필드 상태 보존. initStage/_regionInit·적 재스폰 없음 |
+| 일반 재시작 | 해금 전 CH1-1·다른 일반 필드는 기존 initStage→_regionInit 리셋 유지 |
+| 해금/클리어 조건 | 기존 4지역·80% 및 gate 가드 10%·CH1 앵글러 완료 조건·보상/표시 공식 변경 0 |
+| 실제 source gate 경계 | 복원 후 기존 checkRooms: _fbDone+_bossUnlocked 유지면 _bossLoadPhase 1; 앵글러 미완료/불완전 지역의 해금 부족은 phase 0 |
+| 저장/시연 | 중간 필드 진행 저장 스키마 추가 0, load=스테이지 재생성 기존 규칙. 시연 si=3 직접 재도전 선행 |
+
+[CH1-1 보스 사망 진행 보존 정본](CH1-1_BOSS_RESPAWN_PROGRESS_20261002.md)의 source/메모리 경계가 우선한다. 검수 영수증 `tmp/mac-migration-runtime/continued-review-20261002/boss-respawn-backup/receipt.json`: 양판 actual source 30/30 PASS(각 15), 공통 자원 인접 회귀 5/5 PASS(최종 후 1회), inline JS 12/importmap JSON 2 구문 PASS. SHA와 46개 필드·대역/미검증 범위는 전용 정본에 기록한다. 검수는 실제 source 추출 + controlled fixture에 한정한다. 실제 게임·등록 이벤트·카메라·시각·오디오·성능은 미인수이며 source PASS를 runtime/visual PASS로 대체하지 않는다.

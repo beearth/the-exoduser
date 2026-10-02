@@ -65,3 +65,22 @@
 
 ## 8. CODE CHANGE
 **NONE.** 검증 기준 정의 전용.
+
+
+---
+
+## 2026-10-02 — 보스 사망 후 필드 진행 보존 (현행 재도전 계약)
+
+§5 “_preArenaBackup restore/잔여 몹 full-clear/_stageKills reset” 체크는 무조건 초기화 판정이 아니다. 현행 분기별 Gate는 아래와 같으며 기존 자동 검사로 실게임/시각 Gate를 해제하지 않는다.
+
+| Gate | 기대/증거 | 현재 인수 |
+|---|---|---|
+| 일반 arena 사망 | 진입 전 field 46key·적/오브젝트 상태·해금 복원, 적/오브젝트 재생성 없음 | actual source fixture에 한정 |
+| 해금 완료 CH1-1 필드 사망 | currentfield capture/restore, 기존 플레이어 일시 상태 정리·자원 완충, stageTime/사망 통계 유지 | actual source fixture에 한정 |
+| 정상 초기화 분기 | 해금 전 CH1-1/다른 일반 필드 initStage, demo si=3 직접 retry 선행 | actual source fixture에 한정 |
+| 캐시/충돌 | MM context/bg queue 취소·hash/deadpool·MAP_OBJS collision·정적 조명/cache dirty | source fixture/소스 읽기; 실제 idle/GPU/첫 프레임 미검수 |
+| 전체 source 회귀 | 30/30 PASS(양판15), 기존 자원 5/5 PASS(최종 후1회), inline12/importmap2구문 PASS | source만 |
+| 실제 플레이/카메라/시각/오디오/성능 | 등록 이벤트·전체 루프·왕복 이동·게이트 통과·render 확인 필요 | 미실시/미인수 |
+| 전체 맵 visual | 기존 MAP-020 RETOUCH 역사 판정 유지 | 이번 수정 새 visual PASS 0 |
+
+[CH1-1 보스 사망 진행 보존 정본](CH1-1_BOSS_RESPAWN_PROGRESS_20261002.md)는 제작 가이드 §23 MAP PRODUCTION REPORT 전체 항목과 각 미검수 범위를 포함한다. `tmp/mac-migration-runtime/continued-review-20261002/boss-respawn-backup/receipt.json`를 증거로 연결하며 과거 baseline/중간 실패를 최종 PASS에 합산하지 않는다.
