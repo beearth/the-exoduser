@@ -2,7 +2,7 @@
 import {execFileSync} from 'node:child_process';
 import {readFileSync,mkdirSync,existsSync,linkSync,copyFileSync,statSync} from 'node:fs';
 import {resolve,dirname,sep} from 'node:path';
-import {isMapAuthoringSource} from './web-runtime-manifest.mjs';
+import {selectWebRuntimeFiles} from './web-runtime-manifest.mjs';
 
 const root=process.cwd(),out=resolve(root,process.argv[2]||'web-dist');
 if(!out.startsWith(root+sep)||out===root)throw new Error('Output must be a child of the workspace');
@@ -10,11 +10,11 @@ if(existsSync(out))throw new Error('Use a fresh output directory; existing files
 // Reuse the reviewed desktop runtime manifest, without its Node/NW bootstrap.
 const nw=readFileSync('build-nwjs.mjs','utf8');
 const extract=name=>[...nw.match(new RegExp('const '+name+' = \\[([\\s\\S]*?)\\];'))[1].matchAll(/'([^']+)'/g)].map(m=>m[1]);
-const files=new Set(extract('FILES')),dirs=extract('DIRS');
+const files=extract('FILES');
 const tracked=execFileSync('git',['ls-files','-z'],{maxBuffer:16*1024*1024}).toString().split('\0').filter(Boolean);
-const selected=tracked.filter(p=>(files.has(p)||/^(lang_[^/]+\.js|atlas_[^/]+)$/.test(p)||dirs.some(d=>p.startsWith(d+'/')))
-  &&!p.includes('/_unity_preview/')&&!p.includes('/_p11_candidates/')&&!isMapAuthoringSource(p)&&!/\.(zip|blend|psd|kra)$/i.test(p)&&existsSync(resolve(root,p)));
-for(const p of ['index.html','game.html','stat-panel-ui.js','localization-runtime.js','video/title_motion_hd.mp4',
+const selected=selectWebRuntimeFiles(tracked,files,p=>readFileSync(resolve(root,p),'utf8'));
+for(const p of selected)if(!existsSync(resolve(root,p)))throw new Error('Missing tracked web runtime file: '+p);
+for(const p of ['index.html','game.html','stat-panel-ui.js','localization-runtime.js','video/title_motion_hd_20260929.mp4',
   'three-runtime.js','assets/vendor/three-r160/build/three.module.js',
   'assets/vendor/three-r160/examples/jsm/loaders/GLTFLoader.js',
   'assets/vendor/three-r160/examples/jsm/utils/BufferGeometryUtils.js']){

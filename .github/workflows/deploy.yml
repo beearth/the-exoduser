@@ -6,11 +6,23 @@ on:
       - main
     tags:
       - 'v*'
+    paths-ignore:
+      - 'docs/**'
+      - 'test/**'
+      - '**/*.md'
   workflow_dispatch:
 
 jobs:
   vercel-deploy:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      VERCEL_PROJECT_ID: prj_JlXzqv8nqoud3MGZ3eDnxNmFCKhL
+      VERCEL_ORG_ID: team_2BOa3cZFRrB3zZbZXIIdKhsf
+    concurrency:
+      group: exoduser-vercel-production
+      cancel-in-progress: true
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -18,10 +30,14 @@ jobs:
           node-version: 22
       - name: Install Vercel CLI
         run: npm install --global vercel@59.16.0
+      - name: Verify existing Vercel project
+        run: vercel project inspect the-exoduser --scope fordeargamers --token=${{ secrets.VERCEL_TOKEN }}
       - name: Pull Vercel Environment Information
         run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
       - name: Build Project Artifacts
         run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Preserve Unicode URLs with ASCII upload paths
+        run: node tools/prepare-vercel-output.mjs
       - name: Check static upload limits
         run: node tools/check-vercel-output.mjs
       - name: Deploy to Vercel
