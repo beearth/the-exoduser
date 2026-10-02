@@ -52715,3 +52715,29 @@ source9 parent HEAD는 `e11ed7d052d825bcaf2a041d1f28ffac7f6f63f2`다. source10 �
 | ANIMVFX / `ANIMVFX-source9.patch` | 13334 / `2bc44b18db1459f7d266a0b1974f6c236cdb6fdfd48aa518052a9a7f2bcf3632` | `234f20a4-8634-4e32-99fb-aec5f3c9c807` | 원문 보존·미적용 |
 
 경로는 `tools/team-followup-20261003/claude-candidates/`다. 실제共同 의미검수는 dead→snapshot null(corpse1/fade0), 보조 경로 크기, 기존 scene cleanup과 새 pool 미연결을 확인해 HOLD했다. 현재 live 크기·pose/fallback·fixed update 수명·source-over·cleanup 보완 목표는 [ANIMVFX master의 최신 절](5.1임펙트디자인/ANIMATION_VFX_TEAM_MASTER.md)을 따른다. 코드/gameplay/세이브 변경0, 생산 source10 `8bcdd1632d343a8336ae5df589f4bf793b04bed8`와28검사/구문검사 결과는 불변이다. 후보 보존은 게임 기능 완료로 계산하지 않는다. 원격 보존의 정확 commit/SHA는 `tmp/mac-migration-runtime/continued-review-20261003/root-deathfade-source11/raw-checkpoint-receipt.json` 실제 실행결과를 참조한다.
+
+## 2026-10-03 source10 최신 Mac 물리 포장·정상 초기 기동 — 실게임 인수 대기
+
+| 최신 경계 | root 실제 결과 / 未인수 |
+|---|---|
+| 고정 입력 | checkpoint/원격 `0538cf32b35cbcdae2da7453f27059ae1ea4c411`, main4029803/a0eab60f…·easy3907070/ebaacc36…·index342119/1dd28cab… 원문=stage=app exact. 기존 생산28/28·12JS+2JSON 근거 재사용/이번 재실행0 |
+| 새 실제 앱 | job `9b0d6558-50e9-4333-a735-eff40ae8fc56` /loopback3389. fresh plan1/default execute1/공식 내부 verify, exit0/stdout951B/stderr0/fixtureOnly false/packageCreated true. **PACKAGED_NOT_RUNTIME_ACCEPTED** |
+| 실물·격리 | inputs7918/runtime340, regular8253+link5/7043804747B. 서버3389/saveRoot 외 역치환 exact·stagepackage plan exact·apppackage 공식 product_string1차이, main+helper4 arm64/0755/runtimeSHA exact. UTC20:39:22 물리 영수증 시점 새user-state absent/portfree |
+| 검수 경계·보존 | root 최초 inspection assertion3은 기대product_string·실제helper경로·rename 가정 정정이며 gamefail/재빌드 아님. 기존 cached NW0.111.2 arm64/nw-builder4.17.10/원앱·profile-save 보존, 새download/install/auth/permission/sign0·추가7918/구8253 감사0·전역source변경0 |
+| source8 후속 | 정상 guide→practiceSkip→CH1 Lv1·0/32 표시 필드, 조사 중 idle 일반필드 투사체 사망/0처치. 보스 사망0. 정상 Cmd-Q 뒤 CUA runningfalse/PID7118gone/3388noListener(root 전달). screen05 916050B/e365220a… |
+| source10 정상 초기 기동 | root exact앱 CUA launch1→3389/index.html?demo=1→Enter→world intro 영상 실제 재생/AX World intro. UTC20:40:26 Renderer36721 IPv4loopback3389 LISTEN·GETslots ok[], ownprofile/saveRoot 생성. 기동 전 user-state 부재와 시점 분리 |
+| 저장·제품 Gate | DEMO hellsave_demo→로비 활성 hellsave_demo_i 병합 계약. backend slots empty만으로 저장 실패 판정0. source10 초기기동/인트로 부분관측만; 캐릭터등록·필드·연결6단계·보스 사망/부활·재도전·장착·실청취·player저장재실행·8카메라 未인수/PASS0 |
+
+root `ch1-source10-build/physical-receipt.json`3996B/SHA `440724315b1ce93e0cc8bdf055442a2062a1fb27d389c6ac87358099ff09fe5f`를 재사용한다. 기존source8/6의 날짜별 원문·검수 건수는 보존하며 이번 source10로 치환하지 않는다.
+
+[source10 고정full64·정확 파생·포장 영수증·후속 source8 이력](13출시·마케팅/MAC_CH1_SOURCE10_CANDIDATE_20261003.md)을 따른다. root 예약4를 실제 직렬 적용(actual71→75/max83 기준), 기존3 prefix/EOL·보호67/WIP·운영STATE/LOG 보존. 문서 담당 tracked/Git/앱/서버 쓰기0이며 root가 직렬 적용하고 후속GUI는 별도 시점 append한다.
+
+## 총괄 직렬 적용 및 초기 인트로 후속 관측
+
+| 항목 | 직접 관측·범위 |
+|---|---|
+| source10 인트로 후속 | 총괄 CUA의 새 화면에서 영상이 자연 종료한 뒤 한국어 `데모버전에 오신 것을 환영합니다` / `데모버전 입장하기` 정상 UI를 확인. 아직 캐릭터·필드·보스전 완료0 |
+| 초기 기동 영수증 | `boot-observation.json` 836B / SHA `09eab0ea6f75084171c0d030bd5cb42db732581e62644882a2208dbd60d8dba5`; UTC20:40:26Z의 launch·World intro·loopback3389 및 새 job 상태 생성 |
+| 후속 화면 | `source10-native-play/02-demo-welcome.png` 584948B / SHA `8d420aff65e2a35b6228c619e44b9651d05ffa3fbae64e2b45b27fa29779142e`; 현재 동일 source10 앱 정상 UI, 실청취 미인수 |
+| 문서 적용 시점 | UTC `2026-10-02T20:46:23.274640+00:00`; 직전 NUL `--untracked-files=all` 실제71 + 예약4 + 외부8 = 최대83. 이번4 적용 시 실제75/예약0/최대83, 완료소유4만 별도 checkpoint. protected67 exact·기존3 prefix/EOL 보존 |
+| 검수 상태 | **PACKAGED_NOT_RUNTIME_ACCEPTED**. 영상 종료를 native6·combat·장착·보스방 개방·boss death/revive·saveRestart·visual PASS로 확대0 |
