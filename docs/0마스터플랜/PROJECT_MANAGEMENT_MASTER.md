@@ -1075,3 +1075,33 @@ docs 전체60매치/22파일을 대조한 뒤 설정3.3·저장15·source10 nati
 source11 코드 checkpoint `efb3bb7e02a9ab161e92d9ff3da7229b4cf884cd`의 원격 exact 후 기존 selector7918/runtime340를 유지한 공식 PLAN/기본 EXECUTE exit0로 고유 앱 job `2a937fde-3322-492f-bef4-32dfa78a1d69`/3390을 생성했다. 상태는 `PACKAGED_NOT_RUNTIME_ACCEPTED`/fixtureOnlyfalse이다. source3 원문=stage=app, 파생 node/package, main+helper4의 arm64/0755/runtime/plist를 좁게 확인했고 전기동 user-state 부재·3390 free를 기록했다. physical receipt12299B/SHA `1b1c2bf34824d35bffd4bbf9ff22323f8fc9c72616be0e7506064fd876ee8e76`.
 
 실제 CUA Mac잠금 오류로 oldsource10 Quit도 미전달, 사용자 unlock 요청 대기다. 기존 own3389 설정 정지·profile/save를 보존하고 새앱 기동은 아직 하지 않았다. source10 동일 캐릭터/장비 재실행 복원은 부분 인수이며 source11 난이도 재실행·처치/획득·보스방 개방/보스 사망 후 맵 보존/재도전·청취/visual은 미완료다. 상세 핀·artifact·미인수 경계는 `docs/13출시·마케팅/MAC_CH1_SOURCE11_CANDIDATE_20261003.md`에 정리한다. 정확root4(new1/existing3)만 완료 checkpoint하며 새 팀·설치·승인 우회·세이브 직접수정0.
+
+
+## 2026-10-03 source11 실제 기동·동일 앱 난이도 재실행 인수
+
+이전 잠금 대기 절은 당시 시점의 이력이다. 이번 정상 입력·Quit 관찰로 Mac 잠금 대기는 해소됐으며 source11 앱은 실제 기동·재기동했다. 전체 제품 상태는 계속 `PACKAGED_NOT_RUNTIME_ACCEPTED`이며 설정 재실행 1경로만 실제 부분 인수한다.
+
+| 항목 | 직접 관측·완료 경계 |
+|---|---|
+| 고정 앱/소스 | job `2a937fde-3322-492f-bef4-32dfa78a1d69`, loopback3390, code checkpoint `efb3bb7e02a9ab161e92d9ff3da7229b4cf884cd`; 앱·source3 변경 없음 |
+| 정상 생성·시작 | 한국어 로비→전사 `맥검수열하나` 신규 생성→이야기/시작 안내→정상 연습 건너뛰기→CH1-1 Lv1·XP0/15·지역0/32·악의1000. 최초 HP557/557·MP306/306·SP282/282·CP1689는 관측값이며 새 기본 수치 정책이 아님 |
+| 종료 전 설정 | ESC 설정 난이도 슬라이더5·일반. 정상 캐릭터 선택(로비)으로 저장하고 캐릭터 카드 확인 |
+| 정상 종료 | 동일 앱 Cmd-Q 후 UTC2026-10-02T21:31:02.561051+00:00에3390 noListener 확인. 강제 kill·사용자 게임 조작0 |
+| 같은 앱 재실행 | 동일 앱 정상 실행→저장된 `맥검수열하나` 선택→입장→ESC. 난이도 슬라이더5와 실제 화면 `일반` 유지. **신규5→저장→종료→재실행5 PASS**, source10의5→10 오류 경로 해소 |
+| 화면 증거 | ignored `source11-native-play/04-after-restart-difficulty-visible.png` / 660153B / SHA `94e361b58643eb7321a32bb2504312eedd558c23e8bdf59f57bcd0065334d953`. 02/03은 설정 시스템 섹션 화면이며 화면상 난이도 항목 증거로 확대0 |
+| 관측 영수증 | ignored `root-source11-native-resume/native-restart-observation.json` / 1316B / SHA `e8de494846a014b3da9212a2203040ac5edf7f14cecd1363d269d97bbf315119` |
+| 아직 미인수 | source11 실제 처치·획득·장비/가방 재실행 값·필드 앵글러4·보스방 개방·CH1 보스 사망 후 맵/몬스터 보존·재도전·실청취·8카메라 visual. 설정 PASS를 native6·보스 coregoal 완료로 확대0 |
+
+실제 후속 관측 기록4개만 갱신한다. 기존 앱/profile/save·보호67·타인WIP·감독 소유STATE/LOG를 보존하며 이전 검사·패키지 전수감사 반복0.
+
+
+## 2026-10-03 Claude 완료 후 대기 공백 복구
+
+| 항목 | 실제 근거·운영 변경 |
+|---|---|
+| 대기 확인 | UTC21:27 저장STATE의8역할 inventory=idle, UTC21:29:23 실제 Claude CLI는QA busy·다른7 idle. 과거 source 시각이나 self-select 선언만으로 현재 실행이라고 계산0 |
+| 원인 | 새TASK에 이전peer/source/end가 섞여 현재 착수 근거가 부정확했고, 완료문에서 다음 작업을 선언해도 end_turn 뒤 새 작업은 자동 시작되지 않음 |
+| 복구 | 기존 Claude 오더 담당이 정확peer/end/큐를 대조해 완료팀에 구체 후속 작업을 송신. 송신·수신·성공source·완료 분리/중복TASK 송신0 |
+| 저장된 자동 점검 | 기존 `exoduser-claude8` ACTIVE·동일 감독·기존5분 유지. 새TASK 증거초기화/해당TASK와 송신 이후 성공tool_result 결합/목적별HOLD/승인 백로그의 구체2~3작업 연결 규칙 저장. 정시·무중단 실행 보장 주장0 |
+| 보류 | ART 직접 인간 입력 요구 보존. ANIM decoder 관찰 대기는 그 접점만 보류하며 독립 승인 소유작업은 계속. 정책 승인 거절 목적의 대리·우회0 |
+| 제품 성과 경계 | 후보·NOFIX 계약 검사·형식 보고는 게임 적용 완료가 아님. 생산 코드/정본docs/앱/Git 통합은 원총괄 소유 |
