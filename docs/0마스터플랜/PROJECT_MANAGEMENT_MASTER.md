@@ -1061,3 +1061,10 @@ root `ch1-source10-build/physical-receipt.json`3996B/SHA `440724315b1ce93e0cc8bd
 | 후속 화면 | `source10-native-play/02-demo-welcome.png` 584948B / SHA `8d420aff65e2a35b6228c619e44b9651d05ffa3fbae64e2b45b27fa29779142e`; 현재 동일 source10 앱 정상 UI, 실청취 미인수 |
 | 문서 적용 시점 | UTC `2026-10-02T20:46:23.274640+00:00`; 직전 NUL `--untracked-files=all` 실제71 + 예약4 + 외부8 = 최대83. 이번4 적용 시 실제75/예약0/최대83, 완료소유4만 별도 checkpoint. protected67 exact·기존3 prefix/EOL 보존 |
 | 검수 상태 | **PACKAGED_NOT_RUNTIME_ACCEPTED**. 영상 종료를 native6·combat·장착·보스방 개방·boss death/revive·saveRestart·visual PASS로 확대0 |
+
+
+## 2026-10-03 source11 — 실제 재실행 결함 수정·부분 native 인수
+
+source10 정상 동일 앱 Quit/재입장에서 맥검수십의 도끼·불꽃석궁/장착15/16/보석0/27/가방10/300 복원을 확인했다. 신규 일반5→10을 실제 관찰하고 양판 writer/loader에서 재현했다. source11은 saveSettings payload의 `opt:{...OPT,diffV2:1}`만 각9B 추가하여 이후 저장을 새 난이도 형식으로 표시한다. 기본OPT·구형0→5/5→10/상한10 loader는 보존했다. 적용 후18케이스×양판36PASS·inline JS12 parse PASS. 초기 harness의 easy언어 저장순서 가정1건은 제품 수정 없이 바로잡았고 같은 LIVE의 중복 실행은 추가 성과로 합산하지 않는다.
+
+docs 전체60매치/22파일을 대조한 뒤 설정3.3·저장15·source10 native 후보·마스터·CHANGELOG를 동기화한다. 정확root7(code2/docs5)만 백업·검수·checkpoint하며 보호67·타인WIP·운영STATELOG·기존 앱/profile/사용자 세이브는 보존한다. 장비 재실행은 부분 인수이며 HP/CP 독립 원인·보스방 개방·보스 사망 후 맵 보존/재도전·청취/visual은 미완료다.

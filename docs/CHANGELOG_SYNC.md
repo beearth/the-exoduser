@@ -52741,3 +52741,10 @@ root `ch1-source10-build/physical-receipt.json`3996B/SHA `440724315b1ce93e0cc8bd
 | 후속 화면 | `source10-native-play/02-demo-welcome.png` 584948B / SHA `8d420aff65e2a35b6228c619e44b9651d05ffa3fbae64e2b45b27fa29779142e`; 현재 동일 source10 앱 정상 UI, 실청취 미인수 |
 | 문서 적용 시점 | UTC `2026-10-02T20:46:23.274640+00:00`; 직전 NUL `--untracked-files=all` 실제71 + 예약4 + 외부8 = 최대83. 이번4 적용 시 실제75/예약0/최대83, 완료소유4만 별도 checkpoint. protected67 exact·기존3 prefix/EOL 보존 |
 | 검수 상태 | **PACKAGED_NOT_RUNTIME_ACCEPTED**. 영상 종료를 native6·combat·장착·보스방 개방·boss death/revive·saveRestart·visual PASS로 확대0 |
+
+
+## 2026-10-03 source11 — 신규 난이도의 재실행 +5 오변환 방지
+
+- Mac source10 신규 일반5→정상 Quit/재실행10(+5/+500)을 재현. 양판 saveSettings의 opt를 `{...OPT,diffV2:1}`로 변경(각9B). 선택 diff·기본OPT·legacy loader·P/G/INV 변경0.
+- 기존 구형0→5/5→10/상한10과 marker1 현재0/5/10 보존. 적용 전 RED10FAIL→메모리 후보36PASS, 실제 LIVE36PASS·inline JS12 parse PASS. 동일 LIVE 중복은 추가 성과0.
+- docs 전체60매치/22파일 대조, 설정3.3·저장15 정본·source10 부분 native·마스터 동기화. 동일 앱 장비 복원은 실제 확인; HP최대/CP 변화·캐릭터 영상 오류는 독립 미확정. 보스 사망/맵 보존·재도전·실청취·변경 앱 native는 아직 미완료.

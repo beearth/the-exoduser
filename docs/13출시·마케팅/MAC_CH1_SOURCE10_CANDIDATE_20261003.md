@@ -83,3 +83,24 @@ root 예약4문서만 사용한다: 이 새 보고서와 기존 PROJECT_MANAGEME
 | 후속 화면 | `source10-native-play/02-demo-welcome.png` 584948B / SHA `8d420aff65e2a35b6228c619e44b9651d05ffa3fbae64e2b45b27fa29779142e`; 현재 동일 source10 앱 정상 UI, 실청취 미인수 |
 | 문서 적용 시점 | UTC `2026-10-02T20:46:23.274640+00:00`; 직전 NUL `--untracked-files=all` 실제71 + 예약4 + 외부8 = 최대83. 이번4 적용 시 실제75/예약0/최대83, 완료소유4만 별도 checkpoint. protected67 exact·기존3 prefix/EOL 보존 |
 | 검수 상태 | **PACKAGED_NOT_RUNTIME_ACCEPTED**. 영상 종료를 native6·combat·장착·보스방 개방·boss death/revive·saveRestart·visual PASS로 확대0 |
+
+
+## source10 정상 필드·장비·동일 앱 재실행 후속 — 2026-10-03
+
+아래는 기존 source10 고유 앱/3389의 정상 UI 후속 관측이다. 초기 포장 핀·기동 이력은 보존한다.
+
+| 실제 경로 | 관측·한계 |
+|---|---|
+| 캐릭터/필드 | 전사 맥검수십 생성→이야기 영상→guide/practice 건너뛰기→CH1-1 Lv1·경험치0/15·처치0/32 |
+| 일반 사망·부활 | 일반 필드의 몬스터 투사체 사망→다시 일어서라 정상 부활. 보스 사망 아님 |
+| 정상 전투 | Space/F/1 자원·쿨다운, 근접 실제 몬스터302 등 피해 표시. W20회 정상 탭에서 camera/minimap·목표거리20M→11M 이동. 실제 처치0 |
+| 실제 장착 | 녹슨 도끼·불꽃 석궁 장착 후 CP1673/ATK142/DEF408/추가효과1123, 장착15/16·보석0/27·가방10/300 |
+| 동일 앱 재실행 | 정상 캐릭터 선택(로비)→Quit→동일 앱 재실행→같은 저장 캐릭터 입장. 도끼·석궁·15/16·0/27·10/300 복원, 악의984 |
+| 새 관측 | 일반 난이도5→10(+5단/+500), HP최대526→416, CP1673→1618, 추가효과1123→1068. ATK142/DEF408 동일. 저장파일/profile 직접변경·상태주입0 |
+| 입력 경계 | Tab2회 탭은 inventory 무반응, ESC→실제 메뉴 클릭 정상; 원인 미확정. CUA modifier 단독 Shift 미지원/조합의 실제 사슬 발사 미관찰. HUD Shift클릭은 스킬 배정창 |
+| 영상 경계 | 캐릭터 선택 AX 미디어 재생불가. clip source/app exact H264 High@5.1·3840×2160·24fps·8.0417s·무음; decoder/HTTP 원인 미확정. world intro/전사 이야기 실제 진행 관찰, 실제 청취0 |
+| 재실행 화면 | `source10-native-play/09-restart-gear-restored.png` 906331B/SHA `4dd0789260e48b758779f7100e5fc748874500999d8161e6829617f5d58f71ee` |
+| 관측 영수증 | `source10-native-play/native-restart-observation.json` 2371B/SHA `06d147ae8071d62bd0be8e3470d2ae41b5cbd95812a1cbb236896cf495fcd849` |
+| 미완료 | 지역 처치/획득·필드 앵글러4·보스방 개방·CH1 보스 사망 후 맵 보존·재도전·실청취·visual 인수 |
+
+source11은 재현한 난이도 오변환을 양판 settings writer `opt:{...OPT,diffV2:1}`로 막는다. LIVE36/36·JS12 parse는 소스 검증이다. 위 실행 앱은 source10이므로 새 수정의 앱/native 인수로 확대하지 않는다. 설정3.3·저장15 정본에 직렬화 경계·legacy 보존·과거 무표식의 한계를 동기화했다.

@@ -45832,7 +45832,7 @@ function renderSettings(){
 $('setClose').onclick=()=>closePanel('settings');
 if($('showTutorialBtn'))$('showTutorialBtn').onclick=()=>{closePanel('settings');showTutorial()};
 // ── 자동 저장 함수 ──
-function saveSettings(){try{localStorage.setItem('hellcave_settings',JSON.stringify({binds:{...BINDS},binds2:{...BINDS2},opt:{...OPT}}));localStorage.setItem('hellLang',OPT.lang)}catch(e){}}
+function saveSettings(){try{localStorage.setItem('hellcave_settings',JSON.stringify({binds:{...BINDS},binds2:{...BINDS2},opt:{...OPT,diffV2:1}}));localStorage.setItem('hellLang',OPT.lang)}catch(e){}}
 
 // ══ 2026-04-17 UI 고정 디자인 시스템 — Reference Resolution 1920×1080 ══
 // 창 크기·페이지 줌에 맞춰 HUD 비율을 유지하는 순수 자동 스케일.
