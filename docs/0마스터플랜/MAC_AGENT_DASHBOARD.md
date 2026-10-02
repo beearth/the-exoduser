@@ -174,3 +174,7 @@ root 진단·실제검수 완료, 기존 qa_review 읽기 검토 완료. CLI11 d
 root는 양판 `_skClick` 카드 연결 수명 guard(생산2GREEN/guard제거 음성2RED)와 node-main POST /api/mats 실패500 JSON 응답(기존하니스4PASS)을 인수했다. 양판 classic4/module2/importmap1씩 구문/JSON 통과. 기존 실물 앱 재빌드·전체게임/native/실저장/시각/청취 인수는 별도 대기다. 기존 팀 원자료는 당시 source SHA·미적용/실패 상태 그대로 보존한다.
 
 완료→보고→근거 인수→수정 피드백 또는 다음 승인 업무 배정을 같은 실행에서 수행한다. 이Mac 총괄 heartbeat `exoduser-mac` ACTIVE/1분간격을 공식도구로 생성하고 실제 automation.toml로 확인했다. 진행 중에는 완료를 확인하는 대로 처리하고, 대화 종료 뒤에는 예약 점검 시 이어간다. 실시간 무지연 감지를 보장하는 설정으로 설명하지 않는다. 로컬 파일 후속은 맥북이 켜져 있고 앱이 실행 중이어야 한다. 기존 PC5분 관리 자동화는 변경0이다. 새 Mac heartbeat 금지라는 앞선 운영 이력은 이번 사용자 최신 요청으로 대체한다.
+
+## 연속 후속 배정 준비 — 2026-10-02
+
+이전 전문15팀 완료를 인수하고 다음 각1건을 `mac-resume-20261001/vscode-dispatch/CONTINUOUS-DISPATCH-20261002.md` 및 JSON에 고정했다. 생산2오류 수정·docs는7e694950 commit/원격 SHA 확인 완료. 새 TASK는 전달 전 checkpoint 대상이며 실제 수신/Read는 이 registry에 갱신한다. BOSS 영수증 정정 완료·설계19/구현35 구분 유지. 실행은 Mac/local, 현재 채팅 heartbeat ACTIVE1분으로 완료→검토→피드백/다음 배정을 이어간다.

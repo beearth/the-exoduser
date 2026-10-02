@@ -52093,3 +52093,7 @@ unrestricted/network-enabled 변경 뒤 원격5b8e6ba9 exactHEAD 및 지정127.0
 
 - 양판 _skClick에 isConnected/skillGrid.contains guard 적용: 현재 실제함수2GREEN, 제거음성2RED. node-main POST /api/mats 실패를500 JSON/end1로 마감: 원본1PASS/3FAIL→수정4PASS, 직접write/clamp·성공계약 유지. 양판 inline12/importmap2 구문검사 통과. UI/스킬/자원 및 저장/API/BUILD/BALANCE canonical 동기화. 실제게임/HTTP/NW.js/저장/패키지/시각·청취 미검수.
 - 사용자 최신 완료→보고→피드백/다음업무 요청에 따라 Mac heartbeat exoduser-mac ACTIVE/1분 주기 생성·실제파일 확인. 초기 전문15 제출과 생산 인수 구분, BOSS outside-write/evidence 충돌 정정 피드백 실제수신, ANIM rollback 모형·SOUNDpri1·mats atomic/cleanup 후보 보류. 기존PC 자동화/사용자탭/세이브/23보존항목 변경0.
+
+## 2026-10-02 Mac continuous 후속 배정 준비
+
+전문15팀 다음 TASK/COMMON과 별도 dispatch registry를 추가했다. BOSS 영수증1건/설계canonical 정정 완료를 기록했다. continuous/BUILD의 TASK/checks/result/evidence4경로만 ignore 예외로 추가하며 다른 빌드 출력은 유지한다. 생산 변경은 이 준비 단계0이다. 기존 사용자23건과 runtime 산출은 보존한다.

@@ -197,3 +197,11 @@ assets/vfx/boss/gen/
 !/tools/team-followup-20261002/codex-half/BUILD/checks.mjs
 !/tools/team-followup-20261002/codex-half/BUILD/result.md
 !/tools/team-followup-20261002/codex-half/BUILD/evidence.json
+
+# Keep only the continuous BUILD task and its three owned review artifacts visible.
+!/tools/team-followup-20261002/continuous/BUILD/
+/tools/team-followup-20261002/continuous/BUILD/*
+!/tools/team-followup-20261002/continuous/BUILD/TASK.md
+!/tools/team-followup-20261002/continuous/BUILD/checks.mjs
+!/tools/team-followup-20261002/continuous/BUILD/result.md
+!/tools/team-followup-20261002/continuous/BUILD/evidence.json

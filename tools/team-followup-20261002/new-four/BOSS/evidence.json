@@ -1,0 +1,114 @@
+{
+  "taskId": "BOSS-INITIAL-SSOT-SOURCE-20261002",
+  "provider": "Claude Code",
+  "terminal": "Mac Claude Code Terminal 20 (BOSS role, Claude8/Codex8 role split)",
+  "model": "claude-opus-4-8",
+  "sessionId": null,
+  "receivedAtUTC": "2026-10-02T04:35:00Z",
+  "startedAtUTC": "2026-10-02T04:35:05Z",
+  "completedAtUTC": "2026-10-02T04:41:00Z",
+  "receiptCorrectedAtUTC": "2026-10-02T05:12:00Z",
+  "receiptCorrectionNote": "총괄 피드백(continuous/BOSS/TASK.md)에 따른 영수증 정정 1건. result.md §0의 outside write 1건과 evidence.json writesOutsideOwned=0 충돌을 일치시키고, BOSS_CANONICAL_MAPPING LOCKED(설계 19 ⊂ 런타임 35)에 맞춰 result.md의 19→35 치환 제안을 취소·별도 구현표로 수정. 새 검사 반복 없음.",
+  "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+  "cwdMatchesTaskPath": true,
+  "branch": "codex/mac-environment-20261001",
+  "head": {
+    "taskWrittenAt": "8fd5b7ecf7bb9caebf4a1c2cadb844e0986f8c82",
+    "actualAtStart": "4cd0cb4906daee2b7953af7284f9ecc3ef96dd49",
+    "actualAtComplete": "4cd0cb4906daee2b7953af7284f9ecc3ef96dd49",
+    "note": "HEAD advanced from the SHA recorded in TASK (8fd5b7ec) to 4cd0cb49 before 착수. Not changed by this task; UNKNOWN which other session advanced it. No git write performed."
+  },
+  "ownedPaths": [
+    "tools/team-followup-20261002/new-four/BOSS/result.md",
+    "tools/team-followup-20261002/new-four/BOSS/evidence.json"
+  ],
+  "safetyContract": {
+    "writesOutsideOwned": 1,
+    "deletes": 0,
+    "cleanupOrMoveOrRename": 0,
+    "gitWriteCommitPushResetCheckout": 0,
+    "newSessionsOrSubagentsOrMessages": 0,
+    "buildOrServerOrImageGenOrTestRun": 0,
+    "productionOrSharedDocsEdited": 0,
+    "note": "Read/Grep/Glob + read-only git rev-parse/status/hash-object/stat only. game.html/game-easy-test.html battle numbers and protected design NOT changed. 정정: 초기 인수 중 소유 밖 쓰기 1건 발생(아래 outsideWriteDetail). 이전 writesOutsideOwned=0은 오기였고 실제는 1이다.",
+    "outsideWriteDetail": {
+      "count": 1,
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261002/tools/team-followup-20261002/new-four/BOSS/result.md",
+      "relativeToRealCheckout": "checkout 밖 형제 디렉터리(잘못된 날짜 20261002). git 미추적, -20261001 git status에 미표시",
+      "bytes": 11,
+      "content": "placeholder",
+      "createdAtUTC": "2026-10-02T04:40:41Z",
+      "createdAtLocal": "2026-10-02T13:40:41+0900",
+      "timeSource": "stat -f modify/birth (filesystem mtime=birth 동일)",
+      "cause": "정식 result.md 작성 직전 Write 경로에 20261001을 20261002로 오타. TASK '날짜 변경·20261002 프로젝트 생성 금지' 위반.",
+      "remediation": "삭제/cleanup/이동/복구/추가쓰기 안 함(삭제 금지·오경로 보고 규칙). 정식 산출물은 올바른 -20261001 경로에 작성. 정리는 총괄 판단에 위임.",
+      "status": "미정리(총괄 보고), 본 세션 불간섭"
+    }
+  },
+  "changesCount": {
+    "atStart": 53,
+    "beforeWritingReports": 59,
+    "note": "Growth 53->59 is other sessions' untracked WIP under tools/team-followup-20261002 (claude-native-6, codex-half). Not authored by this task. Under 80 threshold; this task adds only the 2 owned files."
+  },
+  "preserveSHAs": {
+    "atStart": {
+      "game.html": "81bf3d45176ea614a4626f71a02a9253b7fbaba5",
+      "game-easy-test.html": "4cf9df090f717876d00f68ebe3488f1fd7716295",
+      "server.cjs": "cab33a0c6862aeb31e29be69e19f2a0ed21209b1",
+      "node-main.js": "8b0fa00bc88a659976ef4f3a32f62b50fd8caba3",
+      "index.html": "6b44d07cb14049da51f2accd6755ca80d3344cc8",
+      "test/nodeMainMats.test.js": "179fa3032c80950cb08953c1b003ccb0377d9f9e"
+    },
+    "atComplete": {
+      "game.html": "81bf3d45176ea614a4626f71a02a9253b7fbaba5",
+      "game-easy-test.html": "4cf9df090f717876d00f68ebe3488f1fd7716295",
+      "server.cjs": "cab33a0c6862aeb31e29be69e19f2a0ed21209b1",
+      "node-main.js": "8b0fa00bc88a659976ef4f3a32f62b50fd8caba3",
+      "index.html": "6b44d07cb14049da51f2accd6755ca80d3344cc8",
+      "test/nodeMainMats.test.js": "179fa3032c80950cb08953c1b003ccb0377d9f9e"
+    },
+    "unchanged": true,
+    "atReceiptCorrection": {
+      "observedAtUTC": "2026-10-02T05:11:23Z",
+      "head": "f14015510adc2593d2bd7882cfd9f382170714fa",
+      "game.html": "3b96f144a97f7af1dc28a28e66cba6bd808467d4",
+      "note": "정정 패스 시점(05:11Z) HEAD와 game.html SHA가 task-window 값(4cd0cb49/81bf3d45)에서 전진함. 본 작업/정정은 game.html·git을 건드리지 않았으므로 auto-sync cron 또는 타 세션 변경으로 분류(UNKNOWN 주체). 되돌리지 않음. task-window atStart/atComplete SHA 기록은 보존."
+    }
+  },
+  "coreSSOTSHAs": {
+    "docs/8.1보스디자인바이블/BOSS_BATTLE_SETTINGS.md": "f6d84b432bb0769f1a9516073ec861deec54e41f",
+    "docs/4.1맵디자인+설정/CH1_1_DRUID_BOSS_ASSIGNMENT.md": "5259f00b1f7a93c86dd893bf9b8db6cbff8cae89",
+    "docs/11내러티브·로어디자인/WORLD_CORE.md": "df44fa6699756a3c059650b2302e1f20d3350a2e"
+  },
+  "readFiles": [
+    { "path": "tools/team-followup-20261002/new-four/BOSS/TASK.md", "what": "작업 지시 전문 (40행)" },
+    { "path": "AGENTS.md", "what": "운영 상태/절대 규칙 전문 (234행)" },
+    { "path": "docs/0마스터플랜/TEAM_CONTINUATION_POLICY_20261001.md", "what": "팀 연속 진행·역할16(BOSS=Claude) 전문 (142행)" },
+    { "path": "docs/8.1보스디자인바이블/BOSS_BATTLE_SETTINGS.md", "what": "SSOT 머리말, §3 HP/ATK 감사정정, §5 BOSS_PHASES, §6 _BOSS_MOVESET 테이블, cageTrap 금지, 전문 614행" },
+    { "path": "docs/4.1맵디자인+설정/CH1_1_DRUID_BOSS_ASSIGNMENT.md", "what": "si0/si3 다크드루이드 현행 배정·무브셋 23종·cageTrap 차단 (머리 ~70행)" },
+    { "path": "docs/8.1보스디자인바이블/DARK_DRUID_FINALE_QA_20260909.md", "what": "데모 피날레 v0.3/v0.4 구현 계약·검증·밸런스 측정 (머리 ~60행)" },
+    { "path": "docs/11내러티브·로어디자인/WORLD_CORE.md", "what": "35보스=35사연, 7장×5보스 서사 분배 (해당 절)" },
+    { "path": "game.html", "whatLines": "BOSS_MOVES 9497-9557(59항목), BOSS_COMBOS 9558-9627, BOSS_PHASES 9628-9634, _BOSS_MOVESET 9637-9688, HELL_BOSSES 15868-15876, HELL_NAMES/THEMES 15857-15867, EN명 6206, 보스실행 switch 36358-/case 36406 burrowStrike·36544 burstCounter, _bossScore 36306-/CD read 36310, _moveCDs alloc 29938, decrement 37031/reset 36913, next pattern 37045-37095, 디버그 58696, _isDruidFinale/_druidFinaleHp 16219-16247" },
+    { "path": "game-easy-test.html", "whatLines": "구조 병렬 확인: BOSS_MOVES 8948-(59항목), burstCounter idx:60 @8980, _BOSS_MOVESET 9088-, HELL_BOSSES 14985-, _moveCDs alloc 28758, CD read 35114, reset 35716, decrement 35834, next pattern 35850/35852/35886, 디버그 57033, EN명 5744" }
+  ],
+  "commandsRun": [
+    { "cmd": "git rev-parse HEAD / --abbrev-ref HEAD", "exit": 0 },
+    { "cmd": "git status --short --untracked-files=all | wc -l", "exit": 0 },
+    { "cmd": "git hash-object <preserve+SSOT files>", "exit": 0 },
+    { "cmd": "grep -n (BOSS_MOVES/_BOSS_MOVESET/_bossPhaseCheck/druidFinale/burstCounter/idx:60) both HTML", "exit": 0 },
+    { "cmd": "sed -n move-table ranges; grep -c '{id:' (=59 both)", "exit": 0 },
+    { "cmd": "grep case labels 36000-37100 (59 unique, all 59 ids)", "exit": 0 },
+    { "cmd": "grep -rnE '19보스|49종|49 moves' docs/ (non-backup)", "exit": 0 },
+    { "cmd": "date -u", "exit": 0 }
+  ],
+  "changesBeforeThisTask": "none (read-only until report write)",
+  "changesAfterThisTask": "소유 2파일(-20261001/tools/team-followup-20261002/new-four/BOSS/{result.md,evidence.json}) 작성 + 소유 밖 오류 1파일(-20261002/.../new-four/BOSS/result.md, 11바이트 placeholder, 미삭제). evidence.json/result.md는 본 정정 패스에서 재작성됨. continuous/BOSS/TASK.md 지시의 영수증 정정만 수행.",
+  "correctionCommandsRun": [
+    { "cmd": "Read continuous/BOSS/TASK.md", "exit": 0 },
+    { "cmd": "Read docs/4.1맵디자인+설정/BOSS_CANONICAL_MAPPING.md (LOCKED 19 design ⊂ 35 runtime)", "exit": 0 },
+    { "cmd": "stat -f modify/birth + cat 11B erroneous file (read-only)", "exit": 0 },
+    { "cmd": "date -u; git rev-parse HEAD; git hash-object game.html (read-only drift 확인)", "exit": 0 }
+  ],
+  "otherSessionChanges": "docs/CHANGELOG_SYNC.md and many docs_backup_before_normalize_20260726/* marked M, plus tools/team-followup-20261002/claude-native-6/* and codex-half/* untracked. UNKNOWN/다른 담당 변경으로 분류, 되돌리지 않음.",
+  "verificationBoundary": "코드 정적 읽기만 수행. 런타임·시각·테스트 PASS·FPS·팀 동시가동 미추정. 우선 제안(burstCounter 쿨다운) 은 코드 논리 검토이며 실제 전투 실행으로 재현하지 않음."
+}

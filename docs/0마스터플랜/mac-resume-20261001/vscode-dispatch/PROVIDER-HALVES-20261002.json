@@ -1,7 +1,7 @@
 {
   "recordedAt": "2026-10-02T04:32:39.602689+00:00",
   "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
-  "latestUserRequest": "보스전·스토리·퀘스트/NPC·유튜브/스팀 페이지 관리4팀 추가",
+  "latestUserRequest": "완료 보고/알림 후 같은 실행에서 피드백과 다음 업무; 지속 진행",
   "plannedTotalRoles": 16,
   "coordinatorRoles": 1,
   "specialistRoles": 15,
@@ -857,7 +857,7 @@
     "newAutomation": 0
   },
   "completionBoundary": "Dispatch/Read and actual source outputs are separate; production/runtime/visual/listening acceptance remains pending.",
-  "latestObservedAt": "2026-10-02T04:43:21.956853+00:00",
+  "latestObservedAt": "2026-10-02T05:23:19.224897+00:00",
   "codexExecutionReadReceipts": {
     "schemaVersion": 1,
     "observedAtUTC": "2026-10-02T04:36:28Z",
@@ -2291,7 +2291,7 @@
     "initialCodexSpecialistSubmissionsCompleted": 7,
     "initialClaudeSpecialistSubmissionsCompleted": 8,
     "nativeBossCorrectionFeedbackReceivedAt": "2026-10-02T05:10:08.806Z",
-    "initialBossReceiptMismatch": "outside write declared in result but evidence zero; correction required",
+    "initialBossReceiptMismatch": "corrected: outside write1 acknowledged, 19→35 replacement withdrawn",
     "bossCanonicalLock": "design19 and runtime35 must remain distinct",
     "rootProductionChanges": [
       "game.html:_skClick lifetime guard",
@@ -2316,6 +2316,13 @@
       "actualTomlVerified": true,
       "policy": "new completion -> evidence review -> feedback or next assigned task in same run; unchanged state quiet"
     },
-    "nativeDeliveryMethod": "CUA typeText works; coordinate click/clipboard paste failed and not counted as delivered"
+    "nativeDeliveryMethod": "CUA typeText works; coordinate click/clipboard paste failed and not counted as delivered",
+    "bossCorrectionCompletedAt": "2026-10-02T05:14:35.761Z"
+  },
+  "currentContinuousDispatch": {
+    "registryPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/CONTINUOUS-DISPATCH-20261002.json",
+    "status": "prepared_not_sent",
+    "roles": 15,
+    "recordedAt": "2026-10-02T05:23:19.224897+00:00"
   }
 }
