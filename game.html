@@ -49036,6 +49036,7 @@ d.innerHTML=`<div class="fg-in" style="color:${rc}">${label} <span style="color:
           G.mats-=c2;
           if(Math.random()<r2){
             it.enh=(it.enh||0)+1;
+            const _fgHP=P.hp,_fgMP=P.mp,_fgST=P.st,_fgShield=P.shield;applyStats();P.hp=Math.min(P.mhp,_fgHP);P.mp=Math.min(P.mmp,_fgMP);P.st=Math.min(P.mst,_fgST);P.shield=Math.min(P.mshield,_fgShield);
             SFX.forge();
             const _ec2=enhColor(it.enh);
             addTxt(P.x,P.y-20,'+'+it.enh+_L(' 강화!',' Enhanced!'),_ec2,60);

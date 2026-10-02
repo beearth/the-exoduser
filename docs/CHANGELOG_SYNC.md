@@ -52773,3 +52773,10 @@ source11 코드 checkpoint `efb3bb7e02a9ab161e92d9ff3da7229b4cf884cd`의 원격 
 | 아직 미인수 | source11 실제 처치·획득·장비/가방 재실행 값·필드 앵글러4·보스방 개방·CH1 보스 사망 후 맵/몬스터 보존·재도전·실청취·8카메라 visual. 설정 PASS를 native6·보스 coregoal 완료로 확대0 |
 
 실제 후속 관측 기록4개만 갱신한다. 기존 앱/profile/save·보호67·타인WIP·감독 소유STATE/LOG를 보존하며 이전 검사·패키지 전수감사 반복0.
+
+
+## 2026-10-03 source12 수동 장비 강화 성공 자원 보존
+
+- 양판 `renderForge` 성공 직후 현재HP/MP/ST/쉴드 보관→`applyStats()`→최종최대치 min복원 각204B. 원본의 최대HP·CP stale 및 단순추가의 강인/마력그릇 현재자원 손실을 함께 방지. 실패/부족 재계산0, 기존 비용/확률/효과/펫/저장/기본 강화식 유지.
+- 신규 실제 추출26그룹: 원본17RED/plain18RED/최종26PASS, production 동일26PASS/inline12 JS+2 JSON PASS. UI·FX·펫·저장 leaf 기록 대역, native/전체게임 완료로 확대0. [정확 슬롯·수치·범위](14밸런스+수치테이블/14밸런스+수치테이블.md).
+- source11 앱의 실제14처치/일반 사망/불꽃갑옷 CP1734→1740 관찰과 CP 미리보기−16/실제+6 미해결을 기록. 보스 사망 후 맵 보존 인수0/앱 덮어쓰기0/맥 재잠금으로 실플레이 대기. [별도 native 경계](13출시·마케팅/MAC_CH1_SOURCE11_CANDIDATE_20261003.md).

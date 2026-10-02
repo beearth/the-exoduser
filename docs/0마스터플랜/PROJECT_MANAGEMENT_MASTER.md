@@ -1105,3 +1105,19 @@ source11 코드 checkpoint `efb3bb7e02a9ab161e92d9ff3da7229b4cf884cd`의 원격 
 | 저장된 자동 점검 | 기존 `exoduser-claude8` ACTIVE·동일 감독·기존5분 유지. 새TASK 증거초기화/해당TASK와 송신 이후 성공tool_result 결합/목적별HOLD/승인 백로그의 구체2~3작업 연결 규칙 저장. 정시·무중단 실행 보장 주장0 |
 | 보류 | ART 직접 인간 입력 요구 보존. ANIM decoder 관찰 대기는 그 접점만 보류하며 독립 승인 소유작업은 계속. 정책 승인 거절 목적의 대리·우회0 |
 | 제품 성과 경계 | 후보·NOFIX 계약 검사·형식 보고는 게임 적용 완료가 아님. 생산 코드/정본docs/앱/Git 통합은 원총괄 소유 |
+
+
+## 2026-10-03 source12 수동 강화 자원 보존·source11 필드 부분 관찰
+
+ITEM2137의 수동 강화 후 최대자원·CP 갱신 누락을 root가 두 HTML에 반영했다. 단순 `applyStats` 1줄 후보는 강인·마력그릇 현재자원을 줄여 폐기했고, 성공 접점에 현재 HP/MP/ST/쉴드 보관→재계산→최종최대치 min복원 각204B를 적용했다. 새 비용/확률/회복량 변경0, 실패·부족 새 재계산0. 후보 신규26그룹 원본17RED/plain18RED/최종26PASS와 생산 동일26 PASS, inline12 JS+2 JSON PASS. UI/FX/펫/save leaf는 대역이며 native 인수로 확대0. 기존ITEM4그룹을 새 성과로 중복 집계하지 않는다.
+
+| source12 입력·결과 | bytes / SHA256 |
+|---|---|
+| 본편 before→after | 4029812→4030016 / `0c48deabcff0cb6dd541e79d457148e3e7c8e0a6b5d91cf434620ecd15d06b8c` |
+| easy before→after | 3907079→3907283 / `421a490606e7d2eeae9c428b73a08c5b29e4e2221d7af7215b4a84582e7cef10` |
+| 최소 범위 | 각 성공 접점204B 제거 시 source11 전체byte 일치. index/공용 applyStats/자동강화/기존 앱3390 불변 |
+| 정본 | 강화14·인벤2_7의 기존 HP/ST/DEF 슬롯 오기를 실제 소비값과 정합화. native source11 기록13은 별도 부분 인수 |
+| 회귀 | `test/manualEnhanceResourceRefreshAcceptance.test.cjs` live26; ignored `root-manual-enhance-source12/receipt.json` 원자료 SHA `932383a115ef5c60db9944ff836c0af1ee295c7df3cea9c81b0ff40226588a6e` |
+| 용량 정정 | source3는 clean이었다. root clean8경로(HTML2/docs5/test1)로 baseline71→79 예상, external future8 포함 예약상한87. 예약 수와 실제 변경 수를 구분하며 완료8경로만 즉시checkpoint |
+
+source11 같은 앱/캐릭터에서 실제14처치·지역4/32·일반 필드 사망 및 정상 불꽃갑옷 장착(CP1734→1740)을 관찰했다. 보스 사망/개방 문·필드 몬스터 보존·앵글러4·드롭 획득·재도전은 아직 미인수다. 미리보기−16/실제+6 CP 차이는 UIUX 다음 독립 목표로 감독에 연결했고, 이후 실제 Mac 재잠금으로 새 unlock 질문이 대기 중이다. CLAUDE2143/2145 신규6TASK는 실제peer 이후 성공tool_result가 확인됐으며 종료 역할은 감독 단일송신으로 다음 목표에 연결한다. source12 코드 회귀를 source11 앱 또는 제품 coregoal 완료로 세지 않는다.
