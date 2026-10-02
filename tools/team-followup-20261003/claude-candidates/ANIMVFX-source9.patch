@@ -1,0 +1,129 @@
+# ANIMVFX-source9.patch — §6a CH1 8-dir 사망 디졸브 (ANIM 소유분) — 후보(미적용)
+# 작성 2026-10-03 / productionApplied=false runtimeAccepted=false (source 후보 ≠ 생산/native/화면/청취 완료)
+# ─────────────────────────────────────────────────────────────────────────────
+# [범위] ANIM 소유 = 시각 전용 페이드 풀 _mobDeathFades + _addCorpse 끝 단일 훅(소비자) + corpse draw 직후 update/draw.
+#        ENEMY 소유(별도 ENEMY-source9.patch) = 순수 helper _snapshotMobDeathFade(e) 1개. 서로 완료 대기 0, 공동 root 통합.
+# [root 수치 고정] frames=20 · cap=24 · scaleY 1→0.8 · 아래 6px · 기존 8dir atlas idle 베이스 crop만. 신규 에셋/프레임큐 0.
+#        제외(ENEMY helper가 null 반환): ib(보스)·ghoul·slime·elite·etype≥90(레어)·large. 별도 대형 deathFX와 중복 아님.
+# [불변] hurtE/사망 판정/e.alive/EXP·드랍/ G.kills·_stageKills·콤보/atkTicketRelease/_addCorpse 시체 개수·수명 전부 불변.
+#        e/P/G/보상/save 게임상태 새 field 0. _mobDeathFades 는 모듈 지역 시각 전용 배열(세이브 비직렬화).
+#
+# ── 공유 helper 계약(ENEMY-source9.patch와 inline 정렬 완료) ─────────────────
+#   _snapshotMobDeathFade(e) → null (비대상) | plainobject (대상):
+#     { img, sx, sy, sw, sh, x, y, w, h, anchorX:0.5, anchorY:0.5 }
+#     img            = 기존 8dir atlas 이미지 (_ch8Atlas[e._mobCh].dirs[_mobFacingDir8(e.facing)].img) — 신규 에셋 0
+#     sx,sy,sw,sh    = 현재 idle 베이스 셀 crop (e._mob8Col*cell, e._mob8Row*cell, cell, cell)
+#     x,y            = 월드 anchor(중심), w,h = 그릴 크기(max(e.r*3.5,30))
+#     anchorX,anchorY= 0.5,0.5 → dest 오프셋 -w*ax, -h*ay
+#   ※ consumer 는 w/h/anchorX/anchorY 를 소비(초기 dw/dh 가정은 ENEMY 실제 계약 확인 후 w/h/anchor 로 정정함).
+#   ※ 반환은 object 또는 null (수치 아님) → consumer 는 snapshot!==null(본 patch _mdf&&_mdf.img) 일 때만 소비, >0 수치비교 금지(준수).
+#   ※ ENEMY producer 완료 c34e34f2-c7e3-45bb-a2f9-2d5b2ef4e7b4(19:56:36) 헤더계약과 1:1 일치 확인(CONTRACT-ENEMY-DEATHFADE-1958 보충).
+#
+# ── 실측 SHA (sha256, git-free) ──────────────────────────────────────────────
+#   ⚠ base SHA 연속 drift: 본 세션 중 game.html 794d2927→908102e7→a0eab60f (auto-sync/타세션 동시 편집).
+#      아래 SHA 는 측정 시점 스냅샷. root 는 apply 시 base 재측정 후 앵커 3개로 재적용하고 candidate 재도출할 것.
+#   source9 이력 참조(태스크 제공): main 908102e7…48525 / easy fba52654…845af7 / HEAD e11ed7d0…63f2
+#   측정 시점 base      : game.html          a0eab60f025654636f16668d5a9b0ab93cbe155f7e806a65d79764b1f6be2718
+#                         game-easy-test.html ebaacc36f22d9ae7b7b57f7537f063783abdb74a66baa8789e32bef726b565a8
+#   측정 시점 candidate : game.html          576c2cb98c193314d8d23340422464ce78d25ee7cfcc587af2575f779a08cc6f
+#                         game-easy-test.html 8b03d2942fa4c251a055f7ebfc1a3559d04e625d27e608c98016862f957e7b06
+#   byteΔ +1512/파일 · 앵커 unique 1/1/1 (pool/hook/draw, 양판) · inverse byte-exact TRUE (candidate→base 복원)
+#   acorn parse(ecma2022) 변경 JS 블록 before=ok / after=ok (양판)
+#
+# ── 적용 방식 ────────────────────────────────────────────────────────────────
+#   라인번호는 측정 시점(main pool23636/hook23755/draw52908, easy pool22665/hook22784/draw51355) 기준이며
+#   auto-sync 로 drift 가능 → `patch -F3` 또는 아래 앵커 컨텍스트로 위치. 순수 삽입 3곳(치환/삭제 0).
+#
+# ── 기존 완료 검증 증빙 ID (재사용, 재검사 0) ────────────────────────────────
+#   e4d71a1f-a3bf-434d-bea4-b730d3214073  VFX sheet loader latch NOFIX
+#   67aa5b5f-a282-462f-bdbe-2329cc969e30  VFX 상호배타(mutual-exclusion) clean
+#   2d024d11-27c8-464d-9343-e5e91981bc49  death-fade reset=prep 조건부(설계 회귀 분리)
+#   c34e34f2-c7e3-45bb-a2f9-2d5b2ef4e7b4  ENEMY _snapshotMobDeathFade producer patch 완료(계약 공급원, 공동 통합 선행)
+#
+# ── docs 동기화 목록 (root 채택 시, ANIM 소유분) ─────────────────────────────
+#   docs/5.1임펙트디자인/ANIMATION_VFX_TEAM_MASTER.md §6a:
+#     "구현 보류"→ "ANIM 후보 제출(미적용)". 풀 _mobDeathFades(cap24, 시각 전용), 훅 1개(_addCorpse 끝),
+#     update+draw(corpse draw 직후), 20f/scaleY1→.8/+6px/source-over, 기존 8dir idle crop 재사용(신규 에셋 0),
+#     ENEMY _snapshotMobDeathFade 계약({img,sx,sy,sw,sh,x,y,w,h,anchorX,anchorY}) 소비. 불변 목록(§6a 128) 유지.
+#   (helper 등록/제외 분류는 ENEMY-source9.patch 의 docs/9적ai패턴디자인/ENEMY_AI_TEAM_MASTER.md 소관.)
+#
+# ── 미검증 한계 (root Gate) ──────────────────────────────────────────────────
+#   1) GL/native/화면 PASS 아님: 실제 GPU 합성·디졸브 외형·z-order(시체 위 겹침)·시체 수명과 타이밍 정합 = root QA 화면 Gate.
+#   2) ENEMY helper 공동 랜딩 필수: 단독 적용 시 typeof 가드로 무해(효과 0·크래시 0)하나 효과 미발현. ENEMY-source9.patch 와 동일 통합.
+#   3) base SHA drift(위) — apply 시 base 재측정·앵커 재적용·candidate 재도출.
+#   4) 룸 전환 reset 미포함: 20f auto-expire + view-cull 로 ≤24개·<0.33s bounded. stale fade 관측 시
+#      _clearDeathDecals 에 `for(let i=0;i<_MDF_MAX;i++)_mobDeathFades[i].active=false;` 추가(단 TDZ 회피 위해 pool def 를 함수 앞으로 이동).
+#   5) _dtSp 스코프: corpse draw 함수 내 _vfxAnims 루프가 동일 _dtSp 사용 → 유효. pause 시 _dtSp=0 이면 fade 동결(의도).
+#   6) source-over 정확: 본 디졸브는 _vfxAnims GL 인스턴싱(additive 고정, 증빙 CO1454) 경로가 아니라 corpse draw 직후
+#      2D proxy X.drawImage 로 직접 그림 → 블렌드 정확. 시체+gib 와 동일 2D 버퍼이므로 z-order 보존 추정, 실화면 root.
+#   7) easy 빌드 동형(동일 코드/앵커), 별도 실화면 root.
+#   8) walk 오버레이 미포함(idle 베이스 crop 고정) = ENEMY 제출 후보 헤더의 한계. 이동 중 사망 몹 디졸브가 idle 포즈로 고정됨 →
+#      외형 정합성은 root 의미 Gate 로 보고(현재 프레임/visual PASS 로 과장 0).
+#   9) 사망 시점 계약(root HOLD-2000 fact1): 실제 hurtE 는 e.alive=false 뒤 _addCorpse 호출(main 41278→41298/easy 40078→40098).
+#      본 훅은 _addCorpse 끝(= e.alive=false 이후)에서 _snapshotMobDeathFade(e) 를 부르므로 올바른 사망 시점 통합점이나,
+#      현재 ENEMY raw helper 의 !e.alive guard 는 이 시점에서 항상 null → fade 0(가드로 무해). root-derived helper 가 사망
+#      시점을 수용해야 동작(ENEMY raw 불변, root 교정 예정). consumer 코드 변경 불요.
+#  10) 크기 계약(root HOLD-2000 fact2): live queue/draw 크기는 Math.max(e.r*7,80)(main 51887/52021·easy 50510);
+#      ENEMY 제출 helper 의 e.r*3.5,min30 은 보조 drawEnBody 크기라 승인 scaleY1→.8 외 크기 팝 유발. root-derived 가 live
+#      크기로 보정. 본 consumer 는 _mdf.w/_mdf.h 와 anchor 를 그대로 수용하고 scaleX=1·scaleY 1→.8(승인 sink)만 적용,
+#      별도 축소 기준을 덧붙이지 않음(준수). consumer 코드 변경 불요.
+#   보호 2_3 / Q-only magic / E불가 / 어택티켓금지 / 맵가이드 / AGENTS·LOCK·SSOT / 타팀 WIP·기존 23 보존.
+# ═════════════════════════════════════════════════════════════════════════════
+
+--- a/game.html
++++ b/game.html
+@@ -23635,3 +23635,6 @@
+ const _CORPSE_MAX=120;const _corpses=[]; // 15→60→120 (2026-09-01): 대량 사망 시체 카펫 더 진하게
+ for(let i=0;i<_CORPSE_MAX;i++){const _cc=document.createElement('canvas');_cc.width=128;_cc.height=128;_corpses.push({x:0,y:0,vx:0,vy:0,r:0,rv:0,sz:0,t:0,mt:0,c:_cc,ctx:_cc.getContext('2d'),active:false,bounced:0})}
++// §6a CH1 8-dir 사망 디졸브 — 시각 전용 페이드 풀 (ANIM 소유; 판정·시체 수/수명 불변). ENEMY _snapshotMobDeathFade 계약 소비.
++const _MDF_MAX=24;const _mobDeathFades=[];
++for(let i=0;i<_MDF_MAX;i++)_mobDeathFades.push({active:false,img:null,sx:0,sy:0,sw:0,sh:0,x:0,y:0,w:0,h:0,ax:0.5,ay:0.5,f:0});
+ // 일반 etype 몹 스프라이트 캡처 (렌더가 쓰는 _atlasE UV와 동일 소스) — 8dir/보스 미해당 몹 시체·gib가 빨간 원("적고구마") 되던 것 수정
+@@ -23754,3 +23754,7 @@
+   // 중형+/보스: 대가리 한 조각이 처치방향으로 날아감 (통짜 시체와 병행, _isLarge 게이트는 _addHeadGib 내부)
+   _addHeadGib(e,a,power);
++  // §6a 사망 디졸브 스냅샷 훅 (ENEMY 순수 helper _snapshotMobDeathFade; 비대상이면 null)
++  if(typeof _snapshotMobDeathFade==='function'){const _mdf=_snapshotMobDeathFade(e);
++    if(_mdf&&_mdf.img){let _mi=-1,_mx=-1;for(let i=0;i<_MDF_MAX;i++){if(!_mobDeathFades[i].active){_mi=i;break}if(_mobDeathFades[i].f>_mx){_mx=_mobDeathFades[i].f;_mi=i}}
++      const d=_mobDeathFades[_mi];d.active=true;d.img=_mdf.img;d.sx=_mdf.sx;d.sy=_mdf.sy;d.sw=_mdf.sw;d.sh=_mdf.sh;d.x=_mdf.x;d.y=_mdf.y;d.w=_mdf.w;d.h=_mdf.h;d.ax=(_mdf.anchorX!==undefined?_mdf.anchorX:0.5);d.ay=(_mdf.anchorY!==undefined?_mdf.anchorY:0.5);d.f=0;}}
+ }
+@@ -52908,3 +52908,10 @@
+     X.drawImage(c.c,-c.sz/2,-c.sz/2,c.sz,c.sz);X.restore();
+   }
++  // §6a 사망 디졸브 페이드 — 시체 위 합성 (source-over, 20f, α1→0, scaleY1→.8, 아래 6px). 시각 전용.
++  for(let mi=0;mi<_MDF_MAX;mi++){const d=_mobDeathFades[mi];if(!d.active)continue;
++    d.f+=_dtSp;if(d.f>=20){d.active=false;d.img=null;continue}
++    if(d.x<_vl-d.w||d.x>_vr+d.w||d.y<_vt-d.h||d.y>_vb+d.h)continue;
++    const _p=d.f/20,_a=1-_p;if(_a<0.05)continue;
++    X.save();X.globalAlpha=_a;X.translate(d.x,d.y+_p*6);X.scale(1,1-_p*0.2);
++    X.drawImage(d.img,d.sx,d.sy,d.sw,d.sh,-d.w*d.ax,-d.h*d.ay,d.w,d.h);X.restore();}
+   // 불타는 시체 — 본체 + 불경계 (compositeOp 전환 1회)
+
+--- a/game-easy-test.html
++++ b/game-easy-test.html
+@@ -22664,3 +22664,6 @@
+ const _CORPSE_MAX=120;const _corpses=[]; // 15→60→120 (2026-09-01): 대량 사망 시체 카펫 더 진하게
+ for(let i=0;i<_CORPSE_MAX;i++){const _cc=document.createElement('canvas');_cc.width=128;_cc.height=128;_corpses.push({x:0,y:0,vx:0,vy:0,r:0,rv:0,sz:0,t:0,mt:0,c:_cc,ctx:_cc.getContext('2d'),active:false,bounced:0})}
++// §6a CH1 8-dir 사망 디졸브 — 시각 전용 페이드 풀 (ANIM 소유; 판정·시체 수/수명 불변). ENEMY _snapshotMobDeathFade 계약 소비.
++const _MDF_MAX=24;const _mobDeathFades=[];
++for(let i=0;i<_MDF_MAX;i++)_mobDeathFades.push({active:false,img:null,sx:0,sy:0,sw:0,sh:0,x:0,y:0,w:0,h:0,ax:0.5,ay:0.5,f:0});
+ // 일반 etype 몹 스프라이트 캡처 (렌더가 쓰는 _atlasE UV와 동일 소스) — 8dir/보스 미해당 몹 시체·gib가 빨간 원("적고구마") 되던 것 수정
+@@ -22783,3 +22783,7 @@
+   // 중형+/보스: 대가리 한 조각이 처치방향으로 날아감 (통짜 시체와 병행, _isLarge 게이트는 _addHeadGib 내부)
+   _addHeadGib(e,a,power);
++  // §6a 사망 디졸브 스냅샷 훅 (ENEMY 순수 helper _snapshotMobDeathFade; 비대상이면 null)
++  if(typeof _snapshotMobDeathFade==='function'){const _mdf=_snapshotMobDeathFade(e);
++    if(_mdf&&_mdf.img){let _mi=-1,_mx=-1;for(let i=0;i<_MDF_MAX;i++){if(!_mobDeathFades[i].active){_mi=i;break}if(_mobDeathFades[i].f>_mx){_mx=_mobDeathFades[i].f;_mi=i}}
++      const d=_mobDeathFades[_mi];d.active=true;d.img=_mdf.img;d.sx=_mdf.sx;d.sy=_mdf.sy;d.sw=_mdf.sw;d.sh=_mdf.sh;d.x=_mdf.x;d.y=_mdf.y;d.w=_mdf.w;d.h=_mdf.h;d.ax=(_mdf.anchorX!==undefined?_mdf.anchorX:0.5);d.ay=(_mdf.anchorY!==undefined?_mdf.anchorY:0.5);d.f=0;}}
+ }
+@@ -51355,3 +51355,10 @@
+     X.drawImage(c.c,-c.sz/2,-c.sz/2,c.sz,c.sz);X.restore();
+   }
++  // §6a 사망 디졸브 페이드 — 시체 위 합성 (source-over, 20f, α1→0, scaleY1→.8, 아래 6px). 시각 전용.
++  for(let mi=0;mi<_MDF_MAX;mi++){const d=_mobDeathFades[mi];if(!d.active)continue;
++    d.f+=_dtSp;if(d.f>=20){d.active=false;d.img=null;continue}
++    if(d.x<_vl-d.w||d.x>_vr+d.w||d.y<_vt-d.h||d.y>_vb+d.h)continue;
++    const _p=d.f/20,_a=1-_p;if(_a<0.05)continue;
++    X.save();X.globalAlpha=_a;X.translate(d.x,d.y+_p*6);X.scale(1,1-_p*0.2);
++    X.drawImage(d.img,d.sx,d.sy,d.sw,d.sh,-d.w*d.ax,-d.h*d.ay,d.w,d.h);X.restore();}
+   // 불타는 시체 — 본체 + 불경계 (compositeOp 전환 1회)

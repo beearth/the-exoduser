@@ -52706,3 +52706,12 @@ source9 parent HEAD는 `e11ed7d052d825bcaf2a041d1f28ffac7f6f63f2`다. source10 �
 관련 패턴의 합집합39파일/고유 literal191행을 분류했다. 추가 matching3파일의 보스 착지300/150·마법 피해계통·리시 텔레포트는 기존값 정확/별도 시스템이므로 보존한다. 패턴 차이를 문서 생성/삭제·역사 변경으로 확대0. 기존docs6에서 fog 현재1행·관리18역할 표기2접점 외 원문/EOL·QA-B03·보호2_3·타인 WIP를 유지한다.
 
 후보28과 fresh 생산28은 단계별 검수로 완제품 성과 합산0. fog10/10은 실제 bake+render synthetic 후보 검수, merged canvas1개 추가/GC비용 未. 이전source9 검사 반복0. source8 앱 Mac 잠금, source10 패키징·실행0, CH1 보스 사망/native/실화면/실청취/플레이 save 완료0. rawMAP 보존·미적용, rawENEMY deathfade HOLD·통합0. raw4 단독 commit 시도는 docs-sync hook 거절/미커밋/우회0이며 root가 code2+test1+기존docs6+원자료raw4 완성scope13을 함께 보존한다. commit·원격 정확SHA는 위 실제 실행 영수증으로 확인한다. 신규 tracked 문서·보고서0.
+
+## 2026-10-03 완료 Claude 사망 연출 원후보2 보존 — HOLD
+
+| 소유 / 원후보 | bytes / SHA-256 | 실제 완료 ID | 생산 상태 |
+|---|---|---|---|
+| ENEMY / `ENEMY-source9.patch` | 9048 / `2acaec456dfb54966ba5eb2b00983c7036b224cc2aa7594a1f244d05e2b5fe99` | `c34e34f2-c7e3-45bb-a2f9-2d5b2ef4e7b4` | 원문 보존·미적용 |
+| ANIMVFX / `ANIMVFX-source9.patch` | 13334 / `2bc44b18db1459f7d266a0b1974f6c236cdb6fdfd48aa518052a9a7f2bcf3632` | `234f20a4-8634-4e32-99fb-aec5f3c9c807` | 원문 보존·미적용 |
+
+경로는 `tools/team-followup-20261003/claude-candidates/`다. 실제共同 의미검수는 dead→snapshot null(corpse1/fade0), 보조 경로 크기, 기존 scene cleanup과 새 pool 미연결을 확인해 HOLD했다. 현재 live 크기·pose/fallback·fixed update 수명·source-over·cleanup 보완 목표는 [ANIMVFX master의 최신 절](5.1임펙트디자인/ANIMATION_VFX_TEAM_MASTER.md)을 따른다. 코드/gameplay/세이브 변경0, 생산 source10 `8bcdd1632d343a8336ae5df589f4bf793b04bed8`와28검사/구문검사 결과는 불변이다. 후보 보존은 게임 기능 완료로 계산하지 않는다. 원격 보존의 정확 commit/SHA는 `tmp/mac-migration-runtime/continued-review-20261003/root-deathfade-source11/raw-checkpoint-receipt.json` 실제 실행결과를 참조한다.

@@ -279,3 +279,18 @@ root가 sparse8+데모2를 재실행했지만 중간 record의 draws 누락을 d
 | 검수 | root corrected 후보36/36, 최종 공동 production46/46 | helper+조건의 synthetic 의미검수; 동일 파생 범위를 별도 완제품 성과로 더하지 않음 |
 
 일반8f/etype3 5f는 windup 소진 뒤의 attack 타이머이며 windup은 진입 경로별 `st2`다. synthetic boss fixture에서 ❗ 제외를 확인한 결과를 자연 보스의 실제 렌더·픽셀 또는 native/visual PASS로 확대하지 않는다. source9 앱 빌드·실행0, 실화면·실청취 검수0. [최종 소스·공식 검사 pin](../CHANGELOG_SYNC.md)을 참조한다.
+
+## 2026-10-03 CH1 사망 디졸브 원후보 보존 — 생산 미적용
+
+source9 기준의 완료 ENEMY·ANIMVFX 원패치2를 불변 보존한다. source10 생산 소스(8bcdd163)의 변경은0이며, 이 원후보는 공동 의미검수에서 HOLD다. §6a의 사망 판정·보상·기존 시체 개수/수명 보존 원칙을 유지한다.
+
+| 항목 | 실제 원후보·검수 결과 | 다음 최소 보완 / 경계 |
+|---|---|---|
+| 사망 연결 | 실제 `_addCorpse`는 `e.alive=false` 후 호출. 원 helper의 alive 필수 guard 때문에 양판 정상 dead에서 corpse1/fade0 | snapshot이 사망 시점을 수용해야 함. actor의 alive 임시 복구0 |
+| 크기 | 원 helper의 `max(r×3.5,30)`은 보조 경로. 현행 일반 body는 `max(r×7,80)` | 현행 live metadata를 사용; 별도 크기 축소 팝0 |
+| pose·방향 | 원 snapshot은 idle base crop. live 방향 미준비 시 south-ready fallback과 이동 overlay를 반영하지 않음 | 실제 현재 sprite crop·fallback 계약 완성 필요 |
+| 초기화 | 원 pool은 `_clearDeathDecals`의 기존 initStage/arena 정리 후에도 잔상1 잔류 | 기존 cleanup에 active/img 정리 연결. 모든 scene reset으로 일반화0 |
+| 수명·합성 | 원 consumer는 draw 경로에서 감쇠. pause/`_dtSp=0` 시 벽시계 만료 보장0; source-over는 상속 | fixed update 수명 및 local save/restore·source-over 정합 보완 필요 |
+| 최신 제작목표 값 | 20f / cap24 / scaleY1→0.8 / 아래6px / 기존 atlas만 | 이전10–14f·4~8px는 2026-10-01 설계 제안. 현재 목표는 후보값이며 생산 도입0 |
+
+검수는 실제 `_addCorpse`+원 pool/hook/draw의 메모리 연결1회다. 자연 hurtE·전체 renderer·픽셀·GL·native·성능 인수0. draft SHA 변경으로 축 실행 전1회 중단한 이력은 제품 실패로 계산하지 않는다. root의 corrected metadata/consumer 제작은 별도 다음 목표이며, 이 원패치 자체는 수정하지 않는다. 실제 증빙 `tmp/mac-migration-runtime/continued-review-20261003/root-deathfade-source11/receipt.json` SHA `415e5d2d8b3f552aec3ea31a1cf354539e71915ab020b65cd561430429320c4a`.

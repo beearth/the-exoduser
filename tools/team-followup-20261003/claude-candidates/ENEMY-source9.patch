@@ -1,0 +1,70 @@
+# ENEMY-source9.patch — §6a CH1 일반 8-dir 몹 사망 디졸브 스냅샷 helper (ENEMY 소유, candidate)
+# ANIMVFX 공동 §6a. ENEMY 소유 = 순수 _snapshotMobDeathFade(e) helper 1개만(표시 전용, side-effect 0).
+# source fixture/후보 patch ≠ 생산적용/native6/화면/청취 완료. root 소유 인수·checkpoint 후 다음 scope.
+#
+# ── 실측 SHA (actual, 새 측정) ─────────────────────────────────────────────
+# base SHA256:
+#   game.html           908102e7fdbf2b1d42ebb0f4e90476124bb8dbec8d22daa6babf3246def48525
+#   game-easy-test.html fba52654d8f316a1f54b48cdcb21dc251f4e9968f59eb031572c0ab71e845af7
+# candidate SHA256 (적용 후):
+#   game.html           7d305b327ee4e91fa714847ccebf7b3d5a1f4082c2062d1674c8d264c9080329
+#   game-easy-test.html d5ae5a0dc564945421be96e3c9553cc7049b0ea1a8c8817fdb7be359d447abfe
+# helper sha256 0702a35ab20d0f2fd3eb468a1d385cd2e5b4d0ad2f3d32490e8f4dbb10f1561d
+# helper 651 bytes · byteΔ +652/파일(651+\n) · anchorCount 1/파일 · inverse byte-exact TRUE (양판)
+# parse(acorn): classic(sloppy script = 승인 런타임) PASS 양판 (ce=null).
+#   module 모드는 기존 중복선언 _addHeadGib 로 fail — 원본에서도 동일, 본 helper와 무관.
+# (HEAD e11ed7d0…·이력 SHA는 참고. 위 base는 현재 원본 직접 측정값.)
+#
+# ── 렌더러 필드 계약 핀 (8-dir 라이브 draw: game.html 19081–19100 / easy 대응) ──
+#   gate     e._mob8dir && e._mobCh
+#   atlas    _ch8Atlas[e._mobCh].dirs[_mobFacingDir8(e.facing)].img
+#   cell     _ch8Atlas[e._mobCh].meta.cell
+#   crop     e._mob8Col*cell, e._mob8Row*cell, cell, cell      (idle 베이스 프레임)
+#   worldpos e.x, e.y   (anchor=center → dest 오프셋 -_bsz/2)
+#   size     _bsz = Math.max(e.r*3.5, 30)
+#   walk 오버레이(이동 중)는 _walkDist 시간파생 → 스냅샷은 idle 베이스 crop 고정, ANIM이 동일 resolver로 처리.
+#
+# ── ANIM 오더담당 짧은 inline 협의 ────────────────────────────────────────
+#   - helper 반환 plainobject: {img, sx, sy, sw, sh, x, y, w, h, anchorX:0.5, anchorY:0.5} (대상 아니면 null).
+#   - ANIM 소유: helper 소비 + 기존 _addCorpse hook 1 + visual runtime pool update+draw.
+#   - root dissolve 파라미터(ANIM pool 적용, helper 비관여): 20f / cap24 / scaleY 1→.8 / 아래 +6px / 기존 atlas만.
+#   - 두 팀 완료 대기 0. ANIM은 helper 결과가 null 아닐 때만 연결(helper>0 계약).
+#
+# ── 제외 대상 (null 반환) ──────────────────────────────────────────────────
+#   e.ib(보스) · e._isGhoul(구울) · e._isSlime · e.elite>0 · e.etype>=90(레어) · _isLargeMob(e)(별도 대형 deathFX).
+#   순수: e/P/G/보상/시체count/save 변경 0, 새 game-state 필드 0, 새 프레임큐/애셋생성 0.
+#   참조 심볼(_ch8Atlas/_mobFacingDir8/_isLargeMob/_mob8dir/_mob8Col) 양판 존재 확인. typeof 가드로 미정의 안전.
+#
+# ── 기존 완료 증빙 ID 체인 (인수만, 재검사 0) ─────────────────────────────
+#   hb1014(F06 identity) · CO-ENEMY-1810(windup dead-commit NOFIX) · 1817/1821(abort _swFire recipe de1e281f)
+#   · 1902(_enemyWindupRemaining — 현재 원본 소스에 이미 적용 확인됨, 본 patch 삽입점 직전 함수) · 1926(recover NOFIX)
+#
+# ── docs 동기화 목록 (root 반영, 본 patch 직접 편집 0) ────────────────────
+#   docs/5.1임펙트디자인/  — §6a 사망 디졸브: 8-dir idle 베이스 crop 스냅샷 + ANIM pool(20f/cap24/scaleY1→.8/+6px, 기존 atlas)
+#   docs/9적ai패턴디자인/ENEMY_AI_TEAM_MASTER.md — _snapshotMobDeathFade(순수·표시전용) 등록, 제외 분류(ib/ghoul/slime/rare/elite/large)
+#   docs/4.0케릭터스프라이트 디자인/ — _ch8Atlas/_mob8Col/_mob8Row/meta.cell 8-dir 필드 계약 참조
+#
+# ── 미검증 한계 ────────────────────────────────────────────────────────────
+#   자연 death 연출·UI·GL·성능·visual PASS 는 root 미검증. 후보 patch는 생산 적용/native6/화면/청취 완료 아님.
+#   적용: base SHA 일치 확인 후 git apply. 생산 통합·checkpoint·의미/docs/native6 = root Gate.
+#
+--- a/game.html
++++ b/game.html
+@@ -18980,6 +18980,7 @@
+ function radialProjs(e,count,spd,dmgMult,el,life,col,sz){count*=2;life=~~(life*1.5);const _fa=e.facing||Math.atan2(P.y-e.y,P.x-e.x);const _m=_eMouthXY(e,_fa);for(let i=0;i<count;i++){const a=Math.PI*2*i/count;const b=_beanRoll(el,col,sz,spd,dmgMult,e);_emitEnemyShot(e,{x:_m.x,y:_m.y,vx:Math.cos(a)*b.spd,vy:Math.sin(a)*b.spd,dmg:~~(e.atk*b.dmgM),el:b.el,friendly:false,life:b.blackBean?400:life,ml:b.blackBean?400:life,col:b.col,sz:b.sz,redBean:b.redBean,blackBean:b.blackBean,bwBean:b.bwBean,gbBean:b.gbBean,homing:b.homing,fireMagic:b.fireMagic,waterBean:b.waterBean})}}
+ function eProjAt(e,ang,spd,dmgMult,el,life,col,sz){life=~~(life*1.5);const b=e.s==='eShootWind'?{el,col:ELC[el]||col,sz,spd,dmgM:dmgMult}:_beanRoll(el,col,sz,spd,dmgMult,e);const _m=_eMouthXY(e,ang);_emitEnemyShot(e,{x:_m.x,y:_m.y,vx:Math.cos(ang)*b.spd,vy:Math.sin(ang)*b.spd,dmg:~~(e.atk*b.dmgM),el:b.el,friendly:false,life:b.blackBean?400:life,ml:b.blackBean?400:life,col:b.col,sz:b.sz,redBean:b.redBean,blackBean:b.blackBean,bwBean:b.bwBean,gbBean:b.gbBean,homing:b.homing,fireMagic:b.fireMagic,waterBean:b.waterBean,_closeBean:b._closeBean,_commit:true})}
+ function _enemyWindupRemaining(e){return (e&&!e.ib&&e.alive&&e.s==='windup'&&!(e.stunned>0)&&!(e._frozen>0)&&!(e._hitStun>0))?(Number.isFinite(e.st2)?Math.max(0,e.st2):0):0;}
++function _snapshotMobDeathFade(e){if(!e||!e.alive)return null;if(e.ib||e._isGhoul||e._isSlime||e.elite>0||e.etype>=90||(typeof _isLargeMob!=='undefined'&&_isLargeMob(e)))return null;if(!e._mob8dir||!e._mobCh||e._mob8Col===undefined||e._mob8Row===undefined)return null;const _a8=(typeof _ch8Atlas!=='undefined')?_ch8Atlas[e._mobCh]:null;if(!_a8||!_a8.meta||!_a8.dirs)return null;const _da8=_a8.dirs[_mobFacingDir8(e.facing)];if(!_da8||!_da8.ready||!_da8.img)return null;const _cell=_a8.meta.cell,_bsz=Math.max(e.r*3.5,30);return{img:_da8.img,sx:e._mob8Col*_cell,sy:e._mob8Row*_cell,sw:_cell,sh:_cell,x:e.x,y:e.y,w:_bsz,h:_bsz,anchorX:0.5,anchorY:0.5};}
+ function _cancelProjCharge(e){e._projChargeT=0;e._projChargeCol=null;e._projChargeBean=null;e._projChargeParryClass=null}
+ function _fireChargedProj(e){
+   const _aimAng=Math.atan2(P.y-e.y,P.x-e.x);
+--- a/game-easy-test.html
++++ b/game-easy-test.html
+@@ -18071,6 +18071,7 @@
+ function radialProjs(e,count,spd,dmgMult,el,life,col,sz){count*=2;life=~~(life*1.5);const _fa=e.facing||Math.atan2(P.y-e.y,P.x-e.x);const _m=_eMouthXY(e,_fa);for(let i=0;i<count;i++){const a=Math.PI*2*i/count;const b=_beanRoll(el,col,sz,spd,dmgMult,e);_emitEnemyShot(e,{x:_m.x,y:_m.y,vx:Math.cos(a)*b.spd,vy:Math.sin(a)*b.spd,dmg:~~(e.atk*b.dmgM),el:b.el,friendly:false,life:b.blackBean?400:life,ml:b.blackBean?400:life,col:b.col,sz:b.sz,redBean:b.redBean,blackBean:b.blackBean,bwBean:b.bwBean,gbBean:b.gbBean,homing:b.homing,fireMagic:b.fireMagic,waterBean:b.waterBean})}}
+ function eProjAt(e,ang,spd,dmgMult,el,life,col,sz){life=~~(life*1.5);const b=e.s==='eShootWind'?{el,col:ELC[el]||col,sz,spd,dmgM:dmgMult}:_beanRoll(el,col,sz,spd,dmgMult,e);const _m=_eMouthXY(e,ang);_emitEnemyShot(e,{x:_m.x,y:_m.y,vx:Math.cos(ang)*b.spd,vy:Math.sin(ang)*b.spd,dmg:~~(e.atk*b.dmgM),el:b.el,friendly:false,life:b.blackBean?400:life,ml:b.blackBean?400:life,col:b.col,sz:b.sz,redBean:b.redBean,blackBean:b.blackBean,bwBean:b.bwBean,gbBean:b.gbBean,homing:b.homing,fireMagic:b.fireMagic,waterBean:b.waterBean,_closeBean:b._closeBean,_commit:true})}
+ function _enemyWindupRemaining(e){return (e&&!e.ib&&e.alive&&e.s==='windup'&&!(e.stunned>0)&&!(e._frozen>0)&&!(e._hitStun>0))?(Number.isFinite(e.st2)?Math.max(0,e.st2):0):0;}
++function _snapshotMobDeathFade(e){if(!e||!e.alive)return null;if(e.ib||e._isGhoul||e._isSlime||e.elite>0||e.etype>=90||(typeof _isLargeMob!=='undefined'&&_isLargeMob(e)))return null;if(!e._mob8dir||!e._mobCh||e._mob8Col===undefined||e._mob8Row===undefined)return null;const _a8=(typeof _ch8Atlas!=='undefined')?_ch8Atlas[e._mobCh]:null;if(!_a8||!_a8.meta||!_a8.dirs)return null;const _da8=_a8.dirs[_mobFacingDir8(e.facing)];if(!_da8||!_da8.ready||!_da8.img)return null;const _cell=_a8.meta.cell,_bsz=Math.max(e.r*3.5,30);return{img:_da8.img,sx:e._mob8Col*_cell,sy:e._mob8Row*_cell,sw:_cell,sh:_cell,x:e.x,y:e.y,w:_bsz,h:_bsz,anchorX:0.5,anchorY:0.5};}
+ function _cancelProjCharge(e){e._projChargeT=0;e._projChargeCol=null;e._projChargeBean=null}
+ function _fireChargedProj(e){
+   const _aimAng=Math.atan2(P.y-e.y,P.x-e.x);
