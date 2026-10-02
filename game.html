@@ -46679,7 +46679,7 @@ function _renderSkillRow(sk,grid){
     }
 
     // 공용 (-) 처리: 레벨다운/취소/합체해제
-    function _skMinusClick(){
+    function _skMinusClick(){if(!d.isConnected||!grid.contains(d))return;
         if(!learned)return;
         const _unfuseAllNow=()=>{
           let _refundedSp=0;

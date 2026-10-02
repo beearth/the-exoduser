@@ -207,3 +207,23 @@ root가 명시 reviewOnly 설치/해제 후보23그룹을 실제 port·양쪽 mk
 ### 2026-10-02 D13 callback 경계 root 인수
 
 첫 callback의 clear()/배열 교체 뒤 두 번째 stale callback이 실행되는 두 반례를 root가 실제 후보 import로 독립 재현했다. callback마다 epoch·배열 identity를 재검사하고 drain 재진입을 막는 담당 최소 수정 후 두 반례는 callbacks 2→1이다. 담당 13+기존19 검사를 root도 재실행해 32 PASS를 확인했다. 전환 뒤 신규 등록 보존, 원 피해·RNG·기본 비활성은 유지한다. 생산 연결0, 자식 수치/cap/중첩/저장 계약 및 native 검수는 여전히 미결이다. 근거: outputs/team-review-20261002/four-candidate-acceptance/item-root-independent.json, item-root-callback13.json, item-root-adjacent19.json.
+
+### 2026-10-02 D13 데이터 공급 대표 경로 검수 인수 — 생산 미연결
+
+`continuous/ITEM`의 새 검수는 명시 신규 D13·일반 아이템·로드된 UI-13 missing binding의 **3입력 / 5경로 / 5주장 그룹 PASS, 최종 exit0·실패0**다. 검수 근거를 인수하며 생성·장착 효과·저장 스키마를 채택하지 않는다. 기존 callback32/caller22/data12+JSON1/D10/698 완료검사는 이번에 재실행하거나 새 수치에 합산하지 않았다.
+
+| 항목 / 적용 위치 | 정확한 검수 범위와 현재 상태 |
+|---|---|
+| 대표 source 경로 | `game.html`의 rollDrop(30760)→mkItem(15177)→worldItems→R pickupItem(15675)→INV.bag→equipItem(15571)→INV.equipped.belt→dbSave inv 식(3537)→메모리 JSON→dbRestore bag/equipped 대입(3615/3616)→binding 읽기 후보. 줄번호는 제출 당시 source snapshot 기준 |
+| 현재 공급 누락 | mkItem의 rarity>=5는 기존 UNIQUE_SPECIAL만 공급한다. UI-13/U-D13/uniqueRoll/_uTrapOffshoot 생성 및 rollDrop D13 선택 resolver·장착 D13 효과 소비는 미연결. rarity5/belt 또는 uniqueId만으로 D13 선택이나 새 생성 출처를 증명하지 못함 |
+| 신규 공급 제안 | 새 mkItem 반환 직후 world item 공개 전에 신뢰된 caller가 UI-13 / U-D13 / 번지는 뿌리의 띠 / belt와 이미 결정한 정수 rawPercent20~40을 명시 공급하는 계약 후보. 실제 caller 연결 완료가 아니며 mkItem factory는 합성 base 반환 대역 |
+| 검토 shape | `uniqueRoll:{version:1,effectId:'U-D13',stat:'_uTrapOffshoot',unit:'fraction',storedValue:0.30}`. rawPercent÷100으로 .20~.40, 대표값30→.30. raw·직접 stat 필드 중복 저장0이며 이 shape는 미채택 |
+| 실제 메모리 실행 | pickupItem/equipItem 전체 source 함수를 empty belt·강화 없음·crystal 이전 없음 조건으로 VM 실행. UI/음향/1×1 grid/recalcSt/save는 대역. 정상 drop 확률·필터·획득 UI와 mkItem/rollDrop 전체 실행은 없음 |
+| 저장·복원 경계 | dbSave 전체가 아니라 inv 식, dbRestore 전체가 아니라 bag/equipped 두 대입식만 실행하고 native JSON stringify/parse로 운반. adapter 이전 중첩 입력 보존과 JSON 이후 로드 객체 identity를 각각 확인; JSON 전후 동일 참조를 주장하지 않음 |
+| 5그룹 PASS | 생산 공급·소비 누락 확인 / 명시 factory·선택 후보의 기존 중첩값 보존 / 일반 아이템 source 동등 pass-through / loaded missing의 missing 유지·수리 및 fresh 추론0 / 제한된 복원·읽기의 생성·추가 metadata0 |
+| 활성 상태 | `schemaAdopted=false`, `enabled=false`, `runtimeReady=false`, `productionApplied=false`. 검토 consumer는 canonical 값 반환만 하며 실제 효과 소비가 아님 |
+| 미결 Gate | 데이터 공급 계약 인수 뒤 실제 caller·source lifecycle/payload·저장 공급·전투 소비 연결을 순차 검수. child 피해20~40%·반경150px·지속180f·원 시전당1의 구현, 전역 cap·겹침은 미결 |
+
+RNG throw guard 미발동과 restoreGeneration/RNG/repair0은 위 추출식·후보 경로에만 해당하며 실제 소켓/affix 마이그레이션 전체 RNG0 근거가 아니다. `fromStoredValue`는 원본 읽기만 했으며 import0, 완전 schema 감사나 생산 소비 완료가 아니다. 실제 DB/API·사용자 세이브·공유 STORAGE·브라우저·전투·시각·GPU·패키지 검수는 수행하지 않았다.
+
+검수 main snapshot SHA-256 `6c77ec6f571f4de9cb199a2ac425eb3f0450205bcf6f1d883ac8d13135ac4b43`; easy SHA-256 `c40ea16180305a3d0043d1c9dfa9091096820e589e537a893d5d28fff56528d0`는 보존 관측만이며 easy 경로 실행 근거가 아니다. 원문/대역/수치 근거: [담당 결과](../../tools/team-followup-20261002/continuous/ITEM/result.md), [evidence](../../tools/team-followup-20261002/continuous/ITEM/evidence.json). 이번 문서 보강은 기존 원문을 보존한 추가 기록이며 생산 적용0이다.

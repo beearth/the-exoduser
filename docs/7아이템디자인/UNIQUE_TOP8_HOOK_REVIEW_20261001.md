@@ -78,3 +78,19 @@ Node 후보 연결과 root 보강 회귀61PASS. 게임 생성/드롭/저장라�
 | 남은 게이트 | 실제 caller/clear 수명주기·D17 저장롤 공급·브라우저·적별 중첩 피해 검수. 효과·드롭·장착·경제·생산 적용 완료 아님 |
 
 원본 함수/literal SHA와 범위는 `d17-source-adapter-result.md`, root 근거는 `outputs/team-review-20261002/production-integration/item-root-check.json`에 기록했다.
+
+### 2026-10-02 D13 공급 경로 검토와 전투 훅 미연결
+
+D13의 데이터 공급 대표 경로를 실제 source 위치로 연결하고 메모리 후보를 검수했다. **새3입력 / 5경로 / 5주장 그룹 PASS**는 제한된 메모리 경로의 근거이며 기존 완료검사 반복·합산0이다. 실제 fresh 공급 resolver·binding 생성·장착 효과 소비는 생산에 연결하지 않았다.
+
+| ID / 항목 | 현재 검토 계약·한계 |
+|---|---|
+| UI-13 / U-D13 | 번지는 뿌리의 띠, slot belt, stat _uTrapOffshoot. rarity5/belt 및 uniqueId만으로 선택·fresh 출처를 판정하지 않음 |
+| 생성·값 후보 | 새 mkItem 반환 직후 공개 전 caller의 명시 선택과 결정된 정수20~40% 공급을 제안. rawPercent÷100의 fraction .20~.40(대표30→.30), uniqueRoll version1/U-D13/_uTrapOffshoot/fraction shape는 미채택. 신뢰된 caller 공급은 구현 완료가 아님 |
+| 실제 source 실행 | pickupItem/equipItem 전체 VM의 empty belt·강화/crystal 이전 없음 경로. mkItem factory·UI/음향/grid/recalc/save는 대역, rollDrop와 정상 드롭은 정적 추적만. dbSave inv 식·dbRestore 두 INV 대입식 및 메모리 JSON만 실행 |
+| missing/legacy | 로드된 UI-13 missing binding을 보충하거나 새 아이템으로 추론하지 않음. 저장/복원/장착 읽기에서 freshPort 호출·D13 생성·재롤0은 이 제한된 후보 경로의 검수 |
+| 전투 payload | child 피해는 원본 tick의20~40%, 반경150px, 지속180f, 원 시전당 최대1 child·child 재귀 생성 금지라는 기존 검토 설계를 유지. 이번에 child/DOT/death/clear를 변경하거나 해당 payload를 구현하지 않음 |
+| 미결 | 실제 source lifecycle/payload·caller 연결, 전역 cap·겹침, 브라우저·보스/연쇄·실전 성능 Gate. 공급 경로 PASS로 이 미결 상태를 해소하지 않음 |
+| 상태 | schemaAdopted=false / enabled=false / runtimeReady=false / productionApplied=false |
+
+기존 D13 callback 경계 root 인수와 이번 공급 후보 검수는 별도 근거다. source fixture PASS는 실제 DB·사용자 세이브·전투·시각·패키지 PASS가 아니다. 다음 순서는 총괄의 데이터 공급 계약 인수 뒤 lifecycle/payload의 실제 연결 검수다. [ITEM 상세 상태](ITEM_TEAM_MASTER.md), [이번 결과](../../tools/team-followup-20261002/continuous/ITEM/result.md), [source·대역 evidence](../../tools/team-followup-20261002/continuous/ITEM/evidence.json).

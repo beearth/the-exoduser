@@ -118,3 +118,23 @@
 | 무효 콜백 | 실제 grid 재생성으로 분리된 옛 callback 재호출은 추가 SP/악의 차감·저장·렌더·SFX0. 원래 이벤트 stopPropagation은 유지 |
 | 검증 | `tools/team-followup-20261002/root-integration/uiux-skill-lifetime-checks.mjs`: 현재 양판 실제 추출 함수2GREEN, guard 제거 메모리 음성대조2RED, 연결 첫 호출의 전체 효과 동일. 기존 팀 원자료는 byte 보존 |
 | 적용·한계 | 생산 코드 반영 완료. 일반 가시덫 카드 한 source fixture이며 native 입력·브라우저 자연도달·전체 렌더·compact/상세·minus/합체별 handler·P 교체·실제 저장/오디오·패드·시각은 미검수. UI 전체 완료나 runtime/visual PASS로 표시하지 않음 |
+
+
+### 2026-10-02 분리된 스킬 카드 minus 콜백 수명 — 생산 반영
+
+본편 `game.html:46682`와 easy `game-easy-test.html:45283`의 `_renderSkillRow._skMinusClick` 첫 문장에 `if(!d.isConnected||!grid.contains(d))return;`만 추가했다. 문서에 연결되고 현재 skillGrid에 속한 카드만 원래 레벨다운을 처리한다. 각 HTML은44바이트 삽입뿐이며 비용·레벨·그룹·슬롯·환불 및 다른 분기 원문은 보존했다.
+
+| 대상 / 경계 | 현행 환불식·관측 | 변경 여부 |
+|---|---|---|
+| 합체 단일 레벨다운 | `_gemC=(_bg.star)||_ids.length||1`, `_fLv=min(현재 멤버Lv)`, `_refundSp=_fuseUpSpCost(_fLv-1,_gemC)` | 기존 원문 유지 |
+| whirlDet 2성 Lv3→2 | `_skillUpSpCost(2)=1`, 기존 합체 기본1+(2−1)=2SP. 악의 환불0, 합체 상태/빈6슬롯/ULT_SLOT null/activeLMBSk whirlwind 유지 | 정상 첫 효과 동일 |
+| 비합체 단일 레벨다운 | 기존 `_skillUpSpCost(_curLv-1,false)` SP와 `_malCost(sk.upMat||0)` 악의 환불 분기 유지 | 이번 합체fixture의 검수 대상은 아님 |
+| 전체 리셋/합체 해제 | 기존 별도 환불·악의 미환불 계약 유지 | 실행·정책 변경0 |
+
+회전기폭 `whirlDet`(whirlwind·detonate, 실제2성)의 기존 합체 상태를 합성했다. 멤버Lv3/SP10/악의80에서 연결된 첫 minus는 두 멤버Lv2/SP12/악의80으로 원본과 전체 효과가 같다. 재생성으로 분리된 옛 minus wrapper를 직접 호출해도 추가 레벨/SP/악의/슬롯/저장/렌더/UI/SFX 효과0이다. 원래 `ev.stopPropagation()` 호출1회는 유지한다.
+
+적용 검증은 `tools/team-followup-20261002/root-integration/uiux-minus-lifetime-checks.mjs`다. 실제 생산 source2GREEN·guard를 제거한 메모리 음성대조2RED·연결 첫 호출 전체 효과 동등성2PASS, 새1시나리오4비교를 확인했다. 양판 inline JavaScript12개/importmap JSON2개 구문 PASS. 이전 역할 checks/plus/인벤토리 완료 검사는 재실행·합산0이며 기존 result/evidence/checks byte를 보존했다.
+
+실제 minus 함수·카드/합체 host 캡처·그룹/멤버 선택·환불 helper·grid clear/append와 wrapper를 추출했다. DOM/P/G·부분 renderer·UI/save/SFX는 대역이며 옛 callback 직접 호출은 합성 수명 반례다. 자연 더블클릭/native/gamepad/전체 렌더/compact·상세/다른 합체/리셋·합체 생성gate/P 교체·async reset/실제 저장/오디오 내부 RNG·청취/시각/실게임은 미검수다. source PASS를 runtime/visual/저장/청취 PASS로 계산하지 않는다.
+
+원본2HTML 및 전후SHA·검수 receipt는 `tmp/mac-migration-runtime/continued-review-20261002/uiux-minus-backup/`에 보존한다. 기존 plus 수명 인수의 minus 미검수 표기는 당시 경계이며 위 합체 minus 한 경계만 이번에 별도 생산 인수했다.

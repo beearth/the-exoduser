@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "recordedAt": "2026-10-02T05:30:36.221977+00:00",
+  "recordedAt": "2026-10-02T05:39:22.883777+00:00",
   "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
   "currentExecutionHost": "Mac/local",
   "remoteModeClarificationPending": true,
-  "rolesIncludingCoordinator": 16,
+  "rolesIncludingCoordinator": 17,
   "providersIncludingCoordinator": {
-    "Codex": 8,
+    "Codex": 9,
     "Claude Code": 8
   },
   "productionBaselineCommit": "7e69495046323b3120578f67635c20feb48b2a4f",
@@ -19,7 +19,8 @@
     "intervalMinutes": 1,
     "targetThreadId": "01a0faa9-b453-7673-be39-98adedb4c2b3",
     "tomlVerified": true,
-    "notificationPolicy": null
+    "notificationPolicy": null,
+    "role": "root production integration and supervisor follow-up; no duplicate specialist dispatch"
   },
   "bossCorrection": {
     "status": "completed_receipt_accepted",
@@ -31,8 +32,8 @@
     "canonical19To35ReplacementWithdrawn": true
   },
   "sourcePins": {
-    "game.html": "6c77ec6f571f4de9cb199a2ac425eb3f0450205bcf6f1d883ac8d13135ac4b43",
-    "game-easy-test.html": "c40ea16180305a3d0043d1c9dfa9091096820e589e537a893d5d28fff56528d0",
+    "game.html": "2e45ee0e9ad909b378bf1a7b864818ce442a4c3e17b12360b42e363dc7d0bd94",
+    "game-easy-test.html": "3e5969ca139497c2efb312dc720ab53eb42a8d1912c8288caa2ce858cfd5120a",
     "node-main.js": "541ff8e6f57db862ddbb1b148ee37a3a8e0da1e16293bc8343a0bc4144d80daf",
     "test/nodeMainMats.test.js": "08fb8730fed0865447aefa13c8721d29daa59016a3fec945687cf8181d5b3797"
   },
@@ -46,7 +47,7 @@
       "taskPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/UIUX/TASK.md",
       "taskSha256": "d2959681e96aa6cb6cb8ea5d177c3c03537d262ee20827e0e3bb1512ff0ed483",
       "subject": "분리된 minus 콜백의 합체 환불 수명",
-      "status": "read_confirmed_in_progress",
+      "status": "completed_root_production_integration",
       "previousTaskCompleted": true,
       "received": {
         "startedAt": "2026-10-02T05:24:34.000Z",
@@ -57,7 +58,15 @@
         "readCommandId": "exec-1f503f52-25eb-4c69-9b7b-a34db8acbb68",
         "readCommandExit": 0
       },
-      "readObservedAt": "2026-10-02T05:28:16.669Z"
+      "readObservedAt": "2026-10-02T05:28:16.669Z",
+      "completion": {
+        "sourceRed": 2,
+        "memoryCandidateGreen": 2,
+        "currentProductionGreen": 2,
+        "negativeControlRed": 2,
+        "linkedFirstEffectsEqual": 2,
+        "rootReceiptPending": true
+      }
     },
     {
       "role": "ITEM",
@@ -68,7 +77,7 @@
       "taskPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/ITEM/NEXT.md",
       "taskSha256": "6a040887151c3e719f7315c0470860553ded83b6cbf0229ae5fb34fbd0fa2fc2",
       "subject": "D13 parent lifecycle・child payload 접점",
-      "status": "next_prepared_not_sent",
+      "status": "next_sent_read_pending",
       "previousTaskCompleted": true,
       "received": null,
       "read": null,
@@ -202,12 +211,38 @@
       "taskPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/ART/TASK.md",
       "taskSha256": "43a5e3c5f07e084fd712333bf7c6804271b19eb717c3167464168d7879ab5e32",
       "subject": "COVER 이미지 오류·배경 fallback",
-      "status": "delivery_blocked_native_input",
+      "status": "read_confirmed_in_progress",
       "previousTaskCompleted": true,
-      "received": null,
-      "read": null,
-      "readObservedAt": "2026-10-02T05:28:16.619Z",
-      "lastReadReceiptStatus": "not_received"
+      "received": {
+        "eventUuid": "6302fcea-63ed-49c2-befb-72632c85b307",
+        "timestamp": "2026-10-02T05:34:52.235Z",
+        "model": null,
+        "status": "received",
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/ART/TASK.md",
+        "receiptKind": "peer_local_inbox"
+      },
+      "read": {
+        "toolUse": {
+          "eventUuid": "1e8dc86c-0422-4da1-a87f-455357bb9cf8",
+          "timestamp": "2026-10-02T05:34:55.285Z",
+          "model": "claude-opus-4-8",
+          "toolUseId": "toolu_01Gj1iDZHTxnCB2SSXUiTvfE",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/ART/TASK.md"
+        },
+        "toolResult": {
+          "eventUuid": "7511da4d-bb99-4975-bf6f-41a47656c5bc",
+          "timestamp": "2026-10-02T05:34:55.319Z",
+          "model": null,
+          "toolUseId": "toolu_01Gj1iDZHTxnCB2SSXUiTvfE",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/ART/TASK.md",
+          "status": "succeeded",
+          "isError": false,
+          "isErrorFieldPresent": false,
+          "structuredReadPathMatched": true
+        }
+      },
+      "readObservedAt": "2026-10-02T05:38:34.979Z",
+      "deliveryMethod": "official_existing_local_inbox"
     },
     {
       "role": "MAP",
@@ -218,12 +253,38 @@
       "taskPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/MAP/TASK.md",
       "taskSha256": "51906f007825caaff15cfff1b2d02360f30012015d98d7efc8c2780030bc53e6",
       "subject": "easy CH1-1 hook 차이와 LOCK 인계",
-      "status": "prepared_not_sent_native_input_blocked",
+      "status": "read_confirmed_in_progress",
       "previousTaskCompleted": true,
-      "received": null,
-      "read": null,
-      "readObservedAt": "2026-10-02T05:28:16.619Z",
-      "lastReadReceiptStatus": "not_received"
+      "received": {
+        "eventUuid": "bfb3ef0f-783c-48dd-8106-9bf3342e586e",
+        "timestamp": "2026-10-02T05:36:40.718Z",
+        "model": null,
+        "status": "received",
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/MAP/TASK.md",
+        "receiptKind": "peer_local_inbox"
+      },
+      "read": {
+        "toolUse": {
+          "eventUuid": "b46ddb39-8059-4b95-9c1c-7c660746c1dc",
+          "timestamp": "2026-10-02T05:36:45.637Z",
+          "model": "claude-opus-4-8",
+          "toolUseId": "toolu_017dKrt4Xz7sYnG175CdeEiw",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/MAP/TASK.md"
+        },
+        "toolResult": {
+          "eventUuid": "dba98a26-36a3-4844-b99b-5e7f7cdd1598",
+          "timestamp": "2026-10-02T05:36:45.661Z",
+          "model": null,
+          "toolUseId": "toolu_017dKrt4Xz7sYnG175CdeEiw",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/MAP/TASK.md",
+          "status": "succeeded",
+          "isError": false,
+          "isErrorFieldPresent": false,
+          "structuredReadPathMatched": true
+        }
+      },
+      "readObservedAt": "2026-10-02T05:38:34.979Z",
+      "deliveryMethod": "official_existing_local_inbox"
     },
     {
       "role": "SKILL",
@@ -234,12 +295,38 @@
       "taskPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/SKILL/TASK.md",
       "taskSha256": "102cf28ea8a2b4315771f2bd8c5d7587307731cc7a993b0a6abec4c746350b5d",
       "subject": "blur 시 박격포 취소·자원 차감 대조",
-      "status": "prepared_not_sent_native_input_blocked",
+      "status": "read_confirmed_in_progress",
       "previousTaskCompleted": true,
-      "received": null,
-      "read": null,
-      "readObservedAt": "2026-10-02T05:28:16.619Z",
-      "lastReadReceiptStatus": "not_received"
+      "received": {
+        "eventUuid": "95213f5d-5e9a-4501-bf54-773eac9cd06b",
+        "timestamp": "2026-10-02T05:36:40.736Z",
+        "model": null,
+        "status": "received",
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/SKILL/TASK.md",
+        "receiptKind": "peer_local_inbox"
+      },
+      "read": {
+        "toolUse": {
+          "eventUuid": "4d0dd65a-e9b3-4125-ae1f-c0449114e68d",
+          "timestamp": "2026-10-02T05:36:43.850Z",
+          "model": "claude-opus-4-8",
+          "toolUseId": "toolu_01P8nLstqA6m531LqWiHjRYS",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/SKILL/TASK.md"
+        },
+        "toolResult": {
+          "eventUuid": "25760a43-1b4e-4e01-ac20-6da2c5fcb589",
+          "timestamp": "2026-10-02T05:36:43.870Z",
+          "model": null,
+          "toolUseId": "toolu_01P8nLstqA6m531LqWiHjRYS",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/SKILL/TASK.md",
+          "status": "succeeded",
+          "isError": false,
+          "isErrorFieldPresent": false,
+          "structuredReadPathMatched": true
+        }
+      },
+      "readObservedAt": "2026-10-02T05:38:34.979Z",
+      "deliveryMethod": "official_existing_local_inbox"
     },
     {
       "role": "QA",
@@ -250,12 +337,38 @@
       "taskPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/QA/TASK.md",
       "taskSha256": "7724e1e0f6732b5284862c832dfea8188b1a7d240db6996826329ac5ac02afca",
       "subject": "descriptor 설치/rollback 실패 경계",
-      "status": "prepared_not_sent_native_input_blocked",
+      "status": "read_confirmed_in_progress",
       "previousTaskCompleted": true,
-      "received": null,
-      "read": null,
-      "readObservedAt": "2026-10-02T05:28:16.619Z",
-      "lastReadReceiptStatus": "not_received"
+      "received": {
+        "eventUuid": "ccc20819-8274-453e-97eb-93d5dd1d93f4",
+        "timestamp": "2026-10-02T05:36:40.748Z",
+        "model": null,
+        "status": "received",
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/QA/TASK.md",
+        "receiptKind": "peer_local_inbox"
+      },
+      "read": {
+        "toolUse": {
+          "eventUuid": "0d4f6a70-065d-440a-8488-80784cf303eb",
+          "timestamp": "2026-10-02T05:36:43.762Z",
+          "model": "claude-opus-4-8",
+          "toolUseId": "toolu_01S8CUUB9yRLCPJR4rEGSp3u",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/QA/TASK.md"
+        },
+        "toolResult": {
+          "eventUuid": "f84b8cf0-5d28-4889-a020-edef8b25fb3b",
+          "timestamp": "2026-10-02T05:36:43.791Z",
+          "model": null,
+          "toolUseId": "toolu_01S8CUUB9yRLCPJR4rEGSp3u",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/QA/TASK.md",
+          "status": "succeeded",
+          "isError": false,
+          "isErrorFieldPresent": false,
+          "structuredReadPathMatched": true
+        }
+      },
+      "readObservedAt": "2026-10-02T05:38:34.979Z",
+      "deliveryMethod": "official_existing_local_inbox"
     },
     {
       "role": "ENEMY",
@@ -266,12 +379,38 @@
       "taskPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/ENEMY/TASK.md",
       "taskSha256": "40f09e5b8c5302c034cd51de9837332af8528b499d2a9f531eb8227fed29dd40",
       "subject": "burstCounter idx60 CD 만료 경로",
-      "status": "prepared_not_sent_native_input_blocked",
+      "status": "read_confirmed_in_progress",
       "previousTaskCompleted": true,
-      "received": null,
-      "read": null,
-      "readObservedAt": "2026-10-02T05:28:16.619Z",
-      "lastReadReceiptStatus": "not_received"
+      "received": {
+        "eventUuid": "cac0156d-b4b2-4caa-99dc-f53b72aefc47",
+        "timestamp": "2026-10-02T05:36:40.763Z",
+        "model": null,
+        "status": "received",
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/ENEMY/TASK.md",
+        "receiptKind": "peer_local_inbox"
+      },
+      "read": {
+        "toolUse": {
+          "eventUuid": "05c12bba-abb4-491f-920f-edeab4b47b1a",
+          "timestamp": "2026-10-02T05:36:44.389Z",
+          "model": "claude-opus-4-8",
+          "toolUseId": "toolu_017xmjRxZbboaiYk6F7eHjCc",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/ENEMY/TASK.md"
+        },
+        "toolResult": {
+          "eventUuid": "89013729-bf55-43f2-a7dc-9c650c4d22ef",
+          "timestamp": "2026-10-02T05:36:44.407Z",
+          "model": null,
+          "toolUseId": "toolu_017xmjRxZbboaiYk6F7eHjCc",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/ENEMY/TASK.md",
+          "status": "succeeded",
+          "isError": false,
+          "isErrorFieldPresent": false,
+          "structuredReadPathMatched": true
+        }
+      },
+      "readObservedAt": "2026-10-02T05:38:34.979Z",
+      "deliveryMethod": "official_existing_local_inbox"
     },
     {
       "role": "ANIMVFX",
@@ -282,12 +421,38 @@
       "taskPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/ANIMVFX/TASK.md",
       "taskSha256": "3b09e3617860e2c9b667cd0072263b5ae1ec4793b76e6024091877d40f477a61",
       "subject": "실제 queue/draw 잔류와 부분 실패",
-      "status": "prepared_not_sent_native_input_blocked",
+      "status": "read_confirmed_in_progress",
       "previousTaskCompleted": true,
-      "received": null,
-      "read": null,
-      "readObservedAt": "2026-10-02T05:28:16.619Z",
-      "lastReadReceiptStatus": "not_received"
+      "received": {
+        "eventUuid": "a7c0ed2b-ffef-4703-a8dd-19a117611fca",
+        "timestamp": "2026-10-02T05:36:40.809Z",
+        "model": null,
+        "status": "received",
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/ANIMVFX/TASK.md",
+        "receiptKind": "peer_local_inbox"
+      },
+      "read": {
+        "toolUse": {
+          "eventUuid": "4369bfa2-6005-459d-9229-2fc620149880",
+          "timestamp": "2026-10-02T05:36:47.867Z",
+          "model": "claude-opus-4-8",
+          "toolUseId": "toolu_01DjcjmcJEL6zdffYpAVwDua",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/ANIMVFX/TASK.md"
+        },
+        "toolResult": {
+          "eventUuid": "8db727f1-c4ff-4e44-a453-666a8a58059e",
+          "timestamp": "2026-10-02T05:36:47.878Z",
+          "model": null,
+          "toolUseId": "toolu_01DjcjmcJEL6zdffYpAVwDua",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/ANIMVFX/TASK.md",
+          "status": "succeeded",
+          "isError": false,
+          "isErrorFieldPresent": false,
+          "structuredReadPathMatched": true
+        }
+      },
+      "readObservedAt": "2026-10-02T05:38:34.979Z",
+      "deliveryMethod": "official_existing_local_inbox"
     },
     {
       "role": "BOSS",
@@ -298,12 +463,38 @@
       "taskPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/BOSS/NEXT.md",
       "taskSha256": "3e5ea6d83fde678539602f5a41fe8e7c2a303054aac6df4fb2eae956d32a63cf",
       "subject": "설계19와 구현35 별도 대응표",
-      "status": "prepared_not_sent_native_input_blocked",
+      "status": "read_confirmed_in_progress",
       "previousTaskCompleted": true,
-      "received": null,
-      "read": null,
-      "readObservedAt": "2026-10-02T05:28:16.619Z",
-      "lastReadReceiptStatus": "not_received"
+      "received": {
+        "eventUuid": "05a15dcc-31ae-4dc1-9ac0-131c9d0d1734",
+        "timestamp": "2026-10-02T05:36:40.803Z",
+        "model": null,
+        "status": "received",
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/BOSS/NEXT.md",
+        "receiptKind": "peer_local_inbox"
+      },
+      "read": {
+        "toolUse": {
+          "eventUuid": "9df049b7-cdf9-49c0-88c9-5b8b41c31e4a",
+          "timestamp": "2026-10-02T05:36:44.203Z",
+          "model": "claude-opus-4-8",
+          "toolUseId": "toolu_01Gc6taRcjrK1A8w9Te6V4Kv",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/BOSS/NEXT.md"
+        },
+        "toolResult": {
+          "eventUuid": "9d3bdea0-e5e6-4866-b247-5d6217437028",
+          "timestamp": "2026-10-02T05:36:44.242Z",
+          "model": null,
+          "toolUseId": "toolu_01Gc6taRcjrK1A8w9Te6V4Kv",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/BOSS/NEXT.md",
+          "status": "succeeded",
+          "isError": false,
+          "isErrorFieldPresent": false,
+          "structuredReadPathMatched": true
+        }
+      },
+      "readObservedAt": "2026-10-02T05:38:34.979Z",
+      "deliveryMethod": "official_existing_local_inbox"
     },
     {
       "role": "STORY",
@@ -314,12 +505,38 @@
       "taskPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/STORY/TASK.md",
       "taskSha256": "3d66b435145ae6f918688542a8d1fd4fce347ed90420b0e082fc3b2d6ca4b451",
       "subject": "CIN 타이밍·locale·skip 실제 source",
-      "status": "prepared_not_sent_native_input_blocked",
+      "status": "read_confirmed_in_progress",
       "previousTaskCompleted": true,
-      "received": null,
-      "read": null,
-      "readObservedAt": "2026-10-02T05:28:16.619Z",
-      "lastReadReceiptStatus": "not_received"
+      "received": {
+        "eventUuid": "1c19513b-109b-401a-ad98-98a2e8f89718",
+        "timestamp": "2026-10-02T05:36:40.856Z",
+        "model": null,
+        "status": "received",
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/STORY/TASK.md",
+        "receiptKind": "peer_local_inbox"
+      },
+      "read": {
+        "toolUse": {
+          "eventUuid": "b5e5e7f0-8174-452e-a20c-6a2049462ca3",
+          "timestamp": "2026-10-02T05:36:44.403Z",
+          "model": "claude-opus-4-8",
+          "toolUseId": "toolu_01715kLYdC7xsS9KH7PqX9eh",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/STORY/TASK.md"
+        },
+        "toolResult": {
+          "eventUuid": "654539cf-2f5e-4016-86bb-e65a7e7ca98f",
+          "timestamp": "2026-10-02T05:36:44.420Z",
+          "model": null,
+          "toolUseId": "toolu_01715kLYdC7xsS9KH7PqX9eh",
+          "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/STORY/TASK.md",
+          "status": "succeeded",
+          "isError": false,
+          "isErrorFieldPresent": false,
+          "structuredReadPathMatched": true
+        }
+      },
+      "readObservedAt": "2026-10-02T05:38:34.979Z",
+      "deliveryMethod": "official_existing_local_inbox"
     }
   ],
   "completionMeans": "Assignment delivery and actual Read receipts are distinct from completion; source fixture PASS is not runtime/visual/audio/package acceptance.",
@@ -329,11 +546,28 @@
     "actualNewTaskReceived": 0,
     "typedAttemptRole": "ART",
     "reason": "AX focus/keyboard events do not show actual native message receipt; user ART click requested",
-    "userActionQuestionPending": true,
-    "automaticApprovalRejected": false
+    "userActionQuestionPending": false,
+    "automaticApprovalRejected": false,
+    "resolvedAt": "2026-10-02T05:38:34.979Z",
+    "resolution": "Official existing local inbox; all8 exactTASK Read succeeded. UI input no longer needed for dispatch."
   },
   "phase2ReadCounts": {
     "codex": 7,
-    "claude": 0
+    "claude": 8
+  },
+  "specialistsUnchanged": 15,
+  "supervisor": {
+    "threadId": "01a0fb1e-4ec3-7dd3-bba2-f87518e881fa",
+    "hostId": "local",
+    "title": "EXODUSER 작업감독",
+    "status": "active_task_read_confirmed",
+    "taskReadCommandId": "exec-d2e63778-c0ee-4c20-a882-01574c2ca6f6",
+    "taskReadExit": 0,
+    "heartbeatId": "exoduser",
+    "heartbeatStatus": "ACTIVE",
+    "heartbeatMinutes": 1,
+    "tomlVerified": true,
+    "ownsSpecialistDispatch": true,
+    "latestOperationalState": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/supervisor/SUPERVISOR_STATE.json"
   }
 }

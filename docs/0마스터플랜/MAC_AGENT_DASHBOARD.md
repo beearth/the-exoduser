@@ -178,3 +178,8 @@ root는 양판 `_skClick` 카드 연결 수명 guard(생산2GREEN/guard제거 �
 ## 연속 후속 배정 준비 — 2026-10-02
 
 이전 전문15팀 완료를 인수하고 다음 각1건을 `mac-resume-20261001/vscode-dispatch/CONTINUOUS-DISPATCH-20261002.md` 및 JSON에 고정했다. 생산2오류 수정·docs는7e694950 commit/원격 SHA 확인 완료. 새 TASK는 전달 전 checkpoint 대상이며 실제 수신/Read는 이 registry에 갱신한다. BOSS 영수증 정정 완료·설계19/구현35 구분 유지. 실행은 Mac/local, 현재 채팅 heartbeat ACTIVE1분으로 완료→검토→피드백/다음 배정을 이어간다.
+
+
+## 최신 사용자 지시: 별도 작업감독 추가 — 2026-10-02
+
+EXODUSER 작업감독 `01a0fb1e-4ec3-7dd3-bba2-f87518e881fa` 생성·TASK Read exit0·active 확인. 총괄+감독2/Codex전문7/Claude전문8=17역할(Codex9/Claude8)이며 이전8+8은 이력이다. 전문팀 완료인수/피드백/다음지시의단일담당은감독, production/docs동기화/Git는원총괄이다. 최신운영기록은 supervisor/SUPERVISOR_STATE.json·LOG, 중앙CONTINUOUS-DISPATCH는인수snapshot이다. Claude8새지시 실제peer수신→정확TASK Read성공을05:38:34Z에확인했다. 공식기존local inbox를사용해화면입력대기를해소했으며새세션/resume/권한변경0이다. 감독heartbeat exoduser·원총괄 exoduser-mac 각각ACTIVE1분·target actualTOML확인, 중복전문팀송신0이다.

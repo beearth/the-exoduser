@@ -2,12 +2,12 @@
   "recordedAt": "2026-10-02T04:32:39.602689+00:00",
   "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
   "latestUserRequest": "완료 보고/알림 후 같은 실행에서 피드백과 다음 업무; 지속 진행",
-  "plannedTotalRoles": 16,
-  "coordinatorRoles": 1,
+  "plannedTotalRoles": 17,
+  "coordinatorRoles": 2,
   "specialistRoles": 15,
   "plannedProviderCounts": {
     "Claude Code": 8,
-    "Codex": 8
+    "Codex": 9
   },
   "claudeRoles": [
     "ART",
@@ -21,6 +21,7 @@
   ],
   "codexRoles": [
     "ROOT",
+    "SUPERVISOR",
     "UIUX",
     "ITEM",
     "BUILD",
@@ -29,7 +30,7 @@
     "QUESTNPC",
     "MARKETING"
   ],
-  "roleCountMeaning": "Codex coordinator plus seven specialists; eight Claude specialists in Terminal14-21. Eight duplicate Codex chats archived recoverably; historical snapshots retained.",
+  "roleCountMeaning": "latest user added one separate supervisor: two coordinators plus15 specialists; Codex9/Claude8. Old8/8 snapshots historical.",
   "nativeSix": {
     "schemaVersion": 1,
     "projectPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
@@ -857,7 +858,7 @@
     "newAutomation": 0
   },
   "completionBoundary": "Dispatch/Read and actual source outputs are separate; production/runtime/visual/listening acceptance remains pending.",
-  "latestObservedAt": "2026-10-02T05:30:36.221977+00:00",
+  "latestObservedAt": "2026-10-02T05:39:22.883777+00:00",
   "codexExecutionReadReceipts": {
     "schemaVersion": 1,
     "observedAtUTC": "2026-10-02T04:36:28Z",
@@ -2025,7 +2026,7 @@
   },
   "managementChatsTotalCreated": 15,
   "activeCodexSpecialistChats": 7,
-  "activeCodexRolesIncludingCoordinator": 8,
+  "activeCodexRolesIncludingCoordinator": 9,
   "archivedDuplicateCodexChats": {
     "recordedAt": "2026-10-02T04:42:07.671Z",
     "archived": 8,
@@ -2321,12 +2322,26 @@
   },
   "currentContinuousDispatch": {
     "registryPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/CONTINUOUS-DISPATCH-20261002.json",
-    "status": "codex7_read_confirmed_claude_native_input_blocked",
+    "status": "all15_task_read_confirmed_supervisor_dispatch_owner",
     "roles": 15,
     "actualPhase2ReadCounts": {
       "Codex": 7,
-      "Claude Code": 0
+      "Claude Code": 8
     },
-    "recordedAt": "2026-10-02T05:30:36.221977+00:00"
+    "recordedAt": "2026-10-02T05:39:22.883777+00:00"
+  },
+  "supervisor": {
+    "threadId": "01a0fb1e-4ec3-7dd3-bba2-f87518e881fa",
+    "hostId": "local",
+    "title": "EXODUSER 작업감독",
+    "status": "active_task_read_confirmed",
+    "taskReadCommandId": "exec-d2e63778-c0ee-4c20-a882-01574c2ca6f6",
+    "taskReadExit": 0,
+    "heartbeatId": "exoduser",
+    "heartbeatStatus": "ACTIVE",
+    "heartbeatMinutes": 1,
+    "tomlVerified": true,
+    "ownsSpecialistDispatch": true,
+    "latestOperationalState": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/supervisor/SUPERVISOR_STATE.json"
   }
 }

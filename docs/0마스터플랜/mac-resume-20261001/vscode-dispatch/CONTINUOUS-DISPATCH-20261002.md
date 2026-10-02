@@ -8,21 +8,21 @@ BOSS 영수증 정정은 실제 Read와 end_turn을 확인했다. 소유 밖11�
 
 | 역할 | 제공자 | 다음 한 건 | TASK | 현재 상태 |
 |---|---|---|---|---|
-| UIUX | Codex | 분리된 minus 콜백의 합체 환불 수명 | `tools/team-followup-20261002/continuous/UIUX/TASK.md` | read_confirmed_in_progress |
-| ITEM | Codex | D13 parent lifecycle・child payload 접점 | `tools/team-followup-20261002/continuous/ITEM/NEXT.md` | next_prepared_not_sent |
+| UIUX | Codex | 분리된 minus 콜백의 합체 환불 수명 | `tools/team-followup-20261002/continuous/UIUX/TASK.md` | completed_root_production_integration |
+| ITEM | Codex | D13 parent lifecycle・child payload 접점 | `tools/team-followup-20261002/continuous/ITEM/NEXT.md` | next_sent_read_pending |
 | BUILD | Codex | 기존 앱과 최신 source 차이·새 빌드 계획 | `tools/team-followup-20261002/continuous/BUILD/TASK.md` | read_confirmed_in_progress |
 | BALANCE | Codex | POST 본문 중간 abort/error 응답 수명 | `tools/team-followup-20261002/continuous/BALANCE/TASK.md` | read_confirmed_in_progress |
 | SOUND | Codex | ghost_laugh 실제 backend 포화 경계 | `tools/team-followup-20261002/continuous/SOUND/TASK.md` | read_confirmed_in_progress |
 | QUESTNPC | Codex | firstItem 대사 성공·거절·취소 수명 | `tools/team-followup-20261002/continuous/QUESTNPC/TASK.md` | read_confirmed_in_progress |
 | MARKETING | Codex | Steam 주장과 코드/출시 빌드 근거 대응 | `tools/team-followup-20261002/continuous/MARKETING/TASK.md` | read_confirmed_in_progress |
-| ART | Claude Code | COVER 이미지 오류·배경 fallback | `tools/team-followup-20261002/continuous/ART/TASK.md` | delivery_blocked_native_input |
-| MAP | Claude Code | easy CH1-1 hook 차이와 LOCK 인계 | `tools/team-followup-20261002/continuous/MAP/TASK.md` | prepared_not_sent_native_input_blocked |
-| SKILL | Claude Code | blur 시 박격포 취소·자원 차감 대조 | `tools/team-followup-20261002/continuous/SKILL/TASK.md` | prepared_not_sent_native_input_blocked |
-| QA | Claude Code | descriptor 설치/rollback 실패 경계 | `tools/team-followup-20261002/continuous/QA/TASK.md` | prepared_not_sent_native_input_blocked |
-| ENEMY | Claude Code | burstCounter idx60 CD 만료 경로 | `tools/team-followup-20261002/continuous/ENEMY/TASK.md` | prepared_not_sent_native_input_blocked |
-| ANIMVFX | Claude Code | 실제 queue/draw 잔류와 부분 실패 | `tools/team-followup-20261002/continuous/ANIMVFX/TASK.md` | prepared_not_sent_native_input_blocked |
-| BOSS | Claude Code | 설계19와 구현35 별도 대응표 | `tools/team-followup-20261002/continuous/BOSS/NEXT.md` | prepared_not_sent_native_input_blocked |
-| STORY | Claude Code | CIN 타이밍·locale·skip 실제 source | `tools/team-followup-20261002/continuous/STORY/TASK.md` | prepared_not_sent_native_input_blocked |
+| ART | Claude Code | COVER 이미지 오류·배경 fallback | `tools/team-followup-20261002/continuous/ART/TASK.md` | read_confirmed_in_progress |
+| MAP | Claude Code | easy CH1-1 hook 차이와 LOCK 인계 | `tools/team-followup-20261002/continuous/MAP/TASK.md` | read_confirmed_in_progress |
+| SKILL | Claude Code | blur 시 박격포 취소·자원 차감 대조 | `tools/team-followup-20261002/continuous/SKILL/TASK.md` | read_confirmed_in_progress |
+| QA | Claude Code | descriptor 설치/rollback 실패 경계 | `tools/team-followup-20261002/continuous/QA/TASK.md` | read_confirmed_in_progress |
+| ENEMY | Claude Code | burstCounter idx60 CD 만료 경로 | `tools/team-followup-20261002/continuous/ENEMY/TASK.md` | read_confirmed_in_progress |
+| ANIMVFX | Claude Code | 실제 queue/draw 잔류와 부분 실패 | `tools/team-followup-20261002/continuous/ANIMVFX/TASK.md` | read_confirmed_in_progress |
+| BOSS | Claude Code | 설계19와 구현35 별도 대응표 | `tools/team-followup-20261002/continuous/BOSS/NEXT.md` | read_confirmed_in_progress |
+| STORY | Claude Code | CIN 타이밍·locale·skip 실제 source | `tools/team-followup-20261002/continuous/STORY/TASK.md` | read_confirmed_in_progress |
 
 현재 채팅 heartbeat `exoduser-mac` ACTIVE1분·기본 알림을 actual TOML로 확인했다. 새 완료만 보고하고 같은 실행에서 근거 검토→피드백 또는 다음 한 건→실제 Read를 확인한다. 상태 변화가 없을 때 중복 알림/재실행0. PC 기존5분 자동화는 유지한다. 즉시 무지연을 보장하는 이벤트 연결은 아니다.
 
@@ -34,3 +34,11 @@ BOSS 영수증 정정은 실제 Read와 end_turn을 확인했다. 소유 밖11�
 실제 후속 Read 확인: Codex7명령 exit0. Claude8의 새TASK/NEXT 수신은0(기존 초기8완료와 구분). ART 입력시도는 JSONL 수신이 없어 시작으로 계산하지 않았다. AX초점 표시는 되지만 keyboard 전달이 확인되지 않아 사용자 ART입력칸 클릭 응답 대기. 새 세션/중복 resume/원세션 재시작0.
 
 ITEM 새 공급 경로 검수3입력/5그룹 PASS를 같은 실행에서 인수했다. actual D13 공급·효과연결0/플래그false를 보존하고 기존3파일을 유지하며 NEXT.md의 lifecycle 하위폴더 한 건을 준비했다.
+
+## 감독 추가·Claude 실제 착수 확인
+
+최신 사용자 지시에 따라 EXODUSER 작업감독(`01a0fb1e-4ec3-7dd3-bba2-f87518e881fa`)을 추가했고 TASK 실제Read(exit0)·active를 확인했다. 총괄+감독2/Codex전문7/Claude전문8=17역할(Codex9/Claude8), 이전8+8표는 감독추가전 이력이다. 이후 전문팀 업무전달/완료후feedback는 감독STATE/LOG가최신운영기록, 총괄은생산통합/Git전담이다.
+
+05:38:34Z Claude8 모두 기존 UUID를 유지한 local inbox peer수신/정확TASK/NEXT Read/tool_result 성공을 확인했다. ART05:34:55Z,나머지7은05:36:43~47Z. 화면입력의이전실패기록은역사보존,현재새지시의입력대기해소. 새세션/resume/Remote Control서버/권한모드변경0. isMeta=true peer를제외하던collector판정을정정했다. 단순send/EOF는ACK가아니며Read로검증했다.
+
+감독heartbeat `exoduser` ACTIVE1분과root `exoduser-mac` ACTIVE1분은각target 실제TOML확인. 감독만15팀후속을보내고root는감독인수/생산통합을해중복배정을막는다.

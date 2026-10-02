@@ -1,0 +1,3091 @@
+{
+  "schemaVersion": 1,
+  "taskId": "UIUX-MINUS-FUSION-LIFETIME-20261002",
+  "provider": "Codex",
+  "chatId": "01a0faaf-8fd2-7083-b174-69c604bd58b0",
+  "chatIdSource": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROVIDER-HALVES-20261002.md",
+  "parentChatId": "01a0faa9-b453-7673-be39-98adedb4c2b3",
+  "preflight": {
+    "actualReadUTC": "2026-10-02T05:25:51.353Z",
+    "actualReadKST": "2026-10-02 14:25:51 KST",
+    "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "realpath": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "taskRealpath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/UIUX/TASK.md",
+    "ownFiles": [
+      "TASK.md"
+    ],
+    "readSHA": {
+      "AGENTS.md": "fd59bef70960bcaf1ab9910051faa860362884e574ac2869fad05c6872ae04e4",
+      "game.html": "6c77ec6f571f4de9cb199a2ac425eb3f0450205bcf6f1d883ac8d13135ac4b43",
+      "game-easy-test.html": "c40ea16180305a3d0043d1c9dfa9091096820e589e537a893d5d28fff56528d0",
+      "tools/team-followup-20261002/continuous/COMMON.md": "de5a881270625a7b2d0e854331205e01372a037340a18474c6442b60e668465e",
+      "tools/team-followup-20261002/continuous/UIUX/TASK.md": "d2959681e96aa6cb6cb8ea5d177c3c03537d262ee20827e0e3bb1512ff0ed483",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/CONTINUOUS-DISPATCH-20261002.md": "caea75a0c6f64b2bdc29b979731c38286d2da18ad5b112403b3ac52793452358",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROVIDER-HALVES-20261002.md": "99adf66254d877cdbb1718ad6a4052a537e84a0027b5f5b4dfb5dbf9f15f9dd6",
+      "docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md": "de6fd967362e97fc21f16c8abba48cd1480ae48064a8feccc9600839a915b372",
+      "docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md": "b801cc30d66717a4f3e107285d87916b38f89bdf498da274b6f1612fb191767a",
+      "docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md": "12f511feca18545e920a3f59163c08db5b892969a47680bf032f331806cc79e3",
+      "docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식.md": "396f669b2caf3ee20c2c31341b91db6bec183e3566bd13e79d4943dc21657d61",
+      "docs/2_1 스킬관리+합체시스템+자원/SKILL_자원게이트_감사_20261001.md": "e7a8e8f27818a0d1acd02de1edff6c74a3fad2f53c5f5c22bffbff7033656c7a",
+      "tools/team-followup-20261002/codex-half/UIUX/result.md": "8cde8f50874d271f8a0af7f92fb1dbb68c3e4fed920d64c2b7788eec99ffa658",
+      "tools/team-followup-20261002/codex-half/UIUX/evidence.json": "d0d3b19059b28f4c84fa3516e034e2cee2eb97915228d7a3a897929d597d6f0e",
+      "tools/team-followup-20261002/root-integration/uiux-skill-lifetime-checks.mjs": "925e58764cbc8096fb785d6d7c2209e8d3af807ddb37d4ef3c3f0bfea7407d41",
+      "tools/team-followup-20261001/UIUX/inventory-dom/node-dom.mjs": "b3c6bb3abf74d5b9e464d1db2e5d2441645af3be8eb096f3c30788b7019cfb95"
+    },
+    "priorAdopted": {
+      "status": "source-counterexample-reproduced-memory-candidate-verified-production-unapplied",
+      "counts": {
+        "scenarios": 1,
+        "files": 2,
+        "sourceRED": 2,
+        "candidateGREEN": 2,
+        "comparisonRuns": 4,
+        "comparisonAssertions": "PASS",
+        "previous16Rerun": 0,
+        "previous16Added": 0
+      },
+      "completed": "2026-10-02T04:37:25.701Z",
+      "reexecuted": 0
+    },
+    "integrationAdopted": [
+      "| UI-04 | P1 | 인벤토리/장비/유골함 | 아이템 비교, 긴 설명, 필터, 키보드/패드 이동과 작은 화면의 정보 우선순위를 검수한다. | 부분 완료 | 2026-10-02 양쪽 HTML 카드/상세·닫기 및 필터 재생성 초점 반영. 필터 생산32+인접23=55검사 통과. 이전 native host8조합은 필터 변경 이전 검수이며 새 필터/유골함 세부/전체게임·패드·시각은 미검수. |",
+      "### 2026-10-02 UI-04 빈 상세 후보 root 검수",
+      "### 2026-10-02 UI-04 키보드 상세·카드 소멸 초점 생산 반영",
+      "### 2026-10-02 UI-04 필터 초점 후속 생산 인수",
+      "### 2026-10-02 유골함 행동 비활성화 초점 생산 반영",
+      "### 2026-10-02 분리된 스킬 카드 학습 콜백 수명 — 생산 반영",
+      "| renderSkillPanel / _skClick | 본편 game.html:46747와 game-easy-test.html:45348 첫 문장에 `if(!d.isConnected||!grid.contains(d))return;` 적용. 문서에 연결되고 현재 skillGrid에 속한 카드만 원래 학습/강화 콜백을 실행한다 |",
+      "| 검증 | `tools/team-followup-20261002/root-integration/uiux-skill-lifetime-checks.mjs`: 현재 양판 실제 추출 함수2GREEN, guard 제거 메모리 음성대조2RED, 연결 첫 호출의 전체 효과 동일. 기존 팀 원자료는 byte 보존 |"
+    ]
+  },
+  "providedCommits": {
+    "production": {
+      "SHA": "7e69495046323b3120578f67635c20feb48b2a4f",
+      "source": "COMMON.md 및 총괄 위임 메시지, CONTINUOUS-DISPATCH-20261002.md",
+      "registryUTC": "2026-10-02T05:23:19.224897+00:00",
+      "independentlyObservedHead": false
+    },
+    "taskCheckpoint": {
+      "shortSHA": "cd675f24",
+      "source": "총괄 위임 메시지",
+      "messageTimestamp": "UNKNOWN",
+      "observedByReadUTC": "2026-10-02T05:25:51.353Z",
+      "independentlyObservedHead": false
+    },
+    "currentHEAD": "UNKNOWN"
+  },
+  "readAndCommandEvidence": [
+    {
+      "command": "pwd; cat tools/team-followup-20261002/continuous/COMMON.md; cat tools/team-followup-20261002/continuous/UIUX/TASK.md",
+      "exit": 0,
+      "note": "도구 명령은 세미콜론 없이 각 독립 행 사용. 최초 실제 Read; 당시 UTC 별도 관측 없음"
+    },
+    {
+      "command": "선행 AGENTS·현재 PROVIDER-HALVES/CONTINUOUS-DISPATCH·스킬/UI/자원 SSOT·기존 result/evidence·root-integration 검사 파일 실제 읽기",
+      "exit": 0,
+      "exactReadFilesAndSHA": {
+        "AGENTS.md": "fd59bef70960bcaf1ab9910051faa860362884e574ac2869fad05c6872ae04e4",
+        "game.html": "6c77ec6f571f4de9cb199a2ac425eb3f0450205bcf6f1d883ac8d13135ac4b43",
+        "game-easy-test.html": "c40ea16180305a3d0043d1c9dfa9091096820e589e537a893d5d28fff56528d0",
+        "tools/team-followup-20261002/continuous/COMMON.md": "de5a881270625a7b2d0e854331205e01372a037340a18474c6442b60e668465e",
+        "tools/team-followup-20261002/continuous/UIUX/TASK.md": "d2959681e96aa6cb6cb8ea5d177c3c03537d262ee20827e0e3bb1512ff0ed483",
+        "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/CONTINUOUS-DISPATCH-20261002.md": "caea75a0c6f64b2bdc29b979731c38286d2da18ad5b112403b3ac52793452358",
+        "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROVIDER-HALVES-20261002.md": "99adf66254d877cdbb1718ad6a4052a537e84a0027b5f5b4dfb5dbf9f15f9dd6",
+        "docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md": "de6fd967362e97fc21f16c8abba48cd1480ae48064a8feccc9600839a915b372",
+        "docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md": "b801cc30d66717a4f3e107285d87916b38f89bdf498da274b6f1612fb191767a",
+        "docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md": "12f511feca18545e920a3f59163c08db5b892969a47680bf032f331806cc79e3",
+        "docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식.md": "396f669b2caf3ee20c2c31341b91db6bec183e3566bd13e79d4943dc21657d61",
+        "docs/2_1 스킬관리+합체시스템+자원/SKILL_자원게이트_감사_20261001.md": "e7a8e8f27818a0d1acd02de1edff6c74a3fad2f53c5f5c22bffbff7033656c7a",
+        "tools/team-followup-20261002/codex-half/UIUX/result.md": "8cde8f50874d271f8a0af7f92fb1dbb68c3e4fed920d64c2b7788eec99ffa658",
+        "tools/team-followup-20261002/codex-half/UIUX/evidence.json": "d0d3b19059b28f4c84fa3516e034e2cee2eb97915228d7a3a897929d597d6f0e",
+        "tools/team-followup-20261002/root-integration/uiux-skill-lifetime-checks.mjs": "925e58764cbc8096fb785d6d7c2209e8d3af807ddb37d4ef3c3f0bfea7407d41",
+        "tools/team-followup-20261001/UIUX/inventory-dom/node-dom.mjs": "b3c6bb3abf74d5b9e464d1db2e5d2441645af3be8eb096f3c30788b7019cfb95"
+      },
+      "UTC": "2026-10-02T05:25:51.353Z",
+      "KST": "2026-10-02 14:25:51 KST"
+    },
+    {
+      "command": "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node tools/team-followup-20261002/continuous/UIUX/checks.mjs",
+      "exit": 0,
+      "wallSeconds": 0.121885916,
+      "stdoutJSON": true,
+      "startedUTC": "2026-10-02T05:27:59.904Z",
+      "finishedUTC": "2026-10-02T05:28:00.119Z",
+      "finishedKST": "2026-10-02 14:28:00 KST"
+    },
+    {
+      "command": [
+        "rg",
+        "-n",
+        "-e",
+        "_skMinusClick|renderSkillPanel|합체|레벨다운|환불|_fuseUpSpCost|isConnected|whirlDet|_renderSkillRow",
+        "docs"
+      ],
+      "exit": 0,
+      "UTC": "2026-10-02T05:30:17.710Z",
+      "note": "코드 산출 후 docs 전체 검색; raw output은 저장하지 않고 SHA/목록/행 기록"
+    }
+  ],
+  "fixture": {
+    "taskId": "UIUX-MINUS-FUSION-LIFETIME-20261002",
+    "provider": "Codex",
+    "chatId": "01a0faaf-8fd2-7083-b174-69c604bd58b0",
+    "chatIdSource": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROVIDER-HALVES-20261002.md",
+    "startedUTC": "2026-10-02T05:27:59.904Z",
+    "checkout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "node": "v24.15.0",
+    "productionApplied": false,
+    "sourceFragments": {
+      "game.html": {
+        "render": {
+          "lineStart": 45793,
+          "lineEnd": 45793,
+          "SHA256": "ff47284bfb81597da7055c8efee85d5b2da87b7d2e28cd7e381c11d01d0a089f",
+          "text": "function renderSkillPanel(){"
+        },
+        "row": {
+          "lineStart": 46106,
+          "lineEnd": 46106,
+          "SHA256": "114febb031894943391297cb6093b5a7ce711f13981b679d07e2d30b6187800b",
+          "text": "function _renderSkillRow(sk,grid){"
+        },
+        "gridReset": {
+          "lineStart": 45804,
+          "lineEnd": 45804,
+          "SHA256": "d4c6890dd1e5a9ecc8614a17f90d55dc0132b5515b31bc40c4e53c2f444774de",
+          "text": "const grid=$('skillGrid');grid.innerHTML='';"
+        },
+        "whirlwind": {
+          "lineStart": 42687,
+          "lineEnd": 42687,
+          "SHA256": "2791aa0f8481c0714187d423dbe2be63fa9660a1e1cd732efd35ba5aa8cd2dfe",
+          "text": "  {id:'whirlwind',name:'회전참',cat:'phys',desc:'무기 홀드 → 전진 회전 공격. 360도 광역, ST 지속소모. Lv당 범위+5 뎀+5%',descEn:'Hold weapon → forward spin attack. 360° AoE, continuous ST drain. Per Lv range+5 DMG+5%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},"
+        },
+        "detonate": {
+          "lineStart": 42688,
+          "lineEnd": 42688,
+          "SHA256": "7247fa564c5fe37bc4b0cb62b9a592036694b50117389cf7f4cbfd7794acbc81",
+          "text": "  {id:'detonate',name:'기폭팔',cat:'def',desc:'패링 3초 홀드 → 흡수 데미지 광역 폭발. Lv당 범위+15 (1렙150, 10렙285)',descEn:'Parry 3s hold → absorbed DMG AoE explosion. Per Lv range+15 (Lv1: 150, Lv10: 285)',spCost:10,matCost:100,up:true,upSp:5,upMat:0},"
+        },
+        "refundHelpers": {
+          "lineStart": 3892,
+          "lineEnd": 3904,
+          "SHA256": "cba6d2c19392f83d8b506581da233b8ad6619141f1533013e7d7ab5229c71e3f",
+          "text": "function _skillUpSpCost(curLv){\n  const _nextLv=curLv+1;\n  const _tbl=[0,1,1,1,1,1,1,1,1,1,1];\n  return _tbl[Math.max(1,Math.min(10,_nextLv))]||1;\n}\nfunction _fuseUpSpCost(curLv,gemCnt){\n  const _base=_skillUpSpCost(curLv);\n  const _star=gemCnt||2;\n  const _raw=_base+(_star-1);\n  // 2~3성 마지막(10렙) 캡=6, 4성 캡=8\n  if(curLv>=9)return _star>=4?8:_star>=2?6:_raw;\n  return _raw;\n}\n"
+        },
+        "maliceCost": {
+          "lineStart": 26867,
+          "lineEnd": 26872,
+          "SHA256": "afd7124eb44c1b3724bf31484a2a7aa2ae962ab3c3cd7728484e1c4baeff94d2",
+          "text": "const _MALICE_COST_MUL=0.5; // 악의 소비 50% 할인\nfunction _malCost(v){\n  const _n=Number(v)||0;\n  if(_n<=0)return 0;\n  return Math.max(1,Math.ceil(_n*_MALICE_COST_MUL));\n}\n"
+        },
+        "fuseGroups": {
+          "lineStart": 42843,
+          "lineEnd": 42876,
+          "SHA256": "accb542c71c9ec6fd2c66249de0ef66ae8df1f389cf4dfb38e95c252867491b1",
+          "text": "const _FUSE_GEM_GROUPS={\n  dimBreach: {color:'#00ddcc',color2:'#0066ff',tier:'clear',minLv:5,skills:['chargeBoost','magicBlink']}, // 청록+파랑\n  dimSlam:   {color:'#00ddcc',color2:'#0066ff',tier:'clear',minLv:10,skills:['chargeBoost','magicBlink','chainAssault']}, // 청록+파랑 (dimBreach 상위)\n  dimThunder:{color:'#00ddcc',color2:'#0066ff',tier:'clear',minLv:15,skills:['chargeBoost','magicBlink','chainAssault','chainSlam']}, // 청록+파랑 (dimSlam 상위)\n  dimRush:   {color:'#00ddcc',color2:'#0066ff',tier:'clear',minLv:20,skills:['chargeBoost','magicBlink','chainAssault','chainSlash','chainSlam']}, // 청록+파랑 5성 (dimThunder 상위)\n  dimBlast:  {color:'#00ddcc',color2:'#ffaa00',tier:'clear',minLv:25,skills:['chargeBoost','magicBlink','chainAssault','chainSlash','chainSlam','giantSlam']}, // 청록+금 6성 (dimRush 상위)\n  sixFuse:   {color:'#ffdd00',color2:'#ff6600',tier:'clear',minLv:5,star:2, skills:['fanShot','omniBeam']}, // 금+주황 2성\n  elemFuse:  {color:'#ffdd00',color2:'#ff6600',tier:'clear',minLv:10,skills:['fanShot','omniBeam','elemMissile']}, // 금+주황 (sixFuse와 동일)\n  whirlDet:  {color:'#ff7722',color2:'#ffee00',tier:'clear',minLv:5, skills:['whirlwind','detonate']}, // 주황+노랑\n  slamStorm: {color:'#ff7722',color2:'#ffee00',tier:'clear',minLv:10,skills:['whirlwind','detonate','giantSlam']}, // 주황+노랑 (whirlDet과 동일)\n  stormBeam: {color:'#ff4400',color2:'#ffdd00',tier:'clear',minLv:15,star:4,skills:['whirlwind','detonate','giantSlam','fanShot','omniBeam','elemMissile']}, // 빨강+금 (slamStorm+elemFuse 크로스) 4성\n  stormBurst:{color:'#dd00ff',color2:'#ffdd00',tier:'clear',minLv:30,star:5,hidden:true,skills:['whirlwind','detonate','giantSlam','fanShot','omniBeam','elemMissile','burstLoop']}, // 보라+금 (stormBeam 4성+버스트루프 4성 → 히든 5성)\n  bladeFuse: {color:'#ffffff',color2:'#ccbbaa',tier:'clear',minLv:5, skills:['maliceHunt','guardian']}, // 흰+베이지\n  bladeEcho: {color:'#e6f8ff',color2:'#44ddff',tier:'clear',minLv:1,star:2,skills:['maliceHunt','bladeDash']}, // 추적칼날 + 전격이동\n  iceMortar: {color:'#2299ff',color2:'#00ffaa',tier:'clear',minLv:10, skills:['maliceMortar','iceOrb']}, // 하늘+민트\n  boneStorm: {color:'#44ee44',color2:'#886622',tier:'clear',minLv:5, skills:['maliceStorm','boneWall']}, // 연두+갈색\n  elecRepent:{color:'#44ee44',color2:'#ffd700',tier:'clear',minLv:10,skills:['maliceStorm','hellRay']}, // 연두+금 (참회 귀환)\n  shieldFuse:{color:'#8888cc',color2:'#cc8844',tier:'clear',minLv:1, skills:['maliceSwipe','shieldThrow']}, // 청보라+동색\n  plagueFuse:{color:'#ffffff',color2:'#ccbbaa',tier:'clear',minLv:10,skills:['maliceHunt','guardian','plagueBurst']}, // 흰+베이지 (bladeFuse 상위)\n  plagueVenom:{color:'#44dd44',color2:'#ccbbaa',tier:'clear',minLv:15,star:4,skills:['maliceHunt','guardian','plagueBurst','venomBlade']},\n  holyFuse:  {color:'#ff88aa',color2:'#ffccdd',tier:'clear',minLv:5, skills:['holyDome','holyPrison']}, // 2성\n  holyIce:   {color:'#ff88aa',color2:'#88ddff',tier:'clear',minLv:10,skills:['holyDome','holyPrison','iceStorm']}, // 3성\n  holyWeak1: {color:'#ff88aa',color2:'#aa66cc',tier:'clear',minLv:15,star:4,skills:['holyDome','holyPrison','iceStorm','weakPhys']}, // +파쇄 4성\n  holyWeak2: {color:'#ff88aa',color2:'#8866ff',tier:'clear',minLv:20,star:5,skills:['holyDome','holyPrison','iceStorm','weakPhys','weakMag']}, // +침식 5성\n  holyWeak3: {color:'#ff88aa',color2:'#6688ff',tier:'clear',minLv:25,star:6,skills:['holyDome','holyPrison','iceStorm','weakPhys','weakMag','weakPj']}, // +관통 6성\n  holyWeak4: {color:'#ff88aa',color2:'#ffdd00',tier:'clear',minLv:30,star:7,skills:['holyDome','holyPrison','iceStorm','weakPhys','weakMag','weakPj','weakRev']}, // +부활 7성\n  pillarSpike:{color:'#7722cc',color2:'#66aa44',tier:'clear',minLv:1,skills:['darkPillar','spikeTrap']}, // 악의기둥(모체) + 가시덫 흡수, 2성(=skills.length)\n  pillarSlam:{color:'#ff8844',color2:'#7722cc',tier:'clear',minLv:1,skills:['giantSlam2','darkPillar']}, // 지옥강타 2(모체) + 악의기둥 흡수, 2성\n  infernoSlam:{color:'#ff6622',color2:'#ff4400',tier:'clear',minLv:1,skills:['giantSlam2','fireAura']}, // 지옥강타 2(모체) + 지옥진, 2성 (구성 2개)\n  siegeGhost: {color:'#6688cc',color2:'#aa66dd',tier:'clear',minLv:1,star:3,skills:['ghostXbowTurret','voidScarecrow']}, // 공성쇠뇌(2★) + 유령허수아비(2★ via dual) = 3성 (2+2)\n  dualScarecrow:{color:'#aa66dd',color2:'#ff4422',tier:'clear',minLv:1,star:2,skills:['voidScarecrow','explodeScarecrow']}, // 유령허수아비 + 폭발허수아비 = 2성 (1+1)\n  thunderGhost:{color:'#44ddff',color2:'#8899bb',tier:'clear',minLv:1,star:2,skills:['bladeDash','thunderStake']}, // 전격이동(모체) + 뇌전창\n  timeStep:{color:'#8888ff',color2:'#44ddff',tier:'clear',minLv:500,star:2,skills:['timeWarp','ghostWalk']}, // 시간왜곡(1성) + 뇌전걸음(1성) = 시간걸음 2성\n};\n"
+        },
+        "fusePairs": {
+          "lineStart": 42972,
+          "lineEnd": 43005,
+          "SHA256": "904b0768d5ba2d802224033ba21110082cf99cef93c9161daeee5de888ed349f",
+          "text": "const _FUSE_PAIRS={\n  dimBreach:['chargeBoost','magicBlink'],\n  dimSlam:['chargeBoost','magicBlink','chainAssault'],\n  dimThunder:['chargeBoost','magicBlink','chainAssault','chainSlam'],\n  dimRush:['chargeBoost','magicBlink','chainAssault','chainSlash','chainSlam'],\n  dimBlast:['chargeBoost','magicBlink','chainAssault','chainSlash','chainSlam','giantSlam'],\n  whirlDet:['whirlwind','detonate'],\n  slamStorm:['whirlwind','detonate','giantSlam'],\n  stormBeam:['whirlwind','detonate','giantSlam','fanShot','omniBeam','elemMissile'],\n  stormBurst:['whirlwind','detonate','giantSlam','fanShot','omniBeam','elemMissile','burstLoop'],\n  bladeFuse:['maliceHunt','guardian'],\n  bladeEcho:['maliceHunt','bladeDash'],\n  iceMortar:['maliceMortar','iceOrb'],\n  sixFuse:['fanShot','omniBeam'],\n  elemFuse:['fanShot','omniBeam','elemMissile'],\n  boneStorm:['maliceStorm','boneWall'],\n  elecRepent:['maliceStorm','hellRay'],\n  shieldFuse:['maliceSwipe','shieldThrow'],\n  plagueFuse:['maliceHunt','guardian','plagueBurst'],\n  plagueVenom:['maliceHunt','guardian','plagueBurst','venomBlade'],\n  holyFuse:['holyDome','holyPrison'],\n  holyIce:['holyDome','holyPrison','iceStorm'],\n  holyWeak1:['holyDome','holyPrison','iceStorm','weakPhys'],\n  holyWeak2:['holyDome','holyPrison','iceStorm','weakPhys','weakMag'],\n  holyWeak3:['holyDome','holyPrison','iceStorm','weakPhys','weakMag','weakPj'],\n  holyWeak4:['holyDome','holyPrison','iceStorm','weakPhys','weakMag','weakPj','weakRev'],\n  pillarSpike:['darkPillar','spikeTrap'],\n  pillarSlam:['giantSlam2','darkPillar'],\n  infernoSlam:['giantSlam2','fireAura'],\n  siegeGhost:['ghostXbowTurret','voidScarecrow'],\n  dualScarecrow:['voidScarecrow','explodeScarecrow'],\n  thunderGhost:['bladeDash','thunderStake'],\n  timeStep:['timeWarp','ghostWalk'],\n};\n"
+        },
+        "isFused": {
+          "lineStart": 43007,
+          "lineEnd": 43007,
+          "SHA256": "f8866059e0766a852995178775588bc7b125be3ccc09b80951527526d932307d",
+          "text": "function _isFused(key){return!!(P._fused&&P._fused[key])}"
+        },
+        "isDimBreach": {
+          "lineStart": 42841,
+          "lineEnd": 42841,
+          "SHA256": "4a6f50f512711556bfb94d3810042e7a10bddfe7a8965d8c3c937a6c5b418699",
+          "text": "function isDimBreach(){return _isFused('dimBreach')}"
+        },
+        "groupSelector": {
+          "lineStart": 42881,
+          "lineEnd": 42901,
+          "SHA256": "9c3f66301694c72208da1b66839b371d0de78d7a2a7232c10e19dfd9876372b7",
+          "text": "function _fuseGemGroup(skId){\n  // 선택된 파트너가 있다면 해당 그룹을 우선 반환 (중복 그룹 스킬 대응)\n  if(_fuseSelId && _fuseSelId !== skId){\n    for(const[k,g]of Object.entries(_FUSE_GEM_GROUPS)){\n      if(g.skills.includes(skId) && g.skills.includes(_fuseSelId)){\n        const slv=P.skills[skId]||1;\n        const tier=slv>=10?'gold':slv>=5?'silver':'clear';\n        return {key:k,...g,tier};\n      }\n    }\n  }\n  // 복수 그룹 소속: 가장 작은(기본 합체) 그룹 우선 → 1단 색 통일\n  // 2단 전용 스킬(1단에 없는 스킬)은 2단 그룹 색\n  let _bestG=null,_bestK=null,_bestN=9999;\n  for(const[k,g]of Object.entries(_FUSE_GEM_GROUPS)){\n    if(!g.skills.includes(skId))continue;\n    if(g.skills.length<_bestN){_bestN=g.skills.length;_bestG=g;_bestK=k}\n  }\n  if(_bestG){const slv=P.skills[skId]||1;const tier=slv>=10?'gold':slv>=5?'silver':'clear';return{key:_bestK,..._bestG,tier}}\n  return null;\n}\n"
+        },
+        "hostCaptureCard": {
+          "lineStart": 46110,
+          "lineEnd": 46196,
+          "SHA256": "3d458aa9bda76e7469a26f631c96d7b947266b1e2f363c3b913e09403dfbed8e",
+          "text": "    const _dimFuse=isDimBreach();\n    const _dimSlamF=P.skills.chargeBoost>=1&&P.skills.magicBlink>=1&&P.skills.chainAssault>=1&&_isFused('dimSlam');\n    const _dimThunderF=_dimSlamF&&P.skills.chainSlam>=1&&_isFused('dimThunder');\n    const _dimRushF=_dimThunderF&&P.skills.chainSlash>=1&&_isFused('dimRush');\n    const _dimBlastF=_dimRushF&&P.skills.giantSlam>=1&&_isFused('dimBlast');\n    if(sk.id==='chainSlam'&&!(P.skills.chainAssault>=1)) return;\n    if(sk.hidden&&!P.skills[sk.id]&&sk.id!=='chainSlash'&&!sk.reqLv) return;\n    const _isDimBlast=sk.id==='chargeBoost'&&_dimBlastF;\n    const _isDimRush=sk.id==='chargeBoost'&&_dimRushF&&!_dimBlastF;\n    const _isDimThunder=sk.id==='chargeBoost'&&_dimThunderF&&!_dimRushF&&!_dimBlastF;\n    const _isDimSlam=sk.id==='chargeBoost'&&_dimSlamF&&!_dimThunderF&&!_dimRushF&&!_dimBlastF;\n    const _isDimFuse=sk.id==='chargeBoost'&&_dimFuse&&!_dimSlamF&&!_dimThunderF&&!_dimRushF&&!_dimBlastF;\n    // ═══ 합체 호스트 감지 (흡수 스킬은 위 _isAbsorbed에서 이미 제거됨) ═══\n    const _stormBeamF=_isFused('stormBeam');\n    const _slamStormF=P.skills.whirlwind>=1&&P.skills.detonate>=1&&P.skills.giantSlam>=1&&_isFused('slamStorm');\n    const _synth=P.skills.whirlwind>=1&&P.skills.detonate>=1&&_isFused('whirlDet');\n    const _isStormBeam=sk.id==='whirlwind'&&_stormBeamF;\n    const _isSlamStorm=sk.id==='whirlwind'&&_slamStormF&&!_stormBeamF;\n    const _isSynth=sk.id==='whirlwind'&&_synth&&!_slamStormF&&!_stormBeamF;\n    const _bladeFuse=P.skills.maliceHunt>=1&&P.skills.guardian>=1&&_isFused('bladeFuse');\n    const _isBladeFuse=sk.id==='maliceHunt'&&_bladeFuse&&!(P.skills.plagueBurst>=1&&_isFused('plagueFuse'));\n    const _iceMortarFuse=P.skills.maliceMortar>=1&&P.skills.iceOrb>=1&&_isFused('iceMortar');\n    const _isIceFuse=sk.id==='maliceMortar'&&_iceMortarFuse;\n    const _elemFuseF=P.skills.fanShot>=1&&P.skills.omniBeam>=1&&P.skills.elemMissile>=1&&_isFused('elemFuse');\n    const _sixFuse=P.skills.fanShot>=1&&P.skills.omniBeam>=1&&_isFused('sixFuse');\n    const _isElemFuse=sk.id==='omniBeam'&&_elemFuseF&&!_stormBeamF;\n    const _isSixFuse=sk.id==='fanShot'&&_sixFuse&&!_elemFuseF&&!_stormBeamF;\n    const _elecRepentF=P.skills.maliceStorm>=1&&P.skills.hellRay>=1&&_isFused('elecRepent');\n    const _boneStormF=P.skills.maliceStorm>=1&&P.skills.boneWall>=1&&_isFused('boneStorm')&&!_elecRepentF;\n    const _isElecRepent=sk.id==='maliceStorm'&&_elecRepentF;\n    const _isBoneStorm=sk.id==='maliceStorm'&&_boneStormF&&!_elecRepentF;\n    const _shieldFuseF=P.skills.maliceSwipe>=1&&P.skills.shieldThrow>=1&&_isFused('shieldFuse');\n    const _isShieldFuse=sk.id==='maliceSwipe'&&_shieldFuseF;\n    const _plagueFuseF=P.skills.maliceHunt>=1&&P.skills.plagueBurst>=1&&_isFused('plagueFuse');\n    const _plagueVenomF=P.skills.maliceHunt>=1&&P.skills.venomBlade>=1&&_isFused('plagueVenom');\n    const _isPlagueVenom=sk.id==='maliceHunt'&&P.skills.venomBlade>=1&&_isFused('plagueVenom');\n    const _isPlagueFuse=sk.id==='maliceHunt'&&_plagueFuseF&&!_isPlagueVenom;\n    const _holyW4F=_isFused('holyWeak4')&&P.skills.holyDome>=1&&P.skills.weakRev>=1;\n    const _holyW3F=!_holyW4F&&_isFused('holyWeak3')&&P.skills.holyDome>=1&&P.skills.weakPj>=1;\n    const _holyW2F=!_holyW4F&&!_holyW3F&&_isFused('holyWeak2')&&P.skills.holyDome>=1&&P.skills.weakMag>=1;\n    const _holyW1F=!_holyW4F&&!_holyW3F&&!_holyW2F&&_isFused('holyWeak1')&&P.skills.holyDome>=1&&P.skills.weakPhys>=1;\n    const _holyIceF=!_holyW4F&&!_holyW3F&&!_holyW2F&&!_holyW1F&&P.skills.holyDome>=1&&P.skills.holyPrison>=1&&P.skills.iceStorm>=1&&_isFused('holyIce');\n    const _holyFuseF=!_holyW4F&&!_holyW3F&&!_holyW2F&&!_holyW1F&&!_holyIceF&&(P.skills.holyDome>=1&&P.skills.holyPrison>=1&&_isFused('holyFuse'));\n    const _isHolyW4=sk.id==='holyDome'&&_holyW4F;\n    const _isHolyW3=sk.id==='holyDome'&&_holyW3F;\n    const _isHolyW2=sk.id==='holyDome'&&_holyW2F;\n    const _isHolyW1=sk.id==='holyDome'&&_holyW1F;\n    const _isHolyIce=sk.id==='holyDome'&&_holyIceF;\n    const _isHolyFuse=sk.id==='holyDome'&&_holyFuseF;\n    const _pillarSlamF=P.skills.giantSlam2>=1&&P.skills.darkPillar>=1&&_isFused('pillarSlam');\n    const _pillarSpikeF=P.skills.darkPillar>=1&&P.skills.spikeTrap>=1&&_isFused('pillarSpike')&&!_pillarSlamF;\n    const _isPillarSlam=sk.id==='giantSlam2'&&_pillarSlamF;\n    const _isPillarSpike=sk.id==='darkPillar'&&_pillarSpikeF;\n    const _infernoSlamF=P.skills.giantSlam2>=1&&P.skills.fireAura>=1&&_isFused('infernoSlam')&&!_pillarSlamF;\n    const _isInfernoSlam=sk.id==='giantSlam2'&&_infernoSlamF;\n    const _siegeGhostF=P.skills.ghostXbowTurret>=1&&P.skills.voidScarecrow>=1&&_isFused('siegeGhost');\n    const _isSiegeGhost=sk.id==='ghostXbowTurret'&&_siegeGhostF;\n    const _dualScarecrowF=P.skills.voidScarecrow>=1&&P.skills.explodeScarecrow>=1&&_isFused('dualScarecrow');\n    const _isDualScarecrow=sk.id==='voidScarecrow'&&_dualScarecrowF;\n    const _thunderGhostF=P.skills.bladeDash>=1&&P.skills.thunderStake>=1&&_isFused('thunderGhost');\n    const _isThunderGhost=sk.id==='bladeDash'&&_thunderGhostF;\n    const _timeStepF=P.skills.timeWarp>=1&&P.skills.ghostWalk>=1&&_isFused('timeStep');\n    const _isTimeStep=sk.id==='timeWarp'&&_timeStepF;\n    const _stormBurstF=_stormBeamF&&P.skills.burstLoop>=1&&_isFused('stormBurst');\n    const _isStormBurst=sk.id==='whirlwind'&&_stormBurstF;\n    const slv=P.skills[sk.id]||0; // 0=미습득, 1+=습득(강화 횟수)\n    const learned=slv>=1;\n    const _reqMet=sk.requires?(P.skills[sk.requires]||0)>=1:true;\n    const _hasUltLearned=false; // 필살기 전부 습득 가능\n    const _lvMet=sk.reqLv?P.lv>=sk.reqLv:true;\n    const canLearn=!learned&&_reqMet&&_lvMet&&P.sp>=sk.spCost&&G.mats>=_malCost(sk.matCost||0);\n    const _skMaxLv=20;\n    const _skLvLock=Math.min(20,~~(P.lv/50)+1); // 50렙당 +1 (Lv1=1렙, Lv50=2렙, Lv100=3렙, ... Lv950=20렙)\n    // 합체 강화 통합: 구성 스킬 upSp/upMat 합산\n    const _isFuseUp=_isStormBurst||_isStormBeam||_isDimBlast||_isDimRush||_isDimFuse||_isDimSlam||_isDimThunder||_isSlamStorm||_isSynth||_isElemFuse||_isSixFuse||_isBladeFuse||_isIceFuse||_isBoneStorm||_isElecRepent||_isShieldFuse||_isPlagueFuse||_isPlagueVenom||_isHolyFuse||_isHolyIce||_isHolyW1||_isHolyW2||_isHolyW3||_isHolyW4||_isPillarSlam||_isPillarSpike||_isInfernoSlam||_isSiegeGhost||_isDualScarecrow||_isThunderGhost||_isTimeStep;\n    let _fuseUpSp=0,_fuseUpMat=0,_fuseCanUp=false;\n    if(_isFuseUp){\n      const _fk2=_isStormBurst?'stormBurst':_isStormBeam?'stormBeam':_isDimBlast?'dimBlast':_isDimRush?'dimRush':_isDimThunder?'dimThunder':_isDimSlam?'dimSlam':_isDimFuse?'dimBreach':_isSlamStorm?'slamStorm':_isSynth?'whirlDet':_isElemFuse?'elemFuse':_isSixFuse?'sixFuse':_isBladeFuse?'bladeFuse':_isBoneStorm?'boneStorm':_isElecRepent?'elecRepent':_isShieldFuse?'shieldFuse':_isPlagueVenom?'plagueVenom':_isPlagueFuse?'plagueFuse':_isPillarSlam?'pillarSlam':_isPillarSpike?'pillarSpike':_isInfernoSlam?'infernoSlam':_isSiegeGhost?'siegeGhost':_isDualScarecrow?'dualScarecrow':_isThunderGhost?'thunderGhost':_isTimeStep?'timeStep':_isHolyW4?'holyWeak4':_isHolyW3?'holyWeak3':_isHolyW2?'holyWeak2':_isHolyW1?'holyWeak1':_isHolyIce?'holyIce':_isHolyFuse?'holyFuse':'iceMortar';\n      const _fIds2=_fk2==='stormBeam'?['whirlwind','detonate','giantSlam','fanShot','omniBeam','elemMissile']:_fk2==='elemFuse'?['fanShot','omniBeam','elemMissile']:_fk2==='slamStorm'?['whirlwind','detonate','giantSlam']:(_FUSE_PAIRS[_fk2]||[]);\n      const _fLv2=Math.min(..._fIds2.map(id=>P.skills[id]||1));\n      const _gemGrp=_FUSE_GEM_GROUPS[_fk2];const _gemCnt=(_gemGrp&&_gemGrp.star)||_fIds2.length;_fuseUpSp=_fuseUpSpCost(_fLv2,_gemCnt);\n      _fuseCanUp=_fLv2<_skMaxLv&&P.sp>=_fuseUpSp;\n    }\n    const _singleUpSp=_skillUpSpCost(slv,false);\n    const canUp=(learned&&sk.up&&slv<_skMaxLv&&slv<_skLvLock&&P.sp>=_singleUpSp&&G.mats>=_malCost(sk.upMat||0)&&!_isFuseUp)||(_fuseCanUp&&slv<_skLvLock);\n    const d=document.createElement('div');\n    d.dataset.skId=sk.id; // 라인 연결용 식별자\n"
+        },
+        "learnedCapture": {
+          "lineStart": 46176,
+          "lineEnd": 46176,
+          "SHA256": "127a3edd2d1397aeec9c8ea21953654f16715ddd5ae1d39273dcce6c190deed4",
+          "text": "    const learned=slv>=1;"
+        },
+        "minus": {
+          "lineStart": 46682,
+          "lineEnd": 46745,
+          "SHA256": "58c70a6a3115fce62154cd1374838af21d0a39fc331f9c138ed02fac38993a3d",
+          "text": "    function _skMinusClick(){\n        if(!learned)return;\n        const _unfuseAllNow=()=>{\n          let _refundedSp=0;\n          if(P._fused){\n            for(const _fk in P._fused){\n              if(!P._fused[_fk])continue;\n              const _fIds=_FUSE_PAIRS[_fk]||[];\n              const _grpDef=_FUSE_GEM_GROUPS&&_FUSE_GEM_GROUPS[_fk];\n              if(_fIds.includes(sk.id)||(_grpDef&&_grpDef.skills&&_grpDef.skills.includes(sk.id))){\n                delete P._fused[_fk];\n                const _avgLv=_fIds.length?Math.min.apply(null,_fIds.map(id=>P.skills[id]||1)):1;\n                if(_avgLv>1){\n                  const _gemC=_fIds.length||1;\n                  for(let _l=1;_l<_avgLv;_l++){_refundedSp+=_fuseUpSpCost(_l,_gemC)}\n                }\n              }\n            }\n          }\n          return _refundedSp;\n        };\n        const _fGrpNow=_fuseGemGroup(sk.id);\n        const _isFusedNow=_fGrpNow&&_isFused(_fGrpNow.key);\n        const _curLv=(P.skills[sk.id]||0);\n        if(_curLv>1){\n          // 합체 상태면 합체 단위로 레벨 다운 + 합체 강화비 환불\n          const _activeFuseKeys=[];\n          for(const _fk of Object.keys(P._fused||{})){\n            if(!P._fused[_fk])continue;\n            const _fg=_FUSE_GEM_GROUPS[_fk]||{};\n            const _ids=(_fg.skills&&_fg.skills.length)?_fg.skills:(_FUSE_PAIRS[_fk]||[]);\n            if(_ids.includes(sk.id))_activeFuseKeys.push(_fk);\n          }\n          if(_activeFuseKeys.length){\n            let _bestK=_activeFuseKeys[0],_bestN=0;\n            for(const _fk of _activeFuseKeys){\n              const _fg=_FUSE_GEM_GROUPS[_fk]||{};\n              const _ids=(_fg.skills&&_fg.skills.length)?_fg.skills:(_FUSE_PAIRS[_fk]||[]);\n              if(_ids.length>_bestN){_bestN=_ids.length;_bestK=_fk}\n            }\n            const _bg=_FUSE_GEM_GROUPS[_bestK]||{};\n            const _ids=(_bg.skills&&_bg.skills.length)?_bg.skills:(_FUSE_PAIRS[_bestK]||[]);\n            const _gemC=(_bg.star)||_ids.length||1;\n            const _fLv=Math.min(..._ids.map(id=>P.skills[id]||1));\n            if(_fLv>1){\n              const _refundSp=_fuseUpSpCost(_fLv-1,_gemC);\n              _ids.forEach(id=>{if((P.skills[id]||1)>=_fLv)P.skills[id]=_fLv-1});\n              P.sp+=_refundSp;\n              SFX.pickup();addTxt(P.x,P.y-30,_T('합체 Lv.')+(_fLv-1)+' (-)','#55ccff',60);\n            }else{\n              addTxt(P.x,P.y-30,_L('리셋/합체해제는 리셋 버튼 사용','Use Reset button for reset/unfuse'),'#ff6666',60);\n              return;\n            }\n          }else{\n            const _refundSp=_skillUpSpCost(_curLv-1,false);\n            P.skills[sk.id]=_curLv-1;P.sp+=_refundSp;G.mats+=_malCost(sk.upMat||0);\n            SFX.pickup();addTxt(P.x,P.y-30,_T(sk.name)+' Lv.'+(_curLv-1)+' (-)','#ff8844',60);\n          }\n        }else{\n          addTxt(P.x,P.y-30,_L('리셋/합체해제는 리셋 버튼 사용','Use Reset button for reset/unfuse'),'#ff6666',60);\n          return;\n        }\n        renderSkillPanel();updateSkSlot&&updateSkSlot();updateQS&&updateQS();dbSaveForce();\n    }\n"
+        },
+        "buttons": {
+          "lineStart": 46803,
+          "lineEnd": 46831,
+          "SHA256": "9b89eecee470b1eeec11cc7ac80177207c6bd0e883cfe4bb7e47f650361342d6",
+          "text": "    // 일반 카드(+/-) 버튼: compact 펼침 카드는 자체 버튼을 사용\n    if(!(_skCompact&&_isExpanded)&&(learned||canLearn||canUp)){\n      const _btnRow2=document.createElement('div');\n      _btnRow2.dataset.nodrag='1';\n      _btnRow2.style.cssText='display:flex;gap:6px;margin-top:8px;justify-content:flex-end';\n      if(learned){\n        const _bMin2=document.createElement('div');\n        _bMin2.dataset.nodrag='1';\n        _bMin2.style.cssText='padding:3px 8px;min-width:28px;background:rgba(80,30,30,0.45);border:1px solid #cc4444;border-radius:4px;color:#ff8888;font-size:.95rem;text-align:center;cursor:pointer;font-weight:700;line-height:1.1';\n        _bMin2.textContent='-';\n        _bMin2.title=_L('레벨다운 / 취소','Level down / cancel');\n        _bMin2.onmouseenter=()=>{_bMin2.style.background='rgba(120,40,40,0.7)'};\n        _bMin2.onmouseleave=()=>{_bMin2.style.background='rgba(80,30,30,0.45)'};\n        _bMin2.onclick=(ev)=>{ev.stopPropagation();_skMinusClick()};\n        _btnRow2.appendChild(_bMin2);\n      }\n      if(canLearn||canUp){\n        const _bPlus2=document.createElement('div');\n        _bPlus2.dataset.nodrag='1';\n        _bPlus2.style.cssText='padding:3px 8px;min-width:28px;background:rgba(60,40,15,0.6);border:1px solid #aa8833;border-radius:4px;color:#ffcc66;font-size:.95rem;text-align:center;cursor:pointer;font-weight:700;line-height:1.1';\n        _bPlus2.textContent='+';\n        _bPlus2.title=canLearn?( _L('습득','Learn') ):( _L('레벨업','Level up') );\n        _bPlus2.onmouseenter=()=>{_bPlus2.style.background='rgba(80,55,20,0.7)'};\n        _bPlus2.onmouseleave=()=>{_bPlus2.style.background='rgba(60,40,15,0.6)'};\n        _bPlus2.onclick=(ev)=>{ev.stopPropagation();_skClick()};\n        _btnRow2.appendChild(_bPlus2);\n      }\n      if(_btnRow2.children.length>0)d.appendChild(_btnRow2);\n    }\n"
+        },
+        "minusBinding": {
+          "lineStart": 46816,
+          "lineEnd": 46816,
+          "SHA256": "c41723097ebba0b6eac74c467476048a915aefa0afde9a4b5dec9e28d6c417b4",
+          "text": "        _bMin2.onclick=(ev)=>{ev.stopPropagation();_skMinusClick()};"
+        },
+        "append": {
+          "lineStart": 46847,
+          "lineEnd": 46847,
+          "SHA256": "45111ca46990c19399098f8161cd3f52cbd1d0c0a663e9757eb0a2125395a355",
+          "text": "    grid.appendChild(d);"
+        },
+        "plusFirstStatement": {
+          "lineStart": 46747,
+          "lineEnd": 46747,
+          "SHA256": "585ad8c3c99dacf878d3b2c4ec25907dd8d2f4da0505084334b96c28541454ec",
+          "text": "    function _skClick(){if(!d.isConnected||!grid.contains(d))return;"
+        }
+      },
+      "game-easy-test.html": {
+        "render": {
+          "lineStart": 44401,
+          "lineEnd": 44401,
+          "SHA256": "ff47284bfb81597da7055c8efee85d5b2da87b7d2e28cd7e381c11d01d0a089f",
+          "text": "function renderSkillPanel(){"
+        },
+        "row": {
+          "lineStart": 44708,
+          "lineEnd": 44708,
+          "SHA256": "114febb031894943391297cb6093b5a7ce711f13981b679d07e2d30b6187800b",
+          "text": "function _renderSkillRow(sk,grid){"
+        },
+        "gridReset": {
+          "lineStart": 44412,
+          "lineEnd": 44412,
+          "SHA256": "d4c6890dd1e5a9ecc8614a17f90d55dc0132b5515b31bc40c4e53c2f444774de",
+          "text": "const grid=$('skillGrid');grid.innerHTML='';"
+        },
+        "whirlwind": {
+          "lineStart": 41484,
+          "lineEnd": 41484,
+          "SHA256": "2791aa0f8481c0714187d423dbe2be63fa9660a1e1cd732efd35ba5aa8cd2dfe",
+          "text": "  {id:'whirlwind',name:'회전참',cat:'phys',desc:'무기 홀드 → 전진 회전 공격. 360도 광역, ST 지속소모. Lv당 범위+5 뎀+5%',descEn:'Hold weapon → forward spin attack. 360° AoE, continuous ST drain. Per Lv range+5 DMG+5%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},"
+        },
+        "detonate": {
+          "lineStart": 41485,
+          "lineEnd": 41485,
+          "SHA256": "7247fa564c5fe37bc4b0cb62b9a592036694b50117389cf7f4cbfd7794acbc81",
+          "text": "  {id:'detonate',name:'기폭팔',cat:'def',desc:'패링 3초 홀드 → 흡수 데미지 광역 폭발. Lv당 범위+15 (1렙150, 10렙285)',descEn:'Parry 3s hold → absorbed DMG AoE explosion. Per Lv range+15 (Lv1: 150, Lv10: 285)',spCost:10,matCost:100,up:true,upSp:5,upMat:0},"
+        },
+        "refundHelpers": {
+          "lineStart": 3661,
+          "lineEnd": 3673,
+          "SHA256": "cba6d2c19392f83d8b506581da233b8ad6619141f1533013e7d7ab5229c71e3f",
+          "text": "function _skillUpSpCost(curLv){\n  const _nextLv=curLv+1;\n  const _tbl=[0,1,1,1,1,1,1,1,1,1,1];\n  return _tbl[Math.max(1,Math.min(10,_nextLv))]||1;\n}\nfunction _fuseUpSpCost(curLv,gemCnt){\n  const _base=_skillUpSpCost(curLv);\n  const _star=gemCnt||2;\n  const _raw=_base+(_star-1);\n  // 2~3성 마지막(10렙) 캡=6, 4성 캡=8\n  if(curLv>=9)return _star>=4?8:_star>=2?6:_raw;\n  return _raw;\n}\n"
+        },
+        "maliceCost": {
+          "lineStart": 25742,
+          "lineEnd": 25747,
+          "SHA256": "afd7124eb44c1b3724bf31484a2a7aa2ae962ab3c3cd7728484e1c4baeff94d2",
+          "text": "const _MALICE_COST_MUL=0.5; // 악의 소비 50% 할인\nfunction _malCost(v){\n  const _n=Number(v)||0;\n  if(_n<=0)return 0;\n  return Math.max(1,Math.ceil(_n*_MALICE_COST_MUL));\n}\n"
+        },
+        "fuseGroups": {
+          "lineStart": 41640,
+          "lineEnd": 41672,
+          "SHA256": "153f987283fd0cb34512c9a7bdb2c3813af538e170d27f338c0a44bb3e62e204",
+          "text": "const _FUSE_GEM_GROUPS={\n  dimBreach: {color:'#00ddcc',color2:'#0066ff',tier:'clear',minLv:5,skills:['chargeBoost','magicBlink']}, // 청록+파랑\n  dimSlam:   {color:'#00ddcc',color2:'#0066ff',tier:'clear',minLv:10,skills:['chargeBoost','magicBlink','chainAssault']}, // 청록+파랑 (dimBreach 상위)\n  dimThunder:{color:'#00ddcc',color2:'#0066ff',tier:'clear',minLv:15,skills:['chargeBoost','magicBlink','chainAssault','chainSlam']}, // 청록+파랑 (dimSlam 상위)\n  dimRush:   {color:'#00ddcc',color2:'#0066ff',tier:'clear',minLv:20,skills:['chargeBoost','magicBlink','chainAssault','chainSlash','chainSlam']}, // 청록+파랑 5성 (dimThunder 상위)\n  dimBlast:  {color:'#00ddcc',color2:'#ffaa00',tier:'clear',minLv:25,skills:['chargeBoost','magicBlink','chainAssault','chainSlash','chainSlam','giantSlam']}, // 청록+금 6성 (dimRush 상위)\n  sixFuse:   {color:'#ffdd00',color2:'#ff6600',tier:'clear',minLv:5,star:2, skills:['fanShot','omniBeam']}, // 금+주황 2성\n  elemFuse:  {color:'#ffdd00',color2:'#ff6600',tier:'clear',minLv:10,skills:['fanShot','omniBeam','elemMissile']}, // 금+주황 (sixFuse와 동일)\n  whirlDet:  {color:'#ff7722',color2:'#ffee00',tier:'clear',minLv:5, skills:['whirlwind','detonate']}, // 주황+노랑\n  slamStorm: {color:'#ff7722',color2:'#ffee00',tier:'clear',minLv:10,skills:['whirlwind','detonate','giantSlam']}, // 주황+노랑 (whirlDet과 동일)\n  stormBeam: {color:'#ff4400',color2:'#ffdd00',tier:'clear',minLv:15,star:4,skills:['whirlwind','detonate','giantSlam','fanShot','omniBeam','elemMissile']}, // 빨강+금 (slamStorm+elemFuse 크로스) 4성\n  stormBurst:{color:'#dd00ff',color2:'#ffdd00',tier:'clear',minLv:30,star:5,hidden:true,skills:['whirlwind','detonate','giantSlam','fanShot','omniBeam','elemMissile','burstLoop']}, // 보라+금 (stormBeam 4성+버스트루프 4성 → 히든 5성)\n  bladeFuse: {color:'#ffffff',color2:'#ccbbaa',tier:'clear',minLv:5, skills:['maliceHunt','guardian']}, // 흰+베이지\n  iceMortar: {color:'#2299ff',color2:'#00ffaa',tier:'clear',minLv:10, skills:['maliceMortar','iceOrb']}, // 하늘+민트\n  boneStorm: {color:'#44ee44',color2:'#886622',tier:'clear',minLv:5, skills:['maliceStorm','boneWall']}, // 연두+갈색\n  elecRepent:{color:'#44ee44',color2:'#ffd700',tier:'clear',minLv:10,skills:['maliceStorm','hellRay']}, // 연두+금 (참회 귀환)\n  shieldFuse:{color:'#8888cc',color2:'#cc8844',tier:'clear',minLv:1, skills:['maliceSwipe','shieldThrow']}, // 청보라+동색\n  plagueFuse:{color:'#ffffff',color2:'#ccbbaa',tier:'clear',minLv:10,skills:['maliceHunt','guardian','plagueBurst']}, // 흰+베이지 (bladeFuse 상위)\n  plagueVenom:{color:'#44dd44',color2:'#ccbbaa',tier:'clear',minLv:15,star:4,skills:['maliceHunt','guardian','plagueBurst','venomBlade']},\n  holyFuse:  {color:'#ff88aa',color2:'#ffccdd',tier:'clear',minLv:5, skills:['holyDome','holyPrison']}, // 2성\n  holyIce:   {color:'#ff88aa',color2:'#88ddff',tier:'clear',minLv:10,skills:['holyDome','holyPrison','iceStorm']}, // 3성\n  holyWeak1: {color:'#ff88aa',color2:'#aa66cc',tier:'clear',minLv:15,star:4,skills:['holyDome','holyPrison','iceStorm','weakPhys']}, // +파쇄 4성\n  holyWeak2: {color:'#ff88aa',color2:'#8866ff',tier:'clear',minLv:20,star:5,skills:['holyDome','holyPrison','iceStorm','weakPhys','weakMag']}, // +침식 5성\n  holyWeak3: {color:'#ff88aa',color2:'#6688ff',tier:'clear',minLv:25,star:6,skills:['holyDome','holyPrison','iceStorm','weakPhys','weakMag','weakPj']}, // +관통 6성\n  holyWeak4: {color:'#ff88aa',color2:'#ffdd00',tier:'clear',minLv:30,star:7,skills:['holyDome','holyPrison','iceStorm','weakPhys','weakMag','weakPj','weakRev']}, // +부활 7성\n  pillarSpike:{color:'#7722cc',color2:'#66aa44',tier:'clear',minLv:1,skills:['darkPillar','spikeTrap']}, // 악의기둥(모체) + 가시덫 흡수, 2성(=skills.length)\n  pillarSlam:{color:'#ff8844',color2:'#7722cc',tier:'clear',minLv:1,skills:['giantSlam2','darkPillar']}, // 지옥강타 2(모체) + 악의기둥 흡수, 2성\n  infernoSlam:{color:'#ff6622',color2:'#ff4400',tier:'clear',minLv:1,skills:['giantSlam2','fireAura']}, // 지옥강타 2(모체) + 지옥진, 2성 (구성 2개)\n  siegeGhost: {color:'#6688cc',color2:'#aa66dd',tier:'clear',minLv:1,star:3,skills:['ghostXbowTurret','voidScarecrow']}, // 공성쇠뇌(2★) + 유령허수아비(2★ via dual) = 3성 (2+2)\n  dualScarecrow:{color:'#aa66dd',color2:'#ff4422',tier:'clear',minLv:1,star:2,skills:['voidScarecrow','explodeScarecrow']}, // 유령허수아비 + 폭발허수아비 = 2성 (1+1)\n  thunderGhost:{color:'#44ddff',color2:'#8899bb',tier:'clear',minLv:1,star:2,skills:['bladeDash','thunderStake']}, // 전격이동(모체) + 뇌전창\n  timeStep:{color:'#8888ff',color2:'#44ddff',tier:'clear',minLv:500,star:2,skills:['timeWarp','ghostWalk']}, // 시간왜곡(1성) + 뇌전걸음(1성) = 시간걸음 2성\n};\n"
+        },
+        "fusePairs": {
+          "lineStart": 41768,
+          "lineEnd": 41800,
+          "SHA256": "3aeed1c77303a23f9677701a66958724c5b4a9ac27f22962af29b3a42d0edafe",
+          "text": "const _FUSE_PAIRS={\n  dimBreach:['chargeBoost','magicBlink'],\n  dimSlam:['chargeBoost','magicBlink','chainAssault'],\n  dimThunder:['chargeBoost','magicBlink','chainAssault','chainSlam'],\n  dimRush:['chargeBoost','magicBlink','chainAssault','chainSlash','chainSlam'],\n  dimBlast:['chargeBoost','magicBlink','chainAssault','chainSlash','chainSlam','giantSlam'],\n  whirlDet:['whirlwind','detonate'],\n  slamStorm:['whirlwind','detonate','giantSlam'],\n  stormBeam:['whirlwind','detonate','giantSlam','fanShot','omniBeam','elemMissile'],\n  stormBurst:['whirlwind','detonate','giantSlam','fanShot','omniBeam','elemMissile','burstLoop'],\n  bladeFuse:['maliceHunt','guardian'],\n  iceMortar:['maliceMortar','iceOrb'],\n  sixFuse:['fanShot','omniBeam'],\n  elemFuse:['fanShot','omniBeam','elemMissile'],\n  boneStorm:['maliceStorm','boneWall'],\n  elecRepent:['maliceStorm','hellRay'],\n  shieldFuse:['maliceSwipe','shieldThrow'],\n  plagueFuse:['maliceHunt','guardian','plagueBurst'],\n  plagueVenom:['maliceHunt','guardian','plagueBurst','venomBlade'],\n  holyFuse:['holyDome','holyPrison'],\n  holyIce:['holyDome','holyPrison','iceStorm'],\n  holyWeak1:['holyDome','holyPrison','iceStorm','weakPhys'],\n  holyWeak2:['holyDome','holyPrison','iceStorm','weakPhys','weakMag'],\n  holyWeak3:['holyDome','holyPrison','iceStorm','weakPhys','weakMag','weakPj'],\n  holyWeak4:['holyDome','holyPrison','iceStorm','weakPhys','weakMag','weakPj','weakRev'],\n  pillarSpike:['darkPillar','spikeTrap'],\n  pillarSlam:['giantSlam2','darkPillar'],\n  infernoSlam:['giantSlam2','fireAura'],\n  siegeGhost:['ghostXbowTurret','voidScarecrow'],\n  dualScarecrow:['voidScarecrow','explodeScarecrow'],\n  thunderGhost:['bladeDash','thunderStake'],\n  timeStep:['timeWarp','ghostWalk'],\n};\n"
+        },
+        "isFused": {
+          "lineStart": 41802,
+          "lineEnd": 41802,
+          "SHA256": "f8866059e0766a852995178775588bc7b125be3ccc09b80951527526d932307d",
+          "text": "function _isFused(key){return!!(P._fused&&P._fused[key])}"
+        },
+        "isDimBreach": {
+          "lineStart": 41638,
+          "lineEnd": 41638,
+          "SHA256": "4a6f50f512711556bfb94d3810042e7a10bddfe7a8965d8c3c937a6c5b418699",
+          "text": "function isDimBreach(){return _isFused('dimBreach')}"
+        },
+        "groupSelector": {
+          "lineStart": 41677,
+          "lineEnd": 41697,
+          "SHA256": "9c3f66301694c72208da1b66839b371d0de78d7a2a7232c10e19dfd9876372b7",
+          "text": "function _fuseGemGroup(skId){\n  // 선택된 파트너가 있다면 해당 그룹을 우선 반환 (중복 그룹 스킬 대응)\n  if(_fuseSelId && _fuseSelId !== skId){\n    for(const[k,g]of Object.entries(_FUSE_GEM_GROUPS)){\n      if(g.skills.includes(skId) && g.skills.includes(_fuseSelId)){\n        const slv=P.skills[skId]||1;\n        const tier=slv>=10?'gold':slv>=5?'silver':'clear';\n        return {key:k,...g,tier};\n      }\n    }\n  }\n  // 복수 그룹 소속: 가장 작은(기본 합체) 그룹 우선 → 1단 색 통일\n  // 2단 전용 스킬(1단에 없는 스킬)은 2단 그룹 색\n  let _bestG=null,_bestK=null,_bestN=9999;\n  for(const[k,g]of Object.entries(_FUSE_GEM_GROUPS)){\n    if(!g.skills.includes(skId))continue;\n    if(g.skills.length<_bestN){_bestN=g.skills.length;_bestG=g;_bestK=k}\n  }\n  if(_bestG){const slv=P.skills[skId]||1;const tier=slv>=10?'gold':slv>=5?'silver':'clear';return{key:_bestK,..._bestG,tier}}\n  return null;\n}\n"
+        },
+        "hostCaptureCard": {
+          "lineStart": 44712,
+          "lineEnd": 44798,
+          "SHA256": "3d458aa9bda76e7469a26f631c96d7b947266b1e2f363c3b913e09403dfbed8e",
+          "text": "    const _dimFuse=isDimBreach();\n    const _dimSlamF=P.skills.chargeBoost>=1&&P.skills.magicBlink>=1&&P.skills.chainAssault>=1&&_isFused('dimSlam');\n    const _dimThunderF=_dimSlamF&&P.skills.chainSlam>=1&&_isFused('dimThunder');\n    const _dimRushF=_dimThunderF&&P.skills.chainSlash>=1&&_isFused('dimRush');\n    const _dimBlastF=_dimRushF&&P.skills.giantSlam>=1&&_isFused('dimBlast');\n    if(sk.id==='chainSlam'&&!(P.skills.chainAssault>=1)) return;\n    if(sk.hidden&&!P.skills[sk.id]&&sk.id!=='chainSlash'&&!sk.reqLv) return;\n    const _isDimBlast=sk.id==='chargeBoost'&&_dimBlastF;\n    const _isDimRush=sk.id==='chargeBoost'&&_dimRushF&&!_dimBlastF;\n    const _isDimThunder=sk.id==='chargeBoost'&&_dimThunderF&&!_dimRushF&&!_dimBlastF;\n    const _isDimSlam=sk.id==='chargeBoost'&&_dimSlamF&&!_dimThunderF&&!_dimRushF&&!_dimBlastF;\n    const _isDimFuse=sk.id==='chargeBoost'&&_dimFuse&&!_dimSlamF&&!_dimThunderF&&!_dimRushF&&!_dimBlastF;\n    // ═══ 합체 호스트 감지 (흡수 스킬은 위 _isAbsorbed에서 이미 제거됨) ═══\n    const _stormBeamF=_isFused('stormBeam');\n    const _slamStormF=P.skills.whirlwind>=1&&P.skills.detonate>=1&&P.skills.giantSlam>=1&&_isFused('slamStorm');\n    const _synth=P.skills.whirlwind>=1&&P.skills.detonate>=1&&_isFused('whirlDet');\n    const _isStormBeam=sk.id==='whirlwind'&&_stormBeamF;\n    const _isSlamStorm=sk.id==='whirlwind'&&_slamStormF&&!_stormBeamF;\n    const _isSynth=sk.id==='whirlwind'&&_synth&&!_slamStormF&&!_stormBeamF;\n    const _bladeFuse=P.skills.maliceHunt>=1&&P.skills.guardian>=1&&_isFused('bladeFuse');\n    const _isBladeFuse=sk.id==='maliceHunt'&&_bladeFuse&&!(P.skills.plagueBurst>=1&&_isFused('plagueFuse'));\n    const _iceMortarFuse=P.skills.maliceMortar>=1&&P.skills.iceOrb>=1&&_isFused('iceMortar');\n    const _isIceFuse=sk.id==='maliceMortar'&&_iceMortarFuse;\n    const _elemFuseF=P.skills.fanShot>=1&&P.skills.omniBeam>=1&&P.skills.elemMissile>=1&&_isFused('elemFuse');\n    const _sixFuse=P.skills.fanShot>=1&&P.skills.omniBeam>=1&&_isFused('sixFuse');\n    const _isElemFuse=sk.id==='omniBeam'&&_elemFuseF&&!_stormBeamF;\n    const _isSixFuse=sk.id==='fanShot'&&_sixFuse&&!_elemFuseF&&!_stormBeamF;\n    const _elecRepentF=P.skills.maliceStorm>=1&&P.skills.hellRay>=1&&_isFused('elecRepent');\n    const _boneStormF=P.skills.maliceStorm>=1&&P.skills.boneWall>=1&&_isFused('boneStorm')&&!_elecRepentF;\n    const _isElecRepent=sk.id==='maliceStorm'&&_elecRepentF;\n    const _isBoneStorm=sk.id==='maliceStorm'&&_boneStormF&&!_elecRepentF;\n    const _shieldFuseF=P.skills.maliceSwipe>=1&&P.skills.shieldThrow>=1&&_isFused('shieldFuse');\n    const _isShieldFuse=sk.id==='maliceSwipe'&&_shieldFuseF;\n    const _plagueFuseF=P.skills.maliceHunt>=1&&P.skills.plagueBurst>=1&&_isFused('plagueFuse');\n    const _plagueVenomF=P.skills.maliceHunt>=1&&P.skills.venomBlade>=1&&_isFused('plagueVenom');\n    const _isPlagueVenom=sk.id==='maliceHunt'&&P.skills.venomBlade>=1&&_isFused('plagueVenom');\n    const _isPlagueFuse=sk.id==='maliceHunt'&&_plagueFuseF&&!_isPlagueVenom;\n    const _holyW4F=_isFused('holyWeak4')&&P.skills.holyDome>=1&&P.skills.weakRev>=1;\n    const _holyW3F=!_holyW4F&&_isFused('holyWeak3')&&P.skills.holyDome>=1&&P.skills.weakPj>=1;\n    const _holyW2F=!_holyW4F&&!_holyW3F&&_isFused('holyWeak2')&&P.skills.holyDome>=1&&P.skills.weakMag>=1;\n    const _holyW1F=!_holyW4F&&!_holyW3F&&!_holyW2F&&_isFused('holyWeak1')&&P.skills.holyDome>=1&&P.skills.weakPhys>=1;\n    const _holyIceF=!_holyW4F&&!_holyW3F&&!_holyW2F&&!_holyW1F&&P.skills.holyDome>=1&&P.skills.holyPrison>=1&&P.skills.iceStorm>=1&&_isFused('holyIce');\n    const _holyFuseF=!_holyW4F&&!_holyW3F&&!_holyW2F&&!_holyW1F&&!_holyIceF&&(P.skills.holyDome>=1&&P.skills.holyPrison>=1&&_isFused('holyFuse'));\n    const _isHolyW4=sk.id==='holyDome'&&_holyW4F;\n    const _isHolyW3=sk.id==='holyDome'&&_holyW3F;\n    const _isHolyW2=sk.id==='holyDome'&&_holyW2F;\n    const _isHolyW1=sk.id==='holyDome'&&_holyW1F;\n    const _isHolyIce=sk.id==='holyDome'&&_holyIceF;\n    const _isHolyFuse=sk.id==='holyDome'&&_holyFuseF;\n    const _pillarSlamF=P.skills.giantSlam2>=1&&P.skills.darkPillar>=1&&_isFused('pillarSlam');\n    const _pillarSpikeF=P.skills.darkPillar>=1&&P.skills.spikeTrap>=1&&_isFused('pillarSpike')&&!_pillarSlamF;\n    const _isPillarSlam=sk.id==='giantSlam2'&&_pillarSlamF;\n    const _isPillarSpike=sk.id==='darkPillar'&&_pillarSpikeF;\n    const _infernoSlamF=P.skills.giantSlam2>=1&&P.skills.fireAura>=1&&_isFused('infernoSlam')&&!_pillarSlamF;\n    const _isInfernoSlam=sk.id==='giantSlam2'&&_infernoSlamF;\n    const _siegeGhostF=P.skills.ghostXbowTurret>=1&&P.skills.voidScarecrow>=1&&_isFused('siegeGhost');\n    const _isSiegeGhost=sk.id==='ghostXbowTurret'&&_siegeGhostF;\n    const _dualScarecrowF=P.skills.voidScarecrow>=1&&P.skills.explodeScarecrow>=1&&_isFused('dualScarecrow');\n    const _isDualScarecrow=sk.id==='voidScarecrow'&&_dualScarecrowF;\n    const _thunderGhostF=P.skills.bladeDash>=1&&P.skills.thunderStake>=1&&_isFused('thunderGhost');\n    const _isThunderGhost=sk.id==='bladeDash'&&_thunderGhostF;\n    const _timeStepF=P.skills.timeWarp>=1&&P.skills.ghostWalk>=1&&_isFused('timeStep');\n    const _isTimeStep=sk.id==='timeWarp'&&_timeStepF;\n    const _stormBurstF=_stormBeamF&&P.skills.burstLoop>=1&&_isFused('stormBurst');\n    const _isStormBurst=sk.id==='whirlwind'&&_stormBurstF;\n    const slv=P.skills[sk.id]||0; // 0=미습득, 1+=습득(강화 횟수)\n    const learned=slv>=1;\n    const _reqMet=sk.requires?(P.skills[sk.requires]||0)>=1:true;\n    const _hasUltLearned=false; // 필살기 전부 습득 가능\n    const _lvMet=sk.reqLv?P.lv>=sk.reqLv:true;\n    const canLearn=!learned&&_reqMet&&_lvMet&&P.sp>=sk.spCost&&G.mats>=_malCost(sk.matCost||0);\n    const _skMaxLv=20;\n    const _skLvLock=Math.min(20,~~(P.lv/50)+1); // 50렙당 +1 (Lv1=1렙, Lv50=2렙, Lv100=3렙, ... Lv950=20렙)\n    // 합체 강화 통합: 구성 스킬 upSp/upMat 합산\n    const _isFuseUp=_isStormBurst||_isStormBeam||_isDimBlast||_isDimRush||_isDimFuse||_isDimSlam||_isDimThunder||_isSlamStorm||_isSynth||_isElemFuse||_isSixFuse||_isBladeFuse||_isIceFuse||_isBoneStorm||_isElecRepent||_isShieldFuse||_isPlagueFuse||_isPlagueVenom||_isHolyFuse||_isHolyIce||_isHolyW1||_isHolyW2||_isHolyW3||_isHolyW4||_isPillarSlam||_isPillarSpike||_isInfernoSlam||_isSiegeGhost||_isDualScarecrow||_isThunderGhost||_isTimeStep;\n    let _fuseUpSp=0,_fuseUpMat=0,_fuseCanUp=false;\n    if(_isFuseUp){\n      const _fk2=_isStormBurst?'stormBurst':_isStormBeam?'stormBeam':_isDimBlast?'dimBlast':_isDimRush?'dimRush':_isDimThunder?'dimThunder':_isDimSlam?'dimSlam':_isDimFuse?'dimBreach':_isSlamStorm?'slamStorm':_isSynth?'whirlDet':_isElemFuse?'elemFuse':_isSixFuse?'sixFuse':_isBladeFuse?'bladeFuse':_isBoneStorm?'boneStorm':_isElecRepent?'elecRepent':_isShieldFuse?'shieldFuse':_isPlagueVenom?'plagueVenom':_isPlagueFuse?'plagueFuse':_isPillarSlam?'pillarSlam':_isPillarSpike?'pillarSpike':_isInfernoSlam?'infernoSlam':_isSiegeGhost?'siegeGhost':_isDualScarecrow?'dualScarecrow':_isThunderGhost?'thunderGhost':_isTimeStep?'timeStep':_isHolyW4?'holyWeak4':_isHolyW3?'holyWeak3':_isHolyW2?'holyWeak2':_isHolyW1?'holyWeak1':_isHolyIce?'holyIce':_isHolyFuse?'holyFuse':'iceMortar';\n      const _fIds2=_fk2==='stormBeam'?['whirlwind','detonate','giantSlam','fanShot','omniBeam','elemMissile']:_fk2==='elemFuse'?['fanShot','omniBeam','elemMissile']:_fk2==='slamStorm'?['whirlwind','detonate','giantSlam']:(_FUSE_PAIRS[_fk2]||[]);\n      const _fLv2=Math.min(..._fIds2.map(id=>P.skills[id]||1));\n      const _gemGrp=_FUSE_GEM_GROUPS[_fk2];const _gemCnt=(_gemGrp&&_gemGrp.star)||_fIds2.length;_fuseUpSp=_fuseUpSpCost(_fLv2,_gemCnt);\n      _fuseCanUp=_fLv2<_skMaxLv&&P.sp>=_fuseUpSp;\n    }\n    const _singleUpSp=_skillUpSpCost(slv,false);\n    const canUp=(learned&&sk.up&&slv<_skMaxLv&&slv<_skLvLock&&P.sp>=_singleUpSp&&G.mats>=_malCost(sk.upMat||0)&&!_isFuseUp)||(_fuseCanUp&&slv<_skLvLock);\n    const d=document.createElement('div');\n    d.dataset.skId=sk.id; // 라인 연결용 식별자\n"
+        },
+        "learnedCapture": {
+          "lineStart": 44778,
+          "lineEnd": 44778,
+          "SHA256": "127a3edd2d1397aeec9c8ea21953654f16715ddd5ae1d39273dcce6c190deed4",
+          "text": "    const learned=slv>=1;"
+        },
+        "minus": {
+          "lineStart": 45283,
+          "lineEnd": 45346,
+          "SHA256": "58c70a6a3115fce62154cd1374838af21d0a39fc331f9c138ed02fac38993a3d",
+          "text": "    function _skMinusClick(){\n        if(!learned)return;\n        const _unfuseAllNow=()=>{\n          let _refundedSp=0;\n          if(P._fused){\n            for(const _fk in P._fused){\n              if(!P._fused[_fk])continue;\n              const _fIds=_FUSE_PAIRS[_fk]||[];\n              const _grpDef=_FUSE_GEM_GROUPS&&_FUSE_GEM_GROUPS[_fk];\n              if(_fIds.includes(sk.id)||(_grpDef&&_grpDef.skills&&_grpDef.skills.includes(sk.id))){\n                delete P._fused[_fk];\n                const _avgLv=_fIds.length?Math.min.apply(null,_fIds.map(id=>P.skills[id]||1)):1;\n                if(_avgLv>1){\n                  const _gemC=_fIds.length||1;\n                  for(let _l=1;_l<_avgLv;_l++){_refundedSp+=_fuseUpSpCost(_l,_gemC)}\n                }\n              }\n            }\n          }\n          return _refundedSp;\n        };\n        const _fGrpNow=_fuseGemGroup(sk.id);\n        const _isFusedNow=_fGrpNow&&_isFused(_fGrpNow.key);\n        const _curLv=(P.skills[sk.id]||0);\n        if(_curLv>1){\n          // 합체 상태면 합체 단위로 레벨 다운 + 합체 강화비 환불\n          const _activeFuseKeys=[];\n          for(const _fk of Object.keys(P._fused||{})){\n            if(!P._fused[_fk])continue;\n            const _fg=_FUSE_GEM_GROUPS[_fk]||{};\n            const _ids=(_fg.skills&&_fg.skills.length)?_fg.skills:(_FUSE_PAIRS[_fk]||[]);\n            if(_ids.includes(sk.id))_activeFuseKeys.push(_fk);\n          }\n          if(_activeFuseKeys.length){\n            let _bestK=_activeFuseKeys[0],_bestN=0;\n            for(const _fk of _activeFuseKeys){\n              const _fg=_FUSE_GEM_GROUPS[_fk]||{};\n              const _ids=(_fg.skills&&_fg.skills.length)?_fg.skills:(_FUSE_PAIRS[_fk]||[]);\n              if(_ids.length>_bestN){_bestN=_ids.length;_bestK=_fk}\n            }\n            const _bg=_FUSE_GEM_GROUPS[_bestK]||{};\n            const _ids=(_bg.skills&&_bg.skills.length)?_bg.skills:(_FUSE_PAIRS[_bestK]||[]);\n            const _gemC=(_bg.star)||_ids.length||1;\n            const _fLv=Math.min(..._ids.map(id=>P.skills[id]||1));\n            if(_fLv>1){\n              const _refundSp=_fuseUpSpCost(_fLv-1,_gemC);\n              _ids.forEach(id=>{if((P.skills[id]||1)>=_fLv)P.skills[id]=_fLv-1});\n              P.sp+=_refundSp;\n              SFX.pickup();addTxt(P.x,P.y-30,_T('합체 Lv.')+(_fLv-1)+' (-)','#55ccff',60);\n            }else{\n              addTxt(P.x,P.y-30,_L('리셋/합체해제는 리셋 버튼 사용','Use Reset button for reset/unfuse'),'#ff6666',60);\n              return;\n            }\n          }else{\n            const _refundSp=_skillUpSpCost(_curLv-1,false);\n            P.skills[sk.id]=_curLv-1;P.sp+=_refundSp;G.mats+=_malCost(sk.upMat||0);\n            SFX.pickup();addTxt(P.x,P.y-30,_T(sk.name)+' Lv.'+(_curLv-1)+' (-)','#ff8844',60);\n          }\n        }else{\n          addTxt(P.x,P.y-30,_L('리셋/합체해제는 리셋 버튼 사용','Use Reset button for reset/unfuse'),'#ff6666',60);\n          return;\n        }\n        renderSkillPanel();updateSkSlot&&updateSkSlot();updateQS&&updateQS();dbSaveForce();\n    }\n"
+        },
+        "buttons": {
+          "lineStart": 45404,
+          "lineEnd": 45432,
+          "SHA256": "9b89eecee470b1eeec11cc7ac80177207c6bd0e883cfe4bb7e47f650361342d6",
+          "text": "    // 일반 카드(+/-) 버튼: compact 펼침 카드는 자체 버튼을 사용\n    if(!(_skCompact&&_isExpanded)&&(learned||canLearn||canUp)){\n      const _btnRow2=document.createElement('div');\n      _btnRow2.dataset.nodrag='1';\n      _btnRow2.style.cssText='display:flex;gap:6px;margin-top:8px;justify-content:flex-end';\n      if(learned){\n        const _bMin2=document.createElement('div');\n        _bMin2.dataset.nodrag='1';\n        _bMin2.style.cssText='padding:3px 8px;min-width:28px;background:rgba(80,30,30,0.45);border:1px solid #cc4444;border-radius:4px;color:#ff8888;font-size:.95rem;text-align:center;cursor:pointer;font-weight:700;line-height:1.1';\n        _bMin2.textContent='-';\n        _bMin2.title=_L('레벨다운 / 취소','Level down / cancel');\n        _bMin2.onmouseenter=()=>{_bMin2.style.background='rgba(120,40,40,0.7)'};\n        _bMin2.onmouseleave=()=>{_bMin2.style.background='rgba(80,30,30,0.45)'};\n        _bMin2.onclick=(ev)=>{ev.stopPropagation();_skMinusClick()};\n        _btnRow2.appendChild(_bMin2);\n      }\n      if(canLearn||canUp){\n        const _bPlus2=document.createElement('div');\n        _bPlus2.dataset.nodrag='1';\n        _bPlus2.style.cssText='padding:3px 8px;min-width:28px;background:rgba(60,40,15,0.6);border:1px solid #aa8833;border-radius:4px;color:#ffcc66;font-size:.95rem;text-align:center;cursor:pointer;font-weight:700;line-height:1.1';\n        _bPlus2.textContent='+';\n        _bPlus2.title=canLearn?( _L('습득','Learn') ):( _L('레벨업','Level up') );\n        _bPlus2.onmouseenter=()=>{_bPlus2.style.background='rgba(80,55,20,0.7)'};\n        _bPlus2.onmouseleave=()=>{_bPlus2.style.background='rgba(60,40,15,0.6)'};\n        _bPlus2.onclick=(ev)=>{ev.stopPropagation();_skClick()};\n        _btnRow2.appendChild(_bPlus2);\n      }\n      if(_btnRow2.children.length>0)d.appendChild(_btnRow2);\n    }\n"
+        },
+        "minusBinding": {
+          "lineStart": 45417,
+          "lineEnd": 45417,
+          "SHA256": "c41723097ebba0b6eac74c467476048a915aefa0afde9a4b5dec9e28d6c417b4",
+          "text": "        _bMin2.onclick=(ev)=>{ev.stopPropagation();_skMinusClick()};"
+        },
+        "append": {
+          "lineStart": 45448,
+          "lineEnd": 45448,
+          "SHA256": "45111ca46990c19399098f8161cd3f52cbd1d0c0a663e9757eb0a2125395a355",
+          "text": "    grid.appendChild(d);"
+        },
+        "plusFirstStatement": {
+          "lineStart": 45348,
+          "lineEnd": 45348,
+          "SHA256": "585ad8c3c99dacf878d3b2c4ec25907dd8d2f4da0505084334b96c28541454ec",
+          "text": "    function _skClick(){if(!d.isConnected||!grid.contains(d))return;"
+        }
+      }
+    },
+    "executions": [
+      {
+        "file": "game.html",
+        "version": "source",
+        "verdict": "RED",
+        "verification": "PASS",
+        "criterion": "Detached old minus has no further member/refund/save/UI/SFX effects",
+        "rejection": "Detached minus must not lower members again\n+ actual - expected\n\n  {\n+   detonate: 1,\n+   whirlwind: 1\n-   detonate: 2,\n-   whirlwind: 2\n  }\n",
+        "selection": {
+          "key": "whirlDet",
+          "members": [
+            "whirlwind",
+            "detonate"
+          ],
+          "explicitStar": null,
+          "star": 2,
+          "definition": {
+            "color": "#ff7722",
+            "color2": "#ffee00",
+            "tier": "clear",
+            "minLv": 5,
+            "skills": [
+              "whirlwind",
+              "detonate"
+            ]
+          },
+          "pairs": [
+            "whirlwind",
+            "detonate"
+          ],
+          "selectedGroup": "whirlDet",
+          "refund3to2": 2,
+          "refund2to1": 2
+        },
+        "trace": [
+          {
+            "label": "start",
+            "members": {
+              "whirlwind": 3,
+              "detonate": 3
+            },
+            "sp": 10,
+            "mats": 80,
+            "fused": {
+              "whirlDet": true
+            },
+            "slots": [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "ultSlot": null,
+            "activeLMBSk": "whirlwind",
+            "counts": {
+              "render": 1,
+              "save": 0,
+              "slotUpdate": 0,
+              "quickUpdate": 0,
+              "sfx": 0,
+              "stopPropagation": 0,
+              "rng": 0
+            },
+            "effects": [],
+            "capture": {
+              "slv": 3,
+              "learned": true,
+              "canLearn": false,
+              "canUp": false
+            }
+          },
+          {
+            "label": "after-connected-first",
+            "members": {
+              "whirlwind": 2,
+              "detonate": 2
+            },
+            "sp": 12,
+            "mats": 80,
+            "fused": {
+              "whirlDet": true
+            },
+            "slots": [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "ultSlot": null,
+            "activeLMBSk": "whirlwind",
+            "counts": {
+              "render": 2,
+              "save": 1,
+              "slotUpdate": 1,
+              "quickUpdate": 1,
+              "sfx": 1,
+              "stopPropagation": 1,
+              "rng": 0
+            },
+            "effects": [
+              {
+                "kind": "pickup"
+              },
+              {
+                "kind": "addTxt",
+                "args": [
+                  100,
+                  70,
+                  "합체 Lv.2 (-)",
+                  "#55ccff",
+                  60
+                ]
+              }
+            ],
+            "capture": {
+              "slv": 2,
+              "learned": true,
+              "canLearn": false,
+              "canUp": true
+            },
+            "oldCardConnected": false,
+            "oldMinusConnected": false,
+            "oldCardInCurrentGrid": false
+          },
+          {
+            "label": "after-saved-detached",
+            "members": {
+              "whirlwind": 1,
+              "detonate": 1
+            },
+            "sp": 14,
+            "mats": 80,
+            "fused": {
+              "whirlDet": true
+            },
+            "slots": [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "ultSlot": null,
+            "activeLMBSk": "whirlwind",
+            "counts": {
+              "render": 3,
+              "save": 2,
+              "slotUpdate": 2,
+              "quickUpdate": 2,
+              "sfx": 2,
+              "stopPropagation": 2,
+              "rng": 0
+            },
+            "effects": [
+              {
+                "kind": "pickup"
+              },
+              {
+                "kind": "addTxt",
+                "args": [
+                  100,
+                  70,
+                  "합체 Lv.2 (-)",
+                  "#55ccff",
+                  60
+                ]
+              },
+              {
+                "kind": "pickup"
+              },
+              {
+                "kind": "addTxt",
+                "args": [
+                  100,
+                  70,
+                  "합체 Lv.1 (-)",
+                  "#55ccff",
+                  60
+                ]
+              }
+            ],
+            "capture": {
+              "slv": 1,
+              "learned": true,
+              "canLearn": false,
+              "canUp": true
+            },
+            "oldCardConnected": false,
+            "oldMinusConnected": false,
+            "oldCardInCurrentGrid": false
+          }
+        ],
+        "captures": [
+          {
+            "slv": 3,
+            "learned": true,
+            "canLearn": false,
+            "canUp": false
+          },
+          {
+            "slv": 2,
+            "learned": true,
+            "canLearn": false,
+            "canUp": true
+          },
+          {
+            "slv": 1,
+            "learned": true,
+            "canLearn": false,
+            "canUp": true
+          }
+        ],
+        "detachedDelta": {
+          "members": {
+            "whirlwind": -1,
+            "detonate": -1
+          },
+          "sp": 2,
+          "mats": 0,
+          "calls": {
+            "render": 1,
+            "save": 1,
+            "slotUpdate": 1,
+            "quickUpdate": 1,
+            "sfx": 1,
+            "stopPropagation": 1,
+            "rng": 0
+          },
+          "newEffects": [
+            {
+              "kind": "pickup"
+            },
+            {
+              "kind": "addTxt",
+              "args": [
+                100,
+                70,
+                "합체 Lv.1 (-)",
+                "#55ccff",
+                60
+              ]
+            }
+          ]
+        },
+        "helperSHA256": "0c693c490c9d1abb95a8eb1a267bd36e253c1992356f6cc7a7c4fad2a7bf15a9",
+        "rendererSHA256": "13dc428127c541221c59974d19df1d9acf513a868ae5d46a28bf1bdf9b16bfa7",
+        "minusSHA256": "58c70a6a3115fce62154cd1374838af21d0a39fc331f9c138ed02fac38993a3d",
+        "nativeInput": false,
+        "fullRender": false,
+        "storageIO": false,
+        "audioPlayback": false
+      },
+      {
+        "file": "game.html",
+        "version": "candidate",
+        "verdict": "GREEN",
+        "verification": "PASS",
+        "criterion": "Detached old minus has no further member/refund/save/UI/SFX effects",
+        "rejection": null,
+        "selection": {
+          "key": "whirlDet",
+          "members": [
+            "whirlwind",
+            "detonate"
+          ],
+          "explicitStar": null,
+          "star": 2,
+          "definition": {
+            "color": "#ff7722",
+            "color2": "#ffee00",
+            "tier": "clear",
+            "minLv": 5,
+            "skills": [
+              "whirlwind",
+              "detonate"
+            ]
+          },
+          "pairs": [
+            "whirlwind",
+            "detonate"
+          ],
+          "selectedGroup": "whirlDet",
+          "refund3to2": 2,
+          "refund2to1": 2
+        },
+        "trace": [
+          {
+            "label": "start",
+            "members": {
+              "whirlwind": 3,
+              "detonate": 3
+            },
+            "sp": 10,
+            "mats": 80,
+            "fused": {
+              "whirlDet": true
+            },
+            "slots": [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "ultSlot": null,
+            "activeLMBSk": "whirlwind",
+            "counts": {
+              "render": 1,
+              "save": 0,
+              "slotUpdate": 0,
+              "quickUpdate": 0,
+              "sfx": 0,
+              "stopPropagation": 0,
+              "rng": 0
+            },
+            "effects": [],
+            "capture": {
+              "slv": 3,
+              "learned": true,
+              "canLearn": false,
+              "canUp": false
+            }
+          },
+          {
+            "label": "after-connected-first",
+            "members": {
+              "whirlwind": 2,
+              "detonate": 2
+            },
+            "sp": 12,
+            "mats": 80,
+            "fused": {
+              "whirlDet": true
+            },
+            "slots": [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "ultSlot": null,
+            "activeLMBSk": "whirlwind",
+            "counts": {
+              "render": 2,
+              "save": 1,
+              "slotUpdate": 1,
+              "quickUpdate": 1,
+              "sfx": 1,
+              "stopPropagation": 1,
+              "rng": 0
+            },
+            "effects": [
+              {
+                "kind": "pickup"
+              },
+              {
+                "kind": "addTxt",
+                "args": [
+                  100,
+                  70,
+                  "합체 Lv.2 (-)",
+                  "#55ccff",
+                  60
+                ]
+              }
+            ],
+            "capture": {
+              "slv": 2,
+              "learned": true,
+              "canLearn": false,
+              "canUp": true
+            },
+            "oldCardConnected": false,
+            "oldMinusConnected": false,
+            "oldCardInCurrentGrid": false
+          },
+          {
+            "label": "after-saved-detached",
+            "members": {
+              "whirlwind": 2,
+              "detonate": 2
+            },
+            "sp": 12,
+            "mats": 80,
+            "fused": {
+              "whirlDet": true
+            },
+            "slots": [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "ultSlot": null,
+            "activeLMBSk": "whirlwind",
+            "counts": {
+              "render": 2,
+              "save": 1,
+              "slotUpdate": 1,
+              "quickUpdate": 1,
+              "sfx": 1,
+              "stopPropagation": 2,
+              "rng": 0
+            },
+            "effects": [
+              {
+                "kind": "pickup"
+              },
+              {
+                "kind": "addTxt",
+                "args": [
+                  100,
+                  70,
+                  "합체 Lv.2 (-)",
+                  "#55ccff",
+                  60
+                ]
+              }
+            ],
+            "capture": {
+              "slv": 2,
+              "learned": true,
+              "canLearn": false,
+              "canUp": true
+            },
+            "oldCardConnected": false,
+            "oldMinusConnected": false,
+            "oldCardInCurrentGrid": false
+          }
+        ],
+        "captures": [
+          {
+            "slv": 3,
+            "learned": true,
+            "canLearn": false,
+            "canUp": false
+          },
+          {
+            "slv": 2,
+            "learned": true,
+            "canLearn": false,
+            "canUp": true
+          }
+        ],
+        "detachedDelta": {
+          "members": {
+            "whirlwind": 0,
+            "detonate": 0
+          },
+          "sp": 0,
+          "mats": 0,
+          "calls": {
+            "render": 0,
+            "save": 0,
+            "slotUpdate": 0,
+            "quickUpdate": 0,
+            "sfx": 0,
+            "stopPropagation": 1,
+            "rng": 0
+          },
+          "newEffects": []
+        },
+        "helperSHA256": "0c693c490c9d1abb95a8eb1a267bd36e253c1992356f6cc7a7c4fad2a7bf15a9",
+        "rendererSHA256": "563c3e02ee7c6993526c575c650112584520e2de7a472392f708ee0cc38cdd92",
+        "minusSHA256": "7f59bec25e231f859af9b50ec9909c2391b487339186548b200326061e3b86de",
+        "nativeInput": false,
+        "fullRender": false,
+        "storageIO": false,
+        "audioPlayback": false
+      },
+      {
+        "file": "game-easy-test.html",
+        "version": "source",
+        "verdict": "RED",
+        "verification": "PASS",
+        "criterion": "Detached old minus has no further member/refund/save/UI/SFX effects",
+        "rejection": "Detached minus must not lower members again\n+ actual - expected\n\n  {\n+   detonate: 1,\n+   whirlwind: 1\n-   detonate: 2,\n-   whirlwind: 2\n  }\n",
+        "selection": {
+          "key": "whirlDet",
+          "members": [
+            "whirlwind",
+            "detonate"
+          ],
+          "explicitStar": null,
+          "star": 2,
+          "definition": {
+            "color": "#ff7722",
+            "color2": "#ffee00",
+            "tier": "clear",
+            "minLv": 5,
+            "skills": [
+              "whirlwind",
+              "detonate"
+            ]
+          },
+          "pairs": [
+            "whirlwind",
+            "detonate"
+          ],
+          "selectedGroup": "whirlDet",
+          "refund3to2": 2,
+          "refund2to1": 2
+        },
+        "trace": [
+          {
+            "label": "start",
+            "members": {
+              "whirlwind": 3,
+              "detonate": 3
+            },
+            "sp": 10,
+            "mats": 80,
+            "fused": {
+              "whirlDet": true
+            },
+            "slots": [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "ultSlot": null,
+            "activeLMBSk": "whirlwind",
+            "counts": {
+              "render": 1,
+              "save": 0,
+              "slotUpdate": 0,
+              "quickUpdate": 0,
+              "sfx": 0,
+              "stopPropagation": 0,
+              "rng": 0
+            },
+            "effects": [],
+            "capture": {
+              "slv": 3,
+              "learned": true,
+              "canLearn": false,
+              "canUp": false
+            }
+          },
+          {
+            "label": "after-connected-first",
+            "members": {
+              "whirlwind": 2,
+              "detonate": 2
+            },
+            "sp": 12,
+            "mats": 80,
+            "fused": {
+              "whirlDet": true
+            },
+            "slots": [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "ultSlot": null,
+            "activeLMBSk": "whirlwind",
+            "counts": {
+              "render": 2,
+              "save": 1,
+              "slotUpdate": 1,
+              "quickUpdate": 1,
+              "sfx": 1,
+              "stopPropagation": 1,
+              "rng": 0
+            },
+            "effects": [
+              {
+                "kind": "pickup"
+              },
+              {
+                "kind": "addTxt",
+                "args": [
+                  100,
+                  70,
+                  "합체 Lv.2 (-)",
+                  "#55ccff",
+                  60
+                ]
+              }
+            ],
+            "capture": {
+              "slv": 2,
+              "learned": true,
+              "canLearn": false,
+              "canUp": true
+            },
+            "oldCardConnected": false,
+            "oldMinusConnected": false,
+            "oldCardInCurrentGrid": false
+          },
+          {
+            "label": "after-saved-detached",
+            "members": {
+              "whirlwind": 1,
+              "detonate": 1
+            },
+            "sp": 14,
+            "mats": 80,
+            "fused": {
+              "whirlDet": true
+            },
+            "slots": [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "ultSlot": null,
+            "activeLMBSk": "whirlwind",
+            "counts": {
+              "render": 3,
+              "save": 2,
+              "slotUpdate": 2,
+              "quickUpdate": 2,
+              "sfx": 2,
+              "stopPropagation": 2,
+              "rng": 0
+            },
+            "effects": [
+              {
+                "kind": "pickup"
+              },
+              {
+                "kind": "addTxt",
+                "args": [
+                  100,
+                  70,
+                  "합체 Lv.2 (-)",
+                  "#55ccff",
+                  60
+                ]
+              },
+              {
+                "kind": "pickup"
+              },
+              {
+                "kind": "addTxt",
+                "args": [
+                  100,
+                  70,
+                  "합체 Lv.1 (-)",
+                  "#55ccff",
+                  60
+                ]
+              }
+            ],
+            "capture": {
+              "slv": 1,
+              "learned": true,
+              "canLearn": false,
+              "canUp": true
+            },
+            "oldCardConnected": false,
+            "oldMinusConnected": false,
+            "oldCardInCurrentGrid": false
+          }
+        ],
+        "captures": [
+          {
+            "slv": 3,
+            "learned": true,
+            "canLearn": false,
+            "canUp": false
+          },
+          {
+            "slv": 2,
+            "learned": true,
+            "canLearn": false,
+            "canUp": true
+          },
+          {
+            "slv": 1,
+            "learned": true,
+            "canLearn": false,
+            "canUp": true
+          }
+        ],
+        "detachedDelta": {
+          "members": {
+            "whirlwind": -1,
+            "detonate": -1
+          },
+          "sp": 2,
+          "mats": 0,
+          "calls": {
+            "render": 1,
+            "save": 1,
+            "slotUpdate": 1,
+            "quickUpdate": 1,
+            "sfx": 1,
+            "stopPropagation": 1,
+            "rng": 0
+          },
+          "newEffects": [
+            {
+              "kind": "pickup"
+            },
+            {
+              "kind": "addTxt",
+              "args": [
+                100,
+                70,
+                "합체 Lv.1 (-)",
+                "#55ccff",
+                60
+              ]
+            }
+          ]
+        },
+        "helperSHA256": "740c7e693ef95e4815ceb799da571c16092becbf61dbcc9a28b603cc1eff6f40",
+        "rendererSHA256": "13dc428127c541221c59974d19df1d9acf513a868ae5d46a28bf1bdf9b16bfa7",
+        "minusSHA256": "58c70a6a3115fce62154cd1374838af21d0a39fc331f9c138ed02fac38993a3d",
+        "nativeInput": false,
+        "fullRender": false,
+        "storageIO": false,
+        "audioPlayback": false
+      },
+      {
+        "file": "game-easy-test.html",
+        "version": "candidate",
+        "verdict": "GREEN",
+        "verification": "PASS",
+        "criterion": "Detached old minus has no further member/refund/save/UI/SFX effects",
+        "rejection": null,
+        "selection": {
+          "key": "whirlDet",
+          "members": [
+            "whirlwind",
+            "detonate"
+          ],
+          "explicitStar": null,
+          "star": 2,
+          "definition": {
+            "color": "#ff7722",
+            "color2": "#ffee00",
+            "tier": "clear",
+            "minLv": 5,
+            "skills": [
+              "whirlwind",
+              "detonate"
+            ]
+          },
+          "pairs": [
+            "whirlwind",
+            "detonate"
+          ],
+          "selectedGroup": "whirlDet",
+          "refund3to2": 2,
+          "refund2to1": 2
+        },
+        "trace": [
+          {
+            "label": "start",
+            "members": {
+              "whirlwind": 3,
+              "detonate": 3
+            },
+            "sp": 10,
+            "mats": 80,
+            "fused": {
+              "whirlDet": true
+            },
+            "slots": [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "ultSlot": null,
+            "activeLMBSk": "whirlwind",
+            "counts": {
+              "render": 1,
+              "save": 0,
+              "slotUpdate": 0,
+              "quickUpdate": 0,
+              "sfx": 0,
+              "stopPropagation": 0,
+              "rng": 0
+            },
+            "effects": [],
+            "capture": {
+              "slv": 3,
+              "learned": true,
+              "canLearn": false,
+              "canUp": false
+            }
+          },
+          {
+            "label": "after-connected-first",
+            "members": {
+              "whirlwind": 2,
+              "detonate": 2
+            },
+            "sp": 12,
+            "mats": 80,
+            "fused": {
+              "whirlDet": true
+            },
+            "slots": [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "ultSlot": null,
+            "activeLMBSk": "whirlwind",
+            "counts": {
+              "render": 2,
+              "save": 1,
+              "slotUpdate": 1,
+              "quickUpdate": 1,
+              "sfx": 1,
+              "stopPropagation": 1,
+              "rng": 0
+            },
+            "effects": [
+              {
+                "kind": "pickup"
+              },
+              {
+                "kind": "addTxt",
+                "args": [
+                  100,
+                  70,
+                  "합체 Lv.2 (-)",
+                  "#55ccff",
+                  60
+                ]
+              }
+            ],
+            "capture": {
+              "slv": 2,
+              "learned": true,
+              "canLearn": false,
+              "canUp": true
+            },
+            "oldCardConnected": false,
+            "oldMinusConnected": false,
+            "oldCardInCurrentGrid": false
+          },
+          {
+            "label": "after-saved-detached",
+            "members": {
+              "whirlwind": 2,
+              "detonate": 2
+            },
+            "sp": 12,
+            "mats": 80,
+            "fused": {
+              "whirlDet": true
+            },
+            "slots": [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "ultSlot": null,
+            "activeLMBSk": "whirlwind",
+            "counts": {
+              "render": 2,
+              "save": 1,
+              "slotUpdate": 1,
+              "quickUpdate": 1,
+              "sfx": 1,
+              "stopPropagation": 2,
+              "rng": 0
+            },
+            "effects": [
+              {
+                "kind": "pickup"
+              },
+              {
+                "kind": "addTxt",
+                "args": [
+                  100,
+                  70,
+                  "합체 Lv.2 (-)",
+                  "#55ccff",
+                  60
+                ]
+              }
+            ],
+            "capture": {
+              "slv": 2,
+              "learned": true,
+              "canLearn": false,
+              "canUp": true
+            },
+            "oldCardConnected": false,
+            "oldMinusConnected": false,
+            "oldCardInCurrentGrid": false
+          }
+        ],
+        "captures": [
+          {
+            "slv": 3,
+            "learned": true,
+            "canLearn": false,
+            "canUp": false
+          },
+          {
+            "slv": 2,
+            "learned": true,
+            "canLearn": false,
+            "canUp": true
+          }
+        ],
+        "detachedDelta": {
+          "members": {
+            "whirlwind": 0,
+            "detonate": 0
+          },
+          "sp": 0,
+          "mats": 0,
+          "calls": {
+            "render": 0,
+            "save": 0,
+            "slotUpdate": 0,
+            "quickUpdate": 0,
+            "sfx": 0,
+            "stopPropagation": 1,
+            "rng": 0
+          },
+          "newEffects": []
+        },
+        "helperSHA256": "740c7e693ef95e4815ceb799da571c16092becbf61dbcc9a28b603cc1eff6f40",
+        "rendererSHA256": "563c3e02ee7c6993526c575c650112584520e2de7a472392f708ee0cc38cdd92",
+        "minusSHA256": "7f59bec25e231f859af9b50ec9909c2391b487339186548b200326061e3b86de",
+        "nativeInput": false,
+        "fullRender": false,
+        "storageIO": false,
+        "audioPlayback": false
+      }
+    ],
+    "comparisons": [
+      {
+        "file": "game.html",
+        "normalConnectedCompleteEquivalence": "PASS",
+        "currentDetachedCriterion": "RED",
+        "candidateDetachedCriterion": "GREEN"
+      },
+      {
+        "file": "game-easy-test.html",
+        "normalConnectedCompleteEquivalence": "PASS",
+        "currentDetachedCriterion": "RED",
+        "candidateDetachedCriterion": "GREEN"
+      }
+    ],
+    "failures": [],
+    "candidate": {
+      "applied": false,
+      "scope": "only _skMinusClick first statement",
+      "insertion": "if(!d.isConnected||!grid.contains(d))return;"
+    },
+    "priorAdopted": {
+      "productionPlusGREEN": 2,
+      "plusNegativeControlRED": 2,
+      "plusRerun": 0,
+      "inventoryRerun": 0,
+      "addedToNewCount": 0
+    },
+    "limits": {
+      "statement": "source fixture PASS ≠ runtime/visual/저장/청취 PASS",
+      "scenario": "whirlDet only; all members Lv3, connected minus → rebuild → saved detached minus direct call",
+      "fullRender": false,
+      "nativeInput": false,
+      "naturalDoubleClick": false,
+      "runtimePASS": false,
+      "visualPASS": false,
+      "storagePASS": false,
+      "audioPASS": false,
+      "otherFusion": false,
+      "resetPolicy": false,
+      "PReplacement": false,
+      "asyncReset": false
+    },
+    "realBoundary": "actual _skMinusClick, host/capture/card declarations, minus binding, grid clear/append, group/member/refund helpers",
+    "doubles": "synthetic P/G and source-fragment renderer; existing read-only DOM; save/UI/SFX call sinks; plus callback throws if invoked",
+    "writes": 0,
+    "gitCommands": 0,
+    "server": 0,
+    "http": 0,
+    "game": 0,
+    "uiInput": 0,
+    "audio": 0,
+    "build": 0,
+    "install": 0,
+    "newSessions": 0,
+    "subagents": 0,
+    "externalMessages": 0,
+    "fileDeletion": 0,
+    "moves": 0,
+    "inputsBefore": {
+      "game.html": "6c77ec6f571f4de9cb199a2ac425eb3f0450205bcf6f1d883ac8d13135ac4b43",
+      "game-easy-test.html": "c40ea16180305a3d0043d1c9dfa9091096820e589e537a893d5d28fff56528d0",
+      "AGENTS.md": "fd59bef70960bcaf1ab9910051faa860362884e574ac2869fad05c6872ae04e4",
+      "tools/team-followup-20261002/continuous/COMMON.md": "de5a881270625a7b2d0e854331205e01372a037340a18474c6442b60e668465e",
+      "tools/team-followup-20261002/continuous/UIUX/TASK.md": "d2959681e96aa6cb6cb8ea5d177c3c03537d262ee20827e0e3bb1512ff0ed483",
+      "tools/team-followup-20261002/codex-half/UIUX/result.md": "8cde8f50874d271f8a0af7f92fb1dbb68c3e4fed920d64c2b7788eec99ffa658",
+      "tools/team-followup-20261002/codex-half/UIUX/evidence.json": "d0d3b19059b28f4c84fa3516e034e2cee2eb97915228d7a3a897929d597d6f0e",
+      "tools/team-followup-20261002/root-integration/uiux-skill-lifetime-checks.mjs": "925e58764cbc8096fb785d6d7c2209e8d3af807ddb37d4ef3c3f0bfea7407d41",
+      "tools/team-followup-20261001/UIUX/inventory-dom/node-dom.mjs": "b3c6bb3abf74d5b9e464d1db2e5d2441645af3be8eb096f3c30788b7019cfb95"
+    },
+    "priorBoundarySearch": {
+      "command": [
+        "rg",
+        "-n",
+        "-e",
+        "minus.*(detached|수명)|_skMinusClick.*isConnected|분리된.*minus|이전 minus",
+        "docs",
+        "tools/team-followup-20261001/UIUX",
+        "tools/team-followup-20261002/codex-half/UIUX",
+        "tools/team-followup-20261002/project-teams/UIUX",
+        "--glob",
+        "*.md",
+        "--glob",
+        "*.mjs",
+        "--glob",
+        "!TASK.md",
+        "--glob",
+        "!task.md"
+      ],
+      "exit": 0,
+      "output": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/CONTINUOUS-DISPATCH-20261002.md:11:| UIUX | Codex | 분리된 minus 콜백의 합체 환불 수명 | `tools/team-followup-20261002/continuous/UIUX/TASK.md` | prepared_not_sent |\n",
+      "outputSHA256": "8bf530baec4d40e341d9c7add6c85943e01cfd79da205d2a4ea80ee1b6d7d6c2",
+      "classification": "Only prepared TASK assignment, no prior completed lifetime fixture found"
+    },
+    "counts": {
+      "scenarios": 1,
+      "files": 2,
+      "sourceRED": 2,
+      "candidateGREEN": 2,
+      "comparisonRuns": 4,
+      "previousRerun": 0,
+      "previousAdded": 0
+    },
+    "inputsAfter": {
+      "game.html": "6c77ec6f571f4de9cb199a2ac425eb3f0450205bcf6f1d883ac8d13135ac4b43",
+      "game-easy-test.html": "c40ea16180305a3d0043d1c9dfa9091096820e589e537a893d5d28fff56528d0",
+      "AGENTS.md": "fd59bef70960bcaf1ab9910051faa860362884e574ac2869fad05c6872ae04e4",
+      "tools/team-followup-20261002/continuous/COMMON.md": "de5a881270625a7b2d0e854331205e01372a037340a18474c6442b60e668465e",
+      "tools/team-followup-20261002/continuous/UIUX/TASK.md": "d2959681e96aa6cb6cb8ea5d177c3c03537d262ee20827e0e3bb1512ff0ed483",
+      "tools/team-followup-20261002/codex-half/UIUX/result.md": "8cde8f50874d271f8a0af7f92fb1dbb68c3e4fed920d64c2b7788eec99ffa658",
+      "tools/team-followup-20261002/codex-half/UIUX/evidence.json": "d0d3b19059b28f4c84fa3516e034e2cee2eb97915228d7a3a897929d597d6f0e",
+      "tools/team-followup-20261002/root-integration/uiux-skill-lifetime-checks.mjs": "925e58764cbc8096fb785d6d7c2209e8d3af807ddb37d4ef3c3f0bfea7407d41",
+      "tools/team-followup-20261001/UIUX/inventory-dom/node-dom.mjs": "b3c6bb3abf74d5b9e464d1db2e5d2441645af3be8eb096f3c30788b7019cfb95"
+    },
+    "preservation": {
+      "game.html": true,
+      "game-easy-test.html": true,
+      "AGENTS.md": true,
+      "tools/team-followup-20261002/continuous/COMMON.md": true,
+      "tools/team-followup-20261002/continuous/UIUX/TASK.md": true,
+      "tools/team-followup-20261002/codex-half/UIUX/result.md": true,
+      "tools/team-followup-20261002/codex-half/UIUX/evidence.json": true,
+      "tools/team-followup-20261002/root-integration/uiux-skill-lifetime-checks.mjs": true,
+      "tools/team-followup-20261001/UIUX/inventory-dom/node-dom.mjs": true
+    },
+    "finishedUTC": "2026-10-02T05:28:00.119Z",
+    "finishedKST": "2026-10-02 14:28:00 KST",
+    "status": "PASS"
+  },
+  "productionApplied": false,
+  "toolsActuallyUsed": {
+    "functionsExec": true,
+    "execCommand": true,
+    "applyPatch": true,
+    "NodeVM": true,
+    "rg": true,
+    "skills": [],
+    "API": [],
+    "MCP": [],
+    "note": "추가 스킬/API/MCP는 이번 좁은 read-only source fixture에 필요 없어 호출0; 가용 목록을 사용 이력으로 계산하지 않음"
+  },
+  "errors": [],
+  "limits": {
+    "statement": "source fixture PASS ≠ runtime/visual/저장/청취 PASS",
+    "scenario": "whirlDet only; all members Lv3, connected minus → rebuild → saved detached minus direct call",
+    "fullRender": false,
+    "nativeInput": false,
+    "naturalDoubleClick": false,
+    "runtimePASS": false,
+    "visualPASS": false,
+    "storagePASS": false,
+    "audioPASS": false,
+    "otherFusion": false,
+    "resetPolicy": false,
+    "PReplacement": false,
+    "asyncReset": false
+  },
+  "changes": {
+    "currentCount": "UNKNOWN",
+    "reason": "Git 명령 금지; 총괄의 현행 count 제공 없음",
+    "threshold80": "총괄 checkpoint 필요",
+    "stopBefore100": true
+  },
+  "owner": {
+    "directory": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/UIUX",
+    "allowedWrites": [
+      "checks.mjs",
+      "result.md",
+      "evidence.json"
+    ],
+    "TASKImmutable": true
+  },
+  "prohibitedActions": {
+    "productionWrites": 0,
+    "sharedDocsWrites": 0,
+    "priorArtifactsWrites": 0,
+    "GitCommands": 0,
+    "index": 0,
+    "commit": 0,
+    "push": 0,
+    "server": 0,
+    "http": 0,
+    "game": 0,
+    "UI": 0,
+    "audio": 0,
+    "build": 0,
+    "install": 0,
+    "accountPermissions": 0,
+    "billing": 0,
+    "publishing": 0,
+    "externalMessages": 0,
+    "newSessions": 0,
+    "subagents": 0,
+    "deletion": 0,
+    "cleanup": 0,
+    "moves": 0,
+    "outsideOwnerWrites": 0
+  },
+  "docsSearch": {
+    "command": [
+      "rg",
+      "-n",
+      "-e",
+      "_skMinusClick|renderSkillPanel|합체|레벨다운|환불|_fuseUpSpCost|isConnected|whirlDet|_renderSkillRow",
+      "docs"
+    ],
+    "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "startedUTC": "2026-10-02T05:30:17.710Z",
+    "finishedUTC": "2026-10-02T05:30:17.743Z",
+    "exit": 0,
+    "pattern": "_skMinusClick|renderSkillPanel|합체|레벨다운|환불|_fuseUpSpCost|isConnected|whirlDet|_renderSkillRow",
+    "lineCount": 679,
+    "fileCount": 133,
+    "outputSHA256": "dfbeb17328894c26da15ce4d8c2fbabeb618b3804c42b39ea72d9338703f5fb6",
+    "outputBytes": 181342,
+    "rawOutputStored": false,
+    "coverage": "docs 전체; glob 제한 없음. 목록/행/출력SHA 기록",
+    "files": [
+      {
+        "file": "docs/0마스터플랜/DEMO/HELL_DEMO_BUILD_NOTES.md",
+        "matchingLines": [
+          49
+        ],
+        "SHA256": "8d8af731d22312d9d7ceeb63ca118b4c022aad63d177fe0ecae7a3aa0e8aa2cb"
+      },
+      {
+        "file": "docs/0마스터플랜/EA/HELL_EA_BUILD_CHECKLIST.md",
+        "matchingLines": [
+          89,
+          141,
+          175,
+          189,
+          192,
+          236
+        ],
+        "SHA256": "d24b884a73ea560323a97424d2d367e26752734e616db529a29785f8b4ed90e9"
+      },
+      {
+        "file": "docs/0마스터플랜/EXODUSER_MASTER_BIBLE_v2_2 (2).md",
+        "matchingLines": [
+          499,
+          554,
+          578,
+          580,
+          1994
+        ],
+        "SHA256": "eb87a22a85edc5ae055c488d0654a118361d626ca42671b0959ec8e4e5be9af9"
+      },
+      {
+        "file": "docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md",
+        "matchingLines": [
+          50,
+          297
+        ],
+        "SHA256": "4d13244269bf4e5cf99bbb0babc93a7bef6db14bc4168e25c4b3a59e6baa7c92"
+      },
+      {
+        "file": "docs/0마스터플랜/mac-resume-20261001/map020-evidence/BALANCE-읽기근거.json",
+        "matchingLines": [
+          32
+        ],
+        "SHA256": "4145033b25631d68422ae91dc935d4da4b8e63933c46fbfc55aa949ee385b451"
+      },
+      {
+        "file": "docs/0마스터플랜/mac-resume-20261001/map020-evidence/팀실행-영수증.json",
+        "matchingLines": [
+          315
+        ],
+        "SHA256": "8a1f2febd378d78c3dc8be084f42f17f05257a192112a2117692b9ab8dcdb68b"
+      },
+      {
+        "file": "docs/0마스터플랜/mac-resume-20261001/map020-zoomfix-evidence/SKILL-팀검토.md",
+        "matchingLines": [
+          45
+        ],
+        "SHA256": "5a549557b1340c44805f50bc342f17114867aee3ba499de766544329c1384546"
+      },
+      {
+        "file": "docs/0마스터플랜/mac-resume-20261001/map020-zoomfix-evidence/team-receipts.json",
+        "matchingLines": [
+          35,
+          42,
+          125,
+          132
+        ],
+        "SHA256": "3742d50c10d6b34c94e936877e708613cc19c5a15e3e4d70baaf230ad01dbbe1"
+      },
+      {
+        "file": "docs/0마스터플랜/mac-resume-20261001/ui03-evidence/BALANCE-팀검토.md",
+        "matchingLines": [
+          36,
+          52
+        ],
+        "SHA256": "35388d4beb40ad7ba4c83c2ff7804c5baa40e313988dbff6c333252a8cc78f97"
+      },
+      {
+        "file": "docs/0마스터플랜/mac-resume-20261001/ui03-evidence/SKILL-팀검토.md",
+        "matchingLines": [
+          83
+        ],
+        "SHA256": "5e68658dd3299a6d1b6dc3da4d7174cf0f8092aabe7f1ba865b11ebeed3d4bd9"
+      },
+      {
+        "file": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-d10-result.md",
+        "matchingLines": [
+          11,
+          22,
+          56,
+          60
+        ],
+        "SHA256": "12b197e240872c8fb6d3958303b426b8c54ae2e4df81cd78ba5ebdfe6c8f56ae"
+      },
+      {
+        "file": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-skill-support-result.md",
+        "matchingLines": [
+          58
+        ],
+        "SHA256": "2c364f17201c00353ca5bf82b7b500feaac8a8980cfcfa8c5aba0804fa166482"
+      },
+      {
+        "file": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/CLAUDE-PROVIDER-DISPATCH-20261002.json",
+        "matchingLines": [
+          241
+        ],
+        "SHA256": "b97273ee320e2d15f83a83872bba04ce09eda2c0fc6210ad32d6f45ff8d7d106"
+      },
+      {
+        "file": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/COMBAT-REVIEW-20261002.md",
+        "matchingLines": [
+          26,
+          45
+        ],
+        "SHA256": "46b1514bafc8ef9e7ed8f3b134fd6e0e530794649a9ff9a2caf6f7e56139093d"
+      },
+      {
+        "file": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/CONTINUOUS-DISPATCH-20261002.json",
+        "matchingLines": [
+          48
+        ],
+        "SHA256": "16d8757d422c8ca0cf96ac89032ce24f7b62e5527875d11c41144bc095d2f63d"
+      },
+      {
+        "file": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/CONTINUOUS-DISPATCH-20261002.md",
+        "matchingLines": [
+          11
+        ],
+        "SHA256": "33385332b648ba5cb268ac83351a187a51761b1e094f9b6baf6995f79957ac0c"
+      },
+      {
+        "file": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/D10-root-review.md",
+        "matchingLines": [
+          13
+        ],
+        "SHA256": "339037047c2d2883746717c986edccdbd8e25f579ff28426a13f22339d3ee44d"
+      },
+      {
+        "file": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FOUR-SUBMISSIONS-HELLRAY-20261002.md",
+        "matchingLines": [
+          5,
+          7,
+          9,
+          44
+        ],
+        "SHA256": "6b9fc5e3987c314b4ada16acb4bdcf6ace4017b9c6d5f60b841ad8f0e18c097f"
+      },
+      {
+        "file": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FOUR-TEAM-FOLLOWUP-20261002.md",
+        "matchingLines": [
+          12
+        ],
+        "SHA256": "887f55435f2b7d0ff1fe9016012f8fe4a9ebdc56a0ec84e5b97c01edb03a376d"
+      },
+      {
+        "file": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-BALANCE-integration-result.md",
+        "matchingLines": [
+          13
+        ],
+        "SHA256": "8f1f6b3521bff9e051365243e96511b7a197f2b11e1eada5580a01390fc34b58"
+      },
+      {
+        "file": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-d10-result.md",
+        "matchingLines": [
+          7,
+          40,
+          49
+        ],
+        "SHA256": "390b6f8b0750b5193b6991434bacf69fd853377676f1afeb739dd89d5e04922c"
+      },
+      {
+        "file": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/OWNER_NEXT_20261002-result.md",
+        "matchingLines": [
+          63
+        ],
+        "SHA256": "173ff902ab3d17caf187aad3d14d87db7c441c6daffe6908a37f1572dd963fac"
+      },
+      {
+        "file": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/QA-next-receipt.json",
+        "matchingLines": [
+          44
+        ],
+        "SHA256": "e147d8b2efde17e01564f40c1550975c086b89ce032bd20cc60ad33ead2d50ee"
+      },
+      {
+        "file": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/QA-next-result.md",
+        "matchingLines": [
+          44,
+          61
+        ],
+        "SHA256": "a5d522bcc2afd52bf906ca3bad5c2f5623bee4f82bf05e7e9b93f1c75ef4b8c7"
+      },
+      {
+        "file": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/SKILL-next-receipt.json",
+        "matchingLines": [
+          33
+        ],
+        "SHA256": "58377c0a19ab3664d3d2580b3d4b8688578e4d7f7e6d294cbf84a9b1ce3929a6"
+      },
+      {
+        "file": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/SKILL-next-result.md",
+        "matchingLines": [
+          56,
+          63
+        ],
+        "SHA256": "430c179e85d45f0fa4e8c1fd2889885e2cde410c9c1b81c72c0ee623ee6c6f10"
+      },
+      {
+        "file": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/SKILL-receipt.json",
+        "matchingLines": [
+          33
+        ],
+        "SHA256": "31b830cc0f212f3064e4315ceb14d43f0f2bed57106eadf1e8433dedb1314acc"
+      },
+      {
+        "file": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/SKILL-result.md",
+        "matchingLines": [
+          50,
+          57
+        ],
+        "SHA256": "e59bd52506e5d8badfd93d3cb136d8845af1714c68e32ba5c4a5d9ce326fd3f2"
+      },
+      {
+        "file": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/SKILL-task.md",
+        "matchingLines": [
+          15
+        ],
+        "SHA256": "b8438a698ae94cc4d895d4eeb2af7bf456e5b8c2499aa3baa8d0378b49824fa7"
+      },
+      {
+        "file": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/confirm-inventory-review-receipt.json",
+        "matchingLines": [
+          36,
+          59
+        ],
+        "SHA256": "ddbe7af7f7b45464d769c97a6695aa81b5f93bb090b6822fef073b655b587b8f"
+      },
+      {
+        "file": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/confirm-inventory-review-result.md",
+        "matchingLines": [
+          30,
+          35,
+          54
+        ],
+        "SHA256": "49e9a05ef30e665510740a930a8ff71344ab89d540fecf6664af63e59534faba"
+      },
+      {
+        "file": "docs/0마스터플랜/정식/HELL_RELEASE_BUILD_NOTES.md",
+        "matchingLines": [
+          41
+        ],
+        "SHA256": "bfd672c088554ba2ab3b8447a1777e82d53353f196aabfe1c0d57148706a6d91"
+      },
+      {
+        "file": "docs/10ai에셋프롬프트모음/HELL_HUNTER_SEEDANCE_IDLE_20260928.md",
+        "matchingLines": [
+          15
+        ],
+        "SHA256": "42e612e2f20bec0227868a64c01e60f3738e4c574ed05fc1fcfd898cf9af72bb"
+      },
+      {
+        "file": "docs/10ai에셋프롬프트모음/UI_아이콘_GPT_생성프롬프트팩.md",
+        "matchingLines": [
+          207
+        ],
+        "SHA256": "c87ce7633c3d39ee40a73384c839af94d4c345fc4a4f67cbbe2d9b71a41174f0"
+      },
+      {
+        "file": "docs/12퍼포먼스·최적화/QA_PERFORMANCE_TEAM_MASTER.md",
+        "matchingLines": [
+          47
+        ],
+        "SHA256": "e6d05ae97356e2a1145e203a51c90b9bc6a73dd3208cfbcf976894997f27da4e"
+      },
+      {
+        "file": "docs/13출시·마케팅/13출시·마케팅.md",
+        "matchingLines": [
+          59,
+          82,
+          106,
+          107,
+          139,
+          210,
+          266
+        ],
+        "SHA256": "856eac0abbf6bfbdca46da11de682f24f3b31be81f8b58c69cc7212ca8063832"
+      },
+      {
+        "file": "docs/13출시·마케팅/GAMEPLAY_TRAILER_20260909_PRODUCTION.md",
+        "matchingLines": [
+          18
+        ],
+        "SHA256": "2d0b7d465bc039a6946db3a83d94d9213dacbec994e7f394128873503f1e5ff3"
+      },
+      {
+        "file": "docs/13출시·마케팅/GAMEPLAY_TRAILER_V22_20260909.md",
+        "matchingLines": [
+          34,
+          68
+        ],
+        "SHA256": "fac01930f741959d713a208a2e52ed5c2ad588c051ba98d04620b9cbfda6bb7b"
+      },
+      {
+        "file": "docs/13출시·마케팅/HELL_DIROI_종합확장전략기획서_v2_0.md",
+        "matchingLines": [
+          99
+        ],
+        "SHA256": "9d42aa289761837d3d46ad963404bcddab548f2d2048effcd70756214be1b013"
+      },
+      {
+        "file": "docs/13출시·마케팅/INDIE_LIVE_EXPO_20261201_SUBMISSION_20260928.md",
+        "matchingLines": [
+          156,
+          180,
+          280
+        ],
+        "SHA256": "efd0663f22f22413507c6867cb3357d5aa5fb1294ae7e9eda796f9f2624bec75"
+      },
+      {
+        "file": "docs/13출시·마케팅/PUBLISHER_MOBILITY_PARRY_20260929.md",
+        "matchingLines": [
+          11
+        ],
+        "SHA256": "b55f4e8a251de5ee97528afc2e4dc674ce2811781f770eaaa93111ebeb5aef80"
+      },
+      {
+        "file": "docs/13출시·마케팅/PUBLISHER_REVIEW_20260929.md",
+        "matchingLines": [
+          177,
+          180
+        ],
+        "SHA256": "eca9edf10f7af53e132a5317a1b96c58d06b0584cbaf077cb8a08dcd5d4340f1"
+      },
+      {
+        "file": "docs/13출시·마케팅/PUBLISHER_SKILL_FUSION_BUILD_20260930.md",
+        "matchingLines": [
+          3
+        ],
+        "SHA256": "2a46fb0a929a60af6d0fb278e7f3b60dbc3b21845962c996343459ff2d86f2e4"
+      },
+      {
+        "file": "docs/14밸런스+수치테이블/14밸런스+수치테이블.md",
+        "matchingLines": [
+          135,
+          136,
+          143,
+          145,
+          148,
+          150,
+          156
+        ],
+        "SHA256": "f809b60874aef760217edfb7708e2444e35bd9925f4c9a0f3a2316389d41779b"
+      },
+      {
+        "file": "docs/14밸런스+수치테이블/BALANCE_ECONOMY_TEAM_MASTER.md",
+        "matchingLines": [
+          130
+        ],
+        "SHA256": "9ea03646283c43a7412c4704100acb35732fddd3933ddfd1966d5ee7b8aef8bc"
+      },
+      {
+        "file": "docs/14밸런스+수치테이블/EARLY_COMBAT_5_7_1_20260910.md",
+        "matchingLines": [
+          32
+        ],
+        "SHA256": "71be6319fc45a7ae209b3120cc63d8bd0dadfc72ecd966e2f7b4a040dc6e3e21"
+      },
+      {
+        "file": "docs/14밸런스+수치테이블/SPIKE_TRAP_HALF_20260913.md",
+        "matchingLines": [
+          6,
+          12
+        ],
+        "SHA256": "11c9f81266c783a5d6b7b8f61c48b60a673bead09059a3d894bcb0ad28383583"
+      },
+      {
+        "file": "docs/14밸런스+수치테이블/스킬_밸런스_리포트.md",
+        "matchingLines": [
+          6,
+          12,
+          108,
+          187,
+          188,
+          191,
+          192,
+          201,
+          206,
+          221,
+          227,
+          253
+        ],
+        "SHA256": "25d4c2c23417d46a817bcdc7d7a516689db575ae0d5e2b6877f93024b0ba3dc3"
+      },
+      {
+        "file": "docs/14밸런스+수치테이블/스킬데미지공식표.md",
+        "matchingLines": [
+          3,
+          9,
+          23,
+          166,
+          194,
+          231,
+          384,
+          419,
+          426
+        ],
+        "SHA256": "2faaa73e427366d80e2645010d833bd22c9a43eb4130c07ad7094f2e86cfc92d"
+      },
+      {
+        "file": "docs/14밸런스+수치테이블/스킬별_DPS_자원소비표.md",
+        "matchingLines": [
+          6,
+          12,
+          72,
+          87,
+          103,
+          117,
+          127,
+          138,
+          251,
+          252,
+          253,
+          261,
+          264,
+          274
+        ],
+        "SHA256": "336ca84b7581c1c512c2df511c373df9ae12f03a112ca562e6b60e918850d6ea"
+      },
+      {
+        "file": "docs/14밸런스+수치테이블/자원소비량표.md",
+        "matchingLines": [
+          3,
+          69
+        ],
+        "SHA256": "5f63f98bc0522cd28ab38ca4392c258c096f2fddad132c1d51f2eb0df561f849"
+      },
+      {
+        "file": "docs/14밸런스+수치테이블/패시브효과표.md",
+        "matchingLines": [
+          8,
+          98,
+          99
+        ],
+        "SHA256": "e9fd69ffefea87a003cb0091978e15251f9344509694e0ad09beeff2b4e699ef"
+      },
+      {
+        "file": "docs/15 세이브+데이터구조/15 세이브+데이터구조.md",
+        "matchingLines": [
+          299,
+          303,
+          305,
+          328,
+          362,
+          431
+        ],
+        "SHA256": "146d079c794c86307835ef12ffe4c5566148d2e9ed07c96f80b249dbaaf0f4eb"
+      },
+      {
+        "file": "docs/16번역·로컬라이제이션/FINISH_TRANSLATIONS_20260923.md",
+        "matchingLines": [
+          62,
+          63,
+          71,
+          81,
+          111
+        ],
+        "SHA256": "4651eab30b57483fd50651922ca8b5b4497889f4509c8b6b9302e4607fc8fd7f"
+      },
+      {
+        "file": "docs/16번역·로컬라이제이션/LOCALIZATION_RUNTIME_20260909.md",
+        "matchingLines": [
+          6,
+          51,
+          79,
+          81
+        ],
+        "SHA256": "494a045aaff8f904bef101d68326ebbb354ce6970283cf4938c1515fff0167f6"
+      },
+      {
+        "file": "docs/16번역·로컬라이제이션/STEAM_LANGUAGE_SCOPE_20260909.md",
+        "matchingLines": [
+          56
+        ],
+        "SHA256": "415664024420719095bfee0d0fa7f16adfcb275dd46ab17bce55956dc2ec237c"
+      },
+      {
+        "file": "docs/16번역·로컬라이제이션/UI_ARABIC_TRANSLATIONS_20260909.md",
+        "matchingLines": [
+          11,
+          13,
+          15
+        ],
+        "SHA256": "72ecfa400d7f0fe0866c3ca41838f7ef596dd4a5e490908c9d83c5a0b82d528c"
+      },
+      {
+        "file": "docs/16번역·로컬라이제이션/UI_ASIA_TRANSLATIONS_20260909.md",
+        "matchingLines": [
+          20,
+          28,
+          36,
+          38,
+          46,
+          47,
+          50
+        ],
+        "SHA256": "489e3b4da2ebc5ea0dd2ad58075d9a6a1d10cd74b8978641fd483cd32e52be6f"
+      },
+      {
+        "file": "docs/16번역·로컬라이제이션/UI_CENTRAL_EUROPE_20260909.md",
+        "matchingLines": [
+          3,
+          8,
+          10
+        ],
+        "SHA256": "019566cd65d370a685c60847cb2f4d59d923f48ffb28a699ba55eff771d8240a"
+      },
+      {
+        "file": "docs/16번역·로컬라이제이션/UI_EUROPE_BATCH2_20260909.md",
+        "matchingLines": [
+          18,
+          27,
+          34,
+          45,
+          46,
+          50
+        ],
+        "SHA256": "89e0e98d9cee8e73e2a42a758f1e11a0421fbe94d189bf4868281d88035fadbb"
+      },
+      {
+        "file": "docs/16번역·로컬라이제이션/UI_EUROPE_TRANSLATIONS_20260909.md",
+        "matchingLines": [
+          21,
+          23,
+          25,
+          26,
+          35
+        ],
+        "SHA256": "faa34266b161ce3238923d0dc09d6d7306be00f44dc548b4abaeac83a6084ea9"
+      },
+      {
+        "file": "docs/16번역·로컬라이제이션/UI_EXTRA_TRANSLATIONS_20260909.md",
+        "matchingLines": [
+          21,
+          24
+        ],
+        "SHA256": "c584fd0ca2063d9ccfd0dedbc561bf050ff5372196634e9b1c95d6e7ee91494b"
+      },
+      {
+        "file": "docs/16번역·로컬라이제이션/UI_GROWTH_TRANSLATIONS_20260909.md",
+        "matchingLines": [
+          14,
+          15,
+          17,
+          20,
+          23,
+          124,
+          135,
+          150,
+          161
+        ],
+        "SHA256": "a75b0d23e1874064500f06286bfbed286f07754ba60b0409254101505ee6280b"
+      },
+      {
+        "file": "docs/16번역·로컬라이제이션/UI_NORTHERN_EUROPE_20260909.md",
+        "matchingLines": [
+          18,
+          27,
+          34,
+          53
+        ],
+        "SHA256": "75674d7e767d954f965bf5828b4ba0c5e7f7579712859aec19b3b6adc5d970d1"
+      },
+      {
+        "file": "docs/16번역·로컬라이제이션/UI_POLISH_TRANSLATIONS_20260909.md",
+        "matchingLines": [
+          12,
+          14
+        ],
+        "SHA256": "6f00e1fd86dd8b95c1aa26b2e9d3f9556c7ee3cdd4cd273c5c3403ca986b25d7"
+      },
+      {
+        "file": "docs/16번역·로컬라이제이션/UI_ROMANIAN_TRANSLATIONS_20260909.md",
+        "matchingLines": [
+          9,
+          11
+        ],
+        "SHA256": "1ecfa5d57d04aa4be0d0655ed20b825665cb19a10b57b9f19539d05fd49ca12b"
+      },
+      {
+        "file": "docs/16번역·로컬라이제이션/UI_SOUTHEAST_EUROPE_20260909.md",
+        "matchingLines": [
+          10,
+          12
+        ],
+        "SHA256": "4b4b784553b38fb2565ff9c45b9042106b24742ce3b8174da6360e4a298ab3db"
+      },
+      {
+        "file": "docs/16번역·로컬라이제이션/UI_TRANSLATIONS_20260909.md",
+        "matchingLines": [
+          61,
+          62,
+          88
+        ],
+        "SHA256": "6896173f9b23cf24e9b2ce009e2a7221927e73c43a820083416989dcac6eff21"
+      },
+      {
+        "file": "docs/16번역·로컬라이제이션/UI_TURKISH_TRANSLATIONS_20260909.md",
+        "matchingLines": [
+          15
+        ],
+        "SHA256": "cbc53992154e50ef05f87aad5b476546886d0798f285c19fac4094920d4e410f"
+      },
+      {
+        "file": "docs/16번역·로컬라이제이션/번역대상_UI시스템.md",
+        "matchingLines": [
+          48,
+          50
+        ],
+        "SHA256": "c58b3bb0f4ab1893e28f3a6051e3a0a6711b912e7bc001d018401ffebb254846"
+      },
+      {
+        "file": "docs/16번역·로컬라이제이션/번역대상_전체목록.md",
+        "matchingLines": [
+          19,
+          670,
+          672,
+          675,
+          679,
+          682,
+          684,
+          685,
+          1438,
+          1553,
+          2096,
+          2130,
+          2464,
+          2465,
+          2466,
+          2469,
+          2470,
+          2471,
+          2472,
+          2473,
+          2475,
+          2476,
+          2477,
+          2478,
+          2479,
+          3162,
+          3527
+        ],
+        "SHA256": "954626722e7c1e3c83d693ea4a6b3b0290c15b76a7a719e49875b8849b43afd7"
+      },
+      {
+        "file": "docs/16영문화(i18n)/영문화_진행현황.md",
+        "matchingLines": [
+          71,
+          100
+        ],
+        "SHA256": "979b52613e23627b28bf95108e0b2e83a5c3cb6b005baa647be2f43e08dc8b8d"
+      },
+      {
+        "file": "docs/1전체그래픽세팅/1전체그래픽세팅_MASTER.md",
+        "matchingLines": [
+          1116
+        ],
+        "SHA256": "d440d054d90d7f0551db8a794aed8a7f0f45ac77c6d96c98bc3e30f5b72c40de"
+      },
+      {
+        "file": "docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md",
+        "matchingLines": [
+          11,
+          19,
+          31,
+          33,
+          87,
+          94,
+          103,
+          104,
+          106,
+          108,
+          112,
+          116,
+          119,
+          120,
+          121,
+          123,
+          125,
+          132,
+          138,
+          145,
+          146,
+          147,
+          152,
+          207,
+          252,
+          317,
+          329,
+          331,
+          332,
+          333,
+          334,
+          348,
+          353,
+          384,
+          405,
+          408,
+          414,
+          445,
+          448,
+          459,
+          461,
+          468,
+          469,
+          471,
+          473,
+          551,
+          552,
+          560,
+          566,
+          567,
+          570,
+          585,
+          600,
+          608,
+          612,
+          614,
+          624,
+          641,
+          645,
+          652,
+          656,
+          684,
+          690,
+          692,
+          696,
+          709,
+          713,
+          723,
+          725,
+          726,
+          730,
+          737,
+          766,
+          768,
+          770,
+          772,
+          789,
+          798,
+          801,
+          802,
+          806,
+          813,
+          814,
+          815,
+          818,
+          820,
+          822,
+          830,
+          839,
+          840,
+          843,
+          844,
+          850,
+          851,
+          852,
+          859,
+          900,
+          990,
+          1069,
+          1070,
+          1071,
+          1075,
+          1080,
+          1081,
+          1084,
+          1086,
+          1088,
+          1092,
+          1093,
+          1094,
+          1095,
+          1101,
+          1103,
+          1105,
+          1108,
+          1109,
+          1110,
+          1111,
+          1113,
+          1137,
+          1139,
+          1140,
+          1143,
+          1145,
+          1146,
+          1150,
+          1152,
+          1154,
+          1157,
+          1158,
+          1159,
+          1161,
+          1222,
+          1224,
+          1236,
+          1239,
+          1244,
+          1250,
+          1256,
+          1260,
+          1263,
+          1265,
+          1266,
+          1352,
+          1445,
+          1466,
+          1562,
+          1564,
+          1570,
+          1573,
+          1582,
+          1584,
+          1587
+        ],
+        "SHA256": "12f511feca18545e920a3f59163c08db5b892969a47680bf032f331806cc79e3"
+      },
+      {
+        "file": "docs/2_1 스킬관리+합체시스템+자원/E_BASE_WING_STRIKE_20260910.md",
+        "matchingLines": [
+          5,
+          6,
+          11,
+          12,
+          13,
+          23,
+          24,
+          25,
+          33,
+          34,
+          37,
+          47
+        ],
+        "SHA256": "9f6b33a1156b7ae58eef24a9e6daa561a27c9f9628cc1ca2211857dd27d4a515"
+      },
+      {
+        "file": "docs/2_1 스킬관리+합체시스템+자원/KISLASH_Q_CANCEL_20260916.md",
+        "matchingLines": [
+          24,
+          28
+        ],
+        "SHA256": "2de524d131e7bb51dba02fd0eeb75f11eab1f765cc58cd1deb337ebd4b3a563d"
+      },
+      {
+        "file": "docs/2_1 스킬관리+합체시스템+자원/SKILL03_설치확정_자원검수_20261001.md",
+        "matchingLines": [
+          53
+        ],
+        "SHA256": "b06dc80d4b837d29f0c01f5679c5a4d94bd2095033ec96adc36f6682c4a43891"
+      },
+      {
+        "file": "docs/2_1 스킬관리+합체시스템+자원/SKILL_자원게이트_감사_20261001.md",
+        "matchingLines": [
+          44
+        ],
+        "SHA256": "e7a8e8f27818a0d1acd02de1edff6c74a3fad2f53c5f5c22bffbff7033656c7a"
+      },
+      {
+        "file": "docs/2_1 스킬관리+합체시스템+자원/신규캐릭_스킬프로젝트_20260930.md",
+        "matchingLines": [
+          5,
+          15,
+          23,
+          80,
+          81,
+          85,
+          104,
+          192
+        ],
+        "SHA256": "c4835c8d322186f447aa65f3637b4208be5849c81c5d174b3e9400cf25561387"
+      },
+      {
+        "file": "docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식.md",
+        "matchingLines": [
+          226,
+          227,
+          228,
+          325,
+          329,
+          339
+        ],
+        "SHA256": "396f669b2caf3ee20c2c31341b91db6bec183e3566bd13e79d4943dc21657d61"
+      },
+      {
+        "file": "docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식__NFD_0628_2305_백업.md",
+        "matchingLines": [
+          212,
+          213,
+          214,
+          311
+        ],
+        "SHA256": "4a08900fae23386adad5040273b7cd4f0622cb060ad3ea576d09ff8524227448"
+      },
+      {
+        "file": "docs/2_1 스킬관리+합체시스템+자원/전격이동_사슬기동_공용기동게이지_개편.md",
+        "matchingLines": [
+          23,
+          49,
+          81,
+          82
+        ],
+        "SHA256": "8505ad9a519c6023120d67d60bf10b1f826be68f707b002febcbf0f65a567f55"
+      },
+      {
+        "file": "docs/2_1 스킬관리+합체시스템+자원/추적전격_합체_20260927.md",
+        "matchingLines": [
+          3,
+          7,
+          8,
+          10,
+          12,
+          15,
+          20,
+          22,
+          28
+        ],
+        "SHA256": "8bc8dd985ac3bc56ceb9c600cb5ef535a3c238acdf09c8e17e104b8b91511c07"
+      },
+      {
+        "file": "docs/2_1 스킬관리+합체시스템+자원/추천빌드_SKILL_REC_PATH.md",
+        "matchingLines": [
+          8,
+          9,
+          13,
+          17,
+          23,
+          26,
+          37,
+          40,
+          43,
+          44,
+          46,
+          124
+        ],
+        "SHA256": "f1afb4b0d7f4c8d2c1cfc61c0b49ab79cd5dd2158a624b3e221cd03ae2179797"
+      },
+      {
+        "file": "docs/2_1 스킬관리+합체시스템+자원/헬거너_H2_이식의존성_20261001.md",
+        "matchingLines": [
+          23
+        ],
+        "SHA256": "6d915ee5d189fbf806ea966fb975fd5e5c25b466c9e98fef35d7f16db9c2c5a0"
+      },
+      {
+        "file": "docs/2_2 무기+활+속성시스템/2_2 무기+활+속성시스템.md",
+        "matchingLines": [
+          103,
+          171,
+          173,
+          181
+        ],
+        "SHA256": "6bccad4df29e2221799662546a7f1b865028602f51cd37298fe6f6ef5e51cb8e"
+      },
+      {
+        "file": "docs/2_3 돌진+패링+방패시스템/2_3 돌진+패링+방패시스템.md",
+        "matchingLines": [
+          128,
+          129,
+          176,
+          194
+        ],
+        "SHA256": "76c10998272e8e17782161db2a65b75b88d01fb76e945dec9270cb448c6e14a2"
+      },
+      {
+        "file": "docs/2_5 부활+에너지쉴드시스템/2_5 부활+에너지쉴드시스템.md",
+        "matchingLines": [
+          212
+        ],
+        "SHA256": "b6b36f780a6f2605ea11eaeced43dbe2991f5e60eb28b454f2bad7b7ea54bf07"
+      },
+      {
+        "file": "docs/2게임디자인레벨디자인/CHAIN_PRACTICE_20260913.md",
+        "matchingLines": [
+          36
+        ],
+        "SHA256": "dde022dd7445c90b9cb5bf363efb792e47c775dbb20bdd4be7d03b8da1adb8bc"
+      },
+      {
+        "file": "docs/2게임디자인레벨디자인/PARRY_TUTORIAL_20260912.md",
+        "matchingLines": [
+          44
+        ],
+        "SHA256": "7c3bdc07bf5e4813b5e545cfbd7776f659f3b0c681f553e0446a776fa0001bb0"
+      },
+      {
+        "file": "docs/2게임디자인레벨디자인/SPIKE_TRAP_PRACTICE_20260913.md",
+        "matchingLines": [
+          27,
+          28,
+          35
+        ],
+        "SHA256": "c600837ffea4af6c5b26d9038be245691097c3584a5ba70b9b762de8400acb65"
+      },
+      {
+        "file": "docs/3.1 ui hud 디자인/PASSIVE_BODY_TREE_UI_20260909.md",
+        "matchingLines": [
+          5,
+          71,
+          72,
+          88
+        ],
+        "SHA256": "183642b694c10aceae5c7350672a6fe872983b569528310d7087114ab8cab39c"
+      },
+      {
+        "file": "docs/3.1 ui hud 디자인/PASSIVE_CODEX_DESIGN_RESEARCH_20260909.md",
+        "matchingLines": [
+          36,
+          37,
+          45,
+          64
+        ],
+        "SHA256": "f666ab642275fc9f5bd409ffca87d4dfb5c6ca0cee36ac9d42892bf189f4fa5e"
+      },
+      {
+        "file": "docs/3.1 ui hud 디자인/PASSIVE_CONSTELLATION_20260909.md",
+        "matchingLines": [
+          19,
+          47
+        ],
+        "SHA256": "97b0fdaa8e366c6b2474848bfeed2850383d7f100a9351f59d84225f89b6c4e2"
+      },
+      {
+        "file": "docs/3.1 ui hud 디자인/PASSIVE_TREE_REDESIGN_20260909.md",
+        "matchingLines": [
+          59,
+          64,
+          66,
+          73,
+          80
+        ],
+        "SHA256": "27082837315c992d9d5e2131ab103941d530e6a1e94dcb39db313d8273bb403c"
+      },
+      {
+        "file": "docs/3.1 ui hud 디자인/SETTINGS_HUD_DETAIL_20260930.md",
+        "matchingLines": [
+          75
+        ],
+        "SHA256": "3482af218a6be91f02e38c84147f7d4e8c36e39e9e1216588452b40b46e9e540"
+      },
+      {
+        "file": "docs/3.1 ui hud 디자인/SKILL_CARD_ICON_FIT_20260928.md",
+        "matchingLines": [
+          5
+        ],
+        "SHA256": "973449669e7667f2dbb3a14bc73874af1c6af25f836fb793cefd6a95dfe8dfe2"
+      },
+      {
+        "file": "docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md",
+        "matchingLines": [
+          15,
+          16,
+          17,
+          19,
+          454,
+          1112,
+          1131,
+          1132,
+          1837,
+          1840,
+          2703
+        ],
+        "SHA256": "b801cc30d66717a4f3e107285d87916b38f89bdf498da274b6f1612fb191767a"
+      },
+      {
+        "file": "docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md",
+        "matchingLines": [
+          116,
+          120
+        ],
+        "SHA256": "de6fd967362e97fc21f16c8abba48cd1480ae48064a8feccc9600839a915b372"
+      },
+      {
+        "file": "docs/3.1 ui hud 디자인/exoduser-hud-redesign.md",
+        "matchingLines": [
+          956
+        ],
+        "SHA256": "8154c25fab329400eb9994debee686d7e4d3af5ce3731ce3bea20c83f266abf7"
+      },
+      {
+        "file": "docs/3.1 ui hud 디자인/exoduser-ui-phase2 (1).md",
+        "matchingLines": [
+          39,
+          495,
+          821,
+          825,
+          832,
+          868
+        ],
+        "SHA256": "2f847f8d6ed8d92cda48711b1eea90c63d1611e1e72a86f02dfc9baf4da1e694"
+      },
+      {
+        "file": "docs/3.1 ui hud 디자인/능력치_패시브_개편_20260909.md",
+        "matchingLines": [
+          7,
+          18,
+          19,
+          21,
+          23,
+          25,
+          27,
+          52,
+          53,
+          69,
+          88,
+          91
+        ],
+        "SHA256": "68058ae354ed9344ea4bcb935009990566c070b5a8342c55182e573e7a6365cf"
+      },
+      {
+        "file": "docs/3.1 ui hud 디자인/성장창 신체 패시브 시각 보강 2026-09-27.md",
+        "matchingLines": [
+          5,
+          27
+        ],
+        "SHA256": "3b45544f63600973b7097771f447a62d52000a532c004c1516f2ee6ddcdb9a3d"
+      },
+      {
+        "file": "docs/3.1 ui hud 디자인/패시브 AP 자동 투자 예약 2026-09-27.md",
+        "matchingLines": [
+          14
+        ],
+        "SHA256": "7cb598016dfd92b6f541ce995e65476de41aeafe40b6a9ff032d0f82eb0afa4b"
+      },
+      {
+        "file": "docs/3.2메타·진행시스템/3.2메타·진행시스템.md",
+        "matchingLines": [
+          25
+        ],
+        "SHA256": "c672fab16dae2f9b7a4993a1541250ca0b04732cc96d1554ce7856889c296496"
+      },
+      {
+        "file": "docs/3.3 키바인딩+설정/3.3 키바인딩+설정.md",
+        "matchingLines": [
+          30,
+          168,
+          170,
+          171,
+          175,
+          186,
+          190,
+          194,
+          195,
+          196,
+          199,
+          202,
+          203,
+          205,
+          207,
+          225,
+          226,
+          228,
+          232,
+          239,
+          240,
+          241,
+          243,
+          244,
+          246,
+          248,
+          463
+        ],
+        "SHA256": "f5c6370f096ca4971b92cda0cd16527933c2e163e9ea1d53bf55bbdfdb735e1b"
+      },
+      {
+        "file": "docs/4.1맵디자인+설정/EXODUSER_MAP_BIBLE_v3 (1).md",
+        "matchingLines": [
+          355,
+          362
+        ],
+        "SHA256": "d5bb6daf5783b0acfe60bef86571192314e1cc109a7338e5ebca71ad01f910e1"
+      },
+      {
+        "file": "docs/5.0애니메이션파이프라인/전대_소환_프레임애니.md",
+        "matchingLines": [
+          129
+        ],
+        "SHA256": "9d73f5377816885ae1d7cca86754788b95e1171f6157489cb119a73ec17724e3"
+      },
+      {
+        "file": "docs/5.1임펙트디자인/BOSS_CAGE_TRAP_VFX.md",
+        "matchingLines": [
+          20,
+          54,
+          62
+        ],
+        "SHA256": "733002d2a6982b73ce2165642970e2cb79ae1ef0bd66adef75311718997427e8"
+      },
+      {
+        "file": "docs/5.1임펙트디자인/KI_SLASH_RADIANT_20260915.md",
+        "matchingLines": [
+          28
+        ],
+        "SHA256": "fdbc2db7cc9788b54344cc37aee7ad8a8358e738b8eae6d5415d429c26c6a8b8"
+      },
+      {
+        "file": "docs/5.1임펙트디자인/VFX_구현가이드.md",
+        "matchingLines": [
+          44,
+          45,
+          50,
+          51,
+          52,
+          235,
+          562,
+          735,
+          801
+        ],
+        "SHA256": "abb5e55d53a76a267b83521fa149d8d50e97ac4b9d22f9ee6b3e095e4ba6d252"
+      },
+      {
+        "file": "docs/5.1임펙트디자인/ZONE_LIGHT_CLASSIFICATION_20260910.md",
+        "matchingLines": [
+          14,
+          36
+        ],
+        "SHA256": "975ac311342fcdb3344e84ca979ee8a567e8f934757e2a7b022e4ff3da90fe4e"
+      },
+      {
+        "file": "docs/5.1임펙트디자인/추적전격_후속이동_VFX_20260927.md",
+        "matchingLines": [
+          3
+        ],
+        "SHA256": "177aedf475113a07006033d0940ae53c6b537c929f6aeea876ab82a7a5d79870"
+      },
+      {
+        "file": "docs/6사운드디자인/6사운드디자인.md",
+        "matchingLines": [
+          56,
+          57,
+          485
+        ],
+        "SHA256": "39f97d11bfc34e89647e2230acaea1777d5c6654aaf6378b83135d29cb1ecea4"
+      },
+      {
+        "file": "docs/7아이템디자인/ITEM_TEAM_MASTER.md",
+        "matchingLines": [
+          115
+        ],
+        "SHA256": "b3beda374dfeaa837f8a19baa607853d705f0892accc23dad7f3532cae7f61aa"
+      },
+      {
+        "file": "docs/7아이템디자인/UNIQUE_ITEM_GAME_INTEGRATION_CONTRACT_20261001.md",
+        "matchingLines": [
+          93
+        ],
+        "SHA256": "c0017c5ebf0922c1670d898940cbdcae317213198a96ab6a100a46e332fb85e6"
+      },
+      {
+        "file": "docs/7아이템디자인/UNIQUE_TOP8_HOOK_REVIEW_20261001.md",
+        "matchingLines": [
+          7,
+          20,
+          23,
+          28,
+          40
+        ],
+        "SHA256": "1e86f9f484e1c4b229abc8db91ba5ce1becc7a1937c14df4224a64d37a6ca264"
+      },
+      {
+        "file": "docs/7아이템디자인/고유아이템_모델_어픽스_밸런싱_프로젝트_20260930.md",
+        "matchingLines": [
+          22
+        ],
+        "SHA256": "3d5b28ecb573deee4c153d60a27033f9821775ccd47e9a26bbbe2e5cff0cbeb8"
+      },
+      {
+        "file": "docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md",
+        "matchingLines": [
+          145,
+          147,
+          670,
+          675,
+          676,
+          678,
+          776,
+          839,
+          840,
+          842,
+          938
+        ],
+        "SHA256": "1b569dd7f3f65a70e48818fa251f8cde8fca9a25fa6ccca2608282e064edf14b"
+      },
+      {
+        "file": "docs/7아이템디자인/유니크_어픽스_리스트.md",
+        "matchingLines": [
+          146,
+          149,
+          153,
+          155,
+          158,
+          159,
+          180,
+          228
+        ],
+        "SHA256": "745e59d9839a5078e869987092b2352114059622f9d36cf8cb626216c0799eb0"
+      },
+      {
+        "file": "docs/8.0몬스터디자인/PHYSICAL_PROJECTILE_SCALE_REWARD_20260910.md",
+        "matchingLines": [
+          50
+        ],
+        "SHA256": "c8ff7250526af91e16118998671634014c8b9783f892a83878d0f68f79714144"
+      },
+      {
+        "file": "docs/8.0몬스터디자인/pixellab_종류분류.md",
+        "matchingLines": [
+          168
+        ],
+        "SHA256": "a86226b25b1638b9823818e89e4d4410534c6040d26ef529339d09b6ed7476d1"
+      },
+      {
+        "file": "docs/8.0몬스터디자인/몬스터_공격시스템.md",
+        "matchingLines": [
+          253,
+          571
+        ],
+        "SHA256": "495fc461b57f9f3b0abacaecf8fdd917d0fb04dc5d236750ba83629a547f522d"
+      },
+      {
+        "file": "docs/8.0몬스터디자인/몬스터_사운드설계.md",
+        "matchingLines": [
+          180,
+          350,
+          387,
+          508
+        ],
+        "SHA256": "6a21167af5862fc08a8f83926852a991967cfbcc52f718be6c38344e15902db3"
+      },
+      {
+        "file": "docs/8.0몬스터디자인/몬스터_총관리.md",
+        "matchingLines": [
+          302,
+          851
+        ],
+        "SHA256": "cb227355c0d06ee6d6a9ddd9fde54d184e6d1296eea0a900ae002a13b7fd1fb0"
+      },
+      {
+        "file": "docs/8.0몬스터디자인/탄막시스템_총정리.md",
+        "matchingLines": [
+          314,
+          549,
+          637
+        ],
+        "SHA256": "ad3d09bf1d501211f026074645e712b55949d2f344edff7a2dd6f7317ff45855"
+      },
+      {
+        "file": "docs/9적ai패턴디자인/9_적AI패턴디자인.md",
+        "matchingLines": [
+          127
+        ],
+        "SHA256": "febe28660a5ed5465130399b4514a89658c51cec6da266d15f6ff1b4f51176a3"
+      },
+      {
+        "file": "docs/CHANGELOG_SYNC.md",
+        "matchingLines": [
+          167,
+          684,
+          690,
+          699,
+          706,
+          1261,
+          1271,
+          1383,
+          1395,
+          1855,
+          1917,
+          1919,
+          1920,
+          1998,
+          2006,
+          2009,
+          2038,
+          2042,
+          2241,
+          2598,
+          2638,
+          2767,
+          2774,
+          2919,
+          2920,
+          2921,
+          2943,
+          2981,
+          2984,
+          2987,
+          2994,
+          2997,
+          3036,
+          3039,
+          3040,
+          3078,
+          3120,
+          3167,
+          4735,
+          4745,
+          49000,
+          49048,
+          49050,
+          49051,
+          49057,
+          49058,
+          49066,
+          49083,
+          49098,
+          49099,
+          49117,
+          49137,
+          49159,
+          49176,
+          50274,
+          50279,
+          50577,
+          50580,
+          51874,
+          52094
+        ],
+        "SHA256": "8b15e42627e510a1e80c56f4e238ac5c5c82dc4a1376128458aed973f9bcd1a9"
+      },
+      {
+        "file": "docs/archetypes/silvertail/SILVERTAIL_ARCHETYPE_v1.md",
+        "matchingLines": [
+          216,
+          261,
+          262
+        ],
+        "SHA256": "8ed5f22dfee03035bb151d692dec8c724df7e5e44e455815eb58d0241026a8cb"
+      },
+      {
+        "file": "docs/archetypes/silvertail/SILVERTAIL_ARCHETYPE_v1_1.md",
+        "matchingLines": [
+          249,
+          304,
+          306
+        ],
+        "SHA256": "c25a97c62789e84950dbe33102301ac57f21e83cbda9b41716cfdfc734b061b4"
+      },
+      {
+        "file": "docs/cinematic/EXODUSER_TITLE_MOTION_20260908.md",
+        "matchingLines": [
+          20
+        ],
+        "SHA256": "b6e7569fabc08c33918f58f811d3013f178e70d2ba13db7700cd42c35ddbf10d"
+      },
+      {
+        "file": "docs/종합_버그리포트.md",
+        "matchingLines": [
+          17
+        ],
+        "SHA256": "2818fe382c736af77171fe7e227b1ed63d362593a07086c3173d34c0d115e91f"
+      },
+      {
+        "file": "docs/최종기획서/build_document.py",
+        "matchingLines": [
+          116,
+          150,
+          346,
+          350,
+          352,
+          353,
+          358,
+          360,
+          364,
+          366,
+          528
+        ],
+        "SHA256": "3f44c8669292c58bc4b9116e0277a778f7b029187a72f3dad1982be8a268d086"
+      }
+    ],
+    "stderr": ""
+  },
+  "docsProposal": {
+    "canonical": "docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md",
+    "UI": "docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md",
+    "resource": "docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식.md",
+    "exactText": "2026-10-02 이전 minus 콜백 합체 레벨다운 수명 감사(생산 미적용): 본편/easy의 _renderSkillRow._skMinusClick는 현재 learned 캡처 확인 이후 실제 P.skills/P._fused를 읽으며, 분리된 카드의 보관된 minus wrapper를 직접 재호출하면 추가 레벨다운과 환불/저장/SFX가 실행된다. 회전기폭 whirlDet(whirlwind·detonate, 실제 2성), 멤버 Lv3/SP10/악의80 시작에서 연결 정상 1회는 멤버 Lv2/SP12/악의80, 보관 detached 재호출은 현행 멤버 Lv1/SP14/악의80이다. 환불은 _fuseUpSpCost(fLv-1,(_bg.star)||_ids.length||1); 실제 _skillUpSpCost(2)=1이므로 Lv3→2 환불2SP, Lv2→1도2SP다. P._fused.whirlDet=true, 빈6슬롯/ULT_SLOT=null/activeLMBSk=whirlwind는 유지된다. _skMinusClick 첫 문장 if(!d.isConnected||!grid.contains(d))return; 메모리 후보는 정상 첫 효과 동일, detached 재호출의 레벨/SP/악의/슬롯/저장/렌더/SFX 추가0이며 원래 wrapper stopPropagation은1회 유지한다. 새 source2RED/후보2GREEN, 1시나리오4비교이며 이전 plus/인벤토리 재실행·합산0. source fixture PASS ≠ runtime/visual/저장/청취 PASS; productionApplied=false. 자연 더블클릭/native input/전체 렌더/실제 저장/오디오 내부 RNG/다른 합체/리셋은 미검수다.",
+    "sharedDocsEdited": false,
+    "productionApplied": false,
+    "canonicalPlacement": "합체 비용/리셋 환불 공식 뒤에 별도 단일 레벨다운 수명 감사 표 추가. 리셋 전체 환불식과 혼합하지 않음",
+    "uiPlacement": "plus 생산 반영 절 다음에 minus 별도 함수 감사·미적용 상태 표 추가; plus2GREEN/음성2RED는 기존 인수 이력으로 유지",
+    "resourcePlacement": "SP 환불/악의 소비 설명에 단일 합체 레벨다운 SP2·악의 환불0과 위 감사 링크 추가",
+    "optionalLink": "UI_COMPOSITION_20260925.md 스킬 작업공간 조작 보존에 minus 감사 링크·미적용/미검수 상태만 추가",
+    "lockedDocsWrites": 0,
+    "numericDesignChanges": 0,
+    "otherMatchedDocs": "검색 매칭 근거 목록 인계. 생산 변경0이므로 다른 합체·전투·시전·리셋 설계/수치 변경안0"
+  },
+  "finalAudit": {
+    "UTC": "2026-10-02T05:30:17.756Z",
+    "KST": "2026-10-02 14:30:17 KST",
+    "ownFiles": [
+      "TASK.md",
+      "checks.mjs",
+      "evidence.json",
+      "result.md"
+    ],
+    "writtenFiles": [
+      "checks.mjs",
+      "result.md",
+      "evidence.json"
+    ],
+    "writtenFileCount": 3,
+    "hashesAfter": {
+      "AGENTS.md": "fd59bef70960bcaf1ab9910051faa860362884e574ac2869fad05c6872ae04e4",
+      "game.html": "6c77ec6f571f4de9cb199a2ac425eb3f0450205bcf6f1d883ac8d13135ac4b43",
+      "game-easy-test.html": "c40ea16180305a3d0043d1c9dfa9091096820e589e537a893d5d28fff56528d0",
+      "tools/team-followup-20261002/continuous/COMMON.md": "de5a881270625a7b2d0e854331205e01372a037340a18474c6442b60e668465e",
+      "tools/team-followup-20261002/continuous/UIUX/TASK.md": "d2959681e96aa6cb6cb8ea5d177c3c03537d262ee20827e0e3bb1512ff0ed483",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/CONTINUOUS-DISPATCH-20261002.md": "33385332b648ba5cb268ac83351a187a51761b1e094f9b6baf6995f79957ac0c",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROVIDER-HALVES-20261002.md": "99adf66254d877cdbb1718ad6a4052a537e84a0027b5f5b4dfb5dbf9f15f9dd6",
+      "docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md": "de6fd967362e97fc21f16c8abba48cd1480ae48064a8feccc9600839a915b372",
+      "docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md": "b801cc30d66717a4f3e107285d87916b38f89bdf498da274b6f1612fb191767a",
+      "docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md": "12f511feca18545e920a3f59163c08db5b892969a47680bf032f331806cc79e3",
+      "docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식.md": "396f669b2caf3ee20c2c31341b91db6bec183e3566bd13e79d4943dc21657d61",
+      "docs/2_1 스킬관리+합체시스템+자원/SKILL_자원게이트_감사_20261001.md": "e7a8e8f27818a0d1acd02de1edff6c74a3fad2f53c5f5c22bffbff7033656c7a",
+      "tools/team-followup-20261002/codex-half/UIUX/result.md": "8cde8f50874d271f8a0af7f92fb1dbb68c3e4fed920d64c2b7788eec99ffa658",
+      "tools/team-followup-20261002/codex-half/UIUX/evidence.json": "d0d3b19059b28f4c84fa3516e034e2cee2eb97915228d7a3a897929d597d6f0e",
+      "tools/team-followup-20261002/root-integration/uiux-skill-lifetime-checks.mjs": "925e58764cbc8096fb785d6d7c2209e8d3af807ddb37d4ef3c3f0bfea7407d41",
+      "tools/team-followup-20261001/UIUX/inventory-dom/node-dom.mjs": "b3c6bb3abf74d5b9e464d1db2e5d2441645af3be8eb096f3c30788b7019cfb95"
+    },
+    "preflightChangedFiles": [
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/CONTINUOUS-DISPATCH-20261002.md"
+    ],
+    "criticalInputsUnchanged": true,
+    "checksSHA256": "65fa2cf9af3cb72d7c7f2e173ae175675711b8d7ac33ae05606bbd3e56d5736c",
+    "resultSHA256": "b5c6da0c143e739dc9e473f39b9a6a6fbf443178a35de4f1bc9f7ce299c81a08",
+    "fixtureExecutions": 1,
+    "priorExecutions": 0,
+    "GitCommands": 0,
+    "HEAD": "UNKNOWN",
+    "Changes": "UNKNOWN"
+  },
+  "completionUTC": "2026-10-02T05:30:17.756Z",
+  "completionKST": "2026-10-02 14:30:17 KST"
+}
