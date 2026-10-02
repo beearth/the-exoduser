@@ -52232,3 +52232,24 @@ late4 result/evidence SHA는 감독 공식 pin과 동일: STORY `870166cc681937f
 기존 팀0548의 source T4-summon601 양판2·정상main1, T5실행0·SayCDfalse추론과 처음VM구문실패/수정후완료1회는 그 제출 이력으로 보존한다. 이번 root의 새 직접bool관측/T4-near_boss/T5-hp_critical 및 양판정상은 별도 범위다. 원팀 raw3는 이미 HEAD에 같은SHA로보존되어 새stage0이다. supervisor의 직전raw10도65e046bb에서 정확보존·인수완료라 재stage0. 새로운 완료원문 인계0이며 이번 scope는 core10(game2/test1/정본4/new보고1/root2)만이다.
 
 총괄은 source/문서 인수와 scoped Git 보존을 수행하며 전문15팀 완료감시/피드백·다음TASK는 기존감독의 단일송신 소유다. root 전문팀 재배정·같은TASK/검사재송신0. 총괄+감독2/Codex전문7/Claude8=17 및 Changes80 checkpoint/100전새산출중단 Gate 유지. 감독STATE/LOG/activeTASK·타인WIP/원 사용자23·보호2_3·사용자게임탭/세이브/기존앱/서버를 보존한다. 실제UI·input/reload/close·저장·서버/앱재시작·AI/GPU/음향/native·패키지/서명/배포·설치/권한/인증/결제/게시/삭제/cleanup/새채팅·팀/PC/Windows 작업0이다. 최종exact원격SHA와10경로 blob proof는 `tmp/mac-migration-runtime/continued-review-20261002/pet-first-item-checkpoint/receipt.json`에 commit/push후 기록한다.
+
+## 2026-10-02 ANIM 일반 body의 source-sink 인수 범위 정정
+
+원팀 `ANIMVFX-texture-failure-body-0548`의 공식 완료 `1a18b23f-aff4-4469-b28b-c4cb9f0d9476`를 현재 소스와 정적으로 대조했다. **생산 코드·테스트 변경 0, 새 검사/기존6·18·57·11/root 검사 재실행 0, 안전한 생산 후보 미정/HOLD**다. 원자료의 호출 합산을 실제 픽셀 중복·보행 누락 없음·독립 CPU 복구로 확대하지 않는다.
+
+| 항목 | 확인한 범위 | 인수 한계 / 보존 |
+|---|---|---|
+| 현재 source | 본편 SHA `34ba2b742523850bda8b6f204f86d216b74ce3264698277f6e6c728f9c75bdf7`, easy `24f820a162d8ef545caf910116119cb09db6980c0f9508d48867eff5dc7d8adb`; 기준 HEAD `b9fc1059345c862929e722ccb2e17591d50d5c1c` | 이번 전체 source byte 불변. 양판 queue/draw/facing/body 각4, 총8 추출 SHA가 기존 원팀 regex 경계와 동일 |
+| 등록과 본문 | idle 큐 등록 뒤 `_ensGLMode=1`; 일반 body는 `_eDrew=!!_ensGLQueued` 초기화 뒤 `if(_a8)`에 queued guard 없음 | 해당 조건의 JS 경로 정적 사실. 모든 queued 적·특수 body·다른 atlas/전체 caller로 일반화하지 않음 |
+| 기존6 기록 | both-ready 선택 upload-prefix idle/walk1/1, 합성 walk-null1/0; 별도 body 호출은 각각1/1 | 별도 fixture 입력 x9999/8888와 body(340,420)/Pnull, walk UV256/1280. 같은 위치·UV·alpha·객체의 연결 실행 또는 출력 픽셀 수를 측정하지 않음 |
+| GL 대역 | `drawArraysInstanced(m,f,c)`는 세 번째 vertexCount4만 기록; 네 번째 instanceCount 누락, glInst는 assert 미사용 | sentinel-prefix와 별도 drawImage 호출의 합산 idle2/walk2 또는2/1은 가시 중복 증거가 아님. 양수 `_drawn`도 native 성공 증거 아님 |
+| 실제 body 경로 | 정상 `_useGL`의 X는 `_buildProxyX` GPU proxy. Image `X.drawImage`도 같은 `_getTex→_setTex→_quad` 사용 | 독립 CPU/Canvas2D 복구·실제 walk 표시 무누락 UNKNOWN. 원 합성 null은 실제 backend 실패 정책 실행이 아님 |
+| 실제 텍스처 실패 | 업로드 throw/0크기/최대치 초과 뒤 투명 RGBA1×1 업로드 시도; nonnull createTexture와 fallback 업로드 완료 때 cache/return 가능 | null handle/2차 업로드 throw 성공보장0. 같은 `_glVer` cache 재시도 없음. nonnull handle은 가시 픽셀 보장이 아님 |
+| shader / 다음 Gate | instanced shader sampled alpha≤.001 discard 정적 확인; bodyproxy shader 픽셀 검수와 구분 | queue-only/body-skip 단독 미채택. draw 실패 정보·버킷/적 대응·caller 조율·실제 유효 픽셀/alpha 근거 필요 |
+| 정본 동기화 | 스킨 렌더링 파이프라인 기존35/78행2접점, 스킨 시스템 기존45행1접점 최소 정정; ANIM master와3문서 부록, 새 Gate 보고서 | 승인3접점 역치환 원문 byte/EOL100%, master 원 prefix100%. 2026-08-09 로드맵/08-10 작업보고·기존 피격 플래시 검수는 별도 역사로 보존 |
+| 전수 docs | 쓰기 전163행/53문서, 정본 완료 뒤183행/54문서 전수검색 및 행별분류 | 정본기존3+신규1/비소유50 분류. 비소유 새 매칭행0, supervisor STATE 외부변경은 소유자 그대로 보존. root2 append 뒤 최종검색은 checkpoint 영수증에 별도 기록 |
+| 정확 scope | 정본3+새 Gate1+root2 = docs6경로 | 원팀 result/evidence/checks3는 이미 HEAD에 동일SHA; 재stage/수정0. game/test/source12pin·원 사용자23변경 전체 SHA 보존 |
+
+상세 계약은 `docs/8.0몬스터디자인/ENEMY_GL_2D_BODY_FALLBACK_GATE_20261002.md` SHA `20b8175861def44b3a73966e8adacbf11987a167c1960465351f2c7caa65f7f2`를 따른다. 정적 영수증 `tmp/mac-migration-runtime/continued-review-20261002/anim-body-static/receipt.json` SHA `807b0f169ac5995c6a69dad510bfc792348f6a5c63fe035b7c0385984e8cf482`; 문서 completion `tmp/mac-migration-runtime/continued-review-20261002/anim-body-docs-backup/2026-10-02T09-05-06.157Z-8aa70d14-6c2d-49f5-9394-0e6106fa21e0/completion.json` SHA `117f77b5d3c5106a670024bc91596e7d8e7bdd50b00f014edd33acd818ca30f5`. 실제 GL/Canvas/DOM/native·게임 입력/재시작·저장·GPU 픽셀/청취 검수0이며 발 앵커 UNKNOWN/corpse fade 보류를 유지한다.
+
+전문15팀 완료감시/피드백/다음TASK는 기존 작업감독의 단일송신 소유이며 총괄은 이 docs-only 인수·정확 Git 보존을 맡는다. 총괄+감독2/Codex전문7/Claude8=17, Changes80 완료소유경로 checkpoint/100전 새산출중단 Gate 유지. 보호2_3/PETS_LOCK/타인WIP/원 사용자23·사용자게임탭·세이브·기존앱/서버 보존. 설치/권한/인증/삭제/cleanup/결제/게시/새채팅·새팀/PC·Windows 작업0. exact commit/push/원격SHA 및6경로 blob proof는 `tmp/mac-migration-runtime/continued-review-20261002/anim-body-checkpoint/receipt.json`에 완료 뒤 기록한다.

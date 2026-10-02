@@ -251,3 +251,16 @@ QA 판단: GL 경로 **코드 동작은 정규 런타임에서 확인**했다. *
 ### 2026-10-02 sparse C5 추가 반례와 원담당 수정
 
 root가 sparse8+데모2를 재실행했지만 중간 record의 draws 누락을 dD=0처럼 판정해 전체 고주사율 PASS로 승격하는 반례를 재현했다. clockMissing의 draws 누락과 첫 record 검수 경계도 함께 보강할 필요가 있어 기존 patch 통합은 보류했다. 원바이트 before 보존 후 같은 ANIMVFX에 실제 canonical gate 수정·통합 한 건을 전달하고 Read 확인. 실제 >=90Hz 실측은 UNKNOWN, 생산 VFX/GL probe/게임 변경0. [실패 입력·SHA·후속](../0마스터플랜/mac-resume-20261001/vscode-dispatch/FIVE-OWNER-INTEGRATION-20261002.md).
+
+## 2026-10-02 일반 body texture-failure Gate — 정적 인수
+
+`ANIMVFX-texture-failure-body-0548`의 기존6 기록을 현재 queue/draw/body/facing 원문과 대조했다. 이 작업은 생산·테스트 변경 0, 기존6/18/57/11 및 root 검사 재실행 0이다. §5b/§10/§11의 피격 플래시 상호배타·수명·정규 GL 이력은 해당 효과의 검수이며 일반 body의 픽셀 중복 방지나 실패 복구 PASS로 확장하지 않는다.
+
+| 백로그/Gate | 인수 내용 | 상태 |
+|---|---|---|
+| 일반 8dir body | 현재 `_eDrew=!!_ensGLQueued` 뒤의 `if(_a8)` 본문은 queued guard 없이 실행. 기존 선택 fixture의 idle/walk upload-prefix 입력과 별도 `X.drawImage` 호출만 확인 | 정적 source-sink 인수; 실제 GL 인스턴스/픽셀 수 미관측 |
+| draw-time walk 실패 | 합성 `_getTex=null`에서 walk upload-prefix는 0, body walk 호출은 1. 그러나 정상 GL의 X도 GPU proxy이며 같은 `_getTex`를 사용하므로 독립 CPU/Canvas2D 구제·보행 픽셀 무누락 UNKNOWN | 실제 backend 실패/전체 caller 미실행 |
+| 안전한 최소 후보 | queue-only/body-skip 단독 채택 금지. 등록 성공/양수 제출 반환/non-null 텍스처만으로 유효 알파·픽셀을 인수할 수 없음 | 생산 미채택; 후보 미정 |
+| 유지 | 기존 hitFlash 계약·corpse fade 보류·발 앵커 UNKNOWN·스킨/프레임/좌표/전투 수치 | 이 작업 변경 0 |
+
+원팀의 ‘idle 이중 출력’은 서로 다른 sentinel-prefix/일반 body 호출의 합산 기록이며 같은 UV·좌표·알파의 가시 중복 증거가 아니다. 정확 대역·함수/행·투명 텍스처 실패 정책·검색 분류·승인한 정본 수정은 [새 body Gate](../8.0몬스터디자인/ENEMY_GL_2D_BODY_FALLBACK_GATE_20261002.md)에 기록한다. 현재 실게임/native/GL/DOM/픽셀/청취 검수는 0이다.
