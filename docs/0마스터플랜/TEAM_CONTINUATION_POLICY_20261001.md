@@ -1,6 +1,6 @@
-# 현재 팀 배치 — Codex8·Claude8 / 총16역할
+# 현재 팀 배치 — 총괄+감독2 / Codex전문7·Claude전문8 / 총17역할
 
-사용자 최신 확정: Codex는총괄+UIUX/ITEM/BUILD/BALANCE/SOUND/QUESTNPC/MARKETING8, Claude는ART/MAP/SKILL/QA/ENEMY/ANIMVFX/BOSS/STORY8이다. Claude TASK Read8/8·Codex전문 TASK Read7/7 확인. 중복Codex채팅8개는완료턴확인후복구가능보관했고현재Codex전문채팅7개+이총괄이다. [현재역할·실행위치·소유·상태](mac-resume-20261001/vscode-dispatch/PROVIDER-HALVES-20261002.md). 이표가최신배치이며아래11/12/15팀기록은각시각이력이다.
+사용자 최신 확정: 원총괄+작업감독2, Codex전문UIUX/ITEM/BUILD/BALANCE/SOUND/QUESTNPC/MARKETING7, Claude전문ART/MAP/SKILL/QA/ENEMY/ANIMVFX/BOSS/STORY8로 총17역할이다. Claude TASK Read8/8·Codex전문 TASK Read7/7 확인. 중복Codex채팅8개는완료턴확인후복구가능보관했고현재Codex전문채팅7개+이총괄이다. [현재역할·실행위치·소유·상태](mac-resume-20261001/vscode-dispatch/PROVIDER-HALVES-20261002.md). 이표가최신배치이며아래11/12/15팀기록은각시각이력이다.
 
 # 팀 연속 진행과 한국어 응대
 
@@ -161,3 +161,25 @@ root는 양판 `_skClick` 카드 연결 수명 guard(생산2GREEN/guard제거 �
 ## 최신 사용자 지시: 별도 작업감독 추가 — 2026-10-02
 
 EXODUSER 작업감독 `01a0fb1e-4ec3-7dd3-bba2-f87518e881fa` 생성·TASK Read exit0·active 확인. 총괄+감독2/Codex전문7/Claude전문8=17역할(Codex9/Claude8)이며 이전8+8은 이력이다. 전문팀 완료인수/피드백/다음지시의단일담당은감독, production/docs동기화/Git는원총괄이다. 최신운영기록은 supervisor/SUPERVISOR_STATE.json·LOG, 중앙CONTINUOUS-DISPATCH는인수snapshot이다. Claude8새지시 실제peer수신→정확TASK Read성공을05:38:34Z에확인했다. 공식기존local inbox를사용해화면입력대기를해소했으며새세션/resume/권한변경0이다. 감독heartbeat exoduser·원총괄 exoduser-mac 각각ACTIVE1분·target actualTOML확인, 중복전문팀송신0이다.
+
+## 2026-10-02 최신: 전문15팀 자율 연속 진행
+
+사용자 “감독없이 혼자 그냥 계속진행하게 명령하면어떄” 및 “그렇게 다 일시켜봐”를 적용한다. 전문팀은 현재 작업·사용자 직접 지시를 보존하며 완료 근거 제출 후 감독 검토나 총괄 통합을 기다리지 않고 자기 승인 백로그의 다음 독립 작업 한 건을 선택한다. 기존 다음지시 대기 방식보다 이 항목이 우선한다.
+
+| 항목 | 현재 계약 |
+|---|---|
+| 역할 | 원총괄+감독2 / Codex 전문7 / Claude 전문8 =17; 과거8+8은 감독 추가 전 이력 |
+| Codex 전문 | UIUX, ITEM, BUILD, BALANCE, SOUND, QUESTNPC, MARKETING |
+| Claude 전문 | ART, MAP, SKILL, QA, ENEMY, ANIMVFX, BOSS, STORY |
+| 작업 순서 | 재현된 결함 수정 후보 → 필요한 회귀 검수 → 기존 구현 누락 연결; 같은 결함·검사·문서 보고 반복 금지 |
+| 자율 소유 | `tools/team-followup-20261002/supervisor-next/<ROLE>/` 아래 자기 새 고유 반복 폴더; 반복당 최대3산출; 제출한 기존 원자료 불변 |
+| 통합 소유 | 공용 production 코드·공유 정본 docs·Git/index/commit/push는 원총괄; 팀은 후보·근거·정확 docs 동기화 필요사항을 인계 |
+| 의존성 | 한 작업이 막히면 구체적 의존성·필수 결정을 기록하고 다른 승인 독립 작업을 진행 |
+| 감독 | 허가 대기 문턱이 아닌 실제 종료/idle/막힘 복구·근거 인계. 진행 중 계속 지시 반복0; 기존 세션에 정책1회 전달·실제 Read 확인 |
+| 예약 | 기존 `exoduser` / EXODUSER 작업감독 완료감시 / ACTIVE /5분 / 감독채팅 `01a0fb1e-4ec3-7dd3-bba2-f87518e881fa`; 공식 update 및 저장 TOML 확인. 과거1분 설정 기록은 이력 |
+| 실행 중 | 감독이 긴 실행 중에도 최대5분마다 점검. 검증된 후보는 즉시 원총괄에 인계, 전체팀 묶음 완료를 기다리지 않음 |
+| 용량 | 실제 untracked 전체 포함 변경 항목80부터 완료 소유만 checkpoint,100 전 새 산출 중단; ignore/삭제로 숫자 축소0 |
+| 보존 | 현재 TASK/사용자 직접 작업·타인WIP·사용자23 변경·보호2_3/Q전용패링/어택티켓 금지·맵 LOCK/가이드·사용자 게임/세이브 보존 |
+| 제한 | 새 팀/채팅/세션·권한/인증/설치/결제/게시/삭제/cleanup0; PC/Windows 대상0 |
+
+정책 저장과 실제15팀 수신·착수는 구분한다. 감독에게 공식 전달했고 실제 Read 결과는 supervisor STATE/LOG의 최신 영수증을 따른다. 한 번의 계속 명령이나 예약 간격을 무제한 실행·무지연 보장으로 보고하지 않는다. 의미 있는 완료/실패/필수 결정만 알린다.

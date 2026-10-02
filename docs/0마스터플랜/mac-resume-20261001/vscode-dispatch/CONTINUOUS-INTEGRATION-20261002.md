@@ -305,3 +305,11 @@ late4 result/evidence SHA는 감독 공식 pin과 동일: STORY `870166cc681937f
 | MARKETING | 데모 CTA·로비 반환 closure | `01a0fc30-4081-7293-a063-feb355d9d3ae` | Steam/데모경로 후보; 외부상품·native·실패키지 미검수 |
 
 14 원자료 변경0·기존 검사 재실행0·코드 변경0·docs 키워드 재검색0. 원사용자23/현재 source12는 직전 `supervisor-immutable-task-checkpoint/receipt.json` pin과 바이트동일임을 확인했다. HEAD `d5c1b62d9e74304a163ddd46bc95d28877de160f` 및 정확16경로/pin/총괄2 prefix·개행 보존 증거는 `tmp/mac-migration-runtime/continued-review-20261002/codex7-candidate-preservation-checkpoint/receipt.json`에 기록한다. supervisor STATE/LOG·재개 TASK·진행 중 새 결과·타인WIP는 제외하고 외부 mutable 파일을 동결하지 않는다. root의 scoped stage/commit/push·원격 인수는 다음 절차다.
+
+## 전문15팀 자율연속·Claude8 원자료 보존 checkpoint — 2026-10-02T11:24:37.037585+00:00
+
+사용자 최신 확정에 따라 각 팀은 완료 제출 후 자기 승인 백로그의 다음 독립 작업을 이어간다. 감독은5분 idle/막힘 복구·완료 인계, 원총괄은 production/docs/Git 통합을 맡는다. [자율 연속 계약](../../TEAM_CONTINUATION_POLICY_20261001.md) 및 감독 STATE/LOG의 실제 수신 증거를 구분한다. Codex전문7·Claude전문8/총괄+감독2=17, 기존세션 유지·중복팀0이다.
+
+공식 Claude8 hb1014 검수manifest SHA `dd4c2883ad1878934c4ffb4eefa55041f25af2100b1b73cbeac5cf79a7d3b843`의 완료소유 raw16만 원SHA 그대로 보존한다. ART/MAP NOFIX는 native/시각 PASS가 아니며 SKILL source추출·QA/STORY lifecycle자동연결·ENEMY identity/실제updateE·BOSS partialspawn정책/실제source·ANIMVFX missing caller Gate는 미인수다. 원자료 보존16건을 게임 구현16건으로 계산하지 않는다.
+
+이번 checkpoint는 raw16+운영정책2+원총괄문서2 정확20경로, source/test 적용0·기존검사반복0이다. SOUND 양판 +23B 및 독립12PASS는 별도 소유 WIP이며 이번 stage 대상이 아니다. 기존user23·타인WIP·진행TASK/STATE/LOG를 보존하고 정확 원격SHA로 확인한다.
