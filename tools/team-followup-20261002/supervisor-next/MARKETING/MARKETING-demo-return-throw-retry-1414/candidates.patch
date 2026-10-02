@@ -1,0 +1,73 @@
+--- a/game.html
++++ b/game.html
+@@ -12724,6 +12724,7 @@
+   if(e.code==='F8'){e.preventDefault();if(window._v3fx&&P){const _v3keys=['fire','ice','lightning','dark','poison'];window._v3fx(_v3keys[window._v3ti||0],P.x,P.y);addTxt(P.x,P.y-30,'3D: '+_v3keys[window._v3ti||0],'#ffcc44',30);window._v3ti=((window._v3ti||0)+1)%_v3keys.length}else{_tvfx2Spawn()}return}
+   if(e.code==='F4'){e.preventDefault();const _nf=!OPT.fog;OPT.fog=_nf;OPT.bossFog=_nf;saveSettings();showPH(_nf?_L('안개 ON','Fog ON'):_L('안개 OFF','Fog OFF'),_nf?'#8899cc':'#888888');return}
+   if(window._parryLesson?.active&&!window._parryLesson.allowKey(e.code)){e.preventDefault();return;}
++  if(['Space','Enter','NumpadEnter','Tab'].includes(e.code)&&e.target instanceof Element&&$('demoEnd')?.style.display==='flex'&&e.target.closest('#demoEnd button'))return;
+   // Focused panel controls own activation and focus traversal keys.
+   if(['Space','Enter','NumpadEnter','Tab'].includes(e.code)&&e.target instanceof Element&&e.target.closest('#invPanel.on button,#invPanel.on [data-inventory-detail-trigger],#crBagPop button,#settings.on button,#settings.on input,#settings.on select'))return;
+   K[e.code]=true;KH[e.code]=true;
+@@ -61641,14 +61642,19 @@
+   window.open('https://store.steampowered.com/','_blank');
+ }
+ // ═══ 로비 복귀 버튼 ═══
++let _lobbyReturnPending=false;
+ async function goToLobby(){
+-  if(typeof _deathDlgStop==='function')_deathDlgStop();
++  if(_lobbyReturnPending)return;
++  _lobbyReturnPending=true;
+   try{
+-    // 사망 상태면 HP 복구 후 저장 (죽은 채로 저장 방지)
+-    if(P&&P.hp<=0){P.hp=P.mhp;P.st=P.mst;P.mp=P.mmp;P.shield=P.mshield;P.s='idle'}
+-    if(_dbReady)await dbSave();
+-  }catch(e){console.error('[goToLobby] save error:',e)}
+-  window.location.href=_DEMO_MODE?'/?lobby=1&demo=1':'/?lobby=1';
++    if(typeof _deathDlgStop==='function')_deathDlgStop();
++    try{
++      // 사망 상태면 HP 복구 후 저장 (죽은 채로 저장 방지)
++      if(P&&P.hp<=0){P.hp=P.mhp;P.st=P.mst;P.mp=P.mmp;P.shield=P.mshield;P.s='idle'}
++      if(_dbReady)await dbSave();
++    }catch(e){console.error('[goToLobby] save error:',e)}
++    window.location.href=_DEMO_MODE?'/?lobby=1&demo=1':'/?lobby=1';
++  }catch(e){_lobbyReturnPending=false;throw e;}
+ }
+ if($('toLobbyBtn'))$('toLobbyBtn').onclick=goToLobby;
+ if($('toLobbyBtn2'))$('toLobbyBtn2').onclick=goToLobby;
+
+--- a/game-easy-test.html
++++ b/game-easy-test.html
+@@ -12120,6 +12120,7 @@
+   if(e.code==='F8'){e.preventDefault();if(window._v3fx&&P){const _v3keys=['fire','ice','lightning','dark','poison'];window._v3fx(_v3keys[window._v3ti||0],P.x,P.y);addTxt(P.x,P.y-30,'3D: '+_v3keys[window._v3ti||0],'#ffcc44',30);window._v3ti=((window._v3ti||0)+1)%_v3keys.length}else{_tvfx2Spawn()}return}
+   if(e.code==='F4'){e.preventDefault();const _nf=!OPT.fog;OPT.fog=_nf;OPT.bossFog=_nf;saveSettings();showPH(_nf?_L('안개 ON','Fog ON'):_L('안개 OFF','Fog OFF'),_nf?'#8899cc':'#888888');return}
+   if(window._parryLesson?.active&&!window._parryLesson.allowKey(e.code)){e.preventDefault();return;}
++  if(['Space','Enter','NumpadEnter','Tab'].includes(e.code)&&e.target instanceof Element&&$('demoEnd')?.style.display==='flex'&&e.target.closest('#demoEnd button'))return;
+   // Focused panel controls own activation and focus traversal keys.
+   if(['Space','Enter','NumpadEnter','Tab'].includes(e.code)&&e.target instanceof Element&&e.target.closest('#invPanel.on button,#invPanel.on [data-inventory-detail-trigger],#crBagPop button,#settings.on button,#settings.on input,#settings.on select'))return;
+   K[e.code]=true;KH[e.code]=true;
+@@ -59979,14 +59980,19 @@
+   window.open('https://store.steampowered.com/','_blank');
+ }
+ // ═══ 로비 복귀 버튼 ═══
++let _lobbyReturnPending=false;
+ async function goToLobby(){
+-  if(typeof _deathDlgStop==='function')_deathDlgStop();
++  if(_lobbyReturnPending)return;
++  _lobbyReturnPending=true;
+   try{
+-    // 사망 상태면 HP 복구 후 저장 (죽은 채로 저장 방지)
+-    if(P&&P.hp<=0){P.hp=P.mhp;P.st=P.mst;P.mp=P.mmp;P.shield=P.mshield;P.s='idle'}
+-    if(_dbReady)await dbSave();
+-  }catch(e){console.error('[goToLobby] save error:',e)}
+-  window.location.href=_DEMO_MODE?'indexdemo.html':'/?lobby=1';
++    if(typeof _deathDlgStop==='function')_deathDlgStop();
++    try{
++      // 사망 상태면 HP 복구 후 저장 (죽은 채로 저장 방지)
++      if(P&&P.hp<=0){P.hp=P.mhp;P.st=P.mst;P.mp=P.mmp;P.shield=P.mshield;P.s='idle'}
++      if(_dbReady)await dbSave();
++    }catch(e){console.error('[goToLobby] save error:',e)}
++    window.location.href=_DEMO_MODE?'indexdemo.html':'/?lobby=1';
++  }catch(e){_lobbyReturnPending=false;throw e;}
+ }
+ if($('toLobbyBtn'))$('toLobbyBtn').onclick=goToLobby;
+ if($('toLobbyBtn2'))$('toLobbyBtn2').onclick=goToLobby;

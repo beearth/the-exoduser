@@ -1,0 +1,5 @@
+--- a/docs/3.1 ui hud 디자인/LOBBY_ANCESTOR_ART_20260928.md
++++ b/docs/3.1 ui hud 디자인/LOBBY_ANCESTOR_ART_20260928.md
+@@ -12 +12 @@
+-| SELECTED_MEDIA | idleVid 재생, idleRate 없으면1. 전사 assets/charselect/idle_warrior_cs3_4k.mp4?v=20260929-cs3, playbackRate0.75; poster_idle_warrior_cs3_4k.jpg 같은 버전 (2026-09-29 CS3.0 재생성, 아래 §전사 아이들 재생성 참조; 구 idle_warrior_higgsfield_4k.* 파일은 미참조로 보존). 실버테일 idle_silvertail.mp4 및 poster_idle_silvertail.jpg, 버전20260927-restored. 공개 comingSoon/생성 제한 변경 없음 |
++| SELECTED_MEDIA | idleVid 재생, idleRate 없으면1. 전사 assets/charselect/idle_warrior_cs3_4k.mp4?v=20260929-cs3, playbackRate0.75; poster_idle_warrior_cs3_4k.jpg 같은 버전 (2026-09-29 CS3.0 재생성, 아래 §전사 아이들 재생성 참조; 구 idle_warrior_higgsfield_4k.* 파일은 미참조로 보존). 실버테일 assets/charselect/idle_silvertail_4k.mp4?v=20260929-remaster 및 assets/charselect/poster_idle_silvertail_4k.jpg?v=20260929-remaster. 공개 comingSoon/생성 제한 변경 없음 |

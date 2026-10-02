@@ -483,3 +483,18 @@ CH1-1 목표 actual전체Read13/13(기존MAP미소비/ENEMY실거부제외)을�
 ### 2026-10-02 쓰레기 확인 후 잠금 보호 source 인수
 
 실제 KeyF→gameConfirm/gcOk→await bulk 연결에서 확인 중 중요잠금한A의 오분해·과지급을 재현하여 양판 `_jkBtn.onclick`의 현재bag/junk/fav/equipped/분해액을 확인 전·후 재검사했다. 초기악의500에서 old3500(A+B)→final2500(B만), A보존. callback2 각+562B 외전체bytes/EOL 동일. 신규28/28+별도정상역소스대조8/8 PASS(구검사반복0), inlineJS12/importmapJSON2 구문1회PASS. 실제native/전체renderer/청취/실저장은미인수다. [정확계약](../../../2_7%20인벤토리+장비시스템/INVENTORY_JUNK_CONFIRM_REVALIDATION_20261002.md). 코드+canonical2_7/UI동기화와관련docs전체검색45행20경로분류를같은범위로보존한다. b3Mac앱은이전3fixsnapshot이며후속source를포함한새앱/실제6단계는별도다. 제품source수정1건이고검수36그룹을제품36건으로계산하지않는다. root는생산인수·빌드·Git,기존감독은전문15팀단일오더전담을유지한다.
+
+
+### 2026-10-02 완료 원자료16 보존 — 14:19/14:23 인계
+
+| 항목 | 보존 및 인수 경계 |
+|---|---|
+| 소유 | SKILL/QA/ANIMVFX/BOSS/STORY9 + SOUND/BUILD4 + BALANCE/MARKETING3 =16파일, 9역할 |
+| 핀 | readiness e7013ece8c8b16ac92f051ed009a5029121e276012f7e8347e0094c72b91442b의 정규화 소유16 경로·바이트·SHA exact. 읽기 중 변경0/HOLD0 |
+| 공식 근거 | native5 Write→공식 end_turn 연결9파일. SOUND/BUILD4와 추가BALANCE/MARKETING3은 감독 handoff attestation으로 별도 기록하며 직접 JSONL 검수로 확대하지 않는다 |
+| source Gate | BOSS1차 C/2차폴백10은 별도비용 설계, 추가10삭제 HOLD. SKILL ghostwalk/QA죽음과대모델은 상위 실제guard로 정정. ANIM모델 draw후 카운터0은 render수정 입증0. STORY는 timer 블록 대역이며 전체caller/native/wholeindexSHA38f4 주장미인수 |
+| 그밖의 raw | SOUND/BUILD source 전체검토대기. 결정dust 및 로비return 후보는 native0/도달성·예외경계 인수대기. 후보patch를production으로 적용0 |
+| whitespace | EOF0, authentic raw 후행공백8(QA1/BUILD7) 원문유지. root문서 strict검사와 분리 |
+| 제품/반복 | 이번 scope source/test적용0·기존검사재실행0·native/게임제품완료0. 현재 production source4는 ca7e0bb0 잠금확인 인수이며 appb3는옛3fixsnapshot |
+
+근거 ignored `tmp/mac-migration-runtime/continued-review-20261002/ready1419-1423-raw/receipt.json`; 감독 원manifest `hb1419-native-owned-evidence.json` ca31c251… + `hb1423-additional-owned3-handoff.json` c4d7240c…. 전문15팀 오더는 기존감독단일소유, root는 정확완료소유범위만 checkpoint한다.
