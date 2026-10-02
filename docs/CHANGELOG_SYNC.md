@@ -52204,3 +52204,31 @@ raw6는 완료 산출의 원문 보존이며 후보 생산 채택을 뜻하지 �
 | ENEMY-evidence-discipline-scope-0755 result/evidence2, end913fd3f9-7f51-45d3-9331-f3c5a661926a 08:05:16.104Z | 기존 같은 검사 반복1·Git조회1·두 번째 exit 공백을 인정. 손작성 realInit/gap30호환/SOUND원인/idx60일반화 주장 제한. root 실제 수정 영수증07:34:22가07:41전이며07:50checkpoint를 수정시각으로 취급하지 않음. 검색105매칭/25경로 완전성은 감독 public audit 보완 | 기존8PASS+8witness 보존, newNode0. 실제spawn/lifecycle·gap30호환·전체RNG·적AI 생산채택/실전투 미인수. Git조회는 쓰기나 rollback으로 분류하지 않음 |
 
 late4 result/evidence SHA는 감독 공식 pin과 동일: STORY `870166cc681937fbb8d8919c52a1f19fa5ec665a80546572dc3e079e163f98ae` / `33f890873237e8ec9ff952423fdc05510c0a187c0f90ec4388f4d3ca19853ccd`, ENEMY `2b2c0c6ba67832cbb01fc5ec7ae5ab2658607edac7daa9dc6ab0a95125cf699a` / `6de8264856b65ef38c5159f44aa063bccbe949f6677aaa25321544cd9ba73ef4`다. 앞선 오류가 있는raw6도 제출당시원문 그대로 유지하고 정정4에서 의미를 좁힌다. 두 정정은 감독이 이미 제한인수·root결정 대기 피드백을 처리했으므로 root전문팀 재송신0. 이번 최종보존 소유는 core7+새완료raw10=17경로다. 감독 STATE/LOG·새 active TASK는 제외한다.
+
+
+## 2026-10-02 첫 아이템 펫 안내의 수락 후 소비·거절 후 평가 소스 인수
+
+감독이 검증·인계한 QUESTNPC-firstItem-fallthrough-0548의 좁은 후보를 실제 양판에 최소 적용했다. 최초 안내 요청을 helper가 거절해도 `_petTut.firstItem`을 선소비하던 원문을, 실제 `_petSayCD` true일 때만 flag를 소비하고 return하도록 고쳤다. false면 기존 뒤쪽 분기를 평가한다. 이전 HOLD 후보는 거절돼도 return해 뒤쪽 평가를 생략했다. 이번에는 거절 시 기존 뒤쪽 평가를 허용하는 후보를 채택했으며, 다른 튜토리얼·전체 프레임 우선순위는 기존 계약을 유지한다.
+
+| 항목 | 이번 source 인수 | 검수·보존 경계 |
+|---|---|---|
+| 시작 HEAD | `65e046bbc46ee68abd863c8177ae32b5c00d257a` | 직전 저장 오류 source12 및 raw10 checkpoint는 이미 원격보존. supervisor 공식 인수·pending0 확인, 재검사/재stage0 |
+| 생산 접점 | main9243/easy8694 각각218→223UTF8 bytes(+5), 고유1접점·개행 유지. `flag=true;SayCD(...);return`→`if(SayCD(...)){flag=true;return}` | 접점 밖 전체 rawbyte 동일, 역치환 전체가 이전 HEAD/raw backup과 동일. 대사 인수/조건·숫자·외형 LOCK·저장 schema 변경0 |
+| 현행 source | main SHA `34ba2b742523850bda8b6f204f86d216b74ce3264698277f6e6c728f9c75bdf7`; easy `24f820a162d8ef545caf910116119cb09db6980c0f9508d48867eff5dc7d8adb` | 이전 main275929/easy12343 전체 SHA는 과거 checkpoint 이력. 이전 boss/SOUND/storm·기타 소스 구역은 이번접점 밖 동일 |
+| 발동·수락 | Stage0/Lv≤200·flagfalse·bag≥1 유지. crow5초300f/cat예약4초240f, ID9999초599940f, T1글로벌720f | 실제 helper true는 선발 상태/표시·SFX 호출과 pair 예약 수락. 실제 DOM/후발완료·청취·저장 보장 아님 |
+| 거절→재수락 | 실제 startup/timer·일반 pickup2회 후 t2 SayCDfalse/flagfalse, 기존 최종FireBid 도달. 실제 timer만료 뒤t721 true1회, t722 추가요청0 | 합성 시계·자원·이동/DOM/audio/save 대역. 다른 tutorial return·장기경쟁·pair중단 뒤 재생은 미검수 |
+| 새 T4 후속 | 최초 가방 없이620 dispatcher호출 후 pickup2회·합성 near_boss. t621 T1CD100 거절→기존T4 bid/fire/Saytrue; ID1800f/T4CD240·crow240/cat예약240 | center10/10타일·P0/0 거리226.274px<300의 실제predicate. 실제 보스spawn/AI/이동·맵도착 적법성UNKNOWN. 기존summon601 fixture를 재실행한 관측 아님 |
+| 기존 T5 선행 | HP8/100 대역에서 hp_critical weight100이 먼저 mid-fire·Saytrue; UID/ID1800f/crow180/cat예약180. T0/2/3/4CD300, 기존T1CD719 유지. 뒤firstItemfalse/미소비, 활성T5/T4CD가 near_boss 발화 차단 | 긴급bubble·ID/tierCD는 옛접점 대조와 동일. 기존 T5 inner Say 반환무시 정책 변경0. 전체프레임을 중단하는 새return·모든T5/실피해/죽음/native 인수0 |
+| 새 회귀 | `test/petFirstItemAcceptance.test.cjs` SHA `f1b27ec25b9da96deae73135b1f24bb32d5fe726bd2155b02ce7896f52a3e489`, final10/10·exit0, 양판각5그룹 | 원본 같은10의4PASS/6FAIL은 별도 이력. memory oldcontact 반례6 및 부적격하위입력8을10그룹에 추가합산0 |
+| 정상 보존 | 양판 old/current 추출 post-call 전체snapshot·sink/helper 인수와 호출순서 deepEqual2. 성공firstItem은 기존return으로 후속T4평가 생략 | flag 소비시점을 의도적으로 옮겨 표시/SFX 함수 안의 flag관측값은 동등성 범위 밖. 실제 DOM/sink예외 정책·fault검수 추가0 |
+| 실제 추출 | full _checkPetDialogue/updatePet/pickupItem 및 say/CD/urgent/bid/fire/timer/TierOf/BagNext/dst2·state 원문 | 전체 update/AI 생략·이동 no-op·DOM/번역/SFX sink·공간/stat/save/guide 대역. main일반장비2bag, easy첫자동장착/둘째bag 경로만 관측 |
+| 구문 / 반복 | inlineJS12/importmapJSON2 구문1회 PASS·게임/module실행0. 새 baseline1회/final1회 | raw파일 .tap 확장자는 Node기본spec reporter 원문이며 TAP형식이라고 주장하지 않음. 기존 팀8/summon601 및 boss/SOUND/BUILD/storm/save/mats/mortar 검사반복0 |
+| 실제 helper·티어 | [S03e] main8978/easy8433, actual _petSayUrgent9110/8561. _petUrgent 이름·alias0. T0~T5 글로벌1200/720/480/360/240/0f 보존 | ID CD·외부 같은UID활성가드 유지. 일반동일티어는 코드순, 생존weight별도. v6단일15초/일반plannedweight65·45를 현재코드로 이식0 |
+| 전수 docs | source뒤65행/13docs raw·행별분류; docs 초기union120행/21문서→최종164행/22문서 무절단검색·정확분류 | final 정본기존4+신규1/기타보존17. 번역·PETS_DESIGN_LOCK·보호2_3·보스/키바인딩·사운드/영상·역사 자료 보존 |
+| 정본 소유 | 2_4 main/대사_스크립트/대사_개편_v7_설계 + 11 펫_대사_스크립트4개, 신규 PET_FIRST_ITEM_ACCEPTANCE_FALLTHROUGH_20261002.md | 스크립트/v7 prefix100%. main59/63·서사89/93 현재설명4접점만 정확 old/new 최소교정, 역치환 나머지 기존bytes/EOL100%. 원문대사/번역/캐릭터/역사전체수량 재작성0 |
+
+소스 영수증 `tmp/mac-migration-runtime/continued-review-20261002/pet-first-item-backup/receipt.json` SHA `3d591e869a92808aca543e443ac42b9e842fe68c886e2e6d561190f10f13e379`, 문서 completion `tmp/mac-migration-runtime/continued-review-20261002/pet-first-item-docs-backup/2026-10-02T08-30-47.591Z-ec7ddaff-99cf-49d8-a1f1-02a83819a0e3/completion.json` SHA `13fe6789be0758ac49952be23517d76983feee6ce27f04a4daf41aeef44b29f8`를 따른다. source 보존18pin(node-main/보호2_3/PETS_LOCK/BUILD/SOUND/boss/storm/save/mats/mortar·원팀TASK/result/evidence/checks 등)과 원 사용자23변경의 전체 SHA를 확인하며 전문팀 원문은 수정하지 않는다.
+
+기존 팀0548의 source T4-summon601 양판2·정상main1, T5실행0·SayCDfalse추론과 처음VM구문실패/수정후완료1회는 그 제출 이력으로 보존한다. 이번 root의 새 직접bool관측/T4-near_boss/T5-hp_critical 및 양판정상은 별도 범위다. 원팀 raw3는 이미 HEAD에 같은SHA로보존되어 새stage0이다. supervisor의 직전raw10도65e046bb에서 정확보존·인수완료라 재stage0. 새로운 완료원문 인계0이며 이번 scope는 core10(game2/test1/정본4/new보고1/root2)만이다.
+
+총괄은 source/문서 인수와 scoped Git 보존을 수행하며 전문15팀 완료감시/피드백·다음TASK는 기존감독의 단일송신 소유다. root 전문팀 재배정·같은TASK/검사재송신0. 총괄+감독2/Codex전문7/Claude8=17 및 Changes80 checkpoint/100전새산출중단 Gate 유지. 감독STATE/LOG/activeTASK·타인WIP/원 사용자23·보호2_3·사용자게임탭/세이브/기존앱/서버를 보존한다. 실제UI·input/reload/close·저장·서버/앱재시작·AI/GPU/음향/native·패키지/서명/배포·설치/권한/인증/결제/게시/삭제/cleanup/새채팅·팀/PC/Windows 작업0이다. 최종exact원격SHA와10경로 blob proof는 `tmp/mac-migration-runtime/continued-review-20261002/pet-first-item-checkpoint/receipt.json`에 commit/push후 기록한다.

@@ -8691,7 +8691,7 @@ function _checkPetDialogue(){
     if(!_petTut.firstParry&&_petParryCnt>=1){_petTut.firstParry=true;_petSayCD('tut_1stparry','crow','됐어! 감 잡았구나.',4,9999,'cat','…운이 좋았을 뿐이야. 아마.',5);return}
     if(!_petTut.firstKill&&_petKillCnt>=1){_petTut.firstKill=true;_petSayCD('tut_1stkill','crow','하나 죽었군.',4,9999,'cat','…고기 냄새. 싫진 않네.',5);return}
     if(!_petTut.bowIntro&&_petKillCnt>=3){_petTut.bowIntro=true;_petSayCD('tut_bow','crow','유령쇠뇌야. 인사해.',3,9999,'cat','…말은 못해.',4);return}
-    if(!_petTut.firstItem&&INV.bag.length>=1){_petTut.firstItem=true;_petSayCD('tut_firstItem','crow','TAB을 눌러. 가방을 열고 장비를 입어야 한다.',5,9999,'cat','주웠으면 껴야지! TAB!',4);return}
+    if(!_petTut.firstItem&&INV.bag.length>=1){if(_petSayCD('tut_firstItem','crow','TAB을 눌러. 가방을 열고 장비를 입어야 한다.',5,9999,'cat','주웠으면 껴야지! TAB!',4)){_petTut.firstItem=true;return}}
     if(!_petTut.potionCraft&&P.lv>=100){_petTut.potionCraft=true;_petSayCD('tut_potionCraft','crow','G. 대장간에서 물약도 제작할 수 있다.',5,9999,'cat','악의로 물약 만들어! G키야!',4);return}
   }
   // 탄막 기본 가이드 — 첫 적 투사체 등장 시 (표시 성공까지 재시도)
