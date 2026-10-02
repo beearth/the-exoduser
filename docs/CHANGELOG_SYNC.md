@@ -52432,3 +52432,17 @@ CH1-1 목표 actual전체Read13/13(기존MAP미소비/ENEMY실거부제외)을�
 80Gate에서두번째분할인수한 BUILD exactraw2는완료ID 01a0fc89-7301-77a2-94ea-d62524f6a1e6 /manifestSHA0ad734c1f61985ea79b66c55ddb7ac5f1cea848ed84f1a10a26a52891f621801이며source/helper에적용0/검사반복0으로보존한다. standalone helper후보e6e73c22…의bytes↔pin/closure는source계약후보이며Acorn공급/filepin·선택계약/nativeGate 미인수; 앞서실제생성앱의helper는기존pin이다. raw2를제품수정2로계산0이다.
 
 같은 분할 보존에 MARKETING 완료01a0fc89-7574-7940-893c-4bc7cef1a761의 exactraw2를추가한다. manifestSHA 1fa2bbe624354e44d618c93c76c14d034ced927d096f38f1940cd99f6220a5ab의 실제showCharGate→_goLogin취소 뒤1200ms 옛callback 재입장/기존seqguard2줄후보이며 정상/story/활성화실패·demo slot Map trace동등근거, source0/native0/검사반복0이다. 현재생성앱에후보적용0, raw보존과게임완료합산0이다. 잠금해제요청은이미보냈으며 새사용자응답전 동일질문/기동반복·UI우회0, 독립source인수를계속한다.
+
+## 2026-10-02 SOUND 연결 실패 생산 인수·팀 종료 대기 복구
+
+| 범위 | 현행 결과·경계 |
+|---|---|
+| 실제 생산 수정 | 양판 `_playSampleNow` mono/stereo wiring과 start를 같은 catch에서 정리하고 stereo `_dnP`를 connect 앞에 등록. backend 2313→2324B, 각+11B/3접점. count/list 실패 등록분 회수와 같은 Error 전파; 정상 음원·RNG·상한·deathCD/frame 소비 정책 보존 |
+| 새 검수 | 실제 source 신규10/10 PASS·fixture0, 옛 source 정상대조4개 events/RNG/state/resources 동등. 신규 검사1회·source14실행; inline JS12/importmapJSON2 구문1회. 과거 검사 재실행0 |
+| 문서 | 적용 후 whole docs 검색1회71행/20경로와 정확정본3 동기화. 역사 start/flush 보고서·팀raw는 보존하고 현재 wiring 보호 경계를 명시 |
+| 운영 복구 | epoch당1반복/2파일 후 종료 대기를 해제. 80 완료소유 checkpoint/100전 새산출 중단·소유/WIP 보호 유지. 상세 전수검수는 다른 팀 착수의 조건이 아님. 감독이 종료된 기존 세션만 다음 구체 업무로 재개하고 새turn/첫source tool로 확인; Read/전송/옛 결과를 현재active로 세지 않음 |
+| 자동화 | 기존 감독5분·총괄1분의 savedprompt 교정 및 exact 일치 확인. target/cadence/ACTIVE 보존, 새 자동화/새 세션/권한변경0 |
+| 원자료 checkpoint | 감독 hb1245 manifest c272e17984b252e15af5f8edf6cc40f0cae2c9b97ce9069121234e23a9165111의 완료10팀/raw20 exact만 보존. source 후보 상세 인수와 독립이며 제품수정20건으로 계산0. EOF 빈줄 WARN5는 원문보존 |
+| 실제 앱 | c927 Mac 앱은 dd333 snapshot/기존 backend88f298 그대로이며 이번 SOUND 수정은 미포함. Mac locked 기동 Gate로 실제6단계/visual/청취 미인수. 잠금해제 질문은 이미 전달됐고 반복/우회0; 독립 source/팀작업 계속 |
+
+[생산 SOUND 계약과 정확 SHA](6사운드디자인/SOUND_SPATIAL_CONNECT_CLEANUP_20261002.md) 및 ignored source final receipt SHA771e38488d9a41c9cb6175f7010d199348632d9461855e53ae89796f13f101e6 참조. 실패 정리는 pan.value 완전회수·실장치·전체 RAF 회복 인수가 아니다. 실제 목표는 CH1-1 연결 플레이이며 계속 active다.

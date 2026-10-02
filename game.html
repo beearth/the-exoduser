@@ -11824,17 +11824,20 @@ function _playSampleNow(key,vol,rate,startTime,pan,priOverride){
   let _d=false;
   function _dn(){if(_d)return;_d=true;_activeNodeCnt=Math.max(0,_activeNodeCnt-1);const idx=_activeNodes.indexOf(_nd);if(idx>=0){_activeNodes[idx]=_activeNodes[_activeNodes.length-1];_activeNodes.pop()}try{src.disconnect();gain.disconnect()}catch(e){}}
   _nd._dn=_dn;_activeNodes.push(_nd);
+  try{
   if(pan&&Math.abs(pan)>0.05){
     const _panner=c.createStereoPanner();
     _panner.pan.value=Math.max(-1,Math.min(1,pan));
-    src.connect(_panner);_panner.connect(gain);
     const _dnP=function(){_dn();try{_panner.disconnect()}catch(e){}};
-    _nd._dn=_dnP;src.onended=_dnP;setTimeout(_dnP,(_dur+.5)*1000);
+    _nd._dn=_dnP;
+    src.connect(_panner);_panner.connect(gain);
+    src.onended=_dnP;setTimeout(_dnP,(_dur+.5)*1000);
   }else{
     src.connect(gain);
     src.onended=_dn;setTimeout(_dn,(_dur+.5)*1000);
   }
-  try{src.start(startTime||0);}catch(e){_nd._dn();throw e;}
+  src.start(startTime||0);
+  }catch(e){_nd._dn();throw e;}
   return src;
 }
 function _sfxFrameReset(){
