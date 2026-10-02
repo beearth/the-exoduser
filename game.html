@@ -15341,31 +15341,22 @@ function _invFindSpace(w,h,skip,item=INV.bag[skip]){
   }
   return null;
 }
-function _invAutoPlace(){
-  // 정렬: 즐겨찾기 → 쓰레기 → calcCP 베니핏(가상장착 CP차이) 내림차순
-  // UI의 "CP +/-" 표시와 완전 동일한 기준
-  const _baseCP=calcCP().total;
-  const _benCache=new Map();
-  function _getBen(it){
-    if(_benCache.has(it))return _benCache.get(it);
-    let ben=0;
-    const sl=_equipSlot(it);
-    if(sl&&INV.equipped.hasOwnProperty(sl)){
-      const prev=INV.equipped[sl];
-      INV.equipped[sl]=it;
-      ben=calcCP().total-_baseCP;
-      INV.equipped[sl]=prev;
-    }
-    _benCache.set(it,ben);
-    return ben;
-  }
+// 가방 정렬 순서 (2026-10-02): 즐겨찾기 → 등급 높은 순 → 종합지수(itemPower) 높은 순 → 아이템Lv → 강화 → 쓰레기 최하단
+// calcCP는 어픽스·강화·치명·전설/유니크 특수효과를 반영하지 않아 좋은 아이템이 뒤로 밀렸다 → itemPower 기준으로 교체
+function _invSortBag(){
+  const _pw=new Map();
+  const _p=it=>{let v=_pw.get(it);if(v===undefined){v=itemPower(it);_pw.set(it,v)}return v};
+  const _order=new Map(INV.bag.map((it,i)=>[it,i]));
   INV.bag.sort((a,b)=>{
     if(!!a.fav!==!!b.fav)return a.fav?-1:1;
     if(!!a.junk!==!!b.junk)return a.junk?1:-1;
-    const aBen=_getBen(a), bBen=_getBen(b);
-    if((aBen>0)!==(bBen>0))return aBen>0?-1:1;
-    if(aBen>0)return bBen-aBen; // 업그레이드: 이득 큰 순
-    return bBen-aBen; // 다운그레이드: 손해 적은 순 (-100이 -1500보다 위)
+    const ar=+a.rarity||0,br=+b.rarity||0;
+    if(ar!==br)return br-ar;
+    const ap=_p(a),bp=_p(b);
+    if(ap!==bp)return bp-ap;
+    if((a.itemLv||0)!==(b.itemLv||0))return(b.itemLv||0)-(a.itemLv||0);
+    if((a.enh||0)!==(b.enh||0))return(b.enh||0)-(a.enh||0);
+    return _order.get(a)-_order.get(b);
   });
   // 그리드 초기화
   for(let i=0;i<INV.bag.length;i++){INV.bag[i]._gx=null;INV.bag[i]._gy=null}
@@ -15397,6 +15388,9 @@ function _invCanPlace(idx,gx,gy){
 let STORAGE={}; // 하위호환용 객체, 실제는 STORAGE[0] 단일 배열 사용
 const STORAGE_MAX=200; // 창고 최대 슬롯
 let invFilter={slot:null,rarity:null,el:null}; // toggle filters
+}
+function _invAutoPlace(){
+  _invSortBag();
 
 // 장착음 — 무기 타입별 전용음(검=wtype:sword, 석궁=btype:crossbow) + 그 외 전부 기본음(equip_base) + 희귀(rarity>=2) 룬 글린트 레이어.
 const _EQUIP_SFX_BY_WTYPE={sword:'equip_sword'};
@@ -15536,7 +15530,7 @@ function pickupItem(item){
     INV.bag.push(item);
     const bpos=_invFindSpace(bw,bh,INV.bag.length-1);
     if(!bpos){INV.bag.pop();notify(_T('가방에 공간이 없습니다!'));return false}
-    item._gx=bpos.x;item._gy=bpos.y;item._pickT=Date.now();
+    item._gx=bpos.x;item._gy=bpos.y;item._pickT=Date.now();_invAutoSortIfClosed();
     playItemPickupSfx(item);notify(`${_rarName(item.rarity)} ${_T(item.name)} ${_T('획득!')}`);
     window._systemLesson?.pickedUp(item);dbSaveForce();return true;
   }
@@ -15547,7 +15541,7 @@ function pickupItem(item){
   INV.bag.push(item);
   const pos=_invFindSpace(w,h,INV.bag.length-1);
   if(!pos){INV.bag.pop();notify(_T('가방에 공간이 없습니다!'));return false}
-  item._gx=pos.x;item._gy=pos.y;item._pickT=Date.now();
+  item._gx=pos.x;item._gy=pos.y;item._pickT=Date.now();_invAutoSortIfClosed();
   playItemPickupSfx(item);notify(`${_rarName(item.rarity)} ${_T(item.name)} ${_T('획득!')}`);
   if(item.rarity>=5)_petSayCD('item_unique','crow','…유니크?! 이건… 말도 안 돼.',6,60,'cat','유니크!! 이건 대박이야!!',6);
   else if(item.rarity>=3)_petSayCD('item_pickup','crow','탭 장비창을 열어봐.',4,60,'cat','좋은 거 나왔다! TAB!',4);
@@ -15619,29 +15613,7 @@ function itemPower(it){
   return~~p;
 }
 function sortInvBag(){
-  const _baseCP2=calcCP().total;
-  const _benCache2=new Map();
-  function _getBen2(it){
-    if(_benCache2.has(it))return _benCache2.get(it);
-    let ben=0;
-    const sl=_equipSlot(it);
-    if(sl&&INV.equipped.hasOwnProperty(sl)){
-      const prev=INV.equipped[sl];
-      INV.equipped[sl]=it;
-      ben=calcCP().total-_baseCP2;
-      INV.equipped[sl]=prev;
-    }
-    _benCache2.set(it,ben);
-    return ben;
-  }
-  INV.bag.sort((a,b)=>{
-    if(!!a.fav!==!!b.fav)return a.fav?-1:1;
-    if(!!a.junk!==!!b.junk)return a.junk?1:-1;
-    const aBen=_getBen2(a), bBen=_getBen2(b);
-    if((aBen>0)!==(bBen>0))return aBen>0?-1:1;
-    if(aBen>0)return bBen-aBen;
-    return bBen-aBen; // 다운그레이드: 손해 적은 순
-  });
+  _invAutoPlace();
   _invSalSel.clear();INV.selected=null;
 }
 function wp(){return INV.equipped.weapon||{}}
@@ -15674,6 +15646,11 @@ const CHAPTER_STAGES=[
   {hell:5, name:'사도의 마굴',    stages:6,  startSi:26},
   {hell:6, name:'지옥성',        stages:3,  startSi:32},
 ];
+// 인벤토리 기본 상태 = 항상 정렬됨. 패널이 열려 있으면 선택/분해 선택 인덱스가 깨지므로 닫힌 상태에서만 재배치.
+function _invAutoSortIfClosed(){
+  if($('invPanel')?.classList.contains('on'))return;
+  _invAutoPlace();_invSalSel.clear();INV.selected=null;
+}
 const TOTAL_STAGES=35;
 // ── 데모 잠금 ──────────────────────────────────────────
 // ?bic / ?demo → 공개 데모(Lv100, 1-1), 없으면 정식
@@ -42256,8 +42233,8 @@ function _injectPanelNav(activeId){
     pbox.insertBefore(nav,pbox.firstChild);
   });
 }
-function togglePanel(id){const el=$(id);const isOn=el.classList.contains('on');closeAllPanels();const _rc=$('resetConfirm');if(_rc)_rc.style.display='none';if(!isOn){el.classList.add('on');G.paused=true;_injectPanelNav(id);if(id==='invPanel')renderInv();if(id==='settings'){const _rc2=$('resetConfirm');if(_rc2)_rc2.style.display='none';renderSettings();}if(id==='statPanel')renderStatPanel();if(id==='skillPanel')renderSkillPanel()}}
-function openPanel(id){closeAllPanels();$(id).classList.add('on');G.paused=true;_injectPanelNav(id);if(id==='invPanel')renderInv();if(id==='settings')renderSettings();if(id==='forge')renderForge();if(id==='statPanel')renderStatPanel();if(id==='skillPanel')renderSkillPanel()}
+function togglePanel(id){const el=$(id);const isOn=el.classList.contains('on');closeAllPanels();const _rc=$('resetConfirm');if(_rc)_rc.style.display='none';if(!isOn){if(id==='invPanel'){_invAutoPlace();_invSalSel.clear();INV.selected=null}el.classList.add('on');G.paused=true;_injectPanelNav(id);if(id==='invPanel')renderInv();if(id==='settings'){const _rc2=$('resetConfirm');if(_rc2)_rc2.style.display='none';renderSettings();}if(id==='statPanel')renderStatPanel();if(id==='skillPanel')renderSkillPanel()}}
+function openPanel(id){closeAllPanels();if(id==='invPanel'){_invAutoPlace();_invSalSel.clear();INV.selected=null}$(id).classList.add('on');G.paused=true;_injectPanelNav(id);if(id==='invPanel')renderInv();if(id==='settings')renderSettings();if(id==='forge')renderForge();if(id==='statPanel')renderStatPanel();if(id==='skillPanel')renderSkillPanel()}
 function openInventoryStorage(){
   const panel=$('invPanel');
   if(panel.classList.contains('on')&&panel.dataset.inventoryPage==='storage'){closeAllPanels();return}
