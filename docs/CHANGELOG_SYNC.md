@@ -52296,3 +52296,17 @@ late4 result/evidence SHA는 감독 공식 pin과 동일: STORY `870166cc681937f
 관련 정본3과 신규 UIUX_EXPANDED_MINUS_LIFETIME_20261002.md를 코드·신규test·root2와 같은9경로 checkpoint에 보존한다. docs 전체 관련 키워드 검색과 분류·원본문서 백업/최소 교정·prefix 보존·정확 scoped commit/push/원격SHA는 `tmp/mac-migration-runtime/continued-review-20261002/uiux-expanded-minus-checkpoint/receipt.json`에 기록한다. 원 사용자23·별도 소스10·BOSS 직전 정본6·원팀 raw3·LOCK/보호2_3/타인WIP/사용자게임/세이브를 보존한다.
 
 사용자 최신 연속개발 요청에 따라15팀 모두dependency/새업무0 상태를 감독 공식 STATE에서 확인하고, 기존 작업감독에게 실제 미해결 코드·콘텐츠에 연결된 독립 업무를 기존팀 소유범위 안에서 다시 배정하도록 복구 피드백을 전달했다. 전문15팀 다음TASK 단일송신은 감독 소유로 유지하며 이번 root expandedminus와 중복배정0이다. 전체 프로젝트 목적은 실제 플레이 가능한 EXODUSER 출시 상태이며 문서·보존 건수를 코드/실게임 완료로 계산하지 않는다. 총괄+감독2/Codex전문7/Claude8=17, Changes80 완료소유 checkpoint/100전 새산출중단. 새채팅·팀/설치/권한/인증/결제/게시/삭제/cleanup/PC·Windows0.
+
+## 2026-10-02 완료된 감독 immutable TASK29 보존
+
+전문15팀의 전체 dependency 대기를 확인한 뒤 기존 감독이 실제 결함의 독립 재현·수정후보 업무를 재개하고 있다. 과거 작업완료27개와 산출0 acknowledgment2개에 해당하는 실제 Read 확인 지시29개가 untracked로 남아 있어 다음 산출의 Changes80/100 Gate에 영향을 준다. 삭제·ignore·cleanup 없이 이29개의 exact 원문을 보존한다.
+
+| 범위 | 보존 / 인수 사실 |
+|---|---|
+| 공식 소유 목록 | supervisor hb1014-capacity-owned-list.json의 oldImmutableTASKs29, SHA395e9500c115846f17f2aa8991a50109f9bb056fb3964b73551594c089f10fde |
+| 선택 경로 | tools/team-followup-20261002/supervisor-next/ROLE/과거TASK/TASK.md29 + root 기록2 =31경로. 각 원문SHA·바이트·수신/Read 이력 확인 |
+| 제외 소유 | 변경 중 supervisor STATE/LOG·이번 재개TASK·새 팀 결과·타인WIP·원사용자23. 폴더 전체 stage0 |
+| 의미 | 과거 지시의 Git 보존이며 게임 구현/기능·콘텐츠 완료29건이 아님. source 변경0/검사 재실행0 |
+| 보존 기준 | 직전 UIX source checkpoint c881a6a935020b9c0c5e48e3f6cfc495f40008a5 및 실제소스12·test1·새정본6·BOSS정본6·user23 byte보존 |
+
+전문팀 다음TASK·완료감시·피드백은 기존 작업감독의 단일송신 소유로 유지한다. 재개 완료는 실제 새로운 TASK 수신/Read로 판단하며 의사표현만으로 완료 처리하지 않는다. 정확31경로 commit/push·원격SHA·보존pin·Changes 감소는 `tmp/mac-migration-runtime/continued-review-20261002/supervisor-immutable-task-checkpoint/receipt.json`에 기록한다. 이 작업의 게임 입력·재시작·세이브·native/GL/오디오·설치/권한/인증/결제/게시/새채팅·팀/PC·Windows 작업0.

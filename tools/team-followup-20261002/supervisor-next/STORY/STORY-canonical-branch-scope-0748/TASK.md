@@ -1,0 +1,15 @@
+# STORY 수정 피드백 한 건 — canonical 분기 조건·검색 근거 정정
+
+실제 checkout /Users/fordeargamers/Projects/exoduser-migration-20261001. 이 TASK를 실제 먼저 읽는다. 기존 COMMON/AGENTS와 자막 SSOT 계약을 유지하고 타인 WIP를 되돌리지 않는다. 이 TASK는 감독 소유 read-only. 이 새 폴더 result.md/evidence.json 최대2파일만 작성한다. 기존 산출/TASK/checks 수정0, Node·sourcefixture·5probe/13assertion/빈cue/boot/route/전수언어 재실행0. 이번은 아래 **문서 인계 정확성** 한 건만이다. production/공유docs/기존test/Git조회·쓰기/index/실게임/UI/DOM/미디어·타이머/세이브/서버/빌드/삭제·이동·cleanup/권한·인증·설치/외부메시지/새세션·하위팀0. 보호2_3/Q전용 blackBean magic패링/어택티켓금지/캐릭터LOCK/WORLD_CORE TBD 유지. 맵 제작·geometry·collision·camera QA 범위 밖.
+
+## 직전 완료의 제한 인수
+
+empty-only-type-preservation-0733 end_turn69b01e90-6679-4a0b-9f30-ea74545f581f(07:39:14.000Z), exactRead5dd402ae-38eb-4ea9-9898-0264ebd4054e(07:35:24.703Z)를 감독이 대조했다. actual source index whole38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8/linea782daf54d17fc68379a79d7c44923135f8d153bdb70d286540c684443f355f4 일치, Bash toolu_019M6Pc3LxoVs7HRctVKraAB의 command07:37:00.879Z/tool_result07:37:01.339Z·exit0·13PASS를 감독이 읽었다. date 출력07:37:01.3NZ는 mac date의 literal형식이며 정확한 밀리초값이 아니다. 원문/이전string guard/empty-only 비교는5SYNTH probe와13assertion. plain1/true/object 동일참조/0 fallback 보존과 빈문자열 정정은 source 제한 인수한다. 실제품/movie/Native/전체 getter·sideeffect 동등은 미검수, 이전 후보채택과 새후보채택은 root결정이다. 이전 검사 반복0.
+
+## 이번 한 건: 이미 실행한 결과를 바꾸지 않고 인계 문안만 정정
+
+1. result§5의 '데드=nonempty cue 한정/빈 cue13/18 live'는 분모가 불명확하다. 정확한 원문 조건을 정적 표현 표로 적는다: KO는 line.text 직접; nonKO는 **선택된 언어의 inline 값이 truthy**면 뒤 fallback 미평가; inline이falsy일 때만 정의된 _CIN_I18N과 해당 locale object guard를 평가하고, guard 성공 시 idx값을 읽는다; 그 idx값도 truthy이어야 최종 반환으로 선택되며 아니면 line.en→line.text 순서다. 'cue의 어느 텍스트가 nonempty'나 'inline키 존재'만으로 판정0. de13/18 기존 실제 자료 증거와23topkeys는 예시/정적수이며 모든23locale×cue lookup 또는 실영화에서 live라는 뜻이 아니다. normal WorldIntroPlayer가 legacy showLine을 호출하지 않는 현행 경로 인수와 식상 접근 조건은 분리해 문안에 함께 명시한다. getter/호출순서 실제실행 분석 확장0.
+2. 이 직전 TASK의 public JSONL은 TASK Read→Write checks→Node→Write result/evidence→JSON구문검사였고 새 docs검색/Grep 관측0이다. 이전 매칭목록을 재사용한 자료를 이번 새 전체검색 성공으로 쓰지 않는다. 이번 새 docs 인계 검색이 아직 미완료인 필수 항목이므로 **docs 전체에 관련시스템 키워드 _CIN_I18N/CIN_LINES/_cinTxt/CAT-68/CAT-96/index.html:2087**를 실제검색한다. head/truncation/백업·역사폴더제외0. 전체 매칭 경로/개수 목록과 관련행을 자신의 evidence에 보존하고 역사자료/정본/운영STATE 소유를 표로 분리한다. 임의 regex광범위 '데드/empty'로 모든게임 시스템 조사 확장0. 실행명령/exit/UTC·실제파일목록·정본관련행과 제안문안을 제공한다. canonical 직접편집0.
+3. root 문안은 번역가이드/CAT68/CAT96의20→23 top-levelkeys, index2087→2317 및 위 정확분기조건/현재영화미호출 Gate를 표현한다. SOURCE기록/Node시각 및0710metadata정정은 기존근거 재사용으로 표기한다. 실제23키percue 존재·값·제품노출/모든언어 동등은UNKNOWN, CIN28키/영화29×32와 혼합0. 이2파일이 완료되면 추가업무 자율생성 없이 root동기화 의존 상태로 대기한다.
+
+provider Claude Code/검증UUID3ed6e74d-5552-4d7b-a04b-dc5945e0f3d7. source읽기/정적검토와 새실행(검색만)을 구분하고 actualTASK Read/end는 감독독립확인. canonical·production·Git는root, STATE/LOG는감독 소유다. 제공rootcheckpoint5420819d7b406590578b1bae57eabad071e754e1(07:21:16Z receipt)는역사입력이며 root조준취소48source검사/docs 통합 병행, 현재HEAD조회0. 전역Changes는감독 STATE 최신관측, 자신의2파일로80/100판단0;80부터rootcheckpoint/100전신규산출중단. productionApplied=false/native/runtime UNKNOWN. 한국어로 이 문서 인계 정정 한 건만 보고한다.
