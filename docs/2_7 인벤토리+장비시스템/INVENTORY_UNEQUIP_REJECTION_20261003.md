@@ -45,3 +45,11 @@ parent는 source14 `8d95685814b86b824ff2f8b9fa0ee22dc3ada303`이다. 양판6접�
 | live receipt | 107304B/SHA `dd948b0c034f675991b0aad5a5d3ec20104bb22d621ee9ae2c8c54f80f81519b` |
 
 전체 docs 관련 검색을 실행해 현재 인벤토리/저장/어픽스 정본의 해제 재계산 설명을 성공 조건으로 동기화했다. 기존 유골함 성공의2×2 공간·선택/호버 및 역사 GPU/패링/스킬/레이아웃 기록의 수치는 동일하다. 보호2_3/Q전용/어택티켓금지·맵geometry 변경0. 원격exact checkpoint와 최종 검색 개수는 root 영수증에 별도 기록한다.
+
+## 후속 source16 — 성공 경로 손실은 별도 범위
+
+위 source15 원본22/48PASS·26RED/최종48/48PASS, 두 일반 거절 caller HP/MP 손실 수치·SHA·준비실패2회는 당시 이력으로 보존한다. source15 성공 대조는 낮은 현재 자원의 무료회복0과 기존 이동/효과를 검수했으며 성공 해제 중간 clamp 손실 해결은 당시 별도 미해결이었다.
+
+source16 후보는 성공 전이 직후 자원4개 보관→캐시 무효화→applyStats1회→최종 최대치로 min 복원하고 caller 중복 재계산을 제거한다. 새 private47그룹은 원본11PASS/36FAIL→후보47/47PASS이며 기존 source15 48 전체검사 재실행0이다. actual production/live 결과는 [source16 보고서](EQUIPMENT_ATOMIC_RESOURCE_REFRESH_20261003.md)에 별도 확정한다. 이력48을47로 치환하거나 native 성공으로 합산하지 않는다.
+
+현재 검수는 `test/equipmentAtomicResourceAcceptance.test.cjs --live --root <checkout>`다. 옛 하니스는 `--historical-source15`와 정확한 source14(memory)/source15(live)에서만 지원하며 plan 쓰기0이다. 일반/현재 입력은 exit2·executedCases0·overallPass=null과 새 명령을 안내한다. 과거48 결과는 보존하며 현재47의 실패 경계6/성공 후 반복 거절2와 합산하지 않는다.

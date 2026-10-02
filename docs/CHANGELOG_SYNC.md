@@ -52821,3 +52821,11 @@ source11 코드 checkpoint `efb3bb7e02a9ab161e92d9ff3da7229b4cf884cd`의 원격 
 | 문서/Git | docs전체554행/47문서 검색·날짜별 역사 보존, own6만 동기화/타인67와 감독 STATE/LOG4 보존; 완료 own6만 원격 checkpoint |
 
 source15 생산 장비 해제 검증48/48은 기존 실제 코드 결과이며 이번 제작 때 재실행0이다. 최신 패키지 생성과 전문7팀의 새 코드 조사 착수를 게임 연결 완료로 계산하지 않는다. Mac 잠금 질문은 기존 질문을 유지한다.
+
+## 2026-10-03 source16 성공 장비 자원·저장 원자 갱신
+
+본편/Easy의 성공 장착/해제·최초 유골함·Easy 빈 슬롯 자동장착은 HP/MP/ST/쉴드를 선행 재계산 전에 보관하고 최종 applyStats1회/min복원 뒤 기존 효과/저장을 수행한다. caller 중복재계산을 제거해 성공 중간 clamp 손실과 최종 계산 전 저장을 해결했다. 글로벌 수치/공식·강화/결정/경제·격자/schema·source15 실패계약은 유지한다.
+
+private 원본11/47PASS→후보47/47 및 실제 생산47/47·12JS2JSON PASS. 과거 source15 48 재실행·합산0, 옛 하니스는 explicit historical/exact-pin만 허용·일반 current exit2/executed0/PASSnull로 분리. docs전체622행/101경로검색 뒤 정본4+과거2후속+새1+MASTER/이파일2 총9를 동기화했다. code2/test2/docs9만 scoped checkpoint.
+
+Mac source15 격리3391 정상 새캐릭터→도입/조작안내/기본 연습skip→CH1진입과 보스전 이전 일반 필드0처치 사망을 관측했다. source16 실제앱·4지역·보스방·보스사망/부활/재도전·실저장/청취 미인수. [source16 정확범위](2_7%20인벤토리+장비시스템/EQUIPMENT_ATOMIC_RESOURCE_REFRESH_20261003.md).

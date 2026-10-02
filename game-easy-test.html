@@ -14683,6 +14683,12 @@ function playItemDropSfx(rar,x,y){const now=performance.now();if(now-_lastDropSn
 // 아이템 습득음 — 그랩/뒤적임("사삭") 풀에서 랜덤 재생(등급 무관). cloth-grab 1 + rummage 슬라이스 5 = 6종. 골드·물약·보주 등 비아이템 습득은 기존 절차음(SFX.pickup) 유지.
 const _PICKUP_SFX_POOL=['pickup_item','pickup_rummage1','pickup_rummage2','pickup_rummage3','pickup_rummage4','pickup_rummage5'];
 function playItemPickupSfx(item){playSample(_PICKUP_SFX_POOL[~~(Math.random()*_PICKUP_SFX_POOL.length)],.5,_r(1,.05));}
+function _refreshEquipmentStats(){
+  const _eqHP=P.hp,_eqMP=P.mp,_eqST=P.st,_eqShield=P.shield;
+  _eqAffixCache=null;_eqStatCache=null;
+  applyStats();
+  P.hp=Math.min(P.mhp,_eqHP);P.mp=Math.min(P.mmp,_eqMP);P.st=Math.min(P.mst,_eqST);P.shield=Math.min(P.mshield,_eqShield);
+}
 function equipItem(item){
   // 유골 부위: 장착 대신 도감 등록 (2026-09-01 도감 개편)
   if(item&&item.slot==='bonePart'){registerBonePart(item);return}
@@ -14751,7 +14757,7 @@ function equipItem(item){
     const pos=_invFindSpace(ow,oh,-1,old);
     if(pos){old._gx=pos.x;old._gy=pos.y}
   }
-  recalcSt();playEquipSfx(item);notify(_T(item.name)+_T(' 장착!'));
+  _refreshEquipmentStats();playEquipSfx(item);notify(_T(item.name)+_T(' 장착!'));
   window._systemLesson?.equipped(item);
   dbSaveForce();
 }
@@ -14764,7 +14770,7 @@ function unequipItem(slot){
   if(!pos){INV.bag.pop();notify(_T('가방에 공간이 없습니다!'));return false}
   item._gx=pos.x;item._gy=pos.y;
   INV.equipped[slot]=null;
-  recalcSt();
+  _refreshEquipmentStats();
   notify(_T(item.name)+_T(' 해제'));
   try{playFM(300,120,200,.04,.02,'sine',350);playNoise(.02,4000,.015,2000,.001,'bandpass')}catch(e){}
   dbSaveForce();return true;
@@ -14805,11 +14811,12 @@ function pickupItem(item){
     :(!INV.equipped[item.slot]?item.slot:null);
   if(_autoSlot){
     INV.equipped[_autoSlot]=item;item.slot=_autoSlot;
+    _refreshEquipmentStats();
     playItemPickupSfx(item);playEquipSfx(item);notify(`${_rarName(item.rarity)} ${_T(item.name)} ${_T('획득!')} ⚡ ${_T('자동 장착!')}`);
     if(item.rarity>=5)_petSayCD('item_unique','crow','…유니크?! 이건… 말도 안 돼.',6,60,'cat','유니크!! 이건 대박이야!!',6);
     else if(item.rarity>=3)_petSayCD('item_pickup','crow','탭 장비창을 열어봐.',4,60,'cat','좋은 거 나왔다! TAB!',4);
     if(item.rarity>=4&&typeof _petOnFirstLegend==='function')_petOnFirstLegend();
-    recalcSt();applyStats();window._systemLesson?.pickedUp(item);dbSaveForce();return true;
+    window._systemLesson?.pickedUp(item);dbSaveForce();return true;
   }
   const[w,h]=_itemSz(item);
   // 먼저 빈 공간 검사 (push 전에)
@@ -43052,9 +43059,9 @@ function _grantOssuaryIfNeeded(){
   if(INV.bag.some(i=>i&&i.slot==='ossuary'))return;
   const oss=mkItem('ossuary',0,EL.P,5);
   INV.equipped.ossuary=oss;
+  _refreshEquipmentStats();
   notify('⚱️ '+_rarName(5)+' ['+_T(oss.name)+'] '+_T('획득!')+' '+_T('자동 장착!'));
   try{addTxt(P.x,P.y-55,'⚱️ '+_T(oss.name),'#ff4466',80)}catch(e){}
-  try{recalcSt()}catch(e){}
 }
 // 철갑 전대 고유식: 대검을 꽂은 뒤 5초 동안 주변 탄막을 삼키고 발광한 뒤, 축적량과 투사체 피해를 폭발로 되돌린다.
 function _ancestorSwordAbsorbRadius(a){
@@ -45579,7 +45586,7 @@ function _invBagRightClick(idx){
   const item=INV.bag[idx];if(!item)return;
   if($('invPanel')?.dataset.inventoryPage==='storage'){depositStorage(idx);return}
   if(item.slot==='bonePart'){registerBonePart(item);return}
-  equipItem(item);applyStats();renderInv();
+  equipItem(item);renderInv();
 }
 function withdrawStorage(idx){
   if(INV.bag.length>=BAG_MAX){notify(_T('가방이 가득 찼습니다!'));return}
@@ -46632,9 +46639,9 @@ function _invRenderDetail(idx,source,preview=false){
       const _xc=_fe>0?xferCost(_fe):0;
       const _reqFail=it.reqLv&&P&&P.lv<it.reqLv;
       const _lbl=it.slot==='bonePart'?_T('도감 등록'):_reqFail?'⚠ '+_L('Lv.'+it.reqLv+' 필요','Req. Lv.'+it.reqLv):_fe>0?_T('장착')+' (\u2692+'+_fe+' \u2192 '+_xc.toLocaleString()+_L('악의',' Malice')+((G.mats||0)<_xc?' \u26A0':'')+')'  :_T('장착');
-_actB.innerHTML=`<div class="id-btns" style="display:flex;gap:6px"><button type="button" class="id-btn equip${_reqFail?' dis':''}" style="${_reqFail?'color:#ff4444;border-color:#ff444466':''}" onclick="equipItem(INV.bag[${idx}]);applyStats();renderInv()">${_lbl}</button><button type="button" class="id-btn" onclick="if(dropItem(${idx}))renderInv()">${_T('분해')} (${_T('악의')}+${_salV})</button></div>`;
+_actB.innerHTML=`<div class="id-btns" style="display:flex;gap:6px"><button type="button" class="id-btn equip${_reqFail?' dis':''}" style="${_reqFail?'color:#ff4444;border-color:#ff444466':''}" onclick="equipItem(INV.bag[${idx}]);renderInv()">${_lbl}</button><button type="button" class="id-btn" onclick="if(dropItem(${idx}))renderInv()">${_T('분해')} (${_T('악의')}+${_salV})</button></div>`;
     } else if(source==='eq'){
-      _actB.innerHTML=`<div class="id-btns"><button type="button" class="id-btn" onclick="if(unequipItem('${idx}')){applyStats();renderInv()}">${_T('해제')}</button></div>`;
+      _actB.innerHTML=`<div class="id-btns"><button type="button" class="id-btn" onclick="if(unequipItem('${idx}')){renderInv()}">${_T('해제')}</button></div>`;
     } else if(source==='st'){
       _actB.innerHTML=`<div class="id-btns"><button type="button" class="id-btn equip" onclick="withdrawStorage(${idx})">${_T('꺼내기')}</button></div>`;
     } else _actB.innerHTML='';
@@ -47007,7 +47014,7 @@ function renderOssPanel(){
   if(oss)urn.title=urnDescription;else urn.removeAttribute('title');
   urn.setAttribute('aria-label',urnDescription);
   urn.onclick=()=>{if(oss){INV.selected='eq:ossuary';renderInv();}};
-  urn.oncontextmenu=(ev)=>{ev.preventDefault();if(!oss)return;if(!unequipItem('ossuary'))return;applyStats();INV.selected=null;renderInv();_invClearHover();};
+  urn.oncontextmenu=(ev)=>{ev.preventDefault();if(!oss)return;if(!unequipItem('ossuary'))return;INV.selected=null;renderInv();_invClearHover();};
   urn.onmouseenter=()=>{if(oss){_invHover=-1;_invRenderDetail('ossuary','eq',true);}};
   urn.onmouseleave=()=>_invClearHover();
   const take=pn.querySelector('.oss-withdraw'),remove=pn.querySelector('.oss-unequip');
@@ -47108,7 +47115,7 @@ function renderInv(){
     div.oncontextmenu=(ev)=>{
       ev.preventDefault();
       // 우클릭 → 해제
-      if(item){if(unequipItem(slot)){applyStats();renderInv()}return}
+      if(item){if(unequipItem(slot)){renderInv()}return}
     };
     if(item)_inventoryFocus.bind(div,()=>INV.equipped[slot]===item?item:null,()=>{INV.selected='eq:'+slot;renderInv();_invRenderDetail(slot,'eq');},_T(item.name));
     eqGrid.appendChild(div);

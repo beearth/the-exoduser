@@ -55,3 +55,7 @@ source 실제 적용 후 docs 전체 관련 검색1회: 115매칭/33문서. 인�
 | `test/inventoryFilteredEquipIdentityAcceptance.test.cjs` | `7c7fab6f8c9a21f1fc9cb0a9a382c87eb70515c4810999ecc25d29d8a1dd8f80` |
 
 현재 본문 계약은 [인벤토리 정본](2_7%20인벤토리+장비시스템.md)과 [키보드 초점 정본](INVENTORY_KEYBOARD_FOCUS_20261002.md)을 함께 따른다.
+
+## source16 후속 계약, 2026-10-03
+
+위 2026-10-02 필터 Y 인수의 객체 동일성·거절 뒤 applyStats/renderInv 관측과 수치는 당시 이력이다. source16은 현재 bag 객체 선택·반환/강화/결정/비용을 보존하며 성공 producer에서 자원4개의 최종 계산을 완료하고 caller 중복 applyStats를 제거한다. 레벨/악의 거절에는 helper0·apply0·저장0, 우클릭 caller render1은 유지한다. 귀걸이 adapter의 선택/render 의미도 유지한다. 기존 필터 Y 24그룹 검사 재실행0, 현재 actual-source 47그룹은 [source16 보고서](EQUIPMENT_ATOMIC_RESOURCE_REFRESH_20261003.md)를 따른다.

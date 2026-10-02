@@ -1,14 +1,21 @@
 'use strict';
-// AST-extracted actual functions and actual UI registrations. stdout JSON only.
-// --memory [--plan ignored/patch-plan.json] vs --live; --root /checkout supported.
+// Historical source15 AST acceptance only; old48 evidence stays immutable.
+// Requires --historical-source15 and --memory (exact source14) or --live (exact source15).
+// Current production: test/equipmentAtomicResourceAcceptance.test.cjs --live --root /checkout.
 const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
 const crypto=require('node:crypto'),assert=require('node:assert/strict');
 const args=process.argv.slice(2),option=n=>{const i=args.indexOf(n);return i<0?args.find(a=>a.startsWith(n+'='))?.slice(n.length+1):args[i+1];};
+function unsupportedHistoricalRun(reason){
+  process.stderr.write(JSON.stringify({status:'UNSUPPORTED_ARCHIVED_SOURCE15_RUN',reason,executedCases:0,overallPass:null,currentProductionAccepted:false,currentReplacement:'test/equipmentAtomicResourceAcceptance.test.cjs',currentCommand:process.execPath+' test/equipmentAtomicResourceAcceptance.test.cjs --live --root <checkout>'})+'\n');
+  process.exit(2);
+}
+if(!args.includes('--historical-source15')||args.includes('--memory')===args.includes('--live')||option('--plan'))unsupportedHistoricalRun('Use the source16 harness for current production; source15 requires explicit historical mode, exactly one --memory/--live, and no plan overwrite.');
 const root=path.resolve(option('--root')||option('--repo')||path.resolve(__dirname,'..'));
 const {parse}=require(require.resolve('acorn',{paths:[root]}));
 const memory=args.includes('--memory'),files=['game.html','game-easy-test.html'];
 const sha=v=>crypto.createHash('sha256').update(v).digest('hex'),plain=v=>JSON.parse(JSON.stringify(v));
 const pins={'game.html':'00519cdf518a5a9eb6147c536c7f77886cc6d11e79ac5ad8f181280a8495150f','game-easy-test.html':'87f36138e07055fcaa5237a116bbddd5c62759983427cf5851cc00f1c0d44152'};
+const historicalLivePins={'game.html':'4e528f8ccd65f222b6c0d108e89c1281022eb27e3c8de152c72fb7e659d7d614','game-easy-test.html':'fe3bca4e299b5aea9e08fdbd37cf3798d8085d923c013fc21d0ac74f81288a4e'};
 const changes=[
   {id:'empty-slot-false',old:'function unequipItem(slot){\n  const item=INV.equipped[slot];\n  if(!item)return;',next:'function unequipItem(slot){\n  const item=INV.equipped[slot];\n  if(!item)return false;'},
   {id:'no-grid-space-false',old:"if(!pos){INV.bag.pop();notify(_T('가방에 공간이 없습니다!'));return}\n  item._gx=pos.x;item._gy=pos.y;\n  INV.equipped[slot]=null;",next:"if(!pos){INV.bag.pop();notify(_T('가방에 공간이 없습니다!'));return false}\n  item._gx=pos.x;item._gy=pos.y;\n  INV.equipped[slot]=null;"},
@@ -37,7 +44,9 @@ function parts(html,file){
     metadata:{functions:Object.fromEntries(localFns.map(name=>{const n=top(name);return [name,{line:line(n),bytes:Buffer.byteLength(text(n)),sha256:sha(text(n))}];})),declarations:Object.fromEntries(declNames.map(name=>{const n=top(name);return [name,{line:line(n),bytes:Buffer.byteLength(text(n)),sha256:sha(text(n))}];})),registrations:{detail:{line:line(inner),sha256:sha(text(inner))},context:{line:line(context),sha256:sha(text(context))},urn:{line:line(urn),sha256:sha(text(urn))}}}};
 }
 function readSource(file){
-  const bytes=fs.readFileSync(path.join(root,file)),html=bytes.toString('utf8'),expected=memory?pins[file]:option(file==='game.html'?'--expect-main-sha':'--expect-easy-sha');if(expected)assert.equal(sha(bytes),expected,file+' exact pin');
+  const bytes=fs.readFileSync(path.join(root,file)),html=bytes.toString('utf8'),expected=memory?pins[file]:historicalLivePins[file];
+  const requested=option(file==='game.html'?'--expect-main-sha':'--expect-easy-sha');
+  if((requested&&requested!==expected)||sha(bytes)!==expected)unsupportedHistoricalRun(file+' is outside the exact archived source14/source15 input contract');
   let oldHTML=html,finalHTML=html;
   if(memory)for(const c of changes)finalHTML=oneReplace(finalHTML,c.old,c.next,file+' '+c.id+' OLD unique');
   else for(const c of changes.slice().reverse())oldHTML=oneReplace(oldHTML,c.next,c.old,file+' '+c.id+' inverse NEW unique');
@@ -159,10 +168,10 @@ const cases=[
   const overall=unchanged&&summary.final.fail===0&&genuineRed;
   const plan={schemaVersion:1,purpose:'source15 six scoped exact OLD/NEW edits; memory candidate only',productionWritten:false,files:sources.map(s=>({file:s.file,source:s.originalWhole,final:s.finalWhole,changeBytes:s.changeBytes,inverseExact:s.inverseExact,patches:s.patches}))};
   const planPath=option('--plan');if(planPath){assert(memory,'patch-plan write requires memory mode');const resolved=path.resolve(planPath),allowed=path.join(root,'tmp/mac-migration-runtime/continued-review-20261003/root-unequip-rejection-source15')+path.sep;assert(resolved.startsWith(allowed),'plan remains within owned ignored scope');fs.writeFileSync(resolved,JSON.stringify(plan,null,2)+'\n');}
-  const report={schemaVersion:1,at:new Date().toISOString(),mode:memory?'memory-red-green':'live-green-only',repo:root,overallPass:overall,sourceUnchanged:unchanged,genuineFullGridResourceLossReproduced:memory?genuineRed:null,summary,fullFinalHTMLParse:{...fullParse,pass:true},
+  const report={schemaVersion:1,at:new Date().toISOString(),mode:memory?'historical-source15-memory-red-green':'historical-source15-live-green-only',archiveOnly:true,currentProductionAccepted:false,repo:root,overallPass:overall,sourceUnchanged:unchanged,genuineFullGridResourceLossReproduced:memory?genuineRed:null,summary,fullFinalHTMLParse:{...fullParse,pass:true},
     sourceReceipts:sources.map(s=>({file:s.file,sourceBytes:s.sourceBytes,sourceSHA256:s.sourceSHA256,afterSHA256:after[s.file],pinVerified:s.pinVerified,originalWhole:s.originalWhole,finalWhole:s.finalWhole,changeBytes:s.changeBytes,inverseExact:s.inverseExact,originalMetadata:s.original.metadata,finalMetadata:s.final.metadata,dependenciesByteExact:s.original.shared===s.final.shared})),
     results,actualExtraction:'acorn actual unequip/grid/stat/crystal/passive dependencies, actual detail HTML assignment and emitted inline onclick parsed as JS, actual div/urn oncontextmenu registrations; no hand-copied callback implementation',
-    successCurrentHPClamp:'Existing successful applyStats HP/MP loss with pFortify/pVital is intentionally preserved; low resources never freely refill.',
+    successCurrentHPClamp:'Archived source15 behavior only: then-unresolved successful HP/MP clamp loss remains an historical assertion; source16 final-current-min supersedes it for current production.',
     fixtureBoundary:'Synthetic controlled inventory/resource state; UI renderer/hover, notify/FM/noise/SFX, DB save leaves are recorders. Real app/DOM rendering/audio/user save/native play are not accepted.',
     nativeAccepted:false,productionWritten:false,patchPlanPath:planPath||null};
   console.log(JSON.stringify(report,null,2));process.exitCode=overall?0:1;

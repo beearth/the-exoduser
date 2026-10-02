@@ -1201,3 +1201,20 @@ Claude BOSS2215 후보를 root가 실제 `retryBtn.onclick`의 보스/해금CH1 
 | 문서/Git | docs전체554행/47문서 검색·날짜별 역사 보존, own6만 동기화/타인67와 감독 STATE/LOG4 보존; 완료 own6만 원격 checkpoint |
 
 source15 생산 장비 해제 검증48/48은 기존 실제 코드 결과이며 이번 제작 때 재실행0이다. 최신 패키지 생성과 전문7팀의 새 코드 조사 착수를 게임 연결 완료로 계산하지 않는다. Mac 잠금 질문은 기존 질문을 유지한다.
+
+## 2026-10-03 source16 실제 생산 통합·source15 Mac 부분 플레이
+
+최신 main/Easy 생산은 [source16 장비 원자적 자원 갱신](../2_7%20인벤토리+장비시스템/EQUIPMENT_ATOMIC_RESOURCE_REFRESH_20261003.md)이다. 최신 Mac 패키지 source15/job a1488887-2fbf-48e0-b006-7b28b4c19976/3391은 source16을 포함하지 않는다. 위23:10 잠김/기동0은 당시 이력이며 이후 정상 UI 검수가 진행됐다.
+
+| 항목 | 실제 결과 |
+|---|---|
+| 생산 | main11/Easy12접점, 성공 자원4개 보관→캐시2개 무효화→applyStats1회/min복원→기존 효과/저장, caller 중복 계산 제거. source15 실패 boolean/복구 유지 |
+| 검증 | private 원본11PASS/36RED→후보47/47, actual-source live47/47·fixture0/12JS+2JSON PASS. 과거48 재실행·합산0 |
+| 문서·Git범위 | code2/test2/docs9=13, existing11 backup/new2 absent. docs전체622행/101경로와 정확동기화. 타인67/index/관리자STATELOG4 보존·완료13만 scopecheckpoint |
+| 실제 source15 앱 | 정상index→새전사 맥검수열다섯→story→game→기본ESC 컷신skip→guide1–4→기본 연습skip 버튼→CH1 LV1/지역0/32·HP565/565·MP244/244·SP226/226·00:09 화면 |
+| 실제 사망 | 보스방 개방 전 일반 투사체로HP0/565·00:18/0처치. 보스사망회귀검수0, 공격/Space/1의 처치 성공인수0 |
+| UI·증거 | 일부 AX에는 이전/hidden안내가 남아 픽셀 기반 정상버튼으로 진행. screenshot03은INTRO·04는CH1·05는일반사망. 콘솔/강제state/teleport/save패치0 |
+| 저장·미완 | own /api/slots0은 DEMO localStorage 실패근거가 아님. 사용자/기존source11앱·세이브 보존. source16 실제앱·4지역·보스방·보스사망/부활/재도전·청취 미인수 |
+| Claude | 23:31:57–59 후속2333 단일송신→23:32:27/47 실제7busy·정확peer7/첫source7확인, ART1human-localhold. 관리회차8분초과·5분정시/무idle준수 주장0 |
+
+Mac partial ignored영수증은 `source15-native-play/ch1-entry-field-death.json`이다. 실제 CH1-1 연결 목표는 계속 미완이다.
