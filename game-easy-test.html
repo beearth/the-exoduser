@@ -45034,7 +45034,7 @@ function _renderSkillRow(sk,grid){
         return _refundedSp;
       };
       // 레벨다운/취소/합체해제 함수 (SP+악의 환불)
-      const _skUnclick=()=>{
+      const _skUnclick=()=>{if(!d.isConnected||!grid.contains(d))return;
         if(!learned)return;
         // ── 합체된 스킬은 합체 해제 우선 ──
         const _fGrpNow=_fuseGemGroup(sk.id);

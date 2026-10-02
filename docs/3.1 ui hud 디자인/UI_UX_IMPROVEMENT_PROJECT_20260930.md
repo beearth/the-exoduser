@@ -113,7 +113,7 @@
 
 | id·위치 | 현행 구현·수치·검수 |
 |---|---|
-| renderSkillPanel / _skClick | 본편 game.html:46747와 game-easy-test.html:45348 첫 문장에 `if(!d.isConnected||!grid.contains(d))return;` 적용. 문서에 연결되고 현재 skillGrid에 속한 카드만 원래 학습/강화 콜백을 실행한다 |
+| _renderSkillRow / _skClick | 본편 game.html:46747와 game-easy-test.html:45348 첫 문장에 `if(!d.isConnected||!grid.contains(d))return;` 적용. 카드 d가 문서에 연결되고 렌더 당시 전달받아 캡처한 grid에 포함된 경우만 원래 학습/강화 콜백을 실행한다 |
 | 가시덫 spikeTrap 일반 학습 | SP 원가10, 악의 학습 원가80→`_malCost(80)=max(1,ceil(80×0.5))=40`; P.lv1/SP20/악의80에서 첫 학습 후Lv1/SP10/악의40, 일반 슬롯index0(숫자1) 배정. 시전 비용과 별개이며 비용/성장/슬롯 수치 변경0 |
 | 무효 콜백 | 실제 grid 재생성으로 분리된 옛 callback 재호출은 추가 SP/악의 차감·저장·렌더·SFX0. 원래 이벤트 stopPropagation은 유지 |
 | 검증 | `tools/team-followup-20261002/root-integration/uiux-skill-lifetime-checks.mjs`: 현재 양판 실제 추출 함수2GREEN, guard 제거 메모리 음성대조2RED, 연결 첫 호출의 전체 효과 동일. 기존 팀 원자료는 byte 보존 |
@@ -122,7 +122,7 @@
 
 ### 2026-10-02 분리된 스킬 카드 minus 콜백 수명 — 생산 반영
 
-본편 `game.html:46682`와 easy `game-easy-test.html:45283`의 `_renderSkillRow._skMinusClick` 첫 문장에 `if(!d.isConnected||!grid.contains(d))return;`만 추가했다. 문서에 연결되고 현재 skillGrid에 속한 카드만 원래 레벨다운을 처리한다. 각 HTML은44바이트 삽입뿐이며 비용·레벨·그룹·슬롯·환불 및 다른 분기 원문은 보존했다.
+본편 `game.html:46682`와 easy `game-easy-test.html:45283`의 `_renderSkillRow._skMinusClick` 첫 문장에 `if(!d.isConnected||!grid.contains(d))return;`만 추가했다. 카드 d가 문서에 연결되고 렌더 당시 전달받아 캡처한 grid에 포함된 경우만 원래 레벨다운을 처리한다. 각 HTML은44바이트 삽입뿐이며 비용·레벨·그룹·슬롯·환불 및 다른 분기 원문은 보존했다.
 
 | 대상 / 경계 | 현행 환불식·관측 | 변경 여부 |
 |---|---|---|
@@ -138,3 +138,16 @@
 실제 minus 함수·카드/합체 host 캡처·그룹/멤버 선택·환불 helper·grid clear/append와 wrapper를 추출했다. DOM/P/G·부분 renderer·UI/save/SFX는 대역이며 옛 callback 직접 호출은 합성 수명 반례다. 자연 더블클릭/native/gamepad/전체 렌더/compact·상세/다른 합체/리셋·합체 생성gate/P 교체·async reset/실제 저장/오디오 내부 RNG·청취/시각/실게임은 미검수다. source PASS를 runtime/visual/저장/청취 PASS로 계산하지 않는다.
 
 원본2HTML 및 전후SHA·검수 receipt는 `tmp/mac-migration-runtime/continued-review-20261002/uiux-minus-backup/`에 보존한다. 기존 plus 수명 인수의 minus 미검수 표기는 당시 경계이며 위 합체 minus 한 경계만 이번에 별도 생산 인수했다.
+
+### 2026-10-02 확대 카드의 별도 minus 콜백 — source 인수
+
+이번 접점은 `_renderSkillRow._skUnclick`(본편 `game.html:46434`, easy `game-easy-test.html:45037`)이다. 첫 문장에 `if(!d.isConnected||!grid.contains(d))return;` 44바이트씩만 추가했다. `grid`는 렌더 당시 전달받은 인수로 추천 행의 `skWrap`일 수도 있다. 현재 전역 `#skillGrid`를 새로 조회하는 검사나 live owner/epoch 검사로 확대하지 않는다. 기존 common `_skClick`/`_skMinusClick` guard 보존, 현재 `_rfCards` 심볼0.
+
+| source fixture 경계 | 관측 / 한계 |
+|---|---|
+| 연결된 정상 ordinary / formed whirlDet | 원래 접점과 양판4개 정상 상태·trace 동등; 비용·환불·레벨·슬롯 정책 변경0 |
+| 은퇴 wrapper·분리된 추천 카드 행·다른 grid로 옮긴 연결 카드 | 선택된 ordinary/fused fixture의 추가 레벨·환불·렌더·저장·SFX sink 효과0; wrapper의 stopPropagation1은 허용 |
+| 새 회귀 / 구문 | actual-source16/16 PASS, 생산 전 baseline8PASS/8FAIL은 별도 이력; inline JS12/importmap JSON2 구문 통과. 옛 common2GREEN·역할 검사는 재실행/합산0 |
+| 하니스 | 실제 onclick/expanded/helper/clear/container 일부 + 합성 DOM/P/G·UI/save/SFX sink. P.lv1000은 합성값이고 stat counter는 `_skDetailHTML` 표시 sink이며 실제 스탯 재계산이 아님 |
+
+버튼만 제거, 카드와 캡처한 컨테이너의 동시 재부착, P/G 교체, hide/pause/epoch는 이 guard의 보장 밖이다. 실제 입력·전체 renderer·브라우저/native/gamepad·실저장·오디오·시각·실게임은 UNKNOWN이다. [확대 minus 독립 보고서](UIUX_EXPANDED_MINUS_LIFETIME_20261002.md)를 따르며 기존2GREEN 문단은 당시 common 경계로 보존한다.

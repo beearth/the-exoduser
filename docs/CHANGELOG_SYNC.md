@@ -52275,3 +52275,24 @@ late4 result/evidence SHA는 감독 공식 pin과 동일: STORY `870166cc681937f
 정적 조사 `tmp/mac-migration-runtime/continued-review-20261002/boss-runtime-taxonomy-static/2026-10-02T09-34-21.501Z-c9a11d6d-16ed-4649-b2c4-ede31e4c6058/completion-final.json` SHA `43464cc08513dacee7569410967757d2f0b4a60f55627d0e0cc9b50f8c49abcc`, docs완료 동일폴더 `docs-sync-completion.json` SHA `31b4b829f921f99046ade8f2b76ab966228bd37549d829386d6b894434607533`. 최종8경로 blob·원격exactSHA는 `tmp/mac-migration-runtime/continued-review-20261002/boss-runtime-taxonomy-checkpoint/receipt.json`에 기록한다. 이 작업의 source/검사/실게임/native/GL/청취/geometry/카메라·맵QA0이며 기존 MAP RETOUCH를 visual PASS로 승격하지 않는다.
 
 총괄+감독2/Codex전문7/Claude8=17, 전문15팀 감시/피드백/다음TASK는 기존감독 단일송신 소유. 총괄은 승인 인수·최소 적용·문서/Git 보존을 맡으며 기존TASK·검사재송신0이다. Changes80 완료소유경로 checkpoint/100전 새산출중단, 사용자게임탭·세이브·기존앱/서버·원23변경 보존. 설치/권한/인증/결제/게시/삭제/cleanup/새채팅·팀/PC·Windows0.
+
+## 2026-10-02 펼친 스킬 카드 minus 수명 guard 통합
+
+실제 `_renderSkillRow`의 compact-expanded `_skUnclick`에 카드와 렌더 시점 소유 컨테이너의 수명을 검사하도록 양판 각44 UTF-8바이트를 삽입했다. 공용 `_skMinusClick`은 이전에 반영된 guard를 그대로 보존했다. 스킬 비용·환불 공식·밸런스·저장 구조 변경0이다.
+
+| 항목 | 현재 구현 / 검사 | 정확한 적용 경계 |
+|---|---|---|
+| 소스 접점 | game.html:46434 / game-easy-test.html:45037, `_skUnclick` 첫줄 `if(!d.isConnected||!grid.contains(d))return;` | `grid`는 `_renderSkillRow`에 전달된 캡처 컨테이너. 현재 top-level #skillGrid 재조회가 아님 |
+| 최소 수정 | old2411B→new2455B, fragment SHA480040ace294023a3355f50d63532e0d38d696f9cbb4fbc503e0c9a75462ead7→3115328bdfa0a73e17aef58741b73e356b4833ae423e89026b3b7c6b15f27092 | 각HTML 전체에서44B 역치환하면 parent6b865637 원문과100% 일치. 다른 접점·EOL·공용guard 보존 |
+| 신규 회귀 | test/uiuxExpandedMinusLifetime.test.cjs, 양판 각8그룹 총16. 수정 전8PASS/8수명FAIL→수정 후16PASS/0FAIL | baseline1회/final1회, 원래 팀 검사 재실행0. 동일한 소스 추출 하니스의 결과이며 실게임 인수는 아님 |
+| 무효 수명 | 이전 렌더의 ordinary/fused wrapper, 분리된 card-row, 다른 컨테이너로 옮긴 연결 카드의 게임 효과0 | wrapper stopPropagation1은 유지. 버튼만 제거·카드+컨테이너 재부착·P/G 교체·hide/pause/epoch는 이 guard의 범위 밖 |
+| 정상 동등 | ordinary whirlwind Lv3→2/SP100→101, 기존 whirlDet 구성원Lv6→5/SP100→102. mats80 유지. 양판 ordinary/fused 정상 대조4건 전체 state/trace 일치 | 실제 helper upMat0으로 mats환불0. 다른 스킬/비영 ordinary mats/합체 생성gate 검증으로 확대하지 않음 |
+| 렌더·효과 | 실제 펼침 onclick/별도 minus wrapper/선택 helper와 부분 render 재사용; pickup/addTxt/render/detailHTML/updateSkSlot/updateQS/dbSaveForce sink 정상 각1, RNG0 | stat 카운터는 `_skDetailHTML` 상세표시 sink이며 실제 스탯 재계산·DPS 검증이 아님. DOM/P/G와 P.lv1000 합성 |
+| 추가 gate | 미습득 카드 실제 minus생성0; privateFn 직접호출0효과. ordinary Lv1 안내1/stopPropagation1, 나머지효과0 | privateFn 호출은 합성 검사이며 실제 버튼 입력으로 계산하지 않음 |
+| 구문 | 변경 양판 inline JS12/importmap JSON2 PASS, 실행/import0 | native/browser/전체패널/gamepad/storage/audio/visual 검수0. 사용자 게임탭 입력·새로고침0 |
+
+현재 whole source는 main8b4653f3f7282cf2a1adcf9c8f547b3d07b8bbf90362913a3b07f7e3b07a856b / easy50f9a24bb11d95bd3b88fdd4d826594d4e0aac43d1d1760c6f44ac382e32a057. 새test SHA30257b9462d09462b40ce0fe9212b24a144585c4098c95526740c2666da6c1b1. 소스 검수 영수증 `tmp/mac-migration-runtime/continued-review-20261002/uiux-expanded-minus-backup/receipt.json` SHAd1cb72a4888e18fde8b11b732d4431edfe9a2af2772aec0af4d4dd1105e912d5. baseline 당시parent892086fa와 이번 적용parent6b865637을 구분한다. 기존 commonminus source2RED/memory2GREEN/반영2GREEN 이력은 재실행하거나 신규16건에 합산하지 않았다.
+
+관련 정본3과 신규 UIUX_EXPANDED_MINUS_LIFETIME_20261002.md를 코드·신규test·root2와 같은9경로 checkpoint에 보존한다. docs 전체 관련 키워드 검색과 분류·원본문서 백업/최소 교정·prefix 보존·정확 scoped commit/push/원격SHA는 `tmp/mac-migration-runtime/continued-review-20261002/uiux-expanded-minus-checkpoint/receipt.json`에 기록한다. 원 사용자23·별도 소스10·BOSS 직전 정본6·원팀 raw3·LOCK/보호2_3/타인WIP/사용자게임/세이브를 보존한다.
+
+사용자 최신 연속개발 요청에 따라15팀 모두dependency/새업무0 상태를 감독 공식 STATE에서 확인하고, 기존 작업감독에게 실제 미해결 코드·콘텐츠에 연결된 독립 업무를 기존팀 소유범위 안에서 다시 배정하도록 복구 피드백을 전달했다. 전문15팀 다음TASK 단일송신은 감독 소유로 유지하며 이번 root expandedminus와 중복배정0이다. 전체 프로젝트 목적은 실제 플레이 가능한 EXODUSER 출시 상태이며 문서·보존 건수를 코드/실게임 완료로 계산하지 않는다. 총괄+감독2/Codex전문7/Claude8=17, Changes80 완료소유 checkpoint/100전 새산출중단. 새채팅·팀/설치/권한/인증/결제/게시/삭제/cleanup/PC·Windows0.
