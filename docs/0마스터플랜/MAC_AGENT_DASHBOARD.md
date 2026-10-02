@@ -1,6 +1,10 @@
+# 최신 실행 제공자 확인 — 2026-10-02 03:48:50 UTC
+
+새 관리11채팅과 현재 검수11건은 모두 Codex이며 실제 task Read11/11을 확인했다. 원래 Claude7+Codex4 실행팀은 보존했다. 현재 Claude6 interactive idle 및 SOUND background idle/done, 새 후속 지시0. Codex검수 인수 후 비중복 다음 제작 건은 원 제공자에 전달한다. VS Code 자체는 Claude Code의 필수 앱이 아니다. 원 interactive 세션의 지원되는 CLI 메시지 경로는 미확인이고 native 전달은 대기다. 아래 과거 상태와 구분한다. [제공자·실제 배정 근거](mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-CHATS-20261002.md).
+
 # 최신 상태 — 사용자 요청 프로젝트 팀 관리 채팅11개
 
-2026-10-02 fdg 프로젝트 아래11개 채팅 개설·초기 문서인수의 실제 commandExecution 확인. 기존11팀/CLI/PC팀 삭제·종료0. 실제 운영workdir는 migration 절대경로이며 저장된 fdg의 이전 main 경로와 구분한다. Terminal12 총괄검수보조 TASK 수신·Read·전체 handler18 PASS 확인, 생산미적용. 인수기준 local/remote680f22c5 일치. 최신3340 리스너 없음/API연결거부, 원래3333 보존. [채팅등록부·실제상태](mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-CHATS-20261002.md). 아래 모든 과거 차단/전달/미할당 표기는 해당 관찰 당시 이력이다.
+2026-10-02 fdg 프로젝트 아래11개 채팅 개설·각각 실제 업무 전송11/11·task.md Read11/11·새turn 착수 확인. 기존11팀/CLI/PC팀 삭제·종료0. 실제 운영workdir는 migration 절대경로이며 저장된 fdg의 이전 main 경로와 구분한다. Terminal12 총괄검수보조 TASK 수신·Read·전체 handler18 PASS 확인, 생산미적용. 인수기준 local/remote680f22c5 일치. 기동전3340 부재 뒤 root 격리Node 기동·slots HTTP200/ok=true/기존1슬롯 확인·QA 유일UI슬롯 release. 원래3333 보존. [채팅등록부·실제상태](mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-CHATS-20261002.md). 아래 모든 과거 차단/전달/미할당 표기는 해당 관찰 당시 이력이다.
 
 # 최신 후속 — 권한 변경 뒤3340 응답 확인
 

@@ -929,7 +929,8 @@
     "executionObserved": true,
     "observedPass": 18,
     "productionApplied": false,
-    "currentEvidence": "tools/team-followup-20261002/pm-test-support/result.json"
+    "currentEvidence": "tools/team-followup-20261002/pm-test-support/result.json",
+    "rootAcceptance": "Source syntax checked,18 PASS result and8 preserved input SHA verified; actual handler Promise rejection and fakeFs limits retained."
   },
   "remoteCheckpointNote": "Verified checkpoint before this recovery attempt",
   "previousSnapshotAt": "2026-10-01T18:53:31.855475+00:00",
@@ -1009,7 +1010,10 @@
         "initialTask": "read-only team handoff",
         "initialReadCommandObserved": true,
         "initialStatus": "inProgress",
-        "productionApplied": false
+        "productionApplied": false,
+        "chatProvider": "Codex",
+        "originalSessionId": "a489cbeb-92d9-449a-a2b7-ba0e2871322f",
+        "originalExecutionProvider": "Claude Code"
       },
       {
         "team": "MAP",
@@ -1019,7 +1023,10 @@
         "initialTask": "read-only team handoff",
         "initialReadCommandObserved": true,
         "initialStatus": "inProgress",
-        "productionApplied": false
+        "productionApplied": false,
+        "chatProvider": "Codex",
+        "originalSessionId": "d447a49d-ecaa-4b5f-bc56-da5353ebb668",
+        "originalExecutionProvider": "Claude Code"
       },
       {
         "team": "SKILL",
@@ -1029,7 +1036,10 @@
         "initialTask": "read-only team handoff",
         "initialReadCommandObserved": true,
         "initialStatus": "inProgress",
-        "productionApplied": false
+        "productionApplied": false,
+        "chatProvider": "Codex",
+        "originalSessionId": "203377cc-64c4-47ea-af27-95b66ae829fa",
+        "originalExecutionProvider": "Claude Code"
       },
       {
         "team": "UIUX",
@@ -1039,7 +1049,10 @@
         "initialTask": "read-only team handoff",
         "initialReadCommandObserved": true,
         "initialStatus": "inProgress",
-        "productionApplied": false
+        "productionApplied": false,
+        "chatProvider": "Codex",
+        "originalSessionId": "01a0f6e5-8653-7ae2-8b2b-314e275c215c",
+        "originalExecutionProvider": "Codex"
       },
       {
         "team": "ITEM",
@@ -1049,7 +1062,10 @@
         "initialTask": "read-only team handoff",
         "initialReadCommandObserved": true,
         "initialStatus": "inProgress",
-        "productionApplied": false
+        "productionApplied": false,
+        "chatProvider": "Codex",
+        "originalSessionId": "01a0f6e6-1fbe-7df0-8d02-a9c2d9df3750",
+        "originalExecutionProvider": "Codex"
       },
       {
         "team": "SOUND",
@@ -1059,7 +1075,10 @@
         "initialTask": "read-only team handoff",
         "initialReadCommandObserved": true,
         "initialStatus": "inProgress",
-        "productionApplied": false
+        "productionApplied": false,
+        "chatProvider": "Codex",
+        "originalSessionId": "aa3ac0ed-f4e5-44ad-a0b2-d4d2da045b84",
+        "originalExecutionProvider": "Claude Code"
       },
       {
         "team": "QA",
@@ -1069,7 +1088,10 @@
         "initialTask": "read-only team handoff",
         "initialReadCommandObserved": true,
         "initialStatus": "inProgress",
-        "productionApplied": false
+        "productionApplied": false,
+        "chatProvider": "Codex",
+        "originalSessionId": "88c3f903-ece5-4640-8b0c-86feaaca0e53",
+        "originalExecutionProvider": "Claude Code"
       },
       {
         "team": "ENEMY",
@@ -1079,7 +1101,10 @@
         "initialTask": "read-only team handoff",
         "initialReadCommandObserved": true,
         "initialStatus": "inProgress",
-        "productionApplied": false
+        "productionApplied": false,
+        "chatProvider": "Codex",
+        "originalSessionId": "ddbd64be-975a-458e-a020-c09749281f5b",
+        "originalExecutionProvider": "Claude Code"
       },
       {
         "team": "BUILD",
@@ -1089,7 +1114,10 @@
         "initialTask": "read-only team handoff",
         "initialReadCommandObserved": true,
         "initialStatus": "inProgress",
-        "productionApplied": false
+        "productionApplied": false,
+        "chatProvider": "Codex",
+        "originalSessionId": "01a0f6e6-2e4c-7322-92d7-3aa309857856",
+        "originalExecutionProvider": "Codex"
       },
       {
         "team": "BALANCE",
@@ -1099,7 +1127,10 @@
         "initialTask": "read-only team handoff",
         "initialReadCommandObserved": true,
         "initialStatus": "inProgress",
-        "productionApplied": false
+        "productionApplied": false,
+        "chatProvider": "Codex",
+        "originalSessionId": "01a0f6e6-5303-7392-81ba-94c42e349ffc",
+        "originalExecutionProvider": "Codex"
       },
       {
         "team": "ANIMVFX",
@@ -1109,19 +1140,300 @@
         "initialTask": "read-only team handoff",
         "initialReadCommandObserved": true,
         "initialStatus": "inProgress",
-        "productionApplied": false
+        "productionApplied": false,
+        "chatProvider": "Codex",
+        "originalSessionId": "1d2a7253-478c-43aa-8c6f-766a02270432",
+        "originalExecutionProvider": "Claude Code"
       }
     ],
     "existingOwnerSessionsPreserved": true,
     "deleted": 0,
     "initialActualReadCommandObserved": 11,
-    "note": "User requested additional project management chats. Existing teams[] remain historical owner-session snapshots; new chats initial read-only handoff."
+    "note": "User requested additional project management chats. Existing teams[] remain historical owner-session snapshots; new chats initial read-only handoff.",
+    "tasks": [
+      {
+        "team": "ART",
+        "title": "EXODUSER 아트팀",
+        "threadId": "01a0faaf-479e-7143-99d6-4e1fdb5fdde5",
+        "hostId": "local",
+        "initialTask": "read-only team handoff",
+        "initialReadCommandObserved": true,
+        "initialStatus": "inProgress",
+        "productionApplied": false,
+        "actualTask": "emg1-lock-review",
+        "actualTaskFile": "tools/team-followup-20261002/project-teams/ART/task.md",
+        "actualTaskReadObserved": true,
+        "actualWorkTurnId": "01a0fab5-c35b-7771-9141-0847624a758c",
+        "actualWorkStatusAtObservation": "inProgress"
+      },
+      {
+        "team": "MAP",
+        "title": "EXODUSER 맵팀",
+        "threadId": "01a0faaf-8ab1-7c81-9d2b-d17f15ba25a3",
+        "hostId": "local",
+        "initialTask": "read-only team handoff",
+        "initialReadCommandObserved": true,
+        "initialStatus": "inProgress",
+        "productionApplied": false,
+        "actualTask": "m5-tile-reachability",
+        "actualTaskFile": "tools/team-followup-20261002/project-teams/MAP/task.md",
+        "actualTaskReadObserved": true,
+        "actualWorkTurnId": "01a0fab5-c447-7583-875e-3b62c717a449",
+        "actualWorkStatusAtObservation": "inProgress"
+      },
+      {
+        "team": "SKILL",
+        "title": "EXODUSER 스킬팀",
+        "threadId": "01a0faaf-8d1e-7c93-94c0-37b5df8a10eb",
+        "hostId": "local",
+        "initialTask": "read-only team handoff",
+        "initialReadCommandObserved": true,
+        "initialStatus": "inProgress",
+        "productionApplied": false,
+        "actualTask": "mortar-production-regression-ready",
+        "actualTaskFile": "tools/team-followup-20261002/project-teams/SKILL/task.md",
+        "actualTaskReadObserved": true,
+        "actualWorkTurnId": "01a0fab5-c4d3-7552-9380-6e754466a372",
+        "actualWorkStatusAtObservation": "inProgress"
+      },
+      {
+        "team": "UIUX",
+        "title": "EXODUSER UIUX팀",
+        "threadId": "01a0faaf-8fd2-7083-b174-69c604bd58b0",
+        "hostId": "local",
+        "initialTask": "read-only team handoff",
+        "initialReadCommandObserved": true,
+        "initialStatus": "inProgress",
+        "productionApplied": false,
+        "actualTask": "cross-panel-focus-source",
+        "actualTaskFile": "tools/team-followup-20261002/project-teams/UIUX/task.md",
+        "actualTaskReadObserved": true,
+        "actualWorkTurnId": "01a0fab5-c54f-7dd0-8482-984e9a6b9bd4",
+        "actualWorkStatusAtObservation": "inProgress"
+      },
+      {
+        "team": "ITEM",
+        "title": "EXODUSER 아이템팀",
+        "threadId": "01a0faaf-92a3-7eb1-842d-eb4baa1a2954",
+        "hostId": "local",
+        "initialTask": "read-only team handoff",
+        "initialReadCommandObserved": true,
+        "initialStatus": "inProgress",
+        "productionApplied": false,
+        "actualTask": "d13-integration-map",
+        "actualTaskFile": "tools/team-followup-20261002/project-teams/ITEM/task.md",
+        "actualTaskReadObserved": true,
+        "actualWorkTurnId": "01a0fab5-c60d-7853-a755-df884c0fb1ad",
+        "actualWorkStatusAtObservation": "inProgress"
+      },
+      {
+        "team": "SOUND",
+        "title": "EXODUSER 사운드팀",
+        "threadId": "01a0faaf-956a-74a3-9bf1-77032f124e2d",
+        "hostId": "local",
+        "initialTask": "read-only team handoff",
+        "initialReadCommandObserved": true,
+        "initialStatus": "inProgress",
+        "productionApplied": false,
+        "actualTask": "mkitem-sideeffects-readonly",
+        "actualTaskFile": "tools/team-followup-20261002/project-teams/SOUND/task.md",
+        "actualTaskReadObserved": true,
+        "actualWorkTurnId": "01a0fab5-c6bb-77a0-a8a8-30b191ba4269",
+        "actualWorkStatusAtObservation": "inProgress"
+      },
+      {
+        "team": "QA",
+        "title": "EXODUSER QA 성능팀",
+        "threadId": "01a0faaf-9806-7cc1-8ef3-0783fd03d2f6",
+        "hostId": "local",
+        "initialTask": "read-only team handoff",
+        "initialReadCommandObserved": true,
+        "initialStatus": "inProgress",
+        "productionApplied": false,
+        "actualTask": "host-native-acceptance",
+        "actualTaskFile": "tools/team-followup-20261002/project-teams/QA/task.md",
+        "actualTaskReadObserved": true,
+        "actualWorkTurnId": "01a0fab5-c770-7692-b96c-c017b743fa78",
+        "actualWorkStatusAtObservation": "inProgress"
+      },
+      {
+        "team": "ENEMY",
+        "title": "EXODUSER 몬스터 AI팀",
+        "threadId": "01a0faaf-9ade-74d3-8162-4261329b1ac3",
+        "hostId": "local",
+        "initialTask": "read-only team handoff",
+        "initialReadCommandObserved": true,
+        "initialStatus": "inProgress",
+        "productionApplied": false,
+        "actualTask": "telegraph-cancel-boundary",
+        "actualTaskFile": "tools/team-followup-20261002/project-teams/ENEMY/task.md",
+        "actualTaskReadObserved": true,
+        "actualWorkTurnId": "01a0fab5-c829-7030-b069-2b1d99d85ba7",
+        "actualWorkStatusAtObservation": "inProgress"
+      },
+      {
+        "team": "BUILD",
+        "title": "EXODUSER 통합 빌드팀",
+        "threadId": "01a0faaf-9dd5-7c91-ab09-ee0bcff343b0",
+        "hostId": "local",
+        "initialTask": "read-only team handoff",
+        "initialReadCommandObserved": true,
+        "initialStatus": "inProgress",
+        "productionApplied": false,
+        "actualTask": "packaged-source-delta",
+        "actualTaskFile": "tools/team-followup-20261002/project-teams/BUILD_TEAM/task.md",
+        "actualTaskReadObserved": true,
+        "actualWorkTurnId": "01a0fab5-c8a6-7113-95d5-39fa109bfc7e",
+        "actualWorkStatusAtObservation": "inProgress"
+      },
+      {
+        "team": "BALANCE",
+        "title": "EXODUSER 밸런스 경제팀",
+        "threadId": "01a0faaf-a06a-79a2-9def-58eb8ad10d65",
+        "hostId": "local",
+        "initialTask": "read-only team handoff",
+        "initialReadCommandObserved": true,
+        "initialStatus": "inProgress",
+        "productionApplied": false,
+        "actualTask": "shared-mats-production-acceptance-plan",
+        "actualTaskFile": "tools/team-followup-20261002/project-teams/BALANCE/task.md",
+        "actualTaskReadObserved": true,
+        "actualWorkTurnId": "01a0fab5-c95b-7160-b52f-097404a21529",
+        "actualWorkStatusAtObservation": "inProgress"
+      },
+      {
+        "team": "ANIMVFX",
+        "title": "EXODUSER 애니메이션 VFX팀",
+        "threadId": "01a0faaf-a2e6-7262-afc1-196ae9a0ab80",
+        "hostId": "local",
+        "initialTask": "read-only team handoff",
+        "initialReadCommandObserved": true,
+        "initialStatus": "inProgress",
+        "productionApplied": false,
+        "actualTask": "foot-shadow-anchor",
+        "actualTaskFile": "tools/team-followup-20261002/project-teams/ANIMVFX/task.md",
+        "actualTaskReadObserved": true,
+        "actualWorkTurnId": "01a0fab5-c9c8-7203-83b9-82e85d161d5f",
+        "actualWorkStatusAtObservation": "inProgress"
+      }
+    ],
+    "actualWorkDispatch": 11,
+    "actualTaskReadObserved": 11,
+    "workDispatchEvidence": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-WORK-DISPATCH-20261002.json"
   },
   "currentRuntimeObservation": {
-    "server3340": "listener absent; slots connection refused",
-    "server3333": "Node PID12319 listening; preserved",
-    "newGameMeasurements": 0,
-    "source": "2026-10-02 current coordinator read-only lsof/curl; prior recovery record historical"
+    "serverPort": 3340,
+    "host": "127.0.0.1",
+    "saveDir": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tmp/mac-migration-runtime/saves",
+    "slotsHTTP": 200,
+    "slotsOK": true,
+    "slotCount": 1,
+    "original3333Preserved": true,
+    "uiOwner": "QA",
+    "releaseSent": true,
+    "server3340": "started by root;HTTP200 slotsAPI ok=true",
+    "newGameMeasurements": 0
   },
-  "projectChatCoordinationReport": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-CHATS-20261002.md"
+  "projectChatCoordinationReport": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-CHATS-20261002.md",
+  "providerRouting20261002": {
+    "recordedAt": "2026-10-02 03:48:50 UTC",
+    "requestedByUser": "VS Code는 안 써도 되겠네, Claude Code 토큰도 쓰려고 했는데",
+    "newChatProvider": "Codex",
+    "newChatsConsumeClaudeTokens": false,
+    "originalExecutionProviders": {
+      "Claude Code": [
+        "ART",
+        "MAP",
+        "SKILL",
+        "SOUND",
+        "QA",
+        "ENEMY",
+        "ANIMVFX"
+      ],
+      "Codex": [
+        "UIUX",
+        "ITEM",
+        "BUILD",
+        "BALANCE"
+      ]
+    },
+    "originalClaudeSessions": [
+      {
+        "team": "QA",
+        "sessionId": "88c3f903-ece5-4640-8b0c-86feaaca0e53",
+        "observed": true,
+        "kind": "interactive",
+        "status": "idle",
+        "state": null,
+        "pid": 51163
+      },
+      {
+        "team": "MAP",
+        "sessionId": "d447a49d-ecaa-4b5f-bc56-da5353ebb668",
+        "observed": true,
+        "kind": "interactive",
+        "status": "idle",
+        "state": null,
+        "pid": 51363
+      },
+      {
+        "team": "SKILL",
+        "sessionId": "203377cc-64c4-47ea-af27-95b66ae829fa",
+        "observed": true,
+        "kind": "interactive",
+        "status": "idle",
+        "state": null,
+        "pid": 52159
+      },
+      {
+        "team": "ENEMY",
+        "sessionId": "ddbd64be-975a-458e-a020-c09749281f5b",
+        "observed": true,
+        "kind": "interactive",
+        "status": "idle",
+        "state": null,
+        "pid": 52230
+      },
+      {
+        "team": "ART",
+        "sessionId": "a489cbeb-92d9-449a-a2b7-ba0e2871322f",
+        "observed": true,
+        "kind": "interactive",
+        "status": "idle",
+        "state": null,
+        "pid": 51300
+      },
+      {
+        "team": "ANIMVFX",
+        "sessionId": "1d2a7253-478c-43aa-8c6f-766a02270432",
+        "observed": true,
+        "kind": "interactive",
+        "status": "idle",
+        "state": null,
+        "pid": 52299
+      },
+      {
+        "team": "SOUND",
+        "sessionId": "aa3ac0ed-f4e5-44ad-a0b2-d4d2da045b84",
+        "observed": true,
+        "kind": "background",
+        "status": "idle",
+        "state": "done",
+        "pid": 55890
+      }
+    ],
+    "currentReviewDispatch": "11 new Codex chats: task Read 11/11; independent review work in progress at observation",
+    "claudeNewDispatchCount": 0,
+    "followupRoute": "Finish current Codex reviews, accept results, then route one non-overlapping followup to original designated provider",
+    "cliDispatchFinding": "agents is read-only inventory; attach help documents background sessions; --bg --resume can copy a session that is already running. No supported send/queue command confirmed for original interactive Claude sessions. Existing native UI delivery still pending.",
+    "vsCodeRequiredForClaudeCode": false,
+    "existingSessionsPreserved": true
+  },
+  "snapshotScopes": {
+    "teamsAndTopLevelCounts": "Historical original execution-session snapshot at checkedAt; retain original receipts/status and do not aggregate new-chat execution as Claude work",
+    "projectChatTeams": "New Codex management/review chats; actual task dispatch and Read tracked separately",
+    "currentProviderRouting": "providerRouting20261002",
+    "currentReviewDispatch": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-WORK-DISPATCH-20261002.json",
+    "currentRuntime": "currentRuntimeObservation"
+  }
 }

@@ -33,7 +33,7 @@
 | BALANCE | EXODUSER 밸런스 경제팀 | `01a0faaf-a06a-79a2-9def-58eb8ad10d65` | 기존 역할의 업무 인수 착수·공식 commandExecution 확인 |
 | ANIMVFX | EXODUSER 애니메이션 VFX팀 | `01a0faaf-a2e6-7262-afc1-196ae9a0ab80` | 기존 역할의 업무 인수 착수·공식 commandExecution 확인 |
 
-기계 등록부는 [PROJECT-TEAM-CHATS-20261002.json](PROJECT-TEAM-CHATS-20261002.json)이다. 원래 CLI의 세션 ID와 과거 완료 근거는 [TEAM_UTILIZATION_20261001.json](TEAM_UTILIZATION_20261001.json)에 보존한다. 새 채팅은 각 팀의 관리·인수 연결점이며, 같은 과제를 원래 CLI와 동시에 실행하지 않는다. 공유 HTML은 함수·데이터 소유권 지정 후 순차 변경하고 실제 게임·측정 슬롯은 총괄이 조율한다. 이번 첫 과제는 팀 문서·최근 근거의 읽기 전용 인수이며 다음 한 건과 Gate를 최종 보고하도록 지정했다.
+기계 등록부는 [PROJECT-TEAM-CHATS-20261002.json](PROJECT-TEAM-CHATS-20261002.json)이다. 원래 CLI의 세션 ID와 과거 완료 근거는 [TEAM_UTILIZATION_20261001.json](TEAM_UTILIZATION_20261001.json)에 보존한다. 새 채팅은 각 팀의 관리·인수 연결점이고 실제 실행 제공자는 Codex다. 기존 Claude 원세션에 자동 연결되지 않는다. 새 채팅은 같은 과제를 원래 CLI와 동시에 실행하지 않는다. 공유 HTML은 함수·데이터 소유권 지정 후 순차 변경하고 실제 게임·측정 슬롯은 총괄이 조율한다. 이번 첫 과제는 팀 문서·최근 근거의 읽기 전용 인수이며 다음 한 건과 Gate를 최종 보고하도록 지정했다.
 
 ## Terminal 12 배정과 실제 착수
 
@@ -45,7 +45,7 @@
 | 지시 파일 | `tools/team-followup-20261002/pm-test-support/TASK.md` |
 | 전송 | 공식 메시지 도구는 기존 CLI active writer로 거절. 원세션 전용 codex queue 성공, queue ID `01a0faae-c745-7fe3-abd1-155fc7f63c0b` |
 | 실제 수신·Read | 공식 read_thread에서 TASK.md 읽기·소스 읽기·검사 파일 작성·실행 확인 |
-| 관찰된 검사 | 18 PASS / 실패0. 입력 SHA 보존, open/write/close/rename 실패의 이전 mats·슬롯 bytes 보존·성공 ACK0. 최종 제출과 root 인수는 별도 |
+| 관찰된 검사 | 18 PASS / 실패0. 입력 SHA 보존, open/write/close/rename 실패의 이전 mats·슬롯 bytes 보존·성공 ACK0. 최종 소유 보고서·18 PASS 원자료·8입력 SHA·구문 검사 인수 완료. 실제 HTTP/앱은 별도 |
 | 제어 한계 | AX 관찰 가능했으나 UI 입력은 elementHasNoFrame/noWindowsAvailable. 무조건 재연결 성공/승인 완료로 보고하지 않음 |
 | 보존 경계 | 생산 소스·기존 test·기존11팀·공용 인덱스·서버·게임 조작0. 보조 소유 폴더만 작성 |
 
@@ -62,3 +62,22 @@
 | 자동화 | 기존 PC 전달의 exoduser 5분 ACTIVE 이력 | Mac 자동화 새 생성/주기 변경0, 현재 독립 재검증 주장0 |
 
 코드 생산 인수·실제 게임·맵 8뷰·청취·새 앱 빌드와 구분한다. 관련 docs 검색·소유 범위 보존·작업별 체크포인트·GitHub 정확 ref 대조를 이어간다. 새로운 팀 채팅 생성만으로 게임 품질 완료를 선언하지 않는다.
+
+## 11팀 실제 업무 전송·Read와 QA 실행 슬롯
+
+사용자가 각 팀 업무 배정을 확인한 후 원래 승인 백로그 한 건씩 공식 send_message_to_thread로11/11 전송 성공했다. 공식 read_thread의 실제 task.md 출력/성공 명령으로11/11 Read와 새 turn 착수를 확인했다. BALANCE 명령 전체 exit1은 task 읽기 이후 AGENTS 파일 검색 무매칭이며 실제 task 본문 출력으로 Read를 확인했다. 개설만 한 상태가 아니다. 담당·작업·소유 경로·turnId·첫 명령은 [실제 배정 근거](PROJECT-TEAM-WORK-DISPATCH-20261002.json)를 따른다.
+
+배정 전 code+docs·검수 보조·task11파일26개를96610b65로 scope checkpoint하고 정확GitHub ref SHA 일치를 확인했다. root가127.0.0.1:3340 격리 saves의 Node서버를 기동했고 /api/slots HTTP200/ok=true/기존1슬롯을 확인한 뒤 QA에 유일UI슬롯을 release했다. 원래3333 NodePID12319·사용자게임/앱/세이브는 보존했다. 앞의3340 부재는 기동 전 이력이다. 실제 host 검수·각 팀 최종 결과·생산 반영은 후속 인수이며 이번 배정/Read 확인과 구분한다.
+
+## 사용자 Claude Code 토큰 활용 의향과 실행 제공자
+
+2026-10-02 03:48:50 UTC에 실제 claude agents 조회로 원담당 6개 interactive 세션의 idle 및 SOUND background 세션의 idle/done을 확인했다. 과거 등록용 done 세션과 구분했다. 새 프로젝트11채팅은 전부 Codex이며 이번 배정11건도 Codex에서 실제 검수 중이다. 이 작업은 Claude Code 토큰을 사용하지 않는다. 원래 Claude 제작팀을 새 Codex 채팅으로 교체하거나 삭제하지 않았다.
+
+| 역할 | 실행 제공자·현재 관계 |
+|---|---|
+| ART/MAP/SKILL/SOUND/QA/ENEMY/ANIMVFX | 원래 Claude Code 7팀. 현재 후속 지시 수신0, 대기 관찰. 이번 Codex 검수 인수 후 중복되지 않는 다음 제작 건을 원담당에 전달하는 후속 경로 |
+| UIUX/ITEM/BUILD/BALANCE | 원래 Codex 4팀. 기존 세션과 새 관리 채팅 보존, 동일 과제 동시 실행 금지 |
+| 새 프로젝트 관리 채팅11개 | 모두 Codex. 이번 실제 검수 작업과 결과 인수 담당, Claude 세션이나 토큰 공유 아님 |
+| VS Code | Claude Code 사용의 필수 앱 아님. 기존 대화형 Claude 실행창이 현재 여기에 있으므로 입력 경로는 보존 |
+
+확인한 CLI 도움말에서 agents는 상태 조회이고 attach는 background 세션 열기다. --bg --resume은 이미 실행 중인 세션을 복제할 수 있다고 명시돼 있어 기존 interactive 세션의 메시지 전달용으로 사용하지 않았다. 지원되는 원 interactive 세션 send/queue 경로는 확인하지 못했으며 실제 native 후속 전달은 아직 미완료다. 현재 11개 Codex 검수를 인수한 뒤 소유 범위가 겹치지 않는 다음 한 건을 원 제공자에 배정한다. 원 Claude 7팀이 새 지시를 받았거나 실행을 재개했다고 집계하지 않는다.

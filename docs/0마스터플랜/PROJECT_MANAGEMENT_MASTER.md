@@ -755,3 +755,12 @@ HEAD5b8e6ba9에서 지원3명이 11역할을 묶어 mortar38 PASS·MAP source9 P
 ### 2026-10-02 프로젝트11팀 실제 업무 배정 준비
 
 사용자 각 팀 업무 배정 지시에 따라 tools/team-followup-20261002/project-teams/의 task.md11개에 기존 승인 백로그 한 건씩과 소유 파일·검수 조건을 지정했다. ART emg1 LOCK, MAP M5 도달성, SKILL mortar 생산회귀, UIUX 패널초점, ITEM D13 통합지도, SOUND 실제획득 SFX 연결계약, QA 독립host 실제인수, ENEMY 예고취소, BUILD 패키지source delta, BALANCE 공유악의 생산/오류응답 인수계획, ANIMVFX foot-shadow anchor다. 공유 생산코드 적용은 총괄 순차 인수이며 팀별 소유 새 산출은 최대3개다. BUILD 소유폴더는 build/ 무시 규칙의 Mac 대소문자 영향을 피하도록 BUILD_TEAM을 사용한다. QA 유일UI슬롯은 root3340 기동/응답 확인 뒤 별도 release한다. 실제 전송/Read/착수는 PROJECT-TEAM-CHATS-20261002.json 후속 receipts에 기록한다.
+
+
+### 2026-10-02 프로젝트11팀 실제 업무 전송·Read와 격리QA 슬롯 release
+
+공식 send11/11 성공, 실제 task.md Read11/11·새 작업turn 착수를 read_thread 명령/본문으로 확인했다. code+docs/검수보조/task11파일의 복구96610b65를GitHub 정확ref와 대조한 뒤 전송했다. root3340/127.0.0.1/격리saves Node서버 기동 및 slotsHTTP200/ok=true/기존1슬롯 확인, QA에 유일UI슬롯을 release했다. 원래3333/기존11CLI/PC팀/사용자게임/세이브 삭제·중단0, 생산공용소스 변경0. 전체 handler18 PASS와8입력SHA보존·소유 최종보고를 인수했으며 fakeFs/HTTP오류응답 미완료 한계를 유지했다. 각 팀 최종 산출은 완료·검수·생산 반영 단계로 이어 인수한다. 실제근거: mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-WORK-DISPATCH-20261002.json.
+
+### 2026-10-02 사용자 Claude 토큰 활용 의향과 혼합 실행 제공자
+
+새11관리채팅 및 현재 검수11건은 전부 Codex다. Claude 토큰 소비로 세지 않는다. 원 Claude7(ART/MAP/SKILL/SOUND/QA/ENEMY/ANIMVFX)+Codex4(UIUX/ITEM/BUILD/BALANCE) 구성은 보존하며 현재 Codex검수 인수 후 다음 비중복 제작건을 원 제공자에 전달한다. 실제 Claude CLI조회는6 interactive idle+SOUND background idle/done이며 후속 전달0/Read0다. VS Code는 Claude Code의 필수 앱이 아니지만 기존 실행창 전달 경로를 보존한다. --bg --resume은 실행중세션 복제 가능성 때문에 사용하지 않았다. 지원되는 interactive send/queue는 미확인이고 native 전달은 미완료다. 상세와시각: PROJECT-TEAM-CHATS-20261002.md 및 TEAM_UTILIZATION_20261001.json의 providerRouting20261002. 기존세션 삭제/중단0.

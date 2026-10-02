@@ -1,0 +1,373 @@
+{
+  "observedAt": "2026-10-02 03:45:13 UTC",
+  "checkpoint": "96610b6546a31e882962470ea1f2164ce94edca6",
+  "ref": "refs/heads/codex/mac-environment-20261001",
+  "dispatched": 11,
+  "actualTaskReadCount": 11,
+  "tasks": [
+    {
+      "team": "ART",
+      "task": "emg1-lock-review",
+      "source": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/native-recovery/ART-task.md",
+      "detail": "실제 emg1 두 번째 후보·현재 연결 원본·LOCK의 경로/SHA/규격·알파·구도·전사 신원을 대조하세요. 기존 로컬 이미지를 view_image로 실제 확인해 항목별 채택 가능/수정 필요/근거 부족 근거를 남기세요. 새 생성·변환·다운로드·기존 에셋 변경0. 실제 게임 카메라 판정은 하지 않습니다.",
+      "outputDir": "ART",
+      "threadId": "01a0faaf-479e-7143-99d6-4e1fdb5fdde5",
+      "observed": {
+        "team": "ART",
+        "threadId": "01a0faaf-479e-7143-99d6-4e1fdb5fdde5",
+        "status": {
+          "type": "active",
+          "activeFlags": []
+        },
+        "turnId": "01a0fab5-c35b-7771-9141-0847624a758c",
+        "turnStatus": "inProgress",
+        "startedAt": 1790912611,
+        "completedAt": null,
+        "taskReadCommands": [
+          {
+            "command": "/bin/zsh -lc 'cat /Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/ART/task.md'",
+            "status": "completed",
+            "exitCode": 0
+          }
+        ],
+        "commandCount": 3,
+        "codeEdits": [],
+        "latestMessage": "배정된 `task.md`를 읽고 emg1 후보와 LOCK을 대조하겠습니다. 지정 소유 폴더에 최대 3개 파일로 결과·검수 근거·docs 계약표를 작성하고, 생산 소스와 기존 에셋은 읽기 전용으로 유지하겠습니다.\n",
+        "actualTaskRead": true
+      }
+    },
+    {
+      "team": "MAP",
+      "task": "m5-tile-reachability",
+      "source": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/native-recovery/MAP-task.md",
+      "detail": "맵 제작 가이드 v0.9 전체와 _MAP_SSOT_INDEX.md를 선독하고 실제 M5 타일 통행식/접근로·경계·출입 계약을 소스 원문으로 조사하세요. 가능한 작은 실제소스/데이터 fixture에서 도달성·막힘 반례를 검수하세요. 임의 좌표·레이아웃·collision 변경0, 실제 게임/8뷰0. 결과에는 가이드 §23 MAP PRODUCTION REPORT와 VISUAL VERDICT RETOUCH(현행 새 시각 미검수)를 반드시 포함하세요.",
+      "outputDir": "MAP",
+      "threadId": "01a0faaf-8ab1-7c81-9d2b-d17f15ba25a3",
+      "observed": {
+        "team": "MAP",
+        "threadId": "01a0faaf-8ab1-7c81-9d2b-d17f15ba25a3",
+        "status": {
+          "type": "active",
+          "activeFlags": []
+        },
+        "turnId": "01a0fab5-c447-7583-875e-3b62c717a449",
+        "turnStatus": "inProgress",
+        "startedAt": 1790912611,
+        "completedAt": null,
+        "taskReadCommands": [
+          {
+            "command": "/bin/zsh -lc \"cat '/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/MAP/task.md'\"",
+            "status": "completed",
+            "exitCode": 0
+          }
+        ],
+        "commandCount": 8,
+        "codeEdits": [],
+        "latestMessage": "배정된 `m5-tile-reachability` 과제와 선행 문서를 읽고 M5 도달성을 소스로 검수하겠습니다. 산출은 지정 폴더의 최대 3파일로 제한하며, 생산 소스·UI·게임·서버·빌드·Git은 변경하지 않습니다.\n",
+        "actualTaskRead": true
+      }
+    },
+    {
+      "team": "SKILL",
+      "task": "mortar-production-regression-ready",
+      "source": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/native-recovery/SKILL-task.md",
+      "detail": "이미 준비된 mortar-integration-targets.patch와 frozen before를 재사용해 실제 fireMaliceMortar/confirm 호출 source를 대상으로 생산 인수용 회귀 하니스를 새 소유 경로에 준비하세요. production이 미적용인 현재와 메모리 patch 후보 양쪽을 비교하며 동적 비용 정확값/0.25 부족·할인 변경·회복 재클릭·RMB/Escape 우선·release 이후 자동 재시도 금지·일반/iceMortar 성공 상태/RNG parity를 검사하세요. 기존38/17/19 단순 재실행 대신 생산 적용 후도 재사용 가능한 하니스여야 합니다. 생산소스 수정0.",
+      "outputDir": "SKILL",
+      "threadId": "01a0faaf-8d1e-7c93-94c0-37b5df8a10eb",
+      "observed": {
+        "team": "SKILL",
+        "threadId": "01a0faaf-8d1e-7c93-94c0-37b5df8a10eb",
+        "status": {
+          "type": "active",
+          "activeFlags": []
+        },
+        "turnId": "01a0fab5-c4d3-7552-9380-6e754466a372",
+        "turnStatus": "inProgress",
+        "startedAt": 1790912611,
+        "completedAt": null,
+        "taskReadCommands": [
+          {
+            "command": "/bin/zsh -lc \"cat '/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/SKILL/task.md'; git rev-parse HEAD; git status --short --untracked-files=all | wc -l; git diff --cached --name-only\"",
+            "status": "completed",
+            "exitCode": 0
+          }
+        ],
+        "commandCount": 5,
+        "codeEdits": [],
+        "latestMessage": "배정된 `mortar-production-regression-ready` 지시문을 읽고, 지정 소유 폴더에만 검수 산출물과 docs 계약표를 만들겠습니다. 생산소스는 읽기 전용으로 유지하며 게임·서버·빌드·Git쓰기는 하지 않겠습니다.",
+        "actualTaskRead": true
+      }
+    },
+    {
+      "team": "UIUX",
+      "task": "cross-panel-focus-source",
+      "source": "tools/team-followup-20261002/owner-dispatch/UIUX-task.md",
+      "detail": "현행 renderInv/renderOssPanel 실제 source의 filter rerender→ossuary disable→bag navigation 혼합 순서에서 공유 keyboard handler/activeElement 소유권을 새 작은 fixture로 검수하세요. 기존15 단순 반복0. 재현된 결함만 별도 최소 미적용 patch로 남기고 실제 source·DOM 대역·미지원 native/패드/레이아웃을 명시하세요.",
+      "outputDir": "UIUX",
+      "threadId": "01a0faaf-8fd2-7083-b174-69c604bd58b0",
+      "observed": {
+        "team": "UIUX",
+        "threadId": "01a0faaf-8fd2-7083-b174-69c604bd58b0",
+        "status": {
+          "type": "active",
+          "activeFlags": []
+        },
+        "turnId": "01a0fab5-c54f-7dd0-8482-984e9a6b9bd4",
+        "turnStatus": "inProgress",
+        "startedAt": 1790912611,
+        "completedAt": null,
+        "taskReadCommands": [
+          {
+            "command": "/bin/zsh -lc \"cat '/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/UIUX/task.md'\"",
+            "status": "completed",
+            "exitCode": 0
+          }
+        ],
+        "commandCount": 6,
+        "codeEdits": [],
+        "latestMessage": "배정된 `cross-panel-focus-source` 과제서를 읽고 지정 폴더 안에 최대 3개 산출을 만들겠습니다. 실제 소스의 혼합 초점 흐름을 검수하고, 생산 수정 없이 결과와 한계를 기록하겠습니다.\n",
+        "actualTaskRead": true
+      }
+    },
+    {
+      "team": "ITEM",
+      "task": "d13-integration-map",
+      "source": "tools/team-followup-20261002/owner-dispatch/ITEM-task.md",
+      "detail": "검수된 D13 candidate의 실제 activateSpikeTrap/hurtE/_fireZones pass와 stage/player/zones 교체·clear 경계를 source line/SHA와 caller 소유권 표로 연결하세요. 연결 안 된 lifecycle reset과 runtimeReady=false 해제 전 Gate를 정확히 기록하세요. 새 payload/스키마/정책0, callback32 반복0, 생산 연결0.",
+      "outputDir": "ITEM",
+      "threadId": "01a0faaf-92a3-7eb1-842d-eb4baa1a2954",
+      "observed": {
+        "team": "ITEM",
+        "threadId": "01a0faaf-92a3-7eb1-842d-eb4baa1a2954",
+        "status": {
+          "type": "active",
+          "activeFlags": []
+        },
+        "turnId": "01a0fab5-c60d-7853-a755-df884c0fb1ad",
+        "turnStatus": "inProgress",
+        "startedAt": 1790912611,
+        "completedAt": null,
+        "taskReadCommands": [
+          {
+            "command": "/bin/zsh -lc 'cat /Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/ITEM/task.md'",
+            "status": "completed",
+            "exitCode": 0
+          }
+        ],
+        "commandCount": 5,
+        "codeEdits": [],
+        "latestMessage": "배정된 `d13-integration-map` 지시문을 읽고, 지정 폴더에 caller·초기화 경계·미결 정책을 정리하겠습니다. 생산 소스는 읽기 전용으로 유지하고, 근거 대조를 마친 보고서와 evidence를 제출하겠습니다.",
+        "actualTaskRead": true
+      }
+    },
+    {
+      "team": "SOUND",
+      "task": "mkitem-sideeffects-readonly",
+      "source": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/native-recovery/SOUND-task.md",
+      "detail": "기존 actual mkItem/rollAffixes/등록·획득 source18그룹/84입력 근거를 읽고 전용 유골 획득 SFX 후보가 실제 생성·등록·pitch RNG와 어떻게 연결되는지 integration 계약표를 작성하세요. 기존18검사를 반복하지 말고 실제 caller·SFX 중복 방지·음량/재생 수명·아이템 data side effects·필요한 실청취 Gate를 분리하세요. 실제 helpers를 stub해 RNG0을 주장하지 말고 whole-game RNG0 주장0. 청취·오디오생성·인코딩·생산연결0.",
+      "outputDir": "SOUND",
+      "threadId": "01a0faaf-956a-74a3-9bf1-77032f124e2d",
+      "observed": {
+        "team": "SOUND",
+        "threadId": "01a0faaf-956a-74a3-9bf1-77032f124e2d",
+        "status": {
+          "type": "active",
+          "activeFlags": []
+        },
+        "turnId": "01a0fab5-c6bb-77a0-a8a8-30b191ba4269",
+        "turnStatus": "inProgress",
+        "startedAt": 1790912612,
+        "completedAt": null,
+        "taskReadCommands": [
+          {
+            "command": "/bin/zsh -lc 'cat /Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/SOUND/task.md'",
+            "status": "completed",
+            "exitCode": 0
+          },
+          {
+            "command": "/bin/zsh -lc \"rg -n -i '유골.*(SFX|사운드|효과음|습득음|획득음)|bone.*pickup|bone.*sfx|mkitem-sideeffects|ghost_laugh' tools/team-followup-20261001/SOUND docs/6사운드디자인 docs/0마스터플랜/mac-resume-20261001/vscode-dispatch tools/team-followup-20261002/project-teams/SOUND/task.md\"",
+            "status": "completed",
+            "exitCode": 0
+          },
+          {
+            "command": "/bin/zsh -lc 'git --no-optional-locks diff -- tools/team-followup-20261002/project-teams/SOUND/task.md docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/native-recovery/SOUND-task.md'",
+            "status": "completed",
+            "exitCode": 0
+          }
+        ],
+        "commandCount": 10,
+        "codeEdits": [],
+        "latestMessage": "새로 배정된 SOUND 과제 지시서를 끝까지 읽고, 지정 폴더에서 소스 대조와 근거·계약표를 완성하겠습니다. 공유 생산소스는 읽기 전용으로 유지하고, 실행 검수 허용 범위는 이번 지시서를 기준으로 확인하겠습니다.",
+        "actualTaskRead": true
+      }
+    },
+    {
+      "team": "QA",
+      "task": "host-native-acceptance",
+      "source": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/native-recovery/QA-task.md",
+      "detail": "tools/team-followup-20261001/ITEM/browser-csp-cause-qa-plan.md의 독립 review host 설치·생성·JSON복원·해제 검수를 수행하세요. 이 팀이 유일한 실제 UI 슬롯입니다. root가 지정 127.0.0.1:3340/격리 saves Node server만 기동하고 응답을 확인한 뒤 시작 신호를 별도로 전달합니다. 신호 전에는 host 원자료/입력계획만 검토하세요. 기존 사용자 tab1573846373/앱/세이브 조작0, 새 서버/listen0. CUA가 실패하면 CDP/Playwright/직접HTTP/AppleScript로 UI 우회0. 실제 CSP phase·sourceFile/행/열·counters와 UNKNOWN을 보존하세요. 정상 전투 밀집 측정은 이번 host 한 건 이후 별도 슬롯입니다.",
+      "outputDir": "QA",
+      "threadId": "01a0faaf-9806-7cc1-8ef3-0783fd03d2f6",
+      "observed": {
+        "team": "QA",
+        "threadId": "01a0faaf-9806-7cc1-8ef3-0783fd03d2f6",
+        "status": {
+          "type": "active",
+          "activeFlags": []
+        },
+        "turnId": "01a0fab5-c770-7692-b96c-c017b743fa78",
+        "turnStatus": "inProgress",
+        "startedAt": 1790912612,
+        "completedAt": null,
+        "taskReadCommands": [
+          {
+            "command": "/bin/zsh -lc \"cat '/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/QA/task.md'; git --no-optional-locks rev-parse HEAD; git --no-optional-locks status --short --untracked-files=all | wc -l; rg --files tools/team-followup-20261002/project-teams/QA\"",
+            "status": "completed",
+            "exitCode": 0
+          }
+        ],
+        "commandCount": 5,
+        "codeEdits": [],
+        "latestMessage": "총괄이 3340 응답을 확인하고 QA UI 슬롯을 release했습니다. 독립 review host만 새 탭에서 열어 초기 원자료를 보존한 뒤 설치→생성→JSON 복원→해제를 검수하겠습니다.\n",
+        "actualTaskRead": true
+      }
+    },
+    {
+      "team": "ENEMY",
+      "task": "telegraph-cancel-boundary",
+      "source": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/native-recovery/ENEMY-task.md",
+      "detail": "실제 공격 예고 생성/진행/피격/사망 정리 경로와 SSOT의 취소/의도된 사망탄·돌진 commit 계약을 비교하세요. 실제 source 추출 소규모 fixture에서 확정 가능한 반례와 기존 정상 경계를 검사하고 재현된 결함만 미적용 최소 patch로 남기세요. AI패턴/수치/티켓/동시공격 제한 변경0, roundrobin 반복구현0, 실게임0.",
+      "outputDir": "ENEMY",
+      "threadId": "01a0faaf-9ade-74d3-8162-4261329b1ac3",
+      "observed": {
+        "team": "ENEMY",
+        "threadId": "01a0faaf-9ade-74d3-8162-4261329b1ac3",
+        "status": {
+          "type": "active",
+          "activeFlags": []
+        },
+        "turnId": "01a0fab5-c829-7030-b069-2b1d99d85ba7",
+        "turnStatus": "inProgress",
+        "startedAt": 1790912612,
+        "completedAt": null,
+        "taskReadCommands": [
+          {
+            "command": "/bin/zsh -lc 'cat tools/team-followup-20261002/project-teams/ENEMY/task.md\nGIT_OPTIONAL_LOCKS=0 git rev-parse HEAD\nGIT_OPTIONAL_LOCKS=0 git status --short --untracked-files=all\nrg --files tools/team-followup-20261002/project-teams/ENEMY'",
+            "status": "completed",
+            "exitCode": 0
+          }
+        ],
+        "commandCount": 5,
+        "codeEdits": [],
+        "latestMessage": "배정된 `telegraph-cancel-boundary`를 시작하겠습니다. 지정 작업서를 먼저 읽고, 생산소스를 읽기 전용으로 대조해 소유 폴더 안에 최대 3개 산출물과 검수 근거를 남기겠습니다.",
+        "actualTaskRead": true
+      }
+    },
+    {
+      "team": "BUILD",
+      "task": "packaged-source-delta",
+      "source": "tools/team-followup-20261002/owner-dispatch/BUILD-task.md",
+      "detail": "기존 app08cac1ce의 작은 핵심 입력 파일과 현재 source HEAD의 실제 SHA·기능 차이를 표로 기록하고 정확한 다음 재빌드 입력 계약을 작성하세요. source HEAD는 현재 직접 읽고 이전5b8e6ba9/680f22c5를 현재값으로 고정하지 마세요. node-main 격리port/save/package 파생변환과 누락 기능을 구분하고 원격 input manifest/QA 슬롯/실앱 저장 재실행 Gate를 제시하세요. 대형 파일 전수해시/복사/빌드/서버/앱실행0. 사용자 config 초안 보존.",
+      "outputDir": "BUILD_TEAM",
+      "threadId": "01a0faaf-9dd5-7c91-ab09-ee0bcff343b0",
+      "observed": {
+        "team": "BUILD",
+        "threadId": "01a0faaf-9dd5-7c91-ab09-ee0bcff343b0",
+        "status": {
+          "type": "active",
+          "activeFlags": []
+        },
+        "turnId": "01a0fab5-c8a6-7113-95d5-39fa109bfc7e",
+        "turnStatus": "inProgress",
+        "startedAt": 1790912612,
+        "completedAt": null,
+        "taskReadCommands": [
+          {
+            "command": "/bin/zsh -lc \"cat 'tools/team-followup-20261002/project-teams/BUILD_TEAM/task.md'\"",
+            "status": "completed",
+            "exitCode": 0
+          }
+        ],
+        "commandCount": 5,
+        "codeEdits": [],
+        "latestMessage": "배정된 `packaged-source-delta` 과제 전체를 읽고, 지정 폴더에 핵심 파일 차이와 재빌드 입력계약을 정리하겠습니다. 생산 소스는 읽기 전용으로 유지하고 서버·게임·빌드·Git 쓰기는 수행하지 않습니다.\n",
+        "actualTaskRead": true
+      }
+    },
+    {
+      "team": "BALANCE",
+      "task": "shared-mats-production-acceptance-plan",
+      "source": "tools/team-followup-20261002/owner-dispatch/BALANCE-task.md",
+      "detail": "준비된 양쪽 exact-context patches·actual-file14와 Terminal12 전체handler18 PASS를 인수하고 byte SHA/AST/적용경계를 대조하세요. 새 patch나14/18 테스트를 중복 제작하지 마세요. 기존 test/nodeMainMats.test.js의 fd fakeFs 보완 최소 계획과 node-main 저장 오류의 handler rejection·성공 ACK0·정상 HTTP 오류응답 미완료를 비교하세요. 최소 오류응답 candidate가 필요하면 source fixture에만 준비하고 현행 /api/mats GET/clamp/slot/저장 호환을 유지하세요. fsync/crash/Windows/concurrency를 PASS로 확대하지 않습니다. 생산 적용0.",
+      "outputDir": "BALANCE",
+      "threadId": "01a0faaf-a06a-79a2-9def-58eb8ad10d65",
+      "observed": {
+        "team": "BALANCE",
+        "threadId": "01a0faaf-a06a-79a2-9def-58eb8ad10d65",
+        "status": {
+          "type": "active",
+          "activeFlags": []
+        },
+        "turnId": "01a0fab5-c95b-7160-b52f-097404a21529",
+        "turnStatus": "inProgress",
+        "startedAt": 1790912612,
+        "completedAt": null,
+        "taskReadCommands": [
+          {
+            "command": "/bin/zsh -lc \"cat tools/team-followup-20261002/project-teams/BALANCE/task.md && git rev-parse HEAD && git status --short --untracked-files=all | wc -l && rg --files -g 'AGENTS.md' tools/team-followup-20261002 && ls -la tools/team-followup-20261002/project-teams/BALANCE\"",
+            "status": "failed",
+            "exitCode": 1
+          }
+        ],
+        "commandCount": 4,
+        "codeEdits": [],
+        "latestMessage": "배정된 `shared-mats-production-acceptance-plan` 과제를 읽고, 지정 폴더에 생산 인수 조건·검수 근거·docs 계약표를 작성하겠습니다. 공유 생산소스는 읽기 전용으로 유지합니다.",
+        "actualTaskRead": true,
+        "readEvidenceNote": "Official command output contains complete BALANCE task body and HEAD. Overall command exit1 came from later rg with no AGENTS match; task cat succeeded."
+      }
+    },
+    {
+      "team": "ANIMVFX",
+      "task": "foot-shadow-anchor",
+      "source": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/native-recovery/ANIMVFX-task.md",
+      "detail": "승인 렌더러의 실제 발 위치/그림자 anchor 변환식·프레임·scale·offset과 기존 asset metadata를 원문 기반 작은 검수로 비교하세요. 연출/의도된 offset과 재현 결함을 구분하고 결함이 확인된 경우에만 소유 경로에 미적용 최소 patch를 남기세요. 새 animation/asset생성0, corpse fade 보류 유지, 실게임·시각 PASS 주장0.",
+      "outputDir": "ANIMVFX",
+      "threadId": "01a0faaf-a2e6-7262-afc1-196ae9a0ab80",
+      "observed": {
+        "team": "ANIMVFX",
+        "threadId": "01a0faaf-a2e6-7262-afc1-196ae9a0ab80",
+        "status": {
+          "type": "active",
+          "activeFlags": []
+        },
+        "turnId": "01a0fab5-c9c8-7203-83b9-82e85d161d5f",
+        "turnStatus": "inProgress",
+        "startedAt": 1790912612,
+        "completedAt": null,
+        "taskReadCommands": [
+          {
+            "command": "/bin/zsh -lc \"cat 'tools/team-followup-20261002/project-teams/ANIMVFX/task.md'\"",
+            "status": "completed",
+            "exitCode": 0
+          }
+        ],
+        "commandCount": 19,
+        "codeEdits": [],
+        "latestMessage": "배정된 `foot-shadow-anchor` 과제 지시문을 읽고, 지정 폴더 안에서 source 계약 대조·검수·계약표를 완성하겠습니다. 생산 소스는 읽기만 하고 실제 화면 검수와 반영은 총괄 인수로 남기겠습니다.",
+        "actualTaskRead": true
+      }
+    }
+  ],
+  "qaRelease": {
+    "serverPort": 3340,
+    "host": "127.0.0.1",
+    "saveDir": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tmp/mac-migration-runtime/saves",
+    "slotsHTTP": 200,
+    "slotsOK": true,
+    "slotCount": 1,
+    "original3333Preserved": true,
+    "uiOwner": "QA",
+    "releaseSent": true
+  },
+  "productionChanged": false
+}
