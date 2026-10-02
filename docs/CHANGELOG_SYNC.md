@@ -52459,3 +52459,16 @@ CH1-1 목표 actual전체Read13/13(기존MAP미소비/ENEMY실거부제외)을�
 | 시연 경계 | DOM/stat/audio/storage는 명시 대역이고 native/실입력/저장/청취/6단계 플레이 미인수. immutable c927 앱은 dd333 snapshot이며 이번ITEM수정 미포함 |
 
 관련 inventory 정본은 적용 후 whole docs 키워드 검색과 현재 코드 대조를 거쳐 동기화한다. production receipt `tmp/mac-migration-runtime/continued-review-20261002/inventory-filtered-equip-acceptance/receipt.json` SHAa989e216254717a5d7339806aa33352e83fd70f209f5dfc95cb64405eee26b31이 정확한 source/test/검수 경계다. 원팀완료01a0fc89-726f-7f52-8929-74b24956bbee의 원자료는 앞3b548b06에서 이미보존됐고 반복실행0. 감독은 종료된 기존팀의 새turn을 재개하고 root는 source·docs·Git인수를 이어간다.
+
+## 2026-10-02 캐릭터 입장 취소 뒤 재입장 생산 인수
+
+캐릭터 입장 대기 중 취소/로그아웃 뒤 1200ms 옛 콜백이 게임으로 재이동하던 오류를 `showCharGate`의 기존 `_characterLoadSeq` 캡처와 callback 첫 검증2접점(+73B)으로 수정했다. 취소 전에 이미 수행한 slot활성화 저장은 유지하며 새로운 세이브 롤백/타이머정책0.
+
+| 범위 | 최종 결과·미인수 |
+|---|---|
+| 실제 호출 경계 | actual enterGame 등록wrapper→전체gate. 실제 생성logout onclick→signOut 대역→등록SIGNED_OUT callback→전체_goLogin(온라인fixture), demo replay inlinehandler→전체_goCinematic. 취소 뒤 옛callback 추가navigation0 |
+| 신규 검수 | baseline8=6PASS/취소2FAIL·fixture0, 최종8/8PASS(정상4·취소2·missing1·첫setItemError1 포함). 별도 old正常controls4의 URL/storage/events/lifecycle 동등. 앞선 함수추출 fixture실패는 실행그룹0으로별도보존·완료수합산0 |
+| 구문/보존 | index inlineJS4/importmapJSON0구문1회PASS, external scripts11 미검수. wholebackup/inverse/접점밖bytes/EOL·원팀raw2·ITEM양판 source보존. 기존팀checks재실행0 |
+| 범위 한계 | auth 등록은init의_testMode earlyreturn뒤여서 demo/offline SIGNED_OUT 실제서비스로확대0. DOM/timer/media/Map저장대역 검수이며 실제 overlay pointer·native·인증서비스·영속저장·시연6단계 미인수. c927앱dd333에는이번fix미포함 |
+
+[현재 계약·docs 검색 분류·정확 SHA](13출시·마케팅/CHAR_GATE_CANCELLATION_20261002.md)와 source final receipt SHA8573548814afa0dfcf19cfac1866998b19a999a4644c26615355b534b2ac1fdb 참조. source인수·관련docs4·root기록2만 scoped checkpoint하고 타팀WIP/사용자23·game현재ITEM/SOUND수정을 보존한다. 기존팀13 재개와 개별 종료 복구를 감독이 담당하며 과거Read/제출을현재active로계산0. 실제Mac연결플레이목표는미완료 active다.

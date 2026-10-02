@@ -4174,6 +4174,7 @@ _GP.on('lobbyNav', (gp, just) => {
 
 // ═══ 캐릭터 선택 → 입장 ═══
 function showCharGate(charId,storySeen=false){
+  const request=_characterLoadSeq;
   showLoading(_TL('지옥으로 입장하는 중...'));
   // 로고 프리로드
   const _preImg=new Image();_preImg.src='img/logo_exoduser.png';
@@ -4181,7 +4182,7 @@ function showCharGate(charId,storySeen=false){
   const _demoParam=_LOBBY_BUILD==='demo'?'&demo=1':'';
   if(_LOBBY_BUILD==='demo'&&!_demoActivateSlot(charId)){hideLoading();setStatus(_TL('알 수 없는 오류'),true);return}
   const _tp=(_LOBBY_BUILD==='demo'?'game.html?test=1&slot=demo':_testMode?'game.html?test=1&slot='+encodeURIComponent(charId):'game.html?char='+charId+'&slot='+encodeURIComponent(_slotName))+_demoParam;
-  setTimeout(()=>{window.location.href=_tp+(storySeen?'&story=warrior-v21':'')},1200);
+  setTimeout(()=>{if(request!==_characterLoadSeq)return;window.location.href=_tp+(storySeen?'&story=warrior-v21':'')},1200);
 }
 
 // ═══ 펫 말풍선 시스템 ═══
