@@ -52748,3 +52748,10 @@ root `ch1-source10-build/physical-receipt.json`3996B/SHA `440724315b1ce93e0cc8bd
 - Mac source10 신규 일반5→정상 Quit/재실행10(+5/+500)을 재현. 양판 saveSettings의 opt를 `{...OPT,diffV2:1}`로 변경(각9B). 선택 diff·기본OPT·legacy loader·P/G/INV 변경0.
 - 기존 구형0→5/5→10/상한10과 marker1 현재0/5/10 보존. 적용 전 RED10FAIL→메모리 후보36PASS, 실제 LIVE36PASS·inline JS12 parse PASS. 동일 LIVE 중복은 추가 성과0.
 - docs 전체60매치/22파일 대조, 설정3.3·저장15 정본·source10 부분 native·마스터 동기화. 동일 앱 장비 복원은 실제 확인; HP최대/CP 변화·캐릭터 영상 오류는 독립 미확정. 보스 사망/맵 보존·재도전·실청취·변경 앱 native는 아직 미완료.
+
+
+## 2026-10-03 source11 실제 별도 Mac 앱 — native 잠금 대기
+
+source11 코드 checkpoint `efb3bb7e02a9ab161e92d9ff3da7229b4cf884cd`의 원격 exact 후 기존 selector7918/runtime340를 유지한 공식 PLAN/기본 EXECUTE exit0로 고유 앱 job `2a937fde-3322-492f-bef4-32dfa78a1d69`/3390을 생성했다. 상태는 `PACKAGED_NOT_RUNTIME_ACCEPTED`/fixtureOnlyfalse이다. source3 원문=stage=app, 파생 node/package, main+helper4의 arm64/0755/runtime/plist를 좁게 확인했고 전기동 user-state 부재·3390 free를 기록했다. physical receipt12299B/SHA `1b1c2bf34824d35bffd4bbf9ff22323f8fc9c72616be0e7506064fd876ee8e76`.
+
+실제 CUA Mac잠금 오류로 oldsource10 Quit도 미전달, 사용자 unlock 요청 대기다. 기존 own3389 설정 정지·profile/save를 보존하고 새앱 기동은 아직 하지 않았다. source10 동일 캐릭터/장비 재실행 복원은 부분 인수이며 source11 난이도 재실행·처치/획득·보스방 개방/보스 사망 후 맵 보존/재도전·청취/visual은 미완료다. 상세 핀·artifact·미인수 경계는 `docs/13출시·마케팅/MAC_CH1_SOURCE11_CANDIDATE_20261003.md`에 정리한다. 정확root4(new1/existing3)만 완료 checkpoint하며 새 팀·설치·승인 우회·세이브 직접수정0.
