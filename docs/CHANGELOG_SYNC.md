@@ -52524,3 +52524,8 @@ CH1-1 목표 actual전체Read13/13(기존MAP미소비/ENEMY실거부제외)을�
 ### 2026-10-02 최신 source4 Mac 후보 생성
 
 97bb3ef9-fff2-4761-9841-e5a24a953847 앱은 codeca7e0bb0/원격backup e764ed33의 네sourcefix를포함한다. main e462f234…/easy68fa8e17…/index1dd28cab… 원문·stage·실앱동일, inputs7918/비파생7916/runtime334+메타6 exact. freshplan1/execute1 exit0/내부verify1/readinventory1, 별도verifier/재빌드0. regular8253+symlink5/7043803133B, 고유port3386/profile-save. 기존앱·user23·원자료·cache보존. 최종receipt743842ae…/20421B, configcdf9ba83…/3428980B. sourcefreeze는사본생성완료로해제한다. 실제앱기동/6단계플레이/visual/청취/영속save는0으로활성목표는미완료다. [현재후보정확계약](13출시·마케팅/MAC_CH1_SOURCE4_CANDIDATE_20261002.md). 함께보존한BOSS철회/BALANCEGPnav원자료2는제품적용0이며readiness dee37149… exact2다. 감독단일오더전담/총괄생산·검수·Git 역할을유지한다.
+
+
+### 2026-10-03 오더 담당 분담과 완료 raw18 보존
+
+사용자 요청으로 새 Claude 오더 담당 01a0fd2d-8a6f-7f01-b2da-70119654cffe를 생성하고 기존 감독은 Codex7, 새 담당은 기존 Claude8의 유일 송신으로 인계했다. 관리3+전문15=18이며 제작팀/Claude실행세션 추가0. 기존 exoduser ACTIVE5분 유지/Codex7 범위, 새 exoduser-claude8 ACTIVE5분/새 담당 대상, root exoduser-mac ACTIVE1분/18역할 통합으로 공식 저장 후 TOML 정확 매치. 먼저 실제 상태 확인·종료팀 후속 배정/3분 회차 종료, 상세 생산 검수는 root로 인계한다. 정책2/총괄·통합·목표·감독TASK4/이 기록1 총docs7을 동기화했다. ART/MAP 기존 큐 미소비와 ENEMY Auto-Mode Bypass 승인 거절은 우회0. 완료 raw18/1,203,540B의 감독attestation 핀을 읽기 검증하고 원문 EOF 경고2 보존, 기존 bc415 raw2와 중복0. source/test/production/native/visual/청취/제품 완료0. 정확24+이 기록1 범위만 체크포인트하며 감독별 STATE/LOG·타인WIP·사용자23 변경은 제외한다. 자료 보존으로 팀 파일 여유를 확보하고 상세 후보 인수와 구분한다.

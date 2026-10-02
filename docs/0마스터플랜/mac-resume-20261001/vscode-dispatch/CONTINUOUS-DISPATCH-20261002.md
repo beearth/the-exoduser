@@ -81,3 +81,26 @@ ITEM 새 공급 경로 검수3입력/5그룹 PASS를 같은 실행에서 인수�
 | 실행 가능한 목표 | 팀은 승인된 독립 백로그를 이어가고, 종료팀 복구 때 감독이 역할별 실행 가능한 다음 목표를 선택한다. 총괄의 소스 통합을 기다리는 동안에도 충돌 없는 독립 작업을 선택한다. 가능한 작업이 없으면 실제 의존성을 기록하고 착수·완료를 만들지 않는다. |
 
 다음 목표는 [CH1-1 실제 플레이 통합 목표](MILESTONE-CH1-1-PLAYABLE-20261002.md)를 따른다. source fixture 통과는 실제 플레이·native·visual·청취 Gate를 대신하지 않는다. [팀 공통 연속 정책](../../TEAM_CONTINUATION_POLICY_20261001.md)의 기존 소유·보호 계약도 유지한다.
+
+## 2026-10-03 현행 보충 — Codex7·Claude8 오더 담당 분리
+
+사용자 최신 지시 “다놀고있으니까 안쉬는방법...몇개더만들던가 관리에이전트를제발”에 따라 관리 담당을 분리한다. 아래 표는 위 관리2+전문15=17 및 감독 한 명의 전문15팀 단일 송신 계약을 대체하는 최신 운영 기준이다. [공통 연속 정책](../../TEAM_CONTINUATION_POLICY_20261001.md)의 동일 보충을 함께 적용한다. 구표·송신·검수 이력과 공통 보호 규칙은 보존한다.
+
+| 항목 | 최신 계약·실제 확인 범위 |
+|---|---|
+| 역할 수 | 원총괄·기존 작업감독·Claude 오더 담당 관리3 + Codex 전문7·Claude 전문8 =18. 전문15팀과 기존 Claude 세션은 추가하지 않는다. |
+| Codex7 유일 송신 | 기존 `EXODUSER 작업감독` `01a0fb1e-4ec3-7dd3-bba2-f87518e881fa`: UIUX, ITEM, BUILD, BALANCE, SOUND, QUESTNPC, MARKETING. 기존 supervisor STATE/LOG 소유를 유지한다. |
+| Claude8 유일 송신 | 새 `EXODUSER Claude 오더 담당` `01a0fd2d-8a6f-7f01-b2da-70119654cffe`: ART, MAP, SKILL, QA, ENEMY, ANIMVFX, BOSS, STORY. 새 관리 채팅 생성은 사용자 승인 예외이며 새 전문팀·Claude 세션·resume copy·권한 변경0이다. |
+| 원총괄 소유 | 생산 코드·공유 정본 동기화·인수·Git/index/commit/push. 두 오더 담당은 긴 source 의미 검수를 총괄에 인계하고 해당 검수 때문에 전체팀을 정지시키지 않는다. |
+| 송신 이관 경계 | 기존 감독의 마지막 native1512 송신5건은 2026-10-02 15:12:50~51Z이며 이후 추가 Claude 송신0 ACK를 총괄이 확인했다. 새 담당은 5팀 진행·ART/MAP 미소비2건·ENEMY 승인 거절1건의 실제 감사를 수신했다. 이 기록은 8팀 모두 active라는 판정이 아니다. |
+| 새 담당 활성화 | 총괄의 용량 확보·activation 이후 Claude8 송신과 `supervisor/claude-orders/SUPERVISOR_STATE.json`, `supervisor/claude-orders/LOG.md` 두 운영 파일 쓰기를 시작한다. 활성화 전 실제 송신·파일 작성 완료로 계산하지 않는다. 기존 감독의 STATE/LOG를 덮어쓰지 않는다. |
+| 기존 예약 | `exoduser`: 이름·5분·target 기존 작업감독 유지, scope는 Codex7로 변경. 총괄의 공식 automation update 성공을 인계받았으며 영구 TOML 대조는 총괄 후속이다. |
+| 새 예약 | `exoduser-claude8`, 이름 `EXODUSER Claude8 오더 점검`, ACTIVE·5분·target 새 Claude 오더 담당. 총괄의 공식 생성 성공을 인계받았다. |
+| 총괄 예약 | `exoduser-mac`: ACTIVE·1분·target 원총괄 유지, scope18로 공식 update 성공. 설정 성공은 실제 5분 점검 준수나 무지연·무중단 작업의 증명이 아니다. |
+| 짧은 관리 회차 | 각 담당은 먼저 소유7팀/8팀의 공식 active·idle·needAttention와 최신 turn·tool을 확인하고, 완료·idle 팀에 구체적인 다음 승인 독립 목표를 배정한다. 관리 회차는 3분 안에 종료하고 놓친 점검 시각·간격은 정직하게 기록한다. |
+| 착수 증거 | 종료팀은 공식 기존 chat/CLI prompt로 깨운 뒤 새 turn와 유용한 tool 실행을 확인한다. 전송·Read·채팅 active만으로 실작업 또는 완료를 선언하지 않는다. 채팅 복구와 goal 재개는 구분한다. |
+| 중복·거절 보호 | pending·busy인 지시를 재송신하지 않는다. MAP 기존 대기열·미소비 입력과 ENEMY classifier/승인 거절을 보존하고 우회·재시도하지 않는다. 권한·인증 변경0이다. |
+| 연속·용량 | 결과1건 뒤 다음 승인 독립 작업을 즉시 이어간다. epoch 횟수·2파일 소진·검수 대기는 종료 조건이 아니다. 실제 untracked 전체 포함80부터 완료 소유만 checkpoint,100 전 새 산출 중단을 유지하고 메모리 독립 조사는 계속한다. 동시 owner·원자료·사용자23·타인 WIP를 보존한다. |
+| 관측 이력 | 2026-10-03 KST 감사에서 BUILD는 00:00:29 완료→00:12:50 새 지시·실도구로 복귀해 idle12분21초가 관측됐다. BALANCE는 00:12:41 완료 뒤 00:13:54 조회에서 idle이었다. 이 시각별 관측을 현재 계속 active 또는 영구 정지로 확대하지 않는다. |
+
+목표는 [CH1-1 실제 플레이 통합 목표](MILESTONE-CH1-1-PLAYABLE-20261002.md)를 유지한다. source fixture·원자료 보존·정책 설정을 실제 플레이/native/visual/청취 인수로 바꾸지 않는다. 이 보충 작성 담당은 자동화·팀 송신·생산 코드·검사·Git을 변경하지 않았다.

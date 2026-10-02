@@ -1,0 +1,18 @@
+--- a/tools/team-followup-20261001/BUILD/mac-packager/packager.mjs
++++ b/tools/team-followup-20261001/BUILD/mac-packager/packager.mjs
+@@ -127,1 +127,14 @@
+-  assertHtmlInputClosure(sourceRoot,inputs);assertStaticModuleClosure(sourceRoot,inputs);assertExplicitMediaInputs(sourceRoot,inputs);assertLiteralModelInputClosure(sourceRoot,inputs);assertDeclaredVideoInputs(sourceRoot,inputs);
++
++function assertDeclaredImageInputs(sourceRoot,inputs){
++  const selected=new Set(inputs.map(x=>x.path)),entries=new Set(['index.html','game.html','game-easy-test.html','game-guide.html']),origin='https://image-closure.invalid/';
++  for(const input of inputs){if(!entries.has(input.path))continue;
++    for(const media of mediaReferences(readClosureFile(path.join(sourceRoot,input.path)).toString())){
++      if(media.tag!=='img'||!media.url||media.url.startsWith('#'))continue;
++      const url=new URL(media.url,new URL(input.path,origin));if(url.origin!==new URL(origin).origin)continue;
++      const dependency=decodeURIComponent(url.pathname.slice(1));relative(dependency);
++      requireValue(selected.has(dependency),'REQUIRED_DECLARED_IMAGE_INPUT_MISSING:'+input.path+'->'+dependency);
++    }
++  }
++}
++
++  assertHtmlInputClosure(sourceRoot,inputs);assertStaticModuleClosure(sourceRoot,inputs);assertExplicitMediaInputs(sourceRoot,inputs);assertLiteralModelInputClosure(sourceRoot,inputs);assertDeclaredVideoInputs(sourceRoot,inputs);assertDeclaredImageInputs(sourceRoot,inputs);

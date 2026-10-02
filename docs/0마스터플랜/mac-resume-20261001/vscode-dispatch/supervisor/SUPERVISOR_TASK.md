@@ -25,3 +25,24 @@
 STATE에는 역할/제공자/chat 또는session ID/현행TASK SHA/소유 경로/turn·cursor/실제Read·완료·검토/후속send/read/처리완료 marker를 기록한다. 중앙 registry는 인수 snapshot이며 이후 감독 STATE가 전문팀 배정의 최신 운영 기록이다. TASK는 최대3산출·단일 새 경계·SSOT/보호설계/기존검사 인수·docs 검색/정확한 동기화 인계·source vs runtime Gate·생산 미적용을 명시한다. root가 적용한 최신 source SHA/commit은 역사 입력과 구분한다. 근거 없는 PASS/동시실행/모든도구사용을 보고하지 않는다.
 
 Changes80부터 총괄에 정확한 완료 소유 목록을 보내 checkpoint를 요청하고100 전에 새 산출을 멈춘다. status 변동이 없으면 알림/동일검사/동일지시0, 의미 있는 완료·실패·사용자 결정만 보고한다. 1분 heartbeat는 대화 종료 후 후속 감시이며 즉시 이벤트/무지연을 보장하지 않는다. 새 세션 착수는 TASK actual Read와 감독 STATE 생성으로 총괄이 확인한다.
+
+
+### 2026-10-03 최신 오더 분담과 연속 실행
+
+사용자가 완료 뒤 팀들이 계속 대기하는 문제를 지적하며 관리 담당 추가를 요청했다. 기존 감독의 업무를 둘로 나누며, 전문 제작팀15와 기존 Claude 실행세션8은 유지한다. 이 절이 이전 17역할 및 전문15팀 단일 송신 문구보다 우선한다.
+
+| 담당 | 현행 소유 |
+|---|---|
+| 원총괄 | 생산 통합·정본 docs 동기화·의미 검수·Mac 앱·Git 원격 보존 |
+| 기존 EXODUSER 작업감독 `01a0fb1e-4ec3-7dd3-bba2-f87518e881fa` | Codex7 UIUX/ITEM/BUILD/BALANCE/SOUND/QUESTNPC/MARKETING의 유일 오더 송신. 기존 STATE/LOG 소유 유지 |
+| 새 EXODUSER Claude 오더 담당 `01a0fd2d-8a6f-7f01-b2da-70119654cffe` | Claude8 ART/MAP/SKILL/QA/ENEMY/ANIMVFX/BOSS/STORY의 유일 오더 송신. `supervisor/claude-orders/SUPERVISOR_STATE.json`·`SUPERVISOR_LOG.md`만 별도 소유 |
+| 역할 집계 | 관리3+전문15=18. 새 제작팀·Claude 실행세션·resume 복제0 |
+| 인계 | 기존 감독은 2026-10-02T15:12:50~51Z native1512 송신5 이후 추가 Claude 송신0을 공식 ACK. 원총괄이 새 담당에게 송신 소유 활성 메시지를 전달. 진행중1512·미소비 큐 재송신0 |
+| 완료 뒤 | 승인된 다음 독립 실제 코드·콘텐츠 작업을 즉시 이어간다. 상세 생산 검수는 원총괄로 인계하며, 통합·다른 팀 완료·새 epoch 대기를 팀 전체 종료 조건으로 삼지 않는다 |
+| 관리 회차 | 먼저 담당7/8의 실제 상태를 확인하고 종료·입력대기만 복구한다. 회차3분 내 종료/5분 점검 설정, 미준수 시 실제 누락 기록. 수신·Read·새 turn의 유용한 tool·완료를 구분하며 설정만으로 무지연이나 준수를 선언하지 않는다 |
+| 보존 | 실제 Changes80부터 정확 완료 소유만 checkpoint/100전 새 산출 중단. 파일 여유가 없어도 승인된 출력 없는 독립 조사를 이어갈 수 있다. 제출 원자료 불변·반복당 최대3산출·기존 소유권 유지 |
+| 남은 예외 | ART/MAP 기존 큐 미소비는 입력 필요이며 현재 착수 근거0. ENEMY 정책 읽기 Auto-Mode Bypass 자동 승인 거절은 우회0. 원총괄 앱3386 QA 독점·사용자 게임/세이브/옛 앱 보존 |
+
+자동화3의 공식 tool 저장 후 실제 TOML의 name/prompt/status/주기/target/kind가 요청값과 모두 일치했다. `exoduser`는 기존 이름·ACTIVE5분·기존 감독 대상을 유지하며 Codex7 범위로 갱신, 새 `exoduser-claude8`은 EXODUSER Claude8 오더 점검/ACTIVE5분/새 담당 대상, `exoduser-mac`은 기존 이름·ACTIVE1분·원총괄 대상/18역할 통합 범위다. 알림 정책 변경0. TOML SHA는 각각 bfd845b459ac7fa499ba0b0b6836e302f0ad6432d735648581a2347ab51cbe24, e3379051b29343bbf7891428da505cbee1dff79578a57ac84b783c6502e719aa, 2f0576016b0c7073d834d8f678a1c1c9230adab8b902881e19a58c7078a9335c. 실제 다음 회차의 송신·Read·도구 실행은 별도 확인한다.
+
+이 TASK의 이전 Claude 전달 설명은 기존 계약과 인계 이력으로 보존한다. 현재 이 채팅의 후속 송신은 Codex7만이며 Claude8은 새 담당이 전담한다. 새 담당의 상태2는 원총괄 공간 확보 메시지 이후 쓰기 가능하고 기존 감독 상태2를 편집하지 않는다.
