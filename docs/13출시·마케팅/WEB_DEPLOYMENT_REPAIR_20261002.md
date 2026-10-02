@@ -30,6 +30,10 @@
 | 재발 방지 | 세 프로젝트의 기본 Git 연결을 해제하고 canonical `the-exoduser`의 Actions만 사용. 기존 프로젝트/배포는 보존. Mac 작업 브랜치의 중복 배포 생성도 차단 |
 | 잔여 대기열 | `hell`/`hell-build`의 이미 생성된 QUEUED/BUILDING/INITIALIZING만 취소. READY/ERROR/CANCELED와 canonical 프로젝트는 대상에서 제외 |
 | 수동 정리 도구 | `cleanup-vercel-duplicates.yml`은 workflow_dispatch/main 전용, 기존 GitHub secret으로 FDG team과 두 legacy 이름만 조회. 공식 GET `/v7/deployments`, PATCH `/v12/deployments/{id}/cancel`; 각 상태를 100개씩 조회·취소 후 빈 목록을 확인. 최대20회/상태, 작업10분. 다른 프로젝트 응답·인증 오류·취소 미확인은 즉시 중단; 토큰/응답 본문은 출력하지 않음 |
-| 정리 검증 | 범위 이탈 전 취소 금지, READY 보존·여러 배치의 대기열 비우기, 인증 오류 비밀값 비노출의 회귀3개. 실제 원격 정리 결과는 완료 후 기록 |
+| 정리 검증 | 범위 이탈 전 취소 금지, READY 보존·여러 배치의 대기열 비우기, 인증 오류 비밀값 비노출의 회귀3개 PASS. [수동 정리 #1](https://github.com/beearth/the-exoduser/actions/runs/36974004565) SUCCESS; 소스 `136cb24215a86db62ed10ef1a05ef485ede5fb97`. 추가 취소 hell87개 + hell-build89개 = 176개. 이후 FDG 전체 Building/Queued 필터에 No Results 표시 확인 |
+| 실제 브라우저 | 새 배포 전용 origin `the-exoduser-b1qoj5bly-fordeargamers.vercel.app`에서 정상 UI로 데모 입장 → 격리 테스트 캐릭터 생성 → 전사 영상 → game.html 진입 → 초기 대사·조작 안내 → CH1-1 맵·플레이어·펫·HP497/497·튜토리얼 표시 확인. 실제 계정/원래 공개 origin 세이브는 사용하지 않음. 플레이 상태 주입·fixture 없이 정상 클릭/Enter 입력; 캡처된 error/warn 로그0. 전체 전투·자연 진행·모든 언어 전수 검수는 미수행 |
+| 결과 증거 | Codex 시각 자료 경로의 `vercel-repair-production-ready.jpg`, `vercel-repair-active-queues-zero.jpg`, `vercel-repair-game-start.jpg`. 원본 PC 체크아웃은 별도 검수와 Steam 작업을 위해 계속 보존 |
 
 API 근거: [배포 목록](https://vercel.com/docs/rest-api/deployments/list-deployments), [진행 중 배포 취소](https://vercel.com/docs/rest-api/deployments/cancel-a-deployment).
+
+수동 정리 도구를 추가한 commit은 `[skip ci]`로 이미 검증된 프로덕션을 다시 만들지 않았으며, 별도 workflow_dispatch의 자체 범위 회귀3개와 실제 원격 정리를 실행했다. 이 동작은 이후 main 코드 push의 자동 배포를 비활성화하지 않는다. [GitHub의 push/PR 건너뛰기 범위](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/skip-workflow-runs).

@@ -16,6 +16,10 @@
 
 앞선 WEB_RENDERER_REDEPLOY·LATEST_WEB_RELEASE 및 Mac 비교 문서의 hell-smoky 결과는 해당 도메인의 이력으로만 보존한다. 앞으로 사용자 서비스 배포/검증의 기본 대상은 이 문서다.
 
+## 현행 자동 배포 — 2026-10-02
+
+`the-exoduser`를 고정 project/team ID로 지정하는 GitHub Actions 한 경로로 배포한다. `hell`/`hell-build`/`the-exoduser`의 기본 Git 연결은 중복 요청을 막기 위해 해제했다. 기존 프로젝트와 완료된 배포는 보존한다. 수정 소스 `e1960cca9e58995ba078bd3078778e79b1474be0`의 Actions #1127 SUCCESS, Vercel `Df1mk3NHdPtz1A4dYVM3XscKsTwQ` READY 및 실제 서비스 alias/파일 해시/첫 맵 실행을 확인했다. 상세 계약과 대기열 정리 근거는 [웹 배포 실패 복구](WEB_DEPLOYMENT_REPAIR_20261002.md)를 우선한다. 아래 검증은 2026-09-10 당시의 이력이다.
+
 ## 실제 서비스 검증 완료
 
 | 항목 | 결과 |

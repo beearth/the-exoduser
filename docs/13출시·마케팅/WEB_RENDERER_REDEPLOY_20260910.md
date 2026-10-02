@@ -2,6 +2,8 @@
 
 > **대상 정정:** hell-smoky는 다른 프로젝트였다. 실제 사용자 서비스는 **the-exoduser.vercel.app**. 아래 검증은 hell의 이력으로 보존하며 [대상 정정](PRODUCTION_TARGET_CORRECTION_20260910.md)을 우선한다.
 
+> **2026-10-02 현행 변경:** 아래 디렉터리 전체 복사 규칙과 세 프로젝트 Git 연결은 당시 이력이다. 현재는 실제 참조 기반 에셋 선택·Unicode 공개 URL 보존·합계 전송 예산 검사 및 `the-exoduser` Actions 단일 배포를 사용한다. [현재 복구 계약과 실제 성공 검증](WEB_DEPLOYMENT_REPAIR_20261002.md).
+
 사용자 지시: 렌더러 비교 수정 후 “배포다시해봐”. 대상은 기존 `.vercel/project.json`의 hell 프로젝트, 실제 Production 도메인 `hell-smoky.vercel.app`.
 
 | 항목 | 내용 |
