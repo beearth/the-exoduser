@@ -1435,7 +1435,8 @@
     "currentProviderRouting": "providerRouting20261002",
     "currentReviewDispatch": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-WORK-DISPATCH-20261002.json",
     "currentRuntime": "currentRuntimeObservation",
-    "currentProviderExecution": "claudeProviderExecution20261002 and CLAUDE-PROVIDER-DISPATCH-20261002.json; earlier providerRouting snapshot is history"
+    "currentProviderExecution": "claudeProviderExecution20261002 and CLAUDE-PROVIDER-DISPATCH-20261002.json; earlier providerRouting snapshot is history",
+    "latestProviderHalves": "PROVIDER-HALVES-20261002.json; earlier providerRouting/execution are historical"
   },
   "claudeProviderExecution20261002": {
     "recordedAt": "2026-10-02T04:06:17.992047+00:00",
@@ -1445,7 +1446,7 @@
     "newPersistentSessions": 0,
     "method": "official print/no-session-persistence, readonly followups",
     "evidence": "CLAUDE-PROVIDER-DISPATCH-20261002.json",
-    "status": "running"
+    "status": "completed7/7; historical read-only batch"
   },
   "codexProjectReviewCompletions": [
     {
@@ -1558,5 +1559,19 @@
       "completedAt": 1790913440,
       "completedAtISO": "2026-10-02T03:57:20.000Z"
     }
-  ]
+  ],
+  "latestProviderHalves20261002": {
+    "recordedAt": "2026-10-02T04:32:39.602689+00:00",
+    "registry": "PROVIDER-HALVES-20261002.json",
+    "plannedTotalRoles": 16,
+    "plannedClaude": 8,
+    "plannedCodex": 8,
+    "nativeReadConfirmed": 6,
+    "nativeReadExpected": 8,
+    "codexFiveOfficialSendSucceeded": 5,
+    "newManagementChats": 4,
+    "managementChatsTotal": 15,
+    "productionApplied": false,
+    "qaPathIncident": "see registry; prior contents UNKNOWN"
+  }
 }

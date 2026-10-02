@@ -81,3 +81,8 @@
 | VS Code | Claude Code 사용의 필수 앱 아님. 기존 대화형 Claude 실행창이 현재 여기에 있으므로 입력 경로는 보존 |
 
 확인한 CLI 도움말에서 agents는 상태 조회이고 attach는 background 세션 열기다. --bg --resume은 이미 실행 중인 세션을 복제할 수 있다고 명시돼 있어 기존 interactive 세션의 메시지 전달용으로 사용하지 않았다. 지원되는 원 interactive 세션 send/queue 경로는 확인하지 못했으며 실제 native 후속 전달은 아직 미완료다. 현재 11개 Codex 검수를 인수한 뒤 소유 범위가 겹치지 않는 다음 한 건을 원 제공자에 배정한다. 원 Claude 7팀이 새 지시를 받았거나 실행을 재개했다고 집계하지 않는다.
+
+
+## 최신 신규4팀과8대8 역할
+
+기존11채팅은보존하고 보스전·스토리·퀘스트NPC·유튜브스팀페이지4관리채팅을추가했다. 총괄포함16역할, 관리채팅15개. 실행담당의Claude8/Codex8·실제수신·TASK와QA오류인계는 [현재운영](PROVIDER-HALVES-20261002.md) 및json을따른다. BOSS/STORY Codex채팅은관리인수이며해당Claude실행과중복제작하지않는다.

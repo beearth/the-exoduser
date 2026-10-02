@@ -189,3 +189,11 @@ assets/vfx/boss/gen/
 !/tools/team-followup-20261001/BUILD/*.css
 /tools/team-followup-20261001/BUILD/_sharedMats.json
 /tools/team-followup-20261001/BUILD/profile.json
+
+# Preserve the four explicitly owned Codex BUILD task/review source files.
+!/tools/team-followup-20261002/codex-half/BUILD/
+/tools/team-followup-20261002/codex-half/BUILD/*
+!/tools/team-followup-20261002/codex-half/BUILD/TASK.md
+!/tools/team-followup-20261002/codex-half/BUILD/checks.mjs
+!/tools/team-followup-20261002/codex-half/BUILD/result.md
+!/tools/team-followup-20261002/codex-half/BUILD/evidence.json

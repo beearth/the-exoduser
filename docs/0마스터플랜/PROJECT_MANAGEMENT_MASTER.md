@@ -768,3 +768,8 @@ HEAD5b8e6ba9에서 지원3명이 11역할을 묶어 mortar38 PASS·MAP source9 P
 ### 2026-10-02 Claude Code 토큰 실제 활용·7역할 후속 검토
 
 사용자 최신 요청으로 Codex검수11건의 공식completed를 인수한 뒤 ART/MAP/SKILL/SOUND/QA/ENEMY/ANIMVFX 후속7건을 실제Claude CLI에서 실행했다. claude.ai Max/firstParty·APIKEY/타provider환경없음·실제init claude-opus-4-8·전원API usage와성공Read를 확인했다. 기존원세션과새Codex11채팅은보존, 원세션resume/copy0. Native입력불가 후 공식print/no-session-persistence·Read/Glob/Grep만으로 비중복읽기전용후속검토를 진행하며 결과를총괄이기록한다. 생산/UI/런타임/Git/설정변경0. 과거Claude후속전달0은원세션기록이며 이번직접CLI실행과구분한다. 상세: mac-resume-20261001/vscode-dispatch/CLAUDE-PROVIDER-DISPATCH-20261002.md 및json. Codex새제출은생산미인수보존후보로checkpoint한다.
+
+
+### 2026-10-02 최신 역할16·Claude8/Codex8
+
+사용자6대6지시 후 보스전·스토리·퀘스트/NPC·유튜브/스팀 페이지관리4팀을 추가하여 총괄1+전문15=16역할로 확장했다. Claude는ART/MAP/SKILL/QA/ENEMY/ANIMVFX/BOSS/STORY, Codex는총괄/UIUX/ITEM/BUILD/BALANCE/SOUND/QUESTNPC/MARKETING이다. 기존Claude6 실제TASK Read6/6·기존Codex5후속send5/5를 확인했고 신규4관리채팅을생성했다. BOSS/STORY 실행은 열린Claude2창에배정준비, 해당Codex채팅은관리인수만. 기존11관리채팅삭제0, 현재관리15개와실행16역할을구분한다. 별도Claude일회7검토success완료. 모든팀생산채택/새게임/게시0, 삭제/cleanup/소유밖쓰기금지. QA20261002오타경로삭제사건과기존자료UNKNOWN도기록한다. [현재역할·수신근거](mac-resume-20261001/vscode-dispatch/PROVIDER-HALVES-20261002.md).

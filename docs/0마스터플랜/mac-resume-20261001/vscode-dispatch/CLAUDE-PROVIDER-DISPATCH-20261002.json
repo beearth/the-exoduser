@@ -26,14 +26,18 @@
       "permissionMode": "default",
       "taskFile": "tools/team-followup-20261002/claude-provider/ART/TASK.md",
       "taskSha256": "679b947774836e6487ba4b7e058d1266398bb1d3a8db485afcf2897a9b6b995e",
-      "actualReadRequestCount": 5,
-      "successfulReadCount": 5,
+      "actualReadRequestCount": 13,
+      "successfulReadCount": 13,
       "successfulReadFiles": [
         "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/ART/task.md",
         "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/ART/result.md",
         "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/ART/evidence.json",
         "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/ART/../../../../AGENTS.md",
-        "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html"
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/11내러티브·로어디자인/WARRIOR_DESIGN_LOCK.md",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/game-easy-test.html",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/cutscene/warintro/emg1.jpg",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/output/cutscene_remaster_20260930/warintro_candidates_unreviewed/emg1_candidate2_retry.jpg"
       ],
       "apiResponseUsageObserved": {
         "input_tokens": 2,
@@ -47,8 +51,71 @@
         "service_tier": "standard",
         "inference_geo": "not_available"
       },
-      "status": "running",
-      "rawStreamFile": "tmp/mac-migration-runtime/claude-provider-20261002/ART/agent-stream.jsonl"
+      "status": "completed",
+      "rawStreamFile": "tmp/mac-migration-runtime/claude-provider-20261002/ART/agent-stream.jsonl",
+      "promptInputSha256AtLaunch": "679b947774836e6487ba4b7e058d1266398bb1d3a8db485afcf2897a9b6b995e",
+      "taskFileSha256AtRecord": "e7ecce9983b812c71e5b188a1f532d1e4619c7a9f5d6c6c3022880d58917596f",
+      "promptWhitespaceNormalizationNote": "TASK trailing blank lines normalized at checkpoint; no semantic change",
+      "resultSubtype": "success",
+      "completedObservedAt": "2026-10-02T04:11:17.066113+00:00",
+      "usage": {
+        "input_tokens": 22,
+        "cache_creation_input_tokens": 70956,
+        "cache_read_input_tokens": 556409,
+        "output_tokens": 22341,
+        "output_tokens_details": {
+          "thinking_tokens": 14077
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 70956,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "not_available",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 8906,
+            "cache_read_input_tokens": 74786,
+            "cache_creation_input_tokens": 795,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 795
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null
+      },
+      "modelUsage": {
+        "claude-opus-4-8": {
+          "inputTokens": 22,
+          "outputTokens": 22341,
+          "cacheReadInputTokens": 556409,
+          "cacheCreationInputTokens": 70956,
+          "webSearchRequests": 0,
+          "costUSD": 1.5463995,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 64000,
+          "thinkingTokens": 14077,
+          "canonicalModel": "claude-opus-4-8",
+          "provider": "firstParty",
+          "costBasis": "list"
+        }
+      },
+      "durationMs": 341421,
+      "permissionDenials": [],
+      "toolErrors": [],
+      "resultFile": "tools/team-followup-20261002/claude-provider/ART/result.md",
+      "resultSha256": "0b8d9dd6b368389bb2c6d41d6706c0651a90e666c3b5d07815ec2d7a91194cbf",
+      "rawStreamSha256": "74ca5022f257bb4f0405de60bbfc4370fa64b644301c7aa6e48b5f7fcefe436f",
+      "productionApplied": false,
+      "runtimeExecuted": false
     },
     {
       "role": "MAP",
@@ -62,12 +129,17 @@
       "permissionMode": "default",
       "taskFile": "tools/team-followup-20261002/claude-provider/MAP/TASK.md",
       "taskSha256": "810249858f6f807a4103870437ac432428af9e4d43702dc1f3b5e55e53c1f550",
-      "actualReadRequestCount": 4,
-      "successfulReadCount": 4,
+      "actualReadRequestCount": 10,
+      "successfulReadCount": 10,
       "successfulReadFiles": [
         "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/MAP/task.md",
         "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/MAP/result.md",
-        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/MAP/evidence.json"
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/MAP/evidence.json",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/4.1맵디자인+설정/EXODUSER_MAP_PRODUCTION_GUIDELINE_v0.9.md",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/4.1맵디자인+설정/_MAP_SSOT_INDEX.md",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/14밸런스+수치테이블/EASY_BALANCE_TEST_20260912.md",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/game-easy-test.html",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html"
       ],
       "apiResponseUsageObserved": {
         "input_tokens": 2,
@@ -81,8 +153,71 @@
         "service_tier": "standard",
         "inference_geo": "not_available"
       },
-      "status": "running",
-      "rawStreamFile": "tmp/mac-migration-runtime/claude-provider-20261002/MAP/agent-stream.jsonl"
+      "status": "completed",
+      "rawStreamFile": "tmp/mac-migration-runtime/claude-provider-20261002/MAP/agent-stream.jsonl",
+      "promptInputSha256AtLaunch": "810249858f6f807a4103870437ac432428af9e4d43702dc1f3b5e55e53c1f550",
+      "taskFileSha256AtRecord": "9d301d6ae699f19474b11f97514b0cd79c5763929db63c6c23430b78096272e7",
+      "promptWhitespaceNormalizationNote": "TASK trailing blank lines normalized at preservation checkpoint; no semantic change",
+      "resultSubtype": "success",
+      "completedObservedAt": "2026-10-02T04:08:57.668282+00:00",
+      "usage": {
+        "input_tokens": 24,
+        "cache_creation_input_tokens": 120991,
+        "cache_read_input_tokens": 797602,
+        "output_tokens": 16132,
+        "output_tokens_details": {
+          "thinking_tokens": 7372
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 120991,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "not_available",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 6747,
+            "cache_read_input_tokens": 121520,
+            "cache_creation_input_tokens": 4096,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 4096
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null
+      },
+      "modelUsage": {
+        "claude-opus-4-8": {
+          "inputTokens": 24,
+          "outputTokens": 16132,
+          "cacheReadInputTokens": 797602,
+          "cacheCreationInputTokens": 120991,
+          "webSearchRequests": 0,
+          "costUSD": 2.012131,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 64000,
+          "thinkingTokens": 7372,
+          "canonicalModel": "claude-opus-4-8",
+          "provider": "firstParty",
+          "costBasis": "list"
+        }
+      },
+      "durationMs": 248869,
+      "permissionDenials": [],
+      "toolErrors": [],
+      "resultFile": "tools/team-followup-20261002/claude-provider/MAP/result.md",
+      "resultSha256": "873a7023b8ea773358ffd3c56f074a34c251bfbd17d81e99ec7f5b0e6fc00a45",
+      "rawStreamSha256": "5dbb3ee9b89d08b261f233202fa9a52875485698f0c484ddf2a92d9f0d98c3c6",
+      "productionApplied": false,
+      "runtimeExecuted": false
     },
     {
       "role": "SKILL",
@@ -96,8 +231,8 @@
       "permissionMode": "default",
       "taskFile": "tools/team-followup-20261002/claude-provider/SKILL/TASK.md",
       "taskSha256": "7d9e1805b39338101b00bb4d464c5cb8ef9bff94672d625648f036da247941ad",
-      "actualReadRequestCount": 10,
-      "successfulReadCount": 10,
+      "actualReadRequestCount": 18,
+      "successfulReadCount": 18,
       "successfulReadFiles": [
         "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/SKILL/task.md",
         "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/SKILL/result.md",
@@ -105,7 +240,8 @@
         "/Users/fordeargamers/Projects/exoduser-migration-20261001/AGENTS.md",
         "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/2_1 스킬관리+합체시스템+자원/SKILL03_설치확정_자원검수_20261001.md",
         "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/SKILL/mortar-confirm-source-before.txt",
-        "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html"
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/game-easy-test.html"
       ],
       "apiResponseUsageObserved": {
         "input_tokens": 2,
@@ -119,8 +255,71 @@
         "service_tier": "standard",
         "inference_geo": "not_available"
       },
-      "status": "running",
-      "rawStreamFile": "tmp/mac-migration-runtime/claude-provider-20261002/SKILL/agent-stream.jsonl"
+      "status": "completed",
+      "rawStreamFile": "tmp/mac-migration-runtime/claude-provider-20261002/SKILL/agent-stream.jsonl",
+      "promptInputSha256AtLaunch": "7d9e1805b39338101b00bb4d464c5cb8ef9bff94672d625648f036da247941ad",
+      "taskFileSha256AtRecord": "15addc57c78ff69b1d0e9390d72bd057d2cded756485a1916b37f6a684e79d7f",
+      "promptWhitespaceNormalizationNote": "TASK trailing blank lines normalized at checkpoint; no semantic change",
+      "resultSubtype": "success",
+      "completedObservedAt": "2026-10-02T04:11:17.075439+00:00",
+      "usage": {
+        "input_tokens": 28,
+        "cache_creation_input_tokens": 101577,
+        "cache_read_input_tokens": 969060,
+        "output_tokens": 22281,
+        "output_tokens_details": {
+          "thinking_tokens": 12703
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 101577,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "not_available",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 5363,
+            "cache_read_input_tokens": 104980,
+            "cache_creation_input_tokens": 1222,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 1222
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null
+      },
+      "modelUsage": {
+        "claude-opus-4-8": {
+          "inputTokens": 28,
+          "outputTokens": 22281,
+          "cacheReadInputTokens": 969060,
+          "cacheCreationInputTokens": 101577,
+          "webSearchRequests": 0,
+          "costUSD": 2.057465,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 64000,
+          "thinkingTokens": 12703,
+          "canonicalModel": "claude-opus-4-8",
+          "provider": "firstParty",
+          "costBasis": "list"
+        }
+      },
+      "durationMs": 394808,
+      "permissionDenials": [],
+      "toolErrors": [],
+      "resultFile": "tools/team-followup-20261002/claude-provider/SKILL/result.md",
+      "resultSha256": "19c66ea0413454e1ecd357c0010820f6f9da43a9cc90e2a561a77d128de86375",
+      "rawStreamSha256": "3f99d7f675ef4e220f857893a522ceaf231cb9c3b27f1bef7c57fea511cd5435",
+      "productionApplied": false,
+      "runtimeExecuted": false
     },
     {
       "role": "SOUND",
@@ -156,8 +355,71 @@
         "service_tier": "standard",
         "inference_geo": "not_available"
       },
-      "status": "running",
-      "rawStreamFile": "tmp/mac-migration-runtime/claude-provider-20261002/SOUND/agent-stream.jsonl"
+      "status": "completed",
+      "rawStreamFile": "tmp/mac-migration-runtime/claude-provider-20261002/SOUND/agent-stream.jsonl",
+      "promptInputSha256AtLaunch": "0871b191fa7aff688a458d150f195d9d51150662d0e22312975c0ae16d7aa636",
+      "taskFileSha256AtRecord": "0871b191fa7aff688a458d150f195d9d51150662d0e22312975c0ae16d7aa636",
+      "promptWhitespaceNormalizationNote": "same bytes",
+      "resultSubtype": "success",
+      "completedObservedAt": "2026-10-02T04:08:57.672732+00:00",
+      "usage": {
+        "input_tokens": 22,
+        "cache_creation_input_tokens": 82434,
+        "cache_read_input_tokens": 674289,
+        "output_tokens": 19208,
+        "output_tokens_details": {
+          "thinking_tokens": 9995
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 82434,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "not_available",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 10839,
+            "cache_read_input_tokens": 83983,
+            "cache_creation_input_tokens": 1443,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 1443
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null
+      },
+      "modelUsage": {
+        "claude-opus-4-8": {
+          "inputTokens": 22,
+          "outputTokens": 19208,
+          "cacheReadInputTokens": 674289,
+          "cacheCreationInputTokens": 82434,
+          "webSearchRequests": 0,
+          "costUSD": 1.6417944999999998,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 64000,
+          "thinkingTokens": 9995,
+          "canonicalModel": "claude-opus-4-8",
+          "provider": "firstParty",
+          "costBasis": "list"
+        }
+      },
+      "durationMs": 302340,
+      "permissionDenials": [],
+      "toolErrors": [],
+      "resultFile": "tools/team-followup-20261002/claude-provider/SOUND/result.md",
+      "resultSha256": "e42f87a06d68668effba15f96e35cbfa3ee8db91d796bfc9d4926e47c4ef1cb7",
+      "rawStreamSha256": "aea96a92f4f3963e551093b02cdc656fe145cd10867e1f306fb31a0686192bfe",
+      "productionApplied": false,
+      "runtimeExecuted": false
     },
     {
       "role": "QA",
@@ -171,8 +433,8 @@
       "permissionMode": "default",
       "taskFile": "tools/team-followup-20261002/claude-provider/QA/TASK.md",
       "taskSha256": "ae32b37bc60fb5968f92e4802bff33ac1d7346c175c7dac5b5d1abd774019bb2",
-      "actualReadRequestCount": 12,
-      "successfulReadCount": 10,
+      "actualReadRequestCount": 14,
+      "successfulReadCount": 12,
       "successfulReadFiles": [
         "/Users/fordeargamers/Projects/exoduser-migration-20261001/AGENTS.md",
         "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/QA/task.md",
@@ -183,7 +445,9 @@
         "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/browser-host/persistence-integration-port.js",
         "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/browser-host/binding-d10.js",
         "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/browser-bootstrap-ui.js",
-        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/browser-bootstrap-api.js"
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/browser-bootstrap-api.js",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/browser-host/index.html",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/browser-host/csp-startup.js"
       ],
       "apiResponseUsageObserved": {
         "input_tokens": 2,
@@ -197,8 +461,88 @@
         "service_tier": "standard",
         "inference_geo": "not_available"
       },
-      "status": "running",
-      "rawStreamFile": "tmp/mac-migration-runtime/claude-provider-20261002/QA/agent-stream.jsonl"
+      "status": "completed",
+      "rawStreamFile": "tmp/mac-migration-runtime/claude-provider-20261002/QA/agent-stream.jsonl",
+      "promptInputSha256AtLaunch": "ae32b37bc60fb5968f92e4802bff33ac1d7346c175c7dac5b5d1abd774019bb2",
+      "taskFileSha256AtRecord": "22973236cdc261b9631a5f4aa312bf1a790f3a1dbb008a97551492c376cdb8ee",
+      "promptWhitespaceNormalizationNote": "TASK trailing blank lines normalized at preservation checkpoint; no semantic change",
+      "resultSubtype": "success",
+      "completedObservedAt": "2026-10-02T04:08:57.674512+00:00",
+      "usage": {
+        "input_tokens": 14,
+        "cache_creation_input_tokens": 61511,
+        "cache_read_input_tokens": 254220,
+        "output_tokens": 16984,
+        "output_tokens_details": {
+          "thinking_tokens": 10093
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 61511,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "not_available",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 9833,
+            "cache_read_input_tokens": 59471,
+            "cache_creation_input_tokens": 6665,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 6665
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null
+      },
+      "modelUsage": {
+        "claude-opus-4-8": {
+          "inputTokens": 14,
+          "outputTokens": 16984,
+          "cacheReadInputTokens": 254220,
+          "cacheCreationInputTokens": 61511,
+          "webSearchRequests": 0,
+          "costUSD": 1.16689,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 64000,
+          "thinkingTokens": 10093,
+          "canonicalModel": "claude-opus-4-8",
+          "provider": "firstParty",
+          "costBasis": "list"
+        }
+      },
+      "durationMs": 251715,
+      "permissionDenials": [
+        {
+          "tool_name": "Read",
+          "tool_use_id": "toolu_017yL8aqyhAmURypGcaCktb9",
+          "tool_input": {
+            "file_path": "/Users/fordeargamers/Projects/exoduser-migration-20261002/project-teams/QA/result.md"
+          }
+        }
+      ],
+      "toolErrors": [
+        {
+          "toolUseId": "toolu_018DiEHcqeBoFRm9URm2iunC",
+          "content": "File does not exist. Note: your current working directory is /Users/fordeargamers/Projects/exoduser-migration-20261001."
+        },
+        {
+          "toolUseId": "toolu_017yL8aqyhAmURypGcaCktb9",
+          "content": "Permission for this tool use was denied. It requires approval, and this session has no approval surface — nobody can answer a permission prompt here — so it was denied automatically. The action was NOT performed; do not claim it succeeded, and do not retry it: this action, and anything else that requires approval, will be denied the same way for the rest of this session. Tell the user what was blocked and why you needed it, then continue with the parts of the task that do not require approval. What required approval: Claude requested permissions to read from /Users/fordeargamers/Projects/exodu"
+        }
+      ],
+      "resultFile": "tools/team-followup-20261002/claude-provider/QA/result.md",
+      "resultSha256": "15735e087f60bd5685eca7cd5036808e8b05fce95e527fb13aee53085c70c555",
+      "rawStreamSha256": "c76e2367306b340176fee0ee34d4667a7ef2a4aa91add9e0f9702d370f0f602e",
+      "productionApplied": false,
+      "runtimeExecuted": false
     },
     {
       "role": "ENEMY",
@@ -212,8 +556,8 @@
       "permissionMode": "default",
       "taskFile": "tools/team-followup-20261002/claude-provider/ENEMY/TASK.md",
       "taskSha256": "150c6ff402f9df210c1b37d98cb37596a9803e319befc43c3271bc56e3d1961b",
-      "actualReadRequestCount": 8,
-      "successfulReadCount": 8,
+      "actualReadRequestCount": 16,
+      "successfulReadCount": 16,
       "successfulReadFiles": [
         "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/ENEMY/task.md",
         "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/ENEMY/result.md",
@@ -234,8 +578,71 @@
         "service_tier": "standard",
         "inference_geo": "not_available"
       },
-      "status": "running",
-      "rawStreamFile": "tmp/mac-migration-runtime/claude-provider-20261002/ENEMY/agent-stream.jsonl"
+      "status": "completed",
+      "rawStreamFile": "tmp/mac-migration-runtime/claude-provider-20261002/ENEMY/agent-stream.jsonl",
+      "promptInputSha256AtLaunch": "150c6ff402f9df210c1b37d98cb37596a9803e319befc43c3271bc56e3d1961b",
+      "taskFileSha256AtRecord": "ae4adda6a38617a033c79ec81ada6ed96dc9acb2d8f93d4ecf55530f8d75bebc",
+      "promptWhitespaceNormalizationNote": "TASK trailing blank lines normalized at checkpoint; no semantic change",
+      "resultSubtype": "success",
+      "completedObservedAt": "2026-10-02T04:13:23.229250+00:00",
+      "usage": {
+        "input_tokens": 32,
+        "cache_creation_input_tokens": 142991,
+        "cache_read_input_tokens": 1436639,
+        "output_tokens": 33420,
+        "output_tokens_details": {
+          "thinking_tokens": 23268
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 142991,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "not_available",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 7098,
+            "cache_read_input_tokens": 141739,
+            "cache_creation_input_tokens": 5877,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 5877
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null
+      },
+      "modelUsage": {
+        "claude-opus-4-8": {
+          "inputTokens": 32,
+          "outputTokens": 33420,
+          "cacheReadInputTokens": 1436639,
+          "cacheCreationInputTokens": 142991,
+          "webSearchRequests": 0,
+          "costUSD": 2.9838895000000005,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 64000,
+          "thinkingTokens": 23268,
+          "canonicalModel": "claude-opus-4-8",
+          "provider": "firstParty",
+          "costBasis": "list"
+        }
+      },
+      "durationMs": 504733,
+      "permissionDenials": [],
+      "toolErrors": [],
+      "resultFile": "tools/team-followup-20261002/claude-provider/ENEMY/result.md",
+      "resultSha256": "c935d7403c396ec756c2c5a13dbb2ff9e8433b7dfb19e306ed734e0caddf414d",
+      "rawStreamSha256": "c6156f06fdeb04a1898703c7d21c07f06e6f957a0dae930c4aa4761c4d697a17",
+      "productionApplied": false,
+      "runtimeExecuted": false
     },
     {
       "role": "ANIMVFX",
@@ -249,14 +656,18 @@
       "permissionMode": "default",
       "taskFile": "tools/team-followup-20261002/claude-provider/ANIMVFX/TASK.md",
       "taskSha256": "7a5faffc4880d4bdbe15c6d2a2843989c3a2e0403469f623525837571d7705b0",
-      "actualReadRequestCount": 5,
-      "successfulReadCount": 5,
+      "actualReadRequestCount": 10,
+      "successfulReadCount": 10,
       "successfulReadFiles": [
         "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/ANIMVFX/task.md",
         "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/ANIMVFX/result.md",
         "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/ANIMVFX/evidence.json",
         "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/ANIMVFX/checks.mjs",
-        "/Users/fordeargamers/Projects/exoduser-migration-20261001/AGENTS.md"
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/AGENTS.md",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/game-easy-test.html",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/img/atlas_ch1_8dir_walk.json",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/img/atlas_ch1_8dir.json"
       ],
       "apiResponseUsageObserved": {
         "input_tokens": 2,
@@ -270,8 +681,71 @@
         "service_tier": "standard",
         "inference_geo": "not_available"
       },
-      "status": "running",
-      "rawStreamFile": "tmp/mac-migration-runtime/claude-provider-20261002/ANIMVFX/agent-stream.jsonl"
+      "status": "completed",
+      "rawStreamFile": "tmp/mac-migration-runtime/claude-provider-20261002/ANIMVFX/agent-stream.jsonl",
+      "promptInputSha256AtLaunch": "7a5faffc4880d4bdbe15c6d2a2843989c3a2e0403469f623525837571d7705b0",
+      "taskFileSha256AtRecord": "d48e1b989cd77fec84ae5f1e7126f8227f5a0af1c1e59ab128f02a0f250edc8b",
+      "promptWhitespaceNormalizationNote": "TASK trailing blank lines normalized at checkpoint; no semantic change",
+      "resultSubtype": "success",
+      "completedObservedAt": "2026-10-02T04:25:57.192915+00:00",
+      "usage": {
+        "input_tokens": 16,
+        "cache_creation_input_tokens": 99653,
+        "cache_read_input_tokens": 524766,
+        "output_tokens": 18147,
+        "output_tokens_details": {
+          "thinking_tokens": 11496
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 99653,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "not_available",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 4692,
+            "cache_read_input_tokens": 99697,
+            "cache_creation_input_tokens": 4581,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 4581
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null
+      },
+      "modelUsage": {
+        "claude-opus-4-8": {
+          "inputTokens": 16,
+          "outputTokens": 18147,
+          "cacheReadInputTokens": 524766,
+          "cacheCreationInputTokens": 99653,
+          "webSearchRequests": 0,
+          "costUSD": 1.7126679999999999,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 64000,
+          "thinkingTokens": 11496,
+          "canonicalModel": "claude-opus-4-8",
+          "provider": "firstParty",
+          "costBasis": "list"
+        }
+      },
+      "durationMs": 1097829,
+      "permissionDenials": [],
+      "toolErrors": [],
+      "resultFile": "tools/team-followup-20261002/claude-provider/ANIMVFX/result.md",
+      "resultSha256": "93dcc7a724b01647c576063d468dc4f5525ebf9bda12423f987afd0021bb44fc",
+      "rawStreamSha256": "900c3cfa11f4e60081b705d1a46c521e3c093bc4127ed0fc7e6594ce7c9f5010",
+      "productionApplied": false,
+      "runtimeExecuted": false
     }
   ],
   "originalCodexReviews": "11/11 completed, new Codex chats idle; submitted artifacts preserved, not production acceptance",
@@ -563,5 +1037,14 @@
     "fullDiffCheckNotes": [
       "ART/result.md and ANIMVFX/result.md each retain one trailing blank line as submitted; immutable input/evidence bytes preserved"
     ]
+  },
+  "completedRoles": 7,
+  "latestObservedAt": "2026-10-02T04:25:57.193520+00:00",
+  "status": "all_seven_completed_source_reviews_runtime_acceptance_pending",
+  "aggregateUsage": {
+    "input_tokens": 158,
+    "cache_creation_input_tokens": 680113,
+    "cache_read_input_tokens": 5212985,
+    "output_tokens": 148513
   }
 }

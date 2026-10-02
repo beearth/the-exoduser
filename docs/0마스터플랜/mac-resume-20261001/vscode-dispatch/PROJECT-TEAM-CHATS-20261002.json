@@ -362,5 +362,53 @@
     "vsCodeRequiredForClaudeCode": false,
     "existingSessionsPreserved": true
   },
-  "currentClaudeExecution": "CLAUDE-PROVIDER-DISPATCH-20261002.json"
+  "currentClaudeExecution": "CLAUDE-PROVIDER-DISPATCH-20261002.json",
+  "latestProviderHalves20261002": {
+    "recordedAt": "2026-10-02T04:32:39.602689+00:00",
+    "registry": "PROVIDER-HALVES-20261002.json",
+    "plannedTotalRoles": 16,
+    "plannedClaude": 8,
+    "plannedCodex": 8,
+    "nativeReadConfirmed": 6,
+    "nativeReadExpected": 8,
+    "codexFiveOfficialSendSucceeded": 5,
+    "newManagementChats": 4,
+    "managementChatsTotal": 15,
+    "productionApplied": false,
+    "qaPathIncident": "see registry; prior contents UNKNOWN"
+  },
+  "additionalManagementTeams20261002": [
+    {
+      "role": "BOSS",
+      "title": "EXODUSER 보스전팀",
+      "threadId": "01a0fae0-c5df-70d0-9ab7-751a587bb498",
+      "hostId": "local",
+      "created": true,
+      "initialScope": "read-only role intake; actual execution task separate"
+    },
+    {
+      "role": "STORY",
+      "title": "EXODUSER 스토리팀",
+      "threadId": "01a0fae0-c9ce-7890-b125-b3da65d8b3fa",
+      "hostId": "local",
+      "created": true,
+      "initialScope": "read-only role intake; actual execution task separate"
+    },
+    {
+      "role": "QUESTNPC",
+      "title": "EXODUSER 퀘스트 NPC팀",
+      "threadId": "01a0fae0-ccb2-7572-9d58-8c3176f9afff",
+      "hostId": "local",
+      "created": true,
+      "initialScope": "read-only role intake; actual execution task separate"
+    },
+    {
+      "role": "MARKETING",
+      "title": "EXODUSER 유튜브 스팀 페이지팀",
+      "threadId": "01a0fae0-cff3-78f0-aa73-32b08c6d6055",
+      "hostId": "local",
+      "created": true,
+      "initialScope": "read-only role intake; actual execution task separate"
+    }
+  ]
 }

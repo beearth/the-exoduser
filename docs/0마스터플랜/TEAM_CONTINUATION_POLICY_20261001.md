@@ -132,3 +132,10 @@ Mac core.ignorecase=true에서 기존 build/ 규칙이 tools/team-followup-20261
 ### 2026-10-02 Claude 직접 실행 대안의 실제 적용
 
 사용자가Claude사용을지시해 기존대화형창을보존하고공식비대화형CLI의 no-session-persistence로7역할후속검토를실행했다. 임의원세션복제/재개가아니며 기존Codex11건완료뒤남은별도경계검토다. Read/Glob/Grep만허용하고Claude API usage/성공Read/최종응답으로실행·완료를구분한다. 다음후속도원제공자실행을우선하며 Codex관리채팅자동연결로추정하지않는다. 기존원세션미수신이력은보존한다. CLAUDE-PROVIDER-DISPATCH-20261002.md/json을최신실행근거로참조한다.
+
+
+### 2026-10-02 최신 역할16·Claude8/Codex8
+
+사용자6대6지시 후 보스전·스토리·퀘스트/NPC·유튜브/스팀 페이지관리4팀을 추가하여 총괄1+전문15=16역할로 확장했다. Claude는ART/MAP/SKILL/QA/ENEMY/ANIMVFX/BOSS/STORY, Codex는총괄/UIUX/ITEM/BUILD/BALANCE/SOUND/QUESTNPC/MARKETING이다. 기존Claude6 실제TASK Read6/6·기존Codex5후속send5/5를 확인했고 신규4관리채팅을생성했다. BOSS/STORY 실행은 열린Claude2창에배정준비, 해당Codex채팅은관리인수만. 기존11관리채팅삭제0, 현재관리15개와실행16역할을구분한다. 별도Claude일회7검토success완료. 모든팀생산채택/새게임/게시0, 삭제/cleanup/소유밖쓰기금지. QA20261002오타경로삭제사건과기존자료UNKNOWN도기록한다. [현재역할·수신근거](mac-resume-20261001/vscode-dispatch/PROVIDER-HALVES-20261002.md).
+
+최신 BUILD 소유는 codex-half/BUILD의TASK.md/checks.mjs/result.md/evidence.json4정확경로만Git노출한다. 이전BUILD정책의대소문자위험과동일하며산출하위폴더/저장/캐시를공개하지않는다.
