@@ -403,3 +403,11 @@ source 인수는 뼈벽 포커스취소에만 한정한다. 합성 패드 버튼
 | 현재 시연준비 | 기존런타임으로 fresh c927efb0 config/plan READY_PLAN_ONLY, actualbuild/앱/6단계플레이 아직 미인수. 입력source는dd333 뼈벽취소 포함양판이며 새source추가적용으로 빌드입력을바꾸지않음 |
 
 공식 raw 원SHA·byte·완료ID와 부모/원격exact 및 사용자23/타인WIP는 ignored 완료영수증에 기록한다. 원자료 보존2건을게임수정2건으로계산0. root활성목표는 실제Mac후보·연결플레이로 계속한다.
+
+## 2026-10-02 최신 Mac 실제 후보 생성·기동 Gate
+
+CH1-1 목표 actual전체Read13/13(기존MAP미소비/ENEMY실거부제외)을감독이확인했고 실제코드후보제출이이어졌다. root는dd333 입력으로 새c927efb0 Mac 앱을40.044초/execute1·내부verify1/exit0 생성했다. 고유3384/profile/save와선택7918·source2·helper4·runtime340의실출력검증완료. [실제앱·정확SHA·기동/6단계미인수조건](../../../13출시·마케팅/MAC_CH1_PLAYABLE_CANDIDATE_20261002.md)과 build-final receipt SHA464c456fd0238100aed28ce38771eae8358744492172359645df1e4942164ac8 참조. 단계는앱파일생성이며native/visual/audio/6단계플레이완료아님. `cua.getApp`에서Mac locked를확인해잠금해제요청만남겼고UI우회0/독립코드작업은계속한다.
+
+80Gate에서두번째분할인수한 BUILD exactraw2는완료ID 01a0fc89-7301-77a2-94ea-d62524f6a1e6 /manifestSHA0ad734c1f61985ea79b66c55ddb7ac5f1cea848ed84f1a10a26a52891f621801이며source/helper에적용0/검사반복0으로보존한다. standalone helper후보e6e73c22…의bytes↔pin/closure는source계약후보이며Acorn공급/filepin·선택계약/nativeGate 미인수; 앞서실제생성앱의helper는기존pin이다. raw2를제품수정2로계산0이다.
+
+같은 분할 보존에 MARKETING 완료01a0fc89-7574-7940-893c-4bc7cef1a761의 exactraw2를추가한다. manifestSHA 1fa2bbe624354e44d618c93c76c14d034ced927d096f38f1940cd99f6220a5ab의 실제showCharGate→_goLogin취소 뒤1200ms 옛callback 재입장/기존seqguard2줄후보이며 정상/story/활성화실패·demo slot Map trace동등근거, source0/native0/검사반복0이다. 현재생성앱에후보적용0, raw보존과게임완료합산0이다. 잠금해제요청은이미보냈으며 새사용자응답전 동일질문/기동반복·UI우회0, 독립source인수를계속한다.

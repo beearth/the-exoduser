@@ -811,3 +811,11 @@ EXODUSER 작업감독 `01a0fb1e-4ec3-7dd3-bba2-f87518e881fa` 생성·TASK Read e
 공용 game2·shared docs·Git는 원총괄이 순차 통합하고 감독은5분마다 actual idle/막힘/새완료를 복구·인계한다. 보고 기준은 **게임 반영된 변화 → 실제 검수 근거/남은 Gate → 다음 구현 담당**이며 원자료 보존과 구현 수를 분리한다. 사용자게임/세이브·타인WIP·보호2_3/Q전용패링/어택티켓금지/맵LOCK 보존, 신규 계정/권한/설치/결제/게시/삭제0이다.
 
 지금까지 새목표 전체 실게임 시연·새 통합빌드·청취 완료0이다. 현재 production source에는72fe SOUND dispatch 배치 정리 source12PASS가 포함되지만 동일Error 전파로 인한 실제 RAF회복은 미수정·미인수다. ENEMY 정책읽기 자동classifier 거부(`[Auto-Mode Bypass]`)는 우회0/현API재시도와별도, MAP enqueue미소비는Read미확정이다. 13팀 자율정책 Read는 운영 인수이며13개 제품 완료가 아니다. 필수 실제입력/장치 Gate는 사실대로남기고 독립 source작업은계속한다.
+
+## 2026-10-02 최신 Mac 실제 후보 생성·기동 Gate
+
+CH1-1 목표 actual전체Read13/13(기존MAP미소비/ENEMY실거부제외)을감독이확인했고 실제코드후보제출이이어졌다. root는dd333 입력으로 새c927efb0 Mac 앱을40.044초/execute1·내부verify1/exit0 생성했다. 고유3384/profile/save와선택7918·source2·helper4·runtime340의실출력검증완료. [실제앱·정확SHA·기동/6단계미인수조건](../13출시·마케팅/MAC_CH1_PLAYABLE_CANDIDATE_20261002.md)과 build-final receipt SHA464c456fd0238100aed28ce38771eae8358744492172359645df1e4942164ac8 참조. 단계는앱파일생성이며native/visual/audio/6단계플레이완료아님. `cua.getApp`에서Mac locked를확인해잠금해제요청만남겼고UI우회0/독립코드작업은계속한다.
+
+80Gate에서두번째분할인수한 BUILD exactraw2는완료ID 01a0fc89-7301-77a2-94ea-d62524f6a1e6 /manifestSHA0ad734c1f61985ea79b66c55ddb7ac5f1cea848ed84f1a10a26a52891f621801이며source/helper에적용0/검사반복0으로보존한다. standalone helper후보e6e73c22…의bytes↔pin/closure는source계약후보이며Acorn공급/filepin·선택계약/nativeGate 미인수; 앞서실제생성앱의helper는기존pin이다. raw2를제품수정2로계산0이다.
+
+같은 분할 보존에 MARKETING 완료01a0fc89-7574-7940-893c-4bc7cef1a761의 exactraw2를추가한다. manifestSHA 1fa2bbe624354e44d618c93c76c14d034ced927d096f38f1940cd99f6220a5ab의 실제showCharGate→_goLogin취소 뒤1200ms 옛callback 재입장/기존seqguard2줄후보이며 정상/story/활성화실패·demo slot Map trace동등근거, source0/native0/검사반복0이다. 현재생성앱에후보적용0, raw보존과게임완료합산0이다. 잠금해제요청은이미보냈으며 새사용자응답전 동일질문/기동반복·UI우회0, 독립source인수를계속한다.
