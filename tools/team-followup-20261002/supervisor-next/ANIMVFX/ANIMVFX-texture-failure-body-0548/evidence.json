@@ -1,0 +1,335 @@
+{
+  "taskId": "supervisor-next/ANIMVFX/ANIMVFX-texture-failure-body-0548",
+  "provider": "VS Code Claude native (supervisor follow-up)",
+  "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+  "node": "v24.15.0",
+  "startedAt": "2026-10-02T05:59:15.754Z",
+  "endedAt": "2026-10-02T05:59:15.790Z",
+  "sourceReadSHA": {
+    "note": "본 세션 실제 Read 시점 sha256(파일 전체내용). Git 미호출.",
+    "fileContent": {
+      "game.html": "dc711864876610a83c67a659d4f162551191b56ba11d74e1cb81f03df935368e",
+      "game-easy-test.html": "1f139e0cd5fd898e33ba2b1c408b33e49984e106f0b46cc5b38b7d2abf2dabe1"
+    },
+    "bodySlice": {
+      "game.html": "a7fca5d0b0b49687ae59abc713097848860c357722d110c7ddb1a7a1fe9a11a9",
+      "game-easy-test.html": "a7fca5d0b0b49687ae59abc713097848860c357722d110c7ddb1a7a1fe9a11a9"
+    },
+    "queueSlice": "acbf8ebfdebb079e7196931721e8bdb9dfdbc9201a823ea81d8003c169d7b1a6",
+    "drawSlice": "4378a60213e9a2ad068b4b735e6a7cb7c617e10c8ade65899ff523b15c7a63e7"
+  },
+  "supervisorCheckpoint": {
+    "note": "총괄 제공 원격검증(조회시점 근거, 독립 현재 HEAD 아님)",
+    "remote": "f2e70ef7c9c663fdd69e925bc379b6d6f8bcaa9c",
+    "game": "2e45",
+    "easy": "3e59",
+    "node": "541ff8"
+  },
+  "bands": "GL=호출/bufferSubData/_getTex ready|fail 기록, 2D body=실제 원문 블록을 canvas source-sink(drawImage/save/restore/translate)로 실행. _mW.ready=이미지 로드(GL _getTex 업로드와 독립).",
+  "summary": {
+    "total": 6,
+    "pass": 6,
+    "fail": 0
+  },
+  "productionApplied": false,
+  "disclaimer": "source fixture PASS ≠ actual GL/pixel/visual/package PASS. idle 이중 픽셀 안전성 미확정.",
+  "rows": [
+    {
+      "id": "EX-slices-identical",
+      "status": "PASS"
+    },
+    {
+      "id": "EX-body-no-guard",
+      "status": "PASS"
+    },
+    {
+      "id": "both-ready-double[G]",
+      "status": "PASS"
+    },
+    {
+      "id": "walk-tex-null-body-covers-walk[G]",
+      "status": "PASS"
+    },
+    {
+      "id": "both-ready-double[E]",
+      "status": "PASS"
+    },
+    {
+      "id": "walk-tex-null-body-covers-walk[E]",
+      "status": "PASS"
+    }
+  ],
+  "perFile": {
+    "game.html": {
+      "ex": {
+        "queueSha": "acbf8ebfdebb079e7196931721e8bdb9dfdbc9201a823ea81d8003c169d7b1a6",
+        "drawSha": "4378a60213e9a2ad068b4b735e6a7cb7c617e10c8ade65899ff523b15c7a63e7",
+        "bodySha": "a7fca5d0b0b49687ae59abc713097848860c357722d110c7ddb1a7a1fe9a11a9",
+        "facingSha": "38aa12292c84a2ba1e5c56cb61cc4f23f7c0d485040b3ab027271eb21f395b33",
+        "ENS_GL_MAX": 512,
+        "ENS8_GL_MAX": 1024,
+        "GROUPS": 16,
+        "STRIDE": 9
+      },
+      "inputs": {
+        "both_ready": {
+          "idleOK": true,
+          "walkOK": true,
+          "glDrawn": 2,
+          "getTexCalls": [
+            {
+              "img": "idle",
+              "ok": true
+            },
+            {
+              "img": "walk",
+              "ok": true
+            }
+          ],
+          "glIdle": 1,
+          "glWalk": 1,
+          "twoIdle": 1,
+          "twoWalk": 1,
+          "bodyRan": true,
+          "eDrew": true,
+          "usedSpr": true,
+          "drawImages": [
+            {
+              "call": "drawImage",
+              "img": "idle",
+              "sx": 256,
+              "sy": 768,
+              "sw": 256,
+              "sh": 256,
+              "dx": -70,
+              "dy": -70,
+              "dw": 140,
+              "dh": 140
+            },
+            {
+              "call": "drawImage",
+              "img": "walk",
+              "sx": 1280,
+              "sy": 768,
+              "sw": 256,
+              "sh": 256,
+              "dx": -70,
+              "dy": -70,
+              "dw": 140,
+              "dh": 140
+            }
+          ],
+          "sum": {
+            "idle": 2,
+            "walk": 2
+          }
+        },
+        "walk_tex_null": {
+          "idleOK": true,
+          "walkOK": true,
+          "glDrawn": 1,
+          "getTexCalls": [
+            {
+              "img": "idle",
+              "ok": true
+            },
+            {
+              "img": "walk",
+              "ok": false
+            }
+          ],
+          "glIdle": 1,
+          "glWalk": 0,
+          "twoIdle": 1,
+          "twoWalk": 1,
+          "bodyRan": true,
+          "eDrew": true,
+          "usedSpr": true,
+          "drawImages": [
+            {
+              "call": "drawImage",
+              "img": "idle",
+              "sx": 256,
+              "sy": 768,
+              "sw": 256,
+              "sh": 256,
+              "dx": -70,
+              "dy": -70,
+              "dw": 140,
+              "dh": 140
+            },
+            {
+              "call": "drawImage",
+              "img": "walk",
+              "sx": 1280,
+              "sy": 768,
+              "sw": 256,
+              "sh": 256,
+              "dx": -70,
+              "dy": -70,
+              "dw": 140,
+              "dh": 140
+            }
+          ],
+          "sum": {
+            "idle": 2,
+            "walk": 1
+          }
+        }
+      }
+    },
+    "game-easy-test.html": {
+      "ex": {
+        "queueSha": "acbf8ebfdebb079e7196931721e8bdb9dfdbc9201a823ea81d8003c169d7b1a6",
+        "drawSha": "4378a60213e9a2ad068b4b735e6a7cb7c617e10c8ade65899ff523b15c7a63e7",
+        "bodySha": "a7fca5d0b0b49687ae59abc713097848860c357722d110c7ddb1a7a1fe9a11a9",
+        "facingSha": "38aa12292c84a2ba1e5c56cb61cc4f23f7c0d485040b3ab027271eb21f395b33",
+        "ENS_GL_MAX": 512,
+        "ENS8_GL_MAX": 1024,
+        "GROUPS": 16,
+        "STRIDE": 9
+      },
+      "inputs": {
+        "both_ready": {
+          "idleOK": true,
+          "walkOK": true,
+          "glDrawn": 2,
+          "getTexCalls": [
+            {
+              "img": "idle",
+              "ok": true
+            },
+            {
+              "img": "walk",
+              "ok": true
+            }
+          ],
+          "glIdle": 1,
+          "glWalk": 1,
+          "twoIdle": 1,
+          "twoWalk": 1,
+          "bodyRan": true,
+          "eDrew": true,
+          "usedSpr": true,
+          "drawImages": [
+            {
+              "call": "drawImage",
+              "img": "idle",
+              "sx": 256,
+              "sy": 768,
+              "sw": 256,
+              "sh": 256,
+              "dx": -70,
+              "dy": -70,
+              "dw": 140,
+              "dh": 140
+            },
+            {
+              "call": "drawImage",
+              "img": "walk",
+              "sx": 1280,
+              "sy": 768,
+              "sw": 256,
+              "sh": 256,
+              "dx": -70,
+              "dy": -70,
+              "dw": 140,
+              "dh": 140
+            }
+          ],
+          "sum": {
+            "idle": 2,
+            "walk": 2
+          }
+        },
+        "walk_tex_null": {
+          "idleOK": true,
+          "walkOK": true,
+          "glDrawn": 1,
+          "getTexCalls": [
+            {
+              "img": "idle",
+              "ok": true
+            },
+            {
+              "img": "walk",
+              "ok": false
+            }
+          ],
+          "glIdle": 1,
+          "glWalk": 0,
+          "twoIdle": 1,
+          "twoWalk": 1,
+          "bodyRan": true,
+          "eDrew": true,
+          "usedSpr": true,
+          "drawImages": [
+            {
+              "call": "drawImage",
+              "img": "idle",
+              "sx": 256,
+              "sy": 768,
+              "sw": 256,
+              "sh": 256,
+              "dx": -70,
+              "dy": -70,
+              "dw": 140,
+              "dh": 140
+            },
+            {
+              "call": "drawImage",
+              "img": "walk",
+              "sx": 1280,
+              "sy": 768,
+              "sw": 256,
+              "sh": 256,
+              "dx": -70,
+              "dy": -70,
+              "dw": 140,
+              "dh": 140
+            }
+          ],
+          "sum": {
+            "idle": 2,
+            "walk": 1
+          }
+        }
+      }
+    }
+  },
+  "receipts": {
+    "confirmedChatSessionId": "UNKNOWN(피어 세션 전달, 확인 ID 미제공)",
+    "taskReadUTC": "2026-10-02T (TASK.md + continuous/COMMON.md + AGENTS.md + pipeline SSOT Read, 명령 전)",
+    "commandRunUTC": "2026-10-02T05:59:15.754Z",
+    "harnessEndedUTC": "2026-10-02T05:59:15.790Z",
+    "exit": 0,
+    "ownedFiles": [
+      "tools/team-followup-20261002/supervisor-next/ANIMVFX/ANIMVFX-texture-failure-body-0548/checks.mjs",
+      "tools/team-followup-20261002/supervisor-next/ANIMVFX/ANIMVFX-texture-failure-body-0548/result.md",
+      "tools/team-followup-20261002/supervisor-next/ANIMVFX/ANIMVFX-texture-failure-body-0548/evidence.json"
+    ],
+    "gitQueried": false,
+    "note": "COMMON/TASK 계약: Git 호출 0. file 내용 sha가 세션 중 2e45→dc71로 재변경(총괄 UI minus-수명/카드수명 통합). instancing/queue/draw/body slice는 실Read시점 기록."
+  },
+  "docsCorrections": [
+    {
+      "file": "docs/8.0몬스터디자인/몬스터_스킨_렌더링_파이프라인.md",
+      "loc": "§75~80 T4",
+      "text": "T4 정정: 현행 코드는 2D Canvas 본문에 !_ensGLQueued 가드가 없어 GL-큐된 개체에도 2D body 블록이 실제 실행된다(drawImage 발생, source-sink로 확인). 따라서 draw의 _getTex(walk) 실패 시에도 2D body가 _mW.ready(이미지 로드, GL 업로드와 독립) 기준으로 walk를 CPU drawImage로 그려 현행에서는 보행 누락이 없다. 다만 idle이 GL+2D로 이중 출력된다(정상·both-ready에선 idle·walk 모두 이중). 본체 소실 위험은 body skip 가드를 단독 채택할 때만 발생하므로 가드 단독 금지. idle 이중의 실제 픽셀 안전성은 미확정(GL/시각 Gate)."
+    },
+    {
+      "file": "docs/5.1임펙트디자인/ANIMATION_VFX_TEAM_MASTER.md",
+      "loc": "백로그 말미",
+      "text": "supervisor-next texture-failure-body: 실제 2D body 원문 블록을 canvas source-sink로 실행(모형 아님). walk 텍스처 실패 시 2D body가 walk 커버(누락 없음), idle 이중 출력 확정. walk 텍스처 실패를 전파할 안전한 큐시점 후보는 정의 불가(draw 시점 발생), draw시점 bucket-drawn 피드백+가드 결합은 coordination Gate+실픽셀 검수 필요 → UNKNOWN 인계. 미적용."
+    }
+  ],
+  "docsRg": {
+    "when": "2026-10-02T06:00:01.886Z",
+    "keywords": "_ensGLQueued|2D 폴백|이중|_getTex|텍스처 실패|walk"
+  },
+  "candidateVerdict": {
+    "safeQueueTimeCandidate": false,
+    "reason": "draw 시점 _getTex 실패는 큐 성공 뒤라 큐시점 rollback/precheck가 감지 불가. 현행은 무가드 2D가 이미 walk를 커버하므로 보행 누락은 없고 과제는 idle 이중.",
+    "drawTimeCandidate": "정의 가능하나 body !_ensGLQueued 가드 채택(단독 금지)과 bucket-drawn 피드백, 실픽셀/GL 검수가 함께 필요 → caller/조정 Gate + UNKNOWN 인계"
+  }
+}

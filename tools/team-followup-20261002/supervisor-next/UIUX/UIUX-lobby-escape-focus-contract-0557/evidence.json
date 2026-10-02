@@ -1,0 +1,730 @@
+{
+  "schemaVersion": 1,
+  "taskId": "UIUX-lobby-escape-focus-contract-0557",
+  "provider": "Codex",
+  "chatId": "01a0faaf-8fd2-7083-b174-69c604bd58b0",
+  "chatIdSource": "PROVIDER-HALVES-20261002.md UIUX 행",
+  "supervisorChatId": "01a0fb1e-4ec3-7dd3-bba2-f87518e881fa",
+  "verdict": "NO-FIX / static source contract handoff",
+  "productionApplied": false,
+  "preflight": {
+    "taskId": "UIUX-lobby-escape-focus-contract-0557",
+    "readUTC": "2026-10-02T05:59:17.682Z",
+    "readKST": "2026-10-02 14:59:17 KST",
+    "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "realpath": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "taskRealpath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/supervisor-next/UIUX/UIUX-lobby-escape-focus-contract-0557/TASK.md",
+    "ownerFiles": [
+      "TASK.md"
+    ],
+    "readSHA": {
+      "index.html": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8",
+      "tools/team-followup-20261002/supervisor-next/UIUX/UIUX-lobby-escape-focus-contract-0557/TASK.md": "c92dd222bad875bdd0e69ae5bb8d0fc7a8092520bbf8f41beffe300fb5c45b37",
+      "AGENTS.md": "fd59bef70960bcaf1ab9910051faa860362884e574ac2869fad05c6872ae04e4",
+      "tools/team-followup-20261002/continuous/COMMON.md": "de5a881270625a7b2d0e854331205e01372a037340a18474c6442b60e668465e",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROVIDER-HALVES-20261002.md": "16cbe4b9d0c9d0e0e8cabc1ac8d4f7718f78b4e013b6e5cb169e5bb6d397be6d",
+      "docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md": "3e906af1421fc18fa8c03e64e8de8db99e14f31ed886568102395d787bad249e",
+      "docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md": "8e84ae631d586d7ae3da5d5c121de2ee1813eff633f7d2053502ea34426ad4de",
+      "docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md": "06c2c5c4d02238f31dc9b27cd0c64c78be4670276a28f71f26e3f84fee6e8e1f",
+      "tools/team-followup-20261002/supervisor-next/UIUX/UIUX-lobby-locked-keyboard-0543/result.md": "a97b77f03c5576af632fb7e27829d706529effa266d2e05bc30bad3d5751e089",
+      "tools/team-followup-20261002/supervisor-next/UIUX/UIUX-lobby-locked-keyboard-0543/evidence.json": "ed4dfdae10d76745cd40ea9418477c56531861fa4408f5a2df51559800e26835",
+      "tools/team-followup-20261002/supervisor-next/UIUX/UIUX-lobby-locked-keyboard-0543/checks.mjs": "8222f706d28652dab18c3a8c079d1a74bd68d8055ae266f6bf3d37a51847dedd"
+    },
+    "fragments": {
+      "_visualSelectKeydown": {
+        "lineStart": 3247,
+        "lineEnd": 3267,
+        "SHA256": "a94f16bcbd7e13b17cef7549ed71f72bc87545bfd6c8a1206fb02f45c513a06e",
+        "text": "function _visualSelectKeydown(e){\n  const pop=$('charVisualPop');if(!pop||pop.style.display!=='flex'||e.isComposing||e.keyCode===229)return;\n  if(e.key==='Escape'){e.preventDefault();e.stopPropagation();if(!e.repeat)$('visualCancelBtn').click();return;}\n  const icons=[...$('visualGrid').querySelectorAll('.cs-ico')];\n  if(['ArrowLeft','ArrowRight','Home','End'].includes(e.key)&&icons.includes(document.activeElement)){\n    e.preventDefault();e.stopPropagation();\n    const index=icons.indexOf(document.activeElement),last=icons.length-1;\n    const step=(e.key==='ArrowRight'?1:-1)*(document.documentElement.dir==='rtl'?-1:1);\n    const next=e.key==='Home'?0:e.key==='End'?last:Math.max(0,Math.min(last,index+step));\n    icons[next].click();icons[next].focus({preventScroll:true});return;\n  }\n  if(e.key!=='Tab')return;\n  const details=[$('csLeft'),$('csRight')].filter(Boolean);\n  const controls=[...details,...icons,$('visualCancelBtn'),$('visualCreateBtn')].filter(el=>el&&!el.disabled);\n  if(!controls.length)return;\n  e.preventDefault();e.stopPropagation();\n  const index=controls.indexOf(document.activeElement);\n  const next=index<0?(e.shiftKey?controls.length-1:0):(index+(e.shiftKey?-1:1)+controls.length)%controls.length;\n  const target=controls[next];target.focus({preventScroll:true});\n  if(details.includes(target))target.scrollIntoView({block:'start'});\n}",
+        "start": 227826,
+        "end": 229196
+      },
+      "openVisualSelect": {
+        "lineStart": 3227,
+        "lineEnd": 3246,
+        "SHA256": "42150f7f2c86ee2f792079a9b1540230856c2bedfe3c203f212d42e957813e53",
+        "text": "function openVisualSelect(){\n  _visualReturnFocus=document.activeElement;\n  const pop=$('charVisualPop');pop.style.display='flex';\n  _spawnEmbers();\n  const grid=$('visualGrid');grid.replaceChildren();\n  CHAR_VISUALS.forEach((ch,ci)=>{\n    const ico=document.createElement('button');ico.type='button';ico.className='cs-ico';ico.setAttribute('data-vi',ci);\n    ico.title=_TL(ch.name);\n    const ring=document.createElement('div');ring.className='cs-ico-ring';\n    if(ch.emblemImg){const img=document.createElement('img');img.src=ch.emblemImg;img.alt='';ring.appendChild(img)}\n    const label=document.createElement('div');label.className='lbl';label.textContent=_TL(ch.tab||ch.name);\n    ico.replaceChildren(ring,label);\n    if(ch.comingSoon){ico.classList.add('locked');const badge=document.createElement('span');badge.className='cs-soon';badge.textContent=_TL('출시 준비 중');ico.appendChild(badge);ico.title+=' — '+_TL('출시 준비 중')}\n    ico.onclick=()=>selectVisual(ci);\n    grid.appendChild(ico);\n  });\n  selectVisual(_pendingVisualIdx||0);\n  _resetVisualInfoScroll();\n  const target=grid.querySelector('.cs-ico.sel')||$('visualCancelBtn');if(target)target.focus({preventScroll:true});\n}",
+        "start": 226642,
+        "end": 227825
+      },
+      "_closeVisualSelect": {
+        "lineStart": 3119,
+        "lineEnd": 3131,
+        "SHA256": "0dff217111acbd4442ce30841915a5cf8c10683d93e193edd9ed6d14de235c38",
+        "text": "function _closeVisualSelect({restoreFocus=false}={}){\n  const pop=$('charVisualPop');if(!pop||pop.style.display!=='flex')return;\n  ++_visualPreviewSeq;\n  const target=_visualReturnFocus;_visualReturnFocus=null;\n  if(pop.contains(document.activeElement))document.activeElement.blur();\n  pop.style.display='none';\n  ['csIdleVid','csSceneVid'].forEach(id=>{\n    const v=$(id);if(!v)return;\n    clearTimeout(v._csT);v._csT=null;v.onerror=null;v.oncanplay=null;\n    stopMediaVideo(v);v.classList.remove('on');v.removeAttribute('src');v.removeAttribute('poster');v.load();\n  });\n  if(restoreFocus&&target&&target.isConnected)target.focus({preventScroll:true});\n}",
+        "start": 220783,
+        "end": 221439
+      },
+      "_closeCreationOverlays": {
+        "lineStart": 3132,
+        "lineEnd": 3141,
+        "SHA256": "cee18604ef56d6c1c8c6c7fe7bc320f8ffede78dc2296793174699423a4ae1bc",
+        "text": "function _closeCreationOverlays(){\n  _closeVisualSelect();\n  const modal=$('createModal'),keyboard=$('vkbWrap');\n  if((modal&&modal.classList.contains('show'))||$('createBtn')?.disabled)setStatus('');\n  if(modal&&modal.classList.contains('show')){\n    if(modal.contains(document.activeElement))document.activeElement.blur();\n    modal.classList.remove('show');_vkbHide();\n  }else if(keyboard&&keyboard.style.display==='block')_vkbHide();\n  if(typeof ExoduserCharacterStory!=='undefined'&&ExoduserCharacterStory.active)ExoduserCharacterStory.skip();\n}",
+        "start": 221440,
+        "end": 221990
+      },
+      "_visualConfirm": {
+        "lineStart": 3270,
+        "lineEnd": 3275,
+        "SHA256": "a3ac40e591d152dd25bb2528e4c4f5c75491836c1035a85da370fc305258c996",
+        "text": "function _visualConfirm(){\n  if(CHAR_VISUALS[_pendingVisualIdx]?.comingSoon)return;\n  _closeVisualSelect();\n  $('createModal').classList.add('show');$('charName').value='';setStatus('');\n  setTimeout(()=>{if($('createModal').classList.contains('show'))$('charName').focus()},50);\n}",
+        "start": 229286,
+        "end": 229567
+      },
+      "cancelBinding": {
+        "lineStart": 3277,
+        "lineEnd": 3277,
+        "SHA256": "ef1e9e19a48c238664496ef137d02f685d78ed174e4df5faa02f8a50ca9b86af",
+        "text": "$('visualCancelBtn').onclick=()=>_closeVisualSelect({restoreFocus:true});"
+      },
+      "keydownBinding": {
+        "lineStart": 3268,
+        "lineEnd": 3268,
+        "SHA256": "772e0ccafc4649818296f0bb4782e9a20a61da2a6e6bf3306c5b8bf77170a46e",
+        "text": "$('charVisualPop').addEventListener('keydown',_visualSelectKeydown);"
+      },
+      "returnFocusInitial": {
+        "lineStart": 3117,
+        "lineEnd": 3117,
+        "SHA256": "f48a7554bcefe533815da80707858d5d4a4d716964a0f1c865087524904d3ac8",
+        "text": "let _visualReturnFocus=null;"
+      }
+    },
+    "callers": {
+      "_goLogin": {
+        "declaration": {
+          "lineStart": 2675,
+          "lineEnd": 2675,
+          "SHA256": "f078f482ecdfb8181d0c0600a7f50c12dc1386523293a3df193aa2046007d8f5",
+          "text": "function _goLogin({fromCinematic=false}={}){"
+        },
+        "call": {
+          "lineStart": 2676,
+          "lineEnd": 2676,
+          "SHA256": "1b3aeaa7a37a8aa6a404c2cd8e021ef68052b576372a3a409fc833e3a7cde5e2",
+          "text": "if(typeof _closeCreationOverlays==='function')_closeCreationOverlays();"
+        }
+      },
+      "_goCinematic": {
+        "declaration": {
+          "lineStart": 2703,
+          "lineEnd": 2703,
+          "SHA256": "2bf49f3063ebe67f152d36ebcaff7985376893da363df012cdc929fa23ea015c",
+          "text": "function _goCinematic(){"
+        },
+        "call": {
+          "lineStart": 2704,
+          "lineEnd": 2704,
+          "SHA256": "1b3aeaa7a37a8aa6a404c2cd8e021ef68052b576372a3a409fc833e3a7cde5e2",
+          "text": "if(typeof _closeCreationOverlays==='function')_closeCreationOverlays();"
+        }
+      },
+      "_goLobby": {
+        "declaration": {
+          "lineStart": 2737,
+          "lineEnd": 2737,
+          "SHA256": "7e98da47f2fe95841283297bbd5a49bcb2257c409b728ae45a5a9cac3a7d843c",
+          "text": "async function _goLobby({fromCinematic=false}={}){"
+        },
+        "call": {
+          "lineStart": 2738,
+          "lineEnd": 2738,
+          "SHA256": "1b3aeaa7a37a8aa6a404c2cd8e021ef68052b576372a3a409fc833e3a7cde5e2",
+          "text": "if(typeof _closeCreationOverlays==='function')_closeCreationOverlays();"
+        }
+      },
+      "showLobby": {
+        "declaration": {
+          "lineStart": 2883,
+          "lineEnd": 2883,
+          "SHA256": "50cce4f737f123677bdfea375eccb617b50cb01cf503a7ccb404ecc97db6a28b",
+          "text": "async function showLobby({fromCinematic=false}={}){"
+        },
+        "call": {
+          "lineStart": 2884,
+          "lineEnd": 2884,
+          "SHA256": "1b3aeaa7a37a8aa6a404c2cd8e021ef68052b576372a3a409fc833e3a7cde5e2",
+          "text": "if(typeof _closeCreationOverlays==='function')_closeCreationOverlays();"
+        }
+      }
+    },
+    "sourceExecution": 0,
+    "VM": 0,
+    "fixture": 0,
+    "tests": 0
+  },
+  "providedCheckpoint": {
+    "SHA": "6c2dadab0b3a81a600e8358f485518cfcb122199",
+    "source": "감독 소유 TASK",
+    "providedTimestamp": "UNKNOWN",
+    "actualReadUTC": "2026-10-02T05:59:17.682Z",
+    "HEADIndependentlyObserved": false,
+    "HEAD": "UNKNOWN",
+    "historicalPins": [
+      "f2e70ef7",
+      "7e694950",
+      "6c77",
+      "c40e"
+    ]
+  },
+  "counts": {
+    "sourceContractRead": 1,
+    "sourceExecution": 0,
+    "tests": 0,
+    "newFixture": 0,
+    "newChecks": 0,
+    "candidate": 0,
+    "previousTestsRepeated": 0,
+    "previousCountsAdded": 0,
+    "sourceRuntimePASS": 0,
+    "accessibilityPASS": 0
+  },
+  "priorAdopted": {
+    "lockedPreview": "NO-FIX/source2PASS 이전 제출 및 TASK 피드백만 인수",
+    "hostNativeDefault": "Enter default click 대역 유지; 실제 Space/패드/확정·저장종단 미검수",
+    "reexecuted": 0
+  },
+  "contracts": [
+    {
+      "id": "escape-normal",
+      "condition": "pop 존재/display flex, isComposing=false/keyCode!=229, key Escape/repeat=false",
+      "source": "preventDefault/stopPropagation → visualCancelBtn.click() → cancel onclick _closeVisualSelect({restoreFocus:true})",
+      "resultScope": "소스 연결 계약; 실제 click/blur/focus 실행0"
+    },
+    {
+      "id": "escape-repeat",
+      "condition": "같은 열린 non-IME Escape, repeat=true",
+      "source": "preventDefault/stopPropagation 이후 click 생략하고 return",
+      "resultScope": "닫기/복귀 요청 경로 미진입; 브라우저 실측 아님"
+    },
+    {
+      "id": "ime",
+      "condition": "isComposing=true 또는 keyCode===229",
+      "source": "Escape 분기 전 early return, preventDefault/stopPropagation/cancel click 문장 미진입",
+      "resultScope": "OS IME 동등성 미검수"
+    },
+    {
+      "id": "closed-or-missing-popup",
+      "condition": "!pop 또는 style.display!='flex'",
+      "source": "keydown 및 _closeVisualSelect 각각 첫 guard로 return; close에서는 seq/returnFocus/blur/media/focus 문장도 미진입",
+      "resultScope": "style 문자열 조건, 실제 CSS 가시성/레이아웃 판정 아님"
+    },
+    {
+      "id": "open-capture",
+      "condition": "openVisualSelect 호출",
+      "source": "첫 문장 document.activeElement를 _visualReturnFocus에 캡처; 선택 카드 또는 cancel focus({preventScroll:true}) 요청",
+      "resultScope": "실제 캡처 대상/가시성/성공 위치는 미검수"
+    },
+    {
+      "id": "connected-return",
+      "condition": "열린 close, restoreFocus=true, target truthy & target.isConnected",
+      "source": "target=_visualReturnFocus; _visualReturnFocus=null; 내부active면 blur; popup display none; media 정리 호출들; target.focus({preventScroll:true})",
+      "resultScope": "focus 요청만. disabled/hidden/focusable 검사 없음; 성공 보장 아님"
+    },
+    {
+      "id": "detached-or-null-return",
+      "condition": "열린 close, restoreFocus=true이나 !target 또는 !target.isConnected",
+      "source": "close 내부 정리 이후 target.focus 문장 생략. 별도 fallback 대상 배정·focus 없음",
+      "resultScope": "다른 UX 결정/후보 추가0; 실제 activeElement 이후 위치 UNKNOWN"
+    },
+    {
+      "id": "confirm-default-false",
+      "condition": "_visualConfirm, selected comingSoon=false",
+      "source": "_closeVisualSelect()의 restoreFocus 기본false, 이전 target 복귀요청 없음; 이름 modal show/charName clear/setStatus; 50ms 후 modal show 유지 조건에서 charName.focus 요청 등록",
+      "resultScope": "타이머 실행/실제 focus/생성·저장 미검수; comingSoon true면 confirm 첫 guard에서 종료"
+    },
+    {
+      "id": "creation-overlay-default-false",
+      "condition": "_closeCreationOverlays 호출",
+      "source": "_closeVisualSelect() 기본false; 열린 이름modal 내부blur/show제거/_vkbHide, 숨겨도 vkbWrap block이면 _vkbHide, 활성 story skip 호출",
+      "resultScope": "화면전환 미디어/키보드/스토리 완료 동등성 미검수"
+    },
+    {
+      "id": "media-static-cleanup",
+      "condition": "열린 close, csIdleVid/csSceneVid 노드 존재",
+      "source": "clearTimeout(_csT); _csT/onerror/oncanplay=null; stopMediaVideo; on제거; src/poster제거; load 호출",
+      "resultScope": "소스 호출/등록 해제 대입 근거만. pause/stop 실제상태·비동기 완료·디코더/GPU·재생동등성 PASS 아님"
+    }
+  ],
+  "staticReferences": {
+    "_visualSelectKeydown": {
+      "lineStart": 3247,
+      "lineEnd": 3267,
+      "SHA256": "a94f16bcbd7e13b17cef7549ed71f72bc87545bfd6c8a1206fb02f45c513a06e",
+      "text": "function _visualSelectKeydown(e){\n  const pop=$('charVisualPop');if(!pop||pop.style.display!=='flex'||e.isComposing||e.keyCode===229)return;\n  if(e.key==='Escape'){e.preventDefault();e.stopPropagation();if(!e.repeat)$('visualCancelBtn').click();return;}\n  const icons=[...$('visualGrid').querySelectorAll('.cs-ico')];\n  if(['ArrowLeft','ArrowRight','Home','End'].includes(e.key)&&icons.includes(document.activeElement)){\n    e.preventDefault();e.stopPropagation();\n    const index=icons.indexOf(document.activeElement),last=icons.length-1;\n    const step=(e.key==='ArrowRight'?1:-1)*(document.documentElement.dir==='rtl'?-1:1);\n    const next=e.key==='Home'?0:e.key==='End'?last:Math.max(0,Math.min(last,index+step));\n    icons[next].click();icons[next].focus({preventScroll:true});return;\n  }\n  if(e.key!=='Tab')return;\n  const details=[$('csLeft'),$('csRight')].filter(Boolean);\n  const controls=[...details,...icons,$('visualCancelBtn'),$('visualCreateBtn')].filter(el=>el&&!el.disabled);\n  if(!controls.length)return;\n  e.preventDefault();e.stopPropagation();\n  const index=controls.indexOf(document.activeElement);\n  const next=index<0?(e.shiftKey?controls.length-1:0):(index+(e.shiftKey?-1:1)+controls.length)%controls.length;\n  const target=controls[next];target.focus({preventScroll:true});\n  if(details.includes(target))target.scrollIntoView({block:'start'});\n}",
+      "start": 227826,
+      "end": 229196
+    },
+    "openVisualSelect": {
+      "lineStart": 3227,
+      "lineEnd": 3246,
+      "SHA256": "42150f7f2c86ee2f792079a9b1540230856c2bedfe3c203f212d42e957813e53",
+      "text": "function openVisualSelect(){\n  _visualReturnFocus=document.activeElement;\n  const pop=$('charVisualPop');pop.style.display='flex';\n  _spawnEmbers();\n  const grid=$('visualGrid');grid.replaceChildren();\n  CHAR_VISUALS.forEach((ch,ci)=>{\n    const ico=document.createElement('button');ico.type='button';ico.className='cs-ico';ico.setAttribute('data-vi',ci);\n    ico.title=_TL(ch.name);\n    const ring=document.createElement('div');ring.className='cs-ico-ring';\n    if(ch.emblemImg){const img=document.createElement('img');img.src=ch.emblemImg;img.alt='';ring.appendChild(img)}\n    const label=document.createElement('div');label.className='lbl';label.textContent=_TL(ch.tab||ch.name);\n    ico.replaceChildren(ring,label);\n    if(ch.comingSoon){ico.classList.add('locked');const badge=document.createElement('span');badge.className='cs-soon';badge.textContent=_TL('출시 준비 중');ico.appendChild(badge);ico.title+=' — '+_TL('출시 준비 중')}\n    ico.onclick=()=>selectVisual(ci);\n    grid.appendChild(ico);\n  });\n  selectVisual(_pendingVisualIdx||0);\n  _resetVisualInfoScroll();\n  const target=grid.querySelector('.cs-ico.sel')||$('visualCancelBtn');if(target)target.focus({preventScroll:true});\n}",
+      "start": 226642,
+      "end": 227825
+    },
+    "_closeVisualSelect": {
+      "lineStart": 3119,
+      "lineEnd": 3131,
+      "SHA256": "0dff217111acbd4442ce30841915a5cf8c10683d93e193edd9ed6d14de235c38",
+      "text": "function _closeVisualSelect({restoreFocus=false}={}){\n  const pop=$('charVisualPop');if(!pop||pop.style.display!=='flex')return;\n  ++_visualPreviewSeq;\n  const target=_visualReturnFocus;_visualReturnFocus=null;\n  if(pop.contains(document.activeElement))document.activeElement.blur();\n  pop.style.display='none';\n  ['csIdleVid','csSceneVid'].forEach(id=>{\n    const v=$(id);if(!v)return;\n    clearTimeout(v._csT);v._csT=null;v.onerror=null;v.oncanplay=null;\n    stopMediaVideo(v);v.classList.remove('on');v.removeAttribute('src');v.removeAttribute('poster');v.load();\n  });\n  if(restoreFocus&&target&&target.isConnected)target.focus({preventScroll:true});\n}",
+      "start": 220783,
+      "end": 221439
+    },
+    "_closeCreationOverlays": {
+      "lineStart": 3132,
+      "lineEnd": 3141,
+      "SHA256": "cee18604ef56d6c1c8c6c7fe7bc320f8ffede78dc2296793174699423a4ae1bc",
+      "text": "function _closeCreationOverlays(){\n  _closeVisualSelect();\n  const modal=$('createModal'),keyboard=$('vkbWrap');\n  if((modal&&modal.classList.contains('show'))||$('createBtn')?.disabled)setStatus('');\n  if(modal&&modal.classList.contains('show')){\n    if(modal.contains(document.activeElement))document.activeElement.blur();\n    modal.classList.remove('show');_vkbHide();\n  }else if(keyboard&&keyboard.style.display==='block')_vkbHide();\n  if(typeof ExoduserCharacterStory!=='undefined'&&ExoduserCharacterStory.active)ExoduserCharacterStory.skip();\n}",
+      "start": 221440,
+      "end": 221990
+    },
+    "_visualConfirm": {
+      "lineStart": 3270,
+      "lineEnd": 3275,
+      "SHA256": "a3ac40e591d152dd25bb2528e4c4f5c75491836c1035a85da370fc305258c996",
+      "text": "function _visualConfirm(){\n  if(CHAR_VISUALS[_pendingVisualIdx]?.comingSoon)return;\n  _closeVisualSelect();\n  $('createModal').classList.add('show');$('charName').value='';setStatus('');\n  setTimeout(()=>{if($('createModal').classList.contains('show'))$('charName').focus()},50);\n}",
+      "start": 229286,
+      "end": 229567
+    },
+    "cancelBinding": {
+      "lineStart": 3277,
+      "lineEnd": 3277,
+      "SHA256": "ef1e9e19a48c238664496ef137d02f685d78ed174e4df5faa02f8a50ca9b86af",
+      "text": "$('visualCancelBtn').onclick=()=>_closeVisualSelect({restoreFocus:true});"
+    },
+    "keydownBinding": {
+      "lineStart": 3268,
+      "lineEnd": 3268,
+      "SHA256": "772e0ccafc4649818296f0bb4782e9a20a61da2a6e6bf3306c5b8bf77170a46e",
+      "text": "$('charVisualPop').addEventListener('keydown',_visualSelectKeydown);"
+    },
+    "returnFocusInitial": {
+      "lineStart": 3117,
+      "lineEnd": 3117,
+      "SHA256": "f48a7554bcefe533815da80707858d5d4a4d716964a0f1c865087524904d3ac8",
+      "text": "let _visualReturnFocus=null;"
+    }
+  },
+  "callerReferences": {
+    "_goLogin": {
+      "declaration": {
+        "lineStart": 2675,
+        "lineEnd": 2675,
+        "SHA256": "f078f482ecdfb8181d0c0600a7f50c12dc1386523293a3df193aa2046007d8f5",
+        "text": "function _goLogin({fromCinematic=false}={}){"
+      },
+      "call": {
+        "lineStart": 2676,
+        "lineEnd": 2676,
+        "SHA256": "1b3aeaa7a37a8aa6a404c2cd8e021ef68052b576372a3a409fc833e3a7cde5e2",
+        "text": "if(typeof _closeCreationOverlays==='function')_closeCreationOverlays();"
+      }
+    },
+    "_goCinematic": {
+      "declaration": {
+        "lineStart": 2703,
+        "lineEnd": 2703,
+        "SHA256": "2bf49f3063ebe67f152d36ebcaff7985376893da363df012cdc929fa23ea015c",
+        "text": "function _goCinematic(){"
+      },
+      "call": {
+        "lineStart": 2704,
+        "lineEnd": 2704,
+        "SHA256": "1b3aeaa7a37a8aa6a404c2cd8e021ef68052b576372a3a409fc833e3a7cde5e2",
+        "text": "if(typeof _closeCreationOverlays==='function')_closeCreationOverlays();"
+      }
+    },
+    "_goLobby": {
+      "declaration": {
+        "lineStart": 2737,
+        "lineEnd": 2737,
+        "SHA256": "7e98da47f2fe95841283297bbd5a49bcb2257c409b728ae45a5a9cac3a7d843c",
+        "text": "async function _goLobby({fromCinematic=false}={}){"
+      },
+      "call": {
+        "lineStart": 2738,
+        "lineEnd": 2738,
+        "SHA256": "1b3aeaa7a37a8aa6a404c2cd8e021ef68052b576372a3a409fc833e3a7cde5e2",
+        "text": "if(typeof _closeCreationOverlays==='function')_closeCreationOverlays();"
+      }
+    },
+    "showLobby": {
+      "declaration": {
+        "lineStart": 2883,
+        "lineEnd": 2883,
+        "SHA256": "50cce4f737f123677bdfea375eccb617b50cb01cf503a7ccb404ecc97db6a28b",
+        "text": "async function showLobby({fromCinematic=false}={}){"
+      },
+      "call": {
+        "lineStart": 2884,
+        "lineEnd": 2884,
+        "SHA256": "1b3aeaa7a37a8aa6a404c2cd8e021ef68052b576372a3a409fc833e3a7cde5e2",
+        "text": "if(typeof _closeCreationOverlays==='function')_closeCreationOverlays();"
+      }
+    }
+  },
+  "readAndCommands": [
+    {
+      "operation": "TASK 먼저 cat, COMMON/AGENTS/담당표/UI05/캐릭터선택 SSOT/source 제한 경로 Read",
+      "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "exit": 0,
+      "readUTC": "2026-10-02T05:59:17.682Z",
+      "readKST": "2026-10-02 14:59:17 KST",
+      "sourceSHA": {
+        "index.html": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8",
+        "tools/team-followup-20261002/supervisor-next/UIUX/UIUX-lobby-escape-focus-contract-0557/TASK.md": "c92dd222bad875bdd0e69ae5bb8d0fc7a8092520bbf8f41beffe300fb5c45b37",
+        "AGENTS.md": "fd59bef70960bcaf1ab9910051faa860362884e574ac2869fad05c6872ae04e4",
+        "tools/team-followup-20261002/continuous/COMMON.md": "de5a881270625a7b2d0e854331205e01372a037340a18474c6442b60e668465e",
+        "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROVIDER-HALVES-20261002.md": "16cbe4b9d0c9d0e0e8cabc1ac8d4f7718f78b4e013b6e5cb169e5bb6d397be6d",
+        "docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md": "3e906af1421fc18fa8c03e64e8de8db99e14f31ed886568102395d787bad249e",
+        "docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md": "8e84ae631d586d7ae3da5d5c121de2ee1813eff633f7d2053502ea34426ad4de",
+        "docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md": "06c2c5c4d02238f31dc9b27cd0c64c78be4670276a28f71f26e3f84fee6e8e1f",
+        "tools/team-followup-20261002/supervisor-next/UIUX/UIUX-lobby-locked-keyboard-0543/result.md": "a97b77f03c5576af632fb7e27829d706529effa266d2e05bc30bad3d5751e089",
+        "tools/team-followup-20261002/supervisor-next/UIUX/UIUX-lobby-locked-keyboard-0543/evidence.json": "ed4dfdae10d76745cd40ea9418477c56531861fa4408f5a2df51559800e26835",
+        "tools/team-followup-20261002/supervisor-next/UIUX/UIUX-lobby-locked-keyboard-0543/checks.mjs": "8222f706d28652dab18c3a8c079d1a74bd68d8055ae266f6bf3d37a51847dedd"
+      }
+    },
+    {
+      "operation": "지정 Node inline 정적 Acorn 원문 위치·SHA 추출",
+      "exit": 0,
+      "wallSeconds": 0.000008458,
+      "VM": 0,
+      "sourceExecution": 0,
+      "newCodeFile": 0
+    },
+    {
+      "operation": "docs 전체 관련키워드 rg",
+      "command": [
+        "rg",
+        "-n",
+        "-e",
+        "_closeVisualSelect|_closeCreationOverlays|_visualReturnFocus|_visualSelectKeydown|restoreFocus|Escape·IME|UI-05",
+        "docs"
+      ],
+      "exit": 0,
+      "UTC": "2026-10-02T06:01:31.146Z"
+    }
+  ],
+  "toolsActuallyUsed": {
+    "execCommand": true,
+    "NodeStaticRead": true,
+    "acornAST": true,
+    "rg": true,
+    "applyPatch": true,
+    "skills": [],
+    "API": [],
+    "MCP": [],
+    "note": "Acorn은 설치된 로컬 원문 위치 파싱만; VM/앱 함수/fixture/구문회귀 실행0. 추가 스킬/API/MCP 필요 없음"
+  },
+  "errors": [],
+  "limits": {
+    "statement": "static source contract ≠ browser activeElement/blur/native Escape/focus location/visible UI/gamepad/media async/runtime/accessibility PASS",
+    "nativeKeyboard": false,
+    "gamepad": false,
+    "actualUI": false,
+    "HTTP": false,
+    "storage": false,
+    "mediaPlayback": false,
+    "asyncCompletion": false,
+    "UI05FullComplete": false
+  },
+  "owner": {
+    "directory": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/supervisor-next/UIUX/UIUX-lobby-escape-focus-contract-0557",
+    "allowedWrites": [
+      "result.md",
+      "evidence.json"
+    ],
+    "TASKImmutable": true
+  },
+  "Changes": {
+    "actualCount": "UNKNOWN",
+    "trackedBy": "감독",
+    "checkpoint80": true,
+    "stopBefore100": true,
+    "GitRequery": 0
+  },
+  "prohibitedActions": {
+    "productionWrite": 0,
+    "sharedDocsWrite": 0,
+    "oldArtifactsWrite": 0,
+    "testWrite": 0,
+    "GitQuery": 0,
+    "GitWrite": 0,
+    "server": 0,
+    "http": 0,
+    "userGame": 0,
+    "save": 0,
+    "UI": 0,
+    "app": 0,
+    "build": 0,
+    "install": 0,
+    "account": 0,
+    "permission": 0,
+    "publishing": 0,
+    "externalMessages": 0,
+    "newSessions": 0,
+    "subagents": 0,
+    "deletion": 0,
+    "moves": 0,
+    "cleanup": 0,
+    "bossDeathMapResetInvestigation": 0,
+    "bossDeathMapResetFix": 0
+  },
+  "docsSearch": {
+    "command": [
+      "rg",
+      "-n",
+      "-e",
+      "_closeVisualSelect|_closeCreationOverlays|_visualReturnFocus|_visualSelectKeydown|restoreFocus|Escape·IME|UI-05",
+      "docs"
+    ],
+    "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "startedUTC": "2026-10-02T06:01:31.146Z",
+    "finishedUTC": "2026-10-02T06:01:31.185Z",
+    "exit": 0,
+    "lineCount": 71,
+    "fileCount": 18,
+    "outputSHA256": "2f6915f14a17034c638987598a086f7233f543ef0f1d513e40392e6e6221204f",
+    "rawOutputStored": false,
+    "files": [
+      {
+        "file": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-definition-result.md",
+        "lines": [
+          19
+        ],
+        "SHA256": "3f1110d573c56807cbf14eb9963257aef4158e4e81b23942b34b8710fd2a2cc2"
+      },
+      {
+        "file": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-review-result.md",
+        "lines": [
+          20
+        ],
+        "SHA256": "7df5bab8129a7223f908af8e96f7780dbedc18e1e2f43f6aa71ba82a5ade2a8a"
+      },
+      {
+        "file": "docs/15 세이브+데이터구조/15 세이브+데이터구조.md",
+        "lines": [
+          667,
+          668,
+          669,
+          670,
+          692,
+          709,
+          710,
+          712,
+          842
+        ],
+        "SHA256": "9c88a0ea27b4d34aeff5a5bc49d05fd75df714a33a1b05739e51ec64584d9d64"
+      },
+      {
+        "file": "docs/16번역·로컬라이제이션/LOCALIZATION_RUNTIME_20260909.md",
+        "lines": [
+          282
+        ],
+        "SHA256": "494a045aaff8f904bef101d68326ebbb354ce6970283cf4938c1515fff0167f6"
+      },
+      {
+        "file": "docs/1전체그래픽세팅/CHARSELECT_VIDEO_QUALITY_20260913.md",
+        "lines": [
+          55
+        ],
+        "SHA256": "5a0baf83876de9076da86a60a177c05d5e10ed8dd8a6c859ddbb081c1c96f23d"
+      },
+      {
+        "file": "docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md",
+        "lines": [
+          2301,
+          2302,
+          2303,
+          2304,
+          2322,
+          2335,
+          2336,
+          2338,
+          2435,
+          2527
+        ],
+        "SHA256": "8e84ae631d586d7ae3da5d5c121de2ee1813eff633f7d2053502ea34426ad4de"
+      },
+      {
+        "file": "docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md",
+        "lines": [
+          38
+        ],
+        "SHA256": "3e906af1421fc18fa8c03e64e8de8db99e14f31ed886568102395d787bad249e"
+      },
+      {
+        "file": "docs/3.1 ui hud 디자인/lobby_full_patch.md",
+        "lines": [
+          1007,
+          1008,
+          1009,
+          1010,
+          1028,
+          1041,
+          1042,
+          1044,
+          1149,
+          1241
+        ],
+        "SHA256": "dfb71cb72b545f57f66f10690067f8b407562234302cae9e0955470e740e4a94"
+      },
+      {
+        "file": "docs/3.1 ui hud 디자인/남전사_로비_아이들_모션_20260908.md",
+        "lines": [
+          92
+        ],
+        "SHA256": "f493d4d2fb6ed004dc407a8a79b9eb7c5381cf58c5f91a627498c53b2029b00b"
+      },
+      {
+        "file": "docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md",
+        "lines": [
+          618,
+          619,
+          620,
+          621,
+          639,
+          653,
+          654,
+          657,
+          755,
+          847
+        ],
+        "SHA256": "06c2c5c4d02238f31dc9b27cd0c64c78be4670276a28f71f26e3f84fee6e8e1f"
+      },
+      {
+        "file": "docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md",
+        "lines": [
+          463,
+          464,
+          465,
+          466,
+          484,
+          497,
+          498,
+          500,
+          648
+        ],
+        "SHA256": "45d4e9818f6c02b9db1c0dfd5f1503553640adc1247a4f0ccf67054fba8b3cf3"
+      },
+      {
+        "file": "docs/7아이템디자인/UNIQUE_ITEM_GAME_INTEGRATION_CONTRACT_20261001.md",
+        "lines": [
+          40
+        ],
+        "SHA256": "c0017c5ebf0922c1670d898940cbdcae317213198a96ab6a100a46e332fb85e6"
+      },
+      {
+        "file": "docs/7아이템디자인/고유아이템_모델_어픽스_밸런싱_프로젝트_20260930.md",
+        "lines": [
+          36
+        ],
+        "SHA256": "3d5b28ecb573deee4c153d60a27033f9821775ccd47e9a26bbbe2e5cff0cbeb8"
+      },
+      {
+        "file": "docs/7아이템디자인/보라색_고유아이템_카탈로그_20260930.md",
+        "lines": [
+          22,
+          58
+        ],
+        "SHA256": "6d1303ede39e997d1eb104e00ccb6cce07dca1727df1d3bf0c690d5273f66a0c"
+      },
+      {
+        "file": "docs/CHANGELOG_DAILY_20260520.md",
+        "lines": [
+          288
+        ],
+        "SHA256": "36c3c5a528d34140193307c7fb047a4b959caae29cede71f25eacbd859d3727f"
+      },
+      {
+        "file": "docs/CHANGELOG_SYNC.md",
+        "lines": [
+          51066,
+          51067,
+          51068,
+          51069,
+          51091,
+          51109,
+          51110,
+          51113,
+          51281,
+          51373
+        ],
+        "SHA256": "534f73826b4e8cd49df447c5b73613f42c50df030447cd90a1f6a16da7b84989"
+      },
+      {
+        "file": "docs/archetypes/silvertail/SILVERTAIL_KEYART_CANON_20260927.md",
+        "lines": [
+          70
+        ],
+        "SHA256": "5ef0fc825d049f8c55b82ab8fa8a25947ba963ad7fea34c9443ec86be7b90032"
+      },
+      {
+        "file": "docs/cinematic/WARINTRO_CREATION_RUNTIME_20260910.md",
+        "lines": [
+          161
+        ],
+        "SHA256": "c5f0811b34b67002804b09fd85fd3f9f7f8acc28cc1d3126812e1851b387552a"
+      }
+    ],
+    "stderr": ""
+  },
+  "docsProposal": {
+    "exactText": "2026-10-02 UI-05 캐릭터 선택 Escape·초점 복귀 정적 source 계약(NO-FIX): _visualSelectKeydown는 charVisualPop이 없거나 inline display가 flex가 아니거나 isComposing/keyCode229이면 Escape 분기 전 반환한다. 열린 non-IME Escape는 preventDefault/stopPropagation 후 repeat=false일 때만 visualCancelBtn.click()을 호출한다. cancel onclick은 _closeVisualSelect({restoreFocus:true})다. openVisualSelect의 첫 문장이 document.activeElement를 _visualReturnFocus에 캡처한다. 열린 close는 _visualPreviewSeq 증가, target 캡처/저장 참조 null, 내부 activeElement blur 요청, display none 대입 및 csIdleVid/csSceneVid의 타이머 clear/null·onerror/oncanplay null·stopMediaVideo·on제거·src/poster제거·load 호출을 순서대로 둔다. restoreFocus&&target&&target.isConnected일 때만 target.focus({preventScroll:true})를 요청한다. 분리되거나 없는 target에 별도 fallback 초점을 지정하지 않으며 disabled/hidden/focusable 검사는 추가로 하지 않는다. restoreFocus 기본false이므로 _visualConfirm의 잠금 guard 이후 close 및 _closeCreationOverlays caller는 이전 target 복귀를 요청하지 않는다. confirm은 이름창 show 이후 50ms 조건부 charName.focus 타이머를 등록한다. _goLogin/_goCinematic/_goLobby/showLobby는 함수형 _closeCreationOverlays가 있으면 호출한다. source/SSOT 연결은 일치하나 실제 focus 성공·blur 뒤 activeElement·native Escape·IME·표시·gamepad·media stop/재생/비동기 완료 동등성은 미검수다. 이번 함수 실행/테스트/fixture/후보0, productionApplied=false, UI05 전체 완료/실제 접근성 PASS가 아니다.",
+    "canonical": "docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md",
+    "placement": "2026-09-28 키보드 조작·초점 격리 및 팝업 정리 계약 뒤에 2026-10-02 정적 경로표와 행/SHA·미검수 추가",
+    "composition": "UI_COMPOSITION_20260925.md의 _visualReturnFocus/_closeVisualSelect/Escape·IME 설명에 동일 정적 경계 링크",
+    "UI05": "UI_UX_IMPROVEMENT_PROJECT_20260930.md에는 정적 계약 인계만 기록, 전체 대기·실제품 Gate 유지",
+    "existingDocsConsistent": true,
+    "conflictFound": false,
+    "missingClarifications": [
+      "repeat Escape도 preventDefault/stopPropagation은 요청한다",
+      "분리된/null target에 fallback focus 지정 없음",
+      "연결 target focus는 시도이며 hidden/disabled/focusable 검사·성공 보장 없음",
+      "숨김 close는 returnFocus 참조 해제·seq 증가 전에 반환한다"
+    ],
+    "UXDecision": "fallback 초점·새 guard를 임의 결정하지 않음. 실제 source와 Gate를 root에 인계",
+    "sharedDocsEdited": false,
+    "productionApplied": false
+  },
+  "finalAudit": {
+    "UTC": "2026-10-02T06:01:31.189Z",
+    "KST": "2026-10-02 15:01:31 KST",
+    "ownFiles": [
+      "TASK.md",
+      "evidence.json",
+      "result.md"
+    ],
+    "writtenFiles": [
+      "result.md",
+      "evidence.json"
+    ],
+    "writtenFileCount": 2,
+    "readHashesAfter": {
+      "index.html": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8",
+      "tools/team-followup-20261002/supervisor-next/UIUX/UIUX-lobby-escape-focus-contract-0557/TASK.md": "c92dd222bad875bdd0e69ae5bb8d0fc7a8092520bbf8f41beffe300fb5c45b37",
+      "AGENTS.md": "fd59bef70960bcaf1ab9910051faa860362884e574ac2869fad05c6872ae04e4",
+      "tools/team-followup-20261002/continuous/COMMON.md": "de5a881270625a7b2d0e854331205e01372a037340a18474c6442b60e668465e",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROVIDER-HALVES-20261002.md": "16cbe4b9d0c9d0e0e8cabc1ac8d4f7718f78b4e013b6e5cb169e5bb6d397be6d",
+      "docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md": "3e906af1421fc18fa8c03e64e8de8db99e14f31ed886568102395d787bad249e",
+      "docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md": "8e84ae631d586d7ae3da5d5c121de2ee1813eff633f7d2053502ea34426ad4de",
+      "docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md": "06c2c5c4d02238f31dc9b27cd0c64c78be4670276a28f71f26e3f84fee6e8e1f",
+      "tools/team-followup-20261002/supervisor-next/UIUX/UIUX-lobby-locked-keyboard-0543/result.md": "a97b77f03c5576af632fb7e27829d706529effa266d2e05bc30bad3d5751e089",
+      "tools/team-followup-20261002/supervisor-next/UIUX/UIUX-lobby-locked-keyboard-0543/evidence.json": "ed4dfdae10d76745cd40ea9418477c56531861fa4408f5a2df51559800e26835",
+      "tools/team-followup-20261002/supervisor-next/UIUX/UIUX-lobby-locked-keyboard-0543/checks.mjs": "8222f706d28652dab18c3a8c079d1a74bd68d8055ae266f6bf3d37a51847dedd"
+    },
+    "changedFiles": [],
+    "protectedInputsUnchanged": true,
+    "sourceExecution": 0,
+    "tests": 0,
+    "fixture": 0,
+    "newChecks": 0,
+    "candidate": 0,
+    "resultSHA256": "fc9248b324fd40028371541a534e0fa6db24f4b0f065482c1d2e405fac6fe330",
+    "HEAD": "UNKNOWN",
+    "Git": 0
+  },
+  "completedUTC": "2026-10-02T06:01:31.189Z",
+  "completedKST": "2026-10-02 15:01:31 KST"
+}

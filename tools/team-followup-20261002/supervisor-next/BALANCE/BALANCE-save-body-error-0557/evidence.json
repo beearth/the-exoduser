@@ -1,0 +1,630 @@
+{
+  "taskId": "BALANCE-save-body-error-0557",
+  "provider": "Codex BALANCE",
+  "chatId": "01a0faaf-a06a-79a2-9def-58eb8ad10d65",
+  "chatIdSource": "previous confirmed role identity",
+  "received": {
+    "exactTimestamp": null,
+    "source": "supervisor direct delegation; TASK read first"
+  },
+  "coordinatorProvided": {
+    "checkpoint": "6c2dadab0b3a81a600e8358f485518cfcb122199",
+    "source": "TASK root-provided history",
+    "independentHeadObservation": false,
+    "changesCount": null
+  },
+  "inputs": {
+    "AGENTS.md": "fd59bef70960bcaf1ab9910051faa860362884e574ac2869fad05c6872ae04e4",
+    "tools/team-followup-20261002/supervisor-next/BALANCE/BALANCE-save-body-error-0557/TASK.md": "8bc92ab749312e2fafed1889355e1bea2752dbea64a1f435e526917a1449f99b",
+    "tools/team-followup-20261002/continuous/COMMON.md": "de5a881270625a7b2d0e854331205e01372a037340a18474c6442b60e668465e",
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/CONTINUOUS-DISPATCH-20261002.md": "ecd73a1eb8cd56d66fd1c026f5a1a8dafcbc3798a5d20aa9ea937d01bf0f9500",
+    "docs/15 세이브+데이터구조/15 세이브+데이터구조.md": "9c88a0ea27b4d34aeff5a5bc49d05fd75df714a33a1b05739e51ec64584d9d64",
+    "node-main.js": "541ff8e6f57db862ddbb1b148ee37a3a8e0da1e16293bc8343a0bc4144d80daf"
+  },
+  "execution": {
+    "startedAt": {
+      "UTC": "2026-10-02T05:59:32.406Z",
+      "KST": "2026-10-02T14:59:32.406+09:00"
+    },
+    "actualCwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "node": "v24.15.0",
+    "command": "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node tools/team-followup-20261002/supervisor-next/BALANCE/BALANCE-save-body-error-0557/checks.mjs",
+    "endedAt": {
+      "UTC": "2026-10-02T05:59:32.460Z",
+      "KST": "2026-10-02T14:59:32.460+09:00"
+    }
+  },
+  "ownedFiles": [
+    "checks.mjs",
+    "result.md",
+    "evidence.json"
+  ],
+  "skillUsage": [],
+  "externalAPIUsage": [],
+  "errors": [],
+  "source": {
+    "readAt": {
+      "UTC": "2026-10-02T05:59:32.414Z",
+      "KST": "2026-10-02T14:59:32.414+09:00"
+    },
+    "nodeSha256": "541ff8e6f57db862ddbb1b148ee37a3a8e0da1e16293bc8343a0bc4144d80daf",
+    "readBody": {
+      "sha256": "c74146a60b861e66a276841997b5e30589f72938edbc099e18662d7e800c74f5",
+      "source": "function readBody(req) {\n  return new Promise((resolve, reject) => {\n    const chunks = [];\n    req.on('data', c => chunks.push(c));\n    req.on('end', () => { try { resolve(JSON.parse(Buffer.concat(chunks).toString())); } catch(e){ reject(e); } });\n    req.on('error', reject);\n  });\n}"
+    },
+    "sendJSON": {
+      "sha256": "c09093657543e7fda7890b8848ac28dd3ae7a2ce903b26b6ed172efdc21e55d6",
+      "source": "function sendJSON(res, status, data) {\n  res.writeHead(status, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });\n  res.end(JSON.stringify(data));\n}"
+    },
+    "sanitizeSlot": {
+      "sha256": "1be40f5b0490a3a37b229e05c75143a728df7974981e39d94bcd32e184e156d0",
+      "source": "function sanitizeSlot(name) {\n  return String(name).replace(/[^a-zA-Z0-9가-힣_\\-]/g, '_').slice(0, 50);\n}"
+    },
+    "save": {
+      "sha256": "5780001a5c5db67aa226d9a21141a4486aefead828acf17bd7ceecb91d204818",
+      "source": "if (pathname === '/api/save' && req.method === 'POST') {\n    const body = await readBody(req);\n    const slot = sanitizeSlot(body.slot || 'default');\n    if (!body.data) return sendJSON(res, 400, { ok: false, error: 'No data' });\n    fs.writeFileSync(path.join(SAVE_DIR, slot + '.json'), JSON.stringify(body.data, null, 2), 'utf8');\n    return sendJSON(res, 200, { ok: true, slot });\n  }"
+    },
+    "candidate": {
+      "sha256": "990b5e8a173a849561d8f6d6fbe325ed7e7df360a53a708b3260df4bb341af24",
+      "source": "if (pathname === '/api/save' && req.method === 'POST') {\n  let body, slot;\n  try {\n    body = await readBody(req);\n    slot = sanitizeSlot(body.slot || 'default');\n    if (body.data) fs.writeFileSync(path.join(SAVE_DIR, slot + '.json'), JSON.stringify(body.data, null, 2), 'utf8');\n  } catch (error) {\n    return sendJSON(res, 500, { ok: false, error: 'Internal Server Error' });\n  }\n  if (!body.data) return sendJSON(res, 400, { ok: false, error: 'No data' });\n  return sendJSON(res, 200, { ok: true, slot });\n}",
+      "productionApplied": false
+    },
+    "sharedReadBodyCandidateApplied": false
+  },
+  "runs": [
+    {
+      "label": "current",
+      "inputKind": "request error only",
+      "trace": [
+        {
+          "op": "requestEvent",
+          "event": "error",
+          "error": {
+            "name": "Error",
+            "message": "synthetic request body failure",
+            "code": "ECONNRESET"
+          }
+        },
+        {
+          "op": "bodyRejected",
+          "error": {
+            "name": "Error",
+            "message": "synthetic request body failure",
+            "code": "ECONNRESET"
+          }
+        },
+        {
+          "op": "handlerRejected",
+          "error": {
+            "name": "Error",
+            "message": "synthetic request body failure",
+            "code": "ECONNRESET"
+          }
+        }
+      ],
+      "snapshots": [
+        {
+          "stage": "registered",
+          "microtaskTurns": 16,
+          "state": {
+            "body": "pending",
+            "bodySettles": 0,
+            "handler": "pending",
+            "handlerSettles": 0
+          },
+          "response": {
+            "status": null,
+            "headers": null,
+            "bytes": null,
+            "headCount": 0,
+            "endCount": 0
+          },
+          "writeCount": 0
+        },
+        {
+          "stage": "after_error",
+          "microtaskTurns": 16,
+          "state": {
+            "body": "rejected",
+            "bodySettles": 1,
+            "handler": "rejected",
+            "handlerSettles": 1,
+            "bodyError": {
+              "name": "Error",
+              "message": "synthetic request body failure",
+              "code": "ECONNRESET"
+            },
+            "handlerError": {
+              "name": "Error",
+              "message": "synthetic request body failure",
+              "code": "ECONNRESET"
+            }
+          },
+          "response": {
+            "status": null,
+            "headers": null,
+            "bytes": null,
+            "headCount": 0,
+            "endCount": 0
+          },
+          "writeCount": 0
+        }
+      ],
+      "state": {
+        "body": "rejected",
+        "bodySettles": 1,
+        "handler": "rejected",
+        "handlerSettles": 1,
+        "bodyError": {
+          "name": "Error",
+          "message": "synthetic request body failure",
+          "code": "ECONNRESET"
+        },
+        "handlerError": {
+          "name": "Error",
+          "message": "synthetic request body failure",
+          "code": "ECONNRESET"
+        }
+      },
+      "response": {
+        "status": null,
+        "headers": null,
+        "bytes": null,
+        "headCount": 0,
+        "endCount": 0
+      },
+      "writes": [],
+      "slotBytes": "{\"player\":{\"lv\":7},\"game\":{\"stage\":2},\"ts\":8}",
+      "sharedMatsBytes": "{\"mats\":4567,\"ts\":99}",
+      "successACK": 0,
+      "listeners": {
+        "data": 1,
+        "end": 1,
+        "error": 1,
+        "aborted": 0,
+        "close": 0
+      }
+    },
+    {
+      "label": "memory save catch candidate",
+      "inputKind": "request error only",
+      "trace": [
+        {
+          "op": "requestEvent",
+          "event": "error",
+          "error": {
+            "name": "Error",
+            "message": "synthetic request body failure",
+            "code": "ECONNRESET"
+          }
+        },
+        {
+          "op": "bodyRejected",
+          "error": {
+            "name": "Error",
+            "message": "synthetic request body failure",
+            "code": "ECONNRESET"
+          }
+        },
+        {
+          "op": "headers",
+          "status": 500
+        },
+        {
+          "op": "responseEnd",
+          "bytes": "{\"ok\":false,\"error\":\"Internal Server Error\"}"
+        },
+        {
+          "op": "handlerFulfilled",
+          "returnedValue": "undefined"
+        }
+      ],
+      "snapshots": [
+        {
+          "stage": "registered",
+          "microtaskTurns": 16,
+          "state": {
+            "body": "pending",
+            "bodySettles": 0,
+            "handler": "pending",
+            "handlerSettles": 0
+          },
+          "response": {
+            "status": null,
+            "headers": null,
+            "bytes": null,
+            "headCount": 0,
+            "endCount": 0
+          },
+          "writeCount": 0
+        },
+        {
+          "stage": "after_error",
+          "microtaskTurns": 16,
+          "state": {
+            "body": "rejected",
+            "bodySettles": 1,
+            "handler": "fulfilled",
+            "handlerSettles": 1,
+            "bodyError": {
+              "name": "Error",
+              "message": "synthetic request body failure",
+              "code": "ECONNRESET"
+            },
+            "returnedValue": "undefined"
+          },
+          "response": {
+            "status": 500,
+            "headers": {
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "*"
+            },
+            "bytes": "{\"ok\":false,\"error\":\"Internal Server Error\"}",
+            "headCount": 1,
+            "endCount": 1
+          },
+          "writeCount": 0
+        }
+      ],
+      "state": {
+        "body": "rejected",
+        "bodySettles": 1,
+        "handler": "fulfilled",
+        "handlerSettles": 1,
+        "bodyError": {
+          "name": "Error",
+          "message": "synthetic request body failure",
+          "code": "ECONNRESET"
+        },
+        "returnedValue": "undefined"
+      },
+      "response": {
+        "status": 500,
+        "headers": {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "bytes": "{\"ok\":false,\"error\":\"Internal Server Error\"}",
+        "headCount": 1,
+        "endCount": 1
+      },
+      "writes": [],
+      "slotBytes": "{\"player\":{\"lv\":7},\"game\":{\"stage\":2},\"ts\":8}",
+      "sharedMatsBytes": "{\"mats\":4567,\"ts\":99}",
+      "successACK": 0,
+      "listeners": {
+        "data": 1,
+        "end": 1,
+        "error": 1,
+        "aborted": 0,
+        "close": 0
+      }
+    },
+    {
+      "label": "current",
+      "inputKind": "normal complete body",
+      "trace": [
+        {
+          "op": "requestEvent",
+          "event": "data",
+          "bytes": "{\"slot\":\"영웅/../ A?\",\"data\":{\"player\":{\"lv\":9},\"game\":{\"stage\":4},\"ts\":80}}"
+        },
+        {
+          "op": "requestEvent",
+          "event": "end"
+        },
+        {
+          "op": "bodyFulfilled"
+        },
+        {
+          "op": "write",
+          "path": "/synthetic/영웅_____A_.json",
+          "bytes": "{\n  \"player\": {\n    \"lv\": 9\n  },\n  \"game\": {\n    \"stage\": 4\n  },\n  \"ts\": 80\n}",
+          "encoding": "utf8"
+        },
+        {
+          "op": "headers",
+          "status": 200
+        },
+        {
+          "op": "responseEnd",
+          "bytes": "{\"ok\":true,\"slot\":\"영웅_____A_\"}"
+        },
+        {
+          "op": "handlerFulfilled",
+          "returnedValue": "undefined"
+        }
+      ],
+      "snapshots": [
+        {
+          "stage": "registered",
+          "microtaskTurns": 16,
+          "state": {
+            "body": "pending",
+            "bodySettles": 0,
+            "handler": "pending",
+            "handlerSettles": 0
+          },
+          "response": {
+            "status": null,
+            "headers": null,
+            "bytes": null,
+            "headCount": 0,
+            "endCount": 0
+          },
+          "writeCount": 0
+        },
+        {
+          "stage": "after_end",
+          "microtaskTurns": 16,
+          "state": {
+            "body": "fulfilled",
+            "bodySettles": 1,
+            "handler": "fulfilled",
+            "handlerSettles": 1,
+            "returnedValue": "undefined"
+          },
+          "response": {
+            "status": 200,
+            "headers": {
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "*"
+            },
+            "bytes": "{\"ok\":true,\"slot\":\"영웅_____A_\"}",
+            "headCount": 1,
+            "endCount": 1
+          },
+          "writeCount": 1
+        }
+      ],
+      "state": {
+        "body": "fulfilled",
+        "bodySettles": 1,
+        "handler": "fulfilled",
+        "handlerSettles": 1,
+        "returnedValue": "undefined"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "bytes": "{\"ok\":true,\"slot\":\"영웅_____A_\"}",
+        "headCount": 1,
+        "endCount": 1
+      },
+      "writes": [
+        {
+          "path": "/synthetic/영웅_____A_.json",
+          "bytes": "{\n  \"player\": {\n    \"lv\": 9\n  },\n  \"game\": {\n    \"stage\": 4\n  },\n  \"ts\": 80\n}",
+          "encoding": "utf8"
+        }
+      ],
+      "slotBytes": "{\n  \"player\": {\n    \"lv\": 9\n  },\n  \"game\": {\n    \"stage\": 4\n  },\n  \"ts\": 80\n}",
+      "sharedMatsBytes": "{\"mats\":4567,\"ts\":99}",
+      "successACK": 1,
+      "listeners": {
+        "data": 1,
+        "end": 1,
+        "error": 1,
+        "aborted": 0,
+        "close": 0
+      }
+    },
+    {
+      "label": "memory save catch candidate",
+      "inputKind": "normal complete body",
+      "trace": [
+        {
+          "op": "requestEvent",
+          "event": "data",
+          "bytes": "{\"slot\":\"영웅/../ A?\",\"data\":{\"player\":{\"lv\":9},\"game\":{\"stage\":4},\"ts\":80}}"
+        },
+        {
+          "op": "requestEvent",
+          "event": "end"
+        },
+        {
+          "op": "bodyFulfilled"
+        },
+        {
+          "op": "write",
+          "path": "/synthetic/영웅_____A_.json",
+          "bytes": "{\n  \"player\": {\n    \"lv\": 9\n  },\n  \"game\": {\n    \"stage\": 4\n  },\n  \"ts\": 80\n}",
+          "encoding": "utf8"
+        },
+        {
+          "op": "headers",
+          "status": 200
+        },
+        {
+          "op": "responseEnd",
+          "bytes": "{\"ok\":true,\"slot\":\"영웅_____A_\"}"
+        },
+        {
+          "op": "handlerFulfilled",
+          "returnedValue": "undefined"
+        }
+      ],
+      "snapshots": [
+        {
+          "stage": "registered",
+          "microtaskTurns": 16,
+          "state": {
+            "body": "pending",
+            "bodySettles": 0,
+            "handler": "pending",
+            "handlerSettles": 0
+          },
+          "response": {
+            "status": null,
+            "headers": null,
+            "bytes": null,
+            "headCount": 0,
+            "endCount": 0
+          },
+          "writeCount": 0
+        },
+        {
+          "stage": "after_end",
+          "microtaskTurns": 16,
+          "state": {
+            "body": "fulfilled",
+            "bodySettles": 1,
+            "handler": "fulfilled",
+            "handlerSettles": 1,
+            "returnedValue": "undefined"
+          },
+          "response": {
+            "status": 200,
+            "headers": {
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "*"
+            },
+            "bytes": "{\"ok\":true,\"slot\":\"영웅_____A_\"}",
+            "headCount": 1,
+            "endCount": 1
+          },
+          "writeCount": 1
+        }
+      ],
+      "state": {
+        "body": "fulfilled",
+        "bodySettles": 1,
+        "handler": "fulfilled",
+        "handlerSettles": 1,
+        "returnedValue": "undefined"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "bytes": "{\"ok\":true,\"slot\":\"영웅_____A_\"}",
+        "headCount": 1,
+        "endCount": 1
+      },
+      "writes": [
+        {
+          "path": "/synthetic/영웅_____A_.json",
+          "bytes": "{\n  \"player\": {\n    \"lv\": 9\n  },\n  \"game\": {\n    \"stage\": 4\n  },\n  \"ts\": 80\n}",
+          "encoding": "utf8"
+        }
+      ],
+      "slotBytes": "{\n  \"player\": {\n    \"lv\": 9\n  },\n  \"game\": {\n    \"stage\": 4\n  },\n  \"ts\": 80\n}",
+      "sharedMatsBytes": "{\"mats\":4567,\"ts\":99}",
+      "successACK": 1,
+      "listeners": {
+        "data": 1,
+        "end": 1,
+        "error": 1,
+        "aborted": 0,
+        "close": 0
+      }
+    }
+  ],
+  "verification": {
+    "status": "PASS_BODY_ERROR_REPRODUCED_CATCH_CANDIDATE_NORMAL_EQUIVALENT",
+    "failureInputs": 1,
+    "normalInputs": 1,
+    "policies": 2,
+    "totalSourceRuns": 4,
+    "previousTestsRerun": 0,
+    "productionApplied": false,
+    "sharedReadBodyCandidateApplied": false,
+    "runtimeVerified": false
+  },
+  "docsSearch": {
+    "command": "rg -n \"readBody|/api/save|sanitizeSlot|No data|Internal Server Error\" docs/",
+    "exitCode": 0,
+    "matchCount": 27,
+    "outputSha256": "d437a7d1a4c34516fb065c4a4f006545108e18a509f39b6522c1bcb505578832",
+    "matchedDocuments": [
+      "docs/API연결_가이드.md",
+      "docs/13출시·마케팅/PUBLISHER_REDELIVERY_20260930.md",
+      "docs/13출시·마케팅/INTEGRATION_BUILD_TEAM_MASTER.md",
+      "docs/15 세이브+데이터구조/15 세이브+데이터구조.md",
+      "docs/0마스터플랜/EA/HELL_EA_BUILD_CHECKLIST.md",
+      "docs/12퍼포먼스·최적화/QA_PERFORMANCE_TEAM_MASTER.md",
+      "docs/4.1맵디자인+설정/CH1_1_FINAL_REVIEW_20260916.md",
+      "docs/CHANGELOG_SYNC.md",
+      "docs/14밸런스+수치테이블/BALANCE_ECONOMY_TEAM_MASTER.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PM-TEST-SUPPORT-20261002.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/INTEGRATION-REVIEW-20261002.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/supervisor/SUPERVISOR_STATE.json",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/busy-save-independent-result.md",
+      "docs/cinematic/WARINTRO_CREATION_RUNTIME_20260910.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/CONTINUOUS-INTEGRATION-20261002.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/SERVER-INTEGRATION-20261002.md"
+    ]
+  },
+  "inputDriftAtEnd": [],
+  "status": "COMPLETED_MEMORY_SAVE_CATCH_CANDIDATE_UNAPPLIED",
+  "limits": [
+    "request error/end only; close/aborted/late-error cases not repeated",
+    "harness rejection observer does not catch or respond inside production route",
+    "candidate catch includes body read/parse, sanitize, data test and direct write; responses400/200 outside catch; failure sendJSON errors not caught",
+    "No-data400 is source-preserved but not executed; fs exception/partialwrite/response errors not tested",
+    "candidate accesses plain JSON body.data twice; exotic getters/proxies not tested",
+    "No actual HTTP/IncomingMessage/NW.js/process crash/disk/atomic/fsync/cleanup/concurrency claim"
+  ],
+  "constraints": {
+    "GitCommands": 0,
+    "productionWrites": 0,
+    "sharedDocsWrites": 0,
+    "previousOutputsWrites": 0,
+    "server": 0,
+    "HTTP": 0,
+    "socket": 0,
+    "game": 0,
+    "UI": 0,
+    "build": 0,
+    "install": 0,
+    "newSessions": 0,
+    "subagents": 0,
+    "externalMessages": 0,
+    "filesystemDeletes": 0,
+    "moves": 0,
+    "cleanup": 0
+  },
+  "commands": {
+    "syntaxCheck": {
+      "exitCode": 0,
+      "runs": 1,
+      "command": "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node --check tools/team-followup-20261002/supervisor-next/BALANCE/BALANCE-save-body-error-0557/checks.mjs"
+    },
+    "fixture": {
+      "exitCode": 0,
+      "runs": 1,
+      "command": "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node tools/team-followup-20261002/supervisor-next/BALANCE/BALANCE-save-body-error-0557/checks.mjs"
+    },
+    "docsSearch": {
+      "exitCode": 0,
+      "runs": 1,
+      "command": "rg -n \"readBody|/api/save|sanitizeSlot|No data|Internal Server Error\" docs/"
+    },
+    "requiredReads": {
+      "exitCode": 0
+    },
+    "artifactValidation": {
+      "exitCode": 0,
+      "fixtureRerun": false
+    }
+  },
+  "artifactValidation": {
+    "status": "PASS",
+    "inputDrift": [],
+    "ownedFileSetExact": true,
+    "checksSha256": "34448f0b4fc0c219c05a49145aede32af9af9ff3a82ba794ea38bfa8c2ab8976",
+    "resultSha256": "5b826df270a95a8f3b8b31e985e11490c96f972b337f89dd05b77759d9448525",
+    "completedAtUTC": "2026-10-02T06:00:28.599583+00:00",
+    "completedAtKST": "2026-10-02T15:00:28.599583+09:00"
+  },
+  "usedTools": [
+    "functions.exec",
+    "tools.exec_command: Read/designated Node/rg/Python artifact validation",
+    "tools.apply_patch: owned files only"
+  ]
+}

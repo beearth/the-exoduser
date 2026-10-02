@@ -52113,3 +52113,8 @@ Codex7의 새 TASK 실제 read 명령/exit0를 registry에 기록했다. Claude8
 ## 2026-10-02 감독 완료34파일 인수 checkpoint
 
 감독의 실제 완료 turn/end_turn에 연결된34개 SHA/bytes를 대조했고 UIUX3개는f2e70ef7에동일바이트로이미보존돼제외했다. 나머지31개 source검사/후보/보고서와통합인수표를보존한다. 생산적용/실제품인수0·기존검사재실행0이며 SOUND동순위포화/QArestore실패/BOSS14vs15문구충돌/Quest retry HOLD/ITEM lifecycle 미결을완료와구분한다. 진행중supervisor-next·감독STATE/LOG·기존사용자23항목은제외한다. docs전체관련키워드검색및정확SHA백업기록을함께남겼다. CONTINUOUS-INTEGRATION-20261002.md의소유표와후속Gate를따른다.
+
+
+## 2026-10-02 mortar focus lifetime and completed specialist checkpoint
+
+Both HTML P guards now cancel mortar aim/charge on blur/hidden. Actual-source 2 GREEN / 2 negative RED / 2 normal equality / 12 boundary PASS, isolated runs24, inline JS12/importmaps2 PASS. Five canonical byte prefixes preserved. Game/native/visual/audio remain unaccepted; no cost/cooldown/fusion/RNG policy changes. Next supervisor completed source/report files are SHA-pinned and preserved with pending review distinguished from production adoption. Narrow BUILD-helper-integrity text ignore exception only. Root-priority CH1-1 boss-death reset investigation continues separately. Active outputs, supervisor STATE/LOG and original23 user pending items excluded.

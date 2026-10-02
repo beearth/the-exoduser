@@ -12276,7 +12276,7 @@ function _clearHeldInput(){
   for(const b in MB)MB[b]=false;
   for(const b in MBjust)MBjust[b]=false;
   _dashHold=false;_dashHoldF=0;_dashTier=0; // 쉬프트 홀드 무장 해제 (팬텀 릴리즈/재발사 차단)
-  if(typeof P!=='undefined'&&P)P._beamHold=false;
+  if(typeof P!=='undefined'&&P){P._beamHold=false;P._mmAiming=false;P._mmCharging=false}
   _cutSkipHolding=false;_cutSkipHold=0;
 }
 addEventListener('blur',_clearHeldInput);

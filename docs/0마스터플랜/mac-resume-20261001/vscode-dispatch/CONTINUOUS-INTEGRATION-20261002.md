@@ -25,3 +25,12 @@
 완료 산출 보존은 생산 적용 또는 실게임·GPU·시각·실저장·청취·배포 검수 통과를 뜻하지 않는다. 당시 제출 source SHA 및 제공 commit은 역사 입력으로 보존한다. 이미 완료한 검사를 이 checkpoint 때문에 재실행하지 않았다.
 
 관련 전체 docs 키워드 검색과 파일별 SHA/소유/완료 영수증·백업은 `tmp/mac-migration-runtime/continued-review-20261002/completed34-checkpoint/`에 기록했다. production source 변경0이며 새 도구 검사 소스와 이 docs/CHANGELOG 기록을 같은 commit에 포함한다. 원격 exact SHA 검증은 commit 후 수행하고 결과를 별도 receipt에 기록한다.
+
+
+## 2026-10-02 mortar focus integration and next completed-output checkpoint
+
+Production change is limited to the two mortar cancellation flags inside the existing P guard of _clearHeldInput in both HTML files (39 added bytes each). Actual-source verification: 2 GREEN, cancel-removed memory negative controls 2 RED, normal complete fixture effects equal in both variants, 12 boundary PASS, 24 isolated executions; 12 inline JS and 2 import maps syntax PASS. Native/full-update/hidden-rAF/game/audio acceptance remains false. Costs, cooldowns, fusion and RNG contracts are unchanged. Five canonical docs preserve their original byte prefixes and line endings. Receipt: tmp/mac-migration-runtime/continued-review-20261002/mortar-focus-backup/receipt.json.
+
+The next supervisor-completed files are preserved as original reports and test sources, including review-pending submissions. Preservation does not adopt those production candidates. BUILD/SOUND candidates await root integration; BOSS/ART/STORY time or taxonomy conflicts are retained as historical reports with supervisor corrections; ITEM flags remain false; BALANCE shared-body/save, UIUX, Quest, QA and ANIMVFX follow-up gates are distinct. Existing specialist checks were not repeated. Exactly four BUILD-helper-integrity-0543 text paths are unignored; other build/runtime/private outputs stay ignored. Active task outputs and mutable supervisor STATE/LOG remain excluded.
+
+User-priority CH1-1 boss-death field progress reset is owned by root and under investigation. This checkpoint does not yet change boss respawn source. Original 23 user pending items, saves and the user game tab are preserved.

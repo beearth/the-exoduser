@@ -1,0 +1,98 @@
+{
+  "taskId": "ART-emg1-local-details-0553",
+  "role": "ART",
+  "model": "claude-opus-4-8",
+  "provider": "claude-native (VS Code 직연결 Claude6)",
+  "requestedBy": "peer Claude session (작업감독/supervisor 다음 한 건 전달); 사용자 직접 타이핑 아님",
+  "confirmedChatId": null,
+  "confirmedSessionId": null,
+  "taskFile": "tools/team-followup-20261002/supervisor-next/ART/ART-emg1-local-details-0553/TASK.md",
+  "taskFileSha256": "cd6a81a434e29ffd8f4410093db2454e2ddfa2bd6ecea2611e7b591df1b12382",
+  "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+  "providedRemoteCheckpointFromPM": {
+    "checkpoint": "6c2dadab0b3a81a600e8358f485518cfcb122199",
+    "context": "2026-10-02T05:53 전후 검증 이력",
+    "independentHeadObserved": false,
+    "gitQueried": false
+  },
+  "timeline": {
+    "startUTC": "2026-10-02T05:53:30Z",
+    "startKST": "2026-10-02T14:53:30+09:00",
+    "completedUTC": "2026-10-02T05:56:00Z",
+    "completedKST": "2026-10-02T14:56:00+09:00"
+  },
+  "changesCount": null,
+  "changesCountNote": "이 과제는 Git 조회 0 규칙 → Changes 독립 관측 안 함. count는 감독 추적(제공 이력 없음 → null).",
+  "priorTaskTimelineCorrectionFromSupervisor": {
+    "newInstructionReceivedUTC": "2026-10-02T05:45:02.021Z",
+    "priorTaskReadUTC": "2026-10-02T05:45:09.046Z",
+    "priorCompletedEndTurnUTC": "2026-10-02T05:50:10.127Z",
+    "note": "이전 report의 start05:43/완료05:48·Changes56은 최신 관측으로 쓰지 않음(감독 정정 반영)."
+  },
+  "priorOverclaimCorrected": "ART-emg1-candidate-review-0545 본문의 'LOCK 3종 모두 시각 대조'는 정정: 실제 시각 대조는 identity·face 2종. warrior_cut은 메타만 읽음.",
+  "ownedOutputs": [
+    { "path": "tools/team-followup-20261002/supervisor-next/ART/ART-emg1-local-details-0553/result.md", "sha256": "2eeec84b33717f88f64ecc17ebd12ae731a45540f12df0dc95ea3463d52f3ed8" },
+    { "path": "tools/team-followup-20261002/supervisor-next/ART/ART-emg1-local-details-0553/evidence.json", "sha256": "self" }
+  ],
+  "docsRead": [
+    "tools/team-followup-20261002/supervisor-next/ART/ART-emg1-local-details-0553/TASK.md",
+    "tools/team-followup-20261002/continuous/COMMON.md (이전 세션 Read 인수)",
+    "docs/11내러티브·로어디자인/WARRIOR_DESIGN_LOCK.md (이전 세션 Read 인수)"
+  ],
+  "imageToolUsed": "Read (뷰어, 전프레임 전용 — 영역확대/native 1:1 크롭 미지원)",
+  "displayScale": { "native": "2048x1152", "displayed": "2000x1125", "mapFactor": 1.02, "effective": "0.977x native, 전프레임 1장" },
+  "regionFindings": [
+    {
+      "region": "전사 얼굴/눈",
+      "approxNativePx": "x933-979,y291-326 (머리~46x35, 얼굴~20-25, 홍채~2-3)",
+      "observable": "짧은 흑발, 창백한 얼굴 톤, 목 갑옷 깃, 뒤 암적 망토, 보라 안광/보라 픽셀 없음",
+      "unresolved": "눈 색(짙은눈 compliance), 이목구비 신원, 얼굴 문양",
+      "verdict": "UNKNOWN",
+      "violetEyeViolation": "징후 없음(미확정)"
+    },
+    {
+      "region": "전사 손/대검 그립",
+      "approxNativePx": "x985-1010,y331-353 (그립~26x22, 손가락~3)",
+      "observable": "양손 자루 파지, 양팔 거상, 자루1·팔2 정상(여분/결손 없음)",
+      "unresolved": "손가락 개수·마디 해부",
+      "verdict": "GROSS_PASS / FINE_UNKNOWN"
+    },
+    {
+      "region": "궁수 활손",
+      "approxNativePx": "활손 x1288-1314,y681-703 / 시위손 x1212-1236,y697-716 (손~18-26, 손가락~2-3)",
+      "observable": "활 리저 파지+시위 당김 양손 궁술자세, 주황 화살 노킹, 양팔 정상",
+      "unresolved": "손가락 해부·리저 접점 세부",
+      "verdict": "GROSS_PASS / FINE_UNKNOWN"
+    }
+  ],
+  "faceRefComparison": "warrior_face_ref.png(410x484) vs 후보 얼굴(~35px): 해상도 10배+ 격차로 '짧은 흑발 존재' 외 신원 대조 불성립 → 얼굴 신원 UNKNOWN 유지. 미해상 얼굴 추정 복원 0.",
+  "imageReadThisSession": [
+    { "path": "output/cutscene_remaster_20260930/warintro_candidates_unreviewed/emg1_candidate2_retry.jpg", "sha256": "ca3802be4bab276452395427eb03ca3ff422d9c478fbc5b50f4dec1fdab49ae2", "bytes": 612213, "mtime": "2026-10-01T05:18:35", "viewedFullFrame": true }
+  ],
+  "imageRefMetaOnly": [
+    { "path": "docs/11내러티브·로어디자인/assets/warrior_face_ref.png", "sha256": "b8aae22efd571298731ebee12061ef9b76ce4542e3c816af97a99d15347f0648", "note": "비교 기준(이전 세션 시각 열람 인수)" }
+  ],
+  "toolsUsed": [
+    { "tool": "Read", "purpose": "TASK·이미지 전프레임 읽기" },
+    { "tool": "Bash", "purpose": "stat/shasum/rg/date 읽기전용. Git 미사용", "exit": 0, "errors": "none" },
+    { "tool": "Write", "purpose": "소유 2파일 작성" }
+  ],
+  "skillsUsed": [],
+  "mcpUsed": [],
+  "paidToolCalled": false,
+  "imageGenerationEditRecrop": false,
+  "gitQueriedOrWritten": false,
+  "productionApplied": false,
+  "originalOrCandidateLinked": false,
+  "realGameCoverSubtitleGpuPass": false,
+  "repeatedPriorChecks": false,
+  "canonicalHandoff": [
+    "docs/17게임아트팀/ART_TEAM_MASTER.md:214 (KEEP-HOLD 주석 하위) → 손/활손 그로스 PASS·눈색 UNKNOWN(해상 불가) 문안 제안"
+  ],
+  "handoffDependencies": [
+    "총괄/root: result §4 문안 ART_TEAM_MASTER:214 순차 반영 (공유 docs·Git은 root)",
+    "ART: 전사 얼굴 신원 확정은 얼굴이 큰 다른 컷에서만 가능 — emg1 조감에서는 구조적 불가",
+    "root + QA/BUILD: 채택은 원본 보존·연결·실게임 COVER/자막 Gate 이후"
+  ],
+  "status": "completed"
+}

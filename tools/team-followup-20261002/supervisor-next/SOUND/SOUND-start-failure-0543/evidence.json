@@ -1,0 +1,1356 @@
+{
+  "taskId": "SOUND-start-failure-0543",
+  "provider": "Codex",
+  "chatId": "01a0faaf-956a-74a3-9bf1-77032f124e2d",
+  "supervisorChatId": "01a0fb1e-4ec3-7dd3-bba2-f87518e881fa",
+  "sessionId": null,
+  "status": "CURRENT_RED_MEMORY_GREEN_NORMAL_EQUIVALENT",
+  "productionApplied": false,
+  "priorityPolicyAdopted": false,
+  "receipt": {
+    "firstTaskReadChunk": "f8b985",
+    "exitCode": 0,
+    "exactInboundTimestamp": null,
+    "firstReadAt": null
+  },
+  "execution": {
+    "startedAt": "2026-10-02T05:45:59.682Z",
+    "completedAt": "2026-10-02T05:45:59.800Z",
+    "startedAtKST": "2026-10-02 14:45:59.682 KST",
+    "completedAtKST": "2026-10-02 14:45:59.800 KST",
+    "node": "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node",
+    "version": "v24.15.0",
+    "uniqueSourceGroups": 1,
+    "uniqueInputs": 2,
+    "sourceExecutions": 4,
+    "comparisons": 1,
+    "assertionFailures": 0,
+    "exitCode": 0,
+    "command": [
+      "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node",
+      "tools/team-followup-20261002/supervisor-next/SOUND/SOUND-start-failure-0543/checks.mjs"
+    ],
+    "old3_7_31_84Reruns": 0
+  },
+  "paths": {
+    "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "rootReal": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "ownerReal": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/supervisor-next/SOUND/SOUND-start-failure-0543",
+    "initialFiles": [
+      "TASK.md",
+      "checks.mjs"
+    ]
+  },
+  "reads": [
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/supervisor-next/SOUND/SOUND-start-failure-0543/TASK.md",
+      "at": "2026-10-02T05:45:59.683Z",
+      "sha256": "4f8031b604769963983729b0ec49c32d207b20fa43b30281998e8286897f01d2",
+      "bytes": 3705
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/COMMON.md",
+      "at": "2026-10-02T05:45:59.683Z",
+      "sha256": "de5a881270625a7b2d0e854331205e01372a037340a18474c6442b60e668465e",
+      "bytes": 3373
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/AGENTS.md",
+      "at": "2026-10-02T05:45:59.683Z",
+      "sha256": "fd59bef70960bcaf1ab9910051faa860362884e574ac2869fad05c6872ae04e4",
+      "bytes": 26076
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md",
+      "at": "2026-10-02T05:45:59.683Z",
+      "sha256": "9568410db4e0b66f3b603b8335d779b647ea5fa15461e87be94e47ee2159f7c8",
+      "bytes": 134920
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROVIDER-HALVES-20261002.md",
+      "at": "2026-10-02T05:45:59.683Z",
+      "sha256": "16cbe4b9d0c9d0e0e8cabc1ac8d4f7718f78b4e013b6e5cb169e5bb6d397be6d",
+      "bytes": 11624
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/6사운드디자인/6사운드디자인.md",
+      "at": "2026-10-02T05:45:59.684Z",
+      "sha256": "39f97d11bfc34e89647e2230acaea1777d5c6654aaf6378b83135d29cb1ecea4",
+      "bytes": 73452
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/SOUND/result.md",
+      "at": "2026-10-02T05:45:59.684Z",
+      "sha256": "3232737df1efef936a466aea2c450304a743d5e217b827ff3243c15b213d2769",
+      "bytes": 9539
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/SOUND/evidence.json",
+      "at": "2026-10-02T05:45:59.684Z",
+      "sha256": "3c5ec415472ef5e053e03b5644f5ea13d01cb70fef69c19adbd2a71ece2bdeac",
+      "bytes": 293369
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/node-main.js",
+      "at": "2026-10-02T05:45:59.685Z",
+      "sha256": "541ff8e6f57db862ddbb1b148ee37a3a8e0da1e16293bc8343a0bc4144d80daf",
+      "bytes": 10282
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+      "at": "2026-10-02T05:45:59.685Z",
+      "sha256": "2e45ee0e9ad909b378bf1a7b864818ce442a4c3e17b12360b42e363dc7d0bd94",
+      "bytes": 4025390
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game-easy-test.html",
+      "at": "2026-10-02T05:45:59.731Z",
+      "sha256": "3e5969ca139497c2efb312dc720ab53eb42a8d1912c8288caa2ce858cfd5120a",
+      "bytes": 3902515
+    }
+  ],
+  "sources": [
+    {
+      "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+      "sha256": "2e45ee0e9ad909b378bf1a7b864818ce442a4c3e17b12360b42e363dc7d0bd94",
+      "fingerprint": "65eacaa7c35ffa505b8338e50da55e2afe736eadcf202b3fc5f288cd1136015e",
+      "priorHistoricalSHA": "6c77ec6f571f4de9cb199a2ac425eb3f0450205bcf6f1d883ac8d13135ac4b43",
+      "blocks": [
+        {
+          "name": "_r",
+          "sha256": "a2ae931f0268caf75ddb17d752c77cd32960a6cf59eac23be2db7dc76dda8ab3",
+          "line": 12004,
+          "endLine": 12004
+        },
+        {
+          "name": "playSample",
+          "sha256": "4305df5cdb884bda6cfe83fc670852d5d7a3d02937e4087ea3f59eebaff6bc79",
+          "line": 11899,
+          "endLine": 11911
+        },
+        {
+          "name": "_sfxFrameReset",
+          "sha256": "a1e9ed017b19ea9adb736eaa53ff9f1b9f548db8b14763ed7068854a54705370",
+          "line": 11840,
+          "endLine": 11867
+        },
+        {
+          "name": "_playSampleNow",
+          "sha256": "9b0733ee9355782ea98e0e959eafec27e04544b850c8b33eb0c076d1b2459e4a",
+          "line": 11800,
+          "endLine": 11839
+        },
+        {
+          "name": "_evictLowest",
+          "sha256": "01e85bff85d87d3121731a046b9308f4bbd0e206d6259143bb689404de144e88",
+          "line": 11793,
+          "endLine": 11799
+        },
+        {
+          "name": "_sfxPri",
+          "sha256": "ddb3b9c901afd6dca96d917fb79dbcd164ed802b4dfea2287394c23c253738d5",
+          "line": 11778,
+          "endLine": 11792
+        },
+        {
+          "name": "_sfxCat",
+          "sha256": "b46865084a6cd213875c288681d8ddc3bd6f72446e604778c9ec9713c2695e8b",
+          "line": 11883,
+          "endLine": 11895
+        },
+        {
+          "name": "_isFootstepSfx",
+          "sha256": "d3f6179e260c9264ff417dc356f789044609d495d7f9d8a70f3ce01be882f853",
+          "line": 11777,
+          "endLine": 11777
+        },
+        {
+          "name": "_isSkillSfx",
+          "sha256": "1eb9ed929a4b063ee1f8f7f418a8ba92a771149482be8d3eb2ef8eb8f1d1f73a",
+          "line": 11897,
+          "endLine": 11897
+        },
+        {
+          "name": "_MAX_ACTIVE_NODES",
+          "sha256": "7fc65f673a1f32ef796b08234996170426b4e5c133f37aa43452143a63ff4267",
+          "line": 11767,
+          "endLine": 11767
+        },
+        {
+          "name": "_SFX_MAX",
+          "sha256": "409644afebe7967ebe57352442c4a6f0080359debd5d948c8b93e55845781470",
+          "line": 11768,
+          "endLine": 11768
+        },
+        {
+          "name": "_SFX_PER_FRAME",
+          "sha256": "74b8f6406e429a980e5ba25120e30f4b8a23df18c60a945998f79759083745b9",
+          "line": 11770,
+          "endLine": 11770
+        },
+        {
+          "name": "_SFX_PRI",
+          "sha256": "3d026a723da2d9ff5693b3f8486f2a8790854f0a43f84313ffc40d6836e5e965",
+          "line": 11772,
+          "endLine": 11772
+        },
+        {
+          "name": "_SKILL_SFX_KEYS",
+          "sha256": "e2b7bd8e642492759d2ac39c2cab43f6f932bda35f7061269f41effaaaf71271",
+          "line": 11896,
+          "endLine": 11896
+        },
+        {
+          "name": "_MAX_PROJ_NODES",
+          "sha256": "9d7cf03015d8a1c8f5526ef3c01d78976c13fe836538330b6ae47253cb2fb04d",
+          "line": 11774,
+          "endLine": 11774
+        },
+        {
+          "name": "_MAX_HIT_NODES",
+          "sha256": "f4c08800ccc4a5e6909ad405ab1469fbf9bff17ce6a1fe935e40f900a6f13011",
+          "line": 11775,
+          "endLine": 11775
+        },
+        {
+          "name": "_MAX_STEP_NODES",
+          "sha256": "f6dc8c7eb4e4453f936f6a7f862132a9e7b52108edd18ce35edbacb20a4318c1",
+          "line": 11776,
+          "endLine": 11776
+        }
+      ]
+    },
+    {
+      "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game-easy-test.html",
+      "sha256": "3e5969ca139497c2efb312dc720ab53eb42a8d1912c8288caa2ce858cfd5120a",
+      "fingerprint": "65eacaa7c35ffa505b8338e50da55e2afe736eadcf202b3fc5f288cd1136015e",
+      "priorHistoricalSHA": "c40ea16180305a3d0043d1c9dfa9091096820e589e537a893d5d28fff56528d0",
+      "blocks": [
+        {
+          "name": "_r",
+          "sha256": "a2ae931f0268caf75ddb17d752c77cd32960a6cf59eac23be2db7dc76dda8ab3",
+          "line": 11408,
+          "endLine": 11408
+        },
+        {
+          "name": "playSample",
+          "sha256": "4305df5cdb884bda6cfe83fc670852d5d7a3d02937e4087ea3f59eebaff6bc79",
+          "line": 11303,
+          "endLine": 11315
+        },
+        {
+          "name": "_sfxFrameReset",
+          "sha256": "a1e9ed017b19ea9adb736eaa53ff9f1b9f548db8b14763ed7068854a54705370",
+          "line": 11244,
+          "endLine": 11271
+        },
+        {
+          "name": "_playSampleNow",
+          "sha256": "9b0733ee9355782ea98e0e959eafec27e04544b850c8b33eb0c076d1b2459e4a",
+          "line": 11204,
+          "endLine": 11243
+        },
+        {
+          "name": "_evictLowest",
+          "sha256": "01e85bff85d87d3121731a046b9308f4bbd0e206d6259143bb689404de144e88",
+          "line": 11197,
+          "endLine": 11203
+        },
+        {
+          "name": "_sfxPri",
+          "sha256": "ddb3b9c901afd6dca96d917fb79dbcd164ed802b4dfea2287394c23c253738d5",
+          "line": 11182,
+          "endLine": 11196
+        },
+        {
+          "name": "_sfxCat",
+          "sha256": "b46865084a6cd213875c288681d8ddc3bd6f72446e604778c9ec9713c2695e8b",
+          "line": 11287,
+          "endLine": 11299
+        },
+        {
+          "name": "_isFootstepSfx",
+          "sha256": "d3f6179e260c9264ff417dc356f789044609d495d7f9d8a70f3ce01be882f853",
+          "line": 11181,
+          "endLine": 11181
+        },
+        {
+          "name": "_isSkillSfx",
+          "sha256": "1eb9ed929a4b063ee1f8f7f418a8ba92a771149482be8d3eb2ef8eb8f1d1f73a",
+          "line": 11301,
+          "endLine": 11301
+        },
+        {
+          "name": "_MAX_ACTIVE_NODES",
+          "sha256": "7fc65f673a1f32ef796b08234996170426b4e5c133f37aa43452143a63ff4267",
+          "line": 11171,
+          "endLine": 11171
+        },
+        {
+          "name": "_SFX_MAX",
+          "sha256": "409644afebe7967ebe57352442c4a6f0080359debd5d948c8b93e55845781470",
+          "line": 11172,
+          "endLine": 11172
+        },
+        {
+          "name": "_SFX_PER_FRAME",
+          "sha256": "74b8f6406e429a980e5ba25120e30f4b8a23df18c60a945998f79759083745b9",
+          "line": 11174,
+          "endLine": 11174
+        },
+        {
+          "name": "_SFX_PRI",
+          "sha256": "3d026a723da2d9ff5693b3f8486f2a8790854f0a43f84313ffc40d6836e5e965",
+          "line": 11176,
+          "endLine": 11176
+        },
+        {
+          "name": "_SKILL_SFX_KEYS",
+          "sha256": "e2b7bd8e642492759d2ac39c2cab43f6f932bda35f7061269f41effaaaf71271",
+          "line": 11300,
+          "endLine": 11300
+        },
+        {
+          "name": "_MAX_PROJ_NODES",
+          "sha256": "9d7cf03015d8a1c8f5526ef3c01d78976c13fe836538330b6ae47253cb2fb04d",
+          "line": 11178,
+          "endLine": 11178
+        },
+        {
+          "name": "_MAX_HIT_NODES",
+          "sha256": "f4c08800ccc4a5e6909ad405ab1469fbf9bff17ce6a1fe935e40f900a6f13011",
+          "line": 11179,
+          "endLine": 11179
+        },
+        {
+          "name": "_MAX_STEP_NODES",
+          "sha256": "f6dc8c7eb4e4453f936f6a7f862132a9e7b52108edd18ce35edbacb20a4318c1",
+          "line": 11180,
+          "endLine": 11180
+        }
+      ]
+    }
+  ],
+  "memoryEdits": [
+    {
+      "files": [
+        "game.html",
+        "game-easy-test.html"
+      ],
+      "changes": 1,
+      "target": "_playSampleNow",
+      "old": "src.start(startTime||0);",
+      "patch": "try{src.start(startTime||0);}catch(e){_nd._dn();throw e;}",
+      "oldFragmentSha256": "c80abd0156f02464862b2ac008d3ed7a8e2a7c1085f901291a549d99cd632b7c",
+      "patchFragmentSha256": "fce643fdfa8c8f1aacb20099c9e93863ccbc575d188356bc1f983e4841825a10",
+      "originalFunctionSha256": "9b0733ee9355782ea98e0e959eafec27e04544b850c8b33eb0c076d1b2459e4a",
+      "memoryFunctionSha256": "88f298c061d8a71d3df7bf34a30a15de54a42f5e66faa22c452a7dd71aff32e7",
+      "productionApplied": false
+    }
+  ],
+  "records": [
+    {
+      "id": "start-throws-current",
+      "inputKind": "start exception",
+      "candidate": false,
+      "sourceFiles": [
+        "game.html",
+        "game-easy-test.html"
+      ],
+      "status": "PASS",
+      "trace": [
+        {
+          "index": 0,
+          "phase": "flush",
+          "clockMs": 100,
+          "type": "backend.enter",
+          "key": "ghost_laugh",
+          "override": null
+        },
+        {
+          "index": 1,
+          "phase": "flush",
+          "clockMs": 100,
+          "type": "createBufferSource"
+        },
+        {
+          "index": 2,
+          "phase": "flush",
+          "clockMs": 100,
+          "type": "createGain"
+        },
+        {
+          "index": 3,
+          "phase": "flush",
+          "clockMs": 100,
+          "type": "gain.connect",
+          "target": "bus0"
+        },
+        {
+          "index": 4,
+          "phase": "flush",
+          "clockMs": 100,
+          "type": "src.connect",
+          "target": "gain0"
+        },
+        {
+          "index": 5,
+          "phase": "flush",
+          "clockMs": 100,
+          "type": "timer.schedule",
+          "delayMs": 700
+        },
+        {
+          "index": 6,
+          "phase": "flush",
+          "clockMs": 100,
+          "type": "src.start.attempt",
+          "at": 0.1,
+          "active": {
+            "count": 1,
+            "nodes": [
+              {
+                "key": "ghost_laugh",
+                "pri": 9,
+                "startedMs": 100
+              }
+            ],
+            "queue": [
+              {
+                "key": "ghost_laugh",
+                "vol": 0.8,
+                "rate": 1.1856
+              }
+            ],
+            "lastT": {
+              "ghost_laugh": 100
+            }
+          },
+          "rate": 1.1856
+        },
+        {
+          "index": 7,
+          "phase": "flush",
+          "clockMs": 100,
+          "type": "src.start.throw"
+        },
+        {
+          "index": 8,
+          "phase": "flush",
+          "clockMs": 100,
+          "type": "fixture.catches-original-error",
+          "sameIdentity": true,
+          "name": "FixtureStartError"
+        },
+        {
+          "index": 9,
+          "phase": "held-timeout",
+          "clockMs": 800,
+          "type": "src.disconnect"
+        },
+        {
+          "index": 10,
+          "phase": "held-timeout",
+          "clockMs": 800,
+          "type": "gain.disconnect"
+        }
+      ],
+      "rngTrace": [
+        {
+          "origin": "caller_r",
+          "value": 0.25,
+          "phase": "enqueue",
+          "clockMs": 100
+        },
+        {
+          "origin": "playSample_pitch",
+          "value": 0.75,
+          "phase": "enqueue",
+          "clockMs": 100
+        }
+      ],
+      "productionApplied": false,
+      "priorityPolicyAdopted": false,
+      "beforeFlush": {
+        "count": 0,
+        "nodes": [],
+        "queue": [
+          {
+            "key": "ghost_laugh",
+            "vol": 0.8,
+            "rate": 1.1856
+          }
+        ],
+        "lastT": {
+          "ghost_laugh": 100
+        }
+      },
+      "immediate": {
+        "count": 1,
+        "nodes": [
+          {
+            "key": "ghost_laugh",
+            "pri": 9,
+            "startedMs": 100
+          }
+        ],
+        "queue": [
+          {
+            "key": "ghost_laugh",
+            "vol": 0.8,
+            "rate": 1.1856
+          }
+        ],
+        "lastT": {
+          "ghost_laugh": 100
+        }
+      },
+      "backendEntries": 1,
+      "errorPropagated": true,
+      "error": {
+        "name": "FixtureStartError",
+        "message": "synthetic src.start failure",
+        "sameInjectedIdentity": true
+      },
+      "normalReturnSameSource": false,
+      "callerRng": 1,
+      "playSamplePitchRng": 1,
+      "startAttempts": 1,
+      "startSuccesses": 0,
+      "immediateDisconnects": 0,
+      "gainValue": 0.8,
+      "rate": 1.1856,
+      "afterTimer": {
+        "count": 0,
+        "nodes": [],
+        "queue": [
+          {
+            "key": "ghost_laugh",
+            "vol": 0.8,
+            "rate": 1.1856
+          }
+        ],
+        "lastT": {
+          "ghost_laugh": 100
+        }
+      },
+      "afterLateEnded": {
+        "count": 0,
+        "nodes": [],
+        "queue": [
+          {
+            "key": "ghost_laugh",
+            "vol": 0.8,
+            "rate": 1.1856
+          }
+        ],
+        "lastT": {
+          "ghost_laugh": 100
+        }
+      },
+      "stopCalls": 0,
+      "sourceDisconnects": 1,
+      "gainDisconnects": 1,
+      "timerCount": 1,
+      "timerDelayMs": 700,
+      "immediateRecoveryCriterion": false,
+      "audibleVerified": false
+    },
+    {
+      "id": "start-throws-memory",
+      "inputKind": "start exception",
+      "candidate": true,
+      "sourceFiles": [
+        "game.html",
+        "game-easy-test.html"
+      ],
+      "status": "PASS",
+      "trace": [
+        {
+          "index": 0,
+          "phase": "flush",
+          "clockMs": 100,
+          "type": "backend.enter",
+          "key": "ghost_laugh",
+          "override": null
+        },
+        {
+          "index": 1,
+          "phase": "flush",
+          "clockMs": 100,
+          "type": "createBufferSource"
+        },
+        {
+          "index": 2,
+          "phase": "flush",
+          "clockMs": 100,
+          "type": "createGain"
+        },
+        {
+          "index": 3,
+          "phase": "flush",
+          "clockMs": 100,
+          "type": "gain.connect",
+          "target": "bus0"
+        },
+        {
+          "index": 4,
+          "phase": "flush",
+          "clockMs": 100,
+          "type": "src.connect",
+          "target": "gain0"
+        },
+        {
+          "index": 5,
+          "phase": "flush",
+          "clockMs": 100,
+          "type": "timer.schedule",
+          "delayMs": 700
+        },
+        {
+          "index": 6,
+          "phase": "flush",
+          "clockMs": 100,
+          "type": "src.start.attempt",
+          "at": 0.1,
+          "active": {
+            "count": 1,
+            "nodes": [
+              {
+                "key": "ghost_laugh",
+                "pri": 9,
+                "startedMs": 100
+              }
+            ],
+            "queue": [
+              {
+                "key": "ghost_laugh",
+                "vol": 0.8,
+                "rate": 1.1856
+              }
+            ],
+            "lastT": {
+              "ghost_laugh": 100
+            }
+          },
+          "rate": 1.1856
+        },
+        {
+          "index": 7,
+          "phase": "flush",
+          "clockMs": 100,
+          "type": "src.start.throw"
+        },
+        {
+          "index": 8,
+          "phase": "flush",
+          "clockMs": 100,
+          "type": "src.disconnect"
+        },
+        {
+          "index": 9,
+          "phase": "flush",
+          "clockMs": 100,
+          "type": "gain.disconnect"
+        },
+        {
+          "index": 10,
+          "phase": "flush",
+          "clockMs": 100,
+          "type": "fixture.catches-original-error",
+          "sameIdentity": true,
+          "name": "FixtureStartError"
+        }
+      ],
+      "rngTrace": [
+        {
+          "origin": "caller_r",
+          "value": 0.25,
+          "phase": "enqueue",
+          "clockMs": 100
+        },
+        {
+          "origin": "playSample_pitch",
+          "value": 0.75,
+          "phase": "enqueue",
+          "clockMs": 100
+        }
+      ],
+      "productionApplied": false,
+      "priorityPolicyAdopted": false,
+      "beforeFlush": {
+        "count": 0,
+        "nodes": [],
+        "queue": [
+          {
+            "key": "ghost_laugh",
+            "vol": 0.8,
+            "rate": 1.1856
+          }
+        ],
+        "lastT": {
+          "ghost_laugh": 100
+        }
+      },
+      "immediate": {
+        "count": 0,
+        "nodes": [],
+        "queue": [
+          {
+            "key": "ghost_laugh",
+            "vol": 0.8,
+            "rate": 1.1856
+          }
+        ],
+        "lastT": {
+          "ghost_laugh": 100
+        }
+      },
+      "backendEntries": 1,
+      "errorPropagated": true,
+      "error": {
+        "name": "FixtureStartError",
+        "message": "synthetic src.start failure",
+        "sameInjectedIdentity": true
+      },
+      "normalReturnSameSource": false,
+      "callerRng": 1,
+      "playSamplePitchRng": 1,
+      "startAttempts": 1,
+      "startSuccesses": 0,
+      "immediateDisconnects": 1,
+      "gainValue": 0.8,
+      "rate": 1.1856,
+      "afterTimer": {
+        "count": 0,
+        "nodes": [],
+        "queue": [
+          {
+            "key": "ghost_laugh",
+            "vol": 0.8,
+            "rate": 1.1856
+          }
+        ],
+        "lastT": {
+          "ghost_laugh": 100
+        }
+      },
+      "afterLateEnded": {
+        "count": 0,
+        "nodes": [],
+        "queue": [
+          {
+            "key": "ghost_laugh",
+            "vol": 0.8,
+            "rate": 1.1856
+          }
+        ],
+        "lastT": {
+          "ghost_laugh": 100
+        }
+      },
+      "stopCalls": 0,
+      "sourceDisconnects": 1,
+      "gainDisconnects": 1,
+      "timerCount": 1,
+      "timerDelayMs": 700,
+      "immediateRecoveryCriterion": true,
+      "audibleVerified": false
+    },
+    {
+      "id": "start-normal-current",
+      "inputKind": "normal vacancy",
+      "candidate": false,
+      "sourceFiles": [
+        "game.html",
+        "game-easy-test.html"
+      ],
+      "status": "PASS",
+      "trace": [
+        {
+          "index": 0,
+          "phase": "flush",
+          "clockMs": 100,
+          "type": "backend.enter",
+          "key": "ghost_laugh",
+          "override": null
+        },
+        {
+          "index": 1,
+          "phase": "flush",
+          "clockMs": 100,
+          "type": "createBufferSource"
+        },
+        {
+          "index": 2,
+          "phase": "flush",
+          "clockMs": 100,
+          "type": "createGain"
+        },
+        {
+          "index": 3,
+          "phase": "flush",
+          "clockMs": 100,
+          "type": "gain.connect",
+          "target": "bus0"
+        },
+        {
+          "index": 4,
+          "phase": "flush",
+          "clockMs": 100,
+          "type": "src.connect",
+          "target": "gain0"
+        },
+        {
+          "index": 5,
+          "phase": "flush",
+          "clockMs": 100,
+          "type": "timer.schedule",
+          "delayMs": 700
+        },
+        {
+          "index": 6,
+          "phase": "flush",
+          "clockMs": 100,
+          "type": "src.start.attempt",
+          "at": 0.1,
+          "active": {
+            "count": 1,
+            "nodes": [
+              {
+                "key": "ghost_laugh",
+                "pri": 9,
+                "startedMs": 100
+              }
+            ],
+            "queue": [
+              {
+                "key": "ghost_laugh",
+                "vol": 0.8,
+                "rate": 1.1856
+              }
+            ],
+            "lastT": {
+              "ghost_laugh": 100
+            }
+          },
+          "rate": 1.1856
+        },
+        {
+          "index": 7,
+          "phase": "flush",
+          "clockMs": 100,
+          "type": "src.start.success"
+        },
+        {
+          "index": 8,
+          "phase": "flush",
+          "clockMs": 100,
+          "type": "backend.return",
+          "sameSource": true
+        },
+        {
+          "index": 9,
+          "phase": "held-timeout",
+          "clockMs": 800,
+          "type": "src.disconnect"
+        },
+        {
+          "index": 10,
+          "phase": "held-timeout",
+          "clockMs": 800,
+          "type": "gain.disconnect"
+        }
+      ],
+      "rngTrace": [
+        {
+          "origin": "caller_r",
+          "value": 0.25,
+          "phase": "enqueue",
+          "clockMs": 100
+        },
+        {
+          "origin": "playSample_pitch",
+          "value": 0.75,
+          "phase": "enqueue",
+          "clockMs": 100
+        }
+      ],
+      "productionApplied": false,
+      "priorityPolicyAdopted": false,
+      "beforeFlush": {
+        "count": 0,
+        "nodes": [],
+        "queue": [
+          {
+            "key": "ghost_laugh",
+            "vol": 0.8,
+            "rate": 1.1856
+          }
+        ],
+        "lastT": {
+          "ghost_laugh": 100
+        }
+      },
+      "immediate": {
+        "count": 1,
+        "nodes": [
+          {
+            "key": "ghost_laugh",
+            "pri": 9,
+            "startedMs": 100
+          }
+        ],
+        "queue": [],
+        "lastT": {
+          "ghost_laugh": 100
+        }
+      },
+      "backendEntries": 1,
+      "errorPropagated": false,
+      "error": null,
+      "normalReturnSameSource": true,
+      "callerRng": 1,
+      "playSamplePitchRng": 1,
+      "startAttempts": 1,
+      "startSuccesses": 1,
+      "immediateDisconnects": 0,
+      "gainValue": 0.8,
+      "rate": 1.1856,
+      "afterTimer": {
+        "count": 0,
+        "nodes": [],
+        "queue": [],
+        "lastT": {
+          "ghost_laugh": 100
+        }
+      },
+      "afterLateEnded": {
+        "count": 0,
+        "nodes": [],
+        "queue": [],
+        "lastT": {
+          "ghost_laugh": 100
+        }
+      },
+      "stopCalls": 0,
+      "sourceDisconnects": 1,
+      "gainDisconnects": 1,
+      "timerCount": 1,
+      "timerDelayMs": 700,
+      "immediateRecoveryCriterion": false,
+      "audibleVerified": false
+    },
+    {
+      "id": "start-normal-memory",
+      "inputKind": "normal vacancy",
+      "candidate": true,
+      "sourceFiles": [
+        "game.html",
+        "game-easy-test.html"
+      ],
+      "status": "PASS",
+      "trace": [
+        {
+          "index": 0,
+          "phase": "flush",
+          "clockMs": 100,
+          "type": "backend.enter",
+          "key": "ghost_laugh",
+          "override": null
+        },
+        {
+          "index": 1,
+          "phase": "flush",
+          "clockMs": 100,
+          "type": "createBufferSource"
+        },
+        {
+          "index": 2,
+          "phase": "flush",
+          "clockMs": 100,
+          "type": "createGain"
+        },
+        {
+          "index": 3,
+          "phase": "flush",
+          "clockMs": 100,
+          "type": "gain.connect",
+          "target": "bus0"
+        },
+        {
+          "index": 4,
+          "phase": "flush",
+          "clockMs": 100,
+          "type": "src.connect",
+          "target": "gain0"
+        },
+        {
+          "index": 5,
+          "phase": "flush",
+          "clockMs": 100,
+          "type": "timer.schedule",
+          "delayMs": 700
+        },
+        {
+          "index": 6,
+          "phase": "flush",
+          "clockMs": 100,
+          "type": "src.start.attempt",
+          "at": 0.1,
+          "active": {
+            "count": 1,
+            "nodes": [
+              {
+                "key": "ghost_laugh",
+                "pri": 9,
+                "startedMs": 100
+              }
+            ],
+            "queue": [
+              {
+                "key": "ghost_laugh",
+                "vol": 0.8,
+                "rate": 1.1856
+              }
+            ],
+            "lastT": {
+              "ghost_laugh": 100
+            }
+          },
+          "rate": 1.1856
+        },
+        {
+          "index": 7,
+          "phase": "flush",
+          "clockMs": 100,
+          "type": "src.start.success"
+        },
+        {
+          "index": 8,
+          "phase": "flush",
+          "clockMs": 100,
+          "type": "backend.return",
+          "sameSource": true
+        },
+        {
+          "index": 9,
+          "phase": "held-timeout",
+          "clockMs": 800,
+          "type": "src.disconnect"
+        },
+        {
+          "index": 10,
+          "phase": "held-timeout",
+          "clockMs": 800,
+          "type": "gain.disconnect"
+        }
+      ],
+      "rngTrace": [
+        {
+          "origin": "caller_r",
+          "value": 0.25,
+          "phase": "enqueue",
+          "clockMs": 100
+        },
+        {
+          "origin": "playSample_pitch",
+          "value": 0.75,
+          "phase": "enqueue",
+          "clockMs": 100
+        }
+      ],
+      "productionApplied": false,
+      "priorityPolicyAdopted": false,
+      "beforeFlush": {
+        "count": 0,
+        "nodes": [],
+        "queue": [
+          {
+            "key": "ghost_laugh",
+            "vol": 0.8,
+            "rate": 1.1856
+          }
+        ],
+        "lastT": {
+          "ghost_laugh": 100
+        }
+      },
+      "immediate": {
+        "count": 1,
+        "nodes": [
+          {
+            "key": "ghost_laugh",
+            "pri": 9,
+            "startedMs": 100
+          }
+        ],
+        "queue": [],
+        "lastT": {
+          "ghost_laugh": 100
+        }
+      },
+      "backendEntries": 1,
+      "errorPropagated": false,
+      "error": null,
+      "normalReturnSameSource": true,
+      "callerRng": 1,
+      "playSamplePitchRng": 1,
+      "startAttempts": 1,
+      "startSuccesses": 1,
+      "immediateDisconnects": 0,
+      "gainValue": 0.8,
+      "rate": 1.1856,
+      "afterTimer": {
+        "count": 0,
+        "nodes": [],
+        "queue": [],
+        "lastT": {
+          "ghost_laugh": 100
+        }
+      },
+      "afterLateEnded": {
+        "count": 0,
+        "nodes": [],
+        "queue": [],
+        "lastT": {
+          "ghost_laugh": 100
+        }
+      },
+      "stopCalls": 0,
+      "sourceDisconnects": 1,
+      "gainDisconnects": 1,
+      "timerCount": 1,
+      "timerDelayMs": 700,
+      "immediateRecoveryCriterion": false,
+      "audibleVerified": false
+    }
+  ],
+  "comparisons": [
+    {
+      "files": [
+        "game.html",
+        "game-easy-test.html"
+      ],
+      "status": "PASS",
+      "normalEqual": true,
+      "errorAndQueuePreserved": true,
+      "currentRedMemoryGreen": true
+    }
+  ],
+  "preservation": [
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/supervisor-next/SOUND/SOUND-start-failure-0543/TASK.md",
+      "before": "4f8031b604769963983729b0ec49c32d207b20fa43b30281998e8286897f01d2",
+      "after": "4f8031b604769963983729b0ec49c32d207b20fa43b30281998e8286897f01d2"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/COMMON.md",
+      "before": "de5a881270625a7b2d0e854331205e01372a037340a18474c6442b60e668465e",
+      "after": "de5a881270625a7b2d0e854331205e01372a037340a18474c6442b60e668465e"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/AGENTS.md",
+      "before": "fd59bef70960bcaf1ab9910051faa860362884e574ac2869fad05c6872ae04e4",
+      "after": "fd59bef70960bcaf1ab9910051faa860362884e574ac2869fad05c6872ae04e4"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md",
+      "before": "9568410db4e0b66f3b603b8335d779b647ea5fa15461e87be94e47ee2159f7c8",
+      "after": "9568410db4e0b66f3b603b8335d779b647ea5fa15461e87be94e47ee2159f7c8"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROVIDER-HALVES-20261002.md",
+      "before": "16cbe4b9d0c9d0e0e8cabc1ac8d4f7718f78b4e013b6e5cb169e5bb6d397be6d",
+      "after": "16cbe4b9d0c9d0e0e8cabc1ac8d4f7718f78b4e013b6e5cb169e5bb6d397be6d"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/6사운드디자인/6사운드디자인.md",
+      "before": "39f97d11bfc34e89647e2230acaea1777d5c6654aaf6378b83135d29cb1ecea4",
+      "after": "39f97d11bfc34e89647e2230acaea1777d5c6654aaf6378b83135d29cb1ecea4"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/SOUND/result.md",
+      "before": "3232737df1efef936a466aea2c450304a743d5e217b827ff3243c15b213d2769",
+      "after": "3232737df1efef936a466aea2c450304a743d5e217b827ff3243c15b213d2769"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/SOUND/evidence.json",
+      "before": "3c5ec415472ef5e053e03b5644f5ea13d01cb70fef69c19adbd2a71ece2bdeac",
+      "after": "3c5ec415472ef5e053e03b5644f5ea13d01cb70fef69c19adbd2a71ece2bdeac"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/node-main.js",
+      "before": "541ff8e6f57db862ddbb1b148ee37a3a8e0da1e16293bc8343a0bc4144d80daf",
+      "after": "541ff8e6f57db862ddbb1b148ee37a3a8e0da1e16293bc8343a0bc4144d80daf"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+      "before": "2e45ee0e9ad909b378bf1a7b864818ce442a4c3e17b12360b42e363dc7d0bd94",
+      "after": "2e45ee0e9ad909b378bf1a7b864818ce442a4c3e17b12360b42e363dc7d0bd94"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game-easy-test.html",
+      "before": "3e5969ca139497c2efb312dc720ab53eb42a8d1912c8288caa2ce858cfd5120a",
+      "after": "3e5969ca139497c2efb312dc720ab53eb42a8d1912c8288caa2ce858cfd5120a"
+    }
+  ],
+  "allReadInputsBytePreserved": true,
+  "providedHistorical": {
+    "source": "TASK coordinator-provided at approximately 2026-10-02T05:42 UTC, not independent Git query",
+    "commit": "f2e70ef7c9c663fdd69e925bc379b6d6f8bcaa9c",
+    "game": "2e45ee0e9ad909b378bf1a7b864818ce442a4c3e17b12360b42e363dc7d0bd94",
+    "easy": "3e5969ca139497c2efb312dc720ab53eb42a8d1912c8288caa2ce858cfd5120a",
+    "node": "541ff8e6f57db862ddbb1b148ee37a3a8e0da1e16293bc8343a0bc4144d80daf"
+  },
+  "currentHead": null,
+  "currentChanges": null,
+  "nodeMainActualSha256": "541ff8e6f57db862ddbb1b148ee37a3a8e0da1e16293bc8343a0bc4144d80daf",
+  "priorAcceptedOnly": {
+    "source": "continuous/SOUND/evidence.json",
+    "execution": {
+      "startedAt": "2026-10-02T05:27:25.428Z",
+      "completedAt": "2026-10-02T05:27:25.585Z",
+      "startedAtKST": "2026-10-02 14:27:25.428 KST",
+      "completedAtKST": "2026-10-02 14:27:25.585 KST",
+      "node": "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node",
+      "version": "v24.15.0",
+      "uniqueSourceBackends": 1,
+      "sourceVariants": 2,
+      "newContrasts": 3,
+      "passed": 3,
+      "failed": 0,
+      "exitCode": 0,
+      "command": [
+        "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node",
+        "tools/team-followup-20261002/continuous/SOUND/checks.mjs"
+      ],
+      "sourceFixturePassIsNotRuntimeVisualListeningPass": true
+    },
+    "rerun": 0,
+    "import": 0
+  },
+  "docsSearch": {
+    "at": "2026-10-02T05:45:59.768Z",
+    "command": [
+      "rg",
+      "-n",
+      "ghost_laugh|_playSampleNow|_activeNodeCnt|_activeNodes|src.start|_nd._dn|onended|30ms",
+      "docs/"
+    ],
+    "exitCode": 0,
+    "lines": 51,
+    "fileCount": 33,
+    "files": [
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/종합_버그리포트.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/6사운드디자인/6사운드디자인.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/CHANGELOG_SYNC.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/15 세이브+데이터구조/15 세이브+데이터구조.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/Mac-긴간격-루프밖-귀속.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/12퍼포먼스·최적화/QA_PERFORMANCE_TEAM_MASTER.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/MAC_AGENT_DASHBOARD.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/12퍼포먼스·최적화/성능최적화_보고서_2026-05-23.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/12퍼포먼스·최적화/MAP_STARTUP_READY_20260929.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/12퍼포먼스·최적화/FIRST_KILL_CPU_INVESTIGATION_20261001.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/12퍼포먼스·최적화/CLAUDE_CODE_인수인계_전체작업보고서_2026-08-10.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/12퍼포먼스·최적화/12퍼포먼스·최적화.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/12퍼포먼스·최적화/TEXTURE_ASYNC_PREWARM_20261001.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/Mac-드롭빔-부트준비-검수.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/Mac-첫처치-밀집전투-실측.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/SOUND-dedup-result.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/INTEGRATION-REVIEW-20261002.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/CONTINUOUS-DISPATCH-20261002.json",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/CONTINUOUS-DISPATCH-20261002.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROVIDER-HALVES-20261002.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-WORK-DISPATCH-20261002.json",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/SOUND-rng-result.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/GAMEPLAY_TRAILER_20260909_PRODUCTION.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/4.1맵디자인+설정/MAP_RUNTIME_ARCHITECTURE.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/4.1맵디자인+설정/CH1_ROTTEN_FOREST_FACE_LIFE_PASS97_20260930.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/4.1맵디자인+설정/CH1_ROTTEN_FOREST_MASS_READ_PASS96_20260930.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/4.1맵디자인+설정/qa_ch1_master_16x9/QA_REPORT_INGAME.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/3.3 키바인딩+설정/게임패드_트러블슈팅.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/3.1 ui hud 디자인/lobby_full_patch.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md"
+    ],
+    "outputSha256": "7c23d7e260efce3065d037f24bfa6279fc736dd8783ea96500cb462e96790e3f",
+    "canonicalProposal": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/supervisor-next/SOUND/SOUND-start-failure-0543/result.md",
+    "writes": 0
+  },
+  "boundary": {
+    "actual": [
+      "_r",
+      "playSample",
+      "_sfxFrameReset",
+      "_playSampleNow",
+      "_evictLowest",
+      "_sfxPri",
+      "_sfxCat",
+      "_isFootstepSfx",
+      "_isSkillSfx",
+      "internal _dn"
+    ],
+    "stubs": [
+      "WebAudio source/gain/bus methods",
+      "synthetic loaded buffer duration0.2",
+      "src.start throws same synthetic error in failure input only",
+      "held700ms callback/manual late onended",
+      "identity voice mapper",
+      "clock and deterministic counted Math.random"
+    ],
+    "runtimeExecuted": false,
+    "audibleVerified": false,
+    "realDeviceFailureObserved": false,
+    "sourcePassIsNotRuntimeVisualListeningPass": true
+  },
+  "tools": {
+    "actual": [
+      "functions.exec",
+      "exec_command",
+      "apply_patch",
+      "Node fs/vm/crypto",
+      "acorn",
+      "rg"
+    ],
+    "skills": [],
+    "externalAPI": [],
+    "MCP": []
+  },
+  "prohibited": {
+    "productionWrites": 0,
+    "sharedDocsWrites": 0,
+    "ownerOutsideWrites": 0,
+    "Git": 0,
+    "server": 0,
+    "HTTP": 0,
+    "game": 0,
+    "UI": 0,
+    "build": 0,
+    "installation": 0,
+    "realAudioContext": 0,
+    "fetch": 0,
+    "decode": 0,
+    "realTimer": 0,
+    "listening": 0,
+    "audioFiles": 0,
+    "deletion": 0,
+    "moving": 0,
+    "cleanup": 0,
+    "messages": 0,
+    "newSession": 0,
+    "subteam": 0
+  },
+  "artifacts": [
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/supervisor-next/SOUND/SOUND-start-failure-0543/checks.mjs",
+      "sha256": "75089397740878d371a47a63e90e84a9d6b06e27541ce76cd1261faddedac0a2"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/supervisor-next/SOUND/SOUND-start-failure-0543/result.md",
+      "sha256": "e8610674b4136cb2feb8d6d6f92a9976eade78414b167be135e47a5fbc44c66b"
+    }
+  ]
+}

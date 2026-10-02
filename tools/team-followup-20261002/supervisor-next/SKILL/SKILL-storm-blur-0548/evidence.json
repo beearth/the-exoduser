@@ -1,0 +1,82 @@
+{
+  "role": "SKILL",
+  "task": "SKILL-storm-blur-0548 — maliceStorm 홀드→release 포커스 상실 경계",
+  "model": "claude-opus-4-8",
+  "provider": "작업감독 후속(피어 Claude 세션 전달)",
+  "chatSessionId": "abd20f45-953d-47ae-870c-2ce033bbdfab",
+  "taskFile": "tools/team-followup-20261002/supervisor-next/SKILL/SKILL-storm-blur-0548/TASK.md",
+  "common": "tools/team-followup-20261002/continuous/COMMON.md",
+  "inheritsFrom": "tools/team-followup-20261002/continuous/SKILL/{result.md,evidence.json} (mortar, 재실행0)",
+  "scope": "maliceStorm 독립 경계 1건. 정상 keyup 1입력 + 충전 중 _clearHeldInput 합성 blur 1입력만 비교. mortar 4대조/C0/142 재실행0.",
+  "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+  "node": "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node (v24.15.0)",
+  "tools": ["Read", "Grep", "Bash(node,git-status-readonly,shasum,date)", "Write"],
+  "permissionMode": "default",
+  "productionApplied": false,
+  "runtimeExecuted": true,
+  "gitWrites": 0,
+  "readTimes": {"utc": "2026-10-02T05:57:23Z", "kst": "2026-10-02T14:57:23+09:00"},
+  "sourceSha256CurrentAtRead": {
+    "game.html": "dc711864876610a83c67a659d4f162551191b56ba11d74e1cb81f03df935368e",
+    "game-easy-test.html": "1f139e0cd5fd898e33ba2b1c408b33e49984e106f0b46cc5b38b7d2abf2dabe1"
+  },
+  "supervisorCheckpointHistory": {
+    "note": "감독 제공 조회시점 근거, 독립 현재 HEAD로 쓰지 않음",
+    "remoteCheckpoint": "f2e70ef7c9c663fdd69e925bc379b6d6f8bcaa9c (2026-10-02 감독 인수)",
+    "game": "2e45…", "easy": "3e59…", "node": "541ff8"
+  },
+  "sourceShaChangeNote": "game 2e45(감독)/30ae(직전) → 현행 dc711864 로 변경(root 순차 통합). Git 조회·되돌림 안 함.",
+  "rootMortarFixObserved": "현행 _clearHeldInput 12883 = if(...P){P._beamHold=false;P._mmAiming=false;P._mmCharging=false} — mortar 두 플래그 취소 root 기통합. _ms(storm) 미포함. 본인 mortar 미수정.",
+  "extractedFragmentsCurrentLines": {
+    "router_maliceStorm": "game.html 12484-12491 (진입만, MP 미차감)",
+    "maliceStorm_aim_charge_release": "35039-35122",
+    "plain_storm_fire": "35105-35113 (MP 미차감)",
+    "fire_tail_cooldown": "35114-35119 (_msBF?_bnsCd=1500:_msCd=1200)",
+    "_clearHeldInput": "12877-12885",
+    "_isFused": "43007", "_r": "12004", "EL": "13838",
+    "P_init_null": "15899"
+  },
+  "harnessSelfHashes": {
+    "aim": "ecd253d15ddb28a385cdffac8ff8f4d8afec21ed6e86bd2dbef2ceccab65de00",
+    "clearCur": "933584568da1f9180786fca061beab853bbe8c993e6d5390739106a646033dce"
+  },
+  "realVsBand": {
+    "realSource": ["maliceStorm aim/charge/release 블록(합체분기 포함 전문)", "_clearHeldInput(현행+후보)", "_isFused", "_r", "EL"],
+    "band": {
+      "SFX/playSample/addTxt/shake": "호출 레코더",
+      "magicRef/statInt/pMagicMul/_skMul/_fuseMul(+합체전용 meleeRef/statStr/pAtkMul/pBeamMul)": "_msDmg 데미지 helper baseline=1 (피해값은 결함 대상 아님, 비용 가짜대입 아님)",
+      "dst": "거리 band(플레인+빈 _fireZones라 미호출)",
+      "Math.random": "mulberry32 seed 0x5EED — 두 변형 동일 스트림, 호출/RNG 순서 결정적 대조",
+      "_gpActive=true, mouse/VW/VH/G.cam": "합성입력: 게임패드 경로 고정(KBM else 미도달)"
+    },
+    "playerBaseline": {"skills.maliceStorm": 1, "_fused": null, "mp": 100, "note": "플레인 경로는 release에서 MP 미차감(실측)"}
+  },
+  "matrix": [
+    {"variant": "current", "scenario": "normalKeyup", "fired": true, "fireZones": 1, "fireZoneType": "storm", "cooldownMsCd": 1200, "mpDelta": 0, "sfxCalls": ["SFX.magic(4)", "playSample(electric_storm3)", "shake(4)", "playSample(voice_grunt)"], "rngCount": 5, "aimingAfter": false, "chargingAfter": false, "mortarFlagsTouched": {"mmAiming": false, "mmCharging": false}},
+    {"variant": "candidate", "scenario": "normalKeyup", "fired": true, "fireZones": 1, "fireZoneType": "storm", "cooldownMsCd": 1200, "mpDelta": 0, "sfxCalls": ["SFX.magic(4)", "playSample(electric_storm3)", "shake(4)", "playSample(voice_grunt)"], "rngCount": 5, "aimingAfter": false, "chargingAfter": false, "mortarFlagsTouched": {"mmAiming": false, "mmCharging": false}},
+    {"variant": "current", "scenario": "blur", "fired": true, "fireZones": 1, "fireZoneType": "storm", "cooldownMsCd": 1200, "mpDelta": 0, "sfxCalls": ["SFX.magic(4)", "playSample(electric_storm3)", "shake(4)", "playSample(voice_grunt)"], "rngCount": 5, "aimingAfter": false, "chargingAfter": false, "mortarFlagsTouched": {"mmAiming": false, "mmCharging": false}},
+    {"variant": "candidate", "scenario": "blur", "fired": false, "fireZones": 0, "fireZoneType": null, "cooldownMsCd": 0, "mpDelta": 0, "sfxCalls": [], "rngCount": 0, "aimingAfter": false, "chargingAfter": false, "mortarFlagsTouched": {"mmAiming": false, "mmCharging": false}}
+  ],
+  "verdicts": {
+    "NORMAL_EQUIV": "PASS(정상 release 발사·fireZone(storm)·쿨다운1200·연출·RNG5·MP미차감 current==candidate)",
+    "CURRENT_BLUR_GHOSTFIRE": "FAIL(현행 maliceStorm blur 유령발사: fireZone 설치+쿨다운1200+음향+RNG5; 플레인 MP 미차감)",
+    "CANDIDATE_BLUR_NOFIRE": "PASS(후보: 무발사·fireZone0·쿨다운0·음향/RNG 추가0·조준해제)"
+  },
+  "candidateDef": "_clearHeldInput 12883 기존 P guard 안에 P._msAiming=false;P._msCharging=false 2플래그만 추가. _mm 2플래그는 root 기통합(본인 미수정). 입력배열/거리/키/스킬공식/원상수/연출/자원/정상release/RNG순서/키바인딩/2_3 불변.",
+  "realDefectConfirmed": true,
+  "unknownKept": ["실게임 focus 타이밍", "실입력장치", "음향/시각/GPU/저장/패키지", "pause/death/revive/패드/stage 경계(확장 금지)"],
+  "policyUnchanged": {"skillFormula": true, "constants": true, "cooldown": true, "resources": true, "rngOrder": true, "keybind": true, "protect_2_3": true},
+  "docsHandoff": [
+    {"file": "docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md", "lines": [228, 397, 404], "kind": "maliceStorm 수명 경계 각주 보충(미적용)"},
+    {"file": "docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md", "line": 404, "kind": "관찰: 합체 쿨 _bnsCd=1500(25초) 문서 미표기 — root 확인 권고(미적용)"}
+  ],
+  "sourceFixtureCaveat": "source fixture PASS ≠ 실입력 포커스/음향/시각/게임/GPU/저장/패키지 PASS",
+  "ownedFiles": [
+    {"path": "tools/team-followup-20261002/supervisor-next/SKILL/SKILL-storm-blur-0548/checks.mjs", "sha256": "6f182bc43e049295b5a5c27d36e018efbb0272c9bc7b106e2ef65688cb5d0bf4"},
+    {"path": "tools/team-followup-20261002/supervisor-next/SKILL/SKILL-storm-blur-0548/result.md"},
+    {"path": "tools/team-followup-20261002/supervisor-next/SKILL/SKILL-storm-blur-0548/evidence.json"}
+  ],
+  "changesCount": {"start": 30, "mid": 36, "note": "80 root checkpoint 미도달, 100 전 새 산출 중단 규칙 준수. 본인 신규 산출은 이 3개로 종료, 자체 추가작업0."},
+  "nextGate": "root: 현행 SHA 재검증·후보 _ms 2플래그 통합 결정·docs 반영·합체 쿨 1500 표기 / QA: 실게임 focus 타이밍 maliceStorm blur 실측",
+  "status": "completed"
+}

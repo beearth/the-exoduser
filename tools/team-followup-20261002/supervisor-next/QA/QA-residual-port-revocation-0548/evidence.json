@@ -1,0 +1,113 @@
+{
+  "taskId": "QA-residual-port-revocation-0548",
+  "provider": "Claude (Opus 4.8)",
+  "confirmedSessionId": "UNKNOWN — 이 세션 sessionId를 수신 메시지/환경에서 확인 불가. 추정 0",
+  "receivedFrom": "다른 Claude 세션 teammate 메시지(작업감독 검토 후 다음 한 건 전달). 배송 시각 미제공 → null",
+  "receivedUtc": null,
+  "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+  "supervisorFeedbackAcknowledged": {
+    "gitDeviationSeparation": {
+      "note": "이전 continuous/QA의 read-only Git 조회 이탈과 쓰기0을 정확히 분리. 0으로 지우지 않음. 이전 파일 직접 수정 0.",
+      "prior_continuous_QA": {
+        "gitWrites": 0,
+        "gitReadQueries": "실제 수행: git rev-parse HEAD(093ca555), git status --porcelain|wc -l(55->68). 이전 보고가 이를 'Git 0'으로 뭉뚱그린 것이 충돌",
+        "preserved": "역사 기록으로 보존, 편집 0"
+      },
+      "this_task": {"gitWrites": 0, "gitReadQueries": 0, "note": "지시 'Git로 재조회0' 준수 — Git 명령 자체 미실행"}
+    }
+  },
+  "timeline": {
+    "taskReadUtc": "2026-10-02T05:50:00Z",
+    "commonReadUtc": "2026-10-02T05:50:00Z",
+    "sourceReadShaUtc": "2026-10-02T05:57:48Z",
+    "harnessRunUtc": "2026-10-02T05:57:48.370Z",
+    "harnessExit": 0,
+    "docsSearchUtc": "2026-10-02T05:59:00Z",
+    "resultWrittenUtc": "2026-10-02T06:01:00Z",
+    "kstOffset": "+09:00"
+  },
+  "actualReads": [
+    "tools/team-followup-20261002/supervisor-next/QA/QA-residual-port-revocation-0548/TASK.md",
+    "tools/team-followup-20261002/continuous/COMMON.md (이력)",
+    "tools/team-followup-20261001/ITEM/browser-bootstrap-api.js",
+    "tools/team-followup-20261001/ITEM/browser-host/persistence-integration-port.js",
+    "tools/team-followup-20261001/ITEM/browser-host/mk-item-fixture.js (export/시그니처)",
+    "unique-item-project/definitions.js (UI-10 상태)"
+  ],
+  "commands": [
+    {"cmd": "ls / find (browser-host, integration, fixture)", "exit": 0, "readonly": true},
+    {"cmd": "shasum -a 256 (api, integration, fixture)", "exit": 0, "readonly": true, "git": false},
+    {"cmd": "node --input-type=module import() 실제 factory 로드 테스트", "exit": 0, "readonly": true},
+    {"cmd": "node --experimental-vm-modules checks.mjs", "exit": 0, "readonly": true, "mutatesRepo": false},
+    {"cmd": "rg docs/ (revocation|revocable|persistenceReviewCallsite|assertOwned|잔존|lifetime|수명)", "exit": 0, "readonly": true, "git": false}
+  ],
+  "gitCommandsThisTask": 0,
+  "sourceSha_thisRun": {
+    "browser-bootstrap-api.js": "dcea3ff9722dde2fd200ecf1fb55f6d742f70631918fa7276c089e5e775ae9eb",
+    "persistence-integration-port.js": "9d2536fef5608d18dda3a6e557e24b48d5c262f9566f3c0cd37a52d8e4058491",
+    "mk-item-fixture.js": "5476174988858bd50b700cd48b1aa681cf7c002719a0e54248c199473e1cc0a8"
+  },
+  "providedCheckpoint": {
+    "value": "f2e70ef7c9c663fdd69e925bc379b6d6f8bcaa9c (2026-10-02 감독 인수)",
+    "aux": ["game2e45", "easy3e59", "node541ff8"],
+    "usage": "그 조회 시점 근거. 독립 현재 HEAD로 쓰지 않음. 이번 Git 조회 0"
+  },
+  "runtime": {
+    "node": "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node",
+    "nodeVersion": "v24.15.0", "flags": ["--experimental-vm-modules"],
+    "method": "vm.SourceTextModule(api 원문) + dynamic import(실제 factory/fixture)"
+  },
+  "fragmentBandSynthetic": {
+    "real": "api 원문 설치/rollback/assertOwned/same/restore, createD10PersistenceIntegration factory, createReview binding(createNewIdentifiedD10Instance 등), Object.getOwnPropertyDescriptor",
+    "standIn": "rollback delete 실패 Proxy host(deleteProperty trap=false) 1 사건; revocation 후보 = 격리 Proxy.revocable 데모(source 미patch)",
+    "synthetic": "mkItem의 random=()=>0.5, D10 rng=()=>0.5 만 합성(생성 로직은 실제). 가짜 counter port 사용 0"
+  },
+  "distinctFromPrior": "fresh/data/accessor/다른value/멱등/정상rollback(claude-native-6 6검사)·rollback 실패 RESIDUAL 2 + nonconfigurable/flag/skip(continuous 5검사)·project-teams 16검사 전부 재실행·합산 0. 이번은 잔존 raw port 직접 호출 수명 1 경계",
+  "request": {"proposalOnly": true, "uniqueId": "UI-10", "tier": 1, "element": 0, "baseRarity": 2},
+  "residualDirectCallPossible": true,
+  "productionApplied": false,
+  "checks": [
+    {"id": "RESID-LIFETIME", "verdict": "OBSERVED-LIFETIME-LEAK",
+     "observed": "AggregateError errors=[late-install-failure, 검토 property 정리 실패] | 잔존 port(status:proposal) sameRef=true | handle.create 거부(해제/교체된 검토 포트 호출 금지) | 직접 createReview 성공 → instance{uniqueId:UI-10, hasUniqueRoll:true, 29 keys} | factory=1 mkItem=1 rng=1",
+     "finding": "handle revoke(active=false)되나 잔존 raw port는 revocation 없어 직접 호출 지속 → 수명 누수",
+     "productionEvidence": "persistence-integration-port.js:29-39 persistenceReviewCallsite: window._d10PersistenceReviewPort.createReview(request) 직접 호출",
+     "restoration": "RESIDUAL — delete 실패로 raw port 잔존, 외부 강제정리 0, PASS 아님"},
+    {"id": "NORMAL-CMP", "verdict": "PASS",
+     "observed": "handle.create=직접=instance{UI-10,29 keys} | close=restored after.present=false | uninstall후 handle.create 거부=true | 보관 raw 참조 호출가능=true",
+     "finding": "정상 경로에서도 raw port 객체 미neutralize — descriptor 삭제만으론 보관 참조 수명 종료 불가(동일 근본 원인)",
+     "restoration": "restored(delete 성공), descriptor absent"},
+    {"id": "REVOKE-CAND", "verdict": "CANDIDATE-VIABLE",
+     "observed": "revoke전 호출=true | revoke후 차단=true(TypeError) | 원 port 보존=true",
+     "finding": "Proxy.revocable wrapper 1개로 직접 호출 수명 종료 가능(개념). foreign preservation 성립",
+     "productionApplied": false, "newApiOrSchema": false, "sourcePatched": false}
+  ],
+  "memoryCandidate": {
+    "count": 1,
+    "id": "revocable-owned-wrapper",
+    "mechanism": "raw port 대신 Proxy.revocable(port)/active·same 재검 delegating wrapper 설치, uninstall·rollback실패 시 revoke()",
+    "foreignPreservation": "성립 — descriptor value·host·원 port 삭제 0, 외부 교체값 보존과 양립",
+    "status": "CANDIDATE-VIABLE, productionApplied=false, 새 API/schema 0, 실제 source patch 0, 대조 1개만",
+    "noFix": false
+  },
+  "docsSearch": {
+    "tool": "rg", "scope": "docs/",
+    "queries": ["revocation", "revocable", "persistenceReviewCallsite", "assertOwned", "잔존 port", "raw port", "lifetime", "수명"],
+    "canonicalMatches": "ITEM_TEAM_MASTER.md·QA_PERFORMANCE_TEAM_MASTER.md에 port revocation/수명 경계 문안 없음",
+    "unrelatedMatches": "기존 '수명' 매칭은 뇌전창(2_2)·맵 텍스처 lifetime(PERF)·스킬 카드 minus 콜백(2_1) 등 무관 시스템",
+    "handoff": "canonical 반영 문안은 result.md §5. 공유docs 쓰기 0 — root 순차 인수"
+  },
+  "gates": {
+    "done": "source fixture(Node VM, 실제 factory) 잔존 raw port 직접 호출 수명 1 경계",
+    "notReleased": "실브라우저/CUA/evaluate·CSP·UI·서버·게임·빌드·GPU·시각·청취·HTTP·저장 슬롯 release 0",
+    "next": "root source 계약 인수 + 명시적 QA 단독 슬롯 release; revocable wrapper 후보 채택은 root/총괄 판단. 담당 자체 추가 작업 0"
+  },
+  "notRun": [
+    "실제 window/브라우저/UI/저장", "실게임/GPU/청취/빌드/설치/서버", "CUA/evaluate/CSP 주입",
+    "외부 descriptor 강제정리/추가삭제", "실제 source patch/생산 채택", "새 API/데이터 schema",
+    "이전 5/6/16검사 반복·합산", "이전 writer 실행", "이전 파일 직접 수정",
+    "Git(쓰기·읽기 전부)", "새 세션/하위팀/외부메시지", "삭제/cleanup/이동", "타인 변경 되돌리기"
+  ],
+  "ownedFiles": ["checks.mjs", "result.md", "evidence.json"],
+  "preserved": ["이전 산출(continuous/QA, claude-native-6/QA, project-teams/QA)", "타인 변경", "사용자 게임/세이브", "기존 3333/서버", "보호문서 2_3", "공유docs", "TASK/COMMON(읽기전용)"],
+  "changesNote": "이번 Git 재조회 0이라 현재 Changes 미측정. 직전 관측 68(이전 task) 마지막 근거, 80 임계 근접 → root가 Git로 확인/checkpoint. 내 산출은 이 폴더 3파일뿐"
+}

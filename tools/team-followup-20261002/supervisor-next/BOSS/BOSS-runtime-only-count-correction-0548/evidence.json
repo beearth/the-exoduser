@@ -1,0 +1,84 @@
+{
+  "taskId": "BOSS-runtime-only-count-correction-0548",
+  "provider": "Claude Code",
+  "role": "BOSS (Claude8/Codex8 role split)",
+  "invokedVia": "peer Claude session relay (작업감독 후속 1건)",
+  "sessionId": null,
+  "time": {
+    "receivedUTC": "2026-10-02T05:50:00Z",
+    "startedUTC": "2026-10-02T05:52:00Z",
+    "observedUTC": "2026-10-02T05:56:12Z",
+    "observedKST": "2026-10-02T14:56:12+0900",
+    "completedUTC": "2026-10-02T06:00:00Z"
+  },
+  "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+  "productionApplied": false,
+  "scope": "이전 continuous/BOSS §B runtime-only 행의 count/목록/분모·서사매핑 근거 교정 1건. canonical/이전보고/production 미수정(인계만).",
+  "remoteCheckpointProvided": {
+    "overseerCheckpoint": "f2e70ef7c9c663fdd69e925bc379b6d6f8bcaa9c",
+    "note": "총괄 제공 원격검증 checkpoint(2026-10-02 감독인수) + game2e45/easy3e59/node541ff8은 그 조회시점 근거. COMMON/ TASK 지시에 따라 독립 현재 HEAD로 쓰지 않는다. 본 세션 git 조회 0.",
+    "independentHeadObserved": null,
+    "gitQueriesRun": 0
+  },
+  "ownedPaths": [
+    "tools/team-followup-20261002/supervisor-next/BOSS/BOSS-runtime-only-count-correction-0548/result.md",
+    "tools/team-followup-20261002/supervisor-next/BOSS/BOSS-runtime-only-count-correction-0548/evidence.json"
+  ],
+  "ownedFileCount": 2,
+  "checksMjsCreated": 0,
+  "safetyContract": {
+    "writesOutsideOwned": 0,
+    "deletesCleanupMoveRename": 0,
+    "gitQueryIndexCommitPush": 0,
+    "productionOrSharedDocsOrPriorOutputEdited": 0,
+    "existingTestEdited": 0,
+    "serverUiGameBuildInstallAccountPermsPublishExtMsgNewSessionSubagent": 0,
+    "imageGenOrReplace": 0,
+    "erroneousDatePlaceholderTouched": 0,
+    "revertedOthersChanges": 0,
+    "repeatedPriorAuditOrInstruction": 0,
+    "autoDerived_35_minus_19": false,
+    "note": "Read/Grep/shasum/date/sed read-only만. NO git. LOCK19·런타임35·34표시명 유지. 초기 59case/무브/si0·3/idx60 감사 미반복. 보호 2_3·Q전용 blackBean·어택티켓 금지·PixelLab 금지 유지."
+  },
+  "nonGitContentSHA256": {
+    "method": "shasum -a 256 (NOT git blob, NOT HEAD)",
+    "docs/4.1맵디자인+설정/BOSS_CANONICAL_MAPPING.md@05:56Z": "eaf369a495ba70cefd5c9116db62f0372a57b7168383a7624a4e893be399d505",
+    "game.html@05:37Z": "2e45ee0e9ad909b378bf1a7b864818ce442a4c3e17b12360b42e363dc7d0bd94",
+    "game.html@05:56Z": "dc711864876610a83c67a659d4f162551191b56ba11d74e1cb81f03df935368e"
+  },
+  "sourceTimepointNote": "canonical(eaf369a4)는 05:37Z·05:56Z 동일(교정 근거 안정). game.html은 05:37Z→05:56Z 내용 드리프트(2e45ee0e→dc711864) — 총괄 UI minus-수명 가드 순차 통합으로 추정, 타 세션 변경, 되돌리지 않음. 보스 구역 행(HELL_BOSSES/BOSS_MOVES/_BOSS_MOVESET)은 05:37Z 확인분과 동일 행이었고 본 교정은 canonical 문서 기반이라 game.html 드리프트 영향 없음. 이전 세션 source값(git-blob 81bf3d45 등)은 이력으로 보존하며 해시 종류가 달라 직접 비교 불가.",
+  "designatedNode": "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node (이번 산출엔 Node 미실행 — 순수 source/data 검토)",
+  "readFiles": [
+    { "path": "supervisor-next/BOSS/BOSS-runtime-only-count-correction-0548/TASK.md", "what": "감독 피드백·교정 지시" },
+    { "path": "tools/team-followup-20261002/continuous/COMMON.md", "what": "공통 계약(git조회 금지·소유 2파일·source SHA 시점) — 이력 인지" },
+    { "path": "docs/4.1맵디자인+설정/BOSS_CANONICAL_MAPPING.md", "whatLines": "§2 전체 35행(37-71) 재대조, §3.1 77행 '14종' 목록, si0 37·80, drift 39·78. @05:56Z 재확인" },
+    { "path": "tools/team-followup-20261002/continuous/BOSS/result.md", "what": "역사 근거 §B(교정 대상) 읽기 전용 — 수정 안 함" }
+  ],
+  "arithmetic": {
+    "section2_runtimeOnly_labeled": { "siSet": [4,5,8,10,12,14,15,17,19,21,23,26,27,28,32], "count": 15 },
+    "section31_prose_14names_siSet": [5,8,10,12,14,15,17,19,21,23,26,27,28,32],
+    "section31_count": 14,
+    "delta_missingFromProse": { "name": "벌레 수호자", "si": 4 },
+    "slot35_directClassification": { "loreMapped_A": 19, "runtimeOnly_B": 15, "si0_special_C": 1, "sum": 35 },
+    "priorErrorInContinuousB": "15-si 나열 + '14종' 라벨 혼용(§2목록 + §3.1라벨). 목록=15 정확, 라벨=14 오기.",
+    "denominatorAmbiguity": "runtime-only 라벨=15 / §3.1 산문=14 / 로어-부재 슬롯(si0 포함)=16 — 분모 정의 명시 필수, 단일 숫자 금지.",
+    "no_35_minus_19": true
+  },
+  "subsetVsAlias": {
+    "asIdentityAliasMapping": "성립(§2: 로어 19 식별자 ↔ 19 런타임 슬롯, 별칭 드리프트 포함 si2 사냥꾼→지옥기형, si3 기생수→현행 다크드루이드)",
+    "asLiteralStringSubset": "불성립/반증(숲의 사냥꾼·숲의 기생수는 현행 런타임 문자열 아님)",
+    "fullVerification": "UNKNOWN — 바이블 19 원본 목록을 본 작업에서 독립 열거/검증하지 않음(초기 감사 재실행 금지)"
+  },
+  "handoffTargets": [
+    "BOSS_CANONICAL_MAPPING.md:77 (§3.1 14종→15종+벌레 수호자, 또는 si4 제외 근거; 분모 정의 명시) — 총괄 결정",
+    "BOSS_CANONICAL_MAPPING.md:37,80 (si0 로어-부재 보조 주석)",
+    "BOSS_CANONICAL_MAPPING.md:77 서두 (19⊂35 = identity/alias, 리터럴 subset 아님·UNKNOWN 주석)"
+  ],
+  "openUNKNOWN": [
+    "runtime-only 최종 canonical 숫자(14 vs 15 vs 16 분모) = 총괄 결정",
+    "바이블 named 19 원본 목록의 정확한 구성(리터럴 subset 검증 미완)",
+    "si33 Killu/si34 지옥 군주 ↔ 네메시아 최종보스 명칭 (내러티브 공동)",
+    "runtime-only 슬롯 로어 서사 부여"
+  ],
+  "verificationBoundary": "source/data 검토만. 전투/runtime/visual/GPU/청취/저장/패키지 PASS 아님. productionApplied=false. 설계·구현 두 축 분리 유지, 합산·치환·자동산출 없음."
+}

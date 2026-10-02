@@ -205,3 +205,11 @@ assets/vfx/boss/gen/
 !/tools/team-followup-20261002/continuous/BUILD/checks.mjs
 !/tools/team-followup-20261002/continuous/BUILD/result.md
 !/tools/team-followup-20261002/continuous/BUILD/evidence.json
+
+# Only completed BUILD helper task text sources; all other build outputs stay ignored.
+!tools/team-followup-20261002/supervisor-next/BUILD/
+!tools/team-followup-20261002/supervisor-next/BUILD/BUILD-helper-integrity-0543/
+!tools/team-followup-20261002/supervisor-next/BUILD/BUILD-helper-integrity-0543/TASK.md
+!tools/team-followup-20261002/supervisor-next/BUILD/BUILD-helper-integrity-0543/checks.mjs
+!tools/team-followup-20261002/supervisor-next/BUILD/BUILD-helper-integrity-0543/result.md
+!tools/team-followup-20261002/supervisor-next/BUILD/BUILD-helper-integrity-0543/evidence.json

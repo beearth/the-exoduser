@@ -1,0 +1,91 @@
+{
+  "taskId": "ART-emg1-candidate-review-0545",
+  "role": "ART",
+  "model": "claude-opus-4-8",
+  "provider": "claude-native (VS Code 직연결 Claude6)",
+  "requestedBy": "peer Claude session (작업감독/supervisor 다음 한 건 전달); 사용자 직접 타이핑 아님",
+  "confirmedChatId": null,
+  "confirmedSessionId": null,
+  "taskFile": "tools/team-followup-20261002/supervisor-next/ART/ART-emg1-candidate-review-0545/TASK.md",
+  "taskFileSha256": "70f4e7d8bc714141f4d34e7437658f5d7b08effcb40917ed7e7279fe73ad3aaa",
+  "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+  "providedCheckpointFromPM": {
+    "checkpoint": "f2e70ef7c9c663fdd69e925bc379b6d6f8bcaa9c",
+    "game.html": "2e45 (원격조회 시점값)",
+    "game-easy-test.html": "3e59 (원격조회 시점값)",
+    "independentHeadObserved": false,
+    "note": "git 조회 안 함. 제공 값을 현재 HEAD로 표시하지 않음."
+  },
+  "timeline": {
+    "startUTC": "2026-10-02T05:43:00Z",
+    "startKST": "2026-10-02T14:43:00+09:00",
+    "completedUTC": "2026-10-02T05:48:00Z",
+    "completedKST": "2026-10-02T14:48:00+09:00"
+  },
+  "changesCountObserved": { "duringTask": 56, "note": "읽기전용 관측. 소유 2파일만 추가. 80 임계 미도달, Git stage/commit/push 0. 증가분은 타 담당/총괄 통합 포함 추정(독립 확인 안 함)" },
+  "ownedOutputs": [
+    { "path": "tools/team-followup-20261002/supervisor-next/ART/ART-emg1-candidate-review-0545/result.md", "sha256": "bd4e84a164e40fe6ca4bf11d3c4aacbdbd2d651057912ec6e356bc2fd6cc235a" },
+    { "path": "tools/team-followup-20261002/supervisor-next/ART/ART-emg1-candidate-review-0545/evidence.json", "sha256": "self" }
+  ],
+  "docsRead": [
+    "tools/team-followup-20261002/supervisor-next/ART/ART-emg1-candidate-review-0545/TASK.md",
+    "tools/team-followup-20261002/continuous/COMMON.md",
+    "docs/11내러티브·로어디자인/WARRIOR_DESIGN_LOCK.md",
+    "docs/17게임아트팀/ART_TEAM_MASTER.md (grep: emg1/후보/미검수 113,114,145,163,171,207,213,214,215,224,235)",
+    "docs/cinematic/WARINTRO_STILLS_AUDIT_20261001.md (grep: emg1 84,93 등)"
+  ],
+  "imageToolUsed": "Read (뷰어 렌더링) — 실제 시각 검토",
+  "imagesVisuallyReviewed": [
+    { "role": "candidate2(검토대상)", "path": "output/cutscene_remaster_20260930/warintro_candidates_unreviewed/emg1_candidate2_retry.jpg", "sha256": "ca3802be4bab276452395427eb03ca3ff422d9c478fbc5b50f4dec1fdab49ae2", "px": "2048x1152", "bytes": 612213, "viewed": true },
+    { "role": "original(연결중)", "path": "assets/cutscene/warintro/emg1.jpg", "sha256": "96e5e41900c60292488bb4cd3a2becf2e98297e522143177143f0be3b31fabf1", "px": "1536x1024", "bytes": 527153, "viewed": true },
+    { "role": "LOCK-identity", "path": "docs/11내러티브·로어디자인/assets/warrior_identity_ref.png", "sha256": "3bbde9d07e9a88d0b849ef6913a3f2c78ccca57e412461f206864c788c5c7868", "px": "940x544", "bytes": 325568, "viewed": true },
+    { "role": "LOCK-face", "path": "docs/11내러티브·로어디자인/assets/warrior_face_ref.png", "sha256": "b8aae22efd571298731ebee12061ef9b76ce4542e3c816af97a99d15347f0648", "px": "410x484", "bytes": 229493, "viewed": true }
+  ],
+  "imagesMetaOnlyNotReReviewed": [
+    { "role": "candidate1(이력)", "path": "output/cutscene_remaster_20260930/warintro_candidates_unreviewed/emg1_candidate1_rejected.jpg", "sha256": "1b01d8b5a22d0e56f3b664922d00c71880daba8b38df4603124bcc96cbf628f3", "px": "2048x1152", "bytes": 579635, "note": "불채택 이력, 재검수 안 함" },
+    { "role": "LOCK-main(미열람)", "path": "assets/charselect/warrior_cut.png", "sha256": "58e68f5f996c31966e9109c2de421185d93d138cec4fd5600da0ca1b58debfd4", "px": "1223x986", "bytes": 1670346, "note": "LOCK이 얼굴 약함으로 규정, SHA 메타만 기록" }
+  ],
+  "verdict": "KEEP-HOLD",
+  "verdictBasis": [
+    "후보1 불채택 사유(복수자 혼령화) 해소 — 청발 번개·보라후드 녹색·불화살 궁수 3인 뚜렷",
+    "전사 실루엣 LOCK 일치(흑발·흑철판금·암적망토·대검), 보라 눈 징후 없음",
+    "바닥 잔점 원본('잔점 심함') 대비 눈에 띄게 감소",
+    "네이티브 16:9 → 게임 COVER 16:9창 크롭0 (직전 ART 기하분석 연계)"
+  ],
+  "unknown": [
+    "전사 얼굴 신원·눈 보라 여부: 조감 축소로 미해상 (LOCK 얼굴 참조 레벨 판정 불가)",
+    "1x 픽셀 잔점/디더링: 표시 해상도 검토, 1x 계수 안 함",
+    "전사 손/대검 그립·궁수 활손 해부: 스케일상 미확인",
+    "실게임 COVER/카메라/자막/GPU 품질: 미수행"
+  ],
+  "retouchLocationsProposed": [
+    { "area": "청색 번개 스파크 노드", "uv": "0.68,0.33→0.95,0.28" },
+    { "area": "녹색 마법 폭발", "uv": "0.22,0.72" },
+    { "area": "불화살 끝 블룸", "uv": "0.60,0.62" },
+    { "area": "전사 얼굴(확인만)", "uv": "0.48,0.33" }
+  ],
+  "toolsUsed": [
+    { "tool": "Read", "purpose": "TASK/docs/이미지 읽기·시각검토" },
+    { "tool": "Bash", "purpose": "shasum/stat/rg/date 읽기전용 조회", "exit": 0, "errors": "none" },
+    { "tool": "Write", "purpose": "소유 2파일 작성" }
+  ],
+  "skillsUsed": [],
+  "mcpUsed": [],
+  "imageGenerationOrEdit": false,
+  "gitWrite": false,
+  "productionApplied": false,
+  "realGameOrCameraOrGpuPass": false,
+  "priorChecksRerun": false,
+  "sameFallbackInvestigationRepeated": false,
+  "canonicalHandoff": [
+    "docs/17게임아트팀/ART_TEAM_MASTER.md:214 (emg1 2차 후보 품질) → KEEP-HOLD 갱신 문안 제안",
+    "docs/cinematic/WARINTRO_STILLS_AUDIT_20261001.md:84 → KEEP-HOLD 주석 제안"
+  ],
+  "handoffDependencies": [
+    "총괄: result §7 docs 2건 순차 반영 (공유 docs 직접 쓰기는 총괄 소관)",
+    "ART 후속: §4 밝은 점 국소 보정 + 1x 얼굴/손/잔점 확인 (재개 지시·MagicLight 잔액 확인 필요)",
+    "QA/BUILD: 후보 채택 시 실게임 COVER 16:9/16:10/자막 Gate",
+    "root: 채택은 원본 보존·로더 연결·게임 Gate 통과 이후"
+  ],
+  "status": "completed"
+}

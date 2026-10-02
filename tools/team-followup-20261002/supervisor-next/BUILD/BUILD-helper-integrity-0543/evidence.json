@@ -1,0 +1,710 @@
+{
+  "taskId": "BUILD-helper-integrity-0543",
+  "provider": "Codex",
+  "chatId": "01a0faaf-9dd5-7c91-ab09-ee0bcff343b0",
+  "chatIdSource": "coordinator roster",
+  "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+  "owner": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/supervisor-next/BUILD/BUILD-helper-integrity-0543",
+  "startedUtc": "2026-10-02T05:45:45.947Z",
+  "endedUtc": "2026-10-02T05:45:46.025Z",
+  "startedKst": "2026-10-02T14:45:45.947+09:00",
+  "node": "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node",
+  "providedCheckpoint": {
+    "commit": "f2e70ef7c9c663fdd69e925bc379b6d6f8bcaa9c",
+    "source": "supervisor TASK root provided 2026-10-02T05:42 approx; no independent Git observation"
+  },
+  "currentHead": "UNKNOWN_GIT_NOT_QUERIED",
+  "sourceReceipt": [
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+      "bytes": 4025390,
+      "sha256": "2e45ee0e9ad909b378bf1a7b864818ce442a4c3e17b12360b42e363dc7d0bd94",
+      "readUtc": "2026-10-02T05:45:45.957Z"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game-easy-test.html",
+      "bytes": 3902515,
+      "sha256": "3e5969ca139497c2efb312dc720ab53eb42a8d1912c8288caa2ce858cfd5120a",
+      "readUtc": "2026-10-02T05:45:45.960Z"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/node-main.js",
+      "bytes": 10282,
+      "sha256": "541ff8e6f57db862ddbb1b148ee37a3a8e0da1e16293bc8343a0bc4144d80daf",
+      "readUtc": "2026-10-02T05:45:45.962Z"
+    }
+  ],
+  "references": [
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/supervisor-next/BUILD/BUILD-helper-integrity-0543/TASK.md",
+      "bytes": 4013,
+      "sha256": "0ed398bbf06b097ecc218ef39dfac0631c0a601c0d05b82e3e660ef2791377c4",
+      "readUtc": "2026-10-02T05:45:45.948Z"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/COMMON.md",
+      "bytes": 3373,
+      "sha256": "de5a881270625a7b2d0e854331205e01372a037340a18474c6442b60e668465e",
+      "readUtc": "2026-10-02T05:45:45.948Z"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/AGENTS.md",
+      "bytes": 26076,
+      "sha256": "fd59bef70960bcaf1ab9910051faa860362884e574ac2869fad05c6872ae04e4",
+      "readUtc": "2026-10-02T05:45:45.948Z"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROVIDER-HALVES-20261002.md",
+      "bytes": 11624,
+      "sha256": "16cbe4b9d0c9d0e0e8cabc1ac8d4f7718f78b4e013b6e5cb169e5bb6d397be6d",
+      "readUtc": "2026-10-02T05:45:45.948Z"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/INTEGRATION_BUILD_TEAM_MASTER.md",
+      "bytes": 18464,
+      "sha256": "cf677477e7909093e6bdc9ea927e7853c55e83c2d5074d81f2b8e55bb76e23a1",
+      "readUtc": "2026-10-02T05:45:45.949Z"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/BUILD_BACKUP_POLICY_20261001.md",
+      "bytes": 8966,
+      "sha256": "945251be6c05eba6cbee6d4411e42ee0395d1c292fc61f33cb4679577b1c4c94",
+      "readUtc": "2026-10-02T05:45:45.949Z"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/mac-packager/packager.mjs",
+      "bytes": 14962,
+      "sha256": "1975f899fe62559b96674a811604fb24cee873cd1e1b6da170814a1ffa0e7f0c",
+      "readUtc": "2026-10-02T05:45:45.949Z"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/node_modules/nw-builder/src/bld/osx.js",
+      "bytes": 6827,
+      "sha256": "9db9b472d4eea79776076d187d5329107de73177d82628f88f006e3eb281968a",
+      "readUtc": "2026-10-02T05:45:45.949Z"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/integrated-mac-build-plan.json",
+      "bytes": 2903253,
+      "sha256": "f43b820a900cf54f874aa169391e51aca88418a4edd2e83d0e5b7e5ba77dbeb8",
+      "readUtc": "2026-10-02T05:45:45.951Z"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+      "bytes": 4025390,
+      "sha256": "2e45ee0e9ad909b378bf1a7b864818ce442a4c3e17b12360b42e363dc7d0bd94",
+      "readUtc": "2026-10-02T05:45:45.957Z"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game-easy-test.html",
+      "bytes": 3902515,
+      "sha256": "3e5969ca139497c2efb312dc720ab53eb42a8d1912c8288caa2ce858cfd5120a",
+      "readUtc": "2026-10-02T05:45:45.960Z"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/node-main.js",
+      "bytes": 10282,
+      "sha256": "541ff8e6f57db862ddbb1b148ee37a3a8e0da1e16293bc8343a0bc4144d80daf",
+      "readUtc": "2026-10-02T05:45:45.962Z"
+    }
+  ],
+  "actualFragments": {
+    "verifyOutput": {
+      "text": "function verifyOutput(proposal){\n  const {parse}=createRequire(import.meta.url)('plist');\n  const app=path.join(proposal.paths.output,proposal.args.app.name+'.app');safeAncestors(app);\n  const main=path.join(app,'Contents/MacOS',proposal.args.app.name),plist=path.join(app,'Contents/Info.plist');requireValue(digest(readFile(main))===proposal.runtimeFiles.find(entry=>entry.path==='nwjs.app/Contents/MacOS/nwjs').sha256&&parse(readFile(plist).toString()).CFBundleExecutable===proposal.args.app.name,'MAC_RENAME_NOT_COMPLETED');\n  const resource=path.join(app,'Contents/Resources/app.nw');\n  requireValue(JSON.stringify(JSON.parse(readFile(path.join(resource,'package.json'))))===JSON.stringify({...proposal.derivedPackage,product_string:proposal.args.app.name}),'DERIVED_PACKAGE_MISMATCH');\n  requireValue(digest(readFile(path.join(resource,'node-main.js')))===digest(proposal.derivedServer),'DERIVED_SERVER_MISMATCH');\n  const helperRoot=path.join(app,'Contents/Frameworks/nwjs Framework.framework/Versions',proposal.args.releaseInfo.components.chromium,'Helpers');\n  for(const suffix of ['', ' (Alerts)',' (GPU)',' (Renderer)']){const helper=proposal.args.app.name+' Helper'+suffix;requireValue(readFile(path.join(helperRoot,helper+'.app/Contents/MacOS',helper)).length>0,'MAC_HELPER_RENAME_NOT_COMPLETED');requireValue(parse(readFile(path.join(helperRoot,helper+'.app/Contents/Info.plist')).toString()).CFBundleExecutable===helper,'MAC_HELPER_PLIST_NOT_COMPLETED');}\n  for(const input of proposal.inputs){if(['package.json','node-main.js'].includes(input.path))continue;requireValue(digest(readFile(path.join(resource,input.path)))===input.sha256,'PACKAGED_INPUT_SHA_MISMATCH');}\n  return app;\n}",
+      "startLine": 75,
+      "sha256": "420dc31f3b2be05992a26f9d4ce042c8aaf55d36a8e4c6caae54c54096748e8a"
+    },
+    "safeAncestors": {
+      "text": "function safeAncestors(absolute){\n  let current=path.parse(absolute).root;\n  for(const segment of absolute.slice(current.length).split(path.sep).filter(Boolean)){current=path.join(current,segment);requireValue(!fs.lstatSync(current).isSymbolicLink(),'SYMLINK_PATH');}\n}",
+      "startLine": 17,
+      "sha256": "d2f8dcde7bf4fd93cc707137089fc9031a4286fe228d6e3fee2e9e5288cb0792"
+    },
+    "readFile": {
+      "text": "function readFile(absolute){safeAncestors(absolute);const descriptor=fs.openSync(absolute,fs.constants.O_RDONLY|fs.constants.O_NOFOLLOW);try{const before=fs.fstatSync(descriptor);requireValue(before.isFile()&&before.nlink===1,'REGULAR_SINGLE_LINK_REQUIRED');const data=fs.readFileSync(descriptor);const after=fs.fstatSync(descriptor);requireValue(before.size===after.size&&before.mtimeMs===after.mtimeMs&&before.ctimeMs===after.ctimeMs,'SOURCE_CHANGED');return data;}finally{fs.closeSync(descriptor);}}",
+      "startLine": 23,
+      "sha256": "2fb4bd3c0577e7ca05f9adcfddd0df991401d460bbb63b80f640df5f18fd00ce"
+    },
+    "helperLibrary": {
+      "path": "node_modules/nw-builder/src/bld/osx.js",
+      "renameLines": [
+        92,
+        104
+      ],
+      "plistExecutableLine": 21
+    }
+  },
+  "candidate": {
+    "text": "function verifyOutput(proposal){\n  const {parse}=createRequire(import.meta.url)('plist');\n  const app=path.join(proposal.paths.output,proposal.args.app.name+'.app');safeAncestors(app);\n  const main=path.join(app,'Contents/MacOS',proposal.args.app.name),plist=path.join(app,'Contents/Info.plist');requireValue(digest(readFile(main))===proposal.runtimeFiles.find(entry=>entry.path==='nwjs.app/Contents/MacOS/nwjs').sha256&&parse(readFile(plist).toString()).CFBundleExecutable===proposal.args.app.name,'MAC_RENAME_NOT_COMPLETED');\n  const resource=path.join(app,'Contents/Resources/app.nw');\n  requireValue(JSON.stringify(JSON.parse(readFile(path.join(resource,'package.json'))))===JSON.stringify({...proposal.derivedPackage,product_string:proposal.args.app.name}),'DERIVED_PACKAGE_MISMATCH');\n  requireValue(digest(readFile(path.join(resource,'node-main.js')))===digest(proposal.derivedServer),'DERIVED_SERVER_MISMATCH');\n  const helperRoot=path.join(app,'Contents/Frameworks/nwjs Framework.framework/Versions',proposal.args.releaseInfo.components.chromium,'Helpers');\n  for(const suffix of ['', ' (Alerts)',' (GPU)',' (Renderer)']){const helper=proposal.args.app.name+' Helper'+suffix;const helperBytes=readFile(path.join(helperRoot,helper+'.app/Contents/MacOS',helper));requireValue(helperBytes.length>0,'MAC_HELPER_RENAME_NOT_COMPLETED');const sourceHelper='nwjs Helper'+suffix;const expectedPath='nwjs.app/Contents/Frameworks/nwjs Framework.framework/Versions/'+proposal.args.releaseInfo.components.chromium+'/Helpers/'+sourceHelper+'.app/Contents/MacOS/'+sourceHelper;const expectedPin=proposal.runtimeFiles.find(entry=>entry.path===expectedPath);requireValue(expectedPin&&/^[a-f0-9]{64}$/.test(expectedPin.sha256),'MAC_HELPER_PIN_MISSING_OR_INVALID');requireValue(digest(helperBytes)===expectedPin.sha256,'MAC_HELPER_SHA_MISMATCH:'+sourceHelper);requireValue(parse(readFile(path.join(helperRoot,helper+'.app/Contents/Info.plist')).toString()).CFBundleExecutable===helper,'MAC_HELPER_PLIST_NOT_COMPLETED');}\n  for(const input of proposal.inputs){if(['package.json','node-main.js'].includes(input.path))continue;requireValue(digest(readFile(path.join(resource,input.path)))===input.sha256,'PACKAGED_INPUT_SHA_MISMATCH');}\n  return app;\n}",
+    "sha256": "d17222a0e1af21fc9770ea8ac9665af0e2a16140f1c7d2528aecc93cb8161030",
+    "status": "MEMORY_ONLY_NOT_APPLIED",
+    "replacement": "const helperBytes=readFile(path.join(helperRoot,helper+'.app/Contents/MacOS',helper));requireValue(helperBytes.length>0,'MAC_HELPER_RENAME_NOT_COMPLETED');const sourceHelper='nwjs Helper'+suffix;const expectedPath='nwjs.app/Contents/Frameworks/nwjs Framework.framework/Versions/'+proposal.args.releaseInfo.components.chromium+'/Helpers/'+sourceHelper+'.app/Contents/MacOS/'+sourceHelper;const expectedPin=proposal.runtimeFiles.find(entry=>entry.path===expectedPath);requireValue(expectedPin&&/^[a-f0-9]{64}$/.test(expectedPin.sha256),'MAC_HELPER_PIN_MISSING_OR_INVALID');requireValue(digest(helperBytes)===expectedPin.sha256,'MAC_HELPER_SHA_MISMATCH:'+sourceHelper);"
+  },
+  "dependencies": {
+    "memoryFs": "Map payload; lstat non-symlink; fstat regular nlink1/stable size times; descriptor open/read/close logs; no disk fallback",
+    "path": "actual node:path",
+    "digest": "actual SHA256",
+    "plist": "actual installed plist parse/build; only plist allowed in extracted createRequire shim",
+    "moduleUrlAdapter": "import.meta.url replaced with literal source URL in VM Script; original verify body otherwise exact",
+    "excludedFunctions": [
+      "plan",
+      "execute",
+      "localBuild",
+      "listTree"
+    ],
+    "proposal": "historical name/chromium/path mapping; synthetic main/helper pins replace historical expected SHA for memory inputs only; derived package/server synthetic; inputs empty to isolate helper boundary"
+  },
+  "mapping": [
+    {
+      "suffix": "",
+      "originalPath": "nwjs.app/Contents/Frameworks/nwjs Framework.framework/Versions/148.0.7778.97/Helpers/nwjs Helper.app/Contents/MacOS/nwjs Helper",
+      "outputPath": "/memory-only/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Frameworks/nwjs Framework.framework/Versions/148.0.7778.97/Helpers/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper.app/Contents/MacOS/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper",
+      "historicalPin": "544c9e579c914be565a416ca50c01bf8a259a8bd489fe91aff340bfe1087bedc",
+      "memoryExpectedSha256": "3f346fe0498539d6fb7dcfb5ad6c07a0dca30734b8ee3caf7f6ce577a350a8f4",
+      "memoryBytes": 28
+    },
+    {
+      "suffix": " (Alerts)",
+      "originalPath": "nwjs.app/Contents/Frameworks/nwjs Framework.framework/Versions/148.0.7778.97/Helpers/nwjs Helper (Alerts).app/Contents/MacOS/nwjs Helper (Alerts)",
+      "outputPath": "/memory-only/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Frameworks/nwjs Framework.framework/Versions/148.0.7778.97/Helpers/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper (Alerts).app/Contents/MacOS/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper (Alerts)",
+      "historicalPin": "601cafa38b6cb4be5fb9026489a717d3abe0320cb31ab473c8b44e0418b92eab",
+      "memoryExpectedSha256": "35a50f088d9aeb1ff12204dd613aa794f81e87e4cbbd5538f74c3a4a7b5c89dd",
+      "memoryBytes": 37
+    },
+    {
+      "suffix": " (GPU)",
+      "originalPath": "nwjs.app/Contents/Frameworks/nwjs Framework.framework/Versions/148.0.7778.97/Helpers/nwjs Helper (GPU).app/Contents/MacOS/nwjs Helper (GPU)",
+      "outputPath": "/memory-only/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Frameworks/nwjs Framework.framework/Versions/148.0.7778.97/Helpers/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper (GPU).app/Contents/MacOS/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper (GPU)",
+      "historicalPin": "abc0a72d988ba5b33cfa638c05352f1a7be975c22d1f4ee379f25e7f0f4f289e",
+      "memoryExpectedSha256": "b47a3ce00a8db0eed88d42105fdb55694272767d2b76a42e6087a1b78a370429",
+      "memoryBytes": 34
+    },
+    {
+      "suffix": " (Renderer)",
+      "originalPath": "nwjs.app/Contents/Frameworks/nwjs Framework.framework/Versions/148.0.7778.97/Helpers/nwjs Helper (Renderer).app/Contents/MacOS/nwjs Helper (Renderer)",
+      "outputPath": "/memory-only/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Frameworks/nwjs Framework.framework/Versions/148.0.7778.97/Helpers/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper (Renderer).app/Contents/MacOS/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper (Renderer)",
+      "historicalPin": "1706b0cdbeec3bfe73a5dec8e42ed4b1c634a7c44c25216de1c60ae804822777",
+      "memoryExpectedSha256": "1cc74ca204b70aba259f7e2d75f0b8d1793d4604ed5138da4620e6939693a5a9",
+      "memoryBytes": 39
+    }
+  ],
+  "mutation": {
+    "path": "/memory-only/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Frameworks/nwjs Framework.framework/Versions/148.0.7778.97/Helpers/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper (GPU).app/Contents/MacOS/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper (GPU)",
+    "offset": 33,
+    "xor": 1,
+    "byteBefore": 49,
+    "byteAfter": 48,
+    "beforeSha256": "b47a3ce00a8db0eed88d42105fdb55694272767d2b76a42e6087a1b78a370429",
+    "afterSha256": "c294f2ff72c08ea153902bc767a374c3523967d10ef284e75794051d61442fa7",
+    "sameLength": true
+  },
+  "outcomes": {
+    "normal": {
+      "current": {
+        "accepted": true,
+        "returned": "/memory-only/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app",
+        "error": null,
+        "reads": [
+          {
+            "path": "/memory-only/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/MacOS/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269",
+            "sha256": "f6a571a0072a637009446515a4fdc973b44a9a5a79c9c00355ca527f7a68dc6c",
+            "bytes": 42,
+            "flags": 256
+          },
+          {
+            "path": "/memory-only/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Info.plist",
+            "sha256": "8ec6f0b6635a49664aa5482750d4cac3f15f96876f5c824d1b10934b190e5f3e",
+            "bytes": 292,
+            "flags": 256
+          },
+          {
+            "path": "/memory-only/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Resources/app.nw/package.json",
+            "sha256": "dadd2488424f7a7be1a8abb51c4a2506db18235464819554fd994f3642d0d770",
+            "bytes": 137,
+            "flags": 256
+          },
+          {
+            "path": "/memory-only/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Resources/app.nw/node-main.js",
+            "sha256": "61df7ad7b49565ec4a817329ce978169ea85ce3a01d9cfb4b7b4917b666e2e72",
+            "bytes": 28,
+            "flags": 256
+          },
+          {
+            "path": "/memory-only/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Frameworks/nwjs Framework.framework/Versions/148.0.7778.97/Helpers/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper.app/Contents/MacOS/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper",
+            "sha256": "3f346fe0498539d6fb7dcfb5ad6c07a0dca30734b8ee3caf7f6ce577a350a8f4",
+            "bytes": 28,
+            "flags": 256
+          },
+          {
+            "path": "/memory-only/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Frameworks/nwjs Framework.framework/Versions/148.0.7778.97/Helpers/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper.app/Contents/Info.plist",
+            "sha256": "57e75cafa55cc4b4b189695acb06008badde880f6011c30d3fc4785a05b352eb",
+            "bytes": 299,
+            "flags": 256
+          },
+          {
+            "path": "/memory-only/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Frameworks/nwjs Framework.framework/Versions/148.0.7778.97/Helpers/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper (Alerts).app/Contents/MacOS/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper (Alerts)",
+            "sha256": "35a50f088d9aeb1ff12204dd613aa794f81e87e4cbbd5538f74c3a4a7b5c89dd",
+            "bytes": 37,
+            "flags": 256
+          },
+          {
+            "path": "/memory-only/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Frameworks/nwjs Framework.framework/Versions/148.0.7778.97/Helpers/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper (Alerts).app/Contents/Info.plist",
+            "sha256": "dbdeca1d124d08fa745a801321631fa1fe8688381a007c9e54688c14acf7e5b6",
+            "bytes": 308,
+            "flags": 256
+          },
+          {
+            "path": "/memory-only/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Frameworks/nwjs Framework.framework/Versions/148.0.7778.97/Helpers/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper (GPU).app/Contents/MacOS/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper (GPU)",
+            "sha256": "b47a3ce00a8db0eed88d42105fdb55694272767d2b76a42e6087a1b78a370429",
+            "bytes": 34,
+            "flags": 256
+          },
+          {
+            "path": "/memory-only/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Frameworks/nwjs Framework.framework/Versions/148.0.7778.97/Helpers/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper (GPU).app/Contents/Info.plist",
+            "sha256": "8a0d0094f8b12d27ac63bebf197a11f9d753aa03b2027188eee8633b706cf669",
+            "bytes": 305,
+            "flags": 256
+          },
+          {
+            "path": "/memory-only/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Frameworks/nwjs Framework.framework/Versions/148.0.7778.97/Helpers/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper (Renderer).app/Contents/MacOS/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper (Renderer)",
+            "sha256": "1cc74ca204b70aba259f7e2d75f0b8d1793d4604ed5138da4620e6939693a5a9",
+            "bytes": 39,
+            "flags": 256
+          },
+          {
+            "path": "/memory-only/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Frameworks/nwjs Framework.framework/Versions/148.0.7778.97/Helpers/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper (Renderer).app/Contents/Info.plist",
+            "sha256": "570320c228cfd66d533ad950e94aacf342699ed62046d04b0e56ee43ef281dd3",
+            "bytes": 310,
+            "flags": 256
+          }
+        ],
+        "opens": 12,
+        "closes": 12,
+        "descriptorsOutstanding": 0
+      },
+      "candidate": {
+        "accepted": true,
+        "returned": "/memory-only/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app",
+        "error": null,
+        "reads": [
+          {
+            "path": "/memory-only/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/MacOS/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269",
+            "sha256": "f6a571a0072a637009446515a4fdc973b44a9a5a79c9c00355ca527f7a68dc6c",
+            "bytes": 42,
+            "flags": 256
+          },
+          {
+            "path": "/memory-only/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Info.plist",
+            "sha256": "8ec6f0b6635a49664aa5482750d4cac3f15f96876f5c824d1b10934b190e5f3e",
+            "bytes": 292,
+            "flags": 256
+          },
+          {
+            "path": "/memory-only/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Resources/app.nw/package.json",
+            "sha256": "dadd2488424f7a7be1a8abb51c4a2506db18235464819554fd994f3642d0d770",
+            "bytes": 137,
+            "flags": 256
+          },
+          {
+            "path": "/memory-only/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Resources/app.nw/node-main.js",
+            "sha256": "61df7ad7b49565ec4a817329ce978169ea85ce3a01d9cfb4b7b4917b666e2e72",
+            "bytes": 28,
+            "flags": 256
+          },
+          {
+            "path": "/memory-only/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Frameworks/nwjs Framework.framework/Versions/148.0.7778.97/Helpers/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper.app/Contents/MacOS/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper",
+            "sha256": "3f346fe0498539d6fb7dcfb5ad6c07a0dca30734b8ee3caf7f6ce577a350a8f4",
+            "bytes": 28,
+            "flags": 256
+          },
+          {
+            "path": "/memory-only/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Frameworks/nwjs Framework.framework/Versions/148.0.7778.97/Helpers/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper.app/Contents/Info.plist",
+            "sha256": "57e75cafa55cc4b4b189695acb06008badde880f6011c30d3fc4785a05b352eb",
+            "bytes": 299,
+            "flags": 256
+          },
+          {
+            "path": "/memory-only/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Frameworks/nwjs Framework.framework/Versions/148.0.7778.97/Helpers/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper (Alerts).app/Contents/MacOS/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper (Alerts)",
+            "sha256": "35a50f088d9aeb1ff12204dd613aa794f81e87e4cbbd5538f74c3a4a7b5c89dd",
+            "bytes": 37,
+            "flags": 256
+          },
+          {
+            "path": "/memory-only/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Frameworks/nwjs Framework.framework/Versions/148.0.7778.97/Helpers/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper (Alerts).app/Contents/Info.plist",
+            "sha256": "dbdeca1d124d08fa745a801321631fa1fe8688381a007c9e54688c14acf7e5b6",
+            "bytes": 308,
+            "flags": 256
+          },
+          {
+            "path": "/memory-only/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Frameworks/nwjs Framework.framework/Versions/148.0.7778.97/Helpers/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper (GPU).app/Contents/MacOS/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper (GPU)",
+            "sha256": "b47a3ce00a8db0eed88d42105fdb55694272767d2b76a42e6087a1b78a370429",
+            "bytes": 34,
+            "flags": 256
+          },
+          {
+            "path": "/memory-only/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Frameworks/nwjs Framework.framework/Versions/148.0.7778.97/Helpers/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper (GPU).app/Contents/Info.plist",
+            "sha256": "8a0d0094f8b12d27ac63bebf197a11f9d753aa03b2027188eee8633b706cf669",
+            "bytes": 305,
+            "flags": 256
+          },
+          {
+            "path": "/memory-only/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Frameworks/nwjs Framework.framework/Versions/148.0.7778.97/Helpers/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper (Renderer).app/Contents/MacOS/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper (Renderer)",
+            "sha256": "1cc74ca204b70aba259f7e2d75f0b8d1793d4604ed5138da4620e6939693a5a9",
+            "bytes": 39,
+            "flags": 256
+          },
+          {
+            "path": "/memory-only/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Frameworks/nwjs Framework.framework/Versions/148.0.7778.97/Helpers/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper (Renderer).app/Contents/Info.plist",
+            "sha256": "570320c228cfd66d533ad950e94aacf342699ed62046d04b0e56ee43ef281dd3",
+            "bytes": 310,
+            "flags": 256
+          }
+        ],
+        "opens": 12,
+        "closes": 12,
+        "descriptorsOutstanding": 0
+      }
+    },
+    "oneByteMutation": {
+      "current": {
+        "accepted": true,
+        "returned": "/memory-only/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app",
+        "error": null,
+        "reads": [
+          {
+            "path": "/memory-only/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/MacOS/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269",
+            "sha256": "f6a571a0072a637009446515a4fdc973b44a9a5a79c9c00355ca527f7a68dc6c",
+            "bytes": 42,
+            "flags": 256
+          },
+          {
+            "path": "/memory-only/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Info.plist",
+            "sha256": "8ec6f0b6635a49664aa5482750d4cac3f15f96876f5c824d1b10934b190e5f3e",
+            "bytes": 292,
+            "flags": 256
+          },
+          {
+            "path": "/memory-only/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Resources/app.nw/package.json",
+            "sha256": "dadd2488424f7a7be1a8abb51c4a2506db18235464819554fd994f3642d0d770",
+            "bytes": 137,
+            "flags": 256
+          },
+          {
+            "path": "/memory-only/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Resources/app.nw/node-main.js",
+            "sha256": "61df7ad7b49565ec4a817329ce978169ea85ce3a01d9cfb4b7b4917b666e2e72",
+            "bytes": 28,
+            "flags": 256
+          },
+          {
+            "path": "/memory-only/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Frameworks/nwjs Framework.framework/Versions/148.0.7778.97/Helpers/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper.app/Contents/MacOS/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper",
+            "sha256": "3f346fe0498539d6fb7dcfb5ad6c07a0dca30734b8ee3caf7f6ce577a350a8f4",
+            "bytes": 28,
+            "flags": 256
+          },
+          {
+            "path": "/memory-only/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Frameworks/nwjs Framework.framework/Versions/148.0.7778.97/Helpers/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper.app/Contents/Info.plist",
+            "sha256": "57e75cafa55cc4b4b189695acb06008badde880f6011c30d3fc4785a05b352eb",
+            "bytes": 299,
+            "flags": 256
+          },
+          {
+            "path": "/memory-only/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Frameworks/nwjs Framework.framework/Versions/148.0.7778.97/Helpers/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper (Alerts).app/Contents/MacOS/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper (Alerts)",
+            "sha256": "35a50f088d9aeb1ff12204dd613aa794f81e87e4cbbd5538f74c3a4a7b5c89dd",
+            "bytes": 37,
+            "flags": 256
+          },
+          {
+            "path": "/memory-only/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Frameworks/nwjs Framework.framework/Versions/148.0.7778.97/Helpers/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper (Alerts).app/Contents/Info.plist",
+            "sha256": "dbdeca1d124d08fa745a801321631fa1fe8688381a007c9e54688c14acf7e5b6",
+            "bytes": 308,
+            "flags": 256
+          },
+          {
+            "path": "/memory-only/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Frameworks/nwjs Framework.framework/Versions/148.0.7778.97/Helpers/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper (GPU).app/Contents/MacOS/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper (GPU)",
+            "sha256": "c294f2ff72c08ea153902bc767a374c3523967d10ef284e75794051d61442fa7",
+            "bytes": 34,
+            "flags": 256
+          },
+          {
+            "path": "/memory-only/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Frameworks/nwjs Framework.framework/Versions/148.0.7778.97/Helpers/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper (GPU).app/Contents/Info.plist",
+            "sha256": "8a0d0094f8b12d27ac63bebf197a11f9d753aa03b2027188eee8633b706cf669",
+            "bytes": 305,
+            "flags": 256
+          },
+          {
+            "path": "/memory-only/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Frameworks/nwjs Framework.framework/Versions/148.0.7778.97/Helpers/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper (Renderer).app/Contents/MacOS/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper (Renderer)",
+            "sha256": "1cc74ca204b70aba259f7e2d75f0b8d1793d4604ed5138da4620e6939693a5a9",
+            "bytes": 39,
+            "flags": 256
+          },
+          {
+            "path": "/memory-only/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Frameworks/nwjs Framework.framework/Versions/148.0.7778.97/Helpers/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper (Renderer).app/Contents/Info.plist",
+            "sha256": "570320c228cfd66d533ad950e94aacf342699ed62046d04b0e56ee43ef281dd3",
+            "bytes": 310,
+            "flags": 256
+          }
+        ],
+        "opens": 12,
+        "closes": 12,
+        "descriptorsOutstanding": 0
+      },
+      "candidate": {
+        "accepted": false,
+        "returned": null,
+        "error": "MAC_HELPER_SHA_MISMATCH:nwjs Helper (GPU)",
+        "reads": [
+          {
+            "path": "/memory-only/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/MacOS/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269",
+            "sha256": "f6a571a0072a637009446515a4fdc973b44a9a5a79c9c00355ca527f7a68dc6c",
+            "bytes": 42,
+            "flags": 256
+          },
+          {
+            "path": "/memory-only/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Info.plist",
+            "sha256": "8ec6f0b6635a49664aa5482750d4cac3f15f96876f5c824d1b10934b190e5f3e",
+            "bytes": 292,
+            "flags": 256
+          },
+          {
+            "path": "/memory-only/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Resources/app.nw/package.json",
+            "sha256": "dadd2488424f7a7be1a8abb51c4a2506db18235464819554fd994f3642d0d770",
+            "bytes": 137,
+            "flags": 256
+          },
+          {
+            "path": "/memory-only/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Resources/app.nw/node-main.js",
+            "sha256": "61df7ad7b49565ec4a817329ce978169ea85ce3a01d9cfb4b7b4917b666e2e72",
+            "bytes": 28,
+            "flags": 256
+          },
+          {
+            "path": "/memory-only/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Frameworks/nwjs Framework.framework/Versions/148.0.7778.97/Helpers/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper.app/Contents/MacOS/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper",
+            "sha256": "3f346fe0498539d6fb7dcfb5ad6c07a0dca30734b8ee3caf7f6ce577a350a8f4",
+            "bytes": 28,
+            "flags": 256
+          },
+          {
+            "path": "/memory-only/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Frameworks/nwjs Framework.framework/Versions/148.0.7778.97/Helpers/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper.app/Contents/Info.plist",
+            "sha256": "57e75cafa55cc4b4b189695acb06008badde880f6011c30d3fc4785a05b352eb",
+            "bytes": 299,
+            "flags": 256
+          },
+          {
+            "path": "/memory-only/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Frameworks/nwjs Framework.framework/Versions/148.0.7778.97/Helpers/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper (Alerts).app/Contents/MacOS/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper (Alerts)",
+            "sha256": "35a50f088d9aeb1ff12204dd613aa794f81e87e4cbbd5538f74c3a4a7b5c89dd",
+            "bytes": 37,
+            "flags": 256
+          },
+          {
+            "path": "/memory-only/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Frameworks/nwjs Framework.framework/Versions/148.0.7778.97/Helpers/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper (Alerts).app/Contents/Info.plist",
+            "sha256": "dbdeca1d124d08fa745a801321631fa1fe8688381a007c9e54688c14acf7e5b6",
+            "bytes": 308,
+            "flags": 256
+          },
+          {
+            "path": "/memory-only/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Frameworks/nwjs Framework.framework/Versions/148.0.7778.97/Helpers/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper (GPU).app/Contents/MacOS/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269 Helper (GPU)",
+            "sha256": "c294f2ff72c08ea153902bc767a374c3523967d10ef284e75794051d61442fa7",
+            "bytes": 34,
+            "flags": 256
+          }
+        ],
+        "opens": 9,
+        "closes": 9,
+        "descriptorsOutstanding": 0
+      }
+    }
+  },
+  "checks": [
+    {
+      "id": "ONE-BYTE-ONLY",
+      "passed": true
+    },
+    {
+      "id": "CURRENT-DEFECT-REPRODUCED",
+      "passed": true
+    },
+    {
+      "id": "CANDIDATE-REJECTS-MUTATION",
+      "passed": true
+    },
+    {
+      "id": "NORMAL-EQUIVALENCE",
+      "passed": true
+    },
+    {
+      "id": "DESCRIPTORS-CLOSED",
+      "passed": true
+    }
+  ],
+  "counts": {
+    "inputs": 2,
+    "verifierInvocations": 4,
+    "priorChecksRerun": 0,
+    "fullTreeScans": 0,
+    "actualNativePayloadReads": 0,
+    "realFsFixtureWrites": 0
+  },
+  "preservation": [
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/supervisor-next/BUILD/BUILD-helper-integrity-0543/TASK.md",
+      "before": "0ed398bbf06b097ecc218ef39dfac0631c0a601c0d05b82e3e660ef2791377c4",
+      "after": "0ed398bbf06b097ecc218ef39dfac0631c0a601c0d05b82e3e660ef2791377c4"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/COMMON.md",
+      "before": "de5a881270625a7b2d0e854331205e01372a037340a18474c6442b60e668465e",
+      "after": "de5a881270625a7b2d0e854331205e01372a037340a18474c6442b60e668465e"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/AGENTS.md",
+      "before": "fd59bef70960bcaf1ab9910051faa860362884e574ac2869fad05c6872ae04e4",
+      "after": "fd59bef70960bcaf1ab9910051faa860362884e574ac2869fad05c6872ae04e4"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROVIDER-HALVES-20261002.md",
+      "before": "16cbe4b9d0c9d0e0e8cabc1ac8d4f7718f78b4e013b6e5cb169e5bb6d397be6d",
+      "after": "16cbe4b9d0c9d0e0e8cabc1ac8d4f7718f78b4e013b6e5cb169e5bb6d397be6d"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/INTEGRATION_BUILD_TEAM_MASTER.md",
+      "before": "cf677477e7909093e6bdc9ea927e7853c55e83c2d5074d81f2b8e55bb76e23a1",
+      "after": "cf677477e7909093e6bdc9ea927e7853c55e83c2d5074d81f2b8e55bb76e23a1"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/BUILD_BACKUP_POLICY_20261001.md",
+      "before": "945251be6c05eba6cbee6d4411e42ee0395d1c292fc61f33cb4679577b1c4c94",
+      "after": "945251be6c05eba6cbee6d4411e42ee0395d1c292fc61f33cb4679577b1c4c94"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/mac-packager/packager.mjs",
+      "before": "1975f899fe62559b96674a811604fb24cee873cd1e1b6da170814a1ffa0e7f0c",
+      "after": "1975f899fe62559b96674a811604fb24cee873cd1e1b6da170814a1ffa0e7f0c"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/node_modules/nw-builder/src/bld/osx.js",
+      "before": "9db9b472d4eea79776076d187d5329107de73177d82628f88f006e3eb281968a",
+      "after": "9db9b472d4eea79776076d187d5329107de73177d82628f88f006e3eb281968a"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/integrated-mac-build-plan.json",
+      "before": "f43b820a900cf54f874aa169391e51aca88418a4edd2e83d0e5b7e5ba77dbeb8",
+      "after": "f43b820a900cf54f874aa169391e51aca88418a4edd2e83d0e5b7e5ba77dbeb8"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+      "before": "2e45ee0e9ad909b378bf1a7b864818ce442a4c3e17b12360b42e363dc7d0bd94",
+      "after": "2e45ee0e9ad909b378bf1a7b864818ce442a4c3e17b12360b42e363dc7d0bd94"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game-easy-test.html",
+      "before": "3e5969ca139497c2efb312dc720ab53eb42a8d1912c8288caa2ce858cfd5120a",
+      "after": "3e5969ca139497c2efb312dc720ab53eb42a8d1912c8288caa2ce858cfd5120a"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/node-main.js",
+      "before": "541ff8e6f57db862ddbb1b148ee37a3a8e0da1e16293bc8343a0bc4144d80daf",
+      "after": "541ff8e6f57db862ddbb1b148ee37a3a8e0da1e16293bc8343a0bc4144d80daf"
+    }
+  ],
+  "docsSearch": {
+    "pattern": "verifyOutput|MAC_HELPER|native helper|Helper|Mach-O|packager|INTEGRATION_BUILD_TEAM_MASTER",
+    "exitCode": 0,
+    "lineCount": 30,
+    "matchedFiles": [
+      "docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md",
+      "docs/0마스터플랜/TEAM_CONTINUATION_POLICY_20261001.md",
+      "docs/0마스터플랜/TEAM_START_COMMANDS_20261001.md",
+      "docs/0마스터플랜/mac-resume-20261001/BUILD-SOUND-잔여팀-인수검토.md",
+      "docs/0마스터플랜/mac-resume-20261001/corpse-capture-evidence/invariants.json",
+      "docs/0마스터플랜/mac-resume-20261001/item-fallback-evidence/다음작업-감사.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BUILD-result.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BUILD-task.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FOUR-SUBMISSIONS-HELLRAY-20261002.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/INTEGRATION-REVIEW-20261002.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/MAC-APP-RUNTIME-20261002.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PERSISTENCE-MAC-PACKAGE-20261002.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/POST-INTEGRATION-PACKAGE-20261002.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json",
+      "docs/13출시·마케팅/BUILD_BACKUP_POLICY_20261001.md",
+      "docs/13출시·마케팅/INTEGRATION_BUILD_TEAM_MASTER.md",
+      "docs/13출시·마케팅/PC_PACKAGING_20260910.md",
+      "docs/CHANGELOG_SYNC.md",
+      "docs/GIT_PROVENANCE_NOTES.md"
+    ],
+    "outputSha256": "75c8aa53fb608e6440c4bfc347c3cd319144fdd076bfe7d572641cf260f639f4"
+  },
+  "canonical": "BUILD-helper-integrity-0543: packager.mjs verifyOutput의 helper 검증은 원본 실행 payload SHA를 비교하지 않고 비어 있지 않은 바이트와 CFBundleExecutable rename만 확인한다. 실제 verifyOutput/readFile/safeAncestors fragment와 메모리 fs 대역에서 GPU helper payload 끝1바이트 XOR1 변형이 현행에 인수됨을 재현했다. 메모리 후보는 nwjs Helper{suffix}.app/Contents/MacOS/nwjs Helper{suffix} 원 pin을 proposal.runtimeFiles에서 조회하고 rename된 EXODUSER-{id} Helper{suffix} payload SHA를 비교해 MAC_HELPER_SHA_MISMATCH로 거부한다. 정상 대조1입력은 반환값·읽기 path/bytes/SHA·descriptor close 동등. 총2입력×현행/후보4실행, 대역 expected SHA는 실제 native payload 관측치가 아니다. productionApplied/rebuildExecuted/runtimeAccepted/visualAccepted=false; missing-pin/타helper suffix/failure shape·실앱·서명/제품 검수는 미실행.",
+  "verdict": "DEFECT_REPRODUCED_MEMORY_CANDIDATE_READY",
+  "productionApplied": false,
+  "rebuildExecuted": false,
+  "runtimeAccepted": false,
+  "visualAccepted": false,
+  "toolsActuallyUsed": [
+    "functions.exec -> exec_command"
+  ],
+  "skillsUsed": [],
+  "prohibitedActions": {
+    "git": 0,
+    "index": 0,
+    "productionWrite": 0,
+    "sharedDocsWrite": 0,
+    "oldOutputWrite": 0,
+    "build": 0,
+    "app": 0,
+    "server": 0,
+    "ui": 0,
+    "nativeCopy": 0,
+    "nativeRead": 0,
+    "delete": 0,
+    "move": 0,
+    "messages": 0,
+    "subteams": 0
+  },
+  "limitations": [
+    "Two inputs only; missing/invalid pin and other helper mutations not executed",
+    "No real native byte/architecture/code-signature/plist filesystem validation",
+    "Current game/easy/node hashes receipt only; prior delta checks not rerun",
+    "Current Changes count tracked by supervisor, unknown here; 80/100 checkpoint root responsibility"
+  ],
+  "commandReceipts": [
+    {
+      "command": "cat supervisor-next/BUILD/BUILD-helper-integrity-0543/TASK.md",
+      "exitCode": 0,
+      "chunk": "056ca3"
+    },
+    {
+      "command": "cat COMMON.md; cat AGENTS.md; sed roster1..31; rg packager verify/runtimeFiles/helper; cat BUILD_BACKUP_POLICY; rg BUILD master",
+      "exitCode": 0,
+      "chunks": [
+        "970c8c",
+        "3f4aa1"
+      ]
+    },
+    {
+      "command": "sed packager1..112; sed BUILD master1..16; rg osx Helper/plist/rename",
+      "exitCode": 0,
+      "chunk": "b4c5ad"
+    },
+    {
+      "command": "sed osx1..28,71..108; sed AGENTS231..310",
+      "exitCode": 0,
+      "chunk": "c6fc3b"
+    },
+    {
+      "command": "exact Node /Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/supervisor-next/BUILD/BUILD-helper-integrity-0543/checks.mjs",
+      "exitCode": 0
+    },
+    {
+      "command": "rg -n verifyOutput|MAC_HELPER|native helper|Helper|Mach-O|packager|INTEGRATION_BUILD_TEAM_MASTER docs/",
+      "exitCode": 0
+    }
+  ],
+  "report": {
+    "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/supervisor-next/BUILD/BUILD-helper-integrity-0543/result.md",
+    "bytes": 7808,
+    "sha256": "9be047cfd0090c19a5f851b7458b22f64deb655a2bb41bf789d9abee823871bf"
+  },
+  "checksFile": {
+    "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/supervisor-next/BUILD/BUILD-helper-integrity-0543/checks.mjs",
+    "sha256": "ee5adfe04a43ecfb3693430daeee1c69cdaab8cb66cefb591dba2f8e9056b7bf"
+  }
+}

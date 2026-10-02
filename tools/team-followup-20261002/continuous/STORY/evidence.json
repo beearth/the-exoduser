@@ -1,0 +1,89 @@
+{
+  "taskId": "continuous-STORY-cin-lines",
+  "provider": "Claude Code (Opus 4.8)",
+  "role": "STORY",
+  "chatSessionId": null,
+  "threadIdFromUtilization": "01a0fae0-c9ce-7890-b125-b3da65d8b3fa",
+  "timestamps": {
+    "receivedAtUTC": "2026-10-02T05:33Z(approx, 메시지 수신)",
+    "startedAtUTC": "2026-10-02T05:37:06Z",
+    "completedAtUTC": "2026-10-02T05:42Z(approx)",
+    "kstAtStart": "2026-10-02T14:37:06+0900"
+  },
+  "env": {
+    "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "cwdMatchesTask": true,
+    "gitQueried": false,
+    "providedCommit": {
+      "sha": "7e69495046323b3120578f67635c20feb48b2a4f",
+      "source": "COMMON.md 및 PROJECT_MANAGEMENT_MASTER.md(line 792)에서 총괄이 제공한 값. 독립 HEAD 관측 아님",
+      "note": "카드 수명·NW.js 실패 응답 반영. 총괄이 UI 수명 가드 순차 통합 중이라 index/game 콘텐츠 해시가 직전 과제 시점과 다를 수 있음 — 되돌리지 않고 현재 source 기준으로만 인용"
+    }
+  },
+  "ownedOutputs": [
+    "tools/team-followup-20261002/continuous/STORY/result.md",
+    "tools/team-followup-20261002/continuous/STORY/evidence.json"
+  ],
+  "checksMjs": "미생성 (이번 TASK는 의미 있는 source fixture를 요구하지 않음 — COMMON 기본 2파일 소유 유지)",
+  "contentSHA256_shasum_not_git": {
+    "index.html": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8",
+    "game.html": "2e45ee0e9ad909b378bf1a7b864818ce442a4c3e17b12360b42e363dc7d0bd94",
+    "lobby_i18n.js": "aed031de1f722add233ef35ab8b37cd9cce38cc36d829858575ece841837613a",
+    "world-intro-subtitles.js": "9e3ac2207ece4cf5591ef7eee5d3296f4024c0e5ecfdfcaeda19bd2918dbc92b",
+    "docs/11내러티브·로어디자인/WORLD_CORE.md": "5f29ed67a28e91251223edc14953053f407126978e58d3af0ca16fd180275a56",
+    "docs/4.1맵디자인+설정/BOSS_CANONICAL_MAPPING.md": "eaf369a495ba70cefd5c9116db62f0372a57b7168383a7624a4e893be399d505",
+    "docs/cinematic/SPACE_HOLD_SKIP_20260914.md": "ff1f2646e4ecaeb940e67d7ab0b5783b5b7b73d6be2a500fa9a15aee7a3c59c0",
+    "docs/11내러티브·로어디자인/11내러티브·로어디자인.md": "1bf0ce36c762c3b5114b981a679528c5c7c97cbdc5a242d882f47978b1770393",
+    "docs/cinematic/WARINTRO_CREATION_RUNTIME_20260910.md": "c5f0811b34b67002804b09fd85fd3f9f7f8acc28cc1d3126812e1851b387552a",
+    "docs/16번역·로컬라이제이션/WARRIOR_LANGUAGE_SUBTITLES_20260922.md": "3433806d42760376e1045642871e04d93a3bd46910a117885d047bb0157b6466"
+  },
+  "readPaths": [
+    {"path": "tools/team-followup-20261002/continuous/COMMON.md", "scope": "전문"},
+    {"path": "tools/team-followup-20261002/continuous/STORY/TASK.md", "scope": "전문"},
+    {"path": "AGENTS.md", "scope": "전문(직전 세션에서 Read)"},
+    {"path": "docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md", "scope": "grep: commit/STORY/수명/CIN_LINES (line 3,53,55,58,96,689,691,779,786,792)"},
+    {"path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json", "scope": "STORY 엔트리 line 1683-1695 (threadId 01a0fae0-c9ce)"},
+    {"path": "docs/11내러티브·로어디자인/WORLD_CORE.md", "scope": "챕터7단계 149-160, 친구TBD 300-304/T8 399, 단일에너지 38-48, 35사연 134-146"},
+    {"path": "docs/4.1맵디자인+설정/BOSS_CANONICAL_MAPPING.md", "scope": "전문. §0 18-20, §1 24-29, 매핑표 35-71(Killu line 70 hell6 si33), §3 75-81"},
+    {"path": "docs/cinematic/SPACE_HOLD_SKIP_20260914.md", "scope": "전문(세계관 line 8, 전사 9, 구분 계약)"},
+    {"path": "index.html", "scope": "CIN_LINES 2200-2221, _CIN_VOICE 2126, BGM 2128-2135, resolver 2316-2317, playCinematic/showLine 2231-2360, onSubSkip 2449-2467, keyHandler 2476-2483, hold/skipToGate 2512-2600, getCurrentLanguage 2040, _I18N_SUPPORTED 2034"},
+    {"path": "game.html", "scope": "HELL_BOSSES 15868-15875, hell/stage def 15820, ready table 15851-15853, hell6=CH7 라벨 2734/6208/15858/16950, 무브셋 9683, 펫 잡담 9322/9474"},
+    {"path": "lobby_i18n.js", "scope": "_CIN_I18N 정의 1327(데드 폴백 확인)"},
+    {"path": "world-intro-subtitles.js", "scope": "WorldIntroSubtitles.attach/resolveLanguage/normalizeLanguage 13-43 (전사영상 VTT용, CIN_LINES와 별개)"},
+    {"path": "localization-runtime.js", "scope": "languages 4(29개), ExoduserI18n 57"},
+    {"path": "tools/team-followup-20261002/new-four/STORY/result.md", "scope": "과거 입력(오독 정정 대상, 미편집)"},
+    {"path": "tools/team-followup-20261002/new-four/STORY/evidence.json", "scope": "과거 입력(미편집)"}
+  ],
+  "commands": [
+    {"cmd": "date -u / TZ=Asia/Seoul date", "exit": 0},
+    {"cmd": "shasum -a 256 <핵심 파일들>", "exit": 0, "note": "git 아님 — content hash"},
+    {"cmd": "grep -n CIN_LINES|_CIN_VOICE|_CIN_I18N|skipToGate index.html", "exit": 0},
+    {"cmd": "grep -rn _CIN_I18N / ExoduserI18n / WorldIntroSubtitles (repo, 백업제외)", "exit": 0},
+    {"cmd": "grep -n HELL_BOSSES|Killu|ready:false|지옥성 game.html", "exit": 0},
+    {"cmd": "grep -n languages localization-runtime.js", "exit": 0},
+    {"cmd": "for k in <29 langs>: check inline key on index.html:2201", "exit": 0, "note": "ms만 인라인 키 부재 확인"},
+    {"cmd": "grep -rln CIN_LINES|세계관 프롤로그|skipToGate docs/ (백업제외)", "exit": 0}
+  ],
+  "keyFindings": [
+    {"id": "CIN-LEDGER", "detail": "CIN_LINES=20항목(cue0-18 line + cue19 exit). 텍스트 뜨는 cue 17개(idx13·18 의도적 빈텍스트). v/dur/img 전표 §1"},
+    {"id": "RESOLVER", "detail": "ko→line.text; else line[_cLang]→_CIN_I18N(dead)→line.en→line.text. _CIN_I18N은 lobby_i18n.js:1327 정의되나 인라인 키 우선으로 데드. 지원=ExoduserI18n.languages 29(localization-runtime.js:4), 인라인=ko+27=28, ms만 결여→en 폴백"},
+    {"id": "CIN-VOICE", "detail": "_CIN_VOICE=false(index.html:2126); voice-sync 2266·오디오점프 2459 가드로 미재생. BGM은 _CIN_BGM_TRACKS 4종 별도 재생"},
+    {"id": "SPACE-CHAIN", "detail": "탭(Space/Enter/클릭)=다음cue onSubSkip; hold(Space/Esc/pad9·1)=_CIN_HOLD_DUR 5000ms→skipToGate→미디어/BGM 정리·_cinSeenSet→_goLobby/_goLogin. 전사(1200)·game PRO/INTRO(2000)와 분리"},
+    {"id": "HELL-INDEX-FIX", "detail": "정정: BOSS_CANONICAL 1열=hell(0-based). hell6=game.html:15820 지옥성=UI 7장/CH7. 이전 '6장' 오독→'7장'. 로어 챕터6(배신) vs 런타임 hell6=7장 Killu si33 충돌=UNKNOWN(BOSS/STORY)"},
+    {"id": "READY-VS-IMPL", "detail": "정정: ready:false(game.html:15853 si33 '지옥 탑' 스테이지)≠보스 미구현. Killu slot은 HELL_BOSSES hell6 si33 존재(15875), 무브셋 전49무브(9683). ❌=per-boss 전용문서 없음(§5)"},
+    {"id": "CANONICAL-PROTECT", "detail": "설계19⊂런타임35, WORLD_CORE TBD 미확정, 2_3/전투수치/LOCK 보호 유지"}
+  ],
+  "proposalsForLead": [
+    "신규 전표 SSOT 후보 WORLDVIEW_CINEMATIC_CIN_LINES_20261002.md (보고서 §1·§2 문안) — 파일 미생성, 승인 대기",
+    "BOSS_CANONICAL_MAPPING.md 1열 hell 0-based 환산 주석(hell N=N+1장) 보강 제안",
+    "번역대상_전체목록 CAT-96 인근 'ms=en폴백, _CIN_I18N 데드' 주석 제안"
+  ],
+  "verificationLimits": "source 정적 대조만. 실게임/UI 입력/자막 렌더/음성·BGM 청취/영상 재생/전투/HTTP/저장/패키지 PASS 아님. 28언어 번역 품질 QA 아님. source 확인을 실PASS로 계산하지 않음",
+  "nextDependencies": [
+    "Killu 챕터6/7 로어 결정 (BOSS 전투 + STORY 로어 합의)",
+    "ms 세계관 자막 번역 추가 여부 (번역팀)",
+    "신규 CIN_LINES SSOT 작성 승인 (총괄)"
+  ],
+  "notRun": ["생산 코드", "공유 docs 수정", "Git add/commit/push/조회", "UI/서버/실게임/빌드", "테스트/새 fixture 실행", "영상·음성·이미지 생성", "파일 삭제/이동/cleanup", "소유 밖 쓰기", "이전 검사 반복"],
+  "otherSessionNote": "총괄의 UI 수명 가드 순차 통합으로 index.html/game.html이 직전 과제와 다를 수 있음. 타인 변경 되돌리지 않음. 과거 new-four STORY 산출 직접 편집 안 함"
+}

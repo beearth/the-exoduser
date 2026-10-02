@@ -1,0 +1,1962 @@
+{
+  "taskId": "BALANCE-close-only-0543",
+  "provider": "Codex BALANCE",
+  "chatId": "01a0faaf-a06a-79a2-9def-58eb8ad10d65",
+  "chatIdSource": "previous confirmed role/chat identity; no new session created",
+  "received": {
+    "exactTimestamp": null,
+    "source": "supervisor direct delegation; TASK read first"
+  },
+  "coordinatorProvided": {
+    "commit": "f2e70ef7c9c663fdd69e925bc379b6d6f8bcaa9c",
+    "time": "2026-10-02T05:42 approximately",
+    "source": "TASK",
+    "independentHeadObservation": false,
+    "changesCount": null
+  },
+  "execution": {
+    "startedAt": {
+      "UTC": "2026-10-02T05:45:22.264Z",
+      "KST": "2026-10-02 14:45:22 KST"
+    },
+    "actualCwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "node": "v24.15.0",
+    "command": "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node tools/team-followup-20261002/supervisor-next/BALANCE/BALANCE-close-only-0543/checks.mjs",
+    "endedAt": {
+      "UTC": "2026-10-02T05:45:22.332Z",
+      "KST": "2026-10-02 14:45:22 KST"
+    }
+  },
+  "ownedFiles": [
+    "checks.mjs",
+    "result.md",
+    "evidence.json"
+  ],
+  "constraints": {
+    "GitCommands": 0,
+    "productionModified": false,
+    "sharedDocsModified": false,
+    "previousOutputsModified": false,
+    "server": 0,
+    "HTTP": 0,
+    "socket": 0,
+    "game": 0,
+    "UI": 0,
+    "build": 0,
+    "install": 0,
+    "newSessions": 0,
+    "subagents": 0,
+    "externalMessages": 0,
+    "filesystemDeletes": 0
+  },
+  "skillUsage": [],
+  "externalAPIUsage": [],
+  "readErrors": [],
+  "inputs": {
+    "AGENTS.md": "fd59bef70960bcaf1ab9910051faa860362884e574ac2869fad05c6872ae04e4",
+    "node-main.js": "541ff8e6f57db862ddbb1b148ee37a3a8e0da1e16293bc8343a0bc4144d80daf",
+    "tools/team-followup-20261002/supervisor-next/BALANCE/BALANCE-close-only-0543/TASK.md": "c4958739b36716f0f9c888454e1a200c26673b764c3650ab20801174ca659e66",
+    "tools/team-followup-20261002/continuous/COMMON.md": "de5a881270625a7b2d0e854331205e01372a037340a18474c6442b60e668465e",
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/CONTINUOUS-DISPATCH-20261002.md": "ecd73a1eb8cd56d66fd1c026f5a1a8dafcbc3798a5d20aa9ea937d01bf0f9500",
+    "docs/15 세이브+데이터구조/15 세이브+데이터구조.md": "9c88a0ea27b4d34aeff5a5bc49d05fd75df714a33a1b05739e51ec64584d9d64",
+    "docs/14밸런스+수치테이블/BALANCE_ECONOMY_TEAM_MASTER.md": "9ea03646283c43a7412c4704100acb35732fddd3933ddfd1966d5ee7b8aef8bc",
+    "tools/team-followup-20261002/continuous/BALANCE/checks.mjs": "16f4e76fc87432a7b72391e16473b6672550ec6c7cf81c11c3bfcf6bb59389dd",
+    "tools/team-followup-20261002/continuous/BALANCE/evidence.json": "414d81c8ec120929a87259e3e824e9c61bb1663e926c2aab4e4171fa05e27093"
+  },
+  "source": {
+    "readAt": {
+      "UTC": "2026-10-02T05:45:22.284Z",
+      "KST": "2026-10-02 14:45:22 KST"
+    },
+    "nodeSha256": "541ff8e6f57db862ddbb1b148ee37a3a8e0da1e16293bc8343a0bc4144d80daf",
+    "readBody": {
+      "sha256": "c74146a60b861e66a276841997b5e30589f72938edbc099e18662d7e800c74f5",
+      "source": "function readBody(req) {\n  return new Promise((resolve, reject) => {\n    const chunks = [];\n    req.on('data', c => chunks.push(c));\n    req.on('end', () => { try { resolve(JSON.parse(Buffer.concat(chunks).toString())); } catch(e){ reject(e); } });\n    req.on('error', reject);\n  });\n}"
+    },
+    "candidate": {
+      "sha256": "10815cca14a032cbe933284980081d49eb00e9db0608fdc3c50c5b309a5fd619",
+      "source": "function readBody(req) {\n  return new Promise((resolve, reject) => {\n    let chunks = [];\n    let settled = false;\n    function finish(error, value) {\n      if (settled) return;\n      settled = true;\n      req.removeListener('data', onData);\n      req.removeListener('end', onEnd);\n      req.removeListener('aborted', onAborted);\n      req.removeListener('close', onClose);\n      chunks = [];\n      // Preserve an error guard for late request errors until request lifetime ends.\n      if (error) reject(error); else resolve(value);\n    }\n    function onData(chunk) { if (!settled) chunks.push(chunk); }\n    function onEnd() {\n      if (settled) return;\n      try { finish(null, JSON.parse(Buffer.concat(chunks).toString())); }\n      catch (error) { finish(error); }\n    }\n    function onError(error) { finish(error); }\n    function onAborted() { finish(Object.assign(new Error('Request body aborted'), {code: 'ECONNABORTED'})); }\n    function onClose() { finish(Object.assign(new Error('Request closed before body end'), {code: 'ERR_STREAM_PREMATURE_CLOSE'})); }\n    req.on('data', onData);\n    req.on('end', onEnd);\n    req.on('error', onError);\n    req.on('aborted', onAborted);\n    req.on('close', onClose);\n  });\n}",
+      "applied": false,
+      "origin": "previous evidence candidate copied as text; previous fixture not imported/executed"
+    },
+    "sendJSON": {
+      "sha256": "c09093657543e7fda7890b8848ac28dd3ae7a2ce903b26b6ed172efdc21e55d6",
+      "source": "function sendJSON(res, status, data) {\n  res.writeHead(status, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });\n  res.end(JSON.stringify(data));\n}"
+    },
+    "sanitizeSlot": {
+      "sha256": "1be40f5b0490a3a37b229e05c75143a728df7974981e39d94bcd32e184e156d0",
+      "source": "function sanitizeSlot(name) {\n  return String(name).replace(/[^a-zA-Z0-9가-힣_\\-]/g, '_').slice(0, 50);\n}"
+    },
+    "routes": {
+      "/api/mats": {
+        "sha256": "d591b787d1851f4234fb3a28890d0bfeb0571a6d64ef2ac57edb52affcab2b12",
+        "source": "if (pathname === '/api/mats' && req.method === 'POST') {\n    let n;\n    try {\n      const body = await readBody(req);\n      n = Math.max(0, Math.min(Math.floor(+body.mats || 0), Number.MAX_SAFE_INTEGER));\n      fs.writeFileSync(MATS_FILE, JSON.stringify({ mats: n, ts: Date.now() }), 'utf8');\n    } catch (error) {\n      return sendJSON(res, 500, { ok: false, error: 'Internal Server Error' });\n    }\n    return sendJSON(res, 200, { ok: true, mats: n });\n  }"
+      },
+      "/api/save": {
+        "sha256": "5780001a5c5db67aa226d9a21141a4486aefead828acf17bd7ceecb91d204818",
+        "source": "if (pathname === '/api/save' && req.method === 'POST') {\n    const body = await readBody(req);\n    const slot = sanitizeSlot(body.slot || 'default');\n    if (!body.data) return sendJSON(res, 400, { ok: false, error: 'No data' });\n    fs.writeFileSync(path.join(SAVE_DIR, slot + '.json'), JSON.stringify(body.data, null, 2), 'utf8');\n    return sendJSON(res, 200, { ok: true, slot });\n  }"
+      }
+    },
+    "callsites": [
+      {
+        "line": 126,
+        "source": "readBody(req)"
+      },
+      {
+        "line": 162,
+        "source": "readBody(req)"
+      }
+    ]
+  },
+  "runs": [
+    {
+      "route": "/api/mats",
+      "policy": "current",
+      "inputKind": "partial close-only",
+      "input": "{\"mats\":51.8,\"slot\":\"hero\",\"data\":",
+      "trace": [
+        {
+          "op": "requestEvent",
+          "event": "data",
+          "flags": {
+            "complete": false,
+            "readableEnded": false,
+            "aborted": false,
+            "destroyed": false
+          },
+          "bytes": "{\"mats\":51.8,\"slot\":\"hero\",\"data\":"
+        },
+        {
+          "op": "emitResult",
+          "event": "data",
+          "handled": true
+        },
+        {
+          "op": "requestEvent",
+          "event": "close",
+          "flags": {
+            "complete": false,
+            "readableEnded": false,
+            "aborted": false,
+            "destroyed": true
+          }
+        },
+        {
+          "op": "emitResult",
+          "event": "close",
+          "handled": false
+        }
+      ],
+      "snapshots": [
+        {
+          "stage": "registered",
+          "microtaskTurns": 16,
+          "flags": {
+            "complete": false,
+            "readableEnded": false,
+            "aborted": false,
+            "destroyed": false
+          },
+          "state": {
+            "body": "pending",
+            "bodySettles": 0,
+            "handler": "pending",
+            "handlerSettles": 0
+          },
+          "reply": {
+            "status": null,
+            "headers": null,
+            "body": null,
+            "headCount": 0,
+            "endCount": 0
+          },
+          "writeCount": 0,
+          "listeners": {
+            "data": 1,
+            "end": 1,
+            "error": 1,
+            "aborted": 0,
+            "close": 0
+          }
+        },
+        {
+          "stage": "after_data",
+          "microtaskTurns": 16,
+          "flags": {
+            "complete": false,
+            "readableEnded": false,
+            "aborted": false,
+            "destroyed": false
+          },
+          "state": {
+            "body": "pending",
+            "bodySettles": 0,
+            "handler": "pending",
+            "handlerSettles": 0
+          },
+          "reply": {
+            "status": null,
+            "headers": null,
+            "body": null,
+            "headCount": 0,
+            "endCount": 0
+          },
+          "writeCount": 0,
+          "listeners": {
+            "data": 1,
+            "end": 1,
+            "error": 1,
+            "aborted": 0,
+            "close": 0
+          }
+        },
+        {
+          "stage": "after_close",
+          "microtaskTurns": 16,
+          "flags": {
+            "complete": false,
+            "readableEnded": false,
+            "aborted": false,
+            "destroyed": true
+          },
+          "state": {
+            "body": "pending",
+            "bodySettles": 0,
+            "handler": "pending",
+            "handlerSettles": 0
+          },
+          "reply": {
+            "status": null,
+            "headers": null,
+            "body": null,
+            "headCount": 0,
+            "endCount": 0
+          },
+          "writeCount": 0,
+          "listeners": {
+            "data": 1,
+            "end": 1,
+            "error": 1,
+            "aborted": 0,
+            "close": 0
+          }
+        }
+      ],
+      "state": {
+        "body": "pending",
+        "bodySettles": 0,
+        "handler": "pending",
+        "handlerSettles": 0
+      },
+      "reply": {
+        "status": null,
+        "headers": null,
+        "body": null,
+        "headCount": 0,
+        "endCount": 0
+      },
+      "writes": [],
+      "matsBytes": "{\"mats\":4567,\"ts\":99}",
+      "slotBytes": "{\"player\":{\"lv\":7},\"game\":{\"stage\":2},\"ts\":8}",
+      "flags": {
+        "complete": false,
+        "readableEnded": false,
+        "aborted": false,
+        "destroyed": true
+      },
+      "listeners": {
+        "data": 1,
+        "end": 1,
+        "error": 1,
+        "aborted": 0,
+        "close": 0
+      },
+      "successACK": 0
+    },
+    {
+      "route": "/api/mats",
+      "policy": "candidate",
+      "inputKind": "partial close-only",
+      "input": "{\"mats\":51.8,\"slot\":\"hero\",\"data\":",
+      "trace": [
+        {
+          "op": "requestEvent",
+          "event": "data",
+          "flags": {
+            "complete": false,
+            "readableEnded": false,
+            "aborted": false,
+            "destroyed": false
+          },
+          "bytes": "{\"mats\":51.8,\"slot\":\"hero\",\"data\":"
+        },
+        {
+          "op": "emitResult",
+          "event": "data",
+          "handled": true
+        },
+        {
+          "op": "requestEvent",
+          "event": "close",
+          "flags": {
+            "complete": false,
+            "readableEnded": false,
+            "aborted": false,
+            "destroyed": true
+          }
+        },
+        {
+          "op": "emitResult",
+          "event": "close",
+          "handled": true
+        },
+        {
+          "op": "bodyRejected",
+          "error": {
+            "name": "Error",
+            "message": "Request closed before body end",
+            "code": "ERR_STREAM_PREMATURE_CLOSE"
+          }
+        },
+        {
+          "op": "headers",
+          "status": 500
+        },
+        {
+          "op": "responseEnd",
+          "bytes": "{\"ok\":false,\"error\":\"Internal Server Error\"}"
+        },
+        {
+          "op": "handlerFulfilled"
+        }
+      ],
+      "snapshots": [
+        {
+          "stage": "registered",
+          "microtaskTurns": 16,
+          "flags": {
+            "complete": false,
+            "readableEnded": false,
+            "aborted": false,
+            "destroyed": false
+          },
+          "state": {
+            "body": "pending",
+            "bodySettles": 0,
+            "handler": "pending",
+            "handlerSettles": 0
+          },
+          "reply": {
+            "status": null,
+            "headers": null,
+            "body": null,
+            "headCount": 0,
+            "endCount": 0
+          },
+          "writeCount": 0,
+          "listeners": {
+            "data": 1,
+            "end": 1,
+            "error": 1,
+            "aborted": 1,
+            "close": 1
+          }
+        },
+        {
+          "stage": "after_data",
+          "microtaskTurns": 16,
+          "flags": {
+            "complete": false,
+            "readableEnded": false,
+            "aborted": false,
+            "destroyed": false
+          },
+          "state": {
+            "body": "pending",
+            "bodySettles": 0,
+            "handler": "pending",
+            "handlerSettles": 0
+          },
+          "reply": {
+            "status": null,
+            "headers": null,
+            "body": null,
+            "headCount": 0,
+            "endCount": 0
+          },
+          "writeCount": 0,
+          "listeners": {
+            "data": 1,
+            "end": 1,
+            "error": 1,
+            "aborted": 1,
+            "close": 1
+          }
+        },
+        {
+          "stage": "after_close",
+          "microtaskTurns": 16,
+          "flags": {
+            "complete": false,
+            "readableEnded": false,
+            "aborted": false,
+            "destroyed": true
+          },
+          "state": {
+            "body": "rejected",
+            "bodySettles": 1,
+            "handler": "fulfilled",
+            "handlerSettles": 1,
+            "bodyError": {
+              "name": "Error",
+              "message": "Request closed before body end",
+              "code": "ERR_STREAM_PREMATURE_CLOSE"
+            }
+          },
+          "reply": {
+            "status": 500,
+            "headers": {
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "*"
+            },
+            "body": "{\"ok\":false,\"error\":\"Internal Server Error\"}",
+            "headCount": 1,
+            "endCount": 1
+          },
+          "writeCount": 0,
+          "listeners": {
+            "data": 0,
+            "end": 0,
+            "error": 1,
+            "aborted": 0,
+            "close": 0
+          }
+        }
+      ],
+      "state": {
+        "body": "rejected",
+        "bodySettles": 1,
+        "handler": "fulfilled",
+        "handlerSettles": 1,
+        "bodyError": {
+          "name": "Error",
+          "message": "Request closed before body end",
+          "code": "ERR_STREAM_PREMATURE_CLOSE"
+        }
+      },
+      "reply": {
+        "status": 500,
+        "headers": {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "body": "{\"ok\":false,\"error\":\"Internal Server Error\"}",
+        "headCount": 1,
+        "endCount": 1
+      },
+      "writes": [],
+      "matsBytes": "{\"mats\":4567,\"ts\":99}",
+      "slotBytes": "{\"player\":{\"lv\":7},\"game\":{\"stage\":2},\"ts\":8}",
+      "flags": {
+        "complete": false,
+        "readableEnded": false,
+        "aborted": false,
+        "destroyed": true
+      },
+      "listeners": {
+        "data": 0,
+        "end": 0,
+        "error": 1,
+        "aborted": 0,
+        "close": 0
+      },
+      "successACK": 0
+    },
+    {
+      "route": "/api/save",
+      "policy": "current",
+      "inputKind": "partial close-only",
+      "input": "{\"mats\":51.8,\"slot\":\"hero\",\"data\":",
+      "trace": [
+        {
+          "op": "requestEvent",
+          "event": "data",
+          "flags": {
+            "complete": false,
+            "readableEnded": false,
+            "aborted": false,
+            "destroyed": false
+          },
+          "bytes": "{\"mats\":51.8,\"slot\":\"hero\",\"data\":"
+        },
+        {
+          "op": "emitResult",
+          "event": "data",
+          "handled": true
+        },
+        {
+          "op": "requestEvent",
+          "event": "close",
+          "flags": {
+            "complete": false,
+            "readableEnded": false,
+            "aborted": false,
+            "destroyed": true
+          }
+        },
+        {
+          "op": "emitResult",
+          "event": "close",
+          "handled": false
+        }
+      ],
+      "snapshots": [
+        {
+          "stage": "registered",
+          "microtaskTurns": 16,
+          "flags": {
+            "complete": false,
+            "readableEnded": false,
+            "aborted": false,
+            "destroyed": false
+          },
+          "state": {
+            "body": "pending",
+            "bodySettles": 0,
+            "handler": "pending",
+            "handlerSettles": 0
+          },
+          "reply": {
+            "status": null,
+            "headers": null,
+            "body": null,
+            "headCount": 0,
+            "endCount": 0
+          },
+          "writeCount": 0,
+          "listeners": {
+            "data": 1,
+            "end": 1,
+            "error": 1,
+            "aborted": 0,
+            "close": 0
+          }
+        },
+        {
+          "stage": "after_data",
+          "microtaskTurns": 16,
+          "flags": {
+            "complete": false,
+            "readableEnded": false,
+            "aborted": false,
+            "destroyed": false
+          },
+          "state": {
+            "body": "pending",
+            "bodySettles": 0,
+            "handler": "pending",
+            "handlerSettles": 0
+          },
+          "reply": {
+            "status": null,
+            "headers": null,
+            "body": null,
+            "headCount": 0,
+            "endCount": 0
+          },
+          "writeCount": 0,
+          "listeners": {
+            "data": 1,
+            "end": 1,
+            "error": 1,
+            "aborted": 0,
+            "close": 0
+          }
+        },
+        {
+          "stage": "after_close",
+          "microtaskTurns": 16,
+          "flags": {
+            "complete": false,
+            "readableEnded": false,
+            "aborted": false,
+            "destroyed": true
+          },
+          "state": {
+            "body": "pending",
+            "bodySettles": 0,
+            "handler": "pending",
+            "handlerSettles": 0
+          },
+          "reply": {
+            "status": null,
+            "headers": null,
+            "body": null,
+            "headCount": 0,
+            "endCount": 0
+          },
+          "writeCount": 0,
+          "listeners": {
+            "data": 1,
+            "end": 1,
+            "error": 1,
+            "aborted": 0,
+            "close": 0
+          }
+        }
+      ],
+      "state": {
+        "body": "pending",
+        "bodySettles": 0,
+        "handler": "pending",
+        "handlerSettles": 0
+      },
+      "reply": {
+        "status": null,
+        "headers": null,
+        "body": null,
+        "headCount": 0,
+        "endCount": 0
+      },
+      "writes": [],
+      "matsBytes": "{\"mats\":4567,\"ts\":99}",
+      "slotBytes": "{\"player\":{\"lv\":7},\"game\":{\"stage\":2},\"ts\":8}",
+      "flags": {
+        "complete": false,
+        "readableEnded": false,
+        "aborted": false,
+        "destroyed": true
+      },
+      "listeners": {
+        "data": 1,
+        "end": 1,
+        "error": 1,
+        "aborted": 0,
+        "close": 0
+      },
+      "successACK": 0
+    },
+    {
+      "route": "/api/save",
+      "policy": "candidate",
+      "inputKind": "partial close-only",
+      "input": "{\"mats\":51.8,\"slot\":\"hero\",\"data\":",
+      "trace": [
+        {
+          "op": "requestEvent",
+          "event": "data",
+          "flags": {
+            "complete": false,
+            "readableEnded": false,
+            "aborted": false,
+            "destroyed": false
+          },
+          "bytes": "{\"mats\":51.8,\"slot\":\"hero\",\"data\":"
+        },
+        {
+          "op": "emitResult",
+          "event": "data",
+          "handled": true
+        },
+        {
+          "op": "requestEvent",
+          "event": "close",
+          "flags": {
+            "complete": false,
+            "readableEnded": false,
+            "aborted": false,
+            "destroyed": true
+          }
+        },
+        {
+          "op": "emitResult",
+          "event": "close",
+          "handled": true
+        },
+        {
+          "op": "bodyRejected",
+          "error": {
+            "name": "Error",
+            "message": "Request closed before body end",
+            "code": "ERR_STREAM_PREMATURE_CLOSE"
+          }
+        },
+        {
+          "op": "handlerRejected",
+          "error": {
+            "name": "Error",
+            "message": "Request closed before body end",
+            "code": "ERR_STREAM_PREMATURE_CLOSE"
+          }
+        }
+      ],
+      "snapshots": [
+        {
+          "stage": "registered",
+          "microtaskTurns": 16,
+          "flags": {
+            "complete": false,
+            "readableEnded": false,
+            "aborted": false,
+            "destroyed": false
+          },
+          "state": {
+            "body": "pending",
+            "bodySettles": 0,
+            "handler": "pending",
+            "handlerSettles": 0
+          },
+          "reply": {
+            "status": null,
+            "headers": null,
+            "body": null,
+            "headCount": 0,
+            "endCount": 0
+          },
+          "writeCount": 0,
+          "listeners": {
+            "data": 1,
+            "end": 1,
+            "error": 1,
+            "aborted": 1,
+            "close": 1
+          }
+        },
+        {
+          "stage": "after_data",
+          "microtaskTurns": 16,
+          "flags": {
+            "complete": false,
+            "readableEnded": false,
+            "aborted": false,
+            "destroyed": false
+          },
+          "state": {
+            "body": "pending",
+            "bodySettles": 0,
+            "handler": "pending",
+            "handlerSettles": 0
+          },
+          "reply": {
+            "status": null,
+            "headers": null,
+            "body": null,
+            "headCount": 0,
+            "endCount": 0
+          },
+          "writeCount": 0,
+          "listeners": {
+            "data": 1,
+            "end": 1,
+            "error": 1,
+            "aborted": 1,
+            "close": 1
+          }
+        },
+        {
+          "stage": "after_close",
+          "microtaskTurns": 16,
+          "flags": {
+            "complete": false,
+            "readableEnded": false,
+            "aborted": false,
+            "destroyed": true
+          },
+          "state": {
+            "body": "rejected",
+            "bodySettles": 1,
+            "handler": "rejected",
+            "handlerSettles": 1,
+            "bodyError": {
+              "name": "Error",
+              "message": "Request closed before body end",
+              "code": "ERR_STREAM_PREMATURE_CLOSE"
+            },
+            "handlerError": {
+              "name": "Error",
+              "message": "Request closed before body end",
+              "code": "ERR_STREAM_PREMATURE_CLOSE"
+            }
+          },
+          "reply": {
+            "status": null,
+            "headers": null,
+            "body": null,
+            "headCount": 0,
+            "endCount": 0
+          },
+          "writeCount": 0,
+          "listeners": {
+            "data": 0,
+            "end": 0,
+            "error": 1,
+            "aborted": 0,
+            "close": 0
+          }
+        }
+      ],
+      "state": {
+        "body": "rejected",
+        "bodySettles": 1,
+        "handler": "rejected",
+        "handlerSettles": 1,
+        "bodyError": {
+          "name": "Error",
+          "message": "Request closed before body end",
+          "code": "ERR_STREAM_PREMATURE_CLOSE"
+        },
+        "handlerError": {
+          "name": "Error",
+          "message": "Request closed before body end",
+          "code": "ERR_STREAM_PREMATURE_CLOSE"
+        }
+      },
+      "reply": {
+        "status": null,
+        "headers": null,
+        "body": null,
+        "headCount": 0,
+        "endCount": 0
+      },
+      "writes": [],
+      "matsBytes": "{\"mats\":4567,\"ts\":99}",
+      "slotBytes": "{\"player\":{\"lv\":7},\"game\":{\"stage\":2},\"ts\":8}",
+      "flags": {
+        "complete": false,
+        "readableEnded": false,
+        "aborted": false,
+        "destroyed": true
+      },
+      "listeners": {
+        "data": 0,
+        "end": 0,
+        "error": 1,
+        "aborted": 0,
+        "close": 0
+      },
+      "successACK": 0
+    },
+    {
+      "route": "/api/mats",
+      "policy": "current",
+      "inputKind": "complete end then close",
+      "input": "{\"mats\":51.8,\"slot\":\"hero\",\"data\":{\"player\":{\"lv\":8},\"game\":{\"stage\":3},\"ts\":77}}",
+      "trace": [
+        {
+          "op": "requestEvent",
+          "event": "data",
+          "flags": {
+            "complete": false,
+            "readableEnded": false,
+            "aborted": false,
+            "destroyed": false
+          },
+          "bytes": "{\"mats\":51.8,\"slot\":\"hero\",\"data\":{\"player\":{\"lv\":8},\"game\":{\"stage\":3},\"ts\":77}}"
+        },
+        {
+          "op": "emitResult",
+          "event": "data",
+          "handled": true
+        },
+        {
+          "op": "requestEvent",
+          "event": "end",
+          "flags": {
+            "complete": true,
+            "readableEnded": true,
+            "aborted": false,
+            "destroyed": false
+          }
+        },
+        {
+          "op": "emitResult",
+          "event": "end",
+          "handled": true
+        },
+        {
+          "op": "bodyFulfilled"
+        },
+        {
+          "op": "write",
+          "path": "/synthetic/_sharedMats.json",
+          "bytes": "{\"mats\":51,\"ts\":123456}",
+          "encoding": "utf8"
+        },
+        {
+          "op": "headers",
+          "status": 200
+        },
+        {
+          "op": "responseEnd",
+          "bytes": "{\"ok\":true,\"mats\":51}"
+        },
+        {
+          "op": "handlerFulfilled"
+        },
+        {
+          "op": "requestEvent",
+          "event": "close",
+          "flags": {
+            "complete": true,
+            "readableEnded": true,
+            "aborted": false,
+            "destroyed": true
+          }
+        },
+        {
+          "op": "emitResult",
+          "event": "close",
+          "handled": false
+        }
+      ],
+      "snapshots": [
+        {
+          "stage": "registered",
+          "microtaskTurns": 16,
+          "flags": {
+            "complete": false,
+            "readableEnded": false,
+            "aborted": false,
+            "destroyed": false
+          },
+          "state": {
+            "body": "pending",
+            "bodySettles": 0,
+            "handler": "pending",
+            "handlerSettles": 0
+          },
+          "reply": {
+            "status": null,
+            "headers": null,
+            "body": null,
+            "headCount": 0,
+            "endCount": 0
+          },
+          "writeCount": 0,
+          "listeners": {
+            "data": 1,
+            "end": 1,
+            "error": 1,
+            "aborted": 0,
+            "close": 0
+          }
+        },
+        {
+          "stage": "after_data",
+          "microtaskTurns": 16,
+          "flags": {
+            "complete": false,
+            "readableEnded": false,
+            "aborted": false,
+            "destroyed": false
+          },
+          "state": {
+            "body": "pending",
+            "bodySettles": 0,
+            "handler": "pending",
+            "handlerSettles": 0
+          },
+          "reply": {
+            "status": null,
+            "headers": null,
+            "body": null,
+            "headCount": 0,
+            "endCount": 0
+          },
+          "writeCount": 0,
+          "listeners": {
+            "data": 1,
+            "end": 1,
+            "error": 1,
+            "aborted": 0,
+            "close": 0
+          }
+        },
+        {
+          "stage": "after_end_before_close",
+          "microtaskTurns": 16,
+          "flags": {
+            "complete": true,
+            "readableEnded": true,
+            "aborted": false,
+            "destroyed": false
+          },
+          "state": {
+            "body": "fulfilled",
+            "bodySettles": 1,
+            "handler": "fulfilled",
+            "handlerSettles": 1
+          },
+          "reply": {
+            "status": 200,
+            "headers": {
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "*"
+            },
+            "body": "{\"ok\":true,\"mats\":51}",
+            "headCount": 1,
+            "endCount": 1
+          },
+          "writeCount": 1,
+          "listeners": {
+            "data": 1,
+            "end": 1,
+            "error": 1,
+            "aborted": 0,
+            "close": 0
+          }
+        },
+        {
+          "stage": "after_close",
+          "microtaskTurns": 16,
+          "flags": {
+            "complete": true,
+            "readableEnded": true,
+            "aborted": false,
+            "destroyed": true
+          },
+          "state": {
+            "body": "fulfilled",
+            "bodySettles": 1,
+            "handler": "fulfilled",
+            "handlerSettles": 1
+          },
+          "reply": {
+            "status": 200,
+            "headers": {
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "*"
+            },
+            "body": "{\"ok\":true,\"mats\":51}",
+            "headCount": 1,
+            "endCount": 1
+          },
+          "writeCount": 1,
+          "listeners": {
+            "data": 1,
+            "end": 1,
+            "error": 1,
+            "aborted": 0,
+            "close": 0
+          }
+        }
+      ],
+      "state": {
+        "body": "fulfilled",
+        "bodySettles": 1,
+        "handler": "fulfilled",
+        "handlerSettles": 1
+      },
+      "reply": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "body": "{\"ok\":true,\"mats\":51}",
+        "headCount": 1,
+        "endCount": 1
+      },
+      "writes": [
+        {
+          "path": "/synthetic/_sharedMats.json",
+          "bytes": "{\"mats\":51,\"ts\":123456}",
+          "encoding": "utf8"
+        }
+      ],
+      "matsBytes": "{\"mats\":51,\"ts\":123456}",
+      "slotBytes": "{\"player\":{\"lv\":7},\"game\":{\"stage\":2},\"ts\":8}",
+      "flags": {
+        "complete": true,
+        "readableEnded": true,
+        "aborted": false,
+        "destroyed": true
+      },
+      "listeners": {
+        "data": 1,
+        "end": 1,
+        "error": 1,
+        "aborted": 0,
+        "close": 0
+      },
+      "successACK": 1
+    },
+    {
+      "route": "/api/mats",
+      "policy": "candidate",
+      "inputKind": "complete end then close",
+      "input": "{\"mats\":51.8,\"slot\":\"hero\",\"data\":{\"player\":{\"lv\":8},\"game\":{\"stage\":3},\"ts\":77}}",
+      "trace": [
+        {
+          "op": "requestEvent",
+          "event": "data",
+          "flags": {
+            "complete": false,
+            "readableEnded": false,
+            "aborted": false,
+            "destroyed": false
+          },
+          "bytes": "{\"mats\":51.8,\"slot\":\"hero\",\"data\":{\"player\":{\"lv\":8},\"game\":{\"stage\":3},\"ts\":77}}"
+        },
+        {
+          "op": "emitResult",
+          "event": "data",
+          "handled": true
+        },
+        {
+          "op": "requestEvent",
+          "event": "end",
+          "flags": {
+            "complete": true,
+            "readableEnded": true,
+            "aborted": false,
+            "destroyed": false
+          }
+        },
+        {
+          "op": "emitResult",
+          "event": "end",
+          "handled": true
+        },
+        {
+          "op": "bodyFulfilled"
+        },
+        {
+          "op": "write",
+          "path": "/synthetic/_sharedMats.json",
+          "bytes": "{\"mats\":51,\"ts\":123456}",
+          "encoding": "utf8"
+        },
+        {
+          "op": "headers",
+          "status": 200
+        },
+        {
+          "op": "responseEnd",
+          "bytes": "{\"ok\":true,\"mats\":51}"
+        },
+        {
+          "op": "handlerFulfilled"
+        },
+        {
+          "op": "requestEvent",
+          "event": "close",
+          "flags": {
+            "complete": true,
+            "readableEnded": true,
+            "aborted": false,
+            "destroyed": true
+          }
+        },
+        {
+          "op": "emitResult",
+          "event": "close",
+          "handled": false
+        }
+      ],
+      "snapshots": [
+        {
+          "stage": "registered",
+          "microtaskTurns": 16,
+          "flags": {
+            "complete": false,
+            "readableEnded": false,
+            "aborted": false,
+            "destroyed": false
+          },
+          "state": {
+            "body": "pending",
+            "bodySettles": 0,
+            "handler": "pending",
+            "handlerSettles": 0
+          },
+          "reply": {
+            "status": null,
+            "headers": null,
+            "body": null,
+            "headCount": 0,
+            "endCount": 0
+          },
+          "writeCount": 0,
+          "listeners": {
+            "data": 1,
+            "end": 1,
+            "error": 1,
+            "aborted": 1,
+            "close": 1
+          }
+        },
+        {
+          "stage": "after_data",
+          "microtaskTurns": 16,
+          "flags": {
+            "complete": false,
+            "readableEnded": false,
+            "aborted": false,
+            "destroyed": false
+          },
+          "state": {
+            "body": "pending",
+            "bodySettles": 0,
+            "handler": "pending",
+            "handlerSettles": 0
+          },
+          "reply": {
+            "status": null,
+            "headers": null,
+            "body": null,
+            "headCount": 0,
+            "endCount": 0
+          },
+          "writeCount": 0,
+          "listeners": {
+            "data": 1,
+            "end": 1,
+            "error": 1,
+            "aborted": 1,
+            "close": 1
+          }
+        },
+        {
+          "stage": "after_end_before_close",
+          "microtaskTurns": 16,
+          "flags": {
+            "complete": true,
+            "readableEnded": true,
+            "aborted": false,
+            "destroyed": false
+          },
+          "state": {
+            "body": "fulfilled",
+            "bodySettles": 1,
+            "handler": "fulfilled",
+            "handlerSettles": 1
+          },
+          "reply": {
+            "status": 200,
+            "headers": {
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "*"
+            },
+            "body": "{\"ok\":true,\"mats\":51}",
+            "headCount": 1,
+            "endCount": 1
+          },
+          "writeCount": 1,
+          "listeners": {
+            "data": 0,
+            "end": 0,
+            "error": 1,
+            "aborted": 0,
+            "close": 0
+          }
+        },
+        {
+          "stage": "after_close",
+          "microtaskTurns": 16,
+          "flags": {
+            "complete": true,
+            "readableEnded": true,
+            "aborted": false,
+            "destroyed": true
+          },
+          "state": {
+            "body": "fulfilled",
+            "bodySettles": 1,
+            "handler": "fulfilled",
+            "handlerSettles": 1
+          },
+          "reply": {
+            "status": 200,
+            "headers": {
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "*"
+            },
+            "body": "{\"ok\":true,\"mats\":51}",
+            "headCount": 1,
+            "endCount": 1
+          },
+          "writeCount": 1,
+          "listeners": {
+            "data": 0,
+            "end": 0,
+            "error": 1,
+            "aborted": 0,
+            "close": 0
+          }
+        }
+      ],
+      "state": {
+        "body": "fulfilled",
+        "bodySettles": 1,
+        "handler": "fulfilled",
+        "handlerSettles": 1
+      },
+      "reply": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "body": "{\"ok\":true,\"mats\":51}",
+        "headCount": 1,
+        "endCount": 1
+      },
+      "writes": [
+        {
+          "path": "/synthetic/_sharedMats.json",
+          "bytes": "{\"mats\":51,\"ts\":123456}",
+          "encoding": "utf8"
+        }
+      ],
+      "matsBytes": "{\"mats\":51,\"ts\":123456}",
+      "slotBytes": "{\"player\":{\"lv\":7},\"game\":{\"stage\":2},\"ts\":8}",
+      "flags": {
+        "complete": true,
+        "readableEnded": true,
+        "aborted": false,
+        "destroyed": true
+      },
+      "listeners": {
+        "data": 0,
+        "end": 0,
+        "error": 1,
+        "aborted": 0,
+        "close": 0
+      },
+      "successACK": 1
+    },
+    {
+      "route": "/api/save",
+      "policy": "current",
+      "inputKind": "complete end then close",
+      "input": "{\"mats\":51.8,\"slot\":\"hero\",\"data\":{\"player\":{\"lv\":8},\"game\":{\"stage\":3},\"ts\":77}}",
+      "trace": [
+        {
+          "op": "requestEvent",
+          "event": "data",
+          "flags": {
+            "complete": false,
+            "readableEnded": false,
+            "aborted": false,
+            "destroyed": false
+          },
+          "bytes": "{\"mats\":51.8,\"slot\":\"hero\",\"data\":{\"player\":{\"lv\":8},\"game\":{\"stage\":3},\"ts\":77}}"
+        },
+        {
+          "op": "emitResult",
+          "event": "data",
+          "handled": true
+        },
+        {
+          "op": "requestEvent",
+          "event": "end",
+          "flags": {
+            "complete": true,
+            "readableEnded": true,
+            "aborted": false,
+            "destroyed": false
+          }
+        },
+        {
+          "op": "emitResult",
+          "event": "end",
+          "handled": true
+        },
+        {
+          "op": "bodyFulfilled"
+        },
+        {
+          "op": "write",
+          "path": "/synthetic/hero.json",
+          "bytes": "{\n  \"player\": {\n    \"lv\": 8\n  },\n  \"game\": {\n    \"stage\": 3\n  },\n  \"ts\": 77\n}",
+          "encoding": "utf8"
+        },
+        {
+          "op": "headers",
+          "status": 200
+        },
+        {
+          "op": "responseEnd",
+          "bytes": "{\"ok\":true,\"slot\":\"hero\"}"
+        },
+        {
+          "op": "handlerFulfilled"
+        },
+        {
+          "op": "requestEvent",
+          "event": "close",
+          "flags": {
+            "complete": true,
+            "readableEnded": true,
+            "aborted": false,
+            "destroyed": true
+          }
+        },
+        {
+          "op": "emitResult",
+          "event": "close",
+          "handled": false
+        }
+      ],
+      "snapshots": [
+        {
+          "stage": "registered",
+          "microtaskTurns": 16,
+          "flags": {
+            "complete": false,
+            "readableEnded": false,
+            "aborted": false,
+            "destroyed": false
+          },
+          "state": {
+            "body": "pending",
+            "bodySettles": 0,
+            "handler": "pending",
+            "handlerSettles": 0
+          },
+          "reply": {
+            "status": null,
+            "headers": null,
+            "body": null,
+            "headCount": 0,
+            "endCount": 0
+          },
+          "writeCount": 0,
+          "listeners": {
+            "data": 1,
+            "end": 1,
+            "error": 1,
+            "aborted": 0,
+            "close": 0
+          }
+        },
+        {
+          "stage": "after_data",
+          "microtaskTurns": 16,
+          "flags": {
+            "complete": false,
+            "readableEnded": false,
+            "aborted": false,
+            "destroyed": false
+          },
+          "state": {
+            "body": "pending",
+            "bodySettles": 0,
+            "handler": "pending",
+            "handlerSettles": 0
+          },
+          "reply": {
+            "status": null,
+            "headers": null,
+            "body": null,
+            "headCount": 0,
+            "endCount": 0
+          },
+          "writeCount": 0,
+          "listeners": {
+            "data": 1,
+            "end": 1,
+            "error": 1,
+            "aborted": 0,
+            "close": 0
+          }
+        },
+        {
+          "stage": "after_end_before_close",
+          "microtaskTurns": 16,
+          "flags": {
+            "complete": true,
+            "readableEnded": true,
+            "aborted": false,
+            "destroyed": false
+          },
+          "state": {
+            "body": "fulfilled",
+            "bodySettles": 1,
+            "handler": "fulfilled",
+            "handlerSettles": 1
+          },
+          "reply": {
+            "status": 200,
+            "headers": {
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "*"
+            },
+            "body": "{\"ok\":true,\"slot\":\"hero\"}",
+            "headCount": 1,
+            "endCount": 1
+          },
+          "writeCount": 1,
+          "listeners": {
+            "data": 1,
+            "end": 1,
+            "error": 1,
+            "aborted": 0,
+            "close": 0
+          }
+        },
+        {
+          "stage": "after_close",
+          "microtaskTurns": 16,
+          "flags": {
+            "complete": true,
+            "readableEnded": true,
+            "aborted": false,
+            "destroyed": true
+          },
+          "state": {
+            "body": "fulfilled",
+            "bodySettles": 1,
+            "handler": "fulfilled",
+            "handlerSettles": 1
+          },
+          "reply": {
+            "status": 200,
+            "headers": {
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "*"
+            },
+            "body": "{\"ok\":true,\"slot\":\"hero\"}",
+            "headCount": 1,
+            "endCount": 1
+          },
+          "writeCount": 1,
+          "listeners": {
+            "data": 1,
+            "end": 1,
+            "error": 1,
+            "aborted": 0,
+            "close": 0
+          }
+        }
+      ],
+      "state": {
+        "body": "fulfilled",
+        "bodySettles": 1,
+        "handler": "fulfilled",
+        "handlerSettles": 1
+      },
+      "reply": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "body": "{\"ok\":true,\"slot\":\"hero\"}",
+        "headCount": 1,
+        "endCount": 1
+      },
+      "writes": [
+        {
+          "path": "/synthetic/hero.json",
+          "bytes": "{\n  \"player\": {\n    \"lv\": 8\n  },\n  \"game\": {\n    \"stage\": 3\n  },\n  \"ts\": 77\n}",
+          "encoding": "utf8"
+        }
+      ],
+      "matsBytes": "{\"mats\":4567,\"ts\":99}",
+      "slotBytes": "{\n  \"player\": {\n    \"lv\": 8\n  },\n  \"game\": {\n    \"stage\": 3\n  },\n  \"ts\": 77\n}",
+      "flags": {
+        "complete": true,
+        "readableEnded": true,
+        "aborted": false,
+        "destroyed": true
+      },
+      "listeners": {
+        "data": 1,
+        "end": 1,
+        "error": 1,
+        "aborted": 0,
+        "close": 0
+      },
+      "successACK": 1
+    },
+    {
+      "route": "/api/save",
+      "policy": "candidate",
+      "inputKind": "complete end then close",
+      "input": "{\"mats\":51.8,\"slot\":\"hero\",\"data\":{\"player\":{\"lv\":8},\"game\":{\"stage\":3},\"ts\":77}}",
+      "trace": [
+        {
+          "op": "requestEvent",
+          "event": "data",
+          "flags": {
+            "complete": false,
+            "readableEnded": false,
+            "aborted": false,
+            "destroyed": false
+          },
+          "bytes": "{\"mats\":51.8,\"slot\":\"hero\",\"data\":{\"player\":{\"lv\":8},\"game\":{\"stage\":3},\"ts\":77}}"
+        },
+        {
+          "op": "emitResult",
+          "event": "data",
+          "handled": true
+        },
+        {
+          "op": "requestEvent",
+          "event": "end",
+          "flags": {
+            "complete": true,
+            "readableEnded": true,
+            "aborted": false,
+            "destroyed": false
+          }
+        },
+        {
+          "op": "emitResult",
+          "event": "end",
+          "handled": true
+        },
+        {
+          "op": "bodyFulfilled"
+        },
+        {
+          "op": "write",
+          "path": "/synthetic/hero.json",
+          "bytes": "{\n  \"player\": {\n    \"lv\": 8\n  },\n  \"game\": {\n    \"stage\": 3\n  },\n  \"ts\": 77\n}",
+          "encoding": "utf8"
+        },
+        {
+          "op": "headers",
+          "status": 200
+        },
+        {
+          "op": "responseEnd",
+          "bytes": "{\"ok\":true,\"slot\":\"hero\"}"
+        },
+        {
+          "op": "handlerFulfilled"
+        },
+        {
+          "op": "requestEvent",
+          "event": "close",
+          "flags": {
+            "complete": true,
+            "readableEnded": true,
+            "aborted": false,
+            "destroyed": true
+          }
+        },
+        {
+          "op": "emitResult",
+          "event": "close",
+          "handled": false
+        }
+      ],
+      "snapshots": [
+        {
+          "stage": "registered",
+          "microtaskTurns": 16,
+          "flags": {
+            "complete": false,
+            "readableEnded": false,
+            "aborted": false,
+            "destroyed": false
+          },
+          "state": {
+            "body": "pending",
+            "bodySettles": 0,
+            "handler": "pending",
+            "handlerSettles": 0
+          },
+          "reply": {
+            "status": null,
+            "headers": null,
+            "body": null,
+            "headCount": 0,
+            "endCount": 0
+          },
+          "writeCount": 0,
+          "listeners": {
+            "data": 1,
+            "end": 1,
+            "error": 1,
+            "aborted": 1,
+            "close": 1
+          }
+        },
+        {
+          "stage": "after_data",
+          "microtaskTurns": 16,
+          "flags": {
+            "complete": false,
+            "readableEnded": false,
+            "aborted": false,
+            "destroyed": false
+          },
+          "state": {
+            "body": "pending",
+            "bodySettles": 0,
+            "handler": "pending",
+            "handlerSettles": 0
+          },
+          "reply": {
+            "status": null,
+            "headers": null,
+            "body": null,
+            "headCount": 0,
+            "endCount": 0
+          },
+          "writeCount": 0,
+          "listeners": {
+            "data": 1,
+            "end": 1,
+            "error": 1,
+            "aborted": 1,
+            "close": 1
+          }
+        },
+        {
+          "stage": "after_end_before_close",
+          "microtaskTurns": 16,
+          "flags": {
+            "complete": true,
+            "readableEnded": true,
+            "aborted": false,
+            "destroyed": false
+          },
+          "state": {
+            "body": "fulfilled",
+            "bodySettles": 1,
+            "handler": "fulfilled",
+            "handlerSettles": 1
+          },
+          "reply": {
+            "status": 200,
+            "headers": {
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "*"
+            },
+            "body": "{\"ok\":true,\"slot\":\"hero\"}",
+            "headCount": 1,
+            "endCount": 1
+          },
+          "writeCount": 1,
+          "listeners": {
+            "data": 0,
+            "end": 0,
+            "error": 1,
+            "aborted": 0,
+            "close": 0
+          }
+        },
+        {
+          "stage": "after_close",
+          "microtaskTurns": 16,
+          "flags": {
+            "complete": true,
+            "readableEnded": true,
+            "aborted": false,
+            "destroyed": true
+          },
+          "state": {
+            "body": "fulfilled",
+            "bodySettles": 1,
+            "handler": "fulfilled",
+            "handlerSettles": 1
+          },
+          "reply": {
+            "status": 200,
+            "headers": {
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "*"
+            },
+            "body": "{\"ok\":true,\"slot\":\"hero\"}",
+            "headCount": 1,
+            "endCount": 1
+          },
+          "writeCount": 1,
+          "listeners": {
+            "data": 0,
+            "end": 0,
+            "error": 1,
+            "aborted": 0,
+            "close": 0
+          }
+        }
+      ],
+      "state": {
+        "body": "fulfilled",
+        "bodySettles": 1,
+        "handler": "fulfilled",
+        "handlerSettles": 1
+      },
+      "reply": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "body": "{\"ok\":true,\"slot\":\"hero\"}",
+        "headCount": 1,
+        "endCount": 1
+      },
+      "writes": [
+        {
+          "path": "/synthetic/hero.json",
+          "bytes": "{\n  \"player\": {\n    \"lv\": 8\n  },\n  \"game\": {\n    \"stage\": 3\n  },\n  \"ts\": 77\n}",
+          "encoding": "utf8"
+        }
+      ],
+      "matsBytes": "{\"mats\":4567,\"ts\":99}",
+      "slotBytes": "{\n  \"player\": {\n    \"lv\": 8\n  },\n  \"game\": {\n    \"stage\": 3\n  },\n  \"ts\": 77\n}",
+      "flags": {
+        "complete": true,
+        "readableEnded": true,
+        "aborted": false,
+        "destroyed": true
+      },
+      "listeners": {
+        "data": 0,
+        "end": 0,
+        "error": 1,
+        "aborted": 0,
+        "close": 0
+      },
+      "successACK": 1
+    }
+  ],
+  "verification": {
+    "status": "PASS_CLOSE_ONLY_BOUNDARY_AND_SHARED_CALLSITE_RISK",
+    "newFailureInputs": 1,
+    "minimalNormalInputs": 1,
+    "actualCallsites": 2,
+    "policies": 2,
+    "totalSourceRuns": 8,
+    "microtaskObservationTurns": 16,
+    "previousTestsRerun": 0,
+    "candidateApplied": false,
+    "runtimeVerified": false,
+    "productionDecision": "NO-FIX: retain unapplied shared candidate; /api/save rejection has no local response catch"
+  },
+  "docsSearch": {
+    "command": "rg -n \"readBody|/api/mats|/api/save|ERR_STREAM_PREMATURE_CLOSE|readableEnded|aborted\" docs/",
+    "exitCode": 0,
+    "matchCount": 44,
+    "outputSha256": "b9b2d608445e29c08ecb7c06aba1b23019a985929ce7dddefdfaf41a4757095b",
+    "matchedDocuments": [
+      "docs/API연결_가이드.md",
+      "docs/CHANGELOG_SYNC.md",
+      "docs/4.1맵디자인+설정/CH1_1_FINAL_REVIEW_20260916.md",
+      "docs/0마스터플랜/TEAM_CONTINUATION_POLICY_20261001.md",
+      "docs/12퍼포먼스·최적화/QA_PERFORMANCE_TEAM_MASTER.md",
+      "docs/0마스터플랜/MAC_AGENT_DASHBOARD.md",
+      "docs/0마스터플랜/EA/HELL_EA_BUILD_CHECKLIST.md",
+      "docs/15 세이브+데이터구조/15 세이브+데이터구조.md",
+      "docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md",
+      "docs/cinematic/WARINTRO_CREATION_RUNTIME_20260910.md",
+      "docs/14밸런스+수치테이블/BALANCE_ECONOMY_TEAM_MASTER.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PM-TEST-SUPPORT-20261002.md",
+      "docs/13출시·마케팅/PUBLISHER_REDELIVERY_20260930.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/supervisor/SUPERVISOR_STATE.json",
+      "docs/13출시·마케팅/INTEGRATION_BUILD_TEAM_MASTER.md",
+      "docs/13출시·마케팅/STEAM_LATEST_DEPLOY_20260909.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/busy-save-independent-result.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/INTEGRATION-REVIEW-20261002.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROVIDER-HALVES-20261002.json",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/SERVER-INTEGRATION-20261002.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROVIDER-HALVES-20261002.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-WORK-DISPATCH-20261002.json"
+    ]
+  },
+  "inputDriftAtEnd": [],
+  "status": "COMPLETED_CANDIDATE_UNAPPLIED_SHARED_CATCH_GATE",
+  "limits": [
+    "Synthetic EventEmitter flags complete/readableEnded assigned by fixture; neither current nor candidate reads them",
+    "No aborted/error emitted; late error guard presence only counted, not exercised again",
+    "Pending bounded to16 microtask turns; no forced completion, elapsed timeout or infinite wait claim",
+    "Rejected /api/save handler is observed by harness; no production catch inserted or process crash proven",
+    "No actual IncomingMessage/socket/HTTP/NW.js/end-user delivery or disk writes",
+    "No already-ended response boundary; no atomic/fsync/cleanup/durability/concurrency/lifetime-GC claims"
+  ],
+  "actualReads": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "fd59bef70960bcaf1ab9910051faa860362884e574ac2869fad05c6872ae04e4",
+      "type": "source/full instructions or relevant system section read"
+    },
+    {
+      "path": "node-main.js",
+      "sha256": "541ff8e6f57db862ddbb1b148ee37a3a8e0da1e16293bc8343a0bc4144d80daf",
+      "type": "source/full instructions or relevant system section read"
+    },
+    {
+      "path": "tools/team-followup-20261002/supervisor-next/BALANCE/BALANCE-close-only-0543/TASK.md",
+      "sha256": "c4958739b36716f0f9c888454e1a200c26673b764c3650ab20801174ca659e66",
+      "type": "source/full instructions or relevant system section read"
+    },
+    {
+      "path": "tools/team-followup-20261002/continuous/COMMON.md",
+      "sha256": "de5a881270625a7b2d0e854331205e01372a037340a18474c6442b60e668465e",
+      "type": "source/full instructions or relevant system section read"
+    },
+    {
+      "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/CONTINUOUS-DISPATCH-20261002.md",
+      "sha256": "ecd73a1eb8cd56d66fd1c026f5a1a8dafcbc3798a5d20aa9ea937d01bf0f9500",
+      "type": "source/full instructions or relevant system section read"
+    },
+    {
+      "path": "docs/15 세이브+데이터구조/15 세이브+데이터구조.md",
+      "sha256": "9c88a0ea27b4d34aeff5a5bc49d05fd75df714a33a1b05739e51ec64584d9d64",
+      "type": "source/full instructions or relevant system section read"
+    },
+    {
+      "path": "docs/14밸런스+수치테이블/BALANCE_ECONOMY_TEAM_MASTER.md",
+      "sha256": "9ea03646283c43a7412c4704100acb35732fddd3933ddfd1966d5ee7b8aef8bc",
+      "type": "source/full instructions or relevant system section read"
+    },
+    {
+      "path": "tools/team-followup-20261002/continuous/BALANCE/checks.mjs",
+      "sha256": "16f4e76fc87432a7b72391e16473b6672550ec6c7cf81c11c3bfcf6bb59389dd",
+      "type": "source/full instructions or relevant system section read"
+    },
+    {
+      "path": "tools/team-followup-20261002/continuous/BALANCE/evidence.json",
+      "sha256": "414d81c8ec120929a87259e3e824e9c61bb1663e926c2aab4e4171fa05e27093",
+      "type": "source/full instructions or relevant system section read"
+    }
+  ],
+  "commands": {
+    "syntaxCheck": {
+      "command": "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node --check tools/team-followup-20261002/supervisor-next/BALANCE/BALANCE-close-only-0543/checks.mjs",
+      "exitCode": 0,
+      "runs": 1
+    },
+    "newFixture": {
+      "command": "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node tools/team-followup-20261002/supervisor-next/BALANCE/BALANCE-close-only-0543/checks.mjs",
+      "exitCode": 0,
+      "runs": 1
+    },
+    "docsSearch": {
+      "command": "rg -n \"readBody|/api/mats|/api/save|ERR_STREAM_PREMATURE_CLOSE|readableEnded|aborted\" docs/",
+      "exitCode": 0,
+      "runs": 1
+    },
+    "instructionSourceReads": {
+      "exitCodes": [
+        0
+      ],
+      "errors": []
+    },
+    "finalArtifactValidation": {
+      "exitCode": 0,
+      "fixtureRerun": false
+    }
+  },
+  "artifactValidation": {
+    "status": "PASS",
+    "inputDrift": [],
+    "ownedFileSetExact": true,
+    "checksSha256": "fb705e47a5046ed508b53f6b7479f8cfb5039e579f29fba039247a72d801bcd1",
+    "resultSha256": "efeb268a68d16c4aced3b8b88125b7d60f77c9d7affc10b7705f233f11dadd0a",
+    "completedAtUTC": "2026-10-02T05:46:37.839829+00:00",
+    "completedAtKST": "2026-10-02T14:46:37.839829+09:00"
+  },
+  "usedTools": [
+    "functions.exec",
+    "tools.exec_command: file reads / designated Node / Python artifact validation / rg",
+    "tools.apply_patch: owned checks.mjs and result.md"
+  ]
+}

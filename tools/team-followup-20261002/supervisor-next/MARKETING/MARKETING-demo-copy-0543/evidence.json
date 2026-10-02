@@ -1,0 +1,415 @@
+{
+  "taskId": "MARKETING-demo-copy-0543",
+  "provider": "Codex / OpenAI",
+  "chatId": "01a0fae0-cff3-78f0-aa73-32b08c6d6055",
+  "sessionId": null,
+  "supervisorChatId": "01a0fb1e-4ec3-7dd3-bba2-f87518e881fa",
+  "checkout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+  "start": {
+    "current_time": "2026-10-02 05:44:00 UTC"
+  },
+  "writtenAt": {
+    "current_time": "2026-10-02 05:46:03 UTC"
+  },
+  "timezone": "Asia/Seoul",
+  "sourceObservation": {
+    "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "readAt": "2026-10-02T05:44:16.367Z",
+    "files": [
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/supervisor-next/MARKETING/MARKETING-demo-copy-0543/TASK.md",
+        "exists": true,
+        "sha256": "3ab69ca02d5369c10e200fdd752fc2de11120c9df1ec1b0b5b76597957c7d7a2",
+        "scope": "text/policy evidence"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/COMMON.md",
+        "exists": true,
+        "sha256": "de5a881270625a7b2d0e854331205e01372a037340a18474c6442b60e668465e",
+        "scope": "text/policy evidence"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/AGENTS.md",
+        "exists": true,
+        "sha256": "fd59bef70960bcaf1ab9910051faa860362884e574ac2869fad05c6872ae04e4",
+        "scope": "text/policy evidence"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json",
+        "exists": true,
+        "sha256": "c8940720a31c3d64b3170309708cc8e2f397c8028fe5316f2b900cfbba82f5a6",
+        "scope": "text/policy evidence"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md",
+        "exists": true,
+        "sha256": "9568410db4e0b66f3b603b8335d779b647ea5fa15461e87be94e47ee2159f7c8",
+        "scope": "text/policy evidence"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/EXODUSER_PRODUCT_MARKET_STRATEGY.md",
+        "exists": true,
+        "sha256": "1dc39e7cb38a9601e047f2dbdbf77ce8d7da9042ec0490a2d24be2c0dc47908d",
+        "scope": "text/policy evidence"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/시장포지셔닝_정통루팅ARPG.md",
+        "exists": true,
+        "sha256": "6e85186bdee9319027882bd8e03996e41b20d58511e023478f356a709c9fb278",
+        "scope": "text/policy evidence"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/13출시·마케팅.md",
+        "exists": true,
+        "sha256": "856eac0abbf6bfbdca46da11de682f24f3b31be81f8b58c69cc7212ca8063832",
+        "scope": "text/policy evidence"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/MARKETING/result.md",
+        "exists": true,
+        "sha256": "dbbd81a72b0fbdbb1134ee353a1aacfd5b5cfa7744f1571e862f296a0edb314a",
+        "scope": "text/policy evidence"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/MARKETING/evidence.json",
+        "exists": true,
+        "sha256": "2ae715ef4d78c5221a602dd0909d8c626a0f1a4eb784b09283d3112d1ef82ef8",
+        "scope": "text/policy evidence"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+        "exists": true,
+        "sha256": "2e45ee0e9ad909b378bf1a7b864818ce442a4c3e17b12360b42e363dc7d0bd94",
+        "scope": "SHA metadata only; prior content evidence reused"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game-easy-test.html",
+        "exists": true,
+        "sha256": "3e5969ca139497c2efb312dc720ab53eb42a8d1912c8288caa2ce858cfd5120a",
+        "scope": "SHA metadata only; prior content evidence reused"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/node-main.js",
+        "exists": true,
+        "sha256": "541ff8e6f57db862ddbb1b148ee37a3a8e0da1e16293bc8343a0bc4144d80daf",
+        "scope": "SHA metadata only; prior content evidence reused"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/index.html",
+        "exists": true,
+        "sha256": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8",
+        "scope": "SHA metadata only; prior content evidence reused"
+      }
+    ]
+  },
+  "sourceObservedKst": "2026-10-02T14:44:16.367+09:00",
+  "providedReference": {
+    "commit": "f2e70ef7c9c663fdd69e925bc379b6d6f8bcaa9c",
+    "source": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/supervisor-next/MARKETING/MARKETING-demo-copy-0543/TASK.md",
+    "providedAtApproximateUtc": "2026-10-02T05:42:00Z",
+    "independentHeadObservation": false,
+    "providedHashesMatchLocalRead": true
+  },
+  "historicalReferences": {
+    "commit": "7e69495046323b3120578f67635c20feb48b2a4f",
+    "mainPrefix": "6c77",
+    "easyPrefix": "c40e",
+    "currentApproval": false
+  },
+  "checkpoint": {
+    "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/supervisor/SUPERVISOR_STATE.json",
+    "sha256": "9271bfa4c97a3ace504d05fbe2100e9c79b3123482a9ad9a200b2721996d9429",
+    "observedAt": "2026-10-02T05:45:30.233Z",
+    "updatedAt": "2026-10-02T05:45:29.970496+00:00",
+    "changesCountCurrent": 69,
+    "changesCountAtStart": 56,
+    "role": "MARKETING"
+  },
+  "checkpointKst": "2026-10-02T14:45:30.233+09:00",
+  "checkpointInterpretation": "supervisor count69 below80 checkpoint threshold; not independently read via Git",
+  "git": {
+    "calls": 0,
+    "head": "UNKNOWN",
+    "independentChanges": "UNKNOWN"
+  },
+  "paragraphEvidence": [
+    {
+      "id": "KO_S",
+      "text": "EXODUSER: HELL LORD는 지옥을 무대로, 적의 공세를 피하고 패링으로 맞받아치며 장비와 스킬 조합을 탐구하는 다크 판타지 액션 RPG입니다. 데모는 대검전사의 전투를 통해 액션과 루팅, 스킬 합체가 이어지는 흐름을 체험하는 데 초점을 맞춰 준비하고 있습니다.",
+      "reusedEvidence": [
+        "product strategy: customer/position and product criteria",
+        "previous accepted comparison: normal lobby/demo boundary"
+      ],
+      "publicationStatus": "총괄확인필요 / unpublished candidate",
+      "shippingVerified": false
+    },
+    {
+      "id": "KO_P1",
+      "text": "지옥의 적들과 맞서는 전투는 공격을 이어 가는 것에서 시작합니다. 적의 움직임을 살피고, 거리를 좁혀 베어 내고, 위험한 순간에는 빠져나오세요. EXODUSER: HELL LORD는 다수의 적을 상대하는 핵앤슬래시 전투에 직접 움직이고 대응하는 액션을 결합합니다.",
+      "reusedEvidence": [
+        "product strategy: action, parry and movement",
+        "market positioning: loot/build/parry/dark fantasy"
+      ],
+      "publicationStatus": "공개가능후보 / actual shipping mechanics require coordinator confirmation",
+      "shippingVerified": false
+    },
+    {
+      "id": "KO_P2",
+      "text": "회피로 공격의 궤도에서 벗어나고, 패링으로 적의 공세를 받아치세요. 언제 접근하고 언제 물러날지 판단하는 과정이 전투의 일부입니다. 기동과 방어를 공격 사이에 엮으며 자신에게 맞는 전투 리듬을 찾아보세요.",
+      "reusedEvidence": [
+        "product strategy: action, parry and movement",
+        "market positioning: loot/build/parry/dark fantasy"
+      ],
+      "publicationStatus": "공개가능후보 / actual shipping mechanics require coordinator confirmation",
+      "shippingVerified": false
+    },
+    {
+      "id": "KO_P3",
+      "text": "전투에서 얻은 장비는 다음 선택으로 이어집니다. 장비의 능력을 살펴 전투 구성에 맞추고, 스킬을 조합해 다른 공격 방식을 시도하세요. 스킬 합체는 익힌 기술을 새로운 조합으로 연결하며, 어떤 장비와 기술을 함께 사용할지 고민할 여지를 만듭니다.",
+      "reusedEvidence": [
+        "product strategy: loot/build",
+        "previous accepted comparison: fusion declaration versus demo access"
+      ],
+      "publicationStatus": "공개가능후보 / actual shipping mechanics require coordinator confirmation",
+      "shippingVerified": false
+    },
+    {
+      "id": "KO_P4",
+      "text": "데모는 대검전사로 첫 구역을 진행하며 이 흐름을 살펴보는 체험으로 준비하고 있습니다. 적의 공격에 대응하고, 얻은 장비를 비교하고, 스킬 조합을 바꿔 보며 액션과 성장의 연결을 알아가는 데 초점을 둡니다. 전투의 대응 방식과 장비·스킬 선택을 함께 즐기는 플레이어에게 EXODUSER의 방향을 소개하는 데모입니다.",
+      "reusedEvidence": [
+        "previous accepted comparison: warrior lobby gate and first-area ending"
+      ],
+      "publicationStatus": "총괄확인필요 / unpublished candidate",
+      "shippingVerified": false
+    },
+    {
+      "id": "EN_S",
+      "text": "EXODUSER: HELL LORD is a dark fantasy action RPG set in Hell, combining evasive movement and parries with loot and skill combinations. The demo is being prepared around the Greatsword Warrior, with a focus on how combat, equipment choices, and skill fusion work together.",
+      "reusedEvidence": [
+        "product strategy: customer/position and product criteria",
+        "previous accepted comparison: normal lobby/demo boundary"
+      ],
+      "publicationStatus": "총괄확인필요 / unpublished candidate",
+      "shippingVerified": false
+    },
+    {
+      "id": "EN_P1",
+      "text": "Combat in Hell begins with taking the fight to its enemies. Watch their movements, close the distance to strike, and pull away when danger approaches. EXODUSER: HELL LORD combines movement and defensive action with hack-and-slash battles against groups of enemies.",
+      "reusedEvidence": [
+        "product strategy: action, parry and movement",
+        "market positioning: loot/build/parry/dark fantasy"
+      ],
+      "publicationStatus": "공개가능후보 / actual shipping mechanics require coordinator confirmation",
+      "shippingVerified": false
+    },
+    {
+      "id": "EN_P2",
+      "text": "Evade to move out of an attack’s path, and parry to meet an enemy’s assault. Deciding when to approach and when to retreat is part of the fight. Weave movement and defense between your attacks to find a combat rhythm that suits you.",
+      "reusedEvidence": [
+        "product strategy: action, parry and movement",
+        "market positioning: loot/build/parry/dark fantasy"
+      ],
+      "publicationStatus": "공개가능후보 / actual shipping mechanics require coordinator confirmation",
+      "shippingVerified": false
+    },
+    {
+      "id": "EN_P3",
+      "text": "The equipment you find in combat leads to your next decision. Consider its abilities alongside your build, and combine skills to try a different approach to attacking. Skill fusion connects learned abilities into new combinations, giving you choices about which equipment and skills to use together.",
+      "reusedEvidence": [
+        "product strategy: loot/build",
+        "previous accepted comparison: fusion declaration versus demo access"
+      ],
+      "publicationStatus": "공개가능후보 / actual shipping mechanics require coordinator confirmation",
+      "shippingVerified": false
+    },
+    {
+      "id": "EN_P4",
+      "text": "The demo is being prepared as an introduction to this loop, following the Greatsword Warrior through the opening area. Its focus is on responding to enemy attacks, comparing equipment, and exploring skill combinations to understand how action and progression connect. It introduces EXODUSER’s direction to players who enjoy making decisions both in combat and in their builds.",
+      "reusedEvidence": [
+        "previous accepted comparison: warrior lobby gate and first-area ending"
+      ],
+      "publicationStatus": "총괄확인필요 / unpublished candidate",
+      "shippingVerified": false
+    }
+  ],
+  "reusedReport": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/MARKETING/result.md",
+  "previousEvidence": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/continuous/MARKETING/evidence.json",
+  "priorEvidenceRead": "prior accepted evidence reused from session; current byte hash recorded, tests and web queries not rerun",
+  "unknowns": [
+    "current shipping BuildID and manifest",
+    "shipping file-to-source mapping",
+    "current gameplay/native save QA",
+    "complete localization QA",
+    "multiplayer",
+    "channel"
+  ],
+  "scope": {
+    "ownedOutputs": [
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/supervisor-next/MARKETING/MARKETING-demo-copy-0543/result.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/supervisor-next/MARKETING/MARKETING-demo-copy-0543/evidence.json"
+    ],
+    "checksCreated": 0,
+    "productionWrites": 0,
+    "sharedDocsWrites": 0,
+    "gitCalls": 0,
+    "webCalls": 0,
+    "previousTestsRepeated": 0,
+    "sourceCountsRecalculated": 0,
+    "fixtures": 0,
+    "servers": 0,
+    "games": 0,
+    "builds": 0,
+    "ui": 0,
+    "accountChanges": 0,
+    "publication": 0,
+    "externalMessages": 0,
+    "mediaCreation": 0,
+    "subagents": 0,
+    "deletionCleanupMove": 0
+  },
+  "decision": "safe NO-FIX: text authoring only; no new production failure claimed",
+  "skills": {
+    "used": [],
+    "reason": "explicit repository result.md text output; focused copywriting using authorized product strategy and inherited evidence, no external workflow needed"
+  },
+  "toolLog": [
+    {
+      "tool": "exec_command",
+      "id": "policy",
+      "command": "cat tools/team-followup-20261002/continuous/COMMON.md\ncat AGENTS.md",
+      "exit": 0,
+      "truncated": false
+    },
+    {
+      "tool": "exec_command",
+      "id": "ssot",
+      "command": "cat 'docs/13출시·마케팅/시장포지셔닝_정통루팅ARPG.md'\nsed -n '333,364p' 'docs/13출시·마케팅/13출시·마케팅.md'\ncat tools/team-followup-20261002/continuous/MARKETING/result.md",
+      "exit": 0,
+      "truncated": false
+    },
+    {
+      "tool": "exec_command",
+      "id": "registry",
+      "command": "python3 - <<'PY'\nimport json\nfrom pathlib import Path\np=Path('docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json')\nd=json.loads(p.read_text())\nprint('root keys:',list(d))\ndef walk(x,p=''):\n if isinstance(x,dict):\n  if any(str(v).upper()=='MARKETING' for v in x.values() if isinstance(v,str)):print(p,json.dumps(x,ensure_ascii=False))\n  for k,v in x.items():walk(v,p+'/'+str(k))\n elif isinstance(x,list):\n  for i,v in enumerate(x):walk(v,p+'/'+str(i))\nwalk(d)\nPY",
+      "exit": 0,
+      "truncated": false
+    },
+    {
+      "tool": "exec_command",
+      "id": "strategy",
+      "command": "cat 'docs/0마스터플랜/EXODUSER_PRODUCT_MARKET_STRATEGY.md'\ntail -28 'docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md'\npython3 - <<'PY'\nimport json\nfrom pathlib import Path\nx=json.loads(Path('docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json').read_text())\nfor k in ['checkedAt','counts','providerRouting20261002','latestProviderHalves20261002']:\n v=x.get(k)\n if k=='latestProviderHalves20261002':\n  def walk(d,p=''):\n   if isinstance(d,dict):\n    for a,b in d.items():\n     if 'market' in str(a).lower() or (isinstance(b,str) and 'MARKETING' in b):print(p+'/'+a,str(b)[:600])\n     else:walk(b,p+'/'+a)\n   elif isinstance(d,list):\n    for i,b in enumerate(d):walk(b,p+'/'+str(i))\n  walk(v)\n else:print(k,json.dumps(v,ensure_ascii=False)[:2800])\nPY",
+      "exit": 0,
+      "truncated": false
+    },
+    {
+      "tool": "exec_command",
+      "id": "supervisor",
+      "command": "python3 - <<'PY'\nimport json\nfrom pathlib import Path\np=Path('tools/team-followup-20261002/supervisor/SUPERVISOR_STATE.json')\nprint('path',str(p.resolve()),'exists',p.exists())\nif p.exists():\n d=json.loads(p.read_text());print('keys',list(d))\n def walk(x,path=''):\n  if isinstance(x,dict):\n   for k,v in x.items():\n    if 'MARKETING' in k.upper():print(path+'/'+k,json.dumps(v,ensure_ascii=False)[:2000])\n    elif isinstance(v,(dict,list)):walk(v,path+'/'+k)\n    elif k in ['updatedAt','checkedAt','changes','changesCount','provider','role']:print(path+'/'+k,str(v)[:160])\n  elif isinstance(x,list):\n   for i,v in enumerate(x):walk(v,path+'/'+str(i))\n walk(d)\nPY",
+      "exit": 0,
+      "truncated": false
+    },
+    {
+      "tool": "exec_command",
+      "id": "registrylocate",
+      "command": "rg --files tools/team-followup-20261002 docs/0마스터플랜 | rg 'SUPERVISOR_STATE.json$|PROVIDER-HALVES-20261002.md$'",
+      "exit": 0,
+      "truncated": false
+    },
+    {
+      "tool": "exec_command",
+      "id": "currenttable",
+      "command": "python3 - <<'PY'\nimport json\nfrom pathlib import Path\np=Path('docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/supervisor/SUPERVISOR_STATE.json')\nd=json.loads(p.read_text());print('keys',list(d))\ndef walk(x,path=''):\n if isinstance(x,dict):\n  if any('MARKETING' in str(v) for v in x.values() if isinstance(v,str)):print(path,json.dumps(x,ensure_ascii=False)[:1900]);return\n  for k,v in x.items():\n   if isinstance(v,(dict,list)):walk(v,path+'/'+k)\n   elif k in ['updatedAt','checkedAt','changes','changesCount']:print(path+'/'+k,str(v))\n elif isinstance(x,list):\n  for i,v in enumerate(x):walk(v,path+'/'+str(i))\nwalk(d)\nPY",
+      "exit": 0,
+      "truncated": false
+    },
+    {
+      "tool": "exec_command",
+      "id": "checkpoint",
+      "command": "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node --input-type=module <<'JS'\nimport {readFileSync} from 'node:fs';import {createHash} from 'node:crypto';\nconst p='docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/supervisor/SUPERVISOR_STATE.json';const bytes=readFileSync(p),d=JSON.parse(bytes);console.log(JSON.stringify({path:process.cwd()+'/'+p,sha256:createHash('sha256').update(bytes).digest('hex'),observedAt:new Date().toISOString(),updatedAt:d.updatedAt,changesCountCurrent:d.changesCountCurrent,changesCountAtStart:d.changesCountAtStart,role:d.rows.find(x=>x.role==='MARKETING')?.role}));\nJS",
+      "exit": 0,
+      "truncated": false
+    },
+    {
+      "tool": "exec_command",
+      "id": "owned_output_read",
+      "command": "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node --input-type=module <<'JS'\nimport {readFileSync} from 'node:fs';import {createHash} from 'node:crypto';\nconst d=\"/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/supervisor-next/MARKETING/MARKETING-demo-copy-0543\";const e=JSON.parse(readFileSync(d+'/evidence.json','utf8'));const r=readFileSync(d+'/result.md','utf8');console.log(JSON.stringify({taskId:e.taskId,paragraphIds:e.paragraphEvidence.map(x=>x.id),draftLabelPresent:r.includes('미공개 초안 / 현행 소스 기준·출하 검수 전'),resultSha:createHash('sha256').update(r).digest('hex'),evidenceParsed:true,outputs:2}));\nJS",
+      "exit": 0
+    }
+  ],
+  "metadataTool": {
+    "tool": "exec_command",
+    "command": "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node --input-type=module <<'JS'\nimport {readFileSync,existsSync} from 'node:fs';import {resolve} from 'node:path';import {createHash} from 'node:crypto';\nconst paths=[\"tools/team-followup-20261002/supervisor-next/MARKETING/MARKETING-demo-copy-0543/TASK.md\",\"tools/team-followup-20261002/continuous/COMMON.md\",\"AGENTS.md\",\"docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json\",\"docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md\",\"docs/0마스터플랜/EXODUSER_PRODUCT_MARKET_STRATEGY.md\",\"docs/13출시·마케팅/시장포지셔닝_정통루팅ARPG.md\",\"docs/13출시·마케팅/13출시·마케팅.md\",\"tools/team-followup-20261002/continuous/MARKETING/result.md\",\"tools/team-followup-20261002/continuous/MARKETING/evidence.json\",\"game.html\",\"game-easy-test.html\",\"node-main.js\",\"index.html\"];\nconsole.log(JSON.stringify({cwd:process.cwd(),readAt:new Date().toISOString(),files:paths.map(p=>({path:resolve(p),exists:existsSync(p),sha256:existsSync(p)?createHash('sha256').update(readFileSync(p)).digest('hex'):null,scope:p.endsWith('.html')||p==='node-main.js'?'SHA metadata only; prior content evidence reused':'text/policy evidence'}))}));\nJS",
+    "exit": 0
+  },
+  "taskRead": {
+    "tool": "exec_command",
+    "command": "cat tools/team-followup-20261002/supervisor-next/MARKETING/MARKETING-demo-copy-0543/TASK.md",
+    "exit": 0
+  },
+  "mutations": [
+    {
+      "tool": "apply_patch",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/supervisor-next/MARKETING/MARKETING-demo-copy-0543/result.md",
+      "operations": [
+        "create",
+        "replace quality-adjacent adjective with action description"
+      ]
+    },
+    {
+      "tool": "apply_patch",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/supervisor-next/MARKETING/MARKETING-demo-copy-0543/evidence.json",
+      "operations": [
+        "create"
+      ]
+    }
+  ],
+  "errors": [],
+  "pathObservations": [
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/supervisor/SUPERVISOR_STATE.json",
+      "exists": false,
+      "meaning": "initial inferred path absent; no write/cleanup"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/supervisor/SUPERVISOR_STATE.json",
+      "exists": true,
+      "meaning": "resolved by scoped rg files, then actual read"
+    }
+  ],
+  "validation": {
+    "copyPairs": 1,
+    "shortParagraphsPerLanguage": 1,
+    "bodyParagraphsPerLanguage": 4,
+    "manualScopeReview": true,
+    "countsQualityTranslationMultiplayerServiceNewLorePromises": false,
+    "sourcePassClaimed": false,
+    "runtimePassClaimed": false,
+    "shippingPassClaimed": false,
+    "ownedOutputRead": {
+      "taskId": "MARKETING-demo-copy-0543",
+      "paragraphIds": [
+        "KO_S",
+        "KO_P1",
+        "KO_P2",
+        "KO_P3",
+        "KO_P4",
+        "EN_S",
+        "EN_P1",
+        "EN_P2",
+        "EN_P3",
+        "EN_P4"
+      ],
+      "draftLabelPresent": true,
+      "resultSha": "f227da02ea49b65f5bcbf4107bbb9239488206c2cc95456163a9597dc3f79468",
+      "evidenceParsed": true,
+      "outputs": 2
+    }
+  },
+  "canonicalHandoff": {
+    "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/13출시·마케팅.md",
+    "parentSection": "시장 포지셔닝",
+    "proposedSection": "미공개 KO/EN 데모 소개 초안 — 2026-10-02",
+    "applied": false
+  },
+  "privacy": "no raw prompts, thinking, auth, keys or personal contact information copied"
+}

@@ -1,0 +1,1555 @@
+{
+  "schemaVersion": 1,
+  "taskId": "UIUX-lobby-locked-keyboard-0543",
+  "provider": "Codex",
+  "chatId": "01a0faaf-8fd2-7083-b174-69c604bd58b0",
+  "chatIdEvidence": "PROVIDER-HALVES-20261002.md UIUX row",
+  "supervisorChatId": "01a0fb1e-4ec3-7dd3-bba2-f87518e881fa",
+  "productionApplied": false,
+  "verdict": "NO-FIX",
+  "preflight": {
+    "readUTC": "2026-10-02T05:45:37.345Z",
+    "readKST": "2026-10-02 14:45:37 KST",
+    "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "realpath": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "taskRealpath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/supervisor-next/UIUX/UIUX-lobby-locked-keyboard-0543/TASK.md",
+    "ownFiles": [
+      "TASK.md"
+    ],
+    "sourceSHA": {
+      "index.html": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8",
+      "game.html": "2e45ee0e9ad909b378bf1a7b864818ce442a4c3e17b12360b42e363dc7d0bd94",
+      "game-easy-test.html": "3e5969ca139497c2efb312dc720ab53eb42a8d1912c8288caa2ce858cfd5120a",
+      "node-main.js": "541ff8e6f57db862ddbb1b148ee37a3a8e0da1e16293bc8343a0bc4144d80daf",
+      "AGENTS.md": "fd59bef70960bcaf1ab9910051faa860362884e574ac2869fad05c6872ae04e4",
+      "tools/team-followup-20261002/continuous/COMMON.md": "de5a881270625a7b2d0e854331205e01372a037340a18474c6442b60e668465e",
+      "tools/team-followup-20261002/supervisor-next/UIUX/UIUX-lobby-locked-keyboard-0543/TASK.md": "870a76598ea1ee60585bd936b095c71ee955808d52946cad4aa9eab98cc77930",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROVIDER-HALVES-20261002.md": "16cbe4b9d0c9d0e0e8cabc1ac8d4f7718f78b4e013b6e5cb169e5bb6d397be6d",
+      "docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md": "3e906af1421fc18fa8c03e64e8de8db99e14f31ed886568102395d787bad249e",
+      "docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md": "8e84ae631d586d7ae3da5d5c121de2ee1813eff633f7d2053502ea34426ad4de",
+      "docs/3.1 ui hud 디자인/LOBBY_ANCESTOR_ART_20260928.md": "937c9c999612c0642b98e324abb4e6c666b267fc10d993f664c72202413e19e3",
+      "test/lobbyVisualKeyboard.test.js": "8722ddb1266d36038db06df0aea61a99da24330431c3907474882251b71be0c3",
+      "test/lobbyCreationOverlayLifecycle.test.js": "d38438a46fa0165559c98a89db211a2c910c31408a0cdc6608ae47e245fac407",
+      "tools/team-followup-20261001/UIUX/inventory-dom/node-dom.mjs": "b3c6bb3abf74d5b9e464d1db2e5d2441645af3be8eb096f3c30788b7019cfb95",
+      "tools/team-followup-20261002/continuous/UIUX/checks.mjs": "65fa2cf9af3cb72d7c7f2e173ae175675711b8d7ac33ae05606bbd3e56d5736c",
+      "tools/team-followup-20261002/continuous/UIUX/result.md": "b5c6da0c143e739dc9e473f39b9a6a6fbf443178a35de4f1bc9f7ce299c81a08",
+      "tools/team-followup-20261002/continuous/UIUX/evidence.json": "4bb90bd319dbc415f0ce51809f72aff340c4f1950cd1a11703add84352a1c4a9"
+    },
+    "packageAcornPresent": true
+  },
+  "providedProductionReference": {
+    "commit": "f2e70ef7c9c663fdd69e925bc379b6d6f8bcaa9c",
+    "source": "감독 소유 TASK의 총괄 제공 근거",
+    "providedAroundUTC": "2026-10-02T05:42 (TASK의 근사시각; 독립 시각 관측 아님)",
+    "providedHashes": {
+      "game.html": "2e45ee0e9ad909b378bf1a7b864818ce442a4c3e17b12360b42e363dc7d0bd94",
+      "game-easy-test.html": "3e5969ca139497c2efb312dc720ab53eb42a8d1912c8288caa2ce858cfd5120a",
+      "node-main.js": "541ff8e6f57db862ddbb1b148ee37a3a8e0da1e16293bc8343a0bc4144d80daf"
+    },
+    "actualReadUTC": "2026-10-02T05:45:37.345Z",
+    "headIndependentlyObserved": false,
+    "HEAD": "UNKNOWN",
+    "historicalOnly": [
+      "7e694950",
+      "6c77",
+      "c40e"
+    ]
+  },
+  "fixture": {
+    "taskId": "UIUX-lobby-locked-keyboard-0543",
+    "provider": "Codex",
+    "chatId": "01a0faaf-8fd2-7083-b174-69c604bd58b0",
+    "supervisorChatId": "01a0fb1e-4ec3-7dd3-bba2-f87518e881fa",
+    "startedUTC": "2026-10-02T05:47:57.637Z",
+    "checkout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "sourceSHA256": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8",
+    "node": "v24.15.0",
+    "sourceFragments": {
+      "openVisualSelect": {
+        "text": "function openVisualSelect(){\n  _visualReturnFocus=document.activeElement;\n  const pop=$('charVisualPop');pop.style.display='flex';\n  _spawnEmbers();\n  const grid=$('visualGrid');grid.replaceChildren();\n  CHAR_VISUALS.forEach((ch,ci)=>{\n    const ico=document.createElement('button');ico.type='button';ico.className='cs-ico';ico.setAttribute('data-vi',ci);\n    ico.title=_TL(ch.name);\n    const ring=document.createElement('div');ring.className='cs-ico-ring';\n    if(ch.emblemImg){const img=document.createElement('img');img.src=ch.emblemImg;img.alt='';ring.appendChild(img)}\n    const label=document.createElement('div');label.className='lbl';label.textContent=_TL(ch.tab||ch.name);\n    ico.replaceChildren(ring,label);\n    if(ch.comingSoon){ico.classList.add('locked');const badge=document.createElement('span');badge.className='cs-soon';badge.textContent=_TL('출시 준비 중');ico.appendChild(badge);ico.title+=' — '+_TL('출시 준비 중')}\n    ico.onclick=()=>selectVisual(ci);\n    grid.appendChild(ico);\n  });\n  selectVisual(_pendingVisualIdx||0);\n  _resetVisualInfoScroll();\n  const target=grid.querySelector('.cs-ico.sel')||$('visualCancelBtn');if(target)target.focus({preventScroll:true});\n}",
+        "lineStart": 3227,
+        "lineEnd": 3246,
+        "SHA256": "42150f7f2c86ee2f792079a9b1540230856c2bedfe3c203f212d42e957813e53"
+      },
+      "selectVisual": {
+        "text": "function selectVisual(ci){\n  const ch=CHAR_VISUALS[ci],pop=$('charVisualPop');if(!ch||!pop||pop.style.display!=='flex')return;\n  const changed=_pendingVisualIdx!==ci;\n  const request=++_visualPreviewSeq,isCurrent=()=>request===_visualPreviewSeq&&pop.style.display==='flex';\n  _pendingVisualIdx=ci;\n  $('csPortrait').parentElement.classList.toggle('silvertail-keyart',!!ch.keyart);\n  const locked=!!ch.comingSoon;\n  $('charVisualPop').classList.toggle('release-locked',locked);\n  $('visualCreateBtn').disabled=locked;\n  $('visualCreateBtn').textContent=_TL(locked?'출시 준비 중':'생성');\n  $('csReleaseLabel').textContent=locked?_TL('출시 준비 중'):'';\n  // 중앙: 아이들 영상 있으면 우선 재생(실패·지연 시 정적 누끼로 폴백), 없으면 정적 누끼\n  const idle=$('csIdleVid'), port=$('csPortrait');\n  const _showStatic=()=>{\n    if(!isCurrent())return;\n    if(idle){idle.classList.remove('on');idle.pause&&idle.pause();}\n    if(port){port.style.display='';port.classList.add('swap');\n      setTimeout(()=>{if(!isCurrent())return;port.src=ch.portrait||'';port.classList.remove('swap');},180);}\n    const _sc=$('csScene');if(_sc){if(ch.scene)_sc.style.backgroundImage=\"url('\"+ch.scene+\"')\";_sc.style.opacity=ch.scene?'1':'0';}\n  };\n  if(ch.idleVid&&idle){\n    if(ch.poster)idle.poster=ch.poster;             // 로딩 중 즉시 첫 프레임 표시\n    if(idle.getAttribute('src')!==ch.idleVid||idle.error){idle.classList.remove('on');idle.src=ch.idleVid;idle.load&&idle.load();}\n    idle.defaultPlaybackRate=ch.idleRate||1;idle.playbackRate=idle.defaultPlaybackRate;\n    clearTimeout(idle._csT);\n    idle.onerror=_showStatic;                         // 로드/디코드 실패 → 정적 폴백\n    idle.oncanplay=()=>{if(isCurrent())clearTimeout(idle._csT);};\n    idle._csT=setTimeout(()=>{if(isCurrent()&&idle.readyState<2)_showStatic();},5000); // 5초 스톨 → 폴백\n    idle.classList.add('on');if(port)port.style.display='none';\n    const _pr=idle.play&&idle.play();if(_pr&&_pr.catch)_pr.catch(()=>{}); // autoplay 막혀도 poster 프레임 유지\n  }else{\n    _showStatic();\n  }\n  // 좌측 정보\n  $('csClsName').textContent=_TL(ch.job||ch.cls||'');\n  $('csCharName').textContent=_TL(ch.name);\n  $('csCharDesc').textContent=_TL(ch.desc);\n  const th=$('csThumb');if(th){const _tp=ch.bust||ch.portrait;th.style.backgroundImage=_tp?\"url('\"+_tp+\"')\":'';th.classList.toggle('silvertail-keyart',!!ch.keyart);}\n  const aura=$('csAura');if(aura&&ch.aura)aura.style.setProperty('--aura',ch.aura);\n  // 배경 씬 — 아이들 영상 있으면 그게 전체를 덮으므로 배경 레이어는 끔\n  const sc=$('csScene'), vid=$('csSceneVid');\n  if(ch.idleVid){\n    if(sc)sc.style.opacity='0';\n    if(vid){vid.classList.remove('on');vid.pause&&vid.pause();}\n  }else{\n    if(sc){sc.style.opacity='0';if(ch.scene)setTimeout(()=>{if(!isCurrent())return;sc.style.backgroundImage=\"url('\"+ch.scene+\"')\";sc.style.opacity='1';},180);}\n    if(vid){\n      if(ch.sceneVid){if(vid.getAttribute('src')!==ch.sceneVid||vid.error){vid.src=ch.sceneVid;}vid.classList.add('on');vid.play&&vid.play().catch(()=>{});}\n      else{vid.classList.remove('on');vid.pause&&vid.pause();}\n    }\n  }\n  // 우측 플레이 방식\n  const tr=$('csTraits');\n  if(tr){tr.innerHTML=(ch.traits||[]).map(t=>\n    '<div class=\"cs-trait\"><div class=\"ti\"><span class=\"ti-g\">'+t[0]+'</span></div><div><div class=\"tt\">'+escHtml(_TL(t[1]))\n    +'</div><div class=\"td\">'+escHtml(_TL(t[2]))+'</div></div></div>').join('');}\n  // 아이콘 레일 선택 표시\n  const grid=$('visualGrid');if(grid)grid.querySelectorAll('.cs-ico').forEach((c,i)=>{c.classList.toggle('sel',i===ci);c.setAttribute('aria-pressed',String(i===ci));});\n  if(changed)_resetVisualInfoScroll();\n  // 좌우 패널 등장 애니메이션 (재트리거)\n  ['csLeft','csRight'].forEach(id=>{const el=$(id);if(el){el.classList.remove('in');void el.offsetWidth;el.classList.add('in');}});\n}",
+        "lineStart": 3155,
+        "lineEnd": 3216,
+        "SHA256": "3db46074afc04296d7d42e136a1153485e4f1748cf7930029b948ac0814d2b8b"
+      },
+      "_visualSelectKeydown": {
+        "text": "function _visualSelectKeydown(e){\n  const pop=$('charVisualPop');if(!pop||pop.style.display!=='flex'||e.isComposing||e.keyCode===229)return;\n  if(e.key==='Escape'){e.preventDefault();e.stopPropagation();if(!e.repeat)$('visualCancelBtn').click();return;}\n  const icons=[...$('visualGrid').querySelectorAll('.cs-ico')];\n  if(['ArrowLeft','ArrowRight','Home','End'].includes(e.key)&&icons.includes(document.activeElement)){\n    e.preventDefault();e.stopPropagation();\n    const index=icons.indexOf(document.activeElement),last=icons.length-1;\n    const step=(e.key==='ArrowRight'?1:-1)*(document.documentElement.dir==='rtl'?-1:1);\n    const next=e.key==='Home'?0:e.key==='End'?last:Math.max(0,Math.min(last,index+step));\n    icons[next].click();icons[next].focus({preventScroll:true});return;\n  }\n  if(e.key!=='Tab')return;\n  const details=[$('csLeft'),$('csRight')].filter(Boolean);\n  const controls=[...details,...icons,$('visualCancelBtn'),$('visualCreateBtn')].filter(el=>el&&!el.disabled);\n  if(!controls.length)return;\n  e.preventDefault();e.stopPropagation();\n  const index=controls.indexOf(document.activeElement);\n  const next=index<0?(e.shiftKey?controls.length-1:0):(index+(e.shiftKey?-1:1)+controls.length)%controls.length;\n  const target=controls[next];target.focus({preventScroll:true});\n  if(details.includes(target))target.scrollIntoView({block:'start'});\n}",
+        "lineStart": 3247,
+        "lineEnd": 3267,
+        "SHA256": "a94f16bcbd7e13b17cef7549ed71f72bc87545bfd6c8a1206fb02f45c513a06e"
+      },
+      "_resetVisualInfoScroll": {
+        "text": "function _resetVisualInfoScroll(){\n  const body=$('charVisualPop')?.querySelector('.cs-body');\n  for(const el of [body,$('csLeft'),$('csRight')])if(el)el.scrollTop=0;\n}",
+        "lineStart": 3144,
+        "lineEnd": 3147,
+        "SHA256": "6d103cd9dc1a570fb86ddb4f24619c44c57b5100b37bdf125f79b6514389fc47"
+      },
+      "_visualConfirm": {
+        "text": "function _visualConfirm(){\n  if(CHAR_VISUALS[_pendingVisualIdx]?.comingSoon)return;\n  _closeVisualSelect();\n  $('createModal').classList.add('show');$('charName').value='';setStatus('');\n  setTimeout(()=>{if($('createModal').classList.contains('show'))$('charName').focus()},50);\n}",
+        "lineStart": 3270,
+        "lineEnd": 3275,
+        "SHA256": "a3ac40e591d152dd25bb2528e4c4f5c75491836c1035a85da370fc305258c996"
+      },
+      "doCreateChar": {
+        "text": "async function doCreateChar(name,visualIdx){\n  if($('createBtn').disabled)return;\n  if(CHAR_VISUALS[visualIdx]?.comingSoon){setStatus(_TL('출시 준비 중'),true);return}\n  const request=_characterLoadSeq;\n  $('createBtn').disabled=true;setStatus(_TL('생성 중...'));\n  if(_testMode){\n    try{\n    try{\n      if(_LOBBY_BUILD==='demo')throw new Error('demo local');\n      const res=await fetch('/api/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({slot:name,data:{ts:Date.now(),charIdx:visualIdx}})});\n      if(request!==_characterLoadSeq)return;\n      if(!res.ok)throw new Error('no server');\n      const j=await res.json();\n      if(request!==_characterLoadSeq)return;\n      $('createBtn').disabled=false;\n      if(!j.ok){_showCreateFailure(name,_TL('생성 실패: ')+(j.error||_TL('알 수 없는 오류')));return}\n      $('charName').value='';setStatus('');await _afterCharacterCreated(name,visualIdx);\n    }catch(e){\n      if(request!==_characterLoadSeq)return;\n      const _LS_PREFIX='hellsave_demo_';const MAX_LS=5;\n      for(let i=0;i<MAX_LS;i++){const raw=localStorage.getItem(_LS_PREFIX+i);if(raw){try{const d=JSON.parse(raw);if(d.name===name){_showCreateFailure(name,_TL('이미 같은 이름의 캐릭터가 있습니다.'));return}}catch(pe){}}}\n      let _slot=-1;for(let i=0;i<MAX_LS;i++){if(!localStorage.getItem(_LS_PREFIX+i)){_slot=i;break}}\n      if(_slot<0){_showCreateFailure(name,_TL('슬롯이 가득 찼습니다.'));return}\n      localStorage.setItem(_LS_PREFIX+_slot,JSON.stringify({name:name,ts:Date.now(),charIdx:visualIdx}));\n      $('createBtn').disabled=false;$('charName').value='';setStatus('');await _afterCharacterCreated(name,visualIdx);\n    }\n    return;\n    }catch(error){if(request===_characterLoadSeq)_showCreateFailure(name,_TL('생성 실패: ')+(error.message||_TL('알 수 없는 오류')))}\n    finally{$('createBtn').disabled=false;}\n    return;\n  }\n  let error=null;\n  try{\n    if(!currentUser||!currentUser.id)throw new Error(_TL('로그인 필요'));\n    ({error}=await sb.from('characters').insert({user_id:currentUser.id,name:name,data:{charIdx:visualIdx}}));\n  }catch(cause){error=cause||new Error(_TL('알 수 없는 오류'));}\n  finally{$('createBtn').disabled=false;}\n  if(request!==_characterLoadSeq)return;\n  if(error){\n    _showCreateFailure(name,error.code==='23505'?_TL('이미 같은 이름의 캐릭터가 있습니다.'):_TL('생성 실패: ')+(error.message||_TL('알 수 없는 오류')));return;\n  }\n  $('charName').value='';setStatus('');await _afterCharacterCreated(name,visualIdx);\n}",
+        "lineStart": 3304,
+        "lineEnd": 3346,
+        "SHA256": "484be813916042c26657ccf68d50c8348393be6a2112acb27941fae86b0b89f9"
+      },
+      "CHAR_VISUALS": {
+        "text": "const CHAR_VISUALS=[\n  {id:'exoduser_warrior',name:'엑소듀서 전사',cls:'WARRIOR',desc:'거대검을 휘두르는 흑철의 전사',folder:'img/exoduser_warrior',fw:48,fh:48,portrait:'assets/charselect/warrior_cut.png?v=3',bust:'assets/charselect/portrait_warrior.png?v=20260930-eyefix',emblemImg:'assets/charselect/emblem_warrior.png?v=1',aura:'rgba(140,70,190,.55)',scene:'assets/charselect/bg_scene1.png?v=1',sceneVid:'assets/charselect/bg_scene1_loop.mp4?v=2',idleVid:'assets/charselect/idle_warrior_cs3_4k.mp4?v=20260929-cs3',idleRate:0.75,poster:'assets/charselect/poster_idle_warrior_cs3_4k.jpg?v=20260929-cs3',tab:'전사',job:'전사',\n    emblem:'<svg viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M50 28 L50 82\"/><path d=\"M35 44 L65 44\"/><path d=\"M31 33 C23 25 21 17 23 11 C31 15 34 24 35 32\"/><path d=\"M69 33 C77 25 79 17 77 11 C69 15 66 24 65 32\"/></svg>',\n    traits:[\n      ['⚔','근접 화신','거대검을 휘두르는 정면 돌파형 전투가입니다.'],\n      ['🛡','흑철의 방어','검은 갑옷으로 적의 공세를 견디고 되받아칩니다.'],\n      ['💥','파멸의 일격','느리지만 치명적인 광역 참격을 내리꽂습니다.'],\n    ]},\n  {id:'exoduser_silvertail',name:'실버테일',cls:'BLADE DANCER',desc:'회전하는 단 하나의 검, 그녀의 춤은 파멸',folder:'img/exoduser_silvertail',fw:48,fh:48,portrait:'assets/charselect/silvertail_cut.png?v=20260927-restored',bust:'assets/charselect/portrait_silvertail.png?v=20260927-restored',emblemImg:'assets/charselect/emblem_silvertail.png?v=1',aura:'rgba(120,165,215,.5)',scene:'assets/charselect/bg_scene2.png?v=1',sceneVid:'assets/charselect/bg_scene2_loop.mp4?v=1',idleVid:'assets/charselect/idle_silvertail_4k.mp4?v=20260929-remaster',poster:'assets/charselect/poster_idle_silvertail_4k.jpg?v=20260929-remaster',tab:'실버테일',job:'블레이드 댄서',\n    comingSoon:true,\n    emblem:'<svg viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M24 24 L72 72\"/><path d=\"M76 24 L28 72\"/><circle cx=\"50\" cy=\"50\" r=\"3.5\" fill=\"currentColor\" stroke=\"none\"/></svg>',\n    traits:[\n      ['🌀','검무의 화신','회전대검으로 사방의 적을 동시에 베어냅니다.'],\n      ['🗡','쌍단검 기동','빠르고 민첩한 연속 공격으로 파고듭니다.'],\n      ['✨','무희의 춤','화려한 회피와 폭발적인 딜을 오가는 곡예입니다.'],\n    ]},\n  // 신규 3종 (2026-09-29, Higgsfield 키아트 영상) — 인게임 미구현이므로 comingSoon 잠금. 기획 초안: char_create.html\n  {id:'exoduser_hellgunner',name:'헬거너',cls:'HELLGUNNER',desc:'자신의 피를 탄환 삼는 혈월의 창포수',folder:'',fw:48,fh:48,portrait:'assets/charselect/portrait_hellgunner.jpg?v=20260929',bust:'assets/charselect/portrait_hellgunner.jpg?v=20260929',emblemImg:'assets/charselect/emblem_hellgunner.png?v=20260929',aura:'rgba(224,32,58,.5)',scene:'assets/charselect/poster_idle_hellgunner.jpg?v=20260929',idleVid:'assets/charselect/idle_hellgunner.mp4?v=20260929',poster:'assets/charselect/poster_idle_hellgunner.jpg?v=20260929',tab:'헬거너',job:'창포수',\n    comingSoon:true,\n    traits:[\n      ['🩸','혈탄 장전','체력을 소모해 충전한 관통탄을 발사합니다.'],\n      ['🎯','관통 창격','창포로 일직선상의 적을 모두 꿰뚫습니다.'],\n      ['💨','역추진 도약','사격 반동을 이용해 뒤로 도약합니다.'],\n    ]},\n  {id:'exoduser_transmuter',name:'변성술사',cls:'TRANSMUTER',desc:'베어낸 영혼을 먹고 자라는 청염의 낫',folder:'',fw:48,fh:48,portrait:'assets/charselect/portrait_transmuter.jpg?v=20260929',bust:'assets/charselect/portrait_transmuter.jpg?v=20260929',emblemImg:'assets/charselect/emblem_transmuter.png?v=20260929',aura:'rgba(47,123,255,.5)',scene:'assets/charselect/poster_idle_transmuter.jpg?v=20260929',idleVid:'assets/charselect/idle_transmuter.mp4?v=20260929',poster:'assets/charselect/poster_idle_transmuter.jpg?v=20260929',tab:'변성술사',job:'사신',\n    comingSoon:true,\n    traits:[\n      ['🌙','반월참','낫을 크게 휘둘러 전방 반원을 베어냅니다.'],\n      ['👻','영혼 수확','처치한 적의 영혼을 거둬 낫을 강화합니다.'],\n      ['🌀','망령 걸음','청염으로 흩어졌다 원하는 곳에 다시 나타납니다.'],\n    ]},\n  {id:'exoduser_spearmage',name:'창법사',cls:'SPEARMAGE',desc:'룬으로 공간을 봉인하는 공허의 전령',folder:'',fw:48,fh:48,portrait:'assets/charselect/portrait_spearmage.jpg?v=20260929',bust:'assets/charselect/portrait_spearmage.jpg?v=20260929',emblemImg:'assets/charselect/emblem_spearmage.png?v=20260929',aura:'rgba(155,77,255,.5)',scene:'assets/charselect/poster_idle_spearmage.jpg?v=20260929',idleVid:'assets/charselect/idle_spearmage.mp4?v=20260929',poster:'assets/charselect/poster_idle_spearmage.jpg?v=20260929',tab:'창법사',job:'공허 창술사',\n    comingSoon:true,\n    traits:[\n      ['🔮','공허 투창','공허창을 던져 관통시킨 뒤 다시 회수합니다.'],\n      ['✴','룬 각인','지면에 봉인 룬을 새겨 적을 묶습니다.'],\n      ['🌌','균열 이동','공간을 찢고 룬이 있는 곳으로 이동합니다.'],\n    ]},\n];",
+        "lineStart": 3076,
+        "lineEnd": 3114,
+        "SHA256": "b37783b99abdbc25f87cc00c0524d60fe2f063eedffdb939a19481334b61d9a1"
+      },
+      "keydownBinding": {
+        "text": "$('charVisualPop').addEventListener('keydown',_visualSelectKeydown);",
+        "lineStart": 3268,
+        "lineEnd": 3268,
+        "SHA256": "772e0ccafc4649818296f0bb4782e9a20a61da2a6e6bf3306c5b8bf77170a46e"
+      },
+      "confirmBinding": {
+        "text": "$('visualCreateBtn').onclick=_visualConfirm;",
+        "lineStart": 3276,
+        "lineEnd": 3276,
+        "SHA256": "56c8321d96d5e767ddb47ee42d9a51c390a7d4b94c137f76cbf77d59d072ad3f"
+      },
+      "offlineLockGuard": {
+        "text": "    if(CHAR_VISUALS[_pendingVisualIdx]?.comingSoon){setStatus(_TL('출시 준비 중'),true);return}",
+        "lineStart": 2784,
+        "lineEnd": 2784,
+        "SHA256": "c91e1072c1c4b7ebe1f7c5169df7f669fc9702d61c541a11a87b592230299761"
+      }
+    },
+    "executions": [
+      {
+        "case": "locked",
+        "key": "Enter",
+        "target": {
+          "index": 1,
+          "id": "exoduser_silvertail",
+          "name": "실버테일",
+          "comingSoon": true
+        },
+        "initialIndex": 0,
+        "before": {
+          "label": "before-keyboard-activate",
+          "pendingIndex": 0,
+          "selectedID": "exoduser_warrior",
+          "selectedSlot": null,
+          "createDisabled": false,
+          "createText": "생성",
+          "releaseLabel": "",
+          "releaseLocked": false,
+          "focusIndex": 1,
+          "returnFocusPreserved": true,
+          "popDisplay": "flex",
+          "nameModalShown": false,
+          "nodeCount": 42,
+          "cardState": [
+            {
+              "vi": "0",
+              "locked": false,
+              "pressed": "true",
+              "children": 2,
+              "badge": null
+            },
+            {
+              "vi": "1",
+              "locked": true,
+              "pressed": "false",
+              "children": 3,
+              "badge": "출시 준비 중"
+            },
+            {
+              "vi": "2",
+              "locked": true,
+              "pressed": "false",
+              "children": 3,
+              "badge": "출시 준비 중"
+            },
+            {
+              "vi": "3",
+              "locked": true,
+              "pressed": "false",
+              "children": 3,
+              "badge": "출시 준비 중"
+            },
+            {
+              "vi": "4",
+              "locked": true,
+              "pressed": "false",
+              "children": 3,
+              "badge": "출시 준비 중"
+            }
+          ],
+          "counts": {
+            "keydown": 0,
+            "nativeDefaultClick": 0,
+            "sourceClick": 0,
+            "focus": 3,
+            "fetch": 0,
+            "localRead": 0,
+            "localWrite": 0,
+            "slotInsert": 0,
+            "afterCreation": 0,
+            "close": 0,
+            "status": 0
+          }
+        },
+        "afterActualKeydown": {
+          "label": "after-actual-keydown-before-native-default",
+          "pendingIndex": 0,
+          "selectedID": "exoduser_warrior",
+          "selectedSlot": null,
+          "createDisabled": false,
+          "createText": "생성",
+          "releaseLabel": "",
+          "releaseLocked": false,
+          "focusIndex": 1,
+          "returnFocusPreserved": true,
+          "popDisplay": "flex",
+          "nameModalShown": false,
+          "nodeCount": 42,
+          "cardState": [
+            {
+              "vi": "0",
+              "locked": false,
+              "pressed": "true",
+              "children": 2,
+              "badge": null
+            },
+            {
+              "vi": "1",
+              "locked": true,
+              "pressed": "false",
+              "children": 3,
+              "badge": "출시 준비 중"
+            },
+            {
+              "vi": "2",
+              "locked": true,
+              "pressed": "false",
+              "children": 3,
+              "badge": "출시 준비 중"
+            },
+            {
+              "vi": "3",
+              "locked": true,
+              "pressed": "false",
+              "children": 3,
+              "badge": "출시 준비 중"
+            },
+            {
+              "vi": "4",
+              "locked": true,
+              "pressed": "false",
+              "children": 3,
+              "badge": "출시 준비 중"
+            }
+          ],
+          "counts": {
+            "keydown": 1,
+            "nativeDefaultClick": 0,
+            "sourceClick": 0,
+            "focus": 3,
+            "fetch": 0,
+            "localRead": 0,
+            "localWrite": 0,
+            "slotInsert": 0,
+            "afterCreation": 0,
+            "close": 0,
+            "status": 0
+          }
+        },
+        "after": {
+          "label": "after-source-onclick-selectVisual",
+          "pendingIndex": 1,
+          "selectedID": "exoduser_silvertail",
+          "selectedSlot": null,
+          "createDisabled": true,
+          "createText": "출시 준비 중",
+          "releaseLabel": "출시 준비 중",
+          "releaseLocked": true,
+          "focusIndex": 1,
+          "returnFocusPreserved": true,
+          "popDisplay": "flex",
+          "nameModalShown": false,
+          "nodeCount": 42,
+          "cardState": [
+            {
+              "vi": "0",
+              "locked": false,
+              "pressed": "false",
+              "children": 2,
+              "badge": null
+            },
+            {
+              "vi": "1",
+              "locked": true,
+              "pressed": "true",
+              "children": 3,
+              "badge": "출시 준비 중"
+            },
+            {
+              "vi": "2",
+              "locked": true,
+              "pressed": "false",
+              "children": 3,
+              "badge": "출시 준비 중"
+            },
+            {
+              "vi": "3",
+              "locked": true,
+              "pressed": "false",
+              "children": 3,
+              "badge": "출시 준비 중"
+            },
+            {
+              "vi": "4",
+              "locked": true,
+              "pressed": "false",
+              "children": 3,
+              "badge": "출시 준비 중"
+            }
+          ],
+          "counts": {
+            "keydown": 1,
+            "nativeDefaultClick": 1,
+            "sourceClick": 1,
+            "focus": 3,
+            "fetch": 0,
+            "localRead": 0,
+            "localWrite": 0,
+            "slotInsert": 0,
+            "afterCreation": 0,
+            "close": 0,
+            "status": 0
+          }
+        },
+        "activationTrace": [
+          {
+            "kind": "host-keydown",
+            "key": "Enter",
+            "targetIndex": 1
+          },
+          {
+            "kind": "source-keydown-return",
+            "prevented": false,
+            "stopped": false
+          },
+          {
+            "kind": "host-native-button-default",
+            "key": "Enter"
+          },
+          {
+            "kind": "source-onclick",
+            "vi": "1"
+          }
+        ],
+        "verdict": "PASS",
+        "nativeDefault": "host double only; actual source keydown does not cancel; actual onclick/selectVisual execute",
+        "existingNodeIdentityPreserved": true,
+        "actualCreateConfirmCalls": 0,
+        "saveSinkCalls": 0,
+        "sourceFunctionsSHA256": "6fffed513613bba3c37996b91e303f206a45888f785199c882dfe785a34355cc",
+        "omittedDOM": [
+          "csTraits",
+          "csThumb",
+          "csAura",
+          "csScene",
+          "csIdleVid",
+          "csSceneVid"
+        ],
+        "delayedTimersExecuted": 0,
+        "mediaExecuted": false,
+        "traitsParentReplacementExecuted": false
+      },
+      {
+        "case": "warrior-control",
+        "key": "Enter",
+        "target": {
+          "index": 0,
+          "id": "exoduser_warrior",
+          "name": "엑소듀서 전사",
+          "comingSoon": false
+        },
+        "initialIndex": 1,
+        "before": {
+          "label": "before-keyboard-activate",
+          "pendingIndex": 1,
+          "selectedID": "exoduser_silvertail",
+          "selectedSlot": null,
+          "createDisabled": true,
+          "createText": "출시 준비 중",
+          "releaseLabel": "출시 준비 중",
+          "releaseLocked": true,
+          "focusIndex": 0,
+          "returnFocusPreserved": true,
+          "popDisplay": "flex",
+          "nameModalShown": false,
+          "nodeCount": 42,
+          "cardState": [
+            {
+              "vi": "0",
+              "locked": false,
+              "pressed": "false",
+              "children": 2,
+              "badge": null
+            },
+            {
+              "vi": "1",
+              "locked": true,
+              "pressed": "true",
+              "children": 3,
+              "badge": "출시 준비 중"
+            },
+            {
+              "vi": "2",
+              "locked": true,
+              "pressed": "false",
+              "children": 3,
+              "badge": "출시 준비 중"
+            },
+            {
+              "vi": "3",
+              "locked": true,
+              "pressed": "false",
+              "children": 3,
+              "badge": "출시 준비 중"
+            },
+            {
+              "vi": "4",
+              "locked": true,
+              "pressed": "false",
+              "children": 3,
+              "badge": "출시 준비 중"
+            }
+          ],
+          "counts": {
+            "keydown": 0,
+            "nativeDefaultClick": 0,
+            "sourceClick": 0,
+            "focus": 3,
+            "fetch": 0,
+            "localRead": 0,
+            "localWrite": 0,
+            "slotInsert": 0,
+            "afterCreation": 0,
+            "close": 0,
+            "status": 0
+          }
+        },
+        "afterActualKeydown": {
+          "label": "after-actual-keydown-before-native-default",
+          "pendingIndex": 1,
+          "selectedID": "exoduser_silvertail",
+          "selectedSlot": null,
+          "createDisabled": true,
+          "createText": "출시 준비 중",
+          "releaseLabel": "출시 준비 중",
+          "releaseLocked": true,
+          "focusIndex": 0,
+          "returnFocusPreserved": true,
+          "popDisplay": "flex",
+          "nameModalShown": false,
+          "nodeCount": 42,
+          "cardState": [
+            {
+              "vi": "0",
+              "locked": false,
+              "pressed": "false",
+              "children": 2,
+              "badge": null
+            },
+            {
+              "vi": "1",
+              "locked": true,
+              "pressed": "true",
+              "children": 3,
+              "badge": "출시 준비 중"
+            },
+            {
+              "vi": "2",
+              "locked": true,
+              "pressed": "false",
+              "children": 3,
+              "badge": "출시 준비 중"
+            },
+            {
+              "vi": "3",
+              "locked": true,
+              "pressed": "false",
+              "children": 3,
+              "badge": "출시 준비 중"
+            },
+            {
+              "vi": "4",
+              "locked": true,
+              "pressed": "false",
+              "children": 3,
+              "badge": "출시 준비 중"
+            }
+          ],
+          "counts": {
+            "keydown": 1,
+            "nativeDefaultClick": 0,
+            "sourceClick": 0,
+            "focus": 3,
+            "fetch": 0,
+            "localRead": 0,
+            "localWrite": 0,
+            "slotInsert": 0,
+            "afterCreation": 0,
+            "close": 0,
+            "status": 0
+          }
+        },
+        "after": {
+          "label": "after-source-onclick-selectVisual",
+          "pendingIndex": 0,
+          "selectedID": "exoduser_warrior",
+          "selectedSlot": null,
+          "createDisabled": false,
+          "createText": "생성",
+          "releaseLabel": "",
+          "releaseLocked": false,
+          "focusIndex": 0,
+          "returnFocusPreserved": true,
+          "popDisplay": "flex",
+          "nameModalShown": false,
+          "nodeCount": 42,
+          "cardState": [
+            {
+              "vi": "0",
+              "locked": false,
+              "pressed": "true",
+              "children": 2,
+              "badge": null
+            },
+            {
+              "vi": "1",
+              "locked": true,
+              "pressed": "false",
+              "children": 3,
+              "badge": "출시 준비 중"
+            },
+            {
+              "vi": "2",
+              "locked": true,
+              "pressed": "false",
+              "children": 3,
+              "badge": "출시 준비 중"
+            },
+            {
+              "vi": "3",
+              "locked": true,
+              "pressed": "false",
+              "children": 3,
+              "badge": "출시 준비 중"
+            },
+            {
+              "vi": "4",
+              "locked": true,
+              "pressed": "false",
+              "children": 3,
+              "badge": "출시 준비 중"
+            }
+          ],
+          "counts": {
+            "keydown": 1,
+            "nativeDefaultClick": 1,
+            "sourceClick": 1,
+            "focus": 3,
+            "fetch": 0,
+            "localRead": 0,
+            "localWrite": 0,
+            "slotInsert": 0,
+            "afterCreation": 0,
+            "close": 0,
+            "status": 0
+          }
+        },
+        "activationTrace": [
+          {
+            "kind": "host-keydown",
+            "key": "Enter",
+            "targetIndex": 0
+          },
+          {
+            "kind": "source-keydown-return",
+            "prevented": false,
+            "stopped": false
+          },
+          {
+            "kind": "host-native-button-default",
+            "key": "Enter"
+          },
+          {
+            "kind": "source-onclick",
+            "vi": "0"
+          }
+        ],
+        "verdict": "PASS",
+        "nativeDefault": "host double only; actual source keydown does not cancel; actual onclick/selectVisual execute",
+        "existingNodeIdentityPreserved": true,
+        "actualCreateConfirmCalls": 0,
+        "saveSinkCalls": 0,
+        "sourceFunctionsSHA256": "6fffed513613bba3c37996b91e303f206a45888f785199c882dfe785a34355cc",
+        "omittedDOM": [
+          "csTraits",
+          "csThumb",
+          "csAura",
+          "csScene",
+          "csIdleVid",
+          "csSceneVid"
+        ],
+        "delayedTimersExecuted": 0,
+        "mediaExecuted": false,
+        "traitsParentReplacementExecuted": false
+      }
+    ],
+    "errors": [],
+    "productionApplied": false,
+    "candidate": null,
+    "priorCompletedTests": {
+      "rerun": 0,
+      "addedToNewCount": 0
+    },
+    "writes": 0,
+    "Git": 0,
+    "server": 0,
+    "http": 0,
+    "app": 0,
+    "game": 0,
+    "build": 0,
+    "nativeUI": 0,
+    "audio": 0,
+    "storage": 0,
+    "install": 0,
+    "newSession": 0,
+    "subagent": 0,
+    "externalMessage": 0,
+    "deletion": 0,
+    "moves": 0,
+    "limits": {
+      "nativeKeyboard": false,
+      "gamepad": false,
+      "SpaceExecuted": false,
+      "fullPage": false,
+      "media": false,
+      "traitsRendering": false,
+      "confirmationExecuted": false,
+      "actualSave": false,
+      "statement": "source PASS ≠ native keyboard/gamepad/runtime/HTTP/GPU/visual/audio/storage/product PASS"
+    },
+    "counts": {
+      "newInputCases": 2,
+      "lockedKeyboardActivation": 1,
+      "warriorKeyboardControl": 1,
+      "sourcePASS": 2,
+      "sourceRED": 0,
+      "candidateRuns": 0,
+      "previousRerun": 0,
+      "previousAdded": 0
+    },
+    "verdict": "NO-FIX",
+    "sourceAfterSHA256": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8",
+    "finishedUTC": "2026-10-02T05:47:57.696Z",
+    "finishedKST": "2026-10-02 14:47:57 KST"
+  },
+  "readAndCommands": [
+    {
+      "operation": "TASK/COMMON/AGENTS/담당표/로비 UI SSOT와 선택·확정·생성 source 경로 실제 Read",
+      "exit": 0,
+      "readSHA": {
+        "index.html": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8",
+        "game.html": "2e45ee0e9ad909b378bf1a7b864818ce442a4c3e17b12360b42e363dc7d0bd94",
+        "game-easy-test.html": "3e5969ca139497c2efb312dc720ab53eb42a8d1912c8288caa2ce858cfd5120a",
+        "node-main.js": "541ff8e6f57db862ddbb1b148ee37a3a8e0da1e16293bc8343a0bc4144d80daf",
+        "AGENTS.md": "fd59bef70960bcaf1ab9910051faa860362884e574ac2869fad05c6872ae04e4",
+        "tools/team-followup-20261002/continuous/COMMON.md": "de5a881270625a7b2d0e854331205e01372a037340a18474c6442b60e668465e",
+        "tools/team-followup-20261002/supervisor-next/UIUX/UIUX-lobby-locked-keyboard-0543/TASK.md": "870a76598ea1ee60585bd936b095c71ee955808d52946cad4aa9eab98cc77930",
+        "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROVIDER-HALVES-20261002.md": "16cbe4b9d0c9d0e0e8cabc1ac8d4f7718f78b4e013b6e5cb169e5bb6d397be6d",
+        "docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md": "3e906af1421fc18fa8c03e64e8de8db99e14f31ed886568102395d787bad249e",
+        "docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md": "8e84ae631d586d7ae3da5d5c121de2ee1813eff633f7d2053502ea34426ad4de",
+        "docs/3.1 ui hud 디자인/LOBBY_ANCESTOR_ART_20260928.md": "937c9c999612c0642b98e324abb4e6c666b267fc10d993f664c72202413e19e3",
+        "test/lobbyVisualKeyboard.test.js": "8722ddb1266d36038db06df0aea61a99da24330431c3907474882251b71be0c3",
+        "test/lobbyCreationOverlayLifecycle.test.js": "d38438a46fa0165559c98a89db211a2c910c31408a0cdc6608ae47e245fac407",
+        "tools/team-followup-20261001/UIUX/inventory-dom/node-dom.mjs": "b3c6bb3abf74d5b9e464d1db2e5d2441645af3be8eb096f3c30788b7019cfb95",
+        "tools/team-followup-20261002/continuous/UIUX/checks.mjs": "65fa2cf9af3cb72d7c7f2e173ae175675711b8d7ac33ae05606bbd3e56d5736c",
+        "tools/team-followup-20261002/continuous/UIUX/result.md": "b5c6da0c143e739dc9e473f39b9a6a6fbf443178a35de4f1bc9f7ce299c81a08",
+        "tools/team-followup-20261002/continuous/UIUX/evidence.json": "4bb90bd319dbc415f0ce51809f72aff340c4f1950cd1a11703add84352a1c4a9"
+      },
+      "readUTC": "2026-10-02T05:45:37.345Z",
+      "readKST": "2026-10-02 14:45:37 KST"
+    },
+    {
+      "command": "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node tools/team-followup-20261002/supervisor-next/UIUX/UIUX-lobby-locked-keyboard-0543/checks.mjs",
+      "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "exit": 0,
+      "startedUTC": "2026-10-02T05:47:57.637Z",
+      "finishedUTC": "2026-10-02T05:47:57.696Z",
+      "wallSeconds": 0.000006291,
+      "JSONstdout": true
+    },
+    {
+      "command": [
+        "rg",
+        "-n",
+        "-e",
+        "UI-05|CHAR_VISUALS|comingSoon|_visualSelectKeydown|openVisualSelect|selectVisual|_visualConfirm|doCreateChar|출시 준비 중|잠금.*(카드|캐릭터)|Enter·Space",
+        "docs"
+      ],
+      "exit": 0,
+      "UTC": "2026-10-02T05:50:16.970Z",
+      "note": "코드 산출 뒤 docs 전체 검색"
+    }
+  ],
+  "previousAdopted": {
+    "minusProductionGREEN": 2,
+    "minusNegativeRED": 2,
+    "source": "이번 TASK의 감독/root 인수 피드백",
+    "executedAgain": 0,
+    "oldUI04": 0,
+    "HUD": 0,
+    "oldNativeKeyboardEvidence": "캐릭터선택_리모델링_기획서 §2026-09-28의 Enter/Space/실화면은 당시 이력; 이번 네이티브 검증으로 재사용하지 않음",
+    "oldLobbyTestExecuted": 0,
+    "newDifference": "기존 lobbyVisualKeyboard는 합성2종·Arrow/Tab/onclick 대조. 이번은 현재 CHAR_VISUALS5종을 그대로 읽고 actual keydown→host Enter default→actual onclick/selectVisual의 잠금1/전사1 경계만"
+  },
+  "modelNotes": {
+    "actualSource": [
+      "CHAR_VISUALS 전체",
+      "openVisualSelect 전체",
+      "selectVisual 전체",
+      "_visualSelectKeydown 전체",
+      "_resetVisualInfoScroll",
+      "keydown/confirm 실제 연결"
+    ],
+    "sourceReadOnlyNotExecuted": [
+      "_visualConfirm",
+      "doCreateChar",
+      "offline comingSoon guard"
+    ],
+    "hostDoubles": [
+      "기존 createDocument + compound class/getAttribute/listener/click 보충",
+      "Enter 버튼 기본 활성화(click)를 host double로 실행",
+      "초점을 목표 카드에 놓는 fixture 준비",
+      "한국어 _TL identity",
+      "media/traits 노드 null, 타이머 queue만; 실행0",
+      "엠버 생성 no-op",
+      "저장/HTTP/slotInsert 호출 sink"
+    ],
+    "selectedSlotNote": "trace selectedSlot은 fixture에서 없는 값에 null을 정규화한 표시. 기존 슬롯 선택 종단 동등성 검수 아님; preview source에는 해당 슬롯 선택/생성 실행 연결이 없음",
+    "nodeCount": 42,
+    "existingNodePreservation": true,
+    "Space": "source keydown/네이티브 button 계약만 읽기 인수; Space 실행0",
+    "confirm": "잠금 guard 정적 Read만; 별도 입력/확정/생성 실행0",
+    "candidateRuns": 0
+  },
+  "actualTools": {
+    "execCommand": true,
+    "applyPatch": true,
+    "NodeVM": true,
+    "acorn": "설치된 로컬 패키지로 AST 원문 추출; 별도 구문회귀 실행/설치0",
+    "rg": true,
+    "skills": [],
+    "API": [],
+    "MCP": [],
+    "note": "추가 스킬/API/MCP가 이 source-only NO-FIX 검수에 필요 없어 호출0"
+  },
+  "errors": [],
+  "owner": {
+    "directory": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/supervisor-next/UIUX/UIUX-lobby-locked-keyboard-0543",
+    "allowedWrites": [
+      "checks.mjs",
+      "result.md",
+      "evidence.json"
+    ],
+    "TASKImmutable": true
+  },
+  "prohibitedActions": {
+    "productionWrite": 0,
+    "sharedDocsWrite": 0,
+    "previousArtifactWrite": 0,
+    "GitQuery": 0,
+    "index": 0,
+    "commit": 0,
+    "push": 0,
+    "userGame": 0,
+    "save": 0,
+    "server": 0,
+    "http": 0,
+    "UI": 0,
+    "app": 0,
+    "build": 0,
+    "install": 0,
+    "account": 0,
+    "permission": 0,
+    "publishing": 0,
+    "externalMessages": 0,
+    "newSessions": 0,
+    "subagents": 0,
+    "deletion": 0,
+    "cleanup": 0,
+    "moves": 0,
+    "outsideOwnerWrite": 0
+  },
+  "Changes": {
+    "actualCount": "UNKNOWN",
+    "owner": "감독 추적; Git 재조회0",
+    "checkpoint80": true,
+    "stopBefore100": true
+  },
+  "docsSearch": {
+    "command": [
+      "rg",
+      "-n",
+      "-e",
+      "UI-05|CHAR_VISUALS|comingSoon|_visualSelectKeydown|openVisualSelect|selectVisual|_visualConfirm|doCreateChar|출시 준비 중|잠금.*(카드|캐릭터)|Enter·Space",
+      "docs"
+    ],
+    "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "startedUTC": "2026-10-02T05:50:16.970Z",
+    "finishedUTC": "2026-10-02T05:50:17.013Z",
+    "exit": 0,
+    "lineCount": 341,
+    "fileCount": 54,
+    "outputSHA256": "ab0ded1c940a693dc95e931a7bcf394156ae080ed4575835fc5f6e73e58fac05",
+    "rawOutputStored": false,
+    "files": [
+      {
+        "file": "docs/0마스터플랜/DEMO/HELL_DEMO_BUILD_NOTES.md",
+        "lines": [
+          3
+        ],
+        "SHA256": "8d8af731d22312d9d7ceeb63ca118b4c022aad63d177fe0ecae7a3aa0e8aa2cb"
+      },
+      {
+        "file": "docs/0마스터플랜/EA/HELL_EA_BUILD_CHECKLIST.md",
+        "lines": [
+          218,
+          276
+        ],
+        "SHA256": "d24b884a73ea560323a97424d2d367e26752734e616db529a29785f8b4ed90e9"
+      },
+      {
+        "file": "docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md",
+        "lines": [
+          191,
+          251
+        ],
+        "SHA256": "9568410db4e0b66f3b603b8335d779b647ea5fa15461e87be94e47ee2159f7c8"
+      },
+      {
+        "file": "docs/0마스터플랜/mac-resume-20261001/BUILD-SOUND-잔여팀-인수검토.md",
+        "lines": [
+          13
+        ],
+        "SHA256": "1c84e38538b376fa55e2503b796e3bf8329101e70ac5ce0782b0ac4f2959a105"
+      },
+      {
+        "file": "docs/0마스터플랜/mac-resume-20261001/map020-zoomfix-evidence/SKILL-팀검토.md",
+        "lines": [
+          4
+        ],
+        "SHA256": "5a549557b1340c44805f50bc342f17114867aee3ba499de766544329c1384546"
+      },
+      {
+        "file": "docs/0마스터플랜/mac-resume-20261001/map020-zoomfix-evidence/team-receipts.json",
+        "lines": [
+          132
+        ],
+        "SHA256": "3742d50c10d6b34c94e936877e708613cc19c5a15e3e4d70baaf230ad01dbbe1"
+      },
+      {
+        "file": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-definition-result.md",
+        "lines": [
+          19
+        ],
+        "SHA256": "3f1110d573c56807cbf14eb9963257aef4158e4e81b23942b34b8710fd2a2cc2"
+      },
+      {
+        "file": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PERSISTENCE-MAC-PACKAGE-20261002.md",
+        "lines": [
+          9
+        ],
+        "SHA256": "b8bc4922103fdae3322b53c64e0e887f3fdfe3e3e6c8bca10ac2d547bcbf1140"
+      },
+      {
+        "file": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PRODUCTION-INTEGRATION-20261002.md",
+        "lines": [
+          19
+        ],
+        "SHA256": "4723f120ef3c2fd7d8bce8ad6d9fad1eead2f92a368ea9df58f6ec3073706644"
+      },
+      {
+        "file": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-review-result.md",
+        "lines": [
+          20
+        ],
+        "SHA256": "7df5bab8129a7223f908af8e96f7780dbedc18e1e2f43f6aa71ba82a5ade2a8a"
+      },
+      {
+        "file": "docs/11내러티브·로어디자인/11내러티브·로어디자인.md",
+        "lines": [
+          55
+        ],
+        "SHA256": "1bf0ce36c762c3b5114b981a679528c5c7c97cbdc5a242d882f47978b1770393"
+      },
+      {
+        "file": "docs/13출시·마케팅/INDIE_LIVE_EXPO_20261201_SUBMISSION_20260928.md",
+        "lines": [
+          280,
+          284
+        ],
+        "SHA256": "efd0663f22f22413507c6867cb3357d5aa5fb1294ae7e9eda796f9f2624bec75"
+      },
+      {
+        "file": "docs/13출시·마케팅/PUBLISHER_REDELIVERY_20260930.md",
+        "lines": [
+          10
+        ],
+        "SHA256": "dce5201fd738d14a88b4f0f2ee2f4c3279becedcda3f71639157e1a9bced3ecd"
+      },
+      {
+        "file": "docs/13출시·마케팅/STEAM_INSTALL_REVIEW_20260916.md",
+        "lines": [
+          12
+        ],
+        "SHA256": "72dfdf386df0f6ffb735e27b2405d91bf5595e089cbcca74c1a42720e2c4a668"
+      },
+      {
+        "file": "docs/14밸런스+수치테이블/BALANCE_ECONOMY_TEAM_MASTER.md",
+        "lines": [
+          131
+        ],
+        "SHA256": "9ea03646283c43a7412c4704100acb35732fddd3933ddfd1966d5ee7b8aef8bc"
+      },
+      {
+        "file": "docs/15 세이브+데이터구조/15 세이브+데이터구조.md",
+        "lines": [
+          21,
+          104,
+          498,
+          506,
+          518,
+          665,
+          666,
+          668,
+          669,
+          672,
+          675,
+          677,
+          687,
+          694,
+          708,
+          710,
+          711,
+          727,
+          768,
+          786,
+          809,
+          813,
+          829,
+          831,
+          842,
+          843,
+          844,
+          849,
+          866
+        ],
+        "SHA256": "9c88a0ea27b4d34aeff5a5bc49d05fd75df714a33a1b05739e51ec64584d9d64"
+      },
+      {
+        "file": "docs/16번역·로컬라이제이션/FINISH_TRANSLATIONS_20260923.md",
+        "lines": [
+          83
+        ],
+        "SHA256": "4651eab30b57483fd50651922ca8b5b4497889f4509c8b6b9302e4607fc8fd7f"
+      },
+      {
+        "file": "docs/16번역·로컬라이제이션/LOCALIZATION_RUNTIME_20260909.md",
+        "lines": [
+          205,
+          232,
+          234,
+          282,
+          283,
+          284,
+          289
+        ],
+        "SHA256": "494a045aaff8f904bef101d68326ebbb354ce6970283cf4938c1515fff0167f6"
+      },
+      {
+        "file": "docs/16번역·로컬라이제이션/STEAM_LANGUAGE_RESUME_20260921.md",
+        "lines": [
+          38
+        ],
+        "SHA256": "fd66783c418f7e5a1826c7bf708d47361d10c49b2f2e15612f974381eb68fbe6"
+      },
+      {
+        "file": "docs/16번역·로컬라이제이션/번역_가이드.md",
+        "lines": [
+          122,
+          123,
+          130
+        ],
+        "SHA256": "50208c8152407d7d8263658e6830b399af437109d0962b43ceb756fc632c1aea"
+      },
+      {
+        "file": "docs/16번역·로컬라이제이션/번역대상_전체목록.md",
+        "lines": [
+          9,
+          3766,
+          3768,
+          3772
+        ],
+        "SHA256": "954626722e7c1e3c83d693ea4a6b3b0290c15b76a7a719e49875b8849b43afd7"
+      },
+      {
+        "file": "docs/1전체그래픽세팅/CHARSELECT_VIDEO_QUALITY_20260913.md",
+        "lines": [
+          3,
+          14,
+          43,
+          44,
+          56,
+          57,
+          65,
+          69
+        ],
+        "SHA256": "5a0baf83876de9076da86a60a177c05d5e10ed8dd8a6c859ddbb081c1c96f23d"
+      },
+      {
+        "file": "docs/1전체그래픽세팅/LOBBY_IMAGE_REVIEW_20260913.md",
+        "lines": [
+          3
+        ],
+        "SHA256": "bcdce8347fe0f424cd71d37c1dabc2943cc035849414ddf53d167264bd9c7a85"
+      },
+      {
+        "file": "docs/1전체그래픽세팅/LOBBY_WARRIOR_REDESIGN_20260913.md",
+        "lines": [
+          3
+        ],
+        "SHA256": "5f730b40d1d1b1e759fe3a782f13c374a7d1d1a02c7bc5fb47d08a47ad1bc393"
+      },
+      {
+        "file": "docs/2_1 스킬관리+합체시스템+자원/SKILL03_설치확정_자원검수_20261001.md",
+        "lines": [
+          3
+        ],
+        "SHA256": "b06dc80d4b837d29f0c01f5679c5a4d94bd2095033ec96adc36f6682c4a43891"
+      },
+      {
+        "file": "docs/2_1 스킬관리+합체시스템+자원/SKILL_자원게이트_감사_20261001.md",
+        "lines": [
+          41
+        ],
+        "SHA256": "333c045228e68d41b0f695ef30b9d45c23b8d195e466cfa3af2bd82066a5b4e9"
+      },
+      {
+        "file": "docs/2_1 스킬관리+합체시스템+자원/신규캐릭_스킬프로젝트_20260930.md",
+        "lines": [
+          11,
+          112,
+          174,
+          180,
+          189
+        ],
+        "SHA256": "c4835c8d322186f447aa65f3637b4208be5849c81c5d174b3e9400cf25561387"
+      },
+      {
+        "file": "docs/2_1 스킬관리+합체시스템+자원/헬거너_H2_이식의존성_20261001.md",
+        "lines": [
+          3,
+          45,
+          51
+        ],
+        "SHA256": "6d915ee5d189fbf806ea966fb975fd5e5c25b466c9e98fef35d7f16db9c2c5a0"
+      },
+      {
+        "file": "docs/2게임디자인레벨디자인/PARRY_TUTORIAL_20260912.md",
+        "lines": [
+          3
+        ],
+        "SHA256": "7c3bdc07bf5e4813b5e545cfbd7776f659f3b0c681f553e0446a776fa0001bb0"
+      },
+      {
+        "file": "docs/3.1 ui hud 디자인/LOBBY_ANCESTOR_ART_20260928.md",
+        "lines": [
+          3,
+          10,
+          12,
+          68,
+          116,
+          140,
+          141,
+          192
+        ],
+        "SHA256": "937c9c999612c0642b98e324abb4e6c666b267fc10d993f664c72202413e19e3"
+      },
+      {
+        "file": "docs/3.1 ui hud 디자인/SETTINGS_HUD_DETAIL_20260930.md",
+        "lines": [
+          76
+        ],
+        "SHA256": "3482af218a6be91f02e38c84147f7d4e8c36e39e9e1216588452b40b46e9e540"
+      },
+      {
+        "file": "docs/3.1 ui hud 디자인/SETTINGS_UI_WORKSPACE_20260929.md",
+        "lines": [
+          99
+        ],
+        "SHA256": "f6fd71142150f7de0d68dc0534c8ea2e87e7a22c74091a801caa9d794d5aa367"
+      },
+      {
+        "file": "docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md",
+        "lines": [
+          3,
+          1503,
+          1512,
+          1523,
+          1535,
+          1737,
+          1778,
+          1779,
+          1867,
+          1977,
+          1978,
+          2299,
+          2300,
+          2302,
+          2303,
+          2306,
+          2309,
+          2311,
+          2319,
+          2334,
+          2336,
+          2337,
+          2353,
+          2396,
+          2400,
+          2433,
+          2435,
+          2437,
+          2463,
+          2467,
+          2514,
+          2516,
+          2527,
+          2528,
+          2529,
+          2534,
+          2551
+        ],
+        "SHA256": "8e84ae631d586d7ae3da5d5c121de2ee1813eff633f7d2053502ea34426ad4de"
+      },
+      {
+        "file": "docs/3.1 ui hud 디자인/UI_FOUNDATION_20260924.md",
+        "lines": [
+          3
+        ],
+        "SHA256": "acb2a8bd3c36151aea66acf25a76d5de8d416957e6ca7fe1a565f6a0cef28b57"
+      },
+      {
+        "file": "docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md",
+        "lines": [
+          38
+        ],
+        "SHA256": "3e906af1421fc18fa8c03e64e8de8db99e14f31ed886568102395d787bad249e"
+      },
+      {
+        "file": "docs/3.1 ui hud 디자인/lobby_full_patch.md",
+        "lines": [
+          3,
+          482,
+          510,
+          511,
+          590,
+          700,
+          701,
+          1005,
+          1006,
+          1008,
+          1009,
+          1012,
+          1015,
+          1017,
+          1025,
+          1040,
+          1042,
+          1043,
+          1059,
+          1110,
+          1114,
+          1147,
+          1149,
+          1151,
+          1177,
+          1181,
+          1228,
+          1230,
+          1241,
+          1242,
+          1243,
+          1248,
+          1265
+        ],
+        "SHA256": "dfb71cb72b545f57f66f10690067f8b407562234302cae9e0955470e740e4a94"
+      },
+      {
+        "file": "docs/3.1 ui hud 디자인/남전사_로비_아이들_모션_20260908.md",
+        "lines": [
+          17,
+          18,
+          40,
+          80,
+          81,
+          93,
+          94,
+          102,
+          106
+        ],
+        "SHA256": "f493d4d2fb6ed004dc407a8a79b9eb7c5381cf58c5f91a627498c53b2029b00b"
+      },
+      {
+        "file": "docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md",
+        "lines": [
+          3,
+          8,
+          10,
+          37,
+          39,
+          50,
+          54,
+          58,
+          59,
+          60,
+          64,
+          67,
+          78,
+          267,
+          275,
+          303,
+          423,
+          432,
+          443,
+          455,
+          506,
+          534,
+          535,
+          616,
+          617,
+          619,
+          620,
+          623,
+          626,
+          628,
+          636,
+          652,
+          654,
+          655,
+          656,
+          661,
+          673,
+          716,
+          720,
+          753,
+          755,
+          757,
+          783,
+          787,
+          834,
+          836,
+          847,
+          848,
+          849,
+          854,
+          871,
+          895
+        ],
+        "SHA256": "06c2c5c4d02238f31dc9b27cd0c64c78be4670276a28f71f26e3f84fee6e8e1f"
+      },
+      {
+        "file": "docs/3.3 키바인딩+설정/3.3 키바인딩+설정.md",
+        "lines": [
+          578
+        ],
+        "SHA256": "f5c6370f096ca4971b92cda0cd16527933c2e163e9ea1d53bf55bbdfdb735e1b"
+      },
+      {
+        "file": "docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md",
+        "lines": [
+          232,
+          461,
+          462,
+          464,
+          465,
+          468,
+          471,
+          473,
+          481,
+          496,
+          498,
+          499,
+          515,
+          576,
+          635,
+          637,
+          648,
+          649,
+          650,
+          655,
+          672
+        ],
+        "SHA256": "45d4e9818f6c02b9db1c0dfd5f1503553640adc1247a4f0ccf67054fba8b3cf3"
+      },
+      {
+        "file": "docs/4.0케릭터스프라이트 디자인/캐릭터_몬스터_보스_최적화디자인_v1.md",
+        "lines": [
+          56,
+          255,
+          278,
+          371,
+          856,
+          961,
+          1002,
+          1075,
+          1243,
+          1244
+        ],
+        "SHA256": "4909a4391aedb89b7d63bcc8aab416692966adbc82760edca449ef9b07548d88"
+      },
+      {
+        "file": "docs/5.0애니메이션파이프라인/ANCESTOR_GROK2_SPRITE_TRIAL_20260928.md",
+        "lines": [
+          3
+        ],
+        "SHA256": "dbb3532159a584f3560e8c6b04ec17429143baf0f67d61751abce32d940ff7ae"
+      },
+      {
+        "file": "docs/5.0애니메이션파이프라인/LOBBY_VARKAN_SPRITE_VIDEO_20260928.md",
+        "lines": [
+          96,
+          103
+        ],
+        "SHA256": "87f94205063602cf273da44e6ac7361b3db36206b77c8e40510dfdef3c386865"
+      },
+      {
+        "file": "docs/7아이템디자인/ITEM_TEAM_MASTER.md",
+        "lines": [
+          116
+        ],
+        "SHA256": "d18f90ae89c01960e482304c39eee3a9a720cf6e4e351902560664ef34199087"
+      },
+      {
+        "file": "docs/7아이템디자인/UNIQUE_ITEM_GAME_INTEGRATION_CONTRACT_20261001.md",
+        "lines": [
+          40,
+          94
+        ],
+        "SHA256": "c0017c5ebf0922c1670d898940cbdcae317213198a96ab6a100a46e332fb85e6"
+      },
+      {
+        "file": "docs/7아이템디자인/UNIQUE_TOP8_HOOK_REVIEW_20261001.md",
+        "lines": [
+          41
+        ],
+        "SHA256": "4a2aa0ec258caacbae38c9a44ab8dfd7c8d10b1a5db88f726cfd98256bed7af4"
+      },
+      {
+        "file": "docs/7아이템디자인/고유아이템_모델_어픽스_밸런싱_프로젝트_20260930.md",
+        "lines": [
+          36
+        ],
+        "SHA256": "3d5b28ecb573deee4c153d60a27033f9821775ccd47e9a26bbbe2e5cff0cbeb8"
+      },
+      {
+        "file": "docs/7아이템디자인/보라색_고유아이템_카탈로그_20260930.md",
+        "lines": [
+          22,
+          58
+        ],
+        "SHA256": "6d1303ede39e997d1eb104e00ccb6cce07dca1727df1d3bf0c690d5273f66a0c"
+      },
+      {
+        "file": "docs/7아이템디자인/유니크_어픽스_리스트.md",
+        "lines": [
+          229
+        ],
+        "SHA256": "745e59d9839a5078e869987092b2352114059622f9d36cf8cb626216c0799eb0"
+      },
+      {
+        "file": "docs/CHANGELOG_DAILY_20260520.md",
+        "lines": [
+          201,
+          224,
+          228,
+          275,
+          277,
+          288,
+          289,
+          290,
+          295,
+          312
+        ],
+        "SHA256": "36c3c5a528d34140193307c7fb047a4b959caae29cede71f25eacbd859d3727f"
+      },
+      {
+        "file": "docs/CHANGELOG_SYNC.md",
+        "lines": [
+          1072,
+          1639,
+          2086,
+          2096,
+          2127,
+          49008,
+          49009,
+          50131,
+          50144,
+          50159,
+          50181,
+          50460,
+          50508,
+          50509,
+          50614,
+          50748,
+          50749,
+          51064,
+          51065,
+          51067,
+          51068,
+          51071,
+          51074,
+          51076,
+          51086,
+          51093,
+          51108,
+          51110,
+          51111,
+          51112,
+          51117,
+          51137,
+          51230,
+          51242,
+          51246,
+          51279,
+          51281,
+          51283,
+          51309,
+          51313,
+          51360,
+          51362,
+          51373,
+          51374,
+          51375,
+          51380,
+          51397
+        ],
+        "SHA256": "84e8e240b22b54042b618278aef0aa3be35927e7178f03304afa77ff3131a99f"
+      },
+      {
+        "file": "docs/archetypes/silvertail/SILVERTAIL_KEYART_CANON_20260927.md",
+        "lines": [
+          3,
+          6,
+          13,
+          26,
+          54,
+          55,
+          71,
+          72,
+          80,
+          84
+        ],
+        "SHA256": "5ef0fc825d049f8c55b82ab8fa8a25947ba963ad7fea34c9443ec86be7b90032"
+      },
+      {
+        "file": "docs/cinematic/WARINTRO_CREATION_RUNTIME_20260910.md",
+        "lines": [
+          9,
+          158
+        ],
+        "SHA256": "c5f0811b34b67002804b09fd85fd3f9f7f8acc28cc1d3126812e1851b387552a"
+      },
+      {
+        "file": "docs/미구현+구현예정.md",
+        "lines": [
+          68,
+          70
+        ],
+        "SHA256": "e3313c030e4e6421a126f248cf8d17a423b049a84dde01833a2ba8c4a33f638e"
+      }
+    ],
+    "stderr": ""
+  },
+  "docsProposal": {
+    "exactText": "2026-10-02 UI-05 잠금 캐릭터 키보드 미리보기 source 검수: 현재 index.html의 CHAR_VISUALS는5종이며 index0 exoduser_warrior는 comingSoon=false(원문 flag 없음), index1 exoduser_silvertail 및2~4는 comingSoon=true다. openVisualSelect는 잠금 캐릭터도 활성 네이티브 button/type=button으로 생성해 미리보기 접근을 허용한다. _visualSelectKeydown는 Enter/Space를 취소하지 않고 버튼 기본 click에 맡긴다. 이번 검수는 Enter 한 번의 실제 keydown→대역의 네이티브 기본 click→원래 ico.onclick/selectVisual 순서로 잠금1건·전사 대조1건만 실행했다. 실버테일 미리보기 선택(_pendingVisualIdx=1)은 release-locked=true, visualCreateBtn.disabled=true, 버튼/배지/csReleaseLabel의 출시 준비 중 안내 유지, 기존 초점/노드와 저장 sink0이다. 전사 대조(_pendingVisualIdx=0)는 잠금 표시 해제, 생성 버튼 enabled/생성 문구, 안내 빈값, 초점/노드 및 저장 sink0이다. 이름창/선택 확정/캐릭터 생성 입력은 실행하지 않았다. _visualConfirm와 doCreateChar 및 offline 생성의 comingSoon guard는 정적 Read 인수만 했다. source2PASS/NO-FIX, 후보0, productionApplied=false. Enter 기본 동작은 host double이며 이번 실물 키보드/Space/gamepad/runtime/HTTP/GPU/시각/청취/저장/제품 Gate는 미검수다. 이전 로비·UI04·plus/minus·HUD 검사 재실행·합산0.",
+    "sharedDocsEdited": false,
+    "productionApplied": false,
+    "canonical": "docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md",
+    "canonicalPlacement": "2026-09-28 외형 선택창 키보드 조작·초점 격리 뒤에 현재 디스크 NO-FIX 감사 표 추가",
+    "UI": "docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md",
+    "UIStatus": "UI-05 전체 대기/전체 runtime 미검수를 유지하며 잠금 키보드 source 경계만 부분 검수 기록",
+    "composition": "UI_COMPOSITION_20260925.md 동일 키보드 절에 위 감사 링크. 현재2종/6·5 controls 표는 2026-09-28 당시 검증 이력으로 명시. 이번은5종 source 데이터 확인이며 Tab controls 재검사0",
+    "ancestor": "LOBBY_ANCESTOR_ART_20260928.md comingSoon/생성 제한 유지에 링크만; 미디어 규격/unlock/저장 수치 변경0",
+    "oldEvidence": "기존 Enter/Space native 검증과2종 합성 테스트 결과는 당시 이력. 이번 Enter default 대역의2건에 합산하지 않음",
+    "lockedDocs": "보호2_3 변경0",
+    "candidate": "없음; 정상 계약을 결함으로 만들지 않음"
+  },
+  "finalAudit": {
+    "UTC": "2026-10-02T05:50:17.023Z",
+    "KST": "2026-10-02 14:50:17 KST",
+    "ownFiles": [
+      "TASK.md",
+      "checks.mjs",
+      "evidence.json",
+      "result.md"
+    ],
+    "writtenFiles": [
+      "checks.mjs",
+      "result.md",
+      "evidence.json"
+    ],
+    "writtenFileCount": 3,
+    "sourceHashesAfter": {
+      "index.html": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8",
+      "game.html": "2e45ee0e9ad909b378bf1a7b864818ce442a4c3e17b12360b42e363dc7d0bd94",
+      "game-easy-test.html": "3e5969ca139497c2efb312dc720ab53eb42a8d1912c8288caa2ce858cfd5120a",
+      "node-main.js": "541ff8e6f57db862ddbb1b148ee37a3a8e0da1e16293bc8343a0bc4144d80daf",
+      "AGENTS.md": "fd59bef70960bcaf1ab9910051faa860362884e574ac2869fad05c6872ae04e4",
+      "tools/team-followup-20261002/continuous/COMMON.md": "de5a881270625a7b2d0e854331205e01372a037340a18474c6442b60e668465e",
+      "tools/team-followup-20261002/supervisor-next/UIUX/UIUX-lobby-locked-keyboard-0543/TASK.md": "870a76598ea1ee60585bd936b095c71ee955808d52946cad4aa9eab98cc77930",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROVIDER-HALVES-20261002.md": "16cbe4b9d0c9d0e0e8cabc1ac8d4f7718f78b4e013b6e5cb169e5bb6d397be6d",
+      "docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md": "3e906af1421fc18fa8c03e64e8de8db99e14f31ed886568102395d787bad249e",
+      "docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md": "8e84ae631d586d7ae3da5d5c121de2ee1813eff633f7d2053502ea34426ad4de",
+      "docs/3.1 ui hud 디자인/LOBBY_ANCESTOR_ART_20260928.md": "937c9c999612c0642b98e324abb4e6c666b267fc10d993f664c72202413e19e3",
+      "test/lobbyVisualKeyboard.test.js": "8722ddb1266d36038db06df0aea61a99da24330431c3907474882251b71be0c3",
+      "test/lobbyCreationOverlayLifecycle.test.js": "d38438a46fa0165559c98a89db211a2c910c31408a0cdc6608ae47e245fac407",
+      "tools/team-followup-20261001/UIUX/inventory-dom/node-dom.mjs": "b3c6bb3abf74d5b9e464d1db2e5d2441645af3be8eb096f3c30788b7019cfb95",
+      "tools/team-followup-20261002/continuous/UIUX/checks.mjs": "65fa2cf9af3cb72d7c7f2e173ae175675711b8d7ac33ae05606bbd3e56d5736c",
+      "tools/team-followup-20261002/continuous/UIUX/result.md": "b5c6da0c143e739dc9e473f39b9a6a6fbf443178a35de4f1bc9f7ce299c81a08",
+      "tools/team-followup-20261002/continuous/UIUX/evidence.json": "4bb90bd319dbc415f0ce51809f72aff340c4f1950cd1a11703add84352a1c4a9"
+    },
+    "preflightChangedFiles": [],
+    "protectedInputsUnchanged": true,
+    "checksSHA256": "8222f706d28652dab18c3a8c079d1a74bd68d8055ae266f6bf3d37a51847dedd",
+    "resultSHA256": "a97b77f03c5576af632fb7e27829d706529effa266d2e05bc30bad3d5751e089",
+    "fixtureExecutions": 1,
+    "newInputCases": 2,
+    "previousTestExecutions": 0,
+    "candidateRuns": 0,
+    "HEAD": "UNKNOWN",
+    "Git": 0
+  },
+  "completionUTC": "2026-10-02T05:50:17.023Z",
+  "completionKST": "2026-10-02 14:50:17 KST"
+}
