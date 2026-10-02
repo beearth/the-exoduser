@@ -185,3 +185,13 @@ shared-mats-atomic 미적용 후보의 담당 실제 파일14 검사를 root가 
 | server.cjs / POST /api/mats | 기존 외부 catch의 HTTP500 text/plain 유지 | 파일 변경0. NW.js JSON과 wire 형식 차이를 보존 |
 
 직접 write·clamp·정상 저장 계약과 세이브 슬롯 형식은 유지한다. 원자쓰기 후보·close/unlink cleanup 정책 미채택. 실제 HTTP/NW.js·성공 디스크 저장·재시작·Windows·fsync/crash/concurrency는 미검수이며 실물 앱 재빌드0이다. [저장 현행 계약](../15%20세이브+데이터구조/15%20세이브+데이터구조.md).
+
+
+## 2026-10-03 source7 레벨업·예약 투자 자원 갱신
+
+| 소유 결과 | 반영 단계 | 남은 검수 |
+|---|---|---|
+| BALANCE1756+1812+1818 | 원총괄이 양판 `addExp`와 본편 `_processPassiveQueue` 최소3곳을 source7에 생산 반영. 전체역변환source6일치/함수후보SHA일치/12script+2JSONparse | 생산 회귀는 `test/levelUpResourceRefreshAcceptance.test.cjs`; 실제UI예약·저장·source7native미검수 |
+| 성장 계약 | 최종최대치 갱신·현재자원보존·기존20%회복호출당1회. 공식/SP/AP/레벨상한/globalapplyStats불변 | [현행 재계산·자원 보존 계약](LEVEL_UP_RESOURCE_REFRESH_20261003.md) |
+
+이전 단순 레벨 재계산 후보는 강인/마력그릇 중간clamp로 현재자원 손실이 있어 채택하지 않았다. 이전 source6 실플레이는 source7의 실행 결과로 계산하지 않는다.

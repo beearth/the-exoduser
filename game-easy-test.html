@@ -40526,7 +40526,7 @@ function addExp(v,trans){
     if(P.lv>1000){P._transLvCount=(P._transLvCount||0)+1}
   }
   if(lvd>0){
-    P.hp=Math.min(P.mhp,P.hp+~~(P.mhp*.2));P.st=Math.min(P.mst,P.st+~~(P.mst*.2));P.mp=Math.min(P.mmp,P.mp+~~(P.mmp*.2));
+    const _lvHP=P.hp,_lvMP=P.mp,_lvST=P.st,_lvShield=P.shield;applyStats();P.hp=Math.min(P.mhp,_lvHP);P.mp=Math.min(P.mmp,_lvMP);P.st=Math.min(P.mst,_lvST);P.shield=Math.min(P.mshield,_lvShield);P.hp=Math.min(P.mhp,P.hp+~~(P.mhp*.2));P.st=Math.min(P.mst,P.st+~~(P.mst*.2));P.mp=Math.min(P.mmp,P.mp+~~(P.mmp*.2));
     const _isTrans=P.lv>1000;
     const _demonic=(PASSIVES.pDemon||0)>(PASSIVES.pHuman||0);
     const _lvCol=_demonic?'#d38aff':'#ffdd00';

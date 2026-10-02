@@ -41727,7 +41727,7 @@ function addExp(v,trans){
   }
   if(lvd>0){
     const autoInvested=_processPassiveQueue();
-    P.hp=Math.min(P.mhp,P.hp+~~(P.mhp*.2));P.st=Math.min(P.mst,P.st+~~(P.mst*.2));P.mp=Math.min(P.mmp,P.mp+~~(P.mmp*.2));
+    const _lvHP=P.hp,_lvMP=P.mp,_lvST=P.st,_lvShield=P.shield;applyStats();P.hp=Math.min(P.mhp,_lvHP);P.mp=Math.min(P.mmp,_lvMP);P.st=Math.min(P.mst,_lvST);P.shield=Math.min(P.mshield,_lvShield);P.hp=Math.min(P.mhp,P.hp+~~(P.mhp*.2));P.st=Math.min(P.mst,P.st+~~(P.mst*.2));P.mp=Math.min(P.mmp,P.mp+~~(P.mmp*.2));
     const _isTrans=P.lv>1000;
     const _demonic=(PASSIVES.pDemon||0)>(PASSIVES.pHuman||0);
     const _lvCol=_demonic?'#d38aff':'#ffdd00';
@@ -49633,7 +49633,7 @@ function _processPassiveQueue(){
     P.ap-=cost;PASSIVES[key]=rank+1;queue.shift();invested++;
   }
   P._passiveQueue=queue;
-  if(invested)applyStats();
+  if(invested){const _pqHP=P.hp,_pqMP=P.mp,_pqST=P.st,_pqShield=P.shield;applyStats();P.hp=Math.min(P.mhp,_pqHP);P.mp=Math.min(P.mmp,_pqMP);P.st=Math.min(P.mst,_pqST);P.shield=Math.min(P.mshield,_pqShield);}
   return invested;
 }
 function renderStatPanel(){

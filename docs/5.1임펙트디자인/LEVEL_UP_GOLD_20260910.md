@@ -53,3 +53,8 @@
 `tools/verify_level_up_live.py`는 실제 게임 update 루프에서 일시정지 중 정지·해제 후 수명 종료를 검사하고, 기존 `SFX.levelup()`을 미리보기용으로 녹음한다. v1 결과는 `output/vfx/level_up_gold_20260910/{qa,live_qa}.json`, v1 영상은 루트 `레벨업_금빛_미리보기.mp4`다. 이 영상은 숫자·보라빛 추가 전 자료다. 실행파일 재빌드·배포는 이 작업에 포함하지 않았다.
 
 2026-09-10 가독성 보정 검증: 숫자는 실제2.5초에도 alpha=1, 3.2초에 alpha≈0.5, 3.5초 종료. 30/60/120fps 수명과 배너2500ms·이전 타이머 취소를 테스트한다. `tools/verify_level_up_readability.py`에서 실제 addExp→WebGL2 draw로 금빛·보라빛 각각2.5초 후 숫자와 잔여 VFX를 확인했다(기둥 alpha≈0.06854, 글자47px 아틀라스, pageerror0). 결과·스크린샷: `output/vfx/level_up_readability_20260910/{qa.json,human_gold.png,demon_violet.png}`. 세이브 쓰기 차단. 이전 v1/v2 검증 결과와 영상은 당시 수명의 이력이다.
+
+
+## 2026-10-03 source7 레벨업·예약 투자 자원 갱신
+
+`addExp`는 루프 종료와 본편 예약 투자 후, 현재 자원을 보관하고 최종 최대치 재계산·복원·기존HP/ST/MP20% 회복을 거친 뒤 동일한 VFX를1회 발동한다. 기존수명/색/소리/쉴드추가회복0은 그대로다. [정확한 자원 계약과 생산 회귀](../14밸런스+수치테이블/LEVEL_UP_RESOURCE_REFRESH_20261003.md). 위2026-09-10 검사 건수는 당시 이력이다.

@@ -52604,3 +52604,12 @@ CH1-1 목표 actual전체Read13/13(기존MAP미소비/ENEMY실거부제외)을�
 공식 새 job `3dd1813f-7e53-4987-acb4-03df340810a5`/port3387에 production source6(main4028973B/1e4591ca…·easy3906420B/17f490d5…·index342119B/1dd28cab…)를 고정했다. freshplan1→actualexecute1/내부verify1 exit0, 실제 source3 원문·stage·app exact, main/helper4 실행비트·arm64·plist 확인. regular8253+symlink5/7043803267B, 신규profile/save는 고유job 절대경로이며 user-state 미생성. 새download/install/sign/GUI기동/서버기동0, 기존97bb core5/own악의save31B·config/cache/사용자게임-save 보존. final receipt2842B/SHA297e8d1a254da30e5032dcf58648474c5c7cb5d734caf1a4585d22ec86f4852b는 ignored ch1-source6-build 경로에 있다.
 
 패키지생성은 native6 완료가 아니다. Mac 잠금/기존해제질문 대기이며 정상전투·획득/장착·게이트·보스사망/부활·기존필드와열린보스방보존·재도전·실청취·player-save재시작·전체8카메라 미검수. 고정 source4 정상필드 부분관측을 새앱 검수로 확대0. 양판 스냅샷을 확보해 포장용 source freeze 해제. 실제 source와 runtime계약/정확fullSHA는 `docs/13출시·마케팅/MAC_CH1_SOURCE6_CANDIDATE_20261003.md`를 따른다.
+
+
+## 2026-10-03 source7 레벨업·예약 투자 자원 갱신
+
+- BALANCE1756/1812/1818 실제원문검수후 양판`addExp`최대치refresh+현재자원보존 및본편예약투자현재자원보존을생산반영. 기존HP/ST/MP20%회복은레벨오른호출당1회/쉴드추가회복0/AP·공식·globalapplyStats불변. 본편+371B/easy+191B, 역변환source6byteexact. `test/levelUpResourceRefreshAcceptance.test.cjs`와관련SSOT동일스코프보존. [정확변수·수치](14밸런스+수치테이블/LEVEL_UP_RESOURCE_REFRESH_20261003.md).
+- source6물리앱3dd1813f/3387정상실행·로비·전사·CH1필드공격/MAXHIT637/XP2부분관측. WASD/획득/인벤후속입력은Maclocked로중단;보스해금/사망·부활·재도전/실청취/저장재실행미인수. [부분실플레이·MAP RETOUCH](13출시·마케팅/MAC_CH1_SOURCE6_NATIVE_PARTIAL_20261003.md).
+- source7는실행중source6앱에덮어쓰지않았으며기존사용자게임/세이브/보호2_3/Q전용패링/타인WIP를보존했다.
+
+검수·예산 영수증: 신규 levelUpResourceRefreshAcceptance17/17 PASS(양판7씩+본편큐3), 첫14PASS/3 VM-array 검사오류를 host 정규화 후 1회 수리 재실행. 실제 UI·음향·저장/native0. root16예약=소스2/test1/docs13 모두소비/rootFutureRemaining0; checkpoint전 actual87/worst95(잔여QUEST2+STORY1+external5), 소비한16중복가산0.
