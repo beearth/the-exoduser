@@ -52561,3 +52561,10 @@ CH1-1 목표 actual전체Read13/13(기존MAP미소비/ENEMY실거부제외)을�
 | 제품 | production source/test 적용0·기존 검사 재실행0·실제 native6단계/화면/청취/플레이 저장 인수0. 원문10개를 게임수정10건으로 세지 않음 |
 
 실제 Changes80 완료소유 공간 회수로 이 raw10과 HTTP/저장 보고 docs7만 보존한다. 문서7과 원자료10이 정확 소유 범위다. 감독별 STATE/LOG·활성 TASK·타인 WIP·사용자23 변경은 포함0이다.
+
+
+## 2026-10-03 gameConfirm 재진입 source5·고정 source4 앱 native 부분 입장
+
+양판 공용확인창에 첫요청보존/새요청즉시false47B guard를 반영했다. 공식 함수SHA c058a9e1…와 exact, actual live12재진입PASS+4정상대조 동일/fixture0, inlineJS12/importmapJSON2 PASS. 새test/gameConfirmReentryAcceptance.test.cjs 및 인벤토리SSOT·UI정본·기존 분해보고의source5 계약을 함께 동기화한다. docs 전체 키워드45행/17경로를 검색하고 현행소유·빌드/HTTP 역사snapshot·감독WIP를 분류했다. 보호2_3·타인원자료 변경0.
+
+고정97bb/source4/PID48587/3386에서 정상새캐릭터 맥검수→INTRO/안내→실습→정상skip→CH1-1필드복귀·실습이동/dash를 실제 관측했다. 새47B는 실행앱에 포함하지 않아 source5 native인수로 계산0. 잠금재발로 다음 전투입력차단/수동unlock대기,6단계·보스사망필드보존·청취·영속save/전체시각 목표미완료. master/milestone/integration/현재candidate/새native부분보고를 동기화하고 §23 VISUAL VERDICT RETOUCH를 기록했다. 생성시GUI0/HTTP-only0는 역사시점을 표시했다. source2+test1+docs9=12경로만 보존하며 정확 commit/remoteSHA는 root checkpoint 영수증을 따른다.

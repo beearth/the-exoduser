@@ -3392,6 +3392,7 @@ const _gcOk=document.getElementById('gcOk');
 const _gcCancel=document.getElementById('gcCancel');
 let _gcResolve=null;
 function gameConfirm(msg,okTxt,cancelTxt,html){
+  if(_gcResolve)return Promise.resolve(false);
   if(html)_gcMsg.innerHTML=msg; else _gcMsg.textContent=msg;
   _gcOk.textContent=okTxt||'\ud655\uc778';
   _gcCancel.textContent=cancelTxt||'\ucde8\uc18c';
