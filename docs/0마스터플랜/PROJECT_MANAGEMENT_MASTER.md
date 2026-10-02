@@ -1143,3 +1143,25 @@ Claude BOSS2205의 필드 앵글러 기본 처치 악의 누락 후보를 root�
 | 후속 후보 | BOSS2215 드루이드 잔류 공격4상태는 실제 `retryBtn.onclick` 접점이며 다음 별도 검수. 기존 초기화 선례는 `_enterBossArena`; helper `_retryBossArena`나 initStage로 오기하지 않음 |
 
 Claude7의 실제 새TASK peer·성공 소스 근거를 감독이 확인했고 완료 역할은 독립 후속으로 연결했다. ART1은 기존 직접 인간 입력 요구 대기이며 별도 재시작·대리 승인0. 과거 종료/기존source를 현재TASK 착수로 계산0, 저장된5분 점검을 무중단 보장으로 주장0. 자세한 현재 계약은 몬스터8.0·레벨2·source11 native13 정본에 동기화한다.
+
+
+## 2026-10-03 source14 사망 복귀의 이전 드루이드 공격 제거
+
+Claude BOSS2215 후보를 root가 실제 `retryBtn.onclick`의 보스/해금CH1 field 복귀 분기에 통합했다. 기존 보스 공격 정리 뒤 restore 이전에 `G._druidOrbs=[];G._druidOrbT=0;G._druidParryT=0;G._druidParryVolley=0;` 각70B만 추가했다. 기존 초기화 선례는 `_enterBossArena`이며 별도 retry helper나 initStage로 오기하지 않는다.
+
+| source14 생산 | 실제 수치·근거 |
+|---|---|
+| parent / 입력 | source13 `2fa91ac0f7f70b946efd4c08260c5b12e6105a11`, 이전+4/사망 가드 유지 |
+| 본편 | 4030035→4030105B, SHA `00519cdf518a5a9eb6147c536c7f77886cc6d11e79ac5ad8f181280a8495150f` |
+| easy | 3907302→3907372B, SHA `87f36138e07055fcaa5237a116bbddd5c62759983427cf5851cc00f1c0d44152` |
+| 이유 | stage0/3 bossAlive=true에서 bossRef=null이어도 이전 ORB가 이동·필드 적 AOE/FX 소비를 계속함. 복귀 순간 배열 제거로 차단 |
+| 시간 의미 | OrbT0은 복귀 순간 값. 이후 기존 update가sp1에서1로 증가하는 대조 PASS; 지속0 계약 아님 |
+| 의미 회귀 | memory 원본12RED/최종36PASS, 실제 production36PASS, 전체12JS+2JSON PASS. source13/기존30·5검사 반복0 |
+| 유지 | capture/restore46 key·field enemies/items/regions/gate·통계/시간/INV, EXP30%·자원/기동 완충·iframes300·DB 순서·일반 initStage 및si3 선행 |
+| 최소 소유 | HTML2/docs7/test1=10. clean기존9 byte백업·신규test부재 기준; 보호67·공유index·감독STATE/LOG·기존앱/save 보존 |
+| 용량 | actual71+own10=81, external future8 포함 예약상한89. 80이상에서 완료own10만즉시checkpoint, 그전추가scope0·100전새산출중단 |
+| 원자료 | ignored `root-druid-retry-source14/` before/patch/production/memory/live receipt; `test/druidRetryTransientAcceptance.test.cjs` |
+| 정본 | CH1 복귀4.1·보스8.1·부활2_5/RESPAWN·저장15·CHANGELOG의 임시4 key와 영속/schema0 경계 동기화 |
+| 제품 인수 | source11/3390 앱 별도 고정. 새 코드 native 사망/열린문·필드몬스터 보존/재도전·visual/청취는 아직 대기 |
+
+실제 callback/helper/ORB block을 추출하고 합성 상태로 검사했다. DB·FX·geometry·stat·damage leaf 및 initStage/enterArena sentinel은 대역이다. 미인수 실제 피해·입력·저장/소리·시각을 완료로 승격하지 않는다. 최신 Mac unlock 요청 대기 동안 코드 통합과 감독의 종료팀 후속 단일송신은 계속한다.

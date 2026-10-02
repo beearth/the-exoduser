@@ -52789,3 +52789,11 @@ source11 코드 checkpoint `efb3bb7e02a9ab161e92d9ff3da7229b4cf884cd`의 원격 
 - 기본+4에 콤보·난이도 배율을 곱한다는 레벨 문구를 실제 `hurtE`의 고정 기본+4/엘리트·보스 추가 악의·XP 계약과 구분하고, 저장diff5=일반/부호 `OPT.diff−5` 기준으로 정정했다. [수치·공식](2게임디자인레벨디자인/2게임디자인레벨디자인.md).
 - source11 실제 전설 드롭 획득·전기전투화 장착 CP1859→2257·일반 부활 Lv7/CP2282/장비 보존을 기록했다. 미리보기+116/실제+398은 미해결 UIUX 후보, 보스 사망 검수0. 새 Mac 재잠금으로 정상 입력 대기이며 검수 앱은 일시정지 보존. [실제 화면·현재 native 경계](13출시·마케팅/MAC_CH1_SOURCE11_CANDIDATE_20261003.md).
 - HTML2/docs5/test1 root완료8경로만 checkpoint. 타인WIP67·공유 index·감독STATE/LOG·기존사용자게임·save·source11앱은 소유 변경에 포함하지 않는다. 관리3+전문15 운영과 생산 통합 완료를 구분한다.
+
+
+## 2026-10-03 source14 보스 사망 복귀의 드루이드 잔류 공격 정리
+
+- 양판 실제 `retryBtn.onclick`의 보스/해금CH1 field 복귀에서 restore 직전 드루이드 ORB 배열·OrbT/ParryT/ParryVolley 초기화 각70B. 기존 `_enterBossArena`와 같은 네 key며 snapshot46 key·필드 적/아이템/열린 문 보존, EXP/자원/무적·저장·공격 수치 변경0.
+- 원본의 복귀 후 bossRef=null/bossAlive=true에서도 잔류 ORB가 이동하고 필드 적 AOE/FX를 호출하는 경계를 actual AST block으로 재현했다. OrbT0은 복귀 순간 값이며 이후tick증가 유지. [정확 분기·값·핀](4.1맵디자인+설정/CH1-1_BOSS_RESPAWN_PROGRESS_20261002.md).
+- 신규 후보 원본12RED/최종36PASS·실제 생산36PASS·12JS+2JSON PASS, 최초 fixture 실패0. 실콜백·capture/restore·si3/refill/ORB 추출, DB/피해/FX/stat/host 및 initStage/enterArena leaf는 대역. 이전 source13·30/5검사 반복0; native 보스 사망/입력/저장/시각/청취 인수0.
+- HTML2/docs7/test1 root완료10만 checkpoint. actual71→81(외부future8 포함max89)에서 80기준 완료소유만 즉시보존. 기존 검수source11앱/profile/save·타인WIP67·감독STATE/LOG 보존.

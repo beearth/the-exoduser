@@ -183,3 +183,37 @@ RETOUCH — 기존 MAP-020 전체 맵 역사 판정 유지. 이번 수정의 새
 
 NEXT PASS:
 실제 CH1-1에서 해금 완료 필드 사망 및 보스 구역 사망→재도전→기존 적/오브젝트 진행·게이트 개방·자원 완충 확인, 해금 전 일반 재시작과 si=3 직접 보스 재도전 확인. 그 뒤 기존 카메라 보드·시각 QA 미완료 목록을 담당 범위에서 수행. 자동 검수 결과로 미완료 Gate를 해제하지 않음.
+
+
+## 2026-10-03 source14 이전 드루이드 공격의 복귀 순간 정리
+
+필드의 열린 지옥문·기존 몬스터·획득 아이템을 보존하는 위46 key 계약은 그대로다. 보스 전투에서 남은 독립 ORB는 이 field snapshot에 포함되지 않으므로 별도로 정리한다.
+
+| 정확한 key / 소비자 | 복귀 순간 값 | 경계 |
+|---|---|---|
+| `G._druidOrbs` | 새 `[]` | 이전 전투 ORB의 필드 이동·접촉 효과 제거 |
+| `G._druidOrbT` | 0 | 이후 기존 update에서 재증가 가능; 영구0 아님 |
+| `G._druidParryT` | 0 | 이전 리듬탄 타이머 제거 |
+| `G._druidParryVolley` | 0 | 이전 리듬탄 웨이브 번호 제거 |
+| `retryBtn.onclick` | 기존 `G._bossArena&&_preArenaBackup` 또는 해금 CH1 field 분기 | 기존 보스 공격 배열 정리 후, `_restoreBossFieldState(b)` 전에 각70B 추가 |
+| snapshot / 저장 | 46 key 유지·새 schema0 | 네 key를 backup/DB에 추가하지 않음 |
+| 유지 | map/gate·ens/아이템/오브젝트·nullable 필드 적·지역·처치·FOW refs/복사 계약 | 재스폰·HP 초기화·문 잠금·geometry/배치 변화 없음 |
+| 다른 경로 | si3 finale 직접 재도전·그 외 initStage | 기존 선행/폴백 분기 유지 |
+
+기존 ORB update는 stage0/3 및 bossAlive=true에서 bossRef=null이어도 이미 있던 ORB를 처리한다. 이를 복귀 순간 배열 제거로 차단한다. 접점의 기존 네 초기화 선례는 `_enterBossArena`다. EXP30% 정수 손실·최종 applyStats/완충·iframes300·화톳불300f/r280·DB 저장 순서·공격 수치는 변경하지 않는다. source14는 시각/카메라/실청취/native 보스 사망 검수를 추가 인수하지 않으며 검수 source11 앱도 덮어쓰지 않는다.
+
+
+### source14 실제 소스 검수 결과·고정 핀
+
+| 항목 | 검증·인수 경계 |
+|---|---|
+| 최소 변경 | 양판 실제 retry callback 각4053→4123B(+70B), 해당 분기 초기화 네 대입만 추가. 역치환 시 source13 전체 byte exact |
+| 본편 | 4030105B, SHA `00519cdf518a5a9eb6147c536c7f77886cc6d11e79ac5ad8f181280a8495150f` |
+| easy | 3907372B, SHA `87f36138e07055fcaa5237a116bbddd5c62759983427cf5851cc00f1c0d44152` |
+| 후보·생산 회귀 | 신규 memory 원본24PASS/12RED→최종36PASS, 실제 생산36PASS; 각각 전체12JS+2JSON PASS. 첫 fixture 실패0 |
+| 실제 추출 | 등록된 async retry callback의 소스·capture/restore·si3 retry/predicate·공통 refill·드루이드 ORB IfStatement. snapshot46 key와 helper/Orb update byte 유지 |
+| 잔류 재현 | source fixture의 bossRef=null/bossAlive=true: 원본 남은구슬 t12→13, hurtE 기록1/ORB FX leaf12/hurtP0(무적300). 최종 남은구슬 처리/기록0, OrbT 복귀0→다음sp1 tick1 |
+| 보존 대조 | arena backup 복원·해금CH1 현재필드 capture/restore·46 key 복사/원 참조·P/INV/통계/시간·현재EXP30% 손실·최종 자원/기동 충전·DB 순서·일반 및 si3 선행 |
+| 대역 | geometry/cache/DOM/FX/DB/stat/equipment leaf, initStage·enterArena 분기 sentinel, hurtE/hurtP 기록 대역. 실제 저장/피해함수·DOM입력·시각·native 사망 인수로 확대하지 않음 |
+| 원자료 | `test/druidRetryTransientAcceptance.test.cjs`; ignored `root-druid-retry-source14/memory-receipt.json`(28044B, SHA `87d4e745d20f7975a7eba9a0b854005978596090c9e5aa56f2ae7f031dfe9f63`) 및 live-receipt |
+| 기존 성과 | 이전30/30·자원5/5 검사 재실행/이번 성과 합산0. source11 앱·사용자 게임/세이브·원자료·타인WIP 보존 |

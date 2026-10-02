@@ -657,3 +657,19 @@ X.translate(Math.round(C.width/2 - G.cam.x + sx), Math.round(C.height/2 - G.cam.
 | 패링 분류 | CH3+ 기존 ordinary-parry signature 불변 | teleDrop 전체Q전용 주장0. magic의 Q-only/E불가 규칙은 별도 원계약 유지 |
 
 생산 양판에 적용했다. fresh live production resource/stun handler·dispatch·completion·case28/28 PASS1회(exit0/stderr0), inline12JS+2JSON syntax PASS1회다. 후보28/28은 같은 변경의 사전 의미검수이므로 fresh 생산 결과와 완제품 성과로 중복 합산하지 않는다. 이전source9 검사 반복0. source10 패키징·실행0, CH1 보스 사망/native·실화면·실청취·플레이 save 완료0이다. [최종 소스·공식 증빙](../CHANGELOG_SYNC.md)의 source10 절을 참조한다.
+
+
+## 2026-10-03 source14 보스 사망 복귀 시 드루이드 임시 공격 정리
+
+실제 접점은 `retryBtn.onclick`의 보스 구역/해금 완료 CH1 필드 복귀 분기다. 동일 초기화의 기존 선례는 `_enterBossArena`이며, `initStage`나 별도 `_retryBossArena` 함수로 오기하지 않는다.
+
+| id / G key | 복귀 순간 값 | 적용·보존 경계 |
+|---|---|---|
+| druidOrbs / `_druidOrbs` | 새 빈 배열 `[]` | 이전 보스전 독립 ORB를 필드로 가져오지 않음 |
+| druidOrbTimer / `_druidOrbT` | 0 | 이전 발사 타이머를 초기화. 이후 기존 update에서 다시 증가할 수 있음 |
+| druidParryTimer / `_druidParryT` | 0 | 이전 Q 리듬탄 누적 타이머 초기화 |
+| druidParryVolley / `_druidParryVolley` | 0 | 이전 리듬탄 웨이브 카운터 초기화 |
+| 위치 | 기존 `_gSlamWave/_lavaField/_gwPillar` 정리 직후, `_restoreBossFieldState(b)` 이전 | 두 HTML 각70B 추가. 기존46 field key에는 네 key 없음 |
+| 다른 분기 | 해금 전 일반 `initStage`, si3 `_retryDruidFinale` 선행 | 이번 분기 추가를 다른 사망 경로에 중복 적용하지 않음 |
+
+기존 ORB 루프는 stage0/3 및 bossAlive가 참이면 bossRef가 null이어도 남은 배열을 이동·충돌 처리한다. 복귀 후 bossAlive=true/ref=null인 상태에서 이전 ORB가 필드에 남는 경계를 복귀 순간에 정리한다. 필드 map/ens/아이템/지역/열린 문을 새로 만들거나 초기화하지 않는다. 보스 공격 수치·110f 발사·3발·r26·속도6.8·피해0.6배 및 Q/패링/탄 보정은 변경하지 않는다. 실제 의미 검수·native 경계는 [복귀 정본](../4.1맵디자인+설정/CH1-1_BOSS_RESPAWN_PROGRESS_20261002.md)의 source14 절을 따른다.
