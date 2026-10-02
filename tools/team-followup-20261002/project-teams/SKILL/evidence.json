@@ -1,0 +1,4094 @@
+{
+  "taskId": "mortar-production-regression-ready",
+  "team": "SKILL",
+  "status": "completed_readiness_production_unapplied",
+  "events": [
+    {
+      "stage": "received",
+      "observedAtUTC": "2026-10-02T03:43:36Z",
+      "basis": "총괄의 현재 배정 메시지를 수신한 뒤 첫 clock 조회 시각. 메시지 발송 시각을 추정하지 않음"
+    },
+    {
+      "stage": "Read",
+      "observedAtUTC": "2026-10-02T03:43:36Z",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/SKILL/task.md",
+      "basis": "첫 exec_command cat 전체 읽기 exit0와 동시 clock 관찰"
+    },
+    {
+      "stage": "system_contract_Read",
+      "observedAtUTC": "2026-10-02T03:44:14Z",
+      "basis": "native-recovery SKILL-task 전체·자원 SSOT·기존 patch/frozen/source 하니스와 실제 aim/confirm/cost 읽기 완료. AGENTS는 앞선 인수에서 전체 읽음"
+    },
+    {
+      "stage": "execution_and_validation",
+      "observedAtUTC": "2026-10-02T03:48:20.593703+00:00",
+      "basis": "explicit Node24.15.0 actual source runs recorded with start/end timestamps, SHAs and each result; production-required CLI rejected absent guards as expected"
+    },
+    {
+      "stage": "artifact_write",
+      "firstObservedFileCreationAtUTC": "2026-10-02T03:46:43.418353+00:00",
+      "basis": "checks.mjs filesystem birthtime; owner folder3files only"
+    },
+    {
+      "stage": "completed",
+      "atUTC": "2026-10-02T03:51:26.104535+00:00",
+      "basis": "accepted readiness142/0, expected production rejection only2 Gates, docs121/35, output inventory and immutable source/task SHA verified; shared commit/index transition observed read-only"
+    }
+  ],
+  "startHead": "96610b6546a31e882962470ea1f2164ce94edca6",
+  "remoteRead": {
+    "observedAtUTC": "2026-10-02T03:44:14Z",
+    "ref": "refs/heads/codex/mac-environment-20261001",
+    "sha": "96610b6546a31e882962470ea1f2164ce94edca6",
+    "method": "git ls-remote origin (read-only)"
+  },
+  "ownership": {
+    "folder": "tools/team-followup-20261002/project-teams/SKILL/",
+    "ownedFiles": [
+      "checks.mjs",
+      "evidence.json",
+      "result.md"
+    ],
+    "taskMdOwner": "root",
+    "productionOwner": "root sequential integration",
+    "newAgents": 0
+  },
+  "duplicateCheck": {
+    "newOwnerFolderBefore": [
+      "task.md"
+    ],
+    "existingOwnerTask": "mortar-integration-ready (latest table no new receipt/Read)",
+    "priorCompletedTask": "mortar-confirm-dispatch",
+    "currentIndependentTask": "mortar-production-regression-ready",
+    "basis": "current explicit assignment, existing table/owner evidence and exact new-prefix inventory; no direct CLI attachment or liveness claim"
+  },
+  "changeObservations": [
+    {
+      "stage": "start",
+      "count": 23
+    },
+    {
+      "stage": "middle",
+      "count": 48
+    },
+    {
+      "stage": "completion",
+      "count": 50
+    }
+  ],
+  "executions": [
+    {
+      "startedAtUTC": "2026-10-02T03:47:01.148Z",
+      "completedAtUTC": "2026-10-02T03:47:01.303Z",
+      "head": "96610b6546a31e882962470ea1f2164ce94edca6",
+      "requireProduction": false,
+      "startChanges": 45,
+      "endChanges": 45,
+      "protectedBefore": {
+        "game.html": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+        "game-easy-test.html": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+        "server.cjs": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d",
+        "node-main.js": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce",
+        "index.html": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8",
+        "ui-panels.js": "b22c4a31141672304a15adfae3a5050cb9fde3b96601507c8f10de3ea63f4cb5",
+        "tools/team-followup-20261002/project-teams/SKILL/task.md": "a482647181ac0ac66ba88a5b2c6ba582d2cfab827356661ff66efdd6e3e9ecda",
+        "tools/team-followup-20261002/combat-review/mortar-integration-targets.patch": "b29ed20fcea62334a0c432d7c5c27f26534d4902658b5aa36534f15887c6958e",
+        "tools/team-followup-20261001/SKILL/mortar-confirm-source-before.txt": "044883d89f708916d85d26aab522bb3996bf95e43a7151ccd8be36c8b05fe92b"
+      },
+      "sharedIndexSHA256": "7beab93b570ef992959359065cf6a2e79dffc1c7a3988df782c36aed1816ca2e",
+      "checksSHA256": "32560dbc0c8af98f93aca417bca5f0a3afab4f6f2b8454704d41e89c1f24c76e",
+      "inputs": {
+        "normalizedPatch": {
+          "path": "tools/team-followup-20261002/combat-review/mortar-integration-targets.patch",
+          "sha256": "b29ed20fcea62334a0c432d7c5c27f26534d4902658b5aa36534f15887c6958e"
+        },
+        "frozen": {
+          "path": "tools/team-followup-20261001/SKILL/mortar-confirm-source-before.txt",
+          "sha256": "044883d89f708916d85d26aab522bb3996bf95e43a7151ccd8be36c8b05fe92b"
+        }
+      },
+      "provenance": {
+        "game.html": {
+          "currentMode": "unapplied",
+          "sourceSHA256": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+          "sliceSHA256": {
+            "aim": "bc204f9f160a75d0660aa3301b164639b217714a7a130e97a4a66bbb6522ad7f",
+            "confirm": "caa4c1881e6d3be59ca9361d3157c6a0a8dccb4dfcd7c8e85ff18d0d5108c188",
+            "fire": "cdeeead948d5518c6beeb8f3eee4fbf38eed8cc785165738f7150f8c375f2f49",
+            "costs": "327181ff5ded95664611d3ef6d1e503b7df7cde1bf5988aa435383be0221e973"
+          },
+          "candidateFireSHA256": "8169e4403a5f58b954515533c230958e1c955b7457ee12e30c83b0540096e11f",
+          "testedFireSHA256": "8169e4403a5f58b954515533c230958e1c955b7457ee12e30c83b0540096e11f"
+        },
+        "game-easy-test.html": {
+          "currentMode": "unapplied",
+          "sourceSHA256": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+          "sliceSHA256": {
+            "aim": "bc204f9f160a75d0660aa3301b164639b217714a7a130e97a4a66bbb6522ad7f",
+            "confirm": "caa4c1881e6d3be59ca9361d3157c6a0a8dccb4dfcd7c8e85ff18d0d5108c188",
+            "fire": "cdeeead948d5518c6beeb8f3eee4fbf38eed8cc785165738f7150f8c375f2f49",
+            "costs": "327181ff5ded95664611d3ef6d1e503b7df7cde1bf5988aa435383be0221e973"
+          },
+          "candidateFireSHA256": "8169e4403a5f58b954515533c230958e1c955b7457ee12e30c83b0540096e11f",
+          "testedFireSHA256": "8169e4403a5f58b954515533c230958e1c955b7457ee12e30c83b0540096e11f"
+        }
+      },
+      "checks": [
+        {
+          "name": "approved frozen SHA",
+          "status": "PASS"
+        },
+        {
+          "name": "pre/post production selector has no double insertion",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html production application Gate",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html frozen defect and current-state classification",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html actual dynamic cost {\"lv\":1,\"expected\":50}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html cost minus 0.25 click {\"lv\":1,\"expected\":50}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html cost minus 0.25 release {\"lv\":1,\"expected\":50}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":1,\"expected\":50} fuse=false rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":1,\"expected\":50} fuse=false rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":1,\"expected\":50} fuse=false rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":1,\"expected\":50} fuse=true rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":1,\"expected\":50} fuse=true rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":1,\"expected\":50} fuse=true rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html actual dynamic cost {\"lv\":10,\"expected\":207}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html cost minus 0.25 click {\"lv\":10,\"expected\":207}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html cost minus 0.25 release {\"lv\":10,\"expected\":207}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":10,\"expected\":207} fuse=false rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":10,\"expected\":207} fuse=false rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":10,\"expected\":207} fuse=false rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":10,\"expected\":207} fuse=true rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":10,\"expected\":207} fuse=true rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":10,\"expected\":207} fuse=true rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html actual dynamic cost {\"lv\":5,\"passive\":5,\"expected\":96}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html cost minus 0.25 click {\"lv\":5,\"passive\":5,\"expected\":96}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html cost minus 0.25 release {\"lv\":5,\"passive\":5,\"expected\":96}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":5,\"passive\":5,\"expected\":96} fuse=false rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":5,\"passive\":5,\"expected\":96} fuse=false rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":5,\"passive\":5,\"expected\":96} fuse=false rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":5,\"passive\":5,\"expected\":96} fuse=true rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":5,\"passive\":5,\"expected\":96} fuse=true rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":5,\"passive\":5,\"expected\":96} fuse=true rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html actual dynamic cost {\"lv\":20,\"affix\":0.1,\"expected\":344}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html cost minus 0.25 click {\"lv\":20,\"affix\":0.1,\"expected\":344}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html cost minus 0.25 release {\"lv\":20,\"affix\":0.1,\"expected\":344}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":20,\"affix\":0.1,\"expected\":344} fuse=false rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":20,\"affix\":0.1,\"expected\":344} fuse=false rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":20,\"affix\":0.1,\"expected\":344} fuse=false rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":20,\"affix\":0.1,\"expected\":344} fuse=true rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":20,\"affix\":0.1,\"expected\":344} fuse=true rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":20,\"affix\":0.1,\"expected\":344} fuse=true rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html actual dynamic cost {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html cost minus 0.25 click {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html cost minus 0.25 release {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83} fuse=false rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83} fuse=false rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83} fuse=false rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83} fuse=true rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83} fuse=true rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83} fuse=true rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html actual dynamic cost {\"lv\":5,\"unique\":0.25,\"expected\":90}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html cost minus 0.25 click {\"lv\":5,\"unique\":0.25,\"expected\":90}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html cost minus 0.25 release {\"lv\":5,\"unique\":0.25,\"expected\":90}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":5,\"unique\":0.25,\"expected\":90} fuse=false rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":5,\"unique\":0.25,\"expected\":90} fuse=false rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":5,\"unique\":0.25,\"expected\":90} fuse=false rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":5,\"unique\":0.25,\"expected\":90} fuse=true rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":5,\"unique\":0.25,\"expected\":90} fuse=true rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":5,\"unique\":0.25,\"expected\":90} fuse=true rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html confirm rechecks changed passive discount",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html confirm rechecks changed affix discount",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html confirm rechecks changed unique discount",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html failed click does not auto retry after MP recovery",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html failed release does not auto retry after MP recovery",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html cancel wins over simultaneous click/release right lowMP=false",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html cancel wins over simultaneous click/release right lowMP=true",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html cancel wins over simultaneous click/release escape lowMP=false",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html cancel wins over simultaneous click/release escape lowMP=true",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html successful duplicate confirm cannot consume twice",
+          "status": "FAIL",
+          "message": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  {\n    P: {\n      _ioCd: 0,\n      _mmAimKey: 'Digit1',\n      _mmAiming: false,\n...\n      sy: 20,\n+     t: 40,\n-     t: 0,\n      tx: 148.15914910043276,\n      ty: 78.41275134629757,\n      vortex: true,\n      x: 10,\n      y: 20\n"
+        },
+        {
+          "name": "game.html failed iceMortar preserves existing vortex/ioCd",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html caller world target and overpayment use exact cost",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html controls detect hardcoded50 and off-by-one guards",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html production application Gate",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html frozen defect and current-state classification",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html actual dynamic cost {\"lv\":1,\"expected\":50}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html cost minus 0.25 click {\"lv\":1,\"expected\":50}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html cost minus 0.25 release {\"lv\":1,\"expected\":50}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":1,\"expected\":50} fuse=false rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":1,\"expected\":50} fuse=false rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":1,\"expected\":50} fuse=false rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":1,\"expected\":50} fuse=true rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":1,\"expected\":50} fuse=true rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":1,\"expected\":50} fuse=true rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html actual dynamic cost {\"lv\":10,\"expected\":207}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html cost minus 0.25 click {\"lv\":10,\"expected\":207}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html cost minus 0.25 release {\"lv\":10,\"expected\":207}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":10,\"expected\":207} fuse=false rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":10,\"expected\":207} fuse=false rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":10,\"expected\":207} fuse=false rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":10,\"expected\":207} fuse=true rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":10,\"expected\":207} fuse=true rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":10,\"expected\":207} fuse=true rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html actual dynamic cost {\"lv\":5,\"passive\":5,\"expected\":96}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html cost minus 0.25 click {\"lv\":5,\"passive\":5,\"expected\":96}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html cost minus 0.25 release {\"lv\":5,\"passive\":5,\"expected\":96}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":5,\"passive\":5,\"expected\":96} fuse=false rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":5,\"passive\":5,\"expected\":96} fuse=false rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":5,\"passive\":5,\"expected\":96} fuse=false rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":5,\"passive\":5,\"expected\":96} fuse=true rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":5,\"passive\":5,\"expected\":96} fuse=true rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":5,\"passive\":5,\"expected\":96} fuse=true rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html actual dynamic cost {\"lv\":20,\"affix\":0.1,\"expected\":344}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html cost minus 0.25 click {\"lv\":20,\"affix\":0.1,\"expected\":344}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html cost minus 0.25 release {\"lv\":20,\"affix\":0.1,\"expected\":344}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":20,\"affix\":0.1,\"expected\":344} fuse=false rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":20,\"affix\":0.1,\"expected\":344} fuse=false rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":20,\"affix\":0.1,\"expected\":344} fuse=false rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":20,\"affix\":0.1,\"expected\":344} fuse=true rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":20,\"affix\":0.1,\"expected\":344} fuse=true rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":20,\"affix\":0.1,\"expected\":344} fuse=true rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html actual dynamic cost {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html cost minus 0.25 click {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html cost minus 0.25 release {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83} fuse=false rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83} fuse=false rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83} fuse=false rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83} fuse=true rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83} fuse=true rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83} fuse=true rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html actual dynamic cost {\"lv\":5,\"unique\":0.25,\"expected\":90}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html cost minus 0.25 click {\"lv\":5,\"unique\":0.25,\"expected\":90}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html cost minus 0.25 release {\"lv\":5,\"unique\":0.25,\"expected\":90}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":5,\"unique\":0.25,\"expected\":90} fuse=false rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":5,\"unique\":0.25,\"expected\":90} fuse=false rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":5,\"unique\":0.25,\"expected\":90} fuse=false rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":5,\"unique\":0.25,\"expected\":90} fuse=true rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":5,\"unique\":0.25,\"expected\":90} fuse=true rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":5,\"unique\":0.25,\"expected\":90} fuse=true rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html confirm rechecks changed passive discount",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html confirm rechecks changed affix discount",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html confirm rechecks changed unique discount",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html failed click does not auto retry after MP recovery",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html failed release does not auto retry after MP recovery",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html cancel wins over simultaneous click/release right lowMP=false",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html cancel wins over simultaneous click/release right lowMP=true",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html cancel wins over simultaneous click/release escape lowMP=false",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html cancel wins over simultaneous click/release escape lowMP=true",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html successful duplicate confirm cannot consume twice",
+          "status": "FAIL",
+          "message": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  {\n    P: {\n      _ioCd: 0,\n      _mmAimKey: 'Digit1',\n      _mmAiming: false,\n...\n      sy: 20,\n+     t: 40,\n-     t: 0,\n      tx: 148.15914910043276,\n      ty: 78.41275134629757,\n      vortex: true,\n      x: 10,\n      y: 20\n"
+        },
+        {
+          "name": "game-easy-test.html failed iceMortar preserves existing vortex/ioCd",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html caller world target and overpayment use exact cost",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html controls detect hardcoded50 and off-by-one guards",
+          "status": "PASS"
+        },
+        {
+          "name": "main/easy actual slices parity",
+          "status": "PASS"
+        },
+        {
+          "name": "production, owner inputs, task and shared index stayed byte-identical",
+          "status": "PASS"
+        }
+      ],
+      "observations": [
+        {
+          "file": "game.html",
+          "label": "frozen",
+          "mode": "baseline",
+          "state": {
+            "P": {
+              "x": 10,
+              "y": 20,
+              "facing": 0.4,
+              "mp": 0,
+              "skills": {
+                "maliceMortar": 10,
+                "iceOrb": 0
+              },
+              "_mmAiming": false,
+              "_mmCharging": false,
+              "_mmCd": 660,
+              "_ioCd": 0,
+              "_mmDist": 174,
+              "_mmAimKey": "Digit1"
+            },
+            "bomb": {
+              "sx": 10,
+              "sy": 20,
+              "tx": 170.26461295650202,
+              "ty": 87.7587915617052,
+              "x": 10,
+              "y": 20,
+              "t": 0,
+              "maxT": 40,
+              "r": 562,
+              "phase": "throw",
+              "vortex": true,
+              "iceFuse": false,
+              "slv": 10
+            },
+            "lastCost": 206.75,
+            "side": {
+              "random": [
+                0.2
+              ],
+              "magic": [
+                "dark"
+              ],
+              "sample": [
+                [
+                  "voice_magic",
+                  1,
+                  1
+                ]
+              ],
+              "shake": [
+                5
+              ],
+              "messages": []
+            }
+          }
+        },
+        {
+          "file": "game.html",
+          "label": "current",
+          "mode": "unapplied",
+          "state": {
+            "P": {
+              "x": 10,
+              "y": 20,
+              "facing": 0.4,
+              "mp": 0,
+              "skills": {
+                "maliceMortar": 10,
+                "iceOrb": 0
+              },
+              "_mmAiming": false,
+              "_mmCharging": false,
+              "_mmCd": 660,
+              "_ioCd": 0,
+              "_mmDist": 174,
+              "_mmAimKey": "Digit1"
+            },
+            "bomb": {
+              "sx": 10,
+              "sy": 20,
+              "tx": 170.26461295650202,
+              "ty": 87.7587915617052,
+              "x": 10,
+              "y": 20,
+              "t": 0,
+              "maxT": 40,
+              "r": 562,
+              "phase": "throw",
+              "vortex": true,
+              "iceFuse": false,
+              "slv": 10
+            },
+            "lastCost": 206.75,
+            "side": {
+              "random": [
+                0.2
+              ],
+              "magic": [
+                "dark"
+              ],
+              "sample": [
+                [
+                  "voice_magic",
+                  1,
+                  1
+                ]
+              ],
+              "shake": [
+                5
+              ],
+              "messages": []
+            }
+          }
+        },
+        {
+          "file": "game.html",
+          "discountKey": "passive",
+          "beforeCost": 96,
+          "afterCost": 120,
+          "state": {
+            "P": {
+              "x": 10,
+              "y": 20,
+              "facing": 0.4,
+              "mp": 96,
+              "skills": {
+                "maliceMortar": 5,
+                "iceOrb": 0
+              },
+              "_mmAiming": true,
+              "_mmCharging": false,
+              "_mmCd": 0,
+              "_ioCd": 0,
+              "_mmDist": 150,
+              "_mmAimKey": "Digit1"
+            },
+            "bomb": null,
+            "lastCost": 0,
+            "side": {
+              "random": [],
+              "magic": [],
+              "sample": [],
+              "shake": [],
+              "messages": [
+                [
+                  "MP 부족!",
+                  "#4488ff"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "file": "game.html",
+          "discountKey": "affix",
+          "beforeCost": 96,
+          "afterCost": 120,
+          "state": {
+            "P": {
+              "x": 10,
+              "y": 20,
+              "facing": 0.4,
+              "mp": 96,
+              "skills": {
+                "maliceMortar": 5,
+                "iceOrb": 0
+              },
+              "_mmAiming": true,
+              "_mmCharging": false,
+              "_mmCd": 0,
+              "_ioCd": 0,
+              "_mmDist": 150,
+              "_mmAimKey": "Digit1"
+            },
+            "bomb": null,
+            "lastCost": 0,
+            "side": {
+              "random": [],
+              "magic": [],
+              "sample": [],
+              "shake": [],
+              "messages": [
+                [
+                  "MP 부족!",
+                  "#4488ff"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "file": "game.html",
+          "discountKey": "unique",
+          "beforeCost": 96,
+          "afterCost": 120,
+          "state": {
+            "P": {
+              "x": 10,
+              "y": 20,
+              "facing": 0.4,
+              "mp": 96,
+              "skills": {
+                "maliceMortar": 5,
+                "iceOrb": 0
+              },
+              "_mmAiming": true,
+              "_mmCharging": false,
+              "_mmCd": 0,
+              "_ioCd": 0,
+              "_mmDist": 150,
+              "_mmAimKey": "Digit1"
+            },
+            "bomb": null,
+            "lastCost": 0,
+            "side": {
+              "random": [],
+              "magic": [],
+              "sample": [],
+              "shake": [],
+              "messages": [
+                [
+                  "MP 부족!",
+                  "#4488ff"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "file": "game-easy-test.html",
+          "label": "frozen",
+          "mode": "baseline",
+          "state": {
+            "P": {
+              "x": 10,
+              "y": 20,
+              "facing": 0.4,
+              "mp": 0,
+              "skills": {
+                "maliceMortar": 10,
+                "iceOrb": 0
+              },
+              "_mmAiming": false,
+              "_mmCharging": false,
+              "_mmCd": 660,
+              "_ioCd": 0,
+              "_mmDist": 174,
+              "_mmAimKey": "Digit1"
+            },
+            "bomb": {
+              "sx": 10,
+              "sy": 20,
+              "tx": 170.26461295650202,
+              "ty": 87.7587915617052,
+              "x": 10,
+              "y": 20,
+              "t": 0,
+              "maxT": 40,
+              "r": 562,
+              "phase": "throw",
+              "vortex": true,
+              "iceFuse": false,
+              "slv": 10
+            },
+            "lastCost": 206.75,
+            "side": {
+              "random": [
+                0.2
+              ],
+              "magic": [
+                "dark"
+              ],
+              "sample": [
+                [
+                  "voice_magic",
+                  1,
+                  1
+                ]
+              ],
+              "shake": [
+                5
+              ],
+              "messages": []
+            }
+          }
+        },
+        {
+          "file": "game-easy-test.html",
+          "label": "current",
+          "mode": "unapplied",
+          "state": {
+            "P": {
+              "x": 10,
+              "y": 20,
+              "facing": 0.4,
+              "mp": 0,
+              "skills": {
+                "maliceMortar": 10,
+                "iceOrb": 0
+              },
+              "_mmAiming": false,
+              "_mmCharging": false,
+              "_mmCd": 660,
+              "_ioCd": 0,
+              "_mmDist": 174,
+              "_mmAimKey": "Digit1"
+            },
+            "bomb": {
+              "sx": 10,
+              "sy": 20,
+              "tx": 170.26461295650202,
+              "ty": 87.7587915617052,
+              "x": 10,
+              "y": 20,
+              "t": 0,
+              "maxT": 40,
+              "r": 562,
+              "phase": "throw",
+              "vortex": true,
+              "iceFuse": false,
+              "slv": 10
+            },
+            "lastCost": 206.75,
+            "side": {
+              "random": [
+                0.2
+              ],
+              "magic": [
+                "dark"
+              ],
+              "sample": [
+                [
+                  "voice_magic",
+                  1,
+                  1
+                ]
+              ],
+              "shake": [
+                5
+              ],
+              "messages": []
+            }
+          }
+        },
+        {
+          "file": "game-easy-test.html",
+          "discountKey": "passive",
+          "beforeCost": 96,
+          "afterCost": 120,
+          "state": {
+            "P": {
+              "x": 10,
+              "y": 20,
+              "facing": 0.4,
+              "mp": 96,
+              "skills": {
+                "maliceMortar": 5,
+                "iceOrb": 0
+              },
+              "_mmAiming": true,
+              "_mmCharging": false,
+              "_mmCd": 0,
+              "_ioCd": 0,
+              "_mmDist": 150,
+              "_mmAimKey": "Digit1"
+            },
+            "bomb": null,
+            "lastCost": 0,
+            "side": {
+              "random": [],
+              "magic": [],
+              "sample": [],
+              "shake": [],
+              "messages": [
+                [
+                  "MP 부족!",
+                  "#4488ff"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "file": "game-easy-test.html",
+          "discountKey": "affix",
+          "beforeCost": 96,
+          "afterCost": 120,
+          "state": {
+            "P": {
+              "x": 10,
+              "y": 20,
+              "facing": 0.4,
+              "mp": 96,
+              "skills": {
+                "maliceMortar": 5,
+                "iceOrb": 0
+              },
+              "_mmAiming": true,
+              "_mmCharging": false,
+              "_mmCd": 0,
+              "_ioCd": 0,
+              "_mmDist": 150,
+              "_mmAimKey": "Digit1"
+            },
+            "bomb": null,
+            "lastCost": 0,
+            "side": {
+              "random": [],
+              "magic": [],
+              "sample": [],
+              "shake": [],
+              "messages": [
+                [
+                  "MP 부족!",
+                  "#4488ff"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "file": "game-easy-test.html",
+          "discountKey": "unique",
+          "beforeCost": 96,
+          "afterCost": 120,
+          "state": {
+            "P": {
+              "x": 10,
+              "y": 20,
+              "facing": 0.4,
+              "mp": 96,
+              "skills": {
+                "maliceMortar": 5,
+                "iceOrb": 0
+              },
+              "_mmAiming": true,
+              "_mmCharging": false,
+              "_mmCd": 0,
+              "_ioCd": 0,
+              "_mmDist": 150,
+              "_mmAimKey": "Digit1"
+            },
+            "bomb": null,
+            "lastCost": 0,
+            "side": {
+              "random": [],
+              "magic": [],
+              "sample": [],
+              "shake": [],
+              "messages": [
+                [
+                  "MP 부족!",
+                  "#4488ff"
+                ]
+              ]
+            }
+          }
+        }
+      ],
+      "pass": 140,
+      "fail": 2,
+      "productionWrite": false,
+      "limits": [
+        "Actual aim/confirm/fire/cost/_r source slices; whole update/game/DOM/physics not run",
+        "PASSIVES/equipment/fusion/SFX/sample/input-reset are fixtures; source RNG sequence only, no whole-game RNG or listening claim",
+        "Readiness PASS may use memory patch; --require-production fails until both real production functions match approved candidate",
+        "Frozen or candidate byte drift fails closed; new legitimate source changes require root review",
+        "No server, UI, game, physical gamepad, build, install, Git writes or source mutation"
+      ],
+      "classification": "initial_harness_assumption_failure",
+      "observedToolExitCode": 1
+    },
+    {
+      "startedAtUTC": "2026-10-02T03:47:28.444Z",
+      "completedAtUTC": "2026-10-02T03:47:28.592Z",
+      "head": "96610b6546a31e882962470ea1f2164ce94edca6",
+      "requireProduction": false,
+      "startChanges": 45,
+      "endChanges": 45,
+      "protectedBefore": {
+        "game.html": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+        "game-easy-test.html": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+        "server.cjs": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d",
+        "node-main.js": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce",
+        "index.html": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8",
+        "ui-panels.js": "b22c4a31141672304a15adfae3a5050cb9fde3b96601507c8f10de3ea63f4cb5",
+        "tools/team-followup-20261002/project-teams/SKILL/task.md": "a482647181ac0ac66ba88a5b2c6ba582d2cfab827356661ff66efdd6e3e9ecda",
+        "tools/team-followup-20261002/combat-review/mortar-integration-targets.patch": "b29ed20fcea62334a0c432d7c5c27f26534d4902658b5aa36534f15887c6958e",
+        "tools/team-followup-20261001/SKILL/mortar-confirm-source-before.txt": "044883d89f708916d85d26aab522bb3996bf95e43a7151ccd8be36c8b05fe92b"
+      },
+      "sharedIndexSHA256": "7beab93b570ef992959359065cf6a2e79dffc1c7a3988df782c36aed1816ca2e",
+      "checksSHA256": "403f138c8e8f0eb9d4dcc732d27d0e50f9198a4d846b85223f19d3dc948a1499",
+      "inputs": {
+        "normalizedPatch": {
+          "path": "tools/team-followup-20261002/combat-review/mortar-integration-targets.patch",
+          "sha256": "b29ed20fcea62334a0c432d7c5c27f26534d4902658b5aa36534f15887c6958e"
+        },
+        "frozen": {
+          "path": "tools/team-followup-20261001/SKILL/mortar-confirm-source-before.txt",
+          "sha256": "044883d89f708916d85d26aab522bb3996bf95e43a7151ccd8be36c8b05fe92b"
+        }
+      },
+      "provenance": {
+        "game.html": {
+          "currentMode": "unapplied",
+          "sourceSHA256": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+          "sliceSHA256": {
+            "aim": "bc204f9f160a75d0660aa3301b164639b217714a7a130e97a4a66bbb6522ad7f",
+            "confirm": "caa4c1881e6d3be59ca9361d3157c6a0a8dccb4dfcd7c8e85ff18d0d5108c188",
+            "fire": "cdeeead948d5518c6beeb8f3eee4fbf38eed8cc785165738f7150f8c375f2f49",
+            "costs": "327181ff5ded95664611d3ef6d1e503b7df7cde1bf5988aa435383be0221e973"
+          },
+          "candidateFireSHA256": "8169e4403a5f58b954515533c230958e1c955b7457ee12e30c83b0540096e11f",
+          "testedFireSHA256": "8169e4403a5f58b954515533c230958e1c955b7457ee12e30c83b0540096e11f"
+        },
+        "game-easy-test.html": {
+          "currentMode": "unapplied",
+          "sourceSHA256": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+          "sliceSHA256": {
+            "aim": "bc204f9f160a75d0660aa3301b164639b217714a7a130e97a4a66bbb6522ad7f",
+            "confirm": "caa4c1881e6d3be59ca9361d3157c6a0a8dccb4dfcd7c8e85ff18d0d5108c188",
+            "fire": "cdeeead948d5518c6beeb8f3eee4fbf38eed8cc785165738f7150f8c375f2f49",
+            "costs": "327181ff5ded95664611d3ef6d1e503b7df7cde1bf5988aa435383be0221e973"
+          },
+          "candidateFireSHA256": "8169e4403a5f58b954515533c230958e1c955b7457ee12e30c83b0540096e11f",
+          "testedFireSHA256": "8169e4403a5f58b954515533c230958e1c955b7457ee12e30c83b0540096e11f"
+        }
+      },
+      "checks": [
+        {
+          "name": "approved frozen SHA",
+          "status": "PASS"
+        },
+        {
+          "name": "pre/post production selector has no double insertion",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html production application Gate",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html frozen defect and current-state classification",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html actual dynamic cost {\"lv\":1,\"expected\":50}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html cost minus 0.25 click {\"lv\":1,\"expected\":50}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html cost minus 0.25 release {\"lv\":1,\"expected\":50}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":1,\"expected\":50} fuse=false rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":1,\"expected\":50} fuse=false rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":1,\"expected\":50} fuse=false rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":1,\"expected\":50} fuse=true rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":1,\"expected\":50} fuse=true rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":1,\"expected\":50} fuse=true rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html actual dynamic cost {\"lv\":10,\"expected\":207}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html cost minus 0.25 click {\"lv\":10,\"expected\":207}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html cost minus 0.25 release {\"lv\":10,\"expected\":207}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":10,\"expected\":207} fuse=false rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":10,\"expected\":207} fuse=false rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":10,\"expected\":207} fuse=false rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":10,\"expected\":207} fuse=true rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":10,\"expected\":207} fuse=true rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":10,\"expected\":207} fuse=true rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html actual dynamic cost {\"lv\":5,\"passive\":5,\"expected\":96}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html cost minus 0.25 click {\"lv\":5,\"passive\":5,\"expected\":96}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html cost minus 0.25 release {\"lv\":5,\"passive\":5,\"expected\":96}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":5,\"passive\":5,\"expected\":96} fuse=false rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":5,\"passive\":5,\"expected\":96} fuse=false rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":5,\"passive\":5,\"expected\":96} fuse=false rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":5,\"passive\":5,\"expected\":96} fuse=true rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":5,\"passive\":5,\"expected\":96} fuse=true rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":5,\"passive\":5,\"expected\":96} fuse=true rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html actual dynamic cost {\"lv\":20,\"affix\":0.1,\"expected\":344}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html cost minus 0.25 click {\"lv\":20,\"affix\":0.1,\"expected\":344}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html cost minus 0.25 release {\"lv\":20,\"affix\":0.1,\"expected\":344}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":20,\"affix\":0.1,\"expected\":344} fuse=false rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":20,\"affix\":0.1,\"expected\":344} fuse=false rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":20,\"affix\":0.1,\"expected\":344} fuse=false rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":20,\"affix\":0.1,\"expected\":344} fuse=true rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":20,\"affix\":0.1,\"expected\":344} fuse=true rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":20,\"affix\":0.1,\"expected\":344} fuse=true rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html actual dynamic cost {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html cost minus 0.25 click {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html cost minus 0.25 release {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83} fuse=false rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83} fuse=false rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83} fuse=false rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83} fuse=true rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83} fuse=true rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83} fuse=true rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html actual dynamic cost {\"lv\":5,\"unique\":0.25,\"expected\":90}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html cost minus 0.25 click {\"lv\":5,\"unique\":0.25,\"expected\":90}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html cost minus 0.25 release {\"lv\":5,\"unique\":0.25,\"expected\":90}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":5,\"unique\":0.25,\"expected\":90} fuse=false rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":5,\"unique\":0.25,\"expected\":90} fuse=false rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":5,\"unique\":0.25,\"expected\":90} fuse=false rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":5,\"unique\":0.25,\"expected\":90} fuse=true rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":5,\"unique\":0.25,\"expected\":90} fuse=true rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":5,\"unique\":0.25,\"expected\":90} fuse=true rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html confirm rechecks changed passive discount",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html confirm rechecks changed affix discount",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html confirm rechecks changed unique discount",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html failed click does not auto retry after MP recovery",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html failed release does not auto retry after MP recovery",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html cancel wins over simultaneous click/release right lowMP=false",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html cancel wins over simultaneous click/release right lowMP=true",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html cancel wins over simultaneous click/release escape lowMP=false",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html cancel wins over simultaneous click/release escape lowMP=true",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html successful duplicate confirm cannot consume twice",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html failed iceMortar preserves existing vortex/ioCd",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html caller world target and overpayment use exact cost",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html controls detect hardcoded50 and off-by-one guards",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html production application Gate",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html frozen defect and current-state classification",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html actual dynamic cost {\"lv\":1,\"expected\":50}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html cost minus 0.25 click {\"lv\":1,\"expected\":50}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html cost minus 0.25 release {\"lv\":1,\"expected\":50}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":1,\"expected\":50} fuse=false rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":1,\"expected\":50} fuse=false rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":1,\"expected\":50} fuse=false rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":1,\"expected\":50} fuse=true rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":1,\"expected\":50} fuse=true rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":1,\"expected\":50} fuse=true rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html actual dynamic cost {\"lv\":10,\"expected\":207}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html cost minus 0.25 click {\"lv\":10,\"expected\":207}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html cost minus 0.25 release {\"lv\":10,\"expected\":207}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":10,\"expected\":207} fuse=false rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":10,\"expected\":207} fuse=false rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":10,\"expected\":207} fuse=false rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":10,\"expected\":207} fuse=true rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":10,\"expected\":207} fuse=true rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":10,\"expected\":207} fuse=true rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html actual dynamic cost {\"lv\":5,\"passive\":5,\"expected\":96}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html cost minus 0.25 click {\"lv\":5,\"passive\":5,\"expected\":96}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html cost minus 0.25 release {\"lv\":5,\"passive\":5,\"expected\":96}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":5,\"passive\":5,\"expected\":96} fuse=false rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":5,\"passive\":5,\"expected\":96} fuse=false rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":5,\"passive\":5,\"expected\":96} fuse=false rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":5,\"passive\":5,\"expected\":96} fuse=true rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":5,\"passive\":5,\"expected\":96} fuse=true rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":5,\"passive\":5,\"expected\":96} fuse=true rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html actual dynamic cost {\"lv\":20,\"affix\":0.1,\"expected\":344}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html cost minus 0.25 click {\"lv\":20,\"affix\":0.1,\"expected\":344}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html cost minus 0.25 release {\"lv\":20,\"affix\":0.1,\"expected\":344}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":20,\"affix\":0.1,\"expected\":344} fuse=false rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":20,\"affix\":0.1,\"expected\":344} fuse=false rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":20,\"affix\":0.1,\"expected\":344} fuse=false rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":20,\"affix\":0.1,\"expected\":344} fuse=true rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":20,\"affix\":0.1,\"expected\":344} fuse=true rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":20,\"affix\":0.1,\"expected\":344} fuse=true rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html actual dynamic cost {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html cost minus 0.25 click {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html cost minus 0.25 release {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83} fuse=false rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83} fuse=false rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83} fuse=false rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83} fuse=true rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83} fuse=true rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83} fuse=true rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html actual dynamic cost {\"lv\":5,\"unique\":0.25,\"expected\":90}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html cost minus 0.25 click {\"lv\":5,\"unique\":0.25,\"expected\":90}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html cost minus 0.25 release {\"lv\":5,\"unique\":0.25,\"expected\":90}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":5,\"unique\":0.25,\"expected\":90} fuse=false rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":5,\"unique\":0.25,\"expected\":90} fuse=false rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":5,\"unique\":0.25,\"expected\":90} fuse=false rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":5,\"unique\":0.25,\"expected\":90} fuse=true rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":5,\"unique\":0.25,\"expected\":90} fuse=true rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":5,\"unique\":0.25,\"expected\":90} fuse=true rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html confirm rechecks changed passive discount",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html confirm rechecks changed affix discount",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html confirm rechecks changed unique discount",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html failed click does not auto retry after MP recovery",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html failed release does not auto retry after MP recovery",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html cancel wins over simultaneous click/release right lowMP=false",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html cancel wins over simultaneous click/release right lowMP=true",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html cancel wins over simultaneous click/release escape lowMP=false",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html cancel wins over simultaneous click/release escape lowMP=true",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html successful duplicate confirm cannot consume twice",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html failed iceMortar preserves existing vortex/ioCd",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html caller world target and overpayment use exact cost",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html controls detect hardcoded50 and off-by-one guards",
+          "status": "PASS"
+        },
+        {
+          "name": "main/easy actual slices parity",
+          "status": "PASS"
+        },
+        {
+          "name": "production, owner inputs, task and shared index stayed byte-identical",
+          "status": "PASS"
+        }
+      ],
+      "observations": [
+        {
+          "file": "game.html",
+          "label": "frozen",
+          "mode": "baseline",
+          "state": {
+            "P": {
+              "x": 10,
+              "y": 20,
+              "facing": 0.4,
+              "mp": 0,
+              "skills": {
+                "maliceMortar": 10,
+                "iceOrb": 0
+              },
+              "_mmAiming": false,
+              "_mmCharging": false,
+              "_mmCd": 660,
+              "_ioCd": 0,
+              "_mmDist": 174,
+              "_mmAimKey": "Digit1"
+            },
+            "bomb": {
+              "sx": 10,
+              "sy": 20,
+              "tx": 170.26461295650202,
+              "ty": 87.7587915617052,
+              "x": 10,
+              "y": 20,
+              "t": 0,
+              "maxT": 40,
+              "r": 562,
+              "phase": "throw",
+              "vortex": true,
+              "iceFuse": false,
+              "slv": 10
+            },
+            "lastCost": 206.75,
+            "side": {
+              "random": [
+                0.2
+              ],
+              "magic": [
+                "dark"
+              ],
+              "sample": [
+                [
+                  "voice_magic",
+                  1,
+                  1
+                ]
+              ],
+              "shake": [
+                5
+              ],
+              "messages": []
+            }
+          }
+        },
+        {
+          "file": "game.html",
+          "label": "current",
+          "mode": "unapplied",
+          "state": {
+            "P": {
+              "x": 10,
+              "y": 20,
+              "facing": 0.4,
+              "mp": 0,
+              "skills": {
+                "maliceMortar": 10,
+                "iceOrb": 0
+              },
+              "_mmAiming": false,
+              "_mmCharging": false,
+              "_mmCd": 660,
+              "_ioCd": 0,
+              "_mmDist": 174,
+              "_mmAimKey": "Digit1"
+            },
+            "bomb": {
+              "sx": 10,
+              "sy": 20,
+              "tx": 170.26461295650202,
+              "ty": 87.7587915617052,
+              "x": 10,
+              "y": 20,
+              "t": 0,
+              "maxT": 40,
+              "r": 562,
+              "phase": "throw",
+              "vortex": true,
+              "iceFuse": false,
+              "slv": 10
+            },
+            "lastCost": 206.75,
+            "side": {
+              "random": [
+                0.2
+              ],
+              "magic": [
+                "dark"
+              ],
+              "sample": [
+                [
+                  "voice_magic",
+                  1,
+                  1
+                ]
+              ],
+              "shake": [
+                5
+              ],
+              "messages": []
+            }
+          }
+        },
+        {
+          "file": "game.html",
+          "discountKey": "passive",
+          "beforeCost": 96,
+          "afterCost": 120,
+          "state": {
+            "P": {
+              "x": 10,
+              "y": 20,
+              "facing": 0.4,
+              "mp": 96,
+              "skills": {
+                "maliceMortar": 5,
+                "iceOrb": 0
+              },
+              "_mmAiming": true,
+              "_mmCharging": false,
+              "_mmCd": 0,
+              "_ioCd": 0,
+              "_mmDist": 150,
+              "_mmAimKey": "Digit1"
+            },
+            "bomb": null,
+            "lastCost": 0,
+            "side": {
+              "random": [],
+              "magic": [],
+              "sample": [],
+              "shake": [],
+              "messages": [
+                [
+                  "MP 부족!",
+                  "#4488ff"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "file": "game.html",
+          "discountKey": "affix",
+          "beforeCost": 96,
+          "afterCost": 120,
+          "state": {
+            "P": {
+              "x": 10,
+              "y": 20,
+              "facing": 0.4,
+              "mp": 96,
+              "skills": {
+                "maliceMortar": 5,
+                "iceOrb": 0
+              },
+              "_mmAiming": true,
+              "_mmCharging": false,
+              "_mmCd": 0,
+              "_ioCd": 0,
+              "_mmDist": 150,
+              "_mmAimKey": "Digit1"
+            },
+            "bomb": null,
+            "lastCost": 0,
+            "side": {
+              "random": [],
+              "magic": [],
+              "sample": [],
+              "shake": [],
+              "messages": [
+                [
+                  "MP 부족!",
+                  "#4488ff"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "file": "game.html",
+          "discountKey": "unique",
+          "beforeCost": 96,
+          "afterCost": 120,
+          "state": {
+            "P": {
+              "x": 10,
+              "y": 20,
+              "facing": 0.4,
+              "mp": 96,
+              "skills": {
+                "maliceMortar": 5,
+                "iceOrb": 0
+              },
+              "_mmAiming": true,
+              "_mmCharging": false,
+              "_mmCd": 0,
+              "_ioCd": 0,
+              "_mmDist": 150,
+              "_mmAimKey": "Digit1"
+            },
+            "bomb": null,
+            "lastCost": 0,
+            "side": {
+              "random": [],
+              "magic": [],
+              "sample": [],
+              "shake": [],
+              "messages": [
+                [
+                  "MP 부족!",
+                  "#4488ff"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "file": "game-easy-test.html",
+          "label": "frozen",
+          "mode": "baseline",
+          "state": {
+            "P": {
+              "x": 10,
+              "y": 20,
+              "facing": 0.4,
+              "mp": 0,
+              "skills": {
+                "maliceMortar": 10,
+                "iceOrb": 0
+              },
+              "_mmAiming": false,
+              "_mmCharging": false,
+              "_mmCd": 660,
+              "_ioCd": 0,
+              "_mmDist": 174,
+              "_mmAimKey": "Digit1"
+            },
+            "bomb": {
+              "sx": 10,
+              "sy": 20,
+              "tx": 170.26461295650202,
+              "ty": 87.7587915617052,
+              "x": 10,
+              "y": 20,
+              "t": 0,
+              "maxT": 40,
+              "r": 562,
+              "phase": "throw",
+              "vortex": true,
+              "iceFuse": false,
+              "slv": 10
+            },
+            "lastCost": 206.75,
+            "side": {
+              "random": [
+                0.2
+              ],
+              "magic": [
+                "dark"
+              ],
+              "sample": [
+                [
+                  "voice_magic",
+                  1,
+                  1
+                ]
+              ],
+              "shake": [
+                5
+              ],
+              "messages": []
+            }
+          }
+        },
+        {
+          "file": "game-easy-test.html",
+          "label": "current",
+          "mode": "unapplied",
+          "state": {
+            "P": {
+              "x": 10,
+              "y": 20,
+              "facing": 0.4,
+              "mp": 0,
+              "skills": {
+                "maliceMortar": 10,
+                "iceOrb": 0
+              },
+              "_mmAiming": false,
+              "_mmCharging": false,
+              "_mmCd": 660,
+              "_ioCd": 0,
+              "_mmDist": 174,
+              "_mmAimKey": "Digit1"
+            },
+            "bomb": {
+              "sx": 10,
+              "sy": 20,
+              "tx": 170.26461295650202,
+              "ty": 87.7587915617052,
+              "x": 10,
+              "y": 20,
+              "t": 0,
+              "maxT": 40,
+              "r": 562,
+              "phase": "throw",
+              "vortex": true,
+              "iceFuse": false,
+              "slv": 10
+            },
+            "lastCost": 206.75,
+            "side": {
+              "random": [
+                0.2
+              ],
+              "magic": [
+                "dark"
+              ],
+              "sample": [
+                [
+                  "voice_magic",
+                  1,
+                  1
+                ]
+              ],
+              "shake": [
+                5
+              ],
+              "messages": []
+            }
+          }
+        },
+        {
+          "file": "game-easy-test.html",
+          "discountKey": "passive",
+          "beforeCost": 96,
+          "afterCost": 120,
+          "state": {
+            "P": {
+              "x": 10,
+              "y": 20,
+              "facing": 0.4,
+              "mp": 96,
+              "skills": {
+                "maliceMortar": 5,
+                "iceOrb": 0
+              },
+              "_mmAiming": true,
+              "_mmCharging": false,
+              "_mmCd": 0,
+              "_ioCd": 0,
+              "_mmDist": 150,
+              "_mmAimKey": "Digit1"
+            },
+            "bomb": null,
+            "lastCost": 0,
+            "side": {
+              "random": [],
+              "magic": [],
+              "sample": [],
+              "shake": [],
+              "messages": [
+                [
+                  "MP 부족!",
+                  "#4488ff"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "file": "game-easy-test.html",
+          "discountKey": "affix",
+          "beforeCost": 96,
+          "afterCost": 120,
+          "state": {
+            "P": {
+              "x": 10,
+              "y": 20,
+              "facing": 0.4,
+              "mp": 96,
+              "skills": {
+                "maliceMortar": 5,
+                "iceOrb": 0
+              },
+              "_mmAiming": true,
+              "_mmCharging": false,
+              "_mmCd": 0,
+              "_ioCd": 0,
+              "_mmDist": 150,
+              "_mmAimKey": "Digit1"
+            },
+            "bomb": null,
+            "lastCost": 0,
+            "side": {
+              "random": [],
+              "magic": [],
+              "sample": [],
+              "shake": [],
+              "messages": [
+                [
+                  "MP 부족!",
+                  "#4488ff"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "file": "game-easy-test.html",
+          "discountKey": "unique",
+          "beforeCost": 96,
+          "afterCost": 120,
+          "state": {
+            "P": {
+              "x": 10,
+              "y": 20,
+              "facing": 0.4,
+              "mp": 96,
+              "skills": {
+                "maliceMortar": 5,
+                "iceOrb": 0
+              },
+              "_mmAiming": true,
+              "_mmCharging": false,
+              "_mmCd": 0,
+              "_ioCd": 0,
+              "_mmDist": 150,
+              "_mmAimKey": "Digit1"
+            },
+            "bomb": null,
+            "lastCost": 0,
+            "side": {
+              "random": [],
+              "magic": [],
+              "sample": [],
+              "shake": [],
+              "messages": [
+                [
+                  "MP 부족!",
+                  "#4488ff"
+                ]
+              ]
+            }
+          }
+        }
+      ],
+      "pass": 142,
+      "fail": 0,
+      "productionWrite": false,
+      "limits": [
+        "Actual aim/confirm/fire/cost/_r source slices; whole update/game/DOM/physics not run",
+        "PASSIVES/equipment/fusion/SFX/sample/input-reset are fixtures; source RNG sequence only, no whole-game RNG or listening claim",
+        "Readiness PASS may use memory patch; --require-production fails until both real production functions match approved candidate",
+        "Frozen or candidate byte drift fails closed; new legitimate source changes require root review",
+        "No server, UI, game, physical gamepad, build, install, Git writes or source mutation"
+      ],
+      "classification": "readiness_accepted",
+      "observedToolExitCode": 0
+    },
+    {
+      "startedAtUTC": "2026-10-02T03:47:59.701Z",
+      "completedAtUTC": "2026-10-02T03:47:59.854Z",
+      "head": "96610b6546a31e882962470ea1f2164ce94edca6",
+      "requireProduction": true,
+      "startChanges": 45,
+      "endChanges": 45,
+      "protectedBefore": {
+        "game.html": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+        "game-easy-test.html": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+        "server.cjs": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d",
+        "node-main.js": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce",
+        "index.html": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8",
+        "ui-panels.js": "b22c4a31141672304a15adfae3a5050cb9fde3b96601507c8f10de3ea63f4cb5",
+        "tools/team-followup-20261002/project-teams/SKILL/task.md": "a482647181ac0ac66ba88a5b2c6ba582d2cfab827356661ff66efdd6e3e9ecda",
+        "tools/team-followup-20261002/combat-review/mortar-integration-targets.patch": "b29ed20fcea62334a0c432d7c5c27f26534d4902658b5aa36534f15887c6958e",
+        "tools/team-followup-20261001/SKILL/mortar-confirm-source-before.txt": "044883d89f708916d85d26aab522bb3996bf95e43a7151ccd8be36c8b05fe92b"
+      },
+      "sharedIndexSHA256": "7beab93b570ef992959359065cf6a2e79dffc1c7a3988df782c36aed1816ca2e",
+      "checksSHA256": "403f138c8e8f0eb9d4dcc732d27d0e50f9198a4d846b85223f19d3dc948a1499",
+      "inputs": {
+        "normalizedPatch": {
+          "path": "tools/team-followup-20261002/combat-review/mortar-integration-targets.patch",
+          "sha256": "b29ed20fcea62334a0c432d7c5c27f26534d4902658b5aa36534f15887c6958e"
+        },
+        "frozen": {
+          "path": "tools/team-followup-20261001/SKILL/mortar-confirm-source-before.txt",
+          "sha256": "044883d89f708916d85d26aab522bb3996bf95e43a7151ccd8be36c8b05fe92b"
+        }
+      },
+      "provenance": {
+        "game.html": {
+          "currentMode": "unapplied",
+          "sourceSHA256": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+          "sliceSHA256": {
+            "aim": "bc204f9f160a75d0660aa3301b164639b217714a7a130e97a4a66bbb6522ad7f",
+            "confirm": "caa4c1881e6d3be59ca9361d3157c6a0a8dccb4dfcd7c8e85ff18d0d5108c188",
+            "fire": "cdeeead948d5518c6beeb8f3eee4fbf38eed8cc785165738f7150f8c375f2f49",
+            "costs": "327181ff5ded95664611d3ef6d1e503b7df7cde1bf5988aa435383be0221e973"
+          },
+          "candidateFireSHA256": "8169e4403a5f58b954515533c230958e1c955b7457ee12e30c83b0540096e11f",
+          "testedFireSHA256": "8169e4403a5f58b954515533c230958e1c955b7457ee12e30c83b0540096e11f"
+        },
+        "game-easy-test.html": {
+          "currentMode": "unapplied",
+          "sourceSHA256": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+          "sliceSHA256": {
+            "aim": "bc204f9f160a75d0660aa3301b164639b217714a7a130e97a4a66bbb6522ad7f",
+            "confirm": "caa4c1881e6d3be59ca9361d3157c6a0a8dccb4dfcd7c8e85ff18d0d5108c188",
+            "fire": "cdeeead948d5518c6beeb8f3eee4fbf38eed8cc785165738f7150f8c375f2f49",
+            "costs": "327181ff5ded95664611d3ef6d1e503b7df7cde1bf5988aa435383be0221e973"
+          },
+          "candidateFireSHA256": "8169e4403a5f58b954515533c230958e1c955b7457ee12e30c83b0540096e11f",
+          "testedFireSHA256": "8169e4403a5f58b954515533c230958e1c955b7457ee12e30c83b0540096e11f"
+        }
+      },
+      "checks": [
+        {
+          "name": "approved frozen SHA",
+          "status": "PASS"
+        },
+        {
+          "name": "pre/post production selector has no double insertion",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html production application Gate",
+          "status": "FAIL",
+          "message": "AssertionError [ERR_ASSERTION]: production guard is still unapplied\n+ actual - expected\n\n+ 'unapplied'\n- 'applied'\n"
+        },
+        {
+          "name": "game.html frozen defect and current-state classification",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html actual dynamic cost {\"lv\":1,\"expected\":50}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html cost minus 0.25 click {\"lv\":1,\"expected\":50}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html cost minus 0.25 release {\"lv\":1,\"expected\":50}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":1,\"expected\":50} fuse=false rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":1,\"expected\":50} fuse=false rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":1,\"expected\":50} fuse=false rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":1,\"expected\":50} fuse=true rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":1,\"expected\":50} fuse=true rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":1,\"expected\":50} fuse=true rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html actual dynamic cost {\"lv\":10,\"expected\":207}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html cost minus 0.25 click {\"lv\":10,\"expected\":207}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html cost minus 0.25 release {\"lv\":10,\"expected\":207}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":10,\"expected\":207} fuse=false rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":10,\"expected\":207} fuse=false rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":10,\"expected\":207} fuse=false rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":10,\"expected\":207} fuse=true rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":10,\"expected\":207} fuse=true rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":10,\"expected\":207} fuse=true rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html actual dynamic cost {\"lv\":5,\"passive\":5,\"expected\":96}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html cost minus 0.25 click {\"lv\":5,\"passive\":5,\"expected\":96}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html cost minus 0.25 release {\"lv\":5,\"passive\":5,\"expected\":96}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":5,\"passive\":5,\"expected\":96} fuse=false rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":5,\"passive\":5,\"expected\":96} fuse=false rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":5,\"passive\":5,\"expected\":96} fuse=false rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":5,\"passive\":5,\"expected\":96} fuse=true rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":5,\"passive\":5,\"expected\":96} fuse=true rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":5,\"passive\":5,\"expected\":96} fuse=true rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html actual dynamic cost {\"lv\":20,\"affix\":0.1,\"expected\":344}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html cost minus 0.25 click {\"lv\":20,\"affix\":0.1,\"expected\":344}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html cost minus 0.25 release {\"lv\":20,\"affix\":0.1,\"expected\":344}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":20,\"affix\":0.1,\"expected\":344} fuse=false rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":20,\"affix\":0.1,\"expected\":344} fuse=false rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":20,\"affix\":0.1,\"expected\":344} fuse=false rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":20,\"affix\":0.1,\"expected\":344} fuse=true rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":20,\"affix\":0.1,\"expected\":344} fuse=true rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":20,\"affix\":0.1,\"expected\":344} fuse=true rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html actual dynamic cost {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html cost minus 0.25 click {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html cost minus 0.25 release {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83} fuse=false rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83} fuse=false rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83} fuse=false rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83} fuse=true rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83} fuse=true rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83} fuse=true rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html actual dynamic cost {\"lv\":5,\"unique\":0.25,\"expected\":90}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html cost minus 0.25 click {\"lv\":5,\"unique\":0.25,\"expected\":90}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html cost minus 0.25 release {\"lv\":5,\"unique\":0.25,\"expected\":90}",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":5,\"unique\":0.25,\"expected\":90} fuse=false rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":5,\"unique\":0.25,\"expected\":90} fuse=false rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":5,\"unique\":0.25,\"expected\":90} fuse=false rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":5,\"unique\":0.25,\"expected\":90} fuse=true rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":5,\"unique\":0.25,\"expected\":90} fuse=true rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html exact-cost full state/RNG parity {\"lv\":5,\"unique\":0.25,\"expected\":90} fuse=true rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html confirm rechecks changed passive discount",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html confirm rechecks changed affix discount",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html confirm rechecks changed unique discount",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html failed click does not auto retry after MP recovery",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html failed release does not auto retry after MP recovery",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html cancel wins over simultaneous click/release right lowMP=false",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html cancel wins over simultaneous click/release right lowMP=true",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html cancel wins over simultaneous click/release escape lowMP=false",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html cancel wins over simultaneous click/release escape lowMP=true",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html successful duplicate confirm cannot consume twice",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html failed iceMortar preserves existing vortex/ioCd",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html caller world target and overpayment use exact cost",
+          "status": "PASS"
+        },
+        {
+          "name": "game.html controls detect hardcoded50 and off-by-one guards",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html production application Gate",
+          "status": "FAIL",
+          "message": "AssertionError [ERR_ASSERTION]: production guard is still unapplied\n+ actual - expected\n\n+ 'unapplied'\n- 'applied'\n"
+        },
+        {
+          "name": "game-easy-test.html frozen defect and current-state classification",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html actual dynamic cost {\"lv\":1,\"expected\":50}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html cost minus 0.25 click {\"lv\":1,\"expected\":50}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html cost minus 0.25 release {\"lv\":1,\"expected\":50}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":1,\"expected\":50} fuse=false rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":1,\"expected\":50} fuse=false rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":1,\"expected\":50} fuse=false rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":1,\"expected\":50} fuse=true rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":1,\"expected\":50} fuse=true rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":1,\"expected\":50} fuse=true rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html actual dynamic cost {\"lv\":10,\"expected\":207}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html cost minus 0.25 click {\"lv\":10,\"expected\":207}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html cost minus 0.25 release {\"lv\":10,\"expected\":207}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":10,\"expected\":207} fuse=false rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":10,\"expected\":207} fuse=false rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":10,\"expected\":207} fuse=false rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":10,\"expected\":207} fuse=true rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":10,\"expected\":207} fuse=true rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":10,\"expected\":207} fuse=true rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html actual dynamic cost {\"lv\":5,\"passive\":5,\"expected\":96}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html cost minus 0.25 click {\"lv\":5,\"passive\":5,\"expected\":96}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html cost minus 0.25 release {\"lv\":5,\"passive\":5,\"expected\":96}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":5,\"passive\":5,\"expected\":96} fuse=false rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":5,\"passive\":5,\"expected\":96} fuse=false rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":5,\"passive\":5,\"expected\":96} fuse=false rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":5,\"passive\":5,\"expected\":96} fuse=true rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":5,\"passive\":5,\"expected\":96} fuse=true rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":5,\"passive\":5,\"expected\":96} fuse=true rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html actual dynamic cost {\"lv\":20,\"affix\":0.1,\"expected\":344}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html cost minus 0.25 click {\"lv\":20,\"affix\":0.1,\"expected\":344}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html cost minus 0.25 release {\"lv\":20,\"affix\":0.1,\"expected\":344}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":20,\"affix\":0.1,\"expected\":344} fuse=false rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":20,\"affix\":0.1,\"expected\":344} fuse=false rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":20,\"affix\":0.1,\"expected\":344} fuse=false rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":20,\"affix\":0.1,\"expected\":344} fuse=true rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":20,\"affix\":0.1,\"expected\":344} fuse=true rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":20,\"affix\":0.1,\"expected\":344} fuse=true rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html actual dynamic cost {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html cost minus 0.25 click {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html cost minus 0.25 release {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83} fuse=false rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83} fuse=false rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83} fuse=false rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83} fuse=true rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83} fuse=true rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":10,\"passive\":10,\"affix\":0.3,\"expected\":83} fuse=true rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html actual dynamic cost {\"lv\":5,\"unique\":0.25,\"expected\":90}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html cost minus 0.25 click {\"lv\":5,\"unique\":0.25,\"expected\":90}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html cost minus 0.25 release {\"lv\":5,\"unique\":0.25,\"expected\":90}",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":5,\"unique\":0.25,\"expected\":90} fuse=false rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":5,\"unique\":0.25,\"expected\":90} fuse=false rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":5,\"unique\":0.25,\"expected\":90} fuse=false rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":5,\"unique\":0.25,\"expected\":90} fuse=true rng=0.2",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":5,\"unique\":0.25,\"expected\":90} fuse=true rng=0.8,0.2,0.25",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html exact-cost full state/RNG parity {\"lv\":5,\"unique\":0.25,\"expected\":90} fuse=true rng=0.8,0.8,0.75",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html confirm rechecks changed passive discount",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html confirm rechecks changed affix discount",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html confirm rechecks changed unique discount",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html failed click does not auto retry after MP recovery",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html failed release does not auto retry after MP recovery",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html cancel wins over simultaneous click/release right lowMP=false",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html cancel wins over simultaneous click/release right lowMP=true",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html cancel wins over simultaneous click/release escape lowMP=false",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html cancel wins over simultaneous click/release escape lowMP=true",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html successful duplicate confirm cannot consume twice",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html failed iceMortar preserves existing vortex/ioCd",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html caller world target and overpayment use exact cost",
+          "status": "PASS"
+        },
+        {
+          "name": "game-easy-test.html controls detect hardcoded50 and off-by-one guards",
+          "status": "PASS"
+        },
+        {
+          "name": "main/easy actual slices parity",
+          "status": "PASS"
+        },
+        {
+          "name": "production, owner inputs, task and shared index stayed byte-identical",
+          "status": "PASS"
+        }
+      ],
+      "observations": [
+        {
+          "file": "game.html",
+          "label": "frozen",
+          "mode": "baseline",
+          "state": {
+            "P": {
+              "x": 10,
+              "y": 20,
+              "facing": 0.4,
+              "mp": 0,
+              "skills": {
+                "maliceMortar": 10,
+                "iceOrb": 0
+              },
+              "_mmAiming": false,
+              "_mmCharging": false,
+              "_mmCd": 660,
+              "_ioCd": 0,
+              "_mmDist": 174,
+              "_mmAimKey": "Digit1"
+            },
+            "bomb": {
+              "sx": 10,
+              "sy": 20,
+              "tx": 170.26461295650202,
+              "ty": 87.7587915617052,
+              "x": 10,
+              "y": 20,
+              "t": 0,
+              "maxT": 40,
+              "r": 562,
+              "phase": "throw",
+              "vortex": true,
+              "iceFuse": false,
+              "slv": 10
+            },
+            "lastCost": 206.75,
+            "side": {
+              "random": [
+                0.2
+              ],
+              "magic": [
+                "dark"
+              ],
+              "sample": [
+                [
+                  "voice_magic",
+                  1,
+                  1
+                ]
+              ],
+              "shake": [
+                5
+              ],
+              "messages": []
+            }
+          }
+        },
+        {
+          "file": "game.html",
+          "label": "current",
+          "mode": "unapplied",
+          "state": {
+            "P": {
+              "x": 10,
+              "y": 20,
+              "facing": 0.4,
+              "mp": 0,
+              "skills": {
+                "maliceMortar": 10,
+                "iceOrb": 0
+              },
+              "_mmAiming": false,
+              "_mmCharging": false,
+              "_mmCd": 660,
+              "_ioCd": 0,
+              "_mmDist": 174,
+              "_mmAimKey": "Digit1"
+            },
+            "bomb": {
+              "sx": 10,
+              "sy": 20,
+              "tx": 170.26461295650202,
+              "ty": 87.7587915617052,
+              "x": 10,
+              "y": 20,
+              "t": 0,
+              "maxT": 40,
+              "r": 562,
+              "phase": "throw",
+              "vortex": true,
+              "iceFuse": false,
+              "slv": 10
+            },
+            "lastCost": 206.75,
+            "side": {
+              "random": [
+                0.2
+              ],
+              "magic": [
+                "dark"
+              ],
+              "sample": [
+                [
+                  "voice_magic",
+                  1,
+                  1
+                ]
+              ],
+              "shake": [
+                5
+              ],
+              "messages": []
+            }
+          }
+        },
+        {
+          "file": "game.html",
+          "discountKey": "passive",
+          "beforeCost": 96,
+          "afterCost": 120,
+          "state": {
+            "P": {
+              "x": 10,
+              "y": 20,
+              "facing": 0.4,
+              "mp": 96,
+              "skills": {
+                "maliceMortar": 5,
+                "iceOrb": 0
+              },
+              "_mmAiming": true,
+              "_mmCharging": false,
+              "_mmCd": 0,
+              "_ioCd": 0,
+              "_mmDist": 150,
+              "_mmAimKey": "Digit1"
+            },
+            "bomb": null,
+            "lastCost": 0,
+            "side": {
+              "random": [],
+              "magic": [],
+              "sample": [],
+              "shake": [],
+              "messages": [
+                [
+                  "MP 부족!",
+                  "#4488ff"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "file": "game.html",
+          "discountKey": "affix",
+          "beforeCost": 96,
+          "afterCost": 120,
+          "state": {
+            "P": {
+              "x": 10,
+              "y": 20,
+              "facing": 0.4,
+              "mp": 96,
+              "skills": {
+                "maliceMortar": 5,
+                "iceOrb": 0
+              },
+              "_mmAiming": true,
+              "_mmCharging": false,
+              "_mmCd": 0,
+              "_ioCd": 0,
+              "_mmDist": 150,
+              "_mmAimKey": "Digit1"
+            },
+            "bomb": null,
+            "lastCost": 0,
+            "side": {
+              "random": [],
+              "magic": [],
+              "sample": [],
+              "shake": [],
+              "messages": [
+                [
+                  "MP 부족!",
+                  "#4488ff"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "file": "game.html",
+          "discountKey": "unique",
+          "beforeCost": 96,
+          "afterCost": 120,
+          "state": {
+            "P": {
+              "x": 10,
+              "y": 20,
+              "facing": 0.4,
+              "mp": 96,
+              "skills": {
+                "maliceMortar": 5,
+                "iceOrb": 0
+              },
+              "_mmAiming": true,
+              "_mmCharging": false,
+              "_mmCd": 0,
+              "_ioCd": 0,
+              "_mmDist": 150,
+              "_mmAimKey": "Digit1"
+            },
+            "bomb": null,
+            "lastCost": 0,
+            "side": {
+              "random": [],
+              "magic": [],
+              "sample": [],
+              "shake": [],
+              "messages": [
+                [
+                  "MP 부족!",
+                  "#4488ff"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "file": "game-easy-test.html",
+          "label": "frozen",
+          "mode": "baseline",
+          "state": {
+            "P": {
+              "x": 10,
+              "y": 20,
+              "facing": 0.4,
+              "mp": 0,
+              "skills": {
+                "maliceMortar": 10,
+                "iceOrb": 0
+              },
+              "_mmAiming": false,
+              "_mmCharging": false,
+              "_mmCd": 660,
+              "_ioCd": 0,
+              "_mmDist": 174,
+              "_mmAimKey": "Digit1"
+            },
+            "bomb": {
+              "sx": 10,
+              "sy": 20,
+              "tx": 170.26461295650202,
+              "ty": 87.7587915617052,
+              "x": 10,
+              "y": 20,
+              "t": 0,
+              "maxT": 40,
+              "r": 562,
+              "phase": "throw",
+              "vortex": true,
+              "iceFuse": false,
+              "slv": 10
+            },
+            "lastCost": 206.75,
+            "side": {
+              "random": [
+                0.2
+              ],
+              "magic": [
+                "dark"
+              ],
+              "sample": [
+                [
+                  "voice_magic",
+                  1,
+                  1
+                ]
+              ],
+              "shake": [
+                5
+              ],
+              "messages": []
+            }
+          }
+        },
+        {
+          "file": "game-easy-test.html",
+          "label": "current",
+          "mode": "unapplied",
+          "state": {
+            "P": {
+              "x": 10,
+              "y": 20,
+              "facing": 0.4,
+              "mp": 0,
+              "skills": {
+                "maliceMortar": 10,
+                "iceOrb": 0
+              },
+              "_mmAiming": false,
+              "_mmCharging": false,
+              "_mmCd": 660,
+              "_ioCd": 0,
+              "_mmDist": 174,
+              "_mmAimKey": "Digit1"
+            },
+            "bomb": {
+              "sx": 10,
+              "sy": 20,
+              "tx": 170.26461295650202,
+              "ty": 87.7587915617052,
+              "x": 10,
+              "y": 20,
+              "t": 0,
+              "maxT": 40,
+              "r": 562,
+              "phase": "throw",
+              "vortex": true,
+              "iceFuse": false,
+              "slv": 10
+            },
+            "lastCost": 206.75,
+            "side": {
+              "random": [
+                0.2
+              ],
+              "magic": [
+                "dark"
+              ],
+              "sample": [
+                [
+                  "voice_magic",
+                  1,
+                  1
+                ]
+              ],
+              "shake": [
+                5
+              ],
+              "messages": []
+            }
+          }
+        },
+        {
+          "file": "game-easy-test.html",
+          "discountKey": "passive",
+          "beforeCost": 96,
+          "afterCost": 120,
+          "state": {
+            "P": {
+              "x": 10,
+              "y": 20,
+              "facing": 0.4,
+              "mp": 96,
+              "skills": {
+                "maliceMortar": 5,
+                "iceOrb": 0
+              },
+              "_mmAiming": true,
+              "_mmCharging": false,
+              "_mmCd": 0,
+              "_ioCd": 0,
+              "_mmDist": 150,
+              "_mmAimKey": "Digit1"
+            },
+            "bomb": null,
+            "lastCost": 0,
+            "side": {
+              "random": [],
+              "magic": [],
+              "sample": [],
+              "shake": [],
+              "messages": [
+                [
+                  "MP 부족!",
+                  "#4488ff"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "file": "game-easy-test.html",
+          "discountKey": "affix",
+          "beforeCost": 96,
+          "afterCost": 120,
+          "state": {
+            "P": {
+              "x": 10,
+              "y": 20,
+              "facing": 0.4,
+              "mp": 96,
+              "skills": {
+                "maliceMortar": 5,
+                "iceOrb": 0
+              },
+              "_mmAiming": true,
+              "_mmCharging": false,
+              "_mmCd": 0,
+              "_ioCd": 0,
+              "_mmDist": 150,
+              "_mmAimKey": "Digit1"
+            },
+            "bomb": null,
+            "lastCost": 0,
+            "side": {
+              "random": [],
+              "magic": [],
+              "sample": [],
+              "shake": [],
+              "messages": [
+                [
+                  "MP 부족!",
+                  "#4488ff"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "file": "game-easy-test.html",
+          "discountKey": "unique",
+          "beforeCost": 96,
+          "afterCost": 120,
+          "state": {
+            "P": {
+              "x": 10,
+              "y": 20,
+              "facing": 0.4,
+              "mp": 96,
+              "skills": {
+                "maliceMortar": 5,
+                "iceOrb": 0
+              },
+              "_mmAiming": true,
+              "_mmCharging": false,
+              "_mmCd": 0,
+              "_ioCd": 0,
+              "_mmDist": 150,
+              "_mmAimKey": "Digit1"
+            },
+            "bomb": null,
+            "lastCost": 0,
+            "side": {
+              "random": [],
+              "magic": [],
+              "sample": [],
+              "shake": [],
+              "messages": [
+                [
+                  "MP 부족!",
+                  "#4488ff"
+                ]
+              ]
+            }
+          }
+        }
+      ],
+      "pass": 140,
+      "fail": 2,
+      "productionWrite": false,
+      "limits": [
+        "Actual aim/confirm/fire/cost/_r source slices; whole update/game/DOM/physics not run",
+        "PASSIVES/equipment/fusion/SFX/sample/input-reset are fixtures; source RNG sequence only, no whole-game RNG or listening claim",
+        "Readiness PASS may use memory patch; --require-production fails until both real production functions match approved candidate",
+        "Frozen or candidate byte drift fails closed; new legitimate source changes require root review",
+        "No server, UI, game, physical gamepad, build, install, Git writes or source mutation"
+      ],
+      "classification": "expected_unapplied_production_gate_rejection",
+      "observedToolExitCode": 1
+    }
+  ],
+  "docsSearch": {
+    "executedAtUTC": "2026-10-02T03:48:20.593541+00:00",
+    "command": [
+      "rg",
+      "-n",
+      "mortar|maliceMortar|fireMaliceMortar|폭풍소환|_mmAiming|_mmCharging|iceMortar|mortar-production-regression-ready",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs"
+    ],
+    "exitCode": 0,
+    "matchCount": 121,
+    "fileCount": 35,
+    "byFile": {
+      "docs/0마스터플랜/MAC_AGENT_DASHBOARD.md": 1,
+      "docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md": 2,
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ASYNC-BOUNDARY-20261002.md": 1,
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/COMBAT-REVIEW-20261002.md": 12,
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/INDEPENDENT-NEXT-20261002.md": 1,
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/MAC-COORDINATION-20261002.md": 4,
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-CHATS-20261002.json": 2,
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-CHATS-20261002.md": 1,
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-WORK-DISPATCH-20261002.json": 3,
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json": 6,
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/native-recovery/SKILL-task.md": 4,
+      "docs/12퍼포먼스·최적화/CLAUDE_CODE_인수인계_전체작업보고서_2026-08-10.md": 1,
+      "docs/12퍼포먼스·최적화/QA_PERFORMANCE_TEAM_MASTER.md": 1,
+      "docs/13출시·마케팅/13출시·마케팅.md": 3,
+      "docs/13출시·마케팅/GAMEPLAY_TRAILER_V22_20260909.md": 3,
+      "docs/14밸런스+수치테이블/MAGIC_ATTACK_DAMAGE_20260910.md": 1,
+      "docs/14밸런스+수치테이블/스킬_밸런스_리포트.md": 8,
+      "docs/14밸런스+수치테이블/스킬데미지공식표.md": 3,
+      "docs/14밸런스+수치테이블/스킬별_DPS_자원소비표.md": 5,
+      "docs/14밸런스+수치테이블/자원소비량표.md": 2,
+      "docs/16번역·로컬라이제이션/번역대상_전체목록.md": 5,
+      "docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md": 8,
+      "docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식.md": 4,
+      "docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식__NFD_0628_2305_백업.md": 3,
+      "docs/2_1 스킬관리+합체시스템+자원/추천빌드_SKILL_REC_PATH.md": 1,
+      "docs/2_7 인벤토리+장비시스템/3파트_아이템분류.md": 2,
+      "docs/3.1 ui hud 디자인/exoduser-ui-phase2 (1).md": 1,
+      "docs/3.3 키바인딩+설정/3.3 키바인딩+설정.md": 1,
+      "docs/7아이템디자인/슬롯별_어픽스_풀.md": 7,
+      "docs/7아이템디자인/아이템_어픽스_시스템.md": 2,
+      "docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md": 2,
+      "docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md": 1,
+      "docs/7아이템디자인/어픽스_시스템_현황분석_2026-08-10.md": 1,
+      "docs/7아이템디자인/유니크_어픽스_리스트.md": 4,
+      "docs/CHANGELOG_SYNC.md": 15
+    },
+    "matches": [
+      {
+        "path": "docs/7아이템디자인/슬롯별_어픽스_풀.md",
+        "line": 93,
+        "text": "skMaliceHuntDmg, skMaliceMortarDmg, skMaliceStormDmg, skMissileDmg,"
+      },
+      {
+        "path": "docs/7아이템디자인/슬롯별_어픽스_풀.md",
+        "line": 102,
+        "text": "farDmg, skBlueShotDmg, skChainAssaultDmg, skMaliceMortarDmg,"
+      },
+      {
+        "path": "docs/7아이템디자인/슬롯별_어픽스_풀.md",
+        "line": 394,
+        "text": "| `skMaliceMortarDmg` | 악의박격강화 | xbow.SUF | pct |"
+      },
+      {
+        "path": "docs/7아이템디자인/슬롯별_어픽스_풀.md",
+        "line": 709,
+        "text": "| `skMaliceMortarDmg` | 악의박격강화 | xbow.SUF | 35 |"
+      },
+      {
+        "path": "docs/7아이템디자인/슬롯별_어픽스_풀.md",
+        "line": 863,
+        "text": "| `skMaliceMortarDmg` | 악의박격강화 | 1 | xbow | 0.08→0.44 | pct |"
+      },
+      {
+        "path": "docs/7아이템디자인/슬롯별_어픽스_풀.md",
+        "line": 1112,
+        "text": "| skMaliceMortarDmg | 악의박격강화 | 0.08 | 0.14 | 0.22 | 0.32 | 0.44 | pct | 35 |  |"
+      },
+      {
+        "path": "docs/7아이템디자인/슬롯별_어픽스_풀.md",
+        "line": 1194,
+        "text": "| skMaliceMortarDmg | 악의박격강화 | 0.08 | 0.14 | 0.22 | 0.32 | 0.44 | pct | 35 |  |"
+      },
+      {
+        "path": "docs/7아이템디자인/어픽스_시스템_현황분석_2026-08-10.md",
+        "line": 153,
+        "text": "- 스킬강화 20: skWhirlDmg skBeamDmg skFireballDmg skMissileDmg skBlueShotDmg skBlastShotDmg skHellRayDmg skMaliceStormDmg skChainSlashDmg skGiantSlamDmg skGhostWalkDmg skMaliceMortarDmg skFireAuraDmg skIceOrbDmg skFireBeamDmg skMaliceHuntDmg skDarkPillarDmg skPlagueDmg skSpikeAuraDmg skChainAssaultDmg"
+      },
+      {
+        "path": "docs/7아이템디자인/아이템_어픽스_시스템.md",
+        "line": 429,
+        "text": "| skMaliceMortarDmg | 악의박격강화 | SUF | 0.08 / 0.14 / 0.22 / 0.32 / 0.44 | pct | 무기, 왕관 | 35 |"
+      },
+      {
+        "path": "docs/7아이템디자인/아이템_어픽스_시스템.md",
+        "line": 813,
+        "text": "| `aoeRadiusPct` | 확산의 | 범위 반경% + | 34% | wpn/helm | 회전참, 지옥강타 1, 폭풍소환 |"
+      },
+      {
+        "path": "docs/7아이템디자인/어픽스_Layer_전수매핑_402_2026-08-10.md",
+        "line": 363,
+        "text": "| skMaliceMortarDmg | DEAD | 스킬강화 | L6 | FLEX | REWORK | 〃 포격기 |"
+      },
+      {
+        "path": "docs/7아이템디자인/유니크_어픽스_리스트.md",
+        "line": 122,
+        "text": "| F 영역·1~4 설치 스킬 | U-D12~14 | F 회복의 영역 방어, 1~4 가시덫 증식·폭풍소환과 악의구 연동. |"
+      },
+      {
+        "path": "docs/7아이템디자인/유니크_어픽스_리스트.md",
+        "line": 149,
+        "text": "| **U-D04** Ctrl 얼음보주 / 파쇄 회수 | 파쇄 칼날이 얼어붙은 **서로 다른 적**을 맞히면 얼음보주 쿨다운을 회복한다. | 적당 **60~180f**: 하60~100/중101~140/상141~180f; 저장 정수 f; 시전당 최대 `360f`. | `_uIceShatterRefund`; `activateIceShatter` 44567~44617, 얼음칼날 적중 33400~. | `_ioCd=max(0,_ioCd-min(값,남은 시전 상한))`; 적별 1회, 파쇄가 만든 칼날만 인정, 빙결은 소비하지 않음. `iceMortar` 합체가 얼음보주를 흡수한 경우 자동 파쇄 경로에서만 허용 여부 확인. | 기본 파쇄 쿨 1200f, 최저 600f. 상한 360f는 기본의 30% 회복이며 다수전 무한 파쇄를 막는다. | H·U |"
+      },
+      {
+        "path": "docs/7아이템디자인/유니크_어픽스_리스트.md",
+        "line": 159,
+        "text": "| **U-D14** 1~4 폭풍소환 / 폭심 악의구 | 폭풍소환 소용돌이 안에서 악의구가 폭발하면 그 소용돌이가 **추가 충격파 1회**를 낸다. | 악의구 원래 폭발 피해의 **20~40%**: 하20~26/중27~33/상34~40%; 저장 `0.20~0.40`; 소용돌이별 `120f` 간격. | `_uVortexOrbPulse`; 악의구 폭발 22956~22968, 폭풍소환 착지·장판 생성 34933~34951, 장판 틱 35404~35435. | 폭발 중심이 `vortex` 또는 `iceVortex` 안일 때만, 동일 소용돌이에서 반경 `min(200,r)` 1회; 충격파는 중독·흡인·재폭발 없음. `iceMortar` 합체 시 냉기 소용돌이에도 동일 횟수 상한을 적용한다. | 폭풍소환 기본 쿨660f·소용돌이 지속390f(6.5초) 동안 위치를 맞춘 E 연계를 보상한다. 초반 악의구 직격+폭발 1404의 일부만 추가한다. | H·U·S |"
+      },
+      {
+        "path": "docs/7아이템디자인/유니크_어픽스_리스트.md",
+        "line": 177,
+        "text": "| 5 | U-D14 | 폭풍소환의 위치와 악의구 폭발을 맞추는 능동 조합이다. 구역 중복·재귀 차단으로 난도 **중간**. |"
+      },
+      {
+        "path": "docs/3.3 키바인딩+설정/3.3 키바인딩+설정.md",
+        "line": 414,
+        "text": "- **조준 모드**: 범위지정 스킬 활성 시(`_mmAiming`, `_bwAiming`, `_tsAiming`, `_msAiming`, `_isAiming`) 좌스틱이 이동 대신 **조준 커서 제어**로 전환 (사거리 최대 1000px, 스틱 기울기 비례)"
+      },
+      {
+        "path": "docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md",
+        "line": 564,
+        "text": "| skMaliceMortarDmg | D | 스킬강화 | FLEX | REWORK | 〃 포격기 |"
+      },
+      {
+        "path": "docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md",
+        "line": 927,
+        "text": "**UD-3 계열안 A (sk* 20종 실측 분할)**: ①근접기(Whirl·ChainSlash·GiantSlam·GhostWalk) ②투사체기(Missile·BlueShot·BlastShot·MaliceHunt) ③구체기(Fireball·IceOrb) ④광선기(Beam·HellRay·FireBeam) ⑤포격기(MaliceStorm·MaliceMortar·ChainAssault) ⑥오라·장판기(FireAura·SpikeAura·DarkPillar·Plague). 소환기(악의 보호자)·영역기(회복/구속의 영역)는 현 sk*에 없음 → 7계열째 확장 슬롯으로 예약. Element/DoT 계열은 L4와 중복이라 제외."
+      },
+      {
+        "path": "docs/2_7 인벤토리+장비시스템/3파트_아이템분류.md",
+        "line": 286,
+        "text": "  - **wpn→xbow 이전 (24종)**: arcRangerRange, arcRangerDmg, arcRangerPierce, bowAtkSpd, bowRange, critRateBow, pierceChance, pierceCount, projDmgPct, projSpeedPct, rangedDmgPct, multiShot, splashRadius, splashDmg, farDmg, chainTarget, pierceDmgKeep, skBlastShotDmg, skBlueShotDmg, skChainAssaultDmg, skMaliceHuntDmg, skMaliceMortarDmg, skMaliceStormDmg, skMissileDmg"
+      },
+      {
+        "path": "docs/2_7 인벤토리+장비시스템/3파트_아이템분류.md",
+        "line": 287,
+        "text": "  - **helm→xbow 이전 (6종)**: farDmg, skBlueShotDmg, skChainAssaultDmg, skMaliceMortarDmg, skMaliceStormDmg, skMissileDmg"
+      },
+      {
+        "path": "docs/CHANGELOG_SYNC.md",
+        "line": 4357,
+        "text": "- **wpn→xbow 24종**: arcRangerRange, arcRangerDmg, arcRangerPierce, bowAtkSpd, bowRange, critRateBow, pierceChance, pierceCount, projDmgPct, projSpeedPct, rangedDmgPct, multiShot, splashRadius, splashDmg, farDmg, chainTarget, pierceDmgKeep, skBlastShotDmg, skBlueShotDmg, skChainAssaultDmg, skMaliceHuntDmg, skMaliceMortarDmg, skMaliceStormDmg, skMissileDmg"
+      },
+      {
+        "path": "docs/CHANGELOG_SYNC.md",
+        "line": 4358,
+        "text": "- **helm→xbow 6종**: farDmg, skBlueShotDmg, skChainAssaultDmg, skMaliceMortarDmg, skMaliceStormDmg, skMissileDmg"
+      },
+      {
+        "path": "docs/CHANGELOG_SYNC.md",
+        "line": 4711,
+        "text": "  - **마법**: fireball, fireBeam, fireAura, blueShot, omniBeam(2곳), hellRay(2곳), maliceStorm(2곳), darkPillar, iceOrb, maliceMortar(5곳), spikeTrap, burstLoop, plagueBurst, ghostWalk, elemMissile, magicBlink(DOT)"
+      },
+      {
+        "path": "docs/CHANGELOG_SYNC.md",
+        "line": 4728,
+        "text": "  - **maliceMortar (폭풍소환)**: `*5*(1+Lv*0.2)` → `*(5+(Lv-1))`"
+      },
+      {
+        "path": "docs/CHANGELOG_SYNC.md",
+        "line": 23048,
+        "text": "- img/sk_maliceMortar.png"
+      },
+      {
+        "path": "docs/CHANGELOG_SYNC.md",
+        "line": 23090,
+        "text": "- img/skillskin/maliceMortar.png"
+      },
+      {
+        "path": "docs/CHANGELOG_SYNC.md",
+        "line": 23155,
+        "text": "- img/skillskin/maliceMortar.png"
+      },
+      {
+        "path": "docs/CHANGELOG_SYNC.md",
+        "line": 23205,
+        "text": "- img/skillskin/maliceMortar.png"
+      },
+      {
+        "path": "docs/CHANGELOG_SYNC.md",
+        "line": 23254,
+        "text": "- img/skillskin/maliceMortar.png"
+      },
+      {
+        "path": "docs/CHANGELOG_SYNC.md",
+        "line": 23343,
+        "text": "- img/skillskin/maliceMortar.png"
+      },
+      {
+        "path": "docs/CHANGELOG_SYNC.md",
+        "line": 23385,
+        "text": "- img/skillskin_upscaled/maliceMortar.png"
+      },
+      {
+        "path": "docs/CHANGELOG_SYNC.md",
+        "line": 23680,
+        "text": "- img/skillskin/maliceMortar.png"
+      },
+      {
+        "path": "docs/CHANGELOG_SYNC.md",
+        "line": 23754,
+        "text": "- img/skillskinXX/maliceMortar.png"
+      },
+      {
+        "path": "docs/CHANGELOG_SYNC.md",
+        "line": 23821,
+        "text": "- img/skillskin_upscaled/maliceMortar.png"
+      },
+      {
+        "path": "docs/CHANGELOG_SYNC.md",
+        "line": 52058,
+        "text": "mortar 실제 비용/확정 source38검사 PASS 및 미적용 원후보 헤더 정정, MAP source9검사/과거PNG15 무결성과 정정8뷰, SOUND actual mkItem/등록/획득18그룹·84입력, shared-mats actual-file14 및 현행 양쪽 미적용 context patch를 기록했다. 생산코드 변화0. mortar 비용 canonical3문서는 base50/+35%/최종정수절삭, 할인없는 Lv10 최종207에 맞췄고 피해+15%·역사백업을 보존했다. 코드 도구·필수 합성 fixture·근거와 관련 docs를 함께 보존한다."
+      },
+      {
+        "path": "docs/16번역·로컬라이제이션/번역대상_전체목록.md",
+        "line": 117,
+        "text": "| 0050 | 폭풍소환 | Vortex Summon |"
+      },
+      {
+        "path": "docs/16번역·로컬라이제이션/번역대상_전체목록.md",
+        "line": 778,
+        "text": "| 0582 | 🌪️ 폭풍소환! | 🌪️ Vortex Summon! |"
+      },
+      {
+        "path": "docs/16번역·로컬라이제이션/번역대상_전체목록.md",
+        "line": 1716,
+        "text": "| 1257 | 영역 스킬 (폭풍소환 등) | Area Skill (Vortex Summon etc) |"
+      },
+      {
+        "path": "docs/16번역·로컬라이제이션/번역대상_전체목록.md",
+        "line": 2473,
+        "text": "| 2013 | 폭풍소환 + 얼음보주 → 합체: 얼음폭풍 | Malice Mortar + Ice Orb → Fuse: Ice Mortar |"
+      },
+      {
+        "path": "docs/16번역·로컬라이제이션/번역대상_전체목록.md",
+        "line": 2499,
+        "text": "| 2034 | maliceMortar | Summon dark vortex. CD 11s. INT scale. Pulls enemies |"
+      },
+      {
+        "path": "docs/12퍼포먼스·최적화/QA_PERFORMANCE_TEAM_MASTER.md",
+        "line": 47,
+        "text": "| 캐릭터 | 주: 데모 테스트 캐릭터(Lv100, 전 스킬·합체, `_dLv500` 경로, 슬롯 maliceStorm/maliceMortar/ghostXbowTurret/maliceHunt/giantSlam2/holyDome). 보조: 데모 신규 Lv1 |"
+      },
+      {
+        "path": "docs/13출시·마케팅/GAMEPLAY_TRAILER_V22_20260909.md",
+        "line": 87,
+        "text": "| mortar | 5 | 64 | 35 | 420 | 290 | 38 | 96005901.067 | 3 | 6 | 70.7 |"
+      },
+      {
+        "path": "docs/13출시·마케팅/GAMEPLAY_TRAILER_V22_20260909.md",
+        "line": 131,
+        "text": "| `maliceMortar` | 폭풍소환 |"
+      },
+      {
+        "path": "docs/13출시·마케팅/GAMEPLAY_TRAILER_V22_20260909.md",
+        "line": 172,
+        "text": "| 25 | mortar | 0.60 | 42.10 | 44.40 |"
+      },
+      {
+        "path": "docs/12퍼포먼스·최적화/CLAUDE_CODE_인수인계_전체작업보고서_2026-08-10.md",
+        "line": 399,
+        "text": "**Skill-use 교전 (Lv100 전스킬 43개, heavy 슬롯 maliceStorm/maliceMortar/ghostXbowTurret/plagueBurst/giantSlam2/holyDome + ULT blackStar, 스킬 연속 발동)** — 유저 지적(\"스킬 쓸 때 끊긴다\") 반영:"
+      },
+      {
+        "path": "docs/13출시·마케팅/13출시·마케팅.md",
+        "line": 107,
+        "text": "dimBreach, dimSlam, sixFuse, elemFuse, whirlDet, slamStorm, bladeFuse, plagueFuse, boneStorm, elecRepent, shieldFuse, holyFuse, holyIce, iceMortar, pillarSpike, pillarSlam, infernoSlam, thunderGhost, dualScarecrow, siegeGhost"
+      },
+      {
+        "path": "docs/13출시·마케팅/13출시·마케팅.md",
+        "line": 265,
+        "text": "| 스킬 | **전 스킬 53종 Lv5** | chargeBoost/magicBlink/ghostWalk/bladeDash/kiSlash/fireball/whirlwind/detonate/maliceSwipe/fanShot/omniBeam/elemMissile/guardian/maliceHunt/venomBlade/maliceMortar/boneWall/blackStar/lavaSummon/execution/iceOrb/needleShot/arcLaser/fireBeam/fireAura/plagueBurst/maliceStorm/darkPillar/holyDome/holyPrison/iceStorm/giantSlam/giantSlam2/**skyCrusher**/chainAssault/chainSlam/chainSlash/peaceShield/hellRay/shieldThrow/weakPhys/weakMag/weakPj/weakRev/spikeTrap/blueShot/burstLoop/voidScarecrow/explodeScarecrow/ghostXbowTurret/timeWarp/thunderStake/ancestorSummon |"
+      },
+      {
+        "path": "docs/13출시·마케팅/13출시·마케팅.md",
+        "line": 266,
+        "text": "| 합체 해금 | **전 합체 30종** | dimBreach/dimSlam/dimThunder/dimRush/dimBlast/whirlDet/slamStorm/stormBeam/stormBurst/bladeFuse/iceMortar/sixFuse/elemFuse/boneStorm/elecRepent/shieldFuse/plagueFuse/holyFuse/holyIce/holyWeak1/holyWeak2/holyWeak3/holyWeak4/pillarSpike/pillarSlam/infernoSlam/siegeGhost/dualScarecrow/thunderGhost/timeStep |"
+      },
+      {
+        "path": "docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md",
+        "line": 227,
+        "text": "| maliceMortar | 폭풍소환 | **summon+aoe** | 투척 (마우스=방향, 키 홀드=거리충전, 릴리즈=투척), 1렙 400범위 +18/Lv, 6.5초(390f) 흡인+뎀, 쿨 11초 |"
+      },
+      {
+        "path": "docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md",
+        "line": 397,
+        "text": "> - **포격식 설치** (maliceStorm = 악의폭풍): KBM=마우스 클릭, 게임패드=키홀드→`P._msDist` 충전(150→1000, +24×sp/f), 릴리즈=발사. P.facing방향으로 투척. (2026-05-12: maliceMortar 방식과 통일)"
+      },
+      {
+        "path": "docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md",
+        "line": 398,
+        "text": "> - **투척 계열** (maliceMortar = 폭풍소환): 마우스=방향, **키 홀드=거리 충전**, 릴리즈=투척 발사. `P._mmDist` 150에서 시작, 프레임당 `+24*sp` 증가 (2026-04-16: `6→12→24` 4배 가속, 풀충전 1000px 도달 시간 약 2.3초 → 0.6초), 1000px 클램프. 투척 컨셉이므로 홀드-충전 패턴만 쓰는 유일 스킬. (`8f7fb78b` 원본 구현 / `game.html:23595`)"
+      },
+      {
+        "path": "docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md",
+        "line": 400,
+        "text": "> **키다운 `e.repeat` 가드 (2026-04-16)**: 브라우저 키반복(~500ms 딜레이 후 ~30ms 간격)이 `_dispatchSkillSlot`을 재호출해서 maliceMortar aim/charge 모드를 중간에 취소하던 문제. 1000px 충전에 2.3초 필요한데 500ms부터 repeat이 발동하면 충전 불가. Digit1~4 / Space / KeyF / ControlLeft / KeyZ 전부 `!e.repeat` 가드 추가. (`game.html:7030, 7052, 7056, 7060, 7064`)"
+      },
+      {
+        "path": "docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md",
+        "line": 592,
+        "text": "| iceMortar | 얼음소용돌이 | 2성 | maliceMortar + iceOrb |"
+      },
+      {
+        "path": "docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md",
+        "line": 746,
+        "text": "| iceMortar (얼음소용돌이) | maliceMortar | iceOrb |"
+      },
+      {
+        "path": "docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md",
+        "line": 780,
+        "text": "| iceMortar | maliceMortar, iceOrb |"
+      },
+      {
+        "path": "docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md",
+        "line": 1121,
+        "text": "| iceMortar | _isIceFuse | maliceMortar | 2성 |"
+      },
+      {
+        "path": "docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식.md",
+        "line": 3,
+        "text": "> **2026-10-02 폭풍소환 MP 현행 교정:** 본편/easy의 key=`mortar`, 스킬레벨=`P.skills.maliceMortar||1`, `_COST_BASE=50`, `_COST_DPS=.35`. `mpCost`는 `~~(50×(1+(Lv−1)×.35)×pMagicCost())`로 최종 정수 절삭한다. 할인계수1에서 Lv1=50/Lv10=207(절삭 전207.5), 할인계수.4에서20/83이다. `pMagicCost()=max(.40,1−PASSIVES.pMagic×.04−_eqAffix('mpCostRed')−(_uEq('_uHelmMagic')||0))`. 비용계수와 피해 성장률을 구분한다. 다른 스킬의 아래 과거 수치·비교는 이번 감사에서 검수하지 않았다. 생산 수치 변경0, 확정입력 재검사 patch는 아직 미적용. [38검사·소스 근거](../0마스터플랜/mac-resume-20261001/vscode-dispatch/COMBAT-REVIEW-20261002.md)."
+      },
+      {
+        "path": "docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식.md",
+        "line": 138,
+        "text": "| mortar | 폭풍소환 | 50 | +35%/Lv 비용스케일 | 50→207 | `~~(50×(1+(Lv−1)×.35)×pMagicCost())`; 피해 성장률과 별도 |"
+      },
+      {
+        "path": "docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식.md",
+        "line": 291,
+        "text": "| 지옥강타 1(giantSlam) | ~~유탄산탄(삭제됨)~~ | 폭풍소환(maliceMortar) |"
+      },
+      {
+        "path": "docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식.md",
+        "line": 324,
+        "text": "- **폭풍소환(maliceMortar)**: 악의 소모 없음, MP만 소모."
+      },
+      {
+        "path": "docs/3.1 ui hud 디자인/exoduser-ui-phase2 (1).md",
+        "line": 467,
+        "text": "| maliceMortar | P._mmCd | 악의포격 |"
+      },
+      {
+        "path": "docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md",
+        "line": 738,
+        "text": "HEAD5b8e6ba9에서 지원3명이 11역할을 묶어 mortar38 PASS·MAP source9 PASS/과거PNG15 SHA·actual 유골획득 RNG18그룹/84입력 및 shared-mats 실파일14 PASS를 인수했다. mortar 비용 canonical3문서의50/+35%/최종정수207을 정정하고, 원담당 patch 헤더·8뷰 좌표와 두 mats context patch를 별도 준비했다. 생산 변경0, 후보 미적용, 새 게임/시각/청취0. 기존 앱 HTML은 현행과 다르며 node-main의 격리port/save 차이는 의도된 변환이다."
+      },
+      {
+        "path": "docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md",
+        "line": 757,
+        "text": "사용자 각 팀 업무 배정 지시에 따라 tools/team-followup-20261002/project-teams/의 task.md11개에 기존 승인 백로그 한 건씩과 소유 파일·검수 조건을 지정했다. ART emg1 LOCK, MAP M5 도달성, SKILL mortar 생산회귀, UIUX 패널초점, ITEM D13 통합지도, SOUND 실제획득 SFX 연결계약, QA 독립host 실제인수, ENEMY 예고취소, BUILD 패키지source delta, BALANCE 공유악의 생산/오류응답 인수계획, ANIMVFX foot-shadow anchor다. 공유 생산코드 적용은 총괄 순차 인수이며 팀별 소유 새 산출은 최대3개다. BUILD 소유폴더는 build/ 무시 규칙의 Mac 대소문자 영향을 피하도록 BUILD_TEAM을 사용한다. QA 유일UI슬롯은 root3340 기동/응답 확인 뒤 별도 release한다. 실제 전송/Read/착수는 PROJECT-TEAM-CHATS-20261002.json 후속 receipts에 기록한다."
+      },
+      {
+        "path": "docs/2_1 스킬관리+합체시스템+자원/추천빌드_SKILL_REC_PATH.md",
+        "line": 24,
+        "text": "| 10 | 폭풍소환+얼음보주+뇌전걸음 | maliceMortar, iceOrb, ghostWalk | iceMortar | 얼음소용돌이 | Ice Vortex | maliceMortar + iceOrb |"
+      },
+      {
+        "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/native-recovery/SKILL-task.md",
+        "line": 1,
+        "text": "# SKILL: 검수된 mortar guard의 생산 적용 준비"
+      },
+      {
+        "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/native-recovery/SKILL-task.md",
+        "line": 3,
+        "text": "INDEPENDENT-NEXT-20261002.md의 미전달 한 건을 기존 세션에서만 이어간다. 작업 ID mortar-integration-ready. 동일 과제 수신/진행/대기 또는 초안이 있으면 중복 실행하지 말고 원자료를 보존해 상태를 보고한다. 기준 원격 체크포인트60b0d08b, 현재 HEAD는 시작 시 읽어 기록한다."
+      },
+      {
+        "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/native-recovery/SKILL-task.md",
+        "line": 5,
+        "text": "mortar-confirm-source/dispatch 및 root 독립19검사 인수 결과를 읽고 현재 양쪽 실제 함수에 기존 최소 패치가 적용 가능한지 준비한다. 기존 후보 재작성/이미 동일한 검사를 단순 반복하지 말고 함수 SHA/문맥 드리프트와 꼭 필요한 인접 회귀만 확인한다. 생산 HTML은 읽기 전용이며 소유 prefix의 검토용 파생본/미적용 patch만 가능. 원 MP 수치·확정/취소·RNG·보호 전투 설계를 보존한다."
+      },
+      {
+        "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/native-recovery/SKILL-task.md",
+        "line": 7,
+        "text": "소유 신규 prefix: tools/team-followup-20261001/SKILL/mortar-integration-ready-*. SOUND 외 팀은 최소 필요한 산출만 만들고 불필요한 전체 게임 사본을 늘리지 않는다. 공용 HTML/서버/에셋/팀 외 docs는 읽기 전용. 후보·단위검사·실제 런타임 인수를 구분한다. 기존 초안/사용자 세이브/타팀 stage·변경을 보존한다. 새 팀·세션·에이전트/생산 통합/빌드/에셋생성/Git쓰기/권한 변경0. 서버/listen/EPERM/읽기전용 제한 우회0. UI/런타임은 QA만 맡는다."
+      },
+      {
+        "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ASYNC-BOUNDARY-20261002.md",
+        "line": 9,
+        "text": "| SKILL | 실제 조준→확정→발사 슬라이스 통합 | 19 PASS | 기존 mortar MP 가드 후보 적용·실게임 |"
+      },
+      {
+        "path": "docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식__NFD_0628_2305_백업.md",
+        "line": 133,
+        "text": "| mortar | 폭풍소환 | 250 | +15%/Lv | 250→587 | |"
+      },
+      {
+        "path": "docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식__NFD_0628_2305_백업.md",
+        "line": 277,
+        "text": "| 지옥강타 1(giantSlam) | ~~유탄산탄(삭제됨)~~ | 폭풍소환(maliceMortar) |"
+      },
+      {
+        "path": "docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식__NFD_0628_2305_백업.md",
+        "line": 310,
+        "text": "- **폭풍소환(maliceMortar)**: 악의 소모 없음, MP만 소모."
+      },
+      {
+        "path": "docs/14밸런스+수치테이블/스킬_밸런스_리포트.md",
+        "line": 3,
+        "text": "> **2026-10-02 폭풍소환 MP 현행 교정:** 본편/easy의 key=`mortar`, 스킬레벨=`P.skills.maliceMortar||1`, `_COST_BASE=50`, `_COST_DPS=.35`. `mpCost`는 `~~(50×(1+(Lv−1)×.35)×pMagicCost())`로 최종 정수 절삭한다. 할인계수1에서 Lv1=50/Lv10=207(절삭 전207.5), 할인계수.4에서20/83이다. `pMagicCost()=max(.40,1−PASSIVES.pMagic×.04−_eqAffix('mpCostRed')−(_uEq('_uHelmMagic')||0))`. 비용계수와 피해 성장률을 구분한다. 다른 스킬의 아래 과거 수치·비교는 이번 감사에서 검수하지 않았다. 생산 수치 변경0, 확정입력 재검사 patch는 아직 미적용. [38검사·소스 근거](../0마스터플랜/mac-resume-20261001/vscode-dispatch/COMBAT-REVIEW-20261002.md)."
+      },
+      {
+        "path": "docs/14밸런스+수치테이블/스킬_밸런스_리포트.md",
+        "line": 29,
+        "text": "| 단발 폭딜 (장쿨) | 지옥강타 1, 폭풍소환, 얼음보주, 악의폭풍 | DPS ÷ 쿨타임 (초당 환산) |"
+      },
+      {
+        "path": "docs/14밸런스+수치테이블/스킬_밸런스_리포트.md",
+        "line": 81,
+        "text": "| maliceMortar | 폭풍소환 | **10** | +15%/Lv | 10 | 23.5 | 범위 | 11초 | MP `~~(50×(1+(Lv−1)×.35)×pMagicCost())` |"
+      },
+      {
+        "path": "docs/14밸런스+수치테이블/스킬_밸런스_리포트.md",
+        "line": 130,
+        "text": "  3위 maliceMortar  23.5배               ← 11초 쿨 (미변경)"
+      },
+      {
+        "path": "docs/14밸런스+수치테이블/스킬_밸런스_리포트.md",
+        "line": 164,
+        "text": "#### 2. 폭풍소환(maliceMortar) 배율 조정 완료 — 기본배율 15→10, Lv스케일 +20%→+15%"
+      },
+      {
+        "path": "docs/14밸런스+수치테이블/스킬_밸런스_리포트.md",
+        "line": 251,
+        "text": "| maliceMortar 폭풍소환 | 배율 15, +20%/Lv | **배율 10, +15%/Lv** | 마법 평균(4)의 2.5배로 하향 |"
+      },
+      {
+        "path": "docs/14밸런스+수치테이블/스킬_밸런스_리포트.md",
+        "line": 295,
+        "text": "  - maliceMortar 폭풍소환 (2.14/초, 범위)  ← 쿨 11초"
+      },
+      {
+        "path": "docs/14밸런스+수치테이블/스킬_밸런스_리포트.md",
+        "line": 363,
+        "text": "| 20 | 폭풍소환 | 단발 | **86** |"
+      },
+      {
+        "path": "docs/14밸런스+수치테이블/MAGIC_ATTACK_DAMAGE_20260910.md",
+        "line": 12,
+        "text": "| 이동·소환·특수 | 강화된 마법 기반 피해 사용 | 사슬화염, 기동불꽃, 전격이동, 뇌전걸음, 폭풍소환, 천공쇄기, 전대, 허수아비, 탄막블랙홀 |"
+      },
+      {
+        "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json",
+        "line": 74,
+        "text": "      \"task\": \"mortar-integration-ready\","
+      },
+      {
+        "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json",
+        "line": 91,
+        "text": "        \"task\": \"mortar-confirm-dispatch\","
+      },
+      {
+        "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json",
+        "line": 92,
+        "text": "        \"instruction\": \"tools/team-followup-20261001/SKILL/mortar-confirm-dispatch-task.md\","
+      },
+      {
+        "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json",
+        "line": 915,
+        "text": "    \"tools/team-followup-20261002/owner-dispatch/mortar-doc-sync.json\","
+      },
+      {
+        "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json",
+        "line": 951,
+        "text": "      \"mortarPass\": 38,"
+      },
+      {
+        "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json",
+        "line": 1160,
+        "text": "        \"actualTask\": \"mortar-production-regression-ready\","
+      },
+      {
+        "path": "docs/14밸런스+수치테이블/스킬별_DPS_자원소비표.md",
+        "line": 3,
+        "text": "> **2026-10-02 폭풍소환 MP 현행 교정:** 본편/easy의 key=`mortar`, 스킬레벨=`P.skills.maliceMortar||1`, `_COST_BASE=50`, `_COST_DPS=.35`. `mpCost`는 `~~(50×(1+(Lv−1)×.35)×pMagicCost())`로 최종 정수 절삭한다. 할인계수1에서 Lv1=50/Lv10=207(절삭 전207.5), 할인계수.4에서20/83이다. `pMagicCost()=max(.40,1−PASSIVES.pMagic×.04−_eqAffix('mpCostRed')−(_uEq('_uHelmMagic')||0))`. 비용계수와 피해 성장률을 구분한다. 다른 스킬의 아래 과거 수치·비교는 이번 감사에서 검수하지 않았다. 생산 수치 변경0, 확정입력 재검사 patch는 아직 미적용. [38검사·소스 근거](../0마스터플랜/mac-resume-20261001/vscode-dispatch/COMBAT-REVIEW-20261002.md)."
+      },
+      {
+        "path": "docs/14밸런스+수치테이블/스킬별_DPS_자원소비표.md",
+        "line": 48,
+        "text": "  magic:250, blink:250, iceOrb:250, dimBreach:250, exBolt:250, mortar:50"
+      },
+      {
+        "path": "docs/14밸런스+수치테이블/스킬별_DPS_자원소비표.md",
+        "line": 54,
+        "text": "  마법(+10~15%): magic/iceOrb(15%), mortar(35%, 비용), blink/dimBreach/exBolt(10%)"
+      },
+      {
+        "path": "docs/14밸런스+수치테이블/스킬별_DPS_자원소비표.md",
+        "line": 133,
+        "text": "| maliceMortar | 폭풍소환 | MP | `~~(50×(1+(Lv−1)×.35)×pMagicCost())` (key=mortar) | **660f (11초)** | INT 스케일 | 6.5초간 소용돌이, 범위 400+(Lv-1)×18 (1렙400, 20렙742), **흡인력 2.0+Lv×0.1** — lv1=2.1, lv20=4.0, 랩당 +0.1 선형 (2026-05-13 수정), 마우스 조준 클릭 설치 (사거리 1000px) (2026-04-21 범위×2) |"
+      },
+      {
+        "path": "docs/14밸런스+수치테이블/스킬별_DPS_자원소비표.md",
+        "line": 194,
+        "text": "| maliceMortar 폭풍소환 | 액티브 | 10 | 11초 | **0.9** |"
+      },
+      {
+        "path": "docs/14밸런스+수치테이블/스킬데미지공식표.md",
+        "line": 76,
+        "text": "- **해당 스킬**: fireball, omniBeam, fireAura, maliceMortar, maliceStorm, hellRay, elemMissile, thunderStake"
+      },
+      {
+        "path": "docs/14밸런스+수치테이블/스킬데미지공식표.md",
+        "line": 216,
+        "text": "| 폭풍소환 (maliceMortar) | magicRef | INT | pMagicMul | _skMul (b:7, g:5.6) | **ATK×7** | **ATK×32.2** | 광역 | 11초쿨. Lv10=32.2×, Lv20=60.2×. (g 2배 상향 2026-05-19) |"
+      },
+      {
+        "path": "docs/14밸런스+수치테이블/스킬데미지공식표.md",
+        "line": 229,
+        "text": "| 폭풍소환 (maliceMortar) | magicRef | INT | pMagicMul | _skMul | 300 | 390 | 범위 | 쿨 11초, 흡인, 5라인 모두 통일 |"
+      },
+      {
+        "path": "docs/14밸런스+수치테이블/자원소비량표.md",
+        "line": 52,
+        "text": "| mortar | +35%/Lv | 50 | 120 | 207 |"
+      },
+      {
+        "path": "docs/14밸런스+수치테이블/자원소비량표.md",
+        "line": 93,
+        "text": "| 폭풍소환 (maliceMortar) | 50 | 120 | 207 | 50×DPS(+35%) | 쿨 11초 |"
+      },
+      {
+        "path": "docs/0마스터플랜/MAC_AGENT_DASHBOARD.md",
+        "line": 11,
+        "text": "HEAD `5b8e6ba9` 기준 총괄+지원3의 source 인수: mortar38 PASS, MAP source9 PASS/과거PNG15 SHA, SOUND actual18그룹/84입력, 공유 악의 실파일14 PASS. 원담당11팀 새 전달0·새 실측0이며 지원 검수를 원담당 가동으로 세지 않는다. mortar 문서3개 정정·미적용 patch/8뷰 보드 준비 완료. VISUAL VERDICT RETOUCH, 실제8뷰0/8."
+      },
+      {
+        "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/COMBAT-REVIEW-20261002.md",
+        "line": 10,
+        "text": "| SKILL | `mortar-integration-ready` 준비, 전달0·Read0·미가동; 이전 실제3슬라이스19검사 인수 | 기존 mortar 가드의 현행 양쪽 생산 함수 문맥·드리프트·인접 회귀 확인 | 원함수 SHA·패치 적용가능성·동적 실제 MP 비용·정상/RNG parity; 생산 적용 뒤 실제 플레이는 별도 | 실제 현재 소스 새 감사38 PASS/0 FAIL. 헤더만 정규화한 미적용 patch 준비 |"
+      },
+      {
+        "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/COMBAT-REVIEW-20261002.md",
+        "line": 16,
+        "text": "`node tools/team-followup-20261002/combat-review/mortar-integration-audit.mjs`를 실제 실행해 **38 PASS/0 FAIL**을 확인했다. 기존19검사의 반복 실행으로 집계한 숫자가 아니다. 현재 양쪽 실제 aim-start/confirm/fire 및 `_COST_BASE`·`_COST_SK`·`_COST_DPS`·`_skLv`·`_dpsCostMul`·`pMagicCost`·`mpCost`·`useMp`·`_r` 원문을 실행한다. 환경의 PASSIVES/어픽스/유니크 조회와 SFX는 fixture다."
+      },
+      {
+        "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/COMBAT-REVIEW-20261002.md",
+        "line": 25,
+        "text": "| 저MP 릴리즈 실패 후 새 입력 없음 | `_mmCharging=false`, 추가4회 confirm에서 안내/RNG 반복0 | 실제 프레임 드라이버는 fixture |"
+      },
+      {
+        "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/COMBAT-REVIEW-20261002.md",
+        "line": 28,
+        "text": "현행 소스의 실제 비용은 `~~(50 × (1+(maliceMortarLv−1)×0.35) × pMagicCost())`다. 레벨은 `P.skills.maliceMortar||1`, `pMagicCost()` 계수 하한은0.40이다. 할인없는 Lv1→10의 최종 MP는50→207이며 중간 원값207.5에 `~~`가 적용된다.207.5를 실제 차감 MP로 기록하지 않는다. 이 감사는 비용을 바꾸지 않는다. 새 raw에는 각 조합에서 계산된 actualCost와 원본/후보 상태가 모두 저장된다."
+      },
+      {
+        "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/COMBAT-REVIEW-20261002.md",
+        "line": 30,
+        "text": "새로 확인한 적용 장애는 **owner patch의 파일 헤더**다. 기존 `mortar-confirm-source-{game,easy}.patch`의 `+++`가 `/private/tmp/claude-501/.../scratchpad/mm/...`를 가리켜 현행 Git의 `git apply --check`는 `No such file or directory`로 실패했다. 소스 문맥 드리프트나 생산 결함 추가를 의미하지 않는다. 원담당 patch는 그대로 보존했다."
+      },
+      {
+        "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/COMBAT-REVIEW-20261002.md",
+        "line": 32,
+        "text": "지원 파생본 `tools/team-followup-20261002/combat-review/mortar-integration-targets.patch`에서 `--- a/game*.html`·`+++ b/game*.html` 헤더만 정규화했다. **각 @@ 이하 hunk 바이트가 원담당 patch와 동일**하며 combined `git apply --check`가 통과했다. patch는 미적용이다. 기존 가드는 함수 시작의 MP 재검사1줄이며 새 로직 후보를 설계하지 않았다."
+      },
+      {
+        "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/COMBAT-REVIEW-20261002.md",
+        "line": 34,
+        "text": "첫 감사 원자료 `mortar-integration-first-run.json`의31 PASS/4 FAIL도 보존했다. 2 FAIL은 frozen 파일의 설명주석까지 비교한 지원 하니스 오류로, 원함수만 추출하도록 수정했다. 다른2 FAIL은 위 파일헤더의 실제 적용 준비 장애다. 최종 근거는 `mortar-integration-evidence.json`이다. 원담당 결과의 미래시각/전체 RNG0 표현을 현행 인수로 승격하지 않는다."
+      },
+      {
+        "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/COMBAT-REVIEW-20261002.md",
+        "line": 38,
+        "text": "`rg -n -i 'mortar|폭풍소환|fireMaliceMortar|light-normal-observer|qa_first_kill_cpu_probe|telegraph|foot.shadow' docs/ --glob '*.md'`를 실행했다. 기존 문서166매칭의 원문을 `tools/team-followup-20261002/combat-review/docs-search-20261002.txt`로 보존했다. 지원 도구 추가 후 관련 현행 계약과 미적용 상태를 이 문서에 기록했다. 공용 SSOT와 NFD 백업을 임의 수정하지 않는다."
+      },
+      {
+        "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/COMBAT-REVIEW-20261002.md",
+        "line": 40,
+        "text": "아래 표는 지원 검토 시작에 읽은 정정 전 표기의 이력이다. **root가2026-10-01 23:19:22.401841 UTC에 canonical3문서의 mortar 비용 부분을 정정 완료**했고, 지원이 실제 수정내용과 `tools/team-followup-20261002/owner-dispatch/mortar-doc-sync.json`의 before/after SHA·백업기록을 읽어 인수했다. 비용에는 `~~` 정수반환·Lv10 최종207·최저 계수0.40에서83을 구분한다. 피해10/+15%와 역사 NFD백업은 보존했다. 다른 키의 오래된 비용 흔적은 이번 범위 밖 미검수다."
+      },
+      {
+        "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/COMBAT-REVIEW-20261002.md",
+        "line": 44,
+        "text": "| `docs/14밸런스+수치테이블/자원소비량표.md` 52·93행 | mortar base50·+35%/Lv | 현행 비용 SSOT와 일치 |"
+      },
+      {
+        "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/COMBAT-REVIEW-20261002.md",
+        "line": 46,
+        "text": "| `docs/14밸런스+수치테이블/스킬별_DPS_자원소비표.md` 정정 전45·51·130행 | mortar250·+15%·MP250×DPS | 비용 부분3개소 root 정정 완료, 피해배율 분리 |"
+      },
+      {
+        "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/COMBAT-REVIEW-20261002.md",
+        "line": 50,
+        "text": "현행 canonical3문서의 mortar 비용 동기화 게이트는 root 정정으로 완료다. 생산 통합은 root가 원격 복구지점·함수 소유권을 확보한 뒤 순차 인수하며 이번 지원 완료는 후보 적용준비까지다. 원격 DNS오류와 Git쓰기 EPERM은 해소됐다고 주장하지 않는다."
+      },
+      {
+        "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-CHATS-20261002.md",
+        "line": 58,
+        "text": "| mortar 최소 가드 | normalized patch apply-check, 동적 비용38·함수17·actual dispatch19·인접30 PASS; 기존 원자료 보존 | 양쪽 fireMaliceMortar 미적용. frozen before 대비 생산 회귀·docs 상태 정정·실제 입력 Gate 필요 |"
+      },
+      {
+        "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-WORK-DISPATCH-20261002.json",
+        "line": 72,
+        "text": "      \"task\": \"mortar-production-regression-ready\","
+      },
+      {
+        "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-WORK-DISPATCH-20261002.json",
+        "line": 74,
+        "text": "      \"detail\": \"이미 준비된 mortar-integration-targets.patch와 frozen before를 재사용해 실제 fireMaliceMortar/confirm 호출 source를 대상으로 생산 인수용 회귀 하니스를 새 소유 경로에 준비하세요. production이 미적용인 현재와 메모리 patch 후보 양쪽을 비교하며 동적 비용 정확값/0.25 부족·할인 변경·회복 재클릭·RMB/Escape 우선·release 이후 자동 재시도 금지·일반/iceMortar 성공 상태/RNG parity를 검사하세요. 기존38/17/19 단순 재실행 대신 생산 적용 후도 재사용 가능한 하니스여야 합니다. 생산소스 수정0.\","
+      },
+      {
+        "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-WORK-DISPATCH-20261002.json",
+        "line": 97,
+        "text": "        \"latestMessage\": \"배정된 `mortar-production-regression-ready` 지시문을 읽고, 지정 소유 폴더에만 검수 산출물과 docs 계약표를 만들겠습니다. 생산소스는 읽기 전용으로 유지하며 게임·서버·빌드·Git쓰기는 하지 않겠습니다.\","
+      },
+      {
+        "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/INDEPENDENT-NEXT-20261002.md",
+        "line": 14,
+        "text": "| SKILL | 검수된 mortar guard의 생산 적용 준비 및 원소스 회귀; SKILL 소유 후보 | 미전달. 생산 HTML 소유권 미부여, 다른 작업과 직렬 조율 필요 |"
+      },
+      {
+        "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/MAC-COORDINATION-20261002.md",
+        "line": 8,
+        "text": "| SKILL | 현행 양쪽 actual aim/confirm/fire·실제 비용 경계38 PASS. 기존 patch의 scratchpad 목적지를 헤더만 정규화, hunk byte 동일/apply-check PASS | Claude 전달0; 생산 미적용. 원격복구·순차 소유권 확보 뒤 mortar 최소 가드 인수·실제 플레이 |"
+      },
+      {
+        "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/MAC-COORDINATION-20261002.md",
+        "line": 21,
+        "text": "- [전투 source 검수](COMBAT-REVIEW-20261002.md): mortar38검사 및 헤더 정정 미적용 patch, 새 raw 분석 CLI. 원담당 patch·초기 실패자료 보존."
+      },
+      {
+        "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/MAC-COORDINATION-20261002.md",
+        "line": 24,
+        "text": "- mortar 비용 문서3개를 실제 `_COST_BASE=50`, `_COST_DPS=.35`, `_COST_SK.mortar=maliceMortar`, `mpCost=~~(50×(1+(Lv−1)×.35)×pMagicCost())`로 정정했다. 할인계수1의 Lv1→10 최종50→207, 중간원값207.5; 최저계수.4에서20→83. 피해10/+15%·역사 NFD백업과 타키 수치는 이번 범위 밖으로 보존했다. 원자료/수정전 로컬복사/문서SHA는 `tools/team-followup-20261002/owner-dispatch/mortar-doc-sync.json`."
+      },
+      {
+        "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/MAC-COORDINATION-20261002.md",
+        "line": 41,
+        "text": "다음 승인 한 건은 원격복구 확인 뒤 준비된 mortar/shared-mats patch를 순차 인수하는 것이다. 정상 서버/UI 슬롯이 열리면 첫 처치·밀집 CPU 및 MAP 정정8뷰·M5 전체경로의 실제 측정을 우선한다. 준비와 실제 실행은 계속 구분한다."
+      },
+      {
+        "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-CHATS-20261002.json",
+        "line": 50,
+        "text": "      \"actualTask\": \"mortar-production-regression-ready\","
+      },
+      {
+        "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-CHATS-20261002.json",
+        "line": 190,
+        "text": "    \"mortar\": ["
+      }
+    ],
+    "sharedDocsWritten": false,
+    "syncDestination": "result.md 계약표/정확한 root 적용안; shared docs는 최신 소유권상 읽기 전용"
+  },
+  "completion": {
+    "atUTC": "2026-10-02T03:51:26.104535+00:00",
+    "head": "31454dfa49c90bac77351273fc32f0c1eb937928",
+    "lastObservedRemoteRef": "refs/heads/codex/mac-environment-20261001",
+    "lastObservedRemoteSHA": "31454dfa49c90bac77351273fc32f0c1eb937928",
+    "remoteObservationBasis": "final git ls-remote actual tool result, read-only",
+    "changes": 50,
+    "checkpointNeeded": false,
+    "readyPass": 142,
+    "readyFail": 0,
+    "productionApplied": false,
+    "productionRequiredGate": {
+      "observedExitCode": 1,
+      "expectedGateFailures": 2,
+      "unexpectedFailures": 0
+    },
+    "firstRunFailure": "2 harness assumptions about existing throw fast-landing; preserved in executions[0]",
+    "sharedIndex": {
+      "unchangedDuringAcceptedRun": true,
+      "acceptedRunSHA256": "7beab93b570ef992959359065cf6a2e79dffc1c7a3988df782c36aed1816ca2e",
+      "completionSHA256": "4fb7e76f71cb7ac7ed0f9bf1f7cc06dc8c0918941c7a9c392e68f7fd5939f290",
+      "completionEqualsAccepted": false,
+      "stagedFiles": [],
+      "explanation": "shared HEAD/index transitioned during concurrent work; no team Git writes, no rollback or index modification"
+    },
+    "protectedInputsUnchanged": true,
+    "docsContractsRecordedIn": "result.md",
+    "sharedDocsWritten": false,
+    "ownedFilesSHA256": {
+      "checks.mjs": "403f138c8e8f0eb9d4dcc732d27d0e50f9198a4d846b85223f19d3dc948a1499",
+      "result.md": "fa74e64f3b6850da06e856a58c673b484f14aceb0625262f3ee6f2655619f7d8"
+    },
+    "teamStatusLines": [
+      "?? tools/team-followup-20261002/project-teams/SKILL/checks.mjs",
+      "?? tools/team-followup-20261002/project-teams/SKILL/evidence.json",
+      "?? tools/team-followup-20261002/project-teams/SKILL/result.md"
+    ],
+    "forbiddenActions": {
+      "productionWrites": 0,
+      "gitWrites": 0,
+      "newSessions": 0,
+      "subagents": 0,
+      "otherChatMessages": 0,
+      "uiGameServer": 0,
+      "measurementsBuildsInstalls": 0,
+      "automationChanges": 0
+    }
+  }
+}

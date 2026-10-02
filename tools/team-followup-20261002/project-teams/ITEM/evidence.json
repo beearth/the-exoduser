@@ -1,0 +1,2605 @@
+{
+  "task": "d13-integration-map",
+  "status": "정적 통합지도 산출·검수 완료 / 생산 미연결",
+  "receivedObservationAt": "2026-10-02T03:43:38Z",
+  "timeSource": "첫 지시문 읽기 도구 완료 뒤 clock 실제 관찰; 메시지 도착의 정확한 시각을 추정하지 않음",
+  "startingHead": "96610b6546a31e882962470ea1f2164ce94edca6",
+  "startingChanges": 23,
+  "events": [
+    {
+      "phase": "수신 및 최신 task.md 전체 Read 확인",
+      "observedAt": "2026-10-02T03:43:38Z"
+    },
+    {
+      "phase": "실행·정적 검수 완료",
+      "at": "2026-10-02T03:46:56.986Z",
+      "passed": 20
+    },
+    {
+      "phase": "실행·정적 검수 완료",
+      "at": "2026-10-02T03:47:40.463Z",
+      "passed": 22
+    },
+    {
+      "phase": "보고서·최종 산출 보존 검수 완료",
+      "at": "2026-10-02T03:50:08.663Z",
+      "checks": 4
+    },
+    {
+      "phase": "보고서·최종 산출 보존 검수 완료",
+      "at": "2026-10-02T03:50:32.676Z",
+      "checks": 4
+    }
+  ],
+  "duplicateCheck": {
+    "tool": "official read_thread latest turn",
+    "threadId": "01a0f6e6-1fbe-7df0-8d02-a9c2d9df3750",
+    "title": "할당 작업 실행",
+    "lastTurnId": "01a0f8c3-979b-75e1-8fa4-cafa4312faf6",
+    "lastTask": "d13-callback-boundary",
+    "startedAtUnix": 1790879963,
+    "completedAtUnix": 1790880244,
+    "turnStatus": "completed",
+    "d13IntegrationMapReceivedEvidence": false,
+    "limits": "최근 턴/문서 범위에서 중복 수행 근거 없음. notLoaded를 종료·전체 큐 부재로 해석하지 않음"
+  },
+  "reads": [
+    "AGENTS.md",
+    "docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md §18 및 최신 말미",
+    "docs/0마스터플랜/TEAM_CONTINUATION_POLICY_20261001.md (앞선 인수 유지)",
+    "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/MAC-COORDINATION-20261002.md (앞선 인수 유지)",
+    "docs/7아이템디자인/ITEM_TEAM_MASTER.md (앞선 전체 인수 유지)",
+    "tools/team-followup-20261002/project-teams/ITEM/task.md 전체",
+    "tools/team-followup-20261002/owner-dispatch/ITEM-task.md 전체",
+    "docs/7아이템디자인/유니크_어픽스_리스트.md D절 저장/생명주기 및 U-D13",
+    "docs/7아이템디자인/UNIQUE_TOP8_HOOK_REVIEW_20261001.md D13 및 구현 순서",
+    "docs/7아이템디자인/UNIQUE_ITEM_GAME_INTEGRATION_CONTRACT_20261001.md 관련 생성/저장/슬롯 계약",
+    "tools/team-followup-20261001/ITEM/d13-deferred-contract-candidate.mjs 전체 및 fixture 읽기",
+    "outputs/team-review-20261002/four-candidate-acceptance/item-root-independent.json",
+    "양쪽 생산 HTML 생성/DOT/압축/사망/stage/DB/demo/test 초기화 source"
+  ],
+  "ownedOutputs": [
+    "result.md",
+    "evidence.json",
+    "checks.mjs"
+  ],
+  "constraints": {
+    "productionWrites": 0,
+    "originalCandidateWrites": 0,
+    "taskWrites": 0,
+    "gitWrites": 0,
+    "callback32Reruns": 0,
+    "ui": 0,
+    "server": 0,
+    "game": 0,
+    "build": 0,
+    "install": 0,
+    "newSessions": 0,
+    "subagents": 0,
+    "newPolicies": 0,
+    "newPayloads": 0,
+    "newSchemas": 0
+  },
+  "remoteCheckpoint": {
+    "reportedByRoot": "96610b6546a31e882962470ea1f2164ce94edca6",
+    "independentRemoteQueryThisTask": false
+  },
+  "remainingGates": [
+    "실제 caller/clear 순차 소유권·연결",
+    "D13 저장롤 공급/장착 소비",
+    "자식 payload 및 미결 cap/겹침",
+    "동기·비동기 lifecycle·재진입·연쇄·보스 실전 검수",
+    "브라우저/게임/패키지 및 성능 인수"
+  ],
+  "staticReview": {
+    "task": "d13-integration-map",
+    "startedAt": "2026-10-02T03:47:39.487Z",
+    "completedAt": "2026-10-02T03:47:40.463Z",
+    "head": "96610b6546a31e882962470ea1f2164ce94edca6",
+    "changesStart": 45,
+    "changesEnd": 45,
+    "passed": 22,
+    "failed": 0,
+    "checks": [
+      {
+        "name": "인수된 D13 후보 byte 보존",
+        "status": "PASS"
+      },
+      {
+        "name": "기본 비활성/proposal/runtimeReady=false 정적 계약",
+        "status": "PASS"
+      },
+      {
+        "name": "출처·시전·큐 및 callback 전환경계 정적 계약",
+        "status": "PASS"
+      },
+      {
+        "name": "game.html 모든 inline script AST 파싱",
+        "status": "PASS"
+      },
+      {
+        "name": "game.html 핵심 함수/수명 경계 식별",
+        "status": "PASS"
+      },
+      {
+        "name": "game.html update의 실제 장판 pass 유일성",
+        "status": "PASS"
+      },
+      {
+        "name": "game.html spikeTrap 원 hurtE 인수식 1곳",
+        "status": "PASS"
+      },
+      {
+        "name": "game.html 압축 종료 위치 및 실제 적별 겹침 cap",
+        "status": "PASS"
+      },
+      {
+        "name": "game.html 생산 D13 설치/롤 공급 부재",
+        "status": "PASS"
+      },
+      {
+        "name": "game.html stage/boss/death 실제 배열 reset 식별",
+        "status": "PASS"
+      },
+      {
+        "name": "game.html lazy 배열 초기화와 lifecycle reset 구분",
+        "status": "PASS"
+      },
+      {
+        "name": "game.html 캐릭터/복원/새 플레이어 경계 식별",
+        "status": "PASS"
+      },
+      {
+        "name": "본편 인수된 전체 장판 pass SHA 동일",
+        "status": "PASS"
+      },
+      {
+        "name": "game-easy-test.html 모든 inline script AST 파싱",
+        "status": "PASS"
+      },
+      {
+        "name": "game-easy-test.html 핵심 함수/수명 경계 식별",
+        "status": "PASS"
+      },
+      {
+        "name": "game-easy-test.html update의 실제 장판 pass 유일성",
+        "status": "PASS"
+      },
+      {
+        "name": "game-easy-test.html spikeTrap 원 hurtE 인수식 1곳",
+        "status": "PASS"
+      },
+      {
+        "name": "game-easy-test.html 압축 종료 위치 및 실제 적별 겹침 cap",
+        "status": "PASS"
+      },
+      {
+        "name": "game-easy-test.html 생산 D13 설치/롤 공급 부재",
+        "status": "PASS"
+      },
+      {
+        "name": "game-easy-test.html stage/boss/death 실제 배열 reset 식별",
+        "status": "PASS"
+      },
+      {
+        "name": "game-easy-test.html lazy 배열 초기화와 lifecycle reset 구분",
+        "status": "PASS"
+      },
+      {
+        "name": "game-easy-test.html 캐릭터/복원/새 플레이어 경계 식별",
+        "status": "PASS"
+      }
+    ],
+    "maps": [
+      {
+        "path": "game.html",
+        "sha256": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+        "inlineScripts": 6,
+        "functions": [
+          {
+            "name": "dbRestore",
+            "start": 204809,
+            "end": 221979,
+            "line": 3589,
+            "async": false,
+            "sha256": "63385633575b51647ab02b9e27f6d840e036dc35f9cd595b1cc65063e1133c35",
+            "bytes": 19544
+          },
+          {
+            "name": "_loadCharAtlas",
+            "start": 562186,
+            "end": 564379,
+            "line": 10145,
+            "async": false,
+            "sha256": "47f6cb0b5630535ed2c79b436b80320978cd01b0d1aaa8f89e4d400a653eeae6",
+            "bytes": 2267
+          },
+          {
+            "name": "_dispatchSkillSlot",
+            "start": 677321,
+            "end": 688060,
+            "line": 12435,
+            "async": false,
+            "sha256": "f0f84687bcd648a75d8324618d075131b21de0d250692f662eeadc98b9e7c068",
+            "bytes": 11575
+          },
+          {
+            "name": "_enterBossArena",
+            "start": 1655090,
+            "end": 1660069,
+            "line": 29511,
+            "async": false,
+            "sha256": "01f063493e7b07deed6ae1f8925ffb09c54f0fd03070bf3d3e27cd2cf79d365b",
+            "bytes": 5365
+          },
+          {
+            "name": "initStage",
+            "start": 1700261,
+            "end": 1708679,
+            "line": 30295,
+            "async": false,
+            "sha256": "2b88d7b367a9b2bb60aef018d2be92e51cbfb66c64524c327343772cd0f150c3",
+            "bytes": 9094
+          },
+          {
+            "name": "update",
+            "start": 1732383,
+            "end": 2066668,
+            "line": 30857,
+            "async": false,
+            "sha256": "c37aa75077f5670d8f4af076f2570f75471d7f0bf5c32b6c1b43185749045a1c",
+            "bytes": 365091
+          },
+          {
+            "name": "checkRooms",
+            "start": 2277974,
+            "end": 2290198,
+            "line": 40379,
+            "async": false,
+            "sha256": "98bf9b1a8b413c7f4354964c03df8929433e1f5af1e0f508b97408341a79dab0",
+            "bytes": 14016
+          },
+          {
+            "name": "hurtE",
+            "start": 2297524,
+            "end": 2353786,
+            "line": 40713,
+            "async": false,
+            "sha256": "a8578d764819733816dce0ed677f5d2e2d4bae35040425c9f1762b7fd69771f2",
+            "bytes": 63812
+          },
+          {
+            "name": "_fallenResolve",
+            "start": 2391669,
+            "end": 2394261,
+            "line": 42370,
+            "async": false,
+            "sha256": "e5cb1a7a2c9dcd1065902e09e86539a5e3bf01ba662aa7c3a5eb6ca2230a582a",
+            "bytes": 2870
+          },
+          {
+            "name": "_tickBladeDash",
+            "start": 2502071,
+            "end": 2505611,
+            "line": 43860,
+            "async": false,
+            "sha256": "a1007f245486c35b92ad8e58f693aea4c83312c2f586482793228949530daadd",
+            "bytes": 3842
+          },
+          {
+            "name": "activateSpikeTrap",
+            "start": 2509518,
+            "end": 2510078,
+            "line": 43997,
+            "async": false,
+            "sha256": "f5d9f41ee12c8f51a0d8a1b116588a6133a3bc801aec73bb0532d3c02fc2dd19",
+            "bytes": 618
+          },
+          {
+            "name": "activateDarkPillar",
+            "start": 2544906,
+            "end": 2546824,
+            "line": 44750,
+            "async": false,
+            "sha256": "8cc33de63f8af812c79ec0fddb7f9fbbd649c276c903415317f62aeb42e40069",
+            "bytes": 2145
+          },
+          {
+            "name": "activateGiantSlam",
+            "start": 2553933,
+            "end": 2557711,
+            "line": 44935,
+            "async": false,
+            "sha256": "2c2cb60f5af6a4759aa24efeea620673b621e7a0dad3658f0a480780f12c58fb",
+            "bytes": 4329
+          },
+          {
+            "name": "activateWeakZone",
+            "start": 2562529,
+            "end": 2563192,
+            "line": 45130,
+            "async": false,
+            "sha256": "d623f3db67ddd3c79bc76254c5417de10f916cfecfe9e08e6b28fed11a85a839",
+            "bytes": 721
+          },
+          {
+            "name": "activateMaliceDome",
+            "start": 2563215,
+            "end": 2563841,
+            "line": 45147,
+            "async": false,
+            "sha256": "1646073484979f0c7b42e21754e124c7fc1970907981a02aa52217f5cf8e88e7",
+            "bytes": 646
+          },
+          {
+            "name": "activateHolyDome",
+            "start": 2563865,
+            "end": 2565080,
+            "line": 45161,
+            "async": false,
+            "sha256": "c8a6475cff895e33d37d635a1318b0ca574692818d944f97ccbe02bcc0efaf75",
+            "bytes": 1403
+          },
+          {
+            "name": "activateHolyPrison",
+            "start": 2565105,
+            "end": 2565565,
+            "line": 45188,
+            "async": false,
+            "sha256": "1ec276bab2e8e8ae3558388b85c4961c11db4731b52e9ad75434085d3a593ac1",
+            "bytes": 482
+          },
+          {
+            "name": "_startDemoTest",
+            "start": 3466486,
+            "end": 3475535,
+            "line": 60011,
+            "async": true,
+            "sha256": "138b521a5cf1da45ef9b1e9842f0dc6561562b1b90fced638db40cac3f7175d2",
+            "bytes": 9791
+          },
+          {
+            "name": "_startDemoNew",
+            "start": 3475630,
+            "end": 3480990,
+            "line": 60187,
+            "async": true,
+            "sha256": "1771f0d240c849f9c058694305f594dc91167d55ba8876cc56b79b66d71e28c0",
+            "bytes": 5613
+          },
+          {
+            "name": "_startTestChar",
+            "start": 3481037,
+            "end": 3486465,
+            "line": 60293,
+            "async": true,
+            "sha256": "fc87d7b40dfd94bab7192e6151c3c9d697c3e5ebb4faec1269b839b54b510535",
+            "bytes": 5736
+          },
+          {
+            "name": "startGameFromDB",
+            "start": 3486494,
+            "end": 3492788,
+            "line": 60384,
+            "async": true,
+            "sha256": "57f378abad7d2315f51b8c3942889cce9ae38790c1ded3bbe87d9c0d37d1e86e",
+            "bytes": 7328
+          },
+          {
+            "name": "anonymous@61409",
+            "start": 3569928,
+            "end": 3573614,
+            "line": 61409,
+            "async": true,
+            "sha256": "c87b52a4021868a0775112e4059cb4dcf747ff342b0c83543bc142a1f8ceadde",
+            "bytes": 4050
+          },
+          {
+            "name": "_boot",
+            "start": 3584902,
+            "end": 3604623,
+            "line": 61726,
+            "async": true,
+            "sha256": "9ff0cdc7cd5d6c617acc8923b506c5edbd731b758dc9292b8b9e3d4c763ecd5c",
+            "bytes": 20903
+          },
+          {
+            "name": "anonymous@61806",
+            "start": 3588771,
+            "end": 3589502,
+            "line": 61806,
+            "async": false,
+            "sha256": "9f8cadfced9a77dcf06c2e5712fd0ee7055a03d2a49e773c9f9abc4f85db4a09",
+            "bytes": 745
+          }
+        ],
+        "zonePass": {
+          "line": 35851,
+          "endLine": 36237,
+          "sha256": "a78c383ab58ccdd9bf67893ed3b742cdcd3c82a21f94b539486a2a075c868c11",
+          "bytes": 22471
+        },
+        "dot": {
+          "name": "hurtE",
+          "line": 36125,
+          "start": 2059303,
+          "end": 2059410,
+          "owner": "update",
+          "sha256": "52e3481541923fcced1e047d7c2dac8cac90ab859615b3909e576b633e72fc93",
+          "expression": "hurtE(e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true,shieldHit:true,_lessonAttack:'spikeTrap'},EL.P)"
+        },
+        "activationCallers": [
+          {
+            "name": "activateSpikeTrap",
+            "line": 12541,
+            "start": 683993,
+            "end": 684012,
+            "owner": "_dispatchSkillSlot",
+            "sha256": "bf572ae5b9bf599842fbbb4226d22b280e8144405155b304fa855e5957a52227"
+          }
+        ],
+        "lifecycleAssignments": [
+          {
+            "left": "INV.equipped",
+            "right": null,
+            "rightSha256": "c4c5462896ee7dd7acd77521796a1a4d234b9f0fd9589966fa7bc91dab91152a",
+            "operator": "=",
+            "line": 3616,
+            "owner": "dbRestore",
+            "guards": [
+              "d.inv"
+            ],
+            "kind": "state-assignment",
+            "sha256": "3cb1a5f2b7765453ace0227447201b649d075235230dbf283688a94ab4230ed5",
+            "start": 206028,
+            "end": 206260
+          },
+          {
+            "left": "_charIdx",
+            "right": "+_sv",
+            "rightSha256": "f0230777b4d0a330d33257dff32cd9453c3adccbee4510bfb301e5187ab236fd",
+            "operator": "=",
+            "line": 10130,
+            "owner": "top-level",
+            "guards": [
+              "_sv!=null"
+            ],
+            "kind": "state-assignment",
+            "sha256": "a8baceaf1034e2e2e88ef8564179f6c1ec14fb14a13d702a0691944ad53fd3c1",
+            "start": 561308,
+            "end": 561321
+          },
+          {
+            "left": "_charIdx",
+            "right": "idx",
+            "rightSha256": "c66a8eb7e6a7e395bf000e8884c7de131a5cf32a9f42de44a1b9ceaf47c8900e",
+            "operator": "=",
+            "line": 10147,
+            "owner": "_loadCharAtlas",
+            "guards": [],
+            "kind": "state-assignment",
+            "sha256": "2c91a7ddb44bca763e7b2b8c55ee77456216b2da0a601e8aded4a2768e4b729d",
+            "start": 562259,
+            "end": 562271
+          },
+          {
+            "left": "G._fireZones",
+            "right": "[]",
+            "rightSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "operator": "=",
+            "line": 29524,
+            "owner": "_enterBossArena",
+            "guards": [],
+            "kind": "state-assignment",
+            "sha256": "d70ef36c46441a6536f3c483894eb1a4f74f9ae09ad97ab314b7067936024c72",
+            "start": 1656291,
+            "end": 1656306
+          },
+          {
+            "left": "G._fireZones",
+            "right": "[]",
+            "rightSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "operator": "=",
+            "line": 30314,
+            "owner": "initStage",
+            "guards": [],
+            "kind": "state-assignment",
+            "sha256": "d70ef36c46441a6536f3c483894eb1a4f74f9ae09ad97ab314b7067936024c72",
+            "start": 1701434,
+            "end": 1701449
+          },
+          {
+            "left": "G._fireZones",
+            "right": "[]",
+            "rightSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "operator": "=",
+            "line": 31087,
+            "owner": "update",
+            "guards": [
+              "_dashActive",
+              "(_harpSk==='magicBlink'||_harpSk==='dimBreach')&&~~(_dashLeft)%3===0",
+              "!G._fireZones"
+            ],
+            "kind": "lazy-array-initialization",
+            "sha256": "d70ef36c46441a6536f3c483894eb1a4f74f9ae09ad97ab314b7067936024c72",
+            "start": 1745119,
+            "end": 1745134
+          },
+          {
+            "left": "G._fireZones",
+            "right": "[]",
+            "rightSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "operator": "=",
+            "line": 31095,
+            "owner": "update",
+            "guards": [
+              "_dashActive",
+              "P._chainSlashActive&&_isFused('dimBlast')&&~~(_dashLeft)%4===0",
+              "!G._fireZones"
+            ],
+            "kind": "lazy-array-initialization",
+            "sha256": "d70ef36c46441a6536f3c483894eb1a4f74f9ae09ad97ab314b7067936024c72",
+            "start": 1745721,
+            "end": 1745736
+          },
+          {
+            "left": "G._fireZones",
+            "right": "[]",
+            "rightSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "operator": "=",
+            "line": 31187,
+            "owner": "update",
+            "guards": [
+              "_dashActive",
+              "(_dashLeft-=_dashStep)<=0",
+              "P._chainAssaultReady",
+              "!G._fireZones"
+            ],
+            "kind": "lazy-array-initialization",
+            "sha256": "d70ef36c46441a6536f3c483894eb1a4f74f9ae09ad97ab314b7067936024c72",
+            "start": 1752085,
+            "end": 1752100
+          },
+          {
+            "left": "G._fireZones.length",
+            "right": "_fzH",
+            "rightSha256": "5195d14aa56db1dc7babc3211d08b08986a8332fe65927feb45cef4873cc46b2",
+            "operator": "=",
+            "line": 31327,
+            "owner": "update",
+            "guards": [
+              "_hsActive",
+              "G._fireZones"
+            ],
+            "kind": "state-assignment",
+            "sha256": "01c975107e4db1b8bb5307e8a0a7a9ae7aba66ad2737d2f01f91767992e1c19e",
+            "start": 1760930,
+            "end": 1760954
+          },
+          {
+            "left": "G._fireZones",
+            "right": "[]",
+            "rightSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "operator": "=",
+            "line": 32341,
+            "owner": "update",
+            "guards": [
+              "P.s==='magicCast'",
+              "P.st2<=0",
+              "_mcSk==='fireAura'&&P.skills.fireAura>=1",
+              "!G._fireZones"
+            ],
+            "kind": "lazy-array-initialization",
+            "sha256": "d70ef36c46441a6536f3c483894eb1a4f74f9ae09ad97ab314b7067936024c72",
+            "start": 1824666,
+            "end": 1824681
+          },
+          {
+            "left": "G._fireZones",
+            "right": "[]",
+            "rightSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "operator": "=",
+            "line": 32755,
+            "owner": "update",
+            "guards": [
+              "P.st2<=0",
+              "P.skills.magicBlink>=1",
+              "!G._fireZones"
+            ],
+            "kind": "lazy-array-initialization",
+            "sha256": "d70ef36c46441a6536f3c483894eb1a4f74f9ae09ad97ab314b7067936024c72",
+            "start": 1848169,
+            "end": 1848184
+          },
+          {
+            "left": "G._fireZones",
+            "right": "[]",
+            "rightSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "operator": "=",
+            "line": 35014,
+            "owner": "update",
+            "guards": [
+              "P._hrAiming",
+              "MBjust[0]",
+              "!G._fireZones"
+            ],
+            "kind": "lazy-array-initialization",
+            "sha256": "d70ef36c46441a6536f3c483894eb1a4f74f9ae09ad97ab314b7067936024c72",
+            "start": 1986947,
+            "end": 1986962
+          },
+          {
+            "left": "G._fireZones",
+            "right": "[]",
+            "rightSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "operator": "=",
+            "line": 35060,
+            "owner": "update",
+            "guards": [
+              "P._msAiming",
+              "MBjust[0]||_msRel",
+              "!G._fireZones"
+            ],
+            "kind": "lazy-array-initialization",
+            "sha256": "d70ef36c46441a6536f3c483894eb1a4f74f9ae09ad97ab314b7067936024c72",
+            "start": 1989035,
+            "end": 1989050
+          },
+          {
+            "left": "G._fireZones",
+            "right": "[]",
+            "rightSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "operator": "=",
+            "line": 35130,
+            "owner": "update",
+            "guards": [
+              "G._dpQueue&&G._dpQueue.length>0",
+              "P._dpQueueT>=q.delay",
+              "!G._fireZones"
+            ],
+            "kind": "lazy-array-initialization",
+            "sha256": "d70ef36c46441a6536f3c483894eb1a4f74f9ae09ad97ab314b7067936024c72",
+            "start": 1992376,
+            "end": 1992391
+          },
+          {
+            "left": "G._fireZones",
+            "right": "[]",
+            "rightSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "operator": "=",
+            "line": 35158,
+            "owner": "update",
+            "guards": [
+              "P._isAiming",
+              "MBjust[0]",
+              "!G._fireZones"
+            ],
+            "kind": "lazy-array-initialization",
+            "sha256": "d70ef36c46441a6536f3c483894eb1a4f74f9ae09ad97ab314b7067936024c72",
+            "start": 1993544,
+            "end": 1993559
+          },
+          {
+            "left": "G._fireZones",
+            "right": "[]",
+            "rightSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "operator": "=",
+            "line": 35490,
+            "owner": "update",
+            "guards": [
+              "G._mmBomb",
+              "mb.phase==='throw'",
+              "prog>=1",
+              "mb.vortex",
+              "!G._fireZones"
+            ],
+            "kind": "lazy-array-initialization",
+            "sha256": "d70ef36c46441a6536f3c483894eb1a4f74f9ae09ad97ab314b7067936024c72",
+            "start": 2009931,
+            "end": 2009946
+          },
+          {
+            "left": "G._fireZones.length",
+            "right": "_fzW",
+            "rightSha256": "617d93cbbaec2f85c0a53f2943336804f4a7161fe230b681fecfb4099f0ce96b",
+            "operator": "=",
+            "line": 36236,
+            "owner": "update",
+            "guards": [
+              "G._fireZones&&G._fireZones.length>0"
+            ],
+            "kind": "state-assignment",
+            "sha256": "5abe17fb490c36e9f182e4b98a75bfcfebfcea7832b93573291cacb228d80275",
+            "start": 2065936,
+            "end": 2065960
+          },
+          {
+            "left": "G._fireZones",
+            "right": "[]",
+            "rightSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "operator": "=",
+            "line": 42390,
+            "owner": "_fallenResolve",
+            "guards": [],
+            "kind": "state-assignment",
+            "sha256": "d70ef36c46441a6536f3c483894eb1a4f74f9ae09ad97ab314b7067936024c72",
+            "start": 2392877,
+            "end": 2392892
+          },
+          {
+            "left": "G._fireZones",
+            "right": "[]",
+            "rightSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "operator": "=",
+            "line": 43884,
+            "owner": "_tickBladeDash",
+            "guards": [
+              "P._bdMoveT<=0",
+              "!G._fireZones"
+            ],
+            "kind": "lazy-array-initialization",
+            "sha256": "d70ef36c46441a6536f3c483894eb1a4f74f9ae09ad97ab314b7067936024c72",
+            "start": 2503335,
+            "end": 2503350
+          },
+          {
+            "left": "G._fireZones",
+            "right": "[]",
+            "rightSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "operator": "=",
+            "line": 44005,
+            "owner": "activateSpikeTrap",
+            "guards": [
+              "!G._fireZones"
+            ],
+            "kind": "lazy-array-initialization",
+            "sha256": "d70ef36c46441a6536f3c483894eb1a4f74f9ae09ad97ab314b7067936024c72",
+            "start": 2509872,
+            "end": 2509887
+          },
+          {
+            "left": "G._fireZones",
+            "right": "[]",
+            "rightSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "operator": "=",
+            "line": 44754,
+            "owner": "activateDarkPillar",
+            "guards": [
+              "!G._fireZones"
+            ],
+            "kind": "lazy-array-initialization",
+            "sha256": "d70ef36c46441a6536f3c483894eb1a4f74f9ae09ad97ab314b7067936024c72",
+            "start": 2545115,
+            "end": 2545130
+          },
+          {
+            "left": "G._fireZones",
+            "right": "[]",
+            "rightSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "operator": "=",
+            "line": 44999,
+            "owner": "activateGiantSlam",
+            "guards": [
+              "srcId==='giantSlam2'&&_isFused('infernoSlam')&&P.skills.fireAura>=1",
+              "!G._fireZones"
+            ],
+            "kind": "lazy-array-initialization",
+            "sha256": "d70ef36c46441a6536f3c483894eb1a4f74f9ae09ad97ab314b7067936024c72",
+            "start": 2557460,
+            "end": 2557475
+          },
+          {
+            "left": "G._fireZones",
+            "right": "[]",
+            "rightSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "operator": "=",
+            "line": 45136,
+            "owner": "activateWeakZone",
+            "guards": [
+              "!G._fireZones"
+            ],
+            "kind": "lazy-array-initialization",
+            "sha256": "d70ef36c46441a6536f3c483894eb1a4f74f9ae09ad97ab314b7067936024c72",
+            "start": 2562797,
+            "end": 2562812
+          },
+          {
+            "left": "G._fireZones",
+            "right": "[]",
+            "rightSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "operator": "=",
+            "line": 45153,
+            "owner": "activateMaliceDome",
+            "guards": [
+              "!G._fireZones"
+            ],
+            "kind": "lazy-array-initialization",
+            "sha256": "d70ef36c46441a6536f3c483894eb1a4f74f9ae09ad97ab314b7067936024c72",
+            "start": 2563444,
+            "end": 2563459
+          },
+          {
+            "left": "G._fireZones",
+            "right": "[]",
+            "rightSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "operator": "=",
+            "line": 45167,
+            "owner": "activateHolyDome",
+            "guards": [
+              "!G._fireZones"
+            ],
+            "kind": "lazy-array-initialization",
+            "sha256": "d70ef36c46441a6536f3c483894eb1a4f74f9ae09ad97ab314b7067936024c72",
+            "start": 2564123,
+            "end": 2564138
+          },
+          {
+            "left": "G._fireZones",
+            "right": "[]",
+            "rightSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "operator": "=",
+            "line": 45193,
+            "owner": "activateHolyPrison",
+            "guards": [
+              "!G._fireZones"
+            ],
+            "kind": "lazy-array-initialization",
+            "sha256": "d70ef36c46441a6536f3c483894eb1a4f74f9ae09ad97ab314b7067936024c72",
+            "start": 2565290,
+            "end": 2565305
+          },
+          {
+            "left": "P",
+            "right": "mkP()",
+            "rightSha256": "3730d33b807e6a8cfb8bce4c64e51731a1d97e21c2c101a5f872d37306932c69",
+            "operator": "=",
+            "line": 60015,
+            "owner": "_startDemoTest",
+            "guards": [],
+            "kind": "state-assignment",
+            "sha256": "02d774545bff48d08cd9eddf80e85939b5291c71045a886a3b338365b619a2b7",
+            "start": 3466606,
+            "end": 3466613
+          },
+          {
+            "left": "INV.equipped",
+            "right": null,
+            "rightSha256": "b90167f50431759e465b1e996e05e031d48f4bf5260490e2099363a3fef340b3",
+            "operator": "=",
+            "line": 60017,
+            "owner": "_startDemoTest",
+            "guards": [],
+            "kind": "state-assignment",
+            "sha256": "44d258b9ede51f10afbb59795b3fdbe60417b3d17caa1f4cba8dc6c490548392",
+            "start": 3466631,
+            "end": 3466847
+          },
+          {
+            "left": "P",
+            "right": "mkP()",
+            "rightSha256": "3730d33b807e6a8cfb8bce4c64e51731a1d97e21c2c101a5f872d37306932c69",
+            "operator": "=",
+            "line": 60190,
+            "owner": "_startDemoNew",
+            "guards": [],
+            "kind": "state-assignment",
+            "sha256": "02d774545bff48d08cd9eddf80e85939b5291c71045a886a3b338365b619a2b7",
+            "start": 3475732,
+            "end": 3475739
+          },
+          {
+            "left": "INV.equipped",
+            "right": null,
+            "rightSha256": "b90167f50431759e465b1e996e05e031d48f4bf5260490e2099363a3fef340b3",
+            "operator": "=",
+            "line": 60192,
+            "owner": "_startDemoNew",
+            "guards": [],
+            "kind": "state-assignment",
+            "sha256": "44d258b9ede51f10afbb59795b3fdbe60417b3d17caa1f4cba8dc6c490548392",
+            "start": 3475757,
+            "end": 3475973
+          },
+          {
+            "left": "P",
+            "right": "mkP()",
+            "rightSha256": "3730d33b807e6a8cfb8bce4c64e51731a1d97e21c2c101a5f872d37306932c69",
+            "operator": "=",
+            "line": 60296,
+            "owner": "_startTestChar",
+            "guards": [],
+            "kind": "state-assignment",
+            "sha256": "02d774545bff48d08cd9eddf80e85939b5291c71045a886a3b338365b619a2b7",
+            "start": 3481145,
+            "end": 3481152
+          },
+          {
+            "left": "INV.equipped",
+            "right": null,
+            "rightSha256": "b90167f50431759e465b1e996e05e031d48f4bf5260490e2099363a3fef340b3",
+            "operator": "=",
+            "line": 60298,
+            "owner": "_startTestChar",
+            "guards": [],
+            "kind": "state-assignment",
+            "sha256": "44d258b9ede51f10afbb59795b3fdbe60417b3d17caa1f4cba8dc6c490548392",
+            "start": 3481170,
+            "end": 3481386
+          },
+          {
+            "left": "P",
+            "right": "mkP()",
+            "rightSha256": "3730d33b807e6a8cfb8bce4c64e51731a1d97e21c2c101a5f872d37306932c69",
+            "operator": "=",
+            "line": 60408,
+            "owner": "startGameFromDB",
+            "guards": [],
+            "kind": "state-assignment",
+            "sha256": "02d774545bff48d08cd9eddf80e85939b5291c71045a886a3b338365b619a2b7",
+            "start": 3487445,
+            "end": 3487452
+          },
+          {
+            "left": "INV.equipped",
+            "right": null,
+            "rightSha256": "95ef4e7f7f6347f31a8d386ac84b3250ac246b95d79f1da1d521771f880d5853",
+            "operator": "=",
+            "line": 60409,
+            "owner": "startGameFromDB",
+            "guards": [],
+            "kind": "state-assignment",
+            "sha256": "87aaec3c311ee75ca62dfaa010e3ca4f43942c3617dafbad91231cf96dae06ee",
+            "start": 3487467,
+            "end": 3487683
+          },
+          {
+            "left": "G._fireZones",
+            "right": "[]",
+            "rightSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "operator": "=",
+            "line": 61421,
+            "owner": "anonymous@61409",
+            "guards": [
+              "G._bossArena&&_preArenaBackup"
+            ],
+            "kind": "state-assignment",
+            "sha256": "d70ef36c46441a6536f3c483894eb1a4f74f9ae09ad97ab314b7067936024c72",
+            "start": 3570813,
+            "end": 3570828
+          },
+          {
+            "left": "P",
+            "right": "mkP()",
+            "rightSha256": "3730d33b807e6a8cfb8bce4c64e51731a1d97e21c2c101a5f872d37306932c69",
+            "operator": "=",
+            "line": 61807,
+            "owner": "anonymous@61806",
+            "guards": [
+              "_EDITOR_MODE"
+            ],
+            "kind": "state-assignment",
+            "sha256": "02d774545bff48d08cd9eddf80e85939b5291c71045a886a3b338365b619a2b7",
+            "start": 3588787,
+            "end": 3588794
+          },
+          {
+            "left": "P",
+            "right": "mkP()",
+            "rightSha256": "3730d33b807e6a8cfb8bce4c64e51731a1d97e21c2c101a5f872d37306932c69",
+            "operator": "=",
+            "line": 61882,
+            "owner": "_boot",
+            "guards": [
+              "(_isLocal&&!_charId)||new URLSearchParams(window.location.search).get('test')==='1'"
+            ],
+            "kind": "state-assignment",
+            "sha256": "02d774545bff48d08cd9eddf80e85939b5291c71045a886a3b338365b619a2b7",
+            "start": 3593058,
+            "end": 3593065
+          },
+          {
+            "left": "INV.equipped",
+            "right": null,
+            "rightSha256": "95ef4e7f7f6347f31a8d386ac84b3250ac246b95d79f1da1d521771f880d5853",
+            "operator": "=",
+            "line": 61883,
+            "owner": "_boot",
+            "guards": [
+              "(_isLocal&&!_charId)||new URLSearchParams(window.location.search).get('test')==='1'"
+            ],
+            "kind": "state-assignment",
+            "sha256": "87aaec3c311ee75ca62dfaa010e3ca4f43942c3617dafbad91231cf96dae06ee",
+            "start": 3593080,
+            "end": 3593296
+          },
+          {
+            "left": "P",
+            "right": "mkP()",
+            "rightSha256": "3730d33b807e6a8cfb8bce4c64e51731a1d97e21c2c101a5f872d37306932c69",
+            "operator": "=",
+            "line": 62030,
+            "owner": "_boot",
+            "guards": [
+              "!_charId"
+            ],
+            "kind": "state-assignment",
+            "sha256": "02d774545bff48d08cd9eddf80e85939b5291c71045a886a3b338365b619a2b7",
+            "start": 3600970,
+            "end": 3600977
+          },
+          {
+            "left": "INV.equipped",
+            "right": null,
+            "rightSha256": "95ef4e7f7f6347f31a8d386ac84b3250ac246b95d79f1da1d521771f880d5853",
+            "operator": "=",
+            "line": 62031,
+            "owner": "_boot",
+            "guards": [
+              "!_charId"
+            ],
+            "kind": "state-assignment",
+            "sha256": "87aaec3c311ee75ca62dfaa010e3ca4f43942c3617dafbad91231cf96dae06ee",
+            "start": 3600992,
+            "end": 3601208
+          }
+        ],
+        "lifecycleCallers": [
+          {
+            "name": "_loadCharAtlas",
+            "line": 3593,
+            "start": 205047,
+            "end": 205075,
+            "owner": "dbRestore",
+            "sha256": "f8b8367ea68ddc8df33ddc713e0c3b472c385f4e3e49e21d2464555ba96f6e26"
+          },
+          {
+            "name": "_loadCharAtlas",
+            "line": 10325,
+            "start": 570858,
+            "end": 570882,
+            "owner": "top-level",
+            "sha256": "5ff9104d91a5661d0fd3c50d3e1554b043830e4a7e4b4e9007b29e09b6aa2d93"
+          },
+          {
+            "name": "_loadCharAtlas",
+            "line": 10391,
+            "start": 573282,
+            "end": 573299,
+            "owner": "handleCharSelectClick",
+            "sha256": "441115bd1d9560cabcfec151d34beecae5f2b33b5d885ee109fcc4b76fc18f6e"
+          },
+          {
+            "name": "_enterBossArena",
+            "line": 16249,
+            "start": 916874,
+            "end": 916895,
+            "owner": "_retryDruidFinale",
+            "sha256": "83f2565b60558f970594eaf5fd498bfab62aacab69b0eaad0201e5a62b0b1502"
+          },
+          {
+            "name": "_enterBossArena",
+            "line": 30305,
+            "start": 1700751,
+            "end": 1700768,
+            "owner": "initStage",
+            "sha256": "c9cb81188c7e72a780bbae350c5fd8ec49860f538627f7a55d1ce46dc1be3375"
+          },
+          {
+            "name": "_fallenResolve",
+            "line": 31716,
+            "start": 1782285,
+            "end": 1782301,
+            "owner": "update",
+            "sha256": "51ede911ea9b25c4c67201aea1a3903f4ab8d30f5cadc1935280735fabb2c7b3"
+          },
+          {
+            "name": "_enterBossArena",
+            "line": 40392,
+            "start": 2278480,
+            "end": 2278497,
+            "owner": "checkRooms",
+            "sha256": "c9cb81188c7e72a780bbae350c5fd8ec49860f538627f7a55d1ce46dc1be3375"
+          },
+          {
+            "name": "initStage",
+            "line": 42415,
+            "start": 2395451,
+            "end": 2395469,
+            "owner": "nextStage",
+            "sha256": "1e39bcc325b09675774cd84cf422c7180bb5630adc9153f1b0cffacfbe66138f"
+          },
+          {
+            "name": "_loadCharAtlas",
+            "line": 47014,
+            "start": 2695228,
+            "end": 2695246,
+            "owner": "anonymous@47014",
+            "sha256": "d99542607b339318c74044edd8c65c1c0c71a5195a8c44c96ca126aa7d890285"
+          },
+          {
+            "name": "initStage",
+            "line": 58743,
+            "start": 3399936,
+            "end": 3399954,
+            "owner": "anonymous@58736",
+            "sha256": "d4f45ae5f8d520259774753324ded6f589a409054de97a321307677f639e3e94"
+          },
+          {
+            "name": "initStage",
+            "line": 60137,
+            "start": 3473807,
+            "end": 3473825,
+            "owner": "_startDemoTest",
+            "sha256": "1e39bcc325b09675774cd84cf422c7180bb5630adc9153f1b0cffacfbe66138f"
+          },
+          {
+            "name": "dbRestore",
+            "line": 60245,
+            "start": 3478791,
+            "end": 3478804,
+            "owner": "_startDemoNew",
+            "sha256": "48d13c8e10be86b40b192ee001406fb05669f1c022155f23f2700214ec6fd005"
+          },
+          {
+            "name": "initStage",
+            "line": 60276,
+            "start": 3480414,
+            "end": 3480432,
+            "owner": "_startDemoNew",
+            "sha256": "1e39bcc325b09675774cd84cf422c7180bb5630adc9153f1b0cffacfbe66138f"
+          },
+          {
+            "name": "initStage",
+            "line": 60356,
+            "start": 3484955,
+            "end": 3484973,
+            "owner": "_startTestChar",
+            "sha256": "1e39bcc325b09675774cd84cf422c7180bb5630adc9153f1b0cffacfbe66138f"
+          },
+          {
+            "name": "dbRestore",
+            "line": 60422,
+            "start": 3488564,
+            "end": 3488580,
+            "owner": "startGameFromDB",
+            "sha256": "686e10d6a82d08d40c3ee132b9a0f6ce6494b58b212af8d6400d5503f0da6747"
+          },
+          {
+            "name": "initStage",
+            "line": 60458,
+            "start": 3490260,
+            "end": 3490278,
+            "owner": "startGameFromDB",
+            "sha256": "1e39bcc325b09675774cd84cf422c7180bb5630adc9153f1b0cffacfbe66138f"
+          },
+          {
+            "name": "_loadCharAtlas",
+            "line": 61200,
+            "start": 3559283,
+            "end": 3559302,
+            "owner": "confirm",
+            "sha256": "7d01c2731d37cbebc82fc7ae99e16ff42893098e39bf161f5544e4bec6fcdb78"
+          },
+          {
+            "name": "initStage",
+            "line": 61455,
+            "start": 3573123,
+            "end": 3573141,
+            "owner": "anonymous@61409",
+            "sha256": "1e39bcc325b09675774cd84cf422c7180bb5630adc9153f1b0cffacfbe66138f"
+          },
+          {
+            "name": "initStage",
+            "line": 61808,
+            "start": 3588800,
+            "end": 3588826,
+            "owner": "anonymous@61806",
+            "sha256": "f2cb54b5bb30986281049c5d3baacee8e1da85360be7161bf1c844ef15850307"
+          },
+          {
+            "name": "dbRestore",
+            "line": 61903,
+            "start": 3594548,
+            "end": 3594565,
+            "owner": "anonymous@61892",
+            "sha256": "d5dfcc7b06100053082b014bba73cb9eb04c8d16b39a5b2c147186eeeb68d99c"
+          },
+          {
+            "name": "dbRestore",
+            "line": 61916,
+            "start": 3595251,
+            "end": 3595276,
+            "owner": "anonymous@61892",
+            "sha256": "cc0f7ccb5e7650a7cdb88587b7c45409564a134ef42f9a14378c1d472efb5ae7"
+          },
+          {
+            "name": "initStage",
+            "line": 61960,
+            "start": 3597726,
+            "end": 3597744,
+            "owner": "anonymous@61892",
+            "sha256": "1e39bcc325b09675774cd84cf422c7180bb5630adc9153f1b0cffacfbe66138f"
+          },
+          {
+            "name": "dbRestore",
+            "line": 62046,
+            "start": 3602125,
+            "end": 3602138,
+            "owner": "anonymous@62040",
+            "sha256": "48d13c8e10be86b40b192ee001406fb05669f1c022155f23f2700214ec6fd005"
+          },
+          {
+            "name": "initStage",
+            "line": 62080,
+            "start": 3603900,
+            "end": 3603918,
+            "owner": "anonymous@62040",
+            "sha256": "1e39bcc325b09675774cd84cf422c7180bb5630adc9153f1b0cffacfbe66138f"
+          },
+          {
+            "name": "startGameFromDB",
+            "line": 62097,
+            "start": 3604574,
+            "end": 3604591,
+            "owner": "_boot",
+            "sha256": "3da37b0f2e7dd575abc3763e1019efca76249f081cd016e514c1ce1507f95533"
+          },
+          {
+            "name": "_enterBossArena",
+            "line": 62141,
+            "start": 3606556,
+            "end": 3606573,
+            "owner": "anonymous@62127",
+            "sha256": "c9cb81188c7e72a780bbae350c5fd8ec49860f538627f7a55d1ce46dc1be3375"
+          },
+          {
+            "name": "_enterBossArena",
+            "line": 62221,
+            "start": 3610346,
+            "end": 3610363,
+            "owner": "_btResetBoss",
+            "sha256": "c9cb81188c7e72a780bbae350c5fd8ec49860f538627f7a55d1ce46dc1be3375"
+          },
+          {
+            "name": "initStage",
+            "line": 62693,
+            "start": 3641206,
+            "end": 3641218,
+            "owner": "anonymous@62689",
+            "sha256": "d9f44ad039ddc1ca9021bd502206b77a871a21eaa7f6c9830c840cd634ee1f39"
+          },
+          {
+            "name": "_enterBossArena",
+            "line": 62694,
+            "start": 3641222,
+            "end": 3641239,
+            "owner": "anonymous@62689",
+            "sha256": "c9cb81188c7e72a780bbae350c5fd8ec49860f538627f7a55d1ce46dc1be3375"
+          }
+        ]
+      },
+      {
+        "path": "game-easy-test.html",
+        "sha256": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+        "inlineScripts": 6,
+        "functions": [
+          {
+            "name": "dbRestore",
+            "start": 187216,
+            "end": 204052,
+            "line": 3362,
+            "async": false,
+            "sha256": "2785fd6138a7325f64bbf2c27cde281e270caa85f517b7a7c52801ad9726d274",
+            "bytes": 19210
+          },
+          {
+            "name": "_loadCharAtlas",
+            "start": 525182,
+            "end": 527375,
+            "line": 9596,
+            "async": false,
+            "sha256": "47f6cb0b5630535ed2c79b436b80320978cd01b0d1aaa8f89e4d400a653eeae6",
+            "bytes": 2267
+          },
+          {
+            "name": "_dispatchSkillSlot",
+            "start": 636258,
+            "end": 646960,
+            "line": 11832,
+            "async": false,
+            "sha256": "014e24d8c4c7a420923329ccd075a6081213e4c94a49d28b45db4db5847d9873",
+            "bytes": 11538
+          },
+          {
+            "name": "_enterBossArena",
+            "start": 1573206,
+            "end": 1578041,
+            "line": 28344,
+            "async": false,
+            "sha256": "3ad280675ab8aa45986dab3774f672e16cb7fbe6d9fa3eb982c613e6364949e5",
+            "bytes": 5129
+          },
+          {
+            "name": "initStage",
+            "start": 1617127,
+            "end": 1625125,
+            "line": 29115,
+            "async": false,
+            "sha256": "723ca3fcfc80a6b676c2554a19cb236c344e75aaab9084e1bcc032b449f332ff",
+            "bytes": 8674
+          },
+          {
+            "name": "update",
+            "start": 1648829,
+            "end": 1982179,
+            "line": 29675,
+            "async": false,
+            "sha256": "5dddbe0861d1cf11c7676afebc1960b57c6b22ee166c063b2e4d8c730396d45c",
+            "bytes": 364037
+          },
+          {
+            "name": "checkRooms",
+            "start": 2191032,
+            "end": 2203207,
+            "line": 39179,
+            "async": false,
+            "sha256": "1969b271c46ce27e2cefb0808a90b066fb89e3294f72384edb242af292168dcb",
+            "bytes": 13928
+          },
+          {
+            "name": "hurtE",
+            "start": 2210533,
+            "end": 2266612,
+            "line": 39513,
+            "async": false,
+            "sha256": "872faefc1e74136fd04001ae4effe83dbc76060bc913584300b98056243e6c20",
+            "bytes": 63559
+          },
+          {
+            "name": "_fallenResolve",
+            "start": 2304278,
+            "end": 2306870,
+            "line": 41167,
+            "async": false,
+            "sha256": "e5cb1a7a2c9dcd1065902e09e86539a5e3bf01ba662aa7c3a5eb6ca2230a582a",
+            "bytes": 2870
+          },
+          {
+            "name": "_tickBladeDash",
+            "start": 2409588,
+            "end": 2413128,
+            "line": 42565,
+            "async": false,
+            "sha256": "a1007f245486c35b92ad8e58f693aea4c83312c2f586482793228949530daadd",
+            "bytes": 3842
+          },
+          {
+            "name": "activateSpikeTrap",
+            "start": 2416949,
+            "end": 2417509,
+            "line": 42701,
+            "async": false,
+            "sha256": "f5d9f41ee12c8f51a0d8a1b116588a6133a3bc801aec73bb0532d3c02fc2dd19",
+            "bytes": 618
+          },
+          {
+            "name": "activateDarkPillar",
+            "start": 2450414,
+            "end": 2452332,
+            "line": 43393,
+            "async": false,
+            "sha256": "8cc33de63f8af812c79ec0fddb7f9fbbd649c276c903415317f62aeb42e40069",
+            "bytes": 2145
+          },
+          {
+            "name": "activateGiantSlam",
+            "start": 2459441,
+            "end": 2463215,
+            "line": 43578,
+            "async": false,
+            "sha256": "9aa22aa9a97d75c9ee9908894f7cecad392c608350de3ef676ac13b029438fe7",
+            "bytes": 4325
+          },
+          {
+            "name": "activateWeakZone",
+            "start": 2468025,
+            "end": 2468688,
+            "line": 43773,
+            "async": false,
+            "sha256": "d623f3db67ddd3c79bc76254c5417de10f916cfecfe9e08e6b28fed11a85a839",
+            "bytes": 721
+          },
+          {
+            "name": "activateMaliceDome",
+            "start": 2468711,
+            "end": 2469337,
+            "line": 43790,
+            "async": false,
+            "sha256": "1646073484979f0c7b42e21754e124c7fc1970907981a02aa52217f5cf8e88e7",
+            "bytes": 646
+          },
+          {
+            "name": "activateHolyDome",
+            "start": 2469361,
+            "end": 2470576,
+            "line": 43804,
+            "async": false,
+            "sha256": "c8a6475cff895e33d37d635a1318b0ca574692818d944f97ccbe02bcc0efaf75",
+            "bytes": 1403
+          },
+          {
+            "name": "activateHolyPrison",
+            "start": 2470601,
+            "end": 2471061,
+            "line": 43831,
+            "async": false,
+            "sha256": "1ec276bab2e8e8ae3558388b85c4961c11db4731b52e9ad75434085d3a593ac1",
+            "bytes": 482
+          },
+          {
+            "name": "_startDemoTest",
+            "start": 3349867,
+            "end": 3358773,
+            "line": 58338,
+            "async": true,
+            "sha256": "7985708023a276e04fac8de8d02320aefc8095bb2a99af336e53e21291457276",
+            "bytes": 9648
+          },
+          {
+            "name": "_startDemoNew",
+            "start": 3358868,
+            "end": 3363821,
+            "line": 58514,
+            "async": true,
+            "sha256": "3a4a0a73cfe27d3f3a6694307de62491c28087947fb6621aecbd46cbcebf0157",
+            "bytes": 5206
+          },
+          {
+            "name": "_startTestChar",
+            "start": 3363868,
+            "end": 3369269,
+            "line": 58617,
+            "async": true,
+            "sha256": "e39e579f9a3c00216ddf60cbafb1caf941008938ae46de7d2d0b1dd096f07ada",
+            "bytes": 5709
+          },
+          {
+            "name": "startGameFromDB",
+            "start": 3369298,
+            "end": 3375539,
+            "line": 58708,
+            "async": true,
+            "sha256": "7d33a6e7ed3d4cae51dcc09ec18bb13a13693147c23bb8b176c4d3e8851aed63",
+            "bytes": 7275
+          },
+          {
+            "name": "anonymous@59743",
+            "start": 3454498,
+            "end": 3458184,
+            "line": 59743,
+            "async": true,
+            "sha256": "c87b52a4021868a0775112e4059cb4dcf747ff342b0c83543bc142a1f8ceadde",
+            "bytes": 4050
+          },
+          {
+            "name": "_boot",
+            "start": 3469287,
+            "end": 3488520,
+            "line": 60060,
+            "async": true,
+            "sha256": "b99cc36d7e8b73e236b4f91a541446cb96a1de32deb3fb27ebb3d461b3aa79c9",
+            "bytes": 20415
+          },
+          {
+            "name": "anonymous@60137",
+            "start": 3472842,
+            "end": 3473573,
+            "line": 60137,
+            "async": false,
+            "sha256": "9f8cadfced9a77dcf06c2e5712fd0ee7055a03d2a49e773c9f9abc4f85db4a09",
+            "bytes": 745
+          }
+        ],
+        "zonePass": {
+          "line": 34655,
+          "endLine": 35041,
+          "sha256": "a78c383ab58ccdd9bf67893ed3b742cdcd3c82a21f94b539486a2a075c868c11",
+          "bytes": 22471
+        },
+        "dot": {
+          "name": "hurtE",
+          "line": 34929,
+          "start": 1974814,
+          "end": 1974921,
+          "owner": "update",
+          "sha256": "52e3481541923fcced1e047d7c2dac8cac90ab859615b3909e576b633e72fc93",
+          "expression": "hurtE(e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true,shieldHit:true,_lessonAttack:'spikeTrap'},EL.P)"
+        },
+        "activationCallers": [
+          {
+            "name": "activateSpikeTrap",
+            "line": 11937,
+            "start": 642893,
+            "end": 642912,
+            "owner": "_dispatchSkillSlot",
+            "sha256": "bf572ae5b9bf599842fbbb4226d22b280e8144405155b304fa855e5957a52227"
+          }
+        ],
+        "lifecycleAssignments": [
+          {
+            "left": "INV.equipped",
+            "right": null,
+            "rightSha256": "af481df39945c0fa3a3ff454ac0d9060f4ade174012c0612d052ced0780e8f1c",
+            "operator": "=",
+            "line": 3388,
+            "owner": "dbRestore",
+            "guards": [
+              "d.inv"
+            ],
+            "kind": "state-assignment",
+            "sha256": "7d33009aa69ae0ef2375ec3950cd2c5870cb8389801bc3c0caf328bc849b16f6",
+            "start": 188366,
+            "end": 188583
+          },
+          {
+            "left": "_charIdx",
+            "right": "+_sv",
+            "rightSha256": "f0230777b4d0a330d33257dff32cd9453c3adccbee4510bfb301e5187ab236fd",
+            "operator": "=",
+            "line": 9581,
+            "owner": "top-level",
+            "guards": [
+              "_sv!=null"
+            ],
+            "kind": "state-assignment",
+            "sha256": "a8baceaf1034e2e2e88ef8564179f6c1ec14fb14a13d702a0691944ad53fd3c1",
+            "start": 524304,
+            "end": 524317
+          },
+          {
+            "left": "_charIdx",
+            "right": "idx",
+            "rightSha256": "c66a8eb7e6a7e395bf000e8884c7de131a5cf32a9f42de44a1b9ceaf47c8900e",
+            "operator": "=",
+            "line": 9598,
+            "owner": "_loadCharAtlas",
+            "guards": [],
+            "kind": "state-assignment",
+            "sha256": "2c91a7ddb44bca763e7b2b8c55ee77456216b2da0a601e8aded4a2768e4b729d",
+            "start": 525255,
+            "end": 525267
+          },
+          {
+            "left": "G._fireZones",
+            "right": "[]",
+            "rightSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "operator": "=",
+            "line": 28357,
+            "owner": "_enterBossArena",
+            "guards": [],
+            "kind": "state-assignment",
+            "sha256": "d70ef36c46441a6536f3c483894eb1a4f74f9ae09ad97ab314b7067936024c72",
+            "start": 1574407,
+            "end": 1574422
+          },
+          {
+            "left": "G._fireZones",
+            "right": "[]",
+            "rightSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "operator": "=",
+            "line": 29133,
+            "owner": "initStage",
+            "guards": [],
+            "kind": "state-assignment",
+            "sha256": "d70ef36c46441a6536f3c483894eb1a4f74f9ae09ad97ab314b7067936024c72",
+            "start": 1618272,
+            "end": 1618287
+          },
+          {
+            "left": "G._fireZones",
+            "right": "[]",
+            "rightSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "operator": "=",
+            "line": 29904,
+            "owner": "update",
+            "guards": [
+              "_dashActive",
+              "(_harpSk==='magicBlink'||_harpSk==='dimBreach')&&~~(_dashLeft)%3===0",
+              "!G._fireZones"
+            ],
+            "kind": "lazy-array-initialization",
+            "sha256": "d70ef36c46441a6536f3c483894eb1a4f74f9ae09ad97ab314b7067936024c72",
+            "start": 1661521,
+            "end": 1661536
+          },
+          {
+            "left": "G._fireZones",
+            "right": "[]",
+            "rightSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "operator": "=",
+            "line": 29912,
+            "owner": "update",
+            "guards": [
+              "_dashActive",
+              "P._chainSlashActive&&_isFused('dimBlast')&&~~(_dashLeft)%4===0",
+              "!G._fireZones"
+            ],
+            "kind": "lazy-array-initialization",
+            "sha256": "d70ef36c46441a6536f3c483894eb1a4f74f9ae09ad97ab314b7067936024c72",
+            "start": 1662123,
+            "end": 1662138
+          },
+          {
+            "left": "G._fireZones",
+            "right": "[]",
+            "rightSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "operator": "=",
+            "line": 30004,
+            "owner": "update",
+            "guards": [
+              "_dashActive",
+              "(_dashLeft-=_dashStep)<=0",
+              "P._chainAssaultReady",
+              "!G._fireZones"
+            ],
+            "kind": "lazy-array-initialization",
+            "sha256": "d70ef36c46441a6536f3c483894eb1a4f74f9ae09ad97ab314b7067936024c72",
+            "start": 1668479,
+            "end": 1668494
+          },
+          {
+            "left": "G._fireZones.length",
+            "right": "_fzH",
+            "rightSha256": "5195d14aa56db1dc7babc3211d08b08986a8332fe65927feb45cef4873cc46b2",
+            "operator": "=",
+            "line": 30144,
+            "owner": "update",
+            "guards": [
+              "_hsActive",
+              "G._fireZones"
+            ],
+            "kind": "state-assignment",
+            "sha256": "01c975107e4db1b8bb5307e8a0a7a9ae7aba66ad2737d2f01f91767992e1c19e",
+            "start": 1677316,
+            "end": 1677340
+          },
+          {
+            "left": "G._fireZones",
+            "right": "[]",
+            "rightSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "operator": "=",
+            "line": 31158,
+            "owner": "update",
+            "guards": [
+              "P.s==='magicCast'",
+              "P.st2<=0",
+              "_mcSk==='fireAura'&&P.skills.fireAura>=1",
+              "!G._fireZones"
+            ],
+            "kind": "lazy-array-initialization",
+            "sha256": "d70ef36c46441a6536f3c483894eb1a4f74f9ae09ad97ab314b7067936024c72",
+            "start": 1741034,
+            "end": 1741049
+          },
+          {
+            "left": "G._fireZones",
+            "right": "[]",
+            "rightSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "operator": "=",
+            "line": 31571,
+            "owner": "update",
+            "guards": [
+              "P.st2<=0",
+              "P.skills.magicBlink>=1",
+              "!G._fireZones"
+            ],
+            "kind": "lazy-array-initialization",
+            "sha256": "d70ef36c46441a6536f3c483894eb1a4f74f9ae09ad97ab314b7067936024c72",
+            "start": 1764490,
+            "end": 1764505
+          },
+          {
+            "left": "G._fireZones",
+            "right": "[]",
+            "rightSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "operator": "=",
+            "line": 33819,
+            "owner": "update",
+            "guards": [
+              "P._hrAiming",
+              "MBjust[0]",
+              "!G._fireZones"
+            ],
+            "kind": "lazy-array-initialization",
+            "sha256": "d70ef36c46441a6536f3c483894eb1a4f74f9ae09ad97ab314b7067936024c72",
+            "start": 1902729,
+            "end": 1902744
+          },
+          {
+            "left": "G._fireZones",
+            "right": "[]",
+            "rightSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "operator": "=",
+            "line": 33865,
+            "owner": "update",
+            "guards": [
+              "P._msAiming",
+              "MBjust[0]||_msRel",
+              "!G._fireZones"
+            ],
+            "kind": "lazy-array-initialization",
+            "sha256": "d70ef36c46441a6536f3c483894eb1a4f74f9ae09ad97ab314b7067936024c72",
+            "start": 1904817,
+            "end": 1904832
+          },
+          {
+            "left": "G._fireZones",
+            "right": "[]",
+            "rightSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "operator": "=",
+            "line": 33935,
+            "owner": "update",
+            "guards": [
+              "G._dpQueue&&G._dpQueue.length>0",
+              "P._dpQueueT>=q.delay",
+              "!G._fireZones"
+            ],
+            "kind": "lazy-array-initialization",
+            "sha256": "d70ef36c46441a6536f3c483894eb1a4f74f9ae09ad97ab314b7067936024c72",
+            "start": 1908158,
+            "end": 1908173
+          },
+          {
+            "left": "G._fireZones",
+            "right": "[]",
+            "rightSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "operator": "=",
+            "line": 33963,
+            "owner": "update",
+            "guards": [
+              "P._isAiming",
+              "MBjust[0]",
+              "!G._fireZones"
+            ],
+            "kind": "lazy-array-initialization",
+            "sha256": "d70ef36c46441a6536f3c483894eb1a4f74f9ae09ad97ab314b7067936024c72",
+            "start": 1909326,
+            "end": 1909341
+          },
+          {
+            "left": "G._fireZones",
+            "right": "[]",
+            "rightSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "operator": "=",
+            "line": 34295,
+            "owner": "update",
+            "guards": [
+              "G._mmBomb",
+              "mb.phase==='throw'",
+              "prog>=1",
+              "mb.vortex",
+              "!G._fireZones"
+            ],
+            "kind": "lazy-array-initialization",
+            "sha256": "d70ef36c46441a6536f3c483894eb1a4f74f9ae09ad97ab314b7067936024c72",
+            "start": 1925713,
+            "end": 1925728
+          },
+          {
+            "left": "G._fireZones.length",
+            "right": "_fzW",
+            "rightSha256": "617d93cbbaec2f85c0a53f2943336804f4a7161fe230b681fecfb4099f0ce96b",
+            "operator": "=",
+            "line": 35040,
+            "owner": "update",
+            "guards": [
+              "G._fireZones&&G._fireZones.length>0"
+            ],
+            "kind": "state-assignment",
+            "sha256": "5abe17fb490c36e9f182e4b98a75bfcfebfcea7832b93573291cacb228d80275",
+            "start": 1981447,
+            "end": 1981471
+          },
+          {
+            "left": "G._fireZones",
+            "right": "[]",
+            "rightSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "operator": "=",
+            "line": 41187,
+            "owner": "_fallenResolve",
+            "guards": [],
+            "kind": "state-assignment",
+            "sha256": "d70ef36c46441a6536f3c483894eb1a4f74f9ae09ad97ab314b7067936024c72",
+            "start": 2305486,
+            "end": 2305501
+          },
+          {
+            "left": "G._fireZones",
+            "right": "[]",
+            "rightSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "operator": "=",
+            "line": 42589,
+            "owner": "_tickBladeDash",
+            "guards": [
+              "P._bdMoveT<=0",
+              "!G._fireZones"
+            ],
+            "kind": "lazy-array-initialization",
+            "sha256": "d70ef36c46441a6536f3c483894eb1a4f74f9ae09ad97ab314b7067936024c72",
+            "start": 2410852,
+            "end": 2410867
+          },
+          {
+            "left": "G._fireZones",
+            "right": "[]",
+            "rightSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "operator": "=",
+            "line": 42709,
+            "owner": "activateSpikeTrap",
+            "guards": [
+              "!G._fireZones"
+            ],
+            "kind": "lazy-array-initialization",
+            "sha256": "d70ef36c46441a6536f3c483894eb1a4f74f9ae09ad97ab314b7067936024c72",
+            "start": 2417303,
+            "end": 2417318
+          },
+          {
+            "left": "G._fireZones",
+            "right": "[]",
+            "rightSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "operator": "=",
+            "line": 43397,
+            "owner": "activateDarkPillar",
+            "guards": [
+              "!G._fireZones"
+            ],
+            "kind": "lazy-array-initialization",
+            "sha256": "d70ef36c46441a6536f3c483894eb1a4f74f9ae09ad97ab314b7067936024c72",
+            "start": 2450623,
+            "end": 2450638
+          },
+          {
+            "left": "G._fireZones",
+            "right": "[]",
+            "rightSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "operator": "=",
+            "line": 43642,
+            "owner": "activateGiantSlam",
+            "guards": [
+              "srcId==='giantSlam2'&&_isFused('infernoSlam')&&P.skills.fireAura>=1",
+              "!G._fireZones"
+            ],
+            "kind": "lazy-array-initialization",
+            "sha256": "d70ef36c46441a6536f3c483894eb1a4f74f9ae09ad97ab314b7067936024c72",
+            "start": 2462964,
+            "end": 2462979
+          },
+          {
+            "left": "G._fireZones",
+            "right": "[]",
+            "rightSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "operator": "=",
+            "line": 43779,
+            "owner": "activateWeakZone",
+            "guards": [
+              "!G._fireZones"
+            ],
+            "kind": "lazy-array-initialization",
+            "sha256": "d70ef36c46441a6536f3c483894eb1a4f74f9ae09ad97ab314b7067936024c72",
+            "start": 2468293,
+            "end": 2468308
+          },
+          {
+            "left": "G._fireZones",
+            "right": "[]",
+            "rightSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "operator": "=",
+            "line": 43796,
+            "owner": "activateMaliceDome",
+            "guards": [
+              "!G._fireZones"
+            ],
+            "kind": "lazy-array-initialization",
+            "sha256": "d70ef36c46441a6536f3c483894eb1a4f74f9ae09ad97ab314b7067936024c72",
+            "start": 2468940,
+            "end": 2468955
+          },
+          {
+            "left": "G._fireZones",
+            "right": "[]",
+            "rightSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "operator": "=",
+            "line": 43810,
+            "owner": "activateHolyDome",
+            "guards": [
+              "!G._fireZones"
+            ],
+            "kind": "lazy-array-initialization",
+            "sha256": "d70ef36c46441a6536f3c483894eb1a4f74f9ae09ad97ab314b7067936024c72",
+            "start": 2469619,
+            "end": 2469634
+          },
+          {
+            "left": "G._fireZones",
+            "right": "[]",
+            "rightSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "operator": "=",
+            "line": 43836,
+            "owner": "activateHolyPrison",
+            "guards": [
+              "!G._fireZones"
+            ],
+            "kind": "lazy-array-initialization",
+            "sha256": "d70ef36c46441a6536f3c483894eb1a4f74f9ae09ad97ab314b7067936024c72",
+            "start": 2470786,
+            "end": 2470801
+          },
+          {
+            "left": "P",
+            "right": "mkP()",
+            "rightSha256": "3730d33b807e6a8cfb8bce4c64e51731a1d97e21c2c101a5f872d37306932c69",
+            "operator": "=",
+            "line": 58342,
+            "owner": "_startDemoTest",
+            "guards": [],
+            "kind": "state-assignment",
+            "sha256": "02d774545bff48d08cd9eddf80e85939b5291c71045a886a3b338365b619a2b7",
+            "start": 3349987,
+            "end": 3349994
+          },
+          {
+            "left": "INV.equipped",
+            "right": null,
+            "rightSha256": "f3393497e28721230e6337eaf2d89e9846f29cceafde927bc69809456c0cfb3a",
+            "operator": "=",
+            "line": 58344,
+            "owner": "_startDemoTest",
+            "guards": [],
+            "kind": "state-assignment",
+            "sha256": "543844e6da072dac155312b2319cc1157bb72981a6446ca2cab7de5ba2ec2010",
+            "start": 3350012,
+            "end": 3350213
+          },
+          {
+            "left": "P",
+            "right": "mkP()",
+            "rightSha256": "3730d33b807e6a8cfb8bce4c64e51731a1d97e21c2c101a5f872d37306932c69",
+            "operator": "=",
+            "line": 58517,
+            "owner": "_startDemoNew",
+            "guards": [],
+            "kind": "state-assignment",
+            "sha256": "02d774545bff48d08cd9eddf80e85939b5291c71045a886a3b338365b619a2b7",
+            "start": 3358970,
+            "end": 3358977
+          },
+          {
+            "left": "INV.equipped",
+            "right": null,
+            "rightSha256": "f3393497e28721230e6337eaf2d89e9846f29cceafde927bc69809456c0cfb3a",
+            "operator": "=",
+            "line": 58519,
+            "owner": "_startDemoNew",
+            "guards": [],
+            "kind": "state-assignment",
+            "sha256": "543844e6da072dac155312b2319cc1157bb72981a6446ca2cab7de5ba2ec2010",
+            "start": 3358995,
+            "end": 3359196
+          },
+          {
+            "left": "P",
+            "right": "mkP()",
+            "rightSha256": "3730d33b807e6a8cfb8bce4c64e51731a1d97e21c2c101a5f872d37306932c69",
+            "operator": "=",
+            "line": 58620,
+            "owner": "_startTestChar",
+            "guards": [],
+            "kind": "state-assignment",
+            "sha256": "02d774545bff48d08cd9eddf80e85939b5291c71045a886a3b338365b619a2b7",
+            "start": 3363976,
+            "end": 3363983
+          },
+          {
+            "left": "INV.equipped",
+            "right": null,
+            "rightSha256": "f3393497e28721230e6337eaf2d89e9846f29cceafde927bc69809456c0cfb3a",
+            "operator": "=",
+            "line": 58622,
+            "owner": "_startTestChar",
+            "guards": [],
+            "kind": "state-assignment",
+            "sha256": "543844e6da072dac155312b2319cc1157bb72981a6446ca2cab7de5ba2ec2010",
+            "start": 3364001,
+            "end": 3364202
+          },
+          {
+            "left": "P",
+            "right": "mkP()",
+            "rightSha256": "3730d33b807e6a8cfb8bce4c64e51731a1d97e21c2c101a5f872d37306932c69",
+            "operator": "=",
+            "line": 58732,
+            "owner": "startGameFromDB",
+            "guards": [],
+            "kind": "state-assignment",
+            "sha256": "02d774545bff48d08cd9eddf80e85939b5291c71045a886a3b338365b619a2b7",
+            "start": 3370249,
+            "end": 3370256
+          },
+          {
+            "left": "INV.equipped",
+            "right": "{weapon:null,shield:null,boots:null,armor:null,helmet:null,bow:null,gloves:null,pants:null,necklace:null,ring1:null,ring2:null,cape:null,ossuary:null}",
+            "rightSha256": "4b41dfc718824dd949b4fb421b1ba6b8e499976ac512b43731991c03604f8e1b",
+            "operator": "=",
+            "line": 58733,
+            "owner": "startGameFromDB",
+            "guards": [],
+            "kind": "state-assignment",
+            "sha256": "00d782cc6bfcf1e7d87a8ab79f4658b87eb4af61bb78353cdeafb267f483652f",
+            "start": 3370271,
+            "end": 3370434
+          },
+          {
+            "left": "G._fireZones",
+            "right": "[]",
+            "rightSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "operator": "=",
+            "line": 59755,
+            "owner": "anonymous@59743",
+            "guards": [
+              "G._bossArena&&_preArenaBackup"
+            ],
+            "kind": "state-assignment",
+            "sha256": "d70ef36c46441a6536f3c483894eb1a4f74f9ae09ad97ab314b7067936024c72",
+            "start": 3455383,
+            "end": 3455398
+          },
+          {
+            "left": "P",
+            "right": "mkP()",
+            "rightSha256": "3730d33b807e6a8cfb8bce4c64e51731a1d97e21c2c101a5f872d37306932c69",
+            "operator": "=",
+            "line": 60138,
+            "owner": "anonymous@60137",
+            "guards": [
+              "_EDITOR_MODE"
+            ],
+            "kind": "state-assignment",
+            "sha256": "02d774545bff48d08cd9eddf80e85939b5291c71045a886a3b338365b619a2b7",
+            "start": 3472858,
+            "end": 3472865
+          },
+          {
+            "left": "P",
+            "right": "mkP()",
+            "rightSha256": "3730d33b807e6a8cfb8bce4c64e51731a1d97e21c2c101a5f872d37306932c69",
+            "operator": "=",
+            "line": 60213,
+            "owner": "_boot",
+            "guards": [
+              "(_isLocal&&!_charId)||new URLSearchParams(window.location.search).get('test')==='1'"
+            ],
+            "kind": "state-assignment",
+            "sha256": "02d774545bff48d08cd9eddf80e85939b5291c71045a886a3b338365b619a2b7",
+            "start": 3477095,
+            "end": 3477102
+          },
+          {
+            "left": "INV.equipped",
+            "right": "{weapon:null,shield:null,boots:null,armor:null,helmet:null,bow:null,gloves:null,pants:null,necklace:null,ring1:null,ring2:null,cape:null,ossuary:null}",
+            "rightSha256": "4b41dfc718824dd949b4fb421b1ba6b8e499976ac512b43731991c03604f8e1b",
+            "operator": "=",
+            "line": 60214,
+            "owner": "_boot",
+            "guards": [
+              "(_isLocal&&!_charId)||new URLSearchParams(window.location.search).get('test')==='1'"
+            ],
+            "kind": "state-assignment",
+            "sha256": "00d782cc6bfcf1e7d87a8ab79f4658b87eb4af61bb78353cdeafb267f483652f",
+            "start": 3477117,
+            "end": 3477280
+          },
+          {
+            "left": "P",
+            "right": "mkP()",
+            "rightSha256": "3730d33b807e6a8cfb8bce4c64e51731a1d97e21c2c101a5f872d37306932c69",
+            "operator": "=",
+            "line": 60361,
+            "owner": "_boot",
+            "guards": [
+              "!_charId"
+            ],
+            "kind": "state-assignment",
+            "sha256": "02d774545bff48d08cd9eddf80e85939b5291c71045a886a3b338365b619a2b7",
+            "start": 3484920,
+            "end": 3484927
+          },
+          {
+            "left": "INV.equipped",
+            "right": "{weapon:null,shield:null,boots:null,armor:null,helmet:null,bow:null,gloves:null,pants:null,necklace:null,ring1:null,ring2:null,cape:null,ossuary:null}",
+            "rightSha256": "4b41dfc718824dd949b4fb421b1ba6b8e499976ac512b43731991c03604f8e1b",
+            "operator": "=",
+            "line": 60362,
+            "owner": "_boot",
+            "guards": [
+              "!_charId"
+            ],
+            "kind": "state-assignment",
+            "sha256": "00d782cc6bfcf1e7d87a8ab79f4658b87eb4af61bb78353cdeafb267f483652f",
+            "start": 3484942,
+            "end": 3485105
+          }
+        ],
+        "lifecycleCallers": [
+          {
+            "name": "_loadCharAtlas",
+            "line": 3366,
+            "start": 187454,
+            "end": 187482,
+            "owner": "dbRestore",
+            "sha256": "f8b8367ea68ddc8df33ddc713e0c3b472c385f4e3e49e21d2464555ba96f6e26"
+          },
+          {
+            "name": "_loadCharAtlas",
+            "line": 9776,
+            "start": 533854,
+            "end": 533878,
+            "owner": "top-level",
+            "sha256": "5ff9104d91a5661d0fd3c50d3e1554b043830e4a7e4b4e9007b29e09b6aa2d93"
+          },
+          {
+            "name": "_loadCharAtlas",
+            "line": 9842,
+            "start": 536278,
+            "end": 536295,
+            "owner": "handleCharSelectClick",
+            "sha256": "441115bd1d9560cabcfec151d34beecae5f2b33b5d885ee109fcc4b76fc18f6e"
+          },
+          {
+            "name": "_enterBossArena",
+            "line": 15364,
+            "start": 856254,
+            "end": 856275,
+            "owner": "_retryDruidFinale",
+            "sha256": "83f2565b60558f970594eaf5fd498bfab62aacab69b0eaad0201e5a62b0b1502"
+          },
+          {
+            "name": "_enterBossArena",
+            "line": 29124,
+            "start": 1617589,
+            "end": 1617606,
+            "owner": "initStage",
+            "sha256": "c9cb81188c7e72a780bbae350c5fd8ec49860f538627f7a55d1ce46dc1be3375"
+          },
+          {
+            "name": "_fallenResolve",
+            "line": 30533,
+            "start": 1698650,
+            "end": 1698666,
+            "owner": "update",
+            "sha256": "51ede911ea9b25c4c67201aea1a3903f4ab8d30f5cadc1935280735fabb2c7b3"
+          },
+          {
+            "name": "_enterBossArena",
+            "line": 39192,
+            "start": 2191538,
+            "end": 2191555,
+            "owner": "checkRooms",
+            "sha256": "c9cb81188c7e72a780bbae350c5fd8ec49860f538627f7a55d1ce46dc1be3375"
+          },
+          {
+            "name": "initStage",
+            "line": 41212,
+            "start": 2308060,
+            "end": 2308078,
+            "owner": "nextStage",
+            "sha256": "1e39bcc325b09675774cd84cf422c7180bb5630adc9153f1b0cffacfbe66138f"
+          },
+          {
+            "name": "_loadCharAtlas",
+            "line": 45615,
+            "start": 2597148,
+            "end": 2597166,
+            "owner": "anonymous@45615",
+            "sha256": "d99542607b339318c74044edd8c65c1c0c71a5195a8c44c96ca126aa7d890285"
+          },
+          {
+            "name": "initStage",
+            "line": 57080,
+            "start": 3284083,
+            "end": 3284101,
+            "owner": "anonymous@57073",
+            "sha256": "d4f45ae5f8d520259774753324ded6f589a409054de97a321307677f639e3e94"
+          },
+          {
+            "name": "initStage",
+            "line": 58464,
+            "start": 3357045,
+            "end": 3357063,
+            "owner": "_startDemoTest",
+            "sha256": "1e39bcc325b09675774cd84cf422c7180bb5630adc9153f1b0cffacfbe66138f"
+          },
+          {
+            "name": "dbRestore",
+            "line": 58565,
+            "start": 3361455,
+            "end": 3361468,
+            "owner": "_startDemoNew",
+            "sha256": "48d13c8e10be86b40b192ee001406fb05669f1c022155f23f2700214ec6fd005"
+          },
+          {
+            "name": "initStage",
+            "line": 58600,
+            "start": 3363245,
+            "end": 3363263,
+            "owner": "_startDemoNew",
+            "sha256": "1e39bcc325b09675774cd84cf422c7180bb5630adc9153f1b0cffacfbe66138f"
+          },
+          {
+            "name": "initStage",
+            "line": 58680,
+            "start": 3367759,
+            "end": 3367777,
+            "owner": "_startTestChar",
+            "sha256": "1e39bcc325b09675774cd84cf422c7180bb5630adc9153f1b0cffacfbe66138f"
+          },
+          {
+            "name": "dbRestore",
+            "line": 58746,
+            "start": 3371315,
+            "end": 3371331,
+            "owner": "startGameFromDB",
+            "sha256": "686e10d6a82d08d40c3ee132b9a0f6ce6494b58b212af8d6400d5503f0da6747"
+          },
+          {
+            "name": "initStage",
+            "line": 58782,
+            "start": 3373011,
+            "end": 3373029,
+            "owner": "startGameFromDB",
+            "sha256": "1e39bcc325b09675774cd84cf422c7180bb5630adc9153f1b0cffacfbe66138f"
+          },
+          {
+            "name": "_loadCharAtlas",
+            "line": 59534,
+            "start": 3443847,
+            "end": 3443866,
+            "owner": "confirm",
+            "sha256": "7d01c2731d37cbebc82fc7ae99e16ff42893098e39bf161f5544e4bec6fcdb78"
+          },
+          {
+            "name": "initStage",
+            "line": 59789,
+            "start": 3457693,
+            "end": 3457711,
+            "owner": "anonymous@59743",
+            "sha256": "1e39bcc325b09675774cd84cf422c7180bb5630adc9153f1b0cffacfbe66138f"
+          },
+          {
+            "name": "initStage",
+            "line": 60139,
+            "start": 3472871,
+            "end": 3472897,
+            "owner": "anonymous@60137",
+            "sha256": "f2cb54b5bb30986281049c5d3baacee8e1da85360be7161bf1c844ef15850307"
+          },
+          {
+            "name": "dbRestore",
+            "line": 60234,
+            "start": 3478532,
+            "end": 3478549,
+            "owner": "anonymous@60223",
+            "sha256": "d5dfcc7b06100053082b014bba73cb9eb04c8d16b39a5b2c147186eeeb68d99c"
+          },
+          {
+            "name": "dbRestore",
+            "line": 60247,
+            "start": 3479235,
+            "end": 3479260,
+            "owner": "anonymous@60223",
+            "sha256": "cc0f7ccb5e7650a7cdb88587b7c45409564a134ef42f9a14378c1d472efb5ae7"
+          },
+          {
+            "name": "initStage",
+            "line": 60291,
+            "start": 3481710,
+            "end": 3481728,
+            "owner": "anonymous@60223",
+            "sha256": "1e39bcc325b09675774cd84cf422c7180bb5630adc9153f1b0cffacfbe66138f"
+          },
+          {
+            "name": "dbRestore",
+            "line": 60377,
+            "start": 3486022,
+            "end": 3486035,
+            "owner": "anonymous@60371",
+            "sha256": "48d13c8e10be86b40b192ee001406fb05669f1c022155f23f2700214ec6fd005"
+          },
+          {
+            "name": "initStage",
+            "line": 60411,
+            "start": 3487797,
+            "end": 3487815,
+            "owner": "anonymous@60371",
+            "sha256": "1e39bcc325b09675774cd84cf422c7180bb5630adc9153f1b0cffacfbe66138f"
+          },
+          {
+            "name": "startGameFromDB",
+            "line": 60428,
+            "start": 3488471,
+            "end": 3488488,
+            "owner": "_boot",
+            "sha256": "3da37b0f2e7dd575abc3763e1019efca76249f081cd016e514c1ce1507f95533"
+          },
+          {
+            "name": "_enterBossArena",
+            "line": 60472,
+            "start": 3490453,
+            "end": 3490470,
+            "owner": "anonymous@60458",
+            "sha256": "c9cb81188c7e72a780bbae350c5fd8ec49860f538627f7a55d1ce46dc1be3375"
+          },
+          {
+            "name": "_enterBossArena",
+            "line": 60552,
+            "start": 3494243,
+            "end": 3494260,
+            "owner": "_btResetBoss",
+            "sha256": "c9cb81188c7e72a780bbae350c5fd8ec49860f538627f7a55d1ce46dc1be3375"
+          },
+          {
+            "name": "initStage",
+            "line": 61024,
+            "start": 3525079,
+            "end": 3525091,
+            "owner": "anonymous@61020",
+            "sha256": "d9f44ad039ddc1ca9021bd502206b77a871a21eaa7f6c9830c840cd634ee1f39"
+          },
+          {
+            "name": "_enterBossArena",
+            "line": 61025,
+            "start": 3525095,
+            "end": 3525112,
+            "owner": "anonymous@61020",
+            "sha256": "c9cb81188c7e72a780bbae350c5fd8ec49860f538627f7a55d1ce46dc1be3375"
+          }
+        ]
+      }
+    ],
+    "preserved": [
+      {
+        "path": "game.html",
+        "sha256": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f"
+      },
+      {
+        "path": "game-easy-test.html",
+        "sha256": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8"
+      },
+      {
+        "path": "server.cjs",
+        "sha256": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d"
+      },
+      {
+        "path": "node-main.js",
+        "sha256": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce"
+      },
+      {
+        "path": "index.html",
+        "sha256": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8"
+      },
+      {
+        "path": "tools/team-followup-20261001/ITEM/d13-deferred-contract-candidate.mjs",
+        "sha256": "89ad082ac6c1b62159b0cceeabbd378367e589feff7ccbce1fd08e5035c4a632"
+      },
+      {
+        "path": "tools/team-followup-20261002/project-teams/ITEM/task.md",
+        "sha256": "6204383ee492c3532471740ff3f147dfdbcd990c351d511efb296f99186d90f7"
+      },
+      {
+        "path": "docs/7아이템디자인/ITEM_TEAM_MASTER.md",
+        "sha256": "b3beda374dfeaa837f8a19baa607853d705f0892accc23dad7f3532cae7f61aa"
+      },
+      {
+        "path": "docs/7아이템디자인/UNIQUE_TOP8_HOOK_REVIEW_20261001.md",
+        "sha256": "1e86f9f484e1c4b229abc8db91ba5ce1becc7a1937c14df4224a64d37a6ca264"
+      },
+      {
+        "path": "docs/7아이템디자인/유니크_어픽스_리스트.md",
+        "sha256": "745e59d9839a5078e869987092b2352114059622f9d36cf8cb626216c0799eb0"
+      }
+    ],
+    "docsSearch": {
+      "command": [
+        "rg",
+        "-n",
+        "--",
+        "U-D13|_uTrapOffshoot|자식 덫|자식덫|d13-deferred|d13-callback|G\\._fireZones|activateSpikeTrap",
+        "docs/"
+      ],
+      "lines": 70,
+      "files": 24,
+      "outputSha256": "5b6cf930ff13200f7e3e9f439040b4b2e5fb2a8f2ee27d2f6304b2626af7c77b",
+      "paths": [
+        "docs/7아이템디자인/UNIQUE_ITEM_GAME_INTEGRATION_CONTRACT_20261001.md",
+        "docs/7아이템디자인/고유아이템_모델_어픽스_밸런싱_프로젝트_20260930.md",
+        "docs/7아이템디자인/UNIQUE_TOP8_HOOK_REVIEW_20261001.md",
+        "docs/7아이템디자인/보라색_고유아이템_카탈로그_20260930.md",
+        "docs/7아이템디자인/ITEM_TEAM_MASTER.md",
+        "docs/7아이템디자인/유니크_어픽스_리스트.md",
+        "docs/2게임디자인레벨디자인/SPIKE_TRAP_PRACTICE_20260913.md",
+        "docs/CHANGELOG_SYNC.md",
+        "docs/6사운드디자인/6사운드디자인.md",
+        "docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md",
+        "docs/0마스터플랜/mac-resume-20261001/ui03-evidence/SKILL-팀검토.md",
+        "docs/0마스터플랜/mac-resume-20261001/ui03-evidence/team-receipts.json",
+        "docs/5.1임펙트디자인/VFX_구현가이드.md",
+        "docs/5.1임펙트디자인/PHASE_V1_MOTION_FIREZONE_SEAL.md",
+        "docs/5.1임펙트디자인/BOSS_CAGE_TRAP_VFX.md",
+        "docs/5.1임펙트디자인/ZONE_LIGHT_CLASSIFICATION_20260910.md",
+        "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/d17-async-independent-result.md",
+        "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json",
+        "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-definition-result.md",
+        "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-review-result.md",
+        "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/SKILL-result.md",
+        "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FOUR-TEAM-FOLLOWUP-20261002.md",
+        "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FOUR-CANDIDATE-ACCEPTANCE-20261002.md",
+        "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-WORK-DISPATCH-20261002.json"
+      ]
+    },
+    "scope": "정적 AST/byte/source 지도만. 생산/후보 함수 실행·callback32 재실행·runtime·Git쓰기0"
+  },
+  "preparationFailures": [
+    {
+      "phase": "첫 정적 검사",
+      "exitCode": 1,
+      "error": "Acorn SyntaxError: Unexpected token (2:10)",
+      "cause": "HTML importmap JSON을 JavaScript로 파싱",
+      "repair": "검수기의 비실행 JSON/importmap 제외 및 행 탐색 최적화",
+      "productionChanged": false
+    },
+    {
+      "phase": "보강 전 중간 검사",
+      "passed": 20,
+      "final": false
+    },
+    {
+      "phase": "lazy/reset·누락 player 경계 보강 후 검사",
+      "passed": 22,
+      "failed": 0,
+      "final": true
+    }
+  ],
+  "finalVerification": {
+    "at": "2026-10-02T03:50:32.676Z",
+    "head": "31454dfa49c90bac77351273fc32f0c1eb937928",
+    "checks": 4,
+    "failed": 0,
+    "scope": "원문 보존/보고서 수치/정확3산출/검수기 AST",
+    "preserved": [
+      {
+        "path": "game.html",
+        "beforeSha256": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+        "afterSha256": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+        "unchanged": true
+      },
+      {
+        "path": "game-easy-test.html",
+        "beforeSha256": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+        "afterSha256": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+        "unchanged": true
+      },
+      {
+        "path": "server.cjs",
+        "beforeSha256": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d",
+        "afterSha256": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d",
+        "unchanged": true
+      },
+      {
+        "path": "node-main.js",
+        "beforeSha256": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce",
+        "afterSha256": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce",
+        "unchanged": true
+      },
+      {
+        "path": "index.html",
+        "beforeSha256": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8",
+        "afterSha256": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8",
+        "unchanged": true
+      },
+      {
+        "path": "tools/team-followup-20261001/ITEM/d13-deferred-contract-candidate.mjs",
+        "beforeSha256": "89ad082ac6c1b62159b0cceeabbd378367e589feff7ccbce1fd08e5035c4a632",
+        "afterSha256": "89ad082ac6c1b62159b0cceeabbd378367e589feff7ccbce1fd08e5035c4a632",
+        "unchanged": true
+      },
+      {
+        "path": "tools/team-followup-20261002/project-teams/ITEM/task.md",
+        "beforeSha256": "6204383ee492c3532471740ff3f147dfdbcd990c351d511efb296f99186d90f7",
+        "afterSha256": "6204383ee492c3532471740ff3f147dfdbcd990c351d511efb296f99186d90f7",
+        "unchanged": true
+      }
+    ],
+    "outputs": [
+      {
+        "path": "tools/team-followup-20261002/project-teams/ITEM/result.md",
+        "sha256": "60d90da2b645915177f23fc3299a6837813bc581fd9b72afe8ba3477d33c7241",
+        "bytes": 16282
+      },
+      {
+        "path": "tools/team-followup-20261002/project-teams/ITEM/checks.mjs",
+        "sha256": "7c5378cce0e78735ba3948c2977f40a1efbc5795a57675d64ab2fadd30d33ef6",
+        "bytes": 13529
+      }
+    ],
+    "evidenceSelfHash": "자기참조 해시를 포함하지 않음; 총괄이 최종 바이트를 별도 대조"
+  },
+  "changesObservations": [
+    {
+      "phase": "시작",
+      "count": 23,
+      "at": "2026-10-02T03:43:38Z"
+    },
+    {
+      "phase": "첫 산출 뒤 관찰",
+      "count": 40,
+      "timeUnavailable": true
+    },
+    {
+      "phase": "정적 보강 검수 시작",
+      "count": 45,
+      "at": "2026-10-02T03:47:39.487Z"
+    },
+    {
+      "phase": "정적 보강 검수 종료",
+      "count": 45,
+      "at": "2026-10-02T03:47:40.463Z"
+    },
+    {
+      "phase": "완료",
+      "count": 50,
+      "at": "2026-10-02T03:50:32.676Z"
+    }
+  ],
+  "finalDocsSearch": {
+    "at": "2026-10-02T03:50:32.801748+00:00",
+    "command": [
+      "rg",
+      "-n",
+      "--",
+      "U-D13|_uTrapOffshoot|자식 덫|자식덫|d13-deferred|d13-callback|G\\._fireZones|activateSpikeTrap",
+      "docs/"
+    ],
+    "exitCode": 0,
+    "lines": 70,
+    "files": 24,
+    "paths": [
+      "docs/0마스터플랜/mac-resume-20261001/ui03-evidence/SKILL-팀검토.md",
+      "docs/0마스터플랜/mac-resume-20261001/ui03-evidence/team-receipts.json",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FOUR-CANDIDATE-ACCEPTANCE-20261002.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FOUR-TEAM-FOLLOWUP-20261002.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-definition-result.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-WORK-DISPATCH-20261002.json",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/SKILL-result.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/UIUX-review-result.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/d17-async-independent-result.md",
+      "docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md",
+      "docs/2게임디자인레벨디자인/SPIKE_TRAP_PRACTICE_20260913.md",
+      "docs/5.1임펙트디자인/BOSS_CAGE_TRAP_VFX.md",
+      "docs/5.1임펙트디자인/PHASE_V1_MOTION_FIREZONE_SEAL.md",
+      "docs/5.1임펙트디자인/VFX_구현가이드.md",
+      "docs/5.1임펙트디자인/ZONE_LIGHT_CLASSIFICATION_20260910.md",
+      "docs/6사운드디자인/6사운드디자인.md",
+      "docs/7아이템디자인/ITEM_TEAM_MASTER.md",
+      "docs/7아이템디자인/UNIQUE_ITEM_GAME_INTEGRATION_CONTRACT_20261001.md",
+      "docs/7아이템디자인/UNIQUE_TOP8_HOOK_REVIEW_20261001.md",
+      "docs/7아이템디자인/고유아이템_모델_어픽스_밸런싱_프로젝트_20260930.md",
+      "docs/7아이템디자인/보라색_고유아이템_카탈로그_20260930.md",
+      "docs/7아이템디자인/유니크_어픽스_리스트.md",
+      "docs/CHANGELOG_SYNC.md"
+    ],
+    "outputSha256": "0a791762c161bffedaf2b5dfede6100c1e63b0ee586c4faa7edac949fc3d425b",
+    "afterLastChecksCodeEdit": true,
+    "docsSync": "소유 result.md §6의 정확 기록안을 총괄 인계. 공유 docs 수정0"
+  }
+}

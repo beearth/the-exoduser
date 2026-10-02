@@ -1,0 +1,350 @@
+{
+  "task": "host-native-acceptance",
+  "status": "complete-ui-sequence-with-open-gates",
+  "ui": {
+    "schema": "qa-host-native-acceptance-ui-v1",
+    "browser": "Codex In-app Browser",
+    "surface": "iab",
+    "tabId": "1",
+    "url": "http://127.0.0.1:3340/tools/team-followup-20261001/ITEM/browser-host/index.html",
+    "executedVia": "mcp__cua_repl only; native AX clicks and read-only DOM evidence",
+    "uiStartedUtc": "2026-10-02T03:44:15.609Z",
+    "uiFinishedUtc": "2026-10-02T03:45:16.012Z",
+    "stages": [
+      {
+        "stage": "initial",
+        "recordedUtc": "2026-10-02T03:44:45.047Z",
+        "status": "호스트 준비 · 실제 브라우저 import는 설치 버튼 호출 전 미확인 · 자동 설치/생성 없음",
+        "counts": "base RNG=0 · D10 RNG=0 · restore RNG=0 · 복원조회=0",
+        "errorsRaw": "{\n  \"csp\": {\n    \"schema\": \"item-review-csp-journal-v1\",\n    \"startedUtc\": \"2026-10-02T03:44:15.609Z\",\n    \"listenerPhase\": \"external-classic-after-policy-meta\",\n    \"limitation\": \"리스너 실행 전 주입/사건은 미관찰. sourceFile만으로 주입 주체를 확정하지 않음.\",\n    \"violations\": [\n      {\n        \"sequence\": 1,\n        \"observedUtc\": \"2026-10-02T03:44:15.661Z\",\n        \"phase\": \"host-ready\",\n        \"kind\": \"securitypolicyviolation\",\n        \"fields\": {\n          \"documentURI\": \"http://127.0.0.1:3340/tools/team-followup-20261001/ITEM/browser-host/index.html\",\n          \"referrer\": \"\",\n          \"blockedURI\": \"inline\",\n          \"violatedDirective\": \"style-src-elem\",\n          \"effectiveDirective\": \"style-src-elem\",\n          \"originalPolicy\": \"default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'\",\n          \"sourceFile\": \"\",\n          \"sample\": \"\",\n          \"disposition\": \"enforce\",\n          \"statusCode\": 200,\n          \"lineNumber\": 135,\n          \"columnNumber\": 93904,\n          \"timeStamp\": 135.5,\n          \"isTrusted\": true\n        }\n      }\n    ]\n  },\n  \"runtimeErrors\": []\n}",
+        "reviewChildren": 0
+      },
+      {
+        "stage": "installed",
+        "recordedUtc": "2026-10-02T03:44:50.031Z",
+        "status": "reviewOnly 설치 완료 · 아래 신규/JSON읽기 버튼을 명시 호출하세요. 비활성 유지.",
+        "counts": "base RNG=0 · D10 RNG=0 · restore RNG=0 · 복원조회=0",
+        "errorsRaw": "{\n  \"csp\": {\n    \"schema\": \"item-review-csp-journal-v1\",\n    \"startedUtc\": \"2026-10-02T03:44:15.609Z\",\n    \"listenerPhase\": \"external-classic-after-policy-meta\",\n    \"limitation\": \"리스너 실행 전 주입/사건은 미관찰. sourceFile만으로 주입 주체를 확정하지 않음.\",\n    \"violations\": [\n      {\n        \"sequence\": 1,\n        \"observedUtc\": \"2026-10-02T03:44:15.661Z\",\n        \"phase\": \"host-ready\",\n        \"kind\": \"securitypolicyviolation\",\n        \"fields\": {\n          \"documentURI\": \"http://127.0.0.1:3340/tools/team-followup-20261001/ITEM/browser-host/index.html\",\n          \"referrer\": \"\",\n          \"blockedURI\": \"inline\",\n          \"violatedDirective\": \"style-src-elem\",\n          \"effectiveDirective\": \"style-src-elem\",\n          \"originalPolicy\": \"default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'\",\n          \"sourceFile\": \"\",\n          \"sample\": \"\",\n          \"disposition\": \"enforce\",\n          \"statusCode\": 200,\n          \"lineNumber\": 135,\n          \"columnNumber\": 93904,\n          \"timeStamp\": 135.5,\n          \"isTrusted\": true\n        }\n      }\n    ]\n  },\n  \"runtimeErrors\": []\n}",
+        "reviewChildren": 3
+      },
+      {
+        "stage": "created",
+        "recordedUtc": "2026-10-02T03:44:55.376Z",
+        "status": "reviewOnly 설치 완료 · 아래 신규/JSON읽기 버튼을 명시 호출하세요. 비활성 유지.",
+        "reviewText": "새 제안 fixture 생성fixture JSON 읽기신규 proposal",
+        "counts": "base RNG=49 · D10 RNG=1 · restore RNG=0 · 복원조회=1",
+        "errorsRaw": "{\n  \"csp\": {\n    \"schema\": \"item-review-csp-journal-v1\",\n    \"startedUtc\": \"2026-10-02T03:44:15.609Z\",\n    \"listenerPhase\": \"external-classic-after-policy-meta\",\n    \"limitation\": \"리스너 실행 전 주입/사건은 미관찰. sourceFile만으로 주입 주체를 확정하지 않음.\",\n    \"violations\": [\n      {\n        \"sequence\": 1,\n        \"observedUtc\": \"2026-10-02T03:44:15.661Z\",\n        \"phase\": \"host-ready\",\n        \"kind\": \"securitypolicyviolation\",\n        \"fields\": {\n          \"documentURI\": \"http://127.0.0.1:3340/tools/team-followup-20261001/ITEM/browser-host/index.html\",\n          \"referrer\": \"\",\n          \"blockedURI\": \"inline\",\n          \"violatedDirective\": \"style-src-elem\",\n          \"effectiveDirective\": \"style-src-elem\",\n          \"originalPolicy\": \"default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'\",\n          \"sourceFile\": \"\",\n          \"sample\": \"\",\n          \"disposition\": \"enforce\",\n          \"statusCode\": 200,\n          \"lineNumber\": 135,\n          \"columnNumber\": 93904,\n          \"timeStamp\": 135.5,\n          \"isTrusted\": true\n        }\n      }\n    ]\n  },\n  \"runtimeErrors\": []\n}",
+        "reviewChildren": 3
+      },
+      {
+        "stage": "json-restored",
+        "recordedUtc": "2026-10-02T03:45:00.557Z",
+        "status": "reviewOnly 설치 완료 · 아래 신규/JSON읽기 버튼을 명시 호출하세요. 비활성 유지.",
+        "reviewText": "새 제안 fixture 생성fixture JSON 읽기JSON 복원 proposal · 재롤 없음",
+        "counts": "base RNG=49 · D10 RNG=1 · restore RNG=0 · 복원조회=2",
+        "errorsRaw": "{\n  \"csp\": {\n    \"schema\": \"item-review-csp-journal-v1\",\n    \"startedUtc\": \"2026-10-02T03:44:15.609Z\",\n    \"listenerPhase\": \"external-classic-after-policy-meta\",\n    \"limitation\": \"리스너 실행 전 주입/사건은 미관찰. sourceFile만으로 주입 주체를 확정하지 않음.\",\n    \"violations\": [\n      {\n        \"sequence\": 1,\n        \"observedUtc\": \"2026-10-02T03:44:15.661Z\",\n        \"phase\": \"host-ready\",\n        \"kind\": \"securitypolicyviolation\",\n        \"fields\": {\n          \"documentURI\": \"http://127.0.0.1:3340/tools/team-followup-20261001/ITEM/browser-host/index.html\",\n          \"referrer\": \"\",\n          \"blockedURI\": \"inline\",\n          \"violatedDirective\": \"style-src-elem\",\n          \"effectiveDirective\": \"style-src-elem\",\n          \"originalPolicy\": \"default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'\",\n          \"sourceFile\": \"\",\n          \"sample\": \"\",\n          \"disposition\": \"enforce\",\n          \"statusCode\": 200,\n          \"lineNumber\": 135,\n          \"columnNumber\": 93904,\n          \"timeStamp\": 135.5,\n          \"isTrusted\": true\n        }\n      }\n    ]\n  },\n  \"runtimeErrors\": []\n}",
+        "reviewChildren": 3
+      },
+      {
+        "stage": "uninstalled",
+        "recordedUtc": "2026-10-02T03:45:16.012Z",
+        "status": "검토 해제 완료 · 기존 property 보존 · 자동 재설치 없음",
+        "reviewText": "",
+        "counts": "base RNG=49 · D10 RNG=1 · restore RNG=0 · 복원조회=2",
+        "errorsRaw": "{\n  \"csp\": {\n    \"schema\": \"item-review-csp-journal-v1\",\n    \"startedUtc\": \"2026-10-02T03:44:15.609Z\",\n    \"listenerPhase\": \"external-classic-after-policy-meta\",\n    \"limitation\": \"리스너 실행 전 주입/사건은 미관찰. sourceFile만으로 주입 주체를 확정하지 않음.\",\n    \"violations\": [\n      {\n        \"sequence\": 1,\n        \"observedUtc\": \"2026-10-02T03:44:15.661Z\",\n        \"phase\": \"host-ready\",\n        \"kind\": \"securitypolicyviolation\",\n        \"fields\": {\n          \"documentURI\": \"http://127.0.0.1:3340/tools/team-followup-20261001/ITEM/browser-host/index.html\",\n          \"referrer\": \"\",\n          \"blockedURI\": \"inline\",\n          \"violatedDirective\": \"style-src-elem\",\n          \"effectiveDirective\": \"style-src-elem\",\n          \"originalPolicy\": \"default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'\",\n          \"sourceFile\": \"\",\n          \"sample\": \"\",\n          \"disposition\": \"enforce\",\n          \"statusCode\": 200,\n          \"lineNumber\": 135,\n          \"columnNumber\": 93904,\n          \"timeStamp\": 135.5,\n          \"isTrusted\": true\n        }\n      }\n    ]\n  },\n  \"runtimeErrors\": []\n}",
+        "reviewChildren": 0
+      }
+    ],
+    "tabLogs": [],
+    "initialJournalPreservedByteForByte": true,
+    "portDescriptorRuntime": "UNKNOWN: only UI preservation status observed; no hidden property inspection",
+    "startupAttribution": "UNKNOWN: empty sourceFile/sample; pre-listener events unobserved",
+    "actualUiSequenceComplete": true,
+    "qaCreatedTabClosed": true
+  },
+  "sourceHashes": {
+    "tools/team-followup-20261001/ITEM/browser-host/binding-d10.js": {
+      "disk": "4f3c8c980a9c6b93dcc975b660d7b1e8120067ca83a0152b1469e6ee35182529",
+      "baseline": "4f3c8c980a9c6b93dcc975b660d7b1e8120067ca83a0152b1469e6ee35182529"
+    },
+    "tools/team-followup-20261001/ITEM/browser-host/binding-ports.js": {
+      "disk": "a0e6341efb06d06c18ec5ea957a251fbce045fd4f09b28fabf9dfa0a9c9127ad",
+      "baseline": "a0e6341efb06d06c18ec5ea957a251fbce045fd4f09b28fabf9dfa0a9c9127ad"
+    },
+    "tools/team-followup-20261001/ITEM/browser-host/csp-startup.js": {
+      "disk": "36ee47b1846f508c1d3bca7741d50ebb481312408344401eff2a1c6a1844cf84",
+      "baseline": "36ee47b1846f508c1d3bca7741d50ebb481312408344401eff2a1c6a1844cf84"
+    },
+    "tools/team-followup-20261001/ITEM/browser-host/d10-consumer.js": {
+      "disk": "78f9a69ca9e0f55ec6edb649e6845e94afebd016e6a01892098eb19f83e677e2",
+      "baseline": "78f9a69ca9e0f55ec6edb649e6845e94afebd016e6a01892098eb19f83e677e2"
+    },
+    "tools/team-followup-20261001/ITEM/browser-host/host.css": {
+      "disk": "9e2285d62d698b39d5820b36c2356a161adc06cee17b5351e16ca6eec80dc135",
+      "baseline": "9e2285d62d698b39d5820b36c2356a161adc06cee17b5351e16ca6eec80dc135"
+    },
+    "tools/team-followup-20261001/ITEM/browser-host/host.js": {
+      "disk": "2edc45b60c91c6e75358e070f5b4784628a8df55090f13bb8d15508a10f62dc3",
+      "baseline": "2edc45b60c91c6e75358e070f5b4784628a8df55090f13bb8d15508a10f62dc3"
+    },
+    "tools/team-followup-20261001/ITEM/browser-host/index.html": {
+      "disk": "ea1c8ded5ab7867c9a03082785fad60d8622d08da9e9f1bf125214f83c37a4e3",
+      "baseline": "ea1c8ded5ab7867c9a03082785fad60d8622d08da9e9f1bf125214f83c37a4e3"
+    },
+    "tools/team-followup-20261001/ITEM/browser-host/manifest.json": {
+      "disk": "ee985696e39dbce7913f5e7d28be4a32d92a3b525107c9a9f2fdce3ed1030f79",
+      "baseline": "ee985696e39dbce7913f5e7d28be4a32d92a3b525107c9a9f2fdce3ed1030f79"
+    },
+    "tools/team-followup-20261001/ITEM/browser-host/mk-item-fixture.js": {
+      "disk": "5476174988858bd50b700cd48b1aa681cf7c002719a0e54248c199473e1cc0a8",
+      "baseline": "5476174988858bd50b700cd48b1aa681cf7c002719a0e54248c199473e1cc0a8"
+    },
+    "tools/team-followup-20261001/ITEM/browser-host/persistence-integration-port.js": {
+      "disk": "9d2536fef5608d18dda3a6e557e24b48d5c262f9566f3c0cd37a52d8e4058491",
+      "baseline": "9d2536fef5608d18dda3a6e557e24b48d5c262f9566f3c0cd37a52d8e4058491"
+    },
+    "tools/team-followup-20261001/ITEM/browser-bootstrap-api.js": {
+      "disk": "dcea3ff9722dde2fd200ecf1fb55f6d742f70631918fa7276c089e5e775ae9eb",
+      "baseline": "dcea3ff9722dde2fd200ecf1fb55f6d742f70631918fa7276c089e5e775ae9eb"
+    },
+    "tools/team-followup-20261001/ITEM/browser-bootstrap-ui.js": {
+      "disk": "5c6a17133d39b276f12ebff6e33924b44acf7b122b47821a3730c3026b68634d",
+      "baseline": "5c6a17133d39b276f12ebff6e33924b44acf7b122b47821a3730c3026b68634d"
+    },
+    "unique-item-project/definitions.js": {
+      "disk": "3f04bcc5ac90b039454f32dc9323e60bbe44dda27be7fd439a97633d1f25118a",
+      "baseline": "3f04bcc5ac90b039454f32dc9323e60bbe44dda27be7fd439a97633d1f25118a"
+    },
+    "unique-item-project/roll-values.js": {
+      "disk": "103d0460c738c117840586780eaaed7be7ebe0aba61fa50464db9d004b094975",
+      "baseline": "103d0460c738c117840586780eaaed7be7ebe0aba61fa50464db9d004b094975"
+    }
+  },
+  "productionReadOnlyHashes": {
+    "game.html": {
+      "disk": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+      "baseline": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f"
+    },
+    "game-easy-test.html": {
+      "disk": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+      "baseline": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8"
+    },
+    "server.cjs": {
+      "disk": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d",
+      "baseline": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d"
+    },
+    "node-main.js": {
+      "disk": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce",
+      "baseline": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce"
+    },
+    "index.html": {
+      "disk": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8",
+      "baseline": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8"
+    }
+  },
+  "sourceBaselineSha": "96610b6546a31e882962470ea1f2164ce94edca6",
+  "head": {
+    "atFirstRead": "96610b6546a31e882962470ea1f2164ce94edca6",
+    "atValidation": "96610b6546a31e882962470ea1f2164ce94edca6",
+    "atCompletion": "96610b6546a31e882962470ea1f2164ce94edca6"
+  },
+  "receipt": {
+    "received": true,
+    "source": "delegated instruction in this QA chat",
+    "receivedExactUtc": null,
+    "readCompletedRecordedUtc": "2026-10-02T03:43:47Z",
+    "readClockSource": "clock tool sampled after task/source reads; not message timestamp",
+    "taskFile": "tools/team-followup-20261002/project-teams/QA/task.md",
+    "taskSha256": "2f20ca8eef97b4873eb09a2143a754d677fadfaac3eb95cff40ffa989654d475"
+  },
+  "release": {
+    "received": true,
+    "source": "root release message before UI creation",
+    "rootReportedHead": "96610b6546a31e882962470ea1f2164ce94edca6",
+    "rootReportedHTTP": {
+      "api": "/api/slots",
+      "status": 200,
+      "ok": true,
+      "existingSlots": 1
+    },
+    "host": "127.0.0.1",
+    "port": 3340,
+    "saveDir": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tmp/mac-migration-runtime/saves",
+    "qaIndependentAPICall": false
+  },
+  "originalSession": {
+    "sessionId": "88c3f903-ece5-4640-8b0c-86feaaca0e53",
+    "lastRecordedUserAssistantUtc": "2026-10-01T17:38:58.140Z",
+    "hostTaskTextEvents": 0,
+    "scope": "read local JSONL; no new liveness/UI claim"
+  },
+  "gitCounts": {
+    "firstRead": 23,
+    "beforeArtifactFinalization": 39,
+    "note": "shared checkout includes other team files; QA Git writes0",
+    "atCompletion": 53,
+    "atHandoff": 54
+  },
+  "docsSearch": {
+    "query": "browser-host|item-review-csp-journal-v1|host-native-acceptance|restore RNG|CSP 초기 원자료",
+    "matchCount": 8,
+    "documents": [
+      "docs/7아이템디자인/ITEM_TEAM_MASTER.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/native-recovery/QA-task.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/COMBAT-REVIEW-20261002.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FOUR-SUBMISSIONS-HELLRAY-20261002.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/INDEPENDENT-NEXT-20261002.md"
+    ],
+    "matches": [
+      "docs/7아이템디자인/ITEM_TEAM_MASTER.md:189:### 2026-10-02 CSP 초기 원자료 진단 인수",
+      "docs/7아이템디자인/ITEM_TEAM_MASTER.md:191:기존 browser-host의 sourceFile/줄·열·후속 이력 누락을 수정했다. 초기 외부 self 리스너와 누적 원자료를 추가했고 CSP 정책은 동일하다. 담당 완료와 root 별도 11+12=23그룹 Node PASS를 확인했다. 실제 브라우저/원주입자 귀속은 UNKNOWN이며 QA 전용 게이트로 남긴다. startup 실행 전 사건은 미관찰이다. 상세: `tools/team-followup-20261001/ITEM/browser-csp-cause-result.md`, 실제 검수: `browser-csp-cause-qa-plan.md`. 생산 게임/드롭/저장 스키마 변경0.",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/native-recovery/QA-task.md:1:# QA: ITEM browser-host 실제 설치·생성·JSON 복원·해제 인수",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/native-recovery/QA-task.md:3:INDEPENDENT-NEXT-20261002.md의 미전달 한 건을 기존 세션에서만 이어간다. 작업 ID host-native-acceptance. 동일 과제 수신/진행/대기 또는 초안이 있으면 중복 실행하지 말고 원자료를 보존해 상태를 보고한다. 기준 원격 체크포인트60b0d08b, 현재 HEAD는 시작 시 읽어 기록한다.",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/native-recovery/QA-task.md:7:소유 신규 prefix: tools/team-followup-20261001/QA/host-native-acceptance-*. SOUND 외 팀은 최소 필요한 산출만 만들고 불필요한 전체 게임 사본을 늘리지 않는다. 공용 HTML/서버/에셋/팀 외 docs는 읽기 전용. 후보·단위검사·실제 런타임 인수를 구분한다. 기존 초안/사용자 세이브/타팀 stage·변경을 보존한다. 새 팀·세션·에이전트/생산 통합/빌드/에셋생성/Git쓰기/권한 변경0. 서버/listen/EPERM/읽기전용 제한 우회0. UI/런타임은 QA만 맡는다.",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/COMBAT-REVIEW-20261002.md:9:| QA | `host-native-acceptance` 준비, 전달0·Read0·미가동; 이전 D17 독립20그룹 인수 완료 | 독립 ITEM host의 실제 설치·생성·JSON 복원·해제 | root가 식별한 독립 UI·실제 오류 원문·행동별 카운터·CSP 위치; 사용자 탭 접근0 | 정상전투/첫처치 관측기와 새 입력경로 분석 CLI 준비. 이번 신규 실측0 |",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FOUR-SUBMISSIONS-HELLRAY-20261002.md:28:| ITEM9 | 전이 .js 모듈 체인·실제 factory/mkItem 연결·명시 reviewOnly host | ITEM/browser-host-* 및 browser-host/ |",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/INDEPENDENT-NEXT-20261002.md:7:| ITEM | browser-host CSP 초기 원자료 누락 수정; browser-host 3파일 및 browser-csp-cause-* | 기존 세션 Read/Edit/실행 확인. root 진단11+기존12 PASS. 실브라우저 CSP 원인 귀속은 UNKNOWN |"
+    ],
+    "writePolicy": "shared docs read-only; exact sync proposal in result.md for root"
+  },
+  "hostFixtureBoundary": {
+    "name": "꺼지지 않는 심갑",
+    "uniqueId": "UI-10",
+    "effectId": "U-D10",
+    "slot": "armor",
+    "status": "proposal",
+    "enabled": false,
+    "runtimeReady": false,
+    "frozenManifestSourceGameSha": "21235538c9766a28b04dcf529aed9883a8aa11bdbfef8e9e2ce35d5cc927c5cf",
+    "wholeCurrentGameExecuted": false
+  },
+  "prohibitedActions": {
+    "productionEdits": 0,
+    "taskEdits": 0,
+    "originalPrefixEdits": 0,
+    "userTabActions": 0,
+    "userAppActions": 0,
+    "userSaveActions": 0,
+    "newServer": 0,
+    "newListen": 0,
+    "gameRuns": 0,
+    "performanceMeasurements": 0,
+    "builds": 0,
+    "installs": 0,
+    "gitWrites": 0,
+    "newSessions": 0,
+    "subagents": 0,
+    "automationChanges": 0,
+    "permissionChanges": 0,
+    "cdp": 0,
+    "externalPlaywright": 0,
+    "directHTTP": 0,
+    "appleScript": 0
+  },
+  "artifacts": [
+    "result.md",
+    "evidence.json",
+    "proof.jpg"
+  ],
+  "processingFailures": [
+    {
+      "operation": "source baseline hashing",
+      "error": "git show default execFileSync maxBuffer ENOBUFS",
+      "resolved": "32MiB explicit output buffer; UI not rerun; no baseline or file edits"
+    }
+  ],
+  "proof": {
+    "file": "proof.jpg",
+    "sha256": "bd208986ad0f90dbf5625f65657d4f128e75143abb73351aa7d974b2d392a335",
+    "bytes": 118075
+  },
+  "validation": {
+    "atUtc": "2026-10-02T03:48:42.137Z",
+    "kind": "stored actual UI evidence consistency checks; not new UI/Node DOM fixture/game tests",
+    "checks": [
+      {
+        "name": "실제5단계 순서",
+        "status": "PASS"
+      },
+      {
+        "name": "관측UTC 순서",
+        "status": "PASS"
+      },
+      {
+        "name": "초기 RNG/조회0",
+        "status": "PASS"
+      },
+      {
+        "name": "설치 RNG/조회0",
+        "status": "PASS"
+      },
+      {
+        "name": "신규 base49/D101/재롤0/조회1",
+        "status": "PASS"
+      },
+      {
+        "name": "JSON복원 증가0/조회2",
+        "status": "PASS"
+      },
+      {
+        "name": "해제 카운터 불변",
+        "status": "PASS"
+      },
+      {
+        "name": "review 자식0→3→3→3→0",
+        "status": "PASS"
+      },
+      {
+        "name": "5단계 runtimeErrors0",
+        "status": "PASS"
+      },
+      {
+        "name": "초기 CSP1건 유지",
+        "status": "PASS"
+      },
+      {
+        "name": "초기 journal byte 동일",
+        "status": "PASS"
+      },
+      {
+        "name": "CSP 빈필드/행열/phase 원문",
+        "status": "PASS"
+      },
+      {
+        "name": "실제 설치/생성/JSON/해제 문구",
+        "status": "PASS"
+      },
+      {
+        "name": "host/의존14 SHA 동일·현행 재대조",
+        "status": "PASS"
+      },
+      {
+        "name": "생산5·task SHA 보존",
+        "status": "PASS"
+      },
+      {
+        "name": "임시탭 정리·UNKNOWN 경계·JPEG 증거",
+        "status": "PASS"
+      }
+    ],
+    "total": 16,
+    "pass": 16,
+    "fail": 0
+  },
+  "completedAtUtc": "2026-10-02T03:48:42.137Z",
+  "gates": {
+    "uiSequence": "PASS",
+    "countersAndRestoreRng": "PASS",
+    "reviewChildrenCleanup": "PASS",
+    "initialJournalRetention": "PASS",
+    "cspInjectorAttribution": "UNKNOWN",
+    "originalPortDescriptorRuntime": "UNKNOWN",
+    "wholeGameIntegration": "NOT_EXECUTED",
+    "performance": "NOT_EXECUTED"
+  },
+  "resultSha256": "922303272f8c8a4fe9c9327c06a6cbdd4fc3b49fb4ebd12c1c0d92c5f04ec3a6",
+  "artifactCount": 3,
+  "reportFinalizedUtc": "2026-10-02T03:49:06.471Z",
+  "checkpointNeeded": false,
+  "remoteCheckpoint": "root receipt96610b65; no QA Git write or new remote checkpoint"
+}

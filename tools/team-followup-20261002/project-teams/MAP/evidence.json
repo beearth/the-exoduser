@@ -1,0 +1,3198 @@
+{
+  "executions": [
+    {
+      "taskId": "m5-tile-reachability",
+      "startedAt": "2026-10-02T03:52:47.048Z",
+      "finishedAt": "2026-10-02T03:52:48.887Z",
+      "head": "31454dfa49c90bac77351273fc32f0c1eb937928",
+      "node": "v24.15.0",
+      "fixture": "production functions/data extracted into isolated Node VM; no game bootstrap",
+      "randomFixtureValues": [
+        0.5,
+        0.9
+      ],
+      "randomCalls": 14,
+      "boneWallsFixture": "empty; dynamic encounter not simulated",
+      "counts": {
+        "pass": 20,
+        "fail": 3
+      },
+      "results": [
+        {
+          "id": "S01",
+          "name": "생산 연결과 200×200/T40 계약",
+          "status": "PASS"
+        },
+        {
+          "id": "S02",
+          "name": "RLE 전량 40000셀 및 크기 가드",
+          "status": "PASS"
+        },
+        {
+          "id": "S03",
+          "name": "양쪽 생산 핵심 함수/배치/메타 병합 원문 일치",
+          "status": "FAIL",
+          "reason": "_buildCh1StartForestRLE\n+ actual - expected\n\n  'function _buildCh1StartForestRLE(mw,mh){\\n' +\n+   \"  if(typeof CH1_1_PRODUCTION!=='undefined')return CH1_1_PRODUCTION.buildRLE(mw,mh);\\n\" +\n    '  const n=mw*mh,g=new Uint8Array(n),bell=(v,c,w)=>Math.exp(-Math.pow((v-c)/w,2));\\n' +\n    '  for(let y=0;y<mh;y++){\\n' +\n    '    const ty=y*199/Math.max(1,mh-1);\\n' +\n    '    const left=18+12*bell(ty,50,17)+6*bell(ty,101,22)+15*bell(ty,150,19)+2.4*Math.sin(ty*.11+1.2);\\n' +\n    '    const right=182-16*bell(ty,50,19)-6*bell(ty,105,23)-12*bell(ty,140,21)+2.2*Math.sin(ty*.09+.4);\\n' +\n"
+        },
+        {
+          "id": "S04",
+          "name": "생산 genFromTemplate 전체 실행 결과 양쪽 일치",
+          "status": "FAIL",
+          "reason": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '8a5dfe9f1a6c5a283be293a85cedb49509d1db5d317e063fde0b2cd5ff6c65a1'\n- '7c7e8d31ae37a77291cc4fda815031bdfe7b6d0d399d0333a9314d6ad94677d5'\n"
+        },
+        {
+          "id": "S05",
+          "name": "실제 북측 출입 계약",
+          "status": "PASS"
+        },
+        {
+          "id": "S06",
+          "name": "기존 START 반경15 및 잠금 위치",
+          "status": "PASS"
+        },
+        {
+          "id": "M01",
+          "name": "접근점166,153 통행",
+          "status": "PASS"
+        },
+        {
+          "id": "M02",
+          "name": "7000,6900 촬영점은 벽 반례",
+          "status": "PASS"
+        },
+        {
+          "id": "M03",
+          "name": "M5 에셋 앵커와 보행점 분리",
+          "status": "PASS"
+        },
+        {
+          "id": "M04",
+          "name": "M5 전경 원배치 및 모드 데이터 일치",
+          "status": "PASS"
+        },
+        {
+          "id": "M05",
+          "name": "START→접근점 반경15 샘플 경로 존재",
+          "status": "PASS"
+        },
+        {
+          "id": "M06",
+          "name": "검출 경로 모든 중간 샘플 canMv 통과",
+          "status": "PASS"
+        },
+        {
+          "id": "M07",
+          "name": "같은 경로 역방향 입구 복귀 소스 통과",
+          "status": "PASS"
+        },
+        {
+          "id": "M08",
+          "name": "M5 투영 사각과 겹치는 보행셀 전량 연결",
+          "status": "PASS"
+        },
+        {
+          "id": "M09",
+          "name": "polygon 밖 보행셀을 벽으로 오분류하지 않음",
+          "status": "PASS"
+        },
+        {
+          "id": "M10",
+          "name": "남쪽 직진의 첫 막힘과 네 모서리 반례",
+          "status": "PASS"
+        },
+        {
+          "id": "M11",
+          "name": "타일 바닥만으로 통행 승인하는 오판 반례",
+          "status": "PASS"
+        },
+        {
+          "id": "M12",
+          "name": "실제 collider·scale 캐시 및 전경 군락 비충돌",
+          "status": "PASS"
+        },
+        {
+          "id": "M13",
+          "name": "아웃오브바운드 벽 거부",
+          "status": "PASS"
+        },
+        {
+          "id": "M14",
+          "name": "스폰/북측 카빙 RNG 변경에도 M5 국소 타일 동일",
+          "status": "PASS"
+        },
+        {
+          "id": "M15",
+          "name": "양쪽 접근·벽·남쪽 정지 판정 동일",
+          "status": "FAIL",
+          "reason": "Expected values to be strictly equal:\n\ntrue !== false\n"
+        },
+        {
+          "id": "G01",
+          "name": "UI/이미지 요청·비밀 fallback 호출 없음",
+          "status": "PASS"
+        },
+        {
+          "id": "G02",
+          "name": "보호 생산11입력 실행 전후 SHA 동일",
+          "status": "PASS"
+        }
+      ],
+      "inputsBefore": {
+        "game.html": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+        "game-easy-test.html": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+        "index.html": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8",
+        "server.cjs": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d",
+        "node-main.js": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce",
+        "maps_data.js": "01e74466ea797227d555288592edc959545cb2e44e64e607bf181e7d64c2870e",
+        "assets/map/ch1/production_finish/layout.js": "94b974df0ea090bd0cedb4f492777194e3b5938bcace6a7db2fd879b89a20dab",
+        "ch1-boundary-edge.js": "e1271685ee41026e330c77dfb9c8fc83146f2d116b97512e37d82cf53798edc2",
+        "ch1-border-foreground.js": "7f0f3e2e373041adc9e39512b147ab535f99b89e914686ab7ff14eb602f46b22",
+        "assets/map/ch1/production_finish/outer90_sources/placements.json": "2f6ec8137ea69f3c5f25da17ed9cddc9a33cf3c33b6908e883db0e85b0d27a70",
+        "tools/team-followup-20261002/project-teams/MAP/task.md": "2dac48b7c61040ad5c3b352e31932479cd5e7627dcc7700c1f5b75da38a33d65"
+      },
+      "inputsAfter": {
+        "game.html": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+        "game-easy-test.html": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+        "index.html": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8",
+        "server.cjs": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d",
+        "node-main.js": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce",
+        "maps_data.js": "01e74466ea797227d555288592edc959545cb2e44e64e607bf181e7d64c2870e",
+        "assets/map/ch1/production_finish/layout.js": "94b974df0ea090bd0cedb4f492777194e3b5938bcace6a7db2fd879b89a20dab",
+        "ch1-boundary-edge.js": "e1271685ee41026e330c77dfb9c8fc83146f2d116b97512e37d82cf53798edc2",
+        "ch1-border-foreground.js": "7f0f3e2e373041adc9e39512b147ab535f99b89e914686ab7ff14eb602f46b22",
+        "assets/map/ch1/production_finish/outer90_sources/placements.json": "2f6ec8137ea69f3c5f25da17ed9cddc9a33cf3c33b6908e883db0e85b0d27a70",
+        "tools/team-followup-20261002/project-teams/MAP/task.md": "2dac48b7c61040ad5c3b352e31932479cd5e7627dcc7700c1f5b75da38a33d65"
+      },
+      "functions": {
+        "_rleEncodeGrid": {
+          "sha256": "40f329fbac442ca0b38fad42f469bfe165340f754ba6aa92095ff87be0cdb952",
+          "line": 28698,
+          "bytes": 153
+        },
+        "_buildCh1StartForestRLE": {
+          "sha256": "28caed8b821d9e5c30047823b039e42cc88ae25f445072f0550a0f53d16225db",
+          "line": 28741,
+          "bytes": 773
+        },
+        "_applyCh1StartNorthGate": {
+          "sha256": "9bae0a90422beeef9ecaae99893ae82b589bd12a42e5cf9696667e87f91e0a18",
+          "line": 28791,
+          "bytes": 403
+        },
+        "_cloneField11": {
+          "sha256": "d26f2f4b43ee281e13d176ed5651670498d46ecb09bb5e2d7fd7c55cc4b8e616",
+          "line": 28812,
+          "bytes": 2073
+        },
+        "genFromTemplate": {
+          "sha256": "daf6bf5ed416da77a75671e3d97587d5ada175a6fe4028e91f536a751da0d2fa",
+          "line": 28988,
+          "bytes": 29407
+        },
+        "_tCarveCircle": {
+          "sha256": "aec27b9c4e506c8be80ce8411ad52fae1795f6ae399b36492b5eefa071bd3374",
+          "line": 27807,
+          "bytes": 230
+        },
+        "_tCarveEllipse": {
+          "sha256": "5b68cdcb042ca9258f6005516341da9aac0d0ecd36b66d63849c5b68ccb98b8a",
+          "line": 27815,
+          "bytes": 242
+        },
+        "_tCarveRect": {
+          "sha256": "0b60ed9400e29fe28b34bce5d1aad8222a283119e51ec76cf032f60eaa25e76f",
+          "line": 27822,
+          "bytes": 188
+        },
+        "_tCarveCross": {
+          "sha256": "f47dc8ca89744dc13d9e7f9756d7c3bb0374d0a7b93e938e8becdb885ca7cd69",
+          "line": 27828,
+          "bytes": 426
+        },
+        "_tCarveCorridor": {
+          "sha256": "603da06fecc0a91ed74fea7cd5f8e7f628833f06bc0b7493f68d1506dc6c1bef",
+          "line": 27841,
+          "bytes": 2054
+        },
+        "_tBossDistMap": {
+          "sha256": "6c7ae9d33a94fff9403eb0ce0ca2c13f1e927ac54e3336d65f78f2e0ed714e7b",
+          "line": 27908,
+          "bytes": 333
+        },
+        "_spawnHoleCount": {
+          "sha256": "2df8140e22cd52fd550b5bd8d879d310e227d364d8c30791261b58a6cf7a6a1f",
+          "line": 29792,
+          "bytes": 164
+        },
+        "_cacheExitCenter": {
+          "sha256": "5dba8f4c496c5840254479d292d4652b84121ae5a115555838b2a18951d89ef1",
+          "line": 18655,
+          "bytes": 210
+        },
+        "_appendRotatedColParts": {
+          "sha256": "e06e280ad0741c3d0d84c7de30dff51985e5a22259c28959f239e0aa9ab7e0b1",
+          "line": 30445,
+          "bytes": 389
+        },
+        "_rebuildColObjs": {
+          "sha256": "244522b4da6bdb78401690fddad00ad1a521fdef5ce68145e055a39019b7fea9",
+          "line": 30446,
+          "bytes": 881
+        },
+        "_ensureColObjs": {
+          "sha256": "c68faf791b13410a5c5f258418961669f9db64172a7e7607b22afb5eb72851df",
+          "line": 30447,
+          "bytes": 100
+        },
+        "_ch1HillRampAt": {
+          "sha256": "9c2b6fe8ad4e6b3d2432645528f8f42d90b2bf2c0f93cb4c70a28161a13186be",
+          "line": 30451,
+          "bytes": 223
+        },
+        "_ch1HillBandBlocks": {
+          "sha256": "73e5efc699cf23d4e3b9f481708230e4f510fc9893ae0d1a9d7cbfcecdc4b409",
+          "line": 30456,
+          "bytes": 249
+        },
+        "isW": {
+          "sha256": "96db02d1f1d52890105c319d760a0592cdfc0a679d39a8fe5793b5d4bce12388",
+          "line": 30469,
+          "bytes": 1107
+        },
+        "canMv": {
+          "sha256": "fc0ebf7b6a24afd582d9010734def79bce2649c2d0118934d8c2cc8917dc2c4c",
+          "line": 30470,
+          "bytes": 87
+        }
+      },
+      "geometry": {
+        "fixtureGeneratedMapSHA256": "8a5dfe9f1a6c5a283be293a85cedb49509d1db5d317e063fde0b2cd5ff6c65a1",
+        "rawLayoutRLEConvertedDifferenceCells": 967,
+        "rawWallToRuntimeFloorCells": 680,
+        "walkableR15Centres": 19281,
+        "startConnectedCentres": 19281,
+        "rejectedSampledEdges": 5,
+        "handProps": 36,
+        "placedMapObjects": 37,
+        "collisionObjects": 20
+      },
+      "points": {
+        "start": {
+          "world": [
+            4020,
+            7420
+          ],
+          "tile": [
+            100,
+            185
+          ],
+          "tileValue": 0,
+          "isW": false,
+          "canMvR15": true
+        },
+        "approach": {
+          "world": [
+            6660,
+            6140
+          ],
+          "tile": [
+            166,
+            153
+          ],
+          "tileValue": 0,
+          "isW": false,
+          "canMvR15": true
+        },
+        "badCamera": {
+          "world": [
+            7000,
+            6900
+          ],
+          "tile": [
+            175,
+            172
+          ],
+          "tileValue": 1,
+          "isW": true,
+          "canMvR15": false
+        },
+        "assetAnchor": {
+          "world": [
+            7000,
+            6880
+          ],
+          "tile": [
+            175,
+            172
+          ],
+          "tileValue": 1,
+          "isW": true,
+          "canMvR15": false
+        },
+        "southFirstBlocked": {
+          "world": [
+            6660,
+            6305
+          ],
+          "tile": [
+            166,
+            157
+          ],
+          "tileValue": 0,
+          "isW": false,
+          "canMvR15": false
+        },
+        "pitCounterexample": {
+          "world": [
+            6500,
+            5580
+          ],
+          "tile": [
+            162,
+            139
+          ],
+          "tileValue": 0,
+          "isW": true,
+          "canMvR15": false
+        }
+      },
+      "route": {
+        "radius": 15,
+        "nodeSpacing": 40,
+        "edgeSampleSpacing": 5,
+        "nodeCount": 99,
+        "turnWorldPoints": [
+          [
+            4020,
+            7420
+          ],
+          [
+            4780,
+            7420
+          ],
+          [
+            4780,
+            7060
+          ],
+          [
+            4820,
+            7060
+          ],
+          [
+            4820,
+            7020
+          ],
+          [
+            4860,
+            7020
+          ],
+          [
+            4860,
+            6980
+          ],
+          [
+            5260,
+            6980
+          ],
+          [
+            5260,
+            6940
+          ],
+          [
+            5300,
+            6940
+          ],
+          [
+            5300,
+            6900
+          ],
+          [
+            5340,
+            6900
+          ],
+          [
+            5340,
+            6860
+          ],
+          [
+            5380,
+            6860
+          ],
+          [
+            5380,
+            6820
+          ],
+          [
+            5420,
+            6820
+          ],
+          [
+            5420,
+            6780
+          ],
+          [
+            5460,
+            6780
+          ],
+          [
+            5460,
+            6740
+          ],
+          [
+            5500,
+            6740
+          ],
+          [
+            5500,
+            6700
+          ],
+          [
+            5580,
+            6700
+          ],
+          [
+            5580,
+            6660
+          ],
+          [
+            5660,
+            6660
+          ],
+          [
+            5660,
+            6620
+          ],
+          [
+            5740,
+            6620
+          ],
+          [
+            5740,
+            6580
+          ],
+          [
+            5820,
+            6580
+          ],
+          [
+            5820,
+            6540
+          ],
+          [
+            5900,
+            6540
+          ],
+          [
+            5900,
+            6500
+          ],
+          [
+            5980,
+            6500
+          ],
+          [
+            5980,
+            6460
+          ],
+          [
+            6100,
+            6460
+          ],
+          [
+            6100,
+            6420
+          ],
+          [
+            6220,
+            6420
+          ],
+          [
+            6220,
+            6380
+          ],
+          [
+            6380,
+            6380
+          ],
+          [
+            6380,
+            6340
+          ],
+          [
+            6540,
+            6340
+          ],
+          [
+            6540,
+            6300
+          ],
+          [
+            6660,
+            6300
+          ],
+          [
+            6660,
+            6140
+          ]
+        ],
+        "claim": "static sampled START to known approach and reverse only; not trusted input or named pocket full-route acceptance"
+      },
+      "m5": {
+        "sourcePlacement": [
+          175,
+          172,
+          2,
+          2200,
+          true
+        ],
+        "projectedBounds": {
+          "x": 5925.78125,
+          "y": 6009.765625,
+          "w": 2148.4375,
+          "h": 1208.984375,
+          "anchorY": 6880
+        },
+        "projectedWalkableCentres": 228,
+        "projectedUnreachableCentres": 0,
+        "outsidePolygonWalkableCentres": 27,
+        "fringeExamples": [
+          [
+            6940,
+            6020
+          ],
+          [
+            6900,
+            6060
+          ],
+          [
+            6900,
+            6100
+          ],
+          [
+            6860,
+            6140
+          ],
+          [
+            6820,
+            6180
+          ]
+        ],
+        "semanticPocket": "No separate M5 pocket/entrance polygon or gameplay region ID; sprite rectangle is diagnostic extent only"
+      },
+      "gates": {
+        "actualEightViews": "0/8 new",
+        "actualTrustedMovement": 0,
+        "fullPocketToEntranceRoute": "UNMEASURED",
+        "occlusionCombatPageerrorLoadingPerformance": "UNMEASURED",
+        "visualVerdict": "RETOUCH",
+        "productionApplied": false
+      }
+    },
+    {
+      "taskId": "m5-tile-reachability",
+      "startedAt": "2026-10-02T03:53:29.443Z",
+      "finishedAt": "2026-10-02T03:53:31.299Z",
+      "head": "31454dfa49c90bac77351273fc32f0c1eb937928",
+      "node": "v24.15.0",
+      "fixture": "production functions/data extracted into isolated Node VM; no game bootstrap",
+      "randomFixtureValues": [
+        0.5,
+        0.9
+      ],
+      "randomCalls": 14,
+      "boneWallsFixture": "empty; dynamic encounter not simulated",
+      "counts": {
+        "pass": 20,
+        "fail": 3
+      },
+      "results": [
+        {
+          "id": "S01",
+          "name": "생산 연결과 200×200/T40 계약",
+          "status": "PASS"
+        },
+        {
+          "id": "S02",
+          "name": "RLE 전량 40000셀 및 크기 가드",
+          "status": "PASS"
+        },
+        {
+          "id": "S03",
+          "name": "양쪽 생산 핵심 함수/배치/메타 병합 원문 일치",
+          "status": "FAIL",
+          "reason": "_buildCh1StartForestRLE\n+ actual - expected\n\n  'function _buildCh1StartForestRLE(mw,mh){\\n' +\n+   \"  if(typeof CH1_1_PRODUCTION!=='undefined')return CH1_1_PRODUCTION.buildRLE(mw,mh);\\n\" +\n    '  const n=mw*mh,g=new Uint8Array(n),bell=(v,c,w)=>Math.exp(-Math.pow((v-c)/w,2));\\n' +\n    '  for(let y=0;y<mh;y++){\\n' +\n    '    const ty=y*199/Math.max(1,mh-1);\\n' +\n    '    const left=18+12*bell(ty,50,17)+6*bell(ty,101,22)+15*bell(ty,150,19)+2.4*Math.sin(ty*.11+1.2);\\n' +\n    '    const right=182-16*bell(ty,50,19)-6*bell(ty,105,23)-12*bell(ty,140,21)+2.2*Math.sin(ty*.09+.4);\\n' +\n"
+        },
+        {
+          "id": "S04",
+          "name": "생산 genFromTemplate 전체 실행 결과 양쪽 일치",
+          "status": "FAIL",
+          "reason": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '8a5dfe9f1a6c5a283be293a85cedb49509d1db5d317e063fde0b2cd5ff6c65a1'\n- '7c7e8d31ae37a77291cc4fda815031bdfe7b6d0d399d0333a9314d6ad94677d5'\n"
+        },
+        {
+          "id": "S05",
+          "name": "실제 북측 출입 계약",
+          "status": "PASS"
+        },
+        {
+          "id": "S06",
+          "name": "기존 START 반경15 및 잠금 위치",
+          "status": "PASS"
+        },
+        {
+          "id": "M01",
+          "name": "접근점166,153 통행",
+          "status": "PASS"
+        },
+        {
+          "id": "M02",
+          "name": "7000,6900 촬영점은 벽 반례",
+          "status": "PASS"
+        },
+        {
+          "id": "M03",
+          "name": "M5 에셋 앵커와 보행점 분리",
+          "status": "PASS"
+        },
+        {
+          "id": "M04",
+          "name": "M5 전경 원배치 및 모드 데이터 일치",
+          "status": "PASS"
+        },
+        {
+          "id": "M05",
+          "name": "START→접근점 반경15 샘플 경로 존재",
+          "status": "PASS"
+        },
+        {
+          "id": "M06",
+          "name": "검출 경로 모든 중간 샘플 canMv 통과",
+          "status": "PASS"
+        },
+        {
+          "id": "M07",
+          "name": "같은 경로 역방향 START 복귀 소스 통과",
+          "status": "PASS"
+        },
+        {
+          "id": "M08",
+          "name": "M5 투영 사각과 겹치는 보행셀 전량 연결",
+          "status": "PASS"
+        },
+        {
+          "id": "M09",
+          "name": "polygon 밖 보행셀을 벽으로 오분류하지 않음",
+          "status": "PASS"
+        },
+        {
+          "id": "M10",
+          "name": "남쪽 직진의 첫 막힘과 네 모서리 반례",
+          "status": "PASS"
+        },
+        {
+          "id": "M11",
+          "name": "타일 바닥만으로 통행 승인하는 오판 반례",
+          "status": "PASS"
+        },
+        {
+          "id": "M12",
+          "name": "실제 collider·scale 캐시 및 전경 군락 비충돌",
+          "status": "PASS"
+        },
+        {
+          "id": "M13",
+          "name": "아웃오브바운드 벽 거부",
+          "status": "PASS"
+        },
+        {
+          "id": "M14",
+          "name": "스폰/북측 카빙 RNG 변경에도 M5 국소 타일 동일",
+          "status": "PASS"
+        },
+        {
+          "id": "M15",
+          "name": "양쪽 접근·벽·남쪽 정지 판정 동일",
+          "status": "FAIL",
+          "reason": "Expected values to be strictly equal:\n\ntrue !== false\n"
+        },
+        {
+          "id": "G01",
+          "name": "UI/이미지 요청·비적용 그리드 가드 호출 없음",
+          "status": "PASS"
+        },
+        {
+          "id": "G02",
+          "name": "보호 생산11입력 실행 전후 SHA 동일",
+          "status": "PASS"
+        }
+      ],
+      "inputsBefore": {
+        "game.html": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+        "game-easy-test.html": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+        "index.html": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8",
+        "server.cjs": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d",
+        "node-main.js": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce",
+        "maps_data.js": "01e74466ea797227d555288592edc959545cb2e44e64e607bf181e7d64c2870e",
+        "assets/map/ch1/production_finish/layout.js": "94b974df0ea090bd0cedb4f492777194e3b5938bcace6a7db2fd879b89a20dab",
+        "ch1-boundary-edge.js": "e1271685ee41026e330c77dfb9c8fc83146f2d116b97512e37d82cf53798edc2",
+        "ch1-border-foreground.js": "7f0f3e2e373041adc9e39512b147ab535f99b89e914686ab7ff14eb602f46b22",
+        "assets/map/ch1/production_finish/outer90_sources/placements.json": "2f6ec8137ea69f3c5f25da17ed9cddc9a33cf3c33b6908e883db0e85b0d27a70",
+        "tools/team-followup-20261002/project-teams/MAP/task.md": "2dac48b7c61040ad5c3b352e31932479cd5e7627dcc7700c1f5b75da38a33d65"
+      },
+      "inputsAfter": {
+        "game.html": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+        "game-easy-test.html": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+        "index.html": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8",
+        "server.cjs": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d",
+        "node-main.js": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce",
+        "maps_data.js": "01e74466ea797227d555288592edc959545cb2e44e64e607bf181e7d64c2870e",
+        "assets/map/ch1/production_finish/layout.js": "94b974df0ea090bd0cedb4f492777194e3b5938bcace6a7db2fd879b89a20dab",
+        "ch1-boundary-edge.js": "e1271685ee41026e330c77dfb9c8fc83146f2d116b97512e37d82cf53798edc2",
+        "ch1-border-foreground.js": "7f0f3e2e373041adc9e39512b147ab535f99b89e914686ab7ff14eb602f46b22",
+        "assets/map/ch1/production_finish/outer90_sources/placements.json": "2f6ec8137ea69f3c5f25da17ed9cddc9a33cf3c33b6908e883db0e85b0d27a70",
+        "tools/team-followup-20261002/project-teams/MAP/task.md": "2dac48b7c61040ad5c3b352e31932479cd5e7627dcc7700c1f5b75da38a33d65"
+      },
+      "functions": {
+        "_rleEncodeGrid": {
+          "sha256": "40f329fbac442ca0b38fad42f469bfe165340f754ba6aa92095ff87be0cdb952",
+          "line": 28698,
+          "bytes": 153
+        },
+        "_buildCh1StartForestRLE": {
+          "sha256": "28caed8b821d9e5c30047823b039e42cc88ae25f445072f0550a0f53d16225db",
+          "line": 28741,
+          "bytes": 773
+        },
+        "_applyCh1StartNorthGate": {
+          "sha256": "9bae0a90422beeef9ecaae99893ae82b589bd12a42e5cf9696667e87f91e0a18",
+          "line": 28791,
+          "bytes": 403
+        },
+        "_cloneField11": {
+          "sha256": "d26f2f4b43ee281e13d176ed5651670498d46ecb09bb5e2d7fd7c55cc4b8e616",
+          "line": 28812,
+          "bytes": 2073
+        },
+        "genFromTemplate": {
+          "sha256": "daf6bf5ed416da77a75671e3d97587d5ada175a6fe4028e91f536a751da0d2fa",
+          "line": 28988,
+          "bytes": 29407
+        },
+        "_tCarveCircle": {
+          "sha256": "aec27b9c4e506c8be80ce8411ad52fae1795f6ae399b36492b5eefa071bd3374",
+          "line": 27807,
+          "bytes": 230
+        },
+        "_tCarveEllipse": {
+          "sha256": "5b68cdcb042ca9258f6005516341da9aac0d0ecd36b66d63849c5b68ccb98b8a",
+          "line": 27815,
+          "bytes": 242
+        },
+        "_tCarveRect": {
+          "sha256": "0b60ed9400e29fe28b34bce5d1aad8222a283119e51ec76cf032f60eaa25e76f",
+          "line": 27822,
+          "bytes": 188
+        },
+        "_tCarveCross": {
+          "sha256": "f47dc8ca89744dc13d9e7f9756d7c3bb0374d0a7b93e938e8becdb885ca7cd69",
+          "line": 27828,
+          "bytes": 426
+        },
+        "_tCarveCorridor": {
+          "sha256": "603da06fecc0a91ed74fea7cd5f8e7f628833f06bc0b7493f68d1506dc6c1bef",
+          "line": 27841,
+          "bytes": 2054
+        },
+        "_tBossDistMap": {
+          "sha256": "6c7ae9d33a94fff9403eb0ce0ca2c13f1e927ac54e3336d65f78f2e0ed714e7b",
+          "line": 27908,
+          "bytes": 333
+        },
+        "_spawnHoleCount": {
+          "sha256": "2df8140e22cd52fd550b5bd8d879d310e227d364d8c30791261b58a6cf7a6a1f",
+          "line": 29792,
+          "bytes": 164
+        },
+        "_cacheExitCenter": {
+          "sha256": "5dba8f4c496c5840254479d292d4652b84121ae5a115555838b2a18951d89ef1",
+          "line": 18655,
+          "bytes": 210
+        },
+        "_appendRotatedColParts": {
+          "sha256": "e06e280ad0741c3d0d84c7de30dff51985e5a22259c28959f239e0aa9ab7e0b1",
+          "line": 30445,
+          "bytes": 389
+        },
+        "_rebuildColObjs": {
+          "sha256": "244522b4da6bdb78401690fddad00ad1a521fdef5ce68145e055a39019b7fea9",
+          "line": 30446,
+          "bytes": 881
+        },
+        "_ensureColObjs": {
+          "sha256": "c68faf791b13410a5c5f258418961669f9db64172a7e7607b22afb5eb72851df",
+          "line": 30447,
+          "bytes": 100
+        },
+        "_ch1HillRampAt": {
+          "sha256": "9c2b6fe8ad4e6b3d2432645528f8f42d90b2bf2c0f93cb4c70a28161a13186be",
+          "line": 30451,
+          "bytes": 223
+        },
+        "_ch1HillBandBlocks": {
+          "sha256": "73e5efc699cf23d4e3b9f481708230e4f510fc9893ae0d1a9d7cbfcecdc4b409",
+          "line": 30456,
+          "bytes": 249
+        },
+        "isW": {
+          "sha256": "96db02d1f1d52890105c319d760a0592cdfc0a679d39a8fe5793b5d4bce12388",
+          "line": 30469,
+          "bytes": 1107
+        },
+        "canMv": {
+          "sha256": "fc0ebf7b6a24afd582d9010734def79bce2649c2d0118934d8c2cc8917dc2c4c",
+          "line": 30470,
+          "bytes": 87
+        }
+      },
+      "parity": {
+        "mainProductionLayoutHook": true,
+        "easyProductionLayoutHook": false,
+        "functions": {
+          "_buildCh1StartForestRLE": {
+            "equal": false,
+            "mainSHA256": "28caed8b821d9e5c30047823b039e42cc88ae25f445072f0550a0f53d16225db",
+            "easySHA256": "8f6ad81bd9183d5e58deb99ccddac189d7a59a00cdab6b6157069f17a87d6ca8"
+          },
+          "_applyCh1StartNorthGate": {
+            "equal": true,
+            "mainSHA256": "9bae0a90422beeef9ecaae99893ae82b589bd12a42e5cf9696667e87f91e0a18",
+            "easySHA256": "9bae0a90422beeef9ecaae99893ae82b589bd12a42e5cf9696667e87f91e0a18"
+          },
+          "_cloneField11": {
+            "equal": false,
+            "mainSHA256": "d26f2f4b43ee281e13d176ed5651670498d46ecb09bb5e2d7fd7c55cc4b8e616",
+            "easySHA256": "b46ebc599b90005a6773f96b1ed21cbb6dbb80fe2ebf2c33386a7717379f9a7e"
+          },
+          "genFromTemplate": {
+            "equal": false,
+            "mainSHA256": "daf6bf5ed416da77a75671e3d97587d5ada175a6fe4028e91f536a751da0d2fa",
+            "easySHA256": "b698b233c07de00b8204d2e657cdcc0abf0e3c310aa68a56a02883fed1559bc1"
+          },
+          "_rebuildColObjs": {
+            "equal": true,
+            "mainSHA256": "244522b4da6bdb78401690fddad00ad1a521fdef5ce68145e055a39019b7fea9",
+            "easySHA256": "244522b4da6bdb78401690fddad00ad1a521fdef5ce68145e055a39019b7fea9"
+          },
+          "_ensureColObjs": {
+            "equal": true,
+            "mainSHA256": "c68faf791b13410a5c5f258418961669f9db64172a7e7607b22afb5eb72851df",
+            "easySHA256": "c68faf791b13410a5c5f258418961669f9db64172a7e7607b22afb5eb72851df"
+          },
+          "_ch1HillRampAt": {
+            "equal": true,
+            "mainSHA256": "9c2b6fe8ad4e6b3d2432645528f8f42d90b2bf2c0f93cb4c70a28161a13186be",
+            "easySHA256": "9c2b6fe8ad4e6b3d2432645528f8f42d90b2bf2c0f93cb4c70a28161a13186be"
+          },
+          "_ch1HillBandBlocks": {
+            "equal": true,
+            "mainSHA256": "73e5efc699cf23d4e3b9f481708230e4f510fc9893ae0d1a9d7cbfcecdc4b409",
+            "easySHA256": "73e5efc699cf23d4e3b9f481708230e4f510fc9893ae0d1a9d7cbfcecdc4b409"
+          },
+          "isW": {
+            "equal": true,
+            "mainSHA256": "96db02d1f1d52890105c319d760a0592cdfc0a679d39a8fe5793b5d4bce12388",
+            "easySHA256": "96db02d1f1d52890105c319d760a0592cdfc0a679d39a8fe5793b5d4bce12388"
+          },
+          "canMv": {
+            "equal": true,
+            "mainSHA256": "fc0ebf7b6a24afd582d9010734def79bce2649c2d0118934d8c2cc8917dc2c4c",
+            "easySHA256": "fc0ebf7b6a24afd582d9010734def79bce2649c2d0118934d8c2cc8917dc2c4c"
+          }
+        },
+        "blocks": {
+          "compose": {
+            "equal": true,
+            "mainSHA256": "3cd8a29f6ecd61478d8f649a59423121663fa1083643e8b403a4c293e7da3b5a",
+            "easySHA256": "3cd8a29f6ecd61478d8f649a59423121663fa1083643e8b403a4c293e7da3b5a"
+          },
+          "deco": {
+            "equal": true,
+            "mainSHA256": "462559dfdd649073fb3bd0bccfe29e5ee188115850561f34c028a614c9c20af7",
+            "easySHA256": "462559dfdd649073fb3bd0bccfe29e5ee188115850561f34c028a614c9c20af7"
+          },
+          "fixed": {
+            "equal": true,
+            "mainSHA256": "3cfd7a965d595c472a5dc0d204dbab4797efb5eff4dd696570e7d33763f5ac52",
+            "easySHA256": "3cfd7a965d595c472a5dc0d204dbab4797efb5eff4dd696570e7d33763f5ac52"
+          },
+          "hand": {
+            "equal": true,
+            "mainSHA256": "71cb313c32c5b2af61f3d317d9059fb6cf17c1f12fd72096eb234a87c2d101cf",
+            "easySHA256": "71cb313c32c5b2af61f3d317d9059fb6cf17c1f12fd72096eb234a87c2d101cf"
+          },
+          "metaMerge": {
+            "equal": true,
+            "mainSHA256": "c3324483037981a1b97726075dfde801a299ef2b5e2ccaacdf117ac5aafd8eeb",
+            "easySHA256": "c3324483037981a1b97726075dfde801a299ef2b5e2ccaacdf117ac5aafd8eeb"
+          }
+        },
+        "easyGeneratedMapSHA256": "7c7e8d31ae37a77291cc4fda815031bdfe7b6d0d399d0333a9314d6ad94677d5",
+        "easyPoints": {
+          "approach": {
+            "world": [
+              6660,
+              6140
+            ],
+            "tileValue": 0,
+            "isW": false,
+            "canMvR15": true
+          },
+          "badCamera": {
+            "world": [
+              7000,
+              6900
+            ],
+            "tileValue": 1,
+            "isW": true,
+            "canMvR15": false
+          },
+          "anchor": {
+            "world": [
+              7000,
+              6880
+            ],
+            "tileValue": 1,
+            "isW": true,
+            "canMvR15": false
+          },
+          "southStop": {
+            "world": [
+              6660,
+              6305
+            ],
+            "tileValue": 0,
+            "isW": false,
+            "canMvR15": true
+          }
+        },
+        "note": "easy comparison loads the same pure layout definition in the isolated VM; easy has no production script/hook and its extracted builder still uses the legacy fallback"
+      },
+      "geometry": {
+        "fixtureGeneratedMapSHA256": "8a5dfe9f1a6c5a283be293a85cedb49509d1db5d317e063fde0b2cd5ff6c65a1",
+        "rawLayoutRLEConvertedDifferenceCells": 967,
+        "rawWallToRuntimeFloorCells": 680,
+        "walkableR15Centres": 19281,
+        "startConnectedCentres": 19281,
+        "rejectedSampledEdges": 5,
+        "handProps": 36,
+        "placedMapObjects": 37,
+        "collisionObjects": 20
+      },
+      "points": {
+        "start": {
+          "world": [
+            4020,
+            7420
+          ],
+          "tile": [
+            100,
+            185
+          ],
+          "tileValue": 0,
+          "isW": false,
+          "canMvR15": true
+        },
+        "approach": {
+          "world": [
+            6660,
+            6140
+          ],
+          "tile": [
+            166,
+            153
+          ],
+          "tileValue": 0,
+          "isW": false,
+          "canMvR15": true
+        },
+        "badCamera": {
+          "world": [
+            7000,
+            6900
+          ],
+          "tile": [
+            175,
+            172
+          ],
+          "tileValue": 1,
+          "isW": true,
+          "canMvR15": false
+        },
+        "assetAnchor": {
+          "world": [
+            7000,
+            6880
+          ],
+          "tile": [
+            175,
+            172
+          ],
+          "tileValue": 1,
+          "isW": true,
+          "canMvR15": false
+        },
+        "southFirstBlocked": {
+          "world": [
+            6660,
+            6305
+          ],
+          "tile": [
+            166,
+            157
+          ],
+          "tileValue": 0,
+          "isW": false,
+          "canMvR15": false
+        },
+        "pitCounterexample": {
+          "world": [
+            6500,
+            5580
+          ],
+          "tile": [
+            162,
+            139
+          ],
+          "tileValue": 0,
+          "isW": true,
+          "canMvR15": false
+        }
+      },
+      "route": {
+        "radius": 15,
+        "nodeSpacing": 40,
+        "edgeSampleSpacing": 5,
+        "nodeCount": 99,
+        "turnWorldPoints": [
+          [
+            4020,
+            7420
+          ],
+          [
+            4780,
+            7420
+          ],
+          [
+            4780,
+            7060
+          ],
+          [
+            4820,
+            7060
+          ],
+          [
+            4820,
+            7020
+          ],
+          [
+            4860,
+            7020
+          ],
+          [
+            4860,
+            6980
+          ],
+          [
+            5260,
+            6980
+          ],
+          [
+            5260,
+            6940
+          ],
+          [
+            5300,
+            6940
+          ],
+          [
+            5300,
+            6900
+          ],
+          [
+            5340,
+            6900
+          ],
+          [
+            5340,
+            6860
+          ],
+          [
+            5380,
+            6860
+          ],
+          [
+            5380,
+            6820
+          ],
+          [
+            5420,
+            6820
+          ],
+          [
+            5420,
+            6780
+          ],
+          [
+            5460,
+            6780
+          ],
+          [
+            5460,
+            6740
+          ],
+          [
+            5500,
+            6740
+          ],
+          [
+            5500,
+            6700
+          ],
+          [
+            5580,
+            6700
+          ],
+          [
+            5580,
+            6660
+          ],
+          [
+            5660,
+            6660
+          ],
+          [
+            5660,
+            6620
+          ],
+          [
+            5740,
+            6620
+          ],
+          [
+            5740,
+            6580
+          ],
+          [
+            5820,
+            6580
+          ],
+          [
+            5820,
+            6540
+          ],
+          [
+            5900,
+            6540
+          ],
+          [
+            5900,
+            6500
+          ],
+          [
+            5980,
+            6500
+          ],
+          [
+            5980,
+            6460
+          ],
+          [
+            6100,
+            6460
+          ],
+          [
+            6100,
+            6420
+          ],
+          [
+            6220,
+            6420
+          ],
+          [
+            6220,
+            6380
+          ],
+          [
+            6380,
+            6380
+          ],
+          [
+            6380,
+            6340
+          ],
+          [
+            6540,
+            6340
+          ],
+          [
+            6540,
+            6300
+          ],
+          [
+            6660,
+            6300
+          ],
+          [
+            6660,
+            6140
+          ]
+        ],
+        "claim": "static sampled START to known approach and reverse only; not trusted input or named pocket full-route acceptance"
+      },
+      "m5": {
+        "sourcePlacement": [
+          175,
+          172,
+          2,
+          2200,
+          true
+        ],
+        "projectedBounds": {
+          "x": 5925.78125,
+          "y": 6009.765625,
+          "w": 2148.4375,
+          "h": 1208.984375,
+          "anchorY": 6880
+        },
+        "projectedWalkableCentres": 228,
+        "projectedUnreachableCentres": 0,
+        "outsidePolygonWalkableCentres": 27,
+        "fringeExamples": [
+          [
+            6940,
+            6020
+          ],
+          [
+            6900,
+            6060
+          ],
+          [
+            6900,
+            6100
+          ],
+          [
+            6860,
+            6140
+          ],
+          [
+            6820,
+            6180
+          ]
+        ],
+        "semanticPocket": "No separate M5 pocket/entrance polygon or gameplay region ID; sprite rectangle is diagnostic extent only"
+      },
+      "gates": {
+        "actualEightViews": "0/8 new",
+        "actualTrustedMovement": 0,
+        "fullPocketToEntranceRoute": "UNMEASURED",
+        "occlusionCombatPageerrorLoadingPerformance": "UNMEASURED",
+        "visualVerdict": "RETOUCH",
+        "productionApplied": false
+      }
+    },
+    {
+      "taskId": "m5-tile-reachability",
+      "startedAt": "2026-10-02T03:54:55.370Z",
+      "finishedAt": "2026-10-02T03:54:57.206Z",
+      "head": "31454dfa49c90bac77351273fc32f0c1eb937928",
+      "node": "v24.15.0",
+      "fixture": "production functions/data extracted into isolated Node VM; no game bootstrap",
+      "randomFixtureValues": [
+        0.5,
+        0.9
+      ],
+      "randomCalls": 14,
+      "boneWallsFixture": "empty; dynamic encounter not simulated",
+      "counts": {
+        "pass": 20,
+        "fail": 3
+      },
+      "results": [
+        {
+          "id": "S01",
+          "name": "생산 연결과 200×200/T40 계약",
+          "status": "PASS"
+        },
+        {
+          "id": "S02",
+          "name": "RLE 전량 40000셀 및 크기 가드",
+          "status": "PASS"
+        },
+        {
+          "id": "S03",
+          "name": "양쪽 생산 핵심 함수/배치/메타 병합 원문 일치",
+          "status": "FAIL",
+          "reason": "_buildCh1StartForestRLE\n+ actual - expected\n\n  'function _buildCh1StartForestRLE(mw,mh){\\n' +\n+   \"  if(typeof CH1_1_PRODUCTION!=='undefined')return CH1_1_PRODUCTION.buildRLE(mw,mh);\\n\" +\n    '  const n=mw*mh,g=new Uint8Array(n),bell=(v,c,w)=>Math.exp(-Math.pow((v-c)/w,2));\\n' +\n    '  for(let y=0;y<mh;y++){\\n' +\n    '    const ty=y*199/Math.max(1,mh-1);\\n' +\n    '    const left=18+12*bell(ty,50,17)+6*bell(ty,101,22)+15*bell(ty,150,19)+2.4*Math.sin(ty*.11+1.2);\\n' +\n    '    const right=182-16*bell(ty,50,19)-6*bell(ty,105,23)-12*bell(ty,140,21)+2.2*Math.sin(ty*.09+.4);\\n' +\n"
+        },
+        {
+          "id": "S04",
+          "name": "생산 genFromTemplate 전체 실행 결과 양쪽 일치",
+          "status": "FAIL",
+          "reason": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '8a5dfe9f1a6c5a283be293a85cedb49509d1db5d317e063fde0b2cd5ff6c65a1'\n- '7c7e8d31ae37a77291cc4fda815031bdfe7b6d0d399d0333a9314d6ad94677d5'\n"
+        },
+        {
+          "id": "S05",
+          "name": "실제 북측 출입 계약",
+          "status": "PASS"
+        },
+        {
+          "id": "S06",
+          "name": "기존 START와 실제 mkP 반경15 계약",
+          "status": "PASS"
+        },
+        {
+          "id": "M01",
+          "name": "접근점166,153 통행",
+          "status": "PASS"
+        },
+        {
+          "id": "M02",
+          "name": "7000,6900 촬영점은 벽 반례",
+          "status": "PASS"
+        },
+        {
+          "id": "M03",
+          "name": "M5 에셋 앵커와 보행점 분리",
+          "status": "PASS"
+        },
+        {
+          "id": "M04",
+          "name": "M5 전경 원배치 및 모드 데이터 일치",
+          "status": "PASS"
+        },
+        {
+          "id": "M05",
+          "name": "START→접근점 반경15 샘플 경로 존재",
+          "status": "PASS"
+        },
+        {
+          "id": "M06",
+          "name": "검출 경로 모든 중간 샘플 canMv 통과",
+          "status": "PASS"
+        },
+        {
+          "id": "M07",
+          "name": "같은 경로 역방향 START 복귀 소스 통과",
+          "status": "PASS"
+        },
+        {
+          "id": "M08",
+          "name": "M5 투영 사각과 겹치는 보행셀 전량 연결",
+          "status": "PASS"
+        },
+        {
+          "id": "M09",
+          "name": "polygon 밖 보행셀을 벽으로 오분류하지 않음",
+          "status": "PASS"
+        },
+        {
+          "id": "M10",
+          "name": "남쪽 직진의 첫 막힘과 네 모서리 반례",
+          "status": "PASS"
+        },
+        {
+          "id": "M11",
+          "name": "타일 바닥만으로 통행 승인하는 오판 반례",
+          "status": "PASS"
+        },
+        {
+          "id": "M12",
+          "name": "실제 collider·scale 캐시 및 전경 군락 비충돌",
+          "status": "PASS"
+        },
+        {
+          "id": "M13",
+          "name": "아웃오브바운드 벽 거부",
+          "status": "PASS"
+        },
+        {
+          "id": "M14",
+          "name": "스폰/북측 카빙 RNG 변경에도 M5 국소 타일 동일",
+          "status": "PASS"
+        },
+        {
+          "id": "M15",
+          "name": "양쪽 접근·벽·남쪽 정지 판정 동일",
+          "status": "FAIL",
+          "reason": "Expected values to be strictly equal:\n\ntrue !== false\n"
+        },
+        {
+          "id": "G01",
+          "name": "UI/이미지 요청·비적용 그리드 가드 호출 없음",
+          "status": "PASS"
+        },
+        {
+          "id": "G02",
+          "name": "보호 생산11입력 실행 전후 SHA 동일",
+          "status": "PASS"
+        }
+      ],
+      "inputsBefore": {
+        "game.html": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+        "game-easy-test.html": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+        "index.html": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8",
+        "server.cjs": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d",
+        "node-main.js": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce",
+        "maps_data.js": "01e74466ea797227d555288592edc959545cb2e44e64e607bf181e7d64c2870e",
+        "assets/map/ch1/production_finish/layout.js": "94b974df0ea090bd0cedb4f492777194e3b5938bcace6a7db2fd879b89a20dab",
+        "ch1-boundary-edge.js": "e1271685ee41026e330c77dfb9c8fc83146f2d116b97512e37d82cf53798edc2",
+        "ch1-border-foreground.js": "7f0f3e2e373041adc9e39512b147ab535f99b89e914686ab7ff14eb602f46b22",
+        "assets/map/ch1/production_finish/outer90_sources/placements.json": "2f6ec8137ea69f3c5f25da17ed9cddc9a33cf3c33b6908e883db0e85b0d27a70",
+        "tools/team-followup-20261002/project-teams/MAP/task.md": "2dac48b7c61040ad5c3b352e31932479cd5e7627dcc7700c1f5b75da38a33d65"
+      },
+      "inputsAfter": {
+        "game.html": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+        "game-easy-test.html": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+        "index.html": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8",
+        "server.cjs": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d",
+        "node-main.js": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce",
+        "maps_data.js": "01e74466ea797227d555288592edc959545cb2e44e64e607bf181e7d64c2870e",
+        "assets/map/ch1/production_finish/layout.js": "94b974df0ea090bd0cedb4f492777194e3b5938bcace6a7db2fd879b89a20dab",
+        "ch1-boundary-edge.js": "e1271685ee41026e330c77dfb9c8fc83146f2d116b97512e37d82cf53798edc2",
+        "ch1-border-foreground.js": "7f0f3e2e373041adc9e39512b147ab535f99b89e914686ab7ff14eb602f46b22",
+        "assets/map/ch1/production_finish/outer90_sources/placements.json": "2f6ec8137ea69f3c5f25da17ed9cddc9a33cf3c33b6908e883db0e85b0d27a70",
+        "tools/team-followup-20261002/project-teams/MAP/task.md": "2dac48b7c61040ad5c3b352e31932479cd5e7627dcc7700c1f5b75da38a33d65"
+      },
+      "functions": {
+        "_rleEncodeGrid": {
+          "sha256": "40f329fbac442ca0b38fad42f469bfe165340f754ba6aa92095ff87be0cdb952",
+          "line": 28698,
+          "bytes": 153
+        },
+        "_buildCh1StartForestRLE": {
+          "sha256": "28caed8b821d9e5c30047823b039e42cc88ae25f445072f0550a0f53d16225db",
+          "line": 28741,
+          "bytes": 773
+        },
+        "_applyCh1StartNorthGate": {
+          "sha256": "9bae0a90422beeef9ecaae99893ae82b589bd12a42e5cf9696667e87f91e0a18",
+          "line": 28791,
+          "bytes": 403
+        },
+        "_cloneField11": {
+          "sha256": "d26f2f4b43ee281e13d176ed5651670498d46ecb09bb5e2d7fd7c55cc4b8e616",
+          "line": 28812,
+          "bytes": 2073
+        },
+        "genFromTemplate": {
+          "sha256": "daf6bf5ed416da77a75671e3d97587d5ada175a6fe4028e91f536a751da0d2fa",
+          "line": 28988,
+          "bytes": 29407
+        },
+        "_tCarveCircle": {
+          "sha256": "aec27b9c4e506c8be80ce8411ad52fae1795f6ae399b36492b5eefa071bd3374",
+          "line": 27807,
+          "bytes": 230
+        },
+        "_tCarveEllipse": {
+          "sha256": "5b68cdcb042ca9258f6005516341da9aac0d0ecd36b66d63849c5b68ccb98b8a",
+          "line": 27815,
+          "bytes": 242
+        },
+        "_tCarveRect": {
+          "sha256": "0b60ed9400e29fe28b34bce5d1aad8222a283119e51ec76cf032f60eaa25e76f",
+          "line": 27822,
+          "bytes": 188
+        },
+        "_tCarveCross": {
+          "sha256": "f47dc8ca89744dc13d9e7f9756d7c3bb0374d0a7b93e938e8becdb885ca7cd69",
+          "line": 27828,
+          "bytes": 426
+        },
+        "_tCarveCorridor": {
+          "sha256": "603da06fecc0a91ed74fea7cd5f8e7f628833f06bc0b7493f68d1506dc6c1bef",
+          "line": 27841,
+          "bytes": 2054
+        },
+        "_tBossDistMap": {
+          "sha256": "6c7ae9d33a94fff9403eb0ce0ca2c13f1e927ac54e3336d65f78f2e0ed714e7b",
+          "line": 27908,
+          "bytes": 333
+        },
+        "_spawnHoleCount": {
+          "sha256": "2df8140e22cd52fd550b5bd8d879d310e227d364d8c30791261b58a6cf7a6a1f",
+          "line": 29792,
+          "bytes": 164
+        },
+        "_cacheExitCenter": {
+          "sha256": "5dba8f4c496c5840254479d292d4652b84121ae5a115555838b2a18951d89ef1",
+          "line": 18655,
+          "bytes": 210
+        },
+        "_appendRotatedColParts": {
+          "sha256": "e06e280ad0741c3d0d84c7de30dff51985e5a22259c28959f239e0aa9ab7e0b1",
+          "line": 30445,
+          "bytes": 389
+        },
+        "_rebuildColObjs": {
+          "sha256": "244522b4da6bdb78401690fddad00ad1a521fdef5ce68145e055a39019b7fea9",
+          "line": 30446,
+          "bytes": 881
+        },
+        "_ensureColObjs": {
+          "sha256": "c68faf791b13410a5c5f258418961669f9db64172a7e7607b22afb5eb72851df",
+          "line": 30447,
+          "bytes": 100
+        },
+        "_ch1HillRampAt": {
+          "sha256": "9c2b6fe8ad4e6b3d2432645528f8f42d90b2bf2c0f93cb4c70a28161a13186be",
+          "line": 30451,
+          "bytes": 223
+        },
+        "_ch1HillBandBlocks": {
+          "sha256": "73e5efc699cf23d4e3b9f481708230e4f510fc9893ae0d1a9d7cbfcecdc4b409",
+          "line": 30456,
+          "bytes": 249
+        },
+        "isW": {
+          "sha256": "96db02d1f1d52890105c319d760a0592cdfc0a679d39a8fe5793b5d4bce12388",
+          "line": 30469,
+          "bytes": 1107
+        },
+        "canMv": {
+          "sha256": "fc0ebf7b6a24afd582d9010734def79bce2649c2d0118934d8c2cc8917dc2c4c",
+          "line": 30470,
+          "bytes": 87
+        }
+      },
+      "parity": {
+        "mainProductionLayoutHook": true,
+        "easyProductionLayoutHook": false,
+        "functions": {
+          "_buildCh1StartForestRLE": {
+            "equal": false,
+            "mainSHA256": "28caed8b821d9e5c30047823b039e42cc88ae25f445072f0550a0f53d16225db",
+            "easySHA256": "8f6ad81bd9183d5e58deb99ccddac189d7a59a00cdab6b6157069f17a87d6ca8"
+          },
+          "_applyCh1StartNorthGate": {
+            "equal": true,
+            "mainSHA256": "9bae0a90422beeef9ecaae99893ae82b589bd12a42e5cf9696667e87f91e0a18",
+            "easySHA256": "9bae0a90422beeef9ecaae99893ae82b589bd12a42e5cf9696667e87f91e0a18"
+          },
+          "_cloneField11": {
+            "equal": false,
+            "mainSHA256": "d26f2f4b43ee281e13d176ed5651670498d46ecb09bb5e2d7fd7c55cc4b8e616",
+            "easySHA256": "b46ebc599b90005a6773f96b1ed21cbb6dbb80fe2ebf2c33386a7717379f9a7e"
+          },
+          "genFromTemplate": {
+            "equal": false,
+            "mainSHA256": "daf6bf5ed416da77a75671e3d97587d5ada175a6fe4028e91f536a751da0d2fa",
+            "easySHA256": "b698b233c07de00b8204d2e657cdcc0abf0e3c310aa68a56a02883fed1559bc1"
+          },
+          "_rebuildColObjs": {
+            "equal": true,
+            "mainSHA256": "244522b4da6bdb78401690fddad00ad1a521fdef5ce68145e055a39019b7fea9",
+            "easySHA256": "244522b4da6bdb78401690fddad00ad1a521fdef5ce68145e055a39019b7fea9"
+          },
+          "_ensureColObjs": {
+            "equal": true,
+            "mainSHA256": "c68faf791b13410a5c5f258418961669f9db64172a7e7607b22afb5eb72851df",
+            "easySHA256": "c68faf791b13410a5c5f258418961669f9db64172a7e7607b22afb5eb72851df"
+          },
+          "_ch1HillRampAt": {
+            "equal": true,
+            "mainSHA256": "9c2b6fe8ad4e6b3d2432645528f8f42d90b2bf2c0f93cb4c70a28161a13186be",
+            "easySHA256": "9c2b6fe8ad4e6b3d2432645528f8f42d90b2bf2c0f93cb4c70a28161a13186be"
+          },
+          "_ch1HillBandBlocks": {
+            "equal": true,
+            "mainSHA256": "73e5efc699cf23d4e3b9f481708230e4f510fc9893ae0d1a9d7cbfcecdc4b409",
+            "easySHA256": "73e5efc699cf23d4e3b9f481708230e4f510fc9893ae0d1a9d7cbfcecdc4b409"
+          },
+          "isW": {
+            "equal": true,
+            "mainSHA256": "96db02d1f1d52890105c319d760a0592cdfc0a679d39a8fe5793b5d4bce12388",
+            "easySHA256": "96db02d1f1d52890105c319d760a0592cdfc0a679d39a8fe5793b5d4bce12388"
+          },
+          "canMv": {
+            "equal": true,
+            "mainSHA256": "fc0ebf7b6a24afd582d9010734def79bce2649c2d0118934d8c2cc8917dc2c4c",
+            "easySHA256": "fc0ebf7b6a24afd582d9010734def79bce2649c2d0118934d8c2cc8917dc2c4c"
+          }
+        },
+        "blocks": {
+          "compose": {
+            "equal": true,
+            "mainSHA256": "3cd8a29f6ecd61478d8f649a59423121663fa1083643e8b403a4c293e7da3b5a",
+            "easySHA256": "3cd8a29f6ecd61478d8f649a59423121663fa1083643e8b403a4c293e7da3b5a"
+          },
+          "deco": {
+            "equal": true,
+            "mainSHA256": "462559dfdd649073fb3bd0bccfe29e5ee188115850561f34c028a614c9c20af7",
+            "easySHA256": "462559dfdd649073fb3bd0bccfe29e5ee188115850561f34c028a614c9c20af7"
+          },
+          "fixed": {
+            "equal": true,
+            "mainSHA256": "3cfd7a965d595c472a5dc0d204dbab4797efb5eff4dd696570e7d33763f5ac52",
+            "easySHA256": "3cfd7a965d595c472a5dc0d204dbab4797efb5eff4dd696570e7d33763f5ac52"
+          },
+          "hand": {
+            "equal": true,
+            "mainSHA256": "71cb313c32c5b2af61f3d317d9059fb6cf17c1f12fd72096eb234a87c2d101cf",
+            "easySHA256": "71cb313c32c5b2af61f3d317d9059fb6cf17c1f12fd72096eb234a87c2d101cf"
+          },
+          "metaMerge": {
+            "equal": true,
+            "mainSHA256": "c3324483037981a1b97726075dfde801a299ef2b5e2ccaacdf117ac5aafd8eeb",
+            "easySHA256": "c3324483037981a1b97726075dfde801a299ef2b5e2ccaacdf117ac5aafd8eeb"
+          }
+        },
+        "easyGeneratedMapSHA256": "7c7e8d31ae37a77291cc4fda815031bdfe7b6d0d399d0333a9314d6ad94677d5",
+        "easyPoints": {
+          "approach": {
+            "world": [
+              6660,
+              6140
+            ],
+            "tileValue": 0,
+            "isW": false,
+            "canMvR15": true
+          },
+          "badCamera": {
+            "world": [
+              7000,
+              6900
+            ],
+            "tileValue": 1,
+            "isW": true,
+            "canMvR15": false
+          },
+          "anchor": {
+            "world": [
+              7000,
+              6880
+            ],
+            "tileValue": 1,
+            "isW": true,
+            "canMvR15": false
+          },
+          "southStop": {
+            "world": [
+              6660,
+              6305
+            ],
+            "tileValue": 0,
+            "isW": false,
+            "canMvR15": true
+          }
+        },
+        "note": "easy comparison loads the same pure layout definition in the isolated VM; easy has no production script/hook and its extracted builder still uses the legacy fallback"
+      },
+      "geometry": {
+        "fixtureGeneratedMapSHA256": "8a5dfe9f1a6c5a283be293a85cedb49509d1db5d317e063fde0b2cd5ff6c65a1",
+        "rawLayoutRLEConvertedDifferenceCells": 967,
+        "rawWallToRuntimeFloorCells": 680,
+        "walkableR15Centres": 19281,
+        "startConnectedCentres": 19281,
+        "rejectedSampledEdges": 5,
+        "handProps": 36,
+        "placedMapObjects": 37,
+        "collisionObjects": 20
+      },
+      "points": {
+        "start": {
+          "world": [
+            4020,
+            7420
+          ],
+          "tile": [
+            100,
+            185
+          ],
+          "tileValue": 0,
+          "isW": false,
+          "canMvR15": true
+        },
+        "approach": {
+          "world": [
+            6660,
+            6140
+          ],
+          "tile": [
+            166,
+            153
+          ],
+          "tileValue": 0,
+          "isW": false,
+          "canMvR15": true
+        },
+        "badCamera": {
+          "world": [
+            7000,
+            6900
+          ],
+          "tile": [
+            175,
+            172
+          ],
+          "tileValue": 1,
+          "isW": true,
+          "canMvR15": false
+        },
+        "assetAnchor": {
+          "world": [
+            7000,
+            6880
+          ],
+          "tile": [
+            175,
+            172
+          ],
+          "tileValue": 1,
+          "isW": true,
+          "canMvR15": false
+        },
+        "southFirstBlocked": {
+          "world": [
+            6660,
+            6305
+          ],
+          "tile": [
+            166,
+            157
+          ],
+          "tileValue": 0,
+          "isW": false,
+          "canMvR15": false
+        },
+        "southPreviousCentre": {
+          "world": [
+            6660,
+            6304
+          ],
+          "tile": [
+            166,
+            157
+          ],
+          "tileValue": 0,
+          "isW": false,
+          "canMvR15": true
+        },
+        "southBlockedCornerProbes": [
+          {
+            "world": [
+              6645,
+              6290
+            ],
+            "tile": [
+              166,
+              157
+            ],
+            "tileValue": 0,
+            "isW": false,
+            "canMvR15": true
+          },
+          {
+            "world": [
+              6675,
+              6290
+            ],
+            "tile": [
+              166,
+              157
+            ],
+            "tileValue": 0,
+            "isW": false,
+            "canMvR15": false
+          },
+          {
+            "world": [
+              6645,
+              6320
+            ],
+            "tile": [
+              166,
+              158
+            ],
+            "tileValue": 1,
+            "isW": true,
+            "canMvR15": false
+          },
+          {
+            "world": [
+              6675,
+              6320
+            ],
+            "tile": [
+              166,
+              158
+            ],
+            "tileValue": 1,
+            "isW": true,
+            "canMvR15": false
+          }
+        ],
+        "pitCounterexample": {
+          "world": [
+            6500,
+            5580
+          ],
+          "tile": [
+            162,
+            139
+          ],
+          "tileValue": 0,
+          "isW": true,
+          "canMvR15": false
+        }
+      },
+      "route": {
+        "radius": 15,
+        "nodeSpacing": 40,
+        "edgeSampleSpacing": 5,
+        "nodeCount": 99,
+        "turnWorldPoints": [
+          [
+            4020,
+            7420
+          ],
+          [
+            4780,
+            7420
+          ],
+          [
+            4780,
+            7060
+          ],
+          [
+            4820,
+            7060
+          ],
+          [
+            4820,
+            7020
+          ],
+          [
+            4860,
+            7020
+          ],
+          [
+            4860,
+            6980
+          ],
+          [
+            5260,
+            6980
+          ],
+          [
+            5260,
+            6940
+          ],
+          [
+            5300,
+            6940
+          ],
+          [
+            5300,
+            6900
+          ],
+          [
+            5340,
+            6900
+          ],
+          [
+            5340,
+            6860
+          ],
+          [
+            5380,
+            6860
+          ],
+          [
+            5380,
+            6820
+          ],
+          [
+            5420,
+            6820
+          ],
+          [
+            5420,
+            6780
+          ],
+          [
+            5460,
+            6780
+          ],
+          [
+            5460,
+            6740
+          ],
+          [
+            5500,
+            6740
+          ],
+          [
+            5500,
+            6700
+          ],
+          [
+            5580,
+            6700
+          ],
+          [
+            5580,
+            6660
+          ],
+          [
+            5660,
+            6660
+          ],
+          [
+            5660,
+            6620
+          ],
+          [
+            5740,
+            6620
+          ],
+          [
+            5740,
+            6580
+          ],
+          [
+            5820,
+            6580
+          ],
+          [
+            5820,
+            6540
+          ],
+          [
+            5900,
+            6540
+          ],
+          [
+            5900,
+            6500
+          ],
+          [
+            5980,
+            6500
+          ],
+          [
+            5980,
+            6460
+          ],
+          [
+            6100,
+            6460
+          ],
+          [
+            6100,
+            6420
+          ],
+          [
+            6220,
+            6420
+          ],
+          [
+            6220,
+            6380
+          ],
+          [
+            6380,
+            6380
+          ],
+          [
+            6380,
+            6340
+          ],
+          [
+            6540,
+            6340
+          ],
+          [
+            6540,
+            6300
+          ],
+          [
+            6660,
+            6300
+          ],
+          [
+            6660,
+            6140
+          ]
+        ],
+        "claim": "static sampled START to known approach and reverse only; not trusted input or named pocket full-route acceptance"
+      },
+      "m5": {
+        "sourcePlacement": [
+          175,
+          172,
+          2,
+          2200,
+          true
+        ],
+        "projectedBounds": {
+          "x": 5925.78125,
+          "y": 6009.765625,
+          "w": 2148.4375,
+          "h": 1208.984375,
+          "anchorY": 6880
+        },
+        "projectedWalkableCentres": 228,
+        "projectedUnreachableCentres": 0,
+        "outsidePolygonWalkableCentres": 27,
+        "fringeExamples": [
+          [
+            6940,
+            6020
+          ],
+          [
+            6900,
+            6060
+          ],
+          [
+            6900,
+            6100
+          ],
+          [
+            6860,
+            6140
+          ],
+          [
+            6820,
+            6180
+          ]
+        ],
+        "semanticPocket": "No separate M5 pocket/entrance polygon or gameplay region ID; sprite rectangle is diagnostic extent only"
+      },
+      "gates": {
+        "actualEightViews": "0/8 new",
+        "actualTrustedMovement": 0,
+        "fullPocketToEntranceRoute": "UNMEASURED",
+        "occlusionCombatPageerrorLoadingPerformance": "UNMEASURED",
+        "visualVerdict": "RETOUCH",
+        "productionApplied": false
+      }
+    }
+  ],
+  "latest": {
+    "taskId": "m5-tile-reachability",
+    "startedAt": "2026-10-02T03:54:55.370Z",
+    "finishedAt": "2026-10-02T03:54:57.206Z",
+    "head": "31454dfa49c90bac77351273fc32f0c1eb937928",
+    "node": "v24.15.0",
+    "fixture": "production functions/data extracted into isolated Node VM; no game bootstrap",
+    "randomFixtureValues": [
+      0.5,
+      0.9
+    ],
+    "randomCalls": 14,
+    "boneWallsFixture": "empty; dynamic encounter not simulated",
+    "counts": {
+      "pass": 20,
+      "fail": 3
+    },
+    "results": [
+      {
+        "id": "S01",
+        "name": "생산 연결과 200×200/T40 계약",
+        "status": "PASS"
+      },
+      {
+        "id": "S02",
+        "name": "RLE 전량 40000셀 및 크기 가드",
+        "status": "PASS"
+      },
+      {
+        "id": "S03",
+        "name": "양쪽 생산 핵심 함수/배치/메타 병합 원문 일치",
+        "status": "FAIL",
+        "reason": "_buildCh1StartForestRLE\n+ actual - expected\n\n  'function _buildCh1StartForestRLE(mw,mh){\\n' +\n+   \"  if(typeof CH1_1_PRODUCTION!=='undefined')return CH1_1_PRODUCTION.buildRLE(mw,mh);\\n\" +\n    '  const n=mw*mh,g=new Uint8Array(n),bell=(v,c,w)=>Math.exp(-Math.pow((v-c)/w,2));\\n' +\n    '  for(let y=0;y<mh;y++){\\n' +\n    '    const ty=y*199/Math.max(1,mh-1);\\n' +\n    '    const left=18+12*bell(ty,50,17)+6*bell(ty,101,22)+15*bell(ty,150,19)+2.4*Math.sin(ty*.11+1.2);\\n' +\n    '    const right=182-16*bell(ty,50,19)-6*bell(ty,105,23)-12*bell(ty,140,21)+2.2*Math.sin(ty*.09+.4);\\n' +\n"
+      },
+      {
+        "id": "S04",
+        "name": "생산 genFromTemplate 전체 실행 결과 양쪽 일치",
+        "status": "FAIL",
+        "reason": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '8a5dfe9f1a6c5a283be293a85cedb49509d1db5d317e063fde0b2cd5ff6c65a1'\n- '7c7e8d31ae37a77291cc4fda815031bdfe7b6d0d399d0333a9314d6ad94677d5'\n"
+      },
+      {
+        "id": "S05",
+        "name": "실제 북측 출입 계약",
+        "status": "PASS"
+      },
+      {
+        "id": "S06",
+        "name": "기존 START와 실제 mkP 반경15 계약",
+        "status": "PASS"
+      },
+      {
+        "id": "M01",
+        "name": "접근점166,153 통행",
+        "status": "PASS"
+      },
+      {
+        "id": "M02",
+        "name": "7000,6900 촬영점은 벽 반례",
+        "status": "PASS"
+      },
+      {
+        "id": "M03",
+        "name": "M5 에셋 앵커와 보행점 분리",
+        "status": "PASS"
+      },
+      {
+        "id": "M04",
+        "name": "M5 전경 원배치 및 모드 데이터 일치",
+        "status": "PASS"
+      },
+      {
+        "id": "M05",
+        "name": "START→접근점 반경15 샘플 경로 존재",
+        "status": "PASS"
+      },
+      {
+        "id": "M06",
+        "name": "검출 경로 모든 중간 샘플 canMv 통과",
+        "status": "PASS"
+      },
+      {
+        "id": "M07",
+        "name": "같은 경로 역방향 START 복귀 소스 통과",
+        "status": "PASS"
+      },
+      {
+        "id": "M08",
+        "name": "M5 투영 사각과 겹치는 보행셀 전량 연결",
+        "status": "PASS"
+      },
+      {
+        "id": "M09",
+        "name": "polygon 밖 보행셀을 벽으로 오분류하지 않음",
+        "status": "PASS"
+      },
+      {
+        "id": "M10",
+        "name": "남쪽 직진의 첫 막힘과 네 모서리 반례",
+        "status": "PASS"
+      },
+      {
+        "id": "M11",
+        "name": "타일 바닥만으로 통행 승인하는 오판 반례",
+        "status": "PASS"
+      },
+      {
+        "id": "M12",
+        "name": "실제 collider·scale 캐시 및 전경 군락 비충돌",
+        "status": "PASS"
+      },
+      {
+        "id": "M13",
+        "name": "아웃오브바운드 벽 거부",
+        "status": "PASS"
+      },
+      {
+        "id": "M14",
+        "name": "스폰/북측 카빙 RNG 변경에도 M5 국소 타일 동일",
+        "status": "PASS"
+      },
+      {
+        "id": "M15",
+        "name": "양쪽 접근·벽·남쪽 정지 판정 동일",
+        "status": "FAIL",
+        "reason": "Expected values to be strictly equal:\n\ntrue !== false\n"
+      },
+      {
+        "id": "G01",
+        "name": "UI/이미지 요청·비적용 그리드 가드 호출 없음",
+        "status": "PASS"
+      },
+      {
+        "id": "G02",
+        "name": "보호 생산11입력 실행 전후 SHA 동일",
+        "status": "PASS"
+      }
+    ],
+    "inputsBefore": {
+      "game.html": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+      "game-easy-test.html": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+      "index.html": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8",
+      "server.cjs": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d",
+      "node-main.js": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce",
+      "maps_data.js": "01e74466ea797227d555288592edc959545cb2e44e64e607bf181e7d64c2870e",
+      "assets/map/ch1/production_finish/layout.js": "94b974df0ea090bd0cedb4f492777194e3b5938bcace6a7db2fd879b89a20dab",
+      "ch1-boundary-edge.js": "e1271685ee41026e330c77dfb9c8fc83146f2d116b97512e37d82cf53798edc2",
+      "ch1-border-foreground.js": "7f0f3e2e373041adc9e39512b147ab535f99b89e914686ab7ff14eb602f46b22",
+      "assets/map/ch1/production_finish/outer90_sources/placements.json": "2f6ec8137ea69f3c5f25da17ed9cddc9a33cf3c33b6908e883db0e85b0d27a70",
+      "tools/team-followup-20261002/project-teams/MAP/task.md": "2dac48b7c61040ad5c3b352e31932479cd5e7627dcc7700c1f5b75da38a33d65"
+    },
+    "inputsAfter": {
+      "game.html": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+      "game-easy-test.html": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+      "index.html": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8",
+      "server.cjs": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d",
+      "node-main.js": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce",
+      "maps_data.js": "01e74466ea797227d555288592edc959545cb2e44e64e607bf181e7d64c2870e",
+      "assets/map/ch1/production_finish/layout.js": "94b974df0ea090bd0cedb4f492777194e3b5938bcace6a7db2fd879b89a20dab",
+      "ch1-boundary-edge.js": "e1271685ee41026e330c77dfb9c8fc83146f2d116b97512e37d82cf53798edc2",
+      "ch1-border-foreground.js": "7f0f3e2e373041adc9e39512b147ab535f99b89e914686ab7ff14eb602f46b22",
+      "assets/map/ch1/production_finish/outer90_sources/placements.json": "2f6ec8137ea69f3c5f25da17ed9cddc9a33cf3c33b6908e883db0e85b0d27a70",
+      "tools/team-followup-20261002/project-teams/MAP/task.md": "2dac48b7c61040ad5c3b352e31932479cd5e7627dcc7700c1f5b75da38a33d65"
+    },
+    "functions": {
+      "_rleEncodeGrid": {
+        "sha256": "40f329fbac442ca0b38fad42f469bfe165340f754ba6aa92095ff87be0cdb952",
+        "line": 28698,
+        "bytes": 153
+      },
+      "_buildCh1StartForestRLE": {
+        "sha256": "28caed8b821d9e5c30047823b039e42cc88ae25f445072f0550a0f53d16225db",
+        "line": 28741,
+        "bytes": 773
+      },
+      "_applyCh1StartNorthGate": {
+        "sha256": "9bae0a90422beeef9ecaae99893ae82b589bd12a42e5cf9696667e87f91e0a18",
+        "line": 28791,
+        "bytes": 403
+      },
+      "_cloneField11": {
+        "sha256": "d26f2f4b43ee281e13d176ed5651670498d46ecb09bb5e2d7fd7c55cc4b8e616",
+        "line": 28812,
+        "bytes": 2073
+      },
+      "genFromTemplate": {
+        "sha256": "daf6bf5ed416da77a75671e3d97587d5ada175a6fe4028e91f536a751da0d2fa",
+        "line": 28988,
+        "bytes": 29407
+      },
+      "_tCarveCircle": {
+        "sha256": "aec27b9c4e506c8be80ce8411ad52fae1795f6ae399b36492b5eefa071bd3374",
+        "line": 27807,
+        "bytes": 230
+      },
+      "_tCarveEllipse": {
+        "sha256": "5b68cdcb042ca9258f6005516341da9aac0d0ecd36b66d63849c5b68ccb98b8a",
+        "line": 27815,
+        "bytes": 242
+      },
+      "_tCarveRect": {
+        "sha256": "0b60ed9400e29fe28b34bce5d1aad8222a283119e51ec76cf032f60eaa25e76f",
+        "line": 27822,
+        "bytes": 188
+      },
+      "_tCarveCross": {
+        "sha256": "f47dc8ca89744dc13d9e7f9756d7c3bb0374d0a7b93e938e8becdb885ca7cd69",
+        "line": 27828,
+        "bytes": 426
+      },
+      "_tCarveCorridor": {
+        "sha256": "603da06fecc0a91ed74fea7cd5f8e7f628833f06bc0b7493f68d1506dc6c1bef",
+        "line": 27841,
+        "bytes": 2054
+      },
+      "_tBossDistMap": {
+        "sha256": "6c7ae9d33a94fff9403eb0ce0ca2c13f1e927ac54e3336d65f78f2e0ed714e7b",
+        "line": 27908,
+        "bytes": 333
+      },
+      "_spawnHoleCount": {
+        "sha256": "2df8140e22cd52fd550b5bd8d879d310e227d364d8c30791261b58a6cf7a6a1f",
+        "line": 29792,
+        "bytes": 164
+      },
+      "_cacheExitCenter": {
+        "sha256": "5dba8f4c496c5840254479d292d4652b84121ae5a115555838b2a18951d89ef1",
+        "line": 18655,
+        "bytes": 210
+      },
+      "_appendRotatedColParts": {
+        "sha256": "e06e280ad0741c3d0d84c7de30dff51985e5a22259c28959f239e0aa9ab7e0b1",
+        "line": 30445,
+        "bytes": 389
+      },
+      "_rebuildColObjs": {
+        "sha256": "244522b4da6bdb78401690fddad00ad1a521fdef5ce68145e055a39019b7fea9",
+        "line": 30446,
+        "bytes": 881
+      },
+      "_ensureColObjs": {
+        "sha256": "c68faf791b13410a5c5f258418961669f9db64172a7e7607b22afb5eb72851df",
+        "line": 30447,
+        "bytes": 100
+      },
+      "_ch1HillRampAt": {
+        "sha256": "9c2b6fe8ad4e6b3d2432645528f8f42d90b2bf2c0f93cb4c70a28161a13186be",
+        "line": 30451,
+        "bytes": 223
+      },
+      "_ch1HillBandBlocks": {
+        "sha256": "73e5efc699cf23d4e3b9f481708230e4f510fc9893ae0d1a9d7cbfcecdc4b409",
+        "line": 30456,
+        "bytes": 249
+      },
+      "isW": {
+        "sha256": "96db02d1f1d52890105c319d760a0592cdfc0a679d39a8fe5793b5d4bce12388",
+        "line": 30469,
+        "bytes": 1107
+      },
+      "canMv": {
+        "sha256": "fc0ebf7b6a24afd582d9010734def79bce2649c2d0118934d8c2cc8917dc2c4c",
+        "line": 30470,
+        "bytes": 87
+      }
+    },
+    "parity": {
+      "mainProductionLayoutHook": true,
+      "easyProductionLayoutHook": false,
+      "functions": {
+        "_buildCh1StartForestRLE": {
+          "equal": false,
+          "mainSHA256": "28caed8b821d9e5c30047823b039e42cc88ae25f445072f0550a0f53d16225db",
+          "easySHA256": "8f6ad81bd9183d5e58deb99ccddac189d7a59a00cdab6b6157069f17a87d6ca8"
+        },
+        "_applyCh1StartNorthGate": {
+          "equal": true,
+          "mainSHA256": "9bae0a90422beeef9ecaae99893ae82b589bd12a42e5cf9696667e87f91e0a18",
+          "easySHA256": "9bae0a90422beeef9ecaae99893ae82b589bd12a42e5cf9696667e87f91e0a18"
+        },
+        "_cloneField11": {
+          "equal": false,
+          "mainSHA256": "d26f2f4b43ee281e13d176ed5651670498d46ecb09bb5e2d7fd7c55cc4b8e616",
+          "easySHA256": "b46ebc599b90005a6773f96b1ed21cbb6dbb80fe2ebf2c33386a7717379f9a7e"
+        },
+        "genFromTemplate": {
+          "equal": false,
+          "mainSHA256": "daf6bf5ed416da77a75671e3d97587d5ada175a6fe4028e91f536a751da0d2fa",
+          "easySHA256": "b698b233c07de00b8204d2e657cdcc0abf0e3c310aa68a56a02883fed1559bc1"
+        },
+        "_rebuildColObjs": {
+          "equal": true,
+          "mainSHA256": "244522b4da6bdb78401690fddad00ad1a521fdef5ce68145e055a39019b7fea9",
+          "easySHA256": "244522b4da6bdb78401690fddad00ad1a521fdef5ce68145e055a39019b7fea9"
+        },
+        "_ensureColObjs": {
+          "equal": true,
+          "mainSHA256": "c68faf791b13410a5c5f258418961669f9db64172a7e7607b22afb5eb72851df",
+          "easySHA256": "c68faf791b13410a5c5f258418961669f9db64172a7e7607b22afb5eb72851df"
+        },
+        "_ch1HillRampAt": {
+          "equal": true,
+          "mainSHA256": "9c2b6fe8ad4e6b3d2432645528f8f42d90b2bf2c0f93cb4c70a28161a13186be",
+          "easySHA256": "9c2b6fe8ad4e6b3d2432645528f8f42d90b2bf2c0f93cb4c70a28161a13186be"
+        },
+        "_ch1HillBandBlocks": {
+          "equal": true,
+          "mainSHA256": "73e5efc699cf23d4e3b9f481708230e4f510fc9893ae0d1a9d7cbfcecdc4b409",
+          "easySHA256": "73e5efc699cf23d4e3b9f481708230e4f510fc9893ae0d1a9d7cbfcecdc4b409"
+        },
+        "isW": {
+          "equal": true,
+          "mainSHA256": "96db02d1f1d52890105c319d760a0592cdfc0a679d39a8fe5793b5d4bce12388",
+          "easySHA256": "96db02d1f1d52890105c319d760a0592cdfc0a679d39a8fe5793b5d4bce12388"
+        },
+        "canMv": {
+          "equal": true,
+          "mainSHA256": "fc0ebf7b6a24afd582d9010734def79bce2649c2d0118934d8c2cc8917dc2c4c",
+          "easySHA256": "fc0ebf7b6a24afd582d9010734def79bce2649c2d0118934d8c2cc8917dc2c4c"
+        }
+      },
+      "blocks": {
+        "compose": {
+          "equal": true,
+          "mainSHA256": "3cd8a29f6ecd61478d8f649a59423121663fa1083643e8b403a4c293e7da3b5a",
+          "easySHA256": "3cd8a29f6ecd61478d8f649a59423121663fa1083643e8b403a4c293e7da3b5a"
+        },
+        "deco": {
+          "equal": true,
+          "mainSHA256": "462559dfdd649073fb3bd0bccfe29e5ee188115850561f34c028a614c9c20af7",
+          "easySHA256": "462559dfdd649073fb3bd0bccfe29e5ee188115850561f34c028a614c9c20af7"
+        },
+        "fixed": {
+          "equal": true,
+          "mainSHA256": "3cfd7a965d595c472a5dc0d204dbab4797efb5eff4dd696570e7d33763f5ac52",
+          "easySHA256": "3cfd7a965d595c472a5dc0d204dbab4797efb5eff4dd696570e7d33763f5ac52"
+        },
+        "hand": {
+          "equal": true,
+          "mainSHA256": "71cb313c32c5b2af61f3d317d9059fb6cf17c1f12fd72096eb234a87c2d101cf",
+          "easySHA256": "71cb313c32c5b2af61f3d317d9059fb6cf17c1f12fd72096eb234a87c2d101cf"
+        },
+        "metaMerge": {
+          "equal": true,
+          "mainSHA256": "c3324483037981a1b97726075dfde801a299ef2b5e2ccaacdf117ac5aafd8eeb",
+          "easySHA256": "c3324483037981a1b97726075dfde801a299ef2b5e2ccaacdf117ac5aafd8eeb"
+        }
+      },
+      "easyGeneratedMapSHA256": "7c7e8d31ae37a77291cc4fda815031bdfe7b6d0d399d0333a9314d6ad94677d5",
+      "easyPoints": {
+        "approach": {
+          "world": [
+            6660,
+            6140
+          ],
+          "tileValue": 0,
+          "isW": false,
+          "canMvR15": true
+        },
+        "badCamera": {
+          "world": [
+            7000,
+            6900
+          ],
+          "tileValue": 1,
+          "isW": true,
+          "canMvR15": false
+        },
+        "anchor": {
+          "world": [
+            7000,
+            6880
+          ],
+          "tileValue": 1,
+          "isW": true,
+          "canMvR15": false
+        },
+        "southStop": {
+          "world": [
+            6660,
+            6305
+          ],
+          "tileValue": 0,
+          "isW": false,
+          "canMvR15": true
+        }
+      },
+      "note": "easy comparison loads the same pure layout definition in the isolated VM; easy has no production script/hook and its extracted builder still uses the legacy fallback"
+    },
+    "geometry": {
+      "fixtureGeneratedMapSHA256": "8a5dfe9f1a6c5a283be293a85cedb49509d1db5d317e063fde0b2cd5ff6c65a1",
+      "rawLayoutRLEConvertedDifferenceCells": 967,
+      "rawWallToRuntimeFloorCells": 680,
+      "walkableR15Centres": 19281,
+      "startConnectedCentres": 19281,
+      "rejectedSampledEdges": 5,
+      "handProps": 36,
+      "placedMapObjects": 37,
+      "collisionObjects": 20
+    },
+    "points": {
+      "start": {
+        "world": [
+          4020,
+          7420
+        ],
+        "tile": [
+          100,
+          185
+        ],
+        "tileValue": 0,
+        "isW": false,
+        "canMvR15": true
+      },
+      "approach": {
+        "world": [
+          6660,
+          6140
+        ],
+        "tile": [
+          166,
+          153
+        ],
+        "tileValue": 0,
+        "isW": false,
+        "canMvR15": true
+      },
+      "badCamera": {
+        "world": [
+          7000,
+          6900
+        ],
+        "tile": [
+          175,
+          172
+        ],
+        "tileValue": 1,
+        "isW": true,
+        "canMvR15": false
+      },
+      "assetAnchor": {
+        "world": [
+          7000,
+          6880
+        ],
+        "tile": [
+          175,
+          172
+        ],
+        "tileValue": 1,
+        "isW": true,
+        "canMvR15": false
+      },
+      "southFirstBlocked": {
+        "world": [
+          6660,
+          6305
+        ],
+        "tile": [
+          166,
+          157
+        ],
+        "tileValue": 0,
+        "isW": false,
+        "canMvR15": false
+      },
+      "southPreviousCentre": {
+        "world": [
+          6660,
+          6304
+        ],
+        "tile": [
+          166,
+          157
+        ],
+        "tileValue": 0,
+        "isW": false,
+        "canMvR15": true
+      },
+      "southBlockedCornerProbes": [
+        {
+          "world": [
+            6645,
+            6290
+          ],
+          "tile": [
+            166,
+            157
+          ],
+          "tileValue": 0,
+          "isW": false,
+          "canMvR15": true
+        },
+        {
+          "world": [
+            6675,
+            6290
+          ],
+          "tile": [
+            166,
+            157
+          ],
+          "tileValue": 0,
+          "isW": false,
+          "canMvR15": false
+        },
+        {
+          "world": [
+            6645,
+            6320
+          ],
+          "tile": [
+            166,
+            158
+          ],
+          "tileValue": 1,
+          "isW": true,
+          "canMvR15": false
+        },
+        {
+          "world": [
+            6675,
+            6320
+          ],
+          "tile": [
+            166,
+            158
+          ],
+          "tileValue": 1,
+          "isW": true,
+          "canMvR15": false
+        }
+      ],
+      "pitCounterexample": {
+        "world": [
+          6500,
+          5580
+        ],
+        "tile": [
+          162,
+          139
+        ],
+        "tileValue": 0,
+        "isW": true,
+        "canMvR15": false
+      }
+    },
+    "route": {
+      "radius": 15,
+      "nodeSpacing": 40,
+      "edgeSampleSpacing": 5,
+      "nodeCount": 99,
+      "turnWorldPoints": [
+        [
+          4020,
+          7420
+        ],
+        [
+          4780,
+          7420
+        ],
+        [
+          4780,
+          7060
+        ],
+        [
+          4820,
+          7060
+        ],
+        [
+          4820,
+          7020
+        ],
+        [
+          4860,
+          7020
+        ],
+        [
+          4860,
+          6980
+        ],
+        [
+          5260,
+          6980
+        ],
+        [
+          5260,
+          6940
+        ],
+        [
+          5300,
+          6940
+        ],
+        [
+          5300,
+          6900
+        ],
+        [
+          5340,
+          6900
+        ],
+        [
+          5340,
+          6860
+        ],
+        [
+          5380,
+          6860
+        ],
+        [
+          5380,
+          6820
+        ],
+        [
+          5420,
+          6820
+        ],
+        [
+          5420,
+          6780
+        ],
+        [
+          5460,
+          6780
+        ],
+        [
+          5460,
+          6740
+        ],
+        [
+          5500,
+          6740
+        ],
+        [
+          5500,
+          6700
+        ],
+        [
+          5580,
+          6700
+        ],
+        [
+          5580,
+          6660
+        ],
+        [
+          5660,
+          6660
+        ],
+        [
+          5660,
+          6620
+        ],
+        [
+          5740,
+          6620
+        ],
+        [
+          5740,
+          6580
+        ],
+        [
+          5820,
+          6580
+        ],
+        [
+          5820,
+          6540
+        ],
+        [
+          5900,
+          6540
+        ],
+        [
+          5900,
+          6500
+        ],
+        [
+          5980,
+          6500
+        ],
+        [
+          5980,
+          6460
+        ],
+        [
+          6100,
+          6460
+        ],
+        [
+          6100,
+          6420
+        ],
+        [
+          6220,
+          6420
+        ],
+        [
+          6220,
+          6380
+        ],
+        [
+          6380,
+          6380
+        ],
+        [
+          6380,
+          6340
+        ],
+        [
+          6540,
+          6340
+        ],
+        [
+          6540,
+          6300
+        ],
+        [
+          6660,
+          6300
+        ],
+        [
+          6660,
+          6140
+        ]
+      ],
+      "claim": "static sampled START to known approach and reverse only; not trusted input or named pocket full-route acceptance"
+    },
+    "m5": {
+      "sourcePlacement": [
+        175,
+        172,
+        2,
+        2200,
+        true
+      ],
+      "projectedBounds": {
+        "x": 5925.78125,
+        "y": 6009.765625,
+        "w": 2148.4375,
+        "h": 1208.984375,
+        "anchorY": 6880
+      },
+      "projectedWalkableCentres": 228,
+      "projectedUnreachableCentres": 0,
+      "outsidePolygonWalkableCentres": 27,
+      "fringeExamples": [
+        [
+          6940,
+          6020
+        ],
+        [
+          6900,
+          6060
+        ],
+        [
+          6900,
+          6100
+        ],
+        [
+          6860,
+          6140
+        ],
+        [
+          6820,
+          6180
+        ]
+      ],
+      "semanticPocket": "No separate M5 pocket/entrance polygon or gameplay region ID; sprite rectangle is diagnostic extent only"
+    },
+    "gates": {
+      "actualEightViews": "0/8 new",
+      "actualTrustedMovement": 0,
+      "fullPocketToEntranceRoute": "UNMEASURED",
+      "occlusionCombatPageerrorLoadingPerformance": "UNMEASURED",
+      "visualVerdict": "RETOUCH",
+      "productionApplied": false
+    }
+  },
+  "docsAudit": {
+    "observedAt": "2026-10-02T03:57:28.858Z",
+    "command": [
+      "rg",
+      "-n",
+      "M5|m5-tile-reachability|6660|6140|7000|6900|6305|genFromTemplate|_buildCh1StartForestRLE|CH1_1_PRODUCTION|canMv|isW\\(|_colObjs|forestBoundary|depth2",
+      "docs/"
+    ],
+    "matchLines": 722,
+    "matchedFiles": 148,
+    "fileCounts": {
+      "docs/2_6 소환굴+리프트시스템/2_6 소환굴+리프트시스템.md": 2,
+      "docs/PERF_MAC_CHROME_AUDIT.md": 1,
+      "docs/종합_버그리포트.md": 4,
+      "docs/12퍼포먼스·최적화/CAMERA_MASK_COVERAGE_20260910.md": 1,
+      "docs/13출시·마케팅/MAC_ENVIRONMENT_HANDOFF_20261001.md": 1,
+      "docs/12퍼포먼스·최적화/MAC_RENDERER_OPTIN_TEST_20260910.md": 2,
+      "docs/2게임디자인레벨디자인/2게임디자인레벨디자인.md": 1,
+      "docs/13출시·마케팅/INTEGRATION_BUILD_TEAM_MASTER.md": 1,
+      "docs/13출시·마케팅/GAMEPLAY_TRAILER_V22_20260909.md": 1,
+      "docs/13출시·마케팅/VERCEL_UPLOAD_FAILURE_20260913.md": 2,
+      "docs/13출시·마케팅/LAPTOP_MIGRATION_CHECKLIST_20261001.md": 1,
+      "docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md": 1,
+      "docs/12퍼포먼스·최적화/CLAUDE_CODE_인수인계_전체작업보고서_2026-08-10.md": 11,
+      "docs/13출시·마케팅/HELL_DIROI_종합확장전략기획서_v2_0.md": 1,
+      "docs/13출시·마케팅/PUBLISH_20260928_LFS_HISTORY.md": 1,
+      "docs/12퍼포먼스·최적화/맥북_프레임픽스_깜빡임.md": 5,
+      "docs/2_1 스킬관리+합체시스템+자원/추적전격_합체_20260927.md": 1,
+      "docs/12퍼포먼스·최적화/12퍼포먼스·최적화.md": 2,
+      "docs/12퍼포먼스·최적화/MAC_TEXT_ATLAS_FPS_20260910.md": 1,
+      "docs/12퍼포먼스·최적화/MAC_DEFAULT_WEBGPU_FPS_20260910.md": 1,
+      "docs/14밸런스+수치테이블/OPENING_NO_CHARGERS_20260912.md": 1,
+      "docs/12퍼포먼스·최적화/MAC_ENEMY_DENSITY_INVESTIGATION_20260910.md": 1,
+      "docs/12퍼포먼스·최적화/FRAME_SYSTEM_COMMIT_20260929.md": 2,
+      "docs/MAC_SWIZZLE_AUDIT.md": 2,
+      "docs/2_2 무기+활+속성시스템/2_2 무기+활+속성시스템.md": 1,
+      "docs/9적ai패턴디자인/9_적AI패턴디자인.md": 2,
+      "docs/9적ai패턴디자인/ENEMY_AI_TEAM_MASTER.md": 3,
+      "docs/4.1맵디자인+설정/CH1_LIVING_DETAIL_RUNTIME_20260925.md": 7,
+      "docs/3.1 ui hud 디자인/exoduser-hud-redesign.md": 1,
+      "docs/14밸런스+수치테이블/GROUND_EEL_CONTACT_20260913.md": 1,
+      "docs/8.0몬스터디자인/탄막시스템_총정리.md": 1,
+      "docs/14밸런스+수치테이블/EASY_BALANCE_TEST_20260912.md": 1,
+      "docs/4.1맵디자인+설정/SMILEGATE_CH1_SUBMISSION_GOAL_20260924.md": 1,
+      "docs/8.0몬스터디자인/몬스터_총관리.md": 1,
+      "docs/4.1맵디자인+설정/맵유형_확장기획.md": 11,
+      "docs/0마스터플랜/mac-resume-20261001/light-normal-evidence/summary.json": 5,
+      "docs/8.0몬스터디자인/CH1_1_START_다안육괴_중형몬스터.md": 1,
+      "docs/8.0몬스터디자인/거대에너지탄_피격넉백_2026-09-04.md": 1,
+      "docs/cinematic/B03_HIGGSFIELD_VIDEO_REVIEW.md": 1,
+      "docs/0마스터플랜/mac-resume-20261001/R-입력-작업대장.md": 1,
+      "docs/CHANGELOG_SYNC.md": 21,
+      "docs/0마스터플랜/mac-resume-20261001/ITEM-폴백마스킹-검수.md": 1,
+      "docs/0마스터플랜/mac-resume-20261001/Mac-일반이미지-비동기준비.md": 1,
+      "docs/8.0몬스터디자인/몬스터_공격시스템.md": 1,
+      "docs/0마스터플랜/mac-resume-20261001/MAP020-뿌리변주-검수.md": 4,
+      "docs/4.1맵디자인+설정/맵설정_소환굴.md": 2,
+      "docs/0마스터플랜/mac-resume-20261001/warm-idle-evidence/summary.json": 2,
+      "docs/0마스터플랜/mac-resume-20261001/11팀-MAP020-실행검수.md": 3,
+      "docs/4.1맵디자인+설정/CH1_PAINTED_PHASE1_START_SPIKE.md": 1,
+      "docs/0마스터플랜/mac-resume-20261001/map020-evidence/팀실행-영수증.json": 2,
+      "docs/cinematic/B03_V2_HIGGSFIELD_VIDEO_REVIEW.md": 1,
+      "docs/4.1맵디자인+설정/MAP_IMPROVEMENT_PROJECT.md": 5,
+      "docs/0마스터플랜/mac-resume-20261001/combat-timeline-evidence/summary.json": 15,
+      "docs/0마스터플랜/mac-resume-20261001/map020-evidence/contract-checks.json": 4,
+      "docs/4.1맵디자인+설정/DIMRAETH_MAP_RESEARCH_20260916.md": 3,
+      "docs/0마스터플랜/mac-resume-20261001/R-입력과-GL-후속검수.md": 3,
+      "docs/0마스터플랜/mac-resume-20261001/drop-prewarm-evidence/normal-summary.json": 7,
+      "docs/4.1맵디자인+설정/맵메이킹_가이드.md": 1,
+      "docs/0마스터플랜/mac-resume-20261001/drop-prewarm-evidence/normal2-summary.json": 3,
+      "docs/0마스터플랜/mac-resume-20261001/map020-evidence/MAP-읽기근거.json": 1,
+      "docs/0마스터플랜/mac-resume-20261001/map020-zoomfix-evidence/runtime-contract.json": 1,
+      "docs/0마스터플랜/mac-resume-20261001/map020-zoomfix-evidence/render-benchmark-summary.json": 1,
+      "docs/4.1맵디자인+설정/ROOTWORLD_OUTER_MASS_20260924.md": 1,
+      "docs/16번역·로컬라이제이션/번역대상_전체목록.md": 1,
+      "docs/4.1맵디자인+설정/CH1_VERTICAL_SLICE.md": 2,
+      "docs/0마스터플랜/mac-resume-20261001/map020-evidence/after-map-collision.json": 1,
+      "docs/0마스터플랜/mac-resume-20261001/map020-evidence/before-map-collision.json": 1,
+      "docs/0마스터플랜/mac-resume-20261001/map020-zoomfix-evidence/render-benchmark-raw.json": 1,
+      "docs/0마스터플랜/mac-resume-20261001/normal-first-kill-evidence/metadata.json": 1,
+      "docs/0마스터플랜/mac-resume-20261001/corpse-capture-evidence/summary.json": 8,
+      "docs/0마스터플랜/MAC_AGENT_DASHBOARD.md": 1,
+      "docs/0마스터플랜/mac-resume-20261001/corpse-capture-evidence/candidate-summary.json": 2,
+      "docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md": 9,
+      "docs/0마스터플랜/mac-resume-20261001/normal-first-kill-evidence/summary.json": 6,
+      "docs/0마스터플랜/mac-resume-20261001/MAP-ART-인수검토.md": 8,
+      "docs/0마스터플랜/mac-resume-20261001/map020-evidence/walk-input-raw.json": 78,
+      "docs/0마스터플랜/mac-resume-20261001/MAP020-줌수정-검수.md": 4,
+      "docs/0마스터플랜/mac-resume-20261001/MAP020-Mac-실화면-검수.md": 17,
+      "docs/0마스터플랜/mac-resume-20261001/Mac-정상-WebGL-첫처치-관측.md": 1,
+      "docs/0마스터플랜/mac-resume-20261001/ui03-evidence/final-dense-live.json": 11,
+      "docs/0마스터플랜/mac-resume-20261001/ui03-evidence/team-receipts.json": 1,
+      "docs/0마스터플랜/mac-resume-20261001/item-skin-evidence/functional-after-final.json": 10,
+      "docs/0마스터플랜/mac-resume-20261001/ui03-evidence/final-easy-layout.json": 1,
+      "docs/0마스터플랜/mac-resume-20261001/warm-fire-evidence/summary.json": 6,
+      "docs/0마스터플랜/mac-resume-20261001/ui03-evidence/MAP-팀검토.md": 1,
+      "docs/0마스터플랜/mac-resume-20261001/item-skin-evidence/functional-after.json": 13,
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/native-recovery/MAP-task.md": 4,
+      "docs/0마스터플랜/mac-resume-20261001/Mac-불꽃-비동기준비.md": 1,
+      "docs/0마스터플랜/mac-resume-20261001/item-skin-evidence/pixels-four.json": 1,
+      "docs/0마스터플랜/mac-resume-20261001/ui03-evidence/after-live.json": 1,
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json": 3,
+      "docs/0마스터플랜/mac-resume-20261001/item-skin-evidence/functional-before-cold.json": 2,
+      "docs/0마스터플랜/mac-resume-20261001/ui03-evidence/normal-live.json": 8,
+      "docs/0마스터플랜/mac-resume-20261001/item-skin-evidence/pixels-confirm.json": 16,
+      "docs/0마스터플랜/mac-resume-20261001/item-skin-evidence/pixels-all.json": 16,
+      "docs/0마스터플랜/mac-resume-20261001/item-skin-evidence/summary.json": 5,
+      "docs/0마스터플랜/mac-resume-20261001/item-fallback-evidence/다음작업-감사.md": 2,
+      "docs/0마스터플랜/mac-resume-20261001/item-skin-evidence/functional-after-cold.json": 13,
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ROOT_SUBMISSION_BOUNDARIES.json": 4,
+      "docs/0마스터플랜/mac-resume-20261001/Mac-첫처치-밀집전투-실측.md": 3,
+      "docs/0마스터플랜/mac-resume-20261001/gap-attribution-evidence/attribution.json": 19,
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FOLLOWUP_RECEIPT.md": 1,
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/MAP-ART-REVIEW-20261002.md": 8,
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/MAP-task.md": 3,
+      "docs/0마스터플랜/mac-resume-20261001/gap-attribution-evidence/summary.json": 23,
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/DISPATCH_STATUS.md": 1,
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/MAP-next-receipt.json": 3,
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-CHATS-20261002.json": 1,
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/MAP-receipt.json": 3,
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/MAC-COORDINATION-20261002.md": 2,
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/dispatch-snapshot.json": 2,
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/MAP-next-result.md": 10,
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-WORK-DISPATCH-20261002.json": 3,
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/INDEPENDENT-NEXT-20261002.md": 1,
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/MAP-result.md": 9,
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FIVE-OWNER-INTEGRATION-20261002.md": 1,
+      "docs/4.1맵디자인+설정/보스게이트_버그리포트.md": 1,
+      "docs/4.1맵디자인+설정/CH1_SUNBURST_TREE_PASS88_20260930.md": 1,
+      "docs/4.1맵디자인+설정/CH1_1_SMOOTHING_PASS.md": 2,
+      "docs/4.1맵디자인+설정/맵제작_타게임전수조사.md": 1,
+      "docs/4.1맵디자인+설정/MAP_RUNTIME_ARCHITECTURE.md": 20,
+      "docs/4.1맵디자인+설정/CH1_BOUNDARY_EDGE_MAP020_20261001.md": 7,
+      "docs/4.1맵디자인+설정/CH1_FOREST_SWAY_PASS89_20260930.md": 1,
+      "docs/4.1맵디자인+설정/CH1_1_START_OUTER_MASS.md": 4,
+      "docs/4.1맵디자인+설정/맵제작_SSOT.md": 1,
+      "docs/4.1맵디자인+설정/ROOTWORLD_BLOCKOUT_20260924.md": 2,
+      "docs/4.1맵디자인+설정/DEPTH_SLICE2_20261001.md": 9,
+      "docs/4.1맵디자인+설정/CH1_MAP_KIT_OptionB.md": 4,
+      "docs/4.1맵디자인+설정/CH1_1_GROUND_STRUCTURE_20260916.md": 10,
+      "docs/4.1맵디자인+설정/DIABLO_FIELD_REBUILD_PLAN_20260923.md": 4,
+      "docs/4.1맵디자인+설정/OUTER_DEPTH_MODEL.md": 3,
+      "docs/4.1맵디자인+설정/LEVEL_DESIGN_RULES_SSOT.md": 3,
+      "docs/4.1맵디자인+설정/CH1_1_FINAL_REVIEW_20260916.md": 9,
+      "docs/4.1맵디자인+설정/CH1_HIDDEN_UNDERLAY_20260929.md": 2,
+      "docs/4.1맵디자인+설정/DIABLO_FIELD_IMPLEMENTATION_CONTRACT_20260923.md": 2,
+      "docs/4.1맵디자인+설정/CH1_POISON_ROTTEN_FOREST_ART_20260924.md": 9,
+      "docs/4.1맵디자인+설정/CH1_1_BLOCKOUT_MASTER.md": 13,
+      "docs/4.1맵디자인+설정/MAP_QA_GATES.md": 2,
+      "docs/4.1맵디자인+설정/CH1_1_PRODUCTION_FINISH_20260916.md": 18,
+      "docs/4.1맵디자인+설정/CH3_1_HELL_WINTER_IMPLEMENTATION.md": 2,
+      "docs/4.1맵디자인+설정/MAP_IMPLEMENTATION_ROADMAP.md": 5,
+      "docs/4.1맵디자인+설정/_MAP_SSOT_INDEX.md": 18,
+      "docs/4.1맵디자인+설정/맵디테일.md": 9,
+      "docs/4.1맵디자인+설정/CH1_1_COMPOSE_초안.md": 4,
+      "docs/4.1맵디자인+설정/맵오브젝트_에셋목록.md": 19,
+      "docs/4.1맵디자인+설정/CH1_1_DEPTH_RETOUCH_20260917.md": 9,
+      "docs/4.1맵디자인+설정/맵구성_1장.md": 4,
+      "docs/4.1맵디자인+설정/CH1_1_CRISP_SMOOTHING_REMODEL_2026-09-04.md": 1
+    },
+    "matchOutputSHA256": "b74576365d366731035efcd60682fd20f2cc34d68cc3f2f1aaf975058a0a39c1",
+    "sharedDocsWritten": 0,
+    "protected2_3Written": 0
+  },
+  "changesObservations": [
+    {
+      "phase": "start",
+      "count": 23,
+      "observedAt": "2026-10-02T03:43:43Z",
+      "precision": "same first task-read tool batch; clock seconds"
+    },
+    {
+      "phase": "middle",
+      "count": 31,
+      "observedAt": "2026-10-02T03:48:09Z",
+      "precision": "same middle-read tool batch; clock seconds"
+    },
+    {
+      "phase": "after-fixture",
+      "count": 53,
+      "observedAt": "2026-10-02T03:53:44.534Z",
+      "head": "31454dfa49c90bac77351273fc32f0c1eb937928"
+    },
+    {
+      "phase": "final",
+      "count": 56,
+      "observedAt": "2026-10-02T03:57:51.597Z",
+      "head": "31454dfa49c90bac77351273fc32f0c1eb937928"
+    }
+  ],
+  "provenance": {
+    "taskReceiptObservation": {
+      "observedAt": "2026-10-02T03:43:43Z",
+      "kind": "first current task.md read and clock in same tool batch",
+      "rawMessageTransmitTimestamp": null
+    },
+    "actualReads": [
+      {
+        "path": "AGENTS.md",
+        "range": "entire; migration checkout",
+        "sha256AtFinalVerification": "fd59bef70960bcaf1ab9910051faa860362884e574ac2869fad05c6872ae04e4",
+        "exactReadTimestamp": null
+      },
+      {
+        "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/native-recovery/MAP-task.md",
+        "range": "entire; newest task overrides ownership/routing",
+        "sha256AtFinalVerification": "a74bf5238a614cbef875239035144d748abbd4bc39737f7b14e2c0481c6cc84b",
+        "exactReadTimestamp": null
+      },
+      {
+        "path": "docs/4.1맵디자인+설정/EXODUSER_MAP_PRODUCTION_GUIDELINE_v0.9.md",
+        "range": "1–360,361–720,721–1047; entire before source fixture; §23 re-read 883–973",
+        "sha256AtFinalVerification": "607e36a49a99205be61c0aeedb438da06bffaf13370360acc99fe86be751e80b",
+        "exactReadTimestamp": null
+      },
+      {
+        "path": "docs/4.1맵디자인+설정/_MAP_SSOT_INDEX.md",
+        "range": "1–94,95–220,221–343; entire",
+        "sha256AtFinalVerification": "092f0f17661c31d8a1dfdb8b15c974b431c88d7a77a9ef01188f3b6d753ed632",
+        "exactReadTimestamp": null
+      },
+      {
+        "path": "docs/4.1맵디자인+설정/맵디테일.md",
+        "range": "full read requested; relevant CH1 concept inspected; one tool output middle was truncated",
+        "sha256AtFinalVerification": "967ddce693ea4556d25de2d1761d4a79f19c5da236a7c99b498df1fadde2fb35",
+        "exactReadTimestamp": null
+      },
+      {
+        "path": "docs/4.1맵디자인+설정/MAP_RUNTIME_ARCHITECTURE.md",
+        "range": "78–143 relevant tile/collision/runtime contract",
+        "sha256AtFinalVerification": "eec52a9b3eec3e98c98ac581bfef6efbb5ef43b39ca519a082b821a14d7dd5c2",
+        "exactReadTimestamp": null
+      },
+      {
+        "path": "docs/4.1맵디자인+설정/CH1_1_PRODUCTION_FINISH_20260916.md",
+        "range": "1280–1312 current generation/LOCK contract",
+        "sha256AtFinalVerification": "8a4027204bcbf175a3205dfbd26b34b4c17d8bc22680bf390482480dd4369e5a",
+        "exactReadTimestamp": null
+      },
+      {
+        "path": "docs/4.1맵디자인+설정/CH1_BOUNDARY_EDGE_MAP020_20261001.md",
+        "range": "55–80; later68–92 D1/D2/D3 latest sections",
+        "sha256AtFinalVerification": "1916210e5b59a81e92016f910f382bf91b8012438fe1e0d818231b924aac8fba",
+        "exactReadTimestamp": null
+      },
+      {
+        "path": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/MAP-ART-REVIEW-20261002.md",
+        "range": "full initial handoff; M5 and §23 reference re-read during source task",
+        "sha256AtFinalVerification": "e942f2919ba93c2f50828c168feb71d61f803afd060c282145faac8297f8646b",
+        "exactReadTimestamp": null
+      },
+      {
+        "path": "tools/team-followup-20261002/map-art-review/canonical-camera-board.json",
+        "range": "initial handoff; eight targets and camera semantics",
+        "sha256AtFinalVerification": "9aade42e662b6c6e553e4ee72e5c4b848e8dcc7252053d7ec6d7ddd764316a7f",
+        "exactReadTimestamp": null
+      }
+    ],
+    "readTimestampLimit": "Per-read wall-clock timestamps were not captured; prerequisite complete reads preceded fixture artifact creation. Current file hashes are final verification hashes, not claimed receipt hashes.",
+    "executionCommand": "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node tools/team-followup-20261002/project-teams/MAP/checks.mjs --evidence",
+    "bootstrapAborts": [
+      {
+        "exitCode": 1,
+        "error": "ReferenceError: _rleEncodeGrid is not defined",
+        "count": 2,
+        "exactTimestamp": null,
+        "observedWindow": [
+          "2026-10-02T03:48:09Z",
+          "2026-10-02T03:52:35Z"
+        ],
+        "cause": "easy builder uses legacy fallback requiring its exact RLE encoder; added exact source extraction, no production fix",
+        "includedIn23CheckCounts": false
+      }
+    ],
+    "artifactCreationObservations": {
+      "checks": "after 03:48:09 UTC source-read batch; exact filesystem mutation time not captured",
+      "evidence": "first complete execution ended 03:52:48.887 UTC, immediately wrote evidence",
+      "result": "created after final fixture execution and before this completion observation; exact creation time not captured"
+    },
+    "startHead": "96610b6546a31e882962470ea1f2164ce94edca6",
+    "executionHead": "31454dfa49c90bac77351273fc32f0c1eb937928",
+    "headChangePerformedByThisTask": false
+  },
+  "duplicateGate": {
+    "observedAt": "2026-10-02T03:57:28.874Z",
+    "originalSession": "d447a49d-ecaa-4b5f-bc56-da5353ebb668",
+    "rawLogPath": "/Users/fordeargamers/.claude/projects/-Users-fordeargamers-Projects-exoduser-migration-20261001/d447a49d-ecaa-4b5f-bc56-da5353ebb668.jsonl",
+    "rawLogSHA256": "f219946a7c47f5e504d423d198c9558e2e7979db56365d632499e13dc54a2d2f",
+    "taskIdOccurrences": 0,
+    "lastAssistantTimestamp": "2026-10-01T16:35:58.128Z",
+    "lastAssistantStopReason": "end_turn",
+    "newSessionCreated": 0,
+    "subagentsCreated": 0,
+    "lastUserRecordTimestampIncludingToolResults": "2026-10-01T16:35:31.137Z",
+    "userRecordTimestampLimit": "Claude JSONL user records include tool results; this timestamp is not a new human task message. Task-ID occurrences remain 0."
+  },
+  "completion": {
+    "verifiedAt": "2026-10-02T03:57:51.597Z",
+    "kind": "source/data task and artifacts complete; production/runtime/visual acceptance pending",
+    "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "newArtifacts": [
+      "checks.mjs",
+      "evidence.json",
+      "result.md"
+    ],
+    "newArtifactCount": 3,
+    "artifacts": {
+      "tools/team-followup-20261002/project-teams/MAP/checks.mjs": {
+        "bytes": 19052,
+        "sha256": "80db6c160a50c115a29c9e2ac18ef805a551a91c406859a9abc85e59c57942ec"
+      },
+      "tools/team-followup-20261002/project-teams/MAP/result.md": {
+        "bytes": 15340,
+        "sha256": "c89fc6eb3bbc9286141537852586a2dc3e6f946c4469963b83ea0c52e7933251"
+      }
+    },
+    "evidenceSelfHash": "not embedded to avoid self-reference; final file hash printed in verification tool output",
+    "checks": {
+      "syntax": "PASS",
+      "fixtureCases": 23,
+      "pass": 20,
+      "fail": 3,
+      "failedIds": [
+        "S03",
+        "S04",
+        "M15"
+      ],
+      "protectedInputHashes": "11/11 unchanged since latest fixture",
+      "report23Fields": "PASS",
+      "ownershipFiles": "PASS"
+    },
+    "changesBelow80": true,
+    "productionWrites": 0,
+    "sharedDocsWrites": 0,
+    "gitWrites": 0,
+    "serverGameUIBuildEncodingPerformanceRuns": 0,
+    "actualEightViews": 0,
+    "visualVerdict": "RETOUCH"
+  }
+}

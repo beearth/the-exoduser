@@ -764,3 +764,7 @@ HEAD5b8e6ba9에서 지원3명이 11역할을 묶어 mortar38 PASS·MAP source9 P
 ### 2026-10-02 사용자 Claude 토큰 활용 의향과 혼합 실행 제공자
 
 새11관리채팅 및 현재 검수11건은 전부 Codex다. Claude 토큰 소비로 세지 않는다. 원 Claude7(ART/MAP/SKILL/SOUND/QA/ENEMY/ANIMVFX)+Codex4(UIUX/ITEM/BUILD/BALANCE) 구성은 보존하며 현재 Codex검수 인수 후 다음 비중복 제작건을 원 제공자에 전달한다. 실제 Claude CLI조회는6 interactive idle+SOUND background idle/done이며 후속 전달0/Read0다. VS Code는 Claude Code의 필수 앱이 아니지만 기존 실행창 전달 경로를 보존한다. --bg --resume은 실행중세션 복제 가능성 때문에 사용하지 않았다. 지원되는 interactive send/queue는 미확인이고 native 전달은 미완료다. 상세와시각: PROJECT-TEAM-CHATS-20261002.md 및 TEAM_UTILIZATION_20261001.json의 providerRouting20261002. 기존세션 삭제/중단0.
+
+### 2026-10-02 Claude Code 토큰 실제 활용·7역할 후속 검토
+
+사용자 최신 요청으로 Codex검수11건의 공식completed를 인수한 뒤 ART/MAP/SKILL/SOUND/QA/ENEMY/ANIMVFX 후속7건을 실제Claude CLI에서 실행했다. claude.ai Max/firstParty·APIKEY/타provider환경없음·실제init claude-opus-4-8·전원API usage와성공Read를 확인했다. 기존원세션과새Codex11채팅은보존, 원세션resume/copy0. Native입력불가 후 공식print/no-session-persistence·Read/Glob/Grep만으로 비중복읽기전용후속검토를 진행하며 결과를총괄이기록한다. 생산/UI/런타임/Git/설정변경0. 과거Claude후속전달0은원세션기록이며 이번직접CLI실행과구분한다. 상세: mac-resume-20261001/vscode-dispatch/CLAUDE-PROVIDER-DISPATCH-20261002.md 및json. Codex새제출은생산미인수보존후보로checkpoint한다.

@@ -1,0 +1,1863 @@
+{
+  "schema": "ANIMVFX-foot-shadow-anchor-source-audit-v1",
+  "team": "ANIMVFX",
+  "taskId": "foot-shadow-anchor",
+  "status": "SOURCE_AUDIT_COMPLETE_CANDIDATE_UNAPPLIED_RUNTIME_QA_PENDING",
+  "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+  "ownership": {
+    "directory": "tools/team-followup-20261002/project-teams/ANIMVFX/",
+    "rootOwnedReadOnly": "task.md",
+    "newFiles": [
+      "checks.mjs",
+      "result.md",
+      "evidence.json"
+    ],
+    "maxNewFiles": 3,
+    "candidateLocation": "result.md: section 6 diff fence",
+    "candidateApplied": false,
+    "gitWrites": 0,
+    "productionWrites": 0,
+    "sharedDocsWrites": 0,
+    "agentsSpawned": 0,
+    "newSessions": 0,
+    "servers": 0,
+    "ui": 0,
+    "gameRuns": 0,
+    "performanceMeasurements": 0,
+    "builds": 0,
+    "assetGeneration": 0
+  },
+  "timestamps": {
+    "timezone": "Asia/Seoul",
+    "received": {
+      "firstObservedAt": "2026-10-02T03:43:39Z",
+      "exactHumanDeliveryAt": null,
+      "precision": "first tool-clock boundary, not exact message receipt"
+    },
+    "read": {
+      "initialReadBeforeExecution": true,
+      "initialExactAt": null,
+      "confirmedFullReread": {
+        "startedAt": "2026-10-02 03:54:16 UTC",
+        "endedAt": "2026-10-02 03:54:16 UTC",
+        "exitCode": 0
+      }
+    },
+    "firstOwnedCodeArtifactObservedAt": "2026-10-02T03:48:33Z",
+    "executionStartedAt": "2026-10-02T03:53:24.879Z",
+    "verificationCheckedAt": "2026-10-02T03:53:25.281Z",
+    "packagingStartedAt": "2026-10-02T03:56:07.633Z",
+    "completedAt": "2026-10-02T03:56:46.429Z",
+    "completionMeaning": "owned artifacts read back, input/candidate hashes and 3-file limit verified; source audit handoff complete; production/runtime acceptance pending"
+  },
+  "git": {
+    "initialHead": "96610b6546a31e882962470ea1f2164ce94edca6",
+    "finalCheckStart": {
+      "observedAt": "2026-10-02T03:53:24.983Z",
+      "head": "31454dfa49c90bac77351273fc32f0c1eb937928",
+      "changes": 53
+    },
+    "finalCheckEnd": {
+      "observedAt": "2026-10-02T03:53:25.353Z",
+      "head": "31454dfa49c90bac77351273fc32f0c1eb937928",
+      "changes": 53
+    },
+    "preReport": {
+      "observedAt": "2026-10-02T03:54:17.084Z",
+      "head": "31454dfa49c90bac77351273fc32f0c1eb937928",
+      "changes": 53,
+      "files": [
+        "checks.mjs",
+        "task.md"
+      ],
+      "checksSha256": "c4f4bbcc7f5834d89b1cbb15ae2f768fd92f962b4c613271119ed9f9b557ac24",
+      "taskSha256": "55a5374924a61be4127dd72d3c0231700df2cf469b311cab257e11d902fe92a0"
+    },
+    "remoteCheckpointVerifiedByThisTask": false,
+    "changesObservations": [
+      {
+        "phase": "start",
+        "observedAt": "2026-10-02T03:43:39Z",
+        "count": 23
+      },
+      {
+        "phase": "middle",
+        "observedAt": "2026-10-02T03:49:37Z",
+        "count": 47
+      },
+      {
+        "phase": "final-check",
+        "observedAt": "2026-10-02T03:53:25.353Z",
+        "count": 53
+      },
+      {
+        "phase": "completion-readback",
+        "observedAt": "2026-10-02T03:56:46.429Z",
+        "count": 56
+      }
+    ],
+    "checkpointThreshold": 80,
+    "stopBeforeThreshold": 100,
+    "thresholdReached": false,
+    "finalHead": "31454dfa49c90bac77351273fc32f0c1eb937928"
+  },
+  "inputs": {
+    "sha256": {
+      "game.html": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+      "game-easy-test.html": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+      "server.cjs": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d",
+      "node-main.js": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce",
+      "index.html": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8",
+      "img/atlas_ch1_8dir.json": "f4842e1834074c31ec2a04d5b803924029aa4e6da3c1f4be3bc7e469b771049b",
+      "img/atlas_ch1_8dir_walk.json": "4b18470e74a5b5afe1747e48a91fb2e78f5c9d213e336cef79074e94fcdbed9e",
+      "img/ch1_8dir/manifest.json": "0fbf9907487a609a048ddf7d4ea90479f1347f14d167689042f5d9cf12d8572e",
+      "tools/team-followup-20261002/project-teams/ANIMVFX/task.md": "55a5374924a61be4127dd72d3c0231700df2cf469b311cab257e11d902fe92a0"
+    },
+    "pngFingerprints": "33-byte PNG header SHA only; not full PNG content hashes",
+    "sourceSlices": {
+      "game.html:queue": {
+        "sha256": "acbf8ebfdebb079e7196931721e8bdb9dfdbc9201a823ea81d8003c169d7b1a6",
+        "line": 5028,
+        "bytes": 870
+      },
+      "game.html:prep": {
+        "sha256": "a73e28dc60125130d084383c22c70cc7449af5f26237519741b44c6d6a4535e4",
+        "line": 5152,
+        "bytes": 6338
+      },
+      "game.html:body": {
+        "sha256": "44855da4f779ad60d84f2f82169f3760204cd5ee26e45394c614ad2ecb6c24fc",
+        "line": 51956,
+        "bytes": 1801
+      },
+      "game.html:shadow": {
+        "sha256": "b3c8589319ddffe855d6a2ea92083d61ac6736e2720f9724408520058f5ca3e1",
+        "line": 51826,
+        "bytes": 404
+      },
+      "game.html:blob": {
+        "sha256": "2bdba384740edea3eca143bd784b2cab4363b7d58d8e58e5b6d395079151a63d",
+        "line": 17693,
+        "bytes": 157
+      },
+      "game.html:draw": {
+        "sha256": "4378a60213e9a2ad068b4b735e6a7cb7c617e10c8ade65899ff523b15c7a63e7",
+        "line": 5042,
+        "bytes": 976
+      },
+      "game.html:matrix": {
+        "sha256": "e12c0923c7cb9b786844a7e3bf1e622027ddc2ff7d0d4149b252843bb6f3d41e",
+        "line": 5403,
+        "bytes": 1427
+      },
+      "game.html:shader": {
+        "sha256": "e26da4f1681cbdf1bb86c973ca1b1ef5dd9c576a9f79b737bc1e26684690d74c",
+        "line": 4947,
+        "bytes": 923
+      },
+      "game-easy-test.html:queue": {
+        "sha256": "acbf8ebfdebb079e7196931721e8bdb9dfdbc9201a823ea81d8003c169d7b1a6",
+        "line": 4683,
+        "bytes": 870
+      },
+      "game-easy-test.html:prep": {
+        "sha256": "152692406a222022e0c25dd6b9e2cd02661da55fd9ec02207e8b9a236d0bccaa",
+        "line": 4807,
+        "bytes": 4821
+      },
+      "game-easy-test.html:body": {
+        "sha256": "44855da4f779ad60d84f2f82169f3760204cd5ee26e45394c614ad2ecb6c24fc",
+        "line": 50443,
+        "bytes": 1801
+      },
+      "game-easy-test.html:shadow": {
+        "sha256": "b3c8589319ddffe855d6a2ea92083d61ac6736e2720f9724408520058f5ca3e1",
+        "line": 50313,
+        "bytes": 404
+      },
+      "game-easy-test.html:blob": {
+        "sha256": "2bdba384740edea3eca143bd784b2cab4363b7d58d8e58e5b6d395079151a63d",
+        "line": 16779,
+        "bytes": 157
+      },
+      "game-easy-test.html:draw": {
+        "sha256": "4378a60213e9a2ad068b4b735e6a7cb7c617e10c8ade65899ff523b15c7a63e7",
+        "line": 4697,
+        "bytes": 976
+      },
+      "game-easy-test.html:matrix": {
+        "sha256": "e12c0923c7cb9b786844a7e3bf1e622027ddc2ff7d0d4149b252843bb6f3d41e",
+        "line": 4965,
+        "bytes": 1427
+      },
+      "game-easy-test.html:shader": {
+        "sha256": "e26da4f1681cbdf1bb86c973ca1b1ef5dd9c576a9f79b737bc1e26684690d74c",
+        "line": 4602,
+        "bytes": 923
+      }
+    },
+    "assetHeaders": [
+      {
+        "path": "img/atlas_ch1_8dir_south.png",
+        "width": 2048,
+        "height": 1280,
+        "headerBytes": 33,
+        "headerSha256": "a51e6fc2fae784732fd508d02c03311affdd67f9425fe3bfe3dfc4912a30153c",
+        "pixelDecode": false
+      },
+      {
+        "path": "img/atlas_ch1_8dir_walk_south.png",
+        "width": 8192,
+        "height": 1280,
+        "headerBytes": 33,
+        "headerSha256": "1896da9b092bd70932de1f4665a729cc291720df72b142fe0886d4eab7ef2fde",
+        "pixelDecode": false
+      },
+      {
+        "path": "img/atlas_ch1_8dir_south_east.png",
+        "width": 2048,
+        "height": 1280,
+        "headerBytes": 33,
+        "headerSha256": "a51e6fc2fae784732fd508d02c03311affdd67f9425fe3bfe3dfc4912a30153c",
+        "pixelDecode": false
+      },
+      {
+        "path": "img/atlas_ch1_8dir_walk_south_east.png",
+        "width": 8192,
+        "height": 1280,
+        "headerBytes": 33,
+        "headerSha256": "1896da9b092bd70932de1f4665a729cc291720df72b142fe0886d4eab7ef2fde",
+        "pixelDecode": false
+      },
+      {
+        "path": "img/atlas_ch1_8dir_east.png",
+        "width": 2048,
+        "height": 1280,
+        "headerBytes": 33,
+        "headerSha256": "a51e6fc2fae784732fd508d02c03311affdd67f9425fe3bfe3dfc4912a30153c",
+        "pixelDecode": false
+      },
+      {
+        "path": "img/atlas_ch1_8dir_walk_east.png",
+        "width": 8192,
+        "height": 1280,
+        "headerBytes": 33,
+        "headerSha256": "1896da9b092bd70932de1f4665a729cc291720df72b142fe0886d4eab7ef2fde",
+        "pixelDecode": false
+      },
+      {
+        "path": "img/atlas_ch1_8dir_north_east.png",
+        "width": 2048,
+        "height": 1280,
+        "headerBytes": 33,
+        "headerSha256": "a51e6fc2fae784732fd508d02c03311affdd67f9425fe3bfe3dfc4912a30153c",
+        "pixelDecode": false
+      },
+      {
+        "path": "img/atlas_ch1_8dir_walk_north_east.png",
+        "width": 8192,
+        "height": 1280,
+        "headerBytes": 33,
+        "headerSha256": "1896da9b092bd70932de1f4665a729cc291720df72b142fe0886d4eab7ef2fde",
+        "pixelDecode": false
+      },
+      {
+        "path": "img/atlas_ch1_8dir_north.png",
+        "width": 2048,
+        "height": 1280,
+        "headerBytes": 33,
+        "headerSha256": "a51e6fc2fae784732fd508d02c03311affdd67f9425fe3bfe3dfc4912a30153c",
+        "pixelDecode": false
+      },
+      {
+        "path": "img/atlas_ch1_8dir_walk_north.png",
+        "width": 8192,
+        "height": 1280,
+        "headerBytes": 33,
+        "headerSha256": "1896da9b092bd70932de1f4665a729cc291720df72b142fe0886d4eab7ef2fde",
+        "pixelDecode": false
+      },
+      {
+        "path": "img/atlas_ch1_8dir_north_west.png",
+        "width": 2048,
+        "height": 1280,
+        "headerBytes": 33,
+        "headerSha256": "a51e6fc2fae784732fd508d02c03311affdd67f9425fe3bfe3dfc4912a30153c",
+        "pixelDecode": false
+      },
+      {
+        "path": "img/atlas_ch1_8dir_walk_north_west.png",
+        "width": 8192,
+        "height": 1280,
+        "headerBytes": 33,
+        "headerSha256": "1896da9b092bd70932de1f4665a729cc291720df72b142fe0886d4eab7ef2fde",
+        "pixelDecode": false
+      },
+      {
+        "path": "img/atlas_ch1_8dir_west.png",
+        "width": 2048,
+        "height": 1280,
+        "headerBytes": 33,
+        "headerSha256": "a51e6fc2fae784732fd508d02c03311affdd67f9425fe3bfe3dfc4912a30153c",
+        "pixelDecode": false
+      },
+      {
+        "path": "img/atlas_ch1_8dir_walk_west.png",
+        "width": 8192,
+        "height": 1280,
+        "headerBytes": 33,
+        "headerSha256": "1896da9b092bd70932de1f4665a729cc291720df72b142fe0886d4eab7ef2fde",
+        "pixelDecode": false
+      },
+      {
+        "path": "img/atlas_ch1_8dir_south_west.png",
+        "width": 2048,
+        "height": 1280,
+        "headerBytes": 33,
+        "headerSha256": "a51e6fc2fae784732fd508d02c03311affdd67f9425fe3bfe3dfc4912a30153c",
+        "pixelDecode": false
+      },
+      {
+        "path": "img/atlas_ch1_8dir_walk_south_west.png",
+        "width": 8192,
+        "height": 1280,
+        "headerBytes": 33,
+        "headerSha256": "1896da9b092bd70932de1f4665a729cc291720df72b142fe0886d4eab7ef2fde",
+        "pixelDecode": false
+      }
+    ],
+    "ssotHashesAtPackaging": {
+      "AGENTS.md": "fd59bef70960bcaf1ab9910051faa860362884e574ac2869fad05c6872ae04e4",
+      "docs/5.1임펙트디자인/ANIMATION_VFX_TEAM_MASTER.md": "7a26d6da692adbfce0634d05fde0c23a924922fd166c74f439a9c314a1fb1dbc",
+      "docs/8.0몬스터디자인/몬스터_스킨_렌더링_파이프라인.md": "94c32c92819835031931423f3e841d01f874cd03ff016edf7774e72381124cab",
+      "docs/5.0애니메이션파이프라인/몬스터_스킨_시스템.md": "ff9936c78f2ee889d776a4180ea96614074614725f01861c7d67e3564e4ce2a9",
+      "docs/5.1임펙트디자인/VFX_구현가이드.md": "abb5e55d53a76a267b83521fa149d8d50e97ac4b9d22f9ee6b3e095e4ba6d252",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/native-recovery/ANIMVFX-task.md": "2e6dd1e5fa246121236783a9c7fc668505a917107229ed5fe9d468db5ae47229"
+    }
+  },
+  "execution": {
+    "runtime": "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node",
+    "command": "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node tools/team-followup-20261002/project-teams/ANIMVFX/checks.mjs",
+    "exitCode": 0,
+    "groups": 57,
+    "passedGroups": 57,
+    "failedGroups": 0,
+    "results": [
+      {
+        "id": "metadata-idle-grid40",
+        "status": "PASS"
+      },
+      {
+        "id": "metadata-walk39-four-frames",
+        "status": "PASS"
+      },
+      {
+        "id": "metadata-no-anatomical-anchor",
+        "status": "PASS"
+      },
+      {
+        "id": "png-header:img/atlas_ch1_8dir_south.png",
+        "status": "PASS"
+      },
+      {
+        "id": "png-header:img/atlas_ch1_8dir_walk_south.png",
+        "status": "PASS"
+      },
+      {
+        "id": "png-header:img/atlas_ch1_8dir_south_east.png",
+        "status": "PASS"
+      },
+      {
+        "id": "png-header:img/atlas_ch1_8dir_walk_south_east.png",
+        "status": "PASS"
+      },
+      {
+        "id": "png-header:img/atlas_ch1_8dir_east.png",
+        "status": "PASS"
+      },
+      {
+        "id": "png-header:img/atlas_ch1_8dir_walk_east.png",
+        "status": "PASS"
+      },
+      {
+        "id": "png-header:img/atlas_ch1_8dir_north_east.png",
+        "status": "PASS"
+      },
+      {
+        "id": "png-header:img/atlas_ch1_8dir_walk_north_east.png",
+        "status": "PASS"
+      },
+      {
+        "id": "png-header:img/atlas_ch1_8dir_north.png",
+        "status": "PASS"
+      },
+      {
+        "id": "png-header:img/atlas_ch1_8dir_walk_north.png",
+        "status": "PASS"
+      },
+      {
+        "id": "png-header:img/atlas_ch1_8dir_north_west.png",
+        "status": "PASS"
+      },
+      {
+        "id": "png-header:img/atlas_ch1_8dir_walk_north_west.png",
+        "status": "PASS"
+      },
+      {
+        "id": "png-header:img/atlas_ch1_8dir_west.png",
+        "status": "PASS"
+      },
+      {
+        "id": "png-header:img/atlas_ch1_8dir_walk_west.png",
+        "status": "PASS"
+      },
+      {
+        "id": "png-header:img/atlas_ch1_8dir_south_west.png",
+        "status": "PASS"
+      },
+      {
+        "id": "png-header:img/atlas_ch1_8dir_walk_south_west.png",
+        "status": "PASS"
+      },
+      {
+        "id": "game.html:resolution-and-viewport-contract",
+        "status": "PASS"
+      },
+      {
+        "id": "game.html:base",
+        "status": "PASS"
+      },
+      {
+        "id": "game.html:fractional-camera",
+        "status": "PASS"
+      },
+      {
+        "id": "game.html:zoom062",
+        "status": "PASS"
+      },
+      {
+        "id": "game.html:ssaa15",
+        "status": "PASS"
+      },
+      {
+        "id": "game.html:ssaa2",
+        "status": "PASS"
+      },
+      {
+        "id": "game.html:shake",
+        "status": "PASS"
+      },
+      {
+        "id": "game.html:combined",
+        "status": "PASS"
+      },
+      {
+        "id": "game.html:gl-off",
+        "status": "PASS"
+      },
+      {
+        "id": "game.html:capacity-full",
+        "status": "PASS"
+      },
+      {
+        "id": "game.html:hound-no-walk",
+        "status": "PASS"
+      },
+      {
+        "id": "game.html:idle-only",
+        "status": "PASS"
+      },
+      {
+        "id": "game.html:minimum-size",
+        "status": "PASS"
+      },
+      {
+        "id": "game.html:depth-shadow",
+        "status": "PASS"
+      },
+      {
+        "id": "game.html:nonaxis-fallback",
+        "status": "PASS"
+      },
+      {
+        "id": "game.html:existing-hitflash-source-contract-preserved",
+        "status": "PASS"
+      },
+      {
+        "id": "game.html:frame-boundaries",
+        "status": "PASS"
+      },
+      {
+        "id": "game.html:metadata-loader-authority",
+        "status": "PASS"
+      },
+      {
+        "id": "game-easy-test.html:resolution-and-viewport-contract",
+        "status": "PASS"
+      },
+      {
+        "id": "game-easy-test.html:base",
+        "status": "PASS"
+      },
+      {
+        "id": "game-easy-test.html:fractional-camera",
+        "status": "PASS"
+      },
+      {
+        "id": "game-easy-test.html:zoom062",
+        "status": "PASS"
+      },
+      {
+        "id": "game-easy-test.html:ssaa15",
+        "status": "PASS"
+      },
+      {
+        "id": "game-easy-test.html:ssaa2",
+        "status": "PASS"
+      },
+      {
+        "id": "game-easy-test.html:shake",
+        "status": "PASS"
+      },
+      {
+        "id": "game-easy-test.html:combined",
+        "status": "PASS"
+      },
+      {
+        "id": "game-easy-test.html:gl-off",
+        "status": "PASS"
+      },
+      {
+        "id": "game-easy-test.html:capacity-full",
+        "status": "PASS"
+      },
+      {
+        "id": "game-easy-test.html:hound-no-walk",
+        "status": "PASS"
+      },
+      {
+        "id": "game-easy-test.html:idle-only",
+        "status": "PASS"
+      },
+      {
+        "id": "game-easy-test.html:minimum-size",
+        "status": "PASS"
+      },
+      {
+        "id": "game-easy-test.html:depth-shadow",
+        "status": "PASS"
+      },
+      {
+        "id": "game-easy-test.html:nonaxis-fallback",
+        "status": "PASS"
+      },
+      {
+        "id": "game-easy-test.html:existing-hitflash-source-contract-preserved",
+        "status": "PASS"
+      },
+      {
+        "id": "game-easy-test.html:frame-boundaries",
+        "status": "PASS"
+      },
+      {
+        "id": "game-easy-test.html:metadata-loader-authority",
+        "status": "PASS"
+      },
+      {
+        "id": "candidate-readonly-apply-check",
+        "status": "PASS"
+      },
+      {
+        "id": "readonly-input-hashes-unchanged-during-check",
+        "status": "PASS"
+      }
+    ],
+    "scenarios": [
+      {
+        "file": "game.html",
+        "scenario": "base",
+        "beforeGL": {
+          "bucket": 0,
+          "kind": "idle",
+          "center": [
+            880,
+            620
+          ],
+          "uv": [
+            0.875,
+            0.800000011920929,
+            0.125,
+            0.20000000298023224
+          ],
+          "size": [
+            140,
+            140
+          ],
+          "packedAlpha": 823804.6875,
+          "deviceCenter": [
+            880,
+            620
+          ],
+          "deviceSize": [
+            140,
+            140
+          ]
+        },
+        "worldCenter": [
+          880,
+          620
+        ],
+        "expectedSize": [
+          140,
+          140
+        ],
+        "afterGL": {
+          "bucket": 0,
+          "kind": "idle",
+          "center": [
+            880,
+            620
+          ],
+          "uv": [
+            0.875,
+            0.800000011920929,
+            0.125,
+            0.20000000298023224
+          ],
+          "size": [
+            140,
+            140
+          ],
+          "packedAlpha": 823804.6875,
+          "deviceCenter": [
+            880,
+            620
+          ],
+          "deviceSize": [
+            140,
+            140
+          ]
+        },
+        "beforeBodyCalls": 2,
+        "afterBodyCalls": 0,
+        "originalTransformMismatch": false,
+        "uniforms": [
+          {
+            "name": "uRes",
+            "value": [
+              1280,
+              800
+            ]
+          }
+        ],
+        "drawCalls": [
+          1,
+          1
+        ]
+      },
+      {
+        "file": "game.html",
+        "scenario": "fractional-camera",
+        "beforeGL": {
+          "bucket": 0,
+          "kind": "idle",
+          "center": [
+            879.75,
+            619.25
+          ],
+          "uv": [
+            0.875,
+            0.800000011920929,
+            0.125,
+            0.20000000298023224
+          ],
+          "size": [
+            140,
+            140
+          ],
+          "packedAlpha": 823804.6875,
+          "deviceCenter": [
+            879.75,
+            619.25
+          ],
+          "deviceSize": [
+            140,
+            140
+          ]
+        },
+        "worldCenter": [
+          880,
+          619
+        ],
+        "expectedSize": [
+          140,
+          140
+        ],
+        "afterGL": {
+          "bucket": 0,
+          "kind": "idle",
+          "center": [
+            880,
+            619
+          ],
+          "uv": [
+            0.875,
+            0.800000011920929,
+            0.125,
+            0.20000000298023224
+          ],
+          "size": [
+            140,
+            140
+          ],
+          "packedAlpha": 823804.6875,
+          "deviceCenter": [
+            880,
+            619
+          ],
+          "deviceSize": [
+            140,
+            140
+          ]
+        },
+        "beforeBodyCalls": 2,
+        "afterBodyCalls": 0,
+        "originalTransformMismatch": true,
+        "uniforms": [
+          {
+            "name": "uRes",
+            "value": [
+              1280,
+              800
+            ]
+          }
+        ],
+        "drawCalls": [
+          1,
+          1
+        ]
+      },
+      {
+        "file": "game.html",
+        "scenario": "zoom062",
+        "beforeGL": {
+          "bucket": 0,
+          "kind": "idle",
+          "center": [
+            880,
+            620
+          ],
+          "uv": [
+            0.875,
+            0.800000011920929,
+            0.125,
+            0.20000000298023224
+          ],
+          "size": [
+            140,
+            140
+          ],
+          "packedAlpha": 823804.6875,
+          "deviceCenter": [
+            880,
+            620
+          ],
+          "deviceSize": [
+            140,
+            140
+          ]
+        },
+        "worldCenter": [
+          788.8,
+          536.4
+        ],
+        "expectedSize": [
+          86.8,
+          86.8
+        ],
+        "afterGL": {
+          "bucket": 0,
+          "kind": "idle",
+          "center": [
+            788.7999877929688,
+            536.4000244140625
+          ],
+          "uv": [
+            0.875,
+            0.800000011920929,
+            0.125,
+            0.20000000298023224
+          ],
+          "size": [
+            86.80000305175781,
+            86.80000305175781
+          ],
+          "packedAlpha": 823804.6875,
+          "deviceCenter": [
+            788.7999877929688,
+            536.4000244140625
+          ],
+          "deviceSize": [
+            86.80000305175781,
+            86.80000305175781
+          ]
+        },
+        "beforeBodyCalls": 2,
+        "afterBodyCalls": 0,
+        "originalTransformMismatch": true,
+        "uniforms": [
+          {
+            "name": "uRes",
+            "value": [
+              1280,
+              800
+            ]
+          }
+        ],
+        "drawCalls": [
+          1,
+          1
+        ]
+      },
+      {
+        "file": "game.html",
+        "scenario": "ssaa15",
+        "beforeGL": {
+          "bucket": 0,
+          "kind": "idle",
+          "center": [
+            880,
+            620
+          ],
+          "uv": [
+            0.875,
+            0.800000011920929,
+            0.125,
+            0.20000000298023224
+          ],
+          "size": [
+            140,
+            140
+          ],
+          "packedAlpha": 823804.6875,
+          "deviceCenter": [
+            1320,
+            930
+          ],
+          "deviceSize": [
+            210,
+            210
+          ]
+        },
+        "worldCenter": [
+          1320,
+          930
+        ],
+        "expectedSize": [
+          210,
+          210
+        ],
+        "afterGL": {
+          "bucket": 0,
+          "kind": "idle",
+          "center": [
+            880,
+            620
+          ],
+          "uv": [
+            0.875,
+            0.800000011920929,
+            0.125,
+            0.20000000298023224
+          ],
+          "size": [
+            140,
+            140
+          ],
+          "packedAlpha": 823804.6875,
+          "deviceCenter": [
+            1320,
+            930
+          ],
+          "deviceSize": [
+            210,
+            210
+          ]
+        },
+        "beforeBodyCalls": 2,
+        "afterBodyCalls": 0,
+        "originalTransformMismatch": false,
+        "uniforms": [
+          {
+            "name": "uRes",
+            "value": [
+              1280,
+              800
+            ]
+          }
+        ],
+        "drawCalls": [
+          1,
+          1
+        ]
+      },
+      {
+        "file": "game.html",
+        "scenario": "ssaa2",
+        "beforeGL": {
+          "bucket": 0,
+          "kind": "idle",
+          "center": [
+            880,
+            620
+          ],
+          "uv": [
+            0.875,
+            0.800000011920929,
+            0.125,
+            0.20000000298023224
+          ],
+          "size": [
+            140,
+            140
+          ],
+          "packedAlpha": 823804.6875,
+          "deviceCenter": [
+            1760,
+            1240
+          ],
+          "deviceSize": [
+            280,
+            280
+          ]
+        },
+        "worldCenter": [
+          1760,
+          1240
+        ],
+        "expectedSize": [
+          280,
+          280
+        ],
+        "afterGL": {
+          "bucket": 0,
+          "kind": "idle",
+          "center": [
+            880,
+            620
+          ],
+          "uv": [
+            0.875,
+            0.800000011920929,
+            0.125,
+            0.20000000298023224
+          ],
+          "size": [
+            140,
+            140
+          ],
+          "packedAlpha": 823804.6875,
+          "deviceCenter": [
+            1760,
+            1240
+          ],
+          "deviceSize": [
+            280,
+            280
+          ]
+        },
+        "beforeBodyCalls": 2,
+        "afterBodyCalls": 0,
+        "originalTransformMismatch": false,
+        "uniforms": [
+          {
+            "name": "uRes",
+            "value": [
+              1280,
+              800
+            ]
+          }
+        ],
+        "drawCalls": [
+          1,
+          1
+        ]
+      },
+      {
+        "file": "game.html",
+        "scenario": "shake",
+        "beforeGL": {
+          "bucket": 0,
+          "kind": "idle",
+          "center": [
+            880,
+            620
+          ],
+          "uv": [
+            0.875,
+            0.800000011920929,
+            0.125,
+            0.20000000298023224
+          ],
+          "size": [
+            140,
+            140
+          ],
+          "packedAlpha": 823804.6875,
+          "deviceCenter": [
+            880,
+            620
+          ],
+          "deviceSize": [
+            140,
+            140
+          ]
+        },
+        "worldCenter": [
+          884,
+          617
+        ],
+        "expectedSize": [
+          140,
+          140
+        ],
+        "afterGL": {
+          "bucket": 0,
+          "kind": "idle",
+          "center": [
+            884,
+            617
+          ],
+          "uv": [
+            0.875,
+            0.800000011920929,
+            0.125,
+            0.20000000298023224
+          ],
+          "size": [
+            140,
+            140
+          ],
+          "packedAlpha": 823804.6875,
+          "deviceCenter": [
+            884,
+            617
+          ],
+          "deviceSize": [
+            140,
+            140
+          ]
+        },
+        "beforeBodyCalls": 2,
+        "afterBodyCalls": 0,
+        "originalTransformMismatch": true,
+        "uniforms": [
+          {
+            "name": "uRes",
+            "value": [
+              1280,
+              800
+            ]
+          }
+        ],
+        "drawCalls": [
+          1,
+          1
+        ]
+      },
+      {
+        "file": "game.html",
+        "scenario": "combined",
+        "beforeGL": {
+          "bucket": 0,
+          "kind": "idle",
+          "center": [
+            879.75,
+            619.25
+          ],
+          "uv": [
+            0.875,
+            0.800000011920929,
+            0.125,
+            0.20000000298023224
+          ],
+          "size": [
+            140,
+            140
+          ],
+          "packedAlpha": 823804.6875,
+          "deviceCenter": [
+            1319.625,
+            928.875
+          ],
+          "deviceSize": [
+            210,
+            210
+          ]
+        },
+        "worldCenter": [
+          1186.92,
+          800.8799999999999
+        ],
+        "expectedSize": [
+          130.2,
+          130.2
+        ],
+        "afterGL": {
+          "bucket": 0,
+          "kind": "idle",
+          "center": [
+            791.280029296875,
+            533.9199829101562
+          ],
+          "uv": [
+            0.875,
+            0.800000011920929,
+            0.125,
+            0.20000000298023224
+          ],
+          "size": [
+            86.80000305175781,
+            86.80000305175781
+          ],
+          "packedAlpha": 823804.6875,
+          "deviceCenter": [
+            1186.9200439453125,
+            800.8799743652344
+          ],
+          "deviceSize": [
+            130.20000457763672,
+            130.20000457763672
+          ]
+        },
+        "beforeBodyCalls": 2,
+        "afterBodyCalls": 0,
+        "originalTransformMismatch": true,
+        "uniforms": [
+          {
+            "name": "uRes",
+            "value": [
+              1280,
+              800
+            ]
+          }
+        ],
+        "drawCalls": [
+          1,
+          1
+        ]
+      },
+      {
+        "file": "game-easy-test.html",
+        "scenario": "base",
+        "beforeGL": {
+          "bucket": 0,
+          "kind": "idle",
+          "center": [
+            880,
+            620
+          ],
+          "uv": [
+            0.875,
+            0.800000011920929,
+            0.125,
+            0.20000000298023224
+          ],
+          "size": [
+            140,
+            140
+          ],
+          "packedAlpha": 823804.6875,
+          "deviceCenter": [
+            880,
+            620
+          ],
+          "deviceSize": [
+            140,
+            140
+          ]
+        },
+        "worldCenter": [
+          880,
+          620
+        ],
+        "expectedSize": [
+          140,
+          140
+        ],
+        "afterGL": {
+          "bucket": 0,
+          "kind": "idle",
+          "center": [
+            880,
+            620
+          ],
+          "uv": [
+            0.875,
+            0.800000011920929,
+            0.125,
+            0.20000000298023224
+          ],
+          "size": [
+            140,
+            140
+          ],
+          "packedAlpha": 823804.6875,
+          "deviceCenter": [
+            880,
+            620
+          ],
+          "deviceSize": [
+            140,
+            140
+          ]
+        },
+        "beforeBodyCalls": 2,
+        "afterBodyCalls": 0,
+        "originalTransformMismatch": false,
+        "uniforms": [
+          {
+            "name": "uRes",
+            "value": [
+              1280,
+              800
+            ]
+          }
+        ],
+        "drawCalls": [
+          1,
+          1
+        ]
+      },
+      {
+        "file": "game-easy-test.html",
+        "scenario": "fractional-camera",
+        "beforeGL": {
+          "bucket": 0,
+          "kind": "idle",
+          "center": [
+            879.75,
+            619.25
+          ],
+          "uv": [
+            0.875,
+            0.800000011920929,
+            0.125,
+            0.20000000298023224
+          ],
+          "size": [
+            140,
+            140
+          ],
+          "packedAlpha": 823804.6875,
+          "deviceCenter": [
+            879.75,
+            619.25
+          ],
+          "deviceSize": [
+            140,
+            140
+          ]
+        },
+        "worldCenter": [
+          880,
+          619
+        ],
+        "expectedSize": [
+          140,
+          140
+        ],
+        "afterGL": {
+          "bucket": 0,
+          "kind": "idle",
+          "center": [
+            880,
+            619
+          ],
+          "uv": [
+            0.875,
+            0.800000011920929,
+            0.125,
+            0.20000000298023224
+          ],
+          "size": [
+            140,
+            140
+          ],
+          "packedAlpha": 823804.6875,
+          "deviceCenter": [
+            880,
+            619
+          ],
+          "deviceSize": [
+            140,
+            140
+          ]
+        },
+        "beforeBodyCalls": 2,
+        "afterBodyCalls": 0,
+        "originalTransformMismatch": true,
+        "uniforms": [
+          {
+            "name": "uRes",
+            "value": [
+              1280,
+              800
+            ]
+          }
+        ],
+        "drawCalls": [
+          1,
+          1
+        ]
+      },
+      {
+        "file": "game-easy-test.html",
+        "scenario": "zoom062",
+        "beforeGL": {
+          "bucket": 0,
+          "kind": "idle",
+          "center": [
+            880,
+            620
+          ],
+          "uv": [
+            0.875,
+            0.800000011920929,
+            0.125,
+            0.20000000298023224
+          ],
+          "size": [
+            140,
+            140
+          ],
+          "packedAlpha": 823804.6875,
+          "deviceCenter": [
+            880,
+            620
+          ],
+          "deviceSize": [
+            140,
+            140
+          ]
+        },
+        "worldCenter": [
+          788.8,
+          536.4
+        ],
+        "expectedSize": [
+          86.8,
+          86.8
+        ],
+        "afterGL": {
+          "bucket": 0,
+          "kind": "idle",
+          "center": [
+            788.7999877929688,
+            536.4000244140625
+          ],
+          "uv": [
+            0.875,
+            0.800000011920929,
+            0.125,
+            0.20000000298023224
+          ],
+          "size": [
+            86.80000305175781,
+            86.80000305175781
+          ],
+          "packedAlpha": 823804.6875,
+          "deviceCenter": [
+            788.7999877929688,
+            536.4000244140625
+          ],
+          "deviceSize": [
+            86.80000305175781,
+            86.80000305175781
+          ]
+        },
+        "beforeBodyCalls": 2,
+        "afterBodyCalls": 0,
+        "originalTransformMismatch": true,
+        "uniforms": [
+          {
+            "name": "uRes",
+            "value": [
+              1280,
+              800
+            ]
+          }
+        ],
+        "drawCalls": [
+          1,
+          1
+        ]
+      },
+      {
+        "file": "game-easy-test.html",
+        "scenario": "ssaa15",
+        "beforeGL": {
+          "bucket": 0,
+          "kind": "idle",
+          "center": [
+            880,
+            620
+          ],
+          "uv": [
+            0.875,
+            0.800000011920929,
+            0.125,
+            0.20000000298023224
+          ],
+          "size": [
+            140,
+            140
+          ],
+          "packedAlpha": 823804.6875,
+          "deviceCenter": [
+            1320,
+            930
+          ],
+          "deviceSize": [
+            210,
+            210
+          ]
+        },
+        "worldCenter": [
+          1320,
+          930
+        ],
+        "expectedSize": [
+          210,
+          210
+        ],
+        "afterGL": {
+          "bucket": 0,
+          "kind": "idle",
+          "center": [
+            880,
+            620
+          ],
+          "uv": [
+            0.875,
+            0.800000011920929,
+            0.125,
+            0.20000000298023224
+          ],
+          "size": [
+            140,
+            140
+          ],
+          "packedAlpha": 823804.6875,
+          "deviceCenter": [
+            1320,
+            930
+          ],
+          "deviceSize": [
+            210,
+            210
+          ]
+        },
+        "beforeBodyCalls": 2,
+        "afterBodyCalls": 0,
+        "originalTransformMismatch": false,
+        "uniforms": [
+          {
+            "name": "uRes",
+            "value": [
+              1280,
+              800
+            ]
+          }
+        ],
+        "drawCalls": [
+          1,
+          1
+        ]
+      },
+      {
+        "file": "game-easy-test.html",
+        "scenario": "ssaa2",
+        "beforeGL": {
+          "bucket": 0,
+          "kind": "idle",
+          "center": [
+            880,
+            620
+          ],
+          "uv": [
+            0.875,
+            0.800000011920929,
+            0.125,
+            0.20000000298023224
+          ],
+          "size": [
+            140,
+            140
+          ],
+          "packedAlpha": 823804.6875,
+          "deviceCenter": [
+            1760,
+            1240
+          ],
+          "deviceSize": [
+            280,
+            280
+          ]
+        },
+        "worldCenter": [
+          1760,
+          1240
+        ],
+        "expectedSize": [
+          280,
+          280
+        ],
+        "afterGL": {
+          "bucket": 0,
+          "kind": "idle",
+          "center": [
+            880,
+            620
+          ],
+          "uv": [
+            0.875,
+            0.800000011920929,
+            0.125,
+            0.20000000298023224
+          ],
+          "size": [
+            140,
+            140
+          ],
+          "packedAlpha": 823804.6875,
+          "deviceCenter": [
+            1760,
+            1240
+          ],
+          "deviceSize": [
+            280,
+            280
+          ]
+        },
+        "beforeBodyCalls": 2,
+        "afterBodyCalls": 0,
+        "originalTransformMismatch": false,
+        "uniforms": [
+          {
+            "name": "uRes",
+            "value": [
+              1280,
+              800
+            ]
+          }
+        ],
+        "drawCalls": [
+          1,
+          1
+        ]
+      },
+      {
+        "file": "game-easy-test.html",
+        "scenario": "shake",
+        "beforeGL": {
+          "bucket": 0,
+          "kind": "idle",
+          "center": [
+            880,
+            620
+          ],
+          "uv": [
+            0.875,
+            0.800000011920929,
+            0.125,
+            0.20000000298023224
+          ],
+          "size": [
+            140,
+            140
+          ],
+          "packedAlpha": 823804.6875,
+          "deviceCenter": [
+            880,
+            620
+          ],
+          "deviceSize": [
+            140,
+            140
+          ]
+        },
+        "worldCenter": [
+          884,
+          617
+        ],
+        "expectedSize": [
+          140,
+          140
+        ],
+        "afterGL": {
+          "bucket": 0,
+          "kind": "idle",
+          "center": [
+            884,
+            617
+          ],
+          "uv": [
+            0.875,
+            0.800000011920929,
+            0.125,
+            0.20000000298023224
+          ],
+          "size": [
+            140,
+            140
+          ],
+          "packedAlpha": 823804.6875,
+          "deviceCenter": [
+            884,
+            617
+          ],
+          "deviceSize": [
+            140,
+            140
+          ]
+        },
+        "beforeBodyCalls": 2,
+        "afterBodyCalls": 0,
+        "originalTransformMismatch": true,
+        "uniforms": [
+          {
+            "name": "uRes",
+            "value": [
+              1280,
+              800
+            ]
+          }
+        ],
+        "drawCalls": [
+          1,
+          1
+        ]
+      },
+      {
+        "file": "game-easy-test.html",
+        "scenario": "combined",
+        "beforeGL": {
+          "bucket": 0,
+          "kind": "idle",
+          "center": [
+            879.75,
+            619.25
+          ],
+          "uv": [
+            0.875,
+            0.800000011920929,
+            0.125,
+            0.20000000298023224
+          ],
+          "size": [
+            140,
+            140
+          ],
+          "packedAlpha": 823804.6875,
+          "deviceCenter": [
+            1319.625,
+            928.875
+          ],
+          "deviceSize": [
+            210,
+            210
+          ]
+        },
+        "worldCenter": [
+          1186.92,
+          800.8799999999999
+        ],
+        "expectedSize": [
+          130.2,
+          130.2
+        ],
+        "afterGL": {
+          "bucket": 0,
+          "kind": "idle",
+          "center": [
+            791.280029296875,
+            533.9199829101562
+          ],
+          "uv": [
+            0.875,
+            0.800000011920929,
+            0.125,
+            0.20000000298023224
+          ],
+          "size": [
+            86.80000305175781,
+            86.80000305175781
+          ],
+          "packedAlpha": 823804.6875,
+          "deviceCenter": [
+            1186.9200439453125,
+            800.8799743652344
+          ],
+          "deviceSize": [
+            130.20000457763672,
+            130.20000457763672
+          ]
+        },
+        "beforeBodyCalls": 2,
+        "afterBodyCalls": 0,
+        "originalTransformMismatch": true,
+        "uniforms": [
+          {
+            "name": "uRes",
+            "value": [
+              1280,
+              800
+            ]
+          }
+        ],
+        "drawCalls": [
+          1,
+          1
+        ]
+      }
+    ],
+    "metadata": {
+      "idle": {
+        "cell": 256,
+        "cols": 8,
+        "rows": 5,
+        "total": 40
+      },
+      "walk": {
+        "frames": 4,
+        "mobs": 39
+      },
+      "sourceInventoryCols": 7,
+      "sourceInventoryLoadedByRuntime": false,
+      "footAnchor": "UNKNOWN: no anatomical foot metadata"
+    },
+    "dryRun": {
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  },
+  "history": [
+    {
+      "checkedAt": "2026-10-02T03:48:52.398Z",
+      "groups": 50,
+      "exitCode": 1,
+      "failure": "candidate-readonly-apply-check: invalid hunk context; corrected owned diff generator"
+    },
+    {
+      "checkedAt": "2026-10-02T03:49:20.265Z",
+      "groups": 50,
+      "exitCode": 0,
+      "accepted": false,
+      "reason": "Later source audit identified missing logical uRes/physical viewport normalization; early PASS not final evidence"
+    },
+    {
+      "checkedAt": "2026-10-02T03:52:18.318Z",
+      "groups": 54,
+      "exitCode": 1,
+      "failure": "easy SSAA lock expectation was wrong: easy has MAP_QA_HIDPI; source left intact"
+    },
+    {
+      "checkedAt": "2026-10-02T03:52:51.817Z",
+      "groups": 56,
+      "exitCode": 1,
+      "failure": "easy GL flash expectation was wrong: easy prep has no hitFlash overlay; source left intact"
+    },
+    {
+      "checkedAt": "2026-10-02T03:53:25.281Z",
+      "groups": 57,
+      "exitCode": 0,
+      "accepted": true,
+      "reason": "Actual draw uniform captured; backing-pixel matrix normalized to logical units; HTML-specific source contracts preserved"
+    }
+  ],
+  "candidate": {
+    "sha256": "8771cd8b15c745e19b87576f0bb2d7cf5cf8c05ae0ec30a7699747347ac0b4bb",
+    "files": [
+      "game.html",
+      "game-easy-test.html"
+    ],
+    "reproducedDefects": [
+      "8dir GL center/size bypass world zoom, camera shake and camera translation rounding",
+      "GL queued 8dir bodies drawn again in normal 2D branch"
+    ],
+    "scope": "CH1 ordinary 8dir bodies only; centered artwork anchor unchanged",
+    "prohibitedChangesExcluded": [
+      "corpse fade",
+      "new animation/assets",
+      "gameplay damage/cooldown/parry",
+      "rewards/RNG/corpse count or lifetime"
+    ],
+    "anatomicalFootAnchor": "UNKNOWN"
+  },
+  "docs": {
+    "searchedAt": "2026-10-02 03:53:24 UTC",
+    "command": "rg -l -i 'foot-shadow-anchor|_queueEnemy8DirInstanced|_prepEnemyInstanced|framesPerMob|_walkDist/128|발.?접지|중심앵커|시체.?fade|corpse.?fade' docs/ --glob '*.md'",
+    "exitCode": 0,
+    "matchingFileCount": 20,
+    "matchingFiles": [
+      "docs/4.1맵디자인+설정/MAP_RUNTIME_ARCHITECTURE.md",
+      "docs/12퍼포먼스·최적화/CLAUDE_CODE_인수인계_전체작업보고서_2026-08-10.md",
+      "docs/4.1맵디자인+설정/DEPTH_2_5D_BENCHMARK_20260930.md",
+      "docs/9적ai패턴디자인/9_적AI패턴디자인.md",
+      "docs/12퍼포먼스·최적화/GPU_이관_적용성_조사와_실행_로드맵_2026-08-09.md",
+      "docs/4.1맵디자인+설정/DEPTH_SLICE1_20261001.md",
+      "docs/5.0애니메이션파이프라인/전대_소환_프레임애니.md",
+      "docs/5.0애니메이션파이프라인/몬스터_스킨_시스템.md",
+      "docs/0마스터플랜/mac-resume-20261001/map020-zoomfix-evidence/ANIMVFX-팀검토.md",
+      "docs/0마스터플랜/TEAM_START_COMMANDS_20261001.md",
+      "docs/0마스터플랜/mac-resume-20261001/ui03-evidence/ANIMVFX-팀검토.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/native-recovery/ANIMVFX-task.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/COMBAT-REVIEW-20261002.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/MAC-COORDINATION-20261002.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/INDEPENDENT-NEXT-20261002.md",
+      "docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md",
+      "docs/5.1임펙트디자인/VFX_구현가이드.md",
+      "docs/8.0몬스터디자인/몬스터_스킨_렌더링_파이프라인.md",
+      "docs/5.1임펙트디자인/ANIMATION_VFX_TEAM_MASTER.md",
+      "docs/8.0몬스터디자인/CH1_1_START_다안육괴_중형몬스터.md"
+    ],
+    "proposalLocation": "result.md section 5",
+    "updatesApplied": false,
+    "sharedDocsOwner": "overall root",
+    "protected2_3Writes": 0
+  },
+  "limits": [
+    "Verbatim queue/prep/draw/body/shadow/matrix source slices; state, textures, frame driver and draw recorder are fixtures.",
+    "No pixels decoded/rendered, shader compiled/executed, browser, whole update, performance or natural encounter.",
+    "Candidate numerical placement normalizes proxy backing-pixel matrix by SSAA for the actual logical uRes uniform; nonzero matrix shear/rotation rejects queue and retains fallback.",
+    "game.html locks SSAA to 1; game-easy-test.html supports MAP_QA_HIDPI up to 2. Configurations here are injected source-harness cases, not actual encounters.",
+    "GPU Float32 and shader rotation quantization, pixel rounding and final composition still require QA. Corpse fade remains deferred."
+  ],
+  "remainingGates": [
+    "overall-root production code+docs integration and exact remote SHA",
+    "QA regular visible full boot GPU/Canvas A/B with zoom/shake/fallback/frame/foot inspection",
+    "direction/frame anatomical foot evidence; no invented anchor",
+    "corpse fade remains deferred"
+  ],
+  "artifacts": {
+    "checksSha256": "c4f4bbcc7f5834d89b1cbb15ae2f768fd92f962b4c613271119ed9f9b557ac24",
+    "resultSha256": "6d995be1756e8d6ada2107abac3f4a50cfabdfc51b4bfc6a55cc7408b441c277",
+    "evidenceSelfHash": "Excluded from this file to avoid recursive hash; final readback tool records actual SHA",
+    "finalReadback": {
+      "checkedAt": "2026-10-02T03:56:46.429Z",
+      "pass": true,
+      "files": [
+        "checks.mjs",
+        "evidence.json",
+        "result.md",
+        "task.md"
+      ],
+      "readonlyInputsUnchanged": true,
+      "ownershipNewFiles": 3,
+      "candidateSha256": "8771cd8b15c745e19b87576f0bb2d7cf5cf8c05ae0ec30a7699747347ac0b4bb",
+      "completionEvidenceSealAfterReadback": true
+    }
+  }
+}

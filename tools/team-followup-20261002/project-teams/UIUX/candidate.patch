@@ -1,0 +1,22 @@
+--- a/game.html
++++ b/game.html
+@@ -12719,7 +12719,7 @@
+   if(e.code==='F4'){e.preventDefault();const _nf=!OPT.fog;OPT.fog=_nf;OPT.bossFog=_nf;saveSettings();showPH(_nf?_L('안개 ON','Fog ON'):_L('안개 OFF','Fog OFF'),_nf?'#8899cc':'#888888');return}
+   if(window._parryLesson?.active&&!window._parryLesson.allowKey(e.code)){e.preventDefault();return;}
+   // Focused panel controls own activation and focus traversal keys.
+-  if(['Space','Enter','NumpadEnter','Tab'].includes(e.code)&&e.target instanceof Element&&e.target.closest('#invPanel.on button,#invPanel.on [data-inventory-detail-trigger],#crBagPop button,#settings.on button,#settings.on input,#settings.on select'))return;
++  if(['Space','Enter','NumpadEnter','Tab'].includes(e.code)&&(e.defaultPrevented||e.target instanceof Element&&e.target.closest('#invPanel.on button,#invPanel.on [data-inventory-detail-trigger],#crBagPop button,#settings.on button,#settings.on input,#settings.on select')))return;
+   K[e.code]=true;KH[e.code]=true;
+   // E(shield) 탭 버퍼: 초고속 탭에서 keyup이 K를 지우기 전에 press 사실을 프레임 스탬프로 보존 (게임패드 synth 키다운도 경유)
+   if(!e.repeat&&G&&G.on&&!G.paused&&(e.code===BINDS.shield||e.code===BINDS2.shield))_sdTapBuf=G.frame;
+--- a/game-easy-test.html
++++ b/game-easy-test.html
+@@ -12115,7 +12115,7 @@
+   if(e.code==='F4'){e.preventDefault();const _nf=!OPT.fog;OPT.fog=_nf;OPT.bossFog=_nf;saveSettings();showPH(_nf?_L('안개 ON','Fog ON'):_L('안개 OFF','Fog OFF'),_nf?'#8899cc':'#888888');return}
+   if(window._parryLesson?.active&&!window._parryLesson.allowKey(e.code)){e.preventDefault();return;}
+   // Focused panel controls own activation and focus traversal keys.
+-  if(['Space','Enter','NumpadEnter','Tab'].includes(e.code)&&e.target instanceof Element&&e.target.closest('#invPanel.on button,#invPanel.on [data-inventory-detail-trigger],#crBagPop button,#settings.on button,#settings.on input,#settings.on select'))return;
++  if(['Space','Enter','NumpadEnter','Tab'].includes(e.code)&&(e.defaultPrevented||e.target instanceof Element&&e.target.closest('#invPanel.on button,#invPanel.on [data-inventory-detail-trigger],#crBagPop button,#settings.on button,#settings.on input,#settings.on select')))return;
+   K[e.code]=true;KH[e.code]=true;
+   // E(shield) 탭 버퍼: 초고속 탭에서 keyup이 K를 지우기 전에 press 사실을 프레임 스탬프로 보존 (게임패드 synth 키다운도 경유)
+   if(!e.repeat&&G&&G.on&&!G.paused&&(e.code===BINDS.shield||e.code===BINDS2.shield))_sdTapBuf=G.frame;

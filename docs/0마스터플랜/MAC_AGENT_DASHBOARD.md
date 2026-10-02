@@ -1,3 +1,7 @@
+# 최신 Claude 실제 실행 — 2026-10-02T04:06:17.992047+00:00
+
+Codex검수11건 공식완료후 Claude Code가7역할비중복후속검토를 실제실행중이다. cli init/model·API usage·성공Read7/7확인, claude.ai Max/firstParty. 기존원세션재개/복제0·새지속세션0·생산/UI/게임/설정변경0. 원세션대기와현재비대화형Claude작업을구분한다. [실제배정/근거](mac-resume-20261001/vscode-dispatch/CLAUDE-PROVIDER-DISPATCH-20261002.md). 아래과거대기기록은당시이력이다.
+
 # 최신 실행 제공자 확인 — 2026-10-02 03:48:50 UTC
 
 새 관리11채팅과 현재 검수11건은 모두 Codex이며 실제 task Read11/11을 확인했다. 원래 Claude7+Codex4 실행팀은 보존했다. 현재 Claude6 interactive idle 및 SOUND background idle/done, 새 후속 지시0. Codex검수 인수 후 비중복 다음 제작 건은 원 제공자에 전달한다. VS Code 자체는 Claude Code의 필수 앱이 아니다. 원 interactive 세션의 지원되는 CLI 메시지 경로는 미확인이고 native 전달은 대기다. 아래 과거 상태와 구분한다. [제공자·실제 배정 근거](mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-CHATS-20261002.md).

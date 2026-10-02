@@ -1,0 +1,1274 @@
+{
+  "schemaVersion": 1,
+  "team": "BUILD",
+  "taskId": "packaged-source-delta",
+  "owner": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/BUILD_TEAM",
+  "status": "SOURCE_DELTA_ACCEPTED_REBUILD_AND_RUNTIME_PENDING",
+  "receipt": {
+    "requestReceived": true,
+    "firstTaskReadConfirmed": true,
+    "requestExactAt": null,
+    "firstTaskReadExactAt": null,
+    "firstReadRecordedAt": "2026-10-02T03:43:54.000Z",
+    "timestampLimit": "총괄 공식 read_thread 인수표의 현재 요청 처리 턴 시작시각·실제 task cat exit0 확인. 메시지 자체/명령별 정확 시각은 제공되지 않아 null로 보존.03:43:54Z는 직후 clock 기록 시각이다.",
+    "authorization": "2026-10-02 총괄 전달: 팀별 실제 업무 배정 확인, 새 BUILD 관리 채팅 독립 소유 산출 1건.",
+    "initialChangesObserved": {
+      "count": 23,
+      "at": null,
+      "source": "첫 task/SSOT 인수 명령의 git status --short --untracked-files=all | wc -l 결과"
+    },
+    "originalSession": {
+      "threadId": "01a0f6e6-2e4c-7322-92d7-3aa309857856",
+      "title": "BUILD-task.md 실행하기",
+      "latestTask": "production-inm-acceptance",
+      "latestTurnId": "01a0f8cc-c9d8-7de2-a658-a572314bfbad",
+      "startedAt": "2026-10-01T18:49:25.000Z",
+      "completedAt": "2026-10-01T18:51:03.000Z",
+      "turnStatus": "completed",
+      "newlyReceivedDuplicateObserved": false,
+      "scope": "직전 공식 read_thread 최신1턴. notLoaded 자체는 종료 근거로 사용하지 않음."
+    },
+    "requestTurnStartedAt": "2026-10-02T03:43:32.000Z",
+    "newManagementThread": {
+      "threadId": "01a0faaf-9dd5-7c91-ab09-ee0bcff343b0",
+      "turnId": "01a0fab5-c8a6-7113-95d5-39fa109bfc7e",
+      "source": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-WORK-DISPATCH-20261002.json",
+      "officialTurnStartedAtUnix": 1790912612,
+      "actualTaskRead": true,
+      "readCommandExitCode": 0
+    }
+  },
+  "execution": {
+    "startedAt": "2026-10-02T03:46:10.395Z",
+    "completedAt": "2026-10-02T03:46:10.828Z",
+    "nodeExecutable": "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node",
+    "nodeVersion": "v24.15.0",
+    "currentHead": "96610b6546a31e882962470ea1f2164ce94edca6",
+    "headAfter": "96610b6546a31e882962470ea1f2164ce94edca6",
+    "branch": "codex/mac-environment-20261001",
+    "changesBefore": {
+      "observedAt": "2026-10-02T03:46:10.473Z",
+      "count": 38,
+      "ownerEntries": [
+        "?? tools/team-followup-20261002/project-teams/BUILD_TEAM/checks.mjs"
+      ],
+      "preservedBackupCount": 22,
+      "draftEntries": [
+        "?? tools/team-followup-20261001/BUILD/runtime-acquire-config-draft.json"
+      ],
+      "stagedPaths": [],
+      "caveat": "공유 체크아웃의 타 담당 변경을 포함하며 증가분을 본인에게 전부 귀속하지 않는다."
+    },
+    "changesMiddle": {
+      "observedAt": "2026-10-02T03:46:10.769Z",
+      "count": 38,
+      "ownerEntries": [
+        "?? tools/team-followup-20261002/project-teams/BUILD_TEAM/checks.mjs"
+      ],
+      "preservedBackupCount": 22,
+      "draftEntries": [
+        "?? tools/team-followup-20261001/BUILD/runtime-acquire-config-draft.json"
+      ],
+      "stagedPaths": [],
+      "caveat": "공유 체크아웃의 타 담당 변경을 포함하며 증가분을 본인에게 전부 귀속하지 않는다."
+    }
+  },
+  "remote": {
+    "startedAt": "2026-10-02T03:51:33.386Z",
+    "completedAt": "2026-10-02T03:51:33.839Z",
+    "ref": "refs/heads/codex/mac-environment-20261001",
+    "sha": "31454dfa49c90bac77351273fc32f0c1eb937928",
+    "exitCode": 0,
+    "raw": "31454dfa49c90bac77351273fc32f0c1eb937928\trefs/heads/codex/mac-environment-20261001\naacc7b02bef9d5cd7db6ea5d6466d7b8e4c11a3c\trefs/heads/main\n",
+    "exactMatch": true,
+    "directReadSucceeded": true,
+    "localMatches": true,
+    "rootProvidedCheckpointSha": "96610b6546a31e882962470ea1f2164ce94edca6",
+    "wholeCurrentInputManifestValidated": false,
+    "method": "HEAD 변동 후 본 채팅의 시간 포함 직접 git ls-remote",
+    "initialObservationInRemoteHistory": true
+  },
+  "previousBuild": {
+    "config": {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/integrated-mac-build-config.json",
+      "exists": true,
+      "bytes": 3427930,
+      "sha256": "78426f539bcd5b39578353c2f6a76bfa9fa1ba7354cf1fadcdaf7a085043ee99"
+    },
+    "result": {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/integrated-mac-build-result.json",
+      "exists": true,
+      "bytes": 1328858,
+      "sha256": "7e7955e1bfd0f71b251446d2eeec019be6feb6dfd3f4ece2ef0b6da86a0dc681"
+    },
+    "appPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/mac-package-ready/mac-packager-08cac1ce-21fb-4874-b4df-c136df5ac269/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app",
+    "packagePath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/mac-package-ready/mac-packager-08cac1ce-21fb-4874-b4df-c136df5ac269/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Resources/app.nw",
+    "sourceCommit": "6be3a06b4e8d03768a35f4c57d419f45c8efeb39",
+    "builtAt": "2026-10-01T17:15:36.564Z",
+    "inputCount": 7918,
+    "port": 3383,
+    "profile": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/mac-package-ready/mac-packager-08cac1ce-21fb-4874-b4df-c136df5ac269/user-state/profile",
+    "saveRoot": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/mac-package-ready/mac-packager-08cac1ce-21fb-4874-b4df-c136df5ac269/user-state/saves",
+    "runtimeConfigMetadata": {
+      "cacheRoot": "/Users/fordeargamers/Projects/exoduser-mac-runtime-root-20261002/cache",
+      "releaseInfoPath": "/Users/fordeargamers/Projects/exoduser-mac-runtime-root-20261002/release.json",
+      "releaseInfoSha256": "f5b3855b14e24f99ed9bf271a5896cbfe6b8e0fd14a8cef66609221ecef3a626",
+      "runtimeFileCount": 340
+    },
+    "currentFullRuntimeHashRead": false
+  },
+  "files": [
+    {
+      "name": "game.html",
+      "source": {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+        "exists": true,
+        "bytes": 4025302,
+        "sha256": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f"
+      },
+      "packaged": {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/mac-package-ready/mac-packager-08cac1ce-21fb-4874-b4df-c136df5ac269/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Resources/app.nw/game.html",
+        "exists": true,
+        "bytes": 4024167,
+        "sha256": "c868284af349c996d42087e93eba47a10614d73cb8f55f4db5ae01dde89da31a"
+      },
+      "sourceMatchesHeadBlob": true,
+      "previousInputSha256": "c868284af349c996d42087e93eba47a10614d73cb8f55f4db5ae01dde89da31a",
+      "delta": {
+        "hunks": [
+          "@@ -47892,0 +47893,2 @@ const _inventoryFocus=(function createInventoryFocus({document, get, label}) {",
+          "@@ -47896 +47898 @@ const _inventoryFocus=(function createInventoryFocus({document, get, label}) {",
+          "@@ -47898,0 +47901,6 @@ const _inventoryFocus=(function createInventoryFocus({document, get, label}) {",
+          "@@ -47905 +47913,6 @@ const _inventoryFocus=(function createInventoryFocus({document, get, label}) {",
+          "@@ -48379,0 +48393 @@ function renderOssPanel(){",
+          "@@ -48465,0 +48480,2 @@ function renderOssPanel(){",
+          "@@ -48583,0 +48600,2 @@ function renderInv(){"
+        ],
+        "addedLines": [
+          "+    const filter = get('invFilters')?.contains(active) && active.dataset.inventoryFilterKey",
+          "+      ? {key:active.dataset.inventoryFilterKey,value:active.dataset.inventoryFilterValue} : null;",
+          "+    return {active,owned,item:activeItem || keyboardItem,filter};",
+          "+    if (token.filter && inside()) {",
+          "+      const filters = get('invFilters')?.querySelectorAll('button') || [];",
+          "+      const target = [...filters].find(node => node.dataset.inventoryFilterKey === token.filter.key && node.dataset.inventoryFilterValue === token.filter.value);",
+          "+      if (!focus(target)) focus(get('invClose'));",
+          "+      return;",
+          "+    }",
+          "+  function releaseOssuaryAction(node, previousActive) {",
+          "+    if (!inside() || previousActive !== node || usable(node)) return;",
+          "+    if (document.activeElement !== node && document.activeElement !== document.body) return;",
+          "+    if (!focus(get('invClose')) && document.activeElement === node) node.blur();",
+          "+  }",
+          "+  return Object.freeze({bind, missing, keepsDetail, beforeRender, afterRender, releaseOssuaryAction, begin() {",
+          "+  const ossuaryFocusBefore=document.activeElement;",
+          "+  _inventoryFocus.releaseOssuaryAction(take,ossuaryFocusBefore);",
+          "+  _inventoryFocus.releaseOssuaryAction(remove,ossuaryFocusBefore);",
+          "+    b.dataset.inventoryFilterKey=key;",
+          "+    b.dataset.inventoryFilterValue=String(val);"
+        ],
+        "deletedLines": [
+          "-    return {active,owned,item:activeItem || keyboardItem};",
+          "-  return Object.freeze({bind, missing, keepsDetail, beforeRender, afterRender, begin() {"
+        ]
+      }
+    },
+    {
+      "name": "game-easy-test.html",
+      "source": {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game-easy-test.html",
+        "exists": true,
+        "bytes": 3902427,
+        "sha256": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8"
+      },
+      "packaged": {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/mac-package-ready/mac-packager-08cac1ce-21fb-4874-b4df-c136df5ac269/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Resources/app.nw/game-easy-test.html",
+        "exists": true,
+        "bytes": 3901292,
+        "sha256": "11b4e97b15903b9699b296362bdd068ffed6d3a1a505d9f6eeec5482b7c085ca"
+      },
+      "sourceMatchesHeadBlob": true,
+      "previousInputSha256": "11b4e97b15903b9699b296362bdd068ffed6d3a1a505d9f6eeec5482b7c085ca",
+      "delta": {
+        "hunks": [
+          "@@ -46486,0 +46487,2 @@ const _inventoryFocus=(function createInventoryFocus({document, get, label}) {",
+          "@@ -46490 +46492 @@ const _inventoryFocus=(function createInventoryFocus({document, get, label}) {",
+          "@@ -46492,0 +46495,6 @@ const _inventoryFocus=(function createInventoryFocus({document, get, label}) {",
+          "@@ -46499 +46507,6 @@ const _inventoryFocus=(function createInventoryFocus({document, get, label}) {",
+          "@@ -46871,0 +46885 @@ function renderOssPanel(){",
+          "@@ -46957,0 +46972,2 @@ function renderOssPanel(){",
+          "@@ -47066,0 +47083,2 @@ function renderInv(){"
+        ],
+        "addedLines": [
+          "+    const filter = get('invFilters')?.contains(active) && active.dataset.inventoryFilterKey",
+          "+      ? {key:active.dataset.inventoryFilterKey,value:active.dataset.inventoryFilterValue} : null;",
+          "+    return {active,owned,item:activeItem || keyboardItem,filter};",
+          "+    if (token.filter && inside()) {",
+          "+      const filters = get('invFilters')?.querySelectorAll('button') || [];",
+          "+      const target = [...filters].find(node => node.dataset.inventoryFilterKey === token.filter.key && node.dataset.inventoryFilterValue === token.filter.value);",
+          "+      if (!focus(target)) focus(get('invClose'));",
+          "+      return;",
+          "+    }",
+          "+  function releaseOssuaryAction(node, previousActive) {",
+          "+    if (!inside() || previousActive !== node || usable(node)) return;",
+          "+    if (document.activeElement !== node && document.activeElement !== document.body) return;",
+          "+    if (!focus(get('invClose')) && document.activeElement === node) node.blur();",
+          "+  }",
+          "+  return Object.freeze({bind, missing, keepsDetail, beforeRender, afterRender, releaseOssuaryAction, begin() {",
+          "+  const ossuaryFocusBefore=document.activeElement;",
+          "+  _inventoryFocus.releaseOssuaryAction(take,ossuaryFocusBefore);",
+          "+  _inventoryFocus.releaseOssuaryAction(remove,ossuaryFocusBefore);",
+          "+    b.dataset.inventoryFilterKey=key;",
+          "+    b.dataset.inventoryFilterValue=String(val);"
+        ],
+        "deletedLines": [
+          "-    return {active,owned,item:activeItem || keyboardItem};",
+          "-  return Object.freeze({bind, missing, keepsDetail, beforeRender, afterRender, begin() {"
+        ]
+      }
+    },
+    {
+      "name": "server.cjs",
+      "source": {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/server.cjs",
+        "exists": true,
+        "bytes": 16335,
+        "sha256": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d"
+      },
+      "packaged": {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/mac-package-ready/mac-packager-08cac1ce-21fb-4874-b4df-c136df5ac269/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Resources/app.nw/server.cjs",
+        "exists": false
+      },
+      "sourceMatchesHeadBlob": true,
+      "previousInputSha256": null,
+      "delta": null
+    },
+    {
+      "name": "node-main.js",
+      "source": {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/node-main.js",
+        "exists": true,
+        "bytes": 10153,
+        "sha256": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce"
+      },
+      "packaged": {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/mac-package-ready/mac-packager-08cac1ce-21fb-4874-b4df-c136df5ac269/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Resources/app.nw/node-main.js",
+        "exists": true,
+        "bytes": 10261,
+        "sha256": "f0f922cf4e62dd9f30282ebd37b6ef0c258f2864416e89ab125a6631fd8654c1"
+      },
+      "sourceMatchesHeadBlob": true,
+      "previousInputSha256": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce",
+      "delta": {
+        "hunks": [
+          "@@ -16 +16 @@ dlog('=== EXODUSER RELEASE Server started ===');",
+          "@@ -46 +46 @@ const APPDATA = process.env.APPDATA || require('os').homedir();"
+        ],
+        "addedLines": [
+          "+const PORT = 3333;",
+          "+const SAVE_DIR = path.join(APPDATA, 'EXODUSER-HELL', 'saves');"
+        ],
+        "deletedLines": [
+          "-const PORT = 3383;",
+          "-const SAVE_DIR = \"/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/mac-package-ready/mac-packager-08cac1ce-21fb-4874-b4df-c136df5ac269/user-state/saves\";"
+        ]
+      }
+    },
+    {
+      "name": "ui-panels.js",
+      "source": {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/ui-panels.js",
+        "exists": true,
+        "bytes": 11883,
+        "sha256": "b22c4a31141672304a15adfae3a5050cb9fde3b96601507c8f10de3ea63f4cb5"
+      },
+      "packaged": {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/mac-package-ready/mac-packager-08cac1ce-21fb-4874-b4df-c136df5ac269/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Resources/app.nw/ui-panels.js",
+        "exists": true,
+        "bytes": 11883,
+        "sha256": "b22c4a31141672304a15adfae3a5050cb9fde3b96601507c8f10de3ea63f4cb5"
+      },
+      "sourceMatchesHeadBlob": true,
+      "previousInputSha256": "b22c4a31141672304a15adfae3a5050cb9fde3b96601507c8f10de3ea63f4cb5",
+      "delta": null
+    },
+    {
+      "name": "package.json",
+      "source": {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/package.json",
+        "exists": true,
+        "bytes": 2040,
+        "sha256": "58d101ca053f29d36d0f9bd8d63639753fde807064d3c957e0bb6db17d4be0e8"
+      },
+      "packaged": {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/mac-package-ready/mac-packager-08cac1ce-21fb-4874-b4df-c136df5ac269/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Resources/app.nw/package.json",
+        "exists": true,
+        "bytes": 1054,
+        "sha256": "f76006616e9c2c99b728327baf9440a01f4ef9f95d6760b64a342600e2ff9f8c"
+      },
+      "sourceMatchesHeadBlob": true,
+      "previousInputSha256": "58d101ca053f29d36d0f9bd8d63639753fde807064d3c957e0bb6db17d4be0e8",
+      "delta": {
+        "hunks": [
+          "@@ -2,0 +3 @@",
+          "@@ -4 +5,2 @@",
+          "@@ -7,2 +9,2 @@",
+          "@@ -21,3 +23,28 @@"
+        ],
+        "addedLines": [
+          "+  \"private\": true,",
+          "+  \"type\": \"module\",",
+          "+  \"main\": \"http://localhost:3333/index.html?demo=1\",",
+          "+    \"http://127.0.0.1:3333\",",
+          "+    \"http://localhost:3333\"",
+          "+  \"chromium-args\": \"--disable-features=CrossOriginOpenerPolicy,CrossOriginEmbedderPolicy,IsolateOrigins,SitePerProcess,SkiaGraphite --disable-site-isolation-trials --disable-web-security --no-sandbox --ignore-gpu-blocklist --enable-gpu-rasterization --allow-running-insecure-content --autoplay-policy=no-user-gesture-required --enable-features=SharedArrayBuffer --user-data-dir=./userdata\",",
+          "+  \"scripts\": {",
+          "+    \"serve:map\": \"node tools/map-test-server.mjs\",",
+          "+    \"serve:test\": \"node tools/local-static-server.mjs\",",
+          "+    \"pixellab:request\": \"node tools/pixellab_request.mjs\",",
+          "+    \"pixellab:silvertail:sync\": \"node tools/sync_silvertail_pixellab.mjs\",",
+          "+    \"pixellab:ch1:8dir\": \"node tools/complete_ch1_8dir.mjs\",",
+          "+    \"pixellab:ch1:atlas-sync\": \"node tools/sync_ch1_monster_atlas_sources.mjs\",",
+          "+    \"elevenlabs:tts\": \"node tools/elevenlabs_tts.mjs\",",
+          "+    \"docs:check\": \"powershell -ExecutionPolicy Bypass -File tools/docs-sync-check.ps1\",",
+          "+    \"docs:check:staged\": \"powershell -ExecutionPolicy Bypass -File tools/docs-sync-check.ps1 -Staged\",",
+          "+    \"hooks:install\": \"git config core.hooksPath .githooks\",",
+          "+    \"auto:sync\": \"powershell -ExecutionPolicy Bypass -File auto_commit.ps1\",",
+          "+    \"auto:task:install\": \"powershell -ExecutionPolicy Bypass -File tools/install-auto-sync-task.ps1\",",
+          "+    \"build:nwjs\": \"node build-nwjs.mjs\"",
+          "+  },",
+          "+  \"devDependencies\": {",
+          "+    \"sharp\": \"^0.34.5\"",
+          "+  },",
+          "+  \"dependencies\": {",
+          "+    \"acorn\": \"^8.16.0\",",
+          "+    \"canvas\": \"^3.2.3\",",
+          "+    \"nw-builder\": \"^4.17.10\",",
+          "+    \"omggif\": \"^1.0.10\",",
+          "+    \"playwright\": \"^1.58.2\",",
+          "+    \"pngjs\": \"^7.0.0\"",
+          "+  }",
+          "+}"
+        ],
+        "deletedLines": [
+          "-  \"main\": \"http://127.0.0.1:3383/index.html?demo=1\",",
+          "-    \"http://127.0.0.1:3383\",",
+          "-    \"http://localhost:3383\"",
+          "-  \"chromium-args\": \"--disable-features=CrossOriginOpenerPolicy,CrossOriginEmbedderPolicy,IsolateOrigins,SitePerProcess,SkiaGraphite --disable-site-isolation-trials --disable-web-security --no-sandbox --ignore-gpu-blocklist --enable-gpu-rasterization --allow-running-insecure-content --autoplay-policy=no-user-gesture-required --enable-features=SharedArrayBuffer --user-data-dir=/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/mac-package-ready/mac-packager-08cac1ce-21fb-4874-b4df-c136df5ac269/user-state/profile\",",
+          "-  \"product_string\": \"EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269\"",
+          "-}"
+        ]
+      }
+    },
+    {
+      "name": "index.html",
+      "source": {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/index.html",
+        "exists": true,
+        "bytes": 342046,
+        "sha256": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8"
+      },
+      "packaged": {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/mac-package-ready/mac-packager-08cac1ce-21fb-4874-b4df-c136df5ac269/package/EXODUSER-08cac1ce-21fb-4874-b4df-c136df5ac269.app/Contents/Resources/app.nw/index.html",
+        "exists": true,
+        "bytes": 342046,
+        "sha256": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8"
+      },
+      "sourceMatchesHeadBlob": true,
+      "previousInputSha256": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8",
+      "delta": null
+    }
+  ],
+  "checks": [
+    {
+      "id": "CORE-game.html",
+      "koreanName": "현행 핵심 파일 원격 일치 HEAD 객체 대조",
+      "passed": true,
+      "detail": {
+        "name": "game.html",
+        "sourceSha256": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+        "headBlobSha256": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f"
+      }
+    },
+    {
+      "id": "CORE-game-easy-test.html",
+      "koreanName": "현행 핵심 파일 원격 일치 HEAD 객체 대조",
+      "passed": true,
+      "detail": {
+        "name": "game-easy-test.html",
+        "sourceSha256": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+        "headBlobSha256": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8"
+      }
+    },
+    {
+      "id": "CORE-server.cjs",
+      "koreanName": "현행 핵심 파일 원격 일치 HEAD 객체 대조",
+      "passed": true,
+      "detail": {
+        "name": "server.cjs",
+        "sourceSha256": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d",
+        "headBlobSha256": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d"
+      }
+    },
+    {
+      "id": "CORE-node-main.js",
+      "koreanName": "현행 핵심 파일 원격 일치 HEAD 객체 대조",
+      "passed": true,
+      "detail": {
+        "name": "node-main.js",
+        "sourceSha256": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce",
+        "headBlobSha256": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce"
+      }
+    },
+    {
+      "id": "CORE-ui-panels.js",
+      "koreanName": "현행 핵심 파일 원격 일치 HEAD 객체 대조",
+      "passed": true,
+      "detail": {
+        "name": "ui-panels.js",
+        "sourceSha256": "b22c4a31141672304a15adfae3a5050cb9fde3b96601507c8f10de3ea63f4cb5",
+        "headBlobSha256": "b22c4a31141672304a15adfae3a5050cb9fde3b96601507c8f10de3ea63f4cb5"
+      }
+    },
+    {
+      "id": "CORE-package.json",
+      "koreanName": "현행 핵심 파일 원격 일치 HEAD 객체 대조",
+      "passed": true,
+      "detail": {
+        "name": "package.json",
+        "sourceSha256": "58d101ca053f29d36d0f9bd8d63639753fde807064d3c957e0bb6db17d4be0e8",
+        "headBlobSha256": "58d101ca053f29d36d0f9bd8d63639753fde807064d3c957e0bb6db17d4be0e8"
+      }
+    },
+    {
+      "id": "CORE-index.html",
+      "koreanName": "현행 핵심 파일 원격 일치 HEAD 객체 대조",
+      "passed": true,
+      "detail": {
+        "name": "index.html",
+        "sourceSha256": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8",
+        "headBlobSha256": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8"
+      }
+    },
+    {
+      "id": "SERVER-DERIVATION",
+      "koreanName": "내장 서버 격리 변환만 차이",
+      "passed": true,
+      "detail": {
+        "port": 3383,
+        "saveRoot": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/mac-package-ready/mac-packager-08cac1ce-21fb-4874-b4df-c136df5ac269/user-state/saves",
+        "derivedSha256": "f0f922cf4e62dd9f30282ebd37b6ef0c258f2864416e89ab125a6631fd8654c1"
+      }
+    },
+    {
+      "id": "PACKAGE-DERIVATION",
+      "koreanName": "패키지 JSON의 지정 파생 설정",
+      "passed": true,
+      "detail": {
+        "packagedKeys": [
+          "name",
+          "version",
+          "main",
+          "node-main",
+          "node-remote",
+          "window",
+          "chromium-args",
+          "product_string"
+        ],
+        "omittedSourceKeys": [
+          "private",
+          "type",
+          "scripts",
+          "devDependencies",
+          "dependencies"
+        ],
+        "packagedEntry": "http://127.0.0.1:3383/index.html?demo=1",
+        "profile": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/mac-package-ready/mac-packager-08cac1ce-21fb-4874-b4df-c136df5ac269/user-state/profile"
+      }
+    },
+    {
+      "id": "UNCHANGED-index.html",
+      "koreanName": "기존 앱과 동일한 핵심 입력",
+      "passed": true,
+      "detail": {
+        "name": "index.html"
+      }
+    },
+    {
+      "id": "UNCHANGED-ui-panels.js",
+      "koreanName": "기존 앱과 동일한 핵심 입력",
+      "passed": true,
+      "detail": {
+        "name": "ui-panels.js"
+      }
+    },
+    {
+      "id": "MANIFEST-game.html",
+      "koreanName": "기존 앱 입력 목록과 실제 작은 파일 일치",
+      "passed": true,
+      "detail": {
+        "name": "game.html"
+      }
+    },
+    {
+      "id": "MANIFEST-game-easy-test.html",
+      "koreanName": "기존 앱 입력 목록과 실제 작은 파일 일치",
+      "passed": true,
+      "detail": {
+        "name": "game-easy-test.html"
+      }
+    },
+    {
+      "id": "MANIFEST-ui-panels.js",
+      "koreanName": "기존 앱 입력 목록과 실제 작은 파일 일치",
+      "passed": true,
+      "detail": {
+        "name": "ui-panels.js"
+      }
+    },
+    {
+      "id": "MANIFEST-index.html",
+      "koreanName": "기존 앱 입력 목록과 실제 작은 파일 일치",
+      "passed": true,
+      "detail": {
+        "name": "index.html"
+      }
+    },
+    {
+      "id": "DEV-SERVER-EXCLUDED",
+      "koreanName": "개발 서버는 Mac 앱 입력 밖",
+      "passed": true,
+      "detail": {
+        "missingFileIsExpected": true,
+        "appServer": "node-main.js",
+        "developmentServerAcceptanceIsNotAppAcceptance": true
+      }
+    },
+    {
+      "id": "MANIFEST-INTEGRITY",
+      "koreanName": "기존 빌드 입력·복구 계약 내부 일치",
+      "passed": true,
+      "detail": {
+        "existingInputCount": 7918,
+        "existingSourceCommit": "6be3a06b4e8d03768a35f4c57d419f45c8efeb39",
+        "currentWholeInputRevalidated": false
+      }
+    },
+    {
+      "id": "SOURCE-STABILITY",
+      "koreanName": "비교 전후 생산 핵심 파일 보존",
+      "passed": true,
+      "detail": {
+        "checkedFiles": [
+          "game.html",
+          "game-easy-test.html",
+          "server.cjs",
+          "node-main.js",
+          "ui-panels.js",
+          "package.json",
+          "index.html"
+        ]
+      }
+    },
+    {
+      "id": "APP-STABILITY",
+      "koreanName": "비교 전후 기존 앱 핵심 파일 보존",
+      "passed": true,
+      "detail": {
+        "checkedFiles": [
+          "game.html",
+          "game-easy-test.html",
+          "server.cjs",
+          "node-main.js",
+          "ui-panels.js",
+          "package.json",
+          "index.html"
+        ],
+        "fullAppProof": false
+      }
+    },
+    {
+      "id": "HEAD-STABILITY",
+      "koreanName": "실행 전후 HEAD 보존",
+      "passed": true,
+      "detail": {
+        "headBefore": "96610b6546a31e882962470ea1f2164ce94edca6",
+        "headAfter": "96610b6546a31e882962470ea1f2164ce94edca6"
+      }
+    },
+    {
+      "id": "PROTECTED-STABILITY",
+      "koreanName": "task·사용자 config 초안·공용 인덱스 보존",
+      "passed": true,
+      "detail": {
+        "before": [
+          {
+            "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/BUILD_TEAM/task.md",
+            "exists": true,
+            "bytes": 3862,
+            "sha256": "5256799ba2c99b53e3b5f6c22508718cd7cf745aeead9219a8de927f4bdfb2e4"
+          },
+          {
+            "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/runtime-acquire-config-draft.json",
+            "exists": true,
+            "bytes": 3797,
+            "sha256": "0e2780f84c7d1ce8187762c5291fce450af86c7c7c2ef92ed803c94724a09616"
+          },
+          {
+            "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/.git/index",
+            "exists": true,
+            "bytes": 1963077,
+            "sha256": "7beab93b570ef992959359065cf6a2e79dffc1c7a3988df782c36aed1816ca2e"
+          }
+        ],
+        "after": [
+          {
+            "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/BUILD_TEAM/task.md",
+            "exists": true,
+            "bytes": 3862,
+            "sha256": "5256799ba2c99b53e3b5f6c22508718cd7cf745aeead9219a8de927f4bdfb2e4"
+          },
+          {
+            "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/runtime-acquire-config-draft.json",
+            "exists": true,
+            "bytes": 3797,
+            "sha256": "0e2780f84c7d1ce8187762c5291fce450af86c7c7c2ef92ed803c94724a09616"
+          },
+          {
+            "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/.git/index",
+            "exists": true,
+            "bytes": 1963077,
+            "sha256": "7beab93b570ef992959359065cf6a2e79dffc1c7a3988df782c36aed1816ca2e"
+          }
+        ]
+      }
+    },
+    {
+      "id": "DOCS-SEARCH",
+      "koreanName": "관련 키워드 docs 전체 검색",
+      "passed": true,
+      "detail": {
+        "matchLines": 45,
+        "matchedFiles": 27,
+        "outputSha256": "7e71b1991f0c842b4e87d8700293bca2ef6134a16cedaf85f1e552af1248c010"
+      }
+    }
+  ],
+  "summary": {
+    "passed": 22,
+    "failed": 0
+  },
+  "docsSearch": {
+    "command": "rg -n -e KEYWORDS docs/",
+    "keywords": "packaged-source-delta|INTEGRATION_BUILD_TEAM_MASTER|mac-packager|_inventoryFocus|releaseOssuaryAction|inventoryFilterKey|If-None-Match|atomicSaveJSON|runtime-acquire-config-draft",
+    "exitCode": 0,
+    "matchLines": 45,
+    "matchedFiles": [
+      "docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md",
+      "docs/0마스터플랜/TEAM_CONTINUATION_POLICY_20261001.md",
+      "docs/0마스터플랜/TEAM_START_COMMANDS_20261001.md",
+      "docs/0마스터플랜/mac-resume-20261001/BUILD-SOUND-잔여팀-인수검토.md",
+      "docs/0마스터플랜/mac-resume-20261001/item-fallback-evidence/다음작업-감사.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BUILD-result.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BUILD-task.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/CONDITIONAL-ATOMIC-INTEGRATION-20261002.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FOUR-CANDIDATE-ACCEPTANCE-20261002.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FOUR-SUBMISSIONS-HELLRAY-20261002.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/INTEGRATION-REVIEW-20261002.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/MAC-COORDINATION-20261002.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/POST-INTEGRATION-PACKAGE-20261002.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-CHATS-20261002.json",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-WORK-DISPATCH-20261002.json",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json",
+      "docs/12퍼포먼스·최적화/12퍼포먼스·최적화.md",
+      "docs/12퍼포먼스·최적화/CLAUDE_CODE_인수인계_전체작업보고서_2026-08-10.md",
+      "docs/13출시·마케팅/BUILD_BACKUP_POLICY_20261001.md",
+      "docs/13출시·마케팅/INTEGRATION_BUILD_TEAM_MASTER.md",
+      "docs/13출시·마케팅/PC_PACKAGING_20260910.md",
+      "docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md",
+      "docs/2_7 인벤토리+장비시스템/INVENTORY_KEYBOARD_FOCUS_20261002.md",
+      "docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md",
+      "docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md",
+      "docs/CHANGELOG_SYNC.md",
+      "docs/GIT_PROVENANCE_NOTES.md"
+    ],
+    "rawOutputSha256": "7e71b1991f0c842b4e87d8700293bca2ef6134a16cedaf85f1e552af1248c010"
+  },
+  "preservation": {
+    "protectedBefore": [
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/BUILD_TEAM/task.md",
+        "exists": true,
+        "bytes": 3862,
+        "sha256": "5256799ba2c99b53e3b5f6c22508718cd7cf745aeead9219a8de927f4bdfb2e4"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/runtime-acquire-config-draft.json",
+        "exists": true,
+        "bytes": 3797,
+        "sha256": "0e2780f84c7d1ce8187762c5291fce450af86c7c7c2ef92ed803c94724a09616"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/.git/index",
+        "exists": true,
+        "bytes": 1963077,
+        "sha256": "7beab93b570ef992959359065cf6a2e79dffc1c7a3988df782c36aed1816ca2e"
+      }
+    ],
+    "protectedAfter": [
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/BUILD_TEAM/task.md",
+        "exists": true,
+        "bytes": 3862,
+        "sha256": "5256799ba2c99b53e3b5f6c22508718cd7cf745aeead9219a8de927f4bdfb2e4"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/runtime-acquire-config-draft.json",
+        "exists": true,
+        "bytes": 3797,
+        "sha256": "0e2780f84c7d1ce8187762c5291fce450af86c7c7c2ef92ed803c94724a09616"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/.git/index",
+        "exists": true,
+        "bytes": 1963077,
+        "sha256": "7beab93b570ef992959359065cf6a2e79dffc1c7a3988df782c36aed1816ca2e"
+      }
+    ]
+  },
+  "nextRebuildContract": {
+    "sourceRoot": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "observedSourceCommit": "31454dfa49c90bac77351273fc32f0c1eb937928",
+    "repinIfSourceChanges": true,
+    "existingAllowlistCountIsHistorical": true,
+    "freshInputShaAndGitBlobBackupRequired": true,
+    "freshExactRemoteRefShaAndTimestampRequired": true,
+    "stale6be3ConfigCannotAuthorizeCurrentBuild": true,
+    "freshUniqueUuidAndOutputAndProfileAndSaveRequired": true,
+    "isolatedPortRange": [
+      1024,
+      65535
+    ],
+    "prohibitedPorts": [
+      3333,
+      3340
+    ],
+    "portOccupancyCheckNotPerformed": true,
+    "platform": "osx",
+    "arch": "arm64",
+    "runtimeVersion": "0.111.2",
+    "runtimeFlavor": "normal",
+    "localPinnedRuntimeAndLibraryRevalidationRequired": true,
+    "qaExclusiveReleaseRequired": true,
+    "noExecuteAuthorizationInThisTask": true,
+    "appAcceptance": [
+      "로비→캐릭터 선택→게임",
+      "필터/유골 해제 초점 실제 검수",
+      "설정",
+      "격리 저장 ACK→실제 디스크→앱 종료→재실행→GET/진행 복원",
+      "실제 HTTP/HEAD/Range/미디어",
+      "서명·이동 경로·배포 계약"
+    ],
+    "serverCjsDoesNotPropagateToApp": true,
+    "fullRuntimeDependencyCoverage": "UNKNOWN; 직접 핵심 입력만 인수",
+    "uniqueItemCandidatesRemainUnadopted": true
+  },
+  "prohibitedActions": {
+    "productionWrites": 0,
+    "existingAppWrites": 0,
+    "userDraftWrites": 0,
+    "serverStarts": 0,
+    "httpRequests": 0,
+    "uiActions": 0,
+    "gameRuns": 0,
+    "performanceMeasurements": 0,
+    "builds": 0,
+    "assetCopies": 0,
+    "fullAssetHashes": 0,
+    "fullRuntimeHashes": 0,
+    "gitWrites": 0,
+    "installs": 0,
+    "newSessions": 0,
+    "subagents": 0,
+    "automationChanges": 0
+  },
+  "limitations": [
+    "직접 읽은7개 핵심 source와6개 packaged 파일의 비교만 수행",
+    "server.cjs 부재는 내장 node-main 구조상 예상",
+    "실앱/저장/재실행/미디어/서명/배포는 미검수",
+    "이번 새3산출의 GitHub 체크포인트는 총괄 인수 후 별도",
+    "HEAD 원격 일치가 모든 현재 입력 및 미커밋 변경의 원격보존을 뜻하지 않음"
+  ],
+  "headTransitionReview": {
+    "at": "2026-10-02T03:51:34.019Z",
+    "head": "31454dfa49c90bac77351273fc32f0c1eb937928",
+    "previousHead": "96610b6546a31e882962470ea1f2164ce94edca6",
+    "remote": {
+      "startedAt": "2026-10-02T03:51:33.386Z",
+      "completedAt": "2026-10-02T03:51:33.839Z",
+      "ref": "refs/heads/codex/mac-environment-20261001",
+      "sha": "31454dfa49c90bac77351273fc32f0c1eb937928",
+      "exitCode": 0,
+      "raw": "31454dfa49c90bac77351273fc32f0c1eb937928\trefs/heads/codex/mac-environment-20261001\naacc7b02bef9d5cd7db6ea5d6466d7b8e4c11a3c\trefs/heads/main\n",
+      "exactMatch": true
+    },
+    "blobs": [
+      {
+        "name": "game.html",
+        "sha256": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+        "matchesRecorded": true
+      },
+      {
+        "name": "game-easy-test.html",
+        "sha256": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+        "matchesRecorded": true
+      },
+      {
+        "name": "server.cjs",
+        "sha256": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d",
+        "matchesRecorded": true
+      },
+      {
+        "name": "node-main.js",
+        "sha256": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce",
+        "matchesRecorded": true
+      },
+      {
+        "name": "ui-panels.js",
+        "sha256": "b22c4a31141672304a15adfae3a5050cb9fde3b96601507c8f10de3ea63f4cb5",
+        "matchesRecorded": true
+      },
+      {
+        "name": "package.json",
+        "sha256": "58d101ca053f29d36d0f9bd8d63639753fde807064d3c957e0bb6db17d4be0e8",
+        "matchesRecorded": true
+      },
+      {
+        "name": "index.html",
+        "sha256": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8",
+        "matchesRecorded": true
+      }
+    ],
+    "productionCoreUnchanged": true,
+    "ownership": "공유 HEAD/index 변경 주체는 본 채팅에서 쓰지 않음; 원인/담당 미추정"
+  },
+  "artifactReviewInitial": {
+    "attempts": [
+      {
+        "exactAt": null,
+        "toolResult": "exec_command chunk de2afa exit1",
+        "passed": 8,
+        "failed": 2,
+        "changes": 55,
+        "failures": [
+          {
+            "id": "final-task-draft-index-preservation",
+            "reason": "task/초안은 동일, 공용index SHA 변화",
+            "beforeIndexSha256": "7beab93b570ef992959359065cf6a2e79dffc1c7a3988df782c36aed1816ca2e",
+            "observedIndexSha256": "7204c856e21708a39eb402a684703c07a72673e58428870d2f64d3c1f3ddffbd",
+            "resolution": "task/초안 보존과 공유 index 관측 분리; rollback0·귀속UNKNOWN"
+          },
+          {
+            "id": "report-input-coverage",
+            "reason": "본편/easy 적용위치 표의 파일명 누락",
+            "resolution": "game.html/game-easy-test.html 명시"
+          }
+        ]
+      },
+      {
+        "exactAt": null,
+        "toolResult": "exec_command chunk f5fd6e exit1",
+        "passed": 9,
+        "failed": 1,
+        "changes": 50,
+        "failures": [
+          {
+            "id": "head-stability",
+            "reason": "공유HEAD96610b65→31454dfa 변경",
+            "resolution": "직접 exact remote 재조회와 새HEAD7 blob 대조 모두 일치. 시작/최종 이력 구분"
+          }
+        ]
+      }
+    ],
+    "productionRegression": false
+  },
+  "remoteHistory": [
+    {
+      "ref": "refs/heads/codex/mac-environment-20261001",
+      "sha": "96610b6546a31e882962470ea1f2164ce94edca6",
+      "localMatches": true,
+      "directReadSucceeded": true,
+      "method": "본 채팅 exec_command git ls-remote origin refs/heads/codex/mac-environment-20261001 refs/heads/main exit0",
+      "exactObservedAt": null,
+      "timestampLimit": "직접 조회 결과에 타임스탬프 없음. checks 실행보다 앞선 조회이며 빌드 직전 새 조회 필요.",
+      "rootProvidedCheckpointSha": "96610b6546a31e882962470ea1f2164ce94edca6",
+      "wholeCurrentInputManifestValidated": false
+    }
+  ],
+  "finalization": {
+    "startedAt": "2026-10-02T03:53:45.037Z",
+    "completedAt": "2026-10-02T03:53:45.631Z",
+    "status": "ARTIFACTS_VERIFIED_SHARED_HEAD_AND_INDEX_CHANGES_RECORDED",
+    "head": "31454dfa49c90bac77351273fc32f0c1eb937928",
+    "latestSourceCheck": {
+      "status": "SOURCE_DELTA_ACCEPTED_REBUILD_AND_RUNTIME_PENDING",
+      "execution": {
+        "startedAt": "2026-10-02T03:53:45.079Z",
+        "completedAt": "2026-10-02T03:53:45.524Z",
+        "nodeExecutable": "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node",
+        "nodeVersion": "v24.15.0",
+        "currentHead": "31454dfa49c90bac77351273fc32f0c1eb937928",
+        "headAfter": "31454dfa49c90bac77351273fc32f0c1eb937928",
+        "branch": "codex/mac-environment-20261001",
+        "changesBefore": {
+          "observedAt": "2026-10-02T03:53:45.149Z",
+          "count": 53,
+          "ownerEntries": [
+            "?? tools/team-followup-20261002/project-teams/BUILD_TEAM/checks.mjs",
+            "?? tools/team-followup-20261002/project-teams/BUILD_TEAM/evidence.json",
+            "?? tools/team-followup-20261002/project-teams/BUILD_TEAM/result.md"
+          ],
+          "preservedBackupCount": 22,
+          "draftEntries": [
+            "?? tools/team-followup-20261001/BUILD/runtime-acquire-config-draft.json"
+          ],
+          "stagedPaths": [],
+          "caveat": "공유 체크아웃의 타 담당 변경을 포함하며 증가분을 본인에게 전부 귀속하지 않는다."
+        },
+        "changesMiddle": {
+          "observedAt": "2026-10-02T03:53:45.469Z",
+          "count": 53,
+          "ownerEntries": [
+            "?? tools/team-followup-20261002/project-teams/BUILD_TEAM/checks.mjs",
+            "?? tools/team-followup-20261002/project-teams/BUILD_TEAM/evidence.json",
+            "?? tools/team-followup-20261002/project-teams/BUILD_TEAM/result.md"
+          ],
+          "preservedBackupCount": 22,
+          "draftEntries": [
+            "?? tools/team-followup-20261001/BUILD/runtime-acquire-config-draft.json"
+          ],
+          "stagedPaths": [],
+          "caveat": "공유 체크아웃의 타 담당 변경을 포함하며 증가분을 본인에게 전부 귀속하지 않는다."
+        }
+      },
+      "summary": {
+        "passed": 22,
+        "failed": 0
+      },
+      "files": [
+        {
+          "name": "game.html",
+          "sourceSha": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+          "packagedSha": "c868284af349c996d42087e93eba47a10614d73cb8f55f4db5ae01dde89da31a",
+          "equal": false,
+          "diffHunks": [
+            "@@ -47892,0 +47893,2 @@ const _inventoryFocus=(function createInventoryFocus({document, get, label}) {",
+            "@@ -47896 +47898 @@ const _inventoryFocus=(function createInventoryFocus({document, get, label}) {",
+            "@@ -47898,0 +47901,6 @@ const _inventoryFocus=(function createInventoryFocus({document, get, label}) {",
+            "@@ -47905 +47913,6 @@ const _inventoryFocus=(function createInventoryFocus({document, get, label}) {",
+            "@@ -48379,0 +48393 @@ function renderOssPanel(){",
+            "@@ -48465,0 +48480,2 @@ function renderOssPanel(){",
+            "@@ -48583,0 +48600,2 @@ function renderInv(){"
+          ]
+        },
+        {
+          "name": "game-easy-test.html",
+          "sourceSha": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+          "packagedSha": "11b4e97b15903b9699b296362bdd068ffed6d3a1a505d9f6eeec5482b7c085ca",
+          "equal": false,
+          "diffHunks": [
+            "@@ -46486,0 +46487,2 @@ const _inventoryFocus=(function createInventoryFocus({document, get, label}) {",
+            "@@ -46490 +46492 @@ const _inventoryFocus=(function createInventoryFocus({document, get, label}) {",
+            "@@ -46492,0 +46495,6 @@ const _inventoryFocus=(function createInventoryFocus({document, get, label}) {",
+            "@@ -46499 +46507,6 @@ const _inventoryFocus=(function createInventoryFocus({document, get, label}) {",
+            "@@ -46871,0 +46885 @@ function renderOssPanel(){",
+            "@@ -46957,0 +46972,2 @@ function renderOssPanel(){",
+            "@@ -47066,0 +47083,2 @@ function renderInv(){"
+          ]
+        },
+        {
+          "name": "server.cjs",
+          "sourceSha": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d",
+          "packagedSha": null,
+          "equal": false,
+          "diffHunks": []
+        },
+        {
+          "name": "node-main.js",
+          "sourceSha": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce",
+          "packagedSha": "f0f922cf4e62dd9f30282ebd37b6ef0c258f2864416e89ab125a6631fd8654c1",
+          "equal": false,
+          "diffHunks": [
+            "@@ -16 +16 @@ dlog('=== EXODUSER RELEASE Server started ===');",
+            "@@ -46 +46 @@ const APPDATA = process.env.APPDATA || require('os').homedir();"
+          ]
+        },
+        {
+          "name": "ui-panels.js",
+          "sourceSha": "b22c4a31141672304a15adfae3a5050cb9fde3b96601507c8f10de3ea63f4cb5",
+          "packagedSha": "b22c4a31141672304a15adfae3a5050cb9fde3b96601507c8f10de3ea63f4cb5",
+          "equal": true,
+          "diffHunks": []
+        },
+        {
+          "name": "package.json",
+          "sourceSha": "58d101ca053f29d36d0f9bd8d63639753fde807064d3c957e0bb6db17d4be0e8",
+          "packagedSha": "f76006616e9c2c99b728327baf9440a01f4ef9f95d6760b64a342600e2ff9f8c",
+          "equal": false,
+          "diffHunks": [
+            "@@ -2,0 +3 @@",
+            "@@ -4 +5,2 @@",
+            "@@ -7,2 +9,2 @@",
+            "@@ -21,3 +23,28 @@"
+          ]
+        },
+        {
+          "name": "index.html",
+          "sourceSha": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8",
+          "packagedSha": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8",
+          "equal": true,
+          "diffHunks": []
+        }
+      ],
+      "docsMatches": 27,
+      "evidenceCreated": false
+    },
+    "sourceGroupCount": 22,
+    "artifactChecks": {
+      "passed": 10,
+      "failed": 0
+    },
+    "checks": [
+      {
+        "id": "syntax",
+        "passed": true,
+        "detail": {
+          "exitCode": 0,
+          "stdout": "",
+          "stderr": ""
+        }
+      },
+      {
+        "id": "latest-source-checks",
+        "passed": true,
+        "detail": {
+          "exitCode": 0,
+          "summary": {
+            "passed": 22,
+            "failed": 0
+          },
+          "stderr": ""
+        }
+      },
+      {
+        "id": "source-app-preserved",
+        "passed": true,
+        "detail": [
+          {
+            "name": "game.html",
+            "source": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+            "packaged": "c868284af349c996d42087e93eba47a10614d73cb8f55f4db5ae01dde89da31a"
+          },
+          {
+            "name": "game-easy-test.html",
+            "source": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+            "packaged": "11b4e97b15903b9699b296362bdd068ffed6d3a1a505d9f6eeec5482b7c085ca"
+          },
+          {
+            "name": "server.cjs",
+            "source": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d",
+            "packaged": null
+          },
+          {
+            "name": "node-main.js",
+            "source": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce",
+            "packaged": "f0f922cf4e62dd9f30282ebd37b6ef0c258f2864416e89ab125a6631fd8654c1"
+          },
+          {
+            "name": "ui-panels.js",
+            "source": "b22c4a31141672304a15adfae3a5050cb9fde3b96601507c8f10de3ea63f4cb5",
+            "packaged": "b22c4a31141672304a15adfae3a5050cb9fde3b96601507c8f10de3ea63f4cb5"
+          },
+          {
+            "name": "package.json",
+            "source": "58d101ca053f29d36d0f9bd8d63639753fde807064d3c957e0bb6db17d4be0e8",
+            "packaged": "f76006616e9c2c99b728327baf9440a01f4ef9f95d6760b64a342600e2ff9f8c"
+          },
+          {
+            "name": "index.html",
+            "source": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8",
+            "packaged": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8"
+          }
+        ]
+      },
+      {
+        "id": "task-user-draft-preserved",
+        "passed": true,
+        "detail": [
+          {
+            "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/BUILD_TEAM/task.md",
+            "sha256": "5256799ba2c99b53e3b5f6c22508718cd7cf745aeead9219a8de927f4bdfb2e4"
+          },
+          {
+            "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/BUILD/runtime-acquire-config-draft.json",
+            "sha256": "0e2780f84c7d1ce8187762c5291fce450af86c7c7c2ef92ed803c94724a09616"
+          }
+        ]
+      },
+      {
+        "id": "three-owned-artifacts",
+        "passed": true,
+        "detail": [
+          "checks.mjs",
+          "evidence.json",
+          "result.md",
+          "task.md"
+        ]
+      },
+      {
+        "id": "not-ignored",
+        "passed": true,
+        "detail": {
+          "exitCode": 1,
+          "stdout": "",
+          "stderr": ""
+        }
+      },
+      {
+        "id": "report-complete",
+        "passed": true,
+        "detail": "입력7·파생·Gate·공유 변경·검사 한계 표 확인"
+      },
+      {
+        "id": "docs-after-last-code-change",
+        "passed": true,
+        "detail": {
+          "exitCode": 0,
+          "matchLines": 45,
+          "files": 27
+        }
+      },
+      {
+        "id": "current-head-remote-provenance",
+        "passed": true,
+        "detail": {
+          "head": "31454dfa49c90bac77351273fc32f0c1eb937928",
+          "observedRemote": "31454dfa49c90bac77351273fc32f0c1eb937928",
+          "latestCheckHead": "31454dfa49c90bac77351273fc32f0c1eb937928"
+        }
+      },
+      {
+        "id": "changes-under-100",
+        "passed": true,
+        "detail": {
+          "count": 53,
+          "checkpointNeeded": false
+        }
+      }
+    ],
+    "changes": {
+      "count": 53,
+      "ownerEntries": [
+        "?? tools/team-followup-20261002/project-teams/BUILD_TEAM/checks.mjs",
+        "?? tools/team-followup-20261002/project-teams/BUILD_TEAM/evidence.json",
+        "?? tools/team-followup-20261002/project-teams/BUILD_TEAM/result.md"
+      ],
+      "preservedBackupCount": 22,
+      "stagedPaths": [],
+      "checkpointNeeded": false,
+      "caveat": "타담당 변경을 포함하므로 증가/감소를 전부 BUILD에 귀속하지 않음"
+    },
+    "sharedIndexObservation": {
+      "beforeSha256": "7beab93b570ef992959359065cf6a2e79dffc1c7a3988df782c36aed1816ca2e",
+      "finalSha256": "4fb7e76f71cb7ac7ed0f9bf1f7cc06dc8c0918941c7a9c392e68f7fd5939f290",
+      "changed": true,
+      "attribution": "UNKNOWN",
+      "gitWriteCommandsInThisTask": 0,
+      "rollback": 0
+    },
+    "artifacts": [
+      {
+        "name": "checks.mjs",
+        "sha256": "991cc3ce166acfe2ae4bc6b6276ff376e51cdbc9c732353842e1f0e1c331751b",
+        "bytes": 16121
+      },
+      {
+        "name": "result.md",
+        "sha256": "778734c303ea1e2054593f092d47b8fcffe8b0bf43412206f1674b1a1cbe569d",
+        "bytes": 13977
+      }
+    ],
+    "evidenceSelfHashExcluded": true,
+    "docsSearchAfterLastCodeEdit": {
+      "keywords": "packaged-source-delta|INTEGRATION_BUILD_TEAM_MASTER|mac-packager|_inventoryFocus|releaseOssuaryAction|inventoryFilterKey|If-None-Match|atomicSaveJSON|runtime-acquire-config-draft",
+      "exitCode": 0,
+      "matchLines": 45,
+      "matchedFiles": [
+        "docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md",
+        "docs/0마스터플랜/TEAM_CONTINUATION_POLICY_20261001.md",
+        "docs/0마스터플랜/TEAM_START_COMMANDS_20261001.md",
+        "docs/0마스터플랜/mac-resume-20261001/BUILD-SOUND-잔여팀-인수검토.md",
+        "docs/0마스터플랜/mac-resume-20261001/item-fallback-evidence/다음작업-감사.md",
+        "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BUILD-result.md",
+        "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BUILD-task.md",
+        "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/CONDITIONAL-ATOMIC-INTEGRATION-20261002.md",
+        "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FOUR-CANDIDATE-ACCEPTANCE-20261002.md",
+        "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FOUR-SUBMISSIONS-HELLRAY-20261002.md",
+        "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/INTEGRATION-REVIEW-20261002.md",
+        "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/MAC-COORDINATION-20261002.md",
+        "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/POST-INTEGRATION-PACKAGE-20261002.md",
+        "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-CHATS-20261002.json",
+        "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-WORK-DISPATCH-20261002.json",
+        "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json",
+        "docs/12퍼포먼스·최적화/12퍼포먼스·최적화.md",
+        "docs/12퍼포먼스·최적화/CLAUDE_CODE_인수인계_전체작업보고서_2026-08-10.md",
+        "docs/13출시·마케팅/BUILD_BACKUP_POLICY_20261001.md",
+        "docs/13출시·마케팅/INTEGRATION_BUILD_TEAM_MASTER.md",
+        "docs/13출시·마케팅/PC_PACKAGING_20260910.md",
+        "docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md",
+        "docs/2_7 인벤토리+장비시스템/INVENTORY_KEYBOARD_FOCUS_20261002.md",
+        "docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md",
+        "docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md",
+        "docs/CHANGELOG_SYNC.md",
+        "docs/GIT_PROVENANCE_NOTES.md"
+      ],
+      "rawOutputSha256": "54e7788ee34f5cd0b9f612baafa3163fefe1c2c4934097d6f3ff85f9c99c5003"
+    },
+    "coreAfter": [
+      {
+        "name": "game.html",
+        "source": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+        "packaged": "c868284af349c996d42087e93eba47a10614d73cb8f55f4db5ae01dde89da31a"
+      },
+      {
+        "name": "game-easy-test.html",
+        "source": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+        "packaged": "11b4e97b15903b9699b296362bdd068ffed6d3a1a505d9f6eeec5482b7c085ca"
+      },
+      {
+        "name": "server.cjs",
+        "source": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d",
+        "packaged": null
+      },
+      {
+        "name": "node-main.js",
+        "source": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce",
+        "packaged": "f0f922cf4e62dd9f30282ebd37b6ef0c258f2864416e89ab125a6631fd8654c1"
+      },
+      {
+        "name": "ui-panels.js",
+        "source": "b22c4a31141672304a15adfae3a5050cb9fde3b96601507c8f10de3ea63f4cb5",
+        "packaged": "b22c4a31141672304a15adfae3a5050cb9fde3b96601507c8f10de3ea63f4cb5"
+      },
+      {
+        "name": "package.json",
+        "source": "58d101ca053f29d36d0f9bd8d63639753fde807064d3c957e0bb6db17d4be0e8",
+        "packaged": "f76006616e9c2c99b728327baf9440a01f4ef9f95d6760b64a342600e2ff9f8c"
+      },
+      {
+        "name": "index.html",
+        "source": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8",
+        "packaged": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8"
+      }
+    ]
+  }
+}

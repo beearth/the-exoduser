@@ -1434,6 +1434,129 @@
     "projectChatTeams": "New Codex management/review chats; actual task dispatch and Read tracked separately",
     "currentProviderRouting": "providerRouting20261002",
     "currentReviewDispatch": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-WORK-DISPATCH-20261002.json",
-    "currentRuntime": "currentRuntimeObservation"
-  }
+    "currentRuntime": "currentRuntimeObservation",
+    "currentProviderExecution": "claudeProviderExecution20261002 and CLAUDE-PROVIDER-DISPATCH-20261002.json; earlier providerRouting snapshot is history"
+  },
+  "claudeProviderExecution20261002": {
+    "recordedAt": "2026-10-02T04:06:17.992047+00:00",
+    "actualRolesStarted": 7,
+    "actualReadConfirmed": 7,
+    "originalSessionsResumed": 0,
+    "newPersistentSessions": 0,
+    "method": "official print/no-session-persistence, readonly followups",
+    "evidence": "CLAUDE-PROVIDER-DISPATCH-20261002.json",
+    "status": "running"
+  },
+  "codexProjectReviewCompletions": [
+    {
+      "team": "ART",
+      "title": "EXODUSER 아트팀",
+      "threadId": "01a0faaf-479e-7143-99d6-4e1fdb5fdde5",
+      "hostId": "local",
+      "completedTurnId": "01a0fab5-c35b-7771-9141-0847624a758c",
+      "status": "completed",
+      "completedAt": 1790913036,
+      "completedAtISO": "2026-10-02T03:50:36.000Z"
+    },
+    {
+      "team": "MAP",
+      "title": "EXODUSER 맵팀",
+      "threadId": "01a0faaf-8ab1-7c81-9d2b-d17f15ba25a3",
+      "hostId": "local",
+      "completedTurnId": "01a0fab5-c447-7583-875e-3b62c717a449",
+      "status": "completed",
+      "completedAt": 1790913483,
+      "completedAtISO": "2026-10-02T03:58:03.000Z"
+    },
+    {
+      "team": "SKILL",
+      "title": "EXODUSER 스킬팀",
+      "threadId": "01a0faaf-8d1e-7c93-94c0-37b5df8a10eb",
+      "hostId": "local",
+      "completedTurnId": "01a0fab5-c4d3-7552-9380-6e754466a372",
+      "status": "completed",
+      "completedAt": 1790913098,
+      "completedAtISO": "2026-10-02T03:51:38.000Z"
+    },
+    {
+      "team": "UIUX",
+      "title": "EXODUSER UIUX팀",
+      "threadId": "01a0faaf-8fd2-7083-b174-69c604bd58b0",
+      "hostId": "local",
+      "completedTurnId": "01a0fab5-c54f-7dd0-8482-984e9a6b9bd4",
+      "status": "completed",
+      "completedAt": 1790913131,
+      "completedAtISO": "2026-10-02T03:52:11.000Z"
+    },
+    {
+      "team": "ITEM",
+      "title": "EXODUSER 아이템팀",
+      "threadId": "01a0faaf-92a3-7eb1-842d-eb4baa1a2954",
+      "hostId": "local",
+      "completedTurnId": "01a0fab5-c60d-7853-a755-df884c0fb1ad",
+      "status": "completed",
+      "completedAt": 1790913044,
+      "completedAtISO": "2026-10-02T03:50:44.000Z"
+    },
+    {
+      "team": "SOUND",
+      "title": "EXODUSER 사운드팀",
+      "threadId": "01a0faaf-956a-74a3-9bf1-77032f124e2d",
+      "hostId": "local",
+      "completedTurnId": "01a0fab5-c6bb-77a0-a8a8-30b191ba4269",
+      "status": "completed",
+      "completedAt": 1790912980,
+      "completedAtISO": "2026-10-02T03:49:40.000Z"
+    },
+    {
+      "team": "QA",
+      "title": "EXODUSER QA 성능팀",
+      "threadId": "01a0faaf-9806-7cc1-8ef3-0783fd03d2f6",
+      "hostId": "local",
+      "completedTurnId": "01a0fab5-c770-7692-b96c-c017b743fa78",
+      "status": "completed",
+      "completedAt": 1790912958,
+      "completedAtISO": "2026-10-02T03:49:18.000Z"
+    },
+    {
+      "team": "ENEMY",
+      "title": "EXODUSER 몬스터 AI팀",
+      "threadId": "01a0faaf-9ade-74d3-8162-4261329b1ac3",
+      "hostId": "local",
+      "completedTurnId": "01a0fab5-c829-7030-b069-2b1d99d85ba7",
+      "status": "completed",
+      "completedAt": 1790913165,
+      "completedAtISO": "2026-10-02T03:52:45.000Z"
+    },
+    {
+      "team": "BUILD",
+      "title": "EXODUSER 통합 빌드팀",
+      "threadId": "01a0faaf-9dd5-7c91-ab09-ee0bcff343b0",
+      "hostId": "local",
+      "completedTurnId": "01a0fab5-c8a6-7113-95d5-39fa109bfc7e",
+      "status": "completed",
+      "completedAt": 1790913242,
+      "completedAtISO": "2026-10-02T03:54:02.000Z"
+    },
+    {
+      "team": "BALANCE",
+      "title": "EXODUSER 밸런스 경제팀",
+      "threadId": "01a0faaf-a06a-79a2-9def-58eb8ad10d65",
+      "hostId": "local",
+      "completedTurnId": "01a0fab5-c95b-7160-b52f-097404a21529",
+      "status": "completed",
+      "completedAt": 1790912969,
+      "completedAtISO": "2026-10-02T03:49:29.000Z"
+    },
+    {
+      "team": "ANIMVFX",
+      "title": "EXODUSER 애니메이션 VFX팀",
+      "threadId": "01a0faaf-a2e6-7262-afc1-196ae9a0ab80",
+      "hostId": "local",
+      "completedTurnId": "01a0fab5-c9c8-7203-83b9-82e85d161d5f",
+      "status": "completed",
+      "completedAt": 1790913440,
+      "completedAtISO": "2026-10-02T03:57:20.000Z"
+    }
+  ]
 }

@@ -128,3 +128,7 @@ Mac core.ignorecase=true에서 기존 build/ 규칙이 tools/team-followup-20261
 ### 2026-10-02 실행 제공자 후속 원칙
 
 사용자는 Claude Code 토큰도 활용하려는 의향을 밝혔다. 새11개 Codex 관리채팅은 Claude 실행팀으로 간주하지 않는다. 이번 Codex 독립 검수를 완료·인수하고 원래 Claude7/Codex4에 중복되지 않는 다음 한 건을 전달한다. 실제 원세션 수신·Read를 확인하기 전에는 재가동/Claude 토큰 활용 완료로 보고하지 않는다. VS Code 자체는 필수 조건이 아니며 기존 원세션 실행창과 권한을 보존한다. 이미 실행중인 세션을 --bg --resume으로 복제하지 않는다.
+
+### 2026-10-02 Claude 직접 실행 대안의 실제 적용
+
+사용자가Claude사용을지시해 기존대화형창을보존하고공식비대화형CLI의 no-session-persistence로7역할후속검토를실행했다. 임의원세션복제/재개가아니며 기존Codex11건완료뒤남은별도경계검토다. Read/Glob/Grep만허용하고Claude API usage/성공Read/최종응답으로실행·완료를구분한다. 다음후속도원제공자실행을우선하며 Codex관리채팅자동연결로추정하지않는다. 기존원세션미수신이력은보존한다. CLAUDE-PROVIDER-DISPATCH-20261002.md/json을최신실행근거로참조한다.

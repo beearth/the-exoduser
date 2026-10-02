@@ -1,0 +1,567 @@
+{
+  "recordedAt": "2026-10-02T04:05:10.483310+00:00",
+  "userRequest": "Claude Code 토큰도 함께 활용",
+  "provider": "Claude Code",
+  "authentication": "claude.ai Max, firstParty; API key/auth token/third-party provider env absent",
+  "method": "official non-interactive print mode with no session persistence; existing interactive sessions untouched",
+  "availableTools": [
+    "Read",
+    "Glob",
+    "Grep"
+  ],
+  "uiAttempt": "Code AX selection disagreed with target; coordinate input noWindowsAvailable; no prompt sent to original interactive sessions",
+  "originalClaudeSessionsResumed": 0,
+  "newCodexChatsCreated": 0,
+  "productionApplied": false,
+  "roles": [
+    {
+      "role": "ART",
+      "model": "claude-opus-4-8",
+      "ephemeralSessionId": "d463e449-45d0-4aa4-a36e-5b9ce1c50fb2",
+      "tools": [
+        "Glob",
+        "Grep",
+        "Read"
+      ],
+      "permissionMode": "default",
+      "taskFile": "tools/team-followup-20261002/claude-provider/ART/TASK.md",
+      "taskSha256": "679b947774836e6487ba4b7e058d1266398bb1d3a8db485afcf2897a9b6b995e",
+      "actualReadRequestCount": 5,
+      "successfulReadCount": 5,
+      "successfulReadFiles": [
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/ART/task.md",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/ART/result.md",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/ART/evidence.json",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/ART/../../../../AGENTS.md",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html"
+      ],
+      "apiResponseUsageObserved": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 13555,
+        "cache_read_input_tokens": 36633,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 13555
+        },
+        "output_tokens": 3,
+        "service_tier": "standard",
+        "inference_geo": "not_available"
+      },
+      "status": "running",
+      "rawStreamFile": "tmp/mac-migration-runtime/claude-provider-20261002/ART/agent-stream.jsonl"
+    },
+    {
+      "role": "MAP",
+      "model": "claude-opus-4-8",
+      "ephemeralSessionId": "acad83c7-97da-4351-94a4-e09b013629c2",
+      "tools": [
+        "Glob",
+        "Grep",
+        "Read"
+      ],
+      "permissionMode": "default",
+      "taskFile": "tools/team-followup-20261002/claude-provider/MAP/TASK.md",
+      "taskSha256": "810249858f6f807a4103870437ac432428af9e4d43702dc1f3b5e55e53c1f550",
+      "actualReadRequestCount": 4,
+      "successfulReadCount": 4,
+      "successfulReadFiles": [
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/MAP/task.md",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/MAP/result.md",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/MAP/evidence.json"
+      ],
+      "apiResponseUsageObserved": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 1520,
+        "cache_read_input_tokens": 62638,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 1520
+        },
+        "output_tokens": 3,
+        "service_tier": "standard",
+        "inference_geo": "not_available"
+      },
+      "status": "running",
+      "rawStreamFile": "tmp/mac-migration-runtime/claude-provider-20261002/MAP/agent-stream.jsonl"
+    },
+    {
+      "role": "SKILL",
+      "model": "claude-opus-4-8",
+      "ephemeralSessionId": "e4780ba6-4e15-404c-9824-3cbcd4e494ad",
+      "tools": [
+        "Glob",
+        "Grep",
+        "Read"
+      ],
+      "permissionMode": "default",
+      "taskFile": "tools/team-followup-20261002/claude-provider/SKILL/TASK.md",
+      "taskSha256": "7d9e1805b39338101b00bb4d464c5cb8ef9bff94672d625648f036da247941ad",
+      "actualReadRequestCount": 10,
+      "successfulReadCount": 10,
+      "successfulReadFiles": [
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/SKILL/task.md",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/SKILL/result.md",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/SKILL/evidence.json",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/AGENTS.md",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/2_1 스킬관리+합체시스템+자원/SKILL03_설치확정_자원검수_20261001.md",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/SKILL/mortar-confirm-source-before.txt",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html"
+      ],
+      "apiResponseUsageObserved": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 4121,
+        "cache_read_input_tokens": 71763,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 4121
+        },
+        "output_tokens": 3,
+        "service_tier": "standard",
+        "inference_geo": "not_available"
+      },
+      "status": "running",
+      "rawStreamFile": "tmp/mac-migration-runtime/claude-provider-20261002/SKILL/agent-stream.jsonl"
+    },
+    {
+      "role": "SOUND",
+      "model": "claude-opus-4-8",
+      "ephemeralSessionId": "bf390cb2-37ac-46a3-aa00-61bd96d22780",
+      "tools": [
+        "Glob",
+        "Grep",
+        "Read"
+      ],
+      "permissionMode": "default",
+      "taskFile": "tools/team-followup-20261002/claude-provider/SOUND/TASK.md",
+      "taskSha256": "0871b191fa7aff688a458d150f195d9d51150662d0e22312975c0ae16d7aa636",
+      "actualReadRequestCount": 11,
+      "successfulReadCount": 11,
+      "successfulReadFiles": [
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/SOUND/result.md",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/SOUND/evidence.json",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/AGENTS.md",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/SOUND/OWNER_NEXT_20261002.md",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/game-easy-test.html"
+      ],
+      "apiResponseUsageObserved": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 1204,
+        "cache_read_input_tokens": 82779,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 1204
+        },
+        "output_tokens": 2,
+        "service_tier": "standard",
+        "inference_geo": "not_available"
+      },
+      "status": "running",
+      "rawStreamFile": "tmp/mac-migration-runtime/claude-provider-20261002/SOUND/agent-stream.jsonl"
+    },
+    {
+      "role": "QA",
+      "model": "claude-opus-4-8",
+      "ephemeralSessionId": "2a538560-cfd9-47b2-8ce8-7263ba19844b",
+      "tools": [
+        "Glob",
+        "Grep",
+        "Read"
+      ],
+      "permissionMode": "default",
+      "taskFile": "tools/team-followup-20261002/claude-provider/QA/TASK.md",
+      "taskSha256": "ae32b37bc60fb5968f92e4802bff33ac1d7346c175c7dac5b5d1abd774019bb2",
+      "actualReadRequestCount": 12,
+      "successfulReadCount": 10,
+      "successfulReadFiles": [
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/AGENTS.md",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/QA/task.md",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/QA/result.md",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/QA/evidence.json",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/browser-host/host.js",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/browser-host/binding-ports.js",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/browser-host/persistence-integration-port.js",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/browser-host/binding-d10.js",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/browser-bootstrap-ui.js",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/ITEM/browser-bootstrap-api.js"
+      ],
+      "apiResponseUsageObserved": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 3154,
+        "cache_read_input_tokens": 53612,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 3154
+        },
+        "output_tokens": 3,
+        "service_tier": "standard",
+        "inference_geo": "not_available"
+      },
+      "status": "running",
+      "rawStreamFile": "tmp/mac-migration-runtime/claude-provider-20261002/QA/agent-stream.jsonl"
+    },
+    {
+      "role": "ENEMY",
+      "model": "claude-opus-4-8",
+      "ephemeralSessionId": "228f0513-e22a-47da-b399-bc8fe5dc8aea",
+      "tools": [
+        "Glob",
+        "Grep",
+        "Read"
+      ],
+      "permissionMode": "default",
+      "taskFile": "tools/team-followup-20261002/claude-provider/ENEMY/TASK.md",
+      "taskSha256": "150c6ff402f9df210c1b37d98cb37596a9803e319befc43c3271bc56e3d1961b",
+      "actualReadRequestCount": 8,
+      "successfulReadCount": 8,
+      "successfulReadFiles": [
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/ENEMY/task.md",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/ENEMY/result.md",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/ENEMY/evidence.json",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/ENEMY/checks.mjs",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/AGENTS.md",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html"
+      ],
+      "apiResponseUsageObserved": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 19194,
+        "cache_read_input_tokens": 51114,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 19194
+        },
+        "output_tokens": 4,
+        "service_tier": "standard",
+        "inference_geo": "not_available"
+      },
+      "status": "running",
+      "rawStreamFile": "tmp/mac-migration-runtime/claude-provider-20261002/ENEMY/agent-stream.jsonl"
+    },
+    {
+      "role": "ANIMVFX",
+      "model": "claude-opus-4-8",
+      "ephemeralSessionId": "acd692f6-25f4-4ac0-b520-7a9404afcdee",
+      "tools": [
+        "Glob",
+        "Grep",
+        "Read"
+      ],
+      "permissionMode": "default",
+      "taskFile": "tools/team-followup-20261002/claude-provider/ANIMVFX/TASK.md",
+      "taskSha256": "7a5faffc4880d4bdbe15c6d2a2843989c3a2e0403469f623525837571d7705b0",
+      "actualReadRequestCount": 5,
+      "successfulReadCount": 5,
+      "successfulReadFiles": [
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/ANIMVFX/task.md",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/ANIMVFX/result.md",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/ANIMVFX/evidence.json",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/ANIMVFX/checks.mjs",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/AGENTS.md"
+      ],
+      "apiResponseUsageObserved": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 23710,
+        "cache_read_input_tokens": 52881,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 23710
+        },
+        "output_tokens": 8,
+        "service_tier": "standard",
+        "inference_geo": "not_available"
+      },
+      "status": "running",
+      "rawStreamFile": "tmp/mac-migration-runtime/claude-provider-20261002/ANIMVFX/agent-stream.jsonl"
+    }
+  ],
+  "originalCodexReviews": "11/11 completed, new Codex chats idle; submitted artifacts preserved, not production acceptance",
+  "rawLogScope": "ignored temporary streams remain on disk; scoped results and provenance saved after completion",
+  "codexReviewCompletions": [
+    {
+      "team": "ART",
+      "title": "EXODUSER 아트팀",
+      "threadId": "01a0faaf-479e-7143-99d6-4e1fdb5fdde5",
+      "hostId": "local",
+      "completedTurnId": "01a0fab5-c35b-7771-9141-0847624a758c",
+      "status": "completed",
+      "completedAt": 1790913036,
+      "completedAtISO": "2026-10-02T03:50:36.000Z"
+    },
+    {
+      "team": "MAP",
+      "title": "EXODUSER 맵팀",
+      "threadId": "01a0faaf-8ab1-7c81-9d2b-d17f15ba25a3",
+      "hostId": "local",
+      "completedTurnId": "01a0fab5-c447-7583-875e-3b62c717a449",
+      "status": "completed",
+      "completedAt": 1790913483,
+      "completedAtISO": "2026-10-02T03:58:03.000Z"
+    },
+    {
+      "team": "SKILL",
+      "title": "EXODUSER 스킬팀",
+      "threadId": "01a0faaf-8d1e-7c93-94c0-37b5df8a10eb",
+      "hostId": "local",
+      "completedTurnId": "01a0fab5-c4d3-7552-9380-6e754466a372",
+      "status": "completed",
+      "completedAt": 1790913098,
+      "completedAtISO": "2026-10-02T03:51:38.000Z"
+    },
+    {
+      "team": "UIUX",
+      "title": "EXODUSER UIUX팀",
+      "threadId": "01a0faaf-8fd2-7083-b174-69c604bd58b0",
+      "hostId": "local",
+      "completedTurnId": "01a0fab5-c54f-7dd0-8482-984e9a6b9bd4",
+      "status": "completed",
+      "completedAt": 1790913131,
+      "completedAtISO": "2026-10-02T03:52:11.000Z"
+    },
+    {
+      "team": "ITEM",
+      "title": "EXODUSER 아이템팀",
+      "threadId": "01a0faaf-92a3-7eb1-842d-eb4baa1a2954",
+      "hostId": "local",
+      "completedTurnId": "01a0fab5-c60d-7853-a755-df884c0fb1ad",
+      "status": "completed",
+      "completedAt": 1790913044,
+      "completedAtISO": "2026-10-02T03:50:44.000Z"
+    },
+    {
+      "team": "SOUND",
+      "title": "EXODUSER 사운드팀",
+      "threadId": "01a0faaf-956a-74a3-9bf1-77032f124e2d",
+      "hostId": "local",
+      "completedTurnId": "01a0fab5-c6bb-77a0-a8a8-30b191ba4269",
+      "status": "completed",
+      "completedAt": 1790912980,
+      "completedAtISO": "2026-10-02T03:49:40.000Z"
+    },
+    {
+      "team": "QA",
+      "title": "EXODUSER QA 성능팀",
+      "threadId": "01a0faaf-9806-7cc1-8ef3-0783fd03d2f6",
+      "hostId": "local",
+      "completedTurnId": "01a0fab5-c770-7692-b96c-c017b743fa78",
+      "status": "completed",
+      "completedAt": 1790912958,
+      "completedAtISO": "2026-10-02T03:49:18.000Z"
+    },
+    {
+      "team": "ENEMY",
+      "title": "EXODUSER 몬스터 AI팀",
+      "threadId": "01a0faaf-9ade-74d3-8162-4261329b1ac3",
+      "hostId": "local",
+      "completedTurnId": "01a0fab5-c829-7030-b069-2b1d99d85ba7",
+      "status": "completed",
+      "completedAt": 1790913165,
+      "completedAtISO": "2026-10-02T03:52:45.000Z"
+    },
+    {
+      "team": "BUILD",
+      "title": "EXODUSER 통합 빌드팀",
+      "threadId": "01a0faaf-9dd5-7c91-ab09-ee0bcff343b0",
+      "hostId": "local",
+      "completedTurnId": "01a0fab5-c8a6-7113-95d5-39fa109bfc7e",
+      "status": "completed",
+      "completedAt": 1790913242,
+      "completedAtISO": "2026-10-02T03:54:02.000Z"
+    },
+    {
+      "team": "BALANCE",
+      "title": "EXODUSER 밸런스 경제팀",
+      "threadId": "01a0faaf-a06a-79a2-9def-58eb8ad10d65",
+      "hostId": "local",
+      "completedTurnId": "01a0fab5-c95b-7160-b52f-097404a21529",
+      "status": "completed",
+      "completedAt": 1790912969,
+      "completedAtISO": "2026-10-02T03:49:29.000Z"
+    },
+    {
+      "team": "ANIMVFX",
+      "title": "EXODUSER 애니메이션 VFX팀",
+      "threadId": "01a0faaf-a2e6-7262-afc1-196ae9a0ab80",
+      "hostId": "local",
+      "completedTurnId": "01a0fab5-c9c8-7203-83b9-82e85d161d5f",
+      "status": "completed",
+      "completedAt": 1790913440,
+      "completedAtISO": "2026-10-02T03:57:20.000Z"
+    }
+  ],
+  "preservedCodexSubmissions": [
+    {
+      "path": "tools/team-followup-20261002/project-teams/ANIMVFX/checks.mjs",
+      "sha256": "c4f4bbcc7f5834d89b1cbb15ae2f768fd92f962b4c613271119ed9f9b557ac24",
+      "acceptance": "submitted; production unapplied; root semantic/runtime acceptance pending"
+    },
+    {
+      "path": "tools/team-followup-20261002/project-teams/ANIMVFX/evidence.json",
+      "sha256": "445776a02879633d04b3ae976305f71261e7367118ae8e2134510320a66e1fc1",
+      "acceptance": "submitted; production unapplied; root semantic/runtime acceptance pending"
+    },
+    {
+      "path": "tools/team-followup-20261002/project-teams/ANIMVFX/result.md",
+      "sha256": "6d995be1756e8d6ada2107abac3f4a50cfabdfc51b4bfc6a55cc7408b441c277",
+      "acceptance": "submitted; production unapplied; root semantic/runtime acceptance pending"
+    },
+    {
+      "path": "tools/team-followup-20261002/project-teams/ART/checks.mjs",
+      "sha256": "0ee64151fe1349a6b3f15d12cd53ccf07191657ba582ad8c3017bbbabe62d10f",
+      "acceptance": "submitted; production unapplied; root semantic/runtime acceptance pending"
+    },
+    {
+      "path": "tools/team-followup-20261002/project-teams/ART/evidence.json",
+      "sha256": "e3e74cdd2c77d2d8bca27f9bf7f9523377426249c77d3cfe6da8f915a844cd6a",
+      "acceptance": "submitted; production unapplied; root semantic/runtime acceptance pending"
+    },
+    {
+      "path": "tools/team-followup-20261002/project-teams/ART/result.md",
+      "sha256": "55c3965e25a974f6cab381a97ce4c30d04498ec3f1951d14ac831f4f09d48910",
+      "acceptance": "submitted; production unapplied; root semantic/runtime acceptance pending"
+    },
+    {
+      "path": "tools/team-followup-20261002/project-teams/BALANCE/checks.mjs",
+      "sha256": "cced08e15614682da1e10813c6b832b1f027d05fb23922810355b6aecf7b9912",
+      "acceptance": "submitted; production unapplied; root semantic/runtime acceptance pending"
+    },
+    {
+      "path": "tools/team-followup-20261002/project-teams/BALANCE/evidence.json",
+      "sha256": "e269513abda2fe1f6a241c6674de29c35d0d892b6b01b027a96c55b176438767",
+      "acceptance": "submitted; production unapplied; root semantic/runtime acceptance pending"
+    },
+    {
+      "path": "tools/team-followup-20261002/project-teams/BALANCE/result.md",
+      "sha256": "7c6d562060714c140828cb60ca20613037233f0662c1cb2868e04221244e9bc8",
+      "acceptance": "submitted; production unapplied; root semantic/runtime acceptance pending"
+    },
+    {
+      "path": "tools/team-followup-20261002/project-teams/BUILD_TEAM/checks.mjs",
+      "sha256": "991cc3ce166acfe2ae4bc6b6276ff376e51cdbc9c732353842e1f0e1c331751b",
+      "acceptance": "submitted; production unapplied; root semantic/runtime acceptance pending"
+    },
+    {
+      "path": "tools/team-followup-20261002/project-teams/BUILD_TEAM/evidence.json",
+      "sha256": "f26f11e6b0f41dbc3df5cb0a48046566c8cbd397eb724e27f25c964a6b52fb78",
+      "acceptance": "submitted; production unapplied; root semantic/runtime acceptance pending"
+    },
+    {
+      "path": "tools/team-followup-20261002/project-teams/BUILD_TEAM/result.md",
+      "sha256": "778734c303ea1e2054593f092d47b8fcffe8b0bf43412206f1674b1a1cbe569d",
+      "acceptance": "submitted; production unapplied; root semantic/runtime acceptance pending"
+    },
+    {
+      "path": "tools/team-followup-20261002/project-teams/ENEMY/checks.mjs",
+      "sha256": "db3fd62845b92cb553f2da4f8a8c1d2801c85ca2db113a0b675e696d6becfea1",
+      "acceptance": "submitted; production unapplied; root semantic/runtime acceptance pending"
+    },
+    {
+      "path": "tools/team-followup-20261002/project-teams/ENEMY/evidence.json",
+      "sha256": "986a111cd83b1954699d2c41f8b83acf8f980bad508ff3a17c2e37a78aa1f911",
+      "acceptance": "submitted; production unapplied; root semantic/runtime acceptance pending"
+    },
+    {
+      "path": "tools/team-followup-20261002/project-teams/ENEMY/result.md",
+      "sha256": "5aa36ae41a76cd01c0290a00eed8e243615acbd37e44480659314c5fa7d3c3d0",
+      "acceptance": "submitted; production unapplied; root semantic/runtime acceptance pending"
+    },
+    {
+      "path": "tools/team-followup-20261002/project-teams/ITEM/checks.mjs",
+      "sha256": "7c5378cce0e78735ba3948c2977f40a1efbc5795a57675d64ab2fadd30d33ef6",
+      "acceptance": "submitted; production unapplied; root semantic/runtime acceptance pending"
+    },
+    {
+      "path": "tools/team-followup-20261002/project-teams/ITEM/evidence.json",
+      "sha256": "fea98d90a8119f48b1f90dfa6de2617cd1d77fba19627c221392d48c6348a06c",
+      "acceptance": "submitted; production unapplied; root semantic/runtime acceptance pending"
+    },
+    {
+      "path": "tools/team-followup-20261002/project-teams/ITEM/result.md",
+      "sha256": "60d90da2b645915177f23fc3299a6837813bc581fd9b72afe8ba3477d33c7241",
+      "acceptance": "submitted; production unapplied; root semantic/runtime acceptance pending"
+    },
+    {
+      "path": "tools/team-followup-20261002/project-teams/MAP/checks.mjs",
+      "sha256": "80db6c160a50c115a29c9e2ac18ef805a551a91c406859a9abc85e59c57942ec",
+      "acceptance": "submitted; production unapplied; root semantic/runtime acceptance pending"
+    },
+    {
+      "path": "tools/team-followup-20261002/project-teams/MAP/evidence.json",
+      "sha256": "9b4a3707d5f89ea9a4ae88596c304c423593e8812e80c7971cba2a8ef938c01c",
+      "acceptance": "submitted; production unapplied; root semantic/runtime acceptance pending"
+    },
+    {
+      "path": "tools/team-followup-20261002/project-teams/MAP/result.md",
+      "sha256": "c89fc6eb3bbc9286141537852586a2dc3e6f946c4469963b83ea0c52e7933251",
+      "acceptance": "submitted; production unapplied; root semantic/runtime acceptance pending"
+    },
+    {
+      "path": "tools/team-followup-20261002/project-teams/QA/evidence.json",
+      "sha256": "409a90339126ae0aa8dab350ac8a967bcdd6fcf23e74cfd7f2092be8a8c3edb2",
+      "acceptance": "submitted; production unapplied; root semantic/runtime acceptance pending"
+    },
+    {
+      "path": "tools/team-followup-20261002/project-teams/QA/proof.jpg",
+      "sha256": "bd208986ad0f90dbf5625f65657d4f128e75143abb73351aa7d974b2d392a335",
+      "acceptance": "submitted; production unapplied; root semantic/runtime acceptance pending"
+    },
+    {
+      "path": "tools/team-followup-20261002/project-teams/QA/result.md",
+      "sha256": "922303272f8c8a4fe9c9327c06a6cbdd4fc3b49fb4ebd12c1c0d92c5f04ec3a6",
+      "acceptance": "submitted; production unapplied; root semantic/runtime acceptance pending"
+    },
+    {
+      "path": "tools/team-followup-20261002/project-teams/SKILL/checks.mjs",
+      "sha256": "403f138c8e8f0eb9d4dcc732d27d0e50f9198a4d846b85223f19d3dc948a1499",
+      "acceptance": "submitted; production unapplied; root semantic/runtime acceptance pending"
+    },
+    {
+      "path": "tools/team-followup-20261002/project-teams/SKILL/evidence.json",
+      "sha256": "bd4e4e78954f5db9a7550f961e1c36043fd8132b35f7ef61cf1dc54d479c8217",
+      "acceptance": "submitted; production unapplied; root semantic/runtime acceptance pending"
+    },
+    {
+      "path": "tools/team-followup-20261002/project-teams/SKILL/result.md",
+      "sha256": "fa74e64f3b6850da06e856a58c673b484f14aceb0625262f3ee6f2655619f7d8",
+      "acceptance": "submitted; production unapplied; root semantic/runtime acceptance pending"
+    },
+    {
+      "path": "tools/team-followup-20261002/project-teams/SOUND/checks.mjs",
+      "sha256": "330014728515603266444bb5507885a8d4c3a1108a3afa23936f380463168d3b",
+      "acceptance": "submitted; production unapplied; root semantic/runtime acceptance pending"
+    },
+    {
+      "path": "tools/team-followup-20261002/project-teams/SOUND/evidence.json",
+      "sha256": "c55d5097d170f1e6007b79f7b34dc50df2a4a7d78746bcaa6aa11b8323d1a80d",
+      "acceptance": "submitted; production unapplied; root semantic/runtime acceptance pending"
+    },
+    {
+      "path": "tools/team-followup-20261002/project-teams/SOUND/result.md",
+      "sha256": "c4ac6147bb963eb90a6dc72b0b36147943c57b01fe078a64b8335cecd2fe0090",
+      "acceptance": "submitted; production unapplied; root semantic/runtime acceptance pending"
+    },
+    {
+      "path": "tools/team-followup-20261002/project-teams/UIUX/candidate.patch",
+      "sha256": "5a00f14ffc6f9bd519ba198ff59782811d3584f1666e8ad32e9967537bf895a4",
+      "acceptance": "submitted; production unapplied; root semantic/runtime acceptance pending"
+    },
+    {
+      "path": "tools/team-followup-20261002/project-teams/UIUX/evidence.json",
+      "sha256": "70170da4eb23ef5b362ce96c371e9aed4e2ca28b94a39018c8d4d2880100623c",
+      "acceptance": "submitted; production unapplied; root semantic/runtime acceptance pending"
+    },
+    {
+      "path": "tools/team-followup-20261002/project-teams/UIUX/result.md",
+      "sha256": "e5907b150d89703e0a7506da594c90fb7110ddbcdf52527ee991280b0f3e7b5c",
+      "acceptance": "submitted; production unapplied; root semantic/runtime acceptance pending"
+    }
+  ],
+  "preservationValidation": {
+    "jsonValid": true,
+    "checksSyntaxValid": 9,
+    "productionInputsUnchanged": 6,
+    "byteChangesToCodexSubmissions": 0,
+    "fullDiffCheckNotes": [
+      "ART/result.md and ANIMVFX/result.md each retain one trailing blank line as submitted; immutable input/evidence bytes preserved"
+    ]
+  }
+}

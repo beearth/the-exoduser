@@ -1,0 +1,1551 @@
+{
+  "schemaVersion": 1,
+  "team": "UIUX",
+  "task": "cross-panel-focus-source",
+  "status": "source-defect-reproduced_unapplied-minimal-candidate-verified_runtime-pending",
+  "received": {
+    "source": "총괄의 이 채팅 후속 메시지; 기존11팀/VS Code 보존, 새 관리 채팅의 독립 과제 배정",
+    "exactTimestamp": null,
+    "note": "사용자 메시지에 정확 UTC 없음; 최초 실제 Read 이전 수신"
+  },
+  "read": {
+    "task": "tools/team-followup-20261002/project-teams/UIUX/task.md",
+    "fullTaskReadConfirmed": true,
+    "fullTaskReadTool": "exec cat absolute task.md",
+    "taskReadExactTimestamp": null,
+    "firstTimedReadUTC": "2026-10-02T03:43:53Z",
+    "firstTimedRead": "실제 owner-dispatch/UIUX-task.md cat, current source rg, 기존 하니스 cat",
+    "originalSession": "01a0f6e5-8653-7ae2-8b2b-314e275c215c",
+    "duplicateCheck": "official read_thread last ossuary-production-acceptance completed, no new cross-panel task; own folder task.md only"
+  },
+  "firstEditUTC": "2026-10-02T03:45:49.986429+00:00",
+  "firstEditEvidence": "checks.mjs birthtime UTC; now embedded into evidence/reproductionSource",
+  "startHead": "96610b6546a31e882962470ea1f2164ce94edca6",
+  "remoteRecovery": "총괄 전달 exact local/GitHub ref96610b65; 이 담당 원격쓰기/새 체크포인트0",
+  "counts": {
+    "start": 23,
+    "middle": 45,
+    "patchPrepared": 47,
+    "final": 52,
+    "threshold": 80,
+    "stopBefore": 100,
+    "note": "공용 count는 다른 담당 진행 포함; 해당 파일을 임의 정리하지 않음"
+  },
+  "protectedBaseline": {
+    "at": "2026-10-02T03:46:06.268516+00:00",
+    "firstEdit": "2026-10-02T03:45:49.986429+00:00",
+    "hashes": {
+      "AGENTS.md": "fd59bef70960bcaf1ab9910051faa860362884e574ac2869fad05c6872ae04e4",
+      "game.html": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+      "game-easy-test.html": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+      "ui-panels.js": "b22c4a31141672304a15adfae3a5050cb9fde3b96601507c8f10de3ea63f4cb5",
+      "index.html": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8",
+      "server.cjs": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d",
+      "node-main.js": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce",
+      "docs/2_7 인벤토리+장비시스템/INVENTORY_KEYBOARD_FOCUS_20261002.md": "9a4144457fbaed5d263867ab1a19fe14a65b3039790aaf72d6c5225a6d58038a",
+      "docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md": "2386910936ec5c71964c0d3f25bd8bab8253c8695e198f272c117b1b7431fb6d",
+      "tools/team-followup-20261002/project-teams/UIUX/task.md": "a1e9fd94964a89bba877218ebc903018e4c7a11181eae6806bdca855b10f61fa",
+      "tools/team-followup-20261002/owner-dispatch/UIUX-task.md": "5732ff8f7b58f5500036418a5836d327d21401a338843869aa1c86daf86fc70a",
+      "tools/team-followup-20261001/UIUX/inventory-dom/node-dom.mjs": "b3c6bb3abf74d5b9e464d1db2e5d2441645af3be8eb096f3c30788b7019cfb95",
+      "tools/team-followup-20261001/UIUX/card-removal-focus/host/harness.js": "958549316c5b6abc4a5d15e8ddd3d6ef6c011af68bdcade5318bccd9327799c4",
+      "tools/team-followup-20261001/UIUX/inventory-dom-candidate.mjs": "3e46ee1493f08b238d85f40ebd455f8c7a9908c6c0eacd4feecab6b448773e46",
+      "tools/team-followup-20261001/UIUX/filter-focus-candidate.mjs": "634f7d86fadec17b0b408a644c66524681fec605f8c9cdd719b00885a3575c38"
+    },
+    "indexSha256": "7beab93b570ef992959359065cf6a2e79dffc1c7a3988df782c36aed1816ca2e"
+  },
+  "executions": {
+    "initialCurrent": {
+      "startedAt": "2026-10-02T03:46:06.334Z",
+      "finishedAt": "2026-10-02T03:46:06.959Z",
+      "passed": 0,
+      "failed": 16,
+      "exitCode": 1,
+      "reason": "실제 card activation 이후 분리된 e.target의 closest가 panel guard를 통과하지 않음; 현재 소스 RED"
+    },
+    "firstCandidate": {
+      "startedAt": "2026-10-02T03:47:01.681Z",
+      "finishedAt": "2026-10-02T03:47:02.310Z",
+      "passed": 12,
+      "failed": 4,
+      "exitCode": 1,
+      "reason": "easy에 main 전용 _detailItem metadata를 요구한 하니스 기대값4건; 실제 source를 확인해 양쪽 공통 selected/item-detail 및 activeElement 계약으로 하니스만 정정"
+    },
+    "current": {
+      "task": "cross-panel-focus-source",
+      "mode": "current-production",
+      "startedAt": "2026-10-02T03:47:25.318Z",
+      "finishedAt": "2026-10-02T03:47:25.946Z",
+      "head": "96610b6546a31e882962470ea1f2164ce94edca6",
+      "sources": {
+        "game.html": {
+          "productionSha256": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+          "testedSha256": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+          "factorySha256": "d29c0d8a9cdfac122a1f65d272d24fc75c2be0ea35b02d47468f9c5c0a6261b5",
+          "functions": {
+            "_invPlaceDetail": {
+              "sha256": "f6da18a101abc3c9680f0319b0c15337594c01b7bb26e73819892eddd19b5abb",
+              "line": 47795
+            },
+            "_invRenderDetail": {
+              "sha256": "eeba01ab414a3d80b20a54ae66465a45e971e01f38073c75d21137e5e2cd43b7",
+              "line": 47932
+            },
+            "_invClearHover": {
+              "sha256": "8f0494e1cde07e3c86b023236cde3cf504dad954f86f1f241e2ed2e8d53e0a0d",
+              "line": 48106
+            },
+            "_invRestoreSelectedActions": {
+              "sha256": "891e7095b75973a2b707d68dd4ef938811f8e437a13638788109834ec8d7eb26",
+              "line": 48113
+            },
+            "_invCategoryMatches": {
+              "sha256": "bf6f1ec41adb83e63f2e35d8596c546da2270bb74e936a6aebb9a2030c18d9f7",
+              "line": 48505
+            },
+            "_invChangeCategory": {
+              "sha256": "dcdf0bcd02c8d0404702aaed3ef171bbb3fc429e89c8ebe3d57f6486a4fd1d05",
+              "line": 48512
+            },
+            "_invPlacement": {
+              "sha256": "879d8a804ff8c3394f4aab7251ede02e41acb2a6e0783e91db7d7c549d327389",
+              "line": 48518
+            },
+            "_invPlacementChanged": {
+              "sha256": "42242a0857c46616150aa572945a78eb4c68caec058e9576f78d670a19994a54",
+              "line": 48521
+            },
+            "renderInv": {
+              "sha256": "101161bf08b36d59689a05f6f282831f380cd3c5cf20e60f9020e9cfa946742a",
+              "line": 48527
+            },
+            "renderOssPanel": {
+              "sha256": "97634e82bbf015b2c4ec1c4adacfd0611b1e691656313b3b847596f89a2f7b51",
+              "line": 48391
+            },
+            "_ossHideBoneInfo": {
+              "sha256": "7d847b61dc4abca1e0e3bcdba0f05ba092fa4f2615b013214cad5cd460b17c84",
+              "line": 48364
+            },
+            "_bonePartName": {
+              "sha256": "bc78e3c1bc760ae3ac00acccb46de32c1b1e25904da2ac33d558907425023931",
+              "line": 44274
+            },
+            "_ossSetComplete": {
+              "sha256": "88b4e739e75b64707e03d3539ff7948e2af6d7df6761c9e880ee86f44d17086e",
+              "line": 44286
+            },
+            "closePanel": {
+              "sha256": "f63fb8abb59fa846a7b17a11b89a0ecf13fa30f61fdb43be1387f3978e2c9f4f",
+              "line": 42597
+            },
+            "_invRenderEmptyDetail": {
+              "sha256": "ed79b99a87f9d1860d861391b9c4833d932de40a442971fd7ecaa7c591cf47ac",
+              "line": 48061
+            }
+          }
+        },
+        "game-easy-test.html": {
+          "productionSha256": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+          "testedSha256": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+          "factorySha256": "d29c0d8a9cdfac122a1f65d272d24fc75c2be0ea35b02d47468f9c5c0a6261b5",
+          "functions": {
+            "_invPlaceDetail": {
+              "sha256": "f6da18a101abc3c9680f0319b0c15337594c01b7bb26e73819892eddd19b5abb",
+              "line": 46389
+            },
+            "_invRenderDetail": {
+              "sha256": "b39c5bed0208cb35d3ca2e21ceaa17528967d9aa301471b3572abd8b99384470",
+              "line": 46526
+            },
+            "_invClearHover": {
+              "sha256": "8f0494e1cde07e3c86b023236cde3cf504dad954f86f1f241e2ed2e8d53e0a0d",
+              "line": 46598
+            },
+            "_invRestoreSelectedActions": {
+              "sha256": "a673f79d16c5907e6f7a3394141f14daa76296720e3b0af21ec429e14f9cbc05",
+              "line": 46605
+            },
+            "_invCategoryMatches": {
+              "sha256": "f337c7995d2da57d084269483cf27e265a49c4875e6c9155b311a84334dfcefa",
+              "line": 46997
+            },
+            "_invChangeCategory": {
+              "sha256": "dcdf0bcd02c8d0404702aaed3ef171bbb3fc429e89c8ebe3d57f6486a4fd1d05",
+              "line": 47003
+            },
+            "_invPlacement": {
+              "sha256": "879d8a804ff8c3394f4aab7251ede02e41acb2a6e0783e91db7d7c549d327389",
+              "line": 47009
+            },
+            "_invPlacementChanged": {
+              "sha256": "42242a0857c46616150aa572945a78eb4c68caec058e9576f78d670a19994a54",
+              "line": 47012
+            },
+            "renderInv": {
+              "sha256": "52848e29be25d638277b03a446089eba7855dce0b47e2813ffa7c7a6bcadf838",
+              "line": 47018
+            },
+            "renderOssPanel": {
+              "sha256": "41d92ae50e8a62084eb9b9d3e44c5c203d1bf0f37e39cf3aa385089e5ef1d9bd",
+              "line": 46883
+            },
+            "_ossHideBoneInfo": {
+              "sha256": "7d847b61dc4abca1e0e3bcdba0f05ba092fa4f2615b013214cad5cd460b17c84",
+              "line": 46856
+            },
+            "_bonePartName": {
+              "sha256": "bc78e3c1bc760ae3ac00acccb46de32c1b1e25904da2ac33d558907425023931",
+              "line": 42911
+            },
+            "_ossSetComplete": {
+              "sha256": "88b4e739e75b64707e03d3539ff7948e2af6d7df6761c9e880ee86f44d17086e",
+              "line": 42923
+            },
+            "closePanel": {
+              "sha256": "f63fb8abb59fa846a7b17a11b89a0ecf13fa30f61fdb43be1387f3978e2c9f4f",
+              "line": 41394
+            }
+          }
+        }
+      },
+      "compositionSha256": "b22c4a31141672304a15adfae3a5050cb9fde3b96601507c8f10de3ea63f4cb5",
+      "passed": 0,
+      "failed": 16,
+      "results": [
+        {
+          "name": "game.html/ko/retain filter→disabled take/remove→bag keyboard→close",
+          "pass": false,
+          "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'game-route'\n- undefined\n\n    at file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/UIUX/checks.mjs:102:49"
+        },
+        {
+          "name": "game.html/ko/retain interleaved rerender/Space cancellation/external ownership",
+          "pass": false,
+          "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'game-route'\n- undefined\n\n    at file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/UIUX/checks.mjs:122:95"
+        },
+        {
+          "name": "game.html/ko/blur filter→disabled take/remove→bag keyboard→close",
+          "pass": false,
+          "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'game-route'\n- undefined\n\n    at file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/UIUX/checks.mjs:102:49"
+        },
+        {
+          "name": "game.html/ko/blur interleaved rerender/Space cancellation/external ownership",
+          "pass": false,
+          "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'game-route'\n- undefined\n\n    at file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/UIUX/checks.mjs:122:95"
+        },
+        {
+          "name": "game.html/en/retain filter→disabled take/remove→bag keyboard→close",
+          "pass": false,
+          "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'game-route'\n- undefined\n\n    at file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/UIUX/checks.mjs:102:49"
+        },
+        {
+          "name": "game.html/en/retain interleaved rerender/Space cancellation/external ownership",
+          "pass": false,
+          "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'game-route'\n- undefined\n\n    at file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/UIUX/checks.mjs:122:95"
+        },
+        {
+          "name": "game.html/en/blur filter→disabled take/remove→bag keyboard→close",
+          "pass": false,
+          "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'game-route'\n- undefined\n\n    at file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/UIUX/checks.mjs:102:49"
+        },
+        {
+          "name": "game.html/en/blur interleaved rerender/Space cancellation/external ownership",
+          "pass": false,
+          "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'game-route'\n- undefined\n\n    at file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/UIUX/checks.mjs:122:95"
+        },
+        {
+          "name": "game-easy-test.html/ko/retain filter→disabled take/remove→bag keyboard→close",
+          "pass": false,
+          "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'game-route'\n- undefined\n\n    at file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/UIUX/checks.mjs:102:49"
+        },
+        {
+          "name": "game-easy-test.html/ko/retain interleaved rerender/Space cancellation/external ownership",
+          "pass": false,
+          "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'game-route'\n- undefined\n\n    at file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/UIUX/checks.mjs:122:95"
+        },
+        {
+          "name": "game-easy-test.html/ko/blur filter→disabled take/remove→bag keyboard→close",
+          "pass": false,
+          "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'game-route'\n- undefined\n\n    at file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/UIUX/checks.mjs:102:49"
+        },
+        {
+          "name": "game-easy-test.html/ko/blur interleaved rerender/Space cancellation/external ownership",
+          "pass": false,
+          "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'game-route'\n- undefined\n\n    at file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/UIUX/checks.mjs:122:95"
+        },
+        {
+          "name": "game-easy-test.html/en/retain filter→disabled take/remove→bag keyboard→close",
+          "pass": false,
+          "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'game-route'\n- undefined\n\n    at file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/UIUX/checks.mjs:102:49"
+        },
+        {
+          "name": "game-easy-test.html/en/retain interleaved rerender/Space cancellation/external ownership",
+          "pass": false,
+          "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'game-route'\n- undefined\n\n    at file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/UIUX/checks.mjs:122:95"
+        },
+        {
+          "name": "game-easy-test.html/en/blur filter→disabled take/remove→bag keyboard→close",
+          "pass": false,
+          "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'game-route'\n- undefined\n\n    at file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/UIUX/checks.mjs:102:49"
+        },
+        {
+          "name": "game-easy-test.html/en/blur interleaved rerender/Space cancellation/external ownership",
+          "pass": false,
+          "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'game-route'\n- undefined\n\n    at file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/UIUX/checks.mjs:122:95"
+        }
+      ],
+      "limits": [
+        "Node DOM synthetic retain/blur/focus; no native events/layout/gamepad",
+        "Actual renderInv/renderOssPanel/factory/card/tab handlers; global keyboard guard only, not whole listener",
+        "Synthetic bone/ossuary state deletion; no real withdrawal/economy/save/portrait/image loading",
+        "Inherited item sizing/stats/storage/crystals/art/comparison stubs; no whole-game execution"
+      ],
+      "exitCode": 1
+    },
+    "candidate": {
+      "task": "cross-panel-focus-source",
+      "mode": "unapplied-candidate",
+      "startedAt": "2026-10-02T03:47:25.318Z",
+      "finishedAt": "2026-10-02T03:47:25.955Z",
+      "head": "96610b6546a31e882962470ea1f2164ce94edca6",
+      "sources": {
+        "game.html": {
+          "productionSha256": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+          "testedSha256": "f5e7c70347fea636f3a35957561748f447586941eaddcc2f2cb7572ff748812c",
+          "factorySha256": "d29c0d8a9cdfac122a1f65d272d24fc75c2be0ea35b02d47468f9c5c0a6261b5",
+          "functions": {
+            "_invPlaceDetail": {
+              "sha256": "f6da18a101abc3c9680f0319b0c15337594c01b7bb26e73819892eddd19b5abb",
+              "line": 47795
+            },
+            "_invRenderDetail": {
+              "sha256": "eeba01ab414a3d80b20a54ae66465a45e971e01f38073c75d21137e5e2cd43b7",
+              "line": 47932
+            },
+            "_invClearHover": {
+              "sha256": "8f0494e1cde07e3c86b023236cde3cf504dad954f86f1f241e2ed2e8d53e0a0d",
+              "line": 48106
+            },
+            "_invRestoreSelectedActions": {
+              "sha256": "891e7095b75973a2b707d68dd4ef938811f8e437a13638788109834ec8d7eb26",
+              "line": 48113
+            },
+            "_invCategoryMatches": {
+              "sha256": "bf6f1ec41adb83e63f2e35d8596c546da2270bb74e936a6aebb9a2030c18d9f7",
+              "line": 48505
+            },
+            "_invChangeCategory": {
+              "sha256": "dcdf0bcd02c8d0404702aaed3ef171bbb3fc429e89c8ebe3d57f6486a4fd1d05",
+              "line": 48512
+            },
+            "_invPlacement": {
+              "sha256": "879d8a804ff8c3394f4aab7251ede02e41acb2a6e0783e91db7d7c549d327389",
+              "line": 48518
+            },
+            "_invPlacementChanged": {
+              "sha256": "42242a0857c46616150aa572945a78eb4c68caec058e9576f78d670a19994a54",
+              "line": 48521
+            },
+            "renderInv": {
+              "sha256": "101161bf08b36d59689a05f6f282831f380cd3c5cf20e60f9020e9cfa946742a",
+              "line": 48527
+            },
+            "renderOssPanel": {
+              "sha256": "97634e82bbf015b2c4ec1c4adacfd0611b1e691656313b3b847596f89a2f7b51",
+              "line": 48391
+            },
+            "_ossHideBoneInfo": {
+              "sha256": "7d847b61dc4abca1e0e3bcdba0f05ba092fa4f2615b013214cad5cd460b17c84",
+              "line": 48364
+            },
+            "_bonePartName": {
+              "sha256": "bc78e3c1bc760ae3ac00acccb46de32c1b1e25904da2ac33d558907425023931",
+              "line": 44274
+            },
+            "_ossSetComplete": {
+              "sha256": "88b4e739e75b64707e03d3539ff7948e2af6d7df6761c9e880ee86f44d17086e",
+              "line": 44286
+            },
+            "closePanel": {
+              "sha256": "f63fb8abb59fa846a7b17a11b89a0ecf13fa30f61fdb43be1387f3978e2c9f4f",
+              "line": 42597
+            },
+            "_invRenderEmptyDetail": {
+              "sha256": "ed79b99a87f9d1860d861391b9c4833d932de40a442971fd7ecaa7c591cf47ac",
+              "line": 48061
+            }
+          }
+        },
+        "game-easy-test.html": {
+          "productionSha256": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+          "testedSha256": "7a8b0771bdb921276e276667a71a1d945e8c3fb66e75cf7869bcb357855a27c4",
+          "factorySha256": "d29c0d8a9cdfac122a1f65d272d24fc75c2be0ea35b02d47468f9c5c0a6261b5",
+          "functions": {
+            "_invPlaceDetail": {
+              "sha256": "f6da18a101abc3c9680f0319b0c15337594c01b7bb26e73819892eddd19b5abb",
+              "line": 46389
+            },
+            "_invRenderDetail": {
+              "sha256": "b39c5bed0208cb35d3ca2e21ceaa17528967d9aa301471b3572abd8b99384470",
+              "line": 46526
+            },
+            "_invClearHover": {
+              "sha256": "8f0494e1cde07e3c86b023236cde3cf504dad954f86f1f241e2ed2e8d53e0a0d",
+              "line": 46598
+            },
+            "_invRestoreSelectedActions": {
+              "sha256": "a673f79d16c5907e6f7a3394141f14daa76296720e3b0af21ec429e14f9cbc05",
+              "line": 46605
+            },
+            "_invCategoryMatches": {
+              "sha256": "f337c7995d2da57d084269483cf27e265a49c4875e6c9155b311a84334dfcefa",
+              "line": 46997
+            },
+            "_invChangeCategory": {
+              "sha256": "dcdf0bcd02c8d0404702aaed3ef171bbb3fc429e89c8ebe3d57f6486a4fd1d05",
+              "line": 47003
+            },
+            "_invPlacement": {
+              "sha256": "879d8a804ff8c3394f4aab7251ede02e41acb2a6e0783e91db7d7c549d327389",
+              "line": 47009
+            },
+            "_invPlacementChanged": {
+              "sha256": "42242a0857c46616150aa572945a78eb4c68caec058e9576f78d670a19994a54",
+              "line": 47012
+            },
+            "renderInv": {
+              "sha256": "52848e29be25d638277b03a446089eba7855dce0b47e2813ffa7c7a6bcadf838",
+              "line": 47018
+            },
+            "renderOssPanel": {
+              "sha256": "41d92ae50e8a62084eb9b9d3e44c5c203d1bf0f37e39cf3aa385089e5ef1d9bd",
+              "line": 46883
+            },
+            "_ossHideBoneInfo": {
+              "sha256": "7d847b61dc4abca1e0e3bcdba0f05ba092fa4f2615b013214cad5cd460b17c84",
+              "line": 46856
+            },
+            "_bonePartName": {
+              "sha256": "bc78e3c1bc760ae3ac00acccb46de32c1b1e25904da2ac33d558907425023931",
+              "line": 42911
+            },
+            "_ossSetComplete": {
+              "sha256": "88b4e739e75b64707e03d3539ff7948e2af6d7df6761c9e880ee86f44d17086e",
+              "line": 42923
+            },
+            "closePanel": {
+              "sha256": "f63fb8abb59fa846a7b17a11b89a0ecf13fa30f61fdb43be1387f3978e2c9f4f",
+              "line": 41394
+            }
+          }
+        }
+      },
+      "compositionSha256": "b22c4a31141672304a15adfae3a5050cb9fde3b96601507c8f10de3ea63f4cb5",
+      "passed": 16,
+      "failed": 0,
+      "results": [
+        {
+          "name": "game.html/ko/retain filter→disabled take/remove→bag keyboard→close",
+          "pass": true,
+          "detail": {
+            "trace": [
+              "filter:new same key/value",
+              "take disabled:close",
+              "remove disabled:close",
+              "bag Enter:detail",
+              "close:external opener"
+            ],
+            "actualCalls": {
+              "renderInv": 9,
+              "renderOssPanel": 10
+            }
+          }
+        },
+        {
+          "name": "game.html/ko/retain interleaved rerender/Space cancellation/external ownership",
+          "pass": true,
+          "detail": {
+            "actualCalls": {
+              "renderInv": 10,
+              "renderOssPanel": 11
+            },
+            "spaceAcrossNewCard": "no activation",
+            "externalFocus": "preserved"
+          }
+        },
+        {
+          "name": "game.html/ko/blur filter→disabled take/remove→bag keyboard→close",
+          "pass": true,
+          "detail": {
+            "trace": [
+              "filter:new same key/value",
+              "take disabled:close",
+              "remove disabled:close",
+              "bag Enter:detail",
+              "close:external opener"
+            ],
+            "actualCalls": {
+              "renderInv": 9,
+              "renderOssPanel": 10
+            }
+          }
+        },
+        {
+          "name": "game.html/ko/blur interleaved rerender/Space cancellation/external ownership",
+          "pass": true,
+          "detail": {
+            "actualCalls": {
+              "renderInv": 10,
+              "renderOssPanel": 11
+            },
+            "spaceAcrossNewCard": "no activation",
+            "externalFocus": "preserved"
+          }
+        },
+        {
+          "name": "game.html/en/retain filter→disabled take/remove→bag keyboard→close",
+          "pass": true,
+          "detail": {
+            "trace": [
+              "filter:new same key/value",
+              "take disabled:close",
+              "remove disabled:close",
+              "bag Enter:detail",
+              "close:external opener"
+            ],
+            "actualCalls": {
+              "renderInv": 9,
+              "renderOssPanel": 10
+            }
+          }
+        },
+        {
+          "name": "game.html/en/retain interleaved rerender/Space cancellation/external ownership",
+          "pass": true,
+          "detail": {
+            "actualCalls": {
+              "renderInv": 10,
+              "renderOssPanel": 11
+            },
+            "spaceAcrossNewCard": "no activation",
+            "externalFocus": "preserved"
+          }
+        },
+        {
+          "name": "game.html/en/blur filter→disabled take/remove→bag keyboard→close",
+          "pass": true,
+          "detail": {
+            "trace": [
+              "filter:new same key/value",
+              "take disabled:close",
+              "remove disabled:close",
+              "bag Enter:detail",
+              "close:external opener"
+            ],
+            "actualCalls": {
+              "renderInv": 9,
+              "renderOssPanel": 10
+            }
+          }
+        },
+        {
+          "name": "game.html/en/blur interleaved rerender/Space cancellation/external ownership",
+          "pass": true,
+          "detail": {
+            "actualCalls": {
+              "renderInv": 10,
+              "renderOssPanel": 11
+            },
+            "spaceAcrossNewCard": "no activation",
+            "externalFocus": "preserved"
+          }
+        },
+        {
+          "name": "game-easy-test.html/ko/retain filter→disabled take/remove→bag keyboard→close",
+          "pass": true,
+          "detail": {
+            "trace": [
+              "filter:new same key/value",
+              "take disabled:close",
+              "remove disabled:close",
+              "bag Enter:detail",
+              "close:external opener"
+            ],
+            "actualCalls": {
+              "renderInv": 9,
+              "renderOssPanel": 10
+            }
+          }
+        },
+        {
+          "name": "game-easy-test.html/ko/retain interleaved rerender/Space cancellation/external ownership",
+          "pass": true,
+          "detail": {
+            "actualCalls": {
+              "renderInv": 10,
+              "renderOssPanel": 11
+            },
+            "spaceAcrossNewCard": "no activation",
+            "externalFocus": "preserved"
+          }
+        },
+        {
+          "name": "game-easy-test.html/ko/blur filter→disabled take/remove→bag keyboard→close",
+          "pass": true,
+          "detail": {
+            "trace": [
+              "filter:new same key/value",
+              "take disabled:close",
+              "remove disabled:close",
+              "bag Enter:detail",
+              "close:external opener"
+            ],
+            "actualCalls": {
+              "renderInv": 9,
+              "renderOssPanel": 10
+            }
+          }
+        },
+        {
+          "name": "game-easy-test.html/ko/blur interleaved rerender/Space cancellation/external ownership",
+          "pass": true,
+          "detail": {
+            "actualCalls": {
+              "renderInv": 10,
+              "renderOssPanel": 11
+            },
+            "spaceAcrossNewCard": "no activation",
+            "externalFocus": "preserved"
+          }
+        },
+        {
+          "name": "game-easy-test.html/en/retain filter→disabled take/remove→bag keyboard→close",
+          "pass": true,
+          "detail": {
+            "trace": [
+              "filter:new same key/value",
+              "take disabled:close",
+              "remove disabled:close",
+              "bag Enter:detail",
+              "close:external opener"
+            ],
+            "actualCalls": {
+              "renderInv": 9,
+              "renderOssPanel": 10
+            }
+          }
+        },
+        {
+          "name": "game-easy-test.html/en/retain interleaved rerender/Space cancellation/external ownership",
+          "pass": true,
+          "detail": {
+            "actualCalls": {
+              "renderInv": 10,
+              "renderOssPanel": 11
+            },
+            "spaceAcrossNewCard": "no activation",
+            "externalFocus": "preserved"
+          }
+        },
+        {
+          "name": "game-easy-test.html/en/blur filter→disabled take/remove→bag keyboard→close",
+          "pass": true,
+          "detail": {
+            "trace": [
+              "filter:new same key/value",
+              "take disabled:close",
+              "remove disabled:close",
+              "bag Enter:detail",
+              "close:external opener"
+            ],
+            "actualCalls": {
+              "renderInv": 9,
+              "renderOssPanel": 10
+            }
+          }
+        },
+        {
+          "name": "game-easy-test.html/en/blur interleaved rerender/Space cancellation/external ownership",
+          "pass": true,
+          "detail": {
+            "actualCalls": {
+              "renderInv": 10,
+              "renderOssPanel": 11
+            },
+            "spaceAcrossNewCard": "no activation",
+            "externalFocus": "preserved"
+          }
+        }
+      ],
+      "limits": [
+        "Node DOM synthetic retain/blur/focus; no native events/layout/gamepad",
+        "Actual renderInv/renderOssPanel/factory/card/tab handlers; global keyboard guard only, not whole listener",
+        "Synthetic bone/ossuary state deletion; no real withdrawal/economy/save/portrait/image loading",
+        "Inherited item sizing/stats/storage/crystals/art/comparison stubs; no whole-game execution"
+      ],
+      "exitCode": 0
+    },
+    "embeddedPackagingCorrection": {
+      "exitCode": 1,
+      "reason": "data URL 동적 실행에서 로컬 absolute-path import의 ESM resolve 실패; file: 절대 URL import로 하니스 포장만 정정. 생산/기존 하니스 변경0."
+    },
+    "embeddedFinal": {
+      "current": {
+        "task": "cross-panel-focus-source",
+        "mode": "current-production",
+        "startedAt": "2026-10-02T03:49:34.697Z",
+        "finishedAt": "2026-10-02T03:49:35.330Z",
+        "head": "31454dfa49c90bac77351273fc32f0c1eb937928",
+        "sources": {
+          "game.html": {
+            "productionSha256": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+            "testedSha256": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+            "factorySha256": "d29c0d8a9cdfac122a1f65d272d24fc75c2be0ea35b02d47468f9c5c0a6261b5",
+            "functions": {
+              "_invPlaceDetail": {
+                "sha256": "f6da18a101abc3c9680f0319b0c15337594c01b7bb26e73819892eddd19b5abb",
+                "line": 47795
+              },
+              "_invRenderDetail": {
+                "sha256": "eeba01ab414a3d80b20a54ae66465a45e971e01f38073c75d21137e5e2cd43b7",
+                "line": 47932
+              },
+              "_invClearHover": {
+                "sha256": "8f0494e1cde07e3c86b023236cde3cf504dad954f86f1f241e2ed2e8d53e0a0d",
+                "line": 48106
+              },
+              "_invRestoreSelectedActions": {
+                "sha256": "891e7095b75973a2b707d68dd4ef938811f8e437a13638788109834ec8d7eb26",
+                "line": 48113
+              },
+              "_invCategoryMatches": {
+                "sha256": "bf6f1ec41adb83e63f2e35d8596c546da2270bb74e936a6aebb9a2030c18d9f7",
+                "line": 48505
+              },
+              "_invChangeCategory": {
+                "sha256": "dcdf0bcd02c8d0404702aaed3ef171bbb3fc429e89c8ebe3d57f6486a4fd1d05",
+                "line": 48512
+              },
+              "_invPlacement": {
+                "sha256": "879d8a804ff8c3394f4aab7251ede02e41acb2a6e0783e91db7d7c549d327389",
+                "line": 48518
+              },
+              "_invPlacementChanged": {
+                "sha256": "42242a0857c46616150aa572945a78eb4c68caec058e9576f78d670a19994a54",
+                "line": 48521
+              },
+              "renderInv": {
+                "sha256": "101161bf08b36d59689a05f6f282831f380cd3c5cf20e60f9020e9cfa946742a",
+                "line": 48527
+              },
+              "renderOssPanel": {
+                "sha256": "97634e82bbf015b2c4ec1c4adacfd0611b1e691656313b3b847596f89a2f7b51",
+                "line": 48391
+              },
+              "_ossHideBoneInfo": {
+                "sha256": "7d847b61dc4abca1e0e3bcdba0f05ba092fa4f2615b013214cad5cd460b17c84",
+                "line": 48364
+              },
+              "_bonePartName": {
+                "sha256": "bc78e3c1bc760ae3ac00acccb46de32c1b1e25904da2ac33d558907425023931",
+                "line": 44274
+              },
+              "_ossSetComplete": {
+                "sha256": "88b4e739e75b64707e03d3539ff7948e2af6d7df6761c9e880ee86f44d17086e",
+                "line": 44286
+              },
+              "closePanel": {
+                "sha256": "f63fb8abb59fa846a7b17a11b89a0ecf13fa30f61fdb43be1387f3978e2c9f4f",
+                "line": 42597
+              },
+              "_invRenderEmptyDetail": {
+                "sha256": "ed79b99a87f9d1860d861391b9c4833d932de40a442971fd7ecaa7c591cf47ac",
+                "line": 48061
+              }
+            }
+          },
+          "game-easy-test.html": {
+            "productionSha256": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+            "testedSha256": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+            "factorySha256": "d29c0d8a9cdfac122a1f65d272d24fc75c2be0ea35b02d47468f9c5c0a6261b5",
+            "functions": {
+              "_invPlaceDetail": {
+                "sha256": "f6da18a101abc3c9680f0319b0c15337594c01b7bb26e73819892eddd19b5abb",
+                "line": 46389
+              },
+              "_invRenderDetail": {
+                "sha256": "b39c5bed0208cb35d3ca2e21ceaa17528967d9aa301471b3572abd8b99384470",
+                "line": 46526
+              },
+              "_invClearHover": {
+                "sha256": "8f0494e1cde07e3c86b023236cde3cf504dad954f86f1f241e2ed2e8d53e0a0d",
+                "line": 46598
+              },
+              "_invRestoreSelectedActions": {
+                "sha256": "a673f79d16c5907e6f7a3394141f14daa76296720e3b0af21ec429e14f9cbc05",
+                "line": 46605
+              },
+              "_invCategoryMatches": {
+                "sha256": "f337c7995d2da57d084269483cf27e265a49c4875e6c9155b311a84334dfcefa",
+                "line": 46997
+              },
+              "_invChangeCategory": {
+                "sha256": "dcdf0bcd02c8d0404702aaed3ef171bbb3fc429e89c8ebe3d57f6486a4fd1d05",
+                "line": 47003
+              },
+              "_invPlacement": {
+                "sha256": "879d8a804ff8c3394f4aab7251ede02e41acb2a6e0783e91db7d7c549d327389",
+                "line": 47009
+              },
+              "_invPlacementChanged": {
+                "sha256": "42242a0857c46616150aa572945a78eb4c68caec058e9576f78d670a19994a54",
+                "line": 47012
+              },
+              "renderInv": {
+                "sha256": "52848e29be25d638277b03a446089eba7855dce0b47e2813ffa7c7a6bcadf838",
+                "line": 47018
+              },
+              "renderOssPanel": {
+                "sha256": "41d92ae50e8a62084eb9b9d3e44c5c203d1bf0f37e39cf3aa385089e5ef1d9bd",
+                "line": 46883
+              },
+              "_ossHideBoneInfo": {
+                "sha256": "7d847b61dc4abca1e0e3bcdba0f05ba092fa4f2615b013214cad5cd460b17c84",
+                "line": 46856
+              },
+              "_bonePartName": {
+                "sha256": "bc78e3c1bc760ae3ac00acccb46de32c1b1e25904da2ac33d558907425023931",
+                "line": 42911
+              },
+              "_ossSetComplete": {
+                "sha256": "88b4e739e75b64707e03d3539ff7948e2af6d7df6761c9e880ee86f44d17086e",
+                "line": 42923
+              },
+              "closePanel": {
+                "sha256": "f63fb8abb59fa846a7b17a11b89a0ecf13fa30f61fdb43be1387f3978e2c9f4f",
+                "line": 41394
+              }
+            }
+          }
+        },
+        "compositionSha256": "b22c4a31141672304a15adfae3a5050cb9fde3b96601507c8f10de3ea63f4cb5",
+        "passed": 0,
+        "failed": 16,
+        "results": [
+          {
+            "name": "game.html/ko/retain filter→disabled take/remove→bag keyboard→close",
+            "pass": false,
+            "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'game-route'\n- undefined\n\n    at embedded-fixture:102:49\n    at check (embedded-fixture:77:42)\n    at embedded-fixture:83:5\n    at ModuleJob.run (node:internal/modules/esm/module_job:437:25)\n    at async node:internal/modules/esm/loader:639:26\n    at async file:///Users/fordeargamers/Projects/exoduser-migration-20261001/[eval1]:1:200"
+          },
+          {
+            "name": "game.html/ko/retain interleaved rerender/Space cancellation/external ownership",
+            "pass": false,
+            "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'game-route'\n- undefined\n\n    at embedded-fixture:122:95\n    at check (embedded-fixture:77:42)\n    at embedded-fixture:111:5\n    at ModuleJob.run (node:internal/modules/esm/module_job:437:25)\n    at async node:internal/modules/esm/loader:639:26\n    at async file:///Users/fordeargamers/Projects/exoduser-migration-20261001/[eval1]:1:200"
+          },
+          {
+            "name": "game.html/ko/blur filter→disabled take/remove→bag keyboard→close",
+            "pass": false,
+            "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'game-route'\n- undefined\n\n    at embedded-fixture:102:49\n    at check (embedded-fixture:77:42)\n    at embedded-fixture:83:5\n    at ModuleJob.run (node:internal/modules/esm/module_job:437:25)\n    at async node:internal/modules/esm/loader:639:26\n    at async file:///Users/fordeargamers/Projects/exoduser-migration-20261001/[eval1]:1:200"
+          },
+          {
+            "name": "game.html/ko/blur interleaved rerender/Space cancellation/external ownership",
+            "pass": false,
+            "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'game-route'\n- undefined\n\n    at embedded-fixture:122:95\n    at check (embedded-fixture:77:42)\n    at embedded-fixture:111:5\n    at ModuleJob.run (node:internal/modules/esm/module_job:437:25)\n    at async node:internal/modules/esm/loader:639:26\n    at async file:///Users/fordeargamers/Projects/exoduser-migration-20261001/[eval1]:1:200"
+          },
+          {
+            "name": "game.html/en/retain filter→disabled take/remove→bag keyboard→close",
+            "pass": false,
+            "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'game-route'\n- undefined\n\n    at embedded-fixture:102:49\n    at check (embedded-fixture:77:42)\n    at embedded-fixture:83:5\n    at ModuleJob.run (node:internal/modules/esm/module_job:437:25)\n    at async node:internal/modules/esm/loader:639:26\n    at async file:///Users/fordeargamers/Projects/exoduser-migration-20261001/[eval1]:1:200"
+          },
+          {
+            "name": "game.html/en/retain interleaved rerender/Space cancellation/external ownership",
+            "pass": false,
+            "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'game-route'\n- undefined\n\n    at embedded-fixture:122:95\n    at check (embedded-fixture:77:42)\n    at embedded-fixture:111:5\n    at ModuleJob.run (node:internal/modules/esm/module_job:437:25)\n    at async node:internal/modules/esm/loader:639:26\n    at async file:///Users/fordeargamers/Projects/exoduser-migration-20261001/[eval1]:1:200"
+          },
+          {
+            "name": "game.html/en/blur filter→disabled take/remove→bag keyboard→close",
+            "pass": false,
+            "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'game-route'\n- undefined\n\n    at embedded-fixture:102:49\n    at check (embedded-fixture:77:42)\n    at embedded-fixture:83:5\n    at ModuleJob.run (node:internal/modules/esm/module_job:437:25)\n    at async node:internal/modules/esm/loader:639:26\n    at async file:///Users/fordeargamers/Projects/exoduser-migration-20261001/[eval1]:1:200"
+          },
+          {
+            "name": "game.html/en/blur interleaved rerender/Space cancellation/external ownership",
+            "pass": false,
+            "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'game-route'\n- undefined\n\n    at embedded-fixture:122:95\n    at check (embedded-fixture:77:42)\n    at embedded-fixture:111:5\n    at ModuleJob.run (node:internal/modules/esm/module_job:437:25)\n    at async node:internal/modules/esm/loader:639:26\n    at async file:///Users/fordeargamers/Projects/exoduser-migration-20261001/[eval1]:1:200"
+          },
+          {
+            "name": "game-easy-test.html/ko/retain filter→disabled take/remove→bag keyboard→close",
+            "pass": false,
+            "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'game-route'\n- undefined\n\n    at embedded-fixture:102:49\n    at check (embedded-fixture:77:42)\n    at embedded-fixture:83:5\n    at ModuleJob.run (node:internal/modules/esm/module_job:437:25)\n    at async node:internal/modules/esm/loader:639:26\n    at async file:///Users/fordeargamers/Projects/exoduser-migration-20261001/[eval1]:1:200"
+          },
+          {
+            "name": "game-easy-test.html/ko/retain interleaved rerender/Space cancellation/external ownership",
+            "pass": false,
+            "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'game-route'\n- undefined\n\n    at embedded-fixture:122:95\n    at check (embedded-fixture:77:42)\n    at embedded-fixture:111:5\n    at ModuleJob.run (node:internal/modules/esm/module_job:437:25)\n    at async node:internal/modules/esm/loader:639:26\n    at async file:///Users/fordeargamers/Projects/exoduser-migration-20261001/[eval1]:1:200"
+          },
+          {
+            "name": "game-easy-test.html/ko/blur filter→disabled take/remove→bag keyboard→close",
+            "pass": false,
+            "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'game-route'\n- undefined\n\n    at embedded-fixture:102:49\n    at check (embedded-fixture:77:42)\n    at embedded-fixture:83:5\n    at ModuleJob.run (node:internal/modules/esm/module_job:437:25)\n    at async node:internal/modules/esm/loader:639:26\n    at async file:///Users/fordeargamers/Projects/exoduser-migration-20261001/[eval1]:1:200"
+          },
+          {
+            "name": "game-easy-test.html/ko/blur interleaved rerender/Space cancellation/external ownership",
+            "pass": false,
+            "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'game-route'\n- undefined\n\n    at embedded-fixture:122:95\n    at check (embedded-fixture:77:42)\n    at embedded-fixture:111:5\n    at ModuleJob.run (node:internal/modules/esm/module_job:437:25)\n    at async node:internal/modules/esm/loader:639:26\n    at async file:///Users/fordeargamers/Projects/exoduser-migration-20261001/[eval1]:1:200"
+          },
+          {
+            "name": "game-easy-test.html/en/retain filter→disabled take/remove→bag keyboard→close",
+            "pass": false,
+            "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'game-route'\n- undefined\n\n    at embedded-fixture:102:49\n    at check (embedded-fixture:77:42)\n    at embedded-fixture:83:5\n    at ModuleJob.run (node:internal/modules/esm/module_job:437:25)\n    at async node:internal/modules/esm/loader:639:26\n    at async file:///Users/fordeargamers/Projects/exoduser-migration-20261001/[eval1]:1:200"
+          },
+          {
+            "name": "game-easy-test.html/en/retain interleaved rerender/Space cancellation/external ownership",
+            "pass": false,
+            "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'game-route'\n- undefined\n\n    at embedded-fixture:122:95\n    at check (embedded-fixture:77:42)\n    at embedded-fixture:111:5\n    at ModuleJob.run (node:internal/modules/esm/module_job:437:25)\n    at async node:internal/modules/esm/loader:639:26\n    at async file:///Users/fordeargamers/Projects/exoduser-migration-20261001/[eval1]:1:200"
+          },
+          {
+            "name": "game-easy-test.html/en/blur filter→disabled take/remove→bag keyboard→close",
+            "pass": false,
+            "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'game-route'\n- undefined\n\n    at embedded-fixture:102:49\n    at check (embedded-fixture:77:42)\n    at embedded-fixture:83:5\n    at ModuleJob.run (node:internal/modules/esm/module_job:437:25)\n    at async node:internal/modules/esm/loader:639:26\n    at async file:///Users/fordeargamers/Projects/exoduser-migration-20261001/[eval1]:1:200"
+          },
+          {
+            "name": "game-easy-test.html/en/blur interleaved rerender/Space cancellation/external ownership",
+            "pass": false,
+            "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'game-route'\n- undefined\n\n    at embedded-fixture:122:95\n    at check (embedded-fixture:77:42)\n    at embedded-fixture:111:5\n    at ModuleJob.run (node:internal/modules/esm/module_job:437:25)\n    at async node:internal/modules/esm/loader:639:26\n    at async file:///Users/fordeargamers/Projects/exoduser-migration-20261001/[eval1]:1:200"
+          }
+        ],
+        "limits": [
+          "Node DOM synthetic retain/blur/focus; no native events/layout/gamepad",
+          "Actual renderInv/renderOssPanel/factory/card/tab handlers; global keyboard guard only, not whole listener",
+          "Synthetic bone/ossuary state deletion; no real withdrawal/economy/save/portrait/image loading",
+          "Inherited item sizing/stats/storage/crystals/art/comparison stubs; no whole-game execution"
+        ],
+        "exitCode": 1
+      },
+      "candidate": {
+        "task": "cross-panel-focus-source",
+        "mode": "unapplied-candidate",
+        "startedAt": "2026-10-02T03:49:34.697Z",
+        "finishedAt": "2026-10-02T03:49:35.341Z",
+        "head": "31454dfa49c90bac77351273fc32f0c1eb937928",
+        "sources": {
+          "game.html": {
+            "productionSha256": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+            "testedSha256": "f5e7c70347fea636f3a35957561748f447586941eaddcc2f2cb7572ff748812c",
+            "factorySha256": "d29c0d8a9cdfac122a1f65d272d24fc75c2be0ea35b02d47468f9c5c0a6261b5",
+            "functions": {
+              "_invPlaceDetail": {
+                "sha256": "f6da18a101abc3c9680f0319b0c15337594c01b7bb26e73819892eddd19b5abb",
+                "line": 47795
+              },
+              "_invRenderDetail": {
+                "sha256": "eeba01ab414a3d80b20a54ae66465a45e971e01f38073c75d21137e5e2cd43b7",
+                "line": 47932
+              },
+              "_invClearHover": {
+                "sha256": "8f0494e1cde07e3c86b023236cde3cf504dad954f86f1f241e2ed2e8d53e0a0d",
+                "line": 48106
+              },
+              "_invRestoreSelectedActions": {
+                "sha256": "891e7095b75973a2b707d68dd4ef938811f8e437a13638788109834ec8d7eb26",
+                "line": 48113
+              },
+              "_invCategoryMatches": {
+                "sha256": "bf6f1ec41adb83e63f2e35d8596c546da2270bb74e936a6aebb9a2030c18d9f7",
+                "line": 48505
+              },
+              "_invChangeCategory": {
+                "sha256": "dcdf0bcd02c8d0404702aaed3ef171bbb3fc429e89c8ebe3d57f6486a4fd1d05",
+                "line": 48512
+              },
+              "_invPlacement": {
+                "sha256": "879d8a804ff8c3394f4aab7251ede02e41acb2a6e0783e91db7d7c549d327389",
+                "line": 48518
+              },
+              "_invPlacementChanged": {
+                "sha256": "42242a0857c46616150aa572945a78eb4c68caec058e9576f78d670a19994a54",
+                "line": 48521
+              },
+              "renderInv": {
+                "sha256": "101161bf08b36d59689a05f6f282831f380cd3c5cf20e60f9020e9cfa946742a",
+                "line": 48527
+              },
+              "renderOssPanel": {
+                "sha256": "97634e82bbf015b2c4ec1c4adacfd0611b1e691656313b3b847596f89a2f7b51",
+                "line": 48391
+              },
+              "_ossHideBoneInfo": {
+                "sha256": "7d847b61dc4abca1e0e3bcdba0f05ba092fa4f2615b013214cad5cd460b17c84",
+                "line": 48364
+              },
+              "_bonePartName": {
+                "sha256": "bc78e3c1bc760ae3ac00acccb46de32c1b1e25904da2ac33d558907425023931",
+                "line": 44274
+              },
+              "_ossSetComplete": {
+                "sha256": "88b4e739e75b64707e03d3539ff7948e2af6d7df6761c9e880ee86f44d17086e",
+                "line": 44286
+              },
+              "closePanel": {
+                "sha256": "f63fb8abb59fa846a7b17a11b89a0ecf13fa30f61fdb43be1387f3978e2c9f4f",
+                "line": 42597
+              },
+              "_invRenderEmptyDetail": {
+                "sha256": "ed79b99a87f9d1860d861391b9c4833d932de40a442971fd7ecaa7c591cf47ac",
+                "line": 48061
+              }
+            }
+          },
+          "game-easy-test.html": {
+            "productionSha256": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+            "testedSha256": "7a8b0771bdb921276e276667a71a1d945e8c3fb66e75cf7869bcb357855a27c4",
+            "factorySha256": "d29c0d8a9cdfac122a1f65d272d24fc75c2be0ea35b02d47468f9c5c0a6261b5",
+            "functions": {
+              "_invPlaceDetail": {
+                "sha256": "f6da18a101abc3c9680f0319b0c15337594c01b7bb26e73819892eddd19b5abb",
+                "line": 46389
+              },
+              "_invRenderDetail": {
+                "sha256": "b39c5bed0208cb35d3ca2e21ceaa17528967d9aa301471b3572abd8b99384470",
+                "line": 46526
+              },
+              "_invClearHover": {
+                "sha256": "8f0494e1cde07e3c86b023236cde3cf504dad954f86f1f241e2ed2e8d53e0a0d",
+                "line": 46598
+              },
+              "_invRestoreSelectedActions": {
+                "sha256": "a673f79d16c5907e6f7a3394141f14daa76296720e3b0af21ec429e14f9cbc05",
+                "line": 46605
+              },
+              "_invCategoryMatches": {
+                "sha256": "f337c7995d2da57d084269483cf27e265a49c4875e6c9155b311a84334dfcefa",
+                "line": 46997
+              },
+              "_invChangeCategory": {
+                "sha256": "dcdf0bcd02c8d0404702aaed3ef171bbb3fc429e89c8ebe3d57f6486a4fd1d05",
+                "line": 47003
+              },
+              "_invPlacement": {
+                "sha256": "879d8a804ff8c3394f4aab7251ede02e41acb2a6e0783e91db7d7c549d327389",
+                "line": 47009
+              },
+              "_invPlacementChanged": {
+                "sha256": "42242a0857c46616150aa572945a78eb4c68caec058e9576f78d670a19994a54",
+                "line": 47012
+              },
+              "renderInv": {
+                "sha256": "52848e29be25d638277b03a446089eba7855dce0b47e2813ffa7c7a6bcadf838",
+                "line": 47018
+              },
+              "renderOssPanel": {
+                "sha256": "41d92ae50e8a62084eb9b9d3e44c5c203d1bf0f37e39cf3aa385089e5ef1d9bd",
+                "line": 46883
+              },
+              "_ossHideBoneInfo": {
+                "sha256": "7d847b61dc4abca1e0e3bcdba0f05ba092fa4f2615b013214cad5cd460b17c84",
+                "line": 46856
+              },
+              "_bonePartName": {
+                "sha256": "bc78e3c1bc760ae3ac00acccb46de32c1b1e25904da2ac33d558907425023931",
+                "line": 42911
+              },
+              "_ossSetComplete": {
+                "sha256": "88b4e739e75b64707e03d3539ff7948e2af6d7df6761c9e880ee86f44d17086e",
+                "line": 42923
+              },
+              "closePanel": {
+                "sha256": "f63fb8abb59fa846a7b17a11b89a0ecf13fa30f61fdb43be1387f3978e2c9f4f",
+                "line": 41394
+              }
+            }
+          }
+        },
+        "compositionSha256": "b22c4a31141672304a15adfae3a5050cb9fde3b96601507c8f10de3ea63f4cb5",
+        "passed": 16,
+        "failed": 0,
+        "results": [
+          {
+            "name": "game.html/ko/retain filter→disabled take/remove→bag keyboard→close",
+            "pass": true,
+            "detail": {
+              "trace": [
+                "filter:new same key/value",
+                "take disabled:close",
+                "remove disabled:close",
+                "bag Enter:detail",
+                "close:external opener"
+              ],
+              "actualCalls": {
+                "renderInv": 9,
+                "renderOssPanel": 10
+              }
+            }
+          },
+          {
+            "name": "game.html/ko/retain interleaved rerender/Space cancellation/external ownership",
+            "pass": true,
+            "detail": {
+              "actualCalls": {
+                "renderInv": 10,
+                "renderOssPanel": 11
+              },
+              "spaceAcrossNewCard": "no activation",
+              "externalFocus": "preserved"
+            }
+          },
+          {
+            "name": "game.html/ko/blur filter→disabled take/remove→bag keyboard→close",
+            "pass": true,
+            "detail": {
+              "trace": [
+                "filter:new same key/value",
+                "take disabled:close",
+                "remove disabled:close",
+                "bag Enter:detail",
+                "close:external opener"
+              ],
+              "actualCalls": {
+                "renderInv": 9,
+                "renderOssPanel": 10
+              }
+            }
+          },
+          {
+            "name": "game.html/ko/blur interleaved rerender/Space cancellation/external ownership",
+            "pass": true,
+            "detail": {
+              "actualCalls": {
+                "renderInv": 10,
+                "renderOssPanel": 11
+              },
+              "spaceAcrossNewCard": "no activation",
+              "externalFocus": "preserved"
+            }
+          },
+          {
+            "name": "game.html/en/retain filter→disabled take/remove→bag keyboard→close",
+            "pass": true,
+            "detail": {
+              "trace": [
+                "filter:new same key/value",
+                "take disabled:close",
+                "remove disabled:close",
+                "bag Enter:detail",
+                "close:external opener"
+              ],
+              "actualCalls": {
+                "renderInv": 9,
+                "renderOssPanel": 10
+              }
+            }
+          },
+          {
+            "name": "game.html/en/retain interleaved rerender/Space cancellation/external ownership",
+            "pass": true,
+            "detail": {
+              "actualCalls": {
+                "renderInv": 10,
+                "renderOssPanel": 11
+              },
+              "spaceAcrossNewCard": "no activation",
+              "externalFocus": "preserved"
+            }
+          },
+          {
+            "name": "game.html/en/blur filter→disabled take/remove→bag keyboard→close",
+            "pass": true,
+            "detail": {
+              "trace": [
+                "filter:new same key/value",
+                "take disabled:close",
+                "remove disabled:close",
+                "bag Enter:detail",
+                "close:external opener"
+              ],
+              "actualCalls": {
+                "renderInv": 9,
+                "renderOssPanel": 10
+              }
+            }
+          },
+          {
+            "name": "game.html/en/blur interleaved rerender/Space cancellation/external ownership",
+            "pass": true,
+            "detail": {
+              "actualCalls": {
+                "renderInv": 10,
+                "renderOssPanel": 11
+              },
+              "spaceAcrossNewCard": "no activation",
+              "externalFocus": "preserved"
+            }
+          },
+          {
+            "name": "game-easy-test.html/ko/retain filter→disabled take/remove→bag keyboard→close",
+            "pass": true,
+            "detail": {
+              "trace": [
+                "filter:new same key/value",
+                "take disabled:close",
+                "remove disabled:close",
+                "bag Enter:detail",
+                "close:external opener"
+              ],
+              "actualCalls": {
+                "renderInv": 9,
+                "renderOssPanel": 10
+              }
+            }
+          },
+          {
+            "name": "game-easy-test.html/ko/retain interleaved rerender/Space cancellation/external ownership",
+            "pass": true,
+            "detail": {
+              "actualCalls": {
+                "renderInv": 10,
+                "renderOssPanel": 11
+              },
+              "spaceAcrossNewCard": "no activation",
+              "externalFocus": "preserved"
+            }
+          },
+          {
+            "name": "game-easy-test.html/ko/blur filter→disabled take/remove→bag keyboard→close",
+            "pass": true,
+            "detail": {
+              "trace": [
+                "filter:new same key/value",
+                "take disabled:close",
+                "remove disabled:close",
+                "bag Enter:detail",
+                "close:external opener"
+              ],
+              "actualCalls": {
+                "renderInv": 9,
+                "renderOssPanel": 10
+              }
+            }
+          },
+          {
+            "name": "game-easy-test.html/ko/blur interleaved rerender/Space cancellation/external ownership",
+            "pass": true,
+            "detail": {
+              "actualCalls": {
+                "renderInv": 10,
+                "renderOssPanel": 11
+              },
+              "spaceAcrossNewCard": "no activation",
+              "externalFocus": "preserved"
+            }
+          },
+          {
+            "name": "game-easy-test.html/en/retain filter→disabled take/remove→bag keyboard→close",
+            "pass": true,
+            "detail": {
+              "trace": [
+                "filter:new same key/value",
+                "take disabled:close",
+                "remove disabled:close",
+                "bag Enter:detail",
+                "close:external opener"
+              ],
+              "actualCalls": {
+                "renderInv": 9,
+                "renderOssPanel": 10
+              }
+            }
+          },
+          {
+            "name": "game-easy-test.html/en/retain interleaved rerender/Space cancellation/external ownership",
+            "pass": true,
+            "detail": {
+              "actualCalls": {
+                "renderInv": 10,
+                "renderOssPanel": 11
+              },
+              "spaceAcrossNewCard": "no activation",
+              "externalFocus": "preserved"
+            }
+          },
+          {
+            "name": "game-easy-test.html/en/blur filter→disabled take/remove→bag keyboard→close",
+            "pass": true,
+            "detail": {
+              "trace": [
+                "filter:new same key/value",
+                "take disabled:close",
+                "remove disabled:close",
+                "bag Enter:detail",
+                "close:external opener"
+              ],
+              "actualCalls": {
+                "renderInv": 9,
+                "renderOssPanel": 10
+              }
+            }
+          },
+          {
+            "name": "game-easy-test.html/en/blur interleaved rerender/Space cancellation/external ownership",
+            "pass": true,
+            "detail": {
+              "actualCalls": {
+                "renderInv": 10,
+                "renderOssPanel": 11
+              },
+              "spaceAcrossNewCard": "no activation",
+              "externalFocus": "preserved"
+            }
+          }
+        ],
+        "limits": [
+          "Node DOM synthetic retain/blur/focus; no native events/layout/gamepad",
+          "Actual renderInv/renderOssPanel/factory/card/tab handlers; global keyboard guard only, not whole listener",
+          "Synthetic bone/ossuary state deletion; no real withdrawal/economy/save/portrait/image loading",
+          "Inherited item sizing/stats/storage/crystals/art/comparison stubs; no whole-game execution"
+        ],
+        "exitCode": 0
+      }
+    }
+  },
+  "defect": {
+    "id": "UIUX-CROSS-KEY-01",
+    "name": "카드 재렌더 뒤 처리된 키의 공통 가드 소유권 누락",
+    "trigger": "filter rerender→ossuary take/remove disabled→equipment tab→bag Enter/NumpadEnter",
+    "sourceMechanism": "bind keydown preventDefault→activate→actual renderInv removes original card→same event.target.closest('#invPanel.on ...') null→current focused-panel guard returns game-route marker",
+    "confirmedScope": "실제 production 함수 추출 + Node DOM 합성 타깃 핸들러→가드 순서에서16반례; 실제 document bubbling·K/KH·아이템 경제 영향 미검수",
+    "candidate": "기존 Space/Enter/NumpadEnter/Tab guard의 DOM 조건과 e.defaultPrevented를 OR. 양쪽 HTML 기존 guard 한 줄씩만.",
+    "productionApplied": false
+  },
+  "patch": {
+    "file": "candidate.patch",
+    "sha256": "5a00f14ffc6f9bd519ba198ff59782811d3584f1666e8ad32e9967537bf895a4",
+    "applyCheck": {
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    "inlineParse": {
+      "game.html": {
+        "classic": 4,
+        "module": 2,
+        "importmap": 1,
+        "sha256": "f5e7c70347fea636f3a35957561748f447586941eaddcc2f2cb7572ff748812c"
+      },
+      "game-easy-test.html": {
+        "classic": 4,
+        "module": 2,
+        "importmap": 1,
+        "sha256": "7a8b0771bdb921276e276667a71a1d945e8c3fb66e75cf7869bcb357855a27c4"
+      }
+    },
+    "finalApplyCheck": {
+      "exitCode": 0,
+      "stderr": ""
+    }
+  },
+  "docsSearch": {
+    "command": "rg -n 'renderInv|renderOssPanel|releaseOssuaryAction|inventory-detail-trigger|cross-panel-focus-source|defaultPrevented' docs",
+    "exitCode": 0,
+    "matchCount": 111,
+    "files": [
+      "docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FILTER-INTEGRATION-20261002.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FOUR-CANDIDATE-ACCEPTANCE-20261002.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FOUR-SUBMISSIONS-HELLRAY-20261002.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FOUR-TEAM-FOLLOWUP-20261002.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/MAC-COORDINATION-20261002.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-CHATS-20261002.json",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-WORK-DISPATCH-20261002.json",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/confirm-inventory-review-receipt.json",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/confirm-inventory-review-result.md",
+      "docs/12퍼포먼스·최적화/QA_PERFORMANCE_TEAM_MASTER.md",
+      "docs/15 세이브+데이터구조/15 세이브+데이터구조.md",
+      "docs/16번역·로컬라이제이션/LOCALIZATION_RUNTIME_20260909.md",
+      "docs/16번역·로컬라이제이션/번역대상_전체목록.md",
+      "docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md",
+      "docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md",
+      "docs/2_7 인벤토리+장비시스템/INVENTORY_KEYBOARD_FOCUS_20261002.md",
+      "docs/2_9 결정슬롯시스템/2_9 결정슬롯시스템.md",
+      "docs/2게임디자인레벨디자인/PLAYER_GUIDE_20260912.md",
+      "docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md",
+      "docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md",
+      "docs/3.1 ui hud 디자인/exoduser-ui-phase2 (1).md",
+      "docs/4.1맵디자인+설정/CH1_LIVING_DETAIL_RUNTIME_20260925.md",
+      "docs/CHANGELOG_SYNC.md"
+    ],
+    "samples": [
+      "docs/2_7 인벤토리+장비시스템/INVENTORY_KEYBOARD_FOCUS_20261002.md:8:| 가방/장착 카드 | 기존 DIV에 tabIndex=0·role=button·data-inventory-detail-trigger=1·_T(item.name)의 aria-label 부여. 카드 resolve는 동일 item 생존을 확인하고 가방 index는 활성화 순간 다시 계산 |",
+      "docs/2_7 인벤토리+장비시스템/INVENTORY_KEYBOARD_FOCUS_20261002.md:13:| renderInv 재구성 | beforeRender는 실제 등록 카드의 item identity 또는 keyboard item과 active/owned를 보존하고 Map을 초기화. afterRender는 재등록된 현재 카드로 초점 복귀; 없거나 숨긴 대상은 invClose. 삭제 뒤 resolver=null이어도 삭제 전 identity를 잃지 않음 |",
+      "docs/2_7 인벤토리+장비시스템/INVENTORY_KEYBOARD_FOCUS_20261002.md:36:생산 전체가 filter-focus 후보와 byte 일치한다. 현재 source/composition 기반32 + 인접23=55그룹 PASS와 전체 inline 구문 확인. 이전 production-integration byte 일치 표는 이전 반영 이력이다. 현재 재현은 root-review/filter-integration.mjs --production 및 filter-adjacent.mjs를 사용한다. 기존32 RED와 owner19파일 보존. 실제 OS 버튼 입력/패드/유골함 세부 renderOssPanel·레이아웃은 미검수. [상세 인수](../0마스터플랜/mac-resume-20261001/vscode-dispatch/FILTER-INTEGRATION-20261002.md).",
+      "docs/2_7 인벤토리+장비시스템/INVENTORY_KEYBOARD_FOCUS_20261002.md:40:양쪽 HTML의 focus factory에 releaseOssuaryAction을 추가하고 renderOssPanel 시작의 활성요소 포착 및 take/remove 갱신 뒤 호출만 반영했다. 선택 유골·유골함 해제로 활성 행동이 disabled가 되면 invClose로 이동하고, 숨긴 닫기로 복귀할 수 없으면 내부 disabled 잔류만 blur한다. 외부/다른 활성 컨트롤 초점은 강탈하지 않는다. 저장·유골 생성/등록/해제·장착·경제·RNG·CSS/ui-panels 원문은 보존했다.",
+      "docs/2_7 인벤토리+장비시스템/INVENTORY_KEYBOARD_FOCUS_20261002.md:42:현재 생산 실제 함수/조합 검수34+기존filter32=66그룹 PASS, 전체 inline12개/importmap2 구문 통과. 유골함34는 renderOssPanel 원문을 실행했고 filter32의 renderOssPanel 대역 한계를 분리한다. 실제 키보드·패드·픽셀·전체게임·실저장은 미검수로 UI-04 전체 완료가 아니다. 과거 filter-only exact-byte 표는 이력이며 현재는 connectOssuary(connectFilter(original))와 정확 일치. root-review/four-candidate-acceptance.mjs ui --production 및 four-filter-adjacent.mjs --production으로 재현한다.",
+      "docs/2_7 인벤토리+장비시스템/INVENTORY_KEYBOARD_FOCUS_20261002.md:44:2026-10-02 독립 후속 인수 완료: UIUX 현행 factory/renderOssPanel과 승인 후보 byte 일치, 보호 저장10함수 SHA 동일, 담당 독립15 PASS를 root가 하니스·원자료로 검토했다. 기존 root34+32와 구분하며 생산 추가 수정0·native/패드/레이아웃 미검수다. BUILD 후속13도 완료했고 네 Codex 팀 모두 현재 배정의 실제 Read·완료를 확인했다. 다른7팀은 전달0/Read0 보류다. GitHub 601a0574 체크포인트 SHA를 재확인했으며 이 최종 기록의 원격 확인은 다음 checkpoint로 수행한다.",
+      "docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md:88:빈 bag/eq/st 선택 뒤 이전 상세·비교·행동 잔류를 양쪽 실제 함수에서 재현하고 후보21+기존3/6=30검사 및 양쪽 inline 구문을 확인했다. 당시 생산 미반영. 실제 renderInv 재구성·_invClearHover 숨김·키보드 상세/삭제 후 초점 복귀를 inventory-dom 후속으로 기존 UIUX에 배정했다. 신규 DOM-only host는 실게임/패드/전체 UI-04 시각 완료를 뜻하지 않는다. [인수·후속](../0마스터플랜/mac-resume-20261001/vscode-dispatch/FOUR-SUBMISSIONS-HELLRAY-20261002.md).",
+      "docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md:96:| 상세·복귀 | 빈 bag/eq/st의 이전 상세·행동·비교 제거, KO/EN 리프 상태. keyboard item이 실제 살아 있고 상세/행동에 초점이 있을 때 hover 종료는 상세 유지. renderInv 등록 카드 identity token으로 재구성 후 현재 카드→없거나 숨기면 invClose, 닫으면 연결된 외부 opener 복귀 |",
+      "docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md:103:필터 버튼 재생성 뒤 BODY로 빠지는32반례를 보존하고 key/value 기반 동일 새 버튼 복귀만 적용했다. 생산55그룹·양쪽 inline 구문 PASS, 저장/경제/전투/ui-panels.js/CSS 변경0. renderOssPanel 세부는 대역이며 실제 UI 게이트는 유지한다. [인수·실패 이력·한계](../0마스터플랜/mac-resume-20261001/vscode-dispatch/FILTER-INTEGRATION-20261002.md).",
+      "docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md:107:양쪽 HTML의 focus factory에 releaseOssuaryAction을 추가하고 renderOssPanel 시작의 활성요소 포착 및 take/remove 갱신 뒤 호출만 반영했다. 선택 유골·유골함 해제로 활성 행동이 disabled가 되면 invClose로 이동하고, 숨긴 닫기로 복귀할 수 없으면 내부 disabled 잔류만 blur한다. 외부/다른 활성 컨트롤 초점은 강탈하지 않는다. 저장·유골 생성/등록/해제·장착·경제·RNG·CSS/ui-panels 원문은 보존했다.",
+      "docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md:109:현재 생산 실제 함수/조합 검수34+기존filter32=66그룹 PASS, 전체 inline12개/importmap2 구문 통과. 유골함34는 renderOssPanel 원문을 실행했고 filter32의 renderOssPanel 대역 한계를 분리한다. 실제 키보드·패드·픽셀·전체게임·실저장은 미검수로 UI-04 전체 완료가 아니다. 과거 filter-only exact-byte 표는 이력이며 현재는 connectOssuary(connectFilter(original))와 정확 일치. root-review/four-candidate-acceptance.mjs ui --production 및 four-filter-adjacent.mjs --production으로 재현한다."
+    ]
+  },
+  "docsProposal": "result.md 계약표/SSOT 정정안에 기록. 공유 docs/JSON은 읽기 전용. 총괄 생산 반영 때 관련 현행3문서 및 마스터/CHANGELOG 동기화.",
+  "reproductionSource": "import fs from 'node:fs';\nimport assert from 'node:assert/strict';\nimport {createHash} from 'node:crypto';\nimport {spawnSync} from 'node:child_process';\nimport {fileURLToPath} from 'node:url';\nimport {createDocument} from 'file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/inventory-dom/node-dom.mjs';\nimport {createHost} from 'file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/card-removal-focus/host/harness.js';\nimport {extractFunction} from 'file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/inventory-dom-candidate.mjs';\nimport {sourceFactory} from 'file:///Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261001/UIUX/filter-focus-candidate.mjs';\n\nconst root=new URL('file:///Users/fordeargamers/Projects/exoduser-migration-20261001/'),sha=value=>createHash('sha256').update(value).digest('hex');\nconst composition=fs.readFileSync(new URL('ui-panels.js',root),'utf8');\nconst helpers=composition.slice(composition.indexOf('  const el ='),composition.indexOf('  function describeSettingsControls'));\nconst inventory=composition.slice(composition.indexOf('  function inventory()'),composition.indexOf('  function init()'));\nassert.ok(helpers.includes('function tabBar(')&&inventory.includes(\"root.addEventListener('wheel'\"),'현행 inventory composition 경계');\nconst sourceRecords={},results=[],startedAt=new Date().toISOString();\nconst candidate=process.argv.includes('--candidate');\nconst guardPrefix=\"if(['Space','Enter','NumpadEnter','Tab'].includes(e.code)&&e.target instanceof Element\";\nconst guardCandidate=\"if(['Space','Enter','NumpadEnter','Tab'].includes(e.code)&&(e.defaultPrevented||e.target instanceof Element\";\nfunction patched(source) {\n  assert.equal(source.split(guardPrefix).length,2,'한 파일의 유일한 panel guard');\n  const guard=source.split('\\n').find(line=>line.includes(guardPrefix));\n  const changed=guard.replace(guardPrefix,guardCandidate).replace(\"#settings.on select'))return;\",\"#settings.on select')))return;\");\n  assert.notEqual(changed,guard);return source.replace(guard,changed);\n}\n\nfunction setup(source,language,disableBlur) {\n  const document=createDocument(),prototype=Object.getPrototypeOf(document.createElement('div'));\n  const simpleMatches=prototype.matches,oldFocus=prototype.focus;\n  prototype.matches=function(selector) {\n    if(selector.includes(' ')) {\n      const last=selector.lastIndexOf(' ');\n      return this.matches(selector.slice(last+1))&&!!this.parentElement?.closest(selector.slice(0,last));\n    }\n    const attr=selector.match(/^\\[data-([\\w-]+)(?:=\"([^\"]*)\")?\\]$/);\n    if(attr) {const key=attr[1].replace(/-([a-z])/g,(_,x)=>x.toUpperCase());return attr[2]===undefined?Object.hasOwn(this.dataset,key):this.dataset[key]===attr[2];}\n    const idClass=selector.match(/^#([\\w-]+)\\.([\\w-]+)$/);\n    return idClass?this.id===idClass[1]&&this.classList.contains(idClass[2]):simpleMatches.call(this,selector);\n  };\n  prototype.addEventListener=function(type,fn){this.listeners??={};(this.listeners[type]??=[]).push(fn);};\n  prototype.click=function(){if(!this.disabled)this.onclick?.({target:this,preventDefault(){}});if(!this.disabled)for(const fn of this.listeners?.click||[])fn({target:this});};\n  prototype.before=function(node){this.parentElement.insertBefore(node,this);};\n  prototype.focus=function(...args){const previous=document.activeElement;oldFocus.apply(this,args);if(previous!==document.activeElement)previous.onblur?.({target:previous});};\n  if(disableBlur)Object.defineProperty(prototype,'disabled',{configurable:true,get(){return !!this._disabled;},set(value){this._disabled=value;if(value&&document.activeElement===this)this.blur();}});\n  const names=['_invPlaceDetail','_invRenderDetail','_invClearHover','_invRestoreSelectedActions','_invCategoryMatches','_invChangeCategory','_invPlacement','_invPlacementChanged','renderInv','renderOssPanel','_ossHideBoneInfo','_bonePartName','_ossSetComplete','closePanel'];\n  if(source.includes('function _invRenderEmptyDetail('))names.push('_invRenderEmptyDetail');\n  const metrics={renderInv:0,renderOssPanel:0},errors=[];\n  const functions=names.map(name=>extractFunction(source,name)).join('\\n')+`\n    const actualInv=renderInv,actualOss=renderOssPanel;\n    renderInv=(...args)=>{env.metrics.renderInv++;return actualInv(...args);};\n    renderOssPanel=(...args)=>{env.metrics.renderOssPanel++;return actualOss(...args);};\n    env._invChangeCategory=_invChangeCategory;env.renderOssPanel=renderOssPanel;`;\n  const mount=document.createElement('main');document.body.appendChild(mount);\n  // Host construction does not invoke the renderers; dependencies are populated before opening.\n  const ui=createHost(document,mount,{factory:{current:sourceFactory(source)},functions:{current:functions}},'current',language);\n  Object.assign(ui.env,{metrics,console:{error(...args){errors.push(args.map(String).join(' '));}},ANC_ROSTER:[{id:'iron_warlord',ko:'철갑 전대',en:'Iron Warlord'}],_BONE_PARTS:['skull','torso','arms','legs'],_BONE_PART_KO:{skull:'두개골',torso:'몸통',arms:'팔',legs:'다리'},_BONE_PART_EN:{skull:'Skull',torso:'Torso',arms:'Arms',legs:'Legs'}});\n  const wrap=ui.panel.querySelector('.inv-wrap'),equip=document.createElement('div');equip.className='inv-equip';wrap.appendChild(equip);equip.appendChild(ui.nodes.invEqGrid);\n  for(const id of ['invOssuaryPanel','invCrystalsPanel','invStorageCol','invCenter','invStBagSection','optLang']){const node=document.createElement('div');node.id=id;ui.nodes[id]=node;wrap.appendChild(node);}ui.nodes.optLang.value=language;\n  ui.env.INV.equipped.ossuary={slot:'ossuary',name:'Fixture urn',anc:'iron_warlord',rarity:0,el:0,socketCount:0};\n  ui.env.INV.ossCollect={iron_warlord_skull:{r:2,t:1}};\n  new Function('env',`with(env){${helpers}${inventory}inventory();translate();}`)(ui.env);\n  ui.opener.onclick();\n  const guard=source.split('\\n').find(line=>line.includes(\"if(['Space','Enter','NumpadEnter','Tab'].includes(e.code)\"));\n  assert.ok(guard,'공용 panel keydown guard 존재');\n  const route=new Function('e','Element',guard+'\\nreturn \"game-route\";');\n  ui.env.renderInv=ui.api.renderInv;\n  const key=(node,code,extra={})=>{const event={target:node,code,prevented:false,defaultPrevented:false,preventDefault(){this.prevented=true;this.defaultPrevented=true;},stopPropagation(){},...extra};node.onkeydown?.(event);return event;};\n  const up=(node,code,extra={})=>{const event={target:node,code,preventDefault(){},...extra};node.onkeyup?.(event);return event;};\n  return {...ui,document,metrics,errors,names,guard,key,up,route:event=>route(event,document.createElement('div').constructor),\n    filter(key,val){return [...ui.nodes.invFilters.querySelectorAll('button')].find(n=>n.dataset.inventoryFilterKey===key&&n.dataset.inventoryFilterValue===String(val));},\n    card(){return ui.nodes.invGrid.querySelector('.inv-item');},\n    switchPage(page){const tab=document.getElementById('inventory-tab-'+page);tab.focus();tab.click();return tab;},\n    tabKey(tab,key){for(const fn of tab.listeners?.keydown||[])fn({target:tab,key,preventDefault(){},stopPropagation(){}});}\n  };\n}\n\nfunction check(name,fn){try{const detail=fn();results.push({name,pass:true,detail});}catch(error){results.push({name,pass:false,error:error.stack.replace(/data:text\\/javascript;base64,[A-Za-z0-9+/=]+/g,'embedded-fixture')});}}\nfor(const path of ['game.html','game-easy-test.html']) {\n  const original=fs.readFileSync(new URL(path,root),'utf8'),source=candidate?patched(original):original;\n  sourceRecords[path]={productionSha256:sha(original),testedSha256:sha(source),factorySha256:sha(sourceFactory(source)),functions:{}};\n  for(const language of ['ko','en'])for(const blur of [false,true]) {\n    const tag=`${path}/${language}/${blur?'blur':'retain'}`;\n    check(tag+' filter→disabled take/remove→bag keyboard→close',()=>{\n      const ui=setup(source,language,blur),{document,nodes,env}=ui;\n      for(const name of ui.names){const text=extractFunction(source,name);sourceRecords[path].functions[name]={sha256:sha(text),line:source.slice(0,source.indexOf('function '+name+'(')).split('\\n').length};}\n      const trace=[];\n      ui.switchPage('ossuary');\n      let filter=ui.filter('rarity',0);filter.focus();const original=filter;filter.click();filter=ui.filter('rarity',0);\n      assert.notEqual(filter,original);assert.equal(original.isConnected,false);assert.equal(document.activeElement,filter);assert.equal(filter.attrs['aria-pressed'],'true');trace.push('filter:new same key/value');\n      nodes.invOssuaryPanel.querySelector('[data-part=\"skull\"]').click();\n      const take=nodes.invOssuaryPanel.querySelector('.oss-withdraw');take.focus();assert.equal(ui.route({target:take,code:'Space'}),undefined);\n      delete env.INV.ossCollect.iron_warlord_skull;ui.api.renderInv();\n      assert.equal(take.disabled,true);assert.equal(document.activeElement,nodes.invClose);trace.push('take disabled:close');\n      const remove=nodes.invOssuaryPanel.querySelector('.oss-unequip');remove.focus();env.INV.equipped.ossuary=null;ui.api.renderInv();\n      assert.equal(remove.disabled,true);assert.equal(document.activeElement,nodes.invClose);trace.push('remove disabled:close');\n      // Invoke the actual tabBar keyboard listener: ArrowLeft ossuary→equipment.\n      const tab=document.getElementById('inventory-tab-ossuary');tab.focus();ui.tabKey(tab,'ArrowLeft');\n      assert.equal(ui.panel.dataset.inventoryPage,'equipment');assert.equal(document.activeElement,document.getElementById('inventory-tab-equipment'));\n      assert.equal(nodes.invOssuaryPanel.attrs['aria-hidden'],'true');assert.equal(nodes.invRight.parentElement.className,'inv-wrap');\n      const card=ui.card();assert.ok(card);card.focus();assert.equal(ui.route({target:card,code:'Enter'}),undefined);const event=ui.key(card,'Enter');\n      assert.equal(card.isConnected,false,'actual renderInv removes the original key target');\n      assert.equal(event.prevented,true);assert.equal(ui.route(event),undefined);assert.equal(document.activeElement,nodes.invRight);assert.equal(env.INV.bag[env.INV.selected],ui.item);assert.ok(nodes.invRight.querySelector('.item-detail').innerHTML.includes(ui.item.name));trace.push('bag Enter:detail');\n      const detail=nodes.invRight;ui.api._invClearHover();assert.equal(document.activeElement,detail);assert.equal(detail.style.visibility,'visible');\n      ui.api.renderInv();assert.ok(document.activeElement.isConnected);assert.equal(document.activeElement,detail);assert.equal(env.INV.bag[env.INV.selected],ui.item);\n      const current=ui.card();current.focus();const tabEvent=ui.key(current,'Tab');assert.equal(tabEvent.prevented,false);assert.equal(ui.route(tabEvent),undefined);\n      ui.key(current,'Space');assert.equal(document.activeElement,current);ui.up(current,'Space');assert.equal(document.activeElement,detail);\n      ui.api.closePanel('invPanel');assert.equal(document.activeElement,ui.opener);trace.push('close:external opener');\n      assert.equal(ui.route({target:ui.opener,code:'Space'}),'game-route');assert.equal(ui.route({target:ui.opener,code:'KeyF',defaultPrevented:true}),'game-route');assert.deepEqual(ui.errors,[]);assert.ok(ui.metrics.renderInv>=8&&ui.metrics.renderOssPanel>=8);\n      return {trace,actualCalls:ui.metrics};\n    });\n    check(tag+' interleaved rerender/Space cancellation/external ownership',()=>{\n      const ui=setup(source,language,blur),{document,nodes,env}=ui;\n      ui.switchPage('ossuary');\n      const filter=ui.filter('rarity',4);filter.focus();filter.click();assert.equal(ui.card(),null);assert.equal(document.activeElement,ui.filter('rarity',4));\n      ui.filter('rarity',4).click();assert.equal(document.activeElement,ui.filter('rarity',4));assert.equal(ui.filter('rarity',4).attrs['aria-pressed'],'false');\n      nodes.invOssuaryPanel.querySelector('[data-part=\"skull\"]').click();\n      const external=document.createElement('button');external.id='external-owner';document.body.appendChild(external);external.focus();\n      delete env.INV.ossCollect.iron_warlord_skull;env.INV.equipped.ossuary=null;ui.api.renderInv();assert.equal(document.activeElement,external);\n      ui.switchPage('equipment');const old=ui.card();old.focus();ui.key(old,'Space');\n      ui.switchPage('ossuary');ui.switchPage('equipment');const current=ui.card();current.focus();ui.up(current,'Space');assert.equal(document.activeElement,current);assert.equal(env.INV.selected,null);\n      const before=ui.metrics.renderInv;ui.key(current,'Enter',{ctrlKey:true});ui.key(current,'Enter',{repeat:true});assert.equal(ui.metrics.renderInv,before);\n      const entered=ui.key(current,'NumpadEnter');assert.equal(entered.prevented,true);assert.equal(ui.route(entered),undefined);assert.equal(document.activeElement,nodes.invRight);\n      ui.api.closePanel('invPanel');assert.equal(document.activeElement,ui.opener);ui.api.renderInv();assert.equal(document.activeElement,ui.opener);\n      assert.deepEqual(ui.errors,[]);return {actualCalls:ui.metrics,spaceAcrossNewCard:'no activation',externalFocus:'preserved'};\n    });\n  }\n}\nconst report={task:'cross-panel-focus-source',mode:candidate?'unapplied-candidate':'current-production',startedAt,finishedAt:new Date().toISOString(),head:spawnSync('git',['rev-parse','HEAD'],{cwd:fileURLToPath(root),encoding:'utf8'}).stdout.trim(),sources:sourceRecords,compositionSha256:sha(composition),passed:results.filter(row=>row.pass).length,failed:results.filter(row=>!row.pass).length,results,limits:['Node DOM synthetic retain/blur/focus; no native events/layout/gamepad','Actual renderInv/renderOssPanel/factory/card/tab handlers; global keyboard guard only, not whole listener','Synthetic bone/ossuary state deletion; no real withdrawal/economy/save/portrait/image loading','Inherited item sizing/stats/storage/crystals/art/comparison stubs; no whole-game execution']};\nprocess.stdout.write(JSON.stringify(report,null,2)+'\\n');process.exitCode=report.failed?1:0;\n",
+  "reproductionCommand": "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node --input-type=module -e 'const fs=await import(\"node:fs\");const e=JSON.parse(fs.readFileSync(\"/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/UIUX/evidence.json\",\"utf8\"));await import(\"data:text/javascript;base64,\"+Buffer.from(e.reproductionSource).toString(\"base64\"));' -- --candidate",
+  "limits": [
+    "Node DOM synthetic retain/blur/focus; no native events/layout/gamepad",
+    "Actual renderInv/renderOssPanel/factory/card/tab handlers; global keyboard guard only, not whole listener",
+    "Synthetic bone/ossuary state deletion; no real withdrawal/economy/save/portrait/image loading",
+    "Inherited item sizing/stats/storage/crystals/art/comparison stubs; no whole-game execution",
+    "일반 장비 수치/패링/스키마/CSS 변경0",
+    "Node DOM은 innerHTML 중 button만 최소 파싱; 실제 text/layout/HTML inline onclick 미실행",
+    "filter button click/탭 keyboard listener를 합성 호출; OS default activation/Tab traversal/실물패드0"
+  ],
+  "prohibitedActions": {
+    "productionWrites": 0,
+    "sharedDocsWrites": 0,
+    "oldPrefixWrites": 0,
+    "ui": 0,
+    "server": 0,
+    "game": 0,
+    "performanceMeasurement": 0,
+    "build": 0,
+    "install": 0,
+    "gitWrite": 0,
+    "newSession": 0,
+    "subagent": 0,
+    "automation": 0
+  },
+  "completedAt": "2026-10-02T03:51:45.688286+00:00",
+  "finalAudit": {
+    "at": "2026-10-02T03:51:08.845Z",
+    "head": "31454dfa49c90bac77351273fc32f0c1eb937928",
+    "protected": {
+      "AGENTS.md": {
+        "before": "fd59bef70960bcaf1ab9910051faa860362884e574ac2869fad05c6872ae04e4",
+        "after": "fd59bef70960bcaf1ab9910051faa860362884e574ac2869fad05c6872ae04e4",
+        "same": true
+      },
+      "game.html": {
+        "before": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+        "after": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+        "same": true
+      },
+      "game-easy-test.html": {
+        "before": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+        "after": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+        "same": true
+      },
+      "ui-panels.js": {
+        "before": "b22c4a31141672304a15adfae3a5050cb9fde3b96601507c8f10de3ea63f4cb5",
+        "after": "b22c4a31141672304a15adfae3a5050cb9fde3b96601507c8f10de3ea63f4cb5",
+        "same": true
+      },
+      "index.html": {
+        "before": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8",
+        "after": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8",
+        "same": true
+      },
+      "server.cjs": {
+        "before": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d",
+        "after": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d",
+        "same": true
+      },
+      "node-main.js": {
+        "before": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce",
+        "after": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce",
+        "same": true
+      },
+      "docs/2_7 인벤토리+장비시스템/INVENTORY_KEYBOARD_FOCUS_20261002.md": {
+        "before": "9a4144457fbaed5d263867ab1a19fe14a65b3039790aaf72d6c5225a6d58038a",
+        "after": "9a4144457fbaed5d263867ab1a19fe14a65b3039790aaf72d6c5225a6d58038a",
+        "same": true
+      },
+      "docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md": {
+        "before": "2386910936ec5c71964c0d3f25bd8bab8253c8695e198f272c117b1b7431fb6d",
+        "after": "2386910936ec5c71964c0d3f25bd8bab8253c8695e198f272c117b1b7431fb6d",
+        "same": true
+      },
+      "tools/team-followup-20261002/project-teams/UIUX/task.md": {
+        "before": "a1e9fd94964a89bba877218ebc903018e4c7a11181eae6806bdca855b10f61fa",
+        "after": "a1e9fd94964a89bba877218ebc903018e4c7a11181eae6806bdca855b10f61fa",
+        "same": true
+      },
+      "tools/team-followup-20261002/owner-dispatch/UIUX-task.md": {
+        "before": "5732ff8f7b58f5500036418a5836d327d21401a338843869aa1c86daf86fc70a",
+        "after": "5732ff8f7b58f5500036418a5836d327d21401a338843869aa1c86daf86fc70a",
+        "same": true
+      },
+      "tools/team-followup-20261001/UIUX/inventory-dom/node-dom.mjs": {
+        "before": "b3c6bb3abf74d5b9e464d1db2e5d2441645af3be8eb096f3c30788b7019cfb95",
+        "after": "b3c6bb3abf74d5b9e464d1db2e5d2441645af3be8eb096f3c30788b7019cfb95",
+        "same": true
+      },
+      "tools/team-followup-20261001/UIUX/card-removal-focus/host/harness.js": {
+        "before": "958549316c5b6abc4a5d15e8ddd3d6ef6c011af68bdcade5318bccd9327799c4",
+        "after": "958549316c5b6abc4a5d15e8ddd3d6ef6c011af68bdcade5318bccd9327799c4",
+        "same": true
+      },
+      "tools/team-followup-20261001/UIUX/inventory-dom-candidate.mjs": {
+        "before": "3e46ee1493f08b238d85f40ebd455f8c7a9908c6c0eacd4feecab6b448773e46",
+        "after": "3e46ee1493f08b238d85f40ebd455f8c7a9908c6c0eacd4feecab6b448773e46",
+        "same": true
+      },
+      "tools/team-followup-20261001/UIUX/filter-focus-candidate.mjs": {
+        "before": "634f7d86fadec17b0b408a644c66524681fec605f8c9cdd719b00885a3575c38",
+        "after": "634f7d86fadec17b0b408a644c66524681fec605f8c9cdd719b00885a3575c38",
+        "same": true
+      }
+    },
+    "concurrentProtectedChanges": [],
+    "indexSha256": "4fb7e76f71cb7ac7ed0f9bf1f7cc06dc8c0918941c7a9c392e68f7fd5939f290",
+    "indexSame": false,
+    "stagedNames": "",
+    "ownedFiles": [
+      "candidate.patch",
+      "evidence.json",
+      "result.md",
+      "task.md"
+    ],
+    "checksSourceSha256": "49f5f20abd0d2f5c534b3e4c0f5987c28786bd21f2671f9159d2f0ace4cb3aea",
+    "resultSha256": "e5907b150d89703e0a7506da594c90fb7110ddbcdf52527ee991280b0f3e7b5c",
+    "patchSha256": "5a00f14ffc6f9bd519ba198ff59782811d3584f1666e8ad32e9967537bf895a4",
+    "nativeVerified": false,
+    "ownedSha256": {
+      "task.md": "a1e9fd94964a89bba877218ebc903018e4c7a11181eae6806bdca855b10f61fa",
+      "result.md": "e5907b150d89703e0a7506da594c90fb7110ddbcdf52527ee991280b0f3e7b5c",
+      "candidate.patch": "5a00f14ffc6f9bd519ba198ff59782811d3584f1666e8ad32e9967537bf895a4"
+    },
+    "latestHead": "31454dfa49c90bac77351273fc32f0c1eb937928"
+  },
+  "docsSearchFinal": {
+    "at": "2026-10-02T03:51:45.687892+00:00",
+    "exitCode": 0,
+    "matchCount": 111,
+    "files": [
+      "docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FILTER-INTEGRATION-20261002.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FOUR-CANDIDATE-ACCEPTANCE-20261002.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FOUR-SUBMISSIONS-HELLRAY-20261002.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FOUR-TEAM-FOLLOWUP-20261002.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/MAC-COORDINATION-20261002.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-CHATS-20261002.json",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-WORK-DISPATCH-20261002.json",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/confirm-inventory-review-receipt.json",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/confirm-inventory-review-result.md",
+      "docs/12퍼포먼스·최적화/QA_PERFORMANCE_TEAM_MASTER.md",
+      "docs/15 세이브+데이터구조/15 세이브+데이터구조.md",
+      "docs/16번역·로컬라이제이션/LOCALIZATION_RUNTIME_20260909.md",
+      "docs/16번역·로컬라이제이션/번역대상_전체목록.md",
+      "docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md",
+      "docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md",
+      "docs/2_7 인벤토리+장비시스템/INVENTORY_KEYBOARD_FOCUS_20261002.md",
+      "docs/2_9 결정슬롯시스템/2_9 결정슬롯시스템.md",
+      "docs/2게임디자인레벨디자인/PLAYER_GUIDE_20260912.md",
+      "docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md",
+      "docs/3.1 ui hud 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md",
+      "docs/3.1 ui hud 디자인/exoduser-ui-phase2 (1).md",
+      "docs/4.1맵디자인+설정/CH1_LIVING_DETAIL_RUNTIME_20260925.md",
+      "docs/CHANGELOG_SYNC.md"
+    ]
+  },
+  "completionNote": "embedded current16RED/exit1 및 candidate16PASS/exit0, 최종 patch/inline/보존/소유3파일 검수 후 인계; 추가 작업 착수0"
+}

@@ -1,0 +1,634 @@
+{
+  "task": "mkitem-sideeffects-readonly",
+  "owner": "SOUND project management chat",
+  "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+  "status": "CONTRACT_READY_RUNTIME_PENDING",
+  "receipt": {
+    "recordedAt": "2026-10-02T03:43:55.681Z",
+    "instruction": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/SOUND/task.md",
+    "source": "trusted coordinating-chat assignment",
+    "exactInboundTimestamp": null,
+    "note": "초기 도구 cat은 exit0. 수신 메시지/최초 cat의 정확 시각은 도구 결과에 없어서 추정하지 않았다. 아래 timed reads는 이번 명령에서 실제 기록했다."
+  },
+  "timedReadStartedAt": "2026-10-02T03:49:18.130Z",
+  "firstArtifactCreatedAt": "2026-10-02T03:46:47.279Z",
+  "execution": {
+    "startedAt": "2026-10-02T03:49:18.058Z",
+    "finishedAt": "2026-10-02T03:49:18.326Z",
+    "node": "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node",
+    "nodeVersion": "v24.15.0",
+    "kind": "AST/source contract audit; no game helper execution",
+    "exitCode": 0,
+    "passed": 31,
+    "failed": 0,
+    "previous18GroupFixtureReruns": 0,
+    "checks": [
+      {
+        "id": "prior-artifact-18-groups-84-records-is-existing-evidence",
+        "status": "PASS"
+      },
+      {
+        "id": "recorded-first-and-full-refusal-rng-boundaries",
+        "status": "PASS"
+      },
+      {
+        "id": "game.html:source-sha-matches-existing-trace",
+        "status": "PASS"
+      },
+      {
+        "id": "game.html:grant-before-register-before-bag",
+        "status": "PASS"
+      },
+      {
+        "id": "game.html:refusal-before-one-generic-pickup-call",
+        "status": "PASS"
+      },
+      {
+        "id": "game.html:registration-sample-volume-pitch-and-points",
+        "status": "PASS"
+      },
+      {
+        "id": "game.html:manual-registration-shares-sample-owner",
+        "status": "PASS"
+      },
+      {
+        "id": "game.html:grant-real-generator-and-no-extra-equip-audio",
+        "status": "PASS"
+      },
+      {
+        "id": "game.html:first-draw-also-grants-before-pickup",
+        "status": "PASS"
+      },
+      {
+        "id": "game.html:fixed-ossuary-fields-do-not-remove-previous-rng",
+        "status": "PASS"
+      },
+      {
+        "id": "game.html:generic-six-key-pool-one-selection-one-caller-pitch",
+        "status": "PASS"
+      },
+      {
+        "id": "game.html:ghost-node-priority-is-not-queue-bypass",
+        "status": "PASS"
+      },
+      {
+        "id": "game.html:backend-pitch-rng-is-after-30ms-dedup",
+        "status": "PASS"
+      },
+      {
+        "id": "game.html:gain-master-and-idempotent-lifetime-contract",
+        "status": "PASS"
+      },
+      {
+        "id": "game.html:two-player-callers-own-no-extra-sfx",
+        "status": "PASS"
+      },
+      {
+        "id": "game-easy-test.html:source-sha-matches-existing-trace",
+        "status": "PASS"
+      },
+      {
+        "id": "game-easy-test.html:grant-before-register-before-bag",
+        "status": "PASS"
+      },
+      {
+        "id": "game-easy-test.html:refusal-before-one-generic-pickup-call",
+        "status": "PASS"
+      },
+      {
+        "id": "game-easy-test.html:registration-sample-volume-pitch-and-points",
+        "status": "PASS"
+      },
+      {
+        "id": "game-easy-test.html:manual-registration-shares-sample-owner",
+        "status": "PASS"
+      },
+      {
+        "id": "game-easy-test.html:grant-real-generator-and-no-extra-equip-audio",
+        "status": "PASS"
+      },
+      {
+        "id": "game-easy-test.html:first-draw-also-grants-before-pickup",
+        "status": "PASS"
+      },
+      {
+        "id": "game-easy-test.html:fixed-ossuary-fields-do-not-remove-previous-rng",
+        "status": "PASS"
+      },
+      {
+        "id": "game-easy-test.html:generic-six-key-pool-one-selection-one-caller-pitch",
+        "status": "PASS"
+      },
+      {
+        "id": "game-easy-test.html:ghost-node-priority-is-not-queue-bypass",
+        "status": "PASS"
+      },
+      {
+        "id": "game-easy-test.html:backend-pitch-rng-is-after-30ms-dedup",
+        "status": "PASS"
+      },
+      {
+        "id": "game-easy-test.html:gain-master-and-idempotent-lifetime-contract",
+        "status": "PASS"
+      },
+      {
+        "id": "game-easy-test.html:two-player-callers-own-no-extra-sfx",
+        "status": "PASS"
+      },
+      {
+        "id": "report-separates-source-backend-rng-and-unverified-gates",
+        "status": "PASS"
+      },
+      {
+        "id": "owned-artifact-budget-and-owner-task-preservation",
+        "status": "PASS"
+      },
+      {
+        "id": "production-source-bytes-preserved-during-static-audit",
+        "status": "PASS"
+      }
+    ]
+  },
+  "head": {
+    "observed": "96610b6546a31e882962470ea1f2164ce94edca6",
+    "final": "96610b6546a31e882962470ea1f2164ce94edca6",
+    "remoteQuery": 0,
+    "remote96610b6": "총괄 전달의 정확 ref 관찰; 이 팀은 독립 원격 조회0"
+  },
+  "changes": {
+    "assignmentStart": {
+      "at": "2026-10-02T03:43:55.681Z",
+      "count": 23
+    },
+    "auditStart": {
+      "at": "2026-10-02T03:49:18.130Z",
+      "count": 54,
+      "stdoutSha256": "0029d431921c0155214e4cba82fe567edcb2ce9ef2213b7711168818d9a341a9"
+    },
+    "auditMiddle": {
+      "at": "2026-10-02T03:49:18.302Z",
+      "count": 54,
+      "stdoutSha256": "0029d431921c0155214e4cba82fe567edcb2ce9ef2213b7711168818d9a341a9"
+    },
+    "completion": {
+      "at": "2026-10-02T03:49:18.389Z",
+      "count": 54,
+      "stdoutSha256": "0029d431921c0155214e4cba82fe567edcb2ce9ef2213b7711168818d9a341a9"
+    },
+    "note": "공유 체크아웃 전체 개수이며 타 담당 변경을 본인 산출로 계산하지 않음"
+  },
+  "reads": [
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/AGENTS.md",
+      "startedAt": "2026-10-02T03:49:18.130Z",
+      "finishedAt": "2026-10-02T03:49:18.130Z",
+      "bytes": 26076,
+      "sha256": "fd59bef70960bcaf1ab9910051faa860362884e574ac2869fad05c6872ae04e4"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/SOUND/task.md",
+      "startedAt": "2026-10-02T03:49:18.130Z",
+      "finishedAt": "2026-10-02T03:49:18.130Z",
+      "bytes": 3768,
+      "sha256": "fbbfe0f4e0173818b9369c9fa26faf94cc8d96e4e3513d3353331d354b4c687b"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/native-recovery/SOUND-task.md",
+      "startedAt": "2026-10-02T03:49:18.130Z",
+      "finishedAt": "2026-10-02T03:49:18.130Z",
+      "bytes": 2026,
+      "sha256": "a1b223999d0cb14c7b61bb0dab0845823301d76b7a185db984dbd3aba8c5b3a8"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/6사운드디자인/6사운드디자인.md",
+      "startedAt": "2026-10-02T03:49:18.131Z",
+      "finishedAt": "2026-10-02T03:49:18.131Z",
+      "bytes": 73452,
+      "sha256": "39f97d11bfc34e89647e2230acaea1777d5c6654aaf6378b83135d29cb1ecea4"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md",
+      "startedAt": "2026-10-02T03:49:18.131Z",
+      "finishedAt": "2026-10-02T03:49:18.131Z",
+      "bytes": 102787,
+      "sha256": "29e01d81a0632beb91cac804407510f322e2bd94bee505d2db33c69b82d54c3c"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/INTEGRATION-REVIEW-20261002.md",
+      "startedAt": "2026-10-02T03:49:18.131Z",
+      "finishedAt": "2026-10-02T03:49:18.131Z",
+      "bytes": 10468,
+      "sha256": "17cba3feb35237834031228ad664716c7b65b6848e09098a5efe9d1ce6dffc6d"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/integration-review/mkitem-sideeffects-evidence.json",
+      "startedAt": "2026-10-02T03:49:18.131Z",
+      "finishedAt": "2026-10-02T03:49:18.131Z",
+      "bytes": 426029,
+      "sha256": "9b128722a412a8325a3274cce79df3dca9ea455e3d045315e877c8882ee6a5d8"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/integration-review/mkitem-sideeffects-tests.txt",
+      "startedAt": "2026-10-02T03:49:18.132Z",
+      "finishedAt": "2026-10-02T03:49:18.132Z",
+      "bytes": 1975,
+      "sha256": "3acd26bffc057df28b9152da7e527b9bedd3baf352cac05815bddb17700372ec"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json",
+      "startedAt": "2026-10-02T03:49:18.132Z",
+      "finishedAt": "2026-10-02T03:49:18.132Z",
+      "bytes": 73893,
+      "sha256": "8d143edf8efb696dfe4d847c64ad8039003ea702fb68c284dfd17cf4e08724f6"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/server.cjs",
+      "startedAt": "2026-10-02T03:49:18.132Z",
+      "finishedAt": "2026-10-02T03:49:18.132Z",
+      "bytes": 16335,
+      "sha256": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/node-main.js",
+      "startedAt": "2026-10-02T03:49:18.132Z",
+      "finishedAt": "2026-10-02T03:49:18.133Z",
+      "bytes": 10153,
+      "sha256": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/index.html",
+      "startedAt": "2026-10-02T03:49:18.133Z",
+      "finishedAt": "2026-10-02T03:49:18.133Z",
+      "bytes": 342046,
+      "sha256": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+      "startedAt": "2026-10-02T03:49:18.133Z",
+      "finishedAt": "2026-10-02T03:49:18.134Z",
+      "bytes": 4025302,
+      "sha256": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game-easy-test.html",
+      "startedAt": "2026-10-02T03:49:18.197Z",
+      "finishedAt": "2026-10-02T03:49:18.197Z",
+      "bytes": 3902427,
+      "sha256": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/SOUND/result.md",
+      "startedAt": "2026-10-02T03:49:18.323Z",
+      "finishedAt": "2026-10-02T03:49:18.323Z",
+      "bytes": 14974,
+      "sha256": "c4ac6147bb963eb90a6dc72b0b36147943c57b01fe078a64b8335cecd2fe0090"
+    }
+  ],
+  "sources": [
+    {
+      "file": "game.html",
+      "sha256": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+      "blocks": [
+        {
+          "name": "mkItem",
+          "line": 15177,
+          "sha256": "1ee1820b55f373a6db3c2041b359c393ebab34c3006972924d50cf1476373aa1",
+          "bytes": 26245
+        },
+        {
+          "name": "rollAffixes",
+          "line": 14570,
+          "sha256": "b9580a70fcc9e652d794521ca6d9afd8c83b317135634662b695eeda43f49a09",
+          "bytes": 2262
+        },
+        {
+          "name": "pickupItem",
+          "line": 15675,
+          "sha256": "ade09a8fd8d1a11e19348c6783dacd6a44cbcbf2da62ff61bbb458e9608ee92c",
+          "bytes": 1786
+        },
+        {
+          "name": "_boneRegister",
+          "line": 44315,
+          "sha256": "be4d703b137804a12acc3264e81ccb02be3ab606e710a18f19b64a568cdbc20f",
+          "bytes": 871
+        },
+        {
+          "name": "_grantOssuaryIfNeeded",
+          "line": 44368,
+          "sha256": "52e6b5875f9133e06bd3ddffba495627f33856cf5cd72bf200ba7ab7463383b6",
+          "bytes": 384
+        },
+        {
+          "name": "registerBonePart",
+          "line": 44335,
+          "sha256": "519f6ed24db4751f62fbe96b93d078e66388964391747d69759e8fee69460354",
+          "bytes": 381
+        },
+        {
+          "name": "playItemPickupSfx",
+          "line": 15555,
+          "sha256": "0cf7b3eed2a3200c82d27e50f639c2d9829260456463695013d24846ca47d13d",
+          "bytes": 119
+        },
+        {
+          "name": "playSample",
+          "line": 11899,
+          "sha256": "4305df5cdb884bda6cfe83fc670852d5d7a3d02937e4087ea3f59eebaff6bc79",
+          "bytes": 522
+        },
+        {
+          "name": "_playSampleNow",
+          "line": 11800,
+          "sha256": "9b0733ee9355782ea98e0e959eafec27e04544b850c8b33eb0c076d1b2459e4a",
+          "bytes": 2280
+        },
+        {
+          "name": "_sfxPri",
+          "line": 11778,
+          "sha256": "ddb3b9c901afd6dca96d917fb79dbcd164ed802b4dfea2287394c23c253738d5",
+          "bytes": 1026
+        },
+        {
+          "name": "_sfxCat",
+          "line": 11883,
+          "sha256": "b46865084a6cd213875c288681d8ddc3bd6f72446e604778c9ec9713c2695e8b",
+          "bytes": 747
+        },
+        {
+          "name": "_sfxFrameReset",
+          "line": 11840,
+          "sha256": "a1e9ed017b19ea9adb736eaa53ff9f1b9f548db8b14763ed7068854a54705370",
+          "bytes": 1259
+        },
+        {
+          "name": "_r",
+          "line": 12004,
+          "sha256": "a2ae931f0268caf75ddb17d752c77cd32960a6cf59eac23be2db7dc76dda8ab3",
+          "bytes": 60
+        },
+        {
+          "name": "mbus",
+          "line": 11949,
+          "sha256": "e12ce82fb1d36db1265efd9d4f06000a4173feb17d4b4f3930e5bb36fdacd1f9",
+          "bytes": 1998
+        }
+      ],
+      "directGrantLines": [
+        {
+          "line": 15678,
+          "text": "    _grantOssuaryIfNeeded(); // 첫 부위 획득 시 유니크 유골함 자동 지급"
+        },
+        {
+          "line": 44368,
+          "text": "function _grantOssuaryIfNeeded(){"
+        },
+        {
+          "line": 50086,
+          "text": "  if(!window._ossGrantChk&&typeof _grantOssuaryIfNeeded==='function'&&typeof P!=='undefined'&&P&&typeof INV!=='undefined'&&INV.equipped){window._ossGrantChk=1;try{_grantOssuaryIfNeeded()}catch(e){}}"
+        }
+      ]
+    },
+    {
+      "file": "game-easy-test.html",
+      "sha256": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+      "blocks": [
+        {
+          "name": "mkItem",
+          "line": 14301,
+          "sha256": "1a07dde50c299aceb1d34a3fdd8e122d08fe42d5ca71b2827d0806f9336a0c3d",
+          "bytes": 26141
+        },
+        {
+          "name": "rollAffixes",
+          "line": 13967,
+          "sha256": "b9580a70fcc9e652d794521ca6d9afd8c83b317135634662b695eeda43f49a09",
+          "bytes": 2262
+        },
+        {
+          "name": "pickupItem",
+          "line": 14782,
+          "sha256": "b790a6796976fcb6c38fedf7cdbea03337829243141a089a40e524aa170d9146",
+          "bytes": 2552
+        },
+        {
+          "name": "_boneRegister",
+          "line": 42952,
+          "sha256": "be4d703b137804a12acc3264e81ccb02be3ab606e710a18f19b64a568cdbc20f",
+          "bytes": 871
+        },
+        {
+          "name": "_grantOssuaryIfNeeded",
+          "line": 43005,
+          "sha256": "52e6b5875f9133e06bd3ddffba495627f33856cf5cd72bf200ba7ab7463383b6",
+          "bytes": 384
+        },
+        {
+          "name": "registerBonePart",
+          "line": 42972,
+          "sha256": "519f6ed24db4751f62fbe96b93d078e66388964391747d69759e8fee69460354",
+          "bytes": 381
+        },
+        {
+          "name": "playItemPickupSfx",
+          "line": 14678,
+          "sha256": "0cf7b3eed2a3200c82d27e50f639c2d9829260456463695013d24846ca47d13d",
+          "bytes": 119
+        },
+        {
+          "name": "playSample",
+          "line": 11303,
+          "sha256": "4305df5cdb884bda6cfe83fc670852d5d7a3d02937e4087ea3f59eebaff6bc79",
+          "bytes": 522
+        },
+        {
+          "name": "_playSampleNow",
+          "line": 11204,
+          "sha256": "9b0733ee9355782ea98e0e959eafec27e04544b850c8b33eb0c076d1b2459e4a",
+          "bytes": 2280
+        },
+        {
+          "name": "_sfxPri",
+          "line": 11182,
+          "sha256": "ddb3b9c901afd6dca96d917fb79dbcd164ed802b4dfea2287394c23c253738d5",
+          "bytes": 1026
+        },
+        {
+          "name": "_sfxCat",
+          "line": 11287,
+          "sha256": "b46865084a6cd213875c288681d8ddc3bd6f72446e604778c9ec9713c2695e8b",
+          "bytes": 747
+        },
+        {
+          "name": "_sfxFrameReset",
+          "line": 11244,
+          "sha256": "a1e9ed017b19ea9adb736eaa53ff9f1b9f548db8b14763ed7068854a54705370",
+          "bytes": 1259
+        },
+        {
+          "name": "_r",
+          "line": 11408,
+          "sha256": "a2ae931f0268caf75ddb17d752c77cd32960a6cf59eac23be2db7dc76dda8ab3",
+          "bytes": 60
+        },
+        {
+          "name": "mbus",
+          "line": 11353,
+          "sha256": "e12ce82fb1d36db1265efd9d4f06000a4173feb17d4b4f3930e5bb36fdacd1f9",
+          "bytes": 1998
+        }
+      ],
+      "directGrantLines": [
+        {
+          "line": 14785,
+          "text": "    _grantOssuaryIfNeeded(); // 첫 부위 획득 시 유니크 유골함 자동 지급"
+        },
+        {
+          "line": 43005,
+          "text": "function _grantOssuaryIfNeeded(){"
+        },
+        {
+          "line": 48615,
+          "text": "  if(!window._ossGrantChk&&typeof _grantOssuaryIfNeeded==='function'&&typeof P!=='undefined'&&P&&typeof INV!=='undefined'&&INV.equipped){window._ossGrantChk=1;try{_grantOssuaryIfNeeded()}catch(e){}}"
+        }
+      ]
+    }
+  ],
+  "otherProduction": [
+    {
+      "file": "server.cjs",
+      "sha256": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d"
+    },
+    {
+      "file": "node-main.js",
+      "sha256": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce"
+    },
+    {
+      "file": "index.html",
+      "sha256": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8"
+    }
+  ],
+  "existingEvidence": {
+    "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/integration-review/mkitem-sideeffects-evidence.json",
+    "checkedAt": "2026-10-01T23:17:46.998Z",
+    "groups": 18,
+    "inputs": 84,
+    "rerun": false,
+    "testsPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/integration-review/mkitem-sideeffects-tests.txt"
+  },
+  "originalOwner": {
+    "snapshotAt": "2026-10-01T23:21:34.918080+00:00",
+    "sessionId": "aa3ac0ed-f4e5-44ad-a0b2-d4d2da045b84",
+    "priorCompletedTask": {
+      "task": "SOUND-BONE-PICKUP-CANDIDATE",
+      "instruction": "tools/team-followup-20261001/SOUND/OWNER_NEXT_20261002.md",
+      "receivedAt": "2026-10-01T17:28:41.105Z",
+      "firstReadAt": "2026-10-01T17:28:49.936Z",
+      "completedAt": "2026-10-01T17:31:30.181Z",
+      "rootAcceptance": "Source read only; mkItem is stubbed in proposal, full RNG0 unproven"
+    },
+    "currentTaskReceivedAt": null,
+    "currentTaskReadAt": null,
+    "newSessionOrMessage": 0,
+    "limitation": "원세션 실시간 조회0. 기록에는 같은 과제 새 Read/수신 근거가 없어 독립 소유 문서 과제로 수행함"
+  },
+  "docsSearch": {
+    "startedAt": "2026-10-02T03:49:18.302Z",
+    "command": [
+      "rg",
+      "-n",
+      "mkItem|rollAffixes|_grantOssuaryIfNeeded|_boneRegister|bonePart|ghost_laugh|playItemPickupSfx|_sfxPri|_sfxCat|_ossGrantChk",
+      "docs/"
+    ],
+    "matchingLines": 111,
+    "files": [
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/7아이템디자인/exoduser-item-system-full.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/7아이템디자인/UNIQUE_ITEM_GAME_INTEGRATION_CONTRACT_20261001.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/7아이템디자인/어픽스_시스템_현황분석_2026-08-10.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/15 세이브+데이터구조/15 세이브+데이터구조.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/7아이템디자인/아이템_어픽스_시스템.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/7아이템디자인/유니크_어픽스_리스트.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/7아이템디자인/UNIQUE_TOP8_HOOK_REVIEW_20261001.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/7아이템디자인/ITEM_TEAM_MASTER.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/7아이템디자인/어픽스_Layer_재분류_설계_2026-08-10.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/CHANGELOG_SYNC.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/2_9 결정슬롯시스템/2_9 결정슬롯시스템.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/14밸런스+수치테이블/BALANCE_ECONOMY_TEAM_MASTER.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/6사운드디자인/6사운드디자인.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/8.1보스디자인바이블/DARK_DRUID_FINALE_QA_20260909.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/2_7 인벤토리+장비시스템/3파트_아이템분류.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/3.1 ui hud 디자인/SETTINGS_HUD_DETAIL_20260930.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/16번역·로컬라이제이션/번역대상_전체목록.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/16번역·로컬라이제이션/LOCALIZATION_RUNTIME_20260909.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/2_2 무기+활+속성시스템/2_2 무기+활+속성시스템.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/EXODUSER_MASTER_BIBLE_v2_2 (2).md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/13출시·마케팅.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/GAMEPLAY_TRAILER_20260909_PRODUCTION.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/Mac-아이템스킨-두종-부트준비-검수.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/ring-png-evidence/world-fixture-setup.js",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/Mac-반지-PNG-재사용-진단.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/skin-prepare-evidence/observer-measured.js",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/native-recovery/SOUND-task.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/item-skin-evidence/fixture-before.html",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/item-skin-evidence/observer-measured.js",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/item-skin-evidence/fixture-candidate-rejected.html",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ASYNC-BOUNDARY-20261002.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/INTEGRATION-REVIEW-20261002.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FOUR-NEXT-20261002.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/MAC-COORDINATION-20261002.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BINDING-root-review.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BALANCE-result.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/INDEPENDENT-NEXT-20261002.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/FOUR-SUBMISSIONS-HELLRAY-20261002.md",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-WORK-DISPATCH-20261002.json",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ITEM-unique-save-result.md"
+    ],
+    "stdoutSha256": "06eafd361beab8ede343f5b72a260eb953f1f67af5e2bea3d94e26a5e337956f",
+    "writes": 0,
+    "synchronization": "정확한 추가 문안은 result.md에 있으며 총괄의 생산 반영과 함께 해당 SSOT에 동기화"
+  },
+  "artifacts": [
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/SOUND/checks.mjs",
+      "sha256": "330014728515603266444bb5507885a8d4c3a1108a3afa23936f380463168d3b",
+      "bytes": 17280
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/SOUND/result.md",
+      "sha256": "c4ac6147bb963eb90a6dc72b0b36147943c57b01fe078a64b8335cecd2fe0090",
+      "bytes": 14974
+    }
+  ],
+  "counts": {
+    "productionWrites": 0,
+    "existingOwnerWrites": 0,
+    "sharedDocsWrites": 0,
+    "gitWrites": 0,
+    "serverRuns": 0,
+    "UI": 0,
+    "gameRuns": 0,
+    "performanceMeasurements": 0,
+    "builds": 0,
+    "audioPlayback": 0,
+    "audioGeneration": 0,
+    "encoding": 0,
+    "installs": 0,
+    "agents": 0,
+    "newSessions": 0,
+    "messagesToOtherChats": 0,
+    "automationChanges": 0,
+    "gameHelperEvaluation": 0
+  },
+  "remainingGates": [
+    "후보 고유키/파일/대상 이벤트/분류 미확정",
+    "허용된 QA 단독 환경에서 실제 재생/중복/클리핑/수명 청취",
+    "실제 저장/재로드와 유골함 기존 보유/미보유 확인",
+    "현행 소스를 포함한 고유 패키지 runtime 인수",
+    "새 키면 playSample dedup 통과율 변화에 따른 backend RNG 계약 별도 검수"
+  ],
+  "completedAt": "2026-10-02T03:49:18.326Z",
+  "timezone": "UTC 기록; 한국어 보고는 Asia/Seoul"
+}

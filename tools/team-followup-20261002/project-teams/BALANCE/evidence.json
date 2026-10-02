@@ -1,0 +1,572 @@
+{
+  "task": "shared-mats-production-acceptance-plan",
+  "status": "COMPLETED_PLAN_SOURCE_VERIFIED_PRODUCTION_UNAPPLIED",
+  "root": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+  "received": {
+    "source": "2026-10-02 총괄의 직접 배정 메시지",
+    "observedAt": "2026-10-02 03:44:10 UTC",
+    "exactReceiptTimestampAvailable": false
+  },
+  "read": {
+    "completedObservedAt": "2026-10-02 03:44:10 UTC",
+    "files": [
+      "tools/team-followup-20261002/project-teams/BALANCE/task.md",
+      "tools/team-followup-20261002/owner-dispatch/BALANCE-task.md",
+      "AGENTS.md",
+      "docs/15 세이브+데이터구조/15 세이브+데이터구조.md",
+      "docs/14밸런스+수치테이블/BALANCE_ECONOMY_TEAM_MASTER.md"
+    ],
+    "note": "firstRead 시각은 별도 계측하지 않았다. completedObservedAt은 실제 읽기를 마친 뒤 clock 조회 시각이다."
+  },
+  "initialHead": "96610b6546a31e882962470ea1f2164ce94edca6",
+  "changes": {
+    "start": 23,
+    "middle": 45,
+    "afterChecks": 45,
+    "finish": 54
+  },
+  "originalOwnerObservation": {
+    "threadId": "01a0f6e6-5303-7392-81ba-94c42e349ffc",
+    "title": "Execute assigned task",
+    "status": {
+      "type": "notLoaded"
+    },
+    "cwd": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "turns": [
+      {
+        "id": "01a0f8c3-97dd-7c01-9c0c-af2a7ab37ac6",
+        "status": "completed",
+        "startedAt": 1790879963,
+        "completedAt": 1790880047,
+        "userMessages": [
+          [
+            {
+              "type": "text",
+              "text": "tools/team-followup-20261001/BALANCE/shared-mats-file-task.md를 읽고 기존 세션의 다음 한 건을 수행하세요. root 양쪽 공유 악의 후보16 메모리검사 독립 인수 완료. 이번에는 새 소유 합성 디렉터리의 실제 파일 회귀만, 생산/HTTP/앱0. 같은 과제 대기/진행이면 중복하지 마세요."
+            }
+          ]
+        ]
+      }
+    ]
+  },
+  "duplicateCheck": "원 BALANCE 공식 마지막 턴은 shared-mats-file completed; 이 과제의 추가 수신/동일 실행 근거 없음. project-teams/BALANCE는 task.md만 존재.",
+  "constraints": {
+    "productionApplied": false,
+    "gitWrites": 0,
+    "newSessions": 0,
+    "subagents": 0,
+    "server": 0,
+    "networkHTTP": 0,
+    "game": 0,
+    "build": 0,
+    "install": 0
+  },
+  "ownedOutputs": [
+    "result.md",
+    "evidence.json",
+    "checks.mjs"
+  ],
+  "execution": {
+    "startedAt": "2026-10-02T03:46:54.495Z",
+    "node": "v24.15.0",
+    "platform": "darwin",
+    "arch": "arm64",
+    "command": "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node tools/team-followup-20261002/project-teams/BALANCE/checks.mjs",
+    "head": "96610b6546a31e882962470ea1f2164ce94edca6",
+    "endedAt": "2026-10-02T03:46:54.647Z"
+  },
+  "errorResponseFixture": {
+    "scope": "node-main POST /api/mats branch only; never saved/applied to production",
+    "candidateRoute": "if (pathname === '/api/mats' && req.method === 'POST') {\n    let n;\n    try {\n      const body = await readBody(req);\n      n = Math.max(0, Math.min(Math.floor(+body.mats || 0), Number.MAX_SAFE_INTEGER));\n      atomicSaveJSON(fs, MATS_FILE, { mats: n, ts: Date.now() }, process.pid);\n    } catch (error) {\n      res.writeHead(500, { 'Content-Type': 'text/plain' });\n      return res.end('Internal Server Error');\n    }\n    return sendJSON(res, 200, { ok: true, mats: n });\n  }",
+    "sha256": "e2cdcde449c72c38bd569f1ada8687186df8d038d6dbfe7b713fba5712464308",
+    "helper": "atomicSaveJSON call/throw stub; no fd or disk execution",
+    "policy": "readBody/clamp/atomicSaveJSON failure -> server.cjs existing 500 text/plain body; success sendJSON outside try",
+    "applied": false
+  },
+  "docsSearch": {
+    "command": "rg -n \"sharedMats|공유 악의|atomicSaveJSON|/api/mats|fsync|nodeMainMats\" docs/",
+    "status": 0,
+    "matchCount": 63,
+    "stdoutSha256": "581997f28697051b64691baacb99fefdece376c43a1efc5fbcf14655ba76bf8e",
+    "matchedDocuments": [
+      "docs/API연결_가이드.md",
+      "docs/15 세이브+데이터구조/15 세이브+데이터구조.md",
+      "docs/15 세이브+데이터구조/BALANCE_DISK_SAVE_RESTART_20261002.md",
+      "docs/12퍼포먼스·최적화/QA_PERFORMANCE_TEAM_MASTER.md",
+      "docs/CHANGELOG_SYNC.md",
+      "docs/14밸런스+수치테이블/BALANCE_ECONOMY_TEAM_MASTER.md",
+      "docs/13출시·마케팅/STEAM_LATEST_DEPLOY_20260909.md",
+      "docs/13출시·마케팅/STEAM_REVIEW_FINAL_CHECK_20260918.md",
+      "docs/13출시·마케팅/13출시·마케팅.md",
+      "docs/13출시·마케팅/INTEGRATION_BUILD_TEAM_MASTER.md",
+      "docs/4.1맵디자인+설정/CH1_1_DEPTH_RETOUCH_20260917.md",
+      "docs/0마스터플랜/MAC_AGENT_DASHBOARD.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/INTEGRATION-REVIEW-20261002.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-CHATS-20261002.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PM-TEST-SUPPORT-20261002.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/MAC-COORDINATION-20261002.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-WORK-DISPATCH-20261002.json",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/BUILD-result.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-CHATS-20261002.json",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/SERVER-INTEGRATION-20261002.md",
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/CONDITIONAL-ATOMIC-INTEGRATION-20261002.md"
+    ],
+    "rawOutputStored": false,
+    "note": "추가 산출 제한에 따라 검색 개수·전체출력 SHA·매칭 문서 목록을 evidence 안에 기록; 변경안은 result.md 계약표에 기록"
+  },
+  "inputs": {
+    "AGENTS.md": "fd59bef70960bcaf1ab9910051faa860362884e574ac2869fad05c6872ae04e4",
+    "game.html": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+    "game-easy-test.html": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+    "index.html": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8",
+    "server.cjs": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d",
+    "node-main.js": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce",
+    "test/nodeMainMats.test.js": "4b571385a2c20d84f5589fbd54434dd78e73fe3415c768047a524f9d3d94e934",
+    "tools/team-followup-20261001/BALANCE/shared-mats-atomic-candidate.mjs": "75cb158df4a54569603a4a9855369e72a45d7b135ca0bf07d071141e2b19da1b",
+    "tools/team-followup-20261002/integration-review/server.cjs.shared-mats.patch": "cb6ab97f899f1683d588e2d8ecf6809fbf40099ac4c1de49769fef742b86c7d1",
+    "tools/team-followup-20261002/integration-review/node-main.js.shared-mats.patch": "6716d7710b4d835eb3ba5fafd40a67eef9590f12676b7e27d49bbe9bdf489a7b",
+    "tools/team-followup-20261002/integration-review/server.cjs.shared-mats-candidate": "6caf90a73e7eaf313eba46a2808e7c9bceeb591cdccc86b17e33ac6f4a7a58ec",
+    "tools/team-followup-20261002/integration-review/node-main.js.shared-mats-candidate": "3b56932b93efabb15718394cd9116604aebcf12e60827bef5abd0d32080f218c",
+    "tools/team-followup-20261002/integration-review/shared-mats-patch-evidence.json": "35480c976f35f7a19ab71f34f4d6c36874c67711aee4dc3a7dc04874afbe2011",
+    "tools/team-followup-20261002/integration-review/shared-mats-file-independent.json": "f701e2792ae1ae488d7ef7dd4814fd60ef8c121e901ac35228fc07c297a46435",
+    "tools/team-followup-20261002/pm-test-support/result.json": "b31beb16c03b95a63ac379d9fd52c49ed7c15014fe592d461f2d80cbd2ffc0c0",
+    "tools/team-followup-20261002/pm-test-support/receipt.json": "3da0ac310e20d48816fab9335a8ffe107917cebf22b5852f64dc701ac4109adc",
+    "tools/team-followup-20261002/project-teams/BALANCE/task.md": "8aef73229a1166a85e444600149a8024c368b2a25811f8ac9cbd4d731ca92267"
+  },
+  "checks": [
+    {
+      "name": "원담당 candidate builder SHA 동일",
+      "pass": true
+    },
+    {
+      "name": "server.cjs exact-context/SHA/메모리 적용 동일",
+      "pass": true
+    },
+    {
+      "name": "server.cjs AST 최소 적용 경계",
+      "pass": true
+    },
+    {
+      "name": "node-main.js exact-context/SHA/메모리 적용 동일",
+      "pass": true
+    },
+    {
+      "name": "node-main.js AST 최소 적용 경계",
+      "pass": true
+    },
+    {
+      "name": "기존 actual-file14 결과 재사용·현행 입력 대조",
+      "pass": true,
+      "detail": {
+        "completedAt": "2026-10-01T23:18:47.127Z",
+        "rerun": false
+      }
+    },
+    {
+      "name": "Terminal12 handler18 결과 재사용·후보/입력 대조",
+      "pass": true,
+      "detail": {
+        "completedAt": "2026-10-02T03:37:13.712Z",
+        "rerun": false
+      }
+    },
+    {
+      "name": "기존 영구 테스트 fd fakeFs 부족 확인",
+      "pass": true,
+      "detail": {
+        "missing": [
+          "openSync",
+          "closeSync",
+          "renameSync",
+          "unlinkSync"
+        ],
+        "requiredProcessPid": true,
+        "permanentTestModified": false
+      }
+    },
+    {
+      "name": "오류응답 후보 구문·성공 응답 catch 외부·기존 server 500형태",
+      "pass": true
+    },
+    {
+      "name": "기존 atomic 후보 handler 거부·성공ACK0·오류응답0",
+      "pass": true,
+      "detail": {
+        "events": [
+          [
+            "storage"
+          ]
+        ],
+        "replies": [],
+        "storageCalls": [
+          {
+            "file": "/synthetic/_sharedMats.json",
+            "data": {
+              "mats": 42,
+              "ts": 123456
+            },
+            "pid": 12002
+          }
+        ],
+        "error": "write injected"
+      }
+    },
+    {
+      "name": "오류응답 source fixture open 예외→500/end1",
+      "pass": true,
+      "detail": {
+        "events": [
+          [
+            "storage"
+          ],
+          [
+            "headers",
+            500
+          ],
+          [
+            "end"
+          ]
+        ],
+        "replies": [
+          {
+            "status": 500,
+            "headers": {
+              "Content-Type": "text/plain"
+            },
+            "body": "Internal Server Error"
+          }
+        ],
+        "storageCalls": [
+          {
+            "file": "/synthetic/_sharedMats.json",
+            "data": {
+              "mats": 42,
+              "ts": 123456
+            },
+            "pid": 12002
+          }
+        ]
+      }
+    },
+    {
+      "name": "오류응답 source fixture write 예외→500/end1",
+      "pass": true,
+      "detail": {
+        "events": [
+          [
+            "storage"
+          ],
+          [
+            "headers",
+            500
+          ],
+          [
+            "end"
+          ]
+        ],
+        "replies": [
+          {
+            "status": 500,
+            "headers": {
+              "Content-Type": "text/plain"
+            },
+            "body": "Internal Server Error"
+          }
+        ],
+        "storageCalls": [
+          {
+            "file": "/synthetic/_sharedMats.json",
+            "data": {
+              "mats": 42,
+              "ts": 123456
+            },
+            "pid": 12002
+          }
+        ]
+      }
+    },
+    {
+      "name": "오류응답 source fixture close 예외→500/end1",
+      "pass": true,
+      "detail": {
+        "events": [
+          [
+            "storage"
+          ],
+          [
+            "headers",
+            500
+          ],
+          [
+            "end"
+          ]
+        ],
+        "replies": [
+          {
+            "status": 500,
+            "headers": {
+              "Content-Type": "text/plain"
+            },
+            "body": "Internal Server Error"
+          }
+        ],
+        "storageCalls": [
+          {
+            "file": "/synthetic/_sharedMats.json",
+            "data": {
+              "mats": 42,
+              "ts": 123456
+            },
+            "pid": 12002
+          }
+        ]
+      }
+    },
+    {
+      "name": "오류응답 source fixture rename 예외→500/end1",
+      "pass": true,
+      "detail": {
+        "events": [
+          [
+            "storage"
+          ],
+          [
+            "headers",
+            500
+          ],
+          [
+            "end"
+          ]
+        ],
+        "replies": [
+          {
+            "status": 500,
+            "headers": {
+              "Content-Type": "text/plain"
+            },
+            "body": "Internal Server Error"
+          }
+        ],
+        "storageCalls": [
+          {
+            "file": "/synthetic/_sharedMats.json",
+            "data": {
+              "mats": 42,
+              "ts": 123456
+            },
+            "pid": 12002
+          }
+        ]
+      }
+    },
+    {
+      "name": "오류응답 source fixture JSON 실패→저장0·500/end1",
+      "pass": true,
+      "detail": {
+        "events": [
+          [
+            "headers",
+            500
+          ],
+          [
+            "end"
+          ]
+        ],
+        "replies": [
+          {
+            "status": 500,
+            "headers": {
+              "Content-Type": "text/plain"
+            },
+            "body": "Internal Server Error"
+          }
+        ],
+        "storageCalls": []
+      }
+    },
+    {
+      "name": "오류응답 source fixture 성공 clamp/schema/ACK 순서 유지",
+      "pass": true,
+      "detail": {
+        "events": [
+          [
+            "storage"
+          ],
+          [
+            "rename-success-stub"
+          ],
+          [
+            "headers",
+            200
+          ],
+          [
+            "end"
+          ]
+        ],
+        "replies": [
+          {
+            "status": 200,
+            "headers": {
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "*"
+            },
+            "body": "{\"ok\":true,\"mats\":42}"
+          }
+        ],
+        "storageCalls": [
+          {
+            "file": "/synthetic/_sharedMats.json",
+            "data": {
+              "mats": 42,
+              "ts": 123456
+            },
+            "pid": 12002
+          }
+        ]
+      }
+    },
+    {
+      "name": "성공 응답 transport 실패 재응답 시도0",
+      "pass": true,
+      "detail": {
+        "events": [
+          [
+            "storage"
+          ],
+          [
+            "rename-success-stub"
+          ],
+          [
+            "headers",
+            200
+          ]
+        ],
+        "replies": [],
+        "storageCalls": [
+          {
+            "file": "/synthetic/_sharedMats.json",
+            "data": {
+              "mats": 42,
+              "ts": 123456
+            },
+            "pid": 12002
+          }
+        ],
+        "error": "response transport unavailable"
+      }
+    },
+    {
+      "name": "읽기 입력 SHA 보존",
+      "pass": true
+    },
+    {
+      "name": "코드 산출 후 docs 전체 키워드 검색",
+      "pass": true
+    }
+  ],
+  "reusedEvidence": {
+    "actualFile14": {
+      "path": "tools/team-followup-20261002/integration-review/shared-mats-file-independent.json",
+      "count": 14,
+      "rerun": false
+    },
+    "handler18": {
+      "path": "tools/team-followup-20261002/pm-test-support/result.json",
+      "count": 18,
+      "rerun": false
+    }
+  },
+  "verification": {
+    "completedAt": "2026-10-02T03:46:54.647Z",
+    "passed": 19,
+    "failed": 0,
+    "headAtFinish": "96610b6546a31e882962470ea1f2164ce94edca6",
+    "syntaxCheckedExternally": true,
+    "syntaxCommand": "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node --check tools/team-followup-20261002/project-teams/BALANCE/checks.mjs",
+    "syntaxExitCode": 0,
+    "artifactValidation": {
+      "status": "PASS",
+      "protectedInputsChanged": [],
+      "ownedArtifactCount": 3,
+      "taskPreserved": true,
+      "validatedAt": "2026-10-02T03:49:15.105856+00:00"
+    }
+  },
+  "limits": [
+    "source fixture only; atomic helper call/throw stub, success rename event is a stub",
+    "기존14/18 tests only inspected/reused, not rerun",
+    "실HTTP/응답 socket/앱/실디스크/fsync/전원손실/crash/Windows/concurrency/지속close/unlink 실패 미검수",
+    "생산 코드·영구 test·공용 docs 변경0; 총괄 통합 Gate 유지"
+  ],
+  "verificationHistory": [
+    {
+      "execution": {
+        "startedAt": "2026-10-02T03:46:25.160Z",
+        "node": "v24.15.0",
+        "platform": "darwin",
+        "arch": "arm64",
+        "command": "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node tools/team-followup-20261002/project-teams/BALANCE/checks.mjs",
+        "head": "96610b6546a31e882962470ea1f2164ce94edca6",
+        "endedAt": "2026-10-02T03:46:25.330Z"
+      },
+      "verification": {
+        "completedAt": "2026-10-02T03:46:25.330Z",
+        "passed": 18,
+        "failed": 1,
+        "headAtFinish": "96610b6546a31e882962470ea1f2164ce94edca6",
+        "syntaxCheckedExternally": false
+      },
+      "failures": [
+        {
+          "name": "오류응답 후보 구문·성공 응답 catch 외부·기존 server 500형태",
+          "pass": false,
+          "error": "SyntaxError: Unexpected token (4:25)\n    at pp$4.raise (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/node_modules/acorn/dist/acorn.mjs:3760:13)\n    at pp$9.unexpected (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/node_modules/acorn/dist/acorn.mjs:793:8)\n    at pp$9.semicolon (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/node_modules/acorn/dist/acorn.mjs:770:66)\n    at pp$8.parseVarStatement (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/node_modules/acorn/dist/acorn.mjs:1294:8)\n    at pp$8.parseStatement (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/node_modules/acorn/dist/acorn.mjs:992:17)\n    at pp$8.parseBlock (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/node_modules/acorn/dist/acorn.mjs:1362:21)\n    at pp$8.parseTryStatement (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/node_modules/acorn/dist/acorn.mjs:1269:21)\n    at pp$8.parseStatement (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/node_modules/acorn/dist/acorn.mjs:988:34)\n    at pp$8.parseBlock (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/node_modules/acorn/dist/acorn.mjs:1362:21)\n    at pp$8.parseStatement (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/node_modules/acorn/dist/acorn.mjs:995:36)"
+        }
+      ]
+    },
+    {
+      "execution": {
+        "startedAt": "2026-10-02T03:46:41.733Z",
+        "node": "v24.15.0",
+        "platform": "darwin",
+        "arch": "arm64",
+        "command": "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node tools/team-followup-20261002/project-teams/BALANCE/checks.mjs",
+        "head": "96610b6546a31e882962470ea1f2164ce94edca6",
+        "endedAt": "2026-10-02T03:46:41.882Z"
+      },
+      "verification": {
+        "completedAt": "2026-10-02T03:46:41.882Z",
+        "passed": 18,
+        "failed": 1,
+        "headAtFinish": "96610b6546a31e882962470ea1f2164ce94edca6",
+        "syntaxCheckedExternally": false
+      },
+      "failures": [
+        {
+          "name": "오류응답 후보 구문·성공 응답 catch 외부·기존 server 500형태",
+          "pass": false,
+          "error": "SyntaxError: 'return' outside of function (9:6)\n    at pp$4.raise (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/node_modules/acorn/dist/acorn.mjs:3760:13)\n    at pp$8.parseReturnStatement (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/node_modules/acorn/dist/acorn.mjs:1192:12)\n    at pp$8.parseStatement (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/node_modules/acorn/dist/acorn.mjs:985:37)\n    at pp$8.parseBlock (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/node_modules/acorn/dist/acorn.mjs:1362:21)\n    at pp$8.parseTryStatement (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/node_modules/acorn/dist/acorn.mjs:1281:24)\n    at pp$8.parseStatement (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/node_modules/acorn/dist/acorn.mjs:988:34)\n    at pp$8.parseBlock (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/node_modules/acorn/dist/acorn.mjs:1362:21)\n    at pp$8.parseStatement (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/node_modules/acorn/dist/acorn.mjs:995:36)\n    at pp$8.parseIfStatement (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/node_modules/acorn/dist/acorn.mjs:1185:26)\n    at pp$8.parseStatement (file:///Users/fordeargamers/Projects/exoduser-migration-20261001/node_modules/acorn/dist/acorn.mjs:984:33)"
+        }
+      ]
+    }
+  ],
+  "documentation": {
+    "completedObservedAt": "2026-10-02T03:49:15.105856+00:00",
+    "report": "result.md",
+    "docsContractTableCompleted": true,
+    "sharedDocsModified": false,
+    "outputSha256": {
+      "checks.mjs": "cced08e15614682da1e10813c6b832b1f027d05fb23922810355b6aecf7b9912",
+      "result.md": "7c6d562060714c140828cb60ca20613037233f0662c1cb2868e04221244e9bc8"
+    }
+  },
+  "completedAt": "2026-10-02T03:49:15.105856+00:00",
+  "handoff": {
+    "receiver": "총괄",
+    "method": "이 채팅 최종 보고; 다른 채팅 메시지0",
+    "nextAction": "순차 생산 인수, fd fakeFs 및 오류응답 정책 Gate 판단",
+    "productionApplied": false,
+    "newBacklogCreated": false
+  }
+}

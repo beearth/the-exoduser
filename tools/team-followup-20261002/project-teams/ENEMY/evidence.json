@@ -1,0 +1,830 @@
+{
+  "task": "telegraph-cancel-boundary",
+  "owner": "ENEMY project-team management chat",
+  "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+  "productionApplied": false,
+  "authorization": {
+    "taskFile": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/ENEMY/task.md",
+    "taskFileOwner": "root",
+    "userInstruction": "2026-10-02 확인했어 각각 시키면돼 업무",
+    "dispatchSourceThread": "01a0faa9-b453-7673-be39-98adedb4c2b3",
+    "remoteCheckpointReportedByRoot": "96610b6546a31e882962470ea1f2164ce94edca6",
+    "remoteIndependentlyRecheckedThisTask": false
+  },
+  "lifecycle": {
+    "receivedObservedAt": "2026-10-02T03:43:50Z",
+    "receivedTimestampSource": "clock observation after task receipt; transport event timestamp unavailable",
+    "taskReadCompletedBy": "2026-10-02T03:43:50Z",
+    "taskReadTimestampSource": "task.md first exec read completed before the clock observation",
+    "originalOwnerDuplicateCheck": {
+      "sessionId": "ddbd64be-975a-458e-a020-c09749281f5b",
+      "lastActualUserAt": "2026-10-01T16:27:35.735Z",
+      "sameNewTaskFound": false,
+      "liveUiOrQueueInspected": false
+    },
+    "sourceReadCompletedBy": "2026-10-02T03:47:02.139Z",
+    "firstArtifactWrittenBefore": "2026-10-02T03:47:02.139Z",
+    "firstRunStartedAt": "2026-10-02T03:47:02.139Z",
+    "firstRunCompletedAt": "2026-10-02T03:47:12.635Z",
+    "successfulRunStartedAt": "2026-10-02T03:48:10.906Z",
+    "successfulRunCompletedAt": "2026-10-02T03:48:21.593Z",
+    "reportAssemblyObservedAt": "2026-10-02T03:49:57Z",
+    "completedAt": "2026-10-02T03:51:51.309474+00:00",
+    "completedAtMeaning": "source extraction, report, apply-check and protected-source verification completed; receipt reconciliation follows"
+  },
+  "headAtStart": "96610b6546a31e882962470ea1f2164ce94edca6",
+  "checks": {
+    "syntaxExitCode": 0,
+    "executionExitCode": 0,
+    "task": "telegraph-cancel-boundary",
+    "startedAt": "2026-10-02T03:48:10.906Z",
+    "completedAt": "2026-10-02T03:48:21.593Z",
+    "head": "96610b6546a31e882962470ea1f2164ce94edca6",
+    "sources": {
+      "game.html": {
+        "sha256": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+        "functions": {
+          "_emitEnemyShot": {
+            "line": 18920,
+            "sha256": "831be4b5c0630fa62c743c3789e735b519014675b1c22aeeb9f2b7346d10f3d3"
+          },
+          "_tickEnemyShotWarnings": {
+            "line": 18934,
+            "sha256": "65b42c8672b501d7925c935d855efe471fec87d90ae54e4a66b2c566ad1ac7be"
+          },
+          "_cancelProjCharge": {
+            "line": 18975,
+            "sha256": "b2255c7764a7aaa0492e8979db4daf5890fb240c1d7050bcea7248514593b6ac"
+          },
+          "updateE": {
+            "line": 37206,
+            "sha256": "e1c9aec39e7b4c7311795c9cea94f489bd05c72fd7facc9cfa78a0417a26a893"
+          },
+          "_spawnBossProjectile": {
+            "line": 16107,
+            "sha256": "fda95af0aae5219f56e1f8476517926412ae25b8fb62901536ef10d382d4e3b5"
+          },
+          "_fireChargedProj": {
+            "line": 18976,
+            "sha256": "684d63c4f6744e28d046d1537a4254c901aad81b31849449a03868bebf12159e"
+          }
+        },
+        "cases": 39180
+      },
+      "game-easy-test.html": {
+        "sha256": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+        "functions": {
+          "_emitEnemyShot": {
+            "line": 18017,
+            "sha256": "df25f436002ae60add9d3f693cdbf5ceb59d635349ae51dff9e0164c7b3418f0"
+          },
+          "_tickEnemyShotWarnings": {
+            "line": 18030,
+            "sha256": "65b42c8672b501d7925c935d855efe471fec87d90ae54e4a66b2c566ad1ac7be"
+          },
+          "_cancelProjCharge": {
+            "line": 18066,
+            "sha256": "add246b7bebda31cc23e2fac1df34826022bf3bee77056dbeee596e5c5286a01"
+          },
+          "updateE": {
+            "line": 36009,
+            "sha256": "c3287d0773368a0e04d50dcb9281828d8b1ac8a442194d22565d8469dc52a9f1"
+          },
+          "_spawnBossProjectile": {
+            "line": 15222,
+            "sha256": "fda95af0aae5219f56e1f8476517926412ae25b8fb62901536ef10d382d4e3b5"
+          },
+          "_fireChargedProj": {
+            "line": 18067,
+            "sha256": "bb3142f595e3c4f3937769385982760040b2159d1bdf1c9afd3e31229a6ae4cd"
+          }
+        },
+        "cases": 37979
+      }
+    },
+    "counts": {
+      "pass": 76,
+      "reproduced": 10,
+      "fail": 0
+    },
+    "results": [
+      {
+        "file": "game.html",
+        "mode": "original",
+        "name": "같은 속성 활체 연사:59f 대기+1f 후 2발・commit",
+        "status": "PASS"
+      },
+      {
+        "file": "game.html",
+        "mode": "original",
+        "name": "예약 취소:stun",
+        "status": "PASS"
+      },
+      {
+        "file": "game.html",
+        "mode": "original",
+        "name": "예약 취소:freeze",
+        "status": "PASS"
+      },
+      {
+        "file": "game.html",
+        "mode": "original",
+        "name": "예약 취소:death",
+        "status": "PASS"
+      },
+      {
+        "file": "game.html",
+        "mode": "original",
+        "name": "예약 취소:world",
+        "status": "PASS"
+      },
+      {
+        "file": "game.html",
+        "mode": "original",
+        "name": "의도된 사망탄:스턴/빙결에도 사망 위치 60f 예고",
+        "status": "PASS"
+      },
+      {
+        "file": "game.html",
+        "mode": "original",
+        "name": "활체 이동만큼 발사점 보정",
+        "status": "PASS"
+      },
+      {
+        "file": "game.html",
+        "mode": "original",
+        "name": "완료된 살아있는 eShootWind 즉시 발사・추가지연0",
+        "status": "PASS"
+      },
+      {
+        "file": "game.html",
+        "mode": "original",
+        "name": "무지개탄 즉시발사 우회 금지・60f 큐 유지",
+        "status": "PASS"
+      },
+      {
+        "file": "game.html",
+        "mode": "original",
+        "name": "일반 차징 취소:stun",
+        "status": "PASS"
+      },
+      {
+        "file": "game.html",
+        "mode": "original",
+        "name": "일반 차징 취소:freeze",
+        "status": "PASS"
+      },
+      {
+        "file": "game.html",
+        "mode": "original",
+        "name": "피격경직 단독:AI 중지・일반차징 예약 보존",
+        "status": "PASS"
+      },
+      {
+        "file": "game.html",
+        "mode": "original",
+        "name": "일반차징 정상완료가 동시 특수예고를 취소하지 않음",
+        "status": "PASS"
+      },
+      {
+        "file": "game.html",
+        "mode": "original",
+        "name": "돌진 커밋 상태/시간 보존・예고 종료 전환",
+        "status": "PASS"
+      },
+      {
+        "file": "game.html",
+        "mode": "original",
+        "name": "사망 본체의 잔류 차징 렌더 제외",
+        "status": "PASS"
+      },
+      {
+        "file": "game.html",
+        "mode": "candidate",
+        "name": "같은 속성 활체 연사:59f 대기+1f 후 2발・commit",
+        "status": "PASS"
+      },
+      {
+        "file": "game.html",
+        "mode": "candidate",
+        "name": "예약 취소:stun",
+        "status": "PASS"
+      },
+      {
+        "file": "game.html",
+        "mode": "candidate",
+        "name": "예약 취소:freeze",
+        "status": "PASS"
+      },
+      {
+        "file": "game.html",
+        "mode": "candidate",
+        "name": "예약 취소:death",
+        "status": "PASS"
+      },
+      {
+        "file": "game.html",
+        "mode": "candidate",
+        "name": "예약 취소:world",
+        "status": "PASS"
+      },
+      {
+        "file": "game.html",
+        "mode": "candidate",
+        "name": "의도된 사망탄:스턴/빙결에도 사망 위치 60f 예고",
+        "status": "PASS"
+      },
+      {
+        "file": "game.html",
+        "mode": "candidate",
+        "name": "활체 이동만큼 발사점 보정",
+        "status": "PASS"
+      },
+      {
+        "file": "game.html",
+        "mode": "candidate",
+        "name": "완료된 살아있는 eShootWind 즉시 발사・추가지연0",
+        "status": "PASS"
+      },
+      {
+        "file": "game.html",
+        "mode": "candidate",
+        "name": "무지개탄 즉시발사 우회 금지・60f 큐 유지",
+        "status": "PASS"
+      },
+      {
+        "file": "game.html",
+        "mode": "candidate",
+        "name": "일반 차징 취소:stun",
+        "status": "PASS"
+      },
+      {
+        "file": "game.html",
+        "mode": "candidate",
+        "name": "일반 차징 취소:freeze",
+        "status": "PASS"
+      },
+      {
+        "file": "game.html",
+        "mode": "candidate",
+        "name": "피격경직 단독:AI 중지・일반차징 예약 보존",
+        "status": "PASS"
+      },
+      {
+        "file": "game.html",
+        "mode": "candidate",
+        "name": "일반차징 정상완료가 동시 특수예고를 취소하지 않음",
+        "status": "PASS"
+      },
+      {
+        "file": "game.html",
+        "mode": "candidate",
+        "name": "돌진 커밋 상태/시간 보존・예고 종료 전환",
+        "status": "PASS"
+      },
+      {
+        "file": "game.html",
+        "mode": "candidate",
+        "name": "사망 본체의 잔류 차징 렌더 제외",
+        "status": "PASS"
+      },
+      {
+        "file": "game.html",
+        "mode": "original-counterexample",
+        "name": "특수 예고 stun 뒤 기존 콜백 재발사",
+        "status": "REPRODUCED",
+        "actual": {
+          "retained": true,
+          "fired": 1
+        },
+        "expected": {
+          "retained": true,
+          "fired": 1
+        }
+      },
+      {
+        "file": "game.html",
+        "mode": "candidate",
+        "name": "특수 예고 stun 취소・이전 콜백 재실행0",
+        "status": "PASS"
+      },
+      {
+        "file": "game.html",
+        "mode": "original-counterexample",
+        "name": "특수 예고 freeze 뒤 기존 콜백 재발사",
+        "status": "REPRODUCED",
+        "actual": {
+          "retained": true,
+          "fired": 1
+        },
+        "expected": {
+          "retained": true,
+          "fired": 1
+        }
+      },
+      {
+        "file": "game.html",
+        "mode": "candidate",
+        "name": "특수 예고 freeze 취소・이전 콜백 재실행0",
+        "status": "PASS"
+      },
+      {
+        "file": "game.html",
+        "mode": "original-counterexample",
+        "name": "피격경직+빙결:일반차징 취소 누락",
+        "status": "REPRODUCED",
+        "actual": 30,
+        "expected": 30
+      },
+      {
+        "file": "game.html",
+        "mode": "candidate",
+        "name": "피격경직+stun:일반/특수 차징 정리",
+        "status": "PASS"
+      },
+      {
+        "file": "game.html",
+        "mode": "candidate",
+        "name": "피격경직+freeze:일반/특수 차징 정리",
+        "status": "PASS"
+      },
+      {
+        "file": "game.html",
+        "mode": "original-counterexample",
+        "name": "살아있던 예약+동일tick 사망탄:같은 큐로 묶여 둘 다 취소",
+        "status": "REPRODUCED",
+        "actual": {
+          "rings": 1,
+          "fired": 0
+        },
+        "expected": {
+          "rings": 1,
+          "fired": 0
+        }
+      },
+      {
+        "file": "game.html",
+        "mode": "candidate",
+        "name": "살아있던 예약 취소・동일tick 의도된 사망탄만 방출",
+        "status": "PASS"
+      },
+      {
+        "file": "game.html",
+        "mode": "original-counterexample",
+        "name": "사망시 완료 eShootWind 잔류:60f 예고 우회",
+        "status": "REPRODUCED",
+        "actual": 1,
+        "expected": 1
+      },
+      {
+        "file": "game.html",
+        "mode": "candidate",
+        "name": "사망시 완료 eShootWind 잔류:사망탄60f 예고 복구",
+        "status": "PASS"
+      },
+      {
+        "file": "game.html",
+        "mode": "candidate",
+        "name": "역방향 생명상태 변경도 사망/활체 큐 분리",
+        "status": "PASS"
+      },
+      {
+        "file": "game.html",
+        "mode": "candidate",
+        "name": "보호 함수·돌진 본문·발사 수치 원문 불변",
+        "status": "PASS"
+      },
+      {
+        "file": "game-easy-test.html",
+        "mode": "original",
+        "name": "같은 속성 활체 연사:59f 대기+1f 후 2발・commit",
+        "status": "PASS"
+      },
+      {
+        "file": "game-easy-test.html",
+        "mode": "original",
+        "name": "예약 취소:stun",
+        "status": "PASS"
+      },
+      {
+        "file": "game-easy-test.html",
+        "mode": "original",
+        "name": "예약 취소:freeze",
+        "status": "PASS"
+      },
+      {
+        "file": "game-easy-test.html",
+        "mode": "original",
+        "name": "예약 취소:death",
+        "status": "PASS"
+      },
+      {
+        "file": "game-easy-test.html",
+        "mode": "original",
+        "name": "예약 취소:world",
+        "status": "PASS"
+      },
+      {
+        "file": "game-easy-test.html",
+        "mode": "original",
+        "name": "의도된 사망탄:스턴/빙결에도 사망 위치 60f 예고",
+        "status": "PASS"
+      },
+      {
+        "file": "game-easy-test.html",
+        "mode": "original",
+        "name": "활체 이동만큼 발사점 보정",
+        "status": "PASS"
+      },
+      {
+        "file": "game-easy-test.html",
+        "mode": "original",
+        "name": "완료된 살아있는 eShootWind 즉시 발사・추가지연0",
+        "status": "PASS"
+      },
+      {
+        "file": "game-easy-test.html",
+        "mode": "original",
+        "name": "무지개탄 즉시발사 우회 금지・60f 큐 유지",
+        "status": "PASS"
+      },
+      {
+        "file": "game-easy-test.html",
+        "mode": "original",
+        "name": "일반 차징 취소:stun",
+        "status": "PASS"
+      },
+      {
+        "file": "game-easy-test.html",
+        "mode": "original",
+        "name": "일반 차징 취소:freeze",
+        "status": "PASS"
+      },
+      {
+        "file": "game-easy-test.html",
+        "mode": "original",
+        "name": "피격경직 단독:AI 중지・일반차징 예약 보존",
+        "status": "PASS"
+      },
+      {
+        "file": "game-easy-test.html",
+        "mode": "original",
+        "name": "일반차징 정상완료가 동시 특수예고를 취소하지 않음",
+        "status": "PASS"
+      },
+      {
+        "file": "game-easy-test.html",
+        "mode": "original",
+        "name": "돌진 커밋 상태/시간 보존・예고 종료 전환",
+        "status": "PASS"
+      },
+      {
+        "file": "game-easy-test.html",
+        "mode": "original",
+        "name": "사망 본체의 잔류 차징 렌더 제외",
+        "status": "PASS"
+      },
+      {
+        "file": "game-easy-test.html",
+        "mode": "candidate",
+        "name": "같은 속성 활체 연사:59f 대기+1f 후 2발・commit",
+        "status": "PASS"
+      },
+      {
+        "file": "game-easy-test.html",
+        "mode": "candidate",
+        "name": "예약 취소:stun",
+        "status": "PASS"
+      },
+      {
+        "file": "game-easy-test.html",
+        "mode": "candidate",
+        "name": "예약 취소:freeze",
+        "status": "PASS"
+      },
+      {
+        "file": "game-easy-test.html",
+        "mode": "candidate",
+        "name": "예약 취소:death",
+        "status": "PASS"
+      },
+      {
+        "file": "game-easy-test.html",
+        "mode": "candidate",
+        "name": "예약 취소:world",
+        "status": "PASS"
+      },
+      {
+        "file": "game-easy-test.html",
+        "mode": "candidate",
+        "name": "의도된 사망탄:스턴/빙결에도 사망 위치 60f 예고",
+        "status": "PASS"
+      },
+      {
+        "file": "game-easy-test.html",
+        "mode": "candidate",
+        "name": "활체 이동만큼 발사점 보정",
+        "status": "PASS"
+      },
+      {
+        "file": "game-easy-test.html",
+        "mode": "candidate",
+        "name": "완료된 살아있는 eShootWind 즉시 발사・추가지연0",
+        "status": "PASS"
+      },
+      {
+        "file": "game-easy-test.html",
+        "mode": "candidate",
+        "name": "무지개탄 즉시발사 우회 금지・60f 큐 유지",
+        "status": "PASS"
+      },
+      {
+        "file": "game-easy-test.html",
+        "mode": "candidate",
+        "name": "일반 차징 취소:stun",
+        "status": "PASS"
+      },
+      {
+        "file": "game-easy-test.html",
+        "mode": "candidate",
+        "name": "일반 차징 취소:freeze",
+        "status": "PASS"
+      },
+      {
+        "file": "game-easy-test.html",
+        "mode": "candidate",
+        "name": "피격경직 단독:AI 중지・일반차징 예약 보존",
+        "status": "PASS"
+      },
+      {
+        "file": "game-easy-test.html",
+        "mode": "candidate",
+        "name": "일반차징 정상완료가 동시 특수예고를 취소하지 않음",
+        "status": "PASS"
+      },
+      {
+        "file": "game-easy-test.html",
+        "mode": "candidate",
+        "name": "돌진 커밋 상태/시간 보존・예고 종료 전환",
+        "status": "PASS"
+      },
+      {
+        "file": "game-easy-test.html",
+        "mode": "candidate",
+        "name": "사망 본체의 잔류 차징 렌더 제외",
+        "status": "PASS"
+      },
+      {
+        "file": "game-easy-test.html",
+        "mode": "original-counterexample",
+        "name": "특수 예고 stun 뒤 기존 콜백 재발사",
+        "status": "REPRODUCED",
+        "actual": {
+          "retained": true,
+          "fired": 1
+        },
+        "expected": {
+          "retained": true,
+          "fired": 1
+        }
+      },
+      {
+        "file": "game-easy-test.html",
+        "mode": "candidate",
+        "name": "특수 예고 stun 취소・이전 콜백 재실행0",
+        "status": "PASS"
+      },
+      {
+        "file": "game-easy-test.html",
+        "mode": "original-counterexample",
+        "name": "특수 예고 freeze 뒤 기존 콜백 재발사",
+        "status": "REPRODUCED",
+        "actual": {
+          "retained": true,
+          "fired": 1
+        },
+        "expected": {
+          "retained": true,
+          "fired": 1
+        }
+      },
+      {
+        "file": "game-easy-test.html",
+        "mode": "candidate",
+        "name": "특수 예고 freeze 취소・이전 콜백 재실행0",
+        "status": "PASS"
+      },
+      {
+        "file": "game-easy-test.html",
+        "mode": "original-counterexample",
+        "name": "피격경직+빙결:일반차징 취소 누락",
+        "status": "REPRODUCED",
+        "actual": 30,
+        "expected": 30
+      },
+      {
+        "file": "game-easy-test.html",
+        "mode": "candidate",
+        "name": "피격경직+stun:일반/특수 차징 정리",
+        "status": "PASS"
+      },
+      {
+        "file": "game-easy-test.html",
+        "mode": "candidate",
+        "name": "피격경직+freeze:일반/특수 차징 정리",
+        "status": "PASS"
+      },
+      {
+        "file": "game-easy-test.html",
+        "mode": "original-counterexample",
+        "name": "살아있던 예약+동일tick 사망탄:같은 큐로 묶여 둘 다 취소",
+        "status": "REPRODUCED",
+        "actual": {
+          "rings": 1,
+          "fired": 0
+        },
+        "expected": {
+          "rings": 1,
+          "fired": 0
+        }
+      },
+      {
+        "file": "game-easy-test.html",
+        "mode": "candidate",
+        "name": "살아있던 예약 취소・동일tick 의도된 사망탄만 방출",
+        "status": "PASS"
+      },
+      {
+        "file": "game-easy-test.html",
+        "mode": "original-counterexample",
+        "name": "사망시 완료 eShootWind 잔류:60f 예고 우회",
+        "status": "REPRODUCED",
+        "actual": 1,
+        "expected": 1
+      },
+      {
+        "file": "game-easy-test.html",
+        "mode": "candidate",
+        "name": "사망시 완료 eShootWind 잔류:사망탄60f 예고 복구",
+        "status": "PASS"
+      },
+      {
+        "file": "game-easy-test.html",
+        "mode": "candidate",
+        "name": "역방향 생명상태 변경도 사망/활체 큐 분리",
+        "status": "PASS"
+      },
+      {
+        "file": "game-easy-test.html",
+        "mode": "candidate",
+        "name": "보호 함수·돌진 본문·발사 수치 원문 불변",
+        "status": "PASS"
+      }
+    ],
+    "candidateApplied": false,
+    "candidatePatch": "--- a/game.html\n+++ b/game.html\n@@ -18923,1 +18923,1 @@\n-  if(e.s==='eShootWind'&&e.st2<=0&&e._swChargeEl===props.el&&!props.blackBean){props._commit=true;return spawnProj(props)}\n+  if(e.alive&&e.s==='eShootWind'&&e.st2<=0&&e._swChargeEl===props.el&&!props.blackBean){props._commit=true;return spawnProj(props)}\n@@ -18926,1 +18926,1 @@\n-  let w=list.find(w=>w.owner===e&&w.frame===_gameFrame&&w.world===ens&&w.el===props.el&&w.blackBean===!!props.blackBean&&w.parryClass===_parryClass);\n+  let w=list.find(w=>w.owner===e&&w.dead===!e.alive&&w.frame===_gameFrame&&w.world===ens&&w.el===props.el&&w.blackBean===!!props.blackBean&&w.parryClass===_parryClass);\n@@ -18975,1 +18975,1 @@\n-function _cancelProjCharge(e){e._projChargeT=0;e._projChargeCol=null;e._projChargeBean=null;e._projChargeParryClass=null}\n+function _cancelProjCharge(e,interrupt){e._projChargeT=0;e._projChargeCol=null;e._projChargeBean=null;e._projChargeParryClass=null;if(interrupt&&e.s==='eShootWind'){e._swFire=null;e._swChargeEl=null;e.s='idle';e.st2=0}}\n@@ -37238,1 +37238,1 @@\n-  if(e._hitStun>0)return; // 피격 경직: AI 스킵\n+  if(e._hitStun>0){if(e.stunned>0||e._frozen>0)_cancelProjCharge(e,true);return;} // 피격 경직: AI 스킵\n@@ -37240,1 +37240,1 @@\n-    _cancelProjCharge(e);\n+    _cancelProjCharge(e,true);\n@@ -37267,1 +37267,1 @@\n-    _cancelProjCharge(e);\n+    _cancelProjCharge(e,true);\n\n--- a/game-easy-test.html\n+++ b/game-easy-test.html\n@@ -18020,1 +18020,1 @@\n-  if(e.s==='eShootWind'&&e.st2<=0&&e._swChargeEl===props.el&&!props.blackBean){props._commit=true;return spawnProj(props)}\n+  if(e.alive&&e.s==='eShootWind'&&e.st2<=0&&e._swChargeEl===props.el&&!props.blackBean){props._commit=true;return spawnProj(props)}\n@@ -18022,1 +18022,1 @@\n-  let w=list.find(w=>w.owner===e&&w.frame===_gameFrame&&w.world===ens&&w.el===props.el&&w.blackBean===!!props.blackBean);\n+  let w=list.find(w=>w.owner===e&&w.dead===!e.alive&&w.frame===_gameFrame&&w.world===ens&&w.el===props.el&&w.blackBean===!!props.blackBean);\n@@ -18066,1 +18066,1 @@\n-function _cancelProjCharge(e){e._projChargeT=0;e._projChargeCol=null;e._projChargeBean=null}\n+function _cancelProjCharge(e,interrupt){e._projChargeT=0;e._projChargeCol=null;e._projChargeBean=null;if(interrupt&&e.s==='eShootWind'){e._swFire=null;e._swChargeEl=null;e.s='idle';e.st2=0}}\n@@ -36041,1 +36041,1 @@\n-  if(e._hitStun>0)return; // 피격 경직: AI 스킵\n+  if(e._hitStun>0){if(e.stunned>0||e._frozen>0)_cancelProjCharge(e,true);return;} // 피격 경직: AI 스킵\n@@ -36043,1 +36043,1 @@\n-    _cancelProjCharge(e);\n+    _cancelProjCharge(e,true);\n@@ -36070,1 +36070,1 @@\n-    _cancelProjCharge(e);\n+    _cancelProjCharge(e,true);\n",
+    "limits": [
+      "Node VM source extraction; actual updateE interrupt early paths + extracted eShootWind/eChargeWind cases only",
+      "No full-game timing, render pixels, UI, server, or gameplay execution",
+      "Source globals (spawnProj, geometry, render, particles) explicitly stubbed; no FPS claim"
+    ]
+  },
+  "earlierFixtureRun": {
+    "counts": {
+      "pass": 67,
+      "reproduced": 10,
+      "fail": 5
+    },
+    "exitCode": 1,
+    "failures": [
+      {
+        "file": "game.html",
+        "mode": "original",
+        "error": "sp is not defined",
+        "cause": "extracted eChargeWind wrapper omitted sp parameter"
+      },
+      {
+        "file": "game.html",
+        "mode": "candidate",
+        "error": "sp is not defined",
+        "cause": "extracted eChargeWind wrapper omitted sp parameter"
+      },
+      {
+        "file": "game-easy-test.html",
+        "mode": "original",
+        "error": "sp is not defined",
+        "cause": "extracted eChargeWind wrapper omitted sp parameter"
+      },
+      {
+        "file": "game-easy-test.html",
+        "mode": "candidate",
+        "error": "sp is not defined",
+        "cause": "extracted eChargeWind wrapper omitted sp parameter"
+      },
+      {
+        "file": "game-easy-test.html",
+        "mode": "candidate",
+        "error": "assert.ok(guard)",
+        "cause": "easy variant has the chain stun immunity guard but not the main harpoon guard"
+      }
+    ],
+    "correction": "wrapper sp=1; main-only harpoon assertion plus actual both-variant chain guard. Candidate review added explicit interrupt flag so normal general-charge completion preserves a concurrent special windup; regression added."
+  },
+  "docsSearch": {
+    "pattern": "_swFire|_cancelProjCharge|_hitStun|_shotWarnings|사망탄|논타겟 커밋|스턴/빙결만 취소|예고 취소",
+    "exitCode": 0,
+    "matchCount": 38,
+    "files": {
+      "docs/9적ai패턴디자인/ENEMY_AI_TEAM_MASTER.md": 3,
+      "docs/CHANGELOG_SYNC.md": 2,
+      "docs/8.0몬스터디자인/탄막시스템_총정리.md": 6,
+      "docs/8.0몬스터디자인/PHYSICAL_PROJECTILE_AUDIT_20260916.md": 1,
+      "docs/8.0몬스터디자인/몬스터_공격시스템.md": 7,
+      "docs/12퍼포먼스·최적화/QA_PERFORMANCE_TEAM_MASTER.md": 1,
+      "docs/9적ai패턴디자인/9_적AI패턴디자인.md": 6,
+      "docs/5.1임펙트디자인/VFX_구현가이드.md": 5,
+      "docs/5.1임펙트디자인/ANIMATION_VFX_TEAM_MASTER.md": 2,
+      "docs/0마스터플랜/mac-resume-20261001/map020-zoomfix-evidence/team-receipts.json": 1,
+      "docs/0마스터플랜/mac-resume-20261001/map020-zoomfix-evidence/ANIMVFX-팀검토.md": 2,
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/ENEMY-result.md": 1,
+      "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-WORK-DISPATCH-20261002.json": 1
+    },
+    "relevantLines": [
+      "docs/9적ai패턴디자인/ENEMY_AI_TEAM_MASTER.md:180:- **꼬리 피격/대시 커밋 적도 기아**: hurt>0·eChargeWind/eCharge(논타겟 커밋)는 T1이지만 break 이후면 미처리 → 돌진이 화면상 멈춤.",
+      "docs/9적ai패턴디자인/ENEMY_AI_TEAM_MASTER.md:181:- **타이머/상태 해제 누락**: 상태 타이머 블록(`32880`, stunned/_hitStun/_pImmune/reviveIframes)이 break **이후**라 기아 적은 스턴/빙결/DOT/부활 타이머도 정지 → 동결 연쇄.",
+      "docs/9적ai패턴디자인/ENEMY_AI_TEAM_MASTER.md:244:| → 스킬팀 | 적 상태 계약: `e.stunned/_hitStun/_frozen>0` 시 AI 정지·예고 취소(`36786`~), poise=HP·`_doPoise`/`_poiseReset`, 패링 `isPWin()`이 보스 대시/찌르기 인터럽트(stunned 60~120). blackBean=Q 패링 전용 | 스킬의 스턴/빙결/넉백이 위 필드로 들어오는지, 패링 클래스 일치 |",
+      "docs/8.0몬스터디자인/몬스터_공격시스템.md:352:두 경로. 원이 차면 **반드시 발사** (`_commit`로 1/3 드랍 면제). 스턴/빙결만 취소.",
+      "docs/8.0몬스터디자인/몬스터_공격시스템.md:360:- 구현: `e.s='eShootWind'; e.st2=60; e._swFire=function(){...};`. 물리 특수탄은 준비 시 `_swChargeEl=EL.P`를 함께 기록하고 발사 직후 null로 초기화한다.",
+      "docs/8.0몬스터디자인/몬스터_공격시스템.md:362:  - `e._swFire`: st2 소진 시 실행할 발사 콜백 (실행 후 null, idle 복귀). `eProjAt`은 `_commit:true`",
+      "docs/8.0몬스터디자인/몬스터_공격시스템.md:378:| `_swChargeEl` | 특수 차징 탄 속성 | 전체21개 eShootWind 시작점 | 아래 표 | 물리=#f4f4f4, 나머지 ELC[속성] | 준비 시 기록, `_swFire` 실행 직후 null |",
+      "docs/8.0몬스터디자인/몬스터_공격시스템.md:668:| G._shotWarnings / e._shotWarning | 소유자·world(ens)·_gameFrame·el·blackBean이 모두 같은 탄만 링1개에 묶음. props 복사 후 대기. 다른 속성은 별도 링: r=(e.r 또는12)+동일 소유자/월드 기존 대기 링 수×8 |",
+      "docs/8.0몬스터디자인/몬스터_공격시스템.md:673:| 사망탄 | 요청 시 이미 죽은 소유자는 사망 위치에 링60f 후 방출. 원래 사망탄 효과 유지 |",
+      "docs/8.0몬스터디자인/몬스터_공격시스템.md:690:검증: enemyShotWarning.test.js(일제사격60f, 완료 전조 중복 지연 없음, 취소, 사망탄, 장식 제한 분리), tmp/verify_enemy_shot_warning.py(실제 eProjAt 경로). 이 보정은 모든 보스 패턴의 별도 시각 QA 완료를 의미하지 않는다.",
+      "docs/9적ai패턴디자인/9_적AI패턴디자인.md:33:| `eShootWind` | 탄막 발사 준비 (최소 1초) | st2 소진 → `_swFire()` 실행 → `_swChargeEl=null` → idle. 물리 특수탄(66/68/69)은 `_swChargeEl=EL.P`로 흰색 `#f4f4f4` 속성 예고 라운드 |",
+      "docs/9적ai패턴디자인/9_적AI패턴디자인.md:139:> - **논타겟 커밋**: 예고/돌진(`eChargeWind`/`eCharge`) 진입 후에는 사거리 이탈·디어그로·작살 스턴에도 멈추지 않고 끝까지 진행. 컬링/AI 거리 티어링 무시하고 매프레임 갱신(T1 강제), 작살 스턴 면제 (2026-06-28 신규)",
+      "docs/9적ai패턴디자인/9_적AI패턴디자인.md:164:> 2026-06-28 정리: 예고 1초→1.5초, 팔로잉 30% 감소(락 0.755), 장애물 감지+논타겟 커밋 추가, 돌진뎀 ×30, fire_medium 임팩트. 속도 42px/f 공용, 거리는 dur로 조절(`_chgLen=_chgSpd×_chgDur` 불변식 유지).",
+      "docs/9적ai패턴디자인/9_적AI패턴디자인.md:314:| G._shotWarnings / e._shotWarning | 소유자·world(ens)·_gameFrame·el·blackBean이 모두 같은 탄만 링1개에 묶음. props 복사 후 대기. 다른 속성은 별도 링: r=(e.r 또는12)+동일 소유자/월드 기존 대기 링 수×8 |",
+      "docs/9적ai패턴디자인/9_적AI패턴디자인.md:319:| 사망탄 | 요청 시 이미 죽은 소유자는 사망 위치에 링60f 후 방출. 원래 사망탄 효과 유지 |",
+      "docs/9적ai패턴디자인/9_적AI패턴디자인.md:327:검증: enemyShotWarning.test.js(일제사격60f, 완료 전조 중복 지연 없음, 취소, 사망탄, 장식 제한 분리), tmp/verify_enemy_shot_warning.py(실제 eProjAt 경로). 이 보정은 모든 보스 패턴의 별도 시각 QA 완료를 의미하지 않는다."
+    ]
+  },
+  "sha256": {
+    "game.html": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+    "game-easy-test.html": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+    "server.cjs": "18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d",
+    "node-main.js": "01b0c1d51f77f500ee0a59185458bf0294edce12544482d6cf7abce4262c91ce",
+    "index.html": "38f4e0e97ed63014e86ec48a14d9d0a677472ef57b99916f9a48b7b3395e66c8",
+    "tools/team-followup-20261002/project-teams/ENEMY/task.md": "62295270c26ed37e03333588d3adc972a1decdbe6752d0258b9dc6520f87626c",
+    "tools/team-followup-20261002/project-teams/ENEMY/checks.mjs": "db3fd62845b92cb553f2da4f8a8c1d2801c85ca2db113a0b675e696d6becfea1",
+    "AGENTS.md": "fd59bef70960bcaf1ab9910051faa860362884e574ac2869fad05c6872ae04e4",
+    "docs/9적ai패턴디자인/ENEMY_AI_TEAM_MASTER.md": "b31463899f3e2b3e3cf95f3860bd541e2c666cc321e9bed01c082117749e8d4b",
+    "docs/9적ai패턴디자인/9_적AI패턴디자인.md": "febe28660a5ed5465130399b4514a89658c51cec6da266d15f6ff1b4f51176a3",
+    "docs/8.0몬스터디자인/몬스터_공격시스템.md": "495fc461b57f9f3b0abacaecf8fdd917d0fb04dc5d236750ba83629a547f522d",
+    "docs/8.0몬스터디자인/FIELD_PROJECTILE_CADENCE_20260910.md": "381f3062dad23b30105e20bf9c88349d49c00a0abff9d615d849e251cd01635a"
+  },
+  "changesObserved": {
+    "start": 24,
+    "middle": 45,
+    "reportAssembly": 48,
+    "finish": 52,
+    "threshold80Reached": false
+  },
+  "ownedFiles": [
+    "checks.mjs",
+    "result.md",
+    "evidence.json"
+  ],
+  "prohibitedActions": {
+    "productionWrite": 0,
+    "existingOwnerPrefixWrite": 0,
+    "taskMdWrite": 0,
+    "sharedDocsWrite": 0,
+    "gitWrite": 0,
+    "server": 0,
+    "ui": 0,
+    "game": 0,
+    "performanceMeasurement": 0,
+    "build": 0,
+    "install": 0,
+    "assetGeneration": 0,
+    "newSession": 0,
+    "subagent": 0,
+    "automationChange": 0
+  },
+  "pendingGates": [
+    "root independent source and patch acceptance",
+    "root ownership/backup/checkpoint and matching code+docs integration",
+    "QA sole-slot normal gameplay cancel/death/charge-commit verification",
+    "candidate not applied to either production HTML"
+  ],
+  "headAtFinish": "31454dfa49c90bac77351273fc32f0c1eb937928",
+  "finalValidation": {
+    "verifiedAt": "2026-10-02T03:51:51.309474+00:00",
+    "patchApplyCheckExitCode": 0,
+    "patchApplyCheckCommand": "git apply --check --unidiff-zero - (stdin candidatePatch, GIT_OPTIONAL_LOCKS=0; no mutation)",
+    "changedCandidateLines": 12,
+    "productionAndTaskUnchanged": true,
+    "headFinish": "31454dfa49c90bac77351273fc32f0c1eb937928",
+    "checksSha256": "db3fd62845b92cb553f2da4f8a8c1d2801c85ca2db113a0b675e696d6becfea1"
+  }
+}

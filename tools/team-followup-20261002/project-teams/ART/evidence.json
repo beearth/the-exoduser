@@ -1,0 +1,561 @@
+{
+  "schemaVersion": 1,
+  "taskId": "ART-20261002-EMG1-LOCK-REVIEW",
+  "status": "COMPLETED_PENDING_ROOT_ACCEPTANCE",
+  "verdict": "수정 필요; 전사 얼굴/눈/갑옷 세부 LOCK 근거 부족; 생산 채택0",
+  "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+  "ownerDirectory": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/ART",
+  "instructionPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/ART/task.md",
+  "instructionSha256": "9c89892ee653f8e7643798a11b3544a8c82ac4b02a1e04943a866db062af42b9",
+  "execution": {
+    "receiptObservedAtUTC": "2026-10-02T03:43:58Z",
+    "taskReadCompletedObservedAtUTC": "2026-10-02T03:43:58Z",
+    "observationTimestampNote": "최초 task.md Read 뒤 clock 도구로 기록한 관찰 시각. 메시지 서버 도착/첫 Read 자체의 exact 이벤트 timestamp는 제공되지 않음.",
+    "systemsReadCompletedBeforeUTC": "2026-10-02T03:45:48.042Z",
+    "firstMetadataCommandCompletedBeforeUTC": "2026-10-02T03:44:43Z",
+    "firstCodeWriteAtUTC": "2026-10-02T03:46:32.790Z",
+    "firstCodeWriteTimestampSource": "checks.mjs filesystem birthtime",
+    "resultWriteAtUTC": "2026-10-02T03:48:22.178Z",
+    "initialChecksExecutedAtUTC": "2026-10-02T03:46:54.414Z",
+    "finalChecksExecutedAtUTC": "2026-10-02T03:50:05.205Z",
+    "completedAtUTC": "2026-10-02T03:50:05.302Z",
+    "nodeExecutable": "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node",
+    "commands": [
+      "cat /Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/ART/task.md",
+      "Read migration AGENTS/latest PM tail, native-recovery/ART-task, ART_TEAM_MASTER, WARRIOR_DESIGN_LOCK, WARINTRO_STILLS_AUDIT",
+      "GIT_OPTIONAL_LOCKS=0 git rev-parse HEAD; git status --short --untracked-files=all count",
+      "Read existing Claude ART JSONL only; last 3 actual user messages and duplicate task scan",
+      "/usr/bin/sips -g pixelWidth -g pixelHeight -g hasAlpha existing image paths",
+      "Specified absolute Node: SHA256/byte metadata of existing inputs",
+      "Specified absolute Node /Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/ART/checks.mjs",
+      "rg -l 'emg1|WARRIOR_DESIGN_LOCK|warstills2' docs/"
+    ],
+    "initialCheckExitCode": 0,
+    "finalCheckExitCode": 0
+  },
+  "originalSession": {
+    "sessionId": "a489cbeb-92d9-449a-a2b7-ba0e2871322f",
+    "evidencePath": "/Users/fordeargamers/.claude/projects/-Users-fordeargamers-Projects-exoduser-migration-20261001/a489cbeb-92d9-449a-a2b7-ba0e2871322f.jsonl",
+    "lastActualUserAtUTC": "2026-10-01T16:28:02.145Z",
+    "lastActualUserTask": "tools/team-followup-20261001/ART/wa24-engine-parity-task.md",
+    "lastJsonlRowAtUTC": "2026-10-01T16:38:33.321Z",
+    "emg1ActualUserMessageCount": 0,
+    "priorOwnerEmg1ArtifactCountAtStart": 0,
+    "note": "이번 관리 채팅의 새 소유 산출로 수행. 기존 원세션 미전달 이력/새 수신/현재 생존을 혼동하지 않음."
+  },
+  "git": {
+    "startHead": "96610b6546a31e882962470ea1f2164ce94edca6",
+    "endHead": "31454dfa49c90bac77351273fc32f0c1eb937928",
+    "pmReportedExactRemoteCheckpoint": "96610b6546a31e882962470ea1f2164ce94edca6",
+    "remoteIndependentlyQueriedThisTask": false,
+    "observedChanges": [
+      {
+        "phase": "start",
+        "count": 23
+      },
+      {
+        "phase": "middle-before-checks",
+        "count": 39
+      },
+      {
+        "phase": "after-first-19-group-check",
+        "count": 45
+      },
+      {
+        "phase": "after-result-write",
+        "count": 49
+      },
+      {
+        "phase": "final",
+        "count": 48,
+        "observedAtUTC": "2026-10-02T03:50:05.302Z"
+      }
+    ],
+    "finalChanges": 48,
+    "checkpointThreshold": 80,
+    "stopBeforeThreshold": 100,
+    "actualGitWrites": 0,
+    "attributionNote": "공유 Changes는 다른 팀 변경 포함. ART 신규 산출은 task.md 외 3개만.",
+    "checkpointRequiredNow": false,
+    "stopThresholdReached": false
+  },
+  "imageMetadata": [
+    {
+      "id": "original",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/cutscene/warintro/emg1.jpg",
+      "sha256": "96e5e41900c60292488bb4cd3a2becf2e98297e522143177143f0be3b31fabf1",
+      "bytes": 527153,
+      "width": 1536,
+      "height": 1024,
+      "aspectRatio": 1.5,
+      "hasAlpha": "no",
+      "alphaMethod": "sips hasAlpha; 알파 픽셀 분포/부분투명 경계 미측정"
+    },
+    {
+      "id": "candidate1_rejected",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/output/cutscene_remaster_20260930/warintro_candidates_unreviewed/emg1_candidate1_rejected.jpg",
+      "sha256": "1b01d8b5a22d0e56f3b664922d00c71880daba8b38df4603124bcc96cbf628f3",
+      "bytes": 579635,
+      "width": 2048,
+      "height": 1152,
+      "aspectRatio": 1.7777777777777777,
+      "hasAlpha": "no",
+      "alphaMethod": "sips hasAlpha; 알파 픽셀 분포/부분투명 경계 미측정"
+    },
+    {
+      "id": "candidate2_reviewed",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/output/cutscene_remaster_20260930/warintro_candidates_unreviewed/emg1_candidate2_retry.jpg",
+      "sha256": "ca3802be4bab276452395427eb03ca3ff422d9c478fbc5b50f4dec1fdab49ae2",
+      "bytes": 612213,
+      "width": 2048,
+      "height": 1152,
+      "aspectRatio": 1.7777777777777777,
+      "hasAlpha": "no",
+      "alphaMethod": "sips hasAlpha; 알파 픽셀 분포/부분투명 경계 미측정"
+    },
+    {
+      "id": "identity_lock",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/11내러티브·로어디자인/assets/warrior_identity_ref.png",
+      "sha256": "3bbde9d07e9a88d0b849ef6913a3f2c78ccca57e412461f206864c788c5c7868",
+      "bytes": 325568,
+      "width": 940,
+      "height": 544,
+      "aspectRatio": 1.7279411764705883,
+      "hasAlpha": "no",
+      "alphaMethod": "sips hasAlpha; 알파 픽셀 분포/부분투명 경계 미측정"
+    },
+    {
+      "id": "face_lock",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/11내러티브·로어디자인/assets/warrior_face_ref.png",
+      "sha256": "b8aae22efd571298731ebee12061ef9b76ce4542e3c816af97a99d15347f0648",
+      "bytes": 229493,
+      "width": 410,
+      "height": 484,
+      "aspectRatio": 0.8471074380165289,
+      "hasAlpha": "no",
+      "alphaMethod": "sips hasAlpha; 알파 픽셀 분포/부분투명 경계 미측정"
+    },
+    {
+      "id": "main_lock",
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/charselect/warrior_cut.png",
+      "sha256": "58e68f5f996c31966e9109c2de421185d93d138cec4fd5600da0ca1b58debfd4",
+      "bytes": 1670346,
+      "width": 1223,
+      "height": 986,
+      "aspectRatio": 1.2403651115618661,
+      "hasAlpha": "yes",
+      "alphaMethod": "sips hasAlpha; 알파 픽셀 분포/부분투명 경계 미측정"
+    }
+  ],
+  "visualInspection": {
+    "tool": "view_image",
+    "detail": "original",
+    "count": 6,
+    "inspectedPaths": [
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/cutscene/warintro/emg1.jpg",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/output/cutscene_remaster_20260930/warintro_candidates_unreviewed/emg1_candidate1_rejected.jpg",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/output/cutscene_remaster_20260930/warintro_candidates_unreviewed/emg1_candidate2_retry.jpg",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/11내러티브·로어디자인/assets/warrior_identity_ref.png",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/11내러티브·로어디자인/assets/warrior_face_ref.png",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/charselect/warrior_cut.png"
+    ],
+    "firstFourCompletedBeforeUTC": "2026-10-02T03:44:43Z",
+    "finalTwoCompletedBeforeUTC": "2026-10-02T03:45:48.042Z",
+    "sourceResolutionViewing": true,
+    "actualGameCameraReviewed": false,
+    "numericPixelDotCountMeasured": false,
+    "findings": [
+      {
+        "id": "V01",
+        "item": "조감·군상 구도",
+        "verdict": "채택 가능(항목만)",
+        "evidence": "중앙 전사·대각 전장·양측 거대 악마·다수 악마 유지",
+        "limits": "개체 수/정확 좌표 보존 검증 아님"
+      },
+      {
+        "id": "V02",
+        "item": "다수 복수자 대사 의미",
+        "verdict": "채택 가능(항목만)",
+        "evidence": "전사 외 번개 마법사·녹색 마법사·불화살 궁수의 독립 신체 확인; 1차 혼령 줄기/궁수 부재 개선"
+      },
+      {
+        "id": "V03",
+        "item": "전사 거시 LOCK",
+        "verdict": "채택 가능(거시형상)",
+        "evidence": "짧은 흑발·어두운 판금·암적 망토·큰 대검",
+        "limits": "얼굴/눈/갑옷 세부 동일성 미확정"
+      },
+      {
+        "id": "V04",
+        "item": "ART R1 잔점/반짝이 점 금지",
+        "verdict": "수정 필요",
+        "evidence": "왼쪽 아래 녹색 마법 주변 작은 밝은 점, 오른쪽 위 화염 주변 주황 밝은 점 잔여",
+        "limits": "점 수/마스크 미측정. 번개 선형 효과 자체는 허용 효과와 구분"
+      },
+      {
+        "id": "V05",
+        "item": "평범한 짙은 눈/안광 없음",
+        "verdict": "근거 부족",
+        "evidence": "작고 어두운 얼굴; 보라 안광을 확인하지 못했지만 두 눈의 색/발광 부재 입증 못함"
+      },
+      {
+        "id": "V06",
+        "item": "얼굴/갑옷 세부 동일성",
+        "verdict": "근거 부족",
+        "evidence": "LOCK 참조에 비해 조감 전사의 얼굴·세부 장식이 작아 정확 동일성 미확정"
+      },
+      {
+        "id": "V07",
+        "item": "파일 규격/알파",
+        "verdict": "채택 가능(파일만)",
+        "evidence": "후보2048x1152 JPEG/알파없음. 원본1536x1024에서 비율3:2→16:9",
+        "limits": "실게임 cover/줌 잘림 미검수"
+      },
+      {
+        "id": "V08",
+        "item": "문구/로고·거시 분위기",
+        "verdict": "채택 가능(관찰범위)",
+        "evidence": "읽을 수 있는 삽입 문구/로고 발견 없음; 어두운 화염 전장 유지",
+        "limits": "OCR 전수/앞뒤 컷 실제재생0"
+      }
+    ]
+  },
+  "sourceContracts": [
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+      "wholeSha256AtFirstChecks": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+      "wholeSha256AtFinalChecks": "30ae8544524d7cd710383ebd10f4911bea3247e90b18a46c51c253e73ce9ba3f",
+      "entriesSha256AtFirstChecks": "f46420fd1f99298d1172d5c0ecf1b7d66b90f013733295b0eda598069b11a162",
+      "entriesSha256AtFinalChecks": "f46420fd1f99298d1172d5c0ecf1b7d66b90f013733295b0eda598069b11a162",
+      "lines": [
+        {
+          "id": "wa26",
+          "line": 60566
+        },
+        {
+          "id": "wa27",
+          "line": 60567
+        },
+        {
+          "id": "wa26",
+          "line": 60601
+        },
+        {
+          "id": "wa27",
+          "line": 60602
+        },
+        {
+          "id": "wa26",
+          "line": 60636
+        },
+        {
+          "id": "wa27",
+          "line": 60637
+        },
+        {
+          "id": "wa26",
+          "line": 60671
+        },
+        {
+          "id": "wa27",
+          "line": 60672
+        }
+      ],
+      "loaderLine": 60826,
+      "contract": {
+        "img": "warintro/emg1.jpg",
+        "languages": 4,
+        "entryCount": 8,
+        "candidateReferences": 0,
+        "loaderVersion": "20261001-warstills2"
+      },
+      "wa26": {
+        "declaredSequenceTms": 78900,
+        "durMs": 3600,
+        "zoomStart": 1.08,
+        "zoomEnd": 1.04,
+        "ease": "out = 1-(1-u)^2",
+        "color": "#ddc8a0",
+        "fadeInMs": 600
+      },
+      "wa27": {
+        "declaredSequenceTms": 82500,
+        "durMs": 2300,
+        "text": "",
+        "zoomStart": 1.04,
+        "zoomEnd": 1.04,
+        "fadeInMs": 1
+      },
+      "note": "정적 계약만. 실제line-index/_cutLineStartMs 시간축·카메라/HTTP 미실행",
+      "wholeShaUnchanged": true,
+      "entriesShaUnchanged": true
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game-easy-test.html",
+      "wholeSha256AtFirstChecks": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+      "wholeSha256AtFinalChecks": "9c7c25c131f6175a464cffe2e981e946cf2a0af70ed04b969cc5292403799af8",
+      "entriesSha256AtFirstChecks": "15a778f49bef6acbc8abdb4966208180eb6b241851c945a6851d30331b619227",
+      "entriesSha256AtFinalChecks": "15a778f49bef6acbc8abdb4966208180eb6b241851c945a6851d30331b619227",
+      "lines": [
+        {
+          "id": "wa26",
+          "line": 58890
+        },
+        {
+          "id": "wa27",
+          "line": 58891
+        },
+        {
+          "id": "wa26",
+          "line": 58925
+        },
+        {
+          "id": "wa27",
+          "line": 58926
+        },
+        {
+          "id": "wa26",
+          "line": 58960
+        },
+        {
+          "id": "wa27",
+          "line": 58961
+        },
+        {
+          "id": "wa26",
+          "line": 58995
+        },
+        {
+          "id": "wa27",
+          "line": 58996
+        }
+      ],
+      "loaderLine": 59150,
+      "contract": {
+        "img": "warintro/emg1.jpg",
+        "languages": 4,
+        "entryCount": 8,
+        "candidateReferences": 0,
+        "loaderVersion": "20261001-warstills2"
+      },
+      "wa26": {
+        "declaredSequenceTms": 78900,
+        "durMs": 3600,
+        "zoomStart": 1.08,
+        "zoomEnd": 1.04,
+        "ease": "out = 1-(1-u)^2",
+        "color": "#ddc8a0",
+        "fadeInMs": 600
+      },
+      "wa27": {
+        "declaredSequenceTms": 82500,
+        "durMs": 2300,
+        "text": "",
+        "zoomStart": 1.04,
+        "zoomEnd": 1.04,
+        "fadeInMs": 1
+      },
+      "note": "정적 계약만. 실제line-index/_cutLineStartMs 시간축·카메라/HTTP 미실행",
+      "wholeShaUnchanged": true,
+      "entriesShaUnchanged": true
+    }
+  ],
+  "protectedDocs": [
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/17게임아트팀/ART_TEAM_MASTER.md",
+      "sha256": "631c25b0b0efeae1968cf90154677606d142d2654af3c3ec1ba87c36d5a61aad"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/11내러티브·로어디자인/WARRIOR_DESIGN_LOCK.md",
+      "sha256": "ce40b9dec2f7ee670ec3798d614561cbdaedd71fd8a51238d15fb4b56365ea58"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/cinematic/WARINTRO_STILLS_AUDIT_20261001.md",
+      "sha256": "10aa9d3172b21eeaeab594af79d5fd5abf5e65d0733bebfaf12704e3e348f452"
+    }
+  ],
+  "validation": {
+    "classification": "READ_ONLY_METADATA_AND_SOURCE_CONTRACT",
+    "assertionGroups": 19,
+    "initialPass": 19,
+    "initialFail": 0,
+    "finalPass": 19,
+    "finalFail": 0,
+    "groups": [
+      {
+        "id": "asset-original",
+        "status": "PASS"
+      },
+      {
+        "id": "asset-candidate1_rejected",
+        "status": "PASS"
+      },
+      {
+        "id": "asset-candidate2_reviewed",
+        "status": "PASS"
+      },
+      {
+        "id": "asset-identity_lock",
+        "status": "PASS"
+      },
+      {
+        "id": "asset-face_lock",
+        "status": "PASS"
+      },
+      {
+        "id": "asset-main_lock",
+        "status": "PASS"
+      },
+      {
+        "id": "game.html-wa26-contract",
+        "status": "PASS"
+      },
+      {
+        "id": "game.html-wa27-contract",
+        "status": "PASS"
+      },
+      {
+        "id": "game.html-current-loader",
+        "status": "PASS"
+      },
+      {
+        "id": "game.html-candidates-unconnected",
+        "status": "PASS"
+      },
+      {
+        "id": "game-easy-test.html-wa26-contract",
+        "status": "PASS"
+      },
+      {
+        "id": "game-easy-test.html-wa27-contract",
+        "status": "PASS"
+      },
+      {
+        "id": "game-easy-test.html-current-loader",
+        "status": "PASS"
+      },
+      {
+        "id": "game-easy-test.html-candidates-unconnected",
+        "status": "PASS"
+      },
+      {
+        "id": "unchanged-docs/17게임아트팀/ART_TEAM_MASTER.md",
+        "status": "PASS"
+      },
+      {
+        "id": "unchanged-docs/11내러티브·로어디자인/WARRIOR_DESIGN_LOCK.md",
+        "status": "PASS"
+      },
+      {
+        "id": "unchanged-docs/cinematic/WARINTRO_STILLS_AUDIT_20261001.md",
+        "status": "PASS"
+      },
+      {
+        "id": "unchanged-tools/team-followup-20261002/project-teams/ART/task.md",
+        "status": "PASS"
+      },
+      {
+        "id": "owner-output-limit",
+        "status": "PASS"
+      }
+    ],
+    "visualVerdict": "수정 필요; 일부 LOCK 근거 부족",
+    "isActualGameVisualPass": false
+  },
+  "docsSynchronization": {
+    "search": "rg -l 'emg1|WARRIOR_DESIGN_LOCK|warstills2' docs/",
+    "initialMatchingDocumentCount": 16,
+    "completedSearch": {
+      "atUTC": "2026-10-02T03:50:05.302Z",
+      "query": "emg1|WARRIOR_DESIGN_LOCK|warstills2",
+      "matchingDocumentCount": 16,
+      "paths": [
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/MAP-ART-인수검토.md",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/ui03-evidence/ART-팀검토.md",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/ui03-evidence/team-receipts.json",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/INDEPENDENT-NEXT-20261002.md",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/MAC-COORDINATION-20261002.md",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/MAP-ART-REVIEW-20261002.md",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-CHATS-20261002.json",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/PROJECT-TEAM-WORK-DISPATCH-20261002.json",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/TEAM_UTILIZATION_20261001.json",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/native-recovery/ART-task.md",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/17게임아트팀/ART_TEAM_MASTER.md",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/cinematic/PROLOGUE_STORYBOARD_v1.md",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/cinematic/WARINTRO_BATCH_W12_W13_W16_20260909.md",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/cinematic/WARINTRO_REMASTER_20260909.md",
+        "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/cinematic/WARINTRO_STILLS_AUDIT_20261001.md"
+      ],
+      "pathListSha256": "020e08999c25c31972dab6530a2d510af1e9fe0da6918702759cfcbdc779d165",
+      "sharedDocsEdited": 0
+    },
+    "scope": "소유 result.md에 source ID/수치/적용위치/공식/검수/한계와 정확 SSOT 후속 변경안 표 기록. 공용 docs 읽기 전용; root 인수 후 동기화.",
+    "proposals": [
+      "ART_TEAM_MASTER §8.3: 미검수→로컬 대조 완료/수정 필요/세부LOCK 근거 부족/생산 미채택/실제카메라 미검수",
+      "ART_TEAM_MASTER §8.4: 후보정체확정/잔점 보정·세부LOCK 후속 배정/카메라 별도 Gate",
+      "WARINTRO_STILLS_AUDIT: 2026-10-01 이력 보존, 2026-10-02 독립 검수 결과 추가",
+      "총괄 원세션 미전달 이력은 유지, 새 관리 채팅 별도 수행 완료를 구분"
+    ],
+    "protected2_3Changes": 0
+  },
+  "artifacts": [
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/ART/checks.mjs",
+      "firstWriteAtUTC": "2026-10-02T03:46:32.790Z",
+      "sha256": "0ee64151fe1349a6b3f15d12cd53ccf07191657ba582ad8c3017bbbabe62d10f"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/ART/result.md",
+      "firstWriteAtUTC": "2026-10-02T03:48:22.178Z",
+      "sha256": "55c3965e25a974f6cab381a97ce4c30d04498ec3f1951d14ac831f4f09d48910"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/project-teams/ART/evidence.json",
+      "sha256Note": "영수증 자기 SHA는 포함하지 않음; 총괄 최종 인수에서 읽어 계산 가능"
+    }
+  ],
+  "remainingGates": [
+    "ART-R1 점 형태 정리/승인 대체본",
+    "전사 눈·얼굴·갑옷 세부 LOCK 증거",
+    "실제 컷신 cover/zoom/자막/전환",
+    "총괄 채택·생산반영·캐시·docs·백업"
+  ],
+  "zeroActions": {
+    "imageGeneration": 0,
+    "imageConversion": 0,
+    "download": 0,
+    "existingAssetWrites": 0,
+    "productionSourceWrites": 0,
+    "existingTestWrites": 0,
+    "originalOwnerPrefixWrites": 0,
+    "sharedDocsOrJsonWrites": 0,
+    "ui": 0,
+    "game": 0,
+    "server": 0,
+    "performanceMeasurement": 0,
+    "build": 0,
+    "encoding": 0,
+    "installation": 0,
+    "gitWrites": 0,
+    "newSession": 0,
+    "subagent": 0,
+    "automationChanges": 0,
+    "permissionsChanges": 0
+  },
+  "reportLanguage": "한국어",
+  "preservation": {
+    "imageShaUnchangedCount": 6,
+    "protectedDocShaUnchangedCount": 3,
+    "pmTaskShaUnchanged": true,
+    "productionCutsceneContractsUnchanged": true,
+    "productionWholeFilesUnchanged": true,
+    "ownedArtifactSetExactly": [
+      "checks.mjs",
+      "evidence.json",
+      "result.md"
+    ],
+    "scopeCheck": "3 new files in owner folder; task.md unchanged"
+  },
+  "statusKorean": "배정 한 건 수행·19검사·원화 대조·docs 계약표 완료, 총괄 인수 대기. 수정 필요/세부 LOCK 근거 부족/생산 미채택"
+}
