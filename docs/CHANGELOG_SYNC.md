@@ -53307,3 +53307,15 @@ source29 원문 검수는 실제 keyName·미니바 원문 블록을 DOM/popup/l
 | 실제플레이 | 기존source29/3404 앱에source30/31 미포함, UI/빌드/재실행0. 같은후보 보스문/필드몬스터·사망/부활/재도전/실저장·청취·화면 미인수 |
 
 [정확한집계·consumer 대조·SHA·미검수 범위](15%20세이브+데이터구조/15%20세이브+데이터구조.md#2026-10-03-source31-장비-옵션-숫자-합산). 보호2_3/Q-onlymagic/E불가·어택티켓금지·타인WIP·기존미채택후보 유지.
+
+
+## 2026-10-03 source32 패시브 저장 복원의 숫자 변환
+
+| 파일 / 경계 | 변경 | 검수 |
+|---|---|---|
+| game.html / game-easy-test.html | PASSIVES[k]=+d.passives[k]||0 및 PASSIVES[k]=+_d5.passives[k]||0. 각판+2B | 실제 앵커 각1, 최소 두 숫자 변환 외 역변환 byte 등가 |
+| test/passiveRestoreDamage.test.cjs | 실제 두 복원 문장·배율 함수·hitArc weapon 선행 분기·전체 fireBow·정확 energyShot 식 실행 | 36PASS; 기존 장비30+기본공격4 포함70PASS; 정상·숫자문자열·음수소수·비숫자/null/NaN/누락·키정책·비용 하한 |
+| 저장 정본 / 스킬 정본 / 기본공격 정본 | 숫자 복원 계약·실제 소비 대조·미검수 경계 동기화 | 전체 docs 관련키워드 검색 전후, 기존 본문 byte 접두부 보존 |
+| 총괄 문서 | source32 채택·범위·의미검수·native Gate | 두 오더/기존 전문15/현재 TASK 유지; 새팀·중복송신0 |
+
+CO-QA-0645 완료2066d5e0-758d-4480-a1b7-5c64faa45374(source30 원자료)를 source31에서 재검증했다. 비숫자 pAtk로 피해0이던 통제 입력의 근접/활/마법을294/2100/140으로 복구, 정상9/"9"는558/3990/266 유지. 복원 레벨·배율·Q/E 정책·사용자 저장을 변경하지 않았다. 초기 harness pBowSpd 누락과 기존 타입 계약 실패를 서로 다른 제품 결함으로 세지 않는다. Infinity 유한성 검사/전체 저장 검증은 범위 밖. 백업/검사/소비·구문/원격 exact 영수증은 tmp/mac-migration-runtime/continued-review-20261003/source32-passive-restore/에 보존하며 source29 native 앱은 유지, source30/31/32 앱 반영·실플레이/청취 인수0. [저장 정본](15%20세이브+데이터구조/15%20세이브+데이터구조.md#2026-10-03-source32-패시브-복원-숫자-경계).

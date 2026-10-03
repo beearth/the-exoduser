@@ -28,3 +28,17 @@
 | 검수 | 신규30+기존 basicAttackDamage4=생산34PASS. 실제 전체3참조와 장비 집계함수·정확 applyStats 장비 기본항 실행, 전체 프레임/후속 스탯/실저장/native 미인수 |
 
 원본 atk/enh/bonusHp 또는 PASSIVES/STATS 손상 후보, 기존 다른 어픽스 미연결 정책은 별도다. 사용자 저장을 수정하지 않았다. [정확한 숫자 합산·소비 계약](../15%20세이브+데이터구조/15%20세이브+데이터구조.md#2026-10-03-source31-장비-옵션-숫자-합산) 및 test/equipmentNumericAggregation.test.cjs를 따른다.
+
+
+## 2026-10-03 source32 패시브 복원과 기본 피해 무결성
+
+| 적용 위치 | 현행 계약 / 통제 입력 대조 |
+|---|---|
+| dbRestore / DEMO500 | 두 PASSIVES 복원에 숫자 변환 +값||0. 정상 rank/피해·레벨·공식 변경0 |
+| hitArc weapon 선행 분기 | pAtk="ab" 저장 복원 후 baseDmg420의 ~~(baseDmg*pAtkMul()*pMeleeMul())가0→294. _atkBon 가산·reset 유지 |
+| 전체 fireBow | 같은 저장 rank에서 bowRef100 투사체 최종 피해0→2100. 기존 ×10·×3·악의1/발·보너스/reset 유지 |
+| energyShot 정확 피해식 | magicRef100/statInt1/스킬·합체1에서0→140. 마법2배/pMagicMul(false) 기존 계약 유지 |
+| 정상 대조 | pAtk9/"9"는 위 순서558/3990/266 유지. 사용자 실제 피해 수치가 아닌 fixture |
+| 검수·한계 | 양판 신규36+장비숫자합30+기본공격4=70PASS. 전체 hitArc·마법시전·전체복원·native 미실행; Infinity/음수소수/초과레벨을 새로 제한하지 않음 |
+
+source31에 별도 후보로 남겨 둔 PASSIVES는 이번 두 복원 경계에 한해 처리했다. STATS·장비 기본값·전체 save normalization Gate는 유지한다. [저장 숫자 경계 정본](../15%20세이브+데이터구조/15%20세이브+데이터구조.md#2026-10-03-source32-패시브-복원-숫자-경계).

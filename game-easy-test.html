@@ -3442,7 +3442,7 @@ function dbRestore(d){
   // Stats
   if(d.stats)for(const k in d.stats)STATS[k]=d.stats[k]||0;
   // Passives (known keys only)
-  if(d.passives)for(const k in d.passives)if(PASSIVES.hasOwnProperty(k))PASSIVES[k]=d.passives[k]||0;
+  if(d.passives)for(const k in d.passives)if(PASSIVES.hasOwnProperty(k))PASSIVES[k]=+d.passives[k]||0;
   // removed passive migration: pShield(수호) -> AP refund
   {
     const _legacyLv=Math.max(0,~~(PASSIVES.pShield||0));
@@ -58533,7 +58533,7 @@ async function _startDemoTest(){
         P.hp=_d5.player.hp||P.mhp;P.mhp=_d5.player.mhp||P.mhp;
         P.mp=_d5.player.mp||P.mmp;P.mmp=_d5.player.mmp||P.mmp;
         P.st=_d5.player.st||P.mst;P.mst=_d5.player.mst||P.mst;
-        if(_d5.passives){for(const k in _d5.passives)PASSIVES[k]=_d5.passives[k]||0}
+        if(_d5.passives){for(const k in _d5.passives)PASSIVES[k]=+_d5.passives[k]||0}
         if(_d5.stats){for(const k in _d5.stats)STATS[k]=_d5.stats[k]||0}
         if(_d5.skillSlots&&_d5.skillSlots.length){_d5.skillSlots.forEach((s,i)=>{SKILL_SLOTS[i]=s});_repairAreaSkillSlot()}
         if(_d5.ultSlot)ULT_SLOT=_d5.ultSlot;
