@@ -1004,3 +1004,18 @@ renderAffixTooltip(item) → 인벤토리 툴팁 표시
 원래24/72마스크 Canvas를그대로 PNG화한 반지 후보는256² 및34² RGBA·알파0diff, 실제34px월드fixture 각987회 표시·소스교체/404/null계약을 통과했다. 관측기 없는3쌍의 요청→최초제출 반환 중앙값은 기존9.9ms/PNG4.9ms로 유망하다. 실제 화면표시·GPU완료/FPS·자연전투97.4ms 해결을 뜻하지 않는다. 추가6쌍은 기존경로에만 세부관측기가 있어 단계귀속자료로 분리했고 재접속diff5→10도 기록했다.
 
 파일은52,346→69,119바이트(+32.0%), 제작22.2ms, PNG최초제출 호출은오히려0.6–1.3ms로증가했다. 부트준비확장0·생산/easy/원화변경0. 기존컷아웃없음, 기존20/70+crop도구는비동등하여미사용. 새7+기존13회귀20PASS. 다음제안은 `_worldItemSkin`의물리ring분기만PNG선택하고기존폴백을유지하는한건이며 아직적용하지않았다. [출처·원자료·한계·최소제안](../0마스터플랜/mac-resume-20261001/Mac-반지-PNG-재사용-진단.md).
+
+
+## 2026-10-03 source21 — 드롭 상한의 미개봉 상자 보존 우선순위
+
+| 항목 | 현행 코드 / 완료 경계 |
+|---|---|
+| 실제 누락 경로 | 실제 보스 보상 producer `_wiPush({x:cx,y:cy,type:'chest',picked:false,opened:false})`가 worldItems 장비20개에 상자를 추가하면 기존 nonitem rank−1 때문에 상자 자체를 즉시 제거. 기존 상자도 이후 장비 드롭/GC 초과 정리에서 먼저 제거되어 정상 개봉 입력이 대상을 찾지 못함 |
+| 최소 적용4 | 본편/Easy 각각 `_wiPush` 및 주기GC의 rank식에 `type==='chest'&&!picked&&!opened ? Infinity : 기존식` 추가. 각파일+168B, 총4접점. 원래 배열·동일 객체/좌표/소비flag·swap-remove 순서·20상한 유지. rank순서만 미개봉·미소비 상자를 뒤로 이동 |
+| 축출 계약 | 미개봉·미소비 chest Infinity, item은 기존 item.rarity\|\|0(없으면0), 열린/소비상자 및 hp/debris/o2bubble/mat/potion 등 다른 비장비는 기존−1. 최소rank 먼저, 같은rank는 첫 인덱스. 모두 Infinity면 기존 mi0 fallback으로 첫 인덱스를 제거해20개로 수렴. 무한/절대 상자보존이나20개 상한 확대가 아님 |
+| 개봉·보상 | 실제 개봉lane의 거리<60/opened guard/동기 opened=true→장비3~5개 생성/악의5+floor(stage×2)/HP물약2/같은frame상자1개 break 유지. 원래 RNG·rarity확률·장비공식·자동/R/펫·가방/저장 변경0. 정상빈필드3/4/5생산·동일상자1회소비와 경계거리60을 actual lane으로 확인 |
+| 별도 상한 경계 | 개봉 뒤 상자는 기존 비장비로 제거 가능. 장비 보상은 계속 공유20상한과 기존rarity축출 적용: 근상한에서는 새 저등급보상이 제거될 수 있으며 생성3~5개가 모두 바닥에 보존/가방 지급된다는 보장은 없음. 직접가방지급·보상면제·picked선행정리·상한 변경은 이번 적용0 |
+| 회귀 | test/worldChestEviction.test.cjs: 양판5그룹씩10PASS, baseline source20 6PASS/4FAIL(생성push/GC 상자보존 각판2RED), 정상3그룹씩6은 양쪽동일PASS. 장비/비장비 swap 순서·드롭음향/preview·opened/picked·모두chest35개 상한수렴·실제개봉lane 검사. 초기가상VM배열prototype fixture실패2는 하니스 정정 후 정상, 게임실패로 계산0 |
+| 보스/문법 | 실제 bossRespawnFieldState34PASS로 기존 필드/문/적/아이템 복귀 계약 유지. 양판 AST 파싱 JS12/JSON2, 별도 본편 inline syntax1PASS. 새검사10+보스34=44PASS와 별도syntax1을 구분. 잘못 기입한 .cjs syntax 경로는 체크0, 실제 .js 실행으로 정정 |
+| 검수 한계 | 실제 `_wiPush` 전체함수·GC 선택lane·상자생성문장·개봉lane을 isolated VM에서 실행. 완전한 hurtE 보스승리/전체update·정상native키/픽셀·가방획득/실저장·청취는 fixture 검사가 수행하지 않음. item factory·거리입력·음향/UI·RNG 고정은 대역. source21 패키지/native 인수0, source20/3395 앱 및 이전 사용자 게임/세이브 보존 |
+| 원자료 | tmp/mac-migration-runtime/continued-review-20261003/root-chest-preservation-source21/{before-receipt.json,code-applied-receipt.json,candidate-test.txt,baseline-test.txt,production-test-receipt.json,syntax-test.txt}. 초기fixture 오류 및 각실패/한계 보존, inverse patch source20 byte-exact |

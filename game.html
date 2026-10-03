@@ -15905,7 +15905,7 @@ let G={on:false,paused:false,stage:0,kills:0,mats:0,cam:{x:0,y:0},shake:0,parts:
   _zones:null,_curZone:0,_zoneState:{},_portals:null,_playerPortalPair:null}; // 존 분할 시스템
 let P=null,ens=[],projs=[],pProjs=[],worldItems=[];// worldItems = items on ground, pProjs = player arrows
 const _levelUpVfx=window.LevelUpVfx.create();
-function _wiPush(wi){worldItems.push(wi);if(wi.type==='item'&&wi.item&&!wi._dropPreview)playItemDropSfx(wi.item.rarity||0,wi.x,wi.y);while(worldItems.length>20){let mi=0,mr=Infinity;for(let i=0;i<worldItems.length;i++){const r=worldItems[i].type==='item'?(worldItems[i].item?worldItems[i].item.rarity||0:0):-1;if(r<mr){mr=r;mi=i}}worldItems[mi]=worldItems[worldItems.length-1];worldItems.length--}}
+function _wiPush(wi){worldItems.push(wi);if(wi.type==='item'&&wi.item&&!wi._dropPreview)playItemDropSfx(wi.item.rarity||0,wi.x,wi.y);while(worldItems.length>20){let mi=0,mr=Infinity;for(let i=0;i<worldItems.length;i++){const r=worldItems[i].type==='chest'&&!worldItems[i].picked&&!worldItems[i].opened?Infinity:worldItems[i].type==='item'?(worldItems[i].item?worldItems[i].item.rarity||0:0):-1;if(r<mr){mr=r;mi=i}}worldItems[mi]=worldItems[worldItems.length-1];worldItems.length--}}
 function _spawnWorldDropPreview(){
   if(!_DROP_PREVIEW||!P)return;
   const samples=[['weapon',EL.F,1],['bow',EL.I,2],['ring1',EL.D,3],['armor',EL.L,4],['helmet',EL.H,5]];
@@ -33135,7 +33135,7 @@ function update(){
     // worldItems picked 정리
     let ww=0;for(let i=0;i<worldItems.length;i++){if(!worldItems[i].picked)worldItems[ww++]=worldItems[i]}worldItems.length=ww;
     // 아이템 상한 20개 — 초과 시 비장비(hp/debris/o2)→하급장비 순 제거, 고등급 보존
-    while(worldItems.length>20){let mi=0,mr=Infinity;for(let i=0;i<worldItems.length;i++){const r=worldItems[i].type==='item'?(worldItems[i].item?worldItems[i].item.rarity||0:0):-1;if(r<mr){mr=r;mi=i}}worldItems[mi]=worldItems[worldItems.length-1];worldItems.length--}
+    while(worldItems.length>20){let mi=0,mr=Infinity;for(let i=0;i<worldItems.length;i++){const r=worldItems[i].type==='chest'&&!worldItems[i].picked&&!worldItems[i].opened?Infinity:worldItems[i].type==='item'?(worldItems[i].item?worldItems[i].item.rarity||0:0):-1;if(r<mr){mr=r;mi=i}}worldItems[mi]=worldItems[worldItems.length-1];worldItems.length--}
     // G.txts: 링 버퍼 풀이므로 compaction 불필요 (축소 시 재할당 유발)
   }
   // 공간 해싱 리빌드 (2프레임 주기)
