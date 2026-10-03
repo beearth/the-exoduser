@@ -1033,3 +1033,21 @@ renderAffixTooltip(item) → 인벤토리 툴팁 표시
 | 경계 | 실제 INV 내용/저장 schema 변경0 | Infinity·객체 변환·손상 배열 원소·atk/enh/bonusHp·PASSIVES/STATS는 별도 미채택 범위 |
 
 정상 [5,3,2]→10과 signed/decimal 합산은 보존하며, [5,"9",3]은17, [5,"ab",3]은8이다. 비숫자 한 항목이 정상 옵션의 누적합까지 문자열로 오염시키지 않는다. source31 양판 각+18B/전체 역치환 exact, 신규30+피해 회귀4=생산34PASS·inlineJS12/importmap2PASS. 전체 applyStats·실세이브·native·완주·청취 통과로 계산하지 않는다. [정확한 소비 대조·핀·QA 완료ID](../15%20세이브+데이터구조/15%20세이브+데이터구조.md#2026-10-03-source31-장비-옵션-숫자-합산)를 따른다.
+
+
+## 2026-10-03 source33 상세 어픽스 퍼센트 정밀도
+
+| id / 소비자 | 현행 표시 계약 | 적용 범위 |
+|---|---|---|
+| _affixDetailValStr(af) | AFFIX_POOL의 첫 일치 id를 조회. unit=pct/prob 및 typeof value=number && Number.isFinite(value)에만 v=Math.round(value*10000)/100 | 인벤토리 상세의 _invCardFields 어픽스 값 호출1개 |
+| 부호 / 단위 | (v>0?'+':'')+(Object.is(v,-0)?0:v)+'%' | 소수 최대2자리, 불필요한 뒤0 없음 |
+| -.005 / 0 / .005 / .12 | -0.5% / 0% / +0.5% / +12% | 이전 -.005→0%, .005→+0% 정수절삭을 상세에서 복구 |
+| fallback | pct/prob 이외 또는 비숫자·NaN·Infinity·누락·null·unknown id는 기존 _affixValStr(af) 호출 | 손상값 normalization·기존 다른 단위 포맷 변경0 |
+| _affixValStr | 기존 공용 함수 원문 유지 | 리롤/공용 포맷 소비자 유지. 비교 포맷 후보 ITEM0658은 이번 미채택 |
+| 효과 / 값 | af.value·생성 수치·tiers·장착·저장·_eqAffixRebuild·_slotFlatAtk 변경0 | 표시만 변경. 값×100 후 표시 자릿수 반올림이며 전투 수치를 반올림하지 않음 |
+
+예: armorPen 등 pct 항목에 value=.005를 공급하면 상세 HTML의 +0%를 +0.5%로 표시한다. 모든 옵션에 .005를 생성한다는 뜻은 아니다. 기존 AFFIX_POOL404항목/402고유id의 순서·중복·단위 정의는 그대로이며 각항목의 6개 통제 값(-.125,-.005,0,.005,.125,.12)×양판=4,848 상세 HTML 대조 및 fallback7개×양판=14를 합쳐4,862대조 PASS다. 동일 helper는 첫 일치 pool 정의를 그대로 사용한다.
+
+전체 _invCardFields를 실행해 armor의 DEF/eDEF·enh37·bStr5와 어픽스 이름/색/설명 마크업이 값 문자열 외에는 동일함을 확인했다. _invBuildCompare/renderForge/equipItem/rerollAffixes 및 장비 집계 함수 원문도 byte 등가다. _T/_L·강화 표시 leaf는 통제 대역이며 전체 인벤토리 이벤트/DOM·실장착·저장·native 픽셀/접근성 검증은 실행하지 않았다. 정규 게임 언어별 실제 표시 가독성은 별도 Gate다.
+
+양판 각+309B; source33 game.html4035493B/SHA256 76c4886e4b9d61a79fcd785be88cedf7fcade86901cb44864cd3ab73777a5bd0, easy3913162B/SHA256 021b6339a8aee08d329b8e8913fa058d4100883dc781febf9f2a85f4d1c8b65e. 전체 역변환 원문exact·inlineJS12/importmap2 PASS. 백업/후보/전체 상세 대조/원격 exact 영수증은 tmp/mac-migration-runtime/continued-review-20261003/source33-affix-detail/에 보존한다. 근거 SUPERVISOR-ITEM-0653 완료msg_0dc2542c5744bc89016ac0a6e24fc087d081bf4d80ddd34cf4(2026-10-03T06:55:34.910Z), source31 원자료를 root source32에서 재검증했다.

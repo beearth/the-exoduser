@@ -53319,3 +53319,15 @@ source29 원문 검수는 실제 keyName·미니바 원문 블록을 DOM/popup/l
 | 총괄 문서 | source32 채택·범위·의미검수·native Gate | 두 오더/기존 전문15/현재 TASK 유지; 새팀·중복송신0 |
 
 CO-QA-0645 완료2066d5e0-758d-4480-a1b7-5c64faa45374(source30 원자료)를 source31에서 재검증했다. 비숫자 pAtk로 피해0이던 통제 입력의 근접/활/마법을294/2100/140으로 복구, 정상9/"9"는558/3990/266 유지. 복원 레벨·배율·Q/E 정책·사용자 저장을 변경하지 않았다. 초기 harness pBowSpd 누락과 기존 타입 계약 실패를 서로 다른 제품 결함으로 세지 않는다. Infinity 유한성 검사/전체 저장 검증은 범위 밖. 백업/검사/소비·구문/원격 exact 영수증은 tmp/mac-migration-runtime/continued-review-20261003/source32-passive-restore/에 보존하며 source29 native 앱은 유지, source30/31/32 앱 반영·실플레이/청취 인수0. [저장 정본](15%20세이브+데이터구조/15%20세이브+데이터구조.md#2026-10-03-source32-패시브-복원-숫자-경계).
+
+
+## 2026-10-03 source33 인벤토리 상세의 소수 퍼센트 표시
+
+| 파일 / 경계 | 변경 / 보존 | 검수 |
+|---|---|---|
+| game.html / game-easy-test.html | _affixDetailValStr helper 삽입, _invCardFields affix 값 호출1개 치환. 각+309B | 정상pct/prob .005→+0.5%, -.005→-0.5%, 0→0%; 유한숫자 외 공용 fallback 유지 |
+| 아이템·인벤토리 정본 | 최대2자리/부호·단위·fallback/표시 전용 범위 동기화 | 관련 docs 전체 검색 전후/기존 본문 접두부byte exact |
+| 총괄 문서 | ITEM0653 채택 및 ANIMzeropeak false-positive 검수 정정 | 실제hurtE 상위if(dmg>0) 확인, redundant peak 가드 미채택·결함/수정0 |
+| 코드 소비 | 공용 _affixValStr/비교/renderForge/장착/리롤·장비 집계 원문 유지 | 실제 전체 _invCardFields4,862대조 PASS; 전체역변환 원문exact·JS12/importmap2 PASS |
+
+근거 ITEM0653 완료msg_0dc2542c5744bc89016ac0a6e24fc087d081bf4d80ddd34cf4(2026-10-03T06:55:34.910Z)/source31을 source32에서 재검증. 양판source33 SHA256 main76c4886e4b9d61a79fcd785be88cedf7fcade86901cb44864cd3ab73777a5bd0(4035493B)/easy021b6339a8aee08d329b8e8913fa058d4100883dc781febf9f2a85f4d1c8b65e(3913162B). 코드+docs scope6만 원격 보존. 백업/전체상세 markup대조/영수증은 tmp/mac-migration-runtime/continued-review-20261003/source33-affix-detail/. 실제 전투 수치·사용자 저장·앱/빌드 변경0; native 시각·청취·보스사망/부활 인수0. [상세 정본](7아이템디자인/exoduser-item-system-full.md#2026-10-03-source33-상세-어픽스-퍼센트-정밀도).

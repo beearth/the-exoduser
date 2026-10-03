@@ -1716,3 +1716,18 @@ source29 원문 검수는 실제 keyName·미니바 원문 블록을 DOM/popup/l
 | native | 앱source29/3404 유지, source30/31/32 앱에 미포함. 기존 입력 전달 막힘 유지; 전투·획득/장착·4지역게이트·보스사망/부활·재도전·실화면/청취 인수0 |
 
 백업·완료UUID/pins·원문 RED/후보 GREEN·생산/구문/소비대조와 Git 체크포인트 영수증은 tmp/mac-migration-runtime/continued-review-20261003/source32-passive-restore/이다. source 검사/문서 보존을 실제 게임 완료로 계산하지 않는다. 두 오더 담당의 현재 TASK/활성 CLI를 재시작·중복 지시하지 않았고, 소진 역할은 실제 idle을 보존한다. [숫자 복원 정본](../15%20세이브+데이터구조/15%20세이브+데이터구조.md#2026-10-03-source32-패시브-복원-숫자-경계).
+
+
+### 2026-10-03 원총괄 source33 — 소수 옵션 상세 표시 / 분리 fixture 오판 정정
+
+| 항목 | 결과·실제 범위 |
+|---|---|
+| 채택 | Codex ITEM SUPERVISOR-ITEM-0653 완료msg_0dc2542c5744bc89016ac0a6e24fc087d081bf4d80ddd34cf4 source31 원자료를 source32에서 재검증. _affixDetailValStr helper+_invCardFields 호출1개만 양판 적용(각+309B) |
+| 표시 변화 | pct/prob 유한 숫자 .005:+0%→+0.5%, -.005:0%→-0.5%. 정상.12:+12% 유지; 부호/최대2자리 및 -0 정리 |
+| 의미 검수 | 실제 전체 _invCardFields 실행4,862대조 PASS(기존pool404항목×6값×양판+fallback14). 값 문자열 외 HTML 등가/아이템 원본 불변·공용포맷/리롤/비교·장비 소비 함수 원문 등가; inlineJS12/importmap2 PASS |
+| 미채택 정정 | Claude ANIM0655 완료53d1e994-cd86-493e-b1f4-50c92ce69a4c/0700 보강3783b1ac-0257-4cf6-aedb-f326767981ed의 dmg>0 peak 후보는 REJECT_REDUNDANT_GUARD. 실제 hurtE AST에서 기존 상위 if(dmg > 0)가 이미 peak집계까지 감싸 완전흡수0이 도달하지 않음. 분리 fixture가 상위조건을 빠뜨린 false positive; 결함·수정완료로 세지 않음 |
+| 검수 정정 증거 | tmp/mac-migration-runtime/continued-review-20261003/source33-candidate-review/zero-peak-rejection.json의 양판 source32 hash/AST 조상조건. 생산 변경0·원자료 보존. Claude 오더 담당에게 정정피드백 전달, 진행 중 전문팀 중복지시0 |
+| 보존 | scope6=HTML2/canonical docs4만, 수정 전6파일 backup·타인67 byte exact·관리STATE/LOG 제외. 실제 사용자 저장·앱·빌드 변경0 |
+| 실제 목표 | 앱source29/3404 그대로. source30/31/32/33 앱에 미포함; native 입력 막힘/같은후보6단계·열린 보스문/기존 필드몬스터 보존·실화면/청취 인수0 |
+
+상세 [아이템 표시 정본](../7아이템디자인/exoduser-item-system-full.md#2026-10-03-source33-상세-어픽스-퍼센트-정밀도). 백업·대조·구문·역변환·원격 체크포인트는 tmp/mac-migration-runtime/continued-review-20261003/source33-affix-detail/에 보존한다. 후보 마크업 검증을 제품 시각 완료로 계산하지 않는다.

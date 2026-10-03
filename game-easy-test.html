@@ -46797,7 +46797,7 @@ function _invCardFields(it){
     for(let i=0;i<it.affixes.length;i++){
       const af=it.affixes[i];const p=AFFIX_POOL.find(a=>a.id===af.id);
       const c=p&&p.type===0?'#66ddff':'#ffcc44';
-      stats+='<div style="color:'+c+';font-size:.82rem">'+_T(AFFIX_NAMES_KO[af.id]||af.id)+': '+_T(_AFFIX_DESC[af.id]||'')+' '+_affixValStr(af)+'</div>';
+      stats+='<div style="color:'+c+';font-size:.82rem">'+_T(AFFIX_NAMES_KO[af.id]||af.id)+': '+_T(_AFFIX_DESC[af.id]||'')+' '+_affixDetailValStr(af)+'</div>';
     }
     stats+='</div>';
   }
@@ -47461,6 +47461,14 @@ let _salSel=new Set(); // 분해 선택된 bag 인덱스
 const CRAFT_COST=_malCost(200000); // 제작 비용 10만악의 (200000×0.5=100000)
 // ═══ 접두사/접미사 시스템 ═══
 // ═══ 어픽스 표시 함수 ═══
+function _affixDetailValStr(af){
+  const u=AFFIX_POOL.find(a=>a.id===af.id);
+  if(u&&(u.unit==='pct'||u.unit==='prob')&&typeof af.value==='number'&&Number.isFinite(af.value)){
+    const v=Math.round(af.value*10000)/100;
+    return(v>0?'+':'')+(Object.is(v,-0)?0:v)+'%';
+  }
+  return _affixValStr(af);
+}
 function _affixValStr(af){
   if(af.value==null)return'';
   const u=AFFIX_POOL.find(a=>a.id===af.id);
