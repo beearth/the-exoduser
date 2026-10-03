@@ -25912,8 +25912,8 @@ function useQuickslot(idx){
 
   SFX.potion();
   const _potCdBase=420; // 7s base cooldown
-  const _glPotCd=Math.min(gl().potCd||0,.2); // 장갑 최대 20%
-  const _bltPotCd=Math.min(blt().potCd||0,.2); // 벨트 최대 20%
+  const _glPotCd=Math.min(+gl().potCd||0,.2); // 장갑 최대 20%
+  const _bltPotCd=Math.min(+blt().potCd||0,.2); // 벨트 최대 20%
   const _regenPotCd=Math.min(PASSIVES.pRegen*.03,.3); // 회복력 패시브: -3%/lv, 최대 30%
   const _potCdAffix=Math.min(_eqAffix('potionCdRed'),.2); // 어픽스 최대 20%
   qsCooldown[idx]=Math.max(6,~~(_potCdBase*(1-_glPotCd-_bltPotCd-_regenPotCd-_potCdAffix))); // 최대 90%, 최소 0.1초
@@ -33431,8 +33431,8 @@ function update(){
     const _systemRecoveryBefore=window._systemLesson?.active?{hp:P.hp,mats:G.mats}:null;
     G.mats--;
     const _potCdBase=420;
-    const _glPotCd=Math.min(gl().potCd||0,.2);
-    const _bltPotCd=Math.min(blt().potCd||0,.2);
+    const _glPotCd=Math.min(+gl().potCd||0,.2);
+    const _bltPotCd=Math.min(+blt().potCd||0,.2);
     const _regenPotCd=Math.min(PASSIVES.pRegen*.03,.3);
     autoPotCd=Math.max(6,~~(_potCdBase*(1-_glPotCd-_bltPotCd-_regenPotCd)));
     const v=~~(potHeal('hp')*(1+_eqAffix('potionPower')));
