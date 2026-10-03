@@ -53375,3 +53375,21 @@ CO-QA-0645 완료2066d5e0-758d-4480-a1b7-5c64faa45374(source30 원자료)를 sou
 원자료·수정 전7파일 백업·unary 호환성14실패·최소 대안/118통과·caller 함수핀·일반 입장 소비 회귀82통과·최종 원문 exact 확인은 tmp/mac-migration-runtime/continued-review-20261003/source36-resource-restore/에 보존한다. 초기 검사 대역의 BAG_MAX/공유악의 조회 누락2건은 검사 설정을 보충한 것이며 제품 결함으로 세지 않는다. 보호67·타인 WIP/세이브·관리 담당 STATE/LOG는 수정하지 않는다.
 
 코드 변경 채택0, 최종 회귀1+docs5의 scope6 보존. 게임 핀 main4bc474a8542c20deee21e64fd542f7e295d11dc1d98b350241cc991e423e1f0a/easy9bd5a9bb4de4cacb300e701394ec7dae59faf0b60ddfb2b109027a8f32f42169 유지. docs 전체 관련 검색 전후·정본 접두부 exact·보호67 exact·원격 정확 SHA를 순차 검증한다.
+
+
+## 2026-10-03 source37 컷신 햅틱 비동기 실패 최소 통합
+
+| 항목 | 근거 / 인수 범위 |
+|---|---|
+| 후보 | Claude ANIM0737 완료 d26cd2b4-1f52-4869-b24b-f4d7238dc4fe 중 컷신 playEffect Promise.catch 누락만 부분 채택 |
+| 생산 | 양판 _renderIntroCutscene 직접 playEffect 반환 Promise .catch(()=>{}), 각+14B. 기존 동기 catch/전역 unhandledrejection/일반 _gpVibrate 원문 동일 |
+| 검수 | 실제 전체 컷신 렌더 함수13조건×양판26 PASS. 원본16PASS/10FAIL→후보26PASS. 10FAIL은 처리기 연결/오류 관찰 검사 수이며 별도 제품 결함10개가 아니다 |
+| 보존 | canvas 렌더 명령·타이밍 상태·actuator 호출 인수 등가. 위 결과는 대역검수이며 실제 컷신 시각·음향·진동 인수가 아님 |
+| docs | 설정 정본의 이전50~500ms 진동 설명을 실제 일반 _gpVibrate80~800ms/명시durMs 예외로 정정. 게임 수치 변경0; 컷신 별도1200ms 계약 동기화 |
+| Git | 백업6파일·코드2/test1/docs4=scope7만. 전체 docs 검색 전후·보호67 byte exact·관리운영파일 제외 |
+| 미채택 | OPT.vibration 배선/취소·직접 컷신 호출 통일·chain reset 및 source36 자원 복원 후보 포함0 |
+| 제품 Gate | 앱source29/3404 유지/source30~35 및37 앱에 미포함. 검수checkpoint36은 코드변경0. native 입력막힘·CH1-1 보스사망/부활/재도전·청취 인수 미완료 |
+
+[설정 정본](3.3%20키바인딩+설정/3.3%20키바인딩+설정.md#2026-10-03-source37-컷신-진동의-로컬-비동기-오류-처리). tmp/mac-migration-runtime/continued-review-20261003/source37-cutscene-haptics/에 원완료/백업/후보/회귀/구문/원격 정확 SHA 영수증을 보존한다. 원본 전역 거부 억제를 확인했으므로 게임정지/콘솔팝업 복구 주장0. 사용자 세이브·앱·빌드·타팀 수정0.
+
+코드 핀 main4035875B SHA256 ef11543d6feab952dbca6b083fa0cb292e46a2feaf49154222cf2b0b1b549edb / easy3913544B SHA256 e1a3a7b888e8dceb9cab9e2ec8280109479fd54f861c257d2f5142990c4dc08c. inline JS12/importmap2 PASS, 양판 변경 역변환은 source35 전체 원문 exact다.
