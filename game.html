@@ -30383,7 +30383,7 @@ function initStage(si){
   P.x=(_spX+.5)*T;P.y=(_spY+.5)*T;
   P.hp=P.mhp;P.st=P.mst;P.mp=P.mmp;P.shield=P.mshield;P.s='idle';P.iframes=360;P.kb={x:0,y:0};P._webSlow=0;P._trapSlowT=0;P._freezeSlow=0;P.burnT=0;P.poison=0;P._rbPoison=[];P._rbBurn=[];P._ioActive=false;P._ioT=0;P._altAtk=0;P._altDef=0;P._altSpd=0;P._lastStandUsed=false;P._reviveOnceUsed=false;
   P.chargeStocks=P.maxChargeStocks||1;P.chargeCd=0;
-  G.stageCleared=false;G._deathSpawned=false;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bossUnlocked=false;G._gateGuardKilled=false;G.stageTime=0;G.combo=0;G.comboTimer=0;G._stageKills=0;G._fbDone=false;G._fbSpawned=false;G._fbAnnounced=false;G._fieldBoss=null;G._fieldBosses=null;G._fdSpawned=false;G._fdAnnounced=false;G._fireDevils=null;G._sStats={deaths:0,dmgDealt:0,dmgTaken:0,parries:0,potions:0,items:0,dodges:0,crits:0,maxHit:0,dashDist:0,dashCount:0,walked:0,_prevX:0,_prevY:0};G._dmgPeak={val:0,t:0};
+  G.stageCleared=false;G._deathSpawned=false;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bossUnlocked=false;G._gateGuardKilled=false;G.stageTime=0;G.combo=0;G.comboTimer=0;G._stageKills=0;G._fbDone=false;G._fbSpawned=false;G._fbAnnounced=false;G._fieldBoss=null;G._fieldBosses=null;G._fdSpawned=false;G._fdAnnounced=false;G._fireDevils=null;G._sStats={comboMax:0,deaths:0,dmgDealt:0,dmgTaken:0,parries:0,potions:0,items:0,dodges:0,crits:0,maxHit:0,dashDist:0,dashCount:0,walked:0,_prevX:0,_prevY:0};G._dmgPeak={val:0,t:0};
   if(typeof _clearExtEPalCache==='function')_clearExtEPalCache();
   if(typeof _clearExtBPalCache==='function')_clearExtBPalCache();
   // 여신의 가호: 제거됨 (2026-04-15)
@@ -40619,8 +40619,8 @@ function checkRooms(){
           if((_ss.deaths||0)===0)_badges.push('무패');
           if(_csKillPct>=100)_badges.push('전멸');
           else if(_csKillPct>=90)_badges.push('박멸');
-          if(G.comboMax>=50)_badges.push('콤보마스터');
-          else if(G.comboMax>=20)_badges.push('콤보광');
+          if((_ss.comboMax||0)>=50)_badges.push('콤보마스터');
+          else if((_ss.comboMax||0)>=20)_badges.push('콤보광');
           if((_ss.parries||0)>=30)_badges.push('패링왕');
           else if((_ss.parries||0)>=10)_badges.push('패링장인');
           if(_csTime<=180)_badges.push('스피드런');
@@ -40632,7 +40632,7 @@ function checkRooms(){
             _csEl.innerHTML=
             '처치 '+_csV+_taKills+'/'+_taTotal+'</span> ('+_csKillPct+'%)'+_csD+
             _csV+_csM+':'+((_csS<10?'0':'')+_csS)+'</span>'+_csD+
-            '최대콤보 '+_csV+G.comboMax+'</span>'+
+            '최대콤보 '+_csV+(_ss.comboMax||0)+'</span>'+
             '<br>사망 '+_csV+(_ss.deaths||0)+'회</span>'+_csD+
             '크리 '+_csV+(_ss.crits||0)+'회</span>'+_csD+
             '패링 '+_csV+(_ss.parries||0)+'회</span>'+_csD+
@@ -40729,7 +40729,7 @@ function _showClearResult(){
   const _par=_clearParTime(_tot),_parS=_clearParScore(_tot);
   const _regC=(typeof _regionClearedCount==='function')?_regionClearedCount():0;
   const _ss=G._sStats||{};
-  const p=_clearScoreCalc({kills:G._stageKills||0,regions:_regC,bossKilled:true,clearSec:_sec,parSec:_par,deaths:_ss.deaths||0,dmgTaken:_ss.dmgTaken||0,comboMax:G.comboMax||0});
+  const p=_clearScoreCalc({kills:G._stageKills||0,regions:_regC,bossKilled:true,clearSec:_sec,parSec:_par,deaths:_ss.deaths||0,dmgTaken:_ss.dmgTaken||0,comboMax:_ss.comboMax||0});
   const rank=_clearRankCalc(_sec,_par,p.total,_parS,_ss.deaths||0);
   if(!G._clearRecords)G._clearRecords={};
   const m=_clearRecordMerge(G._clearRecords[G.stage],{t:_sec,s:p.total,r:rank});
@@ -41314,6 +41314,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     if(e.ib){G.comboTimer=Math.min(1800,G.comboTimer+1800)} // 보스: +30초, 최대 30초
     else{G.comboTimer=Math.min(1200,G.comboTimer+60)} // 일반: +1초, 최대 20초
     if(G.combo>G.comboMax)G.comboMax=G.combo;
+    if(G._sStats&&G.combo>(G._sStats.comboMax||0))G._sStats.comboMax=G.combo;
     if(G.combo>=1000&&G.combo%1000===0){const _cbPct=~~((~~(G.combo/100)*0.05+Math.max(0,_diffSigned())*0.10)*100);addTxt(P.x,P.y-40,'🔥 '+G.combo+' COMBO!'+(_cbPct>0?' +'+_cbPct+_L('%보상','% Bonus'):''),'#ffaa00',50)}
     const _killAng=ang!==undefined?ang:Math.atan2(e.y-P.y,e.x-P.x);
     if(!_isWhirlKill)_spawnLargeMonsterDeathFx(e,_killAng);

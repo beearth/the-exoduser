@@ -684,3 +684,21 @@ X.translate(Math.round(C.width/2 - G.cam.x + sx), Math.round(C.height/2 - G.cam.
 | 검수 / 적용 | 양판 각각 draw3접점만 수정, 역치환 source22 byte-exact. 신규8 PASS(원본4 PASS/4 FAIL); 실제 분기·기존 회귀 포함12 PASS | canvas는 호출 기록 대역이며 native·화면·GPU·시각 최종 인수 아님. source23 앱3398 포장·타이틀·HTTP 확인; source22/3397 앱은 기존 코드 보존 |
 
 상세 수치·실제 분기·한계·§23 보고는 [source23 전조 계약](../5.1임펙트디자인/CH1_BOSS_LANDING_FAN_TELEGRAPH_20261003.md)을 따른다. 피해·패링·타이밍·맵 geometry·카메라·기존 앱/세이브는 변경하지 않았다.
+
+
+## 2026-10-03 source24 — 현재 스테이지 콤보와 저장 최고 기록 분리
+
+| id / 적용 위치 | 현행 값·공식 | 수명·보존 경계 |
+|---|---|---|
+| stageCombo / `G._sStats.comboMax` | `initStage`에서0. 기존 `hurtE` 처치 콤보 증가 뒤 `G.combo > (G._sStats.comboMax || 0)`일 때 갱신 | 콤보 종료 때 최대값은 유지. 새 스테이지 생성 때만 기존 다른 `_sStats`와 함께 리셋 |
+| lifetimeCombo / `G.comboMax` | 기존 킬 최대값·`game.comboMax` 저장/복원 유지 | HUD·사망 화면은 기존 저장 최고 기록 사용. 본편 저장 빌더4곳/Easy3곳 및 복원 원문 불변 |
+| clearScore / `_showClearResult` | `comboMax:_ss.comboMax || 0`, 콤보 기여×5 | 계수·시간·처치·지역·보스·사망/무피격·랭크 공식 불변. 이전 최고60/이번0은 기존+300 대신0 |
+| clearStats / 현재 최대콤보 | `(_ss.comboMax || 0)` | 배지 콤보마스터≥50, 콤보광20~49. 이름·번역키·기존DOM/선택/버튼 구조 불변 |
+| bossDeathReturn / capture→restore | `_sStats`는46-key 필드 snapshot에 포함하지 않음 | 현재 stage 최대콤보/사망 횟수 유지. 보스 진입 전 기록으로 rewind하지 않음. 해금 완료 CH1 필드 복귀도 `initStage` 미호출 |
+| save / 재개 | 새 저장 필드 없음. `_sStats`는 기존대로 런타임 통계 | 로드로 새 stage를 생성하면 현재 통계는0부터 시작. 저장 최고와 기존 `_clearRecords`를 지우거나 과거 inflated 점수를 재계산하지 않음 |
+| failure / 검증 | 최종 원본2PASS/8FAIL → 후보10PASS → 생산50PASS | 실제 reset/kill/clearStats/score/best/capture·restore source 실행. DOM 기록/필드 입력은 대역. 실제 Mac 플레이·화면·청취 인수 아님 |
+| source / 적용 범위 | 양판 각6치환, 각+112B. 신규 `test/stageComboResult.test.cjs` | 역치환 원본 전체 byte-exact, index/전투 피해/RNG/저장 builder/capture·restore 함수 불변. source23 앱3398에는 아직 이 source24 수정 미포함 |
+
+최종 source 검증은 신규10 + 기존 클리어 공식6 + 보스 필드 복귀34 =50건이다. 테스트 준비 단계에서 기존 결측 통계의 무피격+500과 Easy 저장 빌더3곳을 잘못 가정한 fixture를 수정했고, 최초 결과를 보존한 뒤 최종 원본 실패대조·후보·생산 검증을 완료했다. 게임 코드의 버그 수정과 fixture 교정을 구분한다. 원자료는 `tmp/mac-migration-runtime/continued-review-20261003/root-stage-combo-source24/`의 before/candidate/baseline-test-corrected/candidate-test-corrected/production-test 및 영수증이다.
+
+같은 후보 CH1-1 시작→전투/획득→4지역/보스문→보스 사망·부활→재도전의 실제 Mac 인수는 미완이며 source50PASS를 그 완료로 계산하지 않는다. 기존 사용자 게임·세이브·앱8·보호2_3·Q-only magic/E불가·어택티켓 금지·타인WIP는 보존했다.
