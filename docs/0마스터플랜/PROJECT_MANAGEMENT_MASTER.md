@@ -1815,3 +1815,20 @@ source29 원문 검수는 실제 keyName·미니바 원문 블록을 DOM/popup/l
 원자료: tmp/mac-migration-runtime/continued-review-20261003/source38-chain-stage-reset/의 원본 백업·ANIM0747 원 completion UUID fbcb71c9-8897-4bef-af8b-557f9fc06c1e·docs전체검색·baseline/candidate/production·정확 역치환·checkpoint 영수증. 최초 fixture 실행의 미정의 외부 상태/함수 실패는 검수 대역 준비 오류이며 게임 결함 수로 계산하지 않는다. 최종 10개 원본 assertion 실패는 하나의 초기화 누락을 경로별로 확인한 결과다.
 
 최종 검수: 신규 체인 수명22 + 인접 기존 스테이지 ORB16 + 보스 필드 복귀68 =106 PASS/0 FAIL. 최종 원본 대조는22개 중12 PASS/10 FAIL(서로 다른 결함10개 아님). 두HTML inline JS12/importmap JSON2 구문 검수 통과. 일반 clean-initStage 및 nextStage의 전체 G/P/기록 sink 동등을 원본과 비교했다. 보호67개 경로 hash 보존과 HTML 전체 정확 역치환은 별도 precommit 영수증으로 확인한다.
+
+
+## 2026-10-03 source39 — 연속 알림 타이머 수명
+
+| id / 적용 위치 | 현행 값·동작 | 보존·검수 경계 |
+|---|---|---|
+| notify / 본편·Easy notify(msg) | 기존 #notif 텍스트 _T(msg), on 추가, bottom260px 뒤 clearTimeout(notify._timer);notify._timer=setTimeout(기존callback,1500) | 각1정확치환/+42B. 함수 property에만 핸들 보관. 기존 callback은 bottom270px/on 제거 그대로 |
+| 교체 수명 | 같은 노드의 새 알림 호출에서 이전 timer를 취소하고 마지막 호출 기준1500ms에 on 제거 예약 | A@0/B@800이면 기존 A@1500가 B를 일찍 숨겼다. 변경 후 B@2300 제거. 이는 class 수명 검사이며 CSS fade/pixel/native 관측 아님 |
+| 표시 CSS / #notif 리프 | 기존 빈 div 리프 하나. z-index22/pointer-events:none/opacity0, on이면1. opacity transition0.3s/bottom transition0.5s 유지 | 1500ms는 숨김 시작(on 제거)까지의 timeout. 페이드 포함 총 픽셀 노출1500ms로 단정하지 않음. 부모 DOM/선택자/CSS 구조 변경0 |
+| showPH / 자원 경고 | 기존 clearTimeout(showPH._timer) 및 duration 기본500ms 유지 | 서로 다른 두 timer property는 독립. notify 교체로 PH·외부 timer를 취소하지 않음. 언어·색·음성 조건 불변 |
+| 실제 caller / 패드 연결·해제 | 실제 등록된 gamepadconnected/disconnected callback 전체를 source 추출해 notify까지 실행 | callback 원문/연결상태·cursor·inputMode 저장 호출 순서 불변. 실제 하드웨어/사용자 localStorage는 조작하지 않은 대역 검사 |
+| 게임 전환 경계 | setTimeout wall-clock은 G.on/paused와 독립. stage/death 전환 시 새 clear 정책을 추가하지 않음 | 새 알림이 없으면 기존 자동 숨김 유지. 사망/보스 HUD·지역 배너·입력/설정/장비·save schema 정책 변경0 |
+| 검수 | 양판20 PASS. 원본4 PASS/16 assertion FAIL은 같은 timer 겹침 결함의 조건별 확인 | 실제 whole notify/showPH/패드 callback + controlled clock/DOM leaf/번역·입력상태·storage sinks. 실제 browser event queue/시각/청취/native·전체 gameplay 미인수 |
+| 정상·보존 | KR/EN 단일 호출의 text/on/bottom·timer1500ms 동등. 교체0/200/800/1499ms·연속12·만료핸들·PH/외부timer·패드 blip·정지게임 조건 확인 | 두HTML inline JS12/importmap JSON2 구문PASS. HTML 전체 역치환 source38 exact. 보호67경로/hash·공유index 보존 |
+| 실행본 | source39 소스 적용. 현재 격리 앱source29/3404에 미포함 | 빌드/앱 재시작/native 입력/사용자 세이브 변경0. CH1-1/보스문·몬스터 보존/부활·재도전·청취/시각 완료와 별개 |
+
+원 후보: ANIM0824 completion c917f67c-1b1f-4820-9efd-5da96a2ca739 (source37 조사). source38 위에서 별도 root 검수·최소 적용했다. 원자료/backup·docs전체키워드검색·baseline/candidate/production·역치환·원격 SHA 영수증은 tmp/mac-migration-runtime/continued-review-20261003/source39-notification-timer/에 보존한다. 제작팀 TASK·이전 핀/후보 이력은 덮어쓰지 않았다.

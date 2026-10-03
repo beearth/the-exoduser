@@ -41001,7 +41001,7 @@ function hurtP(dmg,opts){
   if(P.hp<=0)die()}
 let scrFlash=null,scrFlashA=0;
 function showPH(t,c,duration=500){if(_charIdx===1&&t==='쿨다운 중...')playSample('voice_cooldown',1,1);if(_charIdx===1&&/^(MP|ST|HP) 부족!|^악의 부족!/.test(t))playSample('voice_resource_fail',1,1);const el=$('ph');el.textContent=_T(t);el.style.color=c;el.classList.add('on');clearTimeout(showPH._timer);showPH._timer=setTimeout(()=>el.classList.remove('on'),duration)}
-function notify(msg){const el=$('notif');el.textContent=_T(msg);el.classList.add('on');el.style.bottom='260px';setTimeout(()=>{el.style.bottom='270px';el.classList.remove('on')},1500)}
+function notify(msg){const el=$('notif');el.textContent=_T(msg);el.classList.add('on');el.style.bottom='260px';clearTimeout(notify._timer);notify._timer=setTimeout(()=>{el.style.bottom='270px';el.classList.remove('on')},1500)}
 
 // ═══════════════════════════════════════
 //  [S17] DEATH — Drop System, Replay
