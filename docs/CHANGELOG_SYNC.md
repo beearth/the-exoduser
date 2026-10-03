@@ -52846,3 +52846,17 @@ Mac source15 격리3391 정상 새캐릭터→도입/조작안내/기본 연습s
 | 문서·Git | 관련 docs 전체440행/46경로 검색, 날짜별 역사와 관리자STATE/LOG4 보존. 완료한 root docs6만 scoped checkpoint·원격 정확SHA 대조, 보호 타인67 보존 |
 
 [현행 포장본 상세 계약](13출시·마케팅/MAC_CH1_SOURCE16_CANDIDATE_20261003.md).
+
+## 2026-10-03 source17 천공쇄기 필드 피해 생산 반영
+
+본편/Easy update의 착탄·잔불·파편에 기존 `_hurtFieldMobs` 연결3줄씩만 추가했다. 별도 낚시꾼/벌레/화마귀가 해당 피해를 받지 않던 누락을 고쳤고 기본 지옥강타는 이미 연결되어 수정0이다. 수치·비용·쿨·일반 적 소비자·source13 stale 사망/재료4 보존.
+
+| 항목 | 확인 |
+|---|---|
+| 의미 검증 | 신규 메모리 원본12PASS/8FAIL→후보20/20, 실제 생산 current-only20/20·fixture0, inline12JS+2JSON PASS. 기존47/48 재실행·합산0 |
+| 문서 | docs전체490행/91경로 검색, 2_1에 대상/세접점/기존8f helper 경계를 보충. stale잔불2.1/18.06→현행3.0/25.8 명목표기 정정·코드 피해 배율 변경0 |
+| 완료 범위 | code2/test1/docs4=7, existing5 백업/new2 미존재 확인, 보호 타인67/STATELOG4/index 보존·완료7만 scoped commit/push/원격 exactSHA |
+| 실제 앱 | source16/3392 실물은 확인됐으나 source17 미포함·새앱native0. source15 정상 필드 진입/일반사망 이력과 보스회귀를 구분 |
+| 미완 | Maclocked 부활입력0, 실전 전투·획득/장착·4지역·보스방·보스사망/부활/재도전·오디오 미인수. fixture/fullRNG/native를 완료로 확대0 |
+
+[source17 정확 범위](2_1%20스킬관리+합체시스템+자원/FIELD_MOB_RAGE_SKILL_DAMAGE_20261003.md).

@@ -34044,6 +34044,7 @@ function update(){
         hurtE(e,sc.dmg,a,false,{magic:true,explode:true,poiseHit:true,poiseMult:2,kbMult:1.6},EL.P);
         if(dst(sc.x,sc.y,e.x,e.y)<sc.r*.35&&!e.ib)e.stunned=Math.max(e.stunned||0,30);
       }
+      _hurtFieldMobs(sc.x,sc.y,sc.r,sc.dmg);
       for(let _spi=0;_spi<28;_spi++){const _sa=Math.PI*2*_spi/28+(Math.random()-.5)*.18,_ss=4+Math.random()*9;poolPart(sc.x,sc.y,Math.cos(_sa)*_ss,Math.sin(_sa)*_ss-2,_spi%3?'#756653':'#b6a078',3+Math.random()*5,24+Math.random()*18)}
       _detonateAssaultFlames(); // 천공쇄기 착탄: 활성 기동불꽃 전량 즉시 기폭
       _addBoom(sc.x,sc.y,sc.r,30,'dark');SFX.skyCrusherImpact();shake(28);G.hitStop=Math.max(G.hitStop,8);
@@ -34053,6 +34054,7 @@ function update(){
       for(let _sei=0;_sei<_scFireTargets.length;_sei++){const e=_scFireTargets[_sei];if(!e.alive||dst(sc.x,sc.y,e.x,e.y)>sc.fireRadius+e.r)continue;
         const a=Math.atan2(e.y-sc.y,e.x-sc.x);hurtE(e,~~(sc.dmg*sc.dotMul),a,true,{magic:true,dot:true,noPoise:true},EL.F);
       }
+      _hurtFieldMobs(sc.x,sc.y,sc.fireRadius,~~(sc.dmg*sc.dotMul));
       for(let _sfi=0;_sfi<4;_sfi++){const _sfa=Math.random()*Math.PI*2,_sfr=Math.random()*sc.fireRadius;poolPart(sc.x+Math.cos(_sfa)*_sfr,sc.y+Math.sin(_sfa)*_sfr*.45,(Math.random()-.5)*1.5,-2-Math.random()*3,_sfi%2?'#ff5a18':'#ffb12b',2+Math.random()*3,15+Math.random()*12)}
       sc.nextDotT+=sc.dotEvery;
     }
@@ -34061,6 +34063,7 @@ function update(){
       for(let _sei=0;_sei<_scShardTargets.length;_sei++){const e=_scShardTargets[_sei];if(!e.alive||dst(sc.x,sc.y,e.x,e.y)>sc.r+e.r)continue;
         const a=Math.atan2(e.y-sc.y,e.x-sc.x);hurtE(e,~~(sc.dmg*.35),a,true,{magic:true,explode:true,noPoise:true},EL.P);
       }
+      _hurtFieldMobs(sc.x,sc.y,sc.r,~~(sc.dmg*.35));
       for(let _spi=0;_spi<sc.shardCount;_spi++){const _sa=Math.PI*2*_spi/sc.shardCount,_ss=9+Math.random()*7;poolPart(sc.x+Math.cos(_sa)*sc.r*.18,sc.y+Math.sin(_sa)*sc.r*.1,Math.cos(_sa)*_ss,Math.sin(_sa)*_ss-3,_spi%2?'#d4bd8b':'#6f5c49',5+Math.random()*5,32+Math.random()*16)}
       shake(12);
     }
