@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "createdAt": "2026-10-02T05:38:47.099474+00:00",
-  "updatedAt": "2026-10-03T09:33:09.968062+00:00",
+  "updatedAt": "2026-10-03T09:45:13.414535+00:00",
   "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
   "rootChatId": "01a0faa9-b453-7673-be39-98adedb4c2b3",
   "status": "Codex7-order-owner-Claude8-handoff-ACK-no-further-native-sends",
@@ -54,10 +54,10 @@
       "currentTaskSha256": "8f09488c41ad6a31d710cd7a82fe052cb75cd5b3da9c569ba0e33b47d0e9e0d7",
       "outputOwnerPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/supervisor-next/UIUX/UIUX-reentrant-visual-popup-owner-hb1014b",
       "registryStatusHistorical": "read_confirmed_in_progress",
-      "status": "actual_source_work_confirmed",
-      "turnId": "01a1011b-0d24-7420-94f5-61e3329efed4",
-      "cursor": "e4ffcc6b-e430-4400-806d-235fc67aa97d:133",
-      "actualRead": true,
+      "status": "pending_first_useful_tool",
+      "turnId": "01a10127-43a3-7161-b3f3-f291ee000e94",
+      "cursor": "e4ffcc6b-e430-4400-806d-235fc67aa97d:137",
+      "actualRead": false,
       "completion": {
         "index": 0,
         "id": "01a0fc48-070a-7c91-b69a-2702ecbb0b36",
@@ -72,8 +72,8 @@
         "testsRerun": 0
       },
       "followupSend": {
-        "taskId": "SUPERVISOR-UIUX-0931",
-        "at": "2026-10-03T09:33:09.799516+00:00",
+        "taskId": "SUPERVISOR-UIUX-0944",
+        "at": "2026-10-03T09:45:13.238786+00:00",
         "receipt": {
           "content": [
             {
@@ -83,33 +83,15 @@
           ],
           "isError": false
         },
-        "pending": false
+        "pending": true
       },
       "followupRead": {
         "role": "UIUX",
-        "id": "01a1011b-0d24-7420-94f5-61e3329efed4",
+        "id": "01a10127-43a3-7161-b3f3-f291ee000e94",
         "status": "inProgress",
         "taskTurnConfirmed": true,
-        "ack": [
-          {
-            "id": "msg_04e77a2cd83d56e0016ac0cba340fc87d08c7434bae6a7bcd3",
-            "text": "0931 지시를 수신했습니다. 실제 스킬 카드·제어에 초점이 있는 Tab/Shift+Tab만 전역 게임 입력에서 제외하는 독립 후보를 작성하겠습니다. 0926 Enter/Space와 기존 원자료는 유지합니다.\n"
-          }
-        ],
-        "tools": [
-          {
-            "id": "exec-1fa3b649-f38d-4b6d-95cf-b865ce5a6c24",
-            "exit": 0,
-            "command": "/bin/zsh -lc \"/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node --input-type=module <<'READ09",
-            "sourceEvidenceMatched": true
-          },
-          {
-            "id": "exec-28f0de9d-014d-44a1-94d1-8a58adc8756b",
-            "exit": 0,
-            "command": "/bin/zsh -lc \"rg -n 'Tab|입력 전파|skillGrid|_renderSkillRow' 'docs/3.3 키바인딩+설정/3.3 키바인딩+설정.md' -m 14\"",
-            "sourceEvidenceMatched": false
-          }
-        ]
+        "ack": [],
+        "tools": []
       },
       "processedMarkers": [
         {
@@ -3759,9 +3741,41 @@
           "rootHandedOff": false,
           "nativeAccepted": false,
           "productionApplied": false
+        },
+        {
+          "role": "UIUX",
+          "turnId": "01a1011b-0d24-7420-94f5-61e3329efed4",
+          "messageId": "msg_04e77a2cd83d56e0016ac0ccde7e9c87d09dac8eced20c5584",
+          "toolId": "exec-650d5d70-d417-4851-9a2e-db0076e1420a",
+          "originalFinal": {
+            "id": "msg_04e77a2cd83d56e0016ac0ccde7e9c87d09dac8eced20c5584",
+            "turnId": "01a1011b-0d24-7420-94f5-61e3329efed4",
+            "phase": "final_answer",
+            "text": "SUPERVISOR-UIUX-0931 완료. 실제 초점 기준 Tab/Shift+Tab 후보 저장. 파일별 VM 660건 PASS, keyup 불변. 완료 ID c082d7; writes·실제 Tab/input/DOM/action/focus 0. 최종 검증 핀: Main 6fe749b8f01e05a3c87820c0a7c2780290e1290930c810ebbf98e302e307904f Easy 740912febb84fa58b7a88df6aebf309ed4e488be469cb25e8dd64bdbe9e95093 index 1dd28cab162a4384ad84a356eb2c719940782005d20da1312d2857bc649615a7 메모리: uiuxSkillTabBoundary0931SubmittedCandidate, uiuxSkillTabBoundary0931ExactEdits, uiuxSkillTabBoundary0931Handoff, uiux0931Completion. Gate: Root 병합·docs·기존 Tab 라우팅 조합, QUESTNPC·native/visual/청취 미검수. 새 WIP 채택 추정 없음. 0926 및 기존 원자료 불변."
+          },
+          "at": "2026-10-03T09:40:32.403040+00:00",
+          "rootHandedOff": false,
+          "nativeAccepted": false,
+          "productionApplied": false
+        },
+        {
+          "role": "UIUX",
+          "turnId": "01a10122-fa89-76e3-81e6-5cb211dc050c",
+          "messageId": "msg_04e77a2cd83d56e0016ac0ce4b11ac87d0a90b8df7f59ccc3e",
+          "toolId": "exec-5a99c510-11a9-4511-b116-e48703a6a5b2",
+          "originalFinal": {
+            "id": "msg_04e77a2cd83d56e0016ac0ce4b11ac87d0a90b8df7f59ccc3e",
+            "turnId": "01a10122-fa89-76e3-81e6-5cb211dc050c",
+            "phase": "final_answer",
+            "text": "SUPERVISOR-UIUX-0939 완료. 현재 상세 내부 초점의 Escape를 기존 닫기 콜백에 연결하는 후보 저장. 파일별 VM 297건 PASS. 완료 ID 12acd4; writes·실제 input/action/DOM/render/focus 0. 관측 핀: Main 6fe749b8f01e05a3c87820c0a7c2780290e1290930c810ebbf98e302e307904f Easy 740912febb84fa58b7a88df6aebf309ed4e488be469cb25e8dd64bdbe9e95093 index 1dd28cab162a4384ad84a356eb2c719940782005d20da1312d2857bc649615a7 메모리: uiuxSkillDetailEscape0939SubmittedCandidate, uiuxSkillDetailEscape0939ExactEdits, uiuxSkillDetailEscape0939Handoff, uiux0939Completion. Gate: Root 병합·docs·기존 후보 조합, QUESTNPC·전체 이벤트 전달·native/visual/청취 미검수. 기존 원자료 불변."
+          },
+          "at": "2026-10-03T09:45:13.238786+00:00",
+          "rootHandedOff": false,
+          "nativeAccepted": false,
+          "productionApplied": false
         }
       ],
-      "lastPollAt": "2026-10-03T09:30:03+00:00",
+      "lastPollAt": "2026-10-03T09:44:20+00:00",
       "completionMessage": {
         "id": "msg_04e77a2cd83d56e0016abf8a4b83c487d09dfa80f42c26b7bb",
         "turnId": "01a0fc30-3609-7751-8ef7-643bff0486c2",
@@ -5066,9 +5080,41 @@
             "isError": false
           },
           "rootLongReviewNotStartCondition": true
+        },
+        {
+          "taskId": "SUPERVISOR-UIUX-0939",
+          "previousCompletedTurnId": "01a1011b-0d24-7420-94f5-61e3329efed4",
+          "sentAt": "2026-10-03T09:40:32.403040+00:00",
+          "prompt": "SUPERVISOR-UIUX-0939\n실제 활성 스킬 상세 펼침 카드에서 Escape가 현재 카드의 기존 닫기 콜백과 연결되는 독립 메모리 후보 한 건. 실제 내부초점/현재 skillID·IME/repeat/modifier 확인, 외부/다른패널 Escape 및 keyup K/KH 보존. 기존닫기 실물없거나 이미제출이면 의미를 꾸미지 말고 승인백로그 다음 미제출 스킬 UI 소비자 한 건으로 교체·동일검사보고반복0. EnterSpace0926·Tab0931·close/focus/ARIA 원자료불변. 공식43 abf9eb87/Main6fe749b8/Easy740912fe/index1dd28cab, 앱29/3404/native미인수. Mac/local·파일출력/생산/공유docs/Git/index/app/save/실제focus/input/action0. 보호2_3·Q전용magic/E불가·어택티켓금지·타인WIP·기존23 유지. 수신/Read/새turn 첫유용tool/완료분리;짧은taskID/메모리키/완료ID/pins/Gate 인계.",
+          "receipt": {
+            "content": [
+              {
+                "type": "text",
+                "text": "{\"threadId\":\"01a0faaf-8fd2-7083-b174-69c604bd58b0\"}"
+              }
+            ],
+            "isError": false
+          },
+          "rootLongReviewNotStartCondition": true
+        },
+        {
+          "taskId": "SUPERVISOR-UIUX-0944",
+          "previousCompletedTurnId": "01a10122-fa89-76e3-81e6-5cb211dc050c",
+          "sentAt": "2026-10-03T09:45:13.238786+00:00",
+          "prompt": "SUPERVISOR-UIUX-0944\n0910 제목 aria-labelledby의 외부 속성 변경 시 cleanup 소유권 경계 독립 delta. 외부 aria-labelledby가 본인 생성 제목 ID를 계속 참조하면 ID를 지워 깨진 참조를 만들지 않고, 참조없을때 본인소유 ID/속성만 정확복구. 외부 최신값/동일값재설정한계 Gate 보존.0910 원자료·0921설명cleanup·0939Escape·0931Tab 원자료불변, 실제role/focus/action/input0. 이미제출이면 승인백로그 미제출 스킬UI 실제소비자 한 건으로 대체·동일검사보고반복0. 공식43 abf9eb87/Main6fe749b8/Easy740912fe/index1dd28cab, source44 검수예약9/미채택·앱29/native미인수. Mac/local·파일출력/생산/docs/Git/index/app/save0·보호2_3/Q전용magicE불가/어택티켓금지/타인WIP/기존23 유지. 수신/Read/새turn 첫유용tool/완료분리, 짧은taskID/메모리키/완료ID/pins/Gate 인계.",
+          "receipt": {
+            "content": [
+              {
+                "type": "text",
+                "text": "{\"threadId\":\"01a0faaf-8fd2-7083-b174-69c604bd58b0\"}"
+              }
+            ],
+            "isError": false
+          },
+          "rootLongReviewNotStartCondition": true
         }
       ],
-      "activeTurnId": "01a1011b-0d24-7420-94f5-61e3329efed4",
+      "activeTurnId": "01a10127-43a3-7161-b3f3-f291ee000e94",
       "newTaskObservedStatus": "inProgress",
       "autonomousPolicy": {
         "version": "autonomy-user-20261002-1126-v1",
@@ -5198,7 +5244,7 @@
         "name": "commandExecution",
         "status": "completed"
       },
-      "lastOfficialSnapshotAt": "2026-10-03T09:30:03+00:00",
+      "lastOfficialSnapshotAt": "2026-10-03T09:44:20+00:00",
       "capacityDelivery1458": {
         "sentOnce": true,
         "taskId": "CAPACITY-UIUX-1458",
@@ -5283,8 +5329,8 @@
       },
       "latestOfficialSnapshot": {
         "schemaVersion": 1,
-        "cursor": "e4ffcc6b-e430-4400-806d-235fc67aa97d:133",
-        "revision": 133,
+        "cursor": "e4ffcc6b-e430-4400-806d-235fc67aa97d:137",
+        "revision": 137,
         "changed": true,
         "thread": {
           "id": "01a0faaf-8fd2-7083-b174-69c604bd58b0",
@@ -5294,24 +5340,24 @@
           }
         },
         "latestTurn": {
-          "id": "01a10116-76af-7d71-8643-120612d6339c",
+          "id": "01a10122-fa89-76e3-81e6-5cb211dc050c",
           "status": "completed",
           "error": null,
-          "startedAt": 1791019611,
-          "completedAt": 1791019771,
-          "durationMs": 160090
+          "startedAt": 1791020432,
+          "completedAt": 1791020623,
+          "durationMs": 191428
         },
-        "latestAssistantMessageId": "msg_04e77a2cd83d56e0016ac0caf722f887d0b0a66da6a5e98793",
+        "latestAssistantMessageId": "msg_04e77a2cd83d56e0016ac0ce4b11ac87d0a90b8df7f59ccc3e",
         "latestAssistantMessage": {
-          "id": "msg_04e77a2cd83d56e0016ac0caf722f887d0b0a66da6a5e98793",
-          "turnId": "01a10116-76af-7d71-8643-120612d6339c",
+          "id": "msg_04e77a2cd83d56e0016ac0ce4b11ac87d0a90b8df7f59ccc3e",
+          "turnId": "01a10122-fa89-76e3-81e6-5cb211dc050c",
           "phase": "final_answer",
-          "text": "SUPERVISOR-UIUX-0926 완료. 실제 초점 기준 Enter/Space 게임 입력 차단 후보 저장. 파일별 VM 경계 270건 PASS, keyup 본문 불변. 완료 ID 30eb29; writes·실제 행동/input/render/DOM/focus 0. 관측 핀: Main 82e46f1490496d2a0fcc6c144603e5f483c1a952c46661e1756b3aaf72ce15dc Easy 238dd3e097a92712cef6c33e9fec1f5878b1fae7e7ade881b5706a99e3bb2b58 index 1dd28cab162a4384ad84a356eb2c719940782005d20da1312d2857bc649615a7 메모리: uiuxSkillActivationBoundary0926SubmittedCandidate, uiuxSkillActivationBoundary0926ExactEdits, uiuxSkillActivationBoundary0926Handoff, uiux0926Completion. Gate: Root 병합·docs·기존 라우팅 조합, QUESTNPC·전체 이벤트 전달·native/visual/청취 미검수. 후속 WIP의 공식 채택 추정 없음. 기존 원자료 불변."
+          "text": "SUPERVISOR-UIUX-0939 완료. 현재 상세 내부 초점의 Escape를 기존 닫기 콜백에 연결하는 후보 저장. 파일별 VM 297건 PASS. 완료 ID 12acd4; writes·실제 input/action/DOM/render/focus 0. 관측 핀: Main 6fe749b8f01e05a3c87820c0a7c2780290e1290930c810ebbf98e302e307904f Easy 740912febb84fa58b7a88df6aebf309ed4e488be469cb25e8dd64bdbe9e95093 index 1dd28cab162a4384ad84a356eb2c719940782005d20da1312d2857bc649615a7 메모리: uiuxSkillDetailEscape0939SubmittedCandidate, uiuxSkillDetailEscape0939ExactEdits, uiuxSkillDetailEscape0939Handoff, uiux0939Completion. Gate: Root 병합·docs·기존 후보 조합, QUESTNPC·전체 이벤트 전달·native/visual/청취 미검수. 기존 원자료 불변."
         },
-        "latestToolMarkerId": "exec-70be174b-2f20-4e1a-bd75-e0763903184c",
+        "latestToolMarkerId": "exec-5a99c510-11a9-4511-b116-e48703a6a5b2",
         "latestToolMarker": {
-          "id": "exec-70be174b-2f20-4e1a-bd75-e0763903184c",
-          "turnId": "01a10116-76af-7d71-8643-120612d6339c",
+          "id": "exec-5a99c510-11a9-4511-b116-e48703a6a5b2",
+          "turnId": "01a10122-fa89-76e3-81e6-5cb211dc050c",
           "type": "commandExecution",
           "name": "commandExecution",
           "status": "completed"
@@ -5336,16 +5382,9 @@
           }
         ]
       },
-      "currentTaskId": "SUPERVISOR-UIUX-0931",
-      "actualNewWorkConfirmed": true,
-      "firstUsefulSourceTools": [
-        {
-          "id": "exec-1fa3b649-f38d-4b6d-95cf-b865ce5a6c24",
-          "exit": 0,
-          "command": "/bin/zsh -lc \"/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node --input-type=module <<'READ09",
-          "sourceEvidenceMatched": true
-        }
-      ],
+      "currentTaskId": "SUPERVISOR-UIUX-0944",
+      "actualNewWorkConfirmed": false,
+      "firstUsefulSourceTools": [],
       "actualReadKind": "exact_TASK_ID",
       "pendingSource6AtNextBoundary": {
         "resolvedPinsAvailable": {
@@ -5461,12 +5500,12 @@
       "followupEvidenceObservedAt": "2026-10-03T05:48:35.951016+00:00",
       "nextReviewSourceEpoch": "source37",
       "nextReviewSourcePins": {
-        "game.html": "82e46f1490496d2a0fcc6c144603e5f483c1a952c46661e1756b3aaf72ce15dc",
-        "game-easy-test.html": "238dd3e097a92712cef6c33e9fec1f5878b1fae7e7ade881b5706a99e3bb2b58",
+        "game.html": "6fe749b8f01e05a3c87820c0a7c2780290e1290930c810ebbf98e302e307904f",
+        "game-easy-test.html": "740912febb84fa58b7a88df6aebf309ed4e488be469cb25e8dd64bdbe9e95093",
         "index.html": "1dd28cab162a4384ad84a356eb2c719940782005d20da1312d2857bc649615a7"
       },
-      "nextReviewOfficialCodeEpoch": 42,
-      "nextReviewOfficialCodeSHA": "d67545efee8970b85b9ca3992f216c3195c80a81",
+      "nextReviewOfficialCodeEpoch": 43,
+      "nextReviewOfficialCodeSHA": "abf9eb87a94ef67c61b33119798c463b5dce27e4",
       "rootSource38ScopeOwnershipAvoided": true,
       "activeTaskResentForSource38": false,
       "activeTaskResentForEpoch": false
@@ -5482,9 +5521,9 @@
       "outputOwnerPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/supervisor-next/ITEM/ITEM-oversized-swap-bag-fit-atomicity-hb1014b",
       "registryStatusHistorical": "next_prepared_not_sent",
       "status": "actual_source_work_confirmed",
-      "turnId": "01a1011b-0dc7-7ef1-8d34-ab508e16e375",
-      "cursor": "6b2010dd-1ffb-4392-bfd7-a67301f70d2d:120",
-      "actualRead": false,
+      "turnId": "01a10125-d8dc-7752-94ea-d2e9cf7641bf",
+      "cursor": "6b2010dd-1ffb-4392-bfd7-a67301f70d2d:122",
+      "actualRead": true,
       "completion": {
         "index": 1,
         "id": "01a0fc48-0799-74d2-acc4-3ff61a656ada",
@@ -5499,8 +5538,8 @@
         "testsRerun": 0
       },
       "followupSend": {
-        "taskId": "SUPERVISOR-ITEM-0931",
-        "at": "2026-10-03T09:33:09.799516+00:00",
+        "taskId": "SUPERVISOR-ITEM-0943",
+        "at": "2026-10-03T09:45:13.238786+00:00",
         "receipt": {
           "content": [
             {
@@ -5510,43 +5549,30 @@
           ],
           "isError": false
         },
-        "pending": true
+        "pending": false
       },
       "followupRead": {
         "role": "ITEM",
-        "id": "01a1011b-0dc7-7ef1-8d34-ab508e16e375",
-        "status": "inProgress",
+        "id": "01a10125-d8dc-7752-94ea-d2e9cf7641bf",
+        "status": "completed",
         "taskTurnConfirmed": true,
-        "ack": [],
+        "ack": [
+          {
+            "id": "msg_0dc2542c5744bc89016ac0cea1442887d08a1582472f7df48e",
+            "text": "SUPERVISOR-ITEM-0943 수신·Read·새 turn 완료. 첫 유용 tool `9ca036`, 완료 `97c571`. 실제 `fgGrid`에 [`aria-controls`](https://www.w3.org/TR/wai-aria-1.2/#aria-controls) 연결·소유 속성 복구. 새 ID·역할 추가 없"
+          }
+        ],
         "tools": [
           {
-            "id": "exec-5ae075e3-0e5a-4733-a13d-cf75bf7745d9",
+            "id": "exec-ef2f36b7-2226-450b-bcdf-482df8154a98",
             "exit": 0,
-            "command": "/bin/zsh -lc \"shasum -a 256 game.html game-easy-test.html index.html; rg -n 'id=\\\"qsG\\\"|id=\\\"forge\\\"|id=\\\"fgClose\\\"|func",
+            "command": "/bin/zsh -lc \"shasum -a 256 game.html game-easy-test.html index.html; rg -n 'id=\\\"fgGrid\\\"|const grid=\\\\\"'$'\"\\\\(.fgGrid.",
             "sourceEvidenceMatched": true
           },
           {
-            "id": "exec-26b4bb2f-91f8-455b-a21c-07b8cd296dd7",
+            "id": "exec-60964f34-856b-4c42-bdc6-902762949e8c",
             "exit": 0,
-            "command": "/bin/zsh -lc \"rg -n \\\"openPanel\\\\('forge'\\\\)|togglePanel\\\\('forge'\\\\)|openForge\\\\(\\\" game.html | head -24; rg -n 'functi",
-            "sourceEvidenceMatched": true
-          },
-          {
-            "id": "exec-c43971ff-9ed8-439e-968f-3f0b0b1b7ed0",
-            "exit": 0,
-            "command": "/bin/zsh -lc \"rg -n 'id=\\\"matCnt\\\"|id=\\\"hud.*\\\"|id=\\\"invClose\\\"' game.html | head -12; sed -n '1286,1308p' game.html\"",
-            "sourceEvidenceMatched": true
-          },
-          {
-            "id": "exec-c250dd99-1d9c-479b-822e-b98e9e83c3be",
-            "exit": 0,
-            "command": "/bin/zsh -lc \"sed -n '49308,49319p' game.html; rg -n '_crForgeTab=k;_crForgeSel=-1;renderForge' game-easy-test.html\"",
-            "sourceEvidenceMatched": true
-          },
-          {
-            "id": "exec-0d644f58-9703-46b9-9fda-667bb89bc5cd",
-            "exit": 0,
-            "command": "/bin/zsh -lc \"sed -n '47890,47901p' game-easy-test.html\"",
+            "command": "/bin/zsh -lc \"/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node --input-type=module -e 'impor",
             "sourceEvidenceMatched": true
           }
         ]
@@ -9593,9 +9619,41 @@
           "rootHandedOff": false,
           "nativeAccepted": false,
           "productionApplied": false
+        },
+        {
+          "role": "ITEM",
+          "turnId": "01a1011b-0dc7-7ef1-8d34-ab508e16e375",
+          "messageId": "msg_0dc2542c5744bc89016ac0cbeda3a087d0ba3a274ef9c4bb0a",
+          "toolId": "exec-09255be7-b607-4746-a6f9-3f6fd493b993",
+          "originalFinal": {
+            "id": "msg_0dc2542c5744bc89016ac0cbeda3a087d0ba3a274ef9c4bb0a",
+            "turnId": "01a1011b-0dc7-7ef1-8d34-ab508e16e375",
+            "phase": "final_answer",
+            "text": "SUPERVISOR-ITEM-0931 수신·Read·새 turn 완료. 첫 유용 tool 310e09, 완료 9c5c39. 별도 강화 팝업이 없어 승인 대체 대상인 보석 하위 탭 키보드 위임 완료. 168 spy 검사·JS12/JSON2 PASS. 완료 시 관측 pins: Main 6fe749b8f01e05a3c87820c0a7c2780290e1290930c810ebbf98e302e307904f Easy 740912febb84fa58b7a88df6aebf309ed4e488be469cb25e8dd64bdbe9e95093 index 1dd28cab162a4384ad84a356eb2c719940782005d20da1312d2857bc649615a7 메모리키: item_gemCloseFocus0931_{first_exec,boundary_exec,controls_exec,fallback_exec,easy_exec,script,exec,evidence,patch,docs_sync,handoff}. Gate: 변경 WIP receipt, native 입력·초점, 후보·docs 적용. writes0 / actualgameoperations0."
+          },
+          "at": "2026-10-03T09:40:32.403040+00:00",
+          "rootHandedOff": false,
+          "nativeAccepted": false,
+          "productionApplied": false
+        },
+        {
+          "role": "ITEM",
+          "turnId": "01a10121-de76-76d0-9647-5b3728616c44",
+          "messageId": "msg_0dc2542c5744bc89016ac0cd80f70887d0b228e71c91d48e7f",
+          "toolId": "exec-3c367133-b78f-477f-a026-900a05d7d79b",
+          "originalFinal": {
+            "id": "msg_0dc2542c5744bc89016ac0cd80f70887d0b228e71c91d48e7f",
+            "turnId": "01a10121-de76-76d0-9647-5b3728616c44",
+            "phase": "final_answer",
+            "text": "SUPERVISOR-ITEM-0938 수신·Read·새 turn 완료. 첫 유용 tool cd5925, 완료 3598dc. 기존 탭 키로 재생성된 제어에 초점 복원. 54 VM 검사·JS12/JSON2 PASS. 관측 pins: Main 6fe749b8f01e05a3c87820c0a7c2780290e1290930c810ebbf98e302e307904f Easy 740912febb84fa58b7a88df6aebf309ed4e488be469cb25e8dd64bdbe9e95093 index 1dd28cab162a4384ad84a356eb2c719940782005d20da1312d2857bc649615a7 메모리키: item_gemTabFocus0938_{first_exec,script,exec,evidence,patch,docs_sync,handoff}. Gate: native 초점·전체 렌더, 0931 선행 적용, 후보·docs 적용. writes0 / actualgameoperations0."
+          },
+          "at": "2026-10-03T09:45:13.238786+00:00",
+          "rootHandedOff": false,
+          "nativeAccepted": false,
+          "productionApplied": false
         }
       ],
-      "lastPollAt": "2026-10-03T09:30:03+00:00",
+      "lastPollAt": "2026-10-03T09:42:34+00:00",
       "completionMessage": {
         "id": "msg_0dc2542c5744bc89016abf8a22f31087d0b00ca802c735fd65",
         "turnId": "01a0fc30-378f-7353-a09f-4d23a8d2af9b",
@@ -11100,10 +11158,42 @@
             "isError": false
           },
           "rootLongReviewNotStartCondition": true
+        },
+        {
+          "taskId": "SUPERVISOR-ITEM-0938",
+          "previousCompletedTurnId": "01a1011b-0dc7-7ef1-8d34-ab508e16e375",
+          "sentAt": "2026-10-03T09:40:32.403040+00:00",
+          "prompt": "SUPERVISOR-ITEM-0938\n실제 보석 하위 탭 전환 후 기존 초점이 본인 탭 제어에 있을 때 동일 탭 제어로 복귀하는 독립 메모리 후보.0931 키 위임과 선택열 정책 불변;목록 재렌더로 노드가 교체될 때 실제 탭 ID로 대응하고 외부 초점 탈취0. 보석 선택 객체 초점0916과 구분, 실제 강화/저장/focus0.\nMac/local 감독. 공식43 abf9eb87a94ef67c61b33119798c463b5dce27e4/Main6fe749b8/Easy740912fe/index1dd28cab. bonusSt 수치화+6B각/슬롯main17Easy16 현행 유지, source43 source-only·앱29/3404/native미인수. 파일출력·생산/공유docs·Git/index·앱·세이브0, 제출원자료불변·메모리 실제 소비자 한 건. NUL71/외부8/새팀파일0. 보호2_3·Q전용magic패링·E불가·어택티켓금지·타인WIP·기존23 유지. 이미제출/실물없으면 승인백로그 다음 미제출 실제소비자 한 건으로 대체하고 같은TASK/검사/보고반복0. 수신/Read/새turn 첫유용source tool/완료분리. 완료taskID/메모리키/완료ID/실제관측pins/미확정Gate 짧게 인계;native·visual·청취 미확정.",
+          "receipt": {
+            "content": [
+              {
+                "type": "text",
+                "text": "{\"threadId\":\"01a0faaf-92a3-7eb1-842d-eb4baa1a2954\"}"
+              }
+            ],
+            "isError": false
+          },
+          "rootLongReviewNotStartCondition": true
+        },
+        {
+          "taskId": "SUPERVISOR-ITEM-0943",
+          "previousCompletedTurnId": "01a10121-de76-76d0-9647-5b3728616c44",
+          "sentAt": "2026-10-03T09:45:13.238786+00:00",
+          "prompt": "SUPERVISOR-ITEM-0943\n실제 보석 하위 탭 제어와 해당 탭이 바꾸는 실제 콘텐츠 컨테이너를 aria-controls로 연결하는 독립 후보. 존재하는 콘텐츠만 참조·본인 소유 ID/속성 정확복구;0931키·0938초점·현재선택/재렌더 원자료불변·가짜tabrole0. 실제 강화/초점/저장0.\nMac/local·파일출력/생산/공유docs/Git/index/app/save0·메모리 실제 소비자 한 건·제출원자료불변. 공식43 abf9eb87/Main6fe749b8/Easy740912fe/index1dd28cab, 앱29/3404/native미인수. source44 splashMul/splashR 검수예약9/미채택;반경문자열은 거대범위 가능, 원소추적탄 해당블록/악의구업화선 선행break구분. NUL72/root9/ext8 보수89, 새팀파일0. 보호2_3·Q전용magic/E불가·어택티켓금지·타인WIP·기존23유지. 실물없거나 이미제출이면 자기 승인백로그 다음 미제출 실제소비자 한 건, 동일TASK/검사/보고반복0. 수신/Read/새turn 첫유용source tool/완료 분리·짧은 taskID/메모리키/완료ID/pins/Gate·nativevisual청취미확정.",
+          "receipt": {
+            "content": [
+              {
+                "type": "text",
+                "text": "{\"threadId\":\"01a0faaf-92a3-7eb1-842d-eb4baa1a2954\"}"
+              }
+            ],
+            "isError": false
+          },
+          "rootLongReviewNotStartCondition": true
         }
       ],
-      "activeTurnId": "01a1011b-0dc7-7ef1-8d34-ab508e16e375",
-      "newTaskObservedStatus": "inProgress",
+      "activeTurnId": "01a10125-d8dc-7752-94ea-d2e9cf7641bf",
+      "newTaskObservedStatus": "completed",
       "autonomousPolicy": {
         "version": "autonomy-user-20261002-1126-v1",
         "sha256": "80f7e3cf084c440658b1fae27ad60999ea6e41aa048bb5d22d62a099ab4b9608",
@@ -11234,8 +11324,8 @@
         "name": "commandExecution",
         "status": "completed"
       },
-      "lastOfficialSnapshotAt": "2026-10-03T09:30:03+00:00",
-      "currentTaskId": "SUPERVISOR-ITEM-0931",
+      "lastOfficialSnapshotAt": "2026-10-03T09:42:34+00:00",
+      "currentTaskId": "SUPERVISOR-ITEM-0943",
       "currentTaskHashNote": "Inline directive receipt/ack/first source pinned in hb1445-final-delta.json; old TASK hash retained in history and must not label latest directive.",
       "latestFollowupReceipt": {
         "confirmed": true,
@@ -11367,8 +11457,8 @@
       },
       "latestOfficialSnapshot": {
         "schemaVersion": 1,
-        "cursor": "6b2010dd-1ffb-4392-bfd7-a67301f70d2d:120",
-        "revision": 120,
+        "cursor": "6b2010dd-1ffb-4392-bfd7-a67301f70d2d:122",
+        "revision": 122,
         "changed": true,
         "thread": {
           "id": "01a0faaf-92a3-7eb1-842d-eb4baa1a2954",
@@ -11378,24 +11468,24 @@
           }
         },
         "latestTurn": {
-          "id": "01a10116-7746-7f52-89f2-04df5ea86d0c",
+          "id": "01a10121-de76-76d0-9647-5b3728616c44",
           "status": "completed",
           "error": null,
-          "startedAt": 1791019611,
-          "completedAt": 1791019685,
-          "durationMs": 74012
+          "startedAt": 1791020359,
+          "completedAt": 1791020421,
+          "durationMs": 61773
         },
-        "latestAssistantMessageId": "msg_0dc2542c5744bc89016ac0caa18d5887d0956787c7cc926d5d",
+        "latestAssistantMessageId": "msg_0dc2542c5744bc89016ac0cd80f70887d0b228e71c91d48e7f",
         "latestAssistantMessage": {
-          "id": "msg_0dc2542c5744bc89016ac0caa18d5887d0956787c7cc926d5d",
-          "turnId": "01a10116-7746-7f52-89f2-04df5ea86d0c",
+          "id": "msg_0dc2542c5744bc89016ac0cd80f70887d0b228e71c91d48e7f",
+          "turnId": "01a10121-de76-76d0-9647-5b3728616c44",
           "phase": "final_answer",
-          "text": "SUPERVISOR-ITEM-0926 수신·Read·새 turn 완료. 첫 유용 tool 808ce6, 완료 5ba154. 기존 ok 실행 가드를 aria-disabled에 연결하고 소유 속성 복구. 네이티브 disabled 유지. 20 VM 검사·JS12/JSON2 PASS. 관측 pins: Main 82e46f1490496d2a0fcc6c144603e5f483c1a952c46661e1756b3aaf72ce15dc Easy 238dd3e097a92712cef6c33e9fec1f5878b1fae7e7ade881b5706a99e3bb2b58 index 1dd28cab162a4384ad84a356eb2c719940782005d20da1312d2857bc649615a7 메모리키: item_gemEnhDisabled0926_{first_exec,script,exec,evidence,patch,docs_sync,handoff}. Gate: WIP receipt, native 접근성·닫기·전체 렌더, 후보·docs 적용. writes0 / actualgameoperations0."
+          "text": "SUPERVISOR-ITEM-0938 수신·Read·새 turn 완료. 첫 유용 tool cd5925, 완료 3598dc. 기존 탭 키로 재생성된 제어에 초점 복원. 54 VM 검사·JS12/JSON2 PASS. 관측 pins: Main 6fe749b8f01e05a3c87820c0a7c2780290e1290930c810ebbf98e302e307904f Easy 740912febb84fa58b7a88df6aebf309ed4e488be469cb25e8dd64bdbe9e95093 index 1dd28cab162a4384ad84a356eb2c719940782005d20da1312d2857bc649615a7 메모리키: item_gemTabFocus0938_{first_exec,script,exec,evidence,patch,docs_sync,handoff}. Gate: native 초점·전체 렌더, 0931 선행 적용, 후보·docs 적용. writes0 / actualgameoperations0."
         },
-        "latestToolMarkerId": "exec-2254c6f5-0bb1-492d-b2d6-10d86ae15e3d",
+        "latestToolMarkerId": "exec-3c367133-b78f-477f-a026-900a05d7d79b",
         "latestToolMarker": {
-          "id": "exec-2254c6f5-0bb1-492d-b2d6-10d86ae15e3d",
-          "turnId": "01a10116-7746-7f52-89f2-04df5ea86d0c",
+          "id": "exec-3c367133-b78f-477f-a026-900a05d7d79b",
+          "turnId": "01a10121-de76-76d0-9647-5b3728616c44",
           "type": "commandExecution",
           "name": "commandExecution",
           "status": "completed"
@@ -11410,33 +11500,15 @@
       },
       "firstUsefulSourceTools": [
         {
-          "id": "exec-5ae075e3-0e5a-4733-a13d-cf75bf7745d9",
+          "id": "exec-ef2f36b7-2226-450b-bcdf-482df8154a98",
           "exit": 0,
-          "command": "/bin/zsh -lc \"shasum -a 256 game.html game-easy-test.html index.html; rg -n 'id=\\\"qsG\\\"|id=\\\"forge\\\"|id=\\\"fgClose\\\"|func",
+          "command": "/bin/zsh -lc \"shasum -a 256 game.html game-easy-test.html index.html; rg -n 'id=\\\"fgGrid\\\"|const grid=\\\\\"'$'\"\\\\(.fgGrid.",
           "sourceEvidenceMatched": true
         },
         {
-          "id": "exec-26b4bb2f-91f8-455b-a21c-07b8cd296dd7",
+          "id": "exec-60964f34-856b-4c42-bdc6-902762949e8c",
           "exit": 0,
-          "command": "/bin/zsh -lc \"rg -n \\\"openPanel\\\\('forge'\\\\)|togglePanel\\\\('forge'\\\\)|openForge\\\\(\\\" game.html | head -24; rg -n 'functi",
-          "sourceEvidenceMatched": true
-        },
-        {
-          "id": "exec-c43971ff-9ed8-439e-968f-3f0b0b1b7ed0",
-          "exit": 0,
-          "command": "/bin/zsh -lc \"rg -n 'id=\\\"matCnt\\\"|id=\\\"hud.*\\\"|id=\\\"invClose\\\"' game.html | head -12; sed -n '1286,1308p' game.html\"",
-          "sourceEvidenceMatched": true
-        },
-        {
-          "id": "exec-c250dd99-1d9c-479b-822e-b98e9e83c3be",
-          "exit": 0,
-          "command": "/bin/zsh -lc \"sed -n '49308,49319p' game.html; rg -n '_crForgeTab=k;_crForgeSel=-1;renderForge' game-easy-test.html\"",
-          "sourceEvidenceMatched": true
-        },
-        {
-          "id": "exec-0d644f58-9703-46b9-9fda-667bb89bc5cd",
-          "exit": 0,
-          "command": "/bin/zsh -lc \"sed -n '47890,47901p' game-easy-test.html\"",
+          "command": "/bin/zsh -lc \"/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node --input-type=module -e 'impor",
           "sourceEvidenceMatched": true
         }
       ],
@@ -11521,12 +11593,12 @@
       },
       "nextReviewSourceEpoch": "source37",
       "nextReviewSourcePins": {
-        "game.html": "82e46f1490496d2a0fcc6c144603e5f483c1a952c46661e1756b3aaf72ce15dc",
-        "game-easy-test.html": "238dd3e097a92712cef6c33e9fec1f5878b1fae7e7ade881b5706a99e3bb2b58",
+        "game.html": "6fe749b8f01e05a3c87820c0a7c2780290e1290930c810ebbf98e302e307904f",
+        "game-easy-test.html": "740912febb84fa58b7a88df6aebf309ed4e488be469cb25e8dd64bdbe9e95093",
         "index.html": "1dd28cab162a4384ad84a356eb2c719940782005d20da1312d2857bc649615a7"
       },
-      "nextReviewOfficialCodeEpoch": 42,
-      "nextReviewOfficialCodeSHA": "d67545efee8970b85b9ca3992f216c3195c80a81",
+      "nextReviewOfficialCodeEpoch": 43,
+      "nextReviewOfficialCodeSHA": "abf9eb87a94ef67c61b33119798c463b5dce27e4",
       "rootSource38ScopeOwnershipAvoided": true,
       "activeTaskResentForSource38": false,
       "activeTaskResentForEpoch": false
@@ -11542,8 +11614,8 @@
       "outputOwnerPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/supervisor-next/BUILD/BUILD-importmap-module-input-closure-hb1014b",
       "registryStatusHistorical": "read_confirmed_in_progress",
       "status": "actual_source_work_confirmed",
-      "turnId": "01a1011b-0e4c-7fb3-b8bc-7602068e01b7",
-      "cursor": "a09ac84d-7d48-4d85-9d52-754887080103:120",
+      "turnId": "01a10125-d977-7bb2-8496-f1e6d3efe403",
+      "cursor": "a09ac84d-7d48-4d85-9d52-754887080103:122",
       "actualRead": true,
       "completion": {
         "index": 2,
@@ -11559,8 +11631,8 @@
         "testsRerun": 0
       },
       "followupSend": {
-        "taskId": "SUPERVISOR-BUILD-0931",
-        "at": "2026-10-03T09:33:09.799516+00:00",
+        "taskId": "SUPERVISOR-BUILD-0943",
+        "at": "2026-10-03T09:45:13.238786+00:00",
         "receipt": {
           "content": [
             {
@@ -11574,37 +11646,37 @@
       },
       "followupRead": {
         "role": "BUILD",
-        "id": "01a1011b-0e4c-7fb3-b8bc-7602068e01b7",
+        "id": "01a10125-d977-7bb2-8496-f1e6d3efe403",
         "status": "completed",
         "taskTurnConfirmed": true,
         "ack": [
           {
-            "id": "msg_0462489076d3ce85016ac0cb8c88f887d0832b1a59348e9fbc",
-            "text": "SUPERVISOR-BUILD-0931 수신했습니다. 전역 keydown의 설정 내부 Tab 예외와 관련 문서를 읽겠습니다. 이미 처리된 경계는 재검증하지 않고, 필요하면 허용된 미제출 소비자 한 건으로 대체하겠습니다."
+            "id": "msg_0462489076d3ce85016ac0ce4dfb6c87d090313934c7786e12",
+            "text": "SUPERVISOR-BUILD-0943 수신했습니다. 키바인딩 목록과 기존 섹션 제목 리프를 읽겠습니다. 역할·키 캡처·삭제·저장은 유지하고, 제목 참조와 소유 속성 복구만 메모리에서 검증하겠습니다."
           }
         ],
         "tools": [
           {
-            "id": "exec-6f817b06-9533-4b14-bce3-0d14a2142e1e",
+            "id": "exec-0aff2090-7469-42fc-8cfd-69e30e1ffd2e",
             "exit": 0,
-            "command": "/bin/zsh -lc \"rg -n 'Tab|Shift|settings.on|설정.*input' 'docs/3.1 ui hud 디자인/SETTINGS_HUD_DETAIL_20260930.md'; rg -n 'sett",
+            "command": "/bin/zsh -lc \"rg -n 'keyBindList|키 설정|키바인딩|aria-labelledby' 'docs/3.1 ui hud 디자인/SETTINGS_UI_WORKSPACE_20260929.md' game",
             "sourceEvidenceMatched": true
           },
           {
-            "id": "exec-ed9f2215-257b-496e-8122-606c51ef20cd",
+            "id": "exec-eeb57bcc-f365-4972-a889-7b815e3ca68e",
             "exit": 0,
             "command": "/bin/zsh -lc \"/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node <<'NODE'\nconst fs=require('fs",
             "sourceEvidenceMatched": false
           },
           {
-            "id": "exec-92ff1664-8986-49f6-ab2d-33c70f4a62b7",
+            "id": "exec-3c53a06c-0a94-4aaf-8a79-fc549e367f2d",
             "exit": 0,
-            "command": "/bin/zsh -lc \"sed -n '2863,2876p' game.html; rg -n '하드웨어 진단|diagGpu|diagBench' 'docs/3.1 ui hud 디자인/SETTINGS_UI_WORKSPAC",
+            "command": "/bin/zsh -lc \"/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node <<'NODE'\nconst fs=require('fs",
             "sourceEvidenceMatched": true
           },
           {
-            "id": "exec-a3e61d1c-4d32-4c51-ac15-70fbc4d0a3c4",
-            "exit": 0,
+            "id": "exec-0087bce7-b321-4865-a1cc-d550a05d9009",
+            "exit": 1,
             "command": "/bin/zsh -lc \"/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node <<'NODE'\nconst fs=require('fs",
             "sourceEvidenceMatched": true
           }
@@ -15714,9 +15786,41 @@
           "rootHandedOff": false,
           "nativeAccepted": false,
           "productionApplied": false
+        },
+        {
+          "role": "BUILD",
+          "turnId": "01a1011b-0e4c-7fb3-b8bc-7602068e01b7",
+          "messageId": "msg_0462489076d3ce85016ac0cbc2251487d0adc3a84036753563",
+          "toolId": "exec-a3e61d1c-4d32-4c51-ac15-70fbc4d0a3c4",
+          "originalFinal": {
+            "id": "msg_0462489076d3ce85016ac0cbc2251487d0adc3a84036753563",
+            "turnId": "01a1011b-0e4c-7fb3-b8bc-7602068e01b7",
+            "phase": "final_answer",
+            "text": "SUPERVISOR-BUILD-0931: Tab 예외는 이미 구현되어, 하드웨어 진단 값 그룹의 기존 제목 연결로 대체했습니다. RAM 후보 4VM PASS, 파일 변경 0. 최초 9045cb, 완료 4abd5a. 메모리: BUILD0931_{command,result,raw,proof,originals,docs_handoff,handoff}. game.html 82e46f1490496d2a0fcc6c144603e5f483c1a952c46661e1756b3aaf72ce15dc game-easy-test.html 238dd3e097a92712cef6c33e9fec1f5878b1fae7e7ade881b5706a99e3bb2b58 index.html 1dd28cab162a4384ad84a356eb2c719940782005d20da1312d2857bc649615a7 node-main.js 09eba1c2b9aa83376b93f9d4a2f23467a1068df416d3fef2486734a27d83cfe3 server.cjs 18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d Gate: UIUX·QUESTNPC 통합, native·visual·청취·실제 진단·생산 채택은 미확정입니다."
+          },
+          "at": "2026-10-03T09:40:32.403040+00:00",
+          "rootHandedOff": false,
+          "nativeAccepted": false,
+          "productionApplied": false
+        },
+        {
+          "role": "BUILD",
+          "turnId": "01a10121-ddd6-7c42-b173-9b60eef2fe50",
+          "messageId": "msg_0462489076d3ce85016ac0cd9d6f4487d0ae9f4550ab3f16af",
+          "toolId": "exec-26e5d6bc-ff9f-4e1d-bc7f-1c0f1536e28b",
+          "originalFinal": {
+            "id": "msg_0462489076d3ce85016ac0cd9d6f4487d0ae9f4550ab3f16af",
+            "turnId": "01a10121-ddd6-7c42-b173-9b60eef2fe50",
+            "phase": "final_answer",
+            "text": "SUPERVISOR-BUILD-0938: GPU 값 리프의 status/live·동일값 갱신 억제·속성 복구 RAM 후보 4VM PASS. 파일 변경 0. 최초 8d576d, 완료 21c7e6. 메모리: BUILD0938_proof_v3, originals, docs_handoff, handoff, 명령·실패 원문 보존. game.html 6fe749b8f01e05a3c87820c0a7c2780290e1290930c810ebbf98e302e307904f game-easy-test.html 740912febb84fa58b7a88df6aebf309ed4e488be469cb25e8dd64bdbe9e95093 index.html 1dd28cab162a4384ad84a356eb2c719940782005d20da1312d2857bc649615a7 node-main.js 09eba1c2b9aa83376b93f9d4a2f23467a1068df416d3fef2486734a27d83cfe3 server.cjs 18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d Gate: 실제 진단·native 안내 횟수/시점·visual·청취·생산 채택은 미검증입니다."
+          },
+          "at": "2026-10-03T09:45:13.238786+00:00",
+          "rootHandedOff": false,
+          "nativeAccepted": false,
+          "productionApplied": false
         }
       ],
-      "lastPollAt": "2026-10-03T09:30:03+00:00",
+      "lastPollAt": "2026-10-03T09:42:34+00:00",
       "completionMessage": {
         "id": "msg_0462489076d3ce85016abf89e8903c87d0b36232677328326c",
         "turnId": "01a0fc30-396f-74e2-9b3c-b98e65640245",
@@ -17221,9 +17325,41 @@
             "isError": false
           },
           "rootLongReviewNotStartCondition": true
+        },
+        {
+          "taskId": "SUPERVISOR-BUILD-0938",
+          "previousCompletedTurnId": "01a1011b-0e4c-7fb3-b8bc-7602068e01b7",
+          "sentAt": "2026-10-03T09:40:32.403040+00:00",
+          "prompt": "SUPERVISOR-BUILD-0938\n기존 하드웨어 진단 값 리프의 실제 갱신 소비자를 확인해 값이 바뀔 때만 읽히는 접근성 상태 안내 후보 한 건. 기존 진단/주기/원문값 불변·새폴링0·부모textContent교체0, 현재 실제 리프에만 status/live 연결 및소유복구.0931 제목 연결 원자료 불변, 실제 UI/진단실행0.\nMac/local 감독. 공식43 abf9eb87a94ef67c61b33119798c463b5dce27e4/Main6fe749b8/Easy740912fe/index1dd28cab. bonusSt 수치화+6B각/슬롯main17Easy16 현행 유지, source43 source-only·앱29/3404/native미인수. 파일출력·생산/공유docs·Git/index·앱·세이브0, 제출원자료불변·메모리 실제 소비자 한 건. NUL71/외부8/새팀파일0. 보호2_3·Q전용magic패링·E불가·어택티켓금지·타인WIP·기존23 유지. 이미제출/실물없으면 승인백로그 다음 미제출 실제소비자 한 건으로 대체하고 같은TASK/검사/보고반복0. 수신/Read/새turn 첫유용source tool/완료분리. 완료taskID/메모리키/완료ID/실제관측pins/미확정Gate 짧게 인계;native·visual·청취 미확정.",
+          "receipt": {
+            "content": [
+              {
+                "type": "text",
+                "text": "{\"threadId\":\"01a0faaf-9dd5-7c91-ab09-ee0bcff343b0\"}"
+              }
+            ],
+            "isError": false
+          },
+          "rootLongReviewNotStartCondition": true
+        },
+        {
+          "taskId": "SUPERVISOR-BUILD-0943",
+          "previousCompletedTurnId": "01a10121-ddd6-7c42-b173-9b60eef2fe50",
+          "sentAt": "2026-10-03T09:45:13.238786+00:00",
+          "prompt": "SUPERVISOR-BUILD-0943\n실제 키바인딩 목록 컨테이너에 기존 키바인딩 섹션 제목 리프를 aria-labelledby로 연결하는 독립 후보. 실제 존재리프/ID만사용·기존role·키캡처/삭제/값/옵션/저장불변·소유ID/속성정확복구. 이전대기설명/키삭제/미지정표시원자료반복0, 실제UI/input0.\nMac/local·파일출력/생산/공유docs/Git/index/app/save0·메모리 실제 소비자 한 건·제출원자료불변. 공식43 abf9eb87/Main6fe749b8/Easy740912fe/index1dd28cab, 앱29/3404/native미인수. source44 splashMul/splashR 검수예약9/미채택;반경문자열은 거대범위 가능, 원소추적탄 해당블록/악의구업화선 선행break구분. NUL72/root9/ext8 보수89, 새팀파일0. 보호2_3·Q전용magic/E불가·어택티켓금지·타인WIP·기존23유지. 실물없거나 이미제출이면 자기 승인백로그 다음 미제출 실제소비자 한 건, 동일TASK/검사/보고반복0. 수신/Read/새turn 첫유용source tool/완료 분리·짧은 taskID/메모리키/완료ID/pins/Gate·nativevisual청취미확정.",
+          "receipt": {
+            "content": [
+              {
+                "type": "text",
+                "text": "{\"threadId\":\"01a0faaf-9dd5-7c91-ab09-ee0bcff343b0\"}"
+              }
+            ],
+            "isError": false
+          },
+          "rootLongReviewNotStartCondition": true
         }
       ],
-      "activeTurnId": "01a1011b-0e4c-7fb3-b8bc-7602068e01b7",
+      "activeTurnId": "01a10125-d977-7bb2-8496-f1e6d3efe403",
       "newTaskObservedStatus": "completed",
       "autonomousPolicy": {
         "version": "autonomy-user-20261002-1126-v1",
@@ -17401,8 +17537,8 @@
         "actualReadConfirmed": true,
         "at": "2026-10-02T14:32:07.897478+00:00"
       },
-      "lastOfficialSnapshotAt": "2026-10-03T09:30:03+00:00",
-      "currentTaskId": "SUPERVISOR-BUILD-0931",
+      "lastOfficialSnapshotAt": "2026-10-03T09:42:34+00:00",
+      "currentTaskId": "SUPERVISOR-BUILD-0943",
       "currentTaskHashNote": "Inline directive receipt/ack/first source pinned in hb1445-final-delta.json; old TASK hash retained in history and must not label latest directive.",
       "latestFollowupReceipt": {
         "confirmed": true,
@@ -17526,8 +17662,8 @@
       },
       "latestOfficialSnapshot": {
         "schemaVersion": 1,
-        "cursor": "a09ac84d-7d48-4d85-9d52-754887080103:120",
-        "revision": 120,
+        "cursor": "a09ac84d-7d48-4d85-9d52-754887080103:122",
+        "revision": 122,
         "changed": true,
         "thread": {
           "id": "01a0faaf-9dd5-7c91-ab09-ee0bcff343b0",
@@ -17537,24 +17673,24 @@
           }
         },
         "latestTurn": {
-          "id": "01a10116-77cf-7012-a2ab-547cbcd4a0ba",
+          "id": "01a10121-ddd6-7c42-b173-9b60eef2fe50",
           "status": "completed",
           "error": null,
-          "startedAt": 1791019612,
-          "completedAt": 1791019681,
-          "durationMs": 69136
+          "startedAt": 1791020359,
+          "completedAt": 1791020450,
+          "durationMs": 91834
         },
-        "latestAssistantMessageId": "msg_0462489076d3ce85016ac0ca9bbe7c87d0b5176dcd1ab21652",
+        "latestAssistantMessageId": "msg_0462489076d3ce85016ac0cd9d6f4487d0ae9f4550ab3f16af",
         "latestAssistantMessage": {
-          "id": "msg_0462489076d3ce85016ac0ca9bbe7c87d0b5176dcd1ab21652",
-          "turnId": "01a10116-77cf-7012-a2ab-547cbcd4a0ba",
+          "id": "msg_0462489076d3ce85016ac0cd9d6f4487d0ae9f4550ab3f16af",
+          "turnId": "01a10121-ddd6-7c42-b173-9b60eef2fe50",
           "phase": "final_answer",
-          "text": "SUPERVISOR-BUILD-0926: 언어 select는 이미 연결되어 있어, 그래픽 프리셋 그룹의 기존 제목 연결로 대체했습니다. RAM 후보 4VM PASS, 파일 변경 0. 최초 03ba53, 완료 254a0f. 메모리: BUILD0926_{command,result,raw,proof,originals,docs_handoff,handoff}. game.html 82e46f1490496d2a0fcc6c144603e5f483c1a952c46661e1756b3aaf72ce15dc game-easy-test.html 238dd3e097a92712cef6c33e9fec1f5878b1fae7e7ade881b5706a99e3bb2b58 index.html 1dd28cab162a4384ad84a356eb2c719940782005d20da1312d2857bc649615a7 node-main.js 09eba1c2b9aa83376b93f9d4a2f23467a1068df416d3fef2486734a27d83cfe3 server.cjs 18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d Gate: 관측 WIP의 공식 epoch 미확정. 실제 UI 초기화·native·visual·청취·생산 채택은 미검증입니다."
+          "text": "SUPERVISOR-BUILD-0938: GPU 값 리프의 status/live·동일값 갱신 억제·속성 복구 RAM 후보 4VM PASS. 파일 변경 0. 최초 8d576d, 완료 21c7e6. 메모리: BUILD0938_proof_v3, originals, docs_handoff, handoff, 명령·실패 원문 보존. game.html 6fe749b8f01e05a3c87820c0a7c2780290e1290930c810ebbf98e302e307904f game-easy-test.html 740912febb84fa58b7a88df6aebf309ed4e488be469cb25e8dd64bdbe9e95093 index.html 1dd28cab162a4384ad84a356eb2c719940782005d20da1312d2857bc649615a7 node-main.js 09eba1c2b9aa83376b93f9d4a2f23467a1068df416d3fef2486734a27d83cfe3 server.cjs 18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d Gate: 실제 진단·native 안내 횟수/시점·visual·청취·생산 채택은 미검증입니다."
         },
-        "latestToolMarkerId": "exec-4af1f6d7-2d61-4f86-8b5f-230bed8da0a8",
+        "latestToolMarkerId": "exec-26e5d6bc-ff9f-4e1d-bc7f-1c0f1536e28b",
         "latestToolMarker": {
-          "id": "exec-4af1f6d7-2d61-4f86-8b5f-230bed8da0a8",
-          "turnId": "01a10116-77cf-7012-a2ab-547cbcd4a0ba",
+          "id": "exec-26e5d6bc-ff9f-4e1d-bc7f-1c0f1536e28b",
+          "turnId": "01a10121-ddd6-7c42-b173-9b60eef2fe50",
           "type": "commandExecution",
           "name": "commandExecution",
           "status": "completed"
@@ -17563,19 +17699,13 @@
       "actualNewWorkConfirmed": true,
       "firstUsefulSourceTools": [
         {
-          "id": "exec-6f817b06-9533-4b14-bce3-0d14a2142e1e",
+          "id": "exec-0aff2090-7469-42fc-8cfd-69e30e1ffd2e",
           "exit": 0,
-          "command": "/bin/zsh -lc \"rg -n 'Tab|Shift|settings.on|설정.*input' 'docs/3.1 ui hud 디자인/SETTINGS_HUD_DETAIL_20260930.md'; rg -n 'sett",
+          "command": "/bin/zsh -lc \"rg -n 'keyBindList|키 설정|키바인딩|aria-labelledby' 'docs/3.1 ui hud 디자인/SETTINGS_UI_WORKSPACE_20260929.md' game",
           "sourceEvidenceMatched": true
         },
         {
-          "id": "exec-92ff1664-8986-49f6-ab2d-33c70f4a62b7",
-          "exit": 0,
-          "command": "/bin/zsh -lc \"sed -n '2863,2876p' game.html; rg -n '하드웨어 진단|diagGpu|diagBench' 'docs/3.1 ui hud 디자인/SETTINGS_UI_WORKSPAC",
-          "sourceEvidenceMatched": true
-        },
-        {
-          "id": "exec-a3e61d1c-4d32-4c51-ac15-70fbc4d0a3c4",
+          "id": "exec-3c53a06c-0a94-4aaf-8a79-fc549e367f2d",
           "exit": 0,
           "command": "/bin/zsh -lc \"/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node <<'NODE'\nconst fs=require('fs",
           "sourceEvidenceMatched": true
@@ -17701,12 +17831,12 @@
       },
       "nextReviewSourceEpoch": "source37",
       "nextReviewSourcePins": {
-        "game.html": "82e46f1490496d2a0fcc6c144603e5f483c1a952c46661e1756b3aaf72ce15dc",
-        "game-easy-test.html": "238dd3e097a92712cef6c33e9fec1f5878b1fae7e7ade881b5706a99e3bb2b58",
+        "game.html": "6fe749b8f01e05a3c87820c0a7c2780290e1290930c810ebbf98e302e307904f",
+        "game-easy-test.html": "740912febb84fa58b7a88df6aebf309ed4e488be469cb25e8dd64bdbe9e95093",
         "index.html": "1dd28cab162a4384ad84a356eb2c719940782005d20da1312d2857bc649615a7"
       },
-      "nextReviewOfficialCodeEpoch": 42,
-      "nextReviewOfficialCodeSHA": "d67545efee8970b85b9ca3992f216c3195c80a81",
+      "nextReviewOfficialCodeEpoch": 43,
+      "nextReviewOfficialCodeSHA": "abf9eb87a94ef67c61b33119798c463b5dce27e4",
       "rootSource38ScopeOwnershipAvoided": true,
       "activeTaskResentForSource38": false,
       "activeTaskResentForEpoch": false
@@ -17722,8 +17852,8 @@
       "outputOwnerPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/supervisor-next/BALANCE/BALANCE-forge-panel-nonfinite-target-render-hb1014b",
       "registryStatusHistorical": "read_confirmed_in_progress",
       "status": "actual_source_work_confirmed",
-      "turnId": "01a1011b-0ecf-74f2-8380-b3805324ef93",
-      "cursor": "fe71b8a8-c8fa-444d-bec2-643e34b9afcd:120",
+      "turnId": "01a10125-d9fe-7761-8c86-29efff1240e8",
+      "cursor": "fe71b8a8-c8fa-444d-bec2-643e34b9afcd:122",
       "actualRead": false,
       "completion": {
         "index": 3,
@@ -17739,8 +17869,8 @@
         "testsRerun": 0
       },
       "followupSend": {
-        "taskId": "SUPERVISOR-BALANCE-0931",
-        "at": "2026-10-03T09:33:09.799516+00:00",
+        "taskId": "SUPERVISOR-BALANCE-0943",
+        "at": "2026-10-03T09:45:13.238786+00:00",
         "receipt": {
           "content": [
             {
@@ -17754,40 +17884,34 @@
       },
       "followupRead": {
         "role": "BALANCE",
-        "id": "01a1011b-0ecf-74f2-8380-b3805324ef93",
+        "id": "01a10125-d9fe-7761-8c86-29efff1240e8",
         "status": "completed",
         "taskTurnConfirmed": true,
         "ack": [],
         "tools": [
           {
-            "id": "exec-88dc0a91-82d8-4c97-a662-f1b630a1dcc4",
+            "id": "exec-a74707af-d34f-49a2-b333-c632112bfe43",
             "exit": 0,
-            "command": "/bin/zsh -lc \"rg -n 'critMultiOnLowHP' docs game.html game-easy-test.html\"",
+            "command": "/bin/zsh -lc \"rg -n 'mpRegenFlat|mpRegenPct|manaLeech' docs/7아이템디자인 game.html game-easy-test.html\"",
             "sourceEvidenceMatched": true
           },
           {
-            "id": "exec-8a09aad4-2cf4-4a35-afb3-96804602796b",
+            "id": "exec-95b2e275-19d0-4d21-ba75-554dee6ef09c",
             "exit": 0,
             "command": "/bin/zsh -lc 'shasum -a 256 game.html game-easy-test.html index.html'",
             "sourceEvidenceMatched": false
           },
           {
-            "id": "exec-d51e0fa4-3253-474b-8d2c-781ab1f52176",
+            "id": "exec-7220669a-4b7c-4ec3-851e-7508ac10cab7",
             "exit": 0,
-            "command": "/bin/zsh -lc \"sed -n '289,297p' docs/7아이템디자인/아이템_어픽스_시스템.md\nsed -n '797,804p' docs/7아이템디자인/아이템_어픽스_시스템.md\"",
-            "sourceEvidenceMatched": false
-          },
-          {
-            "id": "exec-1afd8710-5fc7-4b03-bb9a-b4238308372f",
-            "exit": 0,
-            "command": "/bin/zsh -lc \"printf %s 'import fs from '\\\\''node:fs'\\\\'';import vm from '\\\\''node:vm'\\\\'';import assert from '\\\\''node:",
+            "command": "/bin/zsh -lc \"sed -n '271,281p' docs/7아이템디자인/exoduser-item-system-full.md\nsed -n '41001,41015p' game.html\"",
             "sourceEvidenceMatched": true
           },
           {
-            "id": "exec-7e1d33d2-c5e5-4e65-a54d-d5f44a55b92e",
+            "id": "exec-00ff886c-42a0-4fcc-9879-2e3b03805ccd",
             "exit": 0,
-            "command": "/bin/zsh -lc \"printf %s 'import {spawnSync} from '\\\\''node:child_process'\\\\'';import {createHash} from '\\\\''node:crypto'",
-            "sourceEvidenceMatched": false
+            "command": "/bin/zsh -lc \"printf %s 'import fs from '\\\\''node:fs'\\\\'';import vm from '\\\\''node:vm'\\\\'';import assert from '\\\\''node:",
+            "sourceEvidenceMatched": true
           }
         ]
       },
@@ -22106,9 +22230,41 @@
           "rootHandedOff": false,
           "nativeAccepted": false,
           "productionApplied": false
+        },
+        {
+          "role": "BALANCE",
+          "turnId": "01a1011b-0ecf-74f2-8380-b3805324ef93",
+          "messageId": "msg_07e2da25fb01bbcf016ac0cbb5e36c87d0a1173bdf8be20101",
+          "toolId": "exec-7e1d33d2-c5e5-4e65-a54d-d5f44a55b92e",
+          "originalFinal": {
+            "id": "msg_07e2da25fb01bbcf016ac0cbb5e36c87d0a1173bdf8be20101",
+            "turnId": "01a1011b-0ecf-74f2-8380-b3805324ef93",
+            "phase": "final_answer",
+            "text": "SUPERVISOR-BALANCE-0931 완료: 대체 critMultiOnLowHP 설명 후보 PASS. source42 핀: Main 82e46f14, Easy 238dd3e0, index 1dd28cab. 비율 단위·효과 미연결·HP 조건 미구현 표시. 원값·공용 포맷·비교 %p 유지. 메모리키: balanceLowHPCrit0931Handoff, 영수증 064fa8. Gate: DEAD/FIX 유지, Root ST·빔·합산 범위 불변, native·visual·청취 미확정. writes0."
+          },
+          "at": "2026-10-03T09:40:32.403040+00:00",
+          "rootHandedOff": false,
+          "nativeAccepted": false,
+          "productionApplied": false
+        },
+        {
+          "role": "BALANCE",
+          "turnId": "01a10121-df05-70c0-b650-4d19a4343939",
+          "messageId": "msg_07e2da25fb01bbcf016ac0cd919dc087d08ddd8acaae9a0909",
+          "toolId": "exec-dd63cfa9-dbf6-45d4-b699-52538aa5a2ad",
+          "originalFinal": {
+            "id": "msg_07e2da25fb01bbcf016ac0cd919dc087d08ddd8acaae9a0909",
+            "turnId": "01a10121-df05-70c0-b650-4d19a4343939",
+            "phase": "final_answer",
+            "text": "SUPERVISOR-BALANCE-0938 완료: 대체 lifeHealPow 설명 후보 PASS. source43 핀: Main 6fe749b8, Easy 740912fe, index 1dd28cab. 자연 HP 재생량 증가 비율·생존/HP 부족 조건·대기 속도 반영. 원값·포맷·비교 %p 유지. 메모리키: balanceLifeHealPow0938Handoff, 영수증 517e61. Gate: Root ST·빔 불변, 전체 회복 적용 주장 없음, native·visual·청취 미확정. writes0."
+          },
+          "at": "2026-10-03T09:45:13.238786+00:00",
+          "rootHandedOff": false,
+          "nativeAccepted": false,
+          "productionApplied": false
         }
       ],
-      "lastPollAt": "2026-10-03T09:30:03+00:00",
+      "lastPollAt": "2026-10-03T09:42:34+00:00",
       "completionMessage": {
         "id": "msg_07e2da25fb01bbcf016abf8a213df887d08b6f06a8bfd775f4",
         "turnId": "01a0fc30-3b63-7dc3-8442-4120adb55fb2",
@@ -23670,9 +23826,41 @@
             "isError": false
           },
           "rootLongReviewNotStartCondition": true
+        },
+        {
+          "taskId": "SUPERVISOR-BALANCE-0938",
+          "previousCompletedTurnId": "01a1011b-0ecf-74f2-8380-b3805324ef93",
+          "sentAt": "2026-10-03T09:40:32.403040+00:00",
+          "prompt": "SUPERVISOR-BALANCE-0938\n실제 생명 재생 어픽스의 존재 ID와 재생 소비자(예 hpRegenPct 계열)를 확인해 고정량/최대HP비율·단위·틱/전투조건을 현재 구현 그대로 설명하는 독립 후보. raw값/재생공식/비교%p 불변·미연결이면 효과적용 주장0.0931 critMultiOnLowHP DEAD/FIX 원자료불변, RootST/빔소유침범0.\nMac/local 감독. 공식43 abf9eb87a94ef67c61b33119798c463b5dce27e4/Main6fe749b8/Easy740912fe/index1dd28cab. bonusSt 수치화+6B각/슬롯main17Easy16 현행 유지, source43 source-only·앱29/3404/native미인수. 파일출력·생산/공유docs·Git/index·앱·세이브0, 제출원자료불변·메모리 실제 소비자 한 건. NUL71/외부8/새팀파일0. 보호2_3·Q전용magic패링·E불가·어택티켓금지·타인WIP·기존23 유지. 이미제출/실물없으면 승인백로그 다음 미제출 실제소비자 한 건으로 대체하고 같은TASK/검사/보고반복0. 수신/Read/새turn 첫유용source tool/완료분리. 완료taskID/메모리키/완료ID/실제관측pins/미확정Gate 짧게 인계;native·visual·청취 미확정.",
+          "receipt": {
+            "content": [
+              {
+                "type": "text",
+                "text": "{\"threadId\":\"01a0faaf-a06a-79a2-9def-58eb8ad10d65\"}"
+              }
+            ],
+            "isError": false
+          },
+          "rootLongReviewNotStartCondition": true
+        },
+        {
+          "taskId": "SUPERVISOR-BALANCE-0943",
+          "previousCompletedTurnId": "01a10121-df05-70c0-b650-4d19a4343939",
+          "sentAt": "2026-10-03T09:45:13.238786+00:00",
+          "prompt": "SUPERVISOR-BALANCE-0943\n실제 MP 자연재생 관련 어픽스 ID와 기존 재생 소비자를 확인해 생존·현재MP부족 조건/비율·고정량/틱/대기속도를 기존그대로 설명하는 독립 후보. lifeHealPow0938 HP소비자와구분;미연결이면적용주장0·raw값/공식/비교%p불변·Root44범위침범0.\nMac/local·파일출력/생산/공유docs/Git/index/app/save0·메모리 실제 소비자 한 건·제출원자료불변. 공식43 abf9eb87/Main6fe749b8/Easy740912fe/index1dd28cab, 앱29/3404/native미인수. source44 splashMul/splashR 검수예약9/미채택;반경문자열은 거대범위 가능, 원소추적탄 해당블록/악의구업화선 선행break구분. NUL72/root9/ext8 보수89, 새팀파일0. 보호2_3·Q전용magic/E불가·어택티켓금지·타인WIP·기존23유지. 실물없거나 이미제출이면 자기 승인백로그 다음 미제출 실제소비자 한 건, 동일TASK/검사/보고반복0. 수신/Read/새turn 첫유용source tool/완료 분리·짧은 taskID/메모리키/완료ID/pins/Gate·nativevisual청취미확정.",
+          "receipt": {
+            "content": [
+              {
+                "type": "text",
+                "text": "{\"threadId\":\"01a0faaf-a06a-79a2-9def-58eb8ad10d65\"}"
+              }
+            ],
+            "isError": false
+          },
+          "rootLongReviewNotStartCondition": true
         }
       ],
-      "activeTurnId": "01a1011b-0ecf-74f2-8380-b3805324ef93",
+      "activeTurnId": "01a10125-d9fe-7761-8c86-29efff1240e8",
       "newTaskObservedStatus": "completed",
       "autonomousPolicy": {
         "version": "autonomy-user-20261002-1126-v1",
@@ -23828,8 +24016,8 @@
         "actualReadConfirmed": true,
         "at": "2026-10-02T14:32:07.897478+00:00"
       },
-      "lastOfficialSnapshotAt": "2026-10-03T09:30:03+00:00",
-      "currentTaskId": "SUPERVISOR-BALANCE-0931",
+      "lastOfficialSnapshotAt": "2026-10-03T09:42:34+00:00",
+      "currentTaskId": "SUPERVISOR-BALANCE-0943",
       "currentTaskHashNote": "Inline directive receipt/ack/first source pinned in hb1445-final-delta.json; old TASK hash retained in history and must not label latest directive.",
       "latestFollowupReceipt": {
         "confirmed": true,
@@ -23959,8 +24147,8 @@
       },
       "latestOfficialSnapshot": {
         "schemaVersion": 1,
-        "cursor": "fe71b8a8-c8fa-444d-bec2-643e34b9afcd:120",
-        "revision": 120,
+        "cursor": "fe71b8a8-c8fa-444d-bec2-643e34b9afcd:122",
+        "revision": 122,
         "changed": true,
         "thread": {
           "id": "01a0faaf-a06a-79a2-9def-58eb8ad10d65",
@@ -23970,24 +24158,24 @@
           }
         },
         "latestTurn": {
-          "id": "01a10116-785a-7290-bc64-039681eb7602",
+          "id": "01a10121-df05-70c0-b650-4d19a4343939",
           "status": "completed",
           "error": null,
-          "startedAt": 1791019612,
-          "completedAt": 1791019665,
-          "durationMs": 53673
+          "startedAt": 1791020359,
+          "completedAt": 1791020435,
+          "durationMs": 76529
         },
-        "latestAssistantMessageId": "msg_07e2da25fb01bbcf016ac0ca8f3c1c87d09be492ca91ac5fcc",
+        "latestAssistantMessageId": "msg_07e2da25fb01bbcf016ac0cd919dc087d08ddd8acaae9a0909",
         "latestAssistantMessage": {
-          "id": "msg_07e2da25fb01bbcf016ac0ca8f3c1c87d09be492ca91ac5fcc",
-          "turnId": "01a10116-785a-7290-bc64-039681eb7602",
+          "id": "msg_07e2da25fb01bbcf016ac0cd919dc087d08ddd8acaae9a0909",
+          "turnId": "01a10121-df05-70c0-b650-4d19a4343939",
           "phase": "final_answer",
-          "text": "SUPERVISOR-BALANCE-0926 완료: 순수 피해 보너스 ID 없음 → dotDmgPct 설명 후보 PASS. 관찰 핀: Main 82e46f14, Easy 238dd3e0, index 1dd28cab. 실제 opts.dot 판정·비율 단위 반영. 원값·공용 포맷·비교 %p 유지. 메모리키: balanceDotType0926Handoff, 영수증 157445. Gate: 공식 epoch 미확정, 모든 DoT 생산자 참여 미검증, native·visual·청취 미확정. writes0."
+          "text": "SUPERVISOR-BALANCE-0938 완료: 대체 lifeHealPow 설명 후보 PASS. source43 핀: Main 6fe749b8, Easy 740912fe, index 1dd28cab. 자연 HP 재생량 증가 비율·생존/HP 부족 조건·대기 속도 반영. 원값·포맷·비교 %p 유지. 메모리키: balanceLifeHealPow0938Handoff, 영수증 517e61. Gate: Root ST·빔 불변, 전체 회복 적용 주장 없음, native·visual·청취 미확정. writes0."
         },
-        "latestToolMarkerId": "exec-09d251c3-f099-4986-81cc-e87a49ac0d95",
+        "latestToolMarkerId": "exec-dd63cfa9-dbf6-45d4-b699-52538aa5a2ad",
         "latestToolMarker": {
-          "id": "exec-09d251c3-f099-4986-81cc-e87a49ac0d95",
-          "turnId": "01a10116-785a-7290-bc64-039681eb7602",
+          "id": "exec-dd63cfa9-dbf6-45d4-b699-52538aa5a2ad",
+          "turnId": "01a10121-df05-70c0-b650-4d19a4343939",
           "type": "commandExecution",
           "name": "commandExecution",
           "status": "completed"
@@ -23996,13 +24184,19 @@
       "actualNewWorkConfirmed": true,
       "firstUsefulSourceTools": [
         {
-          "id": "exec-88dc0a91-82d8-4c97-a662-f1b630a1dcc4",
+          "id": "exec-a74707af-d34f-49a2-b333-c632112bfe43",
           "exit": 0,
-          "command": "/bin/zsh -lc \"rg -n 'critMultiOnLowHP' docs game.html game-easy-test.html\"",
+          "command": "/bin/zsh -lc \"rg -n 'mpRegenFlat|mpRegenPct|manaLeech' docs/7아이템디자인 game.html game-easy-test.html\"",
           "sourceEvidenceMatched": true
         },
         {
-          "id": "exec-1afd8710-5fc7-4b03-bb9a-b4238308372f",
+          "id": "exec-7220669a-4b7c-4ec3-851e-7508ac10cab7",
+          "exit": 0,
+          "command": "/bin/zsh -lc \"sed -n '271,281p' docs/7아이템디자인/exoduser-item-system-full.md\nsed -n '41001,41015p' game.html\"",
+          "sourceEvidenceMatched": true
+        },
+        {
+          "id": "exec-00ff886c-42a0-4fcc-9879-2e3b03805ccd",
           "exit": 0,
           "command": "/bin/zsh -lc \"printf %s 'import fs from '\\\\''node:fs'\\\\'';import vm from '\\\\''node:vm'\\\\'';import assert from '\\\\''node:",
           "sourceEvidenceMatched": true
@@ -24126,12 +24320,12 @@
       },
       "nextReviewSourceEpoch": "source37",
       "nextReviewSourcePins": {
-        "game.html": "82e46f1490496d2a0fcc6c144603e5f483c1a952c46661e1756b3aaf72ce15dc",
-        "game-easy-test.html": "238dd3e097a92712cef6c33e9fec1f5878b1fae7e7ade881b5706a99e3bb2b58",
+        "game.html": "6fe749b8f01e05a3c87820c0a7c2780290e1290930c810ebbf98e302e307904f",
+        "game-easy-test.html": "740912febb84fa58b7a88df6aebf309ed4e488be469cb25e8dd64bdbe9e95093",
         "index.html": "1dd28cab162a4384ad84a356eb2c719940782005d20da1312d2857bc649615a7"
       },
-      "nextReviewOfficialCodeEpoch": 42,
-      "nextReviewOfficialCodeSHA": "d67545efee8970b85b9ca3992f216c3195c80a81",
+      "nextReviewOfficialCodeEpoch": 43,
+      "nextReviewOfficialCodeSHA": "abf9eb87a94ef67c61b33119798c463b5dce27e4",
       "rootSource38ScopeOwnershipAvoided": true,
       "activeTaskResentForSource38": false,
       "activeTaskResentForEpoch": false
@@ -24147,8 +24341,8 @@
       "outputOwnerPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/supervisor-next/SOUND/SOUND-context-creation-flush-finalization-hb1014b",
       "registryStatusHistorical": "read_confirmed_in_progress",
       "status": "actual_source_work_confirmed",
-      "turnId": "01a1011b-0f88-71e3-ad09-f4374fba88f6",
-      "cursor": "5e295b50-92a8-46a2-8f73-33e047112f1a:117",
+      "turnId": "01a10125-da84-79e2-9b60-4516b626a64d",
+      "cursor": "5e295b50-92a8-46a2-8f73-33e047112f1a:119",
       "actualRead": false,
       "completion": {
         "index": 4,
@@ -24164,8 +24358,8 @@
         "testsRerun": 0
       },
       "followupSend": {
-        "taskId": "SUPERVISOR-SOUND-0931",
-        "at": "2026-10-03T09:33:09.799516+00:00",
+        "taskId": "SUPERVISOR-SOUND-0943",
+        "at": "2026-10-03T09:45:13.238786+00:00",
         "receipt": {
           "content": [
             {
@@ -24179,32 +24373,32 @@
       },
       "followupRead": {
         "role": "SOUND",
-        "id": "01a1011b-0f88-71e3-ad09-f4374fba88f6",
-        "status": "inProgress",
+        "id": "01a10125-da84-79e2-9b60-4516b626a64d",
+        "status": "completed",
         "taskTurnConfirmed": true,
         "ack": [],
         "tools": [
           {
-            "id": "exec-c2076102-8bd5-4343-98b6-cf5f4c21fd91",
+            "id": "exec-1e6d6bb7-ebd4-4b2f-8fb4-b479a6f818a5",
             "exit": 0,
             "command": "/bin/zsh -lc \"/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node -e 'const fs=require('\\\\''fs'",
             "sourceEvidenceMatched": true
           },
           {
-            "id": "exec-02c8ee5d-bffc-4db1-a3fa-4d597aea934e",
+            "id": "exec-aa4a48cf-dc7d-41ad-9522-98e3505243ee",
             "exit": 0,
             "command": "/bin/zsh -lc \"/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node -e 'const fs=require('\\\\''fs'",
             "sourceEvidenceMatched": true
           },
           {
-            "id": "exec-5673b538-f485-4680-bb3a-af1414f7e462",
+            "id": "exec-8ce4390b-b35a-426c-bba5-e002cd885c09",
             "exit": 0,
             "command": "/bin/zsh -lc \"/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node -e 'const fs=require('\\\\''fs'",
             "sourceEvidenceMatched": false
           },
           {
-            "id": "exec-5a1cf0cf-c8a4-4e80-a722-90681cd4fc1d",
-            "exit": 1,
+            "id": "exec-b03952c2-650e-46a3-9ad9-774c1fc15d0b",
+            "exit": 0,
             "command": "/bin/zsh -lc \"/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node -e 'const fs=require('\\\\''fs'",
             "sourceEvidenceMatched": true
           }
@@ -27963,9 +28157,41 @@
           "rootHandedOff": false,
           "nativeAccepted": false,
           "productionApplied": false
+        },
+        {
+          "role": "SOUND",
+          "turnId": "01a1011b-0f88-71e3-ad09-f4374fba88f6",
+          "messageId": "msg_04893afbe993b162016ac0cc00b81087d09eb9aa593e804cc6",
+          "toolId": "exec-3bf5c852-8b8f-4404-996a-fb97d406eb93",
+          "originalFinal": {
+            "id": "msg_04893afbe993b162016ac0cc00b81087d09eb9aa593e804cc6",
+            "turnId": "01a1011b-0f88-71e3-ad09-f4374fba88f6",
+            "phase": "final_answer",
+            "text": "SUPERVISOR-SOUND-0931 완료. mg.gain.value 실물 없음·실제 setter는 0851 제출 완료여서, 미제출 FM connect 후보 1건으로 대체했습니다. 신규 검사 30개 PASS, writes0. 관측 핀: Main 6fe749b8…, Easy 740912fe…, index 1dd28cab… 실행 핀: 82e46f14… / 238dd3e0…; 새 WIP의 FM 원문 동일·전체 역변환 PASS 완료 ID: eda265 / 818684 / eed093 / 9a1f6e 메모리: sound_0931_{candidate_result,unified_candidate,new_only_candidate,docs_sync_table,final_result,handoff} 모두 cleanup 실패: UNRECOVERED native·visual·청취·caller·fullLoop: NOT_RUN, 생산 적용: NOT_APPLIED, 새 epoch: PENDING"
+          },
+          "at": "2026-10-03T09:40:32.403040+00:00",
+          "rootHandedOff": false,
+          "nativeAccepted": false,
+          "productionApplied": false
+        },
+        {
+          "role": "SOUND",
+          "turnId": "01a10121-df8d-7803-aae6-26a2076f1aa0",
+          "messageId": "msg_04893afbe993b162016ac0cd9ec4b087d0b0f5019916a4a7d4",
+          "toolId": "exec-d552f0ba-a878-4ea6-810c-3fdfb30f67a2",
+          "originalFinal": {
+            "id": "msg_04893afbe993b162016ac0cd9ec4b087d0b0f5019916a4a7d4",
+            "turnId": "01a10121-df8d-7803-aae6-26a2076f1aa0",
+            "phase": "final_answer",
+            "text": "SUPERVISOR-SOUND-0938 완료. 후보 1건, 신규 검사 24개·전체 역변환 PASS, writes0. 관측 핀: Main 6fe749b8…, Easy 740912fe…, index 1dd28cab… — 공식43 제공 핀과 일치 완료 ID: 355941 / e1f13b / f03c9c / 73f3de 메모리: sound_0938_{unified_candidate,new_only_candidate,docs_sync_table,final_result,handoff} 모두 cleanup 실패: UNRECOVERED native·visual·청취·actualCaller·fullLoop: NOT_RUN 생산 적용: NOT_APPLIED"
+          },
+          "at": "2026-10-03T09:45:13.238786+00:00",
+          "rootHandedOff": false,
+          "nativeAccepted": false,
+          "productionApplied": false
         }
       ],
-      "lastPollAt": "2026-10-03T09:30:03+00:00",
+      "lastPollAt": "2026-10-03T09:42:34+00:00",
       "completionMessage": {
         "id": "msg_04893afbe993b162016abf8a27513c87d0abac69ee474baa6e",
         "turnId": "01a0fc30-3cbe-7531-b357-178bb2358b5d",
@@ -29381,10 +29607,42 @@
             "isError": false
           },
           "rootLongReviewNotStartCondition": true
+        },
+        {
+          "taskId": "SUPERVISOR-SOUND-0938",
+          "previousCompletedTurnId": "01a1011b-0f88-71e3-ad09-f4374fba88f6",
+          "sentAt": "2026-10-03T09:40:32.403040+00:00",
+          "prompt": "SUPERVISOR-SOUND-0938\nplayDist의 실제 node connect 동기 실패 경계 독립 메모리 후보. 실제 생성된 본인 oscillator/waveshaper/gain 노드 각각독립 disconnect, 원오류재throw;시작전 start/stop/counter감소0·미생성/TDZ0. frequency0921/envelope0856/startstop0840/_dn0824 원자료 불변;모두cleanup실패 UNRECOVERED·실제재생청취0.\nMac/local 감독. 공식43 abf9eb87a94ef67c61b33119798c463b5dce27e4/Main6fe749b8/Easy740912fe/index1dd28cab. bonusSt 수치화+6B각/슬롯main17Easy16 현행 유지, source43 source-only·앱29/3404/native미인수. 파일출력·생산/공유docs·Git/index·앱·세이브0, 제출원자료불변·메모리 실제 소비자 한 건. NUL71/외부8/새팀파일0. 보호2_3·Q전용magic패링·E불가·어택티켓금지·타인WIP·기존23 유지. 이미제출/실물없으면 승인백로그 다음 미제출 실제소비자 한 건으로 대체하고 같은TASK/검사/보고반복0. 수신/Read/새turn 첫유용source tool/완료분리. 완료taskID/메모리키/완료ID/실제관측pins/미확정Gate 짧게 인계;native·visual·청취 미확정.",
+          "receipt": {
+            "content": [
+              {
+                "type": "text",
+                "text": "{\"threadId\":\"01a0faaf-956a-74a3-9bf1-77032f124e2d\"}"
+              }
+            ],
+            "isError": false
+          },
+          "rootLongReviewNotStartCondition": true
+        },
+        {
+          "taskId": "SUPERVISOR-SOUND-0943",
+          "previousCompletedTurnId": "01a10121-df8d-7803-aae6-26a2076f1aa0",
+          "sentAt": "2026-10-03T09:45:13.238786+00:00",
+          "prompt": "SUPERVISOR-SOUND-0943\nplaySub의 실제 node connect 동기실패 경계 독립 후보. 실제 생성된 본인 oscillator/gain만 각각 독립disconnect·원오류재throw·미생성/TDZ0·시작전startstop/counter감소0. frequency0926/envelope0910/startstop0844/_dn0829 원자료불변·cleanup모두실패 UNRECOVERED·실제재생청취0.\nMac/local·파일출력/생산/공유docs/Git/index/app/save0·메모리 실제 소비자 한 건·제출원자료불변. 공식43 abf9eb87/Main6fe749b8/Easy740912fe/index1dd28cab, 앱29/3404/native미인수. source44 splashMul/splashR 검수예약9/미채택;반경문자열은 거대범위 가능, 원소추적탄 해당블록/악의구업화선 선행break구분. NUL72/root9/ext8 보수89, 새팀파일0. 보호2_3·Q전용magic/E불가·어택티켓금지·타인WIP·기존23유지. 실물없거나 이미제출이면 자기 승인백로그 다음 미제출 실제소비자 한 건, 동일TASK/검사/보고반복0. 수신/Read/새turn 첫유용source tool/완료 분리·짧은 taskID/메모리키/완료ID/pins/Gate·nativevisual청취미확정.",
+          "receipt": {
+            "content": [
+              {
+                "type": "text",
+                "text": "{\"threadId\":\"01a0faaf-956a-74a3-9bf1-77032f124e2d\"}"
+              }
+            ],
+            "isError": false
+          },
+          "rootLongReviewNotStartCondition": true
         }
       ],
-      "activeTurnId": "01a1011b-0f88-71e3-ad09-f4374fba88f6",
-      "newTaskObservedStatus": "inProgress",
+      "activeTurnId": "01a10125-da84-79e2-9b60-4516b626a64d",
+      "newTaskObservedStatus": "completed",
       "autonomousPolicy": {
         "version": "autonomy-user-20261002-1126-v1",
         "sha256": "80f7e3cf084c440658b1fae27ad60999ea6e41aa048bb5d22d62a099ab4b9608",
@@ -29536,7 +29794,7 @@
         "name": "commandExecution",
         "status": "completed"
       },
-      "lastOfficialSnapshotAt": "2026-10-03T09:30:03+00:00",
+      "lastOfficialSnapshotAt": "2026-10-03T09:42:34+00:00",
       "capacityDelivery1458": {
         "sentOnce": true,
         "taskId": "CAPACITY-SOUND-1458",
@@ -29621,8 +29879,8 @@
       },
       "latestOfficialSnapshot": {
         "schemaVersion": 1,
-        "cursor": "5e295b50-92a8-46a2-8f73-33e047112f1a:117",
-        "revision": 117,
+        "cursor": "5e295b50-92a8-46a2-8f73-33e047112f1a:119",
+        "revision": 119,
         "changed": true,
         "thread": {
           "id": "01a0faaf-956a-74a3-9bf1-77032f124e2d",
@@ -29632,24 +29890,24 @@
           }
         },
         "latestTurn": {
-          "id": "01a10116-78dc-7a31-bc0c-651d0f5ae72d",
+          "id": "01a10121-df8d-7803-aae6-26a2076f1aa0",
           "status": "completed",
           "error": null,
-          "startedAt": 1791019612,
-          "completedAt": 1791019693,
-          "durationMs": 81017
+          "startedAt": 1791020359,
+          "completedAt": 1791020449,
+          "durationMs": 89933
         },
-        "latestAssistantMessageId": "msg_04893afbe993b162016ac0caaaba9487d08c4b3ecb1cb8a6d6",
+        "latestAssistantMessageId": "msg_04893afbe993b162016ac0cd9ec4b087d0b0f5019916a4a7d4",
         "latestAssistantMessage": {
-          "id": "msg_04893afbe993b162016ac0caaaba9487d08c4b3ecb1cb8a6d6",
-          "turnId": "01a10116-78dc-7a31-bc0c-651d0f5ae72d",
+          "id": "msg_04893afbe993b162016ac0cd9ec4b087d0b0f5019916a4a7d4",
+          "turnId": "01a10121-df8d-7803-aae6-26a2076f1aa0",
           "phase": "final_answer",
-          "text": "SUPERVISOR-SOUND-0926 완료. 후보 1건, 신규 검사 14개·전체 역변환 PASS, writes0. 관측 핀: Main 82e46f14…, Easy 238dd3e0…, index 1dd28cab… 완료 ID: efcf60 / 078a9d / ee5394 / e536b5 메모리: sound_0926_{unified_candidate,new_only_candidate,docs_sync_table,final_result,handoff} 모두 cleanup 실패: UNRECOVERED native·visual·청취·actualCaller·fullLoop: NOT_RUN 생산 적용: NOT_APPLIED, 새 공식 epoch: PENDING"
+          "text": "SUPERVISOR-SOUND-0938 완료. 후보 1건, 신규 검사 24개·전체 역변환 PASS, writes0. 관측 핀: Main 6fe749b8…, Easy 740912fe…, index 1dd28cab… — 공식43 제공 핀과 일치 완료 ID: 355941 / e1f13b / f03c9c / 73f3de 메모리: sound_0938_{unified_candidate,new_only_candidate,docs_sync_table,final_result,handoff} 모두 cleanup 실패: UNRECOVERED native·visual·청취·actualCaller·fullLoop: NOT_RUN 생산 적용: NOT_APPLIED"
         },
-        "latestToolMarkerId": "exec-7100eaf9-563d-4280-a63d-790b16afd419",
+        "latestToolMarkerId": "exec-d552f0ba-a878-4ea6-810c-3fdfb30f67a2",
         "latestToolMarker": {
-          "id": "exec-7100eaf9-563d-4280-a63d-790b16afd419",
-          "turnId": "01a10116-78dc-7a31-bc0c-651d0f5ae72d",
+          "id": "exec-d552f0ba-a878-4ea6-810c-3fdfb30f67a2",
+          "turnId": "01a10121-df8d-7803-aae6-26a2076f1aa0",
           "type": "commandExecution",
           "name": "commandExecution",
           "status": "completed"
@@ -29674,17 +29932,23 @@
         "exit": 0,
         "command": "/bin/zsh -lc \"rg -n 'reviveOnce|voice_second_wind|function die\\\\(' game.html game-easy-test.html\nrg -n 'reviveOnce|voice_second_wind|장비.*부활|부활.*장비' docs/2_5* docs/7아이템디자인 docs/6사운드디자인\""
       },
-      "currentTaskId": "SUPERVISOR-SOUND-0931",
+      "currentTaskId": "SUPERVISOR-SOUND-0943",
       "actualNewWorkConfirmed": true,
       "firstUsefulSourceTools": [
         {
-          "id": "exec-c2076102-8bd5-4343-98b6-cf5f4c21fd91",
+          "id": "exec-1e6d6bb7-ebd4-4b2f-8fb4-b479a6f818a5",
           "exit": 0,
           "command": "/bin/zsh -lc \"/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node -e 'const fs=require('\\\\''fs'",
           "sourceEvidenceMatched": true
         },
         {
-          "id": "exec-02c8ee5d-bffc-4db1-a3fa-4d597aea934e",
+          "id": "exec-aa4a48cf-dc7d-41ad-9522-98e3505243ee",
+          "exit": 0,
+          "command": "/bin/zsh -lc \"/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node -e 'const fs=require('\\\\''fs'",
+          "sourceEvidenceMatched": true
+        },
+        {
+          "id": "exec-b03952c2-650e-46a3-9ad9-774c1fc15d0b",
           "exit": 0,
           "command": "/bin/zsh -lc \"/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node -e 'const fs=require('\\\\''fs'",
           "sourceEvidenceMatched": true
@@ -29780,12 +30044,12 @@
       },
       "nextReviewSourceEpoch": "source37",
       "nextReviewSourcePins": {
-        "game.html": "82e46f1490496d2a0fcc6c144603e5f483c1a952c46661e1756b3aaf72ce15dc",
-        "game-easy-test.html": "238dd3e097a92712cef6c33e9fec1f5878b1fae7e7ade881b5706a99e3bb2b58",
+        "game.html": "6fe749b8f01e05a3c87820c0a7c2780290e1290930c810ebbf98e302e307904f",
+        "game-easy-test.html": "740912febb84fa58b7a88df6aebf309ed4e488be469cb25e8dd64bdbe9e95093",
         "index.html": "1dd28cab162a4384ad84a356eb2c719940782005d20da1312d2857bc649615a7"
       },
-      "nextReviewOfficialCodeEpoch": 42,
-      "nextReviewOfficialCodeSHA": "d67545efee8970b85b9ca3992f216c3195c80a81",
+      "nextReviewOfficialCodeEpoch": 43,
+      "nextReviewOfficialCodeSHA": "abf9eb87a94ef67c61b33119798c463b5dce27e4",
       "rootSource38ScopeOwnershipAvoided": true,
       "activeTaskResentForSource38": false,
       "activeTaskResentForEpoch": false
@@ -29800,9 +30064,9 @@
       "currentTaskSha256": "eba1c254e649cd3180b770164f12564ccc55bde70e0cef9cbd1124fcaba0a149",
       "outputOwnerPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/supervisor-next/QUESTNPC/QUESTNPC-inframe-flag-exception-lifetime-hb1014b",
       "registryStatusHistorical": "read_confirmed_in_progress",
-      "status": "pending_first_useful_tool",
-      "turnId": "01a1011c-39c0-71f3-aa47-8cb3b60b8605",
-      "cursor": "50a148ca-266a-4fc9-bf73-942ff1acf808:142",
+      "status": "actual_source_work_confirmed",
+      "turnId": "01a10121-e012-74f0-b459-d02273899847",
+      "cursor": "50a148ca-266a-4fc9-bf73-942ff1acf808:145",
       "actualRead": false,
       "completion": {
         "index": 5,
@@ -29818,8 +30082,8 @@
         "testsRerun": 0
       },
       "followupSend": {
-        "taskId": "SUPERVISOR-QUESTNPC-0932",
-        "at": "2026-10-03T09:33:09.799516+00:00",
+        "taskId": "SUPERVISOR-QUESTNPC-0938",
+        "at": "2026-10-03T09:40:32.403040+00:00",
         "receipt": {
           "content": [
             {
@@ -29833,11 +30097,30 @@
       },
       "followupRead": {
         "role": "QUESTNPC",
-        "id": "01a1011c-39c0-71f3-aa47-8cb3b60b8605",
+        "id": "01a10121-e012-74f0-b459-d02273899847",
         "status": "inProgress",
         "taskTurnConfirmed": true,
         "ack": [],
-        "tools": []
+        "tools": [
+          {
+            "id": "exec-09973d9d-8674-4ee1-abed-e32c3b1adfca",
+            "exit": 0,
+            "command": "/bin/zsh -lc \"rg -n '완료|status|상태|8과제|stepOrder|배지' 'docs/2게임디자인레벨디자인/RESOURCE_PRACTICE_20260912.md' 'docs/2게임디자인레벨디자인/P",
+            "sourceEvidenceMatched": true
+          },
+          {
+            "id": "exec-503b856d-bd45-4ac5-8b4d-443d729d79bc",
+            "exit": 0,
+            "command": "/bin/zsh -lc \"'/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node' --input-type=module -e 'imp",
+            "sourceEvidenceMatched": false
+          },
+          {
+            "id": "exec-c5f50f05-7fe2-4018-8073-ab755c49ea14",
+            "exit": 0,
+            "command": "/bin/zsh -lc \"'/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node' --input-type=module -e 'imp",
+            "sourceEvidenceMatched": false
+          }
+        ]
       },
       "processedMarkers": [
         {
@@ -33662,9 +33945,25 @@
           "rootHandedOff": false,
           "nativeAccepted": false,
           "productionApplied": false
+        },
+        {
+          "role": "QUESTNPC",
+          "turnId": "01a1011c-39c0-71f3-aa47-8cb3b60b8605",
+          "messageId": "msg_0ca96ca18e41f506016ac0ccd30fcc87d08851cb94cda63ddc",
+          "toolId": "exec-45264f08-0301-4235-b276-7b6b48d80b1b",
+          "originalFinal": {
+            "id": "msg_0ca96ca18e41f506016ac0ccd30fcc87d08851cb94cda63ddc",
+            "turnId": "01a1011c-39c0-71f3-aa47-8cb3b60b8605",
+            "phase": "final_answer",
+            "text": "SUPERVISOR-QUESTNPC-0932 메모리 후보 완료. 기존 챕터 리프 02 · 직접 실습을 게이지의 aria-labelledby로 연결하고, 소유 ID·참조만 복원합니다. 완료: QUESTNPC-0932-resource-completion-visible-chapter-label-reference / 38352e 최종 VM 76대조·152변형 PASS. 중복 ID 반례·수정 이력 보존. 메모리: questNPC0932{CandidateMemory,RuntimeReceipt,DocsDraft,FinalState,Handoff} 관측 6핀 유지: 6fe749b8 / 740912fe / 1dd28cab. 공식42와 후속 WIP 구분. Gate: 0926 역할 합성·정리 순서, native AX·visual 인수. 기존 후보 변경·파일 쓰기·실제 focus/input/skip 0건."
+          },
+          "at": "2026-10-03T09:40:32.403040+00:00",
+          "rootHandedOff": false,
+          "nativeAccepted": false,
+          "productionApplied": false
         }
       ],
-      "lastPollAt": "2026-10-03T09:32:10+00:00",
+      "lastPollAt": "2026-10-03T09:44:20+00:00",
       "completionMessage": {
         "id": "msg_0ca96ca18e41f506016abf8a23f74087d099f311d52a1e67e0",
         "turnId": "01a0fc30-3e6f-7d11-8669-2a08210e58af",
@@ -33688,7 +33987,7 @@
         }
       ],
       "readObservedAt": "2026-10-02T05:56:44.005845+00:00",
-      "lastObservedThreadStatus": "idle",
+      "lastObservedThreadStatus": "active",
       "productionIntegration": {
         "at": "2026-10-02T09:02:51.930177+00:00",
         "owner": "root",
@@ -34377,9 +34676,25 @@
             "isError": false
           },
           "rootLongReviewNotStartCondition": true
+        },
+        {
+          "taskId": "SUPERVISOR-QUESTNPC-0938",
+          "previousCompletedTurnId": "01a1011c-39c0-71f3-aa47-8cb3b60b8605",
+          "sentAt": "2026-10-03T09:40:32.403040+00:00",
+          "prompt": "SUPERVISOR-QUESTNPC-0938\nresource-practice의 실제 진행 게이지가 모든 유효 과제를 완료했을 때 보여주는 완료 문구 리프에, 같은 값 반복 시 재안내하지 않는 좁은 상태 안내 후보 한 건. 실제 visible 완료 leaf만 live/status 소유 연결, 초기/미완료/step제외 조건 유지·새완료문구번역창작0.0926값·0932라벨 원자료불변, 실제 focus/input/skip/save0.\nMac/local 감독. 공식43 abf9eb87a94ef67c61b33119798c463b5dce27e4/Main6fe749b8/Easy740912fe/index1dd28cab. bonusSt 수치화+6B각/슬롯main17Easy16 현행 유지, source43 source-only·앱29/3404/native미인수. 파일출력·생산/공유docs·Git/index·앱·세이브0, 제출원자료불변·메모리 실제 소비자 한 건. NUL71/외부8/새팀파일0. 보호2_3·Q전용magic패링·E불가·어택티켓금지·타인WIP·기존23 유지. 이미제출/실물없으면 승인백로그 다음 미제출 실제소비자 한 건으로 대체하고 같은TASK/검사/보고반복0. 수신/Read/새turn 첫유용source tool/완료분리. 완료taskID/메모리키/완료ID/실제관측pins/미확정Gate 짧게 인계;native·visual·청취 미확정.",
+          "receipt": {
+            "content": [
+              {
+                "type": "text",
+                "text": "{\"threadId\":\"01a0fae0-ccb2-7572-9d58-8c3176f9afff\"}"
+              }
+            ],
+            "isError": false
+          },
+          "rootLongReviewNotStartCondition": true
         }
       ],
-      "activeTurnId": "01a1011c-39c0-71f3-aa47-8cb3b60b8605",
+      "activeTurnId": "01a10121-e012-74f0-b459-d02273899847",
       "newTaskObservedStatus": "inProgress",
       "autonomousPolicy": {
         "version": "autonomy-user-20261002-1126-v1",
@@ -34509,7 +34824,7 @@
         "name": "commandExecution",
         "status": "completed"
       },
-      "lastOfficialSnapshotAt": "2026-10-03T09:32:10+00:00",
+      "lastOfficialSnapshotAt": "2026-10-03T09:44:20+00:00",
       "capacityDelivery1458": {
         "sentOnce": true,
         "taskId": "CAPACITY-QUESTNPC-1458",
@@ -34583,35 +34898,36 @@
       },
       "latestOfficialSnapshot": {
         "schemaVersion": 1,
-        "cursor": "50a148ca-266a-4fc9-bf73-942ff1acf808:142",
-        "revision": 142,
+        "cursor": "50a148ca-266a-4fc9-bf73-942ff1acf808:145",
+        "revision": 145,
         "changed": true,
         "thread": {
           "id": "01a0fae0-ccb2-7572-9d58-8c3176f9afff",
           "hostId": "local",
           "status": {
-            "type": "idle"
+            "type": "active",
+            "activeFlags": []
           }
         },
         "latestTurn": {
-          "id": "01a10116-7962-7a53-b0d4-4c6b0d13b29f",
-          "status": "completed",
+          "id": "01a10121-e012-74f0-b459-d02273899847",
+          "status": "inProgress",
           "error": null,
-          "startedAt": 1791019612,
-          "completedAt": 1791019844,
-          "durationMs": 231559
+          "startedAt": 1791020359,
+          "completedAt": null,
+          "durationMs": null
         },
-        "latestAssistantMessageId": "msg_0ca96ca18e41f506016ac0cb3f320487d0bf27b3c7509e8cdf",
+        "latestAssistantMessageId": "msg_0ca96ca18e41f506016ac0ce4c2ddc87d0b54d9501892200bc",
         "latestAssistantMessage": {
-          "id": "msg_0ca96ca18e41f506016ac0cb3f320487d0bf27b3c7509e8cdf",
-          "turnId": "01a10116-7962-7a53-b0d4-4c6b0d13b29f",
-          "phase": "final_answer",
-          "text": "SUPERVISOR-QUESTNPC-0926 완료. 별도 취소가 없고 skipAll은 스킵 설정을 저장하므로 Escape 연결 대신 기존 진행 게이지의 접근성 값 후보로 전환했습니다. 완료: QUESTNPC-0926-resource-visible-completion-meter-accessible-values / 54403b VM 64대조·128변형 PASS. 메모리: questNPC0926{CandidateMemory,RuntimeReceipt,DocsDraft,FinalState,Handoff} 관측 6핀 유지: Main 82e46f14, Easy 238dd3e0, index 1dd28cab. 후속 공식 epoch 미추정. Gate: 생산·docs 합성, 나머지 27언어, native AX·visual 검증. 파일 쓰기·실제 입력/skip/focus 0건."
+          "id": "msg_0ca96ca18e41f506016ac0ce4c2ddc87d0b54d9501892200bc",
+          "turnId": "01a10121-e012-74f0-b459-d02273899847",
+          "phase": "commentary",
+          "text": "메모리 VM 검증은 통과했습니다. 기존 문구와 완료값을 유지했고, 같은 상태 문구를 두 번 다시 렌더링해도 대상 span의 텍스트 쓰기는 0회였습니다. 미완료·제외 과제에서는 새 상태 속성이 활성화되지 않았으며, 제거·숨김·노드 교체 시 소유 속성을 복구했습니다. 실제 낭독 결과는 아직 검증하지 않았습니다."
         },
-        "latestToolMarkerId": "exec-3e9c1673-4ce7-47a9-8987-c380d73527ac",
+        "latestToolMarkerId": "exec-787d60ae-c1b1-43e1-b39c-9bb5cdc550a7",
         "latestToolMarker": {
-          "id": "exec-3e9c1673-4ce7-47a9-8987-c380d73527ac",
-          "turnId": "01a10116-7962-7a53-b0d4-4c6b0d13b29f",
+          "id": "exec-787d60ae-c1b1-43e1-b39c-9bb5cdc550a7",
+          "turnId": "01a10121-e012-74f0-b459-d02273899847",
           "type": "commandExecution",
           "name": "commandExecution",
           "status": "completed"
@@ -34754,9 +35070,16 @@
         "laterCompletionRecovered": "01a0ff65-7678-79b3-844a-c6364f816a52",
         "retry": "next heartbeat bounded receipt only"
       },
-      "currentTaskId": "SUPERVISOR-QUESTNPC-0932",
-      "actualNewWorkConfirmed": false,
-      "firstUsefulSourceTools": [],
+      "currentTaskId": "SUPERVISOR-QUESTNPC-0938",
+      "actualNewWorkConfirmed": true,
+      "firstUsefulSourceTools": [
+        {
+          "id": "exec-09973d9d-8674-4ee1-abed-e32c3b1adfca",
+          "exit": 0,
+          "command": "/bin/zsh -lc \"rg -n '완료|status|상태|8과제|stepOrder|배지' 'docs/2게임디자인레벨디자인/RESOURCE_PRACTICE_20260912.md' 'docs/2게임디자인레벨디자인/P",
+          "sourceEvidenceMatched": true
+        }
+      ],
       "inputWaitObserved": true,
       "approvalInferred": false,
       "latestSourceObservation": {
@@ -34844,27 +35167,27 @@
         "newTurnClaimed": false
       },
       "activeTaskEvidenceObserved": {
-        "at": "2026-10-03T09:15:02+00:00",
+        "at": "2026-10-03T09:42:34+00:00",
         "turn": {
-          "id": "01a10107-5ff5-7fc3-a406-62d5832c21bb",
+          "id": "01a10121-e012-74f0-b459-d02273899847",
           "status": "inProgress",
           "error": null,
-          "startedAt": 1791018622,
+          "startedAt": 1791020359,
           "completedAt": null,
           "durationMs": null
         },
         "tool": {
-          "id": "exec-c3f4f188-7139-46f7-8ad7-6920e175b7f6",
-          "turnId": "01a10107-5ff5-7fc3-a406-62d5832c21bb",
+          "id": "exec-787d60ae-c1b1-43e1-b39c-9bb5cdc550a7",
+          "turnId": "01a10121-e012-74f0-b459-d02273899847",
           "type": "commandExecution",
           "name": "commandExecution",
           "status": "completed"
         },
         "assistant": {
-          "id": "msg_0ca96ca18e41f506016ac0c6d1afd887d092f5853d653ddc4a",
-          "turnId": "01a10107-5ff5-7fc3-a406-62d5832c21bb",
+          "id": "msg_0ca96ca18e41f506016ac0ce4c2ddc87d0b54d9501892200bc",
+          "turnId": "01a10121-e012-74f0-b459-d02273899847",
           "phase": "commentary",
-          "text": "현재 제목 H2에는 tabindex·초점 진입 코드가 없고, footer 버튼 순서는 시작→건너뛰기입니다. 후보는 패널 생성당 제목으로 한 번만 진입하되 외부 초점과 이후 단계 갱신은 건드리지 않겠습니다. 현재 전역 입력이 Tab을 막는 경계는 별도 gate로 기록하고, 0852 후보는 변경하지 않겠습니다."
+          "text": "메모리 VM 검증은 통과했습니다. 기존 문구와 완료값을 유지했고, 같은 상태 문구를 두 번 다시 렌더링해도 대상 span의 텍스트 쓰기는 0회였습니다. 미완료·제외 과제에서는 새 상태 속성이 활성화되지 않았으며, 제거·숨김·노드 교체 시 소유 속성을 복구했습니다. 실제 낭독 결과는 아직 검증하지 않았습니다."
         }
       },
       "noResend": true,
@@ -34892,13 +35215,13 @@
       },
       "nextReviewSourceEpoch": "source37",
       "nextReviewSourcePins": {
-        "game.html": "82e46f1490496d2a0fcc6c144603e5f483c1a952c46661e1756b3aaf72ce15dc",
-        "game-easy-test.html": "238dd3e097a92712cef6c33e9fec1f5878b1fae7e7ade881b5706a99e3bb2b58",
+        "game.html": "6fe749b8f01e05a3c87820c0a7c2780290e1290930c810ebbf98e302e307904f",
+        "game-easy-test.html": "740912febb84fa58b7a88df6aebf309ed4e488be469cb25e8dd64bdbe9e95093",
         "index.html": "1dd28cab162a4384ad84a356eb2c719940782005d20da1312d2857bc649615a7"
       },
       "activeUsefulSourceToolsObservedAt": "2026-10-03T07:04:43.807419+00:00",
-      "nextReviewOfficialCodeEpoch": 42,
-      "nextReviewOfficialCodeSHA": "d67545efee8970b85b9ca3992f216c3195c80a81",
+      "nextReviewOfficialCodeEpoch": 43,
+      "nextReviewOfficialCodeSHA": "abf9eb87a94ef67c61b33119798c463b5dce27e4",
       "rootSource38ScopeOwnershipAvoided": true,
       "activeTaskResentForSource38": false,
       "activeTaskResentForEpoch": false,
@@ -34923,8 +35246,8 @@
       "outputOwnerPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261002/supervisor-next/MARKETING/MARKETING-demo-end-live-locale-refresh-hb1014b",
       "registryStatusHistorical": "read_confirmed_in_progress",
       "status": "actual_source_work_confirmed",
-      "turnId": "01a1011b-102a-7142-a810-36878b443712",
-      "cursor": "3c754c4d-10ae-4730-a729-6f4052c1f5dc:120",
+      "turnId": "01a10125-db00-7bf1-9f66-568a292a38cd",
+      "cursor": "3c754c4d-10ae-4730-a729-6f4052c1f5dc:122",
       "actualRead": false,
       "completion": {
         "index": 6,
@@ -34940,8 +35263,8 @@
         "testsRerun": 0
       },
       "followupSend": {
-        "taskId": "SUPERVISOR-MARKETING-0931",
-        "at": "2026-10-03T09:33:09.799516+00:00",
+        "taskId": "SUPERVISOR-MARKETING-0943",
+        "at": "2026-10-03T09:45:13.238786+00:00",
         "receipt": {
           "content": [
             {
@@ -34955,34 +35278,58 @@
       },
       "followupRead": {
         "role": "MARKETING",
-        "id": "01a1011b-102a-7142-a810-36878b443712",
+        "id": "01a10125-db00-7bf1-9f66-568a292a38cd",
         "status": "inProgress",
         "taskTurnConfirmed": true,
         "ack": [],
         "tools": [
           {
-            "id": "exec-72c12d5c-25e3-4705-895a-3bfaf62c8868",
+            "id": "exec-8e51e76c-81c9-4166-8601-5aaad2f60e38",
             "exit": 0,
-            "command": "/bin/zsh -lc \"rg -n 'cinHoldGauge|aria-keyshortcuts' index.html\nrg -l 'aria-keyshortcuts|cinHoldGauge|Space 홀드' docs/\"",
+            "command": "/bin/zsh -lc \"rg -n 'cinHoldGauge|role=.progressbar' index.html\nrg -l 'cinHoldGauge|progressbar|role.*button|Space 홀드' d",
             "sourceEvidenceMatched": true
           },
           {
-            "id": "exec-f1f42943-2e52-4c75-be90-2c0e81b2eee6",
+            "id": "exec-ad9560d5-bde5-4548-82f4-3f2b4ce2a0a2",
             "exit": 0,
             "command": "/bin/zsh -lc \"/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node <<'NODE'\nconst fs=require('fs",
             "sourceEvidenceMatched": false
           },
           {
-            "id": "exec-7aa63662-a92e-4b41-9c7e-7ace4c5850f5",
+            "id": "exec-e2bef13c-c1bb-4330-b66f-7312d24d518c",
             "exit": 0,
-            "command": "/bin/zsh -lc \"sed -n '12,26p' docs/cinematic/SPACE_HOLD_SKIP_20260914.md\n/Users/fordeargamers/.local/node-runtime/node-v",
-            "sourceEvidenceMatched": true
+            "command": "/bin/zsh -lc \"rg -n -m 3 '역할|접근성|role' docs/3.1\\\\ ui\\\\ hud\\\\ 디자인/UI_UX_IMPROVEMENT_PROJECT_20260930.md\nsed -n '12,26p' d",
+            "sourceEvidenceMatched": false
           },
           {
-            "id": "exec-82bca7cf-fdd5-41b8-a3fa-bde846c69c1f",
+            "id": "exec-137b6808-78e9-4174-b862-dea1247b72b7",
             "exit": 0,
             "command": "/bin/zsh -lc \"/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node <<'NODE'\nconst fs=require('fs",
             "sourceEvidenceMatched": false
+          },
+          {
+            "id": "exec-806f8c0a-cc3a-4158-933a-585014f2ec78",
+            "exit": 1,
+            "command": "/bin/zsh -lc \"/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node <<'NODE'\nconst fs=require('fs",
+            "sourceEvidenceMatched": false
+          },
+          {
+            "id": "exec-1f64b9d8-84c7-4f68-afcc-53cdaabfc3ea",
+            "exit": 0,
+            "command": "/bin/zsh -lc \"/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node <<'NODE'\nconst fs=require('fs",
+            "sourceEvidenceMatched": false
+          },
+          {
+            "id": "exec-8163dbed-e8f7-40b3-8a25-e291f9bff2f1",
+            "exit": 0,
+            "command": "/bin/zsh -lc \"rg -l 'cinHoldGauge|progressbar|role.*button|Space 홀드' docs/\"",
+            "sourceEvidenceMatched": false
+          },
+          {
+            "id": "exec-32d8fdd0-8437-46c1-b90e-36827b2c8812",
+            "exit": 0,
+            "command": "/bin/zsh -lc \"/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node <<'NODE'\nconst fs=require('fs",
+            "sourceEvidenceMatched": true
           }
         ]
       },
@@ -38789,9 +39136,41 @@
           "rootHandedOff": false,
           "nativeAccepted": false,
           "productionApplied": false
+        },
+        {
+          "role": "MARKETING",
+          "turnId": "01a1011b-102a-7142-a810-36878b443712",
+          "messageId": "msg_05f8637ca4c8483c016ac0cbdffbb487d08e06f0fcb632cc37",
+          "toolId": "exec-d973b92b-4508-4f38-847f-20c273112998",
+          "originalFinal": {
+            "id": "msg_05f8637ca4c8483c016ac0cbdffbb487d08e06f0fcb632cc37",
+            "turnId": "01a1011b-102a-7142-a810-36878b443712",
+            "phase": "final_answer",
+            "text": "SUPERVISOR-MARKETING-0931 메모리 후보 완료. 현재 aria-keyshortcuts가 소유값 Enter Space일 때만 복구하며, 외부 변경·삭제·빈 값 보존 검증 PASS. 다른 속성·게임패드·5000ms 불변. 실제 DOM·입력·초점·스킵·저장·파일 변경 0. 완료 ID: MARKETING-0931-main-hold-keyshortcuts-foreign-current-value-preserve-memory-complete 메모리: 0931_candidate, 0931_docs_sync_v2, 0931_hashes, 0931_handoff_v2 최종 관찰 핀: 1dd28cab / 6fe749b8 / 740912fe / 7a8c4196 / 00cdae7b / 3965e5d5. 공식42 이후 변경은 미확정 WIP로 기록. Gate: root 채택·docs 동기화·선행 합성, 동일 값 외부 재설정의 식별 한계·native AX·RTL·전체 재생. PROVISIONAL/nativeblocked 유지."
+          },
+          "at": "2026-10-03T09:40:32.403040+00:00",
+          "rootHandedOff": false,
+          "nativeAccepted": false,
+          "productionApplied": false
+        },
+        {
+          "role": "MARKETING",
+          "turnId": "01a10121-e092-75f2-a8e5-5abbc9edcd94",
+          "messageId": "msg_05f8637ca4c8483c016ac0cd8a776887d09afea4c78efa5792",
+          "toolId": "exec-e8d67e25-e998-413e-93c2-389fb08d7688",
+          "originalFinal": {
+            "id": "msg_05f8637ca4c8483c016ac0cd8a776887d09afea4c78efa5792",
+            "turnId": "01a10121-e092-75f2-a8e5-5abbc9edcd94",
+            "phase": "final_answer",
+            "text": "SUPERVISOR-MARKETING-0938 메모리 delta 완료. 현재 tabindex가 소유값 0일 때만 복구하며, 외부 변경·삭제 6종 보존 검증 PASS. 0931·역할·게임패드·5000ms 불변. 실제 DOM·입력·초점·스킵·저장·파일 변경 0. 완료 ID: MARKETING-0938-main-hold-tabindex-foreign-current-value-preserve-memory-complete 메모리: 0938_candidate, 0938_docs_sync, 0938_hashes, 0938_handoff 6핀 유지: 1dd28cab / 6fe749b8 / 740912fe / 7a8c4196 / 00cdae7b / 3965e5d5. 공식43 영수증 확인. Gate: root 채택·docs 동기화·합성, 동일값 외부 재설정 식별 한계·native Tab·AX·RTL·전체 재생. PROVISIONAL/nativeblocked 유지."
+          },
+          "at": "2026-10-03T09:45:13.238786+00:00",
+          "rootHandedOff": false,
+          "nativeAccepted": false,
+          "productionApplied": false
         }
       ],
-      "lastPollAt": "2026-10-03T09:30:03+00:00",
+      "lastPollAt": "2026-10-03T09:42:34+00:00",
       "completionMessage": {
         "id": "msg_05f8637ca4c8483c016abf8a2cf29c87d0b20f8b15e98f3aa5",
         "turnId": "01a0fc30-4081-7293-a063-feb355d9d3ae",
@@ -40224,9 +40603,41 @@
             "isError": false
           },
           "rootLongReviewNotStartCondition": true
+        },
+        {
+          "taskId": "SUPERVISOR-MARKETING-0938",
+          "previousCompletedTurnId": "01a1011b-102a-7142-a810-36878b443712",
+          "sentAt": "2026-10-03T09:40:32.403040+00:00",
+          "prompt": "SUPERVISOR-MARKETING-0938\n소유 main hold 키보드 tabindex가 외부에서 변경/삭제됐을 때 cleanup이 외부 최신값을 덮어쓰지 않게 하는 독립 메모리 delta.0926 exact restore 원자료불변, 본인 소유값일 때만 과거정확값 복구·동일값 외부재설정 식별한계 Gate명시.0931keyshortcuts/역할/게임패드/5000ms 불변·실제DOM/input/skip/save0.\nMac/local 감독. 공식43 abf9eb87a94ef67c61b33119798c463b5dce27e4/Main6fe749b8/Easy740912fe/index1dd28cab. bonusSt 수치화+6B각/슬롯main17Easy16 현행 유지, source43 source-only·앱29/3404/native미인수. 파일출력·생산/공유docs·Git/index·앱·세이브0, 제출원자료불변·메모리 실제 소비자 한 건. NUL71/외부8/새팀파일0. 보호2_3·Q전용magic패링·E불가·어택티켓금지·타인WIP·기존23 유지. 이미제출/실물없으면 승인백로그 다음 미제출 실제소비자 한 건으로 대체하고 같은TASK/검사/보고반복0. 수신/Read/새turn 첫유용source tool/완료분리. 완료taskID/메모리키/완료ID/실제관측pins/미확정Gate 짧게 인계;native·visual·청취 미확정.",
+          "receipt": {
+            "content": [
+              {
+                "type": "text",
+                "text": "{\"threadId\":\"01a0fae0-cff3-78f0-aa73-32b08c6d6055\"}"
+              }
+            ],
+            "isError": false
+          },
+          "rootLongReviewNotStartCondition": true
+        },
+        {
+          "taskId": "SUPERVISOR-MARKETING-0943",
+          "previousCompletedTurnId": "01a10121-e092-75f2-a8e5-5abbc9edcd94",
+          "sentAt": "2026-10-03T09:45:13.238786+00:00",
+          "prompt": "SUPERVISOR-MARKETING-0943\n소유 main hold 키보드용 role 속성이 외부에서 변경/삭제됐을 때 cleanup이 외부 최신role을 보존하는 독립 delta.0851 기존 progressbar 보존/역할exact restore 원자료불변·본인 소유role일 때만 정확복구, 동일값외부재설정한계Gate.0931keyshortcuts·0938tabindex·게임패드·5000ms불변·실제DOM/input/skip/save0.\nMac/local·파일출력/생산/공유docs/Git/index/app/save0·메모리 실제 소비자 한 건·제출원자료불변. 공식43 abf9eb87/Main6fe749b8/Easy740912fe/index1dd28cab, 앱29/3404/native미인수. source44 splashMul/splashR 검수예약9/미채택;반경문자열은 거대범위 가능, 원소추적탄 해당블록/악의구업화선 선행break구분. NUL72/root9/ext8 보수89, 새팀파일0. 보호2_3·Q전용magic/E불가·어택티켓금지·타인WIP·기존23유지. 실물없거나 이미제출이면 자기 승인백로그 다음 미제출 실제소비자 한 건, 동일TASK/검사/보고반복0. 수신/Read/새turn 첫유용source tool/완료 분리·짧은 taskID/메모리키/완료ID/pins/Gate·nativevisual청취미확정.",
+          "receipt": {
+            "content": [
+              {
+                "type": "text",
+                "text": "{\"threadId\":\"01a0fae0-cff3-78f0-aa73-32b08c6d6055\"}"
+              }
+            ],
+            "isError": false
+          },
+          "rootLongReviewNotStartCondition": true
         }
       ],
-      "activeTurnId": "01a1011b-102a-7142-a810-36878b443712",
+      "activeTurnId": "01a10125-db00-7bf1-9f66-568a292a38cd",
       "newTaskObservedStatus": "inProgress",
       "autonomousPolicy": {
         "version": "autonomy-user-20261002-1126-v1",
@@ -40382,8 +40793,8 @@
         "actualReadConfirmed": true,
         "at": "2026-10-02T14:32:07.897478+00:00"
       },
-      "lastOfficialSnapshotAt": "2026-10-03T09:30:03+00:00",
-      "currentTaskId": "SUPERVISOR-MARKETING-0931",
+      "lastOfficialSnapshotAt": "2026-10-03T09:42:34+00:00",
+      "currentTaskId": "SUPERVISOR-MARKETING-0943",
       "currentTaskHashNote": "Inline directive receipt/ack/first source pinned in hb1445-final-delta.json; old TASK hash retained in history and must not label latest directive.",
       "latestFollowupReceipt": {
         "confirmed": true,
@@ -40513,8 +40924,8 @@
       },
       "latestOfficialSnapshot": {
         "schemaVersion": 1,
-        "cursor": "3c754c4d-10ae-4730-a729-6f4052c1f5dc:120",
-        "revision": 120,
+        "cursor": "3c754c4d-10ae-4730-a729-6f4052c1f5dc:122",
+        "revision": 122,
         "changed": true,
         "thread": {
           "id": "01a0fae0-cff3-78f0-aa73-32b08c6d6055",
@@ -40524,24 +40935,24 @@
           }
         },
         "latestTurn": {
-          "id": "01a10116-79d7-7270-9ebc-470f1e71d753",
+          "id": "01a10121-e092-75f2-a8e5-5abbc9edcd94",
           "status": "completed",
           "error": null,
-          "startedAt": 1791019612,
-          "completedAt": 1791019724,
-          "durationMs": 112137
+          "startedAt": 1791020359,
+          "completedAt": 1791020430,
+          "durationMs": 70582
         },
-        "latestAssistantMessageId": "msg_05f8637ca4c8483c016ac0cac8e0b887d0bece02eb450952d9",
+        "latestAssistantMessageId": "msg_05f8637ca4c8483c016ac0cd8a776887d09afea4c78efa5792",
         "latestAssistantMessage": {
-          "id": "msg_05f8637ca4c8483c016ac0cac8e0b887d0bece02eb450952d9",
-          "turnId": "01a10116-79d7-7270-9ebc-470f1e71d753",
+          "id": "msg_05f8637ca4c8483c016ac0cd8a776887d09afea4c78efa5792",
+          "turnId": "01a10121-e092-75f2-a8e5-5abbc9edcd94",
           "phase": "final_answer",
-          "text": "SUPERVISOR-MARKETING-0926 대체 후보 완료. 다른 키의 늦은 keyup 보호는 0856에 제출돼, 미제출 tabindex 정확 복구로 전환했습니다. 이전 값 6종·재열기·중복 정리 검증 PASS. 실제 DOM·입력·초점·스킵·저장·파일 변경 0. 완료 ID: MARKETING-0926-main-hold-keyboard-tabindex-exact-restore-fallback-memory-complete 메모리: 0926_candidate, 0926_docs_sync, 0926_hashes, 0926_handoff 관찰 핀: 1dd28cab / 82e46f14 / 238dd3e0 / 7a8c4196 / 00cdae7b / 3965e5d5. 후속 WIP를 공식41과 구분 유지. Gate: root 채택·docs 동기화·선행 합성, native Tab·AX·RTL·전체 재생. PROVISIONAL/nativeblocked 유지."
+          "text": "SUPERVISOR-MARKETING-0938 메모리 delta 완료. 현재 tabindex가 소유값 0일 때만 복구하며, 외부 변경·삭제 6종 보존 검증 PASS. 0931·역할·게임패드·5000ms 불변. 실제 DOM·입력·초점·스킵·저장·파일 변경 0. 완료 ID: MARKETING-0938-main-hold-tabindex-foreign-current-value-preserve-memory-complete 메모리: 0938_candidate, 0938_docs_sync, 0938_hashes, 0938_handoff 6핀 유지: 1dd28cab / 6fe749b8 / 740912fe / 7a8c4196 / 00cdae7b / 3965e5d5. 공식43 영수증 확인. Gate: root 채택·docs 동기화·합성, 동일값 외부 재설정 식별 한계·native Tab·AX·RTL·전체 재생. PROVISIONAL/nativeblocked 유지."
         },
-        "latestToolMarkerId": "exec-d26464fb-e884-4575-8476-ce613cc41f97",
+        "latestToolMarkerId": "exec-e8d67e25-e998-413e-93c2-389fb08d7688",
         "latestToolMarker": {
-          "id": "exec-d26464fb-e884-4575-8476-ce613cc41f97",
-          "turnId": "01a10116-79d7-7270-9ebc-470f1e71d753",
+          "id": "exec-e8d67e25-e998-413e-93c2-389fb08d7688",
+          "turnId": "01a10121-e092-75f2-a8e5-5abbc9edcd94",
           "type": "commandExecution",
           "name": "commandExecution",
           "status": "completed"
@@ -40556,15 +40967,15 @@
       },
       "firstUsefulSourceTools": [
         {
-          "id": "exec-72c12d5c-25e3-4705-895a-3bfaf62c8868",
+          "id": "exec-8e51e76c-81c9-4166-8601-5aaad2f60e38",
           "exit": 0,
-          "command": "/bin/zsh -lc \"rg -n 'cinHoldGauge|aria-keyshortcuts' index.html\nrg -l 'aria-keyshortcuts|cinHoldGauge|Space 홀드' docs/\"",
+          "command": "/bin/zsh -lc \"rg -n 'cinHoldGauge|role=.progressbar' index.html\nrg -l 'cinHoldGauge|progressbar|role.*button|Space 홀드' d",
           "sourceEvidenceMatched": true
         },
         {
-          "id": "exec-7aa63662-a92e-4b41-9c7e-7ace4c5850f5",
+          "id": "exec-32d8fdd0-8437-46c1-b90e-36827b2c8812",
           "exit": 0,
-          "command": "/bin/zsh -lc \"sed -n '12,26p' docs/cinematic/SPACE_HOLD_SKIP_20260914.md\n/Users/fordeargamers/.local/node-runtime/node-v",
+          "command": "/bin/zsh -lc \"/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node <<'NODE'\nconst fs=require('fs",
           "sourceEvidenceMatched": true
         }
       ],
@@ -40613,12 +41024,12 @@
       "initialFull7ActivePreserved": true,
       "nextReviewSourceEpoch": "source37",
       "nextReviewSourcePins": {
-        "game.html": "82e46f1490496d2a0fcc6c144603e5f483c1a952c46661e1756b3aaf72ce15dc",
-        "game-easy-test.html": "238dd3e097a92712cef6c33e9fec1f5878b1fae7e7ade881b5706a99e3bb2b58",
+        "game.html": "6fe749b8f01e05a3c87820c0a7c2780290e1290930c810ebbf98e302e307904f",
+        "game-easy-test.html": "740912febb84fa58b7a88df6aebf309ed4e488be469cb25e8dd64bdbe9e95093",
         "index.html": "1dd28cab162a4384ad84a356eb2c719940782005d20da1312d2857bc649615a7"
       },
-      "nextReviewOfficialCodeEpoch": 42,
-      "nextReviewOfficialCodeSHA": "d67545efee8970b85b9ca3992f216c3195c80a81",
+      "nextReviewOfficialCodeEpoch": 43,
+      "nextReviewOfficialCodeSHA": "abf9eb87a94ef67c61b33119798c463b5dce27e4",
       "rootSource38ScopeOwnershipAvoided": true,
       "activeTaskEvidenceObserved": {
         "at": "2026-10-03T08:24:02+00:00",
@@ -52516,7 +52927,7 @@
       "scope": "reviewed static correction accepted; root production/canonical dependency; native/runtime unaccepted"
     }
   ],
-  "changesCountCurrent": 81,
+  "changesCountCurrent": 80,
   "capacityGate": {
     "at": "2026-10-02T15:30:06.281822+00:00",
     "epoch": "Codex7-after-992bdda4",
@@ -52548,7 +52959,7 @@
     "rootFutureFilesReserved": 0,
     "externalClaudeCohortFilesReservedReported": 5,
     "externalClaudeStateFilesReservedReported": 2,
-    "maximumProjectedChanges": 89,
+    "maximumProjectedChanges": 97,
     "maxOutputFilesPerIteration": 3,
     "independentMemoryWorkMayContinue": true,
     "operationalWaitingForEpochApproval": false,
@@ -53913,10 +54324,10 @@
       "supervisorTestsRepeated": 0,
       "supervisorGUIActions": 0
     },
-    "actualChanges": 81,
-    "rootUnconsumedReservation": 0,
+    "actualChanges": 80,
+    "rootUnconsumedReservation": 9,
     "externalUnconsumedReservation": 8,
-    "observationAt": "2026-10-03T09:33:09.799516+00:00",
+    "observationAt": "2026-10-03T09:45:13.238786+00:00",
     "source28OnlyOwnerReported": false,
     "rootMac28Exact19CheckpointPending": false,
     "rootMac28RemoteCheckpointPending": false,
@@ -56510,37 +56921,39 @@
   "claudeAuditAt": "2026-10-02T15:14:49.230660+00:00",
   "changesCountMethod": "git status --porcelain=v1 --untracked-files=all -z; rename/copy pair counted once",
   "lastHeartbeatAudit": {
-    "round": "hb0929",
-    "startedAt": "2026-10-03T09:30:03+00:00",
-    "full7ObservedAt": "2026-10-03T09:30:03+00:00",
-    "previousFull7": "2026-10-03T09:25:00+00:00",
-    "full7GapSeconds": 303.0,
-    "initialFull7MissedSeconds": 3.0,
-    "actualChanges": 81,
-    "initialActualChanges": 71,
-    "maximumProjectedChanges": 89,
-    "activePreserved": 0,
+    "round": "hb0942",
+    "startedAt": "2026-10-03T09:42:33+00:00",
+    "full7ObservedAt": "2026-10-03T09:42:34+00:00",
+    "previousFull7": "2026-10-03T09:37:33+00:00",
+    "full7GapSeconds": 301.0,
+    "initialFull7MissedSeconds": 1.0,
+    "actualChanges": 80,
+    "initialActualChanges": 72,
+    "maximumProjectedChanges": 97,
+    "activePreserved": 1,
     "ClaudeSends": 0,
     "latestRolesTableHashesUnchanged": true,
-    "officialCodeEpoch": "source42",
-    "source42ReceiptAlreadyRead": true,
-    "initialQUESTNPCActivePreserved": true,
-    "lateQUESTNPCCompletedObserved": "2026-10-03T09:32:10+00:00",
+    "officialCodeEpoch": "source43",
+    "initialActiveRolesPreserved": [
+      "UIUX",
+      "QUESTNPC"
+    ],
+    "lateUIUXCompletedObserved": "2026-10-03T09:44:20+00:00",
+    "source44ReviewReservationPreserved": true,
     "nativeAccepted": false,
-    "endedAt": "2026-10-03T09:33:09.968062+00:00",
-    "elapsedSeconds": 186.968062,
-    "3minViolation": true,
-    "3minOverdueSeconds": 6.968062000000003,
-    "finalProjectedMaximumConservative": 89,
+    "endedAt": "2026-10-03T09:45:13.414535+00:00",
+    "elapsedSeconds": 160.414535,
+    "3minViolation": false,
+    "3minOverdueSeconds": 0,
+    "finalProjectedMaximumConservative": 97,
     "explicitReadPending": [
-      "ITEM",
       "BALANCE",
       "SOUND",
       "MARKETING",
-      "QUESTNPC"
+      "UIUX"
     ],
     "newSourcePending": [
-      "QUESTNPC"
+      "UIUX"
     ],
     "resumptionCompletionClaimed": false
   },
@@ -58860,7 +59273,7 @@
     "MARKETING"
   ],
   "lastFull7SnapshotObservedBy": "official_wait_threads_all7",
-  "lastFull7SnapshotStartedAt": "2026-10-03T09:30:03+00:00",
+  "lastFull7SnapshotStartedAt": "2026-10-03T09:42:34+00:00",
   "rootSource7Reservation": {
     "marker": "root-source7-Future16-after-source6-Future0",
     "observedAt": "2026-10-02T18:22:59.372026+00:00",
@@ -59203,7 +59616,7 @@
     "external8Worst79": true,
     "nativePending": true
   },
-  "latestCodex7FullPollAt": "2026-10-03T09:30:03+00:00",
+  "latestCodex7FullPollAt": "2026-10-03T09:42:34+00:00",
   "currentOrdersRoles": [
     "UIUX",
     "ITEM",
@@ -59563,7 +59976,7 @@
     "teamFileOutputs": 0,
     "reservationCorrectionReason": "docs search48rows/25files; existingitem affix status+Layer design2 clean backups needed success-only recomputation/rejection0 synchronization"
   },
-  "lastFull7ObservedAt": "2026-10-03T09:30:03+00:00",
+  "lastFull7ObservedAt": "2026-10-03T09:42:34+00:00",
   "currentOwnerRoles": [
     "UIUX",
     "ITEM",
@@ -59688,8 +60101,8 @@
     ]
   },
   "externalClaudeOrdersReadOnlyObserved": {
-    "at": "2026-10-03T09:33:09.799516+00:00",
-    "externalUpdatedAt": "2026-10-03T09:29:17.003691+00:00",
+    "at": "2026-10-03T09:45:13.238786+00:00",
+    "externalUpdatedAt": "2026-10-03T09:41:46.667946+00:00",
     "ownClaudeSends": 0
   },
   "rootMacPackageSource15Reservation": {
@@ -60056,13 +60469,12 @@
     "sameCandidateSixStepAccepted": false
   },
   "lastSupervisorRoundFinalized": {
-    "round": "hb0929",
-    "at": "2026-10-03T09:33:09.968062+00:00",
-    "elapsedSeconds": 186.968062,
-    "newOrders": 7,
-    "completedMarkers": 7,
+    "round": "hb0942",
+    "at": "2026-10-03T09:45:13.414535+00:00",
+    "elapsedSeconds": 160.414535,
+    "newOrders": 6,
+    "completedMarkers": 6,
     "actualNewSourceConfirmed": [
-      "UIUX",
       "ITEM",
       "BUILD",
       "BALANCE",
@@ -60070,27 +60482,26 @@
       "MARKETING"
     ],
     "newSourcePending": [
-      "QUESTNPC"
+      "UIUX"
     ],
     "explicitReadObserved": [
-      "UIUX",
+      "ITEM",
       "BUILD"
     ],
     "explicitReadPending": [
-      "ITEM",
       "BALANCE",
       "SOUND",
       "MARKETING",
-      "QUESTNPC"
+      "UIUX"
     ],
-    "activePreserved": 0,
+    "activePreserved": 1,
     "ClaudeSends": 0,
     "nativeAcceptance": 0,
-    "3minViolation": true,
-    "3minOverdueSeconds": 6.968062000000003,
-    "initialFull7MissedSeconds": 3.0,
-    "actualChanges": 81,
-    "maximumProjectedChanges": 89
+    "3minViolation": false,
+    "3minOverdueSeconds": 0,
+    "initialFull7MissedSeconds": 1.0,
+    "actualChanges": 80,
+    "maximumProjectedChanges": 97
   },
   "rootSource17NativeLockedReported": {
     "source": "root owner message",
@@ -68473,6 +68884,257 @@
         "index.html": "1dd28cab162a4384ad84a356eb2c719940782005d20da1312d2857bc649615a7"
       },
       "prompt": "UIUX SUPERVISOR-UIUX-0926 완료. 실제 초점 기준 Enter/Space 게임 입력 차단 후보 저장. 파일별 VM 경계 270건 PASS, keyup 본문 불변. 완료 ID 30eb29; writes·실제 행동/input/render/DOM/focus 0. 관측 핀: Main 82e46f1490496d2a0fcc6c144603e5f483c1a952c46661e1756b3aaf72ce15dc Easy 238dd3e097a92712cef6c33e9fec1f5878b1fae7e7ade881b5706a99e3bb2b58 index 1dd28cab162a4384ad84a356eb2c719940782005d20da1312d2857bc649615a7 메모리: uiuxSkillActivationBoundary0926SubmittedCandidate, uiuxSkillActivationBoundary0926ExactEdits, uiuxSkillActivationBoundary0926Handoff, uiux0926Completion. Gate: Root 병합·docs·기존 라우팅 조합, QUESTNPC·전체 이벤트 전달·native/visual/청취 미검수. 후속 WIP의 공식 채택 추정 없음. 기존 원자료 불변.\nITEM SUPERVISOR-ITEM-0926 수신·Read·새 turn 완료. 첫 유용 tool 808ce6, 완료 5ba154. 기존 ok 실행 가드를 aria-disabled에 연결하고 소유 속성 복구. 네이티브 disabled 유지. 20 VM 검사·JS12/JSON2 PASS. 관측 pins: Main 82e46f1490496d2a0fcc6c144603e5f483c1a952c46661e1756b3aaf72ce15dc Easy 238dd3e097a92712cef6c33e9fec1f5878b1fae7e7ade881b5706a99e3bb2b58 index 1dd28cab162a4384ad84a356eb2c719940782005d20da1312d2857bc649615a7 메모리키: item_gemEnhDisabled0926_{first_exec,script,exec,evidence,patch,docs_sync,handoff}. Gate: WIP receipt, native 접근성·닫기·전체 렌더, 후보·docs 적용. writes0 / actualgameoperations0.\nBUILD SUPERVISOR-BUILD-0926: 언어 select는 이미 연결되어 있어, 그래픽 프리셋 그룹의 기존 제목 연결로 대체했습니다. RAM 후보 4VM PASS, 파일 변경 0. 최초 03ba53, 완료 254a0f. 메모리: BUILD0926_{command,result,raw,proof,originals,docs_handoff,handoff}. game.html 82e46f1490496d2a0fcc6c144603e5f483c1a952c46661e1756b3aaf72ce15dc game-easy-test.html 238dd3e097a92712cef6c33e9fec1f5878b1fae7e7ade881b5706a99e3bb2b58 index.html 1dd28cab162a4384ad84a356eb2c719940782005d20da1312d2857bc649615a7 node-main.js 09eba1c2b9aa83376b93f9d4a2f23467a1068df416d3fef2486734a27d83cfe3 server.cjs 18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d Gate: 관측 WIP의 공식 epoch 미확정. 실제 UI 초기화·native·visual·청취·생산 채택은 미검증입니다.\nBALANCE SUPERVISOR-BALANCE-0926 완료: 순수 피해 보너스 ID 없음 → dotDmgPct 설명 후보 PASS. 관찰 핀: Main 82e46f14, Easy 238dd3e0, index 1dd28cab. 실제 opts.dot 판정·비율 단위 반영. 원값·공용 포맷·비교 %p 유지. 메모리키: balanceDotType0926Handoff, 영수증 157445. Gate: 공식 epoch 미확정, 모든 DoT 생산자 참여 미검증, native·visual·청취 미확정. writes0.\nSOUND SUPERVISOR-SOUND-0926 완료. 후보 1건, 신규 검사 14개·전체 역변환 PASS, writes0. 관측 핀: Main 82e46f14…, Easy 238dd3e0…, index 1dd28cab… 완료 ID: efcf60 / 078a9d / ee5394 / e536b5 메모리: sound_0926_{unified_candidate,new_only_candidate,docs_sync_table,final_result,handoff} 모두 cleanup 실패: UNRECOVERED native·visual·청취·actualCaller·fullLoop: NOT_RUN 생산 적용: NOT_APPLIED, 새 공식 epoch: PENDING\nMARKETING SUPERVISOR-MARKETING-0926 대체 후보 완료. 다른 키의 늦은 keyup 보호는 0856에 제출돼, 미제출 tabindex 정확 복구로 전환했습니다. 이전 값 6종·재열기·중복 정리 검증 PASS. 실제 DOM·입력·초점·스킵·저장·파일 변경 0. 완료 ID: MARKETING-0926-main-hold-keyboard-tabindex-exact-restore-fallback-memory-complete 메모리: 0926_candidate, 0926_docs_sync, 0926_hashes, 0926_handoff 관찰 핀: 1dd28cab / 82e46f14 / 238dd3e0 / 7a8c4196 / 00cdae7b / 3965e5d5. 후속 WIP를 공식41과 구분 유지. Gate: root 채택·docs 동기화·선행 합성, native Tab·AX·RTL·전체 재생. PROVISIONAL/nativeblocked 유지.\nQUESTNPC SUPERVISOR-QUESTNPC-0926 완료. 별도 취소가 없고 skipAll은 스킵 설정을 저장하므로 Escape 연결 대신 기존 진행 게이지의 접근성 값 후보로 전환했습니다. 완료: QUESTNPC-0926-resource-visible-completion-meter-accessible-values / 54403b VM 64대조·128변형 PASS. 메모리: questNPC0926{CandidateMemory,RuntimeReceipt,DocsDraft,FinalState,Handoff} 관측 6핀 유지: Main 82e46f14, Easy 238dd3e0, index 1dd28cab. 후속 공식 epoch 미추정. Gate: 생산·docs 합성, 나머지 27언어, native AX·visual 검증. 파일 쓰기·실제 입력/skip/focus 0건.",
+      "retrySent": false,
+      "rawRemotePreserved": true,
+      "rawPreservationReceiptReadAt": "2026-10-03T09:37:18.209872+00:00",
+      "semanticReviewPending": true
+    },
+    {
+      "round": "hb0937",
+      "at": "2026-10-03T09:40:32.403040+00:00",
+      "accepted": false,
+      "receipt": {
+        "isError": true,
+        "notAttempted": true,
+        "ownerReadViaState": true,
+        "reason": "Original completion evidence directly available in supervisor STATE; no duplicate steering."
+      },
+      "originals": [
+        {
+          "role": "UIUX",
+          "turnId": "01a1011b-0d24-7420-94f5-61e3329efed4",
+          "messageId": "msg_04e77a2cd83d56e0016ac0ccde7e9c87d09dac8eced20c5584",
+          "toolId": "exec-650d5d70-d417-4851-9a2e-db0076e1420a",
+          "originalFinal": {
+            "id": "msg_04e77a2cd83d56e0016ac0ccde7e9c87d09dac8eced20c5584",
+            "turnId": "01a1011b-0d24-7420-94f5-61e3329efed4",
+            "phase": "final_answer",
+            "text": "SUPERVISOR-UIUX-0931 완료. 실제 초점 기준 Tab/Shift+Tab 후보 저장. 파일별 VM 660건 PASS, keyup 불변. 완료 ID c082d7; writes·실제 Tab/input/DOM/action/focus 0. 최종 검증 핀: Main 6fe749b8f01e05a3c87820c0a7c2780290e1290930c810ebbf98e302e307904f Easy 740912febb84fa58b7a88df6aebf309ed4e488be469cb25e8dd64bdbe9e95093 index 1dd28cab162a4384ad84a356eb2c719940782005d20da1312d2857bc649615a7 메모리: uiuxSkillTabBoundary0931SubmittedCandidate, uiuxSkillTabBoundary0931ExactEdits, uiuxSkillTabBoundary0931Handoff, uiux0931Completion. Gate: Root 병합·docs·기존 Tab 라우팅 조합, QUESTNPC·native/visual/청취 미검수. 새 WIP 채택 추정 없음. 0926 및 기존 원자료 불변."
+          },
+          "at": "2026-10-03T09:40:32.403040+00:00",
+          "rootHandedOff": false,
+          "nativeAccepted": false,
+          "productionApplied": false
+        },
+        {
+          "role": "BUILD",
+          "turnId": "01a1011b-0e4c-7fb3-b8bc-7602068e01b7",
+          "messageId": "msg_0462489076d3ce85016ac0cbc2251487d0adc3a84036753563",
+          "toolId": "exec-a3e61d1c-4d32-4c51-ac15-70fbc4d0a3c4",
+          "originalFinal": {
+            "id": "msg_0462489076d3ce85016ac0cbc2251487d0adc3a84036753563",
+            "turnId": "01a1011b-0e4c-7fb3-b8bc-7602068e01b7",
+            "phase": "final_answer",
+            "text": "SUPERVISOR-BUILD-0931: Tab 예외는 이미 구현되어, 하드웨어 진단 값 그룹의 기존 제목 연결로 대체했습니다. RAM 후보 4VM PASS, 파일 변경 0. 최초 9045cb, 완료 4abd5a. 메모리: BUILD0931_{command,result,raw,proof,originals,docs_handoff,handoff}. game.html 82e46f1490496d2a0fcc6c144603e5f483c1a952c46661e1756b3aaf72ce15dc game-easy-test.html 238dd3e097a92712cef6c33e9fec1f5878b1fae7e7ade881b5706a99e3bb2b58 index.html 1dd28cab162a4384ad84a356eb2c719940782005d20da1312d2857bc649615a7 node-main.js 09eba1c2b9aa83376b93f9d4a2f23467a1068df416d3fef2486734a27d83cfe3 server.cjs 18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d Gate: UIUX·QUESTNPC 통합, native·visual·청취·실제 진단·생산 채택은 미확정입니다."
+          },
+          "at": "2026-10-03T09:40:32.403040+00:00",
+          "rootHandedOff": false,
+          "nativeAccepted": false,
+          "productionApplied": false
+        },
+        {
+          "role": "ITEM",
+          "turnId": "01a1011b-0dc7-7ef1-8d34-ab508e16e375",
+          "messageId": "msg_0dc2542c5744bc89016ac0cbeda3a087d0ba3a274ef9c4bb0a",
+          "toolId": "exec-09255be7-b607-4746-a6f9-3f6fd493b993",
+          "originalFinal": {
+            "id": "msg_0dc2542c5744bc89016ac0cbeda3a087d0ba3a274ef9c4bb0a",
+            "turnId": "01a1011b-0dc7-7ef1-8d34-ab508e16e375",
+            "phase": "final_answer",
+            "text": "SUPERVISOR-ITEM-0931 수신·Read·새 turn 완료. 첫 유용 tool 310e09, 완료 9c5c39. 별도 강화 팝업이 없어 승인 대체 대상인 보석 하위 탭 키보드 위임 완료. 168 spy 검사·JS12/JSON2 PASS. 완료 시 관측 pins: Main 6fe749b8f01e05a3c87820c0a7c2780290e1290930c810ebbf98e302e307904f Easy 740912febb84fa58b7a88df6aebf309ed4e488be469cb25e8dd64bdbe9e95093 index 1dd28cab162a4384ad84a356eb2c719940782005d20da1312d2857bc649615a7 메모리키: item_gemCloseFocus0931_{first_exec,boundary_exec,controls_exec,fallback_exec,easy_exec,script,exec,evidence,patch,docs_sync,handoff}. Gate: 변경 WIP receipt, native 입력·초점, 후보·docs 적용. writes0 / actualgameoperations0."
+          },
+          "at": "2026-10-03T09:40:32.403040+00:00",
+          "rootHandedOff": false,
+          "nativeAccepted": false,
+          "productionApplied": false
+        },
+        {
+          "role": "BALANCE",
+          "turnId": "01a1011b-0ecf-74f2-8380-b3805324ef93",
+          "messageId": "msg_07e2da25fb01bbcf016ac0cbb5e36c87d0a1173bdf8be20101",
+          "toolId": "exec-7e1d33d2-c5e5-4e65-a54d-d5f44a55b92e",
+          "originalFinal": {
+            "id": "msg_07e2da25fb01bbcf016ac0cbb5e36c87d0a1173bdf8be20101",
+            "turnId": "01a1011b-0ecf-74f2-8380-b3805324ef93",
+            "phase": "final_answer",
+            "text": "SUPERVISOR-BALANCE-0931 완료: 대체 critMultiOnLowHP 설명 후보 PASS. source42 핀: Main 82e46f14, Easy 238dd3e0, index 1dd28cab. 비율 단위·효과 미연결·HP 조건 미구현 표시. 원값·공용 포맷·비교 %p 유지. 메모리키: balanceLowHPCrit0931Handoff, 영수증 064fa8. Gate: DEAD/FIX 유지, Root ST·빔·합산 범위 불변, native·visual·청취 미확정. writes0."
+          },
+          "at": "2026-10-03T09:40:32.403040+00:00",
+          "rootHandedOff": false,
+          "nativeAccepted": false,
+          "productionApplied": false
+        },
+        {
+          "role": "SOUND",
+          "turnId": "01a1011b-0f88-71e3-ad09-f4374fba88f6",
+          "messageId": "msg_04893afbe993b162016ac0cc00b81087d09eb9aa593e804cc6",
+          "toolId": "exec-3bf5c852-8b8f-4404-996a-fb97d406eb93",
+          "originalFinal": {
+            "id": "msg_04893afbe993b162016ac0cc00b81087d09eb9aa593e804cc6",
+            "turnId": "01a1011b-0f88-71e3-ad09-f4374fba88f6",
+            "phase": "final_answer",
+            "text": "SUPERVISOR-SOUND-0931 완료. mg.gain.value 실물 없음·실제 setter는 0851 제출 완료여서, 미제출 FM connect 후보 1건으로 대체했습니다. 신규 검사 30개 PASS, writes0. 관측 핀: Main 6fe749b8…, Easy 740912fe…, index 1dd28cab… 실행 핀: 82e46f14… / 238dd3e0…; 새 WIP의 FM 원문 동일·전체 역변환 PASS 완료 ID: eda265 / 818684 / eed093 / 9a1f6e 메모리: sound_0931_{candidate_result,unified_candidate,new_only_candidate,docs_sync_table,final_result,handoff} 모두 cleanup 실패: UNRECOVERED native·visual·청취·caller·fullLoop: NOT_RUN, 생산 적용: NOT_APPLIED, 새 epoch: PENDING"
+          },
+          "at": "2026-10-03T09:40:32.403040+00:00",
+          "rootHandedOff": false,
+          "nativeAccepted": false,
+          "productionApplied": false
+        },
+        {
+          "role": "QUESTNPC",
+          "turnId": "01a1011c-39c0-71f3-aa47-8cb3b60b8605",
+          "messageId": "msg_0ca96ca18e41f506016ac0ccd30fcc87d08851cb94cda63ddc",
+          "toolId": "exec-45264f08-0301-4235-b276-7b6b48d80b1b",
+          "originalFinal": {
+            "id": "msg_0ca96ca18e41f506016ac0ccd30fcc87d08851cb94cda63ddc",
+            "turnId": "01a1011c-39c0-71f3-aa47-8cb3b60b8605",
+            "phase": "final_answer",
+            "text": "SUPERVISOR-QUESTNPC-0932 메모리 후보 완료. 기존 챕터 리프 02 · 직접 실습을 게이지의 aria-labelledby로 연결하고, 소유 ID·참조만 복원합니다. 완료: QUESTNPC-0932-resource-completion-visible-chapter-label-reference / 38352e 최종 VM 76대조·152변형 PASS. 중복 ID 반례·수정 이력 보존. 메모리: questNPC0932{CandidateMemory,RuntimeReceipt,DocsDraft,FinalState,Handoff} 관측 6핀 유지: 6fe749b8 / 740912fe / 1dd28cab. 공식42와 후속 WIP 구분. Gate: 0926 역할 합성·정리 순서, native AX·visual 인수. 기존 후보 변경·파일 쓰기·실제 focus/input/skip 0건."
+          },
+          "at": "2026-10-03T09:40:32.403040+00:00",
+          "rootHandedOff": false,
+          "nativeAccepted": false,
+          "productionApplied": false
+        },
+        {
+          "role": "MARKETING",
+          "turnId": "01a1011b-102a-7142-a810-36878b443712",
+          "messageId": "msg_05f8637ca4c8483c016ac0cbdffbb487d08e06f0fcb632cc37",
+          "toolId": "exec-d973b92b-4508-4f38-847f-20c273112998",
+          "originalFinal": {
+            "id": "msg_05f8637ca4c8483c016ac0cbdffbb487d08e06f0fcb632cc37",
+            "turnId": "01a1011b-102a-7142-a810-36878b443712",
+            "phase": "final_answer",
+            "text": "SUPERVISOR-MARKETING-0931 메모리 후보 완료. 현재 aria-keyshortcuts가 소유값 Enter Space일 때만 복구하며, 외부 변경·삭제·빈 값 보존 검증 PASS. 다른 속성·게임패드·5000ms 불변. 실제 DOM·입력·초점·스킵·저장·파일 변경 0. 완료 ID: MARKETING-0931-main-hold-keyshortcuts-foreign-current-value-preserve-memory-complete 메모리: 0931_candidate, 0931_docs_sync_v2, 0931_hashes, 0931_handoff_v2 최종 관찰 핀: 1dd28cab / 6fe749b8 / 740912fe / 7a8c4196 / 00cdae7b / 3965e5d5. 공식42 이후 변경은 미확정 WIP로 기록. Gate: root 채택·docs 동기화·선행 합성, 동일 값 외부 재설정의 식별 한계·native AX·RTL·전체 재생. PROVISIONAL/nativeblocked 유지."
+          },
+          "at": "2026-10-03T09:40:32.403040+00:00",
+          "rootHandedOff": false,
+          "nativeAccepted": false,
+          "productionApplied": false
+        }
+      ],
+      "sourcePins": {
+        "game.html": "6fe749b8f01e05a3c87820c0a7c2780290e1290930c810ebbf98e302e307904f",
+        "game-easy-test.html": "740912febb84fa58b7a88df6aebf309ed4e488be469cb25e8dd64bdbe9e95093",
+        "index.html": "1dd28cab162a4384ad84a356eb2c719940782005d20da1312d2857bc649615a7"
+      },
+      "prompt": "BUILD SUPERVISOR-BUILD-0931: Tab 예외는 이미 구현되어, 하드웨어 진단 값 그룹의 기존 제목 연결로 대체했습니다. RAM 후보 4VM PASS, 파일 변경 0. 최초 9045cb, 완료 4abd5a. 메모리: BUILD0931_{command,result,raw,proof,originals,docs_handoff,handoff}. game.html 82e46f1490496d2a0fcc6c144603e5f483c1a952c46661e1756b3aaf72ce15dc game-easy-test.html 238dd3e097a92712cef6c33e9fec1f5878b1fae7e7ade881b5706a99e3bb2b58 index.html 1dd28cab162a4384ad84a356eb2c719940782005d20da1312d2857bc649615a7 node-main.js 09eba1c2b9aa83376b93f9d4a2f23467a1068df416d3fef2486734a27d83cfe3 server.cjs 18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d Gate: UIUX·QUESTNPC 통합, native·visual·청취·실제 진단·생산 채택은 미확정입니다.\nITEM SUPERVISOR-ITEM-0931 수신·Read·새 turn 완료. 첫 유용 tool 310e09, 완료 9c5c39. 별도 강화 팝업이 없어 승인 대체 대상인 보석 하위 탭 키보드 위임 완료. 168 spy 검사·JS12/JSON2 PASS. 완료 시 관측 pins: Main 6fe749b8f01e05a3c87820c0a7c2780290e1290930c810ebbf98e302e307904f Easy 740912febb84fa58b7a88df6aebf309ed4e488be469cb25e8dd64bdbe9e95093 index 1dd28cab162a4384ad84a356eb2c719940782005d20da1312d2857bc649615a7 메모리키: item_gemCloseFocus0931_{first_exec,boundary_exec,controls_exec,fallback_exec,easy_exec,script,exec,evidence,patch,docs_sync,handoff}. Gate: 변경 WIP receipt, native 입력·초점, 후보·docs 적용. writes0 / actualgameoperations0.\nBALANCE SUPERVISOR-BALANCE-0931 완료: 대체 critMultiOnLowHP 설명 후보 PASS. source42 핀: Main 82e46f14, Easy 238dd3e0, index 1dd28cab. 비율 단위·효과 미연결·HP 조건 미구현 표시. 원값·공용 포맷·비교 %p 유지. 메모리키: balanceLowHPCrit0931Handoff, 영수증 064fa8. Gate: DEAD/FIX 유지, Root ST·빔·합산 범위 불변, native·visual·청취 미확정. writes0.\nSOUND SUPERVISOR-SOUND-0931 완료. mg.gain.value 실물 없음·실제 setter는 0851 제출 완료여서, 미제출 FM connect 후보 1건으로 대체했습니다. 신규 검사 30개 PASS, writes0. 관측 핀: Main 6fe749b8…, Easy 740912fe…, index 1dd28cab… 실행 핀: 82e46f14… / 238dd3e0…; 새 WIP의 FM 원문 동일·전체 역변환 PASS 완료 ID: eda265 / 818684 / eed093 / 9a1f6e 메모리: sound_0931_{candidate_result,unified_candidate,new_only_candidate,docs_sync_table,final_result,handoff} 모두 cleanup 실패: UNRECOVERED native·visual·청취·caller·fullLoop: NOT_RUN, 생산 적용: NOT_APPLIED, 새 epoch: PENDING\nQUESTNPC SUPERVISOR-QUESTNPC-0932 메모리 후보 완료. 기존 챕터 리프 02 · 직접 실습을 게이지의 aria-labelledby로 연결하고, 소유 ID·참조만 복원합니다. 완료: QUESTNPC-0932-resource-completion-visible-chapter-label-reference / 38352e 최종 VM 76대조·152변형 PASS. 중복 ID 반례·수정 이력 보존. 메모리: questNPC0932{CandidateMemory,RuntimeReceipt,DocsDraft,FinalState,Handoff} 관측 6핀 유지: 6fe749b8 / 740912fe / 1dd28cab. 공식42와 후속 WIP 구분. Gate: 0926 역할 합성·정리 순서, native AX·visual 인수. 기존 후보 변경·파일 쓰기·실제 focus/input/skip 0건.\nMARKETING SUPERVISOR-MARKETING-0931 메모리 후보 완료. 현재 aria-keyshortcuts가 소유값 Enter Space일 때만 복구하며, 외부 변경·삭제·빈 값 보존 검증 PASS. 다른 속성·게임패드·5000ms 불변. 실제 DOM·입력·초점·스킵·저장·파일 변경 0. 완료 ID: MARKETING-0931-main-hold-keyshortcuts-foreign-current-value-preserve-memory-complete 메모리: 0931_candidate, 0931_docs_sync_v2, 0931_hashes, 0931_handoff_v2 최종 관찰 핀: 1dd28cab / 6fe749b8 / 740912fe / 7a8c4196 / 00cdae7b / 3965e5d5. 공식42 이후 변경은 미확정 WIP로 기록. Gate: root 채택·docs 동기화·선행 합성, 동일 값 외부 재설정의 식별 한계·native AX·RTL·전체 재생. PROVISIONAL/nativeblocked 유지.\nUIUX SUPERVISOR-UIUX-0931 완료. 실제 초점 기준 Tab/Shift+Tab 후보 저장. 파일별 VM 660건 PASS, keyup 불변. 완료 ID c082d7; writes·실제 Tab/input/DOM/action/focus 0. 최종 검증 핀: Main 6fe749b8f01e05a3c87820c0a7c2780290e1290930c810ebbf98e302e307904f Easy 740912febb84fa58b7a88df6aebf309ed4e488be469cb25e8dd64bdbe9e95093 index 1dd28cab162a4384ad84a356eb2c719940782005d20da1312d2857bc649615a7 메모리: uiuxSkillTabBoundary0931SubmittedCandidate, uiuxSkillTabBoundary0931ExactEdits, uiuxSkillTabBoundary0931Handoff, uiux0931Completion. Gate: Root 병합·docs·기존 Tab 라우팅 조합, QUESTNPC·native/visual/청취 미검수. 새 WIP 채택 추정 없음. 0926 및 기존 원자료 불변.",
+      "retrySent": false
+    },
+    {
+      "round": "hb0942",
+      "at": "2026-10-03T09:45:13.238786+00:00",
+      "accepted": false,
+      "receipt": {
+        "isError": true,
+        "notAttempted": true,
+        "ownerReadViaState": true,
+        "reason": "Completed originals directly available in supervisor STATE; no duplicate steering."
+      },
+      "originals": [
+        {
+          "role": "UIUX",
+          "turnId": "01a10122-fa89-76e3-81e6-5cb211dc050c",
+          "messageId": "msg_04e77a2cd83d56e0016ac0ce4b11ac87d0a90b8df7f59ccc3e",
+          "toolId": "exec-5a99c510-11a9-4511-b116-e48703a6a5b2",
+          "originalFinal": {
+            "id": "msg_04e77a2cd83d56e0016ac0ce4b11ac87d0a90b8df7f59ccc3e",
+            "turnId": "01a10122-fa89-76e3-81e6-5cb211dc050c",
+            "phase": "final_answer",
+            "text": "SUPERVISOR-UIUX-0939 완료. 현재 상세 내부 초점의 Escape를 기존 닫기 콜백에 연결하는 후보 저장. 파일별 VM 297건 PASS. 완료 ID 12acd4; writes·실제 input/action/DOM/render/focus 0. 관측 핀: Main 6fe749b8f01e05a3c87820c0a7c2780290e1290930c810ebbf98e302e307904f Easy 740912febb84fa58b7a88df6aebf309ed4e488be469cb25e8dd64bdbe9e95093 index 1dd28cab162a4384ad84a356eb2c719940782005d20da1312d2857bc649615a7 메모리: uiuxSkillDetailEscape0939SubmittedCandidate, uiuxSkillDetailEscape0939ExactEdits, uiuxSkillDetailEscape0939Handoff, uiux0939Completion. Gate: Root 병합·docs·기존 후보 조합, QUESTNPC·전체 이벤트 전달·native/visual/청취 미검수. 기존 원자료 불변."
+          },
+          "at": "2026-10-03T09:45:13.238786+00:00",
+          "rootHandedOff": false,
+          "nativeAccepted": false,
+          "productionApplied": false
+        },
+        {
+          "role": "ITEM",
+          "turnId": "01a10121-de76-76d0-9647-5b3728616c44",
+          "messageId": "msg_0dc2542c5744bc89016ac0cd80f70887d0b228e71c91d48e7f",
+          "toolId": "exec-3c367133-b78f-477f-a026-900a05d7d79b",
+          "originalFinal": {
+            "id": "msg_0dc2542c5744bc89016ac0cd80f70887d0b228e71c91d48e7f",
+            "turnId": "01a10121-de76-76d0-9647-5b3728616c44",
+            "phase": "final_answer",
+            "text": "SUPERVISOR-ITEM-0938 수신·Read·새 turn 완료. 첫 유용 tool cd5925, 완료 3598dc. 기존 탭 키로 재생성된 제어에 초점 복원. 54 VM 검사·JS12/JSON2 PASS. 관측 pins: Main 6fe749b8f01e05a3c87820c0a7c2780290e1290930c810ebbf98e302e307904f Easy 740912febb84fa58b7a88df6aebf309ed4e488be469cb25e8dd64bdbe9e95093 index 1dd28cab162a4384ad84a356eb2c719940782005d20da1312d2857bc649615a7 메모리키: item_gemTabFocus0938_{first_exec,script,exec,evidence,patch,docs_sync,handoff}. Gate: native 초점·전체 렌더, 0931 선행 적용, 후보·docs 적용. writes0 / actualgameoperations0."
+          },
+          "at": "2026-10-03T09:45:13.238786+00:00",
+          "rootHandedOff": false,
+          "nativeAccepted": false,
+          "productionApplied": false
+        },
+        {
+          "role": "BUILD",
+          "turnId": "01a10121-ddd6-7c42-b173-9b60eef2fe50",
+          "messageId": "msg_0462489076d3ce85016ac0cd9d6f4487d0ae9f4550ab3f16af",
+          "toolId": "exec-26e5d6bc-ff9f-4e1d-bc7f-1c0f1536e28b",
+          "originalFinal": {
+            "id": "msg_0462489076d3ce85016ac0cd9d6f4487d0ae9f4550ab3f16af",
+            "turnId": "01a10121-ddd6-7c42-b173-9b60eef2fe50",
+            "phase": "final_answer",
+            "text": "SUPERVISOR-BUILD-0938: GPU 값 리프의 status/live·동일값 갱신 억제·속성 복구 RAM 후보 4VM PASS. 파일 변경 0. 최초 8d576d, 완료 21c7e6. 메모리: BUILD0938_proof_v3, originals, docs_handoff, handoff, 명령·실패 원문 보존. game.html 6fe749b8f01e05a3c87820c0a7c2780290e1290930c810ebbf98e302e307904f game-easy-test.html 740912febb84fa58b7a88df6aebf309ed4e488be469cb25e8dd64bdbe9e95093 index.html 1dd28cab162a4384ad84a356eb2c719940782005d20da1312d2857bc649615a7 node-main.js 09eba1c2b9aa83376b93f9d4a2f23467a1068df416d3fef2486734a27d83cfe3 server.cjs 18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d Gate: 실제 진단·native 안내 횟수/시점·visual·청취·생산 채택은 미검증입니다."
+          },
+          "at": "2026-10-03T09:45:13.238786+00:00",
+          "rootHandedOff": false,
+          "nativeAccepted": false,
+          "productionApplied": false
+        },
+        {
+          "role": "BALANCE",
+          "turnId": "01a10121-df05-70c0-b650-4d19a4343939",
+          "messageId": "msg_07e2da25fb01bbcf016ac0cd919dc087d08ddd8acaae9a0909",
+          "toolId": "exec-dd63cfa9-dbf6-45d4-b699-52538aa5a2ad",
+          "originalFinal": {
+            "id": "msg_07e2da25fb01bbcf016ac0cd919dc087d08ddd8acaae9a0909",
+            "turnId": "01a10121-df05-70c0-b650-4d19a4343939",
+            "phase": "final_answer",
+            "text": "SUPERVISOR-BALANCE-0938 완료: 대체 lifeHealPow 설명 후보 PASS. source43 핀: Main 6fe749b8, Easy 740912fe, index 1dd28cab. 자연 HP 재생량 증가 비율·생존/HP 부족 조건·대기 속도 반영. 원값·포맷·비교 %p 유지. 메모리키: balanceLifeHealPow0938Handoff, 영수증 517e61. Gate: Root ST·빔 불변, 전체 회복 적용 주장 없음, native·visual·청취 미확정. writes0."
+          },
+          "at": "2026-10-03T09:45:13.238786+00:00",
+          "rootHandedOff": false,
+          "nativeAccepted": false,
+          "productionApplied": false
+        },
+        {
+          "role": "SOUND",
+          "turnId": "01a10121-df8d-7803-aae6-26a2076f1aa0",
+          "messageId": "msg_04893afbe993b162016ac0cd9ec4b087d0b0f5019916a4a7d4",
+          "toolId": "exec-d552f0ba-a878-4ea6-810c-3fdfb30f67a2",
+          "originalFinal": {
+            "id": "msg_04893afbe993b162016ac0cd9ec4b087d0b0f5019916a4a7d4",
+            "turnId": "01a10121-df8d-7803-aae6-26a2076f1aa0",
+            "phase": "final_answer",
+            "text": "SUPERVISOR-SOUND-0938 완료. 후보 1건, 신규 검사 24개·전체 역변환 PASS, writes0. 관측 핀: Main 6fe749b8…, Easy 740912fe…, index 1dd28cab… — 공식43 제공 핀과 일치 완료 ID: 355941 / e1f13b / f03c9c / 73f3de 메모리: sound_0938_{unified_candidate,new_only_candidate,docs_sync_table,final_result,handoff} 모두 cleanup 실패: UNRECOVERED native·visual·청취·actualCaller·fullLoop: NOT_RUN 생산 적용: NOT_APPLIED"
+          },
+          "at": "2026-10-03T09:45:13.238786+00:00",
+          "rootHandedOff": false,
+          "nativeAccepted": false,
+          "productionApplied": false
+        },
+        {
+          "role": "MARKETING",
+          "turnId": "01a10121-e092-75f2-a8e5-5abbc9edcd94",
+          "messageId": "msg_05f8637ca4c8483c016ac0cd8a776887d09afea4c78efa5792",
+          "toolId": "exec-e8d67e25-e998-413e-93c2-389fb08d7688",
+          "originalFinal": {
+            "id": "msg_05f8637ca4c8483c016ac0cd8a776887d09afea4c78efa5792",
+            "turnId": "01a10121-e092-75f2-a8e5-5abbc9edcd94",
+            "phase": "final_answer",
+            "text": "SUPERVISOR-MARKETING-0938 메모리 delta 완료. 현재 tabindex가 소유값 0일 때만 복구하며, 외부 변경·삭제 6종 보존 검증 PASS. 0931·역할·게임패드·5000ms 불변. 실제 DOM·입력·초점·스킵·저장·파일 변경 0. 완료 ID: MARKETING-0938-main-hold-tabindex-foreign-current-value-preserve-memory-complete 메모리: 0938_candidate, 0938_docs_sync, 0938_hashes, 0938_handoff 6핀 유지: 1dd28cab / 6fe749b8 / 740912fe / 7a8c4196 / 00cdae7b / 3965e5d5. 공식43 영수증 확인. Gate: root 채택·docs 동기화·합성, 동일값 외부 재설정 식별 한계·native Tab·AX·RTL·전체 재생. PROVISIONAL/nativeblocked 유지."
+          },
+          "at": "2026-10-03T09:45:13.238786+00:00",
+          "rootHandedOff": false,
+          "nativeAccepted": false,
+          "productionApplied": false
+        }
+      ],
+      "sourcePins": {
+        "game.html": "6fe749b8f01e05a3c87820c0a7c2780290e1290930c810ebbf98e302e307904f",
+        "game-easy-test.html": "740912febb84fa58b7a88df6aebf309ed4e488be469cb25e8dd64bdbe9e95093",
+        "index.html": "1dd28cab162a4384ad84a356eb2c719940782005d20da1312d2857bc649615a7"
+      },
+      "prompt": "ITEM SUPERVISOR-ITEM-0938 수신·Read·새 turn 완료. 첫 유용 tool cd5925, 완료 3598dc. 기존 탭 키로 재생성된 제어에 초점 복원. 54 VM 검사·JS12/JSON2 PASS. 관측 pins: Main 6fe749b8f01e05a3c87820c0a7c2780290e1290930c810ebbf98e302e307904f Easy 740912febb84fa58b7a88df6aebf309ed4e488be469cb25e8dd64bdbe9e95093 index 1dd28cab162a4384ad84a356eb2c719940782005d20da1312d2857bc649615a7 메모리키: item_gemTabFocus0938_{first_exec,script,exec,evidence,patch,docs_sync,handoff}. Gate: native 초점·전체 렌더, 0931 선행 적용, 후보·docs 적용. writes0 / actualgameoperations0.\nBUILD SUPERVISOR-BUILD-0938: GPU 값 리프의 status/live·동일값 갱신 억제·속성 복구 RAM 후보 4VM PASS. 파일 변경 0. 최초 8d576d, 완료 21c7e6. 메모리: BUILD0938_proof_v3, originals, docs_handoff, handoff, 명령·실패 원문 보존. game.html 6fe749b8f01e05a3c87820c0a7c2780290e1290930c810ebbf98e302e307904f game-easy-test.html 740912febb84fa58b7a88df6aebf309ed4e488be469cb25e8dd64bdbe9e95093 index.html 1dd28cab162a4384ad84a356eb2c719940782005d20da1312d2857bc649615a7 node-main.js 09eba1c2b9aa83376b93f9d4a2f23467a1068df416d3fef2486734a27d83cfe3 server.cjs 18cf9aa806d5715788f360debbc2a45c2574a76db952f101b524e2ff77fd517d Gate: 실제 진단·native 안내 횟수/시점·visual·청취·생산 채택은 미검증입니다.\nBALANCE SUPERVISOR-BALANCE-0938 완료: 대체 lifeHealPow 설명 후보 PASS. source43 핀: Main 6fe749b8, Easy 740912fe, index 1dd28cab. 자연 HP 재생량 증가 비율·생존/HP 부족 조건·대기 속도 반영. 원값·포맷·비교 %p 유지. 메모리키: balanceLifeHealPow0938Handoff, 영수증 517e61. Gate: Root ST·빔 불변, 전체 회복 적용 주장 없음, native·visual·청취 미확정. writes0.\nSOUND SUPERVISOR-SOUND-0938 완료. 후보 1건, 신규 검사 24개·전체 역변환 PASS, writes0. 관측 핀: Main 6fe749b8…, Easy 740912fe…, index 1dd28cab… — 공식43 제공 핀과 일치 완료 ID: 355941 / e1f13b / f03c9c / 73f3de 메모리: sound_0938_{unified_candidate,new_only_candidate,docs_sync_table,final_result,handoff} 모두 cleanup 실패: UNRECOVERED native·visual·청취·actualCaller·fullLoop: NOT_RUN 생산 적용: NOT_APPLIED\nMARKETING SUPERVISOR-MARKETING-0938 메모리 delta 완료. 현재 tabindex가 소유값 0일 때만 복구하며, 외부 변경·삭제 6종 보존 검증 PASS. 0931·역할·게임패드·5000ms 불변. 실제 DOM·입력·초점·스킵·저장·파일 변경 0. 완료 ID: MARKETING-0938-main-hold-tabindex-foreign-current-value-preserve-memory-complete 메모리: 0938_candidate, 0938_docs_sync, 0938_hashes, 0938_handoff 6핀 유지: 1dd28cab / 6fe749b8 / 740912fe / 7a8c4196 / 00cdae7b / 3965e5d5. 공식43 영수증 확인. Gate: root 채택·docs 동기화·합성, 동일값 외부 재설정 식별 한계·native Tab·AX·RTL·전체 재생. PROVISIONAL/nativeblocked 유지.\nUIUX SUPERVISOR-UIUX-0939 완료. 현재 상세 내부 초점의 Escape를 기존 닫기 콜백에 연결하는 후보 저장. 파일별 VM 297건 PASS. 완료 ID 12acd4; writes·실제 input/action/DOM/render/focus 0. 관측 핀: Main 6fe749b8f01e05a3c87820c0a7c2780290e1290930c810ebbf98e302e307904f Easy 740912febb84fa58b7a88df6aebf309ed4e488be469cb25e8dd64bdbe9e95093 index 1dd28cab162a4384ad84a356eb2c719940782005d20da1312d2857bc649615a7 메모리: uiuxSkillDetailEscape0939SubmittedCandidate, uiuxSkillDetailEscape0939ExactEdits, uiuxSkillDetailEscape0939Handoff, uiux0939Completion. Gate: Root 병합·docs·기존 후보 조합, QUESTNPC·전체 이벤트 전달·native/visual/청취 미검수. 기존 원자료 불변.",
       "retrySent": false
     }
   ],
@@ -68530,7 +69192,7 @@
     "appEpoch": "source29",
     "nativeAccepted": false
   },
-  "latestRootCodeEpoch": "source42",
+  "latestRootCodeEpoch": "source43",
   "rootNativeAppEpoch": "source29",
   "source30RootOwnerNativeAccepted": false,
   "hb0640LateQuestRecordCorrection": {
@@ -68549,14 +69211,14 @@
     "allProcessingThreeMinuteOverdueSeconds": 101.81977899999998
   },
   "latestStateOnlyRootHandoff": {
-    "at": "2026-10-03T09:33:09.799516+00:00",
-    "round": "hb0929",
-    "officialRootTurnId": "01a10116-11fa-7c42-9952-c84a59660914",
+    "at": "2026-10-03T09:45:13.238786+00:00",
+    "round": "hb0942",
+    "officialRootTurnId": "01a10120-2451-7eb1-b042-3c33ec658d9b",
     "receipt": {
       "isError": true,
       "notAttempted": true,
       "ownerReadViaState": true,
-      "reason": "Completed originals handed off by direct supervisor STATE for root; no duplicate steering."
+      "reason": "Completed originals directly available in supervisor STATE; no duplicate steering."
     },
     "doNotRetrySameOfficialTurn": true
   },
@@ -69151,6 +69813,17 @@
       "semanticReviewConfirmed": false,
       "nativeAccepted": false,
       "receiptSHA256": "ae8cbad4f8c38293531c564ce4e54222dbf768031586532d666a78484930a076"
+    },
+    {
+      "at": "2026-10-03T09:37:18.209872+00:00",
+      "round": "hb0929",
+      "scope": "exact delivered supervisor STATE/LOG raw snapshot only",
+      "completionId": "hb0929-owned-supervisor-state-log-0933",
+      "rawRemotePreservationConfirmedByReceipt": true,
+      "semanticReviewConfirmed": false,
+      "candidateAdopted": false,
+      "nativeAccepted": false,
+      "receiptSHA256": "8dc5c89538534c8ed474e6413792fcea27a2edb35deb6da4ea9d30a338a8ce91"
     }
   ],
   "source36RootReservation": {
@@ -69168,23 +69841,42 @@
     "observedAt": "2026-10-03T08:05:01.471655+00:00"
   },
   "latestRootReservation": {
-    "at": "2026-10-03T09:28:00.144378+00:00",
-    "sourceCheckpoint": 42,
-    "originalTeamTask": "QA0847",
-    "originalCompletionId": "934bbe9d-f58c-4e59-917f-dbb6f624cb66",
-    "initialScopeCount": 8,
-    "unconsumedMaximum": 0,
-    "released": true,
-    "productionAdopted": true,
+    "at": "2026-10-03T09:41:47.964875+00:00",
+    "sourceCheckpoint": 44,
+    "originalTeamTask": "QA0852",
+    "originalCompletionId": "1fcc4ad3-b3de-4b31-a364-fa139ac3cbf0",
+    "baseOfficialCodeEpoch": 43,
+    "baseCodeSHA": "abf9eb87a94ef67c61b33119798c463b5dce27e4",
+    "baseOperationalHEAD": "eed564acd8e1cc632274faacc4dd314aaa945945",
+    "unconsumedMaximum": 9,
     "ownerScopeSlots": {
       "HTML": 2,
       "test": 1,
-      "docs": 5
+      "docs": 6
     },
-    "releaseReceiptSHA256": "b409a11a9211c4e1c513fd816cf46c81183af2b6f527b9f8a2b05c97679817c8",
+    "docsScopeCategories": [
+      "item",
+      "save",
+      "balance",
+      "2_2",
+      "master",
+      "CHANGELOG"
+    ],
+    "exactTestPathPending": true,
+    "scope": "splashMul/splashR two numeric readers",
+    "ownerProposedBytesEachHTML": 2,
+    "ownerPremiseCorrection": "String splashR need not mean no targets: 69+string10 concatenates to string6910, later radius concatenation can coerce to huge number. Verify normal elemMissile path; evil/hellfire fireball explosion break/continue bypass this block.",
+    "ownerPlannedVerification": "whole save/equip, actual _execMagicE/handler, magicCast emission, splash damage and hurtE",
+    "reviewOnly": true,
+    "productionAdopted": false,
+    "released": false,
+    "actualObserved": 71,
+    "externalUnconsumedReservation": 8,
+    "maximumConservative": 88,
     "nativeAccepted": false,
     "activeTaskResent": false,
-    "pastPinsRewritten": false
+    "pastPinsRewritten": false,
+    "ClaudeOrdersSent": 0
   },
   "ClaudeOrderSendsThisNotice": 0,
   "source36OfficialReceiptPending": {
@@ -69268,7 +69960,7 @@
     "supervisorMeaningReview": false,
     "nativeAccepted": false
   },
-  "latestRootReviewCheckpoint": 42,
+  "latestRootReviewCheckpoint": 43,
   "source37RootReservation": {
     "observedAt": "2026-10-03T08:13:40.080733+00:00",
     "ownerReported": true,
@@ -69703,6 +70395,44 @@
       "nativeAccepted": false,
       "runningAppSource": 29,
       "runningAppPort": 3404
+    },
+    {
+      "at": "2026-10-03T09:41:47.964875+00:00",
+      "sourceCheckpoint": 44,
+      "originalTeamTask": "QA0852",
+      "originalCompletionId": "1fcc4ad3-b3de-4b31-a364-fa139ac3cbf0",
+      "baseOfficialCodeEpoch": 43,
+      "baseCodeSHA": "abf9eb87a94ef67c61b33119798c463b5dce27e4",
+      "baseOperationalHEAD": "eed564acd8e1cc632274faacc4dd314aaa945945",
+      "unconsumedMaximum": 9,
+      "ownerScopeSlots": {
+        "HTML": 2,
+        "test": 1,
+        "docs": 6
+      },
+      "docsScopeCategories": [
+        "item",
+        "save",
+        "balance",
+        "2_2",
+        "master",
+        "CHANGELOG"
+      ],
+      "exactTestPathPending": true,
+      "scope": "splashMul/splashR two numeric readers",
+      "ownerProposedBytesEachHTML": 2,
+      "ownerPremiseCorrection": "String splashR need not mean no targets: 69+string10 concatenates to string6910, later radius concatenation can coerce to huge number. Verify normal elemMissile path; evil/hellfire fireball explosion break/continue bypass this block.",
+      "ownerPlannedVerification": "whole save/equip, actual _execMagicE/handler, magicCast emission, splash damage and hurtE",
+      "reviewOnly": true,
+      "productionAdopted": false,
+      "released": false,
+      "actualObserved": 71,
+      "externalUnconsumedReservation": 8,
+      "maximumConservative": 88,
+      "nativeAccepted": false,
+      "activeTaskResent": false,
+      "pastPinsRewritten": false,
+      "ClaudeOrdersSent": 0
     }
   ],
   "source39CodeCheckpointRead": {
@@ -70027,14 +70757,12 @@
     "productionAdoptionScope": "hurtE _accDmg numeric sum only"
   },
   "latestRootCapacityObservation": {
-    "at": "2026-10-03T09:07:23.047998+00:00",
+    "at": "2026-10-03T09:36:08.301300+00:00",
     "method": "git status --porcelain=v1 --untracked-files=all -z",
-    "actualChanges": 79,
-    "rootUnconsumedMaximum": 8,
+    "actualChanges": 71,
+    "rootUnconsumedMaximum": 0,
     "externalUnconsumedMaximum": 8,
-    "maximumConservative": 95,
-    "actual80ThresholdReached": false,
-    "newTeamFileOrders": 0
+    "maximumConservative": 79
   },
   "source41LatestOwnerPremiseCorrection": {
     "originalUncorrectedClaim": "+7B both HTML / seven accessory terms",
@@ -70292,7 +71020,7 @@
     "modifiedOwnedFiles": 2
   },
   "latestCompletedHandoffReadPending": {
-    "round": "hb0929",
+    "round": "hb0942",
     "stateOriginalsReady": true,
     "rootReadConfirmed": false,
     "teamCandidatesAdopted": false,
@@ -70398,5 +71126,293 @@
     "nativeAccepted": false,
     "activeTaskResent": false,
     "pastPinsRewritten": false
+  },
+  "hb0929Actual80OwnedHandoff": {
+    "completionId": "hb0929-owned-supervisor-state-log-0933",
+    "receipt": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"threadId\":\"01a0faa9-b453-7673-be39-98adedb4c2b3\"}"
+        }
+      ],
+      "isError": false
+    },
+    "sentVersionPins": [
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/supervisor/SUPERVISOR_STATE.json",
+        "bytes": 6302341,
+        "sha256": "8666c7a2308f7c6a84e617c8d0e6c728cb7b9759f1b9c828b8dff15409967278"
+      },
+      {
+        "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/supervisor/SUPERVISOR_LOG.md",
+        "bytes": 381753,
+        "sha256": "4271afdd82d7efe598e70f7d674a769dc2cf1d77a4594779ec13fb779a18a035"
+      }
+    ],
+    "exactSentRawSnapshotPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tmp/mac-migration-runtime/supervisor-20261002/hb0929-round.json",
+    "rawField": "sentRawSnapshots",
+    "ownerReadOrRemotePreservationPending": true,
+    "currentOwnerFilesUpdatedAfterSentVersion": true,
+    "nativeAccepted": false,
+    "ownerExactIgnoredSnapshotCapturedReported": true,
+    "ownerRemotePreservationStillPending": false,
+    "ownerReceiptAcknowledged": true,
+    "rawRemotePreserved": true,
+    "ownerReceiptAcknowledgedAt": "2026-10-03T09:37:18.209872+00:00",
+    "ownerPreservationHEAD": "eed564acd8e1cc632274faacc4dd314aaa945945",
+    "teamCandidateAdopted": false
+  },
+  "source43CodeCheckpointRead": {
+    "observedAt": "2026-10-03T09:36:08.301300+00:00",
+    "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tmp/mac-migration-runtime/continued-review-20261003/source43-stamina-bonus/checkpoint-receipt.json",
+    "bytes": 3058,
+    "sha256": "30511700468fd23cc527f40b03d5aa8b275f5d33a6ab26832acdfc3ba22d4db6",
+    "receipt": {
+      "at": "2026-10-03T09:34:23.902837+00:00",
+      "codeEpoch": 43,
+      "head": "abf9eb87a94ef67c61b33119798c463b5dce27e4",
+      "remote": "abf9eb87a94ef67c61b33119798c463b5dce27e4",
+      "scope": [
+        "game.html",
+        "game-easy-test.html",
+        "test/staminaBonusConsumption.test.cjs",
+        "docs/7아이템디자인/exoduser-item-system-full.md",
+        "docs/15 세이브+데이터구조/15 세이브+데이터구조.md",
+        "docs/14밸런스+수치테이블/14밸런스+수치테이블.md",
+        "docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식.md",
+        "docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식__NFD_0628_2305_백업.md",
+        "docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md",
+        "docs/CHANGELOG_SYNC.md"
+      ],
+      "files": {
+        "game.html": {
+          "bytes": 4035958,
+          "sha256": "6fe749b8f01e05a3c87820c0a7c2780290e1290930c810ebbf98e302e307904f"
+        },
+        "game-easy-test.html": {
+          "bytes": 3913626,
+          "sha256": "740912febb84fa58b7a88df6aebf309ed4e488be469cb25e8dd64bdbe9e95093"
+        },
+        "test/staminaBonusConsumption.test.cjs": {
+          "bytes": 8891,
+          "sha256": "ea314a59911ad7a822ec4c32daa552447ec79a420893e0cc413c00aa58e697fd"
+        },
+        "docs/7아이템디자인/exoduser-item-system-full.md": {
+          "bytes": 92625,
+          "sha256": "3aa9afe2efbef6d973e61323fc53dd550f33b6e1399bb482e07d03029d317662"
+        },
+        "docs/15 세이브+데이터구조/15 세이브+데이터구조.md": {
+          "bytes": 182849,
+          "sha256": "4a0997250db29b54f3363a0c6b68756c49a8f4ada45264bb411c3bdc26a3f817"
+        },
+        "docs/14밸런스+수치테이블/14밸런스+수치테이블.md": {
+          "bytes": 44003,
+          "sha256": "404fe7cea60e2ccc97f71067fc69c5dc7fe4c53060fa5328a7282a9099cafe19"
+        },
+        "docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식.md": {
+          "bytes": 37147,
+          "sha256": "74350684769bf08e80be46c94cb21a856ef9e2d6401ca44a8099d6ed87996df0"
+        },
+        "docs/2_1 스킬관리+합체시스템+자원/자원리젠+소모공식__NFD_0628_2305_백업.md": {
+          "bytes": 19374,
+          "sha256": "368472bc7221efa388732d849449ac84b5b80de2cdb391b91f7974e20341f151"
+        },
+        "docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md": {
+          "bytes": 296367,
+          "sha256": "2c8e70ec7448198c7287efb169d497f6f97a533a2d4dff239d25b8e0ff62de5f"
+        },
+        "docs/CHANGELOG_SYNC.md": {
+          "bytes": 3486638,
+          "sha256": "3762562e4e0b0bb71637b77165cee7756b7b3355e4aef40aa1588342f4a88c92"
+        }
+      },
+      "indexEmpty": true,
+      "protected67Unchanged": true,
+      "NULBeforeCheckpoint": 81,
+      "NULAfterCheckpoint": 71,
+      "capacityAction": "81 immediate completed owned scope10 checkpoint; no additional candidate output",
+      "testPass": 32,
+      "baselinePass": 14,
+      "baselineAssertionsFail": 18,
+      "nativeAcceptance": false,
+      "runningAppCodeEpoch": 29,
+      "completion": "610c1508-3ce7-440c-8699-8a44e5787298",
+      "exactHTMLInverse": true,
+      "exactDocsInverse": true,
+      "syntheticNumericMst": 250,
+      "syntheticStringOriginalMst": 1460165408,
+      "alwaysNegativeClaimAccepted": false
+    },
+    "localPins": {
+      "game.html": "6fe749b8f01e05a3c87820c0a7c2780290e1290930c810ebbf98e302e307904f",
+      "game-easy-test.html": "740912febb84fa58b7a88df6aebf309ed4e488be469cb25e8dd64bdbe9e95093",
+      "index.html": "1dd28cab162a4384ad84a356eb2c719940782005d20da1312d2857bc649615a7"
+    },
+    "localHTMLPinsMatchOwnerReceipt": true,
+    "supervisorRemoteVerified": false,
+    "supervisorMeaningReview": false,
+    "originalCompletionId": "610c1508-3ce7-440c-8699-8a44e5787298",
+    "adoptedScope": "recalcSt bonusSt numeric reader only each6B, original1B claim corrected",
+    "currentSlotsPreserved": "main17/Easy16",
+    "syntheticStaminaExamplesNotNativeGameplay": true,
+    "baseline18AssertionFAILNot18Defects": true,
+    "preparationErrorsPreserved": [
+      "omitted _mpr in test",
+      "normal whitespace equivalence assumption"
+    ],
+    "alwaysNegativeOrUniformSystemCollapseClaimAdopted": false,
+    "separateUI_stEqReaderOrInfinityOrFullInitStageNativeVerified": false,
+    "nativeAccepted": false,
+    "appSource": 29,
+    "source43InApp": false
+  },
+  "rootSource43ReviewReservation": {
+    "at": "2026-10-03T09:36:08.301300+00:00",
+    "sourceCheckpoint": 43,
+    "originalTeamTask": "QA0912",
+    "originalCompletionId": "610c1508-3ce7-440c-8699-8a44e5787298",
+    "initialScopeCount": 10,
+    "unconsumedMaximum": 0,
+    "released": true,
+    "productionAdopted": true,
+    "ownerScopeSlots": {
+      "HTML": 2,
+      "test": 1,
+      "docs": 7
+    },
+    "releaseReceiptSHA256": "30511700468fd23cc527f40b03d5aa8b275f5d33a6ab26832acdfc3ba22d4db6",
+    "nativeAccepted": false,
+    "activeTaskResent": false,
+    "pastPinsRewritten": false
+  },
+  "source43NoticeOnlyAudit": {
+    "at": "2026-10-03T09:36:08.301300+00:00",
+    "official7PollPerformed": false,
+    "teamMessagesSent": 0,
+    "rootMessagesSent": 0,
+    "modifiedOwnedFiles": 2,
+    "supervisorProductionOrGitMutations": 0,
+    "nativeAccepted": false
+  },
+  "hb0929OwnedRemotePreservationReceiptRead": {
+    "at": "2026-10-03T09:37:18.209872+00:00",
+    "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tmp/mac-migration-runtime/continued-review-20261003/supervisor-hb0929-owned-0933/checkpoint-receipt.json",
+    "bytes": 1787,
+    "sha256": "8dc5c89538534c8ed474e6413792fcea27a2edb35deb6da4ea9d30a338a8ce91",
+    "receipt": {
+      "at": "2026-10-03T09:36:31.519732+00:00",
+      "kind": "completed-owner-operational-raw",
+      "completion": "hb0929-owned-supervisor-state-log-0933",
+      "owner": "01a0fb1e-4ec3-7dd3-bba2-f87518e881fa",
+      "codeEpoch": 43,
+      "codeHead": "abf9eb87a94ef67c61b33119798c463b5dce27e4",
+      "scope": [
+        "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/supervisor/SUPERVISOR_STATE.json",
+        "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/supervisor/SUPERVISOR_LOG.md"
+      ],
+      "files": {
+        "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/supervisor/SUPERVISOR_STATE.json": {
+          "bytes": 6302341,
+          "sha256": "8666c7a2308f7c6a84e617c8d0e6c728cb7b9759f1b9c828b8dff15409967278"
+        },
+        "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/supervisor/SUPERVISOR_LOG.md": {
+          "bytes": 381753,
+          "sha256": "4271afdd82d7efe598e70f7d674a769dc2cf1d77a4594779ec13fb779a18a035"
+        }
+      },
+      "candidateAccepted": false,
+      "nativeAccepted": false,
+      "head": "eed564acd8e1cc632274faacc4dd314aaa945945",
+      "remote": "eed564acd8e1cc632274faacc4dd314aaa945945",
+      "remoteExact": true,
+      "scopeExact": true,
+      "codeUnchanged": true,
+      "protected67Unchanged": true,
+      "workingOwnerFilesPreserved": true,
+      "indexEmpty": true,
+      "NUL-uall": 71,
+      "workingOwnerFiles": {
+        "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/supervisor/SUPERVISOR_STATE.json": {
+          "bytes": 6309347,
+          "sha256": "9dfced27853357788b32b1ea6d8b19efc26b55ec354d3b1ec9619a0c08704a50",
+          "matchesHandoff": false
+        },
+        "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/supervisor/SUPERVISOR_LOG.md": {
+          "bytes": 382965,
+          "sha256": "0569af6421b15ac744cd35d12aa0d4dc396aacd8a152e266b888973e977c74d0",
+          "matchesHandoff": false
+        }
+      }
+    },
+    "exactSentVersionPinsMatchReceipt": true,
+    "ownerRemoteExactClaim": true,
+    "supervisorRemoteIndependentlyVerified": false,
+    "currentOwnerWorkingFilesPreserved": true,
+    "preservationOnly": true,
+    "candidateAdopted": false,
+    "nativeAccepted": false,
+    "codeEpochRemains": 43,
+    "codeCommit": "abf9eb87a94ef67c61b33119798c463b5dce27e4",
+    "operationalRawPreservationHEAD": "eed564acd8e1cc632274faacc4dd314aaa945945",
+    "claudeOrdersFilesPreservedByThisReceipt": false
+  },
+  "hb0929OwnedRemotePreservationAudit": {
+    "at": "2026-10-03T09:37:18.209872+00:00",
+    "actualNUL": 71,
+    "official7PollPerformed": false,
+    "teamMessagesSent": 0,
+    "rootMessagesSent": 0,
+    "modifiedOwnedFiles": 2,
+    "productionOrGitMutations": 0,
+    "nativeAccepted": false
+  },
+  "rootSource44ReviewReservation": {
+    "at": "2026-10-03T09:41:47.964875+00:00",
+    "sourceCheckpoint": 44,
+    "originalTeamTask": "QA0852",
+    "originalCompletionId": "1fcc4ad3-b3de-4b31-a364-fa139ac3cbf0",
+    "baseOfficialCodeEpoch": 43,
+    "baseCodeSHA": "abf9eb87a94ef67c61b33119798c463b5dce27e4",
+    "baseOperationalHEAD": "eed564acd8e1cc632274faacc4dd314aaa945945",
+    "unconsumedMaximum": 9,
+    "ownerScopeSlots": {
+      "HTML": 2,
+      "test": 1,
+      "docs": 6
+    },
+    "docsScopeCategories": [
+      "item",
+      "save",
+      "balance",
+      "2_2",
+      "master",
+      "CHANGELOG"
+    ],
+    "exactTestPathPending": true,
+    "scope": "splashMul/splashR two numeric readers",
+    "ownerProposedBytesEachHTML": 2,
+    "ownerPremiseCorrection": "String splashR need not mean no targets: 69+string10 concatenates to string6910, later radius concatenation can coerce to huge number. Verify normal elemMissile path; evil/hellfire fireball explosion break/continue bypass this block.",
+    "ownerPlannedVerification": "whole save/equip, actual _execMagicE/handler, magicCast emission, splash damage and hurtE",
+    "reviewOnly": true,
+    "productionAdopted": false,
+    "released": false,
+    "actualObserved": 71,
+    "externalUnconsumedReservation": 8,
+    "maximumConservative": 88,
+    "nativeAccepted": false,
+    "activeTaskResent": false,
+    "pastPinsRewritten": false,
+    "ClaudeOrdersSent": 0
+  },
+  "source44NoticeOnlyAudit": {
+    "at": "2026-10-03T09:41:47.964875+00:00",
+    "official7PollPerformed": false,
+    "teamMessagesSent": 0,
+    "rootMessagesSent": 0,
+    "modifiedOwnedFiles": 2,
+    "supervisorProductionOrGitMutations": 0,
+    "officialCodeEpochRemains": 43,
+    "nativeAccepted": false
   }
 }
