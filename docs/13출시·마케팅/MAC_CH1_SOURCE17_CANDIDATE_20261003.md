@@ -38,3 +38,7 @@
 기존 source15 no-cleanup adapter를 재사용했다. 다운로드·설치·서명·게시·기존 output 삭제·실패 job cleanup0이다. 원본 전체7918 재인벤토리·캐시 재해시·옛 앱 검사·옛 코드 검사 반복0이며 새 stage/app 실물만 확인했다. source17 앱을 정상 진입하여 전투·루팅·장비 갱신과 보스 사망 후 문 개방/필드 몹 유지·재도전이 같은 후보에서 동작하는지 검수해야 한다.
 
 Ignored 근거는 `tmp/mac-migration-runtime/continued-review-20261003/ch1-source17-build/`의 config/preflight/execute-result/physical-receipt/docs-search-classification이다. source15 부활 부분 근거는 `source15-native-play/normal-revival-receipt.json` 및 `06-normal-revival-paused.png`, `07-normal-revival-field.png`다. 새 앱과 이전 앱의 증거를 합쳐 한 번의 완주로 보고하지 않는다.
+
+### source17 포장 기록 이후 실제 정상 기동 관찰
+
+2026-10-03 KST 새3393 source17 앱을 정상 실행해 `index.html?demo=1` 타이틀과 “아무 키나 눌러 계속”, 입장 버튼·한국어 선택 표시를 실제 화면/AX로 확인했다. 위 표의 GUI0·profile 미생성은 포장 검수 시점의 역사다. 새 관찰은 정상 타이틀 기동만 인수하며 CH1 전투·보스·저장·청취 완료가 아니다. 증거는 `tmp/mac-migration-runtime/continued-review-20261003/source17-native-play/startup-receipt.json` 및 `01-normal-startup.png`다. 사용자 기존 앱/세이브 조작0.
