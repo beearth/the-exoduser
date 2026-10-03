@@ -217,3 +217,16 @@ NEXT PASS:
 | 대역 | geometry/cache/DOM/FX/DB/stat/equipment leaf, initStage·enterArena 분기 sentinel, hurtE/hurtP 기록 대역. 실제 저장/피해함수·DOM입력·시각·native 사망 인수로 확대하지 않음 |
 | 원자료 | `test/druidRetryTransientAcceptance.test.cjs`; ignored `root-druid-retry-source14/memory-receipt.json`(28044B, SHA `87d4e745d20f7975a7eba9a0b854005978596090c9e5aa56f2ae7f031dfe9f63`) 및 live-receipt |
 | 기존 성과 | 이전30/30·자원5/5 검사 재실행/이번 성과 합산0. source11 앱·사용자 게임/세이브·원자료·타인WIP 보존 |
+
+
+## 2026-10-03 source26 — 재도전의 BGM 실패와 진행 분리
+
+| id / 소비자 | 현재 오류 경계와 후속 처리 |
+|---|---|
+| R01 / `initStage` 마지막 스테이지 음악 | `try{BGM.play(BGM.stageKey(si));}catch(e){console.error("[BGM] stage start",e);}`. stageKey/play 동기 오류를 기록하고 함수 정상 반환. 앞선 맵 생성/캐시/조명 예외는 catch하지 않음 |
+| R02 / `retryBtn.onclick` 필드·arena 복귀 음악 | 기존 컷신 보류 조건 그대로, 그 조건을 통과한 음악 호출만 catch/`[BGM] field retry` 기록. 공통 자원/idle/iframes300·화톳불300f/r280→최종스탯/완충→HUD/QS→G.on=true→준비된DB 저장 계속 |
+| 진행·저장 | 기존 EXP30% 정수 손실·46-key 필드/열린 보스문/적 HP·지역/현재 P·INV·통계 보존. 해금 전 일반재시작 유지. dbSave 본문/schema/API 변경0; 저장 예외는 그대로 reject |
+| 검수 | 신규16 원본4PASS/12FAIL→후보 신규16+기존34=50PASS. 생산50+기존음향36=86PASS. 실제 전체 retry handler·capture/restore 실행, 일반 initStage는 기존 생성대역 뒤 실제 마지막 음악 statement만 실행. 전체맵/native/기기청취·실저장 검수 아님 |
+| 적용 경계 | 본편/Easy 각2호출부·+104B, 역치환source25전체exact. BGM 본체/stop/Promise·backend·음량·곡선택/RNG·공식·Q/E·보호2_3 불변. source25 앱3400은 이 새 수정 미포함; native 완주/청취/실세이브 인수 미완 |
+
+정본은 `docs/6사운드디자인/SOUND_RETRY_PROGRESS_20261003.md`다. source25 사망·부활72PASS와 포장·타이틀 기록은 당시 인수 이력이며 이번 실제 Mac 사망/재도전 완료로 합산하지 않는다.

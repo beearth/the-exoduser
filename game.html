@@ -30483,7 +30483,7 @@ function initStage(si){
   ].filter(Boolean);
   _bgInitDone=false;_bgInitIdx=0;
   if(si===0)_tickBgInit(9999);
-  BGM.play(BGM.stageKey(si)); // 스테이지 BGM
+  try{BGM.play(BGM.stageKey(si));}catch(e){console.error("[BGM] stage start",e);} // 스테이지 BGM
 }
 
 function hasLOS(x1,y1,x2,y2){
@@ -61535,7 +61535,7 @@ $('retryBtn').onclick=async()=>{
     buildMapCache();initTorchLights();
     _bgInitQueue=[initSwayObjects,initWallEyes,_initEyes,initGlowObjects].filter(Boolean);
     _bgInitDone=false;_bgInitIdx=0;
-    if(!(_forceCutscene||(G.stage===0&&!G._cutsceneDone)))BGM.play(BGM.stageKey(G.stage)); // 컷신 예정 시 보류 — 전쟁 서사는 보이스 전용, 스테이지 BGM은 컷신 종료 후 시작 (2026-07-27)
+    if(!(_forceCutscene||(G.stage===0&&!G._cutsceneDone)))try{BGM.play(BGM.stageKey(G.stage));}catch(e){console.error("[BGM] field retry",e);} // 컷신 예정 시 보류 — 전쟁 서사는 보이스 전용, 스테이지 BGM은 컷신 종료 후 시작 (2026-07-27)
   }else{
     // 일반 사망: 같은 스테이지 재시작 (존 상태 리셋)
     G._zoneState={};

@@ -49,6 +49,10 @@ function extract(file){
     node.declarations.length===1&&node.declarations[0].id?.name===name));
   const retry=select('actual retry handler',(node,text)=>node.type==='ExpressionStatement'&&
     text.slice(node.start,node.end).startsWith("$('retryBtn').onclick=async()=>{"));
+  const stageInit=nodes.filter(({node})=>node.type==='FunctionDeclaration'&&node.id?.name==='initStage');
+  assert.equal(stageInit.length,1,file+' actual initStage count');
+  const stageLast=stageInit[0].node.body.body.at(-1);
+  const stageAudioTail=stageInit[0].text.slice(stageLast.start,stageLast.end);
   const holes=select('actual progressive-hole update',(node,text)=>node.type==='IfStatement'&&node.test.type==='BinaryExpression'&&
     node.test.operator==='<'&&node.test.left?.name==='_gameFrame'&&node.test.right?.value===120&&text.slice(node.start,node.end).includes('h._spawnDelay'));
   const rifts=select('actual rift update',(node,text)=>node.type==='BlockStatement'&&
@@ -56,9 +60,9 @@ function extract(file){
   assert.equal(inlineJavaScript,6);assert.equal(importMapJSON,1);
   console.log('SOURCE_METADATA '+JSON.stringify({file,sha256:sha(bytes),inlineJavaScript,importMapJSON,
     helperPresent:definitions.some(text=>text.startsWith('function _captureBossFieldState(')),
-    sourceBoundary:'actual helpers/enter/retry/genArena/special first ticks/hole+rifts/collision/hash',
-    doubles:'field fixture, enemy factory, render/audio/background sinks, database/stat recalculation, far-asleep special inputs'}));
-  return {file,definitions,retry,holes,rifts};
+    sourceBoundary:'actual helpers/enter/retry/initStage final audio statement/genArena/special first ticks/hole+rifts/collision/hash',
+    doubles:'field fixture, general-stage construction before actual audio tail, enemy factory, render/audio/background sinks, database/stat recalculation, far-asleep special inputs'}));
+  return {file,definitions,retry,holes,rifts,stageAudioTail};
 }
 function fixture(parts,{stage=0,unlocked=true,tileRLE=true,demo=false}={}){
   const ordinary={id:'survivor',x:600,y:660,hp:17,mhp:100,alive:true,ib:false,s:'chase',st2:37,_homeX:600,_homeY:660,kb:{x:2,y:3}};
@@ -153,6 +157,52 @@ function assertEnemies(w){
 }
 for(const file of ['game.html','game-easy-test.html']){
   const parts=extract(file);
+  // Whole actual retry handler; the general initStage path uses its actual final
+  // audio statement after the existing stage-construction double, not full map init.
+  for(const branch of ['opened-field','arena','general'])for(const failure of ['play','stageKey']){
+    test(file+' retry audio boundary '+branch+' '+failure+' cannot strand dead resources or skip save',async()=>{
+      const w=fixture(parts,{unlocked:branch!=='general'});
+      if(branch==='arena')w.enter();
+      w.sandbox.G.on=false;w.sandbox.P.s='dead';
+      const events=[],error=new Error('injected '+failure),logs=[];
+      w.sandbox.console={...console,error(...args){logs.push(args);}};
+      w.sandbox.BGM={stageKey(stage){events.push(['stageKey',stage]);if(failure==='stageKey')throw error;return 'stage-'+stage;},
+        play(key){events.push(['play',key]);if(failure==='play')throw error;}};
+      w.sandbox.updateQS=()=>events.push(['quickslots',w.sandbox.P.hp,w.sandbox.P.mhp]);
+      w.sandbox.dbSave=async()=>{events.push(['save',w.sandbox.G.on,w.sandbox.P.s]);w.calls.saved.push({exp:w.sandbox.P.exp});};
+      if(branch==='general'){
+        const stageDouble=w.sandbox.initStage;
+        w.sandbox.initStage=si=>{stageDouble(si);w.sandbox.si=si;w.run(parts.stageAudioTail);};
+      }
+      await w.retry();
+      assertResources(w);assert.equal(w.sandbox.G.on,true);assert.equal(w.sandbox.P.s,'idle');
+      assert.equal(w.sandbox.P.iframes,300);assert.equal(w.sandbox.G._bonfire.t,300);assert.equal(w.sandbox.G._bonfire.r,280);
+      assert.equal(w.sandbox.P.exp,70);assert.equal(w.calls.saved.length,1);
+      assert.deepEqual(events.at(-1),['save',true,'idle']);
+      assert.deepEqual(events.at(-2),['quickslots',111,111]);
+      assert.equal(logs.length,1);assert.equal(logs[0].at(-1),error);
+      if(branch!=='general'){
+        assertEnemies(w);assert.equal(w.calls.initStage,0);assert.equal(w.sandbox.G._bossUnlocked,true);
+        assert.equal(w.sandbox.G.bossGateOpen,true);assert.equal(w.sandbox.G._regions.filter(r=>r.cleared).length,4);
+      }else assert.equal(w.calls.initStage,1);
+    });
+  }
+  test(file+' retry audio boundary keeps planned cutscene mute and db-not-ready policy',async()=>{
+    for(const condition of ['forced','first-stage']){
+      const w=fixture(parts);w.sandbox.G.on=false;w.sandbox._dbReady=false;
+      w.sandbox._forceCutscene=condition==='forced';w.sandbox.G._cutsceneDone=condition!=='first-stage';
+      w.sandbox.BGM={stageKey(){throw new Error('must stay deferred');},play(){throw new Error('must stay deferred');}};
+      await w.retry();assertResources(w);assert.equal(w.sandbox.G.on,true);assert.equal(w.calls.saved.length,0);assertEnemies(w);
+    }
+  });
+  test(file+' retry audio boundary preserves non-audio cache and save error propagation',async()=>{
+    const cache=fixture(parts),error=new Error('cache failure');cache.sandbox.G.on=false;
+    cache.sandbox.buildMapCache=()=>{throw error;};
+    await assert.rejects(cache.retry(),e=>e===error);assert.equal(cache.sandbox.G.on,false);assert.equal(cache.calls.saved.length,0);
+    const save=fixture(parts),dbError=new Error('save failure');save.sandbox.G.on=false;
+    save.sandbox.dbSave=async()=>{throw dbError;};
+    await assert.rejects(save.retry(),e=>e===dbError);assert.equal(save.sandbox.G.on,true);assertResources(save);
+  });
   test(file+' thunderStake arena transition and real retry clear only temporary state',async()=>{
     const w=fixture(parts);w.sandbox.G._thunderStakes=[{x:20,y:30,t:1,maxT:900}];
     w.sandbox.P._tsAiming=true;w.enter();
