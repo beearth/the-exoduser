@@ -1550,3 +1550,25 @@ source18 투사체 kbMult 초기화와 source19 실제 장착 CP 미리보기·�
 | 보존 | source25/3400 포함기존11검수앱 존재/ID/profile·save메타만대조. 옛전체재인벤토리/세이브내용읽기·입력0, source25는이새2caller미포함의이전본. 원사용자앱59376baf/08cac1ce 정확경로UNKNOWN/추측제어0 |
 
 정확한 경로·SHA·증거와실제플레이 Gate는 `docs/13출시·마케팅/MAC_CH1_SOURCE26_CANDIDATE_20261003.md`를 따른다. 옛source17 부분플레이와source25 타이틀을이번같은후보완주근거로합치지않는다.
+
+
+## 2026-10-03 Claude 대기6팀 재개 및 source26 실제 CH1 후속
+
+| 담당 / 현재 연결 | 실제 이번 실행 근거와 후속 |
+|---|---|
+| SKILL / CO-SKILL-0418→0424 | fireLavaSummon·tick/keyUp/clearHeldInput 취소 경로와 정상 비용·완료 보존. 실제 Bash 결과 751f505d@04:20:53.516, a43b9885@04:21:30.982 UTC 성공. 종료7a789bd5 뒤 오더가 취소 terminal/reentry 후속 연결 |
+| MAP / CO-MAP-0418→0422→0425 | mkEn null과 지역 total/_spawned, rift·total0의 정확 경계. 실제 첫 source 2a28a50e@04:19:02.914. 종료dad01fbf/fc858fc0 뒤 오더가 다중치명타 credit/guard 보너스 복원 후속 연결 |
+| BOSS / CO-BOSS-0418→0424 | detached druidOrb/lavaPools 전환 수명. 실제 Bash ff82c01e@04:20:21.683, 019011f5@04:21:16.169 성공. 종료c3fc0d83 뒤 poisonPools/fissures 수명 후속 연결 |
+| STORY / CO-STORY-0418→0422 | _petBossIntroSeen 표시 성공 commit 접점. 실제 source 123ec408@04:19:06.510. 종료0132054e 뒤 trophy/bossphase 표시 commit 후속 연결, 새 실제 source04:23:34.351 |
+| ENEMY / CO-ENEMY-0418→0422 | etype25 iceZone EL.D/EL.I 접촉·실제 소비자/수명. 실제 source eae5aeb5@04:19:34.506. 종료fffc686b 뒤 blizzard 속성·consumer/lifetime 후속 연결, 새 실제 source04:24:19.368 |
+| ANIMVFX / CO-ANIMVFX-0418→0422 | 무기 전환 직후 렌더 상태·시트/프레임 소비. 실제 source c45d52cc@04:19:03.831. 종료036e7ce9 뒤 활/검 첫 공격·action-sheet fallback 후속 연결, 새 실제 source04:23:32.010 |
+| QA / CO-QA-0417→0420→0425 | QA 기존 진행 유지 후 SFX pool, _saving/_pendingForce의 실패/재진입 후보. 실제 source04:18:00.470 및0420first04:20:54.717. 종료08e63aee 뒤 debounce 프로필 전환/shared mats in-flight 후속 연결 |
+| ART | 기존 사용자 직접 지시 대기 보존. root가 다른 팀 상태로 합산하거나 사용자 승인으로 대체하지 않음 |
+
+대기6팀은 오더 담당의 기존 공식 inbox로 04:18:53.708~54.975 UTC에 각각 1회 송신했고, 7팀 모두 이번 새 과제의 실제 도구 실행을 확인했다. 완료 후 같은 승인 backlog의 구체 후속 목표는 오더 담당이 직접 고른다. root의 생산 채택/새 목표 통지는 일반 후속 작업의 시작 gate가 아니다. root는 전문팀에 중복 지시를 보내지 않는다.
+
+후보 제출은 생산 반영이 아니다. STORY stub/모형·ENEMY/ANIM 정적 대조·BOSS tick 피해 모형·QA 가짜 write/sanitize 모형 및 SKILL 실제 비용값 미측정 한계를 유지한다. root는 원본 실제 함수의 도달·의미 검수 뒤 채택한다. 특정 요청의 승인 보류를 우회하지 않고 가능한 독립 작업을 계속한다. 오더 실제 점검/연결 회차가 3분을 넘긴 이력은 보존하며 5분 준수·영구 무중단·전8팀 동시 실행을 주장하지 않는다.
+
+같은 source26/3401 실제 정상 UI는 스토리→연습1/12→화면의 연습 건너뛰기→CH1 숲1 첫 필드→일반 몬스터 사망→다시 일어서라→인벤토리(가방10/300, 장착15/16, CP1626, 악의999)까지 확인했다. 보스 해금 전 사망이므로 열린 보스방/전체 몬스터 보존 버그의 native 인수는 아직 아니다. source26 포장 직후 제목·인트로만의 이전 표는 당시 이력이다. 전투·획득·장착/4지역·보스/실제 저장·청취·시각 완주 미완, source17 과거 플레이 합산0.
+
+정확한 증거·SHA·경계는 [source26 최신 후보](../13출시·마케팅/MAC_CH1_SOURCE26_CANDIDATE_20261003.md)의 실제 플레이 후속을 따른다. root 소유 docs2만 백업/예약하고 코드3·보호67·manager4·사용자23WIP·기존 게임/세이브를 보존한다. 관련키워드 docs 전체 검색은 이번1221행/134경로이며 코드값 변경0, 동시 관리자가 쓰는 이력은 root 수정에서 제외한다.
