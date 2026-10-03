@@ -3490,7 +3490,7 @@ function dbRestore(d){
     G._cutsceneDone=d.game.cutsceneDone||false;
   }
   // Bag
-  BAG_MAX=d.bagMax||300;
+  BAG_MAX=Number.isNaN(+d.bagMax)?300:d.bagMax||300;
   // Hell cleared
   G.hellCleared=d.hellCleared||[];
   // Storage: 창고는 localStorage 공유 — 세이브 파일의 storage는 완전 무시

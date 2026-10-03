@@ -53686,3 +53686,19 @@ scope10=HTML2/test1/docs7이 실제 NUL-uall81에 도달하면 다른 후보 산
 | 검증 | test/gritTotalConsumption.test.cjs 54 PASS / 명시 actual original24 PASS·30 assertion FAIL. whole dbRestore로 복원한 값을 별도VM whole applyStats/recalcSt/실제 grit·장비stat/affix/implicit함수에 공급. 2VM브리지이며 동일 fullboot 파이프라인 아님. actual hurtP 내부 totalEDef 선언만 별도실행, 실제피해/HP충돌 미실행. 양판 JS12/importmap2 parse |
 | 기존 검사 | test/gritSystem.test.js의 정확본문 정규식1개를 실제함수 실행·정상20/숫자문자열20/비숫자ab 검증으로 교체; 비용/무한레벨/저장/패널 기존 검사 유지. 테스트 완화·skip0 |
 | 인수 | 가상 장비·자원·대역/결정없음; full 게임update·전투·native6·시각·청취·사용자save 미검수. 앱source29/3404에는30~53 미반영. code2/test2/docs6 scope10만 보존. 기존 자동투자번역키9 미등록 및 BAG_MAX 등 새 후보는 별도 미채택 |
+
+## 2026-10-03 source54 가방 용량 복원·이동
+
+| 항목 | 실제 계약·검수 범위 |
+|---|---|
+| 근거 | QA1150 완료19869303-8d29-474d-81a4-c8abcc301361@11:53:30.589Z. 비숫자 bagMax의 가방 개수 제한·행 계산 오류를 whole dbRestore/withdrawStorage/_invRows/_invGrid/_invFindSpace로 확인. 같은 복원 원인1건 |
+| 복원 | 양판 `BAG_MAX=Number.isNaN(+d.bagMax)?300:d.bagMax\|\|300;`. 숫자 변환 결과 NaN이면 기존 기본값300; 그 외 기존 값 또는300 그대로. 새 상·하한 clamp 없음 |
+| 호환 | 정상300/50/0/-5/0.5/1000, 숫자문자열300/50/0/-0, 빈문자열/null/undefined/boolean/빈배열의 기존 실제 의미 보존. 숫자문자열의 raw 타입도 보존. Infinity/-Infinity/문자열Infinity의 기존 의미 보존은 유효·안전 판정 아님 |
+| 후보 기각 | `+d.bagMax\|\|300`은 문자열0/-0와 빈배열의 용량·행 의미를 바꾸므로 미채택. 원인과 관계없는 raw 타입의 일괄 숫자 변경도 하지 않음 |
+| 소비 | `_invRows()=Math.max(10,Math.ceil(BAG_MAX*4/INV_COLS))`, INV_COLS10·최소10행 불변. 기본300은120행. 원본 bagMax='ab'는 NaN행·빈 격자·공간 탐색null; 수정본은120행과 실제 공간 탐색 유지 |
+| 이동 | whole withdrawStorage: 비숫자ab/1.2.3/빈객체 복원 후 bag299는 같은 창고 객체1개를 가방300으로 이동·좌표null·pickup/persist/render/saveNow 각1호출; bag300은 거절하고 창고·가방·아이템 좌표 그대로. 원본은 bag300→301로 이동하여 개수 제한을 우회 |
+| 소유 | 시험 가방과 창고를 합친 대상 객체 소유 개수1 유지. 실제 저장소를 조작하지 않았으며 실제 디스크 보존·전체 UI의 아이템 손실 없음으로 확대하지 않음. 입력 payload.bagMax 자체는 수정하지 않음 |
+| 기존 경계 | STORAGE_MAX 상수200 및 결정주머니/용량 변경0. 음수·소수·무한대·거대 값의 기존 의미는 남아 있고 일반 유효성 검증 또는 유한/메모리 상한 완료 아님. 비유한 행의 실제 격자 생성·render를 시험에서 실행하지 않음 |
+| 검사 | test/bagCapacityRestoreConsumption.test.cjs 수정본50 PASS / 명시 원본38 PASS·12 assertion FAIL. 양판 정상호환38 중 비유한6은 행·이동만 비교하고 격자 할당 생략; 비숫자12는 whole 복원→격자·공간→이동/거절. 기존 helper가 양판 JS12/importmap2 parse |
+| 대역 | 실제 restore·grid·space·withdrawStorage 함수 사용, 장비·좌표는 합성. _getStore/persist/renderInv/SFX/dbSaveNow 및 무관 능력치·마이그레이션 의존은 대역. full pickup/update/localStorage/DOM/native/사용자save·화면·청취 미검수 |
+| 보존 | HTML2/test1/docs4 scope7. 보호2_3/Q/E/사용자23·타인WIP 변경0. 앱source29/3404에는30~54 미반영; source53 단계의 BAG_MAX 미채택 기록은 과거 이력. 초기 stdin 구문오류/필수player 없는 fixture의 false 반환/문서전달 인코딩 SyntaxError는 준비 실패로 제외 |
