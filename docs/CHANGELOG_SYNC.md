@@ -53247,3 +53247,20 @@ source27 정상 Mac 스킬창의 칼등[RMB]·마법[E] 표시는 실제 설정 
 source28 고유앱3403은 이번 라벨 수정 전 코드다. 실제 launch1/live PID44852, HTTP source3 exact·api/slots200 빈 목록을 관측했으나 맥 잠금으로 native 입력0. 창 관측 오류를 앱 종료로 해석하지 않고 재실행하지 않았다. 잠금 해제 질문 pending이며 열린 보스방·몬스터 보존·획득·보스 사망/부활/재입장·실저장·청취·완주 목표는 미완료다. 이 수정은 신규 앱 제작/실제 플레이 완료가 아니다.
 
 코드 byte 증가: game.html +76B, game-easy-test.html +76B. 원본 백업·실행 근거는 `tmp/mac-migration-runtime/continued-review-20261003/source29-skill-input-labels/`에 보존한다.
+
+
+## 2026-10-03 source29 Mac — 최신 파일 후보, native 입력 대기
+
+이 절은 이전 source28 포장 기록 이후의 현재 파일 인계다. 최신 앱 후보는 **source29 / PACKAGED_NOT_RUNTIME_ACCEPTED**이며, 이전 후보의 실제 플레이를 새 후보의 인수로 합산하지 않는다.
+
+| 항목 | 이번 실제 근거와 남은 검수 |
+|---|---|
+| 입력 / job / port | `3948b102db4c353822e6a706067224f72df36c48` / `e771c364-291e-4c7a-b983-1a7496d505aa` / 3404 |
+| 포함 수정 | 스킬 미니바 칼등·마법 키를 현재 BINDS.shield/beam에서 읽음, 기본 마법3종 KO/EN의 구 E 설명 교정. 본편/Easy 각+76B. 기존 source28 DOT 초기화·source27 드루이드 초기화 포함 |
+| 실제 파일 검수 | frozen7918 입력/runtime340 재사용, 새 job execute1회. stage/app payload7916 각각 전체SHA 일치, source3 exact, bootstrap2 전체 역치환 exact. arm64 실행파일5·plist 확인. 이번 소스 검증/포장을 native PASS로 승격하지 않음 |
+| 물리 영수증 | `tmp/mac-migration-runtime/continued-review-20261003/ch1-source29-build/physical-receipt.json` 33957B / SHA256 `0fff1798d98fb924110dfe7000df48d5919c6d0de19d9f6c630bd7e48522d589` |
+| source29 실제 기동 | launch0/native입력0. 새 전용 profile/saveRoot는 아직 미생성. 정상 플레이·보스 사망/부활·열린 보스문/몬스터 보존·획득·저장 재실행·청취·카메라 인수 미완료 |
+| source28 기동 후속 | CUA getApp1회로 실제 main PID44852 실행. HTTP index/game/Easy3가 포장 source3와 exact, api/slots200 빈 목록. 창 관측은 Mac 잠금으로 실패했고 재실행0/native입력0. 이 상태는 이전 launch0 표 이후의 후속이며 파일 포장·실기 검수와 구분 |
+| 기존 실행본 보존 | 이전14 검수앱의 존재/plist ID·profile/save metadata 확인, 내용 hash/수정0. 원사용자 앱 정확 경로 UNKNOWN 유지. source27 장착4/일반retry/첫처치1의 부분 플레이는 과거 관찰로 보존 |
+
+source29 원문 검수는 실제 keyName·미니바 원문 블록을 DOM/popup/localization 경계 대역으로 실행한 12조건이다. 13슬롯과 모든 선택 callback 동등, 양판8치환 전체 역복원 exact, inline script/importmap 구문 통과. 숫자·전투·진행·세이브·input dispatch 변경0. Mac 잠금 해제 질문은 대기 중이며, 동일 최신 후보에서 실제 CH1-1 시작→전투/획득→4지역/보스문→보스 사망/부활→재입장·진행 보존을 검수하는 목표는 계속 미완료다.
