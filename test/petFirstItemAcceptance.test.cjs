@@ -52,6 +52,8 @@ function fixture(p,{control=false}={}){
     _itemSz:()=>[1,1],_invFindSpace:()=>({x:0,y:0}),notify:s=>log('notify',s),_rarName:r=>'R'+r,
     playItemPickupSfx:i=>log('pickupSfx',i.id),playEquipSfx:i=>log('equipSfx',i.id),
     recalcSt:()=>log('recalcSt'),applyStats:()=>log('applyStats'),dbSaveForce:()=>log('save'),
+    // Easy uses the shared equipment-stat refresh entry; stats are outside this pet fixture.
+    _refreshEquipmentStats:()=>{log('recalcSt');log('applyStats');},
     _grantOssuaryIfNeeded:()=>{throw Error('bone path outside scope');},_boneRegister:()=>{throw Error('bone path outside scope');},
     window:{_systemLesson:{pickedUp:i=>log('guidePickup',i.id)}},
   };
