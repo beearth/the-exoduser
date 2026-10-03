@@ -2761,3 +2761,17 @@ source27 정상 Mac 스킬창의 칼등[RMB]·마법[E] 표시는 실제 설정 
 source28 고유앱3403은 이번 라벨 수정 전 코드다. 실제 launch1/live PID44852, HTTP source3 exact·api/slots200 빈 목록을 관측했으나 맥 잠금으로 native 입력0. 창 관측 오류를 앱 종료로 해석하지 않고 재실행하지 않았다. 잠금 해제 질문 pending이며 열린 보스방·몬스터 보존·획득·보스 사망/부활/재입장·실저장·청취·완주 목표는 미완료다. 이 수정은 신규 앱 제작/실제 플레이 완료가 아니다.
 
 코드 byte 증가: game.html +76B, game-easy-test.html +76B. 원본 백업·실행 근거는 `tmp/mac-migration-runtime/continued-review-20261003/source29-skill-input-labels/`에 보존한다.
+
+## 2026-10-03 source55 창고 보관 목록 빈 항목
+
+| 항목 | 실제 계약·검수 범위 |
+|---|---|
+| 근거 | QA1210 완료2c13d0f8-14fe-464a-adcd-44cbc60d9ebe@12:17:00.204Z. 부분 목록 후보를 현재source54의 whole dbRestore→renderInvStorage→행 클릭/우클릭 depositStorage→renderInvStorage 재호출로 검수 |
+| 수정 | 양판 유일한 `INV.bag.forEach((it,idx)=>{` 뒤 `if(!it)return;` 추가·각14B. 가방의 null/0/false/빈문자열은 표시에서만 건너뛰며 배열에서 제거하지 않음. 이름·색·용량·좌표·수치·저장 형식 변경0 |
+| 복원·개수 | 기존 restore/migration은 시험 null을 제거하지 않고 가방에 유지. 보관 제목 개수는 기존 INV.bag.length를 사용하므로 빈 항목도 포함하며, 전부 빈 값인 배열을 정상 빈 가방으로 바꾸지 않음. 실제 사용자 세이브의 발생 빈도는 확인하지 않음 |
+| 인덱스 | 표시 목록에 필터된 새 배열의 인덱스를 쓰지 않고 원래 idx를 유지. [빈값,A,빈값,B]에서 A좌클릭은idx1을 보관하고 재렌더 후 B우클릭은 현재idx2를 보관. 빈 값2개는 남고 대상 객체는 창고에 각각1개씩 있음 |
+| 거절 | 상수 STORAGE_MAX200 불변. 시험 창고200개에서는 [null,A]의 A보관을 거절하고 가방·창고·목록·선택 그대로, 저장·소리 호출 없음 |
+| 검사 | test/storageDepositListConsumption.test.cjs 수정본16 PASS / 명시 원본6 PASS·10 FAIL. 정상 빈가방/1개·선택창고/2개6조건에서 전체 함수 DOM전송기록·INV·실제 이벤트 이동이 원본동등. 빈값4형×양판8조건과 창고full2조건 검증. 양판 JS12/importmap2 parse |
+| 제품 경계 | renderInv의 기존 try/catch는 창고 렌더 오류를 기록함; 전체게임 crash로 표현하지 않음. STORE 그리드 null 원소0809는 같은 함수의 별도 미채택 후보로 남고, STORE 정상 객체 조건에서만 본 목록 검수. truthy primitive·중첩 잘못된 필드 전체 안전 주장0 |
+| 대역 | 실제 restore·renderInvStorage·depositStorage 함수 사용. DOM transport·아이콘/문자열·저장·SFX 및 무관 restore 의존은 대역; renderInv는 창고 함수 재호출로 대체. 기존 부모 innerHTML 초기화는 변경하지 않았고 새 부모 교체0. full renderInv/실DOM·native·localStorage·사용자save·시각·청취 인수0 |
+| 보존 | HTML2/test1/docs5 scope8·보호2_3/Q/E/사용자23·타인WIP 변경0. source54의 가방 용량 복원은 그대로. 앱source29/3404에는30~55 미반영. 원자료 후보·함수 검사와 실제 화면 제품 인수는 구분 |

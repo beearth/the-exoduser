@@ -46979,7 +46979,7 @@ function renderInvStorage(){
   depHdr.textContent=_L("▼ 보관 (가방 {p0}개)","▼ Deposit (Bag {p0})",{p0:INV.bag.length});sec.appendChild(depHdr);
   const bagList=document.createElement('div');bagList.style.cssText='max-height:100px;overflow-y:auto';
   if(INV.bag.length===0){const e=document.createElement('div');e.style.cssText='color:#555;font-size:1rem;padding:3px';e.textContent=_T('비어있음');bagList.appendChild(e)}
-  INV.bag.forEach((it,idx)=>{
+  INV.bag.forEach((it,idx)=>{if(!it)return;
     const d=document.createElement('div');d.className='inv-dep-item';d.style.cssText='display:flex;align-items:center;justify-content:space-between;padding:2px 3px;font-size:1rem;cursor:pointer;border-bottom:1px solid #1a0e00;transition:background .1s';
     d.onmouseenter=()=>d.style.background='rgba(136,170,102,.08)';d.onmouseleave=()=>d.style.background='';
     d.innerHTML=`<span style="color:${RARITY_C[it.rarity]};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:120px">${_itemIco(it,RARITY_C[it.rarity],14)} ${_T(it.name)}</span><span style="color:#88cc66;font-size:1rem;flex-shrink:0;margin-left:4px">${_T('보관')}</span>`;
