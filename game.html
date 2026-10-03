@@ -61530,6 +61530,7 @@ $('retryBtn').onclick=async()=>{
     P.x=sp?sp.x:_gx;P.y=sp?sp.y:_gy;
     // 열린 CH1 필드 사망도 기존 initStage의 일시 상태/1회 효과 초기화를 유지한다.
     if(_fieldRetry){P._webSlow=0;P._trapSlowT=0;P._freezeSlow=0;P.burnT=0;P.poison=0;P._rbPoison=[];P._rbBurn=[];P._ioActive=false;P._ioT=0;P._altAtk=0;P._altDef=0;P._altSpd=0;P._lastStandUsed=false;P._reviveOnceUsed=false;}
+    P.poison=0;P._rbPoison=[];P._rbBurn=[];
     G.cam.x=P.x;G.cam.y=P.y;
     G.pets={crow:{x:P.x,y:P.y-20,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:0},cat:{x:P.x,y:P.y+10,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:~~(Math.random()*100)},xbow:{x:P.x-30,y:P.y-28,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:25,_atkCd:0,_ang:0}};
     buildMapCache();initTorchLights();

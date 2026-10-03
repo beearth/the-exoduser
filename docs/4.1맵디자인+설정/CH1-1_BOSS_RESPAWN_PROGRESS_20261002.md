@@ -49,7 +49,7 @@
 | 0 | `P._webSlow`, `P._trapSlowT`, `P._freezeSlow`, `P.burnT`, `P.poison`, `P._ioT`, `P._altAtk`, `P._altDef`, `P._altSpd` |
 | false | `P._ioActive`, `P._lastStandUsed`, `P._reviveOnceUsed` |
 | 빈 배열 | `P._rbPoison`, `P._rbBurn` |
-| 적용 범위 | `_fieldRetry`에서만 적용; 일반 arena 사망의 플레이어 정리 의미는 변경하지 않음 |
+| 적용 범위 | 위 전체 정리는 `_fieldRetry`에서만 적용. source28부터 그 블록 뒤에 `P.poison=0;P._rbPoison=[];P._rbBurn=[];`를 추가하여 일반 arena 복귀도 이 세 지속 피해만 정리. 버프·1회효과·나머지 상태는 기존대로 보존 |
 
 복귀 좌표는 기존 `(_bossCx+.5)*T,(_gateY+6+.5)*T`를 실제 `safePt`에 전달한다. safePt가 실패하면 원 목표 좌표를 쓰는 기존 fallback을 유지한다. 실제 `checkRooms` source fixture에서 `_fbDone`과 `_bossUnlocked`를 보존한 복귀는 `_bossLoadPhase=1`로 다시 진입하고, 앵글러 미완료 또는 지역이 미완료인 상태의 해금 latch 부족은 phase 0을 유지했다. 게이트 포털·미니맵의 시각 효과 인수는 별도다.
 
@@ -274,3 +274,30 @@ NEXT PASS:
 | 보존 | 기존67WIP/manager4/사용자23변경·원래게임/세이브 보존. 사용자 원래앱59376baf/08cac1ce 정확경로UNKNOWN/추측제어0. 삭제·cleanup·설치·새팀·새채팅0 |
 
 앞선 source27 코드 checkpoint에서 “아직 포장하지 않음”은 당시 단계의 이력이다. 현재 실행 가능한 파일 후보는 준비됐으며 실제 Mac 플레이 인수는 대기다. 정확 앱/프로필·저장경로와 원문SHA는 `docs/13출시·마케팅/MAC_CH1_SOURCE27_CANDIDATE_20261003.md`를 따른다. source26 음악 예외·source14 field복귀·46key 진행 보존 계약은 그대로 포함한다.
+
+
+## 2026-10-03 source28 — 보스 재도전의 이전 전투 지속 피해 정리
+
+| id / 적용 경계 | 현재 정확 계약 |
+|---|---|
+| DOT01 / `retryBtn.onclick`의 일반 arena→field 및 해금 CH1 field 복귀 | 기존 `if(_fieldRetry)` 뒤에 `P.poison=0;P._rbPoison=[];P._rbBurn=[];` 추가. 본편/Easy 각44B. 사망 후 자원 완충 전에 이전 전투의 세 지속 피해만 제거 |
+| 제외 / 기존 분기 | `_retryDruidFinale()`가 먼저 처리하는 si3 직접 보스 재도전 및 해금 전 일반 `initStage`는 변경0. field-only 기존 디버프·버프·1회효과 정리 블록은 그대로 |
+| arena 플레이어 보존 | `_webSlow/_trapSlowT/_freezeSlow/burnT`, `_ioActive/_ioT`, `_altAtk/_altDef/_altSpd`, `_lastStandUsed/_reviveOnceUsed`는 기존대로 보존. 전체 field-only 블록을 arena로 이동하지 않음 |
+| 피해/시간 공식 | `P.poison`은 idle tick에서 `sp*.02` 감소, 기존 중독 피해 `~~(P.mhp*.008)` 유지. `_rbPoison/_rbBurn`의 producer t600f·tick30f·총량/20·최대10중첩 불변. 일반 전투의 독 부여·소비·소멸 변경0 |
+| 진행·저장 | 기존46 field key, 적/시체 HP와 원 참조·지역·열린 보스문·아이템·현재 INV/EXP·시간/사망 통계 보존. EXP30% 정수 손실·iframes300·화톳불300f/r280·최종 applyStats→완충→DB 저장 순서 유지. save schema/API 변경0 |
+| 검증 | 실제 전체 retry/capture/restore+전체 hurtP+AST 원문 DOT3분기/iframes 감소 실행. 원본68검사54PASS/14FAIL→후보68PASS→생산 관련3파일89PASS. 신규18개 중 정상 전투6control 유지; 새sp1/2 재도전12개는 이전 지속 피해를 차단 |
+| 검증 한계 | 필드/장비·pet/visual/audio/DB/stat 재산정은 fixture 또는 경계 대역. 전체 game loop·native·실저장·청취·시각 완주 검수 아님. 실제 시연 앱3402는 source27이며 source28을 포함하지 않음 |
+
+원자료는 `tmp/mac-migration-runtime/continued-review-20261003/source28-retry-dot/`의 원본 백업·baseline/candidate/production 기록이다. 수정 전에는 부활 무적300f 동안 timer만 감소한 뒤 잔여 독/화상이 HP 또는 쉴드를 다시 깎았다. 이번 수정은 해당 복귀 시 지속 피해만 끊으며 새 생애의 정상 전투 DOT는 그대로 작동한다. 보호2_3·Q 전용 magic 패링·E 불가·어택티켓 금지는 변경하지 않았다.
+
+### source28 MAP PRODUCTION REPORT
+
+| 항목 | 이번 범위 |
+|---|---|
+| STAGE / MASTER PLAN | CH1-1 보스 사망→필드 복귀. 이전 전투의 DOT 제거와 이미 열린 문/기존 몬스터 보존 |
+| LARGE OUTER MASS / MEDIUM CONNECTION / GROUND CONNECTION | 지형·통로·외곽·충돌·좌표 변경0 |
+| PLAYABLE/COMBAT | 기존46-key snapshot·적/시체 HP·게이트를 실제 callback fixture에서 검증. 정상 전투 DOT는 유지 |
+| LANDMARK/CENTER / SMALL DETAIL | 오브젝트·아트·VFX 에셋 변경0 |
+| CAMERA QA | 기존 cam/safePt/캐시 원문 불변. 실제 카메라 검수 미실시 |
+| TECH QA | 생산89PASS, 전체 retry/hurtP와 실제 DOT 분기 실행. 렌더·오디오·장비/DB 경계 대역 명시 |
+| VISUAL VERDICT | RETOUCH — native 보스 사망/부활/재입장 및 같은 후보 전체플레이 미인수. 자동 PASS를 visual PASS로 계산하지 않음 |

@@ -369,3 +369,15 @@ atkTicketRelease(e) → 티켓 반환
 | 검수 / 적용 | 양판 각각 draw3접점만 수정, 역치환 source22 byte-exact. 신규8 PASS(원본4 PASS/4 FAIL); 실제 분기·기존 회귀 포함12 PASS | canvas는 호출 기록 대역이며 native·화면·GPU·시각 최종 인수 아님. source23 앱3398 포장·타이틀·HTTP 확인; source22/3397 앱은 기존 코드 보존 |
 
 상세 수치·실제 분기·한계·§23 보고는 [source23 전조 계약](../5.1임펙트디자인/CH1_BOSS_LANDING_FAN_TELEGRAPH_20261003.md)을 따른다. 피해·패링·타이밍·맵 geometry·카메라·기존 앱/세이브는 변경하지 않았다.
+
+
+## 2026-10-03 source28 — 복귀 후 적 지속 피해 수명
+
+| 상태 / 소비자 | 현재 계약 |
+|---|---|
+| `P.poison`, `_rbPoison`, `_rbBurn` / 일반 arena 및 열린 CH1 field retry | field 복원 분기의 기존 `_fieldRetry` 블록 뒤 세 상태만0/[] 정리. 본편/Easy 각44B. 이전 전투의 DOT가 iframes300 이후 다시 피해를 주는 경계 해소 |
+| 정상 적 공격 | poison 감소sp*.02·mhp*.008 피해, rb t600f/tick30f/총량÷20/최대10중첩 유지. hurtP·producer·CC값·패링/QE·포이즈 코드 변경0 |
+| 검증 | 실제 전체 retry/hurtP·DOT3분기·iframes 감소, 신규18(재도전12/현재 생애6control), 관련 생산89PASS. 전체 update/native 아님 |
+| 보존 | arena 버프/1회부활 사용 상태와 나머지 디버프 보존. field46·적/시체·문·지역·loot·저장 스키마 불변 |
+
+정확 분기·제외·대역과 원본 실패는 `docs/4.1맵디자인+설정/CH1-1_BOSS_RESPAWN_PROGRESS_20261002.md`의 source28 표를 따른다. ENEMY0452는 정적 원문 연동 인계였으며, 원총괄의 실제 함수 실행 근거와 구분한다.

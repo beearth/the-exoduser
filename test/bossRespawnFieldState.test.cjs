@@ -62,7 +62,13 @@ function extract(file){
     helperPresent:definitions.some(text=>text.startsWith('function _captureBossFieldState(')),
     sourceBoundary:'actual helpers/enter/retry/initStage final audio statement/genArena/special first ticks/hole+rifts/collision/hash',
     doubles:'field fixture, general-stage construction before actual audio tail, enemy factory, render/audio/background sinks, database/stat recalculation, far-asleep special inputs'}));
-  return {file,definitions,retry,holes,rifts,stageAudioTail};
+  const hurtPlayer=select('whole actual hurtP',node=>node.type==='FunctionDeclaration'&&node.id?.name==='hurtP');
+  const dotConditions=['P.poison>0','P._rbPoison&&P._rbPoison.length>0','P._rbBurn&&P._rbBurn.length>0'];
+  const dotUpdates=dotConditions.map(condition=>select('actual DOT '+condition,(node,text)=>
+    node.type==='IfStatement'&&text.slice(node.test.start,node.test.end).replace(/\s/g,'')===condition));
+  const iframeUpdate=select('actual iframe decrement',(node,text)=>node.type==='IfStatement'&&
+    text.slice(node.start,node.end)==='if(P.iframes>0)P.iframes=Math.max(0,P.iframes-sp);');
+  return {file,definitions,retry,holes,rifts,stageAudioTail,hurtPlayer,dotUpdates,iframeUpdate};
 }
 function fixture(parts,{stage=0,unlocked=true,tileRLE=true,demo=false}={}){
   const ordinary={id:'survivor',x:600,y:660,hp:17,mhp:100,alive:true,ib:false,s:'chase',st2:37,_homeX:600,_homeY:660,kb:{x:2,y:3}};
@@ -155,8 +161,42 @@ function assertEnemies(w){
   assert.deepEqual(plain(e[0].kb),{x:2,y:3});assert.equal(e[1].alive,false);assert.equal(e[1]._revTimer,41);assert.equal(e[2].hp,29);
   assert.equal(w.calls.roomSpawn,0);assert.equal(w.calls.corridorSpawn,0);
 }
+function installActualDot(w,parts){
+  // Equipment/pet/visual sinks are doubles; damage, shield absorption and all
+  // iframe/DOT mutations execute the original source, not a damage model.
+  Object.assign(w.sandbox,{_petOnHit(){},enhMul:()=>0,pDefAdd:()=>0,_gritTotal:()=>0,_uEq:()=>0,
+    sh:()=>({}),cp:()=>({}),gl:()=>({}),pt:()=>({}),hm:()=>({}),nc:()=>({}),rg1:()=>({}),rg2:()=>({}),blt:()=>({}),
+    _logDmg(){},die(){throw new Error('unexpected death in bounded DOT fixture');}});
+  w.run('var _harpActive=false,_dashActive=false,DR_CAP=.75;P.baseDef=0;INV.equipped={};');
+  w.run(parts.hurtPlayer);
+  return frames=>w.run(`for(let dotFrame=0;dotFrame<${frames};dotFrame++){${parts.iframeUpdate}\n${parts.dotUpdates.join('\n')}}`);
+}
 for(const file of ['game.html','game-easy-test.html']){
   const parts=extract(file);
+  for(const key of ['poison','_rbPoison','_rbBurn'])for(const step of [1,2]){
+    test(file+' arena retry clears inherited '+key+' before actual DOT resumes, sp='+step,async()=>{
+      const w=fixture(parts);w.enter();
+      Object.assign(w.sandbox.P,{poison:0,_rbPoison:[],_rbBurn:[],_ioActive:false,_lastStandUsed:true,_reviveOnceUsed:true});
+      w.sandbox.P[key]=key==='poison'?12:[{t:600,tick:0,total:200}];
+      await w.retry();const health=w.sandbox.P.hp+w.sandbox.P.shield;
+      const advance=installActualDot(w,parts);w.sandbox.sp=step;
+      advance(149/step|0);assert.equal(w.sandbox.P.hp+w.sandbox.P.shield,health,'respawn iframe shields damage');
+      advance(351/step+1|0);assert.equal(w.sandbox.P.hp+w.sandbox.P.shield,health,'no prior-life DOT after iframe expiration');
+      assert.equal(w.sandbox.P.iframes,0);assertEnemies(w);assert.equal(w.sandbox.G.bossGateOpen,true);
+      assert.equal(w.sandbox.P._lastStandUsed,true);assert.equal(w.sandbox.P._reviveOnceUsed,true);
+      assert.equal(w.calls.saved.length,1);assert.equal(w.sandbox.P.exp,70);
+    });
+  }
+  for(const key of ['poison','_rbPoison','_rbBurn']){
+    test(file+' ongoing-life '+key+' retains original actual damage and expiration',()=>{
+      const w=fixture(parts),advance=installActualDot(w,parts);
+      Object.assign(w.sandbox.P,{s:'idle',iframes:0,hp:111,mhp:111,shield:444,mshield:444,poison:0,_rbPoison:[],_rbBurn:[],_ioActive:false});
+      w.sandbox.P[key]=key==='poison'?1:[{t:60,tick:0,total:200}];
+      const health=w.sandbox.P.hp+w.sandbox.P.shield;advance(61);
+      assert.ok(w.sandbox.P.hp+w.sandbox.P.shield<health,'current-life DOT still damages');
+      assert.ok(key==='poison'?w.sandbox.P.poison<=0:w.sandbox.P[key].length===0,'original lifetime expires');
+    });
+  }
   // Whole actual retry handler; the general initStage path uses its actual final
   // audio statement after the existing stage-construction double, not full map init.
   for(const branch of ['opened-field','arena','general'])for(const failure of ['play','stageKey']){
@@ -233,7 +273,7 @@ for(const file of ['game.html','game-easy-test.html']){
     assert.equal(w.sandbox.G._bossUnlocked,true);assert.equal(w.sandbox.G.bossGateOpen,true);assert.equal(w.sandbox.G.bossSealed,false);
     w.ticks();assertEnemies(w);assertResources(w);
   });
-  test(file+' opened field retry preserves old player cleanup while arena retry preserves existing player state',async()=>{
+  test(file+' opened field retry preserves cleanup while arena retry clears only inherited damage statuses',async()=>{
     const flags=['_webSlow','_trapSlowT','_freezeSlow','burnT','poison','_ioT','_altAtk','_altDef','_altSpd'];
     const seedStatus=w=>{for(const key of flags)w.sandbox.P[key]=81;Object.assign(w.sandbox.P,{_rbPoison:[{t:40}],_rbBurn:[{t:50}],_ioActive:true,_lastStandUsed:true,_reviveOnceUsed:true});};
     const field=fixture(parts);seedStatus(field);field.sandbox.INV.inventoryMarker='current-on-death';field.sandbox.P.exp=200;
@@ -242,8 +282,10 @@ for(const file of ['game.html','game-easy-test.html']){
     for(const key of ['_rbPoison','_rbBurn'])assert.equal(field.sandbox.P[key].length,0,key);
     assert.equal(field.sandbox.INV.inventoryMarker,'current-on-death');assert.equal(field.sandbox.P.exp,140);assertResources(field);
     const arena=fixture(parts);arena.enter();seedStatus(arena);await arena.retry();
-    for(const key of flags)assert.equal(arena.sandbox.P[key],81,key);
-    assert.equal(arena.sandbox.P._ioActive,true);assert.equal(arena.sandbox.P._rbPoison[0].t,40);
+    for(const key of flags)assert.equal(arena.sandbox.P[key],key==='poison'?0:81,key);
+    assert.equal(arena.sandbox.P._ioActive,true);
+    for(const key of ['_rbPoison','_rbBurn'])assert.equal(arena.sandbox.P[key].length,0,key);
+    for(const key of ['_lastStandUsed','_reviveOnceUsed'])assert.equal(arena.sandbox.P[key],true,key);
   });
   test(file+' actual checkRooms gate predicate remains eligible after restoration and still rejects locked/incomplete field',async()=>{
     for(const openedField of [false,true]){
