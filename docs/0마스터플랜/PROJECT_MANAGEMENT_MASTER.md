@@ -2074,3 +2074,19 @@ scope10=HTML2/test1/docs7이 실제 NUL-uall81에 도달하면 다른 후보 산
 | 검증 | test/statRefundConsumption.test.cjs 양판32 PASS/명시 original before10 PASS·22 assertion FAIL. whole dbRestore/refundTotals/evaluatePlan/renderStatPanel·applyPlan 어댑터·초기 async 핸들러·실제 mount 전체0계획 콜백 실행. 정상 정수/숫자문자열/비숫자/Infinity/10^20/음수합계/소수합계·취소·확인후 live변경·원상태 보존. 양판 JS12/importmap2 parse |
 | 경계 | mount/render/applyStats/DOM/SFX/저장/네트워크 대역, 실제 UI전체렌더·native·청취·사용자save0. source51 기존 번역키9 미등록은 미해결. 별도 _gritTotal/장비 GRIT affix/max-resource 소비 후보는 미채택·수정0. 초기 시험의 cross-realm 배열 및 문자열0→숫자0계획 적용 예상 오류는 수정하고 준비오류로 분리 |
 | 인수 | code3/test1/docs6 소유scope만 checkpoint. 기존 source29/3404 실행 앱에는30~52 미포함·native6/첫보스 사망재도전/화면·청취 인수0. 검사 건수를 새 결함 수나 실제플레이 완료 건수로 계산0 |
+
+
+## 2026-10-03 source53 근성 총합 숫자 소비
+
+| 항목 | 현행 코드·검수 계약 |
+|---|---|
+| 인계 | Claude QA1132 CO-QA-1132-grit-total-def-hp-consumers, actualend da04d93d-0fa1-463d-914a-e10e19f73a13@11:35:41.786Z. 복원 근성 문자열 연결 후보 최소채택 |
+| 공식 | 양판 _gritTotal()=(+_grit 또는0)+_lvB()+_eqStat('Grit')+_eqAffix('gritFlatN')+_eqAffix('gritFlatR'). 첫항만 (+_grit\|\|0) 소비·각+6B. level/equipment/affix 항 및 캐시 그대로. bGrit는 _eqStat, 레벨보너스는 _lvB에서 합산 |
+| 자원 | _gritHpFlat/_gritMpFlat/_gritStFlat은 전체총합 반환. whole applyStats/recalcSt의 HP/MP/ST 최대치 마지막 가산 및 기존 Math.min 현재값 clamp 그대로. 인간성/마력그릇/힘의그릇/강인/장비/강화·기존source7레벨업 보상 변경0 |
+| 방어 | 물리 baseDef의 ~~(_gritTotal()*.5), hurtP 내부 totalEDef의 같은 근성항 그대로. 새 _gritTotal 숫자값이 기존 방어 계산에 전달. 일반 근성+1/pt·DEF/eDEF+0.5/pt·SP비용1 및 무한 레벨 불변, 보호2_3/Q/E 처리 변경0 |
+| 복원 | 기존 d.grit 또는0 복원 및 gritCostModeV2/레거시환급·source52SP전체환불 변경0. 숫자문자열20→읽을때20, 비숫자ab/1.2.3/빈객체→읽을때0. raw복원값/저장형식 변경·레벨clamp0. 숫자 Infinity·음수·소수는 기존숫자 의미 보존, finite/max 검증 완료 아님 |
+| 합성 확인 | Lv20/STATS str5,dex3,int4,lck2/장비 없음/패시브 인간성·마력그릇·힘의그릇·강인·철벽 각1: raw grit='20' 복원 보존→총합30, baseDef37, 추출totalEDef15. _gritFlat 반환 숫자·반복능력치재계산으로 누적증가/추가회복 없음 확인 |
+| 문서 정합 | 본수치표의 공식 첫항 숫자소비 명시. 장비정본의 생략된 _lvB 및 _eqStat/_eqAffix 실제 함수명과 값 출처를 현재식으로 정정. 과거source52 미채택표기는 단계이력으로 유지 |
+| 검증 | test/gritTotalConsumption.test.cjs 54 PASS / 명시 actual original24 PASS·30 assertion FAIL. whole dbRestore로 복원한 값을 별도VM whole applyStats/recalcSt/실제 grit·장비stat/affix/implicit함수에 공급. 2VM브리지이며 동일 fullboot 파이프라인 아님. actual hurtP 내부 totalEDef 선언만 별도실행, 실제피해/HP충돌 미실행. 양판 JS12/importmap2 parse |
+| 기존 검사 | test/gritSystem.test.js의 정확본문 정규식1개를 실제함수 실행·정상20/숫자문자열20/비숫자ab 검증으로 교체; 비용/무한레벨/저장/패널 기존 검사 유지. 테스트 완화·skip0 |
+| 인수 | 가상 장비·자원·대역/결정없음; full 게임update·전투·native6·시각·청취·사용자save 미검수. 앱source29/3404에는30~53 미반영. code2/test2/docs6 scope10만 보존. 기존 자동투자번역키9 미등록 및 BAG_MAX 등 새 후보는 별도 미채택 |

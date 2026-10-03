@@ -25600,7 +25600,7 @@ function _hunterMul(e){return(e&&(e.isBoss||e.isElite||e.etype>=90))?1+(PASSIVES
 let _grit=0; // 근성 레벨
 function _gritCost(){return 1;} // 일반 스탯처럼 SP 1당 근성 1
 function _gritBatchCost(n){return Math.max(0,n);} // +10 = SP 10
-function _gritTotal(){return _grit+_lvB()+_eqStat('Grit')+_eqAffix('gritFlatN')+_eqAffix('gritFlatR')}
+function _gritTotal(){return (+_grit||0)+_lvB()+_eqStat('Grit')+_eqAffix('gritFlatN')+_eqAffix('gritFlatR')}
 function _gritHpFlat(){return _gritTotal();}
 function _gritMpFlat(){return _gritTotal();}
 function _gritStFlat(){return _gritTotal();}

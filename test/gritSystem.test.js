@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import {runInNewContext} from 'node:vm';
 import { readFileSync } from 'node:fs';
 
 const gameHtml = readFileSync(new URL('../game.html', import.meta.url), 'utf8');
@@ -8,7 +9,12 @@ test('grit is an unbounded 1-SP sink whose total includes level, gear, and affix
   assert.match(gameHtml, /let _grit=0;/);
   assert.match(gameHtml, /function _gritCost\(\)\{return 1;\}/);
   assert.match(gameHtml, /function _gritBatchCost\(n\)\{return Math\.max\(0,n\);\}/);
-  assert.match(gameHtml, /function _gritTotal\(\)\{return _grit\+_lvB\(\)\+_eqStat\('Grit'\)\+_eqAffix\('gritFlatN'\)\+_eqAffix\('gritFlatR'\)\}/);
+  const source=gameHtml.match(/function _gritTotal\(\)\{[^}]+\}/)?.[0];
+  assert.ok(source, 'actual grit total function');
+  const calc=value=>runInNewContext(source+';_gritTotal()', {_grit:value,_lvB:()=>10,_eqStat:()=>5,_eqAffix:id=>id==='gritFlatN'?3:2});
+  assert.equal(calc(20),40);
+  assert.equal(calc('20'),40);
+  assert.equal(calc('ab'),20);
   assert.match(gameHtml, /function _gritHpFlat\(\)\{return _gritTotal\(\);\}/);
   assert.match(gameHtml, /function _gritMpFlat\(\)\{return _gritTotal\(\);\}/);
   assert.match(gameHtml, /function _gritStFlat\(\)\{return _gritTotal\(\);\}/);
