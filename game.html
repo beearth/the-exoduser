@@ -44349,7 +44349,7 @@ function mkBonePart(ancIdx,part,tier,rarity){
 }
 // 부위 포인트 = rarity(0~5)+tier(0~4) → 부위당 0~9, 세트 합산 0~36
 // 4부위 실제 수집으로만 해금한다. 임시 전원 해금은 폐지했다.
-function _ancPartPts(ancId,part){const c=INV.ossCollect&&INV.ossCollect[ancId+'_'+part];if(c)return (c.r||0)+(c.t||0);return -1}
+function _ancPartPts(ancId,part){const c=INV.ossCollect&&INV.ossCollect[ancId+'_'+part];if(c)return (+c.r||0)+(+c.t||0);return -1}
 function _ossSetComplete(ai){const R=ANC_ROSTER[ai];if(!R)return false;if(!INV.ossCollect)return false;for(let i=0;i<4;i++){if(!INV.ossCollect[R.id+'_'+_BONE_PARTS[i]])return false}return true}
 function _ossUnlockedList(){const out=[];for(let ai=0;ai<ANC_ROSTER.length;ai++)if(_ossSetComplete(ai))out.push(ai);return out}
 // ═══ 소환 스탯 산출 (소환·미리보기 공용 SSOT) — 미완성 전대는 null ═══
