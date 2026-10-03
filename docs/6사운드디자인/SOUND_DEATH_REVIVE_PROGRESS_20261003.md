@@ -1,0 +1,48 @@
+# 사망·부활 진행의 오디오 오류 격리 — source25
+
+실제 게임 source에 적용한 오류 격리 계약이다. 실제 Mac 플레이·청취·보스완주의 증명은 아니다. parent `feee434f65d6df2979f54a43afea973cce93da66`, 이전 source24 앱3399는 그대로 보존한다.
+
+| id | 적용 위치 | 오류 후 이어지는 처리 / 유지 값 |
+|---|---|---|
+| D01 | `die / ultUnmute` | 마력연사·얼음송곳 해제/중복사망 guard/부활 판정. 음향 복원 성공 보장0 |
+| D02 | `die / voice_second_wind` | 1회부활 사용표시·HP/MP/ST100%·iframes120·기존text/return |
+| D03 | `die / SFX.beamStop·_stopShieldLoop` | 각각 독립 catch. 첫 stop 실패가 둘째 stop을 막지 않으며 300f fallen카운트/무적/연출 유지 |
+| D04 | `die / player_dead1~4` | 기존 키·.8·`_r(1,.1)`·pri1·정상난수호출 유지. 자연/장비/스킬 부활력과 사전roll 계산 계속 |
+| D05 | `_fallenResolve / SFX.levelup·voice_demon_revive` | 각각 독립 catch. 자원최대복원/idle·iframes120·기존텍스트·펫·30파티클 후속 |
+| D06 | `_fallenResolve / SFX.die` | dead/사망통계 뒤 catch. `G.on=false` 및 전투 임시상태정리·사망화면/리플레이버튼·펫대사 후속 |
+| D07 | `_fallenResolve / BGM.fadeOut / 예약 BGM.play` | fade500ms와 기존setTimeout600ms callback 각 catch. 사망UI 후속. callback음악성공 보장0 |
+| D08 | `deathFX / !noSound` 직접음향 블록 | audio분류·버스트throttle5f/일반6·보스1 voice상한·gain/pitch/pan 정상기준 유지. 예외로그 후 기존flash/혈흔part·VFX실행. 시각예외는 catch하지 않음 |
+| D09 | 일반보스 `_reviveTimer` 성공음 | 180f끝 판정·HP50%·revPts10소모·recover60/iframes90·spawn55/VFXpending40 보존. 재생실패가 상위업데이트로 탈출하지 않음 |
+| D10 | 일반보스 `_reviveTimer` 확정사망음 | 기존완전사망/타이머0/flash·shake 보존. 게이트확정30f 검사 구조 변경0 |
+| D11 | 실제 `loop` 첫 `_sfxFrameReset` | 소비자catch에서 오류 기록 후 update/draw/다음RAF 진행. backend·dispatcher 내부에 새catch없음. 비음향 update/draw의 기존 오류 처리 불변 |
+
+## 실제 검수와 경계
+
+| 항목 | 근거 / 한계 |
+|---|---|
+| source | AST로 양판 실제 `die`, `_fallenResolve`, `_r`, `deathFX`, `loop`, `_sfxFrameReset`와 revive-timer IfStatement 추출. inlineJS6/importmap1 각판 구문 확인 |
+| 원본 | 공통36 중2PASS(비음향visual오류전파)/34FAIL(양판17audio장애조건). 잘못된 visual경로 대역·loop `_actx` 누락·185콜백/184물리틱 가정을 교정한 최종 결과. 최초 출력과 교정 영수증 보존 |
+| 후보/생산 | 후보38PASS: 공통36+정상동등2. 생산38+기존bossRespawnFieldState34=72PASS |
+| 정상동등 | 일반사망/장비부활/악마부활/보스180f성공·실패/일반·보스deathFX 7시나리오 + 실제loop185콜백의 events/state/RNG/타이머 동등 |
+| loop | backend직접throw·context획득throw를 실제flush/loop에서 실행, 다음RAF1·후속update/draw 확인. 보스부활음 큐의 다음flush throw 뒤185콜백/184물리틱, HP500(대역mhp1000)/revPts10/queue0 유지 |
+| 대역 | DOM·음향·clock/RAF큐·render sink·update 대역. loop본문은 실제지만 update는 actualboss timer branch 소비대역이다. 실제 전체물리/적AI/기기/native청취·사용자플레이 아님 |
+| 오류전파 | backend동일Error전파 및 flush finally 전체배치폐기/성공prefix재시도0 불변. context획득은finally앞이므로 실패때queue잔류/다음프레임재시도는 기존정책. 노드/decoder/장치복구 완료 선언0 |
+| 불변 | 양판 각12최소치환/+858B, 역치환source24전체exact. index/저장builder/schema/capture·restore46keys·피해/확률/Q전용패링·2_3설계 불변 |
+| 미완 | 같은후보Mac 정상시작·4지역·보스문·사망/부활/재도전·저장재로드/청취/visual 미인수. source24앱3399미포함/새앱포장0 |
+
+## 정확한 source
+
+| 파일 | bytes | SHA256 |
+|---|---|---|
+| `game.html` | 4034676 | `78f37f3b22b1c2584c43d2b7d89e05b549fdb3b9c6a3a77a8a6e740ed3dce05b` |
+| `game-easy-test.html` | 3912345 | `87c00f2d24405274b50f4f5bce52917ae35de0f0803dddd855e676d6c3fe2470` |
+| `index.html` | 342119 | `1dd28cab162a4384ad84a356eb2c719940782005d20da1312d2857bc649615a7` |
+| `test/deathAudioProgress.test.cjs` | 13287 | `20eb420a3b9698b329965d2f5c5a2a41e458fb9a47483fb27922d70a4d2658d5` |
+
+각 소비자의 `[SFX]` prefix로 오류를 기록한다. 새 save/진행 필드가 없으며 성공한 사운드나 파티클을 rollback하지 않는다.
+
+## 인계·보존
+
+SOUND0329(`01a0ffcf-9a2c-7f60-b5ea-1177ee1a3811`)의 player death/deathFX·loop 근거를 인수했다. 팀의 누적10경계16PASS를 이번 부분채택 PASS로 사용하지 않고 root가 새 원본 실패대조를 했다. player입구/성공부활/BGM/일반boss음향 catch는 root의 신규 검수다. lazydecode pending 및 SOUND0338누적11경계 후보는 이번에 채택하지 않았다.
+
+원자료: `/Users/fordeargamers/Projects/exoduser-migration-20261001/tmp/mac-migration-runtime/continued-review-20261003/root-death-audio-source25/`의 before-receipt/backups/replacements/baseline-test-final/candidate-test-complete/production-test/production-test-receipt/fixture-corrections. docs전체 관련키워드188줄/34경로 검색과 동기화·보호67/manager4·타인WIP/앱/게임·세이브 보존 후 code2/test1/docs13 정확scope16 commit/push/remote SHA를 별도 영수증에 보존한다. source검사/보고서를 제품완료 건수로 계산하지 않는다.

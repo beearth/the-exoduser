@@ -32,3 +32,16 @@
 공식 완료01a0fc89-7439-7ab2-bf6c-00c607b4e2f9와 supervisor handoff는 원후보 인수 이력이다. 생산 최종 영수증: `tmp/mac-migration-runtime/continued-review-20261002/sound-spatial-connect-acceptance/final-receipt.json`, SHA771e38488d9a41c9cb6175f7010d199348632d9461855e53ae89796f13f101e6. 최종검사10/10과 원팀10실행/역사baseline4/6 및 이전 start18/flush12는 합산하지 않는다.
 
 관련 정본 [사운드](6사운드디자인.md)·[성능](../12퍼포먼스·최적화/12퍼포먼스·최적화.md)의 이번 부록은 기존 start-only 설명을 현재 wiring 보호구간으로 보강한다. 이전 SOUND 시작/프레임 큐 전용 보고서는 당시 source/검수 snapshot으로 원문 보존한다. 전체 docs 관련키워드 검색·모든 행/경로 분류와 원문 byte 백업은 `tmp/mac-migration-runtime/continued-review-20261002/sound-spatial-connect-docs-backup/`에 둔다. 원자료·보호2_3·root 운영문서·앱/세이브 수정0, 이 문서 담당 검사 실행0.
+
+
+## 2026-10-03 source25 — 사망·부활의 오디오 오류 격리
+
+| 접점 | 현행 계약 |
+|---|---|
+| player | `die`의 궁극기 unmute·빔/방패 정지·사망/1회부활 음성과 `_fallenResolve`의 부활음·사망음·BGM fade/600ms 예약 callback 각각 오디오 예외를 기록하고 후속 게임 처리를 계속한다. 사망 판정300f·자원·확률·EXP30%·저장 변경0 |
+| monster / boss | `deathFX`의 직접 사망음 블록만 catch하여 기존 파티클/혈흔을 후속 실행한다. 일반 보스180f 폴백의 부활음/확정사망음 catch. 부활HP50%/포인트10·55f숨김/40f VFX 보존; si3 전용 피날레 설정 변경0 |
+| actual loop | 첫 `_sfxFrameReset` 호출의 catch로 update/draw/다음RAF까지 이어진다. 하위 `_playSampleNow`의 같은Error 전파와 dispatcher finally의 배치 폐기를 변경하지 않는다. context획득은 기존 finally 전이므로 그 실패 때 queue잔류 정책도 보존 |
+| 검증 | 원본 공통36검사2PASS/34FAIL → 후보38PASS(정상동등2추가) → 생산38+기존field복귀34=72PASS. 양판 정상7시나리오 및 실제loop185콜백/184물리틱 state/events/RNG 대조. DOM·음향·clock·RAF/update 소비 대역이며 기기 청취/native완주 아님 |
+| 적용/보존 | 양판 각12정확치환/+858B; 역치환으로source24원본전체exact. index/backend/flush함수·save·Q/E·보호2_3 불변. source24앱3399는이수정미포함. 보스사망/부활/재도전·청취/저장/화면 인수는아직미완 |
+
+정본: [사망·부활 오류 격리](SOUND_DEATH_REVIVE_PROGRESS_20261003.md). 이전 source 검수와 앱 이력은 당시 결과로 보존한다. lazydecode pending 정리·음원복구/다른피격·입력caller 예외는 이번 범위 밖이며 모든 오디오 장애가 해결됐다고 판정하지 않는다.
