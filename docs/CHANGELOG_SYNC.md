@@ -53624,3 +53624,22 @@ scope10=HTML2/test1/docs7이 실제 NUL-uall81에 도달하면 다른 후보 산
 | 시험 | test/quickslotRestoreConsumption.test.cjs 42 PASS; 원본16 PASS/26 FAIL; 양판 JS12/importmap2 parse | 원본 FAIL은 실제 TypeError와 구조 assertion이며 준비용 prefix SyntaxError는 별도 원자료에 보존. 기존 fixture를 사용하되 그 이전 테스트를 재실행하지 않음 |
 | 실제 인수 | main/easy 복원 대입식 각1곳만 교체, 각+180B. docs4 동기화 | source29/3404 앱에는 source30~49 미포함. 실제 입력·플레이·화면·청취·CH1-1 native6 미인수. DOM/SFX/UI 후처리는 대역이며 전체 스킬 HUD나 전체 부팅 caller를 실행했다고 주장하지 않음 |
 | 원본 비교 기준 | 퀵슬롯 정상 동등은 EXODUSER_TEST_BASELINE_DIR=source49 before를 명시해 비교. 별도로 source48 before를 명시한 기존 물약 시험164 PASS | 후보끼리 동일 상태를 비교한 준비 실행만으로 호환을 판정하지 않음. 변경된 복원 경계가 기존 물약 소비 경로를 보존하는지 확인 |
+
+
+## 2026-10-03 source50 — 장갑 atkSpd 숫자 소비와 실제 스킬 발사
+
+원 후보: Claude QA `CO-QA-0902-potion-cooldown-attackspeed-direct-consumers`, 완료 `af25cc83-2731-4b52-b2fa-898ab0b19a34`. source48은 potCd만 채택한 당시 기록이며, 이번에는 남은 statDex의 장갑 직접 atkSpd reader만 채택했다. main/easy 각1B 추가. 정상 밸런스·슬롯·입력·공격 제한·보호2_3 문서는 변경하지 않았다.
+
+| ID / 적용 위치 | 현행 수치·공식·동작 | 경계 |
+|---|---|---|
+| gl().atkSpd / statDex | `(+gl().atkSpd\|\|0)` | 숫자 문자열을 숫자로 가산하고 비숫자/빈 값은0기여. 정상 숫자·양수/음수·boolean/null/빈 문자열은 원본과 전체 시험 결과 동등. unary+는 Infinity 방어·음수 제한이 아님 |
+| statDex 전체 | `1+(STATS.dex+_eqStat('Dex')+_lvB())*.0005+(+gl().atkSpd\|\|0)+_eqAffix('atkSpeed')+_eqImplicit('_iAtkSpd')*.01+(_uEq('_uGloveSpd')\|\|0)` | _lvB=~~(P.lv*.5)의 기존 정수 처리. 나머지 term·장비/affix/implicit/unique reader·생성 수치 변경0 |
+| 정상 생성 / 저장 | 장갑 atkSpd는 rarity>=1에서 `+((.02+rarity*.015+tier*.005)*(.9+Math.random()*.2)).toFixed(3)` | 전체 dbRestore의 bag/equipped→equipItem→actual reader 도달; whole dbSave JSON 왕복 raw '.1' 그대로 보존. 저장 schema·원 아이템 필드를 변환하지 않음 |
+| 무기 회수 소비 | 실제 wSwing 종료 if: `P.s='wRecover';P.st2=~~(16/((wp().spd\|\|.3)*statDex()*(1+_eqAffix('meleeAtkSpd')+_eqAffix('glovesAtkSpd'))))` | selected if 구간만 실행. 전체 공격 상태머신·키 연속입력·Q 전환·실제 초당공격수 인수 아님. QA의 합성14 분자 대신 실제16 사용 |
+| 바늘출 / activateNeedleShot | ST8·쿨90f, 피해 `~~(bowRef()*statDex()*pBowMul()*_skMul('needleShot'))`, 발수 `2+~~((slv-1)/5)` | 발사 간격2f·사거리600·속도30·관통0. 전체 발동 함수와 실제 update의 needleBurst if 구간으로 투사체 생성; ST 부족/쿨 guard 유지 |
+| 손상 시험 수치 | fixture DEX20/Lv1/weapon.spd.45/다른 term0, bowRef100/pBowMul2/_skMul3: raw '.1' 원본 회수0·발사피해0→32f·666; raw 'ab'→35f·606 | HUD 실행과 별개로 실제 발사 구간을 실행하고 기록. 실제 적 충돌/HP 피해·전체 update·회수 이후 idle 재진입은 미실행 |
+| 표시 소비 | 실제 소스의 `statDex().toFixed(3)` 표현식 실행 | 원본 문자열 반환은 TypeError, 수정본 숫자 format 가능. 전체 HUD DOM·레이아웃·표시 픽셀 인수 아님 |
+| 일반 석궁 | whole fireBow 소스는 `bowRef()*pBowMul()*10` 기반·statDex 미사용 | '전체 석궁 공격주기0/일반 석궁 피해0'라는 범위 확장 미채택. 이번 fireBow 실행·모든 스킬 최종 피해 검수를 했다고 주장하지 않음 |
+| 문서 공식 정합 | 스킬데미지공식표의 statDex `P.stats.dex*.01` 폐기, 실제 위 전체식으로 정정; 같은 표 statStr/statInt는 양판 실제 return1에 맞춰 정정 | STR/INT source 변경0. 스탯 ref의 실제 1:1 가산 설명 유지. 과거 DPS 비교 숫자까지 새 native 실측으로 계산하지 않음 |
+| 검증 | test/gloveAttackSpeedConsumption.test.cjs 100 PASS / 원본40 PASS·60 FAIL. 정상 비교는 source50 before 원본을 명시. 양판 JS12/importmap2 parse | whole save/restore/equip/statDex/_eqStat/_eqAffix/_eqImplicit/_uEq/activateNeedleShot + needle emit·wSwing 종료·format 구간. projectile pool·bowRef/pBowMul/_skMul·stat 재구축·SFX/DOM은 대역 |
+| 생산·인수 | 코드2/test1/docs6 한정 checkpoint. source29/3404 기존 앱에는30~50 미포함 | 사용자 게임·save 접근0, native6·첫보스 사망/재도전·시각/청취 미인수. 보고/fixture를 실제 플레이 완료로 계산0 |

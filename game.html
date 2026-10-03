@@ -26816,7 +26816,7 @@ window._testAffixClear=function(){
 // 장비 임플리싯 합산 (stat명별)
 function _eqImplicit(stat){let v=0;for(const sl of SLOT_NAMES){const it=INV.equipped[sl];if(it&&it._implicitStat===stat)v+=(+it._implicitVal||0)}return v}
 function statStr(){return 1} // STR은 ref 함수에서 직접 ATK로 더해짐 (1:1)
-function statDex(){return 1+(STATS.dex+_eqStat('Dex')+_lvB())*.0005+(gl().atkSpd||0)+_eqAffix('atkSpeed')+_eqImplicit('_iAtkSpd')*.01+(_uEq('_uGloveSpd')||0)}
+function statDex(){return 1+(STATS.dex+_eqStat('Dex')+_lvB())*.0005+(+gl().atkSpd||0)+_eqAffix('atkSpeed')+_eqImplicit('_iAtkSpd')*.01+(_uEq('_uGloveSpd')||0)}
 function statInt(){return 1} // INT는 ref 함수에서 직접 ATK로 더해짐 (1:1)
 function _eqLckTotal(){return STATS.lck+_lvB()+_eqStat('Lck')+_eqAffix('lckFlatN')+_eqAffix('lckFlatR')}
 function statCrit(){return _eqLckTotal()*.025+PASSIVES.pCrit*1.5+(rg1().critRate||0)+(rg2().critRate||0)+(nc().critRate||0)+_eqAffix('critRate')*100+(P._crystalStats?P._crystalStats.crit:0)} // critRate 어픽스 (무기 파트) pct단위 → %로 환산
