@@ -27,7 +27,7 @@ ANIMVFX0247 실제 완료 UUID `76c91e7a-f06e-4ae3-af78-521c3dc2efb5`, UTC2026-1
 | fan 실제 분기 | phase0~4에서 renderer 각 경계가 최초/최종 실제 spawn 탄의 atan2와 일치, 탄 수·life400·recover45 보존. 다른 상태에 두 경고 호출0 |
 | 통합 검사 | 신규8+기존 laser1+CH1배정/감옥예약2+inline구문1=12 PASS. 양판 합산 JS12(모듈4 포함)·importmapJSON2 구문 확인 |
 | 대역·미검수 | Canvas 호출·SFX·canMv·피해 기록은 대역. 실제 GPU 픽셀·CH1 자연 플레이·프레임 성능·청취 미완. 모듈을 classic vm.Script로 파싱한 최초 보조검사는 도구 분류 오류였고 module-aware node --check로 교정; 게임 결함으로 계산0 |
-| 패키지 경계 | 이전 source22 앱3397은 당시 source22 그대로. 이 source23의 별도 앱 포장·동일 후보 native 전체 흐름은 아직 미완 |
+| 패키지 경계 | source23 앱3398의 포장·타이틀·HTTP 확인. source22/3397 앱은 당시 코드 보존. 동일 후보 native 전체 흐름은 미완 |
 
 ## MAP PRODUCTION REPORT — 전투 표시만
 
