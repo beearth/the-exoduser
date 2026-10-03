@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-10-03T11:46:04.627355+00:00",
+  "updatedAt": "2026-10-03T12:01:56.650202+00:00",
   "ownerChatId": "01a0fd2d-8a6f-7f01-b2da-70119654cffe",
   "rootChatId": "01a0faa9-b453-7673-be39-98adedb4c2b3",
   "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
@@ -49,7 +49,7 @@
     "changesAtRoundStart": 76,
     "creditAuditAt": "2026-10-02T16:01:53.736952+00:00",
     "newCreditUsedActual": 4,
-    "changesCurrent": 71,
+    "changesCurrent": 81,
     "initial1530ReservationHistory": {
       "rootRemoteCheckpoint": "73620278a571397c101ee54a85d272a43b8f7d45",
       "rootReceiptSHA256": "3d54d7dcb514636bceb3f3639400c48fd0c5a7e210736aa90de2ee82edbe3654",
@@ -230,9 +230,9 @@
     }
   },
   "timing": {
-    "currentRoundStart": "2026-10-03T11:44:37.592856Z",
-    "roundDeadline": "2026-10-03T11:47:37.592856+00:00",
-    "nextFullSnapshotDue": "2026-10-03T11:49:37.592856+00:00",
+    "currentRoundStart": "2026-10-03T12:00:37.088285Z",
+    "roundDeadline": "2026-10-03T12:03:37.088285+00:00",
+    "nextFullSnapshotDue": "2026-10-03T12:05:37.088285+00:00",
     "knownMisses": [
       {
         "due": "2026-10-02T15:18:00Z",
@@ -367,10 +367,10 @@
         "reason": "heartbeat20:27:22.731 then actual fullinventory; no5min compliance claim"
       }
     ],
-    "currentRoundEnd": "2026-10-03T11:46:04.627355+00:00",
+    "currentRoundEnd": "2026-10-03T12:01:56.650202+00:00",
     "currentRoundLimitExceeded": false,
     "currentRoundOverrunReason": null,
-    "currentRoundElapsedSeconds": 87.034499,
+    "currentRoundElapsedSeconds": 79.561917,
     "currentSnapshotDueComparison": {
       "previousFullSnapshot": "2026-10-02T17:05:27.956725Z",
       "nextDueByFiveMinutes": "2026-10-02T17:10:27.956725Z",
@@ -14288,6 +14288,48 @@
       "activeWorkMode": "memory_only",
       "deniedPurposeRemainsHeld": false,
       "status": "sent_once_pending"
+    },
+    {
+      "role": "QA",
+      "taskId": "CO-QA-1150-bag-storage-capacity-consumers",
+      "sentAt": "2026-10-03T11:51:16.633559+00:00",
+      "uuid": "f7476aa3-e002-492c-8929-48941202fe04",
+      "pid": 91281,
+      "priorEnd": "f1a993e5-110c-436e-911e-3f4202079a92",
+      "inlineInstruction": "CO-QA-1150-bag-storage-capacity-consumers\n\n1144 실제 end f1a993e5-110c-436e-911e-3f4202079a92@11:48:34.040Z 이후 승인 QA 복원→인벤토리 소비의 두 독립 미검토 단위를 committed source52 0db049139b92018fe3a5dbc23984006fbf693764 기준 이어갑니다. (1) 실제 BAG_MAX 복원→pickupItem(실함수이름은 원문확인) bag 가득참 판단→아이템 소유전환/획득실패 보존 경계. (2) 실제 STORAGE_MAX 복원→depositStorage/출금의 창고 용량 판단 및 원본bag/storage 이동 보존 경계. 공유 capacitycause이면 bundle1, 실제필드/분기없으면 모형만들지말고 즉시반증. 비숫자/숫자문자열/음수/0/거대유한/정상 full/onefree의 실제 restore sanitize→consumer 도달, 전체함수 OLD 최소 NEW 정상동등·실행과정적·완료ID/docs keyword/root Gate. 사용자save/UI/앱/팀원자료/코드docs/파일scratch/Gitindex 변경0·메모리/stdin만. 기존소진1138 affix 및1144 exp/0517 restore/1112 APrefund/1122 SPrefund/1132 grit 반복0; 새정책 bag용량변경 임의clamp0. 1144 보고정정: 단순 exp-=maxExp가 항상 IEEE754 값변화를 보장하지 않으며 큰유한1e300·unsafe lv++에서 무진전 가능, 1e12/1663유한샘플만으로 모든JSON손상값 자가종료 주장0. 동기라고 중간throw/부분보상없음도 입증0. 이 Gate는root인계하며 같은 exp검사재개하지말고 현재독립capacity조사를 우선. source52 공식완료 승인작업브랜치 refs/heads/codex/mac-environment-20261001 원격ea5c9858조상/10핀검증, active old51역사불변; 최신생산WIP있으면gitshow stdout→stdin만. 보호2_3/Q-onlymagic/E불가/어택티켓금지/LOCK/SSOT/기존23/맵가이드유지. source후보≠게임반영/native6/visual/청취완료. 두단위후이미승인다음미검토독립경계있으면같은실행에서이어가되 소진시무의미NOFIX반복0.\n\n기존제출raw6 불변/추가파일·scratch·patch덮어쓰기·보고서출력0. production/공유정본docs/타팀/Git/index/앱/save/새세션resume/권한/cleanup0. root상세채택/타팀종료대기는다음소유승인작업시작조건0, 기존소유미검토backlog self-select는승인범위내입니다. 이미완료동일TASK·검사·문서보고재현0. 원총괄 최신 공식 source52 핀(commit 0db049139b92018fe3a5dbc23984006fbf693764 codeepoch52; stat-panel SP환불은 sum(Number(STATS각값))+Number(grit), raw복원저장/변수clamp0·양판asyncreset totalSP/AP와 확인후refund safe비음수거절로 통화투자보존·actual whole dbRestore mounted zero plan/evaluatePlan/양판applyPlan32PASS/원본10PASS22assertFAIL≠22결함·기존growth거래15PASS·정상integer 레거시VIT 확장GRIT 취소 live재계산호환·준비crossrealm/문자열0계획오류제외·_gritTotal1132미채택 별도gate·기존번역9key미해결; 승인원격ref refs/heads/codex/mac-environment-20261001 source52가원격ea5c9858cb19996aad6649d3718e14be4fceef89조상 확인·main통합게시완료0; 이전 source51 핀(commit 4ae160c7f7ec8f8b35a50b0aec873c377925ccec codeepoch51; stat-panel AP환불은 첫10 rank COSTS와 나머지5AP 산술합·임의999상한/perdef.max clamp 미채택·유한정상/확장/분수ceil 기존의미유지, 양HTML reset 확인 전후 unsafe/negative AP transaction 거부·투자통화보존 root50PASS/old42PASS8 childtimeoutFAIL≠nativehang·기존회귀19PASS1FAIL 동일baseline 번역9key 누락 미해결·SPconcat1122는별도sanitize/callerGate 미채택·fullmountedzero/evaluatePlan과applyPlan 구분; 이전 source50 핀(commit 3ecab55cac78c25091fda188b033af21627aa2bf, codeepoch50; statDex gl.atkSpd unary+ 각1B채택/whole save restore equip statDex reader activateNeedleShot 실제needleburst wSwing종료if format식100PASS/원본40PASS60assertFAIL≠60결함·ST8 CD90 발수2f range600 spd30 관통0유지·일반fireBow statDex미사용 전체석궁주기0 피해0미채택·fullupdate 공격상태머신 충돌HP native0; 이전source49 QSLOTS복원 truthy분기 Array.from 배열max(4,len)/非배열4 invalidnull primitive array원소empty/정상object추가필드4초과배열보존 각+180B채택 whole dbRestore sanitize useQuickslot addPotion updateQS dbSaveJSON42PASS/원본16PASS26FAIL/기존물약164PASS·무조건4truncation미채택·fullboot/native0; 이전source48 potCd수동2자동2 reader Math.min(+potCd||0,.2)각4B채택/whole save restore equip useQuickslot actualquickslot tick contiguousauto소모회복쿨차단164PASS/원본98PASS66assertFAIL≠66결함·420f기반6f최소/자동potionCdRed부재유지/atkSpd미채택·fullupdate/native0; 이전source47 BGM.play bgmTrack startsWith typeof string guard각+18B채택/wholeBGM startup/preset closeAllPanels104PASS/원본78PASS26FAIL≠26결함; malformed999일반field는다음categoryguard에서기존skip·자동음악복구아님·모든stage/retryunwrapped주장은actualinitStage/fieldretrycatch충돌로미채택·fullmapinit/native청취0; 이전source46 _ancPartPts (+c.r||0)+(+c.t||0) reader양판각+2B채택/whole save restore equip actualaffiximplicit stats summon ancestor update hurtE 검수152PASS/원본20PASS132assertFAIL≠132결함/음수guard유지·boneRegister UI withdraw 변경0·MP게이트rangeclamp인수0/HP0은첫1f회수후132f폭발제거≠즉사native영구손실; 이전source45 _calcAncestorStats oss.ancPow unary+양판각1B채택/main검기 Easy기존근접경로유지/ancPartPts r-t0819는source46에서채택·합성피해값≠native; source44 splashMul/splashR unary+각1/양판+2B채택/normal elemMissile실제구간대상·evilOrb hellfirebeam은선행breakcontinue제외/모든string타겟없음주장채택0; source43 recalcSt bonusSt 숫자합산 각+6B채택/main17 Easy16슬롯범위유지/항상음수·일률붕괴주장채택0/UI_stEq·Infinity·fullinitStage Gate미검증; source42 pBeamMul의 비숫자 beamDmg만 unary+ 각1B채택/정상숫자문자열은 기존Math.max coercion정합/전체빔0HP 주장은 채택0; source41 _accDmg 본편7항/Easy6항 숫자합산(+7B/+6B)채택·기존슬롯참여범위유지· direct nc().expBonus unary+ 각1B채택·unary+는Infinity clamp아님· notify 마지막호출부터1500ms on제거/페이드 타이머취소 최소채택·일반 initStage chain2reset 유지/검수36 QA0732 REJECT_UNPROVEN_PERSISTENT_FAILURE/실험미채택 이력유지)을 후속 source 의미검수 기준으로 참조하고(source29/3404 기존 실행 앱에는 source30/31/32/33/34/35/37/38/39/40/41/42/43/44/45/46/47/48/49/50/51/52 미포함·재빌드0·native/청취 인수0), 유니크 actual OLD/NEW·설계근거·최소 실패재현을 inline 인계. root 최신 실제 사망 전제: die는 즉시 G.on=false가 아니라 쓰러짐300f 진입, 실패 _fallenResolve에서 false; chain180f는 그 사이 감쇠하므로 후속 적 사망 재갱신의 실제 전체caller 증명 없이 잔존 결함 확정0. 공식 root 핀 참조만; shasum/hash 반복0; 실제 소스/픽셀/앱 인수를 구분하세요. 보호2_3/Q-onlymagic/E불가/어택티켓금지/AGENTS LOCK SSOT mapguide/사용자WIP기존23보호. STATE/policy/_b3r거절 목적재읽기·대리내용·다른toolhostsession/권한우회0, 필수Read막히면root필수USER조치만. receipt/source/end구분/후보≠nativevisual청취완료. 내부게임상태는실제원문함수/분기추출실행, 외부I/O DOM audio만안전대역. 새로만든tick/저장/비용모형PASS는제품근거0. gap후보는baselineFAIL candidatePASS 정상동등을분리하고 정적추론이면실행했다고보고0. 두 단위 검수 후 자동 종료하지 않습니다. 한 경계 완료 결과는 기존 공식 대화 메모리에 남기고, 이미 승인된 같은 팀 도메인의 다음 미검토 독립 소비 경계를 스스로 선택해 같은 실행에서 계속 진행합니다. 원총괄 채택/타팀 완료/두 파일 산출 소진만으로 종료0. 동일검사 반복/무의미 NOFIX/새설계·수치 확장/생산쓰기0. 실제 자료·보호 목적·권한으로 막히면 정확한 막힘만 인계하고 충돌 없는 다른 기존 승인 백로그를 이어갑니다. 새 산출 파일0. scratch도 출력파일이며 예외0입니다. Write/Edit/cat>/writeFile/write_text/임시파일·scratch생성·기존scratch덮어쓰기0, node stdin/here-document/메모리만. 기존위반파일 삭제cleanup0. 실제원문전체 호출자·상위도달조건을 보존하고 새모형PASS를 제품증거로 계산0.",
+      "inlineSha256": "9feada74783c244d1405dfc2e2741f1201ebad688c330769fbd199bf42287196",
+      "newFiles": 0,
+      "activeWorkMode": "memory_only",
+      "deniedPurposeRemainsHeld": false,
+      "status": "sent_once_pending"
+    },
+    {
+      "role": "QA",
+      "taskId": "CO-QA-1155-crystal-bag-capacity-transfer-consumers",
+      "sentAt": "2026-10-03T11:56:09.094263+00:00",
+      "uuid": "f7476aa3-e002-492c-8929-48941202fe04",
+      "pid": 91281,
+      "priorEnd": "19869303-8d29-474d-81a4-c8abcc301361",
+      "inlineInstruction": "CO-QA-1155-crystal-bag-capacity-transfer-consumers\n\n1150 실제 end19869303-8d29-474d-81a4-c8abcc301361@11:53:30.589Z 이후 승인 QA save→인벤토리 도메인의 미검토 두 독립 소비를 committed source52 0db049139b92018fe3a5dbc23984006fbf693764 기준 연결합니다. (1) CRYSTAL_BAG_MAX 실제 const 여부 및 실제 용량 비교 reader에서 CRYSTAL_BAG 복원 shape의 흐름을 전부 선행sanitizer/분기/외부caller와 대조. `.length` undefined 자체는 throw가 아니며 비교 false와 후속 .push/.splice/.filter 등의 실제 실패를 분리. (2) 실제 크리스탈 획득/이동 경로의 용량 판정→소유전환 성공/실패 보존(동작없는용량상수모형만들기0), 앞서0114~0132/0626 등 기검토 crystal shape/renderer 동일재현0; 이미fixed영역이면 짧게대조 후 미검토 consumer에서 실제도달만. 단위별 원문 전체함수추출 실행/정적구분·정상배열/객체·문자열·숫자·null shape 실제restore→실제consume·unique OLD 최소 NEW·정상동등/기존필드보존·공유cause bundle1/docs keyword/root Gate/완료ID. BAG_MAX1150원인 반복0/기존exp1144/GRIT1132 root예약53 같은조사0. source53 아직예약, 미래52·old52/51historical evidence불변; production양HTML WIP면gitshow stdout→stdin만. 새필드·용량수치clamp 정책0, 기존제출raw불변. 게임/save/UI/앱/코드docs/타팀/filescratch/Gitindex/권한/cleanup/새세션0. 내부모형PASS제품증거0, node stdin메모리만. 1150 'crash/데이터손실없음/cosmetic'은 전체render/획득소유검수전未입증이며 root Gate로두고 반복검사0; +||0는Infinity/음수/거대clamp아님. native6/visual/청취0. 완료후 이미승인미검토독립backlog만같은실행에서이어가고 정말소진시NOFIX활동늘리기0.\n\n기존제출raw6 불변/추가파일·scratch·patch덮어쓰기·보고서출력0. production/공유정본docs/타팀/Git/index/앱/save/새세션resume/권한/cleanup0. root상세채택/타팀종료대기는다음소유승인작업시작조건0, 기존소유미검토backlog self-select는승인범위내입니다. 이미완료동일TASK·검사·문서보고재현0. 원총괄 최신 공식 source52 핀(commit 0db049139b92018fe3a5dbc23984006fbf693764 codeepoch52; stat-panel SP환불은 sum(Number(STATS각값))+Number(grit), raw복원저장/변수clamp0·양판asyncreset totalSP/AP와 확인후refund safe비음수거절로 통화투자보존·actual whole dbRestore mounted zero plan/evaluatePlan/양판applyPlan32PASS/원본10PASS22assertFAIL≠22결함·기존growth거래15PASS·정상integer 레거시VIT 확장GRIT 취소 live재계산호환·준비crossrealm/문자열0계획오류제외·_gritTotal1132미채택 별도gate·기존번역9key미해결; 승인원격ref refs/heads/codex/mac-environment-20261001 source52가원격ea5c9858cb19996aad6649d3718e14be4fceef89조상 확인·main통합게시완료0; 이전 source51 핀(commit 4ae160c7f7ec8f8b35a50b0aec873c377925ccec codeepoch51; stat-panel AP환불은 첫10 rank COSTS와 나머지5AP 산술합·임의999상한/perdef.max clamp 미채택·유한정상/확장/분수ceil 기존의미유지, 양HTML reset 확인 전후 unsafe/negative AP transaction 거부·투자통화보존 root50PASS/old42PASS8 childtimeoutFAIL≠nativehang·기존회귀19PASS1FAIL 동일baseline 번역9key 누락 미해결·SPconcat1122는별도sanitize/callerGate 미채택·fullmountedzero/evaluatePlan과applyPlan 구분; 이전 source50 핀(commit 3ecab55cac78c25091fda188b033af21627aa2bf, codeepoch50; statDex gl.atkSpd unary+ 각1B채택/whole save restore equip statDex reader activateNeedleShot 실제needleburst wSwing종료if format식100PASS/원본40PASS60assertFAIL≠60결함·ST8 CD90 발수2f range600 spd30 관통0유지·일반fireBow statDex미사용 전체석궁주기0 피해0미채택·fullupdate 공격상태머신 충돌HP native0; 이전source49 QSLOTS복원 truthy분기 Array.from 배열max(4,len)/非배열4 invalidnull primitive array원소empty/정상object추가필드4초과배열보존 각+180B채택 whole dbRestore sanitize useQuickslot addPotion updateQS dbSaveJSON42PASS/원본16PASS26FAIL/기존물약164PASS·무조건4truncation미채택·fullboot/native0; 이전source48 potCd수동2자동2 reader Math.min(+potCd||0,.2)각4B채택/whole save restore equip useQuickslot actualquickslot tick contiguousauto소모회복쿨차단164PASS/원본98PASS66assertFAIL≠66결함·420f기반6f최소/자동potionCdRed부재유지/atkSpd미채택·fullupdate/native0; 이전source47 BGM.play bgmTrack startsWith typeof string guard각+18B채택/wholeBGM startup/preset closeAllPanels104PASS/원본78PASS26FAIL≠26결함; malformed999일반field는다음categoryguard에서기존skip·자동음악복구아님·모든stage/retryunwrapped주장은actualinitStage/fieldretrycatch충돌로미채택·fullmapinit/native청취0; 이전source46 _ancPartPts (+c.r||0)+(+c.t||0) reader양판각+2B채택/whole save restore equip actualaffiximplicit stats summon ancestor update hurtE 검수152PASS/원본20PASS132assertFAIL≠132결함/음수guard유지·boneRegister UI withdraw 변경0·MP게이트rangeclamp인수0/HP0은첫1f회수후132f폭발제거≠즉사native영구손실; 이전source45 _calcAncestorStats oss.ancPow unary+양판각1B채택/main검기 Easy기존근접경로유지/ancPartPts r-t0819는source46에서채택·합성피해값≠native; source44 splashMul/splashR unary+각1/양판+2B채택/normal elemMissile실제구간대상·evilOrb hellfirebeam은선행breakcontinue제외/모든string타겟없음주장채택0; source43 recalcSt bonusSt 숫자합산 각+6B채택/main17 Easy16슬롯범위유지/항상음수·일률붕괴주장채택0/UI_stEq·Infinity·fullinitStage Gate미검증; source42 pBeamMul의 비숫자 beamDmg만 unary+ 각1B채택/정상숫자문자열은 기존Math.max coercion정합/전체빔0HP 주장은 채택0; source41 _accDmg 본편7항/Easy6항 숫자합산(+7B/+6B)채택·기존슬롯참여범위유지· direct nc().expBonus unary+ 각1B채택·unary+는Infinity clamp아님· notify 마지막호출부터1500ms on제거/페이드 타이머취소 최소채택·일반 initStage chain2reset 유지/검수36 QA0732 REJECT_UNPROVEN_PERSISTENT_FAILURE/실험미채택 이력유지)을 후속 source 의미검수 기준으로 참조하고(source29/3404 기존 실행 앱에는 source30/31/32/33/34/35/37/38/39/40/41/42/43/44/45/46/47/48/49/50/51/52 미포함·재빌드0·native/청취 인수0), 유니크 actual OLD/NEW·설계근거·최소 실패재현을 inline 인계. root 최신 실제 사망 전제: die는 즉시 G.on=false가 아니라 쓰러짐300f 진입, 실패 _fallenResolve에서 false; chain180f는 그 사이 감쇠하므로 후속 적 사망 재갱신의 실제 전체caller 증명 없이 잔존 결함 확정0. 공식 root 핀 참조만; shasum/hash 반복0; 실제 소스/픽셀/앱 인수를 구분하세요. 보호2_3/Q-onlymagic/E불가/어택티켓금지/AGENTS LOCK SSOT mapguide/사용자WIP기존23보호. STATE/policy/_b3r거절 목적재읽기·대리내용·다른toolhostsession/권한우회0, 필수Read막히면root필수USER조치만. receipt/source/end구분/후보≠nativevisual청취완료. 내부게임상태는실제원문함수/분기추출실행, 외부I/O DOM audio만안전대역. 새로만든tick/저장/비용모형PASS는제품근거0. gap후보는baselineFAIL candidatePASS 정상동등을분리하고 정적추론이면실행했다고보고0. 두 단위 검수 후 자동 종료하지 않습니다. 한 경계 완료 결과는 기존 공식 대화 메모리에 남기고, 이미 승인된 같은 팀 도메인의 다음 미검토 독립 소비 경계를 스스로 선택해 같은 실행에서 계속 진행합니다. 원총괄 채택/타팀 완료/두 파일 산출 소진만으로 종료0. 동일검사 반복/무의미 NOFIX/새설계·수치 확장/생산쓰기0. 실제 자료·보호 목적·권한으로 막히면 정확한 막힘만 인계하고 충돌 없는 다른 기존 승인 백로그를 이어갑니다. 새 산출 파일0. scratch도 출력파일이며 예외0입니다. Write/Edit/cat>/writeFile/write_text/임시파일·scratch생성·기존scratch덮어쓰기0, node stdin/here-document/메모리만. 기존위반파일 삭제cleanup0. 실제원문전체 호출자·상위도달조건을 보존하고 새모형PASS를 제품증거로 계산0.",
+      "inlineSha256": "8e5dc18c996dd6a986a1196b4c9dcaf5c76a8fb1564bb5cf10ff6e38851f4f9f",
+      "newFiles": 0,
+      "activeWorkMode": "memory_only",
+      "deniedPurposeRemainsHeld": false,
+      "status": "sent_once_pending"
+    },
+    {
+      "role": "QA",
+      "taskId": "CO-QA-1200-inventory-item-migration-consumers",
+      "sentAt": "2026-10-03T12:01:29.833687+00:00",
+      "uuid": "f7476aa3-e002-492c-8929-48941202fe04",
+      "pid": 91281,
+      "priorEnd": "b3cb3798-62fe-4067-87c7-b4c32bab9bc1",
+      "inlineInstruction": "CO-QA-1200-inventory-item-migration-consumers\n\n1155 실제end b3cb3798-62fe-4067-87c7-b4c32bab9bc1@11:58:04.757Z 이후 승인QA save→inventory 미검토2독립단위를 committedsource52 0db049139b92018fe3a5dbc23984006fbf693764 기준 연결. (1) 실제 INV.bag restore 후 `_fixCr`/item migration에서 정상배열 내부 null·primitive·배열·정상object 항목의 소비와 이동보존(firstfail/필터/후속caller). (2) 실제 INV storage 복원 collection 내 item migration/_fixCr 호출 경로의 항목shape 소비 및 보존. 실제storage명/함수/호출은 원문으로만 정하고 존재하지않으면 반증·모형0. wholearray shape0443/0446 및 CRYSTAL_BAG0449/1155/0114~0132/기존QSLOTS49 같은재검사·동일원인후보재제출0; 첫짧은대조로기검토여부확인후 남은미검토항목consumer만. null item `.crystals` 접근이 실제throw인지 선행전체sanitize/filter와함께증명, 서로같은_fixCr cause면bundle1(중복결함0). Array.isArray만으로 정상배열 모든항목유효보장0/정상추가필드·길이·소유보존 필요. 완료조건 실제원문 전체restore→실소비+원본실패/최소OLD NEW/정상동등 또는반증·source/정적구분·완료ID/docs keyword rootGate. 독립미검토경계없으면즉시정확소진 root인계하고NOFIX전수루프0. 1155crystalbag는0449중복Gate로root인계 신규유일후보확정0, 그검사재개0. source53GRIT root예약생산범위팀쓰기0·future52/currenthistoricalpins불변·productionWIP면gitshowstdout→stdin. 산출파일/scratch0·node stdin메모리만/Gitindex/코드docs/타팀/앱save/권한/cleanup/새세션0. 보호2_3/Q-onlymagic/E불가/어택티켓금지/AGENTS LOCK SSOT 기존23/맵가이드유지. 실제native6visual청취0.\n\n기존제출raw6 불변/추가파일·scratch·patch덮어쓰기·보고서출력0. production/공유정본docs/타팀/Git/index/앱/save/새세션resume/권한/cleanup0. root상세채택/타팀종료대기는다음소유승인작업시작조건0, 기존소유미검토backlog self-select는승인범위내입니다. 이미완료동일TASK·검사·문서보고재현0. 원총괄 최신 공식 source52 핀(commit 0db049139b92018fe3a5dbc23984006fbf693764 codeepoch52; stat-panel SP환불은 sum(Number(STATS각값))+Number(grit), raw복원저장/변수clamp0·양판asyncreset totalSP/AP와 확인후refund safe비음수거절로 통화투자보존·actual whole dbRestore mounted zero plan/evaluatePlan/양판applyPlan32PASS/원본10PASS22assertFAIL≠22결함·기존growth거래15PASS·정상integer 레거시VIT 확장GRIT 취소 live재계산호환·준비crossrealm/문자열0계획오류제외·_gritTotal1132미채택 별도gate·기존번역9key미해결; 승인원격ref refs/heads/codex/mac-environment-20261001 source52가원격ea5c9858cb19996aad6649d3718e14be4fceef89조상 확인·main통합게시완료0; 이전 source51 핀(commit 4ae160c7f7ec8f8b35a50b0aec873c377925ccec codeepoch51; stat-panel AP환불은 첫10 rank COSTS와 나머지5AP 산술합·임의999상한/perdef.max clamp 미채택·유한정상/확장/분수ceil 기존의미유지, 양HTML reset 확인 전후 unsafe/negative AP transaction 거부·투자통화보존 root50PASS/old42PASS8 childtimeoutFAIL≠nativehang·기존회귀19PASS1FAIL 동일baseline 번역9key 누락 미해결·SPconcat1122는별도sanitize/callerGate 미채택·fullmountedzero/evaluatePlan과applyPlan 구분; 이전 source50 핀(commit 3ecab55cac78c25091fda188b033af21627aa2bf, codeepoch50; statDex gl.atkSpd unary+ 각1B채택/whole save restore equip statDex reader activateNeedleShot 실제needleburst wSwing종료if format식100PASS/원본40PASS60assertFAIL≠60결함·ST8 CD90 발수2f range600 spd30 관통0유지·일반fireBow statDex미사용 전체석궁주기0 피해0미채택·fullupdate 공격상태머신 충돌HP native0; 이전source49 QSLOTS복원 truthy분기 Array.from 배열max(4,len)/非배열4 invalidnull primitive array원소empty/정상object추가필드4초과배열보존 각+180B채택 whole dbRestore sanitize useQuickslot addPotion updateQS dbSaveJSON42PASS/원본16PASS26FAIL/기존물약164PASS·무조건4truncation미채택·fullboot/native0; 이전source48 potCd수동2자동2 reader Math.min(+potCd||0,.2)각4B채택/whole save restore equip useQuickslot actualquickslot tick contiguousauto소모회복쿨차단164PASS/원본98PASS66assertFAIL≠66결함·420f기반6f최소/자동potionCdRed부재유지/atkSpd미채택·fullupdate/native0; 이전source47 BGM.play bgmTrack startsWith typeof string guard각+18B채택/wholeBGM startup/preset closeAllPanels104PASS/원본78PASS26FAIL≠26결함; malformed999일반field는다음categoryguard에서기존skip·자동음악복구아님·모든stage/retryunwrapped주장은actualinitStage/fieldretrycatch충돌로미채택·fullmapinit/native청취0; 이전source46 _ancPartPts (+c.r||0)+(+c.t||0) reader양판각+2B채택/whole save restore equip actualaffiximplicit stats summon ancestor update hurtE 검수152PASS/원본20PASS132assertFAIL≠132결함/음수guard유지·boneRegister UI withdraw 변경0·MP게이트rangeclamp인수0/HP0은첫1f회수후132f폭발제거≠즉사native영구손실; 이전source45 _calcAncestorStats oss.ancPow unary+양판각1B채택/main검기 Easy기존근접경로유지/ancPartPts r-t0819는source46에서채택·합성피해값≠native; source44 splashMul/splashR unary+각1/양판+2B채택/normal elemMissile실제구간대상·evilOrb hellfirebeam은선행breakcontinue제외/모든string타겟없음주장채택0; source43 recalcSt bonusSt 숫자합산 각+6B채택/main17 Easy16슬롯범위유지/항상음수·일률붕괴주장채택0/UI_stEq·Infinity·fullinitStage Gate미검증; source42 pBeamMul의 비숫자 beamDmg만 unary+ 각1B채택/정상숫자문자열은 기존Math.max coercion정합/전체빔0HP 주장은 채택0; source41 _accDmg 본편7항/Easy6항 숫자합산(+7B/+6B)채택·기존슬롯참여범위유지· direct nc().expBonus unary+ 각1B채택·unary+는Infinity clamp아님· notify 마지막호출부터1500ms on제거/페이드 타이머취소 최소채택·일반 initStage chain2reset 유지/검수36 QA0732 REJECT_UNPROVEN_PERSISTENT_FAILURE/실험미채택 이력유지)을 후속 source 의미검수 기준으로 참조하고(source29/3404 기존 실행 앱에는 source30/31/32/33/34/35/37/38/39/40/41/42/43/44/45/46/47/48/49/50/51/52 미포함·재빌드0·native/청취 인수0), 유니크 actual OLD/NEW·설계근거·최소 실패재현을 inline 인계. root 최신 실제 사망 전제: die는 즉시 G.on=false가 아니라 쓰러짐300f 진입, 실패 _fallenResolve에서 false; chain180f는 그 사이 감쇠하므로 후속 적 사망 재갱신의 실제 전체caller 증명 없이 잔존 결함 확정0. 공식 root 핀 참조만; shasum/hash 반복0; 실제 소스/픽셀/앱 인수를 구분하세요. 보호2_3/Q-onlymagic/E불가/어택티켓금지/AGENTS LOCK SSOT mapguide/사용자WIP기존23보호. STATE/policy/_b3r거절 목적재읽기·대리내용·다른toolhostsession/권한우회0, 필수Read막히면root필수USER조치만. receipt/source/end구분/후보≠nativevisual청취완료. 내부게임상태는실제원문함수/분기추출실행, 외부I/O DOM audio만안전대역. 새로만든tick/저장/비용모형PASS는제품근거0. gap후보는baselineFAIL candidatePASS 정상동등을분리하고 정적추론이면실행했다고보고0. 두 단위 검수 후 자동 종료하지 않습니다. 한 경계 완료 결과는 기존 공식 대화 메모리에 남기고, 이미 승인된 같은 팀 도메인의 다음 미검토 독립 소비 경계를 스스로 선택해 같은 실행에서 계속 진행합니다. 원총괄 채택/타팀 완료/두 파일 산출 소진만으로 종료0. 동일검사 반복/무의미 NOFIX/새설계·수치 확장/생산쓰기0. 실제 자료·보호 목적·권한으로 막히면 정확한 막힘만 인계하고 충돌 없는 다른 기존 승인 백로그를 이어갑니다. 새 산출 파일0. scratch도 출력파일이며 예외0입니다. Write/Edit/cat>/writeFile/write_text/임시파일·scratch생성·기존scratch덮어쓰기0, node stdin/here-document/메모리만. 기존위반파일 삭제cleanup0. 실제원문전체 호출자·상위도달조건을 보존하고 새모형PASS를 제품증거로 계산0.",
+      "inlineSha256": "ca456f5d05d719def7798b15b68a29db098d2bfca116dd924ed5451a09bccaee",
+      "newFiles": 0,
+      "activeWorkMode": "memory_only",
+      "deniedPurposeRemainsHeld": false,
+      "status": "sent_once_pending"
     }
   ],
   "rows": [
@@ -21102,39 +21144,39 @@
       "socket": "/tmp/cc-socks/91281.sock",
       "socketIdentityValidated": true,
       "status": "actual_source_running",
-      "currentTaskId": "CO-QA-1144-addexp-loop-reward-consumers",
+      "currentTaskId": "CO-QA-1200-inventory-item-migration-consumers",
       "lastPeer": {
-        "at": "2026-10-03T11:45:30.625Z",
-        "eventUuid": "f88d4516-be94-42e0-91ad-2df07998d8ae"
+        "at": "2026-10-03T12:01:29.915Z",
+        "eventUuid": "36ef3c29-d762-447a-9d23-998c4a39edce"
       },
       "firstSuccessfulSource": {
-        "at": "2026-10-03T11:45:38.370Z",
-        "eventUuid": "c16f65fd-d5d2-472a-bd5d-1392692c0b0f",
-        "toolUseId": "toolu_01GbMTtPEKxC2ARuAvwrQqt7",
+        "at": "2026-10-03T12:01:38.628Z",
+        "eventUuid": "cd8ee52d-2d5d-4cda-8959-a8909d5e184d",
+        "toolUseId": "toolu_01BooN95QtjiiBmAbAtk8wiB",
         "tool": "Bash",
         "input": {
-          "command": "cd /Users/fordeargamers/Projects/exoduser-migration-20261001\necho \"=== addExp while-loop + _calcMaxExp + 보상 전문 L41725~41760 ===\"; sed -n '41725,41762p' game.html",
-          "description": "read addExp while loop, _calcMaxExp recalc, and level-up rewards"
+          "command": "cd /Users/fordeargamers/Projects/exoduser-migration-20261001\necho \"=== _fixCr 전문 + INV.bag/storage 호출 (L3742~3747) ===\"; sed -n '3742,3747p' game.html\necho \"=== INV.bag 복원 (Array.isArray 선행 가드?) ===\"; grep -n \"INV.bag=d\\|INV.bag=pd\\|inv.bag\\|INV.bag.forEach\" game.html | head",
+          "description": "read _fixCr body, INV.bag/storage _fixCr calls, and INV.bag restore guard"
         },
-        "taskId": "CO-QA-1144-addexp-loop-reward-consumers",
-        "sentAt": "2026-10-03T11:45:30.542533+00:00"
+        "taskId": "CO-QA-1200-inventory-item-migration-consumers",
+        "sentAt": "2026-10-03T12:01:29.833687+00:00"
       },
       "latestSuccessfulSource": {
-        "at": "2026-10-03T11:45:38.370Z",
-        "eventUuid": "c16f65fd-d5d2-472a-bd5d-1392692c0b0f",
-        "toolUseId": "toolu_01GbMTtPEKxC2ARuAvwrQqt7",
+        "at": "2026-10-03T12:01:38.628Z",
+        "eventUuid": "cd8ee52d-2d5d-4cda-8959-a8909d5e184d",
+        "toolUseId": "toolu_01BooN95QtjiiBmAbAtk8wiB",
         "tool": "Bash",
         "input": {
-          "command": "cd /Users/fordeargamers/Projects/exoduser-migration-20261001\necho \"=== addExp while-loop + _calcMaxExp + 보상 전문 L41725~41760 ===\"; sed -n '41725,41762p' game.html",
-          "description": "read addExp while loop, _calcMaxExp recalc, and level-up rewards"
+          "command": "cd /Users/fordeargamers/Projects/exoduser-migration-20261001\necho \"=== _fixCr 전문 + INV.bag/storage 호출 (L3742~3747) ===\"; sed -n '3742,3747p' game.html\necho \"=== INV.bag 복원 (Array.isArray 선행 가드?) ===\"; grep -n \"INV.bag=d\\|INV.bag=pd\\|inv.bag\\|INV.bag.forEach\" game.html | head",
+          "description": "read _fixCr body, INV.bag/storage _fixCr calls, and INV.bag restore guard"
         },
-        "taskId": "CO-QA-1144-addexp-loop-reward-consumers",
-        "sentAt": "2026-10-03T11:45:30.542533+00:00"
+        "taskId": "CO-QA-1200-inventory-item-migration-consumers",
+        "sentAt": "2026-10-03T12:01:29.833687+00:00"
       },
       "latestEnd": null,
       "completionSourceExcerpt": null,
       "latestQueue": {
-        "at": "2026-10-03T11:45:30.611Z",
+        "at": "2026-10-03T12:01:29.902Z",
         "operation": "dequeue"
       },
       "newFileCredit": 1,
@@ -21154,13 +21196,13 @@
       "heldReason": null,
       "pendingDispatch": {
         "role": "QA",
-        "taskId": "CO-QA-1144-addexp-loop-reward-consumers",
-        "sentAt": "2026-10-03T11:45:30.542533+00:00",
+        "taskId": "CO-QA-1200-inventory-item-migration-consumers",
+        "sentAt": "2026-10-03T12:01:29.833687+00:00",
         "uuid": "f7476aa3-e002-492c-8929-48941202fe04",
         "pid": 91281,
-        "priorEnd": "3e62b286-5971-42f0-8b89-f2497c0fcfcf",
-        "inlineInstruction": "CO-QA-1144-addexp-loop-reward-consumers\n\n1138 완료3e62b286-5971-42f0-8b89-f2497c0fcfcf@11:42:30.625Z 후, 승인 QA 복원→실제 소비 도메인 미검토 두 단위를 committed source51 4ae160c7 기준 연결합니다. (1) 실제 addExp while(P.exp>=P.maxExp)와 _calcMaxExp 매회재계산을 포함한 전체함수/restore후 caller의 종료 경계. 0/음수 초기 maxExp가 한 회 후 정상회복되는지 실제 원문으로 반증하고 NaN 비교false를 무한루프라고 단정0. Infinity/unsafe 값이 반복 후 진전 없을 때만 actual source를 별도 child timeout으로 격리·시간제한 최대2초, 해당 childtimeout≠앱/nativehang. 외부앱/새Claude세션0. (2) 실제 같은 level-up의 SP/AP 보상 누적/파생스탯 갱신 consumers에서 미검토 보존 경계(정상 보상·반복 종료·숫자형/unsafe·partialthrow)를 확인. 이미0517 exp/lv restore/1112 APrefund/1122 SPrefund/1132 grit/1138 affixcache/0626/0616/43bonusSt 동일검사 반복0; source52 SPrefund reserved scope 조사/생산쓰기0. 승인 도메인이라도 새 독립 경계가 실제 없으면 즉시 정확 소진 인계하고 같은 NOFIX을 반복하지 마세요. 1138 'SAFE'는 affix항 string concat 부재만이며 bonusHp inflation/NaN→0/ToInt32 wrap를 게임 안전 전체로 확대0. root source52 아직예약 future51, WIP읽기혼합0·gitshow stdout→stdin메모리만. 단위별 실제원문 전체caller/도달·첫 유용성공source·실행 vs정적·baseline FAIL/최소OLD NEW PASS/정상동등·공유cause bundle·완료ID/docs keyword/root Gate. 새파일/scratch/Write/Edit/cat>/writeFile/write_text/Gitindex/코드docs/앱save/타팀/권한0. native6/visual/청취0.\n\n기존제출raw6 불변/추가파일·scratch·patch덮어쓰기·보고서출력0. production/공유정본docs/타팀/Git/index/앱/save/새세션resume/권한/cleanup0. root상세채택/타팀종료대기는다음소유승인작업시작조건0, 기존소유미검토backlog self-select는승인범위내입니다. 이미완료동일TASK·검사·문서보고재현0. 원총괄 최신 공식 source51 핀(commit 4ae160c7f7ec8f8b35a50b0aec873c377925ccec codeepoch51; stat-panel AP환불은 첫10 rank COSTS와 나머지5AP 산술합·임의999상한/perdef.max clamp 미채택·유한정상/확장/분수ceil 기존의미유지, 양HTML reset 확인 전후 unsafe/negative AP transaction 거부·투자통화보존 root50PASS/old42PASS8 childtimeoutFAIL≠nativehang·기존회귀19PASS1FAIL 동일baseline 번역9key 누락 미해결·SPconcat1122는별도sanitize/callerGate 미채택·fullmountedzero/evaluatePlan과applyPlan 구분; 이전 source50 핀(commit 3ecab55cac78c25091fda188b033af21627aa2bf, codeepoch50; statDex gl.atkSpd unary+ 각1B채택/whole save restore equip statDex reader activateNeedleShot 실제needleburst wSwing종료if format식100PASS/원본40PASS60assertFAIL≠60결함·ST8 CD90 발수2f range600 spd30 관통0유지·일반fireBow statDex미사용 전체석궁주기0 피해0미채택·fullupdate 공격상태머신 충돌HP native0; 이전source49 QSLOTS복원 truthy분기 Array.from 배열max(4,len)/非배열4 invalidnull primitive array원소empty/정상object추가필드4초과배열보존 각+180B채택 whole dbRestore sanitize useQuickslot addPotion updateQS dbSaveJSON42PASS/원본16PASS26FAIL/기존물약164PASS·무조건4truncation미채택·fullboot/native0; 이전source48 potCd수동2자동2 reader Math.min(+potCd||0,.2)각4B채택/whole save restore equip useQuickslot actualquickslot tick contiguousauto소모회복쿨차단164PASS/원본98PASS66assertFAIL≠66결함·420f기반6f최소/자동potionCdRed부재유지/atkSpd미채택·fullupdate/native0; 이전source47 BGM.play bgmTrack startsWith typeof string guard각+18B채택/wholeBGM startup/preset closeAllPanels104PASS/원본78PASS26FAIL≠26결함; malformed999일반field는다음categoryguard에서기존skip·자동음악복구아님·모든stage/retryunwrapped주장은actualinitStage/fieldretrycatch충돌로미채택·fullmapinit/native청취0; 이전source46 _ancPartPts (+c.r||0)+(+c.t||0) reader양판각+2B채택/whole save restore equip actualaffiximplicit stats summon ancestor update hurtE 검수152PASS/원본20PASS132assertFAIL≠132결함/음수guard유지·boneRegister UI withdraw 변경0·MP게이트rangeclamp인수0/HP0은첫1f회수후132f폭발제거≠즉사native영구손실; 이전source45 _calcAncestorStats oss.ancPow unary+양판각1B채택/main검기 Easy기존근접경로유지/ancPartPts r-t0819는source46에서채택·합성피해값≠native; source44 splashMul/splashR unary+각1/양판+2B채택/normal elemMissile실제구간대상·evilOrb hellfirebeam은선행breakcontinue제외/모든string타겟없음주장채택0; source43 recalcSt bonusSt 숫자합산 각+6B채택/main17 Easy16슬롯범위유지/항상음수·일률붕괴주장채택0/UI_stEq·Infinity·fullinitStage Gate미검증; source42 pBeamMul의 비숫자 beamDmg만 unary+ 각1B채택/정상숫자문자열은 기존Math.max coercion정합/전체빔0HP 주장은 채택0; source41 _accDmg 본편7항/Easy6항 숫자합산(+7B/+6B)채택·기존슬롯참여범위유지· direct nc().expBonus unary+ 각1B채택·unary+는Infinity clamp아님· notify 마지막호출부터1500ms on제거/페이드 타이머취소 최소채택·일반 initStage chain2reset 유지/검수36 QA0732 REJECT_UNPROVEN_PERSISTENT_FAILURE/실험미채택 이력유지)을 후속 source 의미검수 기준으로 참조하고(source29/3404 기존 실행 앱에는 source30/31/32/33/34/35/37/38/39/40/41/42/43/44/45/46/47/48/49/50/51 미포함·재빌드0·native/청취 인수0), 유니크 actual OLD/NEW·설계근거·최소 실패재현을 inline 인계. root 최신 실제 사망 전제: die는 즉시 G.on=false가 아니라 쓰러짐300f 진입, 실패 _fallenResolve에서 false; chain180f는 그 사이 감쇠하므로 후속 적 사망 재갱신의 실제 전체caller 증명 없이 잔존 결함 확정0. 공식 root 핀 참조만; shasum/hash 반복0; 실제 소스/픽셀/앱 인수를 구분하세요. 보호2_3/Q-onlymagic/E불가/어택티켓금지/AGENTS LOCK SSOT mapguide/사용자WIP기존23보호. STATE/policy/_b3r거절 목적재읽기·대리내용·다른toolhostsession/권한우회0, 필수Read막히면root필수USER조치만. receipt/source/end구분/후보≠nativevisual청취완료. 내부게임상태는실제원문함수/분기추출실행, 외부I/O DOM audio만안전대역. 새로만든tick/저장/비용모형PASS는제품근거0. gap후보는baselineFAIL candidatePASS 정상동등을분리하고 정적추론이면실행했다고보고0. 두 단위 검수 후 자동 종료하지 않습니다. 한 경계 완료 결과는 기존 공식 대화 메모리에 남기고, 이미 승인된 같은 팀 도메인의 다음 미검토 독립 소비 경계를 스스로 선택해 같은 실행에서 계속 진행합니다. 원총괄 채택/타팀 완료/두 파일 산출 소진만으로 종료0. 동일검사 반복/무의미 NOFIX/새설계·수치 확장/생산쓰기0. 실제 자료·보호 목적·권한으로 막히면 정확한 막힘만 인계하고 충돌 없는 다른 기존 승인 백로그를 이어갑니다. 새 산출 파일0. scratch도 출력파일이며 예외0입니다. Write/Edit/cat>/writeFile/write_text/임시파일·scratch생성·기존scratch덮어쓰기0, node stdin/here-document/메모리만. 기존위반파일 삭제cleanup0. 실제원문전체 호출자·상위도달조건을 보존하고 새모형PASS를 제품증거로 계산0.",
-        "inlineSha256": "56d606e249ea78ed7daa6c15c171895fba44131d0e7aac0eb9694e9099491714",
+        "priorEnd": "b3cb3798-62fe-4067-87c7-b4c32bab9bc1",
+        "inlineInstruction": "CO-QA-1200-inventory-item-migration-consumers\n\n1155 실제end b3cb3798-62fe-4067-87c7-b4c32bab9bc1@11:58:04.757Z 이후 승인QA save→inventory 미검토2독립단위를 committedsource52 0db049139b92018fe3a5dbc23984006fbf693764 기준 연결. (1) 실제 INV.bag restore 후 `_fixCr`/item migration에서 정상배열 내부 null·primitive·배열·정상object 항목의 소비와 이동보존(firstfail/필터/후속caller). (2) 실제 INV storage 복원 collection 내 item migration/_fixCr 호출 경로의 항목shape 소비 및 보존. 실제storage명/함수/호출은 원문으로만 정하고 존재하지않으면 반증·모형0. wholearray shape0443/0446 및 CRYSTAL_BAG0449/1155/0114~0132/기존QSLOTS49 같은재검사·동일원인후보재제출0; 첫짧은대조로기검토여부확인후 남은미검토항목consumer만. null item `.crystals` 접근이 실제throw인지 선행전체sanitize/filter와함께증명, 서로같은_fixCr cause면bundle1(중복결함0). Array.isArray만으로 정상배열 모든항목유효보장0/정상추가필드·길이·소유보존 필요. 완료조건 실제원문 전체restore→실소비+원본실패/최소OLD NEW/정상동등 또는반증·source/정적구분·완료ID/docs keyword rootGate. 독립미검토경계없으면즉시정확소진 root인계하고NOFIX전수루프0. 1155crystalbag는0449중복Gate로root인계 신규유일후보확정0, 그검사재개0. source53GRIT root예약생산범위팀쓰기0·future52/currenthistoricalpins불변·productionWIP면gitshowstdout→stdin. 산출파일/scratch0·node stdin메모리만/Gitindex/코드docs/타팀/앱save/권한/cleanup/새세션0. 보호2_3/Q-onlymagic/E불가/어택티켓금지/AGENTS LOCK SSOT 기존23/맵가이드유지. 실제native6visual청취0.\n\n기존제출raw6 불변/추가파일·scratch·patch덮어쓰기·보고서출력0. production/공유정본docs/타팀/Git/index/앱/save/새세션resume/권한/cleanup0. root상세채택/타팀종료대기는다음소유승인작업시작조건0, 기존소유미검토backlog self-select는승인범위내입니다. 이미완료동일TASK·검사·문서보고재현0. 원총괄 최신 공식 source52 핀(commit 0db049139b92018fe3a5dbc23984006fbf693764 codeepoch52; stat-panel SP환불은 sum(Number(STATS각값))+Number(grit), raw복원저장/변수clamp0·양판asyncreset totalSP/AP와 확인후refund safe비음수거절로 통화투자보존·actual whole dbRestore mounted zero plan/evaluatePlan/양판applyPlan32PASS/원본10PASS22assertFAIL≠22결함·기존growth거래15PASS·정상integer 레거시VIT 확장GRIT 취소 live재계산호환·준비crossrealm/문자열0계획오류제외·_gritTotal1132미채택 별도gate·기존번역9key미해결; 승인원격ref refs/heads/codex/mac-environment-20261001 source52가원격ea5c9858cb19996aad6649d3718e14be4fceef89조상 확인·main통합게시완료0; 이전 source51 핀(commit 4ae160c7f7ec8f8b35a50b0aec873c377925ccec codeepoch51; stat-panel AP환불은 첫10 rank COSTS와 나머지5AP 산술합·임의999상한/perdef.max clamp 미채택·유한정상/확장/분수ceil 기존의미유지, 양HTML reset 확인 전후 unsafe/negative AP transaction 거부·투자통화보존 root50PASS/old42PASS8 childtimeoutFAIL≠nativehang·기존회귀19PASS1FAIL 동일baseline 번역9key 누락 미해결·SPconcat1122는별도sanitize/callerGate 미채택·fullmountedzero/evaluatePlan과applyPlan 구분; 이전 source50 핀(commit 3ecab55cac78c25091fda188b033af21627aa2bf, codeepoch50; statDex gl.atkSpd unary+ 각1B채택/whole save restore equip statDex reader activateNeedleShot 실제needleburst wSwing종료if format식100PASS/원본40PASS60assertFAIL≠60결함·ST8 CD90 발수2f range600 spd30 관통0유지·일반fireBow statDex미사용 전체석궁주기0 피해0미채택·fullupdate 공격상태머신 충돌HP native0; 이전source49 QSLOTS복원 truthy분기 Array.from 배열max(4,len)/非배열4 invalidnull primitive array원소empty/정상object추가필드4초과배열보존 각+180B채택 whole dbRestore sanitize useQuickslot addPotion updateQS dbSaveJSON42PASS/원본16PASS26FAIL/기존물약164PASS·무조건4truncation미채택·fullboot/native0; 이전source48 potCd수동2자동2 reader Math.min(+potCd||0,.2)각4B채택/whole save restore equip useQuickslot actualquickslot tick contiguousauto소모회복쿨차단164PASS/원본98PASS66assertFAIL≠66결함·420f기반6f최소/자동potionCdRed부재유지/atkSpd미채택·fullupdate/native0; 이전source47 BGM.play bgmTrack startsWith typeof string guard각+18B채택/wholeBGM startup/preset closeAllPanels104PASS/원본78PASS26FAIL≠26결함; malformed999일반field는다음categoryguard에서기존skip·자동음악복구아님·모든stage/retryunwrapped주장은actualinitStage/fieldretrycatch충돌로미채택·fullmapinit/native청취0; 이전source46 _ancPartPts (+c.r||0)+(+c.t||0) reader양판각+2B채택/whole save restore equip actualaffiximplicit stats summon ancestor update hurtE 검수152PASS/원본20PASS132assertFAIL≠132결함/음수guard유지·boneRegister UI withdraw 변경0·MP게이트rangeclamp인수0/HP0은첫1f회수후132f폭발제거≠즉사native영구손실; 이전source45 _calcAncestorStats oss.ancPow unary+양판각1B채택/main검기 Easy기존근접경로유지/ancPartPts r-t0819는source46에서채택·합성피해값≠native; source44 splashMul/splashR unary+각1/양판+2B채택/normal elemMissile실제구간대상·evilOrb hellfirebeam은선행breakcontinue제외/모든string타겟없음주장채택0; source43 recalcSt bonusSt 숫자합산 각+6B채택/main17 Easy16슬롯범위유지/항상음수·일률붕괴주장채택0/UI_stEq·Infinity·fullinitStage Gate미검증; source42 pBeamMul의 비숫자 beamDmg만 unary+ 각1B채택/정상숫자문자열은 기존Math.max coercion정합/전체빔0HP 주장은 채택0; source41 _accDmg 본편7항/Easy6항 숫자합산(+7B/+6B)채택·기존슬롯참여범위유지· direct nc().expBonus unary+ 각1B채택·unary+는Infinity clamp아님· notify 마지막호출부터1500ms on제거/페이드 타이머취소 최소채택·일반 initStage chain2reset 유지/검수36 QA0732 REJECT_UNPROVEN_PERSISTENT_FAILURE/실험미채택 이력유지)을 후속 source 의미검수 기준으로 참조하고(source29/3404 기존 실행 앱에는 source30/31/32/33/34/35/37/38/39/40/41/42/43/44/45/46/47/48/49/50/51/52 미포함·재빌드0·native/청취 인수0), 유니크 actual OLD/NEW·설계근거·최소 실패재현을 inline 인계. root 최신 실제 사망 전제: die는 즉시 G.on=false가 아니라 쓰러짐300f 진입, 실패 _fallenResolve에서 false; chain180f는 그 사이 감쇠하므로 후속 적 사망 재갱신의 실제 전체caller 증명 없이 잔존 결함 확정0. 공식 root 핀 참조만; shasum/hash 반복0; 실제 소스/픽셀/앱 인수를 구분하세요. 보호2_3/Q-onlymagic/E불가/어택티켓금지/AGENTS LOCK SSOT mapguide/사용자WIP기존23보호. STATE/policy/_b3r거절 목적재읽기·대리내용·다른toolhostsession/권한우회0, 필수Read막히면root필수USER조치만. receipt/source/end구분/후보≠nativevisual청취완료. 내부게임상태는실제원문함수/분기추출실행, 외부I/O DOM audio만안전대역. 새로만든tick/저장/비용모형PASS는제품근거0. gap후보는baselineFAIL candidatePASS 정상동등을분리하고 정적추론이면실행했다고보고0. 두 단위 검수 후 자동 종료하지 않습니다. 한 경계 완료 결과는 기존 공식 대화 메모리에 남기고, 이미 승인된 같은 팀 도메인의 다음 미검토 독립 소비 경계를 스스로 선택해 같은 실행에서 계속 진행합니다. 원총괄 채택/타팀 완료/두 파일 산출 소진만으로 종료0. 동일검사 반복/무의미 NOFIX/새설계·수치 확장/생산쓰기0. 실제 자료·보호 목적·권한으로 막히면 정확한 막힘만 인계하고 충돌 없는 다른 기존 승인 백로그를 이어갑니다. 새 산출 파일0. scratch도 출력파일이며 예외0입니다. Write/Edit/cat>/writeFile/write_text/임시파일·scratch생성·기존scratch덮어쓰기0, node stdin/here-document/메모리만. 기존위반파일 삭제cleanup0. 실제원문전체 호출자·상위도달조건을 보존하고 새모형PASS를 제품증거로 계산0.",
+        "inlineSha256": "ca456f5d05d719def7798b15b68a29db098d2bfca116dd924ed5451a09bccaee",
         "newFiles": 0,
         "activeWorkMode": "memory_only",
         "deniedPurposeRemainsHeld": false,
@@ -21179,26 +21221,26 @@
       "nextScopeStatus": "source4provenance완료·승인FIRST_KILL독립실코드scope지원감사중·기존DOT/NOFIX재배정0",
       "currentExactTaskPeerReceived": true,
       "currentIndependentSourceSuccess": {
-        "at": "2026-10-03T11:45:38.370Z",
-        "eventUuid": "c16f65fd-d5d2-472a-bd5d-1392692c0b0f",
-        "toolUseId": "toolu_01GbMTtPEKxC2ARuAvwrQqt7",
+        "at": "2026-10-03T12:01:38.628Z",
+        "eventUuid": "cd8ee52d-2d5d-4cda-8959-a8909d5e184d",
+        "toolUseId": "toolu_01BooN95QtjiiBmAbAtk8wiB",
         "tool": "Bash",
         "input": {
-          "command": "cd /Users/fordeargamers/Projects/exoduser-migration-20261001\necho \"=== addExp while-loop + _calcMaxExp + 보상 전문 L41725~41760 ===\"; sed -n '41725,41762p' game.html",
-          "description": "read addExp while loop, _calcMaxExp recalc, and level-up rewards"
+          "command": "cd /Users/fordeargamers/Projects/exoduser-migration-20261001\necho \"=== _fixCr 전문 + INV.bag/storage 호출 (L3742~3747) ===\"; sed -n '3742,3747p' game.html\necho \"=== INV.bag 복원 (Array.isArray 선행 가드?) ===\"; grep -n \"INV.bag=d\\|INV.bag=pd\\|inv.bag\\|INV.bag.forEach\" game.html | head",
+          "description": "read _fixCr body, INV.bag/storage _fixCr calls, and INV.bag restore guard"
         },
-        "taskId": "CO-QA-1144-addexp-loop-reward-consumers",
-        "sentAt": "2026-10-03T11:45:30.542533+00:00"
+        "taskId": "CO-QA-1200-inventory-item-migration-consumers",
+        "sentAt": "2026-10-03T12:01:29.833687+00:00"
       },
       "currentTaskErrors": [],
       "candidatePatchCredit": 1,
       "completedCandidatePatchPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/tools/team-followup-20261003/claude-candidates/QA-source9.patch",
       "activeWorkMode": "memory_only",
       "priorMemoryCompletion": {
-        "taskId": "CO-QA-1138-affix-grit-max-resource-consumers",
-        "eventUuid": "3e62b286-5971-42f0-8b89-f2497c0fcfcf",
-        "at": "2026-10-03T11:42:30.625Z",
-        "text": "양 유닛 확정 — **둘 다 SAFE**: (1) **0626 `_eqAffixRebuild` 채택**(L26795 `+(+a.value||0)`) → gritFlatN/R·maxHPFlat affix 숫자화 → _gritTotal affix항·mhp _afHpF concat 없음(affix SAFE, _gritTotal 잔여 concat은 `_grit`뿐=1132). (2) mhp L26746은 **`~~((base+_afHpF+_imHp+_enhHp)*(1+_afHpP+…))` 전체 `~~`-래핑** → 비숫자 bonusHp도 `~~`로 finite 바운드(비숫자→0, 숫자문자열→inflation finite), **문자열 오염 없음**(1132 L26765 무`~~` `+_gritHpFlat()`와 구조 차이). CO-QA-1138 보고.\n\n---\n\n# CO-QA-1138 결과 — affix gritFlat / max HP 평면가산 affix 소비 (0626 채택 downstream)\n\n**taskID:** CO-QA-1138-affix-grit-max-resource-consumers\n**완료ID:** actual JSONL end(1132 end da04d93d… 이후). 전달/Read ≠ source작업. 첫 source tool: `grep`/`sed`(_eqAffixRebuild L26795 채택상태·mhp L26739-46·_gritTotal 원문, source51 4ae160c7) → memory harness(**node stdin heredoc, 파일/scratch 0**). PIN50 증거 불변·source51 raw 혼합 0.\n**productionApplied=false.** source51 핀(4ae160c7…, codeepoch51; AP환불 COSTS+5 산술·999/def.max clamp 미채택·SPconcat1122 별도 미채택)=의미검수 참조. 기존 scratch/raw 불변(cleanup0), 신규 파일 0. 코드/docs/파일/Git/index/앱/save/생산쓰기 0.\n\n## 1. Unit (1) gritFlatN/R affix → _gritTotal — 0626 채택으로 SAFE\n- **0626 `_eqAffixRebuild` 채택 확인(실제 코드 대조)**: L26795 `_eqAffixCache[a.id]=(_eqAffixCache[a.id]||0)+(+a.value||0)` — affix value **숫자 coerce**(비숫자→0, 숫자문자열→숫자).\n- `_gritTotal` L26723 affix항 `_eqAffix('gritFlatN')`/`('gritFlatR')` → **숫자**(0626).\n\n| gritFlatN affix | _eqAffix | _gritTotal(grit20) |\n|---|---|---|\n| 정상 [5] | 5 | 35 |\n| 숫자문자열 [\"5\"] | 5(0626 coerce) | 35 |\n| 비숫자 [\"ab\"] | 0(0626) | 30 |\n→ **affix 숫자화로 _gritTotal affix항 concat 없음**(잔여 downstream concat 없음). _gritTotal의 유일 concat 트리거는 `_grit` 첫 피연산자(**1132 후보** `(+_grit||0)`). **affix 경로 SAFE, NOFIX 재현 0.**\n\n## 2. Unit (2) max HP 평면가산 affix (_afHpF) → mhp L26746 — `~~`-래핑 바운드\n- `_afHpF=_eqAffix('maxHPFlat')` L26739 → **숫자**(0626). mhp L26746 `P.mhp=~~((_stgHp+s.str*5+s.vit*3+_totalBonusHp+_afHpF+_imHp+_enhHp)*(1+_afHpP+_imHpP*.01+…))` — **전체 `~~((...)*(...))` 래핑**.\n\n| 입력 | mhp L26746 |\n|---|---|\n| 정상 bonusHp50 af10 | 540 |\n| 비숫자 bonusHp \"ab\" af10 | 0(`~~(NaN)`) |\n| 숫자문자열 bonusHp \"50\" | 480501000(inflation **finite via `~~`**) |\n→ `_afHpF`는 0626으로 숫자. 비-affix 항 `_totalBonusHp`(bonusHp 직접필드 `(_dit.bonusHp||0)`, 비숫자→concat)도 **mhp L26746 전체 `~~` 래핑 内** → `~~(string*mult)` → finite(비숫자→0, 숫자문자열→inflation). **문자열 오염 없음**(1132 L26765 `+_gritHpFlat()` 무`~~`→string corruption과 **구조 차이**). bonusHp 숫자문자열 inflation은 0616 **값** 이슈(`~~` 바운드 finite, 재검사 0). **SAFE.**\n\n## 3. 결론 — 유효 누락 없음 (0626 채택 downstream SAFE, 정확 소진)\n- (1) gritFlat affix: 0626 채택 → 숫자 → _gritTotal affix항 concat 없음(잔여 downstream 미도달). SAFE.\n- (2) mhp L26746 affix flat: 0626 affix 숫자 + 전체 `~~` 래핑 → 비숫자 bonusHp도 finite 바운드(문자열 오염 없음). SAFE.\n- **처음 채택상태 실제 코드 대조(L26795)로 확인, 잔여 미검토 downstream concat/도달 없음.** _gritTotal 잔여 concat은 `_grit`(1132), affix 아님. 공유 cause(0626 affix) 확인-안전, 신규 결함수 0. 무의미 NOFIX 대신 **정확 소진 인계**(0626 채택 범위 downstream SAFE).\n\n## 4. 미확정 Gate (root)\n1. bonusHp 직접필드 비숫자→mhp L26746 inflation(finite via `~~`)은 **0616 값 도메인**(`~~` 바운드, 문자열/crash 아님) — 별 판단, 재검사 0.\n2. 1132 `_grit` 첫 피연산자(mhp L26765 무`~~` `+_gritHpFlat()` string corruption)는 별 후보(채택 대기) — 본건 affix와 구분.\n3. `_grit` 문자열 crafted 도달은 source51 sanitize/복원 `||0`(0509) 여부 — 0509 미채택 시 1132 도달, 본 affix 경로는 0626 채택으로 무관. `~~`=trunc/wrap, `+||0` Infinity 미clamp 인정. source ≠ native.\n\n## 5. docs 인계 (쓰기 0, root 동기화)\n- `15 세이브+데이터구조/` + `14밸런스+수치테이블/` — \"0626 `_eqAffixRebuild`(L26795 `+(+a.value||0)`) 채택으로 gritFlatN/R·maxHPFlat affix 숫자화 → _gritTotal affix항·mhp _afHpF SAFE. mhp L26746 전체 `~~((...)*(...))` 래핑 → 비숫자 bonusHp도 finite 바운드(문자열 오염 없음, 1132 L26765 무`~~` grit와 구조 차이). _gritTotal 잔여 concat은 `_grit`(1132)\" 행.\n\n## 6. 경계\nproduction/공유docs/타팀/Git/index/앱/save/새세션/resume/권한/cleanup 0. 기존 raw6·scratch·patch 불변(신규 파일·scratch 0, node stdin/메모리만). 코드/docs/파일/Git/index/앱/save/생산쓰기 0. AGENTS LOCK SSOT mapguide/사용자WIP 23 보호. 내부상태는 실제원문함수 추출+실행(정적추론 아님 — 0626 채택 L26795 대조·mhp `~~` 실행). 0626 채택 경계 NOFIX 재현 0, 1132 _grit/1122 SPconcat/1112 AP loop/0509 restore/43 bonusSt 재검사 0. _grit crafted 도달은 0509/0626 채택 여부로 증명 전 현제품 누락 확정 0. `~~`=trunc/wrap·`+||0` Infinity 미clamp 인정. source51 공식완료·PIN50 증거 불변·raw 혼합 0. native6/visual/청취 0. peer escalation 요청 없음(권한/CLAUDE.md/config 불변).\n\n---\n\n## 다음 self-select (승인 QA 도메인, 통합 대기 없이 계속)\nrefundTotals(1112) 같은 **복원값 기반 while-loop hang**: addExp L41730 `while(P.exp>=P.maxExp){…P.lv++;P.exp-=P.maxExp;P.maxExp=_calcMaxExp(P.lv);…}` — 복원 `P.maxExp`가 0/음수/비숫자면 `P.exp>=P.maxExp`가 영원히 true → **무한 레벨업 loop hang**인지, _calcMaxExp가 매회 재계산해 바운드하는지 원문추출+격리실행으로 확인하겠습니다. 0517 exp/level 복원과 구분해 **while(exp>=maxExp) 루프 종료조건**만 — maxExp 손상→비종료 vs _calcMaxExp 재계산 복구 분리(수치/2_3/Q 변경 0, save 실제 도달+실 reader). 같은 실행에서 메모리로 이어갑니다."
+        "taskId": "CO-QA-1155-crystal-bag-capacity-transfer-consumers",
+        "eventUuid": "b3cb3798-62fe-4067-87c7-b4c32bab9bc1",
+        "at": "2026-10-03T11:58:04.757Z",
+        "text": "양 유닛 확정: (2) **CRYSTAL_BAG_MAX = const 9999**(L14744, 복원 아님) → 손상 벡터 없음(STORAGE_MAX류 no gap, 모형 안 만듦). (1) **CRYSTAL_BAG 복원 L3741 `d.crystalBag||[]`(falsy만) → L3743 `CRYSTAL_BAG.forEach(_migrateCr)` — 비배열 truthy(문자열/객체/숫자) → `.forEach` TypeError → dbRestore crash**(용량비교 前 first-fail). `_fixCr`(L3744)는 nested `it.crystals`만 `if(Array.isArray)`, CRYSTAL_BAG 자체 미가드. CO-QA-1155 보고.\n\n---\n\n# CO-QA-1155 결과 — CRYSTAL_BAG shape / CRYSTAL_BAG_MAX 용량 소비\n\n**taskID:** CO-QA-1155-crystal-bag-capacity-transfer-consumers\n**완료ID:** actual JSONL end(1150 end 19869303… 이후). 전달/Read ≠ source작업. 첫 source tool: `grep`/`sed`(CRYSTAL_BAG 복원 L3741·_migrateCr/_fixCr L3742-44·CRYSTAL_BAG_MAX L14744·용량 L15133 원문, committed source52 0db04913) → memory harness(**node stdin heredoc, 파일/scratch 0**). WIP 혼합 0.\n**productionApplied=false.** source52 핀(0db04913…); source53 예약(future52, 조사·생산쓰기 0). 기존 scratch/raw 불변(cleanup0), 신규 파일 0. 게임/save/UI/앱/코드docs/타팀/파일/Git index/권한/cleanup 변경 0.\n\n## 1. Unit (2) CRYSTAL_BAG_MAX — const, save 아님 (no gap)\n- **L14744 `const CRYSTAL_BAG_MAX=9999`** — 상수, 복원 대입 없음. 용량 비교 L15133/15640/30862 `CRYSTAL_BAG.length>=CRYSTAL_BAG_MAX`·표시 L14825는 상수 9999 참조 → **손상 벡터 없음**(STORAGE_MAX 1150류). **모형 안 만듦, no gap.** (CRYSTAL_BAG 비배열이어도 **L3743에서 먼저 crash** → 용량 비교 미도달.)\n\n## 2. Unit (1) CRYSTAL_BAG shape — 비배열 `.forEach` restore crash (실행 증거)\n- 복원 L3741 `CRYSTAL_BAG=d.crystalBag||[]`(`||[]` falsy만) → **L3743 `CRYSTAL_BAG.forEach(_migrateCr)` (선행 Array.isArray 가드 없음)**. `_fixCr`(L3744)는 nested `if(Array.isArray(it.crystals))`만 가드, CRYSTAL_BAG 자체 미가드. dbRestore **try/catch 없음**(L3741-43 노출).\n\n| d.crystalBag | baseline L3743 | 후보 `Array.isArray(…)?…:[]` |\n|---|---|---|\n| 정상 [{cr}] | OK len1 | OK len1 (등가) |\n| **문자열 \"x\"** | **★CRASH `forEach is not a function`** | OK len0 |\n| **객체 {}** | **★CRASH** | OK len0 |\n| **숫자 5** | **★CRASH** | OK len0 |\n| null | OK len0(`||[]`) | OK len0 (등가) |\n→ **비배열 truthy CRYSTAL_BAG → L3743 `.forEach` TypeError → dbRestore crash(로드 실패)**. `||[]`는 falsy(null/undefined/0/\"\")만 차단. **first-failure = L3743 복원 `.forEach`**(용량 비교/`.length` 前). task \"`.length` undefined ≠ throw\" 구분: 여기 throw는 **`.forEach`**(비배열, 문자열은 `.length`=1 있으나 `.forEach` 없음) — `.length` 아닌 `.forEach`가 crash. QSLOTS 1029 `.map` 동류·다른 필드.\n\n## 3. 후보 (CRYSTAL_BAG Array.isArray 복원 가드)\n- **파일:** game.html / game-easy-test.html (양판)\n- **OLD** (L3741, unique anchor): `CRYSTAL_BAG=d.crystalBag||[];`\n- **NEW:** `CRYSTAL_BAG=Array.isArray(d.crystalBag)?d.crystalBag:[];`\n- **Δ:** +~28B. 정상 array 등가, 비배열 truthy→[](crash 제거), null/undefined→[](등가). **_fixCr L3744의 `if(Array.isArray(it.crystals))`·QSLOTS 1029 Array.isArray 패턴과 정합.**\n- **설계근거:** 복원 `.forEach` 前 Array.isArray로 비배열 차단(dbRestore crash 방지). `||[]`의 falsy-only 가드 공백(비배열 truthy) 보강.\n- **0449 중복 Gate:** 0449(qslots types/crystalbag shape)가 **CRYSTAL_BAG Array.isArray를 이미 제안/채택**했으면 중복(현 L3741 `||[]` 미가드 = 미채택 상태). root가 0449와 대조 — 미채택이면 본 후보.\n\n## 4. 미확정 Gate (root)\n1. anchor L3741 unique = root 확인. 0449 중복 여부 = root. `node --check` = root.\n2. 정상빌드 crystalBag는 배열 → 무영향. 비배열은 crafted save만(직렬화 L3546 `crystalBag:CRYSTAL_BAG`은 정상 배열 저장). \n3. 복원 crash는 dbRestore 중(로드 실패) — native/실게임 로드 타이밍 root(fixture는 `.forEach` TypeError 원문 재현). `.length` undefined ≠ throw(task) — 본건은 `.forEach` throw(구분). source ≠ native.\n\n## 5. docs 인계 (쓰기 0, root 동기화)\n- `15 세이브+데이터구조/` + `2_1 스킬관리+합체시스템+자원/`(결정) — \"CRYSTAL_BAG 복원 L3741 `d.crystalBag||[]`은 비배열 truthy 통과 → L3743 `.forEach` TypeError(dbRestore crash, 용량비교 前). _fixCr는 nested crystals만 Array.isArray, CRYSTAL_BAG 자체 미가드. `Array.isArray(d.crystalBag)?…:[]` 필요(QSLOTS 1029 동류). CRYSTAL_BAG_MAX는 const 9999(복원 아님, no gap)\" 행.\n\n## 6. 경계\nproduction/공유docs/타팀/Git/index/앱/save/새세션/resume/권한/cleanup 0. 기존 raw6·scratch·patch 불변(신규 파일·scratch 0, node stdin/메모리만). 새필드·용량수치 clamp 정책 0. 보호2_3/Q-onlymagic/E불가/어택티켓금지/LOCK/SSOT/기존23/맵가이드 유지. 내부상태는 실제원문함수 추출+실행(정적추론 아님). 0114~0132/0626 crystal shape/renderer 동일재현 0(CRYSTAL_BAG array-ness 신규), BAG_MAX 1150/exp 1144/GRIT 1132 반복 0. CRYSTAL_BAG_MAX const 모형 안 만듦. 1150 \"crash/데이터손실없음/cosmetic\" 미입증 root Gate 수용·반복검사 0. `.length` undefined ≠ throw 구분(본건 `.forEach`). source53 예약 조사·생산쓰기 0. source ≠ native. peer escalation 요청 없음(권한/CLAUDE.md/config 불변).\n\n---\n\n## 다음 self-select (승인 QA 도메인, 통합 대기 없이 계속)\nCRYSTAL_BAG `.forEach`(L3743)와 병렬인 **복원 직후 `.forEach`/배열메서드를 비배열 가능 값에 호출하는 다른 dbRestore 지점**: `INV.bag`(복원 → L3745 `INV.bag.forEach(_fixCr)`)·`G.hellCleared`(0804 reader없음 확인분 제외)의 복원이 비배열 truthy면 `.forEach` crash인지 원문추출+실행으로 확인하겠습니다. INV.bag 복원 `d.inv.bag||[]`(0443/0446 기검토 shape)가 Array.isArray 가드 있는지 vs L3745 `.forEach` 직접 호출 — QSLOTS(1029)/CRYSTAL_BAG(1155) 동류 `.forEach`/`.map` 비배열 crash 전수(수치/2_3/Q 변경 0, save 실제 도달+실 reader). 같은 실행에서 메모리로 이어갑니다."
       },
       "observationHistory": [
         {
@@ -27108,9 +27150,120 @@
             "eventUuid": "3e62b286-5971-42f0-8b89-f2497c0fcfcf",
             "isAfterCurrentPeer": true
           }
+        },
+        {
+          "taskId": "CO-QA-1144-addexp-loop-reward-consumers",
+          "lastPeer": {
+            "at": "2026-10-03T11:45:30.625Z",
+            "eventUuid": "f88d4516-be94-42e0-91ad-2df07998d8ae"
+          },
+          "firstSuccessfulSource": {
+            "at": "2026-10-03T11:45:38.370Z",
+            "eventUuid": "c16f65fd-d5d2-472a-bd5d-1392692c0b0f",
+            "toolUseId": "toolu_01GbMTtPEKxC2ARuAvwrQqt7",
+            "tool": "Bash",
+            "input": {
+              "command": "cd /Users/fordeargamers/Projects/exoduser-migration-20261001\necho \"=== addExp while-loop + _calcMaxExp + 보상 전문 L41725~41760 ===\"; sed -n '41725,41762p' game.html",
+              "description": "read addExp while loop, _calcMaxExp recalc, and level-up rewards"
+            },
+            "taskId": "CO-QA-1144-addexp-loop-reward-consumers",
+            "sentAt": "2026-10-03T11:45:30.542533+00:00"
+          },
+          "latestSuccessfulSource": {
+            "at": "2026-10-03T11:46:16.569Z",
+            "eventUuid": "b9370fe6-775c-42a7-a5fb-e4376fd8956e",
+            "toolUseId": "toolu_01ArZvYmMJ43CyDRScCkZTb6",
+            "tool": "Bash",
+            "input": {
+              "command": "cd /Users/fordeargamers/Projects/exoduser-migration-20261001\necho \"=== _restoreExpProgress (P.exp/maxExp 복원 가드) ===\"; grep -n \"function _restoreExpProgress\\|_restoreExpProgress=\" game.html; sed -n \"$(grep -n 'function _restoreExpProgress' game.html | head -1 | cut -d: -f1),+8p\" game.html\necho \"=== P.exp/maxExp 복원 대입 L3598 ===\"; sed -n '3598,3599p' game.html",
+              "description": "read _restoreExpProgress for P.exp/maxExp coercion/guard"
+            },
+            "taskId": "CO-QA-1144-addexp-loop-reward-consumers",
+            "sentAt": "2026-10-03T11:45:30.542533+00:00"
+          },
+          "latestEnd": {
+            "taskId": "CO-QA-1144-addexp-loop-reward-consumers",
+            "at": "2026-10-03T11:48:34.040Z",
+            "eventUuid": "f1a993e5-110c-436e-911e-3f4202079a92",
+            "isAfterCurrentPeer": true
+          }
+        },
+        {
+          "taskId": "CO-QA-1150-bag-storage-capacity-consumers",
+          "lastPeer": {
+            "at": "2026-10-03T11:51:16.727Z",
+            "eventUuid": "0dc95be5-2988-4745-aeef-b93e3ae612f7"
+          },
+          "firstSuccessfulSource": {
+            "at": "2026-10-03T11:51:27.938Z",
+            "eventUuid": "9978a76f-1948-4bb5-842d-a2369525f2bb",
+            "toolUseId": "toolu_01JkshbQEsnVw5hKNpUgAD1S",
+            "tool": "Bash",
+            "input": {
+              "command": "cd /Users/fordeargamers/Projects/exoduser-migration-20261001\necho \"=== BAG_MAX 복원 + bag 가득참 consumer (pickupItem 등) ===\"; grep -n \"BAG_MAX\" game.html | head -15\necho \"=== STORAGE_MAX 복원 + 창고 용량 consumer ===\"; grep -n \"STORAGE_MAX\" game.html | head",
+              "description": "locate BAG_MAX/STORAGE_MAX restore and capacity consumers"
+            },
+            "taskId": "CO-QA-1150-bag-storage-capacity-consumers",
+            "sentAt": "2026-10-03T11:51:16.633559+00:00"
+          },
+          "latestSuccessfulSource": {
+            "at": "2026-10-03T11:51:27.938Z",
+            "eventUuid": "9978a76f-1948-4bb5-842d-a2369525f2bb",
+            "toolUseId": "toolu_01JkshbQEsnVw5hKNpUgAD1S",
+            "tool": "Bash",
+            "input": {
+              "command": "cd /Users/fordeargamers/Projects/exoduser-migration-20261001\necho \"=== BAG_MAX 복원 + bag 가득참 consumer (pickupItem 등) ===\"; grep -n \"BAG_MAX\" game.html | head -15\necho \"=== STORAGE_MAX 복원 + 창고 용량 consumer ===\"; grep -n \"STORAGE_MAX\" game.html | head",
+              "description": "locate BAG_MAX/STORAGE_MAX restore and capacity consumers"
+            },
+            "taskId": "CO-QA-1150-bag-storage-capacity-consumers",
+            "sentAt": "2026-10-03T11:51:16.633559+00:00"
+          },
+          "latestEnd": {
+            "taskId": "CO-QA-1150-bag-storage-capacity-consumers",
+            "at": "2026-10-03T11:53:30.589Z",
+            "eventUuid": "19869303-8d29-474d-81a4-c8abcc301361",
+            "isAfterCurrentPeer": true
+          }
+        },
+        {
+          "taskId": "CO-QA-1155-crystal-bag-capacity-transfer-consumers",
+          "lastPeer": {
+            "at": "2026-10-03T11:56:09.161Z",
+            "eventUuid": "517dd1ba-ae71-4dc4-a31c-01741cb752d5"
+          },
+          "firstSuccessfulSource": {
+            "at": "2026-10-03T11:56:17.529Z",
+            "eventUuid": "f0a1363a-2f0f-48ae-b00c-8254d5e1b602",
+            "toolUseId": "toolu_01MGZAfbQPtwNo8PnncsN6B7",
+            "tool": "Bash",
+            "input": {
+              "command": "cd /Users/fordeargamers/Projects/exoduser-migration-20261001\necho \"=== CRYSTAL_BAG 복원 + 비배열 sanitize 선행 (L3741~3744) ===\"; sed -n '3741,3746p' game.html\necho \"=== CRYSTAL_BAG.length 용량 비교 + .push/.splice 소비 ===\"; grep -n \"CRYSTAL_BAG.length\\|CRYSTAL_BAG.push\\|CRYSTAL_BAG.splice\\|CRYSTAL_BAG\\[\" game.html | head",
+              "description": "read CRYSTAL_BAG restore sanitize and .length capacity + push/splice consumers"
+            },
+            "taskId": "CO-QA-1155-crystal-bag-capacity-transfer-consumers",
+            "sentAt": "2026-10-03T11:56:09.094263+00:00"
+          },
+          "latestSuccessfulSource": {
+            "at": "2026-10-03T11:56:58.957Z",
+            "eventUuid": "9ae3b2f1-b071-4019-bf5e-2ffe152e3765",
+            "toolUseId": "toolu_01Hh7EMA9LYt4thdKjTYmK2K",
+            "tool": "Bash",
+            "input": {
+              "command": "cd /Users/fordeargamers/Projects/exoduser-migration-20261001\necho \"=== CRYSTAL_BAG 복원 선행 Array.isArray 가드 여부 (L3740~3744) ===\"; sed -n '3740,3744p' game.html | grep -n \"Array.isArray\\|crystalBag\"\necho \"=== dbRestore try/catch 여부 (L3743 .forEach 보호) ===\"; sed -n '3741,3743p' game.html\n/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node --input-type=module <<'EOF'\nconst _migrateCr=cr=>{};\n// 복원 L3741-43: CRYSTAL_BAG=d.crystalBag||[]; CRYSTAL_BAG.forEach(_migrateCr)\nfunction restore(dcb){const CB=dcb||[];CB.forEach(_migrateCr);return CB;}\nfunction restoreCand(dcb){const CB=Array.isArray(dcb)?dcb:[];CB.forEach(_migrateCr);return CB;}\nconsole.log('=== CRYSTAL_BAG 복원 L3743 .forEach (비배열 truthy) ===');\nfor(const [l,v] of [['정상 [{cr}]',[{id:'cr_atk',star:1}]],['문자열 \"x\"','x'],['객체 {}',{}],['숫자 5',5],['null',null]]){\n  let b; try{b='OK len='+restore(v).length}catch(e){b='★CRASH: '+e.message}\n  let c; try{c='OK len='+restoreCand(v).length}catch(e){c='CRASH'}\n  console.log('  d.crystalBag='+l+': baseline='+b+' | 후보(Array.isArray)='+c);\n}\nconsole.log('=== CRYSTAL_BAG_MAX: const 9999(복원 아님) → 손상 벡터 없음 ===');\nEOF",
+              "description": "confirm CRYSTAL_BAG non-array .forEach crash at restore, Array.isArray candidate, CRYSTAL_BAG_MAX const"
+            },
+            "taskId": "CO-QA-1155-crystal-bag-capacity-transfer-consumers",
+            "sentAt": "2026-10-03T11:56:09.094263+00:00"
+          },
+          "latestEnd": {
+            "taskId": "CO-QA-1155-crystal-bag-capacity-transfer-consumers",
+            "at": "2026-10-03T11:58:04.757Z",
+            "eventUuid": "b3cb3798-62fe-4067-87c7-b4c32bab9bc1",
+            "isAfterCurrentPeer": true
+          }
         }
       ],
-      "currentTaskSentAt": "2026-10-03T11:45:30.542533+00:00",
+      "currentTaskSentAt": "2026-10-03T12:01:29.833687+00:00",
       "currentSourceErrors": []
     },
     {
@@ -43256,7 +43409,7 @@
     "playCombatBossComplete": false,
     "unlockQuestionOwner": "root; no duplicate question"
   },
-  "centralContractReadAt": "2026-10-03T11:46:04.561357+00:00",
+  "centralContractReadAt": "2026-10-03T12:01:56.583986+00:00",
   "rootSource5Status": {
     "reportedAt": "2026-10-02T16:44:44.993700+00:00",
     "authority": "01a0faa9-b453-7673-be39-98adedb4c2b3 official message",
@@ -43393,11 +43546,11 @@
     },
     {
       "role": "QA",
-      "taskId": "CO-QA-1144-addexp-loop-reward-consumers",
+      "taskId": "CO-QA-1200-inventory-item-migration-consumers",
       "inventory": "busy",
       "exactTaskPeer": true,
-      "peerAt": "2026-10-03T11:45:30.625Z",
-      "firstSourceAt": "2026-10-03T11:45:38.370Z",
+      "peerAt": "2026-10-03T12:01:29.915Z",
+      "firstSourceAt": "2026-10-03T12:01:38.628Z",
       "endId": null,
       "endAt": null,
       "error": null,
@@ -44524,17 +44677,17 @@
     "marker": "ROOT-DEATHFADE-HOLD-2000"
   },
   "currentThresholdHandoff": {
-    "completionId": "hb1144-owned-claude-orders-final-round",
-    "at": "2026-10-03T11:46:04.561371+00:00",
-    "nul": 71,
+    "completionId": "hb1200-owned-claude-orders-final-round",
+    "at": "2026-10-03T12:01:56.584002+00:00",
+    "nulObserved81At": "2026-10-03T12:00:37.344237Z",
+    "nulNow": 81,
     "ownPaths": [
       "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/supervisor/claude-orders/SUPERVISOR_STATE.json",
       "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/supervisor/claude-orders/SUPERVISOR_LOG.md"
     ],
     "rootCaptureRequired": true,
     "ownRawFreezeUntilExactCaptureAcknowledgment": true,
-    "teamNewFiles": 0,
-    "rawHistoryPinsImmutable": true
+    "teamNewFiles": 0
   },
   "deathFadeSupplementConsumptionAudit": [
     {
@@ -56239,6 +56392,48 @@
       "activeWorkMode": "memory_only",
       "deniedPurposeRemainsHeld": false,
       "status": "socket_sendall_success"
+    },
+    {
+      "role": "QA",
+      "taskId": "CO-QA-1150-bag-storage-capacity-consumers",
+      "sentAt": "2026-10-03T11:51:16.633559+00:00",
+      "uuid": "f7476aa3-e002-492c-8929-48941202fe04",
+      "pid": 91281,
+      "priorEnd": "f1a993e5-110c-436e-911e-3f4202079a92",
+      "inlineInstruction": "CO-QA-1150-bag-storage-capacity-consumers\n\n1144 실제 end f1a993e5-110c-436e-911e-3f4202079a92@11:48:34.040Z 이후 승인 QA 복원→인벤토리 소비의 두 독립 미검토 단위를 committed source52 0db049139b92018fe3a5dbc23984006fbf693764 기준 이어갑니다. (1) 실제 BAG_MAX 복원→pickupItem(실함수이름은 원문확인) bag 가득참 판단→아이템 소유전환/획득실패 보존 경계. (2) 실제 STORAGE_MAX 복원→depositStorage/출금의 창고 용량 판단 및 원본bag/storage 이동 보존 경계. 공유 capacitycause이면 bundle1, 실제필드/분기없으면 모형만들지말고 즉시반증. 비숫자/숫자문자열/음수/0/거대유한/정상 full/onefree의 실제 restore sanitize→consumer 도달, 전체함수 OLD 최소 NEW 정상동등·실행과정적·완료ID/docs keyword/root Gate. 사용자save/UI/앱/팀원자료/코드docs/파일scratch/Gitindex 변경0·메모리/stdin만. 기존소진1138 affix 및1144 exp/0517 restore/1112 APrefund/1122 SPrefund/1132 grit 반복0; 새정책 bag용량변경 임의clamp0. 1144 보고정정: 단순 exp-=maxExp가 항상 IEEE754 값변화를 보장하지 않으며 큰유한1e300·unsafe lv++에서 무진전 가능, 1e12/1663유한샘플만으로 모든JSON손상값 자가종료 주장0. 동기라고 중간throw/부분보상없음도 입증0. 이 Gate는root인계하며 같은 exp검사재개하지말고 현재독립capacity조사를 우선. source52 공식완료 승인작업브랜치 refs/heads/codex/mac-environment-20261001 원격ea5c9858조상/10핀검증, active old51역사불변; 최신생산WIP있으면gitshow stdout→stdin만. 보호2_3/Q-onlymagic/E불가/어택티켓금지/LOCK/SSOT/기존23/맵가이드유지. source후보≠게임반영/native6/visual/청취완료. 두단위후이미승인다음미검토독립경계있으면같은실행에서이어가되 소진시무의미NOFIX반복0.\n\n기존제출raw6 불변/추가파일·scratch·patch덮어쓰기·보고서출력0. production/공유정본docs/타팀/Git/index/앱/save/새세션resume/권한/cleanup0. root상세채택/타팀종료대기는다음소유승인작업시작조건0, 기존소유미검토backlog self-select는승인범위내입니다. 이미완료동일TASK·검사·문서보고재현0. 원총괄 최신 공식 source52 핀(commit 0db049139b92018fe3a5dbc23984006fbf693764 codeepoch52; stat-panel SP환불은 sum(Number(STATS각값))+Number(grit), raw복원저장/변수clamp0·양판asyncreset totalSP/AP와 확인후refund safe비음수거절로 통화투자보존·actual whole dbRestore mounted zero plan/evaluatePlan/양판applyPlan32PASS/원본10PASS22assertFAIL≠22결함·기존growth거래15PASS·정상integer 레거시VIT 확장GRIT 취소 live재계산호환·준비crossrealm/문자열0계획오류제외·_gritTotal1132미채택 별도gate·기존번역9key미해결; 승인원격ref refs/heads/codex/mac-environment-20261001 source52가원격ea5c9858cb19996aad6649d3718e14be4fceef89조상 확인·main통합게시완료0; 이전 source51 핀(commit 4ae160c7f7ec8f8b35a50b0aec873c377925ccec codeepoch51; stat-panel AP환불은 첫10 rank COSTS와 나머지5AP 산술합·임의999상한/perdef.max clamp 미채택·유한정상/확장/분수ceil 기존의미유지, 양HTML reset 확인 전후 unsafe/negative AP transaction 거부·투자통화보존 root50PASS/old42PASS8 childtimeoutFAIL≠nativehang·기존회귀19PASS1FAIL 동일baseline 번역9key 누락 미해결·SPconcat1122는별도sanitize/callerGate 미채택·fullmountedzero/evaluatePlan과applyPlan 구분; 이전 source50 핀(commit 3ecab55cac78c25091fda188b033af21627aa2bf, codeepoch50; statDex gl.atkSpd unary+ 각1B채택/whole save restore equip statDex reader activateNeedleShot 실제needleburst wSwing종료if format식100PASS/원본40PASS60assertFAIL≠60결함·ST8 CD90 발수2f range600 spd30 관통0유지·일반fireBow statDex미사용 전체석궁주기0 피해0미채택·fullupdate 공격상태머신 충돌HP native0; 이전source49 QSLOTS복원 truthy분기 Array.from 배열max(4,len)/非배열4 invalidnull primitive array원소empty/정상object추가필드4초과배열보존 각+180B채택 whole dbRestore sanitize useQuickslot addPotion updateQS dbSaveJSON42PASS/원본16PASS26FAIL/기존물약164PASS·무조건4truncation미채택·fullboot/native0; 이전source48 potCd수동2자동2 reader Math.min(+potCd||0,.2)각4B채택/whole save restore equip useQuickslot actualquickslot tick contiguousauto소모회복쿨차단164PASS/원본98PASS66assertFAIL≠66결함·420f기반6f최소/자동potionCdRed부재유지/atkSpd미채택·fullupdate/native0; 이전source47 BGM.play bgmTrack startsWith typeof string guard각+18B채택/wholeBGM startup/preset closeAllPanels104PASS/원본78PASS26FAIL≠26결함; malformed999일반field는다음categoryguard에서기존skip·자동음악복구아님·모든stage/retryunwrapped주장은actualinitStage/fieldretrycatch충돌로미채택·fullmapinit/native청취0; 이전source46 _ancPartPts (+c.r||0)+(+c.t||0) reader양판각+2B채택/whole save restore equip actualaffiximplicit stats summon ancestor update hurtE 검수152PASS/원본20PASS132assertFAIL≠132결함/음수guard유지·boneRegister UI withdraw 변경0·MP게이트rangeclamp인수0/HP0은첫1f회수후132f폭발제거≠즉사native영구손실; 이전source45 _calcAncestorStats oss.ancPow unary+양판각1B채택/main검기 Easy기존근접경로유지/ancPartPts r-t0819는source46에서채택·합성피해값≠native; source44 splashMul/splashR unary+각1/양판+2B채택/normal elemMissile실제구간대상·evilOrb hellfirebeam은선행breakcontinue제외/모든string타겟없음주장채택0; source43 recalcSt bonusSt 숫자합산 각+6B채택/main17 Easy16슬롯범위유지/항상음수·일률붕괴주장채택0/UI_stEq·Infinity·fullinitStage Gate미검증; source42 pBeamMul의 비숫자 beamDmg만 unary+ 각1B채택/정상숫자문자열은 기존Math.max coercion정합/전체빔0HP 주장은 채택0; source41 _accDmg 본편7항/Easy6항 숫자합산(+7B/+6B)채택·기존슬롯참여범위유지· direct nc().expBonus unary+ 각1B채택·unary+는Infinity clamp아님· notify 마지막호출부터1500ms on제거/페이드 타이머취소 최소채택·일반 initStage chain2reset 유지/검수36 QA0732 REJECT_UNPROVEN_PERSISTENT_FAILURE/실험미채택 이력유지)을 후속 source 의미검수 기준으로 참조하고(source29/3404 기존 실행 앱에는 source30/31/32/33/34/35/37/38/39/40/41/42/43/44/45/46/47/48/49/50/51/52 미포함·재빌드0·native/청취 인수0), 유니크 actual OLD/NEW·설계근거·최소 실패재현을 inline 인계. root 최신 실제 사망 전제: die는 즉시 G.on=false가 아니라 쓰러짐300f 진입, 실패 _fallenResolve에서 false; chain180f는 그 사이 감쇠하므로 후속 적 사망 재갱신의 실제 전체caller 증명 없이 잔존 결함 확정0. 공식 root 핀 참조만; shasum/hash 반복0; 실제 소스/픽셀/앱 인수를 구분하세요. 보호2_3/Q-onlymagic/E불가/어택티켓금지/AGENTS LOCK SSOT mapguide/사용자WIP기존23보호. STATE/policy/_b3r거절 목적재읽기·대리내용·다른toolhostsession/권한우회0, 필수Read막히면root필수USER조치만. receipt/source/end구분/후보≠nativevisual청취완료. 내부게임상태는실제원문함수/분기추출실행, 외부I/O DOM audio만안전대역. 새로만든tick/저장/비용모형PASS는제품근거0. gap후보는baselineFAIL candidatePASS 정상동등을분리하고 정적추론이면실행했다고보고0. 두 단위 검수 후 자동 종료하지 않습니다. 한 경계 완료 결과는 기존 공식 대화 메모리에 남기고, 이미 승인된 같은 팀 도메인의 다음 미검토 독립 소비 경계를 스스로 선택해 같은 실행에서 계속 진행합니다. 원총괄 채택/타팀 완료/두 파일 산출 소진만으로 종료0. 동일검사 반복/무의미 NOFIX/새설계·수치 확장/생산쓰기0. 실제 자료·보호 목적·권한으로 막히면 정확한 막힘만 인계하고 충돌 없는 다른 기존 승인 백로그를 이어갑니다. 새 산출 파일0. scratch도 출력파일이며 예외0입니다. Write/Edit/cat>/writeFile/write_text/임시파일·scratch생성·기존scratch덮어쓰기0, node stdin/here-document/메모리만. 기존위반파일 삭제cleanup0. 실제원문전체 호출자·상위도달조건을 보존하고 새모형PASS를 제품증거로 계산0.",
+      "inlineSha256": "9feada74783c244d1405dfc2e2741f1201ebad688c330769fbd199bf42287196",
+      "newFiles": 0,
+      "activeWorkMode": "memory_only",
+      "deniedPurposeRemainsHeld": false,
+      "status": "socket_sendall_success"
+    },
+    {
+      "role": "QA",
+      "taskId": "CO-QA-1155-crystal-bag-capacity-transfer-consumers",
+      "sentAt": "2026-10-03T11:56:09.094263+00:00",
+      "uuid": "f7476aa3-e002-492c-8929-48941202fe04",
+      "pid": 91281,
+      "priorEnd": "19869303-8d29-474d-81a4-c8abcc301361",
+      "inlineInstruction": "CO-QA-1155-crystal-bag-capacity-transfer-consumers\n\n1150 실제 end19869303-8d29-474d-81a4-c8abcc301361@11:53:30.589Z 이후 승인 QA save→인벤토리 도메인의 미검토 두 독립 소비를 committed source52 0db049139b92018fe3a5dbc23984006fbf693764 기준 연결합니다. (1) CRYSTAL_BAG_MAX 실제 const 여부 및 실제 용량 비교 reader에서 CRYSTAL_BAG 복원 shape의 흐름을 전부 선행sanitizer/분기/외부caller와 대조. `.length` undefined 자체는 throw가 아니며 비교 false와 후속 .push/.splice/.filter 등의 실제 실패를 분리. (2) 실제 크리스탈 획득/이동 경로의 용량 판정→소유전환 성공/실패 보존(동작없는용량상수모형만들기0), 앞서0114~0132/0626 등 기검토 crystal shape/renderer 동일재현0; 이미fixed영역이면 짧게대조 후 미검토 consumer에서 실제도달만. 단위별 원문 전체함수추출 실행/정적구분·정상배열/객체·문자열·숫자·null shape 실제restore→실제consume·unique OLD 최소 NEW·정상동등/기존필드보존·공유cause bundle1/docs keyword/root Gate/완료ID. BAG_MAX1150원인 반복0/기존exp1144/GRIT1132 root예약53 같은조사0. source53 아직예약, 미래52·old52/51historical evidence불변; production양HTML WIP면gitshow stdout→stdin만. 새필드·용량수치clamp 정책0, 기존제출raw불변. 게임/save/UI/앱/코드docs/타팀/filescratch/Gitindex/권한/cleanup/새세션0. 내부모형PASS제품증거0, node stdin메모리만. 1150 'crash/데이터손실없음/cosmetic'은 전체render/획득소유검수전未입증이며 root Gate로두고 반복검사0; +||0는Infinity/음수/거대clamp아님. native6/visual/청취0. 완료후 이미승인미검토독립backlog만같은실행에서이어가고 정말소진시NOFIX활동늘리기0.\n\n기존제출raw6 불변/추가파일·scratch·patch덮어쓰기·보고서출력0. production/공유정본docs/타팀/Git/index/앱/save/새세션resume/권한/cleanup0. root상세채택/타팀종료대기는다음소유승인작업시작조건0, 기존소유미검토backlog self-select는승인범위내입니다. 이미완료동일TASK·검사·문서보고재현0. 원총괄 최신 공식 source52 핀(commit 0db049139b92018fe3a5dbc23984006fbf693764 codeepoch52; stat-panel SP환불은 sum(Number(STATS각값))+Number(grit), raw복원저장/변수clamp0·양판asyncreset totalSP/AP와 확인후refund safe비음수거절로 통화투자보존·actual whole dbRestore mounted zero plan/evaluatePlan/양판applyPlan32PASS/원본10PASS22assertFAIL≠22결함·기존growth거래15PASS·정상integer 레거시VIT 확장GRIT 취소 live재계산호환·준비crossrealm/문자열0계획오류제외·_gritTotal1132미채택 별도gate·기존번역9key미해결; 승인원격ref refs/heads/codex/mac-environment-20261001 source52가원격ea5c9858cb19996aad6649d3718e14be4fceef89조상 확인·main통합게시완료0; 이전 source51 핀(commit 4ae160c7f7ec8f8b35a50b0aec873c377925ccec codeepoch51; stat-panel AP환불은 첫10 rank COSTS와 나머지5AP 산술합·임의999상한/perdef.max clamp 미채택·유한정상/확장/분수ceil 기존의미유지, 양HTML reset 확인 전후 unsafe/negative AP transaction 거부·투자통화보존 root50PASS/old42PASS8 childtimeoutFAIL≠nativehang·기존회귀19PASS1FAIL 동일baseline 번역9key 누락 미해결·SPconcat1122는별도sanitize/callerGate 미채택·fullmountedzero/evaluatePlan과applyPlan 구분; 이전 source50 핀(commit 3ecab55cac78c25091fda188b033af21627aa2bf, codeepoch50; statDex gl.atkSpd unary+ 각1B채택/whole save restore equip statDex reader activateNeedleShot 실제needleburst wSwing종료if format식100PASS/원본40PASS60assertFAIL≠60결함·ST8 CD90 발수2f range600 spd30 관통0유지·일반fireBow statDex미사용 전체석궁주기0 피해0미채택·fullupdate 공격상태머신 충돌HP native0; 이전source49 QSLOTS복원 truthy분기 Array.from 배열max(4,len)/非배열4 invalidnull primitive array원소empty/정상object추가필드4초과배열보존 각+180B채택 whole dbRestore sanitize useQuickslot addPotion updateQS dbSaveJSON42PASS/원본16PASS26FAIL/기존물약164PASS·무조건4truncation미채택·fullboot/native0; 이전source48 potCd수동2자동2 reader Math.min(+potCd||0,.2)각4B채택/whole save restore equip useQuickslot actualquickslot tick contiguousauto소모회복쿨차단164PASS/원본98PASS66assertFAIL≠66결함·420f기반6f최소/자동potionCdRed부재유지/atkSpd미채택·fullupdate/native0; 이전source47 BGM.play bgmTrack startsWith typeof string guard각+18B채택/wholeBGM startup/preset closeAllPanels104PASS/원본78PASS26FAIL≠26결함; malformed999일반field는다음categoryguard에서기존skip·자동음악복구아님·모든stage/retryunwrapped주장은actualinitStage/fieldretrycatch충돌로미채택·fullmapinit/native청취0; 이전source46 _ancPartPts (+c.r||0)+(+c.t||0) reader양판각+2B채택/whole save restore equip actualaffiximplicit stats summon ancestor update hurtE 검수152PASS/원본20PASS132assertFAIL≠132결함/음수guard유지·boneRegister UI withdraw 변경0·MP게이트rangeclamp인수0/HP0은첫1f회수후132f폭발제거≠즉사native영구손실; 이전source45 _calcAncestorStats oss.ancPow unary+양판각1B채택/main검기 Easy기존근접경로유지/ancPartPts r-t0819는source46에서채택·합성피해값≠native; source44 splashMul/splashR unary+각1/양판+2B채택/normal elemMissile실제구간대상·evilOrb hellfirebeam은선행breakcontinue제외/모든string타겟없음주장채택0; source43 recalcSt bonusSt 숫자합산 각+6B채택/main17 Easy16슬롯범위유지/항상음수·일률붕괴주장채택0/UI_stEq·Infinity·fullinitStage Gate미검증; source42 pBeamMul의 비숫자 beamDmg만 unary+ 각1B채택/정상숫자문자열은 기존Math.max coercion정합/전체빔0HP 주장은 채택0; source41 _accDmg 본편7항/Easy6항 숫자합산(+7B/+6B)채택·기존슬롯참여범위유지· direct nc().expBonus unary+ 각1B채택·unary+는Infinity clamp아님· notify 마지막호출부터1500ms on제거/페이드 타이머취소 최소채택·일반 initStage chain2reset 유지/검수36 QA0732 REJECT_UNPROVEN_PERSISTENT_FAILURE/실험미채택 이력유지)을 후속 source 의미검수 기준으로 참조하고(source29/3404 기존 실행 앱에는 source30/31/32/33/34/35/37/38/39/40/41/42/43/44/45/46/47/48/49/50/51/52 미포함·재빌드0·native/청취 인수0), 유니크 actual OLD/NEW·설계근거·최소 실패재현을 inline 인계. root 최신 실제 사망 전제: die는 즉시 G.on=false가 아니라 쓰러짐300f 진입, 실패 _fallenResolve에서 false; chain180f는 그 사이 감쇠하므로 후속 적 사망 재갱신의 실제 전체caller 증명 없이 잔존 결함 확정0. 공식 root 핀 참조만; shasum/hash 반복0; 실제 소스/픽셀/앱 인수를 구분하세요. 보호2_3/Q-onlymagic/E불가/어택티켓금지/AGENTS LOCK SSOT mapguide/사용자WIP기존23보호. STATE/policy/_b3r거절 목적재읽기·대리내용·다른toolhostsession/권한우회0, 필수Read막히면root필수USER조치만. receipt/source/end구분/후보≠nativevisual청취완료. 내부게임상태는실제원문함수/분기추출실행, 외부I/O DOM audio만안전대역. 새로만든tick/저장/비용모형PASS는제품근거0. gap후보는baselineFAIL candidatePASS 정상동등을분리하고 정적추론이면실행했다고보고0. 두 단위 검수 후 자동 종료하지 않습니다. 한 경계 완료 결과는 기존 공식 대화 메모리에 남기고, 이미 승인된 같은 팀 도메인의 다음 미검토 독립 소비 경계를 스스로 선택해 같은 실행에서 계속 진행합니다. 원총괄 채택/타팀 완료/두 파일 산출 소진만으로 종료0. 동일검사 반복/무의미 NOFIX/새설계·수치 확장/생산쓰기0. 실제 자료·보호 목적·권한으로 막히면 정확한 막힘만 인계하고 충돌 없는 다른 기존 승인 백로그를 이어갑니다. 새 산출 파일0. scratch도 출력파일이며 예외0입니다. Write/Edit/cat>/writeFile/write_text/임시파일·scratch생성·기존scratch덮어쓰기0, node stdin/here-document/메모리만. 기존위반파일 삭제cleanup0. 실제원문전체 호출자·상위도달조건을 보존하고 새모형PASS를 제품증거로 계산0.",
+      "inlineSha256": "8e5dc18c996dd6a986a1196b4c9dcaf5c76a8fb1564bb5cf10ff6e38851f4f9f",
+      "newFiles": 0,
+      "activeWorkMode": "memory_only",
+      "deniedPurposeRemainsHeld": false,
+      "status": "socket_sendall_success"
+    },
+    {
+      "role": "QA",
+      "taskId": "CO-QA-1200-inventory-item-migration-consumers",
+      "sentAt": "2026-10-03T12:01:29.833687+00:00",
+      "uuid": "f7476aa3-e002-492c-8929-48941202fe04",
+      "pid": 91281,
+      "priorEnd": "b3cb3798-62fe-4067-87c7-b4c32bab9bc1",
+      "inlineInstruction": "CO-QA-1200-inventory-item-migration-consumers\n\n1155 실제end b3cb3798-62fe-4067-87c7-b4c32bab9bc1@11:58:04.757Z 이후 승인QA save→inventory 미검토2독립단위를 committedsource52 0db049139b92018fe3a5dbc23984006fbf693764 기준 연결. (1) 실제 INV.bag restore 후 `_fixCr`/item migration에서 정상배열 내부 null·primitive·배열·정상object 항목의 소비와 이동보존(firstfail/필터/후속caller). (2) 실제 INV storage 복원 collection 내 item migration/_fixCr 호출 경로의 항목shape 소비 및 보존. 실제storage명/함수/호출은 원문으로만 정하고 존재하지않으면 반증·모형0. wholearray shape0443/0446 및 CRYSTAL_BAG0449/1155/0114~0132/기존QSLOTS49 같은재검사·동일원인후보재제출0; 첫짧은대조로기검토여부확인후 남은미검토항목consumer만. null item `.crystals` 접근이 실제throw인지 선행전체sanitize/filter와함께증명, 서로같은_fixCr cause면bundle1(중복결함0). Array.isArray만으로 정상배열 모든항목유효보장0/정상추가필드·길이·소유보존 필요. 완료조건 실제원문 전체restore→실소비+원본실패/최소OLD NEW/정상동등 또는반증·source/정적구분·완료ID/docs keyword rootGate. 독립미검토경계없으면즉시정확소진 root인계하고NOFIX전수루프0. 1155crystalbag는0449중복Gate로root인계 신규유일후보확정0, 그검사재개0. source53GRIT root예약생산범위팀쓰기0·future52/currenthistoricalpins불변·productionWIP면gitshowstdout→stdin. 산출파일/scratch0·node stdin메모리만/Gitindex/코드docs/타팀/앱save/권한/cleanup/새세션0. 보호2_3/Q-onlymagic/E불가/어택티켓금지/AGENTS LOCK SSOT 기존23/맵가이드유지. 실제native6visual청취0.\n\n기존제출raw6 불변/추가파일·scratch·patch덮어쓰기·보고서출력0. production/공유정본docs/타팀/Git/index/앱/save/새세션resume/권한/cleanup0. root상세채택/타팀종료대기는다음소유승인작업시작조건0, 기존소유미검토backlog self-select는승인범위내입니다. 이미완료동일TASK·검사·문서보고재현0. 원총괄 최신 공식 source52 핀(commit 0db049139b92018fe3a5dbc23984006fbf693764 codeepoch52; stat-panel SP환불은 sum(Number(STATS각값))+Number(grit), raw복원저장/변수clamp0·양판asyncreset totalSP/AP와 확인후refund safe비음수거절로 통화투자보존·actual whole dbRestore mounted zero plan/evaluatePlan/양판applyPlan32PASS/원본10PASS22assertFAIL≠22결함·기존growth거래15PASS·정상integer 레거시VIT 확장GRIT 취소 live재계산호환·준비crossrealm/문자열0계획오류제외·_gritTotal1132미채택 별도gate·기존번역9key미해결; 승인원격ref refs/heads/codex/mac-environment-20261001 source52가원격ea5c9858cb19996aad6649d3718e14be4fceef89조상 확인·main통합게시완료0; 이전 source51 핀(commit 4ae160c7f7ec8f8b35a50b0aec873c377925ccec codeepoch51; stat-panel AP환불은 첫10 rank COSTS와 나머지5AP 산술합·임의999상한/perdef.max clamp 미채택·유한정상/확장/분수ceil 기존의미유지, 양HTML reset 확인 전후 unsafe/negative AP transaction 거부·투자통화보존 root50PASS/old42PASS8 childtimeoutFAIL≠nativehang·기존회귀19PASS1FAIL 동일baseline 번역9key 누락 미해결·SPconcat1122는별도sanitize/callerGate 미채택·fullmountedzero/evaluatePlan과applyPlan 구분; 이전 source50 핀(commit 3ecab55cac78c25091fda188b033af21627aa2bf, codeepoch50; statDex gl.atkSpd unary+ 각1B채택/whole save restore equip statDex reader activateNeedleShot 실제needleburst wSwing종료if format식100PASS/원본40PASS60assertFAIL≠60결함·ST8 CD90 발수2f range600 spd30 관통0유지·일반fireBow statDex미사용 전체석궁주기0 피해0미채택·fullupdate 공격상태머신 충돌HP native0; 이전source49 QSLOTS복원 truthy분기 Array.from 배열max(4,len)/非배열4 invalidnull primitive array원소empty/정상object추가필드4초과배열보존 각+180B채택 whole dbRestore sanitize useQuickslot addPotion updateQS dbSaveJSON42PASS/원본16PASS26FAIL/기존물약164PASS·무조건4truncation미채택·fullboot/native0; 이전source48 potCd수동2자동2 reader Math.min(+potCd||0,.2)각4B채택/whole save restore equip useQuickslot actualquickslot tick contiguousauto소모회복쿨차단164PASS/원본98PASS66assertFAIL≠66결함·420f기반6f최소/자동potionCdRed부재유지/atkSpd미채택·fullupdate/native0; 이전source47 BGM.play bgmTrack startsWith typeof string guard각+18B채택/wholeBGM startup/preset closeAllPanels104PASS/원본78PASS26FAIL≠26결함; malformed999일반field는다음categoryguard에서기존skip·자동음악복구아님·모든stage/retryunwrapped주장은actualinitStage/fieldretrycatch충돌로미채택·fullmapinit/native청취0; 이전source46 _ancPartPts (+c.r||0)+(+c.t||0) reader양판각+2B채택/whole save restore equip actualaffiximplicit stats summon ancestor update hurtE 검수152PASS/원본20PASS132assertFAIL≠132결함/음수guard유지·boneRegister UI withdraw 변경0·MP게이트rangeclamp인수0/HP0은첫1f회수후132f폭발제거≠즉사native영구손실; 이전source45 _calcAncestorStats oss.ancPow unary+양판각1B채택/main검기 Easy기존근접경로유지/ancPartPts r-t0819는source46에서채택·합성피해값≠native; source44 splashMul/splashR unary+각1/양판+2B채택/normal elemMissile실제구간대상·evilOrb hellfirebeam은선행breakcontinue제외/모든string타겟없음주장채택0; source43 recalcSt bonusSt 숫자합산 각+6B채택/main17 Easy16슬롯범위유지/항상음수·일률붕괴주장채택0/UI_stEq·Infinity·fullinitStage Gate미검증; source42 pBeamMul의 비숫자 beamDmg만 unary+ 각1B채택/정상숫자문자열은 기존Math.max coercion정합/전체빔0HP 주장은 채택0; source41 _accDmg 본편7항/Easy6항 숫자합산(+7B/+6B)채택·기존슬롯참여범위유지· direct nc().expBonus unary+ 각1B채택·unary+는Infinity clamp아님· notify 마지막호출부터1500ms on제거/페이드 타이머취소 최소채택·일반 initStage chain2reset 유지/검수36 QA0732 REJECT_UNPROVEN_PERSISTENT_FAILURE/실험미채택 이력유지)을 후속 source 의미검수 기준으로 참조하고(source29/3404 기존 실행 앱에는 source30/31/32/33/34/35/37/38/39/40/41/42/43/44/45/46/47/48/49/50/51/52 미포함·재빌드0·native/청취 인수0), 유니크 actual OLD/NEW·설계근거·최소 실패재현을 inline 인계. root 최신 실제 사망 전제: die는 즉시 G.on=false가 아니라 쓰러짐300f 진입, 실패 _fallenResolve에서 false; chain180f는 그 사이 감쇠하므로 후속 적 사망 재갱신의 실제 전체caller 증명 없이 잔존 결함 확정0. 공식 root 핀 참조만; shasum/hash 반복0; 실제 소스/픽셀/앱 인수를 구분하세요. 보호2_3/Q-onlymagic/E불가/어택티켓금지/AGENTS LOCK SSOT mapguide/사용자WIP기존23보호. STATE/policy/_b3r거절 목적재읽기·대리내용·다른toolhostsession/권한우회0, 필수Read막히면root필수USER조치만. receipt/source/end구분/후보≠nativevisual청취완료. 내부게임상태는실제원문함수/분기추출실행, 외부I/O DOM audio만안전대역. 새로만든tick/저장/비용모형PASS는제품근거0. gap후보는baselineFAIL candidatePASS 정상동등을분리하고 정적추론이면실행했다고보고0. 두 단위 검수 후 자동 종료하지 않습니다. 한 경계 완료 결과는 기존 공식 대화 메모리에 남기고, 이미 승인된 같은 팀 도메인의 다음 미검토 독립 소비 경계를 스스로 선택해 같은 실행에서 계속 진행합니다. 원총괄 채택/타팀 완료/두 파일 산출 소진만으로 종료0. 동일검사 반복/무의미 NOFIX/새설계·수치 확장/생산쓰기0. 실제 자료·보호 목적·권한으로 막히면 정확한 막힘만 인계하고 충돌 없는 다른 기존 승인 백로그를 이어갑니다. 새 산출 파일0. scratch도 출력파일이며 예외0입니다. Write/Edit/cat>/writeFile/write_text/임시파일·scratch생성·기존scratch덮어쓰기0, node stdin/here-document/메모리만. 기존위반파일 삭제cleanup0. 실제원문전체 호출자·상위도달조건을 보존하고 새모형PASS를 제품증거로 계산0.",
+      "inlineSha256": "ca456f5d05d719def7798b15b68a29db098d2bfca116dd924ed5451a09bccaee",
+      "newFiles": 0,
+      "activeWorkMode": "memory_only",
+      "deniedPurposeRemainsHeld": false,
+      "status": "socket_sendall_success"
     }
   ],
   "nextAuthorizedMemoryGoals": {},
@@ -56668,6 +56863,40 @@
         "actual100StopNewOutputs": true
       },
       "correctionReason": "official root: source3 clean, source2 alreadydirty assumption incorrect; production change0 atnotice"
+    },
+    {
+      "at": "2026-10-03T11:58:00.810021+00:00",
+      "source": 53,
+      "prior": {
+        "at": "2026-10-03T11:53:53.939011+00:00",
+        "originTask": "CO-QA-1132-grit-total-def-hp-consumers",
+        "originCompletionId": "da04d93d-0fa1-463d-914a-e10e19f73a13",
+        "baselineHead": "ea5c9858cb19996aad6649d3718e14be4fceef89",
+        "baselineCodeEpoch": 52,
+        "scope": [
+          "game.html",
+          "game-easy-test.html",
+          "test/gritTotalConsumption.test.cjs",
+          "docs/14밸런스+수치테이블/",
+          "docs/2_7 인벤토리+장비시스템/",
+          "docs/15 세이브+데이터구조/",
+          "docs/3.2메타·진행시스템/",
+          "docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md",
+          "docs/CHANGELOG_SYNC.md"
+        ],
+        "scopeCount": 9,
+        "nulAtReservation": 71,
+        "projectedNul": 80,
+        "reservedMaximumIncludingExternal8": 88,
+        "intent": "_gritTotal first _grit consumer (+_grit||0), raw restore/clamp unchanged",
+        "rootOnlyProductionScope": true,
+        "productionApplied": false,
+        "futureCodeEpoch": 52,
+        "currentTask": "CO-QA-1150-bag-storage-capacity-consumers",
+        "duplicateGritCauseForbidden": true,
+        "nativeAccepted": false
+      },
+      "change": "root adds test/gritSystem.test.js actual _gritTotal execution instead of exact-body regex"
     }
   ],
   "rootSource12OfficialNotice": {
@@ -59328,6 +59557,24 @@
         "sameHashNofixRepeat": false,
         "ARTPurposeHoldPreserved": true
       }
+    },
+    {
+      "at": "2026-10-03T11:49:31.952757+00:00",
+      "event": "source52 remote audit target correction",
+      "priorAudit": {
+        "at": "2026-10-03T11:47:21.272582Z",
+        "receiptBytes": 2275,
+        "receiptSha256": "814012ed05f5549a76a492cffbb0e8600e71bfc14d877c63afea8dbb21410ab2",
+        "scopeDiskCommitPinsVerified": 10,
+        "commit": "0db049139b92018fe3a5dbc23984006fbf693764",
+        "actualRemote": "2a053a37a0986d28b5e0a3fc7d020ff26c2c9390",
+        "ancestorCheck": false,
+        "future52PendingRemoteConfirmation": false,
+        "currentTaskPin": 51,
+        "resolvedByApprovedRefAuditAt": "2026-10-03T11:49:31.952757+00:00"
+      },
+      "priorTarget": "refs/heads/main",
+      "reason": "root approved checkpoint target is refs/heads/codex/mac-environment-20261001; main is not checkpoint verification ref"
     }
   ],
   "continuousDispatchRule": {
@@ -59540,9 +59787,9 @@
     "independentCompletedRolesFollowedUpOnce": true
   },
   "latestFullAuditLateness": {
-    "at": "2026-10-03T11:44:37.592856Z",
-    "priorDue": "2026-10-03T11:44:06.591096Z",
-    "lateSeconds": 31.0,
+    "at": "2026-10-03T12:00:37.088285Z",
+    "priorDue": "2026-10-03T12:00:37.133256Z",
+    "lateSeconds": 0,
     "fiveMinuteComplianceClaim": false
   },
   "macLockHistory": [
@@ -60187,7 +60434,7 @@
     "runtimeAccepted": false
   },
   "latestIdentitySocketAudit": {
-    "observedAt": "2026-10-03T11:46:03.180314+00:00",
+    "observedAt": "2026-10-03T12:01:55.217990+00:00",
     "rows": [
       {
         "role": "ART",
@@ -60270,7 +60517,7 @@
         "live": true
       }
     ],
-    "inventoryObservedAt": "2026-10-03T11:46:03.180314+00:00"
+    "inventoryObservedAt": "2026-10-03T12:01:55.217990+00:00"
   },
   "latestRootReadOnlySnapshot": {
     "observedAt": "2026-10-03T07:21:46.648340+00:00",
@@ -60319,17 +60566,18 @@
     "remainingCandidates": "other SOUND and all specialist unadopted/design-gate candidates retained"
   },
   "currentProductionSourcePin": "dabea7ac56fbb1395331370d80b49920996106bf",
-  "futureDispatchSourcePin": "9976264e0e50f097f219e2d009878fc925b500e9",
+  "futureDispatchSourcePin": 52,
   "latestSuccessfulRootHandoff": {
-    "at": "2026-10-03T11:41:00.718076+00:00",
-    "round": "hb1138",
+    "at": "2026-10-03T11:57:06.454641+00:00",
+    "round": "hb1155",
     "status": "delivered",
-    "completedTask": "CO-QA-1132-grit-total-def-hp-consumers",
-    "completionId": "da04d93d-0fa1-463d-914a-e10e19f73a13",
-    "taskId": "CO-QA-1138-affix-grit-max-resource-consumers",
-    "sourceAt": "2026-10-03T11:40:11.690Z",
-    "currentQASource": 51,
-    "source52ReservedOnly": true
+    "completedTask": "CO-QA-1150-bag-storage-capacity-consumers",
+    "completionId": "19869303-8d29-474d-81a4-c8abcc301361",
+    "taskId": "CO-QA-1155-crystal-bag-capacity-transfer-consumers",
+    "sourceAt": "2026-10-03T11:56:17.529Z",
+    "currentQASource": 52,
+    "source53ReservedOnly": true,
+    "nativeAccepted": false
   },
   "latestRootHandoffRecoveryFeedback": {
     "receivedAt": "2026-10-03T06:47:50.236412+00:00",
@@ -61499,10 +61747,10 @@
     "teamResends": 0,
     "nativeAccepted": false
   },
-  "currentProductionCodePin": "dabea7ac56fbb1395331370d80b49920996106bf",
-  "currentProductionCodeEpoch": 41,
+  "currentProductionCodePin": "0db049139b92018fe3a5dbc23984006fbf693764",
+  "currentProductionCodeEpoch": 52,
   "currentReviewCheckpoint": 38,
-  "futureDispatchCodeEpoch": 51,
+  "futureDispatchCodeEpoch": 52,
   "latestQA0732RootRejection": {
     "completionId": "f9aabab7-76f6-4b58-ab9e-748cbbceeeb0",
     "verdict": "REJECT_UNPROVEN_PERSISTENT_FAILURE",
@@ -65882,5 +66130,181 @@
         "productEvidence": "pending_root_full_source_review"
       }
     ]
+  },
+  "latestRootSource52ReadAudit": {
+    "at": "2026-10-03T11:47:21.272582Z",
+    "receiptBytes": 2275,
+    "receiptSha256": "814012ed05f5549a76a492cffbb0e8600e71bfc14d877c63afea8dbb21410ab2",
+    "scopeDiskCommitPinsVerified": 10,
+    "commit": "0db049139b92018fe3a5dbc23984006fbf693764",
+    "actualRemote": "2a053a37a0986d28b5e0a3fc7d020ff26c2c9390",
+    "ancestorCheck": false,
+    "future52PendingRemoteConfirmation": false,
+    "currentTaskPin": 51,
+    "resolvedByApprovedRefAuditAt": "2026-10-03T11:49:31.952757+00:00"
+  },
+  "approvedCheckpointRemoteRef": "refs/heads/codex/mac-environment-20261001",
+  "latestRootSource52Checkpoint": {
+    "verifiedAt": "2026-10-03T11:49:31.952757+00:00",
+    "commit": "0db049139b92018fe3a5dbc23984006fbf693764",
+    "actualHead": "ea5c9858cb19996aad6649d3718e14be4fceef89",
+    "actualRemote": "ea5c9858cb19996aad6649d3718e14be4fceef89",
+    "remoteRef": "refs/heads/codex/mac-environment-20261001",
+    "source52AncestorOfActualRemote": true,
+    "scopeDiskCodeHeadPins": 10,
+    "receiptBytes": 2275,
+    "receiptSha256": "814012ed05f5549a76a492cffbb0e8600e71bfc14d877c63afea8dbb21410ab2",
+    "codeEpoch": 52,
+    "nativeAccepted": false,
+    "mainMergedOrPublished": false
+  },
+  "latestRootHb1144OwnedRemoteCheckpoint": {
+    "at": "2026-10-03T11:49:31.952757+00:00",
+    "completionId": "hb1144-owned-claude-orders-final-round",
+    "commit": "ea5c9858cb19996aad6649d3718e14be4fceef89",
+    "remoteRef": "refs/heads/codex/mac-environment-20261001",
+    "exactRaw2BlobsVerified": true,
+    "receiptBytes": 1524,
+    "receiptSha256": "e9714642b77dfd621c8184b9310336e17c5494d6ac3bcf7a66138b5bc16b4525",
+    "currentWipOverwritten": false,
+    "nativeAccepted": false
+  },
+  "latest1144NoFileCompletionCompliance": {
+    "at": "2026-10-03T11:51:50.748719+00:00",
+    "rows": [
+      {
+        "role": "QA",
+        "taskId": "CO-QA-1144-addexp-loop-reward-consumers",
+        "completionId": "f1a993e5-110c-436e-911e-3f4202079a92",
+        "toolCount": 3,
+        "writeIndicators": [],
+        "stdin": [
+          {
+            "toolUseId": "toolu_01HabkD8qMoHJAosGVJeJNHs",
+            "results": [
+              {
+                "id": "a22161e2-29fb-48ae-a9b3-99636cc3e419",
+                "at": "2026-10-03T11:47:11.718Z",
+                "isError": false
+              }
+            ]
+          }
+        ],
+        "verdict": "observed_no_write_indicators",
+        "productEvidence": "pending_root_full_source_review"
+      }
+    ]
+  },
+  "latest1144CompletionMeaningGate": {
+    "completionId": "f1a993e5-110c-436e-911e-3f4202079a92",
+    "sampleTermination": "1e12 bounded sample 1663 iterations reported",
+    "unprovenClaim": "all JSON reachable damaged finite values terminate; synchronous implies no mid-loop throw",
+    "rootGate": "IEEE754 subtraction and unsafe lv++ progress; entire callers; partial mutations",
+    "newAcceptedCandidate": 0,
+    "nativeAccepted": false
+  },
+  "latestRootSource53Reservation": {
+    "at": "2026-10-03T11:53:53.939011+00:00",
+    "originTask": "CO-QA-1132-grit-total-def-hp-consumers",
+    "originCompletionId": "da04d93d-0fa1-463d-914a-e10e19f73a13",
+    "baselineHead": "ea5c9858cb19996aad6649d3718e14be4fceef89",
+    "baselineCodeEpoch": 52,
+    "scope": [
+      "game.html",
+      "game-easy-test.html",
+      "test/gritTotalConsumption.test.cjs",
+      "docs/14밸런스+수치테이블/",
+      "docs/2_7 인벤토리+장비시스템/",
+      "docs/15 세이브+데이터구조/",
+      "docs/3.2메타·진행시스템/",
+      "docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md",
+      "docs/CHANGELOG_SYNC.md",
+      "test/gritSystem.test.js"
+    ],
+    "scopeCount": 10,
+    "nulAtReservation": 71,
+    "projectedNul": 81,
+    "reservedMaximumIncludingExternal8": 89,
+    "intent": "_gritTotal first _grit consumer (+_grit||0), raw restore/clamp unchanged",
+    "rootOnlyProductionScope": true,
+    "productionApplied": false,
+    "futureCodeEpoch": 52,
+    "currentTask": "CO-QA-1150-bag-storage-capacity-consumers",
+    "duplicateGritCauseForbidden": true,
+    "nativeAccepted": false,
+    "updatedAt": "2026-10-03T11:58:00.810021+00:00",
+    "addedTest": "test/gritSystem.test.js",
+    "addedTestPurpose": "actual _gritTotal execution verifies existing cost/stage contract and string consumption",
+    "teamWritesAllowed": false
+  },
+  "latest1150NoFileCompletionCompliance": {
+    "at": "2026-10-03T11:56:41.900817+00:00",
+    "rows": [
+      {
+        "role": "QA",
+        "taskId": "CO-QA-1150-bag-storage-capacity-consumers",
+        "completionId": "19869303-8d29-474d-81a4-c8abcc301361",
+        "toolCount": 2,
+        "writeIndicators": [],
+        "stdin": [
+          {
+            "toolUseId": "toolu_01TvhxbEHA2ZNk25FC1sfYxN",
+            "results": [
+              {
+                "id": "aa8e921e-7c3e-4a53-9bf5-474a25988a9d",
+                "at": "2026-10-03T11:52:16.859Z",
+                "isError": false
+              }
+            ]
+          }
+        ],
+        "verdict": "observed_no_write_indicators",
+        "productEvidence": "pending_root_full_source_review"
+      }
+    ]
+  },
+  "latest1150CompletionMeaningGate": {
+    "completionId": "19869303-8d29-474d-81a4-c8abcc301361",
+    "candidate": "BAG_MAX=d.bagMax||300 → BAG_MAX=+d.bagMax||300",
+    "bundleCount": 1,
+    "productionApplied": false,
+    "rootGate": "whole restore pickup render ownership; unsafe/negative/Infinity not clamped; no crash/data loss cosmetic not proved",
+    "storageMaxConst": 200,
+    "nativeAccepted": false
+  },
+  "latest1155NoFileCompletionCompliance": {
+    "at": "2026-10-03T12:01:55.825304+00:00",
+    "rows": [
+      {
+        "role": "QA",
+        "taskId": "CO-QA-1155-crystal-bag-capacity-transfer-consumers",
+        "completionId": "b3cb3798-62fe-4067-87c7-b4c32bab9bc1",
+        "toolCount": 2,
+        "writeIndicators": [],
+        "stdin": [
+          {
+            "toolUseId": "toolu_01Hh7EMA9LYt4thdKjTYmK2K",
+            "results": [
+              {
+                "id": "9ae3b2f1-b071-4019-bf5e-2ffe152e3765",
+                "at": "2026-10-03T11:56:58.957Z",
+                "isError": false
+              }
+            ]
+          }
+        ],
+        "verdict": "observed_no_write_indicators",
+        "productEvidence": "pending_root_full_source_review"
+      }
+    ]
+  },
+  "latest1155CompletionMeaningGate": {
+    "completionId": "b3cb3798-62fe-4067-87c7-b4c32bab9bc1",
+    "candidate": "CRYSTAL_BAG Array.isArray shape guard before forEach",
+    "prior0449DuplicateGate": true,
+    "newUniqueDefectConfirmed": false,
+    "productionApplied": false,
+    "nativeAccepted": false,
+    "rootGate": "whole restore caller and prior0449 cause/history review; local forEach TypeError not native load evidence"
   }
 }
