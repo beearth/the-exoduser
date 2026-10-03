@@ -42,3 +42,23 @@
 | 검수·한계 | 양판 신규36+장비숫자합30+기본공격4=70PASS. 전체 hitArc·마법시전·전체복원·native 미실행; Infinity/음수소수/초과레벨을 새로 제한하지 않음 |
 
 source31에 별도 후보로 남겨 둔 PASSIVES는 이번 두 복원 경계에 한해 처리했다. STATS·장비 기본값·전체 save normalization Gate는 유지한다. [저장 숫자 경계 정본](../15%20세이브+데이터구조/15%20세이브+데이터구조.md#2026-10-03-source32-패시브-복원-숫자-경계).
+
+
+## 2026-10-03 source59 무기 기본 공격력 숫자 소비
+
+| id / 위치 | 현재 계산·검수 계약 |
+|---|---|
+| A59-MELEE / meleeRef | (((+wp().atk\|\|0)+enhMulAtk(wp().enh\|\|0))+_slotFlatAtk(wp())+P.baseAtk+(STATS.str+_eqStat('Str')+_lvB()))*(P._weaponSeal>0?.3:1) |
+| A59-BOW / bowRef | (((+bw().atk\|\|0)+enhMulAtk(bw().enh\|\|0))+_slotFlatAtk(bw())+P.baseAtk+(STATS.dex+_eqStat('Dex')+_lvB()))*(P._weaponSeal>0?.3:1) |
+| A59-MAGIC / magicRef | (((+hm().atk\|\|0)+enhMulAtk(hm().enh\|\|0))+_slotFlatAtk(hm())+P.baseAtk+(STATS.int+_eqStat('Int')+_lvB()))*(P._weaponSeal>0?.3:1) |
+| 최소 변경 | 양판 위3함수의 최초 atk 항에 unary+ 각1개, HTML각+3B. enhMulAtk(n)=n*0.25/어픽스합산/스탯·레벨/봉인*.3/연산순서·공격배율 불변 |
+| 복원·장착 | 실제 whole dbRestore→이미장착 weapon/bow/helmet 또는 가방→whole equipItem/_refreshEquipmentStats→whole3참조→whole fireBow/_fireXbow를 같은 VM에서 실행. atk 원값60/0/-10/.5 숫자문자열은 대응 숫자와 동일, ab/빈객체는0 소비. raw 장비·스키마를 다시 쓰지 않음 |
+| 정상 호환 | 숫자0/60/-10/.5/10000/NaN/Infinity/undefined 8입력×양판16조건은 원본과 동일. 음수·소수·Infinity 기존 의미 유지, finite clamp/공격력 상한/전체저장정규화 추가0 |
+| 합성 명시 사례 | Lv20, STATS STR20/DEX21/INT22, 장비 bStr5/bDex6/bInt7, atk 문자열60/enh2, sharpAtk5/brutalAtk 문자열3, P.baseAtk15: 참조118.5/120.5/122.5. 통제 pBowMul2/pXbowMul1.2/석궁 atkMul1.5/수동 보너스10에서 실제 fireBow 투사체7260, _fireXbow 일반1383/터렛1.5배2076. 이는 합성 장비·통제 배율이며 사용자 캐릭터/게임 기본 상수 아님 |
+| 발사 보존 | fireBow의 악의1 소비/_bowBon reset·×10/×3/관통0/회복 및 _fireXbow의 고정28/×3/터렛 배율/위치·사거리·속도·이펙트·음향 호출은 수정0. 실제 투사체의 hit/enemy/hurtE 실행0 |
+| 검사 | test/weaponBaseAttackConsumption.test.cjs 후보66PASS/생산66PASS, 명시source58원본16PASS·50 assertion FAIL. 문자열/비숫자6×이미장착/가방2×봉인2×양판48조건, 숫자16 및 명시2. 50은 음성 대조 조건 수이며 독립버그50개 아님. 기존 equipmentNumericAggregation30+basicAttackDamage4=인접34PASS. 양판 inlineJS12/importmap2 구문PASS |
+| 준비 오류 | 초기 광범위 atk selector는 중복19을 검출해 생산쓰기 전 거절. 첫 후보검사64PASS/명시2FAIL은 기대값 덧셈20 누락으로 수정, 피해 기대값도 연동 정정. 성장 마이그레이션/제품 결함으로 계산0. 실패 원자료 보존 |
+| 인수 경계 | stat-refresh/공간/무관 마이그레이션/음향·UI·네트워크·저장 leaf와 projectile pool/석궁 배율·타입표는 통제 대역. 동일 전체boot·실키·실저장·native·시각·청취·실적피해 인수0 |
+| 미변경 범위 | wSwing의 wp().atk 직접식·다른 공격 caller, STATS/b필드 전부 숫자 안전 주장0. raw enh/bonusHp/bonusMp/bonusShield/DEF/eDef/강화이전 정책 미채택. 보호2_3/Q전용패링/E불가/어택티켓금지/사용자23·타인WIP 보존. 현재 app29/3404에는30~59 미반영 |
+
+BALANCE1350A magicRef 및1355 meleeRef/bowRef 원문·당시 source57/WIP 관측 핀을 유지하고 공식source58에서 최소3항만 채택했다. 기존 source31의 원본 atk 미검수 표기는 당시 이력이며, source59는 위 세 참조 소비만 추가 처리한다.

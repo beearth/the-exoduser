@@ -26442,9 +26442,9 @@ function _slotFlatAtk(it){if(!it||!it.affixes)return 0;let s=0;for(let i=0;i<it.
 // 레벨 자동 성장: 비하인드 적용 (UI에 안 보임, 장비처럼 계산에만 반영)
 function _lvB(){return~~(P.lv*.5)}
 
-function meleeRef(){return(((wp().atk||0)+enhMulAtk(wp().enh||0))+_slotFlatAtk(wp())+P.baseAtk+(STATS.str+_eqStat('Str')+_lvB()))*(P._weaponSeal>0?.3:1)}
-function bowRef(){return(((bw().atk||0)+enhMulAtk(bw().enh||0))+_slotFlatAtk(bw())+P.baseAtk+(STATS.dex+_eqStat('Dex')+_lvB()))*(P._weaponSeal>0?.3:1)}
-function magicRef(){return(((hm().atk||0)+enhMulAtk(hm().enh||0))+_slotFlatAtk(hm())+P.baseAtk+(STATS.int+_eqStat('Int')+_lvB()))*(P._weaponSeal>0?.3:1)}
+function meleeRef(){return(((+wp().atk||0)+enhMulAtk(wp().enh||0))+_slotFlatAtk(wp())+P.baseAtk+(STATS.str+_eqStat('Str')+_lvB()))*(P._weaponSeal>0?.3:1)}
+function bowRef(){return(((+bw().atk||0)+enhMulAtk(bw().enh||0))+_slotFlatAtk(bw())+P.baseAtk+(STATS.dex+_eqStat('Dex')+_lvB()))*(P._weaponSeal>0?.3:1)}
+function magicRef(){return(((+hm().atk||0)+enhMulAtk(hm().enh||0))+_slotFlatAtk(hm())+P.baseAtk+(STATS.int+_eqStat('Int')+_lvB()))*(P._weaponSeal>0?.3:1)}
 const DPS_BAL={bow:0.77,magic:0.475,beam:0.0080};
 function beamCost(){return(75+((P.skills.omniBeam||1)-1)*8)/60*pMagicCost()} // 틱당: 초당75+lv*8 소비 (패시브 할인 적용)
 // ═══ E키 마법 라우팅 — 합체/스킬 상태 → beam/magicCast 자동 분기 ═══
