@@ -64,3 +64,57 @@
 | `/Users/fordeargamers/Projects/exoduser-migration-20261001/tmp/mac-migration-runtime/continued-review-20261003/ch1-source27-build/physical-receipt.json` | 31761 | `94bcf7fe6ba1af2b39476511bc691b06b54c920ac636c8216f053ea638da385e` |
 
 root 관련문서19 exactscope checkpoint/원격 정확SHA는 이 증거 루트의 후속 `checkpoint-receipt.json`을 따른다. 소스104PASS·후보보고·포장을 완제품 건수로 합산하지 않는다.
+
+
+## 2026-10-03 source28 Mac 파일 후보 / source27 실제 플레이 후속
+
+이 절은 이전 포장·잠금 대기 이후의 상태다. 이전 날짜별 기록은 당시 이력으로 보존한다.
+
+| 항목 | 확인한 상태와 남은 검수 |
+|---|---|
+| 최신 파일 후보 | source28 / job `2242869e-903a-4917-a38c-e0f6c02ff47c` / port3403 / 입력 커밋 `f376e3ce9c3524fa7874078c6738e1e5ab8a1e5b` / **PACKAGED_NOT_RUNTIME_ACCEPTED** |
+| 포함 코드 | field 복귀의 `P.poison=0;P._rbPoison=[];P._rbBurn=[];` 양판 각44B 및 이전 initStage 드루이드 초기화. 생산89PASS는 경계 대역 포함 코드 검수 이력이며 실제 앱 완주 증거가 아님 |
+| 실제 파일 검수 | frozen7918 입력 중 bootstrap2 파생. stage/app payload7916 각각 전체SHA 일치, source3 exact, bootstrap2 전체 역치환 exact, arm64 실행파일5와 plist ID 확인. 재빌드·검사 반복0 |
+| source28 실제 플레이 | launch0/native입력0. 물리 검수 시 새 profile/saveRoot 미생성. 전투·보스 사망/부활·열린 문/몬스터 보존·실저장·청취·카메라 인수 미완료 |
+| source27 실제 장착/일반retry | 정상 전사 시작→연습 건너뛰기→CH1 첫 필드. 장착4건 후 CP1857. 일반 사망→다시 일어서라로 HP549/549 MP376/376 SP279/279 및 장비 유지 확인 |
+| source27 마지막 관찰 | 첫 처치1/32, EXP2/15, 악의997, 시간55초, HP0. Controls 설정 화면에서 대기. 앞선 완충 관찰을 현재 생존으로 계산하지 않음. 아이템 줍기·4지역·보스 해금/사망 미인수 |
+| 보존 | source27 포함 기존13 검수앱 존재/Info.plist ID 확인. 기존 profile/save 내용 변경0. 원사용자 앱 정확 위치 UNKNOWN; 전체 원본hash 보존 검증으로 확대0 |
+| 물리 영수증 | `tmp/mac-migration-runtime/continued-review-20261003/ch1-source28-build/physical-receipt.json` 32859B / SHA256 `2b677de448db516036e2d32069f5b326e5aec535104f7db0072c57b5d21e5bda` |
+
+파생 port3403·격리 user-state는 원본 서버3333·저장 schema 변경이 아니다. source27 부분 플레이를 source28 제품 인수로 합산하지 않는다. 상세 successor 경로·SHA·장착 표는 `docs/13출시·마케팅/MAC_CH1_SOURCE27_CANDIDATE_20261003.md`의 후속 기록을 따른다.
+
+### source28 successor 경로와 입력 SHA
+
+| 파일 / 위치 | 값 |
+|---|---|
+| 새 앱 | `/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/mac-package-ready/mac-packager-2242869e-903a-4917-a38c-e0f6c02ff47c/package/EXODUSER-2242869e-903a-4917-a38c-e0f6c02ff47c.app` |
+| Bundle ID | `com.exoduser.mac.2242869e-903a-4917-a38c-e0f6c02ff47c` |
+| `game.html` / source·stage·app | 4034894B / `e3d1e4f3cd5f5e27ec841ea3fcfdf01126a40c0f80f434053289faf8ea07d00c` |
+| `game-easy-test.html` / source·stage·app | 3912563B / `ff35d58070dc4b55f9b530c9f302212711296db04ad10b45ac83ab7ef8fae9bf` |
+| `index.html` / source·stage·app | 342119B / `1dd28cab162a4384ad84a356eb2c719940782005d20da1312d2857bc649615a7` |
+| 새 profile | `/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/mac-package-ready/mac-packager-2242869e-903a-4917-a38c-e0f6c02ff47c/user-state/profile` / 포장 검수 시 미생성 |
+| 새 saveRoot | `/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/mac-package-ready/mac-packager-2242869e-903a-4917-a38c-e0f6c02ff47c/user-state/saves` / 포장 검수 시 미생성 |
+
+### source27 정상 장착과 전투 (source28과 별도)
+
+| 장착 / 입력 | 관찰 |
+|---|---|
+| 불꽃 석궁 | CP1682→1691. ATK4/DPS7.8 vs 기존10/19.4. CP 증가를 피해 증가로 계산하지 않음 |
+| 녹슨 도끼 | CP1691→1768. ATK41/DPS35.8 vs 기존6/5.2 |
+| 불꽃 갑옷 | CP1768→1760. 정상 장착; 개별 어픽스의 실제 기여량 미확정 |
+| 그림자 머리띠 | CP1760→1857. 정상 장착. 나무견갑은 비교만 하고 미장착 |
+| 일반 retry | HP549/549 MP376/376 SP279/279 CP1857. 장비 유지. 보스 사망 경로 아님 |
+| 최신 전투 이미지 | `tmp/mac-migration-runtime/continued-review-20261003/source27-native-play/05-general-retry-hud.jpg`. 파일명은 이력이며 실제 내용은 첫 처치1/32 뒤 HP0/55초 fallen 화면 |
+| 미완 | 아이템 획득·4지역·보스문·보스 사망/부활/재입장·몬스터 보존·저장 재실행·청취·완주. source28은 아직 미기동 |
+
+### source28 MAP PRODUCTION REPORT
+
+| 항목 | 현재 판정 |
+|---|---|
+| STAGE / MASTER PLAN | CH1-1 열린 보스문·필드 몬스터 진행 보존의 같은 후보 실제 검수 목표 유지 |
+| LARGE OUTER MASS / MEDIUM CONNECTION / GROUND CONNECTION | 지형·통로·충돌·좌표 변경0 |
+| PLAYABLE/COMBAT | source27 첫 처치/일반retry 부분 관찰. source28 실제 플레이 미실시 |
+| LANDMARK/CENTER / SMALL DETAIL | 기존 에셋 유지, 새 생성/배치0 |
+| CAMERA QA | source28 실제 카메라 검수 미실시 |
+| TECH QA | 파일 SHA 일치. 생산89PASS는 경계 대역 포함 소스 실행이며 native 인수 아님 |
+| VISUAL VERDICT | RETOUCH — 같은 source28 실제 보스 사망/부활/재입장 미인수 |
