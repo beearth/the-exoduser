@@ -7,6 +7,7 @@ const vm=require('node:vm');
 const {createHash}=require('node:crypto');
 const {parse}=require('acorn');
 const root=path.resolve(__dirname,'..');
+const sourceRoot=process.env.EXODUSER_TEST_SOURCE_DIR||root;
 const plain=value=>JSON.parse(JSON.stringify(value));
 const sha=value=>createHash('sha256').update(value).digest('hex');
 function walk(node,visit){
@@ -18,7 +19,7 @@ function walk(node,visit){
   }
 }
 function extract(file){
-  const bytes=fs.readFileSync(path.join(root,file)),source=bytes.toString('utf8'),nodes=[];
+  const bytes=fs.readFileSync(path.join(sourceRoot,file)),source=bytes.toString('utf8'),nodes=[];
   let inlineJavaScript=0,importMapJSON=0;
   for(const match of source.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script\s*>/gi)){
     if(/\bsrc\s*=/i.test(match[1]))continue;
@@ -152,6 +153,21 @@ function assertEnemies(w){
 }
 for(const file of ['game.html','game-easy-test.html']){
   const parts=extract(file);
+  test(file+' thunderStake arena transition and real retry clear only temporary state',async()=>{
+    const w=fixture(parts);w.sandbox.G._thunderStakes=[{x:20,y:30,t:1,maxT:900}];
+    w.sandbox.P._tsAiming=true;w.enter();
+    assert.equal(w.sandbox.G._thunderStakes,null);assert.equal(w.sandbox.P._tsAiming,false);
+    w.sandbox.G._thunderStakes=[{x:80,y:90,t:1,maxT:900}];w.sandbox.P._tsAiming=true;
+    await w.retry();assert.equal(w.sandbox.G._thunderStakes,null);assert.equal(w.sandbox.P._tsAiming,false);
+    assertEnemies(w);assert.equal(w.sandbox.G._bossUnlocked,true);assertResources(w);
+  });
+  test(file+' thunderStake unlocked-field retry preserves progress while cancelling aim',async()=>{
+    const w=fixture(parts),before=plain(w.sandbox.G.map);
+    w.sandbox.G._thunderStakes=[{x:20,y:30,t:1,maxT:900}];w.sandbox.P._tsAiming=true;
+    await w.retry();assert.equal(w.sandbox.G._thunderStakes,null);assert.equal(w.sandbox.P._tsAiming,false);
+    assert.equal(w.calls.initStage,0);assertEnemies(w);assert.equal(w.sandbox.G._bossUnlocked,true);
+    assert.deepEqual(plain(w.sandbox.G.map),before);assertResources(w);
+  });
   test(file+' arena death restores original enemies through repeated retry/reentry',async()=>{
     const w=fixture(parts,{tileRLE:false});
     for(let n=0;n<2;n++){

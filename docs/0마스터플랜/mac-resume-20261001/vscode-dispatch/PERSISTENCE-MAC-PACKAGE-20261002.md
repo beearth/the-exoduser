@@ -33,3 +33,15 @@ UIUX/BUILD에 이번 새 발견의 후속 메시지를 공식 도구로 보내�
 2. Mac 앱 입력에서 LFS 원본/제작 ZIP의 실행 의존성을 판정하고 완전한 입력 명세를 만든다.
 3. UIUX 카드 소멸 초점 반례를 수정·재검수한 뒤 생산 적용을 결정한다.
 4. busy-save 후보와 각 완료팀 제출은 함수별 원문·실제 회귀를 대조한 후 순차 인수한다.
+
+
+## 2026-10-03 source20 뇌전창 확정·취소·장면 정리
+
+| 항목 | 현행 연결 |
+|---|---|
+| MP / aim | thunderStake click 시 MP<50이면 안내·취소, MP/stock/recharge/설치 효과 보존. 성공 비용50/stock1/rech720 유지. _clearHeldInput의 blur/hidden에서 _tsAiming=false, visible 및 기존 설치물 유지 |
+| scene4 | _enterBossArena·일반 initStage·_fallenResolve 실제사망·retryBtn field복원분기에 G._thunderStakes=null;P._tsAiming=false. 네번째는 _refillRespawnResources 본문이 아님. 자동 부활 성공·field46key·기존 몬스터/문/아이템·자원 완충 공식 변경0 |
+| 수치 / UI 경계 | 현재 maxT=900+(Lv−1)×30f, 충전720f/5stock(Lv10≥6), MP50/1000px/arc20f/0.0875. pDotDur로 창 수명 연장0. 기존 화면 desc의600px/10초는 아직 잔류하며 실제 값과 구분, 번역 후속 필요 |
+| 검수 / 미완 | 신규12PASS(원본4PASS8FAIL)·focus20PASS·실제 boss helper/callback 회귀34PASS(새4/기존30). 정상4control 동등·fixture 오류0. source만 검수, 실제 Mac 게임6단계/시각/청취/저장 및 새 source20 패키지 미인수 |
+
+정확한 수치·소스 경계·원본 영수증은 [뇌전창 현행 계약](<../../../2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md>)의 source20 표를 따른다. 이전 source별 계약/미적용 후보는 당시 이력으로 보존한다.

@@ -137,7 +137,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 | blueShot | 푸른비 | MP | **100+1.5×Lv** (110~115) | **300f (5초)** | INT × magicRef × pMagicMul × _skMul('blueShot') (b=4.0, g=3.2) | 50발 순차유도, Lv300 해금. **Lv1=4×, Lv10=18.4×, Lv20=34.4× (g 2배 상향 2026-05-19)** |
 | burstLoop | 버스트루프 | 없음 | 0 | 없음 | INT × (mul+(Lv-1)) mul=1/3/5 | 홀드 차지, 범위 500/700/900px (합체600/800/1000), Lv700, Lv당 뎀+1 |
 | hellRay | 참회 | MP | **100/충전** | **600f (10초)/충전** | magicRef × INT × pMagicMul × pBeamMul × _skMul('hellRay') | 에너지 쐐기, 회전+뎀. ~~증표 시스템 삭제(2026-05-29)~~ |
-| thunderStake | 뇌전창 | MP | **50/개** | **스택 5개 (12초/충전, Lv10→6)** | INT × magicRef × pMagicMul × _skMul('thunderStake') (b=1.2, g=0.8) | 전기창 설치, 1000px 이내 쌍끼리 전기 아크→경로 적 틱뎀 **(×0.0875/20f — 0.175→0.0875, 50% 너프 2026-07-05)**, 감전, 10초+0.5초/Lv. **Lv1=1.2×, Lv10=4.8×, Lv20=8.8×. 아크 DPS≈33** (아크 50% 너프 2026-07-05) |
+| thunderStake | 뇌전창 | MP | **50/개** | **스택 5개 (12초/충전, Lv10→6)** | INT × magicRef × pMagicMul × _skMul('thunderStake') (b=1.2, g=0.8) | 전기창 설치, 1000px 이내 쌍끼리 전기 아크→경로 적 틱뎀 **(×0.0875/20f — 0.175→0.0875, 50% 너프 2026-07-05)**, 감전, 15초+(Lv-1)×0.5초(900+(Lv-1)×30f). 현재UI desc의10초와 별도. **Lv1=1.2×, Lv10=4.8×, Lv20=8.8×. 아크 DPS≈33** (아크 50% 너프 2026-07-05) |
 
 ---
 
@@ -290,3 +290,15 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 blur/hidden에서는 `_msAiming`·`_msCharging` 취소 후 다음 추출 프레임의 추가 설치·자원·CD 0을 검수했다. 양판 actual-source 새 검수 48/48 PASS(HTML별 24), 구문 12 inline JS + 2 importmap JSON PASS. 생산 전 같은 새 하니스의 20 PASS / 28 FAIL은 역사 baseline이다. 최종 검수에는 가드를 메모리에서 제거했을 때 옛 ghost-release가 재현됨을 확인하는 음성대조 2그룹(내부 12관측)이 포함된다. 실제 게임·native 입력·렌더·청취 PASS로 확대하지 않는다.
 
 최종 소스 영수증: `tmp/mac-migration-runtime/continued-review-20261002/storm-focus-backup/receipt.json` (SHA-256 `a600eb07bd3d9c87c22d8362a73688270ab52f6329b2678368e3cea4a40f1227`). 현재 순서·미검수 Gate는 [악의폭풍 포커스 취소 인수 보고서](../2_1%20스킬관리+합체시스템+자원/MALICE_STORM_FOCUS_CANCELLATION_20261002.md) 참조.
+
+
+## 2026-10-03 source20 뇌전창 확정·취소·장면 정리
+
+| 항목 | 현행 연결 |
+|---|---|
+| MP / aim | thunderStake click 시 MP<50이면 안내·취소, MP/stock/recharge/설치 효과 보존. 성공 비용50/stock1/rech720 유지. _clearHeldInput의 blur/hidden에서 _tsAiming=false, visible 및 기존 설치물 유지 |
+| scene4 | _enterBossArena·일반 initStage·_fallenResolve 실제사망·retryBtn field복원분기에 G._thunderStakes=null;P._tsAiming=false. 네번째는 _refillRespawnResources 본문이 아님. 자동 부활 성공·field46key·기존 몬스터/문/아이템·자원 완충 공식 변경0 |
+| 수치 / UI 경계 | 현재 maxT=900+(Lv−1)×30f, 충전720f/5stock(Lv10≥6), MP50/1000px/arc20f/0.0875. pDotDur로 창 수명 연장0. 기존 화면 desc의600px/10초는 아직 잔류하며 실제 값과 구분, 번역 후속 필요 |
+| 검수 / 미완 | 신규12PASS(원본4PASS8FAIL)·focus20PASS·실제 boss helper/callback 회귀34PASS(새4/기존30). 정상4control 동등·fixture 오류0. source만 검수, 실제 Mac 게임6단계/시각/청취/저장 및 새 source20 패키지 미인수 |
+
+정확한 수치·소스 경계·원본 영수증은 [뇌전창 현행 계약](<../2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md>)의 source20 표를 따른다. 이전 source별 계약/미적용 후보는 당시 이력으로 보존한다.

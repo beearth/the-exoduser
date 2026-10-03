@@ -182,10 +182,11 @@ for (const file of ['game.html','game-easy-test.html']) {
     w.focus('blur');w.focus('hidden');assert.equal(w.context.K.Digit1,false);assert.equal(w.context.KH.Digit1,false);
     return w.snapshot();
   });
-  group(l,'nonbone-other-aim-sentinels-preserved',()=>{
+  group(l,'other-aim-sentinels-preserved-thunderstake-cancelled',()=>{
     const w=world(l);Object.assign(w.context.P,{_hrAiming:true,_isAiming:true,_tsAiming:true,_ebAiming:true});
     w.focus('blur');const once=w.snapshot();w.focus('blur');assert.deepEqual(w.snapshot(),once);
-    for(const key of ['_hrAiming','_isAiming','_tsAiming','_ebAiming'])assert.equal(w.context.P[key],true);
+    for(const key of ['_hrAiming','_isAiming','_ebAiming'])assert.equal(w.context.P[key],true);
+    assert.equal(w.context.P._tsAiming,false);
     assert.equal(w.context.G.mats,100);assert.equal(w.context.G._boneWalls.length,0);return once;
   });
   group(l,'repeat-digit-and-repeat-confirm-no-extra-effects',()=>{

@@ -12887,7 +12887,7 @@ function _clearHeldInput(){
   for(const b in MB)MB[b]=false;
   for(const b in MBjust)MBjust[b]=false;
   _dashHold=false;_dashHoldF=0;_dashTier=0; // 쉬프트 홀드 무장 해제 (팬텀 릴리즈/재발사 차단)
-  if(typeof P!=='undefined'&&P){P._beamHold=false;P._mmAiming=false;P._mmCharging=false;P._msAiming=false;P._msCharging=false;P._bwAiming=false}
+  if(typeof P!=='undefined'&&P){P._beamHold=false;P._mmAiming=false;P._mmCharging=false;P._msAiming=false;P._msCharging=false;P._bwAiming=false;P._tsAiming=false}
   _cutSkipHolding=false;_cutSkipHold=0;
 }
 addEventListener('blur',_clearHeldInput);
@@ -29560,7 +29560,7 @@ function _enterBossArena(retry=false){
   G._stageKills=(G._stageKills||0)+_survCnt;}
   ens=[];for(let _i=0;_i<projs.length;_i++)_recycleProj(projs[_i]);projs.length=0;{for(let _ri=0;_ri<pProjs.length;_ri++)_recyclePProj(pProjs[_ri]);pProjs.length=0;};worldItems=[];G.parts=[];G.txts=[];if(typeof _clearDeathDecals==='function')_clearDeathDecals();
   G.hitStop=0;G.slowMo=0;G.curRoom=0;if(typeof _eSpCache!=='undefined')_eSpCache.clear();_impacts=[];_vfxAnims.length=0;_fireExps.length=0;
-  G._ebBomb=null;G._mmBomb=null;G._gsBombs=[];G._bsBombs=[];G._boneWalls=[];G._fireZones=[];G._stProjs=[];G._gwLightning=null;G._voidScarecrow=null;G._ancestorReturns=[];G._ancestors=[];G._editorEyes=[];
+  G._ebBomb=null;G._mmBomb=null;G._gsBombs=[];G._bsBombs=[];G._boneWalls=[];G._fireZones=[];G._thunderStakes=null;P._tsAiming=false;G._stProjs=[];G._gwLightning=null;G._voidScarecrow=null;G._ancestorReturns=[];G._ancestors=[];G._editorEyes=[];
   G._spiralBullets=[];G._phantomSwords=[];G._doppelgangers=[];G._judgeCuts=[];G._pillars=[];
   G._darkZones=[];G._mirrorClones=[];G._fissures=[];G._tideWaves=[];G._seekerMines=[];
   G._rewindMarks=[];G._gravityWells=[];G._wallPushes=[];G._poisonPools=[];G._cageTraps=[];
@@ -30351,7 +30351,7 @@ function initStage(si){
   _skinSeqIdx=0; // 스킨 순차 배정 카운터 리셋
   // _loadChAtlas(SI_TO_HELL[si]||0); // 레거시 4방향 비활성화 — 8dir 사용
   _load8DirAtlas(1); // 8dir 아틀라스 로드
-  ens=[];for(let _i=0;_i<projs.length;_i++)_recycleProj(projs[_i]);projs.length=0;{for(let _ri=0;_ri<pProjs.length;_ri++)_recyclePProj(pProjs[_ri]);pProjs.length=0;};worldItems=[];MAP_OBJS=[];G.parts=[];G.txts=[];G.hitStop=0;G.slowMo=0;G.curRoom=0;G._flashT=0;G._flashCol='#ffffff';G._chromaT=0;_eSpCache.clear();_impacts=[];_vfxAnims.length=0;_fireExps.length=0;G._ebBomb=null;G._mmBomb=null;G._gsBombs=[];G._bsBombs=[];G._boneWalls=[];G._fireZones=[];G._stProjs=[];G._gwLightning=null;_shDirty=true;_eyeObjs.length=0;_eyeInited=false;if(typeof _clearDeathDecals==='function')_clearDeathDecals();
+  ens=[];for(let _i=0;_i<projs.length;_i++)_recycleProj(projs[_i]);projs.length=0;{for(let _ri=0;_ri<pProjs.length;_ri++)_recyclePProj(pProjs[_ri]);pProjs.length=0;};worldItems=[];MAP_OBJS=[];G.parts=[];G.txts=[];G.hitStop=0;G.slowMo=0;G.curRoom=0;G._flashT=0;G._flashCol='#ffffff';G._chromaT=0;_eSpCache.clear();_impacts=[];_vfxAnims.length=0;_fireExps.length=0;G._ebBomb=null;G._mmBomb=null;G._gsBombs=[];G._bsBombs=[];G._boneWalls=[];G._fireZones=[];G._thunderStakes=null;P._tsAiming=false;G._stProjs=[];G._gwLightning=null;_shDirty=true;_eyeObjs.length=0;_eyeInited=false;if(typeof _clearDeathDecals==='function')_clearDeathDecals();
   // ── 보스 패턴 배열 전수 초기화 (메모리 누수 방지) ──
   G._spiralBullets=[];G._phantomSwords=[];G._doppelgangers=[];G._judgeCuts=[];G._pillars=[];
   G._darkZones=[];G._mirrorClones=[];G._fissures=[];G._tideWaves=[];G._seekerMines=[];
@@ -35286,6 +35286,8 @@ function update(){
     if(MBjust[2]||K['Escape']){P._tsAiming=false;MBjust[2]=false;K['Escape']=false}
     else if(MBjust[0]){
       MBjust[0]=false;
+      if(P.mp<50){showPH(_T('MP 부족! (50)'),'#4488ff');P._tsAiming=false;}
+      else{
       let _tsx=mouse.x-VW/2+G.cam.x,_tsy=mouse.y-VH/2+G.cam.y;
       const _tsD=dst(P.x,P.y,_tsx,_tsy);
       if(_tsD>1000){const _tsA=Math.atan2(_tsy-P.y,_tsx-P.x);_tsx=P.x+Math.cos(_tsA)*1000;_tsy=P.y+Math.sin(_tsA)*1000}
@@ -35303,6 +35305,7 @@ function update(){
       _addSkProf('thunderStake');
       if(Math.random()<.3)playSample('voice_magic',1,1);
       P._tsAiming=false;
+      }
     }
   }
   // ═══ 레인라이트닝 — 전류 폭파 헬퍼 ═══
@@ -42433,7 +42436,7 @@ function _fallenResolve(){
   // ── 부활 실패 → 진짜 사망 ──
   _ddDeaths++;{const _ddH=(typeof SI_TO_HELL!=='undefined'&&SI_TO_HELL[G.stage]!=null)?SI_TO_HELL[G.stage]:0;_ddChapDeathMap[_ddH]=(_ddChapDeathMap[_ddH]||0)+1}
   P.s='dead';P.iframes=0;if(G._sStats)G._sStats.deaths++;
-  SFX.die();G.on=false;G._ebBomb=null;G._mmBomb=null;G._gsBombs=[];G._bsBombs=[];G._boneWalls=[];G._fireZones=[];G._stProjs=[];G._gwLightning=null;G._voidScarecrow=null;G._ancestorReturns=[];G._ancestors=[];
+  SFX.die();G.on=false;G._ebBomb=null;G._mmBomb=null;G._gsBombs=[];G._bsBombs=[];G._boneWalls=[];G._fireZones=[];G._thunderStakes=null;P._tsAiming=false;G._stProjs=[];G._gwLightning=null;G._voidScarecrow=null;G._ancestorReturns=[];G._ancestors=[];
   BGM.fadeOut(500);setTimeout(()=>BGM.play('death'),600);
   ['hud','hudTop','hudCorner','mmWrap','skBar','mmLvl','globeHP','globeMP'].forEach(id=>$(id).classList.remove('on'));
   const expLoss=~~(P.exp*0.3);
@@ -61490,7 +61493,7 @@ $('retryBtn').onclick=async()=>{
     _bgInitQueue.length=0;_bgInitIdx=0;_bgInitDone=true;
     ens=[];for(let _i=0;_i<projs.length;_i++)_recycleProj(projs[_i]);projs.length=0;{for(let _ri=0;_ri<pProjs.length;_ri++)_recyclePProj(pProjs[_ri]);pProjs.length=0;};worldItems=[];MAP_OBJS=[];G.parts=[];G.txts=[];
     G.hitStop=0;G.slowMo=0;G._flashT=0;G._flashCol='#ffffff';G._chromaT=0;
-    if(typeof _eSpCache!=='undefined')_eSpCache.clear();_impacts=[];_vfxAnims.length=0;_fireExps.length=0;G._ebBomb=null;G._mmBomb=null;G._gsBombs=[];G._bsBombs=[];G._boneWalls=[];G._fireZones=[];G._stProjs=[];G._gwLightning=null;
+    if(typeof _eSpCache!=='undefined')_eSpCache.clear();_impacts=[];_vfxAnims.length=0;_fireExps.length=0;G._ebBomb=null;G._mmBomb=null;G._gsBombs=[];G._bsBombs=[];G._boneWalls=[];G._fireZones=[];G._thunderStakes=null;P._tsAiming=false;G._stProjs=[];G._gwLightning=null;
     G._spiralBullets=[];G._phantomSwords=[];G._doppelgangers=[];G._judgeCuts=[];G._pillars=[];
     G._darkZones=[];G._mirrorClones=[];G._fissures=[];G._tideWaves=[];G._seekerMines=[];
     G._rewindMarks=[];G._gravityWells=[];G._wallPushes=[];G._poisonPools=[];G._cageTraps=[];
