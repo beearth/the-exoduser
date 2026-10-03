@@ -1746,3 +1746,18 @@ source29 원문 검수는 실제 keyName·미니바 원문 블록을 DOM/popup/l
 | 제품 Gate | 기존 앱source29/3404 유지; source30~34 앱미포함·native 입력막힘/같은후보6단계·보스문/필드몬스터 보존·실화면/청취 인수0. 실제 사용자저장·추가빌드0 |
 
 상세 [아이템 정본](../7아이템디자인/exoduser-item-system-full.md#2026-10-03-source34-비교-어픽스의-퍼센트포인트-단위). 백업·원자료·실제 전체 compare probe·후보·구문·원격 체크포인트 영수증은 tmp/mac-migration-runtime/continued-review-20261003/source34-affix-compare/에 보존한다. 두 오더 담당만 전문팀 송신을 소유하며 현재 TASK/CLI 재시작·중복지시0.
+
+
+## 2026-10-03 source35 효과음 시작·종료 예약 오류 통합
+
+| 항목 | 인수 범위 / 근거 |
+|---|---|
+| 후보 | SOUND0643 msg_04893afbe993b162016ac0a4839f2487d0aa420832700c77a1 / SOUND0653 msg_04893afbe993b162016ac0a725a22887d09c362eb3a1e71028; source34에 재검증 |
+| 최소 적용 | 양판 playTone start/stop 예약 catch, 독립 stop/osc disconnect/gain disconnect, 최초 오류 재전달; 각+105B |
+| 보존 | 정상 음색/시간/노드 한도/_dn/다른 synth 원문, 다른 음성 카운터; 보호67 exact |
+| 검증 | 원본18개 중12 FAIL→후보18 PASS, 실제 적용본 기본 공격 포함52 PASS, JS12/importmap2 PASS; 실제 장치·전체 caller 미검수 |
+| 미복구 | 모든 정리 API 실패는 UNRECOVERED, 오류 전달 유지·완전 복구 주장 없음 |
+| Git 범위 | 기존5파일 백업, 코드2+검사1+docs4=scope7; docs 전체 관련 검색 전후 및 기존 문서 접두부 보존 |
+| native | 앱source29/3404 유지, source30~35 앱 포함0; 전투/보스사망·부활/재도전 및 시각·청취 인수 미완료 |
+
+[사운드 정본](../6사운드디자인/SOUND_TONE_FAILURE_CLEANUP_20261003.md). 원자료/검사/소비대조/백업/원격 핀 영수증: tmp/mac-migration-runtime/continued-review-20261003/source35-tone-cleanup/. 사용자 저장·새 앱/빌드 변경0. 관리3/전문15/전체18, 두 오더 담당의 전문팀 단일 송신은 유지한다.

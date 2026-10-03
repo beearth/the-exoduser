@@ -11443,7 +11443,7 @@ function playTone(freq,dur,type,vol,freqEnd,atk){
   if(freqEnd!==undefined)o.frequency.exponentialRampToValueAtTime(Math.max(20,_r(freqEnd)),t+dur);
   g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(vol,t+a);
   g.gain.exponentialRampToValueAtTime(.0001,t+dur);
-  o.connect(g);g.connect(mbus());o.start(t);o.stop(t+dur+.02);
+  o.connect(g);g.connect(mbus());try{o.start(t);o.stop(t+dur+.02)}catch(e){try{o.stop()}catch(_e){}try{o.disconnect()}catch(_e){}try{g.disconnect()}catch(_e){}throw e}
   _activeNodeCnt++;let _d=false;function _dn(){if(_d)return;_d=true;_activeNodeCnt=Math.max(0,_activeNodeCnt-1);try{o.disconnect();g.disconnect()}catch(e){}}
   o.onended=_dn;setTimeout(_dn,(dur+.5)*1000);
 }

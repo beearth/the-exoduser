@@ -53343,3 +53343,15 @@ CO-QA-0645 완료2066d5e0-758d-4480-a1b7-5c64faa45374(source30 원자료)를 sou
 | 기존 소비 | source33 상세/공용포맷·CP·장비집계·장착·리롤·강화 이전 호출 유지 | 해당 함수 원문 등가/eqCard 마크업등가/원본값 불변. CP·비용 leaf 대역과 실제 게임 Gate 구분 |
 
 원 후보의 atk/hp/dps 및 일반값 반올림 확장은 이번 미채택이다. 근거 완료msg_0dc2542c5744bc89016ac0a804244087d099b2b7f26de965cf. main4035756B SHA256 c18217d0490db64eb8349afc15d66b5b8a71492b90f9fa120a3149fd57dd8122 / easy3913425B SHA256 db05f518a6c7aef714f8b7575b245e59b10a9a5f7c8831ff06e3b7d10314d592. 코드+정본docs scope6 원격 보존, 백업/비교 probe/핀·영수증은 tmp/mac-migration-runtime/continued-review-20261003/source34-affix-compare/. 실제 사용자저장·앱/빌드 수정0, 기존 앱source29에source30~34미포함/native시각·청취·사망/부활 인수0. [정확 표시 계약](7아이템디자인/exoduser-item-system-full.md#2026-10-03-source34-비교-어픽스의-퍼센트포인트-단위).
+
+
+## 2026-10-03 source35 playTone 시작·종료 예약 실패 정리
+
+| 파일 / 경계 | 변경 / 보존 | 검수 |
+|---|---|---|
+| game.html / game-easy-test.html | playTone start/stop catch+독립 stop/disconnect2+최초 오류 rethrow, 각+105B | 실패 때 연결 잔존 복구 시도·다른 음성 카운터 보존 |
+| test/toneStartStopCleanup.test.cjs | 실제 전체 playTone 외부AudioAPI/clock 통제 검사 | 원본6PASS12FAIL→후보18PASS, 적용본 기본공격 포함52PASS |
+| 사운드 정본/총괄 | 경계·순서·미복구·부분채택·native 미인수 동기화 | 전체 docs 검색 전후·기존 문서 접두부exact |
+| 정상/범위 밖 | envelope/파형/시각/한도/_dn/다른synth 유지 | 생성/context/connect/mbus/타이머 등록·정상 종료 오류 미채택 |
+
+모든 정리 API 실패는 UNRECOVERED이며 최초 오류 전달 유지. 근거 SOUND0643 msg_04893afbe993b162016ac0a4839f2487d0aa420832700c77a1 및 SOUND0653 msg_04893afbe993b162016ac0a725a22887d09c362eb3a1e71028. main4035861B SHA256 4bc474a8542c20deee21e64fd542f7e295d11dc1d98b350241cc991e423e1f0a / easy3913530B SHA256 9bd5a9bb4de4cacb300e701394ec7dae59faf0b60ddfb2b109027a8f32f42169. 전체 역변환source34 exact·inlineJS12/importmap2 PASS. scope7만 보존, 기존5파일 백업·보호67exact, 근거 tmp/mac-migration-runtime/continued-review-20261003/source35-tone-cleanup/. 앱source29/3404 유지/source30~35미포함, native 보스사망·부활·재도전/시각/청취 미인수. 사용자저장·빌드 변경0. [사운드 상세 정본](6사운드디자인/SOUND_TONE_FAILURE_CLEANUP_20261003.md).
