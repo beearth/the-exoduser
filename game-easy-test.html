@@ -3473,7 +3473,7 @@ function dbRestore(d){
   if(_grit>0&&!d.gritCostModeV2){const _legacySpent=_grit*3+((_grit-1)*_grit)/2;const _refund=Math.max(0,_legacySpent-_grit);if(_refund>0)P.sp+=_refund;}
   // Quickslots (filter out removed potions)
   if(d.qslots){
-    QSLOTS=d.qslots.map(s => (s.type && !POT[s.type]) ? {type:null,count:0} : s);
+    QSLOTS=Array.from({length:Array.isArray(d.qslots)?Math.max(4,d.qslots.length):4},(_,i)=>{const s=Array.isArray(d.qslots)?d.qslots[i]:null;return s&&typeof s==='object'&&!Array.isArray(s)?((s.type&&!POT[s.type])?{type:null,count:0}:s):{type:null,count:0};});
   }
   // Game state
   if(d.game){
