@@ -26792,7 +26792,7 @@ function _eqStatRebuild(){_eqStatCache={};for(let si=0;si<SLOT_NAMES.length;si++
 function _eqStat(k){if(!_eqStatCache)_eqStatRebuild();return _eqStatCache[k]||0}
 // 장비 어픽스 합산 (id별 value 합계)
 let _eqAffixCache=null,_eqAffixVer=0;
-function _eqAffixRebuild(){_eqAffixCache={};for(let si=0;si<SLOT_NAMES.length;si++){const it=INV.equipped[SLOT_NAMES[si]];if(it&&it.affixes)for(let i=0;i<it.affixes.length;i++){const a=it.affixes[i];_eqAffixCache[a.id]=(_eqAffixCache[a.id]||0)+a.value}}}
+function _eqAffixRebuild(){_eqAffixCache={};for(let si=0;si<SLOT_NAMES.length;si++){const it=INV.equipped[SLOT_NAMES[si]];if(it&&it.affixes)for(let i=0;i<it.affixes.length;i++){const a=it.affixes[i];_eqAffixCache[a.id]=(_eqAffixCache[a.id]||0)+(+a.value||0)}}}
 function _eqAffix(id){if(!_eqAffixCache)_eqAffixRebuild();return _eqAffixCache[id]||0}
 // ═══ 테스트용: 콘솔에서 어픽스 강제 주입/제거/확인 ═══
 // _testAffix('onCritExplode', 0.5)  → 장착 무기에 어픽스 강제 추가
@@ -26814,7 +26814,7 @@ window._testAffixClear=function(){
   console.log('✓ 테스트 어픽스 전부 제거');
 };
 // 장비 임플리싯 합산 (stat명별)
-function _eqImplicit(stat){let v=0;for(const sl of SLOT_NAMES){const it=INV.equipped[sl];if(it&&it._implicitStat===stat)v+=it._implicitVal}return v}
+function _eqImplicit(stat){let v=0;for(const sl of SLOT_NAMES){const it=INV.equipped[sl];if(it&&it._implicitStat===stat)v+=(+it._implicitVal||0)}return v}
 function statStr(){return 1} // STR은 ref 함수에서 직접 ATK로 더해짐 (1:1)
 function statDex(){return 1+(STATS.dex+_eqStat('Dex')+_lvB())*.0005+(gl().atkSpd||0)+_eqAffix('atkSpeed')+_eqImplicit('_iAtkSpd')*.01+(_uEq('_uGloveSpd')||0)}
 function statInt(){return 1} // INT는 ref 함수에서 직접 ATK로 더해짐 (1:1)
@@ -27558,7 +27558,7 @@ function _autoFireBowSkill(tx,ty){
   P.st=Math.max(0,_sSt-_xbStCost);
   P.s=_sS;P.st2=_sSt2;P.facing=_svF;P.atkArc=_svA;
 }
-function _slotFlatAtk(it){if(!it||!it.affixes)return 0;let s=0;for(let i=0;i<it.affixes.length;i++){const a=it.affixes[i];if(a.id==='sharpAtk'||a.id==='brutalAtk'||a.id==='ruinAtk')s+=a.value}return s}
+function _slotFlatAtk(it){if(!it||!it.affixes)return 0;let s=0;for(let i=0;i<it.affixes.length;i++){const a=it.affixes[i];if(a.id==='sharpAtk'||a.id==='brutalAtk'||a.id==='ruinAtk')s+=(+a.value||0)}return s}
 // 레벨 자동 성장: 비하인드 적용 (UI에 안 보임, 장비처럼 계산에만 반영)
 function _lvB(){return~~(P.lv*.5)}
 

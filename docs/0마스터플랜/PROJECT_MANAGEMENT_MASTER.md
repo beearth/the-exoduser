@@ -1687,3 +1687,17 @@ source29 원문 검수는 실제 keyName·미니바 원문 블록을 DOM/popup/l
 | 목표 | 같은후보 전투·획득/장착·4지역보스문·보스사망/부활/재도전·열린문/필드몬스터 보존·실청취·저장재실행·카메라 미인수. 코드진척과 제품완료 구분 |
 
 상세 [source30 기본 공격 음향](../6사운드디자인/SOUND_BASIC_ATTACK_PROGRESS_20261003.md). 두오더담당의 전문팀 단일송신 소유 유지/새팀·전문팀 중복지시0. source30 백업·검수·검색·핀은 tmp/mac-migration-runtime/continued-review-20261003/source30-basic-attack-audio/에 보존한다.
+
+
+### 2026-10-03 원총괄 source31 — 옵션 문자열 연결의 실제 생산 수정
+
+| 항목 | 완료·미검수 구분 |
+|---|---|
+| 채택 | QA0626/c00f9f72·QA0635/a718d3f4 실제JSONL/오더STATE 인수. source30에서 _eqAffixRebuild/_slotFlatAtk/_eqImplicit 3독립 집계 경계를 숫자-coerce 재검증 후 양판반영 |
+| 변경 | 각경계+6B, 양판각+18B. 정상 숫자/음수/소수·기존공식·캐시/슬롯/ID·저장schema 유지. 비숫자/undefined/NaN은0, 숫자문자열은숫자합. Infinity/원본장비/패시브 등 전체손상정규화 아님 |
+| 검수 | 유효원본30 중12PASS/18FAIL → 후보30PASS → 생산34PASS(신규30+기존피해4), inlineJS12/importmap2PASS·전체역치환원본exact. 초회harness 오류는 별도원자료 보존·제품실패로계산0 |
+| 소비 | 실제전체3공격참조 및장비집계, applyStats 장비HP/MP/speed 정확statement. 전체applyStats·native·실세이브/청취/완주 인수 아님 |
+| 보존 | 원본7파일·타인67WIP 핀·관리4제외. source29/3404 기존앱유지/source30·31 앱미포함. 이번UI/빌드/앱재실행0·사용자저장조회/수정0 |
+| 운영 | root송신실패 인계는담당STATE 원문/공식완료ID 직접읽기로인수 가능함을두오더에복구피드백. 전문팀중복TASK0. 소진팀을허위busy로표시하지않음 |
+
+정확한 수치·핀·범위는 [저장 정본 source31](../15%20세이브+데이터구조/15%20세이브+데이터구조.md#2026-10-03-source31-장비-옵션-숫자-합산). 코드+테스트+관련docs 8스코프만 원격보존하며 실제CH1-1 입장→전투/획득→4지역보스문→사망/부활→재도전·필드/열린문 보존·저장/화면/청취 목표는 미완료다.

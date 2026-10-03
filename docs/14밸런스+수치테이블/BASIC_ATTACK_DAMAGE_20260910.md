@@ -15,3 +15,16 @@
 공격속도·선후딜·소모 자원·범위·속도·관통·애니메이션·소리는 바꾸지 않는다. 회전참, 선택형 석궁 스킬, 우클릭 마법, E 처내기/차징, 패링 반사 배율은 이번 수정 범위가 아니다. 반사 최소치는 기존 고정14×이며 현재 기검참1타와 같은 값이라는 과거 설명만 정정한다. 평타 ST 소비 가산은3배에 포함되지 않으며, 그 외 정수 반올림·적 방어·속성 적용으로 표시 피해 비율은 미세하게 달라질 수 있다.
 
 검증은 `test/basicAttackDamage.test.js`에서 실제 _fireXbow/fireBow/스윙 분기/_skMul을 실행한다. 자동 석궁388→1164, 터렛582→1746, 일반 석궁(보너스 포함)2010→6030, 평타 입력140→420 및 Lv1/10/20 기검참3배를 확인한다. 기존 `test/kiSlashSwingSound.test.js`의 3단 콤보 소리 검사도 유지한다. 실행파일 재패키징은 포함하지 않는다.
+
+
+## 2026-10-03 source31 무기 옵션 입력 무결성
+
+| 경계 | 현행 계약 |
+|---|---|
+| _slotFlatAtk | sharpAtk/brutalAtk/ruinAtk 직접 합산에 (+a.value||0). _eqAffix 캐시 경로와 독립 |
+| meleeRef/bowRef/magicRef | 기존 전체 함수·공식·장비/강화/스탯/baseAtk·봉인*.3 유지. 직접-affix 문자열 연결만 숫자합으로 복구 |
+| _eqAffixRebuild/_eqImplicit | 옵션·임플리싯을 숫자합으로 공급. 생성 수치/티어/확률·스킬/기본공격 배율 변경0 |
+| 실제 root 대조 | sharp/brutal/ruin [5,3,2]에서 참조118 유지; [5,"9",3]에서665931527→125; [5,"ab",3]에서NaN→116. 통제 장비 atk60/enh2·스탯 fixture 값이며 실제 캐릭터 수치 아님 |
+| 검수 | 신규30+기존 basicAttackDamage4=생산34PASS. 실제 전체3참조와 장비 집계함수·정확 applyStats 장비 기본항 실행, 전체 프레임/후속 스탯/실저장/native 미인수 |
+
+원본 atk/enh/bonusHp 또는 PASSIVES/STATS 손상 후보, 기존 다른 어픽스 미연결 정책은 별도다. 사용자 저장을 수정하지 않았다. [정확한 숫자 합산·소비 계약](../15%20세이브+데이터구조/15%20세이브+데이터구조.md#2026-10-03-source31-장비-옵션-숫자-합산) 및 test/equipmentNumericAggregation.test.cjs를 따른다.

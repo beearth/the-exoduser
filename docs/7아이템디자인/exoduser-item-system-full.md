@@ -1019,3 +1019,17 @@ renderAffixTooltip(item) → 인벤토리 툴팁 표시
 | 보스/문법 | 실제 bossRespawnFieldState34PASS로 기존 필드/문/적/아이템 복귀 계약 유지. 양판 AST 파싱 JS12/JSON2, 별도 본편 inline syntax1PASS. 새검사10+보스34=44PASS와 별도syntax1을 구분. 잘못 기입한 .cjs syntax 경로는 체크0, 실제 .js 실행으로 정정 |
 | 검수 한계 | 실제 `_wiPush` 전체함수·GC 선택lane·상자생성문장·개봉lane을 isolated VM에서 실행. 완전한 hurtE 보스승리/전체update·정상native키/픽셀·가방획득/실저장·청취는 fixture 검사가 수행하지 않음. item factory·거리입력·음향/UI·RNG 고정은 대역. source21 패키지3396 포장·타이틀·HTTP200 확인, 실제 native 인수0, source20/3395 앱 및 이전 사용자 게임/세이브 보존 |
 | 원자료 | tmp/mac-migration-runtime/continued-review-20261003/root-chest-preservation-source21/{before-receipt.json,code-applied-receipt.json,candidate-test.txt,baseline-test.txt,production-test-receipt.json,syntax-test.txt}. 초기fixture 오류 및 각실패/한계 보존, inverse patch source20 byte-exact |
+
+
+## 2026-10-03 source31 실제 옵션 합산 경계
+
+아래 표는 위 생성·프롬프트 예제와 구분되는 현행 런타임 합산 계약이다. 옵션 생성 수치·확률·티어·슬롯·반올림과 저장 필드를 바꾸지 않았다.
+
+| 함수 / 값 | 현행 합산 | 적용 |
+|---|---|---|
+| _eqAffixRebuild / a.value | 기존 id 누적합 + (+a.value||0) | 슬롯 간 같은 ID 숫자합. 숫자문자열 변환, 비숫자/undefined/NaN 항목0; 정상 음수·소수 보존 |
+| _slotFlatAtk / sharpAtk·brutalAtk·ruinAtk | s+=(+a.value||0) | 무기 직접 합산. _eqAffixCache 비경유; meleeRef/bowRef/magicRef 모두 소비. 다른 ID 제외 |
+| _eqImplicit / it._implicitVal | v+=(+it._implicitVal||0) | 같은 _implicitStat의 슬롯 간 숫자합. flat HP 및 비율/속도 소비 입력 |
+| 경계 | 실제 INV 내용/저장 schema 변경0 | Infinity·객체 변환·손상 배열 원소·atk/enh/bonusHp·PASSIVES/STATS는 별도 미채택 범위 |
+
+정상 [5,3,2]→10과 signed/decimal 합산은 보존하며, [5,"9",3]은17, [5,"ab",3]은8이다. 비숫자 한 항목이 정상 옵션의 누적합까지 문자열로 오염시키지 않는다. source31 양판 각+18B/전체 역치환 exact, 신규30+피해 회귀4=생산34PASS·inlineJS12/importmap2PASS. 전체 applyStats·실세이브·native·완주·청취 통과로 계산하지 않는다. [정확한 소비 대조·핀·QA 완료ID](../15%20세이브+데이터구조/15%20세이브+데이터구조.md#2026-10-03-source31-장비-옵션-숫자-합산)를 따른다.

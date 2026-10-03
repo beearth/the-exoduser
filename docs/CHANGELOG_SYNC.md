@@ -53293,3 +53293,17 @@ source29 원문 검수는 실제 keyName·미니바 원문 블록을 DOM/popup/l
 | 현재 앱 | 기존source29/e771c364/3404/main52515 유지·source30미포함. Space 후AX/대사불변, 실제화면 기준 클릭 noWindowsAvailable. 보스문/필드몹 보존·보스사망/부활/재도전·완주 미인수 |
 
 [정확한 함수·수치·검증·백업](6사운드디자인/SOUND_BASIC_ATTACK_PROGRESS_20261003.md). docs 전체 관련키워드 검색·코드+관련docs 동시보존·원격 정확SHA 확인. 보호67개WIP·관리4개·사용자앱/게임/세이브 보존, 새앱/빌드/팀·전문팀 중복송신0.
+
+
+## 2026-10-03 source31 옵션·무기·임플리싯 숫자 합산
+
+| 변경 | 실제 완료와 한계 |
+|---|---|
+| 집계3경계 | _eqAffixRebuild의 a.value, _slotFlatAtk의 sharp/brutal/ruin a.value, _eqImplicit의 _implicitVal을 (+값||0)로 합산. 정상숫자/음수/소수·공식·저장필드 보존 |
+| 오류 | 문자열 연결로 HP/3공격참조 inflation 또는 NaN 전파. 숫자문자열 변환/비숫자0으로복구. Infinity/다른저장필드까지 정규화한 변경 아님 |
+| 코드 | 양판각+18B/각경계+6B·전체역치환exact. Main a8a41c979956e5b098725b3dfac9e5b1618a974aca74eed3b2134a4e6a94cc4d, Easy977398f1ecececaef119057bae243f7de96e0688918b099a81d70b5ef36fa58a |
+| 검수 | 유효원본12PASS/18FAIL→후보30PASS→실제생산34PASS(신규30+피해회귀4), inlineJS12/importmap2PASS. 초회harness 조립/기대값 오류와 원자료를 제품실패와구분 |
+| 인계·보존 | QA0626 c00f9f72 / QA0635 a718d3f4의 원문 인수·source30 재검증. docs전체검색·기존prefix·타인67/관리4·사용자세이브/앱 보존. 코드+관련docs 8경로 only checkpoint |
+| 실제플레이 | 기존source29/3404 앱에source30/31 미포함, UI/빌드/재실행0. 같은후보 보스문/필드몬스터·사망/부활/재도전/실저장·청취·화면 미인수 |
+
+[정확한집계·consumer 대조·SHA·미검수 범위](15%20세이브+데이터구조/15%20세이브+데이터구조.md#2026-10-03-source31-장비-옵션-숫자-합산). 보호2_3/Q-onlymagic/E불가·어택티켓금지·타인WIP·기존미채택후보 유지.
