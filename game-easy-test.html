@@ -47418,10 +47418,14 @@ function renderInv(){
       let _isTot=0;for(const idx of _invSalSel){const it=INV.bag[idx];if(it)_isTot+=salvageVal(it)}
 _isBtn.style.display='';_isBtn.textContent=_L("선택분해 ({p0}개 -> 악의 +{p1})","Salvage ({p0} -> +{p1} Malice)",{p0:_isCnt,p1:_isTot});
       _isBtn.onclick=async()=>{
-        if(!await gameConfirm(_L("{p0}개 아이템을 분해합니다.<br>{p1} {p2} 악의 획득.<br><br>{p3} 복구 불가!","Salvage {p0} items.<br>{p1} {p2} Malice gained.<br><br>{p3} Cannot undo!",{p0:_isCnt,p1:_glyph('demon','#cc66ff',15),p2:_isTot,p3:_glyph('warn','#ff6644',15)}),null,null,true))return;
-        const idxArr=[..._invSalSel].sort((a,b)=>b-a);
-        for(const idx of idxArr)INV.bag.splice(idx,1);
-        G.mats+=_isTot;_invSalSel.clear();INV.selected=null;
+        const _canSelected=it=>{if(!it||it.fav||!INV.bag.includes(it)||Object.values(INV.equipped).includes(it))return false;const _value=salvageVal(it);return Number.isFinite(_value)&&_value>=0;};
+        const _pendingSelected=[...new Set([..._invSalSel].map(idx=>INV.bag[idx]))].filter(_canSelected);if(!_pendingSelected.length)return;
+        const _pendingTotal=_pendingSelected.reduce((sum,it)=>sum+salvageVal(it),0);if(!Number.isFinite(_pendingTotal)||_pendingTotal<0)return;
+        if(!await gameConfirm(_L("{p0}개 아이템을 분해합니다.<br>{p1} {p2} 악의 획득.<br><br>{p3} 복구 불가!","Salvage {p0} items.<br>{p1} {p2} Malice gained.<br><br>{p3} Cannot undo!",{p0:_pendingSelected.length,p1:_glyph('demon','#cc66ff',15),p2:_pendingTotal,p3:_glyph('warn','#ff6644',15)}),null,null,true))return;
+        const _currentSelected=_pendingSelected.filter(_canSelected);if(!_currentSelected.length)return;
+        const _currentTotal=_currentSelected.reduce((sum,it)=>sum+salvageVal(it),0);if(!Number.isFinite(_currentTotal)||_currentTotal<0)return;
+        INV.bag=INV.bag.filter(it=>!_currentSelected.includes(it));
+        G.mats+=_currentTotal;_invSalSel.clear();INV.selected=null;
         SFX.pickup();
         dbSaveNow();renderInv();
       };

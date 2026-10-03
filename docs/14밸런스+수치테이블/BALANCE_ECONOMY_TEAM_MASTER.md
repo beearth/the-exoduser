@@ -195,3 +195,23 @@ shared-mats-atomic 미적용 후보의 담당 실제 파일14 검사를 root가 
 | 성장 계약 | 최종최대치 갱신·현재자원보존·기존20%회복호출당1회. 공식/SP/AP/레벨상한/globalapplyStats불변 | [현행 재계산·자원 보존 계약](LEVEL_UP_RESOURCE_REFRESH_20261003.md) |
 
 이전 단순 레벨 재계산 후보는 강인/마력그릇 중간clamp로 현재자원 손실이 있어 채택하지 않았다. 이전 source6 실플레이는 source7의 실행 결과로 계산하지 않는다.
+
+
+## 2026-10-03 source56 선택분해 확인 전후 객체 재검사
+
+| 항목 | 현행 계약 |
+|---|---|
+| 적용 위치 | 양판 renderInv의 invSalvageBtn 연결 onclick만 변경. 바깥 미리보기 _isCnt/_isTot 및 salvageVal 공식 불변 |
+| 클릭 시 대상 | _invSalSel 인덱스를 현재 INV.bag 객체로 변환, Set으로 같은 객체 참조를 중복 제거하여 _pendingSelected에 보관. 이후 선택 인덱스 변경은 새 대상을 추가하지 않음 |
+| _canSelected | truthy 객체, fav가 false인 값, 현재 INV.bag.includes(it), INV.equipped의 값에 같은 객체 없음, salvageVal(it)가 Number.isFinite이고 0 이상. junk 여부는 조건이 아님 |
+| 확인 전 | 유효 대상이 없으면 확인창 없음. _pendingTotal은 대상 salvageVal 합계이며 유한·0 이상일 때만 확인. 기존 한/영 문구 p0는 유효 객체 수, p2는 이 합계 |
+| 확인 후 | 승인 시 원래 _pendingSelected를 같은 조건으로 다시 걸러 _currentSelected 생성. 유효 대상 또는 유한·0 이상 _currentTotal이 없으면 분해·보상·선택 초기화·분해 SFX/저장/최종 렌더 없음 |
+| 소비·보상 | INV.bag.filter로 현재 유효한 원래 객체만 제거, G.mats += _currentTotal. 남은 객체 순서·참조·필드는 보존하나 가방 배열 자체는 새 배열. 같은 참조가 여러 칸에 있으면 해당 별칭 모두 제거하고 보상은 한 번 |
+| 성공 후 | _invSalSel.clear() → INV.selected=null → SFX.pickup() → dbSaveNow() → renderInv() 기존 순서. 0원 유효 분해도 소비·성공 후 효과 수행. 취소는 소비 없음; 중복 클릭은 기존 gameConfirm 재진입 거절 계약 유지 |
+| 실제 소스 재현 | 등록 keydown → KeyF → actual gameConfirm → 연결된 선택분해 콜백을 대역 이벤트로 실행. 확인 대기 중 A.fav=true가 된 뒤 원본은 A를 삭제·1000 지급, 수정본은 A/B·악의500 보존. KeyF 자체의 junk/fav 변경·렌더 효과와 분해 성공 효과는 별도 |
+| 합성 경계 | 배열 삽입/삭제/교체, 장착 상태, 선택 인덱스, 환수값 변경은 합성 상태로 검사. 실제 native에서 이 변경들이 modal 중 발생하는지 전체 호출자 도달은 미검수 |
+| 검사 | test/selectedSalvageConfirmConsumption.test.cjs 양판24조건씩48 PASS; 명시 source55 원본16 PASS·32 FAIL. 정상·취소·KeyX·중복클릭·0원 등16대조는 원본 동등. 32 FAIL은 조건별 음성 대조 수이며 별개 결함32개로 계산하지 않음 |
+| 한계 | DOM/event transport·문자열·레이아웃·저장·음향은 대역. full renderInv/실키/native/localStorage/시각/청취 인수0. getter/throw 원자성, 기존 G.mats 합산 overflow, 비정상 강화 루프 종료 보장0 |
+| 보존 | salvageVal·enhCost·_enhRefund·등급/환수식 불변, PM-013-D 설계 결정 대기 유지. 신규 저장 필드0. 보호2_3/Q전용패링/E금지/어택티켓금지/사용자23·타인WIP 변경0. 실행 앱source29/3404에는30~56 미반영 |
+
+경제 목표나 환수율을 재설계한 변경이 아니다. 선택분해 합계만 확인 전후 재계산하며 PM-013-D 기존 검산 수치와 결정 대기 상태를 유지한다.
