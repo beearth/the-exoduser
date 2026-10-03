@@ -1832,3 +1832,22 @@ source29 원문 검수는 실제 keyName·미니바 원문 블록을 DOM/popup/l
 | 실행본 | source39 소스 적용. 현재 격리 앱source29/3404에 미포함 | 빌드/앱 재시작/native 입력/사용자 세이브 변경0. CH1-1/보스문·몬스터 보존/부활·재도전·청취/시각 완료와 별개 |
 
 원 후보: ANIM0824 completion c917f67c-1b1f-4820-9efd-5da96a2ca739 (source37 조사). source38 위에서 별도 root 검수·최소 적용했다. 원자료/backup·docs전체키워드검색·baseline/candidate/production·역치환·원격 SHA 영수증은 tmp/mac-migration-runtime/continued-review-20261003/source39-notification-timer/에 보존한다. 제작팀 TASK·이전 핀/후보 이력은 덮어쓰지 않았다.
+
+
+## 2026-10-03 source40 — 목걸이 직접 경험치 보너스 숫자 경계
+
+| id / 적용 위치 | 현행 처리·수치 | 보존·검수 경계 |
+|---|---|---|
+| XP40-DIRECT / 양판 addExp(v,trans) | const eb=+nc().expBonus\|\|0; 이후 기존 eb>0이면 v=~~(v*(1+eb)) | 양판 각1정확치환/+1B. 직접 필드는 삭제하지 않고 소비 시 숫자로 변환. 비숫자/undefined 등 NaN 결과는0; Infinity를 제한하는 유한성 검사 아님 |
+| 기존 보상 순서 | !trans에서 v=~~(v/3) → 목걸이 직접 양수 보너스 → _eqAffix('expBonus') 양수 보너스 각각 ~~ 정수화 → P.exp 누적 → 기존 레벨 루프 | 어픽스/생성 수치·비용·상한·성장 공식/20% 자원 회복·SP3/짝수레벨AP1·효과/저장 순서 불변. source31 캐시 합산과 독립된 직접 reader |
+| 저장·장착 도달 | 전체 dbRestore는 inv.equipped/bag 아이템의 직접 expBonus 필드를 보존. 가방 목걸이 전체 equipItem→nc→전체 addExp에서 동일 reader 도달 | 실제 dbSave payload도 필드를 그대로 보관하며 isolated JSON 왕복 후 재복원. 저장 schema·아이템 필드/마이그레이션 수정0; 사용자 저장·실제 DB 접근0 |
+| 생성 범위 | 현행 mkItem 목걸이 베이스에 직접 expBonus 없음. 경험의는 affixes의 expBonus로 생성 | 원 후보는 crafted/legacy 직접 필드 문자열의 처리 경계. 정상 생성 아이템 전체의 XP가 부풀었다는 주장0; 과거 legacy 실제 보유 사용자나 발생 빈도 미확인. 기존 직접 numeric 필드 호환 때문에 reader 삭제0 |
+| 오류 대조 / 합성 XP 입력 | addExp(900), 직접0.5: 기존·신규450. 직접 문자열0.5: 기존3150 → 신규450 | 기존 1+문자열은10.5 연결, 신규1+숫자는1.5. 원보상900/3=300; 실제 드롭/처치 XP 생산자·native 플레이 재현 아님 |
+| 조합·성장 대조 | 합성 addExp(905)/직접0.5/affix0.1:301→451→496. 문자열은 숫자 대응과 동일. 합성 maxExp400, lv1에서 addExp900: lv4/SP9/AP2 및 levelup·saveForce 각1회 | maxExp400은 fixture 값이며 설계 상수 아님. 기존 전체 레벨 루프·_calcMaxExp를 실행. applyStats/예약투자/효과/저장 요청 leaf는 대역; 정상 성장 계산 인접 회귀도 별도 실행 |
+| 정상·호환 | 숫자0.5/0.125·0·음수·missing/null/빈문자열/공백/비숫자의 전체 P/효과 sink 동등. equipped 및 bag→equip 두 경로, 직접+affix/레벨업/demo·trans bypass/JSON 왕복 확인 | 양판 신규48PASS. 원본38PASS/10 assertion FAIL은 같은 문자열 연결 결함 조건별 대조이며10개 독립 결함 아님. 초기 검사 조립 오류(모듈/async/양판 helper 차이)는 제품 결함으로 계산0 |
+| 남은 범위 | critRate 과소·무크리를 benign이라고 단정한 QA 원문은 채택하지 않음. 손상값 전체 정규화·비유한·기타 장신구 직접 reader는 별도 검수 | 크리/피해/패링/맵/보스문·필드몬스터·부활 정책 변경0. 전체 게임/시각·청취/native 인수0 |
+| 실행본 | production 소스40 적용, 현재 격리 앱source29/3404에 미포함 | 새 빌드·reload·앱 조작·사용자 save 변경0. CH1-1 같은후보6단계/보스사망·부활·재도전 미인수 유지 |
+
+원 후보 QA0834 completion 5fb458c3-3b53-4bbd-a5d0-117ff7fd79d6 (source37 조사)를 root source39 위에서 재검증했다. 원본·후보·초기 harness 오류·정상 대조·docs전체 expBonus/addExp/경험치 키워드 검색·양판 HTML 정확 역치환·보호67경로 hash·scope8 Git/원격 영수증은 tmp/mac-migration-runtime/continued-review-20261003/source40-necklace-experience/에 보존한다. 제작팀 TASK와 과거 소스/완료 핀은 덮어쓰지 않는다.
+
+최종 생산 검수: 신규 목걸이 소비48 + 기존 레벨업·예약 패시브 자원 회귀17 =65 PASS/0 FAIL. 신규 검사는 양판 inline JS12/importmap JSON2 구문을 확인했다. 초기 문서 전달 문자열 quoting 오류는 적용 전 발생했고, 그 사이 실행된 미적용 source39 대조도 production-before-apply.tap으로 보존했다. 해당 실패나 검사 조립 오류를 신규 게임 결함·수정 완료로 계산하지 않는다.
