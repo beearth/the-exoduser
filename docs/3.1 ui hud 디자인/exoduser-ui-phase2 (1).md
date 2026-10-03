@@ -1059,3 +1059,23 @@ CSS 캐시 ui-refinement.css?v=20260927-3. 신규 이미지/아이템 데이터 
 | 해상도 복원 | 두HTML 최초 설정과 _loadPreset OPT 복원 뒤 rz(). 저장60%/프리셋70% 실제C/CT/burst 반영, 동일치수no-op |
 | 근거·경계 | 전투 경고의 font/measureText 약29~42ms 스택 확인. 저장본 새로고침100AI/1920×1080/10초 draw p99 4.1ms(직전31.9ms),max44.7ms 잔여2회. 전후CSS창 크기가 달라 평균FPS 개선율 확정하지 않음. 예열20초 연결중단/최종visual·Steam·보스 미검증 |
 | 검사·상태 | 관련57PASS,두HTML실행script각6구문PASS. 기존경고fixture의실제_projectileParryClass 누락복구. 커밋/패키지/Steam업로드미완료,타작업스테이징보존. [상세 계약·실측·검수 경계](../12퍼포먼스·최적화/FRAME_DROP_HUD_TEXT_20260928.md) |
+
+
+## 2026-10-03 source29 — 스킬창 입력 표기 동기화
+
+source27 정상 Mac 스킬창의 칼등[RMB]·마법[E] 표시는 실제 설정 E=shield/우클릭=beam과 반대였다. 같은 구 상수가 본편/Easy의 renderSkillPanel 미니바에 남아 있었으며 아래 표시만 수정했다.
+
+| 정확 대상 | 기존 표기 | 현재 표시·동작 |
+|---|---|---|
+| `renderSkillPanel`의 `_slotDefs` / `id:'rmb'` | 고정 RMB | `keyName(BINDS.shield,true)` / 기본 E, 사용자 primary binding 재지정 시 그 키 이름. 레거시 id rmb·maliceSwipe 선택·openSkSlotPop('rmb') 유지 |
+| `_slotDefs` / `id:'magic'` | 고정 E | `keyName(BINDS.beam,true)` / 기본 KO 우클릭·EN RMB, 사용자 primary binding 재지정 시 그 키 이름. 기존 magic 선택·popup 그대로 |
+| 미니바 키캡·title | 잘못된 고정 키가 두 곳에 표시 | 같은 `sd.key`를 두 leaf/title에 사용. 13슬롯·아이콘·순서·callback 보존. 기존 KBM 참조 바를 유지하도록 forceKbm=true; 패드 주입/설정 변경0 |
+| `SKILL_LIST.fireball` KO/EN 설명 | [기본: E] / [Default: E] | [기본: 우클릭] / [Default: RMB]. 악의구 이름·크기·넉백·비용·배율·레벨·해금·기능 변경0 |
+| `SKILL_LIST.omniBeam` KO/EN 설명 | [고정: E] / [Fixed: E] | [기본: 우클릭] / [Default: RMB]. 리바인딩 가능한 기본키를 고정키라 부르지 않음. 숫자·스킬 기능 변경0 |
+| `SKILL_LIST.blueShot` KO/EN 설명 | [고정: E, Lv300 해금] / [Fixed: E, unlock Lv300] | [기본: 우클릭, Lv300 해금] / [Default: RMB, unlock Lv300]. Lv300·50발·5초·비용·CD·스킬 데이터 유지 |
+| 검수 경계 | 원본 KO/EN 기본 및 사용자 재지정 표시 실패 | 실제 keyName·미니바 원문 블록 실행, DOM/popup/localization 경계 대역. 6입력 조건×본편/Easy=12경계에서 표시 정상, 13슬롯 및 모든 선택 callback·나머지 슬롯 동등. 실제 native·전체 renderSkillPanel 실행·패드 장치·픽셀 인수 아님 |
+| 보존 | 보호2_3·Q-only magic/E불가·어택티켓 금지 | 실제 input dispatch·BINDS/BINDS2 저장/마이그레이션·전투·자원·진행·세이브 수정0. 양판 전체 역치환 원본 exact, 수정3종을 제외한 SKILL_LIST 전체 값 동등 |
+
+source28 고유앱3403은 이번 라벨 수정 전 코드다. 실제 launch1/live PID44852, HTTP source3 exact·api/slots200 빈 목록을 관측했으나 맥 잠금으로 native 입력0. 창 관측 오류를 앱 종료로 해석하지 않고 재실행하지 않았다. 잠금 해제 질문 pending이며 열린 보스방·몬스터 보존·획득·보스 사망/부활/재입장·실저장·청취·완주 목표는 미완료다. 이 수정은 신규 앱 제작/실제 플레이 완료가 아니다.
+
+코드 byte 증가: game.html +76B, game-easy-test.html +76B. 원본 백업·실행 근거는 `tmp/mac-migration-runtime/continued-review-20261003/source29-skill-input-labels/`에 보존한다.
