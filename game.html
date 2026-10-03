@@ -26818,7 +26818,7 @@ function _eqImplicit(stat){let v=0;for(const sl of SLOT_NAMES){const it=INV.equi
 function statStr(){return 1} // STR은 ref 함수에서 직접 ATK로 더해짐 (1:1)
 function statDex(){return 1+(STATS.dex+_eqStat('Dex')+_lvB())*.0005+(+gl().atkSpd||0)+_eqAffix('atkSpeed')+_eqImplicit('_iAtkSpd')*.01+(_uEq('_uGloveSpd')||0)}
 function statInt(){return 1} // INT는 ref 함수에서 직접 ATK로 더해짐 (1:1)
-function _eqLckTotal(){return STATS.lck+_lvB()+_eqStat('Lck')+_eqAffix('lckFlatN')+_eqAffix('lckFlatR')}
+function _eqLckTotal(){return (+STATS.lck||0)+_lvB()+_eqStat('Lck')+_eqAffix('lckFlatN')+_eqAffix('lckFlatR')}
 function statCrit(){return _eqLckTotal()*.025+PASSIVES.pCrit*1.5+(rg1().critRate||0)+(rg2().critRate||0)+(nc().critRate||0)+_eqAffix('critRate')*100+(P._crystalStats?P._crystalStats.crit:0)} // critRate 어픽스 (무기 파트) pct단위 → %로 환산
 function statCritDmg(){return 1.5+_eqLckTotal()*.002+PASSIVES.pCrit*.08+_eqAffix('critDmgA')+_eqAffix('critDmgB')+_eqAffix('critDmgW')+_eqAffix('neckCritDmg')+_eqAffix('glovesCritDmg')+(P._crystalStats?P._crystalStats.cdmg*0.01:0)} // 기본 1.5, LCK 1당 +0.2% (LCK1000=+200%, 1.5→3.5), critDmgW+neckCritDmg+glovesCritDmg
 function statDropBonus(){return 1+_eqLckTotal()*.0015+PASSIVES.pDrop*.08+_eqAffix('dropRate')+(P._crystalStats?P._crystalStats.drop*0.01:0)}
