@@ -52934,3 +52934,26 @@ Mac source15 격리3391 정상 새캐릭터→도입/조작안내/기본 연습s
 | 문법 | 실제 양판 inline JS·JSON 파싱 PASS; 세부 개수는 root 검증 receipt |
 | 의미·소유 | 코드 역패치 시 source17 byte-exact; 보호67경로 유지. 피해100/HP9900 대조 유지, 회수 원소추적탄 일반 넉백3.0 복구 |
 | 미완 GATE | 전체 투사체 collision loop·Mac native source18·4지역→보스 사망/부활→재도전·저장 재개 미완. 검사8건을 게임 완성8건으로 계산하지 않음 |
+
+
+## 2026-10-03 source19 — 실제 장착 파생값을 반영한 CP 미리보기
+
+| 항목 | 현재 코드 계약과 검수 경계 |
+|---|---|
+| 단일 계산 접점 | 양판 _inventoryEquipCP(item,slot). _invBuildCompare·sortInvBag·_invAutoPlace가 같은 helper 결과와 현재 calcCP().total의 차이를 사용. calcCP의 가중치·applyStats/recalcSt·equipItem 공식 변경0 |
+| 대상 슬롯 | 본편은 실제 _equipSlot(item)의 귀걸이 첫 빈 슬롯 선택, Easy는 실제 item.slot 사용. 잘못된/없는 슬롯·이미 같은 장비·요구 레벨 부족은 현재 CP 반환(차이0). 유골부위 bonePart는 장비 슬롯이 아니므로 제외 |
+| 강화 이전 | 기존 장비 enh>0이면 xferCost=_malCost(ceil(enh×1000)); 현재 전역 비용 배율0.5, 즉 유효 양의 정수 enh당500악의. 부족하면 실제 equipItem처럼 장착 거절 예상 CP차이0. 충분하면 새 아이템 복사본의 enh를 기존 enh로 대체. 악의·기존 enh/refund는 쓰지 않음 |
+| 결정 전승 | 새 장비 crystals 배열을 복사하거나 socketCount 길이의 null 배열 생성. 기존 결정의 순서대로 새 장비 첫 빈 홈에 참조를 넣어 계산. 홈이 부족한 결정은 새 장비 CP에 포함0. 실제 장착의 주머니 이동/주머니가득 시 이전 장비 결정 보존은 미리보기에서 실행0 |
+| 파생 능력치 | 임시 P 얕은 복사본·새 equipped map에 대해 기존 applyStats→calcCP 전체 동기 함수 실행. HP/MP/ST/쉴드 상한·스탯/어픽스/임플리싯/결정/패시브·강화별 상한을 실제 코드 그대로 반영. Easy 단일 stat 결정과 본편 다중 opts 결정을 각자의 기존 함수로 계산하며 schema 변경0 |
+| 상태 보존 | finally가 P·INV.equipped·_eqAffixCache·_eqStatCache 4바인딩을 원래 참조로 복원. 원래 장비/결정/가방/자원·P 중첩객체·캐시 버전 변경0. 전역 바인딩을 동기 구간에서 잠시 바꾸므로 순수 함수라고 부르지 않음. 실제 호출 의존20함수 감사에서 외부 DOM/음향/저장/타이머 호출0·기존 P 중첩쓰기0 확인 |
+| 정렬 계약 | 즐겨찾기 먼저·쓰레기 마지막 유지. 중간 장비는 예상 실제 장착 CP차이 내림차순, 양수 우선. 장착 거절은0. 두 정렬은 장비/능력치/캐시를 보존하고 원래 의도대로 가방 순서·배치/선택만 변경 |
+| 안내 수정 | 악의 부족 시 기존 ‘강화 소멸’ 안내를 실제 장착 거절과 일치하는 ‘장착 불가’로 정정. 강화 파괴/비용/성공률 변경0 |
+| 전후 source 증거 | LV2 합성 망토 조건에서 기존 미리보기−20/실제 장착−7 → 수정 미리보기−7/실제−7. 최대HP543→575·ST302→291. native source17에서 관찰한 오차와 같은 수치 조건이며 전체 native 캐릭터 상태를 복제한 검사가 아님 |
+| 회귀 | test/inventoryCPPreview.test.cjs, 양판 각7그룹=14. 어픽스/임플리싯/결정·전승/소켓부족/주머니가득/강화이전/비용·레벨거절/소수·모든장비·패시브·필드밖·빈슬롯·귀걸이14조건, 실제17/16슬롯 교체, 두정렬, frozen 데이터·캐시참조, CP/상한 계산 예외를 검사. 후보14PASS·원본0PASS/14FAIL·최종 생산 검수는 완료 영수증으로 확정 |
+| 미완료 | DOM 렌더/실제 저장·청취·새 Mac 패키지·native CP 재확인·CH1-1 4지역→보스사망/부활→재도전은 아직 미완. source17 앱/사용자 기존 게임·세이브 보존. source11/17/18 이전 CP 미해결 기록은 해당 source 시점의 이력 |
+
+검수 원본: tmp/mac-migration-runtime/continued-review-20261003/root-inventory-cp-source19/의 candidate-v2-receipt·closure-audit-receipt·acceptance-receipt-*·root-before-receipt. 초기 harness 누락 선언 실패는 fixture 오류로 보존하며 게임 결함/통과로 계산하지 않는다.
+
+### source19 생산 소스 검수 완료
+
+양판 실제 함수 기반 회귀14/14 PASS·원본 source18 대조0/14 PASS. 계산 예외를 실제로 발생시켜 원래 P/장비/캐시 복원을 확인했고 frozen 원본에서도 미리보기와 별도 실제 장착 결과가 일치했다. 보호67와 관리자4 WIP 보존. 양판 inline 문법·변경 범위 diff 및 정확 Git 원격 SHA는 완료 영수증에서 확인하며 native 재검수/보스 사망 재도전은 계속 미완료다.

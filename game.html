@@ -15503,10 +15503,7 @@ function _invAutoPlace(){
     let ben=0;
     const sl=_equipSlot(it);
     if(sl&&INV.equipped.hasOwnProperty(sl)){
-      const prev=INV.equipped[sl];
-      INV.equipped[sl]=it;
-      ben=calcCP().total-_baseCP;
-      INV.equipped[sl]=prev;
+      ben=_inventoryEquipCP(it,sl).total-_baseCP;
     }
     _benCache.set(it,ben);
     return ben;
@@ -15784,10 +15781,7 @@ function sortInvBag(){
     let ben=0;
     const sl=_equipSlot(it);
     if(sl&&INV.equipped.hasOwnProperty(sl)){
-      const prev=INV.equipped[sl];
-      INV.equipped[sl]=it;
-      ben=calcCP().total-_baseCP2;
-      INV.equipped[sl]=prev;
+      ben=_inventoryEquipCP(it,sl).total-_baseCP2;
     }
     _benCache2.set(it,ben);
     return ben;
@@ -47809,6 +47803,25 @@ if($('resetYes'))$('resetYes').onclick=async()=>{
 };
 
 // ═══ COMBAT POWER ═══
+function _inventoryEquipCP(item,slot){
+  const _player=P,_equipped=INV.equipped,_affixCache=_eqAffixCache,_statCache=_eqStatCache;
+  try{
+    if(!item||!slot||!Object.prototype.hasOwnProperty.call(_equipped,slot)||item===_equipped[slot]||(item.reqLv&&_player.lv<item.reqLv))return calcCP();
+    const _old=_equipped[slot],_preview={...item};
+    if(_old&&(_old.enh||0)>0){
+      if((G.mats||0)<xferCost(_old.enh||0))return calcCP();
+      _preview.enh=_old.enh||0;
+    }
+    if(_old&&_old.crystals&&_old.crystals.length>0){
+      _preview.crystals=item.crystals?item.crystals.slice():new Array(item.socketCount||0).fill(null);
+      for(const _crystal of _old.crystals){if(!_crystal)continue;const _empty=_preview.crystals.findIndex(c=>!c);if(_empty>=0)_preview.crystals[_empty]=_crystal;}
+    }
+    P={..._player};INV.equipped={..._equipped,[slot]:_preview};
+    _eqAffixCache=null;_eqStatCache=null;
+    applyStats();
+    return calcCP();
+  }finally{P=_player;INV.equipped=_equipped;_eqAffixCache=_affixCache;_eqStatCache=_statCache;}
+}
 function calcCP(){
   let atk=0,def=0,extra=0;
   // Player base + stats
@@ -48325,13 +48338,10 @@ function _invBuildCompare(item,curEq){
   }
   // Total combat power delta with virtual equip swap
   try{
-    const _slot=item&&item.slot;
+    const _slot=item&&_equipSlot(item);
     if(_slot&&INV&&INV.equipped&&Object.prototype.hasOwnProperty.call(INV.equipped,_slot)){
-      const _prev=INV.equipped[_slot];
       const _cpOld=calcCP().total;
-      INV.equipped[_slot]=item;
-      const _cpNew=calcCP().total;
-      INV.equipped[_slot]=_prev;
+      const _cpNew=_inventoryEquipCP(item,_slot).total;
       const _cpDiff=_cpNew-_cpOld;
       if(_cpDiff!==0){
         const _c=_cpDiff>0?'#44cc44':'#cc4444';
@@ -48366,7 +48376,7 @@ function _invBuildCompare(item,curEq){
   const _fromE=curEq.enh||0;
   const _xc=_fromE>0?xferCost(_fromE):0;
   const _xferNote=_fromE>0
-    ?'<div style="font-size:.8rem;color:#886644;margin-bottom:6px">\u2692 장착 시 +'+_fromE+' 자동 이전 | 비용 <span style="color:#ffaa44">'+_xc.toLocaleString()+'악의</span>'+((G.mats||0)<_xc?' <span style="color:#cc4444">악의 부족 \u2192 강화 소멸</span>':'')+'</div>'
+    ?'<div style="font-size:.8rem;color:#886644;margin-bottom:6px">\u2692 장착 시 +'+_fromE+' 자동 이전 | 비용 <span style="color:#ffaa44">'+_xc.toLocaleString()+'악의</span>'+((G.mats||0)<_xc?' <span style="color:#cc4444">악의 부족 \u2192 장착 불가</span>':'')+'</div>'
     :'';
   const diffsHtml=(diffs||_xferNote)
     ?'<div style="border-bottom:1px solid #332211;padding-bottom:8px;margin-bottom:8px">'
