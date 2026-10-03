@@ -53643,3 +53643,15 @@ scope10=HTML2/test1/docs7이 실제 NUL-uall81에 도달하면 다른 후보 산
 | 문서 공식 정합 | 스킬데미지공식표의 statDex `P.stats.dex*.01` 폐기, 실제 위 전체식으로 정정; 같은 표 statStr/statInt는 양판 실제 return1에 맞춰 정정 | STR/INT source 변경0. 스탯 ref의 실제 1:1 가산 설명 유지. 과거 DPS 비교 숫자까지 새 native 실측으로 계산하지 않음 |
 | 검증 | test/gloveAttackSpeedConsumption.test.cjs 100 PASS / 원본40 PASS·60 FAIL. 정상 비교는 source50 before 원본을 명시. 양판 JS12/importmap2 parse | whole save/restore/equip/statDex/_eqStat/_eqAffix/_eqImplicit/_uEq/activateNeedleShot + needle emit·wSwing 종료·format 구간. projectile pool·bowRef/pBowMul/_skMul·stat 재구축·SFX/DOM은 대역 |
 | 생산·인수 | 코드2/test1/docs6 한정 checkpoint. source29/3404 기존 앱에는30~50 미포함 | 사용자 게임·save 접근0, native6·첫보스 사망/재도전·시각/청취 미인수. 보고/fixture를 실제 플레이 완료로 계산0 |
+
+
+## 2026-10-03 source51 패시브 전체 환불 반복 안전성
+
+| 항목 | 변경·검수 |
+|---|---|
+| source51 | QA1112 actualend f443a600-8498-4a74-a952-43c9c2d96726의 패시브 전체환불 반복 소비. 공유 stat-panel-ui.js/양판 최소 적용 |
+| 비용 | 첫10rank 비용 합+이후rank×5 AP. 일반Lv10총23·기존확장·소수ceil 결과 보존; 제안999cap 미채택 |
+| 거래 | 양판 초기 async 핸들러는 비안전/음수AP 확인 전/후 거절·투자/통화 유지. 실제mount 전체0계획/evaluatePlan/양판applyPlan은 기존검증 유지. SP·원save·레벨clamp 변경0 |
+| 검증 | 신규소스검사50 PASS/원본42 PASS·8 child3초timeout FAIL. JS12/importmap2 parse. normal baseline before 명시, test-child 실제1건실행 확인. 준비오류/가짜 childPASS 제외 |
+| 동기화 | meta/수치/저장/UI/master/본changelog6정본. native전체창·플레이·청취 미인수, 앱source29 미반영 |
+| 기존 회귀 | 성장/거래/인체트리/번역 검사20건 중19 PASS, 기존 자동투자 번역키9개 미등록으로1 FAIL. source51 before와 current 누락키집합 정확일치 확인·새 panel키0. 기존 실패를 전체PASS로 보고0; 이번 안내는 양판HTML _L KO/EN 폴백,29언어 신규번역 아님 |

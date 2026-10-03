@@ -49669,10 +49669,12 @@ $('fgClose').onclick=()=>closePanel('forge');
 $('statClose').onclick=()=>closePanel('statPanel');
 $('statResetBtn').onclick=async()=>{
   const {sp:totalSP,ap:totalAP}=ExoduserStatsPanel.refundTotals(STATS,PASSIVES,_grit);
+  if(!Number.isSafeInteger(totalAP)||totalAP<0){notify(_L('패시브 환불액을 확인할 수 없습니다. 투자 상태를 유지합니다.','Cannot verify the passive refund. Your allocations are unchanged.'));return;}
   if(totalSP===0&&totalAP===0){notify(_T('리셋할 포인트가 없습니다'));return}
   if(!await gameConfirm(_L("능력치·근성 {p0} SP + 패시브 {p1} AP를 전부 환불합니다.\n계속할까요?","Refund all attributes and grit: {p0} SP + passives: {p1} AP.\nContinue?",{p0:totalSP,p1:totalAP})))return;
   // Read live allocations after the confirmation resolves.
   const refund=ExoduserStatsPanel.refundTotals(STATS,PASSIVES,_grit);
+  if(!Number.isSafeInteger(refund.ap)||refund.ap<0){notify(_L('패시브 환불액을 확인할 수 없습니다. 투자 상태를 유지합니다.','Cannot verify the passive refund. Your allocations are unchanged.'));return;}
   P.sp+=refund.sp;P.ap=(P.ap||0)+refund.ap;
   for(const k in STATS)STATS[k]=0;
   for(const k in PASSIVES)PASSIVES[k]=0;

@@ -16,8 +16,9 @@
   function refundTotals(stats, passives, grit) {
     const sp = Object.values(stats).reduce((sum, value) => sum + value, grit);
     const ap = Object.values(passives).reduce((sum, level) => {
-      for (let rank = 0; rank < level; rank++) sum += rankCost(rank);
-      return sum;
+      const ranks = Math.max(0, Math.ceil(Number(level) || 0));
+      for (let rank = 0; rank < Math.min(ranks, COSTS.length); rank++) sum += rankCost(rank);
+      return sum + Math.max(0, ranks - COSTS.length) * 5;
     }, 0);
     return {sp, ap};
   }

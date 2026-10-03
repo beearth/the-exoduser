@@ -2047,3 +2047,15 @@ scope10=HTML2/test1/docs7이 실제 NUL-uall81에 도달하면 다른 후보 산
 | 문서 공식 정합 | 스킬데미지공식표의 statDex `P.stats.dex*.01` 폐기, 실제 위 전체식으로 정정; 같은 표 statStr/statInt는 양판 실제 return1에 맞춰 정정 | STR/INT source 변경0. 스탯 ref의 실제 1:1 가산 설명 유지. 과거 DPS 비교 숫자까지 새 native 실측으로 계산하지 않음 |
 | 검증 | test/gloveAttackSpeedConsumption.test.cjs 100 PASS / 원본40 PASS·60 FAIL. 정상 비교는 source50 before 원본을 명시. 양판 JS12/importmap2 parse | whole save/restore/equip/statDex/_eqStat/_eqAffix/_eqImplicit/_uEq/activateNeedleShot + needle emit·wSwing 종료·format 구간. projectile pool·bowRef/pBowMul/_skMul·stat 재구축·SFX/DOM은 대역 |
 | 생산·인수 | 코드2/test1/docs6 한정 checkpoint. source29/3404 기존 앱에는30~50 미포함 | 사용자 게임·save 접근0, native6·첫보스 사망/재도전·시각/청취 미인수. 보고/fixture를 실제 플레이 완료로 계산0 |
+
+
+## 2026-10-03 source51 패시브 전체 환불 반복 안전성
+
+| 항목 | 근거·현행 상태 |
+|---|---|
+| 후보·선택 | QA1112 f443a600-8498-4a74-a952-43c9c2d96726의 레벨기반 반복. 999cap 미채택; 유한 기존 환불 결과 보존 산술 계산으로 교체 |
+| 변경 | stat-panel-ui.js 최대10rank 반복+확장5AP 합산. 양판 초기 async 환불 핸들러에 비안전AP 확인 전/후 거절. 현행 mounted 계획 적용/evaluatePlan 소비와 구분·보호. 관련정본6동기화 |
+| 검증 | 원본 명시 비교50 PASS, 원본42 PASS/8 별도 프로세스3초 timeout FAIL. 준비단 VM 오류 및 미실행 child 비교는 제외. JS12/importmap2 parse; 타인protected67/WIP/index 보존 |
+| 단계 | 기존 source29/3404 앱에는30~51 미포함. native6/첫보스사망·재도전·시각·청취 인수0. source검사·문서·Git 보존을 실제플레이 완료로 계산0 |
+| 사용자 비용·성과 기준 | 2026-10-03 사용자: 토큰소비가 크므로 내일 아침 결과보고 후 성과 부족하면 조정. 기존 오전9시 메일보고 유지; 실제 게임반영/플레이검증/미적용후보를 분리. 확인가능한 토큰사용 근거만 사용하고 전체비용 추정으로 확정0. 새팀 추가 없이 중복조사·소진도메인 반복 및 팀/지시 범위를 성과 근거로 조정 |
+| 기존 회귀 | 성장/거래/인체트리/번역 검사20건 중19 PASS, 기존 자동투자 번역키9개 미등록으로1 FAIL. source51 before와 current 누락키집합 정확일치 확인·새 panel키0. 기존 실패를 전체PASS로 보고0; 이번 안내는 양판HTML _L KO/EN 폴백,29언어 신규번역 아님 |
