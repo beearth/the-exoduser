@@ -1413,6 +1413,17 @@ source18 투사체 kbMult 초기화와 source19 실제 장착 CP 미리보기·�
 |---|---|
 | 적용 | 양판 _wiPush/GC rank에 미개봉·미소비 chest Infinity 우선순위 추가. 다른 비장비−1/장비rarity/20상한/swap 순서 유지, 모든항목chest이면 기존첫인덱스fallback으로20수렴 |
 | 의미·경계 | 드롭20개 때문에 아직 열지 않은 상자가 먼저 사라지는 경로 수정. 열린/소비상자 및 개봉보상은 기존축출 적용. 생성3~5개 전체바닥보존/직접가방지급 보장0, 보상/RNG/픽업·저장공식 변경0 |
-| 검수 | 신규10PASS/원본6PASS4FAIL·보스복귀34PASS·양판AST JS12/JSON2·별도본편syntax1PASS. fixture 원문실행 범위이며 source21 앱/native/저장·시각·청취 인수0. 기존source20/3395·사용자게임/세이브 보존 |
+| 검수 | 신규10PASS/원본6PASS4FAIL·보스복귀34PASS·양판AST JS12/JSON2·별도본편syntax1PASS. fixture 원문실행 범위이며 source21 앱3396 포장·타이틀·HTTP200 확인, 실제 native/저장·시각·청취 인수0. 기존source20/3395·사용자게임/세이브 보존 |
 
 자세한 코드·정상경계·대역/실패 한계는 [아이템 현행 source21 계약](../7아이템디자인/exoduser-item-system-full.md)을 따른다.
+
+
+## 2026-10-03 source21 Mac 실행본 — 포장·정상 타이틀 기동
+
+| 항목 | 현행 상태 |
+|---|---|
+| 후보 | job b4a3cf03-34d2-45ea-b2a7-a08bf94ca7d2 / port3396 / source commit 97d5079b513bebce747899c734dadafd607af95e. source21 미개봉상자+source20 뇌전창+source19 CP+source18 넉백 수정 포함. 기존 앱/세이브 보존 |
+| 확인 | frozen7918/런타임340 실행1회, payload7916 stage/app 정확 복사, bootstrap2·arm64실행파일5 확인. 새 앱 실제 타이틀·전용HTTP4개200, 응답source3 byte-exact |
+| 남은 검수 | 입력 잠금해제 확인 대기; 새캐릭터·전투/획득·4지역/보스문·보스사망/부활·재도전·CP화면·저장/청취 미완. 기존검사 반복0·GUI입력0·사용자게임/세이브조작0 |
+
+자세한 앱·저장경로·코드 SHA·physical/native 영수증은 [source21 후보 계약](../13출시·마케팅/MAC_CH1_SOURCE21_CANDIDATE_20261003.md)를 따른다. source19와 source17 관측은 각각 당시 이력으로 보존한다.
