@@ -53331,3 +53331,15 @@ CO-QA-0645 완료2066d5e0-758d-4480-a1b7-5c64faa45374(source30 원자료)를 sou
 | 코드 소비 | 공용 _affixValStr/비교/renderForge/장착/리롤·장비 집계 원문 유지 | 실제 전체 _invCardFields4,862대조 PASS; 전체역변환 원문exact·JS12/importmap2 PASS |
 
 근거 ITEM0653 완료msg_0dc2542c5744bc89016ac0a6e24fc087d081bf4d80ddd34cf4(2026-10-03T06:55:34.910Z)/source31을 source32에서 재검증. 양판source33 SHA256 main76c4886e4b9d61a79fcd785be88cedf7fcade86901cb44864cd3ab73777a5bd0(4035493B)/easy021b6339a8aee08d329b8e8913fa058d4100883dc781febf9f2a85f4d1c8b65e(3913162B). 코드+docs scope6만 원격 보존. 백업/전체상세 markup대조/영수증은 tmp/mac-migration-runtime/continued-review-20261003/source33-affix-detail/. 실제 전투 수치·사용자 저장·앱/빌드 변경0; native 시각·청취·보스사망/부활 인수0. [상세 정본](7아이템디자인/exoduser-item-system-full.md#2026-10-03-source33-상세-어픽스-퍼센트-정밀도).
+
+
+## 2026-10-03 source34 어픽스 비교 퍼센트포인트
+
+| 파일 / 경계 | 변경 / 보존 | 검수 |
+|---|---|---|
+| game.html / game-easy-test.html | _affixDeltaStr helper+_invBuildCompare affix 값1개, 각+263B | pct/prob .12−.10:+0.020→+2%p, 음수-2%p. 다른 단위 raw 포맷 유지 |
+| 아이템·인벤토리 정본 | 원본 차이×100/%p/최대2자리/숨김·부호·fallback/부분 채택 계약 동기화 | 전체 docs 관련키워드 검색 전후·기존 접두부byte exact |
+| 총괄 문서 | ITEM0658 source31 후보를 source33에서 재검증/단위 범위 채택 | 실 compare markup/값4,046 대조 PASS, JS12/importmap2 PASS·전체역변환 exact |
+| 기존 소비 | source33 상세/공용포맷·CP·장비집계·장착·리롤·강화 이전 호출 유지 | 해당 함수 원문 등가/eqCard 마크업등가/원본값 불변. CP·비용 leaf 대역과 실제 게임 Gate 구분 |
+
+원 후보의 atk/hp/dps 및 일반값 반올림 확장은 이번 미채택이다. 근거 완료msg_0dc2542c5744bc89016ac0a804244087d099b2b7f26de965cf. main4035756B SHA256 c18217d0490db64eb8349afc15d66b5b8a71492b90f9fa120a3149fd57dd8122 / easy3913425B SHA256 db05f518a6c7aef714f8b7575b245e59b10a9a5f7c8831ff06e3b7d10314d592. 코드+정본docs scope6 원격 보존, 백업/비교 probe/핀·영수증은 tmp/mac-migration-runtime/continued-review-20261003/source34-affix-compare/. 실제 사용자저장·앱/빌드 수정0, 기존 앱source29에source30~34미포함/native시각·청취·사망/부활 인수0. [정확 표시 계약](7아이템디자인/exoduser-item-system-full.md#2026-10-03-source34-비교-어픽스의-퍼센트포인트-단위).

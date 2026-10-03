@@ -1051,3 +1051,22 @@ renderAffixTooltip(item) → 인벤토리 툴팁 표시
 전체 _invCardFields를 실행해 armor의 DEF/eDEF·enh37·bStr5와 어픽스 이름/색/설명 마크업이 값 문자열 외에는 동일함을 확인했다. _invBuildCompare/renderForge/equipItem/rerollAffixes 및 장비 집계 함수 원문도 byte 등가다. _T/_L·강화 표시 leaf는 통제 대역이며 전체 인벤토리 이벤트/DOM·실장착·저장·native 픽셀/접근성 검증은 실행하지 않았다. 정규 게임 언어별 실제 표시 가독성은 별도 Gate다.
 
 양판 각+309B; source33 game.html4035493B/SHA256 76c4886e4b9d61a79fcd785be88cedf7fcade86901cb44864cd3ab73777a5bd0, easy3913162B/SHA256 021b6339a8aee08d329b8e8913fa058d4100883dc781febf9f2a85f4d1c8b65e. 전체 역변환 원문exact·inlineJS12/importmap2 PASS. 백업/후보/전체 상세 대조/원격 exact 영수증은 tmp/mac-migration-runtime/continued-review-20261003/source33-affix-detail/에 보존한다. 근거 SUPERVISOR-ITEM-0653 완료msg_0dc2542c5744bc89016ac0a6e24fc087d081bf4d80ddd34cf4(2026-10-03T06:55:34.910Z), source31 원자료를 root source32에서 재검증했다.
+
+
+## 2026-10-03 source34 비교 어픽스의 퍼센트포인트 단위
+
+| 경계 | 현행 계약 / 수치 |
+|---|---|
+| _affixDeltaStr(id,diff) | AFFIX_POOL의 첫 id 일치 정의가 pct/prob이면 n=Number((diff*100).toFixed(2)); (n>0?'+':'')+(Object.is(n,-0)?0:n)+'%p' |
+| _invBuildCompare | 어픽스 수치 차이의 값 템플릿1개만 helper로 치환. 차이는 기존 nv-ov 그대로, 비율의 상대증가율로 재계산하지 않음 |
+| 예: .12−.10 | 기존+0.020 → +2%p. 12%와10%의 절대 퍼센트포인트 차이이며 상대+20%와 구분 |
+| 예: .08−.10 | 기존-0.020 → -2%p. 기존 적색 유지 |
+| 숨김 | Math.abs(diff)>0.0001인 기존 게이트 유지. 동일 값·0 차이 수치 행은 계속 숨김 |
+| 다른 단위 / 미등록 id | (diff>0?'+':'')+(diff<1&&diff>-1?diff.toFixed(3):diff) 기존 값 포맷 유지. atk/hp/dps 확장 후보 미채택; 큰 일반 수치의 자릿수를 새로 절삭하지 않음 |
+| 부호 / 소수 | pct/prob는 표시 소수 최대2자리, 뒤0 제거·-0→0. 표시 반올림은 af.value나 전투 값을 변경하지 않음 |
+
+source33의 상세 _affixDetailValStr와 공용 _affixValStr는 원문 그대로다. 신규/소실 어픽스의 이름 행, 중복 id 합산·정상값 차이, 비교색·강화 이전 비용/차단 문구·현재 장비 카드·CP 계산 호출을 바꾸지 않았다. 원래 비교 집계의 손상 문자열 처리 등 전체 입력 정규화는 이번 범위 밖이다.
+
+root는 실제 전체 _invBuildCompare와 실제 전체 _invCardFields(source33)를 함께 실행했다. 기존 AFFIX_POOL404항목/402고유id에서 양수·음수·동일·0·중복합산5상태×양판=4,040회 및 unknown-unit 자릿수 fallback3×양판=6을 합쳐4,046 markup/값 대조 PASS. pct/prob에서 값 문자열 외 diffs HTML 등가, 다른 단위에서 전체 diffs 등가, 현재장비 eqCard 전체 등가·아이템 원본불변을 확인했다. CP: +50/강화+37/370악의 안내는 통제 CP·강화비용 leaf 입력에서 같게 유지됐다. 실제 calcCP/가상장착/강화 이전은 실행하지 않았고 해당 원문 함수 등가만 확인했다. _T/_L·강화수치 leaf 대역이며 네이티브 DOM/실입력/장착·저장·언어별 가독성 인수0이다.
+
+근거 SUPERVISOR-ITEM-0658 완료msg_0dc2542c5744bc89016ac0a804244087d099b2b7f26de965cf/source31 원자료를 root source33에 재검증. 원 후보의 atk/hp/dps·일반 수치 반올림 확장까지 일괄 채택하지 않고 pct/prob 단위만 채택했다. 양판 각+263B, 전체역변환 source33 exact·inlineJS12/importmap2 PASS. main4035756B/SHA256 c18217d0490db64eb8349afc15d66b5b8a71492b90f9fa120a3149fd57dd8122; easy3913425B/SHA256 db05f518a6c7aef714f8b7575b245e59b10a9a5f7c8831ff06e3b7d10314d592. 백업·원자료·전체비교 probe·후보/영수증은 tmp/mac-migration-runtime/continued-review-20261003/source34-affix-compare/.

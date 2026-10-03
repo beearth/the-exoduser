@@ -1731,3 +1731,18 @@ source29 원문 검수는 실제 keyName·미니바 원문 블록을 DOM/popup/l
 | 실제 목표 | 앱source29/3404 그대로. source30/31/32/33 앱에 미포함; native 입력 막힘/같은후보6단계·열린 보스문/기존 필드몬스터 보존·실화면/청취 인수0 |
 
 상세 [아이템 표시 정본](../7아이템디자인/exoduser-item-system-full.md#2026-10-03-source33-상세-어픽스-퍼센트-정밀도). 백업·대조·구문·역변환·원격 체크포인트는 tmp/mac-migration-runtime/continued-review-20261003/source33-affix-detail/에 보존한다. 후보 마크업 검증을 제품 시각 완료로 계산하지 않는다.
+
+
+### 2026-10-03 원총괄 source34 — 어픽스 비교 차이의 단위 복구
+
+| 항목 | 결과·인수 경계 |
+|---|---|
+| 인계 | Codex ITEM SUPERVISOR-ITEM-0658 완료msg_0dc2542c5744bc89016ac0a804244087d099b2b7f26de965cf(source31 원자료) → root source33 재검증 |
+| 실제 생산 | _affixDeltaStr helper+_invBuildCompare 어픽스 값 템플릿1개. pct/prob 차이만 %p, .12−.10의+0.020→+2%p; .08−.10→-2%p. 양판 각+263B |
+| 부분 채택 | atk/hp/dps 표시 확장·일반 값 자릿수 반올림은 미채택. 다른 단위·큰 값 raw fallback 유지 |
+| 의미 검수 | 실제 전체 비교/현재장비 상세 함수, 기존pool404항목×5상태×양판+fallback6=4,046 markup/값 대조 PASS. pct/prob 값 외 HTML·다른 단위 전체 HTML·eqCard·원본아이템 등가 |
+| 보존 | 숨김threshold .0001/비교색·새/소실 어픽스·중복합산/CP·강화 이전 호출 원문 유지. CP/비용/강화 leaf 대역이며 실제 계산/장착 검수와 구분 |
+| 범위·구문 | 수정 전6파일 backup; scope6=HTML2/canonical docs4만·전체 docs 검색 전후·타인67 byte exact·관리STATE/LOG 제외. inlineJS12/importmap2 PASS/전체역변환 source33 exact |
+| 제품 Gate | 기존 앱source29/3404 유지; source30~34 앱미포함·native 입력막힘/같은후보6단계·보스문/필드몬스터 보존·실화면/청취 인수0. 실제 사용자저장·추가빌드0 |
+
+상세 [아이템 정본](../7아이템디자인/exoduser-item-system-full.md#2026-10-03-source34-비교-어픽스의-퍼센트포인트-단위). 백업·원자료·실제 전체 compare probe·후보·구문·원격 체크포인트 영수증은 tmp/mac-migration-runtime/continued-review-20261003/source34-affix-compare/에 보존한다. 두 오더 담당만 전문팀 송신을 소유하며 현재 TASK/CLI 재시작·중복지시0.

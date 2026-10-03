@@ -46828,6 +46828,14 @@ function _invCardFields(it){
   return stats;
 }
 // ── 장착 비교 HTML 빌드 ──
+function _affixDeltaStr(id,diff){
+  const u=AFFIX_POOL.find(a=>a.id===id);
+  if(u&&(u.unit==='pct'||u.unit==='prob')){
+    const n=Number((diff*100).toFixed(2));
+    return(n>0?'+':'')+(Object.is(n,-0)?0:n)+'%p';
+  }
+  return(diff>0?'+':'')+(diff<1&&diff>-1?diff.toFixed(3):diff);
+}
 function _invBuildCompare(item,curEq){
   const _cmpEN={'ST소모':'ST Cost','무기사거리':'Weapon Range','공격범위':'Attack Arc','무기경직':'Weapon Stagger','발사속도':'Fire Rate','활사거리':'Bow Range','관통확률':'Pierce Chance','ST총량':'ST Total','돌진력':'Charge Power','돌진거리':'Charge Dist','돌진거리+':'Charge Dist+','돌진폭':'Charge Width','광역범위':'AoE Range','돌진충전':'Charge CD','경직력':'Stagger','블록율':'Block Rate','무게':'Weight','스플래시범위':'Splash Range','스플래시배율':'Splash Mult','마법관통':'Magic Pen','사거리+':'Range+','ST회복':'ST Regen','MP회복':'MP Regen','공격속도':'ATK Speed','물약쿨감':'Potion CD','추가HP':'Bonus HP','경험치보너스':'EXP Bonus','치명률':'Crit Rate','치명뎀':'Crit DMG','마법DP':'Magic DP','돌진충전+':'Charge Stock+','에너지방어':'Energy DEF','전대위력':'Ancestor Power'};
   const cmpKeys=[['atk','ATK'],['def','DEF'],['spd','SPD'],['wStCost','ST소모',true],['wRange','무기사거리'],['wArcW','공격범위'],['wStagger','무기경직'],['bowSpd','발사속도'],['bowRange','활사거리'],['bowPierce','관통확률'],['bonusSt','ST총량'],['charge','돌진력'],['chargeDist','돌진거리'],['bonusChargeDist','돌진거리+'],['chargeW','돌진폭'],['chargeAoE','광역범위'],['chargeCharge','돌진충전'],['stagger','경직력'],['blockRate','블록율'],['shieldWt','무게',true],['splashR','스플래시범위'],['splashMul','스플래시배율'],['magicPen','마법관통'],['bonusRange','사거리+'],['stRegen','ST회복'],['mpRegen','MP회복'],['bStr','STR'],['bDex','DEX'],['bInt','INT'],['atkSpd','공격속도'],['potCd','물약쿨감',true],['bonusHp','추가HP'],['expBonus','경험치보너스'],['critRate','치명률'],['critDmg','치명뎀'],['beamDmg','마법DP'],['bonusChargeStock','돌진충전+'],['eDef','에너지방어'],['ancPow','전대위력']];
@@ -46881,7 +46889,7 @@ function _invBuildCompare(item,curEq){
   const _allAf=new Set([...Object.keys(_nAf),...Object.keys(_oAf)]);
   for(const id of _allAf){const nv=_nAf[id]||0,ov=_oAf[id]||0;const diff=nv-ov;
     if(Math.abs(diff)>0.0001){const nm=_T(AFFIX_NAMES_KO[id]||id);const c=diff>0?'#44cc44':'#cc4444';const sign=diff>0?'+':'';
-    diffs+=`<div style="color:${c};font-size:.82rem">${nm}: ${sign}${diff<1&&diff>-1?diff.toFixed(3):diff}</div>`}}
+    diffs+=`<div style="color:${c};font-size:.82rem">${nm}: ${_affixDeltaStr(id,diff)}</div>`}}
   // 새 어픽스/잃는 어픽스 표시
   for(const id of Object.keys(_nAf)){if(!_oAf[id]){const nm=_T(AFFIX_NAMES_KO[id]||id);diffs+=`<div style="color:#44cc44;font-size:.82rem">+ ${nm}</div>`}}
   for(const id of Object.keys(_oAf)){if(!_nAf[id]){const nm=_T(AFFIX_NAMES_KO[id]||id);diffs+=`<div style="color:#cc4444;font-size:.82rem">- ${nm}</div>`}}
