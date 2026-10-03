@@ -59,3 +59,16 @@ source 실제 적용 후 docs 전체 관련 검색1회: 115매칭/33문서. 인�
 ## source16 후속 계약, 2026-10-03
 
 위 2026-10-02 필터 Y 인수의 객체 동일성·거절 뒤 applyStats/renderInv 관측과 수치는 당시 이력이다. source16은 현재 bag 객체 선택·반환/강화/결정/비용을 보존하며 성공 producer에서 자원4개의 최종 계산을 완료하고 caller 중복 applyStats를 제거한다. 레벨/악의 거절에는 helper0·apply0·저장0, 우클릭 caller render1은 유지한다. 귀걸이 adapter의 선택/render 의미도 유지한다. 기존 필터 Y 24그룹 검사 재실행0, 현재 actual-source 47그룹은 [source16 보고서](EQUIPMENT_ATOMIC_RESOURCE_REFRESH_20261003.md)를 따른다.
+
+## 2026-10-03 강화 자동 이전의 기강화 대상 경계
+
+| 항목 | 관측·결정 상태 |
+|---|---|
+| 현행 계약 | 기존 장착 장비 enh>0이면 xferCost를 내고 새 장비 item.enh를 기존 enh로 대체한다. 새 장비의 enh가 더 높아도 현재 코드에는 비교 조건이 없다. CP 미리보기의 동일 대체 계약은 인벤토리 본문 source20 표와 일치 |
+| 전체 함수 관측 | source57 양판 실제 equipItem/_refreshEquipmentStats/xferCost/_malCost/_itemEconomyRarity/salvageVal을 실행. 새 enh5·기존 enh3·악의10000이면 새 enh3·기존 enh0·악의8500. 새 객체는 장착, 기존 객체는 bag에 동일 참조로 반환 |
+| 환수 필드 | 시험 새 장비 _enhRefund17은 17 유지. 기존 장비 rarity2/enh3/_enhRefund7은 이전 후 enh0/_enhRefund3. 새/기존의 salvageVal도 실제 함수로 관측했다. 이것을 실제 강화 지출50% 환수·모든 정상 획득 이력 보존으로 확대하지 않는다 |
+| 대조 범위 | 양판 각각 새/기존 enh=5/3,2/3,0/3(악의10000),5/3(악의1499 거절),5/0(이전 없음) 총10관측. 장착·가방 객체 및 비용·강화값 조건을 검증했으며 NEW 후보·OLD/NEW 동등 검사 아님 |
+| 한계 | 장비·가방·악의는 합성 입력. applyStats·grid·UI/음향/저장 leaves는 대역; 실제 전체 equipItem의 기존 흐름을 실행했지만 실제 강화 획득 이력·native 조작·실저장·사용자 피해 발생 인수0 |
+| 정책 결정 대기 | 새 장비 강화가 기존보다 높거나 같은 경우에도 현재 자동 이전·비용을 유지할지, 이전을 생략해 양쪽 강화·악의를 유지할지 아침 디자인 검토 대상. max/합산/환수 재설계는 미채택. 현재 동작을 바꾸는 새 코드0 |
+| 근거 | QA1320 완료1b6ba036-ca8f-4b75-9c53-93bf6fb3b42d@13:24:21.753Z/source56의 서브블록 관측 뒤 원총괄이 source57 whole equipItem 및 환수 소비를 추가 연결. tmp/mac-migration-runtime/continued-review-20261003/enh-transfer-qa1320-review/whole-equip-observations.json에 원자료 보존 |
+| 완료 구분 | 이번은 현재 동작·설계 경계의 문서 보충. 새 게임 구현 완료0, codeEpoch57 유지. 실행 앱source29/3404는30~57 미반영이며 동일후보6단계·시각·청취 인수0 |
