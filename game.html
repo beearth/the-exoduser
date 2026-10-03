@@ -34246,8 +34246,8 @@ function update(){
         // ── Magic Splash Damage ──
         if(p.magic&&!p.bladeShard&&!p.maliceHunt&&!p.iceBlade&&!p.blueBean&&!p.lightning){
           const hel=hm(); // helmet stats
-          const splR=45+p.r*3+(hel.splashR||0); // splash radius (base + helmet bonus)
-          const splMul=0.5+(hel.splashMul||0); // splash dmg ratio (base 50% + helmet bonus)
+          const splR=45+p.r*3+(+hel.splashR||0); // splash radius (base + helmet bonus)
+          const splMul=0.5+(+hel.splashMul||0); // splash dmg ratio (base 50% + helmet bonus)
           const _neS=shQuery(e.x,e.y,splR+20);
           for(let _si=0;_si<_neS.length;_si++){const e2=_neS[_si];if(!e2.alive||e2===e)continue;
             if(dst(e.x,e.y,e2.x,e2.y)<splR+e2.r){

@@ -53510,3 +53510,22 @@ QA0912 completion610c1508-3ce7-440c-8699-8a44e5787298을 code42 d67545ef 위에�
 현행 ST 원문은 balance 문서의 source19 공식과 동일하며, 자원리젠+소모공식.md의 오래된 200+s.dex×2·방어구6슬롯 한정 표기를 100+STATS.dex×2·전체 SLOT_NAMES 소비로 바로잡는다. __NFD_0628_2305_백업.md의 기존 표는 역사 백업으로 유지하며 이 현행 보충을 기준으로 읽는다. HP/MP 및 리젠의 다른 역사 수치는 이번 ST 수정의 검수 대상이 아니다.
 
 scope10=HTML2/test1/docs7이 실제 NUL-uall81에 도달하면 다른 후보 산출 없이 완료 소유10경로만 즉시 checkpoint한다. 원 감독 완료원문·팀 TASK/source핀 및 타인 WIP/사용자 저장은 덮어쓰지 않는다.
+
+### 2026-10-03 root source44 — 투구 마법 스플래시 두 숫자 경계
+
+| 항목 | 현행 계약 / 검수 근거 |
+|---|---|
+| 변경 | 양판 update Magic Splash Damage의 splR=45+p.r×3+(+hel.splashR\|\|0), splMul=0.5+(+hel.splashMul\|\|0). unary+ 2곳/각판+2B |
+| 정상 | 숫자/소수/음수·0/missing/null/빈문자열 결과 유지. 숫자문자열은 같은 숫자 대응으로 계산, 비숫자·공백 등 NaN/0 결과는0보너스. signed/기존 ~~ 처리·최소HP피해1 불변 |
+| 피해 | sd=~~(p.dmg×splMul×elMul(p.el,e2.el)); whole hurtE(e2,sd,sa,false,{magic:true},p.el). 기본 비율0.5 및 각종 후속 피해/넉백/쉴드/아이템 공식 그대로 |
+| 반경 | shQuery(e.x,e.y,splR+20) 뒤 dst(원 적,주변 적)<splR+e2.r strict 판정. 원 적 자신·죽은 적 제외. 변경은 숫자형 소비이며 공간 제한·추가 피해 정책 신설 아님 |
+| 원 반경 보고 정정 | 숫자문자열이 항상 NaN/타겟없음은 아님. r8에서 splashR="10": 기존 splR="6910", query="691020", e2.r8이면 판정상한="69108". 신규 splR79/query99/상한87. 문자열 연결 때문에 합성 거리5000 적까지 피격하던 경로 차단 |
+| 합성 피해 | 원소추적탄Lv1, 통제 magicRef500/INT2/pMagic3/sk1 + MP보너스20 → 총3020/3발/발당1006. splashMul2:2515; 문자열"2" 기존523→신규2515. "0.5" 기존sd0/HP최소1→신규1006. ab 기존sd0/HP최소1→기본503. 실제 플레이어 피해/빈도 증거 아님 |
+| 실제 도달 | whole dbSave/dbRestore/equipItem/hm/_execMagicE 및 실제 _MAGIC_E_HANDLERS 선언. 실제 update magicCast 완료 분기 전체와 splash if 구간 전체를 추출해 원소추적탄 발사→주변 적 whole hurtE 실행. 완료시각·대상 겹침은 시험이 공급 |
+| 경로 제한 | 정상 elemMissile은 magic/arcMissile=true·r8이며 이 스플래시 구간 도달. 악의구/업화선은 선행 fireball 폭발 뒤 break/continue하므로 이 후보 효과로 해당 두 스킬 피해를 개선했다고 계산하지 않음 |
+| 검사 | test/magicSplashConsumption.test.cjs 양판46PASS. 원본16PASS/30 assertion FAIL은 두 숫자 reader의 조건별 대조. 정상7조합 cast/적/particle 상태 동등; mul3형·radius4형의 equipped/bag→장착, 거리70·87 strict 경계·5000, 실제 저장 JSON 왕복, 제외플래그6종. JS12/importmap2 구문PASS |
+| 대역·한계 | stat·MP비용 차감 leaf/풀 할당·UI/audio/network/공간검색은 통제 대역. 실제 거리 계산·대상 검증은 source splash 구간에서 실행. full update/충돌·이동·유도/폭발/관통 전체·native6단계/시각/청취 미실행. 초기 magicCast 중복 AST 선택/VW 누락은 준비 오류 raw 보존 |
+| 유지 | mkItem helmet splashR 희귀도1+에서 생성·최대10, splashMul 희귀도2+에서 숫자 소수2자리 생성. splashRadius/splashDmg 어픽스와 magicPen/스킬·자원·저장·보호2_3·Q전용패링 변경0. Infinity/숫자 범위 clamp는 이번 방어 아님 |
+| 실행 앱 | 소스44 통합, 현재 격리 앱source29/3404에는 미반영. CH1-1 같은 후보의 시작→획득→게이트→보스사망/부활→재도전·화면·청취 인수는 대기 |
+
+원 후보 QA0852 completion1fcc4ad3-b3de-4b31-a364-fa139ac3cbf0의 두 reader를 code43 abf9eb87 위에서 검증했다. 감독 docsraw eed564ac와 코드epoch43을 구분한다. backup·원 완료·후보·docs전체 splashMul/splashR/스플래시 검색·baseline/candidate/production·HTML 전체 정확 역치환·docs append 역치환·보호67경로 SHA·원격 exact SHA는 tmp/mac-migration-runtime/continued-review-20261003/source44-magic-splash/에 보존한다. scope9=HTML2/test1/docs6. 실제 NUL-uall80에서는 새 후보 산출 없이 완료 소유9경로만 checkpoint한다. 기존 TASK/source핀·감독원문·타인WIP·사용자 세이브는 보존한다.
