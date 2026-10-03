@@ -149,3 +149,46 @@ source29 원문 검수는 실제 keyName·미니바 원문 블록을 DOM/popup/l
 | 새 saveRoot | `/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/mac-package-ready/mac-packager-e771c364-291e-4c7a-b983-1a7496d505aa/user-state/saves` / 미생성 |
 
 **VISUAL VERDICT: RETOUCH** — 지형·좌표·충돌·배치 수정0, 같은source29 실제 카메라/보스 사망·부활·재입장·열린 문/몬스터 보존 미인수. 파일 SHA 검수를 visual PASS로 대신하지 않음.
+
+
+## 2026-10-03 source29 실제 새 전사·영상·INTRO 후속 관측
+
+앞선 source29 launch0/전용 저장경로 미생성 표는 포장 당시의 이력이다. 현재는 같은 후보를 정상 기동해 새 전사를 생성했고, 게임 INTRO까지 도달했다. 전체 플레이 인수는 미완료다.
+
+| 현재 관측 | 실제 근거·한계 |
+|---|---|
+| 같은 최신 후보 | 입력 `3948b102db4c353822e6a706067224f72df36c48`, 파일 checkpoint `b5de8b38c25ebabb19ce4de751e876e0fb865f26`, job `e771c364-291e-4c7a-b983-1a7496d505aa`, port3404. 새 기동1회/main52515 live |
+| 정상 생성·영상 | 타이틀 Enter→세계관 영상→DEMO 로비→전사 맥검수이십구 정상 생성→전사 이야기 영상 실제 렌더→자동 game URL→네메시아 INTRO. 새 전용 profile/saveRoot 생성, 원사용자 저장경로 조회·수정0 |
+| 현재 입력 정체 | 네메시아 “그 아이의 목마를 보니 망자도 정신이 드는가 보구나”. Return/Z/ESC·AX 이미지 클릭·창 Raise/HTML focus 뒤 화면 불변. 좌표 입력은 noWindowsAvailable. 현재 앱 목록에는 잠금 오류가 없어 이전 잠금을 현재 원인으로 단정0 |
+| 검수 한계 | 정상 UI 생성·영상·INTRO 부분 관측. 같은source29 전투/실제 아이템 획득/4지역/열린 보스문/보스 사망·부활·재입장·필드 보존/저장 재실행/실청취/카메라 미인수. source27 부분 플레이 합산0 |
+| 증거 보존 | `tmp/mac-migration-runtime/continued-review-20261003/source29-native-play/progress-receipt.json` 2410B / SHA256 `b219532fae9640aedf1d17f986104acd924651e11374e480dd1a69a3f2562fb8`. 실제 screenshot2와 기존 startup receipt 분리 보존 |
+
+게임 state 주입·리로드·추가 앱 기동·생산 코드 변경0. 실제 입력 전달 복구 후 같은 앱의 정상 진행을 이어간다. 상세 입력·영상·일반 진행 경계는 `docs/13출시·마케팅/MAC_CH1_SOURCE27_CANDIDATE_20261003.md`의 source29 후속 표를 따른다.
+
+
+### source29 정상 입력 경계·현재 부분 인수
+
+| 단계 / 실제 입력 | 확인한 결과 / 남은 확인 |
+|---|---|
+| 새 앱 정상 기동 | CUA getApp1회/main52515 live. title Enter 버튼은 실제 다음 화면으로 이동. 기존 앱 재기동·종료0 |
+| 세계관 영상 | “아무 키나” 화면 뒤 실제 이미지·자막 변화 관측. 기존 5000ms 홀드 skip은 유지하며 자연 종료, 강제 URL 이동0 |
+| 전사 생성 | DEMO 로비의 새 캐릭터→전사→이름 맥검수이십구→생성. 기존 캐릭터·사용자 세이브 덮어쓰기0 |
+| 전사 선택 미리보기 | AX에 미디어를 재생할 수 없다는 안내 관측. 이 관측을 이후 생성 영상 전체 실패로 확대하지 않음. 미리보기의 실제 픽셀·원인 미확정 |
+| 생성 후 전사 이야기 | 실제 방 장면 영상 렌더와 자동 게임 URL 전환 관측. URL `http://127.0.0.1:3404/game.html?test=1&slot=demo&demo=1&story=warrior-v21` |
+| 네메시아 INTRO | 실제 전사·목마 이미지와 네메시아 대사 표시. 초기 HUD0은 컷신에서 `G.on=false`·HUD 숨김 경계이며 실제 전투 사망으로 분류0 |
+| 기존 일반 진행 계약 | `keydown`의 non-repeat Enter/KeyZ→`_cutsceneAdvance()`, Escape→`_cutsceneEnd()`, Space2000ms 홀드→기존 skip. `_cutC` 일반 click도 advance. 타이핑 중이면 전문 표시, 그 다음 입력에서 다음 라인. 실제 새 전달 성공은 미확정 |
+| 정상 종료 계약 | 일반 INTRO 종료→`G._cutsceneDone=true`, 컷신 state 해제/캔버스 숨김→`_startIntro()`→정상 시작·펫 안내. PRO는 명시적 preview에서만 먼저 재생. 이 종료 이후 실제 플레이는 아직 미관측 |
+| 현재 입력 문제 | 같은 handle Raise와 HTML focus, Z·Escape 및 AX 이미지 클릭도 대사 불변. 좌표는 noWindowsAvailable. 자동으로 진행한 무대사 장면과 입력 성공을 구분. 앱 종료·권한 거절·현재 Mac 잠금으로 단정0 |
+| 다음 실제 확인 | 같은 앱에서 정상 입력이 전달되는지 확인→INTRO 종료/시작/펫 안내→CH1 전투·장착·실제 획득→4지역·문→보스 사망/부활/retry/진행 보존. 강제 상태·headless 결과로 native 대체0 |
+
+### source29 MAP PRODUCTION REPORT — 실제 INTRO 부분 관측
+
+| 항목 | 현재 판정 |
+|---|---|
+| STAGE / MASTER PLAN | 같은 최신 source29에서 CH1-1 정상 시작→전투/획득→열린 문→보스 사망/부활/retry/몬스터 보존 실제 인수 목표 유지 |
+| LARGE OUTER MASS / MEDIUM CONNECTION / GROUND CONNECTION | 지형·통로·좌표·충돌 수정0 |
+| PLAYABLE/COMBAT | 정상 새 전사 생성·영상·INTRO 부분 관측, 전투 미시작. source27 첫 처치/일반retry는 과거 후보 기록 |
+| LANDMARK/CENTER / SMALL DETAIL | 기존 에셋 유지, 새 생성·배치0 |
+| CAMERA QA | 현재 INTRO 실제 그림·대사만 관측. CH1 전투 카메라 미인수 |
+| TECH QA | 이전 파일 SHA 검수와 현재 HTTP3 exact 유지. 화면/AX 실제 관측, 키·좌표 입력 전달 문제 별도. 전체 저장/게임 완주 미인수 |
+| VISUAL VERDICT | RETOUCH — 실제 CH1 카메라/보스 사망·부활/retry/열린 문·필드 몬스터 보존 미인수 |

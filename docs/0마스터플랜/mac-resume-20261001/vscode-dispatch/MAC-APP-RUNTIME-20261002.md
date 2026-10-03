@@ -294,3 +294,18 @@ source18 투사체 kbMult 초기화와 source19 실제 장착 CP 미리보기·�
 | 기존 실행본 보존 | 이전14 검수앱의 존재/plist ID·profile/save metadata 확인, 내용 hash/수정0. 원사용자 앱 정확 경로 UNKNOWN 유지. source27 장착4/일반retry/첫처치1의 부분 플레이는 과거 관찰로 보존 |
 
 source29 원문 검수는 실제 keyName·미니바 원문 블록을 DOM/popup/localization 경계 대역으로 실행한 12조건이다. 13슬롯과 모든 선택 callback 동등, 양판8치환 전체 역복원 exact, inline script/importmap 구문 통과. 숫자·전투·진행·세이브·input dispatch 변경0. Mac 잠금 해제 질문은 대기 중이며, 동일 최신 후보에서 실제 CH1-1 시작→전투/획득→4지역/보스문→보스 사망/부활→재입장·진행 보존을 검수하는 목표는 계속 미완료다.
+
+
+## 2026-10-03 source29 실제 새 전사·영상·INTRO 후속 관측
+
+앞선 source29 launch0/전용 저장경로 미생성 표는 포장 당시의 이력이다. 현재는 같은 후보를 정상 기동해 새 전사를 생성했고, 게임 INTRO까지 도달했다. 전체 플레이 인수는 미완료다.
+
+| 현재 관측 | 실제 근거·한계 |
+|---|---|
+| 같은 최신 후보 | 입력 `3948b102db4c353822e6a706067224f72df36c48`, 파일 checkpoint `b5de8b38c25ebabb19ce4de751e876e0fb865f26`, job `e771c364-291e-4c7a-b983-1a7496d505aa`, port3404. 새 기동1회/main52515 live |
+| 정상 생성·영상 | 타이틀 Enter→세계관 영상→DEMO 로비→전사 맥검수이십구 정상 생성→전사 이야기 영상 실제 렌더→자동 game URL→네메시아 INTRO. 새 전용 profile/saveRoot 생성, 원사용자 저장경로 조회·수정0 |
+| 현재 입력 정체 | 네메시아 “그 아이의 목마를 보니 망자도 정신이 드는가 보구나”. Return/Z/ESC·AX 이미지 클릭·창 Raise/HTML focus 뒤 화면 불변. 좌표 입력은 noWindowsAvailable. 현재 앱 목록에는 잠금 오류가 없어 이전 잠금을 현재 원인으로 단정0 |
+| 검수 한계 | 정상 UI 생성·영상·INTRO 부분 관측. 같은source29 전투/실제 아이템 획득/4지역/열린 보스문/보스 사망·부활·재입장·필드 보존/저장 재실행/실청취/카메라 미인수. source27 부분 플레이 합산0 |
+| 증거 보존 | `tmp/mac-migration-runtime/continued-review-20261003/source29-native-play/progress-receipt.json` 2410B / SHA256 `b219532fae9640aedf1d17f986104acd924651e11374e480dd1a69a3f2562fb8`. 실제 screenshot2와 기존 startup receipt 분리 보존 |
+
+게임 state 주입·리로드·추가 앱 기동·생산 코드 변경0. 실제 입력 전달 복구 후 같은 앱의 정상 진행을 이어간다. 상세 입력·영상·일반 진행 경계는 `docs/13출시·마케팅/MAC_CH1_SOURCE27_CANDIDATE_20261003.md`의 source29 후속 표를 따른다.
