@@ -30373,7 +30373,7 @@ function initStage(si){
   G._spiralBullets=[];G._phantomSwords=[];G._doppelgangers=[];G._judgeCuts=[];G._pillars=[];
   G._darkZones=[];G._mirrorClones=[];G._fissures=[];G._tideWaves=[];G._seekerMines=[];
   G._rewindMarks=[];G._gravityWells=[];G._wallPushes=[];G._poisonPools=[];G._cageTraps=[];
-  G._chainLights=[];G._orbWeaves=[];G._soulAnchors=[];G._chaseAoes=[];G._lavaPools=[];G._fireRains=[];G._shockGrids=[];G._donutSlams=[];G._safeCorners=[];G._crossWipes=[];G._tidalWipes=[];G._gSlamWave=[];G._skyCrushers=[];G._lavaField=null;G._gwPillar=null;
+  G._chainLights=[];G._orbWeaves=[];G._soulAnchors=[];G._chaseAoes=[];G._lavaPools=[];G._fireRains=[];G._shockGrids=[];G._donutSlams=[];G._safeCorners=[];G._crossWipes=[];G._tidalWipes=[];G._gSlamWave=[];G._skyCrushers=[];G._lavaField=null;G._gwPillar=null;G._druidOrbs=[];G._druidOrbT=0;G._druidParryT=0;G._druidParryVolley=0;
   let _fixedMap=_getFixedMapForStage(si);G._fieldRebuildQA=false;G._fieldRebuildRegions=null;
   if(_DIABLO_FIELD_QA&&si===0&&_fixedMap){const _field=_buildDiabloField(0,200,200);_fixedMap=Object.assign({},_fixedMap,{tileRLE:_field.tileRLE,rooms:_field.rooms,corridors:[],spawnHoles:_field.spawnHoles.map(h=>({x:h.x,y:h.y,size:h.type})),portals:[],objects:[],_testbed:true});G._fieldRebuildQA=true;G._fieldRebuildRegions=_field.regions}
   if(_fixedMap){genFromTemplate(_fixedMap,si);G.mapType=_fixedMap._testbed?'fixed_testbed':'fixed'}

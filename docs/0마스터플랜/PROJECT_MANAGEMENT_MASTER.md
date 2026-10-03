@@ -1572,3 +1572,19 @@ source18 투사체 kbMult 초기화와 source19 실제 장착 CP 미리보기·�
 같은 source26/3401 실제 정상 UI는 스토리→연습1/12→화면의 연습 건너뛰기→CH1 숲1 첫 필드→일반 몬스터 사망→다시 일어서라→인벤토리(가방10/300, 장착15/16, CP1626, 악의999)까지 확인했다. 보스 해금 전 사망이므로 열린 보스방/전체 몬스터 보존 버그의 native 인수는 아직 아니다. source26 포장 직후 제목·인트로만의 이전 표는 당시 이력이다. 전투·획득·장착/4지역·보스/실제 저장·청취·시각 완주 미완, source17 과거 플레이 합산0.
 
 정확한 증거·SHA·경계는 [source26 최신 후보](../13출시·마케팅/MAC_CH1_SOURCE26_CANDIDATE_20261003.md)의 실제 플레이 후속을 따른다. root 소유 docs2만 백업/예약하고 코드3·보호67·manager4·사용자23WIP·기존 게임/세이브를 보존한다. 관련키워드 docs 전체 검색은 이번1221행/134경로이며 코드값 변경0, 동시 관리자가 쓰는 이력은 root 수정에서 제외한다.
+
+
+## 2026-10-03 source27 — 새 스테이지의 드루이드 공격 상태 초기화
+
+| 정확 key / 적용 위치 | 현재 값·동작 | 보존 경계 |
+|---|---|---|
+| `G._druidOrbs` / 일반 `initStage(si)`의 기존 보스 패턴 정리 끝 | 새 빈 배열 `[]` | 이전 스테이지 ORB 객체는 수정·재사용하지 않음. 현 스테이지 ORB producer/접촉/피해/수명 코드 불변 |
+| `G._druidOrbT` | 0 | 이후 실제 tick에서 다시 증가. 기존 110f/3발/6.8 frame 속도 불변 |
+| `G._druidParryT` | 0 | 이전 스테이지 Q 리듬탄 누적 시간만 제거. 주기·수량·피해·Q/E 규칙 불변 |
+| `G._druidParryVolley` | 0 | 이전 웨이브 번호 제거. 이후 기존 발사 시 다시 증가 |
+| 양판 코드 | `G._lavaField=null;G._gwPillar=null;` 뒤 각70B 추가 | `_enterBossArena`·retry field 복귀에 이미 있는 네 초기화와 동일. 새 helper·전역정리·삭제0 |
+| 다른 분기 | bosstest early-return는 기존 arena 초기화 위임 유지 | 사망 대기/부활 중 clear 추가0. HP50%/180f·si3 피날레·field snapshot46key·save schema·P/INV·플레이어 VFX 불변 |
+| 검수 | 원본16개 중4PASS/12FAIL → 후보18PASS → 생산18+기존필드50+사망음향36=104PASS | 실제 전체 initStage 및 실제 ORB tick 원문 실행. 맵/적 생성·render/audio는 대역; 원본/후보 정상stage 전체G/P/events 동일. native·전체맵/청취 인수 아님 |
+| Mac / 진행 | source27은 현재 생산 소스 통합이며 아직 새 앱으로 포장하지 않음 | source26/3401은 이전 코드의 실제 숲1·일반 사망 retry·inventory 이력 보존. 이번 CUA 관측은 맥 잠금으로 중단, 사용자 해제 질문 대기. 보스/4지역/획득장착/저장재로드 미인수 |
+
+정본·정확 SHA·대역/fixture·§23 보고는 `docs/8.1보스디자인바이블/DRUID_STAGE_TRANSIENT_LIFETIME_20261003.md`를 따른다. 기존 source14 복귀 정리와 source26 음악 예외 계약은 유지하며 이전 문단은 해당 시점 이력이다. native 보스 사망 시 문/몬스터 진행 보존의 완료 선언이 아니다.
