@@ -1249,3 +1249,13 @@ Mac partial ignored영수증은 `source15-native-play/ch1-entry-field-death.json
 | 미완 | Maclocked 부활입력0, 실전 전투·획득/장착·4지역·보스방·보스사망/부활/재도전·오디오 미인수. fixture/fullRNG/native를 완료로 확대0 |
 
 [source17 정확 범위](../2_1%20스킬관리+합체시스템+자원/FIELD_MOB_RAGE_SKILL_DAMAGE_20261003.md).
+
+## 2026-10-03 오전9시 보고 실제 발송 확인
+
+| 항목 | 확인 |
+|---|---|
+| 메일 | Gmail 본인 to=me, 당일 동일 제목 Sent0 확인 뒤 send_email1회 성공·SENT/messageID 확인. 확인시각09:10:26 KST이며 exact Gmail internal_date는 미제공, 정시발송 주장0 |
+| 본문 | 생산 source16 장비47/source17 천공쇄기20 검수·각 원격 exact SHA, source16 앱에 source17 미포함, 정상 CH1 진입/일반사망과 보스회귀 미인수, 팀15 실제 관측/시간·미반영 후보·디자인3항목·오늘 목표를 한국어HTML로 발송 |
+| 보존 | 개인 이메일 주소/코드원문/세이브/인증정보 Git기록0. ignored morning-report-20261003에 본문/준비실패1(실행0)/확인영수증 보존. 설정·대상·예약 변경/중복전송0 |
+
+실제 메일 성공과 예약 설정을 구분하며, sourceVM/포장/팀 송신을 native 연결 완료로 세지 않는다.
