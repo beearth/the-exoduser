@@ -25608,7 +25608,7 @@ function _gritStFlat(){return _gritTotal();}
 function applyStats(){
   // 장비 보너스 스탯 합산
   let _eqStr=0,_eqDex=0,_eqInt=0;
-  for(const sl of SLOT_NAMES){const it=INV.equipped[sl];if(it){_eqStr+=(it.bStr||0);_eqDex+=(it.bDex||0);_eqInt+=(it.bInt||0)}}
+  for(const sl of SLOT_NAMES){const it=INV.equipped[sl];if(it){_eqStr+=(+it.bStr||0);_eqDex+=(+it.bDex||0);_eqInt+=(+it.bInt||0)}}
   const _lb=_lvB();
   const s={str:STATS.str+_eqStr+_lb+~~_eqAffix('strFlat'),dex:STATS.dex+_eqDex+_lb+~~_eqAffix('dexFlat'),int:STATS.int+_eqInt+_lb+~~_eqAffix('intFlat'),vit:~~_eqAffix('vitFlat'),lck:STATS.lck+_lb};
   P._effStats=s; // 유효 스탯 캐시 (UI 표시용)

@@ -2159,3 +2159,21 @@ Claude QA1234 완료46e26e46-82c8-44d9-81f2-399fdd4402a4@12:38:59.516Z의 인덱
 | 보존 | 저장 스키마/원자료/행운계수/확률캡·경제 목표 변경0. 보호2_3/Q전용패링/E금지/어택티켓금지/사용자23·타인WIP 변경0. 실행 앱source29/3404에는30~57 미반영 |
 
 BALANCE1310 완료 msg_07e2da25fb01bbcf016ac0ff34ca2887d08822912d044a04a1/exec-0eb3b6c3-afe3-4863-a232-ce978cd4916c의 숫자문자열 후보를 root가 실제 복원·소비 경로로 추가 검수하여 source57 scope8=HTML2/test1/docs5에 적용. 관리3/전문15=18; native6은 미인수이며 source 성공을 실플레이 완료로 계산하지 않는다.
+
+
+## 2026-10-03 source58 장비 STR/DEX/INT 합산 숫자 소비
+
+| 항목 | 현행 계약 |
+|---|---|
+| 변경 위치 | 양판 applyStats 첫 SLOT_NAMES 루프에서 _eqStr+=(+it.bStr\|\|0), _eqDex+=(+it.bDex\|\|0), _eqInt+=(+it.bInt\|\|0). 각 HTML +3B, 나머지 함수·순서·계수 불변 |
+| 합산 대상 | 본편17/Easy16 SLOT_NAMES의 truthy 장착 아이템 전부. 무기/bow/helmet 포함. 각 필드 숫자 변환 결과가 falsy/NaN이면0; 정상 음수·소수·Infinity 의미는 유지, finite clamp·상한 추가0 |
+| 유효 스탯 | s.str=STATS.str+_eqStr+_lvB()+~~_eqAffix('strFlat'); s.dex=STATS.dex+_eqDex+_lvB()+~~_eqAffix('dexFlat'); s.int=STATS.int+_eqInt+_lvB()+~~_eqAffix('intFlat'); _lvB()=~~(P.lv*0.5). 원래 기본 STATS 소비는 불변 |
+| 파생 소비 | 기존 whole applyStats의 STR→최대HP/HP리젠, DEX→이동속도/ST리젠, INT→최대MP/MP리젠/최대쉴드 및 P._effStats 표시용 캐시에서 문자열 이어붙이기를 방지. recalcSt의 기본 STATS.dex 소비·장비 bonusSt 합산은 불변 |
+| 복원·장착 | 실제 whole dbRestore는 장비 bStr/bDex/bInt 원값을 유지. 이미 장착된 armor 및 가방 armor→whole equipItem/_refreshEquipmentStats 경로에서 문자열20/0/-10/.5와 ab/빈객체를 소비 검증. 계산 때문에 장비·저장 스키마/원자료를 다시 쓰지 않음 |
+| 합성 명시 사례 | Lv20, 기본 STR5/DEX3/INT4/LCK2, boots bStr3/bDex4/bInt5와 strFlat2/dexFlat3/intFlat4, armor 세 필드 문자열20: 유효 STR40/DEX40/INT43/LCK12. boots bonusHp11/bonusMp13/bonusSt19/bonusShield17/enh2, 근성2, pHuman/pVital/pStamina/pFortify/pArmor 각1에서 최대HP925/MP361/쉴드332. 이는 합성 검사값이며 기본 장비·밸런스 상수 아님 |
+| 검사 | test/equipmentPrimaryStatsConsumption.test.cjs 양판45조건씩 후보90 PASS/생산90 PASS. 명시 source57 원본16 PASS·74 assertion FAIL. 숫자8값×양판16대조 원본동등; 3필드×복원6값×이미장착/가방장착2×양판72조건 및 명시 합산2조건. 74 FAIL은 음성 대조 조건 수이며 독립버그74개가 아님. 양판 inline JS12/importmap2 구문 검사 |
+| 인수 경계 | whole 복원/장착 VM에서 얻은 장비·기본스탯을 별도 whole applyStats/recalcSt VM으로 전달한 2VM 브리지. 동일 fullboot 아님. 공간 검사/무관 마이그레이션/UI/음향/네트워크/저장 leaf는 대역, 상태는 합성·crystals 없음. 실게임 피해·실제 사용자save/native/화면/청취 인수0 |
+| 미변경 접점 | _eqStatRebuild는 기존 typeof number인 b필드만 캐시. statStr/statDex/statInt·공격력 reader 전부 숫자 안전하다는 주장0. DEF/eDef/bonusHp/bonusMp/bonusShield/charge 후보, STATS 전체 숫자화, 강화 이전 정책 변경0 |
+| 보존 | 장비 생성·드롭/어픽스/경제/강화·슬롯·저장 데이터 불변. 보호2_3/Q전용패링/E금지/어택티켓금지/사용자23·타인WIP 변경0. 현재 실행 앱source29/3404에는30~58 미반영 |
+
+BALANCE1315 bStr/bInt 및1320 bDex 메모리 후보를 실제 전체 소비 함수로 좁혀 검수한 생산 범위다. 그 밖의 후보는 미채택이며 완료 원문·기존 TASK/핀을 보존한다.
