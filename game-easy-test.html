@@ -43012,7 +43012,7 @@ function _calcAncestorStats(ai){
   const slv=P.skills.ancestorSummon||1;
   const partPts=sk+to+ar2+le;
   const base=magicRef()*statInt()*pMagicMul()*_skMul('ancestorSummon')*_fuseMul('ancestorSummon');
-  const pow=1+((oss&&oss.ancPow)||0)+(_eqAffix('ancDmg')||0)+(_eqImplicit('_iAncPow')||0)*.01;
+  const pow=1+((oss&&+oss.ancPow)||0)+(_eqAffix('ancDmg')||0)+(_eqImplicit('_iAncPow')||0)*.01;
   const dmg=Math.max(1,~~(base*(1+ar2*0.08+sk*0.04)*pow*(1+~~((slv-1)/5)*0.25)));
   const crit=Math.min(60,5+sk*3)/100;
   // `ancDur`는 시간제였던 구세이브 호환용 ID다. 현재는 값 1초당 최대HP +30%로 읽어 기존 유골함(+3)을 +90% HP로 보존한다.
