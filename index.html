@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<script src="build-target.js"></script>
 <meta charset="UTF-8">
 <script src="localization-runtime.js"></script>
 <script src="localization-data.js"></script>
@@ -492,7 +493,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 </style>
 <link rel="stylesheet" href="localization.css?v=20260909">
 <link rel="stylesheet" href="ui-foundation.css?v=20260927-enter-responsive">
-<link rel="stylesheet" href="ui-refinement.css?v=20260930-settings-title-plaque">
+<link rel="stylesheet" href="ui-refinement.css?v=20261002-title-sizes">
 <link rel="stylesheet" href="lobby-ancestor-art.css?v=20260929-slotart3">
 <script src="lobby-ancestor-sprite.js?v=20260929-slotart2" defer></script>
 </head>
@@ -1137,7 +1138,7 @@ function _gpDot(on){
 // 브라우저 줌 차단
 addEventListener('wheel',e=>{if(e.ctrlKey||e.metaKey)e.preventDefault()},{passive:false});
 // ── 빌드 버전 (demo.html → 'demo', ea.html → 'ea') ──
-const _LOBBY_BUILD='demo';
+const _LOBBY_BUILD=window.EXODUSER_BUILD_TARGET||'demo';
 // ── 버전별 멘트 (추후 교체) ──
 const _LOBBY_QUOTES={
   full:'멘트 준비 중',

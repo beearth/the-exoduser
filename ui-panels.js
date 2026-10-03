@@ -217,8 +217,65 @@
     });
     root.classList.add('ui-composed'); nav.children[0].click();
   }
+  // Keep decorative title plates sized to translated text without changing title DOM.
+  function titleFrames() {
+    const titles = ['settings','skillPanel','forge','storagePanel','statPanel'].flatMap(id => {
+      const panel = document.getElementById(id);
+      const title = panel?.querySelector('.ptitle');
+      return title && !title.children.length ? [{panel, title}] : [];
+    });
+    const context = document.createElement('canvas').getContext('2d');
+    if (!context || !titles.length) return;
+    const sizes = [['s',360],['m',520],['l',680]];
+    let pending = false;
+    const put = (title, name, value) => {
+      if (title.style.getPropertyValue(name) !== value) title.style.setProperty(name,value);
+    };
+    function fit() {
+      pending = false;
+      for (const {title} of titles) {
+        if (!title.getClientRects().length || !title.getBoundingClientRect().width) continue;
+        const style = getComputedStyle(title);
+        const base = innerWidth <= 560 || innerHeight <= 650 ? 18 : innerHeight <= 800 ? 20 : 24;
+        let text = title.textContent.trim();
+        if (style.textTransform === 'uppercase') text = text.toLocaleUpperCase();
+        context.font = `${style.fontStyle} ${style.fontWeight} ${base}px ${style.fontFamily}`;
+        const measured = context.measureText(text).width + Math.max(0,[...text].length-1)*base*.02;
+        const [size,width] = sizes.find(([,width]) => measured+96 <= width) || sizes[2];
+        if (title.dataset.titleSize !== size) title.dataset.titleSize = size;
+        put(title,'--title-frame-width',width+'px');
+        const parent = title.parentElement;
+        const parentStyle = getComputedStyle(parent);
+        const available = parent.clientWidth-parseFloat(parentStyle.paddingLeft)-parseFloat(parentStyle.paddingRight);
+        const padding = innerWidth <= 560 ? 56 : 96;
+        const room = Math.max(1,Math.min(width,available)-padding);
+        const font = Math.max(16,Math.min(base,measured ? base*room/measured : base));
+        put(title,'--title-font-size',font.toFixed(2)+'px');
+        const range = document.createRange();
+        range.selectNodeContents(title);
+        const height = Math.max(64,Math.ceil(range.getBoundingClientRect().height)+24);
+        put(title,'--title-plate-height',height+'px');
+      }
+    }
+    const schedule = () => {
+      if (!pending) { pending = true; requestAnimationFrame(fit); }
+    };
+    const textChanges = new MutationObserver(schedule);
+    const panelChanges = new MutationObserver(schedule);
+    const resized = new ResizeObserver(schedule);
+    for (const {panel,title} of titles) {
+      textChanges.observe(title,{childList:true,characterData:true,subtree:true});
+      panelChanges.observe(panel,{attributes:true,attributeFilter:['class']});
+      resized.observe(title.parentElement);
+    }
+    addEventListener('resize',schedule,{passive:true});
+    document.fonts?.ready.then(schedule);
+    document.fonts?.addEventListener('loadingdone',schedule);
+    schedule();
+  }
   function init() {
     settings(); inventory(); translate();
+    titleFrames();
     document.getElementById('optLang')?.addEventListener('change', translate);
   }
   if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded',init,{once:true});

@@ -10,7 +10,7 @@
 <script src="system-lesson.js?v=20260912-skip-density1"></script>
 <link rel="stylesheet" href="parry-lesson.css?v=20260913-mission-details1">
 <script src="resource-practice.js?v=20260916-recovery2"></script>
-<script src="parry-lesson.js?v=20260913-area-practice8"></script>
+<script src="parry-lesson.js?v=20261001-kislash-2sec"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HELL: EXODUSER</title>
@@ -2324,9 +2324,9 @@ canvas{display:block;position:fixed;inset:0}
 <link rel="stylesheet" href="stat-panel-ui.css?v=20260910-fullscreen-readable-v1">
 <link rel="stylesheet" href="localization.css?v=20260909">
 <link rel="stylesheet" href="ui-foundation.css?v=20260930-lesson-translucent">
-<link rel="stylesheet" href="ui-refinement.css?v=20261001-settings-nav18">
+<link rel="stylesheet" href="ui-refinement.css?v=20261002-title-sizes">
 <link rel="stylesheet" href="inventory-oss-balance.css?v=20260928-ossuary-fit5">
-<script defer src="ui-panels.js?v=20261001-settings-nav17"></script>
+<script defer src="ui-panels.js?v=20261002-title-sizes"></script>
 <script src="stat-panel-ui.js?v=20260909-constellation-v3"></script>
 </head>
 <body>
@@ -3353,6 +3353,12 @@ async function dbLoad(){
 }
 
 // ═══ Restore state from saved data ═══
+function _restoreExpProgress(pd){
+  const maxExp=pd.maxExp||15;
+  if((pd.lv||1)<1000||(Number.isFinite(maxExp)&&maxExp>0))return{exp:pd.exp||0,maxExp};
+  // 구버전 초월 필요 경험치의 32비트 오버플로 값만 복구한다.
+  return{exp:Math.max(0,Number(pd.exp)||0),maxExp:_calcMaxExp(pd.lv)};
+}
 function dbRestore(d){
   if(!d)return false;
   // 생성 직후에는 player 없이 charIdx만 저장된다. 이전 캐릭터 캐시보다 슬롯이 우선이다.
@@ -3361,7 +3367,7 @@ function dbRestore(d){
   if(!d.player)return false;
   // Player
   const pd=d.player;
-  P.lv=pd.lv||1; P.exp=pd.exp||0; P.maxExp=pd.maxExp||15;
+  P.lv=pd.lv||1; const _xpRestore=_restoreExpProgress(pd); P.exp=_xpRestore.exp; P.maxExp=_xpRestore.maxExp;
   P._transLvDate=pd.transLvDate||null; P._transLvCount=pd.transLvCount||0; P._apBossCleared=pd.apBossCleared||[]; P._goddessGift=pd.goddessGift||[];
   // SP/AP: 저장된 값 그대로 복원 (재계산 폐지 — 보스+10SP 등 보너스 누락, 합체 비용 오산 등 버그 다수)
   P.sp=pd.sp||0;
@@ -5716,7 +5722,7 @@ function keyName(code,forceKbm){
 }
 
 // Options
-let OPT={shake:80,hitStop:0,parts:IS_ELECTRON?100:80,sfxVol:60,bgmVol:60,diff:5,minPickRar:0,minPickLvTier:0,fpsCap:0,petAuto:true,bossDebug:false,bloom:true,trail:true,slash:true,postfx:true,deathFx:true,lighting:true,torch:true,ambPart:false,fog:true,bossFog:true,grain:true,autoPotThr:0.99,cursor:0,cursorSize:50,quality:'high',resScale:100,ssaa:1,outline:true,bgmTrack:'auto',lang:'ko',crAutoFuse:-1,crAutoEnh:-1,showFps:false,atmos:2};
+let OPT={shake:80,hitStop:0,parts:IS_ELECTRON?100:80,sfxVol:60,bgmVol:60,diff:5,diffV2:1,minPickRar:0,minPickLvTier:0,fpsCap:0,petAuto:true,bossDebug:false,bloom:true,trail:true,slash:true,postfx:true,deathFx:true,lighting:true,torch:true,ambPart:false,fog:true,bossFog:true,grain:true,autoPotThr:0.99,cursor:0,cursorSize:50,quality:'high',resScale:100,ssaa:1,outline:true,bgmTrack:'auto',lang:'ko',crAutoFuse:-1,crAutoEnh:-1,showFps:false,atmos:2};
 rz(); // 캔버스 초기 리사이즈 (OPT 선언 후 호출)
 
 // ═══ [LANG] 다국어 번역 시스템 ═══
@@ -33942,7 +33948,9 @@ function update(){
         const fz=G._fireZones[fi];
         if(fz.type==='iceStorm'&&dst(fz.x,fz.y,_iswx,_iswy)<fz.r+_isR){_isBlocked=true;break}
       }
-      if(_isBlocked){showPH(_T('이미 빙풍 지역!'),'#88ccff')}
+      if((P._isStk||0)<=0){P._isAiming=false;showPH(_T('충전 중...'),'#ff8844')}
+      else if(P.mp<40){showPH(_T('MP 부족! (40)'),'#4488ff')}
+      else if(_isBlocked){showPH(_T('이미 빙풍 지역!'),'#88ccff')}
       else{
         P.mp=Math.max(0,P.mp-40);
         G._fireZones.push({x:_iswx,y:_iswy,r:_isR,t:0,maxT:600,
@@ -40434,7 +40442,7 @@ function _calcMaxExp(lv){
   if(lv<1000)return ~~((15+lv*2.5+lv*lv*.05)*Math.pow(1.001,lv)); // 올드공식 × 0.1%복리 (초반 유지, 후반 도전적)
   // 초월: 500만 + (초월렙)² × 10000
   const t=lv-999;
-  return ~~(5000000+t*t*10000);
+  return Math.floor(5000000+t*t*10000);
 }
 function addExp(v,trans){
   // trans=true: 초월 고정값, /3 스킵
@@ -42468,6 +42476,7 @@ function fireMaliceMortar(_tx,_ty){
 function fireBoneWall(tx,ty){
   try{
   P._bwAiming=false;
+  if((P._bwStk||0)<=0){showPH(_T('충전 중...'),'#ff8844');return}
   if(G.mats<_malCost(12)){showPH(_T('악의 부족!'),'#ff4444');return}
   G.mats-=_malCost(12);
   const slv=P.skills.boneWall||1;
@@ -42983,6 +42992,7 @@ function _grantOssuaryIfNeeded(){
   notify('⚱️ '+_rarName(5)+' ['+_T(oss.name)+'] '+_T('획득!')+' '+_T('자동 장착!'));
   try{addTxt(P.x,P.y-55,'⚱️ '+_T(oss.name),'#ff4466',80)}catch(e){}
   try{recalcSt()}catch(e){}
+  applyStats(); // 자동 장착 보너스를 즉시 재계산; 현재 자원은 기존 clamp 정책 유지
 }
 // 철갑 전대 고유식: 대검을 꽂은 뒤 5초 동안 주변 탄막을 삼키고 발광한 뒤, 축적량과 투사체 피해를 폭발로 되돌린다.
 function _ancestorSwordAbsorbRadius(a){
@@ -44264,7 +44274,7 @@ function _skillBatchUp(){
     if(_slv<1)continue; // 미습득 제외
     while(_slv<_skMaxLv&&_slv<_skLvLock){
       const _cost=_skillUpSpCost(_slv);
-      const _matGate=_malCost(sk.upMat||100); // canUp 게이트와 동일
+      const _matGate=_malCost(sk.upMat||0); // 실제 강화 차감과 동일
       const _matChg=_malCost(sk.upMat||0);    // apply 차감과 동일
       if(P.sp<_cost||G.mats<_matGate)break;
       P.skills[sk.id]++;P.sp-=_cost;G.mats-=_matChg;_slv++;_total++;
@@ -44766,7 +44776,7 @@ function _renderSkillRow(sk,grid){
       _fuseCanUp=_fLv2<_skMaxLv&&P.sp>=_fuseUpSp;
     }
     const _singleUpSp=_skillUpSpCost(slv,false);
-    const canUp=(learned&&sk.up&&slv<_skMaxLv&&slv<_skLvLock&&P.sp>=_singleUpSp&&G.mats>=_malCost(sk.upMat||100)&&!_isFuseUp)||(_fuseCanUp&&slv<_skLvLock);
+    const canUp=(learned&&sk.up&&slv<_skMaxLv&&slv<_skLvLock&&P.sp>=_singleUpSp&&G.mats>=_malCost(sk.upMat||0)&&!_isFuseUp)||(_fuseCanUp&&slv<_skLvLock);
     const d=document.createElement('div');
     d.dataset.skId=sk.id; // 라인 연결용 식별자
     // 합체 보석 그룹 — 습득된 스킬은 항상 그룹색 글로우
@@ -45760,7 +45770,7 @@ function renderSettings(){
 $('setClose').onclick=()=>closePanel('settings');
 if($('showTutorialBtn'))$('showTutorialBtn').onclick=()=>{closePanel('settings');showTutorial()};
 // ── 자동 저장 함수 ──
-function saveSettings(){try{localStorage.setItem('hellcave_settings',JSON.stringify({binds:{...BINDS},binds2:{...BINDS2},opt:{...OPT}}));localStorage.setItem('hellLang',OPT.lang)}catch(e){}}
+function saveSettings(){OPT.diffV2=1;try{localStorage.setItem('hellcave_settings',JSON.stringify({binds:{...BINDS},binds2:{...BINDS2},opt:{...OPT}}));localStorage.setItem('hellLang',OPT.lang)}catch(e){}}
 
 // ══ 2026-04-17 UI 고정 디자인 시스템 — Reference Resolution 1920×1080 ══
 // 창 크기·페이지 줌에 맞춰 HUD 비율을 유지하는 순수 자동 스케일.
@@ -46268,7 +46278,10 @@ try{
     if(data.opt){for(const k in data.opt)OPT[k]=data.opt[k]}
     if(OPT.atmos===undefined)OPT.atmos=2; // ATMOS 구저장본 호환
     // 2026-07-30 난이도 개편 마이그레이션: 구 0~10(0=일반) → 신 0~10(5=일반, -5~+5단)
-    if(!OPT.diffV2){OPT.diff=Math.min(10,(+OPT.diff||0)+5);OPT.diffV2=1}
+    // 저장 원본의 마커로 판정: 신규 OPT의 diffV2 기본값이 구세이브 이관을 가리지 않는다.
+    if(data.opt&&!data.opt.diffV2&&data.opt.diff!=null){OPT.diff=Math.min(10,(+OPT.diff||0)+5)}
+    if(OPT.diff==null)OPT.diff=5;
+    OPT.diffV2=1;
     // 2026-05-19 마이그레이션: 기본 커서 다크커서 강제
     OPT.cursor=0;
     // 2026-06-29: 기본 FPS 제한없음(0) — 마이그레이션 제거

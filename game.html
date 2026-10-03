@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<script src="build-target.js"></script>
 <script src="player-attack-remaster.js?v=20260915-spin-speed15"></script>
 <script src="warrior-bat-swing.js?v=20260915-speed85"></script>
 <script src="warrior-dash-flight.js?v=20260924-flight1"></script>
@@ -10,7 +11,7 @@
 <script src="system-lesson.js?v=20260912-skip-density1"></script>
 <link rel="stylesheet" href="parry-lesson.css?v=20260913-mission-details1">
 <script src="resource-practice.js?v=20260916-recovery2"></script>
-<script src="parry-lesson.js?v=20260913-area-practice8"></script>
+<script src="parry-lesson.js?v=20261001-kislash-2sec"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HELL: EXODUSER</title>
@@ -2541,13 +2542,13 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
 <link rel="stylesheet" href="stat-panel-ui.css?v=20260913-smooth-ui">
 <link rel="stylesheet" href="localization.css?v=20260909">
 <link rel="stylesheet" href="ui-foundation.css?v=20260930-lesson-translucent">
-<link rel="stylesheet" href="ui-refinement.css?v=20261001-settings-nav18">
+<link rel="stylesheet" href="ui-refinement.css?v=20261002-title-sizes">
 <link rel="stylesheet" href="growth-tree-detail.css?v=20260927-body-art3">
 <link rel="stylesheet" href="knight-portrait.css?v=20260928-equipment-cutout3">
 <script defer src="inventory-paperdoll.js?v=20260928-equipment-cutout3"></script>
 <link rel="stylesheet" href="growth-tree-fixed-background.css?v=20260927-fixed2">
 <link rel="stylesheet" href="growth-tree-information.css?v=20260927-info1">
-<script defer src="ui-panels.js?v=20261001-settings-nav17"></script>
+<script defer src="ui-panels.js?v=20261002-title-sizes"></script>
 <link rel="stylesheet" href="inventory-gems.css?v=20260927-jewel-finish">
 <link rel="stylesheet" href="inventory-gems-finish.css?v=20260927-square-art2">
 <link rel="stylesheet" href="inventory-space.css?v=20260928-relic-frame1">
@@ -3580,6 +3581,12 @@ async function dbLoad(){
 }
 
 // ═══ Restore state from saved data ═══
+function _restoreExpProgress(pd){
+  const maxExp=pd.maxExp||15;
+  if((pd.lv||1)<1000||(Number.isFinite(maxExp)&&maxExp>0))return{exp:pd.exp||0,maxExp};
+  // 구버전 초월 필요 경험치의 32비트 오버플로 값만 복구한다.
+  return{exp:Math.max(0,Number(pd.exp)||0),maxExp:_calcMaxExp(pd.lv)};
+}
 function dbRestore(d){
   if(!d)return false;
   // 생성 직후에는 player 없이 charIdx만 저장된다. 이전 캐릭터 캐시보다 슬롯이 우선이다.
@@ -3588,7 +3595,7 @@ function dbRestore(d){
   if(!d.player)return false;
   // Player
   const pd=d.player;
-  P.lv=pd.lv||1; P.exp=pd.exp||0; P.maxExp=pd.maxExp||15;
+  P.lv=pd.lv||1; const _xpRestore=_restoreExpProgress(pd); P.exp=_xpRestore.exp; P.maxExp=_xpRestore.maxExp;
   P._transLvDate=pd.transLvDate||null; P._transLvCount=pd.transLvCount||0; P._apBossCleared=pd.apBossCleared||[]; P._goddessGift=pd.goddessGift||[];
   // SP/AP: 저장된 값 그대로 복원 (재계산 폐지 — 보스+10SP 등 보너스 누락, 합체 비용 오산 등 버그 다수)
   P.sp=pd.sp||0;
@@ -5183,6 +5190,29 @@ function _prepEnemyInstanced(_vl,_vr,_vt,_vb,_now,_E_RMAX){
   }
   const _ens8Drawn=_drawEnemy8DirInstanced();
   if(_ensGLCount>0)_drawEnemyInstanced();
+  // ═══ 피격 플래시(GL 경로) — hurtE가 세팅한 e._hitFlash를 스프라이트 실루엣 가산 발광으로 덧그리고 감소 ═══
+  // GL 인스턴싱 스트라이드에는 tint가 없어(알파만) 셰이더 hot-path를 건드리지 않고, GL 스프라이트 위에 원본 셀을 additive로 1장 덧그린다.
+  let _anyHF8=false;
+  for(let _hi=0;_hi<_eIter.length;_hi++){const e=_eIter[_hi];if(e&&e._hitFlash>0&&e._ensGLMode===1){_anyHF8=true;break}}
+  if(_anyHF8){
+    X.save();X.globalCompositeOperation='lighter';_setBlend(true);X.imageSmoothingEnabled=false;
+    for(let _hi=0;_hi<_eIter.length;_hi++){const e=_eIter[_hi];
+      if(!e||!e.alive||!(e._hitFlash>0)||e._ensGLMode!==1)continue;
+      if(e._mob8dir&&e._mobCh){
+        const _a8=_ch8Atlas[e._mobCh]||_ch8Atlas[1];
+        if(_a8&&_a8.meta){
+          const _dk8=_mobFacingDir8(e.facing);let _da8=_a8.dirs[_dk8];if(!_da8||!_da8.ready)_da8=_a8.dirs.south;
+          if(_da8&&_da8.ready){
+            const _cell=_a8.meta.cell||256,_t=Math.min(1,e._hitFlash/6),_sz=Math.max(e.r*7,80)*(1+.05*_t);
+            X.globalAlpha=_t*.8;
+            X.drawImage(_da8.img,e._mob8Col*_cell,e._mob8Row*_cell,_cell,_cell,e.x-_sz/2,e.y-_sz/2,_sz,_sz);
+          }
+        }
+      }
+      // 수명 감소는 고정스텝 update()로 이동(주사율 독립) — GL 경로는 그리기만
+    }
+    _setBlend(false);X.globalCompositeOperation='source-over';X.globalAlpha=1;X.restore();
+  }
   X.globalAlpha=1;_dbgEnsGL=performance.now()-_t0;_dbgEns8GL=_ens8Drawn;
   return _ensGLCount+_ens8Drawn
 }
@@ -6121,7 +6151,7 @@ function keyName(code,forceKbm){
 }
 
 // Options
-let OPT={shake:80,hitStop:0,parts:IS_ELECTRON?100:80,sfxVol:60,bgmVol:60,diff:5,minPickRar:0,minPickLvTier:0,fpsCap:0,petAuto:true,bossDebug:false,bloom:true,trail:true,slash:true,postfx:true,deathFx:true,lighting:true,torch:true,ambPart:false,fog:true,bossFog:true,grain:true,autoPotThr:0.99,cursor:0,cursorSize:50,quality:'high',resScale:100,ssaa:1,outline:true,bgmTrack:'auto',lang:'ko',crAutoFuse:-1,crAutoEnh:-1,showFps:false,atmos:2};
+let OPT={shake:80,hitStop:0,parts:IS_ELECTRON?100:80,sfxVol:60,bgmVol:60,diff:5,diffV2:1,minPickRar:0,minPickLvTier:0,fpsCap:0,petAuto:true,bossDebug:false,bloom:true,trail:true,slash:true,postfx:true,deathFx:true,lighting:true,torch:true,ambPart:false,fog:true,bossFog:true,grain:true,autoPotThr:0.99,cursor:0,cursorSize:50,quality:'high',resScale:100,ssaa:1,outline:true,bgmTrack:'auto',lang:'ko',crAutoFuse:-1,crAutoEnh:-1,showFps:false,atmos:2};
 rz(); // 캔버스 초기 리사이즈 (OPT 선언 후 호출)
 
 // ═══ [LANG] 다국어 번역 시스템 ═══
@@ -15655,7 +15685,7 @@ const TOTAL_STAGES=35;
 // ── 데모 잠금 ──────────────────────────────────────────
 // ?bic / ?demo → 공개 데모(Lv100, 1-1), 없으면 정식
 const _BIC=location.search.includes('bic');
-const _DEMO_MODE=true;
+const _DEMO_MODE=(window.EXODUSER_BUILD_TARGET||'demo')==='demo';
 const _DEMO_LV_CAP=100;
 const _DEMO_LAST_STAGE=0; // 1-1(stage 0) 클리어 뒤 데모 종료
 const _DEMO_FUSE_ALLOWED=new Set(['dimBreach','dimSlam','sixFuse','elemFuse','whirlDet','slamStorm','bladeFuse','bladeEcho','plagueFuse','plagueVenom','boneStorm','elecRepent','shieldFuse','holyFuse','holyIce','iceMortar','pillarSpike','pillarSlam','infernoSlam','thunderGhost','dualScarecrow','siegeGhost']);
@@ -32833,6 +32863,7 @@ function update(){
       if(e._bossReviveVFXPending>0){e._bossReviveVFXPending-=sp;if(e._bossReviveVFXPending<=0){e._bossReviveVFXPending=0;_bossReviveGrandVFX(e,e._origR||e.r);}}
       if(e.stunned>0)e.stunned-=sp;
       if(e._hitStun>0)e._hitStun-=sp;
+      if(e._hitFlash>0)e._hitFlash=Math.max(0,e._hitFlash-sp); // 피격 플래시 수명: 고정스텝 update 감쇠(주사율 독립, 60fps 6틱≈100ms). slowmo/hitstop은 sp로 존중. render는 그리기만
       if(e._stunImmune>0)e._stunImmune-=sp;
       if(e._pImmune>0)e._pImmune-=sp;
       if(e.stunned<=0&&e._maxStunned){e._maxStunned=0;if(e.ib){_poiseReset(e);e._pImmune=Math.max(e._pImmune||0,300);e.s='idle';e.st2=30;e._teleDropY=0;}}
@@ -34831,7 +34862,9 @@ function update(){
         const fz=G._fireZones[fi];
         if(fz.type==='iceStorm'&&dst(fz.x,fz.y,_iswx,_iswy)<fz.r+_isR){_isBlocked=true;break}
       }
-      if(_isBlocked){showPH(_T('이미 빙풍 지역!'),'#88ccff')}
+      if((P._isStk||0)<=0){P._isAiming=false;showPH(_T('충전 중...'),'#ff8844')}
+      else if(P.mp<40){showPH(_T('MP 부족! (40)'),'#4488ff')}
+      else if(_isBlocked){showPH(_T('이미 빙풍 지역!'),'#88ccff')}
       else{
         P.mp=Math.max(0,P.mp-40);
         G._fireZones.push({x:_iswx,y:_iswy,r:_isR,t:0,maxT:600,
@@ -41330,7 +41363,7 @@ function _calcMaxExp(lv){
   if(lv<1000)return ~~((15+lv*2.5+lv*lv*.05)*Math.pow(1.001,lv)); // 올드공식 × 0.1%복리 (초반 유지, 후반 도전적)
   // 초월: 500만 + (초월렙)² × 10000
   const t=lv-999;
-  return ~~(5000000+t*t*10000);
+  return Math.floor(5000000+t*t*10000);
 }
 function addExp(v,trans){
   // trans=true: 초월 고정값, /3 스킵
@@ -43457,6 +43490,7 @@ function fireMaliceMortar(_tx,_ty){
 function fireBoneWall(tx,ty){
   try{
   P._bwAiming=false;
+  if((P._bwStk||0)<=0){showPH(_T('충전 중...'),'#ff8844');return}
   if(G.mats<_malCost(12)){showPH(_T('악의 부족!'),'#ff4444');return}
   G.mats-=_malCost(12);
   const slv=P.skills.boneWall||1;
@@ -44040,6 +44074,7 @@ function _grantOssuaryIfNeeded(){
   notify('⚱️ '+_rarName(5)+' ['+_T(oss.name)+'] '+_T('획득!')+' '+_T('자동 장착!'));
   try{addTxt(P.x,P.y-55,'⚱️ '+_T(oss.name),'#ff4466',80)}catch(e){}
   try{recalcSt()}catch(e){}
+  applyStats(); // 자동 장착 보너스를 즉시 재계산; 현재 자원은 기존 clamp 정책 유지
 }
 // 철갑 전대 고유식: 대검 설치 후 마지막 60f 붉은 충전에서만 탄막을 흡수한다.
 function _ancestorSwordAbsorbRadius(a){
@@ -45315,7 +45350,7 @@ function _skillBatchUp(){
     if(_slv<1)continue; // 미습득 제외
     while(_slv<_skMaxLv&&_slv<_skLvLock){
       const _cost=_skillUpSpCost(_slv);
-      const _matGate=_malCost(sk.upMat||100); // canUp 게이트와 동일
+      const _matGate=_malCost(sk.upMat||0); // 실제 강화 차감과 동일
       const _matChg=_malCost(sk.upMat||0);    // apply 차감과 동일
       if(P.sp<_cost||G.mats<_matGate)break;
       P.skills[sk.id]++;P.sp-=_cost;G.mats-=_matChg;_slv++;_total++;
@@ -45858,7 +45893,7 @@ function _renderSkillRow(sk,grid){
       _fuseCanUp=_fLv2<_skMaxLv&&P.sp>=_fuseUpSp;
     }
     const _singleUpSp=_skillUpSpCost(slv,false);
-    const canUp=(learned&&sk.up&&slv<_skMaxLv&&slv<_skLvLock&&P.sp>=_singleUpSp&&G.mats>=_malCost(sk.upMat||100)&&!_isFuseUp)||(_fuseCanUp&&slv<_skLvLock);
+    const canUp=(learned&&sk.up&&slv<_skMaxLv&&slv<_skLvLock&&P.sp>=_singleUpSp&&G.mats>=_malCost(sk.upMat||0)&&!_isFuseUp)||(_fuseCanUp&&slv<_skLvLock);
     const d=document.createElement('div');
     d.dataset.skId=sk.id; // 라인 연결용 식별자
     // 합체 보석 그룹 — 습득된 스킬은 항상 그룹색 글로우
@@ -46855,7 +46890,7 @@ function renderSettings(){
 $('setClose').onclick=()=>closePanel('settings');
 if($('showTutorialBtn'))$('showTutorialBtn').onclick=()=>{closePanel('settings');showTutorial()};
 // ── 자동 저장 함수 ──
-function saveSettings(){try{localStorage.setItem('hellcave_settings',JSON.stringify({binds:{...BINDS},binds2:{...BINDS2},opt:{...OPT}}));localStorage.setItem('hellLang',OPT.lang)}catch(e){}}
+function saveSettings(){OPT.diffV2=1;try{localStorage.setItem('hellcave_settings',JSON.stringify({binds:{...BINDS},binds2:{...BINDS2},opt:{...OPT}}));localStorage.setItem('hellLang',OPT.lang)}catch(e){}}
 
 // ══ 2026-04-17 UI 고정 디자인 시스템 — Reference Resolution 1920×1080 ══
 // 창 크기·페이지 줌에 맞춰 HUD 비율을 유지하는 순수 자동 스케일.
@@ -47366,7 +47401,10 @@ try{
     if(data.opt){for(const k in data.opt)OPT[k]=data.opt[k]}
     if(OPT.atmos===undefined)OPT.atmos=2; // ATMOS 구저장본 호환
     // 2026-07-30 난이도 개편 마이그레이션: 구 0~10(0=일반) → 신 0~10(5=일반, -5~+5단)
-    if(!OPT.diffV2){OPT.diff=Math.min(10,(+OPT.diff||0)+5);OPT.diffV2=1}
+    // 저장 원본의 마커로 판정: 신규 OPT의 diffV2 기본값이 구세이브 이관을 가리지 않는다.
+    if(data.opt&&!data.opt.diffV2&&data.opt.diff!=null){OPT.diff=Math.min(10,(+OPT.diff||0)+5)}
+    if(OPT.diff==null)OPT.diff=5;
+    OPT.diffV2=1;
     // 2026-05-19 마이그레이션: 기본 커서 다크커서 강제
     OPT.cursor=0;
     // 2026-06-29: 기본 FPS 제한없음(0) — 마이그레이션 제거
@@ -50564,6 +50602,8 @@ function draw(){
   for(let _eri=0;_eri<ens.length;_eri++){const e=ens[_eri];
     if(!e){continue}
     if(!e.alive){
+      // 부활 잔상 방지: 죽은 몹의 피격 플래시 잔여값 즉시 소거(시각 상태만; death/alive/보상/시체 불변)
+      if(e._hitFlash)e._hitFlash=0;
       // ── 부활 대기 중: vfx_void_black 렌더링 ──
       if(e._reviveTimer>0&&e._reviveX!=null){
         const _rvx=e._reviveX,_rvy=e._reviveY;
@@ -51524,9 +51564,28 @@ function draw(){
       X.fillText('❗',e.x,e.y-e.r-8);
       X.globalAlpha=sa;
     }
-    // ═══ 피격 플래시 (타이머만 감소, 원형 제거) ═══
-    if(e._hitFlash > 0) {
-      e._hitFlash -= 1;
+    // ═══ 피격 플래시 — 히트 시 스프라이트 가산 발광(흑철 지옥 톤 유지, 타격 피드백) ═══
+    // GL 인스턴싱으로 그려진 몹(_ensGLQueued)은 GL 경로 플래시(_prepEnemyInstanced)에서 처리하므로 2D 폴백에선 건너뛴다(이중 방지).
+    if(e._hitFlash > 0 && !_ensGLQueued) {
+      if(!e.ib && e._mob8Col!==undefined && e._mob8Col!==null){
+        const _hfA8=_ch8Atlas[1];
+        if(_hfA8){
+          const _hfDk=_mobFacingDir8(e.facing);
+          let _hfDa=_hfA8.dirs[_hfDk]; if(!_hfDa||!_hfDa.ready)_hfDa=_hfA8.dirs['south'];
+          if(_hfDa&&_hfDa.ready){
+            const _hfC8=(_hfA8.meta?_hfA8.meta.cell:256);
+            const _hfT=Math.min(1,e._hitFlash/6);        // 1→0 페이드
+            const _hfSz=Math.max(e.r*7,80)*(1+.05*_hfT); // 히트 순간 살짝 팝
+            const _hfA=_hfT*.8*sa;
+            X.save();X.translate(e.x,e.y);X.imageSmoothingEnabled=false;
+            X.globalAlpha=_hfA;X.globalCompositeOperation='lighter';_setBlend(true);
+            X.drawImage(_hfDa.img,e._mob8Col*_hfC8,e._mob8Row*_hfC8,_hfC8,_hfC8,-_hfSz/2,-_hfSz/2,_hfSz,_hfSz);
+            _setBlend(false);X.globalCompositeOperation='source-over';X.globalAlpha=sa;
+            X.restore();
+          }
+        }
+      }
+      // 수명 감소는 고정스텝 update()로 이동(주사율 독립) — 2D 폴백은 그리기만
     }
     // ═══ 가시덫 슬로우 비주얼 — 발밑 초록 원 ═══
     if(e._spikeSlow>0){const _ssA=Math.min(.25,e._spikeSlow/90*.25);X.save();X.globalAlpha=_ssA;X.fillStyle='#44cc44';X.beginPath();X.arc(e.x,e.y,e.r*1.2,0,Math.PI*2);X.fill();X.restore()}

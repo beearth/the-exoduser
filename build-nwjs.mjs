@@ -2,22 +2,22 @@
 // 기반: G:\hell-ea\build-nwjs.mjs
 
 import nwbuild from 'nw-builder';
-import { cpSync, existsSync, mkdirSync, rmSync, readdirSync, readFileSync, writeFileSync } from 'fs';
+import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'fs';
 import { dirname } from 'path';
 import { createHash } from 'crypto';
+import { execFileSync } from 'node:child_process';
+import { createReleaseConfig, runtimeManifest } from './tools/release-target.mjs';
 
 // An integration build uses fresh, isolated paths so existing releases and profiles survive.
-const integrationArg = process.argv.slice(2).find(arg => arg.startsWith('--integration-id='));
-if (process.argv.length > 2 && (process.argv.length !== 3 || !integrationArg)) {
-  throw new Error('Usage: node build-nwjs.mjs [--integration-id=YYYYMMDD-HHMMSS]');
-}
-const integrationId = integrationArg?.slice('--integration-id='.length);
-if (integrationArg && !/^\d{8}-\d{6}$/.test(integrationId)) {
-  throw new Error('Integration ID must be YYYYMMDD-HHMMSS');
-}
-const DIST = integrationId ? `dist-integration-${integrationId}` : 'dist';
-const OUT = integrationId ? `out/EXODUSER-integration-${integrationId}` : 'out/EXODUSER-win64';
-if (integrationId && (existsSync(DIST) || existsSync(OUT))) {
+const args=Object.fromEntries(process.argv.slice(2).map(arg=>{
+ const match=/^--(target|build-id|runtime)=(.+)$/.exec(arg);
+ if(!match)throw Error('Usage: node build-nwjs.mjs --target=full|demo --build-id=YYYYMMDD-HHMMSS [--runtime=verified-directory]');
+ return [match[1],match[2]];
+}));
+const release=createReleaseConfig(args.target,args['build-id']);
+const integrationId=release.buildId; // strict missing-input checks apply to every release
+const DIST=release.dist,OUT=release.out;
+if (existsSync(DIST) || existsSync(OUT)) {
   throw new Error(`Integration paths already exist: ${DIST}, ${OUT}`);
 }
 const CODEC_DLL = 'vendor/nwjs-ffmpeg/0.111.2/ffmpeg.dll';
@@ -28,12 +28,12 @@ if (createHash('sha256').update(readFileSync(CODEC_DLL)).digest('hex') !== CODEC
 
 // ── 1. dist/ 스테이징 폴더 초기화 ──────────────────────────────────────────
 console.log('[build] dist/ 초기화...');
-if (!integrationId && existsSync(DIST)) rmSync(DIST, { recursive: true, force: true });
 mkdirSync(DIST, { recursive: true });
 
 // ── 2. 단일 파일 복사 ────────────────────────────────────────────────────────
 const FILES = [
   'index.html', 'game.html', 'credits.html',
+  'build-target.js',
   'game-easy-test.html', 'game-guide.html',
   'player-attack-remaster.js',
   'warrior-bat-swing.js',
@@ -84,24 +84,10 @@ for (const f of FILES) {
 // ── 2b. package.json 정리 (NW.js 런타임용 — type:module/scripts/deps 제거) ──
 {
   const pkg = JSON.parse(readFileSync('package.json', 'utf8'));
-  const nwPkg = {
-    name: pkg.name,
-    version: pkg.version,
-    main: pkg.main,
-    'node-main': pkg['node-main'],
-    'node-remote': pkg['node-remote'],
-    window: pkg.window,
-    'chromium-args': pkg['chromium-args'],
-  };
-  if (integrationId) {
-    if (!nwPkg.main.includes('localhost:3333') || !nwPkg['chromium-args'].includes('--user-data-dir=./userdata')) {
-      throw new Error('Integration package isolation patch failed');
-    }
-    nwPkg.main = nwPkg.main.replace('localhost:3333', 'localhost:3347');
-    nwPkg['node-remote'] = ['http://127.0.0.1:3347', 'http://localhost:3347'];
-    nwPkg['chromium-args'] = nwPkg['chromium-args'].replace('--user-data-dir=./userdata', `--user-data-dir=./userdata-integration-${integrationId}`);
-  }
+  const nwPkg = runtimeManifest(pkg,release);
   writeFileSync(`${DIST}/package.json`, JSON.stringify(nwPkg, null, 2), 'utf8');
+  writeFileSync(`${DIST}/release-config.json`,JSON.stringify(release,null,2));
+  writeFileSync(`${DIST}/build-target.js`,`window.EXODUSER_BUILD_TARGET='${release.target}';\n`);
   console.log('[build] package.json 정리 완료 (type:module 제거)');
 }
 
@@ -118,15 +104,6 @@ for (const f of readdirSync('.').filter(f => f.startsWith('atlas_'))) {
 // ── 5. node-main.js 복사 ────────────────────────────────────────────────────
 if (existsSync('node-main.js')) {
   cpSync('node-main.js', `${DIST}/node-main.js`);
-  if (integrationId) {
-    const isolatedServer = readFileSync(`${DIST}/node-main.js`, 'utf8')
-      .replace('const PORT = 3333;', 'const PORT = 3347;')
-      .replace("path.join(APPDATA, 'EXODUSER-HELL', 'saves')", `path.join(APPDATA, 'EXODUSER-INTEGRATION-${integrationId}', 'saves')`);
-    if (!isolatedServer.includes('const PORT = 3347;') || !isolatedServer.includes(`EXODUSER-INTEGRATION-${integrationId}`)) {
-      throw new Error('Integration server isolation patch failed');
-    }
-    writeFileSync(`${DIST}/node-main.js`, isolatedServer, 'utf8');
-  }
   console.log('[build] node-main.js 포함');
 } else {
   if (integrationId) throw new Error('Required build file missing: node-main.js');
@@ -149,21 +126,20 @@ for (const d of DIRS) {
 }
 
 // ── 7. nwbuild ────────────────────────────────────────────────────────────────
-let useTemp = false;
-if (!integrationId && existsSync(OUT)) {
-  try {
-    rmSync(OUT, { recursive: true, force: true });
-  } catch {
-    console.log('[build] 출력 폴더 잠김 — package.nw만 교체합니다.');
-    useTemp = true;
+const buildDir = OUT;
+
+console.log(args.runtime?'[build] 검증된 로컬 런타임으로 패키징...':'[build] 공식 NW.js 런타임 다운로드/패키징...');
+if(args.runtime){
+  // Local runtime must already be verified against the official per-file shasums.
+  const proof=JSON.parse(readFileSync(`${args.runtime}/runtime-provenance.json`,'utf8'));
+  if(proof.version!=='0.111.2'||proof.flavor!=='normal'||proof.platform!=='win-x64'||proof.officialUrl!=='https://dl.nwjs.io/v0.111.2/SHASUMS256.txt')throw Error('Unverified local runtime');
+  for(const file of proof.files){
+    if(createHash('sha256').update(readFileSync(`${args.runtime}/${file.path}`)).digest('hex')!==file.sha256)throw Error(`Runtime changed: ${file.path}`);
   }
-}
-
-const buildDir = useTemp ? 'out/_tmp_build' : OUT;
-if (useTemp && existsSync(buildDir)) rmSync(buildDir, { recursive: true, force: true });
-
-console.log('[build] nwbuild 시작 (첫 실행 시 NW.js 다운로드, 수 분 소요)...');
-await nwbuild({
+  cpSync(args.runtime,OUT,{recursive:true});
+  cpSync(`${OUT}/nw.exe`,`${OUT}/EXODUSER.exe`);
+  cpSync(DIST,`${OUT}/package.nw`,{recursive:true});
+}else await nwbuild({
   srcDir: DIST,
   mode: 'build',
   version: '0.111.2',
@@ -183,16 +159,19 @@ await nwbuild({
   process.exit(1);
 });
 
-// ── 8. package.nw 교체 (잠긴 경우) ──────────────────────────────────────────
-if (useTemp && existsSync(`${buildDir}/package.nw`)) {
-  if (existsSync(`${OUT}/package.nw`)) rmSync(`${OUT}/package.nw`, { recursive: true, force: true });
-  cpSync(`${buildDir}/package.nw`, `${OUT}/package.nw`, { recursive: true });
-  rmSync(buildDir, { recursive: true, force: true });
-  console.log('[build] 완료: package.nw 교체');
-} else {
-  console.log(`[build] 완료: ${OUT}/`);
-}
+console.log(`[build] 완료: ${OUT}/`);
 
 // Stock NW.js can show H.264 while silently dropping AAC. Keep the matching decoder in every build.
 cpSync(CODEC_DLL, `${OUT}/ffmpeg.dll`);
 console.log('[build] NW.js 0.111.2 AAC/H.264 codec installed');
+const artifactFiles=[];
+function recordArtifact(dir){
+  for(const entry of readdirSync(dir,{withFileTypes:true})){
+    const file=`${dir}/${entry.name}`;
+    if(entry.isDirectory()){recordArtifact(file);continue;}
+    const bytes=readFileSync(file);
+    artifactFiles.push({path:file.slice(OUT.length+1),bytes:bytes.length,sha256:createHash('sha256').update(bytes).digest('hex')});
+  }
+}
+recordArtifact(OUT);
+writeFileSync(`${OUT}/release-artifact-manifest.json`,JSON.stringify({config:release,sourceCommit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8',windowsHide:true}).trim(),sourceDirty:execFileSync('git',['status','--porcelain'],{encoding:'utf8',windowsHide:true}),builtAt:new Date().toISOString(),files:artifactFiles},null,2));

@@ -3,11 +3,12 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "main": "http://localhost:3333/index.html?demo=1",
+  "main": "http://localhost:3350/index.html",
   "node-main": "node-main.js",
+  "exoduser": {"target":"full","appId":4749590,"depotId":4749591,"port":3350,"saveNamespace":"EXODUSER-HELL-FULL"},
   "node-remote": [
-    "http://127.0.0.1:3333",
-    "http://localhost:3333"
+    "http://127.0.0.1:3350",
+    "http://localhost:3350"
   ],
   "window": {
     "title": "EXODUSER: HELL LORD",
@@ -20,7 +21,7 @@
     "frame": false,
     "toolbar": false
   },
-  "chromium-args": "--disable-features=CrossOriginOpenerPolicy,CrossOriginEmbedderPolicy,IsolateOrigins,SitePerProcess,SkiaGraphite --disable-site-isolation-trials --disable-web-security --no-sandbox --ignore-gpu-blocklist --enable-gpu-rasterization --allow-running-insecure-content --autoplay-policy=no-user-gesture-required --enable-features=SharedArrayBuffer --user-data-dir=./userdata",
+  "chromium-args": "--disable-features=CrossOriginOpenerPolicy,CrossOriginEmbedderPolicy,IsolateOrigins,SitePerProcess,SkiaGraphite --disable-site-isolation-trials --disable-web-security --no-sandbox --ignore-gpu-blocklist --enable-gpu-rasterization --allow-running-insecure-content --autoplay-policy=no-user-gesture-required --enable-features=SharedArrayBuffer --user-data-dir=./userdata-full",
   "scripts": {
     "serve:map": "\"C:\\nvm4w\\nodejs\\node.exe\" tools/map-test-server.mjs",
     "serve:test": "node tools/local-static-server.mjs",

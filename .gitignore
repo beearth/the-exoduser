@@ -6,6 +6,8 @@ test_*
 check_*
 *.pyc
 dist/
+# Unique local integration staging copies produced by build-nwjs.mjs.
+/dist-integration-*/
 out/
 .env
 server.err.log
@@ -168,3 +170,9 @@ assets/vfx/boss/gen/
 !/assets/vendor/three-r160/build/
 !/assets/vendor/three-r160/build/three.module.js
 /output/warrior_story_remaster_20261001/
+
+# Steam release staging; source files remain tracked.
+/dist-release-*/
+/out/EXODUSER-full-*/
+/out/EXODUSER-demo-*/
+/output/steam_full_resubmit_20261002*/

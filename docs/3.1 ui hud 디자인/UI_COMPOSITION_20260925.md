@@ -1,5 +1,78 @@
 # UI 구성 개편 — 2026-09-25
 
+## 2026-10-02 공통 제목 명패 S/M/L — 현행 SSOT
+
+설정·전투 스킬·대장간·능력치의 제목은 번역된 글자 폭에 맞춰 S/M/L 금속판을 고른다. 기사 장식은 선택한 금속판 폭에 따라 가로로 늘리지 않는다. 기존 `header.png` 기사 장식과 `button.webp` 금속판을 각각 표시하며 제목 글자는 기존 리프 DOM에 남긴다. 이 절은 아래 제작 이력의 제목 크기·장식·캐시 값 및 `20261002-settings-title-fit`의 440px 설정 전용 규격보다 우선한다.
+
+| 대상 / 상수 | 현재 코드 계약 | 적용 위치 |
+|---|---|---|
+| 대상 패널 | `settings`, `skillPanel`, `forge`, `storagePanel`, `statPanel` 중 초기화 때 실제 존재하고 자식 요소가 없는 첫 `.ptitle`만 등록 | `ui-panels.js`의 `titleFrames()` |
+| 제외·부재 | 인벤토리의 큰 `.ptitle` 숨김 유지. 현재 두 게임 HTML에는 `storagePanel` DOM이 없으며 함수가 새 창고 DOM을 만들지 않음 | 기존 인벤토리 CSS, `getElementById`/리프 검사 |
+| S/M/L | `data-title-size=s/m/l`, `--title-frame-width=360px/520px/680px`. JS 적용 전 CSS 기본 폭520px. 실제 제목 폭은 선택 폭과 부모 내용 폭 중 작은 값 | `titleFrames()` 및 CSS 말미 공통 `.ptitle` |
+| 폭 선택 측정 | 원본 `textContent.trim()`에 계산 스타일의 `text-transform:uppercase`가 있으면 `toLocaleUpperCase()` 적용. 실제 `fontStyle/fontWeight/fontFamily`와 기준 글꼴로 `measureText`를 실행. 측정 폭에 `max(0,Unicode 코드포인트 수−1)×기준 글꼴×.02` 자간 추가 | canvas 2D 측정, DOM 글자 변경 없음 |
+| 폭 선택 공식 | `측정 폭+96px≤360/520/680px`를 만족하는 가장 작은 S/M/L 선택. 모두 초과하면 L. 제목 폭 자체는 부모 가용 폭으로 제한 | `sizes.find(...) || sizes[2]` |
+| 글꼴 기준 | 기본24px. 높이≤800px이면20px. 폭≤560px 또는 높이≤650px이면18px가 우선 | JS `base`, CSS media 조건 |
+| 최종 글꼴 | `available=parent.clientWidth−paddingLeft−paddingRight`, `room=max(1,min(선택 폭,available)−가로 패딩 합)`. `font=max(16,min(base,measured>0 ? base×room/measured : base))`, 소수2자리 px로 `--title-font-size` 저장. 줄높이1.2·자간.02em·줄바꿈/overflow-wrap anywhere | `titleFrames()` 및 공통 `.ptitle` |
+| 기사 장식 기본 | `--title-crest-art=360px`, `--title-crest-height=92px`. `::before`는 폭 `min(아트폭,100%)`·높이92px, 상단 중앙/translateX(−50%), 배경 아트폭²/`center −아트폭×.25` | `img/ui/blackiron/header.png` |
+| 기사 장식 반응형 | 높이≤800px 또는 폭≤560px에서 아트폭280px·높이72px. 높이≤650px에서는 높이0px/`::before display:none`으로 본문 공간 확보 | 공통 CSS media 조건 |
+| 금속판 | `::after`는 기사 장식 아래, 폭100%·높이 `--title-plate-height`. 테두리8px `#6e5b40`, 9-slice `28 72 fill / 8px 20px / 0 stretch` | `img/ui/iron_covenant_20260924/button.webp` |
+| 금속판 높이 | CSS 기본64px, 계산값 `max(64,ceil(Range.getBoundingClientRect().height)+24)`px. Range는 기존 제목 리프의 내용을 선택하여 줄바꿈된 글자 높이를 읽음 | `--title-plate-height` |
+| 제목 총높이·패딩 | 총높이 `기사 높이+판높이`, 패딩 상단 `기사 높이+10px`·좌우48px·하단14px. 폭≤560px에서 좌우28px(합56px). 가운데 정렬, 아래 여백10px; 높이≤650px에서는 아래 여백8px | 공통 `.ptitle`, JS 폭 계산의 패딩 합96/56px |
+| 장식 레이어·입력 | 제목 `isolation:isolate`, 기사 z-index−2/금속판−1, 두 장식 pointer-events none. 부모·제목 내용 교체 없이 dataset/CSS 변수만 필요한 값이 바뀔 때 갱신 | 공통 CSS와 `put()` |
+| 갱신 | 초기 스케줄, 제목 텍스트 `MutationObserver(childList/characterData/subtree)`, 패널 class 변경, 부모 `ResizeObserver`, window resize(passive), `document.fonts.ready`/`loadingdone`에서 재측정 | `titleFrames()` |
+| 중복·숨김 처리 | pending 플래그로 RAF 요청을 한 번으로 합침. client rect가 없거나 제목 폭0이면 해당 제목 측정 생략. 숨김 패널 class/크기 변경 후 다시 스케줄 | `schedule()`/`fit()` |
+| 캐시 | `game.html`, `game-easy-test.html`, `index.html`의 `ui-refinement.css?v=20261002-title-sizes`. 게임 두 HTML의 `ui-panels.js?v=20261002-title-sizes`; 로비는 이 JS를 새로 로드하지 않음 | 세 HTML CSS / 두 HTML JS |
+| 검수 상태 | 격리 브라우저의 실제 번역 매트릭스 AFTER1450/1450 PASS, 별도 합성 긴 제목 L 선택30/30 PASS. 실제 게임·새 Windows 실행·저장·Steam 설치본 검수는 이 결과에 포함되지 않음. 기존 440px 설정판20/20과 `191200` Windows ptbr/es 화면은 당시 규격 이력 | 아래 검수 표 및 frozen 입력 증거 |
+
+### 공통 명패 격리 렌더링 검수 (2026-10-02)
+
+일반판·쉬운판의 실제 소스 패널 DOM·CSS·`ui-panels.js`·번역 사전을 격리 브라우저에 렌더링했다. 각 언어의 제목 리프만 바꾸고 글꼴 준비와 RAF 배치를 기다린 뒤 Range 글자 경계를 금속판 안전 영역과 비교했다. 게임 로직·전투·저장을 실행한 검수와 구분한다. 현재 CSS/JS SHA-256은 AFTER frozen 입력과 일치한다(`ui-refinement.css`: `af8ca3ffb45959f2632f25229afd89c8074570a1213ab3867ccd0699e12c2a550`, `ui-panels.js`: `c686558326944657abb2ab8fb7c5292f34cbccbab50d571ed1b93664e0eeb9ff3`).
+
+| 검수 항목 | 조건·결과 | 증거·범위 |
+|---|---|---|
+| 실제 번역 매트릭스 | 2HTML×29언어×5패널×5화면=1450. 화면은1920×1080,390×844,1280×540,320×568,600×720 | `tmp/steam-main-resubmit-20261002/title-sizes/before.json`, `after.json`, `comparison-summary.json`, `README.md` |
+| 설정 | 290건, BEFORE 명패 이탈8→AFTER0 | 실제 설정 패널 DOM |
+| 전투 스킬 | 290건, BEFORE220→AFTER0 | 실제 `skillPanel` DOM |
+| 대장간 | 290건, BEFORE162→AFTER0 | 실제 `forge` DOM |
+| 창고 | 290건, BEFORE0→AFTER0 | 현재 소스에 실제 창고 DOM이 없으므로 번역 사전의 ‘창고’를 사용하는 CSS 전용 fixture. 플레이 가능한 창고 UI 검수로 사용하지 않음 |
+| 능력치 | 290건, BEFORE190→AFTER0 | 런타임 제목 ‘성장의 각인’ 사용 |
+| 매트릭스 합계·안정성 | BEFORE580→AFTER0. JS오류0, viewport 이탈0, scroll 넘침0, 리프 유지, 최소 글꼴16px. S1374/M76/L0 | 실제29언어 제목은 L 자동 선택을 유발하지 않음 |
+| 별도 L 스트레스 | 합성 긴 제목을 frozen AFTER fixture에 주입. 2HTML×5패널×3화면=30건 모두 L 자동 선택·글자 적합·리프 유지·최소16px·viewport/scroll 정상·JS오류0 | `stress.json`, `stress-summary.json`. 실제 번역·게임 진행·패키지 검수와 분리 |
+| L 줄바꿈 예시 | 전투 스킬의 판 실제 폭680/322/252px, 2/3/4줄, 판 높이68/85/104px(화면1920×1080/390×844/320×568) | 부모 폭 제한과 Range 높이 측정의 격리 fixture 증거 |
+| 낮은 화면 | 높이650px 이하 기사 장식 숨김은 설계. 금속판·제목 적합 PASS를 모든 화면에서 기사 장식이 보인다는 증거로 사용하지 않음 | CSS compact 규격 |
+| 실제 실행·남은 검수 | `194300` ptbr 성장·스킬의 실제 화면 확인, 설정·대장간 미검수. 10/3 퍼블리셔 `091200`은 기동·인트로·내장 서버 6파일 SHA만 확인했고 패널·전투 native 미검수 | 아래 보충 표 참조. 정상 전투·다음 스테이지·저장/재실행·Steam 설치본은 담당 총괄의 별도 기록을 따름 |
+
+### 실제 Windows 검수 보충 (2026-10-02~03)
+
+`EXODUSER-full-20261002-194300/EXODUSER.exe`에서 일반 로비의 `QA1002` 캐릭터로 Enter한 뒤 마우스 메뉴를 직접 클릭했다. 두 화면은 런타임 주입 없이 확인했으므로 실제 패키지의 ptbr 제목 표시·명패 적합 증거다. 모든 번역·해상도·패널·정상 전투를 검수했다는 뜻은 아니며, 앞의 격리 fixture 검수와 구분한다.
+
+| 대상 | 확인 시각(KST) | 실제 확인 범위 | 증거·남은 범위 |
+|---|---|---|---|
+| 194300 성장/능력치(ptbr) | 2026-10-02 19:50:42.281 | `Selos da ascensão` 성장 화면의 제목·명패 표시 | [화면](G:/exoduser/tmp/steam-main-resubmit-20261002/title-sizes/native-ptbr-growth-194300.png), [메타데이터](G:/exoduser/tmp/steam-main-resubmit-20261002/title-sizes/native-ptbr-growth-194300.json) |
+| 194300 전투 스킬(ptbr) | 2026-10-02 19:51:27.293 | `HABILIDADES DE COMBATE` 화면의 제목·명패 표시 | [화면](G:/exoduser/tmp/steam-main-resubmit-20261002/title-sizes/native-ptbr-skills-194300.png), [메타데이터](G:/exoduser/tmp/steam-main-resubmit-20261002/title-sizes/native-ptbr-skills-194300.json) |
+| 194300 설정(Config)·대장간(Forge) | 2026-10-02 | 사용자 ESC로 검수가 중단되어 새 S/M/L 실제 화면 미검수 | 성장·스킬의 부분 검수를 설정·대장간에 확대 적용하지 않음 |
+| 퍼블리셔 20261003-091200 Windows 데모 | 2026-10-03 | Windows 기동·인트로·내장 서버 6파일 SHA 일치만 확인 | 패널·전투 native 미검수. 별도 headless 검수는 진행 중이며 실제 Windows 검수와 구분 |
+
+증거 SHA256(2026-10-03 재확인):
+
+| 증거 파일 | SHA256 |
+|---|---|
+| `native-ptbr-growth-194300.png` | `7dfa5ad6dce3926c8d97c155ef68ebbb2f539c232ff8ee068fae26615520750b` |
+| `native-ptbr-growth-194300.json` | `72a58398c2ae3637a6698d0e3b0ebc4303abb134944a2030a158947d1a4ac0c4` |
+| `native-ptbr-skills-194300.png` | `035f167b52b53d83d754677adcc02d79075abf7b37f977135cc7b46477a5c0d5` |
+| `native-ptbr-skills-194300.json` | `852047c5612a5008c50ab1d59f12b9cb4c885b2cb89b4c29e300ec9b4fbf3f19` |
+
+### 퍼블리셔 20261003-095500 headless 정상 UI·저장/재실행 검수
+
+| 항목 | 실제 검수 결과·경계 |
+|---|---|
+| 조건·제목 | 새095500 전달 파일의 격리 persistent headless Chrome. 새 `QA0955` 캐릭터→일반 UI로 CH1-1→ptbr 설정/스킬→저장·로비→브라우저 프로세스 완전 종료→동일 프로필 새 프로세스 복원. `Configurações` S360/20px, `Habilidades de Combate` M520/20px, 제목 리프 유지·글자 경계 내부 적합 |
+| 저장 계약 | 독립 summary38/38 PASS. `diff=5/diffV2=1`, HP/최대HP514·최대MP449 유지. 장비16/가방10·기존 아이템 필드·스킬·캐릭터·Lv1·stage0·ptbr 동일. 현재MP `299.1125000000004→449`는 기존 재입장 최대치 회복 정책과 일치하며 최대MP 동등과 별도로 검사 |
+| 원문·오류 | raw whole-object bag/equipped 비교2 FAIL을 보존. 첫 복원의 무기5개에 `_spdMig=3/_nameMig=1` 총10필드 추가만 발생; 기존 ID·이름·공속·수치·아이템 변경0. 상태 주입0/직접 DOM 이벤트0, pageerror·consoleerror·HTTP 오류·비미디어 요청 실패0. 의도한 화면 전환의 MP4 `ERR_ABORTED`18건 별도 기록 |
+| 증거·남은 범위 | [요약](G:/exoduser/tmp/publisher-update-20261003/20261003-095500/qa/settings-restart-summary.json), 같은 폴더 raw report·item-diff·ptbr PNG. 모든 QA 브라우저 종료 후 root가 경로를 확인하여 자체 서버PID42672도 종료. 새095500 Windows native 전투·자연 전체 진행/다음 stage·음향/FPS·Steam 검수·Drive 전달은 이 PASS에 포함하지 않음. 앞의091200 native 기동 증거와 구분 |
+
+설정 창 본문·탭·키바인딩 수치는 [설정 UI 작업공간](SETTINGS_UI_WORKSPACE_20260929.md)과 [설정/HUD 디테일](SETTINGS_HUD_DETAIL_20260930.md)을 따른다. 신규 이미지 생성, 저장·번역 문자열·게임 수치·인벤토리 조작 변경은 이번 명패 계약에 포함하지 않는다.
+
 > 2026-09-29 현행: **미선택 기본 화면은 선대 소환체 · 묘왕 바르칸**, 캐릭터 카드 선택 후에는 해당 CHAR_VISUALS의 원화/아이들 영상과 이름·직업을 표시한다. 데모도 자동 선택 없이 시작하며 카드 클릭 후 입장을 활성화한다. 선택 해제 시 전대 화면으로 복귀한다. 아래 2026-09-28 제작·검수는 당시 이력이며, 현재 선택 표시 규칙은 [기본 전대 / 선택 캐릭터 전환 SSOT](<../3.1 ui hud 디자인/LOBBY_ANCESTOR_ART_20260928.md>)를 우선한다.
 
 
@@ -438,6 +511,8 @@ CSS 변경만 적용. 기존 에셋 재사용. 자동 테스트 추가·실행 �
 설정 전용 후속 스타일은 Settings plates 블록 하나로 교체한다. 새 가죽판 생성본은 미채택 작업물이며 런타임 참조 없음. 자동 테스트 추가·실행 없음.
 
 ## 2026-09-26 정보 배경과 통합 제목판
+
+이 절의 제목158px·통합 장식·소지품 압축 제목은 당시 제작 이력이다. 현재 제목 명패 크기·적용 패널·리프 DOM 측정·캐시는 [2026-10-02 공통 제목 명패 S/M/L SSOT](#2026-10-02-공통-제목-명패-sml--현행-ssot)가 우선한다. 인벤토리 큰 제목 숨김과 `storagePanel` DOM 부재도 최신 표를 따른다. 아래 정보 배경·구획·에셋 원본 기록은 보존한다.
 
 레퍼런스의 구성 원칙을 적용한다. 조각·지지대·빈 제목판을 하나의 원본으로 연결하고, 글자는 DOM으로 유지한다. 설정/스킬/소지품의 정보 영역을 조용한 배경 위에 구획한다. 이전 좌측 제목·우측 skull2 계약은 아래 세 창에서 대체한다.
 

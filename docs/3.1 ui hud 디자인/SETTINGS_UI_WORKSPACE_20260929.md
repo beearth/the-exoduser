@@ -2,7 +2,32 @@
 
 사용자 지시: 설정 UI만 작고 답답하므로 크기를 확장한다. 기존 왼쪽 `min(680px,100vw−24px)`·최대 높이1000px 제한을 제거하고, 화면 크기에 맞춰 내용도 재배치했다. 이 문서가 앞선 날짜의 설정 창/제목/행/키캡 크기보다 우선한다. 기존 금속 프레임·제목 아트·버튼 에셋을 사용한다.
 
-## 2026-09-30 설정 제목 명패 정렬
+## 2026-10-02 공통 명패 S/M/L 반영 — 현행
+
+설정 제목의 현행 규격은 [공통 제목 명패 S/M/L SSOT](UI_COMPOSITION_20260925.md#2026-10-02-공통-제목-명패-sml--현행-ssot)를 따른다. 설정 전용 440px 통합 아트 규칙은 아래 당시 이력으로 남긴다. 기존 기사 `header.png`는 S/M/L 판 폭과 분리하며 `button.webp` 9-slice 금속판만 글자 폭에 맞춘다. 설정 제목 리프·언어 선택·옵션·저장·탭 동작은 유지한다.
+
+| 대상 | 현행 계약 / 상태 |
+|---|---|
+| 명패 | S360/M520/L680px, 번역의 실제 글꼴·대문자 변환·자간을 측정하고 가로 여유96px를 더해 선택. 부모 폭 제한·최소16px 글꼴·Range 높이 측정은 공통 SSOT 수식을 따른다 |
+| 장식·작은 화면 | 기본 기사 아트360px/높이92px, 높이≤800 또는 폭≤560에서는280px/72px, 높이≤650에서는 기사 장식 높이0/숨김. 판 높이 최소64px, 좌우48px/폭≤560에서28px |
+| 캐시 | 세 HTML CSS `20261002-title-sizes`, 게임 두 HTML JS `20261002-title-sizes` |
+| 095500 headless 검수 (2026-10-03) | 새 전달 파일의 정상 UI·저장/새 프로세스 복원38/38 PASS. ptbr 설정 S360/20px·스킬 M520/20px 적합. 새 Windows native 전투·전체 진행·음향/FPS 미검수; [공통 SSOT의095500 검수](UI_COMPOSITION_20260925.md#퍼블리셔-20261003-095500-headless-정상-ui저장재실행-검수)에서 원문 비교·현재 MP 회복·증거 경계를 확인 |
+| 검수 | 격리 브라우저 실제 번역 매트릭스 AFTER1450/1450 PASS(BEFORE580→AFTER0, JS오류0, 최소16px, 리프 유지, viewport/scroll 넘침0, S1374/M76/L0). 별도 합성 긴 제목 L 자동 선택30/30 PASS. 창고는 실제 DOM이 없는 CSS fixture. `194300`은 10/2 ptbr 성장·스킬 화면을 실제 클릭으로 확인했으며 설정·대장간은 사용자 ESC 중단으로 미검수다. 10/3 퍼블리셔 `091200`은 기동·인트로·내장 서버 6파일 SHA만 확인했고 패널·전투 native는 미검수다. 상세 조건·증거는 공통 SSOT 검수 표 참조. 아래 `settings-title-fit`의20/20 및 `191200` 실기 화면은 당시 규격 검수 이력 |
+
+## 2026-10-02 긴 번역 설정 제목 명패 맞춤
+
+이 절은 `20261002-settings-title-fit`·본편 `191200` 산출물의 당시 수정·검수 이력이다. 사용자 스크린샷의 `CONFIGURAÇÕES`가 명패를 벗어났다. 기존 제목은 전체 행에 표시됐지만 `::before` 명패만 140px(작은 화면 90px)로 고정되어 있었다. 소스와 기존 본편 패키지의 CSS SHA-256은 동일했으며 캐시·번역 오류가 아니었다. 당시 설정 제목과 원본 기사 명패의 폭·글꼴·세로 배치를 함께 맞췄다. 아래 표는 당시 고정 명패 규격을 대체한440px 규격이며 현행 값은 [공통 S/M/L SSOT](UI_COMPOSITION_20260925.md#2026-10-02-공통-제목-명패-sml--현행-ssot)를 따른다. 당시 제목 리프 DOM과 번역·옵션·저장·다른 패널 제목은 유지했다.
+
+| 선택자 / 조건 | 현행 계약 |
+|---|---|
+| `#settings.panel .pbox .ptitle` | `--settings-title-art=min(440px,100vw−80px)`, 폭은 이 값/최대100%, 높이 아트폭×.4/최소0. 패딩 좌우 아트폭×.17·하단×.065, 가운데·하단 정렬, 글자 `clamp(16px,아트폭×.052,24px)`/줄높이1.2·자간.02em, white-space normal/overflow-wrap anywhere, 아래 여백14px |
+| 제목 `::before` | left0/top0/transform none, 폭·높이100%, 원본 `header.png`를 아트폭²로 균일 확대, `center −아트폭×.25`. pointer-events none 유지 |
+| 폭≤600px | 아트폭 `min(440px,100vw−48px)`; 390px 화면에서 폭342px/높이136.8px/글자17.784px |
+| 높이≤650px | 높이64px, 상하패딩0/세로 가운데, 아래 여백8px, 글자 `clamp(16px,아트폭×.052,20px)`, overflow hidden. 원본 배경 위치 `center (32px−아트폭×.555)`로 명패 부분을 보여 주며 본문 높이를 확보 |
+| 캐시 | `game.html`, `game-easy-test.html`, `index.html` 모두 CSS `20261002-settings-title-fit`; 게임 두 HTML의 JS `20261001-settings-nav17` 유지 |
+| 검수 증거 | 실제 게임 CSS 격리 Chromium 5크기×ptbr/es/de/ko=20/20 명패 내부 경계·가로 넘침 검사 PASS. `tmp/steam-main-resubmit-20261002/settings-title/before.json`, `after.json` 및 각 크기 PNG. 새 Windows `EXODUSER-full-20261002-191200`에서 정상 마우스 메뉴 이동으로 Brazil CONFIGURAÇÕES 및 Spain AJUSTES가 명패 안에 표시되고 본문·닫기 버튼이 보이는 것을 확인. `native-ptbr-191200.png/.json`, `native-es-191200.png/.json`은 실제5120×1440 화면 증거. 격리 검수·설정 가시 검수는 정상 전체 진행·Steam 설치본 검수와 구분 |
+
+## 2026-09-30 설정 제목 명패 정렬 (이전 규격)
 
 `img/ui/blackiron/header.png`에는 글자가 없는 명패가 들어 있다. 기존 `#settings .ptitle`의 왼쪽 패딩 `154px`(작은 폭 `104px`, 낮은 높이 `106px`)이 제목 글자를 명패 오른쪽으로 밀어 빈 명패와 분리했다. 설정 제목에만 글자를 명패 안으로 옮겼다. 다른 패널의 제목, 원본 아트, 설정 값과 동작은 유지한다.
 
@@ -11,7 +36,7 @@
 | 기본 | 제목 높이 `80px`, 왼쪽 패딩 `50px`, 아래 패딩 `9px`, 글자 `24px/28px`, `align-items:flex-end`; 장식 `140×80px`, 배경 `182×182px center -45px` |
 | 폭 `600px` 이하 | 제목 높이 `64px`, 왼쪽 `30px`, 아래 `5px`, 글자 `20px/24px`; 장식 `90×64px`, 배경 `146×146px center -36px` |
 | 높이 `650px` 이하 | 제목 높이 `52px`, 왼쪽 `30px`, 아래 `0`, 글자 `18px/24px`; 장식 `90×52px`, 배경 `120×120px center -30px` |
-| 캐시·검수 | 명패 수정 당시 `game.html`, `game-easy-test.html`, `index.html`의 `ui-refinement.css` 쿼리 `20260930-settings-title-plaque`. 실제 로컬 게임 설정창에서 `1688×1262`, `390×844`, `1280×540` 명패 안 제목을 확인. CSS 캐시 때문에 쿼리 변경 전 새 스타일이 적용되지 않던 현상도 재현했다. 후속 게임 설정·HUD 현행 CSS 캐시는 `20261001-settings-nav16`, JS 캐시는 `20261001-settings-nav17`; 상세 규격은 [후속 디테일 계약](SETTINGS_HUD_DETAIL_20260930.md)을 따른다. 다른 탭 기능·NW.js 패키지·Steam 빌드는 당시 검수 범위 밖 |
+| 캐시·검수 | 명패 수정 당시 `game.html`, `game-easy-test.html`, `index.html`의 `ui-refinement.css` 쿼리 `20260930-settings-title-plaque`. 실제 로컬 게임 설정창에서 `1688×1262`, `390×844`, `1280×540` 명패 안 제목을 확인. CSS 캐시 때문에 쿼리 변경 전 새 스타일이 적용되지 않던 현상도 재현했다. 후속 게임 설정·HUD 현행 CSS 캐시는 `20261001-settings-nav18`, JS 캐시는 `20261001-settings-nav17`; 상세 규격은 [후속 디테일 계약](SETTINGS_HUD_DETAIL_20260930.md)을 따른다. 다른 탭 기능·NW.js 패키지·Steam 빌드는 당시 검수 범위 밖 |
 
 ## 레이아웃 계약
 
@@ -19,8 +44,8 @@
 |---|---|
 | `#settings.panel` | 중앙 정렬, padding12px, border-box, 배경#050507c9 |
 | `.pbox` | width100vw−24px / height100dvh−24px, max-width/max-height none, min-width/min-height0, margin0, padding20px 28px, overflow hidden |
-| `.ptitle` | height/min-height80px, padding0 16px 9px 50px, 왼쪽·아래 정렬, 글자24px/28px, margin-bottom14px |
-| 제목 `::before` | left4px/top0, transform none, 140×80px, 기존 info-header 크기182×182px/위치center −45px |
+| `.ptitle` | S/M/L 판폭·부모 폭 제한, 기사 높이+판 높이, 가운데 정렬, 실제 번역 폭·높이 측정. 현행 수치는 [공통 명패 SSOT](UI_COMPOSITION_20260925.md#2026-10-02-공통-제목-명패-sml--현행-ssot) 참조 |
+| 제목 `::before` / `::after` | 기사 `header.png`와 `button.webp` 9-slice 판을 분리. 아트폭·판높이·반응형·레이어 값은 공통 명패 SSOT 참조 |
 | `.panel-nav` | gap6px/margin-bottom10px. 탭 최소40px/글자14px |
 | `.ui-section-tabs` | gap8px/margin-bottom14px. 탭 최소48px/padding10px 16px/글자16px |
 | `.settings-pages.frame-inner-panel` | padding24px, 기존 본문만 overflow auto. overscroll-behavior contain/scrollbar-gutter stable |
@@ -44,8 +69,8 @@
 | 폭1600px 이상 | 그래픽 품질 섹션 내부2열/gap4px 20px. 제목·gfxPresetRow는 전체 열 |
 | 폭1800px 이상 | keyBindList 내부2열/gap6px 24px. 모드/안내/초기화는 전체 열 |
 | 폭1100px 이하 | pbox padding16px 20px/본문16px. 페이지·조작·게임 섹션1열/gap16px. 커서 sticky 해제 |
-| 폭600px 이하 | 패널 여백6px, pbox100vw−12px/100dvh−12px/padding12px, 제목64px/20px/24px·왼쪽30px·아래5px. 제목 아트90×64px/146²/center−36px. 탭gap2px/최소40px/글자12px/padding8px 3px. 본문10px/섹션8px. 행padding10px 4px/gap8px. 이름14px/값82px·12px. 키 행 minmax(70px,1fr) / minmax(50px,.8fr) / minmax(46px,.7fr) / 20px (패드 행은 위3칸 유지), gap5px/padding6px 2px. 키명/캡12px, 캡padding5px 3px. 닫기 최소폭120px/자동저장12px |
-| 높이650px 이하 | 제목52px/18px/24px·왼쪽30px·아래0/margin-bottom8px. 아트90×52px/120²/center−30px. 공통 패널 탭 최소32px/12px/margin-bottom6px. 설정 탭 최소36px/padding6px/margin-bottom8px. footer margin/padding-top8px |
+| 폭600px 이하 | 패널 여백6px, pbox100vw−12px/100dvh−12px/padding12px. 제목은 공통 명패의 폭560px 이하 규격과 부모 폭 제한을 따른다. 탭gap2px/최소40px/글자12px/padding8px 3px. 본문10px/섹션8px. 행padding10px 4px/gap8px. 이름14px/값82px·12px. 키 행 minmax(70px,1fr) / minmax(50px,.8fr) / minmax(46px,.7fr) / 20px (패드 행은 위3칸 유지), gap5px/padding6px 2px. 키명/캡12px, 캡padding5px 3px. 닫기 최소폭120px/자동저장12px |
+| 높이650px 이하 | 제목 기사 높이0/장식 숨김, 판 최소64px·기준 글꼴18px/하한16px·아래 여백8px. 글자 측정·판 높이는 공통 SSOT 참조. 공통 패널 탭 최소32px/12px/margin-bottom6px. 설정 탭 최소36px/padding6px/margin-bottom8px. footer margin/padding-top8px |
 
 ## 입력 및 DOM 계약
 
@@ -58,7 +83,7 @@
 | 초점 | renderSettings 재구성 전 식별자를 보존, 같은 버튼 focus preventScroll. 보조 삭제 후 해당 alt로 복원 |
 | 대기 | 시작 시 저장/매핑 변경 없음. repeat keydown 무시. 새 키는 기존 등록/충돌 정책으로 처리하고 Escape 취소 |
 | 버튼 입력 | 설정 내 버튼의 Space/Enter/NumpadEnter/Tab을 게임 단축키로 전달하지 않음. 키 캡처 분기가 먼저이므로 대기 중 새 Space/Enter/Tab 등록은 가능 |
-| 캐시 | 당시 `game.html`·`game-easy-test.html`의 ui-refinement.css는 `20260930-settings-title-plaque`, ui-panels.js는 `20260929-settings-choices`. 현재 게임 두 HTML의 CSS는 `20261001-settings-nav16`, JS는 `20261001-settings-nav17`이고 `index.html`은 명패 캐시를 유지한다. |
+| 캐시 | 현행 세 HTML의 ui-refinement.css 및 게임 두 HTML의 ui-panels.js는 `20261002-title-sizes`. `20260930-settings-title-plaque`, `20260929-settings-choices`, `20261001-settings-nav18/nav17`, `20261002-settings-title-fit`은 이전 단계 이력 |
 
 ## 검증 및 상태
 

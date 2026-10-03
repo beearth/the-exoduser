@@ -1,4 +1,4 @@
-// NW.js node-main: 정적 파일 서버 + OAuth 라우트 (정식버전, port 3333)
+// NW.js node-main: target별 정적 파일 서버 + OAuth 라우트 (full 3350 / demo 3351)
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
@@ -13,7 +13,10 @@ function dlog(msg) {
 }
 dlog('=== EXODUSER RELEASE Server started ===');
 
-const PORT = 3333;
+const RELEASE_CONFIG = fs.existsSync(path.join(__dirname, 'release-config.json'))
+  ? JSON.parse(fs.readFileSync(path.join(__dirname, 'release-config.json'), 'utf8'))
+  : JSON.parse(fs.readFileSync(path.join(__dirname, 'package.json'), 'utf8')).exoduser || null;
+const PORT = RELEASE_CONFIG ? RELEASE_CONFIG.port : 3333;
 const APP_DIR = __dirname;
 
 const MIME = {
@@ -41,9 +44,9 @@ const MIME = {
 let _oauthTokens = null;
 let _oauthError = null;
 
-// 세이브 폴더: %APPDATA%\EXODUSER-HELL\saves\ (EA와 동일 경로 공유)
+// release-config/manifest가 지정한 target별 APPDATA 저장 공간. 기존 세이브는 보존한다.
 const APPDATA = process.env.APPDATA || require('os').homedir();
-const SAVE_DIR = path.join(APPDATA, 'EXODUSER-HELL', 'saves');
+const SAVE_DIR = path.join(APPDATA, RELEASE_CONFIG ? RELEASE_CONFIG.saveNamespace : 'EXODUSER-HELL', 'saves');
 if (!fs.existsSync(SAVE_DIR)) fs.mkdirSync(SAVE_DIR, { recursive: true });
 
 function sanitizeSlot(name) {
