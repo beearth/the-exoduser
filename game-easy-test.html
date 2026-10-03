@@ -3891,7 +3891,7 @@ const BGM={
         ||(typeof G!=='undefined'&&G&&G.stage===0&&!G._cutsceneDone&&!G.on);
       if(_cutBlock)return;
     }catch(e){}}
-    if(!force&&OPT.bgmTrack&&OPT.bgmTrack.startsWith('t:'))return;
+    if(!force&&typeof OPT.bgmTrack==='string'&&OPT.bgmTrack.startsWith('t:'))return;
     if(!force&&OPT.bgmTrack!=='auto'&&OPT.bgmTrack!=='allRandom'&&key!=='death'&&key!=='victory'&&key!=='forge'&&key!==OPT.bgmTrack)return;
     this.stop();
     this._curKey=key;

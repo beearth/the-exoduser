@@ -53566,3 +53566,22 @@ scope10=HTML2/test1/docs7이 실제 NUL-uall81에 도달하면 다른 후보 산
 | 실행 앱·인수 | 소스46 통합 대상, 앱source29/3404 미반영. 같은 CH1-1 후보의 시작→전투·획득/장착→4지역게이트→보스사망/부활→재도전·화면/청취 인수 대기. 보스 사망 맵 리셋 수정·실플레이 완료로 계산하지 않음 |
 
 원자료 QA0819 완료8b64aecd-4722-4c99-adf8-e49f2c91b728를 code45 6b045069 위에서 검증한다. source45의 "0819 미채택"은 당시 상태이며 이번 source46에서 해당 reader만 채택한다. HEAD4307cfaa는 Claude오더 완료 raw2 보존 커밋으로 코드epoch45와 구분한다. backup·원 완료·docs전체 관련 키워드 검색 전후·후보/원본/production·관측·전체 HTML 정확 역치환·docs 제한 치환/append 역치환·보호67경로SHA·원격 exactSHA는 tmp/mac-migration-runtime/continued-review-20261003/source46-ancestor-parts/에 보존한다. scope9=HTML2/test1/docs6; 실제 NUL-uall80부터 완료 소유9만 즉시 checkpoint하며 다른 후보를 기다리지 않는다. 현재 TASK/역사핀·오더 소유WIP·사용자 세이브를 보존한다.
+
+
+### 2026-10-03 총괄 source47 — 복원된 BGM 선택값의 문자열 메서드 타입 가드
+
+| 항목 | 현재 소스 계약·검수 결과 |
+|---|---|
+| 변경 id/위치 | main/easy `BGM.play(key,force)`의 첫 bgmTrack guard: `!force&&OPT.bgmTrack&&OPT.bgmTrack.startsWith('t:')` → `!force&&typeof OPT.bgmTrack==='string'&&OPT.bgmTrack.startsWith('t:')`. HTML 각 정확 +18B. QA1005 완료cf5e5d09-f387-404c-9755-4da64ab14bc1 채택 |
+| 설정·저장 | `hellcave_settings` 및 `hellcave_preset_1/2`의 opt를 raw merge하는 기존 경로를 유지. `saveSettings`의 opt payload·diffV2=1·hellLang·바인딩·프리셋 스키마 변경 없음. 숫자/객체 등 잘못 저장된 bgmTrack을 새 값으로 덮어쓰거나 자동 선택으로 마이그레이션하지 않음 |
+| 유효 선택 | 정상 문자열 auto/allRandom/카테고리/t:경로 유지. force=false의 t:경로는 첫 guard에서 반환하며 death/victory/forge도 포함해 기존 카테고리 전환 차단을 유지. force=true는 두 선택 guard를 기존대로 건너뜀 |
+| 비문자 선택 | truthy 숫자999/-1·true·객체·배열을 unforced 호출하면 기존 startsWith TypeError. 신규 타입 guard는 메서드를 호출하지 않는다. 이후 카테고리 조건은 그대로여서 hell1 등 일반 키는 반환·기존 음악을 자동 선택으로 복구하지 않음. death/victory/forge는 다음 조건의 예외여서 원문 트랙 선택/재생 경로를 진행 |
+| 실제 복원 경로 | 양판의 시작 설정 복원 원문 블록 전체(후속 로비 언어 선택/rz/sync/cursor 포함), whole `_loadPreset`/`saveSettings`와 whole BGM 객체를 실행. 시작 설정 저장 순서의 main/easy 기존 차이 유지. renderScale/언어/UI/helper는 통제 대역 |
+| 호출자 검증 | whole `closeAllPanels`의 forgeOpen=true 경로에서 BGM 예외가 없어 후속 forgeOpen=false·_fuseSelId=null·_skExpandedId=null·팝업 숨김까지 진행(가짜 DOM). 실제 initStage의 BGM try/catch statement를 정확 추출해 검증: 기존 track TypeError가 잡혀 stage start 로그를 만들던 경로는 신규에서 그 예외가 사라짐. full initStage/맵 생성/부활은 미실행 |
+| 원 QA 정정 | QA1005의 stage/retry 호출이 모두 unwrapped라 진행 파손된다는 일반화는 미채택. 현재 initStage 마지막 음악·field retry에는 기존 catch가 있다. 이번 변경은 전역 catch 추가가 아니며 다른 BGM/key 타입·오디오 backend 예외를 포괄하지 않음 |
+| 검사 | `test/bgmTrackRestoreConsumption.test.cjs` 양판104PASS/원본78PASS26FAIL. 정상 선택9형×force2×시작/프리셋2의 전체 BGM/설정/오디오 대역 상태 동등, truthy 비문자5형×복원2, whole 패널정리·정확 stage catch·force/cutscene/t:gate, 특수키의 autoplay rejection→5개 이벤트 대기→whole _onInteract 재시도/해제 검증. 원본 실패는 실제 play startsWith TypeError 또는 그 예외 로그 조건의 실패로 구분. JS12/importmap2 구문PASS |
+| 오디오·한계 | whole BGM 객체 원문(트랙표/onEnded 포함)을 로드해 선택기/캐시/stop 및 Promise pending 분기를 실행하되 Audio·localStorage·DOM·timer·난수·UI/언어/바인딩복구 helper는 통제 대역. Promise rejection/interaction은 가짜 오디오 결과이며 실제 권한·파일 decode·청취 인수 아님. 시작 main에만 있던 _settingsMigrated 선언을 easy에도 가정한 초기 AST 선택 실패는 준비 raw 보존 |
+| 미변경 | BGM 트랙·음량·큐·LRU6·컷신 차단·force 정책·재생 Promise catch·다른 bgmTrack/key reader와 설정 UI·사용자 저장·보호2_3/Q전용패링 변경0. cursor는 별도 후보 미채택. 이 타입 guard는 손상 설정 전체 정규화나 자동 음악 복구가 아님 |
+| 실행 앱·인수 | 소스47 통합 대상, 현재 앱source29/3404 미반영. CH1-1 같은 후보의 시작→전투·획득/장착→4지역게이트→보스사망/부활→재도전·native 화면/청취 인수 대기. 실제 stage/retry 파손·보스 사망 맵 리셋 해결로 계산하지 않음 |
+
+원자료 CO-QA-1005-cursor-bgm-setting-readers 완료cf5e5d09-f387-404c-9755-4da64ab14bc1를 code46 81de2cd6 위에서 검증한다. backup·원 완료·docs전체 관련 키워드 검색 전후·후보/원본/production·전체 HTML 정확 역치환·docs append 역치환·보호67경로SHA·원격 exactSHA는 tmp/mac-migration-runtime/continued-review-20261003/source47-bgm-track/에 보존한다. scope8=HTML2/test1/docs5. 완료 소유 범위만 checkpoint하며 기존 TASK/역사핀·오더 소유WIP·사용자 세이브는 보존한다.
