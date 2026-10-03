@@ -53791,3 +53791,21 @@ BALANCE1315 bStr/bInt 및1320 bDex 메모리 후보를 실제 전체 소비 함�
 | 미변경 범위 | wSwing의 wp().atk 직접식·다른 공격 caller, STATS/b필드 전부 숫자 안전 주장0. raw enh/bonusHp/bonusMp/bonusShield/DEF/eDef/강화이전 정책 미채택. 보호2_3/Q전용패링/E불가/어택티켓금지/사용자23·타인WIP 보존. 현재 app29/3404에는30~59 미반영 |
 
 BALANCE1350A magicRef 및1355 meleeRef/bowRef 원문·당시 source57/WIP 관측 핀을 유지하고 공식source58에서 최소3항만 채택했다. 기존 source31의 원본 atk 미검수 표기는 당시 이력이며, source59는 위 세 참조 소비만 추가 처리한다.
+
+
+## 2026-10-03 source60 장비 최대자원 숫자 합산
+
+| 항목 | 현행 계약 |
+|---|---|
+| 변경 위치 | 양판 whole applyStats의 _allDefSlots 루프: _totalBonusHp+=(+_dit.bonusHp\|\|0), _totalBonusMp+=(+_dit.bonusMp\|\|0), _totalBonusShield+=(+_dit.bonusShield\|\|0). HTML각+3B, 세 unary+만 추가 |
+| 합산 슬롯 | shield/armor/boots/gloves/pants/belt/necklace/ring1/ring2/cape/bracelet/headband/ossuary 본편·Easy 공통13, 본편 headband2 추가14. weapon/bow/helmet 제외, Easy headband2 제외. 슬롯·순서·truthy 장비 조건 불변 |
+| 숫자 의미 | 문자열20/0/-10/.5는 대응 숫자, ab/빈객체는0 소비. 정상 숫자·음수·소수·Infinity 기존 의미 유지, finite clamp/상한/새 저장 마이그레이션 추가0. 복원 장비 원값은 그대로 유지 |
+| 파생 계산 | 기존 hp0/maxHP 배율·HP 강화1.0/MP 강화0.2·기본스탯/어픽스/결정·인간성/강인/마력그릇/근성·현재 자원 Math.min 순서 불변. bonusSt/recalcSt/공용 _refreshEquipmentStats 변경0 |
+| 합성 명시 사례 | Lv20, 기본 STR5/DEX3/INT4/LCK2, boots bStr3/bDex4/bInt5와 strFlat2/dexFlat3/intFlat4, armor bonusHp/bonusMp/bonusShield 각 문자열20: 유효 STR20/DEX20/INT23. boots 자원11/13/19/17·enh2, 근성2·pHuman/pVital/pStamina/pFortify/pArmor 각1이면 최대HP845/MP341/쉴드252. 합성 검사값이며 게임 기본장비/상수 아님 |
+| 검사 | test/equipmentMaxResourceConsumption.test.cjs 후보94PASS/생산94PASS, 명시source59원본18PASS·76 assertion FAIL. 숫자8×양판16대조 및 제외슬롯2조건 원본동등. 3필드×복원6×이미장착/가방장착2×양판72, 명시2, 전체합산슬롯2 묶음(본편14/Easy13 슬롯 내부대조). 76은 음성 대조 조건 수이며 독립버그76개 아님. 인접 레벨/자원17PASS·inlineJS12/importmap2 parse |
+| 인수 경계 | 기존 실제 whole dbRestore/equip VM→별도 whole applyStats/recalcSt VM의 2VM브리지. 동일 fullboot 아님. 공간/무관 마이그레이션/UI·음향·네트워크·저장 leaf는 대역·합성장비·결정 없음. 실제 user-save/native·시각·청취·6단계플레이 인수0 |
+| 기존 생성값 대조 | mkItem 기본 b.bonusHp/Shield/Mp는 ~~(tier*50+10+rand*40), T0 10~49/T4 210~249. item에 원값복사하며 rarity배율을 이3필드에 곱하지 않음. 바지 HP 추가 ~~((5+tier*4+rarity*6)*(0.9+rand*.2)), 벨트 HP 추가 ~~((3+tier*2+rarity*4)*(0.9+rand*.2)), 유골함 bonusMp150 override는 별도. 생성 코드 변경0 |
+| 기본표와 최종값 | 방어구6슬롯 기본테이블 HP합계 T4최대1494는 바지 추가·벨트 HP·강화/어픽스/패시브를 포함하지 않음. bonusSt 기본테이블도1494지만 실제 item.bonusSt=~~(b.bonusSt*RARITY_MUL[rarity]*(0.9+rand*.2)) 후처리가 있어 최종ST상한으로 계산하지 않음 |
+| 보존 | source53/58/59 계산·저장스키마/원자료·장비생성·계수·경제/강화이전정책 불변. DEF/eDef/charge 및 다른 STATS/모든 소비자 안전 주장0. 보호2_3/Q전용패링/E불가/어택티켓금지/사용자23·타인WIP 보존. 기존 실행앱source29/3404에30~60 미반영 |
+
+BALANCE1340 HP/MP 및1345 Shield 후보를 공식source59에서 실제 전체 계산으로 검수했다. docs 검색에서 발견한 밸런스 문서의 기존 HP3000/HP·ST1500 표기는 기본테이블 값·후처리 경계에 맞게 정정했다. 기존 source31의 bonusHp 미검수 표기는 당시 이력이고 이번 채택은 위 세 합산 소비에 한정한다.

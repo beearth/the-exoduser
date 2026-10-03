@@ -26742,7 +26742,7 @@ function applyStats(){
   const _allDefSlots=['shield','armor','boots','gloves','pants','belt','necklace','ring1','ring2','cape','bracelet','headband','ossuary','headband2'];
   const _hpEnhSet=new Set(['gloves','pants','boots']); // HP 강화 3종
   const _mpEnhSet=new Set(['bracelet','necklace','headband','headband2','ossuary']); // MP 강화 4종 + 유골함
-  for(let _di=0;_di<_allDefSlots.length;_di++){const _dit=INV.equipped[_allDefSlots[_di]];if(_dit){_totalBonusHp+=(_dit.bonusHp||0);_totalBonusShield+=(_dit.bonusShield||0);_totalBonusMp+=(_dit.bonusMp||0);if(_dit.enh>0){if(_hpEnhSet.has(_allDefSlots[_di]))_enhHp+=_dit.enh*1.0;if(_mpEnhSet.has(_allDefSlots[_di]))_enhMp+=_dit.enh*0.2}}}
+  for(let _di=0;_di<_allDefSlots.length;_di++){const _dit=INV.equipped[_allDefSlots[_di]];if(_dit){_totalBonusHp+=(+_dit.bonusHp||0);_totalBonusShield+=(+_dit.bonusShield||0);_totalBonusMp+=(+_dit.bonusMp||0);if(_dit.enh>0){if(_hpEnhSet.has(_allDefSlots[_di]))_enhHp+=_dit.enh*1.0;if(_mpEnhSet.has(_allDefSlots[_di]))_enhMp+=_dit.enh*0.2}}}
   P.mhp=~~((_stgHp+s.str*5+s.vit*3+_totalBonusHp+_afHpF+_imHp+_enhHp)*(1+_afHpP+_imHpP*.01+(PASSIVES.pMelee||0)*.03));
   P.baseDef=2;
   P.maxPoise=4; // 4칸 고정 (해골 눈알 4개)
