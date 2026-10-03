@@ -15731,7 +15731,7 @@ function recalcSt(){
   const base=100+STATS.dex*2;
   let bonus=0,_enhSt2=0;
   const _stEnhSet=new Set(['ring1','ring2','belt']); // ST 강화 3종
-  for(const slot of SLOT_NAMES){const it=INV.equipped[slot];if(it){if(it.bonusSt)bonus+=it.bonusSt;if(it.enh>0&&_stEnhSet.has(slot))_enhSt2+=it.enh*0.2}}
+  for(const slot of SLOT_NAMES){const it=INV.equipped[slot];if(it){if(it.bonusSt)bonus+=(+it.bonusSt||0);if(it.enh>0&&_stEnhSet.has(slot))_enhSt2+=it.enh*0.2}}
   P.mst=~~(base+bonus+_eqAffix('maxSTFlat')+~~(P._crystalStats?P._crystalStats.st:0)+_enhSt2)+(PASSIVES.pHuman||0)*100+(PASSIVES.pStamina||0)*50+_gritStFlat();P.st=Math.min(P.st,P.mst); // 악세ST강화: ring1/ring2/belt 1강당 +0.2 ST + 인간성: ST+100/Lv
 }
 
