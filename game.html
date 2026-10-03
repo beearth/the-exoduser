@@ -16499,7 +16499,7 @@ function _mkPProj(){return{x:0,y:0,vx:0,vy:0,dmg:0,el:0,r:4,spd:0,
   _aoeR:0,_aoeDmg:0}}
 function _resetPProj(p){
   p.x=p.y=p.vx=p.vy=p.dmg=0;p.el=0;p.r=4;p.spd=0;
-  p.alive=true;p.owner='p';p.maxDist=0;p.dist=0;p.stagger=0;p.kb=0;
+  p.alive=true;p.owner='p';p.maxDist=0;p.dist=0;p.stagger=0;p.kb=0;p.kbMult=undefined;
   p.pierce=0;p.pierceMax=0;p.normalBow=p.ghostXbow=p.needle=false;
   p.magic=p.arcMissile=p._parryMagicShot=false;p._arcLock=0;p._maxBounce=0;
   p.fireball=false;p.fireBeamProj=false;p.energyShot=false;p.explR=0;p.explDmg=0;

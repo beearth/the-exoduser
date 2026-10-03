@@ -52910,3 +52910,27 @@ Mac source15 격리3391 정상 새캐릭터→도입/조작안내/기본 연습s
 | 문서 범위 | docs 전체 관련검색 496행/116경로. 생산값 변경0이므로 과거 이력/확정 수식은 보존하고 현행 native 인수6문서에 이 관찰만 추가. 보호67와 관리자 STATE/LOG4를 편집하지 않음 |
 
 검사 보고서와 부분 플레이 관찰을 게임 완성 건수로 계산하지 않는다. CH1-1 끊김 없는 시연 목표는 계속 진행 중이다.
+
+
+## 2026-10-03 source18 — 투사체 회수 후 넉백 배율 누수 수정
+
+| 항목 | 현재 생산 계약 / 검증 근거 |
+|---|---|
+| 적용 파일·구역 | `game.html`·`game-easy-test.html`의 `_resetPProj(p)`에서 `p.kbMult=undefined`로 초기화. 각 파일 1구역, 피해 공식·풀 크기120·회수 순서·기존 피격 Set 재사용 유지 |
+| 실패 경로 | 악의구 producer가 `kbMult=0.1` 지정 → `_recyclePProj` → 같은 객체 `_getPProj` → 원소추적탄 producer가 배율 미지정 → `hurtE(...,p,p.el)`에 0.1 누수. 기존 원소추적탄은 새 객체 대비 넉백10%만 적용 |
+| 기본/스킬 계약 | `hurtE`는 배율 미지정 시1.0. 악의구 새 발사는 계속0.1 지정. 일반 적 마법투사체는 추가×0.2, 보스는 `finalKbM=0.05`, 기존 EL.L/beam/bow/blueBean/maliceHunt/noKB 차단 유지 |
+| 전후 source 재현 | 실제 전체 `_mkPProj`·`_resetPProj`·`_getPProj`·`_recyclePProj`·`hurtE`와 악의구/원소추적탄 원문 producer 실행. 중립 장비·피해100에서 HP9900 유지, 회수 원소추적탄 kb.x 기존0.30000000000000004 → 수정3(새 발사와 동일). 화면 밖 허용 이동 x3000.9 →3009 |
+| 검사 한계 | 렌더/음향 sink와 장비·패시브 보너스는 fixture. 실제 투사체 이동·충돌 loop/native 플레이·시각·청취 검증은 이 테스트가 수행하지 않음. source18 Mac 앱 생성/실행 인수0 |
+| 회귀 | `test/pProjKnockbackReuse.test.cjs`: 양판 각3그룹(신규/회수 원소추적탄, 악의구 재발사, 화면 밖/보스/EL.L/noKB/활5조건). 기존 source17은6그룹 중2PASS/4FAIL; 수정 후 결과는 아래 완료 근거에서 확정 |
+| 별도 미완료 | 장비 CP 미리보기 전체 상태 보존, CH1-1 4지역 개방·보스전 사망/부활·재도전·저장 재개 전체 native GATE는 미완료. 맥 잠금 때문에 기존 source17 검수 앱·캐릭터·세이브 보존 |
+
+
+### source18 소스 검수 완료 근거
+
+| 항목 | 결과 |
+|---|---|
+| 새 회귀 | 양판 6그룹 PASS. 악의구→원소추적탄 재사용, 역방향 재사용, 화면 밖/보스/EL.L/noKB/활 경계의 신규 객체 대조 |
+| 기존 회귀 | `pProjHitSetPool`·`gameHtmlInlineSyntax` PASS; 새 검사를 합쳐8테스트 PASS/0FAIL |
+| 문법 | 실제 양판 inline JS·JSON 파싱 PASS; 세부 개수는 root 검증 receipt |
+| 의미·소유 | 코드 역패치 시 source17 byte-exact; 보호67경로 유지. 피해100/HP9900 대조 유지, 회수 원소추적탄 일반 넉백3.0 복구 |
+| 미완 GATE | 전체 투사체 collision loop·Mac native source18·4지역→보스 사망/부활→재도전·저장 재개 미완. 검사8건을 게임 완성8건으로 계산하지 않음 |
