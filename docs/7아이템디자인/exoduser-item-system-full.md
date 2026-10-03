@@ -232,7 +232,7 @@ Object.freeze(AFFIX_POOL);
 | crisisBoost | 위기의 | SUFFIX | 25%/40%/65% | pct | arm,nck | HP 30% 이하 시 뎀×(1+배율) |
 | counterHit | 피격반격의 | SUFFIX | 15%/25%/40% | prob | arm,shd | 피격 시 확률로 반격(meleeRef×STR) |
 | abundDmg | 풍요의 | SUFFIX | 12%/20%/32% | pct | wpn,hlm | 적HP≥70% 시 뎀×(1+배율). 패시브 풍요와 합연산 (2026-04-21) |
-| predDmg | 약자포식의 | SUFFIX | 12%/20%/32% | pct | wpn,hlm | 적HP≤30% 시 뎀×(1+배율). 패시브 약자포식과 합연산 |
+| predDmg | 약자포식의 | SUFFIX | 8%/12%/20%/32%/44% (5티어) | pct | wpn,helm | 적HP≤30% 시 조건부 어픽스 합 _cAx에 가산. 합계가 양수이면 dmg=~~(dmg×(1+_cAx)); 패시브 _predBonus(e)는 앞에서 별도 곱연산 |
 | parryExplosion | 패링폭발의 | SUFFIX | 0.4/0.7/1.1 | ATK× | wpn,shd | 패링 시 AoE (meleeRef×STR×배율, 반경100) |
 | staggerExplosion | 스태거폭발의 | SUFFIX | 30%/50%/80% | pct | wpn | 그로기 시 AoE (dmg×배율, 반경100) |
 | elemConvert | 원소전환의 | SUFFIX | 20%/35%/55% | prob | wpn,nck | 물리 → 무기 속성 전환 확률 |
@@ -1171,3 +1171,14 @@ scope10=HTML2/test1/docs7이 실제 NUL-uall81에 도달하면 다른 후보 산
 | 실행 앱 | 소스44 통합, 현재 격리 앱source29/3404에는 미반영. CH1-1 같은 후보의 시작→획득→게이트→보스사망/부활→재도전·화면·청취 인수는 대기 |
 
 원 후보 QA0852 completion1fcc4ad3-b3de-4b31-a364-fa139ac3cbf0의 두 reader를 code43 abf9eb87 위에서 검증했다. 감독 docsraw eed564ac와 코드epoch43을 구분한다. backup·원 완료·후보·docs전체 splashMul/splashR/스플래시 검색·baseline/candidate/production·HTML 전체 정확 역치환·docs append 역치환·보호67경로 SHA·원격 exact SHA는 tmp/mac-migration-runtime/continued-review-20261003/source44-magic-splash/에 보존한다. scope9=HTML2/test1/docs6. 실제 NUL-uall80에서는 새 후보 산출 없이 완료 소유9경로만 checkpoint한다. 기존 TASK/source핀·감독원문·타인WIP·사용자 세이브는 보존한다.
+
+## 2026-10-03 약자포식 어픽스 현행 대조
+
+| 항목 | 양판 source56 계약 |
+|---|---|
+| predDmg 정의 | type=1/SUFFIX, tiers=[0.08,0.12,0.20,0.32,0.44], unit=pct, slots=[wpn,helm], group=pred, weight=45 |
+| 판정 | hitEnemy의 e.hp<=e.mhp*0.3이면 _cAx+=_eqAffix('predDmg'). 다른 활성 조건부 어픽스와 합산 후 _cAx>0일 때 dmg=~~(dmg*(1+_cAx)) |
+| 패시브 | _predBonus(e)는 같은 적HP30% 조건에서 (PASSIVES.pPred||0)*0.20. hitEnemy가 앞선 별도 단계에서 _pb>0일 때 dmg=~~(dmg*(1+_pb)) 적용. predDmg와 pPred를 하나의 합으로 계산하지 않음; 중간 정수 절삭 포함 |
+| 경계 | 해당 predDmg 가산문에는 isDot/속성별 별도 제외가 없음. 전체 hitEnemy의 선행 return/다른 피해 규칙을 무시한 모든 입력 적용 보장은 아님. 코드 주석의 적HP50% 표기는 실행 조건30%와 다르며 이번 문서 정정에서 코드는 변경하지 않음 |
+| 근거·상태 | BALANCE1305 완료 msg_07e2da25fb01bbcf016ac0fdc662d487d0a8204bec81837f43/exec-497dbb29-1b31-4d46-8c42-f51d7e26ad90 후 root가 양판 정의·_predBonus·hitEnemy 호출 순서와 docs 전체 predDmg 관련문을 직접 대조. 기존 아이템_어픽스_시스템.md의 별도 곱연산 설명과 일치하도록 본 표를 정정 |
+| 제품 인수 | 문서만 정정. 피해 수치·게임 코드·저장·실행 앱 변경0. 실제 전투/native/시각/청취 인수0이며 source56 구현 완료 건수에 새 기능으로 더하지 않음 |
