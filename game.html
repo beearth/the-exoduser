@@ -30383,7 +30383,7 @@ function initStage(si){
   P.x=(_spX+.5)*T;P.y=(_spY+.5)*T;
   P.hp=P.mhp;P.st=P.mst;P.mp=P.mmp;P.shield=P.mshield;P.s='idle';P.iframes=360;P.kb={x:0,y:0};P._webSlow=0;P._trapSlowT=0;P._freezeSlow=0;P.burnT=0;P.poison=0;P._rbPoison=[];P._rbBurn=[];P._ioActive=false;P._ioT=0;P._altAtk=0;P._altDef=0;P._altSpd=0;P._lastStandUsed=false;P._reviveOnceUsed=false;
   P.chargeStocks=P.maxChargeStocks||1;P.chargeCd=0;
-  G.stageCleared=false;G._deathSpawned=false;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bossUnlocked=false;G._gateGuardKilled=false;G.stageTime=0;G.combo=0;G.comboTimer=0;G._stageKills=0;G._fbDone=false;G._fbSpawned=false;G._fbAnnounced=false;G._fieldBoss=null;G._fieldBosses=null;G._fdSpawned=false;G._fdAnnounced=false;G._fireDevils=null;G._sStats={comboMax:0,deaths:0,dmgDealt:0,dmgTaken:0,parries:0,potions:0,items:0,dodges:0,crits:0,maxHit:0,dashDist:0,dashCount:0,walked:0,_prevX:0,_prevY:0};G._dmgPeak={val:0,t:0};
+  G.stageCleared=false;G._deathSpawned=false;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bossUnlocked=false;G._gateGuardKilled=false;G.stageTime=0;G.combo=0;G.comboTimer=0;G._chainCnt=0;G._chainT=0;G._stageKills=0;G._fbDone=false;G._fbSpawned=false;G._fbAnnounced=false;G._fieldBoss=null;G._fieldBosses=null;G._fdSpawned=false;G._fdAnnounced=false;G._fireDevils=null;G._sStats={comboMax:0,deaths:0,dmgDealt:0,dmgTaken:0,parries:0,potions:0,items:0,dodges:0,crits:0,maxHit:0,dashDist:0,dashCount:0,walked:0,_prevX:0,_prevY:0};G._dmgPeak={val:0,t:0};
   if(typeof _clearExtEPalCache==='function')_clearExtEPalCache();
   if(typeof _clearExtBPalCache==='function')_clearExtBPalCache();
   // 여신의 가호: 제거됨 (2026-04-15)

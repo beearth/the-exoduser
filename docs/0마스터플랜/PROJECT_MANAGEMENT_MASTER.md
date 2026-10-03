@@ -1797,3 +1797,21 @@ source29 원문 검수는 실제 keyName·미니바 원문 블록을 DOM/popup/l
 | 제품 Gate | 앱source29/3404 유지/source30~35 및37 앱에 미포함. 검수checkpoint36은 코드변경0. native 입력막힘·CH1-1 보스사망/부활/재도전·청취 인수 미완료 |
 
 [설정 정본](../3.3%20키바인딩+설정/3.3%20키바인딩+설정.md#2026-10-03-source37-컷신-진동의-로컬-비동기-오류-처리). tmp/mac-migration-runtime/continued-review-20261003/source37-cutscene-haptics/에 원완료/백업/후보/회귀/구문/원격 정확 SHA 영수증을 보존한다. 원본 전역 거부 억제를 확인했으므로 게임정지/콘솔팝업 복구 주장0. 사용자 세이브·앱·빌드·타팀 수정0.
+
+
+## 2026-10-03 source38 — 일반 스테이지 재생성 시 킬 체인 초기화
+
+| id / 위치 | 현행 계약 | 보존·검수 경계 |
+|---|---|---|
+| chain-reset / 일반 initStage(si) | 기존 G.combo=0;G.comboTimer=0; 뒤에 G._chainCnt=0;G._chainT=0; 추가. 본편/Easy 각26B, 각1정확치환 | 새 필드 없음. 저장 schema/빌더/복원 불변. normal map 생성 성공 뒤 기존 stage 통계 초기화 위치에서 실행 |
+| chain-producer / hurtE 처치 | 처치마다 _chainCnt++, _chainT=180. 일반 적 처치에서 count≥5이면 count=0 및 균열 {t:0,maxT:120,spawned:false,si:G.stage} 생성 | 기존 3초 윈도우/5처치 임계/2초 소환 및 균열 전투 수치 변경0. G.combo 처치 콤보와 별도 상태 |
+| chain-consumer / update, draw | 게임 진행중 _chainT-=sp, ≤0이면 count/time 둘 다0. count≥2일 때 N CHAIN 표시, ≥4일 때 균열 임박 표시, bar폭=100×time/180 | HUD 좌표·문구·색·폰트·타이머·스폰 변경0. 시각 pixel/플레이 인수로 계산하지 않음 |
+| death-caller / die→fallen→_fallenResolve | die()는 fallen300f를 설정하고 G.on을 유지. 실패 resolve 때 dead/G.on=false | 사망 전 체인180f만 있다면 300f 대기 중 이미 만료. ANIM0747의 die 즉시 false/체인 즉시 동결 전제는 틀려 정정 |
+| 실제 재현 범위 | 쓰러짐 중 기존 독 피해가 적을 추가 처치하면 체인 재갱신. 일반 retry의 전체 initStage 뒤 이전 count/time가 남았고, 새 생애의 첫 일반 적 처치가 이전 4체인을5로 이어 균열을 생성할 수 있었다 | 합성 적4개: HP450/독pool500/T300, pDotDmg·Dur=1, sp=1. 실제 독 분기+전체 hurtE에서 241번째 tick 처치→실패 resolve 때 count4/time120. fixture값은 게임 설계 상수 아님 |
+| 경로 보존 | 일반 retry→initStage 및 일반 새 진입만 초기화. 기존 nextStage의 선행 chain=0 동작은 동일 | bosstest early return·보스 arena/해금CH1 field capture→restore·si3 직접 재도전·1회/자연부활의 체인 정책은 변경0. 맵/보스문/기존 필드 몬스터 상태를 초기화하는 추가 호출0 |
+| 검수 | 양판 실제 전체 die/fallenResolve/hurtE/retry callback/initStage/nextStage, 실제 fallen/독/chain/HUD 발췌 분기 실행 | 맵·적 생성/오디오/Canvas/DOM/장비배율·드롭·XP/저장 등 외부 대역. 전체 update/AI·실기기/사용자세이브·native 플레이 미실행 |
+| 적용·인수 | code38 소스 수정. 현재 격리 앱source29/3404에 미포함 | source PASS를 보스 사망·부활·재도전/4지역·저장재로드·시각/청취 완료로 대체0 |
+
+원자료: tmp/mac-migration-runtime/continued-review-20261003/source38-chain-stage-reset/의 원본 백업·ANIM0747 원 completion UUID fbcb71c9-8897-4bef-af8b-557f9fc06c1e·docs전체검색·baseline/candidate/production·정확 역치환·checkpoint 영수증. 최초 fixture 실행의 미정의 외부 상태/함수 실패는 검수 대역 준비 오류이며 게임 결함 수로 계산하지 않는다. 최종 10개 원본 assertion 실패는 하나의 초기화 누락을 경로별로 확인한 결과다.
+
+최종 검수: 신규 체인 수명22 + 인접 기존 스테이지 ORB16 + 보스 필드 복귀68 =106 PASS/0 FAIL. 최종 원본 대조는22개 중12 PASS/10 FAIL(서로 다른 결함10개 아님). 두HTML inline JS12/importmap JSON2 구문 검수 통과. 일반 clean-initStage 및 nextStage의 전체 G/P/기록 sink 동등을 원본과 비교했다. 보호67개 경로 hash 보존과 HTML 전체 정확 역치환은 별도 precommit 영수증으로 확인한다.
