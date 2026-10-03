@@ -53279,3 +53279,17 @@ source29 원문 검수는 실제 keyName·미니바 원문 블록을 DOM/popup/l
 | 증거 보존 | `tmp/mac-migration-runtime/continued-review-20261003/source29-native-play/progress-receipt.json` 2410B / SHA256 `b219532fae9640aedf1d17f986104acd924651e11374e480dd1a69a3f2562fb8`. 실제 screenshot2와 기존 startup receipt 분리 보존 |
 
 게임 state 주입·리로드·추가 앱 기동·생산 코드 변경0. 실제 입력 전달 복구 후 같은 앱의 정상 진행을 이어간다. 상세 입력·영상·일반 진행 경계는 `docs/13출시·마케팅/MAC_CH1_SOURCE27_CANDIDATE_20261003.md`의 source29 후속 표를 따른다.
+
+
+## 2026-10-03 source30 기본 공격 음향 오류 진행 보존
+
+| 변경 | 실제 완료·보존·한계 |
+|---|---|
+| 일반 LMB | 일반 SFX.slash만 try/catch·원 Error 기록. ST5/공격 보너스/통계/모션/음성/기검참·Q전용magic/E불가 보존 |
+| fireBow | crossbow_shot 및 다른 활 SFX.bow 호출만 격리. 악의1·탄환1·피해×3·관통0·bowRecover/성공반환 유지. 비음향 bw/풀 오류 전파 불변 |
+| source | 양판 각+194B/전체 역치환byte-exact. game SHA44946fa036c2e1189b512cb82354105f17ad8686a5fd77ff15b8ec89a6c32ddc, Easy SHAe1e132e2e4965a3d0c494609955fc3bae16c4fe8833c928a7ff5f0f857d37b02 |
+| 검수 | 원본 신규34 중26PASS/8FAIL → 후보34PASS → 생산39PASS(신규34+기존피해·기검참소리5), inlineJS12/importmap2PASS. 실제 전체 fireBow/일반 LMB 분기·입력/스탯/풀/음향 대역, native/full-loop/청취 인수 아님 |
+| 인계 | SOUND SUPERVISOR-SOUND-0617 runtime045738/assemblya7a222/docs21d38a 두경계만 채택. 다른 누적후보·필수설계Gate 유지 |
+| 현재 앱 | 기존source29/e771c364/3404/main52515 유지·source30미포함. Space 후AX/대사불변, 실제화면 기준 클릭 noWindowsAvailable. 보스문/필드몹 보존·보스사망/부활/재도전·완주 미인수 |
+
+[정확한 함수·수치·검증·백업](6사운드디자인/SOUND_BASIC_ATTACK_PROGRESS_20261003.md). docs 전체 관련키워드 검색·코드+관련docs 동시보존·원격 정확SHA 확인. 보호67개WIP·관리4개·사용자앱/게임/세이브 보존, 새앱/빌드/팀·전문팀 중복송신0.

@@ -625,3 +625,15 @@ source29 원문 검수는 실제 keyName·미니바 원문 블록을 DOM/popup/l
 | 증거 보존 | `tmp/mac-migration-runtime/continued-review-20261003/source29-native-play/progress-receipt.json` 2410B / SHA256 `b219532fae9640aedf1d17f986104acd924651e11374e480dd1a69a3f2562fb8`. 실제 screenshot2와 기존 startup receipt 분리 보존 |
 
 게임 state 주입·리로드·추가 앱 기동·생산 코드 변경0. 실제 입력 전달 복구 후 같은 앱의 정상 진행을 이어간다. 상세 입력·영상·일반 진행 경계는 `docs/13출시·마케팅/MAC_CH1_SOURCE27_CANDIDATE_20261003.md`의 source29 후속 표를 따른다.
+
+
+## 2026-10-03 source30 — 공격 진행 코드 반영 / 기존source29 native 대기
+
+| 단계 | 실제 상태 |
+|---|---|
+| source 통합 | SOUND0617의 일반 LMB slash·fireBow 활/석궁 발사음 예외 격리 두 경계 양판반영. 각+194B, 피해/소모·회복 상태·기검참 불변 |
+| 코드 검증 | 변경전26PASS/8FAIL → 후보34PASS → 실제생산39PASS(신규34+기존피해/기검참소리5), inlineJS12/importmap2 및 역치환 전체exact. source fixture·실제분기 실행이며 native 인수 아님 |
+| 현재실행 | source29/e771c364/3404/main52515 기존격리앱 유지. 현재앱에source30 미포함/새빌드·재실행0. 정상Space 후AX불변·목마대사, 실제화면 기준 클릭 noWindowsAvailable |
+| 최종목표 | 같은후보 정상입장→전투·획득/장착→4지역/보스문→보스사망·부활→재도전 및 열린보스문/기존필드몬스터 보존, 실청취·화면·저장재실행 미인수 유지 |
+
+[정확한 경계·수치·검수·팀 완료ID](../../../6사운드디자인/SOUND_BASIC_ATTACK_PROGRESS_20261003.md). 총괄의 실제생산 코드진척이며 새 게임플레이 완료건수는 아니다. 원사용자 앱·게임·세이브·타인WIP·보호설계 보존, 전문팀 송신은 각오더담당만 소유한다.

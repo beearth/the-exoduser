@@ -27498,7 +27498,7 @@ function fireBow(){
       const dmg=(~~(bowRef()*pBowMul()*10)+(P._bowBon||0))*3;P._bowBon=0; // 기본 석궁 데미지 3배
       const bdx=Math.cos(P.atkArc),bdy=Math.sin(P.atkArc);
       {const _pp=_getPProj();_pp.x=P.x+bdx*12;_pp.y=P.y+bdy*12;_pp.vx=bdx*bspd;_pp.vy=bdy*bspd;_pp.dmg=dmg;_pp.el=ael;_pp.maxDist=range;_pp.dist=0;_pp.r=3;_pp.stagger=0;_pp.kb=0;_pp.pierce=0;_pp.pierceMax=0;_pp.normalBow=true;pProjs[pProjs.length]=_pp;} // 관통 0
-      if((bw().btype||'')==='crossbow'){playSample('crossbow_shot',.7,_r(1,.1))}else SFX.bow();
+      if((bw().btype||'')==='crossbow'){try{playSample('crossbow_shot',.7,_r(1,.1))}catch(e){console.error('[SFX] fireBow dispatch error:',e)}}else{try{SFX.bow()}catch(e){console.error('[SFX] fireBow dispatch error:',e)}}
       P.s='bowRecover';P.st2=~~(45/(pBowSpd()*(1+_eqAffix('bowAtkSpd'))));
       return true;
     }
@@ -31834,7 +31834,7 @@ function update(){
     else if(isAct('weapon')&&useStPct('weapon')){if(_gpActive)_gpAutoAim(250);P._atkBon=~~(_lastCost*1.5);if(G._pStats)G._pStats._atkC++;
       if(P.activeLMBSk==='kiSlash'&&_cresStep===2&&_cresComboT>0){_beginKiSlashThirdCharge()}
       else{P.s='wSwing';P.st2=5;P.swProg=0;_startSilvertailAttackMotion('lmb');P.atkArc=P.facing;if(Math.random()<.35){const _ve=['voice_grunt','male_grunt','voice_attack'];playSample(_ve[~~(Math.random()*3)],1,_r(1,.15))}
-        if(P.activeLMBSk==='kiSlash')_fireKiSlashCrescent((_cresStep%3)+1);else SFX.slash()}
+        if(P.activeLMBSk==='kiSlash')_fireKiSlashCrescent((_cresStep%3)+1);else{try{SFX.slash()}catch(e){console.error('[SFX] basic melee dispatch error:',e)}}}
     }
     else if(isJust('shield')||_sdTapOk()){_sdTapBuf=-999;P.s='sDraw';P._sdHold=0} // ═ 발도 게이팅: 탭=뗄 때 칼등처내기, 홀드=차징. 탭버퍼로 초고속 탭 씹힘 방지 ═
     // Space키: SKILL_SLOTS[4]로 처리 (keydown에서 _dispatchSkillSlot)

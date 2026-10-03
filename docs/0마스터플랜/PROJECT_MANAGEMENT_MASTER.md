@@ -1673,3 +1673,17 @@ source29 원문 검수는 실제 keyName·미니바 원문 블록을 DOM/popup/l
 | 증거 보존 | `tmp/mac-migration-runtime/continued-review-20261003/source29-native-play/progress-receipt.json` 2410B / SHA256 `b219532fae9640aedf1d17f986104acd924651e11374e480dd1a69a3f2562fb8`. 실제 screenshot2와 기존 startup receipt 분리 보존 |
 
 게임 state 주입·리로드·추가 앱 기동·생산 코드 변경0. 실제 입력 전달 복구 후 같은 앱의 정상 진행을 이어간다. 상세 입력·영상·일반 진행 경계는 `docs/13출시·마케팅/MAC_CH1_SOURCE27_CANDIDATE_20261003.md`의 source29 후속 표를 따른다.
+
+
+### 2026-10-03 원총괄 source30 — 기본 공격 음향 오류의 실제 생산 반영
+
+| 항목 | 실제 완료와 남은 범위 |
+|---|---|
+| 인계 | SOUND SUPERVISOR-SOUND-0617 runtime045738/assemblya7a222/docs21d38a의 일반 LMB·fireBow 두 경계만 채택. 다른 누적 후보 미채택 |
+| 생산 | 본편/Easy 각각+194B. 일반 SFX.slash 및 활·석궁 발사음 동기 오류만 기록 후 공격 진행. 비음향 오류·자원·피해·Q-only magic/E불가·보호2_3·저장 불변 |
+| 의미 검수 | 변경전 신규34 중26PASS/8FAIL → 후보34PASS → 실제생산 신규34+피해/기검참소리5=39PASS. 양판 inlineJS12/importmap2 구문PASS·전체역치환원본 exact. 실제native/청취/full-loop 인수 아님 |
+| 문서 | docs 전체 관련키워드 검색·변경 없는 공식 보존, SOUND_BASIC_ATTACK_PROGRESS_20261003.md 및 사운드 정본·이총괄·CH1 milestone에 정확 기록. 코드+관련docs만 원격checkpoint |
+| 앱 상태 | 기존source29 job e771c364/port3404/main52515 유지. 이번source30은 기존앱에 미포함. Space 후AX불변/네메시아 목마대사 유지, 새화면 기준 클릭 noWindowsAvailable. 추가빌드·재기동·사용자세이브조작0 |
+| 목표 | 같은후보 전투·획득/장착·4지역보스문·보스사망/부활/재도전·열린문/필드몬스터 보존·실청취·저장재실행·카메라 미인수. 코드진척과 제품완료 구분 |
+
+상세 [source30 기본 공격 음향](../6사운드디자인/SOUND_BASIC_ATTACK_PROGRESS_20261003.md). 두오더담당의 전문팀 단일송신 소유 유지/새팀·전문팀 중복지시0. source30 백업·검수·검색·핀은 tmp/mac-migration-runtime/continued-review-20261003/source30-basic-attack-audio/에 보존한다.
