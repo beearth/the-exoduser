@@ -294,3 +294,14 @@ source9 기준의 완료 ENEMY·ANIMVFX 원패치2를 불변 보존한다. sourc
 | 최신 제작목표 값 | 20f / cap24 / scaleY1→0.8 / 아래6px / 기존 atlas만 | 이전10–14f·4~8px는 2026-10-01 설계 제안. 현재 목표는 후보값이며 생산 도입0 |
 
 검수는 실제 `_addCorpse`+원 pool/hook/draw의 메모리 연결1회다. 자연 hurtE·전체 renderer·픽셀·GL·native·성능 인수0. draft SHA 변경으로 축 실행 전1회 중단한 이력은 제품 실패로 계산하지 않는다. root의 corrected metadata/consumer 제작은 별도 다음 목표이며, 이 원패치 자체는 수정하지 않는다. 실제 증빙 `tmp/mac-migration-runtime/continued-review-20261003/root-deathfade-source11/receipt.json` SHA `415e5d2d8b3f552aec3ea31a1cf354539e71915ab020b65cd561430429320c4a`.
+
+
+## 2026-10-03 source23 — 보스 착지·탄막 전조 범위 동기화
+
+| 상태 / 적용 위치 | 현재 표시값 | 실제 판정·보존 경계 |
+|---|---|---|
+| `bossJump` 바닥 fill/stroke | `e.jumpX,e.jumpY` 중심 반경300px 고정. 이전30~60px 및 후보300×진행도는 미사용 | 착지 즉시 피해 `dst(P,e)<300`·atk×1.8·무적/돌진 예외 유지. 충돌 없는 경로에서 목표=실착지 중심. 벽막힘 시 실제 `e.x/e.y`와 목표의 기존 괴리는 미해결 |
+| `bossFanWind` arc·오브 각도 | `π×(.7+e._bossPhase×.06)`, 페이즈0~4에서126/136.8/147.6/158.4/169.2도 | 실제 발사 `fanW`와 동일식. 방향 표시 길이 `120+stage×3`은 사거리 표시가 아님. 탄 수·RNG·피해·수명·유도 불변 |
+| 검수 / 적용 | 양판 각각 draw3접점만 수정, 역치환 source22 byte-exact. 신규8 PASS(원본4 PASS/4 FAIL); 실제 분기·기존 회귀 포함12 PASS | canvas는 호출 기록 대역이며 native·화면·GPU·시각 최종 인수 아님. source22/3397 앱에는 아직 이 수정 미포함 |
+
+상세 수치·실제 분기·한계·§23 보고는 [source23 전조 계약](CH1_BOSS_LANDING_FAN_TELEGRAPH_20261003.md)을 따른다. 피해·패링·타이밍·맵 geometry·카메라·기존 앱/세이브는 변경하지 않았다.

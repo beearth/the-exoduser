@@ -673,3 +673,14 @@ X.translate(Math.round(C.width/2 - G.cam.x + sx), Math.round(C.height/2 - G.cam.
 | 다른 분기 | 해금 전 일반 `initStage`, si3 `_retryDruidFinale` 선행 | 이번 분기 추가를 다른 사망 경로에 중복 적용하지 않음 |
 
 기존 ORB 루프는 stage0/3 및 bossAlive가 참이면 bossRef가 null이어도 남은 배열을 이동·충돌 처리한다. 복귀 후 bossAlive=true/ref=null인 상태에서 이전 ORB가 필드에 남는 경계를 복귀 순간에 정리한다. 필드 map/ens/아이템/지역/열린 문을 새로 만들거나 초기화하지 않는다. 보스 공격 수치·110f 발사·3발·r26·속도6.8·피해0.6배 및 Q/패링/탄 보정은 변경하지 않는다. 실제 의미 검수·native 경계는 [복귀 정본](../4.1맵디자인+설정/CH1-1_BOSS_RESPAWN_PROGRESS_20261002.md)의 source14 절을 따른다.
+
+
+## 2026-10-03 source23 — 보스 착지·탄막 전조 범위 동기화
+
+| 상태 / 적용 위치 | 현재 표시값 | 실제 판정·보존 경계 |
+|---|---|---|
+| `bossJump` 바닥 fill/stroke | `e.jumpX,e.jumpY` 중심 반경300px 고정. 이전30~60px 및 후보300×진행도는 미사용 | 착지 즉시 피해 `dst(P,e)<300`·atk×1.8·무적/돌진 예외 유지. 충돌 없는 경로에서 목표=실착지 중심. 벽막힘 시 실제 `e.x/e.y`와 목표의 기존 괴리는 미해결 |
+| `bossFanWind` arc·오브 각도 | `π×(.7+e._bossPhase×.06)`, 페이즈0~4에서126/136.8/147.6/158.4/169.2도 | 실제 발사 `fanW`와 동일식. 방향 표시 길이 `120+stage×3`은 사거리 표시가 아님. 탄 수·RNG·피해·수명·유도 불변 |
+| 검수 / 적용 | 양판 각각 draw3접점만 수정, 역치환 source22 byte-exact. 신규8 PASS(원본4 PASS/4 FAIL); 실제 분기·기존 회귀 포함12 PASS | canvas는 호출 기록 대역이며 native·화면·GPU·시각 최종 인수 아님. source22/3397 앱에는 아직 이 수정 미포함 |
+
+상세 수치·실제 분기·한계·§23 보고는 [source23 전조 계약](../5.1임펙트디자인/CH1_BOSS_LANDING_FAN_TELEGRAPH_20261003.md)을 따른다. 피해·패링·타이밍·맵 geometry·카메라·기존 앱/세이브는 변경하지 않았다.

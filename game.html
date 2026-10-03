@@ -51490,7 +51490,7 @@ function draw(){
     }
     if(e.s==='bossFanWind'){const p=1-e.st2/30;
       // 부채꼴 바닥 위험구역
-      const fw=Math.PI*.6,fanR=120+G.stage*3;
+      const fw=Math.PI*(.7+e._bossPhase*.06),fanR=120+G.stage*3;
       X.globalAlpha=p*.12;X.fillStyle='#ff2200';X.beginPath();X.moveTo(e.x,e.y);X.arc(e.x,e.y,fanR,e.facing-fw/2,e.facing+fw/2);X.fill();
       X.globalAlpha=p*.35;X.strokeStyle='#ff4400';X.lineWidth=2;X.beginPath();X.arc(e.x,e.y,fanR,e.facing-fw/2,e.facing+fw/2);X.stroke();
       // 오브 (기존)
@@ -51547,8 +51547,8 @@ function draw(){
       X.globalAlpha=sa}
     if(e.s==='bossJump'){const p=1-e.st2/40;const jumpH=p<.5?p*2:(1-(p-.5)*2);
       // 착지 지점 위험 표시 (빨간 깜빡이는 원)
-      X.globalAlpha=.15+p*.35+Math.sin(_now/60)*.1;X.fillStyle='#ff2200';X.beginPath();X.arc(e.jumpX,e.jumpY,30+p*30,0,Math.PI*2);X.fill();
-      X.strokeStyle='#ff4400';X.lineWidth=2;X.beginPath();X.arc(e.jumpX,e.jumpY,30+p*30,0,Math.PI*2);X.stroke();
+      X.globalAlpha=.15+p*.35+Math.sin(_now/60)*.1;X.fillStyle='#ff2200';X.beginPath();X.arc(e.jumpX,e.jumpY,300,0,Math.PI*2);X.fill();
+      X.strokeStyle='#ff4400';X.lineWidth=2;X.beginPath();X.arc(e.jumpX,e.jumpY,300,0,Math.PI*2);X.stroke();
       // Shadow at landing spot
       X.globalAlpha=.2+p*.3;X.fillStyle='#000';X.beginPath();X.ellipse(e.jumpX,e.jumpY,18-jumpH*8,10-jumpH*4,0,0,Math.PI*2);X.fill();
       // Jump height visual offset

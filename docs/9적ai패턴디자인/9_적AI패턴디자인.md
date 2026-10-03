@@ -358,3 +358,14 @@ atkTicketRelease(e) → 티켓 반환
 | 전체 변경 | 양판 각각 +246B(시각 helper187B + 소환59B) | source8 함수 변경 밖 원문 완전 일치, inverse2exact·교환 결합 exact |
 
 원 literal helper의 보스 표시 확대는 미채택했다. helper가 `!e.ib`를 보장하며 renderer의 기존 `_b3Active` continue를 전체 보스 guard로 설명하지 않는다. 공식 공동 검수46/46과 inline12JS+2JSON syntax PASS는 synthetic 의미·구문 범위이고 자연 보스·전체 AI/draw·픽셀·native/visual 검수 완료가 아니다. source9 앱 빌드·실행0. [생산 pin과 영수증](../CHANGELOG_SYNC.md)을 참조한다.
+
+
+## 2026-10-03 source23 — 보스 착지·탄막 전조 범위 동기화
+
+| 상태 / 적용 위치 | 현재 표시값 | 실제 판정·보존 경계 |
+|---|---|---|
+| `bossJump` 바닥 fill/stroke | `e.jumpX,e.jumpY` 중심 반경300px 고정. 이전30~60px 및 후보300×진행도는 미사용 | 착지 즉시 피해 `dst(P,e)<300`·atk×1.8·무적/돌진 예외 유지. 충돌 없는 경로에서 목표=실착지 중심. 벽막힘 시 실제 `e.x/e.y`와 목표의 기존 괴리는 미해결 |
+| `bossFanWind` arc·오브 각도 | `π×(.7+e._bossPhase×.06)`, 페이즈0~4에서126/136.8/147.6/158.4/169.2도 | 실제 발사 `fanW`와 동일식. 방향 표시 길이 `120+stage×3`은 사거리 표시가 아님. 탄 수·RNG·피해·수명·유도 불변 |
+| 검수 / 적용 | 양판 각각 draw3접점만 수정, 역치환 source22 byte-exact. 신규8 PASS(원본4 PASS/4 FAIL); 실제 분기·기존 회귀 포함12 PASS | canvas는 호출 기록 대역이며 native·화면·GPU·시각 최종 인수 아님. source22/3397 앱에는 아직 이 수정 미포함 |
+
+상세 수치·실제 분기·한계·§23 보고는 [source23 전조 계약](../5.1임펙트디자인/CH1_BOSS_LANDING_FAN_TELEGRAPH_20261003.md)을 따른다. 피해·패링·타이밍·맵 geometry·카메라·기존 앱/세이브는 변경하지 않았다.
