@@ -387,3 +387,39 @@ root는 실제 공식 완료 최종문을 읽고 실파일 bytes/SHA를 대조�
 | Gate | 파일/이미지/픽셀/생산 적용0. 실제 최종문·turn/도구는 `official-0124-turn.json`에 보존; 미공개 영역별 독립 HEX·마스크·좌표 인수 미확정 |
 
 기존 원자료·22행 색상표·타인 WIP·사용자 세이브 보존. Codex7 후속 유일 송신/root 전문팀 중복 송신0, Claude8 상태 유지. codeEpoch60·CH1-1 같은후보 native6 미인수 유지.
+
+
+## 2026-10-04 UI-06 황동·녹청·민트 시안 및0130 원자료 보존
+
+### UI-06 별도 재색칠 시안 — VISUAL VERDICT: RETOUCH
+
+0104-MATERIAL/974fb2의 공통3색·6영역과 실제 원화를 바탕으로 root가 내장 image_gen 편집1회를 실행했다. 영역별 적용은 root의 검토 시안 선택이며 담당 미공개 독립 HEX·마스크·좌표를 제출값으로 확대하지 않는다.
+
+| 항목 | 실제 결과·남은 검수 |
+|---|---|
+| root 색상 배정 | 고리 몸체는 낡은 황동 `#B19455`, 기존 금속 표식3개의 면은 녹청 `#527F79`, 부유 수정1개·기존 보라 발광 홈은 민트 `#9DF6CE` 요청. 비발광 균열·부유 틈·배경 유지. HEX는 프롬프트 목표이며 전 픽셀의 정확 HEX 측정이 아님 |
+| 원화 열람·핀 | 위 중앙이 끊어진 타원 고리1개·좌/우/아래 금속 표식3개·중앙 세로 부유 수정1개. 깨진 단면·수정면·연결 틈·명암 보존 요청. 기존 UI-06 999406 bytes / 1024×1024 / SHA-256 `20700aecc86c40c3dd82b76dd0969eff8c3495fa264279d78f7939b02e443459` |
+| 도구·기본 출력 | 내장 image_gen / `.codex/generated_images/01a0faa9-b453-7673-be39-98adedb4c2b3/exec-6713e864-2ca0-4f45-85b0-de65ef2263ac.png` |
+| 시안 핀 | 1274506 bytes / 1254×1254 PNG / SHA-256 `439a721d5aa8249df1cd42dcbd595659fceb80e1c45dd095d86e9f05c081b35a` |
+| checkout 보존 | `tmp/mac-migration-runtime/continued-review-20261003/item-color-preview-ui06-20261004/ui-06-brass-verdigris-mint-preview-v1.png`. 원본·docs 사전 백업/프롬프트·핀·공식 원자료 보존. 기존 검토 캐시 사용, 새 ignore 규칙·삭제0. 코드+docs 한정 Git checkpoint에 PNG 바이너리 미포함 |
+| 실제 전체 크기 열람 | 상단 끊어진 틈과 타원 고리1개·표식3개·부유 수정1개 배치 확인. 황동/녹청/민트로 고리·표식·수정/기존 홈 색상 구분 확인 |
+| RETOUCH 이유 | 출력1024→1254, 수정면·표식 표면·금속 미세 선/명암·발광 홈 폭이 원본과 다름. 전체 형태·정확 픽셀/질감 경계 보존을 최종 PASS로 인정하지 않음 |
+| 미검수 | 실제34/64/96/160px 검토 화면·게임 슬롯/가방/장비창·알파/투명 파생본·런타임 변환·패키지·실게임/native 시각·청취. 앞선 로컬 file URL 보안 정책 거절 뒤 동일 축소 검토·우회 재시도0 |
+| 누적 구분 | root 시안 대상6종(UI-08/UI-04/UI-02/UI-10/UI-12/UI-06), 생성 결과7장(UI-10 v1/v2 포함). 원화44장·생산 코드 불변, 원본 교체·아트 최종채택·게임 연결0. 22행 팔레트·rarity=5 `#ff4466`·수치/드롭/효과/저장 계약 유지 |
+
+원본·시안 전체 크기 열람을 같은후보 CH1-1 native6단계·축소 슬롯 시각·청취 완료로 계산하지 않는다.
+
+### ITEM0130 공식 완료 원자료 — 후보 미채택
+
+| 항목 | 정확한 제출·인수 범위 |
+|---|---|
+| 공식 완료 | `SUPERVISOR-ITEM-0130-MATERIAL` / `cd6cb8` / turn `01a10488-a28b-7da2-abd6-3434e608c8c0` / final `msg_0dc2542c5744bc89016ac1ac80572087d0ab19f99a00109ad4` |
+| 실제 도구 | imageView `exec-a995c0f5-6d2f-47da-be65-c1fd6db35537`; pin `exec-a267d8aa-b0cc-468a-9db8-b1415840db6b` exit0 |
+| 원화 핀 | `assets/unique-items/ui-09.png`, 1103563 bytes, SHA-256 `01c6e17f50735c3e6a887a800d0f734af9b1d7c161822aafc4a36f2666113c87`; root 실파일 대조 |
+| 팔레트 출처 | `itemColor0033_candidate.rows[8]`: `#B97546 / #E0D0AB / #6CEFFC` |
+| 제출 영역8 | 금속 면·전극/테두리·패딩·기존 전류 아크·전극 발광부·발광 홈·국소 반사·배경 |
+| 보존 기준 | 윤곽·질감·명암·아크 경로·경계 |
+| RAM 키 | `itemMaterial0130_raw`, `itemMaterial0130_candidate`, `itemMaterial0130_handoff` |
+| Gate | 파일/이미지/픽셀/생산 적용0. 실제 최종문·turn/도구는 `official-0130-turn.json`에 보존; 미공개 영역별 독립 HEX·마스크·좌표 인수 미확정 |
+
+기존 원자료·22행 색상표·타인 WIP·사용자 세이브 보존. Codex7 후속 유일 송신/root 전문팀 중복 송신0, Claude8 상태 유지. codeEpoch60·CH1-1 같은후보 native6 미인수 유지.
