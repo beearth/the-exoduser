@@ -1,3 +1,7 @@
+# 2026년 10월 4일 콘텐츠 완성 기획서 초안
+
+사용자 요청 “먼저 기획서를 만들어보자”에 따라 [게임 방향과 콘텐츠 완성 기획서 초안](EXODUSER_GAMEPLAY_CONTENT_PLAN_20261004.md)을 작성했다. 첫 제안은 기존 NPC 세 명의 실제 상호작용 완성, 후속 제안은 첫 이야기와 보스 종주·중간계 마을·새 맵과 보스·추가 캐릭터다. 검토용 제안이며 기존 LOCK·SSOT 변경, 게임 구현 완료, 제작 재개·팀 TASK 송신·예약 변경을 뜻하지 않는다.
+
 # 현재 팀 배치 — 관리3·전문15 / 총18역할
 
 사용자 최신 확정: 관리3(총괄·Codex감독·Claude오더) + 전문15(Codex7·Claude8) = 총18역할이다. Codex전문7은UIUX/ITEM/BUILD/BALANCE/SOUND/QUESTNPC/MARKETING, Claude전문8은ART/MAP/SKILL/QA/ENEMY/ANIMVFX/BOSS/STORY다. Claude TASK Read8/8·Codex전문 TASK Read7/7 확인. 중복Codex채팅8개는완료턴확인후복구가능보관했고현재Codex전문채팅7개+이총괄이다. [현재역할·실행위치·소유·상태](mac-resume-20261001/vscode-dispatch/PROVIDER-HALVES-20261002.md). 이표가최신배치이며아래11/12/15팀기록은각시각이력이다.
