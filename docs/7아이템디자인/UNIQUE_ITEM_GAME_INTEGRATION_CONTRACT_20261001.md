@@ -666,3 +666,50 @@ Codex7 후속 유일 송신/root 전문팀 중복 송신0, Claude8 상태 유지
 | Gate | 담당 파일/이미지/픽셀/생산 적용0. 실제 최종문·turn/도구는 `official-0210-turn.json`에 보존; 미공개 영역별 독립 HEX·마스크·좌표 인수 미확정 |
 
 Codex7 hb0215의 UI-20 후속 accepted=true 인계는 새turn/Read/실tool/완료 별도 pending으로 보존한다. Codex7 후속 유일 송신/root 전문팀 중복 송신0, Claude8 상태 유지. 기존 원자료·22행 색상표·타인 WIP·사용자 세이브·codeEpoch60·CH1-1 같은후보 native6단계/시각/청취 미인수 보존.
+
+
+## 2026-10-04 UI-14 청록·은색·청색 시안 및0215·0220 원자료 보존
+
+### UI-14 별도 재색칠 시안 — VISUAL VERDICT: RETOUCH
+
+0145-MATERIAL/e29245의 공통3색·8영역과 실제 원화를 바탕으로 root가 내장 image_gen 편집1회를 실행했다. 영역별 배정은 root 검토 시안 선택이며 담당 미공개 독립 HEX·마스크·좌표를 제출값으로 확대하지 않는다.
+
+| 항목 | 실제 결과·남은 검수 |
+|---|---|
+| root 색상 배정 | 나선 금속은 청록 `#337E8A`, 연결 고리/삼각 연결부/목줄 슬리브는 비발광 은색 `#A4BFC2`, 기존 상단 보석·나선 발광 홈·코어 발광 테두리만 청색 `#79DDFF` 요청. 중심은 어둡고 빈 상태, 검은 꼬임 목줄·일반 금속 균열·배경 유지. HEX는 프롬프트 목표이며 출력 픽셀의 정확 HEX 측정이 아님 |
+| 원화 열람·핀 | 검은 꼬임 목줄·금속 슬리브2개·보석1개를 포함한 삼각 연결부·둥근 고리1개·비대칭 나선 칼날층/틈·어두운 코어. UI-14 1114094 bytes / 1024×1024 / SHA-256 `a91a3a73eef51e637ce9bc6d0640bc0ca595973bcae0337eeb93fd0cb0e772b0` |
+| 도구·기본 출력 | 내장 image_gen / `.codex/generated_images/01a0faa9-b453-7673-be39-98adedb4c2b3/exec-ef0cebb6-c848-40d9-919f-fd09f2c52132.png` |
+| 시안 핀 | 1611306 bytes / 1254×1254 PNG / SHA-256 `c9edb0e6317fea1c3996d1bb4d1d1a61aa2a7cc9fa58d396a3aedfc20933337e` |
+| checkout 보존 | `tmp/mac-migration-runtime/continued-review-20261003/item-color-preview-ui14-20261004/ui-14-teal-silver-cyan-preview-v1.png`. 원화·docs 사전 백업, 프롬프트·핀·완료문/도구 관측 보존. 기본 출력 유지, 코드+docs 한정 Git checkpoint에 PNG 바이너리 미포함 |
+| 실제 전체 크기 열람 | 목줄·삼각 보석 연결부·고리·겹친 나선·어두운 코어의 큰 구도 확인. 청록 나선 금속·은색 연결부·청색 보석/홈이 분리됨 |
+| RETOUCH 이유 | 출력1024→1254, 금속 표면/긁힘·칼날면/세부 경계·슬리브 문양·보석면·홈 폭·코어 내부 반사가 재해석됨. 전체 금속 밝기/청색 반사와 오래된 질감도 보정 필요. 정확 픽셀/질감/광 경계 보존을 최종 PASS로 인정하지 않음 |
+| 미검수 | 실제34/64/96/160px·게임 슬롯/가방/장비창·알파/투명 파생본·런타임 변환·패키지·실게임/native 시각·청취. 앞선 로컬 file URL 보안 정책 거절 뒤 축소 검토·우회 재시도0 |
+| 누적 구분 | root 시안 대상14종(UI-01~UI-14), 생성 결과15장(UI-10 v1/v2 포함). UI-15~UI-22 root 시안 미생성. 원화44장·생산 코드 불변, 원본 교체·아트 최종채택·게임 연결0. 22행 팔레트·rarity=5 `#ff4466`·수치/드롭/효과/저장 계약 유지 |
+
+### ITEM0215 공식 완료 원자료 — 후보 미채택
+
+| 항목 | 정확한 제출·인수 범위 |
+|---|---|
+| 공식 완료 | `SUPERVISOR-ITEM-0215-MATERIAL` / `b841a1` / turn `01a104b1-a263-7a82-8283-770a1a7fbeb0` / final `msg_0dc2542c5744bc89016ac1b6e4a87487d0ab550a9523341978` |
+| 실제 도구 | imageView `exec-4c0844ea-aa32-4a0b-b6f5-c6c0214003f3`; pin `exec-acfe0c03-9a5e-4410-9899-503c8ee000f0` exit0. Read/commentary `msg_0dc2542c5744bc89016ac1b6b802d487d096bd81949050f2ca`는 final과 구분 |
+| 원화 핀 | `assets/unique-items/ui-20.png`, 1252323 bytes, SHA-256 `1a6cf48c04bc798b05732a82e966e9a577819fa4a595de4bb3a75df90324ba1e`; root 실파일 대조 |
+| 팔레트 출처 | `itemColor0033_candidate.rows[19]`: `#B1C0C1 / #D9C9AA / #65DCCB` |
+| 제출 영역8 | 깨진 금속 외판·뼈 프레임·연결 금속·기존 코어 효과·발광 홈·가죽/안감·국소 반사·배경 |
+| 보존 기준 | 파단·빈 코어·질감·명암·경계 |
+| RAM 키 | `itemMaterial0215_raw`, `itemMaterial0215_candidate`, `itemMaterial0215_handoff` |
+| Gate | 담당 파일/이미지/픽셀/생산 적용0. 관측된 완료문·turn·도구 식별자는 `official-0215-0220-observed.json`에 보존; 미공개 RAM 상세·영역별 독립 HEX·마스크·좌표는 미조회/미인수 |
+
+### ITEM0220 공식 완료 원자료 — 후보 미채택
+
+| 항목 | 정확한 제출·인수 범위 |
+|---|---|
+| 공식 완료 | `SUPERVISOR-ITEM-0220-MATERIAL` / `844a37` / turn `01a104b6-6485-7822-9326-e550ac8c5016` / final `msg_0dc2542c5744bc89016ac1b824b25c87d097a9f38312889b37` |
+| 실제 도구 | imageView `exec-8e5105b9-3381-4293-bd70-4cacb00947f4`; pin `exec-3e5d820e-2c1a-4f60-967f-34ee00bf8f80` exit0. Read/commentary `msg_0dc2542c5744bc89016ac1b7ef84b087d084c054dbe2ea1b47`는 final과 구분 |
+| 원화 핀 | `assets/unique-items/ui-21.png`, 1406213 bytes, SHA-256 `8b8c28e83c0a686c673d601119748ad9489a29df5b49f04bd3f404b07c5e5ac6`; root 실파일 대조 |
+| 팔레트 출처 | `itemColor0033_candidate.rows[20]`: `#C5BBA2 / #693B38 / #F76542` |
+| 제출 영역8 | 뼈 장식·흑철 판금·가죽/봉합·연결 금속·기존 심장 발광·판 사이 빛·국소 반사·배경 |
+| 보존 기준 | 뼈와 금속 구별·윤곽·질감·명암·봉합·경계 |
+| RAM 키 | `itemMaterial0220_raw`, `itemMaterial0220_candidate`, `itemMaterial0220_handoff` |
+| Gate | 담당 파일/이미지/픽셀/생산 적용0. 관측된 완료문·turn·도구 식별자는 `official-0215-0220-observed.json`에 보존; 미공개 RAM 상세·영역별 독립 HEX·마스크·좌표는 미조회/미인수 |
+
+Codex7 후속 유일 송신/root 전문팀 중복 송신0, Claude8 ART 직접 중단·다른7 승인범위 소진 idle 유지. 담당 실제 도구 실패/복구 요청 근거 없음. 기존 원자료·22행 색상표·타인 WIP·사용자 세이브·codeEpoch60·CH1-1 같은후보 native6단계/시각/청취 미인수 보존. 기존 source29 INTRO 정체 이후 새 해제 근거 없이 동일 입력/빌드 검사를 반복하지 않음.
