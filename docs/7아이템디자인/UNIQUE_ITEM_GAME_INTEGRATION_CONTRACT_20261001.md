@@ -713,3 +713,37 @@ Codex7 hb0215의 UI-20 후속 accepted=true 인계는 새turn/Read/실tool/완�
 | Gate | 담당 파일/이미지/픽셀/생산 적용0. 관측된 완료문·turn·도구 식별자는 `official-0215-0220-observed.json`에 보존; 미공개 RAM 상세·영역별 독립 HEX·마스크·좌표는 미조회/미인수 |
 
 Codex7 후속 유일 송신/root 전문팀 중복 송신0, Claude8 ART 직접 중단·다른7 승인범위 소진 idle 유지. 담당 실제 도구 실패/복구 요청 근거 없음. 기존 원자료·22행 색상표·타인 WIP·사용자 세이브·codeEpoch60·CH1-1 같은후보 native6단계/시각/청취 미인수 보존. 기존 source29 INTRO 정체 이후 새 해제 근거 없이 동일 입력/빌드 검사를 반복하지 않음.
+
+
+## 2026-10-04 UI-15 황갈색·회녹색·황록색 시안 및0225 원자료 보존
+
+### UI-15 별도 재색칠 시안 — VISUAL VERDICT: RETOUCH
+
+0150-MATERIAL/4b5bea의 공통3색·8영역과 실제 원화를 바탕으로 root가 내장 image_gen 편집1회를 실행했다. 영역별 배정은 root 검토 시안 선택이며 담당 미공개 독립 HEX·마스크·좌표를 제출값으로 확대하지 않는다.
+
+| 항목 | 실제 결과·남은 검수 |
+|---|---|
+| root 색상 배정 | 목재는 황갈색 `#AA8B63`, 기존 기계 금속/화살촉/고정 밴드/방아쇠/자루 끝 금속은 비발광 회녹색 `#616D58`, 기존 독액 실린더 내용물·호스 내용물·발광 홈만 황록색 `#D5E65A` 요청. 실린더 캡·일반 목재/금속 균열·검은 시위/감김·배경 유지. HEX는 프롬프트 목표이며 출력 픽셀의 정확 HEX 측정이 아님 |
+| 원화 열람·핀 | 대각선 석궁1개·곡선 목재 활·검은 끝 감김/시위·화살/레일1개·실린더1개/고정 밴드·짧은 호스·방아쇠/열린 방아쇠울·감긴 손잡이·금속 자루 끝. UI-15 1113041 bytes / 1024×1024 / SHA-256 `a7e2ad0527cf6411b5c3d53cd21db4aac0469910380951a9bbd7bdd54f5d3052` |
+| 도구·기본 출력 | 내장 image_gen / `.codex/generated_images/01a0faa9-b453-7673-be39-98adedb4c2b3/exec-b09dbf1b-de4a-471a-ae93-6d93198b58d1.png` |
+| 시안 핀 | 1550361 bytes / 1254×1254 PNG / SHA-256 `91090ea989344ba9d008423ad6b229c19837aa725d2aaec02204c9ecdbe6778d` |
+| checkout 보존 | `tmp/mac-migration-runtime/continued-review-20261003/item-color-preview-ui15-20261004/ui-15-tan-olive-poison-preview-v1.png`. 원화·docs 사전 백업, 프롬프트·핀·공식 완료 원자료 보존. 기본 출력 유지, 코드+docs 한정 Git checkpoint에 PNG 바이너리 미포함 |
+| 실제 전체 크기 열람 | 대각 석궁·곡선 활·시위 연결·실린더/호스·방아쇠울·감긴 손잡이의 큰 구도 확인. 황갈색 목재·회녹색 금속·황록색 독액이 분리되고 검은 시위/감김은 비발광으로 보임 |
+| RETOUCH 이유 | 출력1024→1254, 화살촉 미세 끝·금속 면/리벳/홈·나무결·시위/감김의 미세 선·실린더 반사/내용물·호스 폭/밝기가 재해석됨. 정확 부품/픽셀/질감/광 경계 보존을 최종 PASS로 인정하지 않음 |
+| 미검수 | 실제34/64/96/160px·게임 슬롯/가방/장비창·알파/투명 파생본·런타임 변환·패키지·실게임/native 시각·청취. 앞선 로컬 file URL 보안 정책 거절 뒤 축소 검토·우회 재시도0 |
+| 누적 구분 | root 시안 대상15종(UI-01~UI-15), 생성 결과16장(UI-10 v1/v2 포함). UI-16~UI-22 root 시안 미생성. 원화44장·생산 코드 불변, 원본 교체·아트 최종채택·게임 연결0. 22행 팔레트·rarity=5 `#ff4466`·수치/드롭/효과/저장 계약 유지 |
+
+### ITEM0225 공식 완료 원자료 — 후보 미채택
+
+| 항목 | 정확한 제출·인수 범위 |
+|---|---|
+| 공식 완료 | `SUPERVISOR-ITEM-0225-MATERIAL` / `1e14aa` / turn `01a104bb-11a4-79a3-ac76-eed67184b54b` / final `msg_0dc2542c5744bc89016ac1b95345b087d0946c7805037a0914` |
+| 실제 도구 | imageView `exec-c2e8938c-963f-48dc-90a4-901393bda592`; pin `exec-8709b15b-c57a-4847-b281-aa953b8157c9` exit0. Read/commentary `msg_0dc2542c5744bc89016ac1b922036487d08ba2a4c9de4ed1c7`는 final과 구분 |
+| 원화 핀 | `assets/unique-items/ui-22.png`, 987117 bytes, SHA-256 `84d8ec93fd92276d39631626e32a5d413ced809cd1bfd54740ed195fe095d568`; root 실파일 대조 |
+| 팔레트 출처 | `itemColor0033_candidate.rows[21]`: `#B59865 / #A8ABA2 / #F8C571` |
+| 제출 영역8 | 금속 프레임·뒤 띠/고정 고리·뼈 장식·렌즈·기존 발광 균열·보석/발광 홈·국소 반사·배경 |
+| 보존 기준 | 렌즈의 투명감·반사·균열·질감·명암·경계 |
+| RAM 키 | `itemMaterial0225_raw`, `itemMaterial0225_candidate`, `itemMaterial0225_handoff` |
+| Gate | 담당 파일/이미지/픽셀/생산 적용0. 실제 최종문·turn/도구는 `official-0225-turn.json`에 보존; 미공개 영역별 독립 HEX·마스크·좌표 인수 미확정 |
+
+Codex7 후속 유일 송신/root 전문팀 중복 송신0, Claude8 ART 직접 중단·다른7 승인범위 소진 idle 유지. 담당 실제 도구 실패/복구 요청 근거 없음. 기존 원자료·22행 색상표·타인 WIP·사용자 세이브·codeEpoch60·CH1-1 같은후보 native6단계/시각/청취 미인수 보존. 기존 source29 INTRO 정체 이후 새 해제 근거 없이 동일 입력/빌드 검사를 반복하지 않음.
