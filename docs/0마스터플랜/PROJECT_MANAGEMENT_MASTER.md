@@ -2237,3 +2237,10 @@ BALANCE1340 HP/MP 및1345 Shield 후보를 공식source59에서 실제 전체 �
 0038-MATERIAL/fa1ace 완료 turn `01a1045d-f397-7f42-a120-059fe94925d8`, final `msg_0dc2542c5744bc89016ac1a16b3e0087d0a44a2ee8877e3ee0`, 2026-10-04 09:44:41 KST. 기존 원화 유지·색상 다양화 직접 사용자 요청을 따른 22행 HEX와 UI-08 7영역 지시안을 문서에 보존했다. 제출 후보 보존만 인수하며 실제 픽셀 적용·아트 채택·게임 등록·native 시각/청취 인수0. 원화44장·생산 코드·등급 식별색 불변; codeEpoch60 및 CH1-1 같은후보6단계 미인수 유지. 추가 완료0044-MATERIAL/ac8757 UI-04 6영역 지시안·원화1193169B/64dc6276e9da33c424ea4a7d643310c22bda5f78e06eb5319104125d44fbe21d도 같은 계약에 미채택 보존. 독립 영역 마스크·반사 HEX 미제출 유지. Codex7 소유0049-MATERIAL UI-02 새 turn·실제 원화 도구 확인/root 중복송신0. 두 오더 담당 STATE/LOG·타인WIP 보존.
 
 [정확한 색상표·영역·원화 핀·남은 Gate](../7아이템디자인/UNIQUE_ITEM_GAME_INTEGRATION_CONTRACT_20261001.md#2026-10-04-기존-원화-보존22종-색상-다양화-후보-원자료-인수).
+
+
+## 2026-10-04 UI-02 영역안·UI-08 붉은색 시안 미채택 보존
+
+0049-MATERIAL/5f8438 UI-02 7영역 지시안은 공식 완료ID·final·1163525B/SHA로 후보 미채택 보존했다. root UI-08 내장 이미지 편집1회로 붉은 계열 별도 시안1장을 생성·checkout 검토 캐시에 복사했다. 1254×1254/1333662B/SHA d89150081449c4e2cad5fd5cebe9eca5396556da42760d27529fa27cc3d05d3a. 원본44장 불변. 일부 세부 선·명암 및 출력 규격 차이로 VISUAL VERDICT: RETOUCH; 실제 슬롯64/160/34/96px·알파·실게임/native·청취 미검수. 원본 교체·게임 연결·아트 최종채택0, codeEpoch60·CH1-1 같은후보6단계 미인수 유지. UI-10 후속은 Codex7 담당 소유/root 중복송신0.
+
+[정확한 완료 핀·시안 SHA·RETOUCH 사유·남은 Gate](../7아이템디자인/UNIQUE_ITEM_GAME_INTEGRATION_CONTRACT_20261001.md#2026-10-04-ui-02-영역안-보존ui-08-재색칠-미채택-시안).
