@@ -4,7 +4,9 @@
 
 > PM-009 사전 계약. **설계·코드 조사 결과이며 구현 완료 문서가 아니다.** 고유아이템 UI-01~22와 U-D01~22는 아직 `game.html`에 등록되지 않았다. 기존 `UNIQUE_SPECIAL` 12종, 유골함, 다른 팀의 현재 편집을 보존한다.
 
-## 1. 현재 코드와 연결 지점
+## 1. 2026-10-01 사전 조사 기준 코드와 연결 지점
+
+이 표의 행 번호와 당시 보라색 아트 방향은 2026-10-01 사전 조사 이력이다. 현행 색상 방향은 문서 상단의 2026-10-04 지시를 따르고, codeEpoch60의 실제 아이콘 함수/호출부와 연결 부재는 [ITEM0230 현행 소스 확인](#2026-10-04-item0230-실제-아이콘-연결-부재와-후보-범위-종료)을 따른다.
 
 | 기능 | 현행 위치 | 연결 시 지켜야 할 계약 |
 |---|---|---|
@@ -747,3 +749,34 @@ Codex7 후속 유일 송신/root 전문팀 중복 송신0, Claude8 ART 직접 �
 | Gate | 담당 파일/이미지/픽셀/생산 적용0. 실제 최종문·turn/도구는 `official-0225-turn.json`에 보존; 미공개 영역별 독립 HEX·마스크·좌표 인수 미확정 |
 
 Codex7 후속 유일 송신/root 전문팀 중복 송신0, Claude8 ART 직접 중단·다른7 승인범위 소진 idle 유지. 담당 실제 도구 실패/복구 요청 근거 없음. 기존 원자료·22행 색상표·타인 WIP·사용자 세이브·codeEpoch60·CH1-1 같은후보 native6단계/시각/청취 미인수 보존. 기존 source29 INTRO 정체 이후 새 해제 근거 없이 동일 입력/빌드 검사를 반복하지 않음.
+
+
+## 2026-10-04 ITEM0230 실제 아이콘 연결 부재와 후보 범위 종료
+
+`SUPERVISOR-ITEM-0230-ICON-BINDING` / `1c743d`는 실제 소스 조사 완료이며 새 코드 후보/게임 동작 완료가 아니다. 공통 아이콘 consumer는 존재하지만 UI-01~22 원화 선택 consumer가 없다. 이 TASK 범위의 미제출 승인작업 없음으로 종료했고 신규 resolver·가짜 호출·합성 UI PASS를 만들지 않았다.
+
+| 현행 대상 | 정확한 함수·호출부·상태 |
+|---|---|
+| Main DOM | `game.html:26532` `_itemSkin`; `renderInvCrystals:14854` 96px, `renderInvStorage:46966` 34px, `renderInv:48654` 34px 및 `48787` 가방 `_skSz` 호출 |
+| Easy DOM | `game-easy-test.html:25507` `_itemSkin`; `renderInvStorage:45574` 34px, `renderInv:47145` 34px 및 `47369` 가방 `_skSz` 호출 |
+| Main 월드 | `game.html:26683` `_worldItemSkin`; `_prepareWorldItemSkins:26646` 캐시 준비 caller, `draw:51038` 34px 드롭 caller |
+| Easy 월드 | `game-easy-test.html:25566` `_worldItemSkin`; `draw:49543` 34px 드롭 caller |
+| 기존 선택/폴백 | wtype/btype/slot·원소 공통 스킨. DOM은 속성 PNG→물리 PNG→SVG. Main 월드의 실제 공통 컷아웃 로드 성공만 알파를 사용하고 물리 폴백은 기존 마스킹 캐시를 사용. UI-XX별 원화 선택/후보 override 없음 |
+| 별도 정의표 | `unique-item-project/definitions.js:35~40`: UI-01~22 모두 `status='proposal'`, `enabled=false`, `art.runtimePath=null`, `art.accepted=false`, `effectStatus='unimplemented'`; `lookupActiveItemDefinition:53~55`는 enabled/status가 채택된 경우만 반환하는 미연결 조회 API |
+| 게임 연결 부재 | Main/Easy/index와 조사한 로컬 script imports에 `unique-item-project/definitions` 레지스트리 연결 및 UI-01~22 원화 경로 선택 없음. `uniqueId`의 기존 구세이브 이름 보존 처리는 아이콘 연결과 별개 |
+| 남은 의존성 | 채택 원화의 투명 파생본·확정 런타임 경로·게임 등록/실제 표시 binding·실제34/96px/가방/월드 폴백/패키지 인수. 현재 RETOUCH 시안을 확정 경로나 accepted로 간주하지 않음 |
+| 이번 결과 | 담당 파일0·픽셀0·생산 코드0·실제 동작0·테스트0. root 새 이미지0·코드 적용0. 원자료/범위 종료 문서 보존을 native·시각·청취·제품 완료로 계산하지 않음 |
+
+| 공식 근거 | 정확한 핀 |
+|---|---|
+| turn/final | `01a104c1-200f-7520-bc19-e8d0823c8009` completed / final `msg_0dc2542c5744bc89016ac1bb199cd087d0a72cc3c291c9ef30` / 완료 `1c743d` |
+| Read와 실제 소스 | Read/commentary `msg_0dc2542c5744bc89016ac1baafc63887d09f460ff97e4c518c`; 첫 소스 검색 `exec-b920e9a4-49cc-40e3-af21-f5c8cf9380ec`; docs `exec-4735d07f-dcf5-40f0-8359-782f64e20b4d`; 아이콘 검색 `exec-6ee6f63a-335e-4dca-ac76-0915a25b5f33`; 정의표 `exec-8f227b25-42ab-4759-a08a-b5c143268cf6`; 함수 원문 `exec-730fec43-9979-4572-a53b-0e355ac4b939`, 모두 exit0 |
+| 핀/caller/import 감사 | `exec-f34d9ba0-2df6-4c5a-9905-79f081f8cb52`, `exec-0fc24fbd-c6da-49cc-84b3-567dcfb29bad`, 모두 exit0. 보고의 짧은 내부ID와 실제 commandExecution ID를 구분 |
+| Main SHA | `f5f811e4952a49751859ca7b60a37c0fdf1edc9c80048b8f2a4791e2beba939e` |
+| Easy SHA | `ea258a9fbb78386b5540c5945ed339445edc71e9bc3b91741cc5e392156fc934` |
+| index SHA | `1dd28cab162a4384ad84a356eb2c719940782005d20da1312d2857bc649615a7` |
+| definitions SHA | `3f04bcc5ac90b039454f32dc9323e60bbe44dda27be7fd439a97633d1f25118a` |
+| RAM | `itemIcon0230_raw`, `itemIcon0230_finding`, `itemIcon0230_handoff`. 미공개 RAM 코드 후보를 추정/적용하지 않음 |
+| root 보존 | `tmp/mac-migration-runtime/continued-review-20261003/item-icon-binding-0230-20261004/official-0230-turn.json`에 실제 tool 출력·최종문을 보존. 응답에서 truncated=true인 source/import 출력의 생략분은 복원된 것으로 주장하지 않음. 현재 원문/핀은 root가 해당 함수·정의표를 대조하여 `source-fragments.json`·manifest에 보존 |
+
+root 시안 누적15종/16장·원화44장·22행 팔레트·생산 codeEpoch60 불변. Codex7/Claude8 송신 소유와 보호2_3/Q전용패링/어택티켓금지·타인 WIP·사용자 세이브 보존. 원총괄 중복 TASK0. 기존 source29 INTRO 정체 이후 새 해제 근거 없는 native 입력/빌드 반복0, CH1-1 같은후보6단계·보스 사망/부활/재도전·문/필드 몬스터 보존·시각/청취 미인수 유지.
