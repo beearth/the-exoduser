@@ -309,3 +309,41 @@ UI-10 실제 원화 imageView `exec-14ef705c-c121-48d2-ae1d-afab03e239cd`, pin �
 | RAM 키 | `itemMaterial0104_raw`, `itemMaterial0104_candidate`, `itemMaterial0104_handoff` | `itemMaterial0109_raw`, `itemMaterial0109_candidate`, `itemMaterial0109_handoff` |
 
 root는 실파일 bytes/SHA와 실제 공식 완료 최종문을 대조·보존했다. 담당 최종문에는 모든 영역별 독립 HEX·마스크·좌표가 공개되지 않아 그 상세 인수는 미확정이다. RAM 키명은 영구 저장 증명이 아니며 `official-0104-0109-turns.json`에 읽은 실제 turn/도구/최종문을 보존했다. 두 담당 결과는 파일0·이미지0·픽셀0·생산 적용0; root UI-02 생성과 분리한다. Codex7 소유 후속/root 전문팀 중복 송신0, Claude8 상태·타인 WIP 보존.
+
+
+## 2026-10-04 UI-10 흑철·구리·주황 시안 및0114·0119 원자료 보존
+
+### UI-10 시안 수정 — VISUAL VERDICT: RETOUCH
+
+0054-MATERIAL/e7b223의 공통3색·7영역과 실제 원화를 근거로 root가 내장 image_gen 편집2회를 순차 실행했다. 기존 원본은 교체하지 않았다. 영역별 적용은 root의 검토 시안 선택이며 담당 미공개 마스크·좌표·독립 HEX를 담당 제출값으로 보충한 것이 아니다.
+
+| 항목 | 실제 결과·남은 검수 |
+|---|---|
+| root 색상 배정 | 넓은 흑철 판금 `#42484B`, 기존 밝은 금속 테두리 `#AD6D45`, 중앙 보석1개·기존 보라 발광 홈 `#FF842B`; 가죽/패딩·배경 보존 요청. 비발광 균열을 어둡게 유지하고 발광 홈과 분리하도록 지시. HEX는 프롬프트 목표이며 전 픽셀의 정확 HEX 일치 측정이 아님 |
+| 원화 열람·핀 | 전면 빈 흉갑1개, 높은 패딩 목깃·겹친 어깨 판금·측면 가죽 끈/버클·뾰족한 하단·중앙 세로 보석1개. 기존 UI-10 1409615 bytes / 1024×1024 / SHA-256 `9cae02399807a6ae564edc9c3dde7e0c776dabe38264aeeefbbb0fbc8a6e9088` |
+| v1 도구·핀 | 내장 image_gen / `exec-0f948761-12ca-49dd-a4df-77f7e027e2b0.png`; 2004634 bytes / 1254×1254 / SHA-256 `b809ed1cec2b9bcf2b9dcdefa61dd385414391781ea69c1ce16e80905d666439` |
+| v1 실제 결함 | 원본에 없던 목 아래 작은 구리 마름모 장식이 추가됨. 원본 유지 기준에 맞지 않아 v1을 채택하지 않고 실패/수정 근거로 보존 |
+| 수정 방법 | 원본과 v1을 함께 편집 참조로 제공해 추가 목 장식 제거·원본 목깃/틈 복원·비발광 균열 보존을 요청. Python 픽셀 편집0, 새 요소·효과 신설 지시0 |
+| v2 도구·핀 | 내장 image_gen / `exec-baa825e2-7eb4-4451-9a7d-1585b192ca9a.png`; 1961758 bytes / 1254×1254 / SHA-256 `39d273796b1ee720ed8b93d1d1ccb4ffd5b75bc011f3d658625f61d8ce1f3770` |
+| 실제 v2 열람 | 추가 작은 목 장식 제거 확인. 흉갑·중앙 보석1개·패딩/측면 끈/어깨 판금의 큰 구도와 흑철/구리/주황 색 구분 확인 |
+| 남은 RETOUCH | 출력1024→1254, 미세 비발광 균열·판금 선·금속 명암 및 발광 홈의 폭/형태가 원본과 다름. 수정1건 해결을 전체 형태·픽셀 보존 PASS로 확대하지 않음 |
+| 보존 위치 | `.codex/generated_images/01a0faa9-b453-7673-be39-98adedb4c2b3/`의 두 기본 출력과 checkout `tmp/mac-migration-runtime/continued-review-20261003/item-color-preview-ui10-20261004/ui-10-charcoal-copper-preview-v1.png` / `ui-10-charcoal-copper-preview-v2.png`. 원본·docs 사전 백업, 두 프롬프트·핀·공식 원자료 보존. 기존 캐시 사용/새 ignore 규칙·삭제0; 코드+docs 한정 커밋에 PNG 바이너리 미포함 |
+| 아직 미검수 | 실제64/160px 검토 화면·34px 슬롯·가방/96px 장비창·알파/투명 파생본·런타임 변환·패키지·실게임/native 시각·청취 |
+| 누적 구분 | root 시안 대상4종(UI-08/UI-04/UI-02/UI-10), 생성 결과5장(UI-10 v1/v2 포함). 원화44장·생산 코드 불변, 원본 교체·아트 최종채택·게임 연결0. 22행 팔레트·rarity=5 `#ff4466`·아이템 수치/효과/드롭/저장 계약 유지 |
+
+전체 크기 원본/v1/v2의 실제 열람 판단이다. 이미지 생성·결함 수정1건·보고서 보존을 같은후보 CH1-1 native6단계·게임 슬롯 시각·청취 완료로 계산하지 않는다.
+
+### ITEM0114·0119 공식 완료 원자료 — 후보 미채택
+
+| 항목 | UI-01 /0114-MATERIAL | UI-05 /0119-MATERIAL |
+|---|---|---|
+| 공식 완료ID | `SUPERVISOR-ITEM-0114-MATERIAL` / `076ae7` | `SUPERVISOR-ITEM-0119-MATERIAL` / `b43503` |
+| turn / final | `01a1047a-38e1-75d3-b160-83eb9b6b410e` / `msg_0dc2542c5744bc89016ac1a8acf36c87d0ad276ae7e463a5d8` | `01a1047e-ea4f-75a0-bf04-f965072899d9` / `msg_0dc2542c5744bc89016ac1a9de552487d095632ed3acaa5f51` |
+| 실제 원화 도구 / pin exit0 | `exec-ba1ffd79-ce47-4dfe-a721-a66446310d0d` / `exec-1ab9a755-4cf6-40f6-8f4f-81ff0cf6ea84` | `exec-bb3b7dcd-1523-422e-aba6-4cf30560df1e` / `exec-f3b27d69-6cd7-47bf-8f17-e14e49be821d` |
+| 원화 핀 | `assets/unique-items/ui-01.png`, 1211510 bytes, SHA-256 `d7ba8306185572c99333b055b6727742dffb520a964e2dff28a22ef962b00f43` | `assets/unique-items/ui-05.png`, 1223020 bytes, SHA-256 `e614f44721b27ceb495bbb93be7be42001c79b06c14fe423f0ff46c7b71344f2` |
+| 팔레트 출처 | `itemColor0033_candidate.rows[0]`: `#123D48 / #B8C5CB / #70E4DC` | `itemColor0033_candidate.rows[4]`: `#293D63 / #B68454 / #F4D75C` |
+| 제출 영역 | 8: 겉감·거울 안감·기존 빛 무늬·금속 장식·보석·박음질·국소 반사·배경 | 8: 가죽 몸체·금속 판·버클·띠/안감·기존 발광 홈·보석·국소 반사·배경 |
+| 보존 기준 | 직조결·찢어진 끝·주름·거울 반사·경계 | 비대칭 외판·주름·박음질·굽 빈 공간·경계 |
+| RAM 키 | `itemMaterial0114_raw`, `itemMaterial0114_candidate`, `itemMaterial0114_handoff` | `itemMaterial0119_raw`, `itemMaterial0119_candidate`, `itemMaterial0119_handoff` |
+
+root는 실제 공식 완료 최종문을 읽고 실파일 bytes/SHA를 대조했다. `official-0114-0119-turns.json`에 실제 turn/도구/최종문을 보존했다. RAM 키는 영구 저장 증명이 아니며 미공개 영역별 독립 HEX·마스크·좌표는 미확정이다. 담당 두 결과는 파일/이미지/픽셀/생산 적용0, root UI-10 생성과 분리한다. 후속은 Codex7 유일 송신 소유/root 전문팀 중복 송신0. Claude8 상태·타인 WIP·codeEpoch60·미인수 native6 유지.
