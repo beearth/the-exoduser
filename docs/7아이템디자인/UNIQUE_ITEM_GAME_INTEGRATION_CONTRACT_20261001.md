@@ -272,3 +272,40 @@ root는 제출된 지시안과 핀의 문서 보존만 인수했다. 별도 영�
 UI-10 실제 원화 imageView `exec-14ef705c-c121-48d2-ae1d-afab03e239cd`, pin 도구 `exec-58524640-c071-486d-9bd6-4eb5590218bb` exit0는 Codex7 인계와 대조했다. UI-12 실제 원화 imageView `exec-a1c54f4d-700e-4400-99be-e56dfad4917d`, pin 도구 `exec-46cefeb5-1e82-4221-9811-7273030d6cff` exit0는 후속 Codex7 인계로 확인하고 완료 final은 공식 ITEM turn과 대조했다. root가 두 원화의 실파일 bytes/SHA를 대조했다.
 
 메모리 키: `itemMaterial0054_raw`, `itemMaterial0054_candidate`, `itemMaterial0054_handoff`; `itemMaterial0059_raw`, `itemMaterial0059_candidate`, `itemMaterial0059_handoff`. 기존 제출 자료와 정확한 최종문을 보존했다. 최종 제출문의 공통 3색과 영역 목록만 기록하며 각 영역의 미공개 마스크·좌표·독립 HEX 배정을 임의로 채우지 않는다. 두 담당 제출은 각각 파일 출력0·이미지 생성0·픽셀 변경0. root 후보 원자료 보존만 인수; UI-10/UI-12 픽셀 적용·아트 채택·게임/native 인수0. 후속 송신은 Codex7 단일담당/root 중복 지시0.
+
+
+## 2026-10-04 UI-02 녹청·라임 시안 및0104·0109 원자료 보존
+
+### UI-02 별도 재색칠 시안 — VISUAL VERDICT: RETOUCH
+
+0049-MATERIAL/5f8438의 기존 7영역·공통 팔레트와 실제 원화를 근거로 root가 내장 image_gen 편집1회를 실행했다. 아래 영역별 배정은 root의 검토 시안 적용 선택이며, 담당이 제출하지 않은 독립 HEX·마스크·좌표를 담당 제출값으로 확대하지 않는다.
+
+| 항목 | 실제 결과·남은 검수 |
+|---|---|
+| root 색상 배정 | 비늘 금속·뱀 머리 `#60896E`, 송곳니 `#E5D9BC`, 보석 정확3개·기존 눈/발광 홈 `#A8ED45`; 안쪽 매끈한 금속·배경은 원색 보존 요청. HEX는 프롬프트 목표이며 출력 모든 픽셀의 정확 HEX 측정이 아님 |
+| 원화 열람 | 열린 원형 고리 하나·안쪽을 향한 뱀 머리2개·매달린 물방울 보석3개. 보석 수·빈 공간·고리 윤곽·비늘/금속/송곳니 명암을 보존 대상으로 확인 |
+| 생성 도구·기본 출력 | 내장 image_gen / `.codex/generated_images/01a0faa9-b453-7673-be39-98adedb4c2b3/exec-ba8f19f1-a519-4d73-99ec-22668b9f8ffc.png` |
+| checkout 내 보존 | `tmp/mac-migration-runtime/continued-review-20261003/item-color-preview-ui02-20261004/ui-02-verdigris-lime-preview-v1.png`. 원화·docs 사전 백업, 프롬프트·핀·공식 원자료를 같은 기존 검토 캐시에 보존. 새 ignore 규칙·삭제0, 코드+docs 한정 Git checkpoint에 이미지 바이너리 미포함 |
+| 시안 핀 | 1604926 bytes / 1254×1254 PNG / SHA-256 `a98f0330c4d4f2d47b8c5e937ee9231436b22b8264407adf1cd6c86abeb93ade` |
+| 원화 핀 | UI-02 1163525 bytes / 1024×1024 / SHA-256 `e5c05078235fc9e63c2bbfbb508ba9afee877e1f8bea414dc2c5846850a290c7`; 원본 백업·대조 완료 |
+| 실제 시안 열람 | 전체 크기에서 고리·뱀 머리2개·보석3개 배치를 유지하며 녹청 금속·뼛빛 송곳니·라임 보석/눈/기존 홈으로 색상 방향 구분. 안쪽 은빛 고리·배경 보존 방향 확인 |
+| RETOUCH 이유 | 출력1024→1254, 일부 보석면·금속 미세 선·명암 재해석. 모든 질감·정확 픽셀 경계 보존을 최종 PASS로 인정하지 않음 |
+| 미검수 | 실제64/160px 검토 화면·34px 슬롯·가방/96px 장비창·알파/투명 파생본·런타임 변환·패키지·실게임/native 시각·청취 |
+| 생산 상태 | root 누적 시안3(UI-08 붉은색, UI-04 빙청색, UI-02 녹청/라임). 원화44장·코드 불변, 원본 교체·아트 최종채택·게임 연결0. 기존22행 팔레트·rarity=5 `#ff4466`·수치/드롭/효과/저장 계약 유지 |
+
+시안 열람은 같은 후보 CH1-1 native6단계 완료가 아니다. 새로운 앱 실행·빌드·사용자 세이브 조작 없이 별도 검토 후보로 보존했다.
+
+### ITEM0104·0109 공식 완료 원자료 — 후보 미채택
+
+| 항목 | UI-06 /0104-MATERIAL | UI-03 /0109-MATERIAL |
+|---|---|---|
+| 공식 완료ID | `SUPERVISOR-ITEM-0104-MATERIAL` / `974fb2` | `SUPERVISOR-ITEM-0109-MATERIAL` / `f51c33` |
+| turn / final | `01a10471-1af9-7d40-bf29-ee88d9fcc8a2` / `msg_0dc2542c5744bc89016ac1a64defd887d09c08aa826186b0ad` | `01a10475-d5e6-7722-b9c9-58a3b3492799` / `msg_0dc2542c5744bc89016ac1a787c3a487d09127e6a9fece62be` |
+| 실제 원화 도구 / pin exit0 | `exec-cf6b1727-f44a-4c19-a50c-95a0a876f728` / `exec-1685b1a2-557d-41e8-87c2-db31e6065e99` | `exec-f3efae26-5a67-42f8-86b0-e06b456dc002` / `exec-3034e58e-7a10-496c-8e71-2dbbcf92c5b1` |
+| 원화 핀 | `assets/unique-items/ui-06.png`, 999406 bytes, SHA-256 `20700aecc86c40c3dd82b76dd0969eff8c3495fa264279d78f7939b02e443459` | `assets/unique-items/ui-03.png`, 1034373 bytes, SHA-256 `e7ca44416b02035cb8c428bd9e6dd94cecff22a97e8ced2642869f21891d59a2` |
+| 팔레트 출처 | `itemColor0033_candidate.rows[5]`: `#B19455 / #527F79 / #9DF6CE` | `itemColor0033_candidate.rows[2]`: `#ADB7BE / #98713B / #FFD27B` |
+| 제출 영역 | 6: 황동 고리·금속 표식3개·부유 수정·기존 발광 홈·국소 반사·배경 | 8: 강철 칼날·황동 장식·중앙 프리즘·기존 발광 홈·작은 보석·가죽 손잡이·국소 반사·배경 |
+| 보존 기준 | 고리 파단·수정면·부유 간격·질감·명암·경계 | 윤곽·질감·명암·결정면·경계 |
+| RAM 키 | `itemMaterial0104_raw`, `itemMaterial0104_candidate`, `itemMaterial0104_handoff` | `itemMaterial0109_raw`, `itemMaterial0109_candidate`, `itemMaterial0109_handoff` |
+
+root는 실파일 bytes/SHA와 실제 공식 완료 최종문을 대조·보존했다. 담당 최종문에는 모든 영역별 독립 HEX·마스크·좌표가 공개되지 않아 그 상세 인수는 미확정이다. RAM 키명은 영구 저장 증명이 아니며 `official-0104-0109-turns.json`에 읽은 실제 turn/도구/최종문을 보존했다. 두 담당 결과는 파일0·이미지0·픽셀0·생산 적용0; root UI-02 생성과 분리한다. Codex7 소유 후속/root 전문팀 중복 송신0, Claude8 상태·타인 WIP 보존.
