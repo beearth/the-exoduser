@@ -457,3 +457,42 @@ root는 실제 공식 완료 최종문을 읽고 실파일 bytes/SHA를 대조�
 | Gate | 담당 파일/이미지/픽셀/생산 적용0. 실제 최종문·turn/도구는 `official-0135-turn.json`에 보존; 미공개 영역별 독립 HEX·마스크·좌표 인수 미확정 |
 
 Codex7 hb0140의 완료840789 인계와 UI-13 후속 accepted를 확인했다. 새 turn/실tool/완료는 별도 pending이며 root 전문팀 중복 송신0. 기존 원자료·22행 색상표·타인 WIP·사용자 세이브·Claude8 소유 상태 보존. codeEpoch60·CH1-1 같은후보 native6단계·시각·청취 미인수 유지.
+
+
+## 2026-10-04 UI-01 청록·은색·민트 시안 및0140·0145 원자료 보존
+
+### UI-01 별도 재색칠 시안 — VISUAL VERDICT: RETOUCH
+
+0114-MATERIAL/076ae7의 공통3색·8영역과 실제 원화를 바탕으로 root가 내장 image_gen 편집1회를 실행했다. 영역별 적용은 root 검토 시안 선택이며 담당 미공개 독립 HEX·마스크·좌표를 제출값으로 확대하지 않는다.
+
+| 항목 | 실제 결과·남은 검수 |
+|---|---|
+| root 색상 배정 | 바깥 직조 천은 짙은 청록 `#123D48`, 거울처럼 반사하는 안감과 기존 금속 장식/사슬/꼬리 끝은 은색 `#B8C5CB`, 기존 보라 보석·빛/반사·후드 안 발광은 민트 `#70E4DC` 요청. 비발광 봉제선/균열·어두운 후드 틈·배경 유지. HEX는 프롬프트 목표이며 출력 픽셀의 정확 HEX 측정이 아님 |
+| 원화 열람·핀 | 착용자 없는 후드 망토1개·비대칭으로 길게 내려오는 찢어진 꼬리2개·가시형 브로치2개와 짧은 연결 사슬1개·브로치 보석. UI-01 1211510 bytes / 1024×1024 / SHA-256 `d7ba8306185572c99333b055b6727742dffb520a964e2dff28a22ef962b00f43` |
+| 도구·기본 출력 | 내장 image_gen / `.codex/generated_images/01a0faa9-b453-7673-be39-98adedb4c2b3/exec-c62c5cbb-1a76-42a2-aac6-c7f249846850.png` |
+| 시안 핀 | 1705457 bytes / 1254×1254 PNG / SHA-256 `b091ed41c31430557f0fd0be7b0e33c52c051fdcbaf82b61b5d8894bf1555967` |
+| checkout 보존 | `tmp/mac-migration-runtime/continued-review-20261003/item-color-preview-ui01-20261004/ui-01-teal-silver-mint-preview-v1.png`. 원화·docs 사전 백업, 프롬프트·핀·공식 완료 원자료 보존. 기존 검토 캐시 사용, 새 ignore 규칙·삭제0. 코드+docs 한정 Git checkpoint에 PNG 바이너리 미포함 |
+| 실제 전체 크기 열람 | 후드/망토·두 꼬리 사이 빈 공간·브로치2개/사슬 구도와 청록 천·은색 반사 안감·민트 보석 확인 |
+| RETOUCH 이유 | 출력1024→1254, 안감 반사 밝기/폭이 넓어지고 일부 민트가 백색에 가까워짐. 찢어진 가장자리·봉제/직조 선·주름·금속 세부가 재해석됨. 모든 디테일·정확 픽셀/경계 보존을 최종 PASS로 인정하지 않음 |
+| 미검수 | 실제34/64/96/160px·게임 슬롯/가방/장비창·알파/투명 파생본·런타임 변환·패키지·실게임/native 시각·청취. 앞선 로컬 file URL 보안 정책 거절 뒤 축소 검토·우회 재시도0 |
+| 누적 구분 | root 시안 대상8종(UI-08/UI-04/UI-02/UI-10/UI-12/UI-06/UI-03/UI-01), 생성 결과9장(UI-10 v1/v2 포함). 원화44장·생산 코드 불변, 원본 교체·아트 최종채택·게임 연결0. 22행 팔레트·rarity=5 `#ff4466`·수치/드롭/효과/저장 계약 유지 |
+
+### ITEM0140·0145 공식 완료 원자료 — 후보 미채택
+
+| 항목 | ITEM0140 / UI-13 | ITEM0145 / UI-14 |
+|---|---|---|
+| 공식 완료 | `SUPERVISOR-ITEM-0140-MATERIAL` / `89347a` | `SUPERVISOR-ITEM-0145-MATERIAL` / `e29245` |
+| 완료 turn | `01a10491-c5aa-7fe2-965a-a248ac67623b` | `01a10496-3de4-7751-8036-85cfda7c16ae` |
+| 실제 final | `msg_0dc2542c5744bc89016ac1aebbe01487d08e55029feb55f9c2` | `msg_0dc2542c5744bc89016ac1afe28bd487d0849402eea7c520be` |
+| Read/commentary | `msg_0dc2542c5744bc89016ac1ae8f252087d0be14e4beb1b94c31` | `msg_0dc2542c5744bc89016ac1afb642ec87d09767f5b2ff1c03fe` |
+| 실제 원화 열람 | `exec-96389c60-dfd1-457f-beef-fbd9182b51fb` | `exec-151f3925-ca0f-4048-b105-dcfc5d9100f5` |
+| pin 도구 / 종료 | `exec-c4b8752c-540b-42de-ad6b-afb27294415f` / exit0 | `exec-e593ecda-8c60-4d00-a1d3-dde6ec430248` / exit0 |
+| 원화 / bytes | `assets/unique-items/ui-13.png` / 1248248 | `assets/unique-items/ui-14.png` / 1114094 |
+| 원화 SHA-256 | `503231fd7d0f0dfc37f3f12924fe27f1c42c7e5ef91d8f8bbf4aa47ca1550790` | `a91a3a73eef51e637ce9bc6d0640bc0ca595973bcae0337eeb93fd0cb0e772b0` |
+| 팔레트 출처 | `itemColor0033_candidate.rows[12]` | `itemColor0033_candidate.rows[13]` |
+| 공통3색 | `#64704A / #75503A / #88D47D` | `#337E8A / #A4BFC2 / #79DDFF` |
+| 제출 영역 | 7: 뿌리·가죽 띠·금속 버클·기존 발광 홈·가는 뿌리·국소 반사·배경 | 8: 소용돌이 금속 띠·연결 금속·중앙 구체·기존 발광 홈·상단 보석·목줄·국소 반사·배경 |
+| 보존 기준 | 나무결·봉제선·분기·명암·경계 | 윤곽·회전 무늬·질감·명암·경계 |
+| RAM 키 | `itemMaterial0140_raw`, `itemMaterial0140_candidate`, `itemMaterial0140_handoff` | `itemMaterial0145_raw`, `itemMaterial0145_candidate`, `itemMaterial0145_handoff` |
+
+두 완료 turn의 실제 도구·최종문은 `official-0140-0145-turns.json`에 보존하고 원화 bytes/SHA를 root 실파일과 대조했다. 담당 파일/이미지/픽셀/생산 적용0; 미공개 영역별 독립 HEX·마스크·좌표 인수 미확정. Codex7 hb0145의89347a 완료 인계/UI-14 후속 accepted와 해당0145 실제 completed를 구분한다. 전문팀 후속 송신은 Codex7 소유/root 중복 송신0, Claude8 상태 유지. 기존 원자료·22행 색상표·타인 WIP·사용자 세이브·codeEpoch60·CH1-1 같은후보 native6단계/시각/청취 미인수 보존.
