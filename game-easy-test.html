@@ -58998,7 +58998,7 @@ function _getCutsceneImg(filename){
   if(!filename)return null;
   if(_cutsceneImgCache[filename])return _cutsceneImgCache[filename];
   const img=new Image();
-  img.src=filename.indexOf('/')>=0?'assets/cutscene/'+filename+'?v=20261001-warstills2':'assets/cutscene/images/'+filename+'?v=20260930-intro-lock7';
+  img.src=filename.indexOf('/')>=0?'assets/cutscene/'+filename+'?v=20261001-warstills2':'assets/cutscene/images/'+filename+'?v=20261004-intro-lock8';
   if(img.decode)img.decode().catch(()=>{}); // 첫 drawImage 디코딩 스파이크 제거 (2026-07-27)
   _cutsceneImgCache[filename]=img;
   return img;
