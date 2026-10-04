@@ -423,3 +423,37 @@ root는 실제 공식 완료 최종문을 읽고 실파일 bytes/SHA를 대조�
 | Gate | 파일/이미지/픽셀/생산 적용0. 실제 최종문·turn/도구는 `official-0130-turn.json`에 보존; 미공개 영역별 독립 HEX·마스크·좌표 인수 미확정 |
 
 기존 원자료·22행 색상표·타인 WIP·사용자 세이브 보존. Codex7 후속 유일 송신/root 전문팀 중복 송신0, Claude8 상태 유지. codeEpoch60·CH1-1 같은후보 native6 미인수 유지.
+
+
+## 2026-10-04 UI-03 은회색·황동·금빛 시안 및0135 원자료 보존
+
+### UI-03 별도 재색칠 시안 — VISUAL VERDICT: RETOUCH
+
+0109-MATERIAL/f51c33의 공통3색·8영역과 실제 원화를 바탕으로 root가 내장 image_gen 편집1회를 실행했다. 영역별 색 배정은 root 검토 시안 선택이며 담당 미공개 독립 HEX·마스크·좌표를 제출값으로 확대하지 않는다.
+
+| 항목 | 실제 결과·남은 검수 |
+|---|---|
+| root 색상 배정 | 칼날 면/날은 은회색 강철 `#ADB7BE`, 기존 가드/자루 끝 금속은 황동 `#98713B`, 중앙 프리즘·작은 보석·기존 보라 발광 홈은 금빛 `#FFD27B` 요청. 가죽·비발광 틈/균열·배경의 어두운 명암 유지. HEX는 프롬프트 목표이며 출력 픽셀의 정확 HEX 측정이 아님 |
+| 원화 열람·핀 | 왼쪽 아래 칼끝/오른쪽 위 손잡이의 대각 장검1개·계단형 비대칭 칼날·중앙 긴 프리즘·갈고리형 가드2팔/빈 공간·감긴 가죽 손잡이. UI-03 1034373 bytes / 1024×1024 / SHA-256 `e7ca44416b02035cb8c428bd9e6dd94cecff22a97e8ced2642869f21891d59a2` |
+| 도구·기본 출력 | 내장 image_gen / `.codex/generated_images/01a0faa9-b453-7673-be39-98adedb4c2b3/exec-9e45bcef-8e64-4bda-a093-1023a8a1144f.png` |
+| 시안 핀 | 1476976 bytes / 1254×1254 PNG / SHA-256 `ae4d2801d7ec0a4542a639b89d854c6d44f8f3c40294cbcf05fcc6e152d460de` |
+| checkout 보존 | `tmp/mac-migration-runtime/continued-review-20261003/item-color-preview-ui03-20261004/ui-03-silver-brass-gold-preview-v1.png`. 원화·docs 사전 백업, 프롬프트·핀·공식 완료 원자료 보존. 기존 검토 캐시 사용, 새 ignore 규칙·삭제0. 코드+docs 한정 Git checkpoint에 PNG 바이너리 미포함 |
+| 실제 전체 크기 열람 | 대각 장검·중앙 긴 프리즘·갈고리 가드와 빈 공간의 큰 구도 확인. 은회색 칼날/황동 가드/금빛 수정·발광 색상 구분 확인 |
+| RETOUCH 이유 | 출력1024→1254, 프리즘 면·금속 미세 선/명암·가드 조형 세부·발광 폭 재해석. 모든 세부·정확 픽셀/질감 경계 보존을 최종 PASS로 인정하지 않음 |
+| 미검수 | 실제34/64/96/160px·게임 슬롯/가방/장비창·알파/투명 파생본·런타임 변환·패키지·실게임/native 시각·청취. 앞선 로컬 file URL 보안 정책 거절 뒤 축소 검토·우회 재시도0 |
+| 누적 구분 | root 시안 대상7종(UI-08/UI-04/UI-02/UI-10/UI-12/UI-06/UI-03), 생성 결과8장(UI-10 v1/v2 포함). 원화44장·생산 코드 불변, 원본 교체·아트 최종채택·게임 연결0. 22행 팔레트·rarity=5 `#ff4466`·수치/드롭/효과/저장 계약 유지 |
+
+### ITEM0135 공식 완료 원자료 — 후보 미채택
+
+| 항목 | 정확한 제출·인수 범위 |
+|---|---|
+| 공식 완료 | `SUPERVISOR-ITEM-0135-MATERIAL` / `840789` / turn `01a1048d-2f70-7990-92fe-80562ba6b63e` / final `msg_0dc2542c5744bc89016ac1ad94082887d096e5ed88a4e12ad0` |
+| 실제 도구 | imageView `exec-5cf8894d-75af-4be7-9e2c-0163bc37efbd`; pin `exec-8558d5c3-d68f-4ef0-8f20-c48fca00f964` exit0. Read/commentary `msg_0dc2542c5744bc89016ac1ad611f5c87d0ab171dab1cc92953`는 final과 구분 |
+| 원화 핀 | `assets/unique-items/ui-11.png`, 983582 bytes, SHA-256 `e0c44cbbbe589e763344e738ff0ac064f823ca2e651bc8bedbc549db95661e30`; root 실파일 대조 |
+| 팔레트 출처 | `itemColor0033_candidate.rows[10]`: `#8D969C / #694238 / #F6DC80` |
+| 제출 영역8 | 망치 금속·중앙 수정·가죽·뼈 장식·사슬/연결 금속·작은 보석·기존 빛/반사·배경 |
+| 보존 기준 | 윤곽·질감·명암·수정면·감김·경계 |
+| RAM 키 | `itemMaterial0135_raw`, `itemMaterial0135_candidate`, `itemMaterial0135_handoff` |
+| Gate | 담당 파일/이미지/픽셀/생산 적용0. 실제 최종문·turn/도구는 `official-0135-turn.json`에 보존; 미공개 영역별 독립 HEX·마스크·좌표 인수 미확정 |
+
+Codex7 hb0140의 완료840789 인계와 UI-13 후속 accepted를 확인했다. 새 turn/실tool/완료는 별도 pending이며 root 전문팀 중복 송신0. 기존 원자료·22행 색상표·타인 WIP·사용자 세이브·Claude8 소유 상태 보존. codeEpoch60·CH1-1 같은후보 native6단계·시각·청취 미인수 유지.
