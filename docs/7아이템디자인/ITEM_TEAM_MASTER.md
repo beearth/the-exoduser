@@ -227,3 +227,10 @@ root가 명시 reviewOnly 설치/해제 후보23그룹을 실제 port·양쪽 mk
 RNG throw guard 미발동과 restoreGeneration/RNG/repair0은 위 추출식·후보 경로에만 해당하며 실제 소켓/affix 마이그레이션 전체 RNG0 근거가 아니다. `fromStoredValue`는 원본 읽기만 했으며 import0, 완전 schema 감사나 생산 소비 완료가 아니다. 실제 DB/API·사용자 세이브·공유 STORAGE·브라우저·전투·시각·GPU·패키지 검수는 수행하지 않았다.
 
 검수 main snapshot SHA-256 `6c77ec6f571f4de9cb199a2ac425eb3f0450205bcf6f1d883ac8d13135ac4b43`; easy SHA-256 `c40ea16180305a3d0043d1c9dfa9091096820e589e537a893d5d28fff56528d0`는 보존 관측만이며 easy 경로 실행 근거가 아니다. 원문/대역/수치 근거: [담당 결과](../../tools/team-followup-20261002/continuous/ITEM/result.md), [evidence](../../tools/team-followup-20261002/continuous/ITEM/evidence.json). 이번 문서 보강은 기존 원문을 보존한 추가 기록이며 생산 적용0이다.
+
+
+## 2026-10-04 ITEM-0038 색상·재질 후보 원자료 보존
+
+0038-MATERIAL/fa1ace 완료 turn `01a1045d-f397-7f42-a120-059fe94925d8`, final `msg_0dc2542c5744bc89016ac1a16b3e0087d0a44a2ee8877e3ee0`, 2026-10-04 09:44:41 KST. 기존 원화 유지·색상 다양화 직접 사용자 요청을 따른 22행 HEX와 UI-08 7영역 지시안을 문서에 보존했다. 제출 후보 보존만 인수하며 실제 픽셀 적용·아트 채택·게임 등록·native 시각/청취 인수0. 원화44장·생산 코드·등급 식별색 불변; codeEpoch60 및 CH1-1 같은후보6단계 미인수 유지. 추가 완료0044-MATERIAL/ac8757 UI-04 6영역 지시안·원화1193169B/64dc6276e9da33c424ea4a7d643310c22bda5f78e06eb5319104125d44fbe21d도 같은 계약에 미채택 보존. 독립 영역 마스크·반사 HEX 미제출 유지. Codex7 소유0049-MATERIAL UI-02 새 turn·실제 원화 도구 확인/root 중복송신0. 두 오더 담당 STATE/LOG·타인WIP 보존.
+
+[정확한 색상표·영역·원화 핀·남은 Gate](UNIQUE_ITEM_GAME_INTEGRATION_CONTRACT_20261001.md#2026-10-04-기존-원화-보존22종-색상-다양화-후보-원자료-인수).
