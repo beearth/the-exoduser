@@ -347,3 +347,43 @@ root는 실파일 bytes/SHA와 실제 공식 완료 최종문을 대조·보존�
 | RAM 키 | `itemMaterial0114_raw`, `itemMaterial0114_candidate`, `itemMaterial0114_handoff` | `itemMaterial0119_raw`, `itemMaterial0119_candidate`, `itemMaterial0119_handoff` |
 
 root는 실제 공식 완료 최종문을 읽고 실파일 bytes/SHA를 대조했다. `official-0114-0119-turns.json`에 실제 turn/도구/최종문을 보존했다. RAM 키는 영구 저장 증명이 아니며 미공개 영역별 독립 HEX·마스크·좌표는 미확정이다. 담당 두 결과는 파일/이미지/픽셀/생산 적용0, root UI-10 생성과 분리한다. 후속은 Codex7 유일 송신 소유/root 전문팀 중복 송신0. Claude8 상태·타인 WIP·codeEpoch60·미인수 native6 유지.
+
+
+## 2026-10-04 UI-12 뼛빛·금색 시안 및0124 원자료 보존
+
+### UI-12 별도 재색칠 시안 — VISUAL VERDICT: RETOUCH
+
+0059-MATERIAL/811b4a의 공통3색·8영역과 실제 원화를 근거로 root가 내장 image_gen 편집1회를 실행했다. 아래 영역별 배정은 root의 검토 시안 선택이며 담당 미공개 마스크·좌표·독립 HEX를 제출값으로 확대하지 않는다.
+
+| 항목 | 실제 결과·남은 검수 |
+|---|---|
+| root 색상 배정 | 넓은 판금 면은 금속 질감을 유지한 뼛빛 `#DAD7C5`, 기존 밝은 테두리·종 몸체/연결 고리는 낡은 금색 `#AF8B48`, 기존 보라 문양/종의 작은 발광 문양은 따뜻한 백색 `#FFF0B5` 요청. 가죽/패딩·배경 보존 요청, 비발광 균열은 어둡게 분리. HEX는 프롬프트 목표이며 전 픽셀의 정확 HEX 측정이 아님 |
+| 원화 열람·핀 | 비대칭으로 겹친 견갑 판2개·가죽/패딩/버클·연결 고리·매달린 종1개·종 안 둥근 추1개. 왼쪽 나선/물결과 오른쪽 날개형 판금·종 문양의 위치/경계 보존 요청. 기존 UI-12 1194809 bytes / 1024×1024 / SHA-256 `89d3da01324ccbca5ab689e15651f475ba52cb3f1f73ad90e16a7aa39ef72b69` |
+| 도구·기본 출력 | 내장 image_gen / `.codex/generated_images/01a0faa9-b453-7673-be39-98adedb4c2b3/exec-c5d31db7-50dc-4b91-8612-08f62f202f35.png` |
+| 시안 핀 | 1603138 bytes / 1254×1254 PNG / SHA-256 `5fabad3395749a38056257accec9dd871748faac34455c5813bdabd3edd525a7` |
+| checkout 보존 | `tmp/mac-migration-runtime/continued-review-20261003/item-color-preview-ui12-20261004/ui-12-ivory-gold-preview-v1.png`. 원본·docs 사전 백업, 프롬프트·핀·공식 원자료·검토 시도 영수증 보존. 기존 검토 캐시 사용, 새 ignore 규칙·삭제0. 코드+docs 한정 커밋에 PNG 바이너리 미포함 |
+| 실제 전체 크기 열람 | 비대칭 견갑2판·종1개/둥근 추·가죽/패딩 구도와 뼛빛/금색/따뜻한 백색의 색상 구분 확인. 기존 보라색 방향과 다르게 분리됨 |
+| RETOUCH 이유 | 출력1024→1254, 밝아진 판금 표면의 미세 질감·균열·문양/발광 경계와 일부 선/명암 재해석. 원본 모든 디테일·픽셀/경계 보존을 PASS로 인정하지 않음 |
+| 미검수 | 실제34/64/96/160px 검토 화면·게임 슬롯/가방/장비창·알파/투명 파생본·런타임 변환·패키지·실게임/native 시각·청취 |
+| 누적 구분 | root 시안 대상5종(UI-08/UI-04/UI-02/UI-10/UI-12), 생성 결과6장(UI-10 v1/v2 포함). 원화44장·생산 코드 불변, 원본 교체·아트 최종채택·게임 연결0. 22행 팔레트·rarity=5 `#ff4466`·수치/드롭/효과/저장 계약 유지 |
+
+### 축소 검토 화면 시도와 보안 정책 거절
+
+동일 캐시에 `color-review.html` 및 `color-review-inputs.json`을 저장했다. 기존 원본과 선택 시안5종(UI-10은v2)을34/64/96/160px CSS 크기로 비교하도록 준비한 로컬 정적 문서이며 게임·서버·실행 앱은 변경하지 않았다. IAB에서 해당 `file://` 문서를 열려는 첫 호출은 **브라우저 URL 보안 정책**에 의해 거절됐다. 허용 프로토콜이 HTTP/HTTPS라는 거절 사유와 우회 금지를 확인했으며 대체 브라우저·프로토콜 우회·서버 신설·raw browser 명령을 시도하지 않았다.
+
+`thumbnail-browser-attempt.json`에 거절·대상 크기·실제 렌더링 미확인을 기록했다. HTML 준비는 이미지 로드·축소 화면 열람·시각 PASS가 아니므로 해당5종의34/64/96/160px 실제 검토 인수0을 유지한다. 전체 크기 이미지 생성/열람도 같은후보 CH1-1 native6단계·게임 화면·청취 완료로 계산하지 않는다.
+
+### ITEM0124 공식 완료 원자료 — 후보 미채택
+
+| 항목 | 정확한 제출·인수 범위 |
+|---|---|
+| 공식 완료 | `SUPERVISOR-ITEM-0124-MATERIAL` / `8f0895` / turn `01a10483-73e3-7ed0-ad25-e3db8cd32dd0` / final `msg_0dc2542c5744bc89016ac1ab05048487d0b0440301554e3d34` |
+| 실제 도구 | imageView `exec-c94251ca-4c4b-40f4-9790-c58139dadba8`; pin `exec-ea0a4509-8b55-41d7-8493-0cfeeca677d2` exit0 |
+| 원화 핀 | `assets/unique-items/ui-07.png`, 1147357 bytes, SHA-256 `564918488f331ade55ac36f89acc8731f8c9226108fbba1d2aa5b7e22767d0b3`; root 실파일 대조 |
+| 팔레트 출처 | `itemColor0033_candidate.rows[6]`: `#895B37 / #77766F / #E7AD50` |
+| 제출 영역8 | 가죽 띠·철 고리3개·사슬/금속 추·리벳·보석·기존 발광 홈·국소 반사·배경 |
+| 보존 기준 | 비발광 금속 추와 발광 보석 분리, 봉제선·연결 틈·명암·경계 보존 |
+| RAM 키 | `itemMaterial0124_raw`, `itemMaterial0124_candidate`, `itemMaterial0124_handoff` |
+| Gate | 파일/이미지/픽셀/생산 적용0. 실제 최종문·turn/도구는 `official-0124-turn.json`에 보존; 미공개 영역별 독립 HEX·마스크·좌표 인수 미확정 |
+
+기존 원자료·22행 색상표·타인 WIP·사용자 세이브 보존. Codex7 후속 유일 송신/root 전문팀 중복 송신0, Claude8 상태 유지. codeEpoch60·CH1-1 같은후보 native6 미인수 유지.
