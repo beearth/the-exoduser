@@ -780,3 +780,25 @@ Codex7 후속 유일 송신/root 전문팀 중복 송신0, Claude8 ART 직접 �
 | root 보존 | `tmp/mac-migration-runtime/continued-review-20261003/item-icon-binding-0230-20261004/official-0230-turn.json`에 실제 tool 출력·최종문을 보존. 응답에서 truncated=true인 source/import 출력의 생략분은 복원된 것으로 주장하지 않음. 현재 원문/핀은 root가 해당 함수·정의표를 대조하여 `source-fragments.json`·manifest에 보존 |
 
 root 시안 누적15종/16장·원화44장·22행 팔레트·생산 codeEpoch60 불변. Codex7/Claude8 송신 소유와 보호2_3/Q전용패링/어택티켓금지·타인 WIP·사용자 세이브 보존. 원총괄 중복 TASK0. 기존 source29 INTRO 정체 이후 새 해제 근거 없는 native 입력/빌드 반복0, CH1-1 같은후보6단계·보스 사망/부활/재도전·문/필드 몬스터 보존·시각/청취 미인수 유지.
+
+
+## 2026-10-04 UI-16 회색 금속·황동·호박색 시안 보존
+
+### UI-16 별도 재색칠 시안 — VISUAL VERDICT: RETOUCH
+
+이미 보존한 0155-MATERIAL/f21f9d의 공통3색·8영역과 실제 원화를 바탕으로 root가 내장 image_gen 편집1회를 실행했다. 영역별 색상 배정은 root 시안 선택이며 담당 미공개 독립 HEX·마스크·좌표를 제출값으로 확대하지 않는다. 기존 공식 완료 원자료를 새 완료로 다시 계산하지 않는다.
+
+| 항목 | 실제 결과·남은 검수 |
+|---|---|
+| root 색상 배정 | 기존 강철 판금·석궁 활/레일·화살촉은 회색 금속 `#697278`, 일부 기존 리벳/관절 고리/보석 테두리는 비발광 황동 `#B6944A`, 검지 신호판/손목의 기존 다이아몬드와 활/레일의 기존 좁은 발광 홈은 호박색 `#FFB35D` 요청. 갈흑색 가죽·베이지 손가락 패드·검은 시위/감김·배경 유지. HEX는 프롬프트 목표이며 출력 픽셀의 정확 HEX 측정이 아님 |
+| 원화 열람·핀 | 손등 기계 장갑1개·장착 석궁1개·양쪽 곡선 활과 관절·시위·중앙 레일/화살1개·돌출 검지 신호판·손목 다이아몬드. UI-16 1255134 bytes / 1024×1024 / SHA-256 `a92cffb5431c6346da9d08fff2dc990941ad7f070e53e26f0f2e6ba0e575e3a2` |
+| 도구·기본 출력 | 내장 image_gen / `/Users/fordeargamers/.codex/generated_images/01a0faa9-b453-7673-be39-98adedb4c2b3/exec-998e4341-646b-48df-b007-c0f0f9076311.png` |
+| 시안 핀 | 1831318 bytes / 1254×1254 PNG / SHA-256 `0243b3aaddf1557edafedfcfb3613479c62fbd667f6edb364bac54a00284e4c1` |
+| checkout 보존 | `tmp/mac-migration-runtime/continued-review-20261003/item-color-preview-ui16-20261004/ui-16-gunmetal-brass-amber-preview-v1.png`. 원화·docs 사전 백업·프롬프트·핀·검증 영수증 보존. 기본 출력 유지, 코드+docs 한정 Git checkpoint에 PNG 바이너리 미포함 |
+| 실제 전체 크기 열람 | 대각 장갑·손등 석궁·곡선 활/관절·시위·레일/화살·돌출 신호판·손목 보석의 큰 구도 확인. 회색 판금·황동 리벳·호박색 신호/홈이 분리되고 가죽/손가락 패드/시위는 비발광으로 보임 |
+| RETOUCH 이유 | 출력1024→1254, 금속 면/하이라이트·리벳/화살촉 세부·가죽결/봉제/감김·홈 폭/밝기·보석 면/테두리가 재해석됨. 정확 부품/픽셀/질감/광 경계 보존을 최종 PASS로 인정하지 않음 |
+| 미검수 | 실제34/64/96/160px·게임 슬롯/가방/장비창·알파/투명 파생본·런타임 변환·패키지·실게임/native 시각·청취. 앞선 로컬 file URL 보안 정책 거절 뒤 축소 검토·우회 재시도0 |
+| 누적 구분 | root 시안 대상16종(UI-01~UI-16), 생성 결과17장(UI-10 v1/v2 포함). UI-17~UI-22 root 시안 미생성. 원화44장·생산 코드 불변, 원본 교체·아트 최종채택·게임 연결0. 22행 팔레트·rarity=5 `#ff4466`·수치/드롭/효과/저장 계약 유지 |
+| 공식 출처 | 기존 `SUPERVISOR-ITEM-0155-MATERIAL/f21f9d`, turn `01a1049f-52d6-7280-bee9-6da8d345cc4a`, final `msg_0dc2542c5744bc89016ac1b2363ca487d096311b66a2218cc9`. 기계 철·기존 장식 금속·화살·가죽/안감·시위·신호 보석·기존 발광·국소 반사/배경의 8영역; 원자료와 후보 미채택 인수 범위는 앞선 UI-07/0155 절 유지 |
+
+ITEM0230의 실제 아이콘 연결 부재 및 정의표 전종 `accepted=false/runtimePath=null/enabled=false` 유지. Codex7 전문7 승인범위 소진 idle, Claude8 ART 직접 중단·다른7 승인범위 소진 idle이며 담당 실제 도구 실패/복구 요청의 새 근거 없음. root 중복 TASK0·새 제작팀/세션0. 타인 WIP·사용자 세이브·codeEpoch60·CH1-1 같은후보 native6단계/시각/청취 미인수 보존. 기존 source29 INTRO 정체 이후 새 해제 근거 없이 동일 입력/빌드 검사를 반복하지 않음.
