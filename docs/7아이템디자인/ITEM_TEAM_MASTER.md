@@ -241,3 +241,10 @@ RNG throw guard 미발동과 restoreGeneration/RNG/repair0은 위 추출식·후
 0049-MATERIAL/5f8438 UI-02 7영역 지시안은 공식 완료ID·final·1163525B/SHA로 후보 미채택 보존했다. root UI-08 내장 이미지 편집1회로 붉은 계열 별도 시안1장을 생성·checkout 검토 캐시에 복사했다. 1254×1254/1333662B/SHA d89150081449c4e2cad5fd5cebe9eca5396556da42760d27529fa27cc3d05d3a. 원본44장 불변. 일부 세부 선·명암 및 출력 규격 차이로 VISUAL VERDICT: RETOUCH; 실제 슬롯64/160/34/96px·알파·실게임/native·청취 미검수. 원본 교체·게임 연결·아트 최종채택0, codeEpoch60·CH1-1 같은후보6단계 미인수 유지. UI-10 후속은 Codex7 담당 소유/root 중복송신0.
 
 [정확한 완료 핀·시안 SHA·RETOUCH 사유·남은 Gate](UNIQUE_ITEM_GAME_INTEGRATION_CONTRACT_20261001.md#2026-10-04-ui-02-영역안-보존ui-08-재색칠-미채택-시안).
+
+
+## 2026-10-04 UI-04 빙청색 시안·새 재질 후보 보존
+
+UI-08 붉은색 시안에 대한 사용자의 직접 “그래 좋네” 응답을 색상 방향의 긍정 응답으로 보존했다. UI-04 빙청색 별도 시안1장이 추가돼 root 시안은 누적2장; 1254×1254/1776096B/SHA 8229330786ce01c72ab8a9cc90cf7b906c381ae658b95e038c23968f715948fa. 출력 규격·미세 세부 차이로 VISUAL VERDICT: RETOUCH, 64/160/34/96px·알파·실게임/native 시각/청취 미검수. 원화44장·생산 코드 불변, 원본 교체·게임 연결·최종 아트 채택0. 추가 공식 완료0054/e7b223 UI-10 7영역·0059/811b4a UI-12 8영역 지시안은 정확 turn/final·bytes/SHA로 후보 미채택 보존했다. Codex7 후속 소유/root 중복송신0.
+
+[원화/시안 핀·직접 응답·RETOUCH 사유·신규 공식 완료](UNIQUE_ITEM_GAME_INTEGRATION_CONTRACT_20261001.md#2026-10-04-ui-04-빙청색-시안ui-08-색상-방향-응답).
