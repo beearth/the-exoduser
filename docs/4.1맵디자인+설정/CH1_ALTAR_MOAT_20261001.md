@@ -11,7 +11,7 @@
 
 | 항목 | 값 |
 |---|---|
-| 런타임 파일 | `ch1-altar-moat.js` (`globalThis.Ch1AltarMoat`), game.html `<script src="ch1-altar-moat.js?v=20261001-3">` |
+| 런타임 파일 | `ch1-altar-moat.js` (`globalThis.Ch1AltarMoat`), game.html `<script src="ch1-altar-moat.js?v=20261004-1">` |
 | 호출 | `_drawCh1Hill(X)` 직후 `Ch1AltarMoat.draw(X,G,_now,_CH1_HILL,T,VW,VH)` — 바닥 레이어, 맵 오브젝트·엔티티 아래 |
 | 조건 | `G.stage===0 && !G._bossArena`. 다른 스테이지·보스 아레나에서는 이미지 요청·그리기 0 |
 | 형상 기준 | game.html `_CH1_HILL` 그대로 전달(중복 상수 없음). 텍스처 1900×960, 월드 원점 `(cx*T-950, cy*T-480)` = 언덕 텍스처와 동일 |
@@ -54,3 +54,92 @@
 | 액체 세부 | 전용 독액 흐름 텍스처(Seedream 5.0 Pro 1장)로 교체하면 1x 세부와 흐름 방향감 개선 — 이미지 생성 필요 |
 | 다리 | 뿌리·뼈로 엮은 다리 스프라이트를 경사로 위에 추가(깊이 슬라이스와 연동) |
 | 상호작용 | 도랑에 빠진 적·투사체 연출, 독 피해 여부 — 게임 설계 결정 필요 |
+
+## 6. 2026-10-04 — 게임 렌더러의 수직 내벽 보강
+
+사용자 음성 확정은 구성도만이 아니라 **게임에서 입체감을 만들고 레퍼런스의 공간 관계를 반영**하는 것이다. 이번 범위는 제단 도랑의 연속 수직 내벽이다. 전체 외곽·맵 구조 재작업 완료를 뜻하지 않는다. 원총괄 직접 구현이며 새 팀·중복 TASK·새 게임·빌드 실행 없음.
+
+| 항목 | 현행 값·적용 위치 |
+|---|---|
+| BANK_DEPTH | `32` 월드 렌더 픽셀. 실제 지형 높이·충돌 데이터가 아닌 시각 내벽 깊이 |
+| 형상 | `bankFace`에서 기존 `dOut` 북쪽 반원(π→2π), `dIn` 남쪽 반원(0→π)을 각각 90구간으로 따라, 하단을 y+32로 내려 닫은 연속 면 |
+| 마스크 | 액체의 기존 `source-atop` 안에만 합성. 서쪽 다리 `destination-out`은 이후 실행. 투명 영역/통행 영역 확장 없음 |
+| 내벽 재질 | 기존 `prop_pool.png`의 (200,530,440,120) 목질을 8구간마다 190×32로 합성, 알파 .65. 새 이미지·생성·결제 없음 |
+| 명암 | 기저 `#32252b`, 깊이 k=4,8,…,32의 8곡선, 선폭4, 색(8,5,11), 알파 `.12 + .35·k/32`. 기존 NW 키라이트의 SE 투영(+6,+9) 유지 |
+| 캐시 | 기존 1900×960 합성 텍스처 1회 빌드에 포함. 추가 프레임 draw·별도 텍스처 없음 |
+| 배선 | `game.html` 기존 태그 버전만 `20261004-1`로 갱신. 기존 호출·패키지 포함·easy 스크립트 미포함 계약 유지 |
+| 픽셀 검증 | 같은 모듈의 전후 Canvas 합성: RGB 변경84369px, 알파 변경0, 기존 투명영역 변경0, 다리 내부 변경0. 프레임 draw 15→15/vents20→20 (이 검증 장면만) |
+| 자동 검사 | 내벽 픽셀 경계·다리·캐시/프레임 예산 1건 + 기존 도랑5/고지2/깊이1차10/전경11 = **29/29 PASS** |
+| 비용 한계 | 로컬 Node Canvas 1회 합성 before154.1ms/after177.4ms. 브라우저 FPS·게임 초기 프레임 측정이 아니며 성능 PASS로 계산하지 않음 |
+
+### MAP PRODUCTION REPORT
+
+| 항목 | 결과 |
+|---|---|
+| STAGE / SCOPE | CH1-1 제단 도랑 내벽 한 슬라이스 |
+| MASTER PLAN | 기존 도랑 형상·서쪽 다리·제단 연결 보존; 전체 입체감 요청의 부분 구현 |
+| LARGE OUTER MASS / MEDIUM / GROUND | 외곽·연결 무변, 도랑 수직 내벽만 기존 바닥 합성에 연결 |
+| PLAYABLE / COMBAT | 충돌·경사로·보행·전투 수치 무변. 실제 다수 전투 재검수 미실시 |
+| LANDMARK / DETAIL | 기존 제단·늪 목질 재사용, 새 랜드마크/배치 없음 |
+| CAMERA QA | 실제 모듈 텍스처 전후 비교만. 현재 실행 앱/네이티브 게임 화면 검수 미실시 |
+| TECH QA | 29회귀 PASS, 픽셀 마스크/다리/캐시 유지. 새 패키지·6단계 인수 없음 |
+| FILES / EVIDENCE | `ch1-altar-moat.js`, 태그 버전, `test/ch1AltarMoatDepth.test.js`, 관련 docs. 로컬 `tmp/mac-migration-runtime/continued-review-20261004/altar-depth/`의 전후 PNG·pixel-check·백업 |
+| VISUAL VERDICT | **RETOUCH — 내벽 텍스처 보강 후보. 어둠·줌·다수전투에서 체감 깊이 미검증, 전체 맵 PASS 아님** |
+| NEXT PASS | 동일 후보의 실제 제단 카메라·서쪽 다리·전투 가독성/초기 합성 비용 비교 후 승인 판단. 외곽 질량과 공간 깊이 개선은 별도 잔여 |
+
+상단 1차 PASS는 10월1일 이력이며 이 보강의 실제 화면 PASS를 의미하지 않는다.
+
+§23 항목별 기록:
+
+```text
+================= MAP PRODUCTION REPORT =================
+STAGE: CH1-1 / 제단 도랑 내벽 한 슬라이스
+MASTER
+- silhouette: 기존 타원 도랑 그대로
+- regions: 기존 8공간/4전투지역 무변
+- main route: 남쪽 시작→북쪽 출구 무변
+- side spaces: 제단 서쪽 경사로 보존
+OUTER MASS
+- LEFT / RIGHT / TOP / SOUTH: 이번 범위 외, 무변
+- major holes: 신규 연결/외곽 구멍 변경 없음
+LARGE
+- source assets: 기존 prop_pool.png
+- composites: 기존 1900×960 텍스처에 내벽 추가
+- overlap: 기존 액체 alpha 안으로 제한
+- repeated silhouette: 새 mass 반복 없음; 내벽 목질은 기존 뿌리 crop 재사용
+MEDIUM
+- connections: 서쪽 땅 다리 보존
+- remaining holes: 전체 맵 외곽/연결 검수 잔여
+GROUND
+- shadow: 수직 면 명암; 기존 +6,+9 SE 그림자 유지
+- contamination: 기존 독액/뿌리 재질 유지
+- structure integration: 기존 제단 도랑과 같은 형상
+PLAYABLE
+- main arenas / travel space / breathing space / threat space: 이번 변경 없음
+- combat readability: 다리 픽셀 보존; 실제 전투 미검수
+LANDMARK
+- primary: 기존 시체나무 무변
+- secondary: 기존 제단/고지 무변
+- tertiary: 새 배치 없음
+CAMERA QA
+- START / EARLY / ARENA / SIDE L / SIDE R / LANDMARK / LATE / EXIT: 네이티브 촬영 미실시
+- 추가 근거: 실제 모듈 텍스처 전후 합성만 확인
+TECH QA
+- route / collision: 수치·함수 무변, 기존 회귀 통과
+- pageerror / 404: 실제 페이지 미실행으로 미측정
+- seam: 텍스처 경계 alpha 변경0; 게임 청크 seam 미측정
+- loading: 캐시 재사용 확인; 브라우저 초기 합성 비용 미측정
+- performance: 프레임 draw 증가0, 실제 FPS/초기 프레임 미측정
+FILES
+- stage-owned: ch1-altar-moat.js, game.html 태그1줄, 새 픽셀회귀1파일, 관련 docs6파일
+- concurrent touched: 없음
+- unrelated touched: 없음
+GIT
+- staged: 소유9파일 한정 checkpoint
+- commit: 코드+docs 동일범위
+- push: 원격 ref 정확 SHA 검증 영수증 별도 보관
+- deploy: 없음 / 기존 실행 앱 변경 없음
+VISUAL VERDICT: RETOUCH
+NEXT PASS: 같은 게임 후보의 제단/다리/전투 화면과 초기 합성 비용 검수
+=========================================================
+```

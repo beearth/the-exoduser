@@ -8,6 +8,7 @@
   'use strict';
   const W=1900,H=960,CX=950,CY=480,SEG=180,TAU=Math.PI*2;
   const SRC_POOL='assets/map/ch1/collision/prop_pool.png';
+  const BANK_DEPTH=32; // visual pixels only; no hill/collision height change
   let pool=null,tex=null,glow=null,bubble=null,vents=null,lastDraws=0,buildMs=0;
   function cv(w,h){const c=document.createElement('canvas');c.width=w;c.height=h;return c;}
   function rng(seed){let s=seed>>>0;return function(){s=(Math.imul(s,1664525)+1013904223)>>>0;return s/4294967296;};}
@@ -43,6 +44,31 @@
   }
   function bridgeHalfAt(g,x){const t=Math.max(0,Math.min(1,(x-g.x0)/(g.x1-g.x0)));return g.hw0+(g.hw1-g.hw0)*t;}
   function onBridge(g,x,y,pad){return x>=g.x0-pad&&x<=g.x1+pad&&Math.abs(y-g.by)<=bridgeHalfAt(g,x)+pad;}
+  // Continuous vertical bank faces, clipped to the existing liquid alpha by
+  // source-atop. The far outer bank and near island face descend into the moat;
+  // the west bridge is cut out afterwards, so its walkable surface stays open.
+  function bankFace(c,g,df,start,end){
+    const n=SEG/2,point=function(i){const a=start+(end-start)*i/n,d=df(a);return[CX+g.rx*d*Math.cos(a),CY+g.ry*d*Math.sin(a)];};
+    c.save();c.beginPath();
+    for(let i=0;i<=n;i++){const p=point(i);if(i)c.lineTo(p[0],p[1]);else c.moveTo(p[0],p[1]);}
+    for(let i=n;i>=0;i--){const p=point(i);c.lineTo(p[0],p[1]+BANK_DEPTH);}
+    c.closePath();
+    c.fillStyle='#32252b';c.fill();c.clip();
+    // Reuse the approved root bank material on the wall itself; no new asset.
+    for(let i=0;i<n;i+=8){
+      const p=point(i),q=point(Math.min(n,i+8));
+      c.save();c.translate((p[0]+q[0])/2,(p[1]+q[1])/2);
+      c.rotate(Math.atan2(q[1]-p[1],q[0]-p[0]));c.globalAlpha=.65;
+      c.drawImage(pool,200,530,440,120,-95,0,190,BANK_DEPTH);c.restore();
+    }
+    // Cross-section shading follows each curved bank, rather than a flat band.
+    // These overlapping horizontal slices are built once into the cached texture.
+    for(let k=4;k<=BANK_DEPTH;k+=4){
+      c.beginPath();for(let i=0;i<=n;i++){const p=point(i);if(i)c.lineTo(p[0],p[1]+k);else c.moveTo(p[0],p[1]+k);}
+      c.strokeStyle='rgba(8,5,11,'+(.12+.35*k/BANK_DEPTH)+')';c.lineWidth=4;c.stroke();
+    }
+    c.restore();
+  }
   function build(h,T){
     const t0=performance.now(),g=geom(h,T),out=cv(W,H),c=out.getContext('2d');
     // ── liquid ──
@@ -61,6 +87,8 @@
       a+=50/tl;
     }
     l.globalAlpha=1;l.fillStyle='rgba(7,18,8,.18)';l.fillRect(0,0,W,H);
+    bankFace(l,g,g.dOut,Math.PI,TAU);
+    bankFace(l,g,g.dIn,0,Math.PI);
     // Sunken read: both banks darken the liquid edge, and the NW key light throws
     // the north/west bank shadow (and the island's) south-east onto the liquid.
     l.lineJoin='round';
