@@ -1,0 +1,25 @@
+{
+  "preservationId": "SUPERVISOR-CODEX7-20261004-1302-CAP80",
+  "kind": "submitted-owned-raw-history",
+  "productionAdopted": false,
+  "nativeAccepted": false,
+  "newTeamCompletions": 0,
+  "sourceRound": "tmp/mac-migration-runtime/supervisor-20261002/hb20261004-1302-round.json",
+  "sourceRoundSHA256": "18f242beefaa456de8278382259819677771f92195f7e85cbb1393f5817b90da",
+  "snapshots": [
+    {
+      "originalPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/supervisor/SUPERVISOR_STATE.json",
+      "preservedPath": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/completed-preservation/SUPERVISOR-CODEX7-20261004-1302-CAP80/SUPERVISOR_STATE.json",
+      "bytes": 8134444,
+      "sha256": "608fec2f1b905a2f87581b1b8da7fe9c5869bd8f42f133ded14e72fb8768114c"
+    },
+    {
+      "originalPath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/supervisor/SUPERVISOR_LOG.md",
+      "preservedPath": "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/completed-preservation/SUPERVISOR-CODEX7-20261004-1302-CAP80/SUPERVISOR_LOG.md",
+      "bytes": 682912,
+      "sha256": "5b382e2c052e8bcd1c2bfc5a0a09cd35fccca72a7966b5526e0cdad76466be70"
+    }
+  ],
+  "liveFilesModifiedByThisPreservation": false,
+  "meaning": "감독 담당의 제출 당시 완료 소유 raw 보존. 진행 중 live 상태, 제작 후보 채택, 테스트 또는 실플레이 완료를 의미하지 않는다."
+}
