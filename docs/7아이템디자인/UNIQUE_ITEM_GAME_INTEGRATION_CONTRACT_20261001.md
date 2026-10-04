@@ -632,3 +632,37 @@ Codex7 후속 유일 송신/root 전문팀 중복 송신0, Claude8 상태 유지
 | Gate | 담당 파일/이미지/픽셀/생산 적용0. 실제 최종문·turn/도구는 `official-0205-turn.json`에 보존; 미공개 영역별 독립 HEX·마스크·좌표 인수 미확정 |
 
 Codex7 후속 유일 송신/root 전문팀 중복 송신0, Claude8 상태 유지. 기존 원자료·22행 색상표·타인 WIP·사용자 세이브·codeEpoch60·CH1-1 같은후보 native6단계/시각/청취 미인수 보존.
+
+
+## 2026-10-04 UI-13 올리브·갈색·녹색 시안 및0210 원자료 보존
+
+### UI-13 별도 재색칠 시안 — VISUAL VERDICT: RETOUCH
+
+0140-MATERIAL/89347a의 공통3색·7영역과 실제 원화를 바탕으로 root가 내장 image_gen 편집1회를 실행했다. 영역별 배정은 root 검토 시안 선택이며 담당 미공개 독립 HEX·마스크·좌표를 제출값으로 확대하지 않는다.
+
+| 항목 | 실제 결과·남은 검수 |
+|---|---|
+| root 색상 배정 | 기존 나무 뿌리는 어두운 올리브 `#64704A`, 가죽 띠는 갈색 `#75503A`, 기존 뿌리 발광 홈만 녹색 `#88D47D` 요청. 철 버클은 비발광 중성 금속, 일반 균열·가죽 봉제선·배경 유지. HEX는 프롬프트 목표이며 출력 픽셀의 정확 HEX 측정이 아님 |
+| 원화 열람·핀 | 타원 가죽 띠1개·중앙 철 버클/혀/고리·양쪽 큰 뿌리 덩어리와 열린 고리/끝 갈래·얇은 뿌리 가지·기존 발광 홈. UI-13 1248248 bytes / 1024×1024 / SHA-256 `503231fd7d0f0dfc37f3f12924fe27f1c42c7e5ef91d8f8bbf4aa47ca1550790` |
+| 도구·기본 출력 | 내장 image_gen / `.codex/generated_images/01a0faa9-b453-7673-be39-98adedb4c2b3/exec-cdb65370-6815-4e71-bc66-546d5ab4e556.png` |
+| 시안 핀 | 1733648 bytes / 1254×1254 PNG / SHA-256 `5b661e783ae320874ea9c42919f9169423b1399185cc6064268ed6e0aa85d9a7` |
+| checkout 보존 | `tmp/mac-migration-runtime/continued-review-20261003/item-color-preview-ui13-20261004/ui-13-olive-brown-green-preview-v1.png`. 원화·docs 사전 백업, 프롬프트·핀·공식 완료 원자료 보존. 기본 출력 유지, 코드+docs 한정 Git checkpoint에 PNG 바이너리 미포함 |
+| 실제 전체 크기 열람 | 타원 띠·중앙 버클·좌우 열린 뿌리 고리/끝 갈래의 큰 구도 확인. 올리브 뿌리·갈색 가죽·녹색 발광이 분리되고 철 버클은 비발광으로 보임 |
+| RETOUCH 이유 | 출력1024→1254, 가죽결/주름·봉제선·버클 질감·나무 홈·얇은 뿌리 가지·발광 폭/미세 윤곽이 재해석됨. 정확 가지/픽셀/질감 경계 보존을 최종 PASS로 인정하지 않음 |
+| 미검수 | 실제34/64/96/160px·게임 슬롯/가방/장비창·알파/투명 파생본·런타임 변환·패키지·실게임/native 시각·청취. 앞선 로컬 file URL 보안 정책 거절 뒤 축소 검토·우회 재시도0 |
+| 누적 구분 | root 시안 대상13종(UI-01~UI-13), 생성 결과14장(UI-10 v1/v2 포함). UI-14~UI-22 root 시안 미생성. 원화44장·생산 코드 불변, 원본 교체·아트 최종채택·게임 연결0. 22행 팔레트·rarity=5 `#ff4466`·수치/드롭/효과/저장 계약 유지 |
+
+### ITEM0210 공식 완료 원자료 — 후보 미채택
+
+| 항목 | 정확한 제출·인수 범위 |
+|---|---|
+| 공식 완료 | `SUPERVISOR-ITEM-0210-MATERIAL` / `5923aa` / turn `01a104ad-7584-7013-99e1-bb8fd91197c9` / final `msg_0dc2542c5744bc89016ac1b5d8131487d0859a4e8aa5d2e370` |
+| 실제 도구 | imageView `exec-61547f61-590e-416d-b544-f2b93c0d998f`; pin `exec-af61f4a2-5b26-4955-b081-9e45ad01939e` exit0. Read/commentary `msg_0dc2542c5744bc89016ac1b5a71bc887d09866da108e05466e`는 final과 구분 |
+| 원화 핀 | `assets/unique-items/ui-19.png`, 1331348 bytes, SHA-256 `d0b684fa1b8371522c4fd59614f286b98a82db08b339da4014b40a3c7377cea6`; root 실파일 대조 |
+| 팔레트 출처 | `itemColor0033_candidate.rows[18]`: `#668695 / #B16F49 / #BDEEFF·#FF713D` |
+| 제출 영역8 | 철판·구리 연결부·왼쪽 냉각·오른쪽 화염·기존 증기·가죽/안감·국소 반사·배경 |
+| 보존 기준 | 좌우 냉열 효과와 비발광 증기 분리, 윤곽·질감·명암·경계 보존 |
+| RAM 키 | `itemMaterial0210_raw`, `itemMaterial0210_candidate`, `itemMaterial0210_handoff` |
+| Gate | 담당 파일/이미지/픽셀/생산 적용0. 실제 최종문·turn/도구는 `official-0210-turn.json`에 보존; 미공개 영역별 독립 HEX·마스크·좌표 인수 미확정 |
+
+Codex7 hb0215의 UI-20 후속 accepted=true 인계는 새turn/Read/실tool/완료 별도 pending으로 보존한다. Codex7 후속 유일 송신/root 전문팀 중복 송신0, Claude8 상태 유지. 기존 원자료·22행 색상표·타인 WIP·사용자 세이브·codeEpoch60·CH1-1 같은후보 native6단계/시각/청취 미인수 보존.
