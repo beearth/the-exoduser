@@ -53847,3 +53847,10 @@ BALANCE1340 HP/MP 및1345 Shield 후보를 공식source59에서 실제 전체 �
 - `tools/hell-rift-depth.js` 신규: 심연 시차·경계 감쇠·기존 전사 8방향·접지·3부분 전경 가림/투명화·심연 안개. 독립 미리보기에 연결, 보행/nav·생산게임·세이브 무변.
 - docs 전체 지옥의 틈/HELL_RIFT/hell-rift-map/interspace 키워드 검색으로 관련4문서 동기화. 원본 줄바꿈은 bytes append로 보존.
 - 세부 수치·원본 SHA·격리 검수·MAP PRODUCTION REPORT는 `HELL_RIFT_MAP_CANDIDATE_20261005.md` 최신 레이어 절. VISUAL VERDICT RETOUCH, 생산·실플레이·청취 완료 아님.
+
+
+## 2026-10-05 KST — 지옥의 틈 후속을 맵 에디터 우선으로 변경
+
+- 사용자 직접 지시로 기존 MAP팀 수동 한 건 재개; 이후 MAP-EDITOR-HELL-RIFT-20261005를 우선하도록 기존 Claude 오더 담당에게 전달. 자동화/다른팀/새 세션 재개 없음.
+- 승인 원화·기존 nav/부분 깊이 후보를 편집하는 에디터 기능·소유 최대3파일·실제UI/저장왕복 인수 기준을 콘텐츠 계획§21, 총괄, 맵 보고서, 맵 SSOT 인덱스에 동기화.
+- 이번 변경은 기획/배정 기록이며 코드·에디터·본편 완료가 아님. 기존 후보 VISUAL VERDICT RETOUCH 보존.

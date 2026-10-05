@@ -464,3 +464,10 @@ NEXT PASS: 전체 환경 clean plate/투명층, 원화 인물과 실제 캐릭�
 - 후경 요청을 실패시킨 별도 격리 페이지에서 abyss오류 기록/원화 폴백/기본 보행 유지 확인. ready=false는 자산 완전 준비 실패 표시이며 지형 제거가 아니다.
 - 모든 결과는 verification.json, overview.png, start.png, route-*.png, exit.png, occlusion-on.png, occlusion-off.png, mobile.png에 보존.
 - VISUAL VERDICT RETOUCH: 환경 전체 분리·production GPU·캐릭터 재질 조화·NPC·실제 높이·장 전환·실게임 성능/청취 미인수.
+
+
+## 최신 사용자 후속 — 맵 에디터 우선 제작 (2026-10-05 KST)
+
+사용자 최신 직접 지시로 기존 MAP팀 수동 제작 한 건을 재개하고, 곧이어 맵 에디터를 우선하도록 변경했다. 지옥의 틈 완성보다 **승인 원화·레이어·보행 경계를 편집하고 전사로 시험할 수 있는 맵 에디터**가 먼저다. 자동화·다른 팀·새 세션의 재개는 승인하지 않았다.
+
+이 보고서의 기존 원화·후경·부분 레이어·nav와 검수 증거는 변경하지 않았다. MAP은 기존 에디터 재사용을 조사한 뒤 독립 소유 후보를 작성하고 원총괄에 연결 위치를 인계한다. 기능·경계와 수동 한 건의 소유는 [콘텐츠 계획 §21](../0마스터플랜/EXODUSER_GAMEPLAY_CONTENT_PLAN_20261004.md)을 따른다. 원총괄이 오더담당에게 요청한 상태이며 에디터 완료·본편 적용으로 계산하지 않는다. 원화 미리보기의 VISUAL VERDICT는 RETOUCH 그대로다.
