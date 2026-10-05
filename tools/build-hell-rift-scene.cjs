@@ -1,4 +1,4 @@
-/* Assemble editable image sections with canonical navigation. Does not bake or modify source art. */
+/* Assemble editable image sections with a reviewed painted-floor route. Source art/layout stay intact. */
 const fs = require('node:fs'), path = require('node:path'), vm = require('node:vm'), crypto = require('node:crypto');
 const root = path.resolve(__dirname, '..'), sourceDir = 'assets/map/hell_rift/interspace_20261005';
 const context = { window: {} }; vm.runInNewContext(fs.readFileSync(path.join(__dirname,'map-scene-core.js'),'utf8'),context);const K=context.MapSceneCore;
@@ -6,13 +6,26 @@ vm.runInNewContext(fs.readFileSync(path.join(root, sourceDir, 'layout.js'), 'utf
 const source = context.window.HELL_RIFT_INTERSPACE, r = source.variants.interspace, scale = 8000 / 1920;
 const painting = sourceDir + '/hell-rift-painterly-v2.png', abyss = sourceDir + '/hell-rift-abyss-v3.png';
 const sha = file => crypto.createHash('sha256').update(fs.readFileSync(path.join(root,file))).digest('hex');
+// Tile-space centreline follows the painted eastern ledge; the original candidate crosses empty air.
+const centreline = [[100.5,193.5],[102,184],[111,176],[119,167],[123,161],[131,154],[140,148],[145,143],[149,138],[152,133],[155,128],[156,123],[160,119],[161,114],[160,110],[159,106],[156,102],[152,100],[146,97],[140,94],[134,92],[129,89],[129,85],[130,81],[130,77],[131,73],[133,69],[132,65],[126,62],[119,59],[111,57],[103,56],[102,50],[100.5,43.5]];
+const halfWidth = 2.75;
+function distanceToSegment(x,y,a,b) {
+  const dx=b[0]-a[0],dy=b[1]-a[1],t=Math.max(0,Math.min(1,((x-a[0])*dx+(y-a[1])*dy)/(dx*dx+dy*dy)));
+  return Math.hypot(x-a[0]-t*dx,y-a[1]-t*dy);
+}
+const walkable = Array.from({length:40000},(_,i)=>{
+  const x=i%200+.5,y=Math.floor(i/200)+.5;
+  return centreline.slice(1).some((b,j)=>distanceToSegment(x,y,centreline[j],b)<=halfWidth)?1:0;
+});
+const navSHA = crypto.createHash('sha256').update(Buffer.from(walkable)).digest('hex');
 const layer = (id,name,sort='flat') => ({id,name,sort,parallax:1,visible:true,locked:false,objects:[]});
 const p = {format:'exoduser-map-scene',version:1,name:'지옥의 틈 · 잔류자의 계곡',world:{cols:200,rows:200,tileSize:40},assets:[],layers:[
   layer('west','01 · 서측 절벽과 망자의 턱'),layer('east','02 · 동측 생체 절벽'),layer('centre','03 · 도착지와 상승로'),
   layer('abyss','04 · 고정 균열 속 심연'),layer('foot','05 · 앞쪽 뿌리와 뿔','foot'),layer('front','06 · 추가 전경 작업')
-],walkable:K.decode(r.tileRLE,40000),start:{x:(r.start.x+.5)*40,y:(r.start.y+.5)*40},exit:{x:(r.exit.x+.5)*40,y:(r.exit.y+.5)*40},
+],walkable,start:{x:(r.start.x+.5)*40,y:(r.start.y+.5)*40},exit:{x:(r.exit.x+.5)*40,y:(r.exit.y+.5)*40},
  cameras:source.cameraAnchors.map(([x,y],i)=>({id:'cam-'+i,name:['하층 진입','남쪽 잔불','멈춘 망자의 턱','서쪽 우회로','부탁을 품은 턱','심연의 빛','상승 준비','북쪽 상승로'][i],x:(x+.5)*40,y:(y+.5)*40})),
- productionStatus:'ISOLATED_EDITOR_RESULT_NOT_ADOPTED',sourcePins:{painting:sha(painting),abyss:sha(abyss),nav:r.navSha256},
+ productionStatus:'ISOLATED_EDITOR_RESULT_NOT_ADOPTED',sourcePins:{painting:sha(painting),abyss:sha(abyss),originalNav:r.navSha256,nav:navSHA,walkableCount:walkable.filter(Boolean).length},
+ navigationReview:{basis:'painted-eastern-ledge',halfWidthTiles:halfWidth,centreline},
  notes:'원화는 원본 그대로, 6개의 crop 조각으로 조립. 균열 source만 시차 이동, 마스크는 월드 고정. 인물은 원화에 포함된 표현이며 대화/NPC 런타임/높이 물리 미연결.'};
 function part(id,name,crop,at,layerId,mask) {
   const a={id,name,src:painting,width:1920,height:1920,crop,internal:true};p.assets.push(a);

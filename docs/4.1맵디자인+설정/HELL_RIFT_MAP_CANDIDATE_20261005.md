@@ -514,3 +514,8 @@ NEXT PASS: 전체 환경 clean plate/투명층, 원화 인물과 실제 캐릭�
 ## 2026-10-06 — 에디터 구성 결과
 
 사용자 요청으로 [잔류자의 계곡](HELL_RIFT_EDITOR_RESULT_20261006.md) editable scene 제작. 공유editor에서 정확JSON 로드·레이어 편집·PNG/JSON 내보내기·기존전사8방향 보행을 연결했다. 원화6 crop+전경3+심연1=10객체/6층. 원본 PNG/layout 보존, 균열mask고정/sourceParallax.965·내부feather120. 실제 영상의 바닥 경계·전경 인수는 결과보고서를 따른다. NPC/대화·음향·장전환·높이물리·본편채택은 후속이며 최초·부분깊이 당시 검수는 이력으로 보존.
+
+
+### 2026-10-06 결과 씬 보행 정합 보정
+
+저장된 잔류자의 계곡 scene JSON은 초기 허공 통과를 수정해 동측 그림 바닥·계단에 맞춘 34점/반폭2.75tile corridor로 변경했다. 현행 walkable1192 / radius12 BFS1185 / navSHA a4508aa62f21c9b4380640307b36eef06656ebdf0c0245a2f78833d65dda0179. 원본 PNG/layout와 기본 프리셋 nav4107은 그대로다. 실제 키종주267tiles/158turns/36.445초·오류0, 편집 결과는 본편 미채택. 정확 좌표·시각 한계·검수는 HELL_RIFT_EDITOR_RESULT_20261006.md를 따른다.

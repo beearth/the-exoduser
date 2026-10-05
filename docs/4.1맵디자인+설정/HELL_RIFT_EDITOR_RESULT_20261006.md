@@ -11,7 +11,7 @@
 | 재현 | `node tools/build-hell-rift-scene.cjs` — source PNG/layout 무변, 결과 JSON만 결정적 생성 |
 | 편집 | 레이어/객체 변형·크기/pivot·가시성·앞뒤·시차·soft mask·보행/충돌·PNG/JSON 왕복 |
 | 규모 | 200×200 tiles / T40 / 8000×8000 world px, 10 assets / 10 objects / 6 layers |
-| 초기 보행 | 원본 nav4107칸, radius12·4방향 BFS 방문4100 PASS. 시작(4020,7740), 출구(4020,1740). 원본8 cameraAnchors |
+| 현행 보행 | 그림 바닥에 맞춘 동측 corridor1192칸, 반폭2.75tile, radius12·4방향 BFS 방문1185 PASS. 시작(4020,7740), 출구(4020,1740). 원본8 cameraAnchors |
 | 기록 | `/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/` |
 | 출력 | `hell-rift-overview.png` 2048², `editor-result.png`, `hell-rift-walk.webm`, `walking-verification.json` |
 
@@ -28,7 +28,7 @@
 
 전 층 layer.parallax=1. 원화1920²→8000²의 월드 배율은 정확히 **25/6**이다. 세 열 x 경계0/640/1280/1920, 두 행 y 경계0/960/1920에서 내부 경계에 원본1px overlap을 넣어 필터링 틈을 방지한다. crop 위치와 크기 모두 같은25/6배율로 변환한다. 이는 원화를 독립 편집 조각으로 만든 것이며, 원화 인물/바닥/절벽 전체를 투명 clean plate로 분리한 결과는 아니다.
 
-심연 polygon tile bbox(74,61)→(115,163). mask는 월드에 고정하고 이미지 source만 viewport에 따라 이동한다. 경계 내부 거리 d에 smoothstep(min(1,d/120))을 적용하고 최종 polygon clip으로 밖으로 번지는 것을 막는다. 기존 nav의 균열 내부 중심·모서리0, 가장 가까운 타일 경계의 여유 최소56.57 world px라는 별도 대조가 있다. source shift는 시작(.7,130.9) / 출구(.7,−79.1) world px다.
+심연 polygon tile bbox(74,61)→(115,163). mask는 월드에 고정하고 이미지 source만 viewport에 따라 이동한다. 경계 내부 거리 d에 smoothstep(min(1,d/120))을 적용하고 최종 polygon clip으로 밖으로 번지는 것을 막는다. 기존 nav의 균열 내부 중심·모서리0, 가장 가까운 타일 경계의 여유 최소56.57 world px라는 별도 대조가 있다. source shift는 clamp된 실제 viewport 중심과 world 중심의 차이에 .035를 곱한다. viewport 크기/줌에 따라 달라지며 start/exit metadata의 좌표를 그대로 쓰지 않는다.
 
 원본 SHA256:
 
@@ -38,6 +38,55 @@
 | 별도 심연 | ace0c853cc27cbb4d2b807104273399a1144df77d31b1003e574141fed10f991 |
 | 원본 nav | 52bd839614a9d1adad767d472357438c1d58a338ac52639705e9b8ad20a3bbdb |
 | 원본 layout.js | 1b3fe7c4e0e97f6697651fd6c17c52a85de464d8f4f6946d838967f82bbbce21 |
+
+## 결과물 보행 경계 재검수
+
+초기 nav4107은 기술상 연결됐지만 실제 영상에서 (129.4,130.6) 및 x153.5/y79.5~94.5가 파란 허공을 지나갔다. 초기 영상과 trace는 `initial-route-evidence/`에 보존했다. 원본 layout/nav/PNG를 수정하지 않고 **결과 씬 JSON만** 동측 갈색 바닥과 상단 계단을 따라 재작성했다. 원래 서측 후보 길은 이번 결과물에서 보행 활성화하지 않았다.
+
+| 계약 | 값 |
+|---|---|
+| 원본 nav | 4107칸 / SHA256 52bd839614a9d1adad767d472357438c1d58a338ac52639705e9b8ad20a3bbdb, 기본 프리셋 그대로 |
+| 결과 nav | 1192칸 / SHA256 a4508aa62f21c9b4380640307b36eef06656ebdf0c0245a2f78833d65dda0179 |
+| metadata | sourcePins.originalNav / nav / walkableCount, navigationReview.basis=painted-eastern-ledge / halfWidthTiles=2.75 / centreline |
+| raster | 각 tile 중심과 polyline segment의 최소거리≤2.75이면1, 나머지0. endpoint도 같은 거리 사용 |
+| 경로 | 4방향 radius12 BFS1185 방문 PASS, 실제 키종주267tiles/158turns |
+
+| 순서 | tile x | tile y |
+|---:|---:|---:|
+| 1 | 100.5 | 193.5 |
+| 2 | 102 | 184 |
+| 3 | 111 | 176 |
+| 4 | 119 | 167 |
+| 5 | 123 | 161 |
+| 6 | 131 | 154 |
+| 7 | 140 | 148 |
+| 8 | 145 | 143 |
+| 9 | 149 | 138 |
+| 10 | 152 | 133 |
+| 11 | 155 | 128 |
+| 12 | 156 | 123 |
+| 13 | 160 | 119 |
+| 14 | 161 | 114 |
+| 15 | 160 | 110 |
+| 16 | 159 | 106 |
+| 17 | 156 | 102 |
+| 18 | 152 | 100 |
+| 19 | 146 | 97 |
+| 20 | 140 | 94 |
+| 21 | 134 | 92 |
+| 22 | 129 | 89 |
+| 23 | 129 | 85 |
+| 24 | 130 | 81 |
+| 25 | 130 | 77 |
+| 26 | 131 | 73 |
+| 27 | 133 | 69 |
+| 28 | 132 | 65 |
+| 29 | 126 | 62 |
+| 30 | 119 | 59 |
+| 31 | 111 | 57 |
+| 32 | 103 | 56 |
+| 33 | 102 | 50 |
+| 34 | 100.5 | 43.5 |
 
 ## 캐릭터·카메라
 
@@ -51,11 +100,11 @@
 |---|---|
 | core | 29/29 PASS, 추가 query 경로·maskFeather/sourceParallax 검증 |
 | editor 회귀 | 실제 Google Chrome UI15행동그룹 PASS, 페이지/HTTP4040 |
-| 결과 씬 | 독립 Chrome17검사: query 우선/복구 저장 보존·실제 layer pixel/Undo·soft/hard edge·PNG2048²·JSON 왕복·8카메라. 초기 판17 PASS, 카메라 수정 후 최종판은 final-acceptance 기록 |
+| 결과 씬 | 최종 독립 Chrome18/18 PASS: 원본/nav 핀·새1192/1185 경로·34점 실제canWalk·query/복구 저장·실제layer pixel/Undo·soft/hard edge·PNG2048²·JSON 왕복·8카메라 clamp·실제 북향85.344px 보행. 페이지/콘솔/요청/HTTP 오류0. final-acceptance/acceptance-report.json |
 | actor | source/방향/프레임/접지/실패 처리8검사 및 tiles분기3검사 PASS. 기존8PNG 유지 |
-| 실제 종주 | 실제 키 입력257타일 경로/136 turns/34.048초, 도착(4025.568,1745.600), exit 오차7.90world px. JSON 불변/페이지 및 누락오류0/actor8방향loaded·errors0. 영상12,726,475 bytes |
+| 실제 종주 | 수정된 길 실제 키 입력267타일/158 turns/36.445초, 도착(4025.184,1740.384), exit 오차5.20world px. JSON 불변/페이지 및 누락오류0/actor8방향loaded·errors0. 영상12,962,149 bytes |
 | 화면 | 전체/8camera·실제 움직임3지점·출구. 원화 crop joins와 심연 경계에 뚜렷한 직사각 seam 없음 |
-| 한계 | 이동 가능 확인을 바닥과 발의 시각 정합성으로 확대하지 않는다. 초기 종주 중 동측 중간 턱은 허공/절벽 면을 걷는 듯 보이는 위치가 있어 후속 경계 재검토 대상이다. 전경3조각 외 완전 깊이/높이 물리는 미구현 |
+| 한계 | 이동 가능 확인을 바닥과 발의 시각 정합성으로 확대하지 않는다. 초기 허공 통과는 결과물 corridor 재보정으로 수정했다. 원화 인물과 전사 간 시각 크기·원근 차이, 주민/잔불의 독립 collision과 전체 전경은 후속이다. 전경3조각 외 완전 깊이/높이 물리는 미구현 |
 
 ## MAP PRODUCTION REPORT
 
@@ -64,7 +113,7 @@ STAGE: 독립 이미지 씬 결과. 본편 stage·35필드·LOCK 교체0.
 MASTER
 - silhouette: 비대칭 돌/생체 절벽과 세로 균열, 남쪽 도착·북쪽 상승.
 - regions: 하층진입/잔불/멈춘망자/서쪽우회/부탁의턱/심연/준비/계단8 프레임.
-- main route: 기존 양측 nav를 참조한 보행 시험. 실제 그림 바닥 정합은 별도 검수.
+- main route: 동측 그림 바닥/계단을 따라1192칸 corridor, 남쪽→북쪽 실제 키종주. 원본 양측4107 프리셋 불변.
 - side spaces: 원화의 인물·잔불 자리, 런타임 대화0.
 
 OUTER MASS
@@ -79,12 +128,12 @@ LARGE
 
 MEDIUM
 - connections: crop/world25/6 통일, 균열 source만 이동.
-- remaining holes: clean plate·전경전체·높이 모델·동측 보행 시각 정합.
+- remaining holes: clean plate·전경전체·높이 모델·독립 주민과 원근 크기 정합.
 
 GROUND
 - shadow: 기존 원화 접지, 캐릭터 타원25×11 1회.
 - contamination: 기존 돌·생체 재질 보존.
-- structure integration: 원화6파트/soft boundary 연결. 동측 중간 실제 발 위치는 RETOUCH.
+- structure integration: 원화6파트/soft boundary 연결. 초기 동측 허공 길 수정. 독립 주민·원근 크기·높이는 RETOUCH.
 
 PLAYABLE
 - main arenas / travel / breathing / threat: 독립 거점 보행, 새 적/전투 변경0.
@@ -99,7 +148,7 @@ CAMERA QA
 
 TECH QA
 - route: core/실제키종주 PASS; 그림 바닥 정합과 구분.
-- collision: radius12 기존nav, source PNG/layout 변경0.
+- collision: radius12, 새 결과1192 corridor만 변경. source PNG/layout/원본nav 변경0.
 - pageerror / 404 / loading: 독립검수·실제종주 오류0, query/JSON/decode 원자성.
 - seam: crop 접합·심연 soft edge 시각 점검.
 - performance: mask cache8entry/16canvas/longaxis1024·alpha256. 최대전체 스트레스/실게임FPS 인수0.
@@ -115,4 +164,4 @@ GIT
 
 VISUAL VERDICT: **RETOUCH** — 구성/저장/기존전사 이동 결과는 제작했지만, 모든 발 위치·높이·인물/NPC를 포함한 A급 본편 맵 인수는 아니다.
 
-NEXT PASS: 실제 움직임 기준으로 동측 턱의 보행 경계를 맞추고 전체 전경·인물 분리/런타임 대화·다음 구간 gate를 연결한다. 본편채택 후 같은후보 실제6단계·청취를 인수한다.
+NEXT PASS: 전체 전경·원화 인물 분리/크기 정합·런타임 대화·다음 구간 gate를 연결한다. 본편채택 후 같은후보 실제6단계·청취를 인수한다.

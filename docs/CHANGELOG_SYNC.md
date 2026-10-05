@@ -53923,3 +53923,8 @@ BALANCE1340 HP/MP 및1345 Shield 후보를 공식source59에서 실제 전체 �
 | 동기화 | docs전체 관련 검색→씬SSOT/결과보고/틈후속/인덱스/맵가이드/콘텐츠계획 동기화. 본편/native완료0 |
 
 [MAP PRODUCTION REPORT / VISUAL RETOUCH](4.1맵디자인+설정/HELL_RIFT_EDITOR_RESULT_20261006.md). 소유완료만 정확stage/commit/push, 다른팀WIP/세이브/기존23변경 유지.
+
+
+### 2026-10-06 결과 씬 보행 정합 보정
+
+저장된 잔류자의 계곡 scene JSON은 초기 허공 통과를 수정해 동측 그림 바닥·계단에 맞춘 34점/반폭2.75tile corridor로 변경했다. 현행 walkable1192 / radius12 BFS1185 / navSHA a4508aa62f21c9b4380640307b36eef06656ebdf0c0245a2f78833d65dda0179. 원본 PNG/layout와 기본 프리셋 nav4107은 그대로다. 실제 키종주267tiles/158turns/36.445초·오류0, 편집 결과는 본편 미채택. 정확 좌표·시각 한계·검수는 HELL_RIFT_EDITOR_RESULT_20261006.md를 따른다.

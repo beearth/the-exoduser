@@ -529,3 +529,8 @@ Unity 기능 참고: [Scene 오브젝트 조작](https://docs.unity.com/en-us/en
 ## 27 최신 결과 — 씬 에디터로 만든 지옥의 틈
 
 2026-10-06 사용자 요청으로 [잔류자의 계곡](../4.1맵디자인+설정/HELL_RIFT_EDITOR_RESULT_20261006.md) 제작. 6레이어/10이미지객체, editor 프로젝트JSON·PNG·기존8방향 전사 보행. crop·고정심연mask/source시차·feather로 깊이를 편집한다. root조립·자산/시각검토·독립검수·전사모듈을 동시4슬롯 안에서 병렬수행했으며 기존16개 제작팀의 가동으로 계산하지 않는다. NPC·서비스·다음장게이트·본편runtime/native·청취 인수는 후속. 자동화 재개0. core29/Chrome UI15, 정확 씬·실제보행·8camera 검수는 결과보고서 참조.
+
+
+### 2026-10-06 결과 씬 보행 정합 보정
+
+저장된 잔류자의 계곡 scene JSON은 초기 허공 통과를 수정해 동측 그림 바닥·계단에 맞춘 34점/반폭2.75tile corridor로 변경했다. 현행 walkable1192 / radius12 BFS1185 / navSHA a4508aa62f21c9b4380640307b36eef06656ebdf0c0245a2f78833d65dda0179. 원본 PNG/layout와 기본 프리셋 nav4107은 그대로다. 실제 키종주267tiles/158turns/36.445초·오류0, 편집 결과는 본편 미채택. 정확 좌표·시각 한계·검수는 HELL_RIFT_EDITOR_RESULT_20261006.md를 따른다.

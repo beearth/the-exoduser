@@ -403,3 +403,8 @@
 ## 2026-10-06 — 씬 에디터 제작 결과
 
 [지옥의 틈 · 잔류자의 계곡](HELL_RIFT_EDITOR_RESULT_20261006.md): 6레이어/10객체 씬 JSON. 원화6 crop·전경3·심연1, 고정mask 내부feather120/source시차.965·기존8방향 전사. 자동카메라 경계 clamp. [씬 SSOT](MAP_SCENE_EDITOR_20261005.md)에 안전 query·정확 계약 기록. 본편채택·NPC/진행/native 인수는 후속, VISUAL RETOUCH.
+
+
+### 2026-10-06 결과 씬 보행 정합 보정
+
+저장된 잔류자의 계곡 scene JSON은 초기 허공 통과를 수정해 동측 그림 바닥·계단에 맞춘 34점/반폭2.75tile corridor로 변경했다. 현행 walkable1192 / radius12 BFS1185 / navSHA a4508aa62f21c9b4380640307b36eef06656ebdf0c0245a2f78833d65dda0179. 원본 PNG/layout와 기본 프리셋 nav4107은 그대로다. 실제 키종주267tiles/158turns/36.445초·오류0, 편집 결과는 본편 미채택. 정확 좌표·시각 한계·검수는 HELL_RIFT_EDITOR_RESULT_20261006.md를 따른다.
