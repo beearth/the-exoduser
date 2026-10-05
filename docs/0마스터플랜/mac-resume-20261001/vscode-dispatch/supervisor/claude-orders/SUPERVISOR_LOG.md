@@ -2687,3 +2687,777 @@ ART/MAP enqueue 후 dequeue/peer0, 구체적 input-needed 원인 UNKNOWN. ENEMY 
 2026-10-03T12:58:03.686705+00:00: role=QA task=CO-QA-1256-register-bone-bag-callers officialinboxuserframe socket-sendall-success1/newfiles0; priorend=788e2afc-b51f-44ec-94df-07b6b8605f4f; ownSTATE immediate persisted before nextrole; actualpeer/source/end pending separate.
 
 2026-10-03T12:59:07.643014+00:00: hb1256 QA1251 complete/new2 approved units sent once immediateSTATELOG; QA1256 busy firstsource stillnull at12:58:34 not inherited/providerfailure; sevenholds; actualNUL80 completed-own2 preservation immediate freeze/root; official55/reserved56notused/native0; actualelapsed=114.6s; nextfullsnapshot=2026-10-03T13:02:13+00:00
+
+2026-10-03T13:02:04.483054+00:00: hb1256 immutablecapture2 exact verified/freeze released; source56schema pins/head corrected; approvedref advanced during root docs-only checkpoint, ancestor audit recorded rather than exactremote claim; actualdisk/blob perpath results preserved; currentQA1256epoch55 history unchanged; postfreeze firstsource saved. ACK/adoption extends initial3min limit and two verification retries recorded.
+
+2026-10-03T13:02:55.390081+00:00: hb1256 followup1 completed immediate preserved; late root source56 adoption/owncapture ACK/remote raw notices processed with receipt schema correction and advancedremote ancestor audit; exact own2 raw remotely verified/currentWIP retained; future56/currentQA55 unchanged; total round exceeded3min truthfully recorded; no duplicate tasks/raw/native0; actualelapsed=342.4s; nextfullsnapshot=2026-10-03T13:02:13+00:00
+
+2026-10-03T13:04:17.923565+00:00: role=QA task=CO-QA-1303-autoplace-crystal-transfer-preservation officialinboxuserframe socket-sendall-success1/newfiles0; priorend=96a6c2d7-e1e7-4573-97e2-487b3b70ddb7; ownSTATE immediate persisted before nextrole; actualpeer/source/end pending separate.
+
+2026-10-03T13:05:10.304812+00:00: hb1303 QA1256 complete/manual-excerpt limits root Gate; QA autoplace/crystal equip-transfer2 actualapproved units once sent immediateSTATELOG/current56 history55 unchanged; exactpeer firstsuccessfulsource busy; sevenholds/NUL71/native0; previousdue late89.5s truthful; actualelapsed=88.3s; nextfullsnapshot=2026-10-03T13:08:42+00:00
+
+2026-10-03T13:09:21.516214+00:00: role=QA task=CO-QA-1308-storage-roundtrip-inv-drag-preservation officialinboxuserframe socket-sendall-success1/newfiles0; priorend=c5b49360-eacb-4827-9751-2dc5ab268aa2; ownSTATE immediate persisted before nextrole; actualpeer/source/end pending separate.
+
+2026-10-03T13:10:15.501309+00:00: hb1308 QA1303 complete/no newcandidate actualcontinue preserves oldcrystal rootfullcaller Gate; approved memory storage roundtrip+invdrag2 units once immediateSTATELOG/current56; exactpeer firstsuccessfulsource busy; sevenholds/NUL71/native0; previousdue late1s recorded; actualelapsed=93.5s; nextfullsnapshot=2026-10-03T13:13:42+00:00
+
+2026-10-03T13:14:25.551766+00:00: role=QA task=CO-QA-1313-legacy-storage-earring-ownership officialinboxuserframe socket-sendall-success1/newfiles0; priorend=7d9dbb7b-5f21-4e23-87cb-25e0fa77a6d1; ownSTATE immediate persisted before nextrole; actualpeer/source/end pending separate.
+
+2026-10-03T13:15:18.950338+00:00: hb1313 QA1308 completed/no newcandidate limits rootGate; approved legacy-storage migration+earring target2 distinct units once immediateSTATELOG/current56; exactpeer firstsuccessfulsource busy; sevenholds/NUL72initial71final/native0; actualelapsed=97.0s; nextfullsnapshot=2026-10-03T13:18:42+00:00
+
+2026-10-03T13:16:05.684731+00:00: root predDmg docs-only1 officialnotice8fac35d2143eb58d489d4c66da196af725d9b601 recorded as rootreported, no repeatedsource/receiptcheck, codeEpoch56/currentQA1313/historypins preserved/newimplementation0/teamdispatch0/native0.
+
+2026-10-03T13:18:23.174224+00:00: root source57 luck reader FUTURE reservation scope8 unadopted/FUTURE57 forbidden official56 preserved; actualNUL71 versus rootprojected79/ext87 kept distinct; currentQA1313/historyunchanged/teamdispatch0/productionnative0/no selectedsalvage or predDmg repeatedaudit.
+
+2026-10-03T13:21:25.732321+00:00: role=QA task=CO-QA-1320-enh-transfer-crystal-picker-ownership officialinboxuserframe socket-sendall-success1/newfiles0; priorend=cf7bf103-14b3-4a76-ab3e-9d39d3bf953c; ownSTATE immediate persisted before nextrole; actualpeer/source/end pending separate.
+
+2026-10-03T13:21:55.055679+00:00: hb1320 QA1313 completed/no newcandidate legacy201 truncation reachability/docGate root handoff; remaining approved enh-value transfer+crystal-picker callback2 units once immediateSTATELOG/current56; exactpeer firstsuccessfulsource busy; sevenholds/NUL71/native0; previousdue late132s truthful; actualelapsed=61.1s; nextfullsnapshot=2026-10-03T13:25:54+00:00
+
+2026-10-03T13:23:57.527868+00:00: hb1323 actual8 CLI identity/socket verified; QA1320 exactpeer firstsuccessfulsource13:21:36.121 busy/no currentend; sevenholds preserved; NUL71/newdispatch0/rootrepeat0/current56/reserved57unadopted/native0; no meaningfulchange quiet; actualelapsed=16.5s; nextfullsnapshot=2026-10-03T13:28:41+00:00
+
+2026-10-03T13:25:21.045425+00:00: root source57 official40ae680bc6386840d82f674eabf82c8f047a3311 receipt2814B SHA9791fc199fbfe77d2e8ef593b63ea5c9d436c55f1348d6ab865b4a230af4d3e5; scope8 disk/codeblob and approvedref exactremote verified; FUTURE57 only/currentQA1320 source56/history unchanged; rootreported58PASS/old28PASS30assertFAIL not repeated Lck semantic audit; NUL71/teamdispatch0/native0/newbIntbStrcandidateunadopted.
+
+2026-10-03T13:29:27.935677+00:00: role=QA task=CO-QA-1328-preoccupied-crystal-detail-ref officialinboxuserframe socket-sendall-success1/newfiles0; priorend=1b6ba036-ca8f-4b75-9c53-93bf6fb3b42d; ownSTATE immediate persisted before nextrole; actualpeer/source/end pending separate.
+
+2026-10-03T13:30:21.852887+00:00: hb1328 QA1320 extractedenh-overwrite mechanism rootcaller/docs/economyGate handoff no HIGHnative/refundgeneralization; new occupiedcrystal+detailcompareref2 approvedunits once immediateSTATELOG/source57; exactpeer/source separate; sevenholds/NUL71/native0; previousdue late1s truthful; actualelapsed=99.9s; nextfullsnapshot=2026-10-03T13:33:42+00:00
+
+2026-10-03T13:35:17.541041+00:00: hb1333 QA1328 complete/no newcandidate occupiedcrystal3sample/detailguard branchonly rootfullsourceGate; actualapprovedinventoryscopeexhausted so no forge/SKILLownership expansion/NOFIX repeat; root existingQA concrete2-3 authorizedunits handoff successful; actual8idle ARTstop+7exhaustions/NUL71/native0; late6s truthful; actualelapsed=89.5s; nextfullsnapshot=2026-10-03T13:38:48+00:00
+
+2026-10-03T13:38:49.246714+00:00: hb1338 eight actualCLI identity/socket verified; allcurrent exactTASK completed/idle unchanged ARTdirectstop+7approvedscopeexhaustions; QA1328 current57 complete retained/source57newLckretest0; no authorizednewbacklog/no teamresend/no rootrepeatedrequest/NUL71/native0 quiet; actualelapsed=2.2s; nextfullsnapshot=2026-10-03T13:43:47+00:00
+
+2026-10-03T13:39:26.979715+00:00: root QA1320 whole-equip10observations + docs-only1 8ffda0fef52ab04362a275dd03e05638af509ef4 officialreported; codeEpoch57/scope8/currentQA1328/history56 unchanged. Source20 CP replace-by-old-enh contract means max/skip/policycode unadopted; HIGH/allinvestmentloss/nativeuserdamage0. root ACK actualapprovedinventoryscope exhausted-idle maintained, forge/economy/fuse extensions0/repeatedNOFIX0/activepackaging0. receipt932B SHA44c8895fe062354189c2c088452281a312d688e718fcadda563a27c98862103c officialreported not repeated audit; teamdispatch0/newimplementation0/native0.
+
+2026-10-03T13:44:29.957536+00:00: hb1343 existing8 actual CLI/UUID/PID/cwd/uid0600socket snapshot; priorcompletedTASK identities unchanged/ARTdirectstop+7scopesexhausted rootACK preserved/no newauthorizedbacklog; no repeated teamTASK/NOFIX/rootrequest/sourcechecks/native0 quiet; due13:43:47 actualstart recorded; actualelapsed=2.0s; nextfullsnapshot=2026-10-03T13:49:28+00:00
+
+2026-10-03T13:49:18.421066+00:00: hb1348 actual8 CLI fixedidentity/socket observed; no newTASK/currentends unchanged ARTstop+7rootconfirmedapprovedscopeexhaustions; capacityactualNUL recorded/source57history56 preserved; duplicateTASK/NOFIX/denialbypass/rootrepeatedask0/native0 quiet; actualelapsed=2.4s; nextfullsnapshot=2026-10-03T13:54:16+00:00
+
+2026-10-03T13:54:25.784344+00:00: hb1353 actual8 CLI fixedidentity/cwd/live uid0600socket matched; exactcurrentTASK/end/source separate retained unchanged ARTstop+7rootconfirmedapprovedscopeexhaustions; no authorizednewtask/sourcehashrepeat/NOFIX/teamresend/rootrepeatedask/denialbypass/native0 quiet; actualelapsed=1.8s; nextfullsnapshot=2026-10-03T13:59:24+00:00
+
+2026-10-03T13:54:48.500918+00:00: hb1353 timing previousdue13:54:16Z actualstart13:54:24Z late8s; no claim of five-minute punctuality.
+
+2026-10-03T13:55:59.389009+00:00: root source58 official a14f78b6228af2bd539bb1ce1113397aef70d288 ACK; receipt3045B SHAe58df39f547b82a30d46947a230ef418389b7606813306b16b737fb590a2402f localbyte verified; scope8/remote exact rootreported without repeated test/hash audit. FUTURE58 only/currentQA1328 epoch57/history57/56 unchanged. first3 SLOT_NAMES unary+ HTML3B root90PASS old16PASS74conditionFAIL not74bugs; inactive ARTstop+7exhaustions preserved/newTASK0/native0/newimplementationbythischat0.
+
+2026-10-03T13:59:20.566106+00:00: hb1358 existing8 actualCLI UUID/PID/cwd/live uid0600socket matched; currentexactTASK ends unchanged ARTstop+7rootconfirmedapprovedscopeexhaustions; officialfuture58/currentQA57/history56 preserved no newauthorizedbacklog; actualNUL71 no repeatTASK/NOFIX/sourcehash/rootrequest/denialbypass/native0 quiet; actualelapsed=2.6s; nextfullsnapshot=2026-10-03T14:04:18+00:00
+
+2026-10-03T14:04:20.062806+00:00: hb1403 actual8 CLI fixedidentity/cwd/live uid0600socket matched; currentexactTASK ends unchanged ARTstop+7rootconfirmedapprovedscopeexhaustions; officialfuture58/currentQA57/history56 preserved no newauthorizedbacklog; actualNUL=72 no repeatTASK/NOFIX/sourcehash/rootrequest/denialbypass/native0 quiet; actualelapsed=2.1s; nextfullsnapshot=2026-10-03T14:09:18+00:00
+
+2026-10-03T14:09:20.014222+00:00: hb1408 actual8 CLI fixedidentity/cwd/live uid0600socket matched; currentexactTASK ends unchanged ARTstop+7rootconfirmedapprovedscopeexhaustions; future58/currentQA57/history56 preserved no newauthorizedbacklog; actualNUL=71 no repeatTASK/NOFIX/sourcehash/rootrequest/denialbypass/native0 quiet; actualelapsed=2.0s; nextfullsnapshot=2026-10-03T14:14:18+00:00
+
+2026-10-03T14:10:09.405290+00:00: root officialsource59 80fb5acc0937cfd9cb20479eb78531b7a30a529c receipt3195B SHAb2aa818c9827fcc7f3124081012dad81b9c567f506daaad59fb853ff218aa1b7 actually read/byteverified; codeEpoch59 ACK futureonly/currentQA57/history58/57/56 unchanged. rootreported scope8 remoteexact/66PASS old16PASS50conditionFAIL not50bugs/adjacent34PASS; wSwing rawatk andothercallers/STATS/HPMPShield/DEFeDef/enhpolicyunadopted; controlledfixture≠actualhit/native. ARTstop+7rootconfirmedexhaustion maintained/newTASK0/NOFIX0/no newgamecompletioncount.
+
+2026-10-03T14:14:19.963977+00:00: hb1413 actual8 CLI fixedidentity/cwd/live uid0600socket matched; currentexactTASK ends unchanged ARTstop+7rootconfirmedapprovedscopeexhaustions; future59/currentQA57/history58/56 preserved no newauthorizedbacklog; actualNUL=71 no repeatTASK/NOFIX/sourcehash/rootrequest/denialbypass/native0 quiet; actualelapsed=2.0s; nextfullsnapshot=2026-10-03T14:19:18+00:00
+
+2026-10-03T14:19:21.493576+00:00: hb1418 actual8 CLI fixedidentity/cwd/live uid0600socket matched; currentexactTASK ends unchanged ARTstop+7rootconfirmedapprovedscopeexhaustions; future59/currentQA57/history58/56 preserved no newauthorizedbacklog; actualNUL=72 no repeatTASK/NOFIX/sourcehash/rootrequest/denialbypass/native0 quiet; actualelapsed=2.5s; nextfullsnapshot=2026-10-03T14:24:19+00:00
+
+2026-10-03T14:24:28.420855+00:00: hb1423 actual8 CLI fixedidentity/cwd/live uid0600socket matched; currentexactTASK ends unchanged ARTstop+7rootconfirmedapprovedscopeexhaustions; future59/currentQA57/history58/56 preserved no newauthorizedbacklog; actualNUL=74 no repeatTASK/NOFIX/sourcehash/rootrequest/denialbypass/native0 quiet; previousDue14:24:19Z actualstartrecorded no five-minute guarantee; actualelapsed=2.4s; nextfullsnapshot=2026-10-03T14:29:26+00:00
+
+2026-10-03T14:29:19.771998+00:00: hb1428 actual8 CLI fixedidentity/cwd/live uid0600socket matched; currentexactTASK ends unchanged ARTstop+7rootconfirmedapprovedscopeexhaustions; future59/currentQA57/history58/56 preserved no newauthorizedbacklog; actualNUL=71 no repeatTASK/NOFIX/sourcehash/rootrequest/denialbypass/native0 quiet; previousDue14:29:26Z actualstartrecorded no five-minute guarantee; actualelapsed=1.8s; nextfullsnapshot=2026-10-03T14:34:18+00:00
+
+2026-10-03T14:33:24.002236+00:00: root officialsource60 4491b7c2a559c883f8a38e8aa802bbe94b12298b ACK; receipt3795B SHAc016156e8a30b05e78a775280a5fea3f2bc4f98eddb269e31c039f7bfd9ed79e actually read/byteverified. future60 only/currentQA57/history59/58/57/56/raw unchanged. rootreported applyStatsbonusHpMpShield HTML3B/94PASS old18PASS76assertFAIL not76bugs adjacent17PASS; exactscope8/remote/docssearch125lines14files/canonical7 correction boundary recorded no repeatedsourceaudit. BUILD1415/1420 unadopted/ARTstop+7exhaustions honestidle/newTASK0/nativeapp29 excludes30~60/play-save-visual-audio0; Oct4 09KST report actualcode/native/unadoptedRAM/verifiablecost separate.
+
+2026-10-03T14:34:21.765236+00:00: hb1433 actual8 CLI fixedidentity/cwd/live uid0600socket matched; currentexactTASK ends unchanged ARTstop+7rootconfirmedapprovedscopeexhaustions; future60/currentQA57/history59/58/56 preserved no newauthorizedbacklog; actualNUL=71 no repeatTASK/NOFIX/sourcehash/rootrequest/denialbypass/native0 quiet; previousDue14:34:18Z actualstartrecorded no five-minute guarantee; actualelapsed=1.8s; nextfullsnapshot=2026-10-03T14:39:20+00:00
+
+2026-10-03T14:39:53.477581+00:00: hb1439 actual8 CLI fixedidentity/cwd/live uid0600socket matched; currentexactTASK ends unchanged ARTstop+7rootconfirmedapprovedscopeexhaustions; future60/currentQA57/history59/58/56 preserved no newauthorizedbacklog; actualNUL=71 no repeatTASK/NOFIX/sourcehash/rootrequest/denialbypass/native0 quiet; previousDue14:39:20Z late=31.0s no five-minute guarantee; actualelapsed=2.5s; nextfullsnapshot=2026-10-03T14:44:51+00:00
+
+2026-10-03T14:44:56.396822+00:00: hb1444 actual8 CLI fixedidentity/cwd/live uid0600socket matched; currentexactTASK ends unchanged ARTstop+7rootconfirmedapprovedscopeexhaustions; future60/currentQA57/history59/58/56 preserved no newauthorizedbacklog; actualNUL=71 no repeatTASK/NOFIX/sourcehash/rootrequest/denialbypass/native0 quiet; previousDue14:44:51Z late=3.0s no five-minute guarantee; actualelapsed=2.4s; nextfullsnapshot=2026-10-03T14:49:54+00:00
+
+2026-10-03T14:45:44.406354+00:00: root BUILD1435 source61-settings-pad-back receipt1289B SHA1f9850a2005601856735ebb2888062073b9f6b0f33e90677ce6158dd4cccd27d read/byteverified; docs-only1 3ca3ae1eba5aefe41da36ef71dc5bc13f9b10831 rootremoteverified/codeEpoch60 4491/pins unchanged, pathsource61 is scratchreviewname not new61code. rootwhole_gpUINav/_panelBack candidate48PASS source60old22PASS26conditionsFAIL with artificial A/DOMsinkdoubles actualsettingreachunknown/sameDOMcandidateclosesB. Codeunadopted/newgamefix0/native0; morning unadoptedreview classification; currentClaudeTASKhistory/Codex1440/1445 untouched/no crossownerdispatch or repeat.
+
+2026-10-03T14:49:51.057145+00:00: hb1449 actual8 CLI fixedidentity/cwd/live uid0600socket matched; currentexactTASK ends unchanged ARTstop+7rootconfirmedapprovedscopeexhaustions; future60/currentQA57/history59/58/56 preserved; pathsource61 docs-onlyunadopted notnewcode; actualNUL=71 no repeatTASK/NOFIX/sourcehash/rootrequest/denialbypass/native0 quiet; previousDue14:49:54Z late=0s no five-minute guarantee; actualelapsed=2.1s; nextfullsnapshot=2026-10-03T14:54:49+00:00
+
+2026-10-03T14:54:54.298367+00:00: hb1454 actual8 CLI fixedidentity/cwd/live uid0600socket matched; currentexactTASK ends unchanged ARTstop+7rootconfirmedapprovedscopeexhaustions; future60/currentQA57/history59/58/56 preserved; pathsource61 docs-onlyunadopted notnewcode; actualNUL=71 no repeatTASK/NOFIX/sourcehash/rootrequest/denialbypass/native0 quiet; previousDue14:54:49Z late=3.0s no five-minute guarantee; actualelapsed=2.3s; nextfullsnapshot=2026-10-03T14:59:52+00:00
+
+2026-10-03T14:55:47.847655+00:00: root scope-exhaustion docs-only1 805f4d7befecd369a44b853e23679de12dda254b officialremote reported; receipt1039B SHA2d1a1ffb5ea180914e52b643db50a23af6e73ef7dde87a44b1102ddc0965fcb7 read/byteverified. codeEpoch60/4491 HTML2 unchanged. Specialist15 approvedscope exhaustion rootACK; Claude8 actualidle14:54:53.605 ARTdirectstop+7exhausted preserved. BUILD1435/1440 unadopted/1445 exhausted; currentTASK/raw/history unchanged/no repeatedtask or test/newteams. Overallgoal incomplete/native29 excludes30~60/actualsix-save-visual-audio0/newinputaccesssolutionevidence0; morning adoption/play/unadopted/blockers/verifiableusage separate, idle not execution/gamecomplete.
+
+2026-10-03T14:59:56.103720+00:00: hb1459 actual8 CLI fixedidentity/cwd/live uid0600socket matched; currentexactTASK ends unchanged ARTstop+7rootconfirmedapprovedscopeexhaustions; root15scopeexhaustion ACK/code60 preserved; actualNUL=71 no repeatTASK/NOFIX/sourcehash/rootrequest/denialbypass/native0 quiet; previousDue14:59:52Z late=2.0s no five-minute guarantee; actualelapsed=2.1s; nextfullsnapshot=2026-10-03T15:04:54+00:00
+
+2026-10-03T15:05:29.156021+00:00: hb1504 actual8 CLI fixedidentity/cwd/live uid0600socket matched; currentexactTASK ends unchanged ARTstop+7rootconfirmedapprovedscopeexhaustions; root15scopeexhaustion ACK/code60 preserved; actualNUL=71 no repeatTASK/NOFIX/sourcehash/rootrequest/denialbypass/native0 quiet; previousDue15:04:54Z late=33.0s no five-minute guarantee; actualelapsed=2.2s; nextfullsnapshot=2026-10-03T15:10:27+00:00
+
+2026-10-03T15:10:24.121258+00:00: hb1509 actual8 CLI fixedidentity/cwd/live uid0600socket matched; currentexactTASK ends unchanged ARTstop+7rootconfirmedapprovedscopeexhaustions; root15scopeexhaustion ACK/code60 preserved; actualNUL=71 no repeatTASK/NOFIX/sourcehash/rootrequest/denialbypass/native0 quiet; previousDue15:10:27Z late=0s no five-minute guarantee; actualelapsed=2.1s; nextfullsnapshot=2026-10-03T15:15:22+00:00
+
+2026-10-03T15:15:27.944550+00:00: hb1514 actual8 CLI fixedidentity/cwd/live uid0600socket matched; currentexactTASK ends unchanged ARTstop+7rootconfirmedapprovedscopeexhaustions; root15scopeexhaustion ACK/code60 preserved; actualNUL=71 no repeatTASK/NOFIX/sourcehash/rootrequest/denialbypass/native0 quiet; previousDue15:15:22Z late=4.0s no five-minute guarantee; actualelapsed=1.9s; nextfullsnapshot=2026-10-03T15:20:26+00:00
+
+2026-10-03T15:21:41.158346+00:00: hb1520 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T15:20:26+00:00; actual lateSeconds=40.0; actualelapsed=35.2s; nextfullsnapshot=2026-10-03T15:26:06+00:00
+
+2026-10-03T15:26:24.903582+00:00: hb1525 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T15:26:06+00:00; actual lateSeconds=17.0; actualelapsed=1.9s; nextfullsnapshot=2026-10-03T15:31:23+00:00
+
+2026-10-03T15:31:21.720676+00:00: hb1530 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T15:31:23+00:00; actual lateSeconds=-3.0; actualelapsed=1.7s; nextfullsnapshot=2026-10-03T15:36:20+00:00
+
+2026-10-03T15:36:18.803763+00:00: hb1535 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T15:36:20+00:00; actual lateSeconds=-3.0; actualelapsed=1.8s; nextfullsnapshot=2026-10-03T15:41:17+00:00
+
+2026-10-03T15:41:26.075153+00:00: hb1540 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T15:41:17+00:00; actual lateSeconds=7.0; actualelapsed=2.1s; nextfullsnapshot=2026-10-03T15:46:24+00:00
+
+2026-10-03T15:46:24.223287+00:00: hb1545 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T15:46:24+00:00; actual lateSeconds=-2.0; actualelapsed=2.2s; nextfullsnapshot=2026-10-03T15:51:22+00:00
+
+2026-10-03T15:51:22.564549+00:00: hb1550 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T15:51:22+00:00; actual lateSeconds=-2.0; actualelapsed=2.6s; nextfullsnapshot=2026-10-03T15:56:20+00:00
+
+2026-10-03T15:56:20.154095+00:00: hb1555 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T15:56:20+00:00; actual lateSeconds=-2.0; actualelapsed=2.2s; nextfullsnapshot=2026-10-03T16:01:18+00:00
+
+2026-10-03T16:01:19.957198+00:00: hb1600 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T16:01:18+00:00; actual lateSeconds=0.0; actualelapsed=2.0s; nextfullsnapshot=2026-10-03T16:06:18+00:00
+
+2026-10-03T16:06:20.215259+00:00: hb1605 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T16:06:18+00:00; actual lateSeconds=0.0; actualelapsed=2.2s; nextfullsnapshot=2026-10-03T16:11:18+00:00
+
+2026-10-03T16:11:22.035936+00:00: hb1610 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T16:11:18+00:00; actual lateSeconds=2.0; actualelapsed=2.0s; nextfullsnapshot=2026-10-03T16:16:20+00:00
+
+2026-10-03T16:16:19.804546+00:00: hb1615 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T16:16:20+00:00; actual lateSeconds=-2.0; actualelapsed=1.8s; nextfullsnapshot=2026-10-03T16:21:18+00:00
+
+2026-10-03T16:21:22.173156+00:00: hb1620 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T16:21:18+00:00; actual lateSeconds=2.0; actualelapsed=2.2s; nextfullsnapshot=2026-10-03T16:26:20+00:00
+
+2026-10-03T16:26:20.611125+00:00: hb1625 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T16:26:20+00:00; actual lateSeconds=-2.0; actualelapsed=2.6s; nextfullsnapshot=2026-10-03T16:31:18+00:00
+
+2026-10-03T16:31:20.724028+00:00: hb1630 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T16:31:18+00:00; actual lateSeconds=1.0; actualelapsed=1.7s; nextfullsnapshot=2026-10-03T16:36:19+00:00
+
+2026-10-03T16:36:22.030014+00:00: hb1635 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T16:36:19+00:00; actual lateSeconds=1.0; actualelapsed=2.0s; nextfullsnapshot=2026-10-03T16:41:20+00:00
+
+2026-10-03T16:41:19.401687+00:00: hb1640 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T16:41:20+00:00; actual lateSeconds=-3.0; actualelapsed=2.4s; nextfullsnapshot=2026-10-03T16:46:17+00:00
+
+2026-10-03T16:46:20.535528+00:00: hb1645 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T16:46:17+00:00; actual lateSeconds=1.0; actualelapsed=2.5s; nextfullsnapshot=2026-10-03T16:51:18+00:00
+
+2026-10-03T16:51:21.415491+00:00: hb1650 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T16:51:18+00:00; actual lateSeconds=1.0; actualelapsed=2.4s; nextfullsnapshot=2026-10-03T16:56:19+00:00
+
+2026-10-03T16:56:21.684336+00:00: hb1655 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T16:56:19+00:00; actual lateSeconds=1.0; actualelapsed=1.7s; nextfullsnapshot=2026-10-03T17:01:20+00:00
+
+2026-10-03T17:01:20.045405+00:00: hb1700 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T17:01:20+00:00; actual lateSeconds=-2.0; actualelapsed=2.0s; nextfullsnapshot=2026-10-03T17:06:18+00:00
+
+2026-10-03T17:06:19.931317+00:00: hb1705 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T17:06:18+00:00; actual lateSeconds=0.0; actualelapsed=1.9s; nextfullsnapshot=2026-10-03T17:11:18+00:00
+
+2026-10-03T17:11:20.401623+00:00: hb1710 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T17:11:18+00:00; actual lateSeconds=0.0; actualelapsed=2.4s; nextfullsnapshot=2026-10-03T17:16:18+00:00
+
+2026-10-03T17:16:20.825763+00:00: hb1715 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T17:16:18+00:00; actual lateSeconds=1.0; actualelapsed=1.8s; nextfullsnapshot=2026-10-03T17:21:19+00:00
+
+2026-10-03T17:21:20.341391+00:00: hb1720 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T17:21:19+00:00; actual lateSeconds=-1.0; actualelapsed=2.3s; nextfullsnapshot=2026-10-03T17:26:18+00:00
+
+2026-10-03T17:26:21.002267+00:00: hb1725 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T17:26:18+00:00; actual lateSeconds=1.0; actualelapsed=2.0s; nextfullsnapshot=2026-10-03T17:31:19+00:00
+
+2026-10-03T17:31:21.138180+00:00: hb1730 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T17:31:19+00:00; actual lateSeconds=0.0; actualelapsed=2.1s; nextfullsnapshot=2026-10-03T17:36:19+00:00
+
+2026-10-03T17:36:20.459586+00:00: hb1735 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T17:36:19+00:00; actual lateSeconds=-1.0; actualelapsed=2.5s; nextfullsnapshot=2026-10-03T17:41:18+00:00
+
+2026-10-03T17:41:19.587017+00:00: hb1740 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T17:41:18+00:00; actual lateSeconds=0.0; actualelapsed=1.6s; nextfullsnapshot=2026-10-03T17:46:18+00:00
+
+2026-10-03T17:46:19.949269+00:00: hb1745 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T17:46:18+00:00; actual lateSeconds=0.0; actualelapsed=1.9s; nextfullsnapshot=2026-10-03T17:51:18+00:00
+
+2026-10-03T17:51:50.266437+00:00: hb1751 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T17:51:18+00:00; actual lateSeconds=30.0; actualelapsed=2.3s; nextfullsnapshot=2026-10-03T17:56:48+00:00
+
+2026-10-03T17:56:51.816643+00:00: hb1756 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T17:56:48+00:00; actual lateSeconds=2.0; actualelapsed=1.8s; nextfullsnapshot=2026-10-03T18:01:50+00:00
+
+2026-10-03T18:01:51.284714+00:00: hb1801 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T18:01:50+00:00; actual lateSeconds=-1.0; actualelapsed=2.3s; nextfullsnapshot=2026-10-03T18:06:49+00:00
+
+2026-10-03T18:06:50.019143+00:00: hb1806 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T18:06:49+00:00; actual lateSeconds=-1.0; actualelapsed=2.0s; nextfullsnapshot=2026-10-03T18:11:48+00:00
+
+2026-10-03T18:11:50.401787+00:00: hb1811 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T18:11:48+00:00; actual lateSeconds=0.0; actualelapsed=2.4s; nextfullsnapshot=2026-10-03T18:16:48+00:00
+
+2026-10-03T18:16:49.577922+00:00: hb1816 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T18:16:48+00:00; actual lateSeconds=-1.0; actualelapsed=2.6s; nextfullsnapshot=2026-10-03T18:21:47+00:00
+
+2026-10-03T18:21:50.044966+00:00: hb1821 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T18:21:47+00:00; actual lateSeconds=1.0; actualelapsed=2.0s; nextfullsnapshot=2026-10-03T18:26:48+00:00
+
+2026-10-03T18:26:48.511916+00:00: hb1826 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T18:26:48+00:00; actual lateSeconds=-2.0; actualelapsed=2.5s; nextfullsnapshot=2026-10-03T18:31:46+00:00
+
+2026-10-03T18:31:49.465599+00:00: hb1831 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T18:31:46+00:00; actual lateSeconds=1.0; actualelapsed=2.5s; nextfullsnapshot=2026-10-03T18:36:47+00:00
+
+2026-10-03T18:36:50.284164+00:00: hb1836 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T18:36:47+00:00; actual lateSeconds=1.0; actualelapsed=2.3s; nextfullsnapshot=2026-10-03T18:41:48+00:00
+
+2026-10-03T18:41:49.525763+00:00: hb1841 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T18:41:48+00:00; actual lateSeconds=-1.0; actualelapsed=2.5s; nextfullsnapshot=2026-10-03T18:46:47+00:00
+
+2026-10-03T18:46:48.979029+00:00: hb1846 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T18:46:47+00:00; actual lateSeconds=0.0; actualelapsed=2.0s; nextfullsnapshot=2026-10-03T18:51:47+00:00
+
+2026-10-03T18:51:49.616706+00:00: hb1851 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T18:51:47+00:00; actual lateSeconds=1.0; actualelapsed=1.6s; nextfullsnapshot=2026-10-03T18:56:48+00:00
+
+2026-10-03T18:56:49.563763+00:00: hb1856 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T18:56:48+00:00; actual lateSeconds=-1.0; actualelapsed=2.6s; nextfullsnapshot=2026-10-03T19:01:47+00:00
+
+2026-10-03T19:01:49.231017+00:00: hb1901 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T19:01:47+00:00; actual lateSeconds=0.0; actualelapsed=2.2s; nextfullsnapshot=2026-10-03T19:06:47+00:00
+
+2026-10-03T19:06:51.307640+00:00: hb1906 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T19:06:47+00:00; actual lateSeconds=2.0; actualelapsed=2.3s; nextfullsnapshot=2026-10-03T19:11:49+00:00
+
+2026-10-03T19:12:19.265755+00:00: hb1911 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T19:11:49+00:00; actual lateSeconds=28.0; actualelapsed=2.3s; nextfullsnapshot=2026-10-03T19:17:17+00:00
+
+2026-10-03T19:17:19.624002+00:00: hb1916 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T19:17:17+00:00; actual lateSeconds=1.0; actualelapsed=1.6s; nextfullsnapshot=2026-10-03T19:22:18+00:00
+
+2026-10-03T19:22:19.698200+00:00: hb1921 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T19:22:18+00:00; actual lateSeconds=0.0; actualelapsed=1.7s; nextfullsnapshot=2026-10-03T19:27:18+00:00
+
+2026-10-03T19:27:19.528387+00:00: hb1926 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T19:27:18+00:00; actual lateSeconds=-1.0; actualelapsed=2.5s; nextfullsnapshot=2026-10-03T19:32:17+00:00
+
+2026-10-03T19:32:19.334055+00:00: hb1931 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T19:32:17+00:00; actual lateSeconds=0.0; actualelapsed=2.3s; nextfullsnapshot=2026-10-03T19:37:17+00:00
+
+2026-10-03T19:37:19.041851+00:00: hb1936 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T19:37:17+00:00; actual lateSeconds=0.0; actualelapsed=2.0s; nextfullsnapshot=2026-10-03T19:42:17+00:00
+
+2026-10-03T19:42:20.186309+00:00: hb1941 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T19:42:17+00:00; actual lateSeconds=1.0; actualelapsed=2.2s; nextfullsnapshot=2026-10-03T19:47:18+00:00
+
+2026-10-03T19:47:20.218939+00:00: hb1946 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T19:47:18+00:00; actual lateSeconds=0.0; actualelapsed=2.2s; nextfullsnapshot=2026-10-03T19:52:18+00:00
+
+2026-10-03T19:52:18.974645+00:00: hb1951 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T19:52:18+00:00; actual lateSeconds=-1.0; actualelapsed=2.0s; nextfullsnapshot=2026-10-03T19:57:17+00:00
+
+2026-10-03T19:57:19.497415+00:00: hb1956 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T19:57:17+00:00; actual lateSeconds=0.0; actualelapsed=2.5s; nextfullsnapshot=2026-10-03T20:02:17+00:00
+
+2026-10-03T20:02:19.732332+00:00: hb2001 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T20:02:17+00:00; actual lateSeconds=1.0; actualelapsed=1.7s; nextfullsnapshot=2026-10-03T20:07:18+00:00
+
+2026-10-03T20:07:20.319448+00:00: hb2006 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T20:07:18+00:00; actual lateSeconds=0.0; actualelapsed=2.3s; nextfullsnapshot=2026-10-03T20:12:18+00:00
+
+2026-10-03T20:12:22.117640+00:00: hb2011 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T20:12:18+00:00; actual lateSeconds=2.0; actualelapsed=2.1s; nextfullsnapshot=2026-10-03T20:17:20+00:00
+
+2026-10-03T20:17:19.630707+00:00: hb2016 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T20:17:20+00:00; actual lateSeconds=-2.0; actualelapsed=1.6s; nextfullsnapshot=2026-10-03T20:22:18+00:00
+
+2026-10-03T20:22:20.092616+00:00: hb2021 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T20:22:18+00:00; actual lateSeconds=0.0; actualelapsed=2.1s; nextfullsnapshot=2026-10-03T20:27:18+00:00
+
+2026-10-03T20:27:20.147860+00:00: hb2026 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T20:27:18+00:00; actual lateSeconds=0.0; actualelapsed=2.1s; nextfullsnapshot=2026-10-03T20:32:18+00:00
+
+2026-10-03T20:32:20.168869+00:00: hb2031 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T20:32:18+00:00; actual lateSeconds=0.0; actualelapsed=2.2s; nextfullsnapshot=2026-10-03T20:37:18+00:00
+
+2026-10-03T20:37:20.133391+00:00: hb2036 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T20:37:18+00:00; actual lateSeconds=0.0; actualelapsed=2.1s; nextfullsnapshot=2026-10-03T20:42:18+00:00
+
+2026-10-03T20:42:19.641366+00:00: hb2041 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T20:42:18+00:00; actual lateSeconds=0.0; actualelapsed=1.6s; nextfullsnapshot=2026-10-03T20:47:18+00:00
+
+2026-10-03T20:47:20.475608+00:00: hb2046 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T20:47:18+00:00; actual lateSeconds=0.0; actualelapsed=2.5s; nextfullsnapshot=2026-10-03T20:52:18+00:00
+
+2026-10-03T20:52:20.153394+00:00: hb2051 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T20:52:18+00:00; actual lateSeconds=0.0; actualelapsed=2.2s; nextfullsnapshot=2026-10-03T20:57:18+00:00
+
+2026-10-03T20:57:22.115048+00:00: hb2056 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T20:57:18+00:00; actual lateSeconds=2.0; actualelapsed=2.1s; nextfullsnapshot=2026-10-03T21:02:20+00:00
+
+2026-10-03T21:02:19.558116+00:00: hb2101 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T21:02:20+00:00; actual lateSeconds=-2.0; actualelapsed=1.6s; nextfullsnapshot=2026-10-03T21:07:18+00:00
+
+2026-10-03T21:07:20.390601+00:00: hb2106 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T21:07:18+00:00; actual lateSeconds=0.0; actualelapsed=2.4s; nextfullsnapshot=2026-10-03T21:12:18+00:00
+
+2026-10-03T21:12:21.540076+00:00: hb2111 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T21:12:18+00:00; actual lateSeconds=1.0; actualelapsed=2.5s; nextfullsnapshot=2026-10-03T21:17:19+00:00
+
+2026-10-03T21:17:21.324156+00:00: hb2116 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T21:17:19+00:00; actual lateSeconds=0.0; actualelapsed=2.3s; nextfullsnapshot=2026-10-03T21:22:19+00:00
+
+2026-10-03T21:22:48.625462+00:00: hb2122 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T21:22:19+00:00; actual lateSeconds=28.0; actualelapsed=1.6s; nextfullsnapshot=2026-10-03T21:27:47+00:00
+
+2026-10-03T21:27:49.133332+00:00: hb2127 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T21:27:47+00:00; actual lateSeconds=0.0; actualelapsed=2.1s; nextfullsnapshot=2026-10-03T21:32:47+00:00
+
+2026-10-03T21:32:47.720998+00:00: hb2132 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T21:32:47+00:00; actual lateSeconds=-1.0; actualelapsed=1.7s; nextfullsnapshot=2026-10-03T21:37:46+00:00
+
+2026-10-03T21:38:17.909766+00:00: hb2137 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T21:37:46+00:00; actual lateSeconds=30.0; actualelapsed=1.9s; nextfullsnapshot=2026-10-03T21:43:16+00:00
+
+2026-10-03T21:43:18.968187+00:00: hb2142 actual inventory/evidence unchanged; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T21:43:16+00:00; actual lateSeconds=1.0; actualelapsed=2.0s; nextfullsnapshot=2026-10-03T21:48:17+00:00
+
+2026-10-03T21:48:17.519587+00:00: hb2147 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T21:48:17+00:00; actual lateSeconds=-2.0; actualelapsed=2.5s; nextfullsnapshot=2026-10-03T21:53:15+00:00
+
+2026-10-03T21:53:19.998230+00:00: hb2152 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T21:53:15+00:00; actual lateSeconds=3.0; actualelapsed=2.0s; nextfullsnapshot=2026-10-03T21:58:18+00:00
+
+2026-10-03T21:58:17.821336+00:00: hb2157 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T21:58:18+00:00; actual lateSeconds=-2.0; actualelapsed=1.8s; nextfullsnapshot=2026-10-03T22:03:16+00:00
+
+2026-10-03T22:03:18.716804+00:00: hb2202 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T22:03:16+00:00; actual lateSeconds=1.0; actualelapsed=1.7s; nextfullsnapshot=2026-10-03T22:08:17+00:00
+
+2026-10-03T22:08:18.825136+00:00: hb2207 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T22:08:17+00:00; actual lateSeconds=0.0; actualelapsed=1.8s; nextfullsnapshot=2026-10-03T22:13:17+00:00
+
+2026-10-03T22:13:18.145478+00:00: hb2212 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T22:13:17+00:00; actual lateSeconds=-1.0; actualelapsed=2.1s; nextfullsnapshot=2026-10-03T22:18:16+00:00
+
+2026-10-03T22:18:17.715711+00:00: hb2217 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T22:18:16+00:00; actual lateSeconds=0.0; actualelapsed=1.7s; nextfullsnapshot=2026-10-03T22:23:16+00:00
+
+2026-10-03T22:23:21.355923+00:00: hb2222 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T22:23:16+00:00; actual lateSeconds=3.0; actualelapsed=2.4s; nextfullsnapshot=2026-10-03T22:28:19+00:00
+
+2026-10-03T22:28:19.928939+00:00: hb2227 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T22:28:19+00:00; actual lateSeconds=-1.0; actualelapsed=1.9s; nextfullsnapshot=2026-10-03T22:33:18+00:00
+
+2026-10-03T22:33:20.631017+00:00: hb2232 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T22:33:18+00:00; actual lateSeconds=1.0; actualelapsed=1.6s; nextfullsnapshot=2026-10-03T22:38:19+00:00
+
+2026-10-03T22:38:19.670911+00:00: hb2237 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T22:38:19+00:00; actual lateSeconds=-1.0; actualelapsed=1.7s; nextfullsnapshot=2026-10-03T22:43:18+00:00
+
+2026-10-03T22:43:19.670847+00:00: hb2242 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T22:43:18+00:00; actual lateSeconds=0.0; actualelapsed=1.7s; nextfullsnapshot=2026-10-03T22:48:18+00:00
+
+2026-10-03T22:48:21.594286+00:00: hb2247 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T22:48:18+00:00; actual lateSeconds=1.0; actualelapsed=2.6s; nextfullsnapshot=2026-10-03T22:53:19+00:00
+
+2026-10-03T22:53:19.679568+00:00: hb2252 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T22:53:19+00:00; actual lateSeconds=-1.0; actualelapsed=1.7s; nextfullsnapshot=2026-10-03T22:58:18+00:00
+
+2026-10-03T22:58:20.114638+00:00: hb2257 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T22:58:18+00:00; actual lateSeconds=0.0; actualelapsed=2.1s; nextfullsnapshot=2026-10-03T23:03:18+00:00
+
+2026-10-03T23:03:20.249583+00:00: hb2302 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T23:03:18+00:00; actual lateSeconds=0.0; actualelapsed=2.2s; nextfullsnapshot=2026-10-03T23:08:18+00:00
+
+2026-10-03T23:08:20.367901+00:00: hb2307 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T23:08:18+00:00; actual lateSeconds=0.0; actualelapsed=2.4s; nextfullsnapshot=2026-10-03T23:13:18+00:00
+
+2026-10-03T23:13:21.503225+00:00: hb2312 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T23:13:18+00:00; actual lateSeconds=1.0; actualelapsed=2.5s; nextfullsnapshot=2026-10-03T23:18:19+00:00
+
+2026-10-03T23:18:20.377667+00:00: hb2317 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T23:18:19+00:00; actual lateSeconds=-1.0; actualelapsed=2.4s; nextfullsnapshot=2026-10-03T23:23:18+00:00
+
+2026-10-03T23:23:21.499447+00:00: hb2322 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T23:23:18+00:00; actual lateSeconds=1.0; actualelapsed=2.5s; nextfullsnapshot=2026-10-03T23:28:19+00:00
+
+2026-10-03T23:28:19.544151+00:00: hb2327 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T23:28:19+00:00; actual lateSeconds=-1.0; actualelapsed=1.5s; nextfullsnapshot=2026-10-03T23:33:18+00:00
+
+2026-10-03T23:33:21.670245+00:00: hb2332 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T23:33:18+00:00; actual lateSeconds=2.0; actualelapsed=1.7s; nextfullsnapshot=2026-10-03T23:38:20+00:00
+
+2026-10-03T23:38:20.745381+00:00: hb2337 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T23:38:20+00:00; actual lateSeconds=-1.0; actualelapsed=1.7s; nextfullsnapshot=2026-10-03T23:43:19+00:00
+
+2026-10-03T23:43:20.286669+00:00: hb2342 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T23:43:19+00:00; actual lateSeconds=-1.0; actualelapsed=2.3s; nextfullsnapshot=2026-10-03T23:48:18+00:00
+
+2026-10-03T23:48:20.494065+00:00: hb2347 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T23:48:18+00:00; actual lateSeconds=0.0; actualelapsed=2.5s; nextfullsnapshot=2026-10-03T23:53:18+00:00
+
+2026-10-03T23:53:20.730500+00:00: hb2352 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T23:53:18+00:00; actual lateSeconds=1.0; actualelapsed=1.7s; nextfullsnapshot=2026-10-03T23:58:19+00:00
+
+2026-10-03T23:58:20.741567+00:00: hb2357 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-03T23:58:19+00:00; actual lateSeconds=0.0; actualelapsed=1.7s; nextfullsnapshot=2026-10-04T00:03:19+00:00
+
+2026-10-04T00:03:20.997818+00:00: hb0002 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T00:03:19+00:00; actual lateSeconds=0.0; actualelapsed=2.0s; nextfullsnapshot=2026-10-04T00:08:19+00:00
+
+2026-10-04T00:08:20.400521+00:00: hb0007 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T00:08:19+00:00; actual lateSeconds=-1.0; actualelapsed=2.4s; nextfullsnapshot=2026-10-04T00:13:18+00:00
+
+2026-10-04T00:13:20.906773+00:00: hb0012 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T00:13:18+00:00; actual lateSeconds=1.0; actualelapsed=1.9s; nextfullsnapshot=2026-10-04T00:18:19+00:00
+
+2026-10-04T00:18:20.921595+00:00: hb0017 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T00:18:19+00:00; actual lateSeconds=0.0; actualelapsed=1.9s; nextfullsnapshot=2026-10-04T00:23:19+00:00
+
+2026-10-04T00:23:20.972069+00:00: hb0022 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T00:23:19+00:00; actual lateSeconds=0.0; actualelapsed=2.0s; nextfullsnapshot=2026-10-04T00:28:19+00:00
+
+2026-10-04T00:28:20.807303+00:00: hb0027 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T00:28:19+00:00; actual lateSeconds=0.0; actualelapsed=1.8s; nextfullsnapshot=2026-10-04T00:33:19+00:00
+
+2026-10-04T00:33:20.791936+00:00: hb0032 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T00:33:19+00:00; actual lateSeconds=0.0; actualelapsed=1.8s; nextfullsnapshot=2026-10-04T00:38:19+00:00
+
+2026-10-04T00:38:23.801958+00:00: hb0037 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T00:38:19+00:00; actual lateSeconds=3.0; actualelapsed=1.8s; nextfullsnapshot=2026-10-04T00:43:22+00:00
+
+2026-10-04T00:43:20.897371+00:00: hb0042 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T00:43:22+00:00; actual lateSeconds=-3.0; actualelapsed=1.9s; nextfullsnapshot=2026-10-04T00:48:19+00:00
+
+2026-10-04T00:48:21.130733+00:00: hb0047 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T00:48:19+00:00; actual lateSeconds=0.0; actualelapsed=2.1s; nextfullsnapshot=2026-10-04T00:53:19+00:00
+
+2026-10-04T00:53:21.310687+00:00: hb0052 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T00:53:19+00:00; actual lateSeconds=0.0; actualelapsed=2.3s; nextfullsnapshot=2026-10-04T00:58:19+00:00
+
+2026-10-04T00:58:21.128205+00:00: hb0057 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=74; prior due=2026-10-04T00:58:19+00:00; actual lateSeconds=0.0; actualelapsed=2.1s; nextfullsnapshot=2026-10-04T01:03:19+00:00
+
+2026-10-04T01:03:21.324791+00:00: hb0102 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T01:03:19+00:00; actual lateSeconds=0.0; actualelapsed=2.3s; nextfullsnapshot=2026-10-04T01:08:19+00:00
+
+2026-10-04T01:08:20.147142+00:00: hb0107 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T01:08:19+00:00; actual lateSeconds=-1.0; actualelapsed=2.1s; nextfullsnapshot=2026-10-04T01:13:18+00:00
+
+2026-10-04T01:13:21.910021+00:00: hb0112 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T01:13:18+00:00; actual lateSeconds=2.0; actualelapsed=1.9s; nextfullsnapshot=2026-10-04T01:18:20+00:00
+
+2026-10-04T01:18:20.847924+00:00: hb0117 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T01:18:20+00:00; actual lateSeconds=-1.0; actualelapsed=1.8s; nextfullsnapshot=2026-10-04T01:23:19+00:00
+
+2026-10-04T01:23:19.970582+00:00: hb0122 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=74; prior due=2026-10-04T01:23:19+00:00; actual lateSeconds=-1.0; actualelapsed=2.0s; nextfullsnapshot=2026-10-04T01:28:18+00:00
+
+2026-10-04T01:28:51.420860+00:00: hb0128 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T01:28:18+00:00; actual lateSeconds=31.0; actualelapsed=2.4s; nextfullsnapshot=2026-10-04T01:33:49+00:00
+
+2026-10-04T01:33:50.516257+00:00: hb0133 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T01:33:49+00:00; actual lateSeconds=-1.0; actualelapsed=2.5s; nextfullsnapshot=2026-10-04T01:38:48+00:00
+
+2026-10-04T01:38:51.203419+00:00: hb0138 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T01:38:48+00:00; actual lateSeconds=1.0; actualelapsed=2.2s; nextfullsnapshot=2026-10-04T01:43:49+00:00
+
+2026-10-04T01:43:51.544205+00:00: hb0143 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T01:43:49+00:00; actual lateSeconds=0.0; actualelapsed=2.5s; nextfullsnapshot=2026-10-04T01:48:49+00:00
+
+2026-10-04T01:48:50.923095+00:00: hb0148 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T01:48:49+00:00; actual lateSeconds=0.0; actualelapsed=1.9s; nextfullsnapshot=2026-10-04T01:53:49+00:00
+
+2026-10-04T01:53:51.359082+00:00: hb0153 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T01:53:49+00:00; actual lateSeconds=0.0; actualelapsed=2.4s; nextfullsnapshot=2026-10-04T01:58:49+00:00
+
+2026-10-04T01:58:52.232945+00:00: hb0158 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T01:58:49+00:00; actual lateSeconds=1.0; actualelapsed=2.2s; nextfullsnapshot=2026-10-04T02:03:50+00:00
+
+2026-10-04T02:03:55.883385+00:00: hb0203 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T02:03:50+00:00; actual lateSeconds=4.0; actualelapsed=1.9s; nextfullsnapshot=2026-10-04T02:08:54+00:00
+
+2026-10-04T02:08:49.763987+00:00: hb0208 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T02:08:54+00:00; actual lateSeconds=-6.0; actualelapsed=1.8s; nextfullsnapshot=2026-10-04T02:13:48+00:00
+
+2026-10-04T02:13:51.770682+00:00: hb0213 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T02:13:48+00:00; actual lateSeconds=2.0; actualelapsed=1.8s; nextfullsnapshot=2026-10-04T02:18:50+00:00
+
+2026-10-04T02:18:50.426945+00:00: hb0218 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T02:18:50+00:00; actual lateSeconds=-2.0; actualelapsed=2.4s; nextfullsnapshot=2026-10-04T02:23:48+00:00
+
+2026-10-04T02:23:50.276523+00:00: hb0223 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T02:23:48+00:00; actual lateSeconds=0.0; actualelapsed=2.3s; nextfullsnapshot=2026-10-04T02:28:48+00:00
+
+2026-10-04T02:28:51.524765+00:00: hb0228 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T02:28:48+00:00; actual lateSeconds=1.0; actualelapsed=2.5s; nextfullsnapshot=2026-10-04T02:33:49+00:00
+
+2026-10-04T02:33:52.934758+00:00: hb0233 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T02:33:49+00:00; actual lateSeconds=2.0; actualelapsed=1.9s; nextfullsnapshot=2026-10-04T02:38:51+00:00
+
+2026-10-04T02:38:50.320742+00:00: hb0238 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T02:38:51+00:00; actual lateSeconds=-3.0; actualelapsed=2.3s; nextfullsnapshot=2026-10-04T02:43:48+00:00
+
+2026-10-04T02:43:50.465309+00:00: hb0243 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T02:43:48+00:00; actual lateSeconds=0.0; actualelapsed=2.5s; nextfullsnapshot=2026-10-04T02:48:48+00:00
+
+2026-10-04T02:48:50.317609+00:00: hb0248 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T02:48:48+00:00; actual lateSeconds=0.0; actualelapsed=2.3s; nextfullsnapshot=2026-10-04T02:53:48+00:00
+
+2026-10-04T02:53:50.310421+00:00: hb0253 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T02:53:48+00:00; actual lateSeconds=0.0; actualelapsed=2.3s; nextfullsnapshot=2026-10-04T02:58:48+00:00
+
+2026-10-04T02:58:50.832360+00:00: hb0258 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T02:58:48+00:00; actual lateSeconds=1.0; actualelapsed=1.8s; nextfullsnapshot=2026-10-04T03:03:49+00:00
+
+2026-10-04T03:03:52.624769+00:00: hb0303 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T03:03:49+00:00; actual lateSeconds=2.0; actualelapsed=1.6s; nextfullsnapshot=2026-10-04T03:08:51+00:00
+
+2026-10-04T03:08:51.245037+00:00: hb0308 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T03:08:51+00:00; actual lateSeconds=-2.0; actualelapsed=2.2s; nextfullsnapshot=2026-10-04T03:13:49+00:00
+
+2026-10-04T03:13:51.660303+00:00: hb0313 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T03:13:49+00:00; actual lateSeconds=1.0; actualelapsed=1.7s; nextfullsnapshot=2026-10-04T03:18:50+00:00
+
+2026-10-04T03:18:50.332635+00:00: hb0318 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T03:18:50+00:00; actual lateSeconds=-2.0; actualelapsed=2.3s; nextfullsnapshot=2026-10-04T03:23:48+00:00
+
+2026-10-04T03:23:51.428482+00:00: hb0323 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T03:23:48+00:00; actual lateSeconds=2.0; actualelapsed=1.4s; nextfullsnapshot=2026-10-04T03:28:50+00:00
+
+2026-10-04T03:28:56.622930+00:00: hb0328 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T03:28:50+00:00; actual lateSeconds=5.0; actualelapsed=1.6s; nextfullsnapshot=2026-10-04T03:33:55+00:00
+
+2026-10-04T03:33:51.470747+00:00: hb0333 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T03:33:55+00:00; actual lateSeconds=-6.0; actualelapsed=2.5s; nextfullsnapshot=2026-10-04T03:38:49+00:00
+
+2026-10-04T03:38:53.202262+00:00: hb0338 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T03:38:49+00:00; actual lateSeconds=2.0; actualelapsed=2.2s; nextfullsnapshot=2026-10-04T03:43:51+00:00
+
+2026-10-04T03:43:51.389064+00:00: hb0343 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T03:43:51+00:00; actual lateSeconds=-2.0; actualelapsed=2.4s; nextfullsnapshot=2026-10-04T03:48:49+00:00
+
+2026-10-04T03:48:52.062064+00:00: hb0348 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T03:48:49+00:00; actual lateSeconds=1.0; actualelapsed=2.1s; nextfullsnapshot=2026-10-04T03:53:50+00:00
+
+2026-10-04T03:53:52.777259+00:00: hb0353 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T03:53:50+00:00; actual lateSeconds=1.0; actualelapsed=1.8s; nextfullsnapshot=2026-10-04T03:58:51+00:00
+
+2026-10-04T03:58:54.564006+00:00: hb0358 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T03:58:51+00:00; actual lateSeconds=2.0; actualelapsed=1.6s; nextfullsnapshot=2026-10-04T04:03:53+00:00
+
+2026-10-04T04:03:50.672048+00:00: hb0403 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T04:03:53+00:00; actual lateSeconds=-4.0; actualelapsed=1.7s; nextfullsnapshot=2026-10-04T04:08:49+00:00
+
+2026-10-04T04:08:53.042935+00:00: hb0408 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T04:08:49+00:00; actual lateSeconds=2.0; actualelapsed=2.0s; nextfullsnapshot=2026-10-04T04:13:51+00:00
+
+2026-10-04T04:13:51.375310+00:00: hb0413 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T04:13:51+00:00; actual lateSeconds=-2.0; actualelapsed=2.4s; nextfullsnapshot=2026-10-04T04:18:49+00:00
+
+2026-10-04T04:18:51.339537+00:00: hb0418 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T04:18:49+00:00; actual lateSeconds=0.0; actualelapsed=2.3s; nextfullsnapshot=2026-10-04T04:23:49+00:00
+
+2026-10-04T04:23:53.230119+00:00: hb0423 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T04:23:49+00:00; actual lateSeconds=2.0; actualelapsed=2.2s; nextfullsnapshot=2026-10-04T04:28:51+00:00
+
+2026-10-04T04:28:51.291609+00:00: hb0428 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T04:28:51+00:00; actual lateSeconds=-2.0; actualelapsed=2.3s; nextfullsnapshot=2026-10-04T04:33:49+00:00
+
+2026-10-04T04:33:51.080324+00:00: hb0433 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T04:33:49+00:00; actual lateSeconds=0.0; actualelapsed=2.1s; nextfullsnapshot=2026-10-04T04:38:49+00:00
+
+2026-10-04T04:38:52.216595+00:00: hb0438 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T04:38:49+00:00; actual lateSeconds=1.0; actualelapsed=2.2s; nextfullsnapshot=2026-10-04T04:43:50+00:00
+
+2026-10-04T04:43:51.182486+00:00: hb0443 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T04:43:50+00:00; actual lateSeconds=-1.0; actualelapsed=2.2s; nextfullsnapshot=2026-10-04T04:48:49+00:00
+
+2026-10-04T04:48:50.542875+00:00: hb0448 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T04:48:49+00:00; actual lateSeconds=-1.0; actualelapsed=2.5s; nextfullsnapshot=2026-10-04T04:53:48+00:00
+
+2026-10-04T04:53:51.024537+00:00: hb0453 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T04:53:48+00:00; actual lateSeconds=1.0; actualelapsed=2.0s; nextfullsnapshot=2026-10-04T04:58:49+00:00
+
+2026-10-04T04:59:21.259224+00:00: hb0459 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T04:58:49+00:00; actual lateSeconds=30.0; actualelapsed=2.3s; nextfullsnapshot=2026-10-04T05:04:19+00:00
+
+2026-10-04T05:04:20.975454+00:00: hb0504 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T05:04:19+00:00; actual lateSeconds=0.0; actualelapsed=2.0s; nextfullsnapshot=2026-10-04T05:09:19+00:00
+
+2026-10-04T05:09:20.582089+00:00: hb0509 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T05:09:19+00:00; actual lateSeconds=-1.0; actualelapsed=2.6s; nextfullsnapshot=2026-10-04T05:14:18+00:00
+
+2026-10-04T05:14:21.263558+00:00: hb0514 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T05:14:18+00:00; actual lateSeconds=1.0; actualelapsed=2.3s; nextfullsnapshot=2026-10-04T05:19:19+00:00
+
+2026-10-04T05:19:51.090899+00:00: hb0519 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T05:19:19+00:00; actual lateSeconds=30.0; actualelapsed=2.1s; nextfullsnapshot=2026-10-04T05:24:49+00:00
+
+2026-10-04T05:24:50.353398+00:00: hb0524 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T05:24:49+00:00; actual lateSeconds=-1.0; actualelapsed=2.4s; nextfullsnapshot=2026-10-04T05:29:48+00:00
+
+2026-10-04T05:29:51.811654+00:00: hb0529 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T05:29:48+00:00; actual lateSeconds=2.0; actualelapsed=1.8s; nextfullsnapshot=2026-10-04T05:34:50+00:00
+
+2026-10-04T05:34:52.206408+00:00: hb0534 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T05:34:50+00:00; actual lateSeconds=0.0; actualelapsed=2.2s; nextfullsnapshot=2026-10-04T05:39:50+00:00
+
+2026-10-04T05:39:51.590544+00:00: hb0539 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T05:39:50+00:00; actual lateSeconds=0.0; actualelapsed=1.6s; nextfullsnapshot=2026-10-04T05:44:50+00:00
+
+2026-10-04T05:44:53.069368+00:00: hb0544 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T05:44:50+00:00; actual lateSeconds=1.0; actualelapsed=2.1s; nextfullsnapshot=2026-10-04T05:49:51+00:00
+
+2026-10-04T05:49:51.163729+00:00: hb0549 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T05:49:51+00:00; actual lateSeconds=-2.0; actualelapsed=2.2s; nextfullsnapshot=2026-10-04T05:54:49+00:00
+
+2026-10-04T05:54:53.831696+00:00: hb0554 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T05:54:49+00:00; actual lateSeconds=3.0; actualelapsed=1.8s; nextfullsnapshot=2026-10-04T05:59:52+00:00
+
+2026-10-04T05:59:51.374208+00:00: hb0559 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T05:59:52+00:00; actual lateSeconds=-3.0; actualelapsed=2.4s; nextfullsnapshot=2026-10-04T06:04:49+00:00
+
+2026-10-04T06:04:52.754682+00:00: hb0604 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T06:04:49+00:00; actual lateSeconds=2.0; actualelapsed=1.8s; nextfullsnapshot=2026-10-04T06:09:51+00:00
+
+2026-10-04T06:09:52.133995+00:00: hb0609 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T06:09:51+00:00; actual lateSeconds=-1.0; actualelapsed=2.1s; nextfullsnapshot=2026-10-04T06:14:50+00:00
+
+2026-10-04T06:14:52.246431+00:00: hb0614 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T06:14:50+00:00; actual lateSeconds=0.0; actualelapsed=2.2s; nextfullsnapshot=2026-10-04T06:19:50+00:00
+
+2026-10-04T06:19:53.230822+00:00: hb0619 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T06:19:50+00:00; actual lateSeconds=1.0; actualelapsed=2.2s; nextfullsnapshot=2026-10-04T06:24:51+00:00
+
+2026-10-04T06:24:51.173941+00:00: hb0624 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T06:24:51+00:00; actual lateSeconds=-2.0; actualelapsed=2.2s; nextfullsnapshot=2026-10-04T06:29:49+00:00
+
+2026-10-04T06:29:52.089976+00:00: hb0629 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T06:29:49+00:00; actual lateSeconds=1.0; actualelapsed=2.1s; nextfullsnapshot=2026-10-04T06:34:50+00:00
+
+2026-10-04T06:34:52.775677+00:00: hb0634 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T06:34:50+00:00; actual lateSeconds=1.0; actualelapsed=1.8s; nextfullsnapshot=2026-10-04T06:39:51+00:00
+
+2026-10-04T06:39:52.386900+00:00: hb0639 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T06:39:51+00:00; actual lateSeconds=-1.0; actualelapsed=2.4s; nextfullsnapshot=2026-10-04T06:44:50+00:00
+
+2026-10-04T06:44:52.310291+00:00: hb0644 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T06:44:50+00:00; actual lateSeconds=0.0; actualelapsed=2.3s; nextfullsnapshot=2026-10-04T06:49:50+00:00
+
+2026-10-04T06:49:51.777792+00:00: hb0649 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T06:49:50+00:00; actual lateSeconds=0.0; actualelapsed=1.8s; nextfullsnapshot=2026-10-04T06:54:50+00:00
+
+2026-10-04T06:54:53.954073+00:00: hb0654 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T06:54:50+00:00; actual lateSeconds=2.0; actualelapsed=2.0s; nextfullsnapshot=2026-10-04T06:59:52+00:00
+
+2026-10-04T07:00:23.224895+00:00: hb0700 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T06:59:52+00:00; actual lateSeconds=29.0; actualelapsed=2.2s; nextfullsnapshot=2026-10-04T07:05:21+00:00
+
+2026-10-04T07:05:23.873645+00:00: hb0705 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T07:05:21+00:00; actual lateSeconds=1.0; actualelapsed=1.9s; nextfullsnapshot=2026-10-04T07:10:22+00:00
+
+2026-10-04T07:10:24.328119+00:00: hb0710 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T07:10:22+00:00; actual lateSeconds=0.0; actualelapsed=2.3s; nextfullsnapshot=2026-10-04T07:15:22+00:00
+
+2026-10-04T07:15:25.015332+00:00: hb0715 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T07:15:22+00:00; actual lateSeconds=1.0; actualelapsed=2.0s; nextfullsnapshot=2026-10-04T07:20:23+00:00
+
+2026-10-04T07:20:23.945328+00:00: hb0720 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T07:20:23+00:00; actual lateSeconds=-1.0; actualelapsed=1.9s; nextfullsnapshot=2026-10-04T07:25:22+00:00
+
+2026-10-04T07:25:23.396777+00:00: hb0725 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T07:25:22+00:00; actual lateSeconds=-1.0; actualelapsed=2.4s; nextfullsnapshot=2026-10-04T07:30:21+00:00
+
+2026-10-04T07:30:23.463693+00:00: hb0730 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T07:30:21+00:00; actual lateSeconds=0.0; actualelapsed=2.5s; nextfullsnapshot=2026-10-04T07:35:21+00:00
+
+2026-10-04T07:35:23.180868+00:00: hb0735 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T07:35:21+00:00; actual lateSeconds=0.0; actualelapsed=2.2s; nextfullsnapshot=2026-10-04T07:40:21+00:00
+
+2026-10-04T07:40:21.209190+00:00: hb0740 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T07:40:21+00:00; actual lateSeconds=-2.0; actualelapsed=2.2s; nextfullsnapshot=2026-10-04T07:45:19+00:00
+
+2026-10-04T07:45:22.502643+00:00: hb0745 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T07:45:19+00:00; actual lateSeconds=1.0; actualelapsed=2.5s; nextfullsnapshot=2026-10-04T07:50:20+00:00
+
+2026-10-04T07:50:22.658615+00:00: hb0750 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T07:50:20+00:00; actual lateSeconds=1.0; actualelapsed=1.7s; nextfullsnapshot=2026-10-04T07:55:21+00:00
+
+2026-10-04T07:55:22.003591+00:00: hb0755 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T07:55:21+00:00; actual lateSeconds=-1.0; actualelapsed=2.0s; nextfullsnapshot=2026-10-04T08:00:20+00:00
+
+2026-10-04T08:00:53.466552+00:00: hb0800 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T08:00:20+00:00; actual lateSeconds=31.0; actualelapsed=2.5s; nextfullsnapshot=2026-10-04T08:05:51+00:00
+
+2026-10-04T08:05:54.045356+00:00: hb0805 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T08:05:51+00:00; actual lateSeconds=1.0; actualelapsed=2.0s; nextfullsnapshot=2026-10-04T08:10:52+00:00
+
+2026-10-04T08:10:54.282109+00:00: hb0810 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T08:10:52+00:00; actual lateSeconds=0.0; actualelapsed=2.3s; nextfullsnapshot=2026-10-04T08:15:52+00:00
+
+2026-10-04T08:15:51.495887+00:00: hb0815 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T08:15:52+00:00; actual lateSeconds=-2.0; actualelapsed=1.5s; nextfullsnapshot=2026-10-04T08:20:50+00:00
+
+2026-10-04T08:20:51.598196+00:00: hb0820 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T08:20:50+00:00; actual lateSeconds=0.0; actualelapsed=1.6s; nextfullsnapshot=2026-10-04T08:25:50+00:00
+
+2026-10-04T08:25:54.263585+00:00: hb0825 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T08:25:50+00:00; actual lateSeconds=2.0; actualelapsed=2.3s; nextfullsnapshot=2026-10-04T08:30:52+00:00
+
+2026-10-04T08:30:51.630648+00:00: hb0830 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T08:30:52+00:00; actual lateSeconds=-2.0; actualelapsed=1.6s; nextfullsnapshot=2026-10-04T08:35:50+00:00
+
+2026-10-04T08:35:53.307899+00:00: hb0835 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T08:35:50+00:00; actual lateSeconds=1.0; actualelapsed=2.3s; nextfullsnapshot=2026-10-04T08:40:51+00:00
+
+2026-10-04T08:40:53.115327+00:00: hb0840 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T08:40:51+00:00; actual lateSeconds=0.0; actualelapsed=2.1s; nextfullsnapshot=2026-10-04T08:45:51+00:00
+
+2026-10-04T08:45:53.352180+00:00: hb0845 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T08:45:51+00:00; actual lateSeconds=0.0; actualelapsed=2.4s; nextfullsnapshot=2026-10-04T08:50:51+00:00
+
+2026-10-04T08:50:53.730827+00:00: hb0850 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T08:50:51+00:00; actual lateSeconds=1.0; actualelapsed=1.7s; nextfullsnapshot=2026-10-04T08:55:52+00:00
+
+2026-10-04T08:55:52.630652+00:00: hb0855 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T08:55:52+00:00; actual lateSeconds=-1.0; actualelapsed=1.6s; nextfullsnapshot=2026-10-04T09:00:51+00:00
+
+2026-10-04T09:00:52.945614+00:00: hb0900 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T09:00:51+00:00; actual lateSeconds=0.0; actualelapsed=1.9s; nextfullsnapshot=2026-10-04T09:05:51+00:00
+
+2026-10-04T09:05:53.590813+00:00: hb0905 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T09:05:51+00:00; actual lateSeconds=0.0; actualelapsed=2.6s; nextfullsnapshot=2026-10-04T09:10:51+00:00
+
+2026-10-04T09:10:53.174451+00:00: hb0910 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T09:10:51+00:00; actual lateSeconds=0.0; actualelapsed=2.2s; nextfullsnapshot=2026-10-04T09:15:51+00:00
+
+2026-10-04T09:15:52.025265+00:00: hb0915 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T09:15:51+00:00; actual lateSeconds=-1.0; actualelapsed=2.0s; nextfullsnapshot=2026-10-04T09:20:50+00:00
+
+2026-10-04T09:20:52.999208+00:00: hb0920 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T09:20:50+00:00; actual lateSeconds=1.0; actualelapsed=2.0s; nextfullsnapshot=2026-10-04T09:25:51+00:00
+
+2026-10-04T09:25:53.812905+00:00: hb0925 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T09:25:51+00:00; actual lateSeconds=1.0; actualelapsed=1.8s; nextfullsnapshot=2026-10-04T09:30:52+00:00
+
+2026-10-04T09:30:54.666588+00:00: hb0930 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T09:30:52+00:00; actual lateSeconds=1.0; actualelapsed=1.7s; nextfullsnapshot=2026-10-04T09:35:53+00:00
+
+2026-10-04T09:35:55.002058+00:00: hb0935 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T09:35:53+00:00; actual lateSeconds=0.0; actualelapsed=2.0s; nextfullsnapshot=2026-10-04T09:40:53+00:00
+
+2026-10-04T09:40:53.349496+00:00: hb0940 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T09:40:53+00:00; actual lateSeconds=-2.0; actualelapsed=2.3s; nextfullsnapshot=2026-10-04T09:45:51+00:00
+
+2026-10-04T09:45:53.497004+00:00: hb0945 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T09:45:51+00:00; actual lateSeconds=0.0; actualelapsed=2.5s; nextfullsnapshot=2026-10-04T09:50:51+00:00
+
+2026-10-04T09:50:53.968943+00:00: hb0950 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T09:50:51+00:00; actual lateSeconds=1.0; actualelapsed=2.0s; nextfullsnapshot=2026-10-04T09:55:52+00:00
+
+2026-10-04T09:55:54.605244+00:00: hb0955 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T09:55:52+00:00; actual lateSeconds=1.0; actualelapsed=1.6s; nextfullsnapshot=2026-10-04T10:00:53+00:00
+
+2026-10-04T10:00:54.940918+00:00: hb1000Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T10:00:53+00:00; actual lateSeconds=0.0; actualelapsed=1.9s; nextfullsnapshot=2026-10-04T10:05:53+00:00
+
+2026-10-04T10:05:59.852243+00:00: hb1005Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T10:05:53+00:00; actual lateSeconds=5.0; actualelapsed=1.9s; nextfullsnapshot=2026-10-04T10:10:58+00:00
+
+2026-10-04T10:10:53.896009+00:00: hb1010Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T10:10:58+00:00; actual lateSeconds=-6.0; actualelapsed=1.9s; nextfullsnapshot=2026-10-04T10:15:52+00:00
+
+2026-10-04T10:15:54.457923+00:00: hb1015Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T10:15:52+00:00; actual lateSeconds=0.0; actualelapsed=2.5s; nextfullsnapshot=2026-10-04T10:20:52+00:00
+
+2026-10-04T10:20:53.559166+00:00: hb1020Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T10:20:52+00:00; actual lateSeconds=-1.0; actualelapsed=2.6s; nextfullsnapshot=2026-10-04T10:25:51+00:00
+
+2026-10-04T10:25:53.928087+00:00: hb1025Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T10:25:51+00:00; actual lateSeconds=1.0; actualelapsed=1.9s; nextfullsnapshot=2026-10-04T10:30:52+00:00
+
+2026-10-04T10:30:53.903510+00:00: hb1030Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T10:30:52+00:00; actual lateSeconds=0.0; actualelapsed=1.9s; nextfullsnapshot=2026-10-04T10:35:52+00:00
+
+2026-10-04T10:35:53.592742+00:00: hb1035Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T10:35:52+00:00; actual lateSeconds=0.0; actualelapsed=1.6s; nextfullsnapshot=2026-10-04T10:40:52+00:00
+
+2026-10-04T10:40:53.694606+00:00: hb1040Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T10:40:52+00:00; actual lateSeconds=0.0; actualelapsed=1.7s; nextfullsnapshot=2026-10-04T10:45:52+00:00
+
+2026-10-04T10:45:52.873165+00:00: hb1045Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T10:45:52+00:00; actual lateSeconds=-1.0; actualelapsed=1.9s; nextfullsnapshot=2026-10-04T10:50:51+00:00
+
+2026-10-04T10:50:53.065126+00:00: hb1050Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T10:50:51+00:00; actual lateSeconds=0.0; actualelapsed=2.1s; nextfullsnapshot=2026-10-04T10:55:51+00:00
+
+2026-10-04T10:55:54.206082+00:00: hb1055Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T10:55:51+00:00; actual lateSeconds=1.0; actualelapsed=2.2s; nextfullsnapshot=2026-10-04T11:00:52+00:00
+
+2026-10-04T11:00:52.798513+00:00: hb1100Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T11:00:52+00:00; actual lateSeconds=-1.0; actualelapsed=1.8s; nextfullsnapshot=2026-10-04T11:05:51+00:00
+
+2026-10-04T11:05:52.665051+00:00: hb1105Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T11:05:51+00:00; actual lateSeconds=0.0; actualelapsed=1.7s; nextfullsnapshot=2026-10-04T11:10:51+00:00
+
+2026-10-04T11:10:54.356777+00:00: hb1110Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T11:10:51+00:00; actual lateSeconds=1.0; actualelapsed=2.4s; nextfullsnapshot=2026-10-04T11:15:52+00:00
+
+2026-10-04T11:15:54.009827+00:00: hb1115Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T11:15:52+00:00; actual lateSeconds=0.0; actualelapsed=2.0s; nextfullsnapshot=2026-10-04T11:20:52+00:00
+
+2026-10-04T11:20:53.031565+00:00: hb1120Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T11:20:52+00:00; actual lateSeconds=-1.0; actualelapsed=2.0s; nextfullsnapshot=2026-10-04T11:25:51+00:00
+
+2026-10-04T11:25:53.986354+00:00: hb1125Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T11:25:51+00:00; actual lateSeconds=1.0; actualelapsed=2.0s; nextfullsnapshot=2026-10-04T11:30:52+00:00
+
+2026-10-04T11:30:57.392063+00:00: hb1130Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T11:30:52+00:00; actual lateSeconds=3.0; actualelapsed=2.4s; nextfullsnapshot=2026-10-04T11:35:55+00:00
+
+2026-10-04T11:35:53.484841+00:00: hb1135Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T11:35:55+00:00; actual lateSeconds=-4.0; actualelapsed=2.5s; nextfullsnapshot=2026-10-04T11:40:51+00:00
+
+2026-10-04T11:40:53.954167+00:00: hb1140Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T11:40:51+00:00; actual lateSeconds=1.0; actualelapsed=2.0s; nextfullsnapshot=2026-10-04T11:45:52+00:00
+
+2026-10-04T11:45:53.985904+00:00: hb1145Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T11:45:52+00:00; actual lateSeconds=0.0; actualelapsed=2.0s; nextfullsnapshot=2026-10-04T11:50:52+00:00
+
+2026-10-04T11:50:55.035273+00:00: hb1150Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T11:50:52+00:00; actual lateSeconds=1.0; actualelapsed=2.0s; nextfullsnapshot=2026-10-04T11:55:53+00:00
+
+2026-10-04T11:55:55.612779+00:00: hb1155Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T11:55:53+00:00; actual lateSeconds=1.0; actualelapsed=1.6s; nextfullsnapshot=2026-10-04T12:00:54+00:00
+
+2026-10-04T12:00:53.340202+00:00: hb1200Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T12:00:54+00:00; actual lateSeconds=-3.0; actualelapsed=2.3s; nextfullsnapshot=2026-10-04T12:05:51+00:00
+
+2026-10-04T12:05:53.710348+00:00: hb1205Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T12:05:51+00:00; actual lateSeconds=1.0; actualelapsed=1.7s; nextfullsnapshot=2026-10-04T12:10:52+00:00
+
+2026-10-04T12:11:24.526331+00:00: hb1211Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T12:10:52+00:00; actual lateSeconds=30.0; actualelapsed=2.5s; nextfullsnapshot=2026-10-04T12:16:22+00:00
+
+2026-10-04T12:16:24.986067+00:00: hb1216Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T12:16:22+00:00; actual lateSeconds=1.0; actualelapsed=2.0s; nextfullsnapshot=2026-10-04T12:21:23+00:00
+
+2026-10-04T12:21:24.793655+00:00: hb1221Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T12:21:23+00:00; actual lateSeconds=-1.0; actualelapsed=2.8s; nextfullsnapshot=2026-10-04T12:26:22+00:00
+
+2026-10-04T12:26:27.898888+00:00: hb1226Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T12:26:22+00:00; actual lateSeconds=4.0; actualelapsed=1.9s; nextfullsnapshot=2026-10-04T12:31:26+00:00
+
+2026-10-04T12:31:24.756683+00:00: hb1231Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T12:31:26+00:00; actual lateSeconds=-4.0; actualelapsed=2.8s; nextfullsnapshot=2026-10-04T12:36:22+00:00
+
+2026-10-04T12:36:27.255102+00:00: hb1236Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T12:36:22+00:00; actual lateSeconds=3.0; actualelapsed=2.3s; nextfullsnapshot=2026-10-04T12:41:25+00:00
+
+2026-10-04T12:41:24.054473+00:00: hb1241Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=73; prior due=2026-10-04T12:41:25+00:00; actual lateSeconds=-3.0; actualelapsed=2.1s; nextfullsnapshot=2026-10-04T12:46:22+00:00
+
+2026-10-04T12:46:23.948737+00:00: hb1246Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T12:46:22+00:00; actual lateSeconds=0.0; actualelapsed=1.9s; nextfullsnapshot=2026-10-04T12:51:22+00:00
+
+2026-10-04T12:51:24.083699+00:00: hb1251Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T12:51:22+00:00; actual lateSeconds=0.0; actualelapsed=2.1s; nextfullsnapshot=2026-10-04T12:56:22+00:00
+
+2026-10-04T12:56:24.616441+00:00: hb1256Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T12:56:22+00:00; actual lateSeconds=0.0; actualelapsed=2.6s; nextfullsnapshot=2026-10-04T13:01:22+00:00
+
+2026-10-04T13:01:25.642937+00:00: hb1301Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=74; prior due=2026-10-04T13:01:22+00:00; actual lateSeconds=1.0; actualelapsed=2.6s; nextfullsnapshot=2026-10-04T13:06:23+00:00
+
+2026-10-04T13:06:24.100537+00:00: hb1306Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T13:06:23+00:00; actual lateSeconds=-1.0; actualelapsed=2.1s; nextfullsnapshot=2026-10-04T13:11:22+00:00
+
+2026-10-04T13:11:56.202382+00:00: hb1311Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T13:11:22+00:00; actual lateSeconds=32.0; actualelapsed=2.2s; nextfullsnapshot=2026-10-04T13:16:54+00:00
+
+2026-10-04T13:16:54.641723+00:00: hb1316Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T13:16:54+00:00; actual lateSeconds=-2.0; actualelapsed=2.6s; nextfullsnapshot=2026-10-04T13:21:52+00:00
+
+2026-10-04T13:21:55.334423+00:00: hb1321Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T13:21:52+00:00; actual lateSeconds=1.0; actualelapsed=2.3s; nextfullsnapshot=2026-10-04T13:26:53+00:00
+
+2026-10-04T13:26:54.877142+00:00: hb1326Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T13:26:53+00:00; actual lateSeconds=0.0; actualelapsed=1.9s; nextfullsnapshot=2026-10-04T13:31:53+00:00
+
+2026-10-04T13:31:55.765776+00:00: hb1331Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T13:31:53+00:00; actual lateSeconds=0.0; actualelapsed=2.8s; nextfullsnapshot=2026-10-04T13:36:53+00:00
+
+2026-10-04T13:36:55.133820+00:00: hb1336Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T13:36:53+00:00; actual lateSeconds=0.0; actualelapsed=2.1s; nextfullsnapshot=2026-10-04T13:41:53+00:00
+
+2026-10-04T13:41:54.711290+00:00: hb1341Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T13:41:53+00:00; actual lateSeconds=-1.0; actualelapsed=2.7s; nextfullsnapshot=2026-10-04T13:46:52+00:00
+
+2026-10-04T13:46:55.626715+00:00: hb1346Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T13:46:52+00:00; actual lateSeconds=1.0; actualelapsed=2.6s; nextfullsnapshot=2026-10-04T13:51:53+00:00
+
+2026-10-04T13:51:54.575534+00:00: hb1351Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T13:51:53+00:00; actual lateSeconds=-1.0; actualelapsed=2.6s; nextfullsnapshot=2026-10-04T13:56:52+00:00
+
+2026-10-04T13:56:55.298570+00:00: hb1356Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T13:56:52+00:00; actual lateSeconds=1.0; actualelapsed=2.3s; nextfullsnapshot=2026-10-04T14:01:53+00:00
+
+2026-10-04T14:01:55.237584+00:00: hb1401Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T14:01:53+00:00; actual lateSeconds=0.0; actualelapsed=2.2s; nextfullsnapshot=2026-10-04T14:06:53+00:00
+
+2026-10-04T14:06:56.368069+00:00: hb1406Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T14:06:53+00:00; actual lateSeconds=0.0; actualelapsed=3.4s; nextfullsnapshot=2026-10-04T14:11:53+00:00
+
+2026-10-04T14:11:56.628470+00:00: hb1411Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T14:11:53+00:00; actual lateSeconds=1.0; actualelapsed=2.6s; nextfullsnapshot=2026-10-04T14:16:54+00:00
+
+2026-10-04T14:16:56.360123+00:00: hb1416Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T14:16:54+00:00; actual lateSeconds=0.0; actualelapsed=2.4s; nextfullsnapshot=2026-10-04T14:21:54+00:00
+
+2026-10-04T14:21:53.546869+00:00: hb1421Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T14:21:54+00:00; actual lateSeconds=-3.0; actualelapsed=2.5s; nextfullsnapshot=2026-10-04T14:26:51+00:00
+
+2026-10-04T14:26:54.222655+00:00: hb1426Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T14:26:51+00:00; actual lateSeconds=1.0; actualelapsed=2.2s; nextfullsnapshot=2026-10-04T14:31:52+00:00
+
+2026-10-04T14:31:55.519939+00:00: hb1431Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T14:31:52+00:00; actual lateSeconds=1.0; actualelapsed=2.5s; nextfullsnapshot=2026-10-04T14:36:53+00:00
+
+2026-10-04T14:36:55.344416+00:00: hb1436Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T14:36:53+00:00; actual lateSeconds=0.0; actualelapsed=2.3s; nextfullsnapshot=2026-10-04T14:41:53+00:00
+
+2026-10-04T14:45:15.091421+00:00: hb1441Oct4 root recovery feedback: actual CLI inventory and exact current TASK JSONL evidence audit succeeded; official completion evidence/pins preserved; receipt alone not recovery; ART human stop plus seven approved-scope exhausted idle; no team resend/model/permission/session changes; actual NUL changes=71; prior due=2026-10-04T14:41:53+00:00; actual lateSeconds=184.0; actualelapsed=18.1s; nextfullsnapshot=2026-10-04T14:49:57+00:00
+
+2026-10-04T14:46:58.849896+00:00: hb1446Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; root recovery status-only/no specialist resend maintained; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T14:49:57+00:00; actual lateSeconds=-180.0; actualelapsed=1.8s; nextfullsnapshot=2026-10-04T14:51:57+00:00
+
+2026-10-04T14:51:56.456884+00:00: hb1451Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; root recovery status-only/no specialist resend maintained; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T14:51:57+00:00; actual lateSeconds=-3.0; actualelapsed=2.5s; nextfullsnapshot=2026-10-04T14:56:54+00:00
+
+2026-10-04T14:57:02.435381+00:00: hb1456Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; root recovery status-only/no specialist resend maintained; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T14:56:54+00:00; actual lateSeconds=6.0; actualelapsed=2.4s; nextfullsnapshot=2026-10-04T15:02:00+00:00
+
+2026-10-04T15:01:56.979495+00:00: hb1501Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; root recovery status-only/no specialist resend maintained; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T15:02:00+00:00; actual lateSeconds=-5.0; actualelapsed=2.0s; nextfullsnapshot=2026-10-04T15:06:55+00:00
+
+2026-10-04T15:07:03.601583+00:00: hb1506Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; root recovery status-only/no specialist resend maintained; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T15:06:55+00:00; actual lateSeconds=6.0; actualelapsed=2.6s; nextfullsnapshot=2026-10-04T15:12:01+00:00
+
+2026-10-04T15:11:56.796072+00:00: hb1511Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; root recovery status-only/no specialist resend maintained; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T15:12:01+00:00; actual lateSeconds=-6.0; actualelapsed=1.8s; nextfullsnapshot=2026-10-04T15:16:55+00:00
+
+2026-10-04T15:16:57.423983+00:00: hb1516Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; root recovery status-only/no specialist resend maintained; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T15:16:55+00:00; actual lateSeconds=0.0; actualelapsed=2.4s; nextfullsnapshot=2026-10-04T15:21:55+00:00
+
+2026-10-04T15:21:58.104726+00:00: hb1521Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; root recovery status-only/no specialist resend maintained; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T15:21:55+00:00; actual lateSeconds=1.0; actualelapsed=2.1s; nextfullsnapshot=2026-10-04T15:26:56+00:00
+
+2026-10-04T15:26:58.607203+00:00: hb1526Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; root recovery status-only/no specialist resend maintained; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T15:26:56+00:00; actual lateSeconds=0.0; actualelapsed=2.6s; nextfullsnapshot=2026-10-04T15:31:56+00:00
+
+2026-10-04T15:31:58.906075+00:00: hb1531Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; root recovery status-only/no specialist resend maintained; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T15:31:56+00:00; actual lateSeconds=1.0; actualelapsed=1.9s; nextfullsnapshot=2026-10-04T15:36:57+00:00
+
+2026-10-04T15:36:57.655565+00:00: hb1536Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; root recovery status-only/no specialist resend maintained; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T15:36:57+00:00; actual lateSeconds=-2.0; actualelapsed=2.7s; nextfullsnapshot=2026-10-04T15:41:55+00:00
+
+2026-10-04T15:41:58.778599+00:00: hb1541Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; root recovery status-only/no specialist resend maintained; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T15:41:55+00:00; actual lateSeconds=1.0; actualelapsed=2.8s; nextfullsnapshot=2026-10-04T15:46:56+00:00
+
+2026-10-04T15:46:59.370737+00:00: hb1546Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; root recovery status-only/no specialist resend maintained; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T15:46:56+00:00; actual lateSeconds=1.0; actualelapsed=2.4s; nextfullsnapshot=2026-10-04T15:51:57+00:00
+
+2026-10-04T15:51:59.602525+00:00: hb1551Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; root recovery status-only/no specialist resend maintained; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T15:51:57+00:00; actual lateSeconds=0.0; actualelapsed=2.6s; nextfullsnapshot=2026-10-04T15:56:57+00:00
+
+2026-10-04T15:56:58.818401+00:00: hb1556Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; root recovery status-only/no specialist resend maintained; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T15:56:57+00:00; actual lateSeconds=0.0; actualelapsed=1.8s; nextfullsnapshot=2026-10-04T16:01:57+00:00
+
+2026-10-04T16:02:00.136693+00:00: hb1601Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; root recovery status-only/no specialist resend maintained; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T16:01:57+00:00; actual lateSeconds=1.0; actualelapsed=2.1s; nextfullsnapshot=2026-10-04T16:06:58+00:00
+
+2026-10-04T16:07:00.030687+00:00: hb1606Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; root recovery status-only/no specialist resend maintained; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T16:06:58+00:00; actual lateSeconds=0.0; actualelapsed=2.0s; nextfullsnapshot=2026-10-04T16:11:58+00:00
+
+2026-10-04T16:12:00.896522+00:00: hb1611Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; root recovery status-only/no specialist resend maintained; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T16:11:58+00:00; actual lateSeconds=1.0; actualelapsed=1.9s; nextfullsnapshot=2026-10-04T16:16:59+00:00
+
+2026-10-04T16:17:00.770388+00:00: hb1616Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; root recovery status-only/no specialist resend maintained; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T16:16:59+00:00; actual lateSeconds=0.0; actualelapsed=1.8s; nextfullsnapshot=2026-10-04T16:21:59+00:00
+
+2026-10-04T16:21:59.943640+00:00: hb1621Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; root recovery status-only/no specialist resend maintained; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T16:21:59+00:00; actual lateSeconds=-1.0; actualelapsed=1.9s; nextfullsnapshot=2026-10-04T16:26:58+00:00
+
+2026-10-04T16:27:00.553630+00:00: hb1626Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; root recovery status-only/no specialist resend maintained; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T16:26:58+00:00; actual lateSeconds=0.0; actualelapsed=2.6s; nextfullsnapshot=2026-10-04T16:31:58+00:00
+
+2026-10-04T16:32:00.499345+00:00: hb1631Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; root recovery status-only/no specialist resend maintained; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T16:31:58+00:00; actual lateSeconds=0.0; actualelapsed=2.5s; nextfullsnapshot=2026-10-04T16:36:58+00:00
+
+2026-10-04T16:37:00.872250+00:00: hb1636Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; root recovery status-only/no specialist resend maintained; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T16:36:58+00:00; actual lateSeconds=1.0; actualelapsed=1.9s; nextfullsnapshot=2026-10-04T16:41:59+00:00
+
+2026-10-04T16:42:01.055063+00:00: hb1641Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; root recovery status-only/no specialist resend maintained; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T16:41:59+00:00; actual lateSeconds=0.0; actualelapsed=2.1s; nextfullsnapshot=2026-10-04T16:46:59+00:00
+
+2026-10-04T16:47:02.298654+00:00: hb1646Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; root recovery status-only/no specialist resend maintained; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T16:46:59+00:00; actual lateSeconds=1.0; actualelapsed=2.3s; nextfullsnapshot=2026-10-04T16:52:00+00:00
+
+2026-10-04T16:52:00.322997+00:00: hb1651Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; root recovery status-only/no specialist resend maintained; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T16:52:00+00:00; actual lateSeconds=-2.0; actualelapsed=2.3s; nextfullsnapshot=2026-10-04T16:56:58+00:00
+
+2026-10-04T16:57:01.404798+00:00: hb1656Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; root recovery status-only/no specialist resend maintained; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T16:56:58+00:00; actual lateSeconds=1.0; actualelapsed=2.4s; nextfullsnapshot=2026-10-04T17:01:59+00:00
+
+2026-10-04T17:02:05.076531+00:00: hb1701Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; root recovery status-only/no specialist resend maintained; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T17:01:59+00:00; actual lateSeconds=4.0; actualelapsed=2.1s; nextfullsnapshot=2026-10-04T17:07:03+00:00
+
+2026-10-04T17:07:00.814433+00:00: hb1706Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; root recovery status-only/no specialist resend maintained; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T17:07:03+00:00; actual lateSeconds=-4.0; actualelapsed=1.8s; nextfullsnapshot=2026-10-04T17:11:59+00:00
+
+2026-10-04T17:12:30.585998+00:00: hb1712Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; root recovery status-only/no specialist resend maintained; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T17:11:59+00:00; actual lateSeconds=29.0; actualelapsed=2.6s; nextfullsnapshot=2026-10-04T17:17:28+00:00
+
+2026-10-04T17:17:30.568968+00:00: hb1717Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; root recovery status-only/no specialist resend maintained; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T17:17:28+00:00; actual lateSeconds=1.0; actualelapsed=1.6s; nextfullsnapshot=2026-10-04T17:22:29+00:00
+
+2026-10-04T17:22:31.199524+00:00: hb1722Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; root recovery status-only/no specialist resend maintained; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T17:22:29+00:00; actual lateSeconds=0.0; actualelapsed=2.2s; nextfullsnapshot=2026-10-04T17:27:29+00:00
+
+2026-10-04T17:27:31.147368+00:00: hb1727Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; root recovery status-only/no specialist resend maintained; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T17:27:29+00:00; actual lateSeconds=0.0; actualelapsed=2.1s; nextfullsnapshot=2026-10-04T17:32:29+00:00
+
+2026-10-04T17:34:08.917684+00:00: hb1733Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; root recovery status-only/no specialist resend maintained; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T17:32:29+00:00; actual lateSeconds=76.0; changedEnds=[]; actualelapsed=23.9s; nextfullsnapshot=2026-10-04T17:38:45+00:00
+
+2026-10-04T17:39:02.519984+00:00: hb1738Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; root recovery status-only/no specialist resend maintained; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T17:38:45+00:00; actual lateSeconds=15.0; changedEnds=[]; actualelapsed=2.5s; nextfullsnapshot=2026-10-04T17:44:00+00:00
+
+2026-10-04T17:44:04.028846+00:00: hb1743Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; root recovery status-only/no specialist resend maintained; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T17:44:00+00:00; actual lateSeconds=2.0; changedEnds=[]; actualelapsed=2.0s; nextfullsnapshot=2026-10-04T17:49:02+00:00
+
+2026-10-04T17:49:02.758286+00:00: hb1748Oct4 actual inventory/evidence audit; ART human stop plus seven approved-scope exhausted idle; root recovery status-only/no specialist resend maintained; no duplicate TASK, no new scope, no team send; actual NUL changes=71; prior due=2026-10-04T17:49:02+00:00; actual lateSeconds=-1.0; changedEnds=[]; actualelapsed=1.8s; nextfullsnapshot=2026-10-04T17:54:01+00:00
+
+2026-10-05T06:46:07.295210+00:00: manual MAP one task MAP-HELL-RIFT-LAYERS-20261005; sent_once_pending; sentAt=2026-10-05T06:46:07.250663+00:00; priorEnd=b3c0971d-45b8-4e8f-bfa0-ca3ceb01757d; old evidence preserved/current flags reset; owned max3; other teams/automation resume0; initial compilation failure no send
+
+2026-10-05T06:46:28.496912+00:00: MAP-HELL-RIFT-LAYERS-20261005 actual peer={'at': '2026-10-05T06:46:07.333Z', 'eventUuid': '4bc858f1-9542-4a7b-bcba-8bd330080deb'}; first successful tool=None; first source=None; inventory=busy; no resend
+
+2026-10-05T06:46:58.207160+00:00: MAP-HELL-RIFT-LAYERS-20261005 actual TASK evidence; first successful tool={'name': 'Bash', 'input': {'command': 'echo "=== git change count ===" && git status --porcelain=v1 --untracked-files=all -z | tr \'\\0\' \'\\n\' | grep -c . && echo "=== hell-rift source files ===" && ls -la tools/hell-rift-*.html tools/hell-rift-*.js 2>/dev/null; wc -l tools/hell-rift-map.html tools/hell-rift-depth.js tools/hell-rift-layout.js 2>/dev/null && echo "=== candidate + plan docs ===" && ls -la "docs/4.1맵디자인+설정/HELL_RIFT_MAP_CANDIDATE_20261005.md" "docs/0마스터플랜/EXODUSER_GAMEPLAY_CONTENT_PLAN_20261004.md" 2>/dev/null && echo "=== SSOT index + guideline ===" && ls -la "docs/4.1맵디자인+설정/_MAP_SSOT_INDEX.md" 2>/dev/null; find docs -iname "EXODUSER_MAP_PRODUCTION_GUIDELINE_v0.9.md" 2>/dev/null && echo "=== assets ===" && ls -la assets/map/hell_rift/interspace_20261005/ 2>/dev/null && echo "=== verification.json ===" && ls -la /Users/fordeargamers/.codex/visualizations/hell-rift-layers-20261005/ 2>/dev/null', 'description': 'Survey git count, sources, docs, assets'}, 'at': '2026-10-05T06:46:32.501Z', 'toolUseId': 'toolu_01HryxJpdZAvNRyFaaoMYCEa', 'resultAt': '2026-10-05T06:46:32.921Z', 'resultUuid': '7d083982-4ebe-4787-8954-4a7b6273ada6', 'taskId': 'MAP-HELL-RIFT-LAYERS-20261005'}; first source={'name': 'Bash', 'input': {'command': 'echo "=== git change count ===" && git status --porcelain=v1 --untracked-files=all -z | tr \'\\0\' \'\\n\' | grep -c . && echo "=== hell-rift source files ===" && ls -la tools/hell-rift-*.html tools/hell-rift-*.js 2>/dev/null; wc -l tools/hell-rift-map.html tools/hell-rift-depth.js tools/hell-rift-layout.js 2>/dev/null && echo "=== candidate + plan docs ===" && ls -la "docs/4.1맵디자인+설정/HELL_RIFT_MAP_CANDIDATE_20261005.md" "docs/0마스터플랜/EXODUSER_GAMEPLAY_CONTENT_PLAN_20261004.md" 2>/dev/null && echo "=== SSOT index + guideline ===" && ls -la "docs/4.1맵디자인+설정/_MAP_SSOT_INDEX.md" 2>/dev/null; find docs -iname "EXODUSER_MAP_PRODUCTION_GUIDELINE_v0.9.md" 2>/dev/null && echo "=== assets ===" && ls -la assets/map/hell_rift/interspace_20261005/ 2>/dev/null && echo "=== verification.json ===" && ls -la /Users/fordeargamers/.codex/visualizations/hell-rift-layers-20261005/ 2>/dev/null', 'description': 'Survey git count, sources, docs, assets'}, 'at': '2026-10-05T06:46:32.501Z', 'toolUseId': 'toolu_01HryxJpdZAvNRyFaaoMYCEa', 'resultAt': '2026-10-05T06:46:32.921Z', 'resultUuid': '7d083982-4ebe-4787-8954-4a7b6273ada6', 'taskId': 'MAP-HELL-RIFT-LAYERS-20261005'}; first write=None; inventory=busy; end=None; no resend; root first status sent
+
+2026-10-05T06:47:26.234574+00:00: manual MAP one task MAP-EDITOR-HELL-RIFT-20261005; sent_once_pending; sentAt=2026-10-05T06:47:26.190776+00:00; priorEnd=b3c0971d-45b8-4e8f-bfa0-ca3ceb01757d; old evidence preserved/current flags reset; owned max3; other teams/automation resume0; priority amendment preserve WIP; max3 combined; safe boundary transition
+
+2026-10-05T06:48:06.411392+00:00: MAP-EDITOR-HELL-RIFT-20261005 queue enqueue observed; actual peer/source/write not yet observed; preserve ongoing old task and WIP; no resend
+
+2026-10-05T06:49:16.119071+00:00: MAP-EDITOR-HELL-RIFT-20261005 peer attachment consumed; actual new user peer0; editor source=None; write=None; changes=76; inventory=busy; no resend; strict current TASK source remains null without user peer
+
+2026-10-05T06:49:45.071814+00:00: manual editor source correction: Bash head actual existing editor first source result06:49:03.487; current user peer strict null; full guideline prerequisite clarification sent once; no current TASK reset; no files written observed
+
+2026-10-05T06:49:56.258038+00:00: manual editor priority round closed; root handoff tool success; current consumed peer attachment + explicit editor transition + actual editor source success preserved separately from strict type=user current flags; Write/end not observed; automation/other roles resume0
+
+2026-10-05T07:24:31.044766+00:00: same editor quality amendment QUALITY-UNITY-SCENE-20261005 sent_once_pending; inventory=waiting; WIP1/max3 preserved; existing TASK/history not reset; no new task/session/team/automation; pending Chrome selector error not bypassed
+
+2026-10-05T07:25:13.479033+00:00: editor quality amendment actual evidence; peer=None; attachment=None; inventory=waiting; firstSource=None; firstWrite=None; no resend
+
+2026-10-05T07:25:58.545952+00:00: manual editor quality amendment round close; sent once/actual enqueue only/source null; existing WIP1 preserved; Chrome mandatory user choice error exact root handoff succeeded; no arbitrary selection/bypass/resend/automation or other-role resume; roundStarted07:23:44Z
+
+2026-10-05T07:26:43.414445+00:00: same editor external asset importer amendment QUALITY-UNITY-ASSET-IMPORT-20261005 sent_once_pending; existing WIP/previous quality queue retained; combined max3; first asset phase peer/source/write null; no purchase/download/install/auth/other teams/automation
+
+2026-10-05T07:27:12.286532+00:00: asset importer amendment observed queue={'at': '2026-10-05T07:26:43.416Z', 'operation': 'enqueue'}; user peer=None; attachment=None; source/write not claimed; WIPcount=1; changes=77; no resend
+
+2026-10-05T07:27:31.892810+00:00: manual asset import amendment close; root handoff+latest capacity77 correction successful; actual queue07:26:43.416/peer-source-write unobserved; preserve prior scene quality queue/WIP1; no recovery/completion/resend/automation claim
+
+2026-10-05T07:30:13.760504+00:00: existing editor source-fix amendment SOURCE-AUDIT-FIX-20261005 sent_once_pending; root VM diagnoses atomic import/undo/render order/DOM; same owner WIP/max3; waiting Chrome direct user selection kept; prior queues retained; actual phase peer/source/write unconfirmed; no new task/resend/bypass/teams/automation
+
+2026-10-05T07:30:42.523499+00:00: source-fix amendment actual queue={'at': '2026-10-05T07:30:13.762Z', 'operation': 'enqueue'}; actual peer/source/write unobserved; inventory=waiting; existing WIP=['tools/team-followup-20261005/hell-rift/MAP/hell-rift-editor.html']; changes=77; all3 amendments enqueue preserved; no replay/source-start/completion claim
+
+2026-10-05T07:30:58.771118+00:00: source-fix amendment round closed; root handoff success; waiting3 queued corrections source/write0; no claim that inbox send restarted turn; mandatory direct human browser-selection hold root informed; scope WIP1/max3 and changes77 preserved
+
+2026-10-05T11:58:23.542959+00:00: manual all Claude8 collaboration dispatch audit; first4 prior lookup StopIteration before send, additional3 send0; fixed UUID8 metadata absent/current other UUID8 unassigned; actual CLI background11done; ps read denied no alternate lookup bypass; root MCP report denied requires approval/never not delivered; exact7 approved payloads preserved STATE prepared_not_sent; MAP old3 enqueue retained; current changes72; own2 writes only
+
+## CH1 A priority audit 2026-10-05T12:20:38.497332+00:00
+
+Started 2026-10-05T12:17:40Z. Canonical section 3 and content section 25 read. Bounded official role-handoff search: no matching current eight UUIDs; role mapping unresolved. Prepared ART/ANIMVFX/ENEMY/BOSS/SKILL/STORY/QA scopes in STATE only. Prior unsent Rift drafts preserved; each role shares its existing max-1 reservation (additional reservation 0). MAP current TASK, HTML WIP and three amendment queues preserved, cumulative max 3, resend 0. Actual recovery/send/start 0. NUL git status count 72 at 12:18:07.810145Z. Production/shared docs/Git/app/save writes 0. Root MCP prior approval-never rejection retained; this round retry/alternate-channel 0, delivered false. A-grade/play/visual/audio acceptance not claimed.
+
+## Manual Claude8 role recovery 2026-10-05T23:12:27.984098+00:00
+
+Start 2026-10-05T23:11:00Z. Actual CLI queried 23:11:00.626549Z: historical background11 done only. Current8 metadata same checkout/idle, uid501/socket0600; metadata status is not actual live process proof. Searched project transcripts25 and history: current UUID JSONL0/history0. Old8 first role user commands and TASK Read exist only under old UUIDs. No demonstrated old-to-current role link; no inferred mapping/registration/send. Prior ps denied and root reporting approval-never rejection retained; retry/alternate route0. Current NUL72 (root reported66), scene SHA verified f5068d742ddd6da3e1c78fb7178317df228e936bab0edc6237dec40bfd0bb5ac. Updated existing reserved7 instructions and prepared MAP content continuation; old MAP HTML+3 queues preserved, shared editor duplicate work prohibited, cumulative3. Role recovery/send/peer/Read/usefulsource/write/end0. Existing ownership/backlogs/raw preserved; own STATE/LOG only writes. Required external evidence: existing session actual role instruction/TASK history or verified official terminal-to-role handoff, no new sessions or permission bypass.
+
+2026-10-05T23:48:56.430215+00:00: {"event": "official8_new_responsibility_verified", "assignmentId": "ROOT-CLAUDE8-EXISTING-ROLE-ASSIGNMENT-20261006", "localCliDiscrepancyPreserved": true, "oldRowsPreserved": true}
+
+2026-10-05T23:48:56.476847+00:00: {"event": "dispatch_attempt_reserved", "role": "ART", "taskId": "CH1-A-ART-20261006"}
+
+2026-10-05T23:48:56.520014+00:00: {"event": "socket_send_failed_no_retry", "role": "ART", "error": "[Errno 1] Operation not permitted", "errorType": "PermissionError"}
+
+2026-10-05T23:48:56.562650+00:00: {"event": "manual_dispatch_partial_persisted", "actualSent": 0, "actualStarted": 0, "socketPolicyBlocked": true, "newSessions": 0, "oldMapQueueResend": 0}

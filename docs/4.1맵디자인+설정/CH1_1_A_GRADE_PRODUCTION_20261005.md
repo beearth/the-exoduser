@@ -243,3 +243,8 @@ Claude 오더담당 `01a0fd2d-8a6f-7f01-b2da-70119654cffe`가 이 표를 공식 
 ART/ANIMVFX/ENEMY/BOSS/SKILL/STORY/QA는 오더 STATE의 `pendingCH1Assignments20261005`에 준비된 기존 예약1파일을 재사용한다. MAP 및 맵 geometry/가림/카메라 관련 담당은 맵 guide 전체와 stage LOCK/SSOT를 선행 읽고 §23 보고·VISUAL VERDICT를 실제 근거로 제출한다. 후보에는 실제 코드/데이터·OLD/NEW 또는 구체 재현 근거를 담고 단순 계획 반복으로 착수·완료를 대신하지 않는다. 생산/shared docs/Git·게임/세이브/빌드는 root만 변경한다.
 
 배정 기록 시 actualSent=0/actualStarted=0. 현재8 idle 확인과 공식 역할 배정은 실제 제작착수와 구분한다. 이후 유일담당 STATE/LOG에 peer·선행문서 Read·첫 유용 source tool·Write·공식 endID/pins를 구분해 기록한다. 이전 거절된 목적/조회·MAP 큐를 우회 재시도하지 않으며, 이번 별도 CH1 제작 책임을 기존 정상 inbox에 전달한다. 자동화중지·관리3/전문15=18·새팀/세션/권한변경0·보호2_3/Q전용/어택티켓금지/원화/기존23/타인WIP/세이브·80/100 한도를 유지한다.
+
+
+### 2026-10-06 KST 실제 전달 결과 — 실행환경 연결 차단
+
+오더담당 완료 turn `01a10e77-917e-7590-aaa9-579202ec28d0`가 공식 역할8건을 인수·소유 STATE/LOG에 기록했다. 2026-10-05T23:48:56Z 첫 ART 정상 inbox 연결이 `PermissionError: [Errno 1] Operation not permitted`로 차단되어 송신0/전문팀 착수0/8. 나머지7역할 연결은 시도하지 않았고 재시도·다른채널·권한변경0. 역할 이관 문제는 해소됐지만 현재 실행환경의 연결 차단은 남았다. 현재8팀 제작중으로 계산하지 않는다. 이전 MAP WIP/3큐·UUID/완료 이력 보존. 실제 외부 조치가 있기 전 거절 작업을 반복하지 않는다.

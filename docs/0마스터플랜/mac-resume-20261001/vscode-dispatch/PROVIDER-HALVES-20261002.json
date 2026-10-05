@@ -2425,6 +2425,37 @@
         "statusAtInventory": "idle"
       }
     ],
-    "preservation": "Historical role UUIDs/turns and old MAP WIP/3 queues retained; no retransmit or permission bypass; existing per-role reservation only"
+    "preservation": "Historical role UUIDs/turns and old MAP WIP/3 queues retained; no retransmit or permission bypass; existing per-role reservation only",
+    "latestDispatchAttempt": {
+      "recordedAt": "2026-10-05T23:50:27.266437+00:00",
+      "orderTurnId": "01a10e77-917e-7590-aaa9-579202ec28d0",
+      "orderFinalMessageId": "msg_04dcb3e9d6d43cbb016ac4376e993487d0ae46e7404f674df6",
+      "orderCompletedAt": "2026-10-05T23:49:03Z",
+      "assignmentReceived": 8,
+      "actualSent": 0,
+      "actualStarted": 0,
+      "attemptedRoles": [
+        "ART"
+      ],
+      "unattemptedRoles": [
+        "MAP",
+        "SKILL",
+        "QA",
+        "ENEMY",
+        "ANIMVFX",
+        "BOSS",
+        "STORY"
+      ],
+      "errorType": "PermissionError",
+      "error": "[Errno 1] Operation not permitted",
+      "attemptAt": "2026-10-05T23:48:56.476839+00:00",
+      "socket": "/tmp/cc-socks/7458.sock",
+      "retryOrAlternateChannel": false,
+      "outcomeMeaning": "Configured existing eight accepted by order owner; delivery blocked by execution environment, no specialist production started",
+      "capturedOwnerPins": {
+        "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/supervisor/claude-orders/SUPERVISOR_STATE.json": "97c13a9451a3f85ca525906a6ec8a6290d88462e80051f995538d8699fe05526",
+        "docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/supervisor/claude-orders/SUPERVISOR_LOG.md": "bfcbc7e08cb451f9abf5ff3bdb066ade09eac721f392b4debc484fff8d4bceb8"
+      }
+    }
   }
 }
