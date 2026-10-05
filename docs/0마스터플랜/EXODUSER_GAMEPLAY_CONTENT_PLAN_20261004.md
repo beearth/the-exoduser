@@ -434,3 +434,70 @@ Unity 기능 참고: [Scene 오브젝트 조작](https://docs.unity.com/en-us/en
 | UI/외부자산/왕복/본편 | 소스 진단을 실제 화면·임포터 구현·플레이 완료로 계산하지 않음 | 미인수 |
 
 검토 대상 SHA256 795818616e80a81cfa8b21438cdce0c8397f84ab41b2727efad68d417ba5c03b, 저장 증거 /Users/fordeargamers/.codex/visualizations/hell-rift-editor-20261005/source-diagnostic.json. 원총괄은 같은 후보의 복구 피드백을 기존 Claude 오더담당에게 한 번 전달했으며 MAP WIP를 직접 수정·채택하지 않았다.
+
+
+## 24 최신 전팀 협업 플랜 — 지옥의 틈과 맵 에디터
+
+2026-10-05 KST 사용자 직접 지시: “빨리 진행해 거기 npc ui 사운드 등등 팀들이 다 동원돼야 하는 거니까”, “플랜도 최대로 업데이트했다 잘 만들어봐라 전팀 다 동원하고”. 기존 전문15팀 전부를 이번 제작에 한정해 수동 협업한다. §21~23의 MAP 단독/다른팀 중지 기록은 해당 시점 이력이며 아래 범위가 최신이다. 자동화 재개, 새 팀·채팅·실행 세션, Unity 엔진 설치·전체 이전은 포함하지 않는다. 원총괄+Codex7 오더+Claude8 오더=관리3, 전문15=전체18 유지.
+
+### 24.1 제품 목표와 첫 인수 씬
+
+지옥 최하단에서 위로 탈출하는 여정의 장/스테이지 사이에 지옥의 틈이 존재한다. 첫 검수 씬은 1장 썩은숲 뒤/2장 벌레굴 앞의 큰 틈이다. 망자들이 머무는 기묘한 이공간으로, 반복 천막/건물 줄선 마을로 환원하지 않는다. 부패중이지만 괴물이 되지 않은 주민의 사연·준비·선물·구조 부탁을 다음 상승 동기로 연결한다. 부패는 세계관이며 자동 사망/실시간 벌칙은 추가하지 않는다.
+
+편집 목표는 자산 import→팔레트→씬 배치/계층/변형/층·가림/동선→전사로 즉시 테스트→버전 프로젝트 저장왕복→현재 런타임 출력이다. 깊은 계곡/낭떠러지의 큰 형태·접지·심연 시차·전경 가림과 조명·안개가 플레이 공간으로 작동해야 한다. NPC/UI/음향은 동일 씬 계약을 사용한다. 컨셉 원화 승인과 소스 작성만으로 시각·실플레이·청취를 PASS로 선언하지 않는다.
+
+### 24.2 역할별 소유와 구현 인계
+
+아래 파일은 제작 목표/예약이며 작성완료 목록이 아니다. 위치는 tools/team-followup-20261005/hell-rift/<ROLE>/이고, MAP 외 14팀은 신규 후보 각1파일, MAP은 기존 요청 합산 최대3파일이다. 실제 착수/완료는 오더담당의 새 turn·source/tool·Write·공식 완료ID 및 정확 pin으로 확인한다. root는 두 오더담당에게 아래 배정을 각각 한 번 전달했고 전문팀 수신을 가정하지 않았다.
+
+| 팀 | 유일 송신 담당 | 소유 후보 | 책임·인수 기준 |
+|---|---|---|---|
+| MAP | Claude8 | 기존 hell-rift-editor.html 및 합산 max3 | 기존 후보의 원자적 import/Undo/실제 렌더 순서/DOM 안전 수정, Unity 씬 제작·이미지 import/배치/플레이/저장왕복. 기존 큐 중복송신 없음 |
+| UIUX | Codex7 | rift-ui.mjs | inspector/팔레트와 NPC 대화·선택/닫기, createRiftUi({root,dispatch})/destroy, 개별 DOM 노드 갱신/초점 |
+| QUESTNPC | Codex7 | rift-npc.mjs | createRiftNpc({state,inventoryAdapter,questAdapter,emit}); 대화/선택/선물/부탁 상태, 실패·중복 지급 보존 |
+| SOUND | Codex7 | rift-sound.mjs | createRiftSound({getContext,assetCatalog,settings}); 기존 환경·잔불/문/대화 cue, 사용자 gesture unlock, 중복루프 방지/stop/destroy/음소거 |
+| ITEM | Codex7 | rift-gift-adapter.mjs | 기존 지급 API에 주입 adapter, 가방 가득참/실패/재수령에서 선반영·중복0, 새 아이템·경제 수치0 |
+| BUILD | Codex7 | rift-asset-validation.mjs | 자산·프로젝트 순수 validator, ID/경로/규격/pivot/scale/source-license/누락·중복·유한수. MAP 임포트 UI 중복구현·대형빌드0 |
+| BALANCE | Codex7 | rift-progression-validation.mjs | 기존 진행/보상 조건 validator, 방문만으로 장/보스 clear 금지, 신규 수치/가격/부패벌칙0 |
+| MARKETING | Codex7 | rift-review-checklist.json | 사용자 검토용 깊이·반복차별·가독·편집/저장/플레이/청취 기준·증거 요구. 외부 게시/광고0 |
+| ART | Claude8 | rift-asset-catalog.json | 기존 실제 자산 경로·규격·pivot·용도·층·출처·투명 여부 카탈로그, 누락/분리 미완료 명시, 새 원화/캐릭터 생성0 |
+| STORY | Claude8 | rift-dialogue.json | 4POI의 안정 nodeId/선택/action/수락·거절·재방문 데이터. 기존 로어 우선, DLC 약속0 |
+| ANIMVFX | Claude8 | rift-ambience.mjs | createRiftAmbience({ctx,assets,settings}); 심연/안개/잔불·문 renderer와 수명·seed/가림·가독. 공유 HTML 변경0 |
+| QA | Claude8 | rift-contract-checks.mjs | 실제 소스 import/Undo/렌더·schema·참조·지급 실패·상태/루프 수명 검사. source와 UI/native/청취 인수 분리 |
+| SKILL | Claude8 | rift-input-boundary.mjs | createRiftInputBoundary(...); 편집/대화/테스트 입력 소유·held/blur 수명 정리, 주입 binding/확정키 보존 |
+| ENEMY | Claude8 | rift-enemy-boundary.mjs | createRiftEnemyBoundary(...); 안전 씬 NPC를 적으로 분류0, 이전 공격/스폰 누출 방지와 정상전투 복귀, 적세이브 삭제0 |
+| BOSS | Claude8 | rift-boss-gate.mjs | createRiftBossGate({readChapterCompletion,...}); 기존 실제 장완료 gate/죽음·부활·retry 보존, 방문만으로 임의 unlock0 |
+
+### 24.3 연결 계약 v1 — 후보를 합칠 경계
+
+| 항목 | 제작 계약 |
+|---|---|
+| 식별 | schemaVersion=1, sceneId=hell-rift-ch1-ch2. 각 모듈의 생성/상호작용 API는 후보 목표이며 현재 production 함수라고 선언하지 않음 |
+| POI | gift(39,122), request(145,116), rest(79,170), prepare(137,70)는 현재 후보 참조. 확정 이름·기능은 기존 SSOT와 실제 데이터 우선 |
+| 위치 | GRID=200/T=40, 시작(100,193)/출구(100,43), 실제 stage LOCK·SSOT 우선. 소유팀이 임의 좌표계·높이·충돌 계약 변경0 |
+| 대화 | stable npcId/nodeId/options/action, 예시 gift.accept/quest.accept/dialogue.close. 표시 문안과 행동 상태를 분리하고 action 처리 실패에 수락 flag 선반영0 |
+| 저장·보상 | 후보 state version1, 실제 저장·inventory·quest API는 주입. 원총괄만 생산 연결. 기존 save 직접쓰기/무료 보상 생성/실패 뒤 중복 지급0 |
+| 에셋 | ID/원본 파일명/상대경로/규격/pivot/scale/source-license 보존. 이미지 직접지원 목표와 모델·Unity package/prefab 변환·미지원 기능 구분 |
+| 안전 공간 | NPC와 적 분류 분리, 진입·퇴장 뒤 입력/공격/음향/효과 수명 정리. 전투 수치·스킬·보스/적 영구 데이터 변경0 |
+| 이벤트 | root가 dialog/UI cue/scene enter-exit/선물결과/quest결과 연결. 동기·비동기 adapter 실패 모두 현재 씬/상태를 보존할 검수 필요 |
+| 원화 | 승인 painterly-v2/abyss-v3 원본불변. baked 인물과 현재 부분층은 전체 interactive NPC/3D 높이/완전 clean plate가 아님 |
+
+### 24.4 순서와 완료 게이트
+
+| 단계 | 결과 | 통과 기준 |
+|---|---|---|
+| A 기존 후보 안정화 | 현재 MAP 에디터의 오류 복구 | 잘못된 JSON을 원자 거절, Undo/Redo·렌더 순서·DOM 안전 실제 대조 |
+| B 자산·편집 | 팔레트/계층/변형/보행·충돌/POI와 프로젝트 | 자산 누락 안내, 편집→export→import 동등, 실패에 원본 씬 보존 |
+| C 주민·대화·보상 | 실제 선택/선물·부탁/재방문 | 안정 ID, 중복/가방실패/adapter오류, 입력초점/닫기/재진입 확인 |
+| D 공간·음향 | 분위기 renderer와 sound 생명주기 | 접지·깊이/시차/가림·길가독, 음소거/볼륨/중복루프 및 실제 청취 |
+| E 진행·전투 경계 | 안전 씬과 전후 stage/장 연결 | 실제 장완료 gate, 죽음·부활·retry/세이브 보존, 정상전투 복귀 |
+| F root 통합 | 정확 candidate pins·정본/코드 최소 적용 | 맵 guide 전체/§23보고, production 계약/관련 docs 전체 검색과 일치 |
+| G 실제 인수 | 같은 씬과 플레이 카메라로 이동/상호작용/출구 | visual PASS/RETOUCH/FAIL, 실제 native/청취 증거. fixture/산출file만 PASS 금지 |
+
+모든 팀의 최종 완료를 한꺼번에 기다리지 않는다. 정확한 소유·완료ID가 나온 순서대로 원총괄이 raw 미채택 보존/의미검수/최소연결을 진행한다. 완료 뒤 같은 후보의 필요한 보완은 이어가되 기존 검사·보고 반복이나 의존성이 해결된 척하는 착수는 금지한다.
+
+### 24.5 현행 상태·용량·보호
+
+현재 MAP HTML 1파일은 소스 구문 PASS, 실패 import 원자성 FAIL 및 Undo/렌더 순서/DOM 안전 보완 필요다. MAP는 Chrome 직접 사용자 선택 대기, 씬품질/외부asset/소스수정 3보완은 enqueue만 확인됐다. 이 선택을 임의 대체·다른 UI툴/Windows/세션으로 우회하지 않는다. 브라우저 선택 대기는 다른 팀의 승인된 독립 소스작업을 막는 이유가 아니다.
+
+배정 시 실제72항목에 MAP 잔여2+14팀 각각1+원총괄 정본최대7을 보수적으로 더한 상한95. 이미 실제에 반영된 소비는 중복 가산하지 않는다. 실제80부터 완료소유만 정확 pins/공식완료ID로 후보 미채택 checkpoint하며100 전 신규산출 중단. WIP/기존23변경/원자료/정본 LOCK/보호2_3·Q전용패링/E불가·어택티켓금지를 보존하고 ignore/삭제/cleanup/권한/auth/설치/구매/게시/자동화·PC 재개0.

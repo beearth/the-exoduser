@@ -490,3 +490,8 @@ NEXT PASS: 전체 환경 clean plate/투명층, 원화 인물과 실제 캐릭�
 - EVIDENCE: 콘텐츠 계획 §22~23 인수 현황 및 외부 source-diagnostic.json. 대상 SHA256 795818616e80a81cfa8b21438cdce0c8397f84ab41b2727efad68d417ba5c03b.
 - NEXT PASS: MAP 기존 소유 후보 수정, Unity 씬·외부자산 보완 실제 수신/작성, 사용자 브라우저 선택 뒤 UI 인수.
 - VISUAL VERDICT: RETOUCH (기존 판정 유지; 이번 소스 검사로 visual PASS 선언 없음).
+
+
+### 전팀 연결 후속 — 2026-10-05 KST
+
+[콘텐츠 계획 §24](../0마스터플랜/EXODUSER_GAMEPLAY_CONTENT_PLAN_20261004.md)에 사용자 전문15팀 동원, 에디터/자산/NPC/대화/UI/음향·효과/입력/안전씬/진행 gate·검수 계약을 기록했다. 원총괄이 두 오더담당에 배정했고, 전문팀 실제 착수·완료를 가정하지 않았다. 기존 MAP WIP/Chrome 사용자선택/3보완큐와 원화·nav·VISUAL RETOUCH는 보존. 생산/native/청취 인수는 미완료다.
