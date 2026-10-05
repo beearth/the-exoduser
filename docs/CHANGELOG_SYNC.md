@@ -53813,3 +53813,14 @@ BALANCE1350A magicRef 및1355 meleeRef/bowRef 원문·당시 source57/WIP 관측
 | 보존 | source53/58/59 계산·저장스키마/원자료·장비생성·계수·경제/강화이전정책 불변. DEF/eDef/charge 및 다른 STATS/모든 소비자 안전 주장0. 보호2_3/Q전용패링/E불가/어택티켓금지/사용자23·타인WIP 보존. 기존 실행앱source29/3404에30~60 미반영 |
 
 BALANCE1340 HP/MP 및1345 Shield 후보를 공식source59에서 실제 전체 계산으로 검수했다. docs 검색에서 발견한 밸런스 문서의 기존 HP3000/HP·ST1500 표기는 기본테이블 값·후처리 경계에 맞게 정정했다. 기존 source31의 bonusHp 미검수 표기는 당시 이력이고 이번 채택은 위 세 합산 소비에 한정한다.
+
+
+## 2026-10-05 지옥의 틈 최초 이동 후보 미채택 보존
+
+| 항목 | 범위·검증 |
+|---|---|
+| 산출 | 독립 tools/build_hell_rift_map.py·tools/hell-rift-map.html, chapter-master.png·stage-master.png·layout.json·layout.js 및 HELL_RIFT_MAP_CANDIDATE_20261005.md 보존 |
+| 계약 | 200×200 내비게이션, 남쪽 진입·북쪽 출구, 장 사이/스테이지 사이 독립 후보. 생산 게임 통합·NPC·저장 연결 없음 |
+| 검사 | 전체 경로 연결·관심 지점·연속 이동·모바일 가로 넘침 없음 확인. 실게임 6단계·청취 인수로 계산하지 않음 |
+| 시각 | VISUAL VERDICT: RETOUCH. 중앙 균열 깊이·외곽 경계·반복 천막 개선 필요. 최신 사용자가 지정한 기묘한 이공간 방향은 후속 원화에 적용 |
+| 보존 | 완료 소유 산출과 본 로그만 체크포인트. 기존 기획서·인덱스·타인 WIP·사용자 세이브 제외 |

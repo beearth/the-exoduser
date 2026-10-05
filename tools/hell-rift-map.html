@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>지옥의 틈 · EXODUSER</title>
+<style>
+:root{color-scheme:dark;--ink:#d9d0bf;--muted:#8f9595;--gold:#c2a075;--line:#343c3e}*{box-sizing:border-box}body{margin:0;background:#0b1115;color:var(--ink);font:15px/1.65 system-ui,-apple-system,"Apple SD Gothic Neo",sans-serif}header{padding:28px 4vw 22px;display:flex;justify-content:space-between;align-items:flex-end;border-bottom:1px solid var(--line);background:linear-gradient(135deg,#1d272a,#0b1115)}.eyebrow{letter-spacing:.26em;color:var(--gold);font-size:11px}h1{font:500 clamp(32px,4vw,52px)/1.2 Georgia,"AppleMyungjo",serif;letter-spacing:.12em;margin:7px 0 9px}header p{margin:0;color:var(--muted)}.scope{font-size:12px;max-width:250px;text-align:right;color:#b2bab8}main{display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:0;max-width:1720px;margin:auto}.scene{position:relative;min-width:0;padding:18px}canvas{width:100%;height:min(76vh,1000px);display:block;background:#11191c;touch-action:none;border:1px solid #343c3e;cursor:crosshair}nav{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}button{background:#152126;border:1px solid #3b484b;color:#c9d0c9;padding:9px 13px;font:inherit;cursor:pointer;border-radius:3px}button[aria-pressed="true"]{background:#33413f;color:#ecd8b6;border-color:#c2a075}button:focus-visible{outline:2px solid var(--gold);outline-offset:3px}.controls{font-size:12px;color:#9aa6a7;display:flex;justify-content:space-between;gap:8px;margin-top:10px}aside{border-left:1px solid var(--line);padding:24px 22px;background:#111b20}h2{font:400 23px Georgia,"AppleMyungjo",serif;color:#e1d5bd;margin:0 0 15px}.route{color:var(--gold);font-size:13px;border-bottom:1px solid var(--line);padding-bottom:18px}.poilist{display:flex;flex-direction:column;gap:9px;margin:22px 0}.poilist button{text-align:left;padding:13px 11px}.poilist span{font-size:11px;color:var(--gold);display:block;letter-spacing:.15em}.note{font-size:13px;color:#a0aeac;border-top:1px solid var(--line);padding-top:17px}.detail{color:#d0d5ca;margin:16px 0;min-height:90px}footer{padding:13px 4vw;border-top:1px solid var(--line);color:#7e8c8e;font-size:12px}.touch{display:grid;grid-template-columns:repeat(3,42px);gap:4px;position:absolute;bottom:60px;left:32px}.touch button{padding:6px}.touch .empty{visibility:hidden}@media(max-width:800px){header{padding:20px;align-items:flex-start;gap:12px;flex-direction:column}.scope{max-width:none;text-align:left}main{grid-template-columns:1fr}aside{border-left:0;border-top:1px solid var(--line);padding:20px}.poilist{display:grid;grid-template-columns:repeat(2,1fr)}canvas{height:min(96vw,540px)}.detail{min-height:0}.controls{flex-direction:column;gap:5px}}
+</style>
+</head>
+<body>
+<header><div><div class="eyebrow">EXODUSER / BETWEEN THE DEPTHS</div><h1>지옥의 틈</h1><p>한 지옥을 벗어났지만, 아직 탈출하지 못한 자들의 자리.</p></div><div class="scope">장 사이 · 스테이지 사이<br>이동 가능한 맵 후보<br>본편 진행·세이브 미연결</div></header>
+<main>
+<section class="scene" aria-label="지옥의 틈 맵">
+<nav aria-label="지도와 시점"><button id="chapter" aria-pressed="true">장 사이 · 큰 거점</button><button id="stage" aria-pressed="false">스테이지 사이 · 쉼터</button><button id="walk" aria-pressed="false">걸어보기</button><button id="overview" aria-pressed="true">전체 보기</button><button id="labels" aria-pressed="true">장소 이름</button></nav>
+<canvas id="map" tabindex="0" aria-label="남쪽에서 진입해 북쪽으로 올라가는 지옥의 틈. 화살표와 WASD 또는 화면 터치로 이동"></canvas>
+<div class="touch" aria-label="이동 버튼"><button class="empty" tabindex="-1">·</button><button data-key="arrowup" aria-label="위로 이동">↑</button><button class="empty" tabindex="-1">·</button><button data-key="arrowleft" aria-label="왼쪽 이동">←</button><button data-key="arrowdown" aria-label="아래로 이동">↓</button><button data-key="arrowright" aria-label="오른쪽 이동">→</button></div>
+<div class="controls"><span>WASD / 방향키 · 화면을 누르면 걸어서 이동</span><span id="state" role="status">맵 준비 중</span></div>
+</section>
+<aside><h2 id="variantTitle">장 사이의 큰 거점</h2><div class="route" id="route">썩은 숲 → 지옥의 틈 → 벌레굴</div><div class="poilist" id="poiList"></div><p class="detail" id="detail">몸은 변해 가지만 의지와 목적이 남은 망자들이 다음 상승을 준비합니다.</p><p class="note">주민 자리는 공간 확인용입니다. 대사·상점·아이템 양도·구출 퀘스트는 아직 연결하지 않았습니다.</p></aside>
+</main>
+<footer>남쪽 진입 · 중앙 균열과 양측 우회 · 북쪽 상승문. 기존 에셋으로 제작한 별도 후보이며 본편 맵을 교체하지 않습니다.</footer>
+<script src="../assets/map/hell_rift/candidate_20261005/layout.js"></script>
+<script>
+(() => {
+  'use strict';
+  const manifest=window.HELL_RIFT_LAYOUT;
+  const canvas=document.getElementById('map'), ctx=canvas.getContext('2d');
+  const ui={state:document.getElementById('state'),detail:document.getElementById('detail'),
+    list:document.getElementById('poiList'),title:document.getElementById('variantTitle'),route:document.getElementById('route')};
+  const keys=new Set(), images={}, errors=[];
+  let kind='chapter',template,grid,player,mode='overview',labels=true,path=[],previous=0,view,frameCount=0;
+  // Candidate adapter using the production template contract. No genGauntlet.
+  function genFromTemplate(source){
+    const nav=new Uint8Array(source.w*source.h);let at=0;
+    for(let i=0;i<source.tileRLE.length;i+=2){nav.fill(source.tileRLE[i],at,at+source.tileRLE[i+1]);at+=source.tileRLE[i+1];}
+    if(at!==nav.length)throw Error('Invalid template dimensions');
+    return {template:source,grid:nav};
+  }
+  const walkable=(x,y)=>x>=0&&y>=0&&x<template.w&&y<template.h&&grid[Math.floor(y)*template.w+Math.floor(x)]===1;
+  function fits(x,y){return [[0,0],[.4,0],[-.4,0],[0,.4],[0,-.4]].every(([a,b])=>walkable(x+a,y+b));}
+  function select(next){
+    kind=next;({template,grid}=genFromTemplate(manifest.variants[kind]));
+    player={x:template.start.x+.5,y:template.start.y+.5};path=[];keys.clear();
+    ui.title.textContent=kind==='chapter'?'장 사이의 큰 거점':'스테이지 사이의 작은 쉼터';
+    ui.route.textContent=kind==='chapter'?'썩은 숲 → 지옥의 틈 → 벌레굴':'이전 스테이지 → 지옥의 틈 → 다음 스테이지';
+    ui.detail.textContent=kind==='chapter'?'변형 중에도 목적이 남은 망자들. 받은 물건과 부탁이 다음 상승의 이유가 됩니다.':'잠시 숨을 고르고 다음 구간을 준비하는 쉼터입니다. 큰 거점과 같은 세계에 속하지만 주민·정비 공간을 줄였습니다.';
+    ui.list.replaceChildren();
+    for(const [i,poi] of template.pois.entries()){
+      const b=document.createElement('button'),small=document.createElement('span'),name=document.createElement('div');
+      small.textContent=String(i+1).padStart(2,'0');name.textContent=poi.name;b.append(small,name);
+      b.addEventListener('click',()=>{ui.detail.textContent=poi.name+' 자리로 걸어갑니다. 공간과 접근 경로를 확인하는 후보이며 실제 기능은 미연결입니다.';go(poi.x,poi.y);});ui.list.append(b);
+    }
+    document.getElementById('chapter').setAttribute('aria-pressed',kind==='chapter');
+    document.getElementById('stage').setAttribute('aria-pressed',kind==='stage');
+    updateState();
+  }
+  function go(x,y){
+    const tx=Math.floor(x),ty=Math.floor(y);
+    if(!fits(tx+.5,ty+.5)){ui.state.textContent='그곳은 깊은 틈이나 지형입니다.';return false;}
+    const start=Math.floor(player.y)*template.w+Math.floor(player.x),goal=ty*template.w+tx;
+    const seen=new Int32Array(grid.length);seen.fill(-2);seen[start]=-1;
+    const queue=new Int32Array(grid.length);queue[0]=start;let head=0,tail=1;
+    while(head<tail&&seen[goal]===-2){const a=queue[head++],ax=a%template.w,ay=Math.floor(a/template.w);
+      for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1]]){const nx=ax+dx,ny=ay+dy,b=ny*template.w+nx;
+        if(nx<0||ny<0||nx>=template.w||ny>=template.h||seen[b]!==-2||!fits(nx+.5,ny+.5))continue;
+        seen[b]=a;queue[tail++]=b;
+      }
+    }
+    if(seen[goal]===-2){ui.state.textContent='통행 경로가 연결되지 않았습니다.';return false;}
+    path=[];for(let a=goal;a!==start;a=seen[a])path.push({x:a%template.w+.5,y:Math.floor(a/template.w)+.5});path.reverse();updateState();return true;
+  }
+  function updateState(){ui.state.textContent=path.length?'걷는 중':Math.hypot(player.x-template.exit.x,player.y-template.exit.y)<4?'상승문 도착 · 다음 맵 전환 미연결':'남쪽에서 북쪽으로 상승';}
+  function resize(){const r=canvas.getBoundingClientRect(),d=Math.min(devicePixelRatio||1,2);canvas.width=Math.round(r.width*d);canvas.height=Math.round(r.height*d);}
+  function movement(dt){
+    let dx=(keys.has('d')||keys.has('arrowright')?1:0)-(keys.has('a')||keys.has('arrowleft')?1:0);
+    let dy=(keys.has('s')||keys.has('arrowdown')?1:0)-(keys.has('w')||keys.has('arrowup')?1:0);
+    let distance=8*dt;
+    if(dx||dy){path=[];const n=Math.hypot(dx,dy);dx/=n;dy/=n;}
+    else if(path.length){const target=path[0],gap=Math.hypot(target.x-player.x,target.y-player.y);
+      if(gap<.05){path.shift();return;}dx=(target.x-player.x)/gap;dy=(target.y-player.y)/gap;distance=Math.min(distance,gap);}
+    const steps=Math.max(1,Math.ceil(distance/.2));
+    for(let i=0;i<steps;i++){const nx=player.x+dx*distance/steps,ny=player.y+dy*distance/steps;
+      if(fits(nx,player.y))player.x=nx;if(fits(player.x,ny))player.y=ny;}
+    updateState();
+  }
+  function draw(t){
+    const dt=previous?Math.min((t-previous)/1000,.05):0;previous=t;movement(dt);frameCount++;
+    const W=canvas.width,H=canvas.height;
+    ctx.fillStyle='#0e161b';ctx.fillRect(0,0,W,H);
+    const scale=mode==='overview'?Math.min(W,H)/200:Math.min(W/65,H/48);
+    const cx=mode==='overview'?100:Math.max(32.5,Math.min(167.5,player.x));
+    const cy=mode==='overview'?100:Math.max(24,Math.min(176,player.y));
+    view={scale,ox:W/2-cx*scale,oy:H/2-cy*scale};
+    const {ox,oy}=view;const img=images[kind];
+    if(img?.complete&&img.naturalWidth)ctx.drawImage(img,ox,oy,200*scale,200*scale);
+    if(path.length){ctx.strokeStyle='rgba(215,185,127,.52)';ctx.lineWidth=Math.max(1,scale*.11);ctx.setLineDash([scale*.8,scale*.7]);ctx.beginPath();ctx.moveTo(ox+player.x*scale,oy+player.y*scale);for(const p of path)ctx.lineTo(ox+p.x*scale,oy+p.y*scale);ctx.stroke();ctx.setLineDash([]);}
+    if(labels){ctx.font=`${Math.max(11,scale*1.25)}px system-ui`;ctx.textAlign='center';
+      for(const [i,p] of template.pois.entries()){
+        const x=ox+p.x*scale,y=oy+p.y*scale;if(x<0||y<0||x>W||y>H)continue;
+        ctx.fillStyle='#ddb67d';ctx.beginPath();ctx.arc(x,y,Math.max(3,scale*.45),0,Math.PI*2);ctx.fill();
+        const text=(i+1)+' '+p.name.split(' — ')[0],width=ctx.measureText(text).width;
+        ctx.fillStyle='rgba(9,17,21,.82)';ctx.fillRect(x-width/2-6,y+8,width+12,Math.max(19,scale*1.9));
+        ctx.fillStyle='#e5d4b9';ctx.fillText(text,x,y+8+Math.max(14,scale*1.35));
+      }
+    }
+    const x=ox+player.x*scale,y=oy+player.y*scale;
+    ctx.shadowColor='#89c4d9';ctx.shadowBlur=12;ctx.fillStyle='#d6eef0';ctx.beginPath();ctx.arc(x,y,Math.max(4,scale*.65),0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;
+    ctx.strokeStyle='#14242e';ctx.lineWidth=2;ctx.stroke();
+    requestAnimationFrame(draw);
+  }
+  canvas.addEventListener('pointerdown',e=>{canvas.focus();const r=canvas.getBoundingClientRect();go(((e.clientX-r.left)*canvas.width/r.width-view.ox)/view.scale,((e.clientY-r.top)*canvas.height/r.height-view.oy)/view.scale);});
+  const moveKeys=new Set(['w','a','s','d','arrowup','arrowleft','arrowdown','arrowright']);
+  window.addEventListener('keydown',e=>{const k=e.key.toLowerCase();if(moveKeys.has(k)&&document.activeElement===canvas){e.preventDefault();keys.add(k);}});
+  window.addEventListener('keyup',e=>keys.delete(e.key.toLowerCase()));window.addEventListener('blur',()=>keys.clear());
+  document.querySelectorAll('[data-key]').forEach(b=>{b.addEventListener('pointerdown',e=>{e.preventDefault();b.setPointerCapture(e.pointerId);keys.add(b.dataset.key);});for(const event of ['pointerup','pointercancel','lostpointercapture'])b.addEventListener(event,()=>keys.delete(b.dataset.key));});
+  document.getElementById('chapter').onclick=()=>select('chapter');document.getElementById('stage').onclick=()=>select('stage');
+  for(const name of ['walk','overview'])document.getElementById(name).onclick=()=>{mode=name;document.getElementById('walk').setAttribute('aria-pressed',mode==='walk');document.getElementById('overview').setAttribute('aria-pressed',mode==='overview');};
+  document.getElementById('labels').onclick=()=>{labels=!labels;document.getElementById('labels').setAttribute('aria-pressed',labels);};
+  for(const variant of ['chapter','stage']){const im=new Image();images[variant]=im;im.onerror=()=>{errors.push(variant);ui.state.textContent='맵 이미지 로딩 실패';};im.src='../assets/map/hell_rift/candidate_20261005/'+manifest.variants[variant].image;}
+  window.RIFT_QA={snapshot:()=>({kind,mode,player:{...player},pathLength:path.length,errors:[...errors],frames:frameCount,walkable:fits(player.x,player.y),ready:Object.values(images).every(i=>i.complete&&i.naturalWidth>0)}),go};
+  select('chapter');resize();new ResizeObserver(resize).observe(canvas);requestAnimationFrame(draw);
+})();
+</script>
+</body></html>
