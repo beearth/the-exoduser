@@ -103,7 +103,7 @@
 | 결과 씬 | 최종 독립 Chrome18/18 PASS: 원본/nav 핀·새1192/1185 경로·34점 실제canWalk·query/복구 저장·실제layer pixel/Undo·soft/hard edge·PNG2048²·JSON 왕복·8카메라 clamp·실제 북향85.344px 보행. 페이지/콘솔/요청/HTTP 오류0. final-acceptance/acceptance-report.json |
 | actor | source/방향/프레임/접지/실패 처리8검사 및 tiles분기3검사 PASS. 기존8PNG 유지 |
 | 실제 종주 | 수정된 길 실제 키 입력267타일/158 turns/36.445초, 도착(4025.184,1740.384), exit 오차5.20world px. JSON 불변/페이지 및 누락오류0/actor8방향loaded·errors0. 영상12,962,149 bytes |
-| 화면 | 전체/8camera·실제 움직임3지점·출구. 원화 crop joins와 심연 경계에 뚜렷한 직사각 seam 없음 |
+| 화면 | 전체/8camera·실제 보행 중간캡처9장과 출구1장 육안 검수. 발·그림자는 갈색 지면/턱/계단 위이며 초기 허공 통과 수정. walk5/6/7은 y62.58/62.58/61.64로 y70~85 정지포즈가 아니며 그 구간은 실제 연속영상/키trace/nav 오버레이로 확인. 원화 crop joins와 심연 경계에 뚜렷한 직사각 seam 없음 |
 | 한계 | 이동 가능 확인을 바닥과 발의 시각 정합성으로 확대하지 않는다. 초기 허공 통과는 결과물 corridor 재보정으로 수정했다. 원화 인물과 전사 간 시각 크기·원근 차이, 주민/잔불의 독립 collision과 전체 전경은 후속이다. 전경3조각 외 완전 깊이/높이 물리는 미구현 |
 
 ## MAP PRODUCTION REPORT
@@ -144,7 +144,7 @@ LANDMARK
 - secondary / tertiary: 양측 머무는 턱·잔불·망자, 대화 연결0.
 
 CAMERA QA
-- START / EARLY / ARENA / SIDE L / SIDE R / LANDMARK / LATE / EXIT: 실제 Chrome8카메라 캡처, 최초 하단빈공간 발견→자동뷰 clamp 수정. 최종 외부 final-visual-review 확인.
+- START / EARLY / ARENA / SIDE L / SIDE R / LANDMARK / LATE / EXIT: 실제 Chrome8카메라 캡처, 최초 하단빈공간 발견→자동뷰 clamp 수정. 최종 외부 final-visual-review 확인. 보행면/카메라/crop 접합 PASS, 전체 원근·NPC·전경은 RETOUCH.
 
 TECH QA
 - route: core/실제키종주 PASS; 그림 바닥 정합과 구분.

@@ -53928,3 +53928,6 @@ BALANCE1340 HP/MP 및1345 Shield 후보를 공식source59에서 실제 전체 �
 ### 2026-10-06 결과 씬 보행 정합 보정
 
 저장된 잔류자의 계곡 scene JSON은 초기 허공 통과를 수정해 동측 그림 바닥·계단에 맞춘 34점/반폭2.75tile corridor로 변경했다. 현행 walkable1192 / radius12 BFS1185 / navSHA a4508aa62f21c9b4380640307b36eef06656ebdf0c0245a2f78833d65dda0179. 원본 PNG/layout와 기본 프리셋 nav4107은 그대로다. 실제 키종주267tiles/158turns/36.445초·오류0, 편집 결과는 본편 미채택. 정확 좌표·시각 한계·검수는 HELL_RIFT_EDITOR_RESULT_20261006.md를 따른다.
+
+
+2026-10-06 최종 시각 검수: 수정nav 종주 중간9캡처+출구1캡처 육안 대조 완료. 전사 발/그림자 갈색지면, 초기 허공통과 해결. 보행면·카메라·crop접합 PASS; 전체 VISUAL RETOUCH(원화주민크기·NPC·높이·전경 후속). 정확 캡처 좌표/기술18검사/§23은 HELL_RIFT_EDITOR_RESULT_20261006.md에 동기화.
