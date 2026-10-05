@@ -389,3 +389,8 @@
 
 
 최신 협업 범위: [콘텐츠 계획 §24](../0마스터플랜/EXODUSER_GAMEPLAY_CONTENT_PLAN_20261004.md)의 기존 전문15팀 전원 수동 제작을 적용한다. 오더는 Codex7/Claude8 각각 유일 담당, raw 소유 분리와 연결 v1/단계별 Gate 준수. MAP 단독이던 직전 범위는 이력이며 자동화·새세션·생산 정본 전환은 아직 없음.
+
+
+## 2026-10-05 최신 — CH1-1 A급 제작 목표
+
+[CH1_1_A_GRADE_PRODUCTION_20261005.md](CH1_1_A_GRADE_PRODUCTION_20261005.md)는 최신 사용자 요청의 1-1 우선 품질·15전문+root통합16역할·정확핀/가동실패·8-camera/6단계·청취 GATE 정본이다. 기존 stage LOCK/geometry/진행SSOT를 덮어쓰지 않는다. 지옥의 틈·에디터 요구/WIP는 보존. root 비대칭외곽 PNG1점 미채택보존, 생산교체0 / **VISUAL RETOUCH**. Codex7 승인필요/never 송신거절·Claude8 기존등록소실/현재새등록 공식역할 미확인으로 실제 새전달/착수0이며 자동화중지 유지.
