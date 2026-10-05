@@ -569,5 +569,88 @@
     "tomlVerified": true,
     "ownsSpecialistDispatch": true,
     "latestOperationalState": "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/supervisor/SUPERVISOR_STATE.json"
+  },
+  "currentClaude8ManualAssignment20261006": {
+    "assignmentId": "ROOT-CLAUDE8-EXISTING-ROLE-ASSIGNMENT-20261006",
+    "recordedAt": "2026-10-05T23:47:39.827838+00:00",
+    "humanRequest": "클로드 팀도 설정에 맞게 일좀시켜라 / 뭐하냐 아무작업도 안시키고",
+    "workdir": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "inventoryObservedAt": "2026-10-05T23:44:45Z",
+    "inventoryCommand": "/Users/fordeargamers/.local/bin/claude agents --json --all --cwd /Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "evidence": "interactive8 idle; exact metadata UUID/cwd/kind/status matches; root fresh CUA existing Terminal1–8 empty Claude prompts",
+    "assignmentMeaning": "Explicit new responsibility assignment to existing verified eight sessions; no inferred old-role or Terminal-number continuity",
+    "uniqueSenderThreadId": "01a0fd2d-8a6f-7f01-b2da-70119654cffe",
+    "newSessions": 0,
+    "automationResumed": false,
+    "actualSent": 0,
+    "actualStarted": 0,
+    "executionCountMeaning": "assignment recorded before dispatch; actual peer/new turn/useful source tool to be verified by unique owner",
+    "roles": [
+      {
+        "role": "ART",
+        "pid": 7458,
+        "sessionId": "94436f2f-74d9-40c2-b0b5-21c6022e8dc4",
+        "responsibility": "자산 크기·pivot·접지·레이어 교체",
+        "kind": "interactive",
+        "statusAtInventory": "idle"
+      },
+      {
+        "role": "MAP",
+        "pid": 7537,
+        "sessionId": "09198e3b-e45c-404e-b2b0-e42ccd9d8af2",
+        "responsibility": "1-1 큰 구도·외곽·지면 연결·8-camera 후보",
+        "kind": "interactive",
+        "statusAtInventory": "idle"
+      },
+      {
+        "role": "SKILL",
+        "pid": 7621,
+        "sessionId": "ec0868f8-7ba5-42f8-b7ca-20e63d4ebda4",
+        "responsibility": "전투/대화/설정 입력소유·held/blur/retry",
+        "kind": "interactive",
+        "statusAtInventory": "idle"
+      },
+      {
+        "role": "QA",
+        "pid": 7700,
+        "sessionId": "20094d24-cd9b-404a-89c7-cbafcbcdfcaa",
+        "responsibility": "실제 source 경계·scene/nav·저장 영향 검수",
+        "kind": "interactive",
+        "statusAtInventory": "idle"
+      },
+      {
+        "role": "ENEMY",
+        "pid": 7783,
+        "sessionId": "0d77d1ea-dd83-499f-af15-2cd5ebb94d48",
+        "responsibility": "8공간 적 배치·swarm·위협 가독 후보",
+        "kind": "interactive",
+        "statusAtInventory": "idle"
+      },
+      {
+        "role": "ANIMVFX",
+        "pid": 7877,
+        "sessionId": "f56a2bc8-0cf7-459e-a393-5f93d78d30e1",
+        "responsibility": "캐릭터 발접지·앞뒤 가림·VFX 수명 후보",
+        "kind": "interactive",
+        "statusAtInventory": "idle"
+      },
+      {
+        "role": "BOSS",
+        "pid": 7978,
+        "sessionId": "72ba2963-6065-4d67-889a-4e3a76c97140",
+        "responsibility": "4구역 gate·보스/죽음/부활/재도전 연결",
+        "kind": "interactive",
+        "statusAtInventory": "idle"
+      },
+      {
+        "role": "STORY",
+        "pid": 8073,
+        "sessionId": "48d2bfa5-101f-4c8e-9759-dc0925597905",
+        "responsibility": "지옥 상승 안내·틈 망자 node/options/action",
+        "kind": "interactive",
+        "statusAtInventory": "idle"
+      }
+    ],
+    "preservation": "Historical role UUIDs/turns and old MAP WIP/3 queues retained; no retransmit or permission bypass; existing per-role reservation only"
   }
 }

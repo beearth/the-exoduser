@@ -534,3 +534,8 @@ Unity 기능 참고: [Scene 오브젝트 조작](https://docs.unity.com/en-us/en
 ### 2026-10-06 결과 씬 보행 정합 보정
 
 저장된 잔류자의 계곡 scene JSON은 초기 허공 통과를 수정해 동측 그림 바닥·계단에 맞춘 34점/반폭2.75tile corridor로 변경했다. 현행 walkable1192 / radius12 BFS1185 / navSHA a4508aa62f21c9b4380640307b36eef06656ebdf0c0245a2f78833d65dda0179. 원본 PNG/layout와 기본 프리셋 nav4107은 그대로다. 실제 키종주267tiles/158turns/36.445초·오류0, 편집 결과는 본편 미채택. 정확 좌표·시각 한계·검수는 HELL_RIFT_EDITOR_RESULT_20261006.md를 따른다.
+
+
+## 2026-10-06 KST 최신 — 기존 Claude8의 명시 역할 재배정
+
+사용자 직접 재개 지시에 따라 현재 동일 checkout의 공식 CLI inventory interactive/idle 8개를 확인하고 기존 UUID별 책임을 새로 배정했다. 과거 UUID·Terminal14–21 역할이 자동 승계됐다고 추정하지 않는다. [정확 책임표와 실행 경계](../4.1맵디자인+설정/CH1_1_A_GRADE_PRODUCTION_20261005.md#11-기존-claude8-명시-책임-재배정--2026-10-06-kst)를 따른다. Claude 오더담당 한 명만 송신하며 기존 MAP WIP·3개 큐는 보존/재송신0, 공유 에디터 중복 제작0. 자동화·새팀·새세션·권한/인증 변경0. 배정 기록 시 실제 새전달/착수는0이며 peer·새 turn·유용한 source tool 확인 후 운영 STATE/LOG에서 갱신한다. 과거 ps/송신 거절을 우회하지 않는다. 역할별 기존 예약max1/MAP합산max3·80 완료소유 checkpoint/100전 신규산출중단·production/docs/Git root 소유를 유지한다.

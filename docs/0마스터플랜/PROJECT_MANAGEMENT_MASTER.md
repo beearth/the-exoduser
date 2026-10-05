@@ -2438,3 +2438,8 @@ UI-22 황동 프레임/은회색 링/금빛 신호의 별도 시안을 보존했
 ### CH1-1 오더 준비 인수 — 12:20 UTC
 
 [CH1 정본§9](../4.1맵디자인+설정/CH1_1_A_GRADE_PRODUCTION_20261005.md): Codex7 미송신 작업안7개와 Claude후속안7개 준비/기존MAP작업·큐 보존을 root가 인수했다. 실제복구/새전달/착수0. Codex송신 자동승인검토 승인필요/never·STATE/LOG쓰기제한과 Claude현재8UUID 공식역할이관미확인 미해소. 오더준비 완료와 전문팀 제작착수 구분, 우회0·자동화중지. root 이미지/정본9파일 f930bc2c5f7380492083dffc5eefa033d77c6e4c 원격정확SHA 확인/actual81→72. 생산채택/A급/native6단계·청취완료0, VISUAL RETOUCH.
+
+
+## 2026-10-06 KST 최신 — 기존 Claude8의 명시 역할 재배정
+
+사용자 직접 재개 지시에 따라 현재 동일 checkout의 공식 CLI inventory interactive/idle 8개를 확인하고 기존 UUID별 책임을 새로 배정했다. 과거 UUID·Terminal14–21 역할이 자동 승계됐다고 추정하지 않는다. [정확 책임표와 실행 경계](../4.1맵디자인+설정/CH1_1_A_GRADE_PRODUCTION_20261005.md#11-기존-claude8-명시-책임-재배정--2026-10-06-kst)를 따른다. Claude 오더담당 한 명만 송신하며 기존 MAP WIP·3개 큐는 보존/재송신0, 공유 에디터 중복 제작0. 자동화·새팀·새세션·권한/인증 변경0. 배정 기록 시 실제 새전달/착수는0이며 peer·새 turn·유용한 source tool 확인 후 운영 STATE/LOG에서 갱신한다. 과거 ps/송신 거절을 우회하지 않는다. 역할별 기존 예약max1/MAP합산max3·80 완료소유 checkpoint/100전 신규산출중단·production/docs/Git root 소유를 유지한다.

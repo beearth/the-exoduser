@@ -221,3 +221,25 @@ root가 원문 pin과7개 준비 목록·전달0을 직접 대조했다. 두 담
 root가 사용자 최신 이미지 크기 수정·맵 에디터 직접 지시에 따라 editor.html에 씬 편집을 구현했다. [MAP_SCENE_EDITOR_20261005.md](MAP_SCENE_EDITOR_20261005.md)의 이미지 조합·world 크기·pivot·레이어·길/보행·왕복 저장을 core27/실제 Chrome UI15그룹으로 검수했다. 기존 타일 편집은 ?workspace=tiles, 기본은 이미지 씬이다. root 외곽 후보1점은 팔레트 재료로 노출할 뿐 생산 채택0이다.
 
 1-1 프리셋은 v7 ground/left/right/north와 정확 CH1_1_PRODUCTION.buildRLE(200,200), 기존8 regions의 **구성 스케치**다. 최신 production outer/bake/움직임97차를 재현하거나 새 1-1 A급 map를 완성했다고 계산하지 않는다. LOCK/geometry/layout·본편·native 후보 무변, 16 제작 역할의 새 실제송신·착수0 상태는 그대로다. 에디터 기능 완료와 전투/획득·보스6단계·실청취 완료는 별도다. MAP PRODUCTION REPORT는 구현 계약§7, **VISUAL VERDICT: RETOUCH.**
+
+
+## 11. 기존 Claude8 명시 책임 재배정 — 2026-10-06 KST
+
+공식 배정ID **ROOT-CLAUDE8-EXISTING-ROLE-ASSIGNMENT-20261006**. 사용자 직접 지시로 아래 현재 UUID에 담당 책임을 명시 배정한다. 이는 기존 세션의 새 책임 지정이며, 옛 UUID와의 동일역할 승계 또는 Terminal1–8 순서 매칭을 주장하지 않는다. 2026-10-05T23:44:45Z 공식 CLI 조회19개 중 background11/interactive8, 현재8 전부 same checkout/interactive/idle이고 local metadata의 UUID/cwd/kind/status가 일치했다. root의 fresh CUA 화면도 동일 checkout의 기존8 Claude Code 입력대기를 확인했다. 새 세션 생성0.
+
+| 현재 역할 | PID | 현재 정확 UUID | 우선 책임 |
+|---|---|---|---|
+| ART | 7458 | `94436f2f-74d9-40c2-b0b5-21c6022e8dc4` | 자산 크기·pivot·접지·레이어 교체 |
+| MAP | 7537 | `09198e3b-e45c-404e-b2b0-e42ccd9d8af2` | 1-1 큰 구도·외곽·지면 연결·8-camera 후보 |
+| SKILL | 7621 | `ec0868f8-7ba5-42f8-b7ca-20e63d4ebda4` | 전투/대화/설정 입력소유·held/blur/retry |
+| QA | 7700 | `20094d24-cd9b-404a-89c7-cbafcbcdfcaa` | 실제 source 경계·scene/nav·저장 영향 검수 |
+| ENEMY | 7783 | `0d77d1ea-dd83-499f-af15-2cd5ebb94d48` | 8공간 적 배치·swarm·위협 가독 후보 |
+| ANIMVFX | 7877 | `f56a2bc8-0cf7-459e-a393-5f93d78d30e1` | 캐릭터 발접지·앞뒤 가림·VFX 수명 후보 |
+| BOSS | 7978 | `72ba2963-6065-4d67-889a-4e3a76c97140` | 4구역 gate·보스/죽음/부활/재도전 연결 |
+| STORY | 8073 | `48d2bfa5-101f-4c8e-9759-dc0925597905` | 지옥 상승 안내·틈 망자 node/options/action |
+
+Claude 오더담당 `01a0fd2d-8a6f-7f01-b2da-70119654cffe`가 이 표를 공식 handoff로 인수하고 현재 live inventory/metadata/socket을 다시 대조한 뒤 미송신 CH1 후보를 각1회 전달한다. 옛 rows/UUID/완료 이력과 MAP HTML WIP·3개 미소비 큐는 보존하고 현재 배정 필드는 별도로 둔다. MAP은 구 큐 재전송 대신 CH1 큰 형태·8-camera 후보의 독립 책임을 맡으며 기존 WIP 합산max3 안에서 남은 예약만 사용한다. 공유 editor/core/actor/result scene은 root가 구현·보존했으므로 재작성하지 않는다.
+
+ART/ANIMVFX/ENEMY/BOSS/SKILL/STORY/QA는 오더 STATE의 `pendingCH1Assignments20261005`에 준비된 기존 예약1파일을 재사용한다. MAP 및 맵 geometry/가림/카메라 관련 담당은 맵 guide 전체와 stage LOCK/SSOT를 선행 읽고 §23 보고·VISUAL VERDICT를 실제 근거로 제출한다. 후보에는 실제 코드/데이터·OLD/NEW 또는 구체 재현 근거를 담고 단순 계획 반복으로 착수·완료를 대신하지 않는다. 생산/shared docs/Git·게임/세이브/빌드는 root만 변경한다.
+
+배정 기록 시 actualSent=0/actualStarted=0. 현재8 idle 확인과 공식 역할 배정은 실제 제작착수와 구분한다. 이후 유일담당 STATE/LOG에 peer·선행문서 Read·첫 유용 source tool·Write·공식 endID/pins를 구분해 기록한다. 이전 거절된 목적/조회·MAP 큐를 우회 재시도하지 않으며, 이번 별도 CH1 제작 책임을 기존 정상 inbox에 전달한다. 자동화중지·관리3/전문15=18·새팀/세션/권한변경0·보호2_3/Q전용/어택티켓금지/원화/기존23/타인WIP/세이브·80/100 한도를 유지한다.

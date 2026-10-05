@@ -233,3 +233,8 @@ EXODUSER 작업감독 `01a0fb1e-4ec3-7dd3-bba2-f87518e881fa` 생성·TASK Read e
 ## 2026-10-05 최신 — CH1-1 A급 수동 범위
 
 [콘텐츠 계획§25](EXODUSER_GAMEPLAY_CONTENT_PLAN_20261004.md)/[CH1-1 A급 정본](../4.1맵디자인+설정/CH1_1_A_GRADE_PRODUCTION_20261005.md)이 직전§24 미송신 범위의 우선순위를 갱신한다. 전문15+root통합1=제작16, 두유일오더/관리3+전문15=전체18 유지. 실제는 Codex7 승인필요/never 거절로 새전달0, Claude8 기존역할 등록 소실로 현재새8 idle의 공식handoff 미확인·새전달0이다. 거절 후 도구·채널 우회/재시도·새세션/정책변경0. 미송신 배정 준비·정상 handoff 읽기 확인과 root 소유 독립 검수/보존만 진행한다. 기존WIP/큐·지옥의 틈/에디터 요구·80완료checkpoint/100전 산출중단·모든 보호 유지. 자동화는 일시중지이며 구표 ACTIVE는 당시 이력이다. 전송·active·파일·fixture를 실제가동/A급/native·청취 완료로 계산하지 않는다.
+
+
+## 2026-10-06 KST 최신 — 기존 Claude8의 명시 역할 재배정
+
+사용자 직접 재개 지시에 따라 현재 동일 checkout의 공식 CLI inventory interactive/idle 8개를 확인하고 기존 UUID별 책임을 새로 배정했다. 과거 UUID·Terminal14–21 역할이 자동 승계됐다고 추정하지 않는다. [정확 책임표와 실행 경계](../4.1맵디자인+설정/CH1_1_A_GRADE_PRODUCTION_20261005.md#11-기존-claude8-명시-책임-재배정--2026-10-06-kst)를 따른다. Claude 오더담당 한 명만 송신하며 기존 MAP WIP·3개 큐는 보존/재송신0, 공유 에디터 중복 제작0. 자동화·새팀·새세션·권한/인증 변경0. 배정 기록 시 실제 새전달/착수는0이며 peer·새 turn·유용한 source tool 확인 후 운영 STATE/LOG에서 갱신한다. 과거 ps/송신 거절을 우회하지 않는다. 역할별 기존 예약max1/MAP합산max3·80 완료소유 checkpoint/100전 신규산출중단·production/docs/Git root 소유를 유지한다.
