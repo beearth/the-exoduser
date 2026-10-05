@@ -111,3 +111,29 @@
 | 최종 파일 검증 | ui-panels.js와 두 HTML의 인라인 스크립트4개씩 구문PASS. 두 HTML/CSS/JS의 HTTP200 원본 응답과 실제 디스크 바이트 일치, 두 HTML 캐시CSS/JS 모두20260929-settings-choices |
 | 브라우저 중단 한계 | 도구 재연결도 sandbox helper 시작 실패로 중단. 이번 QA 탭의 임시 viewport 수동 reset/닫기 완료는 확인하지 못했으며 생성한 검수 탭은 도구의 턴 종료 자동 정리 대상. 기존 사용자 탭은 수정하지 않음 |
 | 상태·자료 | 캐시20260929-settings-choices. 변경 전 백업·docs 전체 검색은 tmp/settings-choice-20260929. 소스·문서 저장, 기존 dirty/staged 작업 유지. .git 읽기 전용으로 커밋 미완료. 물리 패드/NW.js/Steam 미검증. gp-hover CSS 병기는 구현했으나 실제 패드 선택 이동은 미검증 |
+
+
+## 2026-10-05 캐릭터 선택 미리보기 크기·발선 정렬
+
+사용자가 설정 캐릭터 카드에서 전사와 실버테일의 크기가 다르다고 지적했다. 같은48px 셀을88px로 표시하던 방식은 투명 여백까지 같은 크기로 확대해 실제 본체 높이29px/45px 차이를 그대로 드러냈다. `game.html`·`game-easy-test.html`의 설정 카드 미리보기를 같은 본체 높이와 발선으로 정렬했다.
+
+| 항목 / 적용 위치 | 현행 값·동작 |
+|---|---|
+| 함수 | `_drawSettingsCharacterPreview(cv,img,ch)`, 설정 카드의 `south.png` 첫 idle 셀만 처리. 플레이어·잔상·전투 렌더 배율과 원본 PNG는 유지 |
+| 원본 셀 | `ch.fw`×`ch.fh`; 누락 시 각각48px. 현행 두 캐릭터48×48px |
+| 본체 영역 | 첫 셀 알파>100의 사각 영역. 해당 픽셀이 없으면 알파>0 전체 영역. 완전히 투명한 이미지는 false 반환→로드 실패와 같은 물음표 폴백 |
+| 전체 영역 | 알파>0. 본체와 따로 측정해 저알파 그림자·망토 가장자리도 캔버스 안에서 유지 |
+| 전사 측정 / 읽기 차단 폴백 | 본체 [left11,top14,right33,bottom43) =22×29px, 전체 [9,12,35,46) =26×34px |
+| 실버테일 측정 / 읽기 차단 폴백 | 본체 [12,2,36,47) =24×45px, 전체 [11,2,37,47) =26×45px |
+| 픽셀 읽기 차단 | 현행 두 id는 위 실측 영역을 사용. 그 밖의 id는48px 기본값 또는 명시한 fw/fh 전체 셀 영역으로 폴백 |
+| 미리보기 표시·해상도 | 기존 CSS88×88px 유지. 내부176×176px, `imageSmoothingEnabled=false` / `image-rendering:pixelated`, `aria-hidden=true`. 캔버스만 추가하며 카드 이름·설명·선택 DOM 유지 |
+| 정렬 목표 | 본체 높이72CSSpx, 본체 아래 경계(발선) y80CSSpx, 본체 중심 x44CSSpx. 현행 두 캐릭터 모두72px/80px 일치 |
+| 전체 영역 보호 | 본체 중심x44px 기준 좌우 최대40px(전체 폭 최대80px), 위 여백 최소2px, 발선 아래 여백8px. 특이한 새 에셋은 이 경계를 지키도록 축소될 수 있음 |
+| 배율 공식 | `min(72/bodyHeight, 40/max(center-allLeft,allRight-center), 78/(bodyBottom-allTop), below>0 ? 8/below : Infinity)`, `center=(bodyLeft+bodyRight)*0.5`, `below=allBottom-bodyBottom`; 경계는 오른쪽·아래 제외 좌표 |
+| 위치 공식 | `dx=44-(bodyLeft+bodyRight)*0.5*scale`, `dy=80-bodyBottom*scale`. 내부 캔버스 좌표는 `ratio=cv.width/88` 배 |
+| 이미지 실패 | 내부176px 캔버스 초기화, #443322 바탕/#b4a389 물음표32px 글자, 중앙x88/y100. 첫 idle 셀 로드 실패와 완전 투명 이미지를 같은 방식으로 처리 |
+| 반응형·입력 | 카드220px·폭600px 이하100%·미리보기88px 계약 유지. 기존 Tab/Enter/Space·캐릭터 로더·번역·aria-pressed·초점 복원 유지 |
+| 수치 검증 | 두 HTML×두 캐릭터×실측/읽기 차단 폴백 =8건 모두 본체72CSSpx·발선80CSSpx. 완전 투명 폴백·비대칭 저알파 영역 경계 검사 각각2건 PASS. 두 HTML 인라인 스크립트 각각6개 구문PASS |
+| 기존 회귀 | 선택8 + 번역2 + 키설정10 + 이름/값3 + 렌더크기 복원8 =31/31 PASS |
+| 브라우저 검수 | 기존 설치Chrome의 격리 프로필에서 실제 설정 카드 코드·CSS/원본 PNG로 만든 독립 fixture1100×600·390×700 확인. 두 캐릭터 본체72px/발선80px/88px 캔버스/카드 내부 유지, Enter 선택 PASS. 본편 전체 실행·NW.js 재패키징 검수는 이 작업에 포함하지 않음 |
+| 자료 | `~/.codex/visualizations/character-preview-20261005/`에 변경 전4파일 백업, docs 전체 검색, 알파·브라우저 측정JSON 및 두 화면PNG 보존 |

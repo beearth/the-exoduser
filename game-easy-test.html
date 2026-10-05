@@ -45617,6 +45617,29 @@ function withdrawStorage(idx){
 }
 
 // ═══ SETTINGS RENDER ═══
+// 설정 카드만: 투명 셀 여백과 저알파 그림자를 제외한 본체 높이·발선을 정렬한다.
+function _drawSettingsCharacterPreview(cv,img,ch){
+  const fw=ch.fw||48,fh=ch.fh||48,cell=document.createElement('canvas');cell.width=fw;cell.height=fh;
+  const sx=cell.getContext('2d',{willReadFrequently:true});sx.drawImage(img,0,0,fw,fh,0,0,fw,fh);
+  let body=null,all=null;
+  try{
+    const pixels=sx.getImageData(0,0,fw,fh).data;
+    const bounds=(threshold)=>{let left=fw,top=fh,right=0,bottom=0;for(let y=0;y<fh;y++)for(let x=0;x<fw;x++)if(pixels[(y*fw+x)*4+3]>threshold){left=Math.min(left,x);top=Math.min(top,y);right=Math.max(right,x+1);bottom=Math.max(bottom,y+1);}return right>left&&bottom>top?{left,top,right,bottom}:null;};
+    all=bounds(0);body=bounds(100)||all;
+  }catch(_e){
+    // 픽셀 읽기가 차단되어도 현행 두 본체의 검증된 첫 셀 영역을 사용한다.
+    const known={exoduser_warrior:[11,14,33,43,9,12,35,46],exoduser_silvertail:[12,2,36,47,11,2,37,47]}[ch.id];
+    const b=known||[0,0,fw,fh,0,0,fw,fh];body={left:b[0],top:b[1],right:b[2],bottom:b[3]};all={left:b[4],top:b[5],right:b[6],bottom:b[7]};
+  }
+  if(!body||!all)return false;
+  // CSS88px: 본체72px / 발선80px. 폭80px·상단2px·하단8px 내에서 전체 알파도 보존.
+  const below=all.bottom-body.bottom,center=(body.left+body.right)*.5;
+  const scale=Math.min(72/(body.bottom-body.top),40/Math.max(center-all.left,all.right-center),78/(body.bottom-all.top),below>0?8/below:Infinity);
+  const dx=44-center*scale,dy=80-body.bottom*scale,ratio=cv.width/88;
+  const cx=cv.getContext('2d');cx.clearRect(0,0,cv.width,cv.height);cx.imageSmoothingEnabled=false;
+  cx.drawImage(cell,0,0,fw,fh,dx*ratio,dy*ratio,fw*scale*ratio,fh*scale*ratio);
+  return true;
+}
 function renderSettings(){
   const _bindFocus=document.activeElement?.closest('#keyBindList [data-bind-control]')?.dataset.bindControl;
   const _choiceFocus=document.activeElement?.closest('#settings [data-settings-choice]')?.dataset.settingsChoice;
@@ -45662,20 +45685,14 @@ function renderSettings(){
       card.style.cssText='width:120px;padding:8px;border-radius:6px;cursor:pointer;text-align:center;border:2px solid '+(sel?'#ffcc00':'#443322')+';background:'+(sel?'rgba(80,60,20,.6)':'rgba(20,20,30,.6)')+';transition:all .2s';
       card.onmouseenter=()=>{if(ci!==_charIdx)card.style.borderColor='#886633';};
       card.onmouseleave=()=>{if(ci!==_charIdx)card.style.borderColor='#443322';};
-      // 프리뷰 이미지
-      if(ch.idleN>1){
-        const _cv=document.createElement('canvas');_cv.width=ch.fw;_cv.height=ch.fh;
-        _cv.style.cssText='width:64px;height:64px;image-rendering:pixelated;display:block;margin:0 auto 6px';
-        const _im=new Image();_im.src=ch.folder+'/south.png';
-        _im.onerror=()=>{const _x2=_cv.getContext('2d');_x2.fillStyle='#443322';_x2.fillRect(0,0,ch.fw,ch.fh);_x2.fillStyle='#887766';_x2.font='12px sans-serif';_x2.textAlign='center';_x2.fillText('?',ch.fw/2,ch.fh/2+4);};
-        _im.onload=()=>{_cv.getContext('2d').drawImage(_im,0,0,ch.fw,ch.fh,0,0,ch.fw,ch.fh);};
-        card.appendChild(_cv);
-      }else{
-        const img=document.createElement('img');img.src=ch.folder+'/south.png';
-        img.onerror=function(){this.style.display='none';};
-        img.style.cssText='width:64px;height:64px;image-rendering:pixelated;display:block;margin:0 auto 6px';
-        card.appendChild(img);
-      }
+      // 첫 idle 셀을 본체 기준으로 정렬. 실제 게임 스프라이트 배율은 별도 유지.
+      const _cv=document.createElement('canvas');_cv.width=176;_cv.height=176;_cv.setAttribute('aria-hidden','true');
+      _cv.style.cssText='width:88px;height:88px;image-rendering:pixelated;display:block;margin:0 auto 12px';
+      const _im=document.createElement('img');
+      const _previewFallback=()=>{const cx=_cv.getContext('2d');cx.clearRect(0,0,176,176);cx.fillStyle='#443322';cx.fillRect(0,0,176,176);cx.fillStyle='#b4a389';cx.font='32px sans-serif';cx.textAlign='center';cx.fillText('?',88,100);};
+      _im.onerror=_previewFallback;
+      _im.onload=()=>{if(!_drawSettingsCharacterPreview(_cv,_im,ch))_previewFallback();};
+      _im.src=ch.folder+'/south.png';card.appendChild(_cv);
       // 이름
       const nm=document.createElement('span');nm.className='settings-choice-name';nm.textContent=_T(ch.name);
       nm.style.cssText='color:'+(sel?'#ffcc00':'#cccccc')+';font-size:.85rem;font-weight:bold;margin-bottom:4px';

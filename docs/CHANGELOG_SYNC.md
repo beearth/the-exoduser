@@ -53888,3 +53888,9 @@ BALANCE1340 HP/MP 및1345 Shield 후보를 공식source59에서 실제 전체 �
 
 
 - CH1-1 오더준비 인수 후속: Codex7 미송신7안 정확36129B/SHA20cf21a1610495caaa1aa624f1479bbf7b23d086881f05a948efaf82ada7d10a, Claude7안 소유STATE pendingCH1Assignments20261005/기존MAP큐 보존 직접대조. 실제새송신/착수0·두차단원인 미해소/우회0. CH1 정본§9·콘텐츠§25·총괄 동기화. 첫root9파일 f930bc2c5f7380492083dffc5eefa033d77c6e4c push/원격정확SHA 확인·actual81→72, 생산코드·채택·A급/native/청취 미완료 유지.
+
+
+## 2026-10-05 — 설정 캐릭터 미리보기 본체 크기 정렬
+
+- 사용자 스크린샷의 전사/실버테일 크기 차이를 game.html·game-easy-test.html 설정 카드에서 수정. 첫48² 셀의 알파>100 본체/알파>0 전체영역을 측정해 본체72CSSpx·발선80CSSpx·중심44CSSpx, 내부176²/표시88²로 정렬. 원본 이미지·전투 배율 보존.
+- UI 설정 정본과 캐릭터 스프라이트 정본에 정확 측정 영역·공식·읽기차단/완전투명 폴백·31/31회귀 및 격리Chrome 넓은/390px 화면 검수 동기화. 본편 전체/native 패키지 재검수는 미실시. 백업·docs전체검색·검수이미지/JSON은 ~/.codex/visualizations/character-preview-20261005/.
