@@ -260,6 +260,18 @@ test('camera IDs remain unique so a saved camera can be selected unambiguously',
   assert.throws(() => K.validate(p));
 });
 
+test('named scene URLs allow only local map scene JSON without traversal', () => {
+  assert.equal(K.projectSource('assets/map/hell_rift/editor_result_20261006/hell-rift.scene.json'), 'assets/map/hell_rift/editor_result_20261006/hell-rift.scene.json');
+  for(const value of ['https://example.com/a.scene.json','/api/slots','assets/map/../a.scene.json','assets/map/%2e%2e/a.scene.json','assets/map/a.json','assets/map/a.scene.json?x=1','assets/map/a.scene.json#x']) assert.throws(()=>K.projectSource(value));
+});
+
+test('soft masks and image-only parallax require a valid fixed silhouette', () => {
+  const p=scene(),o=object(p);o.mask=[[0,0],[1,0],[1,1],[0,1]];o.maskFeather=120;o.sourceParallax=.965;
+  const valid=K.validate(p);assert.equal(object(valid).maskFeather,120);assert.equal(object(valid).sourceParallax,.965);
+  for(const [key,value] of [['maskFeather',-1],['maskFeather',161],['maskFeather',NaN],['sourceParallax',-1],['sourceParallax',1.01]]) {const q=plain(p);object(q)[key]=value;assert.throws(()=>K.validate(q));}
+  delete o.mask;assert.throws(()=>K.validate(p));
+});
+
 test('out-of-range geometry and malformed masks are rejected before becoming a project', () => {
   const edits = [
     p => { p.world.cols = 9; }, p => { p.world.rows = 301; }, p => { p.world.cols = 10.5; },

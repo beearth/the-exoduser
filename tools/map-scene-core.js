@@ -27,6 +27,11 @@
     if (!/^(assets|img)\/[A-Za-z0-9_./ -]+\.(png|jpe?g|webp)$/i.test(src) || src.split('/').includes('..')) throw new Error('프로젝트 이미지 경로만 사용하세요');
     return src;
   }
+  function projectSource(src) {
+    string(src, '씬 경로', 400);
+    if (!/^assets\/map\/[A-Za-z0-9_./ -]+\.scene\.json$/.test(src) || src.split('/').includes('..')) throw new Error('assets/map 아래 씬 파일을 선택하세요');
+    return src;
+  }
   function decode(rle, size) {
     if (!Array.isArray(rle) || rle.length % 2) throw new Error('보행 RLE 오류');
     const out = []; let total = 0;
@@ -76,6 +81,8 @@
           if (!Array.isArray(o.mask) || o.mask.length < 3 || o.mask.length > 256) throw new Error('실루엣 마스크 오류');
           for (const v of o.mask) { if (!Array.isArray(v) || v.length !== 2) throw new Error('마스크 점 오류'); number(v[0], 0, 1, '마스크 x'); number(v[1], 0, 1, '마스크 y'); }
         }
+        if (o.maskFeather !== undefined) { number(o.maskFeather, 0, 160, '마스크 경계'); if (!o.mask) throw new Error('부드러운 경계에는 마스크가 필요합니다'); }
+        if (o.sourceParallax !== undefined) { number(o.sourceParallax, 0, 1, '이미지 시차'); if (!o.mask) throw new Error('이미지 시차에는 고정 마스크가 필요합니다'); }
       }
     }
     if (!Array.isArray(p.walkable) || p.walkable.length !== w.cols * w.rows || !p.walkable.every(v => v === 0 || v === 1)) throw new Error('보행 그리드 오류');
@@ -151,7 +158,7 @@
     undo() { this.end(); if (!this.undoStack.length) return false; this.redoStack.push(clone(this.project)); this.project = this.undoStack.pop(); return true; }
     redo() { this.end(); if (!this.redoStack.length) return false; this.undoStack.push(clone(this.project)); this.project = this.redoStack.pop(); return true; }
   }
-  const api = { clone, validate, decode, encode, local, hit, canWalk, resize, route, History };
+  const api = { clone, validate, projectSource, decode, encode, local, hit, canWalk, resize, route, History };
   root.MapSceneCore = api;
   if (typeof module !== 'undefined') module.exports = api;
 })(typeof globalThis !== 'undefined' ? globalThis : window);

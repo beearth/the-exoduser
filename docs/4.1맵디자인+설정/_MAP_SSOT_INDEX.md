@@ -398,3 +398,8 @@
 ## 2026-10-05 최신 — CH1-1 A급 제작 목표
 
 [CH1_1_A_GRADE_PRODUCTION_20261005.md](CH1_1_A_GRADE_PRODUCTION_20261005.md)는 최신 사용자 요청의 1-1 우선 품질·15전문+root통합16역할·정확핀/가동실패·8-camera/6단계·청취 GATE 정본이다. 기존 stage LOCK/geometry/진행SSOT를 덮어쓰지 않는다. 지옥의 틈·에디터 요구/WIP는 보존. root 비대칭외곽 PNG1점 미채택보존, 생산교체0 / **VISUAL RETOUCH**. Codex7 승인필요/never 송신거절·Claude8 기존등록소실/현재새등록 공식역할 미확인으로 실제 새전달/착수0이며 자동화중지 유지.
+
+
+## 2026-10-06 — 씬 에디터 제작 결과
+
+[지옥의 틈 · 잔류자의 계곡](HELL_RIFT_EDITOR_RESULT_20261006.md): 6레이어/10객체 씬 JSON. 원화6 crop·전경3·심연1, 고정mask 내부feather120/source시차.965·기존8방향 전사. 자동카메라 경계 clamp. [씬 SSOT](MAP_SCENE_EDITOR_20261005.md)에 안전 query·정확 계약 기록. 본편채택·NPC/진행/native 인수는 후속, VISUAL RETOUCH.

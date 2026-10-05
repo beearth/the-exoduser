@@ -524,3 +524,8 @@ Unity 기능 참고: [Scene 오브젝트 조작](https://docs.unity.com/en-us/en
 공유 정본 editor.html은 기본 이미지 씬 편집이며, 타일 편집은 ?workspace=tiles로 보존했다. 실제 외부 PNG/JPEG/WebP·투명 crop·400 world px 초기 너비·크기/pivot·회전·비율·레이어 앞뒤/Y가림·시차·길/막기·시작/출구·경로·기존 전사 보행·프로젝트 왕복·PNG를 구현했다. [씬 에디터 SSOT](../4.1맵디자인+설정/MAP_SCENE_EDITOR_20261005.md)에 exact schema/default/한도/수명과 core27/Chrome UI15 실제검수·MAP PRODUCTION REPORT를 기록했다. 잘못된 JSON·이미지 decode 실패는 원자 거절, 느린 import 중 추가 편집 직렬화, 수치 지우고 재입력/첫Undo도 검수했다.
 
 §21~24의 제작 요구 중 위 첫 slice는 구현됐으며, 기존 MAP 소유 독립HTML의 WIP 미인수·팀 가동 실패 기록은 보존한다. 원총괄 공유 구현을 기존 팀들의 착수/완료로 바꾸지 않는다. Unity package/Prefab/FBX·높이·완전 clean plate·runtime export bridge·NPC/대화/음향·실제 장 gate·보스6단계는 남아 있다. 지옥의 틈과 1-1 참조 스케치 **VISUAL RETOUCH** 유지. 사용자앱/게임/세이브·기존23변경·보호2_3/Q-only/어택티켓금지 보존. 자동화·새제작팀·Windows·대형빌드·게시0.
+
+
+## 27 최신 결과 — 씬 에디터로 만든 지옥의 틈
+
+2026-10-06 사용자 요청으로 [잔류자의 계곡](../4.1맵디자인+설정/HELL_RIFT_EDITOR_RESULT_20261006.md) 제작. 6레이어/10이미지객체, editor 프로젝트JSON·PNG·기존8방향 전사 보행. crop·고정심연mask/source시차·feather로 깊이를 편집한다. root조립·자산/시각검토·독립검수·전사모듈을 동시4슬롯 안에서 병렬수행했으며 기존16개 제작팀의 가동으로 계산하지 않는다. NPC·서비스·다음장게이트·본편runtime/native·청취 인수는 후속. 자동화 재개0. core29/Chrome UI15, 정확 씬·실제보행·8camera 검수는 결과보고서 참조.

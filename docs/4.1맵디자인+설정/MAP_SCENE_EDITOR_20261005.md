@@ -7,14 +7,16 @@
 | 항목 | 현행 |
 |---|---|
 | 기본 진입 | `editor.html` — 새 이미지 레이어 씬 작업 영역 |
+| 제작 결과 진입 | `editor.html?scene=assets/map/hell_rift/editor_result_20261006/hell-rift.scene.json` — 저장된 틈 구성 우선 로드 |
 | 기존 타일 작업 | `editor.html?workspace=tiles` — 기존 타일/방/소환굴/FIXED_MAPS 내보내기 유지 |
 | 현재 검수 주소 | `http://127.0.0.1:3387/editor.html` — 실제 checkout의 `server.cjs`, HOST=127.0.0.1, PORT=3387, 격리 save 경로 |
 | 다른 서버에서 사용 | 해당 checkout의 `server.cjs`가 서빙하는 `/editor.html`. 사용자3333 서버는 다른 checkout이므로 이번 수정의 검수 주소로 사용하지 않음 |
 | 공유 HTML | `editor.html` — UI·모드 분기·외부 씬 스크립트 연결 |
-| 구조·수학 | `tools/map-scene-core.js` — validate/decode/encode/local/hit/canWalk/resize/route/History/serializedBytes |
+| 구조·수학 | `tools/map-scene-core.js` — validate/decode/encode/local/hit/canWalk/resize/route/History/serializedBytes/projectSource |
 | 편집·렌더 | `tools/map-scene-editor.js` — preset/asset/변형/레이어/보행/저장·복원·내보내기 |
+| 시험 캐릭터 | `tools/map-scene-actor.js` — 기존8방향 전사 idle/walk, 이미지 씬 전용 |
 | 화면 | `tools/map-scene-editor.css` — 3열 데스크톱, 760px 이하 속성 패널 토글·상단 액션 가로 스크롤 |
-| 검수 | `tools/test-map-scene-core.cjs`, `tools/test-map-scene-ui.cjs` |
+| 검수 | `tools/test-map-scene-core.cjs`, `tools/test-map-scene-ui.cjs`, `tools/test-hell-rift-scene.cjs` |
 | 기존 포크 | `tilemap-editor-src.html`, `docs/4.1맵디자인+설정/tilemap-editor.html` 수정0 |
 | 세이브 격리 | 씬 모드에서 기존 초기 슬롯 선택·설정 로드·타일맵 자동저장·draw·game iframe 기동 및 OBJ_DEFS preload/팔레트 생성 차단. `gameFrame.src` 미설정 |
 
@@ -52,14 +54,17 @@
 | 객체 수 | 전체 레이어 합계 ≤2000, 고유 id·name, assetId가 실제 asset을 참조 |
 | 객체 위치·크기 | x/y∈[−40000,40000], width/height∈[1,32000] world px |
 | 객체 변형 | pivotX/pivotY∈[0,1], rotation∈[−360,360]°, opacity∈[0,1], flipX boolean |
-| mask | 선택 필드, 3~256개의 [x,y] 정규화 점, 각 축0~1. 기존 틈 전경 3조각에 사용 |
+| mask | 선택 필드, 3~256개의 [x,y] 정규화 점, 각 축0~1. 전경3조각·중앙 균열에 사용 |
+| maskFeather | 선택 유한수0~160 world px, mask 필수. polygon 내부 경계 거리 d에 smoothstep(min(1,d/maskFeather)); 0은 hard clip |
+| sourceParallax | 선택 유한수0~1, mask 필수. mask·객체 위치 고정, 이미지 source만 (viewport center−world center)×(1−sourceParallax) 이동. 회전·flip 역변환으로 local offset 계산 |
+| ?scene 경로 | assets/map/ 아래 ASCII 경로의 .scene.json, 최대400 chars, ..·외부URL·query/hash 금지. HTTP/redirect/32MB/JSON/이미지 오류 시 현재 복구 씬 보존 |
 | walkable | cols×rows와 길이가 정확히 같은 0/1 배열. 비주얼 배치와 독립 |
 | start/exit | x∈[0,cols×tileSize−1], y∈[0,rows×tileSize−1] |
 | cameras | 최대32, 고유 id·name, x∈[0,cols×tileSize], y∈[0,rows×tileSize] |
 | 크기 한도 | compact JSON UTF-8 ≤32,000,000 bytes. 파일 import도 ≤32,000,000 bytes, JSON export는 compact 직렬화 |
 | 이미지 import 원자성 | 구조 검증 → 모든 이미지 decode·원본 크기 일치 → history 교체. 잘못된 JSON/누락·decode 실패/크기 불일치에 현재 씬·history 유지 |
 | Undo | 트랜잭션 시작 전 snapshot. 최대40개, undoStack 직렬화 UTF-8 합계 ≤64,000,000 bytes로 오래된 것 제거. JS 실제 heap 상한이라는 뜻은 아님 |
-| 복구 저장 | `localStorage['exoduser:map-scene:v1']`만 사용, 변경 후500ms debounce. quota 실패는 수동 JSON 저장 안내 |
+| 복구 저장 | `localStorage['exoduser:map-scene:v1']`만 사용, 사용자 변경 후500ms debounce. 최초 복구·?scene 로드는 저장하지 않아 기존 복구값 보존. quota 실패는 수동 JSON 저장 안내 |
 
 이 포맷은 기존 FIXED_MAPS/게임 저장 포맷과 다르다. 씬 JSON을 본편 런타임으로 자동 반영하는 bridge는 구현하지 않았다. 외부 PNG/JPEG/WebP 임포트는 가능하지만 `.unitypackage`·Prefab·FBX·Unity material/shader 직접 실행·변환은 미구현이다. 이미지 사용권·출처 메타의 별도 카탈로그 확장도 후속이다.
 
@@ -69,7 +74,9 @@
 |---|---|
 | 기본 층 | BACK→GROUND→MID→FOOT→FRONT. 전부 visible=true, locked=false, ground는 두 이미지 프리셋에서 locked=true |
 | 층 정렬 | flat=배치 순서. foot=객체 y 오름차순에 시험 캐릭터의 발 y를 병합 |
-| 시차 | BACK .965, 나머지1. offset=(viewport center−world center)×(1−parallax) |
+| 시차 | BACK .965, 나머지1. offset=(viewport center−world center)×(1−parallax). 새 결과 layer는1, 심연 객체 sourceParallax만 .965 |
+| 고정 soft mask | 최대8 entry, entry당 image+mask canvas2장/긴 축1024px. 알파 샘플 긴 축256px, smoothing. 최대16 canvas/정사각형RGBA 약64MiB, 기타 원본 이미지 별도. crop/size/polygon/feather stamp 캐시, import 때 clear |
+| 자동 카메라 | 8카메라 버튼·보행 시작/이동에 viewport half extent로 월드 경계 clamp. 원본 camera/start/exit·자유 편집 pan 유지 |
 | 레이어 편집 | 이름·정렬·시차·가시성·잠금·순서·추가, 객체 레이어 이동/복제/삭제. 복제 offset=(40,40), x/y 최대40000 clamp |
 | 시각 선택 | 역회전·반전·pivot를 적용한 객체 좌표, mask polygon 또는 원본 alpha로 투명 여백 선택 방지 |
 | 타일 맞춤 | 기본 ON, 현재 tileSize 배수에 좌표·모서리 크기 맞춤 |
@@ -78,7 +85,9 @@
 | 화면 이동·확대 | Space+드래그/가운데 또는 오른쪽 버튼, 휠×1.12/÷1.12, 버튼×1.2/÷1.2, 줌 .025~3. 전체 fit·카메라 프레임 줌은 별도 계산 |
 | 단축키 | Ctrl/⌘S 저장, Ctrl/⌘Z Undo, Shift+Z 또는 Y Redo, Delete/Backspace 객체 삭제, ESC 선택/시험 종료. 입력 필드와 로딩 busy 동안 전역 편집 키 차단 |
 | 캔버스 | DPR 최대2, 변경 또는 시험 이동 때 redraw |
-| 보행 시험 | 기존 전사 south 시트 첫48×48 셀, 본체 높이80 world px, body center22/source foot43, full frame alpha 보존. 정적 포즈이며 방향별 보행 애니메이션은 미구현 |
+| 보행 시험 | MapSceneActor 기존8방향 PNG1008×48/21셀 중 첫10셀. source cell48², idle0~1/850ms, walk2~9/110ms, south 본체29px→80 world px의 고정80/29배율·source foot43, full frame alpha 보존 |
+| 방향 중심 | east/se/s/sw/w/nw/n/ne 순 source center [22.5,22.5,22,25.5,25,23.5,23.5,21.5], idle0 기준 고정. 프레임별 recenter/rescale0 |
+| actor 수명 | 실제 충돌 반영 뒤 dx/dy로 heading/moving 갱신. frame/heading/moving/load revision 때 redraw. 실패 시 south/다른 loaded 방향→접지 표시. ctx save/restore, shadow25×11 1회. snapshot loaded boolean/moving/heading/frame/errors. tiles모드 Image/API 생성0 |
 | 시험 이동 | WASD/방향키320 world px/s, 대각 정규화, dt 최대.05s, 축별 충돌 검사. blur·시험 종료·로딩 시작에 held key 정리 |
 | 충돌·연결 | radius12 world px, 중심+4모서리5점 canWalk. 경로 검사는 같은 검사로 4방향 BFS |
 | PNG 내보내기 | 긴 축2048px의 전체 구성, 선택/격자/시작·출구 overlay 제외. 청크 베이크/생산 최적화 export는 후속 |
@@ -105,7 +114,7 @@
 
 | 검사 | 실제 결과 |
 |---|---|
-| core | 27/27 PASS: real RLE/nav, 실패 원자성, 트랜잭션, history 한도, 회전·반전·mask 선택, 크기 핸들·충돌/경로 |
+| core | 29/29 PASS: real RLE/nav, 실패 원자성, 트랜잭션, history 한도, 회전·반전·mask 선택, 크기 핸들·충돌/경로·safe query·soft mask 계약 |
 | Chrome UI | 실제 설치 Google Chrome의 격리 headless context에서 15 행동그룹 PASS. numeric Undo/지우고 재입력, alpha crop/400px 배치, 핸들, 실패 import, 왕복 JSON, 느린 import 직렬화, WASD 이동, 재로드 복구, 층 순서/실제 pixel 가시성, PNG2048², CH1 프리셋/Undo, 모바일 저장/속성 접근 |
 | 실행 격리 | pageerror0, HTTP404/이미지 누락0, 팔레트9장 decode 확인, 새 game iframe0, 기존 slot storage write0. 저장 key는 `exoduser:map-scene:v1`만 관찰 |
 | 시각 범위 | 1500×960 에디터·390×844 모바일 및 틈8카메라 캡처. 본편/NW/native/청취/전투 화면을 검수한 근거로 확대하지 않음 |
@@ -171,3 +180,8 @@ GIT
 VISUAL VERDICT: **RETOUCH** — 에디터 작업 화면은 사용 가능한 첫 버전. 틈 전체 레이어/깊이와 1-1 A급 완성은 미인수.
 
 NEXT PASS: 승인 원화를 완전 배경/바닥/외곽/전경으로 제작하고 최신 CH1 생산 visual을 씬 자산으로 인수한다. 이후 runtime export bridge, NPC/대화/음향·진행, 같은 후보의 실플레이6단계·청취를 각각 검수한다.
+
+
+## 8. 2026-10-06 — 실제 틈 씬 결과
+
+[잔류자의 계곡 결과·제작 보고서](HELL_RIFT_EDITOR_RESULT_20261006.md). 원화6 crop 조각·전경3·별도 심연1을 조립했다. 10에셋/10객체/6레이어, world8000², 기존 nav/start/exit/8앵커 참조. query에서 편집·PNG/JSON 내보내기와 8방향 전사 보행을 검수한다. 대화/NPC/장 gate/본편 연결은 미구현. 최신 결과의 시각 판정·경계 검수는 위 문서를 따른다. §7은 첫 에디터 시점 이력이다.

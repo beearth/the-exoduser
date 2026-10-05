@@ -53908,3 +53908,18 @@ BALANCE1340 HP/MP 및1345 Shield 후보를 공식source59에서 실제 전체 �
 | docs | 전체 관련 키워드 검색, MAP_SCENE_EDITOR_20261005.md + 맵메이킹/맵유형/SSOT index/틈/CH1 A급/콘텐츠계획/본로그 동기화 |
 | 경계 | source assets/layout/nav·본편 collision/bake·사용자 save·타인 WIP 무변. CH1은 v7 참조 스케치, Unity package/Prefab/FBX·본편 export·NPC/sound·A급/native 인수 후속 |
 | 판정 | 맵 VISUAL RETOUCH 유지. 실제 편집기 기능 완료를 팀 착수나 게임6단계 완료로 계산0 |
+
+
+## 2026-10-06 KST — 에디터 틈 결과 제작
+
+| 항목 | 적용 |
+|---|---|
+| 씬 | assets/map/hell_rift/editor_result_20261006/hell-rift.scene.json, 10에셋/10객체/6레이어. 원화6crop+전경3+심연1 |
+| 렌더 | 고정polygon 내부feather120·sourceParallax.965, layer시차1. 8entry/16canvas/긴축1024·알파샘플256 |
+| 진입 | 안전 ?scene 경로/redirect오류/32MB한도, 최초복구/query저장0, 구조·decode원자성 |
+| 전사 | 기존8PNG1008×48·48셀, idle0~1/850ms·walk2~9/110ms, 80/29배율·foot43·방향center고정·tiles전사로드0 |
+| 카메라 | 자동8camera·보행 viewport world경계 clamp |
+| 검수 | core29/29·실제Chrome UI15그룹 오류0. 정확씬·PNG/JSON·실제보행/8camera는 결과보고서 |
+| 동기화 | docs전체 관련 검색→씬SSOT/결과보고/틈후속/인덱스/맵가이드/콘텐츠계획 동기화. 본편/native완료0 |
+
+[MAP PRODUCTION REPORT / VISUAL RETOUCH](4.1맵디자인+설정/HELL_RIFT_EDITOR_RESULT_20261006.md). 소유완료만 정확stage/commit/push, 다른팀WIP/세이브/기존23변경 유지.

@@ -509,3 +509,8 @@ NEXT PASS: 전체 환경 clean plate/투명층, 원화 인물과 실제 캐릭�
 사용자 스크린샷 크기 개선·맵 에디터 직접 제작 지시에 따라 root 공유 editor.html의 기본 작업 영역이 이미지 씬 편집으로 구현됐다. [실제 구현 계약](MAP_SCENE_EDITOR_20261005.md)에 원화·전경3 mask·레이어/world 크기/pivot/회전·이미지 임포트·길 브러시·전사 보행·JSON 왕복·PNG 및 검수15그룹을 기록했다. 기존 틈 nav4107·200²/T40·원본과 MAP팀 WIP SHA795818616e80a81cfa8b21438cdce0c8397f84ab41b2727efad68d417ba5c03b는 무변이다. 이전 미인수 진단은 해당 별도 WIP의 이력이며 새 공유 구현의 검수 결과와 혼합하지 않는다.
 
 에디터의 actual Chrome 페이지/이동/왕복 검수 완료, 본편/NW/native/주민대화/장전환/청취 연결은 후속. 그림 전체가 자동으로 full clean plate·3D·높이 맵으로 변환된 것은 아니다. MAP PRODUCTION REPORT는 위 구현 계약§7. **VISUAL VERDICT: RETOUCH.**
+
+
+## 2026-10-06 — 에디터 구성 결과
+
+사용자 요청으로 [잔류자의 계곡](HELL_RIFT_EDITOR_RESULT_20261006.md) editable scene 제작. 공유editor에서 정확JSON 로드·레이어 편집·PNG/JSON 내보내기·기존전사8방향 보행을 연결했다. 원화6 crop+전경3+심연1=10객체/6층. 원본 PNG/layout 보존, 균열mask고정/sourceParallax.965·내부feather120. 실제 영상의 바닥 경계·전경 인수는 결과보고서를 따른다. NPC/대화·음향·장전환·높이물리·본편채택은 후속이며 최초·부분깊이 당시 검수는 이력으로 보존.
