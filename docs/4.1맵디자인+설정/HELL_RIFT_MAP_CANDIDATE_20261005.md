@@ -1,14 +1,18 @@
 # 지옥의 틈 — 두 규모의 이동 가능한 맵 후보
 
-기준: 2026-10-05 KST 사용자 최신 지시. 상태: **ISOLATED_CANDIDATE_NOT_ADOPTED / VISUAL VERDICT: RETOUCH**.
+기준: 2026-10-05 KST 사용자 최신 지시. 상태: **ISOLATED_CANDIDATE_NOT_ADOPTED / VISUAL VERDICT: RETOUCH**. 현재 미리보기 기본 화면은 새 `interspace` 원화·보행 후보이며 최초 `chapter/stage` 후보는 전환 버튼으로 보존한다.
 
 ## 확정 범위와 후보의 경계
 
-지옥의 틈은 **모든 장 사이와 스테이지 사이**에 있다. 최하층에서 위로 탈출하는 여정 중, 아직 괴물이 되지 않았으나 변형 중인 망자들이 머물거나 다음 상승을 준비한다. 첫 장간 마을은 썩은 숲 전체 완료 뒤 벌레굴로 올라가기 전에 둔다. 물건을 맡기거나 위층의 누군가를 구해 달라는 주민 이야기는 사용자 확정 방향이다.
+지옥의 틈은 **모든 장 사이와 스테이지 사이**에 있다. 최하층에서 위로 탈출하는 여정 중, 아직 괴물이 되지 않았으나 변형 중인 망자들이 머물거나 다음 상승을 준비한다. 첫 장간 틈은 썩은 숲 전체 완료 뒤 벌레굴로 올라가기 전에 둔다. 물건을 맡기거나 위층의 누군가를 구해 달라는 주민 이야기는 사용자 확정 방향이다.
 
 장간 큰 거점(`chapter`)과 스테이지간 작은 쉼터(`stage`)의 규모 구분은 이번 제작 제안이다. 두 개의 **반복 배치용 원형**을 만든 것이며, 각 경계의 고유 지형·주민·다음 목적은 후속 제작한다. 기존 7장·35필드 배정이나 CH1-1 완료 판정을 바꾸지 않는다. 부패의 현실 시간 타이머·자동 사망·NPC 소멸은 구현하지 않았다.
 
-## 실제 산출물과 실행
+## 최신 외형 지시와 최초 후보의 이력
+
+사용자 최신 지시: **건물 마을이 아니라 사람들이 머무는 기묘한 이공간**. 오리와 ‘위키드’를 예로 든 빛·깊이·회화적 재질·맵 완성도 요구를 적용한다. 아래 두 이동 후보의 천막·갑각·좌표·검증은 최초 제작 이력이며 최신 외형의 완료 주장으로 사용하지 않는다. 원화 생성과 새 지형 검수는 별도 기록한다.
+
+## 최초 두 후보의 산출물과 실행
 
 | 산출물 | 역할 |
 |---|---|
@@ -89,7 +93,7 @@ HTML을 브라우저에서 직접 열어 사용한다. 새 게임 서버·실게
 
 검수 영수증: `/Users/fordeargamers/.codex/visualizations/hell-rift-qa-20261005/`의 `route-qa.json`, `browser-qa.json`, `continuous-walk-qa.json`, `final-browser-qa.json`, overview/mobile 캡처와 8점 camera sheet. 이 증거를 본편 전투·종주·NPC·청취·성능 인수로 계산하지 않는다.
 
-## MAP PRODUCTION REPORT
+## 최초 두 후보의 MAP PRODUCTION REPORT
 
 STAGE: 지옥의 틈 독립 후보 chapter/stage. 기존 stage LOCK·생산 후보 대체 없음.
 
@@ -159,7 +163,7 @@ FILES
 - unrelated touched: 없음. game.html·보호 2_3·원본 에셋·사용자 세이브 변경 없음.
 
 GIT
-- staged: 완료 후보 소유 7경로만 체크포인트. 타인 staging 제외.
+- staged: 완료 후보 소유 8경로만 체크포인트. 타인 staging 제외.
 - commit: 첫 후보의 미채택 보존 체크포인트. 코드2·이미지/데이터4·이 문서1.
 - push: 같은 소유 범위 원격 보존 후 정확 ref SHA 영수증 대조.
 - deploy: 없음. 원격 보존을 생산 채택이나 출시로 계산하지 않음.
@@ -185,3 +189,136 @@ VISUAL VERDICT: **RETOUCH**
 | exit | `assets/map/ch2/mega/exit_organic_frame.png` | `bdb33fbb965ce22ecaf0f4057bbf88dec47be1725e87c8cfbd77686e01fb7e80` |
 
 제작 순서는 `EXODUSER_MAP_PRODUCTION_GUIDELINE_v0.9.md`의 MASTER→OUTER→MEDIUM→GROUND→PLAYABLE→LANDMARK→DETAIL→CAMERA→TECH를 적용했다. 원본·기존 생산 맵을 대체하지 않은 후보 참고 문서이며 사용자 최신 지시와 stage별 LOCK/SSOT가 우선한다.
+
+
+## 최신 interspace 원화·보행 후보
+
+### 생성과 실제 파일
+
+| 항목 | 실제 값·경계 |
+|---|---|
+| 서비스·모델 | MagicLight Toolbox / Seedream 5.0 Pro. 기존 Chrome 로그인에서 생성. 신규 인증·설치·결제 없음 |
+| 생성 경로 | Toolbox UI의 Image→Create. 직접 API 호출은 이번 연결에서 제공되지 않아 실행하지 않았다. API 실행 완료로 보고하지 않음 |
+| 작업 ID | 7512746338260033536, 1:1 한 장. Create 표시 비용 100포인트, 표시 잔액 58,540은 조회 시점 값이며 계정 전체 증감을 작업 비용으로 환산하지 않음 |
+| 원화 | assets/map/hell_rift/interspace_20261005/hell-rift-painterly-v2.png / 1920×1920 RGB / 6,892,248 bytes |
+| 원화 SHA256 | a3d95a005924692626321cedf384d1e4e90282ba990d9e19e86a3aa73a1563d4 |
+| 원화 변경 | 다운로드 원본을 그대로 복사. 이미지 편집·재합성·기존 원화 덮어쓰기 없음 |
+| 데이터 | 같은 폴더 layout.json/layout.js. 200×200 RLE, 총 40000 타일, 보행 4107, T40, 화면 대응 월드 8000×8000 |
+| 시작·출구 | (100,193)→(100,43), 이동 시 +0.5. 최초 두 후보의 (100,179)→(100,16)과 별개이며 생산 LOCK 변경 없음 |
+| 보행 SHA256 | 52bd839614a9d1adad767d472357438c1d58a338ac52639705e9b8ad20a3bbdb |
+| 이미지 소비 | tools/hell-rift-map.html 기본 interspace. assetRoot=../assets/map/hell_rift/interspace_20261005/. 로딩 실패 표시·예전 후보 전환 유지 |
+| 빌더 | tools/build_hell_rift_map.py --interspace는 원본 SHA를 확인하고 보행 데이터만 생성. 인자 없는 기존 동작은 최초 후보 재생성용. 새 PNG를 생성하거나 편집하지 않음 |
+| 이동 | 기존 8tile/s·dt최대0.05s·substep최대0.2tile·축방향 ±0.4tile·4방향 BFS 계약 동일 |
+| 런타임 경계 | 원화 표면을 따른 보수적 2D 화면 경로. 높이·계단 물리·낙하·가림 순서·생체 애니메이션 미구현. 그림의 사람은 구워진 배경이며 NPC 캐릭터 구현 아님 |
+| 본편 연결 | productionIntegrated=false, saveEnabled=false, spawns=[]·hazards=[]. 게임 코드·사용자 세이브·현재 앱·전투 규칙 변경 없음 |
+
+실제 생성 프롬프트(482자):
+
+```text
+Painterly dark fantasy ARPG map, elevated top-down square. Hell Rift: an impossible interspace between rotten forest and insect abyss. Asymmetric suspended stone and organic ledges around a deep luminous fissure; wide readable paths enter bottom, branch both sides, reunite at upper ascent. Tiny exhausted human souls sit, wait or prepare by isolated embers. Layered blue mist, ochre rim light, tactile brushwork, strong depth. No village, houses, tents, UI, text or repeated props.
+```
+
+### 지역·관심 지점
+
+| 지역·역할 | anchor(tile) | 형태·밀도·진행 | 랜드마크·바닥·전이 |
+|---|---|---|---|
+| 하층의 입구 / 도착 | 100,193 | 넓은 진입·낮음·북서/북동 | 갈라지는 턱·빛이 닿는 흙/돌·입구→양측 |
+| 멈춘 망자의 턱 / 양도 이야기 후보 | 39,122 | 서측 굴곡·중간·북 | 잔불과 머무는 망자·갈라진 돌·서측→북쪽 |
+| 부탁을 품은 턱 / 구출 이야기 후보 | 145,116 | 동측 생체 돌출·중간·북서 | 몸을 낮춘 망자·생체/돌·동측→북쪽 |
+| 깊은 균열 / 비보행 주요 랜드마크 | 102,102 | 세로 심연·비보행·양측 우회 | 심연의 빛·청회색 안개·두 길 사이 |
+| 상승 준비 / 다음 목적 | 137,70 | 유기적 돌턱·낮음·북서 | 상층을 보는 자리·갑각/돌·동측→합류 |
+| 북쪽 상승로 / 출발 후보 | 100,43 | 두 길 합류/계단·낮음·북 | 밝은 균열 너머 계단·회갈색 돌·틈→다음 구간 |
+
+| POI id | 표시 이름 | tile | 실제 기능 |
+|---|---|---|---|
+| gift | 멈춘 망자의 자리 | 39,122 | 접근 후보, 양도 미연결 |
+| request | 위층을 바라보는 망자 | 145,116 | 접근 후보, 구출 미연결 |
+| rest | 남쪽 잔불 | 79,170 | 접근 후보, 화톳불 미연결 |
+| prepare | 상승 전 머무는 턱 | 137,70 | 접근 후보, 정비 미연결 |
+| exit | 북쪽 상승로 — 전환 미연결 | 100,43 | 접근 후보, 장 전환 미연결 |
+
+### interspace MAP PRODUCTION REPORT
+
+STAGE: 지옥의 틈 첫 이공간 원화 후보. 장/스테이지 모든 경계의 완성본은 아님.
+
+MASTER
+- silhouette: 비대칭 떠 있는 두 지형과 세로 심연, 남쪽 진입·북쪽 합류.
+- regions: 위 6구역.
+- main route: 하층→동서 두 길→북쪽 상승로.
+- side spaces: 멈춘 자·부탁한 자·잔불·상승 준비의 서로 다른 턱.
+
+OUTER MASS
+- LEFT: 부서진 돌·죽은 나무의 수직 질량.
+- RIGHT: 굽은 생체·갑각 덩어리, 좌측과 다른 실루엣.
+- TOP: 큰 두 벽 사이의 빛과 계단.
+- SOUTH: 넓은 진입면과 전경 돌턱.
+- major holes: 중앙 심연과 주변 안개는 의도된 빈 깊이.
+
+LARGE
+- source assets: 새 MagicLight 원화 한 장.
+- composites: 원본 한 장 그대로, 추가 소품 합성 없음.
+- overlap: 원화의 전경/중경/후경, 실시간 가림은 미구현.
+- repeated silhouette: 천막·건물 반복 없음.
+
+MEDIUM
+- connections: 돌턱·계단·생체 뿌리로 이어진 각 측 경로.
+- remaining holes: 경사·단면과 실제 보행 마스크의 세부 정합성 미인수.
+
+GROUND
+- shadow: 원화에 구워진 접지와 명암.
+- contamination: 좌측 부패한 숲 잔재·우측 유기적 벌레굴 재질.
+- structure integration: 통일된 그림 재질. 동적 조명·높이 구현 없음.
+
+PLAYABLE
+- main arenas: 전투 공간 없음, 체류·상승 후보.
+- travel space: 원화 표면을 따라 좁게 지정한 보수적 화면 경로.
+- breathing space: 남쪽 진입면과 양측 여러 턱.
+- threat space: 중앙 비보행 균열, 낙하 피해 규칙 미구현.
+- combat readability: 실전 캐릭터·적·VFX·카메라 검수 미실시.
+
+LANDMARK
+- primary: 깊은 세로 균열.
+- secondary: 북쪽 계단과 빛.
+- tertiary: 서로 다른 자세로 머무는 망자와 잔불.
+
+CAMERA QA
+- START (100,193): 전체 원화와 독립 초기 화면 검토.
+- EARLY (79,170): 전체 원화에서 진입 후 좌측 굴곡 확인, 별도 실게임 카메라 미인수.
+- ARENA (39,122): 서측 체류 턱. 전투 아레나 의미 없음.
+- SIDE L (47,86): 원화에서 서측 연결 확인, 확대 경계 정밀 검수 잔여.
+- SIDE R (145,116): 원화에서 생체 돌턱과 머무는 사람 확인, 정밀 경계 잔여.
+- LANDMARK (102,102): 깊이·안개 확인, 비보행 중앙.
+- LATE (137,70): 상층 재질과 북쪽 합류 확인, 실시간 높이 없음.
+- EXIT (100,43): 독립 미리보기 종주 결과로 검토. 본편 전환 없음.
+
+TECH QA
+- route: 전체 보행 연결·POI·연속 종주 검사 결과는 아래 검수 영수증을 따른다.
+- collision: 2D 경로 마스크. 시각 경계·높이·계단의 생산 인수 미완료.
+- pageerror / 404 / loading: 격리 파일 미리보기 결과는 아래 기록.
+- seam: 원화 한 장이므로 배경 청크 접합 없음. 실제 게임 청크 미검수.
+- performance: 실제 게임 FPS·군중·메모리 인수 없음.
+
+FILES
+- stage-owned: 새 원화·layout.json/js, 빌더·독립 미리보기, 해당 보고서·기획서·인덱스·CHANGELOG_SYNC.
+- concurrent touched: 기존 타인 WIP·감독 파일 미수정.
+- unrelated touched: 없음.
+
+GIT
+- staged: 이번 완료 소유 9경로만 보존. 기획서의 앞선 원총괄 작성 내용도 함께 보존하며 타인 파일 제외.
+- commit: 최신 이공간 후보·정정 기획·코드와 docs 동기화.
+- push: 같은 브랜치 보존 후 원격 정확 SHA 대조.
+- deploy: 없음.
+
+VISUAL VERDICT: **RETOUCH**
+
+분위기·비대칭 질량·중앙 깊이·천막 반복 제거는 확인했다. 오리나 특정 ‘위키드’ 작품과 같은 완성도를 달성했다고 판정하지 않는다. 실제 게임 카메라에 맞는 투영·인물 비율·보행면 밝기·높이/가림·정밀 충돌은 남았다.
+
+NEXT PASS: 원화의 구조를 게임 카메라 기준으로 검토하고 높이·층 가림·보행면을 실제 엔진 계약에 맞게 분리. 주민 스프라이트·대화·보상·전환·저장을 후속 구현·인수한다.
+
+확대 검수 정정: 첫 화면 경로의 북쪽 목표 (100,23)가 그림의 빈 빛 영역에 놓이는 오류를 발견했다. 원화는 그대로 두고 북쪽 계단 위 (100,43), 상단 합류와 준비 지점 (137,70)으로 경로를 수정했다. 수정 전 검사 영수증은 verification-before-north-correction.json으로 보존한다. 확대 시 원화의 입자·수직 투영 한계도 RETOUCH에 포함한다.
+
+### 수정 후 독립 검수 영수증
+
+전체 보행 4107/도달 4107, 관심 지점 5개 도달·경로 수락, 중앙 (102,102) 클릭 거부, 방향키 실제 이동을 확인했다. 남쪽에서 북쪽 계단 (100.5,43.5)까지 실제 프레임 연속 종주 완료. 새 원화 로딩과 이전 chapter/stage 전환 유지, pageerror=0·이미지 오류=0, 390×844 모바일 크기 가로 넘침=false. 원화·nav SHA를 원본과 대조했다. 높이·낙하·실제 휴대폰·본편 NPC·6단계 플레이·청취 인수는 아니다.
+
+증거: /Users/fordeargamers/.codex/visualizations/hell-rift-interspace-20261005/verification.json 및 interspace-start.png·interspace-exit.png·interspace-mobile.png. 확대 화면에서 북쪽 목표가 계단 위에 있는 것을 확인했다. 시각 판정 RETOUCH 유지.

@@ -1,4 +1,4 @@
-"""Build the isolated Hell Rift map candidate from existing EXODUSER assets.
+"""Build isolated legacy composites or navigation for a generated Hell Rift image.
 
 No game.html, production template, NPC roster, save, or asset source is modified.
 Python dependency: bundled Pillow + numpy. Output is a master image + template
@@ -245,6 +245,65 @@ def build(kind):
             "navSha256":hashlib.sha256(bytes(tiles)).hexdigest()}
 
 
+def build_interspace():
+    """Author conservative screen-projected paths; never alter the generated bitmap."""
+    out = ROOT / "assets/map/hell_rift/interspace_20261005"
+    image = out / "hell-rift-painterly-v2.png"
+    expected = "a3d95a005924692626321cedf384d1e4e90282ba990d9e19e86a3aa73a1563d4"
+    assert hashlib.sha256(image.read_bytes()).hexdigest() == expected
+    # MASTER: bottom entry, two unequal ledges, reunited stair at the north.
+    left = [(100,193,9),(100,178,8),(77,169,7),(63,162,5),
+            (56,151,5),(47,141,5),(38,130,5),(38,121,6),
+            (43,113,5),(38,104,4),(39,95,5),(47,86,5),
+            (49,78,4),(58,72,4),(69,67,4),(80,62,4),
+            (91,59,4),(100,54,3),(100,43,2)]
+    right = [(100,193,9),(100,178,8),(123,162,6),(134,149,5),
+             (132,135,5),(139,125,5),(146,116,5),(146,109,5),
+             (152,102,5),(159,94,4),(153,85,5),(145,80,5),
+             (146,73,4),(137,70,4),(129,64,4),(120,61,4),
+             (111,58,3),(100,54,3),(100,43,2)]
+    yy, xx = np.mgrid[0:TILES,0:TILES];xx=xx+.5;yy=yy+.5
+    grid=np.zeros((TILES,TILES),dtype=bool)
+    for route in [left,right]:
+        for (ax,ay,ar),(bx,by,br) in zip(route,route[1:]):
+            dx,dy=bx-ax,by-ay
+            t=np.clip(((xx-ax)*dx+(yy-ay)*dy)/(dx*dx+dy*dy),0,1)
+            radius=ar+(br-ar)*t
+            grid |= (xx-(ax+dx*t))**2+(yy-(ay+dy*t))**2 < radius**2
+    tiles=grid.astype(int).ravel().tolist();rle=[]
+    for tile in tiles:
+        if rle and rle[-2]==tile:rle[-1]+=1
+        else:rle.extend([tile,1])
+    pois=[{"id":"gift","name":"멈춘 망자의 자리","x":39,"y":122},
+          {"id":"request","name":"위층을 바라보는 망자","x":145,"y":116},
+          {"id":"rest","name":"남쪽 잔불","x":79,"y":170},
+          {"id":"prepare","name":"상승 전 머무는 턱","x":137,"y":70},
+          {"id":"exit","name":"북쪽 상승로 — 전환 미연결","x":100,"y":43}]
+    regions=[region("하층의 입구","도착",[100,193],"넓은 진입", "낮음","북서·북동","갈라지는 턱","빛이 닿는 흙·돌","입구→양측"),
+             region("멈춘 망자의 턱","양도 이야기 후보",[39,122],"서측 굴곡", "중간","북","잔불과 머무는 망자","갈라진 돌","서측→북쪽"),
+             region("부탁을 품은 턱","구출 이야기 후보",[145,116],"동측 생체 돌출", "중간","북서","몸을 낮춘 망자","생체·돌","동측→북쪽"),
+             region("깊은 균열","비보행 주요 랜드마크",[102,102],"세로 심연", "비보행","양측 우회","심연의 빛","청회색 안개","두 길 사이"),
+             region("상승 준비","다음 목적",[137,70],"유기적 돌턱", "낮음","북서","상층을 보는 자리","갑각·돌","동측→합류"),
+             region("북쪽 상승로","출발 후보",[100,43],"두 길 합류·계단", "낮음","북","밝은 균열 너머 계단","회갈색 돌","틈→다음 구간")]
+    variant={"id":"hell-rift-interspace-v2","variant":"interspace","name":"지옥의 틈",
+             "status":"ISOLATED_CANDIDATE_NOT_ADOPTED","w":200,"h":200,"T":40,
+             "worldSize":[8000,8000],"masterSize":[1920,1920],"tileRLE":rle,
+             "start":{"x":100,"y":193},"exit":{"x":100,"y":43},
+             "pois":pois,"regions":regions,"footprints":[],"spawns":[],"hazards":[],
+             "saveEnabled":False,"image":"hell-rift-painterly-v2.png",
+             "assetRoot":"../assets/map/hell_rift/interspace_20261005/",
+             "projection":"screen-projected conservative route; no height simulation",
+             "navSha256":hashlib.sha256(bytes(tiles)).hexdigest()}
+    manifest={"name":"지옥의 틈","version":2,"productionIntegrated":False,"variants":{"interspace":variant},
+              "cameraAnchors":[[100,193],[79,170],[39,122],[47,86],[145,116],[102,102],[137,70],[100,43]],
+              "source":{"provider":"MagicLight Toolbox","model":"Seedream 5.0 Pro","taskId":"7512746338260033536",
+                        "path":str(image.relative_to(ROOT)),"sha256":expected,"originalUnedited":True,
+                        "route":"authenticated Toolbox UI; no direct API call"}}
+    (out/"layout.json").write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+"\n")
+    (out/"layout.js").write_text("window.HELL_RIFT_INTERSPACE = "+json.dumps(manifest,ensure_ascii=False)+";\n")
+    print(json.dumps({"walkable":sum(tiles),"navSha256":variant["navSha256"],"originalUnedited":True}))
+
+
 def main():
     OUT.mkdir(parents=True,exist_ok=True)
     templates={kind:build(kind) for kind in ["chapter","stage"]}
@@ -261,4 +320,7 @@ def main():
                       "productionIntegrated":False},ensure_ascii=False))
 
 
-if __name__=="__main__":main()
+if __name__=="__main__":
+    import sys
+    if "--interspace" in sys.argv:build_interspace()
+    else:main()

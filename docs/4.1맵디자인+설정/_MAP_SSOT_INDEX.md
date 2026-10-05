@@ -361,3 +361,12 @@
 | 영수증 | `tmp/mac-migration-runtime/continued-review-20261002/boss-respawn-backup/receipt.json`; 46개 field key/양판 SHA/대역·미검증 경계는 전용 정본 |
 
 기존 이력·타 팀 산출·보호 설계 원문은 유지하고 append-only로 계약을 보강했다.
+
+
+## 2026-10-05 — 지옥의 틈 독립 맵 후보 (미채택)
+
+[지옥의 틈 두 규모 후보](HELL_RIFT_MAP_CANDIDATE_20261005.md): 모든 장 사이와 스테이지 사이의 반복 거점 범위는 사용자 확정. 장간 큰 거점·스테이지간 작은 쉼터 구분은 제안. 독립 HTML 보행·이미지·충돌 후보이며 본편 genFromTemplate/stage/NPC/세이브 미연결. VISUAL VERDICT RETOUCH. 기존 P0/P0.5·35필드·stage LOCK·생산 후보의 우선순위를 대체하지 않는 참고 문서다.
+
+최신 외형 정정: 지옥의 틈은 건물 마을이 아니라 사람들이 머무는 기묘한 이공간이다. 최초 천막 후보는 미채택 이력으로 보존하며 회화적인 빛·지형 깊이·재질을 새 원화 기준으로 삼는다. 자동 실행과 제작팀 배정은 재개하지 않는다.
+
+최신 interspace 원화·기본 미리보기: 1920² 회화적 이공간, 남쪽 진입과 서로 다른 두 경로·북쪽 상승로. MagicLight Toolbox UI 생성으로 직접 API 호출은 없음. 원본과 보수적 2D 보행 마스크를 보존하며 NPC·높이·생산 stage에는 미연결. [정확한 파일·수치·생성 프롬프트·MAP PRODUCTION REPORT](HELL_RIFT_MAP_CANDIDATE_20261005.md), VISUAL VERDICT RETOUCH.
