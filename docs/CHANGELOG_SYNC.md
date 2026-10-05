@@ -53839,3 +53839,11 @@ BALANCE1340 HP/MP 및1345 Shield 후보를 공식source59에서 실제 전체 �
 | 판정 | VISUAL VERDICT RETOUCH. 독립 경로 검사는 실게임 6단계·시각·청취 완료로 계산하지 않음 |
 
 수정 후 검사: 보행4107/도달4107·5POI·중앙 심연 클릭 거부·방향키 이동·북쪽(100.5,43.5) 실제 연속 종주·원화/nav SHA 일치, pageerror0/이미지오류0, 모바일390×844 가로 넘침 없음. 원화 높이와 NPC는 구워진 표현이며 실제 물리·대화·게임 인수로 계산하지 않는다.
+
+
+## 2026-10-05 — 지옥의 틈 부분 깊이 레이어 후보
+
+- 승인 원화 보존 후 MagicLight/Seedream UI로 별도 심연 후경1장 생성. 직접 API/참조 업로드 성공 주장 없음.
+- `tools/hell-rift-depth.js` 신규: 심연 시차·경계 감쇠·기존 전사 8방향·접지·3부분 전경 가림/투명화·심연 안개. 독립 미리보기에 연결, 보행/nav·생산게임·세이브 무변.
+- docs 전체 지옥의 틈/HELL_RIFT/hell-rift-map/interspace 키워드 검색으로 관련4문서 동기화. 원본 줄바꿈은 bytes append로 보존.
+- 세부 수치·원본 SHA·격리 검수·MAP PRODUCTION REPORT는 `HELL_RIFT_MAP_CANDIDATE_20261005.md` 최신 레이어 절. VISUAL VERDICT RETOUCH, 생산·실플레이·청취 완료 아님.

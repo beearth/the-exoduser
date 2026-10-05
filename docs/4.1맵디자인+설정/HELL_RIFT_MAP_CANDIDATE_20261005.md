@@ -322,3 +322,145 @@ NEXT PASS: 원화의 구조를 게임 카메라 기준으로 검토하고 높이
 전체 보행 4107/도달 4107, 관심 지점 5개 도달·경로 수락, 중앙 (102,102) 클릭 거부, 방향키 실제 이동을 확인했다. 남쪽에서 북쪽 계단 (100.5,43.5)까지 실제 프레임 연속 종주 완료. 새 원화 로딩과 이전 chapter/stage 전환 유지, pageerror=0·이미지 오류=0, 390×844 모바일 크기 가로 넘침=false. 원화·nav SHA를 원본과 대조했다. 높이·낙하·실제 휴대폰·본편 NPC·6단계 플레이·청취 인수는 아니다.
 
 증거: /Users/fordeargamers/.codex/visualizations/hell-rift-interspace-20261005/verification.json 및 interspace-start.png·interspace-exit.png·interspace-mobile.png. 확대 화면에서 북쪽 목표가 계단 위에 있는 것을 확인했다. 시각 판정 RETOUCH 유지.
+
+
+## 2026-10-05 — 승인 원화의 부분 깊이 레이어와 기존 전사 보행
+
+사용자가 기존 원화의 방향을 좋다고 확인하고, 계곡·낭떠러지의 공간 깊이를 레이어로 쌓아 직접 만들어 보라고 지시했다. 이 절이 독립 미리보기의 최신 상태다. 앞 절의 단일 이미지·점 플레이어 표기는 이전 제작 이력이다. **원화 방향 승인과 생산 시각 인수는 구분한다. VISUAL VERDICT: RETOUCH.** 자동 실행·다른 제작팀 재개 없음.
+
+`tools/hell-rift-depth.js`를 `tools/hell-rift-map.html`에 연결했다. 원본 원화는 무변이며 runtime Canvas 마스크·부분 전경 재그리기·별도 심연 이미지·기존 전사 RGBA를 합성한다. 전체 바닥/절벽의 완전한 투명 분리·가려진 지면 복원·3D 지형·높이 물리·생산 GPU 렌더러 이식은 아직 아니다. 사람들은 여전히 원화에 구워진 배경 인물이며 NPC 구현으로 계산하지 않는다.
+
+### 에셋·생성 출처
+
+| 항목 | 실제 값 |
+|---|---|
+| 새 후경 | `assets/map/hell_rift/interspace_20261005/hell-rift-abyss-v3.png`, 1920×1920 RGB, 6350749 bytes |
+| SHA-256 | `ace0c853cc27cbb4d2b807104273399a1144df77d31b1003e574141fed10f991` |
+| 공급자 / 모델 | 기존 로그인된 MagicLight Toolbox / Seedream 5.0 Pro |
+| 생성 | 1:1 / 출력 1 / Create 표시 비용 100 points / 작업 `7512750092166275072` |
+| 조회 잔액 | 이번 제출 전 표시 58440 points. 최종 잔액 추정으로 기록하지 않음 |
+| 참조 업로드 | 로컬 파일 업로드는 브라우저 파일 접근 권한 부족으로 실패. 권한 변경·우회 없음. 별도 후경은 텍스트만으로 신규 생성했으며 원화 참조 업로드 성공으로 보고하지 않음 |
+| 생성 경로 | Toolbox UI. 직접 API 호출 미실행. 로그인·설치·결제 없음 |
+| 원본 보존 | 승인 원화 SHA `a3d95a005924692626321cedf384d1e4e90282ba990d9e19e86a3aa73a1563d4` 유지. 별도 후경의 다운로드 원본도 보존 |
+| 캐릭터 | 기존 `img/exoduser_warrior/{east,south-east,south,south-west,west,north-west,north,north-east}.png` 재사용. 신규 캐릭터 생성·원본 변경 없음 |
+
+제출한 498자 프롬프트:
+
+```text
+Game background layer ONLY: painterly bottomless Hell canyon in blue-grey atmospheric mist, distant vertical crags on left and right edges, pale luminous mist column in the middle, faint warm ochre light high at top. Elevated top-down square, dramatic depth with many receding cliff walls, soft distant detail. This is the far background behind suspended foreground paths. No walkways, bridges, stairs, characters, trees, buildings, tents, text, UI. Keep center mostly open mist; no horizon or sky.
+```
+
+### 실제 합성·동작 계약
+
+| 순서 / id | 내용·수치·적용 위치 |
+|---|---|
+| 1 painted-terrain | 승인 원화 전체 200×200 tile 화면 합성. 구워진 지면·절벽 단면·망자 유지 |
+| 2 far-abyss-in-fissure | 별도 후경을 중앙 심연 내부에만 합성 α0.38. 원경 시차 walk 모드 `(cameraTile−100)×0.035`, overview는 0. 지면/충돌/전경은 시차 없음 |
+| 후경 경계 | runtime mask 200². 다각형 내부 경계 최단거리 d, `v=min(1,d/3)`, alpha=`round(255×v²×(3−2v))`. 경계에서 0으로 감쇠. 후경 scratch canvas1024²에 매 프레임 합성 후 mask 적용. PNG 편집/재저장 없음 |
+| 3 contact-shadow | 검정 α0.46 타원, 반경 x0.8/y0.3 tile, 중심 y−0.1 tile |
+| 4 existing-warrior | 48×48 RGBA 셀, 출력 7 tile 사각, 발 피벗 y−size×0.88. 이동 프레임 `2+floor(t/110ms)%8`, idle `floor(t/850ms)%2`. 이동거리>0.0001이면 8방향 atan2/π÷4 반올림; 초기 north. 최소 이미지 폭480/높이48 확인. 실패 시 반경max(3px,scale×0.55)의 점 폴백 |
+| 5 footline-foreground | 아래 3개 원화 부분 실루엣을 발 기준선 앞/뒤 재그리기. player.y≥foot면 전경 패스 제외. 플레이어 중심 x와 y−[0.8,2,3.5,5] tile 표본 중 다각형 내부가 있으면 α0.38, 아니면1. 전경 제거/충돌 변경 없음 |
+| 6 fissure-mist | 중앙 심연 안 6개 radial gradient. 최대 α0.025→가장자리0. x=`100+sin(t/11000+i×1.7)×7`, y=`82+i×14+sin(t/14000+i)×3`, r=`9+i×0.8` tile. 걷는 바닥 전체를 덮는 안개 없음 |
+| 화면 설정 | 깊이 레이어 기본 ON, 버튼으로 비교 OFF/ON. 장소 이름 기본 OFF. 이전 chapter/stage 선택 시 기존 배경·점 플레이어 경로 보존 |
+| 폴백 | 후경 미로드/실패면 승인 원화 그대로. 전사 방향 이미지 실패면 점 표시. 오류 목록은 깊이 snapshot으로 제공. 자산 전체 준비 전 ready=false이며 이동/기본 지면은 유지 |
+| 기존 보행 | grid200²/T40/start100,193/exit100,43/속도8tile/s/dt≤0.05/축 여유±0.4/substep≤0.2/BFS4방향·4107보행·nav SHA 무변 |
+
+중앙 심연 polygon(tile):
+```json
+[[103,61],[106,69],[102,74],[110,81],[111,91],[115,101],[113,111],[111,120],[111,131],[106,143],[97,157],[91,163],[86,163],[83,157],[74,150],[77,141],[79,137],[76,130],[81,122],[79,116],[85,108],[82,104],[85,100],[88,91],[85,85],[90,80],[94,73],[102,65]]
+```
+
+| 전경 id | foot(tile y) | polygon(tile) |
+|---|---:|---|
+| west-root | 134 | [[66,116],[65,121],[62,123],[63,127],[59,129],[57,132],[53,133],[56,134],[63,132],[66,128],[68,123],[69,121]] |
+| east-horn | 108 | [[146,83],[149,83],[147,89],[147,94],[150,99],[149,105],[146,108],[141,108],[142,104],[143,100],[143,95]] |
+| south-root | 173 | [[123,157],[124,162],[128,165],[131,169],[130,172],[126,173],[124,169],[121,167],[118,165],[119,161]] |
+
+### MAP PRODUCTION REPORT — 레이어 슬라이스
+
+STAGE: 지옥의 틈 독립 interspace 후보. 본편 stage/LOCK 대체 없음.
+
+MASTER
+- silhouette: 승인 원화의 양측 비대칭 절벽/중앙 계곡/북측 계단 보존.
+- regions: 기존 6지역과 5POI 보존; 위 이전 원화 후보 표가 좌표 정본.
+- main route: 남쪽→두 측면 경로→상단 합류→계단. 보행 데이터 무변.
+- side spaces: 망자 체류·잔불·준비 자리; 실제 기능 미연결.
+
+OUTER MASS
+- LEFT: 썩은 숲 돌턱과 원화의 수직 단면 보존.
+- RIGHT: 유기적 갑각과 돌턱 보존, east-horn 부분 전경.
+- TOP: 원화 북쪽 계단과 빛 보존.
+- SOUTH: 원화 진입면과 south-root 부분 전경.
+- major holes: 심연에 별도 먼 절벽/안개 층. 보행 타일과 polygon 중심 겹침 0.
+
+LARGE
+- source assets: 승인 원화+새 심연 배경+기존 전사 8방향 PNG.
+- composites: runtime Canvas 합성; 승인 PNG 수정0.
+- overlap: 원경 시차와 3부분 전경/전사 교차. 완전한 환경 clean plate 제작은 잔여.
+- repeated silhouette: 천막 추가0, 원화의 비대칭 형태 유지.
+
+MEDIUM
+- connections: 기존 화면 보행 경로 그대로.
+- remaining holes: 전체 절벽의 투명 분리·가려진 지면 복원·지역별 별도 전경 필요.
+
+GROUND
+- shadow: 전사 발밑 접지 타원 추가.
+- contamination: 원화의 부패/갑각 재질 보존.
+- structure integration: 원본 좌표의 부분 실루엣 사용, 높이 물리 미구현.
+
+PLAYABLE
+- main arenas: 휴식 후보, 전투 없음.
+- travel space: 기존 경로에서 기존 전사로 연속 이동.
+- breathing space: 원화 테라스와 남쪽 진입면 보존.
+- threat space: 중앙 비보행 계곡, 낙하 피해 없음.
+- combat readability: 실게임 적/VFX/청취 인수 미실시. 전사 Pixel RGBA와 회화 원화의 재질 조화 잔여.
+
+LANDMARK
+- primary: 중앙 계곡과 겹친 안개 깊이.
+- secondary: 북쪽 계단과 상층 빛.
+- tertiary: 기존 잔불/원화 인물, 실제 NPC 아님.
+
+CAMERA QA
+- START: 독립 확대 남쪽 진입/발밑 접지/전사 크기.
+- EARLY: 연속 이동 y170 부근 남동 연결과 south-root.
+- ARENA: 휴식 후보로 전투 아레나 검수 대상 없음.
+- SIDE L: 전체 보기 좌측 실루엣 확인; 서측 연속 플레이 세부 인수 잔여.
+- SIDE R: 연속 이동 y145/y120/y100 부근 원화 지형과 전사.
+- LANDMARK: 전체 보기 심연; 1차의 다각형 경계 FAIL을 감쇠 마스크로 보정.
+- LATE: 연속 이동 y80/y60 부근 상측 연결.
+- EXIT: 전사 최종100.5,43.5 계단. 본편 전환 없음.
+
+TECH QA
+- route: 기존 nav/4107도달은 이전 영수증. 이번 독립 종주·키보드·OFF/ON·가림 검증은 새 검수 영수증을 따른다.
+- collision: RLE 무변, 중앙 계곡 클릭 거부. 높이 물리 없음.
+- pageerror: 격리 브라우저 기록 확인; 본편 인수로 계산하지 않음.
+- 404: file:// 정적 이미지 검사; 서버 HTTP 상태 검수 아님.
+- seam: 다각형 hard edge를 3tile 경계 감쇠로 수정. 부분 전경은 원본 좌표 유지.
+- loading: 실제 PNG·8방향 전사 로딩과 후경 실패 원화 폴백 검수.
+- performance: 1024² 합성 canvas1/200² mask1. 독립 Chrome 검수만, 실게임 FPS/메모리/밀집 전투 미인수.
+
+FILES
+- stage-owned: preview HTML, depth JS, 새 후경 PNG, 이 보고서/기획서/맵 인덱스/CHANGELOG_SYNC.
+- concurrent touched: 다른 팀/감독/공용게임/세이브 변경0.
+- unrelated touched: 없음.
+
+GIT
+- staged: 완료 소유 위7경로만.
+- commit: 코드+에셋+관련 docs를 함께 보존.
+- push: 원격 동일 SHA 검증 후 로컬 검수 영수증에 기록.
+- deploy: 미실행.
+
+VISUAL VERDICT: RETOUCH.
+NEXT PASS: 전체 환경 clean plate/투명층, 원화 인물과 실제 캐릭터 스케일·재질, 생산 카메라·GPU·장 전환 인수.
+
+검수 영수증은 `/Users/fordeargamers/.codex/visualizations/hell-rift-layers-20261005/`에 보존한다. 원화 방향 승인, 독립 레이어 구현, 실제 본편 완성 판정을 서로 대체하지 않는다.
+
+### 이번 레이어 후보의 검수 결과
+
+- 격리 Chrome file://: 새 후경과 기존 전사8방향 로딩, pageerror0/asset오류0. 중앙 심연 클릭 거부. 기존 전사로 남쪽100.5,193.5에서 키보드 북향 이동 후 연속 경로 종주, 북쪽100.5,43.5 도착.
+- 이동 중 y170/145/120/100/80/60 부근6화면과 시작/출구 확대 확인. 후경 다각형 hard edge는 수정 전 이력이며 현재 3tile 감쇠 화면으로 재검수.
+- 출구에서145.5,107.5로 실제 이동해 east-horn 뒤 가림 확인. fadedOverlaps1, 동일 위치 깊이 ON/OFF 화면 비교. 전경이 전사를 지우는 대신 부분 감쇠해 식별 유지.
+- 중앙 심연 polygon에 속하는 보행 타일 중심0. 원화 SHA/보행RLE 보존. 이전chapter 선택 동작 유지. 390×844 브라우저 모사에서 가로 넘침0, 실제 휴대폰 인수 아님.
+- 후경 요청을 실패시킨 별도 격리 페이지에서 abyss오류 기록/원화 폴백/기본 보행 유지 확인. ready=false는 자산 완전 준비 실패 표시이며 지형 제거가 아니다.
+- 모든 결과는 verification.json, overview.png, start.png, route-*.png, exit.png, occlusion-on.png, occlusion-off.png, mobile.png에 보존.
+- VISUAL VERDICT RETOUCH: 환경 전체 분리·production GPU·캐릭터 재질 조화·NPC·실제 높이·장 전환·실게임 성능/청취 미인수.
