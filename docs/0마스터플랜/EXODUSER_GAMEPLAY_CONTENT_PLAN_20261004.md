@@ -379,3 +379,58 @@ NPC 이름·좌표·훅은 기존 명단의 확정 계약이다. 아래 체험 �
 | 완료 기준 | 실제 편집 조작과 내보내기/불러오기 및 보행 미리보기 증거. 에디터 완성은 본편 연결·실플레이·청취 인수 완료가 아님 |
 
 2026-10-05 KST 원총괄은 오더담당에게 우선순위 변경을 전송했다. 전송 자체를 MAP의 수정지시 수신·에디터 코드 착수·완료로 계산하지 않는다. 이전 §17~20의 전체 제작팀 미재개 기록은 당시 범위이며, 이번 예외는 MAP의 에디터 수동 한 건에 한정한다.
+
+
+## 22 최신 품질 목표 — Unity 수준의 맵 제작 작업 흐름
+
+사용자 2026-10-05 KST 지시: 유니티 정도의 맵을 만들 수 있는 에디터가 필요하다. 기존 MAP-EDITOR-HELL-RIFT-20261005의 목표를 아래로 확장했다. 현재 EXODUSER 런타임에서 사용할 2D/2.5D 씬 제작 도구의 기능 목표이며, Unity 설치·엔진 이전·Unity 전체 엔진 기능 동등 구현을 결정한 것은 아니다. 기존 editor.html/tilemap-editor-src.html의 높이·오브젝트·방/heightRle·undo·zoom·import/export 계약을 재사용 조사한다.
+
+| 영역 | 제작 기능 목표 | 완료 증거 |
+|---|---|---|
+| 씬 조작 | 팬/줌/전체맞춤, 그리드·스냅, 선택·다중선택, 이동/회전/크기 핸들 | 속성값과 실제 배치의 일치 |
+| 계층·속성 | 그룹/부모자식, 좌표·변형·레이어·가림·시차·표시·잠금·불투명도, 복제/Undo/Redo | 같은 씬 객체를 패널과 화면에서 편집; 파일 원본 삭제 없음 |
+| 자산·재사용 부품 | 기존 절벽/바위/지면/계단/다리/잔불 배치와 그룹 프리팹 | 복제한 부품의 자산 참조·배치 보존 |
+| 지형·동선 | 기존 높이/heightRle·타일 계약, 보행/충돌/위험구역/진입·출구/NPC/전환 지점 | 그림과 실제 통행 경계 비교, 출구 도달성 |
+| 깊이·분위기 | 심연/원경/지면/중경/캐릭터/전경/안개, 발 기준 가림·시차, 광원 색/세기/반경·입자 분위기 | 플레이 카메라에서 접지·가림·분위기 확인; 런타임 지원범위 명시 |
+| 플레이 모드 | 같은 편집 씬에서 기존 전사8방향 조작·충돌·카메라, 편집 복귀 | 편집 데이터 유지와 진입→출구 종주 |
+| 프로젝트 보존 | 버전 있는 JSON, 자산경로·ID·그룹·변형·레이어·nav·가림·빛/분위기·POI 보존 | 내보내기→불러오기 동등, 잘못된 입력 시 기존 씬 보존 |
+| 게임 출력·검수 | genFromTemplate/heightRle/objects/rooms 변환 후보, 미참조자산·겹침·도달성 검사 | root 최소 적용 위치와 계약, 본편에서 결과 대조 |
+
+우선 실제 편집→저장→불러오기→걷기의 닫힌 흐름을 구현하고 위 표의 구현/미구현을 구분한다. 에디터 기능은 고품질 분리 에셋과 구도·빛·재질 제작을 대체하지 않는다. 원화 한 장을 자동으로 완전한 투명층/높이/콜리전으로 간주하지 않는다. 첫 검수 맵은 현재 지옥의 틈이다. 전체35필드 새 제작은 이 계약 검수 뒤이며, stage LOCK와 기존 보행/전투·사용자 세이브·원화·타인WIP 보호를 유지한다.
+
+Unity 기능 참고: [Scene 오브젝트 조작](https://docs.unity.com/en-us/engine/6000.0/manual/working-with-scenes/scenes-manage-gameobjects), [2D 렌더 순서](https://docs.unity.com/en-us/engine/6000.6/manual/unity2d/sprite/sort-sprites/sort-sprites), [2D 조명·그림자와 sorting layer](https://docs.unity.com/en-us/engine/6000.5/manual/unity2d/2d-urp/2d-index/2d-light-batching-debugger). 비교 기준이며 고유 에셋·UI 복제가 아니다.
+
+원총괄은 동일 MAP 한 건의 요구사항을 기존 Claude 오더 담당에게 전달했다. 신규 산출은 양 요청 합산 MAP 소유 최대3파일이며 공용 production/정본/Git 적용은 root 소유다. 현재 에디터 source 조사 착수 확인, 구현·UI·프로젝트 왕복·본편 인수는 아직 완료로 선언하지 않았다. 자동화와 다른 팀은 재개하지 않았다.
+
+
+## 23 외부 맵 에셋 — Unity 자산도 사용할 임포트 흐름
+
+사용자 최신 추가 요구는 Unity용 맵 에셋을 가져와 배치할 수 있는 에디터다. 같은 MAP-EDITOR-HELL-RIFT-20261005에 임포트→카탈로그→배치→편집→프로젝트 왕복→게임 출력 요구를 전달했다. 기능 구현 여부는 아래 목표와 구분한다.
+
+| 자산·데이터 | 편집기 지원 목표 | 호환·인수 경계 |
+|---|---|---|
+| PNG/JPEG/WebP·투명스프라이트·타일·아틀라스 | 로컬 import, 썸네일·팔레트, 드래그배치와 변형/레이어/충돌 편집 | 프로젝트 export/import 뒤 자산 참조·배치가 유지돼야 함 |
+| 자산 manifest | ID·원본명·상대경로·규격·pivot·스케일·출처/라이선스 메타데이터 | 중복 ID·누락파일 검사, 원본불변 |
+| FBX/OBJ/glTF/GLB | 모델·재질·텍스처를 현재 렌더러 형식으로 변환하거나 별도3D지원 경로 조사 | 현재 생산 코드의 3D호환으로 계산하지 않음. 지원/변환필요/미지원 구분 |
+| .unitypackage/프리팹 | GUID·계층·transform·collider와 의존자산을 매핑할 subset 조사 | 확장자만 바꿔 완전호환으로 표시하지 않음. 전용셰이더/C#/미지원 구성요소 목록화 |
+| 사용권·보존 | 실제 자산별 표준/Non-standard/Restricted 조건 확인, 로컬 원본 보존 | 이번 지시는 설치·구매·인증 변경·다운로드·원본자산 공개 재배포 승인이 아님 |
+
+현재 첫 구현은 기존 이미지 자산으로 임포트·팔레트·씬 배치·프로젝트 저장왕복을 검수한다. Unity 전용 셰이더·스크립트는 웹 편집기에서 바로 실행되는 계약이 아니다. 3D 모델·패키지 변환이 미완료이면 이를 표시하고 기본 이미지 임포트만 완료로 구분한다. 라이선스마다 사용범위가 다를 수 있으며 전체 Asset Store를 일괄 허용/금지라고 단정하지 않는다.
+
+공식 자료: [Unity Asset Store 라이선스 FAQ](https://assetstore.unity.com/browse/eula-faq), [Asset Store EULA](https://unity.com/legal/as-terms), [모델과 재질·텍스처 import](https://docs.unity.com/en-us/engine/6000.6/manual/assets-and-media/asset-types/models/importing/importing-model-files). 원본 Asset Store 자산을 GitHub 공개나 에디터 재배포 샘플에 넣는 것은 별도 사용권과 배포범위 확인 없이 진행하지 않는다.
+
+
+### §22~23 에디터 후보 인수 현황 — 소스 검토
+
+기존 MAP 소유 tools/team-followup-20261005/hell-rift/MAP/hell-rift-editor.html 한 파일이 작성됐다. Unity 씬 품질과 외부자산 요구는 오더담당이 각각 한 번 enqueue한 상태이며, 새 MAP 수신·구현 증거는 아직 없다. 브라우저 커넥터의 명시적 사용자 선택 요구는 미해소이고 임의 선택·Windows 조작·다른 UI 도구 우회는 수행하지 않았다.
+
+| 검토 | 근거·결과 | 인수 상태 |
+|---|---|---|
+| 스크립트 구문 | Node VM 컴파일 성공 | 소스 구문만 PASS |
+| 실패 import 원자성 | 실제 doImport 함수를 VM에서 호출. grid/fronts/fissure만 가진 부분 JSON은 layers 누락 예외 후 기존 proj를 보존하지 못함 | FAIL, 전체 검증 후 교체 필요 |
+| Undo/Redo | 발선 oninput 변경 뒤 snapshot, 불투명도/시차·표시/순서 변경은 snapshot 없음 | 소스에서 보완 필요 |
+| 레이어 순서 | UI 배열 순서 변경과 고정 render 순서 불일치 | 소스에서 보완 필요 |
+| DOM 안전 | 부모 패널 innerHTML 교체 발견 | AGENTS 규칙에 맞춰 개별 노드 갱신 필요 |
+| UI/외부자산/왕복/본편 | 소스 진단을 실제 화면·임포터 구현·플레이 완료로 계산하지 않음 | 미인수 |
+
+검토 대상 SHA256 795818616e80a81cfa8b21438cdce0c8397f84ab41b2727efad68d417ba5c03b, 저장 증거 /Users/fordeargamers/.codex/visualizations/hell-rift-editor-20261005/source-diagnostic.json. 원총괄은 같은 후보의 복구 피드백을 기존 Claude 오더담당에게 한 번 전달했으며 MAP WIP를 직접 수정·채택하지 않았다.
