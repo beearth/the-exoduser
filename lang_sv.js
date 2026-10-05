@@ -3337,3 +3337,5 @@ Object.assign(_SV,{"앵글러":"Marulk","지옥문":"Helvetesporten","어둠":"M
 Object.assign(_SV,{"클리어 타임":"Tid","기준":"Riktmärke","점수":"Poäng","신기록!":"Nytt rekord!","지역 클리어":"Rensade områden","보스 처치":"Boss besegrad","시간 보너스":"Tidsbonus","무사망":"Utan död","무피격":"Utan träff","베스트":"Bästa","랭크":"Rang"});
 // [REGION/CLEAR-RESULT] 2차 디자인 문자열 (2026-09-30, No.3105~3107)
 Object.assign(_SV,{"정화":"Renad","지역 정화":"Renade områden","사망 감점":"Dödsavdrag"});
+// [SETTINGS] 안내 글자 크기 슬라이더 (2026-10-06, No.3108)
+Object.assign(_SV,{"안내 글자 크기":"Storlek på guidetext"});

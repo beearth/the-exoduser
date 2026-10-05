@@ -2720,3 +2720,5 @@ Object.assign(_IT,{"앵글러":"Rana pescatrice","지옥문":"Porta dell'Inferno
 Object.assign(_IT,{"클리어 타임":"Tempo","기준":"Riferimento","점수":"Punteggio","신기록!":"Nuovo record!","지역 클리어":"Zone ripulite","보스 처치":"Boss ucciso","시간 보너스":"Bonus tempo","무사망":"Nessuna morte","무피격":"Nessun danno","베스트":"Migliore","랭크":"Rango"});
 // [REGION/CLEAR-RESULT] 2차 디자인 문자열 (2026-09-30, No.3105~3107)
 Object.assign(_IT,{"정화":"Purificata","지역 정화":"Zone purificate","사망 감점":"Penalità morte"});
+// [SETTINGS] 안내 글자 크기 슬라이더 (2026-10-06, No.3108)
+Object.assign(_IT,{"안내 글자 크기":"Dimensione testo guida"});

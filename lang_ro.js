@@ -2702,3 +2702,5 @@ Object.assign(_RO,{"앵글러":"Pescar","지옥문":"Poarta Iadului","어둠":"�
 Object.assign(_RO,{"클리어 타임":"Timp","기준":"Reper","점수":"Scor","신기록!":"Record nou!","지역 클리어":"Zone curățate","보스 처치":"Boss învins","시간 보너스":"Bonus de timp","무사망":"Fără moarte","무피격":"Fără lovituri","베스트":"Cel mai bun","랭크":"Rang"});
 // [REGION/CLEAR-RESULT] 2차 디자인 문자열 (2026-09-30, No.3105~3107)
 Object.assign(_RO,{"정화":"Purificată","지역 정화":"Zone purificate","사망 감점":"Penalizare deces"});
+// [SETTINGS] 안내 글자 크기 슬라이더 (2026-10-06, No.3108)
+Object.assign(_RO,{"안내 글자 크기":"Dimensiunea textului de ghidare"});

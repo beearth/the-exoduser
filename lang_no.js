@@ -3849,3 +3849,5 @@ Object.assign(_NO,{"앵글러":"Breiflabb","지옥문":"Helvetesporten","어둠"
 Object.assign(_NO,{"클리어 타임":"Tid","기준":"Norm","점수":"Poeng","신기록!":"Ny rekord!","지역 클리어":"Ryddede områder","보스 처치":"Boss beseiret","시간 보너스":"Tidsbonus","무사망":"Uten død","무피격":"Uten skade","베스트":"Beste","랭크":"Rang"});
 // [REGION/CLEAR-RESULT] 2차 디자인 문자열 (2026-09-30, No.3105~3107)
 Object.assign(_NO,{"정화":"Renset","지역 정화":"Rensede områder","사망 감점":"Dødsfradrag"});
+// [SETTINGS] 안내 글자 크기 슬라이더 (2026-10-06, No.3108)
+Object.assign(_NO,{"안내 글자 크기":"Størrelse på veiledningstekst"});

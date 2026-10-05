@@ -2697,3 +2697,5 @@ Object.assign(_FI,{"앵글러":"Merikrotti","지옥문":"Helvetin portti","어�
 Object.assign(_FI,{"클리어 타임":"Aika","기준":"Tavoiteaika","점수":"Pisteet","신기록!":"Uusi ennätys!","지역 클리어":"Puhdistetut alueet","보스 처치":"Pomo kukistettu","시간 보너스":"Aikabonus","무사망":"Ei kuolemia","무피격":"Ei osumia","베스트":"Paras","랭크":"Arvosana"});
 // [REGION/CLEAR-RESULT] 2차 디자인 문자열 (2026-09-30, No.3105~3107)
 Object.assign(_FI,{"정화":"Puhdistettu","지역 정화":"Puhdistetut alueet","사망 감점":"Kuolemasakko"});
+// [SETTINGS] 안내 글자 크기 슬라이더 (2026-10-06, No.3108)
+Object.assign(_FI,{"안내 글자 크기":"Ohjetekstin koko"});

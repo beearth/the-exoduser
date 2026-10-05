@@ -3849,3 +3849,5 @@ Object.assign(_NL,{"앵글러":"Zeeduivel","지옥문":"Hellepoort","어둠":"Du
 Object.assign(_NL,{"클리어 타임":"Tijd","기준":"Richttijd","점수":"Score","신기록!":"Nieuw record!","지역 클리어":"Gezuiverde gebieden","보스 처치":"Baas verslagen","시간 보너스":"Tijdbonus","무사망":"Zonder dood","무피격":"Zonder schade","베스트":"Beste","랭크":"Rang"});
 // [REGION/CLEAR-RESULT] 2차 디자인 문자열 (2026-09-30, No.3105~3107)
 Object.assign(_NL,{"정화":"Gezuiverd","지역 정화":"Gezuiverde gebieden","사망 감점":"Doodsaftrek"});
+// [SETTINGS] 안내 글자 크기 슬라이더 (2026-10-06, No.3108)
+Object.assign(_NL,{"안내 글자 크기":"Grootte gidstekst"});

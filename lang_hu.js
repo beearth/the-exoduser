@@ -2699,3 +2699,5 @@ Object.assign(_HU,{"앵글러":"Ördöghal","지옥문":"Pokolkapu","어둠":"S�
 Object.assign(_HU,{"클리어 타임":"Idő","기준":"Referencia","점수":"Pontszám","신기록!":"Új rekord!","지역 클리어":"Megtisztított területek","보스 처치":"Főellenség legyőzve","시간 보너스":"Időbónusz","무사망":"Halál nélkül","무피격":"Sérülés nélkül","베스트":"Legjobb","랭크":"Rang"});
 // [REGION/CLEAR-RESULT] 2차 디자인 문자열 (2026-09-30, No.3105~3107)
 Object.assign(_HU,{"정화":"Megtisztult","지역 정화":"Megtisztított területek","사망 감점":"Halál levonás"});
+// [SETTINGS] 안내 글자 크기 슬라이더 (2026-10-06, No.3108)
+Object.assign(_HU,{"안내 글자 크기":"Útmutató szöveg mérete"});

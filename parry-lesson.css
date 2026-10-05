@@ -2,7 +2,10 @@
 #parryLesson{
   --lesson-accent:#c5a4f2;--lesson-glow:rgba(148,89,217,.15);
   position:fixed;right:clamp(18px,3vw,56px);top:50%;transform:translateY(-50%);
-  width:clamp(300px,26vw,400px);max-height:calc(100vh - 32px);max-height:calc(100dvh - 32px);overflow:hidden;box-sizing:border-box;display:flex;flex-direction:column;
+  /* 2026-10-06: 1920×1080 기준 크기를 HUD 배율×안내 글자 크기(--ui-guide-scale)로 확대. 400px 고정이라 QHD·울트라와이드에서 작게 보였음 */
+  zoom:var(--ui-guide-scale,1);
+  /* zoom은 vw/vh 길이도 함께 확대하므로 화면 기준 제한은 배율로 나눠 실제 화면 안에 머물게 한다 */
+  width:clamp(300px,calc(26vw / var(--ui-guide-scale,1)),400px);max-height:calc((100vh - 32px) / var(--ui-guide-scale,1));max-height:calc((100dvh - 32px) / var(--ui-guide-scale,1));overflow:hidden;box-sizing:border-box;display:flex;flex-direction:column;
   z-index:100002;padding:26px;color:#e6ddcc;opacity:.5;
   background:linear-gradient(180deg,#0c0b1020,#0c0b1033),url('assets/ui/tutorial/parry-plaque-v1.png') center/100% 100% no-repeat,#100f13;
   border:1px solid #655445;box-shadow:0 20px 80px #000b,inset 0 0 0 5px #111014,inset 0 0 0 6px #67524040;
@@ -43,8 +46,8 @@
 #parryLesson[data-phase="practice"] .lesson-art::before{width:65px;height:65px;}
 #parryLesson[data-phase="practice"] .lesson-art::after{width:53px;height:53px;}
 #parryLesson[data-phase="practice"] .lesson-key{height:48px;min-width:48px;font-size:26px;}
-@media(max-height:700px){#parryLesson{padding:19px;max-height:90vh;}#parryLesson .lesson-art{height:75px;margin:4px 0 12px;}#parryLesson .lesson-hint{min-height:0;margin:12px 0;}#parryLesson .lesson-subtitle{margin-bottom:10px;}#parryLesson .lesson-safety{margin-bottom:12px;}}
-@media(max-width:760px){#parryLesson{top:auto;bottom:12px;left:12px;right:12px;transform:none;width:auto;max-height:45vh;padding:17px;}#parryLesson .lesson-art{display:none;}#parryLesson h2{font-size:20px;}#parryLesson .lesson-checklist{display:flex;gap:18px;padding:8px 0;}#parryLesson .lesson-hint{min-height:0;margin:10px 0;}#parryLesson .lesson-subtitle,#parryLesson .lesson-safety{display:none;}#parryLesson .lesson-progress{margin-top:10px;}}
+@media(max-height:700px){#parryLesson{padding:19px;max-height:calc(90vh / var(--ui-guide-scale,1));}#parryLesson .lesson-art{height:75px;margin:4px 0 12px;}#parryLesson .lesson-hint{min-height:0;margin:12px 0;}#parryLesson .lesson-subtitle{margin-bottom:10px;}#parryLesson .lesson-safety{margin-bottom:12px;}}
+@media(max-width:760px){#parryLesson{top:auto;bottom:12px;left:12px;right:12px;transform:none;width:auto;max-height:calc(45vh / var(--ui-guide-scale,1));padding:17px;}#parryLesson .lesson-art{display:none;}#parryLesson h2{font-size:20px;}#parryLesson .lesson-checklist{display:flex;gap:18px;padding:8px 0;}#parryLesson .lesson-hint{min-height:0;margin:10px 0;}#parryLesson .lesson-subtitle,#parryLesson .lesson-safety{display:none;}#parryLesson .lesson-progress{margin-top:10px;}}
 @media(prefers-reduced-motion:reduce){#parryLesson .lesson-progress-fill{transition:none;}}
 #parryLesson .lesson-hold{margin:0 0 16px;color:var(--lesson-accent);font-size:12px;}
 #parryLesson .lesson-resource-readout{white-space:pre-line;color:#e4c67b;font-size:13px;line-height:1.8;}
@@ -65,7 +68,7 @@
 #parryLesson .lesson-hold[hidden]{display:none;}
 #parryLesson .lesson-hold progress{display:block;width:100%;height:8px;margin-top:7px;accent-color:var(--lesson-accent);}
 @media(max-width:760px){#parryLesson .lesson-checklist{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;}}
-@media(max-width:760px){#parryLesson{max-height:45vh;max-height:45dvh;}#parryLesson[data-phase="intro"]{max-height:calc(100vh - 24px);max-height:calc(100dvh - 24px);}}
+@media(max-width:760px){#parryLesson{max-height:calc(45vh / var(--ui-guide-scale,1));max-height:calc(45dvh / var(--ui-guide-scale,1));}#parryLesson[data-phase="intro"]{max-height:calc((100vh - 24px) / var(--ui-guide-scale,1));max-height:calc((100dvh - 24px) / var(--ui-guide-scale,1));}}
 #parryLesson .lesson-key{font-size:clamp(15px,1.7vw,28px);white-space:nowrap;}
 #parryLesson .lesson-rage{margin:0 0 16px;font-size:12px;color:#ffb98e;}
 #parryLesson .lesson-rage[hidden]{display:none;}

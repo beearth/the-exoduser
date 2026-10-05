@@ -2698,3 +2698,5 @@ Object.assign(_VI,{"앵글러":"Cá Vực Thẳm","지옥문":"Cổng Địa Ng�
 Object.assign(_VI,{"클리어 타임":"Thời gian","기준":"Chuẩn","점수":"Điểm","신기록!":"Kỷ lục mới!","지역 클리어":"Khu vực đã dọn","보스 처치":"Hạ boss","시간 보너스":"Thưởng thời gian","무사망":"Không chết","무피격":"Không trúng đòn","베스트":"Tốt nhất","랭크":"Hạng"});
 // [REGION/CLEAR-RESULT] 2차 디자인 문자열 (2026-09-30, No.3105~3107)
 Object.assign(_VI,{"정화":"Thanh tẩy","지역 정화":"Khu vực thanh tẩy","사망 감점":"Trừ điểm tử vong"});
+// [SETTINGS] 안내 글자 크기 슬라이더 (2026-10-06, No.3108)
+Object.assign(_VI,{"안내 글자 크기":"Cỡ chữ hướng dẫn"});

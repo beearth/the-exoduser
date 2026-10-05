@@ -3318,3 +3318,5 @@ Object.assign(_ES,{"앵글러":"Rape","지옥문":"Puerta del Infierno","어둠"
 Object.assign(_ES,{"클리어 타임":"Tiempo","기준":"Referencia","점수":"Puntuación","신기록!":"¡Nuevo récord!","지역 클리어":"Zonas despejadas","보스 처치":"Jefe abatido","시간 보너스":"Bonus de tiempo","무사망":"Sin muertes","무피격":"Sin daño","베스트":"Mejor","랭크":"Rango"});
 // [REGION/CLEAR-RESULT] 2차 디자인 문자열 (2026-09-30, No.3105~3107)
 Object.assign(_ES,{"정화":"Purificada","지역 정화":"Zonas purificadas","사망 감점":"Penalización por muerte"});
+// [SETTINGS] 안내 글자 크기 슬라이더 (2026-10-06, No.3108)
+Object.assign(_ES,{"안내 글자 크기":"Tamaño del texto de guía"});

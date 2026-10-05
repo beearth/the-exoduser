@@ -3297,3 +3297,5 @@ Object.assign(_DE,{"앵글러":"Anglerfisch","지옥문":"Höllentor","어둠":"
 Object.assign(_DE,{"클리어 타임":"Zeit","기준":"Richtzeit","점수":"Punkte","신기록!":"Neuer Rekord!","지역 클리어":"Gebiete gesäubert","보스 처치":"Boss besiegt","시간 보너스":"Zeitbonus","무사망":"Ohne Tod","무피격":"Ohne Treffer","베스트":"Bestwert","랭크":"Rang"});
 // [REGION/CLEAR-RESULT] 2차 디자인 문자열 (2026-09-30, No.3105~3107)
 Object.assign(_DE,{"정화":"Gereinigt","지역 정화":"Gebiete gereinigt","사망 감점":"Todesabzug"});
+// [SETTINGS] 안내 글자 크기 슬라이더 (2026-10-06, No.3108)
+Object.assign(_DE,{"안내 글자 크기":"Größe des Hilfetexts"});

@@ -2715,3 +2715,5 @@ Object.assign(_TR,{"앵글러":"Fenerbalığı","지옥문":"Cehennem Kapısı",
 Object.assign(_TR,{"클리어 타임":"Süre","기준":"Referans","점수":"Puan","신기록!":"Yeni rekor!","지역 클리어":"Temizlenen bölgeler","보스 처치":"Boss öldürüldü","시간 보너스":"Süre bonusu","무사망":"Ölümsüz","무피격":"Hasarsız","베스트":"En iyi","랭크":"Derece"});
 // [REGION/CLEAR-RESULT] 2차 디자인 문자열 (2026-09-30, No.3105~3107)
 Object.assign(_TR,{"정화":"Arındırıldı","지역 정화":"Arındırılan bölgeler","사망 감점":"Ölüm cezası"});
+// [SETTINGS] 안내 글자 크기 슬라이더 (2026-10-06, No.3108)
+Object.assign(_TR,{"안내 글자 크기":"Rehber metni boyutu"});

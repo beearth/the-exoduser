@@ -3842,3 +3842,5 @@ Object.assign(_PL,{"앵글러":"Żabnica","지옥문":"Brama Piekieł","어둠":
 Object.assign(_PL,{"클리어 타임":"Czas","기준":"Norma","점수":"Wynik","신기록!":"Nowy rekord!","지역 클리어":"Oczyszczone regiony","보스 처치":"Boss pokonany","시간 보너스":"Premia czasowa","무사망":"Bez śmierci","무피격":"Bez obrażeń","베스트":"Najlepszy","랭크":"Ranga"});
 // [REGION/CLEAR-RESULT] 2차 디자인 문자열 (2026-09-30, No.3105~3107)
 Object.assign(_PL,{"정화":"Oczyszczona","지역 정화":"Oczyszczone regiony","사망 감점":"Kara za śmierć"});
+// [SETTINGS] 안내 글자 크기 슬라이더 (2026-10-06, No.3108)
+Object.assign(_PL,{"안내 글자 크기":"Rozmiar tekstu wskazówek"});

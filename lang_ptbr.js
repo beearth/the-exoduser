@@ -3842,3 +3842,5 @@ Object.assign(_PTBR,{"앵글러":"Tamboril","지옥문":"Portão do Inferno","�
 Object.assign(_PTBR,{"클리어 타임":"Tempo","기준":"Referência","점수":"Pontuação","신기록!":"Novo recorde!","지역 클리어":"Áreas limpas","보스 처치":"Chefe morto","시간 보너스":"Bônus de tempo","무사망":"Sem mortes","무피격":"Sem dano","베스트":"Melhor","랭크":"Classe"});
 // [REGION/CLEAR-RESULT] 2차 디자인 문자열 (2026-09-30, No.3105~3107)
 Object.assign(_PTBR,{"정화":"Purificada","지역 정화":"Áreas purificadas","사망 감점":"Penalidade por morte"});
+// [SETTINGS] 안내 글자 크기 슬라이더 (2026-10-06, No.3108)
+Object.assign(_PTBR,{"안내 글자 크기":"Tamanho do texto de guia"});

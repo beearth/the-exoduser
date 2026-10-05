@@ -3335,3 +3335,5 @@ Object.assign(_FR,{"앵글러":"Baudroie","지옥문":"Porte des Enfers","어둠
 Object.assign(_FR,{"클리어 타임":"Temps","기준":"Référence","점수":"Score","신기록!":"Nouveau record !","지역 클리어":"Zones nettoyées","보스 처치":"Boss vaincu","시간 보너스":"Bonus de temps","무사망":"Sans mort","무피격":"Sans dégât","베스트":"Meilleur","랭크":"Rang"});
 // [REGION/CLEAR-RESULT] 2차 디자인 문자열 (2026-09-30, No.3105~3107)
 Object.assign(_FR,{"정화":"Purifiée","지역 정화":"Zones purifiées","사망 감점":"Pénalité de mort"});
+// [SETTINGS] 안내 글자 크기 슬라이더 (2026-10-06, No.3108)
+Object.assign(_FR,{"안내 글자 크기":"Taille du texte d'aide"});

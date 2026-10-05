@@ -3752,3 +3752,5 @@ Object.assign(_CS,{"앵글러":"Ďas","지옥문":"Pekelná brána","어둠":"Te
 Object.assign(_CS,{"클리어 타임":"Čas","기준":"Norma","점수":"Skóre","신기록!":"Nový rekord!","지역 클리어":"Vyčištěné oblasti","보스 처치":"Boss poražen","시간 보너스":"Časový bonus","무사망":"Bez smrti","무피격":"Bez zásahu","베스트":"Nejlepší","랭크":"Hodnocení"});
 // [REGION/CLEAR-RESULT] 2차 디자인 문자열 (2026-09-30, No.3105~3107)
 Object.assign(_CS,{"정화":"Očištěna","지역 정화":"Očištěné oblasti","사망 감점":"Postih za smrt"});
+// [SETTINGS] 안내 글자 크기 슬라이더 (2026-10-06, No.3108)
+Object.assign(_CS,{"안내 글자 크기":"Velikost textu nápovědy"});

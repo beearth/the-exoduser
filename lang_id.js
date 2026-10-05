@@ -2697,3 +2697,5 @@ Object.assign(_ID,{"앵글러":"Angler","지옥문":"Gerbang Neraka","어둠":"K
 Object.assign(_ID,{"클리어 타임":"Waktu","기준":"Patokan","점수":"Skor","신기록!":"Rekor baru!","지역 클리어":"Wilayah tuntas","보스 처치":"Bos dikalahkan","시간 보너스":"Bonus waktu","무사망":"Tanpa mati","무피격":"Tanpa terkena","베스트":"Terbaik","랭크":"Peringkat"});
 // [REGION/CLEAR-RESULT] 2차 디자인 문자열 (2026-09-30, No.3105~3107)
 Object.assign(_ID,{"정화":"Dimurnikan","지역 정화":"Wilayah dimurnikan","사망 감점":"Penalti kematian"});
+// [SETTINGS] 안내 글자 크기 슬라이더 (2026-10-06, No.3108)
+Object.assign(_ID,{"안내 글자 크기":"Ukuran teks panduan"});

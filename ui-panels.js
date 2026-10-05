@@ -108,7 +108,7 @@
       if (row) target.append(row);
     };
     moveRow('optLang','game',systemGroup);
-    ['optShake','optParts','optFps','optResScale','optIrisSz','optBrightness','optIrisGlow'].forEach(id => moveRow(id,'display',displayTuning));
+    ['optShake','optTextScale','optParts','optFps','optResScale','optIrisSz','optBrightness','optIrisGlow'].forEach(id => moveRow(id,'display',displayTuning));
     ['optSfx','optBgm','optBgmTrack'].forEach(id => moveRow(id,'audio'));
     // Classify whole existing sections by a stable control ID, not translated text.
     const routes = [['cursorGrid','controls'],['keyBindList','controls'],['optScreenSection','display'],['charSelectGrid','game'],['gfxPresetRow','display'],['diagGpu','display'],['saveP1','game'],['toLobbyBtn2','game'],['resetBtn','game'],['quitBtn','game']];
