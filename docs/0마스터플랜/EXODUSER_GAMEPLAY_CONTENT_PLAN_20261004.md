@@ -510,3 +510,8 @@ Unity 기능 참고: [Scene 오브젝트 조작](https://docs.unity.com/en-us/en
 [CH1-1 A급 제작 정본](../4.1맵디자인+설정/CH1_1_A_GRADE_PRODUCTION_20261005.md)에 15팀+root 소유·8공간/8-camera·전투/획득·보스6단계/실청취 GATE, 이전고정앱 native partial, source/package 핀 차이, 신규 비대칭 외곽 이미지1점과 정확핀·최종프롬프트를 기록했다. 이미지 생성/보존 완료이고 생산 적용0, **VISUAL RETOUCH / 6단계 미인수**다.
 
 실제 가동실패: Codex7 모두 후속송신이 자동승인 검토 “승인이 필요하지만 현재 승인 정책은 never”로 거절되어 새전달/착수0. Claude8의 기존 UUID/PID 모두 사라지고 현재다른8 idle metadata는 공식 역할 handoff가 없어 임의대응 불가; 새전달0. 기존 MAP 브라우저대기를 현재새등록의 상태로 계산하지 않는다. 미송신 초안 준비와 정상 읽기 가능한 handoff 근거 확인만 가능하며 거절송신 재시도·다른채널·새팀·권한변경으로 우회0.
+
+
+### §25 오더 준비 인수 — 12:20 UTC
+
+두담당 준비 완료: Codex7 후속7개 미송신 작업안36129B/SHA20cf21a1610495caaa1aa624f1479bbf7b23d086881f05a948efaf82ada7d10a; Claude7후속안 소유STATE/LOG의 pendingCH1Assignments20261005에 저장, MAP기존작업/큐 유지. root 정확핀/목록 대조. 실제복구/새전달/착수0이며 Codex승인필요/never·쓰기범위 제한과 Claude현재8UUID 공식역할미확인 유지. 준비를 제작착수로 계산하지 않는다. 상세는 [CH1 정본§9](../4.1맵디자인+설정/CH1_1_A_GRADE_PRODUCTION_20261005.md). root 첫9파일 f930bc2c5f7380492083dffc5eefa033d77c6e4c checkpoint/push/원격정확SHA 확인, 실제81→72. 아트후보미채택/생산코드 무변/RETOUCH.

@@ -196,11 +196,21 @@ FILES
 - unrelated touched: 0. 보호2_3/사용자세이브/생산geometry·게임코드 무변.
 
 GIT
-- staged: 완료소유9파일만 예정. 타인WIP 제외.
-- commit: 이 후보/정본 배치 checkpoint 예정, 정확결과는 commit 뒤 외부 receipt 및 최종보고.
-- push: 같은branch의 정확SHA 대조 예정. 검증 전 완료 주장0.
+- staged: 첫 완료소유9파일만 실제 commit. 타인WIP 제외.
+- commit: 첫 후보/정본9파일 checkpoint f930bc2c5f7380492083dffc5eefa033d77c6e4c 완료.
+- push: 첫 배치 origin codex/mac-environment-20261001 원격SHA가 f930bc2c5f7380492083dffc5eefa033d77c6e4c와 정확일치 확인.
 - deploy: 0.
 
 VISUAL VERDICT: RETOUCH
 
 NEXT PASS: 담당별 CH1 우선 미송신 범위 준비/정상역할등록 근거 확인, 큰 구도 승인·기존mass replacement/접지 계획→실제8-camera/같은후보6단계·청취. 거절 송신/등록 복구를 우회하지 않는다.
+
+
+## 9. 오더담당 준비 완료와 실제 미송신 — 2026-10-05 12:20 UTC
+
+| 담당 | 완료 근거 | 실제 상태 |
+|---|---|---|
+| Codex7 | SUPERVISOR-CH1A-PREP-20261005-121738, /private/tmp/exoduser-codex7-ch1a-20261005-121738-prepared.json, 36129B/SHA25620cf21a1610495caaa1aa624f1479bbf7b23d086881f05a948efaf82ada7d10a. UIUX/ITEM/BUILD/BALANCE/SOUND/QUESTNPC/MARKETING7개 책임·caller·검수·인계 준비 | 미송신. 새전달/turn/착수0. 승인필요/never 및 STATE/LOG 쓰기 제한 미해소. 거절 재시도/우회0 |
+| Claude8 | 소유STATE의 latestCH1PriorityAudit20261005/pendingCH1Assignments20261005, 기록12:20:38.497332Z. ART/ANIMVFX/ENEMY/BOSS/SKILL/STORY/QA7개 준비 | 현재8 UUID의 공식역할 handoff 근거 없음. 복구/새전달/착수0. MAP 기존TASK·HTML WIP·3보완큐 보존, 재송신0 |
+
+root가 원문 pin과7개 준비 목록·전달0을 직접 대조했다. 두 담당 준비 완료는 전문팀 제작완료가 아니다. Codex STATE/LOG는 쓰기 제한으로 갱신되지 않았으며 root가 대신 덮어쓰지 않았다. Claude 소유STATE/LOG 갱신은 기존72변경 안에 있고 이번root Git에 포함하지 않았다. 기존 Rift 미송신 슬롯을 재사용해 중복예약/새산출예산0, 자동화중지 유지. 첫 root9파일 checkpoint 후 실제변경72 확인. source 게임·geometry·MAP raw는 무변, **VISUAL RETOUCH / A급·같은후보6단계·청취 미인수** 유지.

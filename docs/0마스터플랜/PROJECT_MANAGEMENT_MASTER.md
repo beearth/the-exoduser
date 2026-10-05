@@ -2433,3 +2433,8 @@ UI-22 황동 프레임/은회색 링/금빛 신호의 별도 시안을 보존했
 사용자 기존16 제작 역할 요청을 전문15+원총괄통합1로 적용한다(관리3+전문15=전체18 유지). 첫 인수는 [CH1-1 A급 제작 정본](../4.1맵디자인+설정/CH1_1_A_GRADE_PRODUCTION_20261005.md), [콘텐츠 계획§25](EXODUSER_GAMEPLAY_CONTENT_PLAN_20261004.md). 지옥의 틈/에디터/Unity 자산 요구·기존WIP와 큐 보존. 자동화는 중지 유지.
 
 현재 Codex7 송신은 승인필요/never 자동검토 거절, Claude8은 기존등록 소실·현재다른8 idle의 공식역할 이관 미확인으로 실제 새전달/착수0이다. 예전MAP Chrome 선택 대기는 해당 등록의 이력이다. root는 기존격리앱 로비→1-1/보행 partial 및 실제 화면의 반복·빈바닥·안내가림을 확인하고 비대칭 외곽 PNG 후보1점을 생성/보존했다. 기존앱과 현재game/해자 핀이 달라 최신소스 native PASS로 계산0. source/png/보고서·fixture·앱생성만으로 A급/6단계·청취 완료0. 정확ID ROOT-CH1-A-OUTER-BUTTRESS-CANDIDATE-20261005는 미채택 이미지 보존 완료에 한정한다. **VISUAL RETOUCH.**
+
+
+### CH1-1 오더 준비 인수 — 12:20 UTC
+
+[CH1 정본§9](../4.1맵디자인+설정/CH1_1_A_GRADE_PRODUCTION_20261005.md): Codex7 미송신 작업안7개와 Claude후속안7개 준비/기존MAP작업·큐 보존을 root가 인수했다. 실제복구/새전달/착수0. Codex송신 자동승인검토 승인필요/never·STATE/LOG쓰기제한과 Claude현재8UUID 공식역할이관미확인 미해소. 오더준비 완료와 전문팀 제작착수 구분, 우회0·자동화중지. root 이미지/정본9파일 f930bc2c5f7380492083dffc5eefa033d77c6e4c 원격정확SHA 확인/actual81→72. 생산채택/A급/native6단계·청취완료0, VISUAL RETOUCH.
