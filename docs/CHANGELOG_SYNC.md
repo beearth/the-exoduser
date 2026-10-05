@@ -53894,3 +53894,17 @@ BALANCE1340 HP/MP 및1345 Shield 후보를 공식source59에서 실제 전체 �
 
 - 사용자 스크린샷의 전사/실버테일 크기 차이를 game.html·game-easy-test.html 설정 카드에서 수정. 첫48² 셀의 알파>100 본체/알파>0 전체영역을 측정해 본체72CSSpx·발선80CSSpx·중심44CSSpx, 내부176²/표시88²로 정렬. 원본 이미지·전투 배율 보존.
 - UI 설정 정본과 캐릭터 스프라이트 정본에 정확 측정 영역·공식·읽기차단/완전투명 폴백·31/31회귀 및 격리Chrome 넓은/390px 화면 검수 동기화. 본편 전체/native 패키지 재검수는 미실시. 백업·docs전체검색·검수이미지/JSON은 ~/.codex/visualizations/character-preview-20261005/.
+
+
+## 2026-10-05 — 실제 이미지 씬 맵 에디터 첫 버전
+
+| 항목 | 구현·검수 |
+|---|---|
+| 정본 | editor.html 기본 이미지 씬, 기존 타일 편집 ?workspace=tiles. tools/map-scene-core.js·map-scene-editor.js·map-scene-editor.css |
+| 구성 | 원본 resolution/crop과 world width/height 분리, pivot·비율·회전·반전·가시성·잠금·층 순서/Y가림·시차, PNG/JPEG/WebP 임포트 |
+| 보행·보존 | 길/막기·start/exit·5점 radius12·BFS·기존 전사 WASD320px/s, atomic import·Undo/Redo·compact JSON32MB·PNG긴축2048, scene key만 복구 저장 |
+| 수명 | 수치 필드 지우고 재입력 비율 보존, 로딩 동안 inert/busy/단축키 차단. scene 모드 legacy 슬롯·타일맵 저장·game iframe 차단 |
+| 검수 | test-map-scene-core.cjs 27/27 및 actual Chrome UI15그룹 PASS, pageerror0/HTTP4040/legacy write0. 숨겨진 타일 모드 OBJ_DEFS preload·팔레트 로딩도 차단. 1500×960·390×844·틈8카메라 캡처 |
+| docs | 전체 관련 키워드 검색, MAP_SCENE_EDITOR_20261005.md + 맵메이킹/맵유형/SSOT index/틈/CH1 A급/콘텐츠계획/본로그 동기화 |
+| 경계 | source assets/layout/nav·본편 collision/bake·사용자 save·타인 WIP 무변. CH1은 v7 참조 스케치, Unity package/Prefab/FBX·본편 export·NPC/sound·A급/native 인수 후속 |
+| 판정 | 맵 VISUAL RETOUCH 유지. 실제 편집기 기능 완료를 팀 착수나 게임6단계 완료로 계산0 |

@@ -515,3 +515,12 @@ Unity 기능 참고: [Scene 오브젝트 조작](https://docs.unity.com/en-us/en
 ### §25 오더 준비 인수 — 12:20 UTC
 
 두담당 준비 완료: Codex7 후속7개 미송신 작업안36129B/SHA20cf21a1610495caaa1aa624f1479bbf7b23d086881f05a948efaf82ada7d10a; Claude7후속안 소유STATE/LOG의 pendingCH1Assignments20261005에 저장, MAP기존작업/큐 유지. root 정확핀/목록 대조. 실제복구/새전달/착수0이며 Codex승인필요/never·쓰기범위 제한과 Claude현재8UUID 공식역할미확인 유지. 준비를 제작착수로 계산하지 않는다. 상세는 [CH1 정본§9](../4.1맵디자인+설정/CH1_1_A_GRADE_PRODUCTION_20261005.md). root 첫9파일 f930bc2c5f7380492083dffc5eefa033d77c6e4c checkpoint/push/원격정확SHA 확인, 실제81→72. 아트후보미채택/생산코드 무변/RETOUCH.
+
+
+## 26 최신 구현 — 이미지 크기 개선과 맵 씬 에디터 첫 버전
+
+사용자 최신 스크린샷 요청으로 설정 캐릭터 두 카드의 본체 높이72 CSS px/발80/중심44 기준을 맞췄다. 본편 스프라이트·전투 scale은 유지, game.html/easy-test 및 관련 설정·스프라이트 SSOT 동기화. 커밋 f1520fec2a79581fdd8f58e95c6c70b205c296a5 원격 확인.
+
+공유 정본 editor.html은 기본 이미지 씬 편집이며, 타일 편집은 ?workspace=tiles로 보존했다. 실제 외부 PNG/JPEG/WebP·투명 crop·400 world px 초기 너비·크기/pivot·회전·비율·레이어 앞뒤/Y가림·시차·길/막기·시작/출구·경로·기존 전사 보행·프로젝트 왕복·PNG를 구현했다. [씬 에디터 SSOT](../4.1맵디자인+설정/MAP_SCENE_EDITOR_20261005.md)에 exact schema/default/한도/수명과 core27/Chrome UI15 실제검수·MAP PRODUCTION REPORT를 기록했다. 잘못된 JSON·이미지 decode 실패는 원자 거절, 느린 import 중 추가 편집 직렬화, 수치 지우고 재입력/첫Undo도 검수했다.
+
+§21~24의 제작 요구 중 위 첫 slice는 구현됐으며, 기존 MAP 소유 독립HTML의 WIP 미인수·팀 가동 실패 기록은 보존한다. 원총괄 공유 구현을 기존 팀들의 착수/완료로 바꾸지 않는다. Unity package/Prefab/FBX·높이·완전 clean plate·runtime export bridge·NPC/대화/음향·실제 장 gate·보스6단계는 남아 있다. 지옥의 틈과 1-1 참조 스케치 **VISUAL RETOUCH** 유지. 사용자앱/게임/세이브·기존23변경·보호2_3/Q-only/어택티켓금지 보존. 자동화·새제작팀·Windows·대형빌드·게시0.

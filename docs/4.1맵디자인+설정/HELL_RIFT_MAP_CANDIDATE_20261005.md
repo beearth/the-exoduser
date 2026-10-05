@@ -502,3 +502,10 @@ NEXT PASS: 전체 환경 clean plate/투명층, 원화 인물과 실제 캐릭�
 [콘텐츠 계획§25](../0마스터플랜/EXODUSER_GAMEPLAY_CONTENT_PLAN_20261004.md)/[CH1-1 A급 정본](CH1_1_A_GRADE_PRODUCTION_20261005.md)에 따라 첫 품질 인수는1-1이다. 본 틈·맵에디터/Unity 자산 요구·원화/nav·기존MAP HTML/WIP/3보완큐·RETOUCH는 보존한다. 본편연결·native/청취 완료0.
 
 기존MAP Chrome 사용자선택 대기는 당시 등록의 이력이다. 최신 Claude 담당 감사에서 기존8 UUID/PID 등록이 모두 사라졌고 현재다른8 idle의 공식역할 handoff 미확인으로 현재MAP 세션/상태 재연결0. Codex7도 후속송신이 자동승인 검토 승인필요/never로 거절되어 실제 새전달0. 과거에 큐에 넣었다는 근거를 현재 수신/착수로 바꾸지 않는다. 미송신 우선범위 준비/정상공식handoff 읽기 확인만 하며 채널·브라우저 임의대체·재시도·새세션/정책변경 우회0.
+
+
+## 현행 후속 — 공유 씬 에디터 실제 구현
+
+사용자 스크린샷 크기 개선·맵 에디터 직접 제작 지시에 따라 root 공유 editor.html의 기본 작업 영역이 이미지 씬 편집으로 구현됐다. [실제 구현 계약](MAP_SCENE_EDITOR_20261005.md)에 원화·전경3 mask·레이어/world 크기/pivot/회전·이미지 임포트·길 브러시·전사 보행·JSON 왕복·PNG 및 검수15그룹을 기록했다. 기존 틈 nav4107·200²/T40·원본과 MAP팀 WIP SHA795818616e80a81cfa8b21438cdce0c8397f84ab41b2727efad68d417ba5c03b는 무변이다. 이전 미인수 진단은 해당 별도 WIP의 이력이며 새 공유 구현의 검수 결과와 혼합하지 않는다.
+
+에디터의 actual Chrome 페이지/이동/왕복 검수 완료, 본편/NW/native/주민대화/장전환/청취 연결은 후속. 그림 전체가 자동으로 full clean plate·3D·높이 맵으로 변환된 것은 아니다. MAP PRODUCTION REPORT는 위 구현 계약§7. **VISUAL VERDICT: RETOUCH.**

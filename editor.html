@@ -43,9 +43,11 @@ canvas{display:block;position:absolute;top:0;left:0;z-index:1}
 #show-toggles input{width:12px;height:12px}
 #room-info{position:absolute;top:30px;left:6px;color:#666;font-size:10px;pointer-events:none}
 </style>
+<link rel="stylesheet" href="tools/map-scene-editor.css">
 </head><body>
 <div id="nav">
   <h2>맵 디자이너</h2>
+  <button onclick="location.href='editor.html'" style="padding:8px">레이어 씬 편집 ↗</button>
   <div id="chapter-tabs"></div>
   <div style="display:flex;border-bottom:1px solid #333">
     <div id="mode-normal" style="flex:1;padding:4px 2px;text-align:center;cursor:pointer;background:#222;color:#ffea00;font-size:10px;border-bottom:2px solid #ffea00" onclick="setMapMode('normal')">🗺️맵</div>
@@ -117,6 +119,7 @@ canvas{display:block;position:absolute;top:0;left:0;z-index:1}
 <input type="file" id="fileInput" style="display:none" accept=".json,.txt">
 <input type="file" id="settingsFileInput" style="display:none" accept=".json,.txt">
 <script>
+const SCENE_MODE = new URLSearchParams(location.search).get('workspace') !== 'tiles';
 const C=document.getElementById('c'),X=C.getContext('2d');
 const editor=document.getElementById('editor'),T=8;
 let show3d=true,showObj=true,showRooms=true,showGrid=false;
@@ -242,7 +245,7 @@ const OBJ_DEFS=[
 ];
 // ── 오브젝트 이미지 프리로드 ──
 const _objImgs={};
-OBJ_DEFS.forEach(d=>{if(d.img){const im=new Image();im.src=d.img;_objImgs[d.id]=im}});
+if(!SCENE_MODE) OBJ_DEFS.forEach(d=>{if(d.img){const im=new Image();im.src=d.img;_objImgs[d.id]=im}});
 // ══ 카빙 함수 ══
 function _tCarveCircle(map,mw,mh,cx,cy,r){
   const r2=r*r;
@@ -2576,7 +2579,7 @@ function buildObjPalette(){
     pal.appendChild(b);
   }
 }
-buildObjPalette();
+if(!SCENE_MODE) buildObjPalette();
 function buildChapterTabs(){
   const ct=document.getElementById('chapter-tabs');ct.innerHTML='';
   HELLS.forEach((h,i)=>{const b=document.createElement('div');b.className='ch-tab'+(i===currentHell?' active':'');
@@ -2622,7 +2625,7 @@ C.onmouseup=e=>{if(e.button===1||e.button===2)dragging=false;
   if(e.button===0){painting=false;if(boxStart&&brushShape==='box'){const{tx,ty}=mouseToTile(e.offsetX,e.offsetY);applyBox(boxStart.tx,boxStart.ty,tx,ty);boxStart=null} _saveLiveMapState(); }};
 C.oncontextmenu=e=>e.preventDefault();
 C.onwheel=e=>{const old=zoom;zoom*=e.deltaY<0?1.15:0.87;zoom=Math.max(.1,Math.min(6,zoom));camX+=(e.offsetX-C.width/2)*(1/old-1/zoom);camY+=(e.offsetY-C.height/2)*(1/old-1/zoom);e.preventDefault()};
-window.onkeydown=e=>{if(e.target.tagName==='INPUT')return;
+window.onkeydown=e=>{if(SCENE_MODE||e.target.tagName==='INPUT')return;
   if(e.key>='0'&&e.key<='3')setHeight(+e.key);
   if(e.key==='c')setBrush('circle');if(e.key==='s')setBrush('rect');if(e.key==='b')setBrush('box');
   if(e.key==='['){brushRadius=Math.max(1,brushRadius-1);document.getElementById('brushR').value=brushRadius;document.getElementById('brVal').textContent=brushRadius}
@@ -2727,6 +2730,7 @@ function buildCache(){
 
 let fc=0;
 function draw(){
+  if(SCENE_MODE)return;
   fc++;const m=getCurrentMap();if(!m){requestAnimationFrame(draw);return}
   if(m.dirty||rStage!==currentStage){buildCache();m.dirty=false}
   if(_iframeReady){
@@ -3264,6 +3268,7 @@ function _restoreCurrentMapState(state){
   return true;
 }
 function _saveLiveMapState(){
+  if(SCENE_MODE)return;
   try{
     const slot=_getSelectedSlot();
     const live=_captureCurrentMapState();
@@ -4058,11 +4063,13 @@ for(let i=0;i<STAGES.length;i++){
 }
 for(let h=0;h<7;h++) GRID_MAPS[h]=generateGridMap(h);
 try{
+  if(!SCENE_MODE){
   const savedSlot=localStorage.getItem(EDITOR_SETTINGS_SLOT_KEY);
   _setSelectedSlot(savedSlot||1);
   const slotEl=_slotInput();
   if(slotEl){
     slotEl.addEventListener('change',()=>_setSelectedSlot(slotEl.value));
+  }
   }
 }catch(e){}
 window.addEventListener('beforeunload',()=>{ try{ _saveLiveMapState(); }catch(e){} });
@@ -4070,6 +4077,7 @@ window.addEventListener('pagehide',()=>{ try{ _saveLiveMapState(); }catch(e){} }
 document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='hidden'){ try{ _saveLiveMapState(); }catch(e){} } });
 setInterval(()=>{ try{ _saveLiveMapState(); }catch(e){} }, 5000);
 (async()=>{
+  if(SCENE_MODE)return;
   try{ document.getElementById('stats').textContent=`에디터 빌드 ${BUILD_STAMP}`; }catch(e){}
   try{ await loadEditorSettings(false); }catch(e){ console.error('[EDITOR] settings load fail:',e); }
   // 항상 리스트 빌드 (settings 로드 성공/실패 무관)
@@ -4163,9 +4171,20 @@ applyBrush=function(cx,cy){
 };
 
 function _initGameFrame(){
+  if(SCENE_MODE)return;
   _gFrame.src='/game.html?editor=1&editorStage='+(currentStage||0)+'&test=1';
 }
 
 </script>
+<section id="scene-workspace" hidden aria-label="EXODUSER 레이어 씬 에디터">
+  <header class="scene-top"><div class="scene-brand"><strong>EXODUSER · MAP STUDIO</strong><small>ENVIRONMENT / SCENE EDITOR</small></div><div><span id="scene-name">지옥의 틈</span><div class="scene-note" style="margin:0"><span id="scene-world-label">레이어 씬 · 40px / tile</span></div></div><div class="scene-actions"><button id="scene-undo">↶ 취소</button><button id="scene-redo">↷ 다시</button><button id="scene-load">열기</button><button id="scene-save" class="primary">프로젝트 저장</button><button id="scene-png">PNG</button><button id="scene-inspector-toggle">속성</button><button id="scene-legacy">타일 편집 ↗</button></div></header>
+  <aside class="scene-panel"><div class="scene-section"><h3>SCENE / 새 씬 템플릿</h3><select id="scene-preset" aria-label="새 씬 템플릿"><option value="rift">지옥의 틈 · 승인 원화</option><option value="ch1">1-1 썩은숲 · 구성 스케치</option><option value="blank">빈 씬 · 200 × 200</option></select><button id="scene-reset" style="width:100%;margin-top:7px">새 씬으로 시작</button></div><div class="scene-section"><h3>ASSETS / 이미지 재료</h3><button id="scene-import" style="width:100%">＋ 이미지 가져오기</button><input id="scene-search" placeholder="이름으로 찾기" aria-label="에셋 검색" style="margin-top:9px"><p class="scene-note">이미지 선택 → 바닥에 클릭<br>원본 해상도와 월드 크기는 별개입니다.</p><div id="scene-palette" class="scene-palette"></div></div><div class="scene-section"><h3>CAMERA / 구도 검수</h3><div id="scene-cameras" class="scene-camera-list"></div></div></aside>
+  <main class="scene-stage" id="scene-stage"><canvas id="scene-canvas" tabindex="0" aria-label="씬 편집 화면"></canvas><div class="scene-tools"><button data-scene-tool="select" class="active">선택 V</button><button data-scene-tool="walk">길 칠하기 B</button><button data-scene-tool="block">막기 E</button><button data-scene-tool="start">시작</button><button data-scene-tool="exit">출구</button><button id="scene-play">▶ 보행 시험</button><button id="scene-check">경로 검사</button></div><div class="scene-viewport-label" id="scene-view-label">SOUTH → NORTH · 전체 구도</div><div class="scene-zoom"><button id="scene-fit">전체</button><button id="scene-minus">−</button><span id="scene-zoom-value">10%</span><button id="scene-plus">＋</button></div><output id="scene-toast" class="scene-toast" hidden></output></main>
+  <aside class="scene-panel scene-inspector mobile-hidden" id="scene-inspector"><div class="scene-section"><h3>LAYERS / 앞뒤 순서</h3><div id="scene-layers" class="scene-layers"></div><div class="scene-mini-actions"><button id="scene-layer-up">↑ 앞으로</button><button id="scene-layer-down">↓ 뒤로</button><button id="scene-layer-add">＋ 레이어</button></div><label class="scene-check"><input type="checkbox" id="scene-show-grid">격자</label><label class="scene-check"><input type="checkbox" id="scene-show-nav">보행 경계</label><label class="scene-check"><input type="checkbox" id="scene-snap" checked>타일 맞춤</label><label>브러시 반경 (tile)<input type="number" id="scene-brush" min="0" max="12" value="2"></label><label>레이어 이름<input id="scene-layer-name" maxlength="160"></label><label>가림 순서<select id="scene-layer-sort"><option value="flat">배치 순서</option><option value="foot">발 기준 Y 정렬</option></select></label><label>레이어 시차<input id="scene-parallax" type="number" min="0" max="1" step=".01" value="1"></label></div><div class="scene-section"><h3>TRANSFORM / 크기와 기준점</h3><div id="scene-selection">오브젝트를 선택하세요</div><div id="scene-transform"><label>이름<input id="scene-object-name" maxlength="160"></label><div class="scene-pair"><label>X (world px)<input type="number" id="scene-x"></label><label>Y (world px)<input type="number" id="scene-y"></label><label>너비 (world px)<input type="number" id="scene-width" min="1" max="32000"></label><label>높이 (world px)<input type="number" id="scene-height" min="1" max="32000"></label><label>기준점 X<input type="number" id="scene-pivot-x" min="0" max="1" step=".01"></label><label>발 기준 Y<input type="number" id="scene-pivot-y" min="0" max="1" step=".01"></label></div><label class="scene-check"><input type="checkbox" id="scene-aspect" checked>가로·세로 비율 유지</label><label>회전 (°)<input id="scene-rotation" type="number" min="-360" max="360" step="1"></label><label>불투명도<input id="scene-opacity" type="range" min="0" max="1" step=".01"></label><div class="scene-mini-actions"><button id="scene-flip">↔ 반전</button><button id="scene-duplicate">복제</button><button id="scene-delete">삭제</button></div><label>레이어 이동<select id="scene-object-layer"></select></label><p class="scene-note" id="scene-source-info"></p></div></div><p class="scene-note">휠: 확대 · Space/가운데 버튼: 이동<br>드래그: 배치 · 모서리: 크기 조절<br>Ctrl/⌘ Z: 취소 · Shift Z: 다시<br>이미지는 시각 레이어, 길은 별도 충돌입니다.</p></aside>
+  <footer class="scene-status"><strong id="scene-status">준비 중</strong><span id="scene-coords">200 × 200 · 8000² world px</span></footer>
+  <input type="file" id="scene-image-file" accept="image/png,image/jpeg,image/webp" hidden><input type="file" id="scene-project-file" accept="application/json,.json" hidden>
+</section>
+<script src="tools/map-scene-core.js"></script>
+<script src="tools/map-scene-editor.js"></script>
 </body></html>
 
