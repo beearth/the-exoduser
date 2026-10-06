@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { createCharacterRig } from './2_5d/character-rigs.mjs';
 import { createBakedSpecialMotion } from './2_5d/baked-special-motion.mjs';
 import { createRiftTerrain, RIFT_TERRAIN } from './2_5d/rift-terrain.mjs';
+import { createRiftContactUnderlay } from './2_5d/rift-contact-underlay.mjs';
 import { createDialoguePoseArbiter } from './2_5d/dialogue-pose.mjs';
 import { createDialogueObservationConsumer } from './2_5d/dialogue-observation.mjs';
 import { createCorruptedWolf } from './2_5d/corrupted-wolf.mjs';
@@ -28,6 +29,7 @@ let dialogueObservation, wolf, wolfPlacement=null, wolfError=null;
 const wolfAbort=new AbortController();
 const dialoguePlayer={x:0,y:0};
 let dialogueSignature='',nearestNpc=null;
+let foregroundShaderPrograms=[],contactShaderPrograms=[],contactUnderlay;
 let observeFoot, realNav, anchorJob=null, registration=null;
 let acceptance={status:'PENDING',samples:0,reason:'표시 위치 검사 전',result:null};
 const anchorSamples=12;
@@ -264,7 +266,7 @@ function dispose(){
   reducedQuery?.removeEventListener('change',updateReducedMotion);
   Object.values(effects).forEach(e=>e.dispose());
   Object.values(helpers).forEach(h=>{h.geometry.dispose();h.material.dispose();});
-  wolfAbort.abort();wolf?.dispose();Object.values(rigs).forEach(r=>r.dispose());specialMotion?.dispose();terrain?.dispose();shadow?.geometry.dispose();shadow?.material.dispose();renderer?.dispose();
+  wolfAbort.abort();wolf?.dispose();Object.values(rigs).forEach(r=>r.dispose());specialMotion?.dispose();contactUnderlay?.dispose();terrain?.dispose();shadow?.geometry.dispose();shadow?.material.dispose();renderer?.dispose();
   interactionCue?.dispose();residents?.dispose();dialogue?.close('pagehide');
 }
 try{
@@ -275,10 +277,22 @@ try{
   camera=new THREE.OrthographicCamera(-3,3,1.75,-1.75,.01,100);
   const angle=50*Math.PI/180;camera.position.set(0,Math.sin(angle)*16,Math.cos(angle)*16);camera.lookAt(0,0,0);
   terrain=await createRiftTerrain({THREE,angle:50,scale:400});scene.add(terrain.object3d);
+  // Compile all authored foreground materials, including offscreen cutouts, once.
+  renderer.compile(terrain.object3d,camera);
+  const gl=renderer.getContext();
+  foregroundShaderPrograms=renderer.info.programs.filter(p=>p.cacheKey.includes('rift-foreground-canonical-nav')).map(p=>({cacheKey:p.cacheKey,linked:gl.getProgramParameter(p.program,gl.LINK_STATUS)===true}));
+  const expectedForegroundPrograms=1;
+  if(foregroundShaderPrograms.length!==expectedForegroundPrograms||foregroundShaderPrograms.some(p=>!p.linked))throw new Error('Foreground GPU shader link failed');
   const sceneResponse=await fetch(new URL('../'+RIFT_TERRAIN.scene,import.meta.url));
   if(!sceneResponse.ok)throw new Error('맵 등록 대조 원자료 HTTP '+sceneResponse.status);
   registration=await assessRegistration(terrain.sourceSceneSnapshot(),{canonicalBytes:await sceneResponse.arrayBuffer()});
   if(!registration.ok)throw new Error('맵 정본 핀·배치·투영 대조 실패');
+  contactUnderlay=await createRiftContactUnderlay({THREE,terrain,enabled:$('cliff-contact').checked});
+  if(state.disposed){contactUnderlay.dispose();throw new Error('페이지 종료');}
+  scene.add(contactUnderlay.object3d);
+  renderer.compile(contactUnderlay.object3d,camera);
+  contactShaderPrograms=renderer.info.programs.filter(p=>p.cacheKey.includes('rift-contact-underlay')).map(p=>({cacheKey:p.cacheKey,linked:gl.getProgramParameter(p.program,gl.LINK_STATUS)===true}));
+  if(contactShaderPrograms.length!==2||contactShaderPrograms.some(p=>!p.linked))throw new Error('Contact underlay GPU shader link failed');
   observeFoot=worldFootProvider(terrain,THREE);realNav=realNavFromTerrain(terrain);
   const residentScene=terrain.sourceSceneSnapshot();
   residentAccess=inspectResidentAccess(residentScene,(_s,x,y,r)=>terrain.canWalk(x,y,r));
@@ -322,6 +336,7 @@ try{
   $('bones').addEventListener('change',()=>select(state.selected));
   $('fade-foreground').addEventListener('change',()=>{pose(0);render();updateUi();});
   $('ground-detail').addEventListener('change',()=>{terrain.setGroundDetailEnabled($('ground-detail').checked);render();});
+  $('cliff-contact').addEventListener('change',()=>{contactUnderlay.setEnabled($('cliff-contact').checked);render();});
   $('special-play').addEventListener('click',playSpecial);
   $('special-stop').addEventListener('click',()=>{clearIntent();applyState();});
 
@@ -349,4 +364,4 @@ window.addEventListener('blur',handleBlur);
 $('world-canvas').addEventListener('webglcontextlost',event=>{event.preventDefault();state.contextLost=true;fail(new Error('WebGL 컨텍스트 소실. 페이지를 다시 열어 주세요.'));});
 document.addEventListener('visibilitychange',()=>{clearIntent();if(document.hidden)stopFrame();else resume();});
 window.addEventListener('pagehide',dispose,{once:true});
-window.__rift25Lab=Object.freeze({enterPreview,snapshot:()=>{let actor;rigs[state.selected]?.object3d.traverse(n=>{if(n.isSkinnedMesh)actor=n;});return {...state,previewEntry:previewEntrySnapshot(),raf:!!state.raf,rig:rigs[state.selected]?.snapshot(),poseConsumer:poses[state.selected]?.snapshot(),effects:effects[state.selected]?.snapshot(),specialMotion:specialMotion?.snapshot(),actorVisible:rigs[state.selected]?.object3d.visible,shadowVisible:shadow?.visible,acceptance:structuredClone(acceptance),registration:structuredClone(registration),residents:residents?.snapshot(),interactionCue:interactionCue?.snapshot(),residentAccess:structuredClone(residentAccess),dialogue:dialogue?structuredClone(dialogue.snapshot()):null,dialogueObservation:dialogueObservation?.snapshot(),wolf:wolf?.snapshot(),wolfPlacement:wolfPlacement?{...wolfPlacement,canWalk:terrain.canWalk(wolfPlacement.x,wolfPlacement.y,wolfPlacement.radius)}:null,wolfError,nearestNpc:structuredClone(nearestNpc),cameraPosition:camera?.position.toArray(),diagnosticProvenance:{INTERACTION:INTERACTION_CUE_PROVENANCE,QA:SLICE_ACCEPTANCE_PROVENANCE,MAP:SCENE_REGISTRATION_PROVENANCE},renderContract:actor?{transparent:actor.material.transparent,depthWrite:actor.material.depthWrite,depthTest:actor.material.depthTest,actorOrder:actor.renderOrder,actorScenePosition:rigs[state.selected].object3d.position.toArray(),shadowScenePosition:shadow.position.toArray(),foregroundOrders:terrain.occluders.map(o=>o.object3d.renderOrder)}:null,terrain:terrain?.snapshot(),canvas:{width:$('world-canvas').width,height:$('world-canvas').height}};}});
+window.__rift25Lab=Object.freeze({enterPreview,snapshot:()=>{let actor;rigs[state.selected]?.object3d.traverse(n=>{if(n.isSkinnedMesh)actor=n;});return {...state,previewEntry:previewEntrySnapshot(),raf:!!state.raf,rig:rigs[state.selected]?.snapshot(),poseConsumer:poses[state.selected]?.snapshot(),effects:effects[state.selected]?.snapshot(),specialMotion:specialMotion?.snapshot(),actorVisible:rigs[state.selected]?.object3d.visible,shadowVisible:shadow?.visible,acceptance:structuredClone(acceptance),registration:structuredClone(registration),residents:residents?.snapshot(),interactionCue:interactionCue?.snapshot(),residentAccess:structuredClone(residentAccess),dialogue:dialogue?structuredClone(dialogue.snapshot()):null,dialogueObservation:dialogueObservation?.snapshot(),wolf:wolf?.snapshot(),wolfPlacement:wolfPlacement?{...wolfPlacement,canWalk:terrain.canWalk(wolfPlacement.x,wolfPlacement.y,wolfPlacement.radius)}:null,wolfError,nearestNpc:structuredClone(nearestNpc),cameraPosition:camera?.position.toArray(),diagnosticProvenance:{INTERACTION:INTERACTION_CUE_PROVENANCE,QA:SLICE_ACCEPTANCE_PROVENANCE,MAP:SCENE_REGISTRATION_PROVENANCE},renderContract:actor?{transparent:actor.material.transparent,depthWrite:actor.material.depthWrite,depthTest:actor.material.depthTest,actorOrder:actor.renderOrder,actorScenePosition:rigs[state.selected].object3d.position.toArray(),shadowScenePosition:shadow.position.toArray(),foregroundOrders:terrain.occluders.map(o=>o.object3d.renderOrder)}:null,terrain:terrain?.snapshot(),contactUnderlay:contactUnderlay?.snapshot(),contactShaderPrograms:contactShaderPrograms.map(p=>({...p})),foregroundShaderPrograms:foregroundShaderPrograms.map(p=>({...p})),canvas:{width:$('world-canvas').width,height:$('world-canvas').height}};}});
