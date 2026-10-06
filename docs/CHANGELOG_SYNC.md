@@ -54800,3 +54800,60 @@ MAP raw56의 root 새정적검토는 직접채택 **semanticFAIL**이다. old re
 root main-rift-host의 실제브라우저검사에서 parent/child Object.prototype realm 차이로정상ready거절첫FAIL(checks0)을발견했고보존한후 childrealm만명시허용하여새GUI14PASS를관측했다. 현errorformatter 예외경계를소유파일1에서보완중이므로 최종pin/신규제한검수는후속영수증으로확정한다. 기존memory16과새GUI14를합산0. 실제editor3387/모의maincontext의격리host검사이며actualMainGame/native6/audio/durableGift/saveAcceptedfalse. root가entry/return1600×1000실화면을확인: hostUI PASS,전체맵RETOUCH/1254²확대흐림유지. 게임held/gamepad/update와DEMO1-1진입은미구현이다.
 
 이번보존은완료raw4+운영관련docs만정상checkpoint하며rootpublicWIP/진행MAP·ANIM·STORY/ownerSTATELOG4/foreign68미stage. 관련전체keyword검색 및 기존바이트prefix보존. 외부 main-parallel-raw57-60-formal-receipt.json와daily-production-* 영수증을따른다. §23 MAP PRODUCTION REPORT는앞절을유지하고이번raw4 source완료를actualnative/맵A급으로승격0. VISUAL VERDICT: RETOUCH.
+
+
+## ROOT-MAIN-HOST-PRESERVATION-RAW61-62-20261007 — 완료소유 즉시 checkpoint
+
+실제 전체 NUL 변경 84건 / index 0에서 완료 소유만 보존한다. 상세 후보 전체 검수를 기다리지 않는다. 타인 68개 bytes/fullSHA 불변, 감독 STATE/LOG 4개는 root 소유가 아니므로 stage하지 않는다. 원본 PNG/scene/nav/game.html/보호2_3/사용자 save 변경 0. 기존 raw57–60은 `c02b24c55b85a414eeb3b5c8a3b48b72bb4ea335` 정상 push 및 원격 exactSHA가 일치한다.
+
+| 구분 | 공식 완료 ID / 위치 | bytes / fullSHA256 | 인수 범위 |
+|---|---|---|---|
+| public host | ROOT-RIFT-MAIN-IFRAME-HOST-20261007 / tools/2_5d/main-rift-host.mjs | 17683 / 008a33930406b5ceaea70fb83050eab46acbd24eb7cf98579cae7b64adb6dc38 | caller P/G identity로 독립 iframe admission·취소·focus 복구. 실제 본편 연결 미구현 |
+| raw61 ANIMVFX | CH1-RIFT-MAIN-PARALLEL-20261007-ANIMVFX-CANDIDATE / tools/team-followup-20261007/hell-rift/ANIMVFX/rift-wolf-foot-bounds.candidate.mjs | 8099 / 0ab46a800fba78a33ffac3c7d64948e273a29b768a760c0a42837fe0d9a410e9 | 원자료 보존 / 소비자 미채택·root 의미/화면 검수 PENDING |
+| raw62 MAP | CH1-RIFT-EDITOR-MASK-RESOLUTION-20261007-MAP-CANDIDATE / tools/team-followup-20261007/hell-rift/MAP/rift-editor-mask-resolution.candidate.mjs | 7258 / 603b8a6b8e792747f51e93b9e230a4dd868d99a8a7d724bf22b4a289d572cdb9 | 원자료 보존 / 이번 TASK 가이드·SSOT 선행 읽기 FAIL, 소급 PASS 0 / public editor 미채택 |
+
+raw61 공식 end `be15b87b-9aa6-433b-807a-5c37163b4db8` / 2026-10-06T18:58:40.365Z / end rawSHA `636770290f95569a39d782db017c4bc84c3f5e93592e1d0ba652262056fe245e`. raw62 공식 end `093ac892-bf81-460a-a7be-c8848884270e` / 2026-10-06T19:06:45.744Z / end rawSHA `cd1332d0919c906719566a63068bd44c83556d1d17118c01e726bc2ff46919f9`. MAP 읽기순서 보정은 담당이 1회 송신한 상태이며 실제 peer 미수신; 반복송신/새팀/새세션 0.
+
+`createMainRiftHost({readContext,document,window,timeoutMs=30000,pollMs=100})` → `enterRift(onExit)/cancel/dispose/snapshot`. timeout 범위 100..60000ms, poll 범위 20..1000ms; 동기 own-plain context `{player,character,stage,context,on:false,stageCleared:true,status?}`. 동일 origin editor3387의 `tools/2_5d-world-lab.html` iframe 1개/owned timer 1개, 새 renderer/RAF/main/save/reward/autoTalk/nextStage 호출 0. 성공한 frozen plain handle `restore()` 뒤 `dispose()` 각 1회. admission 첫 실패 onExit0, 소유 job 취소 onExit1; parent blur는 iframe focus 때문에 생기므로 취소하지 않는다. hidden/pagehide는 취소하되 실제 hidden 검수는 SKIP. 오류 formatter getter는 guarded fallback. held/gamepad/update/DEMO_MODE=true·LAST_STAGE=0/5000ms 전환 callback·900ms curtain 연결은 root 후속이며 완료가 아니다.
+
+| 새 검증/근거 | 결과 | 원자료 핀 / 경계 |
+|---|---|---|
+| host 첫 Chrome cross-realm 실패 | FAIL / 체크0 | child Object.prototype 수용 전의 실제 실패 이력. 삭제·숨김 0 |
+| host realm 보정 실제 GUI | 14/14 PASS | 이전 host 6cd3a13627e5eeccd8484ca843ec29ff1255ede47e1a8299493d65405367d0e6의 결과 |
+| 최종 host formatter 제한 검수 | negative2 + normalGUI2 PASS | 최종 008a3393… / 기존 GUI14 반복·합산 0 |
+| 최종 public gate + host 새 interop | 4/4 PASS / 실제 WebGL iframe | 진입→명시 continue는 scheduled만, delayed mockadvance1·재허가0 / Escape 취소 / context 교체 거부 / expectedHTTP503 실패 cleanup. 순수24 및 이전GUI와 합산0 |
+| 본편·native6·청취·실제 save/유품 보상 | PENDING | fixture P/G·mockadvance는 실제 nextStage/게임 완료 아님 |
+
+interop 영수증: `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/main-gate-host-interop/interop-result.json` / 26382B / f4b1d75af1997e69327d1cb81cb1e38944b1843b10fefc18b6ccf894fac0a5c4. unexpected page/HTTP/console0, 외부/nonGET0, 예상 실패주입1. code+docs만 정상 commit/push 후 remote exactSHA를 별도 영수증에 기록한다.
+
+### MAP PRODUCTION REPORT (§23)
+
+| 항목 | 실제 판정 |
+|---|---|
+| MASTER / LARGE OUTER MASS / MEDIUM CONNECTION / GROUND CONNECTION | 기존 상승 여정·원 지형/scene/nav/PNG 불변. public host는 배치/geometry를 고치지 않음 |
+| PLAYABLE / COMBAT | 독립 iframe actual WebGL 렌더 진입/취소·새 interop4 확인. 실제 CH1-1 전투/nextStage/native6 미인수 |
+| LANDMARK / CENTER / SMALL DETAIL | 기존 균열·상승로·주민 배치 불변. 신규 raw61·62 소비자 미채택 |
+| CAMERA QA | entry/return UI 실제 화면 검토. 전체 stage 시각/카메라 인수 아님 |
+| TECH QA | 첫 실패·host GUI14·최종 limited4·새interop4를 핀별 분리. source1254²→world8000² 확대 흐림 미해결 |
+| FILES / GIT | public host1 + 해당 docs4 + 완료 raw2 + 운영 docs2. 후보 원자료 보존≠소비자 채택 |
+| VISUAL VERDICT | host 진입/복귀 UI PASS / 전체 맵 RETOUCH / 원본 해상도·절벽/전경 접합 후속 필요 |
+| NEXT ACTION | FIX4의 새입력·시뮬레이션·보스 admission·근거 형식을 정확 완료핀별 검수하고 실제 본편 seam 연결. MAP prerequisite FAIL 사실 유지 |
+
+일일 목표는 계정 주간10080분 창의 관측값을 기준으로 하루 약15 percentage points. 기준 사용률41%(다른 채팅 포함), 남음59%, reset 2026-10-12T11:52:56Z. 일별 토큰 수치는 API에 없으므로 정확15% 소비/이 채팅 전용 소비를 보장하지 않는다. 의미있는 제작·검수·다음 작업 배정에 사용하며 같은 감사/검사/완료/TASK 반복 0. 목표 도달이 제작 자동중지 조건은 아니다. 기존 단일 연속 heartbeat ACTIVE / 다른 PAUSED·아침메일 재개0.
+
+
+### ROOT-RIFT-MAIN-GATE-PUBLIC-20261007 — public gate와 host 연결 완료 단위
+
+| 항목 | 실제 구현 / 정확 경계 |
+|---|---|
+| 공식 root 완료 / source | ROOT-RIFT-MAIN-ENTRY-GATE-20261007 / tools/2_5d/rift-main-entry-gate.mjs / 16280B / f9dbbcb891e79748d6b71eb08e331745ccd62f7992d0210fe438fbd3574038fd |
+| API | createRiftMainEntryGate({ports:{readState,checkpoint,enterRift,resumeStage}}) → enter/continue/cancel/dispose/snapshot |
+| capture | frozen own-primitive stage/stageCleared/status/difficultyOff/contextId/epoch. 안전 정수 stage>=0·유한 difficultyOff·opaque primitive contextId, clear-continue + stageCleared===true만 admission |
+| async 계약 | own plain 함수 port / same-realm nativePromise만 허용 / 임의 thenable·foreign/subclass/proxy/ownthenconstructor 거부 / checkpoint===true |
+| lifetime | 외부 cleanup 전에 epoch/state detach. handle restore→dispose 각1, reentrant cleanup 뒤 context·disposed 재검사. stale rejection은 새 job 무변. continuation commit 허가 one-shot |
+| 상태 | scheduled 및 commitPermissionConsumed/Issued/permissionCount는 실제 nextStage ACK가 아님. actualStageAcknowledged=false·fallthrough=false |
+| host context | host active poll timer1은 enterRift resolve 이후에도 유지. restore로 부모 화면 귀환/취소/실패 시 timer0. restore/dispose handle 처리와 host cancel은 caller의 같은 job만 정리 |
+| 검증 | 새 pure stdin1 / 24 groups·222 conditions PASS·FAIL0·미도달0·exit0. 별도 새 실제 interop4 PASS는 같은 최종 gate+host핀, mockadvance1. 기존 hostGUI14/final4/pure24 합산·반복0 |
+| 미구현 | game.html lexical P/G·DEMO分岐·update·gamepad·held 입력·5000ms callback/900ms curtain 연동 및 실제 save/유품/부탁 durable consumer·native6·청취 PENDING |
+
+독립 public 모듈 보존과 실제 본편 연결을 구분한다. dbSave/SP10 재지급/autoTalk/game/기존 retry 설계 변경 0. public gate는 raw56 V2를 직접 import하지 않으며 raw56 의미 FAIL 원자료를 고치지 않는다. 강제 rollout/DEMO_MODE 변경으로 완료를 만들지 않는다.

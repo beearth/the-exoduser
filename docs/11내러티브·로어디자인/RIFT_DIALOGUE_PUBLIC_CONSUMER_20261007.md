@@ -109,3 +109,81 @@
 | 보존 / 운영 | 소유 raw+관련docs 한정정상commit/push·remote exact SHA는외부영수증에서확인. foreign68/ownerSTATELOG4 보존, 새팀·관리채팅·Claude session0/전문직접송신0/완료TASK중복0. 24시간연속제작 / paused타자동화·아침메일재개0. |
 
 MAP PRODUCTION REPORT — STAGE: 지옥의 틈 main-entry 논리 후보 raw55 보존. MASTER/OUTER MASS/LARGE/MEDIUM/GROUND/PLAYABLE/LANDMARK: 지형·원화·nav1192·본편모두 변경0; 전환 API만 미채택후보로 보존. CAMERA QA 미수행. TECH QA: 전문stdin1 PASS와 root정적P1 확인을 구분; route/collision/pageerror/404/seam/loading/performance main관측PENDING. FILES: 완료stage-ownedraw1 / 관련rootdocs5; concurrent/unrelated touched0. GIT: 소유완료만 정상commit/push, deploy0. VISUAL VERDICT: RETOUCH (이 논리 후보 화면 NOT ASSESSED; 이전contactON효과FAIL 유지). NEXT PASS: current-state/epoch/validhandle 실패방향을 보정하고 실제 본편host 왕복Gate 검수.
+
+
+## 2026-10-07 ROOT-RIFT-MAIN-GATE-PUBLIC-20261007 — public 논리·격리 host 계약, 본편 미연결
+
+앞선 main-entry 원자료 보존·미구현 계획은 해당 시점 이력으로 유지한다. 현재 root 독립 public gate와 동일 origin host는 아래 계약으로 구현됐다. 모듈 파일 생성/import와 격리3387 검수는 game.html 진입·실제 nextStage·본편 저장/보상 인수가 아니다. 원자료를 직접 import하지 않으며 G.revision 같은 가짜 본편 필드를 추가하지 않는다.
+
+| 현재 public / 원자료 | bytes | full SHA256 / 공식 근거 |
+|---|---:|---|
+| tools/2_5d/rift-main-entry-gate.mjs | 16280 | f9dbbcb891e79748d6b71eb08e331745ccd62f7992d0210fe438fbd3574038fd |
+| tools/2_5d/main-rift-host.mjs | 17683 | 008a33930406b5ceaea70fb83050eab46acbd24eb7cf98579cae7b64adb6dc38 |
+| tools/team-followup-20261007/hell-rift/MAP/rift-main-entry-guards-v2.candidate.mjs | 11268 | 646bf810623bfe7ce687c1bd4d560f40fc751b9586cd46326c0d7764635e72be; officialend be7786a7-6b57-4b97-a55e-e1e7cada25e1; raw 不변·직접 import0 |
+
+| API / 상태 | 현행 수치·구조·실패 경계 |
+|---|---|
+| gate factory / API | createRiftMainEntryGate({ports}) → enter(), continue(), cancel(), dispose(), snapshot(). gate completionId ROOT-RIFT-MAIN-ENTRY-GATE-20261007. ports의 readState/checkpoint/enterRift/resumeStage는 own-data 함수 참조를 factory에서 캡처하며 ports를 receiver로 호출. |
+| ports.readState() | 동기 own plain object(Object.prototype 또는 null), own-data 필수 stage/stageCleared/status/difficultyOff/contextId. stage safe integer≥0; stageCleared boolean; difficultyOff finite number; contextId null/undefined 제외 string/finite number/bigint/symbol/boolean primitive. |
+| status / 진입 | enum clear-continue/dead/final/demo/unknown. stageCleared===true AND status===clear-continue만 진입. 실제 P.s=fallen은 caller에서 dead로 투영하거나 admission 실패. host의 느슨한 status 검사만으로 final/demo 진입을 승인하지 않음. |
+| state / UNKNOWN | detached frozen null-prototype 캡처 {stage,stageCleared,status,difficultyOff,contextId,epoch}. getter 실행0; own/inherited then descriptor·accessor·비정상 구조·reflection/proxy trap throw는 UNKNOWN. proxy trap 자체를 호출하지 않는다는 보장은 아님. |
+| epoch / context | gate-owned epoch는 enter/cancel/invalidate/dispose 수명 구분용. root contextId는 실제 lexical P/캐릭터/run job 동일성을 대표하는 caller-local primitive이어야 함. state의 5필드를 모두 비교; stage만 같은 새 job은 같은 승인으로 취급하지 않음. G.revision 쓰기0. |
+| ports.checkpoint(captured) | true 또는 같은 realm의 native Promise<true>만 승인. false/null/undefined/비true settlement/getter/thenable/throw/reject/stale는 거절. 이 true는 caller 준비 승인이고 dbSave/디스크 ACK/유품 지급 ACK가 아님. |
+| Promise 경계 | gate는 exact native Promise.prototype·intrinsic then brand만 소비. own then/constructor, subclass/foreign realm/proxy/lookalike/arbitrary thenable은 UNKNOWN. 반환 핸들 then을 읽거나 임의 Promise.resolve assimilation하지 않음. |
+| ports.enterRift(onExit,captured) | own plain restore() 필수/own dispose() 선택 핸들 또는 같은 realm native Promise<handle>. null/invalid/throw/reject/load failure/stale는 유효 진입으로 승격하지 않음. onExit는 해당 job 취소만, continue/nextStage 호출0. |
+| 핸들 정리 | 함수 참조와 원 receiver를 캡처; restore→dispose 각 최대1회. raw 메서드 교체/accessor를 다시 읽지 않음. 정리는 동기 반환이어야 하며 async/UNKNOWN 반환·예외는 commit 차단. native rejection 관측과 arbitrary thenable adoption은 구분. |
+| 취소 / 늦은 완료 | handle detach·current 제거·epoch 변경·state clear를 외부 cleanup 이전에 완료, cleanup 이후 취소 상태쓰기0. external port/await/handle cleanup 전후 job+epoch+fresh context 확인. 옛 checkpoint/host/resume reject가 새 job/handle을 지우지 않음. 늦은 valid old handle은 독립 정리. |
+| ports.resumeStage(commit,captured) | undefined/true 또는 같은 realm native Promise<undefined 또는 true>만 정상 반환. continue는 진행 예약만; delayed callback은 commit() AND rootJobIsCurrent()일 때 caller nextStage를 1회 허용. host.cancel()로 top layer를 닫되 gate.cancel()로 예약 job을 취소하지 않는 caller seam 필요. |
+| delayed commit | fresh 5필드 동일성 확인→permissionConsumed 설정→handle cleanup→epoch/disposed/context 재확인→permissionIssued. 외부 cleanup이 cancel/dispose/context 변경/new enter하면 false; duplicate callback false. async cleanup은 false. |
+| 실패 결과 / host 정리 | 모든 gate 결과 fallthrough:false. 실패 뒤 자동 stage advance0. hostCancelRequired는 실제 해당 job 소유 실패이고 새 job이 없는 경우에만 true; root job도 대조해야 새 host를 닫지 않음. host가 null/error UI를 반환하는 경로는 caller가 본인 host.cancel()로 retained dialog를 정리. |
+| gate snapshot | phase/disposed/epoch/scheduled/commitPermissionConsumed/commitPermissionIssued/permissionCount/stage/contextId/ownsHandle/reason/actualStageAcknowledged. phase는 entering/rift/scheduled/committing/permission-issued 또는 idle/disposed. actualStageAcknowledged:false 고정; permissionCount는 허용 횟수이며 실제 stage 성공 수가 아님. |
+| host factory / API | createMainRiftHost({document,window,readContext,timeoutMs?,pollMs?}) → enterRift(onExit), cancel(), dispose(), snapshot(). 직접 continue/nextStage API0. HTTP(S) 동일 origin의 포트3387만 허용; iframe tools/2_5d-world-lab.html. 본편3333/3340 연결0. |
+| host readContext() | 동기 own-data plain {player:P,character:string,stage:integer≥0,context:G 또는 run token,on:false,stageCleared:true,status?:primitive}. player 실제 객체·character 비어있지 않은 string; context 객체 또는 string/boolean/finite number 허용. status optional string/boolean/finite number, dead/fallen/reviving/lastStand 거절. gate contextId의 primitive 계약과 별개. |
+| host poll / UI / resources | default timeout30000ms/poll100ms; 허용 timeout100..60000ms/poll20..1000ms. owned timer loading/active 최대1; restore로 부모 화면 귀환/취소/실패 후 timer0; 성공 enterRift handle resolve 이후 active에는 poll timer1. owned dialog/iframe/status leaf만; iframe about:blank→detach, child pagehide에서 기존 WebGL 해제. host renderer0/RAF0, 자동대화0, parent player/save/reward 쓰기0. |
+| host input / identity | actual child Object.prototype realm만 plain snapshot에 허용. Tab/Enter/NumpadEnter/Space native 유지, Escape 본인 host 종료. 부모 이미-held key/gamepad/앞선 same-window capture는 caller 소유. iframe focus로 발생하는 부모 blur를 실제 게임 이탈로 잘못 처리하지 않음. |
+
+| 검수 묶음 / 코드핀 | 실제 증거·완료 경계 — 서로 합산하지 않음 |
+|---|---|
+| public gate 순수 의미검수 | 외부 main-gate/semantic-test.mjs를 Node stdin 실제1회 실행: 24 고유그룹/222 조건 PASS, fail0/unreached0/exit0. cancel→new epoch/late handle/native Promise/getter/cleanup reentry/delayed permit 반례 포함. 본편·DOM·저장 검수0. |
+| 기존 host GUI14 | main-host/browser-result.json 최초 cross-realm 준비 실패(checks0)를 보존. child realm 보정 뒤 browser-fixed-result.json 실제14 PASS는 host SHA6cd3a13627e5eeccd8484ca843ec29ff1255ede47e1a8299493d65405367d0e6의 이력. intentional HTTP5031과 관련 console1은 예외 주입이고 unexpected error0. 현재핀으로14 재실행0. |
+| 최종 host 제한검수 | main-host/error-formatter-limited-result.json의 현 host008a3393…에서 readContext message-getter throw/null throw 음성2 PASS와 정상 entry/restore-disposal GUI2 PASS를 분리 기록. 이전 GUI14와 합산0. 실제 main context는 모의 own-data fixture, 사용자 저장·본편0. |
+| 신규 gate-host interop | 문서 작성 시 root 실제3387 4항목 검수 진행/인수 PENDING. 외부 main-gate-host-interop/interop-result.json의 preliminary raw4 기록은 수신됐으나 이 행에서 최종 인수로 승격0. 독립 delayed advance 대역이며 본편 nextStage ACK로 계산하지 않음. |
+| 미인수 | mainGameAccepted/native6Accepted/audioAccepted/rewardAccepted/saveAccepted/actualStageAcknowledged 모두 false. A급/완전3D/실grant/본편 연결 완료 선언0. 전체맵 RETOUCH; 논리·문서 작업의 새 실제화면 관찰0. |
+
+외부 백업·prefix 확인·전체 docs 검색/disposition·최종 핀: /Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/main-gate/docs-sync/. 원본 전체 bytes prefix 유지한 LF append만 수행한다. 기존 raw55/V2 원자료·원화PNG·scene/nav1192·주민 발 좌표·game.html·사용자save·보호2_3·Q전용패링/어택티켓금지·타인WIP를 변경하지 않는다.
+
+### 대사 관측·상승 여정과 지속 보상의 경계
+
+| NPC / 독립 대사 | 현행 session flag / record | 본편 미구현 권한 |
+|---|---|---|
+| rift-rest-haran / 하란 | rift.haran.met; record 없음 | 만남 관측만, 실제 stage 전환·save0 |
+| rift-gift-berin / 베린 | rift.berin.giftGiven; gift/story.berin.keepsake/actualGrant:false | 유품 symbolic record이며 실제 itemID·inventory grant·persistent 지급 ledger 없음. 동일 session Map 재방문 중복기록 guard를 durable 지급으로 승격하지 않음. |
+| rift-request-nessa / 네사 | rift.nessa.questAccepted; quest/story.nessa.findLin/actualGrant:false | 부탁 session record만; game quest 등록·저장·구조완료0. foundLin!=rescuedLin. |
+| rift-prepare-dorik / 도릭 | rift.dorik.met; record 없음 | 위층 안내만; gate.continue 및 실제 nextStage를 대사 선택으로 자동 호출0 |
+
+대화 observer의 editor-session-only / committed:false / committedPromoted:false / grant,reward,save:null 계약을 유지한다. public stage gate는 대화 controller의 trialFlags/Map을 저장하거나 성공으로 바꾸지 않는다. 최하층에서 올라가는 여정·장/스테이지 사이 지옥의 틈·망자의 유품과 부탁은 서사 설정이며, 실제 보상과 퀘스트 지속은 별도 데이터/저장 인수가 필요하다. 본편 DEMO first1-1 우회, R hold pickup·parent gamepad/update held·5000ms 전환/900ms curtain epoch 연결은 아직 미구현이다. 모듈 import/격리 iframe 왕복을 본편 이야기 진행 완료로 계산하지 않는다.
+
+| 후속 순서 | 필요한 실제 완료 조건 |
+|---|---|
+| stage 수명 | lexical P/character/root-local job capture·기존 dbSave 반복0·clear SP10 재지급0·DEMO/final 정책·parent held입력/지연 전환 guard |
+| 공간·대화 | 본편 clear→동일 지옥의 틈 iframe→explicit continue 왕복 실관측; 실제grant/save0 경계 우선 |
+| 유품·부탁 지속 | 실제 itemID/수용 공간/중복 지급 ledger/inventory 동시저장 readback ACK; quest 소비자와 지속·재방문·실패/retry 인수 |
+| 보존 | canonical sourcePNG/scene/nav1192/NPC발·rawV2·본편game·사용자save·보호2_3 불변; 기존 첫화면/대사branch/기존GUI/옛테스트 재실행0 |
+
+MAP PRODUCTION REPORT — STAGE: ROOT-RIFT-MAIN-GATE-PUBLIC-20261007 대사/진행 권한 동기화. MASTER/OUTER MASS/LARGE/MEDIUM/GROUND/PLAYABLE/LANDMARK: 맵/geometry/원화/nav1192/NPC배치·대사 원문·보상 생성 변경0, public stage gate와 session-only 대사 기록의 권한을 분리. CAMERA QA: 이 worker 새 관찰0; root interop4 최종 인수 PENDING. TECH QA: pure gate24그룹/222조건 실제stdin1 PASS; 옛 host GUI14와 현 host 음성2+정상GUI2 별도, main/native6/audio/save/grant0. FILES: 본인 docs2 append LF만; 다른 docs·code·STATE·index·WIP 변경0. GIT: root 소유 code+관련 docs 한정 checkpoint/push 예정, 본인 stage/commit/push0/deploy0. VISUAL VERDICT: RETOUCH (전체맵; 본 작업 화면 NOT ASSESSED). NEXT PASS: 실제 본편 최소 진입·explicit continue와 지연전환 ACK 검수, 이후 유품/부탁 지속 저장 Gate.
+
+
+### ROOT-RIFT-MAIN-GATE-PUBLIC-20261007 최신 총괄 인수 — gate-host interop 4/4
+
+위 최초 append의 신규 interop PENDING 문구는 작성 시점 이력이다. 이후 총괄이 main-gate-host-interop/interop-result.json의 시작/종료 source핀과 §23 근거를 대조하고 새 실제3387 4/4 PASS를 인수했다. 코드 gate16280B/f9dbbcb8… 및 host17683B/008a3393…는 시작/종료 동일하며 변경0. 이전 gate 순수24그룹/222조건, 옛 host GUI14, 최종 host 음성2+정상GUI2는 별개 묶음으로 합산0.
+
+| 이번 신규 interop 항목 | 실제 결과 / 경계 |
+|---|---|
+| actual ready iframe + explicit continue | continue는 예약만; 부모 owned host 닫힌 뒤 delayed commit 최초 true/중복 false. 대역 mockadvance1; 실제 nextStage ACK0. |
+| actual Escape | 해당 gate/owned iframe 취소·timer0·advance0, 새 자동 continue0. |
+| 예약 후 context 교체 | contextId와 host context 교체 뒤 저장 callback false·mockadvance0; 옛 허가 재활성0. |
+| HTTP503/null host 실패 | 의도된 load failure 주입1, null handle admission 거절·fallthrough:false·caller owned dialog 정리·advance0. unexpected page/console/HTTP error0과 주입 오류를 구분. |
+| source / 실제 게임 | 시작종료 code2핀 exact. actualMainGame:false / native6Accepted:false / saveAccepted:false / audioAccepted:false / stageAcknowledged:false. delayedAdvanceIsMock:true, plainMainContextFixture:true. 사용자save·보상·quest·game.html 쓰기0. |
+| 외부 화면·판정 | main-gate-host-interop/interop-entry.png 및 interop-scheduled-return.png; 직접 화면 검토는 root 책임. 전체맵 VISUAL VERDICT RETOUCH, 본 문서 worker 새 화면관찰0. |
+
+MAP PRODUCTION REPORT 최신 인수 갱신 — STAGE: public gate-host 독립 왕복. MASTER/OUTER MASS/LARGE/MEDIUM/GROUND/PLAYABLE/LANDMARK 변경0; canonical 원화/nav1192/주민 발·본편불변. CAMERA QA: root 실제 격리 entry/return 화면2, 전체8카메라/전투/native미인수. TECH QA: 신규interop4/4 PASS는 readiness/explicit delayed permission/Escape/context 교체/주입 실패 수명 검수이며 실제게임 route/collision/save/reward/audio 완료0. FILES: docs2 LF-only append; concurrent/WIP prefix 보존. GIT: root가 소유완료 한정 checkpoint/push, 본 worker Git쓰기0/deploy0. VISUAL VERDICT: RETOUCH. NEXT PASS: 본편 DEMO/부모입력/5초 callback+900ms curtain epoch 최소 연결과 실제 nextStage ACK 후 지속 NPC grant/quest/save Gate.

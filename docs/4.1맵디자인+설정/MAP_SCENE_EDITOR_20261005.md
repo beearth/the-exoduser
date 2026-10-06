@@ -1161,3 +1161,117 @@ MAP PRODUCTION REPORT
 - GIT: completed-owned code3+동기화docs 정상commit/push 및 remote exact SHA는 외부영수증에서 확인; deploy0.
 - VISUAL VERDICT: FAIL(음영 ON), RETOUCH(전체 맵 / 기본 OFF).
 - NEXT PASS: nav 셀을 실제 그림 속 절벽 발로 취급하지 말고 authored foreground 접합 위치/부드러운 실제 경계 검수; 별도 본편 entry gate→실제 NPC 왕복→보상/save atomicACK 단위.
+
+
+## ROOT-RIFT-MAIN-HOST-PUBLIC-20261007 — 독립 main-context iframe host 현재 계약
+
+기존 선택 주민용 editor preview host와 별개인 main-context public host의 own DOM/iframe 수명을 기록한다. editor scene/nav/start/exit/selection/view를 바꾸는 editor 기능 추가는 이번 범위에 없으며, 실제 본편 admission caller는 별도 소유다.
+
+### 실행 API·입력·수명 계약
+
+이 절의 문서 marker는 `ROOT-RIFT-MAIN-HOST-PUBLIC-20261007`이며, 코드 `MAIN_RIFT_HOST.completionId`는 `ROOT-RIFT-MAIN-IFRAME-HOST-20261007`이다. public host 구현과 별도 진입 gate의 구현·본편 채택은 다른 범위다. 이번 host 검수는 실제 editor3387에서 모의 main-context를 공급한 독립 표시/복귀 검사이며, 본편의 lexical `P/G`와 stage-clear 경로 연결을 인수하지 않는다.
+
+| 항목/API | 현행 코드 계약·수치 | 소유·판정 경계 |
+|---|---|---|
+| 최종 source | `tools/2_5d/main-rift-host.mjs`, 17683B, SHA256 `008a33930406b5ceaea70fb83050eab46acbd24eb7cf98579cae7b64adb6dc38` | 이전 `6cd3…` 화면 검수와 최종 핀 제한 검수를 구분 |
+| factory | `createMainRiftHost({document,window,readContext,timeoutMs,pollMs}) → {enterRift,cancel,dispose,snapshot}`; 반환 API는 shallow frozen | 기본 document/window는 globalThis; document.body/createElement, window.setTimeout/clearTimeout, readContext 함수 필요 |
+| host URL | `MAIN_RIFT_HOST.labPath='tools/2_5d-world-lab.html'`, 루트 상대 URL; `allowedPort='3387'`; http 또는 https, 부모/child 동일 origin·정확 pathname | 다른 포트/외부 origin 사용 불가; 본편3333/3340·사용자 save 조작0 |
+| 준비 timeout | 기본 `timeoutMs=30000`ms; finite Number `100..60000`ms inclusive, 정수 강제 없음 | loading 상태에만 시간 초과 적용; active 상태의 총 체류 제한 없음 |
+| poll | 기본 `pollMs=100`ms; finite Number `20..1000`ms inclusive, 정수 강제 없음; 최초 poll 예약 `0`ms | record마다 outstanding timer 최대1; 자체 RAF0; performance.now() 있으면 사용, 없으면 Date.now() |
+| 부모 context 반환 | 동기 own-data plain `{player,character,stage,context,on,stageCleared,status}`; 부모의 정확 Object.prototype 또는 null prototype만 허용; 배열·custom prototype·own `then !== undefined` 거절 | Promise/thenable/필드 accessor 거절; `readContext` 재진입 거절, 예외 시 fail closed |
+| player / character | `player`: non-null object, 배열 불가; `character`: 길이>0 string | 실제 lexical caller가 공급해야 함. player 내부 속성·좌표/캐릭터를 host가 deep 검사/복사/child로 전송하지 않음; whitespace-only character도 코드상 거절 규칙 없음 |
+| stage / context | `stage`: Number integer≥0, host 자체 상한 없음; `context`: non-null object 또는 string/boolean/finite Number | opaque identity를 엄격 `!==`로 비교하며 object 내부 변경 감시는 없음. 실제 TOTAL_STAGES/difficulty/_charId 허용 계약은 caller gate 책임 |
+| on / stageCleared | 정확 `on===false`, `stageCleared===true` | 미클리어·truthy 대체값으로 admission 통과0; host가 G 필드를 만들어 넣지 않음 |
+| status | undefined/null 또는 string/boolean/finite Number; 정확 문자열 `dead`, `fallen`, `reviving`, `lastStand` 거절 | 다른 허용 primitive status는 그대로 identity 비교; 사망/부활 의미의 본편 통합 gate와 별도 |
+| active context 확인 | 매 poll마다 위7필드를 새 own-data context로 읽고 초기값과 `!==` 비교 | player/context 참조, character/stage/on/stageCleared/status 변경 또는 읽기 실패 시 취소; 부모 객체 쓰기0 |
+| enterRift | `enterRift(onExit) → Promise` (resolve: handle 또는 null); onExit 함수 필수. disposed 또는 document.hidden이면 null | 초기 context 거절은 UI 생성0·null; return handle은 표시 준비 증거이며 continue/nextStage job 아님 |
+| 중복 호출 | current loading/active에서 같은 onExit 함수+같은 fresh context이면 동일 job 반환, 추가 iframe0 | 다르면 `superseded` 종료+알림 뒤 이번 호출 null; 새 admission의 명시적 재호출 필요 |
+| 재시도 | failed record가 있으면 `failed-retry`로 정리 후 새 context 검사·새 token 발급 | 오류 dialog 보존은 valid gate handle을 뜻하지 않음 |
+| child port | own `__rift25Lab`의 own `snapshot` 함수 호출; 반환은 정확 `child.Object.prototype` 또는 null prototype의 동기 plain own-data | 같은 origin iframe도 별도 realm. 부모 Object.prototype과 억지 비교하지 않고 custom prototype은 계속 거절 |
+| 준비 성공 | child snapshot `ready===true`, error falsy, disposed/contextLost 정확 true 아님; 현재 record의 loaded/path/identity 유효 | active 상태 `ready!==true`, port 상실 또는 경로 변경은 실패; child snapshot truthy error도 실패 |
+| handle | once-owned frozen `{restore(),dispose()}` | restore는 최초만 close `restored`, 반복/해제 후 false. dispose 최초 true·반복 false; 이미 restore된 handle의 최초 dispose도 true일 수 있으나 재종료0 |
+| 늦은 handle / focus | handle은 자기 record만 닫음; settle은 record별1회, 이미 닫힌 record 재정리0 | 기존 연결된 focus 대상·같은 ownerDocument·fresh sameContext·더 새 current가 없을 때만 focus 복원; 새 token의 dialog/focus 침범0 |
+| close cleanup | own timer clear, iframe load/error 및 dialog cancel/close listener 제거; own iframe src=`about:blank`, own dialog close/remove | child가 기존 pagehide에서 WebGL/RAF/resources 정리; parent가 borrowed renderer/DOM을 dispose하지 않음 |
+| onExit | 사용자 종료·자동 취소/로드 실패를 record별 최대1회 통지; sync throw 또는 returned rejection은 `notificationErrors++` | callback 반환을 기다려 continue하지 않음. restore/handle.dispose/cancel/host.dispose는 notify0; 실패 알림 `load-failed`는 오류 dialog를 자동 제거하지 않음 |
+| cancel / dispose | `cancel()` → current close `cancelled`+focus 복원 요청, notify0; 없으면 false. `dispose()` 최초 true, 반복 false; `host-disposed`, own listeners 제거 | module dispose는 focus 복원0·notify0. pagehide는 dispose 호출; 부모 blur 취소 listener0 |
+| 실패 formatter | Error의 non-empty string message만 사용; instanceof 또는 message getter 예외도 catch; fallback `UNKNOWN · 지옥의 틈 표시 실패` | null throw/악성 message getter 때문에 settlement/cleanup가 깨지지 않음 |
+| 실패 UI | phase `failed`, timer0, Promise null로1회 settle, leaf status에 오류 표시, exit leaf를 `닫기`로 교체 | 검토용 own dialog는 유지; 유효 handle/본편 완료로 승격0 |
+| 입력 keyboard | 부모 capture keydown/keyup에서 current가 살아있으면 stopImmediatePropagation; Escape keydown&&!repeat는 preventDefault+종료 | Tab/Enter/NumpadEnter/Space는 native 동작 보존; 그 외 preventDefault. child iframe 이벤트는 별도 window이며 부모에 bubble하지 않음 |
+| 입력 pointer | capture/passive:false 9종: pointerdown, pointerup, mousedown, mouseup, click, dblclick, touchstart, touchmove, wheel | own exit의 click만 user-exit; exit/frame 외 대상 preventDefault. listeners는 module dispose에서 제거 |
+| visibility / blur | 실제 document.hidden이면 `parent-hidden`; pagehide는 host dispose; 부모 blur만으로 취소0 | native parent blur 관측 PASS; 실제 hidden 전환은 이번 headless 검수 SKIPPED, synthetic PASS 대체0 |
+| 부모 hotpath 미인수 | `inputLimitations='already-held keys/gamepad/earlier same-window capture remain caller-owned'` | 기존 held key/gamepad polling/update·먼저 등록된 capture의 격리는 caller 후속. host만으로 main simulation/input freeze 완료0 |
+| 렌더/대화 scope | `ownsRenderer=false`, `ownsRAF=false`, own iframe 최대1; child가 기존 renderer/RAF를 소유; `automaticTalk=false` | 자동 NPC 대화0, child 기본 독립 actor 유지. `childCharacterLinked=false`; parent 캐릭터·선택 주민을 child에 이식한 구현 아님 |
+| 쓰기/인수 flag | `mainAccepted=false`, `nativeAccepted=false`, `saveWrites=false`, `rewardWrites=false`, `nextStageCalls=false`, `parentStateWrites=false`, `borrowedDomWrites=false` | 실제 유품grant/durable ACK/save/native6/audio/A급 인수0; host 복귀가 다음 stage 진행을 뜻하지 않음 |
+
+### phase·reason·고정 오류 표시
+
+| 분류 | 정확 값·조건 |
+|---|---|
+| public phase | current가 없으면 `idle`; current는 `loading`/`active`/`failed`. 내부 record의 `closed`는 close 후 current가 null이므로 public snapshot에서는 idle |
+| 닫기 reason | `restored`, `disposed-handle`, `user-exit`, `user-escape`, `dialog-closed`, `parent-hidden`, `parent-context-invalid`, `parent-context-changed`, `owned-dialog-detached`, `superseded`, `failed-retry`, `UI-create-failed`, `cancelled`, `host-disposed` |
+| 로드 실패 알림 | `onExit('load-failed')`; snapshot.reason/error에는 실제 오류문구. reason은 고정 enum만 있는 필드가 아니며 loading/ready text·Error message도 보존 |
+| context 오류 | `UNKNOWN · host 객체 필요`; `UNKNOWN · host accessor: <key>`; `UNKNOWN · <label>`; `UNKNOWN · <label> plain 동기 객체 필요`; `UNKNOWN · readContext 재진입 금지`; `UNKNOWN · 부모 클리어/정지/identity admission 불일치`; `UNKNOWN · 부모 status primitive 필요`; `UNKNOWN · 부모 status 유한수 필요`; `UNKNOWN · 부모 사망/부활 중` |
+| factory/UI 오류 | `지옥의 틈 host 의존성 필요`; `지옥의 틈 대기 수치 범위 오류`; `지옥의 틈 host는 격리 동일 origin 3387만 지원합니다`; `동일 origin dialog API 필요`; `지옥의 틈 onExit(reason) 알림 함수 필요` |
+| child/시간 오류 | `지옥의 틈 iframe 로드 실패`; `지옥의 틈 활성 iframe 경로 상실`; `지옥의 틈 iframe origin/경로 변경`; `지옥의 틈 활성 port 사라짐`; `지옥의 틈 snapshot port 없음`; `지옥의 틈 표시 실패 · <error 또는 context/disposed>`; `지옥의 틈 활성 준비 상태 상실`; `지옥의 틈 준비 시간 초과` |
+| 초기/ready leaf | 초기 `독립 화면 준비 중 · 본편 저장과 보상은 변경하지 않습니다.`; ready `독립 2.5D 공간 · NPC 대화는 직접 시작 · 본편 캐릭터/보상 연동 미인수`; formatter fallback `UNKNOWN · 지옥의 틈 표시 실패` |
+
+### snapshot·DOM·자원 규격
+
+| 항목 | 정확 현행값·수명 |
+|---|---|
+| snapshot 반환 | shallow frozen; `disposed,active,pending,phase,token,iframeLoaded,ownedDialog,ownedIframe,ownedTimers,parentStage,parentCharacter,reason,error,completed,cancelled,notificationErrors`, MAIN_RIFT_HOST 상수, override timeoutMs/pollMs 및 inputLimitations/parentStateWrites/borrowedDomWrites/childCharacterLinked |
+| snapshot default | current 없음: phase idle/token null/iframeLoaded false/ownedDialog false/ownedIframe false/ownedTimers0/parentStage·parentCharacter null. active/pending는 phase 비교, ownedTimers는0 또는1 |
+| counters | sequence 초기0/새 record token마다+1; completed는 ready handle 수이며 main 완료 수 아님; cancelled는 close reason restored/disposed-handle 외 +1; notificationErrors는 onExit throw/rejection 수 |
+| 소유 DOM | 새 dialog/header/strong title/span status/button exit/iframe만 생성·삭제. dataset.mainRiftHost=token string; aria-labelledby/title ID `main-rift-host-title-<token>` |
+| 기존 leaf 수정 | status/exit는 `children.length===0` 확인 후 textContent 교체; 부모 컨테이너 내용 교체0; 새 leaf의 초기 textContent는 생성 시 설정 |
+| dialog style | width min(1400px,96vw), height94vh, max-width96vw, max-height94vh, margin auto, padding0, border1px solid #8c7851, radius14px, background#080d10, color#e7dfca, shadow0 28px 90px #000b, overflow hidden |
+| header/status style | header height62px/gap18px/padding0 20px/bottom-border1px solid #384344/background#101719. status flex1/font13px/1.5 system-ui/color#aab9b5/role status/aria-live polite |
+| exit/frame style | exit padding9px 16px/border1px solid #8c7851/radius7px/background#202b2a/color#efe3bc/cursor pointer/font600 14px system-ui. frame display block/width100%/height calc(100% - 63px)/border0/background#080d10 |
+| UI label | title `지옥의 틈 · 격리 표시`; iframe.title `지옥의 틈 독립 2.5D 표시`; 정상 exit `돌아가기`, failed exit `닫기`; 준비 중 exit focus, ready child window/world-canvas focus는 optional |
+| 자원 책임 | host의 own DOM/listeners/timeout만 host가 정리. child renderer·WebGL texture/geometry/material·RAF는 child의 기존 pagehide 수명 책임; parent renderer 재생성·차용dispose0 |
+
+### 실제 증거·검사 핀 분리
+
+영수증 폴더는 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/main-host/`이다. 아래 실행은 서로 다른 코드 핀/범위다. 기존 memory16, 최초 FAIL, GUI14와 최종 제한4를 합쳐 새 총 PASS 숫자를 만들지 않는다.
+
+| 실행/자료 | 실제 결과·코드 핀 | 해석 |
+|---|---|---|
+| browser-result.json | 최초 실제 iframe 실행 FAIL, checks0; child realm Object.prototype를 부모 prototype으로 판단하여 정상 ready 거절 | 첫 실패1회 원본 보존. PASS로 재분류0 |
+| browser-fixed-result.json / screen-review.json | 이전 source17466B SHA `6cd3a13627e5eeccd8484ca843ec29ff1255ede47e1a8299493d65405367d0e6`; 새 고유 실제 browser14 PASS | cross-realm 허용 수정 뒤 실제 editor3387/모의 main-context 검사; 최종008a…에 GUI14를 다시 실행했다고 표기0 |
+| 14검사 관측 범위 | own modal/iframe1·중복open0, 실제 WebGL2 CURRENT_PROGRAM/isProgram/LINK_STATUS, childfocus/실제 trusted 부모blur, editor scene/selection/view 보존, Tab·Enter·Space native controls, parent Delete/CtrlZ/CtrlS 격리, Escape/Enter 복귀, stale context, midloadcancel, injected503/timeout, 외부쓰기/미예상오류 경계 | 실제 GL link 관측은 시각/A급 인수와 별도. 당시 canvas1034×713·frames15는 관측값이며 renderer 고정 규격 아님 |
+| 실패 주입·오류 | expectedHTTPFailureInjections1(HTTP503), firstFailureAttempts1; fixed run failure null, 미예상 pageErrors0·외부요청0·mutationRequests0·downloads0 | 예상503 HTTP/console 기록을 제거하거나 전체HTTP오류0이라고 쓰지 않음 |
+| error-formatter-limited-result.json | 최종 source17683B/SHA `008a33930406b5ceaea70fb83050eab46acbd24eb7cf98579cae7b64adb6dc38`; 신규 negative2 PASS + 최종 source 정상GUI 진입/복귀2 PASS; errors0/failure null | message getter throw/null throw의 admission·owned cancellation 검수2와 normal entry/restore/disposal2만 실행; 이전 memory16/GUI14 재실행·합산0 |
+| hidden / blur | nativeParentBlurObserved true; nativeHiddenTransition SKIPPED: 실제 hidden 전환 미유도, synthetic 검수로 계산0 | blur-only 취소0은 관측, hidden cleanup은 코드 계약이며 실제 관측 인수로 승격0 |
+| entry.png | 1600×1000, 909641B, SHA `9db547beabfd1cfd5f9b2511b34aa65c44fae53ecbba6aa75e28f6eff90c7ff7` | 이전6cd… 실제 화면: 전사·늑대·기존 lab canvas·오른쪽 controls·돌아가기 표시, blank/error 없음 |
+| return.png | 1600×1000, 1229882B, SHA `96c7f995856d003b30da4e9310a76568d65edb603c23261399c4f892a7dec44b` | 이전6cd… 실제 복귀 화면: 기존 editor 하란 선택 유지, own modal/iframe 제거, focus 복귀 |
+| 화면 판정 | screen-review.json의 hostUIVisualVerdict PASS / mapVisualVerdict RETOUCH | 호스트 UI 표시/복귀만 PASS. 1254² clean plate의 확대 흐림은 그대로이며 terrain 선명도·접합 개선 claim0; contact 실화면 FAIL/defaultOFF 이력 유지 |
+| 현재 미인수 | actualMainGame=false, durableGift=false, saveAccepted=false, native6Accepted=false, audioAccepted=false; mainAccepted/nativeAccepted false | durable reward ACK·실제 저장·6단계 native route·청취·A급·본편 캐릭터 연동 완료0 |
+
+### 본편 접점과 다음 소비자 경계
+
+| 구분 | 이번 확정 상태 | 다음 책임 |
+|---|---|---|
+| public host | 독립 own DOM/iframe의 준비·입력 focus·오류/취소·복귀 수명 구현 | separate public gate는 이 절에서 import/완료/본편채택으로 단정하지 않음 |
+| editor selected-NPC host | 기존 `createEditorPreviewHost`의 editor selection→접근점 preview 계약 유지 | `createMainRiftHost`가 선택NPC payload를 보내거나 그 host를 대체한 것으로 표기0 |
+| 본편 caller | lexical player 객체·character string·stage integer·context identity·onfalse·stageClearedtrue를 readContext로 공급해야 함 | 현재 모의 context 검사에서 actual main P/G/캐릭터 이전 완료로 승격0 |
+| current1-1 DEMO | 기존 `_DEMO_MODE=true`, `_DEMO_LAST_STAGE=0`, nextBtn의 demo 분기가 `_proceedNextStage` 일반 접점을 우회하는 경계 유지 | host만으로 1-1→틈 진입 완료0; DEMO 분기·SP10 clear보상·bossretry/_preArenaBackup 변경0 |
+| 전환/입력 후속 | 5초 showStageTransition callback/900ms curtain, job/epoch·P/G/_charId(null 정상)/_charIdx/stage/difficulty·held/gamepad/update 격리 본편 인수 PENDING | host return≠continue job. 취소/실패 뒤 자동nextStage0, 실제 캐릭터port·내구 save ACK/native6/audio는 별도 검수 |
+
+### MAP PRODUCTION REPORT — §23
+
+| 필수 항목 | 이번 범위·관측 |
+|---|---|
+| STAGE | 독립 지옥의 틈 main-rift own DOM/iframe public host의 실제 editor3387 표시/복귀·문서 동기화; 본편 gate 인수 단계 아님 |
+| MASTER | 기존 상승 여정/지옥의 틈 silhouette·구역·main route·side space 계획 그대로; 계획 geometry 추가0 |
+| OUTER MASS | LEFT/RIGHT/TOP/SOUTH 및 major opening 이미지/외곽 geometry 변경0; 기존 기준 재제작/새 시각검수0 |
+| LARGE | source PNG/대형 composite/overlap/repeated silhouette 수정0 |
+| MEDIUM | 연결 부품·미해결 구멍 경계 변경0; 이 host로 접합 문제가 해결됐다고 표기0 |
+| GROUND | nav1192·ground source·접지/오염/구조물 연결 geometry 변경0; 기존 contact FAIL/defaultOFF 및1254² 확대흐림 유지 |
+| PLAYABLE | owned iframe input/focus/lifetime만 구현·검수. main arena/travel/breathing/threat/combat-readability·본편 held/gamepad/update 인수 PENDING |
+| LANDMARK | primary/secondary/tertiary landmark 좌표·배치 변경0 |
+| CAMERA QA | 실제 entry/return1600×1000 두 화면만 검토. START/EARLY/ARENA/SIDE_L/SIDE_R/LANDMARK/LATE/EXIT의 새 본편 종주·8시점 QA 미실행 |
+| TECH QA | 첫 realm FAIL0체크 보존; 이전6cd… 실제GUI14 PASS; 최종008a… negative2+normalGUI2 PASS 별도. route/collision/nav 신규검사0; expected503/loading/취소 경계만 해당 범위 관측, seam/performance/full native QA PENDING |
+| FILES | root public host code1과 관련 문서4가 완료소유 범위. 문서 담당은 지정4개 append만; concurrent source/raw/STATE/LOG·무관파일·이미지·game/editor/nav 수정0 |
+| GIT | 이 문서 담당의 stage/commit/push/deploy0. root가 최종 host code+관련 docs를 소유 완료 단위로 보존; 이 절만으로 원격 SHA/push 성공을 선언하지 않음 |
+| VISUAL VERDICT | **RETOUCH** — host UI 표시/복귀 화면 PASS, 전체 맵 확대흐림 미해결. contact ON의 이전 실화면 FAIL/defaultOFF와 구분 |
+| NEXT PASS | 실제 main lexical admission·DEMO1-1 접점·held/gamepad/update·callback/curtain epoch·child character·save/reward ACK/native6/audio의 별도 구현·실검수. 기존 source/nav/보호2_3/Q 전용패링/어택티켓금지 보존 |
