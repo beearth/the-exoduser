@@ -78,3 +78,9 @@ body.scene-mode{font:13px/1.5 -apple-system,BlinkMacSystemFont,'Apple SD Gothic 
 #scene-workspace .scene-object-focus,#scene-workspace #scene-object-prev,#scene-workspace #scene-object-next{min-height:44px;white-space:normal}
 
 #scene-workspace #scene-object-search{min-height:44px}
+
+#scene-workspace .scene-object-batch{grid-column:1/-1;display:flex;align-items:center;gap:8px;min-height:44px;margin:0;cursor:pointer;overflow-wrap:anywhere}
+#scene-workspace .scene-object-batch input{width:18px;height:18px;margin:0;flex-shrink:0}
+#scene-workspace .scene-object-row.batch-selected{border-color:#70cfbc;background:#21382e}
+#scene-workspace #scene-batch-section button{width:100%;min-height:44px;white-space:normal;margin-top:6px}
+#scene-workspace #scene-batch-section input{min-height:44px;min-width:0}

@@ -150,6 +150,21 @@
     }
     return true;
   }
+  // One shared world-space delta; callers own selection, snapping and the History transaction.
+  function translateObjects(objects, dx, dy) {
+    if (!Array.isArray(objects) || objects.length < 1 || objects.length > 2000) throw new Error('동시 이동 객체 목록 오류');
+    number(dx, -80000, 80000, '동시 이동 x'); number(dy, -80000, 80000, '동시 이동 y');
+    const ids = new Set(), result = [];
+    for (const o of objects) {
+      if (!o || typeof o !== 'object' || Array.isArray(o)) throw new Error('동시 이동 객체 오류');
+      const id = string(o.id, '동시 이동 객체 ID'), x = number(o.x, -40000, 40000, '객체 x'), y = number(o.y, -40000, 40000, '객체 y');
+      if (ids.has(id)) throw new Error('중복 동시 이동 객체 ID');
+      ids.add(id);
+      const nextX = number(x + dx, -40000, 40000, '동시 이동 결과 x'), nextY = number(y + dy, -40000, 40000, '동시 이동 결과 y');
+      result.push({ objectId: id, x: nextX, y: nextY });
+    }
+    return result;
+  }
   function resize(o, x, y, aspect, step = 1) {
     const q = local(o, x, y), a = o.rotation * Math.PI / 180, sign = o.flipX ? -1 : 1;
     let width = Math.max(1, Math.min(32000, Math.round(q.x / step) * step)), height = Math.max(1, Math.min(32000, Math.round(q.y / step) * step));
@@ -210,7 +225,7 @@
     undo() { this.end(); if (!this.undoStack.length) return false; this.redoStack.push(clone(this.project)); this.project = this.undoStack.pop(); return true; }
     redo() { this.end(); if (!this.redoStack.length) return false; this.undoStack.push(clone(this.project)); this.project = this.redoStack.pop(); return true; }
   }
-  const api = { clone, validate, projectSource, unityPlacement, placementDefaults, capturePlacement, decode, encode, local, hit, canWalk, resize, reanchor, route, History };
+  const api = { clone, validate, projectSource, unityPlacement, placementDefaults, capturePlacement, decode, encode, local, hit, canWalk, translateObjects, resize, reanchor, route, History };
   root.MapSceneCore = api;
   if (typeof module !== 'undefined') module.exports = api;
 })(typeof globalThis !== 'undefined' ? globalThis : window);

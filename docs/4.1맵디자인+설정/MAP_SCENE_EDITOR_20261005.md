@@ -17,6 +17,7 @@
 | 편집·렌더 | `tools/map-scene-editor.js` — preset/asset/변형/레이어/보행/저장·복원·내보내기 |
 | 객체 목록·카메라 조회 | `tools/map-scene-object-list.mjs` — inspectLayerObjects/focusObjectFoot, 선택/보기만 제어 (§18) |
 | 객체 목록 검수 | `tools/test-map-scene-object-list.cjs` — 신규14/14·실제1회 PASS (§18) |
+| 복수 이동 core·검수 | `tools/map-scene-core.js` translateObjects + `tools/test-map-scene-batch-translate.cjs` 신규13/13·실제1회 PASS (§19) |
 | 시험 캐릭터 | `tools/map-scene-actor.js` — 기존8방향 전사 idle/walk, 이미지 씬 전용 |
 | 화면 | `tools/map-scene-editor.css` — 3열 데스크톱, 760px 이하 속성 패널 토글·상단 액션 가로 스크롤 |
 | 검수 | `tools/test-map-scene-core.cjs`, `tools/test-map-scene-ui.cjs`, `tools/test-hell-rift-scene.cjs`, `tools/test-map-scene-unity.cjs` |
@@ -91,7 +92,7 @@
 | 길 브러시 | 반경0~12 tiles, 기본2, 원형 칠하기/막기. 드래그 구간은 T/2 간격 보간 |
 | 선택/길/막기 | V/B/E. 시작/출구는 툴 버튼, 월드 범위 clamp |
 | 화면 이동·확대 | Space+드래그/가운데 또는 오른쪽 버튼, 휠×1.12/÷1.12, 버튼×1.2/÷1.2, 줌 .025~3. 전체 fit·카메라 프레임 줌은 별도 계산 |
-| 단축키 | Ctrl/⌘S 저장, Ctrl/⌘Z Undo, Shift+Z 또는 Y Redo, Delete/Backspace 객체 삭제, ESC 선택/시험 종료. 입력 필드와 로딩 busy 동안 전역 편집 키 차단 |
+| 단축키 | Ctrl/⌘S 저장, Ctrl/⌘Z Undo, Shift+Z 또는 Y Redo, Delete/Backspace 단일객체 삭제(복수선택중차단), ESC 선택/시험 종료. 입력 필드와 로딩 busy 동안 전역 편집 키 차단. 폼 focusin에서 기존 held 이동·Space 해제 (§19) |
 | 캔버스 | DPR 최대2, 변경 또는 시험 이동 때 redraw |
 | 보행 시험 | MapSceneActor 기존8방향 PNG1008×48/21셀 중 첫10셀. source cell48², idle0~1/850ms, walk2~9/110ms, south 본체29px→80 world px의 고정80/29배율·source foot43, full frame alpha 보존 |
 | 방향 중심 | east/se/s/sw/w/nw/n/ne 순 source center [22.5,22.5,22,25.5,25,23.5,23.5,21.5], idle0 기준 고정. 프레임별 recenter/rescale0 |
@@ -641,3 +642,42 @@ core 의미검수=`tools/test-map-scene-placement-presets.cjs` 신규14/14·1회
 | 남은 GATE | 도구 선택/입력 검수와 전체 맵을 구분한다. VISUAL VERDICT: RETOUCH. 원화 확대 재질/높이·정적 주민·실제 grant/quest/save/상승·본편 native6단계·실청취 인수는 남아 있다 |
 
 정확 API/UI 계약은 `MAP_SCENE_EDITOR_20261005.md` §18, 가이드§23 제작보고는 `HELL_RIFT_EDITOR_RESULT_20261006.md` 같은 완료ID. 백업·의미/화면·검색·Git 근거: `/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/layer-object-list-20261006/receipt.json`. 새 전문팀/세션/중복 TASK/빌드·게임·서버/Windows/게시0, 기존 paused 자동화와 아침메일 재개0. 오늘19시 단일 보고 조건 유지.
+
+## 19. 활성 층 복수 선택·동시 이동과 입력 초점 경계 — 2026-10-06
+
+| API/UI/경계 | 정확 구현 |
+|---|---|
+| core API | `MapSceneCore.translateObjects(objects,dx,dy)`, 배열1…2000. 각 객체 plain값의 id/x/y만 읽으며 id 비어있지않은 문자열≤160·중복거절, x/y 유한−40000…40000, dx/dy 유한−80000…80000, 결과x/y 유한−40000…40000. boolean/문자수치/null/비유한/배열객체는 거절. fresh rows `{objectId,x,y}` 전부 검증 뒤 반환, 원본추가field/nav/assets 읽기·쓰기0 |
+| 세션 선택 | `batchIds:Set`+batchLayer는 활성층 하나만. `EXODUSER_SCENE_EDITOR.batchSelection()`은 fresh ID 배열 진단; snapshot/JSONv1에 선택/그룹메타0. IDs는 현층에서 재조회하며 삭제된 ID 정리. 검색·50행 페이지에서 선택을 유지 |
+| row 체크 | `.scene-object-batch` label(함께 이동), 내부 checkbox dataset.objectId/aria-label=`이름 함께 이동 선택`; 최근 체크를 primary selected로 지정. 해제 시 남은 마지막 ID를 primary로 사용. choose/name 또는 foot-focus는 단일선택으로 돌아가므로 묶음 해제 |
+| 모두/해제 | scene-batch-all=현재층 모두선택, 검색/page와무관한 실제objects 전부. 마지막 배열ID를primary로 사용. clear는Set/층만 해제, 기존단일primary는 유지. 둘다endDrag 뒤 fresh층검사 |
+| UI 치수 | checkbox label flex/gap8px/min-height44px/margin0, checkbox18²px. 선택rowborder #70cfbc/background#21382e. section 버튼width100%/min-height44px/margin-top6px/줄바꿈, 수치input min-height44px/min-width0 |
+| 단일 변형 | 2개 이상 체크 시 TRANSFORM의 input/select/button 및 pivot 찍기/feather/sourceParallax/placement save-reset disabled. property handler/flip/duplicate/delete/object-layer/pivot/savePlacement에서도 다중조건 검사. 묶음 크기·피벗·회전·레이어 이동/삭제를 암묵 수행0 |
+| 수치 이동 | scene-batch-dx/dy number입력, min−80000/max80000/default0; 빈 값 거절. snap ON은 공통dx/dy에 Math.round(delta/tileSize)×tileSize 각각1회. OFF는 소수delta 그대로. currentfreshobjects→translateObjects→History.change1→freshIDs에x/y만적용→changed/원래autosave500ms. 두 delta0이면 명시 no-op, History/autosave0 |
+| 묶음 드래그 | activegroup 안의 그림을 hit한 뒤 before=`[{id,x,y}]`, 시작world포인터, layerID 보관. resize핸들은 다중에서 비활성. pointermove는 gesture시작에서의 공통delta만 snap1회하고 전원의 결과를 함께적용. 각 객체좌표를 tile에 개별snap/clamp0 |
+| 드래그 범위 실패 | 하나라도 ±40000을 넘거나 plan이 거절되면 전원 before좌표 복귀. 연속잘못된입력의toast는 최초1회; 다음유효pointermove에서 다시계산 가능. end/lostcapture/cancel에서 기존validate+History.end, 전체이동 Undo1회·Redo1회. 속성/assets/nav/PNGsource/주민cropprofile값은 변경0 |
+| 비용 | fresh객체lookup와 적용은 Map을 만들어 선형처리. pointermove에서 nav BFS/sourcebitmap/wholeSceneClone0. History는 기존begin/end의원자백업을 사용, render는 선택된 각 그림에 기존선택stroke/발표시를 그리되 다중resizehandle0 |
+| 선택 해제 | 활성층 변경/import(save=false포함)/UndoRedo/보행 시작/팔레트 클릭/단일 목록choose·focus/다른canvas객체·빈곳hit/Esc 및 walk/block/start/exit툴로전환에서 묶음 해제. canvas에서현재묶음memberhit은묶음 유지 |
+| 가드 | busy/playing/dialogue/층locked/!visible 때 체크·전체선택·수치move 불가. clear는busy/playing/dialogue 때불가. freshlayerId/objectId 조회, stale/missing면 move차단. p0은 동일층좌표의공통이동만하며 camera focus는기존계약. import/전체경로/nav편집의기존검증·save격리유지 |
+| held 입력 | workspace focusin 대상 INPUT/SELECT/TEXTAREA이면 releaseHeld로 keys.clear+space=false. typingkeydown가드와별개로 이미누른 W/방향키/Space도해제하여 폼입력 중 자동이동/팬 방지. play/player/nav/dialogueController/history/게임save를 변경하지 않음; canvas 새입력은기존규격으로가능 |
+| 키보드 | 새list checkbox는 INPUT 기본 Space동작, batch all/clear/move와기존page/list 버튼의 Enter/Space는 전역Space팬가드의한정예외. 다른전역키·Q/E전투계약은불변 |
+| 신규검사 | tools/test-map-scene-batch-translate.cjs13그룹1회PASS. fractionalgap/all-or-nothing/2000/원본불변/History1/v2등록·nav보존. UI는 외부 summary/raw report의 고유새그룹·실제launch·첫실패·후속횟수를 따른다. 이전승인suite반복0 |
+
+그룹 이동은 편집 중 x/y의 실제 consumer이며, 원본 후보를 자동 변경하지 않는다. 주민을 움직인 편집씬의 접근 검사와 대화 앵커는 기존 현재body consumer로 다시 계산한다. 승인v2/원화/sourceatlas/보행nav/STORY/game는저장소에서불변. 자동루트수리·높이·그룹정렬/resize·본편exportbridge·실제grant/save는별도 미구현GATE다.
+
+### 2026-10-06 — 여러 그림의 상대 간격을 유지하는 동시 이동
+
+완료ID `ROOT-EDITOR-BATCH-TRANSLATE-20261006`. 격리 editor3387에서 현재 층의 NPC·소품·구조물을 체크해서 함께 이동한다. 같은 이동 거리만 적용하므로 서로의 간격·각 그림 크기와 발 기준은 유지된다.
+
+| 항목 | 정확 현행 계약·인수 경계 |
+|---|---|
+| 읽기 전용 계산 | `MapSceneCore.translateObjects(objects,dx,dy)` → fresh `[{objectId,x,y}]`. 배열1…2000, ID≤160·중복거절, 입력/결과좌표−40000…40000, 공통dx/dy−80000…80000 유한 Number. 한 개라도 잘못되면 전원 거절; 입력쓰기/개별snap·clamp0 |
+| 선택·수명 | 활성층 하나의 UI Set만. 체크/검색/페이지 유지, 현재층 모두선택은 검색과 무관하게 전부. 층 변경/import/UndoRedo/보행 시작/팔레트 선택/단일 목록 선택·보기/다른객체hit/빈곳hit/Esc에 해제. JSON v1에 그룹/선택id 필드 추가0 |
+| 소비자 | 수치dxdy와 묶음drag 모두 공통delta에만 tileSize snap1회(OFF면 소수 유지). 한 History로 x/y만 적용, Undo1회 복원. 수치0delta는 History/autosave0. drag 범위 초과는 전원 gesture 시작좌표 복귀; 다음 유효 입력부터 재개 |
+| 가드·입력 | busy/playing/dialogue/잠금/숨김/fresh ID 검사. 다중 선택 중 단일 크기·발 기준·회전·mask/규격/복제/삭제/층이동 차단. workspace focusin INPUT/SELECT/TEXTAREA는 held 이동/Space 해제, 씬·대화 상태 쓰기0. 그룹 선택 checkboxlabel와 수치·버튼 min-height44px |
+| 실제 검증 | 신규 의미13/13 PASS·최초1회·실패0. 신규 Chrome 16/16 고유 그룹 PASS / 실제 launch 2. 최초 실패·필요 후속이 있으면 browser-qa 원본에 보존하며 성공 suite·네 주민 종주·F 분기 반복0. 390px touch 에뮬레이션이며 실물폰 인수0. |
+| 보존·체크포인트 | code5+docs12 정확17 완료 범위만 정상commit/push. actualNUL89→72·원격exactSHA/보호8·타인72 대조는 외부 receipt. 두 담당 STATE/LOG는 본인 소유로 동시 갱신 가능, root덮어쓰기0. 기존23/save/2_3/Q-only/어택티켓금지 보존 |
+| 팀 실행 근거 | ROOT-RESTART-FOLLOWUP-20261006-0644. Claude 기존8 실제peer8, 06:48 첫 수집 source6·QA선행1·BOSS대기1은 이력. 06:51:12 수집은 source8·end+idle3(SKILL/BOSS/STORY)·busy5·WriteEdit0·오류0. 완료3은 메모리 diff 미채택; SKILL composer 전체에 BOSS reward HOLD 포함, BOSS count/pet/time-attack 의미 변경 및 STORY save잠금 전 stage·중복confirm 불일치는 추가 검수 대상. Codex7 전문팀 송신은 자동승인심사 거절(approval required, policy never), 새 전달/착수0. 16팀 전원 실행·완료를 선언하지 않음 |
+| 남은 GATE | VISUAL VERDICT: RETOUCH. 도구 UI/그룹이동 PASS와 환경 재질·높이·정적주민·본편grant/quest/save/상승/native6단계·실청취 미인수 분리. 발 정렬/그룹 크기 변형은 미구현 |
+
+정확 계약=`MAP_SCENE_EDITOR_20261005.md` §19. 가이드§23 MAP PRODUCTION REPORT=`HELL_RIFT_EDITOR_RESULT_20261006.md` 같은ID. 백업·핀·신규검사·화면·docs검색·정상Git 근거: `/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/batch-translate-20261006/receipt.json`. 새 전문팀/채팅/실행세션·중복TASK0, 기존paused자동화·아침메일재개0. 오늘19시 단일실제결과보고 조건 유지.
