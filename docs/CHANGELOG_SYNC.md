@@ -54464,3 +54464,8 @@ actual NUL83에서 공식완료/idle/exactpins raw6(MAP/BOSS/STORY/SKILL/QA/ENEM
 ## NPC 연결 후 관련docs 동기화 1 — 2026-10-06T14:40:05.634520+00:00
 
 완료소유관련문서7개를현재독립3387계약과정확동기화: docs/4.0케릭터스프라이트 디자인/4.0케릭터스프라이트 디자인.md, docs/4.0케릭터스프라이트 디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md, docs/4.0케릭터스프라이트 디자인/PLAYER_RELIEF_2_5D_20260915.md, docs/0마스터플랜/EXODUSER_GAMEPLAY_CONTENT_PLAN_20261004.md, docs/12퍼포먼스·최적화/THREE_LOCAL_SINGLE_RUNTIME_20260929.md, docs/0마스터플랜/TEAM_CONTINUATION_POLICY_20261001.md, docs/0마스터플랜/CH1_2_5D_PRODUCTION_GOALS_20261006.md. 전수검색·원문prefix/백업보존, actual80부터checkpoint, 기존25a6e38코드/Git근거와원격exact영수증연결. VISUAL VERDICT: RETOUCH/본편native미인수.
+
+
+## NPC 연결 후 관련docs 동기화 2 — 2026-10-06T14:40:05.634520+00:00
+
+완료소유관련문서7개를현재독립3387계약과정확동기화: docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md, docs/5.0애니메이션파이프라인/5.0애니메이션파이프라인.md, docs/4.1맵디자인+설정/맵유형_확장기획.md, docs/4.1맵디자인+설정/맵메이킹_가이드.md, docs/4.1맵디자인+설정/HELL_RIFT_MAP_CANDIDATE_20261005.md, docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/CONTINUOUS-DISPATCH-20261002.md, docs/4.1맵디자인+설정/DEPTH_2_5D_BENCHMARK_20260930.md. 전수검색·원문prefix/백업보존, actual80부터checkpoint, 기존25a6e38코드/Git근거와원격exact영수증연결. VISUAL VERDICT: RETOUCH/본편native미인수.
