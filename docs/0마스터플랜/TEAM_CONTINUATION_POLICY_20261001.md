@@ -554,3 +554,13 @@ EXODUSER 작업감독 `01a0fb1e-4ec3-7dd3-bba2-f87518e881fa` 생성·TASK Read e
 | 남은 제작 | 주인공 동일 외형의 rig 원본 / 무기 socket, 발 IK·보폭, world→screen·앞뒤 가림·맵 광원, 공격 판정과 clip 시간, 실제 본편·성능 인수. 독립 모션 성공을 주인공 교체·A급 완성으로 계산하지 않음 |
 | 보존 / 송신 | 본편·맵·기존 에셋·세이브·Q/E·보호2_3 수정0. 기존 두 오더담당 및 전문팀 송신 소유 유지. 사용자 최신 수동 요청의 캐릭터 지원 담당1 배정; 새 관리 채팅·Claude 실행 세션·자동화 재개0 |
 | 상세 정본 | [전체 수치·원자료 SHA·구현·실제 QA·후속 게이트](../4.0케릭터스프라이트%20디자인/CHARACTER_RIG_MOTION_TRIAL_20261006.md) |
+
+## 2026-10-06 — 세캐릭터·지옥의 틈 2.5D 실제 consumer
+
+완료ID `ROOT-CHARACTERS-RIFT-2_5D-CONSUMER-20261006`. 공통목표 `CH1-2_5D-CHARACTER-MAP-SLICE-20261006`의 전사/실버테일/다크드루이드 세외형을 독립3387 `tools/2_5d-world-lab.html`에서 실제12본SkinnedMesh·8방향보행·1회공격·발위치·동측뿔가림·심연후경에 연결했다. SKILL·ANIMVFX는원자료보존후정정publicconsumer로실제채택했다. MAP/QA/ENEMY/BOSS/STORY 원raw는미채택; MAP/QA/BOSS/STORY v2코드수정4개는현재송신·착수영수증후공식완료수집중이다. 전문15목표는정의됐으나Codex7첫UIUX송신자동승인검토거절(approvalrequired/policynever)로실제0/나머지6미송신,ART기존선택목적대기이므로전원가동을선언하지않는다.
+
+정확계약과새검수원문은 `docs/4.0케릭터스프라이트 디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md`의실제통합절 및 `docs/4.1맵디자인+설정/HELL_RIFT_2_5D_SLICE_20261006.md`의§23 MAP PRODUCTION REPORT. 원본/셀계약502checks·실제browser9+8+13그룹·정지중교체/reset3검사PASS. 실버테일idle/walk고해상도원본소비,전사48/80·실버attack80·드루이드시트clipping과맵1254²확대흐림은남는다. **VISUAL VERDICT: RETOUCH**,완전입체3D/본편/NPCgrant・save・상승・native6・청취/A급 인수없음.
+
+외부증거 `/Users/fordeargamers/.codex/visualizations/dark-druid-character-rigs-20261006/`: actualcanvas30fps요청VP9영상consumer-qa/characters-rig-depth-effects.webm·전후화면·QA원본·source핀·백업·검색/disposition·Gitreceipt. 80부터완료소유만즉시checkpoint,미완료v2/오더STATELOG4/외부WIP미stage. code+docs정상commit/push·원격exactSHA를외부receipt에보존한다. 게임/index/editor/이전rigdemo/에셋/씬/nav/save/보호2_3·Q전용·어택티켓금지·기존23보존;새팀/세션/권한/Windows/설치/빌드·게임·서버추가0,paused자동화/메일재개0.
+
+후속실제관측 2026-10-06T13:12:54Z: MAP/QA/BOSS/STORY v2 성공source·정확완료ID/actualend4·idle4 인계 완료. 원총괄 actual86에서4code의byte/fullSHA를대조해후보미채택즉시보존한다. 직전미완료표기는그관측시점이력이며현재raw완료4/consumer추가채택0,상세root의미검수전이다. 정확핀은CH1_2_5D_TEAM_CANDIDATES_20261006.md의v2보존절.

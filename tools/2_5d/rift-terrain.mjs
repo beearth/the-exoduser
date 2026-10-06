@@ -99,7 +99,7 @@ export async function createRiftTerrain({ THREE, angle=50, scale=400 }={}) {
         abyss.offset.set(-(view.x-4000)*factor/8000,(view.y-4000)*factor/8000);
       };
     }
-    const wallPos=[],wallColors=[];
+    const wallPos=[],wallColors=[],wallUV=[];
     for(let i=0;i<opening.length;i++) {
       const j=(i+1)%opening.length, corners=[opening[i],opening[j],inner[j],inner[i]], clipped=clipPolygon(corners,cfg.clip);
       for(let k=1;k<clipped.length-1;k++)for(const q of [clipped[0],clipped[k],clipped[k+1]]) {
@@ -107,11 +107,12 @@ export async function createRiftTerrain({ THREE, angle=50, scale=400 }={}) {
         const a=opening[i],b=opening[j],dx=b[0]-a[0],dy=b[1]-a[1],len=Math.hypot(dx,dy)||1;
         const distance=Math.abs(dx*(q[1]-a[1])-dy*(q[0]-a[0]))/len;
         const maxDistance=Math.max(1,Math.abs(dx*(inner[i][1]-a[1])-dy*(inner[i][0]-a[0]))/len),f=Math.min(1,distance/maxDistance),v=worldToScene(q[0],q[1],-cfg.authoredDepth*f);
-        wallPos.push(v.x,v.y,v.z);const c=new THREE.Color().setRGB(.15-f*.11,.19-f*.13,.22-f*.14);wallColors.push(c.r,c.g,c.b);
+        wallPos.push(v.x,v.y,v.z);wallUV.push(q[0]/8000,1-q[1]/8000);
+        const c=new THREE.Color().setRGB(.15-f*.11,.19-f*.13,.22-f*.14);wallColors.push(c.r,c.g,c.b);
       }
     }
-    const walls=new THREE.BufferGeometry();walls.setAttribute('position',new THREE.Float32BufferAttribute(wallPos,3));walls.setAttribute('color',new THREE.Float32BufferAttribute(wallColors,3));walls.computeVertexNormals();resources.push(walls);
-    mesh(walls,new THREE.MeshBasicMaterial({vertexColors:true,side:THREE.DoubleSide}),'Authored single chasm skirt · depth240 world');
+    const walls=new THREE.BufferGeometry();walls.setAttribute('position',new THREE.Float32BufferAttribute(wallPos,3));walls.setAttribute('color',new THREE.Float32BufferAttribute(wallColors,3));walls.setAttribute('uv',new THREE.Float32BufferAttribute(wallUV,2));walls.computeVertexNormals();resources.push(walls);
+    mesh(walls,new THREE.MeshBasicMaterial({map:plate,vertexColors:true,side:THREE.DoubleSide}),'Authored textured chasm skirt · depth240 world');
     const foot=source.layers.find(l=>l.id==='foot'), horn=foot.objects.find(o=>o.id==='obj-east-horn'), asset=source.assets.find(a=>a.id===horn.assetId), points=horn.mask.map(([x,y])=>[horn.x+x*horn.width,horn.y-horn.height+y*horn.height]);
     // A foot-anchored camera-facing cutout: no camera quaternion update is necessary at fixed angle.
     const positions=[],uvs=[];
@@ -123,7 +124,7 @@ export async function createRiftTerrain({ THREE, angle=50, scale=400 }={}) {
     const canWalk=(x,y,r=12)=>!disposed&&Number.isFinite(x)&&Number.isFinite(y)&&Number.isFinite(r)&&r>=0&&K.canWalk(source,x,y,r);
     if(!canWalk(cfg.spawn.x,cfg.spawn.y))throw new Error('2.5D 대표 보행 시작점이 막혀 있습니다');
     return {object3d,worldToScene,sceneToWorld,canWalk,spawn:{...cfg.spawn},bounds,occluders,
-      snapshot:()=>({disposed,angle,scale,sourceSceneSha256:cfg.sceneSha256,navSha256:source.sourcePins.nav,walkableCount:1192,clip:{...cfg.clip},physicalHeight:'UNKNOWN',authoredDepth:cfg.authoredDepth,authoredInset:cfg.authoredInset,groundTriangles:floorTriangles.length,occluderFootY:horn.y,sourceParallaxApplied:true,maskFeatherApplied:false,nativeAccepted:false}),
+      snapshot:()=>({disposed,angle,scale,sourceSceneSha256:cfg.sceneSha256,navSha256:source.sourcePins.nav,walkableCount:1192,clip:{...cfg.clip},physicalHeight:'UNKNOWN',authoredDepth:cfg.authoredDepth,authoredInset:cfg.authoredInset,groundTriangles:floorTriangles.length,occluderFootY:horn.y,sourceParallaxApplied:true,skirtTextureApplied:true,maskFeatherApplied:false,nativeAccepted:false}),
       dispose(){if(disposed)return;disposed=true;object3d.clear();for(const r of new Set(resources))r.dispose();resources.length=0;}
     };
   } catch(error) {object3d.clear();for(const r of new Set(resources))r.dispose();throw error;}

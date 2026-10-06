@@ -40,3 +40,32 @@ Codex7 7팀 새 지시 중 첫 UIUX 송신이 자동 승인 검토에서 거절�
 기존 후보 검수: QA crop h/anchorY의 정상 변화에 발드리프트 오탐 및 world foot 관측 부재, BOSS 전용 원화 부재 표기 오류(실제 dive/emerge/transform 이미지 존재), STORY 잘못된 flags/Promise를 빈 신규상태로 오인하는 문제가 확인됐다. SKILL explicit locomotion 모드 미적용은 root 파생 public consumer에서 수정했다. ANIMVFX는 rotation 초기화·실패 의존성·동일 transparent pass 계약을 root 파생본에 반영했다. 새 v2 목표 CH1-2_5D-CONSUMER-CORRECTION-20261006-{ROLE}은 MAP/QA/BOSS/STORY만 각1파일 상한으로 오더담당에게 인계했으며 원 raw7을 수정하지 않는다. 팀 자체 fixture나 이전 memory 결과를 root 의미 PASS로 계산하지 않는다.
 
 QA1257 memory 회차는 실제 임시 probe.mjs 작성·실행·삭제가 관측되어 파일출력0/scratch0/cleanup0으로 계산할 수 없다. 원자료·production 수정 증거는 없으며 오더담당이 원 command/result와 정정 인계를 own STATE에 보존했다. root는 해당 파일에 접근하거나 재삭제하지 않는다.
+
+## 실제 consumer 채택 후 상태 — 첫6/후속MAP 보존은 위 시점별 이력
+
+공식 완료ID `ROOT-CHARACTERS-RIFT-2_5D-CONSUMER-20261006`. 세캐릭터의 실제12본 weighted skin·8방향·키보드보행·1회공격·발접지·심연/전경가림을 독립3387 lab에 연결했다. SKILL·ANIMVFX 원raw에서 수정한 publicconsumer를 실제채택했다. 정확코드/수치/원본핀/검수는 `DIRECTIONAL_CHARACTER_RIGS_20261006.md`와 `HELL_RIFT_2_5D_SLICE_20261006.md`를 따른다. 본편/NPC지급·save·상승·전투/native/청취/A급 인수는 아직 없다.
+
+| 구분 | 실제 관찰 상태 |
+|---|---|
+| 기존 전문15 목표 | 공통목표와역할별출력15개정의완료; 관리3/전문15 유지 |
+| Claude8 첫회차 | 8송신,7역할(SKILL/QA/ENEMY/ANIMVFX/BOSS/STORY/MAP) 코드원자료·공식end/idle 인계 및 정확raw보존. ART는기존선택목적대기 |
+| 소비자 채택 | SKILL·ANIMVFX corrected public파생본2개는 이번root lab에서실제소비. 다른raw5개는미채택 |
+| 수정v2 | CH1-2_5D-CONSUMER-CORRECTION-20261006-MAP/QA/BOSS/STORY 기존4팀에13:08:24Z각1회송신·실제peer4. 13:10:09Z 관측source3/end0/STORY작성1; 이후파일존재만으로완료계산0,완료영수증수집을담당에게인계 |
+| Codex7 | UIUX 첫송신자동승인검토거절(도구승인필요/currentpolicynever),실제수신0/나머지6미송신. 이전거절목적재시도·우회0 |
+| root실검수 | 502원본/셀contracts,실제browser9+8+13그룹,마지막정지중교체/reset3검사PASS. 팀fixture를root검수로재사용하지않음 |
+| 화면판정 | 캐릭터원형·실제bone변형·고해상도실버테일소비확인. 맵1254²확대흐림/skirt접합으로VISUALRETOUCH. 완전3D원본/native6/청취미인수 |
+
+완료소유코드·관련docs만checkpoint한다. 원자료7의공식ID·actualbytes/fullSHA/end는 `CH1_2_5D_TEAM_CANDIDATES_20261006.md`에보존했다. 기존paused자동화/아침메일·보호2_3·Q전용·어택티켓금지·사용자save·타인WIP·이전23·user게임3333/3340·앱3381/3383/Windows보존. v2작성중파일이나오더STATE/LOG는rootstage에포함하지않는다.
+
+## v2 완료 소유4의 즉시 보존 (상세 의미 검수 전)
+
+Claude8 13:12:54Z inventory 및 현재TASK의 성공source/공식end4/idle4를 실제 인계받았다. 원총괄 actual86에서 bytes/fullSHA를 재대조해 아래4개를 후보미채택checkpoint한다. 팀자체fixture를root 의미PASS로 계산하지 않으며 이전raw7은불변이다. 13:10:09Z end0은이전관측이력이다.
+
+| 역할 / 정확파일 | bytes / fullSHA256 | 공식완료ID / actualend |
+|---|---|---|
+| MAP / `tools/team-followup-20261006/hell-rift/MAP/scene-roundtrip-2_5d.v2.candidate.mjs` | 11736 / `bd5aedb146ec72713d88ebc3bff256a6047b1f1fe6312158133d655a4cb9e336` | `CH1-2_5D-CONSUMER-CORRECTION-20261006-MAP-V2-CANDIDATE` / `c4f9b5b7-2f21-466c-92a1-c121d69a97fe` |
+| QA / `tools/team-followup-20261006/hell-rift/QA/slice-acceptance-2_5d.v2.candidate.mjs` | 12131 / `abe974b6571fd239f7b07695113122642e6a5b9ecc02d56777705e36a6e3a955` | `CH1-2_5D-CONSUMER-CORRECTION-20261006-QA-V2-CANDIDATE` / `10b9623c-6c27-4b3e-9969-fe989860cb12` |
+| BOSS / `tools/team-followup-20261006/hell-rift/BOSS/dark-druid-state-adapter-2_5d.v2.candidate.mjs` | 15017 / `2f1c7b546e4dfbeb461a78ad38a6e1936fc9a3464d58272b1b07b0673ad9bab2` | `CH1-2_5D-CONSUMER-CORRECTION-20261006-BOSS-V2-CANDIDATE` / `88190da0-1df5-4cb2-a838-5129bb2bbeba` |
+| STORY / `tools/team-followup-20261006/hell-rift/STORY/rift-ascent-conditions-2_5d.v2.candidate.mjs` | 9425 / `d2a6ec471aacfb4bb4eea3b6ecf05a2b34af20ce6d1ba7253827cc6567aa712c` | `CH1-2_5D-CONSUMER-CORRECTION-20261006-STORY-V2-CANDIDATE` / `d9c8cceb-8813-4de4-b669-a7d32f4464e2` |
+
+MAP은원본동일성/핀과projection/editor미인수구분,QA는crop/foot/provider오탐분리,BOSS는실재전용원화와catalog미등록/rest·가시성분리,STORY는잘못된read/previewflag를commit으로오인하지않는후보다. 모두본편/독립consumer추가채택0. 실제3387·native·청취 Gate는별도다. QA1257scratch위반이력도불변.

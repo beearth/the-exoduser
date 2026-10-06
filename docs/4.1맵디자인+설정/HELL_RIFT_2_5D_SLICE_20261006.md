@@ -1,6 +1,6 @@
 # 지옥의 틈 · 독립 정사영 2.5D 대표 구간
 
-완료 식별: `ROOT-RIFT-2_5D-TERRAIN-SLICE-20261006`. 현재 상태는 **독립 지형 모듈 구현 / 실제 화면 인수 대기 / 생산 미채택**이다. 캐릭터·lab 소비자는 총괄 담당이며, 이 문서의 지형 제작 범위는 `tools/2_5d/rift-terrain.mjs`다. 기존 원화·씬 JSON·nav·에디터·주민 atlas·사용자 저장을 변경하지 않는다.
+완료 식별: `ROOT-RIFT-2_5D-TERRAIN-SLICE-20261006`. 현재 상태는 **독립3387 통합 consumer 구현·브라우저 검수 / VISUAL RETOUCH / 본편 생산 미채택**이다. 캐릭터·lab 소비자는 총괄 담당이며, 이 문서의 지형 제작 범위는 `tools/2_5d/rift-terrain.mjs`다. 기존 원화·씬 JSON·nav·에디터·주민 atlas·사용자 저장을 변경하지 않는다.
 
 ## 1. 정본과 보존 계약
 
@@ -60,11 +60,11 @@ h=Y*S
 |---|---|
 | 지면 | 전체8000² 사각형에서 원본 심연28점 mask를 hole로 triangulate한 뒤 대표 clip에 자른다. clean plate UV는 canonical x/8000, 1−y/8000로 정확 등록. 6crop이 같은 전체 이미지/배율을 공유하는 관계를 이용한 단일 지면 |
 | 심연 | 원본 mask28점의 중심 방향90% inset 후경. 검수용 h−240worldpx, 원본 높이 의미 없음. 현재 물리적 낭떠러지/추락 판정 추가0 |
-| 측면 | 원본 opening과90% inset 사이의 단일 chasm skirt. 깊이0…240worldpx, 정적 어두운 vertex color. 기존 랜드마크/길 위치를 바꾸지 않음. 큰 벽 반복 생성0 |
+| 측면 | 원본 opening과90% inset 사이의 단일 chasm skirt. 깊이0…240worldpx, clean plate UV(x/8000,1−y/8000) × 정적 vertex color(.15−.11f,.19−.13f,.22−.14f), f=0…1. `skirtTextureApplied=true`. 기존 랜드마크/길 위치를 바꾸지 않음. 큰 벽 반복 생성0 |
 | 심연 시차 | sourceParallax .965. 카메라 중심 ray의 h0 교차점으로 texture offset만 이동, 메시 opening 경계 고정 |
 | feather | 기존120worldpx soft mask를 새 3D hole에 재현하지 않음. `snapshot.maskFeatherApplied=false`; seam은 실제 화면에서 RETOUCH 대상 |
 | 동측 뿔 | 원본11점 mask·crop 그대로. world bbox x5640…6000/y3320…4320, footY4320. foot origin 메시를 X축−angle만큼 회전한 camera-facing plane로 배치. 카메라가 fixedangle이면 quaternion 갱신 불필요 |
-| 배우 가림 | 동측 뿔은 depth-writing mesh. 바닥보다 위인 배우 foot-depth와 함께 실제 depth test. 기존 footY 앞뒤가 실제 화면에서 유지되는지 총괄 QA 필요 |
+| 배우 가림 | 지형 단독 재질과 별도로 root lab는 전경과배우모두transparent=true/depthTest=false/depthWrite=false로같은정렬pass 사용. worldY≤4320 actor20/그외40,뿔30; behind겹침opacity.32 선택페이드. 원화front/back 기준이며 측정된물리높이 아님 |
 | 텍스처 | 원본 PNG 수정0. SRGB/Linear mag/LinearMipmapLinear min. 기본 지면 원화색 유지, 심연 tint0x8396a7 |
 
 동측 뿔 tile mask(×40=world): `[146,83],[149,83],[147,89],[147,94],[150,99],[149,105],[146,108],[141,108],[142,104],[143,100],[143,95]`.
@@ -75,21 +75,76 @@ h=Y*S
 
 코드 변경 후 docs 전체에서 `2.5D|정사영|심연|sourceParallax|footY|지옥의 틈`을 검색했다. 관련 상세 기준은 `HELL_RIFT_EDITOR_RESULT_20261006.md`, `MAP_SCENE_EDITOR_20261005.md`, `DEPTH_2_5D_BENCHMARK_20260930.md`, `_MAP_SSOT_INDEX.md`, 지옥의 틈 기획 및 총괄 문서다. 기존 완료 이력은 유지하고 이번 독립 지형 상태는 이 문서를 기준으로 총괄이 동기화한다.
 
-현재 모듈 syntax 검사만 담당 범위다. 총괄이 3387 독립 lab에서 첫 화면·WASD·심연 seam·동측 뿔 앞뒤·원화 등록을 검수한다. 기존 unit/보행 종주/native6단계 PASS를 새 Three 검수로 재사용하지 않는다. 본편 연결·NPC대화·광원/높이 물리·native·사운드·A급 완료는0이다.
+담당 작성시점 모듈 syntax검사 이후 총괄이3387 독립lab의 첫화면·WASD·원화등록·동측뿔앞뒤를 실제검수했다. 신규9+8+13그룹 및 마지막정지중3검사 PASS를 아래범위로만 인수한다. 기존 unit/보행 종주/native6단계 PASS를 새 Three 검수로 재사용하지 않는다. 본편 연결·NPC대화·광원/높이 물리·native·사운드·A급 완료는0이다.
 
-## 5. MAP PRODUCTION REPORT (§23)
+## 5. 실제 통합 인수와 MAP PRODUCTION REPORT (§23)
 
-| 항목 | 보고 |
-|---|---|
-| MAP NAME / TYPE | 지옥의 틈 / 독립 정사영 2.5D 대표 slice |
-| MASTER PLAN | 승인 원화·기존 동측 길·뿔 가림·심연을 같은 Three 화면에서 검수 |
-| LARGE OUTER MASS | 기존 clean plate 및 심연 opening 재사용. 신규 전체 지형 생성0 |
-| MEDIUM / GROUND CONNECTION | 기존1192 nav 유지. 대표 clip은 표시 영역만 |
-| PLAYABLE / COMBAT | 보행 질의와 독립 spawn 제공. 전투/native 인수0 |
-| LANDMARK / CENTER | 동측 뿔11점/footY4320 보존 |
-| SMALL DETAIL | 신규 이미지/atlas/원본 픽셀 편집0 |
-| CAMERA QA | 50° 정사영 등록 구현, 실제 화면 총괄 검수 대기 |
-| TECH QA | `node --check tools/2_5d/rift-terrain.mjs` 실제1회 PASS, 기존 suite 반복0 |
-| SOURCE HEIGHT / LIMIT | 원본 UNKNOWN; 깊이240worldpx/inset90%는 검수용 작성값 |
-| REMAINING | seam feather/색·깊이·앞뒤 가림 실제 확인, 배우 consumer 연결 |
-| VISUAL VERDICT | **RETOUCH — 실제 새 Three 화면 인수 전** |
+현재 root의 독립3387 lab가 지형 및 세캐릭터·모션·FX를 소비한다. 이전 terrain 작성시점 실제화면 대기는 이력이다. 실측원본height UNKNOWN은 그대로다. 독립start5480/3740은 뿔 앞 화면에서 캐릭터를 확인하기 위해 선택했으며 terrain 시험spawn5900/3820 및 원본scene.start/exit는 유지한다. 전체 지도·북쪽 출구 종주/전투·에디터height 저장 roundtrip을 완성한 것이 아니다. 정확배우/키/수명/실검수 계약은 `../4.0케릭터스프라이트 디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md`의 실제통합절이다.
+
+```text
+================= MAP PRODUCTION REPORT =================
+STAGE: ROOT-CHARACTERS-RIFT-2_5D-CONSUMER-20261006 / 지옥의 틈 동측 대표 구간
+MASTER
+- silhouette: 기존 회화 원형·동측 뿔·균열 보존, clip2260×1400만 표시
+- regions: 지면 / authored skirt / 심연 후경 / 동측 전경
+- main route: 기존 nav1192의 동측 통로; 원본 남쪽시작→북쪽출구 불변
+- side spaces: 이번 clip 밖 새 공간 생성0
+OUTER MASS
+- LEFT: 기존 균열 opening mask; 원화UV skirt 단일 연결
+- RIGHT: 기존 동측 plate 지면
+- TOP: 원본 뿔 crop와11점 mask
+- SOUTH: clip y4600 표시경계; 원본남쪽시작은 clip밖
+- major holes: 기존28점 opening; physical height UNKNOWN
+LARGE
+- source assets: 주민v2 scene(c508e70d…),1254²clean plate(aa64cb7b…),1920²abyss(ace0c853…)
+- composites: clippedground17triangles, authoreddepth240/inset90%, camera-fixed foreground
+- overlap: 동일transparentpass actor20/40-foreground30; 선택적opacity.32
+- repeated silhouette: 기존 원형 재사용; 새 반복 large mass0
+MEDIUM
+- connections: canonical XY/UV 및 기존nav 질의 유지
+- remaining holes: 원본feather120 미재현; hard seam RETOUCH
+GROUND
+- shadow: 실제선택배우foot 기준 Circle opacity.26/y.002/order15
+- contamination: 새 바닥 랜덤데코0; skirt plateUV×정적 vertex 음영
+- structure integration: world→scene 정사영50°등록; 실제heightmap추가0
+PLAYABLE
+- main arenas: 실제전투/보스arena검수없음
+- travel space: WASD/방향키8방향·260/470worldpx/s, radius12/clipmargin12
+- breathing space: 독립 캐릭터비교 화면, NPC거점 기능 추가0
+- threat space: 피해/낙하/적spawn추가0
+- combat readability: 공격 시트/arc만 표시; 실제피해·전투완료없음
+LANDMARK
+- primary: 심연 opening
+- secondary: 동측 뿔11점/footY4320
+- tertiary: 기존 지면 원화재질; 새atlas없음
+CAMERA QA
+- START: 5480/3740에서세외형·접지 실제확인, 기존5900/3820초기전체가림관찰보존
+- EARLY: 8방향입력·클립경계 실제검사
+- ARENA: 본편arena/전투 미검수
+- SIDE L: clip내위치관측; 전체서측카메라 미검수
+- SIDE R: 뿔겹침·opacity.32/전체가림OFF 실제비교
+- LANDMARK: 뿔앞뒤actor20/40-foreground30 실제재질 계약확인
+- LATE: 전체상승경로 미검수
+- EXIT: 원본4020/1740 불변; 실제출구 인수없음
+TECH QA
+- route: 독립8방향/nav밖제한PASS; 본편6단계미인수
+- collision: 원본nav/radius12/5샘플 질의; 새높이충돌없음
+- pageerror: 최신consumer13check와정지중3check의runtimeexception0
+- 404: 정상source로드·원본29핀확인; 의도실패로딩은readyfalse/RAF중지
+- seam: plate UV skirt 구현, feather미재현/hardedge RETOUCH
+- loading: 실패관측8그룹중포함; 다른지도/외형폴백0
+- performance: renderer1/RAF최대1/DPR≤2; 장시간FPS/실물폰미인수
+FILES
+- stage-owned: tools/2_5d-world-lab.html/.mjs, tools/2_5d/rift-terrain.mjs 및 관련docs
+- concurrent touched: 오더담당 소유 STATE/LOG4의 정상업데이트 별도보존; v2미완료WIP미stage
+- unrelated touched: 원총괄0; game/index/editor/에셋/씬/nav/세이브/2_3보존
+GIT
+- staged: 완료소유 code+관련docs만 즉시checkpoint
+- commit: 정확SHA는외부 receipt.json에서확인
+- push: 정상Git push 및원격exactSHA 외부영수증
+- deploy: 없음
+VISUAL VERDICT: RETOUCH
+NEXT PASS: 원본형태·nav유지한고밀도바닥/큰절벽·전경alpha와feather접합. 보스전용mode/NPC·상승·save/native·청취연결은별도필수Gate.
+```
+
+실제근거: `/Users/fordeargamers/.codex/visualizations/dark-druid-character-rigs-20261006/`의 원본QA·화면·WebM·마지막정지중제어검사·백업·검색·핀·Git receipt. fixture PASS와 실제화면/native·청취 인수를 구분하며 시각 판정은 맵 확대 흐림과 hard seam이 남아 **RETOUCH**다.

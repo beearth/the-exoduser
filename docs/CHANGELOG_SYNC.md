@@ -54355,3 +54355,13 @@ root 접지그림자 code3 WIP·타인 변경·live supervisor STATE/LOG·원본
 ## 2026-10-06 MAP 2.5D projection raw 완료 보존
 
 공식완료 CH1-2_5D-CHARACTER-MAP-SLICE-20261006-MAP-CANDIDATE, end ea4d8287-0d9b-4dc9-87bd-2c642d5f2d3c의 scene-roundtrip-2_5d.candidate.mjs exact6743B/70ea5ad59ecc82e5d3926c203ddee82d1aaba2f38ea8b49db7a6a16a912e0239를 후보 미채택 보존했다. nav개수/자기projection만으로 원본보존·editor roundtrip PASS를 주장하는 경계오류가 있어 root 인수gate로 사용하지 않는다. QA/BOSS/STORY/SKILL의 의미검수 오류와 QA1257 scratch/cleanup 관측은 CH1_2_5D_TEAM_CANDIDATES_20261006.md에 정확히 동기화했다. docs 전체 키워드 검색 완료; raw7/보호/타인WIP 그대로, 현재후속v2는 오더담당 소유.
+
+## 2026-10-06 — 세캐릭터·지옥의 틈 2.5D 실제 consumer
+
+완료ID `ROOT-CHARACTERS-RIFT-2_5D-CONSUMER-20261006`. 공통목표 `CH1-2_5D-CHARACTER-MAP-SLICE-20261006`의 전사/실버테일/다크드루이드 세외형을 독립3387 `tools/2_5d-world-lab.html`에서 실제12본SkinnedMesh·8방향보행·1회공격·발위치·동측뿔가림·심연후경에 연결했다. SKILL·ANIMVFX는원자료보존후정정publicconsumer로실제채택했다. MAP/QA/ENEMY/BOSS/STORY 원raw는미채택; MAP/QA/BOSS/STORY v2코드수정4개는현재송신·착수영수증후공식완료수집중이다. 전문15목표는정의됐으나Codex7첫UIUX송신자동승인검토거절(approvalrequired/policynever)로실제0/나머지6미송신,ART기존선택목적대기이므로전원가동을선언하지않는다.
+
+정확계약과새검수원문은 `docs/4.0케릭터스프라이트 디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md`의실제통합절 및 `docs/4.1맵디자인+설정/HELL_RIFT_2_5D_SLICE_20261006.md`의§23 MAP PRODUCTION REPORT. 원본/셀계약502checks·실제browser9+8+13그룹·정지중교체/reset3검사PASS. 실버테일idle/walk고해상도원본소비,전사48/80·실버attack80·드루이드시트clipping과맵1254²확대흐림은남는다. **VISUAL VERDICT: RETOUCH**,완전입체3D/본편/NPCgrant・save・상승・native6・청취/A급 인수없음.
+
+외부증거 `/Users/fordeargamers/.codex/visualizations/dark-druid-character-rigs-20261006/`: actualcanvas30fps요청VP9영상consumer-qa/characters-rig-depth-effects.webm·전후화면·QA원본·source핀·백업·검색/disposition·Gitreceipt. 80부터완료소유만즉시checkpoint,미완료v2/오더STATELOG4/외부WIP미stage. code+docs정상commit/push·원격exactSHA를외부receipt에보존한다. 게임/index/editor/이전rigdemo/에셋/씬/nav/save/보호2_3·Q전용·어택티켓금지·기존23보존;새팀/세션/권한/Windows/설치/빌드·게임·서버추가0,paused자동화/메일재개0.
+
+후속실제관측 2026-10-06T13:12:54Z: MAP/QA/BOSS/STORY v2 성공source·정확완료ID/actualend4·idle4 인계 완료. 원총괄 actual86에서4code의byte/fullSHA를대조해후보미채택즉시보존한다. 직전미완료표기는그관측시점이력이며현재raw완료4/consumer추가채택0,상세root의미검수전이다. 정확핀은CH1_2_5D_TEAM_CANDIDATES_20261006.md의v2보존절.

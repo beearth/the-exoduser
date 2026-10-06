@@ -286,3 +286,39 @@ inline 자가검증과 실행 꼬리는 채택 consumer에서 제외했다. 모�
 | snapshot | 원 endId / frozen provenance / frozen options 및 active/reason/live/spawned/expired/recycled/pool/bandWrites/suppressed/meshes |
 
 담당은 두 채택 모듈 코드와 API/provenance 문서만 작성했다. 테스트·GUI·commit/push는 root가 단일 consumer 인수에서 수행한다. 코드 수정 전 기존 문서는 `/tmp/exoduser-rig-consumers-20261006/DIRECTIONAL_CHARACTER_RIGS_20261006.md`에 SHA `ec76c395c3a1962c3f8dd0cc3f64356bacdf9cf72ceda99c891d77f010960486`로 외부 백업했다. docs 전체에서 consumer/수명/공식 완료ID 키워드를 검색했고, 공유 후보기록과 supervisor 기록의 채택상태 동기화는 root 소유다.
+
+## 실제 통합 consumer 인수 — ROOT-CHARACTERS-RIFT-2_5D-CONSUMER-20261006
+
+현재 `http://127.0.0.1:3387/tools/2_5d-world-lab.html`에서 세 외형을 같은 지옥의 틈 대표 구간에 실제로 연결했다. 앞의 담당 작성 시점 미검수는 당시 이력이며 아래 root 검사만 새 인수 근거다. 원화 plane의 실제 skin 변형이며 완전 입체 인체·보스 GLB는 아니다.
+
+| id / 소비 계약 | 실제 값 |
+|---|---|
+| warrior / silvertail / dark-druid 표시 높이 | .36 / .36 / .65 Three units; API 기본높이2.2를 변경하지 않고 caller가 지정 |
+| geometry / 골격 | 각20×28 segments,609vertices/1120triangles,12bones/1SkinnedMesh,vertex당2정규화 weight. 고정 셀에서 실제 applyBoneTransform 변형 관찰 |
+| 카메라 / 런타임 | local Three r160; OrthographicCamera 고도50°/yaw·roll0; base view height3.5units; renderer1/RAF최대1; DPR≤2; 줌80…220%/5step/기본100% |
+| 시작 / 이동 | 대표 화면5480/3740, nav1192/radius12 및 표시clip 경계margin12, 걷기260/달리기470worldpx/s, dt≤.04초. terrain 시험 spawn5900/3820 및 원본 scene.start4020/7740 불변 |
+| UI/키 | 세 선택, 제자리idle/walk/run,1회attack, WASD/방향키,Shift, J,Space정지, bones/fade체크, reset. blur/hidden/캐릭터교체/reset은 입력·공격수명 해제 |
+| 공격 event | J의 repeat=false에서 1프레임 엣지; 홀드 자동재공격0, keyup으로 수명을 취소하지 않음; 진행중 이동 정지. 전사·실버테일.81초/드루이드.6초. pose resolve와 rig.update는 프레임당 각각1회 |
+| 정지 중 교체/reset | `applyState()`에서 pose(0)/render/updateUi. 시간 진행 없이 실제 배우 position·그림자·가림을 새 상태에 맞춤 |
+| 정렬 | actor.transparent=true/depthTest=false/depthWrite=false, 기존alphaTest 유지; y≤4320 actor20/그외40, 전경30/동일transparent pass, helper70. 원화 깊이를 z-buffer 실측으로 주장하지 않음 |
+| 전경 페이드 | 기본ON. 배우foot가뿔뒤/마스크bbox와 겹치면opacity.32,그외1. x범위는 배우height×400/2만큼 확장; 체크OFF 전체가림 비교 가능 |
+| 발 그림자 | CircleGeometry(1,40), color0x030a0c/opacity.26/y.002/order15, x/y scale 플레이어.10/.06·드루이드.17/.10 |
+| 효과 실제 연결 | SKILL `visual-pose-consumer.mjs`와 ANIMVFX `actor-effect-lifetime.mjs`의 ROOT-ADOPTED provenance를 실제 소비. dust size 플레이어.022/드루이드.042, attack.08/.145, depthTest=false. 수명520/240ms/최소간격110ms/cap24는 유지 |
+| 효과 수명 | 캐릭터별3인스턴스/각cap24(가능pool총72), 현재 배우만update; 교체/reset 이전live 회수. live OS reduced-motion change에서3인스턴스dispose/recreate, 새효과 억제. frame 먼지 event는 양발IK 완료의 증거 아님 |
+| 실패/해제 | 로딩·크기·셰이더·컨텍스트 오류 ready=false/입력비활성/RAF중지/다른외형폴백0; pagehide renderer/rig/terrain/helper/effects/shadow dispose |
+| 관측 API | `window.__rift25Lab.snapshot()` 읽기전용 진단. 실제actorScenePosition/shadowScenePosition·재질/정렬값·pose/effects provenance와 state/rig/terrain/canvas 반환. scene/state setter 제공0 |
+
+### 실제 검수·영상과 남은 품질
+
+외부 근거 디렉터리 `/Users/fordeargamers/.codex/visualizations/dark-druid-character-rigs-20261006/`:
+
+| 근거 | 새 관찰 / 결과 |
+|---|---|
+| contracts-result.json | 원본29PNG 정확bytes/SHA/dimensions+472 셀/방향/UV 등 총502checks PASS |
+| browser-qa-final/result.json | 통합 화면·실제8방향·모션/경계 등9그룹 PASS. 이전 실패 하네스 및 잘못된 초기 화면은 별도 보존 |
+| supplement/result.json | 고정원화셀의 실제weighted vertex 변형,고해상도실버테일,공격원본,nav,페이드,로딩실패 등8그룹 PASS |
+| consumer-qa/result.json | 실제2팀provenance소비/transparent정렬/텍스처skirt/preview/J엣지/전환·reset/FXcap/reduced-motion 등13checks PASS, runtimeexception0 |
+| paused-control-result.json | 마지막read-only검토P2 수정 후 정지 중 교체/리셋의 실제position·shadow정합 및 runtimeexception0,3checks PASS |
+| 실제 화면 / 영상 | consumer-qa/silvertail-depth.png, dark-druid-attack.png, final.png 및 characters-rig-depth-effects.webm; 실제canvas.captureStream(30), VP9 WebM. 영상 전체duration·FPS 실측/오디오 인수는 없음 |
+
+root가 실제 실버테일/드루이드 화면을 육안 확인했다. 실버테일idle/walk는고해상도원본을소비하지만attack80px,전사48/80px,드루이드기존시트의 clipping 한계는 남는다. 실버테일16RGBA1254²은 대략96MiB GPU텍스처만 사용하는 데스크톱 시험이며 휴대폰·장시간성능 인수는 없다. 맵 원화1254² 확대 흐림·skirt hard seam으로 **VISUAL VERDICT: RETOUCH**. 본편game/index/editor/이전rig-motion 파일·원본29PNG/scene/nav/save 수정0. NPC대화·실지급·상승gate·전투·피해·dive/emerge/transform/beast rig mode·본편native6단계·청취·A급완성은 미인수다. 드루이드전용원화는실재하나 현재catalog에idle/walk/attack만등록되어있다.
