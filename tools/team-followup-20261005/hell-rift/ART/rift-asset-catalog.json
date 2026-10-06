@@ -1,0 +1,253 @@
+{
+  "schema": "rift-asset-catalog/1",
+  "meta": {
+    "role": "ART",
+    "order": "CH1-A-ART-20261006",
+    "sessionUUID": "94436f2f-74d9-40c2-b0b5-21c6022e8dc4",
+    "roleRegistrySource": "docs/4.1맵디자인+설정/CH1_1_A_GRADE_PRODUCTION_20261005.md §11 (ART 7458 / 94436f2f-... / 자산 크기·pivot·접지·레이어 교체)",
+    "endID": "ART-CH1-1-RIFT-ASSET-CATALOG-CANDIDATE-20261006",
+    "generatedKST": "2026-10-06",
+    "status": "candidate",
+    "acceptance": "NOT production acceptance. 후보 대조·미완료 목록일 뿐이며 M1/M2/M3/M5·bake·collision·placements.json·retouch-layers.json·composition.json·code·save 변경 0.",
+    "scope": "CH1-1 외곽 매스(root buttress) 신규 후보 1점과 기존 외곽/레이어 자산의 실제 크기·pivot·접지·분리 가능성 대조, 그리고 레이어 배치/교체/clean-plate 미완료 항목.",
+    "readDocs": [
+      "docs/4.1맵디자인+설정/CH1_1_A_GRADE_PRODUCTION_20261005.md §3, §6",
+      "docs/4.1맵디자인+설정/MAP_SCENE_EDITOR_20261005.md",
+      "docs/4.1맵디자인+설정/HELL_RIFT_EDITOR_RESULT_20261006.md"
+    ],
+    "assetGeneration": "0 (신규 자산/인물/clean-plate 생성 없음). 기존 파일만 읽어 측정."
+  },
+
+  "worldConstants": {
+    "tileSize": 40,
+    "gridTiles": [200, 200],
+    "worldPx": [8000, 8000],
+    "bakeCorePx": [8192, 8192],
+    "chunkGrid": [8, 8],
+    "originalArtToWorldScale": "25/6 (1920² 원화 → 8000² world)",
+    "source": "HELL_RIFT_EDITOR_RESULT_20261006.md (200×200 tiles / T40 / 8000×8000 world / 6 layers), production_finish/placements.json (tileSize 40)",
+    "placementSchemas": {
+      "placements": "[tileX, tileY, variantId, scale]  (decorator/tree props, production_finish/outer90_sources/placements.json)",
+      "massPlacements": "[tileX, tileY, variantId, sizePx, flipX]  (대형 외곽 매스)",
+      "rootBridges": "[worldX, worldY, variantId]",
+      "retouchLayers": "{id, file, x, y, width, height}  bake-pixel 공간 (production_finish/retouch-layers.json / composition.json)"
+    }
+  },
+
+  "candidate": {
+    "id": "root_buttress_v3",
+    "path": "assets/map/ch1/a_grade_candidates/20261005/root_buttress_v3.png",
+    "sha256": "8e2b6103bd7cd2e1a73599abf64b563ce1932c88e45d66a58f79e3079e65f5b6",
+    "bytes": 1555137,
+    "format": "PNG RGBA",
+    "pixelSize": [1774, 887],
+    "aspect": 2.0,
+    "rootCandidateID": "ROOT-CH1-A-OUTER-BUTTRESS-CANDIDATE-20261005",
+    "alpha": {
+      "fullyTransparentPx": 965861,
+      "partialPx": 607327,
+      "fullyOpaquePx": 350,
+      "nonTransparentPx": 607677,
+      "nonTransparentAlpha": { "q10": 62, "q25": 251, "q50": 253, "q99": 254, "mean": 224.2314 },
+      "note": "몸체 대부분 거의 불투명, 얇은 끝/경계만 부분투명. 출처: CH1_1_A_GRADE §6.",
+      "measuredBy": "doc §6 (PIL 재측정은 이 환경에 미설치 → doc SSOT 값 채택)"
+    },
+    "opaqueBBox": [17, 33, 1712, 864],
+    "margins": { "left": 17, "top": 33, "right": 61, "bottom": 22, "unit": "px", "requested": "모든 변 6% 여백", "meetsRequest": false },
+    "canvasEdgeContact": "비투명 pixel의 캔버스 접촉 0 (잘림 없음)",
+    "silhouette": "높은 좌측 접힌 뿌리/절벽 → 사선 중간 선반 → 낮은 우측 뿌리 부채. 중앙·우측 직립 나무 반복 제거형.",
+    "derivedFootPivot": {
+      "native_px": [865, 864],
+      "native_rule": "opaque bbox 하단 중앙: x=(17+1712)/2≈864.5, y=864(bbox bottom)",
+      "normalized": [0.4873, 0.9741],
+      "verified": false,
+      "note": "접지선(foot y)은 bbox 하단 기준 산출값. 실제 카메라 접지/발밑 그림자 정렬 미검수 (doc §6: 실제 카메라 접지 미검수)."
+    },
+    "separability": {
+      "state": "fused-single-mass",
+      "independentLayerPieces": 0,
+      "cleanPlate": false,
+      "note": "단일 융합 매스 1장. 에디터 6-crop(25/6) 같은 독립 조각으로 분리 안 됨. back silhouette/front occluder 분리나 바닥·절벽 투명 clean-plate 분리 결과 아님."
+    },
+    "generation": "built-in image_gen (transparent_background=true) 3회. 외부 CLI/API key·PixelLab·캐릭터 생성 없음. 원본 3장 + 참조 원본 보존.",
+    "visualVerdict": "RETOUCH",
+    "verdictReason": "개별 이미지 깊이·방향/광·마감, 게임 시점 및 기존 환경 연결 보완 필요 (doc §6)."
+  },
+
+  "existingAssets": [
+    {
+      "id": "rotforest_mass_01",
+      "path": "assets/map/ch1/production_finish/outer90_sources/rotforest_mass_01.png",
+      "sha256": "330e4ba996fe8c9180d1667f0f9fe606348a5681dd2c95c94b1f35a5964dbd19",
+      "pixelSize": [2048, 1152], "bytes": 3152955, "alpha": true,
+      "role": "현 생산 외곽 매스 source (production_finish/outer90). 후보가 재질/실루엣 참조한 계열.",
+      "separability": "개별 매스 1장 (massPlacements로 타일 배치). pivot=하단중앙 관례."
+    },
+    {
+      "id": "rotforest_mass_02",
+      "path": "assets/map/ch1/production_finish/outer90_sources/rotforest_mass_02.png",
+      "sha256": "99aec3f7604820e3764cca4651e5fe955c72f3778ca068c40edc07d377025676",
+      "pixelSize": [2048, 1152], "bytes": 2373147, "alpha": true,
+      "role": "후보 재질 참조 원본 (doc §6 참고). 현 외곽 매스 반복 실루엣의 한 축."
+    },
+    {
+      "id": "rotforest_root_bridge_01",
+      "path": "assets/map/ch1/production_finish/outer90_sources/rotforest_root_bridge_01.png",
+      "sha256": "4748dbd64372ca150143ebdb448a269017b2587e520bf43a6dd811953bc2edd8",
+      "pixelSize": [1698, 935], "bytes": 869902, "alpha": true,
+      "role": "rootBridges 배치용 매스. 후보와 유사한 가로형 비율(≈1.82) 참고."
+    },
+    {
+      "id": "rottenwood_living_hell_v7_left_layer",
+      "path": "assets/map/ch1/rottenwood_living_hell_v7_left_layer.png",
+      "sha256": "10e9009d1b5e8b341702ccb2713c17791ba196065f5602b92a854d0ebb5ef001",
+      "pixelSize": [2048, 2048], "bytes": 10711359, "alpha": true,
+      "role": "v7 좌측 레이어 (리프트 에디터 crop 계열). 후보 좌측 고매스가 겹칠 수 있는 기존 baked mass 영역."
+    },
+    {
+      "id": "rottenwood_living_hell_v7_right_layer",
+      "path": "assets/map/ch1/rottenwood_living_hell_v7_right_layer.png",
+      "sha256": "b0e821ac43a5cfce9f3ec68c604421467cdcd2215d7dfafd439504f2173de5f9",
+      "pixelSize": [2048, 2048], "bytes": 10785470, "alpha": true,
+      "role": "v7 우측 레이어. 후보 우측 낮은 부채가 겹칠 수 있는 영역."
+    },
+    {
+      "id": "rottenwood_living_hell_v7_ground_layer",
+      "path": "assets/map/ch1/rottenwood_living_hell_v7_ground_layer.png",
+      "sha256": "1c66259721e7d5182aa3f2133c436edd59064640a4e9a03432cba9d201480412",
+      "pixelSize": [2048, 2048], "bytes": 10935833, "alpha": true,
+      "role": "v7 지면 레이어. 후보 접지선 정렬 대조 기준(발밑 그림자/지면 접촉)."
+    },
+    {
+      "id": "rottenwood_living_hell_v7_north_layer",
+      "path": "assets/map/ch1/rottenwood_living_hell_v7_north_layer.png",
+      "sha256": "8732e603ee535f4d69160143a65597322c2b5de82207f24a4e647b3fbcbdc0d7",
+      "pixelSize": [2048, 2048], "bytes": 10487181, "alpha": true,
+      "role": "v7 북측 레이어. north_fork/north_exit 실루엣 대조."
+    }
+  ],
+
+  "productionMassPlacements": {
+    "source": "assets/map/ch1/production_finish/outer90_sources/placements.json (version 20260930-rotforest-96)",
+    "note": "현 생산 외곽 매스 배치. 후보 교체 검토 대상(좌/우 대형 매스). 값 변경 0, 참조용 복사.",
+    "massPlacements": [
+      { "tile": [19, 82], "variant": 1, "sizePx": 2050, "flipX": false, "side": "left" },
+      { "tile": [31, 125], "variant": 2, "sizePx": 2150, "flipX": false, "side": "left" },
+      { "tile": [178, 82], "variant": 2, "sizePx": 2050, "flipX": true, "side": "right" },
+      { "tile": [162, 124], "variant": 1, "sizePx": 2150, "flipX": true, "side": "right" },
+      { "tile": [25, 172], "variant": 1, "sizePx": 2200, "flipX": false, "side": "left-south" },
+      { "tile": [175, 172], "variant": 2, "sizePx": 2200, "flipX": true, "side": "right-south" }
+    ]
+  },
+
+  "comparison": {
+    "size": {
+      "candidate": [1774, 887],
+      "existingMassTypical": [2048, 1152],
+      "drawnMassSizePxRange": [2050, 2200],
+      "finding": "후보는 기존 매스보다 작고 더 가로로 긴 비율(2.0 vs 1.78). 생산 매스 draw 높이 2050~2200px에 맞추려면 약 2.3~2.5× 업스케일 필요 → 디테일 해상도 손실 위험. 교체 전 해상도/업스케일 검토 필요."
+    },
+    "pivot": {
+      "candidate": "하단중앙 산출값 native(865,864), norm(0.487,0.974)",
+      "existing": "massPlacements는 타일 좌표+sizePx로 배치, pivot 관례=하단중앙",
+      "finding": "pivot 관례는 호환되나 후보 접지 y가 캔버스 하단에서 22px 떠 있어 배치 시 22px(네이티브)만큼 아래로 보정하거나 접지선 재정의 필요."
+    },
+    "grounding": {
+      "candidate": "opaque 하단 y=864 / 캔버스 887 → 하단 여백 22px. 자체광/그림자만, 게임 접촉 그림자 없음.",
+      "finding": "실제 카메라 접지 미검수. v7 ground_layer와 접지선 대조 및 발밑 접촉그림자 추가 필요. baked mass 위 중복 접지 금지."
+    },
+    "separability": {
+      "candidate": "fused 단일 매스, 독립 조각 0, clean-plate 없음",
+      "existing": "에디터는 원화를 6 crop(25/6)으로 독립 편집, 단 전체 clean-plate 분리는 아님 (HELL_RIFT_EDITOR_RESULT §원화 분리 주)",
+      "finding": "후보를 back/front 깊이 레이어로 쓰려면 수동 분할 필요. 현 상태로는 단일 평면 overlay만 가능."
+    }
+  },
+
+  "incomplete": {
+    "layerPlacement": [
+      {
+        "id": "LP-1",
+        "item": "후보의 최종 레이어 귀속 미정 (border foreground vs back outer mass).",
+        "detail": "기존 border foreground DEFAULT_ON=true. 후보가 전경/배경 중 어느 depth layer인지 미결정. 6-layer(abyss/.../front) 중 배치 레이어와 z-order 미정.",
+        "blockedBy": "massPlacements 교체 승인 + depth 분할 결정",
+        "status": "incomplete"
+      },
+      {
+        "id": "LP-2",
+        "item": "world 배치 좌표/스케일 미정.",
+        "detail": "교체 대상 후보 슬롯(tile [19,82]/[31,125] 좌, [178,82]/[162,124] 우)과 sizePx(2050~2200) 대비 후보 native 1774×887의 scale·flipX·pivot offset 미산출. 승인값 아님.",
+        "blockedBy": "MAP 8-camera 구도 승인",
+        "status": "incomplete"
+      },
+      {
+        "id": "LP-3",
+        "item": "접지선(foot y) world 정렬 미검수.",
+        "detail": "후보 하단 22px 여백 보정 + v7 ground_layer 접지선 대조 + 접촉그림자 미적용.",
+        "blockedBy": "실제 카메라 접지 QA",
+        "status": "incomplete"
+      }
+    ],
+    "replacement": [
+      {
+        "id": "RP-1",
+        "item": "기존 baked outer mass와 이중 드로잉 방지 미설계.",
+        "detail": "CH1_1_A_GRADE §1: 새 PNG가 기존 baked mass와 겹쳐 두 번 그려지지 않도록 replacement·clean plate·pivot·mask 먼저 설계. 현재 미설계.",
+        "blockedBy": "clean-plate(CP-1) + LP-1",
+        "status": "incomplete"
+      },
+      {
+        "id": "RP-2",
+        "item": "교체 대상 매스 식별만 됨, 실제 교체 미적용.",
+        "detail": "좌측 고매스 2슬롯/우측 저부채 2슬롯이 후보 실루엣 후보지. placements.json·retouch-layers.json·composition.json·bake 변경 0 (root만 변경).",
+        "blockedBy": "root 생산 채택",
+        "status": "incomplete"
+      },
+      {
+        "id": "RP-3",
+        "item": "해상도 적합성 미해결.",
+        "detail": "후보 887px 높이 → 생산 draw 2050~2200px로 2.3~2.5× 업스케일 시 디테일 손실. 재생성/업스케일 판단 필요 (이번 생성 0).",
+        "blockedBy": "VISUAL VERDICT RETOUCH 해소",
+        "status": "incomplete"
+      }
+    ],
+    "cleanPlate": [
+      {
+        "id": "CP-1",
+        "item": "교체 영역 baked mass clean-plate 미생성.",
+        "detail": "후보를 overlay/교체하려면 기존 bake의 해당 매스 영역을 투명 clean-plate로 제거해야 중복 드로잉 없음. 현재 clean-plate 0 (HELL_RIFT_EDITOR_RESULT: 원화 전체 투명 clean-plate 분리 아님 / CH1 §6: clean plate 미검수).",
+        "blockedBy": "RP-1 설계 + bake 변경 권한(root)",
+        "status": "incomplete"
+      },
+      {
+        "id": "CP-2",
+        "item": "후보 자체 분리(back/front) clean-plate 미생성.",
+        "detail": "후보를 전경 occluder와 배경 실루엣으로 나누려면 soft/hard mask 분리 필요. 단일 융합본만 존재.",
+        "blockedBy": "LP-1 depth 결정",
+        "status": "incomplete"
+      },
+      {
+        "id": "CP-3",
+        "item": "mask/soft edge 미정의.",
+        "detail": "얇은 끝 부분투명(nonTransparent mean α 224)의 배경 대비 feather·seam 미검수. 에디터 maskFeather(≈120 world px) 관례 참조 가능하나 후보엔 미적용.",
+        "blockedBy": "CP-1",
+        "status": "incomplete"
+      }
+    ]
+  },
+
+  "preservedBans": [
+    "docs 2_3 수정금지",
+    "Q전용 magic 패링 / E 불가",
+    "어택티켓 금지",
+    "기존 스킬·경제·사용자 세이브·타인 WIP 보존",
+    "맵 guide 전체 / §23 보고 적용 대상(해당 시)",
+    "생산/shared docs/Git/게임/세이브/빌드 = root만 변경",
+    "새 자산/인물/clean-plate 생성 0, placements/retouch/composition/bake/collision/code 변경 0"
+  ],
+
+  "provenanceNotes": [
+    "원본 후보·참조·3 생성본 모두 보존, 재편집/덮어쓰기 없음.",
+    "alpha/bbox 수치는 CH1_1_A_GRADE §6을 SSOT로 채택(PIL 미설치로 재측정 생략), pixelSize/bytes/sha256은 이 세션에서 직접 측정.",
+    "candidate는 production acceptance 아님. 본 catalog는 대조·미완료 기록 전용, 단일 소유 산출."
+  ]
+}

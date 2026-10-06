@@ -1,0 +1,413 @@
+{
+  "schemaVersion": 1,
+  "sceneId": "hell-rift-ch1-ch2",
+  "role": "STORY",
+  "endId": "STORY-CH1A-RIFT-DIALOGUE-CANDIDATE-20261006",
+  "candidate": true,
+  "claims": {
+    "note_ko": "후보 데이터만 작성. 실제 NPC 런타임/보상 지급/본편 장 전환 연결 완료를 주장하지 않는다(완료 주장 0). 표시 문안과 행동 상태를 분리하고, action 처리 실패에 수락/지급 flag를 선반영하지 않는다.",
+    "note_en": "Authoring candidate data only. No claim of completed NPC runtime, reward grant, or main-game chapter transition (completion claim = 0). Display text is separated from action state; accept/grant flags are never pre-set when an action fails.",
+    "productionConnection": "owned-by-root",
+    "saveWrites": "none",
+    "newItemsOrEconomy": 0,
+    "dlcPromise": 0
+  },
+  "sources": [
+    "docs/0마스터플랜/EXODUSER_GAMEPLAY_CONTENT_PLAN_20261004.md §12,§14,§15,§24.1,§24.2,§24.3",
+    "docs/4.1맵디자인+설정/CH1_1_A_GRADE_PRODUCTION_20261005.md §3 (STORY 소유)",
+    "docs/4.1맵디자인+설정/MAP_SCENE_EDITOR_20261005.md",
+    "docs/4.1맵디자인+설정/HELL_RIFT_EDITOR_RESULT_20261006.md (8 프레임 구역/랜드마크)",
+    "docs/11내러티브·로어디자인/WORLD_CORE.md (악의 단일에너지/3층구조/부패/상승·탈출/페이싱)"
+  ],
+  "loreGuards": {
+    "ko": "기존 로어 우선. 지옥의 틈 = 한 지옥을 벗어났으나 아직 탈출하지 못한 망자들이 다음 상승을 준비하는 기묘한 이공간(천계-지옥 중층이나 새 에너지원으로 정의하지 않음). 주민은 부패 중이나 괴물이 아니며 자아와 목적이 남아 있다. 부패는 세계관 설정일 뿐 실시간 타이머/자동 사망/벌칙을 만들지 않는다. 1~3장 페이싱: 거점 짧은 대화는 학살의 양념이며 떡밥은 은은하게만. 기존 필드 NPC(마렌/에단/이실라)·동료(디로이/핵터)·네메시아를 틈 주민으로 이동/덮어쓰지 않는다. 현재 확정 진행: 1장 썩은 숲 전체 완료 → 지옥의 틈 → 2장 벌레굴.",
+    "en": "Existing lore first. The Hell Rift is a strange interspace where the dead who left one hell gather to prepare the next ascent (not redefined as a heaven-hell middle layer or a new energy source). Residents are decaying but are not monsters; they still have selfhood and purpose. Decay is worldview flavor only — no real-time timer, auto-death, or penalty is introduced. Chapter 1-3 pacing: hub chatter is seasoning over the slaughter, and hooks stay subtle. Existing field NPCs (Maren/Ethan/Isilla), companions (Diroi/Hector), and Nemesia are not moved into or overwritten as rift residents. Confirmed progression: finish all of Chapter 1 Rotten Forest -> Hell Rift -> enter Chapter 2 Worm Burrow."
+  },
+  "geometry": {
+    "note_ko": "GRID=200 / T=40 참조 좌표. stage LOCK·SSOT가 우선하며 STORY는 좌표계/높이/충돌/카메라 계약을 바꾸지 않는다. 아래 값은 §24.3 POI 참조와 틈 씬 결과의 구역 위치를 UIUX/MAP 배치용으로 옮겨 적은 것일 뿐이다.",
+    "grid": 200,
+    "tile": 40,
+    "start": { "x": 100, "y": 193 },
+    "exit": { "x": 100, "y": 43 }
+  },
+  "landmarks": [
+    {
+      "id": "northStairs",
+      "ko": "북쪽 상승 계단",
+      "en": "Northern ascending stair",
+      "role_ko": "틈의 출구이자 다음 상승로. 2장 벌레굴 방향.",
+      "role_en": "The rift's exit and the next ascent, toward Chapter 2 Worm Burrow.",
+      "sceneRegion": "계단"
+    },
+    {
+      "id": "centerAbyss",
+      "ko": "중앙 심연 균열",
+      "en": "Central abyss crevasse",
+      "role_ko": "건널 수 없는 깊은 균열. 길은 그 가장자리를 돌아간다.",
+      "role_en": "An uncrossable deep crevasse; the path skirts its edge.",
+      "sceneRegion": "심연"
+    },
+    {
+      "id": "embers",
+      "ko": "잔불",
+      "en": "Embers",
+      "role_ko": "망자들이 모여 쉬는 희미한 불씨 자리. 열이 아니라 멈춘 악의의 잔재.",
+      "role_en": "Faint ember spots where the dead gather to rest — not heat, but the residue of stalled malice.",
+      "sceneRegion": "잔불"
+    },
+    {
+      "id": "requestLedge",
+      "ko": "부탁의 턱",
+      "en": "Ledge of requests",
+      "role_ko": "동측 턱. 위층의 누군가를 걱정하는 망자가 머문다.",
+      "role_en": "The eastern ledge where a soul who worries for someone above lingers.",
+      "sceneRegion": "부탁의턱"
+    }
+  ],
+  "actions": {
+    "note_ko": "action id는 후보 어휘다. 실제 처리기는 주입된다(QUESTNPC rift-npc.mjs, UIUX rift-ui.mjs, ITEM rift-gift-adapter.mjs, 본편 연결은 root). 선물/퀘스트 action은 onSuccess에서만 상태 flag가 서는 분기를 가지며 onFailure는 flag를 세우지 않는다.",
+    "vocabulary": {
+      "dialogue.close": "대화를 닫고 정상 조작 복귀. option.set의 만남 플래그만 기록.",
+      "dialogue.next": "같은 NPC의 next 노드로 이동(순수 표시 전환, 상태 변화 없음).",
+      "gift.offer": "선물 제안 노드를 연다(아직 지급 아님).",
+      "gift.accept": "주입된 inventory adapter에 giftRef 지급을 요청. onSuccess=given(플래그 set), onFailure=bagFull(플래그 미set).",
+      "gift.decline": "지급 없이 양도를 보류.",
+      "quest.accept": "주입된 quest adapter에 선택적 목적 등록을 요청. onSuccess=accepted(플래그 set), onFailure=acceptFail(플래그 미set).",
+      "quest.decline": "등록 없이 부탁을 보류.",
+      "quest.recall": "등록된 단서를 다시 보여줌(상태 변화 없음)."
+    }
+  },
+  "stateKeys": {
+    "note_ko": "후보 state version1 키. 실제 저장 필드/트랜잭션은 주입 adapter와 root가 소유. 여기서는 재방문 분기와 중복 지급 방지의 참조로만 선언한다. 세이브 직접 쓰기 0.",
+    "keys": {
+      "rift.haran.met": "하란과 한 번 이상 대화를 마침",
+      "rift.berin.giftGiven": "베린의 유품을 실제로 받음(지급 성공 시에만)",
+      "rift.nessa.questAccepted": "네사의 부탁을 선택적 목적으로 받아 둠(등록 성공 시에만)",
+      "rift.dorik.met": "도릭과 한 번 이상 대화를 마침"
+    }
+  },
+  "revisitModel": {
+    "note_ko": "각 NPC의 entry는 순서대로 평가하여 첫 일치 node로 진입한다(when 식은 주입된 state adapter가 해석). 어떤 when도 참이 아니면 마지막 default로 진입. 재방문은 이미 건넨 선물/받아 둔 부탁을 기억하고 재지급/재등록하지 않는다.",
+    "format": "entry: [ { when: '<stateKey truthy>', node: '<nodeId>' }, ... , { default: '<nodeId>' } ]"
+  },
+  "npcs": [
+    {
+      "npcId": "rift-rest-haran",
+      "name": { "ko": "하란", "en": "Haran" },
+      "role": "arrival-guide",
+      "residentType_ko": "다시 올라갈 준비를 하는 자(안내)",
+      "residentType_en": "one preparing to climb again (guide)",
+      "poi": { "key": "rest", "x": 79, "y": 170, "sceneRegion": "하층진입/잔불" },
+      "background_ko": "썩은 숲에서 숯을 굽던 사람. 먼저 올라온 이들을 보고 틈에 닿았고, 몸을 추스르며 다음 상승을 준비한다.",
+      "necessaryGuide": true,
+      "entry": [
+        { "when": "rift.haran.met", "node": "revisit" },
+        { "default": "meet" }
+      ],
+      "nodes": {
+        "meet": {
+          "speaker": "하란",
+          "text": {
+            "ko": "또 한 사람 올라왔군. 숨 돌려도 돼. 여긴 지옥의 틈이다 — 한 지옥을 벗어난 자들이 다음 오름을 준비하는 자리지.",
+            "en": "Another one made it up. Catch your breath — this is the Hell Rift, where those who left one hell gather before the next climb."
+          },
+          "options": [
+            { "id": "o_where", "label": { "ko": "여긴 어디지?", "en": "Where is this?" }, "action": "dialogue.next", "next": "about" },
+            { "id": "o_dir", "label": { "ko": "어디로 가야 하나?", "en": "Which way do I go?" }, "action": "dialogue.next", "next": "directions" },
+            { "id": "o_leave", "label": { "ko": "가봐야겠다.", "en": "I should move on." }, "action": "dialogue.close", "set": ["rift.haran.met"] }
+          ]
+        },
+        "about": {
+          "speaker": "하란",
+          "text": {
+            "ko": "지옥의 틈이야. 너만 이 길을 오르는 게 아니다 — 여기 머무는 망자들도 저마다 다음을 노린다. 들어봐라. 여기선 소리가 메아리치질 않아. 뭐든 어딘가로 빨려 가버리거든.",
+            "en": "The Hell Rift. You're not the only one climbing this road — the dead who linger here are each eyeing what comes next. Listen: nothing echoes here. Everything gets pulled off somewhere."
+          },
+          "options": [
+            { "id": "o_back", "label": { "ko": "...", "en": "..." }, "action": "dialogue.next", "next": "meet" }
+          ]
+        },
+        "directions": {
+          "speaker": "하란",
+          "text": {
+            "ko": "북쪽 계단을 올라라. 그게 상승로고, 그 너머가 벌레굴이다. 가운데 균열은 건너려 들지 마 — 바닥이 없어. 잔불을 따라 가장자리를 돌아가면 돼.",
+            "en": "Take the northern stair. That's the ascent, and beyond it lies the Worm Burrow. Don't try to cross the central crevasse — there's no floor to it. Follow the embers around its edge."
+          },
+          "options": [
+            { "id": "o_back", "label": { "ko": "알겠다.", "en": "Understood." }, "action": "dialogue.next", "next": "meet" },
+            { "id": "o_leave", "label": { "ko": "고맙다.", "en": "Thanks." }, "action": "dialogue.close", "set": ["rift.haran.met"] }
+          ]
+        },
+        "revisit": {
+          "speaker": "하란",
+          "text": {
+            "ko": "아직 여기 있었군. 서두를 것 없다. 올라갈 땐 북쪽 계단, 그 다음은 벌레굴이야.",
+            "en": "Still here, I see. No need to rush. When you go, it's the northern stair — then the Worm Burrow."
+          },
+          "options": [
+            { "id": "o_dir", "label": { "ko": "길을 다시 알려줘.", "en": "Remind me of the way." }, "action": "dialogue.next", "next": "directions" },
+            { "id": "o_leave", "label": { "ko": "그래.", "en": "Right." }, "action": "dialogue.close" }
+          ]
+        }
+      }
+    },
+    {
+      "npcId": "rift-gift-berin",
+      "name": { "ko": "베린", "en": "Berin" },
+      "role": "gift-giver",
+      "residentType_ko": "마지막 물건을 건네는 망자",
+      "residentType_en": "the soul who hands over their last possession",
+      "poi": { "key": "gift", "x": 39, "y": 122, "sceneRegion": "서쪽우회/멈춘망자" },
+      "background_ko": "썩은 숲을 벗어나 여기까지 왔으나 더 오를 힘이 없다고 느끼는 망자. 자기 몫을 다음 사람에게 맡기려 한다.",
+      "gift": {
+        "giftRef": "story.berin.keepsake",
+        "resolvedBy": "ITEM rift-gift-adapter.mjs",
+        "note_ko": "giftRef는 상징 식별자다. 실제 itemId/등급/수치/지급 조건은 ITEM 담당이 기존 물건을 연결할지 결정한다. STORY는 아이템 수치를 정하지 않는다(새 아이템/경제 0).",
+        "grantOnce": true
+      },
+      "entry": [
+        { "when": "rift.berin.giftGiven", "node": "afterGift" },
+        { "default": "meet" }
+      ],
+      "nodes": {
+        "meet": {
+          "speaker": "베린",
+          "text": {
+            "ko": "거기 선 자. 눈에 아직 오를 힘이 남았구나. ...나는 여기까지인 것 같다. 다리가 더는 위를 바라지 않아.",
+            "en": "You there. There's still climb left in your eyes. ...I think this is as far as I go. My legs no longer reach for what's above."
+          },
+          "options": [
+            { "id": "o_listen", "label": { "ko": "사연을 들어보자.", "en": "Tell me." }, "action": "dialogue.next", "next": "story" },
+            { "id": "o_leave", "label": { "ko": "쉬어라.", "en": "Rest, then." }, "action": "dialogue.close" }
+          ]
+        },
+        "story": {
+          "speaker": "베린",
+          "text": {
+            "ko": "내게 남은 건 이것 하나야. 끝까지 쥐고 있었지. 그런데 더 못 가는 손에 쥐여 있어 봐야 녹슬 뿐이다. 내가 가진 하나뿐인 물건을 너한테 줄게 — 받아 가겠나?",
+            "en": "This is the one thing I have left. I clung to it all the way. But held in a hand that can't go on, it only rusts. My one possession — I'll give it to you. Will you take it?"
+          },
+          "options": [
+            { "id": "o_accept", "label": { "ko": "받겠다.", "en": "I'll take it." }, "action": "gift.offer", "next": "offer" },
+            { "id": "o_notyet", "label": { "ko": "지금은 됐다.", "en": "Not now." }, "action": "dialogue.close" }
+          ]
+        },
+        "offer": {
+          "speaker": "베린",
+          "text": {
+            "ko": "그래. 가져가. 네 손에선 아직 쓸모가 있을 거다.",
+            "en": "Good. Take it. In your hands it may still be of use."
+          },
+          "options": [
+            { "id": "o_take", "label": { "ko": "(물건을 받는다)", "en": "(Take it)" }, "action": "gift.accept", "giftRef": "story.berin.keepsake", "onSuccess": "given", "onFailure": "bagFull" },
+            { "id": "o_decline", "label": { "ko": "(역시 사양한다)", "en": "(Decline after all)" }, "action": "gift.decline", "next": "declined" }
+          ]
+        },
+        "given": {
+          "speaker": "베린",
+          "text": {
+            "ko": "가볍다... 오래 들고 있던 걸 놓으니 이상하게 가벼워. 위로 가라. 그걸 가진 사람이 나 대신 올라가는 거다.",
+            "en": "Light... strange, how letting go of what I carried so long lifts me. Go up. Whoever carries it climbs in my place."
+          },
+          "set": ["rift.berin.giftGiven"],
+          "options": [
+            { "id": "o_close", "label": { "ko": "잘 간직하겠다.", "en": "I'll keep it well." }, "action": "dialogue.close" }
+          ]
+        },
+        "bagFull": {
+          "speaker": "베린",
+          "text": {
+            "ko": "네 손이 벌써 가득하구나. 자리를 비우고 다시 오너라. 나는 아직 여기 있다.",
+            "en": "Your hands are already full. Make room and come back. I'll still be here."
+          },
+          "options": [
+            { "id": "o_close", "label": { "ko": "곧 돌아오지.", "en": "I'll return soon." }, "action": "dialogue.close" }
+          ]
+        },
+        "declined": {
+          "speaker": "베린",
+          "text": {
+            "ko": "그럼, 네가 준비되거든. 서두르지 않으마.",
+            "en": "Then when you're ready. I won't hurry you."
+          },
+          "options": [
+            { "id": "o_close", "label": { "ko": "...", "en": "..." }, "action": "dialogue.close" }
+          ]
+        },
+        "afterGift": {
+          "speaker": "베린",
+          "text": {
+            "ko": "그건 이제 네 거다. 되돌려 받을 생각 없어. 너는 아직 위가 있잖나 — 가라.",
+            "en": "That's yours now. I won't take it back. You still have an 'up' left to reach — go."
+          },
+          "options": [
+            { "id": "o_close", "label": { "ko": "고맙다, 베린.", "en": "Thank you, Berin." }, "action": "dialogue.close" }
+          ]
+        }
+      }
+    },
+    {
+      "npcId": "rift-request-nessa",
+      "name": { "ko": "네사", "en": "Nessa" },
+      "role": "rescue-request",
+      "residentType_ko": "위층의 누군가를 구해 달라는 망자",
+      "residentType_en": "the soul who asks you to find someone above",
+      "poi": { "key": "request", "x": 145, "y": 116, "sceneRegion": "부탁의턱" },
+      "background_ko": "먼저 올라간 동생 린을 찾는 망자. 자기는 더 오르지 못하지만, 다음 지역으로 가는 주인공에게 개인적인 이유를 건넨다.",
+      "quest": {
+        "questRef": "story.nessa.findLin",
+        "kind": "optional-objective",
+        "resolvedBy": "QUESTNPC rift-npc.mjs",
+        "note_ko": "선택적 목적이며 메인 진행을 막지 않는다. 대상(린)·구출 행동·성공/실패·보상·저장은 QUESTNPC/상위 지역이 설계한다. 발견만으로 구출 완료로 계산하지 않는다. 되돌릴 수 없는 사망/실시간 실패는 넣지 않는다.",
+        "targetRegion": "ch2-worm-burrow"
+      },
+      "entry": [
+        { "when": "rift.nessa.questAccepted", "node": "afterAccept" },
+        { "default": "meet" }
+      ],
+      "nodes": {
+        "meet": {
+          "speaker": "네사",
+          "text": {
+            "ko": "잠깐. 너, 위로 가지? ...나는 못 가. 그런데 동생이 먼저 올라갔어. 린. 나보다 훨씬 작은 애였는데.",
+            "en": "Wait. You're going up, aren't you? ...I can't. But my little sister went ahead. Lin. She was so much smaller than me."
+          },
+          "options": [
+            { "id": "o_listen", "label": { "ko": "말해봐라.", "en": "Go on." }, "action": "dialogue.next", "next": "story" },
+            { "id": "o_leave", "label": { "ko": "지금은 바쁘다.", "en": "I'm busy now." }, "action": "dialogue.close" }
+          ]
+        },
+        "story": {
+          "speaker": "네사",
+          "text": {
+            "ko": "벌레굴로 올라가거든, 린을 좀 찾아봐 줘. 살아... 아니, 아직 저 자신으로 있는지만. 위층이 더 낫다고들 하지만, 나는 그 말이 영 못 미덥다. 부탁을 받아 주겠나?",
+            "en": "If you climb to the Worm Burrow, look for Lin. See if she's... no — just whether she's still herself. They say it's better higher up, but I've never quite believed it. Will you take this on?"
+          },
+          "options": [
+            { "id": "o_accept", "label": { "ko": "찾아보지.", "en": "I'll look for her." }, "action": "quest.accept", "questRef": "story.nessa.findLin", "onSuccess": "accepted", "onFailure": "acceptFail" },
+            { "id": "o_decline", "label": { "ko": "약속은 못 하겠다.", "en": "I can't promise that." }, "action": "quest.decline", "next": "declined" }
+          ]
+        },
+        "accepted": {
+          "speaker": "네사",
+          "text": {
+            "ko": "고마워. 린은 왼 손목에 붉은 끈을 매고 있어 — 내가 매 줬지. 급할 것 없다, 네 길을 가는 길에만. 찾거든, 혹은 소식만이라도.",
+            "en": "Thank you. Lin wears a red cord on her left wrist — I tied it there. No rush; only along your own road. If you find her — or even just word of her."
+          },
+          "set": ["rift.nessa.questAccepted"],
+          "options": [
+            { "id": "o_recall", "label": { "ko": "단서를 다시 보자.", "en": "Show me the clue again." }, "action": "quest.recall", "next": "clue" },
+            { "id": "o_close", "label": { "ko": "가보겠다.", "en": "I'll be going." }, "action": "dialogue.close" }
+          ]
+        },
+        "acceptFail": {
+          "speaker": "네사",
+          "text": {
+            "ko": "아니... 아직 마음에 담아 둘 자리가 없나 보구나. 괜찮아. 나는 여기 있을 테니, 준비되거든 다시 와.",
+            "en": "No... there's no room to hold it yet, it seems. It's all right. I'll be here — come back when you're ready."
+          },
+          "options": [
+            { "id": "o_close", "label": { "ko": "곧 다시 오지.", "en": "I'll come back soon." }, "action": "dialogue.close" }
+          ]
+        },
+        "declined": {
+          "speaker": "네사",
+          "text": {
+            "ko": "그래... 억지로 짊어질 일은 아니지. 그래도 위에서 붉은 끈을 보거든, 한 번만 떠올려 줘.",
+            "en": "I see... it's not a thing to be forced to carry. Still, if you see a red cord up there, think of me just once."
+          },
+          "options": [
+            { "id": "o_close", "label": { "ko": "...", "en": "..." }, "action": "dialogue.close" }
+          ]
+        },
+        "clue": {
+          "speaker": "네사",
+          "text": {
+            "ko": "왼 손목, 붉은 끈. 벌레굴 어딘가. 그게 전부야 — 그걸로 충분하길.",
+            "en": "Left wrist, a red cord. Somewhere in the Worm Burrow. That's all I have — may it be enough."
+          },
+          "options": [
+            { "id": "o_back", "label": { "ko": "기억하지.", "en": "I'll remember." }, "action": "dialogue.next", "next": "afterAccept" }
+          ]
+        },
+        "afterAccept": {
+          "speaker": "네사",
+          "text": {
+            "ko": "아직 여기구나. 급할 건 없어. 린을 보거든, 혹은 소식만이라도.",
+            "en": "Still here. No hurry. If you see Lin — or even just word of her."
+          },
+          "options": [
+            { "id": "o_recall", "label": { "ko": "단서를 다시 보자.", "en": "Show me the clue again." }, "action": "quest.recall", "next": "clue" },
+            { "id": "o_close", "label": { "ko": "가보겠다.", "en": "I'll be going." }, "action": "dialogue.close" }
+          ]
+        }
+      }
+    },
+    {
+      "npcId": "rift-prepare-dorik",
+      "name": { "ko": "도릭", "en": "Dorik" },
+      "role": "departure-guide",
+      "residentType_ko": "힘이 부족해 멈춘 자(상승로를 지켜보는 보초)",
+      "residentType_en": "one halted for want of strength (watcher of the ascent)",
+      "poi": { "key": "prepare", "x": 137, "y": 70, "sceneRegion": "준비/계단" },
+      "background_ko": "한때 문지기였던 망자. 상승 계단 곁에 서서 누가 오르고 누가 멈추는지 본다. 출발 안내와 다음 장 연결을 말하지만, 장 전환 자체는 STORY가 아니라 BOSS gate/root가 소유한다.",
+      "entry": [
+        { "when": "rift.dorik.met", "node": "revisit" },
+        { "default": "meet" }
+      ],
+      "nodes": {
+        "meet": {
+          "speaker": "도릭",
+          "text": {
+            "ko": "계단 앞까지 왔군. 나는 오르는 자와 멈추는 자를 센다 — 그게 이제 내 일이야. 물어볼 게 있나?",
+            "en": "You've reached the stair. I count those who climb and those who stop — that's my task now. Something to ask?"
+          },
+          "options": [
+            { "id": "o_ask", "label": { "ko": "위로 가는 길은?", "en": "The way up?" }, "action": "dialogue.next", "next": "ascent" },
+            { "id": "o_why", "label": { "ko": "넌 왜 안 올라가나?", "en": "Why don't you climb?" }, "action": "dialogue.next", "next": "stay" },
+            { "id": "o_leave", "label": { "ko": "가보겠다.", "en": "I'll go." }, "action": "dialogue.close", "set": ["rift.dorik.met"] }
+          ]
+        },
+        "ascent": {
+          "speaker": "도릭",
+          "text": {
+            "ko": "이 계단이 상승로다. 끝까지 오르면 벌레굴이야 — 거기부턴 또 다른 지옥이지. 준비가 됐거든 올라라. 계단은 네가 다 끝낸 뒤에야 길을 연다.",
+            "en": "This stair is the ascent. Climb it to the top and you reach the Worm Burrow — another hell from there. Go up when you're ready. The stair only opens once you've finished below."
+          },
+          "options": [
+            { "id": "o_back", "label": { "ko": "...", "en": "..." }, "action": "dialogue.next", "next": "meet" },
+            { "id": "o_leave", "label": { "ko": "준비하지.", "en": "I'll prepare." }, "action": "dialogue.close", "set": ["rift.dorik.met"] }
+          ]
+        },
+        "stay": {
+          "speaker": "도릭",
+          "text": {
+            "ko": "힘이 남질 않았어. 의지는 있는데 다리가 없지. ...여기가 조용해서 쉬는 것 같나? 아니야. 당기는 힘이 좀 부드러울 뿐, 같은 물살이다. 너는 아직 거스를 수 있을 때 올라라.",
+            "en": "I've no strength left. The will is there; the legs aren't. ...Think it's restful here, being so quiet? No. The pull's just gentler — same current, though. Climb while you still can go against it."
+          },
+          "options": [
+            { "id": "o_back", "label": { "ko": "...", "en": "..." }, "action": "dialogue.next", "next": "meet" }
+          ]
+        },
+        "revisit": {
+          "speaker": "도릭",
+          "text": {
+            "ko": "다시 왔군. 계단은 그대로다. 오를 때가 되면 끝까지 — 벌레굴이 기다린다.",
+            "en": "Back again. The stair hasn't moved. When it's time, climb to the top — the Worm Burrow waits."
+          },
+          "options": [
+            { "id": "o_ask", "label": { "ko": "길을 다시 알려줘.", "en": "Remind me of the way." }, "action": "dialogue.next", "next": "ascent" },
+            { "id": "o_leave", "label": { "ko": "그래.", "en": "Right." }, "action": "dialogue.close" }
+          ]
+        }
+      }
+    }
+  ],
+  "followup_ko": [
+    "ITEM: story.berin.keepsake를 기존 물건에 연결할지 신규 필요한지 결정(새 수치 0). gift.accept 실패(가방 가득)·중복 지급 방지는 adapter가 소유.",
+    "QUESTNPC: story.nessa.findLin 선택적 목적 등록/재방문/상위 지역 발견 처리. 발견≠구출 완료.",
+    "UIUX: 노드 표시·선택 초점·닫기/재진입, onSuccess/onFailure 분기 라우팅 준수(실패 시 flag 미set).",
+    "BOSS/root: 실제 장완료 gate와 벌레굴 전환은 rift-boss-gate/root 소유. STORY는 안내 문안만 제공.",
+    "번역: ko/en을 파일 내 동봉해 자체 완결. 본편 lang_*.js 전파는 root가 생산 연결 시 처리(이 후보는 생산/lang 미변경)."
+  ]
+}

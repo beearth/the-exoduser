@@ -248,3 +248,28 @@ ART/ANIMVFX/ENEMY/BOSS/SKILL/STORY/QA는 오더 STATE의 `pendingCH1Assignments2
 ### 2026-10-06 KST 실제 전달 결과 — 실행환경 연결 차단
 
 오더담당 완료 turn `01a10e77-917e-7590-aaa9-579202ec28d0`가 공식 역할8건을 인수·소유 STATE/LOG에 기록했다. 2026-10-05T23:48:56Z 첫 ART 정상 inbox 연결이 `PermissionError: [Errno 1] Operation not permitted`로 차단되어 송신0/전문팀 착수0/8. 나머지7역할 연결은 시도하지 않았고 재시도·다른채널·권한변경0. 역할 이관 문제는 해소됐지만 현재 실행환경의 연결 차단은 남았다. 현재8팀 제작중으로 계산하지 않는다. 이전 MAP WIP/3큐·UUID/완료 이력 보존. 실제 외부 조치가 있기 전 거절 작업을 반복하지 않는다.
+
+
+## 12. Claude8 실제 재개·완료 후보7 원자료 보존 — 2026-10-06 KST
+
+공식 보존ID **ROOT-CLAUDE7-CANDIDATE-RAW-CHECKPOINT-20261006**. 앞 절의 EPERM/송신0은 당시 이력이다. 이후 실제 외부 실행환경 조치와 새 권한 context를 받은 유일 Claude 오더담당이 정상 CLI/inbox를 확인했고, 2026-10-06T01:01:43.109~43.778Z 기존 역할8에 각1회 전달했다. 신규 peer8, 선행 Read8, 유용 source8이 확인됐다. root의 권한/인증 수정·우회0, 자동화는 일시중지 유지. Codex7의 이번 실제 재가동은 별도 근거 없이 확인된 것으로 확대하지 않는다.
+
+2026-10-06T01:06:44.758Z~01:11:13.365Z 아래7팀의 최초 후보 end_turn과 파일이 확인됐다. ENEMY의 기존 최초 후보 turn은 보존하며 미완료 원자료를 stage하지 않는다. 완료7팀에는 유일 오더담당이 새 파일0·raw 수정0의 독립 메모리 후속을 각1회 전달했다. 기존 MAP HTML WIP·3큐, 타인 WIP·오더 live STATE/LOG·사용자 세이브·기존23변경은 보존/이번 checkpoint 제외다. 전문팀의 후보 제출과 root의 생산 채택은 별도다.
+
+### 정확 완료 파일·핀
+
+| 역할 | 상대 파일 경로 | bytes | SHA256 | 실제 end_turn UUID | 공식 보고 endID | 검수/채택 |
+|---|---|---:|---|---|---|---|
+| ART | `tools/team-followup-20261005/hell-rift/ART/rift-asset-catalog.json` | 14089 | `8776078b295b45cc4e6413204f9dbcef194885f05d8d2ca60a1d8388949dec9e` | `96e2d0e3-dd62-4657-a200-c33c4080f93c` | `ART-CH1-1-RIFT-ASSET-CATALOG-CANDIDATE-20261006` | 원자료 보존 / 생산 미채택 |
+| SKILL | `tools/team-followup-20261005/hell-rift/SKILL/rift-input-boundary.mjs` | 21893 | `0239609bd83b8ad84dcc6242656bee014c111e81a08e8ab37dc6bb6c36b5ef55` | `76498de8-e2f1-4a34-964e-dc4513e74293` | `SKILL-CH1-A-RIFT-INPUT-BOUNDARY-CANDIDATE-20261006` | 원자료 보존 / 생산 미채택 |
+| QA | `tools/team-followup-20261005/hell-rift/QA/rift-contract-checks.mjs` | 17118 | `00966bbf8509ba3a38a39142ecad82388ec34f2a235da0e94a64785c803d72e6` | `7ba57a9e-494b-4a2f-b9aa-8615a0a7724c` | `QA-RIFT-CONTRACT-CHECKS-20261006` | 원자료 보존 / 생산 미채택 |
+| ANIMVFX | `tools/team-followup-20261005/hell-rift/ANIMVFX/rift-ambience.mjs` | 14603 | `2e1c4decdb189a62df94faaa8c909a4e642dbc98c695f92b8ae4b020f186053f` | `35f25cab-4ad2-4b65-bdbf-ef9cdc5c91f4` | `ANIMVFX-CH1-RIFT-AMBIENCE-CANDIDATE-20261006` | 원자료 보존 / 생산 미채택 |
+| BOSS | `tools/team-followup-20261005/hell-rift/BOSS/rift-boss-gate.mjs` | 20605 | `83fb1e5b67f62e2aeb1a5f8a8d040a54a39406d82803e028b8e9f4ab523b6fd0` | `8d6b2380-d50e-4f1e-b28b-37187341dca9` | `BOSS-CH1-A-RIFT-GATE-CANDIDATE-20261006` | 원자료 보존 / 생산 미채택 |
+| STORY | `tools/team-followup-20261005/hell-rift/STORY/rift-dialogue.json` | 25940 | `be14b1416838ab345eb1c2a150b92403566ccfdc43cd3f3b317cf2913840dfdc` | `b55a1b17-6d39-47e4-a787-64555fd84152` | `STORY-CH1A-RIFT-DIALOGUE-CANDIDATE-20261006` | 원자료 보존 / 생산 미채택 |
+| MAP | `tools/team-followup-20261005/hell-rift/MAP/ch1-a-composition.scene.json` | 91606 | `d19d1dd2590bf2f3ce25379e37947f062c8756002b9135e232a1f0a32abad19a` | `aed7cadb-9b0b-4983-a58e-464c14bc77c5` | `MAP-CH1-A-COMPOSITION-CANDIDATE-20261006` | 원자료 보존 / 생산 미채택 |
+
+ART는 기존 자산의 크기/pivot/접지 카탈로그, SKILL은 입력 경계 독립 참조모듈, QA는 source 계약 검사, ANIMVFX는 독립 분위기 렌더 모듈, BOSS는 gate/재도전 참조·검사, STORY는 망자 대사 데이터, MAP은 독립 CH1 구성 씬 후보다. MAP의 JSON은 지옥의 틈 현행 결과 씬을 대체하지 않는다. 공유 editor/core/actor·본편 런타임 변경0. 저장된 틈 nav1192/원화·현재 보행·카메라 결과는 그대로다.
+
+완료 원자료 JSON3 parse 및 MJS4 `node --check` PASS. 실제 함수 의미검수·consumer 연결·후보 화면/청취 인수는 보존 시점 미완료다. harness/source PASS를 실제6단계나 A급 맵 완료로 계산0. **VISUAL VERDICT: 기존 RETOUCH 유지**. 완료 소유 raw7·관련 docs8만 좁게 checkpoint하며, 정확 경로·핀·endID를 보존한다. 외부 백업과 receipt는 `/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/claude7-checkpoint-20261006/`. 문서 쓰기 직전 실제 NUL/untracked 전체 포함 변경 수 **80**; 80부터 상세후보 검수 대기 없이 완료 소유만 보존한다. Git commit/push의 정확 SHA·실제 보존 후 변경 수는 외부 receipt에 기록한다.
+
+NEXT PASS: 안개/입자 좌표계를 에디터 transform·심연 mask·현행 nav에 맞추고, 대사 후보의 접근 불가 POI를 정합 검수한 후 실제 consumer를 연결한다. 원자료를 임의 수정하지 않고 production 수정은 root의 별도 백업·코드/docs 동기화·검수 뒤 채택한다. 같은 후보의 본편 시작→전투·획득→보스방 개방→사망·부활→재도전 및 실제 화면/청취 인수는 남아 있다.
