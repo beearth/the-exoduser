@@ -1,0 +1,228 @@
+// visual-pose-consumer-2_5d.candidate.mjs
+// SKILL 역할 (UUID ec0868f8-7ba5-42f8-b7ca-20e63d4ebda4) — CH1 2.5D 캐릭터 슬라이스 후보.
+// OFFICIAL-COMPLETION-ID: CH1-2_5D-CHARACTER-MAP-SLICE-20261006-SKILL-CANDIDATE
+// GOAL: docs/0마스터플랜/CH1_2_5D_PRODUCTION_GOALS_20261006.md (전사/실버테일/다크드루이드 8방향 idle/move/attack).
+//
+// 역할(SKILL): 기존 이동/공격/skill "이벤트" → 현행 rig의 "실제 pose API" 연결.
+//   idle/walk/run/attack 전이와 attack 중복(overlap)/해제(release) 수명 복귀를 순수 state로 처리.
+//   rootmotion/피해계산/새 스킬 수치/Q 계약 변경 0. 미지원 이벤트를 성공처럼 처리 0.
+//
+// 근거가 된 실제 source(읽기 전용, 미변경):
+//   tools/2_5d/character-rigs.mjs
+//     createCharacterRig(id,{THREE,height}) → async → frozen {object3d, update, snapshot, dispose}
+//     update(dt,{mode='idle',direction=0,phase,speed}) → object3d
+//       · mode ∈ {idle,walk,run,attack}; direction 정수 0..7; phase 선택 [0,1]; speed=관찰값(이동/피해/저장 미변경)
+//   tools/2_5d/character-rig-catalog.mjs
+//     CHARACTER_RIG_CATALOG(ids: dark-druid/warrior/silvertail, frames per mode),
+//     CHARACTER_RIG_CONFIG(frameInterval{idle .65,walk .15,run .1,attack .09}, druidFrameInterval .15),
+//     CHARACTER_RIG_DIRECTIONS, characterRigFrame(id,mode,direction,index)
+//   tools/2_5d-world-lab.mjs:54  direction=(Math.round(Math.atan2(dx,dy)/(Math.PI/4))+8)%8  ← 실제 방향 규약
+//                          :63  rig.update(dt,{...,speed: mode==='run'?1.55:1})              ← speed 규약
+//   world-lab 는 attack 를 키 홀드 동안만 세팅(수명 없음). 본 consumer 가 1회 수명/overlap/release 를 추가.
+//
+// 미검증/미지원(허위 완료 금지): rig 에는 idle/walk/run/attack 外 pose 없음.
+//   parry/shield/dash/cast 등 전용 포즈 없는 skill 이벤트는 supported:false 로 보고하고 포즈를 지어내지 않는다.
+//   → 보호 2_3·Q전용 magic 패링·E불가 계약은 "포즈 미생성"으로 보존(해당 시스템 동작 변경 0).
+//   createCharacterRig 자체는 THREE+Image 런타임(브라우저/world-lab) 필요 → 본 모듈은 이벤트→params 매핑만 담당.
+
+import { CHARACTER_RIG_CATALOG, CHARACTER_RIG_CONFIG, CHARACTER_RIG_DIRECTIONS }
+  from '../../../2_5d/character-rig-catalog.mjs';
+
+/* ── 실제 API 에서 파생된 지원 범위(frozen) ─────────────────────────────── */
+export const SUPPORTED_MODES = Object.freeze(['idle', 'walk', 'run', 'attack']);
+export const SUPPORTED_IDS = Object.freeze(Object.keys(CHARACTER_RIG_CATALOG)); // dark-druid, warrior, silvertail
+export const DIRECTIONS = CHARACTER_RIG_DIRECTIONS; // ['south','south-east','east','north-east','north','north-west','west','south-west']
+
+export function isSupportedId(id) { return Object.prototype.hasOwnProperty.call(CHARACTER_RIG_CATALOG, id); }
+export function directionName(index) { return DIRECTIONS[((index % 8) + 8) % 8]; }
+export function directionIndex(name) { const i = DIRECTIONS.indexOf(name); if (i < 0) throw new Error('알 수 없는 방향: ' + name); return i; }
+
+// world-lab:54 와 동일식 — 게임 (dx,dy) → 0..7. (화면축 규약은 world-lab 소유; 그 식을 그대로 재현)
+export function directionFromDelta(dx, dy) {
+  if (!dx && !dy) return null; // 입력 없음 → 호출측이 직전 방향 유지
+  return (Math.round(Math.atan2(dx, dy) / (Math.PI / 4)) + 8) % 8;
+}
+
+// update() 가 쓰는 실제 지속시간 = interval * frames (druid 는 비-idle 150ms 고정).
+export function modeDuration(id, mode) {
+  const entry = CHARACTER_RIG_CATALOG[id];
+  if (!entry) throw new Error('지원하지 않는 캐릭터: ' + id);
+  if (!SUPPORTED_MODES.includes(mode)) throw new Error('지원하지 않는 모드: ' + mode);
+  const interval = (id === 'dark-druid' && mode !== 'idle')
+    ? CHARACTER_RIG_CONFIG.druidFrameInterval
+    : CHARACTER_RIG_CONFIG.frameInterval[mode];
+  return interval * entry.frames[mode];
+}
+
+/* ── 이벤트 → pose params state machine ──────────────────────────────────
+ * intent(프레임별): {
+ *   dx, dy        : 이동 입력 벡터(없으면 0) — 방향/locomotion 판정
+ *   run           : 달리기 여부(boolean)
+ *   attack        : 공격 이벤트(그 프레임의 상승 엣지면 true)
+ *   facing        : 명시 방향 0..7(선택; dx/dy 없을 때 우선)
+ *   skill         : null | { id, poseMode }  poseMode 는 호출측이 선언한 지원 모드(없으면 미지원)
+ * }
+ * 반환: { params:{mode,direction,speed,phase?}, supported, action, note }
+ *   params 는 rig.update(dt, params) 에 그대로 전달 가능.
+ */
+export function createVisualPoseConsumer(id, opts = {}) {
+  if (!isSupportedId(id)) throw new Error('지원하지 않는 캐릭터: ' + id);
+  const retrigger = opts.retrigger === true;      // 공격 중 재공격: true=재시작, 기본=수명 끝까지 무시(coalesce)
+  const attackDur = modeDuration(id, 'attack');
+
+  const state = {
+    mode: 'idle', direction: 0,
+    attackRemaining: 0,   // >0 이면 attack 수명 진행 중
+    moving: false, running: false,
+  };
+
+  function _applyDirection(intent) {
+    const fromMove = directionFromDelta(intent.dx | 0 || intent.dx || 0, intent.dy | 0 || intent.dy || 0);
+    if (fromMove != null) state.direction = fromMove;
+    else if (Number.isInteger(intent.facing)) state.direction = ((intent.facing % 8) + 8) % 8;
+    // 입력 없고 facing 없으면 직전 방향 유지(release 복귀 포함)
+  }
+
+  function resolve(dt, intent = {}) {
+    const d = Number.isFinite(dt) ? Math.max(0, dt) : 0;
+    state.moving = !!(intent.dx || intent.dy);
+    state.running = !!intent.run && state.moving;
+    _applyDirection(intent);
+
+    // 1) skill 이벤트 지원 판정 — 전용 포즈 없는 이벤트는 성공처럼 처리하지 않음.
+    let supported = true, note = '';
+    let wantAttack = intent.attack === true;
+    if (intent.skill) {
+      const pm = intent.skill.poseMode;
+      if (pm === 'attack') { wantAttack = true; }
+      else if (SUPPORTED_MODES.includes(pm)) { /* 지원 모드 직접 지정 — locomotion 계열 */ }
+      else { supported = false; note = `skill '${intent.skill.id}' 전용 포즈 없음(미지원) → 포즈 생성 안 함`; }
+      // 보호 2_3/Q-only: 패링·방패·돌진 등은 poseMode 미지정 → supported:false, 기존 locomotion 유지.
+    }
+
+    // 2) attack 수명: 상승 엣지 + (비진행 중 또는 retrigger) 에만 arming.
+    if (wantAttack && (state.attackRemaining <= 0 || retrigger)) {
+      state.attackRemaining = attackDur;
+    }
+
+    // 3) 모드 결정 — attack 진행 중이면 attack 우선, 아니면 locomotion.
+    let mode, phase;
+    if (state.attackRemaining > 0) {
+      mode = 'attack';
+      // 1회 재생 보장: phase 명시(미지정 시 update 가 루프). remaining 선감산 후 진행도.
+      state.attackRemaining = Math.max(0, state.attackRemaining - d);
+      phase = Math.min(1, Math.max(0, 1 - state.attackRemaining / attackDur));
+    } else {
+      mode = state.running ? 'run' : (state.moving ? 'walk' : 'idle');
+    }
+    state.mode = mode;
+
+    const params = { mode, direction: state.direction, speed: mode === 'run' ? 1.55 : (state.moving ? 1 : 0) };
+    if (phase != null) params.phase = phase;
+    const action = mode === 'attack' ? 'attack' : (state.moving ? 'locomotion' : 'idle');
+    return { params, supported, action, note, attackRemaining: state.attackRemaining };
+  }
+
+  // held/blur release — world-lab blur(:114) 대응. attack 수명 취소 + idle 복귀(방향 유지).
+  function release() {
+    state.attackRemaining = 0; state.moving = false; state.running = false; state.mode = 'idle';
+    return { params: { mode: 'idle', direction: state.direction, speed: 0 }, supported: true, action: 'idle', note: 'release' };
+  }
+
+  function snapshot() {
+    return Object.freeze({ id, mode: state.mode, direction: state.direction, directionName: directionName(state.direction),
+      attackRemaining: state.attackRemaining, attackDuration: attackDur, retrigger });
+  }
+
+  // 선택 편의: 실제 rig(createCharacterRig 반환)에 params 적용. rig 소유권(생성/dispose)은 호출측.
+  function drive(rig, dt, intent) {
+    if (!rig || typeof rig.update !== 'function') throw new Error('rig.update API 필요 (createCharacterRig 반환 객체)');
+    const r = resolve(dt, intent);
+    rig.update(dt, r.params); // update 는 object3d 반환; 이동/피해/저장/카메라 변경 없음(speed=관찰값)
+    return { ...r, object3d: rig.object3d };
+  }
+
+  return Object.freeze({ resolve, release, snapshot, drive, id, supportedModes: SUPPORTED_MODES });
+}
+
+export default {
+  SUPPORTED_MODES, SUPPORTED_IDS, DIRECTIONS,
+  isSupportedId, directionName, directionIndex, directionFromDelta, modeDuration,
+  createVisualPoseConsumer,
+};
+
+/* ── 인라인 자가검증 (직접 실행 시; three.js/Image 불필요 — 순수 state + mock rig) ── */
+function _selfTest() {
+  let pass = 0, fail = 0;
+  const ok = (n, c) => { c ? pass++ : (fail++, console.error('FAIL:', n)); };
+  const near = (a, b) => Math.abs(a - b) < 1e-9;
+
+  ok('ids match catalog', SUPPORTED_IDS.includes('dark-druid') && SUPPORTED_IDS.includes('warrior') && SUPPORTED_IDS.includes('silvertail'));
+  ok('modes=4', SUPPORTED_MODES.length === 4);
+
+  // modeDuration = interval*frames (실제 config 값)
+  ok('warrior attack .81', near(modeDuration('warrior', 'attack'), 0.09 * 9));
+  ok('warrior walk 1.2', near(modeDuration('warrior', 'walk'), 0.15 * 8));
+  ok('druid walk .6', near(modeDuration('dark-druid', 'walk'), 0.15 * 4));
+  ok('druid idle .65', near(modeDuration('dark-druid', 'idle'), 0.65 * 1));
+  ok('silvertail attack .81', near(modeDuration('silvertail', 'attack'), 0.09 * 9));
+
+  // 방향식(world-lab:54 동일): south=0, east=2, north=4
+  ok('dir south', directionFromDelta(0, 1) === 0 && directionName(0) === 'south');
+  ok('dir east', directionFromDelta(1, 0) === 2 && directionName(2) === 'east');
+  ok('dir north', directionFromDelta(0, -1) === 4 && directionName(4) === 'north');
+  ok('dir none null', directionFromDelta(0, 0) === null);
+
+  const c = createVisualPoseConsumer('warrior');
+  // locomotion 전이
+  ok('idle', c.resolve(0.016, {}).params.mode === 'idle');
+  ok('walk', c.resolve(0.016, { dx: 0, dy: 1 }).params.mode === 'walk');
+  ok('run', c.resolve(0.016, { dx: 1, dy: 0, run: true }).params.mode === 'run');
+  ok('run speed 1.55', c.resolve(0.016, { dx: 1, dy: 0, run: true }).params.speed === 1.55);
+  ok('stop→idle', c.resolve(0.016, {}).params.mode === 'idle');
+
+  // attack 수명: 엣지→attack, 수명 동안 overlap 무시, 완료→locomotion 복귀
+  const dur = modeDuration('warrior', 'attack');
+  let r = c.resolve(0.1, { attack: true });
+  ok('attack start', r.params.mode === 'attack' && r.action === 'attack');
+  ok('attack has phase (1회재생)', typeof r.params.phase === 'number');
+  r = c.resolve(0.1, { attack: true, dx: 0, dy: 1 }); // 진행 중 재공격 + 이동
+  ok('attack holds over move (overlap coalesce)', r.params.mode === 'attack');
+  c.resolve(dur, { dx: 0, dy: 1 }); // 수명 소진
+  ok('attack→walk after lifetime', c.resolve(0.016, { dx: 0, dy: 1 }).params.mode === 'walk');
+
+  // retrigger 옵션: 공격 중 재공격이 수명 재시작
+  const cr = createVisualPoseConsumer('warrior', { retrigger: true });
+  cr.resolve(0.1, { attack: true });
+  const before = cr.snapshot().attackRemaining;
+  const after = cr.resolve(0.0, { attack: true }).attackRemaining;
+  ok('retrigger restarts', after >= before);
+
+  // 미지원 skill → supported:false, 포즈 미생성(locomotion 유지)
+  const u = c.resolve(0.016, { dx: 0, dy: 1, skill: { id: 'parry', poseMode: null } });
+  ok('unsupported skill not faked', u.supported === false && u.params.mode === 'walk');
+  const a = c.resolve(0.016, { skill: { id: 'heavySwing', poseMode: 'attack' } });
+  ok('attack-pose skill supported', a.supported === true && a.params.mode === 'attack');
+
+  // release(blur) → idle, 방향 유지
+  const rel = c.release();
+  ok('release idle', rel.params.mode === 'idle' && rel.action === 'idle');
+
+  // drive(mock rig) 가 update 로 params 전달
+  let captured = null; const mockRig = { object3d: { tag: 'obj' }, update: (dt, p) => { captured = p; return mockRig.object3d; } };
+  const c2 = createVisualPoseConsumer('silvertail');
+  const dr = c2.drive(mockRig, 0.016, { dx: 1, dy: 0 });
+  ok('drive passes params', captured && captured.mode === 'walk' && captured.direction === 2 && dr.object3d.tag === 'obj');
+
+  // 잘못된 id/모드 거절
+  let threw = false; try { modeDuration('nope', 'idle'); } catch { threw = true; } ok('bad id throws', threw);
+
+  console.log(`visual-pose-consumer-2_5d self-test: ${pass} pass, ${fail} fail`);
+  return fail === 0;
+}
+
+if (typeof process !== 'undefined' && process.argv && process.argv[1] &&
+    process.argv[1].endsWith('visual-pose-consumer-2_5d.candidate.mjs')) {
+  const okAll = _selfTest();
+  if (typeof process.exit === 'function') process.exit(okAll ? 0 : 1);
+}
