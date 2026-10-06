@@ -273,3 +273,14 @@ ART는 기존 자산의 크기/pivot/접지 카탈로그, SKILL은 입력 경계
 완료 원자료 JSON3 parse 및 MJS4 `node --check` PASS. 실제 함수 의미검수·consumer 연결·후보 화면/청취 인수는 보존 시점 미완료다. harness/source PASS를 실제6단계나 A급 맵 완료로 계산0. **VISUAL VERDICT: 기존 RETOUCH 유지**. 완료 소유 raw7·관련 docs8만 좁게 checkpoint하며, 정확 경로·핀·endID를 보존한다. 외부 백업과 receipt는 `/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/claude7-checkpoint-20261006/`. 문서 쓰기 직전 실제 NUL/untracked 전체 포함 변경 수 **80**; 80부터 상세후보 검수 대기 없이 완료 소유만 보존한다. Git commit/push의 정확 SHA·실제 보존 후 변경 수는 외부 receipt에 기록한다.
 
 NEXT PASS: 안개/입자 좌표계를 에디터 transform·심연 mask·현행 nav에 맞추고, 대사 후보의 접근 불가 POI를 정합 검수한 후 실제 consumer를 연결한다. 원자료를 임의 수정하지 않고 production 수정은 root의 별도 백업·코드/docs 동기화·검수 뒤 채택한다. 같은 후보의 본편 시작→전투·획득→보스방 개방→사망·부활→재도전 및 실제 화면/청취 인수는 남아 있다.
+
+
+## 13. ENEMY 완료 후보 추가 보존 / source 검수 — 2026-10-06 KST
+
+공식 추가 보존ID **ROOT-CLAUDE8-ENEMY-RAW-CHECKPOINT-20261006**. ENEMY 최초 후보가 2026-10-06T01:14:45.906Z 실제 end_turn `6721d678-7005-422e-99f5-602f2a530f5d`로 종료됐다. 공식 보고 endID `ENEMY-CH1A-RIFT-BOUNDARY-CANDIDATE-20261006`, 정확 경로 `tools/team-followup-20261005/hell-rift/ENEMY/rift-enemy-boundary.mjs`, 20897bytes, SHA256 `ec6b4446984c8d48b8cfe5f680ba1ca41c0c2c337092da936686444d272e15ce`. 이로써 Claude8의 최초 독립 원자료 제출8/8이며 생산 소비자 연결·팀8의 현재 동시 실행·게임 완성은 별도로 확인한다. ENEMY 보고 sourcechecks8/8과 직전 실패7/8 이력은 root의 상세검수와 구분한다. 새 raw는 원문 불변·생산 미채택으로 백업/이 문서와만 보존한다.
+
+§12의 나머지7 raw는 원격 `7054c3450e7e9540fa78262dc308fdd8d0938189`에 정확 보존됐고 actual80→73을 확인했다. 후속 운영은 유일 Claude 오더담당만 송신, 자동화 중지·새팀/세션/권한변경0 유지. 후속 중 일부 담당의 외부 memory/scratch 파일 출력은 '새 파일0/응답만' 범위와 불일치한 관측으로 오더 STATE `memoryOnlyFileScopeObservation20261006`에 별도 기록됐으며 repo/raw 수정과 혼동하지 않는다. 이후 메모리 결과는 응답본문/stdin만으로 제한한다.
+
+root 읽기 전용 semantic 검수: SKILL38/QA33/BOSS20 합계91검사 PASS. SKILL/BOSS는 복제 fixture이며 실제 런타임 import0, QA는 실제 core/layout/nav 실행과 editor/actor source 검사 혼합이다. SKILL의 Ctrl+P/Q/F키/E paused/탭정리 분기가 현행과 다르므로 전체 입력 교체는 미채택. BOSS gate fixture는 호출 전제조건 가드와 실제 보상/부활 수명 검증을 대신하지 않는다. QA는 top-level CLI/process.exit 때문에 production import 금지. blackBean magic/Q 유도반사·본편6단계/시각/청취 인수는 미실시다. ANIMVFX screen projection/world transform 불일치·ground nav 분포와 STORY의4 POI 보행면 밖 문제는 별도 consumer 수정 대상이다. **VISUAL VERDICT: RETOUCH** 유지.
+
+root ENEMY 읽기 전용 검수8/8 PASS·원문 SHA 전후 동일. 실제 브라우저 VM 모듈 평가에서 `process is not defined` 재현; OLD/NEW 고정배치 자기참조 검사와 현행 앵글러/시작 육괴 좌표가 다르고, 설명의 4킬+80%는 현행 각 지역 처치율·지역 문지기/앵글러·_fbDone 안전망과 다르다. 신규18 배치 polygon 내부 검사는 실제 `isW/canMv`·LOS/적 반경·지역 total/kills·중복 스폰/재도전 검증을 대신하지 않는다. 직접 import/배치채택0 유지.
