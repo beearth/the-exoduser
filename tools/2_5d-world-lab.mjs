@@ -46,6 +46,9 @@ function resize(){
   if(!renderer || state.error)return;
   const box=$('world-canvas').parentElement.getBoundingClientRect();
   const width=Math.max(1,Math.round(box.width)),height=Math.max(1,Math.round(box.height));
+  const currentDpr=globalThis.devicePixelRatio;
+  const pixelRatio=typeof currentDpr==='number'&&Number.isFinite(currentDpr)&&currentDpr>0?Math.min(currentDpr,2):1;
+  if(renderer.getPixelRatio()!==pixelRatio)renderer.setPixelRatio(pixelRatio);
   renderer.setSize(width,height,false);
   const half=3.5/2;camera.left=-half*width/height;camera.right=-camera.left;camera.top=half;camera.bottom=-half;
   camera.zoom=Number($('zoom').value)/100;camera.updateProjectionMatrix();

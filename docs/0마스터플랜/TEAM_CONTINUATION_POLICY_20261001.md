@@ -919,3 +919,33 @@ raw63–66는 root direct import/production 채택0·root 의미검수 PENDING. 
 세이브/대사 문서의 host formatter 제한 검수에서 '음성2'라고 잘못 쓴 표기는 실제 '실패 주입 2건 + 정상 GUI 2건'으로 정정했다. 코드변경·음성검수추가0·audio미인수. 원작업전fullprefix보존,5f8 committedbyte백업선행 후새append구간만정정/normal다음commit/amend0. _MAP_SSOT_INDEX와RESOLUTION_DETAIL·키바인딩 관련정본도현재publicmodule핀/해상도/미구현hotpath와정확동기화.
 
 foreign68 bytes/fullSHA·ownerSTATELOG4·타인WIP·user save/원PNG/scene/nav/game/보호2_3/기존23 보존. 실제80부터완료소유만정상checkpoint, raw공식end/fullSHA표는 ROOT-PUBLIC-RIFT-FOLLOWTHROUGH의 4행과 외부 main-policies-fix-raw63-66-formal-receipt.json을따른다. 일일15%포인트목표는계정공용주간사용관측기준이며토큰낭비·반복시험·채팅전용소비보장0. §23 VIEW: 실제hostentryreturn UI PASS / 전체VISUAL VERDICT RETOUCH / 본편native6/save/audio/A급未인수.
+
+
+### ROOT-RIFT-INPUT-DPR-RAW67-CHECKPOINT-20261007
+
+완료소유 공개 모듈 1개와 DPR resize 수정 1개, 공식 완료 raw67을 정확핀으로 보존한다. 관련 정본 9문서와 운영 정본 6문서를 동기화한다. 파일 존재/fixture PASS/원자료 보존을 본편 인수로 계산하지 않는다.
+
+| 항목 | 파일·정확 계약 | bytes / SHA256 | 검수·채택 |
+|---|---|---|---|
+| parent input lease 최종 | tools/2_5d/rift-parent-input-lease.mjs / createRiftParentInputLease({ports:{readOwned,clearHeld}}) | 12294 / d22e6f2c2bcac8f86fa62901c5f1cf62d0c2b497f9c39530a236c9292b89efc1 | 동기 root job 소유권 차단 모듈 완료; 실제 game hotpath 연결 PENDING |
+| DPR resize | tools/2_5d-world-lab.mjs resize() / Number finitepositive DPR만 채택, invalid1, cap2, 값이 달라질 때만 setPixelRatio, init 기존 cap2 유지 | 33105 / 2ee937444788ad8e0c4885867e376e14fc1345ee5a5851561092b7052a367d12 | syntax1 및 새 실제 Chrome 실험1 PASS; 실제 모니터 전환/DPR 단독 자동감지 미인수 |
+| raw67 ANIMVFX V2 | tools/team-followup-20261007/hell-rift/ANIMVFX/rift-wolf-foot-bounds-v2.candidate.mjs / CH1-RIFT-WOLF-FOOT-BOUNDS-FIX-20261007-ANIMVFX-CANDIDATE | 10514 / 4848ab0ffe5af71c3f9d0a4560bbdc72c08a627e283c0e36803f5b0bf9348088 | 공식 end 6ec60258-852e-436e-b15d-5a4b433d6250 / 2026-10-06T19:24:23.093Z / end rawSHA a6a1980792a00dde158cabf97b8e26c944cc383bc60079369e8d3a506f5775c4; 미채택 보존·root 의미검수 PENDING |
+
+| parent input lease 세부 | 현재 값·계약 |
+|---|---|
+| 필수 ownership | synchronous own plain Object.prototype/null record의 own-data owned:boolean + epoch safe integer 0..9007199254740991. 명시적인 현재 owned:false만 allowParent=true. missing/getter/inherited/thenable/throw/낮은 epoch/해제epoch 재사용/disposed는 UNKNOWN 또는 STALE/DISPOSED block=true |
+| held 초기화 | clearHeld own-data function+original ports receiver; 각 owned epoch 첫1회, 외부 콜백 전에 시도기록, 동기 undefined/true만 성공. 콜백 후 rootowned/epoch 재검사, 같은 실패epoch 재시도0. host dispose가 root job 소유권을 해제하지 못함 |
+| API | readPolicy, suppressUpdate, suppressGamepadPoll, suppressGamepadKeyInject, suppressFacingMutation, suppressAutoNextStage, classifyProjectedEvent, captureFreshOwnership, dispose |
+| projected input | root caller의 own primitive event projection만 소비. iframe WASD/arrows walk260·Shift run470·J attack·R dialogue·Space pause·Esc close-dialogue·Tab/Enter modal-native은 advisory. native event dispatch/preventDefault/부모 이벤트 변조0 |
+| 부작용 | timer0/RAF0/DOM0/save0/reward0/nextStage0. captureFreshOwnership은 detached frozen 진단이고 영속 permission/해제handle이 아님. 실제 update 최상단/gamepad poll/key injection/facing/auto-next 및 held exit resync는 caller 연동 필요 |
+| 비동기 실패 보정 | 같은realm native Promise prototype/no own constructor/원 native constructor·species 상태에 한해 captured intrinsic then으로 rejection만 관찰. Promise를 owned나 성공으로 승격0. own then getter 실행0; arbitrary then/foreign Promise 채택0. 검사 foreign Promise는 fulfilled fixture이며 적대 foreign/constructor accessor rejected Promise까지 관찰했다고 주장0 |
+| 초기 핀 검수 이력 | 12058 bytes / 01ce35a76bffe36056680899916436f991d232f4d3e8e5f6cede0ffcb804c676에서 신규 stdin1·16그룹288조건 PASS/FAIL0/exit0. 최종 핀으로 재실행하지 않았음 |
+| 최종 제한 검수 | 새 stdin1에서 최초 FAIL1/3조건·unhandled1(UNKNOWN/block은 정상) 보존→external byteexact backup→observer 최소보정1→후속6그룹33조건 PASS6/FAIL0/newUnhandled0/overall exit0. 원16/288 재실행0; 의미 stdin 총2회. 초기·최종 핀과 실패를 합산 PASS로 덮지 않음 |
+
+DPR 실제 experiment1: CSS 1034×712.46875 고정, DPR1→2→3→1.25에서 backing/GL 1036×714→2072×1428→2072×1428(cap2)→1295×892; LINK=true GPU program13/GLerror0. 같은 launch의 NaN/Infinity/0/negative/string/undefined fallback1 synthetic6도 별도 기록. editor scene/terrain/foot5480/3740 불변. 1254px 원본을 8000 world에 확대하는 흐림 및 2D legacy1024 mask 병목은 별도 미해결이다. resize3줄로 원본 해상도나 보행/geometry를 바꿨다고 선언하지 않는다.
+
+root 본편 접점 읽기 결과: 정상 _proceedNextStage의 기존 dbSave1 앞에서 rootepoch/P/G 캡처 후 await 뒤 동일성 검증이 필요하고, clear reward/save를 중복하지 않는다. clear시 G.on=true·_bossArena=true일 수 있어 arena만으로 유효 clear를 막지 않는다. update의 systemLesson·panel key가 pause 이전이고 gamepad poll·direct WASD·mouse facing도 별도 guard가 필요하다. clearHeld 뒤 gpClearAll 순서, Continue는 host UI만 닫고 gate.cancel0/rootlease는 지연5000ms 동안 유지, callback에서 현재job→commit1→현재job→nextStage1 및 curtain900ms 별도token이 필요하다. DEMO_MODE=true/LAST_STAGE=0의 기존 nextBtn 분기와 3387-only host admission·실제 Continue UI·child P/char 연결은 PENDING. game.html/DEMO·보상·세이브·Q전용blackBean(E패링불가)/어택티켓/보호2_3 변경0.
+
+일일 약15%포인트 제작 목표는 계정 전체 주간 사용률 관측 기준이다(10080분 창 기준41%/남음59%, reset2026-10-12T11:52:56Z; 일일 tokens 미제공). 실제 제작·신규 의미검수·후속 배정으로 쓰고 같은검사/완료/TASK 반복·소비만 위한 작업0. 목표달성만으로 연속 제작 중지0, 실제한도는 준수. 단일rootheartbeat30분 ACTIVE, 다른paused·아침메일 재개0. 기존Claude8/Codex7 owner만 전문송신, 거절된Codex/ART 목적 우회0. ANIMVFX 다음 효과 수명 작업은 owner가 1회 배정·peer/첫source 확인했고 root 전문중복지시0.
+
+MAP PRODUCTION REPORT (§23): MASTER PLAN 기존 guide/SSOT/LOCK 우선; LARGE OUTER MASS/MEDIUM CONNECTION/GROUND CONNECTION/랜드마크/SMALL DETAIL 변경0; PLAYABLE/COMBAT 독립 소비자 모듈이며 본편native6/실보상save未인수; CAMERA QA DPR 새 실WebGL1 및 해당source 화면3, parentlease 화면검수0; TECH QA 신규 검사와 초기핀 이력 분리; 원화·scene/nav·타인WIP·foreign68 bytes/fullSHA·ownerSTATELOG4·user save/기존23 보존. VISUAL VERDICT: RETOUCH. 기존 host entry/return UI PASS와 전체 맵/본편/native6/audio/A급未인수를 구분한다. 정확 code+docs 정상commit/push·remote exactSHA는 외부 영수증으로 확인한다. 실제 NUL80부터는 완료소유만 즉시checkpoint/100전새산출중단한다.
