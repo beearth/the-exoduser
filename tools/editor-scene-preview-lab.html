@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>편집 씬 · 2.5D 미리보기</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,sans-serif;color:#e7ddc7;background:#0a1113}
+*{box-sizing:border-box}body{margin:0;padding:20px}header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:16px}h1{font-size:21px;margin:0 0 6px}p{margin:0;color:#a7b4b0;font-size:13px;line-height:1.6}
+main{display:grid;grid-template-columns:minmax(0,1fr) 240px;gap:16px}#stage{position:relative;height:calc(100vh - 116px);min-height:360px;overflow:hidden;border:1px solid #48534b;border-radius:10px;background:radial-gradient(ellipse,#25312f,#091116 75%)}
+canvas{display:block;width:100%;height:100%;outline:none;touch-action:none}canvas:focus-visible{outline:2px solid #d2af70;outline-offset:-3px}
+aside{display:flex;flex-direction:column;gap:14px;padding:18px;border:1px solid #38483e;border-radius:10px;background:#131d1c}label{display:flex;flex-direction:column;gap:8px;font-size:13px}
+button,select{font:inherit;min-height:40px;border:1px solid #7c795d;border-radius:6px;background:#24312b;color:#eadfc5;padding:8px;cursor:pointer}button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid #d2af70}
+#state{position:absolute;left:16px;bottom:16px;max-width:calc(100% - 32px);background:#091113dc;padding:10px 14px;border-radius:5px;color:#d7d9c9;font-size:13px;line-height:1.5;pointer-events:none}
+#facts{white-space:pre-line;overflow-wrap:anywhere}#scene-name{color:#e7d1a5;font-weight:600}
+@media(max-width:760px){body{padding:12px}main{grid-template-columns:1fr}#stage{height:62vh;min-height:320px}aside{gap:10px}header{align-items:flex-start}h1{font-size:18px}}
+</style>
+</head>
+<body>
+<header><div><h1>편집 씬 · 2.5D 미리보기</h1><p id="scene-name">편집한 씬을 기다리고 있습니다.</p></div><p>WASD / 방향키 · 보행 지점 이동</p></header>
+<main><section id="stage" aria-label="편집 씬 미리보기"><canvas id="scene-canvas" tabindex="0" aria-label="편집 씬 보행 화면"></canvas><div id="state" role="status" aria-live="polite">편집기에서 씬을 보내면 배치를 확인할 수 있습니다.</div></section>
+<aside><label>카메라<select id="camera-mode"><option value="orthographic">정사영</option><option value="perspective">원근</option></select></label>
+<label>확대<input id="zoom" type="range" min="0.5" max="3" step="0.1" value="1"></label>
+<button type="button" id="fit">전체 구도</button><button type="button" id="spawn">시작 지점으로</button>
+<p id="facts">현재 편집 배치와 길을 별도로 확인합니다.</p><p>금빛 점은 보행 위치입니다. 캐릭터 전투·주민 대화는 별도 미리보기에서 확인하세요.</p></aside></main>
+<script src="./map-scene-core.js"></script><script type="module" src="./editor-scene-preview-lab.mjs"></script>
+</body></html>

@@ -55268,3 +55268,10 @@ MAP PRODUCTION REPORT (§23): MASTER=지옥의 틈의 actor cosmetic 수명·프
 | ANIM dialogue owner 원자료 | end53b09739-bd8c-479f-b0a4-6838041a4aec, raw6240/9b9ad0f617ddca16b5f459d4158d23de3a89b2553cca5dd83f19e845f67cfaa9; 보존6895/7f55fb6f0a265ec35d7a7b550ca629fc3a8f048d5bcaf82e433df6bfe05e1cf7. 새공식memory후보미채택, root실행·실화면·본편인수0 |
 | 새 owner 업무 | Claude8 기존owner가 MAP CH1-RIFT-SCENE-OBJECT-ASSET-INTEGRITY-20261007-MAP-MEMORY와 QA CH1-LOBBY-CHARACTER-VISIBLE-BOUNDS-20261007-QA-MEMORY를각sent1/peer1/firstsource1/end0·busy로기록. ANIM CH1-RIFT-VFX-ARBITRATED-ATTACK-EMISSION-20261007-ANIMVFX-MEMORY도sent1/peer1/Read1/firstsource1/end0·busy. 수신/첫source를완료로계산0·전원가동과장0. MAP추가권한질문은이미승인된기존팀독립작업에대한전문자가질문이며실제autoapproval거절로오인0, 기존승인범위업무계속. 새raw의의미검토·후속은기존owner에게만1회인계 |
 | 계속운영/보호 | 기존Claude8/Codex7만전문송신소유·root직접/중복송신0·새팀/세션0. 거절된Codex송신/ART선택/WOLF쓰기목적재시도·도구/경로/호스트/권한우회0, MAP/STORY외부쓰기·삭제피해UNKNOWN유지. WOLF거절뒤같은산출물correctedpathwrite 이력보존·추가접근/검수/실행/채택/Git0. 타인WIP/사용자save/보호2_3·Q전용magicblackBean(E불가)·어택티켓금지보존. 실제NUL80부터완료소유checkpoint/100전새산출중단. 계정주간사용률약15pp/day 목표는공유관측이며이채팅정확일별token보장·토큰태우기0. 기존단일root연속heartbeat/다른paused자동화·아침메일재개0 |
+
+### 2026-10-07 ROOT-EDITOR-EDITED-SCENE-CHECKPOINT-20261007
+
+- 편집 snapshot의 에셋·레이어·객체·crop/mask·보행 영역을 별도 2.5D 지형/child로 소비하는 경로와 editor HTML hook2줄을 구현했다. 기존 canonical NPC 미리보기·원PNG/scene/nav·본편/save는 보존한다.
+- 소유 code5+관련 map docs3를 완료소유 checkpoint한다. factory actualThree CPU8그룹40조건PASS, host 초기숫자draft12그룹51조건PASS는 문자열child미검수 이력, 문자열보정후새2그룹11조건PASS를 별도보존했다. rootlab syntax/source계약 완료·새실제GUI는후속검수PENDING이며 본편/native6/청취/save/A급완성0.
+- docs전체77경로2044행 검색, 세부현재계약과 §23은 HELL_RIFT_2_5D_SLICE/MAP_SCENE_EDITOR/HELL_RIFT_EDITOR_RESULT 최신절. 나머지관련정본은후속exactsync한다. NUL81/index0에서완료소유만보존·foreign68/ownerSTATELOG4/heldWOLF1 stage0.
+- 최초정상commit은 docs-sync-check가 CHANGELOG_SYNC 누락으로중단(exit1)했다. staged8은변경없음; 이진행log를보충해정상hook를다시통과시키며 bypass환경변수·noverify·reset0.

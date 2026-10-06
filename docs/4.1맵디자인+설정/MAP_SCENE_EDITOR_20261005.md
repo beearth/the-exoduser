@@ -1891,3 +1891,55 @@ MAP PRODUCTION REPORT (§23): MASTER=지옥의 틈의 actor cosmetic 수명·프
 | ANIM dialogue owner 원자료 | end53b09739-bd8c-479f-b0a4-6838041a4aec, raw6240/9b9ad0f617ddca16b5f459d4158d23de3a89b2553cca5dd83f19e845f67cfaa9; 보존6895/7f55fb6f0a265ec35d7a7b550ca629fc3a8f048d5bcaf82e433df6bfe05e1cf7. 새공식memory후보미채택, root실행·실화면·본편인수0 |
 | 새 owner 업무 | Claude8 기존owner가 MAP CH1-RIFT-SCENE-OBJECT-ASSET-INTEGRITY-20261007-MAP-MEMORY와 QA CH1-LOBBY-CHARACTER-VISIBLE-BOUNDS-20261007-QA-MEMORY를각sent1/peer1/firstsource1/end0·busy로기록. ANIM CH1-RIFT-VFX-ARBITRATED-ATTACK-EMISSION-20261007-ANIMVFX-MEMORY도sent1/peer1/Read1/firstsource1/end0·busy. 수신/첫source를완료로계산0·전원가동과장0. MAP추가권한질문은이미승인된기존팀독립작업에대한전문자가질문이며실제autoapproval거절로오인0, 기존승인범위업무계속. 새raw의의미검토·후속은기존owner에게만1회인계 |
 | 계속운영/보호 | 기존Claude8/Codex7만전문송신소유·root직접/중복송신0·새팀/세션0. 거절된Codex송신/ART선택/WOLF쓰기목적재시도·도구/경로/호스트/권한우회0, MAP/STORY외부쓰기·삭제피해UNKNOWN유지. WOLF거절뒤같은산출물correctedpathwrite 이력보존·추가접근/검수/실행/채택/Git0. 타인WIP/사용자save/보호2_3·Q전용magicblackBean(E불가)·어택티켓금지보존. 실제NUL80부터완료소유checkpoint/100전새산출중단. 계정주간사용률약15pp/day 목표는공유관측이며이채팅정확일별token보장·토큰태우기0. 기존단일root연속heartbeat/다른paused자동화·아침메일재개0 |
+
+### 2026-10-07 ROOT-EDITOR-EDITED-SCENE-HOST-20261007 · 현재 편집 씬 전용 2.5D 호스트
+
+현재 편집 JSON을 별도 child에 전달하는 호스트를 추가했다. 기존 `선택 주민 · 2.5D`는 canonical 대조·주민 접근 포즈 진입으로 유지하며, 새 버튼은 현재 편집된 레이어와 보행 그리드를 전달하는 독립 경로다. 이 절의 완료 범위는 호스트 source·통제 포트 검수다. child의 실제 Three 지형 생성·첫 화면은 별도 소유 코드와 새 실제 화면 검수가 필요하며, 호스트 단위 PASS로 전체 연결·화질·본편 완료를 선언하지 않는다.
+
+| 항목 | 정확한 호스트 구현 계약 |
+|---|---|
+| 소유 source | `tools/2_5d/editor-scene-preview-host.mjs` 14648 B / SHA256 `39490d20c548a6eb8536439cb962c833ff3ef6e8cdc488ba9a196532121c1a3d` |
+| export | `EDITOR_SCENE_PREVIEW_HOST`, `createEditorScenePreviewHost({document,window,core=window.MapSceneCore,timeoutMs=30000,pollMs=100})`; 반환 `open/close/dispose/snapshot` frozen API. `workspace=tiles`는 null 반환·새 UI 생성0 |
+| 정본 경계 | `registration='EDITOR_SNAPSHOT'`, `mainAccepted=false`, `nativeAccepted=false`. canonical SHA 검증으로 표시하지 않으며 fixed canonical 씬을 fallback으로 전달하지 않음 |
+| 진입 버튼·hook | host가 기존 주민 버튼 뒤에 `#scene-edited-preview-25d`/문구 `편집 씬 · 2.5D`를 추가. `editor.html`의 기존 module hook 인접 import와 `window.__editorScene25dHost=createEditorScenePreviewHost()` 정확2줄만 삽입. 현재 HTML258409 B / `b9e3a61dd9c6a11eff220b7f39a6dc9db76e375be2615422b586d12d5186b41e`; 원258258 B/9f3ef622… bytes의 CRLF4217개를 유지하고 삽입 후4219개·두 줄 제거 역변환 exact |
+| admission 순서 | 현재 `EXODUSER_SCENE_EDITOR` own-data ready=true·snapshot/player 함수 확인 → player() 정확null·workspace inert 아님·document visible·기존 NPC dialog 닫힘 확인 → JSON-safe detached copy → JSON 실제UTF8 bytes 검사 → 실제 `MapSceneCore.validate` clone → 그 뒤에만 dialog/iframe 생성. 잘못된 schema 또는 body는 iframe0 |
+| JSON body·가드 | `maxSceneBytes=32000000` B, 0 또는 초과 거절. `TextEncoder(JSON.stringify(copy))` 실제UTF8 기준. 유한 JSON number만 허용, 순환/접근자/thenable/symbol/비JSON 객체·64 초과 재귀 깊이 거절. 추가 project flag나 requestId를 scene에 삽입하지 않음 |
+| 에디터 원본 | 전달은 별도 clone. 원 scene/assets/world/nav/start/exit/history/선택/배치/원PNG/P/save 쓰기0. child가 받은 clone을 바꿔도 editor 원 snapshot은 유지. core/schema/history/API 수정0 |
+| 새 child URL | 동일 origin의 `tools/editor-scene-preview-lab.html`. 새 열기마다 fresh iframe과 dialog를 소유. 초기 about:blank 이후 href·origin·pathname 및 record의 `frame.contentWindow` identity가 정확히 일치해야 포트를 소비. 추가query/다른path/window/accessor API는 거절 |
+| child 포트 | own-data `window.__editorScene25d`의 `ready===true`, `loadScene`, `snapshot`, `dispose` 함수 필수. 포트 ready는 로딩 준비 허용이며 실제 씬 준비 ACK와 구분 |
+| payload·요청 ID | `loadScene(validatedClone,{entryId})` await. entryId는 단조 내부 epoch에서 만든 primitive 문자열 `editor-scene-1`, `editor-scene-2`…; child의 문자열1…128 계약에 맞춤. scene serializable 필드에는 entryId를 추가하지 않음 |
+| 실제 씬 ACK | await 후에도 같은 current record·같은 iframe href/window·같은 API identity여야 함. child.snapshot()의 own-data `ready=true`, `loading=false`, `disposed=false`, `entryId` 정확일치, `error=null` 또는 빈문자열이어야만 active=true. 초기 ready만으로 active 처리0 |
+| 대기 상수 | 새 host 기본 timeout30000 ms/poll100 ms; override 범위 timeout100…60000 ms/poll20…1000 ms·finite 필수. deadline은 API 준비와 loadScene await 전체를 덮고, 성공/실패/닫기/취소/교체/dispose 때 자기 timer set 전부 해제. host 새 RAF0 |
+| close·취소·늦은 반환 | close/새 open/timeout/hidden/pagehide는 record를 먼저 retired 처리하고 pending/active=false·stop 신호 → timer/capture/frame/dialog 리스너 해제 → 동일 URL/window/API의 자기 child.dispose 최대1회 → about:blank/unload·자기 dialog 제거. 늦게 성공한 이전 load는 새 record를 active로 만들거나 새 iframe을 종료하지 못함 |
+| 부모/child 수명 | 부모 host는 버튼·dialog·iframe·대기·epoch·리스너 소유. child는 자기 detached scene/renderer/RAF/Three 자원 소유. canonical NPC restore handle·기존 world scene 교체0. close/fail은 preview record 리스너 해제; host dispose는 버튼의 click/keydown/keyup 및 pagehide 리스너·자기 버튼/status도 해제 |
+| held 입력 | editor.js:657 기존 keyup 경로로 w/a/s/d/ArrowUp/ArrowDown/ArrowLeft/ArrowRight/Space 9종을 열기·닫기에 발행. blur의 endDrag/history 작업은 강제 호출0. 새 버튼 Enter/Space 전파 방지. modal 동안 parent keydown/keyup capture는 editor 글로벌 단축키로 전파되지 않게 막고 Escape로 자기 preview 종료; child iframe 입력은 별도 window |
+| UI 안전 | 생성된 text leaf에만 textContent 사용, 기존 부모 내용 교체0. 별도 status `#scene-edited-preview-status`; modal IDs `scene-edited-preview-panel/title/frame/close`. dialog96vw 상한1600px·height/maxHeight92vh·close 최소44px, frame height calc(100%−68px) |
+| 실패·cleanup | 원 cause는 private `lastCause`로 보존, 외부 `e.message`/String/formatter 읽기0. 고정 한국어 메시지만 UI/반환 reason에 사용. cleanup 예외 또는 async dispose rejection은 별도 cleanupFailures에 기록하고 다음 정리를 계속하며 rejection observer를 붙임. 원 raw cause/handle/scene을 public 진단에 노출0 |
+| snapshot | detached frozen primitive record: disposed/entryId/active/pending/ownedTimers/sceneBytes/childDisposeAttempts/failures/cleanupFailures/reason/timeoutMs/pollMs/registration/mainAccepted/nativeAccepted. ready 초기값이나 error 객체를 구현 완료로 과장하지 않음 |
+
+| 고정 상태 key | UI reason |
+|---|---|
+| idle | 현재 편집 씬을 별도 2.5D 화면에서 확인합니다. |
+| admission | 편집 씬이 준비되지 않았거나 지원하는 씬 형식·크기와 다릅니다. |
+| busy | 다른 미리보기 또는 보행 시험을 먼저 닫아 주세요. |
+| waiting | 편집 씬의 별도 2.5D 화면을 준비 중입니다. |
+| active | 현재 편집 씬 · 2.5D 미리보기 · 게임에는 저장되지 않습니다. |
+| iframe | 편집 씬 미리보기 화면의 연결을 확인할 수 없습니다. |
+| loading | 편집 씬의 2.5D 화면을 준비하지 못했습니다. |
+| acknowledgement | 편집 씬 미리보기의 준비 결과를 확인할 수 없습니다. |
+| timeout | 편집 씬 미리보기 준비 시간이 초과되었습니다. |
+| closed | 편집 씬 미리보기 닫힘 · 편집 데이터는 유지됩니다. |
+| replaced | 이전 편집 씬 미리보기 요청을 취소했습니다. |
+| disposed | 편집 씬 미리보기 호스트가 종료되었습니다. |
+
+| 신규 검수/기록 | 실제 도달 범위·한계 |
+|---|---|
+| 최초 source 검수 | 새 Node1, actual host+actual MapSceneCore 및 통제 DOM/iframe/timer/child 포트. 초기 draft 14630 B / `d4b09efb04a81fa6030fd0657fa7d245734589071150e50c00c215a41bca802d`에서 신규12그룹51조건 PASS/FAIL0/미도달0/unhandled0. edited transform·nav·name detached 전달, schema/body before child, NPC/playing/inert 차단, close·late API/load·새open·정확href/own-data·ACK·timeout·raw message getter0·cleanup throw·pagehide/hidden 검수 |
+| 최초 검수의 제외 범위 | 당시 fixture가 숫자 entryId를 허용했으며 실제 root child 문자열 계약을 검수하지 못함. 12/51은 그 초기 핀의 source 결과만 유지. actual child/GPU/화면 PASS로 승격0 |
+| 문자열 보정 | 원 draft 외부 fullbyte backup 후 record.id를 `editor-scene-`+단조 epoch 문자열로 최소 보정. 그 외 source 회귀 전체suite 재실행0 |
+| 승인된 한정 후속 | root 승인 새 Node1(총 제품 Node2), final host 핀에서 strict-string child admission/exactACK와 monotonic entry stale handoff 신규2그룹11조건 PASS/FAIL0/미도달0/unhandled0. 12/51과 합산하여 단일 clean suite로 표기0 |
+| 실제 환경 한계 | 두 검수의 child/DOM/iframe/timer는 통제 포트이며 actual lab 모듈/WebGL/renderer/새Chrome/PNG/실모니터/게임/native6/audio/save는 실행·인수0. 실제 editor UI와 새 child/factory 통합 화면은 root 후속 QA |
+| docs 전체검색 | 코드 변경 후 전체 docs rg:25경로184행, raw561706 B; `docs-search-disposition.json`에 own1 append/현재 정본 root 인계/과거이력 원값유지 분류. 같은 검색/과거 accepted suite 반복0 |
+| 보존·완료 경계 | 외부 `editor-edited-scene-host-20261007/`에 before fullbytes, html insertion 역변환, 원12/51·string보정·새2/11·raw와 finalreceipt 보존. 원문 prefix100%/EOF LF1, Git add/commit/push는 root만. actual80부터 완료소유 checkpoint·100 전 신규산출 중단 |
+
+§23 MAP PRODUCTION REPORT — STAGE: 편집 씬 전용 독립 host 연결. MASTER(silhouette/regions/main route/side spaces): 전달 clone만 사용·원본불변. OUTER MASS(LEFT/RIGHT/TOP/SOUTH/major holes), LARGE(source assets/composites/overlap/repeated silhouette), MEDIUM(connections/remaining holes), GROUND(shadow/contamination/integration), PLAYABLE(arenas/travel/breathing/threat/combat readability), LANDMARK(primary/secondary/tertiary): 새 맵 제작·배치·geometry·원PNG 변경0. CAMERA QA(START/EARLY/ARENA/SIDE L/SIDE R/LANDMARK/LATE/EXIT): 신규 실제 화면 NOT ASSESSED. TECH QA: 새 host+core 통제 source 검수와 문자열 한정검수만, route/collision/WebGL/pageerror/404/seam/loading/performance 실측은 root 후속·미인수. FILES: 새 host+HTML hook2줄+본 문서 append만 소유; 다른 root child/factory/문서 WIP 보존. GIT: worker stage/commit/push/deploy0·root 정상보존 담당. VISUAL VERDICT: RETOUCH(기존 전체맵), 이번 신규 visual NOT ASSESSED. NEXT PASS: 별도 child/factory actual WebGL에서 편집 geometry+nav 동일 snapshot 소비와 close/실화면을 인수. 원1254→8000 해상도 한계·legacy1024 mask 흐림 해결 주장0·본편/native6/청취/실save/A급 완료0.
