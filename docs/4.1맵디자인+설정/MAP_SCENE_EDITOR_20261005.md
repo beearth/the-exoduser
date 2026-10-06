@@ -838,3 +838,34 @@ core 의미검수=`tools/test-map-scene-placement-presets.cjs` 신규14/14·1회
 | 인수 경계 | 표시 UI PASS, 전체맵 VISUAL VERDICT RETOUCH. 실제높이/바닥해상도·주민애니메이션·본편grant/quest/save/상승/native6·실청취/실물폰/A급 미인수. 새팀/실행세션/중복TASK0·paused자동화/아침메일재개0·19시단일보고 조건유지 |
 
 코드핀·수정전백업·실제화면/원본검사·docs전체검색/disposition·정상Git/원격근거: `/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/resident-preview-state-ui-20261006/receipt.json`. 가이드§23 MAP PRODUCTION REPORT는 `HELL_RIFT_EDITOR_RESULT_20261006.md`의 동일완료ID.
+
+## 24. 선택 주민의 배치 규격과 첫 실패 값 진단 — 2026-10-06
+
+완료ID `ROOT-RIFT-REGISTRATION-DIAGNOSTICS-20261006`. §12 독립주민 profile의 strict 허용조건을 바꾸지 않고, 수정 중 어느 등록 값이 맞지 않는지 설명한다. 길 연결 PASS와 시각 완성도를 의미하지 않는다.
+
+| 항목 | 정확 현행 계약 |
+|---|---|
+| 공유 validator | `inspectResidentPaintingRegistration(scene)` → `{supported,valid,profile,issue}`. 기존 `residentPaintingProfile(scene)`은 같은 validator의 `profile/null` wrapper. 기존 BODIES/CROPS/RESIDENT_PREVIEW/anchors/grounding 수치·원자료 unchanged |
+| 지원·유효 | `residentLayerReview.kind === independent-resident-preview-v1`에서 supported=true. 알 수 없는 kind는 supported=false/valid=false/profile=null. 모든 기존등록조건 통과시 valid=true/기존profile/issue=null. 실패시 valid=false/profile=null과 첫 issue |
+| 첫 실패 대상 | `issue={target,field,actual,expected}`. target=`scene`, `asset:<id>`, `layer:<id>`, `object:<id>`; field는 실제 key/crop.x…crop.h/width/height. 기존 검사순서와 `.find` 첫 일치 정책 유지. 읽기 예외는 scene/read, actual=읽기 실패/expected=검사 가능한 주민 등록 |
+| 등록 규칙 보존 | 원화·cleanplate·atlas SHA/1254²·6배경crop 등록/그림피벗0·회전0·반전false·불투명도1·mask undefined, foot visible/sort foot/parallax1,4주민 atlas exactcrop·pivot(.5,1)·rotation0/flipfalse/opacity1/mask undefined. 기존 near 허용오차1e-6; 주민 x/y 유한·0≤값<8000, height 1…32000. standing80 강제/값 자동복구0 |
+| 필요한 값 표현 | near 기대값 `{value,tolerance:1e-6}`; x/y `{min:0,maxExclusive:8000,finite:true}`; height `{min:1,max:32000}`. undefined는 문자열 `undefined`; 비유한수는 문자열. actual 복합값은 분리된JSON-safe복사 최대깊이4/최대속성16, accessor·cycle 안전표기. scene 참조 반환0 |
+| 선택 UI | known4 object ID obj-resident-haran/berin/nessa/dorik의 단일선택 및 supported만 카드표시. 다른 주민·배경의 첫 실패면 실제 대상의 name/id와 field를 명시. 비주민/다중>1/미지원/모듈없음은숨김. state는 role=status/aria-live polite; current/expected는 JSON정확값·한글field일부 매핑 |
+| 갱신·성능 | 기존 refresh/dirty render에서 계산, propertyinput/drag는 기존dirty에 따라 다음tick반영. 결과JSON key가같으면 leaf쓰기0; hidden값이달라질때만 hidden속성갱신. 새로운RAF·timer·BFS·보행query0; 선택당기존등록검사만. 정적유효성은 접근/BFS나품질판정과분리 |
+| 소비자·보존 | 읽기전용 `EXODUSER_SCENE_EDITOR.residentRegistration()`에 선택이름/ID와 detached 진단결과. scene/nav/발/크기/원본이미지/대화·History·저장 정책변경0. 실제 property input 자체의 기존편집·autosave/Undo는 유지; 진단이 추가쓰기하지 않음 |
+| 검수 경계 | 신규unit 고유14PASS: 최초13PASS/1FAIL(테스트기대값1ULP)→실패그룹만targeted1PASS, unit actual2/기존성공13재실행0. old/new profile540/540 PASS actual1. module syntax1/rootJS syntax2(숨김cache 최종수정후1회), 기존suite/종주/F분기/PNG/native6 반복0 |
+
+
+### 2026-10-06 — 선택 주민 배치 규격 진단
+
+완료ID `ROOT-RIFT-REGISTRATION-DIAGNOSTICS-20261006`. 정본은 `MAP_SCENE_EDITOR_20261005.md` §24. 앞선 크기비교/접근검사/접근점보행/현재비활성표시 계약은 유지된다.
+
+| 항목 | 현재 구현·인수 |
+|---|---|
+| 신규consumer | 선택한4주민의 배치규격일치/첫실패 대상·field·현재값·필요값 카드. propertyinput에서 다음dirtytick반영, 다른 주민·배경이원인이면 그대상명시. 자동보정/새JSON필드0 |
+| 의미·수치 | 공유strictvalidator의 기존허용조건 보존. near1e-6/좌표0≤값<8000/height1…32000/1254²등록/foot sort·parallax1/pivot(.5,1) 유지. 크기80 자동강제0. 읽기전용·BFS0·안정결과leaf쓰기0 |
+| 실제검사 | unit 신규14최종PASS actual2(초기테스트기대값1ULP실패1보존→실패1만수정재검사), old/new540동등 actual1PASS; module syntax1/rootJS2 PASS. Chrome 신규6그룹PASS·실제launch1/contexts3, 실패이력은 raw/summary. 기존성공검사/전체보행/분기/PNG/native6반복0 |
+| 채택·Git | 독립editor3387에 code4+docs12 정확16한정정상checkpoint; actualNUL88→72/원격exactSHA 외부receipt. source22핀·타인72status/68exactpins·owner4본인기록 보존/root타인쓰기0. 그림·scene/start/feet/nav/story/main/save변경0 |
+| 인수·남은문제 | 진단UI와전체맵분리, VISUAL VERDICT RETOUCH. 바닥해상도/실높이/정적주민/애니메이션/본편grant·quest·save·상승/native6/청취/실물폰/A급미인수. 전팀생산완료주장0·새팀/실행세션/중복TASK0·paused자동화/아침메일재개0. 19시단일보고조건유지 |
+
+수정전백업·코드핀·docs전체검색/disposition·원본실패/후속·실제화면·정상Git/원격근거: `/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/resident-registration-diagnostics-20261006/receipt.json`. helper unit의 `ROOT-RIFT-RESIDENT-REGISTRATION-DIAGNOSTICS-20261006` raw표기는 이root완료ID에 연결된 지원검사alias이며 별도생산완료가 아니다. 가이드§23 MAP PRODUCTION REPORT는 `HELL_RIFT_EDITOR_RESULT_20261006.md`의 동일root완료ID를 따른다.

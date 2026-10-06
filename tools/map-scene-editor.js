@@ -113,7 +113,7 @@
     {npcId:'rift-request-nessa',x:6300,y:5020,visualX:1515*25/6,visualY:1198*25/6,labelHeight:175,approach:{x:6220,y:5020}},
     {npcId:'rift-prepare-dorik',x:5220,y:2500,visualX:1206*25/6,visualY:603*25/6,labelHeight:71,approach:{x:5180,y:2540}}
   ].map(a=>Object.freeze({...a,approach:Object.freeze(a.approach)})));
-  let residentAnchorsFactory, residentGroundingFactory, residentGrounding, residentGroundingScene, dialogueSceneSupport, dialogueFactory, dialogueRaw, dialogueController, dialogueScene, nearestResident = null, dialogueOpen = false;
+  let residentAnchorsFactory, residentGroundingFactory, residentRegistrationFactory, residentRegistrationKey = null, residentGrounding, residentGroundingScene, dialogueSceneSupport, dialogueFactory, dialogueRaw, dialogueController, dialogueScene, nearestResident = null, dialogueOpen = false;
   const residentAnchors = () => residentAnchorsFactory?.(current()) || (dialogueSceneSupport?.(current()) ? RESIDENT_ANCHORS : []);
   let residentAccessFactory, residentAccessReport = null;
   let residentPreviewFactory, residentPreviewOrigin = null;
@@ -395,6 +395,35 @@
     $('scale-raster').textContent=r.status==='masked'?'마스크 · 직접 비교 제외':'X '+num(r.scaleX)+'배 · Y '+num(r.scaleY)+'배';
     $('scale-quality').textContent=r.status==='masked'?'마스크가 적용되어 원본 crop 배율로 선명도를 직접 판정하지 않습니다.':r.status==='enlarged'?'현재 화면에서 원본보다 확대되어 흐려질 수 있습니다. 그림 크기와 확대 배율을 함께 확인하세요.':r.status==='native'?'현재 화면의 최대 축이 원본 해상도와 같습니다.':'현재 화면은 원본보다 축소해서 표시합니다.';
   }
+  function selectedResidentRegistration() {
+    const pair=selectedPair();
+    if(!residentRegistrationFactory||!pair||batchIds.size>1||!['obj-resident-haran','obj-resident-berin','obj-resident-nessa','obj-resident-dorik'].includes(pair.o.id))return null;
+    const q=residentRegistrationFactory(current());
+    return q.supported?{selectedName:pair.o.name,selectedObjectId:pair.o.id,...q}:null;
+  }
+  function residentRegistrationUI() {
+    const card=$('registration-check'),q=selectedResidentRegistration();
+    if(card.hidden!==!q)card.hidden=!q;
+    if(!q){residentRegistrationKey=null;return;}
+    const key=JSON.stringify(q);
+    if(key===residentRegistrationKey)return;
+    residentRegistrationKey=key;
+    const issue=q.issue;
+    card.dataset.valid=String(q.valid);card.dataset.target=issue?.target||'';card.dataset.field=issue?.field||'';
+    $('registration-state').textContent=q.selectedName+' · '+(q.valid?' 배치 규격 일치':' 배치 규격 불일치');
+    $('registration-state').style.color=q.valid?'#a4deb9':'#e9bc82';
+    for(const id of ['registration-target','registration-actual','registration-expected'])$(id).hidden=q.valid;
+    if(issue){
+      const [type,...parts]=issue.target.split(':'),id=parts.join(':'),p=current();
+      const name=type==='object'?p.layers.flatMap(l=>l.objects).find(o=>o.id===id)?.name:type==='asset'?p.assets.find(a=>a.id===id)?.name:type==='layer'?p.layers.find(l=>l.id===id)?.name:null;
+      const fields={pivotX:'발 기준 X',pivotY:'발 기준 Y',rotation:'회전',flipX:'좌우 반전',opacity:'불투명도',parallax:'시차',sort:'정렬',visible:'레이어 표시','width/height':'가로·세로 비율'};
+      const value=v=>JSON.stringify(v);
+      $('registration-target').textContent='실패 대상 · '+(name?name+' / ':'')+issue.target+' · '+(fields[issue.field]||issue.field);
+      $('registration-actual').textContent='현재 값 · '+value(issue.actual);
+      $('registration-expected').textContent='필요한 값 · '+value(issue.expected);
+    }
+    $('registration-note').textContent=q.valid?'그림·발 기준·배경 등록이 맞습니다. 길과 대화 접근은 주민 접근 검사로 확인하세요.':'첫 번째 규격 불일치입니다. 주민 접지·조명·접근·대화 시험을 사용할 수 없습니다. 값을 수정한 뒤 다시 확인하세요.';
+  }
   function refresh() {
     const p = current(), pair = selectedPair(), active = p.layers.find(l=>l.id===layerId)||p.layers[0]; layerId=active.id;
     syncBatchSelection();const multiple=batchIds.size>1;
@@ -422,7 +451,7 @@
     else $('source-info').textContent='';
     const i=p.layers.indexOf(active);$('layer-up').disabled=i===p.layers.length-1;$('layer-down').disabled=i===0;
     $('unity-import').disabled=playing||dialogueOpen;
-    residentAccessUI();placementUI();objectListUI();scaleComparisonUI();
+    residentAccessUI();placementUI();objectListUI();scaleComparisonUI();residentRegistrationUI();
     $('play').textContent=playing?'■ 보행 종료':'▶ 보행 시험';$('view-label').textContent=playing?'보행 시험 · WASD / 방향키 · F 대화 · ESC 종료':tool==='pivot'?'발 기준 찍기 · 선택한 그림 안 클릭 · Esc 취소':'SOUTH → NORTH · 이미지와 충돌을 별도로 편집';
     $('cameras').replaceChildren();for(const c of p.cameras){const b=document.createElement('button');b.textContent=c.name;b.onclick=()=>{viewport={x:c.x,y:c.y,zoom:Math.min(size.w/1800,size.h/1100)};clampCamera();dirty=true;};$('cameras').append(b);} dirty=true;
   }
@@ -479,7 +508,7 @@
     if(playing&&dialogueOpen&&window.MapSceneActor?.tick(time,0,0))dirty=true;
     updateNearby();
     syncResidentPreviewButtons();
-    if(dirty){dirty=false;const d=canvas.width/size.w;ctx.setTransform(d,0,0,d,0,0);ctx.fillStyle='#0d1510';ctx.fillRect(0,0,size.w,size.h);ctx.save();ctx.translate(size.w/2,size.h/2);ctx.scale(viewport.zoom,viewport.zoom);ctx.translate(-viewport.x,-viewport.y);render();ctx.restore();$('zoom-value').textContent=Math.round(viewport.zoom*100)+'%';scaleComparisonUI();}
+    if(dirty){dirty=false;const d=canvas.width/size.w;ctx.setTransform(d,0,0,d,0,0);ctx.fillStyle='#0d1510';ctx.fillRect(0,0,size.w,size.h);ctx.save();ctx.translate(size.w/2,size.h/2);ctx.scale(viewport.zoom,viewport.zoom);ctx.translate(-viewport.x,-viewport.y);render();ctx.restore();$('zoom-value').textContent=Math.round(viewport.zoom*100)+'%';scaleComparisonUI();residentRegistrationUI();}
     requestAnimationFrame(tick);
   }
   function brush(pos) {if(residentAccessReport)invalidateResidentAccess();ambienceScene=null;dialogueScene=null;closeDialogue('nav-edited');const p=current(),t=p.world.tileSize,r=Math.max(0,Math.min(12,+$('brush').value||0)),cx=Math.floor(pos.x/t),cy=Math.floor(pos.y/t);for(let y=-r;y<=r;y++)for(let x=-r;x<=r;x++){const tx=cx+x,ty=cy+y;if(x*x+y*y<=r*r&&tx>=0&&ty>=0&&tx<p.world.cols&&ty<p.world.rows)p.walkable[ty*p.world.cols+tx]=tool==='walk'?1:0;}dirty=true;}
@@ -582,8 +611,8 @@
       if(!response.ok||Number(response.headers.get('content-length'))>256000)throw new Error('주민 대화 데이터 로드 실패');
       const bytes=await response.arrayBuffer();if(bytes.byteLength>256000)throw new Error('주민 대화 데이터가 너무 큽니다');
       dialogueRaw=JSON.parse(new TextDecoder().decode(bytes));dialogueFactory=module.createRiftDialogue;
-    }catch(e){console.warn('틈 대화 시험을 읽지 못했습니다',e);}try{const residents=await import('./map-scene-rift-residents.mjs');residentAnchorsFactory=residents.residentDialogueAnchors;residentGroundingFactory=residents.createResidentGrounding;}catch(e){console.warn('틈 주민 모듈을 읽지 못했습니다',e);}try{residentLighting=(await import('./map-scene-resident-lighting.mjs')).createResidentLighting();}catch(e){console.warn('주민 빛 합성 모듈을 읽지 못했습니다',e);}try{scaleComparisonFactory=(await import('./map-scene-scale-comparison.mjs')).inspectScaleComparison;}catch(e){console.warn('이미지 크기 비교 모듈을 읽지 못했습니다',e);}try{residentAccessFactory=(await import('./map-scene-resident-access.mjs')).inspectResidentAccess;}catch(e){console.warn('주민 접근 검사 모듈을 읽지 못했습니다',e);}try{residentPreviewFactory=(await import('./map-scene-resident-preview.mjs')).prepareResidentPreview;}catch(e){console.warn('주민 보행 시험 모듈을 읽지 못했습니다',e);}try{const objects=await import('./map-scene-object-list.mjs');objectListFactory=objects.inspectLayerObjects;objectFocusFactory=objects.focusObjectFoot;}catch(e){console.warn('객체 목록 모듈을 읽지 못했습니다',e);}try{ambienceFactory=(await import('./map-scene-rift-ambience.mjs')).createRiftAmbience;}catch(e){console.warn('틈 분위기 모듈을 읽지 못했습니다',e);}await Promise.all([script('assets/map/hell_rift/interspace_20261005/layout.js'),script('assets/map/ch1/production_finish/layout.js')]);history=new K.History(await preset('rift'));try{const raw=localStorage.getItem(CACHE_KEY);if(raw){const p=K.validate(JSON.parse(raw));await importProject(p,false);}}catch(e){toast('기존 복구 씬을 읽지 못해 승인 원화로 시작합니다');}const named=new URLSearchParams(location.search).get('scene');if(named){try{await importProject(await namedProject(named),false);}catch(e){toast('현재 씬 유지 · '+e.message);}}resize();fit();refresh();palette();$('status').textContent='준비됨 · '+current().name+' / 본편에 자동 적용하지 않음';new ResizeObserver(resize).observe($('stage'));picture('img/exoduser_warrior/south.png').then(im=>{warrior=im;dirty=true;}).catch(()=>{});setBusy(false); $('workspace').inert=false; requestAnimationFrame(tick);
+    }catch(e){console.warn('틈 대화 시험을 읽지 못했습니다',e);}try{const residents=await import('./map-scene-rift-residents.mjs');residentAnchorsFactory=residents.residentDialogueAnchors;residentGroundingFactory=residents.createResidentGrounding;residentRegistrationFactory=residents.inspectResidentPaintingRegistration;}catch(e){console.warn('틈 주민 모듈을 읽지 못했습니다',e);}try{residentLighting=(await import('./map-scene-resident-lighting.mjs')).createResidentLighting();}catch(e){console.warn('주민 빛 합성 모듈을 읽지 못했습니다',e);}try{scaleComparisonFactory=(await import('./map-scene-scale-comparison.mjs')).inspectScaleComparison;}catch(e){console.warn('이미지 크기 비교 모듈을 읽지 못했습니다',e);}try{residentAccessFactory=(await import('./map-scene-resident-access.mjs')).inspectResidentAccess;}catch(e){console.warn('주민 접근 검사 모듈을 읽지 못했습니다',e);}try{residentPreviewFactory=(await import('./map-scene-resident-preview.mjs')).prepareResidentPreview;}catch(e){console.warn('주민 보행 시험 모듈을 읽지 못했습니다',e);}try{const objects=await import('./map-scene-object-list.mjs');objectListFactory=objects.inspectLayerObjects;objectFocusFactory=objects.focusObjectFoot;}catch(e){console.warn('객체 목록 모듈을 읽지 못했습니다',e);}try{ambienceFactory=(await import('./map-scene-rift-ambience.mjs')).createRiftAmbience;}catch(e){console.warn('틈 분위기 모듈을 읽지 못했습니다',e);}await Promise.all([script('assets/map/hell_rift/interspace_20261005/layout.js'),script('assets/map/ch1/production_finish/layout.js')]);history=new K.History(await preset('rift'));try{const raw=localStorage.getItem(CACHE_KEY);if(raw){const p=K.validate(JSON.parse(raw));await importProject(p,false);}}catch(e){toast('기존 복구 씬을 읽지 못해 승인 원화로 시작합니다');}const named=new URLSearchParams(location.search).get('scene');if(named){try{await importProject(await namedProject(named),false);}catch(e){toast('현재 씬 유지 · '+e.message);}}resize();fit();refresh();palette();$('status').textContent='준비됨 · '+current().name+' / 본편에 자동 적용하지 않음';new ResizeObserver(resize).observe($('stage'));picture('img/exoduser_warrior/south.png').then(im=>{warrior=im;dirty=true;}).catch(()=>{});setBusy(false); $('workspace').inert=false; requestAnimationFrame(tick);
     // Read-only diagnostics for local UI QA; import uses the same validated atomic path.
-    window.EXODUSER_SCENE_EDITOR={snapshot:()=>K.clone(current()),view:()=>({...viewport}),player:()=>playing?{...player}:null,selection:()=>selected,batchSelection:()=>[...batchIds],importProject,ambience:()=>({enabled:!!ambience&&$('ambient').checked,stats:ambience?.snapshot()||null}),grounding:()=>residentGrounding?.snapshot()||[],residentLighting:()=>residentLighting?.snapshot()||null,scaleComparison:()=>selectedScaleComparison(),residentAccess:()=>residentAccessReport?K.clone(residentAccessReport):null,residentPreview:()=>residentPreviewOrigin?{npcId:residentPreviewOrigin.npcId,objectId:residentPreviewOrigin.objectId,entry:{...residentPreviewOrigin.entry}}:null,dialogue:()=>({anchors:residentAnchors().map(a=>({...a,approach:{...a.approach}})),state:dialogueController?.snapshot()||null}),ready:true};
+    window.EXODUSER_SCENE_EDITOR={snapshot:()=>K.clone(current()),view:()=>({...viewport}),player:()=>playing?{...player}:null,selection:()=>selected,batchSelection:()=>[...batchIds],importProject,ambience:()=>({enabled:!!ambience&&$('ambient').checked,stats:ambience?.snapshot()||null}),grounding:()=>residentGrounding?.snapshot()||[],residentLighting:()=>residentLighting?.snapshot()||null,scaleComparison:()=>selectedScaleComparison(),residentRegistration:()=>selectedResidentRegistration(),residentAccess:()=>residentAccessReport?K.clone(residentAccessReport):null,residentPreview:()=>residentPreviewOrigin?{npcId:residentPreviewOrigin.npcId,objectId:residentPreviewOrigin.objectId,entry:{...residentPreviewOrigin.entry}}:null,dialogue:()=>({anchors:residentAnchors().map(a=>({...a,approach:{...a.approach}})),state:dialogueController?.snapshot()||null}),ready:true};
   }catch(e){$('status').textContent='씬 시작 실패 · '+e.message;toast(e.message);}
 })();

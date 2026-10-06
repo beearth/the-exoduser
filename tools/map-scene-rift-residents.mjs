@@ -23,30 +23,105 @@ const CROPS = Object.freeze([
 ]);
 const near = (a,b) => Number.isFinite(a) && Math.abs(a-b)<=1e-6;
 
-/** null on any unknown image/registration/body identity; no fallback scene guessing. */
-export function residentPaintingProfile(scene) {
+const issueValue = (value,depth=0,seen=new Set()) => {
+  if(value===undefined) return 'undefined';
+  if(value===null || typeof value==='string' || typeof value==='boolean') return value;
+  if(typeof value==='number') return Number.isFinite(value) ? value : String(value);
+  if(typeof value==='bigint') return String(value)+'n';
+  if(typeof value==='symbol') return String(value);
+  if(typeof value==='function') return '[function]';
+  if(depth>=4) return '[object]';
+  if(seen.has(value)) return '[circular]';
+  try {
+    seen.add(value);
+    const descriptors=Object.getOwnPropertyDescriptors(value), out=Array.isArray(value)?[]:{};
+    for(const key of Object.keys(descriptors).filter(key=>key!=='length').slice(0,16)) {
+      const d=descriptors[key], next='value' in d?issueValue(d.value,depth+1,seen):'[accessor]';
+      Object.defineProperty(out,key,{value:next,enumerable:true,writable:true,configurable:true});
+    }
+    seen.delete(value);return out;
+  } catch (_) { return '[읽기 실패]'; }
+};
+
+/** The same registration gate used by consumers, with its first failed field. */
+export function inspectResidentPaintingRegistration(scene) {
+  let supported=false;
+  const fail=(target,field,actual,expected)=>({supported,valid:false,profile:null,issue:{target,field,actual:issueValue(actual),expected:expected===undefined?'undefined':expected}});
   try {
     const r=scene.residentLayerReview, p=RESIDENT_PREVIEW;
-    if(r?.kind!==p.kind || r.notAdopted!==true || r.originalPaintingSha256!==p.originalPaintingSha256 ||
-       scene.sourcePins?.painting!==p.originalPaintingSha256 || scene.sourcePins.cleanPlate!==p.cleanPlateSha256 || scene.sourcePins.residentAtlas!==p.atlasSha256) return null;
+    if(r?.kind!==p.kind) return fail('scene','residentLayerReview.kind',r?.kind,p.kind);
+    supported=true;
+    if(r.notAdopted!==true) return fail('scene','residentLayerReview.notAdopted',r.notAdopted,true);
+    if(r.originalPaintingSha256!==p.originalPaintingSha256) return fail('scene','residentLayerReview.originalPaintingSha256',r.originalPaintingSha256,p.originalPaintingSha256);
+    if(scene.sourcePins?.painting!==p.originalPaintingSha256) return fail('scene','sourcePins.painting',scene.sourcePins?.painting,p.originalPaintingSha256);
+    if(scene.sourcePins.cleanPlate!==p.cleanPlateSha256) return fail('scene','sourcePins.cleanPlate',scene.sourcePins.cleanPlate,p.cleanPlateSha256);
+    if(scene.sourcePins.residentAtlas!==p.atlasSha256) return fail('scene','sourcePins.residentAtlas',scene.sourcePins.residentAtlas,p.atlasSha256);
     for(const [k,src,pin] of [['cleanPlate',p.cleanPlate,p.cleanPlateSha256],['atlas',p.atlas,p.atlasSha256]]) {
-      if(r[k]?.src!==src || r[k].sha256!==pin || r[k].width!==p.size || r[k].height!==p.size) return null;
+      if(r[k]?.src!==src) return fail('scene','residentLayerReview.'+k+'.src',r[k]?.src,src);
+      if(r[k].sha256!==pin) return fail('scene','residentLayerReview.'+k+'.sha256',r[k].sha256,pin);
+      if(r[k].width!==p.size) return fail('scene','residentLayerReview.'+k+'.width',r[k].width,p.size);
+      if(r[k].height!==p.size) return fail('scene','residentLayerReview.'+k+'.height',r[k].height,p.size);
     }
     const ratio=p.size/1920;
     for(const [id,layer,x,y,w,h] of CROPS) {
       const a=scene.assets.find(a=>a.id===id), l=scene.layers.find(l=>l.id===layer), o=l?.objects.find(o=>o.id==='obj-'+id);
-      if(!a || a.src!==p.cleanPlate || a.width!==p.size || a.height!==p.size || !l.visible || !o || o.assetId!==id || o.pivotX!==0 || o.pivotY!==0 || o.rotation!==0 || o.flipX || o.opacity!==1 || o.mask!==undefined) return null;
-      if(![near(a.crop?.x,x*ratio),near(a.crop?.y,y*ratio),near(a.crop?.w,w*ratio),near(a.crop?.h,h*ratio),near(o.x,x*25/6),near(o.y,y*25/6),near(o.width,w*25/6),near(o.height,h*25/6)].every(Boolean)) return null;
+      if(!a) return fail('asset:'+id,'present',false,true);
+      if(a.src!==p.cleanPlate) return fail('asset:'+id,'src',a.src,p.cleanPlate);
+      if(a.width!==p.size) return fail('asset:'+id,'width',a.width,p.size);
+      if(a.height!==p.size) return fail('asset:'+id,'height',a.height,p.size);
+      if(!l.visible) return fail('layer:'+layer,'visible',l.visible,true);
+      if(!o) return fail('object:obj-'+id,'present',false,true);
+      if(o.assetId!==id) return fail('object:'+o.id,'assetId',o.assetId,id);
+      if(o.pivotX!==0) return fail('object:'+o.id,'pivotX',o.pivotX,0);
+      if(o.pivotY!==0) return fail('object:'+o.id,'pivotY',o.pivotY,0);
+      if(o.rotation!==0) return fail('object:'+o.id,'rotation',o.rotation,0);
+      if(o.flipX) return fail('object:'+o.id,'flipX',o.flipX,false);
+      if(o.opacity!==1) return fail('object:'+o.id,'opacity',o.opacity,1);
+      if(o.mask!==undefined) return fail('object:'+o.id,'mask',o.mask,undefined);
+      const values=[a.crop?.x,a.crop?.y,a.crop?.w,a.crop?.h,o.x,o.y,o.width,o.height];
+      const expected=[x*ratio,y*ratio,w*ratio,h*ratio,x*25/6,y*25/6,w*25/6,h*25/6];
+      const checks=values.map((value,i)=>near(value,expected[i])), bad=checks.indexOf(false);
+      if(bad!==-1) return fail(bad<4?'asset:'+id:'object:'+o.id,['crop.x','crop.y','crop.w','crop.h','x','y','width','height'][bad],values[bad],{value:expected[bad],tolerance:1e-6});
     }
     const foot=scene.layers.find(l=>l.id==='foot');
-    if(!foot?.visible || foot.sort!=='foot' || foot.parallax!==1) return null;
+    if(!foot?.visible) return fail('layer:foot','visible',foot?.visible,true);
+    if(foot.sort!=='foot') return fail('layer:foot','sort',foot.sort,'foot');
+    if(foot.parallax!==1) return fail('layer:foot','parallax',foot.parallax,1);
     for(const [key,,x,y,w,h] of BODIES) {
       const a=scene.assets.find(a=>a.id==='resident-'+key), o=foot.objects.find(o=>o.id==='obj-resident-'+key);
-      if(!a || a.src!==p.atlas || a.width!==p.size || a.height!==p.size || !o || o.assetId!==a.id || o.mask!==undefined || o.rotation!==0 || o.flipX || o.opacity!==1 || o.pivotX!==.5 || o.pivotY!==1) return null;
-      if(a.crop?.x!==x || a.crop?.y!==y || a.crop?.w!==w || a.crop?.h!==h || !near(o.width/o.height,w/h) || !Number.isFinite(o.x) || !Number.isFinite(o.y) || o.x<0 || o.y<0 || o.x>=8000 || o.y>=8000 || o.height<1 || o.height>32000) return null;
+      if(!a) return fail('asset:resident-'+key,'present',false,true);
+      if(a.src!==p.atlas) return fail('asset:'+a.id,'src',a.src,p.atlas);
+      if(a.width!==p.size) return fail('asset:'+a.id,'width',a.width,p.size);
+      if(a.height!==p.size) return fail('asset:'+a.id,'height',a.height,p.size);
+      if(!o) return fail('object:obj-resident-'+key,'present',false,true);
+      if(o.assetId!==a.id) return fail('object:'+o.id,'assetId',o.assetId,a.id);
+      if(o.mask!==undefined) return fail('object:'+o.id,'mask',o.mask,undefined);
+      if(o.rotation!==0) return fail('object:'+o.id,'rotation',o.rotation,0);
+      if(o.flipX) return fail('object:'+o.id,'flipX',o.flipX,false);
+      if(o.opacity!==1) return fail('object:'+o.id,'opacity',o.opacity,1);
+      if(o.pivotX!==.5) return fail('object:'+o.id,'pivotX',o.pivotX,.5);
+      if(o.pivotY!==1) return fail('object:'+o.id,'pivotY',o.pivotY,1);
+      if(a.crop?.x!==x) return fail('asset:'+a.id,'crop.x',a.crop?.x,x);
+      if(a.crop?.y!==y) return fail('asset:'+a.id,'crop.y',a.crop?.y,y);
+      if(a.crop?.w!==w) return fail('asset:'+a.id,'crop.w',a.crop?.w,w);
+      if(a.crop?.h!==h) return fail('asset:'+a.id,'crop.h',a.crop?.h,h);
+      if(!near(o.width/o.height,w/h)) return fail('object:'+o.id,'width/height',o.width/o.height,{value:w/h,tolerance:1e-6});
+      if(!Number.isFinite(o.x)) return fail('object:'+o.id,'x',o.x,{min:0,maxExclusive:8000,finite:true});
+      if(!Number.isFinite(o.y)) return fail('object:'+o.id,'y',o.y,{min:0,maxExclusive:8000,finite:true});
+      if(o.x<0) return fail('object:'+o.id,'x',o.x,{min:0,maxExclusive:8000,finite:true});
+      if(o.y<0) return fail('object:'+o.id,'y',o.y,{min:0,maxExclusive:8000,finite:true});
+      if(o.x>=8000) return fail('object:'+o.id,'x',o.x,{min:0,maxExclusive:8000,finite:true});
+      if(o.y>=8000) return fail('object:'+o.id,'y',o.y,{min:0,maxExclusive:8000,finite:true});
+      if(o.height<1) return fail('object:'+o.id,'height',o.height,{min:1,max:32000});
+      if(o.height>32000) return fail('object:'+o.id,'height',o.height,{min:1,max:32000});
     }
-    return {src:p.cleanPlate,size:p.size,worldPerSourcePixel:8000/p.size};
-  } catch (_) { return null; }
+    return {supported,valid:true,profile:{src:p.cleanPlate,size:p.size,worldPerSourcePixel:8000/p.size},issue:null};
+  } catch (_) { return fail('scene','read','읽기 실패','검사 가능한 주민 등록'); }
+}
+
+/** null on any unknown image/registration/body identity; no fallback scene guessing. */
+export function residentPaintingProfile(scene) {
+  return inspectResidentPaintingRegistration(scene).profile;
 }
 
 /** Positions are the current body's foot, never a painted-camera POI. */
