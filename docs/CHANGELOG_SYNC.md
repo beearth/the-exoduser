@@ -54459,3 +54459,8 @@ actual NUL83에서 공식완료/idle/exactpins raw6(MAP/BOSS/STORY/SKILL/QA/ENEM
 상세 수치·공식·API·원자료 핀·§23 보고는 `docs/4.1맵디자인+설정/HELL_RIFT_2_5D_SLICE_20261006.md`의 이 목표 절을 따른다. 실제 증거는 `/Users/fordeargamers/.codex/visualizations/rift-interactive-20261006/`의 final-interaction-v2-result.json(23), editor-final-result.json(5), actual-editor-export.scene.json, final-rift-*.png, final-nessa-request.png, interactive-motion.webm 및 Git 영수증이다. source/fixture/root browser/native/listening 인수를 서로 대체하지 않는다.
 
 실제80부터 완료소유 code/docs/raw만 checkpoint. 원문bytes prefix·external before백업보존, docs전체관련키워드검색→상세맵/에디터/팀대장및나머지관련문서순차동기화.
+
+
+## NPC 연결 후 관련docs 동기화 1 — 2026-10-06T14:40:05.634520+00:00
+
+완료소유관련문서7개를현재독립3387계약과정확동기화: docs/4.0케릭터스프라이트 디자인/4.0케릭터스프라이트 디자인.md, docs/4.0케릭터스프라이트 디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md, docs/4.0케릭터스프라이트 디자인/PLAYER_RELIEF_2_5D_20260915.md, docs/0마스터플랜/EXODUSER_GAMEPLAY_CONTENT_PLAN_20261004.md, docs/12퍼포먼스·최적화/THREE_LOCAL_SINGLE_RUNTIME_20260929.md, docs/0마스터플랜/TEAM_CONTINUATION_POLICY_20261001.md, docs/0마스터플랜/CH1_2_5D_PRODUCTION_GOALS_20261006.md. 전수검색·원문prefix/백업보존, actual80부터checkpoint, 기존25a6e38코드/Git근거와원격exact영수증연결. VISUAL VERDICT: RETOUCH/본편native미인수.
