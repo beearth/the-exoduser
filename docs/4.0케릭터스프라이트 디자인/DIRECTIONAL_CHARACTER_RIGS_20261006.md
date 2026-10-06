@@ -388,3 +388,19 @@ STORY v3의 plain thenable 회귀와 ports/ctx.snapshot try 경계 P2를 찾아 
 전수 키워드검색 근거와 정확상세수치/API/핀/§23 MAP PRODUCTION REPORT: `docs/4.1맵디자인+설정/HELL_RIFT_2_5D_SLICE_20261006.md`의 현행목표 절. 실제editor/provenance는 MAP_SCENE_EDITOR_20261005.md, 공식완료ID·fullpin·후보미채택 및MAP/STORY경로·삭제규칙위반의실제증거/피해UNKNOWN은 CH1_2_5D_TEAM_CANDIDATES_20261006.md. 외부 `/Users/fordeargamers/.codex/visualizations/rift-interactive-20261006/`의 final-interaction-v2-result.json/editor-final-result.json/화면/interactive-motion.webm/Git영수증을따른다. 이전QA를새검사로합산0. 코드/주요docs/raw는25a6e38df92c132cf6f1dd98db364391fbb18699에서완료소유NUL82 checkpoint, 나머지관련docs는80부터순차checkpoint·정상push/remoteexact로보존한다. paused자동화·아침메일/새팀·실행세션/설치·권한·게시·Windows재개0.
 
 외형·애니메이션 범위: 기존warrior/silvertail/dark-druid외형과8방향·idle/walk/run/attack계약유지. 신규주민atlas리깅/PixelLab생성0. 원본주민표시와별도대화consumer를분리하며 BOSS 특수dive/emerge/transform/beast는발기준UNKNOWN으로등록0.
+
+
+## 2026-10-07 public baked 특수동작 모듈 — 통합 진행 중
+
+| 항목 | 정확 계약 |
+|---|---|
+| 파일/API | tools/2_5d/baked-special-motion.mjs · await createBakedSpecialMotion({THREE,terrain,camera,scene,height=.65}) → setMotion(id,facing=0)/update(dt,{x,y})/snapshot/dispose |
+| 상태 | dive50/60s; under45/60s 숨김; erupt40/60s 역재생; tele-prep40/60s; tele-warn·emerge alias60/60s 역재생; transform45/60s; beast50/60s 방향 정지 원화. source default60fps tick 환산이며 실제전투시계 아님 |
+| 방향/셀 | 남0·남동1·동2·북동3·북4·북서5·서6·남서7; 야수sourcecell[0,7,6,5,4,3,2,1]. 프레임8개, 경계Math.round와 halftexel.5 inset |
+| 원본 | dive/emerge 각1774×887/2,609,546B/SHA4d154deda10592a655b2504ddcfa186f2e9af443da1146166683c8ad50c506ce; transform2400×724/1,634,653B/SHA7b329ce2d70b9572144391579405029cc74ac07c479b67d73783bea021dc365d; beast1774×887/1,788,236B/SHA41cf09b5b90208bf343f13032664bcccbc9d22607a1aa913ab953e257860b8fd |
+| 표시 크기 | callerheight.65default, native renderer-originY.86는 draw계수. emerge aspect9.3/14.1, 나머지height×cellAspect×1.12. anatomical foot/referenceHeight UNKNOWN |
+| 수명 | 명명4PNG HTTP/fullSHA/bytes/IHDR/decode검증, 동일dive/emerge SHA 공유3decoded/3texture; Group1/plane1/material1; RAF0/timer0/mixer0. update clamp.05s/유한 비음수. one-shot종결 active=false/completed=true; under active=true/visible=false |
+| 범위 | 방향리그catalog 등록0, 완전3D0, VFX/충돌·공격·대미지/save/음향 변경0. 기존 BOSS raw pin bff23e2b83de0e8cf976bed38dc33769c2d160338092a92b726baf463b176609의 source mapping 참고; 새20261007 raw 미채택 |
+| 검증 | worker 신규stdin1회 핵심 PASS; PNG decoder IHDR stub이므로 실제GPU/pixels 검수는 root Gate. 본편/native 발접지 인수0 |
+
+MAP PRODUCTION REPORT: geometry/경로/충돌/외곽/랜드마크 불변, 특수동작 표시 소비만 완료. **VISUAL VERDICT: RETOUCH**, 새 WebGL/camera 검수 대기.

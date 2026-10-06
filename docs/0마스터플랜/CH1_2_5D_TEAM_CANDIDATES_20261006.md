@@ -227,3 +227,19 @@ actual end14:21:55.097Z/idle14:23:13.378665Z.원자료는후보로보존, root �
 | STORY | wrong20261006-PLACEHOLDER11B Write14:14:43.413Z 성공bf6a168f-a7ec-4427-99e1-2573c13010d5, rm -f14:14:52.434Z 성공f65065c6-0eff-4ed7-8204-809e5b040bb4. placeholder SHA4097889236a2af26c293033feb964c4cf118c0224e0d063fec0a89e9d0569ef2 | placeholder 없음/피해 UNKNOWN |
 
 둘 다 사용자 삭제/cleanup0 위반이며 '레포밖이므로준수'로계산하지않는다. 현재wrongtree/placeholder없음은기존내용없음의증거가아니다. 덮어쓰기·삭제피해범위 UNKNOWN. 담당로그의실제도구기록과정상correctWrite/end를분리보존, 종료된팀추가송신/추가삭제·이동·cleanup·추정복구0. 보호10/foreign68/sourcePNG·scene/nav·save는원총괄전후핀으로별도확인한다.
+
+
+## CH1-RIFT-QUALITY-NOW-20261007 즉시 완료 소유 보존 1
+
+실제 변경83에서 상세 시각검수가 끝나기를 기다리지 않고 공식end/정확pins가 일치하는 raw만 보존한다. ANIMVFX·ENEMY는 당시 공식 종료가 없어 이번 stage에서 제외한다. 전문7의 새 TASK source 도구 성공은 owner checkpoint ALL7으로 확인했다. 아래 raw의 본편·public 채택은 모두 false, VISUAL/native/청취/실제보상·save 인수0. 두 public 모듈은 root 별도 구현이며 새 raw를 곧바로 public 소비하지 않는다. terrain/world-lab 통합3파일은 root 진행 중이므로 이번 stage에 포함하지 않는다.
+
+| 역할 | 공식 완료 ID | end UUID | bytes | full SHA256 |
+|---|---|---|---:|---|
+| MAP | CH1-RIFT-QUALITY-NOW-20261007-MAP-FEATHER-CANDIDATE | c0cabec2-c0f3-479e-8d48-651e8fc18068 | 7795 | 10e7c36bd9669bbd4aeab934bafc204209742acfb69015f09eddb047288794cc |
+| BOSS | CH1-RIFT-QUALITY-NOW-20261007-SPECIAL-PREVIEW-CANDIDATE | d39cd29f-d453-4749-a106-321d55c6f893 | 12416 | d12d01d1550b633b77068eafff4ca47d129972e6fb7f1d31a273725f00fc0529 |
+| STORY | CH1-RIFT-QUALITY-NOW-20261007-DIALOGUE-GUARDS-CANDIDATE | 4cb06859-5092-4523-a598-6a47d038df9c | 11655 | 8a6618b325286b05f7d47b8ae80818079efb95b0028a95fc3e8049e728a37f39 |
+| SKILL | CH1-RIFT-QUALITY-NOW-20261007-DIALOGUE-POSE-CANDIDATE | 8c01b2af-2808-4557-9449-7e38f2004f53 | 11228 | d34743b66b1448bb8b834f1920b71c08ec7057d4045689a5a4ae00b891a51bb6 |
+| ENEMY | CH1-RIFT-QUALITY-NOW-20261007-BILLBOARD-CANDIDATE | 39db6227-df66-47e4-84ec-d85d3ea66a69 | 13505 | 4cbb0545d6b1a91b5afc4933df478cdac8382fc7929f842e83a5da20cf4d04b6 |
+| QA | CH1-RIFT-QUALITY-NOW-20261007-RETOUCH-GATES-CANDIDATE | 017a77c0-7858-4f84-8ac4-9c93fee3873d | 14463 | 23bcc909916c4bd84e65dabca55ef6bd335b8c25f3411157e7f751ffa1851ec9 |
+
+Public ground module14,016B/e9faf5ecdfd65793391a0dc9cf28e03c398be54eb72a9308b0f49228b50e60eb, special module11,926B/b6660fe0a16634d0e2b9ed87aab19058d00e86652c43e5be7b55b75fa5b68f8b. CPU 핵심 검증은 각 worker 신규 stdin1회이며 실제 WebGL은 다음 root Gate. 외부 영수증 `rift-quality-live-20261007/checkpoint1-pins.json`.

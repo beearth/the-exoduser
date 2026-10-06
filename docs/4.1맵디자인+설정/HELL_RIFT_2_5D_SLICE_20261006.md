@@ -391,3 +391,17 @@ GIT
 VISUAL VERDICT: RETOUCH
 NEXT PASS: 고밀도지면·큰절벽/전경alpha와feather경계, 주민전용리깅/실여정·본편consumer·native6/청취/IK 인수.
 ```
+
+
+## 2026-10-07 public 지면 재질 모듈 — 통합 진행 중
+
+| 항목 | 정확 계약 |
+|---|---|
+| 파일/API | tools/2_5d/rift-ground-detail.mjs · await createRiftGroundDetailMaterial({THREE,sourceScene,plateTexture,enabled=true,fetcher?,makeCanvas?}) → material/setEnabled(boolean)/snapshot/dispose |
+| 원자료 | arrival-detail-v1.png 1024×1536/2,877,605B/full SHA a38117e63349bc486b038baab9ad266bd98f30c74306629ee0cb93df6eb7da84; crop x320/y1120/w240/h240 |
+| 표시 | mirror480² · world period320 · alpha.4 · sRGB soft-light · globalUV/바닥1메시만 |
+| 마스크 | 200²/40px/nav1192 · nav 실제40,000byte SHA a4508aa62f21c9b4380640307b36eef06656ebdf0c0245a2f78833d65dda0179 · hardNearest×softLinear inward; edge128/interior255 |
+| 수명 | 자체3texture+1material 소유/빌린 plate 미dispose; RAF0/timer0/geometry·nav·scene 쓰기0. setEnabled는 view-only A/B |
+| Gate | worker 신규 CPU stdin6그룹 PASS. 실제 WebGL compile/link·화면은 root 진행 중. 새 ANIMVFX raw candidatePin=null/candidateAdopted=false |
+
+MAP PRODUCTION REPORT (§23): MASTER→OUTER→MEDIUM/경로/랜드마크/geometry/충돌 불변, GROUND 색재질 public 모듈1개 완료, PLAYABLE1192 유지 계약, CAMERA 신규 시각검수 대기, TECH CPU6그룹 PASS. **VISUAL VERDICT: RETOUCH**; 원본1254²의 큰 형태 해상도 복원/native 높이 인수로 계산하지 않는다.
