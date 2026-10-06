@@ -18,7 +18,7 @@
     { id: 'dead-tree', name: '고목 · 기존 에셋', src: 'assets/objects/tree_dead_01.png', width: 240, layer: 'foot', alphaCrop: {x:3,y:4,w:61,h:57} },
     { id: 'glow-mushroom', name: '잔불빛 버섯', src: 'assets/objects/mushroom_glow_01.png', width: 100, layer: 'foot', alphaCrop: {x:7,y:3,w:18,h:27} }
   ];
-  function setBusy(value){busy=value;$('workspace').inert=value;if(value){keys.clear();space=false;}}
+  function setBusy(value){busy=value;$('workspace').inert=value;if(history)$('resident-access-check').disabled=value||playing||dialogueOpen||!residentAccessFactory;if(value){keys.clear();space=false;}}
   const uid = prefix => prefix + '-' + crypto.randomUUID();
   function toast(message) { $('toast').textContent = message; $('toast').hidden = false; clearTimeout(toastTimer); toastTimer = setTimeout(() => { $('toast').hidden = true; }, 4000); }
   function script(src) { return new Promise((resolve, reject) => { const el = document.createElement('script'); el.src = src; el.onload = resolve; el.onerror = () => reject(new Error('데이터 로드 실패: ' + src)); document.head.appendChild(el); }); }
@@ -109,6 +109,54 @@
   ].map(a=>Object.freeze({...a,approach:Object.freeze(a.approach)})));
   let residentAnchorsFactory, residentGroundingFactory, residentGrounding, residentGroundingScene, dialogueSceneSupport, dialogueFactory, dialogueRaw, dialogueController, dialogueScene, nearestResident = null, dialogueOpen = false;
   const residentAnchors = () => residentAnchorsFactory?.(current()) || (dialogueSceneSupport?.(current()) ? RESIDENT_ANCHORS : []);
+  let residentAccessFactory, residentAccessReport = null;
+  const residentStatusText = {ready:'접근 가능', 'foot-blocked':'발이 막힌 바닥 위에 있음', 'start-blocked':'시작점이 막힘', 'no-route':'시작점과 길이 끊김', 'no-approach':'대화 거리 안 접근점 없음'};
+  const pointText = p => Math.round(p.x*100)/100+', '+Math.round(p.y*100)/100;
+  function invalidateResidentAccess() {
+    residentAccessReport = null;
+    $('resident-access-list').replaceChildren();
+    $('resident-access-summary').textContent='주민 위치나 길을 바꿨습니다. 다시 검사하세요.';
+    dirty=true;
+  }
+  function residentAccessUI() {
+    const supported=current().residentLayerReview?.kind==='independent-resident-preview-v1';
+    $('resident-access-section').hidden=!supported;
+    $('resident-access-check').disabled=busy||playing||dialogueOpen||!residentAccessFactory;
+    if(!supported) return;
+    if(!residentAccessReport) {
+      if(!residentAccessFactory) $('resident-access-summary').textContent='주민 접근 검사 모듈을 준비하지 못했습니다.';
+      return;
+    }
+    const report=residentAccessReport;
+    $('resident-access-list').replaceChildren();
+    if(report.mode!=='independent') {
+      $('resident-access-summary').textContent=report.mode==='invalid-profile'?'주민 레이어 구성이 맞지 않습니다. 그림·크기 비율·발 기준·가림 설정을 확인하세요.':'현재 씬의 주민 접근을 검사할 수 없습니다.';
+      return;
+    }
+    const passed=report.rows.filter(r=>r.status==='ready').length;
+    $('resident-access-summary').textContent=passed+' / '+report.rows.length+'명 접근 가능 · 시작점에서 연결된 길 기준';
+    for(const row of report.rows) {
+      const card=document.createElement('div');card.className='scene-resident-card';card.dataset.npcId=row.npcId;card.dataset.status=row.status;
+      const name=dialogueRaw?.npcs.find(n=>n.npcId===row.npcId)?.name?.ko || row.npcId;
+      const heading=document.createElement('strong');heading.textContent=name;
+      const state=document.createElement('p');state.className='scene-resident-state';state.textContent=residentStatusText[row.status]||'검사 불가';
+      const details=document.createElement('p');details.textContent='발 '+pointText(row.foot)+(row.approach?' · 접근 '+pointText(row.approach)+' · 거리 '+Math.round(row.approach.distance*100)/100:'');
+      const focus=document.createElement('button');focus.type='button';focus.textContent=name+' · 발 위치 보기';focus.disabled=playing||dialogueOpen;
+      focus.onclick=()=>{if(busy||playing||dialogueOpen||!residentAccessReport)return;const foot=current().layers.find(l=>l.id==='foot');const o=foot?.objects.find(o=>o.id===row.objectId);if(!o)return;selected=o.id;layerId=foot.id;paletteId=null;tool='select';viewport={x:o.x,y:o.y-60,zoom:Math.min(size.w/900,size.h/600)};clampCamera();if(matchMedia('(max-width:760px)').matches)$('inspector').classList.add('mobile-hidden');palette();refresh();canvas.focus();};
+      card.append(heading,state,details,focus);$('resident-access-list').append(card);
+    }
+  }
+  function drawResidentAccess(target) {
+    if(playing||drag||history.pending||!$('resident-access-show').checked||residentAccessReport?.mode!=='independent')return;
+    target.save();
+    for(const row of residentAccessReport.rows) {
+      const color=row.status==='ready'?'#a4deb9':'#f1ba78', f=row.foot, z=viewport.zoom;
+      target.strokeStyle=color;target.fillStyle=color;target.lineWidth=1.5/z;target.setLineDash([5/z,4/z]);target.beginPath();target.arc(f.x,f.y,140,0,Math.PI*2);target.stroke();target.setLineDash([]);
+      target.beginPath();target.moveTo(f.x-6/z,f.y);target.lineTo(f.x+6/z,f.y);target.moveTo(f.x,f.y-6/z);target.lineTo(f.x,f.y+6/z);target.stroke();
+      if(row.approach){target.beginPath();target.moveTo(f.x,f.y);target.lineTo(row.approach.x,row.approach.y);target.stroke();target.beginPath();target.arc(row.approach.x,row.approach.y,5/z,0,Math.PI*2);target.fill();}
+    }
+    target.restore();
+  }
   function closeDialogue(reason = 'ui-close') {
     dialogueController?.close(reason); dialogueOpen = false; nearestResident = null; keys.clear(); space = false;
     if($('dialogue').open) $('dialogue').close();
@@ -162,7 +210,7 @@
   $('dialogue').addEventListener('cancel',e=>{e.preventDefault();closeDialogue('escape');canvas.focus();});
   const selectedPair = () => { for (const l of current().layers) { const o = l.objects.find(o => o.id === selected); if (o) return { l, o }; } return null; };
   function autosave() { clearTimeout(autosaveTimer); autosaveTimer = setTimeout(() => { try { localStorage.setItem(CACHE_KEY, JSON.stringify(current())); $('status').textContent = '로컬 복구 저장됨 · 프로젝트 JSON으로 보존하세요'; } catch (e) { $('status').textContent = '복구 저장 공간 부족 · 프로젝트 저장을 사용하세요'; } }, 500); }
-  function changed(message) { ambienceScene = null; dialogueScene = null; residentGroundingScene = null; closeDialogue('scene-edited'); dirty = true; refresh(); autosave(); if (message) toast(message); }
+  function changed(message) { invalidateResidentAccess(); ambienceScene = null; dialogueScene = null; residentGroundingScene = null; closeDialogue('scene-edited'); dirty = true; refresh(); autosave(); if (message) toast(message); }
   function mutate(fn, message) { if (busy) return; try { history.change(fn); changed(message); } catch (e) { toast(e.message); refresh(); } }
   function fit() { viewport = { x: current().world.cols * current().world.tileSize / 2, y: current().world.rows * current().world.tileSize / 2, zoom: Math.min((size.w-60)/(current().world.cols*current().world.tileSize), (size.h-110)/(current().world.rows*current().world.tileSize)) }; dirty = true; }
   function clampCamera() {const w=current().world,halfX=size.w/viewport.zoom/2,halfY=size.h/viewport.zoom/2,maxX=w.cols*w.tileSize,maxY=w.rows*w.tileSize;viewport.x=halfX*2>=maxX?maxX/2:Math.max(halfX,Math.min(maxX-halfX,viewport.x));viewport.y=halfY*2>=maxY?maxY/2:Math.max(halfY,Math.min(maxY-halfY,viewport.y));}
@@ -205,6 +253,7 @@
     else $('source-info').textContent='';
     const i=p.layers.indexOf(active);$('layer-up').disabled=i===p.layers.length-1;$('layer-down').disabled=i===0;
     $('unity-import').disabled=playing||dialogueOpen;
+    residentAccessUI();
     $('play').textContent=playing?'■ 보행 종료':'▶ 보행 시험';$('view-label').textContent=playing?'보행 시험 · WASD / 방향키 · F 대화 · ESC 종료':tool==='pivot'?'발 기준 찍기 · 선택한 그림 안 클릭 · Esc 취소':'SOUTH → NORTH · 이미지와 충돌을 별도로 편집';
     $('cameras').replaceChildren();for(const c of p.cameras){const b=document.createElement('button');b.textContent=c.name;b.onclick=()=>{viewport={x:c.x,y:c.y,zoom:Math.min(size.w/1800,size.h/1100)};clampCamera();dirty=true;};$('cameras').append(b);} dirty=true;
   }
@@ -244,6 +293,7 @@
     if(!overlays)return;residentMarkers(target);const w=p.world,t=w.tileSize;
     if($('show-nav').checked){target.fillStyle='#66d99c3d';for(let y=0;y<w.rows;y++)for(let x=0;x<w.cols;x++)if(p.walkable[y*w.cols+x])target.fillRect(x*t,y*t,t,t);}
     if($('show-grid').checked){target.strokeStyle='#b7c8b722';target.lineWidth=.5/viewport.zoom;target.beginPath();for(let x=0;x<=w.cols;x++){target.moveTo(x*t,0);target.lineTo(x*t,w.rows*t);}for(let y=0;y<=w.rows;y++){target.moveTo(0,y*t);target.lineTo(w.cols*t,y*t);}target.stroke();}
+    drawResidentAccess(target);
     target.strokeStyle='#738976';target.lineWidth=1/viewport.zoom;target.strokeRect(0,0,w.cols*t,w.rows*t);
     for(const [id,color,label] of [['start','#8ecdb0','START'],['exit','#e6cc8d','EXIT']]){target.fillStyle=color;target.beginPath();target.arc(p[id].x,p[id].y,5/viewport.zoom,0,Math.PI*2);target.fill();target.font=12/viewport.zoom+'px sans-serif';target.fillText(label,p[id].x+10/viewport.zoom,p[id].y-8/viewport.zoom);}
   }
@@ -254,7 +304,7 @@
     if(dirty){dirty=false;const d=canvas.width/size.w;ctx.setTransform(d,0,0,d,0,0);ctx.fillStyle='#0d1510';ctx.fillRect(0,0,size.w,size.h);ctx.save();ctx.translate(size.w/2,size.h/2);ctx.scale(viewport.zoom,viewport.zoom);ctx.translate(-viewport.x,-viewport.y);render();ctx.restore();$('zoom-value').textContent=Math.round(viewport.zoom*100)+'%';}
     requestAnimationFrame(tick);
   }
-  function brush(pos) {ambienceScene=null;dialogueScene=null;closeDialogue('nav-edited');const p=current(),t=p.world.tileSize,r=Math.max(0,Math.min(12,+$('brush').value||0)),cx=Math.floor(pos.x/t),cy=Math.floor(pos.y/t);for(let y=-r;y<=r;y++)for(let x=-r;x<=r;x++){const tx=cx+x,ty=cy+y;if(x*x+y*y<=r*r&&tx>=0&&ty>=0&&tx<p.world.cols&&ty<p.world.rows)p.walkable[ty*p.world.cols+tx]=tool==='walk'?1:0;}dirty=true;}
+  function brush(pos) {if(residentAccessReport)invalidateResidentAccess();ambienceScene=null;dialogueScene=null;closeDialogue('nav-edited');const p=current(),t=p.world.tileSize,r=Math.max(0,Math.min(12,+$('brush').value||0)),cx=Math.floor(pos.x/t),cy=Math.floor(pos.y/t);for(let y=-r;y<=r;y++)for(let x=-r;x<=r;x++){const tx=cx+x,ty=cy+y;if(x*x+y*y<=r*r&&tx>=0&&ty>=0&&tx<p.world.cols&&ty<p.world.rows)p.walkable[ty*p.world.cols+tx]=tool==='walk'?1:0;}dirty=true;}
   function paintLine(from,to){const t=current().world.tileSize,steps=Math.max(1,Math.ceil(Math.hypot(to.x-from.x,to.y-from.y)/(t/2)));for(let i=0;i<=steps;i++)brush({x:from.x+(to.x-from.x)*i/steps,y:from.y+(to.y-from.y)*i/steps});}
   canvas.addEventListener('pointerdown',async e=>{if(busy||dialogueOpen)return;canvas.focus();const pos=world(e);if(space||e.button===1||e.button===2){drag={kind:'pan',sx:e.clientX,sy:e.clientY,vx:viewport.x,vy:viewport.y};canvas.setPointerCapture(e.pointerId);e.preventDefault();return;}if(playing)return;
     if(tool==='pivot'){
@@ -271,6 +321,7 @@
     const pair=resize?existing:selectAt(pos);if(pair){history.begin();drag={kind:resize?'resize':'move',pos,before:K.clone(pair.o),id:pair.o.id};canvas.setPointerCapture(e.pointerId);}
   });
   canvas.addEventListener('pointermove',e=>{const pos=world(e);$('coords').textContent='x '+Math.round(pos.x)+' · y '+Math.round(pos.y)+' | tile '+Math.floor(pos.x/current().world.tileSize)+', '+Math.floor(pos.y/current().world.tileSize);if(!drag)return;
+    if(drag.kind!=='pan'&&residentAccessReport)invalidateResidentAccess();
     if(drag.kind==='pan'){viewport.x=drag.vx-(e.clientX-drag.sx)/viewport.zoom;viewport.y=drag.vy-(e.clientY-drag.sy)/viewport.zoom;dirty=true;}
     else if(drag.kind==='brush'){paintLine(drag.last,pos);drag.last=pos;}
     else{const pair=selectedPair();if(!pair)return;const o=pair.o,b=drag.before;if(drag.kind==='move'){o.x=Math.max(-40000,Math.min(40000,snap(b.x+pos.x-drag.pos.x)));o.y=Math.max(-40000,Math.min(40000,snap(b.y+pos.y-drag.pos.y)));}else{const off=offset(pair.l),q=K.local(b,pos.x-off.x,pos.y-off.y);Object.assign(o,K.resize(b,pos.x-off.x,pos.y-off.y,$('aspect').checked,$('snap').checked?current().world.tileSize:1));o.x=Math.max(-40000,Math.min(40000,o.x));o.y=Math.max(-40000,Math.min(40000,o.y));}dirty=true;}
@@ -280,7 +331,7 @@
   function zoom(factor,anchor){const old=viewport.zoom;viewport.zoom=Math.max(.025,Math.min(3,old*factor));if(anchor){viewport.x=anchor.x-(anchor.x-viewport.x)*old/viewport.zoom;viewport.y=anchor.y-(anchor.y-viewport.y)*old/viewport.zoom;}dirty=true;}
   canvas.addEventListener('wheel',e=>{e.preventDefault();if(dialogueOpen)return;zoom(e.deltaY<0?1.12:1/1.12,world(e));},{passive:false});
   for(const b of document.querySelectorAll('[data-scene-tool]'))b.onclick=()=>{closeDialogue('tool-changed');tool=b.dataset.sceneTool;paletteId=null;playing=false;keys.clear();for(const x of document.querySelectorAll('[data-scene-tool]'))x.classList.toggle('active',x===b);if(tool==='walk'||tool==='block')$('show-nav').checked=true;palette();refresh();};
-  function property(id,key){const input=$(id);let ratio=1;input.addEventListener('focus',()=>{history.begin();const pair=selectedPair();if(pair)ratio=pair.o.height/pair.o.width;});input.addEventListener('input',()=>{const pair=selectedPair();if(!pair||pair.l.locked)return;if(key!=='name'&&(!input.value.trim()||!Number.isFinite(Number(input.value))))return;const v=key==='name'?input.value:Number(input.value);if((key==='width'||key==='height')&&v<=0)return;history.begin();const o=pair.o;o[key]=v;if($('aspect').checked&&key==='width')o.height=v*ratio;if($('aspect').checked&&key==='height')o.width=v/ratio;dirty=true;});input.addEventListener('change',()=>{try{K.validate(current());history.end();changed();}catch(e){if(history.pending){history.project=history.pending;history.pending=null;}toast(e.message);refresh();}});input.addEventListener('blur',()=>{if(history.pending){try{K.validate(current());history.end();changed();}catch(e){history.project=history.pending;history.pending=null;refresh();}}});}
+  function property(id,key){const input=$(id);let ratio=1;input.addEventListener('focus',()=>{history.begin();const pair=selectedPair();if(pair)ratio=pair.o.height/pair.o.width;});input.addEventListener('input',()=>{const pair=selectedPair();if(!pair||pair.l.locked)return;if(key!=='name'&&(!input.value.trim()||!Number.isFinite(Number(input.value))))return;const v=key==='name'?input.value:Number(input.value);if((key==='width'||key==='height')&&v<=0)return;history.begin();invalidateResidentAccess();const o=pair.o;o[key]=v;if($('aspect').checked&&key==='width')o.height=v*ratio;if($('aspect').checked&&key==='height')o.width=v/ratio;dirty=true;});input.addEventListener('change',()=>{try{K.validate(current());history.end();changed();}catch(e){if(history.pending){history.project=history.pending;history.pending=null;}toast(e.message);refresh();}});input.addEventListener('blur',()=>{if(history.pending){try{K.validate(current());history.end();changed();}catch(e){history.project=history.pending;history.pending=null;refresh();}}});}
   for(const [id,key] of [['object-name','name'],['x','x'],['y','y'],['width','width'],['height','height'],['pivot-x','pivotX'],['pivot-y','pivotY'],['rotation','rotation'],['opacity','opacity'],['feather','maskFeather'],['source-parallax','sourceParallax']])property(id,key);
   $('pivot-pick').onclick=()=>{if(busy||playing||dialogueOpen)return;const q=selectedPair();if(!q||q.l.locked||!q.l.visible)return;endDrag();tool=tool==='pivot'?'select':'pivot';paletteId=null;keys.clear();space=false;if(tool==='pivot'&&matchMedia('(max-width:760px)').matches)$('inspector').classList.add('mobile-hidden');palette();refresh();canvas.focus();};
   $('layer-sort').onchange=()=>mutate(p=>{p.layers.find(l=>l.id===layerId).sort=$('layer-sort').value;});
@@ -295,11 +346,13 @@
   $('undo').onclick=()=>{endDrag();history.undo();selected=null;paletteId=null;palette();changed();};$('redo').onclick=()=>{endDrag();history.redo();selected=null;palette();changed();};
   $('fit').onclick=fit;$('minus').onclick=()=>zoom(1/1.2);$('plus').onclick=()=>zoom(1.2);for(const id of ['show-grid','show-nav','snap'])$(id).onchange=()=>{dirty=true;};$('search').oninput=palette;
   $('play').onclick=()=>{closeDialogue('play-changed');endDrag();syncDialogue();if(playing){playing=false;keys.clear();}else{if(!K.canWalk(current(),current().start.x,current().start.y)){toast('시작점이 막혀 있습니다. 길을 열거나 시작점을 옮기세요');return;}playing=true;selected=null;paletteId=null;player={...current().start};viewport={x:player.x,y:player.y,zoom:Math.min(size.w/1600,size.h/1000)};clampCamera();}palette();refresh();};
+  $('resident-access-check').onclick=()=>{if(busy||playing||dialogueOpen||!residentAccessFactory)return;endDrag();residentAccessReport=residentAccessFactory(current(),(scene,x,y,r)=>K.canWalk(scene,x,y,r));residentAccessUI();dirty=true;};
+  $('resident-access-show').onchange=()=>{dirty=true;};
   $('check').onclick=()=>{const r=K.route(current());toast((r.pass?'연결 PASS · ':'연결 FAIL · ')+r.reason+' ('+r.visited+'칸)');};
   function download(name,blob){const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),5000);}
   $('save').onclick=()=>{endDrag();try{const p=K.validate(current());download(p.name.replace(/[\\/:*?"<>|]/g,'-')+'.scene.json',new Blob([JSON.stringify(p)],{type:'application/json'}));$('status').textContent='프로젝트 JSON 내보냄 · 이미지 크기/기준점/레이어/길 포함';}catch(e){toast(e.message);}};
   $('png').onclick=()=>{const p=current(),out=document.createElement('canvas'),ratio=2048/Math.max(p.world.cols*p.world.tileSize,p.world.rows*p.world.tileSize);out.width=Math.round(p.world.cols*p.world.tileSize*ratio);out.height=Math.round(p.world.rows*p.world.tileSize*ratio);const target=out.getContext('2d',{willReadFrequently:true});target.imageSmoothingQuality='high';target.fillStyle='#0d1510';target.fillRect(0,0,out.width,out.height);target.scale(ratio,ratio);const viewBefore=viewport;viewport={...viewport,x:p.world.cols*p.world.tileSize/2,y:p.world.rows*p.world.tileSize/2};render(target,false);viewport=viewBefore;try{out.toBlob(blob=>{if(blob)download(p.name+'.overview.png',blob);},'image/png');}catch(e){toast('PNG 내보내기는 로컬 서버에서 열어 사용하세요');}};
-  async function importProject(raw, save=true){const p=K.validate(raw),temp=new Map();for(const a of p.assets){const im=await picture(a.src);if(im.naturalWidth!==a.width||im.naturalHeight!==a.height)throw new Error(a.name+' 원본 크기가 파일과 다릅니다');temp.set(a.src,im);}closeDialogue('scene-imported');history.import(p);for(const [src,im] of temp)loaded.set(src,im);softMasks.clear();selected=null;paletteId=null;playing=false;keys.clear();layerId=p.layers[0].id;palette();if(save)changed('씬 불러오기 완료');else refresh();fit();}
+  async function importProject(raw, save=true){const p=K.validate(raw),temp=new Map();for(const a of p.assets){const im=await picture(a.src);if(im.naturalWidth!==a.width||im.naturalHeight!==a.height)throw new Error(a.name+' 원본 크기가 파일과 다릅니다');temp.set(a.src,im);}closeDialogue('scene-imported');invalidateResidentAccess();history.import(p);for(const [src,im] of temp)loaded.set(src,im);softMasks.clear();selected=null;paletteId=null;playing=false;keys.clear();layerId=p.layers[0].id;palette();if(save)changed('씬 불러오기 완료');else refresh();fit();}
   async function namedProject(src){const path=K.projectSource(src),response=await fetch(path,{cache:'no-store',redirect:'error'});if(!response.ok)throw new Error('씬 파일 HTTP '+response.status);if(Number(response.headers.get('content-length'))>32000000)throw new Error('프로젝트 최대 32MB');const bytes=await response.arrayBuffer();if(bytes.byteLength>32000000)throw new Error('프로젝트 최대 32MB');return JSON.parse(new TextDecoder().decode(bytes));}
   $('load').onclick=()=>{if(!busy)$('project-file').click();};$('project-file').onchange=async e=>{if(busy)return;const file=e.target.files[0];if(!file)return;setBusy(true);try{if(file.size>32000000)throw new Error('프로젝트 최대 32MB');await importProject(JSON.parse(await file.text()));}catch(err){toast('현재 씬 유지 · '+err.message);}finally{setBusy(false);e.target.value='';}};
   $('import').onclick=()=>{if(!busy)$('image-file').click();};$('image-file').onchange=async e=>{if(busy)return;const file=e.target.files[0];if(!file)return;setBusy(true);try{if(!['image/png','image/jpeg','image/webp'].includes(file.type)||file.size>10000000)throw new Error('PNG/JPEG/WebP 10MB 이하를 선택하세요');const src=await new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(file);});const a=await asset({id:uid('asset'),name:file.name.replace(/\.[^.]+$/,''),src},true);history.change(p=>p.assets.push(a));paletteId=a.id;selected=null;changed('투명 여백을 제외한 이미지가 팔레트에 추가됐습니다');palette();}catch(err){toast(err.message);}finally{setBusy(false);e.target.value='';}};
@@ -339,8 +392,8 @@
       if(!response.ok||Number(response.headers.get('content-length'))>256000)throw new Error('주민 대화 데이터 로드 실패');
       const bytes=await response.arrayBuffer();if(bytes.byteLength>256000)throw new Error('주민 대화 데이터가 너무 큽니다');
       dialogueRaw=JSON.parse(new TextDecoder().decode(bytes));dialogueFactory=module.createRiftDialogue;
-    }catch(e){console.warn('틈 대화 시험을 읽지 못했습니다',e);}try{const residents=await import('./map-scene-rift-residents.mjs');residentAnchorsFactory=residents.residentDialogueAnchors;residentGroundingFactory=residents.createResidentGrounding;}catch(e){console.warn('틈 주민 모듈을 읽지 못했습니다',e);}try{ambienceFactory=(await import('./map-scene-rift-ambience.mjs')).createRiftAmbience;}catch(e){console.warn('틈 분위기 모듈을 읽지 못했습니다',e);}await Promise.all([script('assets/map/hell_rift/interspace_20261005/layout.js'),script('assets/map/ch1/production_finish/layout.js')]);history=new K.History(await preset('rift'));try{const raw=localStorage.getItem(CACHE_KEY);if(raw){const p=K.validate(JSON.parse(raw));await importProject(p,false);}}catch(e){toast('기존 복구 씬을 읽지 못해 승인 원화로 시작합니다');}const named=new URLSearchParams(location.search).get('scene');if(named){try{await importProject(await namedProject(named),false);}catch(e){toast('현재 씬 유지 · '+e.message);}}resize();fit();refresh();palette();$('status').textContent='준비됨 · '+current().name+' / 본편에 자동 적용하지 않음';new ResizeObserver(resize).observe($('stage'));picture('img/exoduser_warrior/south.png').then(im=>{warrior=im;dirty=true;}).catch(()=>{});setBusy(false); $('workspace').inert=false; requestAnimationFrame(tick);
+    }catch(e){console.warn('틈 대화 시험을 읽지 못했습니다',e);}try{const residents=await import('./map-scene-rift-residents.mjs');residentAnchorsFactory=residents.residentDialogueAnchors;residentGroundingFactory=residents.createResidentGrounding;}catch(e){console.warn('틈 주민 모듈을 읽지 못했습니다',e);}try{residentAccessFactory=(await import('./map-scene-resident-access.mjs')).inspectResidentAccess;}catch(e){console.warn('주민 접근 검사 모듈을 읽지 못했습니다',e);}try{ambienceFactory=(await import('./map-scene-rift-ambience.mjs')).createRiftAmbience;}catch(e){console.warn('틈 분위기 모듈을 읽지 못했습니다',e);}await Promise.all([script('assets/map/hell_rift/interspace_20261005/layout.js'),script('assets/map/ch1/production_finish/layout.js')]);history=new K.History(await preset('rift'));try{const raw=localStorage.getItem(CACHE_KEY);if(raw){const p=K.validate(JSON.parse(raw));await importProject(p,false);}}catch(e){toast('기존 복구 씬을 읽지 못해 승인 원화로 시작합니다');}const named=new URLSearchParams(location.search).get('scene');if(named){try{await importProject(await namedProject(named),false);}catch(e){toast('현재 씬 유지 · '+e.message);}}resize();fit();refresh();palette();$('status').textContent='준비됨 · '+current().name+' / 본편에 자동 적용하지 않음';new ResizeObserver(resize).observe($('stage'));picture('img/exoduser_warrior/south.png').then(im=>{warrior=im;dirty=true;}).catch(()=>{});setBusy(false); $('workspace').inert=false; requestAnimationFrame(tick);
     // Read-only diagnostics for local UI QA; import uses the same validated atomic path.
-    window.EXODUSER_SCENE_EDITOR={snapshot:()=>K.clone(current()),view:()=>({...viewport}),player:()=>playing?{...player}:null,selection:()=>selected,importProject,ambience:()=>({enabled:!!ambience&&$('ambient').checked,stats:ambience?.snapshot()||null}),grounding:()=>residentGrounding?.snapshot()||[],dialogue:()=>({anchors:residentAnchors().map(a=>({...a,approach:{...a.approach}})),state:dialogueController?.snapshot()||null}),ready:true};
+    window.EXODUSER_SCENE_EDITOR={snapshot:()=>K.clone(current()),view:()=>({...viewport}),player:()=>playing?{...player}:null,selection:()=>selected,importProject,ambience:()=>({enabled:!!ambience&&$('ambient').checked,stats:ambience?.snapshot()||null}),grounding:()=>residentGrounding?.snapshot()||[],residentAccess:()=>residentAccessReport?K.clone(residentAccessReport):null,dialogue:()=>({anchors:residentAnchors().map(a=>({...a,approach:{...a.approach}})),state:dialogueController?.snapshot()||null}),ready:true};
   }catch(e){$('status').textContent='씬 시작 실패 · '+e.message;toast(e.message);}
 })();

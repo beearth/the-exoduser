@@ -510,3 +510,52 @@ PPU/단일Sprite의 공식 의미는 [Unity Sprite importer](https://docs.unity.
 | 남은 GATE | Multiple/9slice/.unitypackage/Prefab/FBX/PSD·Unity shader/script·3Dheight/runtime bridge 미구현. 틈4NPC/nav/STORY/source/game·사용자save 불변. 전체맵RETOUCH·실제grant/quest/save/상승·본편/native6단계/청취 미인수 |
 
 정확 계약은 `MAP_SCENE_EDITOR_20261005.md` §15, §23 MAP PRODUCTION REPORT는 `HELL_RIFT_EDITOR_RESULT_20261006.md`의 같은완료ID. 근거는 `/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/unity-sprite-import-20261006/`의 receipt·first-unit-failure.json·browser-qa. 전팀가동/A급/Unity전체호환/음성·메일발송 선언0. 두오더담당 유일송신·전문팀 중복TASK/새팀·세션0, 기존paused/아침메일 재개0·오늘19시한번보고 조건 유지.
+
+## 16. 독립 주민의 발·시작 연결·접근 위치 검사 (2026-10-06)
+
+에디터는 주민을 옮길 수 있었지만, 디자이너에게 현재 발이 막혀 있는지 또는 시작점과 연결돼 있는지 설명하지 않았다. 추가한 도구는 위치/크기를 고친 뒤 inspector에서 수동으로 검사하며 현재 body와 nav를 읽는다. 대화가 여전히 foot을 대상 삼는 구조와 기존 선물·부탁의 시험 ledger는 변경하지 않는다.
+
+| id/API | 입력·결과·제약 |
+|---|---|
+| `RESIDENT_ACCESS` | frozen radius12/range140/step20/minApproachDistance40/maxCells40000. world tileSize8…128/cols·rows양의정수/셀≤40000/0또는1 walkable/범위 안 유한 start |
+| `inspectResidentAccess` | 전달fn 반드시함수. strict residentPaintingProfile + 정확4 residentDialogueAnchors; 원본 baked/generic은 unsupported, 독립 review불일치는 invalid-profile; 함수없음 invalid-query. 모든결과 fresh이며 scene/nav/History/storage 쓰기0 |
+| row | `{objectId,npcId,foot:{x,y},footWalkable,startConnected,approach:{x,y,distance}\|null,status}`. `status=foot-blocked\|start-blocked\|no-route\|no-approach\|ready`. 문자열 표시와 반환은 inspector 시험 진단이며 main NPC상태가 아님 |
+| 엄격 보행 | 현재foot 및 모든query radius12·canWalk===true. 월드 가장자리 r12초과/Promise/throw/다른truthy는false. 0/1지도와 world를 선검증; 현재주민 좌표는 profile검증을 유지 |
+| 시작 연결 | start 및 같은cell center + 사이line 통과해야seed. 4방향 BFS는 center와 edge의 line을 각각 확인. 각line의 sample수=max(1,ceil(distance/20)), i=0…sample로양끝포함. foot도 연결cell center부터line필수 |
+| 접근 후보 | 연결된 cell중심으로 foot거리40≤d≤140, distance/y/x 오름차순, candidate→foot line 통과하는 최초점. 고정 historical anchor.approach는 소비0. currentbody를 움직이면 다시 계산. 대화범위140이지만 40최소거리는 편집안내의 여유간격이며 controller 최소거리 변경0 |
+| 수명 | 수동 검사 버튼에서만 BFS계산. drag/brush/input/changed/import/Undo 때 캐시null와카드삭제, 다시 검사 전 stale좌표 표시0. API residentAccess()는 결과의 detached clone 또는null. 새 source/nav값 저장0 |
+| 화면 | section `scene-resident-access-section`, 버튼 `scene-resident-access-check`, toggle `scene-resident-access-show`, summary role=status/aria-live=polite, 목록 카드 dataset npcId/status. DOM내용은 리프 text만; 지정목록 replaceChildren |
+| camera 보기 | objectId로 현재body선택/foot층선택/toolselect/palette해제, viewport x=body.x,y=body.y−60,zoom=min(stageWidth/900,stageHeight/600)·clampCamera. 모바일≤760에서는 inspector닫힘. player/scene/history변경0 |
+| overlay | ready `#a4deb9`, 그외 `#f1ba78`; line1.5/zoom·dash5/zoom,4/zoom·range140world·footcross6/zoom·point5/zoom. playing/drag/history.pending 중 off, overlays=false인PNG off. toggle는 UI전용 |
+| 접근 제한 | busy/playing/dialogue 중 검사와보기handler차단, workspaceinert/busy 및 검사disabled. 보행 중 overlay off. 모듈load실패는 UI모듈준비불가안내이며 본편/대화 fallback 변경0 |
+
+unit세부와실행로그=`tools/test-map-scene-resident-access.mjs` 및 외부helper-result.json. ready진단은 현재r12/20 샘플링규격의 tile연결과직선접근을 검증하며, 연속 swept collision·카메라전투·상승gate·저장/보상 인수를 주장하지 않는다.
+
+검수한 원본 v2의 접근 안내는 아래와 같다. 현재 연결된 보행 타일 중심에서 계산한 UI 진단값이며, 생산 JSON의 고정 anchor.approach 또는 대화 controller의 최소거리를 바꾸지 않는다.
+
+| npcId | 현재 발 (world px) | 계산된 접근점 (world px) | 거리 | 상태 |
+|---|---|---|---:|---|
+| rift-rest-haran | (4660,6660) | (4700,6660) | 40 | ready |
+| rift-gift-berin | (6020,5580) | (6020,5540) | 40 | ready |
+| rift-request-nessa | (6300,5020) | (6300,4980) | 40 | ready |
+| rift-prepare-dorik | (5220,2500) | (5220,2460) | 40 | ready |
+
+비차단 UI후속: 화면의 no-approach는 발에서40…140px인 타일 중심 후보를 뜻한다. controller는거리0에서도대화할수있다. 현재안내문에이계산조건을더명시하는문구개선은미반영이며 기능/화면검수 실패로 계산하지 않는다.
+
+### 2026-10-06 — 독립 주민 접근 검사 inspector
+
+완료ID `ROOT-RIFT-RESIDENT-ACCESS-INSPECTOR-20261006`. 현재 격리 editor3387에서 네 주민의 발과 시작점 연결·대화 접근 위치를 수동 검사하는 읽기 전용 편집 도구를 구현했다. 원자료·고정 approach를 생산 씬에 새로 저장하지 않으며, 기존 controller의 현재 발 대상·trial-only 대화 계약은 유지한다.
+
+| 항목 | 현재 구현 경계 |
+|---|---|
+| 대상·API | `tools/map-scene-resident-access.mjs`의 `inspectResidentAccess(scene,canWalk)`. strict 독립 profile만 `mode=independent`/4rows, review가 있지만 불일치=`invalid-profile`, 원본 baked·generic=`unsupported`, 함수 누락=`invalid-query`; 실패 rows[]·추정 fallback0 |
+| 판정·단위 | radius12/range140/line step20/minApproachDistance40world px/maxCells40000. nav0/1과 world를 검증하고 시작→자기 cell중심/4방향 BFS edge/중심→foot 및 추천점→foot 모두 양끝 포함≤20 간격 stricttrue. Promise/throw/1 통과0 |
+| 현재 위치·접근점 | body 현재 x/y와 objectId/npcId 사용, 고정 anchor.approach 무시. 연결된 tile중심 중 거리40…140 후보를 distance→y→x로 정렬하여 유효직선 최초1 선택. foot-blocked/start-blocked/no-route/no-approach/ready 구분, 다른 주민 차단 전파0 |
+| 편집 화면 | inspector 주민 접근 검사 버튼,4카드의 이름/발/새 접근점/거리/상태, 발 위치 보기=선택과 camera만 변경. 모바일 보기 뒤 inspector닫힘; teleport/배치/nav/자동저장·History 변경0 |
+| 갱신·export | 검사 버튼당 새 query1회, RAF/BFS자동재실행0. position/size input·드래그/첫brush/changed·Undo·import(save=false포함) 즉시 이전결과 무효화. 표시 토글/원형범위140·십자6screenpx·접근점5screenpx·실선1.5screenpx; 편집 overlay만, 보행/drag/pending/PNG에 표시0 |
+| 의미검수 | 신규 suite12/12 PASS·실제1회·실패0. 실제4ready/이동·독립차단/고립섬/start seed/foot중심/중간구간/r12/invalid/failclosed/비변이. 기존 성공suite 반복0 |
+| 화면검수 | 신규 Chrome12/12그룹PASS·실제launch1·실패/pageerror/404/외부서버요청0. overlay on/off의PNG7018386B SHA21b2651252851355d6e2dee865b5e58282576585ad28a0097b5c08be90efb78a 정확동일·JSON c508e70d…불변. 390px/scale1 touch에뮬레이션·버튼180×44px·가로넘침0·camera보기PASS. 보호14핀 before/after불변+승인원화a3d95a…확인. 원본4주민WASD재실행0;F대화가드1은하란만시작근처로옮긴외부fixture시험이며실플레이인수0 |
+| 보존·인수 | source v2 c508e70d…/STORY be14b141…/game4f4eba25…/주민모듈·core 불변. 검수완료 root소유 code4+관련docs12=16만 정상checkpoint 범위이며 변경88개에서 타인72개와 분리; exactSHA·보존후실제수는 외부receipt 기록; live STATE/LOG·타인72WIP·기존23/save/2_3/Q-only/어택티켓 금지 보존 |
+| 잔여 | VISUAL VERDICT: RETOUCH. 후보 원화 재질/정적 주민/높이/실제grant·quest·save·상승/본편native6단계·실청취 미인수. 시작연결 PASS는 실제 게임 이동·전투·보상 인수가 아님 |
+
+정확 계약은 `MAP_SCENE_EDITOR_20261005.md` §16, §23 제작보고는 `HELL_RIFT_EDITOR_RESULT_20261006.md` 같은완료ID. 외부 백업·의미검수·화면·Git영수증=`/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/resident-access-inspector-20261006/`. 두오더담당 유일송신/전문팀 중복TASK·새팀·실행세션0, 기존paused/아침메일 재개0·오늘19시 실제결과 한 번 보고 조건 유지.

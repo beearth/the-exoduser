@@ -670,3 +670,83 @@ NEXT PASS: 실제맵에 사용할보유에셋의규격/크기/재질을선정하
 | 남은 GATE | Multiple/9slice/.unitypackage/Prefab/FBX/PSD·Unity shader/script·3Dheight/runtime bridge 미구현. 틈4NPC/nav/STORY/source/game·사용자save 불변. 전체맵RETOUCH·실제grant/quest/save/상승·본편/native6단계/청취 미인수 |
 
 정확 계약은 `MAP_SCENE_EDITOR_20261005.md` §15, §23 MAP PRODUCTION REPORT는 `HELL_RIFT_EDITOR_RESULT_20261006.md`의 같은완료ID. 근거는 `/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/unity-sprite-import-20261006/`의 receipt·first-unit-failure.json·browser-qa. 전팀가동/A급/Unity전체호환/음성·메일발송 선언0. 두오더담당 유일송신·전문팀 중복TASK/새팀·세션0, 기존paused/아침메일 재개0·오늘19시한번보고 조건 유지.
+
+## MAP PRODUCTION REPORT — ROOT-RIFT-RESIDENT-ACCESS-INSPECTOR-20261006
+
+STAGE: 지옥의 틈 독립주민 편집 후보의 수동 접근 검사 inspector. 생산 geometry/art/본편 변경0.
+
+MASTER
+- silhouette: 승인 원화/독립v2 구성 불변.
+- regions: 기존8camera와공간역할 불변.
+- main route: start4020,7740→exit4020,1740 유지; 별도 주민접근검사추가.
+- side spaces:4주민foot/currentnav읽기; 새길/시설/scatter0.
+
+OUTER MASS
+- LEFT/RIGHT/TOP/SOUTH: 원본10지형 객체와 layer/world/mask 보존.
+- major holes: 기존심연·절벽후속 RETOUCH; 신규시각질량0.
+
+LARGE
+- source assets: 기존v2 cleanplate/atlas/그림/source pins 불변.
+- composites: 렌더조합 변경0.
+- overlap: 검사overlay는편집중만;PNG0.
+- repeated silhouette: 제거완료선언0.
+
+MEDIUM
+- connections: 기존구조물접합불변;BFS는읽기진단.
+- remaining holes: 기존절벽alpha/원근 후속.
+
+GROUND
+- shadow: 기존nav-clipped접지모듈불변.
+- contamination: 신규0.
+- structure integration: 발막힘과시작단절을UI에서구분;ground/art변경0.
+
+PLAYABLE
+- main arenas: 기존후보불변.
+- travel space: 수동검사 시작연결/접근점만추가.
+- breathing space: 현재네주민대화시험과기존공간유지.
+- threat space: 기존심연불변.
+- combat readability: actual본편전투 미인수.
+
+LANDMARK
+- primary: 중앙균열/상승길불변.
+- secondary: 기존주민4위치불변;focus camera보기가능.
+- tertiary: 새디테일0.
+
+CAMERA QA
+- START/EARLY/ARENA/SIDE L/SIDE R/LANDMARK/LATE/EXIT: 기존8camera재실행0. 신규접근inspector/blockedfoot/mobile 화면은아래영수증근거. 8-camera PASS로확대0.
+
+TECH QA
+- route/collision: r12/step20의현재body·시작seed·4방향edge·footcentre·40…140후보읽기. 신규unit12PASS/1회, 기존route1185재실행0.
+- pageerror/404/seam/loading/performance: 신규Chrome12/12그룹PASS·launch1·pageerror/404/외부서버요청0·보호14핀불변 및 승인원화 SHA 확인. 검사UI desktop/mobile시각PASS; 기존외곽seam/FPS인수를대신하지않음. 수동BFS1회/RAF계산0, FPS개선주장0.
+
+FILES
+- stage-owned: editor.html, tools/map-scene-editor.js, tools/map-scene-resident-access.mjs, tools/test-map-scene-resident-access.mjs +관련docs12.
+- concurrent touched: live관리STATE/LOG는각owner소유·root수정0.
+- unrelated touched: 보호source/STORY/game/scene/nav·기존72/23/save 변경0.
+
+GIT
+- staged/commit/push: 신규consumer unit12/브라우저12검수완료, root소유 code4+docs12 정확16파일만 정상checkpoint 범위. 실제NUL88→보존뒤72·exactSHA·경로/핀의확정결과는외부receipt기록.
+- deploy:0.
+
+VISUAL VERDICT: RETOUCH
+접근검사UI의desktop/mobile4장실제시각검수는PASS. 기존맵원화 확대흐림/정적주민·전체환경/A급/main/native/청취인수는미완료이며RETOUCH를유지한다.
+
+NEXT PASS: 실제NPC grant/quest/save와장상승consumer; 높이/재질/동적주민·전체맵8camera·native6단계·실청취는별도미완료.
+
+### 2026-10-06 — 독립 주민 접근 검사 inspector
+
+완료ID `ROOT-RIFT-RESIDENT-ACCESS-INSPECTOR-20261006`. 현재 격리 editor3387에서 네 주민의 발과 시작점 연결·대화 접근 위치를 수동 검사하는 읽기 전용 편집 도구를 구현했다. 원자료·고정 approach를 생산 씬에 새로 저장하지 않으며, 기존 controller의 현재 발 대상·trial-only 대화 계약은 유지한다.
+
+| 항목 | 현재 구현 경계 |
+|---|---|
+| 대상·API | `tools/map-scene-resident-access.mjs`의 `inspectResidentAccess(scene,canWalk)`. strict 독립 profile만 `mode=independent`/4rows, review가 있지만 불일치=`invalid-profile`, 원본 baked·generic=`unsupported`, 함수 누락=`invalid-query`; 실패 rows[]·추정 fallback0 |
+| 판정·단위 | radius12/range140/line step20/minApproachDistance40world px/maxCells40000. nav0/1과 world를 검증하고 시작→자기 cell중심/4방향 BFS edge/중심→foot 및 추천점→foot 모두 양끝 포함≤20 간격 stricttrue. Promise/throw/1 통과0 |
+| 현재 위치·접근점 | body 현재 x/y와 objectId/npcId 사용, 고정 anchor.approach 무시. 연결된 tile중심 중 거리40…140 후보를 distance→y→x로 정렬하여 유효직선 최초1 선택. foot-blocked/start-blocked/no-route/no-approach/ready 구분, 다른 주민 차단 전파0 |
+| 편집 화면 | inspector 주민 접근 검사 버튼,4카드의 이름/발/새 접근점/거리/상태, 발 위치 보기=선택과 camera만 변경. 모바일 보기 뒤 inspector닫힘; teleport/배치/nav/자동저장·History 변경0 |
+| 갱신·export | 검사 버튼당 새 query1회, RAF/BFS자동재실행0. position/size input·드래그/첫brush/changed·Undo·import(save=false포함) 즉시 이전결과 무효화. 표시 토글/원형범위140·십자6screenpx·접근점5screenpx·실선1.5screenpx; 편집 overlay만, 보행/drag/pending/PNG에 표시0 |
+| 의미검수 | 신규 suite12/12 PASS·실제1회·실패0. 실제4ready/이동·독립차단/고립섬/start seed/foot중심/중간구간/r12/invalid/failclosed/비변이. 기존 성공suite 반복0 |
+| 화면검수 | 신규 Chrome12/12그룹PASS·실제launch1·실패/pageerror/404/외부서버요청0. overlay on/off의PNG7018386B SHA21b2651252851355d6e2dee865b5e58282576585ad28a0097b5c08be90efb78a 정확동일·JSON c508e70d…불변. 390px/scale1 touch에뮬레이션·버튼180×44px·가로넘침0·camera보기PASS. 보호14핀 before/after불변+승인원화a3d95a…확인. 원본4주민WASD재실행0;F대화가드1은하란만시작근처로옮긴외부fixture시험이며실플레이인수0 |
+| 보존·인수 | source v2 c508e70d…/STORY be14b141…/game4f4eba25…/주민모듈·core 불변. 검수완료 root소유 code4+관련docs12=16만 정상checkpoint 범위이며 변경88개에서 타인72개와 분리; exactSHA·보존후실제수는 외부receipt 기록; live STATE/LOG·타인72WIP·기존23/save/2_3/Q-only/어택티켓 금지 보존 |
+| 잔여 | VISUAL VERDICT: RETOUCH. 후보 원화 재질/정적 주민/높이/실제grant·quest·save·상승/본편native6단계·실청취 미인수. 시작연결 PASS는 실제 게임 이동·전투·보상 인수가 아님 |
+
+정확 계약은 `MAP_SCENE_EDITOR_20261005.md` §16, §23 제작보고는 `HELL_RIFT_EDITOR_RESULT_20261006.md` 같은완료ID. 외부 백업·의미검수·화면·Git영수증=`/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/resident-access-inspector-20261006/`. 두오더담당 유일송신/전문팀 중복TASK·새팀·실행세션0, 기존paused/아침메일 재개0·오늘19시 실제결과 한 번 보고 조건 유지.
