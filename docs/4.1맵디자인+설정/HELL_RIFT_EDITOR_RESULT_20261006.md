@@ -1277,3 +1277,48 @@ NEXT PASS: 실제에셋시각보정·주민진행 원자consumer·본편동일�
 ## 2026-10-06 남쪽 진입 해상도 상세 후보 v1 — 시각 실패 보존
 
 기존 v2/clean plate1254²/world8000²를 보존한 별도 후보다. generated arrival-detail-v1.png1024×1536을 centre 기존층에 추가한 scene와 [정확 제작·실패 보고](HELL_RIFT_RESOLUTION_DETAIL_20261006.md)를 보존한다. 네 주민 발·nav1192·start/exit·원본 source는 불변이다. native 그림 밀도는 기존 crop 대비 약2.44배지만120%DPR1에서도 약3.13배 확대되어 전체 흐림 해결 완료로 계산하지 않는다. 신규 의미검수10/10 및3387 동일카메라 브라우저2그룹PASS와 별개로 사각 이음새·지형 이동·south-root 전경의 흐린 삼각 조각 때문에 **이 후보 VISUAL VERDICT: FAIL / 본편 미채택**이다. 기존 전체 맵 판정은 RETOUCH를 유지한다. 원본·실패v1 핀과 전후화면은 외부 resolution-detail-20261006에 보존한다. 완료소유 asset2+신규docs1+관련docs6만 정상checkpoint/push하며 root의 현재 후속/타인WIP·ownerSTATELOG·세이브·2_3/Q전용·어택티켓 금지는 보존한다.
+
+
+## 2026-10-06 바닥 재질 상세 consumer — 최신 상태
+
+완료ID ROOT-RIFT-GROUND-MATERIAL-20261006. 지옥의 틈 주민 v2의 원형 지형을 유지한 editor 전용 바닥 재질 consumer를 구현했다. 전체 landscape 재원화 후보 v1의 VISUAL FAIL/미채택은 그대로다. 원본1254² 배경의 픽셀밀도를 복원한 것이 아니며 **전체맵 및 근접 재질 VISUAL VERDICT: RETOUCH**다.
+
+| 항목 | 현행 값 / 실제 근거 |
+|---|---|
+| 코드 | tools/map-scene-editor.js + tools/map-scene-rift-ground-detail.mjs + tools/test-map-scene-rift-ground-detail.cjs |
+| 원자료 / 소비 | assets/map/hell_rift/resolution_detail_20261006/arrival-detail-v1.png 1024×1536 / crop{x:320,y:1120,w:240,h:240}만 소비. 원자료 전체 맵 채택0 |
+| 표현 | 4방향mirror480² pattern, worldSpan160/period320, alpha.4/soft-light. world고정·200² nav mask·비보행alpha0. foot 전경/주민/전사 전 합성. 기본enabled=true, groundDetailEnabled(boolean)은 저장하지 않는 view-only 진단 |
+| 등록 / 보존 | strict 주민 v2+분위기 등록+abyss.visible===true. world200²/tile40/8000², nav1192, start(4020,7740)/exit(4020,1740), 기존 주민4 발·높이·원화·atlas·JSON/History 계약 유지. module등록 상세는 MAP_SCENE_EDITOR_20261005.md §26 |
+| 새 검수 | unit12/12 PASS 실제1회 + 구문2파일 각각1회. browser Chrome1/context1/page1 기능11PASS·하네스FAIL1(픽셀 QA getImageData 성능 경고3). 재실행0/제품 pageerror·HTTP오류·예기치 않은request실패·API/외부요청0; 원문 및 파생 경고 감사 별도 보존 |
+| 실제 화면 | Haran120% 및207.36% 전후, pan 고정, 심연 중앙 변화0표본, 네 주민 접근점→첫F대화→ESC복귀. 선택0/branch0/보상·questcommit0. 정적2048² PNG export1회 |
+| 미완료 | 큰돌·절벽·뿌리·불 원본 흐림, 남쪽 뿌리 삼각형 접합, 근접 반복감. 본편 소비/grant·save·상승·실제높이·native6·실청취·실물폰·A급 미인수 |
+| docs 검색 | 최초 Markdown302행22문서 검색 원문 경로 충돌 사실 유지; 원문보존 module검색142행28paths, 후속 전체확장자457행23문서 검색→파생 Markdown302행22문서, 현행동기화12/이력보존10/오더STATE보존1/추가consumer충돌0. 원문 재검색·복구 위장0; 보호2_3 매치/수정0 |
+| Git / 운영 | 소유code3+docs12만 보존. exact commit/push/remoteSHA·foreign/protected핀은 외부 receipt.json. 19:00 단일보고 완료/exoduser-2 실제PAUSED. 이 변경은 이후 직접 요청 처리이며 기존자동화·아침메일 재개0/새팀·전문팀중복지시0 |
+
+근거: /Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/ground-detail-20261006/receipt.json, browser-qa/run1/raw-result.json, browser-qa/root-warning-audit.json, root-visual-review.json, docs-audit-summary.json. 성공검사와 원본이력의 수치/핀은 해당 시점 근거로 보존하며 이번 표현 추가로 과거 결과를 새 PASS로 바꾸지 않는다.
+
+
+## MAP PRODUCTION REPORT — ROOT-RIFT-GROUND-MATERIAL-20261006
+
+| 항목 | 실제 결과 / 범위 |
+|---|---|
+| STAGE | 지옥의 틈 주민 v2 독립 editor3387 / 원형 지형 유지 바닥 재질 상세 레이어 |
+| MASTER PLAN | 기존 비대칭 균열·남쪽 진입·북쪽 상승로·양측 보행대 유지. 새 지역/큰 지형 변경0 |
+| LARGE OUTER MASS | LEFT/RIGHT/TOP/SOUTH/major holes 모두 기존 원화·geometry 유지. 전체 외곽을 새 고해상도로 제작한 것0 |
+| LARGE SOURCES / COMPOSITE | 원자료 arrival-detail-v1.png 1024×1536에서 240² 순수 바닥만 사용. 원자료 전체 landscape VISUAL FAIL/미채택 유지. 원형 cleanplate/주민 atlas/foot crop 핀 유지 |
+| MEDIUM CONNECTION | 원형 연결 통로·기존 시작/출구 유지. 기존 뿌리 앞쪽 조각의 삼각형 경계와 해상도 대비가 Haran 근접 화면에 남아 있어 RETOUCH |
+| GROUND CONNECTION | 보행 1192칸 안쪽만 world period320/alpha.4/soft-light 합성. 발접지·그림자·주민 높이 유지. 원형 큰 돌·뿌리·불 원본 흐림 미해결 |
+| PLAYABLE / COMBAT | 시작(4020,7740), 출구(4020,1740), 200²/tile40 nav 원본 유지. 네 주민 접근점에서 첫 F대화 열기/ESC복귀 확인. 본편 전투/보상/장전환·사망부활·재도전은 이번 검수 아님 |
+| LANDMARK / CENTER | 균열·북쪽 상승길 primary, 남쪽 주민/불 secondary, 바닥 돌·재 tertiary 모두 큰 위치 유지. 좁은 재질은 반복감이 보이므로 close RETOUCH |
+| CAMERA QA | 실제 Haran 120% 및 207.36%, 순수 카메라 pan, 심연 중앙, 정적 전체 PNG 검수. START/EARLY/ARENA/SIDE LEFT/SIDE RIGHT/LANDMARK/LATE/EXIT 전체 카메라 sweep을 새로 수행한 것0 |
+| TECH QA — 신규 unit | 모듈12/12 PASS 실제1회, 모듈구문1회 PASS/editor구문1회 PASS. 단위 원문 완료ID ROOT-RIFT-GROUND-DETAIL-20261006은 본 완료ID의 unit 산출 별칭 |
+| TECH QA — 실제 browser | 기존 editor3387만 Chrome1/context1/page1. 기능11PASS/하네스FAIL1. 마지막 unexpectedConsole===0 검사가 픽셀 QA의 getImageData 성능 경고3건에 실패한 원본 유지. 제품 pageerror/HTTP오류/예기치 않은 request failure/API요청/외부요청0; 성공 재실행0 |
+| TECH QA — 표본 경계 | 120% 보행 표본80818개 변경/비보행0, 207.36% 보행112787개 변경/비보행0, 심연 중앙 비보행21000표본 변화0. 화면 stride3·타일안쪽2worldpx 표본이며 제외 경계/모든pixel의 PASS로 확대0. pan stride5·타일안쪽3worldpx, 8bit 반올림 허용오차2/channel 이내 |
+| TECH QA — PNG | 2048² PNG 실제1회. 7042513B/SHA 2c01fb4570311e55e74c746cb6ccb3c826a2db64ce52e8ed7a9fe9a2f13c295c. 보행59201표본 변경/비보행2056714표본 변화0, 타일 경계5.859375worldpx 제외. 원형 PNG byte동일이 아니라 새 합성 결과 |
+| TECH QA — 불러오기 / seam / perf | 실패 import 원형유지, 숨긴foot 적용0, navbrush coverage재구축 후undo, source누락3의도실패 후 같은page복구, finalsourcepins exact. 그리기마다40000nav스캔0. 실제FPS/장시간메모리/전체seam PASS를 선언한 것0 |
+| FILES | 소유 code3 + docs12. 타인 WIP68 byte핀 및 오더 기록4 상태 보존; 기존23/사용자세이브/보호2_3/main/sourcePNG/씬/atlas/발좌표 변경0 |
+| GIT | 정확 소유15만 checkpoint. commit/push/remote exactSHA는 완료 후 외부 receipt.json에 기록. 배포0/자동화·메일 재개0 |
+| VISUAL VERDICT | **RETOUCH**. root가 실제120% 전후/207.36% 후/전체 PNG를 봄. 좁은 바닥 재질은 선명해졌지만 원형 환경 흐림, 남쪽 뿌리 조각의 삼각형 경계, 고배율 반복감이 남음. native/청취/실물폰/A급 인수0 |
+| NEXT PASS | 원형 contour와 길 위치를 유지하는 바닥·큰돌·뿌리·불 각각의 실제 픽셀밀도 제작, 같은 source 등록으로 앞뒤 가림/접합 맞추기. 본편 아이템 grant/quest/atomic save와 native6·실청취는 별도 미완료 |
+
+원문: 외부 ground-detail-20261006/browser-qa/run1/raw-result.json. root 파생 경고 감사는 browser-qa/root-warning-audit.json이며, 원본11PASS+FAIL1을 대체하지 않는다.
