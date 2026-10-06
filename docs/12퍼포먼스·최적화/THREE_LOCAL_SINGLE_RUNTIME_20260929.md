@@ -65,3 +65,21 @@
 | 증빙 | tmp/three-single-runtime-20260929/의 before/, tests-red.txt, tests-green.txt, syntax.txt, docs-keywords.txt, verification.json, static-response.json, package-manifest.json, ui-preservation.json, compare.html 및 pixel-before.html/pixel-after.html. UI 사용 탭은 새로고침/종료하지 않고 생성한 검증 탭만 종료 |
 
 후속 검수: production VFX의 mirrored-camera face culling 영향을 실제 공격 프레임에서 분리 재현하고, 기존 게임 시각을 확인한 뒤 별도 수정한다. 현 단계에서는 엔진 통일과 무관한 표현 변경을 섞지 않았다.
+
+
+## 2026-10-06 캐릭터 2.5D 리깅 움직임 독립 시험 인수
+
+| 항목 | 실제 반영 / 인수 경계 |
+|---|---|
+| 완료 ID | `CHARACTER-RIG-MOTION-TRIAL-20261006` |
+| 코드 / 소비자 | `tools/rig-motion-lab.html`·`rig-motion-lab.mjs`·`rig-motion-controller.mjs` 3개. 기존 격리 `http://127.0.0.1:3387/tools/rig-motion-lab.html`의 독립 소비자에만 채택 |
+| 실제 원자료 | 기존 Vinebound Sentinel GLB Idle/Walking/Running 3개, 총 25,468,812 bytes. skin1 / mesh1 / bones24 / clip별 tracks72. 전사·실버테일 원본 PNG와 본편 sprite 소비자는 그대로 |
+| 표시 / 이동 | 정사영 고도50°, 표시높이2.2, 대기·걷기·달리기 0.22초 전환, WASD/방향키의 8방향 이동·회전, Shift 달리기, 뼈대 표시. 시험 이동속도1.35/2.8 units/s, dt상한0.05초, 축별 경계±3.35 |
+| 런타임 / 실패 | 로컬 Three r160, renderer1 / mixer1 / 활성 RAF최대1. motion 보조 모델2개 해제. GLB·bind·shader 실패 때 ready=false / 입력·RAF 중단, 새 renderer·다른 외형 폴백 없음 |
+| 실제 검증 | controller5/5, 격리 Chrome 실제 GLB·키 입력·화면11/11, 추가 crossfade·셰이더 실패 주입2/2 PASS. 초기 모듈2개 문법 검사 및 최종 renderer 모듈 문법 검사 통과. 성공 그룹 반복 실행 없음 |
+| 화면 / 영상 | root가 걷기·관절 표시 실제 스크린샷2개 시각 확인. 실제 canvas에서 24fps 요청 / 3.2초 VP9 WebM 저장. 오디오·본편 native·1-1 인수는 이번 시험 범위 밖 |
+| 남은 제작 | 주인공 동일 외형의 rig 원본 / 무기 socket, 발 IK·보폭, world→screen·앞뒤 가림·맵 광원, 공격 판정과 clip 시간, 실제 본편·성능 인수. 독립 모션 성공을 주인공 교체·A급 완성으로 계산하지 않음 |
+| 보존 / 송신 | 본편·맵·기존 에셋·세이브·Q/E·보호2_3 수정0. 기존 두 오더담당 및 전문팀 송신 소유 유지. 사용자 최신 수동 요청의 캐릭터 지원 담당1 배정; 새 관리 채팅·Claude 실행 세션·자동화 재개0 |
+| 상세 정본 | [전체 수치·원자료 SHA·구현·실제 QA·후속 게이트](../4.0케릭터스프라이트%20디자인/CHARACTER_RIG_MOTION_TRIAL_20261006.md) |
+
+본편 boss overlay의 기존 수명·장면 계약은 변경하지 않았다. 이번 화면의 renderer1은 독립 문서의 수이며 본편과 함께 실행한 총 WebGL context 측정값이 아니다. GLB 원자료 핀과 shader fail-closed 계약은 상세 정본을 따른다.
