@@ -83,3 +83,21 @@
 | 상세 정본 | [전체 수치·원자료 SHA·구현·실제 QA·후속 게이트](../4.0케릭터스프라이트%20디자인/CHARACTER_RIG_MOTION_TRIAL_20261006.md) |
 
 본편 boss overlay의 기존 수명·장면 계약은 변경하지 않았다. 이번 화면의 renderer1은 독립 문서의 수이며 본편과 함께 실행한 총 WebGL context 측정값이 아니다. GLB 원자료 핀과 shader fail-closed 계약은 상세 정본을 따른다.
+
+## 2026-10-06 세외형 12본 · 지옥의 틈 통합 시험
+
+완료ID `ROOT-CHARACTERS-RIFT-2_5D-CONSUMER-20261006`. 기존24본VineboundGLB 시험은 위 시점별 이력이며, 이번 `tools/2_5d-world-lab.html`에서는 **기존 전사·실버테일·다크드루이드 PNG에12본/1SkinnedMesh weighted plane**을 붙여같은지형에서 실제8방향·idle/walk/run/attack을 소비한다. 완전 입체 인체/주인공GLB 교체는 미구현 상태가 계속유효하다.
+
+| 항목 | 현행 독립lab값 |
+|---|---|
+| 모듈 | character-rigs/catalog + visual-pose-consumer + actor-effect-lifetime + rift-terrain + 2_5d-world-lab |
+| caller표시높이 | 전사.36/실버테일.36/드루이드.65units; API기본2.2와구분 |
+| 원화 | 전사48/attack80px,실버idle/walk1254²원본manifest crop/attack80px,드루이드1656×1240 idle 및887×1774 walk/attack. 기존PNG29개byte/SHA불변 |
+| 루프 | renderer1/RAF최대1,실제pose·rigupdate각1회; 이동260/470worldpx/s/dt.04,줌80…220% |
+| 연동 | SKILL·ANIMVFX정정publicconsumer 실제채택. 공격1회edge수명.81/.81/.6초,foot앞뒤actor20/40-전경30동일transparentpass |
+| 상태 | 실제원본/셀contracts502·browser9+8+13그룹·정지중3검사PASS. 맵확대흐림/hardseam으로VISUALRETOUCH,원본clipping·완전3D·양발IK·본편/native/청취/A급미인수 |
+
+정확crop/원본29핀·수식·모션·UI・effect수명・검수・영상은 `../4.0케릭터스프라이트 디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md` 실제통합절을 따른다. 모듈별수치와원본/api/caller값을혼동하지않는다. 본편game/index/editor/이전rig-motion/사용자save와Q전용/2_3/어택티켓금지 보존.
+
+
+실버테일16枚1254²RGBA 고해상도텍스처는약96MiB GPU원본예산의desktop실험이다. decoder/mipmap/renderer총사용량·휴대폰/장시간성능을인수하지않았다. 현재선택배우만update하나texture는세캐릭터를로드한다. effect3×cap24/possiblepool72,OSreduced-motion livechange면3effect인스턴스재생성·기존meshdispose,추가RAF없음.

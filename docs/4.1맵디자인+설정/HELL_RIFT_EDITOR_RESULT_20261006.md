@@ -1322,3 +1322,17 @@ NEXT PASS: 실제에셋시각보정·주민진행 원자consumer·본편동일�
 | NEXT PASS | 원형 contour와 길 위치를 유지하는 바닥·큰돌·뿌리·불 각각의 실제 픽셀밀도 제작, 같은 source 등록으로 앞뒤 가림/접합 맞추기. 본편 아이템 grant/quest/atomic save와 native6·실청취는 별도 미완료 |
 
 원문: 외부 ground-detail-20261006/browser-qa/run1/raw-result.json. root 파생 경고 감사는 browser-qa/root-warning-audit.json이며, 원본11PASS+FAIL1을 대체하지 않는다.
+
+## 2026-10-06 독립 정사영 캐릭터·맵 consumer 포인터
+
+완료ID `ROOT-CHARACTERS-RIFT-2_5D-CONSUMER-20261006`. 이번 독립 `http://127.0.0.1:3387/tools/2_5d-world-lab.html`은 주민v2 scene/cleanplate/기존nav1192를 읽기전용 소비하는 **동측 대표구간**이다. 기존이미지씬에디터의API·저장·Unity package/Prefab/FBX/PSD import 상태·주민/대화consumer를 변경하지 않았다. fullmap/본편교체가 아니다.
+
+| 항목 | 현행범위 |
+|---|---|
+| 지형 | clipx4300…6560/y3200…4600,50°정사영/scale400,저장원본start4020/7740·exit4020/1740 불변 |
+| 높이 | physicalheight UNKNOWN; authoreddepth240/inset90%는 시험 geometry. 실제heightmap/editorheight roundtrip 미구현 |
+| 표시 | 전사/실버테일/드루이드12본plane·대표start5480/3740/terrain시험spawn5900/3820; 같은nav질의radius12/clipmargin12 |
+| 전경 | 동측뿔mask11점/footY4320,actor20/40-foreground30 동일transparentpass,겹침시선택페이드opacity.32 |
+| 결과 | 실제bone변형/8방향/1회공격/nav밖제한/효과/가림/정지중교체·reset관측. 원화1254²흐림·skirt hardseam **VISUALRETOUCH**,본편native6/청취/NPC실지급·save/상승/완전3D/A급미인수 |
+
+정확맵source/UV/수식/수치/§23 MAP PRODUCTION REPORT는 `HELL_RIFT_2_5D_SLICE_20261006.md`, 캐릭터/공격/효과/UI/실검수는 `../4.0케릭터스프라이트 디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md`를따른다. 현재 MAP v2원자료는editor실행이없는projection검증후보이며실제editorroundtrip 채택으로계산하지않는다. 이전시점의CODE CHANGE NONE은당시조사범위이고이번구현은위별도코드다.
