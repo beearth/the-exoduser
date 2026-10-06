@@ -124,6 +124,8 @@ export async function createRiftTerrain({ THREE, angle=50, scale=400 }={}) {
     const canWalk=(x,y,r=12)=>!disposed&&Number.isFinite(x)&&Number.isFinite(y)&&Number.isFinite(r)&&r>=0&&K.canWalk(source,x,y,r);
     if(!canWalk(cfg.spawn.x,cfg.spawn.y))throw new Error('2.5D 대표 보행 시작점이 막혀 있습니다');
     return {object3d,worldToScene,sceneToWorld,canWalk,spawn:{...cfg.spawn},bounds,occluders,
+      // Diagnostics receives a clone of the actual loaded scene, never the mutable navigation source.
+      sourceSceneSnapshot:()=>K.clone(source),
       snapshot:()=>({disposed,angle,scale,sourceSceneSha256:cfg.sceneSha256,navSha256:source.sourcePins.nav,walkableCount:1192,clip:{...cfg.clip},physicalHeight:'UNKNOWN',authoredDepth:cfg.authoredDepth,authoredInset:cfg.authoredInset,groundTriangles:floorTriangles.length,occluderFootY:horn.y,sourceParallaxApplied:true,skirtTextureApplied:true,maskFeatherApplied:false,nativeAccepted:false}),
       dispose(){if(disposed)return;disposed=true;object3d.clear();for(const r of new Set(resources))r.dispose();resources.length=0;}
     };

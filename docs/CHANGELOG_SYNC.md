@@ -54389,3 +54389,10 @@ root 접지그림자 code3 WIP·타인 변경·live supervisor STATE/LOG·원본
 Claude8 기존 MAP·QA·BOSS·STORY 4역할의 실제 source4·공식 end4·idle4, 정확 bytes/fullSHA 및 syntax PASS 코드4를 후보 미채택 보존했다. raw7+v2raw4 불변, v3 별도4. 실제 NUL80부터 완료 소유 코드4+관리 docs4만 즉시 checkpoint하며 타인 WIP·담당 STATE/LOG·게임·씬/nav/에셋/세이브는 제외한다. 정확 핀과 공식 완료 ID·end UUID는 CH1_2_5D_TEAM_CANDIDATES_20261006.md의 v3 보존절.
 
 전체 docs 관련 키워드 검색 후 동기화했고 기존 혼합 CRLF/LF bytes prefix와 변경 전 백업을 보존했다. BOSS 후보 검증은 실제 Node 직접 실행 17/17(팀 검증), stdin으로 기록하지 않는다. MAP 이전4결함·QA 이전3결함은 읽기 검토상 해결, QA referenceHeight 유한수 P2는 public 파생본 채택 시 수정한다. v3 public 채택0, 본편/native/청취/A급 인수0, 맵 VISUAL VERDICT: RETOUCH 유지. 새 팀/세션·자동화 재개·설치·권한·Windows·게임/빌드 추가0.
+
+
+## 2.5D 실제 맵 등록·표시 위치 검사 연결 — 2026-10-06T13:35:45.067762+00:00
+
+완료 root code5와 STORY v4 공식완료 raw1를 code+docs로 보존한다. MAP·QA v3 corrected public 파생본2를 기존 3387 단일RAF에 연결, 실제 로딩 scene clone/canonical SHA·보호배치·투영 대조 및 actor 원점 world px 앵커12프레임/4px 허용/nav radius12 검사. editorProvider 없음=PENDING, source finite guard와 이동/교체/정지/blur·자동 attack→idle 후 이전PASS 무효화, structuredClone 관측 분리. 21 실제 browser 검사+5 모션해제 검사 PASS/새 runtime0. 맵 화면은 확대 흐림/hard wedge/skirt seam이 남아 VISUAL VERDICT: RETOUCH. 본편/native/청취·IK 발픽셀·에디터 save 왕복/A급 인수0. 정확 계약·§23·핀·공식 IDs는 DIRECTIONAL_CHARACTER_RIGS_20261006.md 및 HELL_RIFT_2_5D_SLICE_20261006.md의 최신 절.
+
+actual80 완료소유 checkpoint 시도에서 docs-sync-check가 CHANGELOG 진행 로그 누락으로 거절했다. 우회 없이 이 완료 로그를 보완해 actual81/code+관련docs9 정상commit/push로 보존한다. 원 raw15 불변, STORY v4=10164B/SHA0473eb649fafd16374bca26455972255ec3ef1988d44bf32fb5bdbfac2ffa8de/공식CH1-2_5D-STORY-ASYNC-GUARD-20261006-V4-CANDIDATE/end e2aff546-5762-4ea1-89d2-70538445478e. v4 요청2결함 해결 및 this=ports 소실P2는 의미검수 기록으로 남기고 일반consumer 미채택. 외부 백업·실제26검사/화면·검색/핀/소유범위 영수증 보존. 기존 혼합CRLF/LF bytes prefix 및 foreign68/ownerSTATELOG4/보호10/게임·scene/nav·save·Q전용·어택티켓 금지·기존23 보존. 새팀·세션·권한·설치·Windows·게임/빌드·paused 자동화/메일 재개0.
