@@ -321,3 +321,105 @@ GIT
 VISUAL VERDICT: **RETOUCH** — 접지점 편집은 구현/화면검수했다. NPC 원근 크기·clean plate/독립body·높이·실제보상/진행·본편/native/청취·A급완성은 미인수다.
 
 NEXT PASS: 각 실제 NPC의 foot/body scale과 독립 레이어 clean plate를 정확히 맞춘 후보를 검수하고 채택한다. 기존 player80world px와 scene identity/transform이 맞지 않는 후보는 소비 보류. 오늘19시 실제 화면·검증·Git·남은 문제를 한 번 보고한다.
+
+
+## 2026-10-06 독립 주민 레이어 후보 반영 — ROOT-RIFT-RESIDENT-LAYERS-PREVIEW-20261006
+
+현재 root 소비자는 승인 원화 유래 인물 없는 배경과 투명 주민4명을 별도 에디터 후보에서 렌더·크기 편집·현재 foot 기반 대화에 연결했다. 이전 절의 원본 baked/clean plate·독립body 후속 표기는 해당 시점과 원본 결과 씬의 이력이다. 원본을 교체하거나 본편 FIELD NPC 구현 상태를 바꾼 것이 아니다.
+
+| 항목 | 현재 계약·근거 |
+|---|---|
+| 후보 | `assets/map/hell_rift/resident_layers_20261006/hell-rift-residents-v2.scene.json`, SHA256 `c508e70d23fafb9295798763c5224c7c92699dfea3d3beebdb6ab18173f44a3a`, `ISOLATED_EDITOR_RESULT_NOT_ADOPTED` |
+| 그림 | built-in imagegen, clean plate/atlas1254². 원본1920²의 정확 픽셀 추출이 아니며 세부 지형/재질이 바뀐 별도 후보. 두 생성 PNG를 byte 그대로 사용 |
+| 주민 | 하란/네사/도릭 최초 본체80world px, 앉은 베린 `80*352/578`. pivot(.5,1), alpha crop>8. 유효 aspect/foot을 유지한 사용자 크기 편집 허용; 편집 후80 고정 강제0 |
+| 하란 v2 | foot(4660,6660), 접근(4660,6700). body와 south-root bbox 사이35.77854671280277world px, 접근 전사 폭80 기준20px. 이전 v1(4780,6460)의 발 가림은 미채택 이력으로 보존 |
+| 씬 | 원본10개 지형 객체의 world/mask·nav1192·BFS1185·r12·시작(4020,7740)/출구(4020,1740) 유지. 6layers/14assets/14objects, foot=기존3+주민4 |
+| 대화 | `residentDialogueAnchors(scene)`는 현재 body x/y/height. 편집 확정 시 controller/ambience 무효화, 보행 시작 전 재생성. F범위140, 최대240·접근step20/r12·64전이·22nodes/37options는 기존 session-only 계약 |
+| PNG | 2048² export, CPU readback context `willReadFrequently:true`, `imageSmoothingQuality='high'`. 보행 전후 각각 멈춘 상태에서 export한 PNG byte 동일 SHA `f7e03969aa26b4eeaf227c513e0b6e5dfd28df992aabb74f0c7e309f5d34ed84` |
+| 검증 | builder 의미19/19, 기본 UI15/15, 실제4주민 보행·분기10그룹 완료 뒤 PNG 차이 FAIL을 보존. 샘플링 수정 후 targeted8/8 PASS(실제3보행, 이전 위치 F닫힘/이동 위치 F열림·Undo·JSON/PNG). pageerror/HTTP누락0 |
+| 기획/운영 | §16의 전문15+root통합1=제작16 유지. Claude8 raw8 공식완료는 미채택 보존, Codex7 새7착수0(송신 자동승인 검토 거절: 승인 필요/never). 기존 paused 자동화/아침메일 재개0; 오늘19시 한 번 실제결과 보고 |
+
+정확 구현 표는 `docs/4.1맵디자인+설정/MAP_SCENE_EDITOR_20261005.md` §12, MAP PRODUCTION REPORT는 `HELL_RIFT_EDITOR_RESULT_20261006.md`의 독립주민 후보 절. 저장/실제지급·부탁/장 gate·높이물리·주민애니메이션·Unity package/Prefab/FBX/PSD 임포트·본편/native6단계·실청취는 미인수. 확대 grain/전사와 주민의 재질·접지 그림자·전체 절벽 실루엣 분리는 추가 개선 대상. **VISUAL VERDICT: RETOUCH.**
+
+완료소유 코드10+관련docs12만 checkpoint한다. 원본 scene/PNG/STORY, game.html/index.html, live supervisor STATE/LOG·타인WIP·보호2_3/Q-only·어택티켓 금지·사용자세이브·기존23 유지. 원격 exact SHA와 최초 실패/최종 화면·영상은 외부 receipt에 보존한다.
+
+
+## 독립 주민 후보 MAP PRODUCTION REPORT (2026-10-06)
+
+================= MAP PRODUCTION REPORT =================
+
+STAGE: ROOT-RIFT-RESIDENT-LAYERS-PREVIEW-20261006 / 독립 주민 배경·크기·접지·현재 foot 대화 / 에디터3387
+
+MASTER
+- silhouette: 승인 원화의 계곡 양측/상승계단 구성을 유지한 파생 plate; 세부 픽셀·지형은 새 생성이므로 정확 복원 주장0.
+- regions: 남쪽 진입/잔불/서측 턱/동측 주민/중앙심연/북쪽 상승.
+- main route: 기존1192nav의 남쪽 시작→동측→북쪽 출구; geometry 재제작0.
+- side spaces: 서쪽 턱 이미지 보존, 이번 실제 주민 접근4는 검수된 corridor 안.
+
+OUTER MASS
+- LEFT: 기존 west2 world/crop 연결, 새 plate source.
+- RIGHT: 기존 east2 및 생체뿌리 world/mask 유지.
+- TOP: 북쪽 계단·출구 marker(4020,1740) 유지.
+- SOUTH: 남쪽 시작(4020,7740), 하란은 기존남쪽뿌리 가림을 피해 foot(4660,6660)으로 이동.
+- major holes: 중앙심연 기존 abyss source1920², no_walk 유지.
+
+LARGE
+- source assets: 기존 painting1920² 참조의 clean plate/주민atlas1254², 원본 PNG 불변.
+- composites: 그림6crop+가림3crop source scaling209/320, abyss1, 독립주민4; assets14/objects14/layers6.
+- overlap: 원화 baked사람 제거 후보+독립4body. south-root와 하란 bbox 간격35.77854671280277worldpx. 완전 실루엣 추출은 아님.
+- repeated silhouette: 같은 천막 추가0; 원본 cliff/roots 재료 유지.
+
+MEDIUM
+- connections: world/map mask/nav 불변, 네 NPC 접근 실제 WASD 완료.
+- remaining holes: 전체 절벽 정확 투명층·근사mask의 다른 지점 접지·고해상도 세부·높이 물리 미인수.
+
+GROUND
+- shadow: 기존 player25×11 접지 그림자 유지. 주민 개별 접지 그림자/조명 반응은 미구현이며 재질/발시각 RETOUCH.
+- contamination: 갈색 토양·생체 뿌리·잔불의 새 생성 grain; 확대시 blur 관찰. 원본과 색/지형 세부 변경을 별도 후보로 명시.
+- structure integration: floor/opaque cliffs 원근이 한 그림 기반인 한계 유지. 단위 좌표와 보행 PASS를 높이 구현으로 계산0.
+
+PLAYABLE
+- main arenas: 이 씬은 비전투 틈; 1-1 전투장/보스 인수0.
+- travel space: 시작→하란→베린→네사→도릭 실제 키보드4보행, nav1192/radius12.
+- breathing space: 주민 접근F·4대화22nodes/37options, mobile390×844 실제44px버튼·16px문자.
+- threat space: 적/공격/구울/장 gate 제작0.
+- combat readability: 전사와 standing주민 본체80 기준 비교만 확인; 전투탄/적밀도 검수0.
+
+LANDMARK
+- primary: 심연의 빛과 위로 향한 계단.
+- secondary: 네 망자·동측/남쪽 잔불.
+- tertiary: west/east 생체뿔/뿌리, 새 장식0.
+
+CAMERA QA
+- START: camera-0 하층진입, floor 연속; 확대 grain/인물 재질 RETOUCH.
+- EARLY: camera-1 남쪽잔불, 절벽턱/토양 확인; 주민을 카메라POI에 강제 배치0.
+- ARENA: 비전투 씬으로 전투장 미인수; camera-2 망자의 턱 실제 프레임 보존.
+- SIDE L: camera-3 서쪽우회로, 기존 roots 연결.
+- SIDE R: camera-4 부탁을 품은 턱, 네사 본체/잔불 관찰.
+- LANDMARK: camera-5 심연의 빛, 고정 abyss 가림 확인.
+- LATE: camera-6 상승준비, 도릭/계단 연결 관찰; 높이 이동은 실제Z0.
+- EXIT: camera-7 북쪽상승로 marker가 계단 위. 실제 장 전환0.
+
+TECH QA
+- route: BFS1185/start→exit PASS, 네 접근/foot radius12, 하란 접근→foot 4px 간격11샘플.
+- collision: 원본 nav SHA a4508aa62f21c9b4380640307b36eef06656ebdf0c0245a2f78833d65dda0179, nav편집0.
+- pageerror: 실제4보행10완료그룹/최종targeted8/기본UI15의 pageerror0.
+- 404: HTTP누락/console error0.
+- seam: source1254/1920 등록 계약과 원본world overlap 유지. 최종 high PNG export 전후 byte 동일; 전체절벽 alpha seam 인수0.
+- loading: strict source pins/crop/aspect/dimensions와 원본 baked 지원, 주민숨김/Undo 비활성/재활성 검수.
+- performance: 새 그림합계3299247B, alpha body4 추가. 기존 foot sort 사용. 실게임 FPS/GPU대형stress 미인수.
+
+FILES
+- stage-owned: renderer/ambience/dialogue/residents/builder/test 코드6+새PNG2+미채택씬v1/v2 2=코드10, 관련docs12.
+- concurrent touched: live supervisor STATE/LOG·ART_TEAM_MASTER·MAP 독립HTML·기존raw후속WIP 제외.
+- unrelated touched: 0. 원본 game/index/PNG/STORY/scene/보호2_3/Q-only/어택티켓금지/사용자세이브/기존23 보존.
+
+GIT
+- staged: 위 완료소유22정확경로만 보존. 다른 staged가 있으면 중단.
+- commit: code+docs 함께 checkpoint; 내용핀/백업은 외부 receipt.
+- push: 정상 origin branch push와 원격 exact SHA 확인 후 receipt에 기록.
+- deploy: 게시/패키징/Windows/중복게임/설치/인증0. 기존 paused 자동화/메일 재개0.
+
+VISUAL VERDICT: **RETOUCH** — 독립4body의 크기·실보행·현재foot 대화는 구현. 새 plate grain/원본과 달라진 세부지형/정적 주민 재질·접지그림자/독립 전체절벽·높이·본편/native/청취/A급완성 미인수.
+
+NEXT PASS: 이 후보/정확핀을 기존 ART/MAP/ANIM/QA의 실제foot·가림·카메라 후속에 인계하고, 실제 ITEM/QUESTNPC 원자 지급/진행 포트는 별도 구현한다. 19시 오늘 실제 결과·영상·Git·남은 문제를 한 번 보고한다.

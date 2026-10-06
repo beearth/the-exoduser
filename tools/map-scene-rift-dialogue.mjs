@@ -4,6 +4,7 @@
  * Keep the supplied player object live while open; close before replacing player/scene.
  */
 import { supportsRiftAmbience } from './map-scene-rift-ambience.mjs';
+import { residentPaintingProfile } from './map-scene-rift-residents.mjs';
 
 export const RIFT_DIALOGUE_LIMITS = Object.freeze({
   range: 140, maxRange: 240, approachStep: 20, radius: 12, maxTransitions: 64,
@@ -105,10 +106,11 @@ function validateRaw(input) {
 /** Fixed interaction proxies are meaningful only on the original six painted crops. */
 export function supportsRiftDialogueScene(scene) {
   if (!supportsRiftAmbience(scene)) return false;
+  const ratio=(residentPaintingProfile(scene)?.size||1920)/1920;
   return ART_CROPS.every(([assetId, layerId, x, y, w, h]) => {
     const l = scene.layers.find(v => v.id === layerId), a = scene.assets.find(v => v.id === assetId), o = l.objects.find(v => v.id === `obj-${assetId}`);
     if (!l.visible || !a.crop || !o || o.rotation !== 0 || o.pivotX !== 0 || o.pivotY !== 0 || o.flipX || o.opacity !== 1 || o.mask !== undefined) return false;
-    return a.crop.x === x && a.crop.y === y && a.crop.w === w && a.crop.h === h &&
+    return [a.crop.x-x*ratio,a.crop.y-y*ratio,a.crop.w-w*ratio,a.crop.h-h*ratio].every(d=>Math.abs(d)<=1e-6) &&
       [o.x - x * 25 / 6, o.y - y * 25 / 6, o.width - w * 25 / 6, o.height - h * 25 / 6].every(d => Math.abs(d) <= 1e-6);
   });
 }

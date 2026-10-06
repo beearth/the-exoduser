@@ -340,8 +340,8 @@ latest 사용자 “작업을해서 저녁까지 보고해”에 따라 오늘20
 | 단위 | 제작 목표 | 현재 실제 구현 | 미완료 인수 |
 |---|---|---|---|
 | 1-1 | 8공간의 큰 질량/연결/접지/랜드마크를 기존 LOCK 안에서 다르게 구성 | 기존 geometry/bake/gate를 보존하는 후보 검수 | 최신 동일후보 실제 전투·획득·개방·보스사망/부활·재도전·청취 |
-| 틈 배경 | 승인 계곡 원화의 심연/바닥/절벽/전경 분리 | 승인 원화6crop+전경3+심연1, 마스크/시차·안개/잔불 editor consumer | 깨끗한 인물 없는 바닥, 독립주민/전체전경/높이 모델·본편 gate |
-| 주민 | 각 발이 실제 바닥에 있고 전사80world px와 의도된 원근비례 | 네 접근점 실제 키보행·대화22node/37option 시험·F/버튼/focus | 독립 body/alpha/발좌표 확정, 유품 실제지급·퀘스트/save 원자성·본편 소비자 |
+| 틈 배경 | 승인 계곡 원화의 심연/바닥/절벽/전경 분리 | 원본 후보 보존. 새 인물 없는 plate1254²의6crop+전경3·기존심연1과 독립4body를 editor consumer에서 구현 | 전체 절벽 alpha/고해상도 재질·접지 그림자·높이 모델·본편 gate |
+| 주민 | 각 발이 실제 바닥에 있고 전사80world px와 의도된 원근비례 | 독립alpha crop4·standing80/앉은비례·pivot(.5,1), 유효크기/현재foot 편집 대화, 네 접근점 실제 키보행·22node/37option 시험 | 생성 파생 인물 재질/접지 그림자·주민애니메이션, 유품 실제지급·퀘스트/save 원자성·본편 소비자 |
 | 맵 스튜디오 | 이미지를 레이어로 놓고 크기·발·가림·길을 조절해 결과 저장 | PNG 등 이미지 가져오기, crop/크기/회전/flip/pivot, 새 발 찍기, 레이어잠금/정렬/시차, Undo/Redo·JSON/PNG·보행/경로검사 | Unity 패키지/PSD/FBX 자동 읽기와 3D 지형/height 편집은 미구현. 기존 보유 이미지의 가져오기부터 사용 |
 | Unity 에셋 활용 | 기존 자산 이미지/규격을 가져와 같은 월드 단위와 발 기준으로 정렬 | 일반 이미지 임포트와 source 원본 보존만 확인 | .unitypackage 자동 추출/메타 pivot·pixels-per-unit 해석/모델 변환을 별도 구현·검수해야 하며 현재 지원으로 선언0 |
 | 사운드 | 환경·접근·대화·선택·상승 cue의 전환/중복/stop 수명 | 기존 cue를 맡긴 담당의 후보/정본검수 | 실제 browser/native gesture/설정과 청취, pause/retry/장전환 lifecycle |
@@ -351,7 +351,7 @@ latest 사용자 “작업을해서 저녁까지 보고해”에 따라 오늘20
 | 역할 / 송신담당 | 다음 실물 책임 | 납품·통합 경계 |
 |---|---|---|
 | MAP / Claude8 | 기존 후보의 절벽/심연/바닥/전경 transform·nav·4접근점과 source 핀 | rift-depth-layers.candidate.scene.json 공식 완료2로 보존. production 씬 직접 교체0, root 채택 후 실제8camera·보행 |
-| ART / Claude8 | 기존 인물 추출·원본 보존·clean plate·player80 기준 크기/foot/alpha | root 승인 imagegen의 원본수정없는 배경 후보에 대조. 이전 camera POI/280px body/근사8각마스크는 보류, 기존 raw 재송신0 |
+| ART / Claude8 | 기존 인물 참조·원본 보존·clean plate·player80 기준 크기/foot/alpha | root 파생 plate/atlas·현재 c508 후보와 대조. 픽셀 정확 추출로 표기0. 이전 camera POI/280px body/근사8각마스크는 보류, 동일 TASK 재송신0 |
 | ANIMVFX / Claude8 | 절벽 앞뒤 정렬·안개/잔불의 장전환/pause/retry lifecycle | 현행 render lifecycle 후보 완료. root editor consumer에 필요한 순수adapter만 채택, 투사체/전투 가독 확인 전 PASS0 |
 | STORY / Claude8 | 네 망자의 지속 action ID/반복방지/취소·재방문·상승 의미 | persistent-actions 후보 완료. dialogue 시험과 실제 inventory/quest/save 성공을 구분 |
 | SKILL / Claude8 | 대화/설정/blur/retry에서 held/aim 오염 없이 입력 복귀 | retry-input-reset 후보 완료. Q-only와 기존 자원·수치 불변 |
@@ -398,3 +398,26 @@ Codex7 기존7의 이전 송신은 자동 승인 검토 “승인 필요 / 정�
 원화/STORY/scene/native/source/runtime/사용자세이브/기존23/보호2_3/Q전용/어택티켓 금지와 live 타인STATE/LOG·WIP는 무변. 실제 NUL/untracked 전체80부터 완료소유 즉시checkpoint/100전 새산출0. 외부 backup·pins·원격 SHA 영수증=`/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/raw2-and-production-plan-20261006/receipt.json`. 오늘19시 실제 결과보고 후오늘자동화 pause, 기존paused/메일 재개0.
 
 공식 통합기록 ID: `ROOT-CH1-RIFT-PRODUCTION-PLAN-RAW2-20261006`
+
+
+## 2026-10-06 독립 주민 레이어 후보 반영 — ROOT-RIFT-RESIDENT-LAYERS-PREVIEW-20261006
+
+현재 root 소비자는 승인 원화 유래 인물 없는 배경과 투명 주민4명을 별도 에디터 후보에서 렌더·크기 편집·현재 foot 기반 대화에 연결했다. 이전 절의 원본 baked/clean plate·독립body 후속 표기는 해당 시점과 원본 결과 씬의 이력이다. 원본을 교체하거나 본편 FIELD NPC 구현 상태를 바꾼 것이 아니다.
+
+| 항목 | 현재 계약·근거 |
+|---|---|
+| 후보 | `assets/map/hell_rift/resident_layers_20261006/hell-rift-residents-v2.scene.json`, SHA256 `c508e70d23fafb9295798763c5224c7c92699dfea3d3beebdb6ab18173f44a3a`, `ISOLATED_EDITOR_RESULT_NOT_ADOPTED` |
+| 그림 | built-in imagegen, clean plate/atlas1254². 원본1920²의 정확 픽셀 추출이 아니며 세부 지형/재질이 바뀐 별도 후보. 두 생성 PNG를 byte 그대로 사용 |
+| 주민 | 하란/네사/도릭 최초 본체80world px, 앉은 베린 `80*352/578`. pivot(.5,1), alpha crop>8. 유효 aspect/foot을 유지한 사용자 크기 편집 허용; 편집 후80 고정 강제0 |
+| 하란 v2 | foot(4660,6660), 접근(4660,6700). body와 south-root bbox 사이35.77854671280277world px, 접근 전사 폭80 기준20px. 이전 v1(4780,6460)의 발 가림은 미채택 이력으로 보존 |
+| 씬 | 원본10개 지형 객체의 world/mask·nav1192·BFS1185·r12·시작(4020,7740)/출구(4020,1740) 유지. 6layers/14assets/14objects, foot=기존3+주민4 |
+| 대화 | `residentDialogueAnchors(scene)`는 현재 body x/y/height. 편집 확정 시 controller/ambience 무효화, 보행 시작 전 재생성. F범위140, 최대240·접근step20/r12·64전이·22nodes/37options는 기존 session-only 계약 |
+| PNG | 2048² export, CPU readback context `willReadFrequently:true`, `imageSmoothingQuality='high'`. 보행 전후 각각 멈춘 상태에서 export한 PNG byte 동일 SHA `f7e03969aa26b4eeaf227c513e0b6e5dfd28df992aabb74f0c7e309f5d34ed84` |
+| 검증 | builder 의미19/19, 기본 UI15/15, 실제4주민 보행·분기10그룹 완료 뒤 PNG 차이 FAIL을 보존. 샘플링 수정 후 targeted8/8 PASS(실제3보행, 이전 위치 F닫힘/이동 위치 F열림·Undo·JSON/PNG). pageerror/HTTP누락0 |
+| 기획/운영 | §16의 전문15+root통합1=제작16 유지. Claude8 raw8 공식완료는 미채택 보존, Codex7 새7착수0(송신 자동승인 검토 거절: 승인 필요/never). 기존 paused 자동화/아침메일 재개0; 오늘19시 한 번 실제결과 보고 |
+
+정확 구현 표는 `docs/4.1맵디자인+설정/MAP_SCENE_EDITOR_20261005.md` §12, MAP PRODUCTION REPORT는 `HELL_RIFT_EDITOR_RESULT_20261006.md`의 독립주민 후보 절. 저장/실제지급·부탁/장 gate·높이물리·주민애니메이션·Unity package/Prefab/FBX/PSD 임포트·본편/native6단계·실청취는 미인수. 확대 grain/전사와 주민의 재질·접지 그림자·전체 절벽 실루엣 분리는 추가 개선 대상. **VISUAL VERDICT: RETOUCH.**
+
+완료소유 코드10+관련docs12만 checkpoint한다. 원본 scene/PNG/STORY, game.html/index.html, live supervisor STATE/LOG·타인WIP·보호2_3/Q-only·어택티켓 금지·사용자세이브·기존23 유지. 원격 exact SHA와 최초 실패/최종 화면·영상은 외부 receipt에 보존한다.
+
+제작16 역할·기획의 현재 구현/후속 경계는 위 표로 갱신한다. §16 틈 배경의 깨끗한 바닥/독립주민은 이 격리 후보에서 구현; 전체 전경/높이/본편 gate와 actual grant·장 저장은 계속 후속이다. 출발 준비·멈춤·유품·구조 부탁이 다음 도전의 선택으로 이어지는 목표는 유지한다.

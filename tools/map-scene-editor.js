@@ -107,7 +107,8 @@
     {npcId:'rift-request-nessa',x:6300,y:5020,visualX:1515*25/6,visualY:1198*25/6,labelHeight:175,approach:{x:6220,y:5020}},
     {npcId:'rift-prepare-dorik',x:5220,y:2500,visualX:1206*25/6,visualY:603*25/6,labelHeight:71,approach:{x:5180,y:2540}}
   ].map(a=>Object.freeze({...a,approach:Object.freeze(a.approach)})));
-  let dialogueFactory, dialogueRaw, dialogueController, dialogueScene, nearestResident = null, dialogueOpen = false;
+  let residentAnchorsFactory, dialogueFactory, dialogueRaw, dialogueController, dialogueScene, nearestResident = null, dialogueOpen = false;
+  const residentAnchors = () => residentAnchorsFactory?.(current()) || RESIDENT_ANCHORS;
   function closeDialogue(reason = 'ui-close') {
     dialogueController?.close(reason); dialogueOpen = false; nearestResident = null; keys.clear(); space = false;
     if($('dialogue').open) $('dialogue').close();
@@ -116,7 +117,7 @@
   function syncDialogue() {
     if(dialogueScene === current()) return;
     closeDialogue('scene-changed'); dialogueScene = current();
-    dialogueController = dialogueFactory && dialogueRaw ? dialogueFactory(current(), dialogueRaw, (scene,x,y,r) => K.canWalk(scene,x,y,r), RESIDENT_ANCHORS) : null;
+    dialogueController = dialogueFactory && dialogueRaw ? dialogueFactory(current(), dialogueRaw, (scene,x,y,r) => K.canWalk(scene,x,y,r), residentAnchors()) : null;
     nearestResident = null;
   }
   function showDialogue(state) {
@@ -149,7 +150,7 @@
   }
   function residentMarkers(target) {
     if(!playing || !dialogueController || target!==ctx || !nearestResident) return;
-    const a=RESIDENT_ANCHORS.find(a=>a.npcId===nearestResident.npcId);if(!a)return;
+    const a=residentAnchors().find(a=>a.npcId===nearestResident.npcId);if(!a)return;
     const name=nearestResident.name.ko,z=viewport.zoom;
     target.save();target.textAlign='center';target.font=(12/z)+'px sans-serif';target.lineWidth=1/z;
     target.beginPath();target.arc(a.x,a.y,6/z,0,Math.PI*2);target.fillStyle='#111b16cc';target.fill();target.strokeStyle='#e5c989';target.stroke();
@@ -161,7 +162,7 @@
   $('dialogue').addEventListener('cancel',e=>{e.preventDefault();closeDialogue('escape');canvas.focus();});
   const selectedPair = () => { for (const l of current().layers) { const o = l.objects.find(o => o.id === selected); if (o) return { l, o }; } return null; };
   function autosave() { clearTimeout(autosaveTimer); autosaveTimer = setTimeout(() => { try { localStorage.setItem(CACHE_KEY, JSON.stringify(current())); $('status').textContent = '로컬 복구 저장됨 · 프로젝트 JSON으로 보존하세요'; } catch (e) { $('status').textContent = '복구 저장 공간 부족 · 프로젝트 저장을 사용하세요'; } }, 500); }
-  function changed(message) { dirty = true; refresh(); autosave(); if (message) toast(message); }
+  function changed(message) { ambienceScene = null; dialogueScene = null; closeDialogue('scene-edited'); dirty = true; refresh(); autosave(); if (message) toast(message); }
   function mutate(fn, message) { if (busy) return; try { history.change(fn); changed(message); } catch (e) { toast(e.message); refresh(); } }
   function fit() { viewport = { x: current().world.cols * current().world.tileSize / 2, y: current().world.rows * current().world.tileSize / 2, zoom: Math.min((size.w-60)/(current().world.cols*current().world.tileSize), (size.h-110)/(current().world.rows*current().world.tileSize)) }; dirty = true; }
   function clampCamera() {const w=current().world,halfX=size.w/viewport.zoom/2,halfY=size.h/viewport.zoom/2,maxX=w.cols*w.tileSize,maxY=w.rows*w.tileSize;viewport.x=halfX*2>=maxX?maxX/2:Math.max(halfX,Math.min(maxX-halfX,viewport.x));viewport.y=halfY*2>=maxY?maxY/2:Math.max(halfY,Math.min(maxY-halfY,viewport.y));}
@@ -291,11 +292,11 @@
   $('layer-up').onclick=()=>layerMove(1);$('layer-down').onclick=()=>layerMove(-1);$('layer-add').onclick=()=>mutate(p=>{if(p.layers.length>=24)throw new Error('최대 24레이어');const l={id:uid('layer'),name:'새 레이어 '+(p.layers.length+1),visible:true,locked:false,sort:'flat',parallax:1,objects:[]};p.layers.push(l);layerId=l.id;});
   $('undo').onclick=()=>{endDrag();history.undo();selected=null;paletteId=null;palette();changed();};$('redo').onclick=()=>{endDrag();history.redo();selected=null;palette();changed();};
   $('fit').onclick=fit;$('minus').onclick=()=>zoom(1/1.2);$('plus').onclick=()=>zoom(1.2);for(const id of ['show-grid','show-nav','snap'])$(id).onchange=()=>{dirty=true;};$('search').oninput=palette;
-  $('play').onclick=()=>{closeDialogue('play-changed');endDrag();if(playing){playing=false;keys.clear();}else{if(!K.canWalk(current(),current().start.x,current().start.y)){toast('시작점이 막혀 있습니다. 길을 열거나 시작점을 옮기세요');return;}playing=true;selected=null;paletteId=null;player={...current().start};viewport={x:player.x,y:player.y,zoom:Math.min(size.w/1600,size.h/1000)};clampCamera();}palette();refresh();};
+  $('play').onclick=()=>{closeDialogue('play-changed');endDrag();syncDialogue();if(playing){playing=false;keys.clear();}else{if(!K.canWalk(current(),current().start.x,current().start.y)){toast('시작점이 막혀 있습니다. 길을 열거나 시작점을 옮기세요');return;}playing=true;selected=null;paletteId=null;player={...current().start};viewport={x:player.x,y:player.y,zoom:Math.min(size.w/1600,size.h/1000)};clampCamera();}palette();refresh();};
   $('check').onclick=()=>{const r=K.route(current());toast((r.pass?'연결 PASS · ':'연결 FAIL · ')+r.reason+' ('+r.visited+'칸)');};
   function download(name,blob){const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),5000);}
   $('save').onclick=()=>{endDrag();try{const p=K.validate(current());download(p.name.replace(/[\\/:*?"<>|]/g,'-')+'.scene.json',new Blob([JSON.stringify(p)],{type:'application/json'}));$('status').textContent='프로젝트 JSON 내보냄 · 이미지 크기/기준점/레이어/길 포함';}catch(e){toast(e.message);}};
-  $('png').onclick=()=>{const p=current(),out=document.createElement('canvas'),ratio=2048/Math.max(p.world.cols*p.world.tileSize,p.world.rows*p.world.tileSize);out.width=Math.round(p.world.cols*p.world.tileSize*ratio);out.height=Math.round(p.world.rows*p.world.tileSize*ratio);const target=out.getContext('2d');target.fillStyle='#0d1510';target.fillRect(0,0,out.width,out.height);target.scale(ratio,ratio);const viewBefore=viewport;viewport={...viewport,x:p.world.cols*p.world.tileSize/2,y:p.world.rows*p.world.tileSize/2};render(target,false);viewport=viewBefore;try{out.toBlob(blob=>{if(blob)download(p.name+'.overview.png',blob);},'image/png');}catch(e){toast('PNG 내보내기는 로컬 서버에서 열어 사용하세요');}};
+  $('png').onclick=()=>{const p=current(),out=document.createElement('canvas'),ratio=2048/Math.max(p.world.cols*p.world.tileSize,p.world.rows*p.world.tileSize);out.width=Math.round(p.world.cols*p.world.tileSize*ratio);out.height=Math.round(p.world.rows*p.world.tileSize*ratio);const target=out.getContext('2d',{willReadFrequently:true});target.imageSmoothingQuality='high';target.fillStyle='#0d1510';target.fillRect(0,0,out.width,out.height);target.scale(ratio,ratio);const viewBefore=viewport;viewport={...viewport,x:p.world.cols*p.world.tileSize/2,y:p.world.rows*p.world.tileSize/2};render(target,false);viewport=viewBefore;try{out.toBlob(blob=>{if(blob)download(p.name+'.overview.png',blob);},'image/png');}catch(e){toast('PNG 내보내기는 로컬 서버에서 열어 사용하세요');}};
   async function importProject(raw, save=true){const p=K.validate(raw),temp=new Map();for(const a of p.assets){const im=await picture(a.src);if(im.naturalWidth!==a.width||im.naturalHeight!==a.height)throw new Error(a.name+' 원본 크기가 파일과 다릅니다');temp.set(a.src,im);}closeDialogue('scene-imported');history.import(p);for(const [src,im] of temp)loaded.set(src,im);softMasks.clear();selected=null;paletteId=null;playing=false;keys.clear();layerId=p.layers[0].id;palette();if(save)changed('씬 불러오기 완료');else refresh();fit();}
   async function namedProject(src){const path=K.projectSource(src),response=await fetch(path,{cache:'no-store',redirect:'error'});if(!response.ok)throw new Error('씬 파일 HTTP '+response.status);if(Number(response.headers.get('content-length'))>32000000)throw new Error('프로젝트 최대 32MB');const bytes=await response.arrayBuffer();if(bytes.byteLength>32000000)throw new Error('프로젝트 최대 32MB');return JSON.parse(new TextDecoder().decode(bytes));}
   $('load').onclick=()=>{if(!busy)$('project-file').click();};$('project-file').onchange=async e=>{if(busy)return;const file=e.target.files[0];if(!file)return;setBusy(true);try{if(file.size>32000000)throw new Error('프로젝트 최대 32MB');await importProject(JSON.parse(await file.text()));}catch(err){toast('현재 씬 유지 · '+err.message);}finally{setBusy(false);e.target.value='';}};
@@ -316,9 +317,9 @@
       const response=await fetch('tools/team-followup-20261005/hell-rift/STORY/rift-dialogue.json',{cache:'no-store',redirect:'error'});
       if(!response.ok||Number(response.headers.get('content-length'))>256000)throw new Error('주민 대화 데이터 로드 실패');
       const bytes=await response.arrayBuffer();if(bytes.byteLength>256000)throw new Error('주민 대화 데이터가 너무 큽니다');
-      dialogueRaw=JSON.parse(new TextDecoder().decode(bytes));dialogueFactory=module.createRiftDialogue;
+      dialogueRaw=JSON.parse(new TextDecoder().decode(bytes));dialogueFactory=module.createRiftDialogue;residentAnchorsFactory=(await import('./map-scene-rift-residents.mjs')).residentDialogueAnchors;
     }catch(e){console.warn('틈 대화 시험을 읽지 못했습니다',e);}try{ambienceFactory=(await import('./map-scene-rift-ambience.mjs')).createRiftAmbience;}catch(e){console.warn('틈 분위기 모듈을 읽지 못했습니다',e);}await Promise.all([script('assets/map/hell_rift/interspace_20261005/layout.js'),script('assets/map/ch1/production_finish/layout.js')]);history=new K.History(await preset('rift'));try{const raw=localStorage.getItem(CACHE_KEY);if(raw){const p=K.validate(JSON.parse(raw));await importProject(p,false);}}catch(e){toast('기존 복구 씬을 읽지 못해 승인 원화로 시작합니다');}const named=new URLSearchParams(location.search).get('scene');if(named){try{await importProject(await namedProject(named),false);}catch(e){toast('현재 씬 유지 · '+e.message);}}resize();fit();refresh();palette();$('status').textContent='준비됨 · '+current().name+' / 본편에 자동 적용하지 않음';new ResizeObserver(resize).observe($('stage'));picture('img/exoduser_warrior/south.png').then(im=>{warrior=im;dirty=true;}).catch(()=>{});setBusy(false); $('workspace').inert=false; requestAnimationFrame(tick);
     // Read-only diagnostics for local UI QA; import uses the same validated atomic path.
-    window.EXODUSER_SCENE_EDITOR={snapshot:()=>K.clone(current()),view:()=>({...viewport}),player:()=>playing?{...player}:null,selection:()=>selected,importProject,ambience:()=>({enabled:!!ambience&&$('ambient').checked,stats:ambience?.snapshot()||null}),dialogue:()=>({anchors:RESIDENT_ANCHORS.map(a=>({...a,approach:{...a.approach}})),state:dialogueController?.snapshot()||null}),ready:true};
+    window.EXODUSER_SCENE_EDITOR={snapshot:()=>K.clone(current()),view:()=>({...viewport}),player:()=>playing?{...player}:null,selection:()=>selected,importProject,ambience:()=>({enabled:!!ambience&&$('ambient').checked,stats:ambience?.snapshot()||null}),dialogue:()=>({anchors:residentAnchors().map(a=>({...a,approach:{...a.approach}})),state:dialogueController?.snapshot()||null}),ready:true};
   }catch(e){$('status').textContent='씬 시작 실패 · '+e.message;toast(e.message);}
 })();

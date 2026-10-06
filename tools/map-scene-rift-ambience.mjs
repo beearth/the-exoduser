@@ -4,6 +4,7 @@
  * replacement walkable arrays are detected and cached automatically.
  */
 import candidate from './team-followup-20261005/hell-rift/ANIMVFX/rift-ambience.mjs';
+import { residentPaintingProfile } from './map-scene-rift-residents.mjs';
 
 const PAINTING = 'assets/map/hell_rift/interspace_20261005/hell-rift-painterly-v2.png';
 const ABYSS = 'assets/map/hell_rift/interspace_20261005/hell-rift-abyss-v3.png';
@@ -44,6 +45,8 @@ export function supportsRiftAmbience(scene) {
     if (scene.start?.x !== 4020 || scene.start.y !== 7740 || scene.exit?.x !== 4020 || scene.exit.y !== 1740 || scene.navigationReview?.basis !== 'painted-eastern-ledge') return false;
     if (!Object.entries(PINS).every(([key, value]) => scene.sourcePins?.[key] === value)) return false;
     if (!Array.isArray(scene.assets) || scene.assets.length > 128 || !Array.isArray(scene.layers) || scene.layers.length !== STRUCTURE.length) return false;
+    const residentProfile = residentPaintingProfile(scene);
+    if (scene.residentLayerReview && !residentProfile) return false;
     let count = 0;
     for (const [i, [id, sort, ids]] of STRUCTURE.entries()) {
       const l = scene.layers[i];
@@ -52,7 +55,8 @@ export function supportsRiftAmbience(scene) {
       for (const assetId of ids) {
         const o = l.objects.find(v => v.id === `obj-${assetId}` && v.assetId === assetId);
         const a = scene.assets.find(v => v.id === assetId);
-        if (!o || !a || a.src !== (assetId === 'rift-depth' ? ABYSS : PAINTING) || a.width !== 1920 || a.height !== 1920) return false;
+        const src=assetId==='rift-depth'?ABYSS:(residentProfile?.src||PAINTING), size=assetId==='rift-depth'?1920:(residentProfile?.size||1920);
+        if (!o || !a || a.src !== src || a.width !== size || a.height !== size) return false;
         if (assetId === 'rift-depth' && !o.mask) return false;
       }
     }

@@ -324,3 +324,58 @@ core29/29, adapter10/10, 실제 animated browser9그룹, 정적 틈18/18, 기존
 외부 근거: `/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/pivot-integration-20261006/`의 before/before-pivot-docs 백업, accepted-qa/browser-verification.json·upright/rotated 전후PNG·workspace/mobile 화면, final-regression/ui-verification.json, related-docs-search.before/after.txt 및 receipt.json. 코드4+관련docs12만 보존한다. 다른 팀 raw/STATE/LOG/WIP, 보호2_3, Q전용 패링, 어택티켓 금지, 사용자세이브·기존23은 유지한다.
 
 **VISUAL VERDICT: RETOUCH**. 새 발 기준 도구는 구현했다. baked 원화 주민의 146/188/175/71px와 전사80px의 원근/크기, clean plate/독립 주민, 실제 지급·부탁·장전환·본편/native/청취는 별도 후속이다. raw 후보6개는 별도 commit `019ba22d3315243a9f60a207672a222c64fef603`로 후보미채택 보존했으며 본 도구에 소비하지 않았다.
+
+
+## 12. 독립 주민 배경·body·대화 편집 계약 (2026-10-06)
+
+완료 ID `ROOT-RIFT-RESIDENT-LAYERS-PREVIEW-20261006`. 기본 rift preset/원본 결과 씬은 유지하며 새 후보 URL은 `http://127.0.0.1:3387/editor.html?scene=assets/map/hell_rift/resident_layers_20261006/hell-rift-residents-v2.scene.json`이다. v1 씬 SHA `bc22ad3865dceb1bf801d8e069c23bd76412f74c1a90d0edf6aa9ac62ed64c8d`는 하란 발 가림 이력으로 보존; 현재 v2 SHA `c508e70d23fafb9295798763c5224c7c92699dfea3d3beebdb6ab18173f44a3a`만 현재 검수 대상이다.
+
+| 에셋 | 크기·SHA256 | 소비 |
+|---|---|---|
+| clean-plate-v1.png | 1254² / `aa64cb7bbfff10c9d5ea2378ef3f8f528bbfb2acfb43ddb9a6520b9f24127673` | `assets/map/hell_rift/resident_layers_20261006/`, 기존 원화6파트+가림3파트의 source만 교체 |
+| resident-atlas-v1.png | 1254² RGBA / `ff20e1f5dc1a8849edb64a10380c1d9eb21688de1817f098b144a57410190a38` | 같은 폴더. 2×2 정적 주민4. PixelLab 생성0, 전사/몬스터를 주민으로 재분류0 |
+| 원본 painting / abyss / 결과씬 | `a3d95a005924692626321cedf384d1e4e90282ba990d9e19e86a3aa73a1563d4` / `ace0c853cc27cbb4d2b807104273399a1144df77d31b1003e574141fed10f991` / `f5068d742ddd6da3e1c78fb7178317df228e936bab0edc6237dec40bfd0bb5ac` | 원본파일 byte 불변, abyss1920² 유지 |
+
+| asset/object id | STORY npcId | source crop x/y/w/h | 최초 foot x/y | 접근 x/y | 최초 width × height world px |
+|---|---|---|---|---|---|
+| resident-haran / obj-resident-haran | rift-rest-haran | (169,27,350,578) | (4660,6660) | (4660,6700) | 48.44290657439446 × 80 |
+| resident-berin / obj-resident-berin | rift-gift-berin | (748,257,363,352) | (6020,5580) | (5980,5620) | 50.24221453287198 × 48.719723183391004 |
+| resident-nessa / obj-resident-nessa | rift-request-nessa | (197,660,262,547) | (6300,5020) | (6220,5020) | 38.318098720292504 × 80 |
+| resident-dorik / obj-resident-dorik | rift-prepare-dorik | (813,742,240,465) | (5220,2500) | (5180,2540) | 41.29032258064516 × 80 |
+
+공통 rotation0/flipX=false/opacity1/pivotX=.5/pivotY=1/mask없음. bbox는 atlas alpha>8 기준이며 개별 발뼈·애니메이션·높이 물리 규격이 아니다. width=height*crop.w/crop.h, 베린 height=80*352/578, 나머지 height80. body object의 현재 x/y가 logical/visual foot이고 현재 height가 labelHeight다. 접근점은 위 검수 좌표로 고정하며 body를 이동할 때 자동 재배치하지 않는다. controller는 현재 body의 보행가능 여부와 F범위로 판정한다.
+
+| API/항목 | 정확 계약 |
+|---|---|
+| build(original) / CLI | `tools/build-hell-rift-resident-scene.cjs` pure clone, build 자체 I/O0. CLI만 원본/그림4핀 검사; 명시 --output 필요, 부모폴더 존재 필요, 기존 파일과 race overwrite는 wx로 거절 |
+| source/world | 원화9crop의 x/y/w/h에 `1254/1920=209/320` 곱함, image dimensions1254². 기존 world transform/mask는 변경0. `worldPerSourcePixel=8000/1254`; 심연 source/world 불변 |
+| layering | west2/east2/centre2/abyss1/foot7/front0, 전층parallax1. foot.sort='foot', y오름차순으로 전사와 주민/뿌리 삽입. 원본 위에 새 주민을 중복 그림0 |
+| RESIDENT_PREVIEW | kind=`independent-resident-preview-v1`, size1254, 새2 src/sha 및 originalPaintingSha256 상수 |
+| residentLayerReview | kind/cleanPlate/atlas/originalPaintingSha256/bodyScale=`standing80-seated-source-proportion`/notAdopted=true. sourcePins 원본 lineage 유지+cleanPlate/residentAtlas추가; productionStatus 미채택 유지 |
+| residentPaintingProfile(scene) | 원본 lineage+새핀/src/dimensions/6ground registration+foot visible/sort/parallax+4body identity/crop/aspect/foot 검증. near허용차1e-6, body height1…32000, x/y유한0이상8000미만 |
+| 변형·숨김 | body mask/rotation/flip/opacity/pivot/비율 불일치, 잘못된 그림/좌표 또는 foot/등록ground숨김은 주민 consumer 비활성. 유효 body 크기·위치 편집은 허용. 원본 baked strict 경로도 유지 |
+| 대화 lifecycle | `changed()`가 ambienceScene/dialogueScene=null, closeDialogue('scene-edited'), refresh/autosave. play click에서 endDrag 뒤 syncDialogue. 제자리 x/y/size 편집에도 캐시좌표 재생성; 편집 확정은 시험 세션 기록을 초기화 |
+| PNG sampling | overview2048², out 2D context willReadFrequently=true/imageSmoothingQuality='high'. PNG target은 안개·근접 marker·grid/start/exit·선택 UI 제외. 보행 중 export는 player 포함, 보행을 멈춘 전후 export 비교가 byte 동일. JSON 파일/nav/STORY 수정0 |
+
+검수19/15/실제10+수정후targeted8과 최초 실패 보존은 아래 현재 반영 절을 따른다. 첫 PNG 비교의 466픽셀 차이와 종료137, v2 샘플링 전 PNG FAIL은 지우지 않았다. 최종 high sampling PNG byte 일치·숨김/Undo·크기/좌표 재생성·JSON 왕복이 현재 근거다.
+
+
+## 2026-10-06 독립 주민 레이어 후보 반영 — ROOT-RIFT-RESIDENT-LAYERS-PREVIEW-20261006
+
+현재 root 소비자는 승인 원화 유래 인물 없는 배경과 투명 주민4명을 별도 에디터 후보에서 렌더·크기 편집·현재 foot 기반 대화에 연결했다. 이전 절의 원본 baked/clean plate·독립body 후속 표기는 해당 시점과 원본 결과 씬의 이력이다. 원본을 교체하거나 본편 FIELD NPC 구현 상태를 바꾼 것이 아니다.
+
+| 항목 | 현재 계약·근거 |
+|---|---|
+| 후보 | `assets/map/hell_rift/resident_layers_20261006/hell-rift-residents-v2.scene.json`, SHA256 `c508e70d23fafb9295798763c5224c7c92699dfea3d3beebdb6ab18173f44a3a`, `ISOLATED_EDITOR_RESULT_NOT_ADOPTED` |
+| 그림 | built-in imagegen, clean plate/atlas1254². 원본1920²의 정확 픽셀 추출이 아니며 세부 지형/재질이 바뀐 별도 후보. 두 생성 PNG를 byte 그대로 사용 |
+| 주민 | 하란/네사/도릭 최초 본체80world px, 앉은 베린 `80*352/578`. pivot(.5,1), alpha crop>8. 유효 aspect/foot을 유지한 사용자 크기 편집 허용; 편집 후80 고정 강제0 |
+| 하란 v2 | foot(4660,6660), 접근(4660,6700). body와 south-root bbox 사이35.77854671280277world px, 접근 전사 폭80 기준20px. 이전 v1(4780,6460)의 발 가림은 미채택 이력으로 보존 |
+| 씬 | 원본10개 지형 객체의 world/mask·nav1192·BFS1185·r12·시작(4020,7740)/출구(4020,1740) 유지. 6layers/14assets/14objects, foot=기존3+주민4 |
+| 대화 | `residentDialogueAnchors(scene)`는 현재 body x/y/height. 편집 확정 시 controller/ambience 무효화, 보행 시작 전 재생성. F범위140, 최대240·접근step20/r12·64전이·22nodes/37options는 기존 session-only 계약 |
+| PNG | 2048² export, CPU readback context `willReadFrequently:true`, `imageSmoothingQuality='high'`. 보행 전후 각각 멈춘 상태에서 export한 PNG byte 동일 SHA `f7e03969aa26b4eeaf227c513e0b6e5dfd28df992aabb74f0c7e309f5d34ed84` |
+| 검증 | builder 의미19/19, 기본 UI15/15, 실제4주민 보행·분기10그룹 완료 뒤 PNG 차이 FAIL을 보존. 샘플링 수정 후 targeted8/8 PASS(실제3보행, 이전 위치 F닫힘/이동 위치 F열림·Undo·JSON/PNG). pageerror/HTTP누락0 |
+| 기획/운영 | §16의 전문15+root통합1=제작16 유지. Claude8 raw8 공식완료는 미채택 보존, Codex7 새7착수0(송신 자동승인 검토 거절: 승인 필요/never). 기존 paused 자동화/아침메일 재개0; 오늘19시 한 번 실제결과 보고 |
+
+정확 구현 표는 `docs/4.1맵디자인+설정/MAP_SCENE_EDITOR_20261005.md` §12, MAP PRODUCTION REPORT는 `HELL_RIFT_EDITOR_RESULT_20261006.md`의 독립주민 후보 절. 저장/실제지급·부탁/장 gate·높이물리·주민애니메이션·Unity package/Prefab/FBX/PSD 임포트·본편/native6단계·실청취는 미인수. 확대 grain/전사와 주민의 재질·접지 그림자·전체 절벽 실루엣 분리는 추가 개선 대상. **VISUAL VERDICT: RETOUCH.**
+
+완료소유 코드10+관련docs12만 checkpoint한다. 원본 scene/PNG/STORY, game.html/index.html, live supervisor STATE/LOG·타인WIP·보호2_3/Q-only·어택티켓 금지·사용자세이브·기존23 유지. 원격 exact SHA와 최초 실패/최종 화면·영상은 외부 receipt에 보존한다.
