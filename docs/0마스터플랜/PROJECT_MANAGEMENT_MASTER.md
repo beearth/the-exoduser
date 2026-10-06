@@ -2843,3 +2843,13 @@ root 접지그림자 code3 WIP·타인 변경·live supervisor STATE/LOG·원본
 외부증거 `/Users/fordeargamers/.codex/visualizations/dark-druid-character-rigs-20261006/`: actualcanvas30fps요청VP9영상consumer-qa/characters-rig-depth-effects.webm·전후화면·QA원본·source핀·백업·검색/disposition·Gitreceipt. 80부터완료소유만즉시checkpoint,미완료v2/오더STATELOG4/외부WIP미stage. code+docs정상commit/push·원격exactSHA를외부receipt에보존한다. 게임/index/editor/이전rigdemo/에셋/씬/nav/save/보호2_3·Q전용·어택티켓금지·기존23보존;새팀/세션/권한/Windows/설치/빌드·게임·서버추가0,paused자동화/메일재개0.
 
 후속실제관측 2026-10-06T13:12:54Z: MAP/QA/BOSS/STORY v2 성공source·정확완료ID/actualend4·idle4 인계 완료. 원총괄 actual86에서4code의byte/fullSHA를대조해후보미채택즉시보존한다. 직전미완료표기는그관측시점이력이며현재raw완료4/consumer추가채택0,상세root의미검수전이다. 정확핀은CH1_2_5D_TEAM_CANDIDATES_20261006.md의v2보존절.
+
+## 2.5D strict v3 실제 완료본 보존 — 2026-10-06T13:27:07.725018+00:00
+
+Claude8 기존 MAP·QA·BOSS·STORY 4역할이 현재 TASK의 실제 source4·공식 end4·idle4와 코드4를 인계했다. 최초 raw7+v2 raw4는 불변이며 v3는 별도 후보4로 보존한다. 새 제작팀·실행 세션·자동화 재개0. 이 보존은 consumer 채택이나 본편/native/청취/A급 인수를 뜻하지 않는다.
+
+정확 후보 핀·공식 완료 ID·end UUID는 CH1_2_5D_TEAM_CANDIDATES_20261006.md의 같은 v3 보존절에 기록했다.
+
+새 코드4 syntax 검사 PASS. 팀이 보고한 source 반례 검증은 화면/native 검증과 구분한다. BOSS 검증은 실제 Node 후보 직접 실행(17/17)이며 stdin 검증으로 기록하지 않는다. MAP은 검토상 앞선4결함 해결, QA는 앞선3결함 해결 및 referenceHeight 유한수 가드 P2가 남아 public 파생본에서 수정 후 채택할 계획이다. BOSS/STORY 의미 검수는 진행 중, v3 public 채택0이다.
+
+전체 docs 관련 키워드 검색 후 기록·보호 원본·현재 독립 시험과 본편 계약을 구분해 동기화했다. 수정 원문은 bytes 그대로 백업하고 append했다. actual NUL80에 도달하는 즉시 완료 소유 코드4+관리 docs4만 checkpoint한다. 타인 WIP/오더담당 STATE·LOG/게임·씬·nav·에셋·사용자 세이브를 stage하지 않는다. 맵 화면의 기존 VISUAL VERDICT: RETOUCH는 유지한다.

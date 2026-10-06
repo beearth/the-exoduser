@@ -84,3 +84,18 @@ MAP은원본동일성/핀과projection/editor미인수구분,QA는crop/foot/prov
 이 근거를 Claude8 담당에게 `CH1-2_5D-STRICT-CONSUMER-FIX-20261006-{MAP,QA,BOSS,STORY}`로 인계했다. 기존 각 소유 폴더에서 새 .v3.candidate.mjs 한 파일만 작성하도록 요청했고, 전문팀 재송신·공유/root/game/scene/nav/save·v1/v2 편집·scratch·삭제는 허용하지 않는다. 실제 peer/source/end/idle와 새 bytes/fullSHA를 받은 뒤 완료를 계산한다. 이 문서 작성 시 root 피드백 전달은 확인됐지만 전문팀 실제 착수/완료는 별도 영수증 대기다. Codex7/ART의 기존 막힌 목적은 재시도하거나 우회하지 않는다.
 
 전체 docs 관련 키워드 검색80문서, 현행 계약·상태 동기화15문서. 나머지65는 이전 시점 기록·본편 2D/전투/save/다른 stage 또는 오더담당 소유 근거이며 별도 독립 consumer의 값으로 덮어쓰지 않았다. exact disposition 및 모든 원본/현재 핀은 외부 `/Users/fordeargamers/.codex/visualizations/dark-druid-character-rigs-20261006/`에 보존한다. CHANGELOG의 기존 혼합 CRLF/LF prefix는 원본 bytes로 보존했고 새 기록만 추가했다. 기본 diff-check가 CR을 trailing whitespace로 지적한 진단을 기록하고, 기존 CR-at-EOL을 인정한 diff 검사에서는 새 범위 오류0이었다. 구현 수치나 내용의 변경으로 계산하지 않는다.
+
+## 2.5D strict v3 실제 완료본 보존 — 2026-10-06T13:27:07.725018+00:00
+
+Claude8 기존 MAP·QA·BOSS·STORY 4역할이 현재 TASK의 실제 source4·공식 end4·idle4와 코드4를 인계했다. 최초 raw7+v2 raw4는 불변이며 v3는 별도 후보4로 보존한다. 새 제작팀·실행 세션·자동화 재개0. 이 보존은 consumer 채택이나 본편/native/청취/A급 인수를 뜻하지 않는다.
+
+| 역할 | 파일 | bytes | SHA256 | 공식 완료 ID | actual end UUID |
+|---|---|---:|---|---|---|
+| MAP | `tools/team-followup-20261006/hell-rift/MAP/scene-roundtrip-2_5d.v3.candidate.mjs` | 11746 | `e10b79849bdf34230daaaab6c976a759229ee14953ed9d6f467f65e333de555c` | `CH1-2_5D-STRICT-CONSUMER-FIX-20261006-MAP-V3-CANDIDATE` | `8692e444-573b-4996-99ce-cf3a3c2dd04f` |
+| QA | `tools/team-followup-20261006/hell-rift/QA/slice-acceptance-2_5d.v3.candidate.mjs` | 13173 | `d5be0daa4a4581be086840a97a5b9678775d216706586e60f08b4344eb5b0886` | `CH1-2_5D-STRICT-CONSUMER-FIX-20261006-QA-V3-CANDIDATE` | `64f6d8e2-aefe-49fb-8a11-da6537f3fd90` |
+| BOSS | `tools/team-followup-20261006/hell-rift/BOSS/dark-druid-state-adapter-2_5d.v3.candidate.mjs` | 13050 | `91863d207abc0d7510d779773566cdf5228f6c9edbcd7cca8690cb9f4ecdcb76` | `CH1-2_5D-STRICT-CONSUMER-FIX-20261006-BOSS-V3-CANDIDATE` | `896d13d5-507e-454c-9997-df289b789db8` |
+| STORY | `tools/team-followup-20261006/hell-rift/STORY/rift-ascent-conditions-2_5d.v3.candidate.mjs` | 10099 | `6be8a40c14e71464080bf97ad89d01bd0359512fd4a74388a95a792c42d887d7` | `CH1-2_5D-STRICT-CONSUMER-FIX-20261006-STORY-V3-CANDIDATE` | `fc652f08-a57b-4878-a85d-4e2ae467b234` |
+
+새 코드4 syntax 검사 PASS. 팀이 보고한 source 반례 검증은 화면/native 검증과 구분한다. BOSS 검증은 실제 Node 후보 직접 실행(17/17)이며 stdin 검증으로 기록하지 않는다. MAP은 검토상 앞선4결함 해결, QA는 앞선3결함 해결 및 referenceHeight 유한수 가드 P2가 남아 public 파생본에서 수정 후 채택할 계획이다. BOSS/STORY 의미 검수는 진행 중, v3 public 채택0이다.
+
+전체 docs 관련 키워드 검색 후 기록·보호 원본·현재 독립 시험과 본편 계약을 구분해 동기화했다. 수정 원문은 bytes 그대로 백업하고 append했다. actual NUL80에 도달하는 즉시 완료 소유 코드4+관리 docs4만 checkpoint한다. 타인 WIP/오더담당 STATE·LOG/게임·씬·nav·에셋·사용자 세이브를 stage하지 않는다. 맵 화면의 기존 VISUAL VERDICT: RETOUCH는 유지한다.

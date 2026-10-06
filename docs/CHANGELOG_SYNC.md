@@ -54382,3 +54382,10 @@ root 접지그림자 code3 WIP·타인 변경·live supervisor STATE/LOG·원본
 전체 docs 관련 키워드 검색80문서, 현행 계약·상태 동기화15문서. 나머지65는 이전 시점 기록·본편 2D/전투/save/다른 stage 또는 오더담당 소유 근거이며 별도 독립 consumer의 값으로 덮어쓰지 않았다. exact disposition 및 모든 원본/현재 핀은 외부 `/Users/fordeargamers/.codex/visualizations/dark-druid-character-rigs-20261006/`에 보존한다. CHANGELOG의 기존 혼합 CRLF/LF prefix는 원본 bytes로 보존했고 새 기록만 추가했다. 기본 diff-check가 CR을 trailing whitespace로 지적한 진단을 기록하고, 기존 CR-at-EOL을 인정한 diff 검사에서는 새 범위 오류0이었다. 구현 수치나 내용의 변경으로 계산하지 않는다.
 
 2026-10-06 저장형식 후속: `tools/2_5d/visual-pose-consumer.mjs` 끝의 빈 줄1개만 제거했다. API·수치·실행 토큰은 동일하며 source bytes 10944, SHA256 `d16723f497ecd2034e337fdcba9f9c25bf737edb5f9cae19e026fbb370b33305`. 이전1cec3a6f… 핀은 당시 이력으로 보존한다. 전체 docs 관련 키워드를 다시 검색했고 새로운 consumer/API/수치 변경은 없다. 새 테스트 반복0; 최종 범위 diff-check의 EOF 오류를 수정했다.
+
+
+## 2.5D strict v3 실제 완료본 보존 — 2026-10-06T13:27:33.975867+00:00
+
+Claude8 기존 MAP·QA·BOSS·STORY 4역할의 실제 source4·공식 end4·idle4, 정확 bytes/fullSHA 및 syntax PASS 코드4를 후보 미채택 보존했다. raw7+v2raw4 불변, v3 별도4. 실제 NUL80부터 완료 소유 코드4+관리 docs4만 즉시 checkpoint하며 타인 WIP·담당 STATE/LOG·게임·씬/nav/에셋/세이브는 제외한다. 정확 핀과 공식 완료 ID·end UUID는 CH1_2_5D_TEAM_CANDIDATES_20261006.md의 v3 보존절.
+
+전체 docs 관련 키워드 검색 후 동기화했고 기존 혼합 CRLF/LF bytes prefix와 변경 전 백업을 보존했다. BOSS 후보 검증은 실제 Node 직접 실행 17/17(팀 검증), stdin으로 기록하지 않는다. MAP 이전4결함·QA 이전3결함은 읽기 검토상 해결, QA referenceHeight 유한수 P2는 public 파생본 채택 시 수정한다. v3 public 채택0, 본편/native/청취/A급 인수0, 맵 VISUAL VERDICT: RETOUCH 유지. 새 팀/세션·자동화 재개·설치·권한·Windows·게임/빌드 추가0.
