@@ -462,3 +462,112 @@ MAP PRODUCTION REPORT: geometry/경로/충돌/외곽/랜드마크 불변, 특수
 | 시각·다음 | 전체그림1254² 확대 흐림, 절벽/전경 접합·실발/물리높이·전체8카메라/전투 인수 잔여. VISUAL VERDICT: RETOUCH. 다음은 원자료 증식보다 현행맵 실제재질·seam·본편최소연결 Gate |
 
 근거 외부 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/editor-entry-*`: browser-result/followup-result/summary, modal/haran-canvas/return PNG, public-pins 및 preservation 영수증. 직전root59721dec0fcdfd7f054f8bbc9cfe63b1d2e86d6c 원격정확보존 이후 본 단위만 code+docs 정상commit/push하고 새정확HEAD는 외부영수증에서 확인한다. foreign68·ownerSTATELOG4 보존/새팀·세션·전문직접중복송신0/다른paused자동화·아침메일재개0. 24시간 연속제작·일별19시요약1회·제작중지0은 그대로다.
+
+## ROOT-ACTOR-OWNED-DISPOSE-20261007 — 배우 효과 소유 자원 독립 정리
+
+이번 변경은 `tools/2_5d/actor-effect-lifetime.mjs`의 기존 public `dispose()` 구역만 교체한 root 최소 inline teardown이다. 새 raw69 전체 producer의 drop-in 교체는 미채택이며 raw 직접 import0이다. 기존 update/onActorChange/onSceneChange/snapshot·factory·defaults·provenance 및 dispose 밖 원문 bytes는 보존했다. 효과 생성·발좌표·원화·nav·렌더 순서·캐릭터 모션·본편 입력/보상/저장 변경0이다.
+
+| id / 적용 위치 | 정확 현재 계약 | 인수·소유 경계 |
+|---|---|---|
+| 완료 ID / 동결 public | ROOT-ACTOR-OWNED-DISPOSE-20261007; 12162 B / SHA256 `a80898889231d8780dbaad13b110c36171be2a93c7b6147c21fc3a3e2010c26b` | 신규 root inline dispose만 채택. Chrome 신규 관측은 PENDING |
+| 수정 전 public | 11238 B / SHA256 `c4fd8fdce92b61d086f480a0466e1dfa37fac9b49b4f1bfc20368318d545a3ab` | 외부 actor-owned-dispose-20261007/before/1.before fullbyte 보존 |
+| 기존 provenance | ACTOR_EFFECT_PROVENANCE.status ROOT-ADOPTED / ANIMVFX / owner f56a2bc8-0cf7-459e-a393-5f93d78d30e1 | 원래 CH1-2_5D-CHARACTER-MAP-SLICE-20261006-ANIMVFX-CANDIDATE provenance 유지; 새 raw69 채택 표시는 아님 |
+| 기존 provenance source | tools/team-followup-20261006/hell-rift/ANIMVFX/actor-effect-lifetime-2_5d.candidate.mjs /9201 B / SHA256 `1c9677089bf219ed0a5d486dc8873cb5fcbf4e7851a5df304996b3957c4c7400` | 원자료 불변. 이번 source derivation은 기존 public dispose 최소 수정 |
+| 공개 factory / 반환 | createActorEffectLifetime({THREE,scene,camera,terrain,options}) → frozen {update,onActorChange,onSceneChange,dispose,snapshot} | 새 API/옵션/exports 없음. default export와 ACTOR_EFFECT_DEFAULTS/PROVENANCE 유지 |
+| 고정 defaults | maxLive24 /dustLifeMs520 /attackLifeMs240 /stepMinIntervalMs110 /footBand4320 | 기존 상한·수명 재설계0. lab의 기존3인스턴스·각cap24, 가능한 총pool72 경계 그대로 |
+| 표시 defaults | dustColor0x1a140f/opacity.5/size.14; attackColor0xc8623a/opacity.8/size.17; groundLift.003; reducedMotion=false/depthTest=true | 현 lab options depthTest=false, dust size warrior/silvertail.022·dark-druid.042, attack.08·.145 및 실제 reducedQuery.matches 그대로 |
+| 기존 update / 전환 | update(dt초,worldX,worldY,snap); dt는 finite일 때0..0.1 clamp×1000. walk/run frame edge 먼지·attack enter-edge 호 | onActorChange/onSceneChange는 기존 live 회수와 edge reset. 이번 cleanup patch가 이동/발/물리높이/foot IK를 바꾸지 않음 |
+| dispose 최초 수명 | 처음 disposed=true로 spawn 수명을 먼저 닫고 현재 all.slice() entries를 캡처 | 초기 factory 시점 빈 pool이 아니라 호출 당시 실제 소유 pool. dispose 이후 update 새효과 생성0 |
+| mesh identity 정리 | detached Set에 실제 mesh identity 먼저 등록; visible=false와 scene.remove(mesh)를 각각 독립 attempt | 중복 entry가 같은 mesh를 가리켜도 detach 시도1회. 첫 attempt throw가 다음 attempt/mesh 정리를 막지 않음 |
+| material / geometry identity | released Set에 resource identity 먼저 등록; 각 owned material 및 공유 dustGeo/attackGeo dispose 각각 한 번 시도 | geometry를 mesh마다 dispose0. 보통 공유geometry2개이며 alias면 같은 identity1회. throw 뒤 재시도0 |
+| 실패 수집 | entry.mesh/material 읽기·hide·remove·resource dispose는 독립 attempt; 잡힌 throw마다 내부 failures++ | 기존 실패 message/getter를 읽어 연결하지 않음. 실패한 자원이 실제 GPU 해제됐다는 뜻은 아님 |
+| finally 보장 | live.length=0/free.length=0; stats.active=false/reason=disposed/live0/pool0 | 실패가 있어도 나머지 자원 시도와 finally state 정리 실행. all 배열/meshes 과거count는 유지 |
+| 최초 성공 / 반복 반환 | 오류 없는 최초 호출은 number all.length 반환; 반복 호출은 number0·추가side effect0 | 성공1회라는 뜻이며 반환을 항상1로 고정하지 않음. 빈pool 최초도0이지만 factory owned 공유geometry 정리는 수행 |
+| 실패 반환 | 정리 시도와 finally 뒤 controlled Error “actor effects 소유 자원 해제 실패: N” throw | 실패 시 number 반환 없음. disposed 이미true이므로 후속 호출0; Error count는 내부 실패 시도 수 |
+| 실제 lab releaseResource 접점 | 기존 WeakSet이 resource를 먼저 등록하고 disposeAttemptCounts[kind]++ 후 release() try/catch; catch면 cleanupFailures++ | 모듈 Error 한 번은 lab cleanupFailures1에 반영. 내부 N을 lab 전체 failure count로 더하지 않음. 후속 root 자원 정리는 진행 |
+| 차용 자원 | scene/camera/terrain/renderer/다른 actor geometry/material·원PNG는 해제 대상 아님 | source pool material과 factory owned 공유geometry만. 새 renderer/RAF/timer/network/save0 |
+| snapshot 경계 | 기존 frozen {endId,provenance,options,...stats,meshes:all.length} 유지 | 모듈에 cleanupFailures 필드 추가0. cleanupFailures는 기존 lab readonly lifecycle 진단이며 물리 GPU memory proof 아님 |
+
+### 새 의미 검수와 남은 인수
+
+| id / 적용 위치 | 정확 현재 계약 | 인수·소유 경계 |
+|---|---|---|
+| 신규 제한 CPU | actual Three r160 CPU objects와 actual unchanged lab releaseResource 추출 소비자; 실제1회7그룹/47조건 PASS7 FAIL0 | WebGL/GPU/Chrome/본편/저장 실행0. 기존 team14/child6/DPR·GUI6/3 재실행·합산0 |
+| 그룹1 /8조건 | current-owned-pool-and-success-number: 늦게 acquire된2 entries·최초 all.length·mesh/material/공유geometry 정리·borrowed 불변 | 실제 pool 기준 number-return 계약 |
+| 그룹2 /9조건 | remove-exception-reaches-rest-and-existing-lab-counter: 첫 remove throw 후 나머지 mesh/material/geometry 시도·기존 lab counter1 | failed sweep 이후 수명 종료·repeat0/no side effects |
+| 그룹3 /7조건 | duplicate-owned-and-shared-identities: 실제 Three alias·entry 과거count 유지·mesh/material/shared geometry identity 각1 | 중복 identity release 시도 중복0 |
+| 그룹4 /5조건 | shared-geometry-never-disposed-per-entry: 공유 geometry2회·entry별geometry반복0·borrowed 정리0 | geometry handles 자체 교체0 |
+| 그룹5 /7조건 | material-exception-safe-fixed-aggregate-and-final-state: controlled Error/count·hostile message 미조회·remaining paths/final state | 실패 후 repeat0 |
+| 그룹6 /5조건 | empty-pool-and-post-dispose-no-spawn: 최초 empty0·mesh/material 미생성·factory geometry 해제·후속 spawn0 | repeat shared release0 |
+| 그룹7 /6조건 | public-contract-and-outside-dispose-byte-identity: 공개 method/defaults/provenance 유지·dispose 교체1·밖 bytes exact | 기존 producer 전체 교체/새raw69 채택0 |
+| 실제 Chrome / 시각 | 신규 Chrome 결과 아직 PENDING; 전체맵 VISUAL VERDICT RETOUCH 유지 | 이번 CPU 해제 관측을 GL deleteProgram/deleteTexture/deleteBuffer·실GPUmemory·화면PASS로 승격0 |
+| 게임 인수 경계 | 본편/native6/audio/save/reward ACK false; physical GPU memory UNKNOWN | 기존 GUI6/3·child lifecycle·main fixture/source-seam 검수는 각 핀 이력. 반복/합산0 |
+| 정확 근거 | actor-owned-dispose-20261007/limited-check-result.json·dispose-replacement.json·preflight.json | 전자는 source12162/a808 /groups7/conditions47; outside-dispose byte identity가 명시됨 |
+
+전체docs 키워드 검색53파일/1181매칭 줄·raw2524094 B와 모든 매칭 문서의 수정담당/역사보존 disposition은 외부 `actor-owned-dispose-docs-related/search-disposition.json`에 기록했다. 이 worker의 저장소 소유는 본 directional 문서1개뿐이며 rig docs3·rootops6·owner STATE/LOG·다른WIP 변경0이다. 수정 전 fullbyte backup·realparent/symlink 확인, 원문 bytes prefix100%와 EOF LF1을 보존한 append만 적용한다. V3 목적/파일/거절 경로 접근0, 새 source 검수·Chrome·Git 실행0이다.
+
+### MAP PRODUCTION REPORT — §23 / 배우 효과 teardown 소비 계약
+
+```text
+STAGE: ROOT-ACTOR-OWNED-DISPOSE-20261007; public effect owned dispose source와 directional docs 계약 동기화.
+MASTER
+- silhouette / regions / main route / side spaces: 원형 계획 변경0.
+OUTER MASS
+- LEFT / RIGHT / TOP / SOUTH / major holes: 원형 지형/nav/마스크 불변.
+LARGE
+- source assets / composites / overlap / repeated silhouette: 기존 원PNG/plate/atlas/actor texture 변경0.
+MEDIUM
+- connections / remaining holes: 이번 변경0; 절벽 접합 RETOUCH 유지.
+GROUND
+- shadow / contamination / structure integration: 기존 효과 default/발좌표/렌더 수치 불변.
+PLAYABLE
+- main arenas / travel space / breathing space / threat space / combat readability: actor cleanup CPU 소비자7/47만; native 게임 미인수.
+LANDMARK
+- primary / secondary / tertiary: 원본/배치 변경0.
+CAMERA QA
+- START / EARLY / ARENA / SIDE L / SIDE R / LANDMARK / LATE / EXIT: 새 화면검수0; 신규 Chrome PENDING.
+TECH QA
+- route / collision: 원nav1192/발/scene/pixels 불변.
+- pageerror / 404 / seam / loading / performance: 이번 actual Chrome 미관측; CPU를 실제 WebGL/해상도/물리GPU로 승격0.
+- ownership: 같은 mesh/material/공유geometry identity 각1시도; 실패 후 나머지 시도·finally·controlled Error.
+FILES
+- stage-owned: DIRECTIONAL_CHARACTER_RIGS_20261006.md 한 파일 append.
+- concurrent touched / unrelated touched: 0; rig docs3/rootops6/raw/STATE/LOG 보호.
+GIT
+- staged / commit / push: worker0; root가 완료 source+관련docs exact checkpoint/push 담당.
+- deploy: 0.
+VISUAL VERDICT: RETOUCH. 새 시각/GPU 인수0; 원1254² 확대흐림·절벽 접합 미해결.
+NEXT PASS: 신규 actor owned cleanup의 실제 격리 Chrome 관측 후 해당 scope만 인수; 본편/native6/audio/save/물리GPU는 별도.
+```
+
+### ROOT-ACTOR-OWNED-DISPOSE-20261007 신규 Chrome 관측·실패 이력 / 후속 접점
+
+public `actor-effect-lifetime.mjs` dispose-only 최소 구현은 code1+docs9로 `5856578bf6cc211315fb9303ab01418e36984ca8` normal commit/push·remote exact에 보존했다. 현재 public actor는 12162B / `a80898889231d8780dbaad13b110c36171be2a93c7b6147c21fc3a3e2010c26b`, worldlab는 36039B / `8388efcf35e8b9a768750fc54227928232363a32f8113039d4f81a04a90eca93`이다. 기존 producer API/defaults/provenance·dispose 밖 전체 원문과 현재 mesh/material/shared cleanup의 number/오류 계약은 이전 구현 영수증대로 유지한다. raw69 full producer 미채택과 root inline cleanup 채택은 서로 다르다.
+
+| 새 관측 / 분류 | 정확한 결과 |
+|---|---|
+| 최초 준비 실행 | Chrome1/context1/parent1/child2, 준비0PASS·2FAIL·exit1; 기존 idle frame0과 dust110ms 조건 때문에 예상 pool3 미도달 / disposal 인수조건0. 해당 시점 제품판정 불가, 원실패 이력 유지 |
+| 승인 후속 실행 | public onActorChange로 edge reset 후 실제 dust2+attack1 / mesh3 / geometry2; Chrome1/context1/parent1/child2. 각6조건 관측 PASS, 총12조건 PASS; 마지막 GPU후검사2FAIL·exit1 유지 |
+| 전체 그룹 판정 | followup raw0PASS·2FAIL; 전체 제품/GUI PASS 선언0. 관측12조건을 원 그룹 판정과 합산·교체0 |
+| actual native 소비자 | QA detached parent의 실제 mainhost → 기존 실제 worldlab iframe. trusted pagehide 후 actual public producer dispose를 호출; game.html/native6/에디터 사용자흐름 검수0 |
+| remove-throw | remove 시도3/성공2; 실패 owned mesh1은 attached·hidden으로 잔류. material actual dispose event3/3, shared geometry2/2. 잔류를 성공 해제로 표시0 |
+| material-throw | remove3/3; material 각 시도1이나 첫 actual dispose event0, 나머지2 event각1; geometry2/2. 실패 material 해제 성공 주장0 |
+| 진단 / 반복 | 각 case controlled Error(`actor effects 소유 자원 해제 실패: 1`) 및 actual lab cleanupFailures1. 반복 dispose0 / 부작용 재시도0. 내부N과 lab resource실패1을 혼동0 |
+| borrowed 경계 | producer dispose 전후 camera/terrain/비소유scene children/current textures 불변; borrowed texture dispose event0. 이후 lab 자기소유 terrain/texture cleanup과 분리 |
+| 실제 GL 렌더 | 두 case render 시 LINK_STATUS true / getError0 / native bufferData·draw 관측. 신규 effect buffer upload8 각 case |
+| 실제 native 삭제 호출 | remove/material 순서 deleteBuffer46/46, deleteProgram13/11, deleteTexture13/13. material 실패의 program차이 및 failed event0 유지 |
+| GPU후검사 실패 | iframe unload 뒤 isContextLost=true / getError37442(CONTEXT_LOST_WEBGL). 그 시점 error===0와 비교한 원 후검사2FAIL 유지. 이전 render GL0와 시점 분리; 추가 Chrome0 / 물리 GPU 메모리 해제 UNKNOWN |
+| 전체 새 실행수 | Chrome2/context2/parent2/child4; 최초2FAIL와 후속12PASS·2FAIL 분리. 기존 child6/21·runtime3/15·CPU7/47·owner14/11·DPR 재실행·합산0 |
+| 소스 / 오류 | protected source11핀 전후 exact; pageerror/consoleerror/404/foreign/mutation0; repo source·docs·Git·save 변경0(검수 worker). actor12162/a808 exact 유지 |
+| 원자료 pins | 최초raw `c262a83ba794208d9c5abd363b4c882cb74aeaf164dc4637ed22d9f763fae417`; 후속raw `03a6e795276bae83d36f436c93db5622b56a982c5ee6b28d3a8afdcc76c9a5bc`; 최종receipt `3dd7fd3caa8034c3a74e06f7d41bce3371cb427c707868a9cffc9ef10d3f12c4`; summary `ba2da122d960e2604fcca7ce2f2e448bd1cfee1169b04bf03fae0f1f890debd1` |
+| 실제 화면 | external `actor-owned-dispose-browser/followup/actual-owned-ring-pool.png` / `668e4bfb95c29edf545f6fe48868d9ffaa9a1f96a2f5ea84ee157312447fd35d`; 화면 개선/A급 증거로 승격0 |
+| owner 새 memory | `CH1-RIFT-ACTOR-EFFECT-RUNTIME-REBUILD-20261007-ANIMVFX-MEMORY-RESULT`, 공식 end `519bf6c5-b01d-4943-a74c-5f59fcfb4419`@2026-10-06T20:24:59.163Z / endrawSHA `7b967f94f5a3b48157a600af44c9b1cd362a01776a2d4dd40f70a24db699e72e`; source-derived 모델11PASS는 owner이력 / root재실행0 / public 적용0 |
+| root 다음 접점 | read-only plan20069B / `c0863b26cc3b24eeb158d24959fe4898b968f792917eb60cd9c3423ded846443`: effects 슬롯 INERT 선행→releaseResource→외부callback 뒤 disposed/epoch/generation/identity 재검사, 중첩phase guard→기존 RAF의 latest pending, 초기local create→takeInitialized→publish. 아직 계획/구현0 |
+| 남은 producer 경계 | geometry ctor 부분할당 및 acquire의 scene.add→all.push 재진입은 initializationScene add guard만으로 입증0. 기존 owner의 새 actorReentrantPublish memory TASK sent/peer/Read/source1·end0 관측을 이어감; 같은TASK 재송신0 |
+| NPC 수 정정 | 이전 '5NPC'는 root→owner 요청범위였으며 실제 current dialogue controller/RIFT_DIALOGUE 정본 조회는 Haran/Berin/Nessa/Dorik 4주민. 미확인 fifth를 기존 NPC로 확정0. item/quantity/quest identity 좁은 조회 진행, 새 보상 ID 임의확정0 |
+| 지속 생산 / 거절 경계 | 기존 owner만 전문송신, 한 단위보존 뒤 다음 승인미완료. STORY 이전 큐 미소비/send0 유지. WOLF V3 auto approval Write 거절(dangerous/구체 사유 미제공) 뒤 동일산출 사고 purpose HOLD / 실행·채택·원격 raw보존·우회0 / 피해UNKNOWN |
+| 인수 한계 | CH1-1 defaultdemo→hub·childP/char·NPC inventory+ledger durableACK/readback·실제본편native6·청취·실보상save·A급 미인수. 검수/계획/fixture/파일보존을 실제플레이완료로 계산0 |
+
+MAP PRODUCTION REPORT (§23): 범위=public actor cleanup의 actual Chrome 관측/오류 이력 보존; geometry·outermass·ground·landmark·camera 배치 변경0, 기존 guide/SSOT/LOCK 유지. TECH=신규 CPU7/47 PASS는 이전 code checkpoint의 별도 검수; 이번 Chrome raw 두 followup 그룹 FAIL 유지/제한 actor 조건12관측 PASS. remove 잔류1·material actual dispose미도달1·native 삭제호출과 physical GPU UNKNOWN을 기록했다. 실제 게임·모바일·native6·청취·save0. **VISUAL VERDICT: RETOUCH**.
+
+외부 증거 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/actor-owned-dispose-browser/`의 final-receipt/acceptance-summary/map-production-report/원·후속 raw와 실제화면을 사용한다. 전체docs actor 관련 검색은53파일1181줄(raw2524094B/`29a74c5d66613e938339359107cc2b1790263c1cb8bc00f56895f447198b9a59`) 및 소스좁은검색22파일336줄의 경로별 disposition을 따른다. rootops6·소비자 actor3·directional·map editor·SSOT의 현재핀/인수상태를 정확 동기화하고 과거 원문fullprefix와 EOF LF1을 보존한다.
