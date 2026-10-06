@@ -2,7 +2,9 @@ import * as THREE from 'three';
 import { createCharacterRig } from './2_5d/character-rigs.mjs';
 import { createBakedSpecialMotion } from './2_5d/baked-special-motion.mjs';
 import { createRiftTerrain, RIFT_TERRAIN } from './2_5d/rift-terrain.mjs';
-import { createVisualPoseConsumer } from './2_5d/visual-pose-consumer.mjs';
+import { createDialoguePoseArbiter } from './2_5d/dialogue-pose.mjs';
+import { createDialogueObservationConsumer } from './2_5d/dialogue-observation.mjs';
+import { createCorruptedWolf } from './2_5d/corrupted-wolf.mjs';
 import { createActorEffectLifetime } from './2_5d/actor-effect-lifetime.mjs';
 import { checkFrameSpec, worldFootProvider, realNavFromTerrain, runV3, SLICE_ACCEPTANCE_PROVENANCE } from './2_5d/slice-acceptance.mjs';
 import { assessRegistration, SCENE_REGISTRATION_PROVENANCE } from './2_5d/scene-registration.mjs';
@@ -22,6 +24,8 @@ const keys = new Set(), rigs = {}, helpers = {}, poses = {}, effects = {};
 const state = {ready:false,error:null,frames:0,selected:'warrior',mode:'idle',direction:0,
   x:0,y:0,paused:false,blocked:0,raf:0,lastTime:null,lastUi:0,contextLost:false,disposed:false,foregroundOpacity:1,previewMode:'idle',attackQueued:false};
 let terrain, scene, camera, renderer, shadow, observer, reducedQuery, residents, dialogue, residentAccess, interactionCue, specialMotion;
+let dialogueObservation, wolf, wolfPlacement=null, wolfError=null;
+const wolfAbort=new AbortController();
 const dialoguePlayer={x:0,y:0};
 let dialogueSignature='',nearestNpc=null;
 let observeFoot, realNav, anchorJob=null, registration=null;
@@ -87,11 +91,13 @@ function select(id){
   state.selected=id;Object.entries(rigs).forEach(([key,rig])=>{rig.object3d.visible=key===id;helpers[key].visible=key===id&&$('bones').checked;});
   leaf('actor-name',rigs[id].snapshot().name);applyState();
 }
-function reset(){interactionCue?.onSceneChange('reset');clearIntent();effects[state.selected]?.onActorChange('reset');state.x=5480;state.y=3740;if(!terrain.canWalk(state.x,state.y,12))throw new Error('대표 화면 시작 발 위치가 막혀 있습니다');state.direction=0;state.blocked=0;setMode('idle');applyState();}
-function closeDialogue(reason){dialogue?.close(reason);dialogueSignature='';updateDialogue();}
+function reset(){closeDialogue('reset');interactionCue?.onSceneChange('reset');clearIntent();poses[state.selected]?.reset();effects[state.selected]?.onActorChange('reset');state.x=5480;state.y=3740;if(!terrain.canWalk(state.x,state.y,12))throw new Error('대표 화면 시작 발 위치가 막혀 있습니다');state.direction=0;state.blocked=0;setMode('idle');placeWolf();applyState();}
+function closeDialogue(reason){const wasOpen=dialogue?.snapshot().isOpen;dialogue?.close(reason);if(wasOpen){keys.clear();state.attackQueued=false;state.previewMode=null;poses[state.selected]?.release('dialogue-close');}dialogueSignature='';updateDialogue();}
 function updateDialogue(){
   if(!dialogue)return;
   const snapshot=dialogue.snapshot(),view=snapshot.view;
+  const observed=dialogueObservation?.observe(snapshot);
+  leaf('dialogue-session',observed?.stateKnown?`이번 화면의 선택 · 유품 ${observed.trial.gift.length} · 부탁 ${observed.trial.quest.length}`:'대화 상태 확인 중');
   nearestNpc=dialogue.nearest(dialoguePlayer);
   leaf('npc-near',nearestNpc?`${nearestNpc.name.ko} · R로 대화`:'주민에게 다가가면 R로 대화합니다.');
   $('talk').disabled=!state.ready||state.paused||!nearestNpc;
@@ -121,6 +127,20 @@ function visitResident(){
   closeDialogue('preview-location-change');clearIntent();interactionCue?.onActorChange('preview-location-change');effects[state.selected]?.onActorChange('preview-location-change');
   state.x=point.x;state.y=point.y;state.direction=(Math.round(Math.atan2(row.foot.x-state.x,row.foot.y-state.y)/(Math.PI/4))+8)%8;state.blocked=0;setMode('idle');applyState();
 }
+function placeWolf(){
+  if(!wolf||!terrain)return;
+  wolfPlacement=null;
+  for(const [dx,dy] of [[180,100],[-180,100],[180,-100],[-180,-100],[0,180],[0,-180]]){
+    const x=state.x+dx,y=state.y+dy;
+    if(terrain.canWalk(x,y,12)){wolfPlacement={x,y,radius:12};break;}
+  }
+  updateWolf(0);
+}
+function updateWolf(dt){
+  if(!wolf)return;
+  if(!wolfPlacement||!$('wolf-visible').checked){wolf.object3d.visible=false;return;}
+  wolf.update(dt,{mode:$('wolf-mode').value,direction:Number($('wolf-facing').value),x:wolfPlacement.x,y:wolfPlacement.y});
+}
 // Explicit selection/reset still applies the new foot transform while time is paused.
 function applyState(){if(state.ready){pose(0);render();updateUi();}}
 function updateUi(){
@@ -136,9 +156,12 @@ function updateUi(){
   leaf('status',special.active?'다크드루이드 · 기존 특수동작 원화 · 발 기준 미인수':`${s.name} · 승인 외형 · 관절 변형과 방향 모션`);
   leaf('special-status',special.active?`${special.visible?'재생':'본체 숨김'} · ${special.frameSource?.frame??0}번 셀`:special.completed?'1회 종료 · 관절 모션으로 복귀':'기존 특수동작 원화를 1회 재생합니다.');
   $('special-play').disabled=state.paused;$('check-foot').disabled=special.active;
+  const ws=wolf?.snapshot();
+  leaf('wolf-status',wolfError?`늑대 표시 중단 · ${wolfError}`:!wolfPlacement?'주변에 접근 가능한 자리가 없습니다.':ws?`${dirs[ws.direction]} · ${ws.usedMode==='walk'?'걷기':'대기'} · ${ws.frame}번 셀${ws.fellBackFromEmptyWalkFrame!==null?' · 빈 셀에서 대기로 전환':''}`:'늑대 그림 준비 중');
   updateDialogue();
 }
 function move(dt){
+  if(dialogue?.snapshot().isOpen)return;
   const dx=Number(keys.has('KeyD')||keys.has('ArrowRight'))-Number(keys.has('KeyA')||keys.has('ArrowLeft'));
   const dy=Number(keys.has('KeyS')||keys.has('ArrowDown'))-Number(keys.has('KeyW')||keys.has('ArrowUp'));
   if(state.attackQueued||poses[state.selected].snapshot().attackRemaining>0)return;
@@ -158,7 +181,7 @@ function pose(dt){
   const intent={dx,dy,run:keys.has('ShiftLeft')||keys.has('ShiftRight'),attack:state.attackQueued,facing:state.direction};
   if(state.previewMode)intent.skill={id:'preview',poseMode:state.previewMode};
   const previousMode=state.mode;
-  const resolved=poses[state.selected].resolve(dt,dialogue?.snapshot().isOpen?{dx:0,dy:0,facing:state.direction}:intent);state.attackQueued=false;
+  const resolved=poses[state.selected].resolve(dt,intent);state.attackQueued=false;
   state.mode=resolved.params.mode;state.direction=resolved.params.direction;
   if(state.mode!==previousMode)cancelAnchorCheck('모션 전환으로 이전 표시 검사 무효');
   const rig=rigs[state.selected];rig.update(dt,resolved.params);
@@ -185,6 +208,7 @@ function pose(dt){
   interactionCue?.update(dt,dialoguePlayer,dialogue);
   const target=terrain.worldToScene(state.x,state.y),angle=50*Math.PI/180;
   camera.position.set(target.x,Math.sin(angle)*16,target.z+Math.cos(angle)*16);camera.lookAt(target);
+  updateWolf(dt);
 }
 function render(){if(state.error||state.contextLost)return;renderer.render(scene,camera);state.frames++;}
 function frame(time){
@@ -202,7 +226,7 @@ function dispose(){
   reducedQuery?.removeEventListener('change',updateReducedMotion);
   Object.values(effects).forEach(e=>e.dispose());
   Object.values(helpers).forEach(h=>{h.geometry.dispose();h.material.dispose();});
-  Object.values(rigs).forEach(r=>r.dispose());specialMotion?.dispose();terrain?.dispose();shadow?.geometry.dispose();shadow?.material.dispose();renderer?.dispose();
+  wolfAbort.abort();wolf?.dispose();Object.values(rigs).forEach(r=>r.dispose());specialMotion?.dispose();terrain?.dispose();shadow?.geometry.dispose();shadow?.material.dispose();renderer?.dispose();
   interactionCue?.dispose();residents?.dispose();dialogue?.close('pagehide');
 }
 try{
@@ -228,6 +252,7 @@ try{
   if(dialoguePin!=='be14b1416838ab345eb1c2a150b92403566ccfdc43cd3f3b317cf2913840dfdc')throw new Error('주민 대사 원자료 핀 불일치');
   dialogue=createRiftDialogue(residentScene,JSON.parse(new TextDecoder().decode(dialogueBytes)),(_s,x,y,r)=>terrain.canWalk(x,y,r),residentDialogueAnchors(residentScene));
   if(!dialogue)throw new Error('주민 대화 소비 계약이 일치하지 않습니다');
+  dialogueObservation=createDialogueObservationConsumer({dialogueProvider:()=>dialogue});
   for(const row of residentAccess.rows)row.displayApproach=displayApproach(row);
   residents=await createRiftResidentBillboards({THREE,terrain,camera,scene,displayScale:1.8});
   const frameSpecs=checkFrameSpec();if(frameSpecs.some(r=>r.pass===false))throw new Error('캐릭터 프레임 규격 실패: '+frameSpecs.find(r=>r.pass===false).detail);
@@ -241,13 +266,16 @@ try{
     rigs[id]=await createCharacterRig(id,{THREE,height:heights[id]});scene.add(rigs[id].object3d);
     // Actor, foreground and effects share Three's transparent pass, so foot renderOrder is effective.
     rigs[id].object3d.traverse(node=>{if(node.isMesh){node.material.transparent=true;node.material.depthTest=false;node.material.depthWrite=false;node.material.needsUpdate=true;}});
-    poses[id]=createVisualPoseConsumer(id);
+    poses[id]=createDialoguePoseArbiter(id,{dialogueProvider:()=>dialogue,retrigger:false});
     effects[id]=createEffects(id);
     helpers[id]=new THREE.SkeletonHelper(rigs[id].object3d);helpers[id].material.transparent=true;helpers[id].material.depthTest=false;helpers[id].material.depthWrite=false;helpers[id].renderOrder=70;helpers[id].visible=false;scene.add(helpers[id]);
   }
   shadow=new THREE.Mesh(new THREE.CircleGeometry(1,40),new THREE.MeshBasicMaterial({color:0x030a0c,transparent:true,opacity:.26,depthWrite:false,side:THREE.DoubleSide}));
   shadow.rotation.x=-Math.PI/2;shadow.renderOrder=15;scene.add(shadow);
   specialMotion=await createBakedSpecialMotion({THREE,terrain,camera,scene,height:heights['dark-druid']});
+  try{wolf=await createCorruptedWolf({THREE,terrain,camera,height:.36,previewFps:6,signal:wolfAbort.signal});if(state.disposed){wolf.dispose();throw new Error('페이지 종료');}scene.add(wolf.object3d);}
+  catch(error){wolfError=error instanceof Error?error.message:String(error);}
+  if(state.disposed)throw new Error('종료한 화면은 다시 재생하지 않습니다');
   state.ready=true;controls.forEach(el=>el.disabled=false);$('loading').hidden=true;reset();select('warrior');
   reducedQuery.addEventListener('change',updateReducedMotion);
   observer=new ResizeObserver(resize);observer.observe($('world-canvas').parentElement);resize();resume();
@@ -266,6 +294,8 @@ try{
   $('visit-resident').addEventListener('click',visitResident);
   $('talk').addEventListener('click',talk);
   $('dialogue-close').addEventListener('click',()=>closeDialogue('manual'));
+  $('wolf-near').addEventListener('click',()=>{placeWolf();render();updateUi();});
+  for(const id of ['wolf-visible','wolf-mode','wolf-facing'])$(id).addEventListener('change',()=>{updateWolf(0);render();updateUi();});
 }catch(error){fail(error);}
 const movementKeys=new Set(['KeyW','KeyA','KeyS','KeyD','ArrowUp','ArrowDown','ArrowLeft','ArrowRight','ShiftLeft','ShiftRight','KeyJ']);
 $('world-canvas').addEventListener('keydown',event=>{
@@ -275,9 +305,10 @@ $('world-canvas').addEventListener('keydown',event=>{
   else if(event.code==='Escape'&&!event.repeat){event.preventDefault();closeDialogue('escape');}
 });
 $('world-canvas').addEventListener('keyup',event=>{if(movementKeys.has(event.code))keys.delete(event.code);});
-$('world-canvas').addEventListener('blur',clearIntent);
-window.addEventListener('blur',clearIntent);
+function handleBlur(){closeDialogue('blur');clearIntent();poses[state.selected]?.onBlur();}
+$('world-canvas').addEventListener('blur',()=>{clearIntent();poses[state.selected]?.onBlur();});
+window.addEventListener('blur',handleBlur);
 $('world-canvas').addEventListener('webglcontextlost',event=>{event.preventDefault();state.contextLost=true;fail(new Error('WebGL 컨텍스트 소실. 페이지를 다시 열어 주세요.'));});
 document.addEventListener('visibilitychange',()=>{clearIntent();if(document.hidden)stopFrame();else resume();});
 window.addEventListener('pagehide',dispose,{once:true});
-window.__rift25Lab=Object.freeze({snapshot:()=>{let actor;rigs[state.selected]?.object3d.traverse(n=>{if(n.isSkinnedMesh)actor=n;});return {...state,raf:!!state.raf,rig:rigs[state.selected]?.snapshot(),poseConsumer:poses[state.selected]?.snapshot(),effects:effects[state.selected]?.snapshot(),specialMotion:specialMotion?.snapshot(),actorVisible:rigs[state.selected]?.object3d.visible,shadowVisible:shadow?.visible,acceptance:structuredClone(acceptance),registration:structuredClone(registration),residents:residents?.snapshot(),interactionCue:interactionCue?.snapshot(),residentAccess:structuredClone(residentAccess),dialogue:dialogue?structuredClone(dialogue.snapshot()):null,nearestNpc:structuredClone(nearestNpc),cameraPosition:camera?.position.toArray(),diagnosticProvenance:{INTERACTION:INTERACTION_CUE_PROVENANCE,QA:SLICE_ACCEPTANCE_PROVENANCE,MAP:SCENE_REGISTRATION_PROVENANCE},renderContract:actor?{transparent:actor.material.transparent,depthWrite:actor.material.depthWrite,depthTest:actor.material.depthTest,actorOrder:actor.renderOrder,actorScenePosition:rigs[state.selected].object3d.position.toArray(),shadowScenePosition:shadow.position.toArray(),foregroundOrders:terrain.occluders.map(o=>o.object3d.renderOrder)}:null,terrain:terrain?.snapshot(),canvas:{width:$('world-canvas').width,height:$('world-canvas').height}};}});
+window.__rift25Lab=Object.freeze({snapshot:()=>{let actor;rigs[state.selected]?.object3d.traverse(n=>{if(n.isSkinnedMesh)actor=n;});return {...state,raf:!!state.raf,rig:rigs[state.selected]?.snapshot(),poseConsumer:poses[state.selected]?.snapshot(),effects:effects[state.selected]?.snapshot(),specialMotion:specialMotion?.snapshot(),actorVisible:rigs[state.selected]?.object3d.visible,shadowVisible:shadow?.visible,acceptance:structuredClone(acceptance),registration:structuredClone(registration),residents:residents?.snapshot(),interactionCue:interactionCue?.snapshot(),residentAccess:structuredClone(residentAccess),dialogue:dialogue?structuredClone(dialogue.snapshot()):null,dialogueObservation:dialogueObservation?.snapshot(),wolf:wolf?.snapshot(),wolfPlacement:wolfPlacement?{...wolfPlacement,canWalk:terrain.canWalk(wolfPlacement.x,wolfPlacement.y,wolfPlacement.radius)}:null,wolfError,nearestNpc:structuredClone(nearestNpc),cameraPosition:camera?.position.toArray(),diagnosticProvenance:{INTERACTION:INTERACTION_CUE_PROVENANCE,QA:SLICE_ACCEPTANCE_PROVENANCE,MAP:SCENE_REGISTRATION_PROVENANCE},renderContract:actor?{transparent:actor.material.transparent,depthWrite:actor.material.depthWrite,depthTest:actor.material.depthTest,actorOrder:actor.renderOrder,actorScenePosition:rigs[state.selected].object3d.position.toArray(),shadowScenePosition:shadow.position.toArray(),foregroundOrders:terrain.occluders.map(o=>o.object3d.renderOrder)}:null,terrain:terrain?.snapshot(),canvas:{width:$('world-canvas').width,height:$('world-canvas').height}};}});

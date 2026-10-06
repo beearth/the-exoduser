@@ -515,3 +515,74 @@ GIT
 VISUAL VERDICT: RETOUCH
 NEXT PASS: NPC pose/관측·실corrupted_wolf idle/유효walkconsumer 최소통합; 큰지형흐림/서측가림·본편native6/청취·보상save 미완료
 ```
+
+
+## 2026-10-07 ROOT-RIFT-NPC-WOLF-CONSUMER-20261007 실제 public 연결
+
+| 현행 항목 | 값·적용 위치·인수 범위 |
+|---|---|
+| 코드 | `tools/2_5d-world-lab.mjs/.html` + `tools/2_5d/dialogue-observation.mjs`, `dialogue-pose.mjs`, `corrupted-wolf.mjs`; 독립3387 public 파생 소비자 |
+| 실제 대화 | 기존 `createRiftDialogue` controller의 snapshot을 관찰. `trialFlags` 4 / `trialRecords` 2 / `view.options` 8 / prototype 검사 16단계 / id 96자 |
+| 포즈 | 3 actor별 `createDialoguePoseArbiter`; 기존 `createVisualPoseConsumer`만 import. run 1.55 / walk 1 / facing 0..7 / 기존 phase·attackDuration·top-level attackRemaining 유지 |
+| 대화 수명 | open 또는 UNKNOWN은 idle, 옛 공격 폐기. close/actor변경/blur/reset 뒤 새 입력 허용. canvas→대화 선택지 blur는 close하지 않음, window blur는 close+release |
+| 대화 관측 | `linked/stateKnown/supported/isOpen/scope/sessionOnly/view/trial/providersUnknown` frozen. accessor/throw/thenable/잘못된 구조는 UNKNOWN+null, getter 실행0 |
+| 실제 보상 | `editor-session-only`, `actualGrant:false`, `committed:false`, `committedPromoted:false`, `grant/reward/save:null`. 본편 지급·저장 채택0 |
+| 늑대 | skin `corrupted_wolf`; JSON2+PNG16 실제bytes/fullSHA/IHDR→ImageBitmap→원본RGBA 셀→Three DataTexture. raw placeholder Texture 경로는 직접 채택0 |
+| 늑대 셀 | cell256 / cols8 / rows5 / idx13 / col5 / row1 / framesPerMob4. idle2048×1280 / walk8192×1280. 8방향 `south,south-east,east,north-east,north,north-west,west,south-west` |
+| 늑대 frame | 방향 모두 walk0,1,2 유효 / walk3 빈 셀. alpha>16인 픽셀0이면 같은방향 검증된idle0로 fallback; alphaTest .01 |
+| 늑대 timing | native walkDistance 128/프레임; 거리 미제공 lab previewFps6. 원JSON metadataFPS UNKNOWN, 임의로 sourceFPS6 선언0. previewFps>0·≤60; update dt finite≥0·최대.05초 사용 |
+| 늑대 표시·자원 | displayHeight .36 시험값 / 셀 하단 중앙 배치 / anatomical foot·referenceHeight UNKNOWN. loadConcurrency2; 256² RGBA DataTexture32 / 8,388,608B / atlas16close / liveAtlasBitmaps0 |
+| 늑대 재질 | Linear mag/min, ClampToEdge, mipmapsfalse, colorSpaceSRGB, bottom-up 복사·flipYfalse, transparenttrue/depthTestfalse/depthWritefalse/DoubleSide/toneMappedfalse |
+| 공통 정렬 | actor/resident/전경/늑대=`30+(footY-4320)/8000*10`. 새RAF/timer0; 기존 lab RAF1만 소비 |
+| 시험 배치 | root 시작5480,3740 유지; 늑대는 캐릭터 주변 offsets `(180,100),(-180,100),(180,-100),(-180,-100),(0,180),(0,-180)` 중 canWalk radius12가 true인 첫 위치 |
+| 새 UI | `wolf-visible/wolf-mode/wolf-facing/wolf-near/wolf-status`, `dialogue-session`. 늑대8방향 idle/walk·현재캐릭터옆 배치·유품/부탁 각개수 표시; 리프만 textContent |
+| 의미 검수 | observation/pose 최초14중6PASS·8FAIL(배열 descriptor 오류); 제품1행수정 후 실패8+가려진 index-getter1=9PASS, 성공6재실행0. wolf새17/17PASS |
+| 실WebGL 검수 | 이번 새고유25유효PASS=첫11+대화10+수명4. Chrome/3387 실제PNGdecode·8dirGPU·3actor R대화·선택click·유품·부탁·run·blur·reset. pageerror/consoleerror/HTTPerror0 |
+| 보존된 검사 실패 | 첫 harness 방향 기대 `E`≠실제`east`; 후속 walk setup 누락 timeout(0검수); `pose.running` 없음으로 false FAIL. source/pose 실제결함으로 둔갑0; 한정 후속에서 수정된 기대 검수 |
+| 영상 | Playwright ffmpeg 미설치로 페이지 생성 전 UNAVAILABLE/검수0. 설치0. 실제 스크린샷은 별도 성공; 영상 생성 주장0 |
+| 시각 판정 | 실제 start·베린 유품·네사 부탁 화면 열람. 캐릭터/주민/늑대 표시와 대화는 관측; 큰1254²판 확대흐림·절벽재질/접합·해부학적발·전체stageCamera 미인수. VISUAL VERDICT RETOUCH |
+| 다음 실제 작업 | owner Claude8만 `CH1-RIFT-EDITOR-ENTRY-20261007-MAP` 송신/peer/firstsource 확인. 선택주민 접근점→2.5D previewPort 실행 adapter 제작; root editorbutton/labport/GUI 검수는 다음 최소단위 |
+| 원자료·Git 범위 | raw52는 48fa4a43f95541ec3a1c9cc55c650aefdba2185a remoteexact로 미채택보존. 이번 root code5+관련docs20만 정상checkpoint; PNG/scene/nav/game/index/save/foreign68/보호2_3불변 |
+
+| NPC id | 실제 flag | 관찰하는 trial record | 적용 범위 |
+|---|---|---|---|
+| rift-rest-haran | rift.haran.met | 없음 | 실제 R/닫기 후 session flag |
+| rift-gift-berin | rift.berin.giftGiven | gift / story.berin.keepsake / actualGrant:false | 유품 선택당 최대1, 재진입 중복0 |
+| rift-request-nessa | rift.nessa.questAccepted | quest / story.nessa.findLin / actualGrant:false | 부탁 수락 최대1, game quest 등록0 |
+| rift-prepare-dorik | rift.dorik.met | 없음 | 기존 위층 안내 / 실제 gate 전환0 |
+
+| root owned code | bytes | fullSHA256 |
+|---|---:|---|
+| tools/2_5d-world-lab.mjs | 27959 | `efccd3adca2af8fecfa72327ea2ed1f7c4afa34f113f629dce4b0367ba73f2e7` |
+| tools/2_5d-world-lab.html | 11829 | `72619d05fe7f92200b40d209320b452e4b5d1c4a9b53d617df2f6fedd79fc06a` |
+| tools/2_5d/dialogue-observation.mjs | 9830 | `3a08185ffa567736fe9c4333e6a2fd293261842becced48e0b13d4370fc836a5` |
+| tools/2_5d/dialogue-pose.mjs | 5937 | `5ff101af0e891c9be279212dab503ff583da4f92bfda6abe44b74c6a624f262a` |
+| tools/2_5d/corrupted-wolf.mjs | 20662 | `ac3fd86a5441c84cd477a716e86af8cec92b61589781a8296b4b59acdec17acc` |
+
+| 새 실제 근거 | 경계 |
+|---|---|
+| npc-wolf-browser-result.json | 새11유효PASS + 방향 expected-label harness FAIL 보존 |
+| npc-wolf-dialogue-followup-result.json | walk설정누락 timeout / 실제검수0 |
+| npc-wolf-dialogue-actual-result.json | 새10유효PASS + pose.running 없는 harness FAIL 보존 |
+| npc-wolf-lifetime-result.json | 한정 신규4PASS / page·console·HTTPerror0 |
+| npc-wolf-start.png / npc-wolf-final-motion.png | 실제PNG GPU·전사와늑대 표시 / foot UNKNOWN |
+| npc-wolf-berin-gift.png / npc-wolf-nessa-request.png | 실제controller 유품/부탁 선택·3actor dialogue 수명과 구분 |
+| npc-wolf-video-unavailable.json | 영상FFmpeg 미설치 / 설치0 / 실제페이지생성·검수0 |
+
+```text
+MAP PRODUCTION REPORT
+STAGE: 지옥의 틈 / 독립3387 / ROOT-RIFT-NPC-WOLF-CONSUMER-20261007
+MASTER PLAN: 승인 비대칭 계곡 silhouette·8000²regions·남도착/양측균열/북상승 route·기존side spaces 유지.
+OUTER MASS: left/right/top/south 큰바위·뿌리·계단/중앙심연 유지; 물리높이UNKNOWN.
+LARGE ASSETS: cleanplate1254²/심연1920²/전경3 exactcrop 유지. 같은지형에 기존늑대1 표시; 새scatter0. 확대흐림RETOUCH.
+MEDIUM CONNECTION: cliff/valley mouth/holes geometry불변; 새접합 제작0.
+GROUND CONNECTION: 기존actor/resident그림자/groundDetail3/period320/alpha.4/nav-alpha 유지. 늑대셀바닥 표시기준≠실제발접촉.
+PLAYABLE: nav1192/radius12 유지; actual run after dialogue 6180,5020→약6235,5020; 전투/획득/gate/사망/부활/재도전 미인수.
+LANDMARK/CENTER: 중앙균열 primary / 북계단·동뿔 secondary / 원4주민·남서뿌리 tertiary 유지.
+CAMERA QA: START원scene.start 미관측; EARLY/LANDMARK 5480,3740 / NPC베린5900,5580·네사6180,5020 실제열람. 3actor Haran 접근 관측. ARENA/SIDE-L/SIDE-R/LATE/EXIT 전체인수UNKNOWN.
+TECH QA: route/collision불변; 새고유25 실WebGL 유효검수. pageerror/consoleerror/HTTPerror0. loading: JSON2+PNG16 실제pins; 새server/RAF0. 성능: cropped256²textures32/8,388,608B/liveAtlasBitmaps0, 전체FPS인수UNKNOWN.
+FILES: root code5+docs20 / owner STATELOG4 별도 / 동시MAP adapter max1 별도. unrelated root0; foreign68/원자료/save/game/protected불변.
+GIT: 완료소유 exactpins만 정상stage/commit/push; commit 자체SHA는 외부 npc-wolf-public-preservation-receipt.json의 remote exact값. deploy0.
+VISUAL VERDICT: RETOUCH
+NEXT PASS: 선택NPC editor→2.5D port 연결 / 큰지형흐림·전경재질·접합 / 최소본편consumer 및 native6·청취·보상save.
+```

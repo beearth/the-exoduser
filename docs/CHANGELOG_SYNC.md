@@ -54636,3 +54636,18 @@ TASK=CH1-RIFT-CONSUMER-LINK-20261007-<suffix>, 완료ID=TASK-CANDIDATE. 각1신�
 | STORY | CH1-RIFT-CONSUMER-LINK-20261007-DIALOGUE-OBSERVATION-CONSUMER-CANDIDATE | tools/team-followup-20261007/hell-rift/STORY/dialogue-observation-consumer-2_5d.candidate.mjs | 8532 | 30a3185cab9066ab73bc1b49770bb7397ae64bcdc0f153636379db5709b89029 | e603cefb-1cbc-44ee-a6d5-a7b59485b278 |
 
 원raw·selftest/합성snapshot≠root WebGL/native/audio/실보상save 인수. 중복TASK/새팀/실행세션0. 해당root34분씬단위의 actual전경/남몸가림수정/실대화 증거와 구분. normalcommit/push·remoteexact는외부 consumer-link-preservation-receipt.json에보존.
+
+
+## 2026-10-07 ROOT-RIFT-NPC-WOLF-CONSUMER-20261007 실제 public 연결
+
+이 부록은 현재 독립3387 public 소비자의 구현 상태다. 앞선 raw/fixture 완료 이력은 보존하며 본편/native·청취·보상save 완료로 승격하지 않는다.
+
+| 현재 적용 | 값·상태 |
+|---|---|
+| NPC consumer | observation+pose 실제controller 연결 / 3actor 대화idle·공격취소 / 유품·부탁 각1 session-only / committedfalse |
+| 늑대 consumer | 기존 JSON2+PNG16 실제decode / 8dir idle·walk0..2 / 빈3→같은dir idle / displayHeight.36 / preview6fps≠UNKNOWN metadataFPS |
+| 자원·정렬 | 256²textures32/8,388,608B/atlas16close/추가RAF0 / `30+(footY-4320)/8000*10` |
+| 검수·남음 | 이번 새25유효실WebGL 검수 / errors0 / RETOUCH; 큰맵흐림·실발·본편native6·청취·보상save 미인수 |
+| 다음 | 기존 MAP owner의 선택NPC→2.5D entry adapter 제작; root editorbutton/labport 다음 최소연결 |
+
+정확 API/범위/5code핀/새근거/§23 전체 보고는 `docs/4.1맵디자인+설정/HELL_RIFT_2_5D_SLICE_20261006.md`의 같은 완료ID 부록을 따른다. raw52 checkpoint48fa4a43f95541ec3a1c9cc55c650aefdba2185a와 root public 파생 채택을 구분한다. MAP·ANIM LINK 선행guide위반은 보존했고 실제fullRead복구2/end2를 확인했으며 소급PASS0.
