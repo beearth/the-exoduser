@@ -54474,3 +54474,42 @@ actual NUL83에서 공식완료/idle/exactpins raw6(MAP/BOSS/STORY/SKILL/QA/ENEM
 ## NPC 연결 후 관련docs 동기화 3 — 2026-10-06T14:40:05.634520+00:00
 
 완료소유관련문서4개를현재독립3387계약과정확동기화: docs/4.1맵디자인+설정/_MAP_SSOT_INDEX.md, docs/4.1맵디자인+설정/CH1_1_A_GRADE_PRODUCTION_20261005.md, docs/4.1맵디자인+설정/HELL_RIFT_EDITOR_RESULT_20261006.md, docs/3.3 키바인딩+설정/3.3 키바인딩+설정.md. 전수검색·원문prefix/백업보존, actual80부터checkpoint, 기존25a6e38코드/Git근거와원격exact영수증연결. VISUAL VERDICT: RETOUCH/본편native미인수.
+
+
+## 2026-10-08 총괄 자율 제작 일정 — 2026-10-07 사용자 승인
+
+사용자 최신 지시: “내일은 진짜 내가 바뻐서 니가 총괄로 일을 좀 시켜야하는데”. 현재 한국시간 2026-10-07 새벽 기준 다음 날짜인 2026-10-08 09:00–19:00을 실행일로 설정했다. 날짜 확인 선택지는 선택사항이며 별도 응답 전에는 이 날짜를 따른다. 기존 2026-10-06 라운드의 임시 `newFollowupTaskProhibited=true`는 해당 종료 라운드 이력으로 보존하며, 이번 날짜의 승인된 새 작업을 영구 보류하는 근거로 사용하지 않는다. 이 절 작성은 목표·일정 준비이며 전문팀 착수·새 코드·시각 인수 완료를 뜻하지 않는다.
+
+| 운영 항목 | 확정된 계약 / 실제 상태 |
+|---|---|
+| 공통 목표 | CH1-RIFT-QUALITY-DAY-20261008: 지옥의 틈 확대 재질·절벽/전경 접합, 기존 캐릭터/드루이드 특수 표시, NPC 대화/유품/부탁 consumer, 실제 맵 에디터 연결 개선 |
+| 실제 기준 | 시작 HEAD 80bf013284987b2c3b50733bf7f90c4de70ee65b / 실제 rename-aware NUL·전체 untracked72 / index 비어 있음. 기존 raw24·독립3387 화면23검사·실제 editor5검사는 과거 근거이며 새 검수로 재합산하지 않음 |
+| 일정 | 기존 원총괄 heartbeat exoduser-2만 2026-10-08 한국시간09–19시 매 정시로 갱신·ACTIVE 저장 확인. 1분 자동화가 아님. 다른 exoduser/exoduser-mac/exoduser-claude8/exoduser-9는 PAUSED 유지 |
+| 보고 | 변화 없음·idle·동일 현황 반복 보고0. 의미 있는 완료·실패·필수 결정만 전달.19시 실제 반영/화면·영상/검증/Git/남은 문제 한 번 보고 후 exoduser-2 일시중지.19시 이후 새 제작·중복보고0 |
+| 단일 송신 | Codex7 01a0fb1e-4ec3-7dd3-bba2-f87518e881fa / Claude8 01a0fd2d-8a6f-7f01-b2da-70119654cffe만 기존 전문15 송신 소유. root는 통합·docs·Git·3387 실검수 소유. 새 팀·관리채팅·Claude 실행 세션·전문팀 직접/중복 송신0 |
+| 완료 뒤 다음 행동 | 각 taskId·정확 소유파일·의존성·완료기준·송신/peer·첫 성공 source·공식 end·bytes/fullSHA·검수판정·nextAction을 ledger에 기록. 실제 완료핀 수집→미채택 보존→root 의미 검수→최소 소비 연결→관련 docs 전수 검색·정확 동기화→code+docs commit/push/remote exactSHA→다음 승인 미완료 단위로 연결. 검수 중 다른 독립 작업 일괄 보류0 |
+| 거절 경계 | Codex 전문팀 송신의 실제 자동 승인 검토 거절(current approval policy never)과 ART 기존 선택 대기는 별도 미착수로 기록. 같은 거절 목적 재시도·다른 도구/경로/호스트/권한 우회0. 허용된 root 구현·검수와 별도 독립 작업은 계속하며 전원 가동으로 과장0 |
+| 저장소/안전 | 실제 checkout /Users/fordeargamers/Projects/exoduser-migration-20261001. 완료소유만80부터 즉시 checkpoint/100 전 새 산출 중단. 수정 전 백업·소유 exact path 충돌검사. 타인 WIP·기존23·사용자save·원본scene/nav/PNG·LOCK·보호2_3/Q 전용 magic blackBean(E 패링 불가)/어택티켓금지 보존 |
+| 도구 범위 | 기존 격리 editor3387만. 사용자 게임3333/3340·앱3381/3383·Windows·새 서버·중복 게임/빌드/대형 작업0. 삭제/cleanup/권한/인증/설치/결제/게시0. 맵 작업자 가이드 전체+SSOT 순서 선행, §23 MAP PRODUCTION REPORT·실제 VISUAL VERDICT 필수 |
+| 기존 사고 | MAP/STORY의 잘못된 외부경로 쓰기·삭제는 실제 규칙 위반이고 피해 UNKNOWN. 완료 후보와 별도로 이력 유지. 경로가 다르면 쓰기를 멈추고 삭제로 수습하지 않음 |
+| 품질 경계 | 현재 VISUAL VERDICT RETOUCH. 원1254² 확대 흐림·hard wedge/절벽 seam·물리높이UNKNOWN·특수모션 발 메타 미확인·본편/NPC 실제 grant·quest/save/상승/native6/청취/A급 미인수. fixture·후보보존·lab만으로 이 Gate를 통과 처리0 |
+
+### 기존 Claude8 역할별 다음 제작 단위 — 아직 배정 준비
+
+아래 역할별 정확 새 소유파일은 모두 `tools/team-followup-20261008/hell-rift/<ROLE>/` 하위 한 파일이다. 기존 raw/public/game/씬/nav/save를 전문팀이 수정하지 않는다. 실제 송신·수신·완료 근거는 오더 담당이 인계한 뒤 별도로 기록한다. ART의 기존 막힌 선택 목적은 포함하지 않는다. MAP/STORY는 경로·삭제 재발 방지 exact path guard를 필수 적용한다.
+
+| 역할 / 새 TASK suffix / 파일 | 구체적 산출과 완료 Gate |
+|---|---|
+| MAP / MAP-FEATHER / rift-feather-boundary-2_5d.candidate.mjs | opening·전경 alpha 경계를 source XY/UV/nav/mask 불변으로 Three에서 소비. feather 폭은 현행 source 근거와 단위 확인 후 명시하며 임의확정0. 경계 alpha/내부·외부/등록 변형 반례→root 동일 카메라 전후 시각 검수 |
+| ANIMVFX / GROUND-MATERIAL / rift-ground-material-2_5d.candidate.mjs | 완료 editor 재질 arrival-detail crop240²·mirror480²·period320·alpha.4의 Three 소비 접점. world 고정·비보행/심연 영향0·추가RAF0·dispose. 원본 해상도 복원 주장0 |
+| BOSS / SPECIAL-PREVIEW / dark-druid-special-preview-2_5d.candidate.mjs | 기존 dive/emerge/transform/beast 시트 fullSHA·cell·frame·방향의 실제 표시 consumer. 기존 draw 계약을 확인하며 foot/referenceHeight UNKNOWN을 추정하지 않고 표시/미인수 분리 |
+| STORY / DIALOGUE-GUARDS / npc-dialogue-preview-2_5d.v2.candidate.mjs | own-key P2를 고치고 실제 createRiftDialogue snapshot/receiver 연계. getter·상속·thenable·throw 거부, gift 재수락 중복0·quest 분리. 실제 grant/save/chapter gate 미구현을 숨기지 않음 |
+| SKILL / DIALOGUE-POSE / dialogue-pose-arbitration-2_5d.v2.candidate.mjs | 실제 isOpen/view.npcId/view.nodeId 계약에 맞추고 대화 진입·종료/캐릭터·blur·reset 후 이전 공격 잔존0. neutral idle/facing 유지. 기존 root 소비자 중복 구현0 |
+| ENEMY / BILLBOARD / enemy-atlas-billboard-2_5d.candidate.mjs | 완료 경로 매핑을 반복하지 않고 기존 CH1 일반몹1종 idle/walk Three 표시. 실 atlas/meta·cell·발/크기·정렬/dispose·누락 failclosed. spawn/AI/피해/충돌 수치 변경0 |
+| QA / RETOUCH-GATES / rift-retouch-consumer-acceptance-2_5d.candidate.mjs | 새 consumer 등록·수명·관측 근거 predicate. 실제 editor와 format/echo 구분, async reject/원본 변조/nav 재질누출/경계·특수모션UNKNOWN·공격잔존 반례. 실제 관측 없으면 PENDING |
+
+TASK ID는 `CH1-RIFT-QUALITY-DAY-20261008-<suffix>`이며 완료 ID는 동일 TASK에 `-CANDIDATE`를 붙인다. MAP/ANIMVFX 시각 개선을 먼저 root에서 소비하고 나머지 독립 단위는 병행한다. active TASK에는 중복 메시지를 보내지 않으며 미완료 의존성은 정확히 표시한다.
+
+Codex7의 기존7 역할도 UIUX 조작·선택/ITEM 단일 유품 provider/BUILD 상대 import·에셋/BALANCE 표시크기·발/SOUND gesture 이후 기존음원 수명/QUESTNPC 본편 대화·진행 연결/MARKETING 실제 촬영 근거라는 목표를 유지한다. 전문팀 송신이 거절된 현재는 목표 보유와 실제 착수를 구분하며, 거절 목적을 재배정해 우회하지 않는다. 원총괄과 기존 허용 지원 담당의 독립 소비자 조사·통합은 해당 거절 action을 우회하지 않는 범위에서 계속한다.
+
+이 준비의 전체 docs 관련 키워드 검색은 외부 `/Users/fordeargamers/.codex/visualizations/exoduser-next-day-20261008/docs-keyword-search.txt`에 보존했다. 관련 현재 관리계약4문서와 CHANGELOG에 동일 일정·연속 진행 정책을 append하고, 과거 라운드/오더 STATELOG/본편 SSOT·보호 문서는 덮어쓰지 않는다. 원본 bytes prefix·외부 백업·소유5문서 한정 Git 영수증을 같은 외부 폴더에 보존한다. 이 변경은 제작 일정 준비이며 맵 구현/시각 Gate 변경0이다.
