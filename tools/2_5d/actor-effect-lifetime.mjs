@@ -100,18 +100,65 @@ export function createActorEffectLifetime(deps = {}) {
   }
   const HALF_PI = Math.PI / 2;
 
-  const all = [], free = [], live = [];
+  const all = [], free = [], live = [], pending = new Set();
+  const detached = new WeakSet(), released = new WeakSet();
+  let allocationDetachFailures = 0, allocationReleaseFailures = 0;
   let clock = 0, lastFrame = -1, lastMode = '', lastStepClock = -1e9, disposed = false;
 
+  function cleanupAttempt(action, kind, failures) {
+    try { action(); } catch (_) {
+      failures.count = Math.min(Number.MAX_SAFE_INTEGER, failures.count + 1);
+      if (kind === 'detach') allocationDetachFailures = Math.min(Number.MAX_SAFE_INTEGER, allocationDetachFailures + 1);
+      else allocationReleaseFailures = Math.min(Number.MAX_SAFE_INTEGER, allocationReleaseFailures + 1);
+    }
+  }
+  function releaseOwned(resource, failures) {
+    if (!resource || released.has(resource)) return;
+    released.add(resource);
+    cleanupAttempt(() => { if (typeof resource.dispose === 'function') resource.dispose(); }, 'release', failures);
+  }
+  function cleanupEntry(entry, failures) {
+    let mesh, material;
+    cleanupAttempt(() => { mesh = entry.mesh; }, 'release', failures);
+    cleanupAttempt(() => { material = entry.material; }, 'release', failures);
+    // An in-flight add may attach after a reentrant dispose; detach only after it settles.
+    if (mesh && !entry.adding && !detached.has(mesh)) {
+      detached.add(mesh);
+      cleanupAttempt(() => { mesh.visible = false; }, 'release', failures);
+      cleanupAttempt(() => { scene.remove(mesh); }, 'detach', failures);
+    }
+    releaseOwned(material, failures);
+  }
+  function retirePending(entry) {
+    pending.delete(entry);
+    cleanupEntry(entry, { count: 0 });
+  }
+
   function acquire(kind) {
+    if (disposed) return null;
     let e = free.pop();
     if (!e) {
-      const material = new THREE.MeshBasicMaterial({ transparent: true, depthWrite: false, depthTest:opt.depthTest, side: THREE.DoubleSide, toneMapped: false });
-      const mesh = new THREE.Mesh(kind === 'attack' ? attackGeo : dustGeo, material);
-      mesh.frustumCulled = false; mesh.visible = false;
-      scene.add(mesh);
-      e = { mesh, material, kind, born: 0, life: 1, follow: false, wx: 0, wy: 0, band: null };
-      all.push(e);
+      const entry = { mesh: null, material: null, adding: false, kind, born: 0, life: 1, follow: false, wx: 0, wy: 0, band: null };
+      pending.add(entry);
+      try {
+        entry.material = new THREE.MeshBasicMaterial({ transparent: true, depthWrite: false, depthTest:opt.depthTest, side: THREE.DoubleSide, toneMapped: false });
+        if (disposed) { retirePending(entry); return null; }
+        entry.mesh = new THREE.Mesh(kind === 'attack' ? attackGeo : dustGeo, entry.material);
+        if (disposed) { retirePending(entry); return null; }
+        entry.mesh.frustumCulled = false;
+        if (disposed) { retirePending(entry); return null; }
+        entry.mesh.visible = false;
+        if (disposed) { retirePending(entry); return null; }
+        entry.adding = true;
+        try { scene.add(entry.mesh); } finally { entry.adding = false; }
+        if (disposed) { retirePending(entry); return null; }
+        pending.delete(entry);
+        all.push(entry); e = entry;
+      } catch (error) {
+        entry.adding = false;
+        retirePending(entry);
+        throw error;
+      }
     } else {
       e.mesh.geometry = kind === 'attack' ? attackGeo : dustGeo;
     }
@@ -137,6 +184,7 @@ export function createActorEffectLifetime(deps = {}) {
     if (opt.reducedMotion) { stats.suppressed++; return null; }
     if (live.length >= opt.maxLive) recycle(live[0], 'cap');
     const e = acquire(kind);
+    if (!e) return null;
     e.born = clock; e.life = kind === 'attack' ? opt.attackLifeMs : opt.dustLifeMs;
     e.follow = !!follow; e.wx = wx; e.wy = wy; e.band = null;
     e.material.color.setHex(kind === 'attack' ? opt.attackColor : opt.dustColor);
@@ -205,40 +253,26 @@ export function createActorEffectLifetime(deps = {}) {
     if (disposed) return 0;
     disposed = true;
     // Capture the actual owned pool at teardown, after further spawns are closed.
-    const entries = all.slice(), detached = new Set(), released = new Set();
-    let failures = 0;
-    const attempt = action => { try { action(); } catch (_) { failures++; } };
-    const release = resource => {
-      if (!resource || released.has(resource)) return;
-      released.add(resource);
-      attempt(() => { if (typeof resource.dispose === 'function') resource.dispose(); });
-    };
+    const entries = all.slice(), pendingEntries = Array.from(pending);
+    const failures = { count: Math.min(Number.MAX_SAFE_INTEGER, allocationDetachFailures + allocationReleaseFailures) };
     try {
-      for (const entry of entries) {
-        let mesh, material;
-        attempt(() => { mesh = entry.mesh; });
-        attempt(() => { material = entry.material; });
-        if (mesh && !detached.has(mesh)) {
-          detached.add(mesh);
-          attempt(() => { mesh.visible = false; });
-          attempt(() => { if (typeof scene.remove === 'function') scene.remove(mesh); });
-        }
-        release(material);
-      }
-      // These geometries are shared by the pool; never dispose per mesh.
-      release(dustGeo);
-      release(attackGeo);
+      for (const entry of entries) cleanupEntry(entry, failures);
+      for (const entry of pendingEntries) cleanupEntry(entry, failures);
+      // These geometries are shared by the pool; never dispose per mesh or rollback.
+      releaseOwned(dustGeo, failures);
+      releaseOwned(attackGeo, failures);
     } finally {
-      live.length = 0; free.length = 0;
+      pending.clear(); live.length = 0; free.length = 0;
       stats.active = false; stats.reason = 'disposed'; stats.live = 0; stats.pool = 0;
     }
-    // The existing lab counts thrown cleanup errors. Report only after all attempts.
-    if (failures) throw new Error(`actor effects 소유 자원 해제 실패: ${failures}`);
+    // Prior rollback failures remain failures; late cleanup is also readable in snapshot().
+    if (failures.count) throw new Error(`actor effects 소유 자원 해제 실패: ${failures.count}`);
     return all.length;
   }
 
   function snapshot() {
-    return Object.freeze({ endId: ACTOR_EFFECT_PROVENANCE.endId, provenance:ACTOR_EFFECT_PROVENANCE, options:opt, ...stats, meshes: all.length });
+    return Object.freeze({ endId: ACTOR_EFFECT_PROVENANCE.endId, provenance:ACTOR_EFFECT_PROVENANCE, options:opt, ...stats, meshes: all.length,
+      allocationCleanup: Object.freeze({ detachFailures: allocationDetachFailures, releaseFailures: allocationReleaseFailures }) });
   }
 
   return Object.freeze({ update, onActorChange, onSceneChange, dispose, snapshot });

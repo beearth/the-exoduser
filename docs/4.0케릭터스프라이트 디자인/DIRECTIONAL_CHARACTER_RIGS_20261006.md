@@ -700,3 +700,96 @@ public producer에서 borrowed `terrain.worldToScene`가 반환된 controller의
 외부 증거 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/actor-terrain-callback-closure/`: preflight.json·before/ fullbytes, source-replacements.json·limited-source-result.json·official-memory-reference.json, docs-keyword-search.txt·docs-search-summary.json·docs-search-disposition.json·docs-precise-matches.json·final-receipt.json. source6접점 외 원문 exact, 문서 oldprefix100%와 EOF LF1 유지. code1+doc1 finalpin 인계 뒤 동결, 지원작업 Git/GUI/server/실게임/save/전문송신0; root normal checkpoint/remote exact는 별도 인수한다.
 
 MAP PRODUCTION REPORT (§23): MASTER PLAN=decorative actor의 borrowed terrain callback 뒤 종료 수명 보호; LARGE OUTER MASS/MEDIUM CONNECTION/GROUND CONNECTION/PLAYABLE-COMBAT/LANDMARK-CENTER/SMALL DETAIL 맵geometry·배치·nav·원화·전투 수정0, 기존 guide/SSOT/LOCK 이력 유지. CAMERA QA=신규0. TECH QA=actual source 신규 단일9그룹37조건 PASS·6접점 역변환 exact·원모델/old suite 반복0. 실제 GPU/native6/audio/durable save 미인수. **VISUAL VERDICT: RETOUCH / NOT ASSESSED**. 본편플레이완료·A급·배경흐림개선·실GPU회수로 계산0.
+
+## 2026-10-07 ROOT-ACTOR-PENDING-ALLOCATION-LEDGER-20261007: 미등록 효과 자원의 소유·실패·종료 회수
+
+public producer가 material을 생성한 뒤 Mesh constructor 또는 `scene.add`에서 실패하면, 이전 acquire는 아직 `all`에 등록하지 않은 material/mesh를 회수할 수 없었다. 이번 단위는 **생성 중 pending ownership과 정상 committed 효과의 숫자를 분리**하고, 반환받은 자기소유 reference를 rollback과 controller.dispose의 공통 수명으로 회수한다. borrowed 콜백 중 이미 종료된 controller에는 새 효과를 성공 게시하지 않는다. 기존 native 게임·플레이어·save·전투·지형에는 연결 변경0이다.
+
+| id·source 접점 | 현재 정확 계약·수치·실패 의미 |
+|---|---|
+| 최종 public source | `tools/2_5d/actor-effect-lifetime.mjs` 14628 bytes / SHA256 `eff18b04cc80c47ee41f62602b782a44ac213e074fe3e936c2d333eaf3f2dfb3`. 직전12844 bytes / SHA256 `660f09d604f4a5f4bcc9ae5e3e1774d2bd52e42744585704706337845c0b0afb` fullbytes 외부 백업, 소유4접점 역변환 전체 원문 exact |
+| 변경·공유 소유 | 이 public source와 현재 문서의 완료 부록만. root world41575 bytes / SHA256 `df1760cbf0c1862dc01e591011212aa5a65dcd8d807a49da0441778c5780994e` 수정0. 새 모듈·repo 테스트·원 PNG·scene/nav·타인 WIP·owner STATE/LOG·Git/index 쓰기0 |
+| pending ledger L103 | `pending = new Set()`는 private. 새 entry는 mesh=null/material=null/adding=false로 기록하고 반환받은 material, Mesh reference를 각 constructor 직후 보유한다. private pending 길이·미완료 mesh를 snapshot/stats/all.length에 공개0 |
+| persistent identity L104 | `detached`와 `released`는 controller별 WeakSet. rollback과 첫 dispose가 같은 identity를 공유하며 동일 mesh detach 시도·material/공유 geometry release 시도를 중복0. 실패한 시도도 attempt ledger에 남아 자동 재시도0; failed cleanup을 성공해제로 인수0 |
+| acquire L137 | 시작 시 disposed면 null. material 반환 뒤, Mesh 반환 뒤, scene.add 반환 뒤 각각 disposed면 retirePending 후 null. 정상 add가 반환하고 active인 경우에만 pending에서 빼고 `all.push(entry)`로 committed 등록. 기존 free entry의 geometry 재사용 경로 유지 |
+| 원 constructor 인자 | material의 transparent=true/depthWrite=false/depthTest=opt.depthTest/side=DoubleSide/toneMapped=false, Mesh geometry의 attack/dust 선택과 원 옵션 불변. 두 공유 RingGeometry constructor의 인자·앞선 실패 unwind source는 이번 수정 밖 byteexact |
+| in-flight add | scene.add 호출 중 entry.adding=true, finally false. dispose가 add 내부에 재진입하면 pending material/공유 geometry는 먼저 회수하고 mesh detach는 add가 settle할 때까지 보류. callback이 dispose 뒤에 attach해도 반환 또는 throw 뒤 retirePending이 그 실제 mesh를 hide/remove 시도; 조기 remove 완료로 late attachment를 놓치지 않음 |
+| acquire 원 오류 | material/Mesh constructor 또는 scene.add가 던진 object/Error/null/undefined 등의 원값을 그대로 throw. Error.message·문자열 변환·cause getter 조회0. rollback cleanup이 실패해도 원 thrown identity를 대체0; 공개 handle을 성공 반환하지 않음 |
+| cleanupEntry L120 | mesh/material reference 조회, mesh.visible=false, scene.remove, material release를 독립 시도. adding=true 동안 mesh detach 보류. source mesh.geometry를 acquire rollback에서 dispose0: 공유 geometry는 controller 소유이며 pending material의 소유와 구분 |
+| releaseOwned L115 | unique owned reference를 release WeakSet에 먼저 기록한 뒤 dispose 함수 조회·호출을 독립 시도. 같은 reference가 controller.dispose와 rollback 양쪽에 나타나도 1회 시도. geometry2가 같은 실제 handle을 반환하는 주입 case도 동일 identity release1 |
+| spawn abort L184 | acquire가 null이면 즉시 null 반환. e.born/material color·opacity/place/mesh.visible=true/live.push/spawned 증가에 도달0. 이전 terrain.worldToScene 종료 guard 및 update의 dust/attack/live abort source는 그대로 보존 |
+| dispose L249 | disposed=true 선행. all.slice와 현재 pending entries를 capture하고 두 목록의 owned material/mesh, 공유 geometry를 같은 cleanup helper로 독립 시도. finally pending/live/free를 비우고 기존 active=false/reason=disposed/live0/pool0 확정. 정상 첫 반환 숫자는 committed all.length만, 반복0 |
+| controlledError | 첫 dispose의 aggregate에는 이전 rollback 진단 실패와 이번 cleanup 실패를 포함하고 MAX_SAFE_INTEGER로 포화. 모든 정리 시도 뒤 기존 `actor effects 소유 자원 해제 실패: N` 형식으로 throw. 실패한 material/remove/geometry를 성공해제로 표시0. first dispose가 이미 반환한 뒤 생긴 late cleanup 실패는 아래 frozen 진단으로 남고, 반복 dispose는 기존0 계약을 유지 |
+| 새 snapshot 필드 L272 | 기존 snapshot 메서드에 frozen `allocationCleanup={detachFailures,releaseFailures}`만 추가. 기존 provenance/options/stats/meshes 필드·public 메서드 변경0. pending count·새 actor/renderer/API·이벤트·RAF/timer 추가0 |
+| allocationCleanup.detachFailures | 초기0, finite safe integer. 실제 scene.remove 조회·호출 cleanup이 throw할 때1 증가, `Math.min(Number.MAX_SAFE_INTEGER,n+1)` 포화. 실패한 detach 뒤 실제 attached mesh가 남을 수 있으며, counter1을 제거 완료로 해석0 |
+| allocationCleanup.releaseFailures | 초기0, finite safe integer. 나머지 owned cleanup의 reference 조회·mesh 숨김·dispose 함수 조회/호출이 throw할 때1 증가, 같은 포화 규칙. 성공 dispose event 수가 아니라 예외 횟수. material/geometry의 시도1-event0 실패를 실제 완료로 승격0 |
+| cleanupAttempt L108 | 두 진단과 해당 cleanup invocation의 private 실패 집계는 실제 catch에서만 증가. 오류값을 포맷하거나 외부 getter를 조회0. 진단 object와 그 안의 두 primitive는 frozen snapshot 복사이며 caller가 수정해도 source 카운터 변경0 |
+| consumer 관측 경계 | 선택 effect가 해당 public producer인 경우 기존 `__rift25Lab.snapshot().effects.allocationCleanup`로 관측 가능. root가 retired handle을 INERT로 교체한 뒤에는 INERT snapshot이 이 producer 필드를 제공하지 않음. 새 필드 자체를 worldlab 전역 cleanupFailures·본편·save 인수로 계산0 |
+| public methods | `createActorEffectLifetime(deps={})` → frozen update/onActorChange/onSceneChange/dispose/snapshot, 메서드명·인수·기존 반환 형태 유지. 정상 update 기존 stats 숫자, 정상 첫 dispose committed count, 반복0 불변 |
+| 고정 수치·외형 | maxLive24 / dustLifeMs520 / attackLifeMs240 / stepMinIntervalMs110 / footBand4320 / dt clamp0..0.1초; dustColor0x1a140f·opacity0.5·size0.14 / attackColor0xc8623a·opacity0.8·size0.17 / groundLift0.003 / reducedMotion=false·depthTest=true. dust(-PI/2,0,0)·attack billboard·bands19/39·root override dust0.022/0.042·attack0.08/0.145 및 transparent/depthWrite/toneMapped 계약 변경0 |
+
+| 신규 actual-source 검수 group | 유의미 조건 | 결과 |
+| normal-pending-hidden-until-commit-and-numeric-dispose | 12 | PASS |
+| material-constructor-null-failure-preserves-unreturned-boundary | 11 | PASS |
+| mesh-constructor-failure-unwinds-material-not-shared-geometry | 12 | PASS |
+| scene-add-before-attach-nullthrow-rolls-back-owned-only | 10 | PASS |
+| scene-add-after-attach-throw-removes-attached-pending | 9 | PASS |
+| rollback-remove-and-release-failures-distinct-originalthrow-preserved | 15 | PASS |
+| scene-add-attached-dispose-reentry-pending-dedup-and-abort | 12 | PASS |
+| scene-add-dispose-before-late-attach-defers-detach | 9 | PASS |
+| scene-add-dispose-late-attach-then-throw-originalidentity | 10 | PASS |
+| material-returned-after-controller-closed-is-released-not-used | 10 | PASS |
+| mesh-returned-after-controller-closed-is-detached-not-configured | 10 | PASS |
+| rollback-remove-callback-dispose-preserves-original-and-ownership | 9 | PASS |
+| committed-plus-pending-shared-geometry-alias-counts-only-commit | 13 | PASS |
+| late-detach-failure-readable-after-first-dispose-completed | 8 | PASS |
+| rollback-release-failure-and-geometry-cleanup-remain-independent | 9 | PASS |
+| actual-private-cleanup-counter-saturates-safe-integers | 3 | PASS |
+| 신규 합계 | 162 | 단일 Node1회 / 고유16그룹 PASS16 / FAIL0 / 미도달0 / exit0 / vacuous·제외조건0 |
+
+이번 검수는 실제 수정 module import와 저장소 Three r160의 실제 RingGeometry/MeshBasicMaterial/Mesh/Scene을 사용했다. actual dispose event와 scene child 배열을 관측하며, 실패·재진입만 constructor subclass와 borrowed scene method wrapper에 주입했다. 정상 생성 중 add callback에서 meshes0/spawned0, 성공 뒤 committed1/firstdispose1, 실패·종료한 pending은 meshes0/spawned0/live0을 확인했다. material constructor nullthrow는 반환 material reference0이며 constructor 내부 미반환 allocation 회수를 입증하지 않는다. Mesh 실패에서는 반환 material 실제event1·공유geometry event0 뒤 later disposal에서 shared event2를 분리했다. add의 attach 전/후 원 throw, remove 실패와 material release 실패의 분리, 종료 전에 commit된1과 진행 중 pending1의 firstdispose1, shared geometry alias event1, late 반환 reference 회수 및 source helper의 saturation을 실제 source 경로로 검수했다. failed remove가 mesh를 남기는 case, failed material dispose의 event0, failed geometry release 뒤 다른 unique geometry event1을 기록하여 실패를 회수 완료로 표시하지 않는다. helper VM saturation은 실제 cleanupAttempt 본문을 추출하고 fixture 카운터를 MAX_SAFE_INTEGER에 seed한 CPU 경계이다.
+
+검수 이전 source 쓰기 준비에서 Python Path.write_text가 newline 인수를 지원하지 않아 TypeError·exit1이 발생했다. repository source 쓰기 전이었고 testsExecuted0이며, 외부 `preparation-write-failure.json`로 보존한 뒤 open(w,newline) 경로로 실제 수정했다. 이 준비 실패를 Node 검수 실패나 PASS 횟수로 혼합0. 실제 Node 신규 실행은1회, syntax는 실제 module import로 확인했다. 이전 dispose47·geometry24·terrain37·consumer105·모델13·GUI/Chrome 검수를 반복하거나 새162조건과 합산0이다.
+
+남은 경계: constructor가 내부 allocation 뒤 reference를 반환하지 않고 throw한 경우는 여전히 UNKNOWN. borrowed scene.remove가 실패하면 actual mesh가 scene에 남을 수 있고 진단이 그 실패를 보존하지만 성공회수로 인수하지 않는다. hostile Three property setter·미계약 resource alias·snap getter·onActorChange 재진입 및 실제 GPU buffer upload/물리 메모리 회수는 이 단위의 완료가 아니다. first dispose 완료 뒤 발생한 late cleanup 실패는 반복 dispose 재시도를 만들지 않고 frozen 진단으로만 유지한다. 본편·실게임/native6·청취·save ACK·실WebGL·카메라 시각 검수0, 별도 root consumer 검수와 생산 인수로 분리한다.
+
+코드 변경 후 docs 전체 관련 검색은 23경로505줄 / raw788914 bytes / SHA256 `c2e96bccf86d65e85c9ec4225790172ce127111463e2bb2297ae3cb619754ca3`이다. scene.add component의 escaping은 해당 component만 [.]로 보완 조회하고 원 결과와 최종 union을 둘 다 보존했으며, 전체 source 키워드 suite를 반복0. 모든 matching path의 disposition은 외부 docs-search-disposition.json에 기록했다. 소유 문서인 이 완료 append만 수정하고 rootops·SLICE·RESOLUTION·THREE·character overview/relief·editor·SSOT·CHANGELOG 등의 최신 public pin·pending/committed 상태·allocationCleanup 두 필드 동기화는 root에 목록으로 인계한다. 전문 STATE/LOG와 원 raw provenance/end는 이력으로 그대로 보존한다.
+
+외부 증거 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/actor-pending-allocation-ledger/`: preflight.json·before/ fullbytes, preparation-write-failure.json, source-replacements.json, pending-source-test.mjs·pending-source-result.json·pending-source-process.json·stdout/stderr, docs-keyword-search-final.txt·docs-search-summary-final.json·docs-search-disposition.json·final-receipt.json. 과거 문서 fullprefix100%와 EOF LF1 유지, 소유 code1+doc1 완료핀을 root 정상 checkpoint에 인계한다. 지원작업의 Git/GUI/server/실게임/save/전문송신/새팀·세션은0이며 80부터 완료소유 보존/100전 새출력 중단 정책을 유지한다.
+
+MAP PRODUCTION REPORT (§23): MASTER=decorative producer의 pending ownership·rollback/종료 자원 수명 보호; LARGE OUTER MASS/MEDIUM CONNECTION/GROUND CONNECTION/PLAYABLE-COMBAT/LANDMARK-CENTER/SMALL DETAIL 맵 geometry·배치·원화·nav·전투 변경0, 기존 guide/SSOT/LOCK fullread 이력 유지. CAMERA QA 신규0. TECH QA 실제 source 신규16그룹162조건 PASS·소유4접점 역변환 exact·실패 관측 분리. 실제 GPU/native6/audio/durable save 미인수. **VISUAL VERDICT: RETOUCH / NOT ASSESSED**. A급·배경 흐림 개선·실플레이 완료로 계산0.
+
+## 2026-10-07 ROOT-ACTOR-PENDING-ALLOCATION-LEDGER-20261007-SETTER-CLOSURE: setter 뒤 종료 경계 보정
+
+이 부록의 현재 source 핀과 신규 제한 검수가 직전 pending-ledger 완료 뒤의 좁은 후속이다. 위 **14628 bytes / eff18** 및 **16그룹162조건 PASS**는 해당 구핀의 실행 이력 그대로 보존하며, 새 핀에서 그 suite를 재실행하지 않았다. 이 부록의 4그룹74조건과 합산하거나 162조건을 현재 새 source의 전체-suite 인수로 표시하지 않는다.
+
+| id·접점 | 현재 정확 계약·근거·한계 |
+|---|---|
+| 현재 public source | `tools/2_5d/actor-effect-lifetime.mjs` 14758 bytes / SHA256 `95b16f5daaf3b64661f59076b0d4fff041ef3d4ca1f760c1df63f98cc78d6e44` |
+| 구핀 exact 보존 | source14628 bytes / SHA256 `eff18b04cc80c47ee41f62602b782a44ac213e074fe3e936c2d333eaf3f2dfb3`, doc120597 bytes / SHA256 `9ee27f6dc6e895409f35cb219872235a4c107b67706998cbb1943bb192c287ee`, 원 final-receipt16733 bytes / SHA256 `160687d6f614e3a0cabc1dd7b911b927e525b044cb6cb578b804cdb2e70ec9b6` fullbytes를 외부 setter-closure/before에 보존. 아래 두 guard 외 source 전체 역변환 exact, doc 기존 prefix100% 보존 |
+| 원 source 반례 | 구 acquire L148의 `mesh.frustumCulled=false; mesh.visible=false;`에 주입한 dependency setter가 controller.dispose를 동기 호출하면, 이전 source는 종료 뒤 다음 setter/scene.add로 진행할 여지가 있었다. native Three 실제 두 필드는 ordinary own writable data property이므로 실제 native 결함 관측으로 주장0 |
+| frustum guard L149 | `entry.mesh.frustumCulled=false` 직후 disposed면 `retirePending(entry); return null`. 종료 뒤 caller의 다음 visible setter·adding=true·scene.add·transform·spawn/live 숫자 게시0 |
+| visible guard L151 | `entry.mesh.visible=false` 직후 같은 disposed 검사. 이 guard가 `entry.adding=true` 직전 검사도 겸한다. 종료 뒤 scene.add·transform·spawn/live 게시0 |
+| cleanup와 caller 구분 | dispose의 정리용 `mesh.visible=false`는 독립 hide 시도이며 caller의 후속 configuration setter와 다르다. 신규 fixture는 cleanup hide1과 caller의 종료 후 write0을 따로 관측했다. frustum 종료 case의 forward visible0, visible 종료 case의 종료 전 forward visible1, 두 case의 종료 후 forward visible0 |
+| throw 경계 | setter가 dispose 뒤 null 또는 hostile Error를 throw해도 기존 catch의 원 thrown value/identity를 그대로 전달. Error.message getter 조회0. pending rollback과 dispose는 기존 persistent identity ledger를 공유하여 material release 시도1·실제 event1, geometry 두 unique handle 시도2·실제 event2, mesh detach 시도1; 반복dispose0 |
+| 보존 계약 | pending private·성공 committed만 all.length/stats에 노출, frozen allocationCleanup.detachFailures/releaseFailures 각 초기0·실제 cleanup 예외1증가·MAX_SAFE_INTEGER 포화, 정상 public API/options/provenance·첫dispose 숫자·반복0·constructor unwind·terrain callback guard를 이번 guard 외 source 역변환 exact로 보존 |
+| 이번 변경 범위 | source의 setter 두 줄을 분리하고 disposed guard2만 추가(130 bytes 증가). 새 모듈·새 field·재시도·별도 RAF/timer·worldlab/main·지형/nav·원 PNG·borrowed scene/camera 해제·save 변경0 |
+| 의존성 한계 | 주입 setter가 자기 내부에서 임의 외부 scene에 늦게 쓰는 동작까지 차단했다고 검수0. 이번 검수는 setter가 반환 또는 throw한 뒤 producer caller의 continuation 차단과 기존 owned cleanup 단일 시도만 인수. constructor 내부 반환 없는 allocation과 실제 GPU buffer 회수 UNKNOWN 유지 |
+
+| 신규 제한 actual-source CPU group | 유의미 조건 | 결과 |
+|---|---|---|
+| frustum-setter-dispose-stops-following-visible-and-add | 18 | PASS |
+| visible-setter-dispose-stops-following-add | 18 | PASS |
+| frustum-setter-dispose-then-nullthrow-preserves-value | 19 | PASS |
+| visible-setter-dispose-then-hostilethrow-preserves-identity | 19 | PASS |
+| 이 제한 실행만 | 74 | 단일 Node1회 / 고유4그룹 PASS4 / FAIL0 / 미도달0 / exit0 / 제외조건0 |
+
+신규 검수는 위14758 핀의 실제 public module과 저장소 Three r160의 실제 Mesh/Material/Geometry/Scene을 사용했다. 먼저 native 두 필드의 own writable data descriptor를 확인한 뒤 setter만 주입하고 actual dispose event·scene child 배열·caller/cleanup별 setter trace를 관측했다. 네 그룹 모두 scene.add0·종료 후 caller setter0·terrain/position continuation0·meshes/spawned0·scenechildren0·반복 release0을 확인했다. dispose 뒤 cleanup hide1은 종료 후 caller가 visible을 다시 게시한 것으로 세지 않는다. 두 throw 그룹에서 원값 identity와 message getterreads0을 확인했다. 실제 Native/GPU 실행에서 문제가 재현됐다는 뜻이 아니며, 브라우저/native6/save/audio/실GPU 검수0이다.
+
+이번 좁은 단위의 준비 오류0·Node 실행 실패0. 직전 단위의 Python newline TypeError 준비실패 및 final-receipt GFM 검사 준비실패는 그 외부 이력으로 유지하고 이번 PASS/FAIL에 합산0. 이전16/162·dispose47·geometry24·terrain37·consumer105·모델13·Chrome/GUI suite 재실행0이다.
+
+코드 변경 뒤 docs 전체 새 관련키워드 검색(정확 `frustumCulled`, `mesh.visible`, setter 종료/재진입, allocationCleanup, ROOT marker)의 7경로83줄 / raw392894 bytes / SHA256 `c56dbf535f20f1c13c757b29007c9927d563d1b8a01b7edf8a8deb9160f0da70` 결과·경로별 disposition을 외부 `docs-setter-keyword-search.txt`, `docs-setter-keyword-summary.json`, `docs-setter-keyword-disposition.json`에 보존했다. 이 소유 문서의 새 부록만 수정하고 다른 current source 참조 문서의 최신14758 핀·두 guard·4/74 독립 검수 동기화는 root에 인계한다. owner STATE/LOG·원 raw/공식 end·타인 WIP는 변경0.
+
+외부 증거 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/actor-pending-allocation-ledger/setter-closure/`: preflight.json·before/의 세 원자료, source-guard-replacement.json, limited-setter-source-test.mjs·limited-setter-source-result.json·limited-setter-process.json·stdout/stderr, docs-setter-keyword-*·docs-append-receipt.json·final-receipt.json. code1+doc1 완료핀 뒤 동결, Git/index/GUI/server/실게임/저장/전문송신/새팀·세션0. root normal checkpoint/원격 exact는 별도 수행 근거이다.
+
+MAP PRODUCTION REPORT (§23): MASTER=decorative producer의 dependency setter 뒤 종료 continuation 보호. LARGE OUTER MASS/MEDIUM CONNECTION/GROUND CONNECTION/PLAYABLE-COMBAT/LANDMARK-CENTER/SMALL DETAIL 맵 geometry·배치·원화/nav·전투 변경0, 기존 guide/SSOT/LOCK 이력 유지. CAMERA QA 신규0. TECH QA 현재14758 핀의 신규4그룹74조건 PASS·두 guard 외 역변환 exact; 원14628 핀16/162는 재실행0 이력. 실제 GPU/native6/audio/durable save 미인수. **VISUAL VERDICT: RETOUCH / NOT ASSESSED**. A급·배경 흐림 개선·실플레이 완료로 계산0.
