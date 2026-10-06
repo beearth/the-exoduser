@@ -2819,3 +2819,17 @@ root 접지그림자 code3 WIP·타인 변경·live supervisor STATE/LOG·원본
 | 남은 제작 | 주인공 동일 외형의 rig 원본 / 무기 socket, 발 IK·보폭, world→screen·앞뒤 가림·맵 광원, 공격 판정과 clip 시간, 실제 본편·성능 인수. 독립 모션 성공을 주인공 교체·A급 완성으로 계산하지 않음 |
 | 보존 / 송신 | 본편·맵·기존 에셋·세이브·Q/E·보호2_3 수정0. 기존 두 오더담당 및 전문팀 송신 소유 유지. 사용자 최신 수동 요청의 캐릭터 지원 담당1 배정; 새 관리 채팅·Claude 실행 세션·자동화 재개0 |
 | 상세 정본 | [전체 수치·원자료 SHA·구현·실제 QA·후속 게이트](../4.0케릭터스프라이트%20디자인/CHARACTER_RIG_MOTION_TRIAL_20261006.md) |
+
+
+## 2026-10-06 2.5D 캐릭터·맵 새 목표 및 완료 지형 후보 보존
+
+사용자 직접 지시에 따라 공통 목표 `CH1-2_5D-CHARACTER-MAP-SLICE-20261006`와 기존 전문15 역할의 책임을 [목표 문서](./CH1_2_5D_PRODUCTION_GOALS_20261006.md)에 확정했다. 두 오더담당이 새 목표를 수신했으며 전문팀 실제 착수와 별도로 기록한다. Codex7의 첫 UIUX 송신은 자동 승인 검토에서 `approval policy=never`의 도구 승인 불가로 거절되어 재시도/우회하지 않는다. 자동화·아침메일 paused 유지.
+
+| 완료 소유 후보 | 보존 상태 / 한계 |
+|---|---|
+| `tools/2_5d/rift-terrain.mjs` + `docs/4.1맵디자인+설정/HELL_RIFT_2_5D_SLICE_20261006.md` | 기존 editor_architecture 소유 완료 최종 핀으로 후보 미채택 보존. 원본 씬/PNG/nav 변경0 |
+| 맵 계약 | world8000², 전체1192nav, clip4300/3200–6560/4600, centre5430/3900, 독립 spawn5900/3820, 정사영50°·scale400, 뿔 footY4320, sourceParallax .965 |
+| 깊이 | 새 시험 geometry240worldpx / inset.9. 실제 높이·heightmap은 UNKNOWN, 기존feather120 미재현 |
+| 검수 | syntax1 PASS. 원총괄 통합 화면/native 인수 전; VISUAL RETOUCH |
+
+실제 NUL/untracked 전체 변경80 도달에 따라 완료 소유만 먼저 code+docs checkpoint한다. 캐릭터/통합 화면은 진행 중이며 완료 채택으로 계산하지 않는다. 보호2_3/Q 전용/E 불가/어택티켓 금지/타인 WIP/사용자 세이브/기존23 보존.
