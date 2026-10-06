@@ -70,3 +70,20 @@ Locked camera, five-second cinematic shot. Preserve the reference image exactly.
 검수용 사본·접촉 시트·백업은 `.gitignore`의 `/output/warrior_hand_20261006/`로 구분한다. 런타임 영상 경로는 계속 추적한다. 로컬 작업 레시피는 `tmp/warrior-hand-20261006.cjs`, 재생 검수 페이지는 `output/warrior_hand_20261006/review.html`이다.
 
 관련: [v25 제작 이력](WARINTRO_NEMESIA_V24_20261001.md), [전사 디자인 LOCK](../11내러티브·로어디자인/WARRIOR_DESIGN_LOCK.md).
+
+## 2차 교정: 칼자루를 손으로 감싸 쥐기 (2026-10-06 오후)
+
+사용자 지적: 1차 교정본도 "칼자루를 손으로 쥐고 있어야 하는데" 주먹을 손잡이 끝에 얹은 모양이었다. 손잡이가 주먹 아래로 비스듬히 박히고 폼멜(칼자루 끝)이 보이지 않았다. 사용자 지시 "이미지부터 교정" → 원화 확인 후 "저걸로 진행".
+
+| 항목 | 값 |
+|---|---|
+| 원화 교정 | `img/lording/rd13.png` → MagicLight GPT Image 2.5 sunburst 1장(200P), 참조=기존 rd13 1장. 오른손 네 손가락이 손잡이 가운데를 감싸고 엄지가 잠금, 손잡이가 주먹을 관통, 폼멜이 주먹 위로 보임, 코등이는 손 아래. 얼굴·눈·갑옷·망토·칼 각도·배경 유지. 2048×1152 |
+| 영상 | MagicLight Hailuo 2.3 / 768p / 5초(200/250 표시, 잔액 기준 250 차감), 기준=교정 원화. 1248×704 24fps 5.041667초. 0.5초 간격 10표본에서 손·손잡이·폼멜 고정, 망토·불만 움직임 |
+| 합성 | `tmp/warrior-grip-20261006.cjs`(1차 레시피 복사, 출력 폴더만 변경) assemble/verify. 첫 300프레임만 교체, 5초 이후 5484프레임 framemd5 전부 일치, 오디오 패킷 SHA-256 동일, 전체 디코딩 PASS |
+| 런타임 영상 | `video/warrior_story_v23_clean.mp4` 92,214,573바이트, SHA-256 `de9d2c41c5355ddd11f87aa2e40cbfab1e5087ad1e8e01ba706134139f0b55be`, 1920×1080 60fps 5784프레임 96.4초 |
+| 캐시 | 재생기 영상·`index.html` 재생기 스크립트 `?v=20261006-grip-wrap`, 로딩 rd 이미지 `?v=20261006-rd13-grip`(index.html 2곳) |
+| 하드링크 | `rd13.png`(링크7)·영상(링크5)이 배포 스냅샷 폴더와 하드링크였음 → 덮어쓰기 대신 새 파일 rename으로 링크를 끊어 스냅샷 보존 |
+| 재생기 검수 | Chrome에서 `ExoduserCharacterStory.play({language:'ko'})` 2.4초 시점 1920×1080 캡처, 새 쿼리 206 응답·KO 자막·미디어 오류 없음 |
+| 테스트 | 스토리 관련 42개 중 40 통과, 2건은 위 표의 기존 실패와 동일 |
+| 원본·작업물 | `output/warrior_grip_20261006/`(로컬 `.git/info/exclude` 처리): `original/`·`rd13_original.png`·`rd13_grip_v1.png`·`compare_*`·`corrected-motion.mp4`·`player_2_5s.png` |
+| 남은 일 | `assets/cutscene/warintro/cin_war.jpg`(미리보기 전용 구 전쟁 인트로)는 1차 이전 rd13 그림을 재사용 중 → 필요 시 같은 교정본으로 교체 |

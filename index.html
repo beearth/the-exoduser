@@ -994,7 +994,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="lobby_i18n.js"></script>
 <script src="lobby-stage-info.js"></script>
-<script src="character-story-player.js?v=20261006-hand-grip"></script>
+<script src="character-story-player.js?v=20261006-grip-wrap"></script>
 <script src="world-intro-player.js?v=20260907-v12-fullscene-newvoice"></script>
 <script src="world-intro-subtitles-data.js?v=20260907-v13-exodus-ko-escape"></script>
 <script src="world-intro-subtitles.js?v=20260907-v6-cinema-size"></script>
@@ -2626,14 +2626,14 @@ const _RD_IMGS=[
   'rd12.png','rd13.png','rd14.png','rd15.png','rd16.png','rd17.png'
 ];
 function pickRandomLoadingImage(){
-  return 'img/lording/'+_RD_IMGS[~~(Math.random()*_RD_IMGS.length)]+'?v=20260930-loading-remaster5';
+  return 'img/lording/'+_RD_IMGS[~~(Math.random()*_RD_IMGS.length)]+'?v=20261006-rd13-grip';
 }
 
 // 로비 진입 시 로딩 이미지 프리로드
 // - rd 계열 16장: rd3 제외, rd11.jpg 외 PNG (로딩 후보 preload)
 // - 1~19.png 19장 (game.html 부트 로딩 배경)
 function _preloadLoadingImgs(){
-  _RD_IMGS.forEach(f=>{const i=new Image();i.src='img/lording/'+f+'?v=20260930-loading-remaster5';});
+  _RD_IMGS.forEach(f=>{const i=new Image();i.src='img/lording/'+f+'?v=20261006-rd13-grip';});
   for(let n=1;n<=19;n++){const i=new Image();i.src='img/lording/'+n+'.png?v=20260930-loading-remaster5';}
 }
 
