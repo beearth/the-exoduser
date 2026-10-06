@@ -1221,3 +1221,54 @@ VISUAL VERDICT: RETOUCH
 - 진단UI와전체맵인수분리. 바닥해상도/실높이/정적주민/본편/native/청취미인수.
 NEXT PASS: 실제에셋시각보정·주민진행consumer·본편동일후보6단계/실청취.
 =========================================================
+
+
+### 2026-10-06 — 독립주민 발 고정 미세 호흡 소비자 채택
+
+완료ID `ROOT-RIFT-RESIDENT-IDLE-20261006`. 현행 정본 `MAP_SCENE_EDITOR_20261005.md` §25. 앞선 정적주민·애니메이션 미인수 표기는 당시 이력이다. 이번에 editor의4주민 미세호흡만 구현하며, 골격/걷기/본편 주민 애니메이션은 미인수다.
+
+| 항목 | 정확 현재 구현·검수 |
+|---|---|
+| 원자료→consumer | Claude ANIMVFX 공식ID `0f9a4f78-e7c5-4509-bb98-9d7a4cdb9857`/09:18:50.110Z/raw SHA `9e3480641c6a516f1074fb5a6908d8c81919c7ff69326b4fe327ec443f050f17`. 원문·기존pin preserved. root는 최신 strict profile와 exact4 첫 객체/발기준/설정·편집·export gate를 추가하고 phase를 index*.137로 확정 |
+| 수치·범위 | period2600ms/amplitude.014, scaleY=1+.014*sin(2PI*((t/2600+index*.137)%1)); index H/B/N/D=0/1/2/3. 최대±1.4%·H80=1.12worldpx·B48.72=.68208. 좌표/원화/JSON/기존등록·lighting·nav값변경0 |
+| 동작·보존 | on-screen+overlays에만 prepare/targetctx에만 verticalscale. ambientOFF/reducedON/busy/drag/pending off; selected+batch 해당주민scale1. PNG/offscreen 정적·onscreen Map 보존. module실패 editor유지, 읽기전용 detached snapshot. 기존30Hz만/새RAF·timer0 |
+| 실제검수 | 새unit10/10 actual1·syntax각1 PASS. 신규 Chrome 고유8기능그룹 PASS·실제launch2/context시도5·ready성공4·pages시도6/성공4·QA중제품수정0; 최초harness4FAIL 보존→raw01/07정확f32분석·미완료02/08만후속, 영상인코더부재/미제작. 새 renderer 영향으로 정적PNG1회 비교·원본결과 raw보존. 기존성공suite/540/종주/F분기/native6 반복0. 영상 인코더 미존재로 영상미제작. 현재시각2스크린/raw256body+640generic/발screen anchor변화0은 browser-qa raw에명시. Canvas scale입력은f32/DOMMatrix곱double; 저장raw 모델오차0·임의tolerance확대0. PNG는이전baseline byte exact, 개별 offscreen matrix는첫1개만검사/4명전부matrix인수로과장0 |
+| 실제채택·Git | code3+docs12 정확15경로 정상checkpoint, 실제NUL87→72·원격exactSHA 외부receipt. 수정전백업·보호25핀·타인72status/68exactpins·owner4본인기록 보존/root타인쓰기0. 본편/game/scene/source원화·세이브 변경0 |
+| 팀·실플레이경계 | Claude8는 새공식원자료8개 제출/각1회인계·그중이번ANIM소비자만별도채택. 다른7개는 의존성과 의미검수전 미채택. Codex7 전문팀송신은 자동승인검토거부·actual0이며 담당본인 소스조사만 완료. 전문전원제작/본편완료주장0·새팀/실행세션/중복TASK0 |
+| 인수·남은문제 | 전체맵 VISUAL VERDICT RETOUCH. 바닥확대해상도·실높이·골격/걷기·본편grant/quest/원자저장·상승/native6·실청취/실물폰/A급 미인수. paused자동화·아침메일 재개0/19시단일결과보고조건유지 |
+
+백업·코드pin·공식원자료/raw·docs전체keyword검색/disposition·새unit/화면/PNG/영상 존재·정상Git/원격근거: `/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/resident-idle-20261006/receipt.json`. 가이드§23 MAP PRODUCTION REPORT는 `HELL_RIFT_EDITOR_RESULT_20261006.md`의 동일완료ID를 따른다.
+
+
+================= MAP PRODUCTION REPORT =================
+STAGE: 지옥의 틈 독립주민v2 editor3387 미세호흡 / ROOT-RIFT-RESIDENT-IDLE-20261006
+MASTER
+- silhouette: 기존비대칭균열; regions: 남도착/서망자턱/동상승절벽/심연/북문.
+- main route: SOUTH→NORTH 원본start/nav/exit; side spaces: 기존4주민턱.
+OUTER MASS
+- LEFT: 서절벽; RIGHT: 동뿌리갑각; TOP: 북계단상승문; SOUTH: 남도착지; major holes: 심연. 신규geometry0.
+LARGE
+- source assets: painting/cleanplate/atlas exact불변; composites: 기존lighting+onscreen4주민미세호흡; overlap/repeated silhouette: 원본배치유지.
+MEDIUM
+- connections: 기존그림·길·발유지; remaining holes: 실제높이·지형접합 미인수.
+GROUND
+- shadow: 기존발그림자정적; contamination: 기존합성; structure integration: 발pivot고정/최대상단1.12worldpx호흡.
+PLAYABLE
+- main arenas: 전이쉼터; travel space: 기존길; breathing space: 주민턱; threat space: 심연; combat readability: 본편전투미인수.
+LANDMARK
+- primary: 심연/북문; secondary: 서턱/동절벽; tertiary: 불씨/뿌리유지.
+CAMERA QA
+- START: source불변; EARLY: exact4호흡/발고정; ARENA: 본편미인수; SIDE L: 선택정지; SIDE R: 편집·drag정지.
+- LANDMARK: 원본유지; LATE: reduced/ambient/module실패; EXIT: 정적export. 본편8카메라반복0.
+TECH QA
+- route: source불변/새BFS0; collision: 원본nav불변; pageerror/404/loading: 새Chrome raw의실제계수·intentional abort별도.
+- seam: 새정적PNG1회 비교; performance: 기존30Hz소비/새RAF·timer0·전체FPS미인수.
+- 신규unit10/10 actual1·syntax2 PASS; 신규 Chrome 고유8기능그룹 PASS·실제launch2/context시도5·ready성공4·pages시도6/성공4·QA중제품수정0; 최초harness4FAIL 보존→raw01/07정확f32분석·미완료02/08만후속, 영상인코더부재/미제작.
+FILES
+- stage-owned: code3+docs12 정확15; concurrent touched: root0/owner4본인기록허용; unrelated touched: root0/72status·68exactpins유지.
+GIT
+- staged: 완료15경로; commit: 정상checkpoint/외부receipt exactSHA; push: 기존branch·remote exactSHA; deploy:0.
+VISUAL VERDICT: RETOUCH
+- 4주민미세호흡 인수와전체맵분리. 바닥확대해상도/실높이/골격·걷기/본편/native/청취 미인수.
+NEXT PASS: 실제에셋시각보정·주민진행 원자consumer·본편동일후보6단계/실청취.
+=========================================================
