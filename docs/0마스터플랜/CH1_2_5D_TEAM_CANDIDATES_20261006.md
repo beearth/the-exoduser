@@ -346,3 +346,20 @@ root 전경완료 code2+docs16 정상push/remoteexact `9600afee0982a1456d833fc3c
 | QA | CONSUMER-LINK-GATES | rift-consumer-link-gates-2_5d.candidate.mjs | actualbytesregistration await+typedbounds/order/world/remaining>=0/hex·pin동일성/누락PENDING; echo/selfreport≠실WebGL/native/audio |
 
 TASK=CH1-RIFT-CONSUMER-LINK-20261007-<suffix>, 완료ID=TASK-CANDIDATE. 각1신규파일만, 원자료45/public/foreign68/ownerSTATELOG4·PNG/nav/save는별도소유보존. 실제80부터완료소유정확pins/end만즉시checkpoint·100전newoutputSTOP. root독립통합 중 전문독립작업일괄보류0. 맵 §23/시각RETOUCH·미관측명시/자동검사PASS를시각PASS로대체0.
+
+
+## CH1-RIFT-CONSUMER-LINK-20261007 완료 소유 부분보존
+
+실제79에서 관련완료문서 추가로80에 도달하므로 모든end/상세검수 대기 없이 현재 공식end·정확핀 7건만 후보미채택 정상checkpoint. 원자료45+7=52. 미완료source·end미확인WIP/foreign68/ownerSTATELOG4 제외. 신규7팀 송신·peer·첫source 각7을 확인했으며 이 숫자는완료수가아니다. MAP/ANIMVFX 선행guide실Read 미확인검수위반/복구는owner에만 인계; 늦은읽기 소급PASS0. root 다음단위는후보추가생산을반복하지않고NPC observation·dialogue pose 실제public 소비/화면 연결이다.
+
+| 역할 | 공식 완료 ID | 정확소유경로 | bytes | SHA256 | end UUID |
+|---|---|---|---:|---|---|
+| MAP | CH1-RIFT-CONSUMER-LINK-20261007-FOREGROUND-VIEW-DATA-CANDIDATE | tools/team-followup-20261007/hell-rift/MAP/rift-foreground-view-data-2_5d.candidate.mjs | 7891 | ec7eab8802d90361bf2d8e2a96df1b5927bafc7de5cb230079f99fb93b78632f | 40490349-8d26-487d-96ec-b196bd5acbdc |
+| SKILL | CH1-RIFT-CONSUMER-LINK-20261007-DIALOGUE-POSE-CONSUMER-CANDIDATE | tools/team-followup-20261007/hell-rift/SKILL/dialogue-pose-consumer-2_5d.candidate.mjs | 14971 | 28cfb0dd57fdd1aec5aee639b7a62474ea1bd5005d978745dfed7cdbd2a90ad2 | a94e50d2-e9b5-49a3-8eed-cde440074224 |
+| QA | CH1-RIFT-CONSUMER-LINK-20261007-CONSUMER-LINK-GATES-CANDIDATE | tools/team-followup-20261007/hell-rift/QA/rift-consumer-link-gates-2_5d.candidate.mjs | 10144 | 4a27ea67edfdeb26872b0a2053487a8d8e548645878fbb9a561a847d4940c3c8 | a4d1af70-336c-4c7b-a07f-1d0d3d100296 |
+| ENEMY | CH1-RIFT-CONSUMER-LINK-20261007-CORRUPTED-WOLF-CONSUMER-CANDIDATE | tools/team-followup-20261007/hell-rift/ENEMY/corrupted-wolf-preview-2_5d.candidate.mjs | 9814 | 8479b1148c911f3c5bb7b42c8522af6b00c4d9c9cee1ccb1e9731fb9596349c2 | bc2a6cbd-34b2-4a47-be81-f55c65075e5a |
+| ANIMVFX | CH1-RIFT-CONSUMER-LINK-20261007-GROUND-CONSUMER-HANDLE-CANDIDATE | tools/team-followup-20261007/hell-rift/ANIMVFX/rift-ground-consumer-handle-2_5d.candidate.mjs | 7452 | 3f51de1d506d59c17ecdaf46ee0549889ed9afcecd3b7e24dc096180edef8e2b | c73e818b-87c5-4132-ac51-4e9395c3f7e1 |
+| BOSS | CH1-RIFT-CONSUMER-LINK-20261007-SOURCE-OBSERVATIONS-CANDIDATE | tools/team-followup-20261007/hell-rift/BOSS/dark-druid-source-observations-2_5d.candidate.mjs | 9356 | 8248e87c69f8e6bc731557888cea0d10a165843305b80aa493cac3de68f90738 | 7961f3f7-eec1-4d2f-904d-2ac9e585c811 |
+| STORY | CH1-RIFT-CONSUMER-LINK-20261007-DIALOGUE-OBSERVATION-CONSUMER-CANDIDATE | tools/team-followup-20261007/hell-rift/STORY/dialogue-observation-consumer-2_5d.candidate.mjs | 8532 | 30a3185cab9066ab73bc1b49770bb7397ae64bcdc0f153636379db5709b89029 | e603cefb-1cbc-44ee-a6d5-a7b59485b278 |
+
+원raw·selftest/합성snapshot≠root WebGL/native/audio/실보상save 인수. 중복TASK/새팀/실행세션0. 해당root34분씬단위의 actual전경/남몸가림수정/실대화 증거와 구분. normalcommit/push·remoteexact는외부 consumer-link-preservation-receipt.json에보존.
