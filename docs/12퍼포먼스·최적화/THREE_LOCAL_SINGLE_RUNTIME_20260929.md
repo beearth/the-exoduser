@@ -662,3 +662,55 @@ public `actor-effect-lifetime.mjs` dispose-only 최소 구현은 code1+docs9로 
 MAP PRODUCTION REPORT (§23): 범위=public actor cleanup의 actual Chrome 관측/오류 이력 보존; geometry·outermass·ground·landmark·camera 배치 변경0, 기존 guide/SSOT/LOCK 유지. TECH=신규 CPU7/47 PASS는 이전 code checkpoint의 별도 검수; 이번 Chrome raw 두 followup 그룹 FAIL 유지/제한 actor 조건12관측 PASS. remove 잔류1·material actual dispose미도달1·native 삭제호출과 physical GPU UNKNOWN을 기록했다. 실제 게임·모바일·native6·청취·save0. **VISUAL VERDICT: RETOUCH**.
 
 외부 증거 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/actor-owned-dispose-browser/`의 final-receipt/acceptance-summary/map-production-report/원·후속 raw와 실제화면을 사용한다. 전체docs actor 관련 검색은53파일1181줄(raw2524094B/`29a74c5d66613e938339359107cc2b1790263c1cb8bc00f56895f447198b9a59`) 및 소스좁은검색22파일336줄의 경로별 disposition을 따른다. rootops6·소비자 actor3·directional·map editor·SSOT의 현재핀/인수상태를 정확 동기화하고 과거 원문fullprefix와 EOF LF1을 보존한다.
+
+
+## 2026-10-07 ROOT-ACTOR-REBUILD-CONSUMER-GUARD-20261007: 종료·중첩 요청을 보호하는 효과 재생성
+
+현재 `tools/2_5d-world-lab.mjs`는 OS reduced-motion 변경의 효과 재생성 consumer를 보강했다. 정상 변경은 기존처럼 동기로 반영하며, cleanup/factory/cue 콜백이 종료나 새 요청을 일으킨 경우 오래된 루프가 효과를 다시 등록하지 않는다. 이 절은 앞선 계획의 구현0 상태를 갱신한다. producer의 부분 할당·등록 전 재진입 문제는 여전히 별도 미해결이다.
+
+| id·적용 위치 | 정확 현재 계약·수치 |
+|---|---|
+| 완료 코드 | worldlab 39715 bytes / SHA256 050f627b712e1e8c83c5d51d010b1e61c177be8f4645fd63fe5220317c8a7dc8. 이전36039 bytes / SHA256 8388efcf35e8b9a768750fc54227928232363a32f8113039d4f81a04a90eca93 fullbytes 백업. 소유9접점 역변환 전체 원문 exact |
+| producer 불변 | actor-effect-lifetime.mjs 12162 bytes / SHA256 a80898889231d8780dbaad13b110c36171be2a93c7b6147c21fc3a3e2010c26b. raw69 직접import/전체producer 대체0. 이전 dispose CPU7/47·Chrome 오류 이력을 이 소비자 검사로 교체0 |
+| createEffects L276 | createEffects(id,reducedMotion=reducedQuery.matches). ensureInitialization()을 먼저 호출하고 actor factory에 raw scene 대신 initializationScene add/remove facade를 공급. geometry/color/opacity/defaults/DPR 값 변경0 |
+| 초기 등록 L428 | local effect=createEffects(id) → takeInitialized(effect,'effects') → effects[id]=effect. 초기 ready=false를 이유로 생성 자체를 막지 않으며, 생성 콜백 중 종료한 뒤 반환된 완성 handle은 epoch 확인 뒤 해제하고 등록0 |
+| 실행 가드 L280 | 재생성은 state.ready 및 !disposed/!error/!contextLost, lifecycleEpoch===initializationEpoch일 때만 허용. cue·old cleanup·factory 각각 반환 후 captured epoch와 current request identity 및 소유 slot identity 재검사 |
+| 요청·phase L282·L289 | private effectRebuildGeneration은 0 시작, 요청마다 증가하며 Number.MAX_SAFE_INTEGER=9007199254740991에서 진단 숫자 포화. 요청마다 fresh frozen identity를 생성하므로 숫자 포화에서도 stale publication 차단. owner phase는 cue/retiring/creating/publishing, 종료 후 idle |
+| 중첩 latest pending | owner가 있으면 새 요청 identity와 pending=true만 보존하고 즉시 반환. cue/cleanup/factory를 재귀 실행0, finally에서 즉시 재실행0. 한 pending boolean·한 latest request만 보존하며 actor id 목록·reducedMotion boolean은 accepted job 시작에 capture |
+| retire·해제 | effects[id]=INERT_EFFECT를 old cleanup보다 먼저 설정. 실제 old controller는 기존 releaseResource를 소비해 identity를 callback 전에 WeakSet 기록하고 controlled cleanup Error를 cleanupFailures에 집계. 한 actor 해제 실패가 다른 actor 재생성을 막지 않음 |
+| 생성 실패·새 참조 | factory 예외는 effectRebuildFailures에 별도 기록하고 해당 소유 slot은 INERT로 유지; 아직 current면 다른 actor 계속 처리. next는 local로 보유하고 current epoch/request/slot을 통과할 때만 publish. stale next는 releaseResource로 1회 해제, lifecycle 종료이면 lateResourceRejected 증가. callback이 바꾼 slot·새로 추가한 id를 stale 루프가 덮거나 임의 채택0 |
+| 고정 per-id reason | rebuild-pending / factory-failed / slot-replaced / 성공 시 빈 문자열. caught error.message 등 외부 예외 내용 조회0. 생성 오류와 cleanup 오류를 성공으로 삼키지 않음 |
+| INERT 반환 계약 | frozen update/onActorChange/onSceneChange/dispose/snapshot 5메서드. update/snapshot은 frozen active=false/inert=true/reason='rebuild-unavailable' 및 live/spawned/expired/recycled/pool/bandWrites/suppressed/meshes=0. 나머지3메서드는 숫자0. GPU 소유 자원으로 releaseResource에 집계0 |
+| 기존 RAF L267 | frame의 기존 ready/disposed 확인 다음 pending을 최대1회 flush. 즉시 ready/disposed/error/contextLost 재검사 뒤 pose/render 진행. 추가 RAF·timer·server·recursive queue0. 미종료 정상 frame의 기존 requestAnimationFrame1회 경로 유지 |
+| dispose L343 | root disposed=true/ready=false/lifecycleEpoch++ 이후, 외부 cleanup 전에 request=null/pending=false/owner=null. teardown은 INERT를 제외한 현재 실제 controller만 해제. 반복 종료 기존 가드 유지 |
+| readonly 진단 L281 | effectRebuildSnapshot() → frozen generation/phase/pending/failures/cueFailures 및 새 frozen reasons 복사. __rift25Lifecycle L370와 __rift25Lab L473의 effectRebuild 필드로 관측. mutable token/controller/Map handle 노출0 |
+| 오류 숫자·화면 leaf | factory failures 및 cueFailures는 0 시작, 각 caught failure마다 +1, MAX_SAFE_INTEGER에서 포화. 기존 status leaf에 고정 '효과 재생성 오류 N · 접근 표시 오류 M'을 추가하고 선택 slot이 INERT면 '효과 비활성' 표시. parent container 교체0. 실제 DOM 화면 검수는 미실행 |
+| 해제 시도 숫자 의미 | disposeAttemptCounts.effects는 초기 actor 수3이 아니라 현재 수명 전체의 실제 controller 해제 시도 누계. 정상 토글이면 old3 및 이후 new3 등의 시도가 추가되며, shared old identity는1회·INERT는0회. 이전 Chrome 이력의 effects3은 그 당시 관측값으로 유지 |
+| 고정 효과 값 | maxLive24/possiblepool72(3×24), dust520ms/attack240ms/간격110ms, public defaults dust size0.14/attack0.17·groundLift0.003·footBand4320 유지. lab 플레이어dust0.022/attack0.08, 드루이드dust0.042/attack0.145·depthTest=false 및 기존 RGB/opacity 유지 |
+
+| 신규 source consumer 제한 검수 | 조건 수 | 결과·범위 |
+|---|---:|---|
+| 전체 module syntax·소유9접점 exact | 12 | PASS; module parse 후 링크·전체 lab 실행0, 역변환 원문 exact/producer 핀 불변 |
+| 정상 동기 토글·actual Three options·dedup | 15 | PASS; 실제 Three r160/public actor factory 반환, captured reduced-motion/options/facade 및 동일 old handle1회 |
+| cleanup throw·다른 actor 계속 | 7 | PASS; 실제 변경 source releaseResource로 cleanupFailures1, factory3 도달·오류 종류 분리 |
+| factory throw·INERT·진단·teardown | 13 | PASS; throwing message getter 미조회, INERT 메서드·0수치·fixed reason, CPU leaf 문자열 및 실제 old3/new2 시도5 |
+| cue throw 격리 | 4 | PASS; factory3 계속·cueFailures1 및 CPU leaf 문구 |
+| old cleanup의 동기 pagehide callback | 10 | PASS; source dispose 호출로 종료·pending 취소·factory0·old3 각1회·후속RAF0 |
+| factory 반환 중 종료 | 7 | PASS; 반환된 완성 public controller 해제·등록0, old3/late1 시도4, reject1·RAF0 |
+| cleanup 중첩 최신 요청·기존 frame | 12 | PASS; 실제 source callback이 새 요청을 호출. 즉시 factory0·generation2 pending, frame1회로 latest false 세actor 일관 적용·RAF1 |
+| factory 중첩·readonly 진단 | 10 | PASS; creating snapshot의 frozen record, nested 요청의 pending, stale 반환 해제·latest frame1회 |
+| slot identity·captured ids | 6 | PASS; callback의 새 ref/new id 보존·stale next 해제·slot-replaced 진단 |
+| 초기 late admission·post-flush 종료 | 8 | PASS; local 반환 takeInitialized 거부/해제·slot등록0 및 frame flush 후 render/RAF0 |
+| 실행 단위 | 104 | 신규 Node stdin 1회·고유11그룹 PASS11/FAIL0/exit0. VM의 actual 변경 소스 추출, 저장소 Three r160/public actor factory 사용. pagehide/RAF/UI/scene lifecycle ports는 fixture이며 실제 Chrome/GPU/native 인수0 |
+
+검수 소스 핀은 위 39715/050f627b…이다. Node의 experimental VM Modules 경고는 실행 도구 경고이며 코드 검사 실패가 아니다. 기존 CPU7/47·GUI6/3·actor Chrome2·owner 모델11·DPR suite 재실행 및 합산0. fixture 호출의 pagehide/모의 RAF1을 trusted browser 이벤트 또는 실제 렌더 loop 인수로 승격0.
+
+기존 owner memory 공식 end519bf6c5-b01d-4943-a74c-5f59fcfb4419@2026-10-06T20:24:59.163Z / rawSHA7b967f94f5a3b48157a600af44c9b1cd362a01776a2d4dd40f70a24db699e72e의 모델11은 이전 이력이다. 새 endb7c855c2-b213-4860-af41-9a433e5aef9a@2026-10-06T20:37:33.547Z / rawSHAd07d61da3a399bd0c03fef32478dcecf892052e2336093acd80328e44b98c001의 보고9 중 유의미7·U2 assert(true)2개는 근거 제외로 구분한다. 자연 matchMedia 별도 task 설명을 Three.dispose/EventDispatcher/주입 scene callback의 동기 재진입 불가 근거로 채택0. 직접 catch로 실패를 삼키기·finally 즉시 재귀 제안은 채택0, 전문 새 TASK/재송신0.
+
+미해결 producer 경계는 actor-effect-lifetime.mjs L84–85의 두 번째 geometry ctor 실패 시 첫 할당의 반환 전 회수, L94–99의 material/Mesh/scene.add→all.push 사이 종료·등록 경합 및 진행 중 spawn의 등록 후 취소이다. consumer의 scene facade는 add 전 admission이며 이 경계의 leak-free/실제 물리 GPU 해제를 증명하지 않는다. 별도 owner 조사와 실제 검수를 기다리며 producer 원본·raw69·main code2·PNG·scene/nav·보호2_3/Q전용/어택티켓·사용자 save 변경0.
+
+코드 변경 후 전체 docs 검색(제외 경로0)은164파일853줄/raw1164941 bytes/SHA10b2bcd91dac12f1339837cd715a951b8f90b41984306b83b752af1eb9869f7f이다. 이 출력 중 actor/source 정확키워드로 좁힌19파일223줄과 모든164파일의 disposition을 외부에 보존한다. 소유 lifecycle docs3은 현재 구현·정확 값·인수 경계를 append로 동기화하고 이전 actual Chrome 실패/UNKNOWN·owner 모델·root main 문서 fullprefix를100% 보존한다. 운영docs6 및 다른 consumer 교차참조는 root 소유로 인계하며, 일반 자산 재생성·다른 시스템 reduced-motion 참조의 값을 임의 수정0.
+
+외부 영수증: `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/actor-rebuild-consumer-guard/`의 preflight.json, before/, source-replacements-final.json, limited-source-result.json, docs-keyword-search.txt, docs-precise-matches.json, docs-search-disposition.json, final-receipt.json. 코드1+docs3 완료 핀을 root에 인계하며 Git mutation/commit/push는 지원 작업0, 원격 정확 SHA 보존은 root 다음 단계이다.
+
+MAP PRODUCTION REPORT (§23): MASTER 기존 목적/LOCK·SSOT 이력 유지; LARGE OUTER MASS→MEDIUM CONNECTION→GROUND CONNECTION→PLAYABLE/COMBAT→LANDMARK/CENTER→SMALL DETAIL 원화·지형·배치·접지·nav·전투 변경0; CAMERA 신규 화면 검수0; TECH 신규 변경 source VM11그룹104조건 PASS, 이전 검수 반복0·실제 GPU/native6/audio/durable save 미인수. VISUAL VERDICT: RETOUCH / NOT ASSESSED. 화면 선명도·A급완성·실제 CH1-1 플레이 완료 선언0.

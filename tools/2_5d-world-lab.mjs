@@ -36,6 +36,11 @@ const anchorSamples=12;
 let lifecycleEpoch=0,cleanupFailures=0,lateResourceRejected=0;
 const disposeAttemptCounts=Object.create(null);
 const initializationEpoch=lifecycleEpoch,releasedResources=new WeakSet();
+let effectRebuildGeneration=0,effectRebuildRequest=null,effectRebuildOwner=null,effectRebuildPending=false;
+let effectRebuildFailures=0,effectRebuildCueFailures=0;
+const effectRebuildReasons=Object.create(null);
+const inertEffectStats=Object.freeze({active:false,inert:true,reason:'rebuild-unavailable',live:0,spawned:0,expired:0,recycled:0,pool:0,bandWrites:0,suppressed:0,meshes:0});
+const INERT_EFFECT=Object.freeze({update(){return inertEffectStats;},onActorChange(){return 0;},onSceneChange(){return 0;},dispose(){return 0;},snapshot(){return inertEffectStats;}});
 let previewSequence=0,previewEntry=null,previewEntryReason=null;
 const leaf = (id,value) => { const el=$(id); if(el && !el.children.length) el.textContent=String(value); };
 function stopFrame(){if(state.raf)cancelAnimationFrame(state.raf);state.raf=0;state.lastTime=null;}
@@ -199,7 +204,8 @@ function updateUi(){
   leaf('metric-position',`${Math.round(state.x)} / ${Math.round(state.y)}`);
   leaf('metric-nav',`${terrain.canWalk(state.x,state.y)?'접지':'경계'} · 막힘 ${state.blocked}`);
   leaf('metric-occlusion',state.foregroundOpacity<1?'전경 32% · 발 위치 유지':state.y<=4320?'뿔 뒤쪽 정렬':'뿔 앞쪽 정렬');
-  leaf('status',special.active?'다크드루이드 · 기존 특수동작 원화 · 발 기준 미인수':`${s.name} · 승인 외형 · 관절 변형과 방향 모션`);
+  const effectDiagnostic=(effectRebuildFailures||effectRebuildCueFailures)?` · 효과 재생성 오류 ${effectRebuildFailures} · 접근 표시 오류 ${effectRebuildCueFailures}`:'';
+  leaf('status',(special.active?'다크드루이드 · 기존 특수동작 원화 · 발 기준 미인수':`${s.name} · 승인 외형 · 관절 변형과 방향 모션`)+(effects[state.selected]===INERT_EFFECT?' · 효과 비활성':'')+effectDiagnostic);
   leaf('special-status',special.active?`${special.visible?'재생':'본체 숨김'} · ${special.frameSource?.frame??0}번 셀`:special.completed?'1회 종료 · 관절 모션으로 복귀':'기존 특수동작 원화를 1회 재생합니다.');
   $('special-play').disabled=state.paused;$('check-foot').disabled=special.active;
   const ws=wolf?.snapshot();
@@ -260,14 +266,59 @@ function pose(dt){
 function render(){if(state.error||state.contextLost)return;renderer.render(scene,camera);state.frames++;}
 function frame(time){
   state.raf=0;if(!state.ready||state.disposed)return;
+  flushEffectRebuild();if(!state.ready||state.disposed||state.error||state.contextLost)return;
   const dt=state.lastTime===null?0:Math.min(.04,Math.max(0,(time-state.lastTime)/1000));state.lastTime=time;
   if(!state.paused){move(dt);pose(dt);}render();if(!state.paused)sampleAnchor();
   if(time-state.lastUi>180){updateUi();state.lastUi=time;}
   if(state.ready&&!state.error)state.raf=requestAnimationFrame(frame);
 }
 function resume(){if(state.ready&&!state.raf&&!state.disposed&&!document.hidden){state.lastTime=null;state.raf=requestAnimationFrame(frame);}}
-function createEffects(id){return createActorEffectLifetime({THREE,scene,camera,terrain,options:{depthTest:false,reducedMotion:reducedQuery.matches,dustSize:id==='dark-druid'?.042:.022,attackSize:id==='dark-druid'?.145:.08}});}
-function updateReducedMotion(){interactionCue?.setReducedMotion(reducedQuery.matches);for(const id of Object.keys(effects)){effects[id].dispose();effects[id]=createEffects(id);}}
+function createEffects(id,reducedMotion=reducedQuery.matches){
+  ensureInitialization();
+  return createActorEffectLifetime({THREE,scene:initializationScene,camera,terrain,options:{depthTest:false,reducedMotion,dustSize:id==='dark-druid'?.042:.022,attackSize:id==='dark-druid'?.145:.08}});
+}
+function effectRebuildUsable(){return state.ready&&!state.disposed&&!state.error&&!state.contextLost&&lifecycleEpoch===initializationEpoch;}
+function effectRebuildSnapshot(){return Object.freeze({generation:effectRebuildGeneration,phase:effectRebuildOwner?.phase||'idle',pending:effectRebuildPending,failures:effectRebuildFailures,cueFailures:effectRebuildCueFailures,reasons:Object.freeze({...effectRebuildReasons})});}
+function updateReducedMotion(){
+  if(!effectRebuildUsable())return;
+  effectRebuildGeneration=Math.min(Number.MAX_SAFE_INTEGER,effectRebuildGeneration+1);
+  // A fresh identity still revokes stale publishers if the numeric diagnostic saturates.
+  effectRebuildRequest=Object.freeze({generation:effectRebuildGeneration});effectRebuildPending=true;
+  if(!effectRebuildOwner)flushEffectRebuild();
+}
+function flushEffectRebuild(){
+  if(!effectRebuildPending||effectRebuildOwner||!effectRebuildUsable())return;
+  const job={request:effectRebuildRequest,epoch:lifecycleEpoch,phase:'cue',ids:Object.keys(effects),reducedMotion:reducedQuery.matches};
+  effectRebuildOwner=job;effectRebuildPending=false;
+  const current=()=>effectRebuildUsable()&&effectRebuildOwner===job&&job.epoch===lifecycleEpoch&&job.request===effectRebuildRequest;
+  try{
+    try{interactionCue?.setReducedMotion(job.reducedMotion);}catch{effectRebuildCueFailures=Math.min(Number.MAX_SAFE_INTEGER,effectRebuildCueFailures+1);}
+    if(!current())return;
+    for(const id of job.ids){
+      if(!current())break;
+      if(!Object.hasOwn(effects,id))continue;
+      const old=effects[id];effects[id]=INERT_EFFECT;effectRebuildReasons[id]='rebuild-pending';job.phase='retiring';
+      if(old!==INERT_EFFECT)releaseResource(old,()=>old.dispose(),'effects');
+      if(!current())break;
+      if(effects[id]!==INERT_EFFECT){effectRebuildReasons[id]='slot-replaced';continue;}
+      job.phase='creating';let next;
+      try{next=createEffects(id,job.reducedMotion);}
+      catch{
+        effectRebuildFailures=Math.min(Number.MAX_SAFE_INTEGER,effectRebuildFailures+1);
+        if(!current())break;
+        effectRebuildReasons[id]=effects[id]===INERT_EFFECT?'factory-failed':'slot-replaced';
+        continue;
+      }
+      if(!current()||effects[id]!==INERT_EFFECT){
+        if(state.disposed||lifecycleEpoch!==job.epoch)lateResourceRejected++;
+        releaseResource(next,()=>next.dispose(),'effects');
+        if(!current())break;
+        effectRebuildReasons[id]='slot-replaced';continue;
+      }
+      job.phase='publishing';effects[id]=next;effectRebuildReasons[id]='';
+    }
+  }finally{if(effectRebuildOwner===job)effectRebuildOwner=null;}
+}
 function releaseResource(resource,release,kind){
   if(!resource||(typeof resource!=='object'&&typeof resource!=='function')||releasedResources.has(resource))return;
   releasedResources.add(resource);
@@ -293,10 +344,11 @@ function dispose(){
   if(state.disposed)return;
   // Invalidate asynchronous owners before invoking any external cleanup.
   state.disposed=true;state.ready=false;lifecycleEpoch++;anchorJob=null;keys.clear();state.attackQueued=false;
+  effectRebuildRequest=null;effectRebuildPending=false;effectRebuildOwner=null;
   invalidatePreview('disposed');stopFrame();
   releaseResource(observer,()=>observer.disconnect(),'observer');
   releaseResource(reducedQuery,()=>reducedQuery.removeEventListener('change',updateReducedMotion),'reduced-motion-listener');
-  for(const effect of Object.values(effects))releaseResource(effect,()=>effect.dispose(),'effects');
+  for(const effect of Object.values(effects))if(effect!==INERT_EFFECT)releaseResource(effect,()=>effect.dispose(),'effects');
   for(const helper of Object.values(helpers)){
     releaseResource(helper.geometry,()=>helper.geometry.dispose(),'helper-geometry');
     releaseResource(helper.material,()=>helper.material.dispose(),'helper-material');
@@ -318,7 +370,7 @@ function dispose(){
 window.__rift25Lifecycle=Object.freeze({snapshot:()=>Object.freeze({
   ready:state.ready,disposed:state.disposed,frames:state.frames,raf:!!state.raf,
   epoch:lifecycleEpoch,cleanupFailures,rendererCreated:!!renderer,
-  disposeAttemptCounts:Object.freeze({...disposeAttemptCounts}),lateResourceRejected
+  disposeAttemptCounts:Object.freeze({...disposeAttemptCounts}),lateResourceRejected,effectRebuild:effectRebuildSnapshot()
 })});
 // Register before the first top-level await, including terrain loading.
 window.addEventListener('pagehide',dispose,{once:true});
@@ -373,7 +425,7 @@ try{
     // Actor, foreground and effects share Three's transparent pass, so foot renderOrder is effective.
     rigs[id].object3d.traverse(node=>{if(node.isMesh){node.material.transparent=true;node.material.depthTest=false;node.material.depthWrite=false;node.material.needsUpdate=true;}});
     poses[id]=createDialoguePoseArbiter(id,{dialogueProvider:()=>dialogue,retrigger:false});
-    effects[id]=createEffects(id);
+    const effect=takeInitialized(createEffects(id),'effects');effects[id]=effect;
     helpers[id]=new THREE.SkeletonHelper(rigs[id].object3d);helpers[id].material.transparent=true;helpers[id].material.depthTest=false;helpers[id].material.depthWrite=false;helpers[id].renderOrder=70;helpers[id].visible=false;scene.add(helpers[id]);
   }
   shadow=new THREE.Mesh(new THREE.CircleGeometry(1,40),new THREE.MeshBasicMaterial({color:0x030a0c,transparent:true,opacity:.26,depthWrite:false,side:THREE.DoubleSide}));
@@ -418,5 +470,5 @@ $('world-canvas').addEventListener('blur',()=>{clearIntent();poses[state.selecte
 window.addEventListener('blur',handleBlur);
 $('world-canvas').addEventListener('webglcontextlost',event=>{event.preventDefault();state.contextLost=true;fail(new Error('WebGL 컨텍스트 소실. 페이지를 다시 열어 주세요.'));});
 document.addEventListener('visibilitychange',()=>{clearIntent();if(document.hidden)stopFrame();else resume();});
-window.__rift25Lab=Object.freeze({enterPreview,snapshot:()=>{let actor;rigs[state.selected]?.object3d.traverse(n=>{if(n.isSkinnedMesh)actor=n;});return {...state,previewEntry:previewEntrySnapshot(),raf:!!state.raf,rig:rigs[state.selected]?.snapshot(),poseConsumer:poses[state.selected]?.snapshot(),effects:effects[state.selected]?.snapshot(),specialMotion:specialMotion?.snapshot(),actorVisible:rigs[state.selected]?.object3d.visible,shadowVisible:shadow?.visible,acceptance:structuredClone(acceptance),registration:structuredClone(registration),residents:residents?.snapshot(),interactionCue:interactionCue?.snapshot(),residentAccess:structuredClone(residentAccess),dialogue:dialogue?structuredClone(dialogue.snapshot()):null,dialogueObservation:dialogueObservation?.snapshot(),wolf:wolf?.snapshot(),wolfPlacement:wolfPlacement?{...wolfPlacement,canWalk:terrain.canWalk(wolfPlacement.x,wolfPlacement.y,wolfPlacement.radius)}:null,wolfError,nearestNpc:structuredClone(nearestNpc),cameraPosition:camera?.position.toArray(),diagnosticProvenance:{INTERACTION:INTERACTION_CUE_PROVENANCE,QA:SLICE_ACCEPTANCE_PROVENANCE,MAP:SCENE_REGISTRATION_PROVENANCE},renderContract:actor?{transparent:actor.material.transparent,depthWrite:actor.material.depthWrite,depthTest:actor.material.depthTest,actorOrder:actor.renderOrder,actorScenePosition:rigs[state.selected].object3d.position.toArray(),shadowScenePosition:shadow.position.toArray(),foregroundOrders:terrain.occluders.map(o=>o.object3d.renderOrder)}:null,terrain:terrain?.snapshot(),contactUnderlay:contactUnderlay?.snapshot(),contactShaderPrograms:contactShaderPrograms.map(p=>({...p})),foregroundShaderPrograms:foregroundShaderPrograms.map(p=>({...p})),canvas:{width:$('world-canvas').width,height:$('world-canvas').height}};}});
+window.__rift25Lab=Object.freeze({enterPreview,snapshot:()=>{let actor;rigs[state.selected]?.object3d.traverse(n=>{if(n.isSkinnedMesh)actor=n;});return {...state,previewEntry:previewEntrySnapshot(),raf:!!state.raf,rig:rigs[state.selected]?.snapshot(),poseConsumer:poses[state.selected]?.snapshot(),effects:effects[state.selected]?.snapshot(),effectRebuild:effectRebuildSnapshot(),specialMotion:specialMotion?.snapshot(),actorVisible:rigs[state.selected]?.object3d.visible,shadowVisible:shadow?.visible,acceptance:structuredClone(acceptance),registration:structuredClone(registration),residents:residents?.snapshot(),interactionCue:interactionCue?.snapshot(),residentAccess:structuredClone(residentAccess),dialogue:dialogue?structuredClone(dialogue.snapshot()):null,dialogueObservation:dialogueObservation?.snapshot(),wolf:wolf?.snapshot(),wolfPlacement:wolfPlacement?{...wolfPlacement,canWalk:terrain.canWalk(wolfPlacement.x,wolfPlacement.y,wolfPlacement.radius)}:null,wolfError,nearestNpc:structuredClone(nearestNpc),cameraPosition:camera?.position.toArray(),diagnosticProvenance:{INTERACTION:INTERACTION_CUE_PROVENANCE,QA:SLICE_ACCEPTANCE_PROVENANCE,MAP:SCENE_REGISTRATION_PROVENANCE},renderContract:actor?{transparent:actor.material.transparent,depthWrite:actor.material.depthWrite,depthTest:actor.material.depthTest,actorOrder:actor.renderOrder,actorScenePosition:rigs[state.selected].object3d.position.toArray(),shadowScenePosition:shadow.position.toArray(),foregroundOrders:terrain.occluders.map(o=>o.object3d.renderOrder)}:null,terrain:terrain?.snapshot(),contactUnderlay:contactUnderlay?.snapshot(),contactShaderPrograms:contactShaderPrograms.map(p=>({...p})),foregroundShaderPrograms:foregroundShaderPrograms.map(p=>({...p})),canvas:{width:$('world-canvas').width,height:$('world-canvas').height}};}});
 }
