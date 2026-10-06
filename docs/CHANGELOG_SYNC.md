@@ -54525,3 +54525,22 @@ Codex7의 기존7 역할도 UIUX 조작·선택/ITEM 단일 유품 provider/BUIL
 최신24시간지시로exoduser-2단일ACTIVE/30분/종료없음 저장확인, 이전10/8대기/09–19window/19중지 superseded. 기존2owner에control갱신 전달/새전문중복TASK0. rootterrain source120worldpx/28nearest/opacity.38/sRGBopaque skirt-backplane/groundDetail3textures1material 및worldlab baked7mode8dir기존RAF 연결. 정지취소actor+shadow복구/같은druid효과풀반환/실모션지표수정. 신규실Chrome phase1유효18+phase2신규9PASS, phase1#19은focus를blur로오인한harnessfailure보존·정정. sourcePNG변조ready/RAF거부. 실제A/B1160cell관측(비보행967 delta0/보행193중156change). 원맵흐림/erupt상단잔여띠/footUNKNOWN RETOUCH/native청취0.
 
 checkpoint1 stage수집최종정정:raw5가아니라ENEMY포함6이며e01dc389ef12ab7494beb4bf4eb63eb621460d5c remoteexact. 마지막ANIMVFX공식end+10462B/6aba605a7cb144634a0653c05e66c1f819f0d63f73eaf936bbf76c0f4f3d9eb4 raw미채택보존추가. docs전체관련키워드검색/18관련정본행을역사와현행으로정확분리+상세map/character/운영4/후보Gates동기화. 이전원자료·foreign68·ownerSTATELOG4·게임/세이브/보호2_3변경0. before명캡처는수정후재사용됐다고명시/동일before-after쌍증거로계산0. 정상Git검수영수증은외부 `rift-quality-live-20261007` 보존.
+
+
+## 2026-10-07 다음 품질 작업 — CH1-RIFT-QUALITY-NEXT-20261007
+
+직전통합정상push/remoteexactSHA `5f1a3b4d5e558efd01b8fc218b98f8197c0db7f0`, 신규실Chrome유효27PASS/foreign68보존/index0/실제NUL72. raw31미채택보존과public소비를구분한다. 아래기존Claude7의다음1TASK씩은지금기존owner에게전달됐으며owner채팅에서수신ACK했다. 이는송신/peer/실code착수/end까지전부완료됐다는뜻은아니다. 각실제근거는owner새round영수증으로확인하고이전qualityNow를재송신하지않는다.
+
+| 기존역할 | 다음TASK suffix | 정확새소유파일(tools/team-followup-20261007/hell-rift/역할/) | 완료Gate/소비 목적 |
+|---|---|---|---|
+| MAP | FOREGROUND-REGISTRY | rift-foreground-registry-2_5d.candidate.mjs | 실제foot west/east/south3개의원XY/pivot/mask/cropUV/footY등록과ThreecallerAPI. 주민분리/nav1192불변/높이UNKNOWN |
+| ANIMVFX | GROUND-GUARDS-V2 | rift-ground-material-2_5d.v2.candidate.mjs | publicgroundmaterial 정확API adapter/실PNG·navSHA/hardnearest×softlinear/asyncprepareepoch/disposecleanup |
+| BOSS | SPECIAL-CELL-AUDIT | dark-druid-special-cell-audit-2_5d.candidate.mjs | 실제PNGdecode8셀alphaoccupiedbounds/edge관측, erupt상단잔여띠source 측정. anatomicalfoot추정/sourcepixels변경0 |
+| STORY | DIALOGUE-GUARDS-V3 | npc-dialogue-preview-2_5d.v3.candidate.mjs | methodgetter실행0/inheritedthenable·flagsaccessor→UNKNOWN/receiver·session정확/actualdialogue를대체0 |
+| SKILL | DIALOGUE-POSE-V3 | dialogue-pose-arbitration-2_5d.v3.candidate.mjs | 성숙publicpose/run/finitefacing/safeprovider/top-levelattackRemaining/close·char·blur·reset후이전공격0 |
+| ENEMY | PINNED-LOADER | enemy-atlas-pinned-loader-2_5d.candidate.mjs | 실제CH1 ghoul atlas/meta/walkimage measuredbytes/fullSHA/decode/UV범위/async수명 loader와기존billboard접점. AI·spawn·damage/save0 |
+| QA | EVIDENCE-GATES-V2 | rift-retouch-consumer-acceptance-2_5d.v2.candidate.mjs | await실editor export/import evidence/FORMAT_VERIFIED≠VERIFIED/필수관측없으면PENDING/publicsnapshots·실bytespins/UNKNOWN/native청취오인0 |
+
+각TASK ID=`CH1-RIFT-QUALITY-NEXT-20261007-<suffix>`, 공식completion=TASK+-CANDIDATE. 지정1새raw파일만/이전raw31불변/새harness·temp·세션·팀0. 기존owner만전문송신, source도구·end분리, root가통합실화면·docs/Git Gate를소유. 실제80부터완료소유만즉시보존/100전newoutputSTOP. 원총괄끝난뒤대기하도록일괄보류하지않고단일ACTIVE rootheartbeat가이어받는다.
+
+Codex7의latestcontrol은memory로만갱신되었고owner STATE/LOG는쓰기허용범위밖이라미갱신이라고보고했다. 이전UIUX/QUESTNPC전문송신은자동승인검토가권한을요구하면서거절한목적만유지한다. root전체/Claude독립작업보류로확대0, 권한요청·다른tool/path/host우회0/전원가동과장0.
