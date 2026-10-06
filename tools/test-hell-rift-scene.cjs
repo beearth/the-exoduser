@@ -12,7 +12,7 @@ const { PNG } = require('pngjs');
 const { loadImage } = require('canvas');
 
 const REPO = path.resolve(__dirname, '..');
-const OUTPUT = '/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/final-acceptance';
+const OUTPUT = process.env.EXODUSER_RIFT_QA_OUTPUT || '/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/final-acceptance';
 const SCENE = 'assets/map/hell_rift/editor_result_20261006/hell-rift.scene.json';
 const LAYOUT = 'assets/map/hell_rift/interspace_20261005/layout.js';
 const ART = 'assets/map/hell_rift/interspace_20261005/hell-rift-painterly-v2.png';
@@ -103,6 +103,10 @@ async function settled(page) {
 
 async function ready(page) {
   await page.waitForFunction(() => window.EXODUSER_SCENE_EDITOR?.ready && !document.getElementById('scene-workspace').inert, null, { timeout: 30000 });
+  await settled(page);
+  // Static scene/Undo pixel comparisons exclude time-varying decoration; animated
+  // rendering is checked separately by the rift ambience acceptance run.
+  if (await page.locator('#scene-ambient-option').isVisible()) await page.locator('#scene-ambient').uncheck();
   await settled(page);
 }
 

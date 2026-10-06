@@ -284,3 +284,10 @@ NEXT PASS: 안개/입자 좌표계를 에디터 transform·심연 mask·현행 n
 root 읽기 전용 semantic 검수: SKILL38/QA33/BOSS20 합계91검사 PASS. SKILL/BOSS는 복제 fixture이며 실제 런타임 import0, QA는 실제 core/layout/nav 실행과 editor/actor source 검사 혼합이다. SKILL의 Ctrl+P/Q/F키/E paused/탭정리 분기가 현행과 다르므로 전체 입력 교체는 미채택. BOSS gate fixture는 호출 전제조건 가드와 실제 보상/부활 수명 검증을 대신하지 않는다. QA는 top-level CLI/process.exit 때문에 production import 금지. blackBean magic/Q 유도반사·본편6단계/시각/청취 인수는 미실시다. ANIMVFX screen projection/world transform 불일치·ground nav 분포와 STORY의4 POI 보행면 밖 문제는 별도 consumer 수정 대상이다. **VISUAL VERDICT: RETOUCH** 유지.
 
 root ENEMY 읽기 전용 검수8/8 PASS·원문 SHA 전후 동일. 실제 브라우저 VM 모듈 평가에서 `process is not defined` 재현; OLD/NEW 고정배치 자기참조 검사와 현행 앵글러/시작 육괴 좌표가 다르고, 설명의 4킬+80%는 현행 각 지역 처치율·지역 문지기/앵글러·_fbDone 안전망과 다르다. 신규18 배치 polygon 내부 검사는 실제 `isW/canMv`·LOS/적 반경·지역 total/kills·중복 스폰/재도전 검증을 대신하지 않는다. 직접 import/배치채택0 유지.
+
+
+## 14. root 틈 분위기 consumer 완료 — 2026-10-06 KST
+
+공식 완료ID **ROOT-RIFT-AMBIENCE-INTEGRATION-20261006**. §12/13의 미소비 ANIMVFX 원자료를 SHA 불변으로 보존하고, `tools/map-scene-rift-ambience.mjs`의 world/nav/mask adapter를 통해 독립 씬 에디터에만 연결했다. screen projection 이중 transform을 제거하고 ground22안을 nav centre로 고정·clip, 전사 주변 제외영역과 reduced-motion/checkbox·PNG 제외를 구현했다. `.mjs` MIME을 수정하여 실제 browser import/움직임/끄기 검수 완료. [정확 코드 계약·수치·검사](MAP_SCENE_EDITOR_20261005.md#9-2026-10-06--저장된-틈의-안개잔불-consumer), [§23 최신 제작 보고](HELL_RIFT_EDITOR_RESULT_20261006.md#2026-10-06-최신--안개잔불의-실제-에디터-연결)를 따른다.
+
+최초 Claude raw8/8는 `15f5e64b9221b7bfbf8d5ca41d5328fcc9afe4a0`에 보존 완료. 이번 code6은 root 소비자 구현이며 후보8의 생산 전체 채택이 아니다. ART 크기/clean plate, STORY 접근 불가4POI, SKILL/BOSS/QA/ENEMY의 실제 runtime 의미검수·소비자는 후속. 본편 game.html·scene/nav/core/actor/원자료8 변경0. 검사 core29/adapter10/static18, animated browser9그룹/UI15그룹 PASS·8카메라 root 시각확인. **VISUAL VERDICT: RETOUCH**; 실제6단계·청취/A급 인수0. 자동화 일시중지·유일오더·관리3/전문15=18·새팀/세션0 유지, Codex7 새 제작착수 미확인.

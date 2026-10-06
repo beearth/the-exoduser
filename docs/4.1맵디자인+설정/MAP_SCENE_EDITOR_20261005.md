@@ -190,3 +190,44 @@ NEXT PASS: 승인 원화를 완전 배경/바닥/외곽/전경으로 제작하�
 ### 2026-10-06 결과 씬 보행 정합 보정
 
 저장된 잔류자의 계곡 scene JSON은 초기 허공 통과를 수정해 동측 그림 바닥·계단에 맞춘 34점/반폭2.75tile corridor로 변경했다. 현행 walkable1192 / radius12 BFS1185 / navSHA a4508aa62f21c9b4380640307b36eef06656ebdf0c0245a2f78833d65dda0179. 원본 PNG/layout와 기본 프리셋 nav4107은 그대로다. 실제 키종주267tiles/158turns/36.445초·오류0, 편집 결과는 본편 미채택. 정확 좌표·시각 한계·검수는 HELL_RIFT_EDITOR_RESULT_20261006.md를 따른다.
+
+
+## 9. 2026-10-06 — 저장된 틈의 안개·잔불 consumer
+
+공식 완료ID **ROOT-RIFT-AMBIENCE-INTEGRATION-20261006**. `tools/map-scene-rift-ambience.mjs`가 원자료 ANIMVFX의 `field/BANDS`만 소비한다. 원자료 SHA256 `2e1c4decdb189a62df94faaa8c909a4e642dbc98c695f92b8ae4b020f186053f`는 불변. `editor.html`의 `scene-ambient-option`/`scene-ambient`는 **틈의 안개와 잔불** checkbox이며 저장된 틈 계약을 만족할 때만 표시한다. 타일 에디터와 일반 CH1 씬에는 적용0. 실제 높이·NPC·본편 연결은 미구현이다.
+
+### 좌표·활성·렌더 계약
+
+| 항목/id | 코드의 정확 계약 | 적용 위치/상태 |
+|---|---|---|
+| `supportsRiftAmbience(scene)` | format=`exoduser-map-scene`, version1, status=`ISOLATED_EDITOR_RESULT_NOT_ADOPTED`; world200×200/T40; start4020,7740 / exit4020,1740; navigationReview.basis=`painted-eastern-ledge` | 실패 시 `createRiftAmbience`가 null, 일반 씬은 기존 렌더 유지 |
+| sourcePins | painting=`a3d95a005924692626321cedf384d1e4e90282ba990d9e19e86a3aa73a1563d4`; abyss=`ace0c853cc27cbb4d2b807104273399a1144df77d31b1003e574141fed10f991`; originalNav=`52bd839614a9d1adad767d472357438c1d58a338ac52639705e9b8ad20a3bbdb`; nav=`a4508aa62f21c9b4380640307b36eef06656ebdf0c0245a2f78833d65dda0179` | pin 문자열 비교. 매 프레임 파일 SHA 재계산0 |
+| 구조 | west(flat):west-0/1 → east(flat):east-0/1 → centre(flat):centre-0/1 → abyss(flat):rift-depth → foot(foot):west-root/east-horn/south-root → front(flat); layer parallax 전부1, visible boolean | 지정10asset/object 존재, asset source1920²와 경로 일치. rift-depth만 abyss-v3, 나머지 painterly-v2 |
+| 제한/유효성 | assets≤128, objects합≤2000; object x/y 절댓값≤40000, rotation절댓값≤360; width/height1…32000; pivot/opacity0…1, flipX boolean; mask3…256점/각좌표0…1; maskFeather0…160/sourceParallax0…1(있으면 mask필수) | nonfinite/변형 계약 실패 시 장식 비활성. 제한은 core 계약을 보수적으로 대조 |
+| nav | binary 배열40000칸; 최소 유효 centre1개. radius12 `canWalk`로 tile centre 검사; row run마다 T40 사각 clip | 저장 결과1192칸/155rowruns는 관측값이며 활성 predicate의 고정 count 조건은 아님 |
+| world draw | 이미 DPR/viewport transform을 받은 ctx에 world8000² draw. adapter의 translate/scale0 | abyss 객체를 그린 직후 back→ground, foot/actor까지 그린 뒤 front, debug overlay는 이후 |
+| mask 변환 | local `(u-pivotX)*width*flipSign`, `(v-pivotY)*height`를 rotation(π/180)→object x/y 이동 | back 실제 abyss polygon clip. `.965`는 그림 source 시차이며 effect에 이중 적용0 |
+| ground 캐시 | raw `lifeMs*q/4`, q=0…3에서 footY:size identity22개 수집 → 유효 nav centre의 최소제곱거리점 | nav 배열 참조 교체/brush 재생성 때만 nearest·rowruns·Path2D 재구축. frame당 nearest검색0 |
+| front cull | 보이는 foot 객체 polygon 안에 `(particle.x, particle.footY)`가 있으면 제외 | front/foot 레이어 숨김이 front 입자 전체를 끄지는 않음 |
+| actor 제외 | x±40, y−96…y+24 rectangle, 입자 bbox overlap cull + evenodd clip | 플레이 중 현재 기존 전사 발 기준. 장식은 scene/input/save 무변 |
+| ctx 복구 | source-over, shadowBlur0, save/restore finally | 외부 ctx transform/alpha 누출0 |
+| UI/프레임 | reduced-motion이면 기본OFF, reduce로 바뀌면OFF; 해제 때 자동ON0. 수동 toggle 가능. 정지화면 추가 redraw 간격≥1000/30ms; document.hidden이면 추가 redraw0 | 이동 FPS를30으로 제한하지 않음. abyss 숨김은 back+ground 호출을 함께 생략 |
+| export/진단 | `render(target,false)`는 장식 제외; `EXODUSER_SCENE_EDITOR.ambience()`는 enabled/stats 읽기 전용 | PNG·JSON·nav·저장키 변경0; checkbox 상태 scene JSON 저장0 |
+| 서버 | server.cjs MIME `.mjs = application/javascript` | 이전 octet-stream 반환은 Chrome ESM 로딩 실패. 격리3387만 기존 저장경로로 재시작하여200/import 확인 |
+| 정적 검사 출력 | `EXODUSER_RIFT_QA_OUTPUT` 환경변수 우선, 없으면 기존 `final-acceptance` 경로 | test-hell-rift-scene은 장식을 끈 뒤 Undo/pixel 비교. 움직임은 별도 실제 browser 검사 |
+
+### 장식 수치
+
+| band | raw seed | count | lifeMs | RGB | raw parallax/rise/sway | adapter 크기(worldpx 반경) | 개별 alpha cap |
+|---|---|---:|---:|---|---|---|---:|
+| back | 0x41564258 | 44 | 9000 | 214,120,96 | .965/520/90 | size1.4…3 ×2.4 =3.36…7.2 | .12 |
+| ground | 0x47524e44 | 22 | 14000 | 120,128,120 | 1/40/220 | rx=max(48,min(110,size*.4)), size120…300; ry=min(24,rx*.22) | .10 |
+| front | 0x46524e54 | 18 | 7000 | 224,123,58 | 1.04/680/60 | size1…2.4 ×2.4 =2.4…5.76 | .10(raw .22를 제한) |
+
+raw fade는 시작15%/마지막30%. ground 위치는 캐시된 nav anchor로 고정되어 raw rise/sway를 추가 이동에 쓰지 않는다. front parallax1.04도 adapter world 위치에 적용하지 않는다. alpha=`min(cap,p.alpha)`이며 back만 `min(1,object.opacity/.38)` 추가곱. .001 이하는 cull. **개별 cap이며 중첩 전체 alpha 상한은 아니다.** back/front radial gradient는 지원 ctx에서만 사용. ground ry 범위10.56…24는 반경이다.
+
+### 검수·제한
+
+core29/29, adapter10/10, 실제 animated browser9그룹, 정적 틈18/18, 기존 editor UI15그룹 PASS. 8카메라 PNG를 root가 실제 열어 확인했고 장식으로 보행 경계가 가려지는 문제는 관측되지 않았다. 큰 갈색 진입면, 확대 원화의 grain·인물 크기·독립 NPC/전경 부족은 남았다. world/source/nav1192와 기존 입력·export 유지, A급 완성은 **VISUAL RETOUCH**. 성능 전체 스트레스·실게임 FPS/native6단계·청취 인수0.
+
+외부 근거: `/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/ambience-integration-20261006/`의 `qa/browser-verification.json`·`static-qa/acceptance-report.json`·`editor-regression/ui-verification.json`·`qa/camera-0…7.png`. 초기 module404/잘못된 MIME 실패는 이력으로 보존하고 현재 PASS와 구분한다. sceneSHA `f5068d742ddd6da3e1c78fb7178317df228e936bab0edc6237dec40bfd0bb5ac` 불변. code6+관련 docs를 좁게 checkpoint, 정확 원격 SHA는 외부 receipt로 기록한다.

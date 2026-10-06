@@ -53943,3 +53943,13 @@ BALANCE1340 HP/MP 및1345 Shield 후보를 공식source59에서 실제 전체 �
 ### 2026-10-06 — ENEMY 최초 완료 후보 / Claude8 원자료8 보존
 
 `ROOT-CLAUDE8-ENEMY-RAW-CHECKPOINT-20261006`: `tools/team-followup-20261005/hell-rift/ENEMY/rift-enemy-boundary.mjs`,20897B,SHA256 `ec6b4446984c8d48b8cfe5f680ba1ca41c0c2c337092da936686444d272e15ce`,실제 end_turn `6721d678-7005-422e-99f5-602f2a530f5d`,endID `ENEMY-CH1A-RIFT-BOUNDARY-CANDIDATE-20261006`. [CH1 제작 정본 §13](4.1맵디자인+설정/CH1_1_A_GRADE_PRODUCTION_20261005.md)와 함께 원문 불변·생산 미채택으로 보존. 최초 제출8/8, sourcechecks8/8은 실제 AI/교전·길막·고정배치/gate와 구분한다. root 검수에서 브라우저 process 참조·현행 고정배치/지역gate 불일치를 확인해 직접 런타임 import는 보류했다. 동일 후보의 상세 source 결과는 정본에 기록한다. 본편·앱·세이브·raw7·타인WIP 변경0, VISUAL RETOUCH 유지.
+
+
+## 2026-10-06 — ROOT-RIFT-AMBIENCE-INTEGRATION-20261006
+
+- 변경: `editor.html`, `server.cjs`, `tools/map-scene-editor.js`, `tools/map-scene-rift-ambience.mjs`, `tools/test-map-scene-rift-ambience.cjs`, `tools/test-hell-rift-scene.cjs` 6개. 저장된 틈 world/nav/mask 장식 adapter·안개/잔불 토글·reduced-motion·PNG 제외·.mjs application/javascript·정적 검사 출력 env/장식 끄기 구현.
+- docs 전체 `MapSceneActor|map-scene-editor|보행 시험|지옥의 틈|rift-ambience` 검색 후 씬정본§9·결과§23·CH1§14 및 마스터/콘텐츠/SSOT/팀정책/연속오더/역사후보에 최신 경계를 동기화했다. 수치·id·레이어·수명/색/반경/개별alpha·캐시·활성·export는 MAP_SCENE_EDITOR_20261005.md §9 표를 따른다. 기존 bytes/줄바꿈 보존한 append이며 이전 ENEMY§13 기록을 유지한다.
+- 검증: core29/29, adapter10/10, static 틈18/18, 실제 움직임/토글/PNG/nav/reduced-motion9그룹, generic UI15그룹 PASS. root camera0…7 actual시각 확인. 오류0/source/nav 불변. fixture합99검사는 앞 raw 분석 이력이며 native/A급 완료로 계산0.
+- 원자료8·source sceneSHA f5068d742ddd6da3e1c78fb7178317df228e936bab0edc6237dec40bfd0bb5ac/navSHA a4508aa62f21c9b4380640307b36eef06656ebdf0c0245a2f78833d65dda0179/1192칸·원본4107·본편/core/actor·보호2_3/Q-only·타인WIP/STATE/LOG·세이브/기존23 무변. 초기404/MIME실패와 currentPASS 근거 구분, 격리3387만 기존save경로 재시작.
+- 백업/검사/스크린샷/영수증: `/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/ambience-integration-20261006/`. 완료 소유 code6+관련docs10만 checkpoint/push하고 remote exactSHA 외부기록. 자동화/새팀/권한/설치/Windows/게임패키지/게시0.
+- 구현 상태: editor 보행·레이어 편집/저장·장식 연결 완료. NPC 분리/크기·대화/보상·장 gate·본편·native6단계/청취 미완료. **VISUAL VERDICT: RETOUCH**.

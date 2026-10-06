@@ -172,3 +172,26 @@ NEXT PASS: 전체 전경·원화 인물 분리/크기 정합·런타임 대화·
 유일 Claude 오더담당의 01:01:43Z 기존8 역할 정상 전달·peer8/Read8/source8 및 최초 완료7의 end_turn/정확 파일 핀을 확인했다. 앞의 송신0/EPERM은 조치 전 이력이며 현재 Claude8 재개를 덮어쓰지 않는다. [완료 raw7·정확핀/endID·검수 경계 정본 §12](CH1_1_A_GRADE_PRODUCTION_20261005.md#12-claude8-실제-재개완료-후보7-원자료-보존--2026-10-06-kst)에 따른다. ART/SKILL/QA/ANIMVFX/BOSS/STORY/MAP의 독립 후보7을 생산 미채택으로 보존하고 JSON3 parse/MJS4 문법 검사 PASS를 기록한다. ENEMY 최초 turn·다른 WIP/live STATE/LOG/세이브·기존23 제외. root는 raw7+관련 docs8만 checkpoint하며 실제80부터 상세검수 대기 없이 완료소유를 보존한다.
 
 완료7팀 후속은 유일 오더담당의 독립 메모리 조사 각1회·새 파일0/raw수정0. 자동화 중지·새팀/세션/권한/인증 변경0, 관리3/전문15=전체18 유지. Codex7 새 제작착수는 미확인. 공유 editor/core/actor/틈 결과/nav1192·본편 무변. NPC 대사/보상·분위기 consumer·장 전환/본편6단계·실청취 연결은 미완료이며 **VISUAL RETOUCH** 유지. 후보 제출/문법 PASS/Git 보존을 게임 완성이나 A급 인수로 계산하지 않는다.
+
+
+## 2026-10-06 최신 — 안개·잔불의 실제 에디터 연결
+
+공식 완료ID **ROOT-RIFT-AMBIENCE-INTEGRATION-20261006**. [씬 에디터 정본 §9](MAP_SCENE_EDITOR_20261005.md#9-2026-10-06--저장된-틈의-안개잔불-consumer)에 활성·좌표·mask/nav·전사 제외영역·캐시·색/수명/크기/alpha·서버 MIME·UI/export/검사 계약을 기록했다. ANIMVFX raw는 그대로 두고 별도 world adapter로 저장된 틈에 장식만 채택했다. 직전 consumer 미완료는 당시 이력이며 현재 **editor 분위기 consumer 구현**; NPC 대화/보상·장 전환·본편 consumer는 미완료다.
+
+### MAP PRODUCTION REPORT — 분위기 통합 pass
+
+| §23 항목 | 이번 결과 |
+|---|---|
+| STAGE / MASTER | 격리된 잔류자의 계곡. 비대칭 균열/남쪽→북쪽 보행·8카메라·side space의 기존 scene 유지 |
+| OUTER MASS / LARGE | LEFT/RIGHT/TOP/SOUTH·major holes·source2bitmap/crop6+전경3+심연1=10객체 그대로. 신규 scatter·반복 silhouette·생산 bake 변경0 |
+| MEDIUM / GROUND | 연결/접지·재질 기존값 유지. ground22안개를 실제nav centre에 clip. clean plate/인물 분리·원근/높이 후속 |
+| PLAYABLE | 기존radius12/1192 corridor 유지, 실제 WASD 검수. 적/전투/위협/gate 변경0. 장식 주변 전사 제외 x±40/y−96…+24 |
+| LANDMARK | 기존 균열/북쪽 계단·망자/잔불 자리 유지. 실제 대화·보상 아직0 |
+| CAMERA QA | START/EARLY/ARENA/SIDE L/SIDE R/LANDMARK/LATE/EXIT의 camera0…7 actual PNG를 root가 열어 검수. 새 장식의 큰 가림·허공 위치 문제 미관측. 시작부 큰 빈 지면·원화 grain·독립 NPC 크기/전경은 RETOUCH |
+| TECH QA | core29 + adapter10 + animated browser9그룹 + static18 + editor UI15 PASS. source/nav 불변·export on/off PNG 동일·오류0·reduced-motion OFF 확인. loading MIME .mjs 수정. 전체 stress/FPS·본편 combat/native/audio 미인수 |
+| FILES | editor.html/server.cjs/scene editor JS/새 adapter/adapter 검사/정적 틈 검사=code6. raw/scene/core/actor·보호2_3·타인WIP/liveSTATE/LOG·세이브·기존23 무변 |
+| GIT | 완료 소유 code+관련 docs만 stage/commit/push, 사전백업 및 exact SHA 영수증 외부보존. 게시/게임 패키지/Windows/자동화 재개0 |
+| VISUAL VERDICT | **RETOUCH**. 편집/보행·장식 consumer는 구현. A급 본편 맵 완료를 의미하지 않음 |
+| NEXT PASS | 원화 인물 분리·캐릭터/NPC 크기/접지, 접근 가능한 NPC 위치와 실제 대화·보상/진행 consumer 연결, 같은후보 native6단계·청취 검수 |
+
+씬SHA `f5068d742ddd6da3e1c78fb7178317df228e936bab0edc6237dec40bfd0bb5ac`; navSHA `a4508aa62f21c9b4380640307b36eef06656ebdf0c0245a2f78833d65dda0179` / nav1192·radius12 BFS1185 불변. 격리3387에서 현재 결과를 열 수 있다. `/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/ambience-integration-20261006/qa/editor-walking.png`는 실제 편집기·전사 화면이다. 기존36.445초 보행영상은 이번 장식 연결 이전 결과로 구분한다.
