@@ -655,3 +655,48 @@ MAP PRODUCTION REPORT (§23): MASTER/OUTER MASS/LARGE/MEDIUM/GROUND/LANDMARK=기
 외부 증거: `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/actor-geometry-constructor-unwind/`의 preflight.json, before/, source-replacement.json, limited-result.json, test-adjudication.json, docs-keyword-search-final.txt, docs-search-summary-final.json, docs-search-disposition-final.json, final-receipt.json. 원 문서 fullprefix를100% 보존하고 append 뒤 EOF LF1개만 둔다. code1+docs2 완료 핀을 root checkpoint에 인계하며 지원 작업의 Git/GUI/게임/server/전문송신/save 쓰기는0이다.
 
 MAP PRODUCTION REPORT (§23): MASTER 기존 장면의 decorative producer 자원 생성 실패 보강; LARGE OUTER MASS/MEDIUM CONNECTION/GROUND CONNECTION/PLAYABLE-COMBAT/LANDMARK-CENTER/SMALL DETAIL 지형·배치·원화·nav·전투 변경0, 기존 guide/SSOT/LOCK 이력 유지. CAMERA QA 신규0; TECH QA 신규 source 단일6그룹 유의미24조건 PASS·원raw25/제외1 분리·접점1 역변환 exact. 실제 GPU·본편native6·audio·durable save 미인수. **VISUAL VERDICT: RETOUCH / NOT ASSESSED**. 화면 흐림 개선·A급·실플레이 완료로 계산0.
+## 2026-10-07 ROOT-ACTOR-TERRAIN-CALLBACK-CLOSURE-20261007: terrain 콜백 뒤 종료된 효과의 접근·재게시 차단
+
+public producer에서 borrowed `terrain.worldToScene`가 반환된 controller의 `dispose()`를 동기로 호출한 뒤 Vector를 반환하면, 이전 소스는 해제된 mesh/material을 계속 변형하고 다시 visible/live/spawned에 게시할 수 있었다. 이번 최소 변경은 **terrain 콜백 직후부터 해당 update가 종료될 때까지의 stale continuation**만 차단한다. 정상 효과의 모양·수명·pool·public API 및 이전 constructor 회수는 그대로 유지한다.
+
+| id·적용 source | 정확 현재 계약·수치·오류 의미 |
+|---|---|
+| 완료 source | `tools/2_5d/actor-effect-lifetime.mjs` 12844 bytes / SHA256 `660f09d604f4a5f4bcc9ae5e3e1774d2bd52e42744585704706337845c0b0afb`. 직전12639 bytes / SHA256 `6870a20883dd9e858895d0fdb951f5ab34bf3f33043ff63a88c9a381e3b982eb` fullbytes 외부 백업. 변경6접점의 역변환 전체 원문 exact |
+| 문서 소유 정정 | 요청의 DIRECTIONAL_RELIEF_RIG_20261006.md는 실재하지 않아 초기lookup FileNotFoundError가 났다. parent가 기존 DIRECTIONAL_CHARACTER_RIGS_20261006.md로 append 소유를 정정; 새 문서 생성0·원문prefix100% 보존. 다른 작업자의 worldlab/THREE/ops 소유 문서는 수정0 |
+| place L122 / guard L124 | `const p=terrain.worldToScene(wx,wy)`가 반환한 **직후** `disposed`면 `false` 반환. p의 x/y/z 또는 mesh/position/quaternion/rotation/renderOrder/band를 그 뒤 조회·변형0. 종료한 콜백이 null·invalid·hostile getter Vector를 반환해도 기존 finite 검사보다 closure guard가 먼저 동작 |
+| 정상 place private 결과 | 기존 finite 원점 검사·position·groundLift·attack billboard/dust rotation·footband 변경을 마치면 `true` 반환. 이 boolean은 private 내부 abort 신호이며 public 메서드·snapshot 필드 추가0 |
+| spawn L136 / abort L144 | `place()` false면 즉시 `null`. `mesh.visible=true`, `live.push`, `stats.spawned++`에 도달0. acquire가 이미 등록한 entry의 all.length는 기존대로 남으며, dispose가 회수한 소유를 다시 등록하거나 재해제0 |
+| update spawn 종료 경계 L159 | dust spawn 뒤 `disposed`면 stats 복사 반환하고 lastStepClock/lastFrame/lastMode·후속 attack/live iteration을 갱신0. attack spawn 뒤도 동일하게 반환. 종료 상태는 dispose가 확정한 active=false/reason=disposed/live0/pool0이며 누적 spawned 값은 이전 정상 spawn 수를 보존 |
+| existing live 종료 경계 L190 | following attack 또는 dust 재배치의 `place()` false면 해당 update 전체에서 즉시 stats 복사 반환. dispose가 live 배열을 비운 뒤 다음 stale entry 접근·다음 borrowed callback·최종 live/pool 집계 continuation0 |
+| terrain throw-only | worldToScene 원 thrown value는 catch/포맷/변환 없이 그대로 전파. dispose하지 않고 throw한 경우, acquire로 all에 등록된 half-initialized entry는 hidden/live0/spawned0 상태이며 나중 controller.dispose가 도달. 이 변경은 임의 producer 성공·오류 삼키기·자동 retry를 만들지 않음 |
+| terrain dispose+throw | dispose로 종료된 뒤 worldToScene가 object/null/controlled cleanup Error를 throw해도 원 동일 값 전파. place guard는 정상 반환 뒤 실행되므로 throw를 다른 validation 오류로 바꾸지 않음. cleanup 실패를 해제 성공으로 표시0 |
+| constructor·acquire·dispose 불변 | 기존 공유 geometry constructor unwind를 포함해 이6접점 밖 source byteexact. acquire L106의 material/Mesh/scene.add→all.push 경계·all/free/live 등록 의미는 그대로; pending ledger/생성실패/scene.add 재진입을 이번에 해결했다고 주장0. 기존 dispose L204의 숫자 all.length/반복0/controlledError 및 identity dedup 불변 |
+| public API·관측 필드 | `createActorEffectLifetime(deps={})` → frozen update/onActorChange/onSceneChange/dispose/snapshot. update는 stats 복사, snapshot은 frozen provenance/options/stats+meshes. producer snapshot에 disposed boolean 추가0; 종료는 active/reason/live/pool로 관측 |
+| 고정 수명·cap | maxLive24 / dust520ms / attack240ms / footstep110ms / footBand4320 / update dt clamp0..0.1초 불변. 추가 RAF/timer/async retry/새mesh·texture 정책0 |
+| 고정 외형·render | dustColor0x1a140f·opacity0.5·size0.14 / attackColor0xc8623a·opacity0.8·size0.17 / groundLift0.003 / reducedMotion=false·depthTest=true. dust(-PI/2,0,0)·attack camera-facing·bands19/39·transparent/depthWrite=false·toneMapped=false 및 기존 root overrides 변화0 |
+| borrowed 소유 | terrain/camera/scene/기존texture를 새로 dispose0. registered per-entry material/mesh 및 공유 geometry2는 기존 controller 정리만 수행. failed material의 실제 dispose event0과 해제 시도1을 구분 |
+
+| 새 actual-source CPU 검수 group | 유의미 조건 | 판정 |
+|---|---:|---|
+| source-six-seams-preserved-and-normal-dust-attack | 6 | PASS |
+| new-dust-dispose-then-hostile-vector-skips-transform-and-publication | 6 | PASS |
+| new-attack-dispose-null-vector-aborts-before-validation | 3 | PASS |
+| existing-following-attack-dispose-stops-stale-transform | 3 | PASS |
+| multiple-live-iteration-closure-stops-before-cleared-next-entry | 5 | PASS |
+| terrain-throw-original-value-and-later-owned-cleanup | 4 | PASS |
+| terrain-dispose-then-null-throw-remains-original | 3 | PASS |
+| caught-cleanup-failure-and-invalid-vector-close-before-validation | 4 | PASS |
+| uncaught-cleanup-error-through-terrain-preserves-identity | 3 | PASS |
+| 전체 | 37 | 신규 stdin 단일1회 / 고유9그룹 PASS9 / FAIL0 / exit0 |
+
+검수는 실제 수정 public module을 import하여 syntax와 실제 producer를 구동했다. 저장소 Three r160의 실제 Mesh/Material/RingGeometry와 dispose event, 관측용 constructor subclass/scene method wrapper를 사용했다. borrowed terrain callback만 종료/throw를 주입했고, 실제 렌더러·GPU·DOM/RAF를 실행하지 않았다. 정상 dust·attack의 live2/색·plane·bands 및 own material2/공유geometry2 event를 대표검수했다. 새 dust의 hostile Vector getter0 reads, 새 attack의 종료 후 null 반환, 기존 following attack의 position/band 유지, live2에서 첫 callback 종료 뒤 추가 callback0 및 cleared-list stale 접근0을 실제 반환값·배열·객체 상태로 관측했다. throw-only는 later dispose material1/geometry2가 실제 도달했고, dispose+nullthrow는 원null을 보존했다. cleanup 실패는 material 시도1/event0·공유geometry2 event와 기존 controlledError를 보존하며, caught invalid Vector 반환 및 uncaught 동일 Error 전달을 분리했다. 관측 없는 상수 disposeCalls=0·무조건 assertion·FIXED frame 모델을 이 검수의 PASS로 계산0.
+
+새 전문 메모리의 공식 end `bb77d9f1-d84b-4851-9e04-cd477b7594c1`@2026-10-06T21:10:48.664Z / raw6260 bytes·SHA256 `e12cbb9e0c3b4aaee0b28126c654f5ae3ae602cfe6e5f5a9c459c5dded0ad698`는 root 외부 `actor-update-failure-formal-end.json`6871 bytes·SHA256 `7bb543948989cc2f3c6ca3b1d2c65556bde7cdf58daa3762d518fe8036e09ebd`로 정확 보존·조회했다. owner reported13PASS는 actual producer+fake terrain 결함재현과 consumer frame 모델을 분리한다. 이번 public source9/37과 합산하지 않고 old13·ctor6/24·rebuild11/104·Chrome·old suite 재실행0이다.
+
+미해결과 범위: constructor 내부의 반환 없는 allocation은 UNKNOWN. material→Mesh 실패 및 scene.add 이전 private pending/committed ledger·scene.add 동기 dispose 재진입은 acquire 별도 소유 문제로 그대로 남아 있다. snap/Vector property getter·fake Three method setter·onActorChange 재진입 등은 이번 borrowed worldToScene 종료/throw 범위의 검사로 인수0. 소비자의 effects.update throw 격리·INERT 진단·RAF 수명은 다른 root 작업자의 별도 단위이며 이 producer 완료로 본편 또는 worldlab 전체 프레임 정책이 해결됐다고 선언0. GPU·브라우저·native6·audio·save ACK 인수0, geometry/nav/원PNG·카메라·전투·원화 변경0.
+
+코드 변경 후 docs 전체 관련 검색은 29경로854줄 / raw1944302 bytes / SHA256 `8496432f19d44882641888410e1eeb1de7eab5a9ba74ed5c575bbbc8aedac4ba`이며, precise source/terrain 참조20경로440줄과 전체 perpath disposition을 외부 보존했다. 소유 DIRECTIONAL_CHARACTER_RIGS 이번 append만 정확동기화한다. rootops·SLICE·RESOLUTION·THREE·editor·SSOT·다른 source 참조는 root 또는 해당 worker에게 완료 source pin·범위·새검수로 인계하고 타인 WIP/ownerSTATELOG/보호2_3/사용자세이브를 변경0.
+
+외부 증거 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/actor-terrain-callback-closure/`: preflight.json·before/ fullbytes, source-replacements.json·limited-source-result.json·official-memory-reference.json, docs-keyword-search.txt·docs-search-summary.json·docs-search-disposition.json·docs-precise-matches.json·final-receipt.json. source6접점 외 원문 exact, 문서 oldprefix100%와 EOF LF1 유지. code1+doc1 finalpin 인계 뒤 동결, 지원작업 Git/GUI/server/실게임/save/전문송신0; root normal checkpoint/remote exact는 별도 인수한다.
+
+MAP PRODUCTION REPORT (§23): MASTER PLAN=decorative actor의 borrowed terrain callback 뒤 종료 수명 보호; LARGE OUTER MASS/MEDIUM CONNECTION/GROUND CONNECTION/PLAYABLE-COMBAT/LANDMARK-CENTER/SMALL DETAIL 맵geometry·배치·nav·원화·전투 수정0, 기존 guide/SSOT/LOCK 이력 유지. CAMERA QA=신규0. TECH QA=actual source 신규 단일9그룹37조건 PASS·6접점 역변환 exact·원모델/old suite 반복0. 실제 GPU/native6/audio/durable save 미인수. **VISUAL VERDICT: RETOUCH / NOT ASSESSED**. 본편플레이완료·A급·배경흐림개선·실GPU회수로 계산0.

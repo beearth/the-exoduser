@@ -121,6 +121,7 @@ export function createActorEffectLifetime(deps = {}) {
 
   function place(e, wx, wy) {
     const p = terrain.worldToScene(wx, wy);
+    if (disposed) return false;
     if(!p||![p.x,p.y,p.z].every(finite))throw new Error('actor effects worldToScene 원점은 finite Vector3이어야 합니다.');
     e.mesh.position.copy(p); e.mesh.position.y += opt.groundLift;
     // dust lies flat on the ground; the attack arc faces the orthographic camera.
@@ -129,6 +130,7 @@ export function createActorEffectLifetime(deps = {}) {
     const effWorldY = e.follow ? wy : e.wy;
     const band = (effWorldY <= opt.footBand ? 19 : 39); // one below the actor's 20/40 so it reads behind the body
     if (e.band !== band) { e.mesh.renderOrder = band; e.band = band; stats.bandWrites++; }
+    return true;
   }
 
   function spawn(kind, wx, wy, follow) {
@@ -139,7 +141,7 @@ export function createActorEffectLifetime(deps = {}) {
     e.follow = !!follow; e.wx = wx; e.wy = wy; e.band = null;
     e.material.color.setHex(kind === 'attack' ? opt.attackColor : opt.dustColor);
     e.material.opacity = kind === 'attack' ? opt.attackOpacity : opt.dustOpacity;
-    place(e, wx, wy);
+    if (!place(e, wx, wy)) return null;
     e.mesh.visible = true;
     live.push(e); stats.spawned++;
     return e;
@@ -165,9 +167,14 @@ export function createActorEffectLifetime(deps = {}) {
     // Edge-triggered generation only (no per-frame spawn, no duplicates).
     if (!(snap && snap.disposed)) {
       if ((mode === 'walk' || mode === 'run') && frame !== lastFrame && clock - lastStepClock >= opt.stepMinIntervalMs) {
-        spawn('dust', x, y, false); lastStepClock = clock;              // footfall dust stays where the foot was
+        spawn('dust', x, y, false);
+        if (disposed) return { ...stats };
+        lastStepClock = clock;              // footfall dust stays where the foot was
       }
-      if (mode === 'attack' && lastMode !== 'attack') spawn('attack', x, y, true); // one arc per attack enter, follows the foot
+      if (mode === 'attack' && lastMode !== 'attack') {
+        spawn('attack', x, y, true); // one arc per attack enter, follows the foot
+        if (disposed) return { ...stats };
+      }
     }
     lastFrame = frame; lastMode = mode;
 
@@ -180,7 +187,7 @@ export function createActorEffectLifetime(deps = {}) {
       const grow = e.kind === 'attack' ? (0.6 + t * 0.8) : (0.5 + t * 1.1);
       const s = (e.kind === 'attack' ? opt.attackSize : opt.dustSize) * grow;
       e.mesh.scale.set(s, s, s);
-      place(e, e.follow ? x : e.wx, e.follow ? y : e.wy);
+      if (!place(e, e.follow ? x : e.wx, e.follow ? y : e.wy)) return { ...stats };
     }
     stats.live = live.length; stats.pool = free.length;
     return { ...stats };
