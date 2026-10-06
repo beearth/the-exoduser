@@ -259,3 +259,25 @@ checkpoint1은stage직전ENEMY공식end가확인되어raw6(7,795B MAP/12,416B BO
 | QA | HOLD. asyncimportrejection미await/가짜providernull PASS, 빈pin/bounds/extents/pose/teardown/walk관측PASS, attackRemaining1을miss. realeditor evidence/FORMAT_VERIFIED구분/필수관측PENDING/publicsnapshot필요 |
 
 검수는독립worker신규stdin각1회: STORY/SKILL14probe(불일치10/정상4), ANIMVFX/QA8반례 확인. fullsuite/기존검사반복0. 현재raw미채택/native·청취·실제보상save인수0. 다음작업은기존owner가이정확결함별독립파생파일을소유팀에배정하며root가직접전문송신하지않는다.
+
+
+## CH1-RIFT-QUALITY-NEXT-20261007 완료 소유 원자료 보존 — 2026-10-07
+
+기존 Claude7의 새 TASK 송신/peer/첫 성공 source/공식 end·idle/정확 최종핀7을 owner 2026-10-06T17:02:13.624713Z 실조회로 확인했다. 원자료 누적31+7=38. 아래7 후보는 본편/public 미채택이며 의미검수와 root 실제화면 소비 Gate가 남아 있다. 파일 존재를 완료로 계산하지 않았다. 실제79에서 이 완료 기록을 docs에 추가하면80에 도달하므로 상세검수를 기다리지 않고 완료소유만 정상 checkpoint한다. 기존 foreign68/owner STATELOG4/index0·sourcepixels/scene/nav1192/save·보호2_3/Q전용/어택티켓금지를 보존한다.
+
+| 역할 | 공식 완료 ID | 새 raw 파일(역할 하위) | bytes | SHA256 | end UUID |
+|---|---|---|---:|---|---|
+| MAP | CH1-RIFT-QUALITY-NEXT-20261007-FOREGROUND-REGISTRY-CANDIDATE | rift-foreground-registry-2_5d.candidate.mjs | 7649 | 1a9f6ac3d28510d9a1f0b1fc1e46d27965b2fe78884e7a408eb7d0c9799295d6 | e38c1504-6462-4f00-bb13-2c1ff5e71704 |
+| ANIMVFX | CH1-RIFT-QUALITY-NEXT-20261007-GROUND-GUARDS-V2-CANDIDATE | rift-ground-material-2_5d.v2.candidate.mjs | 6304 | 840ef4bdd1fb47627acd20a4fe3183ffdc70582e7b1c886260d15b73369263c7 | fc134e06-2eae-4cbd-a9fd-ca5c3c6b0597 |
+| BOSS | CH1-RIFT-QUALITY-NEXT-20261007-SPECIAL-CELL-AUDIT-CANDIDATE | dark-druid-special-cell-audit-2_5d.candidate.mjs | 14727 | 19a5ab52cf27c14a68daa45ab1bb81c48fa6a65adfba58ab7e0b73df1565da09 | 7479afdc-4521-4136-aad5-01d7e92c38ce |
+| STORY | CH1-RIFT-QUALITY-NEXT-20261007-DIALOGUE-GUARDS-V3-CANDIDATE | npc-dialogue-preview-2_5d.v3.candidate.mjs | 11929 | 604832bf97b891596c2db9c379dbe44f4335648a05dec753baa0190d3d8077b2 | d019423b-9b23-4d96-9aee-ee643c09f209 |
+| SKILL | CH1-RIFT-QUALITY-NEXT-20261007-DIALOGUE-POSE-V3-CANDIDATE | dialogue-pose-arbitration-2_5d.v3.candidate.mjs | 12161 | f3b01624dc4d19a63053d9f349f4aa68a88f2bc34b3ce6b4894955105da08f55 | 3cca7a69-752e-420e-9264-5de8288809e2 |
+| ENEMY | CH1-RIFT-QUALITY-NEXT-20261007-PINNED-LOADER-CANDIDATE | enemy-atlas-pinned-loader-2_5d.candidate.mjs | 16481 | 1ad5b47b8b4c33090e89c0841e9072d3f64b7325fa7e6297bcad6ac37b4b791a | dca6cb5b-fa10-4826-82a5-cda5b57778c1 |
+| QA | CH1-RIFT-QUALITY-NEXT-20261007-EVIDENCE-GATES-V2-CANDIDATE | rift-retouch-consumer-acceptance-2_5d.v2.candidate.mjs | 17170 | 7b61b0b4e4d85203c59410f57361be1e1df2bfcb39782d1644839947874b1feb | fd27dc6d-6e21-482c-b3b3-4804351b86f5 |
+
+전체prefix=`tools/team-followup-20261007/hell-rift/<역할>/`. full end textSHA와 경로 realparent·bytes/전체SHA 재대조는 외부 `rift-quality-next-20261007/completed-pins.json`에 보존한다. owner docEvidence/testEvidence 일부가 비어 있어 선행문서 전체읽기·테스트 실행 전체를 인계문 주장만으로 승격하지 않는다.
+
+- MAP: 실제3전경 XY/pivot/mask/crop/footY 표시 소비·동일카메라 검수는 root Gate. VISUAL VERDICT: RETOUCH(이번raw 실제화면 미관찰).
+- ANIMVFX/QA/STORY/SKILL/BOSS/ENEMY: 신규 의미검수 중이며 이전 PASS를 재사용하지 않는다. 원자료 보존과 public 채택을 구분한다.
+- native6/청취/실제유품 지급·퀘스트/save/물리높이·anatomical foot/IK/A급 인수0. 기존 MAP/STORY 외부쓰기·삭제 위반과 피해UNKNOWN 이력 유지.
+- 계속 운영: exoduser-2 ACTIVE/30분/종료없음; 기존 owner만 후속송신/root직접전문중복0. raw 보존 후 root통합검수 및 새로운 결함별 승인단위로 연결한다.
