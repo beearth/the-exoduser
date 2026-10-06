@@ -54898,3 +54898,21 @@ root 본편 접점 읽기 결과: 정상 _proceedNextStage의 기존 dbSave1 앞
 일일 약15%포인트 제작 목표는 계정 전체 주간 사용률 관측 기준이다(10080분 창 기준41%/남음59%, reset2026-10-12T11:52:56Z; 일일 tokens 미제공). 실제 제작·신규 의미검수·후속 배정으로 쓰고 같은검사/완료/TASK 반복·소비만 위한 작업0. 목표달성만으로 연속 제작 중지0, 실제한도는 준수. 단일rootheartbeat30분 ACTIVE, 다른paused·아침메일 재개0. 기존Claude8/Codex7 owner만 전문송신, 거절된Codex/ART 목적 우회0. ANIMVFX 다음 효과 수명 작업은 owner가 1회 배정·peer/첫source 확인했고 root 전문중복지시0.
 
 MAP PRODUCTION REPORT (§23): MASTER PLAN 기존 guide/SSOT/LOCK 우선; LARGE OUTER MASS/MEDIUM CONNECTION/GROUND CONNECTION/랜드마크/SMALL DETAIL 변경0; PLAYABLE/COMBAT 독립 소비자 모듈이며 본편native6/실보상save未인수; CAMERA QA DPR 새 실WebGL1 및 해당source 화면3, parentlease 화면검수0; TECH QA 신규 검사와 초기핀 이력 분리; 원화·scene/nav·타인WIP·foreign68 bytes/fullSHA·ownerSTATELOG4·user save/기존23 보존. VISUAL VERDICT: RETOUCH. 기존 host entry/return UI PASS와 전체 맵/본편/native6/audio/A급未인수를 구분한다. 정확 code+docs 정상commit/push·remote exactSHA는 외부 영수증으로 확인한다. 실제 NUL80부터는 완료소유만 즉시checkpoint/100전새산출중단한다.
+
+
+### ROOT-RIFT-RAW67-STRICT-REVIEW-20261007
+
+raw67 ANIMVFX V2 공식완료 후보는 f5a01e3a72a34fdfdb5b6b1bd2053fddfceaa2ee에 미채택 보존 후 신규 제한검수했다. 이전 부록의 root 의미검수 PENDING 상태는 아래 SEMANTIC FAIL 결과로 갱신한다. 원자료 수정·소비자 채택0.
+
+| 항목 | 현재 근거·판정 |
+|---|---|
+| source/end | tools/team-followup-20261007/hell-rift/ANIMVFX/rift-wolf-foot-bounds-v2.candidate.mjs 10514B / 4848ab0ffe5af71c3f9d0a4560bbdc72c08a627e283c0e36803f5b0bf9348088; CH1-RIFT-WOLF-FOOT-BOUNDS-FIX-20261007-ANIMVFX-CANDIDATE; 공식end6ec60258-852e-436e-b15d-5a4b433d6250@2026-10-06T19:24:23.093Z/endrawSHAa6a1980792a00dde158cabf97b8e26c944cc383bc60079369e8d3a506f5775c4 |
+| 신규 검수 | 제한stdin 실제1회/10그룹=8PASS+2FAIL/96조건중5FAIL/미도달0/unhandled0/exit1. 원40셀 전수측정·raw61 옛5PASS4FAIL 반복0 |
+| 새 P2 plain admission | readOpt86–87이 STRICT_INPUT_CONTRACT의 undefined 또는 plain object와 달리 null/Date/Map/class instance를 받아들임:4조건FAIL. own plain Object.prototype/null prototype을 명시적으로 제한하는 consumer가 필요 |
+| 새 P2 typed length | measureFootBounds104에서 rgba.length mutable property lookup. 실제8bytes Uint8Array에 own length4를붙이면 cell1 exact4bytes admission을 통과:1조건FAIL. captured TypedArray intrinsic length/byteLength·brand 검사가 필요 |
+| 통과 범위 | opts descriptor/getter0·Proxythrow/error.message0·NaN/invalid frame·unknown mode·intcell·threshold와 대표 south1 실측 alpha4114px/lowestRow187, blank frame3 same-dir idle fallback PASS. 정상대표1을 전체40셀 재인수로 계산0 |
+| 원본·consumer | source V2/v1·현 tools/2_5d/corrupted-wolf.mjs20662B/ac3fd86a5441c84cd477a716e86af8cec92b61589781a8296b4b59acdec17acc·img/atlas_ch1_8dir_south.png798229B/156e76481bc26682afe7d85c01c94477e66e1718bbe88f9d67baddbcc561da23 포함4핀 전후exact; 원PNG/scene/nav/실제consumer변경0 |
+| 검수 영수증 | 외부 raw67-review/raw67-limited-review.json24761B/b167bc5f2689025336b4660b41759e0effcedef75c2474b606f5dd0d244f6b71. 새 실패는 이력 보존하고 source 존재/자체PASS/공식end를 의미PASS로 승격0 |
+| 후속 | 기존 Claude8 owner에 새 결과·원격보존을1회인계. 진행중 CH1-RIFT-PARENT-CHILD-EFFECT-LIFETIME-20261007-ANIMVFX-MEMORY(송신/peer/Read/첫source1)는 유지, 같은 TASK 재송신0/root전문송신0/독립팀일괄보류0. 효과수명 완료 뒤 정확end/pin 및 승인된 다음새단위는 owner소유 |
+
+MAP PRODUCTION REPORT (§23): MASTER/OUTER/MEDIUM/GROUND/랜드마크/DETAIL 변형0; PLAYABLE 기존consumer 유지/새raw미채택; CAMERA 새GUI관찰0; TECH 위제한stdin1·정확4핀; code수정0·관련정본6문서append/fullprefix보존. VISUAL VERDICT: RETOUCH / 해당API 실화면 NOT ASSESSED. 해부학적발/IK/본편native6/청취/실보상save/A급未인수. 일일15%포인트 계정공용주간사용목표는 의미있는제작·신규검수에 적용하고 토큰낭비·동일검사/TASK반복으로맞추지않는다.
