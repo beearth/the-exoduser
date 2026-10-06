@@ -167,4 +167,3 @@ export default {
   isSupportedId, directionName, directionIndex, directionFromDelta, modeDuration,
   createVisualPoseConsumer,
 };
-
