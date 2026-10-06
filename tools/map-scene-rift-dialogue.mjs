@@ -1,6 +1,7 @@
 /* Pure, session-only STORY consumer for the isolated painted-rift editor.
  * raw.poi is reference lore, never an executable placement. All four world anchors must
- * be supplied by the integrator. No fetch/DOM/input/timer/storage/item/gate integration.
+ * be supplied by the integrator. Independent residents isolate blocked feet; original
+ * painted proxies still require all four feet. No fetch/DOM/input/timer/storage/item/gate integration.
  * Keep the supplied player object live while open; close before replacing player/scene.
  */
 import { supportsRiftAmbience } from './map-scene-rift-ambience.mjs';
@@ -118,22 +119,28 @@ export function supportsRiftDialogueScene(scene) {
 /** Returns a controller or null; anchors = [{npcId,x,y}] in world pixels, exactly four. */
 export function createRiftDialogue(scene, raw, canWalk, anchors) {
   if (!supportsRiftDialogueScene(scene) || typeof canWalk !== 'function') return null;
+  const independent = !!residentPaintingProfile(scene);
   let npcs, positions;
   try {
     npcs = validateRaw(raw);
     if (!Array.isArray(anchors) || anchors.length !== 4) fail();
     positions = new Map();
     for (const a of anchors) {
-      if (!a || !npcs.has(a.npcId) || positions.has(a.npcId) || !Number.isFinite(a.x) || !Number.isFinite(a.y) || a.x < 0 || a.x >= 8000 || a.y < 0 || a.y >= 8000 || !canWalk(scene, a.x, a.y, RIFT_DIALOGUE_LIMITS.radius)) fail();
+      if (!a || !npcs.has(a.npcId) || positions.has(a.npcId) || !Number.isFinite(a.x) || !Number.isFinite(a.y) || a.x < 0 || a.x >= 8000 || a.y < 0 || a.y >= 8000) fail();
+      if (!independent && canWalk(scene,a.x,a.y,RIFT_DIALOGUE_LIMITS.radius)!==true) fail();
       positions.set(a.npcId, { x: a.x, y: a.y });
     }
   } catch (_) { return null; }
+  function onGround(p) {
+    try { return canWalk(scene,p.x,p.y,RIFT_DIALOGUE_LIMITS.radius)===true; }
+    catch (_) { return false; }
+  }
+  if(independent && ![...positions.values()].some(onGround)) return null;
   const trialFlags = new Set(), records = new Map();
   let conversation = null, closeReason = null, lastAction = null, lastTransitions = 0;
   function supported() {
     if (!supportsRiftDialogueScene(scene)) return false;
-    try { return [...positions.values()].every(p => canWalk(scene, p.x, p.y, RIFT_DIALOGUE_LIMITS.radius)); }
-    catch (_) { return false; }
+    return independent ? [...positions.values()].some(onGround) : [...positions.values()].every(onGround);
   }
   function normalizeRange(range) {
     return Number.isFinite(range) && range > 0 ? Math.min(range, RIFT_DIALOGUE_LIMITS.maxRange) : null;
@@ -145,7 +152,7 @@ export function createRiftDialogue(scene, raw, canWalk, anchors) {
     if (distance > range) return null;
     try {
       const steps = Math.max(1, Math.ceil(distance / RIFT_DIALOGUE_LIMITS.approachStep));
-      for (let i = 0; i <= steps; i++) if (!canWalk(scene, player.x + (a.x - player.x) * i / steps, player.y + (a.y - player.y) * i / steps, RIFT_DIALOGUE_LIMITS.radius)) return null;
+      for (let i = 0; i <= steps; i++) if (canWalk(scene, player.x + (a.x - player.x) * i / steps, player.y + (a.y - player.y) * i / steps, RIFT_DIALOGUE_LIMITS.radius)!==true) return null;
     } catch (_) { return null; }
     return distance;
   }

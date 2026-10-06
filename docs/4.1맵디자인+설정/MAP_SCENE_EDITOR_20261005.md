@@ -246,7 +246,7 @@ core29/29, adapter10/10, 실제 animated browser9그룹, 정적 틈18/18, 기존
 | raw validation | schemaVersion1/sceneId=`hell-rift-ch1-ch2`/roleSTORY/candidate=true/endID 고정; geometry grid200/tile40, NPC정확4/ID·role·stateKeys/actions 확인 | 입력 clone. id 1…96문자, `[a-zA-Z0-9_.:-]`; 일반 text/name/speaker≤160, option label≤320, node본문≤2400; entry1…8/default마지막; 허용 flag1개/참조노드 존재 |
 | `supportsRiftDialogueScene(scene)` | §9 supportsRiftAmbience와 승인 원화6crop 계약을 함께 검사 | 생성·nearest/open/choose/snapshot 때 재검증. 메타 pin 비교이며 매 프레임 파일 hash 계산0 |
 | 승인 crop/transform | west-0 `(0,0,641,961)`,west-1 `(0,959,641,961)`,east-0 `(1279,0,641,961)`,east-1 `(1279,959,641,961)`,centre-0 `(639,0,642,961)`,centre-1 `(639,959,642,961)` | source px. 객체 x/y/width/height는 해당 crop×25/6, 차이≤1e-6. 해당layer visible=true, rotation/pivotX/pivotY0, flipX=false, opacity1, mask없음. 원화를 이동/확대/회전/숨기면 고정 주민 시험 비활성 |
-| `createRiftDialogue(scene,raw,canWalk,anchors)` | exact4개의 `{npcId,x,y}` 외부 주입, x/y 유한수0…8000미만, 중복ID0, 4점 모두 radius12 보행 가능 | 무효면 null. 원문 raw.poi는 실행 위치로 쓰지 않음 |
+| `createRiftDialogue(scene,raw,canWalk,anchors)` | exact4개의 `{npcId,x,y}` 외부 주입, x/y 유한수0…8000미만, 중복ID0. 원본 baked는4점 모두 r12 strict true; 검증된 독립 body는 최소1점 strict true·막힌 주민만 제외(§14) | 구조/profile 또는 생성 보행 조건 무효면 null. 원문 raw.poi는 실행 위치로 쓰지 않음 |
 | `nearest(player,range=140)` | range 유한수>0, max240 clamp; player→anchor 직선 `ceil(distance/20)` 구간과 양끝 radius12 canWalk, 최소거리 NPC | `{npcId,name:{ko,en},x,y,distance}` 또는 null. 점프·벽 너머 대화0 |
 | `open(npcId,player,range=140)` | 같은 근접/보행 검사, actual player 참조 유지, entry when flag/default 선택 | 최초 노드 포함 max64. player/scene 접근 불일치 시 닫기; 보행 원위치 보존 |
 | `choose(optionId)` | 현재 view의 안정 option id만 처리; 잘못된 요청 null, 64진입 상한에서 추가 기록 전 차단 | 허용 action8: dialogue.close/next, gift.offer/accept/decline, quest.accept/decline/recall |
@@ -355,7 +355,7 @@ core29/29, adapter10/10, 실제 animated browser9그룹, 정적 틈18/18, 기존
 | residentPaintingProfile(scene) | 원본 lineage+새핀/src/dimensions/6ground registration+foot visible/sort/parallax+4body identity/crop/aspect/foot 검증. near허용차1e-6, body height1…32000, x/y유한0이상8000미만 |
 | 변형·숨김 | body mask/rotation/flip/opacity/pivot/비율 불일치, 잘못된 그림/좌표 또는 foot/등록ground숨김은 주민 consumer 비활성. 유효 body 크기·위치 편집은 허용. 원본 baked strict 경로도 유지 |
 | 대화 lifecycle | `changed()`가 ambienceScene/dialogueScene=null, closeDialogue('scene-edited'), refresh/autosave. play click에서 endDrag 뒤 syncDialogue. 제자리 x/y/size 편집에도 캐시좌표 재생성; 편집 확정은 시험 세션 기록을 초기화 |
-| PNG sampling | overview2048², out 2D context willReadFrequently=true/imageSmoothingQuality='high'. PNG target은 안개·근접 marker·grid/start/exit·선택 UI 제외. 보행 중 export는 player 포함, 보행을 멈춘 전후 export 비교가 byte 동일. JSON 파일/nav/STORY 수정0 |
+| PNG sampling | overview2048², out 2D context willReadFrequently=true/imageSmoothingQuality='high'. §14부터 mask/sample/image 합성 context도 willReadFrequently=true, image 합성 high로 고정. PNG target은 안개·근접 marker·grid/start/exit·선택 UI 제외. 보행 중 export는 player 포함, 보행을 멈춘 전후 export 비교가 byte 동일. JSON 파일/nav/STORY 수정0 |
 
 검수19/15/실제10+수정후targeted8과 최초 실패 보존은 아래 현재 반영 절을 따른다. 첫 PNG 비교의 466픽셀 차이와 종료137, v2 샘플링 전 PNG FAIL은 지우지 않았다. 최종 high sampling PNG byte 일치·숨김/Undo·크기/좌표 재생성·JSON 왕복이 현재 근거다.
 
@@ -403,3 +403,40 @@ core29/29, adapter10/10, 실제 animated browser9그룹, 정적 틈18/18, 기존
 | 픽셀 | 기존 무그림자 export와 비교해 발ellipse 근방72픽셀만 달라짐, 외부0. 원본/derived PNG·scene/nav·STORY source hash불변. 전체화면 A급 품질이나 실제광원/높이물리 인수로 승격0 |
 
 검수 시4접근 화면 및 resize 화면을 육안 확인했다. 작은 발 그림자는 구현됐지만 확대grain/재질의 차이·정적인물·전체절벽 alpha/height·실제지급/진행save·장gate·본편/native6단계·실청취는 미인수. **VISUAL VERDICT: RETOUCH.** 본편 code patch0. 외부 backup/최초실패/현재검수/PNG/원격exact SHA: `/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/resident-grounding-integration-20261006/receipt.json`. code3+관련docs12만 checkpoint, 보호2_3/Q-only/어택티켓금지/타인WIP·liveSTATE/LOG·사용자세이브·기존23 유지. Claude8 원0324 raw8는 후보 미채택 보존 완료(c9b873cb…+7d12ede3…); 현재 memory후속은 쓰기0이며 본편채택으로 계산0. Codex7 새7은 정상송신 자동승인 검토 거절(승인 필요/정책never) hold. 기존paused/메일 재개0, 오늘19시 실제결과 한 번 보고.
+
+
+## 14. 독립 주민별 접근 실패와 PNG 마스크 합성 (2026-10-06)
+
+완료ID `ROOT-RIFT-RESIDENT-DIALOGUE-ISOLATION-20261006`. 독립 body 이동·편집의 국소 보행 실패를 전체 주민 identity 실패와 구분한다. 원본 baked/proxy의 strict 등록은 유지한다.
+
+| API/상태 | 현재 정확 계약 |
+|---|---|
+| `independent` | 생성 시 `!!residentPaintingProfile(scene)`. 먼저 `supportsRiftDialogueScene(scene)` 필수. raw/anchors 검증 실패는 어떤 모드도 null |
+| anchors | 정확4·서로 다른 기존 npcId·유한 x/y 각각0…8000미만. 독립 모드는 보행 불가 anchor도 구조상 보존하며 원본 모드는 생성 중4점 전부 r12 strict true 필수 |
+| `onGround(p)` | `canWalk(scene,p.x,p.y,RIFT_DIALOGUE_LIMITS.radius)===true`; 예외 false. Promise/1/string을 true로 취급0 |
+| 생성·`supported()` | 독립 초기 positions.some(onGround)가 false면 null; 이후 strict scene profile과 some(onGround). baked 초기·이후 every(onGround). 플레이 가능한 주민1…4명 범위만 허용 |
+| `reachable()` | 기존 range140/max240, distance 및 approachStep20/radius12 유지. 양끝 포함 직선의 각 `canWalk!==true`이면 null. 장애물 밖 다른 주민은 별도 접근 허용 |
+| 활성 대화 | 유효 profile·다른 주민은 남았지만 현재 발/접근이 막히면 choose 전에 out-of-range 종료. 모든 발 또는 profile 실패면 inactive-scene. 실패가 기존ledger를 지우거나 새 accept를 만들지 않음 |
+| `residentAnchors()` | 현재 strict 독립 anchors 우선. 아니면 `dialogueSceneSupport(current())`가 확인된 씬에서만 RESIDENT_ANCHORS, 그 외 []. dialogue module import 뒤 support를 STORY fetch 전에 저장; STORY 실패와 identity 검증 분리 |
+| 마스크 context | mask, feather sample, cached image 모두 CPU readback 요청 `willReadFrequently:true`; 이미지 합성 high smoothing. 기존 sample256/max mask1024/cache8·sourceParallax·rotation/flip/feather 수식 불변 |
+| 검수 범위 | 기존 핵심/UI/grounding 검사 재실행0. 변경 관련 의미19/19, 초기 실제3보행의 국소 차단 확인, 합성 뒤 targeted6/6. 최초 PNG FAIL은 별도 보존 |
+
+기획·source 수치·역할별 미인수는 기존 §12/§13과 현재 제작기획서 §16을 유지한다. v2 JSON round trip은 exact deep equal이며 원본 파일에 장애물 시험 좌표4700,6460을 저장하지 않는다. strict profile 오류 opacity .99 시험은 Undo로 복원한다. 기존 광범위 parent textContent 교체/에셋 추가/본편 상태 쓰기0.
+
+
+### 2026-10-06 — 독립 주민 대화 차단 분리·마스크 출력 안정화
+
+공식 완료ID `ROOT-RIFT-RESIDENT-DIALOGUE-ISOLATION-20261006`. 현행 독립 주민 후보 `c508e70d23fafb9295798763c5224c7c92699dfea3d3beebdb6ab18173f44a3a`의 editor consumer만 수정한다. 원본 baked 씬·그림·STORY·nav·body 값은 불변이며 이전 PASS/PNG 핀은 당시 이력으로 남긴다.
+
+| 항목 | 현재 구현·검수 경계 |
+|---|---|
+| 독립 주민 보행 | strict profile/원문/중복 없는 정확4 anchor 구조 유지. 각 발 `canWalk(scene,x,y,12)===true`; 최소1명이 유효하면 controller 유지하고 막힌 주민만 근접/대화에서 제외. 전원 무효면 초기 null/열린 세션 inactive-scene |
+| 원본 baked·무효 profile | 원본 그림의4 logical 발은 모두 strict true여야 생성·유지. 잘못된 source/body/profile은 전체 비활성. 검증 안 된 씬에는 이전 baked 진단 anchor를 표시하지 않음 |
+| 접근·수락 | 직선 경로 간격≤20world px의 모든 검사 strict true 필수; Promise/1/throw는 실패. 대화 중 발이 막히면 선택 처리 전에 out-of-range로 닫고 새 선물/부탁 기록0. trial은 editor-session-only/actualGrant=false |
+| 마스크 합성 | maskedPicture의 mask/sample/image 2D context `willReadFrequently:true`, image 합성 `imageSmoothingQuality='high'`. 캐시≤8·최대 변1024px·feather sample 최대 변256px·mask/source/world/직렬화 규격 불변. FPS 개선 주장0 |
+| 실제 검수 | 의미19/19(1회). 최초 실제 XY/F/WASD 3확인·3보행 후 PNG 불일치 FAIL 보존. 합성 수정 후 Undo/무효 profile/JSON/새로고침/일반·baked/error불변6/6 PASS, 보행 재실행0. pageerror/HTTP/console0 |
+| 현재 PNG | 멈춘2048² export7018386B SHA `21b2651252851355d6e2dee865b5e58282576585ad28a0097b5c08be90efb78a`; 편집→Undo·fresh reload/cache rebuild byte 동일. 직전24230e77…/7018879B는 수정 전 이력이며 현재 핀으로 사용0 |
+| 제작·보존 | root완료 code3+관련docs12 한정checkpoint. 실제72+15=87부터 완료소유를 보존해72로 복귀; live owner STATE/LOG·타인WIP/기존23/세이브·보호2_3/Q전용·어택티켓 금지 유지. 원문8후속 메모는 미채택·idle, 중복TASK/새팀0 |
+| 품질·잔여 | VISUAL VERDICT: RETOUCH. 정적 주민의 확대 grain/재질·전사와 원근/절벽 alpha·높이·실제 지급/quest/save/상승·본편/native6단계/청취 미인수. 계획이나 fixture를 게임완료로 계산0 |
+
+정본 계약은 `MAP_SCENE_EDITOR_20261005.md` §14, 맵 가이드§23 제작보고는 `HELL_RIFT_EDITOR_RESULT_20261006.md`의 해당 완료ID를 따른다. 외부 근거=`/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/resident-dialogue-isolation-20261006/`의 receipt.json·first-browser-failure.json/log·browser-qa/browser-final-verification.json·실제 베린/네사 대화 PNG. 정상 code+docs commit/push와 remote exact SHA는 영수증에 기록; 새 build/server/game/게시0. 오늘19시 한 번 보고·기존paused/메일 재개0.

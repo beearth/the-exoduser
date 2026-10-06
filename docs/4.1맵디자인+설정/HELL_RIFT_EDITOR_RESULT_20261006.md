@@ -538,3 +538,43 @@ GIT
 VISUAL VERDICT: RETOUCH. Static contact implemented; enlarged grain/material mismatch/static bodies/whole-cliff alpha/depth/main-game grants/gates/save/native/audio remain unaccepted.
 
 NEXT PASS: collect official existing-team memory handoffs by TASK/end, keeping raw preservation separate from adoption. Actual transaction/ascent ports require implemented ITEM/QUESTNPC consumers and normal delivery evidence.
+
+
+## MAP PRODUCTION REPORT — ROOT-RIFT-RESIDENT-DIALOGUE-ISOLATION-20261006
+
+| 가이드 §23 항목 | 실제 결과 |
+|---|---|
+| STAGE | 지옥의 틈 · 잔류자의 계곡 / 독립 주민 editor3387. same candidate c508… |
+| MASTER | 비대칭 절벽·중앙 심연·남쪽 진입→북쪽 계단·주민 곁길 유지. 큰 실루엣/지역/메인·side route 재설계0 |
+| OUTER MASS | LEFT/RIGHT/TOP/SOUTH/major holes: 기존10 geometry·원화 crop·마스크·nav byte 불변. 새로운 지형 높이/빈공간 PASS0 |
+| LARGE | clean plate/atlas/abyss 기존 자산 유지·추가이미지0. 배경 반복/원화 grain의 전면 개선 인수0 |
+| MEDIUM | 연결/holes 불변. 실제 Haran 장애물 위치4700,6460 시험 뒤 Undo; 기존 Berin/Nessa 접근은 유지 |
+| GROUND | 현재 발+nav clip 그림자 기존 계약 유지. soft mask의 CPU/high 합성만 변경; contamination/절벽전체 alpha 통합 미완료 |
+| PLAYABLE | Haran의 blocked F 닫힘·기록0, actual WASD로 Berin5980,5620/Nessa6220,5020 접근·F 대화 확인. main arena/dense combat/threat acceptance0 |
+| LANDMARK | primary 중앙 심연·북쪽계단, secondary 주민/잔불, tertiary 뿌리. 구성·좌표 변경0 |
+| CAMERA QA | START/EARLY/ARENA/SIDE L/SIDE R/LANDMARK/LATE/EXIT의 이전8camera 이력 보존; 이번8camera rerun0. 실제1500×960 베린·네사 대화/복원 overview 직접 확인 |
+| TECH QA route/collision | 실제3 keyboard walks(하란 차단/베린/네사). 새 v2 전용 nav/BFS 검사 재실행0; 원본 baked nav/r12 회귀는 의미19검사 1회에 포함. v2 nav1192/BFS1185/r12 핀 불변. 동일 v2 scene JSON/source/story 불변 |
+| TECH QA errors/loading/seam | normal pageerror/HTTP/console0. 검증 안 된 scene anchor[]·원본 baked4 유지. 최초PNG 불일치 FAIL 보존 후 합성고정·Undo/fresh reload PNG7018386B/21b265… 동일. 전절벽 seam PASS0 |
+| TECH QA performance/tests | 의미19/19 1회·현재 targeted6/6. mask캐시8/최대변1024/sample256 불변. FPS/GPU/native/audio 측정 인수0; 새영상0 |
+| FILES | 완료소유 tools/map-scene-editor.js, tools/map-scene-rift-dialogue.mjs, tools/test-map-scene-rift-dialogue.cjs+관련docs12. 타인WIP/live STATE/LOG·씬/이미지/본편·세이브/기존23 수정0 |
+| GIT | 코드3+docs12 정확15만 정상 checkpoint/push/remote exact SHA 영수증. 기타 staging0·deploy0. 실제87→72 회복 확인 |
+| VISUAL VERDICT | **RETOUCH**. 국소 대화 차단과 출력복원 동작 검수; static grain/material/전체 절벽 depth·본편/native/청취는 미인수 |
+| NEXT PASS | 원자적 실제 지급·부탁/save·상승과 실제1-1 동일후보 인수는 소비자 포트 구현/검수 후. 기존 오더담당으로만 필요한 차이 전달, 완료TASK 재송신0 |
+
+
+### 2026-10-06 — 독립 주민 대화 차단 분리·마스크 출력 안정화
+
+공식 완료ID `ROOT-RIFT-RESIDENT-DIALOGUE-ISOLATION-20261006`. 현행 독립 주민 후보 `c508e70d23fafb9295798763c5224c7c92699dfea3d3beebdb6ab18173f44a3a`의 editor consumer만 수정한다. 원본 baked 씬·그림·STORY·nav·body 값은 불변이며 이전 PASS/PNG 핀은 당시 이력으로 남긴다.
+
+| 항목 | 현재 구현·검수 경계 |
+|---|---|
+| 독립 주민 보행 | strict profile/원문/중복 없는 정확4 anchor 구조 유지. 각 발 `canWalk(scene,x,y,12)===true`; 최소1명이 유효하면 controller 유지하고 막힌 주민만 근접/대화에서 제외. 전원 무효면 초기 null/열린 세션 inactive-scene |
+| 원본 baked·무효 profile | 원본 그림의4 logical 발은 모두 strict true여야 생성·유지. 잘못된 source/body/profile은 전체 비활성. 검증 안 된 씬에는 이전 baked 진단 anchor를 표시하지 않음 |
+| 접근·수락 | 직선 경로 간격≤20world px의 모든 검사 strict true 필수; Promise/1/throw는 실패. 대화 중 발이 막히면 선택 처리 전에 out-of-range로 닫고 새 선물/부탁 기록0. trial은 editor-session-only/actualGrant=false |
+| 마스크 합성 | maskedPicture의 mask/sample/image 2D context `willReadFrequently:true`, image 합성 `imageSmoothingQuality='high'`. 캐시≤8·최대 변1024px·feather sample 최대 변256px·mask/source/world/직렬화 규격 불변. FPS 개선 주장0 |
+| 실제 검수 | 의미19/19(1회). 최초 실제 XY/F/WASD 3확인·3보행 후 PNG 불일치 FAIL 보존. 합성 수정 후 Undo/무효 profile/JSON/새로고침/일반·baked/error불변6/6 PASS, 보행 재실행0. pageerror/HTTP/console0 |
+| 현재 PNG | 멈춘2048² export7018386B SHA `21b2651252851355d6e2dee865b5e58282576585ad28a0097b5c08be90efb78a`; 편집→Undo·fresh reload/cache rebuild byte 동일. 직전24230e77…/7018879B는 수정 전 이력이며 현재 핀으로 사용0 |
+| 제작·보존 | root완료 code3+관련docs12 한정checkpoint. 실제72+15=87부터 완료소유를 보존해72로 복귀; live owner STATE/LOG·타인WIP/기존23/세이브·보호2_3/Q전용·어택티켓 금지 유지. 원문8후속 메모는 미채택·idle, 중복TASK/새팀0 |
+| 품질·잔여 | VISUAL VERDICT: RETOUCH. 정적 주민의 확대 grain/재질·전사와 원근/절벽 alpha·높이·실제 지급/quest/save/상승·본편/native6단계/청취 미인수. 계획이나 fixture를 게임완료로 계산0 |
+
+정본 계약은 `MAP_SCENE_EDITOR_20261005.md` §14, 맵 가이드§23 제작보고는 `HELL_RIFT_EDITOR_RESULT_20261006.md`의 해당 완료ID를 따른다. 외부 근거=`/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/resident-dialogue-isolation-20261006/`의 receipt.json·first-browser-failure.json/log·browser-qa/browser-final-verification.json·실제 베린/네사 대화 PNG. 정상 code+docs commit/push와 remote exact SHA는 영수증에 기록; 새 build/server/game/게시0. 오늘19시 한 번 보고·기존paused/메일 재개0.

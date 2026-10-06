@@ -8,8 +8,10 @@ const crypto = require('node:crypto');
 const { pathToFileURL } = require('node:url');
 const root = path.resolve(__dirname, '..');
 const scenePath = path.join(root, 'assets/map/hell_rift/editor_result_20261006/hell-rift.scene.json');
+const residentScenePath = path.join(root, 'assets/map/hell_rift/resident_layers_20261006/hell-rift-residents-v2.scene.json');
 const rawPath = path.join(__dirname, 'team-followup-20261005/hell-rift/STORY/rift-dialogue.json');
 const apiPromise = import(pathToFileURL(path.join(__dirname, 'map-scene-rift-dialogue.mjs')).href);
+const residentApiPromise = import(pathToFileURL(path.join(__dirname, 'map-scene-rift-residents.mjs')).href);
 const context = vm.createContext({ module: { exports: {} } });
 vm.runInContext(fs.readFileSync(path.join(__dirname, 'map-scene-core.js'), 'utf8'), context, { filename: 'map-scene-core.js' });
 const K = context.module.exports;
@@ -25,6 +27,24 @@ async function fixture() {
   const api = await apiPromise, input = inputs();
   return { api, ...input, c: api.createRiftDialogue(input.scene, input.raw, walk, input.anchors) };
 }
+async function residentInputs() {
+  const [api, residents] = await Promise.all([apiPromise, residentApiPromise]);
+  const bytes = fs.readFileSync(residentScenePath);
+  assert.equal(hash(bytes), 'c508e70d23fafb9295798763c5224c7c92699dfea3d3beebdb6ab18173f44a3a');
+  const scene = JSON.parse(bytes), raw = JSON.parse(fs.readFileSync(rawPath, 'utf8'));
+  assert.ok(residents.residentPaintingProfile(scene));
+  const anchors = residents.residentDialogueAnchors(scene);
+  return { api, residents, scene, raw, anchors, approaches: anchors.map(a => clone(a.approach)) };
+}
+function footCell(scene, anchor) {
+  return Math.floor(anchor.y / scene.world.tileSize) * scene.world.cols + Math.floor(anchor.x / scene.world.tileSize);
+}
+const samePoint = (x, y, point) => Math.abs(x - point.x) < 1e-6 && Math.abs(y - point.y) < 1e-6;
+const rejectedWalkResults = [
+  ['Promise', () => Promise.resolve(true)],
+  ['truthy number', () => 1],
+  ['thrown callback', () => { throw new Error('walk query unavailable'); }]
+];
 function node(snapshot, expected) { assert.ok(snapshot?.isOpen); assert.equal(snapshot.view.nodeId, expected); }
 function acceptGift(c, player) { node(c.open(IDS[1], player), 'meet'); node(c.choose('o_listen'), 'story'); node(c.choose('o_accept'), 'offer'); return c.choose('o_take'); }
 function acceptQuest(c, player) { node(c.open(IDS[2], player), 'meet'); node(c.choose('o_listen'), 'story'); return c.choose('o_accept'); }
@@ -205,6 +225,133 @@ test('explicit bounded close reasons survive later scene invalidation and preser
   const inactive = c.snapshot(); assert.equal(inactive.supported, false); assert.equal(inactive.closeReason, 'scene');
   assert.deepEqual(inactive.trialRecords, ledger); assert.deepEqual(inactive.trialFlags, flags);
   assert.equal(api.RIFT_DIALOGUE_LIMITS.maxCloseReasonChars, 96);
+});
+
+test('independent residents isolate each blocked foot while the other three remain reachable', async () => {
+  for (let blocked = 0; blocked < 4; blocked++) {
+    const { api, residents, scene, raw, anchors, approaches } = await residentInputs();
+    scene.walkable[footCell(scene, anchors[blocked])] = 0;
+    assert.equal(walk(scene, anchors[blocked].x, anchors[blocked].y, 12), false);
+    assert.ok(residents.residentPaintingProfile(scene), 'Nav eligibility does not change registered resident identity');
+    const before = JSON.stringify({ scene, raw, anchors });
+    const c = api.createRiftDialogue(scene, raw, walk, anchors); assert.ok(c);
+    assert.equal(c.snapshot().supported, true);
+    assert.equal(c.nearest(approaches[blocked]), null); assert.equal(c.open(IDS[blocked], approaches[blocked]), null);
+    assert.equal(c.choose('o_accept'), null);
+    for (let i = 0; i < 4; i++) if (i !== blocked) {
+      assert.equal(c.nearest(approaches[i]).npcId, IDS[i]);
+      node(c.open(IDS[i], approaches[i]), 'meet'); c.close('isolation-check');
+    }
+    assert.deepEqual(c.snapshot().trialRecords, []); assert.equal(Object.values(c.snapshot().trialFlags).some(Boolean), false);
+    assert.equal(JSON.stringify({ scene, raw, anchors }), before, 'Controller must not repair nav, source or injected anchors');
+  }
+});
+
+test('a live independent gift or quest foot becoming blocked closes before recording and leaves other NPCs active', async () => {
+  for (const rewardNpc of [1, 2]) {
+    const { api, scene, raw, anchors, approaches } = await residentInputs();
+    const before = JSON.stringify({ scene, raw, anchors });
+    const c = api.createRiftDialogue(scene, raw, walk, anchors); assert.ok(c);
+    node(c.open(IDS[rewardNpc], approaches[rewardNpc]), 'meet'); node(c.choose('o_listen'), 'story');
+    if (rewardNpc === 1) node(c.choose('o_accept'), 'offer');
+    const cell = footCell(scene, anchors[rewardNpc]); scene.walkable[cell] = 0;
+    assert.equal(c.choose(rewardNpc === 1 ? 'o_take' : 'o_accept'), null);
+    const closed = c.snapshot(); assert.equal(closed.supported, true); assert.equal(closed.isOpen, false);
+    assert.equal(closed.closeReason, 'out-of-range'); assert.deepEqual(closed.trialRecords, []);
+    assert.equal(Object.values(closed.trialFlags).some(Boolean), false);
+    assert.equal(c.open(IDS[rewardNpc], approaches[rewardNpc]), null);
+    for (let i = 0; i < 4; i++) if (i !== rewardNpc) {
+      assert.equal(c.nearest(approaches[i]).npcId, IDS[i]); node(c.open(IDS[i], approaches[i]), 'meet'); c.close();
+    }
+    // Restoring the same nav cell permits a fresh attempt, not a phantom prior grant.
+    scene.walkable[cell] = 1;
+    const accepted = rewardNpc === 1 ? acceptGift(c, approaches[1]) : acceptQuest(c, approaches[2]);
+    assert.equal(accepted.trialRecords.length, 1); assert.equal(accepted.trialRecords[0].npcId, IDS[rewardNpc]);
+    assert.equal(accepted.trialRecords[0].actualGrant, false);
+    assert.equal(c.choose(rewardNpc === 1 ? 'o_take' : 'o_accept'), null); assert.equal(c.snapshot().trialRecords.length, 1);
+    assert.equal(JSON.stringify({ scene, raw, anchors }), before);
+  }
+});
+
+test('independent callbacks require synchronous true at feet and along the approach; all failures close the controller', async () => {
+  const { api, scene, raw, anchors, approaches } = await residentInputs();
+  let blockAll = false;
+  const selectiveWalk = (p, x, y, radius) => {
+    if (blockAll) return false;
+    const index = anchors.findIndex(a => samePoint(x, y, a));
+    if (index >= 0 && index < 3) return rejectedWalkResults[index][1]();
+    return walk(p, x, y, radius);
+  };
+  const c = api.createRiftDialogue(scene, raw, selectiveWalk, anchors); assert.ok(c);
+  for (let i = 0; i < 3; i++) {
+    assert.equal(c.nearest(approaches[i]), null, rejectedWalkResults[i][0]);
+    assert.equal(c.open(IDS[i], approaches[i]), null, rejectedWalkResults[i][0]);
+  }
+  assert.equal(c.nearest(approaches[3]).npcId, IDS[3]); node(c.open(IDS[3], approaches[3]), 'meet');
+  blockAll = true; assert.equal(c.choose('o_leave'), null);
+  const inactive = c.snapshot(); assert.equal(inactive.supported, false); assert.equal(inactive.isOpen, false);
+  assert.equal(inactive.closeReason, 'inactive-scene'); assert.deepEqual(inactive.trialRecords, []);
+  assert.equal(Object.values(inactive.trialFlags).some(Boolean), false);
+  assert.equal(c.nearest(approaches[3]), null); assert.equal(c.open(IDS[3], approaches[3]), null);
+  assert.equal(api.createRiftDialogue(scene, raw, selectiveWalk, anchors), null);
+  for (const [label, rejected] of rejectedWalkResults) {
+    assert.equal(api.createRiftDialogue(scene, raw, rejected, anchors), null, 'All ' + label + ' feet must reject construction');
+    const fresh = await residentInputs(), a = fresh.anchors[1], player = fresh.approaches[1];
+    const steps = Math.ceil(Math.hypot(a.x - player.x, a.y - player.y) / 20);
+    const middle = { x: player.x + (a.x - player.x) / steps, y: player.y + (a.y - player.y) / steps };
+    let rejectMiddle = true;
+    const directWalk = (p, x, y, radius) => rejectMiddle && samePoint(x, y, middle) ? rejected() : walk(p, x, y, radius);
+    const direct = api.createRiftDialogue(fresh.scene, fresh.raw, directWalk, fresh.anchors); assert.ok(direct);
+    assert.equal(direct.snapshot().supported, true, 'Walkable anchors do not imply a valid straight approach');
+    assert.equal(direct.nearest(player), null, label); assert.equal(direct.open(IDS[1], player), null, label);
+    assert.equal(direct.nearest(fresh.approaches[0]).npcId, IDS[0]);
+    rejectMiddle = false; node(direct.open(IDS[1], player), 'meet'); node(direct.choose('o_listen'), 'story'); node(direct.choose('o_accept'), 'offer');
+    rejectMiddle = true; assert.equal(direct.choose('o_take'), null);
+    const closed = direct.snapshot(); assert.equal(closed.supported, true); assert.equal(closed.isOpen, false);
+    assert.equal(closed.closeReason, 'out-of-range'); assert.deepEqual(closed.trialRecords, []);
+    assert.equal(closed.trialFlags['rift.berin.giftGiven'], false);
+  }
+});
+
+test('independent anchor structure and profile remain fail-closed; baked proxies still close all four on one failed foot', async () => {
+  const { api, residents, scene, raw, anchors, approaches } = await residentInputs();
+  for (const invalid of [
+    anchors.slice(1), [...anchors, anchors[0]], [anchors[0], anchors[0], anchors[2], anchors[3]],
+    anchors.map((a, i) => i ? a : { ...a, npcId: 'unknown' }),
+    anchors.map((a, i) => i ? a : { ...a, x: Number.NaN }),
+    anchors.map((a, i) => i ? a : { ...a, x: 8000 })
+  ]) assert.equal(api.createRiftDialogue(scene, raw, walk, invalid), null);
+  for (const mutate of [
+    p => { p.sourcePins.cleanPlate = '0'.repeat(64); },
+    p => { p.sourcePins.residentAtlas = '0'.repeat(64); },
+    p => { p.assets.find(a => a.id === 'resident-berin').crop.x += 1; },
+    p => { p.assets.find(a => a.id === 'west-0').crop.w += 1; },
+    p => { p.layers.find(l => l.id === 'foot').objects.find(o => o.id === 'obj-resident-haran').rotation = 1; },
+    p => { p.layers.find(l => l.id === 'foot').visible = false; }
+  ]) {
+    const changed = clone(scene), c = api.createRiftDialogue(changed, raw, walk, anchors); assert.ok(c);
+    node(c.open(IDS[1], approaches[1]), 'meet'); node(c.choose('o_listen'), 'story'); node(c.choose('o_accept'), 'offer');
+    mutate(changed); assert.equal(residents.residentPaintingProfile(changed), null);
+    assert.equal(api.supportsRiftDialogueScene(changed), false);
+    assert.equal(api.createRiftDialogue(changed, raw, walk, anchors), null);
+    assert.equal(api.createRiftDialogue(changed, raw, walk, clone(ANCHORS)), null, 'Baked coordinates cannot rescue an invalid independent profile');
+    assert.equal(c.choose('o_take'), null); assert.equal(c.snapshot().supported, false);
+    assert.equal(c.snapshot().closeReason, 'inactive-scene'); assert.deepEqual(c.snapshot().trialRecords, []);
+  }
+  for (const [label, rejected] of [['false', () => false], ...rejectedWalkResults]) {
+    const baked = inputs(); let rejectFoot = true;
+    const bakedWalk = (p, x, y, radius) => rejectFoot && samePoint(x, y, ANCHORS[0]) ? rejected() : walk(p, x, y, radius);
+    assert.equal(api.createRiftDialogue(baked.scene, baked.raw, bakedWalk, baked.anchors), null, label);
+    rejectFoot = false; const c = api.createRiftDialogue(baked.scene, baked.raw, bakedWalk, baked.anchors); assert.ok(c);
+    node(c.open(IDS[1], APPROACHES[1]), 'meet'); node(c.choose('o_listen'), 'story'); node(c.choose('o_accept'), 'offer');
+    rejectFoot = true; assert.equal(c.choose('o_take'), null, label);
+    const closed = c.snapshot(); assert.equal(closed.supported, false); assert.equal(closed.isOpen, false);
+    assert.equal(closed.closeReason, 'inactive-scene'); assert.deepEqual(closed.trialRecords, []);
+    assert.equal(closed.trialFlags['rift.berin.giftGiven'], false);
+    for (let i = 0; i < 4; i++) { assert.equal(c.nearest(APPROACHES[i]), null); assert.equal(c.open(IDS[i], APPROACHES[i]), null); }
+  }
+  assert.equal(hash(fs.readFileSync(residentScenePath)), 'c508e70d23fafb9295798763c5224c7c92699dfea3d3beebdb6ab18173f44a3a');
+  assert.equal(hash(fs.readFileSync(rawPath)), 'be14b1416838ab345eb1c2a150b92403566ccfdc43cd3f3b317cf2913840dfdc');
 });
 
 test('completed conversations leave immutable raw/file hashes, scene/nav1192 and route untouched', async () => {

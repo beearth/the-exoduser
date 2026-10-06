@@ -341,7 +341,7 @@ latest 사용자 “작업을해서 저녁까지 보고해”에 따라 오늘20
 |---|---|---|---|
 | 1-1 | 8공간의 큰 질량/연결/접지/랜드마크를 기존 LOCK 안에서 다르게 구성 | 기존 geometry/bake/gate를 보존하는 후보 검수 | 최신 동일후보 실제 전투·획득·개방·보스사망/부활·재도전·청취 |
 | 틈 배경 | 승인 계곡 원화의 심연/바닥/절벽/전경 분리 | 원본 후보 보존. 새 인물 없는 plate1254²의6crop+전경3·기존심연1과 독립4body/발접지그림자를 editor consumer에서 구현 | 전체 절벽 alpha/고해상도 재질·높이 모델·본편 gate |
-| 주민 | 각 발이 실제 바닥에 있고 전사80world px와 의도된 원근비례 | 독립alpha crop4·standing80/앉은비례·pivot(.5,1), 유효크기/현재foot 편집 대화, 정적nav clip접지그림자, 네 접근점 실제 키보행·22node/37option 시험 | 생성 파생 인물 재질·주민애니메이션, 유품 실제지급·퀘스트/save 원자성·본편 소비자 |
+| 주민 | 각 발이 실제 바닥에 있고 전사80world px와 의도된 원근비례 | 독립alpha crop4·standing80/앉은비례·pivot(.5,1), 유효크기/현재foot 편집 대화, 정적nav clip접지그림자, 독립 주민별 보행차단 분리, 네 접근점 실제 키보행·22node/37option 시험 | 생성 파생 인물 재질·주민애니메이션, 유품 실제지급·퀘스트/save 원자성·본편 소비자 |
 | 맵 스튜디오 | 이미지를 레이어로 놓고 크기·발·가림·길을 조절해 결과 저장 | PNG 등 이미지 가져오기, crop/크기/회전/flip/pivot, 새 발 찍기, 레이어잠금/정렬/시차, Undo/Redo·JSON/PNG·보행/경로검사 | Unity 패키지/PSD/FBX 자동 읽기와 3D 지형/height 편집은 미구현. 기존 보유 이미지의 가져오기부터 사용 |
 | Unity 에셋 활용 | 기존 자산 이미지/규격을 가져와 같은 월드 단위와 발 기준으로 정렬 | 일반 이미지 임포트와 source 원본 보존만 확인 | .unitypackage 자동 추출/메타 pivot·pixels-per-unit 해석/모델 변환을 별도 구현·검수해야 하며 현재 지원으로 선언0 |
 | 사운드 | 환경·접근·대화·선택·상승 cue의 전환/중복/stop 수명 | 기존 cue를 맡긴 담당의 후보/정본검수 | 실제 browser/native gesture/설정과 청취, pause/retry/장전환 lifecycle |
@@ -477,3 +477,21 @@ root 접지그림자 code3 WIP·타인 변경·live supervisor STATE/LOG·원본
 | 픽셀 | 기존 무그림자 export와 비교해 발ellipse 근방72픽셀만 달라짐, 외부0. 원본/derived PNG·scene/nav·STORY source hash불변. 전체화면 A급 품질이나 실제광원/높이물리 인수로 승격0 |
 
 검수 시4접근 화면 및 resize 화면을 육안 확인했다. 작은 발 그림자는 구현됐지만 확대grain/재질의 차이·정적인물·전체절벽 alpha/height·실제지급/진행save·장gate·본편/native6단계·실청취는 미인수. **VISUAL VERDICT: RETOUCH.** 본편 code patch0. 외부 backup/최초실패/현재검수/PNG/원격exact SHA: `/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/resident-grounding-integration-20261006/receipt.json`. code3+관련docs12만 checkpoint, 보호2_3/Q-only/어택티켓금지/타인WIP·liveSTATE/LOG·사용자세이브·기존23 유지. Claude8 원0324 raw8는 후보 미채택 보존 완료(c9b873cb…+7d12ede3…); 현재 memory후속은 쓰기0이며 본편채택으로 계산0. Codex7 새7은 정상송신 자동승인 검토 거절(승인 필요/정책never) hold. 기존paused/메일 재개0, 오늘19시 실제결과 한 번 보고.
+
+
+### 2026-10-06 — 독립 주민 대화 차단 분리·마스크 출력 안정화
+
+공식 완료ID `ROOT-RIFT-RESIDENT-DIALOGUE-ISOLATION-20261006`. 현행 독립 주민 후보 `c508e70d23fafb9295798763c5224c7c92699dfea3d3beebdb6ab18173f44a3a`의 editor consumer만 수정한다. 원본 baked 씬·그림·STORY·nav·body 값은 불변이며 이전 PASS/PNG 핀은 당시 이력으로 남긴다.
+
+| 항목 | 현재 구현·검수 경계 |
+|---|---|
+| 독립 주민 보행 | strict profile/원문/중복 없는 정확4 anchor 구조 유지. 각 발 `canWalk(scene,x,y,12)===true`; 최소1명이 유효하면 controller 유지하고 막힌 주민만 근접/대화에서 제외. 전원 무효면 초기 null/열린 세션 inactive-scene |
+| 원본 baked·무효 profile | 원본 그림의4 logical 발은 모두 strict true여야 생성·유지. 잘못된 source/body/profile은 전체 비활성. 검증 안 된 씬에는 이전 baked 진단 anchor를 표시하지 않음 |
+| 접근·수락 | 직선 경로 간격≤20world px의 모든 검사 strict true 필수; Promise/1/throw는 실패. 대화 중 발이 막히면 선택 처리 전에 out-of-range로 닫고 새 선물/부탁 기록0. trial은 editor-session-only/actualGrant=false |
+| 마스크 합성 | maskedPicture의 mask/sample/image 2D context `willReadFrequently:true`, image 합성 `imageSmoothingQuality='high'`. 캐시≤8·최대 변1024px·feather sample 최대 변256px·mask/source/world/직렬화 규격 불변. FPS 개선 주장0 |
+| 실제 검수 | 의미19/19(1회). 최초 실제 XY/F/WASD 3확인·3보행 후 PNG 불일치 FAIL 보존. 합성 수정 후 Undo/무효 profile/JSON/새로고침/일반·baked/error불변6/6 PASS, 보행 재실행0. pageerror/HTTP/console0 |
+| 현재 PNG | 멈춘2048² export7018386B SHA `21b2651252851355d6e2dee865b5e58282576585ad28a0097b5c08be90efb78a`; 편집→Undo·fresh reload/cache rebuild byte 동일. 직전24230e77…/7018879B는 수정 전 이력이며 현재 핀으로 사용0 |
+| 제작·보존 | root완료 code3+관련docs12 한정checkpoint. 실제72+15=87부터 완료소유를 보존해72로 복귀; live owner STATE/LOG·타인WIP/기존23/세이브·보호2_3/Q전용·어택티켓 금지 유지. 원문8후속 메모는 미채택·idle, 중복TASK/새팀0 |
+| 품질·잔여 | VISUAL VERDICT: RETOUCH. 정적 주민의 확대 grain/재질·전사와 원근/절벽 alpha·높이·실제 지급/quest/save/상승·본편/native6단계/청취 미인수. 계획이나 fixture를 게임완료로 계산0 |
+
+정본 계약은 `MAP_SCENE_EDITOR_20261005.md` §14, 맵 가이드§23 제작보고는 `HELL_RIFT_EDITOR_RESULT_20261006.md`의 해당 완료ID를 따른다. 외부 근거=`/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/resident-dialogue-isolation-20261006/`의 receipt.json·first-browser-failure.json/log·browser-qa/browser-final-verification.json·실제 베린/네사 대화 PNG. 정상 code+docs commit/push와 remote exact SHA는 영수증에 기록; 새 build/server/game/게시0. 오늘19시 한 번 보고·기존paused/메일 재개0.

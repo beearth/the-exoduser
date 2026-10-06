@@ -36,11 +36,11 @@
     if (!entry || entry.stamp !== stamp) {
       const ratio = 1024 / Math.max(o.width, o.height), w = Math.max(1, Math.round(o.width * ratio)), h = Math.max(1, Math.round(o.height * ratio));
       const mask = document.createElement('canvas'), image = document.createElement('canvas'); mask.width = image.width = w; mask.height = image.height = h;
-      const m = mask.getContext('2d');
+      const m = mask.getContext('2d',{willReadFrequently:true});
       if (!o.maskFeather) { m.fillStyle = '#fff'; m.beginPath(); o.mask.forEach(([x,y], i) => i ? m.lineTo(x*w,y*h) : m.moveTo(x*w,y*h)); m.closePath(); m.fill(); }
       else {
         const sample = document.createElement('canvas'), r = 256 / Math.max(w,h); sample.width = Math.max(1,Math.round(w*r)); sample.height = Math.max(1,Math.round(h*r));
-        const sx = sample.getContext('2d'), pixels = sx.createImageData(sample.width, sample.height), poly = o.mask.map(([x,y]) => [x*o.width,y*o.height]);
+        const sx = sample.getContext('2d',{willReadFrequently:true}), pixels = sx.createImageData(sample.width, sample.height), poly = o.mask.map(([x,y]) => [x*o.width,y*o.height]);
         for (let y=0;y<sample.height;y++) for (let x=0;x<sample.width;x++) {
           const px=(x+.5)/sample.width*o.width, py=(y+.5)/sample.height*o.height; let inside=false, distance=Infinity;
           for(let i=0,j=poly.length-1;i<poly.length;j=i++) {
@@ -55,10 +55,10 @@
       }
       entry={stamp,mask,image};softMasks.delete(o.id);softMasks.set(o.id,entry);while(softMasks.size>8)softMasks.delete(softMasks.keys().next().value);
     }
-    const target=entry.image.getContext('2d'), w=entry.image.width,h=entry.image.height, p=current();
+    const target=entry.image.getContext('2d',{willReadFrequently:true}), w=entry.image.width,h=entry.image.height, p=current();
     const factor=1-(o.sourceParallax ?? 1),dx=(viewport.x-p.world.cols*p.world.tileSize/2)*factor,dy=(viewport.y-p.world.rows*p.world.tileSize/2)*factor;
     const angle=-o.rotation*Math.PI/180, lx=(dx*Math.cos(angle)-dy*Math.sin(angle))*(o.flipX?-1:1),ly=dx*Math.sin(angle)+dy*Math.cos(angle);
-    target.clearRect(0,0,w,h);target.globalCompositeOperation='source-over';target.drawImage(im,a.crop.x,a.crop.y,a.crop.w,a.crop.h,lx/o.width*w,ly/o.height*h,w,h);
+    target.imageSmoothingQuality='high';target.clearRect(0,0,w,h);target.globalCompositeOperation='source-over';target.drawImage(im,a.crop.x,a.crop.y,a.crop.w,a.crop.h,lx/o.width*w,ly/o.height*h,w,h);
     target.globalCompositeOperation='destination-in';target.drawImage(entry.mask,0,0);target.globalCompositeOperation='source-over';return entry.image;
   }
   async function asset(def, trim = false) {
@@ -107,8 +107,8 @@
     {npcId:'rift-request-nessa',x:6300,y:5020,visualX:1515*25/6,visualY:1198*25/6,labelHeight:175,approach:{x:6220,y:5020}},
     {npcId:'rift-prepare-dorik',x:5220,y:2500,visualX:1206*25/6,visualY:603*25/6,labelHeight:71,approach:{x:5180,y:2540}}
   ].map(a=>Object.freeze({...a,approach:Object.freeze(a.approach)})));
-  let residentAnchorsFactory, residentGroundingFactory, residentGrounding, residentGroundingScene, dialogueFactory, dialogueRaw, dialogueController, dialogueScene, nearestResident = null, dialogueOpen = false;
-  const residentAnchors = () => residentAnchorsFactory?.(current()) || RESIDENT_ANCHORS;
+  let residentAnchorsFactory, residentGroundingFactory, residentGrounding, residentGroundingScene, dialogueSceneSupport, dialogueFactory, dialogueRaw, dialogueController, dialogueScene, nearestResident = null, dialogueOpen = false;
+  const residentAnchors = () => residentAnchorsFactory?.(current()) || (dialogueSceneSupport?.(current()) ? RESIDENT_ANCHORS : []);
   function closeDialogue(reason = 'ui-close') {
     dialogueController?.close(reason); dialogueOpen = false; nearestResident = null; keys.clear(); space = false;
     if($('dialogue').open) $('dialogue').close();
@@ -314,7 +314,7 @@
     }
     if(['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;const key=e.key.toLowerCase();if((e.ctrlKey||e.metaKey)&&key==='s'){e.preventDefault();$('save').click();return;}if((e.ctrlKey||e.metaKey)&&(key==='z'||key==='y')){e.preventDefault();(key==='y'||e.shiftKey?$('redo'):$('undo')).click();return;}if(key===' '){space=true;e.preventDefault();}if(playing){if(key==='f'&&!e.repeat&&!e.ctrlKey&&!e.metaKey&&!e.altKey){e.preventDefault();talk();return;}if(['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright'].includes(key)){keys.add(key);e.preventDefault();}if(key==='escape')$('play').click();return;}if(key==='escape'){if(tool==='pivot'){tool='select';if(matchMedia('(max-width:760px)').matches)$('inspector').classList.remove('mobile-hidden');refresh();return;}paletteId=null;selected=null;palette();refresh();}if(key==='delete'||key==='backspace'){e.preventDefault();$('delete').click();}if(key==='v')document.querySelector('[data-scene-tool="select"]').click();if(key==='b')document.querySelector('[data-scene-tool="walk"]').click();if(key==='e')document.querySelector('[data-scene-tool="block"]').click();});
   window.addEventListener('keyup',e=>{keys.delete(e.key.toLowerCase());if(e.key===' ')space=false;});window.addEventListener('blur',()=>{closeDialogue('focus-lost');keys.clear();space=false;endDrag();});
-  try{try{const module=await import('./map-scene-rift-dialogue.mjs');
+  try{try{const module=await import('./map-scene-rift-dialogue.mjs');dialogueSceneSupport=module.supportsRiftDialogueScene;
       const response=await fetch('tools/team-followup-20261005/hell-rift/STORY/rift-dialogue.json',{cache:'no-store',redirect:'error'});
       if(!response.ok||Number(response.headers.get('content-length'))>256000)throw new Error('주민 대화 데이터 로드 실패');
       const bytes=await response.arrayBuffer();if(bytes.byteLength>256000)throw new Error('주민 대화 데이터가 너무 큽니다');
