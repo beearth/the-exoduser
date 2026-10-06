@@ -421,3 +421,17 @@ Codex7 기존7의 이전 송신은 자동 승인 검토 “승인 필요 / 정�
 완료소유 코드10+관련docs12만 checkpoint한다. 원본 scene/PNG/STORY, game.html/index.html, live supervisor STATE/LOG·타인WIP·보호2_3/Q-only·어택티켓 금지·사용자세이브·기존23 유지. 원격 exact SHA와 최초 실패/최종 화면·영상은 외부 receipt에 보존한다.
 
 제작16 역할·기획의 현재 구현/후속 경계는 위 표로 갱신한다. §16 틈 배경의 깨끗한 바닥/독립주민은 이 격리 후보에서 구현; 전체 전경/높이/본편 gate와 actual grant·장 저장은 계속 후속이다. 출발 준비·멈춤·유품·구조 부탁이 다음 도전의 선택으로 이어지는 목표는 유지한다.
+
+
+### 2026-10-06 주민 소비자 후속 완료2 미채택 보존 — ROOT-CLAUDE8-RESIDENT-RAW2-BATCH1-20261006
+
+기존 Claude8의 프로세스정보 preflight실패는 송신0인 이력이다. UTC시간/endpoint PID·uid 검증 정정 후 같은8세션·새세션0으로03:26:34~35Z 각1회 정상송신, 현회차 peer8/source8를 확인했다. actual80 경계에서 공식 end/pin이 확보된 SKILL/BOSS2만 먼저 보존한다. ART/MAP/ANIMVFX/QA/ENEMY/STORY 후속은 최종완료 핀을 기다리는 WIP이며 상세검수 완료까지 보존을 미루지 않는다.
+
+| 역할 | 실제 TASK ID | 담당 보고완료ID / 구분 | bytes | SHA256 | 공식 endUUID / UTC | 상태 |
+|---|---|---|---:|---|---|---|
+| SKILL | `CLAUDE8-RESIDENT-SKILL-20261006-0324` | `ROOTRESIDENT-ROLE-FOLLOWUP-20261006` | 9660 | `09b6e8e57a81f3803aff68936d7ad05f8fb48ee3c4c1d9765aff3c2f0b000445` | `5f142e54-dba0-4ecf-b726-19acbdf95221` / 2026-10-06T03:28:47.747Z | 후보 미채택, MJS syntax만 PASS |
+| BOSS | `CLAUDE8-RESIDENT-BOSS-20261006-0324` | `ROOTRESIDENT-ROLE-FOLLOWUP-20261006` | 13431 | `01cb28daf51463eec2bbf88d0285b858f3db08d596723ccf8e4cbc459c6bd861` | `cd34d69a-af37-46e7-8149-dd1e23026827` / 2026-10-06T03:29:26.063Z | 후보 미채택, MJS syntax만 PASS |
+
+정확 경로: `tools/team-followup-20261006/hell-rift/SKILL/retry-input-reset.candidate.mjs`, `tools/team-followup-20261006/hell-rift/BOSS/boss-revive-kill-tail.candidate.mjs`. SKILL/BOSS의 literal `ROOTRESIDENT-ROLE-FOLLOWUP-20261006`는 ROLE 템플릿이 미치환된 담당 보고값이고 감독 alias `ROOTRESIDENT-SKILL-FOLLOWUP-20261006`는 별도식별값이다. 실제 TASK/end/path/SHA의 조합으로 구분하며 완료ID를 새로 꾸며내지 않는다.
+
+SKILL의 현행game SHA는 `4f4eba2596c33f4e0c28e1e68ac224560e17c944cdbe9596ad9956c7578e3ccd`; pin no-op rebase/HEAD provenance 및 drift거절 후보만 보존. BOSS는 full SHA 거절과 보상 의미 HOLD 후속으로, 본편 EXP/drop/부활 타이밍 변경0. 상세 의미·조합 apply·native6단계/화면/청취는 미인수. root 접지그림자 소비자의 작업중 파일은 이번 raw checkpoint에 넣지 않는다. 후보2+관련docs3만 정상commit/push/원격exactSHA로 보존; 원본game/index/scene/PNG/STORY·보호2_3/Q-only/세이브/기존23/타인WIP/liveSTATE·LOG 유지. 기존 paused/메일 재개0, Codex7 새7은 기존 자동승인거절 hold. 외부pins/원격영수증 `/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/resident-followup-preservation-20261006/batch1/receipt.json`.

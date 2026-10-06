@@ -15,8 +15,13 @@
 //
 // source 핀 (이 후보가 작성·검증된 기준 checkout):
 //   game.html SHA256 = 4f4eba2596c33f4e0c28e1e68ac224560e17c944cdbe9596ad9956c7578e3ccd
-//   game.html bytes  = 4039085
+//   game.html bytes  = 4039085 (file) / utf8-string SHA 동일
 //   anchor 'updateQS();G.on=true;' 는 해당 checkout 에서 유일(1건). (grep -c 확인)
+//
+// strict rebase (CLAUDE8-RESIDENT-SKILL-20261006-0324 ①):
+//   git HEAD 6e9a7a7dedfcc66d9005330249ded0f0a0812526 에서 game.html 내용 SHA 가
+//   위 PINNED 와 '동일'함을 확인 → 핀 변경 불필요(no-op rebase). patch0, Q-only/2_3/수치 보존.
+//   내용이 달라졌으면 PINNED_GAME_HTML_SHA256 를 현행값으로 교체해야 strict 적용된다.
 
 'use strict';
 
@@ -24,6 +29,8 @@
 export const PINNED_GAME_HTML_SHA256 =
   '4f4eba2596c33f4e0c28e1e68ac224560e17c944cdbe9596ad9956c7578e3ccd';
 export const PINNED_GAME_HTML_BYTES = 4039085;
+// 핀이 검증된 checkout. 내용 SHA 는 HEAD 와 독립이나, 추적을 위해 함께 고정한다.
+export const PINNED_AT_GIT_HEAD = '6e9a7a7dedfcc66d9005330249ded0f0a0812526';
 
 // retry 공통 경계 — 루프 재활성 직전. OLD 는 핀 checkout 에서 유일.
 export const RETRY_OLD = 'updateQS();G.on=true;';
@@ -84,6 +91,7 @@ export async function generateRetryInputResetPatch(source, opts = {}) {
     taskId: 'CLAUDE8-PROD-SKILL-20261006-0220',
     sourceSha,
     pinnedSha: PINNED_GAME_HTML_SHA256,
+    pinnedAtGitHead: PINNED_AT_GIT_HEAD,
     shaMatch,
     bytes: source.length,
     anchor: { old: RETRY_OLD, new: RETRY_NEW },
@@ -131,7 +139,7 @@ export async function generateRetryInputResetPatch(source, opts = {}) {
   };
 }
 
-export default { generateRetryInputResetPatch, detectAwaitBeforeGon, PINNED_GAME_HTML_SHA256, RETRY_OLD, RETRY_NEW };
+export default { generateRetryInputResetPatch, detectAwaitBeforeGon, PINNED_GAME_HTML_SHA256, PINNED_AT_GIT_HEAD, RETRY_OLD, RETRY_NEW };
 
 /* ── 인라인 자가검증 (직접 실행 시에만, stdin/메모리 — 파일 쓰기 0) ───── */
 async function _selfTest() {

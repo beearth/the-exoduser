@@ -30,6 +30,14 @@ export const SOURCE = Object.freeze({
 // resolve(33270) 판정식 — _bossWillRevive가 거울로 삼는 source 핀. apply 전 존재 확인.
 export const RESOLVE_PIN = '(e._bossRevRoll??1)<(e._bossRevChance||0)';
 
+// [0324] 전체 game.html SHA256 핀 보완. apply/verify에 {sourceSha}를 넘기면 이 값과 대조해
+// 핀 불일치 source(다른 HEAD/편집본)에 패치 적용을 거부한다. 해시 계산은 호출자(아래 CLI).
+export const EXPECTED_SHA = SOURCE.sha256;
+export function checkSha(sourceSha) {
+  const got = typeof sourceSha === 'string' ? sourceSha.trim().toLowerCase() : null;
+  return { ok: got === EXPECTED_SHA, expected: EXPECTED_SHA, got };
+}
+
 // ── 패치 ops (순수 데이터) ──
 // 각 op: 단일 라인 앵커(정확 들여쓰기 포함) 기준. type:
 //   insertAfter / insertBefore / replaceLine.  anchor는 source에 정확히 1회 존재해야 함.
@@ -98,21 +106,31 @@ function lineOccurrences(src, line) {
 }
 
 // ── 순수 검증: 각 앵커가 정확히 1회 존재 + resolve 핀 존재 ──
-export function verify(source) {
+export function verify(source, opts = {}) {
   if (typeof source !== 'string') throw new TypeError('source must be a string');
+  if (source.length === 0) throw new RangeError('source is empty');
   const ops = buildOps();
   const checks = ops.map((op) => {
     const n = lineOccurrences(source, op.anchor).length;
     return { id: op.id, type: op.type, count: n, ok: n === 1 };
   });
   const resolvePin = source.includes(RESOLVE_PIN);
-  const ok = checks.every((c) => c.ok) && resolvePin;
-  return { ok, resolvePin, checks };
+  // [0324] 전체 SHA 핀(옵션): {sourceSha} 주어지면 EXPECTED_SHA와 대조. 미지정=null(미검, ok 영향 없음).
+  const sha = (opts.sourceSha != null) ? checkSha(opts.sourceSha) : null;
+  const shaOk = sha == null ? true : sha.ok;
+  const ok = checks.every((c) => c.ok) && resolvePin && shaOk;
+  return { ok, resolvePin, sha, checks };
 }
 
 // ── 순수 적용: 패치된 source **문자열** 반환(원본 불변). 앵커 비유일 시 throw ──
-export function apply(source) {
+export function apply(source, opts = {}) {
   if (typeof source !== 'string') throw new TypeError('source must be a string');
+  if (source.length === 0) throw new RangeError('source is empty');
+  // [0324] 전체 SHA 핀 거부: {sourceSha} 주어지고 불일치면 적용 거부(다른 HEAD/편집본).
+  if (opts.sourceSha != null) {
+    const sha = checkSha(opts.sourceSha);
+    if (!sha.ok) throw new Error('SHA pin mismatch — expected ' + sha.expected + ' got ' + sha.got + ' (적용 거부)');
+  }
   if (!source.includes(RESOLVE_PIN)) {
     throw new Error('resolve pin not found — source가 핀 SHA와 다름: ' + RESOLVE_PIN);
   }
@@ -151,6 +169,15 @@ export const CONTRACT = Object.freeze({
               'corpse(_addCorpse)', 'gore', '_addDeathImpact', '"부활 판정 중" 텍스트',
               '문지기(_isGateGuard,!e.ib)', 'checkRooms(매 프레임 재실행)'],
   preserved: ['일반몹(전부: _bossWillRevive=false)', 'EXP/drop/재료 최종1회', '2_3 값 무변'],
+  // [0324] EXP/drop/save/revive/retry 보존 조건 명시
+  timingPreserved: [
+    'EXP(addExp 41713-14)·drop(rollDrop 41710)·재료(G.mats 41682/41703/41707): 최종 사망 사이클 1회 지급 — 부활 미발생(=기존 단일처치) 시 기존과 동일, 부활 예정 사이클만 F-return으로 skip.',
+    'revive: 1차 즉시부활(41258 return)·2차 countdown(_reviveTimer=180 arm)·resolve(33270 roll<chance) 공식/타이밍/포인트 소모 전부 무변. 본 패치는 "보상 지급 여부"만 분기, 부활 판정 자체 불변.',
+    'retry: retryBtn 분기(_retryDruidFinale / _preArenaBackup / field-retry)와 _capture/_restoreBossFieldState 필드 진행 보존은 hurtE 밖 — 본 패치 미접촉.',
+    'save: dbSaveNow(G.kills%10===0, 41716)는 F-return 아래 — 부활 예정 사이클만 skip, 최종/비보스는 기존대로. 세이브 스키마 변경 0.',
+    'corpse/deathFX/gate/문지기: 가드 위(또는 !e.ib)라 매 사망 유지.',
+  ],
+  hold: '의미가 다른 변경은 root 결정 전 HOLD — 지급 시점을 완전사망 resolve(33295)로 이전, 보상 타이밍 재설계, native 보스/본편 game.html patch. 본 후보는 "반복 skip + 최종1회 유지"만 구현하며 새 보상 타이밍 채택 0.',
 });
 
 // 직접 실행(IO는 여기서만): node boss-revive-kill-tail.candidate.mjs <game.html경로>
@@ -163,19 +190,29 @@ if (_isMain) {
     const fs = await import('node:fs');
     const crypto = await import('node:crypto');
     const src = fs.readFileSync(path, 'utf8');
-    const v = verify(src);
+    const srcSha = crypto.createHash('sha256').update(src, 'utf8').digest('hex');
+    const v = verify(src, { sourceSha: srcSha });
     console.log('subject:', SOURCE.subject, '| resolvePin:', v.resolvePin);
+    console.log('fullSHA:', v.sha ? (v.sha.ok ? 'MATCH' : 'MISMATCH ' + v.sha.got) : 'n/a', '(expected ' + EXPECTED_SHA.slice(0, 16) + '…)');
     for (const c of v.checks) console.log(`  ${c.ok ? 'OK' : 'FAIL'} ${c.id} [${c.type}] x${c.count}`);
     if (v.ok) {
-      const patched = apply(src);
+      const patched = apply(src, { sourceSha: srcSha });
       const bytes = Buffer.byteLength(patched, 'utf8');
       const sha = crypto.createHash('sha256').update(patched, 'utf8').digest('hex');
       console.log(`verify: PASS | patched bytes=${bytes} sha256=${sha}`);
       console.log(`delta bytes=${bytes - Buffer.byteLength(src, 'utf8')} (삽입/치환만)`);
     } else {
-      console.log('verify: FAIL — 앵커/핀 불일치, apply 보류');
+      console.log('verify: FAIL — 앵커/SHA/핀 불일치, apply 보류');
       process.exitCode = 1;
     }
+    // [0324] 실패 입력/핀 거부 검증 (파일 생성 없음, stdout만)
+    const probe = (name, fn) => { let rej = false, msg = ''; try { fn(); } catch (e) { rej = true; msg = e.message.slice(0, 40); } console.log(`  ${rej ? 'REJECT-OK' : 'NOT-REJECTED'} ${name}${msg ? ' :: ' + msg : ''}`); };
+    console.log('failure-input probes:');
+    probe('wrong-sha', () => apply(src, { sourceSha: '0'.repeat(64) }));
+    probe('empty-source', () => apply(''));
+    probe('non-string', () => apply(12345));
+    probe('missing-resolve-pin', () => apply(src.split(RESOLVE_PIN).join('(x)')));
+    probe('truncated(anchor-gone)', () => apply(src.slice(0, 1000)));
   }
 }
 
