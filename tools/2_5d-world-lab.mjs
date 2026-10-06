@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { createCharacterRig } from './2_5d/character-rigs.mjs';
+import { CHARACTER_RIG_CATALOG } from './2_5d/character-rig-catalog.mjs';
 import { createBakedSpecialMotion } from './2_5d/baked-special-motion.mjs';
 import { createRiftTerrain, RIFT_TERRAIN } from './2_5d/rift-terrain.mjs';
 import { createRiftContactUnderlay } from './2_5d/rift-contact-underlay.mjs';
@@ -47,7 +48,22 @@ let frameFatalStaleFailures=0,frameFatalReportFailures=0;
 const inertEffectStats=Object.freeze({active:false,inert:true,reason:'rebuild-unavailable',live:0,spawned:0,expired:0,recycled:0,pool:0,bandWrites:0,suppressed:0,meshes:0});
 const INERT_EFFECT=Object.freeze({update(){return inertEffectStats;},onActorChange(){return 0;},onSceneChange(){return 0;},dispose(){return 0;},snapshot(){return inertEffectStats;}});
 let previewSequence=0,previewEntry=null,previewEntryReason=null;
+let initialCharacter=null,initialCharacterReady=false;
 const leaf = (id,value) => { const el=$(id); if(el && !el.children.length) el.textContent=String(value); };
+function readInitialCharacterSeed(search){
+  if(typeof search!=='string')throw new Error('초기 캐릭터 query 문자열이 필요합니다.');
+  const values=new URLSearchParams(search).getAll('main-character');
+  if(values.length===0)return 'warrior';
+  if(values.length!==1||!['warrior','silvertail'].includes(values[0]))throw new Error('지원하지 않는 초기 캐릭터 표시 요청입니다.');
+  return values[0];
+}
+function prepareInitialCharacterDisplay(){
+  const id=initialCharacter;
+  if(!['warrior','silvertail'].includes(id)||!rigs[id])throw new Error('초기 캐릭터 표시 준비가 일치하지 않습니다.');
+  state.selected=id;$('character').value=id;
+  Object.entries(rigs).forEach(([key,rig])=>{rig.object3d.visible=key===id;helpers[key].visible=false;});
+  leaf('actor-name',CHARACTER_RIG_CATALOG[id].name);
+}
 function stopFrame(){if(state.raf)cancelAnimationFrame(state.raf);state.raf=0;state.lastTime=null;}
 function fail(error){
   if(state.disposed)return;
@@ -452,6 +468,8 @@ window.__rift25Lifecycle=Object.freeze({snapshot:()=>Object.freeze({
 // Register before the first top-level await, including terrain loading.
 window.addEventListener('pagehide',dispose,{once:true});
 try{
+  try{initialCharacter=readInitialCharacterSeed(window.location.search);}
+  catch(_){throw new Error('지원하지 않는 초기 캐릭터 표시 요청입니다.');}
   renderer=new THREE.WebGLRenderer({canvas:$('world-canvas'),antialias:true,powerPreference:'low-power'});
   renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));renderer.outputColorSpace=THREE.SRGBColorSpace;
   renderer.debug.checkShaderErrors=true;renderer.debug.onShaderError=()=>fail(new Error('2.5D 화면 셰이더 연결 실패'));
@@ -511,7 +529,9 @@ try{
   try{wolf=takeInitialized(await createCorruptedWolf({THREE,terrain,camera,height:.36,previewFps:6,signal:wolfAbort.signal}),'wolf');scene.add(wolf.object3d);}
   catch(error){ensureInitialization();wolfError=error instanceof Error?error.message:String(error);}
   ensureInitialization();
-  state.ready=true;controls.forEach(el=>el.disabled=false);$('loading').hidden=true;reset();select('warrior');
+  prepareInitialCharacterDisplay();
+  state.ready=true;controls.forEach(el=>el.disabled=false);$('loading').hidden=true;reset();select(initialCharacter);
+  initialCharacterReady=state.ready&&!state.error&&!state.disposed&&state.selected===initialCharacter;
   reducedQuery.addEventListener('change',updateReducedMotion);
   observer=new ResizeObserver(resize);observer.observe($('world-canvas').parentElement);resize();resume();
   for(const id of Object.keys(labels))$(id).addEventListener('click',()=>setMode(id));
@@ -548,5 +568,5 @@ $('world-canvas').addEventListener('blur',()=>{clearIntent();poses[state.selecte
 window.addEventListener('blur',handleBlur);
 $('world-canvas').addEventListener('webglcontextlost',event=>{event.preventDefault();state.contextLost=true;fail(new Error('WebGL 컨텍스트 소실. 페이지를 다시 열어 주세요.'));});
 document.addEventListener('visibilitychange',()=>{clearIntent();if(document.hidden)stopFrame();else resume();});
-window.__rift25Lab=Object.freeze({enterPreview,snapshot:()=>{let actor;rigs[state.selected]?.object3d.traverse(n=>{if(n.isSkinnedMesh)actor=n;});return {...state,previewEntry:previewEntrySnapshot(),raf:!!state.raf,rig:rigs[state.selected]?.snapshot(),poseConsumer:poses[state.selected]?.snapshot(),effects:effects[state.selected]?.snapshot(),effectRebuild:effectRebuildSnapshot(),effectUpdate:effectUpdateSnapshot(),specialMotion:specialMotion?.snapshot(),actorVisible:rigs[state.selected]?.object3d.visible,shadowVisible:shadow?.visible,acceptance:structuredClone(acceptance),registration:structuredClone(registration),residents:residents?.snapshot(),interactionCue:interactionCue?.snapshot(),residentAccess:structuredClone(residentAccess),dialogue:dialogue?structuredClone(dialogue.snapshot()):null,dialogueObservation:dialogueObservation?.snapshot(),wolf:wolf?.snapshot(),wolfPlacement:wolfPlacement?{...wolfPlacement,canWalk:terrain.canWalk(wolfPlacement.x,wolfPlacement.y,wolfPlacement.radius)}:null,wolfError,nearestNpc:structuredClone(nearestNpc),cameraPosition:camera?.position.toArray(),diagnosticProvenance:{INTERACTION:INTERACTION_CUE_PROVENANCE,QA:SLICE_ACCEPTANCE_PROVENANCE,MAP:SCENE_REGISTRATION_PROVENANCE},renderContract:actor?{transparent:actor.material.transparent,depthWrite:actor.material.depthWrite,depthTest:actor.material.depthTest,actorOrder:actor.renderOrder,actorScenePosition:rigs[state.selected].object3d.position.toArray(),shadowScenePosition:shadow.position.toArray(),foregroundOrders:terrain.occluders.map(o=>o.object3d.renderOrder)}:null,terrain:terrain?.snapshot(),contactUnderlay:contactUnderlay?.snapshot(),contactShaderPrograms:contactShaderPrograms.map(p=>({...p})),foregroundShaderPrograms:foregroundShaderPrograms.map(p=>({...p})),canvas:{width:$('world-canvas').width,height:$('world-canvas').height}};}});
+window.__rift25Lab=Object.freeze({enterPreview,snapshot:()=>{let actor;rigs[state.selected]?.object3d.traverse(n=>{if(n.isSkinnedMesh)actor=n;});return {...state,initialCharacter,initialCharacterReady,previewEntry:previewEntrySnapshot(),raf:!!state.raf,rig:rigs[state.selected]?.snapshot(),poseConsumer:poses[state.selected]?.snapshot(),effects:effects[state.selected]?.snapshot(),effectRebuild:effectRebuildSnapshot(),effectUpdate:effectUpdateSnapshot(),specialMotion:specialMotion?.snapshot(),actorVisible:rigs[state.selected]?.object3d.visible,shadowVisible:shadow?.visible,acceptance:structuredClone(acceptance),registration:structuredClone(registration),residents:residents?.snapshot(),interactionCue:interactionCue?.snapshot(),residentAccess:structuredClone(residentAccess),dialogue:dialogue?structuredClone(dialogue.snapshot()):null,dialogueObservation:dialogueObservation?.snapshot(),wolf:wolf?.snapshot(),wolfPlacement:wolfPlacement?{...wolfPlacement,canWalk:terrain.canWalk(wolfPlacement.x,wolfPlacement.y,wolfPlacement.radius)}:null,wolfError,nearestNpc:structuredClone(nearestNpc),cameraPosition:camera?.position.toArray(),diagnosticProvenance:{INTERACTION:INTERACTION_CUE_PROVENANCE,QA:SLICE_ACCEPTANCE_PROVENANCE,MAP:SCENE_REGISTRATION_PROVENANCE},renderContract:actor?{transparent:actor.material.transparent,depthWrite:actor.material.depthWrite,depthTest:actor.material.depthTest,actorOrder:actor.renderOrder,actorScenePosition:rigs[state.selected].object3d.position.toArray(),shadowScenePosition:shadow.position.toArray(),foregroundOrders:terrain.occluders.map(o=>o.object3d.renderOrder)}:null,terrain:terrain?.snapshot(),contactUnderlay:contactUnderlay?.snapshot(),contactShaderPrograms:contactShaderPrograms.map(p=>({...p})),foregroundShaderPrograms:foregroundShaderPrograms.map(p=>({...p})),canvas:{width:$('world-canvas').width,height:$('world-canvas').height}};}});
 }

@@ -8,7 +8,8 @@ export const MAIN_RIFT_HOST = Object.freeze({
   timeoutMs: 30000, pollMs: 100,
   mainAccepted: false, nativeAccepted: false, automaticTalk: false,
   saveWrites: false, rewardWrites: false, nextStageCalls: false,
-  ownsRenderer: false, ownsRAF: false
+  ownsRenderer: false, ownsRAF: false, characterSeedKey: 'main-character',
+  characterLinkScope: 'initial-display-only', fullPlayerLinked: false
 });
 const own = (object, key) => {
   if (!object || typeof object !== 'object') throw new Error('UNKNOWN · host 객체 필요');
@@ -61,7 +62,7 @@ export function createMainRiftHost({document: doc = globalThis.document,
     const value = plain(readContext(), 'readContext'), result = {};
     for (const key of ['player', 'character', 'stage', 'context', 'on', 'stageCleared', 'status']) result[key] = own(value, key);
     if (!result.player || typeof result.player !== 'object' || Array.isArray(result.player) ||
-        typeof result.character !== 'string' || !result.character.length ||
+        typeof result.character !== 'string' || !['warrior', 'silvertail'].includes(result.character) ||
         !Number.isInteger(result.stage) || result.stage < 0 || !identity(result.context) ||
         result.on !== false || result.stageCleared !== true) throw new Error('UNKNOWN · 부모 클리어/정지/identity admission 불일치');
     if (result.status !== undefined && result.status !== null && !['string', 'boolean', 'number'].includes(typeof result.status)) throw new Error('UNKNOWN · 부모 status primitive 필요');
@@ -144,8 +145,8 @@ export function createMainRiftHost({document: doc = globalThis.document,
     frame.style.cssText = 'display:block;width:100%;height:calc(100% - 63px);border:0;background:#080d10;';
     header.append(title, text, exit); panel.append(header, frame);
     record.onLoad = () => {
-      if (!isCurrent(record) || frame.getAttribute('src') !== labURL.href) return;
-      try {const location = frame.contentWindow?.location; record.loaded = !!location && location.origin === origin.origin && location.pathname === labURL.pathname;}
+      if (!isCurrent(record) || frame.getAttribute('src') !== record.entryURL) return;
+      try {const location = frame.contentWindow?.location; record.loaded = !!location && location.origin === origin.origin && location.pathname === labURL.pathname && location.href === record.entryURL;}
       catch (failure) {fail(record, failure);}
     };
     record.onError = () => fail(record, new Error('지옥의 틈 iframe 로드 실패'));
@@ -154,7 +155,7 @@ export function createMainRiftHost({document: doc = globalThis.document,
     frame.addEventListener('load', record.onLoad); frame.addEventListener('error', record.onError);
     panel.addEventListener('cancel', record.onCancel); panel.addEventListener('close', record.onClose);
     doc.body.append(panel); panel.showModal(); status(record, '독립 화면 준비 중 · 본편 저장과 보상은 변경하지 않습니다.');
-    frame.src = labURL.href; exit.focus({preventScroll: true});
+    frame.src = record.entryURL; exit.focus({preventScroll: true});
   }
   function handleFor(record) {
     let restored = false, released = false;
@@ -165,6 +166,20 @@ export function createMainRiftHost({document: doc = globalThis.document,
       if (released) return false; released = true;
       closeRecord(record, 'disposed-handle', true, false); return true;
     }});
+  }
+  function readChildState(child, initial) {
+    // Child traps/opaque exceptions must never reach errorText or string coercion.
+    try {
+      const api = own(child, '__rift25Lab');
+      if (!api) return null;
+      const read = own(api, 'snapshot');
+      if (typeof read !== 'function') throw null;
+      const value = plain(read.call(api), 'lab snapshot', child.Object.prototype);
+      const data = {};
+      for (const key of ['ready', 'error', 'disposed', 'contextLost']) data[key] = own(value, key);
+      if (initial) for (const key of ['initialCharacter', 'initialCharacterReady', 'selected']) data[key] = own(value, key);
+      return data;
+    } catch (_) {throw new Error('UNKNOWN · 지옥의 틈 초기 표시 ACK 읽기 실패');}
   }
   function poll(record) {
     record.timer = null;
@@ -179,20 +194,20 @@ export function createMainRiftHost({document: doc = globalThis.document,
       if (record.phase === 'active' && !record.loaded) throw new Error('지옥의 틈 활성 iframe 경로 상실');
       if (record.loaded) {
         const child = record.frame.contentWindow;
-        if (!child || child.location.origin !== origin.origin || child.location.pathname !== labURL.pathname) throw new Error('지옥의 틈 iframe origin/경로 변경');
-        const api = own(child, '__rift25Lab');
-        if (record.phase === 'active' && !api) throw new Error('지옥의 틈 활성 port 사라짐');
-        if (api) {
-          const read = own(api, 'snapshot');
-          if (typeof read !== 'function') throw new Error('지옥의 틈 snapshot port 없음');
-          // A same-origin iframe still has a distinct Object.prototype realm.
-          // Accept that exact native object prototype, never a custom chain.
-          const state = plain(read.call(api), 'lab snapshot', child.Object.prototype);
-          if (own(state, 'error') || own(state, 'disposed') === true || own(state, 'contextLost') === true) throw new Error('지옥의 틈 표시 실패 · ' + (own(state, 'error') || 'context/disposed'));
-          if (record.phase === 'active' && own(state, 'ready') !== true) throw new Error('지옥의 틈 활성 준비 상태 상실');
-          if (own(state, 'ready') === true && record.phase === 'loading') {
+        if (!child || child.location.origin !== origin.origin || child.location.pathname !== labURL.pathname || child.location.href !== record.entryURL) throw new Error('지옥의 틈 iframe origin/경로 변경');
+        const state = readChildState(child, record.phase === 'loading');
+        if (!isCurrent(record)) return;
+        if (!sameContext(record)) return void closeRecord(record, 'parent-context-changed', false, true);
+        if (!isCurrent(record)) return;
+        if (record.phase === 'active' && !state) throw new Error('지옥의 틈 활성 port 사라짐');
+        if (state) {
+          if (state.error || state.disposed === true || state.contextLost === true) throw new Error('지옥의 틈 표시 실패 · context/disposed/error');
+          if (record.phase === 'active' && state.ready !== true) throw new Error('지옥의 틈 활성 준비 상태 상실');
+          if (state.ready === true && record.phase === 'loading') {
+            if (state.initialCharacterReady !== true || state.initialCharacter !== record.expectedCharacter || state.selected !== record.expectedCharacter) throw new Error('UNKNOWN · 지옥의 틈 초기 캐릭터 표시 ACK 불일치');
+            record.characterAck = true;
             record.phase = 'active'; record.handle = handleFor(record); completed++;
-            status(record, '독립 2.5D 공간 · NPC 대화는 직접 시작 · 본편 캐릭터/보상 연동 미인수');
+            status(record, '독립 2.5D 공간 · 초기 캐릭터 표시 연결 · 본편 상태/보상 연동 미인수');
             settle(record, record.handle);
             try {child.focus(); child.document.getElementById('world-canvas')?.focus({preventScroll: true});} catch (_) { /* optional focus must not revoke the handle */ }
           }
@@ -213,7 +228,8 @@ export function createMainRiftHost({document: doc = globalThis.document,
     if (current) closeRecord(current, 'failed-retry', true, false);
     let context;
     try {context = contextSnapshot();} catch (failure) {error = errorText(failure); reason = error; return Promise.resolve(null);}
-    const record = {id: ++sequence, context, onExit, started: now(), phase: 'loading',
+    const entryURL = new URL(labURL.href);entryURL.searchParams.set(MAIN_RIFT_HOST.characterSeedKey, context.character);
+    const record = {id: ++sequence, context, expectedCharacter:context.character, entryURL:entryURL.href, characterAck:false, onExit, started: now(), phase: 'loading',
       focus: doc.activeElement, timer: null, loaded: false, closed: false, notified: false, settled: false, handle: null};
     record.job = new Promise(resolve => {record.resolve = resolve;}); current = record; error = null;
     try {makeUI(record); if (isCurrent(record)) record.timer = win.setTimeout(() => poll(record), 0);}
@@ -256,7 +272,7 @@ export function createMainRiftHost({document: doc = globalThis.document,
       parentStage: current?.context.stage ?? null, parentCharacter: current?.context.character ?? null,
       reason, error, completed, cancelled, notificationErrors, ...MAIN_RIFT_HOST, timeoutMs, pollMs,
       inputLimitations: 'already-held keys/gamepad/earlier same-window capture remain caller-owned',
-      parentStateWrites: false, borrowedDomWrites: false, childCharacterLinked: false});
+      parentStateWrites: false, borrowedDomWrites: false, childCharacterLinked: current?.characterAck === true});
   }
   return Object.freeze({enterRift, cancel, dispose, snapshot});
 }

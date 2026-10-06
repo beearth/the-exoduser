@@ -917,3 +917,90 @@ MAP PRODUCTION REPORT (§23): MASTER=캐릭터 snapshot·렌더 current failure�
 | 기존 owner 후속 | Claude8 최신 turn134: ANIM 모션 위상/UV 신규TASK1·peer1·실제source1/end0, MAP 후속은 전문 완료문의 인간승인 질문으로 보류. root는 기존 사용자 직접 팀운영 승인에 비춰 이 보류만 복구 피드백1회; 실제 외부manifest 도구거절/삭제·피해UNKNOWN/cleanup0 경계는 그대로. 전문 중복·새팀·새실행세션0. 실제 계속 여부는 새 owner 송신/peer/source/end 근거로만 확인 |
 | 다음 독립 root 접점 | 본편 root P/character와 child 최초 actor 선택의 연결을 별도 exact-source 읽기 중. 기존 epoch/save/Continue 검사는 재실행0. P/HP/inventory 전체전달·본편 native 인수를 이 계획으로 선언0. NPC 유품 실제 contentID/수량·부탁 questID/구조대상은 기존 미확정 유지 |
 | 운영/인수 경계 | 연속 제작 유지/다른paused자동화·아침메일재개0. 사용률 목표 약15 account weekly percentage points/day, 공유 관측·일별token 미제공이므로 이 채팅의 정확 하루소비 보장0/토큰태우기0. 본편native6·청취·실save·A급완성0. 원화1254→8000확대 흐림/legacy1024mask는 미해결·VISUAL RETOUCH. WOLF 거절 뒤 같은 산출물 corrected-path write 이력·피해UNKNOWN 유지, 해당 후보 추가읽기·실행·검수·채택·Git0 |
+
+## 2026-10-07 ROOT-RIFT-MAIN-CHARACTER-SEED-20261007: 본편 두 클래스의 최초 표시 seed와 ACK
+
+기존 본편은 _charIdx0/1을 warrior/silvertail 문자열로 host에 이미 전달했지만, host iframe URL과 child 초기 선택은 항상 warrior였다. 이번 변경은 그 두 canonical 클래스의 **초기 표시만** 같은 origin query로 전달하고 첫 화면의 표시 ACK를 확인한다. 부모 P reference는 계속 parent identity 검사에만 쓰며 child로 복사·공유하지 않는다. 기존 독립 다크드루이드 비교와 preview port는 유지한다.
+
+| id·접점 | 현재 정확 계약·수치·범위 |
+|---|---|
+| public host 현재핀 | tools/2_5d/main-rift-host.mjs 18931 B / SHA256 a242f619d0a6f1bf3e8809a8f059e0979606b4356addd6f9b1e12c73cbc4f967. 원17683 B / 008a33930406b5ceaea70fb83050eab46acbd24eb7cf98579cae7b64adb6dc38 fullbyte 백업 |
+| public child 현재핀 | tools/2_5d-world-lab.mjs 46833 B / SHA256 fbab9b30265a0b211220e0e03775249bee8385fdae26c5c30bfe691409bcb5cb. 원45509 B / 3c5faddc2c0dc32b3e0feef3cce9550ec4a4aeb3b99be8bf61a044d69b8ac8ad fullbyte 백업. 변경 접점 외 source2 전체 역변환 exact |
+| parent 기존 authority | game.html CHAR_LIST의 _charIdx0=exoduser_warrior / 1=exoduser_silvertail → root job.character=warrior/silvertail. _charId는 별도 save character UUID이며 rig id로 전달0. 실제 game4050426 B/ece8c398068903caf666979b33c3e0f541043db1e58f98a65d7c68e427f74230 및 runtime7519 B/b93cb86f7857bd4242af8b9cc9478cceea591d03aad872bca76a5af06b471b69 변경0 |
+| host admission | 기존 own-data context.character를 정확 warrior 또는 silvertail일 때만 허가. empty/unknown/dark-druid·accessor/inherited class는 main admission 실패. 기존 P/G/stage/on/clear/context identity·Continue·timer·입력 수명 유지 |
+| per-entry query L231 | MAIN_RIFT_HOST.characterSeedKey=main-character. record별 entryURL은 기존 동일 origin tools/2_5d-world-lab.html에 이 display id1개만 set. expectedCharacter는 captured context.character. parent P/UUID/HP/inventory/equipment/save/좌표/facing 전달0 |
+| origin·load fence | 기존 3387 origin/path + record.entryURL.href 정확 일치로 onLoad/poll을 검사. old record/current context fence 유지. child snapshot 콜백 뒤 current record와 sameContext를 다시 확인하여 취소된 entry의 ACK가 새 entry를 활성화0 |
+| child seed L53·L471 | URLSearchParams(search).getAll(main-character). missing은 standalone/editor 기존 warrior 유지. present는 정확1개이며 값 warrior/silvertail만 허가. empty/duplicate(같은 값 포함)/unsupported/dark-druid는 고정 오류로 fail-closed. startup seed 조회 예외는 원 opaque exception의 message/coercion을 읽지 않고 고정 내부 오류로 치환 |
+| 첫 표시 L60·L532 | prepareInitialCharacterDisplay는 state.selected·character dropdown.value·rig.object3d.visible(선택1개)·helper.visible=false·actor-name(catalog name)를 첫 ready=true/reset/렌더보다 먼저 설정. 캐논 이름 엑소듀서 전사/실버테일. 기존 spawn5480/3740·direction0·height/모션/지형/카메라 수치 변경0 |
+| child 초기 ACK | 초기 private initialCharacter=null/initialCharacterReady=false. 유효 seed를 적용하고 기존 reset()/select(initialCharacter)가 돌아온 뒤 readytrue/error없음/notdisposed/selected===initialCharacter일 때 ready ACK=true. __rift25Lab.snapshot에 own primitive initialCharacter 및 initialCharacterReady를 추가. 기존 snapshot/preview 진단과 fatal lifecycle 동작 보존 |
+| host ACK L170·L207 | readChildState는 same child realm Object.prototype 또는 null인 plain snapshot의 own-data를 읽음. loading→active 전에 ready===true, initialCharacterReady===true, initialCharacter===expectedCharacter, selected===expectedCharacter를 모두 확인. mismatch/missing/accessor/custom prototype/opaque lookup/read throw는 active/handle 성공으로 승격0 |
+| 새 예외 안전 경계 | child snapshot/API lookup·plain/descriptor 조회 예외는 고정 UNKNOWN·초기 표시 ACK 읽기 실패 Error로 바꿔 기존 host formatter에 원 opaque throw를 전달0. child state.error는 truthy 여부만 검사하며 문자열 연결/coercion0. 기존 host의 모든 다른 formatter·provider 예외를 이 작업으로 포괄 해결했다고 주장0 |
+| 진단 | MAIN_RIFT_HOST.characterLinkScope=initial-display-only, fullPlayerLinked=false. host.snapshot.childCharacterLinked는 현재 record.characterAck===true일 때만 true이며 close 뒤 false. ACK 이후 실패/수동비교 중에는 그 record의 최초 ACK 이력을 의미하며 현재 class 강제 일치·full P 연결·본편 인수의 뜻이 아님 |
+| 독립 비교 유지 | 초기 ACK 후 child 수동 warrior/silvertail/dark-druid 비교 허용. active poll은 initial class를 지속 강제0. missing query 독립 lab은 warrior로 시작. 기존 NPC preview payload/restore·source PNG·rig factory·renderer·scene/nav 변경0 |
+| 수명·상수 보존 | 기존 host timeout30000ms/poll100ms/3387만 허가, 새 timer/RAF/factory0. child 원 fatal STOPPED·current fences·pagehide/dispose·effect producer 계약, 기존 Continue/예약/gate/save port는 source 변경0 |
+| 계획·읽기 | main-character-bridge-readonly/read-only-plan.json12517 B/21cc897601075bdd8fd592e12934902bb0dda98e7613ba8b72437b6659dffda6. guide18392/607e36a4 full0..26 이전 읽기 exact 재사용; 최신 SSOT244377/bd56277b의 읽기순서 및 최근 main/fatal/class append만 확인, 전체 새완독 주장0 |
+
+| 최초 신규 source CPU 실행 | 도달 조건·완료 | 원 결과 |
+|---|---|---|
+| warrior 초기 URL/첫 ready/첫 render | 3PASS, ACK 이후 미도달 | group 미완료 |
+| silvertail 초기 URL/첫 ready/첫 render | 3PASS, ACK 이후 미도달 | group 미완료 |
+| standalone/manual | 0도달 | group 미완료 |
+| invalid child seed·opaque location | 6PASS | 완료 |
+| main canonical admission·class accessor | 4PASS | 완료 |
+| ACK mismatch/own-data/prototype/opaque 예외 | 8PASS | 완료 |
+| stale entry→새 record ACK fence | 2PASS | 완료 |
+| URL/P 불변·정상 timer | 2PASS/1FAIL | group 미완료 |
+| 최초 실행 그대로 | 8그룹 중4완료, 29조건 도달=28PASS/1FAIL·4그룹 잔여 미도달·exit1 | FAIL 이력 유지 |
+
+최초 harness는 actual __rift25Lab.snapshot을 실행할 때 imported provenance3개(INTERACTION_CUE_PROVENANCE/SLICE_ACCEPTANCE_PROVENANCE/SCENE_REGISTRATION_PROVENANCE)를 VM fixture에 공급하지 않았다. 해당 binding은 실제 product module에는 import되어 있다. 첫 두 class의 첫 ready·첫 render는 실제 source 경로에서 통과했지만 이후 snapshot이 fixture 참조 예외로 중단됐고, 정상 timer1 기대는 그 failed host의 timer0 때문에 FAIL이었다. 제품 결함이라고 단정하지 않는다. 최초 full harness20298 B/1933274082059f0b356943142d653a7f1f6fff299cadd52a0b2bfa6d2e945d84 및 raw result7624 B/6acc16e83e9a876f334de74077a909d873ddf105b5e183edc5ee8a6125783379를 원형 보존했다.
+
+| 승인된 제한 후속만 | 새 유의미 조건 | 결과 |
+|---|---|---|
+| warrior ACK/host active/P identity 잔여 | 3 | PASS |
+| silvertail ACK/host active/P identity 잔여 | 3 | PASS |
+| standalone default/수동 dark-druid/active 강제원복0 | 3 | PASS |
+| 정상 child snapshot 뒤 기존 bounded timer1 | 1 | PASS |
+| 제한 새 실행만 | 4그룹10조건·FAIL0·미도달0·준비오류0·exit0 | PASS |
+
+root 승인 뒤 외부 fixture에 실제 provenance imports3개만 공급했고 제품 source2를 변경하지 않았다. 이미 PASS한 최초 invalid/main/ACK/stale4그룹, 두 class 앞3조건씩, P/URL 앞2조건은 재단언0이다. 후속은 미도달9조건과 최초실패 timer1의 한정 검수이며 최초29조건을 정상 PASS로 다시 표시하거나 10과 합산0. 제한 harness15804 B/763c05c0d2dfd58c6d37290ad6bbc25b7669536924bcdef56295a50b98082e9b 및 result3512 B/a62bee6ed7148a8908b8dbf7c2680362c37c8e6f4ebeda0f76b990e20bcdf9d9를 별도 보존한다.
+
+검수는 실제 host module import와 실제 child lexical prefix L19–469(33171 B/35f0853dc31c67f980d752ced8d0e3391b136acf80832ef24bbce2bc2bdfd15d), seed-before-renderer L471–472, startup L532–534, 실제 Lab snapshot 등록 L571을 그대로 VM에서 실행했다. actual readInitialCharacterSeed/prepareInitialCharacterDisplay/reset/select/pose/render와 host entry/load/poll/ACK를 사용했으며 catalog·Three는 저장소 실제 module, DOM/RAF/rig/renderer·scene 초기화 상태·iframe/load/timer/P/G는 통제 ports이다. 첫 ready setter와 실제 renderer.render port 호출 시 selected/dropdown/name/visible rig 및5480/3740을 관측했다. 첫 실GPU pixel/실 main P class·사용자 게임의 성공이라는 뜻은 아니다. 전체 child module parsing·actual host import는 각 실행의 setup이며 기존검사 재인수로 세지 않는다. old epoch/save/Continue/fatal/Chrome suite 재실행0·미러 공식 모델/assert(true)0.
+
+코드 변경 후 docs 전체 rg 관련키워드는28경로370줄 / raw433377 B / SHA256 f1d85f951cb7068549f12a946c996b6db9ebfee86f65257a16eb564aecd278bc이다. 모든 경로 disposition을 외부 보존했고 현재 소유 문서의 새 완료 appendix만 동기화한다. rootops·SLICE·RESOLUTION·THREE·keybinding/save·character·editor·SSOT 등의 최신 class display 계약/핀은 root에 정확 목록으로 인계, owner STATE/LOG·보호2_3·타인 WIP·과거 source/test핀은 보존한다. 원doc159478 B prefix100% 및 최종 LF1 유지.
+
+외부 정확 근거 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/main-character-seed-consumer/`: preflight.json·before/ source2/doc1 fullbyte, source-inverse.json·두 source diff, source-cpu.mjs/result 및 first-attempt-adjudication.json, limited-source-cpu.mjs/result, docs-keyword-search.txt·docs-keyword-disposition.json·docs-append-receipt.json·final-receipt.json. 제품 source2는 최초/제한후속 동일핀으로 동결. 지원작업 Git/index/Chrome/server/game/save/전문송신/새팀·세션0, root 실제Chrome와 정상checkpoint/remote exact는 별도 인수한다.
+
+MAP PRODUCTION REPORT (§23): MASTER=본편 canonical 두 클래스의 최초 표시 seed/ACK. LARGE OUTER MASS/MEDIUM CONNECTION/GROUND CONNECTION/PLAYABLE-COMBAT/LANDMARK-CENTER/SMALL DETAIL은 기존 geometry·배치·scene/nav/PNG·발접지·카메라를 보존/새맵제작0. guide/SSOT/LOCK 이전 선행근거 재사용. CAMERA QA 신규0. TECH QA=동일 code2에서 최초8그룹/29도달 FAIL 이력과 제한4그룹10조건 PASS를 분리, source inverse exact·최초 표시와 P identity 미전달 경계 관측. 신규 GUI/시각 NOT ASSESSED / 전체 VISUAL VERDICT: RETOUCH. full P·실캐릭터스탯/장비·부모 gate continuation·본편/native6·청취·save ACK·A급완성 인수0.
+
+### 2026-10-07 ROOT-RIFT-MAIN-CHARACTER-SEED-20261007 · 부모 선택과 최초 2.5D 표시 연결
+
+이 절은 초기 캐릭터 표시 연결의 최신 source 계약이다. 이전 핀의 child 캐릭터 전달0/host17683·world45509는 당시 이력으로 보존한다. 본편 root 진단의 미인수 상수와 public host의 초기 표시 ACK는 서로 다른 범위다.
+
+| 항목 | 현재 구현·정확한 범위 |
+|---|---|
+| host source | tools/2_5d/main-rift-host.mjs 18931 B / a242f619d0a6f1bf3e8809a8f059e0979606b4356addd6f9b1e12c73cbc4f967 |
+| child source | tools/2_5d-world-lab.mjs 46833 B / fbab9b30265a0b211220e0e03775249bee8385fdae26c5c30bfe691409bcb5cb |
+| 실제 누락 접점 | 기존 game의 _charIdx0/1→warrior/silvertail 및 runtime readHostContext→host는 존재. 이전 host 고정 iframe URL·child 초기 select(warrior) 때문에 silvertail도 전사로 표시. 실제 현재 사용자의 live class 관측을 이 source 반례로 대신하지 않음 |
+| 호스트 허용값 | contextSnapshot.character는 정확 primitive 문자열 warrior 또는 silvertail. MAIN_RIFT_HOST.characterSeedKey='main-character', characterLinkScope='initial-display-only', fullPlayerLinked=false. unknown/empty/main dark-druid는 admission 실패 |
+| per-entry URL | 캡처한 context.character만 새 URL.searchParams.set('main-character',character)로 넣고 expectedCharacter/entryURL/characterAck=false를 해당 record에 보관. onLoad와poll이 동일origin·lab pathname·정확 record.entryURL href를 검사. parent P/UUID/HP/inventory/flags/좌표/facing의 query·payload 직렬화0 |
+| child 초기 준비 | readInitialCharacterSeed(window.location.search)→main-character 없음이면 standalone/editor 기본warrior. present는 getAll 결과 정확1개+허용두ID만 통과, empty/duplicate/unsupported는 고정 내부오류로중단. renderer 생성 전에검사. prepareInitialCharacterDisplay가 state.selected·dropdown.value·rig visible·helper hidden·CHARACTER_RIG_CATALOG 한글명을 first ready/reset/render 전에동기화 |
+| 초기 ACK | initialCharacter는 private 초기ID, initialCharacterReady는 reset/select 이후 ready·error없음·disposed아님·선택일치에따른boolean. __rift25Lab.snapshot의 own-data primitive initialCharacter/initialCharacterReady/selected를 host가 loading때읽고 ready=true일때 expectedCharacter와정확일치해야characterAck=true/active/handle을resolve. child snapshot accessor/proxy/throw는 고정 'UNKNOWN · 지옥의 틈 초기 표시 ACK 읽기 실패'로 치환·외부message/String 읽기0 |
+| 재진입·변경 경계 | ACK read 이후 current record·sameContext 재확인; stale/cancelled entry가 새 entry를active로 만들지 않음. active 이후 새manual비교를강제원복0; standalone dark-druid 수동비교는기존경로. 초기ACK는계속 player 상태를동기화한다는뜻이아님 |
+| 진단 범위 구분 | host.snapshot().childCharacterLinked는 current.characterAck===true만. MAIN_RIFT_HOST.fullPlayerLinked=false 유지. window.__riftMainIntegration.snapshot()의 childCharacterLinked:false/durableSaveAccepted:false/demoHubAccepted:false 등 game 자체미인수진단은실제game코드불변이므로그대로이며 host 초기표시true로대체0 |
+| 그대로인 소비자 | game.html4050426/ece8c398068903caf666979b33c3e0f541043db1e58f98a65d7c68e427f74230와 main-rift-runtime.mjs7519/b93cb86f7857bd4242af8b9cc9478cceea591d03aad872bca76a5af06b471b69 byte불변. Continue/epoch/save/lease/guardedAdvance·기존5000ms/900ms·host30000ms/100ms 정책변경·재검사0. spawn5480/3740·geometry/nav/PNG/카메라·렌더기본값·발접지변경0 |
+| source 최초 Gate | actual importedhost+actual child unchangedfunction/startup/API span을 VM에서호출, actualThree/catalog+통제DOM/RAF/rig/renderer/iframe/P/G ports. 최초8그룹 중4완료·29조건도달(28PASS/1FAIL)·4그룹잔여미도달/exit1. fixture의 INTERACTION_CUE_PROVENANCE/SLICE_ACCEPTANCE_PROVENANCE/SCENE_REGISTRATION_PROVENANCE 3누락→actualsnapshot참조예외→host실패/정상timer1기대FAIL. 제품결함확인0·원FAIL동결 |
+| source 한정후속 | root승인으로외부fixture의실제누락imports3만공급. 이미PASS한조건재단언0/제품2코드핀변경0. 미도달 ACK·hostactive·P identity 두class각3조건+standalone/manual3+정상timer1만 새4그룹10조건PASS/FAIL0·미도달0·준비오류0/exit0. 원FAIL과합산/전체clean suite PASS선언0·old검사0 |
+| source 정확근거 | worker final21003/686b31461510bf0c6cbc0f191ded0d9c32fe6118f433acd1f5376ce3449b79f8; 최초raw7624/6acc16e83e9a876f334de74077a909d873ddf105b5e183edc5ee8a6125783379; 판정1083/6107533374c9675ec4aae266fe7842a8686c7bd23813dccbde968fef7f95daa8; 한정raw3512/a62bee6ed7148a8908b8dbf7c2680362c37c8e6f4ebeda0f76b990e20bcdf9d9. source2 역변환 exact·소유doc원prefix159478·EOF1/GFM3표 |
+| 새 actual Chrome | 신규 actualChrome1/context1/parent1에서 host child2를전사→실버테일순차실행(max동시1). 새2그룹12조건PASS/FAIL0/미도달0/exit0, 추가실행0. 첫원본render ordinal1과ACK전전사6draw·실버테일7draw 모두해당rig/이름/dropdown일치. host own-data ACK3/childCharacterLinked=true(initial-display-only), runtime top-level false는그대로. 각GL13program LINKtrue/getError0/contextLostfalse/canvas1036×714; source-owned timer1→close0/finaldispose0, 전체native timerqueueUNKNOWN. source17exact/P·G detachedfixture·storage{}불변/오류·404·외부·변경요청0. root·helper PNG2직접확인: 초기표시UI PASS/전체맵RETOUCH. final9034/3fa1faad6b5dda2c3ec8609f6e2d3397bbda76d908676717fe9d67bf8525546c; summary22474/41fd6c7a8d284404bff1f51fa24611d3fbd96871b1a1108df2ca9fc901ee739a; raw388349/58988832f471a8c4f5567054fc3d0b4f1428312cf59ff0892517d5daf8b743ac; 전사PNG859610/41cd4c7bdca71d80b5681de872d71933404b992745a1986c26b228fc485e16cb·실버테일PNG861337/d87d4917a92cbfc7a977798d1beeb902d6c59a386179e81c27a5201682acd995. actualgame.html/native6/fullplayer/save/audio/physicalscanout인수0·oldGUI/CPU합산0 |
+| 추가 새 실제 rig 소비자 검수 | 실제character-rigs factory3(전사2독립/실버테일1)→update72호출→private setFrame/nativeThree UV matrix/geometry attributes·weightChecks 소비를신규Node1에서검수: 새7그룹93조건PASS/FAIL0/미도달0/exit0. attack frame8/phase1뒤idle·독립소유자·dispose각1, nativeTexture35의disposeevent35 확인. PNG26/metadata2exact. Image는PNG IHDR크기기반MOCK이며실RGBAdecode·GPUupload·world실행·actualGUI·본편native6·청취·save인수0. 새visual NOT ASSESSED/전체RETOUCH. 준비단계Path.write_text newline API오류1은제품도달0/Node0, root승인외부파일쓰기API만보정뒤최초제품Node1; 제품실패재시도0. final5888/39d2e931065fc9df34ab3f6f36e4687cb3ca4f85699952b8cc2ea43a5532ed04, unit16128/1258909d0e4a6686c9433e37040ae743199f7292c6bf6abedc6706a3e5454da7, raw771/2cd6bfc0430edd2a3b59ed1a6b18eabc0559e9077e0eaacae48f7f05a3be8aec. source수정권고0 |
+| docs·정상보존 | 신규code후 전체rg28경로370행/raw433377/f1d85f951cb7068549f12a946c996b6db9ebfee86f65257a16eb564aecd278bc. root 관련정본24개를현재계약/범위로동기화·모든path disposition. ownerLOG와다른출시후보/맵geometry 이력4경로는원값유지. fullbyte백업→fullprefix/EOF1/GFM→정확소유code2+docs24 정상commit/push·remoteexact은 외부 main-character-seed-consumer/remote-preservation-receipt.json에서확인. foreign68·ownerSTATELOG4·heldWOLF1 소유외/stage0 |
+
+§23 MAP PRODUCTION REPORT: MASTER=기존본편두class의지옥의틈초기표시연결. fullguide607e36a49a99205be61c0aeedb438da06bffaf13370360acc99fe86be751e80b/SSOT_INDEX·stageLOCK의기존정확full읽기근거적용. LARGE OUTER→MEDIUM→GROUND→PLAYABLE→LANDMARK→DETAIL은기존PNG/scene/nav/geometry/카메라/랜드마크/기존23보존·새배치0. CAMERA QA=새actualhost/child초기render표시범위만. TECH QA=최초sourceFAIL29도달/한정4x10과actualChrome별도영수증. VISUAL VERDICT: RETOUCH(전체맵), 새class 표시검수는전체맵선명도·해부학모션·본편native6·청취·실보상save·A급완성의인수가아님. 원화1254→8000확대/기본legacy1024mask흐림미해결.
+
+| 새 전문 원자료·독립 후속 | 원총괄 보존·채택 경계 |
+|---|---|
+| ANIM motion UV 공식 raw | endda8430aa-df06-47d5-b729-ad0394de1d2e@2026-10-06T22:44:15.704Z, raw6359/a887281013d8afc85125ae4730bc5d4bb7d02fb5a826b3355b2e327b9a992972; 외부7081/4694e403a03d0e17b772e997bf10a6b08b4988cf6bf3a7b955eff4345580d2d5. 전문보고stdin8PASS는actualcharacterRigFrame+복사공식만·actualupdate/setFrame/GPU未호출. root readonly12195/8f2d1d396abab42518a3847e612025df6185b5e60a2237bcab724eb8f8b6a838에서신규source결함확정0, 실버테일walk가변crop/anchor→geometry실소비를새검수범위로분리 |
+| MAP host/modal 원자료 | end70832dd3-592c-47c1-98d8-0f199c955fa5, raw4935/9f220fec67181b840ade1c00f92a470f39ebb013ba4bc13f6ef1624949f13898; 보존5665/c4a05aa52540a0201ee6a1e8751f9819aa5d0eadaf7242b9905275436ba525a6. 새공식memory후보미채택, root실행·실화면·본편인수0 |
+| ANIM dialogue owner 원자료 | end53b09739-bd8c-479f-b0a4-6838041a4aec, raw6240/9b9ad0f617ddca16b5f459d4158d23de3a89b2553cca5dd83f19e845f67cfaa9; 보존6895/7f55fb6f0a265ec35d7a7b550ca629fc3a8f048d5bcaf82e433df6bfe05e1cf7. 새공식memory후보미채택, root실행·실화면·본편인수0 |
+| 새 owner 업무 | Claude8 기존owner가 MAP CH1-RIFT-SCENE-OBJECT-ASSET-INTEGRITY-20261007-MAP-MEMORY와 QA CH1-LOBBY-CHARACTER-VISIBLE-BOUNDS-20261007-QA-MEMORY를각sent1/peer1/firstsource1/end0·busy로기록. ANIM CH1-RIFT-VFX-ARBITRATED-ATTACK-EMISSION-20261007-ANIMVFX-MEMORY도sent1/peer1/Read1/firstsource1/end0·busy. 수신/첫source를완료로계산0·전원가동과장0. MAP추가권한질문은이미승인된기존팀독립작업에대한전문자가질문이며실제autoapproval거절로오인0, 기존승인범위업무계속. 새raw의의미검토·후속은기존owner에게만1회인계 |
+| 계속운영/보호 | 기존Claude8/Codex7만전문송신소유·root직접/중복송신0·새팀/세션0. 거절된Codex송신/ART선택/WOLF쓰기목적재시도·도구/경로/호스트/권한우회0, MAP/STORY외부쓰기·삭제피해UNKNOWN유지. WOLF거절뒤같은산출물correctedpathwrite 이력보존·추가접근/검수/실행/채택/Git0. 타인WIP/사용자save/보호2_3·Q전용magicblackBean(E불가)·어택티켓금지보존. 실제NUL80부터완료소유checkpoint/100전새산출중단. 계정주간사용률약15pp/day 목표는공유관측이며이채팅정확일별token보장·토큰태우기0. 기존단일root연속heartbeat/다른paused자동화·아침메일재개0 |
