@@ -170,6 +170,7 @@ assets/vfx/boss/gen/
 !/assets/vendor/three-r160/build/
 !/assets/vendor/three-r160/build/three.module.js
 /output/warrior_story_remaster_20261001/
+/output/warrior_hand_20261006/
 
 # Steam release staging; source files remain tracked.
 /dist-release-*/

@@ -19,7 +19,7 @@ Space 홀드가 빠져 있던 전사 스토리 및 시작 안내 4컷에 연결�
 | 시작 안내 취소 | Space 해제·창 blur·visibilitychange에서 `spaceHeldAt=null`, 버튼 배경 초기화. 종료900ms 후 키/포커스 이벤트 모두 해제 |
 | 캔버스 컷신 | `_renderIntroCutscene` 진입 직후 홀드 검사. 자동 컷·퇴장 페이드의 조기 반환에도 스킵 가능. 100ms 델타 상한·첫16.67ms 보정 유지 |
 | 세계관 안내 | 홀드 게이지 중앙 키보드 표기 `SPACE / ESC`, 패드는 기존 `Ⓑ` |
-| 캐시 | index의 `character-story-player.js?v=20260914-space-hold` |
+| 캐시 | index의 `character-story-player.js?v=20261006-hand-grip` (2026-10-06 손 교정 영상 연결, 홀드 동작 변경 없음) |
 | 검증 | 관련 테스트51개 통과: 양쪽 HTML 시작 안내·자동 퇴장 컷, 전사 키 홀드/해제/반복·미디어 정리, 세계관 BGM/스킵 및 생성 연결 |
 | 브라우저 | 로컬 Chrome에서 DOM KeyboardEvent 주입으로 전사1300ms 후 overlay 제거, 시작 안내2200ms 후 done/숨김, 세계관 홀드 후 완료·영상 pause 확인. 실제 물리 키 연속 입력 검증은 별도 |
 

@@ -1,6 +1,6 @@
 # 구 전쟁 인트로 정지 이미지 검수 (2026-10-01, ART)
 
-대상: `assets/cutscene/warintro/*.jpg` 12장 (전부 1536×1024). `PROLOGUE_LINES`가 참조하며 **`?cutscene=1` 미리보기(`_forceCutscene`)에서만 재생**된다. 신규 캐릭터의 실제 전쟁 서사는 영상 `video/warrior_story_v23_clean.mp4`(내용 v25)이 담당한다. 방법: 전체 축소 + 중앙 상단 480×320 1x 크롭 직접 확인.
+대상: `assets/cutscene/warintro/*.jpg` 12장 (전부 1536×1024). `PROLOGUE_LINES`가 참조하며 **`?cutscene=1` 미리보기(`_forceCutscene`)에서만 재생**된다. 신규 캐릭터의 실제 전쟁 서사는 영상 `video/warrior_story_v23_clean.mp4`(v25 + [2026-10-06 첫 5초 손 교정](WARINTRO_HAND_FIX_20261006.md))이 담당한다. 방법: 전체 축소 + 중앙 상단 480×320 1x 크롭 직접 확인.
 
 | 파일 | 참조 줄 수(4언어 합) | 인물·내용 | 신원 | 잔점 |
 |---|---|---|---|---|
