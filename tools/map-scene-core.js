@@ -62,6 +62,25 @@
     number(width, 1, 32000, 'Unity 배치 너비'); number(height, 1, 32000, 'Unity 배치 높이');
     return { width, height, pivotX: u.pivotX, pivotY: u.pivotY };
   }
+  function placementValues(value) {
+    number(value.width, 1, 32000, '배치 규격 너비'); number(value.height, 1, 32000, '배치 규격 높이');
+    number(value.pivotX, 0, 1, '배치 규격 기준점 x'); number(value.pivotY, 0, 1, '배치 규격 기준점 y');
+    return { width: value.width, height: value.height, pivotX: value.pivotX, pivotY: value.pivotY };
+  }
+  // Per-asset authoring defaults never change the source image or existing objects.
+  function placementDefaults(a) {
+    const base = unityPlacement(a);
+    if (a.placementPreset === undefined) return base;
+    const preset = a.placementPreset;
+    if (!preset || typeof preset !== 'object' || Array.isArray(preset) || preset.kind !== 'world-placement-v1') throw new Error('배치 규격 설정 오류');
+    return placementValues(preset);
+  }
+  function capturePlacement(a, o) {
+    unityPlacement(a); // A capture must not bypass invalid Unity source metadata.
+    string(a.id, '에셋 ID');
+    if (!o || typeof o !== 'object' || Array.isArray(o) || o.assetId !== a.id) throw new Error('배치 규격 에셋 불일치');
+    return { kind: 'world-placement-v1', ...placementValues(o) };
+  }
   function validate(input) {
     if (!input || input.format !== 'exoduser-map-scene' || input.version !== 1) throw new Error('EXODUSER 씬 v1 파일이 아닙니다');
     const p = clone(input), w = p.world;
@@ -77,7 +96,7 @@
       if (!a.crop) throw new Error('에셋 crop 누락');
       number(a.crop.x, 0, a.width - 1, 'crop x'); number(a.crop.y, 0, a.height - 1, 'crop y');
       number(a.crop.w, 1, a.width - a.crop.x, 'crop 너비'); number(a.crop.h, 1, a.height - a.crop.y, 'crop 높이');
-      unityPlacement(a);
+      placementDefaults(a);
     }
     for (const l of p.layers) {
       string(l.id, '레이어 ID'); string(l.name, '레이어 이름');
@@ -191,7 +210,7 @@
     undo() { this.end(); if (!this.undoStack.length) return false; this.redoStack.push(clone(this.project)); this.project = this.undoStack.pop(); return true; }
     redo() { this.end(); if (!this.redoStack.length) return false; this.undoStack.push(clone(this.project)); this.project = this.redoStack.pop(); return true; }
   }
-  const api = { clone, validate, projectSource, unityPlacement, decode, encode, local, hit, canWalk, resize, reanchor, route, History };
+  const api = { clone, validate, projectSource, unityPlacement, placementDefaults, capturePlacement, decode, encode, local, hit, canWalk, resize, reanchor, route, History };
   root.MapSceneCore = api;
   if (typeof module !== 'undefined') module.exports = api;
 })(typeof globalThis !== 'undefined' ? globalThis : window);

@@ -18,7 +18,7 @@
     { id: 'dead-tree', name: '고목 · 기존 에셋', src: 'assets/objects/tree_dead_01.png', width: 240, layer: 'foot', alphaCrop: {x:3,y:4,w:61,h:57} },
     { id: 'glow-mushroom', name: '잔불빛 버섯', src: 'assets/objects/mushroom_glow_01.png', width: 100, layer: 'foot', alphaCrop: {x:7,y:3,w:18,h:27} }
   ];
-  function setBusy(value){busy=value;$('workspace').inert=value;if(history)$('resident-access-check').disabled=value||playing||dialogueOpen||!residentAccessFactory;if(value){keys.clear();space=false;}}
+  function setBusy(value){busy=value;$('workspace').inert=value;if(history){$('resident-access-check').disabled=value||playing||dialogueOpen||!residentAccessFactory;placementUI();}if(value){keys.clear();space=false;}}
   const uid = prefix => prefix + '-' + crypto.randomUUID();
   function toast(message) { $('toast').textContent = message; $('toast').hidden = false; clearTimeout(toastTimer); toastTimer = setTimeout(() => { $('toast').hidden = true; }, 4000); }
   function script(src) { return new Promise((resolve, reject) => { const el = document.createElement('script'); el.src = src; el.onload = resolve; el.onerror = () => reject(new Error('데이터 로드 실패: ' + src)); document.head.appendChild(el); }); }
@@ -158,7 +158,7 @@
     target.restore();
   }
   function closeDialogue(reason = 'ui-close') {
-    dialogueController?.close(reason); dialogueOpen = false; nearestResident = null; keys.clear(); space = false;
+    dialogueController?.close(reason); dialogueOpen = false; nearestResident = null; keys.clear(); space = false;if(history)placementUI();
     if($('dialogue').open) $('dialogue').close();
     $('talk').hidden = true; dirty = true;
   }
@@ -183,7 +183,7 @@
     if(state.trialFlags?.['rift.berin.giftGiven']) notes.push('베린의 유품을 받는 선택');
     if(state.trialFlags?.['rift.nessa.questAccepted']) notes.push('린을 찾는 부탁 수락');
     $('dialogue-record').textContent=notes.length?'이번 시험의 기록 · '+notes.join(' / '):'';$('dialogue-record').hidden=!notes.length;
-    dialogueOpen=true;keys.clear();space=false;$('talk').hidden=true;
+    dialogueOpen=true;keys.clear();space=false;$('talk').hidden=true;placementUI();
     if(!$('dialogue').open) $('dialogue').showModal();
     ($('dialogue-options').querySelector('button') || $('dialogue-close')).focus();dirty=true;
   }
@@ -209,6 +209,29 @@
   $('dialogue-close').onclick=()=>{closeDialogue();canvas.focus();};
   $('dialogue').addEventListener('cancel',e=>{e.preventDefault();closeDialogue('escape');canvas.focus();});
   const selectedPair = () => { for (const l of current().layers) { const o = l.objects.find(o => o.id === selected); if (o) return { l, o }; } return null; };
+  function placementUI() {
+    const pair=selectedPair(),a=pair&&current().assets.find(a=>a.id===pair.o.assetId);
+    const blocked=busy||playing||dialogueOpen||!pair||pair.l.locked||!pair.l.visible||!a||a.internal||!!pair.o.mask;
+    $('placement-save').disabled=blocked;$('placement-reset').disabled=blocked||a?.placementPreset===undefined;
+    const chosen=a||(paletteId&&current().assets.find(a=>a.id===paletteId));
+    if(!chosen){$('placement-status').textContent='선택한 이미지의 다음 배치에 크기와 기준점만 적용합니다.';return;}
+    if(chosen.internal||pair?.o.mask){$('placement-status').textContent='분할·마스크 그림은 배치 규격을 저장하지 않습니다.';return;}
+    try {
+      const rule=K.placementDefaults(chosen),def=LIBRARY.find(d=>d.id===chosen.id),width=rule?.width??def?.width??400,height=rule?.height??width*chosen.crop.h/chosen.crop.w;
+      const value=n=>Number(n.toFixed(3));
+      $('placement-status').textContent=(chosen.placementPreset?'저장된 규격':chosen.unitySprite?'Unity 기본 규격':'기본 규격')+' · '+value(width)+' × '+value(height)+' world px · 기준 ('+value(rule?.pivotX??.5)+', '+value(rule?.pivotY??1)+')';
+    } catch(e) {$('placement-save').disabled=$('placement-reset').disabled=true;$('placement-status').textContent='배치 규격 오류 · '+e.message;}
+  }
+  function savePlacement(reset) {
+    if(busy||playing||dialogueOpen)return;endDrag();
+    const pair=selectedPair(),a=pair&&current().assets.find(a=>a.id===pair.o.assetId);
+    if(!pair||pair.l.locked||!pair.l.visible||!a||a.internal||pair.o.mask)return;
+    if(reset&&a.placementPreset===undefined)return;
+    try {
+      const preset=reset?null:K.capturePlacement(a,pair.o),assetId=a.id;
+      mutate(p=>{const target=p.assets.find(a=>a.id===assetId);if(reset)delete target.placementPreset;else target.placementPreset=preset;},reset?'다음 배치에 기본 규격을 사용합니다':'이 이미지의 다음 배치 크기와 발 기준을 저장했습니다');
+    } catch(e){toast('현재 씬 유지 · '+e.message);refresh();}
+  }
   function autosave() { clearTimeout(autosaveTimer); autosaveTimer = setTimeout(() => { try { localStorage.setItem(CACHE_KEY, JSON.stringify(current())); $('status').textContent = '로컬 복구 저장됨 · 프로젝트 JSON으로 보존하세요'; } catch (e) { $('status').textContent = '복구 저장 공간 부족 · 프로젝트 저장을 사용하세요'; } }, 500); }
   function changed(message) { invalidateResidentAccess(); ambienceScene = null; dialogueScene = null; residentGroundingScene = null; closeDialogue('scene-edited'); dirty = true; refresh(); autosave(); if (message) toast(message); }
   function mutate(fn, message) { if (busy) return; try { history.change(fn); changed(message); } catch (e) { toast(e.message); refresh(); } }
@@ -253,7 +276,7 @@
     else $('source-info').textContent='';
     const i=p.layers.indexOf(active);$('layer-up').disabled=i===p.layers.length-1;$('layer-down').disabled=i===0;
     $('unity-import').disabled=playing||dialogueOpen;
-    residentAccessUI();
+    residentAccessUI();placementUI();
     $('play').textContent=playing?'■ 보행 종료':'▶ 보행 시험';$('view-label').textContent=playing?'보행 시험 · WASD / 방향키 · F 대화 · ESC 종료':tool==='pivot'?'발 기준 찍기 · 선택한 그림 안 클릭 · Esc 취소':'SOUTH → NORTH · 이미지와 충돌을 별도로 편집';
     $('cameras').replaceChildren();for(const c of p.cameras){const b=document.createElement('button');b.textContent=c.name;b.onclick=()=>{viewport={x:c.x,y:c.y,zoom:Math.min(size.w/1800,size.h/1100)};clampCamera();dirty=true;};$('cameras').append(b);} dirty=true;
   }
@@ -314,7 +337,7 @@
       mutate(()=>Object.assign(q.o,K.reanchor(q.o,point.x/q.o.width,point.y/q.o.height)),'그림 위치를 유지한 채 발 기준을 옮겼습니다');
       tool='select';if(matchMedia('(max-width:760px)').matches)$('inspector').classList.remove('mobile-hidden');refresh();return;
     }
-    if(paletteId){const builtIn=LIBRARY.find(a=>a.id===paletteId), def=builtIn||current().assets.find(a=>a.id===paletteId), l=current().layers.find(l=>l.id===layerId);if(l.locked){toast('선택한 레이어의 잠금을 먼저 해제하세요');return;}setBusy(true);try{const a=current().assets.find(a=>a.id===paletteId)||await asset(def,true);const off=offset(l),unity=K.unityPlacement(a),o=object(a,snap(pos.x-off.x),snap(pos.y-off.y),unity?unity.width:(builtIn?builtIn.width:400),unity?unity.pivotX:.5,unity?unity.pivotY:1);if(unity)o.height=unity.height;history.change(p=>{if(!p.assets.some(x=>x.id===a.id))p.assets.push(a);p.layers.find(x=>x.id===layerId).objects.push(o);});selected=o.id;changed('이미지 배치됨 · 속성에서 크기와 발 기준점을 맞추세요');}catch(err){toast(err.message);}finally{setBusy(false);}return;}
+    if(paletteId){const builtIn=LIBRARY.find(a=>a.id===paletteId), def=builtIn||current().assets.find(a=>a.id===paletteId), l=current().layers.find(l=>l.id===layerId);if(l.locked){toast('선택한 레이어의 잠금을 먼저 해제하세요');return;}setBusy(true);try{const a=current().assets.find(a=>a.id===paletteId)||await asset(def,true);const off=offset(l),placement=K.placementDefaults(a),o=object(a,snap(pos.x-off.x),snap(pos.y-off.y),placement?placement.width:(builtIn?builtIn.width:400),placement?placement.pivotX:.5,placement?placement.pivotY:1);if(placement)o.height=placement.height;history.change(p=>{if(!p.assets.some(x=>x.id===a.id))p.assets.push(a);p.layers.find(x=>x.id===layerId).objects.push(o);});selected=o.id;changed('이미지 배치됨 · 속성에서 크기와 발 기준점을 맞추세요');}catch(err){toast(err.message);}finally{setBusy(false);}return;}
     if(tool==='start'||tool==='exit'){mutate(p=>{p[tool]={x:Math.min(p.world.cols*p.world.tileSize-1,Math.max(0,snap(pos.x))),y:Math.min(p.world.rows*p.world.tileSize-1,Math.max(0,snap(pos.y)))};});return;}
     if(tool==='walk'||tool==='block'){history.begin();brush(pos);drag={kind:'brush',last:pos};canvas.setPointerCapture(e.pointerId);return;}
     const existing=selectedPair();let resize=false;if(existing&&!existing.l.locked){const off=offset(existing.l),q=K.local(existing.o,pos.x-off.x,pos.y-off.y);resize=Math.hypot((q.x-existing.o.width)*viewport.zoom,(q.y-existing.o.height)*viewport.zoom)<12;}
@@ -333,6 +356,7 @@
   for(const b of document.querySelectorAll('[data-scene-tool]'))b.onclick=()=>{closeDialogue('tool-changed');tool=b.dataset.sceneTool;paletteId=null;playing=false;keys.clear();for(const x of document.querySelectorAll('[data-scene-tool]'))x.classList.toggle('active',x===b);if(tool==='walk'||tool==='block')$('show-nav').checked=true;palette();refresh();};
   function property(id,key){const input=$(id);let ratio=1;input.addEventListener('focus',()=>{history.begin();const pair=selectedPair();if(pair)ratio=pair.o.height/pair.o.width;});input.addEventListener('input',()=>{const pair=selectedPair();if(!pair||pair.l.locked)return;if(key!=='name'&&(!input.value.trim()||!Number.isFinite(Number(input.value))))return;const v=key==='name'?input.value:Number(input.value);if((key==='width'||key==='height')&&v<=0)return;history.begin();invalidateResidentAccess();const o=pair.o;o[key]=v;if($('aspect').checked&&key==='width')o.height=v*ratio;if($('aspect').checked&&key==='height')o.width=v/ratio;dirty=true;});input.addEventListener('change',()=>{try{K.validate(current());history.end();changed();}catch(e){if(history.pending){history.project=history.pending;history.pending=null;}toast(e.message);refresh();}});input.addEventListener('blur',()=>{if(history.pending){try{K.validate(current());history.end();changed();}catch(e){history.project=history.pending;history.pending=null;refresh();}}});}
   for(const [id,key] of [['object-name','name'],['x','x'],['y','y'],['width','width'],['height','height'],['pivot-x','pivotX'],['pivot-y','pivotY'],['rotation','rotation'],['opacity','opacity'],['feather','maskFeather'],['source-parallax','sourceParallax']])property(id,key);
+  $('placement-save').onclick=()=>savePlacement(false);$('placement-reset').onclick=()=>savePlacement(true);
   $('pivot-pick').onclick=()=>{if(busy||playing||dialogueOpen)return;const q=selectedPair();if(!q||q.l.locked||!q.l.visible)return;endDrag();tool=tool==='pivot'?'select':'pivot';paletteId=null;keys.clear();space=false;if(tool==='pivot'&&matchMedia('(max-width:760px)').matches)$('inspector').classList.add('mobile-hidden');palette();refresh();canvas.focus();};
   $('layer-sort').onchange=()=>mutate(p=>{p.layers.find(l=>l.id===layerId).sort=$('layer-sort').value;});
   $('layer-name').onchange=()=>mutate(p=>{p.layers.find(l=>l.id===layerId).name=$('layer-name').value;});

@@ -750,3 +750,70 @@ NEXT PASS: 실제NPC grant/quest/save와장상승consumer; 높이/재질/동적�
 | 잔여 | VISUAL VERDICT: RETOUCH. 후보 원화 재질/정적 주민/높이/실제grant·quest·save·상승/본편native6단계·실청취 미인수. 시작연결 PASS는 실제 게임 이동·전투·보상 인수가 아님 |
 
 정확 계약은 `MAP_SCENE_EDITOR_20261005.md` §16, §23 제작보고는 `HELL_RIFT_EDITOR_RESULT_20261006.md` 같은완료ID. 외부 백업·의미검수·화면·Git영수증=`/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/resident-access-inspector-20261006/`. 두오더담당 유일송신/전문팀 중복TASK·새팀·실행세션0, 기존paused/아침메일 재개0·오늘19시 실제결과 한 번 보고 조건 유지.
+
+## MAP PRODUCTION REPORT — ROOT-EDITOR-WORLD-PLACEMENT-PRESETS-20261006
+
+STAGE: 격리 editor3387의 이미지별 월드 배치 규격 도구. 생산geometry·원화·본편 변경0.
+
+MASTER
+- silhouette / regions: 기존 승인v2 그대로.
+- main route: start(4020,7740)→exit(4020,1740), nav고정.
+- side spaces: 기존4주민body불변; 새본편시설/NPC0.
+
+OUTER MASS
+- LEFT/RIGHT/TOP/SOUTH / major holes: 기존원화·절벽·심연불변. 기존RETOUCH유지.
+
+LARGE
+- source assets / composites / overlap / repeated silhouette: 기존bitmap/crop/배치불변. 새default는사용자가선택한4크기·피벗을후속배치에적용할뿐반복실루엣제거완료가아님.
+
+MEDIUM
+- connections / remaining holes: 기존접합·alpha·원근후속유지.
+
+GROUND
+- shadow / contamination / structure integration: nav-clipped주민접지consumer불변. 새배치규격을받는현재씬의기존foot위치·ground변경0.
+
+PLAYABLE
+- main arenas / travel space / breathing space / threat space / combat readability: 기존원본유지. 도구의반복pointer배치검수는실플레이/전투인수가아님.
+
+LANDMARK
+- primary / secondary / tertiary: 균열·상승길·주민4원본불변; 새디테일0.
+
+CAMERA QA
+- START/EARLY/ARENA/SIDE L/SIDE R/LANDMARK/LATE/EXIT: 기존8camera반복0. 새규격UI desktop/mobile시각·입력만별도근거.
+
+TECH QA
+- route/collision: source/nav/start/exit불변, 기존route종주재검수0.
+- pageerror/404/seam/loading/performance: 신규 Chrome14/14그룹PASS·실제launch1·실패0. 실제PNG/pointer/Unity·규격저장·반복배치·JSON왕복/Undo/복원·가드·390px touch 에뮬레이션은외부QA기록을따른다. 기존성공suite/원본4주민종주반복0, 휴대폰/native 인수0. 기존seam/FPS스트레스인수를대신하지않음. 원본그림생성·runtime교체0.
+
+FILES
+- stage-owned: editor.html / tools/map-scene-editor.js / tools/map-scene-core.js / tools/test-map-scene-placement-presets.cjs +관련docs12.
+- concurrent touched: live관리STATE/LOG owner소유; root수정0.
+- unrelated touched: 타인72WIP·기존23/save·원본v2/STORY/game/주민모듈nav불변.
+
+GIT
+- staged/commit/push: code4+docs12 정확16완료범위. actualNUL88→checkpoint72 및원격exactSHA는외부receipt확정근거.
+- deploy:0.
+
+VISUAL VERDICT: RETOUCH
+새도구의시각/입력검수와전체맵그림·본편A급/native/청취인수는분리한다.
+
+NEXT PASS: 높이/확대재질·주민동적이미지·본편grant/quest/save/상승·같은후보6단계native·실청취 별도후속.
+
+### 2026-10-06 — 이미지별 다음 배치 크기·발 기준 규격
+
+완료ID `ROOT-EDITOR-WORLD-PLACEMENT-PRESETS-20261006`. 일반 이미지를 편집한 크기·기준점으로 반복 배치하려면 매번 숫자를 다시 입력해야 했다. 선택 객체의 width/height/pivotX/pivotY 네 값만 자산별 기본 규격으로 보존하는 editor3387 consumer를 구현했다. 현재 객체를 일괄 확대하거나 본편 자산을 교체하지 않는다.
+
+| 항목 | 현행 계약과 인수 경계 |
+|---|---|
+| JSON v1 | assets[].placementPreset 선택 `{kind:'world-placement-v1',width,height,pivotX,pivotY}`. world 크기 각 Number 유한1…32000, 피벗 각0…1. 잘못된 kind/null/array/문자수치/비유한/범위밖은 validate와import/History에서거절 |
+| API·우선순위 | `MapSceneCore.placementDefaults(asset)`는 기존 unityPlacement를 먼저 검증한 뒤 preset이 있으면 fresh4값, 없으면 Unity기본 또는null. 다음 pointer배치=preset > UnityPPU·피벗 > 기존library너비/일반400·crop비율·pivot(.5,1). 저장된height도명시적으로적용 |
+| 규격 저장 | `capturePlacement(asset,object)`는 Unity유효성과일치assetId+현재4값을검증해 freshkind+4값 반환, 입력쓰기0. UI는선택한assetId의optional메타만 History1트랜잭션에저장. 회전/반전/opacity/mask/좌표/레이어복사0 |
+| 복원·왕복 | 기본규격복원은asset의placementPreset만제거, Unity메타/기존객체불변. 다음배치는Unity또는기존library/400으로복귀. 프로젝트JSON/로컬씬복구/Undo/Redo에서규격왕복; 게임세이브를사용하지않음 |
+| 화면·가드 | scene-placement-save/reset/status(리프role=status·aria-live=polite), 버튼전체너비·min-height44px·문구줄바꿈. 선택없음/internal자산/마스크객체/잠금/숨김/busy/보행/대화중 저장·복원차단. 현재선택또는팔레트자산의다음규격만표시 |
+| 주민 안내 | 접근검사의40…140world px타일중심조건을실제안내문에명시. controller거리0대화허용/최소거리/고정approach/계산규격변경0 |
+| 새 의미검수 | 신규suite14/14PASS·실제1회·실패0. 일반·Unityoverride/restore·strict거절·detached/원본불변·JSONv1·History/invalidimport원자성·실제v2등록/body/nav보존검수. 기존성공검사반복0 |
+| 새 화면검수 | 신규 Chrome14/14그룹PASS·실제launch1·실패0. 실제PNG/pointer/Unity·규격저장·반복배치·JSON왕복/Undo/복원·가드·390px touch 에뮬레이션은외부QA기록을따른다. 기존성공suite/원본4주민종주반복0, 휴대폰/native 인수0 |
+| 소유·보존 | code4(editor.html/map-scene-editor.js/map-scene-core.js/test-map-scene-placement-presets.cjs)+관련docs12=16완료범위. 실제NUL88의완료소유만정상checkpoint·원격exactSHA/후속72대조는외부receipt. 타인72/기존23·liveSTATELOG/보호2_3/Q전용·어택티켓금지·사용자세이브보존 |
+| 남은 GATE | VISUAL VERDICT: RETOUCH. 정적주민·확대원화흐림/높이·본편 실제grant/quest/save/상승·같은후보native6단계·실청취미인수. 규격도구PASS를맵A급·Unity전체호환·실플레이완료로계산0 |
+
+정확 계약은 `MAP_SCENE_EDITOR_20261005.md` §17, 가이드§23 제작보고는 `HELL_RIFT_EDITOR_RESULT_20261006.md` 같은완료ID. 외부백업·핀·의미/화면·Git근거=`/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/placement-presets-20261006/receipt.json`. 새팀/전문팀중복TASK/빌드·서버·게임/Windows0. 기존paused/아침메일재개0·오늘19시실제결과한번보고조건유지.

@@ -12,7 +12,7 @@
 | 현재 검수 주소 | `http://127.0.0.1:3387/editor.html` — 실제 checkout의 `server.cjs`, HOST=127.0.0.1, PORT=3387, 격리 save 경로 |
 | 다른 서버에서 사용 | 해당 checkout의 `server.cjs`가 서빙하는 `/editor.html`. 사용자3333 서버는 다른 checkout이므로 이번 수정의 검수 주소로 사용하지 않음 |
 | 공유 HTML | `editor.html` — UI·모드 분기·외부 씬 스크립트 연결 |
-| 구조·수학 | `tools/map-scene-core.js` — validate/decode/encode/local/hit/canWalk/resize/route/History/serializedBytes/projectSource/unityPlacement |
+| 구조·수학 | `tools/map-scene-core.js` — validate/decode/encode/local/hit/canWalk/resize/route/History/serializedBytes/projectSource/unityPlacement/placementDefaults/capturePlacement |
 | Unity 메타 | `tools/map-scene-unity.js` — 제한된 단일 Sprite TextureImporter 필드 reader, parseMeta |
 | 편집·렌더 | `tools/map-scene-editor.js` — preset/asset/변형/레이어/보행/저장·복원·내보내기 |
 | 시험 캐릭터 | `tools/map-scene-actor.js` — 기존8방향 전사 idle/walk, 이미지 씬 전용 |
@@ -24,6 +24,8 @@
 ## 2. 원본 해상도와 월드 크기
 
 이미지는 원본 bitmap 크기와 `crop`을 가진다. 배치 객체의 `width/height`는 **월드 px**다. 투명 여백·원본 해상도가 다른 이미지도 월드 너비를 같은 값으로 지정하면 크기를 맞출 수 있다. 기본 발 기준점은 `(pivotX,pivotY)=(0.5,1)`, 회전0°, 불투명도1, 반전false다. 수치 너비/높이 변경은 발 기준점을 유지하며, 모서리 핸들은 회전·반전을 고려해 반대 모서리를 고정한다. 비율 유지 기본 ON, 비율은 필드 편집 시작 시 고정하고 빈 숫자·비유한 값·0 이하 크기는 모델에 반영하지 않는다.
+
+아래 표는 자산별 `placementPreset`이 없을 때의 기본값이다. 명시 저장한 크기·피벗이 Unity 또는 일반 기본값보다 우선한다(§17).
 
 | 에셋 ID | 원본 px | 기본 배치 너비 world px | 제안 층 | 실제 출처 |
 |---|---:|---:|---|---|
@@ -52,6 +54,7 @@
 | assets | 최대128, 고유 id·name 문자열 ≤160, width/height 유한수1~8192, crop 필수 |
 | src | `assets/` 또는 `img/` 아래 ASCII 경로의 png/jpg/jpeg/webp, `..` 금지. 또는 PNG/JPEG/WebP base64 data URI. 문자열 ≤14,000,000 chars |
 | crop | x∈[0,width−1], y∈[0,height−1], w∈[1,width−x], h∈[1,height−y], 소수 허용 |
+| placementPreset | assets[] 선택 {kind:'world-placement-v1',width,height,pivotX,pivotY}. 크기 각Number 유한1…32000 world px/피벗0…1. Unity메타 선검증 뒤 다음배치에우선; 기존객체변경0 (§17) |
 | unitySprite | assets[] 선택 필드. kind=unity-single-sprite-v1, PPU.001~1,000,000, world단위1~32,000, pivot 각0~1, fullcrop 필수·출력크기각1~32,000. 잘못된 metadata는 import 전 원자거절 (§15) |
 | layers | 1~24, 고유 id·name, visible/locked boolean, sort=`flat` 또는 `foot`, parallax∈[0,1], objects 배열 |
 | 객체 수 | 전체 레이어 합계 ≤2000, 고유 id·name, assetId가 실제 asset을 참조 |
@@ -540,7 +543,7 @@ unit세부와실행로그=`tools/test-map-scene-resident-access.mjs` 및 외부h
 | rift-request-nessa | (6300,5020) | (6300,4980) | 40 | ready |
 | rift-prepare-dorik | (5220,2500) | (5220,2460) | 40 | ready |
 
-비차단 UI후속: 화면의 no-approach는 발에서40…140px인 타일 중심 후보를 뜻한다. controller는거리0에서도대화할수있다. 현재안내문에이계산조건을더명시하는문구개선은미반영이며 기능/화면검수 실패로 계산하지 않는다.
+화면의 no-approach는 발에서 40…140px 떨어진 보행 타일 중심 후보가 없다는 뜻이다. controller는 거리 0에서도 대화할 수 있다. 이 계산 조건을 명시하는 안내문은 ROOT-EDITOR-WORLD-PLACEMENT-PRESETS-20261006에서 반영했다. 접근 계산과 controller 계약은 그대로다.
 
 ### 2026-10-06 — 독립 주민 접근 검사 inspector
 
@@ -559,3 +562,42 @@ unit세부와실행로그=`tools/test-map-scene-resident-access.mjs` 및 외부h
 | 잔여 | VISUAL VERDICT: RETOUCH. 후보 원화 재질/정적 주민/높이/실제grant·quest·save·상승/본편native6단계·실청취 미인수. 시작연결 PASS는 실제 게임 이동·전투·보상 인수가 아님 |
 
 정확 계약은 `MAP_SCENE_EDITOR_20261005.md` §16, §23 제작보고는 `HELL_RIFT_EDITOR_RESULT_20261006.md` 같은완료ID. 외부 백업·의미검수·화면·Git영수증=`/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/resident-access-inspector-20261006/`. 두오더담당 유일송신/전문팀 중복TASK·새팀·실행세션0, 기존paused/아침메일 재개0·오늘19시 실제결과 한 번 보고 조건 유지.
+
+## 17. 자산별 다음 배치 규격 — 2026-10-06
+
+선택한 그림의 크기와 발 기준점을 다음 배치에 재사용할 수 있다. 아래 값은 자산에 저장하는 **편집 기본값**이며, 이미 배치된 객체와 원본 그림·투명 crop을 바꾸지 않는다.
+
+| id/API/필드 | 정확 현행 계약 |
+|---|---|
+| placementPreset | 선택object가참조하는 assets[].placementPreset. kind=`world-placement-v1`, width/height world px, pivotX/pivotY 정규화비율. 이5필드만capture반환 |
+| 유효 범위 | width/height 각 typeof Number+finite1…32000, pivotX/pivotY finite0…1. null/array/틀린kind/string/NaN/Infinity/범위밖거절. 추가 metadata의 JSON형식과bytes예산은기존validate사용 |
+| placementDefaults(a) | unityPlacement(a)를먼저호출해Unity메타유효성확인. preset유효하면fresh `{width,height,pivotX,pivotY}` 반환, preset없으면기존Unity기본값또는null. 잘못된Unity정보를preset으로우회0 |
+| capturePlacement(a,o) | a의Unity유효성·문자열id·o object와정확assetId동일·o의4값검증. fresh `{kind:'world-placement-v1',width,height,pivotX,pivotY}` 반환. 기존a/o쓰기0, a의source/crop전체검증은호출전scene.validate계약 |
+| pointer 배치 | 새객체x/y는기존snap·layer시차offset 사용. 새width/pivot은 placementDefaults 우선, 새height도저장값명시적. preset없으면Unity또는builtin너비/일반400·height=width×crop.h/crop.w·pivot(.5,1). rotation0/flipfalse/opacity1·고유objID 유지 |
+| 내부·마스크 | internalasset 또는선택mask객체는규격저장·복원UI차단. 잘린합성지형의마스크를새배치에복사한다는기대가생기지않게하며원본분할등록보존 |
+| History | 규격저장·복원각1트랜잭션. endDrag 후신선선택/assetId 재확인, 수정후 validate·refresh·로컬씬복구저장. Undo/Redo는동일규격왕복; invalidimport는기존씬/History유지 |
+| 복원 | 해당asset의placementPreset 필드만제거. Unity PPU/단위/피벗/원본crop/source, 이미놓인객체의크기·발·좌표는불변 |
+| 버튼 | scene-placement-save `이 크기·발 기준으로 다시 배치`, scene-placement-reset `기본 배치 규격으로 복원`. min-height44px, width100%, white-space:normal, 각margin-top8/6px. 선택/잠금/가시성/internal/mask/busy/playing/dialogue조건을버튼과handler에서검사 |
+| 안내 | scene-placement-status 리프role=status/aria-livepolite. 저장규격/Unity기본/일반기본의width×height·pivot 표시, 표시만toFixed(3)→Number;JSON은원래Number정밀도유지. 팔레트선택에도현재default표시 |
+| 주민 접근 문구 | 발에서40~140px 떨어진보행타일중심으로계산한다는조건을추가했다. 원본검사최소거리40은controller제약이아니며거리0대화가능 |
+
+core 의미검수=`tools/test-map-scene-placement-presets.cjs` 신규14/14·1회PASS. 브라우저측실제일반/Unity·규격pointer·JSON·Undo·복원·guards검수근거는같은완료ID외부영수증을따른다. 본편/NPC다수추가/실제지급이나UnityPrefab/3D물리저장계약은추가하지않았다.
+
+### 2026-10-06 — 이미지별 다음 배치 크기·발 기준 규격
+
+완료ID `ROOT-EDITOR-WORLD-PLACEMENT-PRESETS-20261006`. 일반 이미지를 편집한 크기·기준점으로 반복 배치하려면 매번 숫자를 다시 입력해야 했다. 선택 객체의 width/height/pivotX/pivotY 네 값만 자산별 기본 규격으로 보존하는 editor3387 consumer를 구현했다. 현재 객체를 일괄 확대하거나 본편 자산을 교체하지 않는다.
+
+| 항목 | 현행 계약과 인수 경계 |
+|---|---|
+| JSON v1 | assets[].placementPreset 선택 `{kind:'world-placement-v1',width,height,pivotX,pivotY}`. world 크기 각 Number 유한1…32000, 피벗 각0…1. 잘못된 kind/null/array/문자수치/비유한/범위밖은 validate와import/History에서거절 |
+| API·우선순위 | `MapSceneCore.placementDefaults(asset)`는 기존 unityPlacement를 먼저 검증한 뒤 preset이 있으면 fresh4값, 없으면 Unity기본 또는null. 다음 pointer배치=preset > UnityPPU·피벗 > 기존library너비/일반400·crop비율·pivot(.5,1). 저장된height도명시적으로적용 |
+| 규격 저장 | `capturePlacement(asset,object)`는 Unity유효성과일치assetId+현재4값을검증해 freshkind+4값 반환, 입력쓰기0. UI는선택한assetId의optional메타만 History1트랜잭션에저장. 회전/반전/opacity/mask/좌표/레이어복사0 |
+| 복원·왕복 | 기본규격복원은asset의placementPreset만제거, Unity메타/기존객체불변. 다음배치는Unity또는기존library/400으로복귀. 프로젝트JSON/로컬씬복구/Undo/Redo에서규격왕복; 게임세이브를사용하지않음 |
+| 화면·가드 | scene-placement-save/reset/status(리프role=status·aria-live=polite), 버튼전체너비·min-height44px·문구줄바꿈. 선택없음/internal자산/마스크객체/잠금/숨김/busy/보행/대화중 저장·복원차단. 현재선택또는팔레트자산의다음규격만표시 |
+| 주민 안내 | 접근검사의40…140world px타일중심조건을실제안내문에명시. controller거리0대화허용/최소거리/고정approach/계산규격변경0 |
+| 새 의미검수 | 신규suite14/14PASS·실제1회·실패0. 일반·Unityoverride/restore·strict거절·detached/원본불변·JSONv1·History/invalidimport원자성·실제v2등록/body/nav보존검수. 기존성공검사반복0 |
+| 새 화면검수 | 신규 Chrome14/14그룹PASS·실제launch1·실패0. 실제PNG/pointer/Unity·규격저장·반복배치·JSON왕복/Undo/복원·가드·390px touch 에뮬레이션은외부QA기록을따른다. 기존성공suite/원본4주민종주반복0, 휴대폰/native 인수0 |
+| 소유·보존 | code4(editor.html/map-scene-editor.js/map-scene-core.js/test-map-scene-placement-presets.cjs)+관련docs12=16완료범위. 실제NUL88의완료소유만정상checkpoint·원격exactSHA/후속72대조는외부receipt. 타인72/기존23·liveSTATELOG/보호2_3/Q전용·어택티켓금지·사용자세이브보존 |
+| 남은 GATE | VISUAL VERDICT: RETOUCH. 정적주민·확대원화흐림/높이·본편 실제grant/quest/save/상승·같은후보native6단계·실청취미인수. 규격도구PASS를맵A급·Unity전체호환·실플레이완료로계산0 |
+
+정확 계약은 `MAP_SCENE_EDITOR_20261005.md` §17, 가이드§23 제작보고는 `HELL_RIFT_EDITOR_RESULT_20261006.md` 같은완료ID. 외부백업·핀·의미/화면·Git근거=`/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/placement-presets-20261006/receipt.json`. 새팀/전문팀중복TASK/빌드·서버·게임/Windows0. 기존paused/아침메일재개0·오늘19시실제결과한번보고조건유지.
