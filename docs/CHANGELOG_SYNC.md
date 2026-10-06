@@ -54345,3 +54345,8 @@ root 접지그림자 code3 WIP·타인 변경·live supervisor STATE/LOG·원본
 ## 2026-10-06 기존 전문6팀 2.5D 완료 raw 후보 미채택 checkpoint
 
 현재 목표 CH1-2_5D-CHARACTER-MAP-SLICE-20261006의 SKILL/QA/ENEMY/ANIMVFX/BOSS/STORY 각1파일을 Claude8의 공식완료ID·actual end_turn·exact bytes/full SHA256으로 인계받아 보존한다. [정확6파일·핀·상태](./0마스터플랜/CH1_2_5D_TEAM_CANDIDATES_20261006.md). 후보 의미검수/소비자 채택/본편/native/visual/청취/A급 완료0, root 원자료 재실행0. 실제 전체변경80 이상에서 완료소유만 보존하며 ART/MAP 대기·WIP 및 타인파일 stage0. paused 자동화 유지.
+
+
+## 2026-10-06 완료 캐릭터 리깅·consumer 원자료 checkpoint
+
+완료 지원 소유 ID ROOT-DIRECTIONAL-CHARACTER-RIGS-20261006 및 ROOT-ADOPTED-POSE-EFFECT-CONSUMERS-20261006. tools/2_5d/character-rigs.mjs·character-rig-catalog.mjs·visual-pose-consumer.mjs·actor-effect-lifetime.mjs 및 상세 DIRECTIONAL_CHARACTER_RIGS_20261006.md를 exact pins로 보존한다. 기존 전사/실버테일/드루이드29PNG의 실제 Bone12·SkinnedMesh1과 고해상도 실버테일 원본 crop, SKILL/ANIMVFX 원raw에서 분리한 pose/효과 수명 파생모듈이다. 공식 raw6 pins/endID는 기존 fb923901fc1a1c5d864b0fc5353be2a2cd871d63으로 보존. docs 전체 관련키워드 검색 완료. 실제 전체변경80 도달로 완료 소유만 먼저 보존하며 통합lab의 소비자·신규 공격/가림/효과 화면 검수는 아직 진행중으로 구분한다. 코드원자료 보존을 본편/native/시각·청취/A급완료로 계산0. 타인WIP/index/원본PNG/scene/nav/세이브/보호2_3 변경0.
