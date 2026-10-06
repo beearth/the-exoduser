@@ -47,6 +47,21 @@
     for (const next of grid) { if (next !== v) { out.push(v, n); v = next; n = 0; } n++; }
     if (n) out.push(v, n); return out;
   }
+  // Unity single-sprite import keeps the full bitmap; this is a placement default only.
+  function unityPlacement(a) {
+    if (!a || typeof a !== 'object' || Array.isArray(a)) throw new Error('Unity 에셋 오류');
+    if (a.unitySprite === undefined) return null;
+    const u = a.unitySprite;
+    if (!u || typeof u !== 'object' || Array.isArray(u) || u.kind !== 'unity-single-sprite-v1') throw new Error('Unity 단일 Sprite 설정 오류');
+    number(a.width, 1, 8192, 'Unity 원본 너비'); number(a.height, 1, 8192, 'Unity 원본 높이');
+    if (!a.crop || a.crop.x !== 0 || a.crop.y !== 0 || a.crop.w !== a.width || a.crop.h !== a.height) throw new Error('Unity Sprite는 원본 전체 crop을 유지해야 합니다');
+    number(u.pixelsPerUnit, .001, 1000000, 'Unity Pixels Per Unit');
+    number(u.worldPixelsPerUnit, 1, 32000, 'Unity 단위의 월드 크기');
+    number(u.pivotX, 0, 1, 'Unity 기준점 x'); number(u.pivotY, 0, 1, 'Unity 기준점 y');
+    const width = a.width / u.pixelsPerUnit * u.worldPixelsPerUnit, height = a.height / u.pixelsPerUnit * u.worldPixelsPerUnit;
+    number(width, 1, 32000, 'Unity 배치 너비'); number(height, 1, 32000, 'Unity 배치 높이');
+    return { width, height, pivotX: u.pivotX, pivotY: u.pivotY };
+  }
   function validate(input) {
     if (!input || input.format !== 'exoduser-map-scene' || input.version !== 1) throw new Error('EXODUSER 씬 v1 파일이 아닙니다');
     const p = clone(input), w = p.world;
@@ -62,6 +77,7 @@
       if (!a.crop) throw new Error('에셋 crop 누락');
       number(a.crop.x, 0, a.width - 1, 'crop x'); number(a.crop.y, 0, a.height - 1, 'crop y');
       number(a.crop.w, 1, a.width - a.crop.x, 'crop 너비'); number(a.crop.h, 1, a.height - a.crop.y, 'crop 높이');
+      unityPlacement(a);
     }
     for (const l of p.layers) {
       string(l.id, '레이어 ID'); string(l.name, '레이어 이름');
@@ -175,7 +191,7 @@
     undo() { this.end(); if (!this.undoStack.length) return false; this.redoStack.push(clone(this.project)); this.project = this.undoStack.pop(); return true; }
     redo() { this.end(); if (!this.redoStack.length) return false; this.undoStack.push(clone(this.project)); this.project = this.redoStack.pop(); return true; }
   }
-  const api = { clone, validate, projectSource, decode, encode, local, hit, canWalk, resize, reanchor, route, History };
+  const api = { clone, validate, projectSource, unityPlacement, decode, encode, local, hit, canWalk, resize, reanchor, route, History };
   root.MapSceneCore = api;
   if (typeof module !== 'undefined') module.exports = api;
 })(typeof globalThis !== 'undefined' ? globalThis : window);

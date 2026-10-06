@@ -578,3 +578,95 @@ NEXT PASS: collect official existing-team memory handoffs by TASK/end, keeping r
 | 품질·잔여 | VISUAL VERDICT: RETOUCH. 정적 주민의 확대 grain/재질·전사와 원근/절벽 alpha·높이·실제 지급/quest/save/상승·본편/native6단계/청취 미인수. 계획이나 fixture를 게임완료로 계산0 |
 
 정본 계약은 `MAP_SCENE_EDITOR_20261005.md` §14, 맵 가이드§23 제작보고는 `HELL_RIFT_EDITOR_RESULT_20261006.md`의 해당 완료ID를 따른다. 외부 근거=`/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/resident-dialogue-isolation-20261006/`의 receipt.json·first-browser-failure.json/log·browser-qa/browser-final-verification.json·실제 베린/네사 대화 PNG. 정상 code+docs commit/push와 remote exact SHA는 영수증에 기록; 새 build/server/game/게시0. 오늘19시 한 번 보고·기존paused/메일 재개0.
+### MAP PRODUCTION REPORT — ROOT-EDITOR-UNITY-SINGLE-SPRITE-IMPORT-20261006
+
+```text
+================= MAP PRODUCTION REPORT =================
+STAGE: 지옥의 틈 editor authoring consumer — Unity single Sprite PNG + .meta import
+MASTER
+- silhouette: 기존 c508e70d... 독립주민v2·비대칭계곡 구성 불변
+- regions: 기존200x200/T40/8000x8000 world px 불변
+- main route: 기존 남쪽시작(4020,7740)→북쪽출구(4020,1740) 불변
+- side spaces: 4주민 머무름/접근점 불변
+OUTER MASS
+- LEFT: 기존서쪽절벽/뿌리 불변
+- RIGHT: 기존동쪽절벽/뿔 불변
+- TOP: 기존상승길/절벽 불변
+- SOUTH: 기존진입/전경뿌리 불변
+- major holes: 새공간·구멍편집0; 고해상도재질/전체실루엣 개선미완료
+LARGE
+- source assets: 기존 Unity UI/button.png122x69 + 동명meta만 QA임시import, 원본 bytes/SHA불변
+- composites: PNGfullcrop/dataURI·PPU/단위/pivot로 배치기본값계산
+- overlap: QA canvas실제pointer 배치·pixel검사; 생산v2합성변경0
+- repeated silhouette: Unity반복배치 규격유지 확인; 맵지역반복문제 신규인수0
+MEDIUM
+- connections: scene geometry/nav/STORY/4foot/접근점 불변
+- remaining holes: .unitypackage/Prefab/3Dheight/runtime bridge 미구현
+GROUND
+- shadow: 이전 navclip 정적접지4그림자 유지, 새그림자제작0
+- contamination: Unityfullcrop·source불변, ordinaryalpha trim기존유지
+- structure integration: assets[].unitySprite→팔레트→배치→JSON/History consumer
+PLAYABLE
+- main arenas: 기존map판정 유지; 새전투QA0
+- travel space: 기존nav1192/r12/BFS1185 핀유지, 이번route/BFS재실행0
+- breathing space: 지옥의 틈4주민 원본구성 유지
+- threat space: 신규스폰/어택티켓/보스변경0
+- combat readability: 이번import PASS를 전투·본편/native6단계완료로 계산0
+LANDMARK
+- primary: 기존위로향한북쪽상승로 유지
+- secondary: 중앙심연/절벽 유지
+- tertiary: 네주민자리 유지; UnityQA버튼에셋 생산채택0
+CAMERA QA
+- START: 이전카메라/근거유지, 이번8camera재실행0
+- EARLY: 이전카메라/근거유지
+- ARENA: 이전카메라/근거유지
+- SIDE L: 이전카메라/근거유지
+- SIDE R: 이전카메라/근거유지
+- LANDMARK: 이전카메라/근거유지
+- LATE: 이전카메라/근거유지
+- EXIT: 이전카메라/근거유지
+TECH QA
+- route: nav/scene/STORY/game/source불변, 새route실행0
+- collision: JSON검증/잘못된Unity metadata 원자거절, 충돌수치변경0
+- pageerror: 0, 원래실패2는harness race/진단expect이며제품JS오류0
+- 404: 0, foreign-server request0
+- seam: fullbitmap/crop/pivot맞춤검사; 실제맵seam인수추가0
+- loading: uncached기존PNG실제request-hit1후workspaceinert·입력/Undo차단·정확JSON완료확인; cachedsource의첫harness실패이력보존
+- performance: source양축1~8192·PNG10,000,000B/meta256,000B/JSON32,000,000B제한; 새FPS/native profiling0
+FILES
+- stage-owned: code5+docs12=17
+- concurrent touched: 오더담당 기존STATE/LOG는 owner독립소유, 이번stage대상0
+- unrelated touched: 기존72 NUL/untracked 경로·contents보존
+GIT
+- staged: 위완료소유17한정
+- commit: 정상commit, 실제SHA는 외부receipt 기록
+- push: 기존branch정상push/remoteexactSHA 대조, receipt 기록
+- deploy: 0
+VISUAL VERDICT: RETOUCH
+NEXT PASS: 실제맵에 사용할보유에셋의규격/크기/재질을선정하고 틈의고해상도재질/앞뒤가림·main runtime/실제주민action/native청취인수
+```
+
+
+의미검수는 `node --test tools/test-map-scene-unity.cjs` 최종16/16PASS·실제총4회다. 1차 native CJS/ESM loader fixture14실패와2차필수 cameras[]누락fixture2실패는 외부 `first-unit-failure.json`의 실제조건기록(원본전체로그 아님)으로 보존했다. 3차15PASS 후 읽기검수에서 정상 plain userData apostrophe의P2가 발견되어 parser국소수정/회귀1추가,4차16PASS. 기본core33/UI15 등 기존검사 재실행0.
+
+실제3387 브라우저 고유23그룹PASS·headless실행총5회다. 최초16PASS 뒤 cached tree가 request gate를 우회하여 loading완료 이후 정상Undo/Reset이 실행된 harness race를 진단·다운로드JSON으로 보존했다. 두번째진단의 Reset후보조expect실패도 보존; 제품import는 먼저성공했으며 제품수정0. 새plain apostrophe1·실제request-hit를보장한busy/격리sentinel/mobile/protection4·scene-only실제viewport1·잘린Unity버튼문구의 줄바꿈1만 순차검수했다. 이미성공한 다른검사는 재실행0. pageerror/404/foreign-server request0, 생산7파일의최종각run before/after핀불변. root는추가로v2scene/STORY/game 원본핀을대조했다.
+
+390px 실제viewport는 innerWidth/clientWidth/scrollWidth/bodyScrollWidth/visualViewport.width=390, visualViewport.scale=1, media(max-width:760px)=true. 이전 viewport없는축소PNG는 이력으로 유지. actualtap→filechooser→48.8×27.6/pivot(.5,.5)배치와속성열기/닫기 확인, 버튼·단위입력 실제표시≥44px. 최종 Unity 버튼은 실제55px·2줄 텍스트 rect가 영역 안이며 clientWidth=scrollWidth=121px다. root실제데스크톱custompivot/모바일controls·properties·최종captionPNG를시각확인했다. 모바일입력검수PASS를 전체맵재질/전투/본편/native품질PASS로 대체하지 않는다.
+
+
+이 실제 Unity source는 UI버튼이며 기능검수에만 사용했다. Unity용맵팩/Prefab·shader·material/3D전체지원이나 틈production에셋채택을 선언하지 않는다. 원화·v2scene90767B/SHA `c508e70d23fafb9295798763c5224c7c92699dfea3d3beebdb6ab18173f44a3a`·STORY25940B/`be14b1416838ab345eb1c2a150b92403566ccfdc43cd3f3b317cf2913840dfdc`·gameSHA `4f4eba2596c33f4e0c28e1e68ac224560e17c944cdbe9596ad9956c7578e3ccd` 불변이다. 이전UI/core/8camera/보행/PNG검사의PASS는 당시근거로유지하고이번에중복실행0. 전체맵재질grain/주민애니메이션/실제grant·quest·save·gate/본편/native/청취는 미인수다.
+### 2026-10-06 — Unity 단일 Sprite 이미지 규격 consumer
+
+완료ID `ROOT-EDITOR-UNITY-SINGLE-SPRITE-IMPORT-20261006`. 실제 checkout의 격리 editor3387에서 PNG와 동명 .png.meta2파일을 함께 읽고 단일Sprite(TextureImporter textureType8/spriteMode1)의 PPU·alignment·피벗을 기본 배치에 적용했다. 원본 full crop/data URI, 반복 배치·Undo/Redo·JSON v1 왕복 유지. ordinary PNG/JPEG/WebP의 alpha crop/400world px·pivot(.5,1)은 그대로다.
+
+| 항목 | 현재 사실 |
+|---|---|
+| 단위·규격 | PPU=spritePixelsToUnits .001~1,000,000, worldPixelsPerUnit 기본40·1~32,000, width/height=원본px÷PPU×단위 각1~32,000. Custom editor pivot=(x,1−y), fixed alignment0~8별enum. 범위밖 clamp0 |
+| 파일·consumer | PNG≤10,000,000B + meta fatalUTF8≤256,000B·정확2동명파일. `MapSceneUnity.parseMeta` + `MapSceneCore.unityPlacement` + assets[].unitySprite(kind='unity-single-sprite-v1'). 중복/부적합모드·메타/부분crop·PPU/피벗오류는 현재씬/history 유지 |
+| 실물 출처 | 기존 UI/button.png122×69/8956B SHA9fcb41bc8c54d83414161a44bd79acfba540c5fbc04a9c084bcc954971a5e5ec + meta2082B SHA3c7aa428101710c2a830de30618a5ffc559d2c02f2e80d468dec44b03cb54c1c → PPU100/단위40/center48.8×27.6world px. QA임시배치이며 틈v2채택0 |
+| 의미검수 | 새Unity suite16/16PASS·실제총4회. 1차UMD로더14실패/2차cameras fixture2실패를 외부조건기록으로 보존, 3차15PASS 뒤 plain userData apostropheP2 제품수정·회귀추가 후4차16PASS. 다른 기존suite 재실행0 |
+| 화면·입력 | 실제 브라우저23고유그룹PASS·실행5회(최초16+plain문자1+남은4+실제viewport1+버튼줄바꿈1), 성공한 다른검사 반복0. 390px/scale1/viewport내 속성toggle·실제tap/파일선택/배치, 단위44px·버튼55px/2줄문구확인. pageerror/404/외부서버요청0 |
+| 소유·보존 | code5(editor.html/map-scene-editor.js/map-scene-core.js/map-scene-unity.js/test-map-scene-unity.cjs)+관련docs12=17만 정상commit/push. 완료소유 checkpoint 실제89→72, 원격exactSHA는 외부receipt 기록 |
+| 남은 GATE | Multiple/9slice/.unitypackage/Prefab/FBX/PSD·Unity shader/script·3Dheight/runtime bridge 미구현. 틈4NPC/nav/STORY/source/game·사용자save 불변. 전체맵RETOUCH·실제grant/quest/save/상승·본편/native6단계/청취 미인수 |
+
+정확 계약은 `MAP_SCENE_EDITOR_20261005.md` §15, §23 MAP PRODUCTION REPORT는 `HELL_RIFT_EDITOR_RESULT_20261006.md`의 같은완료ID. 근거는 `/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/unity-sprite-import-20261006/`의 receipt·first-unit-failure.json·browser-qa. 전팀가동/A급/Unity전체호환/음성·메일발송 선언0. 두오더담당 유일송신·전문팀 중복TASK/새팀·세션0, 기존paused/아침메일 재개0·오늘19시한번보고 조건 유지.

@@ -1,6 +1,6 @@
 # 맵 씬 에디터 v1 — 실제 구현·검수 계약
 
-2026-10-05 사용자 최신 지시: 설정 캐릭터 이미지의 크기를 맞추고, 이미지를 재료로 조합하는 맵 에디터를 만든다. 원총괄이 공유 정본 `editor.html`에 레이어 씬 작업 영역을 구현했다. 이전 MAP팀 독립 HTML/WIP의 채택·완료 선언과는 별개다. 현재 첫 버전은 이미지 구성·변형·보행·프로젝트 왕복을 실제 편집한다. 본편 맵 채택, NPC/대화/음향, Unity 전체 기능 및 native 플레이 인수는 후속이다.
+2026-10-05 사용자 최신 지시: 설정 캐릭터 이미지의 크기를 맞추고, 이미지를 재료로 조합하는 맵 에디터를 만든다. 원총괄이 공유 정본 `editor.html`에 레이어 씬 작업 영역을 구현했다. 이전 MAP팀 독립 HTML/WIP의 채택·완료 선언과는 별개다. 현재 버전은 이미지 구성·변형·보행·프로젝트 왕복, 틈 주민 시험대화·환경음 consumer와 Unity 단일 Sprite PNG+.meta 규격 가져오기를 구현했다. 본편 맵 채택·주민 실제지급/quest/save·Unity 전체 기능·native 플레이/청취 인수는 후속이다.
 
 ## 1. 실행·파일 소유
 
@@ -12,11 +12,12 @@
 | 현재 검수 주소 | `http://127.0.0.1:3387/editor.html` — 실제 checkout의 `server.cjs`, HOST=127.0.0.1, PORT=3387, 격리 save 경로 |
 | 다른 서버에서 사용 | 해당 checkout의 `server.cjs`가 서빙하는 `/editor.html`. 사용자3333 서버는 다른 checkout이므로 이번 수정의 검수 주소로 사용하지 않음 |
 | 공유 HTML | `editor.html` — UI·모드 분기·외부 씬 스크립트 연결 |
-| 구조·수학 | `tools/map-scene-core.js` — validate/decode/encode/local/hit/canWalk/resize/route/History/serializedBytes/projectSource |
+| 구조·수학 | `tools/map-scene-core.js` — validate/decode/encode/local/hit/canWalk/resize/route/History/serializedBytes/projectSource/unityPlacement |
+| Unity 메타 | `tools/map-scene-unity.js` — 제한된 단일 Sprite TextureImporter 필드 reader, parseMeta |
 | 편집·렌더 | `tools/map-scene-editor.js` — preset/asset/변형/레이어/보행/저장·복원·내보내기 |
 | 시험 캐릭터 | `tools/map-scene-actor.js` — 기존8방향 전사 idle/walk, 이미지 씬 전용 |
 | 화면 | `tools/map-scene-editor.css` — 3열 데스크톱, 760px 이하 속성 패널 토글·상단 액션 가로 스크롤 |
-| 검수 | `tools/test-map-scene-core.cjs`, `tools/test-map-scene-ui.cjs`, `tools/test-hell-rift-scene.cjs` |
+| 검수 | `tools/test-map-scene-core.cjs`, `tools/test-map-scene-ui.cjs`, `tools/test-hell-rift-scene.cjs`, `tools/test-map-scene-unity.cjs` |
 | 기존 포크 | `tilemap-editor-src.html`, `docs/4.1맵디자인+설정/tilemap-editor.html` 수정0 |
 | 세이브 격리 | 씬 모드에서 기존 초기 슬롯 선택·설정 로드·타일맵 자동저장·draw·game iframe 기동 및 OBJ_DEFS preload/팔레트 생성 차단. `gameFrame.src` 미설정 |
 
@@ -36,10 +37,11 @@
 | dead-tree | 64×64 | 240 | foot | `assets/objects/tree_dead_01.png` |
 | glow-mushroom | 32×32 | 100 | foot | `assets/objects/mushroom_glow_01.png` |
 | 사용자 이미지 | 각 축1~8192 | 400 | foot 제안 | PNG/JPEG/WebP ≤10,000,000 bytes, data URI로 프로젝트에 포함 |
+| Unity 단일 Sprite PNG+.meta | 각 축1~8192·full crop | 원본width/PPU×world단위 | 현재 잠금해제 층 | 동명2파일, PNG≤10,000,000B/meta≤256,000B, 원본data URI·피벗/PPU metadata 보존 |
 
 제안 층은 카탈로그 메타다. 클릭 배치는 **현재 선택한 잠금 해제 레이어**를 사용한다. 비동기 로딩 중 workspace inert·busy 가드·단축키 차단으로 잠금 검사와 실제 배치 대상이 바뀌지 않는다. 이미지 로드·프로젝트 불러오기·새 씬 시작도 직렬화한다.
 
-투명 crop은 원본 ≤16,777,216 pixels에서 alpha>8의 경계를 측정한다. 그보다 큰 원본은 전체 사각형을 쓴다. 완전 투명한 측정 이미지는 거절한다. file:// 픽셀 읽기 차단 시 기존 세 자산은 검증 crop으로 폴백한다: root-wall `(85,35,1626,827)`, dead-tree `(3,4,61,57)`, glow-mushroom `(7,3,18,27)`. 로컬 HTTP 사용을 권장한다. PNG 내보내기의 file:// tainted canvas 실패는 안내하고 씬을 유지한다.
+일반 이미지의 투명 crop은 원본 ≤16,777,216 pixels에서 alpha>8의 경계를 측정한다. Unity 경로는 원본 full crop을 유지하며 alpha trim을 수행하지 않는다. 그보다 큰 원본은 전체 사각형을 쓴다. 완전 투명한 측정 이미지는 거절한다. file:// 픽셀 읽기 차단 시 기존 세 자산은 검증 crop으로 폴백한다: root-wall `(85,35,1626,827)`, dead-tree `(3,4,61,57)`, glow-mushroom `(7,3,18,27)`. 로컬 HTTP 사용을 권장한다. PNG 내보내기의 file:// tainted canvas 실패는 안내하고 씬을 유지한다.
 
 ## 3. 프로젝트 JSON v1
 
@@ -50,6 +52,7 @@
 | assets | 최대128, 고유 id·name 문자열 ≤160, width/height 유한수1~8192, crop 필수 |
 | src | `assets/` 또는 `img/` 아래 ASCII 경로의 png/jpg/jpeg/webp, `..` 금지. 또는 PNG/JPEG/WebP base64 data URI. 문자열 ≤14,000,000 chars |
 | crop | x∈[0,width−1], y∈[0,height−1], w∈[1,width−x], h∈[1,height−y], 소수 허용 |
+| unitySprite | assets[] 선택 필드. kind=unity-single-sprite-v1, PPU.001~1,000,000, world단위1~32,000, pivot 각0~1, fullcrop 필수·출력크기각1~32,000. 잘못된 metadata는 import 전 원자거절 (§15) |
 | layers | 1~24, 고유 id·name, visible/locked boolean, sort=`flat` 또는 `foot`, parallax∈[0,1], objects 배열 |
 | 객체 수 | 전체 레이어 합계 ≤2000, 고유 id·name, assetId가 실제 asset을 참조 |
 | 객체 위치·크기 | x/y∈[−40000,40000], width/height∈[1,32000] world px |
@@ -66,7 +69,7 @@
 | Undo | 트랜잭션 시작 전 snapshot. 최대40개, undoStack 직렬화 UTF-8 합계 ≤64,000,000 bytes로 오래된 것 제거. JS 실제 heap 상한이라는 뜻은 아님 |
 | 복구 저장 | `localStorage['exoduser:map-scene:v1']`만 사용, 사용자 변경 후500ms debounce. 최초 복구·?scene 로드는 저장하지 않아 기존 복구값 보존. quota 실패는 수동 JSON 저장 안내 |
 
-이 포맷은 기존 FIXED_MAPS/게임 저장 포맷과 다르다. 씬 JSON을 본편 런타임으로 자동 반영하는 bridge는 구현하지 않았다. 외부 PNG/JPEG/WebP 임포트는 가능하지만 `.unitypackage`·Prefab·FBX·Unity material/shader 직접 실행·변환은 미구현이다. 이미지 사용권·출처 메타의 별도 카탈로그 확장도 후속이다.
+이 포맷은 기존 FIXED_MAPS/게임 저장 포맷과 다르다. 씬 JSON을 본편 런타임으로 자동 반영하는 bridge는 구현하지 않았다. 외부 PNG/JPEG/WebP와 단일 Sprite PNG+.meta의 PPU·pivot 임포트(§15)는 가능하지만 `.unitypackage`·Prefab·FBX·Unity material/shader 직접 실행·변환은 미구현이다. 이미지 사용권·출처 메타의 별도 카탈로그 확장도 후속이다.
 
 ## 4. 레이어·카메라·입력
 
@@ -440,3 +443,70 @@ core29/29, adapter10/10, 실제 animated browser9그룹, 정적 틈18/18, 기존
 | 품질·잔여 | VISUAL VERDICT: RETOUCH. 정적 주민의 확대 grain/재질·전사와 원근/절벽 alpha·높이·실제 지급/quest/save/상승·본편/native6단계/청취 미인수. 계획이나 fixture를 게임완료로 계산0 |
 
 정본 계약은 `MAP_SCENE_EDITOR_20261005.md` §14, 맵 가이드§23 제작보고는 `HELL_RIFT_EDITOR_RESULT_20261006.md`의 해당 완료ID를 따른다. 외부 근거=`/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/resident-dialogue-isolation-20261006/`의 receipt.json·first-browser-failure.json/log·browser-qa/browser-final-verification.json·실제 베린/네사 대화 PNG. 정상 code+docs commit/push와 remote exact SHA는 영수증에 기록; 새 build/server/game/게시0. 오늘19시 한 번 보고·기존paused/메일 재개0.
+## 15. Unity 단일 Sprite PNG + .meta 가져오기 — 2026-10-06
+
+완료ID `ROOT-EDITOR-UNITY-SINGLE-SPRITE-IMPORT-20261006`. 격리 editor3387에 저장소의 기존 PNG와 같은 이름의 `.png.meta`를 함께 가져오는 consumer를 구현했다. 이미지 원본·투명 여백을 유지하며 PPU와 피벗으로 배치 크기를 계산한다. 일반 이미지 가져오기의 alpha crop·400world px·pivot(.5,1)은 유지한다.
+
+| 항목/API | 현행 계약 |
+|---|---|
+| UI | `scene-unity-import` 버튼, `scene-unity-file` multiple input(accept=.png,.meta), `scene-unity-unit` number 입력. 버튼·단위 입력 min-height44px, Unity 버튼 문구는 좁은 패널에서 줄바꿈 |
+| 모바일 viewport | 씬 모드에서만 head에 viewport=width=device-width,initial-scale=1 추가(기존 meta가 있으면 유지). workspace=tiles는 추가0. ≤760px 반응형·속성 토글 사용; 확대 금지 설정0 |
+| 파일 쌍 | 정확히2파일, 하나 PNG/하나 .png.meta. 이름을 대소문자 무시 비교해 meta.name=png.name+'.meta'. PNG MIME=image/png·≤10,000,000B, meta≤256,000B |
+| 텍스트 | fatal UTF-8 decode, `MapSceneUnity.parseMeta(text)`. parser도 UTF-8≤256,000B 확인, 첫 BOM/CRLF 정규화. 제한된 필드 reader이며 일반 YAML·Unity 실행기가 아님 |
+| 루트 | `fileFormatVersion=2`, 단일 빈값 TextureImporter mapping. 루트명 허용=fileFormatVersion/guid/timeCreated/licenseType/TextureImporter, 중복 거절 |
+| Sprite subset | TextureImporter 바로 아래2공백 `textureType=8`, `spriteMode=1`, `spritePixelsToUnits`, `alignment` 필수. textureShape가 있으면1, spriteBorder가 있으면{x:0,y:0,z:0,w:0} |
+| 숫자 | spritePixelsToUnits=PPU 유한수.001~1,000,000. alignment 정수0~9. 소수·부호·exponent 허용, 중복·문자수치·NaN/Infinity·범위밖 거절 |
+| Custom 피벗 | alignment9일 때 inline `spritePivot:{x,y}` 필수, x/y각0~1. editor pivotX=x, pivotY=1−y. 0~8은 enum 위치 적용; supplied spritePivot도 유효 범위 검사 |
+| 따옴표·부가 필드 | quoted scalar 내부#·escape 보존. plain userData의 apostrophe/따옴표는 일반 문자. 들여쓰기tab·알려진 필드의 가짜중첩·YAML문서/병합/태그/anchor/alias 거절. 기타 importer metadata는 실행·적용0 |
+| 원본 crop | `asset(def,false)`, x=y=0,w=원본width,h=원본height. alpha trim0; source data URI를 그대로 JSON에 보존 |
+| 단위 | `worldPixelsPerUnit` 기본40world px/Unity단위, 유한수1~32,000. tileSize 변경과 자동 연동0; 가져오기 시 값으로 자산에 고정 |
+| 배치 공식 | width=원본width/PPU×worldPixelsPerUnit, height=원본height/PPU×worldPixelsPerUnit. 결과 각각1~32,000world px; 범위밖 자동clamp0·씬 유지 |
+| 저장 계약 | assets[].unitySprite={kind:'unity-single-sprite-v1',pixelsPerUnit,worldPixelsPerUnit,pivotX,pivotY}. `MapSceneCore.unityPlacement(asset)`는 선택 metadata를 검증하고 {width,height,pivotX,pivotY} 반환, 일반자산은null |
+| Number serialization | Toast uses toFixed(2); JSON retains JS Number values. The 122x69/PPU100/unit40 example stores width=48.8, height=27.599999999999998 (display 48.80x27.60); no rounding/clamping is applied to placement defaults |
+| JSON v1 | 기존version1 유지. full crop·PPU·단위·피벗·크기 제한을 validate/import/History에서 검증. malformed metadata/부분crop은 history교체 전 거절; 씬/Undo/Redo 유지 |
+| 배치·편집 | 현재 잠금해제 층에 실제 pointer로 위 크기/피벗 배치. 반복 배치와 저장복원 뒤 같은 기본값. 배치후 수동크기/피벗 편집은 기존객체 계약 사용 |
+| 원자성·가드 | PNG/meta/단위/decode/PPU 오류에 history·씬 불변. busy는 workspace inert, 보행시험/대화중 Unity버튼 disable 및 filehandler reject. import1회는 Undo/Redo1트랜잭션 |
+| 생산 원본 | 기존 `assets/vfx_impact/_unity_preview/Assets/Ultimate Impact Fx/UI/button.png`122×69·8956B SHA9fcb41bc8c54d83414161a44bd79acfba540c5fbc04a9c084bcc954971a5e5ec / .meta2082B SHA3c7aa428101710c2a830de30618a5ffc559d2c02f2e80d468dec44b03cb54c1c 불변 |
+| 실제 기본 배치 | 위 파일의 PPU100/alignment0/단위40 → 48.8×27.6world px, pivot(.5,.5). Unity source는 QA 임시씬에만 배치; 지옥의 틈 production v2에 채택0 |
+| 새 소유 파일 | tools/map-scene-unity.js·tools/test-map-scene-unity.cjs. 기존 editor.html·map-scene-editor.js·map-scene-core.js 수정. parser는 browser global과 명시 VM UMD CJS 호스트 검사; type:module에서 native require('.js') 지원선언0 |
+| 미지원 | Multiple/sprite sheet 분할·9-slice·texture import processing/physics·.unitypackage/Prefab/FBX/PSD·Unity material/shader/script·3D/height/runtime bridge |
+
+| alignment | Unity 이름 | editor (pivotX,pivotY) |
+|---:|---|---|
+| 0 | Center | (.5,.5) |
+| 1 | TopLeft | (0,0) |
+| 2 | TopCenter | (.5,0) |
+| 3 | TopRight | (1,0) |
+| 4 | LeftCenter | (0,.5) |
+| 5 | RightCenter | (1,.5) |
+| 6 | BottomLeft | (0,1) |
+| 7 | BottomCenter | (.5,1) |
+| 8 | BottomRight | (1,1) |
+| 9 | Custom | (x,1−y) |
+
+PPU/단일Sprite의 공식 의미는 [Unity Sprite importer](https://docs.unity.com/en-us/engine/6000.0/manual/materials-and-shaders/textures/textures-reference/texture-type-sprite), alignment 순서는 [Unity SpriteAlignment](https://docs.unity3d.com/6000.0/Documentation/ScriptReference/SpriteAlignment.html)를 따른다. metadata의 실제 필드명은 저장소 원본 `spritePixelsToUnits`와 [Unity 공식 source](https://raw.githubusercontent.com/Unity-Technologies/UnityCsReference/master/Runtime/2D/Common/ScriptBindings/Sprites.bindings.cs)의 legacy 이름을 확인했다.
+
+
+의미검수는 `node --test tools/test-map-scene-unity.cjs` 최종16/16PASS·실제총4회다. 1차 native CJS/ESM loader fixture14실패와2차필수 cameras[]누락fixture2실패는 외부 `first-unit-failure.json`의 실제조건기록(원본전체로그 아님)으로 보존했다. 3차15PASS 후 읽기검수에서 정상 plain userData apostrophe의P2가 발견되어 parser국소수정/회귀1추가,4차16PASS. 기본core33/UI15 등 기존검사 재실행0.
+
+실제3387 브라우저 고유23그룹PASS·headless실행총5회다. 최초16PASS 뒤 cached tree가 request gate를 우회하여 loading완료 이후 정상Undo/Reset이 실행된 harness race를 진단·다운로드JSON으로 보존했다. 두번째진단의 Reset후보조expect실패도 보존; 제품import는 먼저성공했으며 제품수정0. 새plain apostrophe1·실제request-hit를보장한busy/격리sentinel/mobile/protection4·scene-only실제viewport1·잘린Unity버튼문구의 줄바꿈1만 순차검수했다. 이미성공한 다른검사는 재실행0. pageerror/404/foreign-server request0, 생산7파일의최종각run before/after핀불변. root는추가로v2scene/STORY/game 원본핀을대조했다.
+
+390px 실제viewport는 innerWidth/clientWidth/scrollWidth/bodyScrollWidth/visualViewport.width=390, visualViewport.scale=1, media(max-width:760px)=true. 이전 viewport없는축소PNG는 이력으로 유지. actualtap→filechooser→48.8×27.6/pivot(.5,.5)배치와속성열기/닫기 확인, 버튼·단위입력 실제표시≥44px. 최종 Unity 버튼은 실제55px·2줄 텍스트 rect가 영역 안이며 clientWidth=scrollWidth=121px다. root실제데스크톱custompivot/모바일controls·properties·최종captionPNG를시각확인했다. 모바일입력검수PASS를 전체맵재질/전투/본편/native품질PASS로 대체하지 않는다.
+
+
+전체맵 **VISUAL VERDICT: RETOUCH**. 가져오기 기능의 PASS는 A급맵/Unity전체호환/본편 NPC·실제grant/quest/save·장상승·native6단계·청취 인수가 아니다. 새서버/build/game/Windows/설치/권한/결제/게시/원본재배포0.
+### 2026-10-06 — Unity 단일 Sprite 이미지 규격 consumer
+
+완료ID `ROOT-EDITOR-UNITY-SINGLE-SPRITE-IMPORT-20261006`. 실제 checkout의 격리 editor3387에서 PNG와 동명 .png.meta2파일을 함께 읽고 단일Sprite(TextureImporter textureType8/spriteMode1)의 PPU·alignment·피벗을 기본 배치에 적용했다. 원본 full crop/data URI, 반복 배치·Undo/Redo·JSON v1 왕복 유지. ordinary PNG/JPEG/WebP의 alpha crop/400world px·pivot(.5,1)은 그대로다.
+
+| 항목 | 현재 사실 |
+|---|---|
+| 단위·규격 | PPU=spritePixelsToUnits .001~1,000,000, worldPixelsPerUnit 기본40·1~32,000, width/height=원본px÷PPU×단위 각1~32,000. Custom editor pivot=(x,1−y), fixed alignment0~8별enum. 범위밖 clamp0 |
+| 파일·consumer | PNG≤10,000,000B + meta fatalUTF8≤256,000B·정확2동명파일. `MapSceneUnity.parseMeta` + `MapSceneCore.unityPlacement` + assets[].unitySprite(kind='unity-single-sprite-v1'). 중복/부적합모드·메타/부분crop·PPU/피벗오류는 현재씬/history 유지 |
+| 실물 출처 | 기존 UI/button.png122×69/8956B SHA9fcb41bc8c54d83414161a44bd79acfba540c5fbc04a9c084bcc954971a5e5ec + meta2082B SHA3c7aa428101710c2a830de30618a5ffc559d2c02f2e80d468dec44b03cb54c1c → PPU100/단위40/center48.8×27.6world px. QA임시배치이며 틈v2채택0 |
+| 의미검수 | 새Unity suite16/16PASS·실제총4회. 1차UMD로더14실패/2차cameras fixture2실패를 외부조건기록으로 보존, 3차15PASS 뒤 plain userData apostropheP2 제품수정·회귀추가 후4차16PASS. 다른 기존suite 재실행0 |
+| 화면·입력 | 실제 브라우저23고유그룹PASS·실행5회(최초16+plain문자1+남은4+실제viewport1+버튼줄바꿈1), 성공한 다른검사 반복0. 390px/scale1/viewport내 속성toggle·실제tap/파일선택/배치, 단위44px·버튼55px/2줄문구확인. pageerror/404/외부서버요청0 |
+| 소유·보존 | code5(editor.html/map-scene-editor.js/map-scene-core.js/map-scene-unity.js/test-map-scene-unity.cjs)+관련docs12=17만 정상commit/push. 완료소유 checkpoint 실제89→72, 원격exactSHA는 외부receipt 기록 |
+| 남은 GATE | Multiple/9slice/.unitypackage/Prefab/FBX/PSD·Unity shader/script·3Dheight/runtime bridge 미구현. 틈4NPC/nav/STORY/source/game·사용자save 불변. 전체맵RETOUCH·실제grant/quest/save/상승·본편/native6단계/청취 미인수 |
+
+정확 계약은 `MAP_SCENE_EDITOR_20261005.md` §15, §23 MAP PRODUCTION REPORT는 `HELL_RIFT_EDITOR_RESULT_20261006.md`의 같은완료ID. 근거는 `/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/unity-sprite-import-20261006/`의 receipt·first-unit-failure.json·browser-qa. 전팀가동/A급/Unity전체호환/음성·메일발송 선언0. 두오더담당 유일송신·전문팀 중복TASK/새팀·세션0, 기존paused/아침메일 재개0·오늘19시한번보고 조건 유지.

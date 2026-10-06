@@ -342,8 +342,8 @@ latest 사용자 “작업을해서 저녁까지 보고해”에 따라 오늘20
 | 1-1 | 8공간의 큰 질량/연결/접지/랜드마크를 기존 LOCK 안에서 다르게 구성 | 기존 geometry/bake/gate를 보존하는 후보 검수 | 최신 동일후보 실제 전투·획득·개방·보스사망/부활·재도전·청취 |
 | 틈 배경 | 승인 계곡 원화의 심연/바닥/절벽/전경 분리 | 원본 후보 보존. 새 인물 없는 plate1254²의6crop+전경3·기존심연1과 독립4body/발접지그림자를 editor consumer에서 구현 | 전체 절벽 alpha/고해상도 재질·높이 모델·본편 gate |
 | 주민 | 각 발이 실제 바닥에 있고 전사80world px와 의도된 원근비례 | 독립alpha crop4·standing80/앉은비례·pivot(.5,1), 유효크기/현재foot 편집 대화, 정적nav clip접지그림자, 독립 주민별 보행차단 분리, 네 접근점 실제 키보행·22node/37option 시험 | 생성 파생 인물 재질·주민애니메이션, 유품 실제지급·퀘스트/save 원자성·본편 소비자 |
-| 맵 스튜디오 | 이미지를 레이어로 놓고 크기·발·가림·길을 조절해 결과 저장 | PNG 등 이미지 가져오기, crop/크기/회전/flip/pivot, 새 발 찍기, 레이어잠금/정렬/시차, Undo/Redo·JSON/PNG·보행/경로검사 | Unity 패키지/PSD/FBX 자동 읽기와 3D 지형/height 편집은 미구현. 기존 보유 이미지의 가져오기부터 사용 |
-| Unity 에셋 활용 | 기존 자산 이미지/규격을 가져와 같은 월드 단위와 발 기준으로 정렬 | 일반 이미지 임포트와 source 원본 보존만 확인 | .unitypackage 자동 추출/메타 pivot·pixels-per-unit 해석/모델 변환을 별도 구현·검수해야 하며 현재 지원으로 선언0 |
+| 맵 스튜디오 | 이미지를 레이어로 놓고 크기·발·가림·길을 조절해 결과 저장 | PNG 등 일반 이미지·Unity 단일 Sprite PNG+.meta 가져오기/PPU·피벗 배치, crop/크기/회전/flip/pivot·발 찍기, 레이어잠금/정렬/시차, Undo/Redo·JSON/PNG·보행/경로검사·실제 모바일viewport | Unity 패키지/PSD/FBX 자동 읽기와 3D 지형/height 편집은 미구현. 기존 보유 이미지의 가져오기부터 사용 |
+| Unity 에셋 활용 | 기존 자산 이미지/규격을 가져와 같은 월드 단위와 피벗으로 정렬 | 기존 PNG+동명.meta 단일Sprite의 spritePixelsToUnits·alignment/Custom pivot, fullcrop·data URI·원본불변·반복배치·Undo/JSON 왕복 구현검수 (§15) | Multiple/9slice/.unitypackage 자동추출/Prefab/3D모델·재질/shader 변환은 미구현. UI버튼 실물검수는 틈production 자산채택0 |
 | 사운드 | 환경·접근·대화·선택·상승 cue의 전환/중복/stop 수명 | 기존 cue를 맡긴 담당의 후보/정본검수 | 실제 browser/native gesture/설정과 청취, pause/retry/장전환 lifecycle |
 
 ### 기존 팀별 실제 작업 소유
@@ -495,3 +495,18 @@ root 접지그림자 code3 WIP·타인 변경·live supervisor STATE/LOG·원본
 | 품질·잔여 | VISUAL VERDICT: RETOUCH. 정적 주민의 확대 grain/재질·전사와 원근/절벽 alpha·높이·실제 지급/quest/save/상승·본편/native6단계/청취 미인수. 계획이나 fixture를 게임완료로 계산0 |
 
 정본 계약은 `MAP_SCENE_EDITOR_20261005.md` §14, 맵 가이드§23 제작보고는 `HELL_RIFT_EDITOR_RESULT_20261006.md`의 해당 완료ID를 따른다. 외부 근거=`/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/resident-dialogue-isolation-20261006/`의 receipt.json·first-browser-failure.json/log·browser-qa/browser-final-verification.json·실제 베린/네사 대화 PNG. 정상 code+docs commit/push와 remote exact SHA는 영수증에 기록; 새 build/server/game/게시0. 오늘19시 한 번 보고·기존paused/메일 재개0.
+### 2026-10-06 — Unity 단일 Sprite 이미지 규격 consumer
+
+완료ID `ROOT-EDITOR-UNITY-SINGLE-SPRITE-IMPORT-20261006`. 실제 checkout의 격리 editor3387에서 PNG와 동명 .png.meta2파일을 함께 읽고 단일Sprite(TextureImporter textureType8/spriteMode1)의 PPU·alignment·피벗을 기본 배치에 적용했다. 원본 full crop/data URI, 반복 배치·Undo/Redo·JSON v1 왕복 유지. ordinary PNG/JPEG/WebP의 alpha crop/400world px·pivot(.5,1)은 그대로다.
+
+| 항목 | 현재 사실 |
+|---|---|
+| 단위·규격 | PPU=spritePixelsToUnits .001~1,000,000, worldPixelsPerUnit 기본40·1~32,000, width/height=원본px÷PPU×단위 각1~32,000. Custom editor pivot=(x,1−y), fixed alignment0~8별enum. 범위밖 clamp0 |
+| 파일·consumer | PNG≤10,000,000B + meta fatalUTF8≤256,000B·정확2동명파일. `MapSceneUnity.parseMeta` + `MapSceneCore.unityPlacement` + assets[].unitySprite(kind='unity-single-sprite-v1'). 중복/부적합모드·메타/부분crop·PPU/피벗오류는 현재씬/history 유지 |
+| 실물 출처 | 기존 UI/button.png122×69/8956B SHA9fcb41bc8c54d83414161a44bd79acfba540c5fbc04a9c084bcc954971a5e5ec + meta2082B SHA3c7aa428101710c2a830de30618a5ffc559d2c02f2e80d468dec44b03cb54c1c → PPU100/단위40/center48.8×27.6world px. QA임시배치이며 틈v2채택0 |
+| 의미검수 | 새Unity suite16/16PASS·실제총4회. 1차UMD로더14실패/2차cameras fixture2실패를 외부조건기록으로 보존, 3차15PASS 뒤 plain userData apostropheP2 제품수정·회귀추가 후4차16PASS. 다른 기존suite 재실행0 |
+| 화면·입력 | 실제 브라우저23고유그룹PASS·실행5회(최초16+plain문자1+남은4+실제viewport1+버튼줄바꿈1), 성공한 다른검사 반복0. 390px/scale1/viewport내 속성toggle·실제tap/파일선택/배치, 단위44px·버튼55px/2줄문구확인. pageerror/404/외부서버요청0 |
+| 소유·보존 | code5(editor.html/map-scene-editor.js/map-scene-core.js/map-scene-unity.js/test-map-scene-unity.cjs)+관련docs12=17만 정상commit/push. 완료소유 checkpoint 실제89→72, 원격exactSHA는 외부receipt 기록 |
+| 남은 GATE | Multiple/9slice/.unitypackage/Prefab/FBX/PSD·Unity shader/script·3Dheight/runtime bridge 미구현. 틈4NPC/nav/STORY/source/game·사용자save 불변. 전체맵RETOUCH·실제grant/quest/save/상승·본편/native6단계/청취 미인수 |
+
+정확 계약은 `MAP_SCENE_EDITOR_20261005.md` §15, §23 MAP PRODUCTION REPORT는 `HELL_RIFT_EDITOR_RESULT_20261006.md`의 같은완료ID. 근거는 `/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/unity-sprite-import-20261006/`의 receipt·first-unit-failure.json·browser-qa. 전팀가동/A급/Unity전체호환/음성·메일발송 선언0. 두오더담당 유일송신·전문팀 중복TASK/새팀·세션0, 기존paused/아침메일 재개0·오늘19시한번보고 조건 유지.
