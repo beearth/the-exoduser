@@ -81,8 +81,23 @@ export function createActorEffectLifetime(deps = {}) {
   if (!ready) throw new Error('actor effects THREE/scene/camera/terrain 의존성 오류');
 
   // Shared, reused geometry — one per kind, disposed once at teardown.
-  const dustGeo = new THREE.RingGeometry(0.55, 1, 28, 1);
-  const attackGeo = new THREE.RingGeometry(0.62, 1, 24, 1, -0.9, 1.8); // a forward arc wedge
+  function unwindGeometryConstruction(owned) {
+    const released = new Set();
+    for (const geometry of owned) {
+      if (!geometry || released.has(geometry)) continue;
+      released.add(geometry);
+      // Preserve the constructor's thrown value even if owned cleanup also fails.
+      try { geometry.dispose(); } catch (_) {}
+    }
+  }
+  let dustGeo = null, attackGeo = null;
+  try {
+    dustGeo = new THREE.RingGeometry(0.55, 1, 28, 1);
+    attackGeo = new THREE.RingGeometry(0.62, 1, 24, 1, -0.9, 1.8); // a forward arc wedge
+  } catch (error) {
+    unwindGeometryConstruction([dustGeo, attackGeo]);
+    throw error;
+  }
   const HALF_PI = Math.PI / 2;
 
   const all = [], free = [], live = [];

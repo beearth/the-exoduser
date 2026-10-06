@@ -619,3 +619,39 @@ MAP PRODUCTION REPORT (§23): MASTER PLAN=기존 지옥의 틈 2.5D 소비자의
 MAP PRODUCTION REPORT (§23): MASTER/OUTER MASS/LARGE/MEDIUM/GROUND/LANDMARK=기존 silhouette·route·asset·배치·nav·ground 구조 변경0, guide/SSOT/LOCK 유지. PLAYABLE=3387 독립 실제worldlab iframe의 효과교체 소비자3범위만 관측; combat·실게임·보상·장전환·save/native6·audio0. CAMERA QA=새1600×1050 endpoint정지화면 확인 / START→EXIT 전체재생·영상검수0. TECH QA=최초3timeout 이력과후속3scope15조건 PASS를 분리, source11 exact·물리GPU UNKNOWN. FILES=worker 외부 증거만/root 관련docs 동기화, 타인WIP·원PNG/scene/nav·보호2_3·user save 불변. **VISUAL VERDICT: RETOUCH**.
 
 관련 docs disposition은 신규 소스 완료단위의 whole164경로853줄/precise19경로223줄, `npc-canonical-identity-lookup/root-rebuild-docs-disposition.json`23701B/`d197783b7fd4c33868e274f7c502b747fc4f8756748e3ca5d59d8b8a599cb541`와 추가 current worldlab 참조 HELL_RIFT_EDITOR_RESULT를 따른다. 이번14문서의 과거 원prefix를 유지하고 EOF LF1로 새 사실만 동기화한다. 본편 defaultdemo→hub·childP/char·NPC durableACK/readback·실청취/native6/실save·A급 완료 선언0. WOLF 거절 목적 HOLD와 피해UNKNOWN은 기존기록대로 유지한다.
+## 2026-10-07 ROOT-ACTOR-GEOMETRY-CONSTRUCTOR-UNWIND-20261007: 반환된 공유 geometry의 constructor 실패 회수
+
+현재 public `tools/2_5d/actor-effect-lifetime.mjs`의 두 공유 geometry 생성 접점만 보강했다. 첫 constructor가 geometry를 반환하고 다음 constructor가 throw하면, 반환받은 자기소유 reference마다 독립적으로 dispose를 시도한 뒤 처음 constructor가 던진 값을 그대로 전달한다. 이 절은 앞선 geometry 부분할당 미해결 기록 중 **반환받은 geometry reference의 실패 회수**만 갱신한다. material/Mesh/acquire/등록·진행 중 spawn 및 consumer update 예외는 별도 미해결이다.
+
+| id·소유 위치 | 정확한 계약·상수·오류 의미 |
+|---|---|
+| 현재 public source | 12639 bytes / SHA256 `6870a20883dd9e858895d0fdb951f5ab34bf3f33043ff63a88c9a381e3b982eb`. 직전12162 bytes / SHA256 `a80898889231d8780dbaad13b110c36171be2a93c7b6147c21fc3a3e2010c26b`는 과거 dispose·Chrome 검수 핀. 외부 fullbytes 백업·생성 접점1 역변환 전체 원문 exact |
+| 소유 edit 범위 | 공유 geometry 생성 직전의 private helper와 두 constructor try/catch만. 원문 나머지 API/defaults/provenance/spawn/acquire/material/Mesh/all/free/live/등록 및 dispose 본문 byteexact. root world39715 bytes / SHA256 `050f627b712e1e8c83c5d51d010b1e61c177be8f4645fd63fe5220317c8a7dc8` 불변 |
+| private helper L84 | `unwindGeometryConstruction(owned)`. 한 호출 안의 `Set`으로 null·중복 reference를 건너뛰고, unique geometry별 `dispose()`를 각 try/catch로 독립 시도. 실패한 첫 해제를 다음 unique reference의 시도 중단 이유로 사용0 |
+| 반환 reference 초기값 L93 | `dustGeo=null`, `attackGeo=null`. constructor가 정상 반환한 경우에만 변수에 reference가 저장됨. allocation을 하지 않은 null에 dispose 호출0. 반환 전에 내부에서 throw한 allocation은 이 module이 reference를 갖지 못하므로 회수 UNKNOWN |
+| dust 생성 L95 | `new THREE.RingGeometry(0.55,1,28,1)` — innerRadius0.55 / outerRadius1 / thetaSegments28 / phiSegments1. 기존 인자·호출 순서 불변 |
+| attack 생성 L96 | `new THREE.RingGeometry(0.62,1,24,1,-0.9,1.8)` — innerRadius0.62 / outerRadius1 / thetaSegments24 / phiSegments1 / thetaStart-0.9 / thetaLength1.8. dust 다음 호출, 순서 불변 |
+| factory catch L97 | `unwindGeometryConstruction([dustGeo,attackGeo])` 뒤 `throw error`. 원 Error/object/null 등 thrown value를 동일 identity로 전달; error.message/string 변환·getter 조회0, 성공 handle 반환0 |
+| cleanup 실패 경계 | dispose 자체가 throw해도 원 constructor 오류를 대체하지 않음. 이 좁은 변경은 추가 public 오류 API·cleanup counter를 만들지 않는다. 해제 실패가 없는 척하지 않으며, failed dispose attempt를 완료 해제로 인수0. 실제 producer 생성 catch에서는 두 번째 constructor가 throw할 때 두 번째 returned reference가 없으므로 보유 reference는 최대 첫 geometry1개 |
+| borrowed·공유 소유 | 실패 생성 시 자기소유 반환 geometry만 시도. camera/terrain/scene/texture/material/Mesh 접근·회수 추가0. 정상 생성 뒤 geometry2는 기존 controller dispose가 공유 소유로 회수, mesh당 geometry 중복회수0. 두 성공 constructor가 같은 reference를 반환하는 주입 case의 기존 dispose identity dedup 유지 |
+| public API·고정 defaults | `createActorEffectLifetime(deps={})` → frozen update/onActorChange/onSceneChange/dispose/snapshot. maxLive24 / dustLifeMs520 / attackLifeMs240 / stepMinIntervalMs110 / footBand4320 / dustColor0x1a140f·opacity0.5·size0.14 / attackColor0xc8623a·opacity0.8·size0.17 / groundLift0.003 / reducedMotion=false·depthTest=true 모두 불변 |
+| root render overrides | lab 플레이어dust0.022·attack0.08, 드루이드dust0.042·attack0.145, depthTest=false 불변. dust rotation(-PI/2,0,0)·attack billboard·bands19/39·transparent/depthWrite=false·toneMapped=false 변화0 |
+| 기존 dispose 계약 | L197의 기존 body 불변. 정상 첫 dispose 숫자=all.length, 반복0. 독립 정리 후 controlledError 의미·root cleanupFailures의 controller별 실패 집계 불변. 이번 constructor catch가 material/Mesh/scene.add 실패를 회수한다고 선언0 |
+
+| 신규 검수 group | raw 조건 | 유의미 인수 조건 | 결과·관측 범위 |
+|---|---:|---:|---|
+| 정상 actual Three·접점1 원문 보존 | 8 | 8 | PASS. local Three r160 실제 factory·public API/defaults와 empty dispose 숫자, 소유 접점1 역변환 전체 exact; scene/renderer/GPU 실행0 |
+| 두 번째 constructor throw | 5 | 5 | PASS. 실제 RingGeometry를 반환하는 constructor wrapper의 두 번째 호출만 실패 주입. 첫 geometry actual dispose event1, 원 hostile thrown object identity 그대로·message getter0; 두 constructor 인자 exact |
+| 첫 constructor throw | 3 | 2 | 원 raw PASS. exact null thrown value와 ctor 호출1은 유효. 별도 disposeCalls=0 상수가 실제 hook에 연결되지 않은 assertion1은 근거 제외; 미관측을 dispose 관측 PASS로 격상0 |
+| cleanup throw·원 오류 보존 | 3 | 3 | PASS. 실제 geometry의 dispose 실패 port를 주입: 시도1/actual dispose event0, 원 factory 오류 동일 identity. failed cleanup 완료 주장0 |
+| 실제 private helper 독립·identity | 3 | 3 | PASS. 실제 변경 소스 helper를 CPU VM에서 추출해 duplicate/null/두 unique actual geometry references를 공급. 첫 시도 throw1 뒤 둘째 actual event1; 같은 reference 재시도0. factory가 실패 시 두 반환 reference를 보유했다고 해석0 |
+| 성공 constructor alias | 3 | 3 | PASS. 주입 constructor2가 같은 actual geometry를 반환한 성공 case, 기존 shared dispose event1·반복0. constructor unwind 실패 경로는 아님 |
+| 실행·판정 | 25 | 24 | 신규 Node stdin 단일1회, 고유6그룹 raw PASS6/FAIL0/exit0. 유의미 인수6그룹24조건·제외1조건. actual module import가 syntax 검사도 수행; 옛 모델7/11·CPU47/104·GUI 재실행0 |
+
+원 raw25조건 및 제외 이유는 외부 `limited-result.json`과 `test-adjudication.json`에 각각 보존한다. 실제 정상 Three, actual geometry event와 injected constructor/dispose port, 실제 private helper CPU의 범위를 구분한다. GPU buffer upload/물리 메모리 회수·Chrome/네이티브·본편·청취·save ACK 인수0. 원 정상 API와 오류값 전달은 보존했지만 constructor 내부의 반환 없는 allocation, material→Mesh 생성 실패, scene.add→등록 사이 재진입·예외, 진행 중 spawn/live 재게시, worldlab update throw에 의한 RAF정지 정책은 미해결이다. parent가 새 acquire callback 공식 end13ccc735-8e0b-4cdb-a218-0a17e82fbb1b / raw7642 bytes·SHA256 e5f631661eb8f339cae217937a46d460b2d5279a91a1da59bc1c2f98b2cc8d96를 인계했다. 첫 stdin exit1 뒤 second11PASS는 owner의 실제producer+fakeTHREE/scene callback 결함재현 이력이며 public 수정완료0이다. 이번 geometry constructor 인수24조건과 합산0, 이 지원단위에서 새 메모리본문 검수·실험 재실행0; 별도 producer 후속의존성으로 유지한다.
+
+코드 변경 후 전체 docs 관련 검색은 49경로662줄 / raw1406762 bytes / SHA256 `2889835670b2ae50daed3f019f28d4e9558be304b023a2238d9be24ed408021b`이며, precise producer 참조20경로313줄과 모든경로 disposition을 보존했다. 최초 scene.add component의 과도한 escape는 해당 component만 보완 조회하여 union dedup한 최종 검색으로 정정하고 원 출력도 보존했다. 소유 문서2는 이 완료 부록으로 정확 source·수치·의미·검수·남은 위험을 동기화한다. 그 밖의 rootops·SLICE·RESOLUTION·editor·SSOT·다른 consumer 현재핀 참조는 root에 인계한다. 일반 geometry/acquire·다른 시스템 수치를 임의 변경0, 보호2_3 및 owner 증거 이력 불변.
+
+외부 증거: `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/actor-geometry-constructor-unwind/`의 preflight.json, before/, source-replacement.json, limited-result.json, test-adjudication.json, docs-keyword-search-final.txt, docs-search-summary-final.json, docs-search-disposition-final.json, final-receipt.json. 원 문서 fullprefix를100% 보존하고 append 뒤 EOF LF1개만 둔다. code1+docs2 완료 핀을 root checkpoint에 인계하며 지원 작업의 Git/GUI/게임/server/전문송신/save 쓰기는0이다.
+
+MAP PRODUCTION REPORT (§23): MASTER 기존 장면의 decorative producer 자원 생성 실패 보강; LARGE OUTER MASS/MEDIUM CONNECTION/GROUND CONNECTION/PLAYABLE-COMBAT/LANDMARK-CENTER/SMALL DETAIL 지형·배치·원화·nav·전투 변경0, 기존 guide/SSOT/LOCK 이력 유지. CAMERA QA 신규0; TECH QA 신규 source 단일6그룹 유의미24조건 PASS·원raw25/제외1 분리·접점1 역변환 exact. 실제 GPU·본편native6·audio·durable save 미인수. **VISUAL VERDICT: RETOUCH / NOT ASSESSED**. 화면 흐림 개선·A급·실플레이 완료로 계산0.
