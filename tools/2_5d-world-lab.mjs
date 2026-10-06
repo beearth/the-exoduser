@@ -41,6 +41,9 @@ let effectRebuildFailures=0,effectRebuildCueFailures=0;
 const effectRebuildReasons=Object.create(null);
 let effectUpdateOwner=null,effectUpdateFailures=0;
 const effectUpdateReasons=Object.create(null);
+const FRAME_FATAL_ERROR='캐릭터 또는 화면 표시 오류로 시험을 중단했습니다. 페이지를 다시 열어 주세요.';
+let frameFatalHasCause=false,frameFatalCause,frameFatalPhase=null,frameFatalActorId=null,frameFatalEpoch=null;
+let frameFatalStaleFailures=0,frameFatalReportFailures=0;
 const inertEffectStats=Object.freeze({active:false,inert:true,reason:'rebuild-unavailable',live:0,spawned:0,expired:0,recycled:0,pool:0,bandWrites:0,suppressed:0,meshes:0});
 const INERT_EFFECT=Object.freeze({update(){return inertEffectStats;},onActorChange(){return 0;},onSceneChange(){return 0;},dispose(){return 0;},snapshot(){return inertEffectStats;}});
 let previewSequence=0,previewEntry=null,previewEntryReason=null;
@@ -52,6 +55,38 @@ function fail(error){
   controls.forEach(el=>el.disabled=true);Object.values(rigs).forEach(r=>r.object3d.visible=false);
   leaf('loading-title','시험을 중단했습니다');leaf('loading-detail',state.error);$('loading').hidden=false;
   leaf('status','원본 외형을 대체하지 않았습니다. 오류를 확인한 뒤 다시 열어 주세요.');
+}
+function frameFatalSnapshot(){return Object.freeze({failed:frameFatalHasCause,hasCause:frameFatalHasCause,phase:frameFatalPhase,actorId:frameFatalActorId,epoch:frameFatalEpoch,staleFailures:frameFatalStaleFailures,reportFailures:frameFatalReportFailures,heldKeyCount:keys.size,attackQueued:state.attackQueued,previewMode:state.previewMode,anchorPending:!!anchorJob,rebuildPending:effectRebuildPending,rebuildOwnerActive:!!effectRebuildOwner,updateOwnerActive:!!effectUpdateOwner});}
+function stopEssentialFailure(cause,phase,id,epoch,isCurrent){
+  if(!isCurrent()){
+    frameFatalStaleFailures=Math.min(Number.MAX_SAFE_INTEGER,frameFatalStaleFailures+1);return false;
+  }
+  // Retain even undefined/null without touching any property of the thrown value.
+  if(!frameFatalHasCause){frameFatalHasCause=true;frameFatalCause=cause;frameFatalPhase=phase;frameFatalActorId=id;frameFatalEpoch=epoch;}
+  const raf=state.raf;
+  state.ready=false;state.error=FRAME_FATAL_ERROR;state.raf=0;state.lastTime=null;
+  keys.clear();state.attackQueued=false;state.previewMode=null;anchorJob=null;
+  effectRebuildRequest=null;effectRebuildPending=false;effectRebuildOwner=null;effectUpdateOwner=null;
+  invalidatePreview('frame-fatal');
+  // Resource teardown remains with dispose/pagehide. Reporting happens only after closure.
+  const reportingCurrent=()=>!state.disposed&&lifecycleEpoch===epoch&&state.error===FRAME_FATAL_ERROR;
+  const report=operation=>{if(!reportingCurrent())return;try{operation();}catch{frameFatalReportFailures=Math.min(Number.MAX_SAFE_INTEGER,frameFatalReportFailures+1);}};
+  if(raf)report(()=>cancelAnimationFrame(raf));
+  for(const control of controls)report(()=>{control.disabled=true;});
+  report(()=>leaf('loading-title','시험을 중단했습니다'));
+  report(()=>leaf('loading-detail',FRAME_FATAL_ERROR));
+  report(()=>{const loading=$('loading');if(loading)loading.hidden=false;});
+  report(()=>leaf('status','화면 표시 오류로 중단했습니다. 페이지를 다시 열어 주세요.'));
+  return false;
+}
+function readRigSnapshot(id,rig,owner=null){
+  const epoch=lifecycleEpoch;
+  const current=()=>effectFrameUsable(epoch)&&state.selected===id&&rigs[id]===rig&&(!owner||effectUpdateOwner===owner);
+  if(!current())return {ok:false};
+  let value;
+  try{value=rig.snapshot();}
+  catch(cause){stopEssentialFailure(cause,'rig-snapshot',id,epoch,current);return {ok:false};}
+  return current()?{ok:true,value}:{ok:false};
 }
 function resize(){
   if(!renderer || state.error)return;
@@ -103,10 +138,11 @@ function playSpecial(){
   specialMotion.setMotion($('special-motion').value,state.direction);applyState();
 }
 function select(id){
-  if(!rigs[id])return;
+  if(!state.ready||state.error||state.disposed||state.contextLost||!rigs[id])return;
   if(id!==state.selected){invalidatePreview('character-switch');closeDialogue('character-switch');clearIntent();interactionCue?.onActorChange('character-switch');effects[state.selected]?.onActorChange('character-switch');}
   state.selected=id;Object.entries(rigs).forEach(([key,rig])=>{rig.object3d.visible=key===id;helpers[key].visible=key===id&&$('bones').checked;});
-  leaf('actor-name',rigs[id].snapshot().name);applyState();
+  const read=readRigSnapshot(id,rigs[id]);if(!read.ok)return;
+  leaf('actor-name',read.value.name);applyState();
 }
 function reset(){invalidatePreview('reset');closeDialogue('reset');interactionCue?.onSceneChange('reset');clearIntent();poses[state.selected]?.reset();effects[state.selected]?.onActorChange('reset');state.x=5480;state.y=3740;if(!terrain.canWalk(state.x,state.y,12))throw new Error('대표 화면 시작 발 위치가 막혀 있습니다');state.direction=0;state.blocked=0;setMode('idle');placeWolf();applyState();}
 function closeDialogue(reason){const wasOpen=dialogue?.snapshot().isOpen;dialogue?.close(reason);if(wasOpen){keys.clear();state.attackQueued=false;state.previewMode=null;poses[state.selected]?.release('dialogue-close');}dialogueSignature='';updateDialogue();}
@@ -198,9 +234,10 @@ function updateWolf(dt){
 function applyState(){if(state.ready){pose(0);render();updateUi();}}
 function updateUi(){
   if(!state.ready)return;
+  const read=readRigSnapshot(state.selected,rigs[state.selected]);if(!read.ok)return;
+  const s=read.value;
   const sharpness=terrain.snapshot().groundDetail.plateSharpness;
   leaf('plate-sharpness-status',sharpness.effectiveStrength>0?`RGB 확대 비교 ${sharpness.effectiveStrength} · 시각 검수 전`:sharpness.requestedStrength>0&&sharpness.reason!=='disabled-ground-detail'?`원화 유지 · ${sharpness.reason}`:'원화 유지 · OFF');
-  const s=rigs[state.selected].snapshot();
   const special=specialMotion.snapshot();
   for(const id of Object.keys(labels))$(id).setAttribute('aria-pressed',String(id===state.mode));
   leaf('metric-mode',`${special.active?specialLabels[special.id]:labels[state.mode]} · ${dirs[state.direction]}${state.paused?' · 정지':''}`);
@@ -267,7 +304,14 @@ function pose(dt){
   camera.position.set(target.x,Math.sin(angle)*16,target.z+Math.cos(angle)*16);camera.lookAt(target);
   updateWolf(dt);
 }
-function render(){if(state.disposed||state.error||state.contextLost)return;renderer.render(scene,camera);state.frames++;}
+function render(){
+  const epoch=lifecycleEpoch,renderOwner=renderer,sceneOwner=scene,cameraOwner=camera;
+  const current=()=>effectFrameUsable(epoch)&&renderer===renderOwner&&scene===sceneOwner&&camera===cameraOwner;
+  if(!current())return false;
+  try{renderOwner.render(sceneOwner,cameraOwner);}
+  catch(cause){return stopEssentialFailure(cause,'render',null,epoch,current);}
+  if(!current())return false;state.frames++;return true;
+}
 function frame(time){
   state.raf=0;const epoch=lifecycleEpoch;if(!effectFrameUsable(epoch))return;
   flushEffectRebuild();if(!state.ready||state.disposed||state.error||state.contextLost)return;
@@ -276,7 +320,7 @@ function frame(time){
   if(!effectFrameUsable(epoch))return;
   render();if(!effectFrameUsable(epoch))return;if(!state.paused)sampleAnchor();
   if(!effectFrameUsable(epoch))return;
-  if(time-state.lastUi>180){updateUi();state.lastUi=time;}
+  if(time-state.lastUi>180){updateUi();if(!effectFrameUsable(epoch))return;state.lastUi=time;}
   if(effectFrameUsable(epoch)&&!state.raf&&!document.hidden)state.raf=requestAnimationFrame(frame);
 }
 function resume(){if(state.ready&&!state.raf&&!state.disposed&&!document.hidden){state.lastTime=null;state.raf=requestAnimationFrame(frame);}}
@@ -290,7 +334,8 @@ function updateActorEffects(dt,rig){
   const current=()=>effectUpdateOwner===job&&effectFrameUsable(epoch);
   try{
     // A rig failure is not a decorative-effect failure.
-    const snapshot=rig.snapshot();
+    const read=readRigSnapshot(id,rig,job);if(!read.ok)return false;
+    const snapshot=read.value;
     if(!current()||state.selected!==id||effects[id]!==effect)return false;
     job.phase='updating';
     try{effect.update(dt,state.x,state.y,snapshot);}
@@ -402,7 +447,7 @@ function dispose(){
 window.__rift25Lifecycle=Object.freeze({snapshot:()=>Object.freeze({
   ready:state.ready,disposed:state.disposed,frames:state.frames,raf:!!state.raf,
   epoch:lifecycleEpoch,cleanupFailures,rendererCreated:!!renderer,
-  disposeAttemptCounts:Object.freeze({...disposeAttemptCounts}),lateResourceRejected,effectRebuild:effectRebuildSnapshot(),effectUpdate:effectUpdateSnapshot()
+  disposeAttemptCounts:Object.freeze({...disposeAttemptCounts}),lateResourceRejected,effectRebuild:effectRebuildSnapshot(),effectUpdate:effectUpdateSnapshot(),frameFatal:frameFatalSnapshot()
 })});
 // Register before the first top-level await, including terrain loading.
 window.addEventListener('pagehide',dispose,{once:true});
