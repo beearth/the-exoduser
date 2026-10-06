@@ -231,3 +231,59 @@ raw fade는 시작15%/마지막30%. ground 위치는 캐시된 nav anchor로 고
 core29/29, adapter10/10, 실제 animated browser9그룹, 정적 틈18/18, 기존 editor UI15그룹 PASS. 8카메라 PNG를 root가 실제 열어 확인했고 장식으로 보행 경계가 가려지는 문제는 관측되지 않았다. 큰 갈색 진입면, 확대 원화의 grain·인물 크기·독립 NPC/전경 부족은 남았다. world/source/nav1192와 기존 입력·export 유지, A급 완성은 **VISUAL RETOUCH**. 성능 전체 스트레스·실게임 FPS/native6단계·청취 인수0.
 
 외부 근거: `/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/ambience-integration-20261006/`의 `qa/browser-verification.json`·`static-qa/acceptance-report.json`·`editor-regression/ui-verification.json`·`qa/camera-0…7.png`. 초기 module404/잘못된 MIME 실패는 이력으로 보존하고 현재 PASS와 구분한다. sceneSHA `f5068d742ddd6da3e1c78fb7178317df228e936bab0edc6237dec40bfd0bb5ac` 불변. code6+관련 docs를 좁게 checkpoint, 정확 원격 SHA는 외부 receipt로 기록한다.
+
+
+## 10. 2026-10-06 — 지옥의 틈 망자 대화 시험
+
+공식 완료ID **ROOT-RIFT-DIALOGUE-PREVIEW-INTEGRATION-20261006**. `tools/map-scene-rift-dialogue.mjs`가 STORY 원문 `tools/team-followup-20261005/hell-rift/STORY/rift-dialogue.json`의 4인/22노드/37선택지를 소비한다. 원문25940B/SHA256 `be14b1416838ab345eb1c2a150b92403566ccfdc43cd3f3b317cf2913840dfdc`/endID `STORY-CH1A-RIFT-DIALOGUE-CANDIDATE-20261006` 불변. 이전 대화consumer0 기록은 그 시점의 이력이다. 현재 구현은 **에디터 세션 내 대사·선택지 미리보기**이며 실제 아이템 지급·퀘스트 등록/완료·장 gate·게임 저장·본편 채택은 미구현이다.
+
+### consumer·수명·상한
+
+| id/변수/API | 정확 코드 계약 | 적용/구현 상태 |
+|---|---|---|
+| `RIFT_DIALOGUE_LIMITS` | range140/maxRange240/approachStep20/radius12/maxTransitions64/maxRawChars128000/maxNodesPerNpc32/maxOptionsPerNode8/maxTextChars2400/maxCloseReasonChars96 | 거리는 world px, raw는 JSON 직렬화 문자 수, 전이는 한 대화의 노드 진입 수 |
+| raw 로드 | HTTP ok, `cache:no-store`/`redirect:error`, Content-Length·실제 body 각≤256000B | 실패하면 warning 후 대화만 비활성, 편집기 시작 유지. JSON 파일 변경0 |
+| raw validation | schemaVersion1/sceneId=`hell-rift-ch1-ch2`/roleSTORY/candidate=true/endID 고정; geometry grid200/tile40, NPC정확4/ID·role·stateKeys/actions 확인 | 입력 clone. id 1…96문자, `[a-zA-Z0-9_.:-]`; 일반 text/name/speaker≤160, option label≤320, node본문≤2400; entry1…8/default마지막; 허용 flag1개/참조노드 존재 |
+| `supportsRiftDialogueScene(scene)` | §9 supportsRiftAmbience와 승인 원화6crop 계약을 함께 검사 | 생성·nearest/open/choose/snapshot 때 재검증. 메타 pin 비교이며 매 프레임 파일 hash 계산0 |
+| 승인 crop/transform | west-0 `(0,0,641,961)`,west-1 `(0,959,641,961)`,east-0 `(1279,0,641,961)`,east-1 `(1279,959,641,961)`,centre-0 `(639,0,642,961)`,centre-1 `(639,959,642,961)` | source px. 객체 x/y/width/height는 해당 crop×25/6, 차이≤1e-6. 해당layer visible=true, rotation/pivotX/pivotY0, flipX=false, opacity1, mask없음. 원화를 이동/확대/회전/숨기면 고정 주민 시험 비활성 |
+| `createRiftDialogue(scene,raw,canWalk,anchors)` | exact4개의 `{npcId,x,y}` 외부 주입, x/y 유한수0…8000미만, 중복ID0, 4점 모두 radius12 보행 가능 | 무효면 null. 원문 raw.poi는 실행 위치로 쓰지 않음 |
+| `nearest(player,range=140)` | range 유한수>0, max240 clamp; player→anchor 직선 `ceil(distance/20)` 구간과 양끝 radius12 canWalk, 최소거리 NPC | `{npcId,name:{ko,en},x,y,distance}` 또는 null. 점프·벽 너머 대화0 |
+| `open(npcId,player,range=140)` | 같은 근접/보행 검사, actual player 참조 유지, entry when flag/default 선택 | 최초 노드 포함 max64. player/scene 접근 불일치 시 닫기; 보행 원위치 보존 |
+| `choose(optionId)` | 현재 view의 안정 option id만 처리; 잘못된 요청 null, 64진입 상한에서 추가 기록 전 차단 | 허용 action8: dialogue.close/next, gift.offer/accept/decline, quest.accept/decline/recall |
+| 보상·부탁 ledger | `gift:story.berin.keepsake`, `quest:story.nessa.findLin`별 Map 기록1회; `{kind,ref,npcId,name,label:{ko,en},scope:'editor-session-only',actualGrant:false}` | onSuccess는 시험 기록 성공 분기만. 실제 bagFull/등록실패 실행0, onFailure 노드/flag 제약은 구조 검증만 |
+| `trialFlags` | rift.haran.met,rift.berin.giftGiven,rift.nessa.questAccepted,rift.dorik.met의 boolean 객체 | gift/quest flag는 기록 존재+성공노드 진입 뒤에만 true. 거절/닫기/루프 실패가 실제 보상을 만들지 않음 |
+| `snapshot()` | supported/isOpen/view/trialFlags/trialRecords/lastAction/closeReason/transitions/scope | view=`npcId,nodeId,name,speaker,text,options,terminal,notice`; 선택0노드 terminal=true. detached 표시 자료, scene/raw 쓰기0 |
+| `close(reason='manual')` | trim한1…96문자 사유 유지, 무효는manual; 자동종료 inactive-scene/out-of-range/transition-limit | 닫아도 같은controller 시험ledger 유지. scene 객체 교체/import/Undo/nav brush 또는 reload에서 controller 재생성·시험기록 초기화 |
+
+### 주민 위치·표시·시험 플래그
+
+표시 foot은 원화 육안 추정(±6 source px)이며 물리 body/높이 계약이 아니다. logical anchor·접근점은 현행1192nav의 검수 좌표이고 원화 표시와 분리한다. 특히 도릭의 그림 발과 logical anchor 거리는 약195.40px이다. 보행 판정은 logical 좌표만 사용한다. 기존 CH1 마렌/에단/이실라 및 동료 NPC를 대체0, 새 주민 스프라이트0.
+
+| npcId/이름/role | logical anchor world px | 접근점 world px | source visual foot px → visualX/Y | labelHeight world px | flag / 노드·선택 수 |
+|---|---|---|---|---:|---|
+| rift-rest-haran / 하란 / arrival-guide | 4780,6460 | 4820,6500 | 1132,1552 ×25/6 → 4716.666…,6466.666… | 146 | rift.haran.met / 4·8 |
+| rift-gift-berin / 베린 / gift-giver | 6020,5580 | 5980,5620 | 1445,1335 ×25/6 → 6020.833…,5562.5 | 188 | rift.berin.giftGiven / 7·10 |
+| rift-request-nessa / 네사 / rescue-request | 6300,5020 | 6220,5020 | 1515,1198 ×25/6 → 6312.5,4991.666… | 175 | rift.nessa.questAccepted / 7·11 |
+| rift-prepare-dorik / 도릭 / departure-guide | 5220,2500 | 5180,2540 | 1206,603 ×25/6 → 5025,2512.5 | 71 | rift.dorik.met / 4·8 |
+
+기준 scene SHA `f5068d742ddd6da3e1c78fb7178317df228e936bab0edc6237dec40bfd0bb5ac`,nav SHA `a4508aa62f21c9b4380640307b36eef06656ebdf0c0245a2f78833d65dda0179`/walkable1192/radius12 BFS1185/원본4107 불변. 접근8점의 radius12/start연결과 접근점→anchor4px 간격은 별도 읽기 검수 PASS. 위 고정앵커는 본편 NPC collision 인수가 아니다.
+
+### UI·입력·표시 계약
+
+| id/기능 | 구현 계약 |
+|---|---|
+| `scene-talk` | 보행 시험 중 가까운 주민1명만 `<이름> · 이야기 듣기 [F]` 버튼과 canvas 이름표 표시. 버튼 클릭/F, 이동WASD/방향키320px/s 그대로. circle6screenpx·line1screenpx·name12screenpx; 이름 y=`visualY-labelHeight-8/zoom`, 실제접근표식은logical좌표 |
+| `scene-dialogue` | native showModal/closedialog, aria-labelledby=`scene-dialogue-name`; fixed inset0/margin:auto/height:fit-content로 viewport 중앙. width=min(560px,100vw−32px), maxheight=100dvh−48px/overflow:auto. 리프name/role/text/record만 textContent; options 전용목록만 replaceChildren |
+| input lifecycle | 열기/닫기/scene변경/nav편집/blur 때 held keys·space 해제. 대화 중 actor.tick(time,0,0)로 idle. 이동·씬 수정·Ctrl/Meta 저장/Undo 차단, Tab/ShiftTab은 enabled button 목록에서 순환. Enter/Space 기본선택 유지하되 repeat차단, ArrowUp/Down/PageUp/Down/Home/End는 스크롤 허용 |
+| 선택/닫기 | 숫자1…9는 현재 존재하는 해당 option 버튼만 선택(노드상한8), Esc/닫기 버튼은 대화만 종료·canvas focus 복귀. 이어서 Esc는 보행종료. 열린대화 pointer/wheel의 canvas편집0 |
+| 시험 표시 | `대화 시험 · 선택은 게임에 저장되지 않습니다.` 항상 표시. 기록 badge=`이번 시험의 기록 · 베린의 유품을 받는 선택 / 린을 찾는 부탁 수락` 중 현재 시험 선택만. 실제 지급·퀘스트 완료 문구로 처리0 |
+| UI 치수 | dialog padding26px/모바일≤600px 20px; border1/radius9; kicker11px, name24px, role12px, 본문17px/모바일16px·line1.85·margin24/20px. 선택gap9px/padding12×15px/minheight44px/16px·line1.5; 닫기min44px/16px; 이야기듣기font16px/padding11×20px/maxwidth100%−32px |
+| UI 부가 | prompt bottom64px/left50%/translateX−50%/z3; footer gap14px/marginTop22px/paddingTop18px/borderTop1px, small11px·line1.5; trialrecord12px·line1.6/leftborder2px/padding10px. ≤600px footercolumn; backdrop#0307069c, dialoggradient#202620→#111713/border#8e7b56 |
+| export/진단 | PNG render(overlays=false)는 이름표/대화/장식 제외; JSON와nav에는 대화state 추가0. `EXODUSER_SCENE_EDITOR.dialogue()`는 anchors/state 읽기 전용, open/choose/teleport 노출0 |
+| UI 검사 race | `tools/test-map-scene-ui.cjs` reload 대기를 `()=>window.EXODUSER_SCENE_EDITOR?.ready`로 변경 |
+
+대화 테스트15/15, 기존core29/29·안개10/10, 최종 원본UI15그룹 PASS. 별도 Chrome 실제 대화12그룹/4회 보행 PASS: 거리밖F 차단, 하란 분기/재방문, Tab 초점/이동·저장 잠금, 베린 거절/선물시험1회, 네사 거절/부탁·단서, 도릭 상승 안내, reload초기화/일반CH1 비활성, PNG동일·source/nav·저장 불변. pageerror/consoleerror/HTTP≥400 모두0. 390×844에서 대화창358×453.1875px, 위치16,195.40625px(중앙), 선택버튼50px/닫기44px, font16px/가로overflow0. source picture/node/text/geometry 불변.
+
+최초 UI검사 reload ReferenceError, 최초 대화의 Tab초점 실패, 중앙정렬 전 화면은 각각 외부 regression/qa/final-qa 이력으로 보존한다. 최종 accepted-qa와 final-ui의 PASS가 현재근거다. 에디터 일부 변화만으로 실게임/native6단계·실청취·A급인수는0. 원화 grain/주민과전사원근크기/clean plate·독립주민애니메이션/높이/실제지급·부탁·장진행/본편연결은 후속, **VISUAL VERDICT: RETOUCH**.
+
+외부 근거: `/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/dialogue-integration-20261006/`의 accepted-qa/browser-verification.json·주민별PNG/휴대폰PNG·resident-walk.webm, regression/final-ui/ui-verification.json, receipt.json, related-docs-search.before/after.txt. user의 “작업을해서 저녁까지 보고해”에 따라 오늘2026-10-06 KST19:00 결과보고를 설정했다. 기존4자동화는PAUSED 유지, 오늘만exoduser-2(이채팅 heartbeat)가1시간간격으로 승인 작업을 이어가며 변화없으면알림0/19시보고뒤PAUSED. 이메일·음성발송/기존1분루프 재개0.

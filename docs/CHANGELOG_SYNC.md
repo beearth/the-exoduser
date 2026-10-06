@@ -53953,3 +53953,12 @@ BALANCE1340 HP/MP 및1345 Shield 후보를 공식source59에서 실제 전체 �
 - 원자료8·source sceneSHA f5068d742ddd6da3e1c78fb7178317df228e936bab0edc6237dec40bfd0bb5ac/navSHA a4508aa62f21c9b4380640307b36eef06656ebdf0c0245a2f78833d65dda0179/1192칸·원본4107·본편/core/actor·보호2_3/Q-only·타인WIP/STATE/LOG·세이브/기존23 무변. 초기404/MIME실패와 currentPASS 근거 구분, 격리3387만 기존save경로 재시작.
 - 백업/검사/스크린샷/영수증: `/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/ambience-integration-20261006/`. 완료 소유 code6+관련docs10만 checkpoint/push하고 remote exactSHA 외부기록. 자동화/새팀/권한/설치/Windows/게임패키지/게시0.
 - 구현 상태: editor 보행·레이어 편집/저장·장식 연결 완료. NPC 분리/크기·대화/보상·장 gate·본편·native6단계/청취 미완료. **VISUAL VERDICT: RETOUCH**.
+
+
+## 2026-10-06 최신 — 틈 대화 consumer / 오늘19시 보고
+
+공식 완료ID **ROOT-RIFT-DIALOGUE-PREVIEW-INTEGRATION-20261006**. 이전 NPC/대화consumer0와 모든자동화PAUSED는 당시 이력이다. 현재 에디터에 하란·베린·네사·도릭의 F근접대화/선택/시험기록/재방문을 연결했다. 실제선물·퀘스트등록/완료·가방실패·장gate·본편·native6단계·청취/A급인수는0, **VISUAL RETOUCH**. source/raw/scene/nav1192·core/actor/game/index 불변; source STORY SHA be14b1416838ab345eb1c2a150b92403566ccfdc43cd3f3b317cf2913840dfdc. 대화15/실제Chrome12그룹·4보행/원본UI15/core29/안개10 PASS.
+
+오늘 사용자 “작업을해서 저녁까지 보고해”를 따라2026-10-06 KST19:00에 실제완료·미완료/화면·검수·Git을한번보고한다. 기존4자동화PAUSED유지, 오늘만exoduser-2가1시간간격으로승인작업을계속하고 변화없으면알림0/19시보고뒤PAUSED. 기존1분루프·아침email/음성발송·Windows재개0. Codex7/Claude8 유일오더·관리3/전문15=18/새팀·새세션0, 전문TASK중복0, production/docs/Git root소유 유지. 현재slot4의재사용worker/read-only검수를전체16팀가동으로보고하지않는다. liveSTATE/LOG/WIP·보호2_3/Q-only·어택티켓금지·세이브·기존23 보존. 이번완료code6+관련docs11만exactcheckpoint/remoteSHA영수증, 80부터완료소유보존/100전신규산출중단.
+
+코드 변경6: `editor.html`, `tools/map-scene-editor.js`, `tools/map-scene-editor.css`, `tools/map-scene-rift-dialogue.mjs`, `tools/test-map-scene-rift-dialogue.cjs`, `tools/test-map-scene-ui.cjs`. docs전체관련검색근거를외부before/after로보존하고 맵SSOT/결과/CH1/마스터/콘텐츠/팀정책/연속오더/인덱스/역사후보/사용가이드/이로그11개에 현재값동기화. 정확API/수치/노드·flag/UI/위치는MAP_SCENE_EDITOR_20261005.md §10, §23보고는HELL_RIFT_EDITOR_RESULT_20261006.md 최신. 원본bytes·CRLF보존append이며종전기록변형0. 최초reload/Tab/좌상단dialog실패와최종PASS분리. 외부영수증폴더dialogue-integration-20261006.

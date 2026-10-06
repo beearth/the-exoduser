@@ -291,3 +291,10 @@ root ENEMY 읽기 전용 검수8/8 PASS·원문 SHA 전후 동일. 실제 브라
 공식 완료ID **ROOT-RIFT-AMBIENCE-INTEGRATION-20261006**. §12/13의 미소비 ANIMVFX 원자료를 SHA 불변으로 보존하고, `tools/map-scene-rift-ambience.mjs`의 world/nav/mask adapter를 통해 독립 씬 에디터에만 연결했다. screen projection 이중 transform을 제거하고 ground22안을 nav centre로 고정·clip, 전사 주변 제외영역과 reduced-motion/checkbox·PNG 제외를 구현했다. `.mjs` MIME을 수정하여 실제 browser import/움직임/끄기 검수 완료. [정확 코드 계약·수치·검사](MAP_SCENE_EDITOR_20261005.md#9-2026-10-06--저장된-틈의-안개잔불-consumer), [§23 최신 제작 보고](HELL_RIFT_EDITOR_RESULT_20261006.md#2026-10-06-최신--안개잔불의-실제-에디터-연결)를 따른다.
 
 최초 Claude raw8/8는 `15f5e64b9221b7bfbf8d5ca41d5328fcc9afe4a0`에 보존 완료. 이번 code6은 root 소비자 구현이며 후보8의 생산 전체 채택이 아니다. ART 크기/clean plate, STORY 접근 불가4POI, SKILL/BOSS/QA/ENEMY의 실제 runtime 의미검수·소비자는 후속. 본편 game.html·scene/nav/core/actor/원자료8 변경0. 검사 core29/adapter10/static18, animated browser9그룹/UI15그룹 PASS·8카메라 root 시각확인. **VISUAL VERDICT: RETOUCH**; 실제6단계·청취/A급 인수0. 자동화 일시중지·유일오더·관리3/전문15=18·새팀/세션0 유지, Codex7 새 제작착수 미확인.
+
+
+## 15. ROOT 틈 대화 시험 완료 / 오늘 저녁 보고 — 2026-10-06 KST
+
+**ROOT-RIFT-DIALOGUE-PREVIEW-INTEGRATION-20261006**: STORY 원자료를보존한 helper와 실제editorUI로 네NPC 접근/선택/재방문을 연결했다. [정확contract·limits·logical/visual앵커·preview범위](MAP_SCENE_EDITOR_20261005.md#10-2026-10-06--지옥의-틈-망자-대화-시험), [MAP PRODUCTION REPORT](HELL_RIFT_EDITOR_RESULT_20261006.md#2026-10-06-최신--네-망자에게-실제-접근하는-대화-시험) 참조. 대화15·Chrome실제12그룹/4보행·원본UI15·core29·안개10 PASS, source/nav1192·PNG·실제저장 불변. 선물/퀘스트등록/가방실패/장gate/본편native6단계·청취/A급인수0. **VISUAL RETOUCH**.
+
+latest 사용자 “작업을해서 저녁까지 보고해”에 따라 오늘2026-10-06 KST19:00보고까지 승인제작을이어간다. 기존4자동화 PAUSED/전문팀추가0, 오늘만exoduser-2 1시간간격 heartbeat ACTIVE, 변화없는보고0/19시한번보고뒤PAUSED. 기존1분루프/아침메일·음성발송을재개하지않는다. 동시4슬롯 root+재사용worker/읽기검수로이번slice를완료했으며16팀동시가동으로계산0. code6+docs11 완료소유만 checkpoint, 80부터보존/100전새산출중단, liveSTATE/LOG·타인WIP·세이브·기존23무변.

@@ -195,3 +195,70 @@ NEXT PASS: 전체 전경·원화 인물 분리/크기 정합·런타임 대화·
 | NEXT PASS | 원화 인물 분리·캐릭터/NPC 크기/접지, 접근 가능한 NPC 위치와 실제 대화·보상/진행 consumer 연결, 같은후보 native6단계·청취 검수 |
 
 씬SHA `f5068d742ddd6da3e1c78fb7178317df228e936bab0edc6237dec40bfd0bb5ac`; navSHA `a4508aa62f21c9b4380640307b36eef06656ebdf0c0245a2f78833d65dda0179` / nav1192·radius12 BFS1185 불변. 격리3387에서 현재 결과를 열 수 있다. `/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/ambience-integration-20261006/qa/editor-walking.png`는 실제 편집기·전사 화면이다. 기존36.445초 보행영상은 이번 장식 연결 이전 결과로 구분한다.
+
+
+## 2026-10-06 최신 — 네 망자에게 실제 접근하는 대화 시험
+
+공식 완료ID **ROOT-RIFT-DIALOGUE-PREVIEW-INTEGRATION-20261006**. [씬 정본 §10](MAP_SCENE_EDITOR_20261005.md#10-2026-10-06--지옥의-틈-망자-대화-시험)에 정확 API·위치·수치·UI·시험기록을 동기화했다. source/raw/nav 불변이며 현재 실제 에디터 대화는 구현, 실제 선물/부탁 등록·저장·장전환·본편/native는 미완료다. 이전 “대화 미구현”은 당시 이력이다.
+
+================= MAP PRODUCTION REPORT =================
+
+STAGE: 지옥의 틈 · 잔류자의 계곡 / isolated editor dialogue preview v1
+
+MASTER
+- silhouette: 승인 비대칭 계곡·중앙 심연·상승 계단 유지.
+- regions: 현행200×200/T40/8000², source10객체/6층 유지.
+- main route: 남쪽4020,7740→동측그림바닥→북쪽4020,1740 유지.
+- side spaces: 하란/베린/네사/도릭 접근점4; 서측 새 보행면 추가0.
+
+OUTER MASS
+- LEFT/RIGHT/TOP/SOUTH/major holes: 기존 원화·큰 질량·심연 그대로. 본 작업 새 bitmap0/대체0.
+
+LARGE
+- source assets: painterly-v2/abyss-v3 원본 및 STORY25940B/22nodes/37options 불변.
+- composites: 승인 원화6crop을 위치/크기25/6·pivot/rotation0·flipfalse로만 주민활성.
+- overlap/repeated silhouette: 추가 주민 body0. 기존 CH1 NPC 재배정0; 원화 인물 반복/크기 후속.
+
+MEDIUM
+- connections: 접근8점 radius12/start연결 PASS, rawPOI4는 접근불가여서 소비0.
+- remaining holes: 실제 NPC body/collision·장간/스테이지간 본편 거점 연결 미인수.
+
+GROUND
+- shadow: 기존전사25×11 그림자 유지, 대화중 idle 전환.
+- contamination/structure integration: 기존갈색바닥·grain 그대로; 새clean plate0.
+
+PLAYABLE
+- main arenas: 에디터 시험이며 실제 전투arena 인수0.
+- travel space: 실제키입력으로4접근점 도달, scene/nav/PNG/저장 불변.
+- breathing space: F/버튼→대화·선택·Esc→같은위치로복귀; focus/held/보행잠금 검수.
+- threat space/combat readability: 안전대사 시뮬레이션; AI·공격수치·스폰 변경0.
+
+LANDMARK
+- primary: 중앙심연/북쪽상승계단 유지.
+- secondary: 네 망자의 안내·유품·구출부탁·상승대사 trial.
+- tertiary: 가까운NPC1명만 표시foot 이름·logical접근표식.
+
+CAMERA QA
+- START/EARLY/ARENA/SIDE L/SIDE R/LANDMARK/LATE/EXIT: 기존8camera 장식검수 유지; 이번4접근 실제보행 화면과 desktop1500×960/mobile390×844 대화 화면 확인.
+- 추가: viewport중앙 dialog, 모바일가로overflow0, 선택/닫기16px/44px이상. 원화주민과전사크기·확대재질은 RETOUCH.
+
+TECH QA
+- route/collision: 기존nav1192/radius12 BFS1185; 실제4보행12dialogue검사 PASS.
+- pageerror/404: pageerror0/consoleerror0/HTTP≥400 0.
+- seam: 원화/scene/crop/navigation 변경0; 새로운height/Z 인수0.
+- loading: STORY fetch256000B/JSON serialized128000chars 이하, 실패 시 시험만비활성.
+- performance: nearest4/직선20px검사·ctx추가transform0. 전게임FPS/대형씬스트레스 인수0.
+- regression: core29/안개10/대화15/원본UI15그룹 PASS. UI reload race·Tabescape·좌상단dialog를수정하고 실패이력보존.
+
+FILES
+- stage-owned: editor.html/map-scene-editor.js/css/map-scene-rift-dialogue.mjs/test-map-scene-rift-dialogue.cjs/test-map-scene-ui.cjs code6 + 관련docs11.
+- concurrent touched: 기존오더 STATE/LOG/WIP/backup normalize 그대로.
+- unrelated touched: 0. 원화/STORY/scene/core/actor/game.html/index.html·사용자세이브·보호2_3/Q-only/어택티켓금지·기존23 보존.
+
+GIT
+- staged/commit/push: 완료소유 code6+docs11만 좁게 checkpoint; 원격정확SHA는 외부receipt.
+- deploy: 게임패키지/게시/새서버0. isolated3387 headlesseditor만검수.
+
+VISUAL VERDICT: **RETOUCH** — 대화UI/입력/접근 시험 완료. 원화주민의 독립body/원근·게임높이·실제보상/진행·본편/native/청취는 미완료.
+
+NEXT PASS: 기존오더담당에게 다음 승인 통합 의존성을 전달하고, 네 주민의 독립화/사이즈와 실제 선물·구출부탁·장진행 bridge를 각각 검수한다. 오늘2026-10-06 KST19:00 완료·미완료·화면·기술검사·정확Git을한번보고. 현재전문15/관리3 구조와 타인WIP 유지.
