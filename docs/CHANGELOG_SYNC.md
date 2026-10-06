@@ -53988,3 +53988,20 @@ BALANCE1340 HP/MP 및1345 Shield 후보를 공식source59에서 실제 전체 �
 정확 API·수식·범위·UI·저장·검수 계약은 `docs/4.1맵디자인+설정/MAP_SCENE_EDITOR_20261005.md` §11, MAP PRODUCTION REPORT는 `HELL_RIFT_EDITOR_RESULT_20261006.md`의 발 기준 pass를 따른다. core33/33, 실제 포인터/휴대폰13그룹, 최종 기존 UI15그룹 PASS. PNG byte 동일·source/nav·사용자 세이브 불변. 코드4+관련 docs12만 checkpoint하고 원격 exact SHA는 외부 `pivot-integration-20261006/receipt.json`에 보존한다.
 
 **VISUAL VERDICT: RETOUCH**. 발 기준 편집 구현을 주민 크기 통일·clean plate·독립 NPC body·본편/native/청취·A급 맵 인수로 계산하지 않는다. 원본 그림·STORY·결과 씬은 불변이다. 기존 paused 자동화/아침메일 재개0. 오늘 19시 결과보고 조건은 유지한다.
+
+### 2026-10-06 — 현재 16제작 역할과 마지막 완료 후보2
+
+최신 사용자 직접 요청: “16팀 일을시키라고 목적을 정했잖아 어제”, “기획서도 만들고”. 기존 전문15+root통합1=제작 역할16, 관리3+전문15=전체18을 유지한다. 정본 `CH1_1_A_GRADE_PRODUCTION_20261005.md` §16에 1-1/틈/에디터 목적·역할별 실제 납품·소비자/화면 GATE를 구체화했다. 새 팀/채팅/실행세션0, 두 오더담당 유일 송신. 기존 완료 TASK를 다시 보내지 않는다.
+
+Claude8의 기존8 후보 라운드 중 앞선6은 019ba22d3315243a9f60a207672a222c64fef603로 원격 보존, 마지막 MAP/QA2는 아래 공식 end_turn과 bytes/SHA를 대조하여 후보 미채택 상태로 보존한다. 최초 MAP/QA WIP 관측은 이력이며 현재 공식 완료로 정정. QA의 이전22435B/4f51…도 당시 WIP 핀으로 최종 제출에 사용하지 않는다. JSON parse/MJS syntax만 검수했으며 실행·화면·본편 채택으로 계산0.
+
+| 역할 | 공식 완료ID | 정확 경로 | bytes | SHA256 | end UUID / time UTC |
+|---|---|---|---:|---|---|
+| MAP | `MAP-RIFT-DEPTH-LAYERS-CANDIDATE-20261006` | `tools/team-followup-20261006/hell-rift/MAP/rift-depth-layers.candidate.scene.json` | 91496 | `4f8bafea53fb32faea7945ca9dd6174792697a8380810d04a4f63db935c1679d` | `0f74145a-3b74-4770-83ce-d1d2e528966c` / 2026-10-06T02:29:07.410Z |
+| QA | `QA-CH1-RIFT-CANDIDATE-ACCEPTANCE-CHECKER-20261006` | `tools/team-followup-20261006/hell-rift/QA/rift-candidate-acceptance.candidate.mjs` | 24394 | `4ed578105be4925fb5dd8afccda82e47b5184bfe5e13f0b0570d084280b75f6f` | `1ac63ee2-f6fe-4d35-a0a1-14ce5175bb39` / 2026-10-06T02:31:02.015Z |
+
+Codex7 기존7의 이전 송신은 자동 승인 검토 “승인 필요 / 정책 never”로 실제 전달0·착수0. 최신 직접 사람 메시지 확인을 통한 정상 도구의 허용 범위 진단을 해당 오더담당에게만 인계했으며 재거절 시 우회/권한 변경 없이 중단한다. 성공 증거가 오기 전 전팀 가동 선언0. root 발 기준 도구는 code4+docs12 commit 616b22265de6713f5fead9c37bfbc86103fc7db7, 원격 exact SHA 확인; core33/실제pointer13/UI15 PASS, 전체맵 VISUAL RETOUCH.
+
+원화/STORY/scene/native/source/runtime/사용자세이브/기존23/보호2_3/Q전용/어택티켓 금지와 live 타인STATE/LOG·WIP는 무변. 실제 NUL/untracked 전체80부터 완료소유 즉시checkpoint/100전 새산출0. 외부 backup·pins·원격 SHA 영수증=`/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/raw2-and-production-plan-20261006/receipt.json`. 오늘19시 실제 결과보고 후오늘자동화 pause, 기존paused/메일 재개0.
+
+공식 통합기록 ID: `ROOT-CH1-RIFT-PRODUCTION-PLAN-RAW2-20261006`

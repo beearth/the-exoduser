@@ -324,3 +324,77 @@ latest 사용자 “작업을해서 저녁까지 보고해”에 따라 오늘20
 정확 API·수식·범위·UI·저장·검수 계약은 `docs/4.1맵디자인+설정/MAP_SCENE_EDITOR_20261005.md` §11, MAP PRODUCTION REPORT는 `HELL_RIFT_EDITOR_RESULT_20261006.md`의 발 기준 pass를 따른다. core33/33, 실제 포인터/휴대폰13그룹, 최종 기존 UI15그룹 PASS. PNG byte 동일·source/nav·사용자 세이브 불변. 코드4+관련 docs12만 checkpoint하고 원격 exact SHA는 외부 `pivot-integration-20261006/receipt.json`에 보존한다.
 
 **VISUAL VERDICT: RETOUCH**. 발 기준 편집 구현을 주민 크기 통일·clean plate·독립 NPC body·본편/native/청취·A급 맵 인수로 계산하지 않는다. 원본 그림·STORY·결과 씬은 불변이다. 기존 paused 자동화/아침메일 재개0. 오늘 19시 결과보고 조건은 유지한다.
+
+## 16. 현재 제작 기획서 — 1-1·지옥의 틈·맵 스튜디오
+
+이 절은 현재 제작 목적·납품 규격이다. 사용자 요청의 16은 전문15와 통합root1의 기존 제작 역할을 가리킨다. 관리3/전문15 구조를 늘리지 않는다. 아래 목표를 실제 후보 소유와 소비자 검수에 연결하며, 계획·raw 제출·fixture PASS·게임 인수를 따로 기록한다.
+
+### 플레이와 공간의 목적
+
+주인공은 지옥 최하층에서 위로 탈출한다. 1-1 썩은숲의 전투·획득이 장비/스킬의 다음 선택으로 이어지고, 보스 개방→사망·부활→재도전이 같은 후보에서 완결되어야 한다. 장과 스테이지 사이의 지옥의 틈은 기묘한 이공간에 멈춘 망자들이 머무는 장소다. 동일 천막을 반복하는 캠프나 평범한 마을 건물로 구성하지 않는다. 큰 비대칭 절벽/계곡·심연·위로 향한 길, 주민이 흩어진 머무름 자리, 플레이어를 감싸는 앞뒤 층으로 공간을 읽힌다.
+
+하란의 안내, 베린의 유품 선택, 네사의 린을 찾는 부탁, 도릭의 상승 준비가 다음 도전의 이유를 만든다. 주민은 괴물로 확정된 존재가 아니라 아직 변질 중이거나 다시 올라갈 준비를 하는 망자다. 오래 멈추면 썩는 설정은 서사이며 새 실시간 부패 타이머/경제 패널티/DLC 약속을 추가하지 않는다. 장1 이후 벌레굴로 이어지는 방향은 유지한다.
+
+### 납품 단위와 소비자 계약
+
+| 단위 | 제작 목표 | 현재 실제 구현 | 미완료 인수 |
+|---|---|---|---|
+| 1-1 | 8공간의 큰 질량/연결/접지/랜드마크를 기존 LOCK 안에서 다르게 구성 | 기존 geometry/bake/gate를 보존하는 후보 검수 | 최신 동일후보 실제 전투·획득·개방·보스사망/부활·재도전·청취 |
+| 틈 배경 | 승인 계곡 원화의 심연/바닥/절벽/전경 분리 | 승인 원화6crop+전경3+심연1, 마스크/시차·안개/잔불 editor consumer | 깨끗한 인물 없는 바닥, 독립주민/전체전경/높이 모델·본편 gate |
+| 주민 | 각 발이 실제 바닥에 있고 전사80world px와 의도된 원근비례 | 네 접근점 실제 키보행·대화22node/37option 시험·F/버튼/focus | 독립 body/alpha/발좌표 확정, 유품 실제지급·퀘스트/save 원자성·본편 소비자 |
+| 맵 스튜디오 | 이미지를 레이어로 놓고 크기·발·가림·길을 조절해 결과 저장 | PNG 등 이미지 가져오기, crop/크기/회전/flip/pivot, 새 발 찍기, 레이어잠금/정렬/시차, Undo/Redo·JSON/PNG·보행/경로검사 | Unity 패키지/PSD/FBX 자동 읽기와 3D 지형/height 편집은 미구현. 기존 보유 이미지의 가져오기부터 사용 |
+| Unity 에셋 활용 | 기존 자산 이미지/규격을 가져와 같은 월드 단위와 발 기준으로 정렬 | 일반 이미지 임포트와 source 원본 보존만 확인 | .unitypackage 자동 추출/메타 pivot·pixels-per-unit 해석/모델 변환을 별도 구현·검수해야 하며 현재 지원으로 선언0 |
+| 사운드 | 환경·접근·대화·선택·상승 cue의 전환/중복/stop 수명 | 기존 cue를 맡긴 담당의 후보/정본검수 | 실제 browser/native gesture/설정과 청취, pause/retry/장전환 lifecycle |
+
+### 기존 팀별 실제 작업 소유
+
+| 역할 / 송신담당 | 다음 실물 책임 | 납품·통합 경계 |
+|---|---|---|
+| MAP / Claude8 | 기존 후보의 절벽/심연/바닥/전경 transform·nav·4접근점과 source 핀 | rift-depth-layers.candidate.scene.json 공식 완료2로 보존. production 씬 직접 교체0, root 채택 후 실제8camera·보행 |
+| ART / Claude8 | 기존 인물 추출·원본 보존·clean plate·player80 기준 크기/foot/alpha | root 승인 imagegen의 원본수정없는 배경 후보에 대조. 이전 camera POI/280px body/근사8각마스크는 보류, 기존 raw 재송신0 |
+| ANIMVFX / Claude8 | 절벽 앞뒤 정렬·안개/잔불의 장전환/pause/retry lifecycle | 현행 render lifecycle 후보 완료. root editor consumer에 필요한 순수adapter만 채택, 투사체/전투 가독 확인 전 PASS0 |
+| STORY / Claude8 | 네 망자의 지속 action ID/반복방지/취소·재방문·상승 의미 | persistent-actions 후보 완료. dialogue 시험과 실제 inventory/quest/save 성공을 구분 |
+| SKILL / Claude8 | 대화/설정/blur/retry에서 held/aim 오염 없이 입력 복귀 | retry-input-reset 후보 완료. Q-only와 기존 자원·수치 불변 |
+| ENEMY / Claude8 | 1-1 authored 위협/동선 budget과 전투 가독 | authored-spawn-budget neutral 후보 완료. 실제 스폰/전투 적용 전 인수0, 동시공격 제한0 |
+| BOSS / Claude8 | kill-tail/revive/gate의 실제 한 후보 재도전 | revive-kill-tail 후보 완료. 자동 fixture만으로 보스전 완료0 |
+| QA / Claude8 | immutable pins·source와 consumer·8camera/보행/오디오 판정의 분리 | candidate-acceptance checker 공식 완료2로 보존. 원본 checker 실행은 root 단계, 자체 fixture를 인수로 계산0 |
+| UIUX / Codex7 | 크기/발/레이어 편집 동작과 모바일·대화/HUD 초점/가림 | 기존 미송신1파일 범위만 정상 도구가 허용하면 전달. 실제 해상도·배율/Undo/닫기·복귀 검사 |
+| QUESTNPC / Codex7 | 네 주민 접근점/대화 consumer와 본편 action bridge | 임의 접근 teleport/무료 gate0. 선물·부탁의 성공/취소/중복/재방문 계약 |
+| ITEM / Codex7 | 유품/전투획득의 실제 inventory 원자성/용량/중복·save | 기존 아이템 수치 보존, 실제 지급 성공 후 action 소비. 새 경제/아이템 제작0 |
+| SOUND / Codex7 | 기존 자산으로 환경/대화/선택·상승 cue와 중복 stop | 새 결제/음성 생성/발송0. 청취는 실제 증거 있어야 인수 |
+| BALANCE / Codex7 | 기존 전투/보상/gate 비용과 재도전의 연결 | 정본수치 병목표·의미검수, 난이도/경제 임의변경0 |
+| BUILD / Codex7 | scene/source asset path·decode·consumer pins·MIME/404 | 새 서버/대형 build/native 실행0, 누락·규격·로드 failure atomicity 후보 |
+| MARKETING / Codex7 | 8camera 반복실루엣/빈바닥/랜드마크·캐릭터 원근 증거 | 품질표/캡처 근거만, 외부 게시·A급 완성 선언0 |
+| ROOT / 원총괄 | 실제 editor consumer/원화 배경 분리·의미/화면검수·정본/Git | 완료 공식ID/pins→사전백업→최소코드→docs 전체검색·동기화→좁은commit/push/remote exactSHA |
+
+후속은 이미 진행된 TASK를 반복하지 않고 현재 완료파일의 소비자 의존성을 넘긴다. 새7파일까지 Codex7의 기존 미송신 예산만 열고, Claude8 새파일 예산0. 실제 변경80이 되면 새파일 배정/추가산출0, 완료소유를 먼저 보존한다. root는 후보 상세검수 전체가 끝나기 전에도 완료 raw를 미채택으로 보존하여 공간을 확보한다.
+
+### 품질·완료 GATE
+
+| 단계 | 통과 조건 | 실패/보류 조건 |
+|---|---|---|
+| 큰 형태 | 8camera에서 방향·지역·랜드마크가 읽히고 남/북·좌/우가 반복 천막/나무로 보이지 않음 | 작은 데코 양/flip만으로 다양성 완료 선언 |
+| 레이어·접지 | 각 source transform/alpha/foot와 ground/mask가 맞고 캐릭터 뒤·앞 순서가 자연스러움 | 그림 구멍/바닥이 전사 앞에 다시 그려짐, painterly/픽셀 크기 근거 없는 혼합 |
+| 에디터 실사용 | 수동 발 찍기/크기/aspect·rotate·flip/레이어/Undo·모바일/저장·PNG 왕복 | 원본/source/nav나 사용자 save 오염·locked 편집·실행중 동시편집 |
+| 주민 소비자 | 같은 맵에서 실제 걸어 접근하고 대화·취소·재방문, 성공한 실제 지급/quest만 지속 | editor-session-only trial을 실제보상·세이브 완료로 표기 |
+| 게임 인수 | 같은후보에서 시작→전투/획득→보스개방→보스사망/부활→재도전과 실제 화면/청취 | 후보/MJS syntax/fixture/실행파일/보고서만으로 완료 |
+| 보존·보고 | stage-owned code+관련docs·exact remoteSHA·실제 화면·실패도 보존 | broad stage/타인WIP 포함/근거없는 A급·음성·이메일 전송 |
+
+맵 §23의 MASTER/OUTER MASS/LARGE/MEDIUM/GROUND/PLAYABLE/LANDMARK/CAMERA/TECH/FILES/GIT/NEXT PASS 보고를 현재 결과별로 계속 적용한다. 현재 전체 **VISUAL VERDICT: RETOUCH**. 격리editor3387만 사용하므로 최신 본편/native/청취 GATE는 아직 미인수다. 오늘2026-10-06 한국시간19시에 실제 반영·화면/영상·검사·정확Git·남은 문제를 이 채팅으로 한 번 보고한다.
+
+### 2026-10-06 — 현재 16제작 역할과 마지막 완료 후보2
+
+최신 사용자 직접 요청: “16팀 일을시키라고 목적을 정했잖아 어제”, “기획서도 만들고”. 기존 전문15+root통합1=제작 역할16, 관리3+전문15=전체18을 유지한다. 정본 `CH1_1_A_GRADE_PRODUCTION_20261005.md` §16에 1-1/틈/에디터 목적·역할별 실제 납품·소비자/화면 GATE를 구체화했다. 새 팀/채팅/실행세션0, 두 오더담당 유일 송신. 기존 완료 TASK를 다시 보내지 않는다.
+
+Claude8의 기존8 후보 라운드 중 앞선6은 019ba22d3315243a9f60a207672a222c64fef603로 원격 보존, 마지막 MAP/QA2는 아래 공식 end_turn과 bytes/SHA를 대조하여 후보 미채택 상태로 보존한다. 최초 MAP/QA WIP 관측은 이력이며 현재 공식 완료로 정정. QA의 이전22435B/4f51…도 당시 WIP 핀으로 최종 제출에 사용하지 않는다. JSON parse/MJS syntax만 검수했으며 실행·화면·본편 채택으로 계산0.
+
+| 역할 | 공식 완료ID | 정확 경로 | bytes | SHA256 | end UUID / time UTC |
+|---|---|---|---:|---|---|
+| MAP | `MAP-RIFT-DEPTH-LAYERS-CANDIDATE-20261006` | `tools/team-followup-20261006/hell-rift/MAP/rift-depth-layers.candidate.scene.json` | 91496 | `4f8bafea53fb32faea7945ca9dd6174792697a8380810d04a4f63db935c1679d` | `0f74145a-3b74-4770-83ce-d1d2e528966c` / 2026-10-06T02:29:07.410Z |
+| QA | `QA-CH1-RIFT-CANDIDATE-ACCEPTANCE-CHECKER-20261006` | `tools/team-followup-20261006/hell-rift/QA/rift-candidate-acceptance.candidate.mjs` | 24394 | `4ed578105be4925fb5dd8afccda82e47b5184bfe5e13f0b0570d084280b75f6f` | `1ac63ee2-f6fe-4d35-a0a1-14ce5175bb39` / 2026-10-06T02:31:02.015Z |
+
+Codex7 기존7의 이전 송신은 자동 승인 검토 “승인 필요 / 정책 never”로 실제 전달0·착수0. 최신 직접 사람 메시지 확인을 통한 정상 도구의 허용 범위 진단을 해당 오더담당에게만 인계했으며 재거절 시 우회/권한 변경 없이 중단한다. 성공 증거가 오기 전 전팀 가동 선언0. root 발 기준 도구는 code4+docs12 commit 616b22265de6713f5fead9c37bfbc86103fc7db7, 원격 exact SHA 확인; core33/실제pointer13/UI15 PASS, 전체맵 VISUAL RETOUCH.
+
+원화/STORY/scene/native/source/runtime/사용자세이브/기존23/보호2_3/Q전용/어택티켓 금지와 live 타인STATE/LOG·WIP는 무변. 실제 NUL/untracked 전체80부터 완료소유 즉시checkpoint/100전 새산출0. 외부 backup·pins·원격 SHA 영수증=`/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/raw2-and-production-plan-20261006/receipt.json`. 오늘19시 실제 결과보고 후오늘자동화 pause, 기존paused/메일 재개0.
+
+공식 통합기록 ID: `ROOT-CH1-RIFT-PRODUCTION-PLAN-RAW2-20261006`
