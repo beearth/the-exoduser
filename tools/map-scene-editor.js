@@ -180,6 +180,7 @@
   }
   function refresh() {
     const p = current(), pair = selectedPair(), active = p.layers.find(l=>l.id===layerId)||p.layers[0]; layerId=active.id;
+    if(tool==='pivot' && (!pair || pair.l.locked || !pair.l.visible || playing)) tool='select';
     $('name').textContent=p.name; $('world-label').textContent='레이어 씬 · '+p.world.tileSize+'px / tile · '+p.world.cols+' × '+p.world.rows; $('undo').disabled=!history.undoStack.length; $('redo').disabled=!history.redoStack.length;
     $('layers').replaceChildren(); $('object-layer').replaceChildren();
     for (const l of [...p.layers].reverse()) {
@@ -193,10 +194,16 @@
     $('parallax').value=active.parallax; $('layer-sort').value=active.sort; $('layer-name').value=active.name;
     $('selection').textContent=pair?pair.o.name:(paletteId?'클릭해서 이미지 배치':'오브젝트를 선택하세요');
     for(const input of $('transform').querySelectorAll('input,select,button')) input.disabled=!pair||pair.l.locked;
+    $('pivot-pick').disabled=!pair||pair.l.locked||!pair.l.visible||playing;
+    $('pivot-pick').setAttribute('aria-pressed',String(tool==='pivot'));
+    $('pivot-pick').textContent=tool==='pivot'?'접지점을 클릭 · Esc 취소':'⊕ 발 기준 찍기';
+    $('pivot-hint').textContent=tool==='pivot'?'선택한 그림 안의 접지점을 클릭하세요. 그림과 길은 움직이지 않습니다.':'그림 위치를 유지하며 접지점을 바꿉니다.';
+    canvas.style.cursor=tool==='pivot'?'crosshair':'';
+    for(const b of document.querySelectorAll('[data-scene-tool]'))b.classList.toggle('active',b.dataset.sceneTool===tool);
     if(pair){const o=pair.o,a=p.assets.find(a=>a.id===o.assetId);for(const [id,key] of [['x','x'],['y','y'],['width','width'],['height','height'],['pivot-x','pivotX'],['pivot-y','pivotY'],['rotation','rotation'],['opacity','opacity']])$(id).value=Number(o[key].toFixed(3));$('feather').value=o.maskFeather??0;$('source-parallax').value=o.sourceParallax??1;$('feather').disabled=$('source-parallax').disabled=pair.l.locked||!o.mask;$('object-name').value=o.name;$('object-layer').value=pair.l.id;$('source-info').textContent='원본 '+a.width+' × '+a.height+' · 표시 영역 '+a.crop.w+' × '+a.crop.h+' · '+Math.round(o.height/p.world.tileSize*10)/10+' tile 높이';}
     else $('source-info').textContent='';
     const i=p.layers.indexOf(active);$('layer-up').disabled=i===p.layers.length-1;$('layer-down').disabled=i===0;
-    $('play').textContent=playing?'■ 보행 종료':'▶ 보행 시험';$('view-label').textContent=playing?'보행 시험 · WASD / 방향키 · F 대화 · ESC 종료':'SOUTH → NORTH · 이미지와 충돌을 별도로 편집';
+    $('play').textContent=playing?'■ 보행 종료':'▶ 보행 시험';$('view-label').textContent=playing?'보행 시험 · WASD / 방향키 · F 대화 · ESC 종료':tool==='pivot'?'발 기준 찍기 · 선택한 그림 안 클릭 · Esc 취소':'SOUTH → NORTH · 이미지와 충돌을 별도로 편집';
     $('cameras').replaceChildren();for(const c of p.cameras){const b=document.createElement('button');b.textContent=c.name;b.onclick=()=>{viewport={x:c.x,y:c.y,zoom:Math.min(size.w/1800,size.h/1100)};clampCamera();dirty=true;};$('cameras').append(b);} dirty=true;
   }
   function palette() {
@@ -247,6 +254,13 @@
   function brush(pos) {ambienceScene=null;dialogueScene=null;closeDialogue('nav-edited');const p=current(),t=p.world.tileSize,r=Math.max(0,Math.min(12,+$('brush').value||0)),cx=Math.floor(pos.x/t),cy=Math.floor(pos.y/t);for(let y=-r;y<=r;y++)for(let x=-r;x<=r;x++){const tx=cx+x,ty=cy+y;if(x*x+y*y<=r*r&&tx>=0&&ty>=0&&tx<p.world.cols&&ty<p.world.rows)p.walkable[ty*p.world.cols+tx]=tool==='walk'?1:0;}dirty=true;}
   function paintLine(from,to){const t=current().world.tileSize,steps=Math.max(1,Math.ceil(Math.hypot(to.x-from.x,to.y-from.y)/(t/2)));for(let i=0;i<=steps;i++)brush({x:from.x+(to.x-from.x)*i/steps,y:from.y+(to.y-from.y)*i/steps});}
   canvas.addEventListener('pointerdown',async e=>{if(busy||dialogueOpen)return;canvas.focus();const pos=world(e);if(space||e.button===1||e.button===2){drag={kind:'pan',sx:e.clientX,sy:e.clientY,vx:viewport.x,vy:viewport.y};canvas.setPointerCapture(e.pointerId);e.preventDefault();return;}if(playing)return;
+    if(tool==='pivot'){
+      const q=selectedPair();if(!q||q.l.locked||!q.l.visible){tool='select';refresh();return;}
+      const off=offset(q.l),point=K.local(q.o,pos.x-off.x,pos.y-off.y);
+      if(point.x<0||point.y<0||point.x>q.o.width||point.y>q.o.height){toast('선택한 그림 안의 접지점을 클릭하세요');return;}
+      mutate(()=>Object.assign(q.o,K.reanchor(q.o,point.x/q.o.width,point.y/q.o.height)),'그림 위치를 유지한 채 발 기준을 옮겼습니다');
+      tool='select';if(matchMedia('(max-width:760px)').matches)$('inspector').classList.remove('mobile-hidden');refresh();return;
+    }
     if(paletteId){const builtIn=LIBRARY.find(a=>a.id===paletteId), def=builtIn||current().assets.find(a=>a.id===paletteId), l=current().layers.find(l=>l.id===layerId);if(l.locked){toast('선택한 레이어의 잠금을 먼저 해제하세요');return;}setBusy(true);try{const a=current().assets.find(a=>a.id===paletteId)||await asset(def,true);const off=offset(l),o=object(a,snap(pos.x-off.x),snap(pos.y-off.y),builtIn?builtIn.width:400);history.change(p=>{if(!p.assets.some(x=>x.id===a.id))p.assets.push(a);p.layers.find(x=>x.id===layerId).objects.push(o);});selected=o.id;changed('이미지 배치됨 · 속성에서 크기와 발 기준점을 맞추세요');}catch(err){toast(err.message);}finally{setBusy(false);}return;}
     if(tool==='start'||tool==='exit'){mutate(p=>{p[tool]={x:Math.min(p.world.cols*p.world.tileSize-1,Math.max(0,snap(pos.x))),y:Math.min(p.world.rows*p.world.tileSize-1,Math.max(0,snap(pos.y)))};});return;}
     if(tool==='walk'||tool==='block'){history.begin();brush(pos);drag={kind:'brush',last:pos};canvas.setPointerCapture(e.pointerId);return;}
@@ -265,6 +279,7 @@
   for(const b of document.querySelectorAll('[data-scene-tool]'))b.onclick=()=>{closeDialogue('tool-changed');tool=b.dataset.sceneTool;paletteId=null;playing=false;keys.clear();for(const x of document.querySelectorAll('[data-scene-tool]'))x.classList.toggle('active',x===b);if(tool==='walk'||tool==='block')$('show-nav').checked=true;palette();refresh();};
   function property(id,key){const input=$(id);let ratio=1;input.addEventListener('focus',()=>{history.begin();const pair=selectedPair();if(pair)ratio=pair.o.height/pair.o.width;});input.addEventListener('input',()=>{const pair=selectedPair();if(!pair||pair.l.locked)return;if(key!=='name'&&(!input.value.trim()||!Number.isFinite(Number(input.value))))return;const v=key==='name'?input.value:Number(input.value);if((key==='width'||key==='height')&&v<=0)return;history.begin();const o=pair.o;o[key]=v;if($('aspect').checked&&key==='width')o.height=v*ratio;if($('aspect').checked&&key==='height')o.width=v/ratio;dirty=true;});input.addEventListener('change',()=>{try{K.validate(current());history.end();changed();}catch(e){if(history.pending){history.project=history.pending;history.pending=null;}toast(e.message);refresh();}});input.addEventListener('blur',()=>{if(history.pending){try{K.validate(current());history.end();changed();}catch(e){history.project=history.pending;history.pending=null;refresh();}}});}
   for(const [id,key] of [['object-name','name'],['x','x'],['y','y'],['width','width'],['height','height'],['pivot-x','pivotX'],['pivot-y','pivotY'],['rotation','rotation'],['opacity','opacity'],['feather','maskFeather'],['source-parallax','sourceParallax']])property(id,key);
+  $('pivot-pick').onclick=()=>{if(busy||playing||dialogueOpen)return;const q=selectedPair();if(!q||q.l.locked||!q.l.visible)return;endDrag();tool=tool==='pivot'?'select':'pivot';paletteId=null;keys.clear();space=false;if(tool==='pivot'&&matchMedia('(max-width:760px)').matches)$('inspector').classList.add('mobile-hidden');palette();refresh();canvas.focus();};
   $('layer-sort').onchange=()=>mutate(p=>{p.layers.find(l=>l.id===layerId).sort=$('layer-sort').value;});
   $('layer-name').onchange=()=>mutate(p=>{p.layers.find(l=>l.id===layerId).name=$('layer-name').value;});
   $('parallax').onchange=()=>mutate(p=>{p.layers.find(l=>l.id===layerId).parallax=Number($('parallax').value);});
@@ -295,7 +310,7 @@
       else if(e.ctrlKey||e.metaKey||e.altKey||!['tab','enter',' ','arrowup','arrowdown','pageup','pagedown','home','end'].includes(key)||(e.repeat&&['enter',' '].includes(key)))e.preventDefault();
       return;
     }
-    if(['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;const key=e.key.toLowerCase();if((e.ctrlKey||e.metaKey)&&key==='s'){e.preventDefault();$('save').click();return;}if((e.ctrlKey||e.metaKey)&&(key==='z'||key==='y')){e.preventDefault();(key==='y'||e.shiftKey?$('redo'):$('undo')).click();return;}if(key===' '){space=true;e.preventDefault();}if(playing){if(key==='f'&&!e.repeat&&!e.ctrlKey&&!e.metaKey&&!e.altKey){e.preventDefault();talk();return;}if(['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright'].includes(key)){keys.add(key);e.preventDefault();}if(key==='escape')$('play').click();return;}if(key==='escape'){paletteId=null;selected=null;palette();refresh();}if(key==='delete'||key==='backspace'){e.preventDefault();$('delete').click();}if(key==='v')document.querySelector('[data-scene-tool="select"]').click();if(key==='b')document.querySelector('[data-scene-tool="walk"]').click();if(key==='e')document.querySelector('[data-scene-tool="block"]').click();});
+    if(['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;const key=e.key.toLowerCase();if((e.ctrlKey||e.metaKey)&&key==='s'){e.preventDefault();$('save').click();return;}if((e.ctrlKey||e.metaKey)&&(key==='z'||key==='y')){e.preventDefault();(key==='y'||e.shiftKey?$('redo'):$('undo')).click();return;}if(key===' '){space=true;e.preventDefault();}if(playing){if(key==='f'&&!e.repeat&&!e.ctrlKey&&!e.metaKey&&!e.altKey){e.preventDefault();talk();return;}if(['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright'].includes(key)){keys.add(key);e.preventDefault();}if(key==='escape')$('play').click();return;}if(key==='escape'){if(tool==='pivot'){tool='select';if(matchMedia('(max-width:760px)').matches)$('inspector').classList.remove('mobile-hidden');refresh();return;}paletteId=null;selected=null;palette();refresh();}if(key==='delete'||key==='backspace'){e.preventDefault();$('delete').click();}if(key==='v')document.querySelector('[data-scene-tool="select"]').click();if(key==='b')document.querySelector('[data-scene-tool="walk"]').click();if(key==='e')document.querySelector('[data-scene-tool="block"]').click();});
   window.addEventListener('keyup',e=>{keys.delete(e.key.toLowerCase());if(e.key===' ')space=false;});window.addEventListener('blur',()=>{closeDialogue('focus-lost');keys.clear();space=false;endDrag();});
   try{try{const module=await import('./map-scene-rift-dialogue.mjs');
       const response=await fetch('tools/team-followup-20261005/hell-rift/STORY/rift-dialogue.json',{cache:'no-store',redirect:'error'});

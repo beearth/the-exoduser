@@ -126,6 +126,23 @@
     const dx = (width-o.width)*o.pivotX*sign, dy = (height-o.height)*o.pivotY;
     return { width, height, x:o.x+dx*Math.cos(a)-dy*Math.sin(a), y:o.y+dx*Math.sin(a)+dy*Math.cos(a) };
   }
+  // Move the anchor to another bitmap-local point while preserving every rendered point.
+  // The caller applies this detached result in one History transaction; the asset is unchanged.
+  function reanchor(o, pivotX, pivotY) {
+    if (!o || typeof o !== 'object' || Array.isArray(o)) throw new Error('기준점 오브젝트 오류');
+    number(pivotX, 0, 1, '새 기준점 x'); number(pivotY, 0, 1, '새 기준점 y');
+    number(o.x, -40000, 40000, 'x'); number(o.y, -40000, 40000, 'y');
+    number(o.width, 1, 32000, '월드 너비'); number(o.height, 1, 32000, '월드 높이');
+    number(o.pivotX, 0, 1, '기준점 x'); number(o.pivotY, 0, 1, '기준점 y');
+    number(o.rotation, -360, 360, '회전');
+    if (typeof o.flipX !== 'boolean') throw new Error('반전 설정 오류');
+    const angle = o.rotation * Math.PI / 180, sign = o.flipX ? -1 : 1;
+    const dx = (pivotX - o.pivotX) * o.width * sign, dy = (pivotY - o.pivotY) * o.height;
+    const x = o.x + dx * Math.cos(angle) - dy * Math.sin(angle);
+    const y = o.y + dx * Math.sin(angle) + dy * Math.cos(angle);
+    number(x, -40000, 40000, '새 기준점 위치 x'); number(y, -40000, 40000, '새 기준점 위치 y');
+    return { x, y, pivotX, pivotY };
+  }
   function route(p) {
     const w = p.world, t = w.tileSize, sx = Math.floor(p.start.x / t), sy = Math.floor(p.start.y / t), ex = Math.floor(p.exit.x / t), ey = Math.floor(p.exit.y / t);
     if (!canWalk(p, p.start.x, p.start.y) || !canWalk(p, p.exit.x, p.exit.y)) return { pass: false, visited: 0, reason: '시작점 또는 출구가 막혀 있습니다' };
@@ -158,7 +175,7 @@
     undo() { this.end(); if (!this.undoStack.length) return false; this.redoStack.push(clone(this.project)); this.project = this.undoStack.pop(); return true; }
     redo() { this.end(); if (!this.redoStack.length) return false; this.undoStack.push(clone(this.project)); this.project = this.redoStack.pop(); return true; }
   }
-  const api = { clone, validate, projectSource, decode, encode, local, hit, canWalk, resize, route, History };
+  const api = { clone, validate, projectSource, decode, encode, local, hit, canWalk, resize, reanchor, route, History };
   root.MapSceneCore = api;
   if (typeof module !== 'undefined') module.exports = api;
 })(typeof globalThis !== 'undefined' ? globalThis : window);

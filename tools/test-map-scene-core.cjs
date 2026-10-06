@@ -227,6 +227,83 @@ test('resize bounds prevent negative or oversized objects, including aspect-lock
   assert.deepEqual(plain(aspect), { width: 32000, height: 16000, x: 0, y: 0 });
 });
 
+function worldPoint(o, u, v) {
+  const theta = o.rotation * Math.PI / 180;
+  const lx = (u - o.pivotX) * o.width * (o.flipX ? -1 : 1), ly = (v - o.pivotY) * o.height;
+  return { x: o.x + lx * Math.cos(theta) - ly * Math.sin(theta), y: o.y + lx * Math.sin(theta) + ly * Math.cos(theta) };
+}
+function samePoint(actual, expected, message) {
+  assert.ok(Math.abs(actual.x - expected.x) < 1e-9 && Math.abs(actual.y - expected.y) < 1e-9, message);
+}
+
+test('reanchor preserves all bitmap corners, source foot and mask vertices after arbitrary rotation and flip', () => {
+  for (const rotation of [0, 90, -137]) for (const flipX of [false, true]) {
+    const mask = Object.freeze([[0, 0], [1, .2], [.7, 1], [.12, .45]].map(Object.freeze));
+    const o = Object.freeze({ x: 1200.25, y: -60.5, width: 137.25, height: 91.75, pivotX: .3, pivotY: .65, rotation, flipX, mask });
+    const before = JSON.stringify(o), points = [[0, 0], [1, 0], [0, 1], [1, 1], [.5, 1], ...mask];
+    for (const [px, py] of [[.12, .88], [0, 0], [1, 1], [.5, 1]]) {
+      const result = K.reanchor(o, px, py), after = { ...o, ...plain(result) };
+      assert.deepEqual(Object.keys(result).sort(), ['pivotX', 'pivotY', 'x', 'y']);
+      samePoint(result, worldPoint(o, px, py), 'new anchor is the old world location of the picked bitmap point');
+      for (const [u, v] of points) {
+        const expected = worldPoint(o, u, v);
+        samePoint(worldPoint(after, u, v), expected, 'reanchor must not move a source/mask point');
+        const inverse = K.local(after, expected.x, expected.y);
+        samePoint(inverse, { x: u * o.width, y: v * o.height }, 'existing local/hit transform still matches the unchanged world image');
+      }
+      assert.equal(JSON.stringify(o), before); assert.equal(after.mask, o.mask);
+    }
+    assert.deepEqual(plain(K.reanchor(o, o.pivotX, o.pivotY)), { x: o.x, y: o.y, pivotX: o.pivotX, pivotY: o.pivotY });
+  }
+});
+
+test('reanchor is one reversible schema-v1 edit and leaves navigation, clearance, route and assets intact', () => {
+  const p = scene(), o = object(p); o.rotation = -137; o.flipX = true; o.mask = [[0, 0], [1, .2], [.7, 1]];
+  const h = new K.History(p), before = plain(h.project), grid = h.project.walkable;
+  const navHash = crypto.createHash('sha256').update(Buffer.from(grid)).digest('hex'), route = plain(K.route(h.project));
+  const samples = [[20, 20], [5, 100], [221, 180], [380, 380]], clearance = samples.map(([x, y]) => K.canWalk(h.project, x, y));
+  const geometry = [h.project.world, h.project.assets, h.project.start, h.project.exit, h.project.cameras].map(plain);
+  h.change(next => { const selected = object(next); Object.assign(selected, K.reanchor(selected, .17, .43)); });
+  const after = plain(h.project), reloaded = K.validate(JSON.parse(JSON.stringify(h.project)));
+  assert.equal(h.undoStack.length, 1); assert.deepEqual(plain(reloaded), after); assert.equal(reloaded.version, 1);
+  assert.deepEqual(Object.keys(object(reloaded)).sort(), Object.keys(object(before)).sort());
+  assert.deepEqual([h.project.world, h.project.assets, h.project.start, h.project.exit, h.project.cameras].map(plain), geometry);
+  assert.equal(crypto.createHash('sha256').update(Buffer.from(h.project.walkable)).digest('hex'), navHash);
+  assert.deepEqual(samples.map(([x, y]) => K.canWalk(h.project, x, y)), clearance); assert.deepEqual(plain(K.route(h.project)), route);
+  assert.equal(h.undo(), true); assert.deepEqual(plain(h.project), before);
+  assert.equal(h.redo(), true); assert.deepEqual(plain(h.project), after);
+});
+
+test('reanchor rejects invalid normalized pivots or source transforms without mutating the object', () => {
+  const o = plain(object(scene())), before = plain(o);
+  for (const [x, y] of [[-.01, .5], [1.01, .5], [.5, -.01], [.5, 1.01], [NaN, .5], [.5, Infinity], ['.5', .5], [.5, null], [undefined, .5]]) {
+    assert.throws(() => K.reanchor(o, x, y)); assert.deepEqual(o, before);
+  }
+  for (const invalid of [null, [], { ...o, width: 0 }, { ...o, height: Infinity }, { ...o, x: 40001 }, { ...o, y: NaN }, { ...o, pivotX: -.1 }, { ...o, pivotY: 1.1 }, { ...o, rotation: 361 }, { ...o, flipX: 1 }]) {
+    assert.throws(() => K.reanchor(invalid, .5, 1));
+  }
+});
+
+test('out-of-bounds reanchor is rejected atomically without consuming undo or a redo branch', () => {
+  for (const fields of [
+    { x: 39950, y: 100, rotation: 0, flipX: false, to: [1, 1] },
+    { x: -39950, y: 100, rotation: 0, flipX: false, to: [0, 1] },
+    { x: 39950, y: 100, rotation: 90, flipX: false, to: [.5, 0] },
+    { x: 39950, y: 100, rotation: 0, flipX: true, to: [0, 1] },
+    { x: 100, y: 39950, rotation: 0, flipX: false, to: [.5, 1] }
+  ]) {
+    const p = scene(), o = object(p), { to, ...transform } = fields;
+    Object.assign(o, transform, { width: 200, height: 200, pivotY: fields.y === 39950 ? 0 : 1 });
+    const h = new K.History(p); h.change(next => { object(next).opacity = .4; }); h.undo();
+    const before = frame(h), origin = JSON.stringify(object(h.project));
+    assert.throws(() => K.reanchor(object(h.project), ...to)); assert.equal(JSON.stringify(object(h.project)), origin);
+    assert.throws(() => h.change(next => { const selected = object(next); Object.assign(selected, K.reanchor(selected, ...to)); }));
+    assert.equal(frame(h), before); assert.equal(h.redo(), true); assert.equal(object(h.project).opacity, .4);
+  }
+  const edge = { ...plain(object(scene())), x: 40000, y: -40000 };
+  assert.deepEqual(plain(K.reanchor(edge, edge.pivotX, edge.pivotY)), { x: 40000, y: -40000, pivotX: .5, pivotY: 1 });
+});
+
 test('a rotated and flipped silhouette mask rejects the transparent half of an image rectangle', () => {
   const o = { x: 1000, y: 2000, width: 200, height: 100, pivotX: .25, pivotY: .8, rotation: 90, flipX: true, mask: [[0, 0], [1, 0], [0, 1]] };
   assert.equal(K.hit(o, 1055, 2000), true);  // image-local (50,25)

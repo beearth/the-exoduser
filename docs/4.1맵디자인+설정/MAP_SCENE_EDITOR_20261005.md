@@ -287,3 +287,40 @@ core29/29, adapter10/10, 실제 animated browser9그룹, 정적 틈18/18, 기존
 최초 UI검사 reload ReferenceError, 최초 대화의 Tab초점 실패, 중앙정렬 전 화면은 각각 외부 regression/qa/final-qa 이력으로 보존한다. 최종 accepted-qa와 final-ui의 PASS가 현재근거다. 에디터 일부 변화만으로 실게임/native6단계·실청취·A급인수는0. 원화 grain/주민과전사원근크기/clean plate·독립주민애니메이션/높이/실제지급·부탁·장진행/본편연결은 후속, **VISUAL VERDICT: RETOUCH**.
 
 외부 근거: `/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/dialogue-integration-20261006/`의 accepted-qa/browser-verification.json·주민별PNG/휴대폰PNG·resident-walk.webm, regression/final-ui/ui-verification.json, receipt.json, related-docs-search.before/after.txt. user의 “작업을해서 저녁까지 보고해”에 따라 오늘2026-10-06 KST19:00 결과보고를 설정했다. 기존4자동화는PAUSED 유지, 오늘만exoduser-2(이채팅 heartbeat)가1시간간격으로 승인 작업을 이어가며 변화없으면알림0/19시보고뒤PAUSED. 이메일·음성발송/기존1분루프 재개0.
+
+## 11. 2026-10-06 — 그림을 움직이지 않는 발 기준 찍기
+
+공식 완료ID **ROOT-EDITOR-FOOT-PIVOT-INTEGRATION-20261006**. `editor.html` 이미지 씬의 선택 오브젝트에 접지점을 직접 찍는다. 자동 발 추정·NPC 크기 변환이 아니라 수동 편집 도구이며 원본 픽셀과 원화 좌표를 보존한다.
+
+| 항목 | 현행 계약 |
+|---|---|
+| API | `MapSceneCore.reanchor(o,pivotX,pivotY)` → 분리된 `{x,y,pivotX,pivotY}`. 입력 `o`를 수정하지 않으며 호출자가 한 History 거래에서 적용 |
+| 새/기존 pivot | 유한 number, `0…1` 양끝 포함. 오브젝트는 null/배열 제외. 자동 clamp 없음 |
+| 기존 좌표/결과 | `x,y`와 반환 `x,y` 각각 유한 `−40000…40000` world px. 범위 밖 결과는 throw하며 기존 scene/Undo/Redo 보존 |
+| 크기·회전·반전 | width/height 각각 유한 `1…32000` world px; rotation `−360…360` degree; flipX boolean 필수 |
+| 보정 수식 | `s=flipX?−1:1`, `a=rotation×π/180`, `dx=(newPX−oldPX)×width×s`, `dy=(newPY−oldPY)×height`; `newX=oldX+dx×cos(a)−dy×sin(a)`, `newY=oldY+dx×sin(a)+dy×cos(a)` |
+| 불변 | bitmap/source/crop/mask/opacity/width/height/rotation/flipX/layer/navigation/start/exit/assets 불변. FOOT의 y 정렬은 새 기준 y를 사용하므로 다른 객체와의 가림 순서는 의도적으로 바뀔 수 있음 |
+| 버튼 | `scene-pivot-pick`, width100%, min-height44px, margin-top8px, type=button, aria-pressed. 대기 `⊕ 발 기준 찍기`; 활성 `접지점을 클릭 · Esc 취소` |
+| 안내 | 리프 `scene-pivot-hint`: 대기 `그림 위치를 유지하며 접지점을 바꿉니다.` / 활성 `선택한 그림 안의 접지점을 클릭하세요. 그림과 길은 움직이지 않습니다.`. cursor=crosshair; view label `발 기준 찍기 · 선택한 그림 안 클릭 · Esc 취소` |
+| 진입 | 선택객체가 있고 레이어 visible/unlocked, 편집 중이며 busy/playing/dialogueOpen이면 진입0. drag 종료·paletteId 해제·held keys/space 해제·canvas focus. 같은 버튼은 select로 복귀 |
+| 포인터 좌표 | 현재 레이어 offset을 빼고 `K.local`로 회전/flip을 역변환한 crop 사각형 내 좌표를 width/height로 나눔. 그리드 snap·alpha body 자동검출0. 선택그림 밖 클릭은 toast만, scene/선택/찍기모드 그대로 |
+| 적용/취소 | 유효 클릭은 `K.reanchor`의 4필드만 `History.change` 안에 적용 후 select 복귀. toast=`그림 위치를 유지한 채 발 기준을 옮겼습니다`. Esc는 선택/scene 유지하며 찍기만 취소; 일반 선택 Esc의 기존 해제 동작 불변 |
+| 모바일 | media max-width760px에서 찍기 진입 시 inspector에 mobile-hidden, 유효 클릭 또는 Esc 후 제거. 390×844 실제 버튼202×44px·가로 overflow0. 지도 클릭 중 속성창이 클릭면을 가리지 않음 |
+| 차단/자동 종료 | 선택 소실/레이어 잠금 또는 숨김/보행 시작 때 select로 복귀하고 해당 버튼 disabled. 보행 중 편집0 |
+| 저장 | `format=exoduser-map-scene, version=1` 유지, 기존 4필드 직렬화, 새 필드0. tool 모드는 저장0. `exoduser:map-scene:v1` 이외 사용자/본편 저장 쓰기0. JSON round trip/Undo1회/Redo1회 검사 |
+| 기존 수동 입력 | pivot-x/pivot-y 숫자 편집은 기존 anchor 좌표 고정 동작 그대로. 새 찍기 도구에서만 bitmap 위치를 보정 |
+| 비용/한계 | 클릭 시 수식·History validation만 추가. 매 frame alpha 추출/새 bitmap/mask raster 생성0. 기존 alpha threshold·크기 예산 변경0. 전게임 FPS/대형씬 stress 인수0 |
+
+| 검수 | 실제 근거 |
+|---|---|
+| core33/33 | 기존29 + arbitrary pivot/회전0·90·−137/flip 양쪽의 world corner·foot·mask 보존, nav/route/v1 보존, 전체 Undo/Redo, 입력·결과 범위 거절의 4그룹 |
+| 실제 포인터13 | named Rift 활성/본편 실행0, 밖 클릭·Esc, 정방향/rotation70+flip anchor, Undo/Redo, JSON 왕복, 잠금/보행 차단, 모바일 버튼/실제 지도 클릭/패널 복원/모바일 Esc, immutable pins/save/errors |
+| 픽셀 보존 | upright 및 rotated-flipped 각각 변경 전후 PNG bytes 완전 동일; 각 world corner/foot 수치오차 <1e−8. 실제 Chromium 포인터의 요청 normalized 좌표 검사는 1e−6 허용 |
+| 검수 이력 | 최초 포인터 요청의 1e−9 기대값이 Chromium 좌표 오차 약 8e−8로 실패. 제품 그림 이동 실패가 아니며 첫 qa 이력 보존. 실제 geometry 기준1e−8/PNG byte 동일은 유지하고 accepted-qa 최종13 PASS |
+| 회귀15 | 최종 `tools/test-map-scene-ui.cjs` 기존 저장/alpha trim/aspect/resize/atomic import/보행/레이어/PNG2048/LOCK sketch/모바일 PASS. pageerror0·누락 resource0 |
+| 원본 핀 | scene f5068d742ddd6da3e1c78fb7178317df228e936bab0edc6237dec40bfd0bb5ac; painting a3d95a005924692626321cedf384d1e4e90282ba990d9e19e86a3aa73a1563d4; STORY be14b1416838ab345eb1c2a150b92403566ccfdc43cd3f3b317cf2913840dfdc 불변 |
+| 화면 판정 | desktop1500×960 회전/반전 anchor와 mobile390×844 버튼/복원 화면을 직접 열어 검수. 도구 동작은 확인했지만 전체 맵은 VISUAL RETOUCH; 새8camera/native/음성 인수0 |
+
+외부 근거: `/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/pivot-integration-20261006/`의 before/before-pivot-docs 백업, accepted-qa/browser-verification.json·upright/rotated 전후PNG·workspace/mobile 화면, final-regression/ui-verification.json, related-docs-search.before/after.txt 및 receipt.json. 코드4+관련docs12만 보존한다. 다른 팀 raw/STATE/LOG/WIP, 보호2_3, Q전용 패링, 어택티켓 금지, 사용자세이브·기존23은 유지한다.
+
+**VISUAL VERDICT: RETOUCH**. 새 발 기준 도구는 구현했다. baked 원화 주민의 146/188/175/71px와 전사80px의 원근/크기, clean plate/독립 주민, 실제 지급·부탁·장전환·본편/native/청취는 별도 후속이다. raw 후보6개는 별도 commit `019ba22d3315243a9f60a207672a222c64fef603`로 후보미채택 보존했으며 본 도구에 소비하지 않았다.

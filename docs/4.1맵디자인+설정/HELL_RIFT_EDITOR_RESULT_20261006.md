@@ -262,3 +262,62 @@ GIT
 VISUAL VERDICT: **RETOUCH** — 대화UI/입력/접근 시험 완료. 원화주민의 독립body/원근·게임높이·실제보상/진행·본편/native/청취는 미완료.
 
 NEXT PASS: 기존오더담당에게 다음 승인 통합 의존성을 전달하고, 네 주민의 독립화/사이즈와 실제 선물·구출부탁·장진행 bridge를 각각 검수한다. 오늘2026-10-06 KST19:00 완료·미완료·화면·기술검사·정확Git을한번보고. 현재전문15/관리3 구조와 타인WIP 유지.
+
+## 2026-10-06 최신 — 그림 위치를 유지하는 접지점 편집
+
+공식 완료ID **ROOT-EDITOR-FOOT-PIVOT-INTEGRATION-20261006**. 정확 API/수식/숫자/UI/저장 계약은 `MAP_SCENE_EDITOR_20261005.md` §11. source 그림과 결과 씬을 재제작하지 않고 이미지 씬 에디터에서 접지점만 편집한다.
+
+================= MAP PRODUCTION REPORT =================
+
+STAGE: 지옥의 틈 · 잔류자의 계곡 / isolated image-scene editor foot-anchor tool
+
+MASTER
+- silhouette/regions: 비대칭 계곡·중앙 균열/200×200/T40/8000²/6층10객체 유지.
+- main route: 남쪽4020,7740→동측→북쪽4020,1740, corridor1192/radius12/BFS1185 불변.
+- side spaces: 기존 네 망자 접근점과 editor dialogue trial 유지. 새 서측 보행면0.
+
+OUTER MASS
+- LEFT/RIGHT/TOP/SOUTH/major holes: 기존 원화 큰 질량과 심연 유지. 지형·좌표 변경0.
+
+LARGE
+- source assets/composites: 승인 원본2bitmap·6crop/전경3/심연1 유지. 실제 픽셀 편집0.
+- overlap/repeated silhouette: 새 scatter/캠프0. 새 발 기준은 정렬 anchor이며 FOOT y 앞뒤가림에 사용됨. 원화 주민 분리는 아직0.
+
+MEDIUM
+- connections: source/world25/6/crop/nav 불변.
+- remaining holes: clean plate·독립 NPC와 크기/원근·높이모델·본편 gate 미인수.
+
+GROUND
+- shadow: 기존 전사25×11·body80world px 유지.
+- contamination/structure integration: 기존 재질·grain 유지. 포인터 anchor만 바꾸어 그림/마스크 world 점 보존; 자동 feet/body 추정은0.
+
+PLAYABLE
+- main arenas/travel/breathing/threat/combat readability: editor-only 접지점 편집. 기존 보행/대화 consumer 유지. 적·전투·보스·실제 지급/세이브·장전환 변경0.
+
+LANDMARK
+- primary: 중앙심연/상승계단 유지.
+- secondary/tertiary: 네 망자/잔불 및 시험 대화 유지. 새 랜드마크0.
+
+CAMERA QA
+- START/EARLY/ARENA/SIDE L/SIDE R/LANDMARK/LATE/EXIT: 기존8camera 근거 유지, 이번 새8camera/native 인수 없음.
+- 이번 화면: 실제 desktop1500×960 정방향·회전/flip의 앞뒤 PNG 동일, mobile390×844 enabled44px 버튼/지도 클릭/패널 복귀. root가 최종 workspace와 mobile PNG를 열어 확인.
+
+TECH QA
+- route/collision: 기존 scene/nav 원본 핀과 JSON 그대로. 단위 검수에서 reanchor 전후 canWalk/route 불변.
+- pageerror/404/loading: 최종 pointer13 및 UI15에서 pageerror/HTTP≥400/누락0, 저장 exoduser:map-scene:v1만 사용.
+- seam: 전후 PNG byte 동일, crop/mask corner/foot 오차 <1e−8. 원화 접합에 새 seam 추가0.
+- performance: 클릭 때 수식/History validation만 추가; frame alpha read/raster 추가0. 대형스트레스/실게임 FPS 인수0.
+- regression: core33/33, 실제 pointer/mobile13그룹, 최종 기존 UI15그룹 PASS. 최초 과도한 pointer 좌표 허용오차의 실패 이력도 외부 보존.
+
+FILES
+- stage-owned: editor.html, tools/map-scene-editor.js, tools/map-scene-core.js, tools/test-map-scene-core.cjs의 코드4 + 관련docs12.
+- concurrent touched: raw6은 별도019ba22d commit의 후보미채택 보존. MAP/QA 공식 완료 미확인 WIP 및 live STATE/LOG는 본 commit 제외.
+- unrelated touched: 0. 원화/STORY/scene/actor/game.html/index.html·보호2_3/Q-only/어택티켓 금지·사용자세이브·기존23 유지.
+
+GIT
+- staged/commit/push: 완료소유 코드4+docs12만 정확경로 checkpoint, 사전백업·내용핀·원격 exactSHA는 외부 receipt.json.
+- deploy: 게시·게임패키지·Windows·새 서버·기존 paused 자동화/메일 재개0. 격리 editor3387만 사용.
+
+VISUAL VERDICT: **RETOUCH** — 접지점 편집은 구현/화면검수했다. NPC 원근 크기·clean plate/독립body·높이·실제보상/진행·본편/native/청취·A급완성은 미인수다.
+
+NEXT PASS: 각 실제 NPC의 foot/body scale과 독립 레이어 clean plate를 정확히 맞춘 후보를 검수하고 채택한다. 기존 player80world px와 scene identity/transform이 맞지 않는 후보는 소비 보류. 오늘19시 실제 화면·검증·Git·남은 문제를 한 번 보고한다.

@@ -53980,3 +53980,11 @@ BALANCE1340 HP/MP 및1345 Shield 후보를 공식source59에서 실제 전체 �
 6파일 node --check PASS는 구문 확인이며 실제 코드 소비자 채택·본편/native6단계·청취·A급완료를 의미하지 않는다. ART alpha/인물 extents는 추정·traceNeeded, clean plate fill=null/HELD_PENDING_IMAGEGEN_APPROVAL로 독립 픽셀 미완료. STORY 실제 ITEM/QUESTNPC port·지급+commit 원자성 미연결, BOSS 최종지급 의도/arming~resolve는 상세 검토 후 root만 적용한다. 자동 게임/app/save/build 접속0. code6+관련 docs3 정확 경로만 checkpoint하며 원격 exact SHA는 외부 receipt에 확인한다.
 
 근거: `/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/claude8-raw6-preservation-20261006/receipt.json`. 소비자 채택은 별도 완료ID로 기록한다.
+
+### 2026-10-06 — 맵 에디터 발 기준 찍기 현행
+
+공식 완료ID **ROOT-EDITOR-FOOT-PIVOT-INTEGRATION-20261006**. 공유 이미지 씬 에디터의 선택된 이미지에 `발 기준 찍기`와 `MapSceneCore.reanchor`를 구현했다. 그림의 화면 위치·source/crop/mask·길을 유지한 채 기존 v1의 `x/y/pivotX/pivotY`만 하나의 Undo/Redo 거래로 바꾼다. 회전·좌우반전도 보정하며 잠긴/숨긴 레이어와 보행 중에는 차단한다. 모바일≤760px에서 찍기 시작 시 속성창을 접고 성공 클릭 또는 Esc 후 복원한다. 기존 기준점 숫자 입력의 동작은 변경하지 않았다.
+
+정확 API·수식·범위·UI·저장·검수 계약은 `docs/4.1맵디자인+설정/MAP_SCENE_EDITOR_20261005.md` §11, MAP PRODUCTION REPORT는 `HELL_RIFT_EDITOR_RESULT_20261006.md`의 발 기준 pass를 따른다. core33/33, 실제 포인터/휴대폰13그룹, 최종 기존 UI15그룹 PASS. PNG byte 동일·source/nav·사용자 세이브 불변. 코드4+관련 docs12만 checkpoint하고 원격 exact SHA는 외부 `pivot-integration-20261006/receipt.json`에 보존한다.
+
+**VISUAL VERDICT: RETOUCH**. 발 기준 편집 구현을 주민 크기 통일·clean plate·독립 NPC body·본편/native/청취·A급 맵 인수로 계산하지 않는다. 원본 그림·STORY·결과 씬은 불변이다. 기존 paused 자동화/아침메일 재개0. 오늘 19시 결과보고 조건은 유지한다.
