@@ -553,3 +553,18 @@ MAP PRODUCTION REPORT (§23): MASTER→OUTER→MEDIUM→GROUND→PLAYABLE→LAND
 | 보존·운영 | 실제 NUL 90→74로 완료 code2+docs15 보존, foreign68 exact/index0. 신규 raw2는 이번 root 코드 커밋에 포함0, 소유 ownerSTATELOG4는 root쓰기0. 80부터 완료소유 즉시checkpoint/100전새산출중단, 24시간 의미있는 제작·신규검수·후속배정 지속, 계정공용 주간사용률 약15pp/day 목표/토큰태우기·동일TASK반복0·다른 PAUSED 자동화/아침메일 재개0 |
 
 MAP PRODUCTION REPORT (§23): 이번 단위는 문서 감사·정확 pins 기록만이며 geometry/원PNG/scene/nav/실제 consumer·검사·GUI 수정0. 실제 main source 연결의 신규 UI fixture PASS 및 전체맵 VISUAL VERDICT: RETOUCH 유지. V3는 raw/file·공식end·자체assertion을 실플레이나 채택으로 계산하지 않는다. 외부 animWolfV3DeniedOutcomeIncident20261007-root-observed.json과 raw67BrandFix20261007CompletedOwnedHandoff-root-observed.json에 정확 증거 보존; 자동 거절 목적 외 독립 root·기존 owner 작업은 계속한다.
+
+
+## 2026-10-07 raw69 ACTOR-EFFECT-OWNED-RELEASE 공식 완료: 후보 미채택 보존
+
+| 항목 | 정확 핀·인수 경계 |
+|---|---|
+| 완료 소유 | CH1-RIFT-ACTOR-EFFECT-OWNED-RELEASE-20261007-ANIMVFX-CANDIDATE, tools/team-followup-20261007/hell-rift/ANIMVFX/actor-effect-release-2_5d.candidate.mjs 6649B/SHA256 caaf02550bcdd0ecf7f6ae90db445153aebdd66a92cace41c81bbbed8137059c. raw69 번호는 별도 효과해제 후보이며 denied V3 raw68과 다른 승인 목적 |
+| 공식 end·firstsource | b4e272d8-7219-499d-b688-5d69f5f27910 @2026-10-06T20:15:23.328Z/end rawSHA3a09da72b1bdcdfa867ca2cf419696f624991a094465c29d58538e643be8a619. 송신/peer/Read/성공source/end 각1. first successful Bash toolu_019V1KuPVfT6WTW7nod1rs7W/result11a2496e-9c95-4c19-970e-caa4f73ba87c @20:09:26.464Z |
+| 보존 Gate | root 읽기 전용 exact bytes/fullSHA 및 경로·realparent·symlink/충돌 확인, 원 후보 수정0. 실제80부터 완료소유 공식end/exactpin을 상세전수검수 대기 없이 code1+docs6 정상 checkpoint/push로 미채택 보존; 원격 ACK는 외부 remote-preservation-receipt.json에서 확인 |
+| 검사·채택 | 팀 보고 신규14검사 PASS는 팀 이력이며 root 의미검수·actual consumer·native GUI·GPU memory·실효과 반환 인수0/PENDING. 기존 ANIM actor-effect-lifetime public producer/renderer와 원PNG·scene/nav·main code2 변경0. 파일존재·공식end·자체PASS를 소비자채택으로 승격0, productionAdopted=false |
+| 독립 다음 단위 | owner는 기존 ANIM idle를 확인하고 효과 재생성 중 예외·재진입의 별도 memory 조사 단위를 배정 중. 같은 raw69 TASK 재송신0·전문 root직접송신0·새팀/세션0. STORY 새 durable action mapping은 이전 입력이 큐에 남아 있어 새 중복송신 보류; prepared/handoff를 전문 실제 착수로 계산0. root NPC read-only 계획과 canonical 유품·부탁 매핑·async save ACK 과제는 유지 |
+| 거절 경계 | raw68 V3 denied-outcome hold는 여전히 untracked/미채택/원격raw ACKfalse/추가실행·검수·채택0. 동일outcome 다른경로 작성 충돌/거절경로피해UNKNOWN·탐색/수리/삭제0 유지. 이번 raw69 공식 후보 미채택보존이 그 거절 목적을 재시도하거나 검사·채택하는 경로가 되지 않음 |
+| 실제 main 상태 | 정상3387 root sourcehook·Continue 구현은 6de5e92e 코드 commit의 ece8 game/b93c runtime로 동결. 실제 source 제한2/20과 신규 DOM fixture3/15 및 child 수명6/21은 각기 별도. 기본demo1-1 허브/childP캐릭터/durable save/main-native6/청취/A급은 미인수, 전체맵RETOUCH 유지 |
+
+MAP PRODUCTION REPORT (§23): MASTER/OUTER/MEDIUM/GROUND/PLAYABLE/LANDMARK/DETAIL·원화/scene/nav/consumer 변경0; 이번 단계는 공식 raw69 소유완료 보존 및 문서 동기화만 수행. CAMERA 신규검수0, TECH exactpin·공식end·원문prefix backup·새append EOF LF1·정상code+docs 보존, 팀14PASS≠root/native 인수. VISUAL VERDICT: RETOUCH / raw69 실화면 NOT ASSESSED. 이후 root 의미검수와 기존owner의 새 memory 결과를 구분해 최소 생산 통합한다.
