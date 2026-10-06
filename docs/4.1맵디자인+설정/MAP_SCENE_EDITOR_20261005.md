@@ -15,6 +15,8 @@
 | 구조·수학 | `tools/map-scene-core.js` — validate/decode/encode/local/hit/canWalk/resize/route/History/serializedBytes/projectSource/unityPlacement/placementDefaults/capturePlacement |
 | Unity 메타 | `tools/map-scene-unity.js` — 제한된 단일 Sprite TextureImporter 필드 reader, parseMeta |
 | 편집·렌더 | `tools/map-scene-editor.js` — preset/asset/변형/레이어/보행/저장·복원·내보내기 |
+| 객체 목록·카메라 조회 | `tools/map-scene-object-list.mjs` — inspectLayerObjects/focusObjectFoot, 선택/보기만 제어 (§18) |
+| 객체 목록 검수 | `tools/test-map-scene-object-list.cjs` — 신규14/14·실제1회 PASS (§18) |
 | 시험 캐릭터 | `tools/map-scene-actor.js` — 기존8방향 전사 idle/walk, 이미지 씬 전용 |
 | 화면 | `tools/map-scene-editor.css` — 3열 데스크톱, 760px 이하 속성 패널 토글·상단 액션 가로 스크롤 |
 | 검수 | `tools/test-map-scene-core.cjs`, `tools/test-map-scene-ui.cjs`, `tools/test-hell-rift-scene.cjs`, `tools/test-map-scene-unity.cjs` |
@@ -84,7 +86,7 @@
 | 고정 soft mask | 최대8 entry, entry당 image+mask canvas2장/긴 축1024px. 알파 샘플 긴 축256px, smoothing. 최대16 canvas/정사각형RGBA 약64MiB, 기타 원본 이미지 별도. crop/size/polygon/feather stamp 캐시, import 때 clear |
 | 자동 카메라 | 8카메라 버튼·보행 시작/이동에 viewport half extent로 월드 경계 clamp. 원본 camera/start/exit·자유 편집 pan 유지 |
 | 레이어 편집 | 이름·정렬·시차·가시성·잠금·순서·추가, 객체 레이어 이동/복제/삭제. 복제 offset=(40,40), x/y 최대40000 clamp |
-| 시각 선택 | 역회전·반전·pivot를 적용한 객체 좌표, mask polygon 또는 원본 alpha로 투명 여백 선택 방지 |
+| 시각 선택 | 역회전·반전·pivot를 적용한 객체 좌표, mask polygon 또는 원본 alpha로 투명 여백 선택 방지. foot의 같은y도 렌더 역순으로 나중 객체부터 hit; 활성층 객체 목록의 직접선택 추가 (§18) |
 | 타일 맞춤 | 기본 ON, 현재 tileSize 배수에 좌표·모서리 크기 맞춤 |
 | 길 브러시 | 반경0~12 tiles, 기본2, 원형 칠하기/막기. 드래그 구간은 T/2 간격 보간 |
 | 선택/길/막기 | V/B/E. 시작/출구는 툴 버튼, 월드 범위 clamp |
@@ -601,3 +603,41 @@ core 의미검수=`tools/test-map-scene-placement-presets.cjs` 신규14/14·1회
 | 남은 GATE | VISUAL VERDICT: RETOUCH. 정적주민·확대원화흐림/높이·본편 실제grant/quest/save/상승·같은후보native6단계·실청취미인수. 규격도구PASS를맵A급·Unity전체호환·실플레이완료로계산0 |
 
 정확 계약은 `MAP_SCENE_EDITOR_20261005.md` §17, 가이드§23 제작보고는 `HELL_RIFT_EDITOR_RESULT_20261006.md` 같은완료ID. 외부백업·핀·의미/화면·Git근거=`/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/placement-presets-20261006/receipt.json`. 새팀/전문팀중복TASK/빌드·서버·게임/Windows0. 기존paused/아침메일재개0·오늘19시실제결과한번보고조건유지.
+
+## 18. 활성 레이어 객체 목록·발 위치 보기 — 2026-10-06
+
+목록은 현재 층의 **배치 인스턴스**를 보여 준다. 이미지 재료 팔레트나 레이어 이동 메뉴와 역할이 다르다. 승인 원화·독립 주민 등록과 무관하게 유효한 JSON v1 씬에서 사용할 수 있다.
+
+| id/API/필드 | 정확 현행 계약 |
+|---|---|
+| 파일 | `tools/map-scene-object-list.mjs` 읽기 전용 모듈. 시작 시 dynamic import; 실패하면 목록 오류 안내를 표시하며 기존 씬 시작 경로 유지. `tools/test-map-scene-object-list.cjs`는 신규14그룹 의미검사 |
+| inspectLayerObjects | `(scene,layerId,query='',page=0)` → `{layerId,layerName,locked,visible,total,matched,page,pages,rows}`. rows 각 `{objectId,assetId,name,x,y,width,height}` fresh 값; 원본 객체/레이어 배열 참조 반환·쓰기0 |
+| 조회 한계 | caller가 전체 scene.validate를 완료한 계약. module은 format=`exoduser-map-scene`/version1/층1…24·층 ID 중복 및 현재층 fields만 검증. 현재층 objects≤2000·객체 ID 중복 거절, id/name/assetId는 비어 있지 않은 문자열≤160, visible/locked boolean, sort flat/foot, parallax 유한0…1. x/y 유한−40000…40000, width/height 유한1…32000 |
+| 비용 | 현재 층 정렬/검색만. source image/assets/nav/dataURI 읽기0, 전체씬 clone·validate0, RAF에 목록 query0. refresh·검색·페이지·busy/대화 상태 전환 때만 실행 |
+| 검색·페이지 | query 문자열≤160, trim().toLowerCase()를 name/id/assetId의 소문자값에 includes. regex/DOM선택자 해석0. page 유한 정수0…1000000, `OBJECT_LIST_PAGE_SIZE=50`, pages=ceil(matched/50), 끝보다 큰 page는 pages−1. matched0은 page0/pages0/rows[] |
+| 순서 | flat: objects 배열 역순. foot: y 오름차순과 동률 원래 index 오름차순 정렬 후 역순. list는 화면의 앞쪽부터 표시한다. `selectAt`도 foot y 오름차순 안정정렬 후 reverse로 수정하여 동일y의 나중 객체를 먼저 검사한다. renderer·원본배열·alpha threshold8·mask hit 변경0 |
+| focusObjectFoot | `(scene,layerId,objectId)` exact 현재 객체 조회. world.cols/rows 정수10…300, tileSize 유한8…128. parallax p>0이면 `{x:(o.x−(1−p)×worldWidth/2)/p,y:(o.y−(1−p)×worldHeight/2)/p}` fresh camera 좌표; p0은null. unknown ID/잘못된 필드는 throw, 비유한 camera 거절 |
+| focus 한계 | module은 zoom/clamp 없이 발 anchor의 화면중심 해만 반환. root는 zoom=min(stageWidth/900,stageHeight/600)과 기존clampCamera 사용. 월드 가장자리의 clamp 때문에 화면중심이 아닐 수 있다. 객체의 rotation·flip·pivot·원본픽셀·기존 발 좌표를 이동하지 않는다 |
+| HTML | scene-object-search(maxlength160), object-summary(role=status/aria-livepolite), object-list, object-prev, object-next, object-page. 행 dataset.objectId, .scene-object-select(aria-pressed), .scene-object-focus(이름+발 위치 보기 aria-label). 새/리프 노드에만 textContent, 지정 목록 replaceChildren |
+| 표시 | summary=현재층 이름+matched/total와 숨김/잠금 안내. page=`1 / 2쪽 · 한 번에 최대 50개` 또는 `검색 결과 없음`. 행=이름·assetId·발x/y·width×height, 수치 표시만 소수점2자리 반올림; JSON 정밀도 유지. 활성 층 변경 시 page0, 검색 입력 시 page0, 다른 refresh는 범위 clamp |
+| 입력·가드 | search와 prev/next는 busy/playing/dialogue 중 disabled+handler 가드. 행선택/보기는 여기에 locked/!visible 추가, stale layerId와 fresh objectId 확인. p0은 이름 선택만 허용. endDrag 이후 현재 씬 재조회; 새 선택 자체에 History 변경·autosave0 |
+| 선택·카메라 | 선택은 selected/layerId 설정, paletteId=null/tool=select, keys/space 해제, palette/refresh. 보기만 viewport 변경·clamp 및 canvas focus. ≤760px에서 보기 뒤 inspector닫힘; 이름선택은 패널 유지. 새목록/페이지 button Enter·Space는 전역Space팬 키 가드의 한정 예외로 기본click 유지 |
+| 치수 | 검색/이름선택/발보기/이전/다음 min-height44px. 목록gap7px, 행grid minmax(0,1fr)+auto/gap5px/padding6px/border1px/radius5px, 이름버튼 전체행/줄바꿈, 상세10px·overflow-wrap:anywhere. scene의 일반 CSS/화면예산 유지 |
+
+원본v2/대화STORY/game/주민 ground/access/core와 기존 placement 규격 불변. 가림 때문에 선택이 안 되는 문제를 목록으로 다룬 것이며, 미확정 NPC를 추가하거나 일반이미지를 주민으로 추정하지 않는다. UI 검수와 전체맵 RETOUCH/native/청취 미인수는 분리한다.
+
+### 2026-10-06 — 활성 레이어 객체 목록·직접 선택
+
+완료ID `ROOT-EDITOR-LAYER-OBJECT-LIST-20261006`. 격리 editor3387에서 전경 뒤에 가린 NPC·소품도 이름으로 찾아 직접 선택한다. 이미지를 추가하거나 주민·길을 움직이는 대신 선택과 카메라를 제어하는 제작 도구다.
+
+| 항목 | 현행 계약·인수 경계 |
+|---|---|
+| 목록 API | `inspectLayerObjects(scene,layerId,query='',page=0)`, 현재 층만 조회, 한 페이지 50행. 검색은 이름/id/assetId에 trim·소문자 includes, 최대160자. page 정수0…1000000, 범위초과는 마지막 페이지; 0매칭은 page0/pages0. fresh rows만 반환 |
+| 앞뒤 순서 | flat은 배치 배열 역순, foot은 y 오름차순 안정 정렬 후 역순. 같은 y에서도 나중 배치한 그림이 앞이다. canvas hit도 이 역순으로 수정했으며 alpha threshold8/mask/좌표 변환은 유지 |
+| 선택·보기 | fresh layer/object ID 재조회. 선택은 selected/layer/tool/palette/held key 상태만, 발 보기는 시차를 반영한 camera 중심+기존900×600 zoom/clamp만 변경. scene/nav/source/History/autosave/대화 데이터 쓰기0 |
+| 가드·화면 | busy·playing·dialogue 및 숨김·잠금 층은 선택/보기 차단. parallax0은 직접 선택만 허용하고 발 보기 차단. 검색/선택/보기/이전/다음 min-height44px, 지정 목록 replaceChildren·리프 text만. Enter/Space는 새 버튼의 기본 활성 동작을 유지 |
+| 의미·화면 | 새 의미검사14/14 PASS·실제1회·실패0. 신규 Chrome 16/16 고유 그룹 PASS, 실제 launch 1. 최초 실패와 후속이 있으면 외부 기록을 그대로 보존한다. 기존 성공 suite·네 주민 종주·대화 분기 반복 0. 모바일은 390px/scale1 touch 에뮬레이션이며 물리 휴대폰 인수가 아니다. |
+| 보존·Git | code5(editor.html/map-scene-editor.js/css/map-scene-object-list.mjs/test-map-scene-object-list.cjs)+관련docs12 정확17 완료 범위만 정상 checkpoint. 실제 NUL89→72 및 HEAD=remote exact SHA, 타인72/보호8 핀 대조는 외부 receipt. live STATE/LOG·기존23·save·2_3·Q전용·어택티켓금지 유지 |
+| 남은 GATE | 도구 선택/입력 검수와 전체 맵을 구분한다. VISUAL VERDICT: RETOUCH. 원화 확대 재질/높이·정적 주민·실제 grant/quest/save/상승·본편 native6단계·실청취 인수는 남아 있다 |
+
+정확 API/UI 계약은 `MAP_SCENE_EDITOR_20261005.md` §18, 가이드§23 제작보고는 `HELL_RIFT_EDITOR_RESULT_20261006.md` 같은 완료ID. 백업·의미/화면·검색·Git 근거: `/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/layer-object-list-20261006/receipt.json`. 새 전문팀/세션/중복 TASK/빌드·게임·서버/Windows/게시0, 기존 paused 자동화와 아침메일 재개0. 오늘19시 단일 보고 조건 유지.

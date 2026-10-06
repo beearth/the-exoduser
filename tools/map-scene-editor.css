@@ -69,3 +69,12 @@ body.scene-mode{font:13px/1.5 -apple-system,BlinkMacSystemFont,'Apple SD Gothic 
 #scene-dialogue footer small{color:#99a28f;font-size:11px;line-height:1.5}
 #scene-workspace #scene-dialogue-close{min-height:44px;white-space:normal;font-size:16px}
 @media(max-width:600px){#scene-dialogue{padding:20px;}#scene-dialogue footer{align-items:stretch;flex-direction:column;}#scene-dialogue .scene-dialogue-text{font-size:16px;margin:20px 0;}}
+
+#scene-workspace .scene-object-list{display:flex;flex-direction:column;gap:7px}
+#scene-workspace .scene-object-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:5px;padding:6px;border:1px solid #334134;border-radius:5px;background:#121a14}
+#scene-workspace .scene-object-row.active{border-color:var(--gold);background:#2a372c}
+#scene-workspace .scene-object-select{grid-column:1/-1;min-height:44px;text-align:left;white-space:normal;overflow-wrap:anywhere}
+#scene-workspace .scene-object-row small{font-size:10px;color:#99a894;overflow-wrap:anywhere;align-self:center}
+#scene-workspace .scene-object-focus,#scene-workspace #scene-object-prev,#scene-workspace #scene-object-next{min-height:44px;white-space:normal}
+
+#scene-workspace #scene-object-search{min-height:44px}

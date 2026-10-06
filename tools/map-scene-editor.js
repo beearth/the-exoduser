@@ -7,6 +7,7 @@
   const canvas = $('canvas'), ctx = canvas.getContext('2d'), pictures = new Map(), keys = new Set();
   let history, selected = null, layerId = 'mid', paletteId = null, tool = 'select', playing = false, player, drag = null, space = false, busy = true;
   let viewport = { x: 4000, y: 4000, zoom: .08 }, size = { w: 1, h: 1 }, dirty = true, last = 0, toastTimer, autosaveTimer;
+  let objectListFactory, objectFocusFactory, objectPage=0, objectLayer=null;
   const CACHE_KEY = 'exoduser:map-scene:v1', LIBRARY = [
     { id: 'rift-art', name: '지옥의 틈 · 원화', src: 'assets/map/hell_rift/interspace_20261005/hell-rift-painterly-v2.png', width: 8000, layer: 'ground' },
     { id: 'abyss', name: '심연 · 후경', src: 'assets/map/hell_rift/interspace_20261005/hell-rift-abyss-v3.png', width: 8000, layer: 'back' },
@@ -18,7 +19,7 @@
     { id: 'dead-tree', name: '고목 · 기존 에셋', src: 'assets/objects/tree_dead_01.png', width: 240, layer: 'foot', alphaCrop: {x:3,y:4,w:61,h:57} },
     { id: 'glow-mushroom', name: '잔불빛 버섯', src: 'assets/objects/mushroom_glow_01.png', width: 100, layer: 'foot', alphaCrop: {x:7,y:3,w:18,h:27} }
   ];
-  function setBusy(value){busy=value;$('workspace').inert=value;if(history){$('resident-access-check').disabled=value||playing||dialogueOpen||!residentAccessFactory;placementUI();}if(value){keys.clear();space=false;}}
+  function setBusy(value){busy=value;$('workspace').inert=value;if(history){$('resident-access-check').disabled=value||playing||dialogueOpen||!residentAccessFactory;placementUI();objectListUI();}if(value){keys.clear();space=false;}}
   const uid = prefix => prefix + '-' + crypto.randomUUID();
   function toast(message) { $('toast').textContent = message; $('toast').hidden = false; clearTimeout(toastTimer); toastTimer = setTimeout(() => { $('toast').hidden = true; }, 4000); }
   function script(src) { return new Promise((resolve, reject) => { const el = document.createElement('script'); el.src = src; el.onload = resolve; el.onerror = () => reject(new Error('데이터 로드 실패: ' + src)); document.head.appendChild(el); }); }
@@ -158,7 +159,7 @@
     target.restore();
   }
   function closeDialogue(reason = 'ui-close') {
-    dialogueController?.close(reason); dialogueOpen = false; nearestResident = null; keys.clear(); space = false;if(history)placementUI();
+    dialogueController?.close(reason); dialogueOpen = false; nearestResident = null; keys.clear(); space = false;if(history){placementUI();objectListUI();}
     if($('dialogue').open) $('dialogue').close();
     $('talk').hidden = true; dirty = true;
   }
@@ -183,7 +184,7 @@
     if(state.trialFlags?.['rift.berin.giftGiven']) notes.push('베린의 유품을 받는 선택');
     if(state.trialFlags?.['rift.nessa.questAccepted']) notes.push('린을 찾는 부탁 수락');
     $('dialogue-record').textContent=notes.length?'이번 시험의 기록 · '+notes.join(' / '):'';$('dialogue-record').hidden=!notes.length;
-    dialogueOpen=true;keys.clear();space=false;$('talk').hidden=true;placementUI();
+    dialogueOpen=true;keys.clear();space=false;$('talk').hidden=true;placementUI();objectListUI();
     if(!$('dialogue').open) $('dialogue').showModal();
     ($('dialogue-options').querySelector('button') || $('dialogue-close')).focus();dirty=true;
   }
@@ -232,6 +233,40 @@
       mutate(p=>{const target=p.assets.find(a=>a.id===assetId);if(reset)delete target.placementPreset;else target.placementPreset=preset;},reset?'다음 배치에 기본 규격을 사용합니다':'이 이미지의 다음 배치 크기와 발 기준을 저장했습니다');
     } catch(e){toast('현재 씬 유지 · '+e.message);refresh();}
   }
+  function objectListUI() {
+    const blocked=busy||playing||dialogueOpen;
+    $('object-search').disabled=blocked;
+    $('object-list').replaceChildren();$('object-prev').disabled=$('object-next').disabled=true;
+    if(!objectListFactory){$('object-summary').textContent='객체 목록 모듈을 준비하지 못했습니다.';$('object-page').textContent='';return;}
+    if(objectLayer!==layerId){objectLayer=layerId;objectPage=0;}
+    try {
+      const report=objectListFactory(current(),layerId,$('object-search').value,objectPage);objectPage=report.page;
+      $('object-summary').textContent=report.layerName+' · '+report.matched+' / '+report.total+'개'+(!report.visible?' · 숨긴 층입니다. 먼저 표시하세요.':report.locked?' · 잠긴 층입니다. 먼저 잠금을 해제하세요.':'');
+      $('object-page').textContent=report.pages?(report.page+1)+' / '+report.pages+'쪽 · 한 번에 최대 50개':'검색 결과 없음';
+      $('object-prev').disabled=blocked||report.page===0;$('object-next').disabled=blocked||report.page+1>=report.pages;
+      for(const row of report.rows) {
+        const card=document.createElement('div');card.className='scene-object-row'+(row.objectId===selected?' active':'');card.dataset.objectId=row.objectId;
+        const choose=document.createElement('button');choose.type='button';choose.className='scene-object-select';choose.textContent=row.name;choose.title=row.objectId;choose.setAttribute('aria-pressed',String(row.objectId===selected));choose.disabled=blocked||report.locked||!report.visible;
+        choose.onclick=()=>selectListedObject(report.layerId,row.objectId,false);
+        const details=document.createElement('small');details.textContent=row.assetId+' · 발 '+pointText(row)+' · '+Math.round(row.width*100)/100+' × '+Math.round(row.height*100)/100+'px';
+        const focus=document.createElement('button');focus.type='button';focus.className='scene-object-focus';focus.textContent='발 보기';focus.setAttribute('aria-label',row.name+' 발 위치 보기');
+        focus.disabled=choose.disabled||current().layers.find(l=>l.id===report.layerId).parallax===0;focus.title=focus.disabled?'표시·잠금·시차 설정을 확인하세요':'그림과 길을 움직이지 않고 발 위치 보기';focus.onclick=()=>selectListedObject(report.layerId,row.objectId,true);
+        card.append(choose,details,focus);$('object-list').append(card);
+      }
+    } catch(e){$('object-summary').textContent='객체 목록 오류 · '+e.message;$('object-page').textContent='';}
+  }
+  function selectListedObject(targetLayer,objectId,focus) {
+    if(busy||playing||dialogueOpen||targetLayer!==layerId)return;
+    endDrag();
+    const l=current().layers.find(l=>l.id===targetLayer),o=l?.objects.find(o=>o.id===objectId);
+    if(!l||l.locked||!l.visible||!o)return;
+    try {
+      const point=focus?objectFocusFactory?.(current(),targetLayer,objectId):null;if(focus&&!point)return;
+      selected=o.id;layerId=l.id;paletteId=null;tool='select';keys.clear();space=false;
+      if(point){viewport={...point,zoom:Math.min(size.w/900,size.h/600)};clampCamera();if(matchMedia('(max-width:760px)').matches)$('inspector').classList.add('mobile-hidden');}
+      palette();refresh();if(focus)canvas.focus();
+    } catch(e){toast('현재 씬 유지 · '+e.message);}
+  }
   function autosave() { clearTimeout(autosaveTimer); autosaveTimer = setTimeout(() => { try { localStorage.setItem(CACHE_KEY, JSON.stringify(current())); $('status').textContent = '로컬 복구 저장됨 · 프로젝트 JSON으로 보존하세요'; } catch (e) { $('status').textContent = '복구 저장 공간 부족 · 프로젝트 저장을 사용하세요'; } }, 500); }
   function changed(message) { invalidateResidentAccess(); ambienceScene = null; dialogueScene = null; residentGroundingScene = null; closeDialogue('scene-edited'); dirty = true; refresh(); autosave(); if (message) toast(message); }
   function mutate(fn, message) { if (busy) return; try { history.change(fn); changed(message); } catch (e) { toast(e.message); refresh(); } }
@@ -242,7 +277,7 @@
   function snap(v) { return $('snap').checked ? Math.round(v/current().world.tileSize)*current().world.tileSize : v; }
   function offset(l) { return { x:(viewport.x-current().world.cols*current().world.tileSize/2)*(1-l.parallax), y:(viewport.y-current().world.rows*current().world.tileSize/2)*(1-l.parallax) }; }
   function selectAt(pos) {
-    for (const l of [...current().layers].reverse()) { if (!l.visible || l.locked) continue; const off = offset(l), objects = l.sort === 'foot' ? [...l.objects].sort((a,b)=>b.y-a.y) : [...l.objects].reverse();
+    for (const l of [...current().layers].reverse()) { if (!l.visible || l.locked) continue; const off = offset(l), objects = l.sort === 'foot' ? [...l.objects].sort((a,b)=>a.y-b.y).reverse() : [...l.objects].reverse();
       for (const o of objects) { if (K.hit(o,pos.x-off.x,pos.y-off.y)) { const a = current().assets.find(a=>a.id===o.assetId), im = loaded.get(a.src), q=K.local(o,pos.x-off.x,pos.y-off.y);
         // Polygon/alpha hit testing avoids selecting transparent margins over smaller objects.
         if (im && !o.mask) { const test=document.createElement('canvas');test.width=test.height=1;const tx=test.getContext('2d');tx.drawImage(im,a.crop.x+q.x/o.width*a.crop.w,a.crop.y+q.y/o.height*a.crop.h,1,1,0,0,1,1);try{if(tx.getImageData(0,0,1,1).data[3]<8)continue;}catch(e){} }
@@ -276,7 +311,7 @@
     else $('source-info').textContent='';
     const i=p.layers.indexOf(active);$('layer-up').disabled=i===p.layers.length-1;$('layer-down').disabled=i===0;
     $('unity-import').disabled=playing||dialogueOpen;
-    residentAccessUI();placementUI();
+    residentAccessUI();placementUI();objectListUI();
     $('play').textContent=playing?'■ 보행 종료':'▶ 보행 시험';$('view-label').textContent=playing?'보행 시험 · WASD / 방향키 · F 대화 · ESC 종료':tool==='pivot'?'발 기준 찍기 · 선택한 그림 안 클릭 · Esc 취소':'SOUTH → NORTH · 이미지와 충돌을 별도로 편집';
     $('cameras').replaceChildren();for(const c of p.cameras){const b=document.createElement('button');b.textContent=c.name;b.onclick=()=>{viewport={x:c.x,y:c.y,zoom:Math.min(size.w/1800,size.h/1100)};clampCamera();dirty=true;};$('cameras').append(b);} dirty=true;
   }
@@ -356,6 +391,8 @@
   for(const b of document.querySelectorAll('[data-scene-tool]'))b.onclick=()=>{closeDialogue('tool-changed');tool=b.dataset.sceneTool;paletteId=null;playing=false;keys.clear();for(const x of document.querySelectorAll('[data-scene-tool]'))x.classList.toggle('active',x===b);if(tool==='walk'||tool==='block')$('show-nav').checked=true;palette();refresh();};
   function property(id,key){const input=$(id);let ratio=1;input.addEventListener('focus',()=>{history.begin();const pair=selectedPair();if(pair)ratio=pair.o.height/pair.o.width;});input.addEventListener('input',()=>{const pair=selectedPair();if(!pair||pair.l.locked)return;if(key!=='name'&&(!input.value.trim()||!Number.isFinite(Number(input.value))))return;const v=key==='name'?input.value:Number(input.value);if((key==='width'||key==='height')&&v<=0)return;history.begin();invalidateResidentAccess();const o=pair.o;o[key]=v;if($('aspect').checked&&key==='width')o.height=v*ratio;if($('aspect').checked&&key==='height')o.width=v/ratio;dirty=true;});input.addEventListener('change',()=>{try{K.validate(current());history.end();changed();}catch(e){if(history.pending){history.project=history.pending;history.pending=null;}toast(e.message);refresh();}});input.addEventListener('blur',()=>{if(history.pending){try{K.validate(current());history.end();changed();}catch(e){history.project=history.pending;history.pending=null;refresh();}}});}
   for(const [id,key] of [['object-name','name'],['x','x'],['y','y'],['width','width'],['height','height'],['pivot-x','pivotX'],['pivot-y','pivotY'],['rotation','rotation'],['opacity','opacity'],['feather','maskFeather'],['source-parallax','sourceParallax']])property(id,key);
+  $('object-search').oninput=()=>{if(busy||playing||dialogueOpen)return;objectPage=0;objectListUI();};
+  for(const [id,delta] of [['object-prev',-1],['object-next',1]])$(id).onclick=()=>{if(busy||playing||dialogueOpen||$(id).disabled)return;objectPage=Math.max(0,objectPage+delta);objectListUI();};
   $('placement-save').onclick=()=>savePlacement(false);$('placement-reset').onclick=()=>savePlacement(true);
   $('pivot-pick').onclick=()=>{if(busy||playing||dialogueOpen)return;const q=selectedPair();if(!q||q.l.locked||!q.l.visible)return;endDrag();tool=tool==='pivot'?'select':'pivot';paletteId=null;keys.clear();space=false;if(tool==='pivot'&&matchMedia('(max-width:760px)').matches)$('inspector').classList.add('mobile-hidden');palette();refresh();canvas.focus();};
   $('layer-sort').onchange=()=>mutate(p=>{p.layers.find(l=>l.id===layerId).sort=$('layer-sort').value;});
@@ -409,14 +446,14 @@
       else if(e.ctrlKey||e.metaKey||e.altKey||!['tab','enter',' ','arrowup','arrowdown','pageup','pagedown','home','end'].includes(key)||(e.repeat&&['enter',' '].includes(key)))e.preventDefault();
       return;
     }
-    if(['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;const key=e.key.toLowerCase();if((e.ctrlKey||e.metaKey)&&key==='s'){e.preventDefault();$('save').click();return;}if((e.ctrlKey||e.metaKey)&&(key==='z'||key==='y')){e.preventDefault();(key==='y'||e.shiftKey?$('redo'):$('undo')).click();return;}if(key===' '){space=true;e.preventDefault();}if(playing){if(key==='f'&&!e.repeat&&!e.ctrlKey&&!e.metaKey&&!e.altKey){e.preventDefault();talk();return;}if(['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright'].includes(key)){keys.add(key);e.preventDefault();}if(key==='escape')$('play').click();return;}if(key==='escape'){if(tool==='pivot'){tool='select';if(matchMedia('(max-width:760px)').matches)$('inspector').classList.remove('mobile-hidden');refresh();return;}paletteId=null;selected=null;palette();refresh();}if(key==='delete'||key==='backspace'){e.preventDefault();$('delete').click();}if(key==='v')document.querySelector('[data-scene-tool="select"]').click();if(key==='b')document.querySelector('[data-scene-tool="walk"]').click();if(key==='e')document.querySelector('[data-scene-tool="block"]').click();});
+    if(['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;const key=e.key.toLowerCase();if(e.target.tagName==='BUTTON'&&[' ','enter'].includes(key)&&(e.target.closest('#scene-object-list')||['scene-object-prev','scene-object-next'].includes(e.target.id)))return;if((e.ctrlKey||e.metaKey)&&key==='s'){e.preventDefault();$('save').click();return;}if((e.ctrlKey||e.metaKey)&&(key==='z'||key==='y')){e.preventDefault();(key==='y'||e.shiftKey?$('redo'):$('undo')).click();return;}if(key===' '){space=true;e.preventDefault();}if(playing){if(key==='f'&&!e.repeat&&!e.ctrlKey&&!e.metaKey&&!e.altKey){e.preventDefault();talk();return;}if(['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright'].includes(key)){keys.add(key);e.preventDefault();}if(key==='escape')$('play').click();return;}if(key==='escape'){if(tool==='pivot'){tool='select';if(matchMedia('(max-width:760px)').matches)$('inspector').classList.remove('mobile-hidden');refresh();return;}paletteId=null;selected=null;palette();refresh();}if(key==='delete'||key==='backspace'){e.preventDefault();$('delete').click();}if(key==='v')document.querySelector('[data-scene-tool="select"]').click();if(key==='b')document.querySelector('[data-scene-tool="walk"]').click();if(key==='e')document.querySelector('[data-scene-tool="block"]').click();});
   window.addEventListener('keyup',e=>{keys.delete(e.key.toLowerCase());if(e.key===' ')space=false;});window.addEventListener('blur',()=>{closeDialogue('focus-lost');keys.clear();space=false;endDrag();});
   try{try{const module=await import('./map-scene-rift-dialogue.mjs');dialogueSceneSupport=module.supportsRiftDialogueScene;
       const response=await fetch('tools/team-followup-20261005/hell-rift/STORY/rift-dialogue.json',{cache:'no-store',redirect:'error'});
       if(!response.ok||Number(response.headers.get('content-length'))>256000)throw new Error('주민 대화 데이터 로드 실패');
       const bytes=await response.arrayBuffer();if(bytes.byteLength>256000)throw new Error('주민 대화 데이터가 너무 큽니다');
       dialogueRaw=JSON.parse(new TextDecoder().decode(bytes));dialogueFactory=module.createRiftDialogue;
-    }catch(e){console.warn('틈 대화 시험을 읽지 못했습니다',e);}try{const residents=await import('./map-scene-rift-residents.mjs');residentAnchorsFactory=residents.residentDialogueAnchors;residentGroundingFactory=residents.createResidentGrounding;}catch(e){console.warn('틈 주민 모듈을 읽지 못했습니다',e);}try{residentAccessFactory=(await import('./map-scene-resident-access.mjs')).inspectResidentAccess;}catch(e){console.warn('주민 접근 검사 모듈을 읽지 못했습니다',e);}try{ambienceFactory=(await import('./map-scene-rift-ambience.mjs')).createRiftAmbience;}catch(e){console.warn('틈 분위기 모듈을 읽지 못했습니다',e);}await Promise.all([script('assets/map/hell_rift/interspace_20261005/layout.js'),script('assets/map/ch1/production_finish/layout.js')]);history=new K.History(await preset('rift'));try{const raw=localStorage.getItem(CACHE_KEY);if(raw){const p=K.validate(JSON.parse(raw));await importProject(p,false);}}catch(e){toast('기존 복구 씬을 읽지 못해 승인 원화로 시작합니다');}const named=new URLSearchParams(location.search).get('scene');if(named){try{await importProject(await namedProject(named),false);}catch(e){toast('현재 씬 유지 · '+e.message);}}resize();fit();refresh();palette();$('status').textContent='준비됨 · '+current().name+' / 본편에 자동 적용하지 않음';new ResizeObserver(resize).observe($('stage'));picture('img/exoduser_warrior/south.png').then(im=>{warrior=im;dirty=true;}).catch(()=>{});setBusy(false); $('workspace').inert=false; requestAnimationFrame(tick);
+    }catch(e){console.warn('틈 대화 시험을 읽지 못했습니다',e);}try{const residents=await import('./map-scene-rift-residents.mjs');residentAnchorsFactory=residents.residentDialogueAnchors;residentGroundingFactory=residents.createResidentGrounding;}catch(e){console.warn('틈 주민 모듈을 읽지 못했습니다',e);}try{residentAccessFactory=(await import('./map-scene-resident-access.mjs')).inspectResidentAccess;}catch(e){console.warn('주민 접근 검사 모듈을 읽지 못했습니다',e);}try{const objects=await import('./map-scene-object-list.mjs');objectListFactory=objects.inspectLayerObjects;objectFocusFactory=objects.focusObjectFoot;}catch(e){console.warn('객체 목록 모듈을 읽지 못했습니다',e);}try{ambienceFactory=(await import('./map-scene-rift-ambience.mjs')).createRiftAmbience;}catch(e){console.warn('틈 분위기 모듈을 읽지 못했습니다',e);}await Promise.all([script('assets/map/hell_rift/interspace_20261005/layout.js'),script('assets/map/ch1/production_finish/layout.js')]);history=new K.History(await preset('rift'));try{const raw=localStorage.getItem(CACHE_KEY);if(raw){const p=K.validate(JSON.parse(raw));await importProject(p,false);}}catch(e){toast('기존 복구 씬을 읽지 못해 승인 원화로 시작합니다');}const named=new URLSearchParams(location.search).get('scene');if(named){try{await importProject(await namedProject(named),false);}catch(e){toast('현재 씬 유지 · '+e.message);}}resize();fit();refresh();palette();$('status').textContent='준비됨 · '+current().name+' / 본편에 자동 적용하지 않음';new ResizeObserver(resize).observe($('stage'));picture('img/exoduser_warrior/south.png').then(im=>{warrior=im;dirty=true;}).catch(()=>{});setBusy(false); $('workspace').inert=false; requestAnimationFrame(tick);
     // Read-only diagnostics for local UI QA; import uses the same validated atomic path.
     window.EXODUSER_SCENE_EDITOR={snapshot:()=>K.clone(current()),view:()=>({...viewport}),player:()=>playing?{...player}:null,selection:()=>selected,importProject,ambience:()=>({enabled:!!ambience&&$('ambient').checked,stats:ambience?.snapshot()||null}),grounding:()=>residentGrounding?.snapshot()||[],residentAccess:()=>residentAccessReport?K.clone(residentAccessReport):null,dialogue:()=>({anchors:residentAnchors().map(a=>({...a,approach:{...a.approach}})),state:dialogueController?.snapshot()||null}),ready:true};
   }catch(e){$('status').textContent='씬 시작 실패 · '+e.message;toast(e.message);}
