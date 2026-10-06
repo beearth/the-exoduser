@@ -3435,6 +3435,126 @@ addEventListener('unhandledrejection',e=>{
   e.preventDefault();
 });
 
+// ROOT-RIFT-MAIN-SEAM-INTEGRATION-20261007 — lexical, isolated 3387 only.
+// The default CH1-1 demo-end branch remains unchanged. No save/grant ACK here.
+var _rootRiftEnabled=location.origin==='http://127.0.0.1:3387';
+var _rootRiftEpoch=0,_rootRiftJob=null,_rootRiftRuntime=null,_rootRiftLoading=null,_rootRiftDead=false;
+var _rootRiftCurtainEpoch=0,_rootRiftCurtain=null,_rootRiftReason='idle',_rootRiftAdvances=0;
+function _rootRiftStatus(text){
+  if(!_rootRiftEnabled)return;
+  const anchor=$('nextBtn');if(!anchor||!anchor.parentNode)return;
+  let leaf=$('root-rift-main-status');
+  if(!leaf){leaf=document.createElement('span');leaf.id='root-rift-main-status';leaf.setAttribute('role','status');leaf.style.cssText='display:block;min-height:21px;margin:9px 0;color:#d9bd86;font:13px/1.6 system-ui;';anchor.parentNode.insertBefore(leaf,anchor)}
+  if(leaf.children.length===0)leaf.textContent=text;
+}
+function _rootRiftSame(job){
+  return !!job&&job===_rootRiftJob&&job.epoch===_rootRiftEpoch&&P===job.player&&G===job.context&&
+    G.stage===job.stage&&_charId===job.charId&&_charIdx===job.charIdx&&
+    (G._stageDiffOff??0)===job.difficultyOff&&(OPT.diff??5)===job.difficultyIndex&&
+    dbSave===job.save&&_dbReady===job.saveReady&&P.s===job.status&&Number.isFinite(P.hp)&&P.hp>0&&
+    G.stageCleared===true&&G.bossAlive===false;
+}
+function _rootRiftCurrent(job){return _rootRiftSame(job)&&!job.closed&&!job.cancelling&&G.on===false}
+function _rootRiftClearHeld(){
+  _clearHeldInput(); // Disarm Shift before any synthetic gamepad release.
+  _gpClearAll();_gpSynced=false;
+  for(let i=0;i<_gpAxes.length;i++)_gpAxes[i]=0;
+  if(G)G._gpAiming=false;
+}
+function _rootRiftClearOnce(){
+  const job=_rootRiftJob;if(!job||!_rootRiftCurrent(job))return false;
+  if(job.heldCleared)return true;
+  job.heldCleared=true;_rootRiftClearHeld();return true;
+}
+function _rootRiftRelease(job,why,restore=true){
+  if(!job||job!==_rootRiftJob||job.closed)return false;
+  const safe=_rootRiftSame(job)&&G.on===false;
+  // Cancellation also owns the scheduled curtain; successful advance keeps
+  // its independent 900ms fade instead of cancelling it with the old job.
+  if(why!=='advanced'&&_rootRiftCurtain){const owned=_rootRiftCurtain;_rootRiftCurtain=null;owned.cancel()}
+  job.closed=true;_rootRiftJob=null;_rootRiftEpoch++;_rootRiftReason=why;
+  _rootRiftClearHeld(); // Never restore captured held keys, axes or aim state.
+  if(restore&&safe)G.on=job.previousOn;
+  if(why!=='advanced'&&safe){const b=$('nextBtn');if(b){b.disabled=false;b.style.opacity='1'}_rootRiftStatus('지옥의 틈에서 돌아왔습니다. 다시 진입할 수 있습니다.')}
+  else if(why==='advanced')_rootRiftStatus('');
+  return true;
+}
+function _rootRiftInvalidate(why){
+  if(!_rootRiftEnabled)return false;
+  const job=_rootRiftJob;
+  if(job&&job.advancing&&(why==='init-stage'||why==='boot-loading'))return false;
+  if(job&&!job.closed){job.cancelling=true;try{_rootRiftRuntime?.cancel(why)}finally{_rootRiftRelease(job,why)}}
+  else _rootRiftEpoch++;
+  if(_rootRiftCurtain){const owned=_rootRiftCurtain;_rootRiftCurtain=null;owned.cancel()}
+  _rootRiftCurtainEpoch++;
+  return !!job;
+}
+function _rootRiftInvalidateJob(job,why){return job===_rootRiftJob?_rootRiftInvalidate(why):false}
+function _rootRiftBlock(channel){
+  if(!_rootRiftEnabled||!_rootRiftJob)return false;
+  const job=_rootRiftJob;
+  if(job.advancing||job.cancelling)return true;
+  if(!_rootRiftCurrent(job)){_rootRiftInvalidate('parent-context-changed');return true}
+  if(!_rootRiftRuntime)return true; // Import/pre-save preparation already owns input.
+  try{return _rootRiftRuntime.block(channel)}catch(_){_rootRiftInvalidate('lease-failed');return true}
+}
+function _rootRiftBegin(){
+  if(!_rootRiftEnabled||_rootRiftDead||_rootRiftJob||!P||!G||G.stageCleared!==true||G.bossAlive!==false||
+    !Number.isSafeInteger(G.stage)||G.stage<0||!Number.isFinite(P.hp)||P.hp<=0||
+    ['dead','fallen','reviving','lastStand'].includes(P.s)||typeof G.on!=='boolean'||
+    !Number.isFinite(G._stageDiffOff??0)||!Number.isFinite(OPT.diff??5)||
+    !Number.isInteger(_charIdx)||_charIdx<0||_charIdx>=CHAR_LIST.length||
+    (_DEMO_MODE&&G.stage===_DEMO_LAST_STAGE&&SI_TO_HELL[G.stage]===0)||
+    _rootRiftEpoch>=Number.MAX_SAFE_INTEGER-1)return null;
+  if(_rootRiftCurtain){const old=_rootRiftCurtain;_rootRiftCurtain=null;old.cancel()}
+  const job={epoch:++_rootRiftEpoch,player:P,context:G,stage:G.stage,charId:_charId,charIdx:_charIdx,
+    character:_charIdx===1?'silvertail':'warrior',difficultyOff:G._stageDiffOff??0,difficultyIndex:OPT.diff??5,
+    save:dbSave,saveReady:_dbReady,status:P.s,previousOn:G.on,heldCleared:false,closed:false,cancelling:false,advancing:false};
+  _rootRiftJob=job;G.on=false;_rootRiftReason='pre-save-preparation';
+  try{if(!_rootRiftClearOnce()){_rootRiftRelease(job,'held-clear-failed');return null}}catch(_){_rootRiftRelease(job,'held-clear-failed');return null}
+  _rootRiftStatus('지옥의 틈을 준비하고 있습니다.');return job;
+}
+function _rootRiftAdvance(job,commit){
+  if(!_rootRiftCurrent(job)||typeof commit!=='function'||!commit()||!_rootRiftCurrent(job)){_rootRiftInvalidateJob(job,'commit-refused');return false}
+  job.advancing=true;let advanced=false;
+  try{nextStage();_rootRiftAdvances++;advanced=true;return true}
+  finally{_rootRiftRuntime?.finished(job);_rootRiftRelease(job,advanced?'advanced':'advance-failed',false)}
+}
+function _rootRiftEnsure(){
+  if(_rootRiftRuntime)return Promise.resolve(_rootRiftRuntime);
+  if(_rootRiftLoading)return _rootRiftLoading;
+  _rootRiftLoading=import('./tools/2_5d/main-rift-runtime.mjs').then(module=>{
+    if(_rootRiftDead||!_rootRiftEnabled)throw new Error('rift parent no longer active');
+    _rootRiftRuntime=module.createMainRiftRuntime({window,document,ports:{
+      readOwned:()=>({owned:!!_rootRiftJob&&!_rootRiftJob.closed,epoch:_rootRiftEpoch}),
+      clearHeld:_rootRiftClearOnce,isCurrent:_rootRiftCurrent,
+      readHostContext:()=>{const j=_rootRiftJob;if(!_rootRiftCurrent(j))throw new Error('stale rift host context');return {player:P,character:j.character,stage:G.stage,context:G,on:G.on,stageCleared:G.stageCleared,status:P.s}},
+      readGateState:j=>{if(!_rootRiftCurrent(j))return null;return {stage:G.stage,stageCleared:G.stageCleared,status:'clear-continue',difficultyOff:j.difficultyOff,contextId:j.epoch}},
+      release:(j,why)=>_rootRiftRelease(j,why),
+      schedule:(commit,j)=>{if(!_rootRiftCurrent(j))throw new Error('stale rift schedule');_rootRiftReason='scheduled';_rootRiftStatus('위층으로 가는 길을 준비하고 있습니다.');_rootRiftCurtain=showStageTransition(()=>_rootRiftAdvance(j,commit),{current:()=>_rootRiftCurrent(j),onCancel:()=>_rootRiftInvalidateJob(j,'transition-cancelled')})}
+    }});
+    return _rootRiftRuntime;
+  }).catch(()=>{_rootRiftLoading=null;throw new Error('rift runtime import or factory failed')});
+  return _rootRiftLoading;
+}
+if(_rootRiftEnabled){
+  const quarantine=e=>{
+    if(!_rootRiftBlock('update'))return;
+    if(_rootRiftRuntime&&_rootRiftRuntime.parentEvent(e))return;
+    // The host registered later owns its native modal controls. Its capture
+    // listener blocks the legacy document/window gameplay listeners below.
+    const token=_rootRiftRuntime?.snapshot().host.token;
+    const panel=Number.isSafeInteger(token)?document.querySelector('dialog[data-main-rift-host="'+token+'"]'):null;
+    if(panel?.open&&panel.contains(e.target))return;
+    e.stopImmediatePropagation();if(e.cancelable)e.preventDefault();
+    if(e.type==='keydown'&&e.code==='Escape'&&!e.repeat)_rootRiftInvalidate('parent-escape');
+  };
+  for(const type of ['keydown','keyup','pointerdown','pointerup','pointermove','pointercancel','mousedown','mouseup','mousemove','click','dblclick','auxclick','contextmenu','touchstart','touchmove','touchend','touchcancel','wheel'])window.addEventListener(type,quarantine,{capture:true,passive:false});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)_rootRiftInvalidate('parent-hidden')});
+  window.addEventListener('pagehide',()=>{_rootRiftDead=true;_rootRiftInvalidate('pagehide');_rootRiftRuntime?.dispose()});
+  window.__riftMainIntegration=Object.freeze({snapshot:()=>Object.freeze({enabled:true,epoch:_rootRiftEpoch,owned:!!_rootRiftJob,reason:_rootRiftReason,phase:_rootRiftJob?.advancing?'advancing':_rootRiftRuntime?.snapshot().phase??(_rootRiftJob?'preparing':'idle'),guardedAdvanceCalls:_rootRiftAdvances,childCharacterLinked:false,durableSaveAccepted:false,demoHubAccepted:false})});
+}
+// END ROOT-RIFT-MAIN-SEAM-INTEGRATION-20261007.
 let _charId=null;   // current character UUID
 let _charName='';   // character display name
 let _dbReady=false;  // DB loaded & ready
@@ -10161,6 +10281,7 @@ const _CHAR_DKS=['s','se','e','ne','n','nw','w','sw'];
 const _SILVERTAIL_CLOCK_FILES={south:'6','south-east':'5',east:'3','north-east':'1',north:'12','north-west':'11',west:'9','south-west':'7'};
 const _SILVERTAIL_ASSET_VERSION='20260915-walk-v3';
 function _loadCharAtlas(idx){
+  _rootRiftInvalidate('character-change');
   if(idx<0||idx>=CHAR_LIST.length)idx=0;
   _charIdx=idx;try{localStorage.setItem('_charIdx',''+idx);}catch(e){}
   const ch=CHAR_LIST[idx];
@@ -12444,6 +12565,7 @@ function _setMousePosition(e){
   _syncDruidFinaleMouse();
 }
 function _setMouseFacing(){
+  if(_rootRiftBlock('facing'))return;
   if(!P||!G||!G.cam||_gpActive)return;
   const sx=P.x-G.cam.x+VW/2,sy=P.y-G.cam.y+VH/2;
   const dx=mouse.x-sx,dy=mouse.y-sy;
@@ -13008,6 +13130,7 @@ addEventListener('keydown',e=>{if(_gpActive&&!e._fromGp){_gpActive=false;localSt
 
 // 게임패드 자동 에임: 가장 가까운 적 방향으로 facing 보정
 function _gpAutoAim(range){
+  if(_rootRiftBlock('facing'))return;
   if(!_gpActive||!P||P.hp<=0||typeof ens==='undefined')return;
   let best=null,bestD=range||400;
   for(let i=0;i<ens.length;i++){
@@ -13038,6 +13161,7 @@ function _saveGpKeyMap(){_rebuildGpKeyIdx();try{localStorage.setItem('gpKeyMap',
 function _resetGpKeyMap(){_GP_KEY=Object.assign({},_GP_KEY_DEFAULT);_saveGpKeyMap()}
 var _gpInjHeld={}; // [release-sync] 게임패드가 주입해 현재 눌림으로 기록한 키코드 (falling-edge 유실 대비 레벨 동기화용)
 function _gpInjectKey(kc,pressed){
+  if(_rootRiftBlock('inject')){if(pressed)return;_gpInjHeld[kc]=false;if(kc.startsWith('mouse'))MB[+kc.slice(5)]=false;else{K[kc]=false;KH[kc]=false}return}
   _gpInjHeld[kc]=pressed;
   if(kc.startsWith('mouse')){const mn=+kc.slice(5);MB[mn]=pressed;if(pressed)MBjust[mn]=true;}
   else{K[kc]=pressed;const ev=new KeyboardEvent(pressed?'keydown':'keyup',{code:kc,key:kc,bubbles:true});ev._fromGp=true;document.dispatchEvent(ev);}
@@ -13363,6 +13487,7 @@ function _gpUINav(panel){
 }
 
 function _pollGamepad(){
+  if(_rootRiftBlock('poll'))return;
   // 이벤트 의존 금지 — BT 재연결 시 gamepadconnected가 안 오는 경우가 있어 매 프레임 폴링으로 직접 감지 (index.html과 동일 방식)
   const gps=navigator.getGamepads();
   let _found=null;
@@ -13630,6 +13755,7 @@ function _pollGamepad(){
 
   // 좌스틱 → WASD (조준 모드가 아닐 때만 이동)
   const su=!_isAimMode&&_gpAxes[1]<-GP_DEAD,sd=!_isAimMode&&_gpAxes[1]>GP_DEAD,sl=!_isAimMode&&_gpAxes[0]<-GP_DEAD,sr=!_isAimMode&&_gpAxes[0]>GP_DEAD;
+  if(_rootRiftBlock('inject'))return; // direct WASD writes must also obey the root lease
   const _stickMap=[['sU','KeyW',su],['sD','KeyS',sd],['sL','KeyA',sl],['sR','KeyD',sr]];
   for(let _si=0;_si<4;_si++){
     const[pk,kc,on]=_stickMap[_si];
@@ -30350,6 +30476,7 @@ function _spawnCh1StartMediumEyeMasses(si){
 }
 
 function initStage(si){
+  _rootRiftInvalidate('init-stage');
   G._playerPortalPair=null;
   if(window._parryLesson){window._parryLesson.finish();window._parryLesson.seen=false;}
   G._druidVictory=null;G._druidFinaleBoss=null;G._druidActCue=null;
@@ -30912,6 +31039,7 @@ function _editorUpdate(){
 // 벽 끼임 체크 — 모듈 레벨 (핫패스 클로저 할당 제거: 과거 적마다 매 프레임 생성)
 function _eWallStuck(px,py){const tx=~~(px/T),ty=~~(py/T);return tx<0||ty<0||tx>=G.mw||ty>=G.mh||G.map[ty][tx]===1}
 function update(){
+  if(_rootRiftBlock('update'))return;
   window._systemLesson?.tick();
   if(!G.on)return;
   if(window._parryLesson&&window._parryLesson.tick())return;
@@ -42479,7 +42607,7 @@ function _fallenResolve(){
   $('death').classList.add('on');
   _deathDlgStart(); // 두 펫 동시 대사 로테이션 시작
 }
-function nextStage(){SFX.beamStop();$('stageClear').style.opacity='0';$('stageClear').style.pointerEvents='none';G.stageCleared=false;G.on=false;ens=[];G.rooms=[];G.exits=[];_cacheExitCenter();G.bossAlive=true;_ensWarmDone=false;G._zones=null;G._curZone=0;G._zoneState={};G._portals=null;G._bossRef=null;G._crT=0;G.atkTickets=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;const _curHell=SI_TO_HELL[G.stage];const _ch=CHAPTER_STAGES[_curHell];if(_DEMO_MODE&&G.stage===_DEMO_LAST_STAGE&&_curHell===0){const _de=$('demoEnd');if(_de){_de.style.display='flex';const _dt=$('demoEndTitle');if(_dt)_dt.textContent=_T('데모 종료');const _dm=$('demoEndMsg');if(_dm)_dm.textContent=_T('여기까지 데모입니다. 정식 출시를 기대해주세요!');const _ds=$('demoEndSupport');if(_ds)_ds.textContent=_T('STEAM 위시리스트로 응원해 주세요!');const _dw=$('demoEndWishlist');if(_dw)_dw.textContent=_T('STEAM 위시리스트');const _dl=$('demoEndLobby');if(_dl)_dl.textContent=_T('로비로 돌아가기');}G.on=false;return}if(G.stage===_ch.startSi+_ch.stages-1&&_curHell<6){G.stage=CHAPTER_STAGES[_curHell+1].startSi}else{G.stage++}if(G.stage>=TOTAL_STAGES){doWin();return}initStage(G.stage);G.on=true;BGM.play(BGM.stageKey(G.stage))}
+function nextStage(){if(_rootRiftBlock('auto')&&!_rootRiftJob?.advancing)return;SFX.beamStop();$('stageClear').style.opacity='0';$('stageClear').style.pointerEvents='none';G.stageCleared=false;G.on=false;ens=[];G.rooms=[];G.exits=[];_cacheExitCenter();G.bossAlive=true;_ensWarmDone=false;G._zones=null;G._curZone=0;G._zoneState={};G._portals=null;G._bossRef=null;G._crT=0;G.atkTickets=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;const _curHell=SI_TO_HELL[G.stage];const _ch=CHAPTER_STAGES[_curHell];if(_DEMO_MODE&&G.stage===_DEMO_LAST_STAGE&&_curHell===0){const _de=$('demoEnd');if(_de){_de.style.display='flex';const _dt=$('demoEndTitle');if(_dt)_dt.textContent=_T('데모 종료');const _dm=$('demoEndMsg');if(_dm)_dm.textContent=_T('여기까지 데모입니다. 정식 출시를 기대해주세요!');const _ds=$('demoEndSupport');if(_ds)_ds.textContent=_T('STEAM 위시리스트로 응원해 주세요!');const _dw=$('demoEndWishlist');if(_dw)_dw.textContent=_T('STEAM 위시리스트');const _dl=$('demoEndLobby');if(_dl)_dl.textContent=_T('로비로 돌아가기');}G.on=false;return}if(G.stage===_ch.startSi+_ch.stages-1&&_curHell<6){G.stage=CHAPTER_STAGES[_curHell+1].startSi}else{G.stage++}if(G.stage>=TOTAL_STAGES){doWin();return}initStage(G.stage);G.on=true;BGM.play(BGM.stageKey(G.stage))}
 function doWin(){
   SFX.beamStop();G.on=false;
   BGM.fadeOut(800);setTimeout(()=>BGM.play('victory'),1000);
@@ -61537,6 +61665,7 @@ if($('deathReplayBtn'))$('deathReplayBtn').onclick=()=>{
   _drPlay(()=>{if($('death').classList.contains('on'))_deathDlgStart()});
 };
 $('retryBtn').onclick=async()=>{
+  _rootRiftInvalidate('retry');
   $('death').classList.remove('on');$('victory').classList.remove('on');_drReset();if(typeof _deathDlgStop==='function')_deathDlgStop();
   // 경험치 30% 손실
   const expLoss=~~(P.exp*0.3);
@@ -61607,10 +61736,17 @@ function _pickTransitionRd(){
 // 1~19.png 랜덤 로딩 이미지
 for(let i=1;i<=19;i++)_STAGE_TRANSITION_RD.push('img/lording/'+i+'.png?v=20260930-loading-remaster5');
 // 프리로드 제거 — 스테이지 전환 시 lazy load (배포 초기 로딩 최적화)
-function showStageTransition(callback){
+function showStageTransition(callback,rootControl){
+  const controlled=_rootRiftEnabled&&!!rootControl;
+  const curtainOwner=_rootRiftEnabled?++_rootRiftCurtainEpoch:0,bootOwner=_bootLoadEpoch;
+  let ownedRaf=null,ownedWait=null,ownedHide=null,cancelled=false;
+  const curtainCurrent=()=>!cancelled&&curtainOwner===_rootRiftCurtainEpoch&&bootOwner===_bootLoadEpoch;
+  const jobCurrent=()=>!controlled||curtainCurrent()&&rootControl.current();
+  const cancel=()=>{if(cancelled)return false;const mayHide=curtainCurrent();cancelled=true;if(ownedRaf!==null)cancelAnimationFrame(ownedRaf);if(ownedWait!==null)clearTimeout(ownedWait);if(ownedHide!==null)clearTimeout(ownedHide);ownedRaf=ownedWait=ownedHide=null;if(controlled&&mayHide){const old=$('stageTransition');if(old){old.style.opacity='0';old.style.pointerEvents='none'}}return true};
+  const refuse=()=>{cancel();if(controlled)rootControl.onCancel()};
   const el=$('stageTransition'),bar=$('stLoadBar'),name=$('stNextName'),img=$('stRndImg'),info=$('stFloorInfo');
   const nextStg=G.stage+1;
-  if(nextStg>=TOTAL_STAGES){if(callback)callback();return;}
+  if(nextStg>=TOTAL_STAGES){if(jobCurrent()&&callback)callback();else if(controlled)refuse();return controlled?Object.freeze({cancel}):undefined;}
   const hell=SI_TO_HELL[nextStg];
   const stg=STG[nextStg];
   name.textContent=_T('구역')+' '+(SI_TO_FLOOR[nextStg]+1)+' — '+_T(HELL_NAMES[hell]);
@@ -61625,14 +61761,18 @@ function showStageTransition(callback){
     img.style.filter='saturate(1.1) brightness(1.05)';
   }
   el.style.opacity='1';el.style.pointerEvents='all';bar.style.width='0%';
-  requestAnimationFrame(()=>{
+  ownedRaf=requestAnimationFrame(()=>{
+    ownedRaf=null;if(controlled&&!jobCurrent()){refuse();return}
     bar.style.width='45%';
-    setTimeout(()=>{
-      if(callback)callback();
+    ownedWait=setTimeout(()=>{
+      ownedWait=null;if(controlled&&!jobCurrent()){refuse();return}
+      try{if(callback&&callback()===false&&controlled){refuse();return}}catch(error){if(controlled){refuse();return}throw error}
+      if(controlled&&!curtainCurrent())return;
       bar.style.width='100%';
-      setTimeout(()=>{el.style.opacity='0';el.style.pointerEvents='none'},900);
+      ownedHide=setTimeout(()=>{ownedHide=null;if(controlled&&!curtainCurrent())return;el.style.opacity='0';el.style.pointerEvents='none'},900);
     },5000);
   });
+  return controlled?Object.freeze({cancel}):undefined;
 }
 let _bootPerfStart=0,_bootPerfLast=0,_bootPerfMarks=null;
 function _bootPerfMark(pct,msg){
@@ -61649,6 +61789,7 @@ function _bootPerfReport(){
   _bootPerfMarks=null;
 }
 function showBootLoading(msg){
+  _rootRiftInvalidate('boot-loading');if(_rootRiftEnabled)_rootRiftCurtainEpoch++;
   const el=$('stageTransition'),bar=$('stLoadBar'),name=$('stNextName'),img=$('stRndImg');
   if(!el||!bar||!name) return;
   if(_DEBUG_PERF){
@@ -61716,6 +61857,19 @@ function _showNextDiffPop(){
   pop.style.opacity='1';pop.style.pointerEvents='all';
 }
 async function _proceedNextStage(){
+  if(_rootRiftEnabled){
+    const job=_rootRiftBegin();if(!job)return false;
+    try{
+      // Capture and own input BEFORE awaiting the existing single save call.
+      // Its void/skip/catch resolution is preparation, never durable save ACK.
+      if(job.saveReady)await job.save();
+      if(!_rootRiftCurrent(job)){_rootRiftInvalidateJob(job,'context-after-save');return false}
+      const runtime=await _rootRiftEnsure();
+      if(!_rootRiftCurrent(job)){_rootRiftInvalidateJob(job,'context-after-import');return false}
+      const result=await runtime.enter(job);
+      return result.entered===true;
+    }catch(_){_rootRiftInvalidateJob(job,'rift-entry-failed');return false}
+  }
   if(_dbReady)await dbSave();
   showStageTransition(()=>nextStage());
 }
@@ -61734,6 +61888,7 @@ function openWishlist(){
 }
 // ═══ 로비 복귀 버튼 ═══
 async function goToLobby(){
+  _rootRiftInvalidate('lobby');
   if(typeof _deathDlgStop==='function')_deathDlgStop();
   try{
     // 사망 상태면 HP 복구 후 저장 (죽은 채로 저장 방지)
