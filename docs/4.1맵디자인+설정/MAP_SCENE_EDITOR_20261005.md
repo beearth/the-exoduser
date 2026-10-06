@@ -806,3 +806,35 @@ core 의미검수=`tools/test-map-scene-placement-presets.cjs` 신규14/14·1회
 | 시각·남은 것 | 도구 접근점 진입 UI 인수와 전체맵 VISUAL VERDICT RETOUCH 분리. 바닥해상도/주민실높이/애니메이션/본편진행·실지급/save/native6/청취/A급/실물폰 인수0. 새팀·실행세션·중복TASK0; paused자동화/아침메일재개0, 19시단일결과보고 조건유지 |
 
 정확코드핀·수정전백업·검색전체/disposition·검사·화면·Git: `/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/resident-preview-entry-20261006/receipt.json`. 가이드§23 MAP PRODUCTION REPORT는 `HELL_RIFT_EDITOR_RESULT_20261006.md`의 동일완료ID를 따른다. 이 기록은 root지원 구현의 독립 consumer 채택이며 전문팀 전원 제작완료를 의미하지 않는다.
+
+## 23. 보행 시험 버튼의 입력·드래그·로딩 상태 표시 — 2026-10-06
+
+완료ID `ROOT-RIFT-PREVIEW-STATE-UI-20261006`. §22 완료 시 관찰된 pending/drag/busy의 활성 외형 잔존을 해소한다. 기존 안전 handler는 그대로이며, 화면의 disabled 표시가 현재 guard 상태를 따라가도록 변경했다.
+
+| 항목 | 정확 현재 코드 계약 |
+|---|---|
+| 캐시 | `residentPreviewButtons` 배열의 현재4카드 `{button,ready:row.status==='ready'}`. 실제 button 참조만 내부 보관. scene/history/player/view/storage 필드 추가0 |
+| 캐시 초기화 | `invalidateResidentAccess`와 `residentAccessUI` 시작에서 배열=[]/`residentPreviewBlockedState=null`. 이전 DOM 참조 폐기, unsupported/검사없음/무효mode earlyreturn도 빈캐시 유지 |
+| 카드 생성 | 각 preview button의 기존 onclick=`startResidentPreview(npcId)` 유지. 배열push 후 전체4카드 생성 끝에 `syncResidentPreviewButtons()` 최초실행. 이전blocked키가null이므로 새카드 ready/blocked를 적용 |
+| 현재 상태 | blocked=`residentPreviewBlocked() || !dialogueController`. busy/playing/dialogueOpen/drag/history.pending/batchIds.size>1/preview·dialogueFactory·dialogueRaw 미준비를 기존guard 그대로 재사용. 계산결과는 boolean |
+| 갱신 | `syncResidentPreviewButtons()`는 blocked===이전state면 즉시return. 달라졌을때만 state저장 후 cachedbutton.disabled=blocked||!ready. blocked해제 후에도 row.status!==ready의버튼은 비활성 유지 |
+| RAF 비용 | 기존 tick의 updateNearby 뒤·dirty render 앞에서 O(1) guard비교. 동일boolean 동안 disabled DOM쓰기0/DOMquery0/카드재생성0/새BFS0. 상태전이 때만 현재캐시 최대4button의 leaf속성 갱신. 새 RAF/타이머 추가0 |
+| 입력 종료 | propertyfocus로history.pending 시작하면 다음기존tick에서비활성. blur/history.end 뒤 기존 changed는 접근결과무효화·카드삭제. 버튼을 억지로 되살리지 않으며 사용자가 다시접근검사하면 fresh4카드 활성. 기존자동저장/History 규칙 불변 |
+| 드래그·로딩 | 기존pointerdrag 시작~종료의 표시를 다음tick에 반영. pan종료는현재캐시재활성, 객체·브러시편집drag종료는기존changed의보고서무효화후재검사. busy에서는 기존workspace.inert와표시비활성을 함께 적용. 성공import는 기존report무효화/카드삭제, 새검사 후현재카드활성. 원본geometry/진입좌표/길/renderer 변경0 |
+| guard·검수 경계 | 상태변경과다음tick 사이에도 기존handler가진입차단. 접근fresh검사/nearest exactNPC/임시playerview/F/ESC/일반시작/복귀수명 수정0. 이전완료12그룹·unit·F분기/종주/PNG/native6 반복0. 신규단위test0(가역표시만), 새화면상태전이3그룹으로인수 |
+
+
+### 2026-10-06 — 보행 시험 버튼의 현재 비활성 상태 표시
+
+완료ID `ROOT-RIFT-PREVIEW-STATE-UI-20261006`. 정확현행계약은 `MAP_SCENE_EDITOR_20261005.md` §23. §22의 pending/drag/busy enabled외형잔존 관찰은 당시이력이며, 이번변경으로 현재표시가 guard와동기화된다.
+
+| 항목 | 현재 구현·검수 |
+|---|---|
+| 표시 consumer | 현재4카드 button/ready 캐시. report무효화·카드재생성시캐시/상태키 초기화. 기존RAF에서 blockedboolean전이일때만 disabled=blocked||!ready 갱신 |
+| 성능·동작 | 동일상태 DOM조회/disabled쓰기/카드재생성/BFS0, 기존tick O(1)비교만. 새타이머0/진입handler·source/player/view/nav/history/storage/renderer·대화 규칙 변경0 |
+| 종료 정책 | propertyblur/성공import는 기존report/card무효화 후재검사로fresh활성. pan종료는현재캐시활성복귀, 객체·브러시편집drag종료는기존changed가보고서무효화후재검사. busy workspace.inert 유지. 비ready행은blocked해제후에도disabled |
+| 의미·화면 | node --check actual1 PASS; 새unit0. 신규Chrome상태3그룹PASS actuallaunch2/contexts2, 실제propertyfocus·middlepointer·asyncbusy→종료/fresh검사와안정상태leaf쓰기0확인. 별도비활성시각근거1을추가했고 성공3그룹/72·30RAF측정 재실행0. 이전unit12/entry12/분기/종주/native6/PNG재검사0 |
+| 보존·Git | code1+docs12 정확13 한정checkpoint·actualNUL85→72/원격exactSHA 외부receipt. 보호24·타인72status/68핀·owner4본인기록 유지, root타인쓰기0 |
+| 인수 경계 | 표시 UI PASS, 전체맵 VISUAL VERDICT RETOUCH. 실제높이/바닥해상도·주민애니메이션·본편grant/quest/save/상승/native6·실청취/실물폰/A급 미인수. 새팀/실행세션/중복TASK0·paused자동화/아침메일재개0·19시단일보고 조건유지 |
+
+코드핀·수정전백업·실제화면/원본검사·docs전체검색/disposition·정상Git/원격근거: `/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/resident-preview-state-ui-20261006/receipt.json`. 가이드§23 MAP PRODUCTION REPORT는 `HELL_RIFT_EDITOR_RESULT_20261006.md`의 동일완료ID.

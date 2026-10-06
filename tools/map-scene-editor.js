@@ -117,15 +117,18 @@
   const residentAnchors = () => residentAnchorsFactory?.(current()) || (dialogueSceneSupport?.(current()) ? RESIDENT_ANCHORS : []);
   let residentAccessFactory, residentAccessReport = null;
   let residentPreviewFactory, residentPreviewOrigin = null;
+  let residentPreviewButtons = [], residentPreviewBlockedState = null;
   const residentStatusText = {ready:'접근 가능', 'foot-blocked':'발이 막힌 바닥 위에 있음', 'start-blocked':'시작점이 막힘', 'no-route':'시작점과 길이 끊김', 'no-approach':'대화 거리 안 접근점 없음'};
   const pointText = p => Math.round(p.x*100)/100+', '+Math.round(p.y*100)/100;
   function invalidateResidentAccess() {
     residentAccessReport = null;
+    residentPreviewButtons = []; residentPreviewBlockedState = null;
     $('resident-access-list').replaceChildren();
     $('resident-access-summary').textContent='주민 위치나 길을 바꿨습니다. 다시 검사하세요.';
     dirty=true;
   }
   function residentAccessUI() {
+    residentPreviewButtons = []; residentPreviewBlockedState = null;
     const supported=current().residentLayerReview?.kind==='independent-resident-preview-v1';
     $('resident-access-section').hidden=!supported;
     $('resident-access-check').disabled=busy||playing||dialogueOpen||!residentAccessFactory;
@@ -151,13 +154,20 @@
       const focus=document.createElement('button');focus.type='button';focus.textContent=name+' · 발 위치 보기';focus.disabled=playing||dialogueOpen;
       focus.onclick=()=>{if(busy||playing||dialogueOpen||!residentAccessReport)return;const foot=current().layers.find(l=>l.id==='foot');const o=foot?.objects.find(o=>o.id===row.objectId);if(!o)return;selected=o.id;layerId=foot.id;paletteId=null;tool='select';viewport={x:o.x,y:o.y-60,zoom:Math.min(size.w/900,size.h/600)};clampCamera();if(matchMedia('(max-width:760px)').matches)$('inspector').classList.add('mobile-hidden');palette();refresh();canvas.focus();};
       const preview=document.createElement('button');preview.type='button';preview.dataset.residentPreview=row.npcId;preview.textContent=name+' · 접근점에서 보행 시험';
-      preview.disabled=row.status!=='ready'||residentPreviewBlocked()||!dialogueController;
       preview.onclick=()=>startResidentPreview(row.npcId);
+      residentPreviewButtons.push({button:preview,ready:row.status==='ready'});
       card.append(heading,state,details,focus,preview);$('resident-access-list').append(card);
     }
+    syncResidentPreviewButtons();
   }
   function residentPreviewBlocked() {
     return busy||playing||dialogueOpen||!!drag||!!history.pending||batchIds.size>1||!residentPreviewFactory||!dialogueFactory||!dialogueRaw;
+  }
+  function syncResidentPreviewButtons() {
+    const blocked=residentPreviewBlocked()||!dialogueController;
+    if(blocked===residentPreviewBlockedState)return;
+    residentPreviewBlockedState=blocked;
+    for(const {button,ready} of residentPreviewButtons)button.disabled=blocked||!ready;
   }
   function startResidentPreview(npcId) {
     if(residentPreviewBlocked())return;
@@ -468,6 +478,7 @@
     if(playing&&!dialogueOpen){let dx=(keys.has('d')||keys.has('arrowright')?1:0)-(keys.has('a')||keys.has('arrowleft')?1:0),dy=(keys.has('s')||keys.has('arrowdown')?1:0)-(keys.has('w')||keys.has('arrowup')?1:0);const before={...player},n=Math.hypot(dx,dy)||1,step=320*dt;if(K.canWalk(current(),player.x+dx/n*step,player.y))player.x+=dx/n*step;if(K.canWalk(current(),player.x,player.y+dy/n*step))player.y+=dy/n*step;if(window.MapSceneActor?.tick(time,player.x-before.x,player.y-before.y))dirty=true;if(dx||dy){viewport.x=player.x;viewport.y=player.y;clampCamera();dirty=true;}}
     if(playing&&dialogueOpen&&window.MapSceneActor?.tick(time,0,0))dirty=true;
     updateNearby();
+    syncResidentPreviewButtons();
     if(dirty){dirty=false;const d=canvas.width/size.w;ctx.setTransform(d,0,0,d,0,0);ctx.fillStyle='#0d1510';ctx.fillRect(0,0,size.w,size.h);ctx.save();ctx.translate(size.w/2,size.h/2);ctx.scale(viewport.zoom,viewport.zoom);ctx.translate(-viewport.x,-viewport.y);render();ctx.restore();$('zoom-value').textContent=Math.round(viewport.zoom*100)+'%';scaleComparisonUI();}
     requestAnimationFrame(tick);
   }

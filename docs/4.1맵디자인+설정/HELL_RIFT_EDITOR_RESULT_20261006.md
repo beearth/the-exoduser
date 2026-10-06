@@ -1119,3 +1119,55 @@ VISUAL VERDICT: RETOUCH
 - 접근점 시험 도구 UI와 전체맵인수 분리; 실제높이·바닥해상도·정적주민·본편/native/청취미인수.
 NEXT PASS: 실제에셋시각보정과 주민진행consumer·같은후보 본편6단계/실청취.
 =========================================================
+
+
+### 2026-10-06 — 보행 시험 버튼의 현재 비활성 상태 표시
+
+완료ID `ROOT-RIFT-PREVIEW-STATE-UI-20261006`. 정확현행계약은 `MAP_SCENE_EDITOR_20261005.md` §23. §22의 pending/drag/busy enabled외형잔존 관찰은 당시이력이며, 이번변경으로 현재표시가 guard와동기화된다.
+
+| 항목 | 현재 구현·검수 |
+|---|---|
+| 표시 consumer | 현재4카드 button/ready 캐시. report무효화·카드재생성시캐시/상태키 초기화. 기존RAF에서 blockedboolean전이일때만 disabled=blocked||!ready 갱신 |
+| 성능·동작 | 동일상태 DOM조회/disabled쓰기/카드재생성/BFS0, 기존tick O(1)비교만. 새타이머0/진입handler·source/player/view/nav/history/storage/renderer·대화 규칙 변경0 |
+| 종료 정책 | propertyblur/성공import는 기존report/card무효화 후재검사로fresh활성. pan종료는현재캐시활성복귀, 객체·브러시편집drag종료는기존changed가보고서무효화후재검사. busy workspace.inert 유지. 비ready행은blocked해제후에도disabled |
+| 의미·화면 | node --check actual1 PASS; 새unit0. 신규Chrome상태3그룹PASS actuallaunch2/contexts2, 실제propertyfocus·middlepointer·asyncbusy→종료/fresh검사와안정상태leaf쓰기0확인. 별도비활성시각근거1을추가했고 성공3그룹/72·30RAF측정 재실행0. 이전unit12/entry12/분기/종주/native6/PNG재검사0 |
+| 보존·Git | code1+docs12 정확13 한정checkpoint·actualNUL85→72/원격exactSHA 외부receipt. 보호24·타인72status/68핀·owner4본인기록 유지, root타인쓰기0 |
+| 인수 경계 | 표시 UI PASS, 전체맵 VISUAL VERDICT RETOUCH. 실제높이/바닥해상도·주민애니메이션·본편grant/quest/save/상승/native6·실청취/실물폰/A급 미인수. 새팀/실행세션/중복TASK0·paused자동화/아침메일재개0·19시단일보고 조건유지 |
+
+코드핀·수정전백업·실제화면/원본검사·docs전체검색/disposition·정상Git/원격근거: `/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/resident-preview-state-ui-20261006/receipt.json`. 가이드§23 MAP PRODUCTION REPORT는 `HELL_RIFT_EDITOR_RESULT_20261006.md`의 동일완료ID.
+
+
+================= MAP PRODUCTION REPORT =================
+STAGE: 지옥의 틈 editor3387 · 보행시험버튼상태 / ROOT-RIFT-PREVIEW-STATE-UI-20261006
+MASTER
+- silhouette/regions: 기존 비대칭 균열·절벽/남도착지/서망자턱/동상승절벽/심연/북문 유지.
+- main route: SOUTH→NORTH 원본start/nav/exit; side spaces: 4주민턱 불변.
+OUTER MASS
+- LEFT/RIGHT/TOP/SOUTH: 기존서절벽/동뿌리갑각/북계단상승문/남도착지; major holes: 심연 유지/geometry쓰기0.
+LARGE
+- source assets/composites/overlap/repeated silhouette: 원본painting/cleanplate/atlas/조명·배치 불변.
+MEDIUM
+- connections: 기존그림/충돌/발; remaining holes: 실높이·접합후속.
+GROUND
+- shadow/contamination/structure integration: renderer·world/crop/feet/nav변경0.
+PLAYABLE
+- main arenas: 전이쉼터; travel/breathing/threat spaces: 기존path/주민턱/심연; combat readability: 이번표시수정/본편전투미인수.
+LANDMARK
+- primary: 심연/북문; secondary: 서턱/동굴절벽; tertiary: 불씨/뿌리 유지.
+CAMERA QA
+- START/EARLY: 접근4버튼 활성→propertypending 비활성.
+- ARENA: 본편전투미검수; SIDE L/SIDE R: 드래그·busy표시만 신규검수.
+- LANDMARK/LATE/EXIT: 원본환경불변, 종료후fresh검사 활성/안정DOM쓰기0; 본편8카메라 반복0.
+TECH QA
+- route/collision: source24핀 불변/기존전체종주0.
+- pageerror/404/loading: actualraw/summary의신규3그룹·asyncgate기록.
+- seam: 원본PNG쓰기0/재export0; performance: 같은boolean leaf쓰기0 검수/전체FPS미인수.
+- syntax actual1PASS/newunit0/화면3그룹PASS actualChrome2/contexts2.
+FILES
+- stage-owned: code1+docs12 정확13; concurrent touched: root0/owner4본인기록허용; unrelated touched: root0/72status·68핀보존.
+GIT
+- staged: 완료13경로; commit/push: 정상checkpoint/기존branch push·원격exactSHA외부receipt; deploy0.
+VISUAL VERDICT: RETOUCH
+- 표시UI PASS와 전체맵인수 분리. 바닥해상도/실높이/정적주민/본편/native/청취미인수.
+NEXT PASS: 실제에셋 시각보정·주민진행consumer·본편같은후보6단계/실청취.
+=========================================================
