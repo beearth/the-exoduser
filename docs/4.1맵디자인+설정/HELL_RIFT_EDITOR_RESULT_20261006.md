@@ -1065,3 +1065,57 @@ VISUAL VERDICT: RETOUCH
 - 비교 도구 UI 인수와 전체맵GATE분리; 원본저해상도·실높이·정적주민·본편/native/청취미인수.
 NEXT PASS: 현재크기 정보를 활용한 실제에셋시각보정·주민접근/진행consumer·본편동일후보6단계/청취.
 =========================================================
+
+
+### 2026-10-06 — 주민 접근점에서 임시 보행 시험
+
+완료ID `ROOT-RIFT-RESIDENT-PREVIEW-ENTRY-20261006`. 현행 정확 계약은 `MAP_SCENE_EDITOR_20261005.md` §22이며, 이전 접근 진단의 읽기 전용 계약은 유지한다. 새 보행 시험 버튼만 transient player/view를 변경하고, 기존 scene.start와 일반 보행 시작은 유지한다.
+
+| 항목 | 현재 구현·인수 경계 |
+|---|---|
+| 독립 consumer | 접근검사4카드의 이름별 시험 버튼. fresh 시작연결 검사와 nearest 정확대상 확인 후 현재 접근점에서 시작. 자동대화0, F 명시대화·ESC닫기→ESC원편집상태복귀 |
+| 조건·수치 | 정확4 NPC/object ID, ready/footWalkable/startConnected/유한좌표. 기존 r12/거리40…140/step20/40000cells 재사용, scene.start 및 nav/feet 불변. 시험zoom=min(stageW/900,stageH/600); 카메라clamp 유지, 카드 min-height44px |
+| 조작·수명 | busy/playing/dialogue/drag/pending/multi>1 차단. Enter/Space native 버튼, heldkeysrelease. 성공import/changed/UndoRedo/tool/일반보행은 origin폐기, 실패import 이전상태유지. 모듈실패 새disabled/기존에디터유지 |
+| 의미·화면 | 신규unit12/12 actual1 실패0. 신규Chrome 고유12그룹PASS, 실제launch1/contexts3; 원본raw/실패이력은 외부summary. 이전full4walk/분기/scale/old suites 반복0. 직접DOM guard와 actualpointer/390tap 별도기록 |
+| 보존·Git | source scene/start/feet/nav/story/game·renderer코드/원본PNG 파일 불변, preview의JSON/history/autosave/user-save쓰기0. 시험중 새PNG에는 현재전사가 포함되는 기존동작 유지·이번export미검수. code3+docs12 정확15 한정checkpoint·actual NUL87→72·원격exactSHA는 receipt. 타인72status/68pins·owner4본인기록 보존/rootwrites0 |
+| 시각·남은 것 | 도구 접근점 진입 UI 인수와 전체맵 VISUAL VERDICT RETOUCH 분리. 바닥해상도/주민실높이/애니메이션/본편진행·실지급/save/native6/청취/A급/실물폰 인수0. 새팀·실행세션·중복TASK0; paused자동화/아침메일재개0, 19시단일결과보고 조건유지 |
+
+정확코드핀·수정전백업·검색전체/disposition·검사·화면·Git: `/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/resident-preview-entry-20261006/receipt.json`. 가이드§23 MAP PRODUCTION REPORT는 `HELL_RIFT_EDITOR_RESULT_20261006.md`의 동일완료ID를 따른다. 이 기록은 root지원 구현의 독립 consumer 채택이며 전문팀 전원 제작완료를 의미하지 않는다.
+
+
+================= MAP PRODUCTION REPORT =================
+STAGE: 지옥의 틈 독립주민v2 · editor3387 접근점 보행 시험 / ROOT-RIFT-RESIDENT-PREVIEW-ENTRY-20261006
+MASTER
+- silhouette: 기존 비대칭 균열/절벽; regions: 남쪽도착지/서측망자턱/동측절벽/심연/북상승문 유지.
+- main route: 기존 SOUTH→NORTH start/nav/exit 불변; side spaces: 현재4주민 머무는 턱 유지.
+OUTER MASS
+- LEFT: 서측절벽; RIGHT: 동측뿌리/갑각; TOP: 계단/상승문; SOUTH: 도착지; major holes: 심연 유지/geometry쓰기0.
+LARGE
+- source assets: painting/cleanplate/atlas exactpins; composites: 기존정적조명 유지; overlap/repeated silhouette 변경0.
+MEDIUM
+- connections: 기존그림/충돌/발 보존; remaining holes: 실높이·접합 후속GATE.
+GROUND
+- shadow/contamination/structure integration: 기존renderer 유지, 원본world/crop/feet/nav쓰기0.
+PLAYABLE
+- main arenas: 독립전이쉼터; travel/breathing/threat spaces: 기존path/주민턱/심연 유지.
+- combat readability: 이번범위 편집시험 진입, 본편전투/대형경로 인수0.
+LANDMARK
+- primary: 중앙심연/북상승문; secondary: 서측망자턱/동굴절벽; tertiary: 기존불씨/뿌리.
+CAMERA QA
+- START: 일반보행 source.start 확인; EARLY: 접근검사4카드의 시험버튼.
+- ARENA: 전투미인수; SIDE L: 하란fresh진입/F대화; SIDE R: 이동/단절/overlap의거절.
+- LANDMARK: 원본renderer불변; LATE: ESC 편집view/선택복귀; EXIT: 성공import의origin폐기.
+- 390px 실제tap 에뮬레이션이며 본편8카메라/실물폰 인수0.
+TECH QA
+- route/collision: 기존접근 검사 재사용; 전체종주 반복0; source scene/start/nav/feet exact불변.
+- pageerror/404/loading: 신규모듈fallback은 의도된별도검사; 실제raw/summary 참조.
+- seam: renderer코드/원본PNG파일쓰기0·재export미검수, 기존playing export의전사포함유지; performance: 명시클릭마다 fresh검사/RAF상시BFS0, FPS전체미검수.
+- unit12/12 actual1; 화면고유12그룹PASS actualChrome1/contexts3; 이력외부보존.
+FILES
+- stage-owned: code3+docs12 정확15; concurrent touched: root0/owner4본인기록허용; unrelated touched: root0/기존72status·68pins보존.
+GIT
+- staged: 완료15경로 한정; commit: 정상checkpoint; push: 기존branch 정상push/원격exactSHA 외부receipt; deploy:0.
+VISUAL VERDICT: RETOUCH
+- 접근점 시험 도구 UI와 전체맵인수 분리; 실제높이·바닥해상도·정적주민·본편/native/청취미인수.
+NEXT PASS: 실제에셋시각보정과 주민진행consumer·같은후보 본편6단계/실청취.
+=========================================================

@@ -769,3 +769,40 @@ core 의미검수=`tools/test-map-scene-placement-presets.cjs` 신규14/14·1회
 | 인수 | 도구 크기비교 UI의 화면/의미 인수와 전체맵 VISUAL VERDICT RETOUCH 분리. 바닥확대해상도·실높이·정적주민·본편grant/quest/save/상승/native6·실청취·A급 미인수. 새팀/실행세션/중복TASK0·paused자동화/아침메일재개0·19시단일결과보고 조건유지 |
 
 백업·현재정확핀·화면·실패이력·docs전체검색과disposition·정상Git/원격근거: `/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/scale-comparison-20261006/receipt.json`. 가이드§23 MAP PRODUCTION REPORT는 `HELL_RIFT_EDITOR_RESULT_20261006.md`의 동일 완료ID다. Claude/Codex 전문팀 작업전원완료를 뜻하지 않으며, 이 개선은 root지원 구현을 독립 consumer에 채택한 것이다.
+
+## 22. 주민 접근점에서 보행 시험 시작 — 2026-10-06
+
+완료ID `ROOT-RIFT-RESIDENT-PREVIEW-ENTRY-20261006`. §16의 현재 시작점 연결 접근 검사를 이용하여, 독립 editor3387에서 선택한 주민 바로 앞의 임시 보행 시험을 시작한다. 아래 버튼은 편집 검수용이며 본편 이동·장 게이트·실제 지급을 승인하지 않는다. 기존 일반 보행은 여전히 scene.start에서 시작한다.
+
+| 항목 | 정확 현재 코드 계약 |
+|---|---|
+| 준비 모듈 | `tools/map-scene-resident-preview.mjs`의 `prepareResidentPreview(scene,npcId,canWalk)`. 매 진입마다 기존 `inspectResidentAccess`를 fresh 호출. BFS/geometry/반경/좌표 정책 복제0. scene/start/nav/feet/history/storage/player/view 쓰기0 |
+| 정확 대상 | rift-rest-haran↔obj-resident-haran, rift-gift-berin↔obj-resident-berin, rift-request-nessa↔obj-resident-nessa, rift-prepare-dorik↔obj-resident-dorik. string ID/독립 profile/mode/유일 row/objectId 일치 확인. 무효 query/profile/unsupported/row/status/getter 예외는 한국어 사유와 ready=false |
+| 접근 조건 | ready 상태, footWalkable===true, startConnected===true, foot/approach의 x/y는 유한 Number. 기존 strict canWalk===true·r12·연결 tile중심40…140/step20·40000cell 제한을 재사용. Promise/truthy/throw를 새 성공으로 해석0 |
+| 성공 결과 | `{ready:true,npcId,objectId,player:{x,y},foot:{x,y},report}`. player는 현재 fresh 접근점의 좌표 복사. 실패 `{ready:false,reason,report}`; ID 거절 등 검사 전 실패의 report=null. 원본scene.start 수정0 |
+| 버튼 | 기존 주민 접근 검사4카드에 `<이름> · 접근점에서 보행 시험`, type=button/data-resident-preview. 상태ready와 모듈/대화 준비 때 사용; 기존 카드 CSS min-height44px 적용. 카드 표시의 이전PASS만으로 진입0, 클릭마다 재검사 |
+| 진입 guard | busy/playing/dialogueOpen/drag/history.pending/다중batch>1/모듈·대화자료 미준비이면 handler 즉시 종료. 검사 갱신과 dirty표시는 허용하되 실패 시 player/view/선택/history/scene 쓰기0. 드래그/입력 중 이전 enabled 표시가 남아도 handler guard 적용 |
+| 대화 대상 확인 | 새 접근점에서 기존 `dialogueController.nearest(player)`의 npcId가 요청 ID와 정확히 같아야 진입. 다른 주민이 더 가까운 overlap은 한국어 안내 후 거절. 자동대화 open0; 기존 F/이야기 듣기 버튼으로 명시적 대화 |
+| 임시 시작 | 동일 scene reference, npcId/objectId/entry, 이전 view/selected/layerId/paletteId/tool/player/batch/batchLayer/inspectorHidden을 내부 origin에 보존. releaseHeld·clearBatch·selected/paletteId=null·tool=select, player=접근점 복사. zoom=min(size.w/900,size.h/600), 중심=player 후 기존 clampCamera. canvas focus, 모바일 inspector hidden |
+| ESC·종료 | 대화 열린 동안 첫 ESC는 대화만 종료. 보행 상태의 다음 ESC 또는 보행 종료 버튼은 playing=false/releaseHeld 후 동일scene인 origin의 편집 view/선택/도구/배치/패널 상태를 복구. 원본 start/nav/feet 쓰기0. 평소 일반보행 종료는 origin없음으로 기존동작 유지 |
+| 무효화 | changed/Undo·Redo/성공 import/도구전환/일반보행 시작에서 origin 폐기. 실패 import는 기존 검증·이미지 로딩 이전 상태 유지. 성공 import는 새scene에 이전view/선택 복원0. tool변경은 선택한 새tool 유지 |
+| 키·초점 | button[data-resident-preview]의 Enter/Space는 전역 이동/space 처리에서 제외하여 native 버튼 활성화 허용. 진입·종료 releaseHeld로 이전키/space 해제. 기존 대화 focus 처리/F repeat 방지 불변 |
+| 실패 격리·진단 | 모듈 import 별도try/catch. 실패는 새 버튼 disabled, 기존 접근 검사/에디터 유지. readonly `EXODUSER_SCENE_EDITOR.residentPreview()`는 npcId/objectId/entry 좌표 복사 또는 null. 내부 scene/view/origin 참조 노출0 |
+| 출력 경계 | 이 임시 시작점/편집 복귀 정보는 프로젝트JSON·PNG·autosave/history에 추가0. 기본 renderer/조명/정적 주민·바닥/원본 crop·world/nav·게임 코드 불변. 기존 PNG 재export0 |
+| 미인수 | 본편지급/quest/save/상승/native6·청취·주민애니메이션·실높이·Unity import·A급전체맵·실물폰은 후속. 390touch viewport는 에뮬레이션, pointer/tap 검사와 직접 DOM click guard 검사는 구분 |
+
+
+### 2026-10-06 — 주민 접근점에서 임시 보행 시험
+
+완료ID `ROOT-RIFT-RESIDENT-PREVIEW-ENTRY-20261006`. 현행 정확 계약은 `MAP_SCENE_EDITOR_20261005.md` §22이며, 이전 접근 진단의 읽기 전용 계약은 유지한다. 새 보행 시험 버튼만 transient player/view를 변경하고, 기존 scene.start와 일반 보행 시작은 유지한다.
+
+| 항목 | 현재 구현·인수 경계 |
+|---|---|
+| 독립 consumer | 접근검사4카드의 이름별 시험 버튼. fresh 시작연결 검사와 nearest 정확대상 확인 후 현재 접근점에서 시작. 자동대화0, F 명시대화·ESC닫기→ESC원편집상태복귀 |
+| 조건·수치 | 정확4 NPC/object ID, ready/footWalkable/startConnected/유한좌표. 기존 r12/거리40…140/step20/40000cells 재사용, scene.start 및 nav/feet 불변. 시험zoom=min(stageW/900,stageH/600); 카메라clamp 유지, 카드 min-height44px |
+| 조작·수명 | busy/playing/dialogue/drag/pending/multi>1 차단. Enter/Space native 버튼, heldkeysrelease. 성공import/changed/UndoRedo/tool/일반보행은 origin폐기, 실패import 이전상태유지. 모듈실패 새disabled/기존에디터유지 |
+| 의미·화면 | 신규unit12/12 actual1 실패0. 신규Chrome 고유12그룹PASS, 실제launch1/contexts3; 원본raw/실패이력은 외부summary. 이전full4walk/분기/scale/old suites 반복0. 직접DOM guard와 actualpointer/390tap 별도기록 |
+| 보존·Git | source scene/start/feet/nav/story/game·renderer코드/원본PNG 파일 불변, preview의JSON/history/autosave/user-save쓰기0. 시험중 새PNG에는 현재전사가 포함되는 기존동작 유지·이번export미검수. code3+docs12 정확15 한정checkpoint·actual NUL87→72·원격exactSHA는 receipt. 타인72status/68pins·owner4본인기록 보존/rootwrites0 |
+| 시각·남은 것 | 도구 접근점 진입 UI 인수와 전체맵 VISUAL VERDICT RETOUCH 분리. 바닥해상도/주민실높이/애니메이션/본편진행·실지급/save/native6/청취/A급/실물폰 인수0. 새팀·실행세션·중복TASK0; paused자동화/아침메일재개0, 19시단일결과보고 조건유지 |
+
+정확코드핀·수정전백업·검색전체/disposition·검사·화면·Git: `/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/resident-preview-entry-20261006/receipt.json`. 가이드§23 MAP PRODUCTION REPORT는 `HELL_RIFT_EDITOR_RESULT_20261006.md`의 동일완료ID를 따른다. 이 기록은 root지원 구현의 독립 consumer 채택이며 전문팀 전원 제작완료를 의미하지 않는다.
