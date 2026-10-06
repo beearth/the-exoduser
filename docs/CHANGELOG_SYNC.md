@@ -54469,3 +54469,8 @@ actual NUL83에서 공식완료/idle/exactpins raw6(MAP/BOSS/STORY/SKILL/QA/ENEM
 ## NPC 연결 후 관련docs 동기화 2 — 2026-10-06T14:40:05.634520+00:00
 
 완료소유관련문서7개를현재독립3387계약과정확동기화: docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md, docs/5.0애니메이션파이프라인/5.0애니메이션파이프라인.md, docs/4.1맵디자인+설정/맵유형_확장기획.md, docs/4.1맵디자인+설정/맵메이킹_가이드.md, docs/4.1맵디자인+설정/HELL_RIFT_MAP_CANDIDATE_20261005.md, docs/0마스터플랜/mac-resume-20261001/vscode-dispatch/CONTINUOUS-DISPATCH-20261002.md, docs/4.1맵디자인+설정/DEPTH_2_5D_BENCHMARK_20260930.md. 전수검색·원문prefix/백업보존, actual80부터checkpoint, 기존25a6e38코드/Git근거와원격exact영수증연결. VISUAL VERDICT: RETOUCH/본편native미인수.
+
+
+## NPC 연결 후 관련docs 동기화 3 — 2026-10-06T14:40:05.634520+00:00
+
+완료소유관련문서4개를현재독립3387계약과정확동기화: docs/4.1맵디자인+설정/_MAP_SSOT_INDEX.md, docs/4.1맵디자인+설정/CH1_1_A_GRADE_PRODUCTION_20261005.md, docs/4.1맵디자인+설정/HELL_RIFT_EDITOR_RESULT_20261006.md, docs/3.3 키바인딩+설정/3.3 키바인딩+설정.md. 전수검색·원문prefix/백업보존, actual80부터checkpoint, 기존25a6e38코드/Git근거와원격exact영수증연결. VISUAL VERDICT: RETOUCH/본편native미인수.
