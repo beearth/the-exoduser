@@ -54551,3 +54551,20 @@ Codex7의latestcontrol은memory로만갱신되었고owner STATE/LOG는쓰기허�
 기존 Claude7의 새 TASK 송신/peer/첫 성공 source/공식 end·idle/정확 최종핀7을 owner 2026-10-06T17:02:13.624713Z 실조회로 확인했다. 원자료 누적31+7=38. 아래7 후보는 본편/public 미채택이며 의미검수와 root 실제화면 소비 Gate가 남아 있다. 파일 존재를 완료로 계산하지 않았다. 실제79에서 이 완료 기록을 docs에 추가하면80에 도달하므로 상세검수를 기다리지 않고 완료소유만 정상 checkpoint한다. 기존 foreign68/owner STATELOG4/index0·sourcepixels/scene/nav1192/save·보호2_3/Q전용/어택티켓금지를 보존한다.
 
 완료raw7과관련정본5문서만 보존. raw38 미채택/다음rootforeground3 소비검수·각 신규 의미검수 진행. 정상hook/소유path stage/push remoteexact는 외부영수증에서 확인한다.
+
+
+## CH1-RIFT-QUALITY-FIX-20261007 완료 소유 raw checkpoint — 2026-10-07
+
+실제 NUL/untracked 전체81에서 공식완료7만 상세채택검수를 기다리지 않고 보존한다. owner 최종 실조회 2026-10-06T17:16:28.385454+00:00의 송신7/peer7/첫성공source7/공식end·idle7을 정확pins·end원문SHA와 대조했다. 원자료38+7=45, public/본편 직접채택0. root terrain/worldlab2 WIP·foreign68·ownerSTATELOG4는 stage 제외.
+
+| 역할 | 공식 완료 ID | 소유 raw 경로 | bytes | SHA256 | end UUID |
+|---|---|---|---:|---|---|
+| MAP | CH1-RIFT-QUALITY-FIX-20261007-FOREGROUND-CONTRACT-V2-CANDIDATE | tools/team-followup-20261007/hell-rift/MAP/rift-foreground-registry-2_5d.v2.candidate.mjs | 8744 | d81ed403f80aa6106c6fdb30c1d5ade4d78d4d1e0b2876239db5b172afe46b2d | 5033f56d-81a5-4770-959f-594e7544cea6 |
+| ANIMVFX | CH1-RIFT-QUALITY-FIX-20261007-GROUND-HANDLE-V3-CANDIDATE | tools/team-followup-20261007/hell-rift/ANIMVFX/rift-ground-material-2_5d.v3.candidate.mjs | 6464 | 059e4a4cd459bf3c765626d09cded000dd6aa28d6d7472dacf1ae41bf48df121 | 21d7fba1-26e4-4d34-a71f-ac4e3d4c5e6e |
+| BOSS | CH1-RIFT-QUALITY-FIX-20261007-CELL-AUDIT-GUARDS-V2-CANDIDATE | tools/team-followup-20261007/hell-rift/BOSS/dark-druid-special-cell-audit-2_5d.v2.candidate.mjs | 12484 | 2c81896b5ba064480e238244b4a4f1be416259d591a05997323eff3596307caa | ca1f12ca-fc95-4b1a-9159-9da6316c3166 |
+| STORY | CH1-RIFT-QUALITY-FIX-20261007-DIALOGUE-GUARDS-V4-CANDIDATE | tools/team-followup-20261007/hell-rift/STORY/npc-dialogue-preview-2_5d.v4.candidate.mjs | 12583 | b607d9c5b0c673ece00ff02d37fa0c55e4a8a34574bd4e097929e2194aed6b89 | ec2c3f1f-6d05-4284-a172-291f1bf5788b |
+| SKILL | CH1-RIFT-QUALITY-FIX-20261007-DIALOGUE-POSE-V4-CANDIDATE | tools/team-followup-20261007/hell-rift/SKILL/dialogue-pose-arbitration-2_5d.v4.candidate.mjs | 12905 | e4608bc7ef9ccedf36da70dcf1481b0461dd690c9b4302701b2783ffe1d94e62 | 065193b0-bcc5-4203-96bf-7833b3955887 |
+| ENEMY | CH1-RIFT-QUALITY-FIX-20261007-PINNED-LOADER-V2-CANDIDATE | tools/team-followup-20261007/hell-rift/ENEMY/enemy-atlas-pinned-loader-2_5d.v2.candidate.mjs | 11548 | 21d7a0a2321b9d0ce92d36c61f37d71c965e4ed7213637a336b616d0ec793b76 | c31ede05-26d4-4870-b9a5-8ed1c72a43f4 |
+| QA | CH1-RIFT-QUALITY-FIX-20261007-EVIDENCE-GATES-V3-CANDIDATE | tools/team-followup-20261007/hell-rift/QA/rift-retouch-consumer-acceptance-2_5d.v3.candidate.mjs | 14527 | 9ef0d80ac48ac168790012e1204f0430ef3ff8f6dd5e19f147196c4508a1048c | d18a6f9f-756e-482f-beb3-1ccf1259cf27 |
+
+MAP stdin 앞2회/BOSS 앞1회 inner Node 실패와 최종보고를 별도 보존한다. toolResult is_error=false를 내부 test PASS로 계산하지 않는다. MAP/ANIMVFX 최신 TASK의 full guide·SSOT·LOCK 실제읽기 근거는 owner상 UNVERIFIED이며 자기보고를 Gate충족으로 승격0. 나머지 신규 semantic 검수도 pending. 파일존재/fixture/raw보존≠본편/native·청취·보상save/A급완성. 정본 관련 keyword 전체검색과 exactpins/end/정상Git 영수증은 외부 rift-quality-next-20261007/fix-*에 기록한다.
