@@ -3299,3 +3299,5 @@ Object.assign(_DE,{"클리어 타임":"Zeit","기준":"Richtzeit","점수":"Punk
 Object.assign(_DE,{"정화":"Gereinigt","지역 정화":"Gebiete gereinigt","사망 감점":"Todesabzug"});
 // [SETTINGS] 안내 글자 크기 슬라이더 (2026-10-06, No.3108)
 Object.assign(_DE,{"안내 글자 크기":"Größe des Hilfetexts"});
+// [SETTINGS] 설정 창 화면에 맞추기 토글 (2026-10-06, No.3109)
+Object.assign(_DE,{"설정 창 화면에 맞추기":"Einstellungen an Bildschirm anpassen"});

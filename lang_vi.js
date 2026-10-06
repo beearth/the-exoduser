@@ -2700,3 +2700,5 @@ Object.assign(_VI,{"클리어 타임":"Thời gian","기준":"Chuẩn","점수":
 Object.assign(_VI,{"정화":"Thanh tẩy","지역 정화":"Khu vực thanh tẩy","사망 감점":"Trừ điểm tử vong"});
 // [SETTINGS] 안내 글자 크기 슬라이더 (2026-10-06, No.3108)
 Object.assign(_VI,{"안내 글자 크기":"Cỡ chữ hướng dẫn"});
+// [SETTINGS] 설정 창 화면에 맞추기 토글 (2026-10-06, No.3109)
+Object.assign(_VI,{"설정 창 화면에 맞추기":"Vừa khung cài đặt với màn hình"});

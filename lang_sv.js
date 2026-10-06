@@ -3339,3 +3339,5 @@ Object.assign(_SV,{"클리어 타임":"Tid","기준":"Riktmärke","점수":"Poä
 Object.assign(_SV,{"정화":"Renad","지역 정화":"Renade områden","사망 감점":"Dödsavdrag"});
 // [SETTINGS] 안내 글자 크기 슬라이더 (2026-10-06, No.3108)
 Object.assign(_SV,{"안내 글자 크기":"Storlek på guidetext"});
+// [SETTINGS] 설정 창 화면에 맞추기 토글 (2026-10-06, No.3109)
+Object.assign(_SV,{"설정 창 화면에 맞추기":"Anpassa inställningar till skärmen"});

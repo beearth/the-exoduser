@@ -3851,3 +3851,5 @@ Object.assign(_NL,{"클리어 타임":"Tijd","기준":"Richttijd","점수":"Scor
 Object.assign(_NL,{"정화":"Gezuiverd","지역 정화":"Gezuiverde gebieden","사망 감점":"Doodsaftrek"});
 // [SETTINGS] 안내 글자 크기 슬라이더 (2026-10-06, No.3108)
 Object.assign(_NL,{"안내 글자 크기":"Grootte gidstekst"});
+// [SETTINGS] 설정 창 화면에 맞추기 토글 (2026-10-06, No.3109)
+Object.assign(_NL,{"설정 창 화면에 맞추기":"Instellingen aan scherm aanpassen"});

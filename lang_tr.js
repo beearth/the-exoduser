@@ -2717,3 +2717,5 @@ Object.assign(_TR,{"클리어 타임":"Süre","기준":"Referans","점수":"Puan
 Object.assign(_TR,{"정화":"Arındırıldı","지역 정화":"Arındırılan bölgeler","사망 감점":"Ölüm cezası"});
 // [SETTINGS] 안내 글자 크기 슬라이더 (2026-10-06, No.3108)
 Object.assign(_TR,{"안내 글자 크기":"Rehber metni boyutu"});
+// [SETTINGS] 설정 창 화면에 맞추기 토글 (2026-10-06, No.3109)
+Object.assign(_TR,{"설정 창 화면에 맞추기":"Ayarları ekrana sığdır"});

@@ -3320,3 +3320,5 @@ Object.assign(_ES,{"클리어 타임":"Tiempo","기준":"Referencia","점수":"P
 Object.assign(_ES,{"정화":"Purificada","지역 정화":"Zonas purificadas","사망 감점":"Penalización por muerte"});
 // [SETTINGS] 안내 글자 크기 슬라이더 (2026-10-06, No.3108)
 Object.assign(_ES,{"안내 글자 크기":"Tamaño del texto de guía"});
+// [SETTINGS] 설정 창 화면에 맞추기 토글 (2026-10-06, No.3109)
+Object.assign(_ES,{"설정 창 화면에 맞추기":"Ajustar ajustes a la pantalla"});

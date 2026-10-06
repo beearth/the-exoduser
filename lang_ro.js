@@ -2704,3 +2704,5 @@ Object.assign(_RO,{"클리어 타임":"Timp","기준":"Reper","점수":"Scor","�
 Object.assign(_RO,{"정화":"Purificată","지역 정화":"Zone purificate","사망 감점":"Penalizare deces"});
 // [SETTINGS] 안내 글자 크기 슬라이더 (2026-10-06, No.3108)
 Object.assign(_RO,{"안내 글자 크기":"Dimensiunea textului de ghidare"});
+// [SETTINGS] 설정 창 화면에 맞추기 토글 (2026-10-06, No.3109)
+Object.assign(_RO,{"설정 창 화면에 맞추기":"Potrivește setările la ecran"});

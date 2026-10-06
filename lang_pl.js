@@ -3844,3 +3844,5 @@ Object.assign(_PL,{"클리어 타임":"Czas","기준":"Norma","점수":"Wynik","
 Object.assign(_PL,{"정화":"Oczyszczona","지역 정화":"Oczyszczone regiony","사망 감점":"Kara za śmierć"});
 // [SETTINGS] 안내 글자 크기 슬라이더 (2026-10-06, No.3108)
 Object.assign(_PL,{"안내 글자 크기":"Rozmiar tekstu wskazówek"});
+// [SETTINGS] 설정 창 화면에 맞추기 토글 (2026-10-06, No.3109)
+Object.assign(_PL,{"설정 창 화면에 맞추기":"Dopasuj ustawienia do ekranu"});

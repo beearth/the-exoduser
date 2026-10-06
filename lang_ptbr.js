@@ -3844,3 +3844,5 @@ Object.assign(_PTBR,{"클리어 타임":"Tempo","기준":"Referência","점수":
 Object.assign(_PTBR,{"정화":"Purificada","지역 정화":"Áreas purificadas","사망 감점":"Penalidade por morte"});
 // [SETTINGS] 안내 글자 크기 슬라이더 (2026-10-06, No.3108)
 Object.assign(_PTBR,{"안내 글자 크기":"Tamanho do texto de guia"});
+// [SETTINGS] 설정 창 화면에 맞추기 토글 (2026-10-06, No.3109)
+Object.assign(_PTBR,{"설정 창 화면에 맞추기":"Ajustar configurações à tela"});

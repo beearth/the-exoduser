@@ -3754,3 +3754,5 @@ Object.assign(_CS,{"클리어 타임":"Čas","기준":"Norma","점수":"Skóre",
 Object.assign(_CS,{"정화":"Očištěna","지역 정화":"Očištěné oblasti","사망 감점":"Postih za smrt"});
 // [SETTINGS] 안내 글자 크기 슬라이더 (2026-10-06, No.3108)
 Object.assign(_CS,{"안내 글자 크기":"Velikost textu nápovědy"});
+// [SETTINGS] 설정 창 화면에 맞추기 토글 (2026-10-06, No.3109)
+Object.assign(_CS,{"설정 창 화면에 맞추기":"Přizpůsobit nastavení obrazovce"});

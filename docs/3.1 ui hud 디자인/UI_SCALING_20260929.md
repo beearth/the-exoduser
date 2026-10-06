@@ -77,3 +77,15 @@ CSS 크기 제한과 transform 자동 배율을 중복 적용하지 않는다. �
 |---|---|
 | #settings.panel .pbox | CSS viewport 기준 100vw−24px / 100dvh−24px, max-width/max-height none. 폭600px 이하 −12px. 전체 HUD ui-scale과 별개로 읽을 수 있는 설정명16px/키캡14px을 기본으로 사용 |
 | 반응형 | 폭1100px 이하 그룹1열, 폭600px 이하 설정명14px/키캡12px. 높이650px 이하 제목52px로 축소. 상세 SETTINGS_UI_WORKSPACE_20260929.md |
+
+## 2026-10-06 안내 UI·설정 창 배율 (`--ui-guide-scale`)
+
+사용자 5120×1440 스크린샷에서 연습 가이드 패널·설정 창이 너무 작다는 지적으로, HUD 자동 배율을 안내 UI와 설정 창에도 적용한다. HUD 전체 사용자 배율(2026-04-17 제거)은 되살리지 않는다.
+
+| 대상 | 현행 규칙 |
+|---|---|
+| `--ui-guide-scale` | `calc(max(1, var(--ui-scale)) * var(--ui-text-scale))`. 작은 창에서는 1 아래로 줄이지 않음 |
+| `#parryLesson` | `zoom:var(--ui-guide-scale)`, 폭·최대높이는 배율로 나눠 화면 안 유지 |
+| `#settings.panel .pbox` | `zoom:var(--ui-guide-scale)`. 위 표의 100vw−24px/100dvh−24px 규칙은 `.settings-fit`(설정 창 화면에 맞추기, 기본 켬)에서 폭 `min(1920px,…)`로 16:9 영역 상한을 둔다. 끄면 탭별 디자인 크기 |
+| `#petSubtitle` | `scale(calc(var(--ui-scale) * var(--ui-text-scale) * 1.5))` |
+| 상세 | `docs/3.3 키바인딩+설정/3.3 키바인딩+설정.md` §안내 글자 크기 · §설정 창 크기 + 화면에 맞추기 |

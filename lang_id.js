@@ -2699,3 +2699,5 @@ Object.assign(_ID,{"클리어 타임":"Waktu","기준":"Patokan","점수":"Skor"
 Object.assign(_ID,{"정화":"Dimurnikan","지역 정화":"Wilayah dimurnikan","사망 감점":"Penalti kematian"});
 // [SETTINGS] 안내 글자 크기 슬라이더 (2026-10-06, No.3108)
 Object.assign(_ID,{"안내 글자 크기":"Ukuran teks panduan"});
+// [SETTINGS] 설정 창 화면에 맞추기 토글 (2026-10-06, No.3109)
+Object.assign(_ID,{"설정 창 화면에 맞추기":"Sesuaikan pengaturan ke layar"});

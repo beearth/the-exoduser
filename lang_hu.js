@@ -2701,3 +2701,5 @@ Object.assign(_HU,{"클리어 타임":"Idő","기준":"Referencia","점수":"Pon
 Object.assign(_HU,{"정화":"Megtisztult","지역 정화":"Megtisztított területek","사망 감점":"Halál levonás"});
 // [SETTINGS] 안내 글자 크기 슬라이더 (2026-10-06, No.3108)
 Object.assign(_HU,{"안내 글자 크기":"Útmutató szöveg mérete"});
+// [SETTINGS] 설정 창 화면에 맞추기 토글 (2026-10-06, No.3109)
+Object.assign(_HU,{"설정 창 화면에 맞추기":"Beállítások igazítása a képernyőhöz"});

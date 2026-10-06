@@ -3846,3 +3846,5 @@ Object.assign(_DA,{"클리어 타임":"Tid","기준":"Norm","점수":"Point","�
 Object.assign(_DA,{"정화":"Renset","지역 정화":"Rensede områder","사망 감점":"Dødsfradrag"});
 // [SETTINGS] 안내 글자 크기 슬라이더 (2026-10-06, No.3108)
 Object.assign(_DA,{"안내 글자 크기":"Størrelse på vejledningstekst"});
+// [SETTINGS] 설정 창 화면에 맞추기 토글 (2026-10-06, No.3109)
+Object.assign(_DA,{"설정 창 화면에 맞추기":"Tilpas indstillinger til skærmen"});

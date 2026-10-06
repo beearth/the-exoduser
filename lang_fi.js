@@ -2699,3 +2699,5 @@ Object.assign(_FI,{"클리어 타임":"Aika","기준":"Tavoiteaika","점수":"Pi
 Object.assign(_FI,{"정화":"Puhdistettu","지역 정화":"Puhdistetut alueet","사망 감점":"Kuolemasakko"});
 // [SETTINGS] 안내 글자 크기 슬라이더 (2026-10-06, No.3108)
 Object.assign(_FI,{"안내 글자 크기":"Ohjetekstin koko"});
+// [SETTINGS] 설정 창 화면에 맞추기 토글 (2026-10-06, No.3109)
+Object.assign(_FI,{"설정 창 화면에 맞추기":"Sovita asetukset näytölle"});

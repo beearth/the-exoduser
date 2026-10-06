@@ -2833,3 +2833,5 @@ Object.assign(_MS,{"클리어 타임":"Masa","기준":"Penanda aras","점수":"S
 Object.assign(_MS,{"정화":"Disucikan","지역 정화":"Wilayah disucikan","사망 감점":"Penalti kematian"});
 // [SETTINGS] 안내 글자 크기 슬라이더 (2026-10-06, No.3108)
 Object.assign(_MS,{"안내 글자 크기":"Saiz teks panduan"});
+// [SETTINGS] 설정 창 화면에 맞추기 토글 (2026-10-06, No.3109)
+Object.assign(_MS,{"설정 창 화면에 맞추기":"Muatkan tetapan ke skrin"});
