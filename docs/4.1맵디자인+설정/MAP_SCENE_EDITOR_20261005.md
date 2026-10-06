@@ -1678,3 +1678,149 @@ MAP PRODUCTION REPORT (§23): MASTER=지옥의 틈의 actor cosmetic 수명·프
 §23 MAP PRODUCTION REPORT: 작업=등록지면RGB 확대비교; 선행=fullguide·SSOT_INDEX·stageLOCK와exact읽기계획37853/a6df. MASTER PLAN→LARGE OUTER MASS→MEDIUM CONNECTION→GROUND CONNECTION→PLAYABLE/COMBAT→LANDMARK/CENTER→SMALL DETAIL은 기존등록공간보존/새geometry·배치0. CAMERA QA=동일paused160%/DPR1 새Chrome A/B·복귀·전사동작재개. TECH QA=source11/153와GUI6/13 별도핀·source12 exact·LINK13/GL0. VISUAL VERDICT: RETOUCH. PNG4와controls1은 외부 `plate-sharpness-ab-browser/`에 보존. 본편/native6·청취·실보상save·GPU물리메모리·실물모니터·독립platealpha 미인수.
 
 현재shader 비교기능의기본OFF와전경/절벽흐림 RETOUCH를유지한다. 다음작업은실editor mask1024중간축소·feather/cache 및fatalframe 소비접점, NPCdurablebinding·본편native6/청취/save이며 정본PROJECT_MANAGEMENT_MASTER의 최신운영근거를따른다.
+
+
+## 2026-10-07 ROOT-EDITOR-MASK-SOURCE-NATIVE-AB-20261007 · 선택 마스크의 원본 해상도 비교
+
+이 절은 실제 `tools/map-scene-editor.js` 소비자 구현을 기록한다. 기본 경로는 기존 긴 축1024 중간 버퍼다. 사용자가 선택한 단일 composed-mask 객체만 로드된 이미지의 원본 crop 해상도로 비교할 수 있다. Three plate 필터, source-native 그림 생성, 원 PNG 변경, 본편 세이브/보상 연결을 의미하지 않는다. 현행 canonical 씬에서는 `obj-rift-depth`가 해당 경로다. 전경3은 mask가 있어도 feather0/sourceParallax 없음으로 직접 clip+원본 draw 경로이며 이 옵션을 적용하지 않는다.
+
+### 현재 코드·소유·선행 근거
+
+| 항목 | 정확 근거 / 상태 |
+|---|---|
+| 원 source | tools/map-scene-editor.js 77031 B / cd789d1d10c96feeb8decfd8209410640b1baba02f5b28ed32fbf682e1f0c20e. 수정 전 HEAD237bfc3ddc199a5b6ab989b241a83515b71a8a91와 byte exact·git clean, realparent/symlink 검사·fullbyte 외부 백업 선행 |
+| 최종 source | tools/map-scene-editor.js 82229 B / 4c037c1cd732ecb6001365ef46352abe47dbfaa2bd8fec4458024fe0adc633fd. 소유 code1, 새 helper0. UI leaf 문구 정정 외 마지막 CPU 핀과 계산·cache 코드 동일 |
+| source CPU 핀 | 82218 B / bd89e5da3bdbdcca2d835607b1e885fed1cbb9224d10e6e3edffd395fd1f3ac6. 단일 신규 Node 실행10그룹129조건 PASS / FAIL0·미도달0·exit0·stderr0. 이 검사는 해당 핀의 이력이며 최종핀 전수 재실행·합산0 |
+| 문구 정정 | 기존 옵션의 ‘원본 축소’ 표현은 작은 crop의 확대를 포괄하지 않아 ‘기존 중간 버퍼 · 최대 축1024’로 문자열1개 정정. 원82218/Bd89 bytes 외부 code129-before-label.js 보존, label 역변환 exact. 새 수학검사0/전체source검사 반복0 |
+| 맵 선행 | full guide18392 B / 607e36a49a99205be61c0aeedb438da06bffaf13370360acc99fe86be751e80b의 이전 전체 읽기 근거 재사용. 이번 _MAP_SSOT_INDEX228193 B / e084a27d788a82c7bb901592cb23b733c214273372e477d4b0bb094d1884015e의 읽기순서237–289·마스크분리920–943·최신1334–1370 읽음. stage LOCK39679 B / 94081b2aef08771384fb2032dab42f12c3cde57227558f8a11b772690e13451a 이전 선행 유지 |
+| 원자료 제안 경계 | MAP memory formal end117a2b1c-ca3a-4b43-bf0a-c1c8dfd9241e는 분석/제안. 새 임의8192 cap·feather를 native aspect로 바꾸는 제안은 그대로 채택하지 않음. raw62 7258B/603b… 후보·stub 검수 반복0·직접 import0 |
+| 불변 | scene/nav/geometry/카메라·세계크기/기존PNG/rig/player/save·2_3/Q전용/어택티켓 금지·타인WIP. 새 서버·게임·빌드·팀·전문송신·Git/index 변경0 |
+
+### 비교 UI·크기·마스크·수명 계약
+
+| id / 항목 | 기본 / 허용값 | 실제 적용·공식·범위 |
+|---|---|---|
+| scene-mask-resolution | select값 legacy/native, 초기 legacy/OFF | 기존 SIZE CHECK 카드에 새 label/select/leaf만 append. 기존 자식 내용 교체0. 표시 ‘기존 중간 버퍼 · 최대 축1024 (기본)’ / ‘원본 해상도 · 선택 객체만’. runtime preference이며 scene/history/JSON/localStorage에 기록0 |
+| scene-mask-resolution-status | leaf p, role=status/aria-live=polite | 후보 legacy/native 치수·feather256·PNG export 기존 처리·실패 reason을 표시. 부모 textContent/innerHTML 교체0 |
+| 선택 admission | 단일 selected 객체, playing=false, batchIds.size≤1 | mask 존재와 truthy maskFeather 또는 sourceParallax가 defined인 기존 composed 경로만 허용. 실제 원본 loaded와 source/crop 검증이 있어야 UI 활성. busy/playing/dialogueOpen·다중선택/무선택·미로드/원본불일치에서 비활성 |
+| 표시 target | main ctx이면서 includeSelection=true | native 소비 허용. 다른 ctx/PNG export/render overlays=false는 legacy. 일반 mask의 직접 clip 및 residentLighting의 기존 graded 경로는 그대로 |
+| legacy 크기 | ratio=1024/max(object.width,object.height) | w=max(1,round(object.width×ratio)), h=max(1,round(object.height×ratio)). 긴 축1024. source crop가 더 크면 축소, 작으면 확대하므로 ‘모든 원본을1024로 축소’라는 설명은 부정확 |
+| source-native 크기 | w=ceil(crop.w), h=ceil(crop.h) | 실제 im.naturalWidth/Height는 양수 안전정수이고 asset.width/height와 같아야 함. crop x/y/w/h 모두 finite number, x/y≥0, w/h≥1, x+w≤naturalWidth, y+h≤naturalHeight. 임의8192 cap 추가0, 기존 picture()의 원본 각축8192 admission 그대로 |
+| invalid native plan | source-dimensions-mismatch / invalid-source-crop / invalid-world-size | 새 native 버퍼를 만들지 않고 기존 경로 유지·진단 표시. 기존 scene import의 K.validate를 우회해 malformed scene을 허가하는 API가 아님. legacy 계산은 기존 원형 유지 |
+| source registration | drawImage의 원 crop x/y/w/h 그대로 | source RGB/alpha byte·fractional crop 자체 변경0. canvas 정수 ceil 치수 안에 full crop을 매핑하고 출력 전체를 원 object.width/height에 그린다. crop 비율과 world 비율을 새 scene 값으로 덮어쓰지 않음 |
+| mask coordinates | normalized polygon×각 canvas width/height | 기존 main draw의 world polygon clip 유지. 회전/flip/pivot/world 크기·불투명도·렌더순서/가림 변경0. native rasterization의 AA 픽셀 결과가 legacy와 같다고 주장하지 않음 |
+| feather sample | 긴 축256, 기존 legacy canvas aspect 기준 | native도 legacyWidth/Height로 sample w/h를 계산하여 기존 world sampling 위치를 유지. polygon은 object world width/height 좌표, px=(x+.5)/sampleWidth×object.width 등 기존값. alpha=round(255×v²×(3−2v)), v=min(1,distance/maskFeather), inside만 적용 |
+| feather composite | 동일256 alpha array → 현재 mask canvas | 기존 imageSmoothingQuality high와 source-over→destination-in→source-over 순서 유지. native mask/image 크기만 달라짐. 실제 Canvas alpha 보간·edge AA·중간 premultiplication은 별도 실제 검수 대상 |
+| sourceParallax | 기존 factor=1−(sourceParallax??1) | dx/dy=(viewport−world centre)×factor, 원 inverse rotation/flip을 거친 lx/ly를 현재 w/h에 비례해 적용. screen CSS/DPR을 world distance나 feather120에 대입0 |
+| stamp | legacy 기존 JSON 배열 exact | native만 source-native·actual naturalWidth/Height·buffer w/h 추가. crop/size/polygon/feather 변경은 기존 stamp 무효화. native source치수 바뀌면 무효화, 소스원본/다른 소비자의 cache 쓰기0 |
+| cache 정책 | 기존 softMasks Map 최대8 entry | cache hit에서 순서갱신0, 생성/갱신 시 delete+set, 8 초과하면 첫 entry 삭제. 기존 insertion/refresh eviction이며 일반 LRU-hit 승격이라고 부르지 않음 |
+| native 수명 | retained native 최대1 | 선택/옵션 전환마다 자기 softMasks의 이전 native entry만 제거. 다른 legacy entry를 전체 삭제0. playing/무선택/다중선택/직접clip 대상은 native entry0. 같은 object에 모드별 cache2개 만들지 않음. import의 기존 softMasks.clear 유지 |
+| mode change | 기존 selection/scene 유지 | 문자열 legacy/native만 반영, 임의값은 선택 UI 값 복구. dirty=true로 기존 RAF 재그림, history/change/autosave/asset 재로드/새RAF/timer0. setBusy의 기존 UI 재활성 위치에도 비교 UI 상태 갱신 |
+
+### Canonical 씬 실제 소비 대상과 메모리 구분
+
+| 객체 | actual source/crop px | 기존 버퍼 / 후보 native px | 실제 composed 적용 |
+|---|---|---|---|
+| obj-rift-depth | 1920×1920 / (0 / 0 / 1920 / 1920) | 1024 × 1024 / 1920 × 1920 | 선택 시 비교 가능 |
+| obj-west-root | 1254×1254 / (332.30999999999995 / 727.3199999999999 / 100.32 / 112.85999999999999) | 910 × 1024 / 101 × 113 | 직접 clip 경로: 이 옵션 미적용, 두 치수는 계산 참고만 |
+| obj-east-horn | 1254×1254 / (884.0699999999999 / 520.41 / 56.42999999999999 / 156.75) | 369 × 1024 / 57 × 157 | 직접 clip 경로: 이 옵션 미적용, 두 치수는 계산 참고만 |
+| obj-south-root | 1254×1254 / (739.8599999999999 / 984.39 / 81.50999999999999 / 100.32) | 832 × 1024 / 82 × 101 | 직접 clip 경로: 이 옵션 미적용, 두 치수는 계산 참고만 |
+
+| 메모리 항목 | 정확 의미 / 계산 |
+|---|---|
+| owned retained buffer | entry마다 image+mask canvas2장, RGBA 추정8×w×h bytes. snapshot은 실제 현재 canvas 치수의 합계. backend GPU/실제 heap·원본 Image·일시256 sample canvas는 이 추정에서 제외 |
+| 기본 legacy 정사각형8개 | 8×2×1024²×4=67,108,864 bytes=64MiB. 기존 최대8 entry 정책 유지 |
+| canonical abyss native1 | 2×1920²×4=29,491,200 bytes=28.125MiB. native1+legacy 정사각형7개라면88,211,456 bytes=84.125MiB, 원 이미지/AA backend 제외 |
+| 기존 최대원본 admission에서 native1 | 기존8192² full crop의2canvas 추정536,870,912 bytes=512MiB. legacy square7개와 합산하면595,591,168 bytes=568MiB. 새cap이 아니며 기존허용이미지로부터 나온 상한 추정. CPU의8192 case는 실제Canvas 할당이 아닌 port 치수 관측이며 그 할당·OOM/GC/실GPU 인수0 |
+| 작은 crop | native 버퍼가1024보다 작을 수 있고 기존 중간 확대를 줄일 뿐 새로운 디테일을 만들지 않음. canonical foot3은 직접 source clip이므로 본 옵션으로 그 절벽·뿌리 흐림이 개선됐다고 계산0 |
+
+### Read-only QA API
+
+`window.EXODUSER_SCENE_EDITOR.maskResolution()`은 frozen plain snapshot이며 모든 필드는 primitive다. 기존 snapshot/view/selection/importProject 등 공개 메서드 계약을 바꾸지 않는다. 런타임 선택·loaded Image·현재 자기 cache를 읽을 뿐 파일·씬·세이브를 쓰지 않는다.
+
+| 필드 | 뜻 / 값 |
+|---|---|
+| mode / selectedObjectId | 요청 모드 legacy/native / 현재 적격 객체 id 또는 null |
+| ready / reason | native source-plan 검증 boolean / source-native-crop, legacy-1024, invalid… 또는 source-not-loaded/selected-composed-mask-required |
+| sourceWidth / sourceHeight | 실제 로드된 image natural 치수 또는 null |
+| cropWidth / cropHeight | 원 asset crop 치수, 소수 가능 / null |
+| legacyWidth / legacyHeight | 기존 world-aspect1024 중간버퍼 계산 / null |
+| nativeWidth / nativeHeight | 유효 crop ceil 치수 / invalid 또는 미로드면 null |
+| activeMode / activeWidth / activeHeight | 실제 선택 entry의 native/legacy·canvas 치수 또는 null. 요청과 그려진 entry 상태를 구분 |
+| cacheEntries / nativeEntries | 현재 자기 cache 크기 / native entry 수 |
+| retainedRgbaBytes | 현재 retained2canvas의 치수 기반 RGBA 추정 합계. 실GPU·heap memory 측정 아님 |
+| maxEntries / maxNativeEntries | 8 / 1 |
+| featherSampleLongAxis | 256 |
+| scope / exportMode | selected-main-canvas-composed-mask-only / legacy |
+| visualAccepted | false. 이 source/diagnostic 자체는 시각 인수 API가 아님 |
+
+### 새 source 검수와 실제 Canvas 관측 경계
+
+| 신규 source 그룹 | 실제 조건 수 | 검수 범위 |
+|---|---|---|
+| syntax-full-source-and-current-pins | 4 | PASS, 실제 변경source 경로·fixture boundary는 아래대로 |
+| legacy-default-operation-exact-and-feather-bytes | 12 | PASS, 실제 변경source 경로·fixture boundary는 아래대로 |
+| native-source-crop-and-world-registration | 8 | PASS, 실제 변경source 경로·fixture boundary는 아래대로 |
+| fractional-crop-aspect-and-world-feather-invariant | 5 | PASS, 실제 변경source 경로·fixture boundary는 아래대로 |
+| invalid-native-source-bounds-refuse-native-allocation | 42 | PASS, 실제 변경source 경로·fixture boundary는 아래대로 |
+| selected-only-export-direct-clip-and-multiple-guard | 7 | PASS, 실제 변경source 경로·fixture boundary는 아래대로 |
+| cache-eight-entry-eviction-and-native-selection-lifetime | 19 | PASS, 실제 변경source 경로·fixture boundary는 아래대로 |
+| cache-source-size-feather-invalidation-and-bounded-native | 6 | PASS, 실제 변경source 경로·fixture boundary는 아래대로 |
+| ui-default-leaf-safety-change-and-readonly-snapshot | 11 | PASS, 실제 변경source 경로·fixture boundary는 아래대로 |
+| inverse-exact-and-current-canonical-source-unchanged | 15 | PASS, 실제 변경source 경로·fixture boundary는 아래대로 |
+
+검수는 최초 단일 Node1회, 실제 source VM·full script syntax 및 기존/신규 source접점 비교다. Canvas2D·DOM·Image는 software port fixture이고 실제 브라우저/GPU를 실행하지 않았다. 기본 legacy의 Canvas 호출 trace가 기존source와 exact이며 source가 만든 feather RGBA 배열은 두 해상도 모드와 비정방형 crop에서도 exact였다. 이는 실제 Canvas가 합성한 RGB/alpha framebuffer, 경계 AA, premultiplied interpolation, 실제 메모리/GC, export PNG byte equality를 입증하지 않는다. `drawObject`의 main/export/directclip 실제 분기를 fixture에서 호출했으며 renderer 결과 자체는 미관측이다. 기존 raw62/stub/oldChrome/plate11/153 등 재실행·합산0.
+
+실제 byte/IHDR 읽기로 확인한 abyss는 assets/map/hell_rift/interspace_20261005/hell-rift-abyss-v3.png6350749B / ace0c853cc27cbb4d2b807104273399a1144df77d31b1003e574141fed10f991,1920²다. canonical scene90767B/c508e70d23fafb9295798763c5224c7c92699dfea3d3beebdb6ab18173f44a3a를 읽어 상기4마스크 metadata와 소비분기를 대조했다. 이 PNG의 RGB/alpha 픽셀은 worker가 decode/관찰하지 않았다.
+
+| 실제 화면 후속 Gate | 현재 상태 |
+|---|---|
+| 같은원본·선택·viewport/CSS/DPR/rotation/pivot/parallax에서 legacy→native→legacy | root/helper 신규 실제Canvas 검수 대상. native 치수만으로 시각 개선PASS0 |
+| source RGB/투명 alpha·mask 경계·world feather / 원본축소·확대 비교 | CPU source-array와 실제 Canvas pixels를 별도 기록. feather256 한계 유지 |
+| selection/option 전환·cache8 evict·export legacy·복귀 / native allocation·GC | 실브라우저 별도. UI programmatic change와 trusted input도 구분 |
+| 전체 맵 흐림 | 기존 plate1254→world8000·절벽접합/실높이·foot3 저해상도 유지. 신규 VISUAL NOT ASSESSED / 전체 RETOUCH |
+| 본편/native6/audio/save/보상/A급 | 이번 단위 인수0 |
+
+### docs 전체 검색·보존·외부 근거
+
+전체 docs rg pattern `maskedPicture / softMasks / maskFeather / sourceParallax / source.native / 원본 해상도 / 1024.{0,35}(버퍼 / buffer) / 마스크.{0,35}(캐시 / 해상도 / 합성)` 검색57경로/447줄, raw1085255B/SHA 175531c6a1289e6d766334f05a5467e955ad235052e0e7d3792312751347d71a. 해당 원문은 외부 docs-keyword-search.txt, 모든 path의 disposition은 docs-search-disposition.json에 기록했다. 자기 MAP_SCENE_EDITOR 문서만 현재 계약 부록을 append하며 원277500B prefix100% 보존한다. root 현재정본·운영/SSOT·결과·Three 참조는 root에게 별도 전달하여 현행계약을 동기화하고, 과거 이력/다른system 수치/보호문서/ownerSTATELOG는 전역치환하지 않는다. 문서 EOF LF1·GFM table field 수·source 변경접점 전체 inverse exact·diff-check를 완료영수증으로 남긴다.
+
+외부 evidence 전체경로: /Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/editor-mask-source-native-ab/. preflight.json·before/tools/map-scene-editor.js·before/docs/4.1맵디자인+설정/MAP_SCENE_EDITOR_20261005.md·source-replacements.json·source-mask-check.mjs·source-mask-result.json·source-mask-process.json·code129-before-label.js·label-correction.json·canonical-mask-registration.json·docs-search-summary.json·docs-search-disposition.json·final-receipt.json을 범위별로 사용한다. final-receipt의 최종 code/doc pins와 root actualCanvas 자료는 서로 분리한다.
+
+추가 새 API 키워드의 docs 전체 좁은검색(maskBufferResolution/maskResolution/scene-mask-resolution/retainedRgbaBytes/nativeEntries)은2경로10줄·raw2226B/SHA eade8ab92f2b99dd7ae7f8f7f986ec5b4af15a25330d873c7bb4cb32b37cec23다. 자기 최신부록과 owner SUPERVISOR_STATE가 매칭되며 후자는 원자료·메모리이력 보존/수정0이다. docs-new-api-search.txt와 docs-new-api-search-summary.json에 원문·처리범위를 남겼다.
+
+### §23 MAP PRODUCTION REPORT
+
+| 항목 | 이번 작업 / 인수 |
+|---|---|
+| STAGE / MASTER PLAN | 지옥의 틈 editor2D selected composed-mask source-native A/B, 기본legacy1024/OFF. full guide→SSOT reading order→stageLOCK 우선순위 적용 |
+| LARGE OUTER MASS / LARGE SOURCES | 기존 LEFT/RIGHT/TOP/SOUTH silhouette·major holes·원PNG·crop metadata·원화 반복/배치 변경0. 기존물리절벽/height UNKNOWN 보존 |
+| MEDIUM CONNECTION / GROUND CONNECTION | path/nav1192·world200²/T40·start/exit·원본feet·연결/ground texture 등록 변경0 |
+| PLAYABLE / COMBAT | editor 기존보행/선택·protected design 유지. 새실게임/전투/native6·reward/save·audio 인수0 |
+| LANDMARK/CENTER / SMALL DETAIL | 원본 landmark/거리·마스크 polygon·feather world120/sourceParallax.965 등 metadata 변경0. 새 에셋·원PNG resize/generation0 |
+| CAMERA QA | worker 신규Canvas/실화면·영상0. 같은원본/viewport/DPR/selected object A/B는 root/helper 소유. source-native 크기만으로visual PASS0 |
+| TECH QA | 새source10/129 PASS는82218/Bd89핀·Canvas/DOM fixture. 최종82229/4c037핀은 옵션label1교정+inverse exact, 원129 재실행0. cache8/retainednative1 및치수추정은source관측, 실allocation/GC/alpha compositing·GPU 인수0 |
+| FILES / GIT | 소유 code1/doc1, 새helper0·원자료/타인WIP/ownerSTATELOG/Git/index 변경0. 원prefix/exactbackup/inverse 보존, code+docs checkpoint/push/remoteexact는 root 후속 |
+| VISUAL VERDICT | 신규 필터/버퍼 비교 NOT ASSESSED. 전체 기존맵 RETOUCH. 본편A급/완성맵/실여정·청취·save PASS0 |
+| NEXT PASS | root/helper actualCanvas 동일조건 A/B·alpha/mask/feather·cache전환/export/메모리; 그뒤 별도 NPC durable consumer와본편native6/청취/세이브. 모든시각실패이력보존 |
+### 2026-10-07 ROOT-EDITOR-MASK-SOURCE-NATIVE-AB-20261007 · 선택 원본 마스크 비교와 실제 Canvas 검수
+
+| 항목 | 현재 구현 / 정확한 인수 경계 |
+|---|---|
+| source | `tools/map-scene-editor.js` 82229 B / `4c037c1cd732ecb6001365ef46352abe47dbfaa2bd8fec4458024fe0adc633fd` |
+| 기본 / 적용 대상 | `scene-mask-resolution` select legacy/native, 기본legacy. 선택한 feather 또는 sourceParallax composed-mask 객체1개만 native opt-in. leaf `scene-mask-resolution-status`; `EXODUSER_SCENE_EDITOR.maskResolution()` read-only 관측 |
+| 버퍼 / 경계 | legacy는 기존 최대축1024 중간 버퍼(작은crop는 확대될 수 있음), native는 기존8192 image-admission 범위 안의 원본 crop `ceil(w/h)`. crop/월드aspect/월드feather·256 feather샘플/CTM/opacity 보존. 새8192 cap 정책 추가0 |
+| 실제 대상 | 등록 심연 `obj-rift-depth` source1920×1920 / fullcrop / world8000×8000 / feather120 / sourceParallax0.965: legacy1024²→native1920². roots/horn3은 직접clip 경로여서 이 composed-mask 비교 적용·개선 주장0 |
+| 선택 / 캐시 | 기존 최대8 insertion-order 캐시 유지, 옵션·선택 전환 시 이전native만 해제하여 retained native≤1. 원본PNG/scene/nav/배치 변경0. native retainedRGBA 계산값과 실제물리메모리·GC·GPU회수 구분 |
+| 내보내기 / 저장 | unselected·직접clip·PNG export는 기존legacy 처리. 원화1920 이상 새로운 세부 생성0. 실제동일scene/localStorage 불변; 본편 save·보상 저장 인수0 |
+| source CPU 이력 | 최초82218 B / bd89e5da3bdbdcca2d835607b1e885fed1cbb9224d10e6e3edffd395fd1f3ac6에서 신규Node1회10그룹129조건 PASS / FAIL0·미도달0·exit0. DOM/Image/Canvas ports fixture, 실제Canvas RGB/GPU0. 최종82229는 옵션문구1개 정정뿐이며 전체inverse exact; CPU129 재실행·최종핀 이동0 |
+| 첫 실제 Chrome | 최종82229/4c037 실제JS response exact. Chrome1/context1/editorpage1. 그룹1·2 PASS, 그룹3의복귀RGBA FAIL(도달5조건중4PASS/1FAIL), 그룹3잔여·4~6 미도달·exit1. RGB912418px/max11 차이, alpha차0. legacy mask/image alpha histogram·feather256 hash·crop/destination/CTM/opacity exact. 최초실패 보존·원인확정0 |
+| 한정 후속 | 실패3·미도달4~6만 새Chrome1/context1/page1, 4그룹6조건 PASS / FAIL0·미도달0·exit0. 비교 전4회 main readback+실제UI redraw warmup은준비관측/PASS집계0. sentinel 최초→2번째 변경, 2~4번째 exact. Chromium backend 전환은 가설/미관측 |
+| 후속 실제 픽셀 | 안정화된 같은view4100/4100/zoom0.864/selection에서 legacy→native→legacy RGBA와PNG exact복귀. native RGB678172px/max13 변화·합성최종alpha차0. 최초미안정복귀FAIL을 지우거나 전체6cleanPASS로 합산0 |
+| 실제 cache 관측 | native선택1/retainedRGBA29491200 B → plainhorn선택native0/abysslegacy1024/8388608 B → abyss재선택native1. 실제1객체 관측, 설정8 eviction/2 composed객체/GPU메모리 인수0 |
+| 보호 / 시각 | source14정확핀·scene/storage{} exact, 오류·404·foreign0. root/GUI담당 원본·native PNG 직접관찰: 심연 미세세부차이 약함, 확대된 절벽·전경의 전체흐림 지속. VISUAL VERDICT: RETOUCH, 기본legacy 유지·A급/본편/native6/청취/실보상save 인수0 |
+| 영수증 | worker final34835 B / 92b8d3f1949f982df007104cd17dcb57747e66926e1caa985b45bc3bc0d808dc. 첫 실패분석4034 B / b54582d8aa3653db3b7cdb38d572639c1e26ee9b593a615a951050abd4883e54. GUI final 7806 B / e8b9454e0c6f1f361654e3592ac1e7e8a6041f723beef78c61c43dc2772a8adb; 첫검사와한정후속 별도핀/합산0. |
+
+§23 MAP PRODUCTION REPORT: 작업=기존선택composed-mask의legacy/native 중간해상도 비교; fullguide·SSOT_INDEX·stageLOCK 선행정확근거를재사용. MASTER PLAN→LARGE OUTER MASS→MEDIUM CONNECTION→GROUND CONNECTION→PLAYABLE/COMBAT→LANDMARK/CENTER→SMALL DETAIL은등록원화·geometry·nav·배치를보존/새제작0. CAMERA QA=같은view/zoom/selection Canvas A/B와첫복귀FAIL·관측안정화후한정복귀인수분리. TECH QA=sourceCPU10/129 이력핀·최종문구inverse, 실제첫FAIL 및한정후속4/6, 실제native선택해제·legacy export·source14정확. VISUAL VERDICT: RETOUCH. 첫/후속PNG와원자료는외부 `editor-mask-source-native-browser/`에보존. 전체맵선명도완성·main/native6·청취·GPU물리회수·실save 미인수.
+
+선택된composed-mask의기본legacy와실제첫복귀FAIL/관측안정화한정후속을분리하여유지한다. 원화·전경·절벽확대흐림은전체RETOUCH이며본편/native6·청취/save미인수. 다음fatalframe 소비접점과최신운영근거는PROJECT_MANAGEMENT_MASTER를따른다.

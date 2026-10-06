@@ -22,7 +22,7 @@
     { id: 'dead-tree', name: '고목 · 기존 에셋', src: 'assets/objects/tree_dead_01.png', width: 240, layer: 'foot', alphaCrop: {x:3,y:4,w:61,h:57} },
     { id: 'glow-mushroom', name: '잔불빛 버섯', src: 'assets/objects/mushroom_glow_01.png', width: 100, layer: 'foot', alphaCrop: {x:7,y:3,w:18,h:27} }
   ];
-  function setBusy(value){busy=value;$('workspace').inert=value;if(history){$('resident-access-check').disabled=value||playing||dialogueOpen||!residentAccessFactory;placementUI();objectListUI();}if(value){keys.clear();space=false;}}
+  function setBusy(value){busy=value;$('workspace').inert=value;if(history){$('resident-access-check').disabled=value||playing||dialogueOpen||!residentAccessFactory;placementUI();objectListUI();maskResolutionUI();}if(value){keys.clear();space=false;}}
   const uid = prefix => prefix + '-' + crypto.randomUUID();
   function toast(message) { $('toast').textContent = message; $('toast').hidden = false; clearTimeout(toastTimer); toastTimer = setTimeout(() => { $('toast').hidden = true; }, 4000); }
   function script(src) { return new Promise((resolve, reject) => { const el = document.createElement('script'); el.src = src; el.onload = resolve; el.onerror = () => reject(new Error('데이터 로드 실패: ' + src)); document.head.appendChild(el); }); }
@@ -34,18 +34,65 @@
   const loaded = new Map();
   let residentLighting, residentIdle, groundDetail, groundDetailEnabled = true;
   let scaleComparisonFactory, scaleComparisonKey = null;
-  // Runtime composition masks: source bitmaps stay untouched. Keep only eight 1024px buffers.
+  // Runtime composition masks: default remains the legacy 1024px path; source bitmaps stay untouched.
   const softMasks = new Map();
-  function maskedPicture(o, a, im) {
-    const stamp = JSON.stringify([a.src, a.crop, o.width, o.height, o.mask, o.maskFeather || 0]);
+  let maskResolutionMode = 'legacy';
+  function maskBufferResolution(o, a, im, native = false) {
+    const ratio = 1024 / Math.max(o.width, o.height), width = Math.max(1, Math.round(o.width * ratio)), height = Math.max(1, Math.round(o.height * ratio));
+    const legacy = {width,height,legacyWidth:width,legacyHeight:height,native:false,reason:'legacy-1024'};
+    if (!native) return legacy;
+    if (!Number.isFinite(o.width) || !Number.isFinite(o.height) || o.width <= 0 || o.height <= 0) return {...legacy,reason:'invalid-world-size'};
+    if (!Number.isSafeInteger(im?.naturalWidth) || !Number.isSafeInteger(im?.naturalHeight) || im.naturalWidth <= 0 || im.naturalHeight <= 0 || a?.width !== im.naturalWidth || a?.height !== im.naturalHeight) return {...legacy,reason:'source-dimensions-mismatch'};
+    const c = a.crop;
+    if (!c || ![c.x,c.y,c.w,c.h].every(Number.isFinite) || c.x < 0 || c.y < 0 || c.w < 1 || c.h < 1 || c.x + c.w > im.naturalWidth || c.y + c.h > im.naturalHeight) return {...legacy,reason:'invalid-source-crop'};
+    // Canvas dimensions are integral; fractional crop registration is kept in drawImage.
+    return {...legacy,width:Math.ceil(c.w),height:Math.ceil(c.h),native:true,reason:'source-native-crop'};
+  }
+  function selectedMaskObjectId() {
+    const pair = selectedPair();
+    return !playing && batchIds.size <= 1 && pair?.o.mask && (pair.o.maskFeather || pair.o.sourceParallax !== undefined) ? pair.o.id : null;
+  }
+  function syncNativeMaskCache() {
+    const id = maskResolutionMode === 'native' ? selectedMaskObjectId() : null;
+    for (const [key,entry] of softMasks) if (entry.native && key !== id) softMasks.delete(key);
+    return id;
+  }
+  function maskResolutionSnapshot() {
+    const pair = selectedPair(), a = pair && current().assets.find(a=>a.id===pair.o.assetId), im = a && loaded.get(a.src);
+    const eligible = selectedMaskObjectId(), q = eligible && im ? maskBufferResolution(pair.o,a,im,true) : null;
+    const entry = eligible && softMasks.get(eligible);
+    let retainedRgbaBytes = 0, nativeEntries = 0;
+    for (const value of softMasks.values()) { retainedRgbaBytes += 8 * value.image.width * value.image.height; if (value.native) nativeEntries++; }
+    return Object.freeze({mode:maskResolutionMode,selectedObjectId:eligible,ready:!!q?.native,reason:q?.reason || (eligible?'source-not-loaded':'selected-composed-mask-required'),sourceWidth:im?.naturalWidth??null,sourceHeight:im?.naturalHeight??null,cropWidth:a?.crop.w??null,cropHeight:a?.crop.h??null,legacyWidth:q?.legacyWidth??null,legacyHeight:q?.legacyHeight??null,nativeWidth:q?.native?q.width:null,nativeHeight:q?.native?q.height:null,activeMode:entry?.native?'native':'legacy',activeWidth:entry?.image.width??null,activeHeight:entry?.image.height??null,cacheEntries:softMasks.size,nativeEntries,retainedRgbaBytes,maxEntries:8,maxNativeEntries:1,featherSampleLongAxis:256,scope:'selected-main-canvas-composed-mask-only',exportMode:'legacy',visualAccepted:false});
+  }
+  function maskResolutionUI() {
+    syncNativeMaskCache();
+    let select = $('mask-resolution');
+    if (!select) {
+      const field = document.createElement('label'), label = document.createElement('span'), note = document.createElement('p');
+      field.className = 'scene-field'; label.textContent = '선택 마스크 이미지 비교';
+      select = document.createElement('select'); select.id = 'scene-mask-resolution';
+      for (const [value,text] of [['legacy','기존 중간 버퍼 · 최대 축 1024 (기본)'],['native','원본 해상도 · 선택 객체만']]) { const option = document.createElement('option'); option.value=value; option.textContent=text; select.append(option); }
+      note.id = 'scene-mask-resolution-status'; note.className = 'scene-note'; note.setAttribute('role','status'); note.setAttribute('aria-live','polite');
+      field.append(label,select); $('scale-comparison').append(field,note);
+      select.addEventListener('change',()=>{if(!['legacy','native'].includes(select.value)){select.value=maskResolutionMode;return;}maskResolutionMode=select.value;syncNativeMaskCache();dirty=true;maskResolutionUI();});
+    }
+    const q = maskResolutionSnapshot(); select.value = maskResolutionMode;
+    select.disabled = busy || playing || dialogueOpen || !q.selectedObjectId || !q.ready;
+    const note = $('mask-resolution-status');
+    note.textContent = !q.selectedObjectId ? 'feather 또는 원본 시차가 있는 마스크 객체를 하나 선택하세요.' : !q.ready ? '원본 해상도 비교 불가 · '+q.reason+' · 기존 처리 유지' : '기존 '+q.legacyWidth+' × '+q.legacyHeight+' → 원본 crop '+q.nativeWidth+' × '+q.nativeHeight+' px · '+(maskResolutionMode==='native'?'원본 해상도 비교':'기존 처리')+' · feather 256 샘플 유지 / PNG 내보내기는 기존 처리';
+  }
+  function maskedPicture(o, a, im, allowNative = false) {
+    const nativeId = syncNativeMaskCache(), resolution = maskBufferResolution(o,a,im,allowNative && o.id===nativeId);
+    const stamp = JSON.stringify([a.src, a.crop, o.width, o.height, o.mask, o.maskFeather || 0, ...(resolution.native?['source-native',im.naturalWidth,im.naturalHeight,resolution.width,resolution.height]:[])]);
     let entry = softMasks.get(o.id);
     if (!entry || entry.stamp !== stamp) {
-      const ratio = 1024 / Math.max(o.width, o.height), w = Math.max(1, Math.round(o.width * ratio)), h = Math.max(1, Math.round(o.height * ratio));
+      const w = resolution.width, h = resolution.height;
       const mask = document.createElement('canvas'), image = document.createElement('canvas'); mask.width = image.width = w; mask.height = image.height = h;
       const m = mask.getContext('2d',{willReadFrequently:true});
       if (!o.maskFeather) { m.fillStyle = '#fff'; m.beginPath(); o.mask.forEach(([x,y], i) => i ? m.lineTo(x*w,y*h) : m.moveTo(x*w,y*h)); m.closePath(); m.fill(); }
       else {
-        const sample = document.createElement('canvas'), r = 256 / Math.max(w,h); sample.width = Math.max(1,Math.round(w*r)); sample.height = Math.max(1,Math.round(h*r));
+        const sample = document.createElement('canvas'), sw = resolution.legacyWidth, sh = resolution.legacyHeight, r = 256 / Math.max(sw,sh); sample.width = Math.max(1,Math.round(sw*r)); sample.height = Math.max(1,Math.round(sh*r));
         const sx = sample.getContext('2d',{willReadFrequently:true}), pixels = sx.createImageData(sample.width, sample.height), poly = o.mask.map(([x,y]) => [x*o.width,y*o.height]);
         for (let y=0;y<sample.height;y++) for (let x=0;x<sample.width;x++) {
           const px=(x+.5)/sample.width*o.width, py=(y+.5)/sample.height*o.height; let inside=false, distance=Infinity;
@@ -59,7 +106,7 @@
         }
         sx.putImageData(pixels,0,0);m.drawImage(sample,0,0,w,h);
       }
-      entry={stamp,mask,image};softMasks.delete(o.id);softMasks.set(o.id,entry);while(softMasks.size>8)softMasks.delete(softMasks.keys().next().value);
+      entry={stamp,mask,image,native:resolution.native};softMasks.delete(o.id);softMasks.set(o.id,entry);while(softMasks.size>8)softMasks.delete(softMasks.keys().next().value);
     }
     const target=entry.image.getContext('2d',{willReadFrequently:true}), w=entry.image.width,h=entry.image.height, p=current();
     const factor=1-(o.sourceParallax ?? 1),dx=(viewport.x-p.world.cols*p.world.tileSize/2)*factor,dy=(viewport.y-p.world.rows*p.world.tileSize/2)*factor;
@@ -451,7 +498,7 @@
     else $('source-info').textContent='';
     const i=p.layers.indexOf(active);$('layer-up').disabled=i===p.layers.length-1;$('layer-down').disabled=i===0;
     $('unity-import').disabled=playing||dialogueOpen;
-    residentAccessUI();placementUI();objectListUI();scaleComparisonUI();residentRegistrationUI();
+    residentAccessUI();placementUI();objectListUI();scaleComparisonUI();maskResolutionUI();residentRegistrationUI();
     $('play').textContent=playing?'■ 보행 종료':'▶ 보행 시험';$('view-label').textContent=playing?'보행 시험 · WASD / 방향키 · F 대화 · ESC 종료':tool==='pivot'?'발 기준 찍기 · 선택한 그림 안 클릭 · Esc 취소':'SOUTH → NORTH · 이미지와 충돌을 별도로 편집';
     $('cameras').replaceChildren();for(const c of p.cameras){const b=document.createElement('button');b.textContent=c.name;b.onclick=()=>{viewport={x:c.x,y:c.y,zoom:Math.min(size.w/1800,size.h/1100)};clampCamera();dirty=true;};$('cameras').append(b);} dirty=true;
   }
@@ -471,7 +518,7 @@
         const m=target.getTransform();
         if(Math.hypot(m.a,m.b)*o.width<a.crop.w||Math.hypot(m.c,m.d)*o.height<a.crop.h){target.imageSmoothingEnabled=true;target.imageSmoothingQuality='high';}
         target.drawImage(graded,-o.width*o.pivotX,-o.height*o.pivotY,o.width,o.height);
-      }else if(o.mask&&(o.maskFeather||o.sourceParallax!==undefined)){const composed=maskedPicture(o,a,im);target.drawImage(composed,-o.width*o.pivotX,-o.height*o.pivotY,o.width,o.height);}
+      }else if(o.mask&&(o.maskFeather||o.sourceParallax!==undefined)){const composed=maskedPicture(o,a,im,target===ctx&&includeSelection);target.drawImage(composed,-o.width*o.pivotX,-o.height*o.pivotY,o.width,o.height);}
       else target.drawImage(im,a.crop.x,a.crop.y,a.crop.w,a.crop.h,-o.width*o.pivotX,-o.height*o.pivotY,o.width,o.height);
     }finally{target.restore();}
     if(includeSelection&&(o.id===selected||batchIds.has(o.id))){target.save();target.translate(o.x+off.x,o.y+off.y);target.rotate(o.rotation*Math.PI/180);target.scale(o.flipX?-1:1,1);target.strokeStyle='#e8cf8e';target.lineWidth=1.5/viewport.zoom;target.strokeRect(-o.width*o.pivotX,-o.height*o.pivotY,o.width,o.height);if(batchIds.size<=1){const hs=8/viewport.zoom;target.fillStyle='#efdba1';target.fillRect(o.width*(1-o.pivotX)-hs/2,o.height*(1-o.pivotY)-hs/2,hs,hs);}target.restore();target.save();target.strokeStyle='#70cfbc';target.lineWidth=1/viewport.zoom;target.beginPath();target.moveTo(o.x+off.x-9/viewport.zoom,o.y+off.y);target.lineTo(o.x+off.x+9/viewport.zoom,o.y+off.y);target.moveTo(o.x+off.x,o.y+off.y-9/viewport.zoom);target.lineTo(o.x+off.x,o.y+off.y+9/viewport.zoom);target.stroke();target.restore();}
@@ -615,6 +662,6 @@
       dialogueRaw=JSON.parse(new TextDecoder().decode(bytes));dialogueFactory=module.createRiftDialogue;
     }catch(e){console.warn('틈 대화 시험을 읽지 못했습니다',e);}try{const residents=await import('./map-scene-rift-residents.mjs');residentAnchorsFactory=residents.residentDialogueAnchors;residentGroundingFactory=residents.createResidentGrounding;residentRegistrationFactory=residents.inspectResidentPaintingRegistration;}catch(e){console.warn('틈 주민 모듈을 읽지 못했습니다',e);}try{residentLighting=(await import('./map-scene-resident-lighting.mjs')).createResidentLighting();}catch(e){console.warn('주민 빛 합성 모듈을 읽지 못했습니다',e);}try{residentIdle=(await import('./map-scene-resident-idle.mjs')).createResidentIdle();}catch(e){console.warn('주민 호흡 모듈을 읽지 못했습니다',e);}try{groundDetail=(await import('./map-scene-rift-ground-detail.mjs')).createRiftGroundDetail({loadImage:picture,onReady:()=>{dirty=true;}});}catch(e){console.warn('바닥 재질 모듈을 읽지 못했습니다',e);}try{scaleComparisonFactory=(await import('./map-scene-scale-comparison.mjs')).inspectScaleComparison;}catch(e){console.warn('이미지 크기 비교 모듈을 읽지 못했습니다',e);}try{residentAccessFactory=(await import('./map-scene-resident-access.mjs')).inspectResidentAccess;}catch(e){console.warn('주민 접근 검사 모듈을 읽지 못했습니다',e);}try{residentPreviewFactory=(await import('./map-scene-resident-preview.mjs')).prepareResidentPreview;}catch(e){console.warn('주민 보행 시험 모듈을 읽지 못했습니다',e);}try{const objects=await import('./map-scene-object-list.mjs');objectListFactory=objects.inspectLayerObjects;objectFocusFactory=objects.focusObjectFoot;}catch(e){console.warn('객체 목록 모듈을 읽지 못했습니다',e);}try{ambienceFactory=(await import('./map-scene-rift-ambience.mjs')).createRiftAmbience;}catch(e){console.warn('틈 분위기 모듈을 읽지 못했습니다',e);}await Promise.all([script('assets/map/hell_rift/interspace_20261005/layout.js'),script('assets/map/ch1/production_finish/layout.js')]);history=new K.History(await preset('rift'));try{const raw=localStorage.getItem(CACHE_KEY);if(raw){const p=K.validate(JSON.parse(raw));await importProject(p,false);}}catch(e){toast('기존 복구 씬을 읽지 못해 승인 원화로 시작합니다');}const named=new URLSearchParams(location.search).get('scene');if(named){try{await importProject(await namedProject(named),false);}catch(e){toast('현재 씬 유지 · '+e.message);}}await groundDetail?.prepare(current());resize();fit();refresh();palette();$('status').textContent='준비됨 · '+current().name+' / 본편에 자동 적용하지 않음';new ResizeObserver(resize).observe($('stage'));picture('img/exoduser_warrior/south.png').then(im=>{warrior=im;dirty=true;}).catch(()=>{});setBusy(false); $('workspace').inert=false; requestAnimationFrame(tick);
     // Read-only diagnostics for local UI QA; import uses the same validated atomic path.
-    window.EXODUSER_SCENE_EDITOR={snapshot:()=>K.clone(current()),view:()=>({...viewport}),player:()=>playing?{...player}:null,selection:()=>selected,batchSelection:()=>[...batchIds],importProject,ambience:()=>({enabled:!!ambience&&$('ambient').checked,stats:ambience?.snapshot()||null}),grounding:()=>residentGrounding?.snapshot()||[],residentLighting:()=>residentLighting?.snapshot()||null,residentIdle:()=>residentIdle?.snapshot()||null,groundDetail:()=>groundDetail?.snapshot()||null,groundDetailEnabled:value=>{if(typeof value==='boolean'){groundDetailEnabled=value;dirty=true;}return groundDetailEnabled;},scaleComparison:()=>selectedScaleComparison(),residentRegistration:()=>selectedResidentRegistration(),residentAccess:()=>residentAccessReport?K.clone(residentAccessReport):null,residentPreview:()=>residentPreviewOrigin?{npcId:residentPreviewOrigin.npcId,objectId:residentPreviewOrigin.objectId,entry:{...residentPreviewOrigin.entry}}:null,dialogue:()=>({anchors:residentAnchors().map(a=>({...a,approach:{...a.approach}})),state:dialogueController?.snapshot()||null}),ready:true};
+    window.EXODUSER_SCENE_EDITOR={snapshot:()=>K.clone(current()),view:()=>({...viewport}),player:()=>playing?{...player}:null,selection:()=>selected,batchSelection:()=>[...batchIds],importProject,ambience:()=>({enabled:!!ambience&&$('ambient').checked,stats:ambience?.snapshot()||null}),grounding:()=>residentGrounding?.snapshot()||[],residentLighting:()=>residentLighting?.snapshot()||null,residentIdle:()=>residentIdle?.snapshot()||null,groundDetail:()=>groundDetail?.snapshot()||null,groundDetailEnabled:value=>{if(typeof value==='boolean'){groundDetailEnabled=value;dirty=true;}return groundDetailEnabled;},scaleComparison:()=>selectedScaleComparison(),maskResolution:()=>maskResolutionSnapshot(),residentRegistration:()=>selectedResidentRegistration(),residentAccess:()=>residentAccessReport?K.clone(residentAccessReport):null,residentPreview:()=>residentPreviewOrigin?{npcId:residentPreviewOrigin.npcId,objectId:residentPreviewOrigin.objectId,entry:{...residentPreviewOrigin.entry}}:null,dialogue:()=>({anchors:residentAnchors().map(a=>({...a,approach:{...a.approach}})),state:dialogueController?.snapshot()||null}),ready:true};
   }catch(e){$('status').textContent='씬 시작 실패 · '+e.message;toast(e.message);}
 })();
