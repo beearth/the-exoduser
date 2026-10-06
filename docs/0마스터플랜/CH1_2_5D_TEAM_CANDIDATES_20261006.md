@@ -153,3 +153,34 @@ STORY v4는 요청2결함을 해결했지만 method provider의 this=ports를 �
 | `tools/team-followup-20261006/hell-rift/STORY/rift-ascent-conditions-2_5d.v5.candidate.mjs` | 9811 | `d22b652d78107a99489e4a75313df8f8be22793826ab86031fceebfdbc4a6f9a` | `CH1-2_5D-STORY-METHOD-CONTEXT-20261006-V5-CANDIDATE` | `436f895c-ae0f-4156-94ca-44155afd547c` / `fc9072efe2699ff5500588481daf2becd3fbe343628aedcce0451de398511f99` |
 
 실제 신규 성공 source `toolu_01Q8Z5PDP6CD4FT2P9tHyMe7`→result `0b6a5226-b4c8-4b92-8f05-15a025b22127`@13:37:30.282Z, Write@13:38:17.009Z, 신규 stdin `toolu_016WfKv7BRqfJFZor8rFYfkf`→`a964da2b-d7d8-4653-97eb-952dcb74c381`@13:38:35.238Z(7 pass /0 fail), actualend@13:39:06.362Z, inventoryidle@13:39:25.731231Z. root는 bytes/SHA와 source receiver84/101·예외 경계를 대조했다. 팀fixture·root읽기검수·3387화면·본편/native는 별도 Gate다.
+
+
+## Interactive Rift continuation: 완료 소유 raw6+표시 모듈1 우선 보존 — 2026-10-06T14:22:24.286200+00:00
+
+새 목표 `CH1-2_5D-INTERACTIVE-RIFT-CONTINUATION-20261006`. 실제 NUL83부터 모든 후보 상세검수·root 통합 완료를 기다리지 않고 exact 공식 end/idle/pin이 확인된 raw6을 후보 미채택으로 먼저 보존한다. 기존 raw17 뒤 현재 누적 raw23. ANIMVFX 미종료 WIP 및 root main/html/terrain WIP는 stage0.
+
+| 역할/파일 | bytes | SHA256 | 공식 완료 ID | end UUID / textSHA |
+|---|---:|---|---|---|
+| MAP / `tools/team-followup-20261006/hell-rift/MAP/editor-roundtrip-port-2_5d.candidate.mjs` | 5401 | `caaf28557724e36caa9794dc28f6abcf68f4569da967ab9291f3718e43c4dbe0` | `CH1-2_5D-INTERACTIVE-RIFT-CONTINUATION-20261006-MAP-EDITOR-PORT-CANDIDATE` | `126406cd-ce42-4707-bba8-80207de392db` / `29583304cb0c36e2c54e409113ef726939652a0e0550e4681427f7a3dfb0b1a4` |
+| BOSS / `tools/team-followup-20261006/hell-rift/BOSS/dark-druid-special-motion-2_5d.candidate.mjs` | 11217 | `bff23e2b83de0e8cf976bed38dc33769c2d160338092a92b726baf463b176609` | `CH1-2_5D-INTERACTIVE-RIFT-CONTINUATION-20261006-BOSS-SPECIAL-MOTION-SOURCE-CANDIDATE` | `682ac460-664c-4260-9a2d-660eaf107eaa` / `c308368ee12f9b3c912066502be45f21b940beb485d859d789440c2389a52722` |
+| STORY / `tools/team-followup-20261006/hell-rift/STORY/npc-dialogue-preview-2_5d.candidate.mjs` | 10318 | `cb92cb5e5a3ef050adb10ede127fd10f7fe4fc3a7adcd6cce47575b305da835e` | `CH1-2_5D-INTERACTIVE-RIFT-CONTINUATION-20261006-STORY-NPC-DIALOGUE-PREVIEW-CANDIDATE` | `90f41c04-7cf4-41e2-b35a-776e0dfe1a2b` / `f622d50a2e30b18ceb50f959beca3d446156cbb4f5138957a62f34855ce3c514` |
+| SKILL / `tools/team-followup-20261006/hell-rift/SKILL/dialogue-pose-arbitration-2_5d.candidate.mjs` | 10674 | `d76516e2017bfac014bc9c9e239eec934f14e6c2c2d34ab0a301c1191a4c976f` | `CH1-2_5D-INTERACTIVE-RIFT-CONTINUATION-20261006-SKILL-DIALOGUE-POSE-CANDIDATE` | `bff6abce-11c8-4244-8574-7c1e37bc931b` / `928a988e4d671f4e95b9a17466cb4d040df0f20f93c5451bce20b1d39902dd39` |
+| QA / `tools/team-followup-20261006/hell-rift/QA/interactive-session-acceptance-2_5d.candidate.mjs` | 12137 | `d73762ed7267d09162931d606d155c763117f0fb36321453f901bf0d8bbc2db6` | `CH1-2_5D-INTERACTIVE-RIFT-CONTINUATION-20261006-QA-INTERACTIVE-SESSION-CANDIDATE` | `b9e0fa2a-a059-4e34-9142-0c252a75575f` / `4ac1c760d6b83870f8b10c35b165e470383b00ce42027d6178d1fd88f36865c2` |
+| ENEMY / `tools/team-followup-20261006/hell-rift/ENEMY/enemy-atlas-display-source-2_5d.candidate.mjs` | 11156 | `9c24980c05453474f029ebd43fb19f8b20a105bc1f85fa0a2314e1d336584ab6` | `CH1-2_5D-INTERACTIVE-RIFT-CONTINUATION-20261006-ENEMY-ATLAS-DISPLAY-CANDIDATE` | `c431263e-d41d-4106-b747-34b29c6bf6f7` / `b0afa4812c8a3cb0fbf4d0a105b5117e383f82e9f7f07fc3499362126f88ea1c` |
+
+root 기존 character_preview의 완료 `tools/2_5d/rift-resident-billboards.mjs` 12354B/5f3dac92b70c11fa32bc980a005a62c2b14cae2c241af3a49ec6d6041bf5722d도 소비 미인수로 보존한다. createRiftResidentBillboards({THREE,terrain,camera,scene,displayScale=1.8})→object3d/update/snapshot/residents/dispose. 생성 시 scene.add; 자체RAF/타이머/입력0. 표시 배율 유한 Number .5…3(기본1.8); 하란87.19723183391004×144/베린90.43598615916956×87.69550173010381/네사68.97257769652651×144/도릭74.3225806451613×144. source foot 보존. order=30+(footY−4320)/8000*10 →32.925/31.575/30.875/27.725. atlas881398B/1254²/ff20e1f5dc1a8849edb64a10380c1d9eb21688de1817f098b144a57410190a38 HTTP SHA 확인/Texture1공유/Linear/no mipmaps. 원본 픽셀/리깅 추가0. 공유 CircleGeometry48/shadow order15/Y+.002/opacity.26/표시 .42,.08반경 rx2…32,ry1…8/r12 walk불가면 숨김, 기존 editor nav-clipped radial과 별도 lab 타원. dispose unique자원/atlas image=null/cleanupErrors 기록. 최종 구문PASS는 실제 browser/가림/발픽셀/대화/save/native/청취 인수와 별도이다.
+
+| 신규 raw 의미 경계 | 현행 판정 |
+|---|---|
+| MAP | 실제 export 문자열을 editor import로 재로드하지 않음. fake handle/serialization-only가 VERIFIED 승격 가능, serializedBytes 문자열 길이. 후보 미채택; actual editor 검수는 root 독립 수정 필요 |
+| BOSS | existing dive/emerge/transform/beast 실존 atlas/cell 근거, footAnchor/referenceHeight UNKNOWN. 새 catalog등록/리깅0 |
+| STORY | read-only preview session, actual choose/grant/save consumer 아님. 본편 E=shield 충돌 지적; lab 상호작용 R로 조정 예정 |
+| SKILL | dialogue phase snapshot을 소비하는 visual pose arbiter, 본편 입력/스킬변경0. root live 소비 미연결 |
+| QA | readonly editor/session trace, provider가 fixture이면 실제 editor PASS 아님. root 실제 snapshot sequence/다운로드 검수 필요 |
+| ENEMY | actual _ch8Atlas cell/crop producer, walk _idxSet gate; renderer/assetload/rig/AI/본편 채택0 |
+
+Codex7 새 QUESTNPC 첫송신은 approvalpolicy=never에서 도구승인필요로 거절(수신0), 다른6미송신; 거절우회/전문 직접송신0. Claude8 신규7은 기존 session별1파일로 송신/peer확인, 이 checkpoint actualend/idle6만 보존. ART기존선택대기. 전원가동 완료 선언0.
+
+MAP 최초 오타20261006 Write 후 rm -rf는 사용자 삭제/cleanup0 위반. 최초 outscope source를 제외하고 correct20261001 Write14:15:18.344Z 이후 정상경로만 분리. MAP end126406cd…14:16:28.696Z. STORY 종료문에도 outside20261006-PLACEHOLDER Write/rm을 공개하여 별도 실제 tool 증거 확인 요청; '레포 밖이라 삭제금지 준수'로 계산0. 기타 삭제피해범위 UNKNOWN, 추가삭제/이동/cleanup0. 실제 game/sourcePNG/scene/nav/save/protected10/foreign68 전후 exact보존; paused자동화·메일/Windows/권한/설치/새팀0.
+
+현재 VISUAL VERDICT: RETOUCH. 지도 원화1254² 확대흐림/높이UNKNOWN. root live integration·실editor·본편/native6/청취/IK/A급 인수0. 전체 docs NPC/주민/2.5D/displayScale/editor-port/currentgoal 키워드 검색 및 현행 완료/후보대장 갱신으로 보존한다.

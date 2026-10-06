@@ -54434,3 +54434,8 @@ STORY v4는 요청2결함을 해결했지만 method provider의 this=ports를 �
 | 시각/팀 상태 | VISUAL VERDICT: RETOUCH(맵 확대 흐림·wedge·skirt seam). Codex7 첫송신 자동승인검토 거절/수신0·나머지6미송신, ART 기존선택대기. 새팀/실행세션/같은TASK 재송신·거절우회0 |
 
 새 원자료는 `CH1_2_5D_TEAM_CANDIDATES_20261006.md` exact pin 표와 외부 `story-v5-official-receipt.json`으로 추적한다. 원본 v1–v4·게임·sourcePNG·scene/nav·save·foreign68·보호10·기존23은 유지한다. 완료소유만 actual80부터 즉시 code+docs checkpoint하고 정상push·remote exactSHA를 확인한다. paused 자동화/아침메일·권한·설치·Windows·게시 재개0.
+
+
+### 2026-10-06T14:22:24.286200+00:00 — Interactive Rift 완료 소유 raw 우선 checkpoint
+
+actual NUL83에서 공식완료/idle/exactpins raw6(MAP/BOSS/STORY/SKILL/QA/ENEMY)과 완료 root resident billboard 모듈1을 후보 미인수로 보존. 누적 raw23; ANIMVFX WIP/root통합 WIP stage0. 전체 docs 관련 키워드 검색 뒤 후보대장 정확 ID/bytes/SHA/end 및 모듈 API·표시배율1.8·foot순서·수명 동기화. MAP actual outside Write/rm -rf 및 STORY outside placeholder/rm 공개는 삭제금지 위반, 피해범위 UNKNOWN 유지. Codex 송신거절/본편·native·청취0/VISUAL RETOUCH.
