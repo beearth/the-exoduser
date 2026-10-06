@@ -31,6 +31,7 @@ let dialogueSignature='',nearestNpc=null;
 let observeFoot, realNav, anchorJob=null, registration=null;
 let acceptance={status:'PENDING',samples:0,reason:'표시 위치 검사 전',result:null};
 const anchorSamples=12;
+let previewSequence=0,previewEntry=null,previewEntryReason=null;
 const leaf = (id,value) => { const el=$(id); if(el && !el.children.length) el.textContent=String(value); };
 function stopFrame(){if(state.raf)cancelAnimationFrame(state.raf);state.raf=0;state.lastTime=null;}
 function fail(error){
@@ -87,11 +88,11 @@ function playSpecial(){
 }
 function select(id){
   if(!rigs[id])return;
-  if(id!==state.selected){closeDialogue('character-switch');clearIntent();interactionCue?.onActorChange('character-switch');effects[state.selected]?.onActorChange('character-switch');}
+  if(id!==state.selected){invalidatePreview('character-switch');closeDialogue('character-switch');clearIntent();interactionCue?.onActorChange('character-switch');effects[state.selected]?.onActorChange('character-switch');}
   state.selected=id;Object.entries(rigs).forEach(([key,rig])=>{rig.object3d.visible=key===id;helpers[key].visible=key===id&&$('bones').checked;});
   leaf('actor-name',rigs[id].snapshot().name);applyState();
 }
-function reset(){closeDialogue('reset');interactionCue?.onSceneChange('reset');clearIntent();poses[state.selected]?.reset();effects[state.selected]?.onActorChange('reset');state.x=5480;state.y=3740;if(!terrain.canWalk(state.x,state.y,12))throw new Error('대표 화면 시작 발 위치가 막혀 있습니다');state.direction=0;state.blocked=0;setMode('idle');placeWolf();applyState();}
+function reset(){invalidatePreview('reset');closeDialogue('reset');interactionCue?.onSceneChange('reset');clearIntent();poses[state.selected]?.reset();effects[state.selected]?.onActorChange('reset');state.x=5480;state.y=3740;if(!terrain.canWalk(state.x,state.y,12))throw new Error('대표 화면 시작 발 위치가 막혀 있습니다');state.direction=0;state.blocked=0;setMode('idle');placeWolf();applyState();}
 function closeDialogue(reason){const wasOpen=dialogue?.snapshot().isOpen;dialogue?.close(reason);if(wasOpen){keys.clear();state.attackQueued=false;state.previewMode=null;poses[state.selected]?.release('dialogue-close');}dialogueSignature='';updateDialogue();}
 function updateDialogue(){
   if(!dialogue)return;
@@ -121,10 +122,46 @@ function displayApproach(row){
   }
   return row.approach;
 }
+function invalidatePreview(reason){previewEntry=null;previewEntryReason=reason;}
+function previewEntrySnapshot(){return Object.freeze({active:!!previewEntry,token:previewEntry?.token??null,npcId:previewEntry?.npcId??null,objectId:previewEntry?.objectId??null,reason:previewEntryReason});}
+function enterPreview(payload){
+  let origin=null,entry=null;
+  try{
+    if(!state.ready||state.error||state.disposed||state.contextLost)throw new Error('lab-not-ready');
+    const values={};
+    if(!payload||typeof payload!=='object'||Array.isArray(payload))throw new Error('invalid-payload');
+    for(const key of ['npcId','objectId','x','y']){const d=Object.getOwnPropertyDescriptor(payload,key);if(!d||!Object.hasOwn(d,'value'))throw new Error('invalid-payload');values[key]=d.value;}
+    const {npcId,objectId,x,y}=values;
+    if(typeof npcId!=='string'||typeof objectId!=='string'||!Number.isFinite(x)||!Number.isFinite(y))throw new Error('invalid-payload');
+    const row=residentAccess?.rows.find(r=>r.npcId===npcId&&r.objectId===objectId);
+    if(!row||row.status!=='ready')throw new Error('resident-mismatch');
+    const b=terrain.bounds;
+    if(x<b.left+12||x>b.right-12||y<b.top+12||y>b.bottom-12||!terrain.canWalk(x,y,12))throw new Error('approach-blocked');
+    if(dialogue.nearest({x,y})?.npcId!==npcId)throw new Error('nearest-resident-mismatch');
+    origin={x:state.x,y:state.y,direction:state.direction,selected:state.selected};
+    entry={token:++previewSequence,npcId,objectId,x,y,selected:state.selected};
+    invalidatePreview('new-entry');closeDialogue('editor-preview');clearIntent();
+    interactionCue?.onActorChange('editor-preview');effects[state.selected]?.onActorChange('editor-preview');
+    state.x=x;state.y=y;state.direction=(Math.round(Math.atan2(row.foot.x-x,row.foot.y-y)/(Math.PI/4))+8)%8;state.blocked=0;
+    previewEntry=entry;previewEntryReason=null;applyState();
+    let used=false;
+    return Object.freeze({restore(){
+      if(used)return false;used=true;
+      if(previewEntry!==entry||state.selected!==entry.selected||state.x!==entry.x||state.y!==entry.y){if(previewEntry===entry)invalidatePreview('entry-changed');return false;}
+      invalidatePreview('restored');
+      if(!state.ready||state.error||state.disposed||state.contextLost||!terrain.canWalk(origin.x,origin.y,12))return false;
+      closeDialogue('editor-preview-restore');clearIntent();interactionCue?.onActorChange('editor-preview-restore');effects[state.selected]?.onActorChange('editor-preview-restore');
+      state.x=origin.x;state.y=origin.y;state.direction=origin.direction;state.blocked=0;applyState();return true;
+    }});
+  }catch(error){
+    if(entry&&previewEntry===entry){invalidatePreview('entry-failed');if(origin&&state.selected===origin.selected){state.x=origin.x;state.y=origin.y;state.direction=origin.direction;}}
+    previewEntryReason=error instanceof Error?error.message:'entry-failed';return null;
+  }
+}
 function visitResident(){
   const row=residentAccess?.rows.find(r=>r.npcId===$('resident').value),point=row?.displayApproach;
   if(!row||row.status!=='ready'||!point||!terrain.canWalk(point.x,point.y,12))return;
-  closeDialogue('preview-location-change');clearIntent();interactionCue?.onActorChange('preview-location-change');effects[state.selected]?.onActorChange('preview-location-change');
+  invalidatePreview('preview-location-change');closeDialogue('preview-location-change');clearIntent();interactionCue?.onActorChange('preview-location-change');effects[state.selected]?.onActorChange('preview-location-change');
   state.x=point.x;state.y=point.y;state.direction=(Math.round(Math.atan2(row.foot.x-state.x,row.foot.y-state.y)/(Math.PI/4))+8)%8;state.blocked=0;setMode('idle');applyState();
 }
 function placeWolf(){
@@ -166,6 +203,7 @@ function move(dt){
   const dy=Number(keys.has('KeyS')||keys.has('ArrowDown'))-Number(keys.has('KeyW')||keys.has('ArrowUp'));
   if(state.attackQueued||poses[state.selected].snapshot().attackRemaining>0)return;
   if(!dx&&!dy)return;
+  if(previewEntry)invalidatePreview('user-movement');
   const speed=keys.has('ShiftLeft')||keys.has('ShiftRight')?470:260;
   state.direction=(Math.round(Math.atan2(dx,dy)/(Math.PI/4))+8)%8;
   const length=Math.hypot(dx,dy),x=state.x+dx/length*speed*dt,y=state.y+dy/length*speed*dt;
@@ -222,7 +260,7 @@ function resume(){if(state.ready&&!state.raf&&!state.disposed&&!document.hidden)
 function createEffects(id){return createActorEffectLifetime({THREE,scene,camera,terrain,options:{depthTest:false,reducedMotion:reducedQuery.matches,dustSize:id==='dark-druid'?.042:.022,attackSize:id==='dark-druid'?.145:.08}});}
 function updateReducedMotion(){interactionCue?.setReducedMotion(reducedQuery.matches);for(const id of Object.keys(effects)){effects[id].dispose();effects[id]=createEffects(id);}}
 function dispose(){
-  if(state.disposed)return;state.disposed=true;anchorJob=null;stopFrame();observer?.disconnect();
+  if(state.disposed)return;invalidatePreview('disposed');state.disposed=true;anchorJob=null;stopFrame();observer?.disconnect();
   reducedQuery?.removeEventListener('change',updateReducedMotion);
   Object.values(effects).forEach(e=>e.dispose());
   Object.values(helpers).forEach(h=>{h.geometry.dispose();h.material.dispose();});
@@ -311,4 +349,4 @@ window.addEventListener('blur',handleBlur);
 $('world-canvas').addEventListener('webglcontextlost',event=>{event.preventDefault();state.contextLost=true;fail(new Error('WebGL 컨텍스트 소실. 페이지를 다시 열어 주세요.'));});
 document.addEventListener('visibilitychange',()=>{clearIntent();if(document.hidden)stopFrame();else resume();});
 window.addEventListener('pagehide',dispose,{once:true});
-window.__rift25Lab=Object.freeze({snapshot:()=>{let actor;rigs[state.selected]?.object3d.traverse(n=>{if(n.isSkinnedMesh)actor=n;});return {...state,raf:!!state.raf,rig:rigs[state.selected]?.snapshot(),poseConsumer:poses[state.selected]?.snapshot(),effects:effects[state.selected]?.snapshot(),specialMotion:specialMotion?.snapshot(),actorVisible:rigs[state.selected]?.object3d.visible,shadowVisible:shadow?.visible,acceptance:structuredClone(acceptance),registration:structuredClone(registration),residents:residents?.snapshot(),interactionCue:interactionCue?.snapshot(),residentAccess:structuredClone(residentAccess),dialogue:dialogue?structuredClone(dialogue.snapshot()):null,dialogueObservation:dialogueObservation?.snapshot(),wolf:wolf?.snapshot(),wolfPlacement:wolfPlacement?{...wolfPlacement,canWalk:terrain.canWalk(wolfPlacement.x,wolfPlacement.y,wolfPlacement.radius)}:null,wolfError,nearestNpc:structuredClone(nearestNpc),cameraPosition:camera?.position.toArray(),diagnosticProvenance:{INTERACTION:INTERACTION_CUE_PROVENANCE,QA:SLICE_ACCEPTANCE_PROVENANCE,MAP:SCENE_REGISTRATION_PROVENANCE},renderContract:actor?{transparent:actor.material.transparent,depthWrite:actor.material.depthWrite,depthTest:actor.material.depthTest,actorOrder:actor.renderOrder,actorScenePosition:rigs[state.selected].object3d.position.toArray(),shadowScenePosition:shadow.position.toArray(),foregroundOrders:terrain.occluders.map(o=>o.object3d.renderOrder)}:null,terrain:terrain?.snapshot(),canvas:{width:$('world-canvas').width,height:$('world-canvas').height}};}});
+window.__rift25Lab=Object.freeze({enterPreview,snapshot:()=>{let actor;rigs[state.selected]?.object3d.traverse(n=>{if(n.isSkinnedMesh)actor=n;});return {...state,previewEntry:previewEntrySnapshot(),raf:!!state.raf,rig:rigs[state.selected]?.snapshot(),poseConsumer:poses[state.selected]?.snapshot(),effects:effects[state.selected]?.snapshot(),specialMotion:specialMotion?.snapshot(),actorVisible:rigs[state.selected]?.object3d.visible,shadowVisible:shadow?.visible,acceptance:structuredClone(acceptance),registration:structuredClone(registration),residents:residents?.snapshot(),interactionCue:interactionCue?.snapshot(),residentAccess:structuredClone(residentAccess),dialogue:dialogue?structuredClone(dialogue.snapshot()):null,dialogueObservation:dialogueObservation?.snapshot(),wolf:wolf?.snapshot(),wolfPlacement:wolfPlacement?{...wolfPlacement,canWalk:terrain.canWalk(wolfPlacement.x,wolfPlacement.y,wolfPlacement.radius)}:null,wolfError,nearestNpc:structuredClone(nearestNpc),cameraPosition:camera?.position.toArray(),diagnosticProvenance:{INTERACTION:INTERACTION_CUE_PROVENANCE,QA:SLICE_ACCEPTANCE_PROVENANCE,MAP:SCENE_REGISTRATION_PROVENANCE},renderContract:actor?{transparent:actor.material.transparent,depthWrite:actor.material.depthWrite,depthTest:actor.material.depthTest,actorOrder:actor.renderOrder,actorScenePosition:rigs[state.selected].object3d.position.toArray(),shadowScenePosition:shadow.position.toArray(),foregroundOrders:terrain.occluders.map(o=>o.object3d.renderOrder)}:null,terrain:terrain?.snapshot(),canvas:{width:$('world-canvas').width,height:$('world-canvas').height}};}});
