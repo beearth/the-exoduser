@@ -409,3 +409,45 @@ MAP raw56의 root 새정적검토는 직접채택 **semanticFAIL**이다. old re
 root main-rift-host의 실제브라우저검사에서 parent/child Object.prototype realm 차이로정상ready거절첫FAIL(checks0)을발견했고보존한후 childrealm만명시허용하여새GUI14PASS를관측했다. 현errorformatter 예외경계를소유파일1에서보완중이므로 최종pin/신규제한검수는후속영수증으로확정한다. 기존memory16과새GUI14를합산0. 실제editor3387/모의maincontext의격리host검사이며actualMainGame/native6/audio/durableGift/saveAcceptedfalse. root가entry/return1600×1000실화면을확인: hostUI PASS,전체맵RETOUCH/1254²확대흐림유지. 게임held/gamepad/update와DEMO1-1진입은미구현이다.
 
 이번보존은완료raw4+운영관련docs만정상checkpoint하며rootpublicWIP/진행MAP·ANIM·STORY/ownerSTATELOG4/foreign68미stage. 관련전체keyword검색 및 기존바이트prefix보존. 외부 main-parallel-raw57-60-formal-receipt.json와daily-production-* 영수증을따른다. §23 MAP PRODUCTION REPORT는앞절을유지하고이번raw4 source완료를actualnative/맵A급으로승격0. VISUAL VERDICT: RETOUCH.
+
+
+## ROOT-PUBLIC-RIFT-FOLLOWTHROUGH-20261007 — 연속 제작 / 미채택 raw63–66
+
+직전12파일 `5f8a62ebf4f7f1f9f2bc86ebb70ed78509a8a176` 정상 commit/push·원격 exact 확인 완료. public host `tools/2_5d/main-rift-host.mjs`17683B/008a33930406b5ceaea70fb83050eab46acbd24eb7cf98579cae7b64adb6dc38, public gate `tools/2_5d/rift-main-entry-gate.mjs`16280B/f9dbbcb891e79748d6b71eb08e331745ccd62f7992d0210fe438fbd3574038fd 및 docs8/raw61·62를 보존했다. exact운영계약·모든 API/상수·숫자는 PROJECT_MANAGEMENT_MASTER의 ROOT-MAIN-HOST-PRESERVATION-RAW61-62 및 ROOT-RIFT-MAIN-GATE-PUBLIC 절, SLICE/EDITOR_RESULT/MAP_SCENE_EDITOR/THREE/세이브/대사 소비자 문서의 같은 완료 절을 따른다. 원자료 raw56 미채택 의미FAIL은 파생 public과 구분한다.
+
+| 새 검수 단위 | 결과 / 핀 경계 |
+|---|---|
+| gate pure | 신규 stdin1 / 24 groups·222 conditions PASS, exit0. 실제 main ACK0 |
+| host | 최초 child realm FAIL체크0 / 이전6cd… GUI14 PASS / 최종008a… 실패주입2+정상GUI2 PASS를 분리. 반복·합산0 |
+| gate+host actual interop | 최종 f9db+008a exact / 신규4 PASS. 실제 WebGL iframe·명시 continue scheduled만 / 지연 mockadvance1·재허가false / Escape 취소 / context교체거부 / expectedHTTP503+500ms 실패 cleanup. 모의 P/G이며 실제 nextStage/save/audio/native6 미인수 |
+| 화면 | host entry/return UI PASS / 전체 맵 RETOUCH / plate1254²→8000² 확대 흐림 미해결. 원 PNG/nav/scene/지형 geometry 변경0 |
+| raw61 독립 root 검수 | PNG16+JSON2/40셀(32유효+8빈walk3) 실제 바이트·픽셀 표 일치. 새stdin1 데이터5PASS/API경계4FAIL(exit1). getter/type/negative threshold/NaN frame/unknownmode 결함 → raw 미채택. alpha>16 측정≠public alphaTest.01·해부학적발·IK |
+| raw62 MAP | 7258B/603b8a6b8e792747f51e93b9e230a4dd868d99a8a7d724bf22b4a289d572cdb9. TASK 시작 전 fresh가이드/SSOT 선행누락 FAIL / 미채택. 단순2D nativebuffer 후보와 Three확대 흐림 분리. 보정1회 enqueue/실행첨부 전달 흔적을 담당 기록으로 분리, 선행소급PASS0 |
+
+CH1-RIFT-MAIN-POLICIES-FIX-20261007의 기존 SKILL/ENEMY/BOSS/QA 4팀은 송신4/peer4를 넘어 공식end4·exactpins4로 갱신되었다. 아래는 다음 소비자 후보를 정밀 검수하기 전에 완료소유 원자료를 미채택 상태로 checkpoint하는 표다. 후보 stdin 자기보고는 실제 main·native6·청취·보상save 인수로 승격하지 않는다.
+
+| 역할 | 공식 완료 ID | 정확 파일 | bytes / fullSHA256 | official end UUID / 시간 / end rawSHA256 |
+|---|---|---|---|---|
+| SKILL | CH1-RIFT-MAIN-POLICIES-FIX-20261007-SKILL-CANDIDATE | tools/team-followup-20261007/hell-rift/SKILL/rift-main-input-policy-v2.candidate.mjs | 18140 / f37496ba97808f0f831c507d90c18b35666295e79bf648de884fcfe4bc7547b6 | ff7cfaf0-984b-4257-b7ea-c626705f50a9 / 2026-10-06T19:12:05.081Z / 364ad91baf9f314649924dee959ad3cd8c677decb9fd7a3be7d7c347a3207af7 |
+| ENEMY | CH1-RIFT-MAIN-POLICIES-FIX-20261007-ENEMY-CANDIDATE | tools/team-followup-20261007/hell-rift/ENEMY/rift-main-simulation-policy-v2.candidate.mjs | 10122 / 880f204f1a1a7ae7bb5b5ec7587585544c6ebfad20520ef5e82d494730020e03 | 45bd281e-7659-412d-afc7-2156b118b904 / 2026-10-06T19:12:02.896Z / 993e246f2b11c89fff4b12bedd7b804ce7fa456ce0e97b800a19e6657d8b3eb5 |
+| BOSS | CH1-RIFT-MAIN-POLICIES-FIX-20261007-BOSS-CANDIDATE | tools/team-followup-20261007/hell-rift/BOSS/rift-main-stage-clear-admission-v2.candidate.mjs | 9477 / 6eec849eebf9039b79807f7f7b327b36516649343985141f8bf36597452242e5 | d868227c-f5f1-4785-92c8-62da7ab6963d / 2026-10-06T19:10:39.523Z / 7ba8a877016ba37b423210427bcd041ff2f0b8915548f4b6f6702a9acd003888 |
+| QA | CH1-RIFT-MAIN-POLICIES-FIX-20261007-QA-CANDIDATE | tools/team-followup-20261007/hell-rift/QA/rift-main-evidence-contract-v2.candidate.mjs | 15720 / 2789ed1ee1543f9b202da962fec04a0424057694453a188970a6036be22464a2 | d329f12e-4b08-4f63-8809-d478435be163 / 2026-10-06T19:11:28.300Z / c66b2953bcf522b99c2b3719615d96db9fb709b93bb214e05f2a20c35053716e |
+
+raw63–66는 root direct import/production 채택0·root 의미검수 PENDING. root 읽기검수를 입력+시뮬레이션 / 보스+근거형식으로 병렬 분리했으며 같은 검사를 재실행하지 않는다. 새측정·상태·필드의 형식검증은 본편실측과 구분한다. ANIM 후속 TASK CH1-RIFT-WOLF-FOOT-BOUNDS-FIX-20261007-ANIMVFX(max1, rift-wolf-foot-bounds-v2.candidate.mjs)는 공식raw61 결함에 대한 신규 단위로 기존Claude8 owner에게1회 인계했으며 actualsend/peer/source/end는 해당 최신영수증으로 확인해야 한다. STORY 기존부족의존성 보충은1회enqueue와실제peer수신을 구분/반복0.
+
+새 소비자의 root 다음 접점은 lexical P/G capture, update밖 gamepad poll·inject·facing 차단, already-held 초기화, 정상 stage clear admission·DEMO_MODE=true/LAST_STAGE=0 분기,5000ms callback·900ms curtain epoch 및 실제 지속 저장/유품/부탁 consumer다. public module 완료만으로 game.html이 연동됐다고 선언하지 않는다. dbSave/SP10 보상 재지급·Q전용 blackBean/E불가·어택티켓·2_3 설계 변경0.
+
+하루 약15 percentage points 계정사용 목표: 기준 주간10080분41%/남음59%, reset2026-10-12T11:52:56Z, 모든채팅공용/일일토큰값 미제공. 의미있는 제작·검수·후속배정에 쓰며 반복감사·같은TASK·이미완료검사로 소비하지 않는다. 목표도달로 제작 중지0/실한도는 준수/자동결제·설정변경·우회0. 단일rootheartbeat30분 ACTIVE로 연속운영, 다른 PAUSED·아침메일 재개0. 원총괄직접전문중복송신0/Claude8·Codex7 기존owner만송신소유/거절된Codex·ART 목적 재시도0.
+
+실제 NUL80부터 모든후보상세인수 대기없이 완료소유 officialend/fullpin만 즉시 checkpoint.100전새산출중단. foreign68·ownerSTATELOG4·타인WIP·원PNG·사용자save·기존23 보존. §23: MASTER/OUTER/MEDIUM/GROUND/랜드마크/DETAIL 기존불변, PLAYABLE 독립iframe만, CAMERA 실제entry/return UI, TECH 새결과핀별분리, VISUAL VERDICT 전체RETOUCH·hostUI PASS, 본편/native6/audio/save/A급 미인수. 다음 정상 code+docs commit/push·remote exactSHA를 외부 보존 영수증으로 확인한다.
+
+
+### ROOT-PUBLIC-RIFT-CHECKPOINT-RAW63-66-20261007
+
+정확 source/end로 raw63–66 후보4를 미채택 보존한다. root 독립 읽기 반례 결과 raw63 SKILL invalid상태에서 classify 차단과 autoNext/gamepad helper허용 불일치, raw64 ENEMY own phase/inherited then/expectedToken getter실행·throw/invalidboolean·disposed-oldtoken 우회가 관측됐다. 새로운 stdin1 / 7조건FAIL·PASS0·미도달0·exit1, source 전후 exact. raw 직접채택/임의getter실행없는strictroot파생필요. BOSS/QA 신규 반례 stdin1 실제8조건FAIL/exit1: BOSS capturedContext prototype/숫자 String 변환의 getter·throw, QA expectedPin 미사용/다른pin·bare문자열 native6 PASS·kind없는visual PASS·fixtureboolean saveACK PASS 및 오류이름/Promise/ownKeys trap전파를관측했다. 검사준비 공유폴더 EEXIST는조건0·후보호출0로별도보존. 두raw미채택 semanticFAIL. signedDiff는 _diffSigned의-5..+5이고 다음stageDiffOff는 NEXT_DIFF_OPTS [-100,-50,0,50,100](game61689–61696)로서 서로다른수치다. source자체검사PASS는 실제인수로승격하지 않는다.
+
+앞서 검수된 raw61 측정은 PNG16 atlas/40셀=32유효+8빈이며32 PNG가 아니다. 데이터표정확/API4FAIL과해부학적발·IK未인수를분리했다. 원raw61–66 변경0. root의 신규정확소유 tools/2_5d/rift-parent-input-lease.mjs는 rootjob/epoch를host단순disposed보다우선하는 명시ownboolean차단/held초기화각epoch1/parent sim·gamepad poll·inject·facing·autoNext gate 준비를 구현 중이다. 존재/착수는완료가아니며 WIP stage0. publichost/gate 독립모듈의5f8a62eb…보존과실제본편연결未완료는별개다.
+
+세이브/대사 문서의 host formatter 제한 검수에서 '음성2'라고 잘못 쓴 표기는 실제 '실패 주입 2건 + 정상 GUI 2건'으로 정정했다. 코드변경·음성검수추가0·audio미인수. 원작업전fullprefix보존,5f8 committedbyte백업선행 후새append구간만정정/normal다음commit/amend0. _MAP_SSOT_INDEX와RESOLUTION_DETAIL·키바인딩 관련정본도현재publicmodule핀/해상도/미구현hotpath와정확동기화.
+
+foreign68 bytes/fullSHA·ownerSTATELOG4·타인WIP·user save/원PNG/scene/nav/game/보호2_3/기존23 보존. 실제80부터완료소유만정상checkpoint, raw공식end/fullSHA표는 ROOT-PUBLIC-RIFT-FOLLOWTHROUGH의 4행과 외부 main-policies-fix-raw63-66-formal-receipt.json을따른다. 일일15%포인트목표는계정공용주간사용관측기준이며토큰낭비·반복시험·채팅전용소비보장0. §23 VIEW: 실제hostentryreturn UI PASS / 전체VISUAL VERDICT RETOUCH / 본편native6/save/audio/A급未인수.

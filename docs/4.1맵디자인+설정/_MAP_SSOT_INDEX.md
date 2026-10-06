@@ -870,3 +870,92 @@ MAP PRODUCTION REPORT
 - GIT: completed-owned code3+동기화docs 정상commit/push 및 remote exact SHA는 외부영수증에서 확인; deploy0.
 - VISUAL VERDICT: FAIL(음영 ON), RETOUCH(전체 맵 / 기본 OFF).
 - NEXT PASS: nav 셀을 실제 그림 속 절벽 발로 취급하지 말고 authored foreground 접합 위치/부드러운 실제 경계 검수; 별도 본편 entry gate→실제 NPC 왕복→보상/save atomicACK 단위.
+
+
+## ROOT-RIFT-PUBLIC-BOUNDARY-RESOLUTION-20261007 — 현재 정본·lab/main·해상도 경계
+
+현재 public host/gate와 신규 interop의 정본 위치를 추가한다. 앞선 작성 중·end 대기 절은 당시 이력이며, 현재 상태는 아래의 최종 핀과 독립 범위로 읽는다.
+
+### 현재 정본과 읽기 연결
+
+| 정본/책임 | 현재 링크·핀 | 현재 적용 범위 |
+|---|---|---|
+| 선행 기준 | [EXODUSER_MAP_PRODUCTION_GUIDELINE_v0.9.md](EXODUSER_MAP_PRODUCTION_GUIDELINE_v0.9.md), stage LOCK 및 이 인덱스의 기존 읽기 순서 | 기존 순서/QA gate 유지. 이번 문서로 geometry·높이·nav·배치 기준을 재정의하지 않음 |
+| 독립 slice / 결과 | [HELL_RIFT_2_5D_SLICE_20261006.md](HELL_RIFT_2_5D_SLICE_20261006.md), [HELL_RIFT_EDITOR_RESULT_20261006.md](HELL_RIFT_EDITOR_RESULT_20261006.md) | source/nav/XY 등록과 host UI·전체맵 판정을 분리하여 읽음 |
+| editor / runtime | [MAP_SCENE_EDITOR_20261005.md](MAP_SCENE_EDITOR_20261005.md), [THREE_LOCAL_SINGLE_RUNTIME_20260929.md](../12퍼포먼스·최적화/THREE_LOCAL_SINGLE_RUNTIME_20260929.md) | 기존 selected-NPC editor host와 main-context host는 별개. parent는 own DOM/timeout, child는 renderer/RAF 소유 |
+| 해상도 원인 | [HELL_RIFT_RESOLUTION_DETAIL_20261006.md](HELL_RIFT_RESOLUTION_DETAIL_20261006.md) | 기존 arrival-detail 전체지형 후보 FAIL·별도 재질 crop 소비와 현재 source 확대 한계를 구분 |
+| 완료 public host | [main-rift-host.mjs](../../tools/2_5d/main-rift-host.mjs), 17683B, SHA `008a33930406b5ceaea70fb83050eab46acbd24eb7cf98579cae7b64adb6dc38`; 코드 ID ROOT-RIFT-MAIN-IFRAME-HOST-20261007 | public 구현 완료. 독립 iframe 표시/복귀 수명이며 actual main 채택0 |
+| 완료 public gate | [rift-main-entry-gate.mjs](../../tools/2_5d/rift-main-entry-gate.mjs), 16280B, SHA `f9dbbcb891e79748d6b71eb08e331745ccd62f7992d0210fe438fbd3574038fd`; ID ROOT-RIFT-MAIN-ENTRY-GATE-20261007 | public derivative 구현 완료. one-shot commit permission이며 nextStage/save/reward/DOM 호출0 |
+| gate provenance | immutable raw V2 11268B/SHA `646bf810623bfe7ce687c1bd4d560f40fc751b9586cd46326c0d7764635e72be`, 공식 end `be7786a7-6b57-4b97-a55e-e1e7cada25e1` | direct raw import0. raw 후보 완료·public 보정·main 채택은 다른 상태 |
+| 저장/대화 계약 | [15 세이브+데이터구조.md](../15%20세이브+데이터구조/15%20세이브+데이터구조.md), [RIFT_DIALOGUE_PUBLIC_CONSUMER_20261007.md](../11내러티브·로어디자인/RIFT_DIALOGUE_PUBLIC_CONSUMER_20261007.md) | checkpoint true는 durable dbSave/grant ACK가 아니며 대화는 독립 session-only. 실제 quest/reward/save 인수0 |
+
+앞선 정식 end 대기/public 작성 중/interop PENDING 절은 당시 이력으로 보존한다. 현재는 위 최종 public host/gate 핀과 아래 신규 interop 근거를 읽는다. 코드 구현 완료가 본편 연결·선명도·A급 완료를 뜻하지 않는다.
+
+### 독립 lab과 main의 실행 경계
+
+| 항목 | 정확 현재 계약 | 미인수·소유 경계 |
+|---|---|---|
+| host API·대기 | `createMainRiftHost({document,window,readContext,timeoutMs=30000,pollMs=100})` → enterRift/cancel/dispose/snapshot. timeout finite100..60000ms, poll finite20..1000ms | own iframe 최대1·timer 최대1·host RAF0; http/https 동일 origin3387·정확 tools/2_5d-world-lab.html |
+| host admission | 동기 plain own-data player non-null object(배열 제외)/character 길이>0 string/stage integer≥0/context opaque identity/onfalse/stageClearedtrue. status dead/fallen/reviving/lastStand 거절 | 실제 lexical caller가 공급해야 함; player/context 참조 엄격 비교·child character 전송0. 부모 plain과 child native realm snapshot을 구분 |
+| host 반환/종료 | enterRift Promise는 own restore()/dispose() handle 또는 null로 resolve; user Escape/돌아가기/onExit는 gate job 취소 | return≠continue job. 부모 blur 취소0; 실제 hidden 전환은 앞선 검수 SKIPPED |
+| gate API·ports | `createRiftMainEntryGate({ports})` → enter/continue/cancel/dispose/snapshot; own-data readState/checkpoint/enterRift/resumeStage 함수 캡처 | same-realm native Promise만 해당 async port에 허용; 일반 thenable/foreign Promise/custom prototype/accessor 거절 |
+| gate readState | own-data stage/stageCleared/status/difficultyOff/contextId. stage safe integer≥0, stageCleared boolean, difficultyOff finite Number, contextId non-null string/finiteNumber/bigint/symbol/boolean | enum clear-continue/dead/final/demo/unknown; 실제 admission은 stageClearedtrue+clear-continue만. gate primitive contextId와 host opaque context는 별도 입력 |
+| checkpoint/host 재검사 | checkpoint 정확 true 또는 same-realm native Promise<true>; host handle은 own restore 함수와 optional own dispose 함수 | checkpoint 전후/host await 뒤 fresh 동일 admission+epoch 확인. checkpoint는 영구 저장 확인이 아님 |
+| continue/commit | continue는 schedule만. commit은 scheduled/current epoch/fresh admission/cleanup 전후 재검사 후 최대1회 permission 발급 | caller가 commit과 root job 일치를 확인하여 실제 nextStage를 결정. gate nextStage 호출0·actualStageAcknowledgedfalse |
+| stale·실패 | cancel/dispose/new job은 stale await·저장된 callback permission 거절; late handle은 자기 restore→dispose 정리 | 실패 fallthroughfalse. hostCancelRequired와 root job을 함께 확인해야 새 host를 닫지 않음; retained error dialog cleanup은 caller 소유 |
+| main 잔여 접점 | DEMO1-1 nextBtn의 일반 접점 우회, 이미 held된 keys/gamepad polling/update, 5000ms 전환 callback/900ms curtain job guard | host/gate만으로 현재1-1→틈 main 완료0. game.html/P/G/user save/보스retry/SP10clear 변경0 |
+| 인수 flags | host/gate mainAcceptedfalse/nativeAcceptedfalse; gate actualStageAcknowledgedfalse/fallthroughfalse/timers0/raf0/saveWritesfalse/rewardWritesfalse | 실제 nextStage/combat·durable reward ACK/save/native6/audio/실캐릭터 child 연동/A급 인수0 |
+
+### 신규 interop 최종 근거와 검수 묶음
+
+| 자료/관측 | 정확 결과 | 범위 |
+|---|---|---|
+| interop 영수증 | main-gate-host-interop/interop-result.json, 26382B/SHA `f4b1d75af1997e69327d1cb81cb1e38944b1843b10fefc18b6ccf894fac0a5c4`; NEW_INTEROP4_ONLY **4/4 PASS** | 시작/종료 gate16280/f9db…·host17683/008a… 핀 동일. 실제3387 iframe+모의 P/G context, actualMainGamefalse |
+| interop1 | 실제 ready iframe, explicit continue는 schedule만, 저장된 지연 callback commit 최초true·재호출false | delayedAdvanceIsMocktrue; permission1은 실제 stage ACK 아님. actual nextStage 호출0·stageAcknowledgedfalse |
+| interop2 | 실제 Escape로 gate job/owned iframe 정리, permission·모의 advance0 | 복귀를 자동 stage 진행으로 처리0 |
+| interop3 | 예약 뒤 contextId/host context 교체 → 저장 callback 거절·모의 advance0 | 오래된 job/handle로 새 context 진행0 |
+| interop4 | 실제 HTTP503 주입/null host → denial/fallthrough0·wrapper retained dialog cleanup | expectedLoadFailureInjections1; 미예상 page/HTTP/console0·foreign/nonGET0 |
+| UI 화면 보고 | interop-screen-review.json: 별도 지원 담당이 interop-entry/interop-scheduled-return PNG 확인, owned modal·복귀 UI PASS | 문서 worker 신규 GUI/화면 관찰0. 전체맵 RETOUCH |
+| 묶음 분리 | 최초 host realm FAIL0체크 / 이전6cd… GUI14 / 최종008a… formatter negative2+normalGUI2 / gate 순수24그룹222조건 / 이번 interop4 | 이전 검사 재실행·합산0. negative2는 음성 검사 아님 |
+| 미인수 flags | actualMainGamefalse/native6Acceptedfalse/saveAcceptedfalse/audioAcceptedfalse/stageAcknowledgedfalse | fixture/lab/permission/own UI PASS를 native6·청취·저장·보상·A급 인수로 대체0 |
+
+외부 근거 루트는 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/`이다. host의 실제 context admission과 gate의 지연 permission API는 완료됐지만 main 게임의 전환 caller/input/update/DEMO 경로는 아직 연결·인수되지 않았다.
+
+### 해상도 원인별 현행 source 관측
+
+| 경로/source | 현재 규격·계산 | 상태·안전 경계 |
+|---|---|---|
+| 원화 밀도 | clean-plate-v1.png 1254×1254, 2417849B/SHA `aa64cb7bbfff10c9d5ea2378ef3f8f528bbfb2acfb43ddb9a6520b9f24127673` → world8000×8000 | 8000/1254=6.379585326953748 worldpx/sourcepx. host/gate는 source 세부·픽셀·geometry를 바꾸지 않아 확대 한계 유지 |
+| 현행 canonical | hell-rift-residents-v2.scene.json 90767B/SHA `c508e70d23fafb9295798763c5224c7c92699dfea3d3beebdb6ab18173f44a3a`; grid200²/tile40/nav1192; navSHA `a4508aa62f21c9b4380640307b36eef06656ebdf0c0245a2f78833d65dda0179` | source/nav/start/exit/feet/world/XY 등록 변경0. 실제 authored physical height는 원자료 UNKNOWN |
+| Three texture | rift-terrain.mjs:30–35 SHA/1254 크기 확인 후 SRGBColorSpace·mag LinearFilter/min LinearMipmapLinearFilter | 확대 보간/축소용 mipmap이 원픽셀 세부를 만드는 것은 아님. 필터 자체의 신규 A/B 선명도 PASS0 |
+| Three mask/UV | terrain ground/foreground는 source Texture·crop/global UV로 등록하며 Canvas2D maskedPicture의1024 버퍼를 사용하지 않음 | Three의1254→8000 확대 한계와2D 중간 buffer 문제는 별도 |
+| 2D maskedPicture | map-scene-editor.js:37–67, mask 있는 object만 ratio=1024/max(object.width,object.height), 장축1024 buffer, cache 최대8 | crop 장축>1024이면 추가 축소, 작은 crop은 확대. 1254 sheet 전체가 항상1024로 축소된다는 표현 금지 |
+| 현재 masked source | obj-rift-depth는1920² full crop→1024². 세 foot crop 장축: west112.85999999999999/east156.75/south100.32 | foot3의 native crop은1024보다 작아 source 확대 경로. 원본을 고해상도로 교체했다고 계산0 |
+| feather alpha | maskFeather가 있을 때 장축256 alpha sample→1024 buffer, abyss 현재 feather120world | RGB source 해상도와 alpha edge sample 구분; physical 절벽 높이/접지 인수 아님 |
+| 2D 배율 | editor zoom1.2의 CSS/source=8000/1254×1.2=7.655502392344498; 실제 raster는 canvas.width/CSSwidth 추가 적용 | editor 계산에만 적용. Three camera zoom1.2를 같은 world→CSS 배율로 대입하지 않고 실제 projected 크기를 읽음 |
+| lab DPR 초기화 | 2_5d-world-lab.mjs:273–274 antialiastrue/powerPreference low-power, 초기 setPixelRatio는 devicePixelRatio가 falsy면1로 대체한 뒤 cap2; outputSRGB | cap2는 최대 raster 배율. DPR>2 장치의 낮은 raster 밀도 가능성을 source 확대흐림과 구분 |
+| lab resize DPR | 2_5d-world-lab.mjs:45–52 resize는 setSize·정사영 높이3.5·zoom update만, setPixelRatio 재호출0 | 초기화 뒤 monitor/browser DPR 변화 재평가 미구현이라는 source 관측. 새 DPR 전환 GUI/A-B0·수정 완료0 |
+| editor resize DPR | map-scene-editor.js:361 resize 함수는 devicePixelRatio를 다시 읽고 cap2로 canvas dimensions 설정 | lab과 다른 계약. 모든 renderer가 DPR 재평가0이라고 일반화하지 않음; 실제 DPR 전환 이벤트 수명 인수는 이번 범위 아님 |
+| MAP raw62 | CH1-RIFT-EDITOR-MASK-RESOLUTION-20261007-MAP-CANDIDATE; rift-editor-mask-resolution.candidate.mjs 7258B/SHA `603b8a6b8e792747f51e93b9e230a4dd868d99a8a7d724bf22b4a289d572cdb9`; 공식 end `093ac892-bf81-460a-a7be-c8848884270e` | 이번 TASK guide/SSOT 선행 Read prerequisite FAIL, 소급 PASS0·public editor 미채택. 존재/보존을 buffer 개선 적용·시각 PASS로 승격0 |
+| 실패 이력·잔여 | arrival-detail 전체지형 등록 FAIL·contact ON 실화면 FAIL/defaultOFF, 원plate1254² 확대흐림·절벽 접합/physical height 미해결 | host/gate·interop4 성공으로 해상도/접합 해결 선언0. 원source/nav/UV/foot 등록 보존 |
+
+다음 해상도 A/B는 같은 source pin·camera XY/angle/zoom·CSS viewport·실제 raster dimensions·devicePixelRatio·contact OFF·actor pose를 고정한 별도 승인 단위다. DPR 갱신/2D buffer 후보의 코드·fixture PASS만으로 source 세부 개선을 선언하지 않는다. 실제 세부가 개선되고 경계·가림·발 등록과 오류/메모리 수명이 보존되어야 하며, 픽셀 밀도만 증가하거나 원화/길/주민 foot가 달라지면 RETOUCH/FAIL로 남긴다. 이번 문서 작업에서 새 A/B/GPU/browser/원PNG 편집0이다.
+
+### MAP PRODUCTION REPORT — §23
+
+| 필수 항목 | 이번 범위·판정 | 새 실행/변경 |
+|---|---|---|
+| STAGE | public host/gate 정본 링크·독립 lab/main 경계·해상도 source 원인 동기화 | 기존 docs2 append |
+| MASTER | 기존 silhouette/regions/main route/side spaces 유지 | 새 계획/geometry0 |
+| OUTER MASS | LEFT/RIGHT/TOP/SOUTH·major opening 원본 유지 | 변경0 |
+| LARGE | source1254 plate/composite/crop/overlap/repeated silhouette 유지 | 변경0 |
+| MEDIUM | connections/remaining holes·절벽 접합 유지 | 변경0 |
+| GROUND | nav1192·접지/오염/structure integration 유지; contact FAIL/defaultOFF | source 확대흐림 미해결 |
+| PLAYABLE | 독립 iframe+모의 P/G interop4; main arena/travel/breathing/threat/combat 인수 PENDING | 실제 nextStage/save/native6 인수0 |
+| LANDMARK | primary 상승문/secondary 균열/tertiary 주민 배치·feet 유지 | 변경0 |
+| CAMERA QA | 기존 interop entry/return 화면 보고만 참조 | worker 신규 START/EARLY/ARENA/SIDE_L/SIDE_R/LANDMARK/LATE/EXIT·A/B0 |
+| TECH QA | 최종 host/gate pin·신규interop4 영수증 읽기 대조; editor1024/lab DPR 미구현 source 관측 | route/collision/seam/loading/performance 신규 실행0·해결 완료0 |
+| FILES | owned 기존 docs2, 원문 전체bytes prefix100%+추가LF만 | concurrent/unrelated/code/asset/PNG/game/editor/STATE/LOG 변경0 |
+| GIT | worker stage/commit/push/deploy0, root가 완료docs2 checkpoint | 이 절만으로 원격SHA/push 성공 주장0 |
+| VISUAL VERDICT | **RETOUCH** — modal/복귀 UI PASS, 전체맵 확대흐림·접합·본편 미인수 | contact ON의 이전 FAIL/defaultOFF 유지 |
+| NEXT PASS | guide/SSOT 선행을 갖춘2D buffer/DPR source 보정·동일화면 A/B와 main lexical/DEMO/heldgamepad/update/realstage/save/reward/native6/audio | 별도 승인·실검수 |

@@ -146,7 +146,7 @@ MAP PRODUCTION REPORT — STAGE: 지옥의 틈 main-entry 논리 후보 raw55 �
 |---|---|
 | public gate 순수 의미검수 | 외부 main-gate/semantic-test.mjs를 Node stdin 실제1회 실행: 24 고유그룹/222 조건 PASS, fail0/unreached0/exit0. cancel→new epoch/late handle/native Promise/getter/cleanup reentry/delayed permit 반례 포함. 본편·DOM·저장 검수0. |
 | 기존 host GUI14 | main-host/browser-result.json 최초 cross-realm 준비 실패(checks0)를 보존. child realm 보정 뒤 browser-fixed-result.json 실제14 PASS는 host SHA6cd3a13627e5eeccd8484ca843ec29ff1255ede47e1a8299493d65405367d0e6의 이력. intentional HTTP5031과 관련 console1은 예외 주입이고 unexpected error0. 현재핀으로14 재실행0. |
-| 최종 host 제한검수 | main-host/error-formatter-limited-result.json의 현 host008a3393…에서 readContext message-getter throw/null throw 음성2 PASS와 정상 entry/restore-disposal GUI2 PASS를 분리 기록. 이전 GUI14와 합산0. 실제 main context는 모의 own-data fixture, 사용자 저장·본편0. |
+| 최종 host 제한검수 | main-host/error-formatter-limited-result.json의 현 host008a3393…에서 readContext message-getter throw/null throw 실패 주입 2건 PASS와 정상 entry/restore-disposal GUI2 PASS를 분리 기록. 이전 GUI14와 합산0. 실제 main context는 모의 own-data fixture, 사용자 저장·본편0. |
 | 신규 gate-host interop | 문서 작성 시 root 실제3387 4항목 검수 진행/인수 PENDING. 외부 main-gate-host-interop/interop-result.json의 preliminary raw4 기록은 수신됐으나 이 행에서 최종 인수로 승격0. 독립 delayed advance 대역이며 본편 nextStage ACK로 계산하지 않음. |
 | 미인수 | mainGameAccepted/native6Accepted/audioAccepted/rewardAccepted/saveAccepted/actualStageAcknowledged 모두 false. A급/완전3D/실grant/본편 연결 완료 선언0. 전체맵 RETOUCH; 논리·문서 작업의 새 실제화면 관찰0. |
 
@@ -170,12 +170,12 @@ MAP PRODUCTION REPORT — STAGE: 지옥의 틈 main-entry 논리 후보 raw55 �
 | 유품·부탁 지속 | 실제 itemID/수용 공간/중복 지급 ledger/inventory 동시저장 readback ACK; quest 소비자와 지속·재방문·실패/retry 인수 |
 | 보존 | canonical sourcePNG/scene/nav1192/NPC발·rawV2·본편game·사용자save·보호2_3 불변; 기존 첫화면/대사branch/기존GUI/옛테스트 재실행0 |
 
-MAP PRODUCTION REPORT — STAGE: ROOT-RIFT-MAIN-GATE-PUBLIC-20261007 대사/진행 권한 동기화. MASTER/OUTER MASS/LARGE/MEDIUM/GROUND/PLAYABLE/LANDMARK: 맵/geometry/원화/nav1192/NPC배치·대사 원문·보상 생성 변경0, public stage gate와 session-only 대사 기록의 권한을 분리. CAMERA QA: 이 worker 새 관찰0; root interop4 최종 인수 PENDING. TECH QA: pure gate24그룹/222조건 실제stdin1 PASS; 옛 host GUI14와 현 host 음성2+정상GUI2 별도, main/native6/audio/save/grant0. FILES: 본인 docs2 append LF만; 다른 docs·code·STATE·index·WIP 변경0. GIT: root 소유 code+관련 docs 한정 checkpoint/push 예정, 본인 stage/commit/push0/deploy0. VISUAL VERDICT: RETOUCH (전체맵; 본 작업 화면 NOT ASSESSED). NEXT PASS: 실제 본편 최소 진입·explicit continue와 지연전환 ACK 검수, 이후 유품/부탁 지속 저장 Gate.
+MAP PRODUCTION REPORT — STAGE: ROOT-RIFT-MAIN-GATE-PUBLIC-20261007 대사/진행 권한 동기화. MASTER/OUTER MASS/LARGE/MEDIUM/GROUND/PLAYABLE/LANDMARK: 맵/geometry/원화/nav1192/NPC배치·대사 원문·보상 생성 변경0, public stage gate와 session-only 대사 기록의 권한을 분리. CAMERA QA: 이 worker 새 관찰0; root interop4 최종 인수 PENDING. TECH QA: pure gate24그룹/222조건 실제stdin1 PASS; 옛 host GUI14와 현 host 실패 주입 2건 + 정상 GUI 2건 별도, main/native6/audio/save/grant0. FILES: 본인 docs2 append LF만; 다른 docs·code·STATE·index·WIP 변경0. GIT: root 소유 code+관련 docs 한정 checkpoint/push 예정, 본인 stage/commit/push0/deploy0. VISUAL VERDICT: RETOUCH (전체맵; 본 작업 화면 NOT ASSESSED). NEXT PASS: 실제 본편 최소 진입·explicit continue와 지연전환 ACK 검수, 이후 유품/부탁 지속 저장 Gate.
 
 
 ### ROOT-RIFT-MAIN-GATE-PUBLIC-20261007 최신 총괄 인수 — gate-host interop 4/4
 
-위 최초 append의 신규 interop PENDING 문구는 작성 시점 이력이다. 이후 총괄이 main-gate-host-interop/interop-result.json의 시작/종료 source핀과 §23 근거를 대조하고 새 실제3387 4/4 PASS를 인수했다. 코드 gate16280B/f9dbbcb8… 및 host17683B/008a3393…는 시작/종료 동일하며 변경0. 이전 gate 순수24그룹/222조건, 옛 host GUI14, 최종 host 음성2+정상GUI2는 별개 묶음으로 합산0.
+위 최초 append의 신규 interop PENDING 문구는 작성 시점 이력이다. 이후 총괄이 main-gate-host-interop/interop-result.json의 시작/종료 source핀과 §23 근거를 대조하고 새 실제3387 4/4 PASS를 인수했다. 코드 gate16280B/f9dbbcb8… 및 host17683B/008a3393…는 시작/종료 동일하며 변경0. 이전 gate 순수24그룹/222조건, 옛 host GUI14, 최종 host 실패 주입 2건 + 정상 GUI 2건는 별개 묶음으로 합산0.
 
 | 이번 신규 interop 항목 | 실제 결과 / 경계 |
 |---|---|
