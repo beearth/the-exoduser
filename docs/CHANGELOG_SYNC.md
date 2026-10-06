@@ -54396,3 +54396,26 @@ Claude8 기존 MAP·QA·BOSS·STORY 4역할의 실제 source4·공식 end4·idle
 완료 root code5와 STORY v4 공식완료 raw1를 code+docs로 보존한다. MAP·QA v3 corrected public 파생본2를 기존 3387 단일RAF에 연결, 실제 로딩 scene clone/canonical SHA·보호배치·투영 대조 및 actor 원점 world px 앵커12프레임/4px 허용/nav radius12 검사. editorProvider 없음=PENDING, source finite guard와 이동/교체/정지/blur·자동 attack→idle 후 이전PASS 무효화, structuredClone 관측 분리. 21 실제 browser 검사+5 모션해제 검사 PASS/새 runtime0. 맵 화면은 확대 흐림/hard wedge/skirt seam이 남아 VISUAL VERDICT: RETOUCH. 본편/native/청취·IK 발픽셀·에디터 save 왕복/A급 인수0. 정확 계약·§23·핀·공식 IDs는 DIRECTIONAL_CHARACTER_RIGS_20261006.md 및 HELL_RIFT_2_5D_SLICE_20261006.md의 최신 절.
 
 actual80 완료소유 checkpoint 시도에서 docs-sync-check가 CHANGELOG 진행 로그 누락으로 거절했다. 우회 없이 이 완료 로그를 보완해 actual81/code+관련docs9 정상commit/push로 보존한다. 원 raw15 불변, STORY v4=10164B/SHA0473eb649fafd16374bca26455972255ec3ef1988d44bf32fb5bdbfac2ffa8de/공식CH1-2_5D-STORY-ASYNC-GUARD-20261006-V4-CANDIDATE/end e2aff546-5762-4ea1-89d2-70538445478e. v4 요청2결함 해결 및 this=ports 소실P2는 의미검수 기록으로 남기고 일반consumer 미채택. 외부 백업·실제26검사/화면·검색/핀/소유범위 영수증 보존. 기존 혼합CRLF/LF bytes prefix 및 foreign68/ownerSTATELOG4/보호10/게임·scene/nav·save·Q전용·어택티켓 금지·기존23 보존. 새팀·세션·권한·설치·Windows·게임/빌드·paused 자동화/메일 재개0.
+
+
+## 2.5D 현행 소비 계약·제작 목표 동기화 — 2026-10-06T13:37:48.744345+00:00
+
+이 기록은 앞선 시점의 source/채택 대기 이력을 갱신하는 현재 독립 3387 결과다. 공통 목표는 `CH1-2_5D-CHARACTER-MAP-SLICE-20261006`(전사·실버테일·다크드루이드의 같은 지옥의 틈 2.5D 화면에서8방향·대기/보행/달리기/공격·깊이/가림). 관리3/전문15의 기존 역할별 코드 산출 목표를 유지하고 새 팀·관리 채팅·실행 세션은 추가하지 않는다.
+
+| 항목 | 현재 상태 / 코드와 같은 계약 |
+|---|---|
+| 실제 팀 원자료 | 최초7+v2 4+v3 4+STORY v4 1=완료 소유 raw16 보존. source 도구·공식 end·bytes/fullSHA를 확인했다. 원자료 보존은 consumer/native 인수와 구분 |
+| public 소비 | SKILL visual-pose-consumer·ANIMVFX actor-effect-lifetime·MAP scene-registration·QA slice-acceptance 4역할의 파생본을 실제 root lab에서 소비. BOSS/ENEMY/STORY 일반 본편 소비0 |
+| 실제 맵 검사 | 실제 로딩 terrain.sourceSceneSnapshot()=K.clone(source)를90767 B canonical HTTP raw의 SHA256·보호 payload와 대조. world XY 투영 왕복 VERIFIED/1192타일. editorProvider 없음=PENDING; 실제 editor 저장·불러오기 인수0 |
+| 표시 검사 | 실제 getWorldPosition→sceneToWorld의 actor 원점 world px를 제자리12 렌더 프레임 관측. drift 허용4 px/clip inset12·nav radius12. raw scene units·anchorY/h 비율을 접지 증거로 계산0 |
+| source 규격 | 선언 frames×8방향을 순회, finite 양수 referenceHeight/asset width,height/rect, cell 내부 anchor. Infinity/NaN/숫자문자열/0 거부. 정상 crop별 anchor 변화 허용 |
+| 검사 무효화 | 이동 키/blur/캐릭터/모션/reset/정지와 자동 attack→idle 시 이전PASS/FAIL=PENDING·samples0. paused 요청은PENDING, 완료 관측으로 계산0. snapshot 결과는 structuredClone |
+| renderer/perf | 기존renderer1/RAF최대1/추가mixer0 유지, diagnostic job은12 samples 뒤 폐기. 새로운 save/scene/nav 쓰기·게임/빌드/서버 실행0. 실물폰·장시간FPS 미인수 |
+| 실제 검증 | root Mac Chrome/3387 새21검사+자동모션해제5검사 PASS/새runtime0,3id×4mode에서144 프레임 앵커/nav 관측. 이전502/9+8+13+3 검사는 반복하지 않음. 실제 화면3장과 결과json 보존 |
+| 시각 판정 | 맵1254² 확대 흐림·hard wedge·절벽 skirt seam이 남아 VISUAL VERDICT: RETOUCH. 새 높이는 authoredDepth240/inset.9 시험값/physicalHeight UNKNOWN. 본편 전투/NPCgrant·save·상승/native6/청취/IK 발픽셀/A급 인수0 |
+
+정확 원화/셀/geometry/순서·수치·API·provenance는 `DIRECTIONAL_CHARACTER_RIGS_20261006.md`와 `HELL_RIFT_2_5D_SLICE_20261006.md`의 최신 실제 MAP·QA v3 public 소비 절 및 §23 MAP PRODUCTION REPORT을 따른다. 기존 역사 문서·본편2D 계약·다른stage LOCK는 독립lab 값으로 덮어쓰지 않는다. raw의 공식 완료ID/end/정확핀은 CH1_2_5D_TEAM_CANDIDATES_20261006.md에 보존한다. 외부 증거 `/Users/fordeargamers/.codex/visualizations/dark-druid-character-rigs-20261006/v3-live-qa/`의 result.json21·mode-release-result.json5·final-diagnostics.png를 구분한다.
+
+STORY v4는 요청2결함을 해결했지만 method provider의 this=ports를 분리 호출로 잃는 P2가 남아 일반 consumer 채택0이다. Claude8 담당에게만 `CH1-2_5D-STORY-METHOD-CONTEXT-20261006`으로 신규 v5 1파일/rs.call(ports)·cc.call(ports) 복원을 인계했으며, 이 기록 시점의 송신 인계와 이후 실제 peer/source/end 검수는 구분한다. 동일 TASK 재송신·다른 역할 중복지시0. Codex7 UIUX 첫 송신은 자동승인검토에서 도구승인필요/currentpolicynever로 거절되어 수신0/다른6미송신, ART 기존 선택 대기도 별도다. 전원 가동을 선언하지 않는다.
+
+원격 exact `75ce5819ef6e1bbccb5a2acdf5a2db7142b6054e`(v3raw4) 및 `ac96c952b4f3a36e53cd210f745551dd13b8e146`(root code5+STORYv4raw1+상세docs3)의 보존을 확인했다. 후자는 actual80 checkpoint 시도에서 진행로그 hook 누락을 잡아 우회 없이 보완한 actual81 정상 commit이다. 전체 docs 관련 키워드 검색 후 관련15문서를 현재 계약/역할 상태로 동기화하며, 기존 bytes prefix와 백업을 보존한다. 현 관리 docs도 실제80부터 완료 소유 범위만 즉시 정상checkpoint한다. foreign68/owner STATELOG4/보호10/게임·scene/nav·sourcePNG·save/2_3·Q전용·어택티켓 금지·이전23 유지. paused 자동화·메일/권한/설치/Windows/게시/새팀 재개0.
