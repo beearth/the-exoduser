@@ -2469,3 +2469,21 @@ UI-22 황동 프레임/은회색 링/금빛 신호의 별도 시안을 보존했
 오늘 사용자 “작업을해서 저녁까지 보고해”를 따라2026-10-06 KST19:00에 실제완료·미완료/화면·검수·Git을한번보고한다. 기존4자동화PAUSED유지, 오늘만exoduser-2가1시간간격으로승인작업을계속하고 변화없으면알림0/19시보고뒤PAUSED. 기존1분루프·아침email/음성발송·Windows재개0. Codex7/Claude8 유일오더·관리3/전문15=18/새팀·새세션0, 전문TASK중복0, production/docs/Git root소유 유지. 현재slot4의재사용worker/read-only검수를전체16팀가동으로보고하지않는다. liveSTATE/LOG/WIP·보호2_3/Q-only·어택티켓금지·세이브·기존23 보존. 이번완료code6+관련docs11만exactcheckpoint/remoteSHA영수증, 80부터완료소유보존/100전신규산출중단.
 
 [씬 정본§10](../4.1맵디자인+설정/MAP_SCENE_EDITOR_20261005.md#10-2026-10-06--지옥의-틈-망자-대화-시험), [결과§23](../4.1맵디자인+설정/HELL_RIFT_EDITOR_RESULT_20261006.md#2026-10-06-최신--네-망자에게-실제-접근하는-대화-시험), [CH1§15](../4.1맵디자인+설정/CH1_1_A_GRADE_PRODUCTION_20261005.md#15-root-틈-대화-시험-완료--오늘-저녁-보고--2026-10-06-kst)를따른다.
+
+
+## 2026-10-06 — Claude8 완료 후보6 보존 (생산 미채택)
+
+공식 보존ID **ROOT-CLAUDE8-RAW6-PRESERVATION-20261006**. 실제 NUL Changes83 경계에서 전체 후보 상세검수 완료를 기다리지 않고 현재TASK 성공source·공식end와 정확 byte/SHA가 확인된 완료 소유6만 보존한다. 원총괄 발 기준 도구 code4 WIP와 미완료 MAP/QA 후보는 포함하지 않는다. 이전 원자료와 0123/0124 결과는 불변이다.
+
+| 역할 | 공식 완료ID | 경로 | bytes | SHA256 |
+|---|---|---|---:|---|
+| ART | ART-RIFT-LAYER-SPLIT-CANDIDATE-20261006 | `tools/team-followup-20261006/hell-rift/ART/rift-layer-split.candidate.mjs` | 10972 | `8527ced270fa98bb74ba4e09bdefd7f7049a5e7dfd0b3ef05b59046837c7c8aa` |
+| SKILL | SKILL-CH1-A-RETRY-INPUT-RESET-CANDIDATE-20261006 | `tools/team-followup-20261006/hell-rift/SKILL/retry-input-reset.candidate.mjs` | 9007 | `cb5aa6dfadc0da00206fe47c243ecd01516f83df6a9839fcc3e29d9a9ffc520f` |
+| ENEMY | ENEMY-CH1A-AUTHORED-SPAWN-BUDGET-NEUTRAL-20261006 | `tools/team-followup-20261006/hell-rift/ENEMY/ch1-authored-spawn-budget.candidate.mjs` | 14313 | `f32c1a26980d8cf8e665e266f5fb4c18a353e56701ba1655b7ed1962749b1259` |
+| ANIMVFX | ANIMVFX-CH1-RIFT-RENDER-LIFECYCLE-CANDIDATE-20261006 | `tools/team-followup-20261006/hell-rift/ANIMVFX/rift-render-lifecycle.candidate.mjs` | 5227 | `eb5dfd644442e98c1ee0110b4a08d199116b09c3397519306d80789b44d64c2a` |
+| BOSS | BOSS-REVIVE-KILLTAIL-CANDIDATE-20261006 | `tools/team-followup-20261006/hell-rift/BOSS/boss-revive-kill-tail.candidate.mjs` | 10031 | `de0a34125103250335bab0560e2367ebf2bf87b3169cfdf003963a15d0c9de35` |
+| STORY | STORY-CH1A-RIFT-PERSISTENT-ACTIONS-CANDIDATE-20261006 | `tools/team-followup-20261006/hell-rift/STORY/rift-persistent-actions.candidate.mjs` | 13188 | `f9adbea088d9deeddf7beb6f7f652788c86e04a87b465274dfc8c4f8af463691` |
+
+6파일 node --check PASS는 구문 확인이며 실제 코드 소비자 채택·본편/native6단계·청취·A급완료를 의미하지 않는다. ART alpha/인물 extents는 추정·traceNeeded, clean plate fill=null/HELD_PENDING_IMAGEGEN_APPROVAL로 독립 픽셀 미완료. STORY 실제 ITEM/QUESTNPC port·지급+commit 원자성 미연결, BOSS 최종지급 의도/arming~resolve는 상세 검토 후 root만 적용한다. 자동 게임/app/save/build 접속0. code6+관련 docs3 정확 경로만 checkpoint하며 원격 exact SHA는 외부 receipt에 확인한다.
+
+근거: `/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/claude8-raw6-preservation-20261006/receipt.json`. 소비자 채택은 별도 완료ID로 기록한다.
