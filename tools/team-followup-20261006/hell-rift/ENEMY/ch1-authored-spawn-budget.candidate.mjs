@@ -73,17 +73,36 @@ export const AUTHORED = [
 
 const _tileKey = (x,y,T=SRC.T)=>`${~~(x/T)}_${~~(y/T)}`;
 
+export const SCATTER_FLOOR = 20;   // spawnTileRLEEns cnt 하한 (game.html @30300: max(20,…))
+
+// ── budget 계약 (총량 cntOld 초과 0, 작은/비유한 cnt 안전 거절) ─────────────
+//   authoredN = clamp( min(AUTHORED.length, cntOld - SCATTER_FLOOR), 0, len )
+//   scatter   = cntOld - authoredN  (≥ SCATTER_FLOOR 일 땐 유지, cntOld 작으면 그대로)
+//   총량 = scatter + authoredN = cntOld (절대 초과 없음).
+//   예: 80→{authored18,scatter62}  20→{authored0,scatter20}  30→{authored10,scatter20}
+//       10(비정상<floor)→{authored0,scatter10}  NaN/∞/음수→{authored0,scatter0}
+export function budgetPlan(cntOld){
+  if(!Number.isFinite(cntOld) || cntOld<=0) return {authoredN:0, scatter:0, total:0, cntOld, safe:true};
+  const room = Math.max(0, cntOld - SCATTER_FLOOR);           // authored가 들어갈 여유
+  const authoredN = Math.max(0, Math.min(AUTHORED.length, room));
+  const scatter = cntOld - authoredN;                         // 잔여 = scatter
+  return {authoredN, scatter, total:scatter+authoredN, cntOld, safe:(scatter+authoredN)<=cntOld};
+}
+
 // ── spawn port (게임에 주입하는 소비자 함수, budget-neutral) ───────────────
-//   api = { mkEn, rollEl, ens, T, authoredTiles:Set }  (실제 game 함수/배열 주입)
-//   · authored 18기를 mkEn(...,0,etype,false,rollEl(0),-1)로 생성·ens push.
+//   api = { mkEn, rollEl, ens, T, authoredTiles:Set, budget:cntOld }  (실제 game 주입)
+//   · budgetPlan(budget).authoredN 개만 배열 순서로 생성(여유 부족 시 꼬리부터 거절 — 총량 초과 0).
+//   · authored 를 mkEn(...,0,etype,false,rollEl(0),-1)로 생성·ens push.
 //   · fixed(eye/angler/eel)·rare·앵글러 보상 로직 미호출. 어택티켓/동시공격 필드 미설정.
 //   · 각 authored 타일을 authoredTiles에 등록 → scatter 루프 dedup.
 //   · 그룹 증식 etype(33/64/97)은 건너뜀(1:1 총수 보장).
 export function spawnCh1Authored(api){
   const T = api.T || SRC.T;
   const tiles = api.authoredTiles || new Set();
+  const plan = budgetPlan(Number.isFinite(api.budget) ? api.budget : 80); // budget 미지정 시 상한 가정
   let placed = 0;
   for(const a of AUTHORED){
+    if(placed >= plan.authoredN) break;                       // budget 여유만큼만 (안전 거절)
     if(SRC.GROUP_ETYPES.includes(a.etype)) continue;          // 증식형 제외
     const el = api.rollEl(0);                                 // 원소 분포 보존
     const e = api.mkEn(a.x, a.y, 0, a.etype, false, el, -1);  // world px, room -1
@@ -94,7 +113,8 @@ export function spawnCh1Authored(api){
     placed++;
   }
   api.authoredTiles = tiles;
-  return placed;                                              // 이 수만큼 scatter budget 감산
+  // scatter는 cntOld - placed 로 설정 (호출측). placed ≤ plan.authoredN 이므로 총량 ≤ cntOld.
+  return {placed, scatterRemain: Math.max(0, plan.cntOld - placed), authoredN:plan.authoredN, budget:plan.cntOld};
 }
 
 // ── exact patch (game.html, 미적용 — root가 적용) ─────────────────────────
@@ -104,106 +124,130 @@ export function spawnCh1Authored(api){
 export const PATCH = {
   file: 'game.html',
   hunks: [
-    { at: 'spawnTileRLEEns(si) @~30300',
+    { at: 'spawnTileRLEEns(si) @~30300 — scatter = 잔여(cntOld - authored), 총량 ≤ cntOld',
       before: "  const cnt=Math.min(80,Math.max(20,~~(ft.length*0.005*DIFF_MOB[OPT.diff]))+si);",
-      after:  "  const _authN=(si===0&&typeof _CH1_AUTHORED_N==='number')?_CH1_AUTHORED_N:0;\n" +
-              "  const cnt=Math.max(20,Math.min(80,Math.max(20,~~(ft.length*0.005*DIFF_MOB[OPT.diff]))+si)-_authN);" },
+      after:  "  const _cntOld=Math.min(80,Math.max(20,~~(ft.length*0.005*DIFF_MOB[OPT.diff]))+si);\n" +
+              "  const _authN=(si===0&&typeof _CH1_AUTHORED_N==='number')?_CH1_AUTHORED_N:0; // 이미 배치된 authored 수\n" +
+              "  const cnt=Math.max(0,_cntOld-_authN); // 잔여만 scatter — floor 재강제 금지(총량 초과 0)" },
     { at: 'spawnTileRLEEns while-loop tile pick @~30300',
       before: "    if(!canMv(ex,ey,8))continue;",
       after:  "    if(!canMv(ex,ey,8))continue;\n" +
               "    if(si===0&&G._authoredTiles&&G._authoredTiles.has((~~(ex/T))+'_'+(~~(ey/T))))continue; // authored dedup" },
-    { at: 'CH1-1 spawn init (near _spawnCh1StartMediumEyeMasses(si))',
+    { at: 'CH1-1 spawn init (near _spawnCh1StartMediumEyeMasses(si)) — scatter보다 먼저',
       before: "  _spawnCh1StartMediumEyeMasses(si);",
       after:  "  _spawnCh1StartMediumEyeMasses(si);\n" +
               "  if(si===0){G._authoredTiles=new Set();\n" +
-              "    const _n=spawnCh1Authored({mkEn,rollEl,ens,T,authoredTiles:G._authoredTiles});\n" +
-              "    window._CH1_AUTHORED_N=_n;} // budget-neutral: scatter cnt는 위 hunk에서 _n 감산" },
+              "    const _cntOld=Math.min(80,Math.max(20,~~(G._floorTiles.length*0.005*DIFF_MOB[OPT.diff]))+si); // scatter와 동일식\n" +
+              "    const _res=spawnCh1Authored({mkEn,rollEl,ens,T,authoredTiles:G._authoredTiles,budget:_cntOld});\n" +
+              "    window._CH1_AUTHORED_N=_res.placed;} // scatter cnt는 위 hunk에서 _cntOld-placed" },
   ],
-  note: 'spawnCh1Authored 호출은 scatter(spawnTileRLEEns/spawnCorridorEns)보다 먼저 실행해 _CH1_AUTHORED_N/_authoredTiles가 cnt·skip에 반영되게 한다. 실제 호출 지점은 live CH1-1 dispatcher(tileRLE vs room)에 따라 root가 확정.',
+  note: 'authored는 budget(_cntOld)만큼만 배치(budgetPlan). scatter cnt=_cntOld-placed (floor 20 재강제 금지 → 작은 cnt에서 총량 초과 방지). 호출은 scatter보다 먼저. 실제 호출 지점은 live CH1-1 dispatcher(tileRLE vs room)에 따라 root 확정.',
 };
 
 // 불변 선언 (보호계약)
 export const INVARIANTS = {
   attackTicketAdded: 0, simultaneousAttackLimitAdded: 0,
-  totalCountDelta: 0,            // +authored - scatter감산 = 0
-  rollElPreserved: true,         // authored는 rollEl(0) 사용
-  dropExpModel: 'mkEn 동일 스케일(etype+monLv) — 신규 수치 0',
+  totalCountNeverExceedsCntOld: true,   // scatter+authored ≤ cntOld (작은 cnt 안전 거절)
+  rollElPreserved: true,                // authored는 rollEl(0) 사용 → 원소 분포 동일
+  // EXP/drop: mkEn 동일 스케일(etype+monLv)이라 모델상 신규 수치 0이나, 실전 기대값 중립은
+  // authored etype 분포가 pool과 완전 일치하지 않아 **미검증(미인수)**. root 밸런스/QA 판단.
+  dropExpNeutral: 'UNVERIFIED (모델 동일 / 실전 기대값 미인수)',
   fixedSpawnsTouched: 'none (eye/angler/eel/보상/gate/rare/bonfire 심볼 참조만)',
 };
 
 const BANNED = ['atkTicket','attackTicket','maxAttackers','maxConcurrent','concurrentAtk','atkSlot','ringSlot','_atkTok','attackToken','attackLimit','simulCap'];
 
-// ── 자체검증 (mock mkEn/ens/rollEl로 budget-neutral·불변 증명) ─────────────
+// 한 번의 포트 실행(주어진 budget)을 깨끗한 mock에서 수행 — 결과 집계 반환
+function _runPort(budget){
+  let elCalls=0;
+  const rollEl=()=>{elCalls++;return 'EL.P';};                 // HELL_EL[0] 대표
+  const mkEn=(x,y,si,et,ib,el,room)=>{
+    const _et=(si===0&&!ib&&SRC.OPENING_EXCLUDED.includes(et))?0:et; // opening remap
+    return {x,y,si,etype:_et,el,room,r:(SRC.ETYPE_R[_et]+2)*2};      // 실 e.r 모델
+  };
+  const ens=[]; const tiles=new Set();
+  const res=spawnCh1Authored({mkEn,rollEl,ens,T:SRC.T,authoredTiles:tiles,budget});
+  const scatter=Math.max(0, budget - res.placed);              // 호출측 scatter = cntOld - placed
+  return {res, ens, tiles, elCalls, scatter, total:scatter+res.placed};
+}
+
+// 브라우저/Node 공용 main 판정 (process 미정의 시 ReferenceError 방지)
+export function isMainModule(){
+  if(typeof process==='undefined' || !process.argv || !process.argv[1]) return false;
+  return import.meta.url===`file://${process.argv[1]}` ||
+         import.meta.url.endsWith(process.argv[1].split('/').pop());
+}
+
+// ── 자체검증 (mock mkEn/ens/rollEl로 budget 계약·불변 증명) ────────────────
 export function verify(){
   const out=[]; const ok=(n,c,m='')=>out.push({n,pass:!!c,m});
 
-  // mock 게임 환경
-  let elCalls=0;
-  const rollEl=(si)=>{elCalls++;return 'EL.P';};               // HELL_EL[0] 대표
-  const mkEn=(x,y,si,et,ib,el,room)=>{
-    const _et=(si===0&&!ib&&SRC.OPENING_EXCLUDED.includes(et))?0:et;  // opening remap
-    return {x,y,si,etype:_et,el,room,r:(SRC.ETYPE_R[_et]+2)*2};       // 실 e.r 모델
-  };
-  const ens=[]; const tiles=new Set();
+  // ② budget 경계 — 총량이 cntOld 초과 0, 작은/비유한 cnt 안전 거절
+  const cases=[
+    {cntOld:80, authoredN:18, scatter:62},   // 정상: 18 + 62
+    {cntOld:20, authoredN:0,  scatter:20},   // floor: 0 + 20 (초과 방지)
+    {cntOld:30, authoredN:10, scatter:20},   // 부분: 10 + 20
+    {cntOld:10, authoredN:0,  scatter:10},   // 비정상<floor: 0 + 10 (총량 10, 초과 0)
+  ];
+  let budgetOK=true, detail=[];
+  for(const c of cases){
+    const p=budgetPlan(c.cntOld), r=_runPort(c.cntOld);
+    const good = p.authoredN===c.authoredN && r.res.placed===c.authoredN && r.scatter===c.scatter &&
+                 r.total<=c.cntOld;           // 핵심 불변: 총량 ≤ cntOld
+    if(!good)budgetOK=false;
+    detail.push(`${c.cntOld}→{a:${r.res.placed},s:${r.scatter},tot:${r.total}≤${c.cntOld}}`);
+  }
+  ok('budget-no-overflow', budgetOK, detail.join('  '));
 
-  // OLD scatter budget (대표값: floorTiles 큰 개활맵 → cnt 상한 80 가정)
-  const cntOld = 80;
-  const fixedCount = 2 /*eye*/ + 4 /*angler*/;                 // 참조 고정(불변)
+  // 비유한/음수 cnt → authored 0, 총량 0 (안전 거절)
+  const nf=[NaN, Infinity, -5, 0].map(v=>budgetPlan(v));
+  ok('nonfinite-safe-refuse', nf.every(p=>p.authoredN===0 && p.total===0 && p.safe), nf.map(p=>`${p.cntOld}:a${p.authoredN}`).join(' '));
 
-  // NEW: 포트 실행 → placed, scatter는 cnt-placed
-  const placed = spawnCh1Authored({mkEn, rollEl, ens, T:SRC.T, authoredTiles:tiles});
-  const cntNew = Math.max(20, cntOld - placed);
+  // ① authored 전량 소비(budget 충분 시) — 미소비 결함 해소
+  const full=_runPort(80);
+  ok('authored-consumed-when-room', full.res.placed===AUTHORED.length && full.ens.length===AUTHORED.length, `placed ${full.res.placed}/${AUTHORED.length}`);
 
-  // 1) authored 전량 소비(미소비 결함 해소)
-  ok('authored-consumed', placed===AUTHORED.length && ens.length===AUTHORED.length, `placed ${placed}/${AUTHORED.length}`);
+  // rollEl 보존: 배치 수만큼 호출
+  ok('rollEl-preserved', full.elCalls===full.res.placed, `rollEl calls ${full.elCalls} == placed ${full.res.placed}`);
 
-  // 2) 총수 불변: OLD=cntOld+fixed ; NEW=cntNew+placed+fixed
-  const totOld=cntOld+fixedCount, totNew=cntNew+placed+fixedCount;
-  ok('total-count-neutral', totOld===totNew, `OLD ${totOld} == NEW ${totNew} (scatter ${cntOld}→${cntNew}, +authored ${placed})`);
-
-  // 3) rollEl 보존: authored마다 1회 호출
-  ok('rollEl-preserved', elCalls===AUTHORED.length, `rollEl calls ${elCalls}`);
-
-  // 4) 그룹 증식 etype 미사용(1:1)
+  // 그룹 증식 etype 미사용(1:1) / opening 제외 etype 미사용
   const grp=AUTHORED.filter(a=>SRC.GROUP_ETYPES.includes(a.etype));
   ok('no-group-multiplier', grp.length===0, grp.length?grp.map(a=>a.etype).join(','):'none');
-
-  // 5) opening 제외 etype 미사용
   const exc=AUTHORED.filter(a=>SRC.OPENING_EXCLUDED.includes(a.etype));
   ok('no-excluded-opening', exc.length===0, exc.length?exc.map(a=>a.etype).join(','):'none');
 
-  // 6) 어택티켓/동시공격 필드 0 — port 산출물에 금지필드 없음 + 선언 0
-  let leak=[]; for(const e of ens) for(const k of Object.keys(e)) if(BANNED.includes(k)) leak.push(k);
+  // 어택티켓/동시공격 필드 0
+  let leak=[]; for(const e of full.ens) for(const k of Object.keys(e)) if(BANNED.includes(k)) leak.push(k);
   ok('no-attack-ticket', leak.length===0 && INVARIANTS.attackTicketAdded===0 && INVARIANTS.simultaneousAttackLimitAdded===0, leak.length?leak.join(','):'spatial-only');
 
-  // 7) dedup: authored 타일 등록 + scatter가 해당 타일 skip
+  // dedup: authored 타일 등록
   const sampleT=_tileKey(AUTHORED[0].x,AUTHORED[0].y);
-  ok('dedup-tiles-registered', tiles.size>0 && tiles.has(sampleT), `${tiles.size} tiles; scatter skips e.g. ${sampleT}`);
+  ok('dedup-tiles-registered', full.tiles.size===AUTHORED.length && full.tiles.has(sampleT), `${full.tiles.size} tiles; scatter skips e.g. ${sampleT}`);
 
-  // 8) nudge 검증(실제 nav): east_terrace 가시사도 hill band 밖(normDist<inner)
+  // nudge(실제 nav): east_terrace 가시사도 hill band 밖
   const et=AUTHORED.find(a=>a.zone==='east_terrace'&&a.etype===1);
-  const H=SRC.HILL, tx=et.x/SRC.T, ty=et.y/SRC.T;
-  const nd=Math.hypot((tx-H.cx)/H.rx,(ty-H.cy)/H.ry);
-  ok('east-terrace-off-hill-band', nd<H.inner, `normDist ${nd.toFixed(3)} < inner ${H.inner} (band [${H.inner},${H.outer}])`);
-
-  // 9) north_exit 탱크 nudge 반영(+20px → clearance≥90: laneDist 139→~159, e.r36+P.r14=50)
+  const H=SRC.HILL, nd=Math.hypot((et.x/SRC.T-H.cx)/H.rx,(et.y/SRC.T-H.cy)/H.ry);
+  ok('east-terrace-off-hill-band', nd<H.inner, `normDist ${nd.toFixed(3)} < inner ${H.inner}`);
   const tk=AUTHORED.find(a=>a.zone==='north_exit'&&a.etype===4);
-  ok('north-exit-tank-nudged', tk.x===4159, `tank x=${tk.x} (was 4139; +20 → clearance ≈159-50=109)`);
+  ok('north-exit-tank-nudged', tk.x===4159, `tank x=${tk.x} (was 4139; +20 → clearance ≈109)`);
 
-  // 10) fixed spawns 미변경(심볼 핀만 보유, 좌표 재선언 0)
-  ok('fixed-spawns-untouched', typeof SRC.FIXED_PINS.eyeMass==='string' && !AUTHORED.some(a=>a.etype===4&&a._eye), 'eye/angler/eel = symbol pins only');
+  // ③ 브라우저 ESM guard: process 미정의 시에도 isMainModule()이 throw 없이 boolean
+  let guardOK=true; try{ const v=isMainModule(); guardOK=(typeof v==='boolean'); }catch(e){ guardOK=false; }
+  ok('browser-esm-guard', guardOK, 'isMainModule() typeof process 가드 — throw 0');
+
+  // fixed spawns 미변경(심볼 핀만)
+  ok('fixed-spawns-untouched', typeof SRC.FIXED_PINS.eyeMass==='string', 'eye/angler/eel = symbol pins only');
 
   const pass=out.filter(c=>c.pass).length;
   return {pass, fail:out.length-pass, total:out.length, checks:out};
 }
 
-const _isMain = (import.meta.url===`file://${process.argv[1]}`) ||
-                (process.argv[1]&&import.meta.url.endsWith(process.argv[1].split('/').pop()));
+const _isMain = isMainModule();
 if(_isMain){
   const r=verify();
   console.log('── CH1-1 authored-spawn budget-neutral 후보 검증 ──');
   for(const c of r.checks) console.log(`${c.pass?'PASS':'FAIL'}  ${c.n}  ${c.m}`);
   console.log(`\n총 ${r.total}  PASS ${r.pass}  FAIL ${r.fail}`);
-  console.log(`authored ${AUTHORED.length}기 budget-neutral 교체 / 어택티켓 ${INVARIANTS.attackTicketAdded} / 총수 Δ ${INVARIANTS.totalCountDelta}`);
+  console.log(`authored ${AUTHORED.length}기 budget-neutral / 어택티켓 ${INVARIANTS.attackTicketAdded} / 총량≤cntOld=${INVARIANTS.totalCountNeverExceedsCntOld} / EXP·drop중립 ${INVARIANTS.dropExpNeutral}`);
   process.exit(r.fail?1:0);
 }

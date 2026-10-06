@@ -90,4 +90,79 @@ export function createRiftLifecycle(options = {}) {
   return Object.freeze({ tick, reset, pngTime, snapshot });
 }
 
-export default Object.freeze({ createRiftLifecycle });
+/* ============================================================================================
+ * RESIDENT GROUNDING SHADOWS — static, pure-Canvas contact ellipses for the 4 painted residents
+ * (ROOT-RIFT-RESIDENT-LAYERS-PREVIEW-20261006). Decorative and time-independent: reads only the
+ * residents' live foot objects (world x/y/width/height, pivot .5,1), never the scene/nav/atlas/
+ * plate bytes, the lifecycle clock, or the dialogue/idle state (no animation verdict, no pause).
+ * Drawn in the foot layer under each body so the sprite grounds on it. Unlike the animated
+ * ambience, these belong to the STATIC composition and are included in a PNG the same way the
+ * player is (no PNG exclusion). Trial-session boundary and original images are untouched.
+ *
+ * Reference (map-scene-actor.js): the warrior contact ellipse is 25×11 at standing body height 80.
+ * Measured residents: standing h=80, w≈38–50 (≈ the 50px warrior shadow span); seated h=80·352/578.
+ *     W0 = 2·25 = 50 (warrior shadow full width = standing-body width reference), H0 = 80
+ *     rx = 25 · (width / W0)                   — proportional to resident width
+ *     ry = 11 · (width / W0) · (height / H0)    — warrior 25:11 aspect, flattened for seated/shorter
+ * No intrusion: each ellipse is foot-local; with the current four residents its bbox clears the
+ * abyss bbox and the foot occluders (verified). Callers may pass `exclude` rects to subtract any
+ * region so a shadow can never bleed into the abyss or a cliff-front occluder.
+ */
+const WARRIOR_SHADOW = Object.freeze({ rx: 25, ry: 11 });
+const SHADOW_REF = Object.freeze({ width: 2 * WARRIOR_SHADOW.rx, height: 80 }); // W0=50, H0=80
+const SHADOW_WORLD = 8000;
+const SHADOW_FILL = 'rgba(7,12,9,1)'; // warrior shadow tone; alpha applied via globalAlpha
+
+/** Pure radii from a resident's live world size; null if geometry is not finite/positive. */
+export function residentShadowRadii(width, height) {
+  if (!finite(width) || !finite(height) || width <= 0 || height <= 0) return null;
+  const k = width / SHADOW_REF.width;
+  const rx = WARRIOR_SHADOW.rx * k;
+  const ry = WARRIOR_SHADOW.ry * k * (height / SHADOW_REF.height);
+  if (!finite(rx) || !finite(ry) || rx <= 0 || ry <= 0) return null;
+  return { rx, ry };
+}
+
+function usableShadowContext(ctx) {
+  return ctx && ['save', 'restore', 'beginPath', 'rect', 'ellipse', 'clip', 'fill'].every(k => typeof ctx[k] === 'function');
+}
+
+/**
+ * Draw static grounding ellipses under residents. ctx already carries the DPR/world transform
+ * (same contract as the ambience adapter). `residents` = [{x,y,width,height,opacity?}].
+ * options: { opacity=.55, exclude=[{x0,y0,x1,y1}] } — exclude subtracts regions (abyss/occluders).
+ * Returns { drawn, skipped } and keeps ctx.save/restore balanced even if a draw throws.
+ */
+export function drawResidentShadows(ctx, residents, options = {}) {
+  const stats = { drawn: 0, skipped: 0 };
+  if (!usableShadowContext(ctx) || !Array.isArray(residents)) return stats;
+  const base = finite(options.opacity) ? Math.min(1, Math.max(0, options.opacity)) : 0.55;
+  const exclude = Array.isArray(options.exclude)
+    ? options.exclude.filter(r => r && finite(r.x0) && finite(r.y0) && finite(r.x1) && finite(r.y1)) : [];
+  const parentAlpha = finite(ctx.globalAlpha) ? ctx.globalAlpha : 1;
+  ctx.save();
+  try {
+    ctx.globalCompositeOperation = 'source-over';
+    if (finite(ctx.shadowBlur)) ctx.shadowBlur = 0;
+    // Clip to the world, subtracting any excluded region, so no shadow bleeds into abyss/cliff-front.
+    ctx.beginPath(); ctx.rect(0, 0, SHADOW_WORLD, SHADOW_WORLD);
+    for (const r of exclude) ctx.rect(r.x0, r.y0, r.x1 - r.x0, r.y1 - r.y0);
+    ctx.clip('evenodd');
+    for (const r of residents) {
+      if (!r || !finite(r.x) || !finite(r.y) || r.x < 0 || r.x > SHADOW_WORLD || r.y < 0 || r.y > SHADOW_WORLD) { stats.skipped++; continue; }
+      const radii = residentShadowRadii(r.width, r.height);
+      if (!radii) { stats.skipped++; continue; }
+      const a = (finite(r.opacity) ? Math.min(1, Math.max(0, r.opacity)) : base) * parentAlpha;
+      if (a <= 0.001) { stats.skipped++; continue; }
+      ctx.globalAlpha = a;
+      ctx.fillStyle = SHADOW_FILL;
+      ctx.beginPath();
+      ctx.ellipse(r.x, r.y, radii.rx, radii.ry, 0, 0, Math.PI * 2);
+      ctx.fill();
+      stats.drawn++;
+    }
+  } finally { ctx.restore(); }
+  return stats;
+}
+
+export default Object.freeze({ createRiftLifecycle, residentShadowRadii, drawResidentShadows });

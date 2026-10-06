@@ -1,176 +1,167 @@
 /* ============================================================================
- * rift-layer-split.candidate.mjs
- * TASK CLAUDE8-PROD-ART-20261006-0220  ·  endID ART-RIFT-LAYER-SPLIT-CANDIDATE-20261006
+ * rift-layer-split.candidate.mjs   (ART owned candidate — modify-only)
+ * TASK CLAUDE8-RESIDENT-ART-20261006-0324
+ * endID ROOTRESIDENT-ROLE-FOLLOWUP-20261006
+ * consumer: root ROOT-RIFT-RESIDENT-LAYERS-PREVIEW-20261006
  *
- * PURPOSE
- *   지옥의 틈 원화(painterly-v2, 1920²)에 "구워진" 고정 큰 인물(망자) 2기와 기존
- *   플레이어(전사, 7-tile 스프라이트)의 시각 크기·접지·가림 불일치를 푸는 후보.
- *   원화 원본을 변경하지 않고, 런타임 클립 마스크로 인물 영역을 독립 레이어처럼
- *   합성/깊이정렬하는 데이터·함수를 제공한다. 새 캐릭터·이미지 산출 0.
+ * WHAT THIS IS
+ *   지옥의 틈 "독립 주민 레이어" 후보(c508 scene)를 소비하는 **순수 계획·검증
+ *   adapter**. 1254² clean-plate + 1254² RGBA atlas(2×2 정적 주민4)와 각 주민의
+ *   atlas crop·standing80/seated 비례·foot pivot(.5,1)·현재 foot/approach 좌표를
+ *   계획값으로 들고, 유한값/비율/핀을 **거절 검증**한다. 캔버스 렌더·픽셀 추출·
+ *   이미지 산출은 하지 않는다(소비자/ANIMVFX 소관).
  *
- * 두 모드
- *   MODE_OVERLAY (now, 비이미지)  : 구워진 인물을 그대로 두고 footline 기준 깊이
- *       정렬만 추가. 플레이어가 인물보다 북(뒤)일 때 원화에서 인물 영역을 클립해
- *       플레이어 위에 다시 그린다 → 전사가 큰 인물 앞을 잘못 덮는 문제 해소.
- *       (hell-rift-depth.js `fronts`/`foreground()`와 동일 기법, source 수정 0)
- *   MODE_SPLIT_CLEANPLATE (held)  : 구워진 인물을 들어내고 뒤의 구멍을 메워 플레이어
- *       스케일 NPC로 교체. 구멍 메우기 = 공식 imagegen 작업 → 사용자 승인 전까지
- *       보류(HELD). 본 파일은 그 영역/사유만 기술하고 픽셀을 칠하지 않는다.
+ * 설계 근거(root 동기화 대상 docs)
+ *   - CH1_1_A_GRADE_PRODUCTION_20261005.md §16 (ART row: 기존인물 참조·원본보존·
+ *     clean plate·player80 기준 크기/foot/alpha, c508 대조, 픽셀정확추출 표기0,
+ *     이전 camera POI/280px body/근사8각mask 보류)
+ *   - MAP_SCENE_EDITOR_20261005.md §12 (독립 주민 배경·body·대화 편집 계약 표)
+ *   - HELL_RIFT_EDITOR_RESULT_20261006.md (원화 분리/크기정합 NEXT PASS)
+ *   - 맵/접지/camera/충돌/QA 수치는 EXODUSER_MAP_PRODUCTION_GUIDELINE_v0.9 +
+ *     _MAP_SSOT_INDEX 소관이며, 본 adapter는 그것들을 **구현하지 않고 미완료로 명시**.
  *
- * 절대 하지 않는 것
- *   - 원화/scene/depth 소스 수정 0. Python/Canvas 등으로 픽셀 편집 0.
- *   - 구멍이 "원화 색으로 복원됐다"는 주장 0 (cleanPlate.fill은 null, 상태 HELD).
- *   - 승인 필요한 imagegen을 우회하지 않음.
+ * 금지/보류 (절대)
+ *   - 원본 painting/abyss/결과씬 byte 불변. 파생(plate/atlas)은 "정확 픽셀 추출"이
+ *     아니며 exact 원본 identity를 주장하지 않는다.
+ *   - bbox는 atlas alpha>8 경계일 뿐 **해부학적 발뼈/애니메이션/높이 물리 규격이
+ *     아니다**. foot(.5,1)은 **선언된 배치 pivot**이지 측정된 발이 아니다.
+ *   - 이전 280px body / camera POI / 근사 8각 마스크를 실제 발로 쓰지 않는다(보류).
+ *   - 새 PNG·이미지 생성·PixelLab 0. ART 인간승인/자동거절 imagegen·ANIM decoder 보류 유지, 우회 0.
+ *   - 접지 그림자/고해상 재질/주민 애니메이션/높이 모델 = 미완료. 채택 0(notAdopted).
  * ========================================================================== */
 'use strict';
 
-/* ---- 불변 상수 (코드/문서 핀) ------------------------------------------- */
 export const WORLD = Object.freeze({ cols: 200, rows: 200, tileSize: 40, px: 8000 });
-export const ART = Object.freeze({ w: 1920, h: 1920, worldPerArtPx: 8000 / 1920 }); // 25/6 ≈ 4.16667
+// 파생 에셋/원화 매핑: source 1254² ← 원화 1920² ×(1254/1920=209/320); world ← source ×(8000/1254)
+export const SOURCE_SPACE = Object.freeze({
+  size: 1254, worldPerSourcePixel: 8000 / 1254, artToSourceScale: 1254 / 1920, // 0.653125 = 209/320
+});
 
 export const SOURCE_PINS = Object.freeze({
-  painting:  'a3d95a005924692626321cedf384d1e4e90282ba990d9e19e86a3aa73a1563d4', // hell-rift-painterly-v2.png (scene.sourcePins.painting 일치 = 원본 불변)
-  abyss:     'ace0c853cc27cbb4d2b807104273399a1144df77d31b1003e574141fed10f991',
-  sceneJson: 'f5068d742ddd6da3e1c78fb7178317df228e936bab0edc6237dec40bfd0bb5ac', // hell-rift.scene.json
-  depthJs:   '3fdcd297131a193b1a454bc6a40bdfe94b7343bce5134a65a172b4b812d63dd0', // tools/hell-rift-depth.js
-  nav:       'a4508aa62f21c9b4380640307b36eef06656ebdf0c0245a2f78833d65dda0179',
+  painting:      'a3d95a005924692626321cedf384d1e4e90282ba990d9e19e86a3aa73a1563d4', // 원본 불변
+  abyss:         'ace0c853cc27cbb4d2b807104273399a1144df77d31b1003e574141fed10f991',
+  resultScene:   'f5068d742ddd6da3e1c78fb7178317df228e936bab0edc6237dec40bfd0bb5ac',
+  residentScene: 'c508e70d23fafb9295798763c5224c7c92699dfea3d3beebdb6ab18173f44a3a', // v2 (현재 검수 대상)
+  cleanPlate:    'aa64cb7bbfff10c9d5ea2378ef3f8f528bbfb2acfb43ddb9a6520b9f24127673', // 1254²
+  residentAtlas: 'ff20e1f5dc1a8849edb64a10380c1d9eb21688de1817f098b144a57410190a38', // 1254² RGBA
+  originalNav:   '52bd839614a9d1adad767d472357438c1d58a338ac52639705e9b8ad20a3bbdb',
+  nav:           'a4508aa62f21c9b4380640307b36eef06656ebdf0c0245a2f78833d65dda0179',
+  strictModule:  '0a04ff1f502ef77604a5eb7e8b194c2eb48c5fea8f7abb12e936f8ade33428a3', // tools/map-scene-rift-residents.mjs (상위 계약)
+  editor:        '9250f66d8f14acc1699e114bdf861660267434d6581af6c6d0849a71bf6bba70',
 });
+// 상위 strict 계약 위치 (본 adapter는 중복 구현 아님; 교차검증 시 주입)
+export const STRICT_MODULE_PATH = '../../../map-scene-rift-residents.mjs';
+export const NAV_LOCK = Object.freeze({ walkableCount: 1192, radius: 12, bfs: 1185 }); // 불변
 
-/* ---- 기존 플레이어(전사) 접지/크기 기준 (hell-rift-depth.js + 에디터 SSOT) --- */
-export const PLAYER = Object.freeze({
-  sheet: 'img/exoduser_warrior/<dir>.png', dirs: 8, sheetPx: [1008, 48], cell: 48,
-  // depth.js actor(): size=7*scale(=7 tiles), foot=player.y, topLeftY=y-size*0.88, shadow ellipse .8×.3 tile
-  spriteTiles: 7, footAnchorFracY: 0.88, shadowTile: { rx: 0.8, ry: 0.3 },
-  // 에디터 SSOT actor 계약: 고정 80/29 배율, source foot row 43/48
-  editorScale: 80 / 29, sourceFootRow: 43 / 48,
-  worldFootprint: Object.freeze({ bodyTilesTall: 7, bodyWorldPxTall: 280, shadowWorldRx: 32, shadowWorldRy: 12 }),
-});
+// 기존 플레이어(전사) 크기 기준 — 주민 원근 비교용 (hell-rift-depth.js / 에디터 SSOT)
+export const PLAYER = Object.freeze({ bodyWorldPxTall: 280, spriteTiles: 7, editorScale: 80 / 29, sourceFootRow: 43 / 48 });
 
-/* ---- 고정 큰 인물 2기 (원화에 구워짐) -----------------------------------
- * anchor/footTile = 정확(scene 카메라 + MAP_CANDIDATE 랜드마크 좌표 일치).
- * artPx = 25/6 역매핑으로 산출한 발 지점(정확).
- * bboxTiles / maskPoly / estHeightTiles = 추정(APPROX) — 실제 실루엣은 원화 육안
- * 트레이스가 있어야 확정. traceNeeded=true 로 미검증 표시.
+/* ---- 주민 4 계획값 (MAP_SCENE_EDITOR §12 표와 1:1, 모두 정확) --------------
+ * crop = atlas(1254²) alpha>8 bbox 영역 (해부학적 발 아님).
+ * foot = body object 현재 x/y (= logical/visual foot, labelHeight=height).
+ * approach = §12 검수 고정 좌표 (body 이동해도 자동 재배치 안 함).
+ * pose: standing(height80) | seated(berin, height=80*352/578).
+ * width = height × crop.w/crop.h.
  * ------------------------------------------------------------------------ */
-function footArtPx(wx, wy) { return [+(wx / ART.worldPerArtPx).toFixed(1), +(wy / ART.worldPerArtPx).toFixed(1)]; }
-function octagon(cx, cy, hw, hh) { // bbox 중심(cx,cy) 반폭/반높이 → 8각 placeholder 폴리곤(타일)
-  const kx = hw * 0.41, ky = hh * 0.41;
-  return [[cx - kx, cy - hh], [cx + kx, cy - hh], [cx + hw, cy - ky], [cx + hw, cy + ky],
-          [cx + kx, cy + hh], [cx - kx, cy + hh], [cx - hw, cy + ky], [cx - hw, cy - ky]];
-}
-function makeFigure(id, role, worldFoot, bboxTiles) {
-  const [fx, fy] = worldFoot;                       // world px 발 지점
-  const footTile = +(fy / WORLD.tileSize).toFixed(2);
-  const cxT = fx / WORLD.tileSize, botT = fy / WORLD.tileSize;
-  const hwT = bboxTiles.w / 2, hhT = bboxTiles.h / 2, cyT = botT - hhT;
+const STANDING_H = 80;
+function mk(id, npcId, pose, crop, foot, approach) {
+  const h = pose === 'seated' ? STANDING_H * 352 / 578 : STANDING_H;
+  const w = h * crop.w / crop.h;
   return Object.freeze({
-    id, role,
-    worldFoot: Object.freeze({ x: fx, y: fy }),
-    footTile,                                        // 깊이정렬 기준선 (정확)
-    artFootPx: Object.freeze(footArtPx(fx, fy)),     // 원화 1920² 발 좌표 (정확)
-    // 아래는 추정 영역/마스크 — 확정 전
-    bboxTiles: Object.freeze({ x0: cxT - hwT, y0: botT - bboxTiles.h, x1: cxT + hwT, y1: botT }),
-    maskPolyTiles: Object.freeze(octagon(cxT, cyT, hwT, hhT).map(p => Object.freeze(p))),
-    estHeightTiles: bboxTiles.h, estHeightWorldPx: bboxTiles.h * WORLD.tileSize,
-    estVsPlayer: +(bboxTiles.h / PLAYER.spriteTiles).toFixed(2), // 플레이어 7-tile 대비 배수(추정)
-    approx: true, traceNeeded: true,
+    id, npcId, pose,
+    crop: Object.freeze(crop), foot: Object.freeze(foot), approach: Object.freeze(approach),
+    width: w, height: h, aspect: crop.w / crop.h, pivot: Object.freeze({ x: 0.5, y: 1 }),
   });
 }
-export const FIXED_FIGURES = Object.freeze([
-  // 멈춘 망자의 턱 / gift(양도) — scene cam-2 world(1580,4900) = tile(39.5,122.5) = MAP_CANDIDATE (39,122)
-  makeFigure('fig-gift', 'gift', [1580, 4900], { w: 6, h: 16 }),
-  // 부탁을 품은 턱 / request(구출) — scene cam-4 world(5820,4660) = tile(145.5,116.5) = MAP_CANDIDATE (145,116)
-  makeFigure('fig-request', 'request', [5820, 4660], { w: 6, h: 16 }),
+export const RESIDENTS = Object.freeze([
+  mk('resident-haran', 'rift-rest-haran',    'standing', { x: 169, y: 27,  w: 350, h: 578 }, { x: 4660, y: 6660 }, { x: 4660, y: 6700 }),
+  mk('resident-berin', 'rift-gift-berin',    'seated',   { x: 748, y: 257, w: 363, h: 352 }, { x: 6020, y: 5580 }, { x: 5980, y: 5620 }),
+  mk('resident-nessa', 'rift-request-nessa', 'standing', { x: 197, y: 660, w: 262, h: 547 }, { x: 6300, y: 5020 }, { x: 6220, y: 5020 }),
+  mk('resident-dorik', 'rift-prepare-dorik', 'standing', { x: 813, y: 742, w: 240, h: 465 }, { x: 5220, y: 2500 }, { x: 5180, y: 2540 }),
 ]);
 
-/* ---- clean-plate(구멍) 사양 — 보류(HELD), 픽셀 미작성 --------------------- */
-export const CLEAN_PLATE = Object.freeze(FIXED_FIGURES.map(f => Object.freeze({
-  figureId: f.id,
-  requiredFor: 'MODE_SPLIT_CLEANPLATE (구워진 인물을 들어내 플레이어 스케일 NPC로 교체할 때만)',
-  // 구멍 = 인물 bbox의 world 영역(추정). 실제 메우기는 하지 않는다.
-  holeRegionWorld: Object.freeze({
-    x0: f.bboxTiles.x0 * WORLD.tileSize, y0: f.bboxTiles.y0 * WORLD.tileSize,
-    x1: f.bboxTiles.x1 * WORLD.tileSize, y1: f.bboxTiles.y1 * WORLD.tileSize,
-  }),
-  fill: null,                                   // ← 구멍을 메운 데이터 없음
-  status: 'HELD_PENDING_IMAGEGEN_APPROVAL',
-  reason: '구멍 뒤 지면/절벽 복원은 공식 imagegen/API 작업이며 직접 인간 승인/자동거절 대상. '
-        + '우회(Python/Canvas 픽셀 페인트) 금지. 승인 후 별도 root 계획으로만 진행.',
-  claimRestoredWithOriginalColors: false,       // 원화 색 복원 주장 금지
-})));
+/* ---- 미완료/보류/비주장 명시 (ART 소관 경계) ----------------------------- */
+export const COMPLETION_NOTES = Object.freeze({
+  bboxBasis: 'atlas alpha>8 경계. 해부학적 발뼈/애니메이션/높이 물리 아님.',
+  footPivot: 'foot(.5,1) = 선언된 배치 pivot(바닥중심). 측정된 발 접지점이 아님.',
+  grounding: 'INCOMPLETE — 접지 그림자/바닥 정합 미구현.',
+  material:  'INCOMPLETE — 고해상 재질/파생 인물 재질 미구현.',
+  animation: 'INCOMPLETE — 주민 애니메이션 미구현 (현재 2×2 정적 4).',
+  retired:   '이전 280px body / camera POI / 근사 8각 마스크 = 보류, 실제 발로 사용 안 함.',
+  identity:  '파생 plate/atlas는 정확 픽셀 추출이 아니며 exact 원본 identity 주장 안 함.',
+  generation:'새 PNG/이미지 생성/PixelLab 0. 원본 byte 불변.',
+  adoption:  'notAdopted = true. fixture PASS ≠ 본편/native/청취/A급.',
+});
 
-/* ---- 렌더러 적용 순서 ---------------------------------------------------- */
-// 기존 depth.js layerOrder에 'rift-fixed-figure-front'를 전사 뒤에 삽입(=footline foreground와 동형).
-export const LAYER_ORDER_BASE = Object.freeze([
-  'painted-terrain', 'far-abyss-in-fissure', 'contact-shadow',
-  'existing-warrior', 'footline-foreground', 'fissure-mist',
-]);
-export function applyOrder() {
-  const o = [...LAYER_ORDER_BASE];
-  o.splice(o.indexOf('existing-warrior') + 1, 0, 'rift-fixed-figure-front');
-  return Object.freeze(o);
-}
+/* ---- 거절 검증 (유한값/비율/핀/월드범위) --------------------------------- */
+const finite = v => typeof v === 'number' && Number.isFinite(v);
+const inWorld = v => finite(v) && v >= 0 && v < WORLD.px;
 
-/* ---- 기하 유틸 (depth.js와 동일 규약: view={ox,oy,scale}, 타일좌표) -------- */
-export function pointInPoly(x, y, poly) {
-  let hit = false;
-  for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
-    const a = poly[i], b = poly[j];
-    if ((a[1] > y) !== (b[1] > y) && x < (b[0] - a[0]) * (y - a[1]) / (b[1] - a[1]) + a[0]) hit = !hit;
+export function validatePlan({ tol = 1e-9 } = {}) {
+  const rejects = [];
+  if (SOURCE_SPACE.size !== 1254) rejects.push('source size != 1254');
+  for (const r of RESIDENTS) {
+    const c = r.crop;
+    // crop 유한·1254² 내부
+    if (![c.x, c.y, c.w, c.h].every(finite) || c.w <= 0 || c.h <= 0 ||
+        c.x < 0 || c.y < 0 || c.x + c.w > SOURCE_SPACE.size || c.y + c.h > SOURCE_SPACE.size)
+      rejects.push(`${r.id}: crop out of 1254² or non-finite`);
+    // 크기·비율
+    if (!finite(r.width) || !finite(r.height) || r.height < 1 || r.height > 32000) rejects.push(`${r.id}: height out of [1,32000]`);
+    if (Math.abs(r.width / r.height - c.w / c.h) > 1e-6) rejects.push(`${r.id}: width/height != crop aspect`);
+    const expH = r.pose === 'seated' ? STANDING_H * 352 / 578 : STANDING_H;
+    if (Math.abs(r.height - expH) > tol) rejects.push(`${r.id}: height != pose spec (${expH})`);
+    // foot / approach 월드 유한·범위
+    if (!inWorld(r.foot.x) || !inWorld(r.foot.y)) rejects.push(`${r.id}: foot out of world`);
+    if (!inWorld(r.approach.x) || !inWorld(r.approach.y)) rejects.push(`${r.id}: approach out of world`);
+    // pivot 고정
+    if (r.pivot.x !== 0.5 || r.pivot.y !== 1) rejects.push(`${r.id}: pivot != (.5,1)`);
   }
-  return hit;
-}
-export function figureWorldBox(fig) {
-  return { x: fig.bboxTiles.x0 * WORLD.tileSize, y: fig.bboxTiles.y0 * WORLD.tileSize,
-           w: (fig.bboxTiles.x1 - fig.bboxTiles.x0) * WORLD.tileSize,
-           h: (fig.bboxTiles.y1 - fig.bboxTiles.y0) * WORLD.tileSize };
-}
-// 깊이 판정: 플레이어가 인물 발선보다 북(y<foot)이면 인물이 앞(플레이어를 가림).
-export function playerDepthVsFigure(player, fig) {
-  return (player.y / WORLD.tileSize) < fig.footTile ? 'figure-front' : 'figure-back';
-}
-
-/* ---- MODE_OVERLAY 적용 함수 (비이미지, 원본 불변) ------------------------
- * depth.js foreground()와 동일하게 원화(art)에서 인물 폴리곤 영역만 클립해 다시
- * 그린다. 플레이어가 뒤(북)일 때만 그리며, 겹치면 .38로 페이드(발밑 가독 확보).
- * art = 이미 그려진 원화 레이어와 같은 소스(미수정). 어떤 픽셀도 새로 칠하지 않음.
- * ------------------------------------------------------------------------ */
-export function drawFiguresOverlay(ctx, art, view, player, { figures = FIXED_FIGURES, fadeOverlap = 0.38 } = {}) {
-  let drawn = 0, faded = 0;
-  for (const fig of figures) {
-    if (playerDepthVsFigure(player, fig) !== 'figure-front') continue; // 플레이어가 앞이면 구워진 배경이 뒤에 그대로 → 추가 그리기 불필요
-    const poly = fig.maskPolyTiles;
-    const px = player.x / WORLD.tileSize, py = player.y / WORLD.tileSize;
-    const overlap = [0.8, 2, 3.5, 5].some(dy => pointInPoly(px, py - dy / 1, poly));
-    ctx.save();
-    ctx.beginPath();
-    poly.forEach((p, i) => { const X = view.ox + p[0] * view.scale, Y = view.oy + p[1] * view.scale; i ? ctx.lineTo(X, Y) : ctx.moveTo(X, Y); });
-    ctx.closePath(); ctx.clip();
-    ctx.globalAlpha = overlap ? fadeOverlap : 1;
-    ctx.drawImage(art, view.ox, view.oy, WORLD.cols * view.scale, WORLD.rows * view.scale); // 미수정 원화에서 클립 영역만
-    ctx.restore();
-    drawn++; if (overlap) faded++;
+  // atlas crop 겹침 경고(2×2 정적 4 — 겹치면 거절)
+  for (let i = 0; i < RESIDENTS.length; i++) for (let j = i + 1; j < RESIDENTS.length; j++) {
+    const a = RESIDENTS[i].crop, b = RESIDENTS[j].crop;
+    if (a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h)
+      rejects.push(`crop overlap ${RESIDENTS[i].id}∩${RESIDENTS[j].id}`);
   }
-  return { drawn, faded };
+  return { ok: rejects.length === 0, rejects, residents: RESIDENTS.length };
 }
 
-/* ---- 자기검증 (stdin 전용, 파일 산출 없음) -------------------------------- */
+/* ---- scene 교차검증 (c508) — 상위 strict profile 주입 가능 --------------- */
+export function validateAgainstScene(scene, { strictProfile = null } = {}) {
+  const rejects = [];
+  try {
+    const sp = scene?.sourcePins || {};
+    for (const [k, pin] of [['painting', SOURCE_PINS.painting], ['cleanPlate', SOURCE_PINS.cleanPlate], ['residentAtlas', SOURCE_PINS.residentAtlas]])
+      if (sp[k] !== pin) rejects.push(`scene.sourcePins.${k} mismatch`);
+    const rev = scene?.residentLayerReview;
+    if (rev?.kind !== 'independent-resident-preview-v1' || rev?.notAdopted !== true) rejects.push('residentLayerReview kind/notAdopted');
+    const foot = scene?.layers?.find(l => l.id === 'foot');
+    if (!foot || foot.sort !== 'foot' || foot.parallax !== 1 || !foot.visible) rejects.push('foot layer contract');
+    for (const r of RESIDENTS) {
+      const o = foot?.objects?.find(o => o.id === 'obj-' + r.id);
+      if (!o) { rejects.push(`${r.id}: scene object missing`); continue; }
+      if (o.pivotX !== 0.5 || o.pivotY !== 1 || o.rotation !== 0 || o.flipX || o.opacity !== 1 || o.mask !== undefined) rejects.push(`${r.id}: object transform contract`);
+      if (o.x !== r.foot.x || o.y !== r.foot.y) rejects.push(`${r.id}: scene foot != plan (${o.x},${o.y})`);
+      if (Math.abs(o.width - r.width) > 1e-6 || Math.abs(o.height - r.height) > 1e-6) rejects.push(`${r.id}: scene size != plan`);
+    }
+    if (typeof strictProfile === 'function' && strictProfile(scene) === null) rejects.push('strict residentPaintingProfile() returned null');
+  } catch (e) { rejects.push('exception: ' + (e?.message || e)); }
+  return { ok: rejects.length === 0, rejects };
+}
+
+// 순수 계획 헬퍼: foot y 오름차순 삽입 순서(§12 foot.sort). 렌더 아님.
+export function footSortOrder(residents = RESIDENTS) {
+  return residents.map(r => ({ id: r.id, y: r.foot.y })).sort((a, b) => a.y - b.y).map(r => r.id);
+}
+export function atlasCrop(r) { return { ...r.crop }; }
+export function worldFromSourcePx(px) { return px * SOURCE_SPACE.worldPerSourcePixel; }
+
 export function validate() {
-  const errs = [];
-  for (const f of FIXED_FIGURES) {
-    const [ax, ay] = f.artFootPx;
-    if (Math.abs(ax - f.worldFoot.x / ART.worldPerArtPx) > 0.2) errs.push(`${f.id} artFootPx x`);
-    if (f.footTile !== +(f.worldFoot.y / WORLD.tileSize).toFixed(2)) errs.push(`${f.id} footTile`);
-    if (f.maskPolyTiles.length !== 8) errs.push(`${f.id} poly!=8`);
-    if (ax < 0 || ax > ART.w || ay < 0 || ay > ART.h) errs.push(`${f.id} artPx out of 1920²`);
-  }
-  if (CLEAN_PLATE.some(c => c.fill !== null)) errs.push('cleanPlate.fill must be null (HELD)');
-  if (CLEAN_PLATE.some(c => c.claimRestoredWithOriginalColors)) errs.push('must not claim original-color restore');
-  if (!applyOrder().includes('rift-fixed-figure-front')) errs.push('layer insert missing');
-  return { ok: errs.length === 0, errs, figures: FIXED_FIGURES.length,
-           order: applyOrder(), cleanPlateStatus: CLEAN_PLATE.map(c => c.status) };
+  const plan = validatePlan();
+  return { ok: plan.ok, plan, notes: COMPLETION_NOTES, pins: Object.keys(SOURCE_PINS).length,
+           footOrder: footSortOrder(), adopted: false };
 }
 
-export default { WORLD, ART, SOURCE_PINS, PLAYER, FIXED_FIGURES, CLEAN_PLATE,
-  LAYER_ORDER_BASE, applyOrder, pointInPoly, figureWorldBox, playerDepthVsFigure,
-  drawFiguresOverlay, validate };
+export default { WORLD, SOURCE_SPACE, SOURCE_PINS, STRICT_MODULE_PATH, NAV_LOCK, PLAYER,
+  RESIDENTS, COMPLETION_NOTES, validatePlan, validateAgainstScene, footSortOrder,
+  atlasCrop, worldFromSourcePx, validate };

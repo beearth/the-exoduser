@@ -30,7 +30,7 @@
 import { readFileSync, existsSync, readdirSync, statSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { createContext, runInContext } from 'node:vm';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { dirname, resolve, relative, join } from 'node:path';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -60,6 +60,52 @@ const PIN = {
   walkableCount: 1192,
   world: { cols: 200, rows: 200, tileSize: 40 },
 };
+
+// Root resident-layers preview (ROOT-RIFT-RESIDENT-LAYERS-PREVIEW-20261006):
+// derived clean plate + 2×2 resident atlas + v2 scene + strict editor-only module. Original PNG/scene bytes unchanged.
+const RESIDENT = {
+  scene: 'assets/map/hell_rift/resident_layers_20261006/hell-rift-residents-v2.scene.json',
+  module: 'tools/map-scene-rift-residents.mjs',
+  plate: 'assets/map/hell_rift/resident_layers_20261006/clean-plate-v1.png',
+  atlas: 'assets/map/hell_rift/resident_layers_20261006/resident-atlas-v1.png',
+  pins: {
+    scene: 'c508e70d23fafb9295798763c5224c7c92699dfea3d3beebdb6ab18173f44a3a',
+    module: '0a04ff1f502ef77604a5eb7e8b194c2eb48c5fea8f7abb12e936f8ade33428a3',
+    plate: 'aa64cb7bbfff10c9d5ea2378ef3f8f528bbfb2acfb43ddb9a6520b9f24127673',
+    atlas: 'ff20e1f5dc1a8849edb64a10380c1d9eb21688de1817f098b144a57410190a38',
+    editor: '9250f66d8f14acc1699e114bdf861660267434d6581af6c6d0849a71bf6bba70',
+  },
+  // §12 MAP_SCENE_EDITOR_20261005: 4 bodies, foot pivot (.5,1), approach = fixed walkable standpoint.
+  bodies: [
+    { key: 'haran', npcId: 'rift-rest-haran',    foot: [4660, 6660], approach: [4660, 6700] },
+    { key: 'berin', npcId: 'rift-gift-berin',    foot: [6020, 5580], approach: [5980, 5620] },
+    { key: 'nessa', npcId: 'rift-request-nessa', foot: [6300, 5020], approach: [6220, 5020] },
+    { key: 'dorik', npcId: 'rift-prepare-dorik', foot: [5220, 2500], approach: [5180, 2540] },
+  ],
+};
+
+/*
+ * INPUT REGISTRY — required vs optional, with strict pins.
+ * Classification (separated per TASK ①): OK · MISSING · IMPORT-FAIL · PIN-MISMATCH.
+ *   required + MISSING      -> hard fail (nonzero exit)         [a required consumer is never "pending"]
+ *   optional + MISSING      -> PENDING (exit 0 allowed)
+ *   validate + parse/throw  -> IMPORT-FAIL (hard fail)          [present but unusable]
+ *   strict pin + different  -> PIN-MISMATCH (hard fail)         [content drifted from the accepted bytes]
+ */
+// pinFatal: a strict pin whose drift fails the run (the FROZEN data deliverables being accepted).
+// A pin without pinFatal is live TOOLING root iterates; its drift is surfaced as a non-fatal MISMATCH.
+const INPUTS = [
+  { key: 'editor',          path: CONSUMER.editor,         required: true,  pin: RESIDENT.pins.editor },
+  { key: 'core',            path: CONSUMER.core,           required: true },
+  { key: 'scene-result',    path: CONSUMER.scene,          required: true,  validate: true },
+  { key: 'ambience-module', path: CONSUMER.ambienceModule, required: true },
+  { key: 'dialogue-module', path: CONSUMER.dialogueModule, required: true },
+  { key: 'resident-scene',  path: RESIDENT.scene,          required: true,  validate: true, pin: RESIDENT.pins.scene,  pinFatal: true },
+  { key: 'resident-module', path: RESIDENT.module,         required: true,  pin: RESIDENT.pins.module },
+  { key: 'clean-plate',     path: RESIDENT.plate,          required: true,  pin: RESIDENT.pins.plate,  pinFatal: true },
+  { key: 'resident-atlas',  path: RESIDENT.atlas,          required: true,  pin: RESIDENT.pins.atlas,  pinFatal: true },
+  { key: 'dialogue-data',   path: CONSUMER.dialogueData,   required: false },
+];
 
 // the 7 new per-team candidate slots for this round:
 const TEAM_DIR = 'tools/team-followup-20261006/hell-rift';
@@ -285,10 +331,26 @@ try {
   scene = K.validate(JSON.parse(read(at(CONSUMER.scene))));
   reachable = buildReachable(scene);
 
-  sec('CONSUMER PINS (current root-owned source — read-only)');
-  for (const key of ['editor', 'core', 'ambienceModule', 'dialogueModule', 'scene', 'dialogueData']) {
-    const p = at(CONSUMER[key]);
-    existsSync(p) ? line('INFO', key, `${rel(p)}  sha256 ${short(sha256(p))}`) : fail(`consumer:${key}`, `MISSING ${rel(p)} — editor import/fetch would fail`);
+  sec('INPUTS — required/optional, classified (MISSING · IMPORT-FAIL · PIN-MISMATCH · OK)');
+  for (const inp of INPUTS) {
+    const p = at(inp.path);
+    if (!existsSync(p)) {
+      inp.required ? fail(`input:${inp.key}`, `REQUIRED MISSING ${rel(p)} — nonzero exit (not pending)`)
+                   : line('PENDING', `input:${inp.key}`, `optional, absent ${rel(p)} — allowed (exit 0)`);
+      continue;
+    }
+    const got = sha256(p);
+    if (inp.pin && got !== inp.pin) {
+      inp.pinFatal
+        ? fail(`input:${inp.key}`, `PIN-MISMATCH (frozen deliverable) ${rel(p)} got ${short(got)} ≠ pin ${short(inp.pin)}`)
+        : line('MISMATCH', `input:${inp.key}`, `tooling drifted from task pin ${short(inp.pin)} → now ${short(got)} (live root edit; non-fatal, contract re-checked below)`);
+      continue;
+    }
+    if (inp.validate) {
+      try { K.validate(JSON.parse(read(p))); }
+      catch (e) { fail(`input:${inp.key}`, `IMPORT-FAIL ${rel(p)}: ${e.message}`); continue; }
+    }
+    line('PASS', `input:${inp.key}`, `${rel(p)}${inp.pin ? ' · pin OK' : ''}${inp.validate ? ' · validates' : ''}  sha256 ${short(got)}`);
   }
 
   sec('CONSUMER CONTRACTS (what any candidate must integrate with)');
@@ -326,6 +388,74 @@ try {
   const unreach = anchors.filter(([, x, y]) => !reachAt(x, y)).map(a => a[0]);
   unreach.length ? fail('cc/resident-anchors', `unreachable approach anchors: ${unreach.join(', ')}`)
                  : line('PASS', 'cc/resident-anchors', 'all 4 dialogue approach anchors canWalk(r12)-reachable');
+
+  // ---- RESIDENT preview (v2 scene + strict editor-only module) ----
+  sec('RESIDENT PREVIEW — v2 scene invariants + small negative checks (derived, not adopted)');
+  if (!existsSync(at(RESIDENT.scene))) {
+    fail('resident/scene', 'REQUIRED resident scene missing — nonzero');
+  } else {
+    let rs = null;
+    try { rs = K.validate(JSON.parse(read(at(RESIDENT.scene)))); } catch (e) { fail('resident/validate', `IMPORT-FAIL: ${e.message}`); }
+    if (rs) {
+      // INVARIANTS must equal the immutable result-scene (nav/world/start/exit untouched by resident edit)
+      const rNav = createHash('sha256').update(Buffer.from(rs.walkable)).digest('hex');
+      const inv = [
+        ['world', JSON.stringify(rs.world) === JSON.stringify(PIN.world)],
+        ['nav-sha', rNav === PIN.nav && rs.sourcePins?.nav === PIN.nav],
+        ['walkableCount', rs.walkable.filter(Boolean).length === PIN.walkableCount && rs.sourcePins?.walkableCount === PIN.walkableCount],
+        ['start', rs.start.x === scene.start.x && rs.start.y === scene.start.y],
+        ['exit', rs.exit.x === scene.exit.x && rs.exit.y === scene.exit.y],
+      ];
+      const brokenInv = inv.filter(([, ok]) => !ok).map(([k]) => k);
+      brokenInv.length ? fail('resident/invariants', `resident edit changed immutable nav/world/start/exit: ${brokenInv.join(', ')}`)
+                       : line('PASS', 'resident/invariants', 'world/nav(1192,a4508)/start/exit unchanged by resident layer');
+      // NEGATIVE: derived preview must NOT mutate the original painting/abyss lineage
+      (rs.sourcePins?.painting === IMMUTABLE_PINS.painting && rs.sourcePins?.abyss === IMMUTABLE_PINS.abyss && rs.sourcePins?.originalNav === PIN.originalNav)
+        ? line('PASS', 'resident/original-lineage', 'original painting/abyss/originalNav pins preserved (derived, not an original-PNG edit)')
+        : fail('resident/original-lineage', 'resident scene altered an original painting/abyss/originalNav pin — derived preview must keep originals byte-stable');
+      // NEGATIVE: derived asset pins must be declared and match plate/atlas files on disk
+      (rs.sourcePins?.cleanPlate === RESIDENT.pins.plate && rs.sourcePins?.residentAtlas === RESIDENT.pins.atlas)
+        ? line('PASS', 'resident/derived-pins', 'sourcePins.cleanPlate/residentAtlas match the strict plate/atlas pins')
+        : fail('resident/derived-pins', 'sourcePins cleanPlate/residentAtlas missing or ≠ strict plate/atlas pins');
+      // NEGATIVE: candidate must NOT self-declare production adoption.
+      // (A correct status reads NOT_ADOPTED / ISOLATED / notAdopted:true — do not match the "ADOPT" substring inside "NOT_ADOPTED".)
+      const statusStr = String(rs.productionStatus) + ' ' + JSON.stringify(rs.residentLayerReview || {});
+      const notAdopted = /NOT_?ADOPTED|ISOLATED|not-?adopted|notAdopted\s*[:=]\s*true|preview|candidate/i.test(statusStr);
+      notAdopted
+        ? line('PASS', 'resident/not-adopted', `productionStatus=${rs.productionStatus} (not adopted — correct)`)
+        : fail('resident/not-adopted', `candidate does not mark itself not-adopted (productionStatus=${rs.productionStatus}) — adoption is root-owned`);
+      // foot layer: 4 resident bodies, strict foot pivot/transform; approach points reachable
+      const foot = rs.layers.find(l => l.id === 'foot');
+      const rReach = buildReachable(rs);
+      const reachAtR = (x, y) => { const t = rs.world.tileSize, tx = Math.floor(x / t), ty = Math.floor(y / t); return K.canWalk(rs, x, y) && !!rReach[ty * rs.world.cols + tx]; };
+      let bodyBad = [], approachBad = [];
+      for (const b of RESIDENT.bodies) {
+        const o = foot?.objects.find(o => o.id === `obj-resident-${b.key}`);
+        if (!o) { bodyBad.push(`${b.key}:absent`); continue; }
+        // NEGATIVE: wrong foot pivot / flipped / masked / rotated body floats or mis-occludes
+        if (!(o.pivotX === 0.5 && o.pivotY === 1 && o.rotation === 0 && o.flipX === false && o.opacity === 1 && o.mask === undefined)) bodyBad.push(`${b.key}:bad-transform`);
+        // NEGATIVE: an unreachable approach standpoint = an untalkable NPC (the 0124 class)
+        if (!reachAtR(b.approach[0], b.approach[1])) approachBad.push(`${b.key}(${b.approach})`);
+      }
+      (foot && foot.sort === 'foot' && foot.parallax === 1) ? line('PASS', 'resident/foot-layer', `foot.sort=foot parallax=1 objects=${foot.objects.length}`)
+                                                            : fail('resident/foot-layer', 'foot layer not sort=foot/parallax=1');
+      bodyBad.length ? fail('resident/body-transform', 'resident body transform defects: ' + bodyBad.join(', ')) : line('PASS', 'resident/body-transform', '4 bodies: pivot(.5,1), no rotate/flip/mask, opacity1');
+      approachBad.length ? fail('resident/approach-reach', 'unreachable approach standpoint(s): ' + approachBad.join(', ')) : line('PASS', 'resident/approach-reach', 'all 4 resident approach points canWalk(r12)-reachable on v2 scene');
+      // optional: the strict editor-only module's own profile must accept the scene (guarded dynamic import)
+      try {
+        const mod = await import(pathToFileURL(at(RESIDENT.module)).href);
+        const okProfile = typeof mod.residentPaintingProfile === 'function' && mod.residentPaintingProfile(rs) != null;
+        const anchors2 = typeof mod.residentDialogueAnchors === 'function' ? (mod.residentDialogueAnchors(rs) || []) : [];
+        okProfile ? line('PASS', 'resident/module-profile', `residentPaintingProfile(scene) accepts v2; residentDialogueAnchors=${anchors2.length}`)
+                  : fail('resident/module-profile', 'residentPaintingProfile(scene) returned null — module rejects this scene');
+      } catch (e) { line('INFO', 'resident/module-profile', `module not node-importable here (${e.message}) — static pin check stands; manual`); }
+    }
+  }
+
+  // Guard: a source/regex/export PASS is NOT production acceptance.
+  sec('ACCEPTANCE GUARD (what a green run does NOT mean)');
+  line('INFO', 'guard/scope', 'PASS here = source/interface/pin/nav gate only; it is NOT promotion to production acceptance.');
+  line('INFO', 'guard/no-dup', 'this checker does NOT re-run root unit19 / UI15 / 4-dir walk / 8-camera suites, and opens no GUI/native/audio.');
 
   sec('NEW CANDIDATES — 20261006 round (7 per-team slots)');
   for (const { team, kind, rules } of TEAMS) {
