@@ -54916,3 +54916,21 @@ raw67 ANIMVFX V2 공식완료 후보는 f5a01e3a72a34fdfdb5b6b1bd2053fddfceaa2ee
 | 후속 | 기존 Claude8 owner에 새 결과·원격보존을1회인계. 진행중 CH1-RIFT-PARENT-CHILD-EFFECT-LIFETIME-20261007-ANIMVFX-MEMORY(송신/peer/Read/첫source1)는 유지, 같은 TASK 재송신0/root전문송신0/독립팀일괄보류0. 효과수명 완료 뒤 정확end/pin 및 승인된 다음새단위는 owner소유 |
 
 MAP PRODUCTION REPORT (§23): MASTER/OUTER/MEDIUM/GROUND/랜드마크/DETAIL 변형0; PLAYABLE 기존consumer 유지/새raw미채택; CAMERA 새GUI관찰0; TECH 위제한stdin1·정확4핀; code수정0·관련정본6문서append/fullprefix보존. VISUAL VERDICT: RETOUCH / 해당API 실화면 NOT ASSESSED. 해부학적발/IK/본편native6/청취/실보상save/A급未인수. 일일15%포인트 계정공용주간사용목표는 의미있는제작·신규검수에 적용하고 토큰낭비·동일검사/TASK반복으로맞추지않는다.
+
+
+## 2026-10-07 ROOT-RIFT-CHILD-LIFETIME: 실제 종료 검수와 생산 반영
+
+| 항목 | 현재 사실·정확 계약 |
+|---|---|
+| 완료 소유 | ROOT-RIFT-CHILD-LIFETIME-20261007: tools/2_5d-world-lab.mjs 36039B / SHA256 8388efcf35e8b9a768750fc54227928232363a32f8113039d4f81a04a90eca93. 기존 ANIMVFX-MEMORY 공식 end c0a741f3-4fd7-4f07-a6ad-d2a888823376 @2026-10-06T19:33:53.039Z의 파일0·메모리3PASS는 선행 이력이며 이번 실제 구현·Chrome 검수와 구분 |
+| 구현 | 첫 top-level await 이전 native pagehide 등록. 종료 시 disposed/epoch를 먼저 변경하고 각 자원의 cleanup을 독립 실행. 생성완료 뒤 늦게 반환된 terrain/residents/rigs/special은 adopt·scene/DOM/ready·RAF 재시작을 막고 즉시 dispose. 한 cleanup 예외가 이후 cleanup을 막지 않음. readonly __rift25Lifecycle.snapshot()은 detached frozen primitive 진단만 노출 |
+| 최종 소스 제한검수 | final 8388 핀에서 신규 미도달 5그룹·100조건 PASS/exit0. 이전 35079B/dcaad20f prototype 10그룹5PASS5FAIL/110조건은 STORY fixture가 비어서 5경계 미도달한 이력, 제한 하네스 parse 실패1은 product 호출0. 성공한 기존5·메모리3·DPR·publichost/gate/lease 검사를 재실행하거나 최종 전체suite PASS로 합산하지 않음 |
+| 실제 Chrome | ROOT-RIFT-CHILD-LIFETIME-BROWSER-20261007: 고유6그룹 PASS6/FAIL0/partialUnknown0; observed subcheck21 PASS21, process exit0. 실제 Chrome launch1/context1/parentpage1/childdocument6, native trusted pagehide6/6. 보호18 source핀 전후 exact, pageerror/consoleError/HTTP오류/외부요청/변경요청0 |
+| 취소 경계 | terrain/resident/special/rig 실제 factory가 생성완료한 뒤 반환 gate에서 취소한 4경계; lateResourceRejected 각각1·실제 dispose 각각1. 미완료 HTTP 중 취소 실험으로 주장하지 않음. 지연 fetch3(terrain/resident/special), rig는 cache. 종료 뒤 frame/RAF/DOM/native draw 재활성화0 |
+| 예외와 GPU 관측 | 실제 terrain.dispose 이후 정리 예외1을 주입해도 renderer/residents/dialogue 등 해제 진행. 정상·예외 각각 native deleteProgram13/deleteTexture13/deleteBuffer38, cleanupFailures 예외경계1. 이 native API 호출과 JavaScript dispose 관측은 물리 GPU/OS 메모리 반환 인수가 아니며 physicalGpuMemory UNKNOWN 유지 |
+| 문서 정본 | HELL_RIFT_RESOLUTION_DETAIL_20261006.md 73149B/51e2eda13ed335d1056e9564ee58824c1fd45d2854940ef2519f5b52858e0cc0; HELL_RIFT_2_5D_SLICE_20261006.md 127553B/aef712a2456a92e905d1ea03e360e6aef009d89adbb9a92db048df7ffbc566ff; THREE_LOCAL_SINGLE_RUNTIME_20260929.md 93236B/dbe32dfed193e1b829228add274fea9f7d0eb53b1b4909ae6a27808188e8704b. 각 원문 prefix100%·새 append EOF LF1 |
+| 증거 | 외부 /Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/child-lifetime-browser/acceptance-summary.json·final-receipt.json·map-production-report.txt·actual-ready-gpu.png·parent-after-cleanup.png. raw-result SHA256 9a6b60b96fe30a81fc6672bfc7734f82cf16171a9b6619c7fcf92b28c23a0da5. fixture와 실제 Chrome는 별도 영수증 |
+| 다음 미완료 | 새 main-rift-runtime/game 정상3387 clear-route 소스 연결은 별도 완료 단위로 docs·신규 소비자 화면검수 중. 기본 DEMO_MODE=true/LAST_STAGE0 nextBtn 종료→허브는 PENDING. 실제 main/native6/청취/유품·부탁 보상 durable save/child P·char 전달/A급 인수0 |
+| 오더·운영 | 기존 Claude8 owner의 CH1-RIFT-WOLF-FOOT-INPUT-BRAND-FIX-20261007-ANIMVFX는 송신/peer/Read/첫source1, 최신 공식end 수신 전까지 완료로 계산0. raw67 V2 의미FAIL·미채택 보존 및 이전 거절 송신 경계 유지. 24시간 제작·계정 공용 주간사용률 약15 percentage points/day 목표는 의미있는 신규 구현·검수·후속배정으로 운영; 동일 검사/TASK 반복·토큰태우기0 |
+
+MAP PRODUCTION REPORT (§23): MASTER/OUTER/MEDIUM/GROUND/LANDMARK/DETAIL 원본 지형·PNG·scene/nav 변경0; PLAYABLE 종료 뒤 입력/RAF/자원 수명 소비자 최소 보정; CAMERA actual-ready/parent-return UI PASS, 전체맵은 확대 원화·재질/접합 과제로 RETOUCH; TECH 위 실제6 및 source 검수 핀·실패이력 분리; 관련 docs 전체검색·정확 동기화 후 완료 소유 code+docs만 정상 checkpoint/push. VISUAL VERDICT: RETOUCH. 실물 모니터·본편 native6·청취·보상 save·A급완성은 미인수.

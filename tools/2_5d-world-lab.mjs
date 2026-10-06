@@ -33,10 +33,14 @@ let foregroundShaderPrograms=[],contactShaderPrograms=[],contactUnderlay;
 let observeFoot, realNav, anchorJob=null, registration=null;
 let acceptance={status:'PENDING',samples:0,reason:'표시 위치 검사 전',result:null};
 const anchorSamples=12;
+let lifecycleEpoch=0,cleanupFailures=0,lateResourceRejected=0;
+const disposeAttemptCounts=Object.create(null);
+const initializationEpoch=lifecycleEpoch,releasedResources=new WeakSet();
 let previewSequence=0,previewEntry=null,previewEntryReason=null;
 const leaf = (id,value) => { const el=$(id); if(el && !el.children.length) el.textContent=String(value); };
 function stopFrame(){if(state.raf)cancelAnimationFrame(state.raf);state.raf=0;state.lastTime=null;}
 function fail(error){
+  if(state.disposed)return;
   state.error=error instanceof Error?error.message:String(error);state.ready=false;stopFrame();keys.clear();cancelAnchorCheck('오류로 검사 중단');
   controls.forEach(el=>el.disabled=true);Object.values(rigs).forEach(r=>r.object3d.visible=false);
   leaf('loading-title','시험을 중단했습니다');leaf('loading-detail',state.error);$('loading').hidden=false;
@@ -264,14 +268,60 @@ function frame(time){
 function resume(){if(state.ready&&!state.raf&&!state.disposed&&!document.hidden){state.lastTime=null;state.raf=requestAnimationFrame(frame);}}
 function createEffects(id){return createActorEffectLifetime({THREE,scene,camera,terrain,options:{depthTest:false,reducedMotion:reducedQuery.matches,dustSize:id==='dark-druid'?.042:.022,attackSize:id==='dark-druid'?.145:.08}});}
 function updateReducedMotion(){interactionCue?.setReducedMotion(reducedQuery.matches);for(const id of Object.keys(effects)){effects[id].dispose();effects[id]=createEffects(id);}}
-function dispose(){
-  if(state.disposed)return;invalidatePreview('disposed');state.disposed=true;anchorJob=null;stopFrame();observer?.disconnect();
-  reducedQuery?.removeEventListener('change',updateReducedMotion);
-  Object.values(effects).forEach(e=>e.dispose());
-  Object.values(helpers).forEach(h=>{h.geometry.dispose();h.material.dispose();});
-  wolfAbort.abort();wolf?.dispose();Object.values(rigs).forEach(r=>r.dispose());specialMotion?.dispose();contactUnderlay?.dispose();terrain?.dispose();shadow?.geometry.dispose();shadow?.material.dispose();renderer?.dispose();
-  interactionCue?.dispose();residents?.dispose();dialogue?.close('pagehide');
+function releaseResource(resource,release,kind){
+  if(!resource||(typeof resource!=='object'&&typeof resource!=='function')||releasedResources.has(resource))return;
+  releasedResources.add(resource);
+  disposeAttemptCounts[kind]=(disposeAttemptCounts[kind]||0)+1;
+  try{release();}catch{cleanupFailures++;}
 }
+function ensureInitialization(){
+  if(state.disposed||lifecycleEpoch!==initializationEpoch)throw new Error('종료한 화면은 다시 재생하지 않습니다');
+}
+function takeInitialized(resource,kind){
+  if(state.disposed||lifecycleEpoch!==initializationEpoch){
+    lateResourceRejected++;
+    releaseResource(resource,()=>resource.dispose(),kind);
+    throw new Error('종료한 화면은 다시 재생하지 않습니다');
+  }
+  return resource;
+}
+const initializationScene={
+  add(...objects){if(state.disposed||lifecycleEpoch!==initializationEpoch)lateResourceRejected++;ensureInitialization();return scene.add(...objects);},
+  remove(...objects){return scene.remove(...objects);}
+};
+function dispose(){
+  if(state.disposed)return;
+  // Invalidate asynchronous owners before invoking any external cleanup.
+  state.disposed=true;state.ready=false;lifecycleEpoch++;anchorJob=null;keys.clear();state.attackQueued=false;
+  invalidatePreview('disposed');stopFrame();
+  releaseResource(observer,()=>observer.disconnect(),'observer');
+  releaseResource(reducedQuery,()=>reducedQuery.removeEventListener('change',updateReducedMotion),'reduced-motion-listener');
+  for(const effect of Object.values(effects))releaseResource(effect,()=>effect.dispose(),'effects');
+  for(const helper of Object.values(helpers)){
+    releaseResource(helper.geometry,()=>helper.geometry.dispose(),'helper-geometry');
+    releaseResource(helper.material,()=>helper.material.dispose(),'helper-material');
+  }
+  releaseResource(wolfAbort,()=>wolfAbort.abort(),'wolf-abort');
+  releaseResource(wolf,()=>wolf.dispose(),'wolf');
+  for(const rig of Object.values(rigs))releaseResource(rig,()=>rig.dispose(),'rigs');
+  releaseResource(specialMotion,()=>specialMotion.dispose(),'special-motion');
+  releaseResource(contactUnderlay,()=>contactUnderlay.dispose(),'contact-underlay');
+  releaseResource(terrain,()=>terrain.dispose(),'terrain');
+  releaseResource(shadow?.geometry,()=>shadow.geometry.dispose(),'shadow-geometry');
+  releaseResource(shadow?.material,()=>shadow.material.dispose(),'shadow-material');
+  releaseResource(renderer,()=>renderer.dispose(),'renderer');
+  releaseResource(interactionCue,()=>interactionCue.dispose(),'interaction-cue');
+  releaseResource(residents,()=>residents.dispose(),'residents');
+  releaseResource(dialogue,()=>dialogue.close('pagehide'),'dialogue');
+}
+// Read-only diagnostics are available even while the first loader is pending.
+window.__rift25Lifecycle=Object.freeze({snapshot:()=>Object.freeze({
+  ready:state.ready,disposed:state.disposed,frames:state.frames,raf:!!state.raf,
+  epoch:lifecycleEpoch,cleanupFailures,rendererCreated:!!renderer,
+  disposeAttemptCounts:Object.freeze({...disposeAttemptCounts}),lateResourceRejected
+})});
+// Register before the first top-level await, including terrain loading.
+window.addEventListener('pagehide',dispose,{once:true});
 try{
   renderer=new THREE.WebGLRenderer({canvas:$('world-canvas'),antialias:true,powerPreference:'low-power'});
   renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));renderer.outputColorSpace=THREE.SRGBColorSpace;
@@ -279,19 +329,19 @@ try{
   scene=new THREE.Scene();scene.background=new THREE.Color(0x080e11);
   camera=new THREE.OrthographicCamera(-3,3,1.75,-1.75,.01,100);
   const angle=50*Math.PI/180;camera.position.set(0,Math.sin(angle)*16,Math.cos(angle)*16);camera.lookAt(0,0,0);
-  terrain=await createRiftTerrain({THREE,angle:50,scale:400});scene.add(terrain.object3d);
+  terrain=takeInitialized(await createRiftTerrain({THREE,angle:50,scale:400}),'terrain');scene.add(terrain.object3d);
   // Compile all authored foreground materials, including offscreen cutouts, once.
   renderer.compile(terrain.object3d,camera);
   const gl=renderer.getContext();
   foregroundShaderPrograms=renderer.info.programs.filter(p=>p.cacheKey.includes('rift-foreground-canonical-nav')).map(p=>({cacheKey:p.cacheKey,linked:gl.getProgramParameter(p.program,gl.LINK_STATUS)===true}));
   const expectedForegroundPrograms=1;
   if(foregroundShaderPrograms.length!==expectedForegroundPrograms||foregroundShaderPrograms.some(p=>!p.linked))throw new Error('Foreground GPU shader link failed');
-  const sceneResponse=await fetch(new URL('../'+RIFT_TERRAIN.scene,import.meta.url));
+  const sceneResponse=await fetch(new URL('../'+RIFT_TERRAIN.scene,import.meta.url));ensureInitialization();
   if(!sceneResponse.ok)throw new Error('맵 등록 대조 원자료 HTTP '+sceneResponse.status);
-  registration=await assessRegistration(terrain.sourceSceneSnapshot(),{canonicalBytes:await sceneResponse.arrayBuffer()});
+  const canonicalBytes=await sceneResponse.arrayBuffer();ensureInitialization();
+  registration=await assessRegistration(terrain.sourceSceneSnapshot(),{canonicalBytes});ensureInitialization();
   if(!registration.ok)throw new Error('맵 정본 핀·배치·투영 대조 실패');
-  contactUnderlay=await createRiftContactUnderlay({THREE,terrain,enabled:$('cliff-contact').checked});
-  if(state.disposed){contactUnderlay.dispose();throw new Error('페이지 종료');}
+  contactUnderlay=takeInitialized(await createRiftContactUnderlay({THREE,terrain,enabled:$('cliff-contact').checked}),'contact-underlay');
   scene.add(contactUnderlay.object3d);
   renderer.compile(contactUnderlay.object3d,camera);
   contactShaderPrograms=renderer.info.programs.filter(p=>p.cacheKey.includes('rift-contact-underlay')).map(p=>({cacheKey:p.cacheKey,linked:gl.getProgramParameter(p.program,gl.LINK_STATUS)===true}));
@@ -300,16 +350,17 @@ try{
   const residentScene=terrain.sourceSceneSnapshot();
   residentAccess=inspectResidentAccess(residentScene,(_s,x,y,r)=>terrain.canWalk(x,y,r));
   if(residentAccess.mode!=='independent'||residentAccess.rows.some(r=>r.status!=='ready'))throw new Error('주민 접근 지점이 정본 보행과 일치하지 않습니다');
-  const dialogueResponse=await fetch(new URL('./team-followup-20261005/hell-rift/STORY/rift-dialogue.json',import.meta.url));
+  const dialogueResponse=await fetch(new URL('./team-followup-20261005/hell-rift/STORY/rift-dialogue.json',import.meta.url));ensureInitialization();
   if(!dialogueResponse.ok)throw new Error('주민 대사 원자료 HTTP '+dialogueResponse.status);
-  const dialogueBytes=await dialogueResponse.arrayBuffer();
-  const dialoguePin=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',dialogueBytes)),b=>b.toString(16).padStart(2,'0')).join('');
+  const dialogueBytes=await dialogueResponse.arrayBuffer();ensureInitialization();
+  const dialogueDigest=await crypto.subtle.digest('SHA-256',dialogueBytes);ensureInitialization();
+  const dialoguePin=Array.from(new Uint8Array(dialogueDigest),b=>b.toString(16).padStart(2,'0')).join('');
   if(dialoguePin!=='be14b1416838ab345eb1c2a150b92403566ccfdc43cd3f3b317cf2913840dfdc')throw new Error('주민 대사 원자료 핀 불일치');
   dialogue=createRiftDialogue(residentScene,JSON.parse(new TextDecoder().decode(dialogueBytes)),(_s,x,y,r)=>terrain.canWalk(x,y,r),residentDialogueAnchors(residentScene));
   if(!dialogue)throw new Error('주민 대화 소비 계약이 일치하지 않습니다');
   dialogueObservation=createDialogueObservationConsumer({dialogueProvider:()=>dialogue});
   for(const row of residentAccess.rows)row.displayApproach=displayApproach(row);
-  residents=await createRiftResidentBillboards({THREE,terrain,camera,scene,displayScale:1.8});
+  residents=takeInitialized(await createRiftResidentBillboards({THREE,terrain,camera,scene:initializationScene,displayScale:1.8}),'residents');
   const frameSpecs=checkFrameSpec();if(frameSpecs.some(r=>r.pass===false))throw new Error('캐릭터 프레임 규격 실패: '+frameSpecs.find(r=>r.pass===false).detail);
   leaf('metric-registration',`${registration.pin.status} · ${registration.walkableCount} 타일`);
   leaf('metric-editor',registration.editorRoundtrip.status);
@@ -318,7 +369,7 @@ try{
   interactionCue=createInteractionCueLifetime({THREE,scene,camera,terrain,options:{orderFor:riftResidentFootOrder,anchorFor:npcId=>residentDialogueAnchors(residentScene).find(a=>a.npcId===npcId)||null,reducedMotion:reducedQuery.matches}});
   if(!interactionCue.snapshot().active)throw new Error('주민 접근 표시 초기화 실패');
   for(const id of ['warrior','silvertail','dark-druid']){
-    rigs[id]=await createCharacterRig(id,{THREE,height:heights[id]});scene.add(rigs[id].object3d);
+    rigs[id]=takeInitialized(await createCharacterRig(id,{THREE,height:heights[id]}),'rigs');scene.add(rigs[id].object3d);
     // Actor, foreground and effects share Three's transparent pass, so foot renderOrder is effective.
     rigs[id].object3d.traverse(node=>{if(node.isMesh){node.material.transparent=true;node.material.depthTest=false;node.material.depthWrite=false;node.material.needsUpdate=true;}});
     poses[id]=createDialoguePoseArbiter(id,{dialogueProvider:()=>dialogue,retrigger:false});
@@ -327,10 +378,10 @@ try{
   }
   shadow=new THREE.Mesh(new THREE.CircleGeometry(1,40),new THREE.MeshBasicMaterial({color:0x030a0c,transparent:true,opacity:.26,depthWrite:false,side:THREE.DoubleSide}));
   shadow.rotation.x=-Math.PI/2;shadow.renderOrder=15;scene.add(shadow);
-  specialMotion=await createBakedSpecialMotion({THREE,terrain,camera,scene,height:heights['dark-druid']});
-  try{wolf=await createCorruptedWolf({THREE,terrain,camera,height:.36,previewFps:6,signal:wolfAbort.signal});if(state.disposed){wolf.dispose();throw new Error('페이지 종료');}scene.add(wolf.object3d);}
-  catch(error){wolfError=error instanceof Error?error.message:String(error);}
-  if(state.disposed)throw new Error('종료한 화면은 다시 재생하지 않습니다');
+  specialMotion=takeInitialized(await createBakedSpecialMotion({THREE,terrain,camera,scene:initializationScene,height:heights['dark-druid']}),'special-motion');
+  try{wolf=takeInitialized(await createCorruptedWolf({THREE,terrain,camera,height:.36,previewFps:6,signal:wolfAbort.signal}),'wolf');scene.add(wolf.object3d);}
+  catch(error){ensureInitialization();wolfError=error instanceof Error?error.message:String(error);}
+  ensureInitialization();
   state.ready=true;controls.forEach(el=>el.disabled=false);$('loading').hidden=true;reset();select('warrior');
   reducedQuery.addEventListener('change',updateReducedMotion);
   observer=new ResizeObserver(resize);observer.observe($('world-canvas').parentElement);resize();resume();
@@ -353,6 +404,7 @@ try{
   $('wolf-near').addEventListener('click',()=>{placeWolf();render();updateUi();});
   for(const id of ['wolf-visible','wolf-mode','wolf-facing'])$(id).addEventListener('change',()=>{updateWolf(0);render();updateUi();});
 }catch(error){fail(error);}
+if(!state.disposed){
 const movementKeys=new Set(['KeyW','KeyA','KeyS','KeyD','ArrowUp','ArrowDown','ArrowLeft','ArrowRight','ShiftLeft','ShiftRight','KeyJ']);
 $('world-canvas').addEventListener('keydown',event=>{
   if(!state.ready)return;if(movementKeys.has(event.code)){closeDialogue('movement-input');cancelAnchorCheck('키 입력으로 검사 중단');cancelSpecial();event.preventDefault();keys.add(event.code);state.previewMode=null;if(event.code==='KeyJ'&&!event.repeat&&!state.paused)state.attackQueued=true;}
@@ -366,5 +418,5 @@ $('world-canvas').addEventListener('blur',()=>{clearIntent();poses[state.selecte
 window.addEventListener('blur',handleBlur);
 $('world-canvas').addEventListener('webglcontextlost',event=>{event.preventDefault();state.contextLost=true;fail(new Error('WebGL 컨텍스트 소실. 페이지를 다시 열어 주세요.'));});
 document.addEventListener('visibilitychange',()=>{clearIntent();if(document.hidden)stopFrame();else resume();});
-window.addEventListener('pagehide',dispose,{once:true});
 window.__rift25Lab=Object.freeze({enterPreview,snapshot:()=>{let actor;rigs[state.selected]?.object3d.traverse(n=>{if(n.isSkinnedMesh)actor=n;});return {...state,previewEntry:previewEntrySnapshot(),raf:!!state.raf,rig:rigs[state.selected]?.snapshot(),poseConsumer:poses[state.selected]?.snapshot(),effects:effects[state.selected]?.snapshot(),specialMotion:specialMotion?.snapshot(),actorVisible:rigs[state.selected]?.object3d.visible,shadowVisible:shadow?.visible,acceptance:structuredClone(acceptance),registration:structuredClone(registration),residents:residents?.snapshot(),interactionCue:interactionCue?.snapshot(),residentAccess:structuredClone(residentAccess),dialogue:dialogue?structuredClone(dialogue.snapshot()):null,dialogueObservation:dialogueObservation?.snapshot(),wolf:wolf?.snapshot(),wolfPlacement:wolfPlacement?{...wolfPlacement,canWalk:terrain.canWalk(wolfPlacement.x,wolfPlacement.y,wolfPlacement.radius)}:null,wolfError,nearestNpc:structuredClone(nearestNpc),cameraPosition:camera?.position.toArray(),diagnosticProvenance:{INTERACTION:INTERACTION_CUE_PROVENANCE,QA:SLICE_ACCEPTANCE_PROVENANCE,MAP:SCENE_REGISTRATION_PROVENANCE},renderContract:actor?{transparent:actor.material.transparent,depthWrite:actor.material.depthWrite,depthTest:actor.material.depthTest,actorOrder:actor.renderOrder,actorScenePosition:rigs[state.selected].object3d.position.toArray(),shadowScenePosition:shadow.position.toArray(),foregroundOrders:terrain.occluders.map(o=>o.object3d.renderOrder)}:null,terrain:terrain?.snapshot(),contactUnderlay:contactUnderlay?.snapshot(),contactShaderPrograms:contactShaderPrograms.map(p=>({...p})),foregroundShaderPrograms:foregroundShaderPrograms.map(p=>({...p})),canvas:{width:$('world-canvas').width,height:$('world-canvas').height}};}});
+}

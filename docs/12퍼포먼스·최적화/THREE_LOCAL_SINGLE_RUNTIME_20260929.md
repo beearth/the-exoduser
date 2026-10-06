@@ -462,3 +462,115 @@ parent rect는 기존 border 포함 값이고 canvas CSS는 border를 제외한 
 근거는 외부 `parent-input-lease/final-receipt.json`과 `parent-input-lease/rejected-read-owned-limited-result.json`이다. root의 관련 키워드 전체 검색은 `rift-parent-input-lease`, `readOwned`, `observeNativeRejection`, `nativeThen`, `unhandled`, `rejection`, `RIFT-MAIN-GATE-PUBLIC`로 **41파일·210매치**를 보존했다. 다른 시스템·owner 이력은 역편집하지 않는다. 정확한 입력 정책은 [3.3 키바인딩+설정](../3.3%20키바인딩+설정/3.3%20키바인딩+설정.md)과 [PROJECT_MANAGEMENT_MASTER](../0마스터플랜/PROJECT_MANAGEMENT_MASTER.md)의 root 정본을 따른다.
 
 **MAP PRODUCTION REPORT 부록:** 변경 단계는 위 DPR/parent lease 검증 이력의 문서 동기화뿐이며, master·outer mass·medium/ground connection·playable/combat·landmark·small detail·카메라·geometry·nav·원화·주민 발·소스 등록의 새 변경은 0이다. 새 화면/단위검사/실게임/오디오/저장 인수 0, worker Git 변경 0. 직전 §23의 DPR 실제 화면 관찰과 전체맵 판정을 그대로 유지한다. **VISUAL VERDICT: RETOUCH** — parent lease의 실제 화면은 NOT ASSESSED, 전체맵 원본 확대 흐림은 미해결이다.
+
+## ROOT-RIFT-CHILD-LIFETIME-20261007 — 로딩 중 페이지 종료와 늦은 자원 수명
+
+현재 `tools/2_5d-world-lab.mjs`는 renderer 생성과 무거운 첫 top-level await 이전에 pagehide를 등록한다. 로딩 중 종료는 초기화를 폐기하고 늦은 소유 자원을 해제하며, 닫힌 페이지의 scene·DOM·ready·RAF를 다시 활성화하지 않는다. 독립 child lab의 수명 보강이며 parent input lease/main 훅, 맵 선명도, 원화, native 플레이 완료와는 별개다.
+
+| id / 적용 위치 / API | 정확 현행 구현 | 경계·불변 |
+|---|---|---|
+| source / 완료 ID | ROOT-RIFT-CHILD-LIFETIME-20261007; `tools/2_5d-world-lab.mjs` **36039 B**, SHA256 `8388efcf35e8b9a768750fc54227928232363a32f8113039d4f81a04a90eca93` | 조기 pagehide·dispose·async-init 수명·읽기 전용 진단만 변경. 원 PNG/scene/nav/renderer 수치·DPR 3줄 변경 0 |
+| 선행 읽기 | AGENTS 26076 B/`fd59bef70960bcaf1ab9910051faa860362884e574ac2869fad05c6872ae04e4`; guide 18392 B/`607e36a49a99205be61c0aeedb438da06bffaf13370360acc99fe86be751e80b`; LOCK 39679 B/`94081b2aef08771384fb2032dab42f12c3cde57227558f8a11b772690e13451a` | 직전 전체 완독 핀과 동일함을 이번에 확인. SSOT 이전 전체 156633 B prefix도 동일, 추가 11017 B는 이번에 전부 읽음. 현재 SSOT 167650 B/`a588deb05dac1a8e57f6f235d95afce69fcfc2841ac137679a8872e2360fcfa0` |
+| early pagehide | `window.addEventListener('pagehide',dispose,{once:true})` 1개를 renderer 생성·terrain await 전에 등록 | 모듈 평가가 시작된 이후의 수명. 아직 모듈을 실행하지 않은 의존 모듈 다운로드 구간에 리스너가 있다고 주장하지 않음 |
+| epoch / ready | lifecycleEpoch=0 / initializationEpoch=0. 최초 dispose는 disposed=true·ready=false·epoch+1·anchorJob=null·keys.clear·attackQueued=false를 외부 cleanup보다 먼저 적용 | 반복 dispose는 즉시 반환. epoch·해제 시도 추가 0, 폐기한 페이지에서 초기화 재개 0 |
+| `releaseResource(resource,release,kind)` | object/function identity를 해제 시도 전에 WeakSet에 기록. 같은 identity 시도 1회; 각 release는 독립 try/catch | 한 자원의 throw가 이후 다른 해제를 막지 않음. throw한 같은 자원 재시도 0. cleanupFailures는 잡힌 해제 예외 수이며 GPU-free 성공 수가 아님 |
+| 해제 대상 | observer.disconnect, reduced-motion listener 제거, effects, helper geometry/material, wolf abort, wolf, rigs, specialMotion, contactUnderlay, terrain, shadow geometry/material, renderer, interactionCue, residents, dialogue.close('pagehide') | 존재하는 자원만 시도. factory 내부 세부 자원과 실제 GPU 해제는 factory/브라우저 검수 경계. 강제 context-loss API 추가 0 |
+| `takeInitialized(resource,kind)` | epoch 일치·disposed=false일 때만 소유 변수에 대입. 늦은 resource는 lateResourceRejected+1, release 시도 1회 뒤 종료 오류 | terrain/contact/residents/각 rig/special/wolf await 결과에 적용. 늦은 결과를 scene에 추가하거나 ready로 승격 0 |
+| 비자원 await guard | canonical fetch·arrayBuffer·assessRegistration, STORY fetch·arrayBuffer·SHA digest 뒤 `ensureInitialization()` | 뒤늦은 Promise 완료 후 다음 초기화 진행 0. 새 polling/타이머/RAF/파일·세이브 쓰기 0 |
+| async scene attachment | resident/special factory에만 `initializationScene` add/remove 전달. add는 epoch·disposed 확인 후 종료 상태 거절; remove는 기존 scene.remove로 해제 허용 | factory 내부 늦은 scene.add도 차단. factory 자체 해제는 caller release count와 별도. source/world/geometry/nav 등록 변경 0 |
+| fail / 최종 등록 | fail(error)는 disposed이면 UI·오류 상태를 다시 쓰지 않음. ready 승격 직전 epoch 검사. 폐기 상태에서는 후단 키 이벤트와 `__rift25Lab` 신규 노출도 수행하지 않음 | 살아 있는 페이지의 실패 UI 유지. child 폐기로 parent root job/epoch 권한 해제 0 |
+| readonly 초기 진단 | 첫 await 이전 `window.__rift25Lifecycle=Object.freeze({snapshot})`. snapshot은 새 frozen record와 새 frozen counts 반환 | ready:boolean, disposed:boolean, frames:number, raf:boolean, epoch:number, cleanupFailures:number, rendererCreated:boolean, lateResourceRejected:number. mutable release 함수·renderer·자원 handle 노출 0 |
+| `disposeAttemptCounts` | 시도한 kind별 nonnegative integer: observer, reduced-motion-listener, effects, helper-geometry, helper-material, wolf-abort, wolf, rigs, special-motion, contact-underlay, terrain, shadow-geometry, shadow-material, renderer, interaction-cue, residents, dialogue | 미시도 kind는 필드 없음. rendererCreated는 생성 여부라 disposed 뒤에도 true일 수 있음. count는 시도 횟수로 실제 GPU/native 인수가 아님 |
+| 늦은 자원 진단 | lateResourceRejected는 종료 뒤 takeInitialized 또는 guarded scene.add에서 거절한 횟수 | canonical/STORY bytes는 소유 GPU 자원이 아니므로 이 counter로 세지 않음 |
+| 기존 렌더·보행 | 대표 foot5480/3740, nav1192, angle50/scale400, DPR cap2·양의 분수·invalid fallback1 기존 3줄 그대로 | source1254²→world8000² 확대 흐림, 2D mask1024, contact 기본 OFF·실패 이력, 본편/native6·오디오·세이브 미인수 경계 유지 |
+
+### 제한 검수 이력 — 하네스 실패·성공 이력·최종 핀 분리
+
+| 구분 | 실제 실행·결과 | 의미 |
+|---|---|---|
+| ANIM 메모리 선행 근거 | 공식 end `c0a741f3-4fd7-4f07-a6ad-d2a888823376`, 2026-10-06T19:33:53.039Z. `animParentChildLifetime20261007LatestReceipt-root-observed.json`의 평탄 해제 체인 모델 3/3 PASS | 전문 memory 이력이며 새 public 제품 검사가 아님. 재실행 0, 실제 iframe/pagehide/GPU 미관측 |
+| 제품 syntax | 초기 lifetime patch에서 node --check 1회 exit0 | 이후 add/remove guard·readonly 진단 추가. 최종 소스 parse/evaluate는 제한 VM 후속에서 검증; 최초 syntax를 최종 전체 런타임 인수로 승격 0 |
+| 최초 actual-source VM | 35079 B/`dcaad20f6d1177e318351bf7161bc7108db12429846ec461fffea4f2bc08ab21`; 신규 의미 실행 1회, 10그룹 중 PASS5/FAIL5/110도달조건, exit1 | 5 FAIL은 mock STORY bytes가 빈 JSON이라 resident/rig/special/wolf 단계에 미도달한 하네스 결함. 제품 늦은 자원 실패를 관측한 것이 아님. 성공5 재실행 0 |
+| 두 번째 Node 시도 | 외부 stdin 하네스 객체의 닫는 중괄호 누락으로 SyntaxError, 제품 도달0/검사그룹0/exit1 | tooling 실패 이력 별도 보존. 제품FAIL·제품 의미 실행으로 섞지 않음 |
+| 제한 후속 준비 | 외부 `limited-followup.mjs` syntax-only 1회 exit0 | repo 새 검사 파일 0. 최초 성공5·DPR·memory3·host·interop·Chrome 재검사 0 |
+| 최종 핀 제한 후속 | 36039 B 최종핀 actual-source VM 의미 실행 1회, 앞선 미도달5만 **PASS5/FAIL0/100조건/exit0** | 실제 immutable STORY 25940 B/SHA `be14b1416838ab345eb1c2a150b92403566ccfdc43cd3f3b317cf2913840dfdc`. GPU·DOM·factory는 mock, 신규 readonly snapshot도 같은 후속에 검증 |
+| 후속 확인 내용 | resident/special 내부 add 차단, warrior/silvertail/dark-druid 각 rig 경계, 늦은 wolf 해제, terrain/renderer/cue dispose 3개 throw에도 후속 해제, identity 1회·재폐기0·snapshot detached/frozen | 초기5+최종5를 같은 핀 전체10 PASS로 합산하지 않음. 110+100도 최종 단일조건 수로 합산 0 |
+| 실행 총계 | 제품 소스를 실행한 의미 검수 2회. 하네스 parse 실패 포함 해당 Node 실행 3회. 제품 syntax1·외부 harness syntax1은 별도 | 실제 about:blank/pagehide·GPU 해제·WebGL은 root 단일 Chrome QA까지 PENDING. 이 담당 Chrome0/native0 |
+| docs 전체 검색 | pagehide/dispose/async.init/수명/2_5d-world-lab/late terrain·rig·wolf 및 신규 epoch/adopt/scene/release 이름으로 **239파일·2649매치** | child-lifetime/docs-keyword-search.txt 원문과 docs-search-disposition.json 보존. own3 정확 추가, 다른 시스템·owner 역사·관리 정본은 root 소유로 역편집 0 |
+
+외부 영수증·원 fullbytes 백업·최초 실패와 제한 후속 raw는 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/child-lifetime/`에 있다. 입력 정책은 [3.3 키바인딩+설정](../3.3%20키바인딩+설정/3.3%20키바인딩+설정.md), 전체 운영과 root 관측은 [PROJECT_MANAGEMENT_MASTER](../0마스터플랜/PROJECT_MANAGEMENT_MASTER.md)의 정본을 따른다. 예약 root job의 owned/epoch와 child 폐기는 별개이며 child dispose로 부모작업 재개를 허가하지 않는다.
+
+### MAP PRODUCTION REPORT — §23 / child lifetime
+
+| 필수 항목 | 실제 범위·판정 |
+|---|---|
+| STAGE / MASTER | ROOT-RIFT-CHILD-LIFETIME-20261007 독립 child lab async-init·teardown 보강. guide/SSOT/LOCK 선행, 최하층→상승 목표 유지 |
+| OUTER MASS / LARGE | 원화·실루엣·opening·랜드마크·crop·UV·source 등록 변경 0 |
+| MEDIUM / GROUND | 절벽 접합·고도·geometry·보행1192·주민 발·start/exit 변경 0 |
+| PLAYABLE / COMBAT | 독립 lab 자원 수명만 보강. 본편 입력·전투·보스·Q 전용 magic 패링/E 불가·어택티켓 금지·보상·세이브 변경 0 |
+| LANDMARK / SMALL DETAIL | 원 PNG·atlas·리깅·주민 스케일·모션 수치·조명·detail 변경 0 |
+| CAMERA QA | 새 브라우저·8카메라·실 GPU·DPR A/B 실행 0. root 새 Chrome 관측 전 PENDING |
+| TECH QA | 초기 의미1 PASS5/하네스미도달5 보존; 두 번째 tooling parse 실패 제품도달0; 최종 제한 의미1 PASS5/100조건/exit0. 성공 이력·memory·DPR·host·interop 합산/반복 0 |
+| FILES | tools/2_5d-world-lab.mjs 지정 수명 구역과 own docs3만. 기존 docs fullbytes prefix100%+LF append/EOF LF1. 타인 WIP·전문 raw·game·STATE 쓰기 0 |
+| GIT | worker add/commit/push/reset 0. root가 완료 code1+docs3 한정 checkpoint. 여기서 원격 보존 성공 추정 0 |
+| VISUAL VERDICT | **RETOUCH** — 기존 전체맵 확대 흐림·경계 미해결. 이번 수명 실화면은 root 관측 전 NOT ASSESSED. pure PASS를 visual PASS로 대체 0 |
+| NEXT PASS | root 단일 실제 Chrome에서 초기 await 중 about:blank/pagehide·ready/RAF 미부활·해제 시도 관측. 실제 GPU 해제·native 플레이·오디오·durable save 별도 |
+
+## ROOT-RIFT-CHILD-LIFETIME-BROWSER-20261007 — 실제 child 수명 인수 / 최종 소스 동결
+
+직전 ROOT-RIFT-CHILD-LIFETIME-20261007의 실제 브라우저 수명 QA PENDING은 아래 **한정 실제 Chrome 실험**에서 확인한 범위만 완료로 갱신한다. 최종 public 소스는 36039 B/SHA `8388efcf35e8b9a768750fc54227928232363a32f8113039d4f81a04a90eca93`로 동결되어 검수 중 제품 변경 0이다. 미완료 HTTP 응답 중 취소, OS/드라이버 물리 GPU 메모리 반환, 본편/native6·청취·저장 인수는 이 실험의 완료로 계산하지 않는다.
+
+| 항목 / API·증거 | 실제 새 관측 | 인수 범위·제한 |
+|---|---|---|
+| 실행 / 완료 ID | ROOT-RIFT-CHILD-LIFETIME-BROWSER-20261007; 신규 Chrome 실험1/launch1/context1/parent page1/직렬 child document6 | 기존 DPR·VM·memory3·host·interop 검사 재실행 0. screenshot2, 새 harness 실행1, process exit0 |
+| 고유 검수 | 신규 **6그룹 PASS6/FAIL0**, 관측 subcheck **21/21 PASS**, partialUnknown0 | 아래 수명 범위의 검사 상태. 물리 GPU 메모리 UNKNOWN을 전체게임 PASS로 승격하지 않음 |
+| 정상 actual GPU 해제 | ready child를 실제 host.cancel 경로로 닫고 native pagehide 관측. cancellation frames13→late 후13, ready=false/disposed=true/epoch1/RAF=false/actual RAF pending0 | 이미 ready였던 lab port는 존재하지만 ready·draw·RAF·DOM은 부활하지 않음 |
+| terrain 늦은 반환 | 실제 factory 생성완료 결과를 return gate에서 보류→실제 취소→gate 해제. lateResourceRejected1, actual dispose completion1, frames0→0 | source fetch 지연 요청100ms/관측103ms 뒤 반환 gate가 취소 지점. 미완료 응답 취소 실험이 아님 |
+| residents 늦은 반환 | 실제 생성완료 결과의 return gate 취소/해제, lateResourceRejected1/actual dispose completion1, frames0→0 | atlas fetch 지연100ms/관측102ms. 실제 주민 factory 사용, mock/source-regex 대체 0 |
+| 첫 rig 늦은 반환 | 실제 생성완료 결과의 return gate 취소/해제, lateResourceRejected1/actual dispose completion1, frames0→0 | 첫 rig 이미지는 browser cache를 재사용해 새 matching fetch 없음. 실제 factory 결과 반환 경계는 관측 |
+| special-motion 늦은 반환 | 실제 생성완료 결과의 return gate 취소/해제, lateResourceRejected1/actual dispose completion1, frames0→0 | dive 원화 fetch 지연100ms/관측102ms. renderer 업로드·렌더 전 결과 보류의 범위 |
+| cleanup 예외 격리 | 실제 terrain.dispose를 먼저 실행한 다음 예상 예외1 주입. cleanupFailures1, 나머지 renderer/residents/dialogue 등 release 지속, frames6→6 | factory/GPU를 mock으로 교체한 예외 검사가 아님. 이미 실제 release를 호출한 뒤 주입한 throw임 |
+| native 종료 / 비부활 | trusted native pagehide **6/6**; 각 child에서 종료 뒤 draw0/DOM mutation0/actual RAF pending0, ready=false/disposed=true/epoch1 | synthetic pagehide0. 여기서 native는 브라우저 DOM 이벤트이며 게임 milestone native6가 아님 |
+| 실제 native GL delete | 정상 ready 해제와 예외 주입 해제 **각각** deleteProgram13/deleteTexture13/deleteBuffer38 | 두 그룹 수를 전체6의 단일 총량으로 합산하지 않음. GL delete 호출·JS dispose는 물리 GPU memory-free 증거가 아님 |
+| 늦은 반환 GL 경계 | terrain deleteProgram0/texture0/buffer0; residents·rig·special는 각각 program5/texture0/buffer0 | 늦은 실제 자원은 gate 반환 전에 렌더/업로드하지 않았음. texture/buffer delete0을 driver allocation 부재·메모리 반환 인수로 해석하지 않음 |
+| 오류 / 외부 쓰기 | pageerror0/consoleError0/HTTP error0/foreign request0/mutation request0/download0, native GL error 종료 전후 child6 각각0 | source18 전후 exact, editor scene·격리 storage 불변, productCodeChangesDuringQA0. 실험 worker repo/Git 쓰기0 |
+| old realm 관측 | QA parent가 제거된 child의 readonly snapshot과 gate resolver를 의도적으로 보존하여 실제 pagehide 뒤 late return 관측 | 일반 discarded realm이 다시 실행된다는 주장 0. 생산용 mutable resource handle·추가타이머·RAF·scene/nav/source 변경 0 |
+| readonly 진단 | 실제 `__rift25Lifecycle.snapshot()`의 ready/disposed/frames/raf/epoch/cleanupFailures/rendererCreated/disposeAttemptCounts/lateResourceRejected와 native draw/delete/pagehide 관측 | disposal count는 실제 시도 횟수. 강제 context loss·OS GPU 메모리 계측 추가 0 |
+| 시각 관측 | actual ready canvas와 normal parent return의 실제 screenshot2 직접 검수. 한정 ready/return UI PASS | 전체맵 **VISUAL RETOUCH** 유지. source1254²→world8000² 확대 흐림·작은 raster 캐릭터 미해결, A급·맵 선명도·본편 완료 주장 0 |
+| 실제 물리 GPU | physicalGpuMemoryFreeAccepted=false / **UNKNOWN** | native delete13/13/38이나 renderer.dispose1을 드라이버 메모리 반환으로 승격 0 |
+| 본편 / 저장 / 청취 | actualMainGame=false, native6Accepted=false, audioAccepted=false, saveAccepted=false | main 연결·전투/획득/보스 사망·부활·재도전·durable save·청취 인수는 별도 |
+
+정상 ready와 예외 주입 child에서 readonly releaseAttemptCounts는 observer1/reduced-motion-listener1/effects3/helper-geometry3/helper-material3/wolf-abort1/wolf1/rigs3/special-motion1/contact-underlay1/terrain1/shadow-geometry1/shadow-material1/renderer1/interaction-cue1/residents1/dialogue1을 관측했다. loading gate child는 당시 이미 생성한 자원과 늦은 해당 자원만 각각 시도1이며, 미생성 자원의 count를 만들어 채우지 않는다. loading 4개 child에서 lab port 신규 노출은 false, 정상·예외 ready child는 기존 port가 true인 채 disposed/ready=false를 유지했다.
+
+### 독립 증거·이력 핀
+
+| 증거 | 정확 bytes / SHA256 | 구분 |
+|---|---|---|
+| public source | 36039 B / `8388efcf35e8b9a768750fc54227928232363a32f8113039d4f81a04a90eca93` | 브라우저 actual6/21과 최종 VM5/100은 같은 소스라도 **서로 다른 검사**로 유지 |
+| acceptance-summary.json | 11120 B / `d7d5b4df81b6c70c8bacee8ec0828bb8470e170a16b8ae5f4278f5701e275bb4` | 신규 actual Chrome6/21 요약 |
+| raw-result.json | 84980 B / `9a6b60b96fe30a81fc6672bfc7734f82cf16171a9b6619c7fcf92b28c23a0da5` | 실제 native event·GL·source18·gate 원 관측 |
+| map-production-report.txt | 2601 B / `82a591ad9eb945e3c3f4b9baa9f1e5ad4e229ab01010ff3f2f656cc3067eebb3` | §23 실제 수명 QA, VISUAL RETOUCH |
+| actual-ready-gpu.png | 913111 B / `2e094e4b27c005382b17a13ae0d001730d762de55068266fcc8fbacb6f7baf14` | 실제 ready UI 화면 |
+| parent-after-cleanup.png | 1242952 B / `ba81df0e7e7e99de9be6ea2b39311d51ad2da552fccc8798dccf5c875522b7e3` | 실제 parent return 화면 |
+| 초기 prototype VM | 35079 B/`dcaad20f6d1177e318351bf7161bc7108db12429846ec461fffea4f2bc08ab21`: PASS5/하네스미도달 FAIL5/110조건 | 원 핀 이력 보존. 제품FAIL/현재 전체PASS로 바꾸지 않음, 재실행0 |
+| 하네스 parse 실패 | 두 번째 Node 시도 제품도달0/그룹0/exit1 | tooling 이력 보존; actual Chrome 실패나 제품 의미검사로 합산0 |
+| 최종 VM 한정 후속 | 최종36039핀에서 PASS5/FAIL0/100조건/exit0 | 최초 성공5 재실행0. 이 5/100과 actual6/21을 11그룹·121조건의 같은 검사로 합산0 |
+| 전문 memory | end `c0a741f3-4fd7-4f07-a6ad-d2a888823376`의 모델3PASS | 전문 이력과 이번 실제 소스/GPU 관측 분리, 재실행0 |
+
+실제 QA 근거는 외부 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/child-lifetime-browser/acceptance-summary.json`, `final-receipt.json`, `map-production-report.txt`다. 문서 담당은 이 결과만 읽어 own3에 원 fullbytes prefix100%+LF append/EOF LF1로 동기화했으며 코드·검사·브라우저·Git 실행0이다. 전체 docs 관련키워드검색은 ROOT-RIFT-CHILD-LIFETIME/__rift25Lifecycle/pagehide/deleteProgram/deleteTexture/deleteBuffer/physical GPU·GPU 메모리/2_5d-world-lab로 **69파일·535매치**, 원문과 파일별 disposition를 `child-lifetime-browser/docs-sync/`에 보존했다. 다른 root 관리·메인 문서와 owner 이력은 역편집0이다.
+
+### MAP PRODUCTION REPORT — §23 / 실제 child 수명 QA 문서 인수
+
+| 필수 항목 | 실제 범위·판정 |
+|---|---|
+| STAGE / MASTER | ROOT-RIFT-CHILD-LIFETIME-BROWSER-20261007의 한정 실제 child 수명 인수. 기존 맵 SSOT·guide·LOCK·최하층 상승 목표 유지 |
+| OUTER MASS / LARGE | silhouette·regions·main route·source18·원PNG/composite/crop·UV·opening 변경0 |
+| MEDIUM / GROUND | 연결부·낭떠러지·shadow·contamination·geometry·nav1192·등록·foot·start/exit 변경0 |
+| PLAYABLE / COMBAT | 실제본편/native6 인수0, arena/travel/threat/combat readability 새 검수0, 보상·저장·보스·보호2_3·Q-only/E 불가·어택티켓 금지 변경0 |
+| LANDMARK / SMALL DETAIL | 기존 랜드마크·상승문·주민·소스·모션·detail 변경0 |
+| CAMERA QA | 기존8카메라 반복0. 신규 ready/return 실제2화면을 QA가 관찰, camera 수치 변경0 |
+| TECH QA | actual Chrome launch1/context1/parent1/child6, 새6그룹 PASS/관측21 subcheck PASS, trusted pagehide6/6/GLerror0, 늦은4 실제 자원 각 dispose1, 정상·예외 각각 native delete13/13/38, 비부활0 |
+| FILES | 문서 담당 own docs3만 원문 prefix100% LF append/EOF LF1. 실제QA는 외부 계획/runner/raw/요약/화면만, code source36039/8388 동결 |
+| GIT | 담당 stage/commit/push/reset0. root 완료소유 checkpoint 담당, 여기서 remote 성공 추정0 |
+| VISUAL VERDICT | **RETOUCH** — 한정 ready/return UI PASS와 전체맵 판정 분리. 물리 GPU 메모리 UNKNOWN/본편·native6·audio·save false |
+| NEXT PASS | root 실제 본편 연결·게임6단계·오디오 청취·save/reward 인수. 신규 수명6/21 또는 옛 성공검사 재실행0 |
