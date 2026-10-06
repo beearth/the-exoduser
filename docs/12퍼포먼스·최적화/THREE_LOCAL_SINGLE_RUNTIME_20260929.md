@@ -100,4 +100,4 @@
 정확crop/원본29핀·수식·모션·UI・effect수명・검수・영상은 `../4.0케릭터스프라이트 디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md` 실제통합절을 따른다. 모듈별수치와원본/api/caller값을혼동하지않는다. 본편game/index/editor/이전rig-motion/사용자save와Q전용/2_3/어택티켓금지 보존.
 
 
-실버테일16枚1254²RGBA 고해상도텍스처는약96MiB GPU원본예산의desktop실험이다. decoder/mipmap/renderer총사용량·휴대폰/장시간성능을인수하지않았다. 현재선택배우만update하나texture는세캐릭터를로드한다. effect3×cap24/possiblepool72,OSreduced-motion livechange면3effect인스턴스재생성·기존meshdispose,추가RAF없음.
+실버테일16장1254²RGBA 고해상도텍스처는약96MiB GPU원본예산의desktop실험이다. decoder/mipmap/renderer총사용량·휴대폰/장시간성능을인수하지않았다. 현재선택배우만update하나texture는세캐릭터를로드한다. effect3×cap24/possiblepool72,OSreduced-motion livechange면3effect인스턴스재생성·기존meshdispose,추가RAF없음.
