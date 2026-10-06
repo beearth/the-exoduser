@@ -198,6 +198,8 @@ function updateWolf(dt){
 function applyState(){if(state.ready){pose(0);render();updateUi();}}
 function updateUi(){
   if(!state.ready)return;
+  const sharpness=terrain.snapshot().groundDetail.plateSharpness;
+  leaf('plate-sharpness-status',sharpness.effectiveStrength>0?`RGB 확대 비교 ${sharpness.effectiveStrength} · 시각 검수 전`:sharpness.requestedStrength>0&&sharpness.reason!=='disabled-ground-detail'?`원화 유지 · ${sharpness.reason}`:'원화 유지 · OFF');
   const s=rigs[state.selected].snapshot();
   const special=specialMotion.snapshot();
   for(const id of Object.keys(labels))$(id).setAttribute('aria-pressed',String(id===state.mode));
@@ -411,7 +413,7 @@ try{
   scene=new THREE.Scene();scene.background=new THREE.Color(0x080e11);
   camera=new THREE.OrthographicCamera(-3,3,1.75,-1.75,.01,100);
   const angle=50*Math.PI/180;camera.position.set(0,Math.sin(angle)*16,Math.cos(angle)*16);camera.lookAt(0,0,0);
-  terrain=takeInitialized(await createRiftTerrain({THREE,angle:50,scale:400}),'terrain');scene.add(terrain.object3d);
+  terrain=takeInitialized(await createRiftTerrain({THREE,angle:50,scale:400,renderer,plateSharpness:Number($('plate-sharpness').value)}),'terrain');scene.add(terrain.object3d);
   // Compile all authored foreground materials, including offscreen cutouts, once.
   renderer.compile(terrain.object3d,camera);
   const gl=renderer.getContext();
@@ -471,7 +473,8 @@ try{
   $('character').addEventListener('change',()=>select($('character').value));
   $('bones').addEventListener('change',()=>select(state.selected));
   $('fade-foreground').addEventListener('change',()=>{pose(0);render();updateUi();});
-  $('ground-detail').addEventListener('change',()=>{terrain.setGroundDetailEnabled($('ground-detail').checked);render();});
+  $('ground-detail').addEventListener('change',()=>{terrain.setGroundDetailEnabled($('ground-detail').checked);render();updateUi();});
+   $('plate-sharpness').addEventListener('change',()=>{terrain.setPlateSharpness(Number($('plate-sharpness').value));render();updateUi();});
   $('cliff-contact').addEventListener('change',()=>{contactUnderlay.setEnabled($('cliff-contact').checked);render();});
   $('special-play').addEventListener('click',playSpecial);
   $('special-stop').addEventListener('click',()=>{clearIntent();applyState();});

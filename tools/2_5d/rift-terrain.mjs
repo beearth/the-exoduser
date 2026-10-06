@@ -50,7 +50,7 @@ function clipPolygon(points, b) {
 }
 
 /** Camera must retain yaw/roll 0 and this elevation; following the mapped foot is safe. */
-export async function createRiftTerrain({ THREE, angle=50, scale=400 }={}) {
+export async function createRiftTerrain({ THREE, angle=50, scale=400, renderer=null, plateSharpness=0 }={}) {
   if (!THREE?.Group || !THREE.ShapeUtils?.triangulateShape) throw new Error('지형 Three 런타임이 없습니다');
   finite(angle,'카메라 각도'); finite(scale,'지형 배율');
   if (angle<10 || angle>85 || scale<=0 || scale>32000) throw new Error('지형 카메라/배율 범위 오류');
@@ -84,7 +84,7 @@ export async function createRiftTerrain({ THREE, angle=50, scale=400 }={}) {
       const p=clipPolygon(tri.map(i=>all[i]),cfg.clip), base=floorPoints.length;floorPoints.push(...p);
       for(let i=1;i<p.length-1;i++)floorTriangles.push([base,base+i,base+i+1]);
     }
-    groundDetail=await createRiftGroundDetailMaterial({THREE,sourceScene:source,plateTexture:plate});
+    groundDetail=await createRiftGroundDetailMaterial({THREE,sourceScene:source,plateTexture:plate,renderer,plateSharpness});
     mesh(geometry(floorPoints,floorTriangles),groundDetail.material,'Registered ground · pinned nav-gated colour detail',0,false);
     // Both surfaces stay opaque: fading a skirt alone would uncover empty background.
     // This is source colour compositing, separate from the authored depth geometry.
@@ -192,6 +192,7 @@ float riftBoundaryAlpha(vec2 p){
       // Diagnostics receives a clone of the actual loaded scene, never the mutable navigation source.
       sourceSceneSnapshot:()=>K.clone(source),
       setGroundDetailEnabled:value=>groundDetail.setEnabled(value),
+      setPlateSharpness:value=>groundDetail.setPlateSharpness(value),
       snapshot:()=>({disposed,angle,scale,sourceSceneSha256:cfg.sceneSha256,navSha256:source.sourcePins.nav,walkableCount:1192,clip:{...cfg.clip},physicalHeight:'UNKNOWN',authoredDepth:cfg.authoredDepth,authoredInset:cfg.authoredInset,groundTriangles:floorTriangles.length,occluderFootY:4320,foreground:occluders.map(o=>({objectId:o.objectId,footY:o.footY,renderOrder:o.object3d.renderOrder,opacity:o.object3d.material.opacity,maskPoints:o.polygon.length,triangles:o.triangles,sourceCrop:{...o.sourceCrop},feather:o.feather,nonWalkableOnly:true})),sourceParallaxApplied:true,skirtTextureApplied:true,skirtTopSourceMatched:true,maskFeatherApplied:featherCompiled,openingComposite:{compiled:featherCompiled,featherWorldPx:sourceFeather,opacity:abyssObject.opacity,segments:opening.length,blendSpace:'sRGB',opaqueSurfaces:true,globalUV:true,maskWorldFixed:true},groundDetail:groundDetail.snapshot(),nativeAccepted:false}),
       dispose(){if(disposed)return;disposed=true;object3d.clear();groundDetail?.dispose();for(const r of new Set(resources))r.dispose();resources.length=0;}
     };

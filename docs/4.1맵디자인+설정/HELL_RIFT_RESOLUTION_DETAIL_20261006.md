@@ -748,3 +748,103 @@ MAP PRODUCTION REPORT (§23): MASTER=지옥의 틈의 actor cosmetic 수명·프
 원 source12844/660f와 종료 소비자41575/df1760는 각각 보존 이력이다. 이번 변경은 효과 자원 획득·회수 계약이며 맵 PNG/scene/nav·geometry 배치·카메라·전투·Q 전용·보호2_3 변경 0. §23: 작업=효과 allocation consumer, MASTER/지형/플레이/랜드마크/세부/카메라 새 제작=0, TECH=신규 단일 source CPU 4그룹·74조건 PASS / FAIL0·미도달0 / exit0, 원162 재실행0 및 이전16/162를 별도 기록, 신규 VISUAL NOT ASSESSED / 기존 전체 RETOUCH. 같은 검사·TASK·이력 재실행 0.
 
 다음 미완료: 맵 흐림·절벽 접합 시각 품질, rig.snapshot/render fatal frame 복구, NPC 유품·부탁의 본편 durable 소비자, 실제 native6·청취·보상 save. 최신 운영 근거는 PROJECT_MANAGEMENT_MASTER와 연속 dispatch 정본을 따른다.
+
+## 2026-10-07 ROOT-RIFT-PLATE-SHARPNESS-AB-20261007 — 기존 지면 원화 RGB 확대 비교
+
+기존1254² 원화가8000² 월드에서 확대되는 softness를 비교하기 위해 **ground plate RGB에만** 선택 가능한16tap Catmull–Rom 재구성을 연결했다. 기본값0/OFF이며 ground-detail OFF에서는 유효 강도0이다. 원plate·원alpha·UV·scene/nav·지형·카메라·전경·주민/캐릭터 발 좌표·원PNG·기존 재질 pattern은 보존한다. 이는 기존 픽셀의 보간 방식 비교이며 새 고해상도 세부 생성·흐림 개선 시각 인수·본편 채택을 뜻하지 않는다. 원 arrival-detail 전체지형 FAIL, contact ON 시각 FAIL/defaultOFF, 전체 VISUAL RETOUCH 이력을 유지한다.
+
+| id·소유 source | 완료 exact pin·계약 |
+|---|---|
+| ground material | `tools/2_5d/rift-ground-detail.mjs` 21249 B / SHA256 `830eef30ee9bc9e74219d12fa954300796a5b2ee53ce961bc3544affdfb8837e` |
+| terrain adapter | `tools/2_5d/rift-terrain.mjs` 16816 B / SHA256 `c7079fdbc32f4d19cc9ee89e6dc67ae81d6cb92d7d28e7169d29829ed45d44a0` |
+| world lab consumer | `tools/2_5d-world-lab.mjs` 42125 B / SHA256 `4c5cdb71a0bd4330c3afb6d75440b41f6f33f42989360af31a517999ec1be101` |
+| world lab UI | `tools/2_5d-world-lab.html` 12266 B / SHA256 `e2f0f1692df08f67bc2e6dc42f8e692a53ca060e33833813c8f58492adb8089c` |
+| 수정 전 exact | ground14016/e9faf5ecdfd65793391a0dc9cf28e03c398be54eb72a9308b0f49228b50e60eb, terrain16689/c600aa524b5a664dc0c8d00fd296c972add38f7c97b066e3985966cc33e2e3b2, world41575/df1760cbf0c1862dc01e591011212aa5a65dcd8d807a49da0441778c5780994e, HTML11943/c55c498c01a84ac63a932ebfcd8296277bc6eb8e22264673a7083d5163e0465d. 현재 문서126505 B /1462392225ab4eb9f551645a38865560ab68b85f7792a1f0fe92db02cd8a3304 prefix를 정확 백업·보존 |
+| Three actual source | local Three r160 `assets/vendor/three-r160/build/three.module.js`1272972 B / SHA256 `76dea8151bc9352aef3528b4262e249b2604f62543828328db978d060d61a495`. REVISION='160' 및 actual ShaderChunk.map_fragment/map_pars_fragment exact 문자열을 검사한 뒤 해당 map sample 접점만 확장 |
+| canonical 불변 | scene90767/c508e70d23fafb9295798763c5224c7c92699dfea3d3beebdb6ab18173f44a3a, plate2417849/aa64cb7bbfff10c9d5ea2378ef3f8f528bbfb2acfb43ddb9a6520b9f24127673, nav0/1 bytes40000/a4508aa62f21c9b4380640307b36eef06656ebdf0c0245a2f78833d65dda0179 실제 SHA unchanged. world8000²/grid200²/tile40/nav1192/physicalHeight UNKNOWN 유지 |
+
+| API·상수·shader 접점 | 현재 정확 정의·fallback |
+|---|---|
+| public descriptor | frozen `RIFT_PLATE_SHARPNESS`: defaultStrength0 / comparisonStrengths[0,.5,1] / sourceWidth1254·sourceHeight1254 / rgbTaps16 / originalPlateSamples1 / activePlateSamples17 / extraPlateSamples16 / derivativeLimit1 / scope registered-ground-plate-RGB-magnification-only / interpolation Catmull-Rom-central-2x2-clamp / sourcePixelsChangedfalse·visualAcceptedfalse |
+| factory | 기존 `createRiftGroundDetailMaterial` args에 `plateSharpness=0,renderer=null` 추가. renderer는 borrowed capability/동일 객체 검사에만 사용하며 dispose·새 renderer 생성0. 기존 enabled=true·fetcher·makeCanvas·sourceScene·plateTexture 계약 유지 |
+| terrain 전파 | `createRiftTerrain({THREE,angle=50,scale=400,renderer=null,plateSharpness=0})`가 actual ground factory에 renderer/plateSharpness를 전달. 새 `terrain.setPlateSharpness(value)`는 ground setter만 위임. world가 자기 renderer와 실제 UI 현재값을 전달하며 별도 terrain/world scene 생성0 |
+| setter | `setPlateSharpness(value)`는 typeof number·Number.isFinite·0≤value≤1만 허용. invalid는 고정 Error를 throw하고 이전 값 유지. active이면 value 반환·요청 강도 보존·uniform만 변경; valid 입력도 disposed 뒤 false 반환. strength0/.5/1 변경에 recompilation/needsUpdate/새 resource 할당0 |
+| requested/effective | requestedStrength와 effectiveStrength를 구분. compiled compatible renderer·ground-detail ON·not disposed일 때만 effective=requested; ground OFF·unsupported·mismatch·disposed에서는 uniform/effective0. ground OFF→ON이면 요청값 복구. setter0으로 원 RGB 경로 복귀 |
+| 현재 UI | leaf/selector id `plate-sharpness` select: value0 selected=OFF·기존 원화, value0.5=중간 비교, value1=최대 비교. 초기 disabled는 기존 ready 시 controls와 함께 해제. leaf `plate-sharpness-status`에 현재 유효 강도/원화 OFF·fallback 표시. 부모 textContent/innerHTML 교체0 |
+| host 동작 | select change→terrain.setPlateSharpness(Number(value))→기존 render/updateUi. ground-detail change도 유효0 상태를 updateUi에 반영. 기존 pause·resize/DPR·camera/actor/dialogue/key/RAF·리깅·save 수명 변경0 |
+| shader 함수 | `riftPlateWeights(f)`: w0=−.5f+f²−.5f³, w1=1−2.5f²+1.5f³, w2=.5f+2f²−1.5f³, w3=−.5f²+.5f³. `riftPlateReconstruct(uv)`는 pixel=uv×size−.5 / cell=floor(pixel) / f=pixel−cell / base=cell−1, x/y 각4weight로16RGB texel-centre samples를 합산 |
+| source edge | 각 sampleUV=(base+offset+.5)/size를 half-texel lo=.5/size, hi=1−lo 사이로 clamp. source boundary에서 wrap/fract로 반대쪽 source를 섞지 않음. 기존 plate wrap/filter/mipmap/offset/repeat/rotation/flipY를 변경0 |
+| central clamp | 이미 읽은 중앙 p11/p21/p12/p22 RGB의 per-channel min/max로 재구성 RGB를 clamp. 음의 Catmull lobe overshoot를 중앙2×2 범위 안으로 제한. 새로운 픽셀 디테일·ringing/shimmer 제거 시각 PASS로 계산0 |
+| alpha 정확 범위 | actual r160의 `vec4 sampledDiffuseColor=texture2D(map,vMapUv)` 원sample1 및 원 `diffuseColor *= sampledDiffuseColor`를 유지. 새 assignment는 sampledDiffuseColor.rgb만 mix; sampledDiffuseColor.a/w assignment0. strength0/조건실패에서 원 sampled vector/multiply를 그대로 사용. source/CPU 기준이며 실제 GPU framebuffer alpha·RGB byteexact 실측은 이번 worker 인수0 |
+| 작업 색공간 | 기존 Three sRGB Texture가 제공하는 map sample RGB와 같은 working space에서 재구성. 별도 gamma decode/encode0. 기존 ground detail의 sRGB soft-light 전환·alpha.4·worldPeriod320·pattern480²·hard-nearest/soft-linear nav gate를 그대로 뒤에 적용 |
+| 확대 gate | 원 continuous vMapUv를 fract 이전에 사용. X=length(dFdx(vMapUv)×[1254,1254]), Y=length(dFdy(vMapUv)×[1254,1254]); 양쪽>0 AND 각각≤1일 때만 재구성. 0/NaN/Infinity 또는 어느 축이라도>1/mixed minification이면 원sample 유지 |
+| derivative admission | borrowed renderer capabilities.isWebGL2===true면 intrinsic. 정확 false와 OES_standard_derivatives has===true면 material.extensions.derivatives=true. 그 밖/조회throw는 unsupported-or-unknown fallback. onBeforeCompile의 shaderRenderer가 factory renderer와 동일해야 함; unknown renderer는 GPU 기능을 추측해 채택0 |
+| 등록 실패 | actual chunks/REVISION 불일치, renderer 불일치, derivative 미지원, plate1254²/sRGB/channel0/flipYtrue/global offset-repeat-rotation 불일치에는 recon 함수/derivatives를 넣지 않고 원 map include 유지·effective0·reason 진단. 기존 ground shader include 자체 불일치는 수정 전 shader를 그대로 반환하고 compiledfalse/error 진단 |
+| cache key | `rift-ground-detail-srgb-soft-light-nav1192-plate-catmull16-v2`. strength는 uniform이므로 변경마다 shader key/recompile0. CPU의 compiledtrue는 hook 수정 성공이며 실제 GL LINK_STATUS 성공이 아님 |
+| 비용 정정 | 활성 reconstruction의 plate fetch는 원 alpha/RGB fallback용 sample1 + RGB16 = **총17 / 기존 대비+16** nominal texture2D 호출. 계획37853/a6df의 '16 total/+15'는 당시 제안 이력으로 보존하고 현재 비용으로 채택0. detail/hard/soft 기존3sampler는 별도이므로 ground 전체 nominal20(기존4+16). OFF/minified branch는 recon 호출에 도달하지 않는 source 제어흐름이며 실제 GPU hoisting·하드웨어 fetch/시간·전력 실측0 |
+| resource 수명 | 새 Texture/CanvasTexture/DataTexture/geometry/FBO/renderer/RAF/timer0. 기존 detail+hard+soft owned textures3·material1 및 borrowed plate identity 유지. dispose는 effective uniform0, 기존 owned resource 회수, material.map=null; borrowed plate disposal0·반복 기존 수명 유지 |
+| readonly 관측 | `__rift25Lab.snapshot().terrain.groundDetail.plateSharpness`: frozen requestedStrength/effectiveStrength/compiled/reason/derivatives/mapChunksCompatible/sourceWidth/Height1254/rgbTaps16/original1/active17/extra16/alphaPreservedtrue/globalUvPreservedtrue/magnificationOnlytrue/centralClamp2x2/visualAcceptedfalse/shaderLinkVerification caller-WebGL-required. reason은 off-original-plate/disabled-ground-detail/disposed 또는 명확한 fallback/시험 상태 |
+
+| 신규 source CPU group | 유의미 조건 | 결과 |
+|---|---|---|
+| syntax-new-three-modules-and-html-binding | 5 | PASS |
+| current-public-compile-and-off-exact-map-alpha | 15 | PASS |
+| uniform-strength-and-ground-off-interlock | 13 | PASS |
+| finite-strict-api-and-disposed-lifetime | 27 | PASS |
+| renderer-derivative-and-chunk-safe-fallback | 22 | PASS |
+| continuous-magnification-gate | 13 | PASS |
+| catmull-constant-and-ramp-at-centres-half-offset | 17 | PASS |
+| central2x2-clamp-overshoot | 10 | PASS |
+| texture-edge-clamp-and-alpha-original | 15 | PASS |
+| terrain-lab-html-actual-source-binding | 8 | PASS |
+| source-inverse-and-input-pins | 8 | PASS |
+| 이번 단일 실행만 | 153 | Node1회 / 고유11그룹 PASS11 / FAIL0 / 미도달0 / exit0 |
+
+검수는 위 code4 exact 핀에서 실행했다. 실제 public ground factory/shader hook, 저장소 Three160 MeshBasicMaterial/CanvasTexture/DataTexture를 사용하고 renderer capability·Image.decode·2D crop canvas는 fixture로 공급했다. 실제3module을 vm.SourceTextModule로 한 번씩 parse하고 실제 HTML module/importmap binding을 검사했다. shader에서 원map sample1·multiply1·RGB16tap·alpha assignment0을 관측했다. source GLSL의 weights/footprint predicate를 추출하여 CPU로 constant/ramp centre·half offset, negative-lobe clamp, checker 및 source edge를 검수했다. CPU pixel 함수와 RGBA alpha값은 synthetic fixture이며 실제 PNG RGB decode·GPU GLSL 실행/alpha 실측이 아니다. 현 source16tap offset과 clamp 표기는 actual shader에서 읽었고, 실행한 재구성 합산은 CPU fixture이다. strict finite API·groundOFF interlock·requested 복구·strength0 uniform 복귀·disposed/borrowed plate event0·동일 compileCalls1·renderer/chunk fallback도 실제 반환 handle을 관측했다. syntax/fixture PASS를 화면 선명도·GPU LINK PASS로 바꾸지 않는다.
+
+신규 Node 실행 오류·준비 실패0·미도달0. stderr173 B는 Node experimental-vm-modules의 ExperimentalWarning만이며 예외가 아니다. 이 source CPU11/153을 이전 DPR/ground-material/actor/producer/consumer/Chrome/model suite와 합산하거나 재실행0. 별도 root actual WebGL 0/.5/1 비교·GL program LINK_STATUS·실alpha/발/UV/캠/경계·stationary/moving 성능·pan shimmer 및 이미지 직접 확인은 이후 독립 인수이며, 이 worker의 actualGPU/browser/main/native6/save/audio 인수0이다.
+
+맵 선행: 가이드18392 B/607e36a49a99205be61c0aeedb438da06bffaf13370360acc99fe86be751e80b의§0–26 전체(1047 splitlines 및 terminal newline)를 코드 수정 전 읽었다. 현재 _MAP_SSOT_INDEX223685 B/b71763295d779545ac1abdf712371e3423476b0e962622e326fd1d9f3700966b의237–289 순서·LOCK,880–953 canonical/해상도 경계 및1320–1342 최신 append를 읽었으며 전체 index 재독으로 주장0. CH1_1_BLOCKOUT_MASTER39679/94081b2aef08771384fb2032dab42f12c3cde57227558f8a11b772690e13451a LOCK을 보존하며 이를 틈 geometry로 옮기지 않는다. read-only plan37853/a6dfcb5c0da02c913c2673fb5cca6487d9de8985ace4bb47e4c9efae31a3fd50의 MASTER→OUTER→MEDIUM→GROUND→PLAYABLE→LANDMARK→DETAIL→CAMERA→TECH 순서를 적용: 이번은 원 MASTER/질량/geometry/route를 유지한 GROUND RGB interpolation 실험이며 시각 gate를 CPU로 대신하지 않는다.
+
+코드 수정 뒤 docs 전체 관련 키워드 검색44경로743줄 / raw1178839 B / SHA256 `dba7ddb4d0bc405b67267075a31c10f3752ba8cf04cd4849852f1eb6f9c34825`와 모든 path disposition을 외부 보존했다. 이 문서만 현행 code4 pin·정확 API/숫자·fallback·153 source조건으로 append 동기화한다. SLICE/THREE/SSOT/editor/ops 등 최신 shader 소비 계약은 root 소유 후속으로 목록 인계하고, 다른 시스템·이전 시각 결과·owner STATE/LOG·보호2_3/타인 WIP는 수정0. 기존 문서 fullprefix·EOF LF1·GFM 표를 유지한다.
+
+외부 증거 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/map-sharpness-consumer-seam/plate-sharpness-ab-implementation/`: preflight.json·before/ code4/doc1 fullbytes, three-map-chunks.json·source-replacements.json, plate-source-test.mjs·plate-source-result.json·plate-source-process.json·stdout/stderr, docs-keyword-search.txt·docs-search-summary.json·docs-search-disposition.json·final-receipt.json. code4 inverse 외 기존 원문 exact·doc1 원prefix exact. 지원작업 Git/index/서버/실게임/빌드/영상·이미지생성/전문송신/새팀·세션0. root normal checkpoint/remote exact와 GUI 최종 인수는 별도 근거이다.
+
+MAP PRODUCTION REPORT (§23)
+
+| 항목 | 이번 작업·관측·미인수 |
+|---|---|
+| STAGE / MASTER | ROOT-RIFT-PLATE-SHARPNESS-AB-20261007. silhouette/regions/main route/side spaces canonical 그대로; RGB ground sampling 시험만 |
+| OUTER MASS / LARGE | LEFT/RIGHT/TOP/SOUTH·major holes·source assets/composites/overlap/repeated silhouette 기존 그대로, 새 원화/추가 props0·시각 신규 NOT ASSESSED |
+| MEDIUM | 기존 연결/remaining holes 유지. ground만 다른 보간일 때 skirt/foreground filter seam 발생 가능성은 root 화면 Gate에서 확인해야 함 |
+| GROUND | 기존 shadow/contactOFF·contamination detail.4/320·구조물 등록 유지. 강도0/.5/1로 원plate RGB만 비교; 개선 판정 아직 없음 |
+| PLAYABLE | arena/travel/breathing/threat/nav1192·보행/전투 변경0. combat/player readability 실제 화면 미인수 |
+| LANDMARK | primary/secondary/tertiary·주민과 발·그림/형태 보존; 추가 landmarks0 |
+| CAMERA QA | START/EARLY/ARENA/SIDE L/SIDE R/LANDMARK/LATE/EXIT 신규 NOT ASSESSED. root 동일 actor/camera/zoom/DPR·0/.5/1 비교·pan 검수 예정 |
+| TECH QA | 신규 actual source CPU11/153 PASS·원sample/alpha/RGB/clamp/fallback/inverse/finite/lifetime; route/collision/browser pageerror/404/loading/shader LINK/GPU/performance 실측 신규0 |
+| FILES | stage-owned code4+이 doc1; 다른 concurrent worker/root 변경 보존; unrelated source/asset/raw edits0 |
+| GIT | 이 지원 작업 staged/commit/push/deploy0; root 별도 보존 |
+| VISUAL VERDICT | **기존 전체 RETOUCH / 신규 필터 NOT ASSESSED**. A급·실플레이·원화 디테일 증가·흐림 해결 주장0 |
+| NEXT PASS | root 기존 단일 lab에서 동일 frame 조건0/.5/1 비교·GL LINK_STATUS·cost/pan/경계·읽기 확인. 효과 없거나 나쁘면 defaultOFF 유지·거절/한계 보존 |
+
+### 2026-10-07 ROOT-RIFT-PLATE-SHARPNESS-AB-20261007 · 현재 비교 consumer와 실화면 인수
+
+| 항목 | 현재 구현 / 검수 범위 |
+|---|---|
+| ground source | `tools/2_5d/rift-ground-detail.mjs` 21249 B / `830eef30ee9bc9e74219d12fa954300796a5b2ee53ce961bc3544affdfb8837e` |
+| terrain source | `tools/2_5d/rift-terrain.mjs` 16816 B / `c7079fdbc32f4d19cc9ee89e6dc67ae81d6cb92d7d28e7169d29829ed45d44a0` |
+| lab source | `tools/2_5d-world-lab.mjs` 42125 B / `4c5cdb71a0bd4330c3afb6d75440b41f6f33f42989360af31a517999ec1be101`; HTML 12266 B / `e2f0f1692df08f67bc2e6dc42f8e692a53ca060e33833813c8f58492adb8089c` |
+| 비교 UI / API | `plate-sharpness` select 0 / 0.5 / 1, 기본0/OFF. leaf `plate-sharpness-status`. 새 factory옵션 `plateSharpness=0, renderer=null`(borrowed), ground/terrain `setPlateSharpness(number)`; 유한 number0..1 검사. `__rift25Lab.snapshot().terrain.groundDetail.plateSharpness`의 requestedStrength/effectiveStrength 구분 |
+| 처리 범위 | 등록된1254×1254 원 plate의 ground RGB 확대만 Catmull-Rom 16 taps와 중앙2×2 채널별 min/max clamp. UV texel-centre clamp. 기존sample의alpha·multiply 보존. gamma 변환 추가0·원PNG/scene/nav/geometry/camera/rig/save 변경0 |
+| 활성 조건 / fallback | 실제같은borrowed renderer·pinned Three160 map chunk·등록plate·WebGL2 또는 엄격WebGL1 OES_standard_derivatives. 양축 derivative footprint >0 및 ≤1 조건에서만 확대RGB 재구성. unknown/mismatch/minifying는 원plate. ground-detail OFF 또는 dispose 뒤 effective0. compiled는hook 계약이며 LINK 인수와 별개 |
+| 샘플 비용 | 활성확대 plate 원1+추가RGB16=17 fetch(기존대비+16). 기존ground nominal4→20, 조건별분기·GPU실측아님. 읽기계획의+15는 미채택 제안 이력. 추가 texture/geometry/renderer/RAF/timer0 |
+| source Gate | 동결code4의 신규 Node1회 11그룹153조건 PASS / FAIL0·미도달0·exit0. actualThree160/actualfactory·shaderhook와 GLSL CPU계산; image decode/canvas/renderer capabilities는fixture·GPU0. 이전suite 재실행·합산0 |
+| 실Chrome Gate | 같은4source핀 신규 Chrome1/context1/labpage1/child0. 6그룹13조건 PASS / FAIL0·미도달0·exit0, 재실행0. paused160%/DPR1/전사(5480,3740)/detailON 동일조건에서 실제select handler→uniform 0→0.5→1→0. source4+보호8 exact·scene/storage 불변. selectOption change는isTrustedfalse |
+| 실제 픽셀 | 0.5 RGB600148px / 1 RGB745063px 변화, 합성최종framebuffer alpha차이 각각0. OFF복귀 RGBA 및PNG exact. 이 alpha는 중간 원plate 투명shader alpha의 독립 검증이 아니다 |
+| 실제 LINK / 비용 관측 | 13program LINK true·GL0·404/오류/foreign0. 각조건 warmup8+renderer.render wall60표본 median 0/0.5/1/복귀 = 0.5/0.6/0.5/0.6ms, calls11/triangles2456 동일. GPU시간·17fetch 비용실측·실물성능 보장이 아니다 |
+| 시각 판정 / 적용 | root와GUI담당이 원본/강함PNG 직접 관찰. 바닥 결·윤곽 소폭 강화, 절벽·뿌리 저해상도 흐림은 여전히 큼. 전체 VISUAL VERDICT: RETOUCH. 비교기능만 적용, 기본0/OFF 유지·새디테일복원/A급완성/맵선명도완성PASS0 |
+| 정확 근거 | implementation/final-receipt16070B/c2bdd2f21f4315a4eb5398e300095f8ebca4fb594167fa2e19d8b72435bdcc8a. browser/final-receipt9199B/b800f617a39c8f800a0a4c280a760213c943ea5374e02c5323de186f35962a31. source153과GUI13 합산0. readonlyreview7443B/c3f39c3320b37c7e50097383219b1193df552519dc97f09420a6d8ec0404ac4e는같은4핀초안읽기, 테스트아님 |
+
+§23 MAP PRODUCTION REPORT: 작업=등록지면RGB 확대비교; 선행=fullguide·SSOT_INDEX·stageLOCK와exact읽기계획37853/a6df. MASTER PLAN→LARGE OUTER MASS→MEDIUM CONNECTION→GROUND CONNECTION→PLAYABLE/COMBAT→LANDMARK/CENTER→SMALL DETAIL은 기존등록공간보존/새geometry·배치0. CAMERA QA=동일paused160%/DPR1 새Chrome A/B·복귀·전사동작재개. TECH QA=source11/153와GUI6/13 별도핀·source12 exact·LINK13/GL0. VISUAL VERDICT: RETOUCH. PNG4와controls1은 외부 `plate-sharpness-ab-browser/`에 보존. 본편/native6·청취·실보상save·GPU물리메모리·실물모니터·독립platealpha 미인수.
+
+현재shader 비교기능의기본OFF와전경/절벽흐림 RETOUCH를유지한다. 다음작업은실editor mask1024중간축소·feather/cache 및fatalframe 소비접점, NPCdurablebinding·본편native6/청취/save이며 정본PROJECT_MANAGEMENT_MASTER의 최신운영근거를따른다.

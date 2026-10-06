@@ -24,6 +24,30 @@ export const RIFT_GROUND_DETAIL_PROVENANCE = Object.freeze({
   candidatePin: null,
   candidateAdopted: false
 });
+export const RIFT_PLATE_SHARPNESS = Object.freeze({
+  defaultStrength: 0, comparisonStrengths: Object.freeze([0, .5, 1]),
+  sourceWidth: 1254, sourceHeight: 1254, rgbTaps: 16,
+  originalPlateSamples: 1, activePlateSamples: 17, extraPlateSamples: 16,
+  scope: 'registered-ground-plate-RGB-magnification-only',
+  interpolation: 'Catmull-Rom-central-2x2-clamp', derivativeLimit: 1,
+  sourcePixelsChanged: false, visualAccepted: false
+});
+const PINNED_MAP_FRAGMENT = "#ifdef USE_MAP\n\tvec4 sampledDiffuseColor = texture2D( map, vMapUv );\n\t#ifdef DECODE_VIDEO_TEXTURE\n\t\tsampledDiffuseColor = vec4( mix( pow( sampledDiffuseColor.rgb * 0.9478672986 + vec3( 0.0521327014 ), vec3( 2.4 ) ), sampledDiffuseColor.rgb * 0.0773993808, vec3( lessThanEqual( sampledDiffuseColor.rgb, vec3( 0.04045 ) ) ) ), sampledDiffuseColor.w );\n\t\n\t#endif\n\tdiffuseColor *= sampledDiffuseColor;\n#endif";
+const PINNED_MAP_PARS = "#ifdef USE_MAP\n\tuniform sampler2D map;\n#endif";
+function checkedSharpness(value) {
+  if (typeof value !== 'number' || !Number.isFinite(value) || value < 0 || value > 1) throw new Error('원화 확대 비교 강도는 유한수0..1이어야 합니다');
+  return value;
+}
+function derivativeSupport(renderer) {
+  try {
+    if (renderer?.capabilities?.isWebGL2 === true) return 'webgl2';
+    if (renderer?.capabilities?.isWebGL2 === false && renderer.extensions?.has('OES_standard_derivatives') === true) return 'webgl1-extension';
+  } catch {}
+  return 'unsupported-or-unknown';
+}
+function pinnedMapChunks(THREE) {
+  return THREE.REVISION === '160' && THREE.ShaderChunk?.map_fragment === PINNED_MAP_FRAGMENT && THREE.ShaderChunk?.map_pars_fragment === PINNED_MAP_PARS;
+}
 const ROOT = new URL('../../', import.meta.url);
 const C = RIFT_GROUND_DETAIL_MATERIAL;
 const defaultCanvas = () => document.createElement('canvas');
@@ -111,6 +135,59 @@ async function loadPattern(fetcher, makeCanvas) {
   } finally {URL.revokeObjectURL(url);}
 }
 
+// The original map sample is retained for alpha and OFF/minification fallback.
+const PLATE_FRAGMENT_PARS = `
+#ifdef USE_MAP
+uniform float riftPlateSharpness;
+uniform vec2 riftPlateSize;
+vec4 riftPlateWeights(float f) {
+  float f2 = f * f, f3 = f2 * f;
+  return vec4(-.5*f + f2 - .5*f3, 1.0 - 2.5*f2 + 1.5*f3, .5*f + 2.0*f2 - 1.5*f3, -.5*f2 + .5*f3);
+}
+vec3 riftPlateReconstruct(vec2 uv) {
+  vec2 pixel = uv * riftPlateSize - .5;
+  vec2 cell = floor(pixel), f = pixel - cell, base = cell - 1.0;
+  vec2 lo = .5 / riftPlateSize, hi = vec2(1.0) - lo;
+  vec4 wx = riftPlateWeights(f.x), wy = riftPlateWeights(f.y);
+  vec3 p00 = texture2D(map, clamp((base + vec2(0.0, 0.0) + .5) / riftPlateSize, lo, hi)).rgb;
+  vec3 p10 = texture2D(map, clamp((base + vec2(1.0, 0.0) + .5) / riftPlateSize, lo, hi)).rgb;
+  vec3 p20 = texture2D(map, clamp((base + vec2(2.0, 0.0) + .5) / riftPlateSize, lo, hi)).rgb;
+  vec3 p30 = texture2D(map, clamp((base + vec2(3.0, 0.0) + .5) / riftPlateSize, lo, hi)).rgb;
+  vec3 p01 = texture2D(map, clamp((base + vec2(0.0, 1.0) + .5) / riftPlateSize, lo, hi)).rgb;
+  vec3 p11 = texture2D(map, clamp((base + vec2(1.0, 1.0) + .5) / riftPlateSize, lo, hi)).rgb;
+  vec3 p21 = texture2D(map, clamp((base + vec2(2.0, 1.0) + .5) / riftPlateSize, lo, hi)).rgb;
+  vec3 p31 = texture2D(map, clamp((base + vec2(3.0, 1.0) + .5) / riftPlateSize, lo, hi)).rgb;
+  vec3 p02 = texture2D(map, clamp((base + vec2(0.0, 2.0) + .5) / riftPlateSize, lo, hi)).rgb;
+  vec3 p12 = texture2D(map, clamp((base + vec2(1.0, 2.0) + .5) / riftPlateSize, lo, hi)).rgb;
+  vec3 p22 = texture2D(map, clamp((base + vec2(2.0, 2.0) + .5) / riftPlateSize, lo, hi)).rgb;
+  vec3 p32 = texture2D(map, clamp((base + vec2(3.0, 2.0) + .5) / riftPlateSize, lo, hi)).rgb;
+  vec3 p03 = texture2D(map, clamp((base + vec2(0.0, 3.0) + .5) / riftPlateSize, lo, hi)).rgb;
+  vec3 p13 = texture2D(map, clamp((base + vec2(1.0, 3.0) + .5) / riftPlateSize, lo, hi)).rgb;
+  vec3 p23 = texture2D(map, clamp((base + vec2(2.0, 3.0) + .5) / riftPlateSize, lo, hi)).rgb;
+  vec3 p33 = texture2D(map, clamp((base + vec2(3.0, 3.0) + .5) / riftPlateSize, lo, hi)).rgb;
+  vec3 row0 = p00 * wx.x + p10 * wx.y + p20 * wx.z + p30 * wx.w;
+  vec3 row1 = p01 * wx.x + p11 * wx.y + p21 * wx.z + p31 * wx.w;
+  vec3 row2 = p02 * wx.x + p12 * wx.y + p22 * wx.z + p32 * wx.w;
+  vec3 row3 = p03 * wx.x + p13 * wx.y + p23 * wx.z + p33 * wx.w;
+  vec3 reconstructed = row0 * wy.x + row1 * wy.y + row2 * wy.z + row3 * wy.w;
+  vec3 centralMin = min(min(p11, p21), min(p12, p22));
+  vec3 centralMax = max(max(p11, p21), max(p12, p22));
+  return clamp(reconstructed, centralMin, centralMax);
+}
+#endif`;
+const PLATE_FRAGMENT_RECONSTRUCT = `
+#ifndef DECODE_VIDEO_TEXTURE
+  // Continuous map UV, prior to any fract; zero/NaN/infinite/minified footprints fall back.
+  if (riftPlateSharpness > 0.0) {
+    float riftFootprintX = length(dFdx(vMapUv) * riftPlateSize);
+    float riftFootprintY = length(dFdy(vMapUv) * riftPlateSize);
+    if (riftFootprintX > 0.0 && riftFootprintY > 0.0 && riftFootprintX <= 1.0 && riftFootprintY <= 1.0) {
+      sampledDiffuseColor.rgb = mix(sampledDiffuseColor.rgb, riftPlateReconstruct(vMapUv), riftPlateSharpness);
+    }
+  }
+#endif
+`;
+
 const FRAGMENT_PARS = `
 varying vec2 vRiftGroundWorldUv;
 uniform sampler2D riftGroundDetail;
@@ -154,14 +231,25 @@ const FRAGMENT_BLEND = `
  * The caller restores/replaces the mesh material before dispose(). Shader-link
  * acceptance belongs to the caller's real WebGL renderer, not this CPU adapter.
  */
-export async function createRiftGroundDetailMaterial({THREE, sourceScene, plateTexture, enabled=true, fetcher=globalThis.fetch, makeCanvas=defaultCanvas}={}) {
+export async function createRiftGroundDetailMaterial({THREE, sourceScene, plateTexture, enabled=true, plateSharpness=0, renderer=null, fetcher=globalThis.fetch, makeCanvas=defaultCanvas}={}) {
   if (!THREE?.CanvasTexture || !THREE?.DataTexture || !THREE?.MeshBasicMaterial || typeof fetcher !== 'function' || typeof makeCanvas !== 'function' || typeof enabled !== 'boolean') throw new Error('지면 재질 런타임/옵션 오류');
+  const requested=checkedSharpness(plateSharpness), derivatives=derivativeSupport(renderer), mapChunksCompatible=pinnedMapChunks(THREE);
   const source=copyScene(sourceScene), nav=admission(source);
   if (!plateMatches(plateTexture)) throw new Error('지면 plate texture1254²/global UV 등록 오류');
   if (await hash(nav) !== C.navSha256) throw new Error('지면 nav 실제 SHA256 불일치');
-  const resources=new Set(), uniforms={riftGroundAmount:{value:enabled?C.alpha:0}};
+  const resources=new Set(), uniforms={riftGroundAmount:{value:enabled?C.alpha:0},riftPlateSharpness:{value:0},riftPlateSize:{value:[1254,1254]}};
   let material=null, disposed=false, compiled=false, compileCalls=0, enabledState=enabled, reason='prepared-not-webgl-compiled', error=null;
+  let sharpnessRequested=requested, sharpnessCompiled=false, sharpnessReason='prepared-not-webgl-compiled';
   const stats=masks(nav);
+  function updateSharpness() {
+    uniforms.riftPlateSharpness.value=!disposed&&enabledState&&sharpnessCompiled?sharpnessRequested:0;
+  }
+  function sharpnessSnapshot() {
+    return Object.freeze({requestedStrength:sharpnessRequested,effectiveStrength:uniforms.riftPlateSharpness.value,compiled:sharpnessCompiled,
+      reason:disposed?'disposed':!enabledState?'disabled-ground-detail':!sharpnessCompiled?sharpnessReason:sharpnessRequested===0?'off-original-plate':'RGB-reconstruction-trial',
+      derivatives,mapChunksCompatible,sourceWidth:1254,sourceHeight:1254,rgbTaps:16,originalPlateSamples:1,activePlateSamples:17,extraPlateSamples:16,
+      alphaPreserved:true,globalUvPreserved:true,magnificationOnly:true,centralClamp:'2x2',visualAccepted:false,shaderLinkVerification:'caller-WebGL-required'});
+  }
   function release() {
     for (const r of resources) {try {r.dispose();} catch (e) {error=String(e?.message||e);}}
     resources.clear();
@@ -181,32 +269,43 @@ export async function createRiftGroundDetailMaterial({THREE, sourceScene, plateT
     uniforms.riftGroundDetail={value:detail}; uniforms.riftGroundHard={value:hard}; uniforms.riftGroundSoft={value:soft};
     material=new THREE.MeshBasicMaterial({map:plateTexture, side:THREE.DoubleSide}); resources.add(material);
     material.name='Hell Rift · pinned ground colour detail';
-    material.customProgramCacheKey=()=> 'rift-ground-detail-srgb-soft-light-nav1192-v1';
-    material.onBeforeCompile=shader=>{
+    material.extensions={derivatives:derivatives==='webgl1-extension'};
+    material.customProgramCacheKey=()=> 'rift-ground-detail-srgb-soft-light-nav1192-plate-catmull16-v2';
+    material.onBeforeCompile=(shader,shaderRenderer)=>{
       if (disposed) return;
       compileCalls++;
       const v=shader?.vertexShader, f=shader?.fragmentShader;
       if (typeof v !== 'string' || typeof f !== 'string' || !shader.uniforms ||
           !v.includes('#include <uv_pars_vertex>') || !v.includes('#include <uv_vertex>') ||
           !f.includes('#include <map_pars_fragment>') || !f.includes('#include <map_fragment>')) {
-        compiled=false; reason='shader-contract-mismatch-plate-fallback'; error='Three shader chunk 등록 불일치'; return;
+        compiled=false; sharpnessCompiled=false; sharpnessReason='shader-contract-mismatch-original-plate'; updateSharpness();
+        reason='shader-contract-mismatch-plate-fallback'; error='Three shader chunk 등록 불일치'; return;
       }
       const vertex=v.replace('#include <uv_pars_vertex>','#include <uv_pars_vertex>\nvarying vec2 vRiftGroundWorldUv;')
         .replace('#include <uv_vertex>','#include <uv_vertex>\nvRiftGroundWorldUv = vec2(uv.x, 1.0 - uv.y);');
-      const fragment=f.replace('#include <map_pars_fragment>','#include <map_pars_fragment>\n'+FRAGMENT_PARS)
-        .replace('#include <map_fragment>','#include <map_fragment>\n'+FRAGMENT_BLEND);
+      sharpnessCompiled=mapChunksCompatible&&derivatives!=='unsupported-or-unknown'&&shaderRenderer===renderer&&plateMatches(plateTexture);
+      sharpnessReason=!mapChunksCompatible?'map-chunk-mismatch-original-plate':derivatives==='unsupported-or-unknown'?'derivatives-unsupported-original-plate':shaderRenderer!==renderer?'renderer-mismatch-original-plate':!plateMatches(plateTexture)?'plate-binding-mismatch-original-plate':'RGB-reconstruction-trial';
+      updateSharpness();
+      const mapFragment=sharpnessCompiled?PINNED_MAP_FRAGMENT.replace('\tdiffuseColor *= sampledDiffuseColor;',PLATE_FRAGMENT_RECONSTRUCT+'\tdiffuseColor *= sampledDiffuseColor;'):'#include <map_fragment>';
+      const fragment=f.replace('#include <map_pars_fragment>','#include <map_pars_fragment>\n'+FRAGMENT_PARS+(sharpnessCompiled?'\n'+PLATE_FRAGMENT_PARS:''))
+        .replace('#include <map_fragment>',mapFragment+'\n'+FRAGMENT_BLEND);
       Object.assign(shader.uniforms,uniforms); shader.vertexShader=vertex; shader.fragmentShader=fragment;
       compiled=true; reason=enabledState?'ground-colour-detail':'disabled-original-plate'; error=null;
     };
     function setEnabled(value) {
       if (typeof value !== 'boolean') throw new Error('지면 enabled는 boolean이어야 합니다');
       if (disposed) return false;
-      enabledState=value; uniforms.riftGroundAmount.value=value?C.alpha:0;
+      enabledState=value; uniforms.riftGroundAmount.value=value?C.alpha:0; updateSharpness();
       if (compiled) reason=value?'ground-colour-detail':'disabled-original-plate';
       return value;
     }
+    function setPlateSharpness(value) {
+      checkedSharpness(value);
+      if (disposed) return false;
+      sharpnessRequested=value; updateSharpness(); return value;
+    }
     function snapshot() {
-      return {disposed,enabled:!disposed&&enabledState,ready:!disposed,compiled,compileCalls,reason,error,
+      return {disposed,enabled:!disposed&&enabledState,ready:!disposed,compiled,compileCalls,reason,error,plateSharpness:sharpnessSnapshot(),
         source:{src:C.source.src,bytes:C.sourceBytes,sha256:C.source.sha256,width:C.source.width,height:C.source.height,crop:{...C.source.crop},fullPinVerified:true},
         sceneSha256:C.sceneSha256,scenePinVerification:'caller-terrain-pinned-scene; strict-detached-registration',
         navSha256:C.navSha256,navPinVerified:true,navCells:C.navCells,maskSize:{width:C.grid,height:C.grid},
@@ -218,13 +317,13 @@ export async function createRiftGroundDetailMaterial({THREE, sourceScene, plateT
     }
     function dispose() {
       if (disposed) return;
-      disposed=true; enabledState=false; uniforms.riftGroundAmount.value=0;
+      disposed=true; enabledState=false; uniforms.riftGroundAmount.value=0; updateSharpness();
       reason='disposed';
       material.onBeforeCompile=()=>{}; material.map=null;
       release();
       for (const key of ['riftGroundDetail','riftGroundHard','riftGroundSoft']) uniforms[key].value=null;
     }
-    return Object.freeze({material,setEnabled,snapshot,dispose});
+    return Object.freeze({material,setEnabled,setPlateSharpness,snapshot,dispose});
   } catch (e) {release(); throw e;}
 }
 
