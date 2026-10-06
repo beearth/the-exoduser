@@ -107,7 +107,7 @@
     {npcId:'rift-request-nessa',x:6300,y:5020,visualX:1515*25/6,visualY:1198*25/6,labelHeight:175,approach:{x:6220,y:5020}},
     {npcId:'rift-prepare-dorik',x:5220,y:2500,visualX:1206*25/6,visualY:603*25/6,labelHeight:71,approach:{x:5180,y:2540}}
   ].map(a=>Object.freeze({...a,approach:Object.freeze(a.approach)})));
-  let residentAnchorsFactory, dialogueFactory, dialogueRaw, dialogueController, dialogueScene, nearestResident = null, dialogueOpen = false;
+  let residentAnchorsFactory, residentGroundingFactory, residentGrounding, residentGroundingScene, dialogueFactory, dialogueRaw, dialogueController, dialogueScene, nearestResident = null, dialogueOpen = false;
   const residentAnchors = () => residentAnchorsFactory?.(current()) || RESIDENT_ANCHORS;
   function closeDialogue(reason = 'ui-close') {
     dialogueController?.close(reason); dialogueOpen = false; nearestResident = null; keys.clear(); space = false;
@@ -162,7 +162,7 @@
   $('dialogue').addEventListener('cancel',e=>{e.preventDefault();closeDialogue('escape');canvas.focus();});
   const selectedPair = () => { for (const l of current().layers) { const o = l.objects.find(o => o.id === selected); if (o) return { l, o }; } return null; };
   function autosave() { clearTimeout(autosaveTimer); autosaveTimer = setTimeout(() => { try { localStorage.setItem(CACHE_KEY, JSON.stringify(current())); $('status').textContent = '로컬 복구 저장됨 · 프로젝트 JSON으로 보존하세요'; } catch (e) { $('status').textContent = '복구 저장 공간 부족 · 프로젝트 저장을 사용하세요'; } }, 500); }
-  function changed(message) { ambienceScene = null; dialogueScene = null; closeDialogue('scene-edited'); dirty = true; refresh(); autosave(); if (message) toast(message); }
+  function changed(message) { ambienceScene = null; dialogueScene = null; residentGroundingScene = null; closeDialogue('scene-edited'); dirty = true; refresh(); autosave(); if (message) toast(message); }
   function mutate(fn, message) { if (busy) return; try { history.change(fn); changed(message); } catch (e) { toast(e.message); refresh(); } }
   function fit() { viewport = { x: current().world.cols * current().world.tileSize / 2, y: current().world.rows * current().world.tileSize / 2, zoom: Math.min((size.w-60)/(current().world.cols*current().world.tileSize), (size.h-110)/(current().world.rows*current().world.tileSize)) }; dirty = true; }
   function clampCamera() {const w=current().world,halfX=size.w/viewport.zoom/2,halfY=size.h/viewport.zoom/2,maxX=w.cols*w.tileSize,maxY=w.rows*w.tileSize;viewport.x=halfX*2>=maxX?maxX/2:Math.max(halfX,Math.min(maxX-halfX,viewport.x));viewport.y=halfY*2>=maxY?maxY/2:Math.max(halfY,Math.min(maxY-halfY,viewport.y));}
@@ -232,8 +232,9 @@
   function drawAmbience(target,band){if(target===ctx&&ambience&&$('ambient').checked)ambience.draw(target,band,ambienceTime,{player:playing?player:null});}
   function actor(target) { if(window.MapSceneActor){window.MapSceneActor.draw(target,player);return;}target.save();target.fillStyle='#070c09aa';target.beginPath();target.ellipse(player.x,player.y,25,11,0,0,Math.PI*2);target.fill();if(warrior){target.imageSmoothingEnabled=false;const scale=80/29;target.drawImage(warrior,0,0,48,48,player.x-22*scale,player.y-43*scale,48*scale,48*scale);}else{target.fillStyle='#eddfa7';target.fillRect(player.x-12,player.y-55,24,55);}target.restore(); }
   function render(target=ctx, overlays=true) {
-    const p=current();if(overlays){syncAmbience();syncDialogue();}let actorDrawn=false;
+    const p=current();if(overlays){syncAmbience();syncDialogue();}if(residentGroundingScene!==p){residentGroundingScene=p;residentGrounding=residentGroundingFactory?.(p,(scene,x,y,r)=>K.canWalk(scene,x,y,r))||null;}let actorDrawn=false;
     for(const l of p.layers){if(!l.visible)continue;const objects=l.sort==='foot'?[...l.objects].sort((a,b)=>a.y-b.y):l.objects;
+      if(l.id==='foot')residentGrounding?.draw(target);
       if(playing&&l.sort==='foot'){for(const o of objects){if(!actorDrawn&&player.y<=o.y){actor(target);actorDrawn=true;}drawObject(o,l,target,overlays);}if(!actorDrawn){actor(target);actorDrawn=true;}}
       else for(const o of objects)drawObject(o,l,target,overlays);
       if(overlays&&l.id==='abyss'){drawAmbience(target,'back');drawAmbience(target,'ground');}
@@ -317,9 +318,9 @@
       const response=await fetch('tools/team-followup-20261005/hell-rift/STORY/rift-dialogue.json',{cache:'no-store',redirect:'error'});
       if(!response.ok||Number(response.headers.get('content-length'))>256000)throw new Error('주민 대화 데이터 로드 실패');
       const bytes=await response.arrayBuffer();if(bytes.byteLength>256000)throw new Error('주민 대화 데이터가 너무 큽니다');
-      dialogueRaw=JSON.parse(new TextDecoder().decode(bytes));dialogueFactory=module.createRiftDialogue;residentAnchorsFactory=(await import('./map-scene-rift-residents.mjs')).residentDialogueAnchors;
-    }catch(e){console.warn('틈 대화 시험을 읽지 못했습니다',e);}try{ambienceFactory=(await import('./map-scene-rift-ambience.mjs')).createRiftAmbience;}catch(e){console.warn('틈 분위기 모듈을 읽지 못했습니다',e);}await Promise.all([script('assets/map/hell_rift/interspace_20261005/layout.js'),script('assets/map/ch1/production_finish/layout.js')]);history=new K.History(await preset('rift'));try{const raw=localStorage.getItem(CACHE_KEY);if(raw){const p=K.validate(JSON.parse(raw));await importProject(p,false);}}catch(e){toast('기존 복구 씬을 읽지 못해 승인 원화로 시작합니다');}const named=new URLSearchParams(location.search).get('scene');if(named){try{await importProject(await namedProject(named),false);}catch(e){toast('현재 씬 유지 · '+e.message);}}resize();fit();refresh();palette();$('status').textContent='준비됨 · '+current().name+' / 본편에 자동 적용하지 않음';new ResizeObserver(resize).observe($('stage'));picture('img/exoduser_warrior/south.png').then(im=>{warrior=im;dirty=true;}).catch(()=>{});setBusy(false); $('workspace').inert=false; requestAnimationFrame(tick);
+      dialogueRaw=JSON.parse(new TextDecoder().decode(bytes));dialogueFactory=module.createRiftDialogue;
+    }catch(e){console.warn('틈 대화 시험을 읽지 못했습니다',e);}try{const residents=await import('./map-scene-rift-residents.mjs');residentAnchorsFactory=residents.residentDialogueAnchors;residentGroundingFactory=residents.createResidentGrounding;}catch(e){console.warn('틈 주민 모듈을 읽지 못했습니다',e);}try{ambienceFactory=(await import('./map-scene-rift-ambience.mjs')).createRiftAmbience;}catch(e){console.warn('틈 분위기 모듈을 읽지 못했습니다',e);}await Promise.all([script('assets/map/hell_rift/interspace_20261005/layout.js'),script('assets/map/ch1/production_finish/layout.js')]);history=new K.History(await preset('rift'));try{const raw=localStorage.getItem(CACHE_KEY);if(raw){const p=K.validate(JSON.parse(raw));await importProject(p,false);}}catch(e){toast('기존 복구 씬을 읽지 못해 승인 원화로 시작합니다');}const named=new URLSearchParams(location.search).get('scene');if(named){try{await importProject(await namedProject(named),false);}catch(e){toast('현재 씬 유지 · '+e.message);}}resize();fit();refresh();palette();$('status').textContent='준비됨 · '+current().name+' / 본편에 자동 적용하지 않음';new ResizeObserver(resize).observe($('stage'));picture('img/exoduser_warrior/south.png').then(im=>{warrior=im;dirty=true;}).catch(()=>{});setBusy(false); $('workspace').inert=false; requestAnimationFrame(tick);
     // Read-only diagnostics for local UI QA; import uses the same validated atomic path.
-    window.EXODUSER_SCENE_EDITOR={snapshot:()=>K.clone(current()),view:()=>({...viewport}),player:()=>playing?{...player}:null,selection:()=>selected,importProject,ambience:()=>({enabled:!!ambience&&$('ambient').checked,stats:ambience?.snapshot()||null}),dialogue:()=>({anchors:residentAnchors().map(a=>({...a,approach:{...a.approach}})),state:dialogueController?.snapshot()||null}),ready:true};
+    window.EXODUSER_SCENE_EDITOR={snapshot:()=>K.clone(current()),view:()=>({...viewport}),player:()=>playing?{...player}:null,selection:()=>selected,importProject,ambience:()=>({enabled:!!ambience&&$('ambient').checked,stats:ambience?.snapshot()||null}),grounding:()=>residentGrounding?.snapshot()||[],dialogue:()=>({anchors:residentAnchors().map(a=>({...a,approach:{...a.approach}})),state:dialogueController?.snapshot()||null}),ready:true};
   }catch(e){$('status').textContent='씬 시작 실패 · '+e.message;toast(e.message);}
 })();

@@ -58,3 +58,55 @@ export function residentDialogueAnchors(scene) {
     return {npcId,x:o.x,y:o.y,visualX:o.x,visualY:o.y,labelHeight:o.height,approach:{x:ax,y:ay}};
   });
 }
+
+export const RESIDENT_GROUNDING = Object.freeze({
+  radius:12, widthRatio:.42, heightRatio:.08,
+  minRadiusX:2, maxRadiusX:32, minRadiusY:1, maxRadiusY:8,
+  centreAlpha:.34, middleStop:.55, middleAlpha:.15
+});
+
+/** Static editor contact shadows. Body/nav edits remain live, including an open drag. */
+export function createResidentGrounding(scene, canWalk) {
+  if(!residentPaintingProfile(scene) || typeof canWalk!=='function') return null;
+  const c=RESIDENT_GROUNDING;
+  function snapshot() {
+    if(!residentPaintingProfile(scene)) return [];
+    const foot=scene.layers.find(l=>l.id==='foot'), w=scene.world;
+    if(!w || !Number.isFinite(w.tileSize) || w.tileSize<=0 || !Number.isInteger(w.cols) || !Number.isInteger(w.rows)) return [];
+    const shadows=[];
+    for(const [key,npcId] of BODIES) {
+      const o=foot.objects.find(o=>o.id==='obj-resident-'+key);
+      try {
+        if(canWalk(scene,o.x,o.y,c.radius)!==true) continue;
+        const rx=Math.max(c.minRadiusX,Math.min(c.maxRadiusX,o.width*c.widthRatio));
+        const ry=Math.max(c.minRadiusY,Math.min(c.maxRadiusY,o.height*c.heightRatio));
+        const cells=[];
+        for(let y=Math.max(0,Math.floor((o.y-ry)/w.tileSize));y<=Math.min(w.rows-1,Math.floor((o.y+ry)/w.tileSize));y++) {
+          for(let x=Math.max(0,Math.floor((o.x-rx)/w.tileSize));x<=Math.min(w.cols-1,Math.floor((o.x+rx)/w.tileSize));x++) {
+            if(canWalk(scene,(x+.5)*w.tileSize,(y+.5)*w.tileSize,0)===true) cells.push({x:x*w.tileSize,y:y*w.tileSize,width:w.tileSize,height:w.tileSize});
+          }
+        }
+        if(cells.length) shadows.push({key,npcId,x:o.x,y:o.y,rx,ry,cells});
+      } catch (_) { /* An unsupported/failed walk query adds no guessed ground. */ }
+    }
+    return shadows;
+  }
+  function draw(target) {
+    if(!target || !['save','restore','beginPath','rect','clip','translate','scale','createRadialGradient','fillRect'].every(k=>typeof target[k]==='function')) return 0;
+    const shadows=snapshot();
+    for(const s of shadows) {
+      target.save();
+      try {
+        target.beginPath();for(const cell of s.cells) target.rect(cell.x,cell.y,cell.width,cell.height);target.clip();
+        target.translate(s.x,s.y);target.scale(s.rx,s.ry);
+        const gradient=target.createRadialGradient(0,0,0,0,0,1);
+        gradient.addColorStop(0,'rgba(8,9,6,'+c.centreAlpha+')');
+        gradient.addColorStop(c.middleStop,'rgba(8,9,6,'+c.middleAlpha+')');
+        gradient.addColorStop(1,'rgba(8,9,6,0)');
+        target.fillStyle=gradient;target.fillRect(-1,-1,2,2);
+      } finally { target.restore(); }
+    }
+    return shadows.length;
+  }
+  return Object.freeze({draw,snapshot});
+}

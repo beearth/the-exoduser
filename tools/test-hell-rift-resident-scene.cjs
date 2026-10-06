@@ -295,6 +295,167 @@ async function integrationChecks() {
     assert.ok(D.createRiftDialogue(original, raw, walk, anchors));
   });
 
+  // Record world-space clips and local ellipse fills independently of renderer
+  // implementation. The input context already owns DPR/camera transforms.
+  const groundingCanvas = () => {
+    const calls = [], gradients = [], stack = [];
+    const ctx = { globalAlpha: .63, fillStyle: '#123456', globalCompositeOperation: 'xor', shadowBlur: 7 };
+    for (const method of ['beginPath', 'rect', 'clip', 'translate', 'scale']) ctx[method] = (...args) => calls.push({ method, args });
+    ctx.save = () => { calls.push({ method: 'save', args: [] }); stack.push({ globalAlpha: ctx.globalAlpha, fillStyle: ctx.fillStyle, globalCompositeOperation: ctx.globalCompositeOperation, shadowBlur: ctx.shadowBlur }); };
+    ctx.restore = () => { calls.push({ method: 'restore', args: [] }); assert.ok(stack.length, 'Unbalanced restore'); Object.assign(ctx, stack.pop()); };
+    ctx.createRadialGradient = (...args) => {
+      calls.push({ method: 'createRadialGradient', args });
+      const gradient = { stops: [], addColorStop(offset, color) { this.stops.push([offset, color]); } };
+      gradients.push(gradient); return gradient;
+    };
+    ctx.fillRect = (...args) => calls.push({ method: 'fillRect', args, fillStyle: ctx.fillStyle });
+    return { ctx, calls, gradients, stack };
+  };
+  const groundingRows = controller => {
+    const result = controller.snapshot(); assert.ok(Array.isArray(result)); return result;
+  };
+  const groundingBody = (p, key = 'haran') => objects(p).get('obj-resident-' + key);
+  const groundingFormula = (row, body) => {
+    near(row.rx, Math.max(2, Math.min(32, body.width * .42)));
+    near(row.ry, Math.max(1, Math.min(8, body.height * .08)));
+    assert.equal(row.x, body.x); assert.equal(row.y, body.y);
+  };
+
+  check('Grounding activates only independent residents; old baked, unknown pins and hidden foot reject', () => {
+    assert.equal(typeof R.createResidentGrounding, 'function'); assert.ok(R.RESIDENT_GROUNDING);
+    assert.ok(R.createResidentGrounding(candidate, walk));
+    assert.equal(R.createResidentGrounding(original, walk), null);
+    assert.equal(R.createResidentGrounding(candidate, null), null);
+    for (const mutate of [p => { p.sourcePins.residentAtlas = '0'.repeat(64); }, p => { p.layers.find(l => l.id === 'foot').visible = false; }, p => { groundingBody(p).pivotY = .5; }]) {
+      const bad = K.clone(candidate); mutate(bad); assert.equal(R.createResidentGrounding(bad, walk), null);
+    }
+  });
+
+  check('Four grounding draws use current foot formulas, world clip before local transform and balanced canvas', () => {
+    const controller = R.createResidentGrounding(candidate, walk), rows = groundingRows(controller), canvas = groundingCanvas();
+    assert.equal(rows.length, 4);
+    for (let i = 0; i < rows.length; i++) {
+      assert.equal(rows[i].key, C.residents[i].key); assert.equal(rows[i].npcId, ids[i]);
+      groundingFormula(rows[i], groundingBody(candidate, rows[i].key));
+    }
+    assert.equal(controller.draw(canvas.ctx), 4); assert.equal(canvas.stack.length, 0);
+    assert.equal(canvas.calls.filter(c => c.method === 'save').length, 4);
+    assert.equal(canvas.calls.filter(c => c.method === 'restore').length, 4);
+    assert.equal(canvas.ctx.globalAlpha, .63); assert.equal(canvas.ctx.fillStyle, '#123456');
+    assert.equal(canvas.ctx.globalCompositeOperation, 'xor'); assert.equal(canvas.ctx.shadowBlur, 7);
+    const frames = []; let frame;
+    for (const call of canvas.calls) {
+      if (call.method === 'save') { frame = []; frames.push(frame); }
+      if (frame) frame.push(call);
+      if (call.method === 'restore') frame = null;
+    }
+    assert.equal(canvas.gradients.length, 4);
+    for (let i = 0; i < frames.length; i++) {
+      const f = frames[i], row = rows[i];
+      assert.ok(f.findIndex(c => c.method === 'clip') < f.findIndex(c => c.method === 'translate'));
+      assert.deepEqual(f.find(c => c.method === 'translate').args, [row.x, row.y]);
+      assert.deepEqual(f.find(c => c.method === 'scale').args, [row.rx, row.ry]);
+      assert.deepEqual(f.find(c => c.method === 'fillRect').args, [-1, -1, 2, 2]);
+      assert.deepEqual(f.find(c => c.method === 'createRadialGradient').args, [0, 0, 0, 0, 0, 1]);
+      assert.deepEqual(canvas.gradients[i].stops.map(([offset]) => offset), [0, .55, 1]);
+      assert.deepEqual(canvas.gradients[i].stops.map(([, color]) => Number(color.match(/[,/]\s*([.\d]+)\s*\)$/)?.[1])), [.34, .15, 0]);
+      assert.ok(row.cells.length); assert.deepEqual(f.filter(c => c.method === 'rect').map(c => c.args), row.cells.map(c => [c.x, c.y, c.width, c.height]));
+    }
+  });
+
+  check('Grounding sizes follow in-place proportional resizing with lower and upper caps', () => {
+    const p = K.clone(candidate), controller = R.createResidentGrounding(p, walk), body = groundingBody(p);
+    for (const factor of [.01, .5, 4]) {
+      const base = groundingBody(candidate); body.width = base.width * factor; body.height = base.height * factor;
+      // Valid profile minimum is 1 world pixel in height.
+      if (body.height < 1) { body.height = 1; body.width = base.width / base.height; }
+      const row = groundingRows(controller).find(r => r.key === 'haran'); assert.ok(row); groundingFormula(row, body);
+      const canvas = groundingCanvas(); assert.equal(controller.draw(canvas.ctx), 4);
+      assert.deepEqual(canvas.calls.find(c => c.method === 'scale').args, [row.rx, row.ry]);
+    }
+    const capped = groundingRows(controller).find(r => r.key === 'haran'); assert.equal(capped.rx, 32); assert.equal(capped.ry, 8);
+  });
+
+  check('Grounding rereads in-place foot positions and invalid profile edits without stale anchors', () => {
+    const p = K.clone(candidate), controller = R.createResidentGrounding(p, walk), beforeRow = groundingRows(controller)[0], body = groundingBody(p);
+    body.x = 5980; body.y = 5620;
+    const moved = groundingRows(controller)[0]; assert.equal(moved.x, 5980); assert.equal(moved.y, 5620);
+    assert.equal(beforeRow.x, 4660); assert.equal(beforeRow.y, 6660);
+    const canvas = groundingCanvas(); assert.equal(controller.draw(canvas.ctx), 4);
+    assert.deepEqual(canvas.calls.find(c => c.method === 'translate').args, [5980, 5620]);
+    body.rotation = 10; assert.deepEqual(groundingRows(controller), []); assert.equal(controller.draw(groundingCanvas().ctx), 0);
+    body.rotation = 0; assert.equal(groundingRows(controller).length, 4);
+    p.layers.find(l => l.id === 'foot').visible = false;
+    assert.deepEqual(groundingRows(controller), []); assert.equal(controller.draw(groundingCanvas().ctx), 0);
+    p.layers.find(l => l.id === 'foot').visible = true; assert.equal(groundingRows(controller).length, 4);
+  });
+
+  check('Blocked radius12 foot and throwing walk callback skip only affected resident shadows', () => {
+    const haran = groundingBody(candidate), berin = groundingBody(candidate, 'berin');
+    const guardedWalk = (p, x, y, radius) => {
+      if (radius === 12 && x === haran.x && y === haran.y) return false;
+      if (radius === 12 && x === berin.x && y === berin.y) throw new Error('Blocked callback');
+      return walk(p, x, y, radius);
+    };
+    const controller = R.createResidentGrounding(candidate, guardedWalk);
+    assert.ok(controller); assert.deepEqual(groundingRows(controller).map(row => row.key), ['nessa', 'dorik']);
+    const canvas = groundingCanvas(); assert.equal(controller.draw(canvas.ctx), 2); assert.equal(canvas.stack.length, 0);
+    assert.equal(canvas.calls.filter(c => c.method === 'translate').length, 2);
+    for (const unsupported of [Promise.resolve(true), 1, 'true', null]) {
+      const noFoot = R.createResidentGrounding(candidate, () => unsupported);
+      assert.deepEqual(groundingRows(noFoot), []); assert.equal(noFoot.draw(groundingCanvas().ctx), 0);
+      const noCells = R.createResidentGrounding(candidate, (p, x, y, radius) => radius === 12 ? walk(p, x, y, radius) : unsupported);
+      assert.deepEqual(groundingRows(noCells), []); assert.equal(noCells.draw(groundingCanvas().ctx), 0);
+    }
+  });
+
+  check('Grounding footprint clips only current radius0 walkable world tiles, excluding blocked abyss-side neighbor', () => {
+    const p = K.clone(candidate), body = groundingBody(p), t = p.world.tileSize;
+    const tx = Math.floor(body.x / t), ty = Math.floor(body.y / t), blockedX = (tx - 1) * t, blockedY = ty * t;
+    p.walkable[ty * p.world.cols + tx - 1] = 0;
+    assert.equal(K.canWalk(p, body.x, body.y, 12), true);
+    assert.equal(K.canWalk(p, blockedX + t / 2, blockedY + t / 2, 0), false);
+    const controller = R.createResidentGrounding(p, walk), rows = groundingRows(controller), haran = rows.find(r => r.key === 'haran');
+    assert.ok(haran); assert.ok(haran.x - haran.rx < tx * t, 'Ellipse reaches excluded neighbor');
+    assert.ok(!haran.cells.some(c => c.x === blockedX && c.y === blockedY));
+    assert.ok(haran.cells.some(c => c.x === tx * t && c.y === ty * t));
+    for (const row of rows) for (const cell of row.cells) {
+      assert.equal(cell.width, t); assert.equal(cell.height, t); assert.equal(cell.x % t, 0); assert.equal(cell.y % t, 0);
+      assert.ok(cell.x >= 0 && cell.y >= 0 && cell.x + t <= 8000 && cell.y + t <= 8000);
+      assert.equal(K.canWalk(p, cell.x + t / 2, cell.y + t / 2, 0), true);
+    }
+    const canvas = groundingCanvas(); assert.equal(controller.draw(canvas.ctx), 4);
+    assert.deepEqual(canvas.calls.filter(c => c.method === 'rect').map(c => c.args), rows.flatMap(row => row.cells.map(c => [c.x, c.y, c.width, c.height])));
+  });
+
+  check('Grounding refuses incomplete canvas and restores state while preserving canvas exceptions', () => {
+    const controller = R.createResidentGrounding(candidate, walk);
+    assert.equal(controller.draw(null), 0);
+    for (const method of ['save', 'restore', 'beginPath', 'rect', 'clip', 'translate', 'scale', 'createRadialGradient', 'fillRect']) {
+      const canvas = groundingCanvas(); delete canvas.ctx[method];
+      assert.equal(controller.draw(canvas.ctx), 0); assert.equal(canvas.calls.length, 0);
+    }
+    for (const method of ['clip', 'createRadialGradient', 'fillRect']) {
+      const canvas = groundingCanvas(), error = new Error('Canvas ' + method + ' failure');
+      canvas.ctx[method] = () => { throw error; };
+      assert.throws(() => controller.draw(canvas.ctx), caught => caught === error);
+      assert.equal(canvas.stack.length, 0); assert.equal(canvas.calls.filter(c => c.method === 'save').length, 1);
+      assert.equal(canvas.calls.filter(c => c.method === 'restore').length, 1);
+      assert.equal(canvas.ctx.globalAlpha, .63); assert.equal(canvas.ctx.fillStyle, '#123456');
+    }
+  });
+
+  check('Grounding snapshots are deeply fresh and draw never mutates frozen scene/nav/source or STORY', () => {
+    const p = freeze(K.clone(candidate)), serialized = JSON.stringify(p), controller = R.createResidentGrounding(p, walk);
+    const first = groundingRows(controller), fresh = groundingRows(controller); assert.deepEqual(first, fresh);
+    assert.notStrictEqual(first, fresh); assert.notStrictEqual(first[0], fresh[0]); assert.notStrictEqual(first[0].cells, fresh[0].cells);
+    first[0].x = -999; first[0].cells[0].x = -999; first.push({ key: 'fake' });
+    assert.deepEqual(groundingRows(controller), fresh);
+    assert.equal(controller.draw(groundingCanvas().ctx), 4);
+    assert.equal(JSON.stringify(p), serialized); assert.equal(JSON.stringify(candidate), candidateBytes);
+    assert.equal(sha(fs.readFileSync(rawPath)), rawPin);
+  });
+
   check('Adapter/dialogue integration leaves scene, raw STORY and all source files unchanged', () => {
     assert.equal(JSON.stringify(candidate), candidateBytes);
     assert.equal(sha(fs.readFileSync(rawPath)), rawPin);

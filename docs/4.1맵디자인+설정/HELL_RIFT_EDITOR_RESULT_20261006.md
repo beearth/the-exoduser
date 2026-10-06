@@ -455,3 +455,86 @@ SKILL의 현행game SHA는 `4f4eba2596c33f4e0c28e1e68ac224560e17c944cdbe9596ad99
 담당 literal 완료ID는 모두 `ROOTRESIDENT-ROLE-FOLLOWUP-20261006`이며 ROLE이 미치환된 원보고를 그대로 남긴다. TASK/end/path/SHA로 구분한다. 여기서는 MJS5 syntax/JSON1 parse 및 exact pin만 확인했고, 담당 자체 unit·source검사는 상세검수 채택으로 계산하지 않았다. QA의 live tooling SHA는 root 동시 WIP와 달라질 수 있으며 frozen scene/plate/atlas pin과 구분한다. 원자료 추가 보존과 소비자 채택은 별도다.
 
 root 접지그림자 code3 WIP·타인 변경·live supervisor STATE/LOG·원본game/index/scene/PNG/STORY·보호2_3/Q-only/어택티켓금지·세이브·기존23 제외. 후보6+관련docs4만 정상commit/push/원격exactSHA를 순차 보존. Codex7 새7은 자동승인 검토 거절(승인 필요/정책 never) hold이며 전16착수 선언0. 기존 paused 자동화/아침메일 재개0. 외부 receipt: `/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/resident-followup-preservation-20261006/batch2/receipt.json`.
+
+
+### 2026-10-06 주민 접지 그림자 소비자 — ROOT-RIFT-RESIDENT-GROUNDING-20261006
+
+현재 구현은 독립주민 v2의 정적 발접지 그림자다. 이전 독립주민 절의 접지그림자 미구현·builder19·PNG f7e03969…는 그 시점 이력이며, 현재는 아래 계약을 따른다. 원화/atlas/scene/nav 수치와 본편 구현 상태를 바꾸지 않는다.
+
+| 항목 | 코드와 일치하는 현재 계약 |
+|---|---|
+| 대상 | scene SHA `c508e70d23fafb9295798763c5224c7c92699dfea3d3beebdb6ab18173f44a3a`, strict `residentPaintingProfile(scene)`의 독립4body. generic CH1/원본 baked 씬은 비활성 |
+| API | `createResidentGrounding(scene,canWalk)` → 유효 factory 또는 null. `snapshot()`는 매번 현재 scene/body를 검증, 실패[]; `draw(ctx)`는 그린 shadow 수. 읽기 전용 editor 진단 `EXODUSER_SCENE_EDITOR.grounding()` |
+| 판정 | 현재 foot에서 `canWalk(scene,x,y,12)===true`. Promise/throw/false/다른 truthy는 해당body 제외. ellipse를 겹치는 tile 중심의 `canWalk(scene,cx,cy,0)===true`인 셀에 clip; 현재tile40 |
+| 수식 | `rx=clamp(body.width*.42,2,32)`, `ry=clamp(body.height*.08,1,8)` world px. tileSize 양수유한·cols/rows 정수필수. clipping cell `{x,y,width,height}`는 world rect, 임의 심연/벽 보행 추가0 |
+| 페인트 | ellipse 정규화 반경1 radial gradient: stop0 `rgba(8,9,6,.34)`, stop.55 `rgba(8,9,6,.15)`, stop1 `rgba(8,9,6,0)`. clip→translate foot→scale rx/ry→fillRect(-1,-1,2,2), ctx finally restore |
+| 기본 하란 | foot(4660,6660), rx20.346020761245676 / ry6.4 |
+| 기본 베린 | foot(6020,5580), rx21.10173010380623 / ry3.8975778546712805 |
+| 기본 네사 | foot(6300,5020), rx16.09360146252285 / ry6.4 |
+| 기본 도릭 | foot(5220,2500), rx17.341935483870966 / ry6.4 |
+| 렌더·편집 | 바닥 뒤 foot층의 기존뿌리/전사/주민 y-sort 전에 shadow 1회. changed() 시 scene cache 무효화, 열린 drag 중에도 live body 재검증. 숨김/등록변형/잘못된profile은0. 유효resize에 그림자도 비례, 하란height120일 때 ry8 cap |
+| 로드 | residents import/factory는 STORY fetch/parse와 별도 try. STORY HTTP503 주입 시 대화null·grounding4 유지. 캐릭터·원화·보행 경계·inventory/save변경0 |
+| PNG | overlay=false에도 grounding 포함. 멈춘 보행 전후/숨김Undo복구 2048² PNG 7018879B SHA `24230e778be6a955108e83a16a0086c510e6f82781324c837fb6fd7ef9f06ed4` byte 동일. 실행중 player는 렌더될 수 있음 |
+| 의미·화면 | 기존19+접지 negative8=unit27 PASS(동일검사 반복0). browser10 PASS/실제4WASD접근·하란F/드래그·높이·숨김Undo·JSON정확·STORY503/기본씬비활성. 정상 pageerror/HTTP/console0. 새 동영상0 |
+| 픽셀 | 기존 무그림자 export와 비교해 발ellipse 근방72픽셀만 달라짐, 외부0. 원본/derived PNG·scene/nav·STORY source hash불변. 전체화면 A급 품질이나 실제광원/높이물리 인수로 승격0 |
+
+검수 시4접근 화면 및 resize 화면을 육안 확인했다. 작은 발 그림자는 구현됐지만 확대grain/재질의 차이·정적인물·전체절벽 alpha/height·실제지급/진행save·장gate·본편/native6단계·실청취는 미인수. **VISUAL VERDICT: RETOUCH.** 본편 code patch0. 외부 backup/최초실패/현재검수/PNG/원격exact SHA: `/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/resident-grounding-integration-20261006/receipt.json`. code3+관련docs12만 checkpoint, 보호2_3/Q-only/어택티켓금지/타인WIP·liveSTATE/LOG·사용자세이브·기존23 유지. Claude8 원0324 raw8는 후보 미채택 보존 완료(c9b873cb…+7d12ede3…); 현재 memory후속은 쓰기0이며 본편채택으로 계산0. Codex7 새7은 정상송신 자동승인 검토 거절(승인 필요/정책never) hold. 기존paused/메일 재개0, 오늘19시 실제결과 한 번 보고.
+
+
+MAP PRODUCTION REPORT - ROOT-RIFT-RESIDENT-GROUNDING-20261006
+
+STAGE: independent resident v2, isolated editor static contact pass. Main game/native adoption: 0.
+
+MASTER
+- silhouette / regions: existing asymmetric valley, central abyss, south entry and north ascent. Geometry/crop/nav changes: 0.
+- main route / side spaces: actual WASD approach to Haran, Berin, Nessa, Dorik, using original 1192 nav. Combat/ascent gate connection: 0.
+
+OUTER MASS
+- LEFT / RIGHT / TOP / SOUTH: registered six ground crops and three foot roots remain unchanged.
+- major holes: central abyss is not painted as ground; nav-cell clipping limits contact footprints. Whole-cliff alpha separation remains unaccepted.
+
+LARGE
+- source assets / composites: plate aa64cb7b... / atlas ff20e1f5... / scene c508e70d... unchanged. New high-resolution artwork: 0.
+- overlap / repeated silhouette: only four contact shadows added. Earlier eight-camera source/outer-mass review remains historical. Current enlarged resident grain/material: RETOUCH.
+
+MEDIUM
+- connections: original floor, roots, stairs and approach points retained.
+- remaining holes: physical height and whole-cliff alpha separation remain unimplemented.
+
+GROUND
+- shadow: current body foot; rx=clamp(width*.42,2,32), ry=clamp(height*.08,1,8); radial alpha .34/.15/0; foot r12 eligibility and r0 nav-cell clipping.
+- contamination / structure integration: only 72 pixels differ from prior no-shadow PNG, outside footprints 0. Floor -> shadows -> foot y-sort order.
+
+PLAYABLE
+- main arenas / travel: combat arena acceptance 0; four actual keyboard approaches and Haran F dialogue confirmed. Scene/collision/nav/warrior dimensions unchanged.
+- breathing / threat / combat readability: noncombat interspace pass. Native/dense-combat FPS and active-threat acceptance 0.
+
+LANDMARK
+- primary: central abyss light and north stairs retained.
+- secondary / tertiary: four residents and existing ember sites; static poses and painterly/pixel material mismatch remain.
+
+CAMERA QA
+- START / EARLY / ARENA / SIDE L / SIDE R / LANDMARK / LATE / EXIT: prior c508 eight-camera screenshots preserved; full eight-camera rerun in this pass: 0.
+- current direct review: four approach screenshots at 1500x960 and Haran height120 edit screenshot. Contact/UI/F checked. Current whole-camera PASS claim: 0.
+
+TECH QA
+- route / collision: actual four WASD approaches. Body/approach/nav/geometry/source immutable. Earlier BFS1185 retained as historical evidence.
+- pageerror / 404: normal pageerror/HTTP/console errors 0. Separate injected STORY HTTP503 page retains shadows4 with dialogue null.
+- seam: only contact pixels change; stopped PNG before/after/Undo identical 24230e77.... Whole-cliff seam acceptance 0.
+- loading: resident import separated from STORY try; invalid profiles, hidden foot and generic scenes disable grounding. Undo restores it.
+- performance: four body/profile/nav-cell calculations; added images 0. Actual GPU/FPS/dense-combat/listening acceptance 0.
+- tests: unit27 with eight new grounding cases, browser10, actual keyboard walks4. JSON deep-equal and stopped PNG7018879B identical. Initial missing ffmpeg (checks0) and external harness window guard failure (checks1) preserved separately. Installation/new video: 0.
+
+FILES
+- stage-owned: tools/map-scene-editor.js, tools/map-scene-rift-residents.mjs, tools/test-hell-rift-resident-scene.cjs and related docs12.
+- concurrent touched: existing unrelated WIP/live supervisor STATE/LOG excluded from staging. Claude memory followups allow file writes0.
+- unrelated touched: 0. Original game/index/scene/PNG/STORY, protected2_3, Q-only/no attack tickets, user saves and existing23 retained.
+
+GIT
+- staged: only completed code3+docs12 exact paths; stop if unrelated index entries exist.
+- commit / push: normal code+docs checkpoint, origin branch push, remote exact SHA recorded in external receipt.
+- deploy: 0. Existing3387 only; new server/game/build/install/publish/Windows0. Old paused automations/mail remain paused.
+
+VISUAL VERDICT: RETOUCH. Static contact implemented; enlarged grain/material mismatch/static bodies/whole-cliff alpha/depth/main-game grants/gates/save/native/audio remain unaccepted.
+
+NEXT PASS: collect official existing-team memory handoffs by TASK/end, keeping raw preservation separate from adoption. Actual transaction/ascent ports require implemented ITEM/QUESTNPC consumers and normal delivery evidence.
