@@ -259,3 +259,135 @@ NEXT PASS: 원본형태·nav유지한고밀도바닥/큰절벽·전경alpha와fe
 | 시각/팀 상태 | VISUAL VERDICT: RETOUCH(맵 확대 흐림·wedge·skirt seam). Codex7 첫송신 자동승인검토 거절/수신0·나머지6미송신, ART 기존선택대기. 새팀/실행세션/같은TASK 재송신·거절우회0 |
 
 새 원자료는 `CH1_2_5D_TEAM_CANDIDATES_20261006.md` exact pin 표와 외부 `story-v5-official-receipt.json`으로 추적한다. 원본 v1–v4·게임·sourcePNG·scene/nav·save·foreign68·보호10·기존23은 유지한다. 완료소유만 actual80부터 즉시 code+docs checkpoint하고 정상push·remote exactSHA를 확인한다. paused 자동화/아침메일·권한·설치·Windows·게시 재개0.
+
+
+## 지옥의 틈 NPC 실제 연결 / 현재 독립 3387 계약 — 2026-10-06T14:38:11.904785+00:00
+
+현재 목표 `CH1-2_5D-INTERACTIVE-RIFT-CONTINUATION-20261006`. 이전 clip2260×1400/NPC 미연결/실editor 미인수 기록은 당시 관측 이력이다. 이번 lab은 전체8000×8000 원본 nav1192 범위에서 주민4의 원래 발을 표시하고, 기존 대화 consumer와 카메라 추종을 연결한다. 본편 source start/exit·scene/nav·게임·사용자 세이브와 분리한다.
+
+| 항목 | 현재 실제 코드·검수 |
+|---|---|
+| 소비자 | tools/2_5d-world-lab.html/.mjs + rift-terrain.mjs + scene-registration.mjs + 새 interaction-cue-lifetime.mjs. 기존 주민 billboard 모듈을 실제 연결 |
+| 실제 결과 | 최종 Mac Chrome/3387 브라우저 23검사 PASS, pageerror0/HTTP실패0. 원본 atlas 변조 시 ready=false/RAF0. 초기 QA 하니스 오류와 수정 후 최종 PASS를 별도 보존 |
+| NPC/대화 | 원본 atlas/발4·displayScale1.8, R대화. 물건 받기1회·재방문 중복0·다른 NPC 부탁 수락을 실제 선택. trialRecords 2, actualGrant=false/editor-session-only. 본편 아이템·퀘스트·save·상승 적용0 |
+| 위치 시험 | 원본 NPC foot·nav 불변. 별도 displayApproach로 하란4780/6660·베린5900/5580·네사6180/5020·도릭5100/2500, NPC까지 모두120worldpx. 버튼은 시험 위치 이동이며 전체 여정 실플레이 증거가 아님 |
+| 실제 에디터 | 별도 fresh3387에서 저장 버튼 다운로드→그 파일 importProject(...,false)→snapshot 대조. 실제90767B/c508e70d… 원본과 동일. 비동기·입력변조·파일SHA불일치 포함5검사 PASS. lab 현재 editorProvider 없음=PENDING 유지 |
+| 시각/영상 | 네 주민 대화·부탁 화면 실제 확인, 캐릭터 겹침 완화. interactive-motion.webm 522811B는 canvas 이동/공격·외형교체 영상이며 DOM대화/소리 미포함. 맵1254² 확대 흐림·hard wedge·마스크 feather 미재현 때문에 VISUAL VERDICT: RETOUCH |
+| 남은 Gate | physicalHeight UNKNOWN, NPC 정적billboard, 전용주민리깅·발픽셀IK·본편/native6·보스전 여정·청취·A급 인수0 |
+| 팀 현황 | Claude8 기존7 source/end/idle 실제 확인. 완료 raw 누적24(기존17+이번7). public 역할 SKILL/ANIMVFX/MAP/QA4 유지, cue는 ANIMVFX 추가 파생모듈. 신규 MAP/BOSS/STORY/SKILL/QA/ENEMY raw를 일반 본편 소비로 승격0. Codex7 첫 전문송신 자동승인검토 거절/수신0·다른6미송신, ART 기존선택대기; 전원가동 선언0 |
+
+상세 수치·공식·API·원자료 핀·§23 보고는 `docs/4.1맵디자인+설정/HELL_RIFT_2_5D_SLICE_20261006.md`의 이 목표 절을 따른다. 실제 증거는 `/Users/fordeargamers/.codex/visualizations/rift-interactive-20261006/`의 final-interaction-v2-result.json(23), editor-final-result.json(5), actual-editor-export.scene.json, final-rift-*.png, final-nessa-request.png, interactive-motion.webm 및 Git 영수증이다. source/fixture/root browser/native/listening 인수를 서로 대체하지 않는다.
+
+### 수치·API·원자료 계약
+
+| 항목 | 코드와 같은 현행 값 |
+|---|---|
+| terrain 표시 범위 | RIFT_TERRAIN.clip={left:0,top:0,right:8000,bottom:8000}, centre5430/3900, groundTriangles32. reset5480/3740; terrain 기본 spawn5900/3820 별도. 원본 source start4020/7740·exit4020/1740 불변 |
+| 투영/카메라 | 정사영50°/scale400/yaw0. camera position=(target.x,sin50°×16,target.z+cos50°×16), lookAt(target). 기본 높이3.5, 확대80…220%/step5/초기100%, DPR≤2 |
+| authored 절벽 | depth240/inset.9/physicalHeight UNKNOWN. 상단 source RGB×shade, shade=1−.78f(f0…1)→1… .22. skirtTopSourceMatched=true/skirtTextureApplied=true/sourceParallaxApplied=true/maskFeatherApplied=false |
+| 보행/시간 | WASD·방향키8방향260worldpx/s, Shift470. 각 bounds12안쪽+nav radius12. 기존 RAF1의dt0… .04seconds·UI갱신180ms. 새 RAF/mixer/서버0 |
+| 배우·주민 정렬 | renderOrder=30+(footY−4320)/8000×10, 기존뿔30, 전경 낮추기 opacity.32. 배우 hero mesh 전부 같은 foot order, helper70·그림자15. 주민 source 발 이동0 |
+| 원본 주민v2 scene | 90767B/SHA c508e70d23fafb9295798763c5224c7c92699dfea3d3beebdb6ab18173f44a3a, nav1192·원본 sourcePins 불변 |
+| clean plate / abyss | clean1254² SHA aa64cb7bbfff10c9d5ea2378ef3f8f528bbfb2acfb43ddb9a6520b9f24127673 / abyss1920² SHA ace0c853cc27cbb4d2b807104273399a1144df77d31b1003e574141fed10f991 |
+| 주민 atlas | 881398B/1254²/SHA ff20e1f5dc1a8849edb64a10380c1d9eb21688de1817f098b144a57410190a38. 실제 HTTP bytes SHA 확인, texture1 공유/Linear min·mag/no mipmaps. 원본 픽셀/crop 불변 |
+| 주민 표시 API | createRiftResidentBillboards({THREE,terrain,camera,scene,displayScale=1.8})→object3d/update/snapshot/residents/dispose. scale 유한 Number .5…3; 스스로 scene.add; own RAF/timer/input0 |
+| 주민 그림자 | 공유 CircleGeometry48/material, opacity.26/order15/y+.002. display radii .42/.08의 rx2…32/ry1…8 clamp, radius12 보행 불가면 숨김. 기존 editor의 nav-clipped radial과 별도 lab 타원 |
+| 주민 자원 | unique geometry/material/texture 해제, atlas image=null/cleanupErrors. snapshot count=4. 모듈 dialogueImplemented=false는 billboard 자체 범위이며 실제 lab은 별도 대화 consumer 연결 |
+| 기존 대사 raw | tools/team-followup-20261005/hell-rift/STORY/rift-dialogue.json,25940B/SHA be14b1416838ab345eb1c2a150b92403566ccfdc43cd3f3b317cf2913840dfdc. HTTP SHA 검증 후 createRiftDialogue 사용, NPC Map 기반 |
+| 대화 접근·전환 | range140worldpx, 최대 range240/node 전환64, line step≤20/radius12/정확true 보행검사. inspectResidentAccess 4ready/startConnected를 실제검사. 최대값은 기존 consumer 계약 |
+| displayApproach 알고리즘 | 발에 [120,0],[-120,0],[80,80],[-80,80],[80,-80],[-80,-80],[0,120],[0,-120] 순서. nearest(point)?.npcId 일치 첫점 선택, 없으면 기존 row.approach. 원본40거리 approach 검사 결과를 덮어쓰지 않음 |
+| 대화 입력/pose | R/KeyR·대화버튼, nearest 방향으로8방향 회전 후 clearIntent/release. 대화 중 pose에 neutral{dx:0,dy:0,facing} 전달. ready/paused에서 시작·선택 거부. E/Q변경0 |
+| 대화 닫기 | movement-input/character-switch/motion-preview/preview-location-change/pause-change/escape/manual/pagehide. reset은 기존setMode로 닫음. playerXY는 동일RAF에서 갱신 |
+| 보상 경계 | editor-session-only, 베린 gift trial record1·재방문 afterGift, 네사 story.nessa.findLin quest record1, 총2/allactualGrantfalse. 아이템·퀘스트·save·chapter gate0 |
+
+| NPC ID / 한글명 | 원본 발 XY | 원본 접근검사 XY/거리 | 현재 displayApproach XY/거리 | display W×H | renderOrder |
+|---|---|---|---|---|---:|
+| rift-rest-haran / 하란 | 4660/6660 | 4700/6660 /40 | 4780/6660 /120 | 87.19723183391004×144 | 32.925 |
+| rift-gift-berin / 베린 | 6020/5580 | 6020/5540 /40 | 5900/5580 /120 | 90.43598615916956×87.69550173010381 | 31.575 |
+| rift-request-nessa / 네사 | 6300/5020 | 6300/4980 /40 | 6180/5020 /120 | 68.97257769652651×144 | 30.875 |
+| rift-prepare-dorik / 도릭 | 5220/2500 | 5220/2460 /40 | 5100/2500 /120 | 74.3225806451613×144 | 27.725 |
+
+### Interaction cue 파생 consumer
+
+| 항목 | 코드와 같은 계약 |
+|---|---|
+| 원자료 / 파생본 | ANIMVFX raw9287B/SHA140748cf0ed50961e18b26750c66e240fb0c40abd8ace2baac8e1c54aa0ae567 불변. tools/2_5d/interaction-cue-lifetime.mjs 14063B/SHA1fe07971b3943d4a72ee618d467faf5bfea41175525e19f8f6478740be09aab7 |
+| API | createInteractionCueLifetime({THREE,scene,camera,terrain,options})→update(dtSeconds,player,provider)/setReducedMotion(boolean)/onActorChange(reason)/onSceneChange(reason)/dispose()/snapshot() |
+| 자원·시간 | 접근ring1+열림삼각1/mesh2 pool; 독자RAF/timer0; module dt 유한seconds0… .1 clamp·root0… .04. providerWrites=false/actualGrant=false/nativeAccepted=false |
+| 접근 ring | RGB0xcdbb86/opacity.55/size.16sceneunits/RingGeometry(.5,1,32,1). 닫힌대화의nearest NPC foot XY에 groundLift.003으로 표시 |
+| 열린 대화 표시 | RGB0xc8623a/opacity.8/size.12/RingGeometry(0,1,3,1). 현재anchor XY·openLift.42/camera world quaternion 복사. player/displayApproach에 표시하지 않음 |
+| pulse | 1.6Hz/depth.22/p=1+.22sin(clock/1000×1.6×2π). 접근size=.16p·열림size=.12고정. opacity=clamp(base×(.75+.25p),0,1) |
+| reduced-motion | boolean만, true이면p1·기본opacity·clock0. prefers-reduced-motion 실시간 연결·새mesh추가0 |
+| order/재질 | root orderFor=riftResidentFootOrder→30+(anchorY−4320)/8000×10+.5. 미주입 defaultfixedOrder31과 구분. transparenttrue/depthTestfalse/depthWritefalse/DoubleSide/toneMappedfalse/frustumCulledfalse |
+| XY/ID guard | player/anchor Number유한0≤x,y<8000; ID1…96자 ASCII영숫자/_.:-. 소비 필드 accessor 호출0/거부, method prototype 조회 최대8단계·receiver유지·playerCopy 전달 |
+| option guard | opacity0…1,size>0…32,lift0…32,Hz0…10,depth0…1,RGB정수0…0xffffff. fixedOrder/orderOffset 유한수; maxAnchors4/worldSize8000/orderOffset.5고정; anchorFor/orderFor=null 또는함수 |
+| cache/실패 | 최근anchor최대4. provider/actor/scene변경→retire+cache/clock초기화. root anchorFor null이면cache위치재사용0. getter/NaN/provider·투영·order 예외→양쪽숨김/cache삭제/provider참조폐기. error최대160자/reason최대96자 |
+| 종료/진단 | 부분생성실패unique2geo/2material해제, dispose중복안전. snapshot worldFoot/scenePosition/size/opacity/order·spawn/retire/cache/meshes는복사본. publicroot stdin 새1회6그룹PASS와 실제3387 최종23check 구분 |
+
+### §23 MAP PRODUCTION REPORT — 전체 주민 위치와 실제 대화 연결
+
+```text
+MAP PRODUCTION REPORT =================
+STAGE: CH1-2_5D-INTERACTIVE-RIFT-CONTINUATION-20261006 / 지옥의 틈 독립3387
+MASTER
+- silhouette: 승인된 기묘한 이공간 원형·균열·회화재질 보존; 마을건물/반복캠프 추가0
+- regions: 전체8000² world의 지면/주민4·심연후경/기존뿔전경
+- main route: source남쪽4020/7740→북쪽4020/1740/nav1192 유지; 연속여정 실플레이 미관찰
+- side spaces: 기존 하란/베린/네사/도릭 공간; 신규 geometry/nav 쓰기0
+OUTER MASS
+- LEFT: 기존균열·opening mask
+- RIGHT: 기존동측plate/뿔
+- TOP: 기존상승계단과출구
+- SOUTH: 기존남쪽진입/하란 공간
+- major holes: 기존28점opening/authoreddepth240·physicalHeight UNKNOWN
+LARGE
+- source assets: 원본scene90767B/cleanplate1254²/abyss1920²/주민atlas1254²
+- composites: ground32triangles/fullworldclip·sourceUVskirt·후경시차
+- overlap: 배우/주민footY공식+기존뿔order30; lateral120접근으로두몸겹침완화
+- repeated silhouette: 큰원형재사용/신규반복천막0
+MEDIUM
+- connections: sourceXY/UV/nav1192 유지; 카메라가현재배우를따라주민위치까지이동
+- remaining holes: 원본feather미재현·hard wedge/경계보정필요
+GROUND
+- shadow: 배우/주민발기준opacity.26/order15; 주민정적타원radius12gate
+- contamination: 원본그림보존/새랜덤데코0
+- structure integration: skirt상단RGB source 일치→아래.22배음영; 실제heightmap추가0
+PLAYABLE
+- main arenas: 본편전투/보스arena검수0
+- travel space: 8방향260/470worldpx/s·boundsmargin12/navradius12
+- breathing space: 실제주민4대화/물건·부탁trial 선택; 본편보상/세이브연결0
+- threat space: 적spawn/피해/낙하추가0
+- combat readability: 기존전사/실버테일/드루이드공격표시; 새피해판정0
+LANDMARK
+- primary: 기존심연opening
+- secondary: 북쪽계단·동측뿔
+- tertiary: 주민4/접근ring/열린대화marker
+CAMERA QA
+- START: labreset5480/3740; 원본sourceSTART 실입장미관찰
+- EARLY: 하란4780/6660 실제대화화면
+- ARENA: 본편전투미검수
+- SIDE L: 남쪽하란공간/그밖서측전체미관찰
+- SIDE R: 베린5900/5580·네사6180/5020 실제화면/원본뿔겹침옵션유지
+- LANDMARK: 도릭5100/2500·북쪽계단주변화면/막힌여정완료로계산0
+- LATE: 네사부탁수락실화면; 전체상승여정미관찰
+- EXIT: 원본4020/1740 불변; 장전환인수0
+TECH QA
+- route: inspector4ready/startConnected·lateral120nearest 실제검사; 연결성은전체실플레이완료아님
+- collision: canonicalnav/radius12 유지; 물리높이·캐릭터IK미인수
+- pageerror: 최종3387 actual23check runtime0
+- 404: 정상자산HTTP실패0; NPCatlas변조시readyfalse/RAF0
+- seam: source상단skirt음영보정; hardedge·blur RETOUCH
+- loading: sourceSHA확인·실패닫힘; 새atlas/다른map폴백0
+- performance: renderer1/RAF최대1/cuemesh2pool·pagehide해제실검사; 장시간FPS/폰미인수
+FILES
+- stage-owned: root labhtml/mjs·terrain·scene-registration·NPCbillboards·cue 및관련docs
+- concurrent touched: owner STATE/LOG4 정상갱신만별도; 신규raw7후보미채택보존
+- unrelated touched: root0/game/index/editor·sourcePNG/scene/nav/save·보호10/foreign68불변
+GIT
+- staged: 완료소유code+docs만80부터즉시checkpoint
+- commit: 코드/docs/raw정확목록은외부Gitreceipt
+- push: 정상push/remoteexactSHA를각checkpoint영수증으로확인
+- deploy: 없음
+VISUAL VERDICT: RETOUCH
+NEXT PASS: 고밀도지면·큰절벽/전경alpha와feather경계, 주민전용리깅/실여정·본편consumer·native6/청취/IK 인수.
+```

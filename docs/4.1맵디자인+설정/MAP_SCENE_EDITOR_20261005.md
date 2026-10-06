@@ -1026,3 +1026,37 @@ STORY v4는 요청2결함을 해결했지만 method provider의 this=ports를 �
 | 시각/팀 상태 | VISUAL VERDICT: RETOUCH(맵 확대 흐림·wedge·skirt seam). Codex7 첫송신 자동승인검토 거절/수신0·나머지6미송신, ART 기존선택대기. 새팀/실행세션/같은TASK 재송신·거절우회0 |
 
 새 원자료는 `CH1_2_5D_TEAM_CANDIDATES_20261006.md` exact pin 표와 외부 `story-v5-official-receipt.json`으로 추적한다. 원본 v1–v4·게임·sourcePNG·scene/nav·save·foreign68·보호10·기존23은 유지한다. 완료소유만 actual80부터 즉시 code+docs checkpoint하고 정상push·remote exactSHA를 확인한다. paused 자동화/아침메일·권한·설치·Windows·게시 재개0.
+
+
+## 지옥의 틈 NPC 실제 연결 / 현재 독립 3387 계약 — 2026-10-06T14:38:11.904785+00:00
+
+현재 목표 `CH1-2_5D-INTERACTIVE-RIFT-CONTINUATION-20261006`. 이전 clip2260×1400/NPC 미연결/실editor 미인수 기록은 당시 관측 이력이다. 이번 lab은 전체8000×8000 원본 nav1192 범위에서 주민4의 원래 발을 표시하고, 기존 대화 consumer와 카메라 추종을 연결한다. 본편 source start/exit·scene/nav·게임·사용자 세이브와 분리한다.
+
+| 항목 | 현재 실제 코드·검수 |
+|---|---|
+| 소비자 | tools/2_5d-world-lab.html/.mjs + rift-terrain.mjs + scene-registration.mjs + 새 interaction-cue-lifetime.mjs. 기존 주민 billboard 모듈을 실제 연결 |
+| 실제 결과 | 최종 Mac Chrome/3387 브라우저 23검사 PASS, pageerror0/HTTP실패0. 원본 atlas 변조 시 ready=false/RAF0. 초기 QA 하니스 오류와 수정 후 최종 PASS를 별도 보존 |
+| NPC/대화 | 원본 atlas/발4·displayScale1.8, R대화. 물건 받기1회·재방문 중복0·다른 NPC 부탁 수락을 실제 선택. trialRecords 2, actualGrant=false/editor-session-only. 본편 아이템·퀘스트·save·상승 적용0 |
+| 위치 시험 | 원본 NPC foot·nav 불변. 별도 displayApproach로 하란4780/6660·베린5900/5580·네사6180/5020·도릭5100/2500, NPC까지 모두120worldpx. 버튼은 시험 위치 이동이며 전체 여정 실플레이 증거가 아님 |
+| 실제 에디터 | 별도 fresh3387에서 저장 버튼 다운로드→그 파일 importProject(...,false)→snapshot 대조. 실제90767B/c508e70d… 원본과 동일. 비동기·입력변조·파일SHA불일치 포함5검사 PASS. lab 현재 editorProvider 없음=PENDING 유지 |
+| 시각/영상 | 네 주민 대화·부탁 화면 실제 확인, 캐릭터 겹침 완화. interactive-motion.webm 522811B는 canvas 이동/공격·외형교체 영상이며 DOM대화/소리 미포함. 맵1254² 확대 흐림·hard wedge·마스크 feather 미재현 때문에 VISUAL VERDICT: RETOUCH |
+| 남은 Gate | physicalHeight UNKNOWN, NPC 정적billboard, 전용주민리깅·발픽셀IK·본편/native6·보스전 여정·청취·A급 인수0 |
+| 팀 현황 | Claude8 기존7 source/end/idle 실제 확인. 완료 raw 누적24(기존17+이번7). public 역할 SKILL/ANIMVFX/MAP/QA4 유지, cue는 ANIMVFX 추가 파생모듈. 신규 MAP/BOSS/STORY/SKILL/QA/ENEMY raw를 일반 본편 소비로 승격0. Codex7 첫 전문송신 자동승인검토 거절/수신0·다른6미송신, ART 기존선택대기; 전원가동 선언0 |
+
+상세 수치·공식·API·원자료 핀·§23 보고는 `docs/4.1맵디자인+설정/HELL_RIFT_2_5D_SLICE_20261006.md`의 이 목표 절을 따른다. 실제 증거는 `/Users/fordeargamers/.codex/visualizations/rift-interactive-20261006/`의 final-interaction-v2-result.json(23), editor-final-result.json(5), actual-editor-export.scene.json, final-rift-*.png, final-nessa-request.png, interactive-motion.webm 및 Git 영수증이다. source/fixture/root browser/native/listening 인수를 서로 대체하지 않는다.
+
+### 실제 저장·불러오기와 format-only 분리
+
+| 항목 | 현재 구현/실관측 |
+|---|---|
+| public API | async editorRoundtrip(baseline,editorProvider=null); await save(passedClone), await load(saved), 보호payload를변경전baseline과대조. assessRegistration도await |
+| format-only | 단순JSON/provider→FORMAT_VERIFIED, realEditor=false. 함수shape나selfdeclaredreal만으로actualeditor PASS0. provider없음PENDING |
+| browser provider 조건 | saved는string, kind=browser-export-import, evidence.actualDownload/actualImport/isolatedContext 각각정확true, url=http://127.0.0.1:3387/editor.html, artifactSha256는소문자64hex |
+| pin guard | TextEncoder UTF8(saved) SHA256와artifactSha256 대조. 불일치FAIL; save입력변조/비동기load reject/보호payload변조도FAIL |
+| 실제 실행 | fresh 격리3387 editor scenequery→scene-save실제download→90767B JSON의 importProject(...,false)→rawsnapshot 대조. artifact SHA c508e70d23fafb9295798763c5224c7c92699dfea3d3beebdb6ab18173f44a3a; canonical bytes와동일 |
+| 증거 한계 | evidence boolean은암호학적browserattestation아님. root 실제다운로드/실editor실행 기록이이번관측근거. 자동으로모든provider가검수됐다고선언0 |
+| UI/link | tools/2_5d-world-lab.html에서 ../editor.html?scene=assets%2Fmap%2Fhell_rift%2Fresident_layers_20261006%2Fhell-rift-residents-v2.scene.json, 새tab/noopener. 원본editor코드변경0. lab로드마다provider를공급하지않으므로metric-editor=PENDING이정확 |
+| provenance | 기존MAPv3 raw11746B/e10b79849bdf34230daaaab6c976a759229ee14953ed9d6f467f65e333de555c 유지; rootAdaptation=async save/import + FORMAT_VERIFIED separate from actual browser evidence, adaptationGoal=현재목표 |
+| 신규MAP raw | caaf2855…5401B 원본은fakeecho/format승격·실export→import누락 때문에미채택. root 독립수정·실행과구분 |
+
+실editor 새5검사 PASS와 독립lab 최종23검사는 서로 다른 범위다. sourcePNG/씬/nav/보호editor/WIP/세이브를그대로유지한다.

@@ -9,7 +9,7 @@ export const RIFT_TERRAIN = Object.freeze({
   sceneSha256: 'c508e70d23fafb9295798763c5224c7c92699dfea3d3beebdb6ab18173f44a3a',
   cleanPlateSha256: 'aa64cb7bbfff10c9d5ea2378ef3f8f528bbfb2acfb43ddb9a6520b9f24127673',
   abyssSha256: 'ace0c853cc27cbb4d2b807104273399a1144df77d31b1003e574141fed10f991',
-  clip: Object.freeze({ left: 4300, top: 3200, right: 6560, bottom: 4600 }),
+  clip: Object.freeze({ left: 0, top: 0, right: 8000, bottom: 8000 }),
   centre: Object.freeze({ x: 5430, y: 3900 }),
   spawn: Object.freeze({ x: 5900, y: 3820 }),
   authoredDepth: 240, authoredInset: .9, physicalHeight: 'UNKNOWN'
@@ -108,7 +108,9 @@ export async function createRiftTerrain({ THREE, angle=50, scale=400 }={}) {
         const distance=Math.abs(dx*(q[1]-a[1])-dy*(q[0]-a[0]))/len;
         const maxDistance=Math.max(1,Math.abs(dx*(inner[i][1]-a[1])-dy*(inner[i][0]-a[0]))/len),f=Math.min(1,distance/maxDistance),v=worldToScene(q[0],q[1],-cfg.authoredDepth*f);
         wallPos.push(v.x,v.y,v.z);wallUV.push(q[0]/8000,1-q[1]/8000);
-        const c=new THREE.Color().setRGB(.15-f*.11,.19-f*.13,.22-f*.14);wallColors.push(c.r,c.g,c.b);
+        // Match the source ground at the top edge before descending into shade.
+        // The earlier constant dark rim introduced an artificial polygon seam.
+        const shade=1-.78*f,c=new THREE.Color().setRGB(shade,shade,shade);wallColors.push(c.r,c.g,c.b);
       }
     }
     const walls=new THREE.BufferGeometry();walls.setAttribute('position',new THREE.Float32BufferAttribute(wallPos,3));walls.setAttribute('color',new THREE.Float32BufferAttribute(wallColors,3));walls.setAttribute('uv',new THREE.Float32BufferAttribute(wallUV,2));walls.computeVertexNormals();resources.push(walls);
@@ -126,7 +128,7 @@ export async function createRiftTerrain({ THREE, angle=50, scale=400 }={}) {
     return {object3d,worldToScene,sceneToWorld,canWalk,spawn:{...cfg.spawn},bounds,occluders,
       // Diagnostics receives a clone of the actual loaded scene, never the mutable navigation source.
       sourceSceneSnapshot:()=>K.clone(source),
-      snapshot:()=>({disposed,angle,scale,sourceSceneSha256:cfg.sceneSha256,navSha256:source.sourcePins.nav,walkableCount:1192,clip:{...cfg.clip},physicalHeight:'UNKNOWN',authoredDepth:cfg.authoredDepth,authoredInset:cfg.authoredInset,groundTriangles:floorTriangles.length,occluderFootY:horn.y,sourceParallaxApplied:true,skirtTextureApplied:true,maskFeatherApplied:false,nativeAccepted:false}),
+      snapshot:()=>({disposed,angle,scale,sourceSceneSha256:cfg.sceneSha256,navSha256:source.sourcePins.nav,walkableCount:1192,clip:{...cfg.clip},physicalHeight:'UNKNOWN',authoredDepth:cfg.authoredDepth,authoredInset:cfg.authoredInset,groundTriangles:floorTriangles.length,occluderFootY:horn.y,sourceParallaxApplied:true,skirtTextureApplied:true,skirtTopSourceMatched:true,maskFeatherApplied:false,nativeAccepted:false}),
       dispose(){if(disposed)return;disposed=true;object3d.clear();for(const r of new Set(resources))r.dispose();resources.length=0;}
     };
   } catch(error) {object3d.clear();for(const r of new Set(resources))r.dispose();throw error;}

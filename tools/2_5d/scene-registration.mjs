@@ -4,7 +4,9 @@ export const SCENE_REGISTRATION_PROVENANCE = Object.freeze({
   status:'ROOT-ADOPTED', role:'MAP',
   endId:'CH1-2_5D-STRICT-CONSUMER-FIX-20261006-MAP-V3-CANDIDATE',
   source:'tools/team-followup-20261006/hell-rift/MAP/scene-roundtrip-2_5d.v3.candidate.mjs',
-  sourceBytes:11746, sourceSha256:'e10b79849bdf34230daaaab6c976a759229ee14953ed9d6f467f65e333de555c'
+  sourceBytes:11746, sourceSha256:'e10b79849bdf34230daaaab6c976a759229ee14953ed9d6f467f65e333de555c',
+  rootAdaptation:'async save/import + FORMAT_VERIFIED separate from actual browser evidence',
+  adaptationGoal:'CH1-2_5D-INTERACTIVE-RIFT-CONTINUATION-20261006'
 });
 
 import '../map-scene-core.js';
@@ -106,16 +108,25 @@ export function projectionRoundtrip(scene, opts = {}) {
 }
 
 /* Fix 2: pristine baseline; throwaway clone to provider; compare reloaded vs baseline; flag input mutation. */
-export function editorRoundtrip(baseline, editorProvider = null) {
+export async function editorRoundtrip(baseline, editorProvider = null) {
   if (!editorProvider || typeof editorProvider.save !== 'function' || typeof editorProvider.load !== 'function')
     return { status: 'PENDING', reason: 'editor save/import/export provider 없음', kind: 'editor' };
   try {
     const passed = K.clone(baseline);
-    const saved = editorProvider.save(passed);
+    const saved = await editorProvider.save(passed);
     if (!deepEqual(passed, baseline)) return { status: 'FAIL', kind: 'editor', reason: 'provider.save 가 입력을 변조함 (input mutation)' };
-    const reloaded = editorProvider.load(saved);
+    const reloaded = await editorProvider.load(saved);
     const cmp = compareToCanonical(reloaded, baseline);         // against pristine baseline, never a mutated one
-    return { status: cmp.ok ? 'VERIFIED' : 'FAIL', kind: 'editor', diffs: cmp.diffs };
+    // Format-only providers cannot establish that the real browser editor exported/imported.
+    const proof=editorProvider.evidence;
+    const actual=typeof saved==='string' && editorProvider.kind==='browser-export-import' && proof?.actualDownload===true
+      && proof?.actualImport===true && proof?.isolatedContext===true
+      && proof?.url==='http://127.0.0.1:3387/editor.html' && typeof proof?.artifactSha256==='string'
+      && /^[a-f0-9]{64}$/.test(proof.artifactSha256);
+    if(actual && await sha256hex(new TextEncoder().encode(saved))!==proof.artifactSha256)
+      return {status:'FAIL',kind:'editor',reason:'export artifact SHA256 불일치',realEditor:false};
+    return { status: cmp.ok ? (actual?'VERIFIED':'FORMAT_VERIFIED') : 'FAIL', kind:'editor',
+      realEditor:actual, evidence:actual?structuredClone(proof):null, diffs:cmp.diffs };
   } catch (e) { return { status: 'FAIL', kind: 'editor', reason: e.message }; }
 }
 
@@ -135,7 +146,7 @@ export async function assessRegistration(scene, { canonicalBytes = null, hasher 
     canonicalCompare: { status: 'UNKNOWN', reason: 'canonicalBytes 미제공' },
     transforms: transformSupport(baseline),
     projectionRoundtrip: projectionRoundtrip(baseline, { angle, scale }),
-    editorRoundtrip: editorRoundtrip(baseline, editorProvider),
+    editorRoundtrip: await editorRoundtrip(baseline, editorProvider),
     profileValid: !!residentPaintingProfile(baseline),
     walkableCount: baseline.walkable.filter(Boolean).length,
     inferred_trial_geometry: inferredTrialGeometry(baseline),

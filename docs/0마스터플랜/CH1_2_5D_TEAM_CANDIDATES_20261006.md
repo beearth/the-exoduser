@@ -184,3 +184,46 @@ Codex7 새 QUESTNPC 첫송신은 approvalpolicy=never에서 도구승인필요�
 MAP 최초 오타20261006 Write 후 rm -rf는 사용자 삭제/cleanup0 위반. 최초 outscope source를 제외하고 correct20261001 Write14:15:18.344Z 이후 정상경로만 분리. MAP end126406cd…14:16:28.696Z. STORY 종료문에도 outside20261006-PLACEHOLDER Write/rm을 공개하여 별도 실제 tool 증거 확인 요청; '레포 밖이라 삭제금지 준수'로 계산0. 기타 삭제피해범위 UNKNOWN, 추가삭제/이동/cleanup0. 실제 game/sourcePNG/scene/nav/save/protected10/foreign68 전후 exact보존; paused자동화·메일/Windows/권한/설치/새팀0.
 
 현재 VISUAL VERDICT: RETOUCH. 지도 원화1254² 확대흐림/높이UNKNOWN. root live integration·실editor·본편/native6/청취/IK/A급 인수0. 전체 docs NPC/주민/2.5D/displayScale/editor-port/currentgoal 키워드 검색 및 현행 완료/후보대장 갱신으로 보존한다.
+
+
+## 지옥의 틈 NPC 실제 연결 / 현재 독립 3387 계약 — 2026-10-06T14:38:11.904785+00:00
+
+현재 목표 `CH1-2_5D-INTERACTIVE-RIFT-CONTINUATION-20261006`. 이전 clip2260×1400/NPC 미연결/실editor 미인수 기록은 당시 관측 이력이다. 이번 lab은 전체8000×8000 원본 nav1192 범위에서 주민4의 원래 발을 표시하고, 기존 대화 consumer와 카메라 추종을 연결한다. 본편 source start/exit·scene/nav·게임·사용자 세이브와 분리한다.
+
+| 항목 | 현재 실제 코드·검수 |
+|---|---|
+| 소비자 | tools/2_5d-world-lab.html/.mjs + rift-terrain.mjs + scene-registration.mjs + 새 interaction-cue-lifetime.mjs. 기존 주민 billboard 모듈을 실제 연결 |
+| 실제 결과 | 최종 Mac Chrome/3387 브라우저 23검사 PASS, pageerror0/HTTP실패0. 원본 atlas 변조 시 ready=false/RAF0. 초기 QA 하니스 오류와 수정 후 최종 PASS를 별도 보존 |
+| NPC/대화 | 원본 atlas/발4·displayScale1.8, R대화. 물건 받기1회·재방문 중복0·다른 NPC 부탁 수락을 실제 선택. trialRecords 2, actualGrant=false/editor-session-only. 본편 아이템·퀘스트·save·상승 적용0 |
+| 위치 시험 | 원본 NPC foot·nav 불변. 별도 displayApproach로 하란4780/6660·베린5900/5580·네사6180/5020·도릭5100/2500, NPC까지 모두120worldpx. 버튼은 시험 위치 이동이며 전체 여정 실플레이 증거가 아님 |
+| 실제 에디터 | 별도 fresh3387에서 저장 버튼 다운로드→그 파일 importProject(...,false)→snapshot 대조. 실제90767B/c508e70d… 원본과 동일. 비동기·입력변조·파일SHA불일치 포함5검사 PASS. lab 현재 editorProvider 없음=PENDING 유지 |
+| 시각/영상 | 네 주민 대화·부탁 화면 실제 확인, 캐릭터 겹침 완화. interactive-motion.webm 522811B는 canvas 이동/공격·외형교체 영상이며 DOM대화/소리 미포함. 맵1254² 확대 흐림·hard wedge·마스크 feather 미재현 때문에 VISUAL VERDICT: RETOUCH |
+| 남은 Gate | physicalHeight UNKNOWN, NPC 정적billboard, 전용주민리깅·발픽셀IK·본편/native6·보스전 여정·청취·A급 인수0 |
+| 팀 현황 | Claude8 기존7 source/end/idle 실제 확인. 완료 raw 누적24(기존17+이번7). public 역할 SKILL/ANIMVFX/MAP/QA4 유지, cue는 ANIMVFX 추가 파생모듈. 신규 MAP/BOSS/STORY/SKILL/QA/ENEMY raw를 일반 본편 소비로 승격0. Codex7 첫 전문송신 자동승인검토 거절/수신0·다른6미송신, ART 기존선택대기; 전원가동 선언0 |
+
+상세 수치·공식·API·원자료 핀·§23 보고는 `docs/4.1맵디자인+설정/HELL_RIFT_2_5D_SLICE_20261006.md`의 이 목표 절을 따른다. 실제 증거는 `/Users/fordeargamers/.codex/visualizations/rift-interactive-20261006/`의 final-interaction-v2-result.json(23), editor-final-result.json(5), actual-editor-export.scene.json, final-rift-*.png, final-nessa-request.png, interactive-motion.webm 및 Git 영수증이다. source/fixture/root browser/native/listening 인수를 서로 대체하지 않는다.
+
+### ANIMVFX 공식 완료 및 현행 소비 경계
+
+| 파일 | bytes | SHA256 | 공식 완료 ID | actual end UUID / textSHA |
+|---|---:|---|---|---|
+| tools/team-followup-20261006/hell-rift/ANIMVFX/interaction-cue-lifetime-2_5d.candidate.mjs | 9287 | 140748cf0ed50961e18b26750c66e240fb0c40abd8ace2baac8e1c54aa0ae567 | CH1-2_5D-INTERACTIVE-RIFT-CONTINUATION-20261006-ANIMVFX-INTERACTION-CUE-CANDIDATE | 97feb100-4d0d-40e9-83b9-f8ef88ba16bf / eeacb26c5f1aac11770e80b0bfe1f36b502cc79b6cef8e0a85bebd0f694b61db |
+
+actual end14:21:55.097Z/idle14:23:13.378665Z.원자료는후보로보존, root 파생public 14063B/1fe07971b3943d4a72ee618d467faf5bfea41175525e19f8f6478740be09aab7을실제lab에연결했다. 팀 초기9134B 검사는10PASS+2FAIL이며exit0만으로전체PASS로계산0. 최종9287B 실제관측은수정3check만; 이전10유지주장은추론이다. 호출은node --input-type=module -e이며stdin아님. root 별도새stdin1회6groupPASS·실Chrome23checkPASS를구분한다. 팀untracked48은전체NUL카운트가아니다. 기존6raw+root주민module은075e3e83d52a124d3fc1326da9a614dfe2436e00 정상push/remoteexact로먼저보존했다.
+
+| 신규raw | root판정/채택 |
+|---|---|
+| MAP | 미채택; root별도async/actualdownloadimport수정. fakeprovider/문자열길이오류이력유지 |
+| STORY | selectNode95행 own-key guard없는 __proto__/constructor P2, raw미채택. 기존Map기반대화consumer를사용 |
+| BOSS | 12자SHA접두사는fullpin아님. dive/emerge1774×887/2609546B/fullSHA4d154deda10592a655b2504ddcfa186f2e9af443da1146166683c8ad50c506ce, transform2400×724/1634653B/7b329ce2d70b9572144391579405029cc74ac07c479b67d73783bea021dc365d, beast1774×887/1788236B/41cf09b5b90208bf343f13032664bcccbc9d22607a1aa913ab953e257860b8fd. beastdir[0,7,6,5,4,3,2,1]/underhidden/footAnchor·referenceHeightUNKNOWN. 새catalog등록·본편소비0 |
+| SKILL/QA/ENEMY | 이번raw 일반소비미채택. root 기존poseconsumer/actualbrowserQA를사용. enemy source crop은renderer/AI검수아님 |
+| ANIMVFX | raw불변 후보보존/root파생cue만실화면소비. grant/save/native0 |
+
+### 실제 경로·삭제 규칙 위반 기록
+
+| 담당 | 실제 도구 관측 | 현재 경계 |
+|---|---|---|
+| MAP | wrong20261006 tree Write14:14:33.984Z 성공5703e523-b7d0-4f8c-a490-409b5feea257, rm -rf14:14:50.726Z 성공81d0a9a7-5487-4561-8338-b362a68354e8. correct20261001 Write14:15:18.344Z 성공5d928889-5129-406b-ada1-59da3450ac31 | wrongtree 없음/피해 UNKNOWN |
+| STORY | wrong20261006-PLACEHOLDER11B Write14:14:43.413Z 성공bf6a168f-a7ec-4427-99e1-2573c13010d5, rm -f14:14:52.434Z 성공f65065c6-0eff-4ed7-8204-809e5b040bb4. placeholder SHA4097889236a2af26c293033feb964c4cf118c0224e0d063fec0a89e9d0569ef2 | placeholder 없음/피해 UNKNOWN |
+
+둘 다 사용자 삭제/cleanup0 위반이며 '레포밖이므로준수'로계산하지않는다. 현재wrongtree/placeholder없음은기존내용없음의증거가아니다. 덮어쓰기·삭제피해범위 UNKNOWN. 담당로그의실제도구기록과정상correctWrite/end를분리보존, 종료된팀추가송신/추가삭제·이동·cleanup·추정복구0. 보호10/foreign68/sourcePNG·scene/nav·save는원총괄전후핀으로별도확인한다.
