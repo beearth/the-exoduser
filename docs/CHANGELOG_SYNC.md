@@ -54350,3 +54350,8 @@ root 접지그림자 code3 WIP·타인 변경·live supervisor STATE/LOG·원본
 ## 2026-10-06 완료 캐릭터 리깅·consumer 원자료 checkpoint
 
 완료 지원 소유 ID ROOT-DIRECTIONAL-CHARACTER-RIGS-20261006 및 ROOT-ADOPTED-POSE-EFFECT-CONSUMERS-20261006. tools/2_5d/character-rigs.mjs·character-rig-catalog.mjs·visual-pose-consumer.mjs·actor-effect-lifetime.mjs 및 상세 DIRECTIONAL_CHARACTER_RIGS_20261006.md를 exact pins로 보존한다. 기존 전사/실버테일/드루이드29PNG의 실제 Bone12·SkinnedMesh1과 고해상도 실버테일 원본 crop, SKILL/ANIMVFX 원raw에서 분리한 pose/효과 수명 파생모듈이다. 공식 raw6 pins/endID는 기존 fb923901fc1a1c5d864b0fc5353be2a2cd871d63으로 보존. docs 전체 관련키워드 검색 완료. 실제 전체변경80 도달로 완료 소유만 먼저 보존하며 통합lab의 소비자·신규 공격/가림/효과 화면 검수는 아직 진행중으로 구분한다. 코드원자료 보존을 본편/native/시각·청취/A급완료로 계산0. 타인WIP/index/원본PNG/scene/nav/세이브/보호2_3 변경0.
+
+
+## 2026-10-06 MAP 2.5D projection raw 완료 보존
+
+공식완료 CH1-2_5D-CHARACTER-MAP-SLICE-20261006-MAP-CANDIDATE, end ea4d8287-0d9b-4dc9-87bd-2c642d5f2d3c의 scene-roundtrip-2_5d.candidate.mjs exact6743B/70ea5ad59ecc82e5d3926c203ddee82d1aaba2f38ea8b49db7a6a16a912e0239를 후보 미채택 보존했다. nav개수/자기projection만으로 원본보존·editor roundtrip PASS를 주장하는 경계오류가 있어 root 인수gate로 사용하지 않는다. QA/BOSS/STORY/SKILL의 의미검수 오류와 QA1257 scratch/cleanup 관측은 CH1_2_5D_TEAM_CANDIDATES_20261006.md에 정확히 동기화했다. docs 전체 키워드 검색 완료; raw7/보호/타인WIP 그대로, 현재후속v2는 오더담당 소유.
