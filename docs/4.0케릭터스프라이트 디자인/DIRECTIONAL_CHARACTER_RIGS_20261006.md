@@ -374,7 +374,7 @@ STORY v3의 plain thenable 회귀와 ports/ctx.snapshot try 경계 P2를 찾아 
 | 항목 | 코드와 같은 현행 상태 |
 |---|---|
 | 맵/카메라 | RIFT_TERRAIN.clip 0/0…8000/8000, groundTriangles32, source nav1192 불변. centre5430/3900·reset5480/3740, 정사영50°/scale400/기본높이3.5, 배우 위치를추종. physicalHeight UNKNOWN/depth240/inset.9 |
-| 지면/절벽 | 원본1254² cleanplate·1920²abyss/sourcePNG불변. skirt shade=1−.78f로source상단1→아래.22. maskFeatherApplied=false/확대흐림·hard wedge 남음 |
+| 지면/절벽 | 2026-10-06 이력: skirt shade=1−.78f/maskFeatherApplied=false. 2026-10-07 현행: 고정globalUV·28선분 최단거리/120worldpx/opacity.38 sRGB 합성을 skirt·backplane 공용 불투명재질로 소비, shader 연결 뒤 maskFeatherApplied=true. ground-only sRGB soft-light alpha.4/nav1192/mirror480²/period320. sourcePNG1254²·1920²불변/원해상도 확대흐림 RETOUCH |
 | NPC4 표시 | 기존1254²atlas SHA ff20e1f5… /displayScale1.8/정적billboard. sourcefeet 하란4660/6660·베린6020/5580·네사6300/5020·도릭5220/2500 불변. 배우/주민order=30+(footY−4320)/8000×10/뿔30 |
 | 접근·대화 | displayApproach 하란4780/6660·베린5900/5580·네사6180/5020·도릭5100/2500/각120거리. nearest일치·navradius12검사. R/KeyR대화, 기존createRiftDialogue/session Map 사용; range140/line step≤20/radius12. 원본접근검사40거리/source.start·exit/nav변경0 |
 | 선택·종료 | 실제베린gift1·재방문중복0·네사quest1, 총trial2/actualGrantfalse/editor-session-only. 이동·외형/모션/위치변경·pause·Escape·닫기·pagehide에서닫음. 대화중neutralidle/facing. 본편grant·quest등록·save·chaptergate0 |
@@ -404,3 +404,10 @@ STORY v3의 plain thenable 회귀와 ports/ctx.snapshot try 경계 P2를 찾아 
 | 검증 | worker 신규stdin1회 핵심 PASS; PNG decoder IHDR stub이므로 실제GPU/pixels 검수는 root Gate. 본편/native 발접지 인수0 |
 
 MAP PRODUCTION REPORT: geometry/경로/충돌/외곽/랜드마크 불변, 특수동작 표시 소비만 완료. **VISUAL VERDICT: RETOUCH**, 새 WebGL/camera 검수 대기.
+
+
+## 2026-10-07 현행 world-lab 특수동작 소비
+
+새public baked API를원래3캐릭터방향관절catalog와분리하여실worldlab에연결했다. select동작7(dive/under/erupt/tele-prep/tele-warn/transform/beast)·방향8·1회재생/끝내기. play는dark-druid선택후clearIntent/effectreturn, existingRAF update만진행한다. active동안normalrig/helpers숨김, under는shadow도숨김, completed시normalrig/그림자복귀. 이동·기본모션·대화·character/reset/blur/visibilitycancel에서none과actor/helpers/shadow를함께복구한다. paused의dt/좌표0유지, 움직임키가paused특수를취소해도actor복귀한다. 현재재생이름은snapshot.id를사용하여nextselect와혼동0. 기본12frame표시앵커검사는특수active동안disabled이며특수의해부학적foot인수로사용0.
+
+신규실Chrome7종시작/1회종결+under숨김및정지취소·blur복구·지표·character·NPC·camera·sourcePNG변조를검수. phase1유효18/phase2신규9 PASS와phase1harnessfocus/blur오류1건은따로보존. renderer/Pixels정상표시≠native실전투time·소환/공격·피격·실제높이·footreference인수. **VISUAL VERDICT: RETOUCH**: transform/beast/erupt화면검수했으며erupt상단별도잔여띠가보인다. 기존PNG정확셀보존, 새스프라이트제작/임의cutout/rigcatalog등록0.

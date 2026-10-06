@@ -405,3 +405,24 @@ NEXT PASS: 고밀도지면·큰절벽/전경alpha와feather경계, 주민전용�
 | Gate | worker 신규 CPU stdin6그룹 PASS. 실제 WebGL compile/link·화면은 root 진행 중. 새 ANIMVFX raw candidatePin=null/candidateAdopted=false |
 
 MAP PRODUCTION REPORT (§23): MASTER→OUTER→MEDIUM/경로/랜드마크/geometry/충돌 불변, GROUND 색재질 public 모듈1개 완료, PLAYABLE1192 유지 계약, CAMERA 신규 시각검수 대기, TECH CPU6그룹 PASS. **VISUAL VERDICT: RETOUCH**; 원본1254²의 큰 형태 해상도 복원/native 높이 인수로 계산하지 않는다.
+
+
+## 2026-10-07 현행 실WebGL 재질·경계 통합
+
+| ID/적용 위치 | 정확 구현 계약 |
+|---|---|
+| rift-terrain/createRiftTerrain | groundDetail async controller의 material을 ground1 mesh에 연결; controller가 자체3textures+1material 해제, borrowedplate는terrain에서1회해제. setGroundDetailEnabled(boolean) view-only |
+| obj-rift-depth/source boundary | 원 mask28선분의 world 고정 최단거리d, outside0/inside smoothstep(0,120,d), opacity.38×alpha; feather=0은hardclip. sourceParallax.965→카메라지면투영view와centre4000의 offset ±(view−4000)×.035/8000 |
+| skirt/backplane | 공용 MeshBasicMaterial opaque·mapplate+abyss sRGB sourceover색합성. 기존shade1−.78f/abyssTint0x8396a7 제거. 같은onBeforeRender로각meshparallax갱신. 120은새depth비율/추정값아님 |
+| XY/UV/geometry | globalUV=(x/8000,1−y/8000), 원opening28/nav1192/scene90767B·c508e70d…불변. floor32triangles/authoredInset.9/authoredDepth240/camera50°/scale400 유지. 실제높이UNKNOWN |
+| ground detail | 원 PNG1024×1536/2,877,605B/fullSHA a38117e… /crop320·1120·240·240/mirror480²/period320/alpha.4/sRGB soft-light. 실제nav200²/40,000byteSHA a4508aa… 검증. hardnearest×softlinear edge385칸=128/interior807칸=255 |
+| UI | 지면 재질 상세 checkbox A/B; 기존renderer/RAF1에 통합, 추가RAF/timer0, scene/save/정본에 checkbox 저장0 |
+| snapshot | openingComposite.compiled/featherWorldPx120/opacity.38/segments28/blendSpace sRGB/opaqueSurfaces/globalUV/maskWorldFixed; maskFeatherApplied는shader연결후true. groundDetail.compiled/compileCalls1/source.fullPinVerified/navPinVerified 확인 |
+| 실제 검사 | 신규Chrome phase1 유효18checks PASS(모션7 시작/1회종료·under숨김 포함), phase2 신규lifecycle/대화/이동/PNG변조9checks PASS. 첫phase19번은blur를발생시키지않고focus만주면서취소를기대한harness오류FAIL로 보존/정정. 18개성공항목 전체재실행0 |
+| 실제 pixels | 같은정지camera의지면A/B 1160cell-centre관측: 비보행967곳 pixel delta0, 보행193중156곳 변화. 전체맵·모든경계검수완료 주장은0. 기본python PIL불가→설치없이번들Python 사용 |
+| 캡처 범위 | 외부before-qa 캡처파일명을재사용하여 그파일도수정후화면이다. after-initial-qa에이사실명시. 동일시점before/after파일쌍으로비교했다는주장0. 실제after-start/after-Haran/after-Nessa/special3캡처를root가열어검수 |
+| 수명수정 | 정지중special취소는기본actor/helpers/shadow즉시복구; same-druid특수시작은이전effect풀반환. 동작select는다음재생설정이며표시지표는실제special.id로계산 |
+
+MAP PRODUCTION REPORT (§23): MAP 지옥의틈/rootqualitynow; MASTER/OUTER/MEDIUM/경로/좌표불변; GROUND 원navgated재질만변경; PLAYABLE1192/canonicalradius12불변; LANDMARK/CENTER 원foot/horn불변; SMALL DETAIL mirror480²; CAMERA 실제start/Haran/Nessa/7특수동작관측·초점/정지/추적검사; TECH 신규27유효Chromechecks/noerrors, 음향/native0. 외부영수증 `rift-quality-live-20261007/live-quality-result.json`, `lifecycle-quality-result.json`, `ground-ab-pixels.json`.
+
+**VISUAL VERDICT: RETOUCH** — 이전하드왼쪽wedge색단절은현재화면에서완화됐지만원plate1254²의큰지형확대흐림은남음. erupt셀상단에잔여띠가보이며원PNG/fullcell을보존했으므로root임의삭제·새foot추정0. 특수foot/referenceHeight UNKNOWN, 실제본편/native·청취·보상save·A급인수0.

@@ -54518,3 +54518,10 @@ Codex7의 기존7 역할도 UIUX 조작·선택/ITEM 단일 유품 provider/BUIL
 ## 2026-10-07 CH1-RIFT-QUALITY-NOW 완료 소유 checkpoint1
 
 원총괄24시간 즉시제작 지시에 따라 전문7 이번 TASK source 도구 성공 확인. 실제83부터 공식end/정확pins raw5(MAP/BOSS/STORY/SKILL/QA)와 완료 public모듈2만 후보미채택·실화면대기로 보존. terrain/worldlab3 WIP·ANIMVFX/ENEMY 공식end미확인·foreign68·owner STATELOG4 제외. 전체docs 관련keyword 검색 후 상세맵/캐릭터/후보 기록 동기화. publicground CPU6그룹/newspecialCPU핵심1회 PASS≠WebGL/native/청취/실제보상save 인수. 정상hook commit/push/exactSHA는 외부 checkpoint1 영수증으로 대조.
+
+
+## 2026-10-07 즉시연속운영·realWebGL 통합 checkpoint2
+
+최신24시간지시로exoduser-2단일ACTIVE/30분/종료없음 저장확인, 이전10/8대기/09–19window/19중지 superseded. 기존2owner에control갱신 전달/새전문중복TASK0. rootterrain source120worldpx/28nearest/opacity.38/sRGBopaque skirt-backplane/groundDetail3textures1material 및worldlab baked7mode8dir기존RAF 연결. 정지취소actor+shadow복구/같은druid효과풀반환/실모션지표수정. 신규실Chrome phase1유효18+phase2신규9PASS, phase1#19은focus를blur로오인한harnessfailure보존·정정. sourcePNG변조ready/RAF거부. 실제A/B1160cell관측(비보행967 delta0/보행193중156change). 원맵흐림/erupt상단잔여띠/footUNKNOWN RETOUCH/native청취0.
+
+checkpoint1 stage수집최종정정:raw5가아니라ENEMY포함6이며e01dc389ef12ab7494beb4bf4eb63eb621460d5c remoteexact. 마지막ANIMVFX공식end+10462B/6aba605a7cb144634a0653c05e66c1f819f0d63f73eaf936bbf76c0f4f3d9eb4 raw미채택보존추가. docs전체관련키워드검색/18관련정본행을역사와현행으로정확분리+상세map/character/운영4/후보Gates동기화. 이전원자료·foreign68·ownerSTATELOG4·게임/세이브/보호2_3변경0. before명캡처는수정후재사용됐다고명시/동일before-after쌍증거로계산0. 정상Git검수영수증은외부 `rift-quality-live-20261007` 보존.

@@ -231,7 +231,7 @@ actual end14:21:55.097Z/idle14:23:13.378665Z.원자료는후보로보존, root �
 
 ## CH1-RIFT-QUALITY-NOW-20261007 즉시 완료 소유 보존 1
 
-실제 변경83에서 상세 시각검수가 끝나기를 기다리지 않고 공식end/정확pins가 일치하는 raw만 보존한다. ANIMVFX·ENEMY는 당시 공식 종료가 없어 이번 stage에서 제외한다. 전문7의 새 TASK source 도구 성공은 owner checkpoint ALL7으로 확인했다. 아래 raw의 본편·public 채택은 모두 false, VISUAL/native/청취/실제보상·save 인수0. 두 public 모듈은 root 별도 구현이며 새 raw를 곧바로 public 소비하지 않는다. terrain/world-lab 통합3파일은 root 진행 중이므로 이번 stage에 포함하지 않는다.
+실제 변경83에서 상세 시각검수가 끝나기를 기다리지 않고 공식end/정확pins가 일치하는 raw만 보존한다. ANIMVFX는 당시 공식 종료가 없어 stage에서 제외했다. ENEMY는 stage 직전 공식 종료·핀 확인이 완료되어 포함했다. 전문7의 새 TASK source 도구 성공은 owner checkpoint ALL7으로 확인했다. 아래 raw의 본편·public 채택은 모두 false, VISUAL/native/청취/실제보상·save 인수0. 두 public 모듈은 root 별도 구현이며 새 raw를 곧바로 public 소비하지 않는다. terrain/world-lab 통합3파일은 root 진행 중이므로 이번 stage에 포함하지 않는다.
 
 | 역할 | 공식 완료 ID | end UUID | bytes | full SHA256 |
 |---|---|---|---:|---|
@@ -243,3 +243,19 @@ actual end14:21:55.097Z/idle14:23:13.378665Z.원자료는후보로보존, root �
 | QA | CH1-RIFT-QUALITY-NOW-20261007-RETOUCH-GATES-CANDIDATE | 017a77c0-7858-4f84-8ac4-9c93fee3873d | 14463 | 23bcc909916c4bd84e65dabca55ef6bd335b8c25f3411157e7f751ffa1851ec9 |
 
 Public ground module14,016B/e9faf5ecdfd65793391a0dc9cf28e03c398be54eb72a9308b0f49228b50e60eb, special module11,926B/b6660fe0a16634d0e2b9ed87aab19058d00e86652c43e5be7b55b75fa5b68f8b. CPU 핵심 검증은 각 worker 신규 stdin1회이며 실제 WebGL은 다음 root Gate. 외부 영수증 `rift-quality-live-20261007/checkpoint1-pins.json`.
+
+
+## 2026-10-07 全7 raw保존·채택 Gate 정정
+
+checkpoint1은stage직전ENEMY공식end가확인되어raw6(7,795B MAP/12,416B BOSS/11,655B STORY/11,228B SKILL/13,505B ENEMY/14,463B QA)를보존했다. 본문및CHANGELOG의기존raw5표기는수집중작성숫자였으며정확Gitstage는6이다. ANIMVFX 공식완료 `CH1-RIFT-QUALITY-NOW-20261007-GROUND-MATERIAL-CANDIDATE`/end `706905f4-d587-495b-beaf-ecd688a06f91`/10462B/fullSHA `6aba605a7cb144634a0653c05e66c1f819f0d63f73eaf936bbf76c0f4f3d9eb4`까지이번checkpoint2에서미채택raw로추가보존한다. raw24이력+이번7=31완료후보원자료, sourcepixels/기존pins불변.
+
+| 후보 | 현재채택 Gate/다음 수정 필요 |
+|---|---|
+| MAP | 120worldpx/원boundaryUV sampler계약확인. 실제opaque28nearest/sourcecolor/material은root별도구현, raw 직접import0 |
+| ANIMVFX | RETOUCH/HOLD. alphaMap r160은G인데raw는A에edge128작성, linear비보행spill, 실제PNG/navSHA·strictprofile부재, asyncdispose후allocation누수. rootpublichardnearest+softmask+hash소비는별도이며raw채택false |
+| STORY v2 | HOLD. provider getter/inheritedthenable/flagsgetter와stateKnown오인. actualnearest/open/choose/close/snapshot대체0, session→committed승격0/gift·quest분리유지. 다음안전methoddescriptor/fieldUNKNOWN파생만 |
+| SKILL v2 | HOLD. 이전rawpose import로publicrun/finite계약누락, NEUTRAL이새facing무시, attackRemaining이nested. methodgetter/inheritedthenable/supportedaccessorUNKNOWN누락. publicpose+safeprovider+facing+top-leveladapter파생필요 |
+| BOSS/ENEMY | 보존완료≠public직접채택. sourcepixels/footUNKNOWN/세션preview경계및소비API추가검수중. rootbaked는이전mapping에서별도구현 |
+| QA | HOLD. asyncimportrejection미await/가짜providernull PASS, 빈pin/bounds/extents/pose/teardown/walk관측PASS, attackRemaining1을miss. realeditor evidence/FORMAT_VERIFIED구분/필수관측PENDING/publicsnapshot필요 |
+
+검수는독립worker신규stdin각1회: STORY/SKILL14probe(불일치10/정상4), ANIMVFX/QA8반례 확인. fullsuite/기존검사반복0. 현재raw미채택/native·청취·실제보상save인수0. 다음작업은기존owner가이정확결함별독립파생파일을소유팀에배정하며root가직접전문송신하지않는다.

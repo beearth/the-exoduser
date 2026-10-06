@@ -143,7 +143,7 @@ STORY v4는 요청2결함을 해결했지만 method provider의 this=ports를 �
 | 항목 | 코드와 같은 현행 상태 |
 |---|---|
 | 맵/카메라 | RIFT_TERRAIN.clip 0/0…8000/8000, groundTriangles32, source nav1192 불변. centre5430/3900·reset5480/3740, 정사영50°/scale400/기본높이3.5, 배우 위치를추종. physicalHeight UNKNOWN/depth240/inset.9 |
-| 지면/절벽 | 원본1254² cleanplate·1920²abyss/sourcePNG불변. skirt shade=1−.78f로source상단1→아래.22. maskFeatherApplied=false/확대흐림·hard wedge 남음 |
+| 지면/절벽 | 2026-10-06 이력: skirt shade=1−.78f/maskFeatherApplied=false. 2026-10-07 현행: 고정globalUV·28선분 최단거리/120worldpx/opacity.38 sRGB 합성을 skirt·backplane 공용 불투명재질로 소비, shader 연결 뒤 maskFeatherApplied=true. ground-only sRGB soft-light alpha.4/nav1192/mirror480²/period320. sourcePNG1254²·1920²불변/원해상도 확대흐림 RETOUCH |
 | NPC4 표시 | 기존1254²atlas SHA ff20e1f5… /displayScale1.8/정적billboard. sourcefeet 하란4660/6660·베린6020/5580·네사6300/5020·도릭5220/2500 불변. 배우/주민order=30+(footY−4320)/8000×10/뿔30 |
 | 접근·대화 | displayApproach 하란4780/6660·베린5900/5580·네사6180/5020·도릭5100/2500/각120거리. nearest일치·navradius12검사. R/KeyR대화, 기존createRiftDialogue/session Map 사용; range140/line step≤20/radius12. 원본접근검사40거리/source.start·exit/nav변경0 |
 | 선택·종료 | 실제베린gift1·재방문중복0·네사quest1, 총trial2/actualGrantfalse/editor-session-only. 이동·외형/모션/위치변경·pause·Escape·닫기·pagehide에서닫음. 대화중neutralidle/facing. 본편grant·quest등록·save·chaptergate0 |
@@ -194,3 +194,20 @@ TASK ID는 `CH1-RIFT-QUALITY-DAY-20261008-<suffix>`이며 완료 ID는 동일 TA
 Codex7의 기존7 역할도 UIUX 조작·선택/ITEM 단일 유품 provider/BUILD 상대 import·에셋/BALANCE 표시크기·발/SOUND gesture 이후 기존음원 수명/QUESTNPC 본편 대화·진행 연결/MARKETING 실제 촬영 근거라는 목표를 유지한다. 전문팀 송신이 거절된 현재는 목표 보유와 실제 착수를 구분하며, 거절 목적을 재배정해 우회하지 않는다. 원총괄과 기존 허용 지원 담당의 독립 소비자 조사·통합은 해당 거절 action을 우회하지 않는 범위에서 계속한다.
 
 이 준비의 전체 docs 관련 키워드 검색은 외부 `/Users/fordeargamers/.codex/visualizations/exoduser-next-day-20261008/docs-keyword-search.txt`에 보존했다. 관련 현재 관리계약4문서와 CHANGELOG에 동일 일정·연속 진행 정책을 append하고, 과거 라운드/오더 STATELOG/본편 SSOT·보호 문서는 덮어쓰지 않는다. 원본 bytes prefix·외부 백업·소유5문서 한정 Git 영수증을 같은 외부 폴더에 보존한다. 이 변경은 제작 일정 준비이며 맵 구현/시각 Gate 변경0이다.
+
+
+## 현행 우선 지시 — 2026-10-07 즉시 연속 제작
+
+사용자 “지금부터 시작해야지 24시간 돌아가는 시스템”이 이전10/8날짜대기·09–19시window·19시중지·완료라운드 뒤 새후속보류를 대체한다. 이전 준비절은 당시 이력이며 현행 운영 제한이 아니다.
+
+| 항목 | 현행 정본 |
+|---|---|
+| 운영 | exoduser-2 단일root heartbeat ACTIVE/매30분/종료시각없음, API update와 실제automation.toml 일치 확인. 맥과Codex앱이 켜져 있을 때 실행. 다른4자동화/아침메일PAUSED유지 |
+| 작업 흐름 | 실제코드 → 공식end/bytes/fullSHA → raw미채택보존 → 의미검수 → 최소consumer → 실화면 → docs전체검색/정확동기화 → 정상code+docs commit/push/remote exactSHA → 다음승인미완료단위. root검수 동안 독립팀 일괄보류0 |
+| 송신 | 전문15의 송신은 기존Codex7/Claude8 owner만. 기존Claude7의 이번품질TASK actualsource7/end7 확인; 거절된Codex/ART 목적 재시도·우회0, 전원가동과장0. 관리3+전문15=18 유지/새팀·세션0 |
+| 목표 | CH1-RIFT-QUALITY-NOW-20261007: 맵재질·절벽/전경 접합, 캐릭터특수동작, NPC실consumer, 맵에디터 최소연결. 이번완료 단위를10/8에 중복송신0 |
+| 보고 | 변화없음/idle/같은검사·TASK 반복0. 의미있는완료·실패·필수결정만 알림.19시 요약은 일별1회이며 제작일시중지0. 인간중지시중지/임의재개0 |
+| 자원/보존 | 실제NUL/-uall80부터 완료소유핀만즉시checkpoint/100전새산출중단. foreign68+ownerSTATELOG4/raw원본/LOCK/nav1192/세이브/보호2_3·Q전용magic/어택티켓금지유지. editor3387만/새서버·Windows·게임빌드중복·설치·권한·인증·삭제cleanup0 |
+| 현행 결과 | root ground-detail+baked-special public모듈 및terrain/worldlab 실제WebGL 연결. raw7은 의미검수/미채택보존 구분. fixture·독립Chrome≠본편native6/청취/실제보상save/A급완성 |
+
+정확 코드·수치·검수 근거는 HELL_RIFT_2_5D_SLICE_20261006 및 DIRECTIONAL_CHARACTER_RIGS_20261006의 2026-10-07 현행절, 후보채택 Gate는 CH1_2_5D_TEAM_CANDIDATES_20261006의 최신절을 따른다.

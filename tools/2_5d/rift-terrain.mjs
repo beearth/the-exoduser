@@ -3,6 +3,7 @@
  */
 import '../map-scene-core.js';
 import { residentPaintingProfile } from '../map-scene-rift-residents.mjs';
+import { createRiftGroundDetailMaterial } from './rift-ground-detail.mjs';
 
 export const RIFT_TERRAIN = Object.freeze({
   scene: 'assets/map/hell_rift/resident_layers_20261006/hell-rift-residents-v2.scene.json',
@@ -70,8 +71,8 @@ export async function createRiftTerrain({ THREE, angle=50, scale=400 }={}) {
     const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));if(uv)g.setAttribute('uv',new THREE.Float32BufferAttribute(tex,2));g.computeVertexNormals();resources.push(g);return g;
   };
   const triangulate=p=>THREE.ShapeUtils.triangulateShape(p.map(q=>new THREE.Vector2(...q)),[]);
-  const mesh=(g,m,name,order=0)=>{resources.push(m);const o=new THREE.Mesh(g,m);o.name=name;o.renderOrder=order;object3d.add(o);return o;};
-  let disposed=false, plate, abyss;
+  const mesh=(g,m,name,order=0,ownsMaterial=true)=>{if(ownsMaterial)resources.push(m);const o=new THREE.Mesh(g,m);o.name=name;o.renderOrder=order;object3d.add(o);return o;};
+  let disposed=false, plate, abyss, groundDetail, featherCompiled=false;
   try {
     const plateAsset=source.assets.find(a=>a.id==='centre-0'), abyssObject=source.layers.find(l=>l.id==='abyss').objects.find(o=>o.id==='obj-rift-depth'), abyssAsset=source.assets.find(a=>a.id===abyssObject.assetId);
     // Sequential loading gives error cleanup ownership even if the second image rejects.
@@ -83,23 +84,64 @@ export async function createRiftTerrain({ THREE, angle=50, scale=400 }={}) {
       const p=clipPolygon(tri.map(i=>all[i]),cfg.clip), base=floorPoints.length;floorPoints.push(...p);
       for(let i=1;i<p.length-1;i++)floorTriangles.push([base,base+i,base+i+1]);
     }
-    mesh(geometry(floorPoints,floorTriangles),new THREE.MeshBasicMaterial({map:plate,side:THREE.DoubleSide}),'Registered clean-plate ground · exact global UV');
+    groundDetail=await createRiftGroundDetailMaterial({THREE,sourceScene:source,plateTexture:plate});
+    mesh(geometry(floorPoints,floorTriangles),groundDetail.material,'Registered ground · pinned nav-gated colour detail',0,false);
+    // Both surfaces stay opaque: fading a skirt alone would uncover empty background.
+    // This is source colour compositing, separate from the authored depth geometry.
+    const boundaryMaterial=new THREE.MeshBasicMaterial({map:plate,side:THREE.DoubleSide});
+    const abyssOffset=new THREE.Vector2(),direction=new THREE.Vector3(),position=new THREE.Vector3();
+    const sourceFeather=abyssObject.maskFeather??0;
+    const boundaryUniforms={riftAbyss:{value:abyss},riftAbyssOffset:{value:abyssOffset},riftBoundary:{value:opening.map(q=>new THREE.Vector2(...q))},riftFeather:{value:sourceFeather},riftOpacity:{value:abyssObject.opacity}};
+    boundaryMaterial.customProgramCacheKey=()=>`rift-source-feather-srgb-v1-${opening.length}`;
+    boundaryMaterial.onBeforeCompile=shader=>{
+      if(!shader.fragmentShader.includes('#include <map_pars_fragment>')||!shader.fragmentShader.includes('#include <map_fragment>'))throw new Error('심연 경계 shader 등록 불일치');
+      Object.assign(shader.uniforms,boundaryUniforms);
+      shader.fragmentShader=shader.fragmentShader.replace('#include <map_pars_fragment>',`#include <map_pars_fragment>
+uniform sampler2D riftAbyss;
+uniform vec2 riftAbyssOffset;
+uniform vec2 riftBoundary[${opening.length}];
+uniform float riftFeather;
+uniform float riftOpacity;
+vec3 riftBoundarySRGB(vec3 x){return mix(1.055*pow(max(x,vec3(0.0)),vec3(1.0/2.4))-.055,12.92*x,step(x,vec3(.0031308)));}
+vec3 riftBoundaryLinear(vec3 x){return mix(pow((x+.055)/1.055,vec3(2.4)),x/12.92,step(x,vec3(.04045)));}
+float riftBoundaryAlpha(vec2 p){
+  float distanceToEdge=16000.0;bool inside=false;
+  for(int i=0;i<${opening.length};i++){
+    vec2 a=riftBoundary[i],b=riftBoundary[(i+1)%${opening.length}],edge=b-a;
+    float t=clamp(dot(p-a,edge)/max(dot(edge,edge),.0001),0.0,1.0);
+    distanceToEdge=min(distanceToEdge,length(p-a-t*edge));
+    if((a.y>p.y)!=(b.y>p.y)){
+      float crossing=(b.x-a.x)*(p.y-a.y)/(b.y-a.y)+a.x;
+      if(p.x<crossing)inside=!inside;
+    }
+  }
+  return inside?(riftFeather>0.0?smoothstep(0.0,riftFeather,distanceToEdge):1.0):0.0;
+}`).replace('#include <map_fragment>',`
+#ifdef USE_MAP
+  vec4 riftBase=texture2D(map,vMapUv);
+  vec4 riftDepth=texture2D(riftAbyss,vMapUv+riftAbyssOffset);
+  float amount=riftOpacity*riftBoundaryAlpha(vec2(vMapUv.x,1.0-vMapUv.y)*8000.0)*riftDepth.a;
+  vec3 colour=riftBoundaryLinear(mix(riftBoundarySRGB(riftBase.rgb),riftBoundarySRGB(riftDepth.rgb),amount));
+  diffuseColor*=vec4(colour,riftBase.a+amount*(1.0-riftBase.a));
+#endif`);
+      featherCompiled=true;
+    };
+    const followAbyss=(_renderer,_scene,camera)=>{
+      camera.getWorldDirection(direction);camera.getWorldPosition(position);
+      if(Math.abs(direction.y)<1e-6)return;
+      position.addScaledVector(direction,-position.y/direction.y);
+      const view=sceneToWorld(position),factor=1-abyssObject.sourceParallax;
+      abyssOffset.set(-(view.x-4000)*factor/8000,(view.y-4000)*factor/8000);
+    };
     // This inset/depth is new preview geometry, not a measured cliff footprint or height.
     const centroid=opening.reduce((p,q)=>[p[0]+q[0]/opening.length,p[1]+q[1]/opening.length],[0,0]);
     const inner=opening.map(q=>[centroid[0]+(q[0]-centroid[0])*cfg.authoredInset,centroid[1]+(q[1]-centroid[1])*cfg.authoredInset]);
     const back=clipPolygon(inner,cfg.clip);
     if(back.length>=3) {
-      const bm=mesh(geometry(back,triangulate(back),-cfg.authoredDepth),new THREE.MeshBasicMaterial({map:abyss,color:0x8396a7,side:THREE.DoubleSide}),'Authored abyss backplane · source height UNKNOWN');
-      const direction=new THREE.Vector3(),position=new THREE.Vector3();
-      bm.onBeforeRender=(_renderer,_scene,camera)=>{
-        camera.getWorldDirection(direction);camera.getWorldPosition(position);
-        if(Math.abs(direction.y)<1e-6)return;
-        position.addScaledVector(direction,-position.y/direction.y);
-        const view=sceneToWorld(position),factor=1-abyssObject.sourceParallax;
-        abyss.offset.set(-(view.x-4000)*factor/8000,(view.y-4000)*factor/8000);
-      };
+      const bm=mesh(geometry(back,triangulate(back),-cfg.authoredDepth),boundaryMaterial,'Authored abyss backplane · source colour feather');
+      bm.onBeforeRender=followAbyss;
     }
-    const wallPos=[],wallColors=[],wallUV=[];
+    const wallPos=[],wallUV=[];
     for(let i=0;i<opening.length;i++) {
       const j=(i+1)%opening.length, corners=[opening[i],opening[j],inner[j],inner[i]], clipped=clipPolygon(corners,cfg.clip);
       for(let k=1;k<clipped.length-1;k++)for(const q of [clipped[0],clipped[k],clipped[k+1]]) {
@@ -108,13 +150,10 @@ export async function createRiftTerrain({ THREE, angle=50, scale=400 }={}) {
         const distance=Math.abs(dx*(q[1]-a[1])-dy*(q[0]-a[0]))/len;
         const maxDistance=Math.max(1,Math.abs(dx*(inner[i][1]-a[1])-dy*(inner[i][0]-a[0]))/len),f=Math.min(1,distance/maxDistance),v=worldToScene(q[0],q[1],-cfg.authoredDepth*f);
         wallPos.push(v.x,v.y,v.z);wallUV.push(q[0]/8000,1-q[1]/8000);
-        // Match the source ground at the top edge before descending into shade.
-        // The earlier constant dark rim introduced an artificial polygon seam.
-        const shade=1-.78*f,c=new THREE.Color().setRGB(shade,shade,shade);wallColors.push(c.r,c.g,c.b);
       }
     }
-    const walls=new THREE.BufferGeometry();walls.setAttribute('position',new THREE.Float32BufferAttribute(wallPos,3));walls.setAttribute('color',new THREE.Float32BufferAttribute(wallColors,3));walls.setAttribute('uv',new THREE.Float32BufferAttribute(wallUV,2));walls.computeVertexNormals();resources.push(walls);
-    mesh(walls,new THREE.MeshBasicMaterial({map:plate,vertexColors:true,side:THREE.DoubleSide}),'Authored textured chasm skirt · depth240 world');
+    const walls=new THREE.BufferGeometry();walls.setAttribute('position',new THREE.Float32BufferAttribute(wallPos,3));walls.setAttribute('uv',new THREE.Float32BufferAttribute(wallUV,2));walls.computeVertexNormals();resources.push(walls);
+    mesh(walls,boundaryMaterial,'Authored chasm skirt · source colour feather').onBeforeRender=followAbyss;
     const foot=source.layers.find(l=>l.id==='foot'), horn=foot.objects.find(o=>o.id==='obj-east-horn'), asset=source.assets.find(a=>a.id===horn.assetId), points=horn.mask.map(([x,y])=>[horn.x+x*horn.width,horn.y-horn.height+y*horn.height]);
     // A foot-anchored camera-facing cutout: no camera quaternion update is necessary at fixed angle.
     const positions=[],uvs=[];
@@ -128,8 +167,9 @@ export async function createRiftTerrain({ THREE, angle=50, scale=400 }={}) {
     return {object3d,worldToScene,sceneToWorld,canWalk,spawn:{...cfg.spawn},bounds,occluders,
       // Diagnostics receives a clone of the actual loaded scene, never the mutable navigation source.
       sourceSceneSnapshot:()=>K.clone(source),
-      snapshot:()=>({disposed,angle,scale,sourceSceneSha256:cfg.sceneSha256,navSha256:source.sourcePins.nav,walkableCount:1192,clip:{...cfg.clip},physicalHeight:'UNKNOWN',authoredDepth:cfg.authoredDepth,authoredInset:cfg.authoredInset,groundTriangles:floorTriangles.length,occluderFootY:horn.y,sourceParallaxApplied:true,skirtTextureApplied:true,skirtTopSourceMatched:true,maskFeatherApplied:false,nativeAccepted:false}),
-      dispose(){if(disposed)return;disposed=true;object3d.clear();for(const r of new Set(resources))r.dispose();resources.length=0;}
+      setGroundDetailEnabled:value=>groundDetail.setEnabled(value),
+      snapshot:()=>({disposed,angle,scale,sourceSceneSha256:cfg.sceneSha256,navSha256:source.sourcePins.nav,walkableCount:1192,clip:{...cfg.clip},physicalHeight:'UNKNOWN',authoredDepth:cfg.authoredDepth,authoredInset:cfg.authoredInset,groundTriangles:floorTriangles.length,occluderFootY:horn.y,sourceParallaxApplied:true,skirtTextureApplied:true,skirtTopSourceMatched:true,maskFeatherApplied:featherCompiled,openingComposite:{compiled:featherCompiled,featherWorldPx:sourceFeather,opacity:abyssObject.opacity,segments:opening.length,blendSpace:'sRGB',opaqueSurfaces:true,globalUV:true,maskWorldFixed:true},groundDetail:groundDetail.snapshot(),nativeAccepted:false}),
+      dispose(){if(disposed)return;disposed=true;object3d.clear();groundDetail?.dispose();for(const r of new Set(resources))r.dispose();resources.length=0;}
     };
-  } catch(error) {object3d.clear();for(const r of new Set(resources))r.dispose();throw error;}
+  } catch(error) {object3d.clear();groundDetail?.dispose();for(const r of new Set(resources))r.dispose();throw error;}
 }
