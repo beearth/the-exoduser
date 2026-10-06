@@ -182,11 +182,36 @@ export function createActorEffectLifetime(deps = {}) {
   function dispose() {
     if (disposed) return 0;
     disposed = true;
-    for (const e of all) { e.mesh.visible = false; if (typeof scene.remove === 'function') scene.remove(e.mesh); if (typeof e.material.dispose === 'function') e.material.dispose(); }
-    if (typeof dustGeo.dispose === 'function') dustGeo.dispose();
-    if (typeof attackGeo.dispose === 'function') attackGeo.dispose();
-    live.length = 0; free.length = 0;
-    stats.active = false; stats.reason = 'disposed'; stats.live = 0; stats.pool = 0;
+    // Capture the actual owned pool at teardown, after further spawns are closed.
+    const entries = all.slice(), detached = new Set(), released = new Set();
+    let failures = 0;
+    const attempt = action => { try { action(); } catch (_) { failures++; } };
+    const release = resource => {
+      if (!resource || released.has(resource)) return;
+      released.add(resource);
+      attempt(() => { if (typeof resource.dispose === 'function') resource.dispose(); });
+    };
+    try {
+      for (const entry of entries) {
+        let mesh, material;
+        attempt(() => { mesh = entry.mesh; });
+        attempt(() => { material = entry.material; });
+        if (mesh && !detached.has(mesh)) {
+          detached.add(mesh);
+          attempt(() => { mesh.visible = false; });
+          attempt(() => { if (typeof scene.remove === 'function') scene.remove(mesh); });
+        }
+        release(material);
+      }
+      // These geometries are shared by the pool; never dispose per mesh.
+      release(dustGeo);
+      release(attackGeo);
+    } finally {
+      live.length = 0; free.length = 0;
+      stats.active = false; stats.reason = 'disposed'; stats.live = 0; stats.pool = 0;
+    }
+    // The existing lab counts thrown cleanup errors. Report only after all attempts.
+    if (failures) throw new Error(`actor effects 소유 자원 해제 실패: ${failures}`);
     return all.length;
   }
 

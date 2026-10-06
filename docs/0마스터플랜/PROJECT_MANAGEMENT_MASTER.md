@@ -3404,3 +3404,32 @@ MAP PRODUCTION REPORT (§23): 이번 단위는 문서 감사·정확 pins 기록
 | 실제 main 상태 | 정상3387 root sourcehook·Continue 구현은 6de5e92e 코드 commit의 ece8 game/b93c runtime로 동결. 실제 source 제한2/20과 신규 DOM fixture3/15 및 child 수명6/21은 각기 별도. 기본demo1-1 허브/childP캐릭터/durable save/main-native6/청취/A급은 미인수, 전체맵RETOUCH 유지 |
 
 MAP PRODUCTION REPORT (§23): MASTER/OUTER/MEDIUM/GROUND/PLAYABLE/LANDMARK/DETAIL·원화/scene/nav/consumer 변경0; 이번 단계는 공식 raw69 소유완료 보존 및 문서 동기화만 수행. CAMERA 신규검수0, TECH exactpin·공식end·원문prefix backup·새append EOF LF1·정상code+docs 보존, 팀14PASS≠root/native 인수. VISUAL VERDICT: RETOUCH / raw69 실화면 NOT ASSESSED. 이후 root 의미검수와 기존owner의 새 memory 결과를 구분해 최소 생산 통합한다.
+
+### ROOT-ACTOR-OWNED-DISPOSE-20261007 — 내부 자원 해제 최소 구현 (2026-10-07 KST)
+
+기존 효과 생성·동작·공개 API는 보존하고 `dispose()` 내부만 보강했다. 원 후보 raw69 전체 producer 교체는 API 불일치로 미채택이며, root는 동일한 해제 목적의 최소 인라인 구현을 public consumer에 적용했다. 코드 밖 모든 byte와 defaults/provenance는 이전 원문과 일치한다.
+
+| 구분 | 정확한 현재 계약 / 근거 |
+|---|---|
+| 소유 code | `tools/2_5d/actor-effect-lifetime.mjs` 12162B / `a80898889231d8780dbaad13b110c36171be2a93c7b6147c21fc3a3e2010c26b` |
+| 수정 경계 | `dispose()`만; `update` / `onActorChange` / `onSceneChange` / spawn / rebuild / options / defaults / provenance 변경0 |
+| 실제 해제 대상 | disposed=true 선행 후 현재 `all.slice()` capture; 초기 빈 풀 snapshot을 해제 대상으로 재사용0 |
+| 해제 순서 | 각 entry mesh hidden → scene.remove → material.dispose, 이후 dustGeo / attackGeo; 각각 개별 try/catch로 나머지 시도 계속 |
+| 소유 handle 중복 | mesh detach Set / material·shared geometry release Set으로 identity당 시도1; mesh별 shared geometry 해제0 |
+| 실패 기록 | catch된 원 예외의 message/getter를 읽지 않고 실패 개수만 누적. 마지막에 controlled Error(`actor effects 소유 자원 해제 실패: N`)를 throw하여 기존 lab cleanupFailures consumer가 관측 |
+| finally | live/free 길이0, active=false, reason=disposed, stats.live/pool0. 실패에서도 닫힌 상태이며 dispose 재진입·반복은0 / 재해제0 |
+| 반환값 | 정상 최초 dispose는 기존 number `all.length` 유지(빈 풀0); 실패 최초는 number 미반환 / controlled Error; 이후0 |
+| 공유 외부 자원 | borrowed scene / camera / terrain / texture traversal·dispose0, renderer/worldlab/main source 변경0 |
+| 신규 의미 검수 | 실제 repo Three CPU 객체 + public producer + 기존 lab releaseResource 추출 소비자, stdin1 / 7그룹47조건 PASS / FAIL0. WebGL·실제 pagehide·본편·save0 |
+| 원 후보 | raw69 6649B / `caaf02550bcdd0ecf7f6ae90db445153aebdd66a92cace41c81bbbed8137059c`, 공식 end `b4e272d8-7219-499d-b688-5d69f5f27910`, `aff41d87a38b8b08a18ac7d2d9e99a2054d38a18` remote exact에 후보 미채택 보존. 전체 export/args/메서드/return 불일치 보고와 root 최소 구현 구분 |
+| 전문 후속 | 기존 owner가 송신한 `CH1-RIFT-ACTOR-EFFECT-RUNTIME-REBUILD-20261007-ANIMVFX-MEMORY` 재송신0; root dispose-only와 독립인 update/rebuild 예외·재진입 조사 |
+| NPC 후속 | STORY durable action mapping은 기존 입력·clarification 미수신 큐 때문에 prepared/send0; 5NPC item/quest ID를 임의 확정0, 실제 착수 주장0 |
+| 신규 GUI | actor 내부 오류 1건 주입의 새 Chrome 검수 준비 중 / PENDING. 과거 child6/21·runtime3/15·team14·DPR 검사 재실행·합산0 |
+| docs 전체 검색 | external `actor-owned-dispose-docs-related/search-disposition.json`의 전체 docs 관련키워드 검색·경로별 disposition; rig owned docs3와 directional doc는 별도 완료 핀 후 포함 |
+| Git 인수 | 이 단위 commit/push/remote exact는 후속 external 영수증에 기록; 작성 시 root HEAD aff41. 완료 소유만 checkpoint / ownerSTATELOG4·foreign68·거절 rawV3 staging0 |
+| 자동 승인 경계 | WOLF V3 최초 checkout 밖 Write 자동 승인 검토 거절(dangerous / 구체 사유 미제공) 뒤 동일 산출 작성 사고는 HOLD 유지. 해당 목적 작성·실행·의미검수·채택·원격 raw 보존·우회0; 거절경로 생성/피해 UNKNOWN |
+| 품질 한계 | 기본 DEMO_MODE=true/LAST_STAGE0의 CH1-1→hub PENDING; child P/char·NPC durable inventory+ledger ACK/readback·본편 native6·청취·실보상save·물리 GPU 메모리·A급 미인수 |
+
+MAP PRODUCTION REPORT (§23): 작업=actor effect teardown consumer; MASTER PLAN/OUTER MASS/MEDIUM/GROUND/PLAYABLE/LANDMARK/DETAIL/CAMERA geometry 변경0; 기존 guide/SSOT/LOCK 보호. TECH=신규 CPU7/47 PASS, 신규 Chrome PENDING. 실제 지형/해부학 foot/IK/게임 플레이 품질로 격상0. **VISUAL VERDICT: RETOUCH** (이 단위 신규 화면 미관측).
+
+검수 원자료: `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/actor-owned-dispose-20261007/limited-check-result.json` / `dispose-replacement.json`; root 호환성 읽기 보고 `actor-release-candidate-compatibility/compatibility-report.json`. 백업·원문 fullprefix·EOF LF1·정확 source 핀 확인 후 완료 소유 code+docs만 보존한다.

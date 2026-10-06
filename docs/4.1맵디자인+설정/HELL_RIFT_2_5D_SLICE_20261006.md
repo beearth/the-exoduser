@@ -1075,3 +1075,39 @@ parent rect는 기존 border 포함 값이고 canvas CSS는 border를 제외한 
 | 다음 승인 미완료 | 기본 demo1-1 종료→허브 정책/실제캐릭터 전달, NPC 유품·부탁의 명시선택과 동일save ledger의 async durable ACK, 맵 확대 흐림/절벽·전경 재질접합, 실제 editor/main/native6·청취·보상save 검수. 기존 tools/map-scene-rift-dialogue.mjs session choose(actualGrant:false) 또는 async void dbSave의 resolve를 durable 승인으로 간주0. 24시간 제작은 완료핀·보존 후 다음 미완료를 이어가며 기존 owner 송신독점/거절경계/타인WIP·user save·원PNG·scene/nav/보호2_3/Q전용/어택티켓금지 유지 |
 
 MAP PRODUCTION REPORT (§23): MASTER→OUTER→MEDIUM→GROUND→PLAYABLE→LANDMARK→DETAIL 순서에서 지형·원PNG·scene/nav 수정0, 기존 2.5D 보행화면을 normal parent consumer에 연결; CAMERA 신규 desktop Continue/예약/취소 UI PASS, 맵 RETOUCH; TECH source 핀·prototype/final/신규DOM fixture 분리, 실제 main(native6)·audio·durable save 미인수. 관련 docs 전체검색·fullprefix backup·새 append EOF LF1·완료소유 code+docs 정상 commit/push/remote exact은 외부보존 영수증으로 확인. VISUAL VERDICT: RETOUCH. 소스 구현과 실제 CH1-1 플레이 인수를 구분하며 A급완성 선언0.
+
+
+## 2026-10-07 ROOT-ACTOR-OWNED-DISPOSE-20261007: 효과 소유 자원 해제의 예외 격리
+
+`tools/2_5d/actor-effect-lifetime.mjs`의 private `dispose()`만 보강했다. 한 mesh/material/shared geometry 해제의 예외가 나머지 자원 해제를 중단하지 않으며, 모든 시도 후 기존 lab의 `cleanupFailures` 소비자가 알아볼 수 있는 고정 메시지 Error를 던진다. 새 raw69 모듈을 producer에 대체하거나 직접 import하지 않는다. 이 절의 CPU 검수는 실제 브라우저·GPU 해제 또는 본편 인수가 아니다.
+
+| id·적용 위치 | 정확 계약·현재 값 |
+|---|---|
+| source 이전 핀 | actor-effect-lifetime.mjs 11238 bytes / SHA256 c4fd8fdce92b61d086f480a0466e1dfa37fac9b49b4f1bfc20368318d545a3ab. 변경 전 fullbytes 외부 백업 보존 |
+| source 완료 핀 | actor-effect-lifetime.mjs 12162 bytes / SHA256 a80898889231d8780dbaad13b110c36171be2a93c7b6147c21fc3a3e2010c26b. dispose L182–216만 변경; 새 구역을 원 dispose로 역변환하면 원본 전체 bytes와 일치 |
+| API·provenance | createActorEffectLifetime({THREE,scene,camera,terrain,options}) → frozen {update,onActorChange,onSceneChange,dispose,snapshot}; default export와 ACTOR_EFFECT_DEFAULTS/ACTOR_EFFECT_PROVENANCE 변경0. ROOT-ADOPTED 원출처 9201 bytes / SHA256 1c9677089bf219ed0a5d486dc8873cb5fcbf4e7851a5df304996b3957c4c7400 유지 |
+| 종료·capture | 반복 호출이면 즉시 0. 첫 호출은 disposed=true로 generation을 닫은 뒤 그 시점의 all.slice()를 capture한다. 생성 시점 빈 목록을 복사해 놓는 방식0 |
+| mesh·material | capture된 각 entry의 mesh/material 조회를 독립 시도. 같은 mesh는 identity Set에 먼저 기록하고 visible=false 및 scene.remove(mesh)를 각각 독립 시도. material은 별도 resource identity Set에 먼저 기록하고 dispose가 함수인 경우 호출 |
+| shared geometry | dustGeo/attackGeo는 풀 전체가 공유하는 factory 소유 geometry이며 entry마다 해제0. 모든 material 후 같은 resource Set을 통해 해제한다. 동일 handle은 종류가 겹쳐도 dispose 최대1회. borrowed scene/camera/terrain 자체 dispose0 |
+| 실패·finally | entry 조회·hide·remove·resource.dispose에서 잡힌 예외마다 failures+=1. caught error의 message 조회0. finally에서 live/free length=0, stats.active=false/reason='disposed'/live=0/pool=0. 전 시도 뒤 failures>0이면 Error('actor effects 소유 자원 해제 실패: N')를 throw |
+| return·재호출 | 성공 첫 dispose는 기존 all.length 숫자를 반환한다. 빈 풀은 0, duplicate entry는 역사적 entry 수 그대로 반환. 실패 첫 dispose도 종료 상태를 유지하며 다음 dispose는 0, 재시도·중복 해제0. snapshot.meshes=all.length 유지 |
+| 진단의 의미 | active=false/reason='disposed'는 수명 닫힘이다. 실패한 resource의 물리적 GPU 반환 성공을 뜻하지 않는다. lab releaseResource가 controlled Error 1개를 catch하면 cleanupFailures는 1 증가; 메시지 N은 내부 예외 수이며 둘을 혼동0 |
+| 고정값·렌더 | maxLive24, dustLifeMs520, attackLifeMs240, stepMinIntervalMs110, footBand4320, dustColor0x1a140f/opacity0.5/size0.14, attackColor0xc8623a/opacity0.8/size0.17, groundLift0.003, reducedMotion=false/depthTest=true defaults 유지. lab 공급 size 플레이어dust0.022/attack0.08, 드루이드dust0.042/attack0.145 및 depthTest=false 변경0 |
+| 범위 제외 | update/clear/spawn/onActorChange/onSceneChange/snapshot, reduced-motion 재생성 및 factory 생성 예외·재진입 조사 변경0. 추가 helper/import/RAF/timer0. worldlab·main code2·원raw69·PNG·scene/nav·보호2_3/Q전용/어택티켓·사용자 save 변경0 |
+
+| 신규 제한 검수 그룹 | 조건 수 | 결과·근거 |
+|---|---:|---|
+| 현재 생성된 소유 풀·성공 숫자 | 8 | PASS; 나중에 생성된 실제 Three Mesh 2개를 해제하고 첫 return2, borrowed 해제0 |
+| remove 예외와 기존 lab 실패 집계 | 9 | PASS; 첫 remove throw 후 나머지 remove/material/shared 해제 지속. 현행 releaseResource 소스를 VM에서 소비해 cleanupFailures1 및 시도1 확인 |
+| 동일 소유·shared identity | 7 | PASS; 두 entry가 같은 실제 Mesh/material/geometry를 가리켜도 각 handle1회, return2/다음0 |
+| geometry entry별 해제 금지 | 5 | PASS; factory shared geometry2만 해제하고 원 mesh.geometry 관계 유지 |
+| material 예외·고정 메시지·종료 상태 | 7 | PASS; throwing message getter를 가진 예외의 message를 읽지 않고 fixed Error 실패1, 후속 자원 도달·재호출0 |
+| 빈 풀·종료 후 spawn 차단 | 5 | PASS; 빈 풀 숫자0, factory geometry2 해제, 이후 update 새 mesh0 |
+| 공개 계약·dispose 밖 bytes | 6 | PASS; API/defaults/provenance 동일, dispose 역변환 전체 원문 exact |
+| 실행 단위 | 47 | 신규 Node stdin 1회, 고유7그룹 PASS7/FAIL0/exit0. 저장소 Three r160 CPU 객체와 자원 method 예외 주입. 기존 팀14·child6/21·DPR·runtime DOM 검사 재실행·합산0 |
+
+전체 docs 관련키워드 검색은 코드 변경 후 제외 경로 없이 수행했다. `actor-effect-lifetime`, `actor-effect-release`, `createActorEffectLifetime`, `dustGeo`, `attackGeo`, `cleanupFailures`, owned/dispose 관계는 22개 파일·336개 매칭 줄이며 원출력은 외부에 보존했다. 이 소유 문서3에는 현재 해제 계약을 동기화한다. API·수명·렌더 값이 그대로인 기존 캐릭터/애니메이션 참조는 유지하고, root 소유 운영문서 및 raw69 완료 이력은 root가 새 완료 단위와 구분해 동기화한다. 원raw69 productionAdopted=false 및 팀14 PASS 이력을 이 구현 인수로 승격0.
+
+증거·fullbyte backup 위치: `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/actor-owned-dispose-20261007/`의 preflight.json, before/1.before–4.before, dispose-replacement.json, limited-check-result.json, docs-keyword-search.txt, docs-search-summary.json, docs-search-disposition.json, source.diff, final-receipt.json. 문서3은 root 최신 main append를 포함한 원 fullprefix를 100% 보존하고 새 append EOF LF1을 유지한다. 코드+docs 완료소유 commit/push·원격 exact SHA는 root가 수행할 다음 보존 단계이며 이 지원 작업에서 Git mutation0.
+
+MAP PRODUCTION REPORT (§23): MASTER 기존 목적/LOCK·SSOT 유지; LARGE OUTER MASS→MEDIUM CONNECTION→GROUND CONNECTION→PLAYABLE/COMBAT→LANDMARK/CENTER→SMALL DETAIL 원 지형·원화·nav·접지·전투 변경0; CAMERA 신규 화면 검수0; TECH 소유 효과 dispose 신규 CPU7그룹47조건 PASS, 기존 시각/GPU 이력 재실행0·새 핀 GPU 미인수. 맵 확대 흐림·재질 접합 개선을 주장하지 않는다. VISUAL VERDICT: RETOUCH. actual main/native6/audio/durable save 미인수 유지, A급완성 선언0.
