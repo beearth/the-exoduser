@@ -32,6 +32,7 @@
     pictures.set(src, promise); return promise;
   }
   const loaded = new Map();
+  let residentLighting;
   // Runtime composition masks: source bitmaps stay untouched. Keep only eight 1024px buffers.
   const softMasks = new Map();
   function maskedPicture(o, a, im) {
@@ -368,10 +369,18 @@
   }
   function drawObject(o, l, target=ctx, includeSelection=true) {
     const a=current().assets.find(a=>a.id===o.assetId), im=a&&loaded.get(a.src);if(!im)return;const off=offset(l);
-    target.save();target.translate(o.x+off.x,o.y+off.y);target.rotate(o.rotation*Math.PI/180);target.scale(o.flipX?-1:1,1);target.globalAlpha=o.opacity;
-    if(o.mask){target.beginPath();for(const [i,v] of o.mask.entries()){const x=v[0]*o.width-o.pivotX*o.width,y=v[1]*o.height-o.pivotY*o.height;i?target.lineTo(x,y):target.moveTo(x,y);}target.closePath();target.clip();}
-    if(o.mask&&(o.maskFeather||o.sourceParallax!==undefined)){const composed=maskedPicture(o,a,im);target.drawImage(composed,-o.width*o.pivotX,-o.height*o.pivotY,o.width,o.height);}
-    else target.drawImage(im,a.crop.x,a.crop.y,a.crop.w,a.crop.h,-o.width*o.pivotX,-o.height*o.pivotY,o.width,o.height);target.restore();
+    target.save();
+    try{
+      target.translate(o.x+off.x,o.y+off.y);target.rotate(o.rotation*Math.PI/180);target.scale(o.flipX?-1:1,1);target.globalAlpha=o.opacity;
+      if(o.mask){target.beginPath();for(const [i,v] of o.mask.entries()){const x=v[0]*o.width-o.pivotX*o.width,y=v[1]*o.height-o.pivotY*o.height;i?target.lineTo(x,y):target.moveTo(x,y);}target.closePath();target.clip();}
+      const graded=residentLighting?.picture(o,a,im);
+      if(graded){
+        const m=target.getTransform();
+        if(Math.hypot(m.a,m.b)*o.width<a.crop.w||Math.hypot(m.c,m.d)*o.height<a.crop.h){target.imageSmoothingEnabled=true;target.imageSmoothingQuality='high';}
+        target.drawImage(graded,-o.width*o.pivotX,-o.height*o.pivotY,o.width,o.height);
+      }else if(o.mask&&(o.maskFeather||o.sourceParallax!==undefined)){const composed=maskedPicture(o,a,im);target.drawImage(composed,-o.width*o.pivotX,-o.height*o.pivotY,o.width,o.height);}
+      else target.drawImage(im,a.crop.x,a.crop.y,a.crop.w,a.crop.h,-o.width*o.pivotX,-o.height*o.pivotY,o.width,o.height);
+    }finally{target.restore();}
     if(includeSelection&&(o.id===selected||batchIds.has(o.id))){target.save();target.translate(o.x+off.x,o.y+off.y);target.rotate(o.rotation*Math.PI/180);target.scale(o.flipX?-1:1,1);target.strokeStyle='#e8cf8e';target.lineWidth=1.5/viewport.zoom;target.strokeRect(-o.width*o.pivotX,-o.height*o.pivotY,o.width,o.height);if(batchIds.size<=1){const hs=8/viewport.zoom;target.fillStyle='#efdba1';target.fillRect(o.width*(1-o.pivotX)-hs/2,o.height*(1-o.pivotY)-hs/2,hs,hs);}target.restore();target.save();target.strokeStyle='#70cfbc';target.lineWidth=1/viewport.zoom;target.beginPath();target.moveTo(o.x+off.x-9/viewport.zoom,o.y+off.y);target.lineTo(o.x+off.x+9/viewport.zoom,o.y+off.y);target.moveTo(o.x+off.x,o.y+off.y-9/viewport.zoom);target.lineTo(o.x+off.x,o.y+off.y+9/viewport.zoom);target.stroke();target.restore();}
   }
   let warrior, ambienceFactory, ambience, ambienceScene, ambienceTime = 0, ambienceFrame = 0;
@@ -387,7 +396,7 @@
   function drawAmbience(target,band){if(target===ctx&&ambience&&$('ambient').checked)ambience.draw(target,band,ambienceTime,{player:playing?player:null});}
   function actor(target) { if(window.MapSceneActor){window.MapSceneActor.draw(target,player);return;}target.save();target.fillStyle='#070c09aa';target.beginPath();target.ellipse(player.x,player.y,25,11,0,0,Math.PI*2);target.fill();if(warrior){target.imageSmoothingEnabled=false;const scale=80/29;target.drawImage(warrior,0,0,48,48,player.x-22*scale,player.y-43*scale,48*scale,48*scale);}else{target.fillStyle='#eddfa7';target.fillRect(player.x-12,player.y-55,24,55);}target.restore(); }
   function render(target=ctx, overlays=true) {
-    const p=current();if(overlays){syncAmbience();syncDialogue();}if(residentGroundingScene!==p){residentGroundingScene=p;residentGrounding=residentGroundingFactory?.(p,(scene,x,y,r)=>K.canWalk(scene,x,y,r))||null;}let actorDrawn=false;
+    const p=current();residentLighting?.prepare(p);if(overlays){syncAmbience();syncDialogue();}if(residentGroundingScene!==p){residentGroundingScene=p;residentGrounding=residentGroundingFactory?.(p,(scene,x,y,r)=>K.canWalk(scene,x,y,r))||null;}let actorDrawn=false;
     for(const l of p.layers){if(!l.visible)continue;const objects=l.sort==='foot'?[...l.objects].sort((a,b)=>a.y-b.y):l.objects;
       if(l.id==='foot')residentGrounding?.draw(target);
       if(playing&&l.sort==='foot'){for(const o of objects){if(!actorDrawn&&player.y<=o.y){actor(target);actorDrawn=true;}drawObject(o,l,target,overlays);}if(!actorDrawn){actor(target);actorDrawn=true;}}
@@ -509,8 +518,8 @@
       if(!response.ok||Number(response.headers.get('content-length'))>256000)throw new Error('주민 대화 데이터 로드 실패');
       const bytes=await response.arrayBuffer();if(bytes.byteLength>256000)throw new Error('주민 대화 데이터가 너무 큽니다');
       dialogueRaw=JSON.parse(new TextDecoder().decode(bytes));dialogueFactory=module.createRiftDialogue;
-    }catch(e){console.warn('틈 대화 시험을 읽지 못했습니다',e);}try{const residents=await import('./map-scene-rift-residents.mjs');residentAnchorsFactory=residents.residentDialogueAnchors;residentGroundingFactory=residents.createResidentGrounding;}catch(e){console.warn('틈 주민 모듈을 읽지 못했습니다',e);}try{residentAccessFactory=(await import('./map-scene-resident-access.mjs')).inspectResidentAccess;}catch(e){console.warn('주민 접근 검사 모듈을 읽지 못했습니다',e);}try{const objects=await import('./map-scene-object-list.mjs');objectListFactory=objects.inspectLayerObjects;objectFocusFactory=objects.focusObjectFoot;}catch(e){console.warn('객체 목록 모듈을 읽지 못했습니다',e);}try{ambienceFactory=(await import('./map-scene-rift-ambience.mjs')).createRiftAmbience;}catch(e){console.warn('틈 분위기 모듈을 읽지 못했습니다',e);}await Promise.all([script('assets/map/hell_rift/interspace_20261005/layout.js'),script('assets/map/ch1/production_finish/layout.js')]);history=new K.History(await preset('rift'));try{const raw=localStorage.getItem(CACHE_KEY);if(raw){const p=K.validate(JSON.parse(raw));await importProject(p,false);}}catch(e){toast('기존 복구 씬을 읽지 못해 승인 원화로 시작합니다');}const named=new URLSearchParams(location.search).get('scene');if(named){try{await importProject(await namedProject(named),false);}catch(e){toast('현재 씬 유지 · '+e.message);}}resize();fit();refresh();palette();$('status').textContent='준비됨 · '+current().name+' / 본편에 자동 적용하지 않음';new ResizeObserver(resize).observe($('stage'));picture('img/exoduser_warrior/south.png').then(im=>{warrior=im;dirty=true;}).catch(()=>{});setBusy(false); $('workspace').inert=false; requestAnimationFrame(tick);
+    }catch(e){console.warn('틈 대화 시험을 읽지 못했습니다',e);}try{const residents=await import('./map-scene-rift-residents.mjs');residentAnchorsFactory=residents.residentDialogueAnchors;residentGroundingFactory=residents.createResidentGrounding;}catch(e){console.warn('틈 주민 모듈을 읽지 못했습니다',e);}try{residentLighting=(await import('./map-scene-resident-lighting.mjs')).createResidentLighting();}catch(e){console.warn('주민 빛 합성 모듈을 읽지 못했습니다',e);}try{residentAccessFactory=(await import('./map-scene-resident-access.mjs')).inspectResidentAccess;}catch(e){console.warn('주민 접근 검사 모듈을 읽지 못했습니다',e);}try{const objects=await import('./map-scene-object-list.mjs');objectListFactory=objects.inspectLayerObjects;objectFocusFactory=objects.focusObjectFoot;}catch(e){console.warn('객체 목록 모듈을 읽지 못했습니다',e);}try{ambienceFactory=(await import('./map-scene-rift-ambience.mjs')).createRiftAmbience;}catch(e){console.warn('틈 분위기 모듈을 읽지 못했습니다',e);}await Promise.all([script('assets/map/hell_rift/interspace_20261005/layout.js'),script('assets/map/ch1/production_finish/layout.js')]);history=new K.History(await preset('rift'));try{const raw=localStorage.getItem(CACHE_KEY);if(raw){const p=K.validate(JSON.parse(raw));await importProject(p,false);}}catch(e){toast('기존 복구 씬을 읽지 못해 승인 원화로 시작합니다');}const named=new URLSearchParams(location.search).get('scene');if(named){try{await importProject(await namedProject(named),false);}catch(e){toast('현재 씬 유지 · '+e.message);}}resize();fit();refresh();palette();$('status').textContent='준비됨 · '+current().name+' / 본편에 자동 적용하지 않음';new ResizeObserver(resize).observe($('stage'));picture('img/exoduser_warrior/south.png').then(im=>{warrior=im;dirty=true;}).catch(()=>{});setBusy(false); $('workspace').inert=false; requestAnimationFrame(tick);
     // Read-only diagnostics for local UI QA; import uses the same validated atomic path.
-    window.EXODUSER_SCENE_EDITOR={snapshot:()=>K.clone(current()),view:()=>({...viewport}),player:()=>playing?{...player}:null,selection:()=>selected,batchSelection:()=>[...batchIds],importProject,ambience:()=>({enabled:!!ambience&&$('ambient').checked,stats:ambience?.snapshot()||null}),grounding:()=>residentGrounding?.snapshot()||[],residentAccess:()=>residentAccessReport?K.clone(residentAccessReport):null,dialogue:()=>({anchors:residentAnchors().map(a=>({...a,approach:{...a.approach}})),state:dialogueController?.snapshot()||null}),ready:true};
+    window.EXODUSER_SCENE_EDITOR={snapshot:()=>K.clone(current()),view:()=>({...viewport}),player:()=>playing?{...player}:null,selection:()=>selected,batchSelection:()=>[...batchIds],importProject,ambience:()=>({enabled:!!ambience&&$('ambient').checked,stats:ambience?.snapshot()||null}),grounding:()=>residentGrounding?.snapshot()||[],residentLighting:()=>residentLighting?.snapshot()||null,residentAccess:()=>residentAccessReport?K.clone(residentAccessReport):null,dialogue:()=>({anchors:residentAnchors().map(a=>({...a,approach:{...a.approach}})),state:dialogueController?.snapshot()||null}),ready:true};
   }catch(e){$('status').textContent='씬 시작 실패 · '+e.message;toast(e.message);}
 })();

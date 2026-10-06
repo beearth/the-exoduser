@@ -444,7 +444,7 @@ core29/29, adapter10/10, 실제 animated browser9그룹, 정적 틈18/18, 기존
 | 접근·수락 | 직선 경로 간격≤20world px의 모든 검사 strict true 필수; Promise/1/throw는 실패. 대화 중 발이 막히면 선택 처리 전에 out-of-range로 닫고 새 선물/부탁 기록0. trial은 editor-session-only/actualGrant=false |
 | 마스크 합성 | maskedPicture의 mask/sample/image 2D context `willReadFrequently:true`, image 합성 `imageSmoothingQuality='high'`. 캐시≤8·최대 변1024px·feather sample 최대 변256px·mask/source/world/직렬화 규격 불변. FPS 개선 주장0 |
 | 실제 검수 | 의미19/19(1회). 최초 실제 XY/F/WASD 3확인·3보행 후 PNG 불일치 FAIL 보존. 합성 수정 후 Undo/무효 profile/JSON/새로고침/일반·baked/error불변6/6 PASS, 보행 재실행0. pageerror/HTTP/console0 |
-| 현재 PNG | 멈춘2048² export7018386B SHA `21b2651252851355d6e2dee865b5e58282576585ad28a0097b5c08be90efb78a`; 편집→Undo·fresh reload/cache rebuild byte 동일. 직전24230e77…/7018879B는 수정 전 이력이며 현재 핀으로 사용0 |
+| §14 검수 당시 PNG (현행은 아래 주민 환경광 절) | 멈춘2048² export7018386B SHA `21b2651252851355d6e2dee865b5e58282576585ad28a0097b5c08be90efb78a`; 편집→Undo·fresh reload/cache rebuild byte 동일. 직전24230e77…/7018879B는 수정 전 이력이며 현재 핀으로 사용0 |
 | 제작·보존 | root완료 code3+관련docs12 한정checkpoint. 실제72+15=87부터 완료소유를 보존해72로 복귀; live owner STATE/LOG·타인WIP/기존23/세이브·보호2_3/Q전용·어택티켓 금지 유지. 원문8후속 메모는 미채택·idle, 중복TASK/새팀0 |
 | 품질·잔여 | VISUAL VERDICT: RETOUCH. 정적 주민의 확대 grain/재질·전사와 원근/절벽 alpha·높이·실제 지급/quest/save/상승·본편/native6단계/청취 미인수. 계획이나 fixture를 게임완료로 계산0 |
 
@@ -681,3 +681,51 @@ core 의미검수=`tools/test-map-scene-placement-presets.cjs` 신규14/14·1회
 | 남은 GATE | VISUAL VERDICT: RETOUCH. 도구 UI/그룹이동 PASS와 환경 재질·높이·정적주민·본편grant/quest/save/상승/native6단계·실청취 미인수 분리. 발 정렬/그룹 크기 변형은 미구현 |
 
 정확 계약=`MAP_SCENE_EDITOR_20261005.md` §19. 가이드§23 MAP PRODUCTION REPORT=`HELL_RIFT_EDITOR_RESULT_20261006.md` 같은ID. 백업·핀·신규검사·화면·docs검색·정상Git 근거: `/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/batch-translate-20261006/receipt.json`. 새 전문팀/채팅/실행세션·중복TASK0, 기존paused자동화·아침메일재개0. 오늘19시 단일실제결과보고 조건 유지.
+
+
+## 20. 독립 주민 재질의 정적 환경광과 실제 축소 품질 — 2026-10-06
+
+완료ID `ROOT-RIFT-RESIDENT-LIGHTING-20261006`. Claude8가 보존한 ART·ANIMVFX의 memory 제안을 검토해 독립 에디터 renderer에 한정 적용한다. ART의 모든 이미지 smoothing/무제한 축소 캐시 및 ANIM의 ID-prefix·crop-size-only 캐시는 사용하지 않는다. ground bounce와 본편 renderer 적용은 보류한다.
+
+| API·렌더·수치 | 정확 현재 계약 |
+|---|---|
+| 적용 공간 | editor3387 이미지 씬의 strict `residentPaintingProfile(scene)` 독립4body만. 원본 baked/proxy/CH1/일반 수입 이미지·플레이어는 원래 렌더. `game.html`, source atlas/clean plate/painting, scene JSON/nav/start/exit/world size 쓰기0 |
+| 모듈·상수 | `tools/map-scene-resident-lighting.mjs`, `RESIDENT_LIGHTING` deep frozen: sourceSize1254, maxCache4, composite=`source-atop`, stops0/.55/1. `createResidentLighting(makeCanvas=()=>document.createElement('canvas'))`는 frozen prepare/picture/snapshot/clear API 반환 |
+| admission | `prepare(scene)`는 render 시작 때1회 strict profile 검사. assets배열≤128/layers배열≤24/총objects≤2000; foot층 정확1/visible/sortfoot/parallax1. resident asset별 정확1·네 body ID 각각전체층에서 정확1; 현재 asset/object 참조만 picture 허용. 임의prefix/복제id/다른src·crop·registration은 추측0 |
+| body 추가가드 | 정확 resident-key/obj-resident-key/assetId, atlas source1254²; mask/maskFeather/sourceParallax undefined, rotation0/flipXfalse/opacity1/pivot(.5,1). x/y Number유한0…7999.999999999999, width/height 각각1…32000, crop비율 오차≤1e−6. 전체profile가드 불일치 시 네 body 모두 원래 이미지 폴백. 유효비율 크기·좌표 편집은 기존 값 그대로 소비 |
+| crop 하란 | asset=resident-haran, object=obj-resident-haran, source(x169,y27,w350,h578), world 크기·발접지 변경0 |
+| crop 베린 | resident-berin/obj-resident-berin, source(748,257,363,352), world 크기·발접지 변경0 |
+| crop 네사 | resident-nessa/obj-resident-nessa, source(197,660,262,547), world 크기·발접지 변경0 |
+| crop 도릭 | resident-dorik/obj-resident-dorik, source(813,742,240,465), world 크기·발접지 변경0 |
+| loaded source | image.currentSrc 또는 src가 정확 상대atlas path 또는 document.baseURI로 해석한 동일절대URL. naturalWidth/naturalHeight 각각1254, complete!==false. src/dimensions/identity가 바뀌면 기존crop 재사용0 |
+| crop 합성 | 각원본crop와 같은 w×h canvas를 독립생성, getContext2d `{willReadFrequently:true}`. save→smoothingfalse/globalAlpha1/source-over→원본1:1cropdraw→세로gradient(0,0,0,h)→source-atop fillRect(0,0,w,h)→finallyrestore. 원본 비트맵/알파를 파일에 재작성0 |
+| 환경광 세로stop | offset0 `rgba(116,126,130,0.14)`, offset.55 `rgba(116,126,130,0)`, offset1 `rgba(206,120,92,0.16)`. 몸의 기존 알파 안에서 위쪽 중립 냉광→중간 무색→아래쪽 약한 온광. 신규 동적광원/지면lightbounce/가짜 추가그림자0 |
+| cache | 키에 현재 object/asset/image 참조+resolved source/src+crop x/y/w/h 전부 비교. 최대4 LRU슬롯; 실패null도슬롯을 차지해 동일입력 build 반복0. 교체전 owned crop backing을 w/h0으로 해제, 성공재사용에서 cropcanvas/URL/key할당0. source이미지메모리나전체FPS개선은 주장0 |
+| 수명 | scene참조변경/unsupported profile은 admission/cache 해제. 매prepare로 live in-place crop/body/layer 변경을 확인; picture도 현재body/asset 좁은 검사를 수행. prepare unsupported/import reset은 누적통계유지; publicclear는 통계포함모두0. asset/object참조교체도 해당슬롯 해제 |
+| 실패 | canvas/context/builder 오류는 failed++와null을 캐시해 원래draw로폴백. ctx가save된뒤오류면finallyrestore. 새 module import는 별도try로 격리; 조명실패가대화/접지모듈로드를 차단0 |
+| 실제 축소 | graded가있는body draw에서 현재target.getTransform의 X basis길이×body.width 또는 Y basis길이×body.height가 해당sourcecrop w/h보다 작으면 target.imageSmoothingEnabled=true/Quality=high. DPR/zoom/회전transform을 포함하며, world크기만으로판정0. 둘다upscale면quality강제0, 일반·pixelart 이미지별기존설정불변 |
+| 목적 rect·가림 | gradedcrop draw는 기존 `(-width*pivotX,-height*pivotY,width,height)` 그대로. layer offset/회전/flip/opacity/foot y-sort 유지; target save/try/finallyrestore로 smoothing/alpha/transform/composite다음객체누출0 |
+| 정적 PNG | render(target,false)에도 prepare와grade포함. ambient 체크/reduced-motion/animation시간과독립. 기존2048² PNG의 crop/world/그림자배치불변. 예전§14 PNG21b26512…/7018386B는 당시검수 이력, 이 절의 현재PNG와 구분 |
+| 진단 | readonly `EXODUSER_SCENE_EDITOR.residentLighting()`→snapshot/null. snapshot fresh `{enabled,profileAdmitted,eligible,cacheSize,builds,hits,failed,entries}`. builds=생성시도, hits=성공재사용, failed=생성실패; entries fresh metadata `{objectId,assetId,src,crop,ready}`만, canvas/image/scene 쓰기노출0 |
+| 미포함 | 새그래픽원본/scale자동보정/feet자동이동/지면반사광/3D높이/신규주민애니메이션/지급·부탁save/장gate/본편export·Unity package·Prefab·FBX·PSD/native6·실청취·A급전체맵 인수0 |
+
+
+
+### 2026-10-06 — 주민 재질의 정적 환경광 · 현재 PNG와 소비자 범위
+
+완료ID `ROOT-RIFT-RESIDENT-LIGHTING-20261006`. 현재 독립 주민 렌더 계약은 `MAP_SCENE_EDITOR_20261005.md` §20을 따른다. 앞선 §14의 “현재 PNG”21b26512…·7018386B와 접지/재질 미개선 표기는 해당 시점 이력이다. 현재 PNG는 아래 표이며 원본 atlas·scene·world 크기/발 위치와 본편은 동일하다.
+
+| 항목 | 현행 정확 계약·실제 인수 |
+|---|---|
+| 소비자 | 독립editor3387의 strict residentPaintingProfile(scene)+exact4body/asset/crop만 정적grade. prefix/다른src/crop/transform/duplicateID/참조불일치는 원래이미지로폴백. 기존원화/atlas/scene/nav/STORY/game/feet/height쓰기0 |
+| 페인트 | 원본crop1:1canvas에 세로gradient stop0 rgba(116,126,130,0.14), .55 rgba(116,126,130,0), 1 rgba(206,120,92,0.16)를 source-atop 합성. warmRGB상수로 전구간 계산0; 투명중간stop도실제색보간에 관여. 지면반사광/추가그림자/동적광원0 |
+| 캐시·가드 | 최대4슬롯, imageidentity/src/resolvedURL/crop x/y/w/h+object/asset참조검사. 실패null캐시와 원래draw폴백; publicclear는통계도0. prepare render1회,128assets/24layers/2000objects 상한, live profile편집·import/scene교체시무효화 |
+| 축소·그리기 | exactsame destinationrect/foot y-sort. actualtargettransform×body크기가 sourcecrop보다작은축이있을때만 해당주민 smoothinghigh. DPR/zoom포함, 일반pixelart·upscale의quality강제0. target와cropcontext finallyrestore. staticPNG에포함, ambient/reducedmotion과독립 |
+| 현재 PNG | 2048² / 7018384B SHA `c0ff307db2b2a6abfe55ead8a54fcd48c932cb9047fb6e3b585b8d9973524a21`. 조명OFF동일코드대조는7018386B/21b26512…와exactsame, import/reload 후새PNG동일. 신규변화657pixels=하란222/베린116/네사162/도릭157, 네body rect밖0·최대채널차34 |
+| 의미·화면 | 신규unit14/14 actual1/실패0. Chrome고유12 실행항목PASS, actuallaunch3/context4. 최초11PASS+표본harnessFAIL1→2차색보간가정harnessFAIL1→3차미완료group2만PASS. 제품수정0/성공11그룹·이전suite반복0. 오류/404/외부요청0 |
+| 픽셀 검증의 범위 | 충분한alpha≥128 RGB표본486/319/348/264개,4251채널·최대오차1.9412/동일per-alpha경계3…4 위반0. source해상도crop alphaMismatch/outsideAlpha/outsideRGB=0의 명시영수증은 하란1명만; 최초중단으로다른3의값은저장되지않아 네명전체alpha정밀인수로계산0. 최종PNG4body영역외0·RGB4명검수는별도실측근거 |
+| 시각·GATE | 네원본crop전후board+실제editor300%4명상세·전체맵확인. 주민조명 VISUAL PASS / 전체맵 VISUAL VERDICT RETOUCH. 확대바닥해상도/전체환경재질·높이·정적주민·본편grant/quest/save/상승/native6·실청취·실물폰/A급 미인수 |
+| 팀원자료·채택 | ROOT-RESTART-FOLLOWUP-20261006-0644: Claude8기존8 memory전부완료/end8/idle8/write0(06:59:28 이력). ART좁은downsample·ANIM정적bodygrade 제안만 rooteditorconsumer채택; 무제한cache/prefix판정/groundbounce/기타6 wholeDiff·본편채택0. Codex7송신거절(approval required/policy never) 새전달0·재시도/우회0. 전16팀제작완료 선언0 |
+| 보존·운영 | code3+docs12 정확15 완료소유만 정상commit/push·원격exactSHA. 실제NUL87→72/타인72status·68bytepin·owner4본인갱신/root쓰기0·검수18sourcepin은외부receipt. 보호2_3/Q-only/어택티켓금지/기존23·세이브보존. 새팀/실행세션/중복TASK0·paused자동화/아침메일재개0, 오늘19시 단일실제결과보고 조건유지 |
+
+근거: `/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/resident-lighting-20261006/receipt.json`. 최초실패2·마지막미완료후속·핀/PNG/화면·docs검색은외부보존. 가이드§23 MAP PRODUCTION REPORT는 `HELL_RIFT_EDITOR_RESULT_20261006.md`의동일완료ID 및외부보고서다.
