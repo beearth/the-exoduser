@@ -31,13 +31,13 @@
 
 | 반환 | 계약 |
 |---|---|
-| `object3d` | 지면·심연 후경·독립 절벽 측면·동측 뿔 메시 Group |
+| `object3d` | 지면·심연 후경·독립 절벽 측면·동/서/남 전경3 메시 Group |
 | `worldToScene(x,y,h=0)` | `THREE.Vector3`. 입력은 유한수, h는 world px |
 | `sceneToWorld(vector)` 또는 `(x,y,z)` | fresh `{x,y,h}`. 정사영 역변환 |
 | `canWalk(x,y,r=12)` | 전체 기존 nav의 코어 질의. 표시 clip으로 충돌을 잘라내지 않음 |
 | `spawn` | fresh `{x:5900,y:3820}` |
 | `bounds` | canonical clip, centre, width2260, height1400 |
-| `occluders` | 동측 뿔 object3d·objectId·footY4320·원본 mask world polygon |
+| `occluders` | footY순3개 east4320/west5360/south6920, object3d/objectId/footY/polygon/triangles/sourceCrop/feather. 최신절 exact표 |
 | `snapshot()` | 배율·각도·핀·nav1192·메시 수·미인수 경계 진단 |
 | `dispose()` | Group 제거 및 모든 geometry/material/GPU texture 해제. 중복 호출 안전 |
 
@@ -63,8 +63,8 @@ h=Y*S
 | 측면 | 원본 opening과90% inset 사이의 단일 chasm skirt. 깊이0…240worldpx, clean plate UV(x/8000,1−y/8000) × 정적 vertex color(.15−.11f,.19−.13f,.22−.14f), f=0…1. `skirtTextureApplied=true`. 기존 랜드마크/길 위치를 바꾸지 않음. 큰 벽 반복 생성0 |
 | 심연 시차 | sourceParallax .965. 카메라 중심 ray의 h0 교차점으로 texture offset만 이동, 메시 opening 경계 고정 |
 | feather | 기존120worldpx soft mask를 새 3D hole에 재현하지 않음. `snapshot.maskFeatherApplied=false`; seam은 실제 화면에서 RETOUCH 대상 |
-| 동측 뿔 | 원본11점 mask·crop 그대로. world bbox x5640…6000/y3320…4320, footY4320. foot origin 메시를 X축−angle만큼 회전한 camera-facing plane로 배치. 카메라가 fixedangle이면 quaternion 갱신 불필요 |
-| 배우 가림 | 지형 단독 재질과 별도로 root lab는 전경과배우모두transparent=true/depthTest=false/depthWrite=false로같은정렬pass 사용. worldY≤4320 actor20/그외40,뿔30; behind겹침opacity.32 선택페이드. 원화front/back 기준이며 측정된물리높이 아님 |
+| 동측 뿔 (최초 이력; 현행3전경 최신절) | 원본11점 mask·crop 그대로. world bbox x5640…6000/y3320…4320, footY4320. foot origin 메시를 X축−angle만큼 회전한 camera-facing plane로 배치. 카메라가 fixedangle이면 quaternion 갱신 불필요 |
+| 배우 가림 (최초 이력; 현행연속order 최신절) | 지형 단독 재질과 별도로 root lab는 전경과배우모두transparent=true/depthTest=false/depthWrite=false로같은정렬pass 사용. worldY≤4320 actor20/그외40,뿔30; behind겹침opacity.32 선택페이드. 원화front/back 기준이며 측정된물리높이 아님 |
 | 텍스처 | 원본 PNG 수정0. SRGB/Linear mag/LinearMipmapLinear min. 기본 지면 원화색 유지, 심연 tint0x8396a7 |
 
 동측 뿔 tile mask(×40=world): `[146,83],[149,83],[147,89],[147,94],[150,99],[149,105],[146,108],[141,108],[142,104],[143,100],[143,95]`.
@@ -426,3 +426,92 @@ MAP PRODUCTION REPORT (§23): MASTER→OUTER→MEDIUM/경로/랜드마크/geomet
 MAP PRODUCTION REPORT (§23): MAP 지옥의틈/rootqualitynow; MASTER/OUTER/MEDIUM/경로/좌표불변; GROUND 원navgated재질만변경; PLAYABLE1192/canonicalradius12불변; LANDMARK/CENTER 원foot/horn불변; SMALL DETAIL mirror480²; CAMERA 실제start/Haran/Nessa/7특수동작관측·초점/정지/추적검사; TECH 신규27유효Chromechecks/noerrors, 음향/native0. 외부영수증 `rift-quality-live-20261007/live-quality-result.json`, `lifecycle-quality-result.json`, `ground-ab-pixels.json`.
 
 **VISUAL VERDICT: RETOUCH** — 이전하드왼쪽wedge색단절은현재화면에서완화됐지만원plate1254²의큰지형확대흐림은남음. erupt셀상단에잔여띠가보이며원PNG/fullcell을보존했으므로root임의삭제·새foot추정0. 특수foot/referenceHeight UNKNOWN, 실제본편/native·청취·보상save·A급인수0.
+
+
+## 2026-10-07 현행 전경3·보행 바닥 가림 수정
+
+완료ID `ROOT-RIFT-FOREGROUND-NAV-CONSUMER-20261007`. 독립3387 world-lab에서 원본 전경1→3을 연결했다. 이전 east-only/actor20·40 기록은 당시 이력이며 현행 계약은 아래와 같다. 기존 에디터 scene의 3조각·geometry·mask·PNG·nav1192는 불변이다.
+
+| 적용 위치 | 현행 정확 계약 |
+|---|---|
+| terrain/lab 전경 | obj-east-horn footY4320/order30/mask11/triangle9; obj-west-root footY5360/order31.3/mask12/triangle10; obj-south-root footY6920/order33.25/mask10/triangle8 |
+| 공통 앞뒤 순서 | actor·resident·전경 모두 `30+(footY-4320)/8000*10`; transparent=true/depthTest=false/depthWrite=false. 전경pivot(0,1)/rotationX−angle/alphaTest.01/원maskFeather0. 겹침 선택fade.32(OFF1) |
+| 바닥 가림 차단 | 공용nav200²/40000B RedFormat/UnsignedByte·Nearest/no mipmaps. `(199-y)*200+x`에 walkable255/나머지0, `riftForegroundUV=(worldX/8000,1-worldY/8000)`. map_fragment 뒤 alpha×`1-step(.5,nav.r)`/후속 alphatest. 원nav 쓰기0 |
+| API/snapshot | occluderFootY4320 호환값 유지; foreground 배열의 objectId/footY/renderOrder/opacity/maskPoints/triangles/sourceCrop/feather/nonWalkableOnly=true 추가. geometry/material 각3+공용navtexture1 terrain 소유·Set dispose1회/borrowedplate 중복dispose0 |
+| 실제 관측 | 전경 등록/순서/원본 보존/선택fade 11유효성공 후 정지중disabled talk 클릭harness30초 timeout FAIL 보존. 남쪽 실제몸가림 발견 후 nav-alpha 수정. 수정후 신규4항목(바닥차단/실Haran대화/실KeyS이동/실shader·page·consoleerror0) PASS. 이전27을 이번검사 수에 재사용0 |
+| 시각 인수 | 실제before east/south/north 캡처를 보존하고 수정후 south/east 열람. 남쪽몸가림 수정 확인; 서측 전경 전체/실전투·출구·8카메라 인수 UNKNOWN. 원판1254² 확대흐림 남음. VISUAL VERDICT: RETOUCH |
+| 경계 | 독립lab≠본편/native6·청취·실보상save·물리높이·해부학적foot/IK·A급완성. 원자료45 미채택 보존과 public 별도구현을 구분 |
+
+정확XY/crop/shader·실패/수정화면·§23 보고는 `docs/4.1맵디자인+설정/HELL_RIFT_2_5D_SLICE_20261006.md` 최신절. 근거 외부 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/foreground-{before,after,mask}-*`. docs 전체 관련keyword 검색247매칭32파일을 현행/역사/타시스템으로 분류했다. ownerSTATELOG·잠금/보호문서·역사영수증은 수정0.
+
+
+## ROOT-RIFT-FOREGROUND-NAV-CONSUMER-20261007 — 등록 상세·§23
+
+| object ID | x | footY | width | height | pivotX/Y | mask | triangles | crop x/y/w/h (원 JSON double) | order |
+|---|---:|---:|---:|---:|---|---:|---:|---|---:|
+| obj-east-horn | 5640 | 4320 | 360 | 1000 | 0/1 | 11 | 9 | 884.0699999999999 / 520.41 / 56.42999999999999 / 156.75 | 30 |
+| obj-west-root | 2120 | 5360 | 640 | 720 | 0/1 | 12 | 10 | 332.30999999999995 / 727.3199999999999 / 100.32 / 112.85999999999999 | 31.3 |
+| obj-south-root | 4720 | 6920 | 520 | 640 | 0/1 | 10 | 8 | 739.8599999999999 / 984.39 / 81.50999999999999 / 100.32 | 33.25 |
+
+전경 source의 rotation0/flipXfalse/opacity1/maskFeather(default0)/cleanplate1254² 등록을 검사한다. CPU local vertex=((wx-objectX)/scale,(footY-wy)/scale,0). atlasUV=((cropX+(wx-objectX)/width*cropW)/1254,1-(cropY+(wy-(footY-height))/height*cropH)/1254). 기본camera50°/scale400이면 X축−50° 회전. source mask와 crop는 바꾸지 않는다.
+
+공용 shader key=`rift-foreground-canonical-nav-v1`. `riftForegroundUV` attribute→`riftForegroundWorldUV` varying→`riftForegroundNav` uniform. r160 map_fragment 직후 alpha 차단/alphatest discard이며 compile태그 불일치는 throw, exception cleanup도 Set dispose. 이 draw gate는 보행칸의 그림을 가림에서 제외하며, 뿌리의 실제 silhouette/물리 높이를 측정한 것으로 해석하지 않는다.
+
+| 근거 파일 | 관측/한계 |
+|---|---|
+| foreground-before-{east,south,north}.png / foreground-before-result.json | 수정 전 동일카메라 실제캡처, 이전 턴 이름재사용과 구분 |
+| foreground-after-result.json / foreground-after-south-no-fade.png | 첫3전경 11유효성공. paused disabled #talk 기대 harness timeout FAIL 별도. south 몸가림 실제발견 |
+| foreground-mask-result.json / foreground-mask-south-no-fade.png | navalpha 수정후 fadeOFF1 몸가림 해결 실제열람. 신규4항목 PASS. 11이전항목 전체재실행0 |
+| foreground-mask-dialogue.png / foreground-mask-east.png | 실제Haran meet 및 east 표면. session-only flags/보상save 미기록. west전체/실전투/출구/음향 미관측 |
+| raw FIX checkpoint | 83a7324ed651deb954e04825a4a8cad43d719ff7 remoteexact. 완료소유7+docs2만, 실제prestage83→after74/foreign68불변/index0. raw45 직접import/본편채택0 |
+
+```text
+MAP PRODUCTION REPORT
+STAGE: 지옥의 틈 / 독립3387 world-lab / ROOT-RIFT-FOREGROUND-NAV-CONSUMER-20261007
+MASTER PLAN
+- silhouette: 승인된 비대칭 계곡 원화 유지
+- regions: 원8000²/남도착/양측균열/북상승로 유지
+- main route: canonical start4020,7740→exit4020,1740; 대표spawn5900,3820 불변
+- side spaces: 원4주민 좌표 유지/새전체region 생성0
+OUTER MASS
+- left/right/top/south: 큰바위·뿌리·상승계단 그림 유지
+- major holes: 원심연28점/inset.9/authored240 유지; 물리높이UNKNOWN
+LARGE ASSETS
+- source assets/composites: cleanplate1254²/심연1920² 유지/전경3 exactcrop 같은plate 등록
+- overlap: actor/resident/전경 commonfootY pass; nav보행칸은전경alpha0
+- repeat risk: 새scatter0/원판확대흐림RETOUCH
+MEDIUM CONNECTION
+- cliff connections/valley mouth/remaining holes: geometry 불변/전체경계인수UNKNOWN
+GROUND CONNECTION
+- foot shadows: 기존배우/주민그림자 유지
+- contamination: 이전groundDetail3textures/period320/alpha.4 유지
+- structure-ground connection: source ground의upright 몸가림을navalpha로차단
+PLAYABLE
+- arenas/travel/breathing/threat routes: nav1192/radius12 유지
+- actual travel: KeyS200ms 4780,6660→4780,6712.025999999998 관측
+- combat cameras: fixture를실전투로재계산0/실전투UNKNOWN
+LANDMARK/CENTER
+- primary: 중앙균열 유지
+- secondary: 북쪽계단/동측뿔; tertiary: 남·서뿌리/원4주민
+CAMERA QA
+- START: 남쪽Haran4780,6660 검수; scene.start exact구도는미관측
+- EARLY/LANDMARK: east5480,3740 검수
+- ARENA/SIDE-L/SIDE-R/LATE: 전체인수UNKNOWN
+- EXIT: northDorik5100,2500 등록캡처; scene.exit/장전환미관측
+TECH QA
+- route/collision: 원nav/K.canWalk 변경0/전체종주검사반복0
+- pageerror/consoleerror: 수정후0/새404 검사완료주장0
+- seam: 남쪽몸가림수정/뿌리silhouette·큰지형흐림RETOUCH
+- loading: 기존3387/기존renderer·RAF1/새server·loop0
+- performance: geometry/material3+navtexture1; 전체성능인수UNKNOWN
+FILES
+- stage-owned: root terrain.mjs/world-lab.mjs +관련docs16
+- concurrent touched: ownerSTATELOG4 별도/수정0; FIXraw7 별도보존완료
+- unrelated touched: root0; foreign68/PNG/scene/nav/game/index/save/보호2_3불변
+GIT
+- staged: 완료소유code2+docs16 exactlist
+- commit/push: 정상hook/check/push 및외부public-foreground-receipt.json remoteexact확인
+- deploy: 없음
+VISUAL VERDICT: RETOUCH
+NEXT PASS: NPC pose/관측·실corrupted_wolf idle/유효walkconsumer 최소통합; 큰지형흐림/서측가림·본편native6/청취·보상save 미완료
+```

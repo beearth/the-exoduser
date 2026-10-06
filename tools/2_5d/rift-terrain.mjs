@@ -154,13 +154,37 @@ float riftBoundaryAlpha(vec2 p){
     }
     const walls=new THREE.BufferGeometry();walls.setAttribute('position',new THREE.Float32BufferAttribute(wallPos,3));walls.setAttribute('uv',new THREE.Float32BufferAttribute(wallUV,2));walls.computeVertexNormals();resources.push(walls);
     mesh(walls,boundaryMaterial,'Authored chasm skirt · source colour feather').onBeforeRender=followAbyss;
-    const foot=source.layers.find(l=>l.id==='foot'), horn=foot.objects.find(o=>o.id==='obj-east-horn'), asset=source.assets.find(a=>a.id===horn.assetId), points=horn.mask.map(([x,y])=>[horn.x+x*horn.width,horn.y-horn.height+y*horn.height]);
-    // A foot-anchored camera-facing cutout: no camera quaternion update is necessary at fixed angle.
-    const positions=[],uvs=[];
-    for(const tri of triangulate(points))for(const i of tri){const p=points[i];positions.push((p[0]-horn.x)/scale,(horn.y-p[1])/scale,0);uvs.push((asset.crop.x+(p[0]-horn.x)/horn.width*asset.crop.w)/1254,1-(asset.crop.y+(p[1]-(horn.y-horn.height))/horn.height*asset.crop.h)/1254);}
-    const hg=new THREE.BufferGeometry();hg.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));hg.setAttribute('uv',new THREE.Float32BufferAttribute(uvs,2));resources.push(hg);
-    const hm=new THREE.MeshBasicMaterial({map:plate,side:THREE.DoubleSide,alphaTest:.01});resources.push(hm);const ho=new THREE.Mesh(hg,hm);ho.name=horn.id;ho.position.copy(worldToScene(horn.x,horn.y));ho.rotation.x=-theta;ho.renderOrder=10;object3d.add(ho);
-    const occluders=[{objectId:horn.id,footY:horn.y,object3d:ho,polygon:points.map(p=>({x:p[0],y:p[1]}))}];
+    const foot=source.layers.find(l=>l.id==='foot'),foregroundIds=['obj-west-root','obj-east-horn','obj-south-root'];
+    const foreground=foregroundIds.map(id=>{
+      const matches=foot.objects.filter(o=>o.id===id);
+      if(matches.length!==1)throw new Error('전경 객체 등록 불일치: '+id);
+      const o=matches[0],a=source.assets.find(a=>a.id===o.assetId);
+      if(!a||a.src!==plateAsset.src||a.width!==1254||a.height!==1254||o.pivotX!==0||o.pivotY!==1||o.rotation!==0||o.flipX||o.opacity!==1||(o.maskFeather??0)!==0||!Array.isArray(o.mask)||o.mask.length<3)throw new Error('전경 그림/피벗 등록 불일치: '+id);
+      return {o,a};
+    }).sort((a,b)=>a.o.y-b.o.y);
+    // Authored cutouts contain ground paint as well as roots. Ground pixels must not
+    // become upright occluders: keep the source masks but exclude canonical walk tiles.
+    const foregroundNavBytes=new Uint8Array(40000);
+    for(let y=0;y<200;y++)for(let x=0;x<200;x++)foregroundNavBytes[(199-y)*200+x]=source.walkable[y*200+x]?255:0;
+    const foregroundNav=new THREE.DataTexture(foregroundNavBytes,200,200,THREE.RedFormat,THREE.UnsignedByteType);
+    foregroundNav.magFilter=THREE.NearestFilter;foregroundNav.minFilter=THREE.NearestFilter;foregroundNav.generateMipmaps=false;foregroundNav.needsUpdate=true;resources.push(foregroundNav);
+    const occluders=[];
+    // All three cutouts use the unchanged clean plate and source mask; residents stay separate.
+    for(const {o,a} of foreground){
+      const points=o.mask.map(([x,y])=>[o.x+x*o.width,o.y-o.height+y*o.height]),positions=[],uvs=[],worldUV=[],triangles=triangulate(points);
+      for(const tri of triangles)for(const i of tri){const p=points[i];positions.push((p[0]-o.x)/scale,(o.y-p[1])/scale,0);uvs.push((a.crop.x+(p[0]-o.x)/o.width*a.crop.w)/1254,1-(a.crop.y+(p[1]-(o.y-o.height))/o.height*a.crop.h)/1254);worldUV.push(p[0]/8000,1-p[1]/8000);}
+      const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));g.setAttribute('uv',new THREE.Float32BufferAttribute(uvs,2));g.setAttribute('riftForegroundUV',new THREE.Float32BufferAttribute(worldUV,2));resources.push(g);
+      const m=new THREE.MeshBasicMaterial({map:plate,side:THREE.DoubleSide,alphaTest:.01});resources.push(m);
+      m.customProgramCacheKey=()=> 'rift-foreground-canonical-nav-v1';
+      m.onBeforeCompile=shader=>{
+        if(!shader.vertexShader.includes('#include <begin_vertex>')||!shader.fragmentShader.includes('#include <map_fragment>'))throw new Error('전경 보행 경계 shader 등록 불일치');
+        shader.uniforms.riftForegroundNav={value:foregroundNav};
+        shader.vertexShader=shader.vertexShader.replace('#include <common>','#include <common>\nattribute vec2 riftForegroundUV;\nvarying vec2 riftForegroundWorldUV;').replace('#include <begin_vertex>','#include <begin_vertex>\nriftForegroundWorldUV=riftForegroundUV;');
+        shader.fragmentShader=shader.fragmentShader.replace('#include <common>','#include <common>\nuniform sampler2D riftForegroundNav;\nvarying vec2 riftForegroundWorldUV;').replace('#include <map_fragment>','#include <map_fragment>\ndiffuseColor.a*=1.0-step(.5,texture2D(riftForegroundNav,riftForegroundWorldUV).r);');
+      };
+      const cutout=new THREE.Mesh(g,m);cutout.name=o.id;cutout.position.copy(worldToScene(o.x,o.y));cutout.rotation.x=-theta;cutout.renderOrder=30+(o.y-4320)/8000*10;object3d.add(cutout);
+      occluders.push({objectId:o.id,footY:o.y,object3d:cutout,polygon:points.map(p=>({x:p[0],y:p[1]})),triangles:triangles.length,sourceCrop:{...a.crop},feather:0});
+    }
     const bounds={...cfg.clip,centre:{...cfg.centre},width:cfg.clip.right-cfg.clip.left,height:cfg.clip.bottom-cfg.clip.top};
     const canWalk=(x,y,r=12)=>!disposed&&Number.isFinite(x)&&Number.isFinite(y)&&Number.isFinite(r)&&r>=0&&K.canWalk(source,x,y,r);
     if(!canWalk(cfg.spawn.x,cfg.spawn.y))throw new Error('2.5D 대표 보행 시작점이 막혀 있습니다');
@@ -168,7 +192,7 @@ float riftBoundaryAlpha(vec2 p){
       // Diagnostics receives a clone of the actual loaded scene, never the mutable navigation source.
       sourceSceneSnapshot:()=>K.clone(source),
       setGroundDetailEnabled:value=>groundDetail.setEnabled(value),
-      snapshot:()=>({disposed,angle,scale,sourceSceneSha256:cfg.sceneSha256,navSha256:source.sourcePins.nav,walkableCount:1192,clip:{...cfg.clip},physicalHeight:'UNKNOWN',authoredDepth:cfg.authoredDepth,authoredInset:cfg.authoredInset,groundTriangles:floorTriangles.length,occluderFootY:horn.y,sourceParallaxApplied:true,skirtTextureApplied:true,skirtTopSourceMatched:true,maskFeatherApplied:featherCompiled,openingComposite:{compiled:featherCompiled,featherWorldPx:sourceFeather,opacity:abyssObject.opacity,segments:opening.length,blendSpace:'sRGB',opaqueSurfaces:true,globalUV:true,maskWorldFixed:true},groundDetail:groundDetail.snapshot(),nativeAccepted:false}),
+      snapshot:()=>({disposed,angle,scale,sourceSceneSha256:cfg.sceneSha256,navSha256:source.sourcePins.nav,walkableCount:1192,clip:{...cfg.clip},physicalHeight:'UNKNOWN',authoredDepth:cfg.authoredDepth,authoredInset:cfg.authoredInset,groundTriangles:floorTriangles.length,occluderFootY:4320,foreground:occluders.map(o=>({objectId:o.objectId,footY:o.footY,renderOrder:o.object3d.renderOrder,opacity:o.object3d.material.opacity,maskPoints:o.polygon.length,triangles:o.triangles,sourceCrop:{...o.sourceCrop},feather:o.feather,nonWalkableOnly:true})),sourceParallaxApplied:true,skirtTextureApplied:true,skirtTopSourceMatched:true,maskFeatherApplied:featherCompiled,openingComposite:{compiled:featherCompiled,featherWorldPx:sourceFeather,opacity:abyssObject.opacity,segments:opening.length,blendSpace:'sRGB',opaqueSurfaces:true,globalUV:true,maskWorldFixed:true},groundDetail:groundDetail.snapshot(),nativeAccepted:false}),
       dispose(){if(disposed)return;disposed=true;object3d.clear();groundDetail?.dispose();for(const r of new Set(resources))r.dispose();resources.length=0;}
     };
   } catch(error) {object3d.clear();groundDetail?.dispose();for(const r of new Set(resources))r.dispose();throw error;}

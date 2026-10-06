@@ -300,7 +300,7 @@ inline 자가검증과 실행 꼬리는 채택 consumer에서 제외했다. 모�
 | UI/키 | 세 선택, 제자리idle/walk/run,1회attack, WASD/방향키,Shift, J,Space정지, bones/fade체크, reset. blur/hidden/캐릭터교체/reset은 입력·공격수명 해제 |
 | 공격 event | J의 repeat=false에서 1프레임 엣지; 홀드 자동재공격0, keyup으로 수명을 취소하지 않음; 진행중 이동 정지. 전사·실버테일.81초/드루이드.6초. pose resolve와 rig.update는 프레임당 각각1회 |
 | 정지 중 교체/reset | `applyState()`에서 pose(0)/render/updateUi. 시간 진행 없이 실제 배우 position·그림자·가림을 새 상태에 맞춤 |
-| 정렬 | actor.transparent=true/depthTest=false/depthWrite=false, 기존alphaTest 유지; y≤4320 actor20/그외40, 전경30/동일transparent pass, helper70. 원화 깊이를 z-buffer 실측으로 주장하지 않음 |
+| 정렬 | actor.transparent=true/depthTest=false/depthWrite=false, 기존alphaTest 유지; 최초y≤4320 actor20/그외40·전경30 이력; 현행actor·주민·전경3=30+(footY-4320)/8000*10 동일transparent pass, helper70. 원화 깊이를 z-buffer 실측으로 주장하지 않음 |
 | 전경 페이드 | 기본ON. 배우foot가뿔뒤/마스크bbox와 겹치면opacity.32,그외1. x범위는 배우height×400/2만큼 확장; 체크OFF 전체가림 비교 가능 |
 | 발 그림자 | CircleGeometry(1,40), color0x030a0c/opacity.26/y.002/order15, x/y scale 플레이어.10/.06·드루이드.17/.10 |
 | 효과 실제 연결 | SKILL `visual-pose-consumer.mjs`와 ANIMVFX `actor-effect-lifetime.mjs`의 ROOT-ADOPTED provenance를 실제 소비. dust size 플레이어.022/드루이드.042, attack.08/.145, depthTest=false. 수명520/240ms/최소간격110ms/cap24는 유지 |
@@ -411,3 +411,20 @@ MAP PRODUCTION REPORT: geometry/경로/충돌/외곽/랜드마크 불변, 특수
 새public baked API를원래3캐릭터방향관절catalog와분리하여실worldlab에연결했다. select동작7(dive/under/erupt/tele-prep/tele-warn/transform/beast)·방향8·1회재생/끝내기. play는dark-druid선택후clearIntent/effectreturn, existingRAF update만진행한다. active동안normalrig/helpers숨김, under는shadow도숨김, completed시normalrig/그림자복귀. 이동·기본모션·대화·character/reset/blur/visibilitycancel에서none과actor/helpers/shadow를함께복구한다. paused의dt/좌표0유지, 움직임키가paused특수를취소해도actor복귀한다. 현재재생이름은snapshot.id를사용하여nextselect와혼동0. 기본12frame표시앵커검사는특수active동안disabled이며특수의해부학적foot인수로사용0.
 
 신규실Chrome7종시작/1회종결+under숨김및정지취소·blur복구·지표·character·NPC·camera·sourcePNG변조를검수. phase1유효18/phase2신규9 PASS와phase1harnessfocus/blur오류1건은따로보존. renderer/Pixels정상표시≠native실전투time·소환/공격·피격·실제높이·footreference인수. **VISUAL VERDICT: RETOUCH**: transform/beast/erupt화면검수했으며erupt상단별도잔여띠가보인다. 기존PNG정확셀보존, 새스프라이트제작/임의cutout/rigcatalog등록0.
+
+
+## 2026-10-07 현행 전경3·보행 바닥 가림 수정
+
+완료ID `ROOT-RIFT-FOREGROUND-NAV-CONSUMER-20261007`. 독립3387 world-lab에서 원본 전경1→3을 연결했다. 이전 east-only/actor20·40 기록은 당시 이력이며 현행 계약은 아래와 같다. 기존 에디터 scene의 3조각·geometry·mask·PNG·nav1192는 불변이다.
+
+| 적용 위치 | 현행 정확 계약 |
+|---|---|
+| terrain/lab 전경 | obj-east-horn footY4320/order30/mask11/triangle9; obj-west-root footY5360/order31.3/mask12/triangle10; obj-south-root footY6920/order33.25/mask10/triangle8 |
+| 공통 앞뒤 순서 | actor·resident·전경 모두 `30+(footY-4320)/8000*10`; transparent=true/depthTest=false/depthWrite=false. 전경pivot(0,1)/rotationX−angle/alphaTest.01/원maskFeather0. 겹침 선택fade.32(OFF1) |
+| 바닥 가림 차단 | 공용nav200²/40000B RedFormat/UnsignedByte·Nearest/no mipmaps. `(199-y)*200+x`에 walkable255/나머지0, `riftForegroundUV=(worldX/8000,1-worldY/8000)`. map_fragment 뒤 alpha×`1-step(.5,nav.r)`/후속 alphatest. 원nav 쓰기0 |
+| API/snapshot | occluderFootY4320 호환값 유지; foreground 배열의 objectId/footY/renderOrder/opacity/maskPoints/triangles/sourceCrop/feather/nonWalkableOnly=true 추가. geometry/material 각3+공용navtexture1 terrain 소유·Set dispose1회/borrowedplate 중복dispose0 |
+| 실제 관측 | 전경 등록/순서/원본 보존/선택fade 11유효성공 후 정지중disabled talk 클릭harness30초 timeout FAIL 보존. 남쪽 실제몸가림 발견 후 nav-alpha 수정. 수정후 신규4항목(바닥차단/실Haran대화/실KeyS이동/실shader·page·consoleerror0) PASS. 이전27을 이번검사 수에 재사용0 |
+| 시각 인수 | 실제before east/south/north 캡처를 보존하고 수정후 south/east 열람. 남쪽몸가림 수정 확인; 서측 전경 전체/실전투·출구·8카메라 인수 UNKNOWN. 원판1254² 확대흐림 남음. VISUAL VERDICT: RETOUCH |
+| 경계 | 독립lab≠본편/native6·청취·실보상save·물리높이·해부학적foot/IK·A급완성. 원자료45 미채택 보존과 public 별도구현을 구분 |
+
+정확XY/crop/shader·실패/수정화면·§23 보고는 `docs/4.1맵디자인+설정/HELL_RIFT_2_5D_SLICE_20261006.md` 최신절. 근거 외부 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/foreground-{before,after,mask}-*`. docs 전체 관련keyword 검색247매칭32파일을 현행/역사/타시스템으로 분류했다. ownerSTATELOG·잠금/보호문서·역사영수증은 수정0.

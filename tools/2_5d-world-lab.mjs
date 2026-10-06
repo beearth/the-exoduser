@@ -163,7 +163,7 @@ function pose(dt){
   if(state.mode!==previousMode)cancelAnchorCheck('모션 전환으로 이전 표시 검사 무효');
   const rig=rigs[state.selected];rig.update(dt,resolved.params);
   rig.object3d.position.copy(terrain.worldToScene(state.x,state.y));rig.object3d.quaternion.copy(camera.quaternion);
-  // Same foot-Y order for residents, player and the original horn (footY4320/order30).
+  // Residents, player and all original foregrounds share the foot-Y order (4320 => 30).
   rig.object3d.traverse(node=>{if(node.isMesh)node.renderOrder=30+(state.y-4320)/8000*10;});
   rig.object3d.updateMatrixWorld(true);helpers[state.selected].updateMatrixWorld(true);
   const special=specialMotion.update(dt,{x:state.x,y:state.y});
@@ -233,7 +233,7 @@ try{
   const frameSpecs=checkFrameSpec();if(frameSpecs.some(r=>r.pass===false))throw new Error('캐릭터 프레임 규격 실패: '+frameSpecs.find(r=>r.pass===false).detail);
   leaf('metric-registration',`${registration.pin.status} · ${registration.walkableCount} 타일`);
   leaf('metric-editor',registration.editorRoundtrip.status);
-  for(const occluder of terrain.occluders){occluder.object3d.renderOrder=30;occluder.object3d.material.depthTest=false;occluder.object3d.material.depthWrite=false;occluder.object3d.material.transparent=true;}
+  for(const occluder of terrain.occluders){occluder.object3d.renderOrder=30+(occluder.footY-4320)/8000*10;occluder.object3d.material.depthTest=false;occluder.object3d.material.depthWrite=false;occluder.object3d.material.transparent=true;}
   reducedQuery=matchMedia('(prefers-reduced-motion: reduce)');
   interactionCue=createInteractionCueLifetime({THREE,scene,camera,terrain,options:{orderFor:riftResidentFootOrder,anchorFor:npcId=>residentDialogueAnchors(residentScene).find(a=>a.npcId===npcId)||null,reducedMotion:reducedQuery.matches}});
   if(!interactionCue.snapshot().active)throw new Error('주민 접근 표시 초기화 실패');
