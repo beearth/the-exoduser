@@ -729,3 +729,43 @@ core 의미검수=`tools/test-map-scene-placement-presets.cjs` 신규14/14·1회
 | 보존·운영 | code3+docs12 정확15 완료소유만 정상commit/push·원격exactSHA. 실제NUL87→72/타인72status·68bytepin·owner4본인갱신/root쓰기0·검수18sourcepin은외부receipt. 보호2_3/Q-only/어택티켓금지/기존23·세이브보존. 새팀/실행세션/중복TASK0·paused자동화/아침메일재개0, 오늘19시 단일실제결과보고 조건유지 |
 
 근거: `/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/resident-lighting-20261006/receipt.json`. 최초실패2·마지막미완료후속·핀/PNG/화면·docs검색은외부보존. 가이드§23 MAP PRODUCTION REPORT는 `HELL_RIFT_EDITOR_RESULT_20261006.md`의동일완료ID 및외부보고서다.
+
+## 21. 선택 이미지의 전사 기준 크기와 실제 화면 해상도 비교 — 2026-10-06
+
+완료ID `ROOT-EDITOR-SCALE-COMPARISON-20261006`. 독립 editor3387의 크기 편집 결과를 현재 화면에서 읽어 비교한다. 기본 전사 보행 renderer의 BODY_HEIGHT=80 world px를 참조한다. 자동 크기 보정이나 원본 재제작은 수행하지 않는다.
+
+| 항목 | 정확 현재 코드 계약 |
+|---|---|
+| 계산 모듈 | `tools/map-scene-scale-comparison.mjs`의 `inspectScaleComparison(object,asset,{zoom,rasterScale})`. DOM·scene·source·feet·nav·save·history·cache 쓰기0. 매 호출 fresh plain 반환 |
+| 입력 | object/asset/asset.crop/options는 비배열 object. object.width/height, crop.w/h, zoom/rasterScale 6개는 양의 유한 Number만. 문자열/0/음수/NaN/Infinity 거절. getter 오류·파생 overflow도 throw 없이 invalid 반환. editor의 기존1…32000 편집제한은 그대로이며 모듈은 새 hard clamp를 추가하지 않음 |
+| 유효 반환 | `{valid:true,referenceHeight:80,heightRatio,world:{width,height},sourceCrop:{width,height},css:{width,height},resolution:{status,scaleX,scaleY,maxScale},bars:{maxHeight:72,reference,object}}` |
+| 무효 반환 | `{valid:false,reason,resolution:{status:'invalid',scaleX:null,scaleY:null,maxScale:null}}`. 한국어 사유를 카드에 표시하고 bars/details는 hidden. 씬/선택을 되돌리거나 보정0 |
+| 비교 높이 | heightRatio=object.height/80. 표시 영역 높이이며 불투명 몸체·standing pose·충돌 높이를 추정하지 않음. 회전 전 rect 높이, 투명 여백/앉은 포즈에 따라 체감 차이 명시 |
+| 막대 | common=max(80,object.height), reference=72*(80/common), object=72*(height/common) CSS px. 나눗셈 먼저 수행해 큰 값 overflow 방지; 둘의 실제 비율을 유지. min-height 보정·별도축척·최소 높이 강제0. 막대는 aria-hidden, 같은 의미의 텍스트 제공 |
+| 화면 rect | css.width=world.width*zoom, css.height=world.height*zoom. 회전 전 표시 영역의 CSS px이며 회전 bounding box가 아님 |
+| 실제 rasterScale | consumer가 현재 canvas.width/size.w를 전달. renderer ctx.setTransform(d,0,0,d,0,0)의 실제 d와 동일. 캔버스 생성의 min(devicePixelRatio,2) 및 정수 반올림 결과를 이미 포함하므로 별도 DPR cap/추정/height ratio 재적용0 |
+| 원본 대비 배율 | scaleX=css.width*rasterScale/crop.w, scaleY=css.height*rasterScale/crop.h, maxScale=max(X,Y). resolutionstatus enlarged는 max>1, native는 max===1, reduced는 max<1. native는 최대축만 정확1인 뜻으로 UI 명시; 다른축도1이라 추정0 |
+| 마스크 | Array.isArray(object.mask)이면 status masked, scaleX/Y/maxScale=null. 높이/막대/CSS 크기 비교 유지. 모든마스크의crop배율판정을제외하는UI정책. plain mask는기존directclip/draw, maskFeather또는명시sourceParallax가있을때만별도1024px buffer이므로 모든마스크가버퍼사용이라고설명0. 원본mask·feather·sourceParallax·crop·draw 규칙 수정0 |
+| UI 소비자 | `editor.html`의 #scene-scale-comparison 및 명시적 leaf IDs. single selected pair일 때 표시, 다중batch/선택없음/모듈없음이면 숨김. locked/hidden object도 읽기 전용 크기 정보만 표시; 편집금지 기존계약불변 |
+| 업데이트 | refresh와 dirty tick에서 현재 선택·width/height·crop·zoom·actualcanvasratio를 다시 읽음. serialized result key가 같으면 leaf/style 재쓰기0. 입력·drag·undo/redo·선택교체·fit/zoom·캔버스resize 갱신. JSON/선택ID/지급/세이브필드 추가0 |
+| 포맷 | ko-KR 최대소수3자리. 0<v<.001은 '< 0.001'로 표시하여 양수를0배로 표시0. 모듈 raw값/막대 style은 반올림0. enlarged 카드는 amber 경고·현재 화면에서 흐려질 수 있음을 안내; 인위적 A급/원본 품질PASS 판정0 |
+| 실패 격리·진단 | import 별도try/catch 후 카드만 숨김; 기존 에디터 초기화 유지. readonly `EXODUSER_SCENE_EDITOR.scaleComparison()`은 fresh계산/null. source image/canvas/scene 쓰기 참조 노출0 |
+| 원본 소비·PNG | 원본 네 resident crop/world80·베린앉은높이/feet·nav·scene·ground/source/renderer 변경0. 이 카드의 숫자는 프로젝트JSON이나 PNG에 들어가지 않음. 이전정적환경광 PNG c0ff307d…/7018384B와 동일 |
+| 구현 경계 | 독립 에디터 UI 기능. 이미지 재생성/자동 resize·pivot·crop수리·주민부탁/실지급·본편save/상승·Unity package/Prefab/FBX/PSD·native6·실청취·실물폰/A급전체맵 인수0 |
+
+
+### 2026-10-06 — 선택 이미지의 전사 기준 크기·원본 대비 화면 배율
+
+완료ID `ROOT-EDITOR-SCALE-COMPARISON-20261006`. 현행 독립 에디터의 읽기 전용 비교 계약은 `MAP_SCENE_EDITOR_20261005.md` §21이다. 앞선 크기 편집·발접지·조명 계약은 그대로이며 새 카드가 현재 크기와 확대 상태를 설명한다.
+
+| 항목 | 현행 정확 구현·증거 |
+|---|---|
+| 소비자 | editor3387 single selected object. 높이/전사 기준80, 실제비율72px 막대, world/crop/CSS 크기, X/Y source 배율. refresh/dirtytick 갱신; 다중/선택없음/모듈실패 숨김 |
+| 수치 | heightRatio=H/80; bars=72*(80 또는 H)/max(80,H). CSS=W/H*zoom; source배율=CSS*(canvas.width/size.w)/crop.w/h. 최대축 >1 확대경고, ===1 native, <1 축소. 별도DPR cap·min-height·원본 자동보정0 |
+| 예외·표기 | mask배열 배율null·선명도판정제외, 높이비교유지. ko-KR 최대소수3/0<값<.001 '< 0.001'. 회전전표시영역·투명여백/포즈의체감차이 명시. 리프DOM만 갱신 |
+| 검증 | 신규unit14/14·actual1/실패0. 신규Chrome14/14 고유그룹·actual launch 3/contexts 8, 실패 이력은 외부 원본summary. 이전suite/주민종주/F분기/native6 반복0. QA중제품변경1: 일반마스크도1024buffer를쓰는듯한안내문구만정정, 계산/renderer수정0. 390touch에뮬레이션·실물폰0 |
+| 추가 근거의 경계 | 최초11PASS+harness3FAIL→실패05/06/13부분만후속3PASS, 마스크안내문구만별도1증분PASS; actual18 check executions/Chrome3/context8. 최초390px tap/44px/넘침 assertions와화면은보존됐으나callback중단으로수치값은미반환. PNG exact측정은run1/문구정정전이며정정후재export0; 문구는PNG그리기에참여하지않음 |
+| 보존 | 원본·feet·geometry·nav·scene/game/source·JSON/history/view-only storage 쓰기0. 현재PNG2048²/7018384B/c0ff307db2b2a6abfe55ead8a54fcd48c932cb9047fb6e3b585b8d9973524a21와 exact동일. 정상code5+docs12 한정checkpoint·actualNUL89→72/원격SHA·타인72status/68pin/owner4본인기록은외부receipt |
+| 인수 | 도구 크기비교 UI의 화면/의미 인수와 전체맵 VISUAL VERDICT RETOUCH 분리. 바닥확대해상도·실높이·정적주민·본편grant/quest/save/상승/native6·실청취·A급 미인수. 새팀/실행세션/중복TASK0·paused자동화/아침메일재개0·19시단일결과보고 조건유지 |
+
+백업·현재정확핀·화면·실패이력·docs전체검색과disposition·정상Git/원격근거: `/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/scale-comparison-20261006/receipt.json`. 가이드§23 MAP PRODUCTION REPORT는 `HELL_RIFT_EDITOR_RESULT_20261006.md`의 동일 완료ID다. Claude/Codex 전문팀 작업전원완료를 뜻하지 않으며, 이 개선은 root지원 구현을 독립 consumer에 채택한 것이다.

@@ -33,6 +33,7 @@
   }
   const loaded = new Map();
   let residentLighting;
+  let scaleComparisonFactory, scaleComparisonKey = null;
   // Runtime composition masks: source bitmaps stay untouched. Keep only eight 1024px buffers.
   const softMasks = new Map();
   function maskedPicture(o, a, im) {
@@ -332,6 +333,30 @@
       } }
     } clearBatch();selected=null;refresh();return null;
   }
+  function selectedScaleComparison() {
+    const pair=selectedPair();
+    if(!scaleComparisonFactory||!pair||batchIds.size>1)return null;
+    const a=current().assets.find(a=>a.id===pair.o.assetId);
+    return scaleComparisonFactory(pair.o,a,{zoom:viewport.zoom,rasterScale:canvas.width/size.w});
+  }
+  function scaleComparisonUI() {
+    const card=$('scale-comparison'),q=selectedScaleComparison();
+    card.hidden=!q;
+    if(!q){scaleComparisonKey=null;return;}
+    const key=JSON.stringify(q);
+    if(key===scaleComparisonKey)return;
+    scaleComparisonKey=key;card.dataset.resolution=q.resolution.status;
+    $('scale-bars').hidden=$('scale-details').hidden=!q.valid;
+    if(!q.valid){$('scale-height').textContent='비교할 수 없음 · '+q.reason;$('scale-quality').textContent='이미지 크기와 화면 배율을 확인하세요.';return;}
+    const num=v=>v>0&&v<.001?'< 0.001':new Intl.NumberFormat('ko-KR',{maximumFractionDigits:3}).format(v);
+    const pixels=(v,unit)=>num(v.width)+' × '+num(v.height)+' '+unit;
+    $('scale-height').textContent='표시 영역 높이 '+num(q.world.height)+' world px · 전사 기준의 '+num(q.heightRatio)+'배';
+    $('scale-reference-bar').style.height=q.bars.reference+'px';$('scale-object-bar').style.height=q.bars.object+'px';
+    $('scale-world').textContent=pixels(q.world,'world px');$('scale-source').textContent=pixels(q.sourceCrop,'px');$('scale-screen').textContent=pixels(q.css,'CSS px');
+    const r=q.resolution;
+    $('scale-raster').textContent=r.status==='masked'?'마스크 · 직접 비교 제외':'X '+num(r.scaleX)+'배 · Y '+num(r.scaleY)+'배';
+    $('scale-quality').textContent=r.status==='masked'?'마스크가 적용되어 원본 crop 배율로 선명도를 직접 판정하지 않습니다.':r.status==='enlarged'?'현재 화면에서 원본보다 확대되어 흐려질 수 있습니다. 그림 크기와 확대 배율을 함께 확인하세요.':r.status==='native'?'현재 화면의 최대 축이 원본 해상도와 같습니다.':'현재 화면은 원본보다 축소해서 표시합니다.';
+  }
   function refresh() {
     const p = current(), pair = selectedPair(), active = p.layers.find(l=>l.id===layerId)||p.layers[0]; layerId=active.id;
     syncBatchSelection();const multiple=batchIds.size>1;
@@ -359,7 +384,7 @@
     else $('source-info').textContent='';
     const i=p.layers.indexOf(active);$('layer-up').disabled=i===p.layers.length-1;$('layer-down').disabled=i===0;
     $('unity-import').disabled=playing||dialogueOpen;
-    residentAccessUI();placementUI();objectListUI();
+    residentAccessUI();placementUI();objectListUI();scaleComparisonUI();
     $('play').textContent=playing?'■ 보행 종료':'▶ 보행 시험';$('view-label').textContent=playing?'보행 시험 · WASD / 방향키 · F 대화 · ESC 종료':tool==='pivot'?'발 기준 찍기 · 선택한 그림 안 클릭 · Esc 취소':'SOUTH → NORTH · 이미지와 충돌을 별도로 편집';
     $('cameras').replaceChildren();for(const c of p.cameras){const b=document.createElement('button');b.textContent=c.name;b.onclick=()=>{viewport={x:c.x,y:c.y,zoom:Math.min(size.w/1800,size.h/1100)};clampCamera();dirty=true;};$('cameras').append(b);} dirty=true;
   }
@@ -415,7 +440,7 @@
     if(playing&&!dialogueOpen){let dx=(keys.has('d')||keys.has('arrowright')?1:0)-(keys.has('a')||keys.has('arrowleft')?1:0),dy=(keys.has('s')||keys.has('arrowdown')?1:0)-(keys.has('w')||keys.has('arrowup')?1:0);const before={...player},n=Math.hypot(dx,dy)||1,step=320*dt;if(K.canWalk(current(),player.x+dx/n*step,player.y))player.x+=dx/n*step;if(K.canWalk(current(),player.x,player.y+dy/n*step))player.y+=dy/n*step;if(window.MapSceneActor?.tick(time,player.x-before.x,player.y-before.y))dirty=true;if(dx||dy){viewport.x=player.x;viewport.y=player.y;clampCamera();dirty=true;}}
     if(playing&&dialogueOpen&&window.MapSceneActor?.tick(time,0,0))dirty=true;
     updateNearby();
-    if(dirty){dirty=false;const d=canvas.width/size.w;ctx.setTransform(d,0,0,d,0,0);ctx.fillStyle='#0d1510';ctx.fillRect(0,0,size.w,size.h);ctx.save();ctx.translate(size.w/2,size.h/2);ctx.scale(viewport.zoom,viewport.zoom);ctx.translate(-viewport.x,-viewport.y);render();ctx.restore();$('zoom-value').textContent=Math.round(viewport.zoom*100)+'%';}
+    if(dirty){dirty=false;const d=canvas.width/size.w;ctx.setTransform(d,0,0,d,0,0);ctx.fillStyle='#0d1510';ctx.fillRect(0,0,size.w,size.h);ctx.save();ctx.translate(size.w/2,size.h/2);ctx.scale(viewport.zoom,viewport.zoom);ctx.translate(-viewport.x,-viewport.y);render();ctx.restore();$('zoom-value').textContent=Math.round(viewport.zoom*100)+'%';scaleComparisonUI();}
     requestAnimationFrame(tick);
   }
   function brush(pos) {if(residentAccessReport)invalidateResidentAccess();ambienceScene=null;dialogueScene=null;closeDialogue('nav-edited');const p=current(),t=p.world.tileSize,r=Math.max(0,Math.min(12,+$('brush').value||0)),cx=Math.floor(pos.x/t),cy=Math.floor(pos.y/t);for(let y=-r;y<=r;y++)for(let x=-r;x<=r;x++){const tx=cx+x,ty=cy+y;if(x*x+y*y<=r*r&&tx>=0&&ty>=0&&tx<p.world.cols&&ty<p.world.rows)p.walkable[ty*p.world.cols+tx]=tool==='walk'?1:0;}dirty=true;}
@@ -518,8 +543,8 @@
       if(!response.ok||Number(response.headers.get('content-length'))>256000)throw new Error('주민 대화 데이터 로드 실패');
       const bytes=await response.arrayBuffer();if(bytes.byteLength>256000)throw new Error('주민 대화 데이터가 너무 큽니다');
       dialogueRaw=JSON.parse(new TextDecoder().decode(bytes));dialogueFactory=module.createRiftDialogue;
-    }catch(e){console.warn('틈 대화 시험을 읽지 못했습니다',e);}try{const residents=await import('./map-scene-rift-residents.mjs');residentAnchorsFactory=residents.residentDialogueAnchors;residentGroundingFactory=residents.createResidentGrounding;}catch(e){console.warn('틈 주민 모듈을 읽지 못했습니다',e);}try{residentLighting=(await import('./map-scene-resident-lighting.mjs')).createResidentLighting();}catch(e){console.warn('주민 빛 합성 모듈을 읽지 못했습니다',e);}try{residentAccessFactory=(await import('./map-scene-resident-access.mjs')).inspectResidentAccess;}catch(e){console.warn('주민 접근 검사 모듈을 읽지 못했습니다',e);}try{const objects=await import('./map-scene-object-list.mjs');objectListFactory=objects.inspectLayerObjects;objectFocusFactory=objects.focusObjectFoot;}catch(e){console.warn('객체 목록 모듈을 읽지 못했습니다',e);}try{ambienceFactory=(await import('./map-scene-rift-ambience.mjs')).createRiftAmbience;}catch(e){console.warn('틈 분위기 모듈을 읽지 못했습니다',e);}await Promise.all([script('assets/map/hell_rift/interspace_20261005/layout.js'),script('assets/map/ch1/production_finish/layout.js')]);history=new K.History(await preset('rift'));try{const raw=localStorage.getItem(CACHE_KEY);if(raw){const p=K.validate(JSON.parse(raw));await importProject(p,false);}}catch(e){toast('기존 복구 씬을 읽지 못해 승인 원화로 시작합니다');}const named=new URLSearchParams(location.search).get('scene');if(named){try{await importProject(await namedProject(named),false);}catch(e){toast('현재 씬 유지 · '+e.message);}}resize();fit();refresh();palette();$('status').textContent='준비됨 · '+current().name+' / 본편에 자동 적용하지 않음';new ResizeObserver(resize).observe($('stage'));picture('img/exoduser_warrior/south.png').then(im=>{warrior=im;dirty=true;}).catch(()=>{});setBusy(false); $('workspace').inert=false; requestAnimationFrame(tick);
+    }catch(e){console.warn('틈 대화 시험을 읽지 못했습니다',e);}try{const residents=await import('./map-scene-rift-residents.mjs');residentAnchorsFactory=residents.residentDialogueAnchors;residentGroundingFactory=residents.createResidentGrounding;}catch(e){console.warn('틈 주민 모듈을 읽지 못했습니다',e);}try{residentLighting=(await import('./map-scene-resident-lighting.mjs')).createResidentLighting();}catch(e){console.warn('주민 빛 합성 모듈을 읽지 못했습니다',e);}try{scaleComparisonFactory=(await import('./map-scene-scale-comparison.mjs')).inspectScaleComparison;}catch(e){console.warn('이미지 크기 비교 모듈을 읽지 못했습니다',e);}try{residentAccessFactory=(await import('./map-scene-resident-access.mjs')).inspectResidentAccess;}catch(e){console.warn('주민 접근 검사 모듈을 읽지 못했습니다',e);}try{const objects=await import('./map-scene-object-list.mjs');objectListFactory=objects.inspectLayerObjects;objectFocusFactory=objects.focusObjectFoot;}catch(e){console.warn('객체 목록 모듈을 읽지 못했습니다',e);}try{ambienceFactory=(await import('./map-scene-rift-ambience.mjs')).createRiftAmbience;}catch(e){console.warn('틈 분위기 모듈을 읽지 못했습니다',e);}await Promise.all([script('assets/map/hell_rift/interspace_20261005/layout.js'),script('assets/map/ch1/production_finish/layout.js')]);history=new K.History(await preset('rift'));try{const raw=localStorage.getItem(CACHE_KEY);if(raw){const p=K.validate(JSON.parse(raw));await importProject(p,false);}}catch(e){toast('기존 복구 씬을 읽지 못해 승인 원화로 시작합니다');}const named=new URLSearchParams(location.search).get('scene');if(named){try{await importProject(await namedProject(named),false);}catch(e){toast('현재 씬 유지 · '+e.message);}}resize();fit();refresh();palette();$('status').textContent='준비됨 · '+current().name+' / 본편에 자동 적용하지 않음';new ResizeObserver(resize).observe($('stage'));picture('img/exoduser_warrior/south.png').then(im=>{warrior=im;dirty=true;}).catch(()=>{});setBusy(false); $('workspace').inert=false; requestAnimationFrame(tick);
     // Read-only diagnostics for local UI QA; import uses the same validated atomic path.
-    window.EXODUSER_SCENE_EDITOR={snapshot:()=>K.clone(current()),view:()=>({...viewport}),player:()=>playing?{...player}:null,selection:()=>selected,batchSelection:()=>[...batchIds],importProject,ambience:()=>({enabled:!!ambience&&$('ambient').checked,stats:ambience?.snapshot()||null}),grounding:()=>residentGrounding?.snapshot()||[],residentLighting:()=>residentLighting?.snapshot()||null,residentAccess:()=>residentAccessReport?K.clone(residentAccessReport):null,dialogue:()=>({anchors:residentAnchors().map(a=>({...a,approach:{...a.approach}})),state:dialogueController?.snapshot()||null}),ready:true};
+    window.EXODUSER_SCENE_EDITOR={snapshot:()=>K.clone(current()),view:()=>({...viewport}),player:()=>playing?{...player}:null,selection:()=>selected,batchSelection:()=>[...batchIds],importProject,ambience:()=>({enabled:!!ambience&&$('ambient').checked,stats:ambience?.snapshot()||null}),grounding:()=>residentGrounding?.snapshot()||[],residentLighting:()=>residentLighting?.snapshot()||null,scaleComparison:()=>selectedScaleComparison(),residentAccess:()=>residentAccessReport?K.clone(residentAccessReport):null,dialogue:()=>({anchors:residentAnchors().map(a=>({...a,approach:{...a.approach}})),state:dialogueController?.snapshot()||null}),ready:true};
   }catch(e){$('status').textContent='씬 시작 실패 · '+e.message;toast(e.message);}
 })();

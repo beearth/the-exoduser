@@ -1010,3 +1010,58 @@ VISUAL VERDICT: RETOUCH
 - 주민정적조명증분 PASS / 전체맵·실높이·정적주민·본편/native/청취 미인수.
 NEXT PASS: 바닥/절벽의실제게임카메라해상도·재질연결·주민생활/진행consumer·동일후보본편6단계·청취.
 =========================================================
+
+
+### 2026-10-06 — 선택 이미지의 전사 기준 크기·원본 대비 화면 배율
+
+완료ID `ROOT-EDITOR-SCALE-COMPARISON-20261006`. 현행 독립 에디터의 읽기 전용 비교 계약은 `MAP_SCENE_EDITOR_20261005.md` §21이다. 앞선 크기 편집·발접지·조명 계약은 그대로이며 새 카드가 현재 크기와 확대 상태를 설명한다.
+
+| 항목 | 현행 정확 구현·증거 |
+|---|---|
+| 소비자 | editor3387 single selected object. 높이/전사 기준80, 실제비율72px 막대, world/crop/CSS 크기, X/Y source 배율. refresh/dirtytick 갱신; 다중/선택없음/모듈실패 숨김 |
+| 수치 | heightRatio=H/80; bars=72*(80 또는 H)/max(80,H). CSS=W/H*zoom; source배율=CSS*(canvas.width/size.w)/crop.w/h. 최대축 >1 확대경고, ===1 native, <1 축소. 별도DPR cap·min-height·원본 자동보정0 |
+| 예외·표기 | mask배열 배율null·선명도판정제외, 높이비교유지. ko-KR 최대소수3/0<값<.001 '< 0.001'. 회전전표시영역·투명여백/포즈의체감차이 명시. 리프DOM만 갱신 |
+| 검증 | 신규unit14/14·actual1/실패0. 신규Chrome14/14 고유그룹·actual launch 3/contexts 8, 실패 이력은 외부 원본summary. 이전suite/주민종주/F분기/native6 반복0. QA중제품변경1: 일반마스크도1024buffer를쓰는듯한안내문구만정정, 계산/renderer수정0. 390touch에뮬레이션·실물폰0 |
+| 추가 근거의 경계 | 최초11PASS+harness3FAIL→실패05/06/13부분만후속3PASS, 마스크안내문구만별도1증분PASS; actual18 check executions/Chrome3/context8. 최초390px tap/44px/넘침 assertions와화면은보존됐으나callback중단으로수치값은미반환. PNG exact측정은run1/문구정정전이며정정후재export0; 문구는PNG그리기에참여하지않음 |
+| 보존 | 원본·feet·geometry·nav·scene/game/source·JSON/history/view-only storage 쓰기0. 현재PNG2048²/7018384B/c0ff307db2b2a6abfe55ead8a54fcd48c932cb9047fb6e3b585b8d9973524a21와 exact동일. 정상code5+docs12 한정checkpoint·actualNUL89→72/원격SHA·타인72status/68pin/owner4본인기록은외부receipt |
+| 인수 | 도구 크기비교 UI의 화면/의미 인수와 전체맵 VISUAL VERDICT RETOUCH 분리. 바닥확대해상도·실높이·정적주민·본편grant/quest/save/상승/native6·실청취·A급 미인수. 새팀/실행세션/중복TASK0·paused자동화/아침메일재개0·19시단일결과보고 조건유지 |
+
+백업·현재정확핀·화면·실패이력·docs전체검색과disposition·정상Git/원격근거: `/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/scale-comparison-20261006/receipt.json`. 가이드§23 MAP PRODUCTION REPORT는 `HELL_RIFT_EDITOR_RESULT_20261006.md`의 동일 완료ID다. Claude/Codex 전문팀 작업전원완료를 뜻하지 않으며, 이 개선은 root지원 구현을 독립 consumer에 채택한 것이다.
+
+
+================= MAP PRODUCTION REPORT =================
+STAGE: 지옥의 틈 독립주민v2 · editor3387 크기 비교 / ROOT-EDITOR-SCALE-COMPARISON-20261006
+MASTER
+- silhouette: 기존 비대칭 균열/절벽 유지; regions: 남쪽도착지/서측망자턱/동측상승절벽/중앙심연/북상승문 유지.
+- main route: SOUTH→NORTH source nav/start/exit 불변; side spaces: 네 주민 머무는 턱 보존.
+OUTER MASS
+- LEFT: 서측절벽; RIGHT: 동측뿌리/갑각; TOP: 계단/상승문; SOUTH: 도착지; major holes: 기존심연, geometry변경0.
+LARGE
+- source assets: 원본painting/cleanplate/atlas exactpins. composites: UI만추가; overlap/repeated silhouette 변경0.
+MEDIUM
+- connections: 기존그림/충돌/발정렬 유지. remaining holes: 실제높이/접합 별도GATE.
+GROUND
+- shadow: 기존접지 유지; contamination: 기존재질 유지; structure integration: 새world/crop/feet쓰기0.
+PLAYABLE
+- main arenas: 독립 전이쉼터; travel space/breathing space/threat space: 기존path/주민턱/심연 유지.
+- combat readability: 이번범위 UI; 본편전투 인수0.
+LANDMARK
+- primary: 중앙심연/북상승문; secondary: 서측망자턱/동굴절벽; tertiary: 기존불씨/뿌리.
+CAMERA QA
+- START: PNG2048² exact동일; EARLY: 단일NPC크기 카드.
+- ARENA: 본편전투미검수; SIDE L: 선택교체/발보존; SIDE R: 다른crop/마스크 비교.
+- LANDMARK: 원본PNG불변; LATE: 줌/DPR 실제raster 비교; EXIT: 기존북상승문불변.
+- 390px touch에뮬레이션 도구 UI이며 본편8카메라/실물폰 인수 아님.
+TECH QA
+- route/collision: source scene/nav/foot exact핀불변, 기존종주재실행0.
+- pageerror/404: 외부raw/summary에 실제기록. module부하실패는 의도된 별도fallback검사와 구분.
+- seam: PNG byte/SHA exact동일; loading: 모듈실패격리 검사; performance: 동일결과leaf재쓰기0/전체FPS검수0.
+- 의미14/14 actual1; 화면고유14/14 actualChrome3/contexts8; 실패이력외부보존/성공그룹재실행0.
+FILES
+- stage-owned: code5+docs12 정확17; concurrent touched: root0/owner4본인기록허용; unrelated touched: root0/기존72status·68pins보존.
+GIT
+- staged: 완료17경로 한정; commit: 정상checkpoint; push: 기존branch 정상push/원격exactSHA외부receipt; deploy:0.
+VISUAL VERDICT: RETOUCH
+- 비교 도구 UI 인수와 전체맵GATE분리; 원본저해상도·실높이·정적주민·본편/native/청취미인수.
+NEXT PASS: 현재크기 정보를 활용한 실제에셋시각보정·주민접근/진행consumer·본편동일후보6단계/청취.
+=========================================================

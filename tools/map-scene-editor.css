@@ -84,3 +84,21 @@ body.scene-mode{font:13px/1.5 -apple-system,BlinkMacSystemFont,'Apple SD Gothic 
 #scene-workspace .scene-object-row.batch-selected{border-color:#70cfbc;background:#21382e}
 #scene-workspace #scene-batch-section button{width:100%;min-height:44px;white-space:normal;margin-top:6px}
 #scene-workspace #scene-batch-section input{min-height:44px;min-width:0}
+
+#scene-workspace .scene-scale-comparison{margin-top:12px;padding:12px;border:1px solid #4c604f;border-radius:8px;background:#111b16}
+#scene-workspace .scene-scale-comparison h4{margin:0 0 8px;font-size:12px;letter-spacing:.06em;color:#d6c89c}
+#scene-workspace #scene-scale-height{margin:0 0 10px;color:#d3e2d4;font-size:13px;line-height:1.5;overflow-wrap:anywhere}
+#scene-workspace .scene-scale-bars{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:8px 4px 10px;border-bottom:1px solid #354638}
+#scene-workspace .scene-scale-bars>div{text-align:center;min-width:0}
+#scene-workspace .scene-scale-bar-track{height:72px;display:flex;align-items:flex-end;justify-content:center;border-bottom:1px solid #879b88}
+#scene-workspace .scene-scale-bar-track span{display:block;width:24px;background:#9eb89b;border-radius:3px 3px 0 0}
+#scene-workspace #scene-scale-object-bar{background:#d2b778}
+#scene-workspace .scene-scale-bars small{display:block;margin-top:6px;font-size:11px;color:#b7c4b8;overflow-wrap:anywhere}
+#scene-workspace #scene-scale-details{margin:10px 0;font-size:11px;line-height:1.5}
+#scene-workspace #scene-scale-details>div{display:grid;grid-template-columns:1fr 1.25fr;gap:8px;margin-top:5px}
+#scene-workspace #scene-scale-details dt{color:#a8b8aa}
+#scene-workspace #scene-scale-details dd{margin:0;text-align:right;color:#e0e4d7;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
+#scene-workspace .scene-scale-comparison[data-resolution="enlarged"]{border-color:#97733e}
+#scene-workspace .scene-scale-comparison[data-resolution="enlarged"] #scene-scale-quality{color:#e9bc82}
+
+#scene-workspace .scene-scale-comparison[hidden],#scene-workspace #scene-scale-bars[hidden],#scene-workspace #scene-scale-details[hidden]{display:none!important}
