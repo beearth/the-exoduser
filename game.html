@@ -6244,6 +6244,34 @@ let BINDS2={
   skillCycle:null, irisToggle:null, bladeToggle:null
 };
 // 사슬 이동과 기본 공격의 중복 바인딩만 정리한다. 다른 사용자 설정은 유지.
+// Interact keyboard edges are consumed once; repeats keep only the held state.
+const _interactKeyFresh=new Map();
+let _interactResetPending=false;
+function _resetInteractInput(){
+  _interactKeyFresh.clear();
+  _interactResetPending=true;
+}
+function _consumeInteractCode(code){
+  if(!code)return false;
+  const edge=_chkJust(code);
+  if(code.startsWith('mouse'))return edge;
+  const fresh=_interactKeyFresh.get(code)===true;
+  if(_interactKeyFresh.has(code))_interactKeyFresh.set(code,false);
+  return edge&&fresh;
+}
+function _consumeInteractPressed(){
+  if(window._parryLesson&&!window._parryLesson.allows('interact'))return false;
+  const primary=_consumeInteractCode(BINDS.interact);
+  const secondary=_consumeInteractCode(BINDS2.interact);
+  return primary||secondary;
+}
+function _interactCodeHeld(code){
+  return !!code&&(code.startsWith('mouse')||_interactKeyFresh.has(code))&&_chkHeld(code);
+}
+function _interactHeld(){
+  if(window._parryLesson&&!window._parryLesson.allows('interact'))return false;
+  return _interactCodeHeld(BINDS.interact)||_interactCodeHeld(BINDS2.interact);
+}
 function _chainAttackBindingConflict(action,key){
   if(!key)return false;
   const others=action==='charge'?['weapon','shield']:(action==='weapon'||action==='shield')?['charge']:[];
@@ -6259,6 +6287,7 @@ function _setInputBinding(action,key,alternate){
     return false;
   }
   (alternate?BINDS2:BINDS)[action]=key;
+  if(action==='interact')_resetInteractInput();
   return true;
 }
 const BIND_NAMES={
@@ -13193,6 +13222,7 @@ addEventListener('keydown',e=>{
   if(_handleDeathMenuKeyboard(e))return;
   // Focused panel controls own activation and focus traversal keys.
   if(['Space','Enter','NumpadEnter','Tab'].includes(e.code)&&e.target instanceof Element&&e.target.closest('#invPanel.on button,#invPanel.on [data-inventory-detail-trigger],#crBagPop button,#settings.on button,#settings.on input,#settings.on select'))return;
+  if(!e.repeat&&(e.code===BINDS.interact||e.code===BINDS2.interact))_interactKeyFresh.set(e.code,true);
   K[e.code]=true;KH[e.code]=true;
   // E(shield) 탭 버퍼: 초고속 탭에서 keyup이 K를 지우기 전에 press 사실을 프레임 스탬프로 보존 (게임패드 synth 키다운도 경유)
   if(!e.repeat&&G&&G.on&&!G.paused&&(e.code===BINDS.shield||e.code===BINDS2.shield))_sdTapBuf=G.frame;
@@ -13310,6 +13340,7 @@ function _cycleUlt(){
 })();
 addEventListener('keyup',e=>{
   K[e.code]=false;KH[e.code]=false;
+  _interactKeyFresh.delete(e.code);
   window._parryLesson?.releaseKey(e.code);
   if(e.code==='Space'&&_cutSkipHolding){_cutSkipHolding=false;_cutSkipHold=0}
   if(P&&(e.code===BINDS.beam||e.code===BINDS2.beam))P._beamHold=false; // 마법 홀드 해제 (키보드 바인드)
@@ -13349,6 +13380,7 @@ addEventListener('keyup',e=>{
 // (홀드 중 alt-tab/OS알림/다른창 클릭 등으로 keyup을 못 받으면 KH['ShiftLeft'] 잔류 →
 //  착지마다 돌진 자동 재발사(26302 참조) → "입력 안 했는데 쉬프트 자동 연속 돌진" 버그)
 function _clearHeldInput(){
+  _resetInteractInput();
   for(const k in K)K[k]=false;
   for(const k in KH)KH[k]=false;
   for(const b in MB)MB[b]=false;
@@ -30814,6 +30846,7 @@ function _spawnCh1StartMediumEyeMasses(si){
 
 function initStage(si){
   _rootRiftInvalidate('init-stage');
+  _resetInteractInput();
   G._playerPortalPair=null;
   if(window._parryLesson){window._parryLesson.finish();window._parryLesson.seen=false;}
   G._druidVictory=null;G._druidFinaleBoss=null;G._druidActCue=null;
@@ -32070,7 +32103,9 @@ function update(){
   }
 
   // ── Pick up items with R ──
-  if(isJust('interact')&&!_usePlayerPortal()){
+  if(_interactResetPending){P._pickHoldT=0;_interactResetPending=false;}
+  const _interactPressed=_consumeInteractPressed();
+  if(_interactPressed&&!_usePlayerPortal()){
     // MAP_OBJS 상호작용 (우선)
     for(let _mi=0;_mi<MAP_OBJS.length;_mi++){const mo=MAP_OBJS[_mi];
       if(mo.type==='bonfire'&&dst(P.x,P.y,mo.x,mo.y)<60){
@@ -32198,7 +32233,7 @@ function update(){
     }}
   }
   // ── R키(L3) 홀드: 아이템 연속줍기 (150ms 간격) ──
-  if(!isJust('interact')&&isHeld('interact')){
+  if(!_interactPressed&&_interactHeld()){
     if(!P._pickHoldT)P._pickHoldT=0;
     P._pickHoldT+=sp;
     if(P._pickHoldT>=9){P._pickHoldT=0;
@@ -42964,6 +42999,7 @@ function _fallenResolve(){
   }
   // ── 부활 실패 → 진짜 사망 ──
   _ddDeaths++;{const _ddH=(typeof SI_TO_HELL!=='undefined'&&SI_TO_HELL[G.stage]!=null)?SI_TO_HELL[G.stage]:0;_ddChapDeathMap[_ddH]=(_ddChapDeathMap[_ddH]||0)+1}
+  _resetInteractInput();
   P.s='dead';P.iframes=0;if(G._sStats)G._sStats.deaths++;
   try{SFX.die()}catch(e){console.error('[SFX] player death dispatch error:',e)}G.on=false;G._ebBomb=null;G._mmBomb=null;G._gsBombs=[];G._bsBombs=[];G._boneWalls=[];G._fireZones=[];G._thunderStakes=null;P._tsAiming=false;G._stProjs=[];G._gwLightning=null;G._voidScarecrow=null;G._ancestorReturns=[];G._ancestors=[];
   try{BGM.fadeOut(500)}catch(e){console.error('[SFX] death fade error:',e)}setTimeout(()=>{try{BGM.play('death')}catch(e){console.error('[SFX] death music error:',e)}},600);
@@ -47650,7 +47686,7 @@ function renderSettings(){
     // 보조키 삭제
     if(BINDS2[action]){
       const del=_bindButton('kbm-'+action+'-delete');del.className='bind-delete';del.setAttribute('aria-label',_bindName(action)+' · '+_T('보조')+' · '+_T('삭제'));del.style.cssText='margin-left:2px;color:#664444;font-size:.8rem;cursor:pointer;padding:2px 4px';del.textContent='✕';
-      del.onclick=(e)=>{e.stopPropagation();BINDS2[action]=null;renderSettings();saveSettings()};
+      del.onclick=(e)=>{e.stopPropagation();BINDS2[action]=null;if(action==='interact')_resetInteractInput();renderSettings();saveSettings()};
       row.appendChild(del);
     }
     list.appendChild(row);
@@ -47662,6 +47698,7 @@ function renderSettings(){
   window._resetBinds=()=>{
     BINDS={up:'KeyW',down:'KeyS',left:'KeyA',right:'KeyD',weapon:'mouse0',shield:'KeyE',bow:'Space',charge:'ShiftLeft',parry:'KeyQ',beam:'mouse2',forge:'KeyG',inventory:'Tab',settings:'Escape',interact:'KeyR',storage:'KeyN',stats:'KeyJ',skill:'KeyK',skillCycle:'KeyL'};
     BINDS2={up:null,down:null,left:null,right:null,weapon:null,shield:null,bow:null,charge:null,parry:null,beam:null,skill:null,forge:null,inventory:null,settings:null,interact:null,storage:null,stats:null,skillCycle:null};
+    _resetInteractInput();
     listeningBind=null;_listenAlt=false;saveSettings();renderSettings();
     notify(_T('키 설정 초기화 완료'));
   };
@@ -47701,11 +47738,11 @@ function renderSettings(){
           if(!keyBtn.isConnected){return} // 설정 패널이 닫히거나 재렌더됨 — 바인딩하지 않고 캡처만 해제
           ev.preventDefault();ev.stopPropagation();
           if(ev.code==='Escape'){renderSettings();return}
-          _GP_KEY[i]=ev.code;_saveGpKeyMap();renderSettings()};
+          _GP_KEY[i]=ev.code;_resetInteractInput();_saveGpKeyMap();renderSettings()};
         const _mh=function(ev){_off();
           if(!keyBtn.isConnected){return}
           ev.preventDefault();ev.stopPropagation();
-          _GP_KEY[i]='mouse'+ev.button;_saveGpKeyMap();renderSettings()};
+          _GP_KEY[i]='mouse'+ev.button;_resetInteractInput();_saveGpKeyMap();renderSettings()};
         window._gpBindH={k:_h,m:_mh};
         document.addEventListener('keydown',_h);document.addEventListener('mousedown',_mh);
       }})(idx);
@@ -47718,7 +47755,7 @@ function renderSettings(){
   const gpResetBtn=_bindButton('pad-reset');gpResetBtn.className='bind-reset';
   gpResetBtn.style.cssText='text-align:center;margin-top:8px;padding:6px;background:rgba(100,0,0,.15);border:1px solid #553333;color:#ff6666;cursor:pointer;font-size:.85rem;font-weight:700';
   gpResetBtn.textContent=_T('패드 키 초기화');
-  gpResetBtn.onclick=(e)=>{e.stopPropagation();_resetGpKeyMap();notify(_T('패드 키 초기화 완료'));renderSettings()};
+  gpResetBtn.onclick=(e)=>{e.stopPropagation();_resetInteractInput();_resetGpKeyMap();notify(_T('패드 키 초기화 완료'));renderSettings()};
   list.appendChild(gpResetBtn);
 
   const gpNote=document.createElement('div');
@@ -48199,6 +48236,7 @@ function _loadPreset(slot){
     const data=JSON.parse(raw);
     if(data.binds){for(const k in data.binds){if(k in BINDS)BINDS[k]=data.binds[k]}}
     if(data.binds2){for(const k in data.binds2){if(k in BINDS2||k in BINDS)BINDS2[k]=data.binds2[k]}}
+    _resetInteractInput();
     if(data.opt){for(const k in data.opt)OPT[k]=data.opt[k]}
     if(OPT.atmos===undefined)OPT.atmos=2; // ATMOS 구저장본 호환
     _repairChainAttackBinds();
@@ -62064,6 +62102,7 @@ $('retryBtn').onclick=async function _retryFromDeath(){
      !death?.isConnected||!death.classList.contains('on')||
      $('deathReplay')?.classList.contains('on')||
      !P||P.s!=='dead'||!G||G.on)return;
+  _resetInteractInput();
   death.classList.remove('on');
   const focused=document.activeElement;
   if(focused&&death.contains(focused)&&typeof focused.blur==='function')focused.blur();

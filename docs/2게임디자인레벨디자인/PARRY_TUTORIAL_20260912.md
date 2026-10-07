@@ -180,3 +180,28 @@
 | 캐시 | index.html의 ui-refinement.css?v=20260927-single-lobby-scene |
 | 검증 | 실제 HTML/CSS 격리 브라우저에서 flame 기존 에셋1장으로1600×900 시각 확인. #lobbyBgImg1개/부모lobby/전체화면크기 일치. body에 검수용 마젠타 배경을 두어 외곽에 노출되지 않음 확인. 960×540·1920×1080에서도 전체크기 일치/횡넘침 없음 |
 | 기록 | tmp/lobby-single-scene/after.png,report.json,sizes.json,changes.patch. 게임 저장·계정 변경 없음. 기존 터미널/.git 제한으로 커밋 미완료 |
+
+
+---
+
+## 2026-10-07 실습 자세 초기화와 R 입력 수명 — ROOT-CH1-INTERACT-FRESH-CONSUMER-20261007
+
+공유 `parry-lesson.js`는 원본52,677B / `628a03f781211637262de0ba9d6105e50e54c886225ff4b7da219992697db381`에서 최종52,747B / `f7113a41be241a5510ad84109bc55dc418f140dfc880857b1267171bbb624121`로 K clear 직전 선택적 호출1줄만 추가했다. 중간 무조건 호출 f43a4f는 CPU/native0인 준비 이력으로 외부 보존한다.
+
+새 source 읽기에서 레슨 `resetPose()`의 기존 K/KH clear 뒤 freshMap이 남으면 repeat을 새 누름으로 소비할 수 있는 경계가 확인됐다. 최종 코드는 기존 K clear 직전에 `if(typeof _resetInteractInput==='function')_resetInteractInput();`를 호출한다. 본편에는 입력 API가 있어 Map/pending을 정리하며, API가 없는 Easy는 호출을 건너뛰고 원래 K/KH/MB 해제와 후속 `_stopShieldLoop()`를 그대로 수행한다. 레슨의 기존 자세/자원/월드 정리 권한과 순서는 바꾸지 않는다. 이는 source 검토와 구현 근거이며 실제 사용자/native 반례를 관측했다는 뜻이 아니다.
+
+새 레슨 한정 검수의 최초 runner는 인용부호 준비 오류로 Node parse syntaxFAIL1·제품 VM0·8조건 미도달·exit1이었다. 원 runner/log/receipt를 보존하고 인용부호 한 곳만 별도 후속 runner에서 정정했다. 후속 실제 제품 VM5·8조건 통과, 실패0·미도달0·비동기 미처리 오류0·exit0이며 game f830/lesson f7113 전후 핀 exact다. 물리 Node 시도는2, 실제 제품 실행은1이다. 선택적 API 부재 시 원래 cleanup, 실습 시작/종료의 fresh 잔류와 repeat 차단, 새 누름/keyup 및 Q/E 기존 권한을 통제 VM에서 확인했다. 전체 Easy/전역 update·전체 생애·실제 native/저장 검수는 아니다. 기존 game 전용7그룹26조건은 재실행하거나 이8조건과 합산하지 않는다. 최종 두 source에서 별도 최초 native R 입력3조건이 통과했으며 아래 최종 native 절을 따른다. 이는 레슨 전체 수명이나 Easy native 검수로 확대하지 않는다.
+
+정확한 새 레슨 원자료는 `cpu/lesson-reset-limited/execution-receipt.json`2,211B / `0528e3cd71a40bfda429ccfdf0075b2dfe5a598f7b35d3e5635c331ab6fec25c`(최초 parse 실패), `cpu/lesson-reset-quote-followup/execution-receipt.json`3,289B / `dc7f764d1fb6a1b360bafe94061c98e4ccf306ed3f3a06a7fc1b022f803f56f5`와 `result.json`7,610B / `c8cc7b74f01f9a105f2e0e0d0dcca668bbde4cd72d84c16021a557df9f68adc5`다.
+
+레슨 단계·Q/E/Shift/Space 판정·원래 resetPose 자세/자원/키 해제·저장·보호 설계는 그대로다. 본편 R fresh/dual/repeat/홀드 및 P-free resetPending 상세는 3.3 키바인딩+설정의 이번 절을 따른다. 총괄의 새 native PNG1 직접 판독은 몸·발 가림과 반복 지면으로 RETOUCH이며 실저장 ACK는 미인수다.
+
+새 정확 구현 근거는 같은 외부 디렉터리 `lesson-reset-final-implementation-receipt.json`948B / `f4bd62af0e560e92a091c6622ccd8b1aa1be13cc6af28fea14fdcca4a308a7fe`이며 final 선택적 호출의 원본 역변환 exact·game f830 불변을 기록한다.
+
+### 최종 native 후속 기록
+
+최종 game f830/공유 레슨 f7113에서 최초 Chrome/context/page/maxlive 각1, R1 새 누름 소비·R2 repeat2회 새 누름 재등록 없음·R3 keyup 뒤 Map/held 해제와 홀드 타이머0의 3조건만 통과했다(실패0·미도달0·준비 가드 실패0·exit0). 별도 game CPU26·레슨 parse 실패/후속8과 합산하지 않으며 레슨 전체 수명·Easy·실제 loot/portal·사망/retry·보스·실물 패드·음향·동일 후보6단계·A급은 미인수다.
+
+실제 주소는 `classic=1&test=1&slot=root-r-fresh-20261007&ch1Three=1&ch1Rig=1&webgpu=0`이고 `demo=1`은 없다. source2 HTTP 사전/실수신·전후 exact, pageerror/HTTP 오류0; 외부 폰트 차단3·로컬 intro 중단2(직접 원인 UNKNOWN)는 별도다. POST `/api/mats`1건만 synthetic, 서버 전달/변경0·실저장 ACK0·GL UNKNOWN이며 소유 context/browser를 닫았다. 총괄 PNG1 직접 판독은 금빛 FX의 몸·발 가림과 회색 반복 baked 평면이 남아 RETOUCH다. 상세 현재표는 3.3의 이번 절을 따른다.
+
+외부 근거는 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-interact-fresh-20261007/validation-receipt.json`4,621B / `c6595f90605f435f78213d11d9214d1ba255d4263cd272ec1046236f4c80579c`, `visual-verdict.json`1,884B / `d27d61ad99019f5eaf6aaf96e36f9a067af81db5ae551c4faf72663c9022bda2`다. helper native 영수증의 PNG PENDING은 당시 기록이고 후속 총괄 visual 판정이 현재다. Git 사실은 checkpoint 전 문구와 구분해 같은 디렉터리 `remote-preservation-receipt.json`의 실제 정상 commit/push/정확 원격 SHA로 확정한다.

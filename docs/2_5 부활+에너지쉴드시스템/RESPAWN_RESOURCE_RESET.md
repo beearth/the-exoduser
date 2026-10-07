@@ -232,3 +232,36 @@
 자연사망은 이번 브라우저 검수의 준비 조건이며 이전 자연사망 성과를 다시 합산하지 않는다. 44c9 준비 구현은 실행0이고, 이전 재도전 검사와 이번 CPU·브라우저 결과도 합산하지 않는다. 브라우저 전 메타데이터 준비 오류1회는 Chrome0·제품 실패0으로 분리한다. 추가 검수 실행·자동 재시도는 없다.
 
 정확한 소스·구현·검수 원자료와 정상 커밋·push·원격 SHA는 외부 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-death-keyboard-focus-20261007`의 `implementation-final-receipt.json`, 최종 `validation-receipt.json`·`visual-verdict.json` 및 `remote-preservation-receipt.json`을 참조한다. 문서 작성 시점의 계획을 원격 보존 완료로 표시하지 않는다.
+
+
+---
+
+## 2026-10-07 R 상호작용의 새 누름 1회 소비 — ROOT-CH1-INTERACT-FRESH-CONSUMER-20261007
+
+이번 변경은 R 상호작용의 입력 수명만 정리한다. `_resetInteractInput()`은 P를 읽지 않고 freshMap을 비우며 resetPending을 세운다. 실제 dead 전이, 유효한 기존 retry guard 뒤, initStage의 기존 invalidate 뒤에 연결되어 이전 누름/홀드 타이머를 새 생애로 이월하지 않는다. P에 접근 가능한 기존 R 소비부가 다음에 실행될 때 `_pickHoldT=0`으로 pending을 소비한다.
+
+유효 retry의 현재 순서는 기존 guard → 입력 전용 reset → death 메뉴 동기 소비 → focus blur → 열린 settings만 close → 기존 invalidate/재시작 본문/EXP/자원 완충/save다. 이전 retry 소비 단위의 helper 순서는 당시 이력으로 보존하며 이 새 입력 reset이 앞에 추가됐음을 구분한다. EXP30%·field snapshot46key·HP/MP/ST/shield 완충·G.on/await dbSave·다음 실제 사망의 독립 retry·save 스키마/백엔드는 변경하지 않았다. 전체 reset 수명/보스 사망/열린 필드 보존을 이 한정 CPU로 다시 인수하지 않는다.
+
+현재 working `game.html`은 4,089,667B / `f8302cd77d7726d4f2da7c444b1ad4a0cfda908c1f3553b3847f86cc6da8a49c`, 총괄 소유 HEAD+변경 파일은 4,089,482B / `f88660e7c5b7d12dcd69408cde9c71063a3ee5f24d67581aa3173e0cd432bd1c`다. 본편16+공유 레슨1, 두 코드 경로17개 소유 hunk의 역변환이 원본과 정확히 일치하며 다른 담당의 game185B와 설정 문서2948B는 보존한다.
+
+기존 game 전용 CPU는 최초 Node1·VM12의 실제 helper/입력 조각/R·홀드 본문을 통제 port로 실행한 7그룹26조건 통과(실패0·미도달0·exit0)이며 전체 update/reset 수명·실제 native·실저장 검수는 아니다. selector 비유일 준비 Assertion1은 별도 실행 전 준비 이력이고, 과거 R/normal17/GL 결과와 합산하지 않는다. 별도 최초 native R 입력3조건만 통과했으며 CPU와 합산하지 않는다. 총괄의 새 PNG1 직접 판독은 RETOUCH이고 GL 및 durable ACK는 미인수다.
+
+근거는 외부 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-interact-fresh-20261007/implementation-receipt.json` 5,545B / `8d79af3b516e90d196383eda8b337dc193770061e032b019b7776aeb5338229d`, `cpu/execution-receipt.json` 1,678B / `ba9b5bc98624725027cf491e9f7c00a8ea398fd7e6365e91df591a0043fbdb1a`, `cpu/result.json` 11,489B / `076ad09c513b51d63980a6edd21b2421a874ebf147dbc93cc7400141eee45d10`다. Git 사실은 같은 디렉터리의 `remote-preservation-receipt.json`에 기록할 실제 정상 commit/push/원격 정확 SHA로 확정하며, 현재 문서는 checkpoint 전의 구현·서로 구분한 CPU/native 한정 증거 단계다. 자기 commit SHA를 순환 기입하거나 배포 완료로 표시하지 않는다.
+
+공유 `parry-lesson.js`는 원본52,677B / `628a03f781211637262de0ba9d6105e50e54c886225ff4b7da219992697db381`에서 최종52,747B / `f7113a41be241a5510ad84109bc55dc418f140dfc880857b1267171bbb624121`로 K clear 직전 선택적 호출1줄만 추가했다. 중간 무조건 호출 f43a4f는 CPU/native0인 준비 이력으로 외부 보존한다.
+
+새 source 읽기에서 레슨 `resetPose()`의 기존 K/KH clear 뒤 freshMap이 남으면 repeat을 새 누름으로 소비할 수 있는 경계가 확인됐다. 최종 코드는 기존 K clear 직전에 `if(typeof _resetInteractInput==='function')_resetInteractInput();`를 호출한다. 본편에는 입력 API가 있어 Map/pending을 정리하며, API가 없는 Easy는 호출을 건너뛰고 원래 K/KH/MB 해제와 후속 `_stopShieldLoop()`를 그대로 수행한다. 레슨의 기존 자세/자원/월드 정리 권한과 순서는 바꾸지 않는다. 이는 source 검토와 구현 근거이며 실제 사용자/native 반례를 관측했다는 뜻이 아니다.
+
+새 레슨 한정 검수의 최초 runner는 인용부호 준비 오류로 Node parse syntaxFAIL1·제품 VM0·8조건 미도달·exit1이었다. 원 runner/log/receipt를 보존하고 인용부호 한 곳만 별도 후속 runner에서 정정했다. 후속 실제 제품 VM5·8조건 통과, 실패0·미도달0·비동기 미처리 오류0·exit0이며 game f830/lesson f7113 전후 핀 exact다. 물리 Node 시도는2, 실제 제품 실행은1이다. 선택적 API 부재 시 원래 cleanup, 실습 시작/종료의 fresh 잔류와 repeat 차단, 새 누름/keyup 및 Q/E 기존 권한을 통제 VM에서 확인했다. 전체 Easy/전역 update·전체 생애·실제 native/저장 검수는 아니다. 기존 game 전용7그룹26조건은 재실행하거나 이8조건과 합산하지 않는다. 최종 두 source에서 별도 최초 native R 입력3조건이 통과했으며 아래 최종 native 절을 따른다. 이는 레슨 전체 수명이나 Easy native 검수로 확대하지 않는다.
+
+정확한 새 레슨 원자료는 `cpu/lesson-reset-limited/execution-receipt.json`2,211B / `0528e3cd71a40bfda429ccfdf0075b2dfe5a598f7b35d3e5635c331ab6fec25c`(최초 parse 실패), `cpu/lesson-reset-quote-followup/execution-receipt.json`3,289B / `dc7f764d1fb6a1b360bafe94061c98e4ccf306ed3f3a06a7fc1b022f803f56f5`와 `result.json`7,610B / `c8cc7b74f01f9a105f2e0e0d0dcca668bbde4cd72d84c16021a557df9f68adc5`다.
+
+새 정확 구현 근거는 같은 외부 디렉터리 `lesson-reset-final-implementation-receipt.json`948B / `f4bd62af0e560e92a091c6622ccd8b1aa1be13cc6af28fea14fdcca4a308a7fe`이며 final 선택적 호출의 원본 역변환 exact·game f830 불변을 기록한다.
+
+### 최종 native 후속 기록
+
+최종 game f830/공유 레슨 f7113에서 최초 Chrome/context/page/maxlive 각1, R1 새 누름 소비·R2 repeat2회 새 누름 재등록 없음·R3 keyup 뒤 Map/held 해제와 홀드 타이머0의 3조건만 통과했다(실패0·미도달0·준비 가드 실패0·exit0). 별도 game CPU26·레슨 parse 실패/후속8과 합산하지 않으며 레슨 전체 수명·Easy·실제 loot/portal·사망/retry·보스·실물 패드·음향·동일 후보6단계·A급은 미인수다.
+
+실제 주소는 `classic=1&test=1&slot=root-r-fresh-20261007&ch1Three=1&ch1Rig=1&webgpu=0`이고 `demo=1`은 없다. source2 HTTP 사전/실수신·전후 exact, pageerror/HTTP 오류0; 외부 폰트 차단3·로컬 intro 중단2(직접 원인 UNKNOWN)는 별도다. POST `/api/mats`1건만 synthetic, 서버 전달/변경0·실저장 ACK0·GL UNKNOWN이며 소유 context/browser를 닫았다. 총괄 PNG1 직접 판독은 금빛 FX의 몸·발 가림과 회색 반복 baked 평면이 남아 RETOUCH다. 상세 현재표는 3.3의 이번 절을 따른다.
+
+외부 근거는 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-interact-fresh-20261007/validation-receipt.json`4,621B / `c6595f90605f435f78213d11d9214d1ba255d4263cd272ec1046236f4c80579c`, `visual-verdict.json`1,884B / `d27d61ad99019f5eaf6aaf96e36f9a067af81db5ae551c4faf72663c9022bda2`다. helper native 영수증의 PNG PENDING은 당시 기록이고 후속 총괄 visual 판정이 현재다. Git 사실은 checkpoint 전 문구와 구분해 같은 디렉터리 `remote-preservation-receipt.json`의 실제 정상 commit/push/정확 원격 SHA로 확정한다.

@@ -317,6 +317,7 @@ window._parryLesson = {
     _harpActive=false;_dashActive=false;_dashHold=false;_dashHoldF=0;_dashTier=0;_dashLeft=0;_dashPhase=0;
     P._bdMoveT=0; P._preBdState=null;this.directionSpace=false;this.dashPractice=null;
     P._sdHold = 0; P._bdTrigger = null; P.kb.x = 0; P.kb.y = 0;
+    if(typeof _resetInteractInput==='function')_resetInteractInput();
     for (const key of Object.keys(K)) K[key] = false;
     for (const key of Object.keys(KH)) KH[key] = false;
     for (const key of Object.keys(MB)) MB[key] = false;
