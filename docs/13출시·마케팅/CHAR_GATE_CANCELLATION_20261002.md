@@ -38,3 +38,18 @@
 
 기존 정본3에는 이 지연 수명·저장 예외를 append하고 기존 생성 Promise/슬롯/스킵1200ms/출시 이력은 보존했다. [서사](../11내러티브·로어디자인/11내러티브·로어디자인.md), [출시](13출시·마케팅.md), [저장](../15%20세이브+데이터구조/15%20세이브+데이터구조.md).
 추출 source PASS는 실제 입장·native·visual·auth/실저장 PASS를 대신하지 않는다.
+
+### ROOT-CH1-LOBBY-OPTION-CARRY-20261007 — 로비 왕복의 명시적 2.5D 옵션 전달
+
+위2026-10-02 source/함수 크기·핀·검수 표는 해당 epoch 이력이다. 현재 showCharGate(4176)는 request를4177에서 캡처하며4193의1200ms 콜백 첫 stale guard로 옛 이동을 생략한다. 기존 demo/local/online/story base에 local3387 명시4키만 carry하며 취소 시 선행 저장을 되돌리지 않는다.
+
+| 현행 보충 | 값 |
+|---|---|
+| source | index342547B/27ba97fff5ae755bc58db2e8b2144e5136a4a66e3c9be43a466ff5673ce2a5b1 |
+| callback |4193, request!==_characterLoadSeq이면 이동0;1200ms 유지 |
+| carry | localhost/127.0.0.1:3387, classic/ch1Three/ch1Rig/webgpu 첫 명시값, target-key 우선;mapqa 제외 |
+| 저장/취소 | 기존 demo 활성화가 타이머 전 수행됨; 타이머 취소/재예약/저장 rollback 추가0 |
+
+정확한 전달 key·host/port·첫값/target-key 우선·미전파·원래 저장/지연 수명은 `docs/3.3 키바인딩+설정/3.3 키바인딩+설정.md`의 동일 completion 절을 따른다.
+
+신규 carry CPU는 실제 showCharGate/goToLobby 함수 전체를 추출한 통제 VM의 최초1회로7그룹·25복합조건 PASS25/FAIL0/미도달0/setup0/exit0이다. source2 전후 exact 및 원 working 원문 역치환 exact를 보존했다. 옵션·host/port·중복 첫값/특수문자·demo/test/normal/story·stale·활성화 실패·save await 후 이동/저장 실패 뒤 이동/죽음 복구 후 save·두 실제 함수의 통제 왕복을 확인했다. CPU 전 별도 준비 읽기의 zsh optional-wildcard 오류는 제품/CPU 실패가 아니며 최초 하니스 재실행0이다. 실제 로비→게임→로비→게임 자연 입력·실제 save ACK·전체 native6·청취는 미인수다. 기존 rig/attack CPU·native 숫자를 재집계하지 않는다. 근거는 동일 외부 폴더의 cpu-receipt.json5520B/5d404e0940578fce4e806dd2f3be6054423653a9b3732c9e1b381e3a83f187d3와 result.json32935B/54f24ec8d4751a72b19ed756cc261b91486ac7344111549f2fd13b22aa84bb1a이다.

@@ -61977,7 +61977,16 @@ async function goToLobby(){
     if(P&&P.hp<=0){P.hp=P.mhp;P.st=P.mst;P.mp=P.mmp;P.shield=P.mshield;P.s='idle'}
     if(_dbReady)await dbSave();
   }catch(e){console.error('[goToLobby] save error:',e)}
-  window.location.href=_DEMO_MODE?'/?lobby=1&demo=1':'/?lobby=1';
+  const _lobbyTarget=_DEMO_MODE?'/?lobby=1&demo=1':'/?lobby=1';
+  let _devCarry='';
+  if(location.port==='3387'&&(location.hostname==='127.0.0.1'||location.hostname==='localhost')){
+    const _from=new URLSearchParams(location.search),_to=new URL(_lobbyTarget,location.href).searchParams;
+    for(const _key of ['classic','ch1Three','ch1Rig','webgpu']){
+      const _value=_from.get(_key);
+      if(_value!==null&&!_to.has(_key))_devCarry+='&'+_key+'='+encodeURIComponent(_value);
+    }
+  }
+  window.location.href=_lobbyTarget+_devCarry;
 }
 if($('toLobbyBtn'))$('toLobbyBtn').onclick=goToLobby;
 if($('toLobbyBtn2'))$('toLobbyBtn2').onclick=goToLobby;

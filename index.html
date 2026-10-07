@@ -4182,7 +4182,15 @@ function showCharGate(charId,storySeen=false){
   const _demoParam=_LOBBY_BUILD==='demo'?'&demo=1':'';
   if(_LOBBY_BUILD==='demo'&&!_demoActivateSlot(charId)){hideLoading();setStatus(_TL('알 수 없는 오류'),true);return}
   const _tp=(_LOBBY_BUILD==='demo'?'game.html?test=1&slot=demo':_testMode?'game.html?test=1&slot='+encodeURIComponent(charId):'game.html?char='+charId+'&slot='+encodeURIComponent(_slotName))+_demoParam;
-  setTimeout(()=>{if(request!==_characterLoadSeq)return;window.location.href=_tp+(storySeen?'&story=warrior-v21':'')},1200);
+  let _devCarry='';
+  if(location.port==='3387'&&(location.hostname==='127.0.0.1'||location.hostname==='localhost')){
+    const _from=new URLSearchParams(location.search),_to=new URL(_tp,location.href).searchParams;
+    for(const _key of ['classic','ch1Three','ch1Rig','webgpu']){
+      const _value=_from.get(_key);
+      if(_value!==null&&!_to.has(_key))_devCarry+='&'+_key+'='+encodeURIComponent(_value);
+    }
+  }
+  setTimeout(()=>{if(request!==_characterLoadSeq)return;window.location.href=_tp+(storySeen?'&story=warrior-v21':'')+_devCarry},1200);
 }
 
 // ═══ 펫 말풍선 시스템 ═══

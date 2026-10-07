@@ -1258,3 +1258,11 @@ root가 자연 종료 후 idle/strike PNG2를 직접 판독했다. 전사의 몸
 | W movement | y7420→7200.653340000013, trusted W/K/KH·update 기록 |
 | 자연 종료 | bonfire t243→0, gameFrame57→300, 상태 setter0 |
 | 시각 | 두 pose의 몸/하단 식별만, 전체 VISUAL RETOUCH |
+
+### ROOT-CH1-LOBBY-OPTION-CARRY-20261007 — 로비 왕복의 명시적 2.5D 옵션 전달
+
+기존 본편 terrain/rig 및 전사 LMB 채택 scope는 유지한다. 이제 명시 ch1Three/ch1Rig query가 로비 캐릭터 입장과 정상 로비 복귀를 통과한다. 공격/실버테일/발 인수 범위를 확대하지 않는다.
+
+정확한 전달 key·host/port·첫값/target-key 우선·미전파·원래 저장/지연 수명은 `docs/3.3 키바인딩+설정/3.3 키바인딩+설정.md`의 동일 completion 절을 따른다.
+
+신규 carry CPU는 실제 showCharGate/goToLobby 함수 전체를 추출한 통제 VM의 최초1회로7그룹·25복합조건 PASS25/FAIL0/미도달0/setup0/exit0이다. source2 전후 exact 및 원 working 원문 역치환 exact를 보존했다. 옵션·host/port·중복 첫값/특수문자·demo/test/normal/story·stale·활성화 실패·save await 후 이동/저장 실패 뒤 이동/죽음 복구 후 save·두 실제 함수의 통제 왕복을 확인했다. CPU 전 별도 준비 읽기의 zsh optional-wildcard 오류는 제품/CPU 실패가 아니며 최초 하니스 재실행0이다. 실제 로비→게임→로비→게임 자연 입력·실제 save ACK·전체 native6·청취는 미인수다. 기존 rig/attack CPU·native 숫자를 재집계하지 않는다. 근거는 동일 외부 폴더의 cpu-receipt.json5520B/5d404e0940578fce4e806dd2f3be6054423653a9b3732c9e1b381e3a83f187d3와 result.json32935B/54f24ec8d4751a72b19ed756cc261b91486ac7344111549f2fd13b22aa84bb1a이다.
