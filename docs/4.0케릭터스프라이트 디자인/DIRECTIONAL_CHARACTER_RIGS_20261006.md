@@ -1502,3 +1502,45 @@ borrowed main atlas의 공격 표시 소비를 추가한 현재 계약을 기록
 기존 실버테일 idle/run, 전사 strike/recovery와 다크드루이드의 완료·실패·한정 검수는 각 당시 소스의 이력으로 보존하며, 이번 공격 후보의 검수로 재실행하거나 합산하지 않는다.
 
 상세 모드·API·소스 핀·표시 원점과 해부학적 발 기준의 구분은 `docs/4.0케릭터스프라이트 디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md`의 이 절을 따른다. 구현 근거는 외부 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-main-silvertail-attack-20261007`의 `main-implementation-receipt.json`과 `modules-implementation-receipt.json`이다. 정상 commit·push·정확한 원격 SHA는 같은 디렉터리의 `remote-preservation-receipt.json`에서 체크포인트 뒤 확정하며, 구현 보존 전 상태를 원격 완료로 미리 표시하지 않는다.
+
+
+## 2026-10-07 실버테일 일반 공격 표시의 후속 검수 — ROOT-SILVERTAIL-ATTACK-VERIFICATION-DOCS-20261007
+
+일반 실버테일 LMB 표시의 새 실제 브라우저 결과를 기록한다. 기존 미검수 구현 보존과 이번 한정 검수 완료를 구분한다.
+
+앞의 `ROOT-CH1-SILVERTAIL-LMB-ATTACK-20261007` 절은 구현 후보를 먼저 보존한 당시 기록이다. 그 절의 “화면 미관측·native 대기”는 당시 상태로 보존하며, 현재 한정 검수 상태는 이 후속 절을 우선한다. 소스3개는 변경하지 않았다. code3+docs13은 `d651f8d357d8cc1e4fc06fcd5fa6cb626255154d`로 정상 커밋·push·원격 정확 SHA 보존을 완료했고, 이번 별도 보존은 새 검수 결과를 기록하는 정본6개뿐이다.
+
+| 변경 없는 소스 | bytes | SHA256 |
+|---|---:|---|
+| game.html working | 4087535 | `72cf0d6036005affc773b0ba1e603b1c8ed4f4816a662cd89dfbb964b2327202` |
+| game.html 총괄 소유 파일 | 4087350 | `b5b42f23ac33679d1be9b620859c5b0b869e4b0d919a2cf9767b16cfe9791356` |
+| character-rigs.mjs | 23787 | `d666c9eb1a9aac11c224b496c8c025ef23a505030f931519392319d8f2c45f9a` |
+| ch1-player-rig.mjs | 33296 | `73d0a9e54fc78808ff4189b5de7403f983255845aa27e6a9849ed1f6406c0aa2` |
+
+| 검수 범위 | 실제 횟수와 결과 | 한계 |
+|---|---|---|
+| 기존 main 한정 CPU | 최초 Node1·VM29, 6그룹29복합조건 통과/실패0·미도달0·exit0 | 실제 main 함수와 통제 adapter/DOM/X. 앞선 구현 보존 시점 결과이며 새 실행이 아님 |
+| 기존 모듈 한정 CPU | 최초 stdin1, 실제 전체2개 SourceTextModule+실제 Three609정점·통제 canvas/renderer. 7그룹33조건 통과/실패0·준비0·미도달0·비동기 미처리 오류0·exit0 | 실제 main·브라우저·PNG·ghost·GPU·저장 인수 아님. 새 실행이 아님 |
+| 새 실제 브라우저 | 최초 Chrome/context/page/maxLive 각1, 새2조건 통과/실패0·미도달0·준비 실패0·exit0 | 일반 필드의 동쪽 LMB1회 표시만. 실제 UI 캐릭터 선택·전체 공격·native6 인수 아님 |
+
+세 검수 범위는 서로 다른 결과다. 29·33·2를 하나의 전체 통과 수로 합산하지 않는다. 기존 suite 재실행·자동 재시도·이번 문서 작업의 검수 실행은 없다.
+
+| 실제 관측 | 값과 의미 |
+|---|---|
+| 시작 조건 | 새 격리 context·정확 origin http://127.0.0.1:3387·classseed1. 일반 본편 진입, bonfireT=0 관측. 게임 시간·HP·지도 상태 강제 변경이나 게임 함수 wrapping 없음 |
+| 입력 | trusted LMB down1/up1, 동쪽 direction2. 표시 helper를 직접 호출해 만든 상태가 아님 |
+| strike | gameFrame309, atk2 index0, phase=.5/9 |
+| recovery | gameFrame314, 정상 승계된 atk3 index1, phase=1.5/9 |
+| idle 복귀 | gameFrame349, 기존48셀로 복귀 |
+| 표시 규격 | borrowed609정점, attack canvas85×85·source cell80×80·중앙 표시 원점(40,40)·referenceHeight45. 기존(40,62)는 crop 배치 기준이며 해부학적 발 검수는 미인수 |
+| 원문·HTTP | source3 검수 전후와 HTTP로 받은 소스3개 정확 일치. pageerror0·HTTP실패0 |
+| 관측 도구 | 읽기 전용 observer의 RAF는 최대120표본/5000ms로 제한. 제품 RAF·새 WebGL context·renderer wrapping 없음 |
+| PNG4개 | 기존 main C와 adapter canvas의 strike/recovery toDataURL. frame309/314에서 관측 프레임과 이미지 읽기 전후 프레임 일치. 전체 DOM screenshot·하드웨어 scanout 인수 아님 |
+| GL·물리 자원 | GL UNKNOWN. context와 소유 Chrome은 닫혔지만 실제 GPU 해제 여부 UNKNOWN. GL0·물리 자원 해제 완료를 주장하지 않음 |
+| 저장 | 모든 API는 synthetic, matsPOST1은 서버 도달 전 차단. 실제 서버 변경0·실저장 ACK0·음향 청취0 |
+
+총괄이 PNG4개를 직접 판독했다. 동쪽 strike와 recovery의 서로 다른 몸 포즈 및 기존 보라색 무기FX는 식별된다. 몸이 작고 어두우며 큰 밝은FX가 실루엣을 압도한다. 반복되는 평평한 회색 baked 지면과 배경 확대 흐림도 남아 VISUAL VERDICT: RETOUCH다. 이 판정은 전체 방향·발 접지·지형 높이·최종 미감의 통과가 아니다.
+
+전체 공격·특수/죽음·8방향·실제 DSghost·해부학적 발·실제 지형 높이·보스방 개방/사망/부활/재도전 전체 경로·음향·실저장 ACK·전체 native6는 미인수다. 검수 영수증의 `wholeAttackAccepted=false`, 실제 기능 플래그 `silvertailAttackAccepted=false`·`fullPlayerLinked=false`를 유지한다. 기존 두 strike/recovery 표시 플래그의 true를 전체 공격 승인으로 해석하지 않는다.
+
+상세 결과·한계는 `docs/4.0케릭터스프라이트 디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md`의 이 후속 절을 따른다. 원자료는 외부 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-main-silvertail-attack-20261007`의 `validation-receipt.json`4278B/`55dae31f70b7bc96be2ac30b8d22659e4333fd00e4c9569cb70aa45553ac6128`, `native-attack-result.json`242346B/`13226988a34e87e51e4385586a2159e39e7e64074861e62fed367c52107d8c63`, `visual-verdict.json`4269B/`e6bb23107d3deb1dcd637490e17cf3106c1a598f26d5fc684d34f4c33d7c4f51`이다. 이번 docs6의 정상 커밋·push·정확한 원격 SHA는 별도 `verification-docs/remote-preservation-receipt.json`에서 확정하며, 이전 code3docs13 보존을 다시 집계하지 않는다.

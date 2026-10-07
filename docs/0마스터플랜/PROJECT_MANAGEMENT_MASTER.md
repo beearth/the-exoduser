@@ -4282,3 +4282,24 @@ factory36/combined15/main31/native3/final-limited4를 하나의 clean 전체 PAS
 기존 실버테일 idle/run, 전사 strike/recovery와 다크드루이드의 완료·실패·한정 검수는 각 당시 소스의 이력으로 보존하며, 이번 공격 후보의 검수로 재실행하거나 합산하지 않는다.
 
 상세 모드·API·소스 핀·표시 원점과 해부학적 발 기준의 구분은 `docs/4.0케릭터스프라이트 디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md`의 이 절을 따른다. 구현 근거는 외부 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-main-silvertail-attack-20261007`의 `main-implementation-receipt.json`과 `modules-implementation-receipt.json`이다. 정상 commit·push·정확한 원격 SHA는 같은 디렉터리의 `remote-preservation-receipt.json`에서 체크포인트 뒤 확정하며, 구현 보존 전 상태를 원격 완료로 미리 표시하지 않는다.
+
+
+## 2026-10-07 실버테일 일반 공격 표시의 후속 검수 — ROOT-SILVERTAIL-ATTACK-VERIFICATION-DOCS-20261007
+
+앞선 완료 소유 보존 뒤 도착한 실버테일 공격 표시의 새 실제 검수 결과를 기록한다.
+
+앞의 `ROOT-CH1-SILVERTAIL-LMB-ATTACK-20261007` 절은 구현 후보를 먼저 보존한 당시 기록이다. 그 절의 “화면 미관측·native 대기”는 당시 상태로 보존하며, 현재 한정 검수 상태는 이 후속 절을 우선한다. 소스3개는 변경하지 않았다. code3+docs13은 `d651f8d357d8cc1e4fc06fcd5fa6cb626255154d`로 정상 커밋·push·원격 정확 SHA 보존을 완료했고, 이번 별도 보존은 새 검수 결과를 기록하는 정본6개뿐이다.
+
+최초 실제 Chrome/context/page/maxLive 각1에서 새2조건이 통과했다(실패0·미도달0·준비 실패0·exit0). 실제 LMB1회로 동쪽 direction2의 strike→정상 recovery→idle 복귀를 관측했다. class1은 정확3387 origin의 새 격리 context에 초기값으로 지정했으며 실제 캐릭터 선택 UI는 미인수다. 원본 canvas PNG4개의 해당 프레임은 일치하지만 전체 DOM 화면이나 하드웨어 화면 출력은 캡처하지 않았다.
+
+| 현재 상태 | 이번 후속 결과 |
+|---|---|
+| 표시 검수 | 최초 실제 브라우저2조건 한정 통과. 앞선 main29·module33과 합산하지 않음 |
+| 소스·저장 | source3/HTTP3 정확 일치, pageerror·HTTP실패0. GL UNKNOWN, synthetic matsPOST1 서버 차단·실저장 ACK0 |
+| 시각 | PNG4개에서 strike/recovery 몸 포즈 식별. 작고 어두운 몸·큰FX·반복 평면 지면/흐림이 남아 RETOUCH |
+
+총괄이 PNG4개를 직접 판독했다. 동쪽 strike와 recovery의 서로 다른 몸 포즈 및 기존 보라색 무기FX는 식별된다. 몸이 작고 어두우며 큰 밝은FX가 실루엣을 압도한다. 반복되는 평평한 회색 baked 지면과 배경 확대 흐림도 남아 VISUAL VERDICT: RETOUCH다. 이 판정은 전체 방향·발 접지·지형 높이·최종 미감의 통과가 아니다.
+
+전체 공격·특수/죽음·8방향·실제 DSghost·해부학적 발·실제 지형 높이·보스방 개방/사망/부활/재도전 전체 경로·음향·실저장 ACK·전체 native6는 미인수다. 검수 영수증의 `wholeAttackAccepted=false`, 실제 기능 플래그 `silvertailAttackAccepted=false`·`fullPlayerLinked=false`를 유지한다. 기존 두 strike/recovery 표시 플래그의 true를 전체 공격 승인으로 해석하지 않는다.
+
+상세 결과·한계는 `docs/4.0케릭터스프라이트 디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md`의 이 후속 절을 따른다. 원자료는 외부 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-main-silvertail-attack-20261007`의 `validation-receipt.json`4278B/`55dae31f70b7bc96be2ac30b8d22659e4333fd00e4c9569cb70aa45553ac6128`, `native-attack-result.json`242346B/`13226988a34e87e51e4385586a2159e39e7e64074861e62fed367c52107d8c63`, `visual-verdict.json`4269B/`e6bb23107d3deb1dcd637490e17cf3106c1a598f26d5fc684d34f4c33d7c4f51`이다. 이번 docs6의 정상 커밋·push·정확한 원격 SHA는 별도 `verification-docs/remote-preservation-receipt.json`에서 확정하며, 이전 code3docs13 보존을 다시 집계하지 않는다.
