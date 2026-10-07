@@ -56186,3 +56186,18 @@ pageerrorHTTP0/requestfail5(font3의도차단+introabort2직접원인UNKNOWN)·A
 최초 CPU Node1/8그룹 계획·7완료/42도달41PASS·정적추출oracle1FAIL·미도달0·exit1, 별도Node1 실제renderer599B exact 정적1PASS·exit0, 실제PNG/softwarecanvas+actualhelper8방향 nonempty·exit0을 분리보존한다. 원41조건반복0·clean42/native합산0. 사용자IAB13 oldloadedsource유지/no reload·새게임0으로 새deathnative **NOT_RUN**. ROOT bitmap직접판독은몸/뿔식별한정·작고어두운시체/셀alpha완전성/접지/실전가독성미인수·전체 **RETOUCH**. GPU·HTMLImageElement·실사망/부활/native6/audio/durableACK/A급미인수다.
 
 코드후 전체related검색1회137경로605행748매칭·정본7동기화, owner/protected본문제외·전수완독주장0. [사망VFX](<5.1임펙트디자인/사망VFX_변경로그.md>) / [스킨](<5.0애니메이션파이프라인/몬스터_스킨_시스템.md>) / [리그](<4.0케릭터스프라이트 디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md>) / [파이프라인](<5.0애니메이션파이프라인/5.0애니메이션파이프라인.md>) / [CH1배정](<4.1맵디자인+설정/CH1_1_DRUID_BOSS_ASSIGNMENT.md>) / [전체정확계약·§23](<4.1맵디자인+설정/MAP_RUNTIME_ARCHITECTURE.md>). 외부 validation20425B/`74db21d0c3d0c933709df5377f6ea7243e3c3ad05b803511c852fa1d7e3908be`·visual9562B/`da1bb7a4dc8e5d84a2354f8c45345f83890a7bafb9eab5757e4b6e92e92ae9a1` 기준. ROOT Git정상보존예정·자기SHA추정0·문서담당추가검사0.
+
+## 2026-10-08 회전참 ST 상세 표시 정정 — ROOT-CH1-WHIRLWIND-ST-DISPLAY-20261008
+
+| 항목 | 완료 범위 |
+|---|---|
+| 제품 변경 | `game.html` `_skSpecificDetails`의 회전참 행 한 줄: 고정 `[_L('ST/틱','ST/Tick'),'2','#ffcc44']` → `[_L('ST/초','ST/s'),String(~~(30+(lv-1)*5)),'#ffcc44']` |
+| 기본비용/미습득 | `lv=Math.max(1,slv)`; 미습득/Lv1/Lv2/Lv10/Lv20=30/30/35/75/125 ST/초. 최종 할인/보너스 반영 소비량이 아님 |
+| 갱신 | 기존 `_skDetailHTML` 레벨 전달과 습득·강화·감소 뒤 `renderSkillPanel` 유지 |
+| 원본 보존 | 기존 실제 `_wwCostSec/_wwDrainTick/_wwDrainBonus` 272B 블록 SHA256 `84254dd8fd45fad0ddaa0d518e1ac60fd30582b830c2ababeff7701696a739a1` 전후 exact; 틱/공격/전투/보상/저장 변경0 |
+| 검증 | 1차 자원 정본/실제 소스 정적 대조와 한 행 역변환 exact. 레벨 표는 계약값이며 테스트 PASS 아님. 새 CPU/테스트/Chrome0 |
+| 미검수 | 새 native NOT_RUN, 사용자 IAB tab13 이전 로드 소스 유지/no reload/no newgame. 실제 화면 가독성·언어 전환·소모 체감·save ACK 미인수 |
+| 문서 | 코드 후 전체 관련 검색 최초1회: 54경로/171행/203 occurrence. 보호 2_3 및 거대 owner 경로 본문 제외/path-only; 54문서 전수 fullread 주장은 없음. 직접 관련 정본7에 현재표 추가, 과거 표/번역은 이력으로 구분 |
+| Git | 원총괄이 소유 코드/문서 정상 보존 예정. 이 문서 작성 시 commit/push 완료 주장은 하지 않음 |
+
+소스 작업 세대: working `4108654B / 0f33afcdfa063fe99fbf2c1f8aabc2c134e8ad3188d0e346e831a664297d68a7`, 원총괄 owned `4108469B / 4bccad8744e07586399b823413455b1abacb0393f9cd86ed2c28e19c8adcaf15`. 기존 foreign185B는 미채택으로 보존했다. 외부 근거: `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-whirlwind-st-display-20261008/implementation-receipt.json`(1603B/`ffaa21f22d781fcec07470eaad2708499bb6b31da459a45e80d515b1cccb507d`), `static-review-receipt.json`(1628B/`2e31c84994d0b4657249b21b0607b278d975f80173fd9c0343b75aa81f953645`). 실제 시각 검수를 하지 않은 표시 단위이며 게임 전체 VISUAL RETOUCH 판정을 승격하지 않는다.

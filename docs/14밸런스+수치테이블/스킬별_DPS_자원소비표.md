@@ -339,3 +339,16 @@ blur/hidden에서는 `_msAiming`·`_msCharging` 취소 후 다음 추출 프레�
 | 실행 앱·인수 | 소스46 통합 대상, 앱source29/3404 미반영. 같은 CH1-1 후보의 시작→전투·획득/장착→4지역게이트→보스사망/부활→재도전·화면/청취 인수 대기. 보스 사망 맵 리셋 수정·실플레이 완료로 계산하지 않음 |
 
 원자료 QA0819 완료8b64aecd-4722-4c99-adf8-e49f2c91b728를 code45 6b045069 위에서 검증한다. source45의 "0819 미채택"은 당시 상태이며 이번 source46에서 해당 reader만 채택한다. HEAD4307cfaa는 Claude오더 완료 raw2 보존 커밋으로 코드epoch45와 구분한다. backup·원 완료·docs전체 관련 키워드 검색 전후·후보/원본/production·관측·전체 HTML 정확 역치환·docs 제한 치환/append 역치환·보호67경로SHA·원격 exactSHA는 tmp/mac-migration-runtime/continued-review-20261003/source46-ancestor-parts/에 보존한다. scope9=HTML2/test1/docs6; 실제 NUL-uall80부터 완료 소유9만 즉시 checkpoint하며 다른 후보를 기다리지 않는다. 현재 TASK/역사핀·오더 소유WIP·사용자 세이브를 보존한다.
+
+## 2026-10-08 회전참 초당 기본비용 및 상세 표시 — ROOT-CH1-WHIRLWIND-ST-DISPLAY-20261008
+
+| 대상 | 현재 기본비용 / 표시 |
+|---|---|
+| `whirlwind` | `30+(Lv-1)×5` ST/초. Lv1=30, Lv2=35, Lv10=75, Lv20=125 |
+| 미습득 상세 미리보기 | `Math.max(1,slv)`를 사용하여 30 표시 |
+| 상세 단위 | `_skSpecificDetails`의 KO `ST/초` / EN `ST/s`; 정수 기본비용 문자열 |
+| 틱 소비와 구분 | 기존 `_wwDrainTick=_wwCostSec/60*sp` 유지. 매 프레임 차감 주기와 초당 기본비용 표시 단위는 구분 |
+
+본문의 `30+(Lv-1)×5 ST/초` 행은 현재 기본식과 일치한다. §8의 회전참 `10→100/초 (Lv1→10)`는 과거 수치로 보존하며 현재 회전참 비용 기준으로 사용하지 않는다. 이 정정은 회전참 기본비용/표시만 다루며 다른 스킬의 피해·비교·순위·할인 공식의 현행성을 새로 검수한 것이 아니다. 소비량 감소 보정·보너스를 포함한 최종 소비량을 주장하지 않는다.
+
+제품 변경은 고정 `ST/틱 2`를 현재 기본비용으로 바꾼 표시 한 행뿐이다. 기존 실제 소비/공격/전투/저장 수식은 그대로이며, 소스 정적 대조와 한 행 역변환 exact를 확인했다. CPU/Chrome/새 테스트 0, native NOT_RUN; 위 레벨 표는 코드 계약값으로서 테스트 PASS가 아니다.
