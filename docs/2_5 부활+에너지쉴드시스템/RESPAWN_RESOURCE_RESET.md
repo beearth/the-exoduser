@@ -208,3 +208,27 @@
 외부 증거 디렉터리는 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-main-retry-menu-20261007/`이다. 이전 `implementation-receipt.json` 1,914B / `2491d197877b441d5703306b3ccf4a9c1b289d6d001ab2910f18c1a05310d909`와 `retry-cpu-receipt.json` 4,373B / `05082a5cef7fef3d8848d57e652567c5452a1fd3f74b896a2d19c515ba8ceae4`는4249 source 이력이다. 현재 `implementation-final-receipt.json` 2,737B / `781b5167f12c6f855cffd63998982e878799a345ee065c77eca5d3c8bdafeec6`의 exact2치환/inverse exact/foreign185 보존을 따른다. Git 사실은 같은 디렉터리 `remote-preservation-receipt.json`의 실제 normal commit/push/원격 정확 SHA를 참조하며 자기 commit SHA를 순환 삽입하지 않는다. 이 증거 epoch는 checkpoint 전이며 deploy0이다.
 
 최종 settings 한정 원문 `settings-receipt.json` 4,178B / `f2c077c5c7a57faa3df8e9c095f549f52eecd6bb6ec772434b0965cf31c80a9d`와 `settings-result.json` 7,267B / `812f248743b349671f522578d074d2ed459fcf596a74f66c2ec7a3c9fc0550d6`, 실제 native `native-retry-result.json` 133,977B / `b2dee048ac3e347415e7437c7df68daf8014e39ff8ca48677e7ba414bc780d55`, 브라우저 전 `native-cli-preflight-failure.json` 438B / `bc42a5c8fdea6b50bb73e4ec0e82949abade971f8bd16e508d2fe95b9f137d4a`, `validation-receipt.json` 6,019B / `3a367fd511c8819cbe74c2f2d75fa77c25ed4be3f820b7ee496d0f3b9f4d7978`, `visual-verdict.json` 5,268B / `e56ffe0466fd799cc972ff2cf63d883018170ff1604a3b5126fb930ea8af6aa7`를 별도로 보존한다. 새 editor N3 기대거절 원문 `codex-editor-import-official-manifest.json` 502B / `316193c436db197ec40a28b0e80dae5035b8e1718cde5debf01114ea123c6712`는 root가 미채택 보존한 자료이며 필수 hunk0·이번제품/검수채택0이다.
+
+
+## 2026-10-07 사망 메뉴의 키보드 초점 — ROOT-CH1-DEATH-KEYBOARD-FOCUS-20261007
+
+키보드가 현재 사망 메뉴의 유효 버튼에만 기본 활성화를 넘기도록 입력 경계를 보충한다. 자원 완충과 재도전 순서의 변경이 아니다.
+
+현재 본편 `game.html`은 4,086,254B / `82262b4215e0dba0b1bfdef825b499e302ff3dd81b4b060d323475ea2b86444d`이고, 총괄 소유 변경만 담은 파일은 4,086,069B / `900e8683eddaa7caac72e1685cdbd2f13603aa457dc7e82ac69a82025e7fdc56`다. 본편의 다른 담당 변경185B를 보존한다. 새 변경은 `_handleDeathMenuKeyboard(e)`와 기존 window `keydown` 연결1곳, 기존 `keyup` 끝의 Space 연결1곳이다. 쉬운판과 기존 재도전 본문·자원·저장 순서는 변경하지 않는다.
+
+사망 메뉴에서 Tab·Shift+Tab으로 현재 보이는 활성 버튼만 순환한다. 유효한 Enter·NumpadEnter·Space는 브라우저의 기본 버튼 클릭에 맡기며 직접 `.click()`을 호출하지 않는다. 재생 중이거나 분리·교체·숨김·비활성 상태가 된 버튼의 기본 활성화는 막는다. Space는 keyup에서도 다시 검사한다. 정확한 대상·제외 조건은 `docs/3.3 키바인딩+설정/3.3 키바인딩+설정.md`의 이 절을 따른다.
+
+이전 `ROOT-CH1-RETRY-MENU-CONSUMER-20261007` 절은 당시 소스의 이력으로 보존한다. 그 절의 “Tab 유지”는 이전 재도전 소비 변경의 범위를 뜻하며, 현재 사망 메뉴의 Tab 순환에는 이 새 절을 적용한다. 이전 검수 횟수와 이번 결과를 합산하지 않는다.
+
+기존 재도전 소비가 메뉴를 먼저 닫는 순서, `closePanel(settings)`와 `_rootRiftInvalidate`의 순서, 자원 완충·필드 스냅샷·EXP·DB 저장은 그대로다. 새 helper는 `.click()`이나 재도전 본문을 직접 호출하지 않는다.
+
+| 새 검수 | 이번 범위의 결과 |
+|---|---|
+| 한정 CPU | 최종82262에서 Node1·VM52, 실제 helper+전체 keydown/keyup·통제DOM. 7그룹·55조건 통과/실패0·미도달0·exit0 |
+| 실제 브라우저 | 최초 Chrome/context/page 각1, 새2조건 통과/실패0·미도달0·준비 실패0·exit0. Tab1 초점→Enter 기본click→death/settings 닫힘·pause 해제→W 2프레임 이동·키 해제 |
+| 오류·저장 | 소스3개 전후 정확 일치, pageerror0·HTTP실패0. 의도적 글꼴 차단3·intro 중단3 별도. GL UNKNOWN. synthetic matsPOST2 서버 도달 전 차단, 실제 서버 변경0·실저장 ACK0 |
+| 시각 판정·한계 | 파란 재도전 초점 표시 식별. 재도전 직후 사망 화면 전환과 HUD·금빛FX 겹침으로 RETOUCH. 안정된 전환 종료 미인수. Space keyup·Shift+Tab·리플레이/로비·보스방/전체 native6·음향·실저장은 별도 미인수 |
+
+자연사망은 이번 브라우저 검수의 준비 조건이며 이전 자연사망 성과를 다시 합산하지 않는다. 44c9 준비 구현은 실행0이고, 이전 재도전 검사와 이번 CPU·브라우저 결과도 합산하지 않는다. 브라우저 전 메타데이터 준비 오류1회는 Chrome0·제품 실패0으로 분리한다. 추가 검수 실행·자동 재시도는 없다.
+
+정확한 소스·구현·검수 원자료와 정상 커밋·push·원격 SHA는 외부 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-death-keyboard-focus-20261007`의 `implementation-final-receipt.json`, 최종 `validation-receipt.json`·`visual-verdict.json` 및 `remote-preservation-receipt.json`을 참조한다. 문서 작성 시점의 계획을 원격 보존 완료로 표시하지 않는다.

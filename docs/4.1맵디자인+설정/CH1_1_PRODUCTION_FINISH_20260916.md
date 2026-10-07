@@ -2231,3 +2231,44 @@ CH1 geometry/stage LOCK·field 복귀와 camera를 그대로 둔 death UI 소비
 | GIT | 증거 epoch stage/commit/push 전. 실제 사실은 외부 remote-preservation-receipt.json 참조, deploy0 |
 | VISUAL VERDICT | RETOUCH |
 | NEXT PASS | source-specific death countdown/settings·Tab focus/visible eligibility 원인 진단 후 새 한정 native gate. 현재 원인 UNKNOWN·기존 blind Tab/native/옛suite 재시도0, backend 늦은 save 효과 별도 |
+
+
+## 2026-10-07 사망 메뉴의 키보드 초점 — ROOT-CH1-DEATH-KEYBOARD-FOCUS-20261007
+
+사망 메뉴 입력의 새 접점을 기록한다. 맵 지형·충돌·진행 보존과 카메라·보스 전투 계약은 변경하지 않는다.
+
+현재 본편 `game.html`은 4,086,254B / `82262b4215e0dba0b1bfdef825b499e302ff3dd81b4b060d323475ea2b86444d`이고, 총괄 소유 변경만 담은 파일은 4,086,069B / `900e8683eddaa7caac72e1685cdbd2f13603aa457dc7e82ac69a82025e7fdc56`다. 본편의 다른 담당 변경185B를 보존한다. 새 변경은 `_handleDeathMenuKeyboard(e)`와 기존 window `keydown` 연결1곳, 기존 `keyup` 끝의 Space 연결1곳이다. 쉬운판과 기존 재도전 본문·자원·저장 순서는 변경하지 않는다.
+
+사망 메뉴에서 Tab·Shift+Tab으로 현재 보이는 활성 버튼만 순환한다. 유효한 Enter·NumpadEnter·Space는 브라우저의 기본 버튼 클릭에 맡기며 직접 `.click()`을 호출하지 않는다. 재생 중이거나 분리·교체·숨김·비활성 상태가 된 버튼의 기본 활성화는 막는다. Space는 keyup에서도 다시 검사한다. 정확한 대상·제외 조건은 `docs/3.3 키바인딩+설정/3.3 키바인딩+설정.md`의 이 절을 따른다.
+
+이전 `ROOT-CH1-RETRY-MENU-CONSUMER-20261007` 절은 당시 소스의 이력으로 보존한다. 그 절의 “Tab 유지”는 이전 재도전 소비 변경의 범위를 뜻하며, 현재 사망 메뉴의 Tab 순환에는 이 새 절을 적용한다. 이전 검수 횟수와 이번 결과를 합산하지 않는다.
+
+| 새 검수 | 이번 범위의 결과 |
+|---|---|
+| 한정 CPU | 최종82262에서 Node1·VM52, 실제 helper+전체 keydown/keyup·통제DOM. 7그룹·55조건 통과/실패0·미도달0·exit0 |
+| 실제 브라우저 | 최초 Chrome/context/page 각1, 새2조건 통과/실패0·미도달0·준비 실패0·exit0. Tab1 초점→Enter 기본click→death/settings 닫힘·pause 해제→W 2프레임 이동·키 해제 |
+| 오류·저장 | 소스3개 전후 정확 일치, pageerror0·HTTP실패0. 의도적 글꼴 차단3·intro 중단3 별도. GL UNKNOWN. synthetic matsPOST2 서버 도달 전 차단, 실제 서버 변경0·실저장 ACK0 |
+| 시각 판정·한계 | 파란 재도전 초점 표시 식별. 재도전 직후 사망 화면 전환과 HUD·금빛FX 겹침으로 RETOUCH. 안정된 전환 종료 미인수. Space keyup·Shift+Tab·리플레이/로비·보스방/전체 native6·음향·실저장은 별도 미인수 |
+
+자연사망은 이번 브라우저 검수의 준비 조건이며 이전 자연사망 성과를 다시 합산하지 않는다. 44c9 준비 구현은 실행0이고, 이전 재도전 검사와 이번 CPU·브라우저 결과도 합산하지 않는다. 브라우저 전 메타데이터 준비 오류1회는 Chrome0·제품 실패0으로 분리한다. 추가 검수 실행·자동 재시도는 없다.
+
+### MAP PRODUCTION REPORT — 이번 입력 접점의 범위
+
+| 항목 | 이번 변경과 검수 범위 |
+|---|---|
+| STAGE | CH1 본편 사망 메뉴의 키보드 소비. 보스 사망 경로 전체 인수는 별도 |
+| MASTER | silhouette·regions·main route·side spaces 변경 없음 |
+| OUTER MASS | LEFT·RIGHT·TOP·SOUTH·major holes 변경 없음 |
+| LARGE | source assets·composites·overlap·repeated silhouette 변경 없음 |
+| MEDIUM | connections·remaining holes 변경 없음 |
+| GROUND | shadow·contamination·structure integration 변경 없음 |
+| PLAYABLE | 일반 필드의 Tab1→Enter 재도전 뒤 W 이동 y7420→7414.620080000001·2프레임 관측. 보스방 미인수. main arenas·breathing/threat space·전투 수치 변경 없음 |
+| LANDMARK | primary·secondary·tertiary 변경 없음 |
+| CAMERA QA | START는 일반 본편 진입, EARLY는 Tab1→Enter 기본 클릭→W 이동 관측. ARENA·SIDE L·SIDE R·LANDMARK·LATE·EXIT는 미인수이며 새 카메라 전수 검수 없음 |
+| TECH QA | route는 일반 필드 일부만 관측, collision 변경 없음. pageerror0·HTTP실패0. 의도적 글꼴 차단3·intro 중단3 별도. GL UNKNOWN. 기존 rig/terrain 사용. seam은 현재 메뉴·현재 버튼의 초점 소비 한정, performance·전체 loading 미인수 |
+| FILES | 총괄 소유 game1+현재 문서8개. 본편185B·설정 문서2948B의 동료 변경은 보존하며, 관련 없는 파일 변경 없음 |
+| GIT | 이 초안은 stage·commit·push 전. 정상 커밋·push·정확한 원격 SHA는 같은 외부 디렉터리의 `remote-preservation-receipt.json`으로 확정. 배포 없음 |
+| VISUAL VERDICT | RETOUCH. 재도전 초점은 식별되지만 다음 화면은 사망 화면 전환과 HUD·큰 금빛FX가 겹침. 안정된 전환 종료 미인수 |
+| NEXT PASS | 보스방 개방·보스 사망/부활/재도전·격리 저장 계약과 실제 ACK·안정된 전환 종료 화면. 이번 F1/F2 재실행 없음 |
+
+정확한 소스·구현·검수 원자료와 정상 커밋·push·원격 SHA는 외부 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-death-keyboard-focus-20261007`의 `implementation-final-receipt.json`, 최종 `validation-receipt.json`·`visual-verdict.json` 및 `remote-preservation-receipt.json`을 참조한다. 문서 작성 시점의 계획을 원격 보존 완료로 표시하지 않는다.

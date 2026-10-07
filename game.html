@@ -13130,6 +13130,24 @@ document.addEventListener('keydown',(e)=>{
  }
 },true);
 
+function _handleDeathMenuKeyboard(e){
+  const tab=e.code==='Tab',activation=['Enter','NumpadEnter','Space'].includes(e.code);
+  if((!tab&&!activation)||e.defaultPrevented||listeningBind||e.ctrlKey||e.metaKey||e.altKey)return false;
+  const death=$('death'),replay=$('deathReplay');
+  const current=[$('retryBtn'),$('deathReplayBtn'),$('toLobbyBtn')],target=e.target;
+  const deathButton=target instanceof HTMLButtonElement&&(current.includes(target)||['retryBtn','deathReplayBtn','toLobbyBtn'].includes(target.id));
+  const live=death?.isConnected&&death.classList.contains('on')&&!replay?.classList.contains('on')&&P&&P.s==='dead'&&G&&!G.on;
+  if(!live){if(activation&&deathButton){e.preventDefault();return true}return false}
+  const buttons=current.filter(b=>b instanceof HTMLButtonElement&&b.isConnected&&death.contains(b)&&!b.matches(':disabled')&&b.tabIndex>=0&&!b.closest('[hidden],[inert]')&&b.getClientRects().length>0&&getComputedStyle(b).visibility==='visible');
+  if(activation&&deathButton){if(document.activeElement!==target||!buttons.includes(target))e.preventDefault();return true}
+  if(!tab)return false;
+  e.preventDefault();
+  if(e.repeat||!buttons.length)return true;
+  const index=buttons.indexOf(document.activeElement),next=index<0?(e.shiftKey?buttons.length-1:0):(index+(e.shiftKey?-1:1)+buttons.length)%buttons.length;
+  buttons[next].focus({preventScroll:true});
+  return true;
+}
+
 addEventListener('keydown',e=>{
   // 컷씬 진행 (Enter/Z=다음, Space 홀드=스킵, ESC=즉시 스킵)
   if(typeof _cutsceneState!=='undefined'&&_cutsceneState==='INTRO_CUTSCENE'){
@@ -13165,6 +13183,7 @@ addEventListener('keydown',e=>{
   if(e.code==='F8'){e.preventDefault();if(window._v3fx&&P){const _v3keys=['fire','ice','lightning','dark','poison'];window._v3fx(_v3keys[window._v3ti||0],P.x,P.y);addTxt(P.x,P.y-30,'3D: '+_v3keys[window._v3ti||0],'#ffcc44',30);window._v3ti=((window._v3ti||0)+1)%_v3keys.length}else{_tvfx2Spawn()}return}
   if(e.code==='F4'){e.preventDefault();const _nf=!OPT.fog;OPT.fog=_nf;OPT.bossFog=_nf;saveSettings();showPH(_nf?_L('안개 ON','Fog ON'):_L('안개 OFF','Fog OFF'),_nf?'#8899cc':'#888888');return}
   if(window._parryLesson?.active&&!window._parryLesson.allowKey(e.code)){e.preventDefault();return;}
+  if(_handleDeathMenuKeyboard(e))return;
   // Focused panel controls own activation and focus traversal keys.
   if(['Space','Enter','NumpadEnter','Tab'].includes(e.code)&&e.target instanceof Element&&e.target.closest('#invPanel.on button,#invPanel.on [data-inventory-detail-trigger],#crBagPop button,#settings.on button,#settings.on input,#settings.on select'))return;
   K[e.code]=true;KH[e.code]=true;
@@ -13317,6 +13336,7 @@ addEventListener('keyup',e=>{
     }
     _dashTier=0;
   }
+  if(e.code==='Space')_handleDeathMenuKeyboard(e);
 });
 // ── 포커스 상실 시 눌린 입력 전부 해제 — 미수신 keyup으로 인한 stuck-key 방지 ──
 // (홀드 중 alt-tab/OS알림/다른창 클릭 등으로 keyup을 못 받으면 KH['ShiftLeft'] 잔류 →
