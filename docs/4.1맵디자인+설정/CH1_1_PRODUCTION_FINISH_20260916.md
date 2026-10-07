@@ -2148,3 +2148,43 @@ production_finish LOCK의 맵 크기·좌표·통로·collision·outer mass를 �
 | GIT | 증거 epoch는 stage/commit/push 전. 완료 사실은 같은 외부 디렉터리 remote-preservation-receipt.json의 normal commit/push/remote exact SHA 참조; deploy0 |
 | VISUAL VERDICT | RETOUCH |
 | NEXT PASS | actual camera/zoom의 mouse-aim 소비, normal route→boss lifecycle, intro draw와 동기인 bounds, cardinal/작은 viewport·map clamp, 첫 보간/zoom 진입, alpha/label/FX 가독성; 옛 suite 반복0 |
+
+
+## 2026-10-07 CH1 카메라 zoom과 마우스 조준 소비 — ROOT-CH1-CAMERA-MOUSE-AIM-20261007
+
+현재 CH1 stage LOCK의 geometry/통로/collision을 그대로 둔 input consumer다. 옛 camera 검수와 새 입력 검수는 별도 epoch이며 가이드의 visual gate를 CPU PASS로 대체하지 않는다.
+
+현재 `game.html` working은 4,084,115B / `b3439a539397e73dcc929d565f172a720facdb282b654e741b9f495e8fc6e6f3`, root owned HEAD+변경 blob은 4,083,930B / `ae8244039d7ecc7383fc96076d7ad7bf9e17d7044330d8c0737a333240130073`다. 원래 타인 WIP185B를 보존한다. 이번 단위는 카메라를 바꾸는 대신 입력 좌표가 실제 현재 zoom을 소비하게 한다. camera framing·zoom 보간·시트·애니메이션·전투·AI·충돌·저장 수치는 변경하지 않는다.
+
+전역 `_setMousePosition`의 finite client/rect/raw 위치 guard와 CH1 opt-in의 zoom 역변환은 적용 범위가 다르다. 범위 밖 valid raw/finale 수식은 유지하며, 새 CH1 scope만 current rect+저장 clientXY를 현재 `G._camZoom||1` positive finite 값으로 재투영한다(.3 cap 없음). scoped point 계산 완료 후에만 원자 게시하고 `_set`은 boolean을 반환한다. 일반 mousemove/mousedown의 facing은 true일 때만, 패드 해제 첫 이동은 기존 `_gpClearAll()` 뒤 scoped `_set` 성공 시만 추가 갱신한다. 정확 표/수식은 `docs/3.3 키바인딩+설정/3.3 키바인딩+설정.md`의 같은 unit 절을 따른다.
+
+| 검수 | 현재 상태/경계 |
+|---|---|
+| 신규 CPU | 현재b343 source의 신규 actual main 함수·실제 input callbacks VM 검수: 최초 Node1/VM24/DOM rect141, 7그룹28복합조건 PASS/FAIL0/미도달0/exit0. 통제 DOM/gamepad 경계이며 실제 GPU/하드웨어 gamepad 인수와 구분 |
+| 신규 native | 현재b343 source의 최초 실제 main bosstest0 Chrome/context/page 각1, 3조건 PASS/FAIL0/미도달0/exit0. 동일 trusted mousemove의 effective point/facing 오차0; 같은 이벤트의 legacy 각도 오차는 −.3038275023834693rad. resize1280×720→1600×900에서 새 mousemove0·point 오차0·저장 facing 유지, trusted W 이동 중 저장 facing 유지. source5 exact·GL0·pageerror/HTTP failure0. POST /api/mats1 서버 도달 전 차단·user save0·owned browser 닫힘 |
+| visual | root가 실제 PNG1을 직접 판독: Druid antler/body 식별, 아래 작은 player·green FX 겹침과 반복 평면 baked 지면 남음. VISUAL VERDICT: RETOUCH. 그림의 보스 alpha 지점에 실제 공격이 적중한다는 pixel target hit 인수는 아님 |
+| 이력 분리 | 이전 AIM read-only 계획의 구현0은 작성 당시 상태다. 현재 구현은 위 source핀과 실제 검수로 판단하며 옛 camera14/native1/105검색·공식원문 보존을 새 성과로 재실행/합산하지 않음 |
+| 미인수 | 하드웨어 GP·arena exit 잔여 zoom의 native·normal route·boss lifecycle·shake/round/interpolation/alpha alignment·performance·native6/audio/reward/save. controlled CPU의 GP/arena exit 케이스를 실제 native 인수로 승격하지 않음 |
+
+외부 증거 디렉터리는 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-main-camera-aim-20261007/`이다. `implementation-receipt.json` 4,493B / `045a27500ee5504a75440a7d913359badd5a0c72ed885352a8072bd5d9423c86`의 exact replacements/inverse exact/foreign185 보존을 따른다. Git 사실은 같은 디렉터리 `remote-preservation-receipt.json`의 실제 normal commit/push/원격 정확 SHA를 참조하고 자기 commit SHA는 순환 삽입하지 않는다. 검수 epoch checkpoint 전·deploy0이다.
+
+최종 `aim-cpu-receipt.json` 1,124B / `f4a25b7ae304f8c4665d9f7f821ced2f89e23fbdeb8f168ae661cd39056b6c7c`, `native-result.json` 12,782B / `451a9070a4177502675978364ae877263d32ed7f6ba4e33ba98f216fa8dcf901`, `validation-receipt.json` 1,994B / `be8dc72efa2c1b886df9683a6f89ca7a4667ffd8fd9f05f9235c0d825ccf490e`, `visual-verdict.json` 4,764B / `22108e6e5e55733b0a4c83150f6ed31a791d3ce07900c29f85a94d8c740c593a`를 각각 보존한다. CPU28과 native3은 별도 검수이며 clean 전체 조건으로 합산하지 않는다. 0707 공식 raw6와 다음 retry 계획도 별도 원자료로, 이번 AIM 제품 인수에 합산하지 않는다.
+
+### MAP PRODUCTION REPORT — 가이드 §23
+
+| 항목 | 이번 입력 소비 범위 |
+|---|---|
+| STAGE | CH1 production_finish field200×200/arena128×108 opt-in mouse aim 소비 |
+| MASTER | silhouette/regions/main route/side spaces 변경0 |
+| OUTER MASS | LEFT/RIGHT/TOP/SOUTH/major holes 변경0 |
+| LARGE | source assets/composites/overlap/repeated silhouette 제작 변경0, 기존 시각 문제 인수0 |
+| MEDIUM | connections/remaining holes 변경0 |
+| GROUND | shadow/contamination/structure integration 변경0 |
+| PLAYABLE | input consumer만 변경; main arenas/travel/breathing/threat space·AI·collision 변경0, 실제 combat readability 별도 검수 |
+| LANDMARK | primary/secondary/tertiary 변경0 |
+| CAMERA QA | ARENA: 현재 b343 실제 mouse/resize/W3조건 한정 PASS; 새 mousemove 없는 resize와 저장 facing 유지 관측. START/EARLY/SIDE L/SIDE R/LANDMARK/LATE/EXIT 미관측, 하드웨어GP/arena exit/normal route/alpha target 미인수 |
+| TECH QA | 신규 CPU7/28과 native3 별도. pageerror0/404·HTTPfailure0/source5 exact, asset/loader 변경0. 좌표 역변환·rect resize/facing 관측, collision 변경0·route 미주행·전체 seam/performance 인수0 |
+| FILES | stage-owned game.html 입력4 own hunk+현재 정본9; game foreign185B·3.3 foreign 순차이2,948B는 fullbytes 보존, unrelated touched0 |
+| GIT | 증거 epoch stage/commit/push 전; 실제 사실은 외부 remote-preservation-receipt.json 참조, deploy0 |
+| VISUAL VERDICT | RETOUCH |
+| NEXT PASS | 현재 death menu의 retry 1회 소비·pending save와 다음 death 독립 처리 계획, 실제 main boss lifecycle/normal route 품질. 다음 계획을 현재 구현/검수로 승격하지 않음 |
