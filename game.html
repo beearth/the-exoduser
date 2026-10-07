@@ -5243,6 +5243,34 @@ function _drawEnemyInstanced(){
   if(_glMainProg)GL.useProgram(_glMainProg);
   return _ensGLCount
 }
+// Same-render enemy body layers; borrowed images, no animation or resource ownership.
+const _enemyHFFrames=new Map(),_enemyHFSubmitted=new Set();
+function _enemyHFRecord(e,img,sx,sy,sw,sh,x,y,w,h,bucket=-1){
+  if(!(e._hitFlash>0))return;
+  let frames=_enemyHFFrames.get(e);
+  if(!frames){frames=[];_enemyHFFrames.set(e,frames)}
+  frames.push([img,sx,sy,sw,sh,x,y,w,h,bucket]);
+}
+function _queueEnemyHFFrame(e,bucket,img,sx,sy,sw,sh,x,y,w,h,alpha){
+  const ok=_queueEnemy8DirInstanced(bucket,img,sx,sy,sw,sh,x,y,w,h,alpha);
+  if(ok)_enemyHFRecord(e,img,sx,sy,sw,sh,x-VW*.5+G.cam.x-w/2,y-VH*.5+G.cam.y-h/2,w,h,bucket);
+  return ok;
+}
+function _drawEnemyHFBody(X,e,img,sx,sy,sw,sh,x,y,w,h){
+  const worldX=e.x+x,worldY=e.y+y;
+  X.drawImage(img,sx,sy,sw,sh,x,y,w,h);
+  if(!e._ensGLMode)_enemyHFRecord(e,img,sx,sy,sw,sh,worldX,worldY,w,h);
+}
+function _drawEnemyHFSnapshot(X,e,alpha){
+  const frames=_enemyHFFrames.get(e);
+  if(!frames)return;
+  const pop=1+.05*Math.min(1,e._hitFlash/6);
+  X.globalAlpha=alpha;
+  for(const [img,sx,sy,sw,sh,x,y,w,h,bucket] of frames){
+    if(bucket>=0&&(!_enemyHFSubmitted.has(bucket)||_ens8GLImgs[bucket]!==img))continue;
+    X.drawImage(img,sx,sy,sw,sh,x+w*(1-pop)/2,y+h*(1-pop)/2,w*pop,h*pop);
+  }
+}
 function _queueEnemy8DirInstanced(bucket,img,sx,sy,sw,sh,x,y,dw,dh,alpha){
   if(bucket<0||bucket>=_ENS8_GL_GROUPS||!img||_ens8GLTotal>=_ENS8_GL_MAX)return false;
   const _cnt=_ens8GLCounts[bucket];if(_cnt>=_ENS_GL_MAX)return false;
@@ -5271,7 +5299,7 @@ function _drawEnemy8DirInstanced(){
     const _tex=_getTex(_img,true);if(!_tex)continue;
     GL.bufferSubData(GL.ARRAY_BUFFER,0,_ens8GLCpu,_g*_ENS_GL_MAX*_ENS_GL_STRIDE,_cnt*_ENS_GL_STRIDE);
     GL.activeTexture(GL.TEXTURE0);GL.bindTexture(GL.TEXTURE_2D,_tex);
-    GL.drawArraysInstanced(GL.TRIANGLE_STRIP,0,4,_cnt);if(_DCP.on)_DCP._onInst(_cnt);_drawn+=_cnt;_dbgEns8GLDraws++;
+    GL.drawArraysInstanced(GL.TRIANGLE_STRIP,0,4,_cnt);_enemyHFSubmitted.add(_g);if(_DCP.on)_DCP._onInst(_cnt);_drawn+=_cnt;_dbgEns8GLDraws++;
   }
   GL.bindVertexArray(null);GL.bindBuffer(GL.ARRAY_BUFFER,null);
   if(_glMainProg)GL.useProgram(_glMainProg);
@@ -5368,6 +5396,7 @@ function _flushVfxGL(){
   return n;
 }
 function _prepEnemyInstanced(_vl,_vr,_vt,_vb,_now,_E_RMAX){
+  _enemyHFFrames.clear();_enemyHFSubmitted.clear();
   _dbgEnsGL=0;_dbgEns8GL=0;_dbgEns8GLDraws=0;_ensGLCount=0;_ens8GLTotal=0;_ens8GLCounts.fill(0);
   for(let _egi=0;_egi<ens.length;_egi++)if(ens[_egi])ens[_egi]._ensGLMode=0;
   if(!_useGL||!GL||!_ensGLProg)return 0;
@@ -5402,11 +5431,11 @@ function _prepEnemyInstanced(_vl,_vr,_vt,_vb,_now,_E_RMAX){
         const _dk8=_mobFacingDir8(e.facing);let _da8=_a8.dirs[_dk8];
         if(!_da8||!_da8.ready)_da8=_a8.dirs.south;
         const _bucket=_ENS8_GL_DIRS.indexOf(_dk8),_cell=_a8.meta.cell||256,_baseSz=Math.max(e.r*7,80);
-        if(_da8&&_da8.ready&&_bucket>=0&&_queueEnemy8DirInstanced(_bucket,_da8.img,e._mob8Col*_cell,e._mob8Row*_cell,_cell,_cell,VW*.5+(e.x-G.cam.x),VH*.5+(e.y-G.cam.y),_baseSz,_baseSz,sa)){
+        if(_da8&&_da8.ready&&_bucket>=0&&_queueEnemyHFFrame(e,_bucket,_da8.img,e._mob8Col*_cell,e._mob8Row*_cell,_cell,_cell,VW*.5+(e.x-G.cam.x),VH*.5+(e.y-G.cam.y),_baseSz,_baseSz,sa)){
           const _mIdx=e._mob8Row*_MOB8_COLS+e._mob8Col,_wm=_a8.walkMeta;
           if(e._isMoving&&_a8.walkDirs&&_wm&&_wm._idxSet&&_wm._idxSet.has(_mIdx)){
             const _mW=_a8.walkDirs[_dk8],_mwf=_wm.framesPerMob||4,_mwFr=~~((e._walkDist||0)/128)%_mwf;
-            if(_mW&&_mW.ready)_queueEnemy8DirInstanced(8+_bucket,_mW.img,(e._mob8Col*_mwf+_mwFr)*_cell,e._mob8Row*_cell,_cell,_cell,VW*.5+(e.x-G.cam.x),VH*.5+(e.y-G.cam.y),_baseSz,_baseSz,sa);
+            if(_mW&&_mW.ready)_queueEnemyHFFrame(e,8+_bucket,_mW.img,(e._mob8Col*_mwf+_mwFr)*_cell,e._mob8Row*_cell,_cell,_cell,VW*.5+(e.x-G.cam.x),VH*.5+(e.y-G.cam.y),_baseSz,_baseSz,sa);
           }
           e._ensGLMode=1;
           if(e.alive&&sa>0.1){if(_dsOn2)_dsBlob(X,e.x,e.y+e.r*.35,e.r*.95,e.r*.28,sa*.3);else{X.globalAlpha=sa*.18;X.fillStyle='#000000';X.beginPath();X.ellipse(e.x,e.y+e.r*.35,e.r*.85,e.r*.25,0,0,Math.PI*2);X.fill()}X.globalAlpha=sa}
@@ -5456,17 +5485,7 @@ function _prepEnemyInstanced(_vl,_vr,_vt,_vb,_now,_E_RMAX){
     X.save();X.globalCompositeOperation='lighter';_setBlend(true);X.imageSmoothingEnabled=false;
     for(let _hi=0;_hi<_eIter.length;_hi++){const e=_eIter[_hi];
       if(!e||!e.alive||!(e._hitFlash>0)||e._ensGLMode!==1)continue;
-      if(e._mob8dir&&e._mobCh){
-        const _a8=_ch8Atlas[e._mobCh]||_ch8Atlas[1];
-        if(_a8&&_a8.meta){
-          const _dk8=_mobFacingDir8(e.facing);let _da8=_a8.dirs[_dk8];if(!_da8||!_da8.ready)_da8=_a8.dirs.south;
-          if(_da8&&_da8.ready){
-            const _cell=_a8.meta.cell||256,_t=Math.min(1,e._hitFlash/6),_sz=Math.max(e.r*7,80)*(1+.05*_t);
-            X.globalAlpha=_t*.8;
-            X.drawImage(_da8.img,e._mob8Col*_cell,e._mob8Row*_cell,_cell,_cell,e.x-_sz/2,e.y-_sz/2,_sz,_sz);
-          }
-        }
-      }
+      if(e._mob8dir&&e._mobCh)_drawEnemyHFSnapshot(X,e,Math.min(1,e._hitFlash/6)*.8);
       // 수명 감소는 고정스텝 update()로 이동(주사율 독립) — GL 경로는 그리기만
     }
     _setBlend(false);X.globalCompositeOperation='source-over';X.globalAlpha=1;X.restore();
@@ -19671,7 +19690,7 @@ function _drawCh1StartMediumEyeMass(X,e,_now,sa){
   const drawH=Math.max(240,e.r*7);
   const drawW=drawH*(fw/fh);
   X.save();X.translate(e.x,e.y);X.globalAlpha=sa;
-  X.drawImage(img,sx,sy,fw,fh,-drawW/2,-drawH/2,drawW,drawH);
+  _drawEnemyHFBody(X,e,img,sx,sy,fw,fh,-drawW/2,-drawH/2,drawW,drawH);
   X.restore();
   return true;
 }
@@ -53035,9 +53054,9 @@ function draw(){
             const _mHasW=_a8.walkDirs&&_a8.walkMeta&&_a8.walkMeta._idxSet&&_a8.walkMeta._idxSet.has(_mIdx);
             X.save();X.translate(e.x,e.y);X.globalAlpha=sa;
             X.imageSmoothingEnabled=false;
-            X.drawImage(_da8.img,e._mob8Col*_c8,e._mob8Row*_c8,_c8,_c8,-_baseSz/2,-_baseSz/2,_baseSz,_baseSz);
+            _drawEnemyHFBody(X,e,_da8.img,e._mob8Col*_c8,e._mob8Row*_c8,_c8,_c8,-_baseSz/2,-_baseSz/2,_baseSz,_baseSz);
             if(e._isMoving&&_mHasW){const _mW=_a8.walkDirs[_dk8];
-              if(_mW&&_mW.ready){const _mwf=_a8.walkMeta.framesPerMob||4;const _mwFr=~~((e._walkDist||0)/128)%_mwf;X.drawImage(_mW.img,(e._mob8Col*_mwf+_mwFr)*_c8,e._mob8Row*_c8,_c8,_c8,-_baseSz/2,-_baseSz/2,_baseSz,_baseSz)}}
+              if(_mW&&_mW.ready){const _mwf=_a8.walkMeta.framesPerMob||4;const _mwFr=~~((e._walkDist||0)/128)%_mwf;_drawEnemyHFBody(X,e,_mW.img,(e._mob8Col*_mwf+_mwFr)*_c8,e._mob8Row*_c8,_c8,_c8,-_baseSz/2,-_baseSz/2,_baseSz,_baseSz)}}
             X.restore();_eDrew=true;_usedSpr=true;
           }
         }
@@ -53053,26 +53072,12 @@ function draw(){
     }
     // ═══ 피격 플래시 — 히트 시 스프라이트 가산 발광(흑철 지옥 톤 유지, 타격 피드백) ═══
     // GL 인스턴싱으로 그려진 몹(_ensGLQueued)은 GL 경로 플래시(_prepEnemyInstanced)에서 처리하므로 2D 폴백에선 건너뛴다(이중 방지).
-    if(e._hitFlash > 0 && !_ensGLQueued) {
-      if(!e.ib && e._mob8Col!==undefined && e._mob8Col!==null){
-        const _hfA8=_ch8Atlas[1];
-        if(_hfA8){
-          const _hfDk=_mobFacingDir8(e.facing);
-          let _hfDa=_hfA8.dirs[_hfDk]; if(!_hfDa||!_hfDa.ready)_hfDa=_hfA8.dirs['south'];
-          if(_hfDa&&_hfDa.ready){
-            const _hfC8=(_hfA8.meta?_hfA8.meta.cell:256);
-            const _hfT=Math.min(1,e._hitFlash/6);        // 1→0 페이드
-            const _hfSz=Math.max(e.r*7,80)*(1+.05*_hfT); // 히트 순간 살짝 팝
-            const _hfA=_hfT*.8*sa;
-            X.save();X.translate(e.x,e.y);X.imageSmoothingEnabled=false;
-            X.globalAlpha=_hfA;X.globalCompositeOperation='lighter';_setBlend(true);
-            X.drawImage(_hfDa.img,e._mob8Col*_hfC8,e._mob8Row*_hfC8,_hfC8,_hfC8,-_hfSz/2,-_hfSz/2,_hfSz,_hfSz);
-            _setBlend(false);X.globalCompositeOperation='source-over';X.globalAlpha=sa;
-            X.restore();
-          }
-        }
-      }
-      // 수명 감소는 고정스텝 update()로 이동(주사율 독립) — 2D 폴백은 그리기만
+    if(e._hitFlash>0&&!_ensGLQueued){
+      X.save();X.imageSmoothingEnabled=false;
+      X.globalCompositeOperation='lighter';_setBlend(true);
+      _drawEnemyHFSnapshot(X,e,Math.min(1,e._hitFlash/6)*.8*sa);
+      _setBlend(false);X.globalCompositeOperation='source-over';
+      X.globalAlpha=sa;X.restore();
     }
     // ═══ 가시덫 슬로우 비주얼 — 발밑 초록 원 ═══
     if(e._spikeSlow>0){const _ssA=Math.min(.25,e._spikeSlow/90*.25);X.save();X.globalAlpha=_ssA;X.fillStyle='#44cc44';X.beginPath();X.arc(e.x,e.y,e.r*1.2,0,Math.PI*2);X.fill();X.restore()}
