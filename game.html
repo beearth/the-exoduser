@@ -44192,7 +44192,7 @@ function _skDetailHTML(sk, slv){
   };
   let html='';
   // ── 1) 기본 정보 ──
-  const _cdF=sk.cd?(sk.cd/60).toFixed(1)+'s':(_L('없음','None'));
+  const _cdF=sk.cd?((sk.id==='voidScarecrow'?1200:sk.cd)/60).toFixed(1)+'s':(_L('없음','None'));
   html+=_sec(_L('스킬 정보','Skill Info'),[
     [_L('타입','Type'),(sk.noDmg&&!sk.act)?(_L('패시브','Passive')):_isPhys?(_L('물리','Physical')):_isBow?(_L('활','Bow')):(_L('마법','Magic')),(sk.noDmg&&!sk.act)?'#cccc88':_isPhys?'#ffaa44':_isBow?'#88cc88':'#88aaff'],
     [_L('레벨','Level'),learned?'Lv.'+slv+'/10':(_L('미습득','Not Learned')),learned?'#44cc44':'#888'],
@@ -44265,6 +44265,9 @@ function _skSpecificDetails(sk,slv){
       [_L('범위','Range'),_r+'px','#ddaa66'],
       [_L('레벨당 범위','Per Lv Range'),'+15px','#88aaff'],
     ];
+  }
+  if(id==='ltnChaser'){
+    return [[_L('투사체','Projectile'),String(Math.min(12,2+lv*2)),'#ffcc44']];
   }
   if(id==='maliceHunt'){
     const _pierce=800+lv*20;

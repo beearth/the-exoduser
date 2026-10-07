@@ -2824,3 +2824,46 @@ source28 고유앱3403은 이번 라벨 수정 전 코드다. 실제 launch1/liv
 검수는 실제 controller를 통제 DOM·MutationObserver·ResizeObserver·animation event에 연결한 Node1/VM9, 새6그룹25조건 PASS/FAIL0/준비실패0/미도달0/exit0이다. 이전 view zoom CPU25와 별도 epoch이며 합산하지 않는다. 새 Chrome/GPU/PNG0, native NOT_RUN, 이번 UI 시각 NOT_ASSESSED, 전체 **VISUAL VERDICT: RETOUCH**다. 사용자 IAB13의 이전 로드 화면은 재로드 없이 유지했다. 세부 계약·가이드 §23은 [MAP_RUNTIME_ARCHITECTURE](<../4.1맵디자인+설정/MAP_RUNTIME_ARCHITECTURE.md>)의 같은 TASK 절을 따른다.
 
 기존 지역 배너 top28%/제목18% 배치의 보편적 비충돌 설명은 이전 설계 범위다. 현재 제목 top은 조건부 계산되므로 regionBanner·펫 대사·구슬 및 viewport와의 전 animation 시각 비충돌은 별도 native Gate로 남긴다.
+
+
+## ROOT-SKILL-DETAIL-PRODUCER-VALUES-20261008 — 상세 발수·설치 기본 쿨다운
+
+실제 main의 기존 상세 카드에 두 producer 값을 표시한다. 전투·자원·숙련·metadata를 바꾼 작업이 아니다. 아래 표가 이번 두 상세 표시의 현재 계약이며, 원래 desc/compact 문구와 모든 번역·다른 스킬 수치의 완전 정정을 뜻하지 않는다.
+
+| id / 표시 위치 | 현재 값·공식 | 적용 범위 |
+|---|---|---|
+| ltnChaser / `_skSpecificDetails(sk,slv)` | 기존 `lv=Math.max(1,slv)` 뒤 `String(Math.min(12,2+lv*2))` | 기존 `_L('투사체','Projectile')` 키·EN fallback과 색 `#ffcc44` 재사용. 실제 helper의 기본 발수 `Math.min(12,2+_lcLv*2)`, `_lcLv=P.skills.ltnChaser||1`과 유효 정수 기본레벨에서 일치 |
+| ltnChaser 정적 계약 예시 | 미습득 preview0→Lv1 값4, Lv1=4/Lv4=10/Lv5·10·20=12 | 계약 기대값이며 CPU/native PASS 수로 계산하지 않음. 실제 학습·강화 화면 실행0 |
+| voidScarecrow / `_skDetailHTML`의 기본 쿨다운 값 | `sk.id==='voidScarecrow'?1200:sk.cd`를 기존 `/60`, `toFixed(1)+'s'`에 소비 → `20.0s` | 기존 KO 쿨다운/EN fallback Cooldown 행과 값 span·색·형식 재사용. 원 KO/EN desc의 20초와 실제 설치 `P._vsCd=1200`에 일치 |
+| 다른 스킬·CD 없음 | 다른 id는 기존 `sk.cd/60` 그대로. `sk.cd`가 없는 경우 기존 값 계산의 None fallback 및 실제 쿨다운 행 생략 유지 | 허수아비 metadata600을 전체1200으로 바꾸지 않음 |
+| 값의 권한 | 설치 기본1200f/60=20초 표기이며 현재 남은 시간·보너스 적용 최종치·실경과시간 보장이 아님 | 기존 holyDome 감쇠 가속·실 `_vsCd` update·metadata600을 읽는 기본 숙련1회10초는 각각 보존 |
+| 실제 caller | 기존 `_renderSkillRow`가 현재 `P.skills[sk.id]||0`을 slv로 읽어 `_skDetailHTML(sk,slv)` 호출 | 기존 패널 재렌더 때 계산. 새 watcher/RAF/timer·상태0 |
+| HTML/DOM | 기존 `_skDetailHTML`→`_sec` builder가 신규 ltnChaser rows를 받아 기존 형식의 스킬 고유 section과 발수 row를 생성 | 새 DOM 조작 API·부모 textContent/innerHTML 교체를 추가하지 않음. 상세 HTML 전체가 이전과 같다는 뜻이 아님 |
+| 원 설명·번역 한계 | 원 ltn desc의 `1+Lv발`은 이번 두 hunk에서 수정하지 않은 기존 표시 불일치 | 새 번역키/28개 언어 canonical·전체 카드·compact 설명 정정 주장0. 기존 라벨은 소스의 다른 호출에서도 사용 중 |
+| 전투 불변 | activateLtnChaser의 ST40·실발수·피해·유도/체인·실패admission·helper/dispatcher 숙련, activateVoidScarecrow 설치·회수·축적·폭발·save 원문 보존 | 실제 producer/metadata/숙련/전투 timing을 표시값에 맞춰 변경하지 않음 |
+
+### 검수와 보존
+
+코드2hunk/+142B를 선 working+HEAD fullbytes 백업 후 같은 치환으로 적용했고, 각각 역변환 exact 및 foreigngame185B 보존을 확인했다. 최종 working game4113899B/a9cfb164512c33426f4e251c985315f63e30c984856c752316a3bbdf402b117b, owned4113714B/92fa6346f18b0696a21e1b2bf7965878dd553d84599c4c941ed5ec86b86052e5를 구분한다. source 정적 peer blocking0. 저위험 표시 변경으로 새 tests/Node/VM/CPU/native/GPU/Chrome/청취/PNG/실save 실행0이다. 표의 숫자는 정적 계약 예시이며 재현 PASS로 세지 않는다. 기존 사용자 IAB13은 old-loaded source 그대로이며 새 표시 적용을 주장하지 않는다.
+
+새 관련 docs whole union 검색1회: eligible1022 text/818 Markdown, 93 matching paths/512 lines/588 occurrences. giant owner6·보호2_3·container 등262경로 body/hash 제외, 93문서 전수 fullread 주장0. 현재4(스킬 본문/UI_COMPOSITION/MASTER/CHANGELOG)만 선 working+HEAD fullbytes8 백업·fullprefix/inverse exact·EOF1 append로 동기화한다. 기존 자원/DPS/감사의 producer·metadata·숙련 값은 그대로이며 과거 검수 epoch를 다시 실행하지 않는다. 소유 code1+docs4만 정상 commit/push/remote exact로 보존하며 정확 GIT·peer 최종 결과는 E/ch1-skill-detail-producer-values-20261008/의 completion/remote receipts를 따른다.
+
+### MAP PRODUCTION REPORT (§23)
+
+| 표준 항목 | 이번 단위 판정 |
+|---|---|
+| STAGE | 전역 actual main 스킬 상세 두 표시 consumer. 맵/geometry 수정0 |
+| MASTER — silhouette / regions / main route / side spaces | 원본 유지, 새 시각 평가 없음 |
+| OUTER MASS — LEFT / RIGHT / TOP / SOUTH / major holes | 원본 유지 |
+| LARGE — source assets / composites / overlap / repeated silhouette | 원 PNG/scene/asset 유지 |
+| MEDIUM — connections / remaining holes | 원본 유지 |
+| GROUND — shadow / contamination / structure integration | 원본 유지, physical relief0·확대 흐림 미해결 |
+| PLAYABLE — main arenas / travel space / breathing space / threat space / combat readability | 전투 producer 불변, 상세 값 정적 대조만 |
+| LANDMARK — primary / secondary / tertiary | 원본 유지 |
+| CAMERA QA — START / EARLY / ARENA / SIDE L / SIDE R / LANDMARK / LATE / EXIT | NOT_RUN, 사용자 열린 IAB13 무조작 |
+| TECH QA — route / collision / pageerror / 404 / seam / loading / performance | runtime/route/HTTP NOT_RUN, source 정적 대조·owned inverse·정상 diffcheck. 화면640/1280·성능·실언어 layout 미측정 |
+| FILES — stage-owned / concurrent touched / unrelated touched | game1+currentdocs4 소유. foreigngame185B/설정3.3foreign2948B 미채택 보존, unrelated0 |
+| GIT — staged / commit / push | 소유5paths만, 실제 HEAD/remoteexact는 최종 completion·remote receipt |
+| VISUAL VERDICT | RETOUCH / UI_NOT_ASSESSED / nativeNOT_RUN |
+
+WOLF 파일 쓰기는 자동 승인 검토에서 dangerous로 거절됐고 구체 사유는 제공되지 않았다. 해당 후보의 추가 접근·실행·채택·Git·다른 tool/path/host/권한 우회0을 유지한다.
