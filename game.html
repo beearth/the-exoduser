@@ -12678,7 +12678,13 @@ function _stopLoop(ref,fadeMs){
   setTimeout(()=>{try{ref.src.stop()}catch(e){}},fadeMs||150)}catch(e){}
 }
 function _startShieldLoop(){try{_stopShieldLoop();const c=actx(),buf=_audioBuffers['shield_loop'];if(!buf)return;const src=c.createBufferSource();src.buffer=buf;src.loop=true;const g=c.createGain();g.gain.value=.25*sfxVol();src.connect(g);g.connect(mbus());src.start();_shieldLoopSrc=src;_shieldLoopGain=g}catch(e){}}
-function _stopShieldLoop(){if(_shieldLoopSrc){try{if(_shieldLoopGain)_shieldLoopGain.gain.exponentialRampToValueAtTime(.0001,actx().currentTime+.1);setTimeout(()=>{try{_shieldLoopSrc.stop()}catch(e){}},150)}catch(e){}_shieldLoopSrc=null;_shieldLoopGain=null}}
+function _stopShieldLoop(){
+  const src=_shieldLoopSrc,gain=_shieldLoopGain;
+  _shieldLoopSrc=null;_shieldLoopGain=null;
+  if(!src)return;
+  try{if(gain)gain.gain.exponentialRampToValueAtTime(.0001,actx().currentTime+.1)}catch(e){}
+  try{setTimeout(()=>{try{src.stop()}catch(e){}},150)}catch(e){}
+}
 const SFX={
   // ── Blade slash: 4종 랜덤 ──
   _swIdx:0,_sbIdx:0,_sbSndCd:0,_sbLast:-1,
