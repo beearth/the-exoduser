@@ -16,8 +16,8 @@ export const INTERACTION_CUE_PROVENANCE = Object.freeze({
  */
 export const INTERACTION_CUE_DEFAULTS = Object.freeze({
   approachColor: 0xcdbb86, approachOpacity: .55, approachSize: .16,
-  openColor: 0xc8623a, openOpacity: .8, openSize: .12,
-  openLift: .42, groundLift: .003,
+  openColor: 0xc8623a, openOpacity: .8, openSize: .045,
+  openLift: .70, groundLift: .003,
   pulseHz: 1.6, pulseDepth: .22,
   fixedOrder: 31, orderOffset: .5, reducedMotion: false,
   maxAnchors: 4, worldSize: 8000
