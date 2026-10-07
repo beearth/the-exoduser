@@ -1349,3 +1349,91 @@ checkout game4065692B/525d6656…와 root 소유 commit blob4065507B/b7929672116
 | root PNG2/시각 | idle-main/run-main 직접판독:실버테일몸표시/이동한정. 회색평면지면·확대배경흐림·인접FX·작고어두운실루엣이남아 VISUAL VERDICT: RETOUCH. anatomicalfoot/8dir/공격특수사망/liveDSghost/실높이/전체native6/audio/save未인수 |
 
 원자료는 동일 외부 silvertail-packed-main/validation-receipt.json4269B/f1ac0c5fc524bb218c1f3177a2a94de27ec8452889bdd734091001b4b05b9d8b, native-result.json108953B/5483e67a4b01b5f934041e8122d7a290d53ef660c27ccd3961ea89055f771143, visual-verdict.json2319B/0df7fb371ebf9a2bb5ea6ae3ef9c52cdb5e08c8f797fa78dca3b5ae30f66ac3e다. 이전 recovery42/native3/carry25/oldUV와 새 epoch를 재집계·재실행하지 않는다.
+
+
+## 2026-10-07 다크드루이드 NORMAL 본체 borrowedSheet 소비 — ROOT-CH1-DRUID-NORMAL-MAIN-20261007
+
+현재 구현 범위는 본편 CH1의 살아 있는 다크드루이드 NORMAL 표시 소비다. 기존 시트 선택 뒤 최종 crop/frame을 전달하며, 전투·피해·비용·이동·충돌·타이밍·맵·저장 설계를 바꾸지 않는다. 이전 lab/catalog 또는 Silvertail epoch를 이 보스 제품 인수로 승격하지 않는다.
+
+| 파일 | bytes | SHA256 |
+|---|---:|---|
+| `game.html` | 4080126 | `dd1d38a27cae9ed138b14083888e2812528e55ea2c2a62c3927c03a5302cd052` |
+| `tools/2_5d/character-rigs.mjs` | 23660 | `c6ddc50bca0eca995beaaf70ddeff09918482073508318f93723dc20be1b6e25` |
+| `tools/2_5d/ch1-player-rig.mjs` | 33055 | `27ddc6c8a37bd5fe797e7c908964524887aba41017678897478142106f8b9d79` |
+
+공용 working game에는 타인 WIP185B가 보존되어 있다. root 실제 owned blob은 4,079,941B / `c412d02414e22c9a1fe2a80df3c4a3e7f2ae0ffbf0d1d0b1300da2a443285dbe`; working 전체 핀과 구분하며 root의 `main-decode-v2-implementation.json`과 최종 `main-multi-boss-implementation.json`에 각 inverseExact/foreign185Exact가 기록된다.
+
+| 경계 | 실제 현재 계약 |
+|---|---|
+| opt-in | `localhost` 또는 `127.0.0.1`, port3387, 첫 query `ch1Three=1`과 `ch1Rig=1`일 때 요청. default OFF, storage/schema 추가0 |
+| main scope | `G.on`, stage0, start phase `smoothing`, root `assets/map/ch1/production_finish`; 동일 G/map/ens. field200×200 또는 `_bossArena`128×108 |
+| NORMAL gate | alive=true, hp>0, reviveTimer≤0, defeated=false인 보스; `hit`/`death`와 TelePrep/TeleWarn, DruidDive/Under/Erupt, Charge/Jump/Dash 계열 특수 의도는 시트 준비/legacy fallback보다 먼저 배제. adapter도 stunned/eHit/eKB/eStagger·생명 상태를 재검증 |
+| 채택 모션 | 최종 native `base8→idle`, `walk→walk`, `attack→attack`만. 공격 모션 표시 지원은 전투 판정/특수기 지원이 아님; borrowedSheet run은 거부 |
+| 원시 선택 | 기존 `_nw=performance.now()` 1회와 walk/attack `floor(_nw/150)%4`를 유지. 별도 body 프레임 시계/재선택0 |
+| active dt | 동일 map/ens와 scope 연속, 현재/이전 `_gameFrame` safe integer, 비역행, paused/hidden 아님일 때 `min(.05,(frame-previous.frame)*PHYS_STEP/1000)`; 나머지0. `_gameTime` 소비/RAF/timer/simulation 소유0 |
+
+```js
+createCharacterRig('dark-druid', {THREE, height: 1, borrowedSheet});
+rig.update(dt, {mode, direction, phase, sourceFrame});
+adapter.render({stage, map, actor, id:'dark-druid', mode, direction, phase,
+  heightWorld, backingScale, dt, borrowedSheet, sourceFrame, owner});
+```
+
+factory의 기존 기본 height=2.2는 보존되며 main adapter가 height1 rig를 명시 생성한다. `borrowedSheet`와 `borrowedAtlas` 동시 전달은 거부한다. 미전달 catalog/public 경로와 Silvertail borrowedAtlas 경로는 유지한다.
+
+| 레코드 | own-data 필드/소유 |
+|---|---|
+| borrowedSheet | `image,width,height,generation,decodedGeneration,srcSnapshot,currentSrcSnapshot,srcsetSnapshot,sizesSnapshot`; generation은 plain 객체 토큰, decodedGeneration===generation |
+| sourceFrame | `generation,lifeGeneration,sheet,mode,direction,index,count,sourceCol,sourceRow,columns,rows,x,y,w,h,anchorX,anchorY,referenceHeight`; main은 추가 nativeDir를 기록하고 adapter가 값 일치를 확인 |
+| owner | `active,game,enemies,map,actor,lifeGeneration,sheetRecord,imageGeneration,selectedFrame,state,deaths,bossPhase,lastStand,defeated,pending`; exact actual refs와 selectedFrame 객체 identity를 재검증 |
+| publication | `sourceKind='borrowed-main-sheet'`, `sourcePath='borrowed:dark-druid-main-sheet'`; fresh frozen pose/source wrapper. 실제 image/G/e/ens/map/token를 freeze하거나 소유하지 않음 |
+| 수명 | 동일 e 재사용만으로 부활 세대를 승인하지 않음. deaths/phase/lastStand/defeated/revive pending/live-band/intent 변경에 새 lifeGeneration; scene/game/map/ens/arena·규격 변경/actor 제거/pagehide에 owner·lease 무효화 |
+
+| sheet / mode | 원시 시트·격자 | 선택·phase | anchor / referenceHeight |
+|---|---|---|---|
+| base8 / idle | 1656×1240,4×2,414×620 | nativeDir의 col=nativeDir%4,row=floor(nativeDir/4); index0/count1,phase.5 | (207,603)/591 |
+| walk / walk | 887×1774,4×8 | col=index0..3,row=nativeDir; count4,phase=(index+.5)/4 | (w/2,h)/h |
+| attack / attack | 887×1774,4×8 | col=index0..3,row=nativeDir; count4,phase=(index+.5)/4 | (w/2,h)/h |
+
+`direction=(8-nativeDir)%8`다. crop은 `x=round(col*width/columns)`, `y=round(row*height/rows)`, `w=round((col+1)*width/columns)-x`, `h=round((row+1)*height/rows)-y`로 읽는다. 887/4·1774/8을 일괄 소수 셀 크기로 쓰지 않으며 실제 w/h는221/222다. idle의 방향 셀을 animation index로 쓰지 않는다.
+
+| decode/currentness | 실제 경계 |
+|---|---|
+| native 판독 | root 초기화에서 HTMLImageElement native getters, decode, Promise.then을 캡처. 같은 realm image, complete/natural 크기/source 문자열을 읽고 own-property shadow/decode shadow를 거부 |
+| decode 승격 | loader ready/onload만으로 승인하지 않음. root captured native decode 성공 뒤 scene/owner/life/sheet/image/source fingerprint가 current일 때만 decodedGeneration=generation wrapper 발행. factory/adapter 자체 decode0 |
+| source mutation | image의 src/srcset/sizes attribute MutationObserver와 current 검사 시 takeRecords로 동기 검증. stale/실패/observer 불가/scene·life 교체 시 lease close·disconnect·borrowed clear |
+| 대기 한계 | pending deadline=start+30000ms, 경계 검사 시 만료 취소. timer/RAF 없으며 정확 30초에 깨우는 예약 아님. 동일 미정산 native promise 재요청0, 동일 binding의 실패/취소 lease 재시도0; 실제 owner/source 세대 교체 뒤 기존 promise settled일 때만 새 요청 가능 |
+| 재진입 | async 생성 완료, rig update/publication,609점 bounds, renderer 전후, GL/publication과 반환 전, main 각 합성 pass 앞에서 currentness 재검증. 이미 synchronous blit한 뒤 무효화는 나머지 pass만 중단하고 true 반환해 legacy 중복 draw 방지; 이미 그린 픽셀 rollback 보장 없음 |
+| 미인수 | 같은 src/currentSrc/srcset/sizes와 크기를 유지한 비관측 픽셀 변경, silent texture upload/pixel rollback, reference를 반환하지 못한 constructor 자원/원 dispose exception chain은 UNKNOWN |
+
+| 배치·자원 | 실제 계약 |
+|---|---|
+| 기존 크기 | dw=e.r×9.3,dh=e.r×14.1. 기존 `translate(e.x,e.y+tdY-6+breath)`와 inverse `_btScaleMul` 안에서 표시; 부모 중복 적용0 |
+| 로컬 변환 | heightWorld=dh×referenceHeight/ch; scaleX=dw×ch/(dh×cw); anchorLocalX=−dw/2+anchorX×dw/cw; anchorLocalY=−.86×dh+anchorY×dh/ch |
+| 합성 | 같은 rendered canvas/rect를 source-over sa 및 lighter sa×.42 두 번으로 총3pass 재사용. 기존 finale tell/glow/name/leg fog, 원 PNG와 native special/death fallback 유지 |
+| renderer 한계 | local Three r160, padding2, backingScale≤4, backingDimension≤2048,dt≤.05; 반환 canvas,left,top,width,height. image 소유/추가 Image/fetch/clone/resize/clear/close0 |
+| factory 자원 | 소유 Texture·Geometry·Material·Skeleton만 release. 기존609정점/12본/alphaTest.08/UV inset.5/약변형 구조 유지. 591은 alpha 기준 캘리브레이션이며 해부학 발/실높이·full3D proof 아님 |
+
+| 최종 복수보스 guard | 현재 실제 제한 |
+|---|---|
+| `_ch1DruidSingleBoss()` | ens의 own-data `ib===true` 멤버가2개 이상이면 Druid rig scope 전체를 거부해 해당 보스 본체를 모두 legacy로 유지한다. 한 보스만 임의 우선 표시하지 않으며 다른 player/terrain adapter의 gate를 바꾸지 않는다 |
+| count 경계 | 살아 있는 보스만 세지 않는다. dead/revive pending companion도 ens에 남은 ib 멤버이면 계속 거부; 제거 후에만 단일 scope 재진입 가능. ib가 아닌 일반몹은 count에서 제외 |
+| 원인/보존 | 공용 HTMLImage lease의 복수 owner starvation과 단일 Druid adapter 공유를 코드 검토로 확인해 최소범위 제한. 여러 보스 rig 동시 지원은 미구현/미인수이며 기존 전투·생성·부활·ens 구성 변경0 |
+
+| 검수 epoch | 실제 결과와 한계 |
+|---|---|
+| factory 새 CPU | 최종 factory c6dd source의 실제 factory/catalog/Three 수학·609정점/12본, 통제 HTMLImageElement getter. 최초1회 7그룹36조건 PASS, FAIL/미도달/setup/unhandled/cleanup0, exit0. native image/decode/PNG/GPU/main0 |
+| combined adapter 새 CPU | 최종 modules c6dd/27dd의 실제 전체 factory+adapter/catalog/Three와 통제 Image/renderer. 최초1회 6그룹15조건 PASS, FAIL/미도달/setup/unhandled0, exit0; source4 전후 exact. GPU/PNGdecode/main0 |
+| main 최초 guards CPU | b0c3 source의 실제 main 함수·원 pagehide statement 추출/통제 포트. 최초 Node1회/VM13개, 11그룹31조건 PASS, FAIL/미도달/unhandled0, exit0; game 전후 exact. 최종 복수보스 가드 이전이며 구31 재실행0 |
+| native 최초1회 — 가드 전 | b0c3 source 실제 Chrome1/context1/page1의 기존 bosstest=0 testbed. 3조건 PASS, FAIL/미도달0, exit0. real HTMLImage/native decode2·ready2·failure0, idle base8와 normal attack887×1774·609정점/alpha127095·206083/GL0. pageerror/HTTP4040, POSTmats1 서버 도달 전 차단/user-save0. 실제walk0 |
+| 최종 복수보스 한정 CPU | dd1d 최종 source의 실제 main 함수/통제 포트, Node1회4조건 PASS, FAIL/미도달0, exit0/source exact. 단일보스 admission,두보스 legacy,owner/observer revoke,pending companion·nonboss 경계만. 구31/native3 재실행0/추가Chrome0 |
+| root PNG2 / 시각 | 가드 전 idle-main/resumed-main 직접판독: 정상 idle/attack 본체만 확인. 보스상단 camera 잘림·player/label/FX 겹침·평면 baked ground가 남아 VISUAL VERDICT: RETOUCH |
+
+factory36/combined15/main31/native3/final-limited4를 하나의 clean 전체 PASS로 합산하지 않는다. native3와 시각은 b0c3 이전 source의 한정 증거이고 최종 dd1d source의 native 인수는0이다. 기존 bosstest=0에는 player boost/pillar removal 원동작이 내장되어 있어 정상 새게임→지역/게이트/보스전 전체 진행 인수0이다. 이전 warrior/strike/recovery/Silvertail CPU·native·실패·limited/cleanup epoch도 재실행·합산하지 않는다. 실제walk/native8방향·해부학발·DSghost·특수/사망·부활·보상/저장/audio·전체 본편/native6·물리 relief/full3D는 미인수다.
+
+검수 원문은 외부 `druid-normal-main/factory-cpu-result.json`12248B/`87ab06ef8b61ba91ec30d282008d0235b6bd92367240194360e157c107235365`, `combined-adapter-result.json`5498B/`6a9a132be1007126e83768eac3027750a116b0ed832c14f40bde2a83991131c2`, `main-guards-result.json`15697B/`7c78f7d8a2ca29d31b61252c966773603d1c6537ed3cc976a71cc1c19415501f`다. main receipt2019B/`277c26c7a78b5e1a87c5b9207a9102280cabd70771070b0aa0cf35776d573c04`는 최초b0c3 epoch로 보존한다.
+
+최종 근거는 외부 `druid-normal-main/validation-receipt.json`5368B/`dfdda24546843f67e2aff44b71d2770a46de4267a8aa29ef1089815c758fe5e1`, `visual-verdict.json`5420B/`3f6dcc7818ffe5e7d9a110d60d3baf62e995edb8129e3aae59b55e45cd161460`, `native-result.json`56979B/`70a55e20696a1b7fd4fd0ac8a5e8cea2204d5e8463622dc44de7893828ef1c92`, `multi-boss-limited-result.json`1043B/`88dc0a15ef1278ac3e25d4032cecb8ea695d69f7ff0f12ff30bfc3d9ff34171c`다. 최초main31/native3는 b0c3,최종한정4는 dd1d로 분리한다.
+
+
+외부 `druid-normal-main/remote-preservation-receipt.json`는 root가 이 completion의 정상 commit/push 뒤 exact SHA·remote를 기록하는 보존 참조다. 정본문서에 자기 commitSHA를 순환 기입하지 않으며 이 참조를 현재 push 완료로 미리 주장하지 않는다.

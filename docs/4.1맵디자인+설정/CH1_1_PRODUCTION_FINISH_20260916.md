@@ -1999,3 +1999,97 @@ MAP PRODUCTION REPORT (§23)
 | root PNG2/시각 | idle-main/run-main 직접판독:실버테일몸표시/이동한정. 회색평면지면·확대배경흐림·인접FX·작고어두운실루엣이남아 VISUAL VERDICT: RETOUCH. anatomicalfoot/8dir/공격특수사망/liveDSghost/실높이/전체native6/audio/save未인수 |
 
 원자료는 동일 외부 silvertail-packed-main/validation-receipt.json4269B/f1ac0c5fc524bb218c1f3177a2a94de27ec8452889bdd734091001b4b05b9d8b, native-result.json108953B/5483e67a4b01b5f934041e8122d7a290d53ef660c27ccd3961ea89055f771143, visual-verdict.json2319B/0df7fb371ebf9a2bb5ea6ae3ef9c52cdb5e08c8f797fa78dca3b5ae30f66ac3e다. 이전 recovery42/native3/carry25/oldUV와 새 epoch를 재집계·재실행하지 않는다.
+
+
+## 2026-10-07 다크드루이드 NORMAL 본체 borrowedSheet 소비 — ROOT-CH1-DRUID-NORMAL-MAIN-20261007
+
+이번 패스는 CH1 보스 NORMAL 본체의 표시 접점이다. 지도 geometry/outermass/ground/nav/충돌/랜드마크/카메라를 새로 만들거나 수정하지 않았다. 이를 새 맵 제작/완주 PASS로 계산하지 않는다.
+
+상세 API·source3 전체 핀·검수 epoch와 한계는 `docs/4.0케릭터스프라이트 디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md`의 동일 completion 절을 따른다. §23 보고의 미검수 항목은 아래처럼 그대로 남긴다.
+
+| 최종 복수보스 guard | 현재 실제 제한 |
+|---|---|
+| `_ch1DruidSingleBoss()` | ens의 own-data `ib===true` 멤버가2개 이상이면 Druid rig scope 전체를 거부해 해당 보스 본체를 모두 legacy로 유지한다. 한 보스만 임의 우선 표시하지 않으며 다른 player/terrain adapter의 gate를 바꾸지 않는다 |
+| count 경계 | 살아 있는 보스만 세지 않는다. dead/revive pending companion도 ens에 남은 ib 멤버이면 계속 거부; 제거 후에만 단일 scope 재진입 가능. ib가 아닌 일반몹은 count에서 제외 |
+| 원인/보존 | 공용 HTMLImage lease의 복수 owner starvation과 단일 Druid adapter 공유를 코드 검토로 확인해 최소범위 제한. 여러 보스 rig 동시 지원은 미구현/미인수이며 기존 전투·생성·부활·ens 구성 변경0 |
+
+| 검수 epoch | 실제 결과와 한계 |
+|---|---|
+| factory 새 CPU | 최종 factory c6dd source의 실제 factory/catalog/Three 수학·609정점/12본, 통제 HTMLImageElement getter. 최초1회 7그룹36조건 PASS, FAIL/미도달/setup/unhandled/cleanup0, exit0. native image/decode/PNG/GPU/main0 |
+| combined adapter 새 CPU | 최종 modules c6dd/27dd의 실제 전체 factory+adapter/catalog/Three와 통제 Image/renderer. 최초1회 6그룹15조건 PASS, FAIL/미도달/setup/unhandled0, exit0; source4 전후 exact. GPU/PNGdecode/main0 |
+| main 최초 guards CPU | b0c3 source의 실제 main 함수·원 pagehide statement 추출/통제 포트. 최초 Node1회/VM13개, 11그룹31조건 PASS, FAIL/미도달/unhandled0, exit0; game 전후 exact. 최종 복수보스 가드 이전이며 구31 재실행0 |
+| native 최초1회 — 가드 전 | b0c3 source 실제 Chrome1/context1/page1의 기존 bosstest=0 testbed. 3조건 PASS, FAIL/미도달0, exit0. real HTMLImage/native decode2·ready2·failure0, idle base8와 normal attack887×1774·609정점/alpha127095·206083/GL0. pageerror/HTTP4040, POSTmats1 서버 도달 전 차단/user-save0. 실제walk0 |
+| 최종 복수보스 한정 CPU | dd1d 최종 source의 실제 main 함수/통제 포트, Node1회4조건 PASS, FAIL/미도달0, exit0/source exact. 단일보스 admission,두보스 legacy,owner/observer revoke,pending companion·nonboss 경계만. 구31/native3 재실행0/추가Chrome0 |
+| root PNG2 / 시각 | 가드 전 idle-main/resumed-main 직접판독: 정상 idle/attack 본체만 확인. 보스상단 camera 잘림·player/label/FX 겹침·평면 baked ground가 남아 VISUAL VERDICT: RETOUCH |
+
+factory36/combined15/main31/native3/final-limited4를 하나의 clean 전체 PASS로 합산하지 않는다. native3와 시각은 b0c3 이전 source의 한정 증거이고 최종 dd1d source의 native 인수는0이다. 기존 bosstest=0에는 player boost/pillar removal 원동작이 내장되어 있어 정상 새게임→지역/게이트/보스전 전체 진행 인수0이다. 이전 warrior/strike/recovery/Silvertail CPU·native·실패·limited/cleanup epoch도 재실행·합산하지 않는다. 실제walk/native8방향·해부학발·DSghost·특수/사망·부활·보상/저장/audio·전체 본편/native6·물리 relief/full3D는 미인수다.
+
+```text
+================= MAP PRODUCTION REPORT =================
+STAGE: CH1 stage0; production_finish/smoothing; field200x200 / bossarena128x108
+MASTER
+- silhouette: 기존 권위 보존; 새 구조 인수0
+- regions: 기존 권위 보존; 새 지역 진척 인수0
+- main route: 변경0; 이번 재검수0
+- side spaces: 변경0; 이번 재검수0
+OUTER MASS
+- LEFT: 변경0
+- RIGHT: 변경0
+- TOP: 변경0
+- SOUTH: 변경0
+- major holes: 새 판정0
+LARGE
+- source assets: 기존 dark-druid native sheets만 borrowed; 신규 원화0
+- composites: 기존 body source-over + lighter2; 같은 rig canvas 재사용
+- overlap: 새로운 환경 배치0; b0c3 native에서 player/label/FX 겹침·보스상단잘림 관측/RETOUCH
+- repeated silhouette: 새 제작/인수0
+MEDIUM
+- connections: 변경0
+- remaining holes: 새 판정0
+GROUND
+- shadow: 변경0; 새 발접지 검수0
+- contamination: 변경0
+- structure integration: 변경0
+PLAYABLE
+- main arenas: 기존 bosstest=0 실제128x108 testbed;내장playerboost/pillarremoval,정상전투진행 인수0
+- travel space: 변경0; 새 이동/경로 완주 검수0
+- breathing space: 변경0
+- threat space: b0c3 실제 pause/resume 뒤 bossSlashWind normal attack 표시;AI/피해/시간 변경0
+- combat readability: b0c3 root PNG2에서 camera상단잘림/FX겹침·평면ground RETOUCH; 최종dd1d native0
+LANDMARK
+- primary: 변경0
+- secondary: 변경0
+- tertiary: 변경0
+CAMERA QA
+- START: 새 관측0
+- EARLY: 새 관측0
+- ARENA: b0c3 native idle/attack 촬영·보스상단잘림/RETOUCH;최종dd1d native0
+- SIDE L: 새 관측0
+- SIDE R: 새 관측0
+- LANDMARK: 새 관측0
+- LATE: 새 관측0
+- EXIT: 새 관측0
+TECH QA
+- route: 변경/재검수0
+- collision: 변경/재검수0
+- pageerror: b0c3 native0;최종dd1d 추가Chrome0/미인수
+- 404: b0c3 native0;최종dd1d 추가Chrome0/미인수
+- seam: factory7/36·combined6/15·b0c3 main11/31·native3·dd1d limited4 별도PASS,clean합산0
+- loading: b0c3 actual native decode2 ready2 failure0/실HTMLImage;최종dd1d guard CPU4만
+- performance: bounded backing2048/scale4/dt.05; 실제 FPS/프레임시간 인수0
+FILES
+- stage-owned: game.html; character-rigs.mjs; ch1-player-rig.mjs; current13 docs append
+- concurrent touched: game foreign185B/3.3 foreign 보존; root HEAD+own append partialstage
+- unrelated touched: 0; protected2_3/owner STATE/LOG/TASK 변경0
+GIT
+- staged: root completed-own code3+docs13 부분stage 예정;foreignWIP는 unstaged로 보존
+- commit: 이 completion 정상commit; exact SHA는 외부 remote-preservation-receipt.json 참조
+- push: 현재checkpoint 전 계획; 완료후 외부 remote-preservation-receipt.json의 remote exact 참조
+- deploy: 0
+VISUAL VERDICT: RETOUCH
+NEXT PASS: camera상단잘림/FX·라벨겹침·평면ground RETOUCH;walk/8dir/foot·전투/부활/특수사망/전체게임 별도 미인수
+```
+
+최종 근거는 외부 `druid-normal-main/validation-receipt.json`5368B/`dfdda24546843f67e2aff44b71d2770a46de4267a8aa29ef1089815c758fe5e1`, `visual-verdict.json`5420B/`3f6dcc7818ffe5e7d9a110d60d3baf62e995edb8129e3aae59b55e45cd161460`, `native-result.json`56979B/`70a55e20696a1b7fd4fd0ac8a5e8cea2204d5e8463622dc44de7893828ef1c92`, `multi-boss-limited-result.json`1043B/`88dc0a15ef1278ac3e25d4032cecb8ea695d69f7ff0f12ff30bfc3d9ff34171c`다. 최초main31/native3는 b0c3,최종한정4는 dd1d로 분리한다.
+
+외부 `druid-normal-main/remote-preservation-receipt.json`는 root가 이 completion의 정상 commit/push 뒤 exact SHA·remote를 기록하는 보존 참조다. 정본문서에 자기 commitSHA를 순환 기입하지 않으며 이 참조를 현재 push 완료로 미리 주장하지 않는다.

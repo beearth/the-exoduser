@@ -19,6 +19,11 @@ const PACKED_FIELDS=Object.freeze(['generation','mode','direction','index','coun
 const PACKED_INPUTS=Object.freeze(['borrowedAtlas','sourceFrame','animator','frameMap']);
 const PACKED_DIRECTIONS=Object.freeze(['s','se','e','ne','n','nw','w','sw']);
 const PACKED_PATH='borrowed:silvertail-main-atlas';
+const SHEET_PATH='borrowed:dark-druid-main-sheet';
+const SHEET_FIELDS=Object.freeze(['image','width','height','generation','decodedGeneration','srcSnapshot','currentSrcSnapshot','srcsetSnapshot','sizesSnapshot']);
+const SHEET_FRAME_FIELDS=Object.freeze(['generation','lifeGeneration','sheet','mode','direction','index','count','sourceCol','sourceRow','columns','rows','x','y','w','h','anchorX','anchorY','referenceHeight']);
+const DRUID_OWNER_FIELDS=Object.freeze(['active','game','enemies','map','actor','lifeGeneration','sheetRecord','imageGeneration','selectedFrame','state','deaths','bossPhase','lastStand','defeated','pending']);
+const DRUID_ACTOR_FIELDS=Object.freeze(['ib','alive','hp','s','deaths','_bossPhase','_druidLastStand','_druidDefeated','_reviveTimer','stunned','_isTail','facing','vx','vy']);
 const bump=(object,key)=>{object[key]=Math.min(Number.MAX_SAFE_INTEGER,object[key]+1);};
 function own(object,key){
   if(object===null||(typeof object!=='object'&&typeof object!=='function'))return undefined;
@@ -28,6 +33,102 @@ function own(object,key){
 function plain(object){
   if(!object||typeof object!=='object')return false;
   const prototype=Object.getPrototypeOf(object);return prototype===Object.prototype||prototype===null;
+}
+function dataRecord(object,fields){
+  if(!object||typeof object!=='object')return null;
+  const copy={};
+  for(const key of fields){
+    const descriptor=Object.getOwnPropertyDescriptor(object,key);
+    if(descriptor&&!Object.hasOwn(descriptor,'value'))return null;
+    copy[key]=descriptor?.value;
+  }
+  return copy;
+}
+function imageSheet(image){
+  const Constructor=globalThis.HTMLImageElement;
+  if(typeof Constructor!=='function'||!(image instanceof Constructor))return null;
+  const read=key=>{
+    const descriptor=Object.getOwnPropertyDescriptor(Constructor.prototype,key);
+    if(descriptor&&typeof descriptor.get==='function'){
+      if(Object.getOwnPropertyDescriptor(image,key))return undefined;
+      return descriptor.get.call(image);
+    }
+    return own(image,key);
+  };
+  const complete=read('complete'),width=read('naturalWidth'),height=read('naturalHeight');
+  const srcSnapshot=read('src'),currentSrcSnapshot=read('currentSrc'),srcsetSnapshot=read('srcset'),sizesSnapshot=read('sizes');
+  if(complete!==true||!Number.isSafeInteger(width)||width<1||!Number.isSafeInteger(height)||height<1||![srcSnapshot,currentSrcSnapshot,srcsetSnapshot,sizesSnapshot].every(v=>typeof v==='string'))return null;
+  return {width,height,srcSnapshot,currentSrcSnapshot,srcsetSnapshot,sizesSnapshot};
+}
+function druidPose(actor){
+  const a=dataRecord(actor,DRUID_ACTOR_FIELDS);if(!a)return null;
+  const number=value=>value===undefined?0:typeof value==='number'&&Number.isFinite(value)?value:null;
+  const flag=value=>value===undefined?false:typeof value==='boolean'?value:null;
+  const deaths=number(a.deaths),bossPhase=number(a._bossPhase),lastStand=flag(a._druidLastStand),defeated=flag(a._druidDefeated),tail=flag(a._isTail);
+  const pending=number(a._reviveTimer),stunned=number(a.stunned),facing=number(a.facing),vx=number(a.vx),vy=number(a.vy),state=a.s;
+  if(a.ib!==true||a.alive!==true||typeof a.hp!=='number'||!Number.isFinite(a.hp)||a.hp<=0||typeof state!=='string'||!state||![deaths,bossPhase].every(v=>Number.isSafeInteger(v)&&v>=0)||[lastStand,defeated,tail,pending,stunned,facing,vx,vy].some(v=>v===null)||defeated||pending>0||stunned>0||['eDeath','eHit','eKB','eStagger'].includes(state))return null;
+  const bur=state==='bossTelePrep'||state==='bossTeleWarn',dive=['bossDruidDive','bossDruidUnder','bossDruidErupt'].includes(state);
+  const chargeWind=state.includes('Wind')&&(state.includes('Charge')||state.includes('Jump')||state.includes('Dash'));
+  const charge=!chargeWind&&(state==='bossJump'||state.includes('Charge')||state.includes('charge')||state.includes('Dash')||state.includes('multiDash'));
+  if(bur||dive||chargeWind||charge)return null;
+  let key='idle';
+  if(state.includes('Slam')||state==='bossJump'||state.includes('Meteor'))key='slam';
+  else if(tail||['Slash','Sweep','Spin','Charge','Dash'].some(s=>state.includes(s)))key='slash';
+  else if(['Wind','Aim','Hold'].some(s=>state.includes(s))||state==='eWindup')key='windup';
+  else if(['eWalk','eChase','eApproach','bossRec'].includes(state))key='walk';
+  const mode=['slash','slam','windup'].includes(key)||state==='bossDruidVolleyWind'||state==='bossDruidVolley'?'attack':key==='walk'?'walk':'idle';
+  const angle=['eWalk','eChase','eApproach'].includes(state)&&(vx||vy)?Math.atan2(vy,vx):facing;
+  const nativeDir=[6,7,0,1,2,3,4,5][((Math.round(angle/(Math.PI/4))%8)+8)%8];
+  return {state,deaths,bossPhase,lastStand,defeated,pending:false,mode,nativeDir};
+}
+function sheetFrameValid(sheet,source,input){
+  if(!plain(sheet.generation)||sheet.decodedGeneration!==sheet.generation||!plain(source.lifeGeneration)||source.generation!==sheet.generation||source.mode!==input.mode||source.direction!==input.direction)return false;
+  const idle=source.sheet==='base8';
+  if((idle?input.mode!=='idle':!['walk','attack'].includes(source.sheet)||input.mode!==source.sheet)||sheet.width!==(idle?1656:887)||sheet.height!==(idle?1240:1774))return false;
+  const count=idle?1:4,nativeDir=(8-input.direction)%8;
+  if(!Number.isInteger(source.index)||source.index<0||source.index>=count||source.count!==count||input.phase!==(source.index+.5)/count||source.columns!==4||source.rows!==(idle?2:8)||source.sourceCol!==(idle?nativeDir%4:source.index)||source.sourceRow!==(idle?Math.floor(nativeDir/4):nativeDir))return false;
+  const x=Math.round(source.sourceCol*sheet.width/4),y=Math.round(source.sourceRow*sheet.height/source.rows);
+  const w=Math.round((source.sourceCol+1)*sheet.width/4)-x,h=Math.round((source.sourceRow+1)*sheet.height/source.rows)-y;
+  return source.x===x&&source.y===y&&source.w===w&&source.h===h&&source.anchorX===(idle?207:w/2)&&source.anchorY===(idle?603:h)&&source.referenceHeight===(idle?591:h);
+}
+function sheetCurrent(record,input){
+  try{
+    if(!input?.sheetBorrowed||!plain(input.sheetOwner)||!plain(input.frameOwner)||!plain(input.owner))return false;
+    if(own(input.inputOwner,'borrowedSheet')!==input.sheetOwner||own(input.inputOwner,'sourceFrame')!==input.frameOwner||own(input.inputOwner,'owner')!==record.owner)return false;
+    const sheet=input.borrowedSheet,source=input.sourceFrame,owner=dataRecord(record.owner,DRUID_OWNER_FIELDS),game=dataRecord(record.game,['stage','map','mw','mh','on','_bossArena']);
+    if(!owner||!game||owner.active!==true||owner.game!==record.game||owner.enemies!==record.enemies||owner.map!==record.map||owner.actor!==record.actor||owner.lifeGeneration!==record.lifeGeneration||owner.imageGeneration!==record.sheetGeneration||owner.sheetRecord!==record.sheetRecord||owner.selectedFrame!==input.frameOwner||owner.state!==input.actorPose.state)return false;
+    if(game.stage!==0||game.on!==true||game.map!==record.map)return false;
+    const arena=game._bossArena===true;
+    if(game._bossArena!==undefined&&typeof game._bossArena!=='boolean')return false;
+    if(game.mw!==(arena?128:200)||game.mh!==(arena?108:200)||own(record.map,'length')!==game.mh||own(record.map,'0')===undefined||own(own(record.map,'0'),'length')!==game.mw)return false;
+    if(!Array.isArray(record.enemies)||own(record.enemies,String(input.enemyIndex))!==record.actor)return false;
+    const pose=druidPose(record.actor);
+    if(!pose||pose.state!==input.actorPose.state||pose.mode!==input.mode||pose.nativeDir!==(8-input.direction)%8||['deaths','bossPhase','lastStand','defeated','pending'].some(key=>pose[key]!==input.actorPose[key]||owner[key]!==pose[key]))return false;
+    if(own(record.sheetRecord,'img')!==record.image||own(record.sheetRecord,'ready')!==true)return false;
+    if(SHEET_FIELDS.some(key=>own(input.sheetOwner,key)!==sheet[key])||SHEET_FRAME_FIELDS.some(key=>own(input.frameOwner,key)!==source[key]))return false;
+    const nativeDir=Object.getOwnPropertyDescriptor(input.frameOwner,'nativeDir');
+    if(nativeDir&&(!Object.hasOwn(nativeDir,'value')||nativeDir.value!==pose.nativeDir))return false;
+    const actual=imageSheet(record.image);
+    return !!actual&&sheet.image===record.image&&sheet.generation===record.sheetGeneration&&source.lifeGeneration===record.lifeGeneration&&['width','height','srcSnapshot','currentSrcSnapshot','srcsetSnapshot','sizesSnapshot'].every(key=>actual[key]===sheet[key]);
+  }catch(_){return false;}
+}
+function captureSheet(input){
+  const value={};for(const key of INPUT_FIELDS)value[key]=own(input,key);
+  if(value.id!=='dark-druid'||value.stage!==0||!Array.isArray(value.map)||!value.actor||typeof value.actor!=='object'||!['idle','walk','attack'].includes(value.mode)||!Number.isInteger(value.direction)||value.direction<0||value.direction>7||!Number.isFinite(value.phase)||!Number.isFinite(value.heightWorld)||value.heightWorld<=0||!Number.isFinite(value.backingScale)||value.backingScale<=0||value.backingScale>CH1_PLAYER_RIG.maxBackingScale||!Number.isFinite(value.dt)||value.dt<0)return null;
+  for(const key of ['borrowedAtlas','animator','frameMap']){
+    const descriptor=Object.getOwnPropertyDescriptor(input,key);if(descriptor&&(!Object.hasOwn(descriptor,'value')||descriptor.value!==undefined))return null;
+  }
+  const sheetOwner=own(input,'borrowedSheet'),frameOwner=own(input,'sourceFrame'),owner=own(input,'owner');
+  if(!plain(sheetOwner)||!plain(frameOwner)||!plain(owner))return null;
+  const borrowedSheet=dataRecord(sheetOwner,SHEET_FIELDS),sourceFrame=dataRecord(frameOwner,SHEET_FRAME_FIELDS),ownership=dataRecord(owner,DRUID_OWNER_FIELDS),actorPose=druidPose(value.actor);
+  if(!borrowedSheet||!sourceFrame||!ownership||!actorPose||!sheetFrameValid(borrowedSheet,sourceFrame,value)||ownership.selectedFrame!==frameOwner||ownership.actor!==value.actor||ownership.map!==value.map||ownership.lifeGeneration!==sourceFrame.lifeGeneration)return null;
+  const enemies=ownership.enemies,length=own(enemies,'length');if(!Array.isArray(enemies)||!Number.isSafeInteger(length))return null;
+  let enemyIndex=-1;for(let i=0;i<length;i++)if(own(enemies,String(i))===value.actor){enemyIndex=i;break;}if(enemyIndex<0)return null;
+  Object.assign(value,{packed:false,sheetBorrowed:true,borrowedSheet:Object.freeze(borrowedSheet),sourceFrame:Object.freeze(sourceFrame),ownership:Object.freeze(ownership),
+    owner,sheetOwner,frameOwner,inputOwner:input,actorPose:Object.freeze(actorPose),enemyIndex});
+  const record={owner,game:ownership.game,enemies,map:value.map,actor:value.actor,lifeGeneration:sourceFrame.lifeGeneration,sheetRecord:ownership.sheetRecord,image:borrowedSheet.image,sheetGeneration:borrowedSheet.generation};
+  if(!sheetCurrent(record,value))return null;
+  value.dt=Math.min(CH1_PLAYER_RIG.maxDelta,value.dt);return Object.freeze(value);
 }
 function canvasSize(image){
   for(const Constructor of [globalThis.HTMLCanvasElement,globalThis.OffscreenCanvas]){
@@ -63,6 +164,9 @@ function packedCurrent(record,input){
 }
 function capture(input){
   try{
+    if(own(input,'id')==='dark-druid')return captureSheet(input);
+    const borrowedSheet=Object.getOwnPropertyDescriptor(input,'borrowedSheet');
+    if(borrowedSheet&&(!Object.hasOwn(borrowedSheet,'value')||borrowedSheet.value!==undefined))return null;
     const value={};for(const key of INPUT_FIELDS)value[key]=own(input,key);
     if(value.stage!==0||!Array.isArray(value.map)||value.map.length!==200||!value.actor||typeof value.actor!=='object')return null;
     if((value.id!=='warrior'&&value.id!=='silvertail')||!MODES.includes(value.mode)||!Number.isInteger(value.direction)||value.direction<0||value.direction>7)return null;
@@ -102,6 +206,11 @@ function capture(input){
 function publication(rig,input){
   const state=rig.snapshot(),pose=own(state,'posePublication');
   if(!pose||!Object.isFrozen(pose)||own(pose,'mode')!==input.mode||own(pose,'direction')!==input.direction||own(pose,'normalizedPhase')!==input.phase)return null;
+  if(input.sheetBorrowed){
+    const source=own(pose,'source');
+    if(own(state,'sourceKind')!=='borrowed-main-sheet'||own(state,'sourcePath')!==SHEET_PATH||own(pose,'frame')!==input.sourceFrame.index||!Number.isFinite(own(pose,'elapsed'))||!source||!Object.isFrozen(source)||own(source,'path')!==SHEET_PATH)return null;
+    return SHEET_FRAME_FIELDS.every(key=>own(source,key)===input.sourceFrame[key])?pose:null;
+  }
   if(input.packed){
     const source=own(pose,'source');
     if(own(state,'sourceKind')!=='borrowed-main-atlas'||own(state,'sourcePath')!==PACKED_PATH||own(pose,'frame')!==input.sourceFrame.index||!Number.isFinite(own(pose,'elapsed'))||!source||!Object.isFrozen(source)||own(source,'path')!==PACKED_PATH)return null;
@@ -145,20 +254,24 @@ export function createCh1PlayerRig(){
   function isCurrent(record,job){
     if(!owns(record,job))return false;
     if(record.packed&&!packedCurrent(record,job?.input||record.input))return false;
-    if(record.packed&&job?.pose){
+    if(record.sheetBorrowed&&!sheetCurrent(record,job?.input||record.input))return false;
+    if((record.packed||record.sheetBorrowed)&&job?.pose){
       if(own(record.rig.snapshot(),'posePublication')!==job.pose)return false;
-      if(!packedCurrent(record,job.input))return false;
+      if(record.packed?!packedCurrent(record,job.input):!sheetCurrent(record,job.input))return false;
     }
     return owns(record,job);
   }
   function matches(record,input){
     if(!record||record.map!==input.map||record.actor!==input.actor||record.id!==input.id||record.packed!==input.packed)return false;
+    if(!!record.sheetBorrowed!==!!input.sheetBorrowed)return false;
+    if(input.sheetBorrowed)return record.owner===input.owner&&record.game===input.ownership.game&&record.enemies===input.ownership.enemies&&record.sheetRecord===input.ownership.sheetRecord&&record.lifeGeneration===input.sourceFrame.lifeGeneration&&record.sheetName===input.sourceFrame.sheet&&record.sheetGeneration===input.borrowedSheet.generation&&record.image===input.borrowedSheet.image&&SHEET_FIELDS.every(key=>record.borrowedSheet[key]===input.borrowedSheet[key]);
     return !input.packed||(record.animator===input.animator&&record.frameMap===input.frameMap&&record.image===input.borrowedAtlas.image&&record.atlasGeneration===input.borrowedAtlas.generation&&record.imageWidth===input.borrowedAtlas.width&&record.imageHeight===input.borrowedAtlas.height);
   }
   function reject(why){bump(stats,'fallbacks');reason=why;return null;}
   function fatal(why,record,job){
     if(disposed||current!==record||record.token!==token||(job&&renderJob!==job))return null;
     if(record.packed&&!packedCurrent(record,job?.input||record.input))return null;
+    if(record.sheetBorrowed&&!sheetCurrent(record,job?.input||record.input))return null;
     failed=true;retire(why);releaseRenderer();return null;
   }
   function onLost(){
@@ -173,9 +286,11 @@ export function createCh1PlayerRig(){
     const record={token,id:input.id,map:input.map,actor:input.actor,state:'loading',rig:null,packed:input.packed,input,
       animator:input.animator,frameMap:input.frameMap,image:input.borrowedAtlas?.image,atlasGeneration:input.borrowedAtlas?.generation,
       imageWidth:input.borrowedAtlas?.width,imageHeight:input.borrowedAtlas?.height};current=record;
+    if(input.sheetBorrowed)Object.assign(record,{sheetBorrowed:true,owner:input.owner,game:input.ownership.game,enemies:input.ownership.enemies,sheetRecord:input.ownership.sheetRecord,
+      image:input.borrowedSheet.image,lifeGeneration:input.sourceFrame.lifeGeneration,sheetName:input.sourceFrame.sheet,sheetGeneration:input.borrowedSheet.generation,borrowedSheet:input.borrowedSheet});
     bump(stats,'loadStarts');
     try{
-      createCharacterRig(input.id,{THREE,height:CH1_PLAYER_RIG.rigHeight,...(input.packed?{borrowedAtlas:input.borrowedAtlas}:{})}).then(rig=>{
+      createCharacterRig(input.id,{THREE,height:CH1_PLAYER_RIG.rigHeight,...(input.packed?{borrowedAtlas:input.borrowedAtlas}:input.sheetBorrowed?{borrowedSheet:input.borrowedSheet}:{})}).then(rig=>{
         if(!isCurrent(record)){if(owns(record))retire('packed-owner-changed');releaseRig(rig,true);return;}
         try{
           record.rig=rig;scene.add(rig.object3d);
@@ -230,12 +345,12 @@ export function createCh1PlayerRig(){
     if(record.state!=='ready'||!record.rig)return reject('rig-load-failed');
     const job={input:value};renderJob=job;
     try{
-      record.rig.update(value.dt,{mode:value.mode,direction:value.direction,phase:value.phase,...(value.packed?{sourceFrame:value.sourceFrame}:{})});
+      record.rig.update(value.dt,{mode:value.mode,direction:value.direction,phase:value.phase,...(value.packed||value.sheetBorrowed?{sourceFrame:value.sourceFrame}:{})});
       if(!isCurrent(record,job))return null;
       const pose=publication(record.rig,value);
       if(!isCurrent(record,job))return null;
       if(!pose)return fatal('pose-publication-unavailable',record,job);
-      if(value.packed)job.pose=pose;
+      if(value.packed||value.sheetBorrowed)job.pose=pose;
       const bounds=boundsFor(record,job);
       if(!isCurrent(record,job))return null;
       if(!bounds)return fatal('deformed-bounds-unavailable',record,job);
@@ -265,8 +380,9 @@ export function createCh1PlayerRig(){
       canvas._glVer=(canvas._glVer||0)+1;bump(stats,'frames');reason='ready';
       lastFrame=Object.freeze({id:value.id,mode:value.mode,direction:value.direction,phase:value.phase,frame:own(pose,'frame'),elapsed:own(pose,'elapsed'),
         left,top,width,height,pixelWidth,pixelHeight,vertices:bounds.vertices,heightLocal:value.heightWorld,backingScale:value.backingScale,delta:value.dt,posePublicationMatched:true,
-        sourceKind:value.packed?'borrowed-main-atlas':'catalog-assets',sourcePath:value.packed?PACKED_PATH:own(own(pose,'source'),'path'),
-        packedSource:value.packed?Object.freeze({path:PACKED_PATH,...value.sourceFrame}):null});
+        sourceKind:value.sheetBorrowed?'borrowed-main-sheet':value.packed?'borrowed-main-atlas':'catalog-assets',sourcePath:value.sheetBorrowed?SHEET_PATH:value.packed?PACKED_PATH:own(own(pose,'source'),'path'),
+        packedSource:value.packed?Object.freeze({path:PACKED_PATH,...value.sourceFrame}):null,
+        sheetSource:value.sheetBorrowed?Object.freeze({path:SHEET_PATH,...value.sourceFrame}):null});
       frame=Object.freeze({canvas,left,top,width,height});return frame;
     }catch(_){return fatal('rig-render-failed',record,job);}
     finally{
@@ -277,8 +393,9 @@ export function createCh1PlayerRig(){
   function suspend(){if(disposed)return false;retire('inactive-main-body');return true;}
   function snapshot(){return Object.freeze({...stats,ready:reason==='ready'&&!!frame&&!disposed&&!failed&&!lost,reason,disposed,failed,lost,generation,
     loadState:current?.state||'none',id:current?.id||null,rigReady:!!current?.rig,renderOwnerActive:!!renderJob,lastFrame,
-    sourceKind:current?(current.packed?'borrowed-main-atlas':'catalog-assets'):null,sourcePath:current?.packed?PACKED_PATH:null,
+    sourceKind:current?(current.sheetBorrowed?'borrowed-main-sheet':current.packed?'borrowed-main-atlas':'catalog-assets'):null,sourcePath:current?.sheetBorrowed?SHEET_PATH:current?.packed?PACKED_PATH:null,
     borrowedPixelsGenerationRequired:!!current?.packed,borrowedSameCanvasPixelMutationAccepted:false,
+    borrowedSheetGenerationRequired:!!current?.sheetBorrowed,borrowedSheetDecodeRequired:!!current?.sheetBorrowed,
     groundHeight:0,heightSpace:'parent-body-local-reference',ownsRAF:false,ownsSimulation:false,ownsImages:false,
     actualReliefAccepted:false,full3DPlayerAccepted:false,mainPlayableAccepted:false});}
   function dispose(){
