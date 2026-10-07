@@ -451,3 +451,24 @@ root가 자연 종료 후 idle/strike PNG2를 직접 판독했다. 전사의 몸
 정확한 전달 key·host/port·첫값/target-key 우선·미전파·원래 저장/지연 수명은 `docs/3.3 키바인딩+설정/3.3 키바인딩+설정.md`의 동일 completion 절을 따른다.
 
 신규 carry CPU는 실제 showCharGate/goToLobby 함수 전체를 추출한 통제 VM의 최초1회로7그룹·25복합조건 PASS25/FAIL0/미도달0/setup0/exit0이다. source2 전후 exact 및 원 working 원문 역치환 exact를 보존했다. 옵션·host/port·중복 첫값/특수문자·demo/test/normal/story·stale·활성화 실패·save await 후 이동/저장 실패 뒤 이동/죽음 복구 후 save·두 실제 함수의 통제 왕복을 확인했다. CPU 전 별도 준비 읽기의 zsh optional-wildcard 오류는 제품/CPU 실패가 아니며 최초 하니스 재실행0이다. 실제 로비→게임→로비→게임 자연 입력·실제 save ACK·전체 native6·청취는 미인수다. 기존 rig/attack CPU·native 숫자를 재집계하지 않는다. 근거는 동일 외부 폴더의 cpu-receipt.json5520B/5d404e0940578fce4e806dd2f3be6054423653a9b3732c9e1b381e3a83f187d3와 result.json32935B/54f24ec8d4751a72b19ed756cc261b91486ac7344111549f2fd13b22aa84bb1a이다.
+
+
+### ROOT-CH1-LMB-RECOVERY-RIG-20261007 — 정상 LMB에서 승계한 회수 본체 표시
+
+동일 map/P/camera/기존 X에서 정상 LMB의 atk3 회수 표시만 확장한다. 기존 terrain·DS/Border·shadow·camera/geometry는 유지하며 회수 ghost도 이미 그린 같은 canvas/matrix만 재사용한다.
+
+정확한 owner phase/정상 전이 승계/특수·acceptedQ revoke/atk3 gate/회수 counter는 `docs/4.0케릭터스프라이트 디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md`의 동일 completion 절을 따른다.
+
+이번 source523a recovery CPU는 실제 main 함수/전이/Q 취소와 통제 animator·side-effect port를 소비한 최초1회6그룹42복합조건 PASS42/FAIL0/미도달0/setup0/exit0다. finisher는 revoke 전이 prefix만 실행했고 실제 PNG/renderer/GPU/save는0이다. 별도 신규 native는 같은 최종 source의 실제 본편 Chrome/context/page 각1회,3조건 PASS3/FAIL0/미도달0/exit0다. 실제 LMB→wRecover/atk3 f6→7→8·phase6.5/9→7.5/9→8.5/9·owner recovery·609정점·heightLocal32·alpha>16 579픽셀·GL0와 실제 idle 복귀/owner null을 관측했다. source8/같은 map exact, pageerror/HTTP실패0, POST /api/mats1은 서버 도달 전 차단, 사용자 save 조작0·owned browser 닫힘이다. CPU42와 native3 및 기존 carry25/strike4/과거 FAIL·한정 결과를 합산하거나 재실행하지 않는다. root PNG2 직접판독은 현 east pose의 회수 몸 표시/대기 복귀만 한정 인수했다. 검기FX 몸·발 부근 가림, 회색 평면 baked 지면/배경 확대 흐림이 남으므로 VISUAL VERDICT: RETOUCH다. 해부학 발/8방향/실DS ghost/높이/전체 native6/청취/실보상save/A급은 미인수다. 근거: 외부 recovery/validation-receipt.json2702B/4fc6af74bf6ffae5140d9e1648937093cf2741735f994baaf7ab82f79daea9c2, cpu-receipt.json9965B/50b6e6e80c21ef3595cc6ab9afec37e07e9db3831eef9352c9bebb47a47723c6, native-result.json102950B/26a12f81168296c6b9b5130a69180c46f17a0b78f3e1083aa6765b97b84d09de, visual-verdict.json2514B/c78360ecf19835709c4f87d3d683c77d88b2632d3b93c9b44507ac2398a3ec91.
+
+MAP PRODUCTION REPORT (§23)
+STAGE: CH1-1/main 전사 정상 LMB 회수 표시 부분.
+MASTER PLAN: 기존 guidev0.9/현재 stage LOCK·SSOT 순서 보존.
+LARGE OUTER MASS / MEDIUM CONNECTION / GROUND CONNECTION: geometry/nav/충돌/원PNG/지면 수치 변경0.
+PLAYABLE / COMBAT: 기존 정상 wSwing→wRecover 표시 승계만 연결. 전투 판정/소모/시간 변경0, 새 실제 LMB→회수→대기 한 방향 표시만 관측; 전체 자연 전투/보상은 미인수.
+LANDMARK / CENTER / SMALL DETAIL: 배치·맵 디테일 변경0.
+CAMERA QA: 새 회수8방향·발/가림 미인수.
+TECH QA: 새 recovery CPU6그룹42조건PASS와 별도 actual main native1Chrome/3조건PASS, 모두FAIL·미도달0; 이전 검수 숫자 재집계0.
+FILES / GIT: root 소유 game hook+관련 현재docs만, foreign185B/3.3 사용자 WIP 및 owner/보호 문서 보존.
+VISUAL VERDICT: RETOUCH — 현 east 회수 몸/대기 복귀 표시만 관측; 검기FX 가림·배경 확대 흐림·평면 재질 남음.
+NEXT PASS: 실버테일 packed frame 연결·다크드루이드 body seam·발/가림/지형 입체감 및 전체 전투→획득→보스개방→사망/부활→재도전 인수. 통과한 새 회수 검사 반복0.
