@@ -749,3 +749,105 @@ working game의 foreign185B는 미채택 그대로이며 3.3 foreign2,948B·STAT
 | GIT | staged/commit/push는 ROOT 완료소유 checkpoint 예정, 이 담당 Git쓰기0·새 commit SHA 추정0; deploy0 |
 | VISUAL VERDICT | **RETOUCH** — 시작 본체 가림 개선 한정, 전체맵 A급/정상 route 완료 아님 |
 | NEXT PASS | 정상 route의 실제 지역80%+담당Angler→개방→보스전→death/retry·장비/회복을 같은 후보에서 이어 관측하고, 별도 zoom/shake/SSAA·postprocess색·라벨/FX 및 지형 가독성 Gate를 통과해야 함. 자동 재검사·임의 원화/geometry/nav 수정0 |
+
+## 2026-10-07 지역 목표·앵글러·게이트 사유 HUD — ROOT-CH1-REGION-PROGRESS-HUD-20261007
+
+현재 변경은 Main CH1(stage0)의 필드 HUD 표시 6개 hunk다. 보스방 권한·지역 정화 상태·전투·저장·맵 geometry/nav/원 PNG를 바꾸지 않는다. 3387은 새 검수의 격리 실행 주소이며, 소비자 자체를 3387 opt-in 전용으로 한정하지 않는다.
+
+### 현재 계약과 기존 설명의 범위
+
+이 문서의 이전 전역 `killCnt=_stageKills/_totalSpawned` 설명은 이전 epoch 또는 현재 지역이 없는 폴백에 해당한다. 현재 지역이 있으면 기존 `min(r.kills,r.total)/r.total` 값을 그대로 유지하고, 새 설명 leaf만 3줄로 갱신한다.
+
+| id/위치 | 값·순서·적용 범위 |
+|---|---|
+| `_updateRegionKillLabel(r)` | `#hudKillLabel`/`#killCnt`의 `children.length===0` 확인; 자식 컨테이너 교체0 |
+| active | 두 leaf + `G.on && G.stage===0 && r && !G._bossArena && !(G._bossLoadPhase>0) && !G.stageCleared && G.bossAlive` |
+| target | total>0이면 `Math.max(0,Math.ceil((.8-1e-9-bonus)*r.total))`, total0이면0 |
+| bonus | guardKilled이고 현재 지역과 게이트 지역이 일치할 때 .10, 나머지0 |
+| 1행 | `r.cleared`이면 `정화 완료`/`Purged`; 아니면 `목표 N`/`Target N` |
+| 2행 | `_regionFbAlive(r)` true이면 `앵글러 생존`/`Angler alive`, false이면 `앵글러 조건 충족`/`Angler OK` |
+| 3행 | `_bossGateDisplayOpen()` true를 먼저 표시. 이후 cleared<4 → `봉인: 정화 n/4`/`Sealed: regions n/4`, `!G._fbDone` → `봉인: 앵글러`/`Sealed: Anglers`, 그 외 `개방 대기`/`Gate pending` |
+| 숫자 leaf | 기존 지역 처치 값 및 펄스 유지; 3줄 label의 첫 줄에 `alignSelf='flex-start'`로 맞춤 |
+| 줄바꿈/복귀 | 활성 label `whiteSpace='pre-line'`; inactive는 label/value inline 속성을 각각 `''`로 복귀하고 `지역 처치`/`Area kills` 표시 |
+| 가독성 class | active 판정 직후 `mmLvl.classList.toggle('region-progress',!!active)`; missing leaf도 inactive이므로 기존 class 제거. 패널 없음은 안전하게 생략 |
+| CSS | `#mmLvl.region-progress{transform:scale(max(var(--ui-scale),1))}`. 활성 최소 scale1 → 기본 font12CSSpx; 원 font/width/offset/padding 변경0. scope exit에서 class 제거 및 기존 transform 복귀 |
+| slow 훅 | 기존 slow HUD의 숫자 갱신 후 helper1회; 기본 label의 중복 쓰기 제거 |
+| 언어 훅 | `_refreshPersistentHudLanguage`의 labels loop 직후 current region 또는 null로 helper1회. paused는 active 제외 조건이 아니므로 paused 언어 refresh에서도3줄 동기화 |
+| 초기화 | `G.on=false`에서는 inactive여서 늦은 REGION 상수 접근0; 새 타이머/RAF/state authority 없음 |
+| 캐시 | `_hset`은 캐시와 실제 leaf값을 비교하므로 언어 loop의 직접 쓰기 뒤에도 현재 label 복구 |
+
+`Angler OK`는 조건 충족 표시이며 실제 앵글러 사망을 입증하지 않는다. 4지역·정화 래치·`_fbDone`·gate 진입·retry·save·combat 권한은 기존 그대로다. Main에 적용되며 Easy 완료/28언어 전파 완료로 확대하지 않는다.
+
+### 소스와 검수 epoch
+
+최종 `game.html` working 4,092,122B / SHA256 `b8be6378b7d2805b32ca38f92cca03179f8f1ebb2732bebacec6300f5fe7ad3a`, ROOT owned 4,091,937B / SHA256 `05fa7031c8f1d4b1e02643e9fd9964f81c3a80a25d698ab22a002c2330f1ddc0`의 6개 hunk 기준이다. 기존 foreign 185B는 미채택 상태로 보존한다.
+
+ROOT owned 이외 foreign185B는 MB paused guard와 DOT3 모두 미채택 기존 바이트다. 설정3.3 foreign2948B 및 보호2_3/WOLF/STORY/tree-card는 이번 소유 밖이다.
+
+| epoch | 실제 완료 범위 | 보존 경계 |
+|---|---|---|
+| initial33a80, 4,091,887B | source static language 회귀 발견 후 실행 전에 보정 | CPU/native0; 결과를 이후 핀으로 승격0 |
+| 29c1, 4,091,972B | 최초 CPU7그룹68조건(동작65/정적3) PASS68/FAIL0/미도달0/exit0; native Chrome/context/page1, layout4+paused language2조건 PASS/FAIL0/미도달0/exit0 | 기존1280 font8CSS·640 font4CSS로 ROOT 가독 RETOUCH; 이 epoch 재실행0 |
+| final B8, 4,092,122B | 새 한정 CPU4그룹8조건(동작7/정적1) PASS8/FAIL0/미도달0/exit0, 신규 Node1 | class/복귀/missing leaf·panel/paused language/CSS만; static CSS를 실제 computed CSS로 승격0 |
+| final B8 native | 새 headed Chrome/context/page1, KO/EN640×720 두 조건 PASS2/FAIL0/미도달0/exit0 | 최소12CSSpx/scale1, 패널216×182.484375, viewport 안/clock·minimap 겹침 없음/첫줄 정렬; 최종1280 재실행0 |
+
+각 epoch를 clean 단일 suite로 합산하지 않는다. 기존 suite 재실행0. ROOT PNG 직접 판독은 이전4장+최종2장=6장이고, 이 문서 작성자는 CPU/Chrome을 추가 실행하지 않았다. 최종 language selectOption 관측은 synthetic change(`isTrusted=false`)이며 실제 UI class 선택 인수와 다르다.
+
+최종 native의 pageerror0/HTTPerror0, sourceHTTP4건(두 파일의 prelaunch/실제 응답) exact, context/browser 닫힘을 기록한다. requestfailed6은 외부 font 의도적 차단3 + 로컬 intro abort3이며 후자의 직접 원인은 UNKNOWN이다. 합성 mats POST1/forwarded0/save POST0/durableACKfalse; GL UNKNOWN, 청취0, native6false. DOM fit를 GL·실제 저장·전체 route 인수로 승격하지 않는다.
+
+| 외부 근거 | 정확 pin |
+|---|---|
+| `H/validation-receipt.json` | 3,629B / `13342746490d1a29146e0f98c35f97db09cb5669faeb458dbf6be3bb4f527406` |
+| `H/cpu-readable-receipt.json` | 8,561B / `78806d0c04b242e031881bfb1e51ea02e22a122b58678c1fc09a21c339f6441f` |
+| `H/native-readable-first-only/result.json` | 4,789B / `7a4e95ed8a828406fbb5e44aff65595270b2cdf39e572d1c43cbb4292b7c9b41` |
+| `H/visual-verdict.json` | 2,934B / `f7f280e29c09f5fc5347816a0e1743e7099d72449bee2d1186ef4917ca69d0d9` |
+
+`H=/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-region-progress-hud-20261007`. 이 append는 기존 본문 prefix를 보존한다.
+
+### docs 동기화 검색 근거
+
+최초33a80에서 docs 전체 관련키워드 검색1회: inventory1282/허용 텍스트1024(그중 Markdown817)/owner STATELOG7 path-only/바이너리·container251 path-only, 44매칭경로/154행/181 occurrence, exit0. 보호2_3 본문은 제외했다. 텍스트 범위에 Python4/HTML backup3도 포함했고, path-only 전체를 모두 바이너리라고 부르지 않는다. 전체 검색은 전체 문서 full read를 의미하지 않는다. 29c1에서 `_refreshPersistentHudLanguage` 단일 delta 검색1회는1경로1행이었다. 최종B8에서 `region-progress` 단일 literal delta만 기존1024 경로에 수행하여0경로0행(rg no-match exit1)을 기록했다. 전체 검색 반복0이며 현재 필수8문서만 동기화한다.
+
+### §23 MAP PRODUCTION REPORT
+
+| 항목 | 이번 단위의 실제 상태 |
+|---|---|
+| STAGE | CH1-1 actual Main stage0 필드 HUD 표시; 전체 맵 제작 완료 아님 |
+| MASTER PLAN / silhouette | 기존 실루엣 보존; 재평가 미실시 |
+| MASTER PLAN / regions | 기존4지역 authority 보존 |
+| MASTER PLAN / main route | 기존6시 시작→12시 출구 보존; 이번 전체 route 관측0 |
+| MASTER PLAN / side spaces | 변경0; 새 QA 미실시 |
+| LARGE OUTER MASS / LEFT·RIGHT·TOP·SOUTH | 전부 변경0 |
+| LARGE OUTER MASS / major holes | 새 관측 미실시 |
+| LARGE / source assets·composites·overlap | 원 PNG/합성/배치 변경0 |
+| LARGE / repeated silhouette | 새 관측 미실시 |
+| MEDIUM CONNECTION / connections | 변경0 |
+| MEDIUM CONNECTION / remaining holes | 새 관측 미실시 |
+| GROUND CONNECTION / shadow·contamination | 변경0 |
+| GROUND CONNECTION / structure integration | 변경0; 평평한 baked 지면과 확대 흐림은 남음 |
+| PLAYABLE/COMBAT / main arenas·travel·breathing·threat spaces | 전부 변경0; 이번 전투 인수0 |
+| PLAYABLE/COMBAT / combat readability | 지역 목표·게이트 사유는 더 읽기 쉬움. opening FX/배경/전체 전투 가독은 RETOUCH |
+| LANDMARK/CENTER / primary·secondary·tertiary | 전부 변경0/새 검수0 |
+| SMALL DETAIL | HUD label/class 표시만 변경; 맵 detail 추가0 |
+| CAMERA QA / START | KO/EN640 HUD 두 화면 한정. 글자12CSS/패널216×182.484375와 clock/minimap 비겹침 확인; transient startareaTitle 오른쪽과 패널 겹침 남음 |
+| CAMERA QA / EARLY | 새 관측 미실시 |
+| CAMERA QA / ARENA | 새 관측 미실시 |
+| CAMERA QA / SIDE L | 새 관측 미실시 |
+| CAMERA QA / SIDE R | 새 관측 미실시 |
+| CAMERA QA / LANDMARK | 새 관측 미실시 |
+| CAMERA QA / LATE | 새 관측 미실시 |
+| CAMERA QA / EXIT | 새 관측 미실시 |
+| TECH QA / route·collision | 코드/원 nav 보존; 새 전체 route 인수0 |
+| TECH QA / pageerror·404 | 각 격리 native run에서 pageerror0/HTTPerror0 |
+| TECH QA / seam | 새 관측 미실시 |
+| TECH QA / loading | Main ready 확인; font 차단/intro abort는 위 별도 분류. shader/GL UNKNOWN |
+| TECH QA / performance | 프레임 시간/CPU·GPU 성능 인수0, 영향 UNKNOWN |
+| FILES / stage owned | `game.html` ROOT owned6hunk + 필수 current docs8 |
+| FILES / concurrent touched | game foreign185B와 설정3.3 foreign2948B 보존, 본 작업 미수정 |
+| FILES / unrelated touched | 본 문서 작업에서0 |
+| GIT / staged·commit·push | ROOT 완료소유 보존 예정; 이 append 시점 미완료, 새 SHA 추정0 |
+| GIT / deploy | 0 |
+| VISUAL VERDICT | **RETOUCH**. ROOT 직접 판독에서 HUD 가독 개선 한정; startareaTitle overlap·회색 baked 맵·확대 흐림·heavy opening FX·물리 높이0 잔존 |
+| NEXT PASS | title/패널 safe zone, 실제 정상 gate/전투 route 관측, 맵 재질/높이/저장 NPC consumer의 별도 단위. 본편 native6/audio/durable save 미인수 유지 |
+
+이번 표시 검수는 이전 normal-play B/root-adjudication(f830)의19관측이나 장벽 검수와 별도이며,19PASS 또는 정상 보스방 개방/보스 사망·재시도 완료로 합산하지 않는다.

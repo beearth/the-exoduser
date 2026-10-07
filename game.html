@@ -364,6 +364,7 @@ canvas{display:block;position:fixed;inset:0}
 /* Minimap */
 #mmLvl{position:fixed;top:calc(var(--ui-inset-top) + env(safe-area-inset-top, 0px) + 6px * var(--ui-scale));right:calc(var(--ui-inset-right) + env(safe-area-inset-right, 0px) + 10px * var(--ui-scale));z-index:21;width:auto;pointer-events:none;opacity:0;transition:opacity .5s;transform:scale(var(--ui-scale));transform-origin:top right;display:flex;flex-direction:column;align-items:stretch;min-width:200px;padding:10px 12px;border:1px solid rgba(145,119,76,.45);background:linear-gradient(180deg,rgba(12,13,15,.88),rgba(9,10,12,.76));font-family:var(--font-hell);font-variant-numeric:tabular-nums;text-shadow:0 1px 3px rgba(0,0,0,.95)}
 #mmLvl.on{opacity:1!important}
+#mmLvl.region-progress{transform:scale(max(var(--ui-scale),1))}
 .objective-rank{display:flex;align-items:center;justify-content:space-between;gap:20px;color:#f2e6cb;font-size:.94rem;font-weight:700;line-height:1.4}.objective-rank .objective-label{font-size:.75rem;font-weight:400;color:#cbbd9f}
 .objective-frame{display:block;margin-top:7px;padding-top:7px;border-top:1px solid rgba(145,119,76,.3)}
 .objective-exp{height:2px;margin:0 0 5px;overflow:hidden;background:rgba(0,0,0,.5);box-shadow:inset 0 0 1px rgba(255,255,255,.08)}
@@ -47851,6 +47852,7 @@ function _localizedControlKey(key){
 function _refreshPersistentHudLanguage(){
   const labels=[['hudLevelLabel','레벨','Level'],['hudExpLabel','경험치','Experience'],['hudKillLabel','지역 처치','Area kills'],['hudMaliceLabel','악의','Malice']];
   for(const [id,ko,en] of labels){const el=document.getElementById(id);if(el&&el.children.length===0)el.textContent=_L(ko,en);}
+  _updateRegionKillLabel(G._regions&&G._regCurIdx>=0?G._regions[G._regCurIdx]:null);
   const panel=document.getElementById('mmLvl');if(panel)panel.setAttribute('aria-label',_L('플레이어 상태','Player status'));
   window._tutorialBadges?.refreshLanguage?.();
 }
@@ -59212,6 +59214,26 @@ function _showHudAreaTitle(stage,st){if(_hudAreaStage===stage)return;_hudAreaSta
 let _hudE=null;
 function _hudRefreshEls(){_hudE={hpLiquid:$('hpLiquid'),hpCur:$('hpCur'),hpMax:$('hpMax'),hpShield:$('hpShield'),shieldRing:$('shieldRing'),mobilityRing:$('mobilityRing'),mobilityRingTicks:$('mobilityRingTicks'),hpGlass:document.querySelector('.hp-globe .globe-glass'),mpGlass:document.querySelector('.mp-globe .globe-glass'),stFill:$('stFill'),mpFill:$('mpFill'),mpCur:$('mpCur'),mpMax:$('mpMax'),stCur:$('stCur'),stMax:$('stMax'),hpPotCd:$('hpPotCd'),expF:$('expF'),expTxt:$('expTxt'),skBar:$('skBar'),skSlot0:$('skSlot0')}}
 function _hset(el,prop,val){if(!el)return;const k='_h_'+prop,n='_hn_'+prop;if(el[k]===val&&(prop==='text'?el.textContent===val:el.style[prop]===el[n]))return;el[k]=val;if(prop==='text')el.textContent=val;else{el.style[prop]=val;el[n]=el.style[prop]}}
+// CH1 field progress display only; region/gate helpers retain gameplay authority.
+function _updateRegionKillLabel(r){
+  const label=$('hudKillLabel'),value=$('killCnt');
+  const labelLeaf=!!label&&label.children.length===0,valueLeaf=!!value&&value.children.length===0;
+  const active=labelLeaf&&valueLeaf&&G.on&&G.stage===0&&!!r&&!G._bossArena&&!(G._bossLoadPhase>0)&&!G.stageCleared&&G.bossAlive;
+  const panel=$('mmLvl');if(panel)panel.classList.toggle('region-progress',!!active);
+  if(labelLeaf)_hset(label,'whiteSpace',active?'pre-line':'');
+  if(valueLeaf)_hset(value,'alignSelf',active?'flex-start':'');
+  if(!labelLeaf)return;
+  if(!active){_hset(label,'text',_L('지역 처치','Area kills'));return}
+  const bonus=G._gateGuardKilled&&G._regCurIdx===G._regGateIdx?.10:0;
+  const need=r.total>0?Math.max(0,Math.ceil((_REG_CLEAR_RATIO-1e-9-bonus)*r.total)):0;
+  const target=r.cleared?_L('정화 완료','Purged'):_L('목표 ','Target ')+_hudReadableNumber(need);
+  const angler=_regionFbAlive(r)?_L('앵글러 생존','Angler alive'):_L('앵글러 조건 충족','Angler OK');
+  const cleared=_regionClearedCount();
+  const gate=_bossGateDisplayOpen()?_L('지옥문 개방','Gate open'):
+    cleared<4?_L('봉인: 정화 ','Sealed: regions ')+cleared+'/4':
+    !G._fbDone?_L('봉인: 앵글러','Sealed: Anglers'):_L('개방 대기','Gate pending');
+  _hset(label,'text',[target,angler,gate].join('\n'));
+}
 function updateHUD(slow){
   // ── 빠른 경로: 구슬 수위 + 원형 링 (매 3프레임 = ~20회/초) ──
   P.mhp=~~P.mhp; // 소수점 방지
@@ -59285,10 +59307,11 @@ function updateHUD(slow){
   // ── 느린 경로: 시네마틱 HUD + 장비 innerHTML (매 30프레임 = ~2회/초) ──
   const _s=STG[G.stage];_showHudAreaTitle(G.stage,_s);
   _hset($('hudLevelLabel'),'text',_L('레벨','Level'));_hset($('hudExpLabel'),'text',_L('경험치','Experience'));
-  _hset($('hudKillLabel'),'text',_L('지역 처치','Area kills'));_hset($('hudMaliceLabel'),'text',_L('악의','Malice'));
+  _hset($('hudMaliceLabel'),'text',_L('악의','Malice'));
   // [REGION] '지역 처치' = 현재 지역 처치/총량 (지역 없는 맵은 스테이지 전체 폴백). 클리어 지역은 총량으로 캡 표기
   const _regCur=(G._regions&&G._regCurIdx>=0)?G._regions[G._regCurIdx]:null;
   const _killTotal=_regCur?_regCur.total:(G._totalSpawned||0);const _stageK=_regCur?Math.min(_regCur.kills,_regCur.total):(G._stageKills||0);_hudPulse('killCnt',_stageK);$('killCnt').textContent=`${_hudReadableNumber(_stageK)} / ${_hudReadableNumber(_killTotal)}`;
+  _updateRegionKillLabel(_regCur);
   _hudPulse('matCnt',G.mats);$('matCnt').textContent=_hudReadableNumber(G.mats);
   {const _cr=$('comboRecord');if(_cr){if(G.comboMax>0&&G.combo>=2){_cr.style.display='';_cr.textContent='MAX COMBO '+G.comboMax;_cr.style.color=G.comboMax>=100?'var(--combat-hot)':G.comboMax>=50?'var(--combat-ember)':'var(--combat-bone)'}else{_cr.style.display='none'}}}
   _hudPulse('lvLbl',P.lv);$('lvLbl').textContent=_hudReadableNumber(P.lv);$('spCnt').textContent=`✦ ${P.sp}${P.ap?` +${P.ap}`:''}`;{const _cpV=calcCP().total;$('cpHud').textContent=`◇ ${_cpV>=1e5?_hudCompactNumber(_cpV):_cpV.toLocaleString('en-US')}`;}

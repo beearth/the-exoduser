@@ -1170,3 +1170,28 @@ CSS 캐시 ui-refinement.css?v=20260927-3. 신규 이미지/아이템 데이터 
 통제 Canvas의 640 CSS 폭 cell에서 13px 선언의 한영 문구 6개는 잘리지 않았다. 실제 webfont는 로드하지 않아 resolved face는 UNKNOWN이다. 실제 맵·포털·미니맵·화살표·정상 게이트 도달, 전체 native6·음향·실저장 ACK는 미인수다. VISUAL VERDICT: RETOUCH. 과거 실버테일 공격 검수와 합산하거나 재실행하지 않는다.
 
 상세 정본: `docs/4.1맵디자인+설정/REGION_CLEAR_GATE_20260930.md`의 이번 후속 절. 외부 근거: `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-exit-label-display-20261007/display-cpu-receipt.json`, `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-exit-label-display-20261007/native-display-fixture-result.json`, `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-exit-label-display-20261007/validation-receipt.json`, `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-exit-label-display-20261007/visual-verdict.json`. Git 사실은 같은 디렉터리의 `remote-preservation-receipt.json`에서 정상 commit/push 및 원격 정확 SHA로 확정한다. 이 문서 안에 자기 commit SHA를 순환 기입하지 않는다.
+
+## 2026-10-07 지역 목표·앵글러·게이트 사유 HUD — ROOT-CH1-REGION-PROGRESS-HUD-20261007
+
+기존 단일 “지역 처치” 설명은 이전 표시 epoch 또는 비활성 폴백 설명으로 보존한다. 현재 Main CH1 필드의 활성 HUD는 `#hudKillLabel` 3줄과 `#killCnt` 숫자를 분리한다. 3387 opt-in에 한정된 기능이 아니라 stage0의 전역 소비자다.
+
+| 위치/항목 | 현재 계약 |
+|---|---|
+| `_updateRegionKillLabel(r)` 활성 | 두 leaf 존재 + `G.on` + `G.stage===0` + 현재 지역 + 보스방 아님 + boss load phase 양수 아님 + stage 미완료 + `G.bossAlive` |
+| 1행 | 미정화 시 `목표 N` / `Target N`; 정화 지역은 `정화 완료` / `Purged` |
+| 2행 | `_regionFbAlive(r)`에 따라 `앵글러 생존` / `Angler alive` 또는 `앵글러 조건 충족` / `Angler OK` |
+| 3행 | `Gate open` 우선 → 미정화 지역 수 → 앵글러 조건 → 개방 대기 순의 표시 사유 |
+| 목표 N | total>0이면 `max(0,ceil((.8−1e−9−bonus)×total))`, total0이면0; bonus는 해당 게이트 지역의 guardKilled 때만 .10 |
+| 기존 숫자/펄스 | 지역의 `min(kills,total)/total`, 지역이 없으면 `_stageKills/_totalSpawned`; 기존 숫자 펄스 유지 |
+| leaf 정렬 | 활성 label `whiteSpace='pre-line'`, 숫자 `alignSelf='flex-start'`; 비활성에서는 둘 다 `''` 복귀 |
+| 활성 패널 | `#mmLvl.region-progress`에 `transform:scale(max(var(--ui-scale),1))`; 기존 font/폭/offset/padding 유지, 활성 최소 scale1 / 기본 글자12CSSpx |
+| scope exit | 클래스 제거, 기존 transform과 `지역 처치` / `Area kills` 폴백 복귀 |
+| 갱신 | slow HUD 훅과 `_refreshPersistentHudLanguage` labels loop 직후 동기 갱신. paused는 활성 제외 조건이 아니므로 언어 변경도 유지 |
+
+`Angler OK`는 조건 충족 표시이며 실제 사망 증거가 아니다. 정화 래치·보스방 권한·저장·전투 수치·새 타이머/RAF 변경은 없다. 기존 `stageProgressFill`도 이번 변경 대상이 아니다.
+
+29c1의 CPU68 및 native6조건은 이전 epoch다. 최종 B8의 새 한정 CPU8조건과 KO/EN640 native2조건은 별개이며 clean 합산하지 않는다. ROOT의 최종 PNG 판독에서 12CSSpx 가독성과 clock/minimap 비겹침은 확인했으나, transient `startareaTitle` 오른쪽과 커진 패널의 겹침이 남아 **VISUAL VERDICT: RETOUCH**다. 최종1280 native 재실행은 없다.
+
+최종 `game.html` working 4,092,122B / SHA256 `b8be6378b7d2805b32ca38f92cca03179f8f1ebb2732bebacec6300f5fe7ad3a`, ROOT owned 4,091,937B / SHA256 `05fa7031c8f1d4b1e02643e9fd9964f81c3a80a25d698ab22a002c2330f1ddc0`의 6개 hunk 기준이다. 기존 foreign 185B는 미채택 상태로 보존한다.
+
+전체 런타임 계약·검수 epoch·§23 보고는 [MAP_RUNTIME_ARCHITECTURE.md](../4.1맵디자인+설정/MAP_RUNTIME_ARCHITECTURE.md)의 `ROOT-CH1-REGION-PROGRESS-HUD-20261007` 절을 따른다.

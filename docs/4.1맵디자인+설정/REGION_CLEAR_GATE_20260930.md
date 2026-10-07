@@ -176,3 +176,24 @@ CPU 최초 Node 1회·36 VM·5그룹 35조건 PASS, FAIL·미도달·준비 실�
 통제 Canvas의 640 CSS 폭 cell에서 13px 선언의 한영 문구 6개는 잘리지 않았다. 실제 webfont는 로드하지 않아 resolved face는 UNKNOWN이다. 실제 맵·포털·미니맵·화살표·정상 게이트 도달, 전체 native6·음향·실저장 ACK는 미인수다. VISUAL VERDICT: RETOUCH. 과거 실버테일 공격 검수와 합산하거나 재실행하지 않는다.
 
 상세 정본: `docs/4.1맵디자인+설정/REGION_CLEAR_GATE_20260930.md`의 이번 후속 절. 외부 근거: `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-exit-label-display-20261007/display-cpu-receipt.json`, `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-exit-label-display-20261007/native-display-fixture-result.json`, `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-exit-label-display-20261007/validation-receipt.json`, `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-exit-label-display-20261007/visual-verdict.json`. Git 사실은 같은 디렉터리의 `remote-preservation-receipt.json`에서 정상 commit/push 및 원격 정확 SHA로 확정한다. 이 문서 안에 자기 commit SHA를 순환 기입하지 않는다.
+
+## 2026-10-07 지역 목표·앵글러·게이트 사유 HUD — ROOT-CH1-REGION-PROGRESS-HUD-20261007
+
+§3의 정화·출구 권한은 그대로이며, §5의 `killCnt` 값과 펄스도 유지한다. 아래 추가는 Main CH1 stage0 필드의 읽기 표시 계약이다. Easy의 기존 경로를 이번 변경으로 완료했다고 보지 않는다.
+
+| 표시 입력/상수 | 정확 값/의미 |
+|---|---|
+| `_REG_CLEAR_RATIO` | .8 유지; 표시 역산도 `.8−1e−9` 사용 |
+| `bonus` | `G._gateGuardKilled && G._regCurIdx===G._regGateIdx`일 때만 .10, 그 외0 |
+| 목표 | `r.total>0 ? Math.max(0,Math.ceil((.8-1e-9-bonus)*r.total)) : 0` |
+| `r.cleared` | 목표 숫자 대신 `정화 완료` / `Purged`; 새 정화 판정/쓰기 없음 |
+| `_regionFbAlive(r)` | `앵글러 생존` / `Angler alive`, false이면 `앵글러 조건 충족` / `Angler OK`; 실제 사망 증거로 승격 금지 |
+| 3행 우선순위 | `_bossGateDisplayOpen()` true → `지옥문 개방`; 아니면 cleared<4 → `봉인: 정화 n/4`; 아니면 `!G._fbDone` → `봉인: 앵글러`; 그 외 `개방 대기` |
+| 권한 경계 | 4지역·담당 앵글러·`_fbDone`·기존 gate/update/entry/retry/save 권한 및 래치 변경0 |
+| 가독성 | 활성 `#mmLvl.region-progress`만 scale 최소1, 글자12CSSpx; 비활성 클래스 제거/원 transform 복귀 |
+
+slow HUD와 paused 언어 refresh가 같은 helper를 소비한다. 최종 B8 CPU4그룹8조건 및 KO/EN640 native2조건은 이전29c1 CPU7그룹68조건/native6조건과 별도 epoch다. 실제 보스방 개방·정상 전체 route·보스 사망/재시도·내구 저장을 이번 표시 검사로 인수하지 않는다. ROOT 시각 판정은 startareaTitle 겹침이 남아 **RETOUCH**다.
+
+최종 `game.html` working 4,092,122B / SHA256 `b8be6378b7d2805b32ca38f92cca03179f8f1ebb2732bebacec6300f5fe7ad3a`, ROOT owned 4,091,937B / SHA256 `05fa7031c8f1d4b1e02643e9fd9964f81c3a80a25d698ab22a002c2330f1ddc0`의 6개 hunk 기준이다. 기존 foreign 185B는 미채택 상태로 보존한다.
+
+전체 §23 및 증거: [MAP_RUNTIME_ARCHITECTURE.md](MAP_RUNTIME_ARCHITECTURE.md)의 `ROOT-CH1-REGION-PROGRESS-HUD-20261007` 절.

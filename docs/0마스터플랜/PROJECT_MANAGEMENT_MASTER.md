@@ -4488,3 +4488,25 @@ working game의 foreign185B는 미채택 그대로이며 3.3 foreign2,948B·STAT
 | GIT | staged/commit/push는 ROOT 완료소유 checkpoint 예정, 이 담당 Git쓰기0·새 commit SHA 추정0; deploy0 |
 | VISUAL VERDICT | **RETOUCH** — 시작 본체 가림 개선 한정, 전체맵 A급/정상 route 완료 아님 |
 | NEXT PASS | 정상 route의 실제 지역80%+담당Angler→개방→보스전→death/retry·장비/회복을 같은 후보에서 이어 관측하고, 별도 zoom/shake/SSAA·postprocess색·라벨/FX 및 지형 가독성 Gate를 통과해야 함. 자동 재검사·임의 원화/geometry/nav 수정0 |
+
+## 2026-10-07 지역 목표·앵글러·게이트 사유 HUD — ROOT-CH1-REGION-PROGRESS-HUD-20261007
+
+현재 Main CH1 필드 HUD의 목표/앵글러조건/봉인사유 표시를 구현하고 관련 current docs8을 동기화한다. HUD 소비는 stage0 global이며3387 opt-in 전용이 아니다. 지역정화·gate·save·combat authority와 원PNG/scene/nav 변경0이다.
+
+| id | 현재 상태 |
+|---|---|
+| 구현 | game6hunk: helper/slow/defaultlabel3 + language refresh1 + active class/CSS floor2 |
+| 목표 계약 | `.8−1e−9`, 해당 게이트지역 guardKilled 보너스 .10, ceil 역산/total0→0; Purged/Angler OK/gate 우선순위는 표시 |
+| 가독 계약 | 활성 `#mmLvl.region-progress` scale최소1/기본12CSSpx; scope exit 기존 transform 복귀, 기존font/폭/offset/padding 유지 |
+| old33a80 | staticlanguage 회귀를 실행 전 수정; CPU/native0 |
+| old29c1 | CPU7그룹68조건 PASS(65동작3정적), native layout4+pausedlanguage2조건 PASS; 기존1280/640글자 작음 RETOUCH |
+| finalB8 | 새 한정 CPU4그룹8조건 PASS(7동작1정적), 새 headed Chrome/context/page1의 KO/EN640 native2조건 PASS; epoch별/clean 합산0 |
+| ROOT 실제판독 | 이전4+최종2PNG. 최종640 최소12CSS/패널216×182.484375/viewport·clock·minimap 비겹침. transient startareaTitle 오른쪽 overlap은 남아 **RETOUCH** |
+| 남은 Gate | title/패널 safe zone, 실제 정상 gate/전투 route, 맵 재질/높이/저장 NPC consumer 별도단위 |
+| 미인수 | 최종1280 재실행0/GL UNKNOWN/audio0/native6false/durableACKfalse/전체 A급맵·실보스방개방0 |
+| 보존 | foreigngame185B 및 설정3.3foreign2948B/보호2_3; old normal-play19관측 및 장벽결과와 합산0 |
+| Git | ROOT 완료소유 checkpoint 예정. 이 append 시점 stage/commit/push 미완료, 자기SHA 추정0 |
+
+최종 `game.html` working 4,092,122B / SHA256 `b8be6378b7d2805b32ca38f92cca03179f8f1ebb2732bebacec6300f5fe7ad3a`, ROOT owned 4,091,937B / SHA256 `05fa7031c8f1d4b1e02643e9fd9964f81c3a80a25d698ab22a002c2330f1ddc0`의 6개 hunk 기준이다. 기존 foreign 185B는 미채택 상태로 보존한다.
+
+전체 런타임 계약·검수 epoch·§23 보고는 [MAP_RUNTIME_ARCHITECTURE.md](../4.1맵디자인+설정/MAP_RUNTIME_ARCHITECTURE.md)의 `ROOT-CH1-REGION-PROGRESS-HUD-20261007` 절을 따른다.

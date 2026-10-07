@@ -53,3 +53,21 @@
 | 시각·입력 검수 | 원본 HUD DOM/CSS·배지JS를 분리한 fixture에서0개/1개 스크린샷,배지 모음 실제 클릭→닫기 초점/화면내 배치→닫기→0개 숨김 확인. 브라우저 viewport2534×1262,override없음. fixture는 UI 검수이며 튜토리얼 완료 플레이 검증은 아님 |
 | 현재 게임 | 열린 demo 게임에도 디스크의 render/toggle 함수와 CSS를 hot apply. count0/hiddentrue/displaynone/지역 처치0/168 전체 노출을 실제 플레이 스크린샷으로 확인. 게임 ontrue/pausedfalse 유지; 재시작·저장쓰기·획득기록 수정 없음 |
 | 기록·상태 | tmp/badge-hud-20260929에 before/fixture/docs전체검색/검수계약 보존. 기존 dirty·staged 작업 보존. .git 관리형 읽기 전용으로 커밋 미완료; NW.js패키지·Steam배포 미수행 |
+
+## 2026-10-07 지역 목표·앵글러·게이트 사유 HUD — ROOT-CH1-REGION-PROGRESS-HUD-20261007
+
+기존 두 HTML 공통 leaf-refresh 설명은 그 epoch의 계약으로 보존한다. 이번 새 예외는 Main `game.html`에만 추가되며 Easy까지 변경/검수했다고 해석하지 않는다.
+
+| 위치 | 현재 Main 계약 |
+|---|---|
+| `_refreshPersistentHudLanguage()` | 기본 labels loop 직후 `_updateRegionKillLabel(G._regions&&G._regCurIdx>=0?G._regions[G._regCurIdx]:null)` 동기1회 |
+| paused | active 판정에 paused 제외가 없으므로 paused 중 KO/EN 변경도 Target/Angler/Gate3줄 즉시 복구 |
+| 초기화/비활성 | G.on=false에서 inactive; 늦은 REGION 상수 접근0, `지역 처치` / `Area kills` 폴백 |
+| leaf 안전/캐시 | 특정 label/value leaf만 변경; `_hset`이 캐시와 실제 text/style을 비교하여 loop의 기본값 덮기를 복구 |
+| 가독 복귀 | 활성만 `#mmLvl.region-progress` scale최소1/글자12CSS; inactive class제거/기존 transform 복귀 |
+
+최초33a80의 language regression은 source 읽기 후 CPU/native 실행 전에 정정했다(그 핀 실행0). 29c1의 CPU68 및 native layout4+paused language2조건은 그 source 결과다. 최종B8에서는 class/paused 경계 한정 CPU8조건, KO/EN640 native2조건을 별도 기록하며 이전 결과를 새 source의 clean suite로 합산하지 않는다. ROOT PNG 판독은 transient startareaTitle overlap 때문에 **RETOUCH**다. language change 관측은 synthetic selectOption이며28언어·UI class 선택·실save/native6 인수는 없다.
+
+최종 `game.html` working 4,092,122B / SHA256 `b8be6378b7d2805b32ca38f92cca03179f8f1ebb2732bebacec6300f5fe7ad3a`, ROOT owned 4,091,937B / SHA256 `05fa7031c8f1d4b1e02643e9fd9964f81c3a80a25d698ab22a002c2330f1ddc0`의 6개 hunk 기준이다. 기존 foreign 185B는 미채택 상태로 보존한다.
+
+전체 런타임 계약·검수 epoch·§23 보고는 [MAP_RUNTIME_ARCHITECTURE.md](../4.1맵디자인+설정/MAP_RUNTIME_ARCHITECTURE.md)의 `ROOT-CH1-REGION-PROGRESS-HUD-20261007` 절을 따른다.

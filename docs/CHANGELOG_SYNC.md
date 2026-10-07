@@ -56069,3 +56069,28 @@ working game의 foreign185B는 미채택 그대로이며 3.3 foreign2,948B·STAT
 | GIT | staged/commit/push는 ROOT 완료소유 checkpoint 예정, 이 담당 Git쓰기0·새 commit SHA 추정0; deploy0 |
 | VISUAL VERDICT | **RETOUCH** — 시작 본체 가림 개선 한정, 전체맵 A급/정상 route 완료 아님 |
 | NEXT PASS | 정상 route의 실제 지역80%+담당Angler→개방→보스전→death/retry·장비/회복을 같은 후보에서 이어 관측하고, 별도 zoom/shake/SSAA·postprocess색·라벨/FX 및 지형 가독성 Gate를 통과해야 함. 자동 재검사·임의 원화/geometry/nav 수정0 |
+
+## 2026-10-07 지역 목표·앵글러·게이트 사유 HUD — ROOT-CH1-REGION-PROGRESS-HUD-20261007
+
+Main stage0 필드의 지역 label을 목표/Purged·Angler 조건·gate 사유3줄로 표시한다. target은 total>0일 때 `max(0,ceil((.8−1e−9−bonus)×total))`, total0은0, bonus .10은 guardKilled와 게이트지역 일치 때만 적용한다. `Angler OK`는 조건 충족이며 실제사망 증거가 아니다. 숫자 값/펄스, 정화/gate/save/combat 권한은 유지한다.
+
+| 변경 | 현재 범위 |
+|---|---|
+| initial3hunk | helper/slow 훅/기본 label 중복 쓰기 제거 |
+| language1hunk | labels loop 뒤 helper1회로 paused 언어 refresh 회귀 정정 |
+| readability2hunk | active `mmLvl.region-progress` toggle + `scale(max(var(--ui-scale),1))`; 최소 scale1/글자12CSS, scope exit class제거/원 transform 복귀 |
+| 전체 소유 | game6hunk + current docs8; 3387-only opt-in이 아닌 Main stage0 global consumer |
+
+최종 `game.html` working 4,092,122B / SHA256 `b8be6378b7d2805b32ca38f92cca03179f8f1ebb2732bebacec6300f5fe7ad3a`, ROOT owned 4,091,937B / SHA256 `05fa7031c8f1d4b1e02643e9fd9964f81c3a80a25d698ab22a002c2330f1ddc0`의 6개 hunk 기준이다. 기존 foreign 185B는 미채택 상태로 보존한다.
+
+| 검수 epoch | 결과/한계 |
+|---|---|
+| initial33a80 | language source 회귀 실행 전 정정; CPU/native0 |
+| 29c1 | CPU7그룹68조건(65동작3정적) PASS; headed native layout4+paused language2조건 PASS, fail0/미도달0/exit0; 작은 글자 가독 RETOUCH |
+| finalB8 | 한정 CPU4그룹8조건(7동작1정적) PASS, 별도 headed native KO/EN640 두 조건 PASS, fail0/미도달0/exit0 |
+| 시각 | ROOT6PNG 직접 판독. 최종640 font12CSS/panel216×182.484375/clock·minimap 비겹침 확인; transient startareaTitle overlap 및 전체맵 **RETOUCH**. 최종1280 재실행0 |
+| 미인수 | GL UNKNOWN/audio0/native6false/savePOST0/synthetic matsPOST1 forwarded0/durableACKfalse; 실제 gate 개방·전체route 인수0 |
+
+전체키워드 검색은33a80에서44path/154행/181 occurrence(허용텍스트1024/Markdown817)1회, language delta29c1은1path1행, finalB8 `region-progress` delta는0match다. 전체검색/기존suite 반복0. 과거B의19관측과 합산0. foreign game185B(MB paused/DOT3 미채택)·설정3.3 foreign2948B 보존. 이 append 시점 Git stage/commit/push는 ROOT 예정이며 완료 SHA를 추정하지 않는다.
+
+전체 계약·§23 보고: [MAP_RUNTIME_ARCHITECTURE.md](4.1맵디자인+설정/MAP_RUNTIME_ARCHITECTURE.md)의 `ROOT-CH1-REGION-PROGRESS-HUD-20261007` 절. 외부 H의 validation/cpu-readable/native-readable/visual 영수증이 epoch별 근거다.

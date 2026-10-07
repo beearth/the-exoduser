@@ -98,3 +98,23 @@
 
 
 Node 후보 연결과 root 보강 회귀61PASS. 게임 생성/드롭/저장라우터·실제UI·패키지 연결은 미완료이며 활성0을 유지한다. 기존 소켓누락 마이그레이션 RNG·affixes 보충은 그대로다. [실제 검수·반례·제한](../0마스터플랜/mac-resume-20261001/vscode-dispatch/BINDING-root-review.md).
+
+## 2026-10-07 지역 목표·앵글러·게이트 사유 HUD — ROOT-CH1-REGION-PROGRESS-HUD-20261007
+
+기존 `#mmLvl` 최소폭216px 및 padding(12/14/13), font12px, offset은 유지한다. 이번 Main CH1 필드 활성 label의 확장과 scope 복귀만 아래와 같이 추가된다.
+
+| 항목 | 현재 값 |
+|---|---|
+| label / count | `#hudKillLabel` 3줄 `pre-line`, `#killCnt` 기존값·펄스 유지 및 `alignSelf:flex-start` |
+| scope | stage0/current region/G.on/두 leaf/bossAlive, 비보스방·비load·미완료; paused 자체는 제외하지 않음 |
+| 활성 class | `mmLvl.classList.toggle('region-progress',!!active)` |
+| 실제 CSS | `#mmLvl.region-progress{transform:scale(max(var(--ui-scale),1))}` |
+| 최소 크기 | 활성 scale1/글자12CSSpx; 원 font/폭/padding/offset은 재설정하지 않음 |
+| 복귀 | inactive/missing leaf에서 class 제거, label whiteSpace/value alignSelf는 `''`, 원 transform 복귀 |
+| language | labels loop 뒤 helper1회로 paused 중에도 현재3줄 유지 |
+
+이전29c1에서1280 font8CSS·640 font4CSS가 작았던 사실은 역사로 보존한다. 최종B8 한정 native KO/EN640×720 두 조건에서는 글자12CSS와 패널216×182.484375, viewport 포함/clock·minimap 비겹침/첫줄 정렬을 확인했다. ROOT의 실제 PNG 판독에서는 transient startareaTitle 오른쪽과 확대 패널의 겹침이 남아 **RETOUCH**다. 최종1280 재검사/전 해상도·28언어 fit 인수는 없다. 새 CPU8/새 native2를 이전68/native6과 clean 합산하지 않는다.
+
+최종 `game.html` working 4,092,122B / SHA256 `b8be6378b7d2805b32ca38f92cca03179f8f1ebb2732bebacec6300f5fe7ad3a`, ROOT owned 4,091,937B / SHA256 `05fa7031c8f1d4b1e02643e9fd9964f81c3a80a25d698ab22a002c2330f1ddc0`의 6개 hunk 기준이다. 기존 foreign 185B는 미채택 상태로 보존한다.
+
+전체 런타임 계약·검수 epoch·§23 보고는 [MAP_RUNTIME_ARCHITECTURE.md](../4.1맵디자인+설정/MAP_RUNTIME_ARCHITECTURE.md)의 `ROOT-CH1-REGION-PROGRESS-HUD-20261007` 절을 따른다.
