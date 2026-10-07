@@ -181,3 +181,22 @@ SOUND0329(`01a0ffcf-9a2c-7f60-b5ea-1177ee1a3811`)의 player death/deathFX·loop 
 | CPU Gates | 149/150ms·실 connect·source/gain/next 각각 stale·자연 next·같은 체인 replay·empty/missingbuffer/repeat stop·setter/fade/actx/currentTime/timer/stop 예외 | 실제 WebAudio·기기 자원 해제·청취·Chrome/GPU·새 PNG/save 실행0. timer/stop 실패 시 실제 종료 보장0 |
 
 QA 공식 raw는 보존했다. 원 하니스는 실행 전 누락·실패 exit·시간 port·factory/VM 분리 보정이 필요해 CPU 실행0으로 보존했고, 보정 하니스로만 최초 Node1을 실행했다. 제품 실패·CPU 재시도로 합산하지 않는다. Source peer204 blocking0/findings0. 사용자 기존 IAB13은 이전 로드 상태로 무조작 유지한다. `VISUAL VERDICT: RETOUCH / UI_NOT_ASSESSED / native NOT_RUN / NOT_LISTENED`; §23 전체 및 정확 핀·보존 결과는 외부 `ch1-beam-loop-callback-owner-20261008/visual-verdict.json`, `validation-receipt.json`, `completion-receipt.json`에 기록한다.
+
+## 2026-10-08 지연 사망 BGM 콜백의 현재 소유자 검사
+
+`ROOT-DEATH-BGM-CALLBACK-OWNER-20261008`: 실제 main의 전역 `_fallenResolve` 지연 사망 BGM 한 곳에 1hunk/+290B를 추가했다. 기존 D07의 예외 격리 계약은 유효하며 원행을 보존한다. 이번 변경은 예약 콜백의 현재성 검사이며 전체 오디오 수명이나 실청취 완료를 뜻하지 않는다.
+
+| 적용 위치 | 현재 계약 | 보존·한계 |
+|---|---|---|
+| 외부 fade 호출 전 | `deathOwnerG=G`, `deathOwnerP=P`, `deathOwnerMap=G.map`, `deathOwnerStage=G.stage`, `deathOwnerCount=_ddDeaths`를 지역 상수로 캡처 | 전역 main 소비자이며 CH1 또는 시험 URL에만 적용되는 기능이 아님 |
+| 기존 예약 callback | 캡처한 G/P/map identity, stage, 사망 횟수가 모두 현재 값과 같고 `!G.on` 및 `P.s==='dead'`일 때만 `BGM.play('death')` 실행 | 하나라도 다르면 return. 같은 전체 tuple이 dead/off 상태로 재사용되면 이를 별도 세대로 구별하지 못함 |
+| 기존 시간·예외 처리 | `BGM.fadeOut(500)`과 `setTimeout(...,600)` 유지. fade와 예약 callback 안 play의 두 catch 및 오류 기록 유지 | 기존 timer는 계속 예약되며 취소하지 않음. callback 조건은 전역 오디오 owner·원자적 수명을 보장하지 않음 |
+| 기존 게임 권한 | 부활 성공 early return, 사망 bookkeeping·UI·retry·save·음원·volume·BGM controller 불변 | 사망 판정·전투·자원·EXP·보상 정책을 새로 인수하지 않음 |
+| 새 검수 결과 | actual whole `_fallenResolve` + 통제 DOM/timer/BGM ports 최초 CPU Node1/new Function17·invocation17/VM0, 11그룹33PASS(동적32·정적1), FAIL/setup/미도달/계측 unhandled0·exit0. 실제 retry 전체 UI/helper/save는 실행하지 않은 동기 field cue→idle/on 경계 모델 | 실제 계측·도달 수·exit와 원문은 ROOT 최종 검수 영수증에 기록한다. 준비 하네스와 제품 검수를 구분한다. |
+| 별도 이전 source 근거 | 이전 source 반례2 별도 재현: 빠른 통제 retry 뒤 old death600ms가 field cue를 덮음1, 같은 P의 두 fatal resolve에서 old/new 예약이 모두 실행1. 새33PASS와 합산0. 동일 전체 tuple의 dead/off 재사용 미식별 probe1은 관측만/PASS 제외 | 이전 반례와 새 최종 조건·옛 beam/shield/BGM 검수는 합산하지 않음 |
+| 정적 source peer | Codex209 실제 wholefunction 정적 검토 blocking0 | 실행·native·청취 근거와 구분 |
+| QA 준비 이력 | 원 QA 하네스 CPU 실행0 → 실행 전 blocking5 확인 → ROOT retry fixture 정적 delta1까지 실행 전 한정보정 후 최초 제품 Gate1회 | 준비 보정을 제품 실패나 CPU 재시도로 계산하지 않음. 실행 결과는 위 ROOT 최종 영수증으로 확정 |
+
+원문·보호 범위: working game4114319B/`1a6577ef27e10d2679d93068761cd45eb1e252ac2d247241f693eab5ceace525`, owned4114134B/`2d7d80a03c21a3284c23e6dc26b93175fad0773e6174b5da94aefd987c8aa894`. 기존 foreign game185B·설정3.3 foreign2948B는 미채택 보존하며 사용자 IAB13은 이전 로드 상태로 무조작 유지한다. 기존 retry의 동기 BGM 예외 격리는 별도 소비자로 유지한다.
+
+실제 WebAudio/nativeAudio·청취·기기 자원 해제·Chrome/GPU·실제 CH1 전체 route·native6·보상·durable save는 미인수다. `VISUAL VERDICT: RETOUCH / UI_NOT_ASSESSED / native NOT_RUN / NOT_LISTENED`. §23 전체 MAP PRODUCTION REPORT와 최종 검수 수치는 외부 `ch1-death-bgm-callback-owner-20261008/visual-verdict.json`, `validation-receipt.json`을 따른다. Git stage/commit/push 완료 여부는 최종 `completion-receipt.json`의 실제 기록으로만 확정한다.

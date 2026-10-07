@@ -43363,7 +43363,15 @@ function _fallenResolve(){
   _resetInteractInput();
   P.s='dead';P.iframes=0;if(G._sStats)G._sStats.deaths++;
   try{SFX.die()}catch(e){console.error('[SFX] player death dispatch error:',e)}G.on=false;G._ebBomb=null;G._mmBomb=null;G._gsBombs=[];G._bsBombs=[];G._boneWalls=[];G._fireZones=[];G._thunderStakes=null;P._tsAiming=false;G._stProjs=[];G._gwLightning=null;G._voidScarecrow=null;G._ancestorReturns=[];G._ancestors=[];
-  try{BGM.fadeOut(500)}catch(e){console.error('[SFX] death fade error:',e)}setTimeout(()=>{try{BGM.play('death')}catch(e){console.error('[SFX] death music error:',e)}},600);
+  const deathOwnerG=G,deathOwnerP=P,deathOwnerMap=G.map,
+        deathOwnerStage=G.stage,deathOwnerCount=_ddDeaths;
+  try{BGM.fadeOut(500)}catch(e){console.error('[SFX] death fade error:',e)}
+  setTimeout(()=>{
+    if(G!==deathOwnerG||P!==deathOwnerP||
+       G.map!==deathOwnerMap||G.stage!==deathOwnerStage||
+       _ddDeaths!==deathOwnerCount||G.on||P.s!=='dead')return;
+    try{BGM.play('death')}catch(e){console.error('[SFX] death music error:',e)}
+  },600);
   ['hud','hudTop','hudCorner','mmWrap','skBar','mmLvl','globeHP','globeMP'].forEach(id=>$(id).classList.remove('on'));
   const expLoss=~~(P.exp*0.3);
   const _hn=_T(HELL_NAMES[STG[G.stage].hell]);

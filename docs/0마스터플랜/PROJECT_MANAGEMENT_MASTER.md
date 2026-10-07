@@ -4969,3 +4969,14 @@ WOLF 파일 쓰기는 자동 승인 검토에서 dangerous로 거절됐고 구�
 | 최초 실제 함수 통제 CPU | Node1 / Function factory17 / VM0; 11그룹36 PASS(동작35+정적1), FAIL/setup/미도달/계측 unhandled0, exit0. 이전 반례2는 별도 | 원QA하니스 실행0→실행 전 한정보정 후 제품 suite1. nativeAudio/청취/Chrome/GPU/PNG/save0; 부분start·앞oscillator예외·device release 미인수 |
 
 Source peer204 blocking0. 기존IAB13 무조작/이전 로드 유지. `RETOUCH/UI_NOT_ASSESSED/native NOT_RUN/NOT_LISTENED`; §23·정확 보존은 외부 `ch1-beam-loop-callback-owner-20261008/completion-receipt.json`을 따른다.
+
+## 2026-10-08 지연 사망 BGM 콜백 소유자 검사
+
+| 단위·범위 | 현재 구현·근거 | 보존·미인수 |
+|---|---|---|
+| `ROOT-DEATH-BGM-CALLBACK-OWNER-20261008` / 전역 main `_fallenResolve` 1hunk/+290B | fade 전에 G/P/map identity·stage·_ddDeaths 캡처. 600ms callback은 same tuple 및 !G.on/Pdead일 때만 death BGM 실행 | 기존 fade500ms·timer600ms·death key·두 catch·부활 early return·UI/retry/save 불변 |
+| 최초 Gate | actual whole `_fallenResolve` + 통제 DOM/timer/BGM ports 최초 CPU Node1/new Function17·invocation17/VM0, 11그룹33PASS(동적32·정적1), FAIL/setup/미도달/계측 unhandled0·exit0. 실제 retry 전체 UI/helper/save는 실행하지 않은 동기 field cue→idle/on 경계 모델 | ROOT 최종 영수증 권위; 이전·다른 suite와 합산0 |
+| 별도 이전 근거 | 이전 source 반례2 별도 재현: 빠른 통제 retry 뒤 old death600ms가 field cue를 덮음1, 같은 P의 두 fatal resolve에서 old/new 예약이 모두 실행1. 새33PASS와 합산0. 동일 전체 tuple의 dead/off 재사용 미식별 probe1은 관측만/PASS 제외 | 원 QA CPU0→실행 전 blocking5→ROOT retry fixture 정적 delta1까지 실행 전 한정보정 후 최초 제품 Gate1회; 준비 보정을 제품 실패·재시도로 계산0 |
+| 정적·실행 한계 | Codex209 actual wholefunction 정적 blocking0 | timer 취소0, same tuple dead/off 재사용 미식별, 전역 오디오 owner 원자성·devicefree·nativeAudio·청취·실CH1 route·native6·보상·durable save 미인수 |
+
+working4114319B/`1a6577ef27e10d2679d93068761cd45eb1e252ac2d247241f693eab5ceace525`, owned4114134B/`2d7d80a03c21a3284c23e6dc26b93175fad0773e6174b5da94aefd987c8aa894`; foreign game185B·설정3.3 foreign2948B 미채택/IAB13 이전 로드 무조작. 현재 상세 계약은 사운드본문과 `SOUND_DEATH_REVIVE_PROGRESS_20261003.md`의 이번 append를 따른다. `RETOUCH/UI_NOT_ASSESSED/native NOT_RUN/NOT_LISTENED`; §23·검수는 외부 `ch1-death-bgm-callback-owner-20261008/visual-verdict.json`, `validation-receipt.json`, 최종 Git 보존은 `completion-receipt.json`의 실제 기록을 따른다.
