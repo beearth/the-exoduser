@@ -56569,3 +56569,12 @@ WOLF 파일 쓰기는 자동 승인 검토에서 dangerous로 거절됐고 구�
 상세 계약·source working/owned 정확핀 및 가이드§23은 같은 완료 ID의 스킬 본문과 /Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-ltnchaser-canonical-description-20261008/implementation-receipt.json·validation-receipt.json·visual-verdict.json·completion-receipt.json을 따른다. 기존 IAB13 old-loaded 탭은 무조작으로 유지했다.
 
 가이드 §23의 전체 MAP PRODUCTION REPORT는 같은 완료 ID의 스킬 본문 및 /Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-ltnchaser-canonical-description-20261008/visual-verdict.json에 기록한다. 최종 GIT은 completion-receipt.json을 따른다.
+
+## 2026-10-08 천공쇄기 상세 화염 지속 표시 수정
+
+| ID·적용 위치 | 현재 소비 | 검수·남은 범위 |
+|---|---|---|
+| `ROOT-SKYCRUSHER-PERSIST-DISPLAY-20261008` / `game.html` `_skSpecificDetails.skyCrusher` | 고정 `10s` 대신 `(_sc.persistT/60)+'s'`; 실제 `persistT=180f` → 기본 `3s`. `maxT=impactT+persistT`는 예고 포함값이라 사용하지 않음 | 정적 소스·caller 대조/source peer blocking0. 새 CPU/native/Chrome/청취/save 실행0; UI_NOT_ASSESSED/RETOUCH |
+| 범위 | 기존 라벨·색상·레벨·builder·전투 스펙·피해·비용·충전·save 불변 | 상세 표시 한 leaf만 변경. 사용자 기존 IAB13 무조작/이전 로드 유지, 본편 전체 보스 경로·실보상 인수 미완료 |
+
+정확 보존·§23 보고는 외부 `ch1-skycrusher-persist-display-20261008/completion-receipt.json` 및 `visual-verdict.json`을 따른다.

@@ -44318,7 +44318,7 @@ function _skSpecificDetails(sk,slv){
       [_L('파편 수','Shards'),String(_sc.shardCount),'#c8b58a'],
       [_L('최대 충전','Max Charges'),String(_sc.maxCharges),'#ffcc44'],
       [_L('충전 시간','Recharge'),'15s','#aaccff'],
-      [_L('화염 지속','Burn Duration'),'10s','#ff7733'],
+      [_L('화염 지속','Burn Duration'),(_sc.persistT/60)+'s','#ff7733'],
       [_L('화염 반경','Burn Radius'),_sc.fireRadius+'px','#ff9955'],
     ];
   }

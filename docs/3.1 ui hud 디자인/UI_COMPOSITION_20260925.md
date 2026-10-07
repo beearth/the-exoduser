@@ -2895,3 +2895,16 @@ WOLF 파일 쓰기는 자동 승인 검토에서 dangerous로 거절됐고 구�
 근거 디렉터리: /Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-ltnchaser-canonical-description-20261008. 후보 공식 appfinal은 /Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/editor-pointer-gesture-owner-20261008/codex-201-official에 별도 보존했다. 이 정적 표시 검수와 앞선 editor CPU candidate28·before1을 합산하거나 반복하지 않는다.
 
 가이드 §23의 전체 MAP PRODUCTION REPORT는 같은 완료 ID의 스킬 본문 및 /Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-ltnchaser-canonical-description-20261008/visual-verdict.json에 기록한다. 최종 GIT은 completion-receipt.json을 따른다.
+
+## 2026-10-08 천공쇄기 상세 화염 지속 표시 정본 연결
+
+`ROOT-SKYCRUSHER-PERSIST-DISPLAY-20261008`: 본편 `_skSpecificDetails`의 `skyCrusher` 화염 지속 값 한 곳을 실제 스펙에 연결했다.
+
+| 대상 | 이전 표시 | 현재 표시·소유 계약 | 변경하지 않은 값 |
+|---|---|---|---|
+| `skyCrusher` 화염 지속 / Burn Duration | 고정 `10s` | `(_sc.persistT/60)+'s'`; `_skyCrusherSpec(lv).persistT=180f`이므로 `3s` | 실제 잔류 수명 `180f=3초` |
+| 상세 레벨·정본 | 기존 `lv=Math.max(1,slv)` | 기존 caller의 현재 `P.skills` 기본 레벨; 추가 EQ 수명 보너스 없음 | 기존 라벨·색상·builder·나머지 행 |
+| 총 효과 수명 | `maxT=impactT+persistT` | 착탄 전 예고가 포함되므로 화염 지속 표시에는 사용하지 않음 | 낙하·충돌·파편·DOT·MP80·3충전·기본 충전900f |
+| 검수 범위 | 소스의 표시/스펙 불일치 | 실제 함수·caller·기존 정본 정적 대조, source peer blocking0 | 새 테스트/Node/VM/CPU/native/GPU/Chrome/청취/PNG/save 실행0 |
+
+기존 180f 전투·원화·수치 문서는 그대로 유효하다. UI 배치·640/1280 화면·실보상 저장은 미인수이며 `VISUAL VERDICT: RETOUCH / UI_NOT_ASSESSED / native NOT_RUN`이다. 사용자에게 열어 둔 기존3387 IAB13은 이전 로드 상태로 유지한다. §23 전 항목과 정확 소스/검수 핀은 외부 `ch1-skycrusher-persist-display-20261008/visual-verdict.json`, `validation-receipt.json`, `completion-receipt.json`에 기록한다.
