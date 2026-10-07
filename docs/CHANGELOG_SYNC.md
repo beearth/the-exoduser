@@ -56175,3 +56175,14 @@ pose가기존frozen cue snapshot을반환하고frame말 updateUi뒤/RAF예약앞
 pageerrorHTTP0/requestfail5(font3의도차단+introabort2직접원인UNKNOWN)·API matsPOST1합성forward0/save0/childAPI0/usersave0/durableACKfalse·닫힘/exit0·GL/GPUfreeUNKNOWN. rootPNG2직접판독·after-out은첫이탈frame정확촬영아니며telemetry가exact근거. 확대흐림/근접겹침등전체RETOUCH·native6/audio/saveACK/A급미인수. whole검색1회42경로98행107occurrence·전수완독아님.
 
 [HUD현재계약](<3.1 ui hud 디자인/SETTINGS_HUD_DETAIL_20260930.md>) / [소비자·정확source/영수증](<11내러티브·로어디자인/RIFT_DIALOGUE_PUBLIC_CONSUMER_20261007.md>) / [§23전체보고](<4.1맵디자인+설정/HELL_RIFT_2_5D_SLICE_20261006.md>). 원prefix/옛epoch보존·문서담당제품CPU/Chrome/Git0·root정상checkpoint예정.
+
+
+### 2026-10-07 ROOT-CH1-DRUID-CORPSE-SOURCE-CONSUMER-20261007 · 드루이드 시체 base8 소비
+
+최종 `game.html` working **4,108,637B / SHA256 `e126009e20157a98c0561e3a3f111d94372b26df39bb45964e4d6591af31c757`**, ROOT owned **4,108,452B / `6787cb308cf3d085c5821d3b9eed95e2d760eb584473f3ceec2dbfcb816ed981`**의 2hunk 기준이다. foreign185B는 미채택 기존 바이트로 보존한다.
+
+기존 `_addCorpse`의 fieldmob 캡처 뒤/boss atlas 앞에서 현재 owner/life/scene·ready base8 lease가 일치하는 CH1 사망 actor만 승인된1656×1240/4×2/414×620 방향셀을 기존128²에 중앙 비율 fit한다. 원PNG생성/수정·전용deathsheet·사망animation0. queued mutation은 기존 lease를 source-mutated로 닫고 fallback하는 일관성 보정이며 실제 오채택재현주장0. OPT.deathFx OFF earlyreturn·pool120·보스600·원회전/Y.5/fade·gore/head/floor·death/revive/reward/save/nav/geometry 권한은유지한다. 원timer undefined→0/zero허용·필수양수gate없음.
+
+최초 CPU Node1/8그룹 계획·7완료/42도달41PASS·정적추출oracle1FAIL·미도달0·exit1, 별도Node1 실제renderer599B exact 정적1PASS·exit0, 실제PNG/softwarecanvas+actualhelper8방향 nonempty·exit0을 분리보존한다. 원41조건반복0·clean42/native합산0. 사용자IAB13 oldloadedsource유지/no reload·새게임0으로 새deathnative **NOT_RUN**. ROOT bitmap직접판독은몸/뿔식별한정·작고어두운시체/셀alpha완전성/접지/실전가독성미인수·전체 **RETOUCH**. GPU·HTMLImageElement·실사망/부활/native6/audio/durableACK/A급미인수다.
+
+코드후 전체related검색1회137경로605행748매칭·정본7동기화, owner/protected본문제외·전수완독주장0. [사망VFX](<5.1임펙트디자인/사망VFX_변경로그.md>) / [스킨](<5.0애니메이션파이프라인/몬스터_스킨_시스템.md>) / [리그](<4.0케릭터스프라이트 디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md>) / [파이프라인](<5.0애니메이션파이프라인/5.0애니메이션파이프라인.md>) / [CH1배정](<4.1맵디자인+설정/CH1_1_DRUID_BOSS_ASSIGNMENT.md>) / [전체정확계약·§23](<4.1맵디자인+설정/MAP_RUNTIME_ARCHITECTURE.md>). 외부 validation20425B/`74db21d0c3d0c933709df5377f6ea7243e3c3ad05b803511c852fa1d7e3908be`·visual9562B/`da1bb7a4dc8e5d84a2354f8c45345f83890a7bafb9eab5757e4b6e92e92ae9a1` 기준. ROOT Git정상보존예정·자기SHA추정0·문서담당추가검사0.

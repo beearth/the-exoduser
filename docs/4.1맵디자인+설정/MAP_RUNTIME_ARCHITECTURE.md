@@ -953,3 +953,88 @@ OFF/준비 frame 없음/불가 mode/낡은 identity의 검사 범위에서는 co
 | GIT / deploy | 0 |
 | VISUAL VERDICT | **RETOUCH**. 실제 core 도달과 다리 하단은 관측했지만 미감 개선 미인수. 평평한 지형/FX·초상 겹침 잔존 |
 | NEXT PASS | same-pose OFF/ON 비교 및 실제 actor-ground 접촉 미감, DS 가림/전체 정상route 별도Gate. 본편native6/청취/durableSave/A급 미인수 유지 |
+
+
+## 2026-10-07 ROOT-CH1-DRUID-CORPSE-SOURCE-CONSUMER-20261007 · 드루이드 시체 원본 캡처
+
+기존 승인된 드루이드 base8 방향 원화가 실제 `_addCorpse`의128² bitmap 캡처에 연결됐다. 전용 death sheet·사망 애니메이션·새 원화·새 rig가 아니다. 앞선 normal live rig의 death legacy 문장은 해당 consumer/source epoch로 보존하며, 새 예외는 이 시체 bitmap source에만 적용한다.
+
+최종 `game.html` working **4,108,637B / SHA256 `e126009e20157a98c0561e3a3f111d94372b26df39bb45964e4d6591af31c757`**, ROOT owned **4,108,452B / `6787cb308cf3d085c5821d3b9eed95e2d760eb584473f3ceec2dbfcb816ed981`**의 2hunk 기준이다. foreign185B는 미채택 기존 바이트로 보존한다.
+
+| source/seam | 정확 값·흐름 |
+|---|---|
+| helper | `_captureCh1DruidCorpse(c,e)` boolean, **8278B/SHA256 `379cc4cd601aa208d28f58f8df9ac030754e92d71a9eb08072bdfd0c092a80d1`** |
+| 연결 순서 | `_addCorpse` OPT.deathFx early return→기존pool/물리설정/clear→기존 fieldmob sheet→새helper→원 bossDirAtlas→external boss idle→bossWalkAtlas→generic south/meta→etype→circle→기존gore/headgib |
+| opt-in scope | 기존 `_ch1RigRequested`·`_ch1DruidAlive` lifecycle 활성, `_CH1_START_PHASE==='smoothing'`, root=`assets/map/ch1/production_finish`, G.on true/stage0. request 정책/defaultOFF 변경0 |
+| map/actor | 같은 G/ens/map/scene, field200×200 또는 arena128×108과 mw/mh 일치. 현재 ens에 해당 e가 있고 ib boss 유일1 |
+| 사망 signature | e.ib true/alive false/finite hp<=0/deaths safeint>=1; 같은 owner.band live/pendingfalse/intent normal/state·phase·lastStand·defeated·life 일치, owner.deaths+1===e.deaths. actor관찰·revive/전투권한 추가0 |
+| 원 timer | `_reviveTimer` undefined→0, finite>=0/zero허용. 필수양수 death timer 조건 없음 |
+| lease/source | 이전 live owner가 소유한 base8 sheetRecord/image의 ready/settled/open lease, 같은 scene/life·generation/decodedGeneration, frozen borrowed record·native image complete/dim/src/currentSrc/srcset/sizes fingerprint 일치 |
+| mutation | native `MutationObserver.prototype.takeRecords` queue가 있으면 기존 `_ch1DruidCloseLease(lease,'source-mutated')`→false. 현재 일관성 보정이며 실제 live 오채택 결함 재현으로 주장0 |
+| 원화 | 기존 `assets/sprites/boss/boss_dark_druid_8dir_v3.png` 1656×1240/4×2/414×620, 3,668,669B/SHA256 `ceb3843fc1d612601b63dcb33035298da9b92d4ae39e88d986805ec4216e1549`; 원핀은 bitmap 검수 기록 |
+| 방향 | 기본 facing; eWalk/eChase/eApproach&&(vx||vy)일 때 atan2(vy,vx). round(angle/(PI/4))의0..7 octant→`_DRUID_DIRMAP=[6,7,0,1,2,3,4,5]`. public catalog 방향입력과 구분 |
+| crop | col=dir%4/row=floor(dir/4), sx/sy 및 다음경계 `round(n*dimension/count)` 차이; w414/h620. source crop 밖 확장0 |
+| destination | spec use2D/anim true, dw=r*9.3/dh=r*14.1; k=min(128/dw,128/dh), x=(128−k*dw)/2/y=(128−k*dh)/2/w=k*dw/h=k*dh. r44에서는 authored409.2×620.4 비율 |
+| ctx | ctx.canvas===c.c/128² 확인, save→identity CTM/alpha1/source-over→queue drain/owner·source 재확인→draw→finally restore. attempted draw 예외 시 identity clear를 시도하고 false; 무조건 rollback 보장 주장0 |
+| unchanged pool/options | `_CORPSE_MAX=120`/각128². `OPT.deathFx=false`는 함수 최초 return. 새Image/fetch/decode/texture/RAF/timer0 |
+| unchanged size/life | 일반 보스 `max(96,r*3.0)`/600(r44 size132); 일반 `max(40,min(260,r*2.9))`/420. 기존 fieldmob 크기/220 유지 |
+| unchanged motion | spd=min(5,1.5+(power||1)*.8), r=killAng+PI*.5/rv=(random−.5)*.2; wall bounce vx/vy*−.4·rv*−1, vx/vy*.85**sp·rv*.92**sp, t-=sp |
+| unchanged render | 마지막40% fade/alpha<.05 제거·skip, cull margin40/max25, translate→rotate→Y scale.5→sz×sz 중앙draw. gore overlay/headgib/floortrace 유지 |
+| unchanged authority | PNG/scene/nav/geometry/LOCK·카메라·AI·HP/죽음/부활/피해/보상/quest/save 정책·OPT 수치 변경0 |
+
+호출 흐름은 `정상 죽음의 기존 _addCorpse → ready 현재 base8 캡처 조건 → true면 bitmap 채택 / false면 기존 fallback → 기존 gore·head·물리·renderer`다. source를 얻으려고 actor를 살리거나 새 decode를 시작하지 않는다. 현재 ready base8 lease가 없으면 새 source 소비가 보장되지 않는다.
+
+### 실행 epoch와 인수 경계
+
+| epoch | 실제 결과 | 한계 |
+|---|---|---|
+| 최초 CPU | Node1/8그룹 계획·7그룹완료/42도달41PASS·1FAIL·미도달0/exit1/unhandled0; 동작38·inverse/helper정적3 PASS | 마지막 renderer 정적 oracle가 첫 공통for를 잡아 물리400B를 선택. 실제 제품 renderer 결함 확정0 |
+| renderer 한정 후속 | 별도Node1/제품함수실행0/정적1PASS/FAIL·미도달0/exit0. 원renderer599B/SHA256 `b14c4102ada08b1e9d59f2114a4d906b1fbc442344b0228e507af2e6dca519af` exact·Y.5 1회 | 원41PASS 재실행0·최초FAIL 보존·clean42PASS 합산0 |
+| 실제PNG/software bitmap | 최초한정1회/actualhelper+로컬PNG/software canvas·통제 lifecycle/image fingerprint/observer,8dir capture true/nonempty·exit0/source·원PNG전후exact | actual HTMLImageElement/브라우저/GPU/실사망/부활0. 방향별 alphaPixels `[6350,6901,6891,6898,6538,6551,6821,6853]`, bbox x22..105/y0..127(일부y1)는 관측값이지 셀알파 완전성 증거 아님 |
+| 새 본편 native | **NOT_RUN**, Chrome/context/page0 | 사용자 기존 IAB tab13 old loaded source 유지/no reload·새게임0·새소스적용0 |
+| 준비 이력 | 구현 backup Pythonparse1/write0→한정정정, docs primary 경로조회exit2·경로오타readexit1/write0 | 제품CPU/native FAIL과 별개 |
+
+최초 actual-source CPU는 Node1/8그룹 계획·7그룹 완료/42조건 도달 **41PASS·1FAIL·미도달0·exit1**이다(동작38·inverse/helper 정적3 PASS). 마지막 FAIL은 renderer 대신 물리 update 루프를 선택한 추출 오라클 오류로, 제품 결함 확정이 아니다. 이후 원41조건 재실행 없이 실제 renderer599B exact·`X.scale(1,.5)` 보존만 별도 Node1/정적1조건 PASS·exit0으로 확인했다. 실제 원PNG/software canvas+현재 helper의 8방향 bitmap은 모두 비어있지 않음·exit0이지만 통제 lifecycle/image fingerprint/observer 포트이며 HTMLImageElement·GPU·실본편 사망 검수가 아니다. 이 세 실행을 clean42PASS나 native PASS로 합산하지 않는다.
+
+새 본편 death native는 **NOT_RUN**(Chrome/context/page0)이다. 사용자의 기존 IAB tab13은 old loaded source를 유지하며 새로고침·새 게임0, 새 corpse consumer 적용0이다. ROOT의 bitmap PNG 직접 판독은 몸·뿔 식별 한정이며 회전/Y.5 썸네일은 작고 어둡다. 셀 경계 alpha 완전성·해부학적 발·접지·실제 사망/부활·전투 겹침·동일후보6단계/native6·audio·durableSaveACK·성능·A급은 미인수다. **VISUAL VERDICT: RETOUCH**.
+
+8dir PNG 보드 `bitmap/source-capture-eight-directions.png`는197267B/SHA256 `1f068bd9d3581ae360d62eba28780f3ed0774be383cdec591c544f84c7d78cb9`이며, 하단은 fixture r40/size120/회전PI/2·Y.5 예시다. 실제r44 main 사망 화면이 아니며 gore/head/floor는 생략됐다. ROOT가 직접 판독했고 문서담당 재판독·제품/CPU/Chrome 실행0이다.
+
+### §23 MAP PRODUCTION REPORT
+
+| 항목 | 이번 scope의 실제 상태 |
+|---|---|
+| STAGE | CH1-1 드루이드 시체 source consumer 구현·CPU/software bitmap 한정. 실제맵제작/본편사망 NOT_RUN |
+| MASTER / silhouette·regions·main route·side spaces | 원맵/지역·동선·측면공간 변경0·신규 현장 인수0 |
+| OUTER MASS / LEFT·RIGHT·TOP·SOUTH·major holes | 변경0·새화면검수0·major holes 미관측 |
+| LARGE / source assets·composites | 기존1656×1240 base8→128² 선택셀 중앙fit, 환경합성·신규asset0 |
+| LARGE / overlap·repeated silhouette | 실본편시체/플레이어/FX겹침·환경반복 신규검수0 |
+| MEDIUM / connections·remaining holes | 변경0·현장검수0·남은hole미관측 |
+| GROUND / shadow·contamination·structure integration | 기존바닥흔적/gore권한유지·실사망0·접지/해부학발미인수 |
+| PLAYABLE / main arenas·travel·breathing·threat | 전투장·이동/nav·숨쉴공간·위협/AI/충돌변경0·실보스사망0 |
+| PLAYABLE / combat readability | softwarebitmap몸/뿔식별 한정, 작은어두운시체·실전가독성미인수 |
+| LANDMARK / primary·secondary·tertiary | 배치변경0·새현장검수0 |
+| CAMERA QA / START | 미실행·8방향bitmap은맵카메라보드아님 |
+| CAMERA QA / EARLY | 미실행 |
+| CAMERA QA / ARENA | 미실행 |
+| CAMERA QA / SIDE L | 미실행 |
+| CAMERA QA / SIDE R | 미실행 |
+| CAMERA QA / LANDMARK | 미실행 |
+| CAMERA QA / LATE | 미실행 |
+| CAMERA QA / EXIT | 미실행 |
+| TECH QA / route·collision | 원본불변·실경로/충돌재검사0 |
+| TECH QA / pageerror·404 | 브라우저/HTTP검수미실행·UNKNOWN |
+| TECH QA / seam | 실제맵seam검수0 |
+| TECH QA / loading | 로컬PNG/softwaredecode·8dirnonempty만, HTMLImageElement/GPU/실게임로딩미인수 |
+| TECH QA / performance | 추가RAFtimer0은source계약; frame시간/실본편성능/physicalGPU미측정 |
+| FILES / stage-owned | ROOT game2hunk+이번정본docs7. 문서담당제품/Git실행0 |
+| FILES / concurrent touched | game foreign185B·3.3 foreign WIP·타인작업보존·본작업미수정 |
+| FILES / unrelated touched | 본작업0·원PNG/scene/nav/보호2_3미수정 |
+| GIT / staged·commit·push | ROOT 완료소유 정상보존 예정. 본append시점미완료·자기SHA추정0 |
+| GIT / deploy | 0 |
+| VISUAL VERDICT | **RETOUCH**·몸/뿔식별한정·실사망/접지/셀경계/전투겹침미인수 |
+| NEXT PASS | 사용자게임상태보존조건의 다음승인범위에서 실제보스사망/시체/폴백/부활·셀alpha/몸뿔/접지/FX겹침 관측. native6/audio/durableACK/A급미인수유지 |
+
+코드후 의무 related-keyword docs검색은 1회,137경로/605행/748매칭이다. 전체 문서 전수완독을 주장하지 않으며 giant owner subtree·SUPERVISOR STATE/LOG는 path-only/본문·hash0, 보호2_3본문0으로 제외했다. 텍스트 backup/archive와 원측정이력은 보존하고 binary와 일괄동일시하지 않았다. 현행필수7은 본문에새append하고원prefix/이력수치·핀은유지한다.
+
+외부 근거는 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-druid-corpse-consumer-20261007`의 `implementation-receipt.json`(1,102B/`299f04e4d5e2dd9c909605efd3a4e51a10d2ce88eaf17d9a7391bb7afbfd4822`), `validation-receipt.json`(20,425B/`74db21d0c3d0c933709df5377f6ea7243e3c3ad05b803511c852fa1d7e3908be`), `visual-verdict.json`(9,562B/`da1bb7a4dc8e5d84a2354f8c45345f83890a7bafb9eab5757e4b6e92e92ae9a1`)이다. Git stage/commit/push는 ROOT의 완료소유 보존 예정이며 이 부록에서 완료 SHA를 미리 주장하지 않는다.

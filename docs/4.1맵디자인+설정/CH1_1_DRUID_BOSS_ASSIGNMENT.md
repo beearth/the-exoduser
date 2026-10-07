@@ -144,3 +144,22 @@ CH1-1 보스 배정/arena geometry 변경0. 직전 드루이드 본체의 상단
 외부 증거 디렉터리: `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-main-boss-camera-20261007/`. 최초 `camera-cpu-final-receipt.json` 8,969B / `d68d0679bb77ed45769cf87bfe128525fe10e788ef075faefc1b1acf0eafd35c`, 원결과 `camera-cpu-result.json` 31,138B / `0f862be1ba96ec337b9e052e15995a8afd7427ee896eec0da67ea20151a37dd9`, 최초 native `native-result.json` 8,562B / `c92d3982da42549996f0c261bacf1cd1a91911d7f72b17a485ebeddfea36cc50`는 보정 전044b epoch다. 철회된 중간 코드의 `quantization-implementation-receipt.json` 1,689B / `d5683e0a66d7f33cf4ef32b65863c13270e1927d049cd70bd86c418d107c4ae5`에 inverse exact/foreign185 보존이 기록된다. 해당 `camera-quantization-limited-receipt.json`은 1,660B / `88d4179ca7739f7f5aca088ad3dc302175c2b2328ebd9a30f4f700fd0c9b580e`다. 현재 최종 `directional-round-implementation-receipt.json` 2,666B / `d1ff0383c339fc0cb1ef4610ca959a8f941332a4c0e82c4725e555815080197d`의 rs3/inverse exact/foreign185 보존을 따른다. 최초 visual `visual-verdict.json` 4,437B / `c8767f12ab4d3c5ca4ab4e2d22522ad506f04db450ba8326000779e064a96626`와 최종 검수는 epoch를 분리한다. Git 사실은 같은 디렉터리 `remote-preservation-receipt.json`의 실제 normal commit/push/원격 정확 SHA로 확정하고 자기 commit SHA는 순환 삽입하지 않는다. 검수 관측 당시 checkpoint 전이며 deploy0이다.
 
 최종 증거는 `camera-directional-limited-receipt.json` 1,194B / `ca55b57abcb6ca8dac42b1095bc6d0068e654d702788c7f558a7975190356e66`와 원결과 `camera-directional-limited-result.json` 27,932B / `eec9c743a15c2bbaf60aa67f95767676137927cac1a2dfe24a0b75e38f9c8f45`, `native-directional-result.json` 6,106B / `87217d74229d870ca564743d344da9dab690e11533b4e17a7ac30ac0caa2ee18`, `validation-receipt.json` 4,176B / `44b3be782d4c962d6bf2fcfefc3c7f7b4ef36d137e5ebd0ea63a8dc3e048521d`, `visual-verdict-final.json` 5,811B / `acf4a2165bb087d736815370ed1e55cca7485b73fe92f610d1b253d18411af2f`로 각각 보존한다. 최초044b36조건/native2조건·철회2306 FAIL1·현재a2fa CPU14/native1은 clean 전체 PASS로 합산하지 않는다.
+
+
+## 2026-10-07 ROOT-CH1-DRUID-CORPSE-SOURCE-CONSUMER-20261007 · 드루이드 시체 원본 캡처
+
+기존 si0 드루이드 배정/r44/dw9.3/dh14.1·si3 별도 범위와 전투·사망/부활·진행/보상 수치를 유지한다. 신규 변경은 정상 dead actor의 기존 시체 canvas에 승인된 base8을 소비하는 opt-in 표현 연결이다.
+
+| 범위 | 현재 계약 |
+|---|---|
+| admission | 기존 CH1 rig opt-in·stage0·production_finish/smoothing·G.on true, field200² 또는 boss arena128×108. 같은 map/enemies/scene의 유일 ib actor와 이전 live owner/life signature가 일치해야 함 |
+| dead signature | alive false/finite hp<=0/deaths safeint>=1·owner.deaths+1===deaths, phase/lastStand/defeated/state 일치. `_reviveTimer`는 undefined→0/zero허용이며 양수 필수 아님 |
+| source/비율 | ready base8 1656×1240/4×2/cell414×620의 native 방향셀을128² 중앙 fit. 원 r44에서는 authored409.2×620.4 비율, corpse size132/수명600/회전/Y.5 유지 |
+| 실패 | sameSource/lease/owner 불일치·mutationqueue·미지원/오류는 false→기존 boss atlas 이하 fallback. actor를 revive하거나 죽음 판정을 바꾸지 않음 |
+| 미인수 | 전용 death sheet/사망 animation·actual boss death/revive native/정상보스경로/해부학발/전체alpha·audio·durableSaveACK/동일후보6단계 |
+
+최초 CPU8그룹 계획/42도달41PASS·추출오라클1FAIL·미도달0·exit1, 별도 renderer 보존 정적1PASS·exit0, software bitmap8방향 nonempty·exit0은 별도 epoch다. 기존 사용자 IAB13을 유지하므로 새 native NOT_RUN이며 구 camera/normal rig 검수는 반복·합산0이다. ROOT bitmap 판독은 몸/뿔 식별만 확인했고 작은 어두운 시체/접지·전투 겹침은 미인수여서 **VISUAL VERDICT: RETOUCH**다.
+
+최종 `game.html` working **4,108,637B / SHA256 `e126009e20157a98c0561e3a3f111d94372b26df39bb45964e4d6591af31c757`**, ROOT owned **4,108,452B / `6787cb308cf3d085c5821d3b9eed95e2d760eb584473f3ceec2dbfcb816ed981`**의 2hunk 기준이다. foreign185B는 미채택 기존 바이트로 보존한다.
+
+전체 정확 source/currentness·실행 이력·§23 보고와 다음 Gate는 [MAP_RUNTIME_ARCHITECTURE](MAP_RUNTIME_ARCHITECTURE.md)의 같은 TASK 절을 따른다. ROOT 완료소유 Git 보존 전이며 새 게임·맵·원PNG/nav/scene 변경0이다.

@@ -1568,3 +1568,22 @@ OFF/불가mode/identity/준비 frame 부재의 검수에서는 core0이다. **co
 최종 `game.html` working **4,093,695B / SHA256 `cbc459f7a86e8b3ba15610f34554fd1f81353dbaf691879da9e17f32ca5ae2fb`**, ROOT owned **4,093,510B / SHA256 `7523cbab51c8bbcb008062c0ed2f646da777720b782b06a8a5eb27312e2f41c7`**의7hunk 기준이다. foreign185B는 미채택 기존 바이트로 보존한다.
 
 전체 source 계약·epoch별 결과·§23 보고는 [MAP_RUNTIME_ARCHITECTURE.md](../4.1맵디자인+설정/MAP_RUNTIME_ARCHITECTURE.md)의 `ROOT-CH1-RIG-CONTACT-SHADOW-20261007` 절을 따른다.
+
+
+## 2026-10-07 ROOT-CH1-DRUID-CORPSE-SOURCE-CONSUMER-20261007 · 드루이드 시체 원본 캡처
+
+앞선 normal rig의 death/revive legacy 설명은 살아 있는 rig body의 지원 범위와 당시 source epoch를 뜻한다. 이번 부록은 `_addCorpse`의 별도 정적 bitmap source 예외이며 normal rig에 death animation을 추가한 것이 아니다. 기존 PNG·UV·bone·live publication/crop·world좌표는 그대로다.
+
+| 구분 | 현재 범위 |
+|---|---|
+| source | 기존 `assets/sprites/boss/boss_dark_druid_8dir_v3.png` 1656×1240/4×2/414×620, 전용 death sheet 없음 |
+| 선택 | 실제 main `_DRUID_DIRMAP=[6,7,0,1,2,3,4,5]`의 각도 octant 변환. 앞의 public catalog rowmap `[0,7,6,5,4,3,2,1]`와 입력 공간을 혼동하지 않음 |
+| 표시 | native source 셀을128² 시체 canvas로 `k=min(128/(r*9.3),128/(r*14.1))` 중앙 fit. boss corpse `max(96,r*3)`·600·원 회전/Y.5 유지 |
+| 권한 | 현재 owner/life/scene/ready base8 lease에만 소비. 원 `_reviveTimer` undefined→0/zero허용; queued mutation closeLease는 일관성 보정이며 실제 오채택 결함 재현 주장0 |
+| 제외 | rig death pose/새3D/IK/해부학foot/실사망·부활 native/전체alpha 및 전투 가독성 인수0 |
+
+최초 actual-source CPU41PASS·오라클1FAIL과 별도 renderer 정적1PASS, software bitmap8방향 nonempty는 각각 보존한다. 새로운 main native는 NOT_RUN·기존 사용자 IAB13 old source 유지다. ROOT bitmap 판독에서 몸·뿔은 식별하나 작은 어두운 썸네일과 셀 경계/접지 미인수로 **RETOUCH**다.
+
+최종 `game.html` working **4,108,637B / SHA256 `e126009e20157a98c0561e3a3f111d94372b26df39bb45964e4d6591af31c757`**, ROOT owned **4,108,452B / `6787cb308cf3d085c5821d3b9eed95e2d760eb584473f3ceec2dbfcb816ed981`**의 2hunk 기준이다. foreign185B는 미채택 기존 바이트로 보존한다.
+
+[사망VFX 정본](<../5.1임펙트디자인/사망VFX_변경로그.md>) 및 [MAP_RUNTIME_ARCHITECTURE §23](<../4.1맵디자인+설정/MAP_RUNTIME_ARCHITECTURE.md>)의 같은 TASK 절을 따른다. 기존 완료/실패 검수 재실행·clean 합산0, ROOT 정상 Git 보존 전이다.

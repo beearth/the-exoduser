@@ -24309,6 +24309,201 @@ function _buildCorpseGoreOverlay(noEyes){
   return canvas;
 }
 const _corpseGoreOverlays=Array.from({length:32},(_,i)=>_buildCorpseGoreOverlay(i>=16));
+// ROOT-CH1-DRUID-CORPSE-SOURCE-CONSUMER-20261007
+// Synchronous corpse bitmap only. Never observes or revives the actor.
+function _captureCh1DruidCorpse(c,e){
+  let ctx=null,attempted=false;
+  try{
+    // Missing optional own fields may be normalized; accessors are rejected.
+    const own=(o,k)=>{
+      if(!o||(typeof o!=='object'&&typeof o!=='function'))throw 0;
+      const d=Object.getOwnPropertyDescriptor(o,k);
+      if(d&&!Object.hasOwn(d,'value'))throw 0;
+      return d?d.value:undefined;
+    };
+    const num=v=>v===undefined?0:
+      typeof v==='number'&&Number.isFinite(v)?v:NaN;
+    const flag=v=>v===undefined?false:
+      typeof v==='boolean'?v:null;
+    const token=v=>!!v&&typeof v==='object'&&
+      (Object.getPrototypeOf(v)===Object.prototype||
+       Object.getPrototypeOf(v)===null);
+
+    const game=G,enemies=ens,map=own(game,'map');
+    const mw=own(game,'mw'),mh=own(game,'mh');
+    const arena=flag(own(game,'_bossArena'));
+    if(!_ch1RigRequested||!_ch1DruidAlive||
+       _CH1_START_PHASE!=='smoothing'||
+       _CH1_START_ROOT!=='assets/map/ch1/production_finish'||
+       own(game,'on')!==true||own(game,'stage')!==0||
+       arena===null||!Array.isArray(map)||!Array.isArray(enemies)||
+       mw!==(arena?128:200)||mh!==(arena?108:200)||
+       own(map,'length')!==mh||!Array.isArray(own(map,'0'))||
+       own(own(map,'0'),'length')!==mw)return false;
+
+    let memberIndex=-1,bossCount=0;
+    const count=own(enemies,'length');
+    for(let i=0;i<count;i++){
+      const member=own(enemies,String(i));
+      if(member===e)memberIndex=i;
+      if(member&&own(member,'ib')===true&&++bossCount>1)return false;
+    }
+    if(memberIndex<0||bossCount!==1)return false;
+
+    const hp=own(e,'hp'),state=own(e,'s');
+    const deaths=num(own(e,'deaths'));
+    const phase=num(own(e,'_bossPhase'));
+    const lastStand=flag(own(e,'_druidLastStand'));
+    const defeated=flag(own(e,'_druidDefeated'));
+    const timer=num(own(e,'_reviveTimer'));
+    const radius=num(own(e,'r'));
+    const facing=num(own(e,'facing'));
+    const vx=num(own(e,'vx')),vy=num(own(e,'vy'));
+    if(own(e,'ib')!==true||own(e,'alive')!==false||
+       typeof hp!=='number'||!Number.isFinite(hp)||hp>0||
+       typeof state!=='string'||!state||
+       !Number.isSafeInteger(deaths)||deaths<1||
+       !Number.isSafeInteger(phase)||phase<0||
+       lastStand===null||defeated!==false||
+       !Number.isFinite(timer)||timer<0||
+       !Number.isFinite(radius)||radius<=0||
+       ![facing,vx,vy].every(Number.isFinite))return false;
+
+    const scene=_ch1DruidScene;
+    const owner=_ch1DruidActors.get(e);
+    const life=own(owner,'lifeGeneration');
+    const sheet=own(_druidSheets,'base8');
+    const image=own(sheet,'img');
+    const lease=_ch1DruidDecoded.get(image);
+    const borrowed=own(lease,'borrowed');
+    const generation=own(lease,'generation');
+    const fingerprint=own(lease,'fingerprint');
+    const observer=own(lease,'observer');
+    if(!token(life)||!token(generation)||
+       !Object.isFrozen(borrowed)||
+       own(borrowed,'image')!==image||
+       own(borrowed,'generation')!==generation||
+       own(borrowed,'decodedGeneration')!==generation||
+       typeof MutationObserver!=='function')return false;
+
+    const sameLife=()=>G===game&&ens===enemies&&
+      _ch1RigRequested&&_ch1DruidAlive&&
+      _CH1_START_PHASE==='smoothing'&&
+      _CH1_START_ROOT==='assets/map/ch1/production_finish'&&
+      own(game,'on')===true&&own(game,'stage')===0&&
+      own(game,'map')===map&&own(game,'mw')===mw&&
+      own(game,'mh')===mh&&flag(own(game,'_bossArena'))===arena&&
+      _ch1DruidScene===scene&&own(scene,'game')===game&&
+      own(scene,'map')===map&&own(scene,'enemies')===enemies&&
+      own(scene,'arena')===arena&&own(scene,'mw')===mw&&
+      own(scene,'mh')===mh&&
+      own(enemies,String(memberIndex))===e&&
+      _ch1DruidActors.get(e)===owner&&
+      own(owner,'game')===game&&own(owner,'map')===map&&
+      own(owner,'enemies')===enemies&&own(owner,'actor')===e&&
+      own(owner,'scene')===scene&&own(owner,'lifeGeneration')===life&&
+      own(owner,'band')==='live'&&own(owner,'pending')===false&&
+      own(owner,'intent')==='normal'&&own(owner,'state')===state&&
+      Number.isSafeInteger(own(owner,'deaths'))&&
+      own(owner,'deaths')>=0&&own(owner,'deaths')+1===deaths&&
+      own(owner,'bossPhase')===phase&&
+      own(owner,'lastStand')===lastStand&&
+      own(owner,'defeated')===defeated&&
+      own(e,'ib')===true&&own(e,'alive')===false&&
+      own(e,'hp')===hp&&own(e,'s')===state&&
+      num(own(e,'deaths'))===deaths&&
+      num(own(e,'_bossPhase'))===phase&&
+      flag(own(e,'_druidLastStand'))===lastStand&&
+      flag(own(e,'_druidDefeated'))===defeated&&
+      num(own(e,'_reviveTimer'))===timer&&
+      num(own(e,'r'))===radius&&num(own(e,'facing'))===facing&&
+      num(own(e,'vx'))===vx&&num(own(e,'vy'))===vy;
+
+    const sameSource=()=>{
+      if(own(_druidSheets,'base8')!==sheet||
+         own(sheet,'img')!==image||own(sheet,'ready')!==true||
+         _ch1DruidDecoded.get(image)!==lease||
+         !_ch1DruidLeases.has(lease)||
+         own(lease,'owner')!==owner||own(lease,'life')!==life||
+         own(lease,'scene')!==scene||own(lease,'sheetRecord')!==sheet||
+         own(lease,'state')!=='ready'||own(lease,'settled')!==true||
+         own(lease,'closed')!==false||
+         own(lease,'generation')!==generation||
+         own(lease,'borrowed')!==borrowed||
+         own(lease,'fingerprint')!==fingerprint||
+         own(lease,'observer')!==observer)return false;
+      const now=_ch1DruidImage(image);
+      if(!now||own(now,'naturalWidth')!==1656||
+         own(now,'naturalHeight')!==1240||
+         own(borrowed,'width')!==1656||
+         own(borrowed,'height')!==1240)return false;
+      for(const key of ['image','complete','naturalWidth',
+                        'naturalHeight','src','currentSrc','srcset','sizes']){
+        if(own(fingerprint,key)!==own(now,key))return false;
+      }
+      return own(borrowed,'srcSnapshot')===own(now,'src')&&
+        own(borrowed,'currentSrcSnapshot')===own(now,'currentSrc')&&
+        own(borrowed,'srcsetSnapshot')===own(now,'srcset')&&
+        own(borrowed,'sizesSnapshot')===own(now,'sizes');
+    };
+    if(!sameLife()||!sameSource())return false;
+
+    const spec=own(_CODEX_BOSS,'0');
+    if(own(spec,'use2D')!==true||own(spec,'anim')!==true)return false;
+    const dw=radius*own(spec,'dw'),dh=radius*own(spec,'dh');
+    if(!Number.isFinite(dw)||!Number.isFinite(dh)||dw<=0||dh<=0)
+      return false;
+    let angle=facing;
+    if((state==='eWalk'||state==='eChase'||state==='eApproach')&&
+       (vx||vy))angle=Math.atan2(vy,vx);
+    const octant=((Math.round(angle/(Math.PI/4))%8)+8)%8;
+    const dir=own(_DRUID_DIRMAP,String(octant));
+    if(!Number.isInteger(dir)||dir<0||dir>7)return false;
+    const col=dir%4,row=Math.floor(dir/4);
+    const sx=Math.round(col*1656/4),sy=Math.round(row*1240/2);
+    const sw=Math.round((col+1)*1656/4)-sx;
+    const sh=Math.round((row+1)*1240/2)-sy;
+    const k=Math.min(128/dw,128/dh);
+    const width=k*dw,height=k*dh;
+    if(![k,width,height].every(Number.isFinite)||k<=0)return false;
+
+    ctx=own(c,'ctx');
+    const canvas=own(c,'c');
+    if(!ctx||ctx.canvas!==canvas||
+       canvas.width!==128||canvas.height!==128)return false;
+    const takeRecords=Object.getOwnPropertyDescriptor(
+      MutationObserver.prototype,'takeRecords')?.value;
+    if(typeof takeRecords!=='function')return false;
+
+    ctx.save();
+    try{
+      ctx.setTransform(1,0,0,1,0,0);
+      ctx.globalAlpha=1;
+      ctx.globalCompositeOperation='source-over';
+      // Native queue drain, then recheck ownership and the same image.
+      const sourceChanges=takeRecords.call(observer);
+      if(sourceChanges.length){_ch1DruidCloseLease(lease,'source-mutated');return false;}
+      if(!sameLife()||!sameSource())return false;
+      attempted=true;
+      ctx.drawImage(image,sx,sy,sw,sh,
+        (128-width)/2,(128-height)/2,width,height);
+    }finally{
+      ctx.restore();
+    }
+    return true;
+  }catch(_){
+    if(attempted&&ctx){
+      try{
+        ctx.save();
+        try{
+          ctx.setTransform(1,0,0,1,0,0);
+          ctx.clearRect(0,0,128,128);
+        }finally{ctx.restore();}
+      }catch(_){}
+    }
+    return false;
+  }
+}
 function _addCorpse(e,killAng,power){
   if(!OPT.deathFx)return;
   e._corpseSpawned=true;
@@ -24333,6 +24528,7 @@ function _addCorpse(e,killAng,power){
     if(typeof _fmDrawSpriteTo==='function'&&_fmDrawSpriteTo(c.ctx,128,128,e,e._fmKind==='fb'))_cDrawn=true;
   }
   // ── 보스: 보스 전용 아틀라스에서 캡처 ──
+  if(!_cDrawn&&_captureCh1DruidCorpse(c,e))_cDrawn=true;
   if(!_cDrawn&&e.ib){
     const _bsi=G.stage||0;
     // 1) 방향별 보스 아틀라스

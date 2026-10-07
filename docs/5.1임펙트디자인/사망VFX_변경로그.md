@@ -293,3 +293,27 @@
 | 실제 성능 / 품질 | 첫 처치 시간·실GPU·픽셀·CPU 폴백 회복·청취 미측정. 과거 Windows 및 머리 캡처 실측을 이번 효과로 재사용하지 않음. 이전 등록·업로드 실패 폴백의 복구 보장도 추가하지 않음 |
 
 2026-09-29 배포 스냅샷·기존 실측은 이력이며 이번 source6의 측정값이 아니다.
+
+
+## 2026-10-07 ROOT-CH1-DRUID-CORPSE-SOURCE-CONSUMER-20261007 · 드루이드 시체 원본 캡처
+
+전용 death sheet나 사망 애니메이션을 추가하지 않고, 승인된 기존 base8 방향 셀을 현재 시체 bitmap에 소비하는 좁은 예외를 구현했다. 과거 날짜의 pool60·첫사용 시간·일반 사망 캡처 측정은 당시 source 이력으로 유지한다.
+
+| 소비 위치 | 현재 계약 |
+|---|---|
+| 연결 | `_addCorpse`의 기존 fieldmob 캡처 뒤/기존 boss atlas 앞에서 `!_cDrawn && _captureCh1DruidCorpse(c,e)` 1회 |
+| 원본 | `boss_dark_druid_8dir_v3.png` 1656×1240/4×2/cell414×620; 추가 image 생성·decode·fetch0 |
+| 허용 | 기존 CH1 rig opt-in·stage0·production_finish/smoothing·현재 scene/owner/life/ready base8 lease가 일치하는 사망 actor만. 다른 경우 기존 fallback |
+| 비율 | `dw=r*9.3`, `dh=r*14.1`, `k=min(128/dw,128/dh)`로 기존128² 중앙 fit; 전용 death 포즈나 해부학적 foot 캡처 아님 |
+| 기존 pool/크기/수명 | pool120×128²; 보스 `max(96,r*3)`/600, 일반 `max(40,min(260,r*2.9))`/420, 기존 fieldmob/220 별도 불변 |
+| 기존 motion/render | `r=killAng+PI*.5`, 기존 속도·회전·마찰·벽 bounce, 마지막40% fade/alpha<.05, max25/cull40, rotate 뒤 Y scale.5 그대로 |
+| 옵션/효과 | `OPT.deathFx=false`는 원래 함수 첫 return. 기존 gore overlay·headgib·floortrace·death/revive/reward/save 권한 불변 |
+| 타이머 | 원 actor `_reviveTimer`의 undefined는0으로 정규화하며0허용. 새 필수양수 death timer 조건 없음 |
+
+최초 actual-source CPU는 Node1/8그룹 계획·7그룹 완료/42조건 도달 **41PASS·1FAIL·미도달0·exit1**이다(동작38·inverse/helper 정적3 PASS). 마지막 FAIL은 renderer 대신 물리 update 루프를 선택한 추출 오라클 오류로, 제품 결함 확정이 아니다. 이후 원41조건 재실행 없이 실제 renderer599B exact·`X.scale(1,.5)` 보존만 별도 Node1/정적1조건 PASS·exit0으로 확인했다. 실제 원PNG/software canvas+현재 helper의 8방향 bitmap은 모두 비어있지 않음·exit0이지만 통제 lifecycle/image fingerprint/observer 포트이며 HTMLImageElement·GPU·실본편 사망 검수가 아니다. 이 세 실행을 clean42PASS나 native PASS로 합산하지 않는다.
+
+새 본편 death native는 **NOT_RUN**(Chrome/context/page0)이다. 사용자의 기존 IAB tab13은 old loaded source를 유지하며 새로고침·새 게임0, 새 corpse consumer 적용0이다. ROOT의 bitmap PNG 직접 판독은 몸·뿔 식별 한정이며 회전/Y.5 썸네일은 작고 어둡다. 셀 경계 alpha 완전성·해부학적 발·접지·실제 사망/부활·전투 겹침·동일후보6단계/native6·audio·durableSaveACK·성능·A급은 미인수다. **VISUAL VERDICT: RETOUCH**.
+
+최종 `game.html` working **4,108,637B / SHA256 `e126009e20157a98c0561e3a3f111d94372b26df39bb45964e4d6591af31c757`**, ROOT owned **4,108,452B / `6787cb308cf3d085c5821d3b9eed95e2d760eb584473f3ceec2dbfcb816ed981`**의 2hunk 기준이다. foreign185B는 미채택 기존 바이트로 보존한다.
+
+전체 source/currentness·수치·§23 보고는 [MAP_RUNTIME_ARCHITECTURE](<../4.1맵디자인+설정/MAP_RUNTIME_ARCHITECTURE.md>)의 같은 TASK 절을 따른다. 외부 근거는 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-druid-corpse-consumer-20261007`의 `implementation-receipt.json`(1,102B/`299f04e4d5e2dd9c909605efd3a4e51a10d2ce88eaf17d9a7391bb7afbfd4822`), `validation-receipt.json`(20,425B/`74db21d0c3d0c933709df5377f6ea7243e3c3ad05b803511c852fa1d7e3908be`), `visual-verdict.json`(9,562B/`da1bb7a4dc8e5d84a2354f8c45345f83890a7bafb9eab5757e4b6e92e92ae9a1`)이다. Git stage/commit/push는 ROOT의 완료소유 보존 예정이며 이 부록에서 완료 SHA를 미리 주장하지 않는다.
