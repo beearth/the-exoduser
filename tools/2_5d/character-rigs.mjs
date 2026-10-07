@@ -69,7 +69,7 @@ export async function createCharacterRig(id,{THREE,height=2.2}={}){
     object3d.visible=false;
     const rest=bones.map(bone=>({position:bone.position.clone(),rotation:bone.rotation.clone()}));
     let elapsed=0,lastFrameKey='',frameInfo=null,lastMode='idle',lastDirection=0,frameIndex=0;
-    let weightChecks=0,maxWeightError=0;
+    let weightChecks=0,maxWeightError=0,posePublication=null,updateJob=null,updateDepth=0;
 
     function setGeometry(frame){
       const pixelScale=height/frame.referenceHeight;
@@ -127,24 +127,46 @@ export async function createCharacterRig(id,{THREE,height=2.2}={}){
         byName.get('arm-right').rotation.z-=hit*strength*1.8;
       }
     }
-    function update(dt,{mode='idle',direction=0,phase,speed}={}){
-      if(disposed)throw new Error('해제된 캐릭터 리깅입니다.');
-      if(!['idle','walk','run','attack'].includes(mode)||!Number.isInteger(direction)||direction<0||direction>7)throw new Error('모션/8방향 계약 오류');
-      const delta=Number.isFinite(dt)?clamp(dt,0,C.maxDelta):0;
-      const phaseProvided=Number.isFinite(phase);
-      if(mode!==lastMode)elapsed=0;
-      elapsed+=delta;
-      const interval=id==='dark-druid'&&mode!=='idle'?C.druidFrameInterval:C.frameInterval[mode];
-      const duration=interval*entry.frames[mode];
-      const normalizedPhase=phaseProvided?clamp(phase,0,1):(elapsed%duration)/duration;
-      frameIndex=Math.min(entry.frames[mode]-1,Math.floor(normalizedPhase*entry.frames[mode]));
-      setFrame(mode,direction,frameIndex);
-      pose(mode,elapsed,normalizedPhase);
-      lastMode=mode;lastDirection=direction;
-      // No movement, damage, save, camera or caller transform is modified here. speed is observational.
-      object3d.userData.motionSpeed=Number.isFinite(speed)?speed:0;
-      mesh.updateMatrixWorld(true);skeleton.update();
-      return object3d;
+    function update(dt,options={}){
+      updateDepth++;
+      // Revoke the prior pose before reading any caller option accessor.
+      posePublication=null;
+      const job={};updateJob=job;
+      try{
+        if(disposed)throw new Error('해제된 캐릭터 리깅입니다.');
+        const {mode='idle',direction=0,phase,speed}=options;
+        if(disposed||updateJob!==job)return object3d;
+        if(!['idle','walk','run','attack'].includes(mode)||!Number.isInteger(direction)||direction<0||direction>7)throw new Error('모션/8방향 계약 오류');
+        const delta=Number.isFinite(dt)?clamp(dt,0,C.maxDelta):0;
+        const phaseProvided=Number.isFinite(phase);
+        if(mode!==lastMode)elapsed=0;
+        elapsed+=delta;
+        const interval=id==='dark-druid'&&mode!=='idle'?C.druidFrameInterval:C.frameInterval[mode];
+        const duration=interval*entry.frames[mode];
+        const normalizedPhase=phaseProvided?clamp(phase,0,1):(elapsed%duration)/duration;
+        frameIndex=Math.min(entry.frames[mode]-1,Math.floor(normalizedPhase*entry.frames[mode]));
+        setFrame(mode,direction,frameIndex);
+        if(disposed||updateJob!==job)return object3d;
+        pose(mode,elapsed,normalizedPhase);
+        if(disposed||updateJob!==job)return object3d;
+        lastMode=mode;lastDirection=direction;
+        // No movement, damage, save, camera or caller transform is modified here. speed is observational.
+        object3d.userData.motionSpeed=Number.isFinite(speed)?speed:0;
+        if(disposed||updateJob!==job)return object3d;
+        mesh.updateMatrixWorld(true);
+        if(disposed||updateJob!==job)return object3d;
+        skeleton.update();
+        if(disposed||updateJob!==job)return object3d;
+        if(updateDepth===1)posePublication=Object.freeze({normalizedPhase,mode,direction,frame:frameIndex,elapsed,source:frameInfo});
+        return object3d;
+      }catch(error){
+        posePublication=null;throw error;
+      }finally{
+        updateDepth--;
+        // A resumed outer update can have changed a successful inner pose.
+        if(updateJob!==job)posePublication=null;
+        else updateJob=null;
+      }
     }
     function snapshot(){
       const sample={};
@@ -152,13 +174,14 @@ export async function createCharacterRig(id,{THREE,height=2.2}={}){
         const bone=byName.get(key);sample[key]=Object.freeze({position:Object.freeze(bone.position.toArray()),quaternion:Object.freeze(bone.quaternion.toArray())});
       }
       return Object.freeze({id,name:entry.name,kind:entry.kind,height,mode:lastMode,direction:lastDirection,frame:frameIndex,
-        elapsed,disposed,vertices:count,triangles:geometry.index.count/3,boneCount:bones.length,meshCount:1,
+        elapsed,disposed,posePublication,vertices:count,triangles:geometry.index.count/3,boneCount:bones.length,meshCount:1,
         weightChecks,maxWeightError,source:Object.freeze({...frameInfo}),samples:Object.freeze(sample),
         assets:Object.freeze(entry.assets.map(info=>Object.freeze({path:info.path,sha256:info.sha256,bytes:info.bytes,sampling:info.sampling}))),
         metadata:Object.freeze((entry.metadata||[]).map(info=>Object.freeze({...info}))),
         limits:'원화 평면 스킨 / 정사영 카메라향 billboard 필요 / 완전 3D 인체 아님 / 전투·저장 미연결'});
     }
     function dispose(){
+      posePublication=null;updateJob=null;
       if(disposed)return;disposed=true;object3d.visible=false;object3d.removeFromParent();
       geometry.dispose();material.dispose();skeleton.dispose();textures.forEach(texture=>texture.dispose());
       textures.clear();leases.forEach(lease=>lease.release());leases.length=0;
