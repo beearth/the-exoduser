@@ -56201,3 +56201,19 @@ pageerrorHTTP0/requestfail5(font3의도차단+introabort2직접원인UNKNOWN)·A
 | Git | 원총괄이 소유 코드/문서 정상 보존 예정. 이 문서 작성 시 commit/push 완료 주장은 하지 않음 |
 
 소스 작업 세대: working `4108654B / 0f33afcdfa063fe99fbf2c1f8aabc2c134e8ad3188d0e346e831a664297d68a7`, 원총괄 owned `4108469B / 4bccad8744e07586399b823413455b1abacb0393f9cd86ed2c28e19c8adcaf15`. 기존 foreign185B는 미채택으로 보존했다. 외부 근거: `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-whirlwind-st-display-20261008/implementation-receipt.json`(1603B/`ffaa21f22d781fcec07470eaad2708499bb6b31da459a45e80d515b1cccb507d`), `static-review-receipt.json`(1628B/`2e31c84994d0b4657249b21b0607b278d975f80173fd9c0343b75aa81f953645`). 실제 시각 검수를 하지 않은 표시 단위이며 게임 전체 VISUAL RETOUCH 판정을 승격하지 않는다.
+
+### 2026-10-08 ROOT-MAIN-RIFT-VIEW-ZOOM-CONSUMER-20261008 · 둘러보기 확대/축소
+
+현재 `tools/2_5d-world-lab.mjs`는 **60546B / SHA256 `9e82f40f140c125e71c3a8de63182c4c541f0bc4451b772acfb779739d4e05f0`**다. 아래는 새 view-only 줌 UI의 현재 계약이며, 앞선 view/NPC/freshness 작업의 소스 핀·검수 결과는 각 작업 당시 이력으로 보존한다. 기존 frame말 NPC 안내 숨김 계약은 유지한다.
+
+제품 변경은 view-only stage에 `− / % / +` 조작을 추가하고 기존 range→resize→camera.zoom 경로를 소비한 child1/7hunk다. 범위80~220%/5step/초기100%, 최소44CSSpx 버튼; 최종 camera/epoch/DOM/리프 identity 및 paused/hidden/error/contextloss/disposed 가드. 기존 aside 숨김/standalone 조작, 대화 focus/parent lease/save·원 scene/nav/actor world크기 유지. 새 RAF/timer0.
+
+검수는 ROOT의 **최초 Node1 / 7그룹 / 25조건 PASS, FAIL·setup·미도달0 / exit0**다. 실제 소스의 resize/apply/install/stop/lifecycle/UI 생성 구역을 통제 DOM/range/renderer/dialogue 포트로 실행했다. 100→105→100, 220→215, 80 경계, paused/hidden/error/contextloss/disposed/epoch, 교체 리프, range 포트 재진입·throw, standalone UI0, 대화 focus 보존을 이 범위에서 확인했다. native `range.stepUp` 의미·실WebGL/GPU·실화면 인수는 아니다. 소스 peer의 새 actionable0은 정적 검토이며 별도 실행 성공으로 합산하지 않는다.
+
+새 Chrome0/native **NOT_RUN**, 새 PNG0, 이번 UI 시각 **NOT_ASSESSED**다. 사용자 IAB tab13의 이전 로드 소스를 유지하고 reload/새 게임0이다. 전체 **VISUAL VERDICT: RETOUCH**. 실제 줌 가독성/버튼 겹침·전8카메라·발/물리높이/native6/audio/durable save는 이번에 인수하지 않았다.
+
+코드후 전체 관련 검색1회43경로142행184 occurrence/보호·owner 경계 제외·전수완독 주장0. 직접 관련 정본4에만 추가했다. 초기60473/db14 읽기 뒤 최종60546/9e82와 불일치한 준비 중단1은 검색0/제품0이며 ROOT final ACK 뒤 첫 검색을 진행했다. 이전 CPU/native/WW 결과와 합산0.
+
+근거는 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/main-rift-view-zoom-20261008`의 `validation-receipt.json`1236B/`e92f4a1c24fd4271f0663c4d72a3dcbfb72f66699cfc452924be982730b14e8f`, `cpu-result.json`3776B/`a48a7d172cdef5a83cb5126c57dfd237328c22d76bbb1bc1d0bdcaef50392bce`, `source-peer-review.json`18147B/`411cb174ff05f146a3bd66ba715d4cf5207659447ca5983dc44a43306836265f`, `visual-verdict.json`3495B/`7ce66d415ecb0c4ca951e8d633bf06b70e893d27f65d3c531d59bd2acdca7f80`다. 최종 소스는 7hunk/원 before 역변환 exact이며, 문서 담당의 새 제품 실행/Git0이다. 원총괄 Git 보존은 문서 작성 시 예정 상태로서 commit/push 완료를 미리 주장하지 않는다.
+
+[HUD](<3.1 ui hud 디자인/SETTINGS_HUD_DETAIL_20260930.md>) / [소비자](<11내러티브·로어디자인/RIFT_DIALOGUE_PUBLIC_CONSUMER_20261007.md>) / [§23 전체 보고](<4.1맵디자인+설정/HELL_RIFT_2_5D_SLICE_20261006.md>).

@@ -194,3 +194,27 @@ Node 후보 연결과 root 보강 회귀61PASS. 게임 생성/드롭/저장라�
 신규CPU22와 별도native2가 한정범위에서PASS했다. actual firstOut frame797은 lastUi보다175.1ms뒤이며 cached도릭nearest가 남아도 안내가숨겨졌다. root PNG2는직접판독했으나 after-out.png는첫이탈frame정확촬영이아니며 그근거는telemetry다. 기존도릭/저장대기검수와합산0·전체RETOUCH.
 
 [상세계약·정확근거](<../11내러티브·로어디자인/RIFT_DIALOGUE_PUBLIC_CONSUMER_20261007.md>) / [§23전체보고](<../4.1맵디자인+설정/HELL_RIFT_2_5D_SLICE_20261006.md>). 문서담당제품CPU/Chrome/Git0·root보존예정.
+
+### 2026-10-08 ROOT-MAIN-RIFT-VIEW-ZOOM-CONSUMER-20261008 · 둘러보기 확대/축소
+
+현재 `tools/2_5d-world-lab.mjs`는 **60546B / SHA256 `9e82f40f140c125e71c3a8de63182c4c541f0bc4451b772acfb779739d4e05f0`**다. 아래는 새 view-only 줌 UI의 현재 계약이며, 앞선 view/NPC/freshness 작업의 소스 핀·검수 결과는 각 작업 당시 이력으로 보존한다. 기존 frame말 NPC 안내 숨김 계약은 유지한다.
+
+| 항목 | 현재 계약 |
+|---|---|
+| 노출 | `view-only=1`의 stage 안 별도 `.view-zoom` 그룹. 숨겨진 aside를 다시 노출하지 않으며 일반 standalone의 기존 aside 확대 컨트롤 유지 |
+| 버튼/표시 | `#view-zoom-out`의 `−`, `#view-zoom-in`의 `+`, 리프 `#view-zoom-value`의 정수 percent. 버튼 최소 가로/세로 44 CSS px |
+| 원래 범위 | 기존 HTML `#zoom`: min80/max220/step5/value100. 80~220%, 5%p 간격, 초기100% |
+| 소비 | 기존 range의 `stepDown()/stepUp()` → `applyZoomInput()` → `resize()` → `camera.zoom=Number(range.value)/100` → projection 갱신 |
+| 경계 | 최소에서 축소/최대에서 확대 비활성. camera zoom을 .8~2.2 단위에서 finite 검증 후 표시용 percent만80~220 clamp/정수 반올림. `2.2*100`의 부동소수 오차로 정상 상한이 거절되지 않도록 구분 |
+| 수명/identity | captured epoch/camera/scene/renderer/DOM/range 정의(min/max/step) 일치와 ready/error/contextloss/disposed 상태 확인. paused/hidden이면 조작 비활성 |
+| 리프 안전 | captured output이 현재 ID 노드와 동일·connected·children0일 때 그 리프만 쓴다. 교체된 새 노드를 지우지 않음 |
+| focus | 조작 성공 후 현재/usable이고 대화가 닫혀 있을 때만 canvas focus 복귀. 열린 대화의 선택지 focus를 강제 회수하지 않음 |
+| 반복/저장 | 기존 updateUi/stopFrame/visibility 경로에 sync. 새 RAF/timer/저장 항목0; OPT/BINDS/로비carry4 추가0 |
+
+줌은 기존 카메라의 화면 배율만 소비한다. actor의 world 크기/발 좌표, 원 PNG/scene/nav/배치, 근접 거리140, R/WASD/Escape, parent lease·저장 대기·복귀·클리어·보상 권한을 바꾸지 않는다. 다른 모드의 조작/scene 저장과 연결하지 않는다.
+
+검수는 ROOT의 **최초 Node1 / 7그룹 / 25조건 PASS, FAIL·setup·미도달0 / exit0**다. 실제 소스의 resize/apply/install/stop/lifecycle/UI 생성 구역을 통제 DOM/range/renderer/dialogue 포트로 실행했다. 100→105→100, 220→215, 80 경계, paused/hidden/error/contextloss/disposed/epoch, 교체 리프, range 포트 재진입·throw, standalone UI0, 대화 focus 보존을 이 범위에서 확인했다. native `range.stepUp` 의미·실WebGL/GPU·실화면 인수는 아니다. 소스 peer의 새 actionable0은 정적 검토이며 별도 실행 성공으로 합산하지 않는다.
+
+새 Chrome0/native **NOT_RUN**, 새 PNG0, 이번 UI 시각 **NOT_ASSESSED**다. 사용자 IAB tab13의 이전 로드 소스를 유지하고 reload/새 게임0이다. 전체 **VISUAL VERDICT: RETOUCH**. 실제 줌 가독성/버튼 겹침·전8카메라·발/물리높이/native6/audio/durable save는 이번에 인수하지 않았다.
+
+[소비자·정확 근거](<../11내러티브·로어디자인/RIFT_DIALOGUE_PUBLIC_CONSUMER_20261007.md>) / [§23 전체 보고](<../4.1맵디자인+설정/HELL_RIFT_2_5D_SLICE_20261006.md>).

@@ -31,13 +31,21 @@ if(viewOnly){
   $('loading-title').textContent='지옥의 틈으로 들어갑니다';
   $('loading-detail').textContent='공간을 준비하고 있습니다.';
   const legend=document.querySelector('.legend');if(legend&&legend.children.length===0)legend.textContent='WASD / 방향키 이동 · Shift 달리기 · J 공격 · R 대화 · Esc 돌아가기';
+  style.textContent+='.view-zoom{position:absolute;top:12px;right:12px;z-index:2;display:flex;align-items:center;gap:6px;padding:6px;background:#101914ed;border:1px solid #d2ba83;border-radius:6px}.view-zoom button{min-width:44px;min-height:44px;padding:4px 10px;font-size:18px}.view-zoom output{min-width:4ch;text-align:center;font-size:12px}';
+  const zoomGroup=document.createElement('div');zoomGroup.className='view-zoom';zoomGroup.setAttribute('role','group');zoomGroup.setAttribute('aria-label','화면 확대');
+  for(const [id,text,label] of [['view-zoom-out','−','화면 축소'],['view-zoom-in','+','화면 확대']]){
+    const button=document.createElement('button');button.id=id;button.type='button';button.disabled=true;button.textContent=text;button.setAttribute('aria-label',label);zoomGroup.append(button);
+    if(id==='view-zoom-out'){const output=document.createElement('output');output.id='view-zoom-value';output.setAttribute('aria-live','polite');zoomGroup.append(output);}
+  }
+  document.querySelector('.stage').append(zoomGroup);
 }
 
 const labels = {idle:'대기',walk:'걷기',run:'달리기',attack:'공격'};
 const specialLabels={dive:'지면으로 잠입',under:'잠행 · 본체 숨김',erupt:'솟아오르기','tele-prep':'출현 준비','tele-warn':'출현',transform:'변신',beast:'야수 · 방향 원화'};
 const dirs = ['남','남동','동','북동','북','북서','서','남서'];
 const heights = {warrior:.36, silvertail:.36, 'dark-druid':.65};
-const controls = [...document.querySelectorAll('aside button, aside input, aside select')];
+const controls = [...document.querySelectorAll('aside button, aside input, aside select, .view-zoom button')];
+let syncViewZoom=()=>{};
 const keys = new Set(), rigs = {}, helpers = {}, poses = {}, effects = {};
 const state = {ready:false,error:null,frames:0,selected:'warrior',mode:'idle',direction:0,
   x:0,y:0,paused:false,blocked:0,raf:0,lastTime:null,lastUi:0,contextLost:false,disposed:false,foregroundOpacity:1,previewMode:'idle',attackQueued:false};
@@ -88,7 +96,7 @@ function updateViewNpcPrompt(view){
   if(!state.ready||state.paused||state.error||state.disposed||state.contextLost||document.hidden||!document.hasFocus()||document.activeElement!==$('world-canvas')||view||!nearestNpc){hideViewNpcPrompt();return;}
   leaf('view-npc-prompt',`${nearestNpc.name.ko} · R로 대화`);prompt.hidden=false;
 }
-function stopFrame(){if(state.raf)cancelAnimationFrame(state.raf);state.raf=0;state.lastTime=null;hideViewNpcPrompt();}
+function stopFrame(){if(state.raf)cancelAnimationFrame(state.raf);state.raf=0;state.lastTime=null;hideViewNpcPrompt();syncViewZoom();}
 function fail(error){
   if(state.disposed)return;
   state.error=error instanceof Error?error.message:String(error);state.ready=false;stopFrame();keys.clear();cancelAnchorCheck('오류로 검사 중단');
@@ -140,6 +148,42 @@ function resize(){
   const half=3.5/2;camera.left=-half*width/height;camera.right=-camera.left;camera.top=half;camera.bottom=-half;
   camera.zoom=Number($('zoom').value)/100;camera.updateProjectionMatrix();
   if(state.ready)render();
+}
+function applyZoomInput(){leaf('zoom-label',`${$('zoom').value}%`);resize();syncViewZoom();}
+function installViewZoom(){
+  if(!viewOnly)return;
+  const epoch=lifecycleEpoch,cameraOwner=camera,rendererOwner=renderer,sceneOwner=scene;
+  const range=$('zoom'),canvas=$('world-canvas'),stage=canvas.parentElement;
+  const minus=$('view-zoom-out'),plus=$('view-zoom-in'),output=$('view-zoom-value');
+  const definition={min:range.min,max:range.max,step:range.step};
+  const min=Number(definition.min),max=Number(definition.max),step=Number(definition.step);
+  const validDefinition=[min,max,step].every(Number.isFinite)&&min>0&&max>min&&step>0;
+  const current=()=>validDefinition&&effectFrameUsable(epoch)&&camera===cameraOwner&&renderer===rendererOwner&&scene===sceneOwner&&
+    range===$('zoom')&&canvas===$('world-canvas')&&minus===$('view-zoom-out')&&plus===$('view-zoom-in')&&output===$('view-zoom-value')&&
+    stage.isConnected&&canvas.parentElement===stage&&range.isConnected&&minus.isConnected&&plus.isConnected&&output.isConnected&&!range.disabled&&
+    range.min===definition.min&&range.max===definition.max&&range.step===definition.step;
+  const percent=()=>{
+    const zoom=cameraOwner.zoom;
+    // Validate in camera units: 2.2 * 100 can exceed the authored 220 endpoint.
+    return typeof zoom==='number'&&Number.isFinite(zoom)&&zoom>=min/100&&zoom<=max/100?Math.min(max,Math.max(min,zoom*100)):null;
+  };
+  const usable=()=>current()&&!state.paused&&!document.hidden;
+  syncViewZoom=()=>{
+    const value=current()?percent():null,enabled=usable()&&value!==null;
+    minus.disabled=!enabled||value<=min;plus.disabled=!enabled||value>=max;
+    if(output===$('view-zoom-value')&&output.isConnected&&!output.children.length)output.textContent=value===null?'':`${Math.round(value)}%`;
+  };
+  function change(direction){
+    if(!usable())return;
+    const value=percent();if(value===null)return;
+    try{
+      range.value=String(value);if(direction<0)range.stepDown();else range.stepUp();
+      if(!usable())return;
+      applyZoomInput();
+    }catch(error){if(current())fail(error);syncViewZoom();return;}
+    if(usable()&&!dialogue?.snapshot().isOpen){try{canvas.focus({preventScroll:true});}catch{}}
+  }
+  minus.addEventListener('click',()=>change(-1));plus.addEventListener('click',()=>change(1));syncViewZoom();
 }
 function cancelAnchorCheck(reason){if(!anchorJob&&acceptance.status==='PENDING')return;anchorJob=null;acceptance={status:'PENDING',samples:0,reason,result:null};updateAcceptanceUi();}
 function cancelSpecial(){specialMotion?.setMotion('none');if(rigs[state.selected]){rigs[state.selected].object3d.visible=true;helpers[state.selected].visible=$('bones').checked;}if(shadow)shadow.visible=true;}
@@ -351,6 +395,7 @@ function updateWolf(dt){
 // Explicit selection/reset still applies the new foot transform while time is paused.
 function applyState(){if(state.ready){pose(0);render();updateUi();}}
 function updateUi(){
+  syncViewZoom();
   if(!state.ready)return;
   const read=readRigSnapshot(state.selected,rigs[state.selected]);if(!read.ok)return;
   const s=read.value;
@@ -638,7 +683,7 @@ try{
   state.ready=true;controls.forEach(el=>el.disabled=false);$('loading').hidden=true;reset();select(initialCharacter);
   initialCharacterReady=state.ready&&!state.error&&!state.disposed&&state.selected===initialCharacter;
   reducedQuery.addEventListener('change',updateReducedMotion);
-  observer=new ResizeObserver(resize);observer.observe($('world-canvas').parentElement);resize();resume();
+  observer=new ResizeObserver(resize);observer.observe($('world-canvas').parentElement);resize();installViewZoom();resume();
   for(const id of Object.keys(labels))$(id).addEventListener('click',()=>setMode(id));
   $('character').addEventListener('change',()=>select($('character').value));
   $('bones').addEventListener('change',()=>select(state.selected));
@@ -649,7 +694,7 @@ try{
   $('special-play').addEventListener('click',playSpecial);
   $('special-stop').addEventListener('click',()=>{clearIntent();applyState();});
 
-  $('zoom').addEventListener('input',()=>{leaf('zoom-label',`${$('zoom').value}%`);resize();});
+  $('zoom').addEventListener('input',applyZoomInput);
   $('pause').addEventListener('click',()=>{closeDialogue('pause-change');cancelAnchorCheck('일시정지 또는 재생 전환으로 검사 중단');state.paused=!state.paused;keys.clear();leaf('pause',state.paused?'재생':'일시정지');updateUi();});
   $('reset').addEventListener('click',reset);
   $('check-foot').addEventListener('click',beginAnchorCheck);
@@ -673,6 +718,6 @@ function handleBlur(){closeDialogue('blur');clearIntent();poses[state.selected]?
 $('world-canvas').addEventListener('blur',()=>{clearIntent();poses[state.selected]?.onBlur();});
 window.addEventListener('blur',handleBlur);
 $('world-canvas').addEventListener('webglcontextlost',event=>{event.preventDefault();state.contextLost=true;fail(new Error('WebGL 컨텍스트 소실. 페이지를 다시 열어 주세요.'));});
-document.addEventListener('visibilitychange',()=>{clearIntent();if(document.hidden)stopFrame();else resume();});
+document.addEventListener('visibilitychange',()=>{clearIntent();if(document.hidden)stopFrame();else resume();syncViewZoom();});
 window.__rift25Lab=Object.freeze({enterPreview,snapshot:()=>{let actor;rigs[state.selected]?.object3d.traverse(n=>{if(n.isSkinnedMesh)actor=n;});return {...state,viewOnly,durableWrites:false,parentStateLinked:false,initialCharacter,initialCharacterReady,previewEntry:previewEntrySnapshot(),raf:!!state.raf,rig:rigs[state.selected]?.snapshot(),poseConsumer:poses[state.selected]?.snapshot(),effects:effects[state.selected]?.snapshot(),effectRebuild:effectRebuildSnapshot(),effectUpdate:effectUpdateSnapshot(),specialMotion:specialMotion?.snapshot(),actorVisible:rigs[state.selected]?.object3d.visible,shadowVisible:shadow?.visible,acceptance:structuredClone(acceptance),registration:structuredClone(registration),residents:residents?.snapshot(),interactionCue:interactionCue?.snapshot(),residentAccess:structuredClone(residentAccess),dialogue:dialogue?structuredClone(dialogue.snapshot()):null,dialogueObservation:dialogueObservation?.snapshot(),wolf:wolf?.snapshot(),wolfPlacement:wolfPlacement?{...wolfPlacement,canWalk:terrain.canWalk(wolfPlacement.x,wolfPlacement.y,wolfPlacement.radius)}:null,wolfError,nearestNpc:structuredClone(nearestNpc),cameraPosition:camera?.position.toArray(),diagnosticProvenance:{INTERACTION:INTERACTION_CUE_PROVENANCE,QA:SLICE_ACCEPTANCE_PROVENANCE,MAP:SCENE_REGISTRATION_PROVENANCE},renderContract:actor?{transparent:actor.material.transparent,depthWrite:actor.material.depthWrite,depthTest:actor.material.depthTest,actorOrder:actor.renderOrder,actorScenePosition:rigs[state.selected].object3d.position.toArray(),shadowScenePosition:shadow.position.toArray(),foregroundOrders:terrain.occluders.map(o=>o.object3d.renderOrder)}:null,terrain:terrain?.snapshot(),contactUnderlay:contactUnderlay?.snapshot(),contactShaderPrograms:contactShaderPrograms.map(p=>({...p})),foregroundShaderPrograms:foregroundShaderPrograms.map(p=>({...p})),canvas:{width:$('world-canvas').width,height:$('world-canvas').height}};}});
 }

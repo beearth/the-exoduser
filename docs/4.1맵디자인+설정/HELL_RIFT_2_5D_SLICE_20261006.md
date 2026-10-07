@@ -2052,3 +2052,73 @@ root freshness-matching.png/freshness-after-out.png 직접판독2. 후자는첫f
 | NEXT PASS | 승인된미완료actualmain consumer를다음단위로진행. Druid시체capture는미구현source후보이며이단위에서생산/검수0. blur/발/전8방향/native6/audio/durable보상미인수유지. |
 
 근거는 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/main-rift-npc-freshness-20261007`의 validation-receipt.json4678/af4563131e07122a0660430e4806110ea2d6f1e3944ad5b337418a23f6e2c0e2 및 visual-verdict.json3740/b94464fbbd070403adc41faed41fbf50ccb64407489cab3845ac3aaaf67cddfc다. source4 HTTP/local exact·pageerrorHTTP0·requestfail5(fontintent3+introabort2원인UNKNOWN)·API matsPOST1합성forward0/savePOST0/childAPI0/usersave0/durableACKfalse·context/browser/PTY종료exit0·GL/GPUfreeUNKNOWN. 문서담당새제품실행/Git0. [상세계약·source·실검수](<../11내러티브·로어디자인/RIFT_DIALOGUE_PUBLIC_CONSUMER_20261007.md>).
+
+### 2026-10-08 ROOT-MAIN-RIFT-VIEW-ZOOM-CONSUMER-20261008 · 둘러보기 확대/축소
+
+현재 `tools/2_5d-world-lab.mjs`는 **60546B / SHA256 `9e82f40f140c125e71c3a8de63182c4c541f0bc4451b772acfb779739d4e05f0`**다. 아래는 새 view-only 줌 UI의 현재 계약이며, 앞선 view/NPC/freshness 작업의 소스 핀·검수 결과는 각 작업 당시 이력으로 보존한다. 기존 frame말 NPC 안내 숨김 계약은 유지한다.
+
+이전 `aside display:none` 계약은 유지하며 stage의 별도 사용자 줌 그룹만 추가했다. 기존80~220% 범위/5step/초기100%는 동일하다. 버튼 최소44CSSpx, camera units .8~2.2 검증과 표시percent clamp, current identity/lifecycle 및 대화 focus 보존은 [상세 소비자 계약](<../11내러티브·로어디자인/RIFT_DIALOGUE_PUBLIC_CONSUMER_20261007.md>)을 따른다.
+
+줌은 기존 카메라의 화면 배율만 소비한다. actor의 world 크기/발 좌표, 원 PNG/scene/nav/배치, 근접 거리140, R/WASD/Escape, parent lease·저장 대기·복귀·클리어·보상 권한을 바꾸지 않는다. 다른 모드의 조작/scene 저장과 연결하지 않는다.
+
+검수는 ROOT의 **최초 Node1 / 7그룹 / 25조건 PASS, FAIL·setup·미도달0 / exit0**다. 실제 소스의 resize/apply/install/stop/lifecycle/UI 생성 구역을 통제 DOM/range/renderer/dialogue 포트로 실행했다. 100→105→100, 220→215, 80 경계, paused/hidden/error/contextloss/disposed/epoch, 교체 리프, range 포트 재진입·throw, standalone UI0, 대화 focus 보존을 이 범위에서 확인했다. native `range.stepUp` 의미·실WebGL/GPU·실화면 인수는 아니다. 소스 peer의 새 actionable0은 정적 검토이며 별도 실행 성공으로 합산하지 않는다.
+
+새 Chrome0/native **NOT_RUN**, 새 PNG0, 이번 UI 시각 **NOT_ASSESSED**다. 사용자 IAB tab13의 이전 로드 소스를 유지하고 reload/새 게임0이다. 전체 **VISUAL VERDICT: RETOUCH**. 실제 줌 가독성/버튼 겹침·전8카메라·발/물리높이/native6/audio/durable save는 이번에 인수하지 않았다.
+
+#### MAP PRODUCTION REPORT · 가이드 §23
+
+| 항목 | 이번 scope의 보고 |
+|---|---|
+| STAGE | 3387 actualmain의 기존 Rift view-only 줌 UI 소비자. 새 native 관측 없이 소스/CPU 범위. |
+| MASTER / silhouette | 승인 씬 실루엣 유지. |
+| MASTER / regions | 기존 영역 유지. |
+| MASTER / main route | 기존 주경로 유지·새 route 검수0. |
+| MASTER / side spaces | 기존 측면 공간 유지. |
+| OUTER MASS / LEFT | 원 외곽 유지·기존 흐림/품질 잔여. |
+| OUTER MASS / RIGHT | 원 외곽 유지·기존 흐림/품질 잔여. |
+| OUTER MASS / TOP | 원 외곽 유지·기존 흐림/품질 잔여. |
+| OUTER MASS / SOUTH | 원 외곽 유지·기존 흐림/품질 잔여. |
+| OUTER MASS / major holes | 기존 심연/큰 구멍 유지. |
+| LARGE / source assets | 원 PNG/scene/nav 생성·수정0. |
+| LARGE / composites | 기존 합성 유지. |
+| LARGE / overlap | 새 줌 UI 겹침은 시각 NOT_ASSESSED. |
+| LARGE / repeated silhouette | 기존 반복 실루엣 해결 인수0. |
+| MEDIUM / connections | 기존 연결 유지. |
+| MEDIUM / remaining holes | 이번 scope 미검수. |
+| GROUND / shadow | 기존 그림자/발 좌표 유지. |
+| GROUND / contamination | 기존 재질/오염 유지. |
+| GROUND / structure integration | 실제 지형 높이/physical relief0 미해결. |
+| PLAYABLE / main arenas | geometry/입력/전투 유지·새 native 관측0. |
+| PLAYABLE / travel space | 기존 이동 공간 유지·새 route 인수0. |
+| PLAYABLE / breathing space | 기존 여유 공간 유지. |
+| PLAYABLE / threat space | 기존 위협 공간 유지·전투 권한 변경0. |
+| PLAYABLE / combat readability | 새 실제 전투 가독성 인수0. |
+| LANDMARK / primary | 기존 중심 랜드마크 유지. |
+| LANDMARK / secondary | 기존 보조 랜드마크 유지. |
+| LANDMARK / tertiary | 기존 소형 랜드마크/NPC 배치 유지. |
+| CAMERA QA / START | NOT_ASSESSED. 기존 사용자 IAB13 old loaded source 유지·새 view 줌 화면0. |
+| CAMERA QA / EARLY | NOT_ASSESSED. 기존 사용자 IAB13 old loaded source 유지·새 view 줌 화면0. |
+| CAMERA QA / ARENA | NOT_ASSESSED. 기존 사용자 IAB13 old loaded source 유지·새 view 줌 화면0. |
+| CAMERA QA / SIDE L | NOT_ASSESSED. 기존 사용자 IAB13 old loaded source 유지·새 view 줌 화면0. |
+| CAMERA QA / SIDE R | NOT_ASSESSED. 기존 사용자 IAB13 old loaded source 유지·새 view 줌 화면0. |
+| CAMERA QA / LANDMARK | NOT_ASSESSED. 기존 사용자 IAB13 old loaded source 유지·새 view 줌 화면0. |
+| CAMERA QA / LATE | NOT_ASSESSED. 기존 사용자 IAB13 old loaded source 유지·새 view 줌 화면0. |
+| CAMERA QA / EXIT | NOT_ASSESSED. 기존 사용자 IAB13 old loaded source 유지·새 view 줌 화면0. |
+| TECH QA / route | 원 route unchanged·새 route suite0. |
+| TECH QA / collision | nav/거리140/충돌 유지. |
+| TECH QA / pageerror | native NOT_RUN; pageerror0이라고 측정하지 않음. |
+| TECH QA / 404 | native NOT_RUN; HTTP/404 성공 인수0. |
+| TECH QA / seam | 기존 seam 유지·새 실제 화면 미검수. |
+| TECH QA / loading | 기존 진입 경로 유지·lifecycle 통제 포트 CPU 한정. |
+| TECH QA / performance | NOT_MEASURED. 새 RAF/timer0을 성능 측정으로 계산하지 않음. |
+| FILES / stage-owned | root tools/2_5d-world-lab.mjs 1개/7hunk + HUDdetail/RIFT_DIALOGUE/본slice/CHANGELOG 4append. |
+| FILES / concurrent touched | 타인 WIP 보존. gameforeign185/설정3.3foreign2948 미채택·본문/해시 추가 접근0. |
+| FILES / unrelated touched | 문서 담당 다른 제품/PNG/scene/nav/STATE/보호2_3 변경0. |
+| GIT / staged | 문서 담당0·원총괄 완료소유 보존 예정. |
+| GIT / commit | 문서 작성 시 PENDING·SHA 추정0. |
+| GIT / push | 문서 작성 시 PENDING·remote 성공 추정0. |
+| GIT / deploy | 0. |
+| VISUAL VERDICT | RETOUCH. 이번 UI visual NOT_ASSESSED, CPU PASS를 시각 PASS로 대체0. |
+| NEXT PASS | 별도 승인된 격리 view 세션에서 native 범위/끝점/focus/컨트롤 배치 검수. 사용자 IAB13 강제 reload/중복0. 본편 정상 보스개방/death/revive/retry/audio/reward/save 인수는 별도 미완료. |
+
+근거는 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/main-rift-view-zoom-20261008`의 `validation-receipt.json`1236B/`e92f4a1c24fd4271f0663c4d72a3dcbfb72f66699cfc452924be982730b14e8f`, `cpu-result.json`3776B/`a48a7d172cdef5a83cb5126c57dfd237328c22d76bbb1bc1d0bdcaef50392bce`, `source-peer-review.json`18147B/`411cb174ff05f146a3bd66ba715d4cf5207659447ca5983dc44a43306836265f`, `visual-verdict.json`3495B/`7ce66d415ecb0c4ca951e8d633bf06b70e893d27f65d3c531d59bd2acdca7f80`다. 최종 소스는 7hunk/원 before 역변환 exact이며, 문서 담당의 새 제품 실행/Git0이다. 원총괄 Git 보존은 문서 작성 시 예정 상태로서 commit/push 완료를 미리 주장하지 않는다.
