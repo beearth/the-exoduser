@@ -56162,3 +56162,16 @@ main4100302 B/SHA256 `4166ed4b16d62fa87a47c39218553a3827a320b51c29cc553c64854901
 신규CPU Node1/VM18/4그룹20PASS(동적18/정적2)·별도headedChrome/context/page/child각1의S1자연pending1→0/S2입장후8초부모·저장표본/S3manualreturn·timer0/iframe0·buttonenabled 신규3PASS, FAIL/미도달0·exit0. 이전NPC2PASS/storageFAIL1/hostreturn미도달은과거epoch동결·route재실행/clean합산0. admission은globalstoragelock아니며dbSave settle≠durableACK·실제writer직접원인미확정. pageerror/HTTP0/requestfail6(font의도3+introabort3원인UNKNOWN)/API합성matsPOST1forward0/savePOST0/childAPI0/usersave0/durableACKfalse·closedtrue·GLUNKNOWN. rootPNG1은몸/pet/복귀안내표시한정·전체RETOUCH·native6/audio/reward/save/A급미인수.
 
 [저장primary](<15 세이브+데이터구조/15 세이브+데이터구조.md>) / [소비자·정확근거](<11내러티브·로어디자인/RIFT_DIALOGUE_PUBLIC_CONSUMER_20261007.md>) / [HUD](<3.1 ui hud 디자인/SETTINGS_HUD_DETAIL_20260930.md>) / [§23전체보고](<4.1맵디자인+설정/HELL_RIFT_2_5D_SLICE_20261006.md>). 기존prefix/epoch보존·문서담당제품/Git실행0·정상checkpoint는root예정이다.
+
+
+### 2026-10-07 ROOT-MAIN-RIFT-NPC-PROMPT-FRESHNESS-20261007 · 주민 접근 안내 잔류 숨김
+
+최종 `tools/2_5d-world-lab.mjs`는 **57096 B / SHA256 `d07e5520564dde709cb0e2469315e14f620e12bc950b6de29a0b22444148c255`**다. 기존56848/9dd71e4의180ms 잔류 설명과 당시 검수 결과는 그 source epoch의 이력으로 보존하며, 이 새 절이 현재 안내 갱신 계약을 우선한다.
+
+pose가기존frozen cue snapshot을반환하고frame말 updateUi뒤/RAF예약앞에서active/disposedfalse/approachVisible/nearestNpc.npcId일치를엄격대조한다. 실패·누락은view-only prompt숨김. 이름표시는기존 >180ms주기·입력/거리/nav/보상/save/추가RAFtimer변경0.
+
+새actualCPU Node1/VM20·5그룹22PASS(동적20정적2)·FAIL/setup/미도달/unhandled0/exit0. 별도최초headedChrome1/context1/page1/child1새2조건2PASS/exit0·추가실행0. firstOut797에서age175.1ms/cached도릭nearest잔류/cueVisiblefalse/promptHiddentrue·textempty였으며직전796은visibletrue다. 기존11waypoint는setup only·옛route/dialogue/8초/saveGate assertion0·기존검수clean합산0.
+
+pageerrorHTTP0/requestfail5(font3의도차단+introabort2직접원인UNKNOWN)·API matsPOST1합성forward0/save0/childAPI0/usersave0/durableACKfalse·닫힘/exit0·GL/GPUfreeUNKNOWN. rootPNG2직접판독·after-out은첫이탈frame정확촬영아니며telemetry가exact근거. 확대흐림/근접겹침등전체RETOUCH·native6/audio/saveACK/A급미인수. whole검색1회42경로98행107occurrence·전수완독아님.
+
+[HUD현재계약](<3.1 ui hud 디자인/SETTINGS_HUD_DETAIL_20260930.md>) / [소비자·정확source/영수증](<11내러티브·로어디자인/RIFT_DIALOGUE_PUBLIC_CONSUMER_20261007.md>) / [§23전체보고](<4.1맵디자인+설정/HELL_RIFT_2_5D_SLICE_20261006.md>). 원prefix/옛epoch보존·문서담당제품CPU/Chrome/Git0·root정상checkpoint예정.

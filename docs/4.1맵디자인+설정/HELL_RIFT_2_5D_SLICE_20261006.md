@@ -1985,3 +1985,70 @@ view-only stage에 기존 nearest 이름/R 안내를 추가했다. 숨겨진 asi
 root PNG `native-first-only/save-admitted-rift.png`는859587 B/SHA256 `c19efb7d81adb4822d4dc994aa48d295704ab0383e075aff3e49966c17557dbc`다. 시작전사/pet/복귀버튼·입력힌트가보이는한정관측이며배경확대흐림·작고어두운몸은남는다. sameposeOFF/ON미감A/B·globalparentstoragefreeze·실ACK·현재source전체NPC왕복·A급완료는주장하지않는다. API합성matsPOST1forward0/savePOST0/childAPI0/durableACKfalse/usersave0·context/browserclosed·GL/물리GPU해제UNKNOWN·native6/audio/reward미인수다.
 
 [상세저장계약](<../15 세이브+데이터구조/15 세이브+데이터구조.md>) / [최신source·검수원자료](<../11내러티브·로어디자인/RIFT_DIALOGUE_PUBLIC_CONSUMER_20261007.md>). 근거는외부main-rift-save-admission-20261007의validation-receipt.json3944/0ce77c95729de88a110d846f0f6a3db23d9b82ddda3177e9657057ebe5467d64와visual-verdict.json4201/6b85abdb5e06776a0f4805d7b16428c91ee787e2be5c4c064b16437b8bcfc597이다. 문서담당새제품CPU/Chrome/Git0·root직접PNG판독을기록했다.
+
+
+### 2026-10-07 ROOT-MAIN-RIFT-NPC-PROMPT-FRESHNESS-20261007 · 주민 접근 안내 잔류 숨김
+
+최종 `tools/2_5d-world-lab.mjs`는 **57096 B / SHA256 `d07e5520564dde709cb0e2469315e14f620e12bc950b6de29a0b22444148c255`**다. 기존56848/9dd71e4의180ms 잔류 설명과 당시 검수 결과는 그 source epoch의 이력으로 보존하며, 이 새 절이 현재 안내 갱신 계약을 우선한다.
+
+새frame말대조는기존UI >180ms 이름표시주기를바꾸지않고, cue상태/대상불일치나누락때이전안내를숨긴다. actualCPU Node1/VM20·5그룹22PASS와별도headedChrome1/context1/page1/child1새2조건PASS/exit0이다. firstOut frame797/time7464.2/lastUi7289.1(age175.1ms)에서 cached도릭nearest가남아도cueVisiblefalse·promptHiddentrue/textempty를관측했다. 직전796은visibletrue였다. 기존11waypoint는setup only·옛route/dialogue/8초/saveGate assertion0.
+
+root freshness-matching.png/freshness-after-out.png 직접판독2. 후자는첫frame정확촬영아니며exactframe근거는readonlypostRAFtelemetry다. 모든새조건결과는한정소비자검수이며원화흐림/근접NPCplayer겹침/발·전8방향/물리높이/native6/audio/saveACK/A급미인수·전체RETOUCH.
+
+#### MAP PRODUCTION REPORT · 가이드 §23
+
+| 항목 | 이번 scope의 보고 |
+|---|---|
+| STAGE | 3387 actualmain preclear stage0의 view-only Rift 주민안내 freshness. 클리어/보상전환이 아니다. |
+| MASTER / silhouette | 승인Rift 실루엣 그대로·새원화0. |
+| MASTER / regions | 기존영역 그대로·재인수0. |
+| MASTER / main route | 기존11waypoint는 이번검수 setup일뿐·옛route assertions0. |
+| MASTER / side spaces | 기존측면공간 그대로·재인수0. |
+| OUTER MASS / LEFT | 원래외곽 그대로·재인수0. |
+| OUTER MASS / RIGHT | 원래외곽 그대로·재인수0. |
+| OUTER MASS / TOP | 원래외곽 그대로·재인수0. |
+| OUTER MASS / SOUTH | 원래외곽 그대로·재인수0. |
+| OUTER MASS / major holes | 기존심연/구멍 그대로·재인수0. |
+| LARGE / source assets | 원PNG/scene/nav 수정·생성0. |
+| LARGE / composites | 기존합성 그대로·확대흐림남음. |
+| LARGE / overlap | 근접NPC/플레이어겹침 RETOUCH. |
+| LARGE / repeated silhouette | 이번scope밖·재검수0. |
+| MEDIUM / connections | 기존연결 그대로. |
+| MEDIUM / remaining holes | 수정·재인수0. |
+| GROUND / shadow | 기존shadow/foot좌표 그대로. |
+| GROUND / contamination | 기존재질/오염 그대로. |
+| GROUND / structure integration | 확대plate흐림·physicalheight0미해결. |
+| PLAYABLE / main arenas | 기존arena/전투권한 그대로·재인수0. |
+| PLAYABLE / travel space | 원경로는setup만·옛보행/nav assertions0. |
+| PLAYABLE / breathing space | 원공간그대로; 안내잔류숨김만새관측. |
+| PLAYABLE / threat space | view-only 전투/보상권한0. |
+| PLAYABLE / combat readability | CH1-1전투가독인수가아님. |
+| LANDMARK / primary | 기존중심/심연그대로·새배치0. |
+| LANDMARK / secondary | 기존북쪽연결그대로·새배치0. |
+| LANDMARK / tertiary | 기존NPC/cue배치그대로·새geometry0. |
+| CAMERA QA / START | 기존카메라그대로·재인수0. |
+| CAMERA QA / EARLY | 기존카메라그대로·재인수0. |
+| CAMERA QA / ARENA | 이번scope미검수. |
+| CAMERA QA / SIDE L | 이번scope미검수. |
+| CAMERA QA / SIDE R | 이번scope미검수. |
+| CAMERA QA / LANDMARK | 근접/이탈 PNG2 root직접판독은안내표시의한정근거; 전체landmark인수0. |
+| CAMERA QA / LATE | 이번scope미검수. |
+| CAMERA QA / EXIT | 이번scope미검수·옛복귀/저장gate검사반복0. |
+| TECH QA / route | 원route assertion0·새freshness2조건만. |
+| TECH QA / collision | nav/radius/충돌그대로·재인수0. |
+| TECH QA / pageerror | 0. |
+| TECH QA / 404 | HTTPerror0; font3의도차단과introabort2직접원인UNKNOWN은별도. |
+| TECH QA / seam | actual-source CPU22와별도actualnative2만인수. firstOut175.1ms cachednearest잔류상태에서prompt숨김. |
+| TECH QA / loading | 기존저장대기정착은setup뿐·옛saveGate재검수0. |
+| TECH QA / performance | 성능미측정/미인수. 기존RAF하나·추가RAF/timer0. |
+| FILES / stage-owned | root childmjs1의4hunk 및HUD/RIFT_DIALOGUE/본slice/CHANGELOG4append. |
+| FILES / concurrent touched | 타인WIP/원자료/gameforeign185/설정3.3foreign2948보존. |
+| FILES / unrelated touched | 이번담당의다른repo파일·PNG/scene/nav/save/STATE쓰기0·보호2_3본문제외. |
+| GIT / staged | 문서담당0·root완료소유checkpoint예정. |
+| GIT / commit | 문서작성시미실행·자기SHA추정0. |
+| GIT / push | 문서작성시미실행·root최종receipt권위. |
+| GIT / deploy | 0. |
+| VISUAL VERDICT | RETOUCH. 자동조건PASS를전체맵/미감PASS로대체0. |
+| NEXT PASS | 승인된미완료actualmain consumer를다음단위로진행. Druid시체capture는미구현source후보이며이단위에서생산/검수0. blur/발/전8방향/native6/audio/durable보상미인수유지. |
+
+근거는 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/main-rift-npc-freshness-20261007`의 validation-receipt.json4678/af4563131e07122a0660430e4806110ea2d6f1e3944ad5b337418a23f6e2c0e2 및 visual-verdict.json3740/b94464fbbd070403adc41faed41fbf50ccb64407489cab3845ac3aaaf67cddfc다. source4 HTTP/local exact·pageerrorHTTP0·requestfail5(fontintent3+introabort2원인UNKNOWN)·API matsPOST1합성forward0/savePOST0/childAPI0/usersave0/durableACKfalse·context/browser/PTY종료exit0·GL/GPUfreeUNKNOWN. 문서담당새제품실행/Git0. [상세계약·source·실검수](<../11내러티브·로어디자인/RIFT_DIALOGUE_PUBLIC_CONSUMER_20261007.md>).

@@ -177,3 +177,20 @@ Node 후보 연결과 root 보강 회귀61PASS. 게임 생성/드롭/저장라�
 | 한계·이력 | 새표본은globalstorage lock/실saveACK가아님. 이전NPC native2PASS 뒤storageFAIL1/hostreturn미도달은과거source이력·재검사/합산0. rootPNG1에서몸/pet/복귀안내가보이는한정관측이며흐림/작고어두운몸으로전체RETOUCH. |
 
 최종 game4100302 B/SHA256 `4166ed4b16d62fa87a47c39218553a3827a320b51c29cc553c64854901333c19`. API합성matsPOST1forward0/savePOST0/childAPI0/durableACKfalse·GLUNKNOWN·native6/audio/save/reward미인수다. [저장 정본](<../15 세이브+데이터구조/15 세이브+데이터구조.md>) / [소비자·근거](<../11내러티브·로어디자인/RIFT_DIALOGUE_PUBLIC_CONSUMER_20261007.md>) / [§23보고](<../4.1맵디자인+설정/HELL_RIFT_2_5D_SLICE_20261006.md>). 문서담당 제품실행/Git0, root보존예정.
+
+
+### 2026-10-07 ROOT-MAIN-RIFT-NPC-PROMPT-FRESHNESS-20261007 · 주민 접근 안내 잔류 숨김
+
+최종 `tools/2_5d-world-lab.mjs`는 **57096 B / SHA256 `d07e5520564dde709cb0e2469315e14f620e12bc950b6de29a0b22444148c255`**다. 기존56848/9dd71e4의180ms 잔류 설명과 당시 검수 결과는 그 source epoch의 이력으로 보존하며, 이 새 절이 현재 안내 갱신 계약을 우선한다.
+
+| 항목 | 현재 계약 |
+|---|---|
+| 이름·표시 주기 | 기존 `time-state.lastUi >180ms` UI 주기를 유지한다. 새 대상 이름을 매프레임 즉시 표시한다고 보장하지 않는다. |
+| cue 결과 | `pose(dt)`가 기존 `interactionCue.update`의 frozen snapshot을 반환한다. frame은 local `promptCue=null`로 시작하고 재생 중 move/pose 뒤 반환값을 받는다. |
+| frame말 대조 | 유효한 frame에서 기존 updateUi 뒤·다음 RAF 예약 전에 검사한다. `active===true && disposed===false && approachVisible===true && nearestNpc && approachNpc===nearestNpc.npcId`를 모두 충족해야 이전 안내를 유지하며, 나머지는 view-only `#view-npc-prompt`를 숨기고 leaf를 빈 문자열로 만든다. |
+| 대상·수명 | cue에는 이름이 없어 기존 nearestNpc의 이름을 쓴다. cue 누락/비활성/대상 불일치 및 paused frame의 null은 숨김 대상이다. 기존 clearIntent/stopFrame/fatal/dispose·canvas focus·대화닫힘 노출 가드는 유지한다. epoch 중단으로 frame이 일찍 끝난 경우 전체화면 최종숨김까지 새로 보장한 검수는 아니다. |
+| 그대로인 계약 | CSS bottom70px/font14px 등 기존배치·주민좌표·nearest/range140/segment20/nav radius12·R fresh admission·대사/controller/보상/quest/save·카메라는 그대로다. 추가 nearest 탐색/입력/RAF/timer0. |
+
+신규CPU22와 별도native2가 한정범위에서PASS했다. actual firstOut frame797은 lastUi보다175.1ms뒤이며 cached도릭nearest가 남아도 안내가숨겨졌다. root PNG2는직접판독했으나 after-out.png는첫이탈frame정확촬영이아니며 그근거는telemetry다. 기존도릭/저장대기검수와합산0·전체RETOUCH.
+
+[상세계약·정확근거](<../11내러티브·로어디자인/RIFT_DIALOGUE_PUBLIC_CONSUMER_20261007.md>) / [§23전체보고](<../4.1맵디자인+설정/HELL_RIFT_2_5D_SLICE_20261006.md>). 문서담당제품CPU/Chrome/Git0·root보존예정.

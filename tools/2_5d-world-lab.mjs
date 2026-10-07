@@ -417,10 +417,11 @@ function pose(dt){
   if(!updateActorEffects(dt,rig))return;
   dialoguePlayer.x=state.x;dialoguePlayer.y=state.y;
   residents?.update(state.x,state.y);
-  interactionCue?.update(dt,dialoguePlayer,dialogue);
+  const promptCue=interactionCue?.update(dt,dialoguePlayer,dialogue);
   const target=terrain.worldToScene(state.x,state.y),angle=50*Math.PI/180;
   camera.position.set(target.x,Math.sin(angle)*16,target.z+Math.cos(angle)*16);camera.lookAt(target);
   updateWolf(dt);
+  return promptCue;
 }
 function render(){
   const epoch=lifecycleEpoch,renderOwner=renderer,sceneOwner=scene,cameraOwner=camera;
@@ -434,11 +435,13 @@ function frame(time){
   state.raf=0;const epoch=lifecycleEpoch;if(!effectFrameUsable(epoch))return;
   flushEffectRebuild();if(!state.ready||state.disposed||state.error||state.contextLost)return;
   const dt=state.lastTime===null?0:Math.min(.04,Math.max(0,(time-state.lastTime)/1000));state.lastTime=time;
-  if(!state.paused){move(dt);pose(dt);}
+  let promptCue=null;
+  if(!state.paused){move(dt);promptCue=pose(dt);}
   if(!effectFrameUsable(epoch))return;
   render();if(!effectFrameUsable(epoch))return;if(!state.paused)sampleAnchor();
   if(!effectFrameUsable(epoch))return;
   if(time-state.lastUi>180){updateUi();if(!effectFrameUsable(epoch))return;state.lastUi=time;}
+  if(viewOnly&&!(promptCue?.active===true&&promptCue.disposed===false&&promptCue.approachVisible===true&&nearestNpc&&promptCue.approachNpc===nearestNpc.npcId))hideViewNpcPrompt();
   if(effectFrameUsable(epoch)&&!state.raf&&!document.hidden)state.raf=requestAnimationFrame(frame);
 }
 function resume(){if(state.ready&&!state.raf&&!state.disposed&&!document.hidden){state.lastTime=null;state.raf=requestAnimationFrame(frame);}}

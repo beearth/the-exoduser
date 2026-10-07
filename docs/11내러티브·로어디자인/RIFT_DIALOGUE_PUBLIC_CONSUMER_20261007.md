@@ -1087,3 +1087,35 @@ NEXT PASS: alpha-aware 보수적 셀 점유 source/API 계약·원자료 수치�
 | visual-verdict.json | 4201 / 6b85abdb5e06776a0f4805d7b16428c91ee787e2be5c4c064b16437b8bcfc597 |
 
 근거 루트는 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/main-rift-save-admission-20261007/`다. Codex147 actualsource 정적review finding0은별도원문1033 B/518bda627967240e0216f6652ed11f48bf249aef72534af700f765b2b2b937c9이며실행PASS대체아님. 다른raw11은미채택이다. 준비단계의잘못된primary경로읽기실패1(write0)/Codex원문수집Pythonencoding실패1(rawwrite0)은제품FAIL로합산하지않는다. 신규whole docs검색1회는16경로39행51occurrence·보호2_3/owner거대본문제외·텍스트archive포함이며전수완독아니다. [저장primary](<../15 세이브+데이터구조/15 세이브+데이터구조.md>) / [§23전체보고](<../4.1맵디자인+설정/HELL_RIFT_2_5D_SLICE_20261006.md>). 본문원prefix/옛epoch유지·문서담당제품CPU/Chrome/Git0·root정상checkpoint예정.
+
+
+### 2026-10-07 ROOT-MAIN-RIFT-NPC-PROMPT-FRESHNESS-20261007 · 주민 접근 안내 잔류 숨김
+
+최종 `tools/2_5d-world-lab.mjs`는 **57096 B / SHA256 `d07e5520564dde709cb0e2469315e14f620e12bc950b6de29a0b22444148c255`**다. 기존56848/9dd71e4의180ms 잔류 설명과 당시 검수 결과는 그 source epoch의 이력으로 보존하며, 이 새 절이 현재 안내 갱신 계약을 우선한다.
+
+| 항목 | 현재 계약 |
+|---|---|
+| 이름·표시 주기 | 기존 `time-state.lastUi >180ms` UI 주기를 유지한다. 새 대상 이름을 매프레임 즉시 표시한다고 보장하지 않는다. |
+| cue 결과 | `pose(dt)`가 기존 `interactionCue.update`의 frozen snapshot을 반환한다. frame은 local `promptCue=null`로 시작하고 재생 중 move/pose 뒤 반환값을 받는다. |
+| frame말 대조 | 유효한 frame에서 기존 updateUi 뒤·다음 RAF 예약 전에 검사한다. `active===true && disposed===false && approachVisible===true && nearestNpc && approachNpc===nearestNpc.npcId`를 모두 충족해야 이전 안내를 유지하며, 나머지는 view-only `#view-npc-prompt`를 숨기고 leaf를 빈 문자열로 만든다. |
+| 대상·수명 | cue에는 이름이 없어 기존 nearestNpc의 이름을 쓴다. cue 누락/비활성/대상 불일치 및 paused frame의 null은 숨김 대상이다. 기존 clearIntent/stopFrame/fatal/dispose·canvas focus·대화닫힘 노출 가드는 유지한다. epoch 중단으로 frame이 일찍 끝난 경우 전체화면 최종숨김까지 새로 보장한 검수는 아니다. |
+| 그대로인 계약 | CSS bottom70px/font14px 등 기존배치·주민좌표·nearest/range140/segment20/nav radius12·R fresh admission·대사/controller/보상/quest/save·카메라는 그대로다. 추가 nearest 탐색/입력/RAF/timer0. |
+
+| 검수 epoch | 한정 결과 |
+|---|---|
+| 신규 actual-source CPU | Node1/VM20·5그룹22조건 PASS(동적20/정적2), FAIL/미도달/setup/unhandled0·exit0. 실제 pose/frame/hide/leaf 경로를 통제DOM·cue/rig/effects/renderer/RAF기록 ports로 소비했다. full cue GPU·전체 updateUi/dialogue/route·fatal lifetime 검수는 아니다. |
+| 신규 실제 화면 | 최초 headed Chrome1/context1/page1/child1/maxLive1·새2조건2PASS, FAIL/setup/미도달0·exit0. 추가실행0. 기존11waypoint는 setup뿐이며 옛route/dialogue/8초/saveGate assertion0이다. CPU22와 native2 또는 옛결과를 clean suite로 합산하지 않는다. |
+| firstOut | frame797/time7464.2/lastUi7289.1로 age175.1ms. cached nearest는 도릭이지만 cueVisible=false/cueNpc=null이며 promptHidden=true·promptText="". staleCacheObserved=true/uiNotRefreshed=true로180ms UI 갱신 전 숨김을 관측했다. |
+| 직전 관측 | frame796/time7455.7에서 도릭 cueVisible=true·promptHidden=false였다. firstOut의 exactframe 근거는 readonly post-RAF telemetry다. after-out PNG는 그첫frame을 정확촬영한 자료가 아니다. |
+| 격리·오류 | source4 HTTP/local exact(검증원문 HTTPSourcePins=8). pageerror/HTTPerror0. requestFailure5=외부font 의도차단3+localintroabort2(직접원인UNKNOWN). matsPOST1 합성/forward0/savePOST0/childAPI0/user-save0/durableACKfalse. context/browserclosed·PTY79638 종료/exit0. GL/물리GPU해제UNKNOWN. |
+| 시각·미인수 | root PNG2 직접판독. 근접안내와 이탈후 숨김은 보이나 배경확대흐림/근접NPC·플레이어겹침은 남는다. 전체RETOUCH, 해부학발/전8방향/물리높이/native6/audio/saveACK/A급 미인수다. |
+
+| 근거 | bytes / SHA256 |
+|---|---|
+| implementation-receipt.json | 708 / 5479db5853966484df0d9e361d92bfe54ad83175e9796af3a2ac9928713f2341 |
+| validation-receipt.json | 4678 / af4563131e07122a0660430e4806110ea2d6f1e3944ad5b337418a23f6e2c0e2 |
+| visual-verdict.json | 3740 / b94464fbbd070403adc41faed41fbf50ccb64407489cab3845ac3aaaf67cddfc |
+| cpu/execution-receipt.json | 2540 / 7460a8e22daf0dad970a768cc61a49bfe347e7d95a505378c7ce1d5e79ef8a1c |
+| native-first-only/result.json | 87839 / e8971a8ca7eedc2f6c33e1076de9bb2982b9fe78ee9d71d9b83fbc74796faec8 |
+
+근거루트는 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/main-rift-npc-freshness-20261007`다. old9dd NPC검수와game4166 저장대기검수는원래epoch로보존하고소급성공/재실행/합산0. 코드후whole docs검색1회는42경로98행107occurrence이며보호2_3/owner거대본문제외·텍스트archive포함이다. 42문서전수완독을주장하지않는다. 문서준비nonUTF8parse1/write0→ASCII정정1은제품실패가아니다. 원fullprefix보존·문서담당제품CPU/Chrome/Git0·root정상checkpoint예정. [§23전체보고](<../4.1맵디자인+설정/HELL_RIFT_2_5D_SLICE_20261006.md>).
