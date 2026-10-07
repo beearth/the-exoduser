@@ -28,23 +28,82 @@ const boneSpecs=Object.freeze([
   ['foot-left','root',-0.10,0.07],['foot-right','root',0.10,0.07],
 ]);
 
-export async function createCharacterRig(id,{THREE,height=2.2}={}){
+// Optional ready main atlas: scalar wrappers are copied, never the borrowed canvas/token.
+const PACKED_PATH='borrowed:silvertail-main-atlas';
+const PACKED_COUNTS=Object.freeze({idle:2,walk:4,run:4});
+const PACKED_FRAME_KEYS=Object.freeze(['generation','mode','direction','index','count','x','y','w','h','anchorX','anchorY','referenceHeight']);
+function ownFields(value,keys){
+  if(!value||typeof value!=='object')throw new Error('빌린 아틀라스 own-data 계약 오류');
+  const proto=Object.getPrototypeOf(value);
+  if(proto!==Object.prototype&&proto!==null)throw new Error('빌린 아틀라스 plain wrapper가 필요합니다.');
+  const result={};
+  for(const key of keys){
+    const descriptor=Object.getOwnPropertyDescriptor(value,key);
+    if(!descriptor||!Object.hasOwn(descriptor,'value'))throw new Error('빌린 아틀라스 own-data 필드 누락');
+    result[key]=descriptor.value;
+  }
+  return result;
+}
+function canvasSize(image){
+  if(!image||typeof image!=='object')throw new Error('준비된 canvas가 필요합니다.');
+  for(const Type of [globalThis.HTMLCanvasElement,globalThis.OffscreenCanvas]){
+    if(typeof Type!=='function'||!(image instanceof Type))continue;
+    const dimensions=[];
+    for(const key of ['width','height']){
+      const descriptor=Object.getOwnPropertyDescriptor(Type.prototype,key);
+      if(descriptor&&typeof descriptor.get==='function'){
+        if(Object.getOwnPropertyDescriptor(image,key))throw new Error('canvas 크기 shadow 필드는 허용되지 않습니다.');
+        dimensions.push(descriptor.get.call(image));
+      }else{
+        const own=Object.getOwnPropertyDescriptor(image,key);
+        if(!own||!Object.hasOwn(own,'value'))throw new Error('canvas 실제 크기를 읽지 못했습니다.');
+        dimensions.push(own.value);
+      }
+    }
+    return dimensions;
+  }
+  throw new Error('HTMLCanvasElement 또는 OffscreenCanvas가 필요합니다.');
+}
+function readBorrowedAtlas(id,value){
+  if(id!=='silvertail')throw new Error('빌린 본편 아틀라스는 실버테일 전용입니다.');
+  const record=ownFields(value,['image','width','height','generation']);
+  const token=record.generation;
+  if(!token||typeof token!=='object'||![Object.prototype,null].includes(Object.getPrototypeOf(token))||Object.getOwnPropertyDescriptor(token,'then'))throw new Error('아틀라스 객체 세대 토큰이 필요합니다.');
+  if(!Number.isSafeInteger(record.width)||record.width<=0||!Number.isSafeInteger(record.height)||record.height<=0)throw new Error('아틀라스 크기 계약 오류');
+  const size=canvasSize(record.image);
+  if(size[0]!==record.width||size[1]!==record.height)throw new Error('아틀라스 실제 크기 불일치');
+  return Object.freeze(record);
+}
+function readPackedFrame(value,atlas,mode,direction,index,count){
+  const frame=ownFields(value,PACKED_FRAME_KEYS);
+  if(frame.generation!==atlas.generation||frame.mode!==mode||frame.direction!==direction||frame.index!==index||frame.count!==count)throw new Error('빌린 프레임 세대/모션/방향/phase 계약 오류');
+  if(!Number.isInteger(frame.index)||!Number.isInteger(frame.count)||!Number.isInteger(frame.direction)||frame.w!==48||frame.h!==48||frame.anchorX!==24||frame.anchorY!==47||frame.referenceHeight!==45)throw new Error('실버테일 packed 셀/발 기준 계약 오류');
+  if(!Number.isSafeInteger(frame.x)||frame.x<0||!Number.isSafeInteger(frame.y)||frame.y<0||frame.x>atlas.width-frame.w||frame.y>atlas.height-frame.h)throw new Error('빌린 프레임 아틀라스 경계 오류');
+  const size=canvasSize(atlas.image);
+  if(size[0]!==atlas.width||size[1]!==atlas.height)throw new Error('아틀라스 크기가 변경되었습니다.');
+  return Object.freeze({path:PACKED_PATH,...frame});
+}
+
+export async function createCharacterRig(id,{THREE,height=2.2,borrowedAtlas}={}){
   const entry=CATALOG[id];
   if(!entry)throw new Error(`지원하지 않는 캐릭터: ${id}`);
   if(!THREE?.SkinnedMesh||!THREE?.Bone||!THREE?.Skeleton)throw new Error('Three.js 스킨 리깅 런타임이 필요합니다.');
   if(!Number.isFinite(height)||height<=0||height>20)throw new Error('캐릭터 높이 범위 오류');
-  const leases=entry.assets.map(acquireImage),textures=new Map();
+  const packed=borrowedAtlas===undefined?null:readBorrowedAtlas(id,borrowedAtlas);
+  const assetInfos=packed?[{path:PACKED_PATH,width:packed.width,height:packed.height,sampling:'nearest'}]:entry.assets;
+  const leases=packed?[]:entry.assets.map(acquireImage),textures=new Map();
   let geometry=null,material=null,skeleton=null,disposed=false;
   try{
-    const images=await Promise.all(leases.map(lease=>lease.promise));
+    const images=packed?[packed.image]:await Promise.all(leases.map(lease=>lease.promise));
     images.forEach((image,i)=>{
       const texture=new THREE.Texture(image);
+      if(packed)textures.set(PACKED_PATH,texture);
       texture.colorSpace=THREE.SRGBColorSpace;
       texture.generateMipmaps=false;
-      texture.magFilter=id==='dark-druid'||entry.assets[i].sampling==='linear'?THREE.LinearFilter:THREE.NearestFilter;
+      texture.magFilter=id==='dark-druid'||assetInfos[i].sampling==='linear'?THREE.LinearFilter:THREE.NearestFilter;
       texture.minFilter=texture.magFilter;
       texture.wrapS=THREE.ClampToEdgeWrapping;texture.wrapT=THREE.ClampToEdgeWrapping;
-      texture.needsUpdate=true;textures.set(entry.assets[i].path,texture);
+      texture.needsUpdate=true;textures.set(assetInfos[i].path,texture);
     });
     geometry=new THREE.PlaneGeometry(1,1,C.columns,C.rows);
     const positions=geometry.getAttribute('position'),count=positions.count;
@@ -63,7 +122,7 @@ export async function createCharacterRig(id,{THREE,height=2.2}={}){
       if(parent)byName.get(parent).add(bone);
     }
     if(bones.length!==C.boneCount||bones.some(bone=>!Number.isFinite(bone.position.x)||!Number.isFinite(bone.position.y)))throw new Error('본 계층/좌표 계약 오류');
-    material=new THREE.MeshBasicMaterial({map:textures.get(entry.assets[0].path),alphaTest:C.alphaTest,side:THREE.DoubleSide,depthWrite:true,transparent:false,toneMapped:false});
+    material=new THREE.MeshBasicMaterial({map:textures.get(assetInfos[0].path),alphaTest:C.alphaTest,side:THREE.DoubleSide,depthWrite:true,transparent:false,toneMapped:false});
     const mesh=new THREE.SkinnedMesh(geometry,material);mesh.name=`${id}-original-art-skin`;mesh.frustumCulled=false;
     mesh.add(bones[0]);skeleton=new THREE.Skeleton(bones);mesh.bind(skeleton);object3d.add(mesh);
     object3d.visible=false;
@@ -95,8 +154,19 @@ export async function createCharacterRig(id,{THREE,height=2.2}={}){
       positions.needsUpdate=true;geometry.getAttribute('skinIndex').needsUpdate=true;geometry.getAttribute('skinWeight').needsUpdate=true;
       geometry.computeBoundingBox();geometry.computeBoundingSphere();
     }
-    function setFrame(mode,direction,index){
-      const frame=characterRigFrame(id,mode,direction,index),key=`${frame.path}|${frame.x}|${frame.y}|${frame.w}|${frame.h}`;
+    function setFrame(mode,direction,index,packedFrame){
+      const frame=packedFrame||characterRigFrame(id,mode,direction,index),key=`${frame.path}|${frame.x}|${frame.y}|${frame.w}|${frame.h}`;
+      if(packed){
+        // Calibration and semantic source freshness cannot be hidden by equal crop UVs.
+        if(!frameInfo||frame.w!==frameInfo.w||frame.h!==frameInfo.h||frame.anchorX!==frameInfo.anchorX||frame.anchorY!==frameInfo.anchorY||frame.referenceHeight!==frameInfo.referenceHeight)setGeometry(frame);
+        if(key!==lastFrameKey){
+          const texture=textures.get(PACKED_PATH),inset=C.uvInsetPixels;
+          texture.repeat.set((frame.w-inset*2)/packed.width,(frame.h-inset*2)/packed.height);
+          texture.offset.set((frame.x+inset)/packed.width,1-(frame.y+frame.h-inset)/packed.height);
+          texture.updateMatrix();material.map=texture;
+        }
+        frameInfo=frame;lastFrameKey=key;return;
+      }
       if(key===lastFrameKey)return;
       const info=entry.assets.find(asset=>asset.path===frame.path),texture=textures.get(frame.path),inset=C.uvInsetPixels;
       texture.repeat.set((frame.w-inset*2)/info.width,(frame.h-inset*2)/info.height);
@@ -131,21 +201,31 @@ export async function createCharacterRig(id,{THREE,height=2.2}={}){
       updateDepth++;
       // Revoke the prior pose before reading any caller option accessor.
       posePublication=null;
+      if(packed)object3d.visible=false;
       const job={};updateJob=job;
       try{
         if(disposed)throw new Error('해제된 캐릭터 리깅입니다.');
         const {mode='idle',direction=0,phase,speed}=options;
         if(disposed||updateJob!==job)return object3d;
         if(!['idle','walk','run','attack'].includes(mode)||!Number.isInteger(direction)||direction<0||direction>7)throw new Error('모션/8방향 계약 오류');
+        if(packed&&(!Object.hasOwn(PACKED_COUNTS,mode)||!Number.isFinite(phase)||phase<0||phase>1))throw new Error('실버테일 packed 모션/명시 phase 계약 오류');
         const delta=Number.isFinite(dt)?clamp(dt,0,C.maxDelta):0;
         const phaseProvided=Number.isFinite(phase);
         if(mode!==lastMode)elapsed=0;
         elapsed+=delta;
         const interval=id==='dark-druid'&&mode!=='idle'?C.druidFrameInterval:C.frameInterval[mode];
-        const duration=interval*entry.frames[mode];
+        const frameCount=packed?PACKED_COUNTS[mode]:entry.frames[mode];
+        const duration=interval*frameCount;
         const normalizedPhase=phaseProvided?clamp(phase,0,1):(elapsed%duration)/duration;
-        frameIndex=Math.min(entry.frames[mode]-1,Math.floor(normalizedPhase*entry.frames[mode]));
-        setFrame(mode,direction,frameIndex);
+        frameIndex=Math.min(frameCount-1,Math.floor(normalizedPhase*frameCount));
+        let packedFrame;
+        if(packed){
+          const descriptor=Object.getOwnPropertyDescriptor(options,'sourceFrame');
+          if(!descriptor||!Object.hasOwn(descriptor,'value'))throw new Error('packed sourceFrame own-data가 필요합니다.');
+          packedFrame=readPackedFrame(descriptor.value,packed,mode,direction,frameIndex,frameCount);
+          if(disposed||updateJob!==job)return object3d;
+        }
+        setFrame(mode,direction,frameIndex,packedFrame);
         if(disposed||updateJob!==job)return object3d;
         pose(mode,elapsed,normalizedPhase);
         if(disposed||updateJob!==job)return object3d;
@@ -157,7 +237,15 @@ export async function createCharacterRig(id,{THREE,height=2.2}={}){
         if(disposed||updateJob!==job)return object3d;
         skeleton.update();
         if(disposed||updateJob!==job)return object3d;
-        if(updateDepth===1)posePublication=Object.freeze({normalizedPhase,mode,direction,frame:frameIndex,elapsed,source:frameInfo});
+        if(packed){
+          const size=canvasSize(packed.image);
+          if(size[0]!==packed.width||size[1]!==packed.height)throw new Error('게시 전 아틀라스 크기 불일치');
+          if(disposed||updateJob!==job)return object3d;
+        }
+        if(updateDepth===1){
+          posePublication=Object.freeze({normalizedPhase,mode,direction,frame:frameIndex,elapsed,source:frameInfo});
+          if(packed)object3d.visible=true;
+        }
         return object3d;
       }catch(error){
         posePublication=null;throw error;
@@ -166,6 +254,7 @@ export async function createCharacterRig(id,{THREE,height=2.2}={}){
         // A resumed outer update can have changed a successful inner pose.
         if(updateJob!==job)posePublication=null;
         else updateJob=null;
+        if(packed&&!posePublication)object3d.visible=false;
       }
     }
     function snapshot(){
@@ -176,8 +265,9 @@ export async function createCharacterRig(id,{THREE,height=2.2}={}){
       return Object.freeze({id,name:entry.name,kind:entry.kind,height,mode:lastMode,direction:lastDirection,frame:frameIndex,
         elapsed,disposed,posePublication,vertices:count,triangles:geometry.index.count/3,boneCount:bones.length,meshCount:1,
         weightChecks,maxWeightError,source:Object.freeze({...frameInfo}),samples:Object.freeze(sample),
-        assets:Object.freeze(entry.assets.map(info=>Object.freeze({path:info.path,sha256:info.sha256,bytes:info.bytes,sampling:info.sampling}))),
-        metadata:Object.freeze((entry.metadata||[]).map(info=>Object.freeze({...info}))),
+        assets:Object.freeze((packed?[]:entry.assets).map(info=>Object.freeze({path:info.path,sha256:info.sha256,bytes:info.bytes,sampling:info.sampling}))),
+        metadata:Object.freeze((packed?[]:(entry.metadata||[])).map(info=>Object.freeze({...info}))),
+        ...(packed?{sourceKind:'borrowed-main-atlas',sourcePath:PACKED_PATH}:{}),
         limits:'원화 평면 스킨 / 정사영 카메라향 billboard 필요 / 완전 3D 인체 아님 / 전투·저장 미연결'});
     }
     function dispose(){
@@ -186,7 +276,7 @@ export async function createCharacterRig(id,{THREE,height=2.2}={}){
       geometry.dispose();material.dispose();skeleton.dispose();textures.forEach(texture=>texture.dispose());
       textures.clear();leases.forEach(lease=>lease.release());leases.length=0;
     }
-    update(0,{mode:'idle',direction:0});object3d.visible=true;
+    if(!packed){update(0,{mode:'idle',direction:0});object3d.visible=true;}
     return Object.freeze({object3d,update,snapshot,dispose});
   }catch(error){
     geometry?.dispose();material?.dispose();skeleton?.dispose();textures.forEach(texture=>texture.dispose());

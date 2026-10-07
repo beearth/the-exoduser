@@ -11465,8 +11465,8 @@ globalThis.__ch1FieldTerrainQA=()=>_ch1ThreeTerrain?_ch1ThreeTerrain.snapshot():
 // ROOT-CH1-1-PLAYER-RIG-CONSUMER-20261007: body display only, default OFF.
 const _ch1RigRequested=_ch1ThreeRequested&&new URLSearchParams(location.search).get('ch1Rig')==='1';
 const _ch1RigDirections=Object.freeze(['s','se','e','ne','n','nw','w','sw']);
-let _ch1PlayerRig=null,_ch1RigAlive=true,_ch1RigImportFailed=false,_ch1RigBodyFrame=null,_ch1RigClock=null,_ch1RigDelta=0,_ch1RigScoped=false,_ch1RigStrikeOwner=null;
-const _ch1RigStats={bodyFrames:0,attackFrames:0,recoveryFrames:0,ghostFrames:0,legacyFrames:0,lastState:'awaiting-main-body'};
+let _ch1PlayerRig=null,_ch1RigAlive=true,_ch1RigImportFailed=false,_ch1RigBodyFrame=null,_ch1RigClock=null,_ch1RigDelta=0,_ch1RigScoped=false,_ch1RigStrikeOwner=null,_ch1RigPackedOwner=null;
+const _ch1RigStats={bodyFrames:0,attackFrames:0,recoveryFrames:0,packedBodyFrames:0,ghostFrames:0,legacyFrames:0,lastState:'awaiting-main-body'};
 if(_ch1RigRequested){
   window.addEventListener('pagehide',()=>{_ch1RigAlive=false;_ch1RigBodyFrame=null;if(_ch1PlayerRig){if(typeof _freeMapTex==='function')_freeMapTex(_ch1PlayerRig.canvas);_ch1PlayerRig.dispose();}},{once:true});
   import('./tools/2_5d/ch1-player-rig.mjs').then(module=>{if(_ch1RigAlive)_ch1PlayerRig=module.createCh1PlayerRig();}).catch(()=>{_ch1RigImportFailed=true;});
@@ -11487,7 +11487,8 @@ function _ch1RigBeginBodyFrame(){
   _ch1RigBodyFrame=null;
   if(_ch1RigStrikeOwner&&!((P.s==='wSwing'&&_ch1RigCombatOwnerCurrent('strike'))||(P.s==='wRecover'&&_ch1RigCombatOwnerCurrent('recovery'))))_ch1RigStrikeOwner=null;
   if(!_ch1RigRequested||!_ch1RigAlive)return;
-  const scoped=_charIdx===0&&G.on&&G.stage===0&&!G._bossArena&&_ch1StartOuterEnabled()&&_CH1_START_PHASE==='smoothing';
+  const scoped=(_charIdx===0||_charIdx===1)&&G.on&&G.stage===0&&!G._bossArena&&_ch1StartOuterEnabled()&&_CH1_START_PHASE==='smoothing';
+  if(_ch1RigPackedOwner&&(!scoped||_charIdx!==1||P.hp<=0||P.s!=='idle'||_ch1RigPackedOwner.actor!==P||_ch1RigPackedOwner.map!==G.map||_ch1RigPackedOwner.animator!==P._sa||_ch1RigPackedOwner.image!==P._sa?.img||_ch1RigPackedOwner.frameMap!==P._sa?.fm||_ch1RigPackedOwner.image.width!==_ch1RigPackedOwner.width||_ch1RigPackedOwner.image.height!==_ch1RigPackedOwner.height)){_ch1RigPackedOwner=null;if(_ch1PlayerRig)_ch1PlayerRig.suspend();}
   const previous=_ch1RigClock,frame=_gameFrame;
   // Observe committed gameplay ticks; do not call update's Rift/lesson guards again.
   _ch1RigDelta=scoped&&previous&&previous.scoped&&previous.actor===P&&previous.map===G.map&&previous.classId===_charIdx&&Number.isSafeInteger(frame)&&Number.isSafeInteger(previous.frame)&&frame>=previous.frame&&!G.paused&&!document.hidden?Math.min(.05,(frame-previous.frame)*PHYS_STEP/1000):0;
@@ -11495,7 +11496,52 @@ function _ch1RigBeginBodyFrame(){
   if(!scoped&&_ch1RigScoped&&_ch1PlayerRig)_ch1PlayerRig.suspend();
   _ch1RigScoped=!!scoped;
 }
+function _ch1RigPackedCurrent(owned){
+  return !!owned&&_ch1RigPackedOwner===owned&&_ch1RigRequested&&_ch1RigAlive&&_ch1RigScoped&&_charIdx===1&&P.hp>0&&P.s==='idle'&&G.on&&G.stage===0&&!G._bossArena&&_ch1StartOuterEnabled()&&_CH1_START_PHASE==='smoothing'&&owned.actor===P&&owned.map===G.map&&owned.animator===P._sa&&owned.image===P._sa?.img&&owned.frameMap===P._sa?.fm&&_atlasPReady&&owned.image===_atlasP_img&&owned.frameMap===_atlasP_frames&&owned.image.width===owned.width&&owned.image.height===owned.height;
+}
+function _ch1RigPackedFrameCurrent(owned,capture){
+  if(!_ch1RigPackedCurrent(owned)||!capture||P._sa.anim!==capture.mode||P._sa.f!==capture.index||_playerSpriteDirection(P)!==capture.direction)return false;
+  const native=SpriteAnimator._fr(P._sa,capture.direction),cell=capture.cell,source=capture.sourceFrame;
+  return native===capture.native&&native===owned.frameMap[capture.mode+'_'+capture.direction]&&native.length===capture.count&&Object.hasOwn(native,capture.index)&&native[capture.index]===cell&&cell.x===source.x&&cell.y===source.y&&cell.w===source.w&&cell.h===source.h;
+}
+function _drawCh1SilvertailRigBody(direction,alpha){
+  // ROOT-CH1-SILVERTAIL-PACKED-MAIN-20261007: borrow the final native atlas/cell; preserve parent .65 and body transform.
+  if(!_ch1RigRequested||!_ch1RigAlive||!_ch1PlayerRig||!_ch1RigScoped||_charIdx!==1||P.hp<=0||P.s!=='idle'||!P._sa||!_atlasPReady||P._sa.img!==_atlasP_img||P._sa.fm!==_atlasP_frames)return false;
+  const mode=P._sa.anim,index=_ch1RigDirections.indexOf(direction),count=mode==='idle'?2:(mode==='walk'||mode==='run'?4:0),native=SpriteAnimator._fr(P._sa,direction),image=P._sa.img,frameMap=P._sa.fm,width=image.width,height=image.height,f=P._sa.f;
+  if(!count||index<0||!Number.isInteger(f)||f<0||f>=count||!Array.isArray(native)||native.length!==count||native!==frameMap[mode+'_'+direction]||!Number.isSafeInteger(width)||!Number.isSafeInteger(height)||width<48||height<48)return false;
+  for(let i=0;i<count;i++){
+    const c=native[i];
+    if(!Object.hasOwn(native,i)||!c||!Number.isSafeInteger(c.x)||!Number.isSafeInteger(c.y)||c.x<0||c.y<0||c.w!==48||c.h!==48||c.x+48>width||c.y+48>height)return false;
+  }
+  if(!_ch1RigPackedCurrent(_ch1RigPackedOwner)){
+    const generation={};_ch1RigPackedOwner={actor:P,map:G.map,animator:P._sa,image,frameMap,width,height,generation,atlas:Object.freeze({image,width,height,generation})};
+  }
+  const owned=_ch1RigPackedOwner,cell=native[f],sourceFrame=Object.freeze({generation:owned.generation,mode,direction:index,index:f,count,x:cell.x,y:cell.y,w:48,h:48,anchorX:24,anchorY:47,referenceHeight:45});
+  const capture=Object.freeze({direction,mode,index:f,count,native,cell,sourceFrame});
+  const frame=_ch1PlayerRig.render({stage:G.stage,map:G.map,actor:P,id:'silvertail',mode,direction:index,phase:(f+.5)/count,heightWorld:45,backingScale:_ssaa,dt:_ch1RigDelta,borrowedAtlas:owned.atlas,sourceFrame,animator:P._sa,frameMap});
+  if(!frame){_ch1RigStats.legacyFrames++;_ch1RigStats.lastState='legacy-packed-pending-or-failed';return false;}
+  const state=_ch1PlayerRig.snapshot(),publication=state.lastFrame;
+  if(!state.ready||state.id!=='silvertail'||state.sourceKind!=='borrowed-main-atlas'||!publication||publication.mode!==mode||publication.frame!==f||publication.direction!==index||publication.phase!==(f+.5)/count||!_ch1RigPackedFrameCurrent(owned,capture))return false;
+  let blitted=false;
+  X.save();
+  try{
+    X.globalAlpha=alpha;X.translate(0,23); // native 48px center -> packed crop baseline (24,47), not an anatomical foot.
+    let matrix;if(_useGPU||_useGL)matrix=_mat().slice(0,6);else{const m=X.getTransform();matrix=[m.a,m.b,m.c,m.d,m.e,m.f];}
+    if(matrix.length!==6||!matrix.every(Number.isFinite)||!_ch1RigPackedFrameCurrent(owned,capture))return false;
+    X.drawImage(frame.canvas,frame.left,frame.top,frame.width,frame.height);blitted=true;
+    _ch1RigStats.bodyFrames++;_ch1RigStats.packedBodyFrames++;
+    const after=_ch1PlayerRig.snapshot();
+    if(_ch1RigPackedFrameCurrent(owned,capture)&&after.ready&&after.generation===state.generation&&after.lastFrame===publication){
+      _ch1RigBodyFrame={frame,matrix,now:_now,map:G.map,actor:P,animator:P._sa,classId:_charIdx,generation:state.generation,publication,canvasVersion:frame.canvas._glVer,packedOwner:owned,packedCapture:capture};
+      _ch1RigStats.lastState='silvertail-packed-body-adopted';
+    }else{_ch1RigBodyFrame=null;_ch1RigStats.lastState='silvertail-packed-blit-retired';}
+    // A completed synchronous parent blit cannot be rolled back; never request a second legacy body afterward.
+    return true;
+  }catch(_){_ch1RigBodyFrame=null;_ch1RigStats.lastState=blitted?'silvertail-packed-blit-retired':'legacy-packed-parent-blit-failed';return blitted;}
+  finally{X.restore();}
+}
 function _drawCh1PlayerRigBody(direction,alpha){
+  if(_charIdx===1)return _drawCh1SilvertailRigBody(direction,alpha);
   if(!_ch1RigRequested||!_ch1RigAlive||!_ch1PlayerRig||!_ch1RigScoped||P.hp<=0||!P._sa)return false;
   // ROOT-CH1-LMB-RECOVERY-RIG-20261007: normal LMB cut and its inherited recovery only.
   const strike=P.s==='wSwing'&&P._sa.anim==='atk2'&&_ch1RigCombatOwnerCurrent('strike');
@@ -11528,11 +11574,13 @@ function _drawCh1PlayerRigBody(direction,alpha){
 function _drawCh1PlayerRigGhost(alpha){
   const owned=_ch1RigBodyFrame;
   if(!owned||!_ch1RigAlive||!_ch1PlayerRig)return false;
+  if(owned.classId===1&&!_ch1RigPackedFrameCurrent(owned.packedOwner,owned.packedCapture))return false;
   const state=_ch1PlayerRig.snapshot();
+  if(owned.classId===1&&!_ch1RigPackedFrameCurrent(owned.packedOwner,owned.packedCapture))return false;
   if(owned.now!==_now||owned.map!==G.map||owned.actor!==P||owned.animator!==P._sa||owned.classId!==_charIdx||!state.ready||owned.generation!==state.generation||owned.publication!==state.lastFrame||owned.canvasVersion!==owned.frame.canvas._glVer)return false;
   X.save();try{X.globalAlpha=alpha;X.setTransform(...owned.matrix);const frame=owned.frame;X.drawImage(frame.canvas,frame.left,frame.top,frame.width,frame.height);_ch1RigStats.ghostFrames++;return true;}catch(_){return false;}finally{X.restore();}
 }
-globalThis.__ch1PlayerRigQA=()=>Object.freeze({requested:_ch1RigRequested,alive:_ch1RigAlive,importFailed:_ch1RigImportFailed,scope:_ch1RigScoped,..._ch1RigStats,adapter:_ch1PlayerRig?_ch1PlayerRig.snapshot():null,bodyCurrent:!!_ch1RigBodyFrame&&_ch1RigBodyFrame.now===_now,adoptedClass:'warrior',adoptedModes:'idle/walk/run/attack(normal LMB wSwing+wRecover)',silvertailAccepted:false,attackStrikeAccepted:true,attackRecoveryAccepted:true,attackStates:'LMB-origin wSwing/atk2 -> inherited wRecover/atk3',attackAccepted:false,fullPlayerLinked:false});
+globalThis.__ch1PlayerRigQA=()=>Object.freeze({requested:_ch1RigRequested,alive:_ch1RigAlive,importFailed:_ch1RigImportFailed,scope:_ch1RigScoped,..._ch1RigStats,adapter:_ch1PlayerRig?_ch1PlayerRig.snapshot():null,bodyCurrent:!!_ch1RigBodyFrame&&_ch1RigBodyFrame.now===_now,adoptedClass:'warrior/silvertail',adoptedModes:'warrior idle/walk/run/normal-LMB strike+recovery; silvertail packed idle/walk/run',silvertailAccepted:true,silvertailAttackAccepted:false,attackStrikeAccepted:true,attackRecoveryAccepted:true,attackStates:'LMB-origin wSwing/atk2 -> inherited wRecover/atk3',attackAccepted:false,fullPlayerLinked:false});
 function _drawCh1StartOuter(ctx){
   if(_drawCh1ThreeTerrain(ctx))return;
   _ch1StartOuterStats.visibleIds=[];_ch1StartOuterStats.drawnIds=[];if(!_ch1StartOuterEnabled())return;_preloadCh1StartOuter();
