@@ -13196,6 +13196,7 @@ function _dispatchSkillSlot(slotIdx,keyCode){
         if(_vs2.resHP>0||_vs2.resMP>0||_vs2.resST>0){
           P.hp=Math.min(P.mhp,P.hp+_vs2.resHP);P.mp=Math.min(P.mmp,P.mp+_vs2.resMP);P.st=Math.min(P.mst,P.st+_vs2.resST);
           addTxt(_vs2.x,_vs2.y-30,'HP+'+_vs2.resHP+' MP+'+_vs2.resMP+' ST+'+_vs2.resST,'#66ffaa',60);
+          _vs2.resHP=_vs2.resMP=_vs2.resST=0;
         }
         addParts(_vs2.x,_vs2.y,'#bb88ee',15);SFX.scarecrowRecall();
         // 합체(dualScarecrow): 회수 시 부풀기(1초) → 폭발!

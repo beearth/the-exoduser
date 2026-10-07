@@ -56451,3 +56451,51 @@ actual HTMLAudio/Chrome/GPU/청취/새PNG/save 서비스 실행0, native NOT_RUN
 | VISUAL VERDICT | **RETOUCH / 이번 UI_NOT_ASSESSED**. CPU PASS를 시각·청취 인수로 승격하지 않음 |
 
 별도 WOLF 파일 쓰기는 자동 승인 검토에서 dangerous로 거절됐으며 구체 사유는 제공되지 않았다. 해당 파일 추가 접근·실행·채택은 하지 않는다.
+
+
+## ROOT-SCARECROW-RECALL-REFUND-CONSUMER-20261008 — 현재 수동 환급 소비 계약
+
+아래 표가 이 작업의 현재 실제 main 계약이다. 앞의 회수 후 즉시 소멸/어그로 재ON, 회수·폭발 후 600f, 폭발 후 cooldownRed 표기는 해당 시점의 기획·구현 설명이며 현재 설치/회수 수명을 대신하지 않는다. 게임 밸런스를 새로 바꾼 작업이 아니다.
+
+| id / 범위 | 실제 현재 값·순서 | 적용 위치·한계 |
+|---|---|---|
+| voidScarecrow 수동 환급 | `resHP>0 || resMP>0 || resST>0`이면 HP/MP/ST를 각각 `min(현재최대치, 현재자원+축적잔액)`로 회복 → 원래 잔액으로 기존 addTxt → `resHP=resMP=resST=0` | `_dispatchSkillSlot`의 voidScarecrow 한 case에 초기화 한 행(+46B). 일반 본편 공통이며 URL/stage 제한을 추가하지 않음 |
+| 소비 권한 | 정상 첫 표시 반환 뒤 같은 객체의 지급 완료 잔액은 0. 남은 dual 폭발 대기 객체에 키를 놓고 다시 입력해도 같은 축적 자원을 재환급하지 않음 | 새로운 input guard/상태/Map/Set/timer를 만들지 않음. 남은 잔액이 0이면 환급·환급표시만 생략 |
+| 기존 첫 환급 | HP/MP/ST 각각 원량·각 최대치 제한·표시 내용과 순서 보존. 최대치 때문에 넘친 부분도 해당 축적 잔액에서 소진 | HP만/MP만/ST만/잔액0/일부 최대치 도달을 별도 검수. 이후 새 탄막으로 생긴 새 축적까지 영구 차단하는 설계가 아님 |
+| dualScarecrow | 기존 `absorbed>0`과 합체이면 `aggroOn=false; exploding=60; _dualBoom=true`, 기존 임계 문구·SFX. `absorbed/dmgPool/maxAbsorb/lv`는 보존 | 같은 객체 재입력의 기존 60 재설정·FX·숙련 호출도 그대로. 폭발 타이밍·피해 수정이라고 계산하지 않음 |
+| 일반 수동 회수 | 합체 폭발 조건이 아니면 기존 `G._voidScarecrow=null` 및 아이콘 갱신 | 수동 회수 자체에 XP1000 지급을 추가하지 않음 |
+| 축적 producer | 기존 탄막 1개당 HP/MP/ST 각100. dual은 기존 탄막 dmg를 dmgPool에 합산 | 흡수 필터/판정 반경/최대흡수량/피해식/포이즈/보호Q를 수정하지 않음 |
+| dual 폭발 update | 기존 exploding을 update당 1 감소, 0에서 기존 폭발·제거. 반경 `min(2000,500+trunc(absorbed/10)*500)`, 일반 dual 피해 `trunc(meleeRef()*statStr()*.5*absorbed+dmgPool*1.5)` | 공성유령의 bowRef 분기·연쇄 폭발 처리도 원문 그대로. 자원 잔액 초기화로 폭발 absorbed/dmgPool을 지우지 않음 |
+| 거리 자동 회수 | non-siegeGhost이며 `dst(P.x,P.y,scarecrow.x,scarecrow.y)>=3000`이면 현재 남은 잔액만 반환 → 기존 XP1000 → FX/SFX → 제거 | 수동 환급 뒤 같은 잔액의 추가 반환0. 아직 수동으로 지급하지 않은 잔액은 기존대로 반환. siegeGhost 자동 회수 제외 |
+| 설치 쿨다운 | `activateVoidScarecrow`의 `P._vsCd=1200`, `activateExplodeScarecrow`의 `P._exsCd=1200` 직접 설정 | 설치 시 기본20초. 이 두 설정에 cooldownRed 곱셈 없음. 기존 update 감쇠 `sp+_hdCdBonus`의 holyDome 가속은 별개로 보존. 회수/폭발 시 새 쿨 설정 추가0 |
+| 숙련과 비용 | voidScarecrow metadata `cd=600`을 읽는 기존 `_addSkProf`가 수동 case 성공당1회, 정상 조건 기본10초. 실제 설치1200과 다른 소유 값 | metadata600/숙련10초 변경0. 설치·수동회수 caller/helper의 직접 HP/MP/ST 차감 추가0. 습득/강화 비용·전체 표시 정책과 구분 |
+| 예외·재진입 | addTxt가 던지면 자원 회복 뒤 초기화에 도달하지 않음. 초기화 뒤 SFX가 던지면 잔액은 이미0이며 기존 예외가 전파 | 동기 재진입·모든 예외에 대해 원자적 1회 지급/rollback 보장0. 공성유령 철거의 다른 refund case 전체를 고쳤다고 주장0 |
+| 불변 범위 | 설치/회수/폭발·피해·EXP 공식·AI/nav/collision·PNG/scene/에셋·DOM·RAF/timer 종류·save 스키마 보존 | game/설정3.3 foreign WIP 미채택 보존. 사용자 IAB13 old-loaded 그대로이며 새 코드 실시간 적용 주장0 |
+
+### 새 한정 검수와 보존
+
+첫 metadata 준비 epoch: Node1/VM1(metadata1), setupFAIL1, 제품조건 PASS0/FAIL0/48未도달/exit1을 원문 보존했다. 끝의 // 주석 뒤 LF 누락만 고친 별도 epoch에서 최초 실제 함수 suite Node1/VM30(metadata1+before2+final27), 9그룹48조건 PASS/FAIL0/setup0/未도달0/계측unhandled0/exit0이었다. 이전 소스의 같은 객체 재환급 반례1은 별도 재현이며 48PASS에 합산하지 않았다. 물리 Node 총2, 실제 제품 조건 suite1이다. 실제 whole dispatcher/helper/숙련/slot 함수와 원문 그대로인 흡수·dual폭발·3000px 자동회수 3개 update block을 통제 VM/ports로 검수했다. 전체 main update timing·실제 input release·실 _fireExsBoom 피해·GPU·서버 save 검수가 아니다. source/owned 전후 exact이며 실제 결과는 cpu-corrected-result.json과 validation-receipt.json에 동결한다.
+
+실제 native 키보드/게임패드/클래스 선택·GPU·새 Chrome·청취·새 PNG·실서버 save는 이번 작업에서 실행하지 않았다. 통제 dependency port·stub을 실제 브라우저/서버 ACK로 승격하지 않는다. 전체 같은 후보 CH1-1 보스 정상 개방→진입→death/revive/retry/native6·청취·실보상 save 인수는 여전히 미완료다. UI_NOT_ASSESSED / 전체 VISUAL RETOUCH를 유지한다.
+
+관련 docs 새 whole keyword 검색1회: eligible1022 text/818 Markdown, 33 matching paths/97 lines/122 occurrences. giant owner 관리 파일은 path-only, 보호2_3 본문은 제외했다. 매칭33개 전수 fullread를 주장하지 않는다. 현재 정본5(스킬 본문/자원 공식/DPS 자원표/MASTER/CHANGELOG)만 선 working+HEAD fullbytes10 백업, 같은 own ops와 append, inverse exact/EOF1로 동기화한다. code1+docs5 소유 경로만 정상 commit/push/remote exact로 보존한다. 검수·실패·미도달·원격 여부는 E/ch1-scarecrow-refund-consumer-20261008/의 validation/completion/remote receipts가 최종 근거다.
+
+### MAP PRODUCTION REPORT (§23)
+
+| 표준 항목 | 이 단위의 실제 판정 |
+|---|---|
+| STAGE | actual main global voidScarecrow 수동 환급 소비. 맵/geometry 작업0 |
+| MASTER — silhouette / regions / main route / side spaces | 원본 유지, 새 시각 평가 없음 |
+| OUTER MASS — LEFT / RIGHT / TOP / SOUTH / major holes | 원본 유지, 새 시각 평가 없음 |
+| LARGE — source assets / composites / overlap / repeated silhouette | 원PNG/scene/에셋 유지 |
+| MEDIUM — connections / remaining holes | 원본 유지 |
+| GROUND — shadow / contamination / structure integration | 원본 유지, physical relief0·맵 확대 흐림 미해결 |
+| PLAYABLE — main arenas / travel space / breathing space / threat space / combat readability | 정상 첫 환급·폭발 동작 보존, 같은 지급 완료 잔액 재환급 차단을 통제 CPU로만 검수 |
+| LANDMARK — primary / secondary / tertiary | 원본 유지 |
+| CAMERA QA — START / EARLY / ARENA / SIDE L / SIDE R / LANDMARK / LATE / EXIT | NOT_RUN, 사용자 열린 IAB13 무조작 |
+| TECH QA — route / collision / pageerror / 404 / seam / loading / performance | route/native NOT_RUN, collision/loading 변경0, pageerror/HTTP 새 관측0, seam은 실제 함수·block 통제 ports 검수. 성능 미측정 |
+| FILES — stage-owned / concurrent touched / unrelated touched | game1 + current docs5만 소유. foreigngame185B/설정3.3foreign2948B 미채택 보존. unrelated0 |
+| GIT — staged / commit / push | 소유 code+docs 정상 보존 여부·정확 SHA는 최종 completion/remote receipt. 문서 작성 시 아직 보존 전인 값은 실완료로 승격0 |
+| VISUAL VERDICT | RETOUCH, 이 단위 UI_NOT_ASSESSED/nativeNOT_RUN |
+
+WOLF 파일 쓰기는 자동 승인 검토에서 dangerous로 거절됐고 구체 사유는 제공되지 않았다. 해당 후보의 추가 접근·실행·검수·채택·Git 및 다른 tool/path/host/권한 우회0을 유지한다.
