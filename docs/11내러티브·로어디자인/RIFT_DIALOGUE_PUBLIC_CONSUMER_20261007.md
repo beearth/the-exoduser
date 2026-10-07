@@ -942,3 +942,60 @@ NEXT PASS: alpha-aware 보수적 셀 점유 source/API 계약·원자료 수치�
 ```
 
 추가 cap source/수학 검토 `CODEX7-BERIN-OPAQUE-CAP-FEASIBILITY-20261007`(공식 turn `01a11435-5732-7c21-83d8-6bdf85811169`)의 provider 단일 원문은 `codex-opaque-cap-official-end.txt` 3303B/`f45694b428a15585a3676f77e86364d3636d1c95c11f130ad98737f9c8011d88`에 미채택 보존했다. A 기준 수평 bounds [L,R], NPC 반폭 h, r=.045/m=.015/cap=h+r+m인 기존 보수적 사각형 모델에서 겹침 시 왼쪽 가능 조건은 L≥−h, 오른쪽은 R≤h다. L<−h 및 R>h이면 양방향 cap 초과이며, 중심 q=(L+R)/2·반폭 b=(R−L)/2의 가능 조건은 b−|q|≤h다. 최초 실패 전체 geometry 값으로 계산한 한쪽 edge의 필요 축소는 약 .134518/.179499 scene이며 alpha 적용 결과가 아니다. 실제 direction/frame/elapsed/pose/발/A를 고정한 새 alpha 투영 가능성 Gate를 통과한 후보만 새 화면 검수 대상으로 삼는다. 실제 실패 frame UNKNOWN·대표 raw 동일 pose 추정0·cap 새 값 확정0·새 코드/CPU/GPU/Chrome/전문송신0이다. 기존 정책 유지·별도 유한 outreach·유효 위치 없을 때 open 숨김의 대안은 모두 미확정 제안이다.
+
+### 2026-10-07 ROOT-MAIN-RIFT-VIEW-CONSUMER-20261007 · 본편에서 지옥의 틈 둘러보기
+
+기존 클리어 후 다음 구역 경로와 별개인 표시 전용 진입을 실제 main에 추가했다. 아래 현재 예외가 앞선 clear-only 시점의 기록을 덮어쓰지는 않는다. 본편 진행·저장 권한은 그대로다.
+
+| 항목 | 현재 계약·근거 |
+|---|---|
+| 노출 | 실제 main의 origin이 http://127.0.0.1:3387이고 ch1RiftView=1일 때만 생성한다. 기본 OFF이며 기존 로비 carry4에 포함하지 않는다. 설정 메뉴·OPT·BINDS 저장 항목이 아니다. |
+| 진입 버튼 | root-rift-view-open, native button type=button, 지옥의 틈 둘러보기. fixed left18px/bottom150px/z-index75, minHeight44px, padding10px 16px, border1px, radius7px, font600 14px system-ui. 설정 footer에는 넣지 않는다. |
+| 버튼 입력 | mousedown은 preventDefault+stopPropagation으로 기존 window MB arming을 막는다. Enter/NumpadEnter/Space의 keydown·keyup은 stopPropagation만 하여 브라우저 기본 click을 허용한다. Tab·키 재지정 정책은 그대로다. |
+| 실제 admission | enabled/notdead/visible, view job과 clear job이 없고 P/G 존재, G.on===true/G.paused===false, stage0/nonarena/stageCleared===false, P.s===idle와 finite hp>0, charIdx0 또는1, _parryLesson.active 아님. 버튼 자체를 이 admission에 맞춰 숨김/disabled로 갱신하는 구현은 아니다. |
+| 부모 소유 | await 전에 _rootRiftViewJob을 게시하고 G.on=false. P/G/map/stage/charId/charIdx/status/paused/기존 stage epoch와 새 viewToken을 캡처한다. view epoch는 새 entry 때 증가하며 _rootRiftViewSame으로 현재 job/부모를 확인한다. |
+| 공개 host | createMainRiftViewHost({window,document,readContext}) → frozen {openView,cancel,dispose,snapshot,parentEvent}. 기존 createMainRiftHost의 clear-only admission은 별도 유지한다. view는 main-rift-runtime/gate/checkpoint/Continue/schedule을 거치지 않는다. |
+| readContext | own plain {player,character,stage,context,on,stageCleared,status,map,viewToken}. 실제 stage0/onfalse/stageClearedfalse를 전달하며 가짜 클리어를 만들지 않는다. game은 정확한 127.0.0.1 origin을 요구하고 public view host는 로컬 localhost 또는127.0.0.1:3387을 허용한다. |
+| child 표시·ACK | 기존 tools/2_5d-world-lab.html에 main-character=warrior 또는silvertail과 view-only=1을 전달한다. initialCharacter/initialCharacterReady/selected 정확일치 및 viewOnlytrue/durableWritesfalse/parentStateLinkedfalse를 확인한다. 전체 P/G·장비·퀘스트 상태 전달은 없다. |
+| 사용자 화면 | view-only만 header/footer/aside를 display:none으로 감춘다. main은 padding/margin0·max-width해제·100vh, stage는 width/height100%·aspect-ratio auto·border/radius0. 실험조작 DOM은 보존하지만 화면 선택 접근은 감춘다. 일반 standalone/clear host의 해당 화면 배치는 바꾸지 않는다. |
+| 접근성·리프 문구 | stage aria-label 지옥의 틈. canvas는 기존 WASD/방향키·Shift·J·R와 Escape 전투 복귀를 안내한다. loading-title 지옥의 틈으로 들어갑니다, loading-detail 공간을 준비하고 있습니다. legend는 리프일 때만 기존 조작과 Esc 복귀를 표시한다. 물리·rig·NPC·API는 그대로다. |
+| host 문구 | 제목 지옥의 틈, iframe title 지옥의 틈 둘러보기, 준비 공간을 준비하고 있습니다., ready WASD 이동 · R 대화 · Esc 돌아가기, 종료 버튼 전투로 돌아가기. 주요 흐름에는 standalone 실험 조작·기술 표시를 드러내지 않는다. |
+| ESC 우선순위 | ready 이후 view host가 child capture keydown을 설치한다. nonrepeat Escape를 preventDefault+stopImmediatePropagation한 뒤 child-escape로 본편에 즉시 귀환한다. 이 경로는 child NPC 대화의 Escape보다 우선하며 view-only에만 적용한다. 기존 standalone/clear host Escape는 그대로다. |
+| 입력 격리 | 기존 _rootRiftBlock가 view 소유 중 update/facing/gamepad poll·key inject/direct held/auto nextStage를 차단한다. 부모 capture quarantine는 view host의 native controls로 전달한다. 진입 시 _rootRiftClearHeld를 재사용하고 held·패드축·aim 상태는 복원하지 않는다. G.paused는 직접 쓰지 않는다. |
+| release 보정 | current/nonclosed/nonreleasing job만 받으며 j.releasing=true를 먼저 설정해 lease를 유지한다. 시작 currentSame일 때만 clearHeld하고 finally에서 currentSame을 재확인한다. 여전히 current job일 때만 closed/detach/reason을 쓰며 restore&&safe인 경우 캡처한 j.context.on만 previousOn으로 복귀한다. releasing 중 Block은 true다. |
+| 취소·포커스 | init/retry/char/lobby의 기존 invalidate, visibility hidden/pagehide, 늦은 import/handle에 현재 identity 경계를 적용한다. host는 entry 당시 activeElement를 캡처해 connected/sameContext인 경우 복귀한다. mouse launch의 preventDefault 때문에 항상 launch button으로 복귀한다고 주장하지 않는다. |
+| 소유 자원 | host timer clear·child ESC listener 제거·iframe about:blank·자기 dialog 제거와 child 기존 pagehide cleanup을 사용한다. 기존 timeout30000ms/poll100ms 유지, 추가 renderer/RAF 소유0. 실제 종료 표본은 timer0/iframe0이었다. |
+| 저장·진행 권한 | view 경로의 checkpoint/dbSave/reward/quest grant/clear/nextStage 호출0. child 이동·대화는 독립 session이며 본편으로 보상·퀘스트·저장을 전송하지 않는다. initial class 문자열 표시 연결만 제공하며 fullPlayerLinkedfalse/durableSaveAcceptedfalse다. |
+| 격리 한계 | 동일 origin iframe은 보안 sandbox가 아니다. 이 단위는 협력하는 표시 소비자의 포트/수명 경계다. 진단상 writes0를 실제 backend 저장·보안 검증 완료로 해석하지 않는다. |
+| 불변 | 원PNG/scene/nav/발 좌표/geometry/카메라/rig motion/부모 전투·AI·클리어·nextStage·5000ms/900ms 기존 진행 계약은 변경하지 않는다. 기존 game foreign185 B와 설정3.3 foreign2948 B는 미채택 보존한다. |
+
+현재 source 핀
+
+| 항목 | 현재 계약·근거 |
+|---|---|
+| game.html | 4098926 B / SHA256 229d570440c0199e5d73c661817ec0e909f865de9cd3f0724ea0c6fcbd9e6949 |
+| tools/2_5d/main-rift-host.mjs | 21121 B / SHA256 e6438f8651638bfe7b35b241b1d01a1fe69cba6362808eca7c3322198f3ba3b2 |
+| tools/2_5d-world-lab.mjs | 55664 B / SHA256 082e75e14a01bb56819173d8cfc43fc41b35d7fe94f4613502153136af4bb9f1 |
+| game ROOT owned | 4098741 B / SHA256 422bd8c9f4272bb3e978c69db9cff9d291e233976774b16ecfbfed496e178995; working의 기존 foreign185 B는 미채택 보존 |
+
+검수는 source/범위별로 분리한다.
+
+| 항목 | 현재 계약·근거 |
+|---|---|
+| 준비·구문 이력 | 초기 seam 준비 assertion은 repoWrite0. game4098489/f592의 괄호 오류는 정적 source 구문 결함 발견이며 Nodeparse0/제품VM0/native0다. 1byte 교정4098488/75c197도 CPU0 이력이다. 실행 parseFAIL로 기록하지 않는다. |
+| 이전 root CPU | launch 입력 보강 뒤 game4098783/2d2 source의 최초7그룹48조건 PASS. release guard 이전 source의 이력이며 최종229d 검수로 소급하거나 재실행하지 않는다. |
+| host CPU | host21121/e643 source의 actual module+통제DOM 신규9그룹41조건 PASS. 실제 WebGL/native 검수와 별개다. |
+| 최종 release CPU | game4098926/229d source의 한정3그룹8조건 PASS. 이전48·host41과 clean 전체 합산하지 않는다. |
+| 새 native 범위 | headed Chrome1/context1/page1/maxLivePage1/child동시1의 최초3조건 PASS, FAIL0/setupFAIL0/미도달0/exit0. main button→child 실제 표시/이동→Escape 귀환과 부모W 재개만 새 인수다. |
+| 위치·부모 표본 | child x5480/y3740→y3612.6260000000016(modewalk/frames109). 부모 P x4020/y7420/sidle/hp542는 귀환까지 같고, 실제W 재개 뒤 y7368.796899999992였다. 같은 P/G/map 및 적·진행·저장 표본 보존을 관측했으며 모든 상태의 보존을 전수 증명한 것은 아니다. |
+| 새 화면 표본 | controlsHidden true, child stageHeight612=viewportHeight612. root가 open/moving/return PNG3을 직접 판독해 실제 둘러보기·감춘 기술조작·이동 몸체·복귀 HUD/body 가시성만 한정 확인했다. |
+| 오류·요청 | pageerror0/HTTP오류0. requestFailures5는 외부 font 의도 차단3과 local intro.mp4 abort2이며 후자 직접원인은 UNKNOWN. 모든 API는 합성 응답으로 격리, 합성 POST/api/mats1 forwardedfalse, save0/childAPI0/usersave0/durableACKfalse. context/browser closedtrue. |
+| 미인수 | native GL·물리GPU 해제 UNKNOWN. 실main 전체 진행/native6/청취/실세이브/A급 미인수. 해부학적 발·전8방향·주민 전체 경로·물리 높이 미인수. 원화 확대 흐림·작고 어두운 몸·복귀 bonfire/portrait/FX 중첩이 남아 전체 VISUAL VERDICT RETOUCH. |
+
+| 항목 | 현재 계약·근거 |
+|---|---|
+| 최종 검증 | /Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/main-rift-view-consumer-20261007/validation-receipt.json — 6098 B / bb2a1e51265689353d7c48d5194d230a8ae84e69fbda94ff4ddf4462602a1143 |
+| root 시각 판정 | /Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/main-rift-view-consumer-20261007/visual-verdict.json — 5427 B / 92a3c8e40dc51f2e286e328f87ad14f7b8e099f0edc4a5ec505604f2219ca4b1 |
+| 최초 native 원자료 | /Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/main-rift-view-consumer-20261007/native-first-only/result.json — 137809 B / 1c3c70bf9287530f3eef94702a8068e0dd8cf7ce9ff6c0d10041b857cacac50d |
+| 검색 범위 | 관련키워드 전체 검색1회:32경로/1007행/1118 occurrence. release 한정delta1회0매칭, child presentation 한정delta1회는 외부 검색영수증 값. 보호2_3 본문1경로/owner STATE·LOG6경로는 제외·path-only. archive 텍스트 일괄제외0. matching32문서 전부 full-read했다고 주장하지 않는다. |
+| 보존 상태 | 코드3+현재문서8의 정상 stage/commit/push는 root 소유로 예정. 현재 문서 작성자는 Git쓰기/CPU/Chrome실행0이며 자기 commit SHA를 추정하지 않는다. |

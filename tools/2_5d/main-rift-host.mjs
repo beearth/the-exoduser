@@ -42,15 +42,23 @@ const identity = value => value !== null && (typeof value === 'object' || typeof
  * {restore(),dispose()} handle or null. onExit(reason) only notifies a user exit
  * or automatic cancellation; the host never invokes continuation/nextStage.
  */
-export function createMainRiftHost({document: doc = globalThis.document,
+export function createMainRiftHost(options = {}) {return createHost(options, false);}
+// View admission is explicit; it never represents a cleared-stage gate.
+export function createMainRiftViewHost(options = {}) {
+  const host = createHost(options, true);
+  return Object.freeze({openView: host.enterRift, cancel: host.cancel, dispose: host.dispose,
+    snapshot: host.snapshot, parentEvent: host.parentEvent});
+}
+function createHost({document: doc = globalThis.document,
   window: win = globalThis.window, readContext,
-  timeoutMs = MAIN_RIFT_HOST.timeoutMs, pollMs = MAIN_RIFT_HOST.pollMs} = {}) {
+  timeoutMs = MAIN_RIFT_HOST.timeoutMs, pollMs = MAIN_RIFT_HOST.pollMs} = {}, viewOnly = false) {
   if (!doc?.body || !win || typeof readContext !== 'function' || typeof doc.createElement !== 'function' ||
       typeof win.setTimeout !== 'function' || typeof win.clearTimeout !== 'function') throw new Error('지옥의 틈 host 의존성 필요');
   if (!Number.isFinite(timeoutMs) || timeoutMs < 100 || timeoutMs > 60000 ||
       !Number.isFinite(pollMs) || pollMs < 20 || pollMs > 1000) throw new Error('지옥의 틈 대기 수치 범위 오류');
   const origin = new URL(win.location.href), labURL = new URL('/' + MAIN_RIFT_HOST.labPath, origin);
   if (!['http:', 'https:'].includes(origin.protocol) || origin.port !== MAIN_RIFT_HOST.allowedPort || labURL.origin !== origin.origin) throw new Error('지옥의 틈 host는 격리 동일 origin 3387만 지원합니다');
+  if (viewOnly && !['127.0.0.1', 'localhost'].includes(origin.hostname)) throw new Error('둘러보기는 로컬 3387에서만 지원합니다');
   const now = () => typeof win.performance?.now === 'function' ? win.performance.now() : Date.now();
   let disposed = false, sequence = 0, current = null, readingContext = false, reason = 'idle', error = null,
     completed = 0, cancelled = 0, notificationErrors = 0;
@@ -60,11 +68,11 @@ export function createMainRiftHost({document: doc = globalThis.document,
     readingContext = true;
     try {
     const value = plain(readContext(), 'readContext'), result = {};
-    for (const key of ['player', 'character', 'stage', 'context', 'on', 'stageCleared', 'status']) result[key] = own(value, key);
+    for (const key of ['player', 'character', 'stage', 'context', 'on', 'stageCleared', 'status', ...(viewOnly ? ['map', 'viewToken'] : [])]) result[key] = own(value, key);
     if (!result.player || typeof result.player !== 'object' || Array.isArray(result.player) ||
         typeof result.character !== 'string' || !['warrior', 'silvertail'].includes(result.character) ||
         !Number.isInteger(result.stage) || result.stage < 0 || !identity(result.context) ||
-        result.on !== false || result.stageCleared !== true) throw new Error('UNKNOWN · 부모 클리어/정지/identity admission 불일치');
+        result.on !== false || (viewOnly ? result.stage !== 0 || result.stageCleared !== false || !result.map || typeof result.map !== 'object' || !result.viewToken || typeof result.viewToken !== 'object' : result.stageCleared !== true)) throw new Error('UNKNOWN · 부모 클리어/정지/identity admission 불일치');
     if (result.status !== undefined && result.status !== null && !['string', 'boolean', 'number'].includes(typeof result.status)) throw new Error('UNKNOWN · 부모 status primitive 필요');
     if (typeof result.status === 'number' && !Number.isFinite(result.status)) throw new Error('UNKNOWN · 부모 status 유한수 필요');
     if (['dead', 'fallen', 'reviving', 'lastStand'].includes(result.status)) throw new Error('UNKNOWN · 부모 사망/부활 중');
@@ -73,7 +81,7 @@ export function createMainRiftHost({document: doc = globalThis.document,
   }
   function sameContext(record) {
     const fresh = contextSnapshot();
-    for (const key of ['player', 'character', 'stage', 'context', 'on', 'stageCleared', 'status']) if (fresh[key] !== record.context[key]) return false;
+    for (const key of ['player', 'character', 'stage', 'context', 'on', 'stageCleared', 'status', ...(viewOnly ? ['map', 'viewToken'] : [])]) if (fresh[key] !== record.context[key]) return false;
     return true;
   }
   const isCurrent = record => !disposed && current === record && !record.closed;
@@ -99,6 +107,8 @@ export function createMainRiftHost({document: doc = globalThis.document,
     record.closed = true; record.phase = 'closed';
     if (current === record) current = null;
     clearTimer(record); settle(record, null);
+    try {record.child?.removeEventListener('keydown', record.onChildKey, true);} catch (_) {}
+    record.child = null;
     record.frame?.removeEventListener('load', record.onLoad);
     record.frame?.removeEventListener('error', record.onError);
     record.panel?.removeEventListener('cancel', record.onCancel);
@@ -116,7 +126,9 @@ export function createMainRiftHost({document: doc = globalThis.document,
   }
   function fail(record, failure) {
     if (!isCurrent(record)) return;
-    error = errorText(failure); record.phase = 'failed'; clearTimer(record);
+    error = errorText(failure);
+    if (viewOnly) {closeRecord(record, 'load-failed', true, true); return;}
+    record.phase = 'failed'; clearTimer(record);
     status(record, error); settle(record, null);
     // Retain the owned error dialog for review. It cannot return a gate handle.
     if (record.exit && !record.exit.children.length) record.exit.textContent = '닫기';
@@ -134,14 +146,14 @@ export function createMainRiftHost({document: doc = globalThis.document,
     panel.style.cssText = 'width:min(1400px,96vw);height:94vh;max-width:96vw;max-height:94vh;margin:auto;padding:0;border:1px solid #8c7851;border-radius:14px;background:#080d10;color:#e7dfca;box-shadow:0 28px 90px #000b;overflow:hidden;';
     const header = doc.createElement('header');
     header.style.cssText = 'height:62px;display:flex;align-items:center;gap:18px;padding:0 20px;border-bottom:1px solid #384344;background:#101719;';
-    const title = doc.createElement('strong'); title.id = 'main-rift-host-title-' + record.id; title.textContent = '지옥의 틈 · 격리 표시';
+    const title = doc.createElement('strong'); title.id = 'main-rift-host-title-' + record.id; title.textContent = viewOnly ? '지옥의 틈' : '지옥의 틈 · 격리 표시';
     const text = doc.createElement('span'); record.status = text;
     text.setAttribute('role', 'status'); text.setAttribute('aria-live', 'polite');
     text.style.cssText = 'flex:1;font:13px/1.5 system-ui;color:#aab9b5;';
-    const exit = doc.createElement('button'); record.exit = exit; exit.type = 'button'; exit.textContent = '돌아가기';
+    const exit = doc.createElement('button'); record.exit = exit; exit.type = 'button'; exit.textContent = viewOnly ? '전투로 돌아가기' : '돌아가기';
     exit.style.cssText = 'padding:9px 16px;border:1px solid #8c7851;border-radius:7px;background:#202b2a;color:#efe3bc;cursor:pointer;font:600 14px system-ui;';
     const frame = doc.createElement('iframe'); record.frame = frame;
-    frame.title = '지옥의 틈 독립 2.5D 표시'; frame.src = 'about:blank';
+    frame.title = viewOnly ? '지옥의 틈 둘러보기' : '지옥의 틈 독립 2.5D 표시'; frame.src = 'about:blank';
     frame.style.cssText = 'display:block;width:100%;height:calc(100% - 63px);border:0;background:#080d10;';
     header.append(title, text, exit); panel.append(header, frame);
     record.onLoad = () => {
@@ -154,7 +166,7 @@ export function createMainRiftHost({document: doc = globalThis.document,
     record.onClose = () => {if (isCurrent(record)) userExit(record, 'dialog-closed');};
     frame.addEventListener('load', record.onLoad); frame.addEventListener('error', record.onError);
     panel.addEventListener('cancel', record.onCancel); panel.addEventListener('close', record.onClose);
-    doc.body.append(panel); panel.showModal(); status(record, '독립 화면 준비 중 · 본편 저장과 보상은 변경하지 않습니다.');
+    doc.body.append(panel); panel.showModal(); status(record, viewOnly ? '공간을 준비하고 있습니다.' : '독립 화면 준비 중 · 본편 저장과 보상은 변경하지 않습니다.');
     frame.src = record.entryURL; exit.focus({preventScroll: true});
   }
   function handleFor(record) {
@@ -176,7 +188,7 @@ export function createMainRiftHost({document: doc = globalThis.document,
       if (typeof read !== 'function') throw null;
       const value = plain(read.call(api), 'lab snapshot', child.Object.prototype);
       const data = {};
-      for (const key of ['ready', 'error', 'disposed', 'contextLost']) data[key] = own(value, key);
+      for (const key of ['ready', 'error', 'disposed', 'contextLost', ...(viewOnly ? ['viewOnly', 'durableWrites', 'parentStateLinked'] : [])]) data[key] = own(value, key);
       if (initial) for (const key of ['initialCharacter', 'initialCharacterReady', 'selected']) data[key] = own(value, key);
       return data;
     } catch (_) {throw new Error('UNKNOWN · 지옥의 틈 초기 표시 ACK 읽기 실패');}
@@ -201,13 +213,19 @@ export function createMainRiftHost({document: doc = globalThis.document,
         if (!isCurrent(record)) return;
         if (record.phase === 'active' && !state) throw new Error('지옥의 틈 활성 port 사라짐');
         if (state) {
+          if (viewOnly && (state.viewOnly !== true || state.durableWrites !== false || state.parentStateLinked !== false)) throw new Error('둘러보기 표시 계약이 일치하지 않습니다');
           if (state.error || state.disposed === true || state.contextLost === true) throw new Error('지옥의 틈 표시 실패 · context/disposed/error');
           if (record.phase === 'active' && state.ready !== true) throw new Error('지옥의 틈 활성 준비 상태 상실');
           if (state.ready === true && record.phase === 'loading') {
             if (state.initialCharacterReady !== true || state.initialCharacter !== record.expectedCharacter || state.selected !== record.expectedCharacter) throw new Error('UNKNOWN · 지옥의 틈 초기 캐릭터 표시 ACK 불일치');
+            if (viewOnly) {
+              record.child = child;
+              record.onChildKey = event => {if (isCurrent(record) && event.code === 'Escape' && !event.repeat) {event.preventDefault(); event.stopImmediatePropagation(); userExit(record, 'child-escape');}};
+              child.addEventListener('keydown', record.onChildKey, true);
+            }
             record.characterAck = true;
             record.phase = 'active'; record.handle = handleFor(record); completed++;
-            status(record, '독립 2.5D 공간 · 초기 캐릭터 표시 연결 · 본편 상태/보상 연동 미인수');
+            status(record, viewOnly ? 'WASD 이동 · R 대화 · Esc 돌아가기' : '독립 2.5D 공간 · 초기 캐릭터 표시 연결 · 본편 상태/보상 연동 미인수');
             settle(record, record.handle);
             try {child.focus(); child.document.getElementById('world-canvas')?.focus({preventScroll: true});} catch (_) { /* optional focus must not revoke the handle */ }
           }
@@ -229,6 +247,7 @@ export function createMainRiftHost({document: doc = globalThis.document,
     let context;
     try {context = contextSnapshot();} catch (failure) {error = errorText(failure); reason = error; return Promise.resolve(null);}
     const entryURL = new URL(labURL.href);entryURL.searchParams.set(MAIN_RIFT_HOST.characterSeedKey, context.character);
+    if (viewOnly) entryURL.searchParams.set('view-only', '1');
     const record = {id: ++sequence, context, expectedCharacter:context.character, entryURL:entryURL.href, characterAck:false, onExit, started: now(), phase: 'loading',
       focus: doc.activeElement, timer: null, loaded: false, closed: false, notified: false, settled: false, handle: null};
     record.job = new Promise(resolve => {record.resolve = resolve;}); current = record; error = null;
@@ -248,6 +267,11 @@ export function createMainRiftHost({document: doc = globalThis.document,
     const record = current; event.stopImmediatePropagation();
     if (event.type === 'click' && event.target === record.exit) {event.preventDefault(); userExit(record);}
     else if (event.target !== record.exit && event.target !== record.frame) event.preventDefault();
+  }
+  function parentEvent(event) {
+    if (!viewOnly || !guarded()) return false;
+    if (event.type === 'keydown' || event.type === 'keyup') parentKey(event); else parentPointer(event);
+    return true;
   }
   const pointerTypes = ['pointerdown', 'pointerup', 'mousedown', 'mouseup', 'click', 'dblclick', 'touchstart', 'touchmove', 'wheel'];
   const visibility = () => {if (doc.hidden && current) closeRecord(current, 'parent-hidden', false, true);};
@@ -270,9 +294,9 @@ export function createMainRiftHost({document: doc = globalThis.document,
       ownedDialog: !!current?.panel?.isConnected, ownedIframe: !!current?.frame?.isConnected,
       ownedTimers: current?.timer === null || !current ? 0 : 1,
       parentStage: current?.context.stage ?? null, parentCharacter: current?.context.character ?? null,
-      reason, error, completed, cancelled, notificationErrors, ...MAIN_RIFT_HOST, timeoutMs, pollMs,
+      reason, error, completed, cancelled, notificationErrors, ...MAIN_RIFT_HOST, timeoutMs, pollMs, viewOnly,
       inputLimitations: 'already-held keys/gamepad/earlier same-window capture remain caller-owned',
       parentStateWrites: false, borrowedDomWrites: false, childCharacterLinked: current?.characterAck === true});
   }
-  return Object.freeze({enterRift, cancel, dispose, snapshot});
+  return Object.freeze({enterRift, cancel, dispose, snapshot, ...(viewOnly ? {parentEvent} : {})});
 }

@@ -4531,3 +4531,30 @@ working game의 foreign185B는 미채택 그대로이며 3.3 foreign2,948B·STAT
 최종 `game.html` working **4,093,695B / SHA256 `cbc459f7a86e8b3ba15610f34554fd1f81353dbaf691879da9e17f32ca5ae2fb`**, ROOT owned **4,093,510B / SHA256 `7523cbab51c8bbcb008062c0ed2f646da777720b782b06a8a5eb27312e2f41c7`**의7hunk 기준이다. foreign185B는 미채택 기존 바이트로 보존한다.
 
 전체 source 계약·epoch별 결과·§23 보고는 [MAP_RUNTIME_ARCHITECTURE.md](../4.1맵디자인+설정/MAP_RUNTIME_ARCHITECTURE.md)의 `ROOT-CH1-RIG-CONTACT-SHADOW-20261007` 절을 따른다.
+
+### 2026-10-07 ROOT-MAIN-RIFT-VIEW-CONSUMER-20261007 · 본편에서 지옥의 틈 둘러보기
+
+| 항목 | 현재 계약·근거 |
+|---|---|
+| 노출 | 실제 main의 origin이 http://127.0.0.1:3387이고 ch1RiftView=1일 때만 생성한다. 기본 OFF이며 기존 로비 carry4에 포함하지 않는다. 설정 메뉴·OPT·BINDS 저장 항목이 아니다. |
+| 실제 admission | enabled/notdead/visible, view job과 clear job이 없고 P/G 존재, G.on===true/G.paused===false, stage0/nonarena/stageCleared===false, P.s===idle와 finite hp>0, charIdx0 또는1, _parryLesson.active 아님. 버튼 자체를 이 admission에 맞춰 숨김/disabled로 갱신하는 구현은 아니다. |
+| 사용자 화면 | view-only만 header/footer/aside를 display:none으로 감춘다. main은 padding/margin0·max-width해제·100vh, stage는 width/height100%·aspect-ratio auto·border/radius0. 실험조작 DOM은 보존하지만 화면 선택 접근은 감춘다. 일반 standalone/clear host의 해당 화면 배치는 바꾸지 않는다. |
+| ESC 우선순위 | ready 이후 view host가 child capture keydown을 설치한다. nonrepeat Escape를 preventDefault+stopImmediatePropagation한 뒤 child-escape로 본편에 즉시 귀환한다. 이 경로는 child NPC 대화의 Escape보다 우선하며 view-only에만 적용한다. 기존 standalone/clear host Escape는 그대로다. |
+| 저장·진행 권한 | view 경로의 checkpoint/dbSave/reward/quest grant/clear/nextStage 호출0. child 이동·대화는 독립 session이며 본편으로 보상·퀘스트·저장을 전송하지 않는다. initial class 문자열 표시 연결만 제공하며 fullPlayerLinkedfalse/durableSaveAcceptedfalse다. |
+| 격리 한계 | 동일 origin iframe은 보안 sandbox가 아니다. 이 단위는 협력하는 표시 소비자의 포트/수명 경계다. 진단상 writes0를 실제 backend 저장·보안 검증 완료로 해석하지 않는다. |
+
+| 항목 | 현재 계약·근거 |
+|---|---|
+| 준비·구문 이력 | 초기 seam 준비 assertion은 repoWrite0. game4098489/f592의 괄호 오류는 정적 source 구문 결함 발견이며 Nodeparse0/제품VM0/native0다. 1byte 교정4098488/75c197도 CPU0 이력이다. 실행 parseFAIL로 기록하지 않는다. |
+| 이전 root CPU | launch 입력 보강 뒤 game4098783/2d2 source의 최초7그룹48조건 PASS. release guard 이전 source의 이력이며 최종229d 검수로 소급하거나 재실행하지 않는다. |
+| host CPU | host21121/e643 source의 actual module+통제DOM 신규9그룹41조건 PASS. 실제 WebGL/native 검수와 별개다. |
+| 최종 release CPU | game4098926/229d source의 한정3그룹8조건 PASS. 이전48·host41과 clean 전체 합산하지 않는다. |
+| 새 native 범위 | headed Chrome1/context1/page1/maxLivePage1/child동시1의 최초3조건 PASS, FAIL0/setupFAIL0/미도달0/exit0. main button→child 실제 표시/이동→Escape 귀환과 부모W 재개만 새 인수다. |
+| 위치·부모 표본 | child x5480/y3740→y3612.6260000000016(modewalk/frames109). 부모 P x4020/y7420/sidle/hp542는 귀환까지 같고, 실제W 재개 뒤 y7368.796899999992였다. 같은 P/G/map 및 적·진행·저장 표본 보존을 관측했으며 모든 상태의 보존을 전수 증명한 것은 아니다. |
+| 새 화면 표본 | controlsHidden true, child stageHeight612=viewportHeight612. root가 open/moving/return PNG3을 직접 판독해 실제 둘러보기·감춘 기술조작·이동 몸체·복귀 HUD/body 가시성만 한정 확인했다. |
+| 오류·요청 | pageerror0/HTTP오류0. requestFailures5는 외부 font 의도 차단3과 local intro.mp4 abort2이며 후자 직접원인은 UNKNOWN. 모든 API는 합성 응답으로 격리, 합성 POST/api/mats1 forwardedfalse, save0/childAPI0/usersave0/durableACKfalse. context/browser closedtrue. |
+| 미인수 | native GL·물리GPU 해제 UNKNOWN. 실main 전체 진행/native6/청취/실세이브/A급 미인수. 해부학적 발·전8방향·주민 전체 경로·물리 높이 미인수. 원화 확대 흐림·작고 어두운 몸·복귀 bonfire/portrait/FX 중첩이 남아 전체 VISUAL VERDICT RETOUCH. |
+
+[현재 source 핀·상세 정본](<../11내러티브·로어디자인/RIFT_DIALOGUE_PUBLIC_CONSUMER_20261007.md>) / [§23 전체 보고](<../4.1맵디자인+설정/HELL_RIFT_2_5D_SLICE_20261006.md>) 참조. 코드3+docs8은 root의 정상 보존 예정이며 stage/commit/push 완료로 미리 기록하지 않는다.
+
+별도 전문 원문 보존: root 제공1226/1246 provider end12의 manifest23625 B/SHA2564427311e526c22a7f07a6682430d2602954d505be5b883684518feefb9f417de, 원문37764 B. optional tool metadata 경계 때문에 firstsourceUNKNOWN12/exitUNKNOWN12이며 미채택·의미실행0이다. 이 원자료 수신을 이번 제품/CPU/native 완료로 계산하지 않는다.

@@ -3436,6 +3436,77 @@ addEventListener('unhandledrejection',e=>{
   e.preventDefault();
 });
 
+// ROOT-MAIN-RIFT-VIEW-CONSUMER-20261007 — a separate, non-progressing view lease.
+var _rootRiftViewEnabled=location.origin==='http://127.0.0.1:3387'&&new URLSearchParams(location.search).get('ch1RiftView')==='1';
+var _rootRiftViewJob=null,_rootRiftViewHost=null,_rootRiftViewLoading=null,_rootRiftViewDead=false,_rootRiftViewEpoch=0,_rootRiftViewReason='idle';
+function _rootRiftViewSame(j){
+  return !!j&&j===_rootRiftViewJob&&!j.closed&&!_rootRiftViewDead&&P===j.player&&G===j.context&&G.map===j.map&&
+    G.stage===j.stage&&_charId===j.charId&&_charIdx===j.charIdx&&_rootRiftEpoch===j.stageEpoch&&!_rootRiftJob&&
+    G.on===false&&G.paused===j.paused&&G.stageCleared===false&&!G._bossArena&&P.s===j.status&&Number.isFinite(P.hp)&&P.hp>0;
+}
+function _rootRiftViewRelease(j,why,restore=true){
+  if(!j||j!==_rootRiftViewJob||j.closed||j.releasing)return false;
+  j.releasing=true;
+  try{if(_rootRiftViewSame(j))_rootRiftClearHeld()}
+  finally{
+    const safe=_rootRiftViewSame(j);
+    if(j===_rootRiftViewJob){j.closed=true;_rootRiftViewJob=null;_rootRiftViewReason=why;if(restore&&safe)j.context.on=j.previousOn}
+  }
+  return true;
+}
+function _rootRiftViewInvalidate(why,restore=false){
+  const j=_rootRiftViewJob;if(!j)return false;
+  try{_rootRiftViewHost?.cancel()}finally{_rootRiftViewRelease(j,why,restore)}return true;
+}
+function _rootRiftViewBlock(){
+  const j=_rootRiftViewJob;if(!j)return false;
+  if(j.releasing)return true;
+  if(!_rootRiftViewSame(j))_rootRiftViewInvalidate('parent-context-changed',false);
+  return true;
+}
+async function _rootRiftViewOpen(){
+  if(!_rootRiftViewEnabled||_rootRiftViewDead||document.hidden||_rootRiftViewJob||_rootRiftJob||!P||!G||
+    G.on!==true||G.paused!==false||G.stage!==0||G.stageCleared!==false||G._bossArena||P.s!=='idle'||
+    !Number.isFinite(P.hp)||P.hp<=0||![0,1].includes(_charIdx)||window._parryLesson?.active)return false;
+  const j={token:Object.freeze({}),epoch:++_rootRiftViewEpoch,player:P,context:G,map:G.map,stage:G.stage,
+    charId:_charId,charIdx:_charIdx,character:_charIdx===1?'silvertail':'warrior',status:P.s,paused:G.paused,
+    stageEpoch:_rootRiftEpoch,previousOn:G.on,closed:false};
+  _rootRiftViewJob=j;G.on=false;_rootRiftViewReason='loading';
+  try{
+    _rootRiftClearHeld();
+    if(!_rootRiftViewLoading)_rootRiftViewLoading=import('./tools/2_5d/main-rift-host.mjs').then(m=>{
+      if(_rootRiftViewDead)throw new Error('view parent disposed');
+      _rootRiftViewHost=m.createMainRiftViewHost({window,document,readContext:()=>{
+        const q=_rootRiftViewJob;if(!_rootRiftViewSame(q))throw new Error('stale view context');
+        return {player:P,character:q.character,stage:G.stage,context:G,map:G.map,viewToken:q.token,on:G.on,stageCleared:G.stageCleared,status:P.s};
+      }});return _rootRiftViewHost;
+    }).catch(e=>{_rootRiftViewLoading=null;throw e});
+    const host=await _rootRiftViewLoading;
+    if(!_rootRiftViewSame(j))return false;
+    const handle=await host.openView(why=>_rootRiftViewRelease(j,why,true));
+    if(!_rootRiftViewSame(j)){handle?.dispose();return false;}
+    if(!handle){_rootRiftViewInvalidate('entry-failed',true);return false;}
+    _rootRiftViewReason='view-ready';return true;
+  }catch(_){if(j===_rootRiftViewJob)_rootRiftViewInvalidate('load-failed',true);return false;}
+}
+if(_rootRiftViewEnabled){
+  const install=()=>{
+    if(_rootRiftViewDead||$('root-rift-view-open'))return;
+    const button=document.createElement('button');button.id='root-rift-view-open';button.type='button';button.textContent='지옥의 틈 둘러보기';
+    button.style.cssText='position:fixed;left:18px;bottom:150px;z-index:75;padding:10px 16px;border:1px solid #8c7851;border-radius:7px;background:#151c1de8;color:#efe3bc;font:600 14px system-ui;cursor:pointer;';
+    button.style.minHeight='44px';
+    button.addEventListener('mousedown',event=>{event.preventDefault();event.stopPropagation()});
+    for(const type of ['keydown','keyup'])button.addEventListener(type,event=>{if(['Enter','NumpadEnter','Space'].includes(event.code))event.stopPropagation()});
+    button.addEventListener('click',()=>{void _rootRiftViewOpen()});document.body.append(button);
+  };
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install,{once:true});else install();
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)_rootRiftViewInvalidate('parent-hidden',true)});
+  window.addEventListener('pagehide',()=>{_rootRiftViewDead=true;_rootRiftViewInvalidate('pagehide',false);_rootRiftViewHost?.dispose()});
+  window.__riftMainView=Object.freeze({snapshot:()=>Object.freeze({enabled:true,owned:!!_rootRiftViewJob,epoch:_rootRiftViewEpoch,reason:_rootRiftViewReason,
+    host:_rootRiftViewHost?.snapshot()??null,saveWrites:0,rewardWrites:0,nextStageCalls:0,fullPlayerLinked:false,durableSaveAccepted:false})});
+}
+// END ROOT-MAIN-RIFT-VIEW-CONSUMER-20261007.
+
 // ROOT-RIFT-MAIN-SEAM-INTEGRATION-20261007 — lexical, isolated 3387 only.
 // The default CH1-1 demo-end branch remains unchanged. No save/grant ACK here.
 var _rootRiftEnabled=location.origin==='http://127.0.0.1:3387';
@@ -3481,6 +3552,7 @@ function _rootRiftRelease(job,why,restore=true){
   return true;
 }
 function _rootRiftInvalidate(why){
+  _rootRiftViewInvalidate(why,false);
   if(!_rootRiftEnabled)return false;
   const job=_rootRiftJob;
   if(job&&job.advancing&&(why==='init-stage'||why==='boot-loading'))return false;
@@ -3492,6 +3564,7 @@ function _rootRiftInvalidate(why){
 }
 function _rootRiftInvalidateJob(job,why){return job===_rootRiftJob?_rootRiftInvalidate(why):false}
 function _rootRiftBlock(channel){
+  if(_rootRiftViewBlock())return true;
   if(!_rootRiftEnabled||!_rootRiftJob)return false;
   const job=_rootRiftJob;
   if(job.advancing||job.cancelling)return true;
@@ -3500,7 +3573,7 @@ function _rootRiftBlock(channel){
   try{return _rootRiftRuntime.block(channel)}catch(_){_rootRiftInvalidate('lease-failed');return true}
 }
 function _rootRiftBegin(){
-  if(!_rootRiftEnabled||_rootRiftDead||_rootRiftJob||!P||!G||G.stageCleared!==true||G.bossAlive!==false||
+  if(!_rootRiftEnabled||_rootRiftDead||_rootRiftViewJob||_rootRiftJob||!P||!G||G.stageCleared!==true||G.bossAlive!==false||
     !Number.isSafeInteger(G.stage)||G.stage<0||!Number.isFinite(P.hp)||P.hp<=0||
     ['dead','fallen','reviving','lastStand'].includes(P.s)||typeof G.on!=='boolean'||
     !Number.isFinite(G._stageDiffOff??0)||!Number.isFinite(OPT.diff??5)||
@@ -3541,6 +3614,7 @@ function _rootRiftEnsure(){
 if(_rootRiftEnabled){
   const quarantine=e=>{
     if(!_rootRiftBlock('update'))return;
+    if(_rootRiftViewJob){if(_rootRiftViewHost?.parentEvent(e))return;e.stopImmediatePropagation();if(e.cancelable)e.preventDefault();if(e.type==='keydown'&&e.code==='Escape'&&!e.repeat)_rootRiftViewInvalidate('user-escape',true);return;}
     if(_rootRiftRuntime&&_rootRiftRuntime.parentEvent(e))return;
     // The host registered later owns its native modal controls. Its capture
     // listener blocks the legacy document/window gameplay listeners below.

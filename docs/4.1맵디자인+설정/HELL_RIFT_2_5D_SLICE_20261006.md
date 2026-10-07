@@ -1757,3 +1757,86 @@ MAP PRODUCTION REPORT (§23): STAGE=CH1-1 2.5D 캐릭터 기반 API; MASTER/OUTE
 정확한 scope/방향/phase/active-tick clock/발 anchor/폴백/생명주기는 `docs/4.0케릭터스프라이트 디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md`의 동일 completion 절을 따른다.
 
 clock 전 native5조건 부분 PASS와 최종 clock CPU 검수는 별도 epoch다. 전체 main rig/foot/native6/A급 완료0, 현재 VISUAL VERDICT: RETOUCH.
+
+### 2026-10-07 ROOT-MAIN-RIFT-VIEW-CONSUMER-20261007 · 본편에서 지옥의 틈 둘러보기
+
+| 항목 | 현재 계약·근거 |
+|---|---|
+| 노출 | 실제 main의 origin이 http://127.0.0.1:3387이고 ch1RiftView=1일 때만 생성한다. 기본 OFF이며 기존 로비 carry4에 포함하지 않는다. 설정 메뉴·OPT·BINDS 저장 항목이 아니다. |
+| 실제 admission | enabled/notdead/visible, view job과 clear job이 없고 P/G 존재, G.on===true/G.paused===false, stage0/nonarena/stageCleared===false, P.s===idle와 finite hp>0, charIdx0 또는1, _parryLesson.active 아님. 버튼 자체를 이 admission에 맞춰 숨김/disabled로 갱신하는 구현은 아니다. |
+| child 표시·ACK | 기존 tools/2_5d-world-lab.html에 main-character=warrior 또는silvertail과 view-only=1을 전달한다. initialCharacter/initialCharacterReady/selected 정확일치 및 viewOnlytrue/durableWritesfalse/parentStateLinkedfalse를 확인한다. 전체 P/G·장비·퀘스트 상태 전달은 없다. |
+| 사용자 화면 | view-only만 header/footer/aside를 display:none으로 감춘다. main은 padding/margin0·max-width해제·100vh, stage는 width/height100%·aspect-ratio auto·border/radius0. 실험조작 DOM은 보존하지만 화면 선택 접근은 감춘다. 일반 standalone/clear host의 해당 화면 배치는 바꾸지 않는다. |
+| ESC 우선순위 | ready 이후 view host가 child capture keydown을 설치한다. nonrepeat Escape를 preventDefault+stopImmediatePropagation한 뒤 child-escape로 본편에 즉시 귀환한다. 이 경로는 child NPC 대화의 Escape보다 우선하며 view-only에만 적용한다. 기존 standalone/clear host Escape는 그대로다. |
+| 저장·진행 권한 | view 경로의 checkpoint/dbSave/reward/quest grant/clear/nextStage 호출0. child 이동·대화는 독립 session이며 본편으로 보상·퀘스트·저장을 전송하지 않는다. initial class 문자열 표시 연결만 제공하며 fullPlayerLinkedfalse/durableSaveAcceptedfalse다. |
+| 격리 한계 | 동일 origin iframe은 보안 sandbox가 아니다. 이 단위는 협력하는 표시 소비자의 포트/수명 경계다. 진단상 writes0를 실제 backend 저장·보안 검증 완료로 해석하지 않는다. |
+
+| 항목 | 현재 계약·근거 |
+|---|---|
+| 이전 root CPU | launch 입력 보강 뒤 game4098783/2d2 source의 최초7그룹48조건 PASS. release guard 이전 source의 이력이며 최종229d 검수로 소급하거나 재실행하지 않는다. |
+| host CPU | host21121/e643 source의 actual module+통제DOM 신규9그룹41조건 PASS. 실제 WebGL/native 검수와 별개다. |
+| 최종 release CPU | game4098926/229d source의 한정3그룹8조건 PASS. 이전48·host41과 clean 전체 합산하지 않는다. |
+| 새 native 범위 | headed Chrome1/context1/page1/maxLivePage1/child동시1의 최초3조건 PASS, FAIL0/setupFAIL0/미도달0/exit0. main button→child 실제 표시/이동→Escape 귀환과 부모W 재개만 새 인수다. |
+| 위치·부모 표본 | child x5480/y3740→y3612.6260000000016(modewalk/frames109). 부모 P x4020/y7420/sidle/hp542는 귀환까지 같고, 실제W 재개 뒤 y7368.796899999992였다. 같은 P/G/map 및 적·진행·저장 표본 보존을 관측했으며 모든 상태의 보존을 전수 증명한 것은 아니다. |
+| 새 화면 표본 | controlsHidden true, child stageHeight612=viewportHeight612. root가 open/moving/return PNG3을 직접 판독해 실제 둘러보기·감춘 기술조작·이동 몸체·복귀 HUD/body 가시성만 한정 확인했다. |
+| 오류·요청 | pageerror0/HTTP오류0. requestFailures5는 외부 font 의도 차단3과 local intro.mp4 abort2이며 후자 직접원인은 UNKNOWN. 모든 API는 합성 응답으로 격리, 합성 POST/api/mats1 forwardedfalse, save0/childAPI0/usersave0/durableACKfalse. context/browser closedtrue. |
+| 미인수 | native GL·물리GPU 해제 UNKNOWN. 실main 전체 진행/native6/청취/실세이브/A급 미인수. 해부학적 발·전8방향·주민 전체 경로·물리 높이 미인수. 원화 확대 흐림·작고 어두운 몸·복귀 bonfire/portrait/FX 중첩이 남아 전체 VISUAL VERDICT RETOUCH. |
+
+[정확 API·source 핀·영수증 정본](<../11내러티브·로어디자인/RIFT_DIALOGUE_PUBLIC_CONSUMER_20261007.md>) 참조.
+
+#### §23 MAP PRODUCTION REPORT — 이번 진입·귀환 범위
+
+| 항목 | 현재 계약·근거 |
+|---|---|
+| STAGE | 실제 CH1-1 main→지옥의 틈 둘러보기→같은 main 귀환. 실제 클리어/다음스테이지/저장 인수는 그대로 미완료. |
+| MASTER / silhouette | 승인 원화/scene/nav 보존, 신규 geometry0. |
+| MASTER / regions | 기존 Rift 주민과 CH1-1 지역 권한 유지. |
+| MASTER / main route | 둘러보기 진입과 북쪽127.374world 이동만 관측, 전체 경로 미인수. |
+| MASTER / side spaces | 변경0/새 관측0. |
+| OUTER MASS / LEFT | 기존 scene 유지, 이 위치의 별도 Gate는 미검수. |
+| OUTER MASS / RIGHT | 기존 scene 유지, 이 위치의 별도 Gate는 미검수. |
+| OUTER MASS / TOP | 기존 scene 유지, 이 위치의 별도 Gate는 미검수. |
+| OUTER MASS / SOUTH | 기존 scene 유지, 이 위치의 별도 Gate는 미검수. |
+| OUTER MASS / major holes | 기존 scene 유지, 이 위치의 별도 Gate는 미검수. |
+| LARGE / source assets | 기존 PNG/scene/nav/rig만 사용, 새 생성0. |
+| LARGE / composites | 기존 레이어 terrain 유지, 새 main iframe 표시만 추가. |
+| LARGE / overlap | 소유 modal 뒤 부모 main이 가려지고, 시작 pose에 player/wolf가 보임. |
+| LARGE / repeated silhouette | 원 silhouette 유지, 새 전수 감사0. |
+| MEDIUM / connections | child session 소유 동안 부모 P/G/map 표본이 정지하며 귀환 후 같은 identity. |
+| MEDIUM / remaining holes | 전체 geometry/가림/발 연결 미인수. |
+| GROUND / shadow | 기존 child shadow 유지, 해부학적 발 미인수. |
+| GROUND / contamination | 원화 유지. |
+| GROUND / structure integration | 기존 전경/절벽 레이어 유지,1254→8000 확대 흐림 미해결. |
+| PLAYABLE / main arenas | 클리어 전 필드만, 보스방 경로 미인수. |
+| PLAYABLE / travel space | 실제 trusted W로 child y3740→3612.626 이동. |
+| PLAYABLE / breathing space | 둘러보기 내부 이동/대화, durable 보상0. |
+| PLAYABLE / threat space | 표본 중 부모 적 상태 정지, child wolf는 기존 장식 소비자. |
+| PLAYABLE / combat readability | 시작 몸체가 보이나 큰 지형에 비해 작고 어두움. main 복귀의 bonfire/portrait 겹침 RETOUCH. |
+| LANDMARK / primary | 기존 상승 유기체 길이 보임. |
+| LANDMARK / secondary | 기존 절벽 균열/횃불이 보임. |
+| LANDMARK / tertiary | 주민 및 전체 출구 경로는 미관측. |
+| CAMERA QA / START | root가 open PNG 직접 판독, map/stage612px 전체 viewport. |
+| CAMERA QA / EARLY | root가 moving PNG 직접 판독, trusted W에 camera follow. |
+| CAMERA QA / ARENA | 미검수. |
+| CAMERA QA / SIDE L | 미검수. |
+| CAMERA QA / SIDE R | 미검수. |
+| CAMERA QA / LANDMARK | 별도 랜드마크 Gate0. |
+| CAMERA QA / LATE | 미검수. |
+| CAMERA QA / EXIT | Escape로 같은 실제 main 귀환. 지리적 출구/보스 gate 인수가 아님. |
+| TECH QA / route | 새 native3조건 PASS, 전체경로/native6 미인수. |
+| TECH QA / collision | 기존 nav 유지, 새 collision Gate0. |
+| TECH QA / pageerror | 0 |
+| TECH QA / 404 | 0 |
+| TECH QA / seam | view 중 main onfalse. Escape 뒤 같은P/G/map, timer0/iframe0, main W 재개. |
+| TECH QA / loading | 실제 child 초기 warrior ACK+view flags, standalone controls 숨김, stageHeight=viewportHeight612. |
+| TECH QA / performance | 성능측정0, GL/물리GPU해제 UNKNOWN. |
+| FILES / stage-owned | game.html의 ROOT view hunk, tools/2_5d/main-rift-host.mjs, tools/2_5d-world-lab.mjs. |
+| FILES / concurrent touched | owner STATE/LOG4 및 기존 foreign 변경 보존. |
+| FILES / unrelated touched | game foreign185 B와 설정3.3 foreign2948 B 미채택 보존. |
+| GIT / staged | 완료 소유 code3/docs8만 root stage 예정. |
+| GIT / commit | root 보존 예정. |
+| GIT / push | root 보존 예정. |
+| GIT / deploy | 0 |
+| VISUAL VERDICT | RETOUCH |
+| NEXT PASS | 둘러보기 진입/복귀를 유지하고 원화 흐림·인물/환경 스케일·발·실제 NPC 대화와 main 진행을 다음 단위에서 구체화한다. quest/reward ID 추정0. 실제 clear/native6/audio/durableSave는 별도 미인수. |
+
+**VISUAL VERDICT: RETOUCH.** 자동 조건 PASS를 맵 전체·시각 완성 PASS로 대체하지 않는다. 위 PNG3은 root의 직접 판독이며 문서 담당자는 새 화면/제품 검사를 실행하지 않았다.

@@ -118,3 +118,24 @@ Node 후보 연결과 root 보강 회귀61PASS. 게임 생성/드롭/저장라�
 최종 `game.html` working 4,092,122B / SHA256 `b8be6378b7d2805b32ca38f92cca03179f8f1ebb2732bebacec6300f5fe7ad3a`, ROOT owned 4,091,937B / SHA256 `05fa7031c8f1d4b1e02643e9fd9964f81c3a80a25d698ab22a002c2330f1ddc0`의 6개 hunk 기준이다. 기존 foreign 185B는 미채택 상태로 보존한다.
 
 전체 런타임 계약·검수 epoch·§23 보고는 [MAP_RUNTIME_ARCHITECTURE.md](../4.1맵디자인+설정/MAP_RUNTIME_ARCHITECTURE.md)의 `ROOT-CH1-REGION-PROGRESS-HUD-20261007` 절을 따른다.
+
+### 2026-10-07 ROOT-MAIN-RIFT-VIEW-CONSUMER-20261007 · 본편에서 지옥의 틈 둘러보기
+
+| 항목 | 현재 계약·근거 |
+|---|---|
+| 노출 | 실제 main의 origin이 http://127.0.0.1:3387이고 ch1RiftView=1일 때만 생성한다. 기본 OFF이며 기존 로비 carry4에 포함하지 않는다. 설정 메뉴·OPT·BINDS 저장 항목이 아니다. |
+| 진입 버튼 | root-rift-view-open, native button type=button, 지옥의 틈 둘러보기. fixed left18px/bottom150px/z-index75, minHeight44px, padding10px 16px, border1px, radius7px, font600 14px system-ui. 설정 footer에는 넣지 않는다. |
+| 버튼 입력 | mousedown은 preventDefault+stopPropagation으로 기존 window MB arming을 막는다. Enter/NumpadEnter/Space의 keydown·keyup은 stopPropagation만 하여 브라우저 기본 click을 허용한다. Tab·키 재지정 정책은 그대로다. |
+| 사용자 화면 | view-only만 header/footer/aside를 display:none으로 감춘다. main은 padding/margin0·max-width해제·100vh, stage는 width/height100%·aspect-ratio auto·border/radius0. 실험조작 DOM은 보존하지만 화면 선택 접근은 감춘다. 일반 standalone/clear host의 해당 화면 배치는 바꾸지 않는다. |
+| 접근성·리프 문구 | stage aria-label 지옥의 틈. canvas는 기존 WASD/방향키·Shift·J·R와 Escape 전투 복귀를 안내한다. loading-title 지옥의 틈으로 들어갑니다, loading-detail 공간을 준비하고 있습니다. legend는 리프일 때만 기존 조작과 Esc 복귀를 표시한다. 물리·rig·NPC·API는 그대로다. |
+| host 문구 | 제목 지옥의 틈, iframe title 지옥의 틈 둘러보기, 준비 공간을 준비하고 있습니다., ready WASD 이동 · R 대화 · Esc 돌아가기, 종료 버튼 전투로 돌아가기. 주요 흐름에는 standalone 실험 조작·기술 표시를 드러내지 않는다. |
+| ESC 우선순위 | ready 이후 view host가 child capture keydown을 설치한다. nonrepeat Escape를 preventDefault+stopImmediatePropagation한 뒤 child-escape로 본편에 즉시 귀환한다. 이 경로는 child NPC 대화의 Escape보다 우선하며 view-only에만 적용한다. 기존 standalone/clear host Escape는 그대로다. |
+
+| 항목 | 현재 계약·근거 |
+|---|---|
+| 새 native 범위 | headed Chrome1/context1/page1/maxLivePage1/child동시1의 최초3조건 PASS, FAIL0/setupFAIL0/미도달0/exit0. main button→child 실제 표시/이동→Escape 귀환과 부모W 재개만 새 인수다. |
+| 새 화면 표본 | controlsHidden true, child stageHeight612=viewportHeight612. root가 open/moving/return PNG3을 직접 판독해 실제 둘러보기·감춘 기술조작·이동 몸체·복귀 HUD/body 가시성만 한정 확인했다. |
+| 오류·요청 | pageerror0/HTTP오류0. requestFailures5는 외부 font 의도 차단3과 local intro.mp4 abort2이며 후자 직접원인은 UNKNOWN. 모든 API는 합성 응답으로 격리, 합성 POST/api/mats1 forwardedfalse, save0/childAPI0/usersave0/durableACKfalse. context/browser closedtrue. |
+| 미인수 | native GL·물리GPU 해제 UNKNOWN. 실main 전체 진행/native6/청취/실세이브/A급 미인수. 해부학적 발·전8방향·주민 전체 경로·물리 높이 미인수. 원화 확대 흐림·작고 어두운 몸·복귀 bonfire/portrait/FX 중첩이 남아 전체 VISUAL VERDICT RETOUCH. |
+
+[입력·수명·정확 source 핀 정본](<../11내러티브·로어디자인/RIFT_DIALOGUE_PUBLIC_CONSUMER_20261007.md>)과 [§23 전체 보고](<../4.1맵디자인+설정/HELL_RIFT_2_5D_SLICE_20261006.md>)를 따른다. 기존 설정 footer·OPT·BINDS 및 사용자 설정 저장 항목은 변경하지 않았다.

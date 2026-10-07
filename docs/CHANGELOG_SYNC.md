@@ -56116,3 +56116,31 @@ Main stage0 필드의 지역 label을 목표/Purged·Angler 조건·gate 사유3
 이번 docs 전체 관련검색1회는 허용text1024/Markdown817에서70path/214행/229 occurrence였다. owner/관리8 및 binary/container251 path-only, 보호2_3본문0; 전체fullread 주장0. 필수 current6만 append하며 설정3.3foreign2948/otherdocs/foreigngame185는 본 작업 미수정이다. 외부 docs-contact 준비metadata TypeError1은 source/제품 실행 전 분류 오류이며 검색·제품 의미 FAIL로 합산하지 않는다.
 
 전체 계약·§23: [MAP_RUNTIME_ARCHITECTURE.md](4.1맵디자인+설정/MAP_RUNTIME_ARCHITECTURE.md)의 `ROOT-CH1-RIG-CONTACT-SHADOW-20261007` 절. 이 append 시점 Git 완료는 ROOT 예정이며 자기 SHA를 기록하지 않는다.
+
+### 2026-10-07 ROOT-MAIN-RIFT-VIEW-CONSUMER-20261007 · 본편에서 지옥의 틈 둘러보기
+
+| 항목 | 현재 계약·근거 |
+|---|---|
+| 노출 | 실제 main의 origin이 http://127.0.0.1:3387이고 ch1RiftView=1일 때만 생성한다. 기본 OFF이며 기존 로비 carry4에 포함하지 않는다. 설정 메뉴·OPT·BINDS 저장 항목이 아니다. |
+| 진입 버튼 | root-rift-view-open, native button type=button, 지옥의 틈 둘러보기. fixed left18px/bottom150px/z-index75, minHeight44px, padding10px 16px, border1px, radius7px, font600 14px system-ui. 설정 footer에는 넣지 않는다. |
+| 버튼 입력 | mousedown은 preventDefault+stopPropagation으로 기존 window MB arming을 막는다. Enter/NumpadEnter/Space의 keydown·keyup은 stopPropagation만 하여 브라우저 기본 click을 허용한다. Tab·키 재지정 정책은 그대로다. |
+| 공개 host | createMainRiftViewHost({window,document,readContext}) → frozen {openView,cancel,dispose,snapshot,parentEvent}. 기존 createMainRiftHost의 clear-only admission은 별도 유지한다. view는 main-rift-runtime/gate/checkpoint/Continue/schedule을 거치지 않는다. |
+| 사용자 화면 | view-only만 header/footer/aside를 display:none으로 감춘다. main은 padding/margin0·max-width해제·100vh, stage는 width/height100%·aspect-ratio auto·border/radius0. 실험조작 DOM은 보존하지만 화면 선택 접근은 감춘다. 일반 standalone/clear host의 해당 화면 배치는 바꾸지 않는다. |
+| ESC 우선순위 | ready 이후 view host가 child capture keydown을 설치한다. nonrepeat Escape를 preventDefault+stopImmediatePropagation한 뒤 child-escape로 본편에 즉시 귀환한다. 이 경로는 child NPC 대화의 Escape보다 우선하며 view-only에만 적용한다. 기존 standalone/clear host Escape는 그대로다. |
+| release 보정 | current/nonclosed/nonreleasing job만 받으며 j.releasing=true를 먼저 설정해 lease를 유지한다. 시작 currentSame일 때만 clearHeld하고 finally에서 currentSame을 재확인한다. 여전히 current job일 때만 closed/detach/reason을 쓰며 restore&&safe인 경우 캡처한 j.context.on만 previousOn으로 복귀한다. releasing 중 Block은 true다. |
+| 저장·진행 권한 | view 경로의 checkpoint/dbSave/reward/quest grant/clear/nextStage 호출0. child 이동·대화는 독립 session이며 본편으로 보상·퀘스트·저장을 전송하지 않는다. initial class 문자열 표시 연결만 제공하며 fullPlayerLinkedfalse/durableSaveAcceptedfalse다. |
+| 격리 한계 | 동일 origin iframe은 보안 sandbox가 아니다. 이 단위는 협력하는 표시 소비자의 포트/수명 경계다. 진단상 writes0를 실제 backend 저장·보안 검증 완료로 해석하지 않는다. |
+
+| 항목 | 현재 계약·근거 |
+|---|---|
+| 준비·구문 이력 | 초기 seam 준비 assertion은 repoWrite0. game4098489/f592의 괄호 오류는 정적 source 구문 결함 발견이며 Nodeparse0/제품VM0/native0다. 1byte 교정4098488/75c197도 CPU0 이력이다. 실행 parseFAIL로 기록하지 않는다. |
+| 이전 root CPU | launch 입력 보강 뒤 game4098783/2d2 source의 최초7그룹48조건 PASS. release guard 이전 source의 이력이며 최종229d 검수로 소급하거나 재실행하지 않는다. |
+| host CPU | host21121/e643 source의 actual module+통제DOM 신규9그룹41조건 PASS. 실제 WebGL/native 검수와 별개다. |
+| 최종 release CPU | game4098926/229d source의 한정3그룹8조건 PASS. 이전48·host41과 clean 전체 합산하지 않는다. |
+| 새 native 범위 | headed Chrome1/context1/page1/maxLivePage1/child동시1의 최초3조건 PASS, FAIL0/setupFAIL0/미도달0/exit0. main button→child 실제 표시/이동→Escape 귀환과 부모W 재개만 새 인수다. |
+| 위치·부모 표본 | child x5480/y3740→y3612.6260000000016(modewalk/frames109). 부모 P x4020/y7420/sidle/hp542는 귀환까지 같고, 실제W 재개 뒤 y7368.796899999992였다. 같은 P/G/map 및 적·진행·저장 표본 보존을 관측했으며 모든 상태의 보존을 전수 증명한 것은 아니다. |
+| 새 화면 표본 | controlsHidden true, child stageHeight612=viewportHeight612. root가 open/moving/return PNG3을 직접 판독해 실제 둘러보기·감춘 기술조작·이동 몸체·복귀 HUD/body 가시성만 한정 확인했다. |
+| 오류·요청 | pageerror0/HTTP오류0. requestFailures5는 외부 font 의도 차단3과 local intro.mp4 abort2이며 후자 직접원인은 UNKNOWN. 모든 API는 합성 응답으로 격리, 합성 POST/api/mats1 forwardedfalse, save0/childAPI0/usersave0/durableACKfalse. context/browser closedtrue. |
+| 미인수 | native GL·물리GPU 해제 UNKNOWN. 실main 전체 진행/native6/청취/실세이브/A급 미인수. 해부학적 발·전8방향·주민 전체 경로·물리 높이 미인수. 원화 확대 흐림·작고 어두운 몸·복귀 bonfire/portrait/FX 중첩이 남아 전체 VISUAL VERDICT RETOUCH. |
+
+[최종 source3 fullSHA와 근거](<11내러티브·로어디자인/RIFT_DIALOGUE_PUBLIC_CONSUMER_20261007.md>)를 따른다. 기존 source/검수 이력은 바꾸지 않았고 root7/48·host9/41·최종release3/8·native3을 clean 합산하지 않았다. 문서 담당자의 코드/CPU/Chrome/Git 실행0, root 정상 checkpoint 예정.
