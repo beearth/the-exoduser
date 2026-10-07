@@ -195,3 +195,30 @@
 | 저장/선택 | hellsave_demo, 내부 DEMO CHARACTER, charIdx0 유지. _selectedSlot/_selectedSlotName=demo는 카드 선택 후 설정; 최초 null. 이름 변경으로 저장을 재작성하지 않음 |
 | DOM/언어 | _lobbyCardLeaf는 특정 리프의 children.length===0만 갱신. 선택 제어/이미지 노드/초점 유지. 언어 전환 중 세이브 읽기/쓰기 없음 |
 | 검증 | 기존 언어·데모 슬롯·소환체 회귀와 격리 브라우저의 신규/저장 진행, 한국어/영어, 새로고침 및3크기 확인. 상세 증거 captures/ancestor_grok_review/player-card/runtime-report.json |
+
+
+---
+
+## 2026-10-07 같은 후보의 정상 UI·필드 플레이 부분 관측 — ROOT-CH1-NORMAL-UI-PARTIAL-COVERAGE-20261007
+
+기존 날짜별 단위 검수는 당시 이력으로 보존한다. 이번 절은 새 `normal01` 실제 로비/UI에서 시작한 부분 플레이 결과이며, 이전 class seed/bosstest/Canvas 조각 또는 과거 패키지 검사와 합산하지 않는다. 제품 코드는 변경하지 않았다. 이번 root 인수는 동일 source/context의 시작·전투/획득·일반 필드 사망/직접 retry 부분 coverage이며 `sameCandidateSixStageAccepted=false`를 유지한다.
+
+root 소유의 실제 Chrome/context/page/maxLive 각 1개를 같은 세션으로 유지했다. 실제 UI에서 전사(class0)를 선택·생성하고 캐릭터 스토리 Escape 홀드, main 컷신 Escape, 안내 `건너뛰기`, `연습 건너뛰기`를 거쳤다. class seed·HP/시간/전투/해금/spawn/좌표 강제는 없었다. 로비가 만든 실제 URL은 `http://127.0.0.1:3387/game.html?test=1&slot=demo&demo=1&story=warrior-v21&classic=1&ch1Three=1&ch1Rig=1&webgpu=0`이다. 이는 fresh 비영속 context의 normal DEMO이며 durable 저장 경로 인수가 아니다.
+
+| 실제 UI 관측 | 결과/경계 |
+|---|---|
+| 로비 → 새 캐릭터 → 전사(class0) → 생성 | 실제 selector 클릭/이름 입력의 trusted 이벤트 기록. localStorage class seed 없음 |
+| 캐릭터 스토리 및 main 도입 | Escape 홀드와 기존 스킵 UI 사용; 강제 스토리 플래그/함수 호출 없음 |
+| 안내/연습 | 실제 `건너뛰기`, `연습 건너뛰기` 버튼 클릭 뒤 main 진행 |
+| 생성 후 플레이 | W 이동·필드 전투/사망/직접 retry/새 획득 부분 관측 |
+| 실버테일/저장 | 공개 comingSoon 잠금 우회 없음. fresh DEMO 제품 저장은 서버 durable ACK 아님 |
+
+기존 로비 원화/전사 영상/실버테일 격리 함수 검수는 당시 별도 이력으로 보존한다. 이번 새 UI Warrior 진행을 전체 캐릭터 생성/시각/모든 언어/영속 저장 인수로 확대하지 않는다.
+
+완료 관측 JSON은 17개이며 명령 metadata 18번째 `close01`은 원문의 STARTED를 보존한다. 이를 17/18조건 PASS 또는 전체 clean suite로 계산하지 않는다. source5의 실제 HTTP 및 로컬 전후 핀은 정확했고 pageErrors0·httpErrors0·cleanup0·exit0이다. renderer/GL wrapping 및 getError 계측은 0이므로 GL 결과는 UNKNOWN이다. requestFailures는 별도로 12개다: 외부 폰트·supabase 명시 차단 `ERR_FAILED`7, 로컬 `ERR_ABORTED`5(스토리 영상1/lobby.mp3 1/intro.mp4 3). 로컬5는 skip/navigation과 함께 관측됐지만 개별 직접 원인은 UNKNOWN이며 전부 의도 차단으로 단정하지 않는다.
+
+API synthetic 10회는 모두 `POST /api/mats`, forwarded0이다. `POST /api/save`는 0회였다. retry의 기존 dbSave 경로와 fresh context 제품 localStorage 저장, 서버의 durable ACK를 구분하며 실제 백엔드 영속 저장은 미인수다. root 명시 close 후 context/owned browser가 닫혔고 stdin EOF 뒤 PTY exit0도 확인됐다. 원문 scope의 `actualMainNormalDemoExpectedButNotYetObserved=true`는 준비 당시 라벨이며, 새 root 판정이 실제 관측을 따로 기록한다. 원문을 고쳐 실행 결과로 꾸미지 않았다.
+
+보스방 개방/정상 진입·4지역 정화·보스전 사망/부활/재도전·해금된 필드 보존·전체 native6·실청취·durable save ACK는 계속 미인수다. root의 PNG6 직접 판독은 반복 회색 baked 평면 지면, 작고 어두운 몸과 큰 전투FX 겹침, retry 뒤 사망 fade/금빛FX 잔존을 확인했다. SW 희귀 획득 팝업은 식별되지만 몸 가독성은 여전히 혼잡하다. **VISUAL VERDICT: RETOUCH**.
+
+현재 상세 근거는 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-normal-play-20261007/root-partial-coverage/validation-receipt.json` (35791B / `627816f881f7fd6c5c981a503be792bbffa66430a7d38bd20ed68ff9841c6e4e`), `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-normal-play-20261007/root-partial-coverage/visual-verdict.json` (3310B / `805409879cfa1bb2e301ab07be882fc0d361d2d3b624403ded60627eaaf1ce85`)이다. 완료 원문은 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-normal-play-20261007/run-normal01/`, session 영수증은 3509449B / `4de3f0bfab85d9a55665173fc4c6ebbe599ab67f37bd24f013a4d97b2a5e42db`이다. Git 정상 보존 사실은 같은 `root-partial-coverage/remote-preservation-receipt.json`의 commit/push/원격 정확 SHA로 확정하며 문서 자기 commit SHA를 순환 기입하지 않는다.

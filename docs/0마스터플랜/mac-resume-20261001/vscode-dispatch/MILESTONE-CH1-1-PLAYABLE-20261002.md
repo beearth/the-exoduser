@@ -960,3 +960,31 @@ factory36/combined15/main31/native3/final-limited4를 하나의 clean 전체 PAS
 전체 공격·특수/죽음·8방향·실제 DSghost·해부학적 발·실제 지형 높이·보스방 개방/사망/부활/재도전 전체 경로·음향·실저장 ACK·전체 native6는 미인수다. 검수 영수증의 `wholeAttackAccepted=false`, 실제 기능 플래그 `silvertailAttackAccepted=false`·`fullPlayerLinked=false`를 유지한다. 기존 두 strike/recovery 표시 플래그의 true를 전체 공격 승인으로 해석하지 않는다.
 
 상세 결과·한계는 `docs/4.0케릭터스프라이트 디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md`의 이 후속 절을 따른다. 원자료는 외부 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-main-silvertail-attack-20261007`의 `validation-receipt.json`4278B/`55dae31f70b7bc96be2ac30b8d22659e4333fd00e4c9569cb70aa45553ac6128`, `native-attack-result.json`242346B/`13226988a34e87e51e4385586a2159e39e7e64074861e62fed367c52107d8c63`, `visual-verdict.json`4269B/`e6bb23107d3deb1dcd637490e17cf3106c1a598f26d5fc684d34f4c33d7c4f51`이다. 이번 docs6의 정상 커밋·push·정확한 원격 SHA는 별도 `verification-docs/remote-preservation-receipt.json`에서 확정하며, 이전 code3docs13 보존을 다시 집계하지 않는다.
+
+
+---
+
+## 2026-10-07 같은 후보의 정상 UI·필드 플레이 부분 관측 — ROOT-CH1-NORMAL-UI-PARTIAL-COVERAGE-20261007
+
+기존 날짜별 단위 검수는 당시 이력으로 보존한다. 이번 절은 새 `normal01` 실제 로비/UI에서 시작한 부분 플레이 결과이며, 이전 class seed/bosstest/Canvas 조각 또는 과거 패키지 검사와 합산하지 않는다. 제품 코드는 변경하지 않았다. 이번 root 인수는 동일 source/context의 시작·전투/획득·일반 필드 사망/직접 retry 부분 coverage이며 `sameCandidateSixStageAccepted=false`를 유지한다.
+
+실제 UI 전사 선택·생성 및 story/guide/lesson 건너뛰기 → W 이동·전투 → 일반 필드 자연 사망 → 기존 retry 직접 클릭 → 재진행/Lv2/새 희귀 획득을 한 Chrome/context/page에서 관측했다. 전체 목표 완료가 아니라 아래 범위의 새 부분 진행이다.
+
+| 관측 epoch | 실제 기록 | 해석 경계 |
+|---|---|---|
+| 초기 UI/지급 | 전사 실제 선택·생성, story/guide/lesson 건너뛰기. 전투 전 starter bag10 | 시작 bag10은 전투 획득 아님. 안내 뒤 받은 `전대의 유골함`은 intro gift이며 별도 제외 |
+| 첫 이동 | trusted W로 `(4020,7420)` → `(4020,7161.327040000009)` | 첫 walk 뒤 bonfireT=6. 시작 금빛FX/전환 종료 또는 전체 몸/발 시각 인수 아님 |
+| 사망 전 map 관측 ID1 | 첫 처치: EXP0→1·mats1000→1005. 이후 stageKills7·mats1031·EXP7·HP0·fallen→dead | 일반 필드 자연 사망; `_bossUnlocked=false`, `_fbDone=false`, 아레나 밖. `combat-loot01`은 fallen/HP0에서 R 미도달, `death-observe01`에서 dead/사망 메뉴 확인. 보스전 사망 아님 |
+| 실제 retry 클릭 | 기존 보이는 retry 버튼 클릭. EXP7→5, 맵 객체 관측 ID1→2, stageKills7→0, mats1031 | 봉인 상태 일반 필드의 재시작 관측. 해금된 필드/보스전 진행 보존 PASS 아님 |
+| 재진행 map 관측 ID2 | 이동·전투 재개 후 stageKills11·mats1077·Lv2·EXP1 | 이전 7처치와 합산하지 않음; 지역 정화·보스 클리어 수치 아님 |
+| 실제 새 획득 | `southwest-combat01`의 실제 R 입력 뒤 bag10→11, `그림자 머리띠` ID `1791366584107.055`, slot helmet·rarity2·tier0 | baseline에도 같은 이름의 아이템이 있어 새 ID로 구분. root가 SW PNG의 획득 팝업 직접 확인; 장착/스탯 검수 아님 |
+
+완료 관측 JSON은 17개이며 명령 metadata 18번째 `close01`은 원문의 STARTED를 보존한다. 이를 17/18조건 PASS 또는 전체 clean suite로 계산하지 않는다. source5의 실제 HTTP 및 로컬 전후 핀은 정확했고 pageErrors0·httpErrors0·cleanup0·exit0이다. renderer/GL wrapping 및 getError 계측은 0이므로 GL 결과는 UNKNOWN이다. requestFailures는 별도로 12개다: 외부 폰트·supabase 명시 차단 `ERR_FAILED`7, 로컬 `ERR_ABORTED`5(스토리 영상1/lobby.mp3 1/intro.mp4 3). 로컬5는 skip/navigation과 함께 관측됐지만 개별 직접 원인은 UNKNOWN이며 전부 의도 차단으로 단정하지 않는다.
+
+API synthetic 10회는 모두 `POST /api/mats`, forwarded0이다. `POST /api/save`는 0회였다. retry의 기존 dbSave 경로와 fresh context 제품 localStorage 저장, 서버의 durable ACK를 구분하며 실제 백엔드 영속 저장은 미인수다. root 명시 close 후 context/owned browser가 닫혔고 stdin EOF 뒤 PTY exit0도 확인됐다. 원문 scope의 `actualMainNormalDemoExpectedButNotYetObserved=true`는 준비 당시 라벨이며, 새 root 판정이 실제 관측을 따로 기록한다. 원문을 고쳐 실행 결과로 꾸미지 않았다.
+
+보스방 개방/정상 진입·4지역 정화·보스전 사망/부활/재도전·해금된 필드 보존·전체 native6·실청취·durable save ACK는 계속 미인수다. root의 PNG6 직접 판독은 반복 회색 baked 평면 지면, 작고 어두운 몸과 큰 전투FX 겹침, retry 뒤 사망 fade/금빛FX 잔존을 확인했다. SW 희귀 획득 팝업은 식별되지만 몸 가독성은 여전히 혼잡하다. **VISUAL VERDICT: RETOUCH**.
+
+상세 현재 정본은 `CH1_1_PRODUCTION_FINISH_20260916.md`의 이번 후속 절이다.
+
+현재 상세 근거는 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-normal-play-20261007/root-partial-coverage/validation-receipt.json` (35791B / `627816f881f7fd6c5c981a503be792bbffa66430a7d38bd20ed68ff9841c6e4e`), `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-normal-play-20261007/root-partial-coverage/visual-verdict.json` (3310B / `805409879cfa1bb2e301ab07be882fc0d361d2d3b624403ded60627eaaf1ce85`)이다. 완료 원문은 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-normal-play-20261007/run-normal01/`, session 영수증은 3509449B / `4de3f0bfab85d9a55665173fc4c6ebbe599ab67f37bd24f013a4d97b2a5e42db`이다. Git 정상 보존 사실은 같은 `root-partial-coverage/remote-preservation-receipt.json`의 commit/push/원격 정확 SHA로 확정하며 문서 자기 commit SHA를 순환 기입하지 않는다.
