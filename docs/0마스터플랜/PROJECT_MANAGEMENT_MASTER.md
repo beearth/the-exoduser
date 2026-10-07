@@ -1,3 +1,54 @@
+# 현재 총괄 제작판 — 2026-10-08 KST
+
+<!-- ROOT-PRODUCTION-CONTROL-BOARD-20261008 -->
+
+총괄 책임은 **우선순위 결정 → 정확한 코드 소유 배정 → 실제 착수 확인 → 검수·통합 → 문서·원격 보존 → 다음 독립 작업 연결**이다. 아래 표는 이번 관측 시점의 제작판이며, 뒤의 날짜별 기록은 당시 이력이다. `sent/peer`는 수신, `first successful source`는 도구 착수, `official end`는 산출 종료, `root accepted`는 검수·채택을 뜻한다. 서로 대체하지 않는다.
+
+**제품 목표:** 실제 CH1-1 고품질 2.5D 본편에서 같은 후보의 시작 → 전투·획득 → 보스방 개방 → 보스전 사망·부활 → 재도전을 연결하고, 화면·청취·실보상 저장까지 인수한다. 현재 전체 인수는 미완료다. 읽기 계획이나 독립 lab 결과를 본편 완성으로 계산하지 않는다.
+
+## 담당과 현재 산출
+
+| 우선 | 작업 / 정확 소유 | 담당 | 이번에 확인한 상태·근거 | 다음 실행 / 완료 기준 |
+|---|---|---|---|---|
+| P0 | 실제 main Rift 화면 확대·축소 / `tools/2_5d-world-lab.mjs` | ROOT 구현·통합 | `ROOT-MAIN-RIFT-VIEW-ZOOM-CONSUMER-20261008`, code1+docs4 정상 원격 `767598a9074994723fc0da2de4ccb582d8c59a30`. 기존80~220%, 5%단계, 기본100%. CPU7그룹25조건은 통제DOM/range/renderer. | 코드·문서 보존 완료. 새 버튼 native 배치·포커스·range 동작은 미인수. 사용자 old-loaded IAB13 유지. |
+| P0 | 실제 CH1 제목과 정화 HUD 간격 / `game.html` ROOT2hunk | ROOT 구현·통합 | `ROOT-CH1-AREA-TITLE-HUD-SEPARATION-20261008`, code1+docs6 원격 `80f10ec516ece277c18e10b987eb1df56bec6fa1`. 새 CPU6그룹25조건/Node1·VM9 통제DOM/observer. source0b6beffafbb9d2335d668d14993a0b9b5d0e1f9a98a14d8668f019a0ff946e88. | 코드·문서 보존 완료. UI NOT_ASSESSED/전체 RETOUCH. 기존제목3.1초/18%/상향15px와 HUD 실하단+기존gap8px 소비. 640/1280 KO·EN·지역배너 동시표시·전 애니메이션 fit는 후속 화면 Gate. |
+| P1 | 번개 말뚝 기본 지속시간 표시의 완성 own hunk / 직접 파일 쓰기 배정0 | 기존 Codex7 작업감독 | `CODEX7-CH1-THUNDERSTAKE-BASE-DURATION-DISPLAY-OWN-HUNK-20261008`, cursor167/formal01a11714-7dc8-7f72-b28c-5cc7f5def327에서 primary docs·현재 소스 읽기 도구 관측. 아직 제안 단계이며 제품 구현0. | 10초 설명과 실제 기본 지속식의 정확 소비 패치를 인수해 ROOT가 의미 검토·구현·문서·보존. 반경600/1000 충돌·전투·밸런스 변경0. |
+| P1 | 기존 전문6의 다음 독립 actual main inline 코드 생산 / 새 repo 파일0 | 기존 Claude8 작업감독 → ANIMVFX·MAP·SKILL·QA·ENEMY·BOSS | cursor252/formal01a11714-7be3-73e0-b33f-30399f6cd758 관측 당시 다음 연결 중. 1531/1532 공식6 원문은 ROOT exact 보존. 1544다른5+1548 BOSS 공식6 exact refs는 owner 인계, ROOT 원문 대조 대기. | 종료 팀은 기존 owner로 다음 승인 미완료 한 단위 송신. TASK·peer·첫 성공 source·공식 end·root 채택을 별도 기록. 같은 NOFIX/메모리 감사 반복을 생산량으로 계산0. |
+| P1 | 발접지·캐릭터/Druid 모션·NPC 표시/접근·절벽/전경·맵 선명도 | ROOT 실제 consumer 선택 + 기존 담당 | contact AO는 defaultOFF/미감 미인수, Druid corpse는 원본셀 소비이며 전용 death 애니메이션 아님. 원화1254→8000·legacy1024mask 흐림·physical relief0 미해결. | 승인 원자료·현재 main caller·정확 소유가 있는 최소 consumer부터 실제 코드에 연결. 높이 환산·새 에셋·보상 ID 추정0. |
+| P1 | 정상 CH1-1 보스방 종주 | ROOT 검수 + 기존 QA/BOSS | 자연 필드 전투·획득·필드 사망·재도전은 부분 관측. 정상 보스방 개방·진입·보스전 사망/부활·재도전·전체 청취/실보상 save 미인수. | 실제 `_regionClearedCount()===4`와 `G._fbDone` 권한을 따른다. 강제 해금·HP/좌표/시간 조작으로 정상 종주를 꾸미지 않는다. |
+
+## 실제 가동과 제한
+
+| 대상 | 현재 구분 | 총괄 조치 |
+|---|---|---|
+| 관리3 / 전문15 | 역할 구성이다. 관측 없이 전원이 계속 실행 중이라고 표시하지 않는다. | 위 담당 표의 실제 도구·원문·코드·검수 근거를 사용한다. |
+| Codex 전문7 | 마지막 역할 진단은 notLoaded/newsource0. UIUX·QUESTNPC 두 실제 송신은 approval 필요+policynever 거절/수신0, 다른5는 미송신. | 읽기·제안 중인 Codex 감독을 전문7 가동으로 계산0. 다른 tool/path/host/권한으로 거절 우회0. |
+| Claude 전문6 | 현재 TASK의 공식 종료·새 송신·첫 source는 owner 최신 기록과 provider 원문을 대조한다. 마지막 idle 관측을 지속 가동으로 바꾸지 않는다. | 완료 뒤 다음 독립 한 단위를 연결하며 ROOT 검수 중 독립팀 일괄 보류0. ART/STORY는 기존 hold 유지. |
+| BOSS1544 → 1548 | 1544는 새 source0·옛 관측 재사용 실패. 1548의 실제 문서 Read·새 Bash 성공·공식 end를 별도로 받았다. | 근거 복구는 새1548에만 결합. 설계 채택·인게임 완성으로 계산0. |
+| ROOT helpers | 기존 character_preview/docs, rig_motion/정적 peer, orders_checkpoint_readiness/원문 보존만 필요한 독립 범위에 재사용. | 새 팀·관리 채팅·Claude 실행 세션0. 결과가 끝나면 필요한 다음 범위에만 배정. |
+
+## 완료와 보존 기준
+
+| 단계 | 기준 |
+|---|---|
+| 코드 산출 | 정확 TASK·파일 소유·실제 caller·수치/상태 권한·원문 핀 확인, 수정 전 외부 fullbytes 백업/path·realparent·symlink 충돌 검사 |
+| 의미 검수 | 변경 목적에 맞는 새 조건만 확인, CPU/통제 port와 실제 native/화면·청취·저장을 구분. 과거 실패·미도달을 합쳐 clean PASS로 표시0 |
+| 문서·Git | 코드 변경 후 docs 전체 관련 keyword 검색·현재 정본 정확 동기화·소유 code+docs 정상 commit/push·remote exact |
+| 현재 공용 파일 | game foreign185B와 설정3.3 foreign2948B는 미커밋·미채택으로 보존. working/HEAD 각각 ownhunk·역변환 exact, 전체 gitadd0 |
+| 용량 | NUL(rename-aware/전체 untracked)80부터 완료소유 exactpins/officialend 즉시 checkpoint, 100전 새 산출 중단·완료 보존 우선. 방금 제품 checkpoint는84→78/index0 |
+| 사용자 화면 | 기존3387 IAB13은 실제 본편 Rift view-only 사용자 인계 탭이며 old-loaded source. 닫기·재로드·중복 게임/Chrome0. 새코드 실시간 적용·API/save 불변을 확인했다고 꾸미지 않는다. |
+
+## 추가 설정·결정이 필요한 경계
+
+- 현재 허용된 제작은 추가 설정 없이 계속한다. 단일 root heartbeat30분 ACTIVE를 유지하며 다른 PAUSED 자동화·아침메일 재개0이다.
+- **실보상 save 인수:** 실행 중3387의 entry/SAVE_DIR은 UNKNOWN. 사용자 저장을 보호하는 전용 저장 경로·실서버 ACK 근거가 확보되어야 durable save를 인수한다. 기존 ps 권한 거절을 우회하거나 서버를 재시작하지 않는다.
+- **미확정 콘텐츠:** Berin contentID/type/qty·Nessa questID/reward는 추정하거나 같은 질문을 반복하지 않는다.
+- **차단 산출:** tree-card/WOLF/출처 UNKNOWN STORY의 금지 접근·대체 구현·stage0을 유지한다. WOLF 쓰기는 자동 승인 검토 dangerous 거절이며 구체 사유 미제공/피해 UNKNOWN이다.
+
+상세 source/검수/§23 정본은 [맵 런타임](<../4.1맵디자인+설정/MAP_RUNTIME_ARCHITECTURE.md>)과 [실제 Rift 공개 소비자](<../11내러티브·로어디자인/RIFT_DIALOGUE_PUBLIC_CONSUMER_20261007.md>)를 따른다. 아래 기존 원문은 삭제하지 않고 당시 이력으로 보존한다.
+
+---
+
 ## 2026-10-04 — 사용자 입체감 요청: 제단 도랑 내벽 코드 보강
 
 내벽32px·기존 목질 재사용·캐시합성에 적용, 충돌/다리/프레임 draw 유지. 29회귀PASS, 실제 게임 화면/성능 인수 미실시. **VISUAL VERDICT RETOUCH / 전체 맵 완성 아님**. 원총괄 직접 한 슬라이스이며 전문팀 중복송신·새 게임·빌드0. [정확 수치·검증·잔여](../4.1맵디자인+설정/CH1_ALTAR_MOAT_20261001.md#6-2026-10-04--게임-렌더러의-수직-내벽-보강). 아래는 각 시점의 이력이다.
