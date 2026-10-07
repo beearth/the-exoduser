@@ -4309,6 +4309,9 @@ const BGM={
     }else if(OPT.bgmTrack==='allRandom'){src=BGM._pickAllRandom();}
     else{src=BGM._pickRandom(key);}
     if(!src)return;
+    const fade=BGM._fade;
+    BGM._fade=null;
+    if(fade!==null)clearInterval(fade);
     BGM._lastSrc=src;
     const a=BGM._getAudio(src);
     a.volume=BGM._vol;a.currentTime=0;a.onended=BGM._onEnded;
@@ -4365,6 +4368,9 @@ const BGM={
     this._cur=a;
   },
   stop(){
+    const fade=this._fade;
+    this._fade=null;
+    if(fade!==null)clearInterval(fade);
     if(this._cur){
       this._cur.onended=null;
       this._cur.pause();
@@ -4377,11 +4383,22 @@ const BGM={
     if(!this._cur)return;
     const a=this._cur;
     const step=a.volume/(dur/50);
-    if(this._fade)clearInterval(this._fade);
-    this._fade=setInterval(()=>{
+    if(this._fade!==null)clearInterval(this._fade);
+    this._fade=null;
+    const fade=setInterval(()=>{
+      if(this._fade!==fade)return;
+      if(this._cur!==a){
+        clearInterval(fade);this._fade=null;
+        return;
+      }
       a.volume=Math.max(0,a.volume-step);
-      if(a.volume<=0){clearInterval(this._fade);this._fade=null;a.onended=null;a.pause();a.currentTime=0;if(this._cur===a){this._cur=null;this._curKey=''}}
+      if(a.volume<=0){
+        clearInterval(fade);this._fade=null;
+        a.onended=null;a.pause();a.currentTime=0;
+        if(this._cur===a){this._cur=null;this._curKey=''}
+      }
     },50);
+    this._fade=fade;
   },
   setVol(v){this._vol=v;if(this._cur)this._cur.volume=v;if(_bgmGainA)_bgmGainA.gain.value=v;if(_bgmGainB)_bgmGainB.gain.value=v},
   stageKey(si){
