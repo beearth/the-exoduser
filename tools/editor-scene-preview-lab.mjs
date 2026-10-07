@@ -9,6 +9,9 @@ const state={entryId:null,ready:false,loading:false,error:null,disposed:false,ra
 let owner=null, renderer=null, scene=null, camera=null, terrain=null, marker=null, observer=null;
 let failurePresent=false, failureCause, failurePhase=null, shaderFailure=false;
 let player=null, viewCentre=null, markerGeometry=null, markerMaterial=null;
+const PROBE_MIN_DIAMETER_CSS=12, PROBE_OUTER_RADIUS=.04, probeView=new THREE.Vector3();
+const probeState={minDiameterCss:PROBE_MIN_DIAMETER_CSS,scale:1,reason:'not-ready'};
+let probeInnerRadius=0;
 const ownedDisposed=new WeakSet();
 const fixedError='편집 씬을 표시하지 못했습니다. 미리보기를 닫고 다시 열어 주세요.';
 const own=(object,key)=>Object.getOwnPropertyDescriptor(object,key);
@@ -21,6 +24,7 @@ function releaseDisplay(){
   stopFrame();keys.clear();
   const oldTerrain=terrain;terrain=null;try{oldTerrain?.dispose();}catch(_e){}
   onceDispose(markerGeometry);onceDispose(markerMaterial);markerGeometry=markerMaterial=null;marker=null;
+  probeInnerRadius=0;probeState.scale=null;probeState.reason='unavailable';
   try{observer?.disconnect();}catch(_e){}observer=null;
   onceDispose(renderer);renderer=null;scene=null;camera=null;player=null;viewCentre=null;
 }
@@ -55,11 +59,66 @@ function configureCamera(){
   }
   camera.updateProjectionMatrix();terrain.setViewport(viewCentre.x,viewCentre.y);
 }
+function measureProbeInnerRadius(geometry){
+  const positions=geometry.getAttribute('position'),indices=geometry.getIndex();
+  if(!positions||positions.itemSize!==3||!Number.isInteger(positions.count)||positions.count<3||!indices||!Number.isInteger(indices.count)||indices.count<3||indices.count%3!==0)throw new Error('보행 표식 geometry 오류');
+  let radius=Infinity;
+  for(let i=0;i<indices.count;i+=3){
+    const a=indices.getX(i),b=indices.getX(i+1),c=indices.getX(i+2);
+    if(!Number.isInteger(a)||!Number.isInteger(b)||!Number.isInteger(c)||a<0||b<0||c<0||a>=positions.count||b>=positions.count||c>=positions.count)throw new Error('보행 표식 index 오류');
+    const ax=positions.getX(a),ay=positions.getY(a),az=positions.getZ(a),bx=positions.getX(b),by=positions.getY(b),bz=positions.getZ(b),cx=positions.getX(c),cy=positions.getY(c),cz=positions.getZ(c);
+    if(![ax,ay,az,bx,by,bz,cx,cy,cz].every(Number.isFinite))throw new Error('보행 표식 vertex 오류');
+    const ux=bx-ax,uy=by-ay,uz=bz-az,vx=cx-ax,vy=cy-ay,vz=cz-az;
+    const nx=uy*vz-uz*vy,ny=uz*vx-ux*vz,nz=ux*vy-uy*vx,length=Math.hypot(nx,ny,nz);
+    const distance=Math.abs(nx*ax+ny*ay+nz*az)/length;
+    if(!Number.isFinite(length)||length<=0||!Number.isFinite(distance)||distance<=0)throw new Error('보행 표식 triangle 오류');
+    radius=Math.min(radius,distance);
+  }
+  if(!Number.isFinite(radius)||radius<=0||radius>PROBE_OUTER_RADIUS)throw new Error('보행 표식 내접 반지름 오류');
+  return radius;
+}
+function displayMatches(record,renderOwner,sceneOwner,cameraOwner,markerOwner){
+  return current(record)&&!!renderOwner&&!!sceneOwner&&!!cameraOwner&&!!markerOwner&&renderer===renderOwner&&scene===sceneOwner&&camera===cameraOwner&&marker===markerOwner;
+}
+function hideProbe(record,renderOwner,sceneOwner,cameraOwner,markerOwner,reason){
+  if(!displayMatches(record,renderOwner,sceneOwner,cameraOwner,markerOwner))return false;
+  markerOwner.visible=false;probeState.scale=Number.isFinite(markerOwner.scale.x)?markerOwner.scale.x:null;probeState.reason=reason;
+  return true;
+}
+function sizeProbe(record,renderOwner,sceneOwner,cameraOwner,markerOwner){
+  if(!displayMatches(record,renderOwner,sceneOwner,cameraOwner,markerOwner))return false;
+  cameraOwner.updateMatrixWorld(true);
+  if(!displayMatches(record,renderOwner,sceneOwner,cameraOwner,markerOwner))return false;
+  markerOwner.updateWorldMatrix(true,false);
+  if(!displayMatches(record,renderOwner,sceneOwner,cameraOwner,markerOwner))return false;
+  probeView.setFromMatrixPosition(markerOwner.matrixWorld).applyMatrix4(cameraOwner.matrixWorldInverse);
+  const rect=canvas.getBoundingClientRect(),projection=cameraOwner.projectionMatrix.elements,depth=-probeView.z,near=cameraOwner.near,far=cameraOwner.far;
+  if(!displayMatches(record,renderOwner,sceneOwner,cameraOwner,markerOwner))return false;
+  if(!Number.isFinite(rect.width)||rect.width<=0||!Number.isFinite(rect.height)||rect.height<=0||!Number.isFinite(probeView.x)||!Number.isFinite(probeView.y)||!Number.isFinite(depth)||!Number.isFinite(near)||near<=0||!Number.isFinite(far)||far<=near||!Number.isFinite(projection[0])||!Number.isFinite(projection[5])||!Number.isFinite(probeInnerRadius)||probeInnerRadius<=0)return hideProbe(record,renderOwner,sceneOwner,cameraOwner,markerOwner,'invalid-projection');
+  if(depth<=0)return hideProbe(record,renderOwner,sceneOwner,cameraOwner,markerOwner,'behind-camera');
+  if(depth<=near||depth>=far)return hideProbe(record,renderOwner,sceneOwner,cameraOwner,markerOwner,'outside-depth');
+  if(cameraOwner.isPerspectiveCamera!==true&&cameraOwner.isOrthographicCamera!==true)return hideProbe(record,renderOwner,sceneOwner,cameraOwner,markerOwner,'unsupported-camera');
+  let pixelsPerUnit=Math.min(rect.width*Math.abs(projection[0]),rect.height*Math.abs(projection[5]))/2;
+  if(cameraOwner.isPerspectiveCamera===true)pixelsPerUnit/=depth;
+  if(!Number.isFinite(pixelsPerUnit)||pixelsPerUnit<=0)return hideProbe(record,renderOwner,sceneOwner,cameraOwner,markerOwner,'invalid-projection');
+  const scale=Math.max(1,PROBE_MIN_DIAMETER_CSS/(2*probeInnerRadius*pixelsPerUnit)),outerRadius=PROBE_OUTER_RADIUS*scale;
+  if(!Number.isFinite(scale)||!Number.isFinite(outerRadius)||!(outerRadius<Math.min(depth-near,far-depth)))return hideProbe(record,renderOwner,sceneOwner,cameraOwner,markerOwner,'minimum-unmet');
+  if(!displayMatches(record,renderOwner,sceneOwner,cameraOwner,markerOwner))return false;
+  markerOwner.scale.setScalar(scale);
+  if(!displayMatches(record,renderOwner,sceneOwner,cameraOwner,markerOwner))return false;
+  markerOwner.visible=true;probeState.scale=scale;probeState.reason='visible';
+  return true;
+}
 function draw(record){
-  if(!current(record)||!renderer||!scene||!camera)return;
-  renderer.render(scene,camera);state.frames++;
+  const renderOwner=renderer,sceneOwner=scene,cameraOwner=camera,markerOwner=marker;
+  if(!displayMatches(record,renderOwner,sceneOwner,cameraOwner,markerOwner)||!sizeProbe(record,renderOwner,sceneOwner,cameraOwner,markerOwner))return;
+  if(!displayMatches(record,renderOwner,sceneOwner,cameraOwner,markerOwner))return;
+  renderOwner.render(sceneOwner,cameraOwner);
+  if(!displayMatches(record,renderOwner,sceneOwner,cameraOwner,markerOwner))return;
+  state.frames++;
   if(shaderFailure)throw new Error('편집 씬 shader 연결 실패');
-  const gl=renderer.getContext();
+  const gl=renderOwner.getContext();
+  if(!displayMatches(record,renderOwner,sceneOwner,cameraOwner,markerOwner))return;
   if(gl.isContextLost()||gl.getError()!==gl.NO_ERROR)throw new Error('편집 씬 WebGL 표시 실패');
 }
 function move(dt){
@@ -86,7 +145,7 @@ function tick(now,record){
 }
 function resume(){if(owner&&current(owner)&&state.ready&&!document.hidden&&!state.raf){state.lastTime=null;state.raf=requestAnimationFrame(time=>tick(time,owner));}}
 function snapshot(){
-  return Object.freeze({entryId:state.entryId,ready:state.ready,loading:state.loading,error:state.error,disposed:state.disposed,raf:!!state.raf,frames:state.frames,heldKeys:keys.size,blocked:state.blocked,dpr:state.dpr,canvas:{width:canvas.width,height:canvas.height},mode:state.mode,zoom:state.zoom,player:player?{...player}:null,terrain:terrain?.snapshot()||null,failure:{hasCause:failurePresent,phase:failurePhase},sceneSource:'EDITOR_SNAPSHOT',canonicalSceneFetch:false,editorMutation:false,saveAccepted:false,native6Accepted:false,physicalHeight:'UNKNOWN'});
+  return Object.freeze({entryId:state.entryId,ready:state.ready,loading:state.loading,error:state.error,disposed:state.disposed,raf:!!state.raf,frames:state.frames,heldKeys:keys.size,blocked:state.blocked,dpr:state.dpr,canvas:{width:canvas.width,height:canvas.height},mode:state.mode,zoom:state.zoom,probe:Object.freeze({...probeState}),player:player?{...player}:null,terrain:terrain?.snapshot()||null,failure:{hasCause:failurePresent,phase:failurePhase},sceneSource:'EDITOR_SNAPSHOT',canonicalSceneFetch:false,editorMutation:false,saveAccepted:false,native6Accepted:false,physicalHeight:'UNKNOWN'});
 }
 async function loadScene(input,options){
   if(state.disposed||owner)throw new Error('편집 씬 진입은 창마다 한 번만 허용됩니다');
@@ -106,7 +165,8 @@ async function loadScene(input,options){
     renderer.debug.onShaderError=()=>{shaderFailure=true;};
     viewCentre={x:(terrain.bounds.left+terrain.bounds.right)/2,y:(terrain.bounds.top+terrain.bounds.bottom)/2};
     player={x:terrain.spawn.x,y:terrain.spawn.y};
-    markerGeometry=new THREE.SphereGeometry(.04,12,8);markerMaterial=new THREE.MeshBasicMaterial({color:0xf1c67b,transparent:true,depthTest:false,depthWrite:false});
+    markerGeometry=new THREE.SphereGeometry(.04,12,8);probeInnerRadius=measureProbeInnerRadius(markerGeometry);
+    markerMaterial=new THREE.MeshBasicMaterial({color:0xf1c67b,transparent:true,depthTest:false,depthWrite:false});
     marker=new THREE.Mesh(markerGeometry,markerMaterial);marker.renderOrder=100000;scene.add(marker);move(0);
     text('scene-name',copy.name);const info=terrain.snapshot();
     text('facts','오브젝트 '+info.objects+'개 · 표시 '+info.visibleObjects+'개\n레이어 '+info.layerCount+'개\n현재 편집 배치와 보행 영역을 사용합니다.');
