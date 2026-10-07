@@ -1197,3 +1197,42 @@ NEXT PASS: alpha-aware 보수적 셀 점유 source/API 계약·원자료 수치�
 ```
 
 추가 cap source/수학 검토 `CODEX7-BERIN-OPAQUE-CAP-FEASIBILITY-20261007`(공식 turn `01a11435-5732-7c21-83d8-6bdf85811169`)의 provider 단일 원문은 `codex-opaque-cap-official-end.txt` 3303B/`f45694b428a15585a3676f77e86364d3636d1c95c11f130ad98737f9c8011d88`에 미채택 보존했다. A 기준 수평 bounds [L,R], NPC 반폭 h, r=.045/m=.015/cap=h+r+m인 기존 보수적 사각형 모델에서 겹침 시 왼쪽 가능 조건은 L≥−h, 오른쪽은 R≤h다. L<−h 및 R>h이면 양방향 cap 초과이며, 중심 q=(L+R)/2·반폭 b=(R−L)/2의 가능 조건은 b−|q|≤h다. 최초 실패 전체 geometry 값으로 계산한 한쪽 edge의 필요 축소는 약 .134518/.179499 scene이며 alpha 적용 결과가 아니다. 실제 direction/frame/elapsed/pose/발/A를 고정한 새 alpha 투영 가능성 Gate를 통과한 후보만 새 화면 검수 대상으로 삼는다. 실제 실패 frame UNKNOWN·대표 raw 동일 pose 추정0·cap 새 값 확정0·새 코드/CPU/GPU/Chrome/전문송신0이다. 기존 정책 유지·별도 유한 outreach·유효 위치 없을 때 open 숨김의 대안은 모두 미확정 제안이다.
+
+
+### ROOT-CH1-1-PLAYER-RIG-CONSUMER-20261007 — 본편 전사 표시 부분 연결
+
+제한 native body 관측은 A급/전체 발 접지·물리 높이 인수를 뜻하지 않으며 현재 visual verdict는 RETOUCH다.
+
+정확한 scope/방향/phase/active-tick clock/발 anchor/폴백/생명주기는 `docs/4.0케릭터스프라이트 디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md`의 동일 completion 절을 따른다.
+
+clock 전 native5조건 부분 PASS와 최종 clock CPU 검수는 별도 epoch다. 전체 main rig/foot/native6/A급 완료0, 현재 VISUAL VERDICT: RETOUCH.
+
+### §23 MAP PRODUCTION REPORT — ROOT-CH1-1-PLAYER-RIG-CONSUMER-20261007
+
+```text
+STAGE: CH1-1 stage0 / 3387 opt-in main warrior body display
+MASTER: silhouette/regions/main route/side spaces = 기존 production layout 보존
+OUTER MASS: LEFT/RIGHT/TOP/SOUTH/major holes = 변경0, 새 물리 높이0
+LARGE: source assets = 기존 warrior directional PNG/rig; composites = 본체 actor canvas;
+       overlap = 시작 금빛 FX가 몸/발을 가림; repeated silhouette = 기존 맵, 신규 배치0
+MEDIUM: connections = 기존 연결 보존; remaining holes = 절벽/전경·실높이 미완료
+GROUND: shadow/contamination/structure integration = 기존 권한 보존, 발 원점 변환만 연결
+PLAYABLE: arenas/travel/breathing/threat = 기존 map/collision 유지;
+          combat readability = 공격/사망 특수상태 legacy, 전투 전체 검수 미완료
+LANDMARK: primary/secondary/tertiary = 기존 랜드마크 보존
+CAMERA QA: START = PNG 직접판독/FX 가림 RETOUCH;
+           EARLY = 실제 W 이동·run 방향/frame 표시;
+           ARENA/SIDE L/SIDE R/LANDMARK/LATE/EXIT = 이번 미검수
+TECH QA: route/collision = 동일 map 보존 한정, 전체 route 신규 검수0;
+         pageerror0/4040; seam = 기존 X + foot(-2,+22), actualDSghost 미관측;
+         loading = native legacy3프레임→rig1세대 ready50프레임;
+         performance = 인수0, 추가 RAF/timer0
+FILES: stage-owned = game.html root hook only + tools/2_5d/ch1-player-rig.mjs;
+       concurrent = 기존 main foreign185B + ownerSTATELOG/WIP 보존;
+       unrelated touched = 0
+GIT: staged = code2 + 관련 docs 소유분만; commit/push exactSHA는 외부 remote receipt;
+     deploy = 0
+VISUAL VERDICT: RETOUCH
+NEXT PASS: unobscured foot observation; cliff/foreground/relief and common foot projection;
+           silvertail per-direction packed calibration; attack/death; actual same-candidate6 steps/audio/save
+```

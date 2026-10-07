@@ -1877,3 +1877,27 @@ Git쓰기승인후체크포인트실행을시도했으나승격실행기의Windo
 | FILES/GIT | newmodule1+game자기hook+관련docs13. foreign game185B/WIP/ownerSTATELOG/protected2_3/기존23/save 보존. 정상commit/push·remoteexact은 완료영수증에서 별도확인. |
 | VISUAL VERDICT | RETOUCH — 지면 연결만 확인. 평면 재질·높이·3D캐릭터·시작FX가림 미해결. |
 | NEXT PASS | 실제 승인된1-1 outer mass/높이/foreground 계약 소비→main rig/발접지→SKILL/ENEMY/BOSS/UI/NPC/사운드 및 같은후보6단계. |
+
+
+### ROOT-CH1-1-PLAYER-RIG-CONSUMER-20261007 — 본편 전사 표시 부분 연결
+
+CH1-1 production smoothing의 전사 표시만 부분 채택한다. outer mass/geometry/collision/nav/원PNG 및 기존 stage 수치는 변경하지 않는다.
+
+| 항목 | 현재 계약 |
+|---|---|
+| opt-in | localhost/127.0.0.1:3387, `ch1Three=1&ch1Rig=1` 동시 지정. 기본 OFF |
+| scope | `_charIdx===0`, `G.on`, stage0, 비보스, production smoothing. `P.hp>0`/`P.s==='idle'`의 idle2/walk8/run8 |
+| 방향/위상 | 실제 `P._sa.f`, phase=`(f+.5)/N`, 방향 `s,se,e,ne,n,nw,w,sw`. native 프레임 수/정수 f 불일치 시 기존 표시 |
+| 발/크기 | 기존 X transform 안 로컬 `(-2,+22)`; 48px 셀 중심→catalog foot `(22,46)`, body-local reference32. 새 world 높이 아님 |
+| 시간 | 같은 P/map/class/scope 및 현재·이전 frame의 Number.isSafeInteger 조건에서 dt=min(.05,delta(_gameFrame)*PHYS_STEP/1000), PHYS_STEP=1000/60. 초기/교체/비활성/paused/hidden은0. _gameTime 단독 증가를 소비하지 않고 draw에서 Rift/lesson guard를 재호출하지 않는다. |
+| 고스트 | 같은 now/map/P/animator/class/generation/publication/canvasVersion의 canvas/rect/6원소 행렬 재사용. DS/Border 공유 1회, 추가 rig.update/render0 |
+| 폴백/미채택 | adapter는 warrior/silvertail 및 attack 지원. main은 warrior idle/walk/run만 채택; 실버테일 보정 보류, 공격/사망/특수/로딩·실패는 기존 아틀라스 |
+| 수명/예산 | 로컬 Three r160; 자체 RAF/시뮬레이션0; scope exit suspend, pagehide freeMapTex+dispose. maxBackingDimension2048, maxBackingScale4, maxDelta.05 |
+
+현재 checkout game.html 4057058B/c0176bfa3f012187972b3b1b9170d44149f5afd21ffac81abf376fec6293b007; adapter 12712B/acc523025d9a56d5e777a2cf5b4145172d57b21ba7f35d4f5e535d4b19ebac0e. Git 소유 blob은 root 인계 4056873B/a291ee71f7b02e7b7dacd4045161ddcfb5b311fdd496c231f71b6f7d4ce845ce이며 checkout foreign185B를 전체 채택하지 않는다.
+
+검수 epoch 분리: clock 보정 전 main d67cbeb3…의 새 Chrome/context/page 각1에서 native5조건 PASS/FAIL0/미도달0/exit0을 관측했다. actual idle→W/run, P.y7420→7346.907759999999, run f2/phase.3125/direction4, actor canvas53×53/alpha>16픽셀356/bbox(18,6)…(37,36)/GL0, 같은 map/source7핀, trusted pagehide rig/renderer dispose각1. `ghostFrames=0`이므로 실제 DS 가림 인수는 미완료다. native6/audio/save0. 시작 금빛 FX로 몸·발이 가려 현재 VISUAL VERDICT: RETOUCH. 이 관측을 최종 clock 코드의 native 재검수로 재사용하지 않는다.
+
+CPU 이력은 합산하지 않는다. 초기 adapter3그룹13조건 PASS 후 G04 maxX 단독 변형 오라클 FAIL1/8그룹 미도달/exit1을 보존했다. root 보고의 별도 오라클 정정 limited9그룹48조건 PASS는 통제 rig CPU이며 실제 factory/GPU와 구분한다. active-tick clock의 2c90 원본은7그룹37조건 PASS 후 previous.frame=100.5→101 경계 FAIL1/잔여4조건 미도달을 보존했다. 현재 c017의 previous.frame safe-integer guard 후 별도 제한 후속은 새 실패조건+잔여4조건, 총5조건 PASS/FAIL0/미도달0/exit0이다. 앞선37PASS를 반복·합산하지 않았다. root clock-guard-limited-receipt.json5067B/4aaec9d44c8864842fb5269cf3f2408dc52c102b6dc1d7a1de997cd4d179b72d를 근거로 하며 clock 보정 후 Chrome 추가0이다.
+
+MAP PRODUCTION REPORT (표시 소비자 부분): STAGE CH1-1/main warrior opt-in; guidev0.9/SSOT 기존 LOCK 준수. LARGE OUTER MASS/MEDIUM/GROUND/geometry/collision/nav/원PNG 변경0. PLAYABLE/COMBAT은 실제 idle/W 부분 이동만 관측; 보스/획득/사망·부활/재도전 미인수. LANDMARK/DETAIL 변경0. CAMERA QA는 전체8방향·가림 미완료; TECH QA는 각 epoch CPU/native 범위를 위와 같이 분리. OWNERSHIP root main+adapter+정본; 3.3 foreign WIP는 partial-stage inverse 필요. VISUAL VERDICT: RETOUCH. NEXT: 최종 clock 제한 검수, 실제 발/전경 및 같은 후보의 전투→획득→보스개방→사망/부활→재도전 인수.

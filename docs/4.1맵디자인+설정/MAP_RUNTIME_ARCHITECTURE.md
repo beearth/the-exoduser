@@ -395,3 +395,29 @@ mapObjs는 전역 MAP_OBJS로 복원한다. 배열 identity는 새로 만들되 
 | FILES/GIT | newmodule1+game자기hook+관련docs13. foreign game185B/WIP/ownerSTATELOG/protected2_3/기존23/save 보존. 정상commit/push·remoteexact은 완료영수증에서 별도확인. |
 | VISUAL VERDICT | RETOUCH — 지면 연결만 확인. 평면 재질·높이·3D캐릭터·시작FX가림 미해결. |
 | NEXT PASS | 실제 승인된1-1 outer mass/높이/foreground 계약 소비→main rig/발접지→SKILL/ENEMY/BOSS/UI/NPC/사운드 및 같은후보6단계. |
+
+## ROOT-CH1-1-PLAYER-RIG-CONSUMER-20261007 — 본편 전사 표시 부분 연결
+
+이 절은 본편의 현재 부분 채택 상태다. 앞선 terrain-only/독립 lab/읽기 계획에서 적힌 `main rig 0`·`actors3D 0`은 해당 epoch의 이력이며, terrain 모듈의 `actors3DAccepted=false`는 그대로다. 전체 플레이어·물리지형·본편 인수 완료를 뜻하지 않는다.
+
+| 항목 | 현재 정확 계약 |
+|---|---|
+| 사용 범위 | `localhost`/`127.0.0.1`의 포트 `3387`, `ch1Three=1&ch1Rig=1`을 함께 지정할 때만 ON. 기본 OFF. stage `0`, 비보스, production smoothing, 전사 `_charIdx===0` |
+| 본편 소비자 | `drawP`의 최종 본체 표시만 `_drawCh1PlayerRigBody`로 대체. `P.s==='idle'`의 `idle` 2프레임 / `walk`·`run` 8프레임. 실제 `P._sa.f`와 방향을 소비하며 phase=`(f+.5)/N`, 방향 순서 `s,se,e,ne,n,nw,w,sw` |
+| 크기·발 | 기존 X의 카메라/캐릭터 배율·호흡·회전 유지. 48px 셀 중심에서 catalog 발 `(22,46)`으로 로컬 `(-2,+22)` 이동, reference `32`. `heightWorld` API 인수는 부모 **body-local** reference이며 새 지형 고도가 아니다 |
+| 동작 시간 | `ROOT-CH1-RIG-ACTIVE-TICK-CLOCK-20261007`: 같은 P/map/class/scope에서 `delta(_gameFrame)*PHYS_STEP/1000`, `PHYS_STEP=1000/60`, 상한 `.05`초. 현재/직전 틱 모두 safe integer일 때만 계산하며 초기·교체·비활성·paused/hidden은 0. `_gameTime` 증가만으로 진행시키지 않으며 Rift/lesson guard를 draw에서 다시 호출하지 않음. 기존 `P._sa`·X breathing 정지 계약은 바꾸지 않음 |
+| 가림 고스트 | DS/Border 기존 1회 제한 유지. 같은 `_now`/map/P/animator/class/generation/publication/canvas `_glVer`에서 복사한 6개 X 행렬과 동일 canvas/rect를 재사용. 추가 `rig.update`·renderer render·translate/scale 없음. 이번 native `ghostFrames=0`이므로 실제 가림 인수는 미완료 |
+| 폴백·미채택 | 로딩/실패·공격·사망·특수 상태는 기존 아틀라스. 실버테일은 방향별 packed rounding/padding 보정 미확정으로 본편 채택 보류. adapter API의 silvertail/attack 지원과 본편 채택은 별개 |
+| 보존 | P/G/전투/충돌/AI/DS/Border/그림자·원PNG/scene/nav/사용자 save/보호2_3/Q전용 규칙 불변. 독립 actor canvas이며 완전 3D 모델이나 높이·경사 구현 아님. 실제 보상/save·청취·native6·A급 미인수 |
+
+소스: `tools/2_5d/ch1-player-rig.mjs` **12712B / acc523025d9a56d5e777a2cf5b4145172d57b21ba7f35d4f5e535d4b19ebac0e**. 최종 checkout `game.html` **4057058B / c0176bfa3f012187972b3b1b9170d44149f5afd21ffac81abf376fec6293b007**. Git에는 HEAD+root 소유 hook의 **4056873B / a291ee71f7b02e7b7dacd4045161ddcfb5b311fdd496c231f71b6f7d4ce845ce** blob만 보존한다. 기존 foreign 185B 차이는 checkout에 남기며 채택하지 않는다.
+
+검수 epoch를 합산하지 않는다. 최초 adapter CPU는 3그룹·13조건 PASS 뒤 maxX 단독 변형 오라클 FAIL1/후속8그룹 미도달/exit1이었다. 실제 minX와 maxY가 변했으므로 오라클을 바로잡은 **별도 제한 후속 9그룹·48조건 PASS/FAIL0/미도달0/exit0**를 보존했다. 원 하네스·원 FAIL은 그대로이며 첫 stdout 파일 미보존도 명시했다. 실제 이미지 factory/GPU는 이 CPU의 통제 rig와 별개다.
+
+새 native **1 Chrome/context/page, 5조건 PASS/FAIL0/미도달0/exit0**: 실제 본편 idle→W 이동(run)의 방향/phase 소비, P.y `7420→7346.907759999999`, run frame `2`/phase `.3125`/direction `4`, 동일 map/source7핀, actor canvas `53×53`의 alpha>16 픽셀 `356`/bbox `(18,6)…(37,36)`/GL0, trusted pagehide rig·renderer dispose 각1. mutation POST1은 차단되어 서버 도달0. 이 native의 main 소스는 clock 보정 전 **4056765B/d67cbeb3ac94afec3f9da56b2b0997e39a3ce0aa0aac0980302dd16780ef9139**이며, 최종 clock guard는 별도 CPU 경계 검수로 구분한다. 보정 후 Chrome 추가0.
+
+근거: `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-main-player-rig-20261007/`의 `implementation-receipt.json`, `main-implementation-receipt.json`, `clock-guard-implementation.json`, `cpu-first-failure-receipt.json`, `cpu-limited-final-receipt.json`, `native-player-result.json`, `main-hook-static-review.json`, `visual-verdict.json`. 원화 확대 흐림·실높이·절벽/전경·시작 금빛 효과의 몸/발 가림이 남는다. **VISUAL VERDICT: RETOUCH**. 다음은 실제 발 투영·전경 접합·클래스/특수 동작 보정과 같은 후보의 전투·획득→보스 개방→사망·부활→재도전 인수다.
+
+Clock 첫 CPU는 7그룹·37조건 PASS 뒤 직전 fractional invalid 틱 `100.5→101`에서 `.008333333333333333`이 전달되어 기대0 FAIL1/잔여4조건 미도달/exit1을 보존했다. 실제 `_gameFrame`은 정수이며 이 실패는 통제 invalid 경계다. 최종 소스에 `Number.isSafeInteger(previous.frame)` 조건을 추가했고, 원37PASS를 반복하지 않는 실패1+잔여4 한정 검수로 분리한다.
+
+최종 c0176bfa 소스의 별도 clock 제한 CPU는 실패1+잔여4만 **5조건 PASS/FAIL0/미도달0/exit0/source 전후 exact**로 완료했다. 원37PASS와 합산한 clean42PASS로 표시하지 않으며 native5조건과도 별개다. 추가 근거는 `clock-guard-cpu-receipt.json`, `clock-invalid-implementation.json`, `clock-guard-limited-receipt.json`이다.

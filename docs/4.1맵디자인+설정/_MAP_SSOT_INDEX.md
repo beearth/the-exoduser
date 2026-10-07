@@ -1794,3 +1794,12 @@ MAP PRODUCTION REPORT (§23): STAGE=CH1-1 2.5D 캐릭터 기반 API; MASTER/OUTE
 | 정본 | `MAP_RUNTIME_ARCHITECTURE.md`와 `CH1_1_PRODUCTION_FINISH_20260916.md`의 본ID절·§23 표. source/module·checkout/부분Git pin 및 검수범위를 거기에 정확기록. 앞선 날짜별source/미구현기록은 당시 이력으로 보존. |
 | 근거·판정 | 외부 `ch1-1-2_5d-production-20261007/validation-receipt.json`3572B/ce099bce7b4312690d31e78004b7b267fa9034e556866352527ed3d534faddee. rootPNG2직접판독, **VISUAL VERDICT: RETOUCH**. |
 | 후속 | Claude8 기존6팀 actual1-1 통합과 Codex7 높이/권한 seam 읽기를 연결. 원총괄은 완료후 최소consumer→화면→docs→소유code+docs보존. 새팀/중복송신0. |
+
+
+### ROOT-CH1-1-PLAYER-RIG-CONSUMER-20261007 — 본편 전사 표시 부분 연결
+
+이 절은 과거 main rig0 기록을 해당 epoch 이력으로 보존하며 현재 전사 본체 부분 채택의 canonical 링크를 추가한다.
+
+정확한 scope/방향/phase/active-tick clock/발 anchor/폴백/생명주기는 `docs/4.0케릭터스프라이트 디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md`의 동일 completion 절을 따른다.
+
+clock 전 native5조건 부분 PASS와 최종 clock CPU 검수는 별도 epoch다. 전체 main rig/foot/native6/A급 완료0, 현재 VISUAL VERDICT: RETOUCH.

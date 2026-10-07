@@ -11462,6 +11462,52 @@ function _drawCh1ThreeTerrain(ctx){
   _ch1StartOuterStats.visibleIds=[...frame.ids];_ch1StartOuterStats.drawnIds=[...frame.ids];return true;
 }
 globalThis.__ch1FieldTerrainQA=()=>_ch1ThreeTerrain?_ch1ThreeTerrain.snapshot():Object.freeze({requested:_ch1ThreeRequested,importFailed:_ch1ThreeImportFailed,alive:_ch1ThreeAlive,ready:false});
+// ROOT-CH1-1-PLAYER-RIG-CONSUMER-20261007: body display only, default OFF.
+const _ch1RigRequested=_ch1ThreeRequested&&new URLSearchParams(location.search).get('ch1Rig')==='1';
+const _ch1RigDirections=Object.freeze(['s','se','e','ne','n','nw','w','sw']);
+let _ch1PlayerRig=null,_ch1RigAlive=true,_ch1RigImportFailed=false,_ch1RigBodyFrame=null,_ch1RigClock=null,_ch1RigDelta=0,_ch1RigScoped=false;
+const _ch1RigStats={bodyFrames:0,ghostFrames:0,legacyFrames:0,lastState:'awaiting-main-body'};
+if(_ch1RigRequested){
+  window.addEventListener('pagehide',()=>{_ch1RigAlive=false;_ch1RigBodyFrame=null;if(_ch1PlayerRig){if(typeof _freeMapTex==='function')_freeMapTex(_ch1PlayerRig.canvas);_ch1PlayerRig.dispose();}},{once:true});
+  import('./tools/2_5d/ch1-player-rig.mjs').then(module=>{if(_ch1RigAlive)_ch1PlayerRig=module.createCh1PlayerRig();}).catch(()=>{_ch1RigImportFailed=true;});
+}
+function _ch1RigBeginBodyFrame(){
+  _ch1RigBodyFrame=null;
+  if(!_ch1RigRequested||!_ch1RigAlive)return;
+  const scoped=_charIdx===0&&G.on&&G.stage===0&&!G._bossArena&&_ch1StartOuterEnabled()&&_CH1_START_PHASE==='smoothing';
+  const previous=_ch1RigClock,frame=_gameFrame;
+  // Observe committed gameplay ticks; do not call update's Rift/lesson guards again.
+  _ch1RigDelta=scoped&&previous&&previous.scoped&&previous.actor===P&&previous.map===G.map&&previous.classId===_charIdx&&Number.isSafeInteger(frame)&&Number.isSafeInteger(previous.frame)&&frame>=previous.frame&&!G.paused&&!document.hidden?Math.min(.05,(frame-previous.frame)*PHYS_STEP/1000):0;
+  _ch1RigClock={frame,scoped:!!scoped,actor:P,map:G.map,classId:_charIdx};
+  if(!scoped&&_ch1RigScoped&&_ch1PlayerRig)_ch1PlayerRig.suspend();
+  _ch1RigScoped=!!scoped;
+}
+function _drawCh1PlayerRigBody(direction,alpha){
+  if(!_ch1RigRequested||!_ch1RigAlive||!_ch1PlayerRig||!_ch1RigScoped||P.hp<=0||P.s!=='idle')return false;
+  const mode=P._sa.anim,native=SpriteAnimator._fr(P._sa,direction),index=_ch1RigDirections.indexOf(direction),count=mode==='idle'?2:(mode==='run'||mode==='walk'?8:0);
+  if(!count||index<0||!native||native.length!==count||!Number.isInteger(P._sa.f)||P._sa.f<0||P._sa.f>=count){_ch1RigStats.lastState='legacy-state';return false;}
+  const frame=_ch1PlayerRig.render({stage:G.stage,map:G.map,actor:P,id:'warrior',mode,direction:index,phase:(P._sa.f+.5)/count,heightWorld:32,backingScale:_ssaa,dt:_ch1RigDelta});
+  if(!frame){_ch1RigStats.legacyFrames++;_ch1RigStats.lastState='legacy-pending-or-failed';return false;}
+  X.save();
+  try{
+    X.globalAlpha=alpha;X.translate(-2,22); // native 48px cell center -> catalog (22,46) foot
+    let matrix;if(_useGPU||_useGL)matrix=_mat().slice(0,6);else{const m=X.getTransform();matrix=[m.a,m.b,m.c,m.d,m.e,m.f];}
+    if(matrix.length!==6||!matrix.every(Number.isFinite))return false;
+    X.drawImage(frame.canvas,frame.left,frame.top,frame.width,frame.height);
+    const state=_ch1PlayerRig.snapshot();
+    _ch1RigBodyFrame={frame,matrix,now:_now,map:G.map,actor:P,animator:P._sa,classId:_charIdx,generation:state.generation,publication:state.lastFrame,canvasVersion:frame.canvas._glVer};
+    _ch1RigStats.bodyFrames++;_ch1RigStats.lastState='warrior-body-adopted';return true;
+  }catch(_){_ch1RigBodyFrame=null;_ch1RigStats.lastState='legacy-parent-blit-failed';return false;}
+  finally{X.restore();}
+}
+function _drawCh1PlayerRigGhost(alpha){
+  const owned=_ch1RigBodyFrame;
+  if(!owned||!_ch1RigAlive||!_ch1PlayerRig)return false;
+  const state=_ch1PlayerRig.snapshot();
+  if(owned.now!==_now||owned.map!==G.map||owned.actor!==P||owned.animator!==P._sa||owned.classId!==_charIdx||!state.ready||owned.generation!==state.generation||owned.publication!==state.lastFrame||owned.canvasVersion!==owned.frame.canvas._glVer)return false;
+  X.save();try{X.globalAlpha=alpha;X.setTransform(...owned.matrix);const frame=owned.frame;X.drawImage(frame.canvas,frame.left,frame.top,frame.width,frame.height);_ch1RigStats.ghostFrames++;return true;}catch(_){return false;}finally{X.restore();}
+}
+globalThis.__ch1PlayerRigQA=()=>Object.freeze({requested:_ch1RigRequested,alive:_ch1RigAlive,importFailed:_ch1RigImportFailed,scope:_ch1RigScoped,..._ch1RigStats,adapter:_ch1PlayerRig?_ch1PlayerRig.snapshot():null,bodyCurrent:!!_ch1RigBodyFrame&&_ch1RigBodyFrame.now===_now,adoptedClass:'warrior',adoptedModes:'idle/walk/run',silvertailAccepted:false,attackAccepted:false,fullPlayerLinked:false});
 function _drawCh1StartOuter(ctx){
   if(_drawCh1ThreeTerrain(ctx))return;
   _ch1StartOuterStats.visibleIds=[];_ch1StartOuterStats.drawnIds=[];if(!_ch1StartOuterEnabled())return;_preloadCh1StartOuter();
@@ -17871,6 +17917,7 @@ function _dsDrawPlayerGhost(_ga){ // _ga: 호출자 지정 알파 (2차 경계 �
   // SpriteAnimator.draw는 렌더 전용(프레임 전진 없음 — update와 분리)이라 재호출이 안전하다.
   if(!_dsPSnap.on||!P||P.hp<=0||!P._sa)return;
   if(_dsPSnap.gN===_now)return;_dsPSnap.gN=_now; // [DEPTH-SLICE2] 프레임당 1회 (1차 프런트 패스와 2차 경계 전경이 공유)
+  if(_drawCh1PlayerRigGhost(_ga||_DS_GHOST_A)){X.globalAlpha=1;return;}
   X.save();
   X.globalAlpha=_ga||_DS_GHOST_A;
   X.translate(P.x,P.y+_dsPSnap.lift);
@@ -54028,6 +54075,7 @@ const ELG2=['#ffffff','#ffaa44','#88ccff','#cc77ff','#ffffaa','#ffccee']; // bri
 const ELP=['#dddddd','#ff6622','#44aaff','#bb55ee','#ffee44','#ffdd55']; // particle colors
 
 function drawP(){
+  _ch1RigBeginBodyFrame();
   if(_DCP.on)_DCP._setSource(_DCP_SRC.PLAYER);
   const _dpStart=performance.now();
   const sp=(G.slowMo>0?.35:1)*_dtSp;
@@ -57246,8 +57294,9 @@ function drawP(){
       (P._aiTrail||(P._aiTrail=[])).push({x:_px,y:_py,dir:_pDk,flip:_pFlip,anim:P._sa.anim,f:P._sa.f,sc:_pScale,lift:_skillAnimLift});
       if(P._aiTrail.length>8)P._aiTrail.shift();
     }else if(P._aiTrail&&P._aiTrail.length){P._aiTrail.length=0}
+    const _ch1RigBodyDrawn=_drawCh1PlayerRigBody(_pDk,_gwA);
     // ── 외곽선: 4방향만 (성능 최적화) ──
-    if(OPT.outline&&_atlasP_outline&&!_apDead){
+    if(!_ch1RigBodyDrawn&&OPT.outline&&_atlasP_outline&&!_apDead){
       const _olSa={img:_atlasP_outline,fm:P._sa.fm,anim:P._sa.anim,f:P._sa.f,t:0,spd:8,loop:true,done:false};
       X.globalAlpha=.8*_gwA;
       X.save();X.translate(1,0);SpriteAnimator.draw(_olSa,X,0,0,_pFlip,_pDk);X.restore();
@@ -57257,11 +57306,11 @@ function drawP(){
     }
     // ── 본체: 밝은 아틀라스 1회 + 원본 1회 ──
     X.globalAlpha=_apDead?X.globalAlpha:_gwA;
-    if(_atlasP_bright&&!_apDead){
+    if(!_ch1RigBodyDrawn&&_atlasP_bright&&!_apDead){
       const _brSa={img:_atlasP_bright,fm:P._sa.fm,anim:P._sa.anim,f:P._sa.f,t:0,spd:8,loop:true,done:false};
       SpriteAnimator.draw(_brSa,X,0,0,_pFlip,_pDk);
     }
-    SpriteAnimator.draw(P._sa,X,0,0,_pFlip,_pDk);
+    if(!_ch1RigBodyDrawn)SpriteAnimator.draw(P._sa,X,0,0,_pFlip,_pDk);
     X.restore();
     X.globalAlpha=fl?.3:1;
   }else if(_playerReady){

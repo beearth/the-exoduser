@@ -101,3 +101,10 @@ placements.json 일치(index·좌표·variant·scale/width/flip) / 분류표(전
 ### 2026-10-01 MAP-020 후속 줌 범위 수정
 
 이 문서의 과거 와이드 촬영과 별개로, 경계 모듈의 실제 .62줌 사각 절단을 확인하고 draw/cull에 전체 월드 줌을 반영했다. 전경 2차의 배치·170px 띠·가림 계약은 변경하지 않았다. [현행 경계 §7](CH1_BOUNDARY_EDGE_MAP020_20261001.md#7-실제-줌-drawcull-수정--2026-10-01). 전체 MAP-020 RETOUCH와 M5 보행 미확인 유지.
+
+
+### ROOT-CH1-1-PLAYER-RIG-CONSUMER-20261007 — 본편 전사 표시 부분 연결
+
+기존 _dsPSnap.gN 공유 1회 제한 아래 이미 그린 rig canvas/rect와 복사한 6원소 X 행렬을 재사용한다. 별도 rig.update/render는 없다.
+
+body에서 갱신한 frame만 같은 now/map/P/animator/class/generation/publication/canvas `_glVer`일 때 재사용한다. 실제 native ghostFrames0이므로 가림 PASS0.
