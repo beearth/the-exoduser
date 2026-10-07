@@ -4928,3 +4928,17 @@ WOLF 파일 쓰기는 자동 승인 검토에서 dangerous로 거절됐고 구�
 | docs·보존 | 코드 후 새 전체 관련 검색1회 26경로/116행/119회; 현재 MAP_SCENE_EDITOR/MASTER/CHANGELOG3만 동기화. 각 working/HEAD fullbytes 선백업·prefix/inverse/EOF1. 소유 code1+docs3 정상 보존 대상; remote exact는 최종 completion 영수증이 확정한다. |
 
 상세 계약과 가이드 §23 MAP PRODUCTION REPORT는 docs/4.1맵디자인+설정/MAP_SCENE_EDITOR_20261005.md의 같은 완료 ID 및 /Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/editor-pointer-gesture-owner-20261008/visual-verdict.json·validation-receipt.json·completion-receipt.json을 따른다. 사용자의 기존 IAB13 old-loaded 탭은 조작·재로드하지 않았다.
+
+## ROOT-LTNCHASER-CANONICAL-DESCRIPTION-20261008 — 번역 정본 소비
+
+| 항목 | 현재 구현·검수 |
+|---|---|
+| 실제 main | SKILL_LIST ltnChaser의 KO/EN 장문1+Lv 한 쌍을 기존 SKILL_SLOT_DEFS.bow.info.ltnChaser의 canonical 설명으로 1회 치환/-144B. KO ‘전기 유도칼날 (ST40, 쿨12초). 관통+체인라이트닝’, EN ‘Lightning homing blades (ST40, CD 12s). Pierce+chain lightning’. |
+| 소비·보존 | 기존 ui-source key/en·_L→_T table/fallback 재사용. 상세/기본 카드의 sk.desc 경로만 새 문구를 소비한다. 동적 발수 min(12,2+lv*2)·실전투/비용/CD/숙련·DOM·save·asset 불변. 새 key/catalog/bundle 생성0. |
+| 역사 구분 | 직전6110 두 상세 hunk의 ‘desc1+Lv 미수정’은 당시 이력. 현재 이 절을 우선한다. 옛 장문 번역 key는 catalog/bundle에 남는다. 28 key 존재와 28언어 의미/화면 인수는 별개다. |
+| 검수 | 실제 source/canonical/caller 정적 대조·source peer blocking0. 저위험 표시로 새 tests/CPU/native/Chrome/audio/PNG/save0. UI_NOT_ASSESSED/nativeNOT_RUN/VISUAL RETOUCH·CH1 boss 전과정/native6/audio/durableSave/A급 미인수. |
+| docs·보존 | 새 whole검색1회 8path/74line/100occ/current5, working/HEAD10 선fullbytesbackup·prefix/inverse/EOF1. 소유 code1+docs5만 정상 보존하며 실제 HEAD/remoteexact는 최종 completion 영수증. |
+
+상세 계약·source working/owned 정확핀 및 가이드§23은 같은 완료 ID의 스킬 본문과 /Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-ltnchaser-canonical-description-20261008/implementation-receipt.json·validation-receipt.json·visual-verdict.json·completion-receipt.json을 따른다. 기존 IAB13 old-loaded 탭은 무조작으로 유지했다.
+
+가이드 §23의 전체 MAP PRODUCTION REPORT는 같은 완료 ID의 스킬 본문 및 /Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-ltnchaser-canonical-description-20261008/visual-verdict.json에 기록한다. 최종 GIT은 completion-receipt.json을 따른다.
