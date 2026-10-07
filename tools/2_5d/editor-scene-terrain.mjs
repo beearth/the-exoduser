@@ -220,7 +220,7 @@ export async function createEditorSceneTerrain({THREE, scene, core = globalThis.
     const visible = source.layers.filter(l => l.visible);
     for (const layer of visible) for (const o of layer.objects) {
       const a = byId.get(o.assetId);
-      if (!/^(assets|img)\/[A-Za-z0-9_./ -]+\.(png|jpe?g|webp)$/i.test(a.src) || a.src.split('/').includes('..')) throw new Error('편집 씬 preview는 프로젝트 이미지 경로만 지원합니다');
+      if (!/^data:image\/(png|jpeg|webp);base64,[A-Za-z0-9+/=]+$/.test(a.src) && (!/^(assets|img)\/[A-Za-z0-9_./ -]+\.(png|jpe?g|webp)$/i.test(a.src) || a.src.split('/').includes('..'))) throw new Error('편집 씬 preview는 프로젝트 이미지 또는 PNG/JPEG/WebP data URI만 지원합니다');
       if (!images.has(a.src)) {
         const handle = await loadImage(a.src, {signal});
         if (!handle || typeof handle !== 'object') throw new Error('편집 씬 image/release loader 계약 오류');

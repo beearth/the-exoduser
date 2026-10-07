@@ -100,7 +100,7 @@ async function loadScene(input,options){
     renderer.debug.onShaderError=()=>{shaderFailure=true;};
     viewCentre={x:(terrain.bounds.left+terrain.bounds.right)/2,y:(terrain.bounds.top+terrain.bounds.bottom)/2};
     player={x:terrain.spawn.x,y:terrain.spawn.y};
-    markerGeometry=new THREE.SphereGeometry(.04,12,8);markerMaterial=new THREE.MeshBasicMaterial({color:0xf1c67b,depthTest:false,depthWrite:false});
+    markerGeometry=new THREE.SphereGeometry(.04,12,8);markerMaterial=new THREE.MeshBasicMaterial({color:0xf1c67b,transparent:true,depthTest:false,depthWrite:false});
     marker=new THREE.Mesh(markerGeometry,markerMaterial);marker.renderOrder=100000;scene.add(marker);move(0);
     text('scene-name',copy.name);const info=terrain.snapshot();
     text('facts','오브젝트 '+info.objects+'개 · 표시 '+info.visibleObjects+'개\n레이어 '+info.layerCount+'개\n현재 편집 배치와 보행 영역을 사용합니다.');
