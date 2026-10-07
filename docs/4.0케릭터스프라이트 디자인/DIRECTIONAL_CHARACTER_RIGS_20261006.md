@@ -1544,3 +1544,27 @@ borrowed main atlas의 공격 표시 소비를 추가한 현재 계약을 기록
 전체 공격·특수/죽음·8방향·실제 DSghost·해부학적 발·실제 지형 높이·보스방 개방/사망/부활/재도전 전체 경로·음향·실저장 ACK·전체 native6는 미인수다. 검수 영수증의 `wholeAttackAccepted=false`, 실제 기능 플래그 `silvertailAttackAccepted=false`·`fullPlayerLinked=false`를 유지한다. 기존 두 strike/recovery 표시 플래그의 true를 전체 공격 승인으로 해석하지 않는다.
 
 상세 결과·한계는 `docs/4.0케릭터스프라이트 디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md`의 이 후속 절을 따른다. 원자료는 외부 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-main-silvertail-attack-20261007`의 `validation-receipt.json`4278B/`55dae31f70b7bc96be2ac30b8d22659e4333fd00e4c9569cb70aa45553ac6128`, `native-attack-result.json`242346B/`13226988a34e87e51e4385586a2159e39e7e64074861e62fed367c52107d8c63`, `visual-verdict.json`4269B/`e6bb23107d3deb1dcd637490e17cf3106c1a598f26d5fc684d34f4c33d7c4f51`이다. 이번 docs6의 정상 커밋·push·정확한 원격 SHA는 별도 `verification-docs/remote-preservation-receipt.json`에서 확정하며, 이전 code3docs13 보존을 다시 집계하지 않는다.
+
+## 2026-10-07 전사 rig 접촉 AO 후보 — ROOT-CH1-RIG-CONTACT-SHADOW-20261007
+
+현재 Main 전사 rig의 크기·motion/frame/UV/bone·발 세계좌표는 유지하고, 원래 ground shadow에 작은 접촉 core만 별도 opt-in으로 겹친다. crop 하단이 해부학 발이라는 주장은 하지 않는다.
+
+`ch1FootAO`는 기존 로비 옵션 carry4키에 포함되지 않는다. 직접 Main 시험 URL의 명시값1에 한정하며 로비 왕복 자동 유지/일반 설정 UI/새 query 메뉴 추가는 없다.
+
+| seam/상수 | 정확 계약 |
+|---|---|
+| scope | 기존3387 `ch1Three=1&ch1Rig=1`에 `ch1FootAO=1`; defaultOFF. class0/P.hp>0/P.s idle/현재scope 및 mode idle·walk·run만 |
+| 기존 shadow | 중심 `(_px,_py+_pR+12)`, rx=`shW`, ry=`_pR*.35`, DS alpha.38/기존 SE offset 또는 hard alpha.25 그대로 |
+| 작은 core | 같은 중심에 rx=`shW*.35`, ry=`(_pR*.35)*.4`, black alpha.10; 시험 미감값 |
+| ground/body 분리 | shadow 직후 ground matrix6 scalar 복사 → 준비된 rig frame의 body blit직전 그 matrix로1회 → context restore. body translate/rig geometry를 고치지 않음 |
+| current guard | 같은 now/frame/map/actor/animator·class/alive/scope/HP/idle/mode; BeginBodyFrame/pagehide에서 record null |
+| ghost | AO 호출0은 정적 source 근거. 기존 ghost suite를 재실행하지 않음 |
+| 진단 | contactShadow `{requested,draws,accepted:false}`; count는 실제 성공 fill 호출 관측 |
+
+OFF/불가mode/identity/준비 frame 부재의 검수에서는 core0이다. **core 뒤 parent body drawImage throw 또는 silent upload failure는 이미 칠한 core를 rollback하지 않는다.** 모든 fallback의 원 pixel 동등성은 미인수이며 기본OFF를 유지한다.
+
+새 actual-source CPU Node1/7그룹52조건 PASS(동작45·정적7, fail/setup/미도달0/exit0)와 새 headed Chrome1의 idle/run2관측은 별개다. native2관측을2PASS로 세지 않는다. idle130/run158/final169draw·body169는 당시 관측치다. ROOT는 B8별도2PNG와 현재2PNG를 읽었으나 same-pose A/Bfalse·anatomical foot false·visualAcceptedfalse이며 **RETOUCH**다. GL UNKNOWN/audio0/native6false/durableSavefalse/추가성능 인수0이다.
+
+최종 `game.html` working **4,093,695B / SHA256 `cbc459f7a86e8b3ba15610f34554fd1f81353dbaf691879da9e17f32ca5ae2fb`**, ROOT owned **4,093,510B / SHA256 `7523cbab51c8bbcb008062c0ed2f646da777720b782b06a8a5eb27312e2f41c7`**의7hunk 기준이다. foreign185B는 미채택 기존 바이트로 보존한다.
+
+전체 source 계약·epoch별 결과·§23 보고는 [MAP_RUNTIME_ARCHITECTURE.md](../4.1맵디자인+설정/MAP_RUNTIME_ARCHITECTURE.md)의 `ROOT-CH1-RIG-CONTACT-SHADOW-20261007` 절을 따른다.

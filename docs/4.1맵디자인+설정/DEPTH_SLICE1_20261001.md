@@ -104,3 +104,23 @@
 ## CODE CHANGE
 
 `game.html`·`game-easy-test.html`(미러): [DEPTH-SLICE] 플래그·헬퍼 블록(2곳), `_prepEnemyInstanced` y정렬+그림자 2사이트, MAP_OBJS 루프 본문 함수 추출+분할 1줄, `_moAlpha`×`_dsFadeMul` 1줄, drawP 직후 프런트 패스 1줄, 적 개별 그림자 1사이트, 플레이어 그림자 1사이트, drawP 고스트 스냅샷 2줄. 신규 `test/depthSlice.test.js`. 플래그 OFF 시 실행 경로·수치 동일(테스트 잠금). 충돌·geometry·베이크·타 스테이지 무변. QA 스크립트=`tmp/depth_slice1/`(비추적), 스크린샷=`captures/depth_slice1/`(비추적).
+
+## 2026-10-07 전사 rig 접촉 AO 후보 — ROOT-CH1-RIG-CONTACT-SHADOW-20261007
+
+DS-4의 기본ON 플레이어 alpha.38/적 alpha.30·SE offset·기존 shadow stamp128² 계약은 그대로다. 아래 새 core는 Main rig 소비자의 **별도 defaultOFF opt-in**이며 기존 DS-4를 대체하지 않는다. 이 문서의 과거 PASS/성능 수치를 새 core에 소급하지 않으며 Easy 공통 적용으로 확대하지 않는다.
+
+| 항목 | 새 별도 후보 |
+|---|---|
+| 요청/대상 | 기존3387 `ch1Three=1&ch1Rig=1` + `ch1FootAO=1`; 전사 class0/P.s idle 내부의 idle/walk/run만 |
+| 중심/원반지름 | 기존 player shadow `(_px,_py+_pR+12)`, rx=`shW`, ry=`_pR*.35` 재사용 |
+| core 수치 | rxfactor.35 / ryfactor.4 / black alpha.10, 시험값 |
+| matrix/순서 | 기존 shadow 직후 ground matrix6 복사; 준비된 body blit직전 core fill 후 context restore |
+| 광원 | 기존 NW keylight/SE shadow SSOT 변경0; 작은 중심 core가 투사 그림자 방향을 대체하지 않음 |
+| ghost | 새 AO 호출0은 source 정적 검사만. 기존 DS ghost 실suite 반복0 |
+| 한계 | core 이후 parent body blit throw/silent proxy failure에서 rollback0. 모든 fallback pixel 동등성·성능/미감 인수0 |
+
+새 CPU Node1/7그룹52조건(45동작7정적) PASS와 새 headed native idle/run2관측은 별도이고2PASS로 합산하지 않는다. draw169/body169는 종료 시점 관측치이며 매프레임 보장0. 원 PNG/scene/nav/충돌/actor geometry·기존 shadow/AI/save 불변, same-pose OFF/ONfalse·실발/IK 미인수·GL UNKNOWN로 **RETOUCH**다.
+
+최종 `game.html` working **4,093,695B / SHA256 `cbc459f7a86e8b3ba15610f34554fd1f81353dbaf691879da9e17f32ca5ae2fb`**, ROOT owned **4,093,510B / SHA256 `7523cbab51c8bbcb008062c0ed2f646da777720b782b06a8a5eb27312e2f41c7`**의7hunk 기준이다. foreign185B는 미채택 기존 바이트로 보존한다.
+
+전체 §23·영수증·제약: [MAP_RUNTIME_ARCHITECTURE.md](MAP_RUNTIME_ARCHITECTURE.md)의 `ROOT-CH1-RIG-CONTACT-SHADOW-20261007` 절.

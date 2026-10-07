@@ -56094,3 +56094,25 @@ Main stage0 필드의 지역 label을 목표/Purged·Angler 조건·gate 사유3
 전체키워드 검색은33a80에서44path/154행/181 occurrence(허용텍스트1024/Markdown817)1회, language delta29c1은1path1행, finalB8 `region-progress` delta는0match다. 전체검색/기존suite 반복0. 과거B의19관측과 합산0. foreign game185B(MB paused/DOT3 미채택)·설정3.3 foreign2948B 보존. 이 append 시점 Git stage/commit/push는 ROOT 예정이며 완료 SHA를 추정하지 않는다.
 
 전체 계약·§23 보고: [MAP_RUNTIME_ARCHITECTURE.md](4.1맵디자인+설정/MAP_RUNTIME_ARCHITECTURE.md)의 `ROOT-CH1-REGION-PROGRESS-HUD-20261007` 절. 외부 H의 validation/cpu-readable/native-readable/visual 영수증이 epoch별 근거다.
+
+## 2026-10-07 전사 rig 접촉 AO 후보 — ROOT-CH1-RIG-CONTACT-SHADOW-20261007
+
+작은 접촉 AO를 actual Main의 기존 rig body 소비자에 별도 opt-in으로 연결했다. geometry/nav/원PNG·actor크기·기존 shadow·충돌·AI/전투/저장 권한은 유지한다.
+
+| 변경/근거 | 정확 범위 |
+|---|---|
+| game7hunk | query `ch1FootAO=1`/private capture·draw/기존 shadow seam/prepared body seam/BeginBodyFrame·pagehide null/readonly 진단 |
+| 수치 | 원 shadow 중심 `(_px,_py+_pR+12)` 및 ground matrix6 재사용, core rx=`shW*.35`, ry=`_pR*.35*.4`, black alpha.10; defaultOFF |
+| 대상 | 기존3387 ch1Three/ch1Rig opt-in의 warrior class0 idle/walk/run만, ghost0 source 근거 |
+| 이력 | 최초 seam selector3중복 assert/write0 뒤한정정정; 제품실패0. 기존 backup 재사용 |
+| CPU | Node1/7그룹52조건 PASS(동작45/정적7), fail/setup/미도달0/exit0; 실제 helper2+whole body/통제 ports. 기존suite 반복0 |
+| native | 새 headed Chrome/context/page/maxLive1의2관측≠2PASS. idle130/run158/final169draw·body169; pageerrorHTTP0/sourceexact/닫힘/exit0 |
+| 네트워크 | 외부font 차단3+introabort2원인UNKNOWN. 전체API합성/matsPOST1forwarded0/savePOST0/durableACKfalse |
+| 미감/실패 한계 | sameposeABfalse/acceptedfalse. AO 뒤 parentblit throw/silent uploadfailure rollback0; 모든fallback 원pixel동등성 미인수 |
+| 판정 | ROOT4PNG(priorB8 2+newCBC 2) 직접판독, 실제darkcore도달 한정/전체 **RETOUCH**. pet초상/몹FX·평면지형 남음/GLUNKNOWN/audio0/native6false |
+
+최종 `game.html` working **4,093,695B / SHA256 `cbc459f7a86e8b3ba15610f34554fd1f81353dbaf691879da9e17f32ca5ae2fb`**, ROOT owned **4,093,510B / SHA256 `7523cbab51c8bbcb008062c0ed2f646da777720b782b06a8a5eb27312e2f41c7`**의7hunk 기준이다. foreign185B는 미채택 기존 바이트로 보존한다.
+
+이번 docs 전체 관련검색1회는 허용text1024/Markdown817에서70path/214행/229 occurrence였다. owner/관리8 및 binary/container251 path-only, 보호2_3본문0; 전체fullread 주장0. 필수 current6만 append하며 설정3.3foreign2948/otherdocs/foreigngame185는 본 작업 미수정이다. 외부 docs-contact 준비metadata TypeError1은 source/제품 실행 전 분류 오류이며 검색·제품 의미 FAIL로 합산하지 않는다.
+
+전체 계약·§23: [MAP_RUNTIME_ARCHITECTURE.md](4.1맵디자인+설정/MAP_RUNTIME_ARCHITECTURE.md)의 `ROOT-CH1-RIG-CONTACT-SHADOW-20261007` 절. 이 append 시점 Git 완료는 ROOT 예정이며 자기 SHA를 기록하지 않는다.

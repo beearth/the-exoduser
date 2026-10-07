@@ -4510,3 +4510,24 @@ working game의 foreign185B는 미채택 그대로이며 3.3 foreign2,948B·STAT
 최종 `game.html` working 4,092,122B / SHA256 `b8be6378b7d2805b32ca38f92cca03179f8f1ebb2732bebacec6300f5fe7ad3a`, ROOT owned 4,091,937B / SHA256 `05fa7031c8f1d4b1e02643e9fd9964f81c3a80a25d698ab22a002c2330f1ddc0`의 6개 hunk 기준이다. 기존 foreign 185B는 미채택 상태로 보존한다.
 
 전체 런타임 계약·검수 epoch·§23 보고는 [MAP_RUNTIME_ARCHITECTURE.md](../4.1맵디자인+설정/MAP_RUNTIME_ARCHITECTURE.md)의 `ROOT-CH1-REGION-PROGRESS-HUD-20261007` 절을 따른다.
+
+## 2026-10-07 전사 rig 접촉 AO 후보 — ROOT-CH1-RIG-CONTACT-SHADOW-20261007
+
+사용자의 실제 인게임 관찰 요청에 따라 ROOT는 B8 Main을 별도로 관찰한 뒤, 몸크기·충돌·기존 shadow를 보존한 작은 contact core 후보를 CBC source에 구현했다. 새 native는 자연 bonfire 종료 뒤 idle/trusted W+D run 도달을 관측했으며 기존 UI/route 검사를 반복한 것이 아니다.
+
+| 상태 | 현재 근거/경계 |
+|---|---|
+| 구현 | game ROOT7hunk + 필수 current docs6; defaultOFF `ch1FootAO=1` + 기존3387 ch1Three/ch1Rig, warrior idle/walk/run만 |
+| 시험값 | 원 중심/ground matrix6 사용, rx .35/ry .4 배율·alpha.10, ghost AO0 source 근거 |
+| 준비 이력 | 최초 shadow seam selector3중복 assert/write0 후 exactseam 한정 보정; 제품 실패0 |
+| CPU | 새 Node1/7그룹52조건 PASS(45동작7정적), fail/setup/미도달0/exit0. 실제 helper2+whole warrior 함수/통제 ports, GPU0 |
+| 새 native | headed Chrome/context/page/maxLive1, idle/run2관측≠2PASS. requestedtrue/idle130/run158/finaldraw169/body169는 당시 관측치 |
+| 미감 | priorB8 PNG2와 새CBC PNG2는 다른 scene/context, samepose A/Bfalse. 실제 작은 dark contact 관측은 개선 인수 아님; acceptedfalse/defaultOFF/RETOUCH |
+| 실패 경계 | AO 뒤 parent drawImage throw/silent upload failure의 이미 칠한 core는 rollback0. 모든 fallback 원pixel동등성 미인수 |
+| 보호/미인수 | 원 PNG/scene/nav/geometry·collision·AI/combat/save 불변; pet초상/몹FX·평면지형 잔여. GL UNKNOWN/audio0/native6false/savePOST0/matsPOST1forwarded0/durableACKfalse |
+| NEXT | same-pose OFF/ON와 actor-ground 접촉 미감, DS 가림·정상route 별도Gate |
+| Git | ROOT 완료소유 보존 예정; 이 append 시점 staged/commit/push 완료나 새SHA 추정0 |
+
+최종 `game.html` working **4,093,695B / SHA256 `cbc459f7a86e8b3ba15610f34554fd1f81353dbaf691879da9e17f32ca5ae2fb`**, ROOT owned **4,093,510B / SHA256 `7523cbab51c8bbcb008062c0ed2f646da777720b782b06a8a5eb27312e2f41c7`**의7hunk 기준이다. foreign185B는 미채택 기존 바이트로 보존한다.
+
+전체 source 계약·epoch별 결과·§23 보고는 [MAP_RUNTIME_ARCHITECTURE.md](../4.1맵디자인+설정/MAP_RUNTIME_ARCHITECTURE.md)의 `ROOT-CH1-RIG-CONTACT-SHADOW-20261007` 절을 따른다.

@@ -11498,11 +11498,13 @@ function _drawCh1ThreeTerrain(ctx){
 globalThis.__ch1FieldTerrainQA=()=>_ch1ThreeTerrain?_ch1ThreeTerrain.snapshot():Object.freeze({requested:_ch1ThreeRequested,importFailed:_ch1ThreeImportFailed,alive:_ch1ThreeAlive,ready:false});
 // ROOT-CH1-1-PLAYER-RIG-CONSUMER-20261007: body display only, default OFF.
 const _ch1RigRequested=_ch1ThreeRequested&&new URLSearchParams(location.search).get('ch1Rig')==='1';
+const _ch1RigContactRequested=_ch1RigRequested&&new URLSearchParams(location.search).get('ch1FootAO')==='1';
+let _ch1RigGroundContact=null,_ch1RigContactDraws=0;
 const _ch1RigDirections=Object.freeze(['s','se','e','ne','n','nw','w','sw']);
 let _ch1PlayerRig=null,_ch1RigAlive=true,_ch1RigImportFailed=false,_ch1RigBodyFrame=null,_ch1RigClock=null,_ch1RigDelta=0,_ch1RigScoped=false,_ch1RigStrikeOwner=null,_ch1RigPackedOwner=null;
 const _ch1RigStats={bodyFrames:0,attackFrames:0,recoveryFrames:0,packedBodyFrames:0,ghostFrames:0,legacyFrames:0,lastState:'awaiting-main-body'};
 if(_ch1RigRequested){
-  window.addEventListener('pagehide',()=>{_ch1RigAlive=false;_ch1RigBodyFrame=null;if(_ch1PlayerRig){if(typeof _freeMapTex==='function')_freeMapTex(_ch1PlayerRig.canvas);_ch1PlayerRig.dispose();}},{once:true});
+  window.addEventListener('pagehide',()=>{_ch1RigAlive=false;_ch1RigBodyFrame=null;_ch1RigGroundContact=null;if(_ch1PlayerRig){if(typeof _freeMapTex==='function')_freeMapTex(_ch1PlayerRig.canvas);_ch1PlayerRig.dispose();}},{once:true});
   import('./tools/2_5d/ch1-player-rig.mjs').then(module=>{if(_ch1RigAlive)_ch1PlayerRig=module.createCh1PlayerRig();}).catch(()=>{_ch1RigImportFailed=true;});
 }
 function _ch1RigCombatOwnerCurrent(phase){
@@ -11521,7 +11523,7 @@ function _ch1RigSilvertailBodyCurrent(){
   return P.s==='idle'||(P.s==='wSwing'&&_ch1RigCombatOwnerCurrent('strike'))||(P.s==='wRecover'&&_ch1RigCombatOwnerCurrent('recovery'));
 }
 function _ch1RigBeginBodyFrame(){
-  _ch1RigBodyFrame=null;
+  _ch1RigBodyFrame=null;_ch1RigGroundContact=null;
   if(_ch1RigStrikeOwner&&!((P.s==='wSwing'&&_ch1RigCombatOwnerCurrent('strike'))||(P.s==='wRecover'&&_ch1RigCombatOwnerCurrent('recovery'))))_ch1RigStrikeOwner=null;
   if(!_ch1RigRequested||!_ch1RigAlive)return;
   const scoped=(_charIdx===0||_charIdx===1)&&G.on&&G.stage===0&&!G._bossArena&&_ch1StartOuterEnabled()&&_CH1_START_PHASE==='smoothing';
@@ -11581,6 +11583,22 @@ function _drawCh1SilvertailRigBody(direction,alpha){
   }catch(_){_ch1RigBodyFrame=null;_ch1RigStats.lastState=blitted?'silvertail-packed-blit-retired':'legacy-packed-parent-blit-failed';return blitted;}
   finally{X.restore();}
 }
+function _ch1RigCaptureGroundContact(x,y,rx,ry){
+  _ch1RigGroundContact=null;
+  if(!_ch1RigContactRequested||!_ch1RigAlive||!_ch1RigScoped||_charIdx!==0||P.hp<=0||P.s!=='idle')return;
+  if(![x,y,rx,ry].every(Number.isFinite)||rx<=0||ry<=0)return;
+  try{
+    let matrix;if(_useGPU||_useGL)matrix=_mat().slice(0,6);else{const m=X.getTransform();matrix=[m.a,m.b,m.c,m.d,m.e,m.f];}
+    if(matrix.length!==6||!matrix.every(Number.isFinite))return;
+    _ch1RigGroundContact={matrix,x,y,rx:rx*.35,ry:ry*.4,now:_now,frame:_gameFrame,map:G.map,actor:P,animator:P._sa,drawn:false};
+  }catch(_){}
+}
+function _drawCh1RigGroundContact(mode){
+  const r=_ch1RigGroundContact;
+  if(!_ch1RigContactRequested||!_ch1RigAlive||!_ch1RigScoped||_charIdx!==0||P.hp<=0||P.s!=='idle'||!['idle','walk','run'].includes(mode)||!r||r.drawn||r.now!==_now||r.frame!==_gameFrame||r.map!==G.map||r.actor!==P||r.animator!==P._sa)return false;
+  r.drawn=true;
+  try{X.save();try{X.setTransform(...r.matrix);X.globalAlpha=.10;X.fillStyle='#000';X.beginPath();X.ellipse(r.x,r.y,r.rx,r.ry,0,0,Math.PI*2);X.fill();_ch1RigContactDraws++;return true;}finally{X.restore();}}catch(_){return false;}
+}
 function _drawCh1PlayerRigBody(direction,alpha){
   if(_charIdx===1)return _drawCh1SilvertailRigBody(direction,alpha);
   if(!_ch1RigRequested||!_ch1RigAlive||!_ch1PlayerRig||!_ch1RigScoped||P.hp<=0||!P._sa)return false;
@@ -11605,6 +11623,7 @@ function _drawCh1PlayerRigBody(direction,alpha){
     X.globalAlpha=alpha;X.translate(attack?0:-2,attack?18:22); // cell center -> catalog foot: attack (40,58), idle/run (22,46)
     let matrix;if(_useGPU||_useGL)matrix=_mat().slice(0,6);else{const m=X.getTransform();matrix=[m.a,m.b,m.c,m.d,m.e,m.f];}
     if(matrix.length!==6||!matrix.every(Number.isFinite))return false;
+    _drawCh1RigGroundContact(mode);
     X.drawImage(frame.canvas,frame.left,frame.top,frame.width,frame.height);
     const state=_ch1PlayerRig.snapshot();
     _ch1RigBodyFrame={frame,matrix,now:_now,map:G.map,actor:P,animator:P._sa,classId:_charIdx,generation:state.generation,publication:state.lastFrame,canvasVersion:frame.canvas._glVer};
@@ -11621,7 +11640,7 @@ function _drawCh1PlayerRigGhost(alpha){
   if(owned.now!==_now||owned.map!==G.map||owned.actor!==P||owned.animator!==P._sa||owned.classId!==_charIdx||!state.ready||owned.generation!==state.generation||owned.publication!==state.lastFrame||owned.canvasVersion!==owned.frame.canvas._glVer)return false;
   X.save();try{X.globalAlpha=alpha;X.setTransform(...owned.matrix);const frame=owned.frame;X.drawImage(frame.canvas,frame.left,frame.top,frame.width,frame.height);_ch1RigStats.ghostFrames++;return true;}catch(_){return false;}finally{X.restore();}
 }
-globalThis.__ch1PlayerRigQA=()=>Object.freeze({requested:_ch1RigRequested,alive:_ch1RigAlive,importFailed:_ch1RigImportFailed,scope:_ch1RigScoped,..._ch1RigStats,adapter:_ch1PlayerRig?_ch1PlayerRig.snapshot():null,bodyCurrent:!!_ch1RigBodyFrame&&_ch1RigBodyFrame.now===_now,adoptedClass:'warrior/silvertail',adoptedModes:'warrior idle/walk/run/normal-LMB strike+recovery; silvertail packed idle/walk/run/normal-LMB strike+recovery',silvertailAccepted:true,silvertailAttackStrikeAccepted:true,silvertailAttackRecoveryAccepted:true,silvertailAttackAccepted:false,attackStrikeAccepted:true,attackRecoveryAccepted:true,attackStates:'LMB-origin wSwing/atk2 -> inherited wRecover/atk3',attackAccepted:false,fullPlayerLinked:false});
+globalThis.__ch1PlayerRigQA=()=>Object.freeze({requested:_ch1RigRequested,alive:_ch1RigAlive,importFailed:_ch1RigImportFailed,scope:_ch1RigScoped,..._ch1RigStats,adapter:_ch1PlayerRig?_ch1PlayerRig.snapshot():null,bodyCurrent:!!_ch1RigBodyFrame&&_ch1RigBodyFrame.now===_now,contactShadow:Object.freeze({requested:_ch1RigContactRequested,draws:_ch1RigContactDraws,accepted:false}),adoptedClass:'warrior/silvertail',adoptedModes:'warrior idle/walk/run/normal-LMB strike+recovery; silvertail packed idle/walk/run/normal-LMB strike+recovery',silvertailAccepted:true,silvertailAttackStrikeAccepted:true,silvertailAttackRecoveryAccepted:true,silvertailAttackAccepted:false,attackStrikeAccepted:true,attackRecoveryAccepted:true,attackStates:'LMB-origin wSwing/atk2 -> inherited wRecover/atk3',attackAccepted:false,fullPlayerLinked:false});
 // ROOT-CH1-DRUID-NORMAL-MAIN-20261007: borrowed final normal sheet; gameplay authority stays in G/e.
 let _ch1DruidRig=null,_ch1DruidAlive=true,_ch1DruidScene=null,_ch1DruidClock=null,_ch1DruidDelta=0;
 const _ch1DruidActors=new Map(),_ch1DruidDecoded=new WeakMap(),_ch1DruidLeases=new Set();
@@ -57464,6 +57483,7 @@ function drawP(){
   const shW=isCharge?_pR+6:_pR+2;
   if(_dsEnabled()){_dsBlob(X,_px,_py+_pR+12,shW,_pR*.35,.38);X.globalAlpha=1} // [DEPTH-SLICE] 플레이어 소프트 접지 그림자 α.38 (NW 키라이트)
   else{X.fillStyle='rgba(0,0,0,.25)';X.beginPath();X.ellipse(_px,_py+_pR+12,shW,_pR*.35,0,0,Math.PI*2);X.fill()}
+  _ch1RigCaptureGroundContact(_px,_py+_pR+12,shW,_pR*.35);
   X.globalAlpha=fl?.3:1;
   // ══ 뇌전걸음: 전기구체 변신 (카운트 비례 스케일) ══
   if(P._gwActive&&!isDead){

@@ -851,3 +851,105 @@ ROOT owned 이외 foreign185B는 MB paused guard와 DOT3 모두 미채택 기존
 | NEXT PASS | title/패널 safe zone, 실제 정상 gate/전투 route 관측, 맵 재질/높이/저장 NPC consumer의 별도 단위. 본편 native6/audio/durable save 미인수 유지 |
 
 이번 표시 검수는 이전 normal-play B/root-adjudication(f830)의19관측이나 장벽 검수와 별도이며,19PASS 또는 정상 보스방 개방/보스 사망·재시도 완료로 합산하지 않는다.
+
+## 2026-10-07 전사 rig 접촉 AO 후보 — ROOT-CH1-RIG-CONTACT-SHADOW-20261007
+
+사용자의 “인게임에서 한번 보고 구체화” 요청에 따라 실제 Main을 관찰한 뒤, 기존 그림자·캐릭터 크기·충돌을 유지하는 작은 접촉 AO를 **defaultOFF 미감 후보**로 추가했다. 본편 전체 rig·실높이·해부학 발/IK 완료를 뜻하지 않는다.
+
+### 현재 source 계약
+
+`ch1FootAO`는 기존 로비 옵션 carry4키에 포함되지 않는다. 직접 Main 시험 URL의 명시값1에 한정하며 로비 왕복 자동 유지/일반 설정 UI/새 query 메뉴 추가는 없다.
+
+| id/위치 | 값·범위·순서 |
+|---|---|
+| 요청 | 기존 `ch1Three=1` + `ch1Rig=1` 범위에 `ch1FootAO=1`까지 명시해야 요청됨. 기존 격리3387 scope의 opt-in; 기본 OFF |
+| actor/mode | 전사 class0, 살아있는 P/현재 rig scope, `P.s==='idle'`; animator mode `idle`/`walk`/`run`만. walk/run 애니메이션도 P.s idle 안에서 소비됨 |
+| 기존 scope | stage0·비보스방·기존 production_finish/smoothing rig consumer 범위 유지 |
+| 기존 shadow | 중심 `(_px,_py+_pR+12)`, `shW=isCharge?_pR+6:_pR+2`, rx=`shW`, ry=`_pR*.35` 그대로 |
+| 기존 shadow 출력 | DS `_dsBlob(...,.38)`/기존 SE offset, 또는 기존 hard ellipse `rgba(0,0,0,.25)` 유지. 새 AO로 기존 alpha/방향을 대체하지 않음 |
+| `_ch1RigCaptureGroundContact` | 기존 shadow 직후 호출. 먼저 이전 record를 null로 취소하고 유효 중심/양수 반지름/유한 matrix만 캡처 |
+| ground matrix6 | GPU/GL은 `_mat().slice(0,6)`, Canvas2D는 `X.getTransform()`의 a,b,c,d,e,f를6 scalar로 복사. 이후 body translate와 분리 |
+| trial core | 중심 동일, rx=`shW*.35`, ry=`(_pR*.35)*.4`, `fillStyle='#000'`, `globalAlpha=.10`; 미감 시험값 |
+| current identity | 같은 `_now`, `_gameFrame`, `G.map`, `P`, `P._sa`; class0/`_ch1RigAlive`/scope/HP/idle와 mode 재검사. 별도 새 생명 token을 제공한다고 주장하지 않음 |
+| 호출 seam | adapter의 nonnull 준비 frame와 유한 body matrix를 얻은 뒤, parent body `X.drawImage` **직전**에 `_drawCh1RigGroundContact(mode)` 호출 |
+| 1회 소비 | `drawn`을 외부 drawing 전에 true로 예약. fill 성공 뒤 draws 증가. ghost 경로에는 AO 호출0(정적 source 확인) |
+| context restore | `X.save`→복사 ground matrix 적용→작은 core fill→`finally X.restore`; 원 body-local transform으로 돌아와 기존 body blit 진행 |
+| 수명 | `_ch1RigBeginBodyFrame` 시작과 pagehide에서 record null; 기존 alive/scope 수명 사용. 추가 RAF/timer/update0 |
+| 진단 | `__ch1PlayerRigQA().contactShadow` = frozen `{requested,draws,accepted:false}`. counter는 성공 fill 호출 관측이며 매프레임 pixel/upload 보장 아님 |
+
+OFF/준비 frame 없음/불가 mode/낡은 identity의 검사 범위에서는 core draw0이다. 그러나 core는 parent body blit보다 먼저 칠해진다. 그 **뒤 parent `X.drawImage`가 throw하거나 proxy upload가 조용히 실패하면 core를 rollback하지 않는다.** 기존 body fallback 권한은 유지하지만, 모든 fallback의 원 pixel 동등성은 미인수다. controlled fill throw 뒤 body blit가 계속되는 CPU 결과도 이 parent 실패 후 pixel 동등성의 근거가 아니다.
+
+원 PNG/scene/nav/geometry/충돌·AI·전투·저장/UV·bone·body 크기와 world foot은 변경0이다. crop 하단을 해부학 발로 확정하지 않는다. 새 renderer/context/texture/이미지/RAF/timer는 없으며, matrix 복사·record·ellipse의 실제 비용은 성능 인수하지 않았다.
+
+최종 `game.html` working **4,093,695B / SHA256 `cbc459f7a86e8b3ba15610f34554fd1f81353dbaf691879da9e17f32ca5ae2fb`**, ROOT owned **4,093,510B / SHA256 `7523cbab51c8bbcb008062c0ed2f646da777720b782b06a8a5eb27312e2f41c7`**의7hunk 기준이다. foreign185B는 미채택 기존 바이트로 보존한다.
+
+### 구현/검수 epoch와 한계
+
+| 구분 | 실제 근거 | 과장 금지 경계 |
+|---|---|---|
+| 최초 구현 준비 | source seam selector가3곳에 맞아 assert 중단, 제품 write0; exact oldshadow seam으로 한정 보정하고 기존 backup 재사용 | 제품 실패/의미 검수 실패로 계산0 |
+| 현재 CPU | physical Node1/actual-source 의미 실행1,7그룹52조건 PASS/FAIL0/setup0/미도달0/exit0. 실제 helper2+whole warrior body 함수를 통제 VM에서 소비 | 동작45조건+정적7조건. adapter/GPU/native getTransform은 통제 port. unhandled는 계측하지 않았고 동기 하네스/Promise 경로0. ghost는 source 부재 검사만 |
+| CBC 실제 native | 새 headed Chrome/context/page/maxLive1,1280×720에서 natural bonfire 종료 뒤 순idle 및 trusted W+D 이동/run **관측2건** | 2PASS가 아님. 강제 위치/HP/시간/AI/해금0. same-pose OFF/ON 비교0/미감 acceptedfalse |
+| native counter | idle draw130 / moving-run draw158 / 종료 draw169·bodyFrames169, requestedtrue | 당시 관측치이며 매프레임169/169 동등성을 보장하지 않음 |
+| 이전 B8 실화면 | `main-view-first-only/result.json`의2관측, 다른 context/scene | 새 CBC와 same-scene A/B 또는 clean 합산0 |
+| ROOT 시각 판독 | B8 PNG2 + 새 contact PNG2 =4장. 다리 하단과 작은 dark contact 표시 관측 | 해부학 발/미감 개선/전체 A급 판정0. 큰 pet 대사 초상·몹FX 겹침·평평한 baked 지형 남음 |
+
+새 native source 전후 및 실제 HTTP exact, pageerror0/HTTPerror0, context/browser 닫힘/exit0/미도달phase0이다. requestfailed5는 의도적으로 차단한 외부 font3 + local intro abort2(직접원인 UNKNOWN)다. 모든 API는 합성 격리이며 mats POST1 forwarded0/save POST0/durableACKfalse다. GL UNKNOWN/물리GPUfree UNKNOWN/audio0/native6false. 이전 HUD·공격·rig·normal route suite를 반복하거나 합산하지 않는다.
+
+| 외부 D 근거 | 정확 pin |
+|---|---|
+| `contact-implementation.json` | 914B / `e63ccb8c629b4878d15deb11be48c99a80fafee108844facf2e116aea3f2d929` |
+| `contact-cpu-final-receipt.json` | 7,973B / `4bf926962640ea1036c061b16ac9f587f37ef0e7d133a29b087ee54e38f49629` |
+| `native-contact-first-only/result.json` | 22,362B / `82c61b60b65abba3dc5d29a2c6941117312eeebb812c34faa79dda6589115214` |
+| `contact-validation-receipt.json` | 2,407B / `725801375623247a36d2b6b8ce61c67960db812d0918327b365327851ed38827` |
+| `contact-visual-verdict.json` | 4,038B / `8dcd09af0896cfcf1adc37ff23315bd68064777861c05a329326fbe009a2c4c5` |
+| 이전 B8 `main-view-first-only/result.json` | 9,040B / `4ba333e806be1a328d0167a0bce447a44d8eead8ab63c62b853eb41ec3a81c37` |
+
+`D=/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-in-game-concretization-20261007`.
+
+### docs 관련검색
+
+이번 AO 키워드로 docs 전체 허용 텍스트 검색1회: inventory1283, eligible text1024/Markdown817,70매칭경로/214행/229 occurrence, exit0. owner/관리8 및 binary·container251은 path-only로 분리하고 보호2_3 본문은 읽지 않았다. path-only 전체를 모두 바이너리라고 부르지 않는다. raw150,752B/SHA256 `13720056a14eb6f5ad3840be2dc95916be9baf2424ddb0c4e148aa56f121d76c`와 파일별 disposition을 외부 보존했다. 전체검색은 전체문서 full read가 아니며, 이전 HUD 검색을 반복한 것이 아니다. current 필수6만 동기화하고 역사/다른대상/불변 spec/설정3.3은 보존한다.
+
+### §23 MAP PRODUCTION REPORT
+
+| 항목 | 이번 scope의 실제 상태 |
+|---|---|
+| STAGE | CH1-1 actual Main 전사 표시의 작은 접촉 core 후보; defaultOFF |
+| MASTER PLAN / silhouette | 기존 silhouette 변경0; 새 실루엣 평가0 |
+| MASTER PLAN / regions | 기존 지역·gate authority 변경0 |
+| MASTER PLAN / main route | 기존6시 시작/12시 출구 보존; 이번 전체 정상route 인수0 |
+| MASTER PLAN / side spaces | 변경0/새 관측0 |
+| LARGE OUTER MASS / LEFT·RIGHT·TOP·SOUTH | 전부 변경0 |
+| LARGE OUTER MASS / major holes | 새 관측0 |
+| LARGE / source assets·composites·overlap | 원 PNG/합성/배치 변경0 |
+| LARGE / repeated silhouette | 새 관측0 |
+| MEDIUM CONNECTION / connections | 변경0 |
+| MEDIUM CONNECTION / remaining holes | 새 관측0 |
+| GROUND CONNECTION / shadow | 원 중심/반지름/ground matrix 재사용; 기존 shadow 유지 + opt-in .35/.4 반지름 배율·alpha.10 core만 |
+| GROUND CONNECTION / contamination | 변경0 |
+| GROUND CONNECTION / structure integration | physicalHeight0/평면 baked 지형 그대로; 접촉 개선 미인수 |
+| PLAYABLE/COMBAT / main arenas·travel·breathing·threat | 변경0. 실제 W+D 이동 한 사례를 전체 전투/route 완료로 승격0 |
+| PLAYABLE/COMBAT / combat readability | 큰 pet 초상/몹FX 겹침 잔존, 개선 인수0 |
+| LANDMARK/CENTER / primary·secondary·tertiary | 전부 변경0/새 검수0 |
+| SMALL DETAIL | 작은 접촉 AO core1후보, prepared warrior idle/walk/run만. ghost0은 정적 source 근거 |
+| CAMERA QA / START | 현재1280×720 순idle/run PNG2관측. 이전B8 PNG2는 별도. same-pose OFF/ON0 |
+| CAMERA QA / EARLY | 새 인수0 |
+| CAMERA QA / ARENA | 새 관측0 |
+| CAMERA QA / SIDE L | 새 관측0 |
+| CAMERA QA / SIDE R | 새 관측0 |
+| CAMERA QA / LANDMARK | 새 관측0 |
+| CAMERA QA / LATE | 새 관측0 |
+| CAMERA QA / EXIT | 새 관측0 |
+| TECH QA / route·collision | 기존 코드/nav 불변, 새 전체route 인수0 |
+| TECH QA / pageerror·404 | 새 native pageerror0/HTTPerror0 |
+| TECH QA / seam | 새 인수0 |
+| TECH QA / loading | 실제 Main/rig body 도달. externalfont 차단3/introabort2 UNKNOWN 별도. GL UNKNOWN |
+| TECH QA / performance | 추가 RAF/timer/시뮬레이션/texture/image0; 실제 비용·성능 영향 UNKNOWN |
+| FILES / stage owned | ROOT game7hunk + current docs6 |
+| FILES / concurrent touched | game foreign185B·설정3.3 foreign2948B 보존, 본 docs 작업 미수정 |
+| FILES / unrelated touched | 본 작업0; 원PNG/scene/nav/보호2_3 불변 |
+| GIT / staged·commit·push | ROOT 완료소유 보존 예정. 이 append 시점 미완료, 자기 SHA 추정0 |
+| GIT / deploy | 0 |
+| VISUAL VERDICT | **RETOUCH**. 실제 core 도달과 다리 하단은 관측했지만 미감 개선 미인수. 평평한 지형/FX·초상 겹침 잔존 |
+| NEXT PASS | same-pose OFF/ON 비교 및 실제 actor-ground 접촉 미감, DS 가림/전체 정상route 별도Gate. 본편native6/청취/durableSave/A급 미인수 유지 |
