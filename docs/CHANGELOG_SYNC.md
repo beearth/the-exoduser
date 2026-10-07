@@ -56264,3 +56264,18 @@ D=`/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-hol
 | 연속 | 단일root exoduser-2 ACTIVE30분·완료팀기존owner로다음turn연결; 다른PAUSED자동화/아침메일재개0·NUL80완료소유checkpoint/100전새산출중단 |
 
 시작지침AGENTS는저장소검사에서non-doc로분류되어진행로그를요구하므로이변경이력도같은소유커밋에포함한다. 첫새파일stage의--add누락준비실패1과CHANGELOG누락commit hook차단1은수정전제품/commit성공으로계산하지않는다. 우회변수ALLOW_MISSING_DOCS사용0. 기존소유stage만보존하고필수로그를추가해정상검사를통과한다. 아래과거이력원문은보존하며runtime수치변경은없다.
+
+## 2026-10-08 ROOT-CH1-TIMEWARP-SPACE-LIFETIME-20261008 — 시간왜곡 공간 수명
+
+| 변경 | 정확 범위 |
+|---|---|
+| 실제 main3hunk | _twSyncSpaceOwner 추가와 _twRecord/activateTimeWarp 첫행 연결. G/P/map identity·stage/mw/mh/Boolean(arena) 변경이면 idx/filled0 |
+| 유지 | 기존300칸 ringbuffer/최소10record/되감기 index·MP/쿨다운/무적/합체/효과/field snapshot/save 불변. global main이며 URL opt-in0 |
+| source | working4,113,146B/`30b33fab3c562cd2c98baa545954d0b79a4ee67be4a63d32d866da91987ed770`; owned4,112,961B/`393c08dd6cd0359f32f7caec00737bc22085535090f03458f091a34a0f78fbf2`; inverse working/HEAD exact·foreign185 보존 |
+| 이전 반례 | 원소스 Node1/VM1·2조건에서 field기록(4020,7420)이 arena5120×4320 밖으로 소비되는 통제 반례 관측. native 재현 아님 |
+| 최종 CPU | 실제 wholefunctions/통제 G/P/effects Node1/VM13·7그룹74조건 PASS/FAIL0/exit0. 이전 반례와 별도 epoch, 합산0 |
+| 한계 | unhandled0은 고정metadata이며 실제 rejection 이벤트는 별도 계측하지 않음. pause는 G.on=false fixture뿐. native/Chrome0·사용자 IAB13 old-loaded 무조작/새 시각평가 없음/전체 RETOUCH |
+| 문서 | 새 keyword검색1회: eligible텍스트843/Markdown700, 매칭15path38행53occurrence. current7 동기화(5 append+2 표 정정/append). owner185/protected2_3 1/archives20/nontext235는 본문·hash0/path-only |
+| 비용 표 정정 | 실제 기존식50+5×(lv−1), Lv20=145로 DPS·유니크 현재표의150을145로 정정. runtime 비용식·다른 스킬 수치 변경0, 코드의150주석은 기존 오기로 구분 |
+
+현재 계약은 [2_1 정본](<2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md>)의 같은 TASK 절과 외부 `ch1-timewarp-space-lifetime-20261008/` implementation/cpu/baseline 영수증을 따른다. 기존 2026-05 시간왜곡/링버퍼 기록과 다른 snapshot 이력은 당시 범위로 보존한다. ROOT 정상 소유 Git checkpoint 예정이며 새 원격 성공/native6/audio/durable save 인수로 기록하지 않는다.

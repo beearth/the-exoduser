@@ -343,3 +343,17 @@ NEXT PASS:
 외부 증거 디렉터리는 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-main-retry-menu-20261007/`이다. 이전 `implementation-receipt.json` 1,914B / `2491d197877b441d5703306b3ccf4a9c1b289d6d001ab2910f18c1a05310d909`와 `retry-cpu-receipt.json` 4,373B / `05082a5cef7fef3d8848d57e652567c5452a1fd3f74b896a2d19c515ba8ceae4`는4249 source 이력이다. 현재 `implementation-final-receipt.json` 2,737B / `781b5167f12c6f855cffd63998982e878799a345ee065c77eca5d3c8bdafeec6`의 exact2치환/inverse exact/foreign185 보존을 따른다. Git 사실은 같은 디렉터리 `remote-preservation-receipt.json`의 실제 normal commit/push/원격 정확 SHA를 참조하며 자기 commit SHA를 순환 삽입하지 않는다. 이 증거 epoch는 checkpoint 전이며 deploy0이다.
 
 최종 settings 한정 원문 `settings-receipt.json` 4,178B / `f2c077c5c7a57faa3df8e9c095f549f52eecd6bb6ec772434b0965cf31c80a9d`와 `settings-result.json` 7,267B / `812f248743b349671f522578d074d2ed459fcf596a74f66c2ec7a3c9fc0550d6`, 실제 native `native-retry-result.json` 133,977B / `b2dee048ac3e347415e7437c7df68daf8014e39ff8ca48677e7ba414bc780d55`, 브라우저 전 `native-cli-preflight-failure.json` 438B / `bc42a5c8fdea6b50bb73e4ec0e82949abade971f8bd16e508d2fe95b9f137d4a`, `validation-receipt.json` 6,019B / `3a367fd511c8819cbe74c2f2d75fa77c25ed4be3f820b7ee496d0f3b9f4d7978`, `visual-verdict.json` 5,268B / `e56ffe0466fd799cc972ff2cf63d883018170ff1604a3b5126fb930ea8af6aa7`를 별도로 보존한다. 새 editor N3 기대거절 원문 `codex-editor-import-official-manifest.json` 502B / `316193c436db197ec40a28b0e80dae5035b8e1718cde5debf01114ea123c6712`는 root가 미채택 보존한 자료이며 필수 hunk0·이번제품/검수채택0이다.
+
+## 2026-10-08 ROOT-CH1-TIMEWARP-SPACE-LIFETIME-20261008 — field restore와 시간왜곡 기록 분리
+
+| 항목 | 현재 계약 |
+|---|---|
+| 46-key snapshot | 기존 map/field 진행 capture→restore와 원 참조·복사 범위 그대로. timeWarp ringbuffer를 이 snapshot에 추가하지 않음 |
+| 필드 복귀 위치 | 기존 (_bossCx+.5)×T, (_gateY+6+.5)×T→safePt 및 기존 fallback 유지 |
+| timeWarp owner | G/P/map identity 및 stage/mw/mh/Boolean(arena)를 producer/consumer 첫행에서 비교. 다른 map 또는 arena 값이면 idx/filled0 |
+| 새 기록 | 같은 stage/G/P여도 복원 map 교체는 새 공간. 기존 300buffer·최소10record를 새 공간에서 다시 채운 뒤 소비 |
+| 변경하지 않은 권한 | EXP/자원/사망·시간/문/적/아이템 진행·진입조건·재도전/save 변경0 |
+
+이는 실제 main 전역 시간왜곡 수명 보정이며 CH1 전용 또는 URL opt-in이 아니다. 이전 문서의 field backup 보존은 과거 arena/field 좌표 기록의 재사용 허가가 아니다. 실행 비용식은 기존 50+5×(lv−1) 그대로이며 Lv20=145로 DPS·유니크 표만 동기화했다. 기존 코드의 150 주석은 실행값 권한이 아니다.
+
+최종 source working4,113,146B/`30b33fab3c562cd2c98baa545954d0b79a4ee67be4a63d32d866da91987ed770`. 통제 actual wholefunction CPU Node1/VM13·7그룹74PASS/exit0은 이전 원소스 Node1/VM1 반례관측과 별도다. 실제 보스 진입/사망/귀환/시간왜곡 native 검수0, Chrome0·IAB13 old-loaded 무조작·새 시각평가 없음/전체 **RETOUCH**. 실제 pause/hidden 및 rejection 집계 인수0. 상세는 [2_1 정본](<../2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md>) 같은 TASK 절을 따른다.

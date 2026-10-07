@@ -1105,3 +1105,16 @@ H2=`/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-ar
 | GIT | stage/commit/push는 ROOT 완료소유 checkpoint 예정, 이 담당 Git쓰기0/새 SHA 추정0/deploy0 |
 | VISUAL VERDICT | **RETOUCH**; 이번 UI NOT_ASSESSED, 자동 CPU PASS를 미감 PASS로 대체0 |
 | NEXT PASS | 새 native640×720/1280×720 KO/EN의 모든 제목 animation phase·resize/font/language·regionBanner·viewport fit. 기존 IAB13 재로드 없이 별도 승인 검수 필요. 실제 main 품질 및 같은 후보6단계 인수 계속 필요 |
+
+## 2026-10-08 ROOT-CH1-TIMEWARP-SPACE-LIFETIME-20261008 — map identity와 rewind 기록
+
+| 경계 | 현재 runtime 계약 |
+|---|---|
+| 전역 main | _twRecord/activateTimeWarp 첫행의 _twSyncSpaceOwner로 현재 G/P/map/stage/mw/mh/Boolean(arena)를 비교. URL opt-in0 |
+| 교체 | 객체 identity 또는 해당 값 변경 시 idx/filled0. 같은 G/P/stage여도 arena 진입 bool 변경·field restore의 새 map은 이전 기록 소비0 |
+| 저장과 구분 | 기존 300buffer·10record 최소 유지. 46-key field capture/restore·P/INV·지형·충돌·자원/전투식·save schema/API 변경0 |
+| 정지 검수 한계 | CPU의 producer 배제는 통제 G.on=false/dead/fallen 범위. 실제 paused/hidden·등록 이벤트·전체 update 검수로 확대하지 않음 |
+
+field200×200와 CH1 arena128×108의 기존 맵 권위/진입·복귀 좌표는 유지한다. 이번 수명 key는 그 경계를 넘는 과거 좌표를 기존 ringbuffer에서 잘못 소비하지 않도록 한다. 정상 같은 공간 rewind 및 기존 비용/쿨다운/효과/합체는 변경하지 않는다.
+
+소스는 working4,113,146B/`30b33fab3c562cd2c98baa545954d0b79a4ee67be4a63d32d866da91987ed770`, owned4,112,961B/`393c08dd6cd0359f32f7caec00737bc22085535090f03458f091a34a0f78fbf2`의 ROOT3hunk다. 최종 통제 wholefunction CPU Node1/VM13·7그룹74PASS/exit0, 이전 원소스 Node1/VM1 반례관측2조건은 별도이며 clean 합산하지 않는다. 고정 unhandled metadata를 rejection 관측값으로 사용하지 않는다. native/Chrome0·IAB13 old-loaded 유지·새 시각 NOT_ASSESSED/전체 **RETOUCH**. §23 표준 보고는 ROOT 별도 report 소유이며 이 CPU 결과로 맵/카메라/TECH/native PASS를 선언하지 않는다. 상세 스킬 계약은 [2_1 정본](<../2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md>)의 같은 TASK 절을 따른다.

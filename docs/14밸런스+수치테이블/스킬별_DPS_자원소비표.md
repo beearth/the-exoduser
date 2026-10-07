@@ -166,7 +166,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 | execution | 처형 | HP+MP+ST | **각 최대의 10%** | **300f (5초)** | 그로기 보스 전용: 보스현재HP 20%(+2%/Lv) + meleeRef×STR×pAtkMul×30(+21%/Lv, 20Lv=150배) + 보스HP30% 순수뎀 | 근접(섬광돌진). 레벨업 가능 |
 | ~~demonRevive~~ | ~~악마화 부활~~ | — | — | — | — | **PASSIVE_DEF로 이전 (pDemon)** |
 | ~~humanity~~ | ~~인간성~~ | — | — | — | — | **PASSIVE_DEF로 이전 (pHuman)** |
-| timeWarp | 시간왜곡 | MP | **50(+5/Lv, 20렙150)** | **2700f (45초)** | — | Ctrl, Lv500 해금. 3~5초 전 상태(위치/HP/MP/ST) 완전 복원. Lv당 되감기+0.105초. 발동 시 1초 무적 |
+| timeWarp | 시간왜곡 | MP | **50+5×(Lv−1), Lv1=50/Lv20=145** | **2700f (45초)** | — | Ctrl, Lv500 해금. 3~5초 전 위치/HP/ST/shield 복원; MP=min(차감 후 현재MP, 기록MP). Lv당 되감기+0.105초. 발동 시 1초 무적 |
 
 ---
 
@@ -364,3 +364,13 @@ blur/hidden에서는 `_msAiming`·`_msCharging` 취소 후 다음 추출 프레�
 | 이번 제품 변경 | global dedicated draw의 성장계수만 `min(1,t/15)`, t>=15 quad지름2r. 게임 지속·damage/억제/simulation/save 변경0 |
 
 TASK `ROOT-CH1-HOLY-PRISON-DEPLOY-IN-20261008`, working game4,112,481B/`f198d7fd3efa75e010d07df27f396cef76e11806ff577f8fa8a4de58759b0139`. 실제 draw block+원PNG decode+통제 Image/softwarecanvas Node1/VM6·2그룹13조건 PASS는 게임 시뮬레이션/HTMLImage/GPU/native/실Save 검수가 아니다. t629 quad800/alpha.000809873에서도 software alpha pixel0이며 가시문양=판정반경 및 만료 직전 가시성 인수0이다. actual main NOT_ASSESSED/전체 RETOUCH. 세부 계약·영수증·§23은 [VFX 구현가이드](<../5.1임펙트디자인/VFX_구현가이드.md>) 같은 TASK 절을 따른다.
+
+## 2026-10-08 ROOT-CH1-TIMEWARP-SPACE-LIFETIME-20261008 — 현재 시간왜곡 비용표 정정
+
+| 항목 | 현재 실행 계약 |
+|---|---|
+| 비용 | 기존 activateTimeWarp의 50+(lv−1)×~~(100/19)=50+5×(lv−1), Lv1=50/Lv20=145. 실행식 변경0, 기존 표의150만145로 정정 |
+| 수명 | G/P/map identity·stage/mw/mh/Boolean(arena) 변경을 기록/시전 첫행에서 확인하여 이전 공간 ringbuffer 폐기. 기존300칸/최소10record 유지 |
+| 검수 | 최종 wholefunction 통제 CPU Node1/VM13·7그룹74PASS/FAIL0/exit0; 비용곡선 전레벨 재검수 아님. native/Chrome0/IAB13 old-loaded 무조작/새 시각 NOT_ASSESSED/전체 RETOUCH |
+
+기존 코드150 주석은 오기이며 실행값 권한이 아니다. 실제 비용식·쿨다운·전투/보상/save 변경0. 과거 표150은 이전 문서 오기로 구분하고 원문 fullbytes 백업과 역변환을 외부 영수증에 보존한다. 상세 공간 계약은 2_1 정본의 같은 TASK 절을 따른다.

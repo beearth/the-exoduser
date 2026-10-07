@@ -4639,3 +4639,16 @@ working game의 foreign185B는 미채택 그대로이며 3.3 foreign2,948B·STAT
 | 보존 | foreign game185/settings2948·STATE/LOG·원PNGscene/nav 불변. 코드1+docs5 정상 checkpoint는 ROOT예정, 원격성공 미리 기재0 |
 
 D=`/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-holy-prison-deploy-in-20261008`의 validation2,624B/`2a40c2a515f3f33b930a1f5ee3fba9ef2bdb9d92723a1d528141e026f1bb7df9`·visual4,197B/`3b54cc8c2f80ccdcdaa5d0a76197034e189a90a310859a4cdc3b2d799a5185fa`에 검수 범위를 고정한다. 상세 현재 계약/§23은 [VFX 구현가이드](<../5.1임펙트디자인/VFX_구현가이드.md>) 같은 TASK 절을 따른다. 앞의 제작판과 전문팀 sent/source/end 관측은 각 작성 시점 이력으로 보존하며 이번 구현을 모든 팀의 새 착수·본편 완성으로 세지 않는다.
+
+## 2026-10-08 ROOT-CH1-TIMEWARP-SPACE-LIFETIME-20261008 — 완료한 코드 경계와 다음 Gate
+
+| 단계 | 이번 범위 |
+|---|---|
+| ROOT 실제 코드 | main 전역 timeWarp3hunk. G/P/map/stage/mw/mh/Boolean(arena) owner 변경을 _twRecord/activateTimeWarp 첫행에서 확인하여 idx/filled0. 기존300buffer/최소10record·전투/저장 수치 유지 |
+| 정확 source | working4,113,146B/`30b33fab3c562cd2c98baa545954d0b79a4ee67be4a63d32d866da91987ed770`; owned4,112,961B/`393c08dd6cd0359f32f7caec00737bc22085535090f03458f091a34a0f78fbf2` |
+| 검수 | 최종 wholefunction 통제 CPU Node1/VM13·7그룹74PASS/exit0. 원소스 반례 Node1/VM1·2조건은 별도 epoch/clean 합산0. unhandled 상수metadata≠실제 집계, G.on=false fixture≠native pause |
+| 미완료 | native/Chrome0·IAB13 old-loaded 무조작. 새 시각 NOT_ASSESSED/전체 RETOUCH, 실제 전환/스킬/전체 수명·native6/audio/saveACK 미인수 |
+| 다음 | 실제 전환·복귀 후 기록 재축적과 정상 같은 공간 사용의 승인된 인게임 관측 필요. 기존 MP식은 변경0, Lv20=145로 현재 DPS·유니크 표를 동기화하고 150 코드주석은 기존 오기로 구분 |
+| 보존 | 현재 정본7 동기화 계획(5 append+2 표 정정/append), ROOT 정상 Git checkpoint 예정. 원화/scene/nav·foreign game185·타인 WIP 불변; stage/commit/push 성공 미리 기록0 |
+
+[현재 스킬 계약](<../2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md>)과 [전환 정본](<../4.1맵디자인+설정/CH1-1_BOSS_RESPAWN_PROGRESS_20261002.md>)을 참조한다. 외부 증거 `ch1-timewarp-space-lifetime-20261008/`의 원소스 반례/최종 CPU를 전문 후보 수신이나 실제 게임 완료로 합산하지 않는다.

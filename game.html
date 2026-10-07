@@ -45979,13 +45979,31 @@ function _gSlamHit(dir,range,arcW,dmg,el,kbM,psM,stunRange){
 const _TW_BUF_LEN=300;
 const _twBuf=[];for(let _i=0;_i<_TW_BUF_LEN;_i++)_twBuf[_i]={x:0,y:0,hp:0,mp:0,st:0,shield:0};
 let _twIdx=0,_twFilled=0;
+let _twOwnerG=null,_twOwnerP=null,_twOwnerMap=null;
+let _twOwnerStage=-1,_twOwnerMw=0,_twOwnerMh=0,_twOwnerArena=false;
+function _twSyncSpaceOwner(){
+  const g=G,p=P,map=g?g.map:null;
+  const stage=g?g.stage:-1,mw=g?g.mw:0,mh=g?g.mh:0;
+  const arena=!!(g&&g._bossArena);
+  if(_twOwnerG!==g||_twOwnerP!==p||_twOwnerMap!==map||
+     _twOwnerStage!==stage||_twOwnerMw!==mw||_twOwnerMh!==mh||
+     _twOwnerArena!==arena){
+    _twFilled=0;_twIdx=0;
+    _twOwnerG=g;_twOwnerP=p;_twOwnerMap=map;
+    _twOwnerStage=stage;_twOwnerMw=mw;_twOwnerMh=mh;
+    _twOwnerArena=arena;
+  }
+  return !!(g&&p&&map);
+}
 function _twRecord(){
+  if(!_twSyncSpaceOwner())return;
   if(!G.on||!P||P.s==='fallen'||P.s==='dead')return;
   const b=_twBuf[_twIdx];b.x=P.x;b.y=P.y;b.hp=P.hp;b.mp=P.mp;b.st=P.st;b.shield=P.shield||0;
   _twIdx=(_twIdx+1)%_TW_BUF_LEN;
   if(_twFilled<_TW_BUF_LEN)_twFilled++;
 }
 function activateTimeWarp(){
+  if(!_twSyncSpaceOwner())return;
   const lv=P.skills.timeWarp||1;
   const rewindSec=3+(lv-1)*0.105; // 1렙 3초, 20렙 5초
   const rewindFrames=Math.min(_twFilled,~~(rewindSec*60));
