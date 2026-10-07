@@ -13121,7 +13121,7 @@ function _dispatchSkillSlot(slotIdx,keyCode){
       if(activateVenomBlade()===true){P._vbCd=Math.max(600,~~(900*(1+_cdRed())));_skOk=true}break;
     case 'ltnChaser':
       if((P._lcCd||0)>0){showPH(_T('쿨다운 중...'),'#ffdd00');break}
-      {activateLtnChaser();P._lcCd=Math.max(480,~~(720*(1+_cdRed())));_skOk=true}break;
+      if(activateLtnChaser()===true){P._lcCd=Math.max(480,~~(720*(1+_cdRed())));_skOk=true}break;
     case 'maliceStorm':
       if(P._msAiming){P._msAiming=false;showPH(_T('취소'),'#888');break}
       {const _msBsFused2=_isFused('boneStorm')||_isFused('elecRepent');
@@ -44703,7 +44703,7 @@ function activateVenomBlade(){
 function activateLtnChaser(){
   const _lcLv=P.skills.ltnChaser||1;
   const _lcStCost=40;
-  if(P.st<_lcStCost){showPH(_T('ST 부족!'),'#ff4444');return}
+  if(P.st<_lcStCost){showPH(_T('ST 부족!'),'#ff4444');return false}
   P.st=Math.max(0,P.st-_lcStCost);
   const _lcDmg=~~(bowRef()*statDex()*pBowMul()*_skMul('ltnChaser')*_fuseMul('ltnChaser'));
   const _lcRange=1000; // 시전 지점에서 최대 1000px
@@ -44734,6 +44734,7 @@ function activateLtnChaser(){
   }
   SFX.magic(EL.L);addTxt(P.x,P.y-25,_T('⚡ 뇌전추격자!'),'#3388ff',35);
   _addSkProf('ltnChaser');
+  return true;
 }
 
 // ═══ 폭풍소환 발사 (키홀드 거리 → 기원 투척 → 착지 시 소용돌이 전개) ═══
