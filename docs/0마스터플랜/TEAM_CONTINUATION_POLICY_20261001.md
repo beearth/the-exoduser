@@ -1,3 +1,11 @@
+# 최신: 프로젝트 메모리와 제작16팀 운영 — 2026-10-08 KST
+
+[프로젝트 메모리·16팀 운영 정본](EXODUSER_16_TEAM_OPERATING_MEMORY_20261008.md)이 사용자 최신 “메모리 해두고 16팀을 어떻게 운영할것인지도 정리하고”의 지속 지침이다. **제작16=총괄1+Codex전문7+Claude전문8**, 기존감독2는별도연결역할로총18역할이며helpers3은지원이다. 아래17/11/자동화5분·1분등표현은당시이력이며현재설정을덮지않는다.
+
+현재 단일root exoduser-2 ACTIVE30분만유지/다른PAUSED자동화·아침메일재개0. 전문송신은기존Codex7/Claude8 owner만, root직접/중복송신·새팀/채팅/Claude세션0. 각팀현재TASK/정확소유/Gate/의존성/sent/peer/첫성공source/공식end/원문핀/root채택/nextAction을구분한다. 완료팀은승인독립다음작업으로실제다음turn을연결하고진행중TASK재송신0. root는main통합→필요검수→docs전체관련검색/현재정본동기화→소유code+docs정상commit/push/remoteexact 책임을진다.
+
+현재허용범위와실제차단·사용자IAB13무조작·foreignWIP보존·NUL80/100·거절목적우회0은운영메모리를따른다. 16전원가동/읽기계획=본편완료선언0. 이문서정리때문에허용독립제작을보류하지않는다. 아래이력은삭제하지않는다.
+
 # 현재 팀 배치 — 총괄+감독2 / Codex전문7·Claude전문8 / 총17역할
 
 사용자 최신 확정: 원총괄+작업감독2, Codex전문UIUX/ITEM/BUILD/BALANCE/SOUND/QUESTNPC/MARKETING7, Claude전문ART/MAP/SKILL/QA/ENEMY/ANIMVFX/BOSS/STORY8로 총17역할이다. Claude TASK Read8/8·Codex전문 TASK Read7/7 확인. 중복Codex채팅8개는완료턴확인후복구가능보관했고현재Codex전문채팅7개+이총괄이다. [현재역할·실행위치·소유·상태](mac-resume-20261001/vscode-dispatch/PROVIDER-HALVES-20261002.md). 이표가최신배치이며아래11/12/15팀기록은각시각이력이다.

@@ -1,3 +1,19 @@
+# 현재 프로젝트 메모리와 16팀 운영 — 2026-10-08 KST
+
+사용자 “메모리 해두고 16팀을 어떻게 운영할것인지도 정리하고”를 반영했다. [프로젝트 메모리·16팀 운영 정본](EXODUSER_16_TEAM_OPERATING_MEMORY_20261008.md)에 팀별 제작 범위/완료Gate·송신소유·TASK필드·후속연결·현재관측과차단을 저장했고 AGENTS.md와 TEAM_CONTINUATION_POLICY 시작부에 연결했다. 앱 전역 메모리를 저장했다고 주장하지 않는다.
+
+| 현재 운영 항목 | 책임·근거 |
+|---|---|
+| 제작 편성 | ROOT1 + Codex전문7 + Claude전문8 =16. 감독2는 별도 송신·연결 역할이라 전체 역할18; helpers3은 지원. 아래17/11 등의표기는 이력 |
+| Codex팀 | UIUX/ITEM/BUILD/BALANCE/SOUND/QUESTNPC/MARKETING. 기존Codex7만송신. 전문7notLoaded/newsource0·실2송신거절과다른5미송신구분 |
+| Claude팀 | ART/MAP/SKILL/QA/ENEMY/ANIMVFX/BOSS/STORY. 기존Claude8만송신. 기존6의1617 end6는16:28:54Z owner새인계/원문대조전, ARTSTORY보류 |
+| 총괄 산출 | 실제CH1-1/Rift mainconsumer·정본계약·의미검수·실화면한계·docs동기화·정상원격보존·다음승인미완료실제연결 |
+| 직전 제품 완료 | ROOT-CH1-HOLY-PRISON-DEPLOY-IN-20261008 code1/docs5 remoteexact f777486e7eec73d625439a9100ebea9802deb83a. t/15 한행·software13PASS, nativeNOT_RUN/RETOUCH. E/ch1-holy-prison-deploy-in-20261008/completion-receipt.json 참조 |
+| 다음 본편 후보 | Codex새BLIT-CONSUMER-OWNERSHIP-INLINE은송신/아직root채택0. 핵심백로그는정상boss개방/death-revive-retry·발접지·맵흐림/절벽전경·NPCdurable·실editor |
+| 지속·보존 | root단일ACTIVE30분·완료즉시후속연결. NUL80완료소유checkpoint/100전새산출중단. game/3.3foreignWIP·사용자열린IAB13무조작 |
+
+상태는 작성시관측이며 최신owner현재필드를덮지않는다. 이운영메모리정리를모든팀대기사유로사용하지않는다. 아래이전총괄표와상세이력은원문보존한다.
+
 # 현재 총괄 제작판 — 2026-10-08 KST
 
 <!-- ROOT-PRODUCTION-CONTROL-BOARD-20261008 -->

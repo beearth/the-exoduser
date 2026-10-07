@@ -1,5 +1,17 @@
 # AGENTS.md — 지옥의 길 (Hell Road)
 
+## 현재 프로젝트 메모리와 제작 16팀 운영 — 2026-10-08 KST
+
+이 절과 사용자 최신 직접 지시는 아래 2026-10-01/02의 인원·자동화·서버 운영 이력보다 우선한다. 보호 설계와 공통 안전 규칙은 유지한다. 시작 시 [프로젝트 메모리·16팀 운영 정본](docs/0마스터플랜/EXODUSER_16_TEAM_OPERATING_MEMORY_20261008.md)을 읽고, 동적 상태는 MASTER 맨앞과 기존 두 owner의 최신 현재 필드·공식 end·영수증으로 확인한다.
+
+- 제작16팀=총괄1+Codex전문7+Claude전문8. 기존 송신 감독2는 별도 연결 역할, 총18역할이며 새로운 팀/채팅/세션을 만들지 않는다. helpers3도 별도 지원이다. 실제16동시가동을 뜻하지 않는다.
+- Codex7 감독 `01a0fb1e-4ec3-7dd3-bba2-f87518e881fa`와 Claude8 orders `01a0fd2d-8a6f-7f01-b2da-70119654cffe`만 기존 전문15 송신을 소유한다. root 직접/중복 전문송신0. sent·peer·첫 성공 source·공식 end·root채택·원격보존을 구분한다.
+- 실제 checkout은 `/Users/fordeargamers/Projects/exoduser-migration-20261001`만. 단일 `exoduser-2` ACTIVE30분, 다른 PAUSED 자동화/아침메일 재개0. 최신 허용 작업은 실제main 최소consumer이며 기존 격리3387만 사용한다. 사용자 IAB13/3387 열린 main Rift view-only는 닫기/재로드/조작/중복게임0. 새Chrome/서버/빌드/Windows·3333/3340·3381/3383 접근0.
+- 현재 game foreign185B·설정3.3 foreign2948B·foreign68·사용자save·타인WIP 보존. game/3.3 전체gitadd0; working/HEAD 선 fullbytes백업·같은ownhunk·inverseexact·ownedblob stage. NUL80부터완료소유checkpoint/100전새산출중단. 삭제cleanup0.
+- 실제 거절된 전문송신·ART선택·ENEMYpolicyRead·tree-card 목적을 다른tool/path/host/권한으로 재시도하지 않는다. heldWOLF/STORY는 추가content/hash/실행/검수/채택/Git0, tree-card는 존재확인/동등출력/root대체구현0. 구체 경계는 운영메모리를 따른다.
+- 완료팀은 기존 owner로 승인독립다음작업을 연결한다. root는 실제main 통합·검수·관련docs전체검색/현재정본동기화·소유code+docs 정상commit/push/remoteexact 책임을 진다. 문서/읽기만 반복하지 않으며, 같은후보native6·청취·실보상save 미인수는 완료로 승격하지 않는다.
+
+
 > 이 파일은 Codex 등 AI 코딩 에이전트가 이 프로젝트에서 작업할 때 반드시 따라야 하는 규칙이다.
 
 ## 최우선 운영 상태: Mac 작업 재개 (2026-10-01 사용자 최신 지시)

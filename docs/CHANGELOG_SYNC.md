@@ -56249,3 +56249,18 @@ scope/priority/hidden-first static gaps는 최초 CPU 전에 보정했고 실제
 | 문서·보존 | 새 관련검색1회22path52행60occurrence, 현재 최소5정본. PHASE_V1검색0·기존봉인 유지. working/HEAD 선백업·표한정교체+append inverse exact·EOF1/ownedHEAD. Git ROOT예정 |
 
 D=`/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-holy-prison-deploy-in-20261008`. validation2,624B/`2a40c2a515f3f33b930a1f5ee3fba9ef2bdb9d92723a1d528141e026f1bb7df9`, visual4,197B/`3b54cc8c2f80ccdcdaa5d0a76197034e189a90a310859a4cdc3b2d799a5185fa`, bitmap3,105B/`b57a542c310e3449f35d9384b28ea0453c45e4cf243622ce2785fa34c6cfd541`를 근거로 한다. 사용자 IAB13 old-loaded 무조작/no reload·새native0·native6/audio/reward/saveACK 미인수. §23 전체 보고는 [VFX 구현가이드](<5.1임펙트디자인/VFX_구현가이드.md>) 같은 TASK 절에 기록한다.
+
+## ROOT-16-TEAM-OPERATING-MEMORY-20261008 — 프로젝트 메모리와 제작16팀 운영
+
+사용자 “메모리 해두고 16팀을 어떻게 운영할것인지도 정리하고”를 반영했다. EXODUSER_16_TEAM_OPERATING_MEMORY_20261008.md에 목표·팀별책임·완료Gate·TASK필드·후속연결·현재관측·금지경계를 저장하고 MASTER/TEAM_CONTINUATION_POLICY/AGENTS 시작부에 연결했다. 앱 전역메모리 저장 주장0·새팀/채팅/Claude세션0·제품런타임변경0·새CPU/Chrome/게임0이다.
+
+| 항목 | 현재 계약 |
+|---|---|
+| 제작팀 수 | 총괄1+Codex전문7+Claude전문8=16; 기존감독2는별도연결역할이라전체18역할, helpers3은별도지원 |
+| 전문송신 소유 | Codex7·Claude8 기존owner만. root직접/중복송신0; TASK·정확소유·Gate·의존성·sent/peer/첫성공source/공식end/root채택/nextAction구분 |
+| 실제 제작 | root는main최소consumer·필요검수·docs전체관련검색/정본동기화·소유code+docs정상commit/push/remoteexact·다음독립미완료연결책임 |
+| 작성관측 | Codex전문7notLoaded/newsource0·실2송신거절과다른5미송신구분; Claude1617 end6는owner16:28:54Z 인계. 최신1631 TASK와별개/지속전원busy과장0 |
+| 보호 | gameforeign185B·설정3.3foreign2948B·foreign68·사용자save/타인WIP원문보존; IAB13닫기/재로드/조작/중복게임0; 거절목적우회0 |
+| 연속 | 단일root exoduser-2 ACTIVE30분·완료팀기존owner로다음turn연결; 다른PAUSED자동화/아침메일재개0·NUL80완료소유checkpoint/100전새산출중단 |
+
+시작지침AGENTS는저장소검사에서non-doc로분류되어진행로그를요구하므로이변경이력도같은소유커밋에포함한다. 첫새파일stage의--add누락준비실패1과CHANGELOG누락commit hook차단1은수정전제품/commit성공으로계산하지않는다. 우회변수ALLOW_MISSING_DOCS사용0. 기존소유stage만보존하고필수로그를추가해정상검사를통과한다. 아래과거이력원문은보존하며runtime수치변경은없다.
