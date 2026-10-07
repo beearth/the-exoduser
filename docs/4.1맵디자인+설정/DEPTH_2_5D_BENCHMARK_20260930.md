@@ -764,3 +764,15 @@ NEXT PASS: alpha-aware 보수적 셀 점유 source/API 계약·원자료 수치�
 ```
 
 추가 cap source/수학 검토 `CODEX7-BERIN-OPAQUE-CAP-FEASIBILITY-20261007`(공식 turn `01a11435-5732-7c21-83d8-6bdf85811169`)의 provider 단일 원문은 `codex-opaque-cap-official-end.txt` 3303B/`f45694b428a15585a3676f77e86364d3636d1c95c11f130ad98737f9c8011d88`에 미채택 보존했다. A 기준 수평 bounds [L,R], NPC 반폭 h, r=.045/m=.015/cap=h+r+m인 기존 보수적 사각형 모델에서 겹침 시 왼쪽 가능 조건은 L≥−h, 오른쪽은 R≤h다. L<−h 및 R>h이면 양방향 cap 초과이며, 중심 q=(L+R)/2·반폭 b=(R−L)/2의 가능 조건은 b−|q|≤h다. 최초 실패 전체 geometry 값으로 계산한 한쪽 edge의 필요 축소는 약 .134518/.179499 scene이며 alpha 적용 결과가 아니다. 실제 direction/frame/elapsed/pose/발/A를 고정한 새 alpha 투영 가능성 Gate를 통과한 후보만 새 화면 검수 대상으로 삼는다. 실제 실패 frame UNKNOWN·대표 raw 동일 pose 추정0·cap 새 값 확정0·새 코드/CPU/GPU/Chrome/전문송신0이다. 기존 정책 유지·별도 유한 outreach·유효 위치 없을 때 open 숨김의 대안은 모두 미확정 제안이다.
+
+### ROOT-CH1-1-THREE-TERRAIN-CONSUMER-20261007 — 현재 상태
+
+| 항목 | 현재 값·범위 |
+|---|---|
+| 완료 | 실제 `game.html`의 `G.map/P/G.cam`을 읽어 Three 지면을 main의 기존 X world transform에 연결. `3387/ch1Three=1` 한정, stage0/smoothing/비boss. 기본OFF. 별도lab완료가 아니다. |
+| 보존·미완 | mw=mh200/T40/world8000²/원PNG·scene·nav·기존actor/DS/Border/paint96/cache97 보존. height0/3Dactor0. 실제 절벽·rig/발접지·NPCdurableconsumer·전투/보스/native6·청취/save/A급 미완. |
+| 검수 | 최종module7699/26d66ae4 source CPU8그룹43조건PASS. guard 전module7559/d4856에서 Chrome1/3조건PASS·실W이동7420→7302.446200000009/map exact/GL0. 최종guard 추가Chrome0·별도epoch합산0. |
+| 경계 | shader callback실패 게시차단. parent X upload exception·부분생성/해제예외·물리GPUfree UNKNOWN. headlessdraw45.4→20.4ms는 성능인수 아님. 차단POST1/실서버쓰기0. |
+| 정본 | `MAP_RUNTIME_ARCHITECTURE.md`와 `CH1_1_PRODUCTION_FINISH_20260916.md`의 본ID절·§23 표. source/module·checkout/부분Git pin 및 검수범위를 거기에 정확기록. 앞선 날짜별source/미구현기록은 당시 이력으로 보존. |
+| 근거·판정 | 외부 `ch1-1-2_5d-production-20261007/validation-receipt.json`3572B/ce099bce7b4312690d31e78004b7b267fa9034e556866352527ed3d534faddee. rootPNG2직접판독, **VISUAL VERDICT: RETOUCH**. |
+| 후속 | Claude8 기존6팀 actual1-1 통합과 Codex7 높이/권한 seam 읽기를 연결. 원총괄은 완료후 최소consumer→화면→docs→소유code+docs보존. 새팀/중복송신0. |

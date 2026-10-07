@@ -4019,3 +4019,15 @@ NEXT PASS: alpha-aware 보수적 셀 점유 source/API 계약·원자료 수치�
 | 인수 상태 | API source/CPU 검수 완료; 신규 시각 NOT ASSESSED, 전체 VISUAL RETOUCH | 본편 native6·audio·save·A급 인수 0; Berin 미채택 후보/복원 world 현행 이력 유지 |
 
 MAP PRODUCTION REPORT (§23): STAGE=CH1-1 2.5D 캐릭터 기반 API; MASTER/OUTER/LARGE/MEDIUM/GROUND/PLAYABLE/LANDMARK/CAMERA 배치 변경0. TECH=신규 실제 rig CPU14그룹90조건 PASS, GPU/화면/청취/본편 플레이0. FILES=rig1+관련docs14; 타인 game/ownerWIP·원 PNG/scene/nav 보존. GIT=이 완료소유만 정상 보존, 배포0. VISUAL VERDICT: RETOUCH. NEXT PASS=실제 1-1 권위 map/P/카메라를 소비하는 2.5D 맵·캐릭터 연결.
+
+### ROOT-CH1-1-THREE-TERRAIN-CONSUMER-20261007 — 현재 상태
+
+| 항목 | 현재 값·범위 |
+|---|---|
+| 완료 | 실제 `game.html`의 `G.map/P/G.cam`을 읽어 Three 지면을 main의 기존 X world transform에 연결. `3387/ch1Three=1` 한정, stage0/smoothing/비boss. 기본OFF. 별도lab완료가 아니다. |
+| 보존·미완 | mw=mh200/T40/world8000²/원PNG·scene·nav·기존actor/DS/Border/paint96/cache97 보존. height0/3Dactor0. 실제 절벽·rig/발접지·NPCdurableconsumer·전투/보스/native6·청취/save/A급 미완. |
+| 검수 | 최종module7699/26d66ae4 source CPU8그룹43조건PASS. guard 전module7559/d4856에서 Chrome1/3조건PASS·실W이동7420→7302.446200000009/map exact/GL0. 최종guard 추가Chrome0·별도epoch합산0. |
+| 경계 | shader callback실패 게시차단. parent X upload exception·부분생성/해제예외·물리GPUfree UNKNOWN. headlessdraw45.4→20.4ms는 성능인수 아님. 차단POST1/실서버쓰기0. |
+| 정본 | `MAP_RUNTIME_ARCHITECTURE.md`와 `CH1_1_PRODUCTION_FINISH_20260916.md`의 본ID절·§23 표. source/module·checkout/부분Git pin 및 검수범위를 거기에 정확기록. 앞선 날짜별source/미구현기록은 당시 이력으로 보존. |
+| 근거·판정 | 외부 `ch1-1-2_5d-production-20261007/validation-receipt.json`3572B/ce099bce7b4312690d31e78004b7b267fa9034e556866352527ed3d534faddee. rootPNG2직접판독, **VISUAL VERDICT: RETOUCH**. |
+| 후속 | Claude8 기존6팀 actual1-1 통합과 Codex7 높이/권한 seam 읽기를 연결. 원총괄은 완료후 최소consumer→화면→docs→소유code+docs보존. 새팀/중복송신0. |

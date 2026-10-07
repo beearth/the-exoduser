@@ -1842,3 +1842,38 @@ Git쓰기승인후체크포인트실행을시도했으나승격실행기의Windo
 완성 production_finish 화면이 전체 뷰포트를 불투명 ready청크로 덮으면 _ch1StartOuterCoversView가 가려진 _fillVoidWithFloor·20개 _oriFireflies·기존 맵캐시 분기3그룹을 렌더에서 제외한다. 매 프레임 줌/흔들림/가장자리·1026² ready를 검사하며, 로딩·오류·맵 밖 노출·다른stage/보스아레나/outer·Rootworld·초기폴백은 원래 바닥을 유지한다. ?ch1LegacyUnderlay=1은 비교용. visible 생체/언덕/소품/ATMO·19빌드레이어/이미지·충돌 삭제0. 캐시 메모리 전체해제나FPS개선율을 주장하지 않는다.
 
 현행 공식·수치·검수는 [가려진 레이어 정리 SSOT](CH1_HIDDEN_UNDERLAY_20260929.md)를 따른다. 앞선 날짜별 회귀·FPS·아트 수치는 당시 검수 이력이다.
+
+### ROOT-CH1-1-THREE-TERRAIN-CONSUMER-20261007 — 실제 1-1 지면 연결
+
+| 항목 | 현재 구현·정확 경계 |
+|---|---|
+| 소비 경로 | `game.html::_drawCh1StartOuter → _drawCh1ThreeTerrain → createCh1FieldTerrain().render`; 실제 `G.map/P/G.cam`을 표시용으로 읽는다. 별도 Rift/editor lab이 아니다. |
+| 사용 범위 | hostname `127.0.0.1`/`localhost`, port `3387`, query `ch1Three=1`; stage0·비boss·`smoothing`·production root에서만. 기본 OFF, 다른 port/stage 불변. 검수 URL은 `classic=1&mapqa=1&ch1Three=1&webgpu=0`. |
+| 지도·권한 | mw=mh200/T40/world8000²·기존53점/8구역 유지. main이 만든 맵/충돌/P/AI가 권한을 가진다. 새 renderer의 simulation/nav/save 쓰기0. |
+| 투영 | local Three r160, orthographic50°/scale400. X=(x−4000)/400, Y=0, Z=(y−4000)/(400sin50°). near.1/far1000. 실제 높이0이며 baked 절벽 픽셀을 분리한 physical relief/3Dactor 구현0. |
+| 소스·UV | 기존 ready Image1026²·bleed1/core1024를 world1000에 등록. UV1/1026..1025/1026, 4vertices/2triangles. 원PNG/scene/nav/배치·paint96/cache97·64청크/23레이어 유지. |
+| 해상도·예산 | 논리 width/height≤4096, zoom.3..4, backingScale≤4. 출력 round(logical×min(2,backingScale)) 각1..4096, rendererpixelRatio1. DPR 재곱0. visible mesh/texture/geometry/material 각≤25, Linear/noMipmaps/clamp/sRGB. |
+| 합성·캐시 | 완성 canvas를 `X.drawImage(canvas,left,top,width/zoom,height/zoom)`로 기존 world transform에 합성. cam/zoom/shake/SSAA 중복 적용0. 변경 frame만 `_glVer++`; 같은 view/map/image signature는 canvas재사용. 새 RAF/timer/Image 생성0. |
+| 폴백 | cold/invalid/outside8000/25초과/backing초과/import실패/renderer실패는 기존 background 경로. Three `debug.onShaderError` flag와 contextlost/GLerror를 publish전에 검사. 부모 X의 GPU upload 예외는 기존 proxy가 숨겨 완전한 성공/폴백 보장은 UNKNOWN. |
+| 순서·수명 | native actor→DS→Border 및 sway/face/hill/moat 순서 보존. 현재 visibleIds/drawnIds 갱신. map identity변경/suspend에서 own records해제, pagehide lateimport차단 및 `_freeMapTex`/dispose. 부분constructor/drop예외·물리GPU free·WebGPU해제 UNKNOWN. |
+| 코드 핀 | 최종module7699B/`26d66ae478230e4d4a9a80d94a4a00586712580970f59f62ac2feed76e2301a9`; checkout game4052452B/`66d384052dc021a43792991fa9b36dee91cf16ca87e5639fc8d00917a10aa48b`. Git game은 HEAD+자기hook4052267B/`61325949fbf8a21563d107d1e2999dc3d4acf0eed18120231e810f400cbe69af`만. 기존 foreign185B차이 보존/채택0. |
+| 신규 CPU | 최종module 실제전체 + 실제Three geometry/math + 통제renderer 최초1회:8그룹43조건PASS/FAIL0/미도달0/exit0/unhandled0. shader-only 통제callback 실패는 frame게시0·재render0; 실제GPU shader실패 관측 아님. |
+| 신규 native | shader guard 전 module7559/d4856 source에서 Chrome1/3조건PASS. 실제 W로 P.y7420→7302.446200000009/map exact/GL0/pageerror0/HTTP오류0; readychunks2→4. 이후 geometry/mainhook 불변, guard만 최소보정; 최종guard 뒤 추가Chrome0. CPU와 합쳐 clean46PASS로 세지 않는다. |
+| 안전·비용 | fresh context/기존3387만, 외부요청차단, `/api/mats` POST1은 route에서 차단/서버도달0. headless Three draw첫45.4ms/최종20.4ms는 관측값, 성능인수 아님. save/청취/실보상 조작0. |
+| 판정·근거 | root PNG2직접판독. `VISUAL VERDICT: RETOUCH`. 시작금빛효과가 지면·캐릭터를 가리고 baked지면은 평면. 실제 높이·rig actor·전체route/전투획득/보스개방/사망부활/재도전·청취·save·A급 미인수. 근거 `ch1-1-2_5d-production-20261007/validation-receipt.json`3572B/`ce099bce7b4312690d31e78004b7b267fa9034e556866352527ed3d534faddee`. |
+
+#### §23 MAP PRODUCTION REPORT
+
+| 항목 | 결과 |
+|---|---|
+| STAGE/MASTER PLAN | 실제 CH1-1/si0,200²/T40/world8000. 기존53점/8구역·시작(4020,7420)·출구(4020,300)·route/nav 보존. |
+| LARGE OUTER MASS | 기존64baked청크 소비; 독립 수직 절벽 mesh/높이 미구현. |
+| MEDIUM CONNECTION | 기존 연결·포켓 유지. 전체 route 재주행0. |
+| GROUND CONNECTION | Three50°/height0/core1024→world1000 지면을 같은 main화면에 연결. |
+| PLAYABLE/COMBAT | 실제 W이동·카메라 추적 확인. mapQA3조건이며 전투/loot/native6 인수0. |
+| LANDMARK/CENTER·SMALL DETAIL | 배치/스케일/콜라이더/원PNG 수정0. |
+| CAMERA QA | 시작·북쪽이동1280×720 PNG2 직접판독. 전체8view/대규모전투 카메라 미검수. |
+| TECH QA | 최종CPU8그룹43조건PASS와 guard 전native3조건PASS는 별도epoch. 부분할당/부모GPU복사 예외/물리GPUfree UNKNOWN. |
+| FILES/GIT | newmodule1+game자기hook+관련docs13. foreign game185B/WIP/ownerSTATELOG/protected2_3/기존23/save 보존. 정상commit/push·remoteexact은 완료영수증에서 별도확인. |
+| VISUAL VERDICT | RETOUCH — 지면 연결만 확인. 평면 재질·높이·3D캐릭터·시작FX가림 미해결. |
+| NEXT PASS | 실제 승인된1-1 outer mass/높이/foreground 계약 소비→main rig/발접지→SKILL/ENEMY/BOSS/UI/NPC/사운드 및 같은후보6단계. |

@@ -127,7 +127,7 @@ kit builders (24417~24507)   ─┘        │
 - `m_c1b*`/`m_c1cn/cs/ce/cw*` structural module 59개와 wall 뒤 `m_eye_tree(185,55)` 1개는 authored layout에서 제거했다. 따라서 과거 quadrant/perimeter alpha와 structural tone 경로는 호환 코드일 뿐 현행 instance 0이다. `m_c1tree`는 smoothing 조건에서 기존 metadata filter + CH1 tone을 단일 `_drawFilter`로 합쳐 기존 save/restore 경로를 사용한다.
 - 현행 authored63/runtime64, structural0, collision total23/hand22이며 tile은 floor23199/wall16495/exit3/gate3/boss300이다. baked outer/smoothing master와 landmark/vertical 수치는 유지한다.
 - 실제 WASD는 START `(100.5,185.5)`에서 north `y23.43`까지 전 segment PASS했고 exits는 y7이다. pageerror/404는 0/0이다.
-- **시각 바닥 경계 (2026-09-01, render-only):** `_useSoftFloorEdge()`가 stage4/boss/vista/paint를 제외한 soil 맵에서 occupancy **1타일 dilate** + `_FLOOR_SOFT_SCALE=4` + `_FLOOR_SOFT_BLUR=5`로 `_blitSoftFloor` 한다. 캐시는 `_SOFT_FLOOR_BACKDROP` 통짜 fill. 근거리 벽 칸 40px 검정 계단과 rim overlay는 없다. CH1-1 `_drawCh1StartOuter`는 `_CH1_OUTER_HUG_X=0.965`로 좌우 forest만 중앙에 붙여 walkable 가장자리에 overlap 한다. 남북은 1.0. `isW`·tileRLE·spawn·minimap 불변. CH2-1은 `_traceCh2AuthoredFloor` 경로를 유지한다.
+- **시각 바닥 경계 (2026-09-01, render-only):** `_useSoftFloorEdge()`가 stage4/boss/vista/paint를 제외한 soil 맵에서 occupancy **1타일 dilate** + `_FLOOR_SOFT_SCALE=4` + `_FLOOR_SOFT_BLUR=5`로 `_blitSoftFloor` 한다. 캐시는 `_SOFT_FLOOR_BACKDROP` 통짜 fill. 근거리 벽 칸 40px 검정 계단과 rim overlay는 없다. CH1-1 `_drawCh1StartOuter`의 현행 `production_finish` 배경은 x scale 1이며, legacy `baked_start_outer` 비교 분기에서만 `_CH1_OUTER_HUG_X=0.965`로 좌우 forest를 중앙에 겹친다. 남북은 1.0. `isW`·tileRLE·spawn·minimap 불변. CH2-1은 `_traceCh2AuthoredFloor` 경로를 유지한다.
 
 ---
 
@@ -360,3 +360,38 @@ mapObjs는 전역 MAP_OBJS로 복원한다. 배열 identity는 새로 만들되 
 | 맵 캐시·파생 조명 | `buildMapCache();initTorchLights()`; 지연 큐는 `initSwayObjects/initWallEyes/_initEyes/initGlowObjects` | `initMapObjects` 제외하여 상호작용 상태 재생성 방지. cache token/bitmap 경계는 source 읽기, 실제 idle/GPU 일정은 미실행 |
 
 실제 분기/게이트 복귀 좌표·플레이어 일시 상태 목록은 [CH1-1 보스 사망 진행 보존 정본](CH1-1_BOSS_RESPAWN_PROGRESS_20261002.md)를 따른다. _shDirty는 적 공간 해시이며 그림자 dirty가 아니다. geometry/art/layout·좌표·비용·CD·합체 수치 변경 0. 검수 영수증 `tmp/mac-migration-runtime/continued-review-20261002/boss-respawn-backup/receipt.json`: 양판 actual source 30/30 PASS(각 15), 공통 자원 인접 회귀 5/5 PASS(최종 후 1회), inline JS 12/importmap JSON 2 구문 PASS. SHA와 46개 필드·대역/미검증 범위는 전용 정본에 기록한다. 검수는 실제 source 추출 + controlled fixture에 한정한다. 실제 게임·등록 이벤트·카메라·시각·오디오·성능은 미인수이며 source PASS를 runtime/visual PASS로 대체하지 않는다.
+
+### ROOT-CH1-1-THREE-TERRAIN-CONSUMER-20261007 — 실제 1-1 지면 연결
+
+| 항목 | 현재 구현·정확 경계 |
+|---|---|
+| 소비 경로 | `game.html::_drawCh1StartOuter → _drawCh1ThreeTerrain → createCh1FieldTerrain().render`; 실제 `G.map/P/G.cam`을 표시용으로 읽는다. 별도 Rift/editor lab이 아니다. |
+| 사용 범위 | hostname `127.0.0.1`/`localhost`, port `3387`, query `ch1Three=1`; stage0·비boss·`smoothing`·production root에서만. 기본 OFF, 다른 port/stage 불변. 검수 URL은 `classic=1&mapqa=1&ch1Three=1&webgpu=0`. |
+| 지도·권한 | mw=mh200/T40/world8000²·기존53점/8구역 유지. main이 만든 맵/충돌/P/AI가 권한을 가진다. 새 renderer의 simulation/nav/save 쓰기0. |
+| 투영 | local Three r160, orthographic50°/scale400. X=(x−4000)/400, Y=0, Z=(y−4000)/(400sin50°). near.1/far1000. 실제 높이0이며 baked 절벽 픽셀을 분리한 physical relief/3Dactor 구현0. |
+| 소스·UV | 기존 ready Image1026²·bleed1/core1024를 world1000에 등록. UV1/1026..1025/1026, 4vertices/2triangles. 원PNG/scene/nav/배치·paint96/cache97·64청크/23레이어 유지. |
+| 해상도·예산 | 논리 width/height≤4096, zoom.3..4, backingScale≤4. 출력 round(logical×min(2,backingScale)) 각1..4096, rendererpixelRatio1. DPR 재곱0. visible mesh/texture/geometry/material 각≤25, Linear/noMipmaps/clamp/sRGB. |
+| 합성·캐시 | 완성 canvas를 `X.drawImage(canvas,left,top,width/zoom,height/zoom)`로 기존 world transform에 합성. cam/zoom/shake/SSAA 중복 적용0. 변경 frame만 `_glVer++`; 같은 view/map/image signature는 canvas재사용. 새 RAF/timer/Image 생성0. |
+| 폴백 | cold/invalid/outside8000/25초과/backing초과/import실패/renderer실패는 기존 background 경로. Three `debug.onShaderError` flag와 contextlost/GLerror를 publish전에 검사. 부모 X의 GPU upload 예외는 기존 proxy가 숨겨 완전한 성공/폴백 보장은 UNKNOWN. |
+| 순서·수명 | native actor→DS→Border 및 sway/face/hill/moat 순서 보존. 현재 visibleIds/drawnIds 갱신. map identity변경/suspend에서 own records해제, pagehide lateimport차단 및 `_freeMapTex`/dispose. 부분constructor/drop예외·물리GPU free·WebGPU해제 UNKNOWN. |
+| 코드 핀 | 최종module7699B/`26d66ae478230e4d4a9a80d94a4a00586712580970f59f62ac2feed76e2301a9`; checkout game4052452B/`66d384052dc021a43792991fa9b36dee91cf16ca87e5639fc8d00917a10aa48b`. Git game은 HEAD+자기hook4052267B/`61325949fbf8a21563d107d1e2999dc3d4acf0eed18120231e810f400cbe69af`만. 기존 foreign185B차이 보존/채택0. |
+| 신규 CPU | 최종module 실제전체 + 실제Three geometry/math + 통제renderer 최초1회:8그룹43조건PASS/FAIL0/미도달0/exit0/unhandled0. shader-only 통제callback 실패는 frame게시0·재render0; 실제GPU shader실패 관측 아님. |
+| 신규 native | shader guard 전 module7559/d4856 source에서 Chrome1/3조건PASS. 실제 W로 P.y7420→7302.446200000009/map exact/GL0/pageerror0/HTTP오류0; readychunks2→4. 이후 geometry/mainhook 불변, guard만 최소보정; 최종guard 뒤 추가Chrome0. CPU와 합쳐 clean46PASS로 세지 않는다. |
+| 안전·비용 | fresh context/기존3387만, 외부요청차단, `/api/mats` POST1은 route에서 차단/서버도달0. headless Three draw첫45.4ms/최종20.4ms는 관측값, 성능인수 아님. save/청취/실보상 조작0. |
+| 판정·근거 | root PNG2직접판독. `VISUAL VERDICT: RETOUCH`. 시작금빛효과가 지면·캐릭터를 가리고 baked지면은 평면. 실제 높이·rig actor·전체route/전투획득/보스개방/사망부활/재도전·청취·save·A급 미인수. 근거 `ch1-1-2_5d-production-20261007/validation-receipt.json`3572B/`ce099bce7b4312690d31e78004b7b267fa9034e556866352527ed3d534faddee`. |
+
+#### §23 MAP PRODUCTION REPORT
+
+| 항목 | 결과 |
+|---|---|
+| STAGE/MASTER PLAN | 실제 CH1-1/si0,200²/T40/world8000. 기존53점/8구역·시작(4020,7420)·출구(4020,300)·route/nav 보존. |
+| LARGE OUTER MASS | 기존64baked청크 소비; 독립 수직 절벽 mesh/높이 미구현. |
+| MEDIUM CONNECTION | 기존 연결·포켓 유지. 전체 route 재주행0. |
+| GROUND CONNECTION | Three50°/height0/core1024→world1000 지면을 같은 main화면에 연결. |
+| PLAYABLE/COMBAT | 실제 W이동·카메라 추적 확인. mapQA3조건이며 전투/loot/native6 인수0. |
+| LANDMARK/CENTER·SMALL DETAIL | 배치/스케일/콜라이더/원PNG 수정0. |
+| CAMERA QA | 시작·북쪽이동1280×720 PNG2 직접판독. 전체8view/대규모전투 카메라 미검수. |
+| TECH QA | 최종CPU8그룹43조건PASS와 guard 전native3조건PASS는 별도epoch. 부분할당/부모GPU복사 예외/물리GPUfree UNKNOWN. |
+| FILES/GIT | newmodule1+game자기hook+관련docs13. foreign game185B/WIP/ownerSTATELOG/protected2_3/기존23/save 보존. 정상commit/push·remoteexact은 완료영수증에서 별도확인. |
+| VISUAL VERDICT | RETOUCH — 지면 연결만 확인. 평면 재질·높이·3D캐릭터·시작FX가림 미해결. |
+| NEXT PASS | 실제 승인된1-1 outer mass/높이/foreground 계약 소비→main rig/발접지→SKILL/ENEMY/BOSS/UI/NPC/사운드 및 같은후보6단계. |

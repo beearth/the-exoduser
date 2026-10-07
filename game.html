@@ -11445,7 +11445,25 @@ function _ch1StartOuterCoversView(){
   }
   return true;
 }
+// ROOT-CH1-1-THREE-TERRAIN-CONSUMER-20261007: isolated3387 opt-in, same map/P/camera.
+const _ch1ThreeRequested=location.port==='3387'&&(location.hostname==='127.0.0.1'||location.hostname==='localhost')&&new URLSearchParams(location.search).get('ch1Three')==='1';
+let _ch1ThreeTerrain=null,_ch1ThreeAlive=true,_ch1ThreeImportFailed=false;
+if(_ch1ThreeRequested){
+  window.addEventListener('pagehide',()=>{_ch1ThreeAlive=false;if(_ch1ThreeTerrain){if(typeof _freeMapTex==='function')_freeMapTex(_ch1ThreeTerrain.canvas);_ch1ThreeTerrain.dispose();}},{once:true});
+  import('./tools/2_5d/ch1-field-terrain.mjs').then(module=>{if(_ch1ThreeAlive)_ch1ThreeTerrain=module.createCh1FieldTerrain();}).catch(()=>{_ch1ThreeImportFailed=true;});
+}
+function _drawCh1ThreeTerrain(ctx){
+  if(!_ch1ThreeRequested||!_ch1ThreeAlive||!_ch1ThreeTerrain)return false;
+  if(!_ch1StartOuterEnabled()||_CH1_START_PHASE!=='smoothing'){_ch1ThreeTerrain.suspend();return false;}
+  const z=_EDITOR_MODE?(G._edZoom||1):(G._camZoom||1);
+  const frame=_ch1ThreeTerrain.render({stage:G.stage,map:G.map,mw:G.mw,mh:G.mh,tileSize:T,player:P,cam:G.cam,width:VW,height:VH,zoom:z,backingScale:_ssaa,root:_CH1_START_ROOT,chunkSize:_CH1_START_OUTER.chunkSize,bleed:_CH1_START_OUTER.bleed,chunks:_CH1_START_OUTER.chunks,cache:_ch1StartOuterCache});
+  if(!frame)return false;
+  ctx.save();try{ctx.globalAlpha=1;ctx.imageSmoothingEnabled=true;ctx.drawImage(frame.canvas,frame.left,frame.top,frame.width,frame.height);}finally{ctx.restore();}
+  _ch1StartOuterStats.visibleIds=[...frame.ids];_ch1StartOuterStats.drawnIds=[...frame.ids];return true;
+}
+globalThis.__ch1FieldTerrainQA=()=>_ch1ThreeTerrain?_ch1ThreeTerrain.snapshot():Object.freeze({requested:_ch1ThreeRequested,importFailed:_ch1ThreeImportFailed,alive:_ch1ThreeAlive,ready:false});
 function _drawCh1StartOuter(ctx){
+  if(_drawCh1ThreeTerrain(ctx))return;
   _ch1StartOuterStats.visibleIds=[];_ch1StartOuterStats.drawnIds=[];if(!_ch1StartOuterEnabled())return;_preloadCh1StartOuter();
   const cs=_CH1_START_ROOT!=='assets/map/ch1/baked_start_outer'?G.mw*T/8:_CH1_START_OUTER.chunkSize,srcCs=_CH1_START_OUTER.chunkSize,b=_CH1_START_OUTER.bleed,z=_EDITOR_MODE&&Number.isFinite(G._edZoom)&&G._edZoom>0?G._edZoom:Math.max(.3,G._camZoom||1);
   const left=G.cam.x-VW/(2*z),right=G.cam.x+VW/(2*z),top=G.cam.y-VH/(2*z),bottom=G.cam.y+VH/(2*z);
