@@ -11465,14 +11465,18 @@ globalThis.__ch1FieldTerrainQA=()=>_ch1ThreeTerrain?_ch1ThreeTerrain.snapshot():
 // ROOT-CH1-1-PLAYER-RIG-CONSUMER-20261007: body display only, default OFF.
 const _ch1RigRequested=_ch1ThreeRequested&&new URLSearchParams(location.search).get('ch1Rig')==='1';
 const _ch1RigDirections=Object.freeze(['s','se','e','ne','n','nw','w','sw']);
-let _ch1PlayerRig=null,_ch1RigAlive=true,_ch1RigImportFailed=false,_ch1RigBodyFrame=null,_ch1RigClock=null,_ch1RigDelta=0,_ch1RigScoped=false;
-const _ch1RigStats={bodyFrames:0,ghostFrames:0,legacyFrames:0,lastState:'awaiting-main-body'};
+let _ch1PlayerRig=null,_ch1RigAlive=true,_ch1RigImportFailed=false,_ch1RigBodyFrame=null,_ch1RigClock=null,_ch1RigDelta=0,_ch1RigScoped=false,_ch1RigStrikeOwner=null;
+const _ch1RigStats={bodyFrames:0,attackFrames:0,ghostFrames:0,legacyFrames:0,lastState:'awaiting-main-body'};
 if(_ch1RigRequested){
   window.addEventListener('pagehide',()=>{_ch1RigAlive=false;_ch1RigBodyFrame=null;if(_ch1PlayerRig){if(typeof _freeMapTex==='function')_freeMapTex(_ch1PlayerRig.canvas);_ch1PlayerRig.dispose();}},{once:true});
   import('./tools/2_5d/ch1-player-rig.mjs').then(module=>{if(_ch1RigAlive)_ch1PlayerRig=module.createCh1PlayerRig();}).catch(()=>{_ch1RigImportFailed=true;});
 }
+function _ch1RigRememberStrike(){
+  _ch1RigStrikeOwner=_ch1RigRequested&&_ch1RigAlive&&_charIdx===0?{actor:P,map:G.map,animator:P._sa}:null;
+}
 function _ch1RigBeginBodyFrame(){
   _ch1RigBodyFrame=null;
+  if(_ch1RigStrikeOwner&&(P.s!=='wSwing'||_ch1RigStrikeOwner.actor!==P||_ch1RigStrikeOwner.map!==G.map||_ch1RigStrikeOwner.animator!==P._sa||_charIdx!==0))_ch1RigStrikeOwner=null;
   if(!_ch1RigRequested||!_ch1RigAlive)return;
   const scoped=_charIdx===0&&G.on&&G.stage===0&&!G._bossArena&&_ch1StartOuterEnabled()&&_CH1_START_PHASE==='smoothing';
   const previous=_ch1RigClock,frame=_gameFrame;
@@ -11483,20 +11487,31 @@ function _ch1RigBeginBodyFrame(){
   _ch1RigScoped=!!scoped;
 }
 function _drawCh1PlayerRigBody(direction,alpha){
-  if(!_ch1RigRequested||!_ch1RigAlive||!_ch1PlayerRig||!_ch1RigScoped||P.hp<=0||P.s!=='idle')return false;
-  const mode=P._sa.anim,native=SpriteAnimator._fr(P._sa,direction),index=_ch1RigDirections.indexOf(direction),count=mode==='idle'?2:(mode==='run'||mode==='walk'?8:0);
+  if(!_ch1RigRequested||!_ch1RigAlive||!_ch1PlayerRig||!_ch1RigScoped||P.hp<=0||!P._sa)return false;
+  // ROOT-CH1-1-WARRIOR-STRIKE-RIG-20261007: only the existing cut, not charge/recovery overrides.
+  const strike=P.s==='wSwing'&&P._sa.anim==='atk2'&&_ch1RigStrikeOwner&&_ch1RigStrikeOwner.actor===P&&_ch1RigStrikeOwner.map===G.map&&_ch1RigStrikeOwner.animator===P._sa;
+  if(P.s!=='idle'&&!strike)return false;
+  const mode=strike?'attack':P._sa.anim,native=SpriteAnimator._fr(P._sa,direction),index=_ch1RigDirections.indexOf(direction),count=strike?9:(mode==='idle'?2:(mode==='run'||mode==='walk'?8:0));
   if(!count||index<0||!native||native.length!==count||!Number.isInteger(P._sa.f)||P._sa.f<0||P._sa.f>=count){_ch1RigStats.lastState='legacy-state';return false;}
+  // The 48px/8-frame fallback atlas is incompatible with the borrowed 80px bat artwork.
+  if(strike){
+    if(!_atlasPReady||P._sa.img!==_atlasP_img||P._sa.fm!==_atlasP_frames||native!==P._sa.fm['atk2_'+direction]||_atlasP_img.width<720||_atlasP_img.height<1024){_ch1RigStats.lastState='legacy-strike-atlas';return false;}
+    for(let i=0;i<9;i++){
+      const cell=native[i];
+      if(!Object.hasOwn(native,i)||!cell||cell.x!==80*i||cell.y!==384+80*index||cell.w!==80||cell.h!==80){_ch1RigStats.lastState='legacy-strike-atlas';return false;}
+    }
+  }
   const frame=_ch1PlayerRig.render({stage:G.stage,map:G.map,actor:P,id:'warrior',mode,direction:index,phase:(P._sa.f+.5)/count,heightWorld:32,backingScale:_ssaa,dt:_ch1RigDelta});
   if(!frame){_ch1RigStats.legacyFrames++;_ch1RigStats.lastState='legacy-pending-or-failed';return false;}
   X.save();
   try{
-    X.globalAlpha=alpha;X.translate(-2,22); // native 48px cell center -> catalog (22,46) foot
+    X.globalAlpha=alpha;X.translate(strike?0:-2,strike?18:22); // cell center -> catalog foot: attack (40,58), idle/run (22,46)
     let matrix;if(_useGPU||_useGL)matrix=_mat().slice(0,6);else{const m=X.getTransform();matrix=[m.a,m.b,m.c,m.d,m.e,m.f];}
     if(matrix.length!==6||!matrix.every(Number.isFinite))return false;
     X.drawImage(frame.canvas,frame.left,frame.top,frame.width,frame.height);
     const state=_ch1PlayerRig.snapshot();
     _ch1RigBodyFrame={frame,matrix,now:_now,map:G.map,actor:P,animator:P._sa,classId:_charIdx,generation:state.generation,publication:state.lastFrame,canvasVersion:frame.canvas._glVer};
-    _ch1RigStats.bodyFrames++;_ch1RigStats.lastState='warrior-body-adopted';return true;
+    _ch1RigStats.bodyFrames++;if(strike)_ch1RigStats.attackFrames++;_ch1RigStats.lastState=strike?'warrior-strike-adopted':'warrior-body-adopted';return true;
   }catch(_){_ch1RigBodyFrame=null;_ch1RigStats.lastState='legacy-parent-blit-failed';return false;}
   finally{X.restore();}
 }
@@ -11507,7 +11522,7 @@ function _drawCh1PlayerRigGhost(alpha){
   if(owned.now!==_now||owned.map!==G.map||owned.actor!==P||owned.animator!==P._sa||owned.classId!==_charIdx||!state.ready||owned.generation!==state.generation||owned.publication!==state.lastFrame||owned.canvasVersion!==owned.frame.canvas._glVer)return false;
   X.save();try{X.globalAlpha=alpha;X.setTransform(...owned.matrix);const frame=owned.frame;X.drawImage(frame.canvas,frame.left,frame.top,frame.width,frame.height);_ch1RigStats.ghostFrames++;return true;}catch(_){return false;}finally{X.restore();}
 }
-globalThis.__ch1PlayerRigQA=()=>Object.freeze({requested:_ch1RigRequested,alive:_ch1RigAlive,importFailed:_ch1RigImportFailed,scope:_ch1RigScoped,..._ch1RigStats,adapter:_ch1PlayerRig?_ch1PlayerRig.snapshot():null,bodyCurrent:!!_ch1RigBodyFrame&&_ch1RigBodyFrame.now===_now,adoptedClass:'warrior',adoptedModes:'idle/walk/run',silvertailAccepted:false,attackAccepted:false,fullPlayerLinked:false});
+globalThis.__ch1PlayerRigQA=()=>Object.freeze({requested:_ch1RigRequested,alive:_ch1RigAlive,importFailed:_ch1RigImportFailed,scope:_ch1RigScoped,..._ch1RigStats,adapter:_ch1PlayerRig?_ch1PlayerRig.snapshot():null,bodyCurrent:!!_ch1RigBodyFrame&&_ch1RigBodyFrame.now===_now,adoptedClass:'warrior',adoptedModes:'idle/walk/run/attack(wSwing only)',silvertailAccepted:false,attackStrikeAccepted:true,attackStates:'LMB-origin wSwing/atk2',attackAccepted:false,fullPlayerLinked:false});
 function _drawCh1StartOuter(ctx){
   if(_drawCh1ThreeTerrain(ctx))return;
   _ch1StartOuterStats.visibleIds=[];_ch1StartOuterStats.drawnIds=[];if(!_ch1StartOuterEnabled())return;_preloadCh1StartOuter();
@@ -16235,7 +16250,7 @@ function _updateKiSlashThirdCharge(sp){
     return false;
   }
   const frames=P._kiChargeT;P._kiChargeActive=false;P._kiChargeT=0;
-  P.s='wSwing';P.st2=5;P.swProg=0;P.atkArc=P.facing;
+  _ch1RigStrikeOwner=null;P.s='wSwing';P.st2=5;P.swProg=0;P.atkArc=P.facing;
   _startSilvertailAttackMotion('lmb');_fireKiSlashCrescent(3,frames);
   return true;
 }
@@ -32026,7 +32041,7 @@ function update(){
     else if(isHeld('weapon')&&P.skills.whirlwind&&P.activeLMBSk==='whirlwind'&&P.st>=2){P.s='whirlwind';P.wwAng=0;P._wwDetTimer=0;SFX._swIdx=0;SFX.slashSeq();if(_isFused('stormBeam')){P._eStormIdx=0;P._eStormT=0;P._eStormActive=true;playSample(['electric_storm','electric_storm2','electric_storm3','electric_storm4'][~~(Math.random()*4)],.6,_r(1,.1))}if(Math.random()<.45){playSample(['voice_flee','voice_storm_attack'][~~(Math.random()*2)],1,1)}else{const _ve=['voice_grunt','male_grunt'];playSample(_ve[~~(Math.random()*2)],1,_r(1,.15))}_addSkProf('whirlwind')}
     else if(isAct('weapon')&&useStPct('weapon')){if(_gpActive)_gpAutoAim(250);P._atkBon=~~(_lastCost*1.5);if(G._pStats)G._pStats._atkC++;
       if(P.activeLMBSk==='kiSlash'&&_cresStep===2&&_cresComboT>0){_beginKiSlashThirdCharge()}
-      else{P.s='wSwing';P.st2=5;P.swProg=0;_startSilvertailAttackMotion('lmb');P.atkArc=P.facing;if(Math.random()<.35){const _ve=['voice_grunt','male_grunt','voice_attack'];playSample(_ve[~~(Math.random()*3)],1,_r(1,.15))}
+      else{P.s='wSwing';P.st2=5;P.swProg=0;_ch1RigRememberStrike();_startSilvertailAttackMotion('lmb');P.atkArc=P.facing;if(Math.random()<.35){const _ve=['voice_grunt','male_grunt','voice_attack'];playSample(_ve[~~(Math.random()*3)],1,_r(1,.15))}
         if(P.activeLMBSk==='kiSlash')_fireKiSlashCrescent((_cresStep%3)+1);else{try{SFX.slash()}catch(e){console.error('[SFX] basic melee dispatch error:',e)}}}
     }
     else if(isJust('shield')||_sdTapOk()){_sdTapBuf=-999;P.s='sDraw';P._sdHold=0} // ═ 발도 게이팅: 탭=뗄 때 칼등처내기, 홀드=차징. 탭버퍼로 초고속 탭 씹힘 방지 ═
@@ -32326,7 +32341,7 @@ function update(){
     let anx=P.x+adx*ams,any=P.y+ady*ams;
     if(canMv(anx,P.y,P.r))P.x=anx;if(canMv(P.x,any,P.r))P.y=any;
     // 상태별 로직
-    if(P.s==='wWindup'){if(P._kiChargeActive)_updateKiSlashThirdCharge(sp);else if(P.st2<=0){P.s='wSwing';P.st2=5;P.swProg=0}}
+    if(P.s==='wWindup'){if(P._kiChargeActive)_updateKiSlashThirdCharge(sp);else if(P.st2<=0){_ch1RigStrikeOwner=null;P.s='wSwing';P.st2=5;P.swProg=0}}
     else if(P.s==='wSwing'){P.swProg=(5-P.st2)/5;
       if(P.st2<=3&&P.st2+sp>3){
         const _wRange=(wp().wRange||50)+(wp().bonusRange||0)*4;
@@ -32522,7 +32537,7 @@ function update(){
       // 활 회복 중 무기/돌진/패링으로 캔슬 가능
       if(isAct('weapon')&&useStPct('weapon')){P._atkBon=~~(_lastCost*1.5);if(G._pStats)G._pStats._atkC++;
         if(P.activeLMBSk==='kiSlash'&&_cresStep===2&&_cresComboT>0){_beginKiSlashThirdCharge()}
-        else{P.s='wSwing';P.st2=5;P.swProg=0;_startSilvertailAttackMotion('lmb');P.atkArc=P.facing;if(Math.random()<.35){const _ve=['voice_grunt','male_grunt','voice_attack'];playSample(_ve[~~(Math.random()*3)],1,_r(1,.15))}
+        else{P.s='wSwing';P.st2=5;P.swProg=0;_ch1RigRememberStrike();_startSilvertailAttackMotion('lmb');P.atkArc=P.facing;if(Math.random()<.35){const _ve=['voice_grunt','male_grunt','voice_attack'];playSample(_ve[~~(Math.random()*3)],1,_r(1,.15))}
           if(P.activeLMBSk==='kiSlash')_fireKiSlashCrescent((_cresStep%3)+1);else SFX.slash()}}
       else if(isAct('charge')&&P.chargeStocks>0&&!_harpActive&&(P.activeChargeSk==='magicBlink'?P.mp>=mpCost('blink'):useStPct('charge'))){
         // ── 사슬 발사 (bowRecover 캔슬) ──

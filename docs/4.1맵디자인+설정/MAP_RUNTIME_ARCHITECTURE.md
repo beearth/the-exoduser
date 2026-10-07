@@ -421,3 +421,15 @@ mapObjs는 전역 MAP_OBJS로 복원한다. 배열 identity는 새로 만들되 
 Clock 첫 CPU는 7그룹·37조건 PASS 뒤 직전 fractional invalid 틱 `100.5→101`에서 `.008333333333333333`이 전달되어 기대0 FAIL1/잔여4조건 미도달/exit1을 보존했다. 실제 `_gameFrame`은 정수이며 이 실패는 통제 invalid 경계다. 최종 소스에 `Number.isSafeInteger(previous.frame)` 조건을 추가했고, 원37PASS를 반복하지 않는 실패1+잔여4 한정 검수로 분리한다.
 
 최종 c0176bfa 소스의 별도 clock 제한 CPU는 실패1+잔여4만 **5조건 PASS/FAIL0/미도달0/exit0/source 전후 exact**로 완료했다. 원37PASS와 합산한 clean42PASS로 표시하지 않으며 native5조건과도 별개다. 추가 근거는 `clock-guard-cpu-receipt.json`, `clock-invalid-implementation.json`, `clock-guard-limited-receipt.json`이다.
+
+### ROOT-CH1-1-WARRIOR-STRIKE-RIG-20261007 — 본편 전사 LMB 베기 표시 부분 연결
+
+기존 production3387 opt-in의 동일 map/P/camera/X 안에서 전사 LMB-origin 베기 본체만 부분 대체한다. terrain/geometry/충돌/전투 권위는 그대로다.
+
+정확한 origin·atlas gate·셀·phase·anchor·미채택 상태는 `docs/4.0케릭터스프라이트 디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md`의 동일 completion 절을 따른다.
+
+최종 sparse guard의 새 한정 CPU는 6조건 PASS/FAIL0/미도달0/exit0이며 최초 공격 CPU100PASS·1FAIL은 별도 보존한다. root가 인계한 동일2a052 소스의 새 main native는 Chrome/context/page 각1, 실제 LMB east/index2의4조건 PASS/FAIL0/미도달0/exit0이다. 실제 atk2 f2/phase2.5÷9/609vertices/canvas85×85/alpha>16픽셀581/GL0, 현재 owned LMB-origin1을 관측했고 wRecover에서 bodyCurrent=false, idle 복귀 owner=null을 관측했다. pageerror/httpfailure0 및 POSTmats1 차단/서버도달0이다. W setup1300ms 입력 중 xy4020,7420이 변하지 않아 이동 성공을 주장하지 않는다. root PNG 직접 판독은 main 시작 금빛FX가 몸·발을 가리고 격리 공격 그림은 보이는 상태다. VISUAL VERDICT: RETOUCH. 실제 발·native8방향·회수 rig·DS ghost·native6·audio·save는 미인수다. 이전 idle/W native5 및 clock5 CPU와 합산하지 않는다.
+
+최초 공격 CPU는 2a052 epoch에서9그룹 도달/8그룹 완료/100조건 PASS·1FAIL/exit1이었다. native.every가 sparse hole(index8)을 건너뛰어 잘못된 배열을 허용한 반례를 원 result.json에 동결했다. 최종8a4e 소스는 i0…8 직접 for-loop와 Object.hasOwn(native,i)로 각 셀의 실재 own index를 요구한다. 최초100PASS를 재실행하지 않은 sparse 한정 후속은 6조건 PASS/FAIL0/미도달0/exit0이다. hole8·hole0·hole4·inherited-only4·own undefined8은 렌더0으로 차단했고 dense 대표 n/f4는 phase.5/anchor(0,18)/단회 렌더를 유지했다. 앞선 native4PASS는 2a052 소스의 결과이며 최종 own-index guard의 native 검수는 미실행/추가Chrome0이다. clean 전체 PASS로 합산하지 않는다.
+
+검수 원문은 외부 ch1-main-warrior-attack-20261007/validation-receipt.json에 epoch별로 보존한다. 최종 game SHA는 8a4e83ab107ad18979f05c7ced7b02e56ee617dee0c64bd9fa3a715c519795b2, sparse 한정 원문은 9440B/637d3d33c0c3d861c3902f3da808ca07d5ffa1e8c588beefde14c4b9dcdc9f7a이다. docs 전체 무제외 관련 검색45경로 중 현재정본13을 동기화하고 역사·타모드·owner WIP·보호2_3의32경로는 그대로 보존했다.

@@ -1901,3 +1901,17 @@ CH1-1 production smoothing의 전사 표시만 부분 채택한다. outer mass/g
 CPU 이력은 합산하지 않는다. 초기 adapter3그룹13조건 PASS 후 G04 maxX 단독 변형 오라클 FAIL1/8그룹 미도달/exit1을 보존했다. root 보고의 별도 오라클 정정 limited9그룹48조건 PASS는 통제 rig CPU이며 실제 factory/GPU와 구분한다. active-tick clock의 2c90 원본은7그룹37조건 PASS 후 previous.frame=100.5→101 경계 FAIL1/잔여4조건 미도달을 보존했다. 현재 c017의 previous.frame safe-integer guard 후 별도 제한 후속은 새 실패조건+잔여4조건, 총5조건 PASS/FAIL0/미도달0/exit0이다. 앞선37PASS를 반복·합산하지 않았다. root clock-guard-limited-receipt.json5067B/4aaec9d44c8864842fb5269cf3f2408dc52c102b6dc1d7a1de997cd4d179b72d를 근거로 하며 clock 보정 후 Chrome 추가0이다.
 
 MAP PRODUCTION REPORT (표시 소비자 부분): STAGE CH1-1/main warrior opt-in; guidev0.9/SSOT 기존 LOCK 준수. LARGE OUTER MASS/MEDIUM/GROUND/geometry/collision/nav/원PNG 변경0. PLAYABLE/COMBAT은 실제 idle/W 부분 이동만 관측; 보스/획득/사망·부활/재도전 미인수. LANDMARK/DETAIL 변경0. CAMERA QA는 전체8방향·가림 미완료; TECH QA는 각 epoch CPU/native 범위를 위와 같이 분리. OWNERSHIP root main+adapter+정본; 3.3 foreign WIP는 partial-stage inverse 필요. VISUAL VERDICT: RETOUCH. NEXT: 최종 clock 제한 검수, 실제 발/전경 및 같은 후보의 전투→획득→보스개방→사망/부활→재도전 인수.
+
+### ROOT-CH1-1-WARRIOR-STRIKE-RIG-20261007 — 본편 전사 LMB 베기 표시 부분 연결
+
+CH1-1 production smoothing의 전사 opt-in에서 LMB-origin wSwing/atk2 본체만 추가 연결한다. 기존 outer mass/ground/nav/카메라/랜드마크 및 stage 수치는 변경하지 않는다.
+
+정확한 origin·atlas gate·셀·phase·anchor·미채택 상태는 `docs/4.0케릭터스프라이트 디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md`의 동일 completion 절을 따른다.
+
+최종 sparse guard의 새 한정 CPU는 6조건 PASS/FAIL0/미도달0/exit0이며 최초 공격 CPU100PASS·1FAIL은 별도 보존한다. root가 인계한 동일2a052 소스의 새 main native는 Chrome/context/page 각1, 실제 LMB east/index2의4조건 PASS/FAIL0/미도달0/exit0이다. 실제 atk2 f2/phase2.5÷9/609vertices/canvas85×85/alpha>16픽셀581/GL0, 현재 owned LMB-origin1을 관측했고 wRecover에서 bodyCurrent=false, idle 복귀 owner=null을 관측했다. pageerror/httpfailure0 및 POSTmats1 차단/서버도달0이다. W setup1300ms 입력 중 xy4020,7420이 변하지 않아 이동 성공을 주장하지 않는다. root PNG 직접 판독은 main 시작 금빛FX가 몸·발을 가리고 격리 공격 그림은 보이는 상태다. VISUAL VERDICT: RETOUCH. 실제 발·native8방향·회수 rig·DS ghost·native6·audio·save는 미인수다. 이전 idle/W native5 및 clock5 CPU와 합산하지 않는다.
+
+MAP PRODUCTION REPORT (§23): STAGE=CH1-1/main warrior opt-in 표시 부분. MASTER/OUTER/MEDIUM/GROUND/LANDMARK/DETAIL 변경0. PLAYABLE/COMBAT=실제 기본LMB east1방향의4조건 부분 PASS이며 전체 전투 인수 미완료. CAMERA/TECH=최종 sparse 한정 CPU6조건 PASS(전체 원검수와 별도), 발·전체8방향·가림 미인수. FILES=root main hook+관련 현재docs, owner/protected WIP 보존. VISUAL VERDICT: RETOUCH. NEXT=동일 후보의 발 투영/가림 및 전투→획득→보스개방→사망/부활/재도전 검수.
+
+최초 공격 CPU는 2a052 epoch에서9그룹 도달/8그룹 완료/100조건 PASS·1FAIL/exit1이었다. native.every가 sparse hole(index8)을 건너뛰어 잘못된 배열을 허용한 반례를 원 result.json에 동결했다. 최종8a4e 소스는 i0…8 직접 for-loop와 Object.hasOwn(native,i)로 각 셀의 실재 own index를 요구한다. 최초100PASS를 재실행하지 않은 sparse 한정 후속은 6조건 PASS/FAIL0/미도달0/exit0이다. hole8·hole0·hole4·inherited-only4·own undefined8은 렌더0으로 차단했고 dense 대표 n/f4는 phase.5/anchor(0,18)/단회 렌더를 유지했다. 앞선 native4PASS는 2a052 소스의 결과이며 최종 own-index guard의 native 검수는 미실행/추가Chrome0이다. clean 전체 PASS로 합산하지 않는다.
+
+검수 원문은 외부 ch1-main-warrior-attack-20261007/validation-receipt.json에 epoch별로 보존한다. 최종 game SHA는 8a4e83ab107ad18979f05c7ced7b02e56ee617dee0c64bd9fa3a715c519795b2, sparse 한정 원문은 9440B/637d3d33c0c3d861c3902f3da808ca07d5ffa1e8c588beefde14c4b9dcdc9f7a이다. docs 전체 무제외 관련 검색45경로 중 현재정본13을 동기화하고 역사·타모드·owner WIP·보호2_3의32경로는 그대로 보존했다.

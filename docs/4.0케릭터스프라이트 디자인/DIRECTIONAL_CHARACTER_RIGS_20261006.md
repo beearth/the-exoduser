@@ -1214,3 +1214,29 @@ Clock 첫 CPU는 7그룹·37조건 PASS 뒤 직전 fractional invalid 틱 `100.5
 | snapshot | fresh frozen 통계·generation·lastFrame·ready/reason/disposed/failed/lost. lastFrame에 id/mode/direction/phase/frame/elapsed/rect/backing/vertices/heightLocal/delta/posePublicationMatched. `heightSpace='parent-body-local-reference'`, groundHeight0, ownsRAF/ownsSimulation/ownsImages false, full3DPlayerAccepted/mainPlayableAccepted false |
 | dispose/suspend | suspend 퇴역/세대 무효화, dispose listener 제거·rig/renderer 소유해제; 재호출 idempotent. 실제 native trusted pagehide에서 rig·renderer dispose 각1, 물리GPUfree UNKNOWN |
 | 본편 연결 제한 | API silvertail·attack 가능과 main warrior idle/run/walk 채택을 혼합0. ghost는 렌더 완료 canvas와 frozen lastFrame identity만 재사용. 원래 AI/전투/세이브 권한은 adapter에 없음 |
+
+### ROOT-CH1-1-WARRIOR-STRIKE-RIG-20261007 — 본편 전사 LMB 베기 표시 부분 연결
+
+기존 idle/walk/run 부분 채택 이후, 아래 LMB-origin wSwing/atk2의9셀 gate를 만족한 본체만 추가 채택한다. 이전 idle-only epoch의 공격 native 폴백 문구는 이 좁은 베기 표시 예외가 생겼으며 나머지 공격 상태는 그대로다.
+
+| ID / 적용 위치 | 정확한 현재 계약 |
+|---|---|
+| opt-in / scope | `localhost`/`127.0.0.1:3387`, `ch1Three=1&ch1Rig=1` 동시 지정, 기본 OFF. 전사 `_charIdx===0`·G.on·stage0·비보스·production smoothing·P.hp>0 |
+| display-origin producer | 기존 idle 기본LMB 진입과 bowRecover→기본LMB 진입 2곳만 `_ch1RigRememberStrike()` 호출. `_ch1RigStrikeOwner={actor:P,map:G.map,animator:P._sa}`는 표시용 참조 |
+| strike 소비자 | `P.s==='wSwing' && P._sa.anim==='atk2'` 및 현재 actor/map/animator 동일 identity일 때만 `mode:'attack'`. actor/map/animator/class 변경 또는 wSwing 종료면 origin null |
+| special / 미채택 | kiSlash3 charge 해제 및 기존 windup 종료→wSwing은 origin null. windup/recovery/bash/death/실버테일/다른 특수 상태는 native 아틀라스 |
+| atlas identity | `_atlasPReady`, `P._sa.img===_atlasP_img`, `P._sa.fm===_atlasP_frames`, native 배열===`fm['atk2_'+direction]`. atlas width≥720/height≥1024 |
+| 공격 셀 gate | 방향 index0…7=`s,se,e,ne,n,nw,w,sw`; 정확히9셀. i0…8 직접 for-loop에서 Object.hasOwn(native,i)를 통과한 모든 cell은 x=80*i, y=384+80*directionIndex, w=h=80. f는 정수0…8. 48px/8프레임 fallback·stale array·잘못된 cell은 native |
+| phase / reference | 실제 이미 선택된 `P._sa.f`를 phase=`(f+.5)/9`로 소비. `heightWorld:32`는 body-local reference. 기존 frame 선택·전투 타이밍을 전진시키지 않음 |
+| 공격 발 anchor | 기존 X transform 안 `translate(0,18)`; 80×80 셀 중심(40,40)→catalog foot(40,58). idle/walk/run의 기존(-2,+22)/reference32는 유지 |
+| clock / ghost | 기존 active-tick clock·same-frame canvas/rect/6원소 X matrix 고스트 재사용 유지. ghost용 rig.update/render 추가0 |
+| QA snapshot | 성공 strike blit만 attackFrames 증가. adoptedModes=`idle/walk/run/attack(wSwing only)`, attackStates=`LMB-origin wSwing/atk2`, attackStrikeAccepted=true는 코드 capability이며 검사PASS 아님. attackAccepted=false/fullPlayerLinked=false 유지 |
+| 보존 / 생명주기 | 기존 전투 판정·ST/MP 소비·상태 시간·공격 방향 선택·weaponFX·사운드·원PNG·충돌·AI·저장 스키마 불변. 기존 opt-in import/suspend/pagehide dispose 유지 |
+
+조사 소스: `game.html` 4058588B / `8a4e83ab107ad18979f05c7ced7b02e56ee617dee0c64bd9fa3a715c519795b2`; adapter `tools/2_5d/ch1-player-rig.mjs` 12712B / `acc523025d9a56d5e777a2cf5b4145172d57b21ba7f35d4f5e535d4b19ebac0e`는 기존 그대로다. root가 완료 증거를 인계한 후 해당 epoch 결과만 추가한다.
+
+최종 sparse guard의 새 한정 CPU는 6조건 PASS/FAIL0/미도달0/exit0이며 최초 공격 CPU100PASS·1FAIL은 별도 보존한다. root가 인계한 동일2a052 소스의 새 main native는 Chrome/context/page 각1, 실제 LMB east/index2의4조건 PASS/FAIL0/미도달0/exit0이다. 실제 atk2 f2/phase2.5÷9/609vertices/canvas85×85/alpha>16픽셀581/GL0, 현재 owned LMB-origin1을 관측했고 wRecover에서 bodyCurrent=false, idle 복귀 owner=null을 관측했다. pageerror/httpfailure0 및 POSTmats1 차단/서버도달0이다. W setup1300ms 입력 중 xy4020,7420이 변하지 않아 이동 성공을 주장하지 않는다. root PNG 직접 판독은 main 시작 금빛FX가 몸·발을 가리고 격리 공격 그림은 보이는 상태다. VISUAL VERDICT: RETOUCH. 실제 발·native8방향·회수 rig·DS ghost·native6·audio·save는 미인수다. 이전 idle/W native5 및 clock5 CPU와 합산하지 않는다.
+
+최초 공격 CPU는 2a052 epoch에서9그룹 도달/8그룹 완료/100조건 PASS·1FAIL/exit1이었다. native.every가 sparse hole(index8)을 건너뛰어 잘못된 배열을 허용한 반례를 원 result.json에 동결했다. 최종8a4e 소스는 i0…8 직접 for-loop와 Object.hasOwn(native,i)로 각 셀의 실재 own index를 요구한다. 최초100PASS를 재실행하지 않은 sparse 한정 후속은 6조건 PASS/FAIL0/미도달0/exit0이다. hole8·hole0·hole4·inherited-only4·own undefined8은 렌더0으로 차단했고 dense 대표 n/f4는 phase.5/anchor(0,18)/단회 렌더를 유지했다. 앞선 native4PASS는 2a052 소스의 결과이며 최종 own-index guard의 native 검수는 미실행/추가Chrome0이다. clean 전체 PASS로 합산하지 않는다.
+
+검수 원문은 외부 ch1-main-warrior-attack-20261007/validation-receipt.json에 epoch별로 보존한다. 최종 game SHA는 8a4e83ab107ad18979f05c7ced7b02e56ee617dee0c64bd9fa3a715c519795b2, sparse 한정 원문은 9440B/637d3d33c0c3d861c3902f3da808ca07d5ffa1e8c588beefde14c4b9dcdc9f7a이다. docs 전체 무제외 관련 검색45경로 중 현재정본13을 동기화하고 역사·타모드·owner WIP·보호2_3의32경로는 그대로 보존했다.
