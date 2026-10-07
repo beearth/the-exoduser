@@ -130,7 +130,7 @@
 | 보드 | 동일 폭 2열, 행 `minmax(100px,1fr) 140px`, 간격10px. 왼쪽 보석/상세, 오른쪽 장비판은 두 행 전체 사용 |
 | 장비판 | 17부위, 4열, 간격4px, 내부 스크롤. 미장착도 표시하고 실제 장비 홈만 조작 |
 | 부위 카드 | padding2px, 제목10px, 아이콘 높이18px·최대폭26px, 아이템 이름 tooltip. 기존 `_itemSkin(item,28,'#c5b38d')` 재사용 |
-| 소켓 | 18×18px, 간격2px, 빈 홈◇ / 장착 보석12×15px. 비호환 disabled opacity .24, 키보드 focus 2px |
+| 소켓 | ~~18×18px~~ → **2026-10-08 리디자인**(아래 절). 세팅 그림 `img/ui/gem_socket_v1.png`, 카드 폭의 24%(26~64px) |
 | 보유 격자 | 최소열54px, 행58px, 간격3px, 보석29×36px, 수량12px |
 | 상세 | 높이140px, 열58px/나머지, 간격10px, padding10px 12px, 보석36×45px, 이름14px, 수치21px. 기존 별도 홈 목록은 숨기고 오른쪽 장비판에서 조작 |
 | 외관 | 유골함과 같은 어두운 표면·금속 구분선, 제목14px. 기존 이미지·테두리 사용, 신규 이미지 생성 없음 |
@@ -2753,3 +2753,20 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 선택 카드 마감 | 캐릭터·커서 native button `settings-choice`, aria-pressed·번역된 aria-label, 캐릭터 aria-describedby. data-settings-choice로 재구성 전/후 초점 보존(preventScroll), Enter/Space 선택·Tab 이동. 기존 미리보기·저장·atlas/cursor 함수 유지 |
 | 카드 재질·번역 | 일반/선택 배경·금색 경계, hover/gp-hover와 focus-visible2px/offset3px 분리. button 공통 before/after 장식 제외, 설명400weight·긴 단어 줄바꿈. easy-test 이름·설명도 본편과 같은 기존 _T 조회. 정확 수치·식별자: SETTINGS_UI_WORKSPACE_20260929.md의 선택 카드 절 |
 | 선택 카드 검증 | 설정 회귀31/31 PASS. 두 HTML의 실제 Enter/Space 선택·초점·Tab 이동/설정창 유지 확인. 본편 KO/EN×6크기×조작/시스템=24건 잘림·가로 넘침0. easy-test 추가 크기 검사는 브라우저 도구 중단으로 미완료; 물리 패드 미검증 |
+
+## 2026-10-08 보석 소켓 리디자인
+
+사용자 지적: "보석 슬롯이 작은 구멍같이 뚫려 있어서 볼품없다". 기존 소켓은 지름 21~23px CSS 원이라 카드(1080p 165px, 2582폭 231px) 안에서 점처럼 보였다.
+
+| 항목 | 값 |
+|---|---|
+| 에셋 | `img/ui/gem_socket_v1.png` 256×256 RGBA. 흑철 원판 + 청동 고딕 테 + 대각 발톱 4개 + 깊은 빈 홈. MagicLight Seedream 5.0 Pro 1:1 1장(100P), 스타일 레퍼런스 `img/ui/ossuary_socket_hf_v2.png`, 회색 배경 원형 마스크 키잉. 원본 `output/gem_socket_20261008/seedream_raw_1920.png` |
+| 크기 | 카드 `container-type:inline-size`, `--sock:clamp(26px,24cqi,64px)` → 1280×720 26px / 1920×1080 39px / 2582×1231 54px |
+| 배치 | 카드 하단 중앙 한 줄(`width:max-content`, `flex-wrap:nowrap`), 간격 소켓의 8%, 뒤에 어두운 타원 그림자 |
+| 빈 홈 | 그림 그대로(◇ 문자 숨김) |
+| 장착 | 보석 66×72%, 밝기1.25·채도1.2 + 보석 색 발광(drop-shadow) + 홈 안쪽 보석 색 방사광 + 바깥 보석 색 글로우 |
+| 장착 가능 | 보석 선택/드래그 중 호환 빈 홈: 보석 색 2px 테 + 글로우 1.6초 맥동(`invSockPulse`), 감속 모드에서는 정지 |
+| 호버·드롭 | 밝기1.22·확대1.06 / 드롭 대상 1.14 |
+| 비호환 | opacity .45, 채도 .3 |
+| 파일 | `inventory-gems-finish.css` 말미(로드 순서상 기존 규칙 덮음), 캐시 `?v=20261008-socket-art1`(game.html. game-easy-test.html은 이 CSS를 로드하지 않음) |
+| 검수 | 1280×720·1920×1080·2582×1231 실제 보석 탭 캡처. 소켓 한 줄(maxRows 1), 장착 보석 1920 25×28px·2582 36×39px, pageerror 0 |

@@ -231,3 +231,28 @@ html.cr-relic-art-missing-1 .cr-relic-inline[data-sheet="1"] .cr-relic-fallback,
   #invPanel .inv-cr-portrait{display:none;}
 }
 @media(max-width:480px){#invPanel .inv-cr-equipment-list{grid-template-columns:repeat(3,minmax(0,1fr));}}
+
+/* 2026-10-08 보석 소켓 리디자인: 작은 CSS 구멍 → 흑철·청동 세팅 그림(img/ui/gem_socket_v1.png).
+   크기는 카드 폭에 비례(카드 101~231px → 소켓 약 26~55px). 보석은 세팅 안에 크게, 보석 색으로 빛남. */
+#invPanel .inv-cr-equipment-card{container-type:inline-size;}
+#invPanel .inv-cr-equipment-sockets{--sock:clamp(26px,24cqi,64px);gap:calc(var(--sock) * .08);min-height:var(--sock);bottom:calc(var(--sock) * .06);padding:calc(var(--sock) * .06) calc(var(--sock) * .14);width:auto;left:50%;right:auto;transform:translateX(-50%);border-radius:999px;background:radial-gradient(ellipse at 50% 60%,#05070acc 30%,#05070a00 72%);}
+#invPanel .inv-cr-socket,
+#invPanel .inv-cr-socket[data-filled=false],
+#invPanel .inv-cr-socket[data-filled=true]{position:relative;width:var(--sock);height:var(--sock);min-width:var(--sock);padding:0;border:0;border-radius:50%;background:url('img/ui/gem_socket_v1.png') center/100% 100% no-repeat;box-shadow:0 3px 6px #000c;color:transparent;flex-shrink:0;overflow:visible;transition:filter .15s ease,transform .15s ease;}
+#invPanel .inv-cr-socket .inv-cr-socket-empty{display:none;}
+#invPanel .inv-cr-socket .inv-cr-gem{width:58%;height:64%;filter:drop-shadow(0 0 calc(var(--sock) * .12) var(--socket-gem,#c8ad76)) drop-shadow(0 1px 1px #000);}
+#invPanel .inv-cr-socket .inv-cr-gem::before{inset:16% 18% 26%;}
+#invPanel .inv-cr-socket[data-filled=true]::after{content:'';position:absolute;inset:14%;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--socket-gem,#c8ad76) 38%,transparent),transparent 70%);z-index:-1;}
+#invPanel .inv-cr-socket[data-filled=false][data-ready=true],
+#invPanel #invCrystalsPanel[data-gem-dragging=true] .inv-cr-socket[data-ready=true]{box-shadow:0 0 0 2px color-mix(in srgb,var(--socket-gem) 80%,#000),0 0 calc(var(--sock) * .35) var(--socket-gem),0 3px 6px #000c;animation:invSockPulse 1.6s ease-in-out infinite;}
+#invPanel .inv-cr-socket:not(:disabled):hover{filter:brightness(1.22);transform:scale(1.06);border:0;background:url('img/ui/gem_socket_v1.png') center/100% 100% no-repeat;}
+#invPanel .inv-cr-socket:disabled{opacity:.45;filter:saturate(.3) brightness(.7);}
+#invPanel #invCrystalsPanel[data-gem-dragging=true] .inv-cr-socket[data-drop-target=true]{transform:scale(1.14);background:url('img/ui/gem_socket_v1.png') center/100% 100% no-repeat;}
+#invPanel .inv-cr-socket:focus-visible{outline:2px solid #f2dbac;outline-offset:2px;}
+@keyframes invSockPulse{50%{box-shadow:0 0 0 2px var(--socket-gem),0 0 calc(var(--sock) * .55) var(--socket-gem),0 3px 6px #000c;}}
+@media(prefers-reduced-motion:reduce){#invPanel .inv-cr-socket{transition:none;animation:none!important;}}
+#invPanel .inv-cr-equipment-sockets{left:0;right:0;transform:none;margin:0 auto;width:max-content;max-width:100%;flex-wrap:nowrap;}
+#invPanel .inv-cr-socket .inv-cr-gem{width:66%;height:72%;filter:brightness(1.25) saturate(1.2) drop-shadow(0 0 calc(var(--sock) * .14) var(--socket-gem,#c8ad76)) drop-shadow(0 0 2px color-mix(in srgb,var(--socket-gem,#c8ad76) 80%,#fff)) drop-shadow(0 1px 1px #000);}
+#invPanel .inv-cr-socket[data-filled=true]::after{inset:10%;background:radial-gradient(circle,color-mix(in srgb,var(--socket-gem,#c8ad76) 70%,#fff) 0,color-mix(in srgb,var(--socket-gem,#c8ad76) 45%,transparent) 38%,transparent 72%);z-index:0;}
+#invPanel .inv-cr-socket[data-filled=true] .inv-cr-gem{position:relative;z-index:1;}
+#invPanel .inv-cr-socket[data-filled=true]{box-shadow:0 0 calc(var(--sock) * .3) color-mix(in srgb,var(--socket-gem,#c8ad76) 55%,transparent),0 3px 6px #000c;}
