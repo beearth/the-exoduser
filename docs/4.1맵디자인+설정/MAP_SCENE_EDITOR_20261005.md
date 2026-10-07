@@ -2107,3 +2107,91 @@ code+docs 정상 commit/push 및 원격 exact SHA는 같은 디렉터리 remote-
 | FILES / GIT | root 소유 lab1+관련docs19만 정상 commit/push. 외부 원문백업·검수·원격exactSHA는 editor-probe-css-size-20261007/remote-preservation-receipt.json에 보존 |
 | VISUAL VERDICT | RETOUCH — 전체 맵 확대 흐림·절벽/전경 접합 미해결. 새 금색 위치 표시 식별만4뷰 PASS |
 | NEXT PASS | 실제 캐릭터·NPC consumer와 본편 연결, 맵 해상도·레이어 접합 개선. 기존 완료 검사 반복0; 본편native6/청취/save/A급 완료 아님 |
+
+## 2026-10-08 현재 — 에디터 제스처 포인터 소유권
+완료 ID: ROOT-EDITOR-POINTER-GESTURE-OWNER-20261008. 현재 source는 tools/map-scene-editor.js 82382B / SHA256 4f073ecdbddbc785042a7b905803a4e26137e9e63ad0a13ca536a7ba6f954a45다. 기존 종료 정책을 유지하면서 진행 중인 제스처에 다른 포인터가 개입하는 경로를 막았다.
+
+| 적용 위치 | 현재 계약 |
+|---|---|
+| canvas pointerdown | 기존 busy/dialogueOpen과 함께 drag가 있으면 focus/world/history/새 drag 게시 전에 반환한다. |
+| 기존 capture 3곳 | pan, brush, move·resize·batch에서 drag.pointerId=e.pointerId를 setPointerCapture 앞에 기록한다. 새 capture API/리스너는 없다. |
+| canvas pointermove | drag가 없거나 e.pointerId가 현재 drag.pointerId와 다르면 제스처 변경 전에 반환한다. 기존 world(e) 계산·coords 리프 갱신은 이 검사 앞에 남는다. |
+| endDrag(e) | 이벤트가 있고 ID가 다르면 반환한다. 현재 owner의 pointerup/pointercancel/lostpointercapture는 기존 종료 흐름을 따른다. |
+| endDrag()·blur | 무인자 내부 종료는 계속 허용한다. blur의 closeDialogue→keys.clear→space=false→endDrag() 순서는 그대로다. |
+| 기존 commit/복구 | pan은 history 처리 없이 종료한다. 나머지는 validate→History.end→changed의 기존 commit 정책이며 cancel/lostcapture도 rollback으로 바꾸지 않았다. 검증 실패 시 기존 pending snapshot 복구를 유지한다. |
+| palette 비동기 경로 | 기존 setBusy(true) 뒤 asset await/placement/history 종료 후 return하는 별도 경로다. 새 async lease를 추가하지 않았다. |
+| 변경량 | 4개 치환 규칙, literal 6곳, +153B. core History/undo 제한·scene/nav·원 PNG·게임플레이·저장·RAF/timer 변경 없음. |
+
+| 검수 | 실제 결과·한계 |
+|---|---|
+| 최초 controlled CPU | Node 1회, 실제 전체 handler 구간+실제 map-scene-core History를 사용한 candidate 28개 그룹 PASS, FAIL/setup/미도달 0, exit 0. 기존 두 번째 down의 drag 덮어쓰기 재현 1그룹은 별도다. 29개 clean product PASS로 합산하지 않는다. |
+| 통제 범위 | EventTarget/capture, world/hit-test/UI, brush/paintLine 효과, palette Promise/busy, changed는 통제 ports다. 실제 autosave·native PointerEvent/capture·전체 editor IIFE 실행이 아니다. VM 실행 수는 계측하지 않았다. |
+| source peer | 최종 source 정적 blocking 0. CPU 실행과 별개다. |
+| 미인수 | 같은 pointerId 재사용의 세대 구분, capture throw·임의 callback 재진입, 실제 장치·브라우저 capture 순서, 실 UI·성능. Chrome/GPU/새 PNG/청취/실 save 실행 0. |
+| 제품 전체 | UI_NOT_ASSESSED / nativeNOT_RUN / VISUAL RETOUCH. CH1 정상 boss 개방→사망·부활·재도전, native6·audio·실보상 durableSave·A급 미인수. 기존 사용자 IAB13은 old-loaded 그대로 유지했다. |
+
+근거: /Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/editor-pointer-gesture-owner-20261008/implementation-receipt.json, cpu-execution-receipt.json, validation-receipt.json, source-peer.json, visual-verdict.json. 코드 후 새 docs 전체 관련 검색은 1회, eligible1022 text/818 Markdown에서 26경로·116행·119회다. giant owner/protected 2_3/container 경로의 본문 제외를 기록했고, 26문서 전수 fullread로 주장하지 않는다. 현재 정본 3개만 동기화하며 기존 역사·제약을 보존한다.
+
+================= MAP PRODUCTION REPORT =================
+STAGE: shared scene editor gesture ownership; no authored stage change
+MASTER
+- silhouette: unchanged; not visually reassessed
+- regions: unchanged
+- main route: unchanged
+- side spaces: unchanged
+OUTER MASS
+- LEFT: unchanged
+- RIGHT: unchanged
+- TOP: unchanged
+- SOUTH: unchanged
+- major holes: not assessed in this editor-input unit
+LARGE
+- source assets: no asset changes
+- composites: unchanged
+- overlap: not assessed
+- repeated silhouette: not assessed
+MEDIUM
+- connections: unchanged
+- remaining holes: not assessed
+GROUND
+- shadow: unchanged
+- contamination: unchanged
+- structure integration: unchanged
+PLAYABLE
+- main arenas: unchanged
+- travel space: unchanged
+- breathing space: unchanged
+- threat space: unchanged
+- combat readability: not assessed
+LANDMARK
+- primary: unchanged
+- secondary: unchanged
+- tertiary: unchanged
+CAMERA QA
+- START: NOT_RUN
+- EARLY: NOT_RUN
+- ARENA: NOT_RUN
+- SIDE L: NOT_RUN
+- SIDE R: NOT_RUN
+- LANDMARK: NOT_RUN
+- LATE: NOT_RUN
+- EXIT: NOT_RUN
+TECH QA
+- route: no route/nav changes; actual traversal NOT_RUN
+- collision: unchanged; actual collision QA NOT_RUN
+- pageerror: UNKNOWN; browser NOT_RUN
+- 404: UNKNOWN; browser NOT_RUN
+- seam: not assessed
+- loading: controlled palette busy/await group only; native loading NOT_RUN
+- performance: UNKNOWN; no profiling
+FILES
+- stage-owned: tools/map-scene-editor.js and synchronized current docs
+- concurrent touched: existing game/settings/owner WIP preserved and unadopted
+- unrelated touched: none by ROOT in this unit
+GIT
+- staged: exact owned source/docs paths are recorded in completion-receipt.json
+- commit: final commit is recorded in completion-receipt.json
+- push: final remote result is recorded in completion-receipt.json
+- deploy: NOT_RUN
+VISUAL VERDICT: RETOUCH
+NEXT PASS: permitted native competing-pointer/capture QA and remaining actual CH1 visual/route/audio/save acceptance. This unit accepts controlled input behavior only.

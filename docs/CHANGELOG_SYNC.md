@@ -56542,3 +56542,16 @@ WOLF 파일 쓰기는 자동 승인 검토에서 dangerous로 거절됐고 구�
 | VISUAL VERDICT | RETOUCH / UI_NOT_ASSESSED / nativeNOT_RUN |
 
 WOLF 파일 쓰기는 자동 승인 검토에서 dangerous로 거절됐고 구체 사유는 제공되지 않았다. 해당 후보의 추가 접근·실행·채택·Git·다른 tool/path/host/권한 우회0을 유지한다.
+
+## 2026-10-08 — 에디터 제스처 포인터 소유권
+완료 ID: ROOT-EDITOR-POINTER-GESTURE-OWNER-20261008.
+
+| 항목 | 현재 구현·검수 |
+|---|---|
+| 실제 코드 | tools/map-scene-editor.js 82382B / SHA256 4f073ecdbddbc785042a7b905803a4e26137e9e63ad0a13ca536a7ba6f954a45. 4치환 규칙/6literal/+153B. drag 존재 시 새 down 거절, capture3곳 owner ID 기록, foreign move/end 거절. |
+| 보존 계약 | matching pointer·무인자 내부 종료·blur의 기존 commit/검증복구 유지. world()/coords 리프 갱신은 move guard 앞. palette busy/await 별도 경로, History/core·scene/nav/PNG·게임플레이·저장·새 RAF/timer 변경 없음. |
+| 최초 검수 | actual handler+History/통제 ports CPU Node1, candidate28그룹 PASS/FAIL·setup·미도달0/exit0. before overwrite 재현1그룹 별도. source 정적 peer blocking0. VM 수 미계측. old suite 반복0. |
+| 한계 | 같은 pointerId 세대·capture throw/재진입·native capture/장치/전체 editor·실 autosave 미인수. Chrome/GPU/새 PNG/청취/실 save0, UI_NOT_ASSESSED/nativeNOT_RUN/VISUAL RETOUCH. CH1 boss 전과정/native6/audio/durableSave/A급 미완료. |
+| docs·보존 | 코드 후 새 전체 관련 검색1회 26경로/116행/119회; 현재 MAP_SCENE_EDITOR/MASTER/CHANGELOG3만 동기화. 각 working/HEAD fullbytes 선백업·prefix/inverse/EOF1. 소유 code1+docs3 정상 보존 대상; remote exact는 최종 completion 영수증이 확정한다. |
+
+상세 계약과 가이드 §23 MAP PRODUCTION REPORT는 docs/4.1맵디자인+설정/MAP_SCENE_EDITOR_20261005.md의 같은 완료 ID 및 /Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/editor-pointer-gesture-owner-20261008/visual-verdict.json·validation-receipt.json·completion-receipt.json을 따른다. 사용자의 기존 IAB13 old-loaded 탭은 조작·재로드하지 않았다.

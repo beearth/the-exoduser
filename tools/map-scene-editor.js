@@ -562,7 +562,7 @@
   }
   function brush(pos) {if(residentAccessReport)invalidateResidentAccess();ambienceScene=null;dialogueScene=null;closeDialogue('nav-edited');const p=current(),t=p.world.tileSize,r=Math.max(0,Math.min(12,+$('brush').value||0)),cx=Math.floor(pos.x/t),cy=Math.floor(pos.y/t);for(let y=-r;y<=r;y++)for(let x=-r;x<=r;x++){const tx=cx+x,ty=cy+y;if(x*x+y*y<=r*r&&tx>=0&&ty>=0&&tx<p.world.cols&&ty<p.world.rows)p.walkable[ty*p.world.cols+tx]=tool==='walk'?1:0;}groundDetail?.invalidate();dirty=true;}
   function paintLine(from,to){const t=current().world.tileSize,steps=Math.max(1,Math.ceil(Math.hypot(to.x-from.x,to.y-from.y)/(t/2)));for(let i=0;i<=steps;i++)brush({x:from.x+(to.x-from.x)*i/steps,y:from.y+(to.y-from.y)*i/steps});}
-  canvas.addEventListener('pointerdown',async e=>{if(busy||dialogueOpen)return;canvas.focus();const pos=world(e);if(space||e.button===1||e.button===2){drag={kind:'pan',sx:e.clientX,sy:e.clientY,vx:viewport.x,vy:viewport.y};canvas.setPointerCapture(e.pointerId);e.preventDefault();return;}if(playing)return;
+  canvas.addEventListener('pointerdown',async e=>{if(busy||dialogueOpen||drag)return;canvas.focus();const pos=world(e);if(space||e.button===1||e.button===2){drag={kind:'pan',sx:e.clientX,sy:e.clientY,vx:viewport.x,vy:viewport.y};drag.pointerId=e.pointerId;canvas.setPointerCapture(e.pointerId);e.preventDefault();return;}if(playing)return;
     if(tool==='pivot'){
       const q=selectedPair();if(!q||q.l.locked||!q.l.visible){tool='select';refresh();return;}
       const off=offset(q.l),point=K.local(q.o,pos.x-off.x,pos.y-off.y);
@@ -572,11 +572,11 @@
     }
     if(paletteId){const builtIn=LIBRARY.find(a=>a.id===paletteId), def=builtIn||current().assets.find(a=>a.id===paletteId), l=current().layers.find(l=>l.id===layerId);if(l.locked){toast('선택한 레이어의 잠금을 먼저 해제하세요');return;}setBusy(true);try{const a=current().assets.find(a=>a.id===paletteId)||await asset(def,true);const off=offset(l),placement=K.placementDefaults(a),o=object(a,snap(pos.x-off.x),snap(pos.y-off.y),placement?placement.width:(builtIn?builtIn.width:400),placement?placement.pivotX:.5,placement?placement.pivotY:1);if(placement)o.height=placement.height;history.change(p=>{if(!p.assets.some(x=>x.id===a.id))p.assets.push(a);p.layers.find(x=>x.id===layerId).objects.push(o);});selected=o.id;changed('이미지 배치됨 · 속성에서 크기와 발 기준점을 맞추세요');}catch(err){toast(err.message);}finally{setBusy(false);}return;}
     if(tool==='start'||tool==='exit'){mutate(p=>{p[tool]={x:Math.min(p.world.cols*p.world.tileSize-1,Math.max(0,snap(pos.x))),y:Math.min(p.world.rows*p.world.tileSize-1,Math.max(0,snap(pos.y)))};});return;}
-    if(tool==='walk'||tool==='block'){history.begin();brush(pos);drag={kind:'brush',last:pos};canvas.setPointerCapture(e.pointerId);return;}
+    if(tool==='walk'||tool==='block'){history.begin();brush(pos);drag={kind:'brush',last:pos};drag.pointerId=e.pointerId;canvas.setPointerCapture(e.pointerId);return;}
     const existing=selectedPair();let resize=false;if(existing&&!existing.l.locked&&batchIds.size<=1){const off=offset(existing.l),q=K.local(existing.o,pos.x-off.x,pos.y-off.y);resize=Math.hypot((q.x-existing.o.width)*viewport.zoom,(q.y-existing.o.height)*viewport.zoom)<12;}
-    const pair=resize?existing:selectAt(pos);if(pair){const group=batchObjects();history.begin();drag=group&&batchIds.size>1?{kind:'batch',pos,layer:pair.l.id,before:group.objects.map(o=>({id:o.id,x:o.x,y:o.y})),id:pair.o.id,rejected:false}:{kind:resize?'resize':'move',pos,before:K.clone(pair.o),id:pair.o.id};canvas.setPointerCapture(e.pointerId);}
+    const pair=resize?existing:selectAt(pos);if(pair){const group=batchObjects();history.begin();drag=group&&batchIds.size>1?{kind:'batch',pos,layer:pair.l.id,before:group.objects.map(o=>({id:o.id,x:o.x,y:o.y})),id:pair.o.id,rejected:false}:{kind:resize?'resize':'move',pos,before:K.clone(pair.o),id:pair.o.id};drag.pointerId=e.pointerId;canvas.setPointerCapture(e.pointerId);}
   });
-  canvas.addEventListener('pointermove',e=>{const pos=world(e);$('coords').textContent='x '+Math.round(pos.x)+' · y '+Math.round(pos.y)+' | tile '+Math.floor(pos.x/current().world.tileSize)+', '+Math.floor(pos.y/current().world.tileSize);if(!drag)return;
+  canvas.addEventListener('pointermove',e=>{const pos=world(e);$('coords').textContent='x '+Math.round(pos.x)+' · y '+Math.round(pos.y)+' | tile '+Math.floor(pos.x/current().world.tileSize)+', '+Math.floor(pos.y/current().world.tileSize);if(!drag||e.pointerId!==drag.pointerId)return;
     if(drag.kind!=='pan'&&residentAccessReport)invalidateResidentAccess();
     if(drag.kind==='pan'){viewport.x=drag.vx-(e.clientX-drag.sx)/viewport.zoom;viewport.y=drag.vy-(e.clientY-drag.sy)/viewport.zoom;dirty=true;}
     else if(drag.kind==='brush'){paintLine(drag.last,pos);drag.last=pos;}
@@ -587,7 +587,7 @@
     }
     else{const pair=selectedPair();if(!pair)return;const o=pair.o,b=drag.before;if(drag.kind==='move'){o.x=Math.max(-40000,Math.min(40000,snap(b.x+pos.x-drag.pos.x)));o.y=Math.max(-40000,Math.min(40000,snap(b.y+pos.y-drag.pos.y)));}else{const off=offset(pair.l),q=K.local(b,pos.x-off.x,pos.y-off.y);Object.assign(o,K.resize(b,pos.x-off.x,pos.y-off.y,$('aspect').checked,$('snap').checked?current().world.tileSize:1));o.x=Math.max(-40000,Math.min(40000,o.x));o.y=Math.max(-40000,Math.min(40000,o.y));}dirty=true;}
   });
-  function endDrag(){if(!drag)return;if(drag.kind!=='pan'){try{K.validate(current());history.end();changed();}catch(e){if(history.pending){history.project=history.pending;history.pending=null;}toast(e.message);refresh();}}drag=null;}
+  function endDrag(e){if(!drag||(e&&e.pointerId!==drag.pointerId))return;if(drag.kind!=='pan'){try{K.validate(current());history.end();changed();}catch(e){if(history.pending){history.project=history.pending;history.pending=null;}toast(e.message);refresh();}}drag=null;}
   canvas.addEventListener('pointerup',endDrag);canvas.addEventListener('pointercancel',endDrag);canvas.addEventListener('lostpointercapture',endDrag);canvas.addEventListener('contextmenu',e=>e.preventDefault());
   function zoom(factor,anchor){const old=viewport.zoom;viewport.zoom=Math.max(.025,Math.min(3,old*factor));if(anchor){viewport.x=anchor.x-(anchor.x-viewport.x)*old/viewport.zoom;viewport.y=anchor.y-(anchor.y-viewport.y)*old/viewport.zoom;}dirty=true;}
   canvas.addEventListener('wheel',e=>{e.preventDefault();if(dialogueOpen)return;zoom(e.deltaY<0?1.12:1/1.12,world(e));},{passive:false});
