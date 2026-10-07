@@ -40388,9 +40388,10 @@ function updateE(e,sp){
           const el=[EL.P,EL.F,EL.I,EL.D,EL.L,EL.H][~~(Math.random()*6)];
           const et=[0,2,3,3,3][~~(Math.random()*5)];
           const ne=mkEn(sx,sy,G.stage,et,false,el,e.room);
+          if(ne&&!canMv(ne.x,ne.y,ne.r)){const _sp=safePt(ne.x,ne.y,ne.r);if(_sp){ne.x=_sp.x;ne.y=_sp.y}}
           ne.hp=~~(ne.hp*.5);ne.mhp=ne.hp;ne.eShield=0;ne.eShieldMax=0; // 소환수는 약함
           ens.push(ne);
-          addParts(sx,sy,'#aa00ff',8);
+          addParts(ne.x,ne.y,'#aa00ff',8);
         }
         SFX.charge();addTxt(e.x,e.y-20,cnt+_L('체 소환!',' Summoned!'),'#cc66ff',40);
       }finally{

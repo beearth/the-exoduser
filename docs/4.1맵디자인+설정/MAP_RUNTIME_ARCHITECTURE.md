@@ -1118,3 +1118,31 @@ H2=`/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-ar
 field200×200와 CH1 arena128×108의 기존 맵 권위/진입·복귀 좌표는 유지한다. 이번 수명 key는 그 경계를 넘는 과거 좌표를 기존 ringbuffer에서 잘못 소비하지 않도록 한다. 정상 같은 공간 rewind 및 기존 비용/쿨다운/효과/합체는 변경하지 않는다.
 
 소스는 working4,113,146B/`30b33fab3c562cd2c98baa545954d0b79a4ee67be4a63d32d866da91987ed770`, owned4,112,961B/`393c08dd6cd0359f32f7caec00737bc22085535090f03458f091a34a0f78fbf2`의 ROOT3hunk다. 최종 통제 wholefunction CPU Node1/VM13·7그룹74PASS/exit0, 이전 원소스 Node1/VM1 반례관측2조건은 별도이며 clean 합산하지 않는다. 고정 unhandled metadata를 rejection 관측값으로 사용하지 않는다. native/Chrome0·IAB13 old-loaded 유지·새 시각 NOT_ASSESSED/전체 **RETOUCH**. §23 표준 보고는 ROOT 별도 report 소유이며 이 CPU 결과로 맵/카메라/TECH/native PASS를 선언하지 않는다. 상세 스킬 계약은 [2_1 정본](<../2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md>)의 같은 TASK 절을 따른다.
+
+기존 §7의 모든 스폰 PLAY 보장 문구는 이번 소환수 안전 위치 검색 null까지 보장하는 보편 명제로 확장하지 않는다. 본 절은 실제 반경 성공 보정과 null 원좌표 보존을 구분한다.
+
+## 2026-10-08 bossSummonWind 실제 소환수 반경 위치 소비
+
+작업 ID: `ROOT-DRUID-SUMMON-SAFE-POSITION-CONSUMER-20261008`. 본편 `game.html` 공통 소환 상태의 현재 계약이다. CH1 또는 URL opt-in 한정 기능으로 해석하지 않으며, easy판·다른 스폰 소비자 수정/검수를 뜻하지 않는다. 원 source9 및 기존 검수 원문은 해당 epoch의 이력으로 보존하고 아래 현재 계약을 우선한다.
+
+| id / 적용 위치 | 현재 계약 | 보존·미인수 경계 |
+|---|---|---|
+| `bossSummonWind` 위치 보정 | mkEn이 반환한 실제 소환수 `ne.r`로 안전 위치를 검증하고 성공한 결과만 `ne.x/ne.y`에 반영 | 보스 자신의 반경으로 소환수 footprint를 대신하지 않음 |
+| 검색 null | 좌표를 새로 대입하지 않고 mkEn 반환 좌표 보존 | 보스 좌표로 강제 fallback 없음. null에서도 안전 배치가 보장된다는 뜻은 아님 |
+| FX | 기존 `ens.push` 뒤 최종 `ne.x/ne.y`를 사용 | 기존 삽입/효과 순서 유지 |
+| 수량·전투 | 기존 `3+trunc(stage×.5)`, HP 절반·shield0 유지 | RNG/생성 인자·전투식·저장 변경0 |
+| 예외·회복 | 기존 `finally`의 recover70f 유지 | mkEn null의 기존 `ne.hp` 예외와 부분 삽입 prefix·원 예외 전파를 새 rollback/retry로 변경하지 않음 |
+| 전조 시간 | 기존 `tele || 55` fallback, 소환 metadata `tele=45` 구분 | 기존 문서의 고정55f는 이전 표현이며 모든 실제 소환 전조가55f라는 뜻으로 사용하지 않음. 타이머 수치 변경0 |
+| 맵 권한 | 기존 map/isW/canMv/safePt/nav 소비 유지 | geometry·stageLOCK·scene·원PNG·collision/route 설계 변경0 |
+
+| 근거 | 상태 |
+|---|---|
+| working game.html | 4114570B / `2639d248b63b748a2bdc2f33dbabe6c22afe353a599e7bdba80d9a1db589a050` |
+| owned game.html | 4114385B / `9466d5bccc5b3799f71adee0af0f6f6240cacaf0ac88043f621b299797c6d19e` |
+| 변경 | 2hunk/+110B. ROOT implementation receipt의 working/owned inverse exact; foreign185B 미채택 |
+| CPU | 첫 Node는 하네스 G04의 닫는 괄호 누락으로 module parse 실패/제품 조건0·20미도달. 해당1문자만 새 파일에 보정한 최초 제품 suite1은 Node1/newFunction2/fixture32/VM0, 6그룹20PASS(동적18·정적2), FAIL/setup/미도달0·exit0. before 벽겹침 반례1은 별도이며21clean으로 합산하지 않음. 물리Node총2. 실mkEn/전체update/실맵/native/음향/save 검수 아님. |
+| native/시각 | whole-map native NOT_RUN/미인수. 실제 보스 자연 도달·벽 인접 소환 화면·전체 route·GPU·청취·저장 인수 없음 |
+| 판정 | 최소 본편 구현·통제 CPU 한정 검수 완료이며 이번 화면 NOT_ASSESSED / 전체 VISUAL RETOUCH. 옛 source9 검사와 합산하지 않음 |
+| Git | ROOT 최종 completion 및 remote-preservation 영수증에서 소유 code/docs 정상 보존 여부를 확인한다 |
+
+외부 근거: `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-druid-summon-safe-position-20261008/implementation-receipt.json`, `docs-search.json`, `docs-disposition.json`, `docs-sync-plan.json`. CPU 수치는 ROOT의 cpu-corrected-execution-receipt.json 기준이며 native/시각·청취·durable save로 승격하지 않는다.
