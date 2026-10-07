@@ -55884,3 +55884,18 @@ factory36/combined15/main31/native3/final-limited4를 하나의 clean 전체 PAS
 전체 공격·특수/죽음·8방향·실제 DSghost·해부학적 발·실제 지형 높이·보스방 개방/사망/부활/재도전 전체 경로·음향·실저장 ACK·전체 native6는 미인수다. 검수 영수증의 `wholeAttackAccepted=false`, 실제 기능 플래그 `silvertailAttackAccepted=false`·`fullPlayerLinked=false`를 유지한다. 기존 두 strike/recovery 표시 플래그의 true를 전체 공격 승인으로 해석하지 않는다.
 
 상세 결과·한계는 `docs/4.0케릭터스프라이트 디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md`의 이 후속 절을 따른다. 원자료는 외부 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-main-silvertail-attack-20261007`의 `validation-receipt.json`4278B/`55dae31f70b7bc96be2ac30b8d22659e4333fd00e4c9569cb70aa45553ac6128`, `native-attack-result.json`242346B/`13226988a34e87e51e4385586a2159e39e7e64074861e62fed367c52107d8c63`, `visual-verdict.json`4269B/`e6bb23107d3deb1dcd637490e17cf3106c1a598f26d5fc684d34f4c33d7c4f51`이다. 이번 docs6의 정상 커밋·push·정확한 원격 SHA는 별도 `verification-docs/remote-preservation-receipt.json`에서 확정하며, 이전 code3docs13 보존을 다시 집계하지 않는다.
+
+
+---
+
+## 2026-10-07 본편 출구 표시의 앵글러 완료 조건 — ROOT-CH1-EXIT-LABEL-DISPLAY-20261007
+
+본편 출구 포털/라벨·나무 포털·미니맵 잠금·지옥문 방향 분기가 `_bossGateDisplayOpen()`를 공유한다. CH1 표시 개방은 `_bossUnlocked && _fbDone`, 다른 stage는 기존 `_bossUnlocked`다. 지역 4/4·앵글러 완료 플래그가 false이면 `지옥문 봉인 · 앵글러 목표 미완료` 인라인 한영 문구를 표시하며 실제 진입·해금·전투·retry/save는 변경하지 않았다. Easy 변경은 없다.
+
+CPU 최초 Node 1회·36 VM·5그룹 35조건 PASS, FAIL·미도달·준비 실패·unhandled 0, exit 0. 실제 helper/방향 함수 전체와 라벨·포털·미니맵 소스 조각을 통제 VM에서 검사했고 working/owned 전후 및 역변환이 정확했다. 별도 Canvas2D 소스 조각은 최초 Chrome/context/page 각 1회에서 한영 6조건 PASS, FAIL·미도달 0, exit 0이다. 두 단위를 합산하지 않으며 실제 게임 초기화·P/G·정상 경로 인수는 0이다.
+
+통제 Canvas의 640 CSS 폭 cell에서 13px 선언의 한영 문구 6개는 잘리지 않았다. 실제 webfont는 로드하지 않아 resolved face는 UNKNOWN이다. 실제 맵·포털·미니맵·화살표·정상 게이트 도달, 전체 native6·음향·실저장 ACK는 미인수다. VISUAL VERDICT: RETOUCH. 과거 실버테일 공격 검수와 합산하거나 재실행하지 않는다.
+
+본편 `game.html` working 4088007B / `dd3e24dd9b02929e2e4a71cebc57c8b3362cc4a10bebfd667a17b1861f53192f`. HEAD+소유 변경 blob 4087822B / `f8104295b740a645bc233a3b78370d444a161fbe30ea25a78cfbec1d2585313b`이며 foreign 185B는 보존한다. Easy는 이번 변경 대상이 아니다.
+
+상세 정본: `docs/4.1맵디자인+설정/REGION_CLEAR_GATE_20260930.md`의 이번 후속 절. 외부 근거: `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-exit-label-display-20261007/display-cpu-receipt.json`, `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-exit-label-display-20261007/native-display-fixture-result.json`, `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-exit-label-display-20261007/validation-receipt.json`, `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-exit-label-display-20261007/visual-verdict.json`. Git 사실은 같은 디렉터리의 `remote-preservation-receipt.json`에서 정상 commit/push 및 원격 정확 SHA로 확정한다. 이 문서 안에 자기 commit SHA를 순환 기입하지 않는다.

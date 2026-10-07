@@ -165,3 +165,18 @@
 
 ## 14. CODE CHANGE
 2026-08-30 CH1-1 forest boundary 적용: `_MAP_COMPOSE[0].handProps` 63개, mega/자동 filler/structural module 0. 중앙 HERO와 START→north approach, side POI landmark를 보존하고 baked forest와 canonical tile wall의 일치, north gate exits y7, authored/runtime63/64를 회귀 기준으로 고정한다.
+
+
+---
+
+## 2026-10-07 본편 출구 표시의 앵글러 완료 조건 — ROOT-CH1-EXIT-LABEL-DISPLAY-20261007
+
+기존 §9의 봉인 라벨 일반 설명에는 다음 **현재 본편 예외**를 적용한다.
+
+표시용 `_bossGateDisplayOpen()`는 `!!G._bossUnlocked && (G.stage!==0 || !!G._fbDone)`만 반환하며 상태를 쓰지 않는다. CH1은 해금과 앵글러 완료가 모두 참일 때 표시상 개방이고, 다른 stage는 기존 해금 플래그를 따른다. 실제 진입·해금 생산자·지역 정화·전투·재도전·저장 순서는 변경하지 않는다.
+
+지역이 있고 CH1에서 `_regionClearedCount()>=4`이지만 `!G._fbDone`이면 `지옥문 봉인 · 앵글러 목표 미완료` / `Gate Sealed · Angler objective incomplete`를 표시한다. 이는 완료 플래그 설명이며 앵글러가 살아 있다고 단정하지 않는다. 나머지 지역 N/4 및 지역 없는 맵의 80% 라벨은 유지한다.
+
+출구 포털·나무 포털·미니맵 잠금·지옥문 방향 안내는 같은 표시 결과를 사용한다. 기존 지역별 80%, 게이트 담당 지역 문지기 +10%, 앵글러 요구, 작은 맵 폴백 및 모든 공간 LOCK 수치는 그대로다. Easy의 2026-09-30 공통 이력은 보존한다.
+
+상세 정본: `docs/4.1맵디자인+설정/REGION_CLEAR_GATE_20260930.md`의 이번 후속 절. 외부 근거: `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-exit-label-display-20261007/display-cpu-receipt.json`, `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-exit-label-display-20261007/native-display-fixture-result.json`, `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-exit-label-display-20261007/validation-receipt.json`, `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-exit-label-display-20261007/visual-verdict.json`. Git 사실은 같은 디렉터리의 `remote-preservation-receipt.json`에서 정상 commit/push 및 원격 정확 SHA로 확정한다. 이 문서 안에 자기 commit SHA를 순환 기입하지 않는다.

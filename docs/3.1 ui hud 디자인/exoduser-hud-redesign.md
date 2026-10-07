@@ -1148,3 +1148,25 @@ CSS 캐시 ui-refinement.css?v=20260927-3. 신규 이미지/아이템 데이터 
 | 실행본 | source39 소스 적용. 현재 격리 앱source29/3404에 미포함 | 빌드/앱 재시작/native 입력/사용자 세이브 변경0. CH1-1/보스문·몬스터 보존/부활·재도전·청취/시각 완료와 별개 |
 
 원 후보: ANIM0824 completion c917f67c-1b1f-4820-9efd-5da96a2ca739 (source37 조사). source38 위에서 별도 root 검수·최소 적용했다. 원자료/backup·docs전체키워드검색·baseline/candidate/production·역치환·원격 SHA 영수증은 tmp/mac-migration-runtime/continued-review-20261003/source39-notification-timer/에 보존한다. 제작팀 TASK·이전 핀/후보 이력은 덮어쓰지 않았다.
+
+
+---
+
+## 2026-10-07 본편 출구 표시의 앵글러 완료 조건 — ROOT-CH1-EXIT-LABEL-DISPLAY-20261007
+
+기존 REGION HUD 표의 봉인 라벨·방향 안내는 본편에서 다음 조건을 우선 적용한다.
+
+| UI 항목 | 현재 본편 표시 계약 |
+|---|---|
+| 출구 포털/나무 포털/미니맵 잠금 | `_bossGateDisplayOpen()` 결과를 함께 사용 |
+| 지옥문 방향 분기 | 같은 helper가 참일 때 개방 안내 분기; 기존 지역 목표 처리와 안전영역 유지 |
+| 지역 4/4이나 CH1 앵글러 미완료 | `지옥문 봉인 · 앵글러 목표 미완료` / `Gate Sealed · Angler objective incomplete` |
+| 지역 카운터/진행바 | kills/total 및 지역 N/4 비율 변경 없음 |
+
+표시용 `_bossGateDisplayOpen()`는 `!!G._bossUnlocked && (G.stage!==0 || !!G._fbDone)`만 반환하며 상태를 쓰지 않는다. CH1은 해금과 앵글러 완료가 모두 참일 때 표시상 개방이고, 다른 stage는 기존 해금 플래그를 따른다. 실제 진입·해금 생산자·지역 정화·전투·재도전·저장 순서는 변경하지 않는다.
+
+기존 addTxt 진입 차단 안내, 색·폰트·위치·방향 재계산 주기 및 Easy는 변경하지 않는다.
+
+통제 Canvas의 640 CSS 폭 cell에서 13px 선언의 한영 문구 6개는 잘리지 않았다. 실제 webfont는 로드하지 않아 resolved face는 UNKNOWN이다. 실제 맵·포털·미니맵·화살표·정상 게이트 도달, 전체 native6·음향·실저장 ACK는 미인수다. VISUAL VERDICT: RETOUCH. 과거 실버테일 공격 검수와 합산하거나 재실행하지 않는다.
+
+상세 정본: `docs/4.1맵디자인+설정/REGION_CLEAR_GATE_20260930.md`의 이번 후속 절. 외부 근거: `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-exit-label-display-20261007/display-cpu-receipt.json`, `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-exit-label-display-20261007/native-display-fixture-result.json`, `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-exit-label-display-20261007/validation-receipt.json`, `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-exit-label-display-20261007/visual-verdict.json`. Git 사실은 같은 디렉터리의 `remote-preservation-receipt.json`에서 정상 commit/push 및 원격 정확 SHA로 확정한다. 이 문서 안에 자기 commit SHA를 순환 기입하지 않는다.

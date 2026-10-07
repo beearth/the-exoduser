@@ -135,3 +135,44 @@
 | 저장/시연 | 중간 필드 진행 저장 스키마 추가 0, load=스테이지 재생성 기존 규칙. 시연 si=3 직접 재도전 선행 |
 
 [CH1-1 보스 사망 진행 보존 정본](CH1-1_BOSS_RESPAWN_PROGRESS_20261002.md)의 source/메모리 경계가 우선한다. 검수 영수증 `tmp/mac-migration-runtime/continued-review-20261002/boss-respawn-backup/receipt.json`: 양판 actual source 30/30 PASS(각 15), 공통 자원 인접 회귀 5/5 PASS(최종 후 1회), inline JS 12/importmap JSON 2 구문 PASS. SHA와 46개 필드·대역/미검증 범위는 전용 정본에 기록한다. 검수는 실제 source 추출 + controlled fixture에 한정한다. 실제 게임·등록 이벤트·카메라·시각·오디오·성능은 미인수이며 source PASS를 runtime/visual PASS로 대체하지 않는다.
+
+
+---
+
+## 2026-10-07 본편 출구 표시의 앵글러 완료 조건 — ROOT-CH1-EXIT-LABEL-DISPLAY-20261007
+
+이 절은 기존 §5의 포털 라벨과 §7의 지옥문 방향 분기에 대한 **현재 본편 적용 규칙**이다. 2026-09-30 본편/Easy 공통 지역 구현 기록은 당시 이력으로 보존하며, 이번 표시 변경은 본편에만 적용한다. 기존 해금·진입 설계나 Easy의 현재 구현을 수정했다고 해석하지 않는다.
+
+표시용 `_bossGateDisplayOpen()`는 `!!G._bossUnlocked && (G.stage!==0 || !!G._fbDone)`만 반환하며 상태를 쓰지 않는다. CH1은 해금과 앵글러 완료가 모두 참일 때 표시상 개방이고, 다른 stage는 기존 해금 플래그를 따른다. 실제 진입·해금 생산자·지역 정화·전투·재도전·저장 순서는 변경하지 않는다.
+
+| 항목 | 현재 본편 계약 |
+|---|---|
+| 표시 개방 | `_bossGateDisplayOpen()` = `!!G._bossUnlocked&&(G.stage!==0||!!G._fbDone)` |
+| 출구 포털·라벨 | `_gUnlk`가 helper 결과를 사용; 봉인/개방의 기존 색과 그리기 위치 유지 |
+| 나무 포털 | `_drawPortalTinted`의 개방 인자에 같은 helper 사용 |
+| 미니맵 자물쇠 | `_mmDrawLock`의 개방 인자에 같은 helper 사용 |
+| 방향 화살표 | `_regionArrowTarget()`의 지옥문 안내 분기가 같은 helper를 사용; 기존 지역 타겟·재계산 주기·버퍼 유지 |
+| CH1 지역 4/4, 앵글러 미완료 | 표시상 봉인; `지옥문 봉인 · 앵글러 목표 미완료` / `Gate Sealed · Angler objective incomplete` |
+| 기타 봉인 문구 | 기존 `지역 N/4`, 지역 없는 맵의 `80% 처치` 유지 |
+| 실제 진입 | 기존 `G.stage===0&&!G._fbDone` 거절 뒤 `_bossUnlocked` 검사 유지; helper가 진입을 허용하거나 latch를 만들지 않음 |
+| 상태·진행 | `_regionClearedCount()`는 cleared 플래그 수를 읽음. `_fbDone`, `_bossUnlocked`, 적·전투·재시도·자원·save 변경 없음 |
+| 언어 | 새 문구는 `_L` 인라인 한영 쌍. 한국어 외에는 기존 `_T` 및 영문 fallback 경로를 사용; 새 28언어 번역 완료 아님 |
+
+지역이 있고 CH1에서 `_regionClearedCount()>=4`이지만 `!G._fbDone`이면 `지옥문 봉인 · 앵글러 목표 미완료` / `Gate Sealed · Angler objective incomplete`를 표시한다. 이는 완료 플래그 설명이며 앵글러가 살아 있다고 단정하지 않는다. 나머지 지역 N/4 및 지역 없는 맵의 80% 라벨은 유지한다.
+
+모든 지역이 cleared인데 CH1 `!G._fbDone`이면 기존 미완료 지역 탐색은 타겟을 찾지 못해 `_raHas=0`을 유지한다. 이번 표시 수정은 새 앵글러 목표를 만들거나 지역·개방 상태를 바꾸지 않는다. 이 모순 플래그 상태의 정상 경로 도달 여부는 미확정이다.
+
+### 이번 코드와 검수 근거
+
+본편 `game.html` working 4088007B / `dd3e24dd9b02929e2e4a71cebc57c8b3362cc4a10bebfd667a17b1861f53192f`. HEAD+소유 변경 blob 4087822B / `f8104295b740a645bc233a3b78370d444a161fbe30ea25a78cfbec1d2585313b`이며 foreign 185B는 보존한다. Easy는 이번 변경 대상이 아니다.
+
+CPU 최초 Node 1회·36 VM·5그룹 35조건 PASS, FAIL·미도달·준비 실패·unhandled 0, exit 0. 실제 helper/방향 함수 전체와 라벨·포털·미니맵 소스 조각을 통제 VM에서 검사했고 working/owned 전후 및 역변환이 정확했다. 별도 Canvas2D 소스 조각은 최초 Chrome/context/page 각 1회에서 한영 6조건 PASS, FAIL·미도달 0, exit 0이다. 두 단위를 합산하지 않으며 실제 게임 초기화·P/G·정상 경로 인수는 0이다.
+
+| 새 검수 | 실제 범위 | 남은 경계 |
+|---|---|---|
+| CPU 5그룹/35조건 | CH1 지역 0/3/4×플래그·한영, 다른 stage, 지역 없는 폴백, 4표시 불일치 방지, 권한 원본 역변환 | 정상 플레이에서 모순 플래그 상태의 실제 도달 여부는 미확정 |
+| Canvas2D 조각 6조건 | 실제 source 조각의 지역 3/4·앵글러 미완료·개방 한영 라벨 | 실제 게임 초기화/route/실제 UI 배경/실제 webfont 미인수 |
+
+통제 Canvas의 640 CSS 폭 cell에서 13px 선언의 한영 문구 6개는 잘리지 않았다. 실제 webfont는 로드하지 않아 resolved face는 UNKNOWN이다. 실제 맵·포털·미니맵·화살표·정상 게이트 도달, 전체 native6·음향·실저장 ACK는 미인수다. VISUAL VERDICT: RETOUCH. 과거 실버테일 공격 검수와 합산하거나 재실행하지 않는다.
+
+상세 정본: `docs/4.1맵디자인+설정/REGION_CLEAR_GATE_20260930.md`의 이번 후속 절. 외부 근거: `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-exit-label-display-20261007/display-cpu-receipt.json`, `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-exit-label-display-20261007/native-display-fixture-result.json`, `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-exit-label-display-20261007/validation-receipt.json`, `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-exit-label-display-20261007/visual-verdict.json`. Git 사실은 같은 디렉터리의 `remote-preservation-receipt.json`에서 정상 commit/push 및 원격 정확 SHA로 확정한다. 이 문서 안에 자기 commit SHA를 순환 기입하지 않는다.

@@ -17984,6 +17984,10 @@ function _buildTintPortal(rgb){
   }
   c.putImageData(id,0,0);return cv;
 }
+// 표시만 실제 입장 조건의 완료 플래그를 투영한다. 개방/전투 상태는 바꾸지 않는다.
+function _bossGateDisplayOpen(){
+  return !!G._bossUnlocked&&(G.stage!==0||!!G._fbDone);
+}
 // 보스방 입구 포탈: 원본 이미지 + 색조만 (잠김=빨강 / 개방=파랑)
 function _drawPortalTinted(ctx,cx,cy,sz,t,unlocked){
   if(unlocked){if(!_bluePortalImg)_bluePortalImg=_buildTintPortal([60,150,255]);}
@@ -50982,9 +50986,9 @@ function draw(){
         const _exCx2=_exitCX;
         const _exCy2=_exitCY;
         const _pcx=(_exCx2+.5)*T,_pcy=(_exCy2+.5)*T;
-        // 보스방 입구 소용돌이: 잠김=빨강 / 80%처치 개방=파랑
+        // 보스방 입구 소용돌이: 입장 완료 플래그 기준 잠김=빨강 / 개방=파랑
         const _psz=T*3+Math.sin(_now/400)*T*.3;
-        const _gUnlk=!!G._bossUnlocked;
+        const _gUnlk=_bossGateDisplayOpen();
         _drawPortalTinted(X,_pcx,_pcy,T*3,_now,_gUnlk);
         // 텍스트
         const _dg=dst(P.x,P.y,_pcx,_pcy);
@@ -50992,7 +50996,9 @@ function draw(){
           X.globalAlpha=Math.min(.9,(1-_dg/(T*5))*.7+Math.sin(_now/300)*.15);
           X.font='bold 13px "Noto Sans KR"';X.textAlign='center';X.textBaseline='bottom';
           X.fillStyle=_gUnlk?'#66ccff':'#ff6644';
-          X.fillText('▼ '+(_gUnlk?_T('보스방'):(G._regions?_L('지옥문 봉인 (지역 ','Gate Sealed (Regions ')+_regionClearedCount()+'/4)':_L('지옥문 봉인 (80% 처치)','Gate Sealed (80% kills)')))+' ▼',_pcx,_pcy-_psz*.45);X.globalAlpha=1;
+          const _regionN=G._regions?_regionClearedCount():0;
+          const _gateLabel=_gUnlk?_T('보스방'):(G._regions?(G.stage===0&&!G._fbDone&&_regionN>=4?_L('지옥문 봉인 · 앵글러 목표 미완료','Gate Sealed · Angler objective incomplete'):_L('지옥문 봉인 (지역 ','Gate Sealed (Regions ')+_regionN+'/4)'):_L('지옥문 봉인 (80% 처치)','Gate Sealed (80% kills)'));
+          X.fillText('▼ '+_gateLabel+' ▼',_pcx,_pcy-_psz*.45);X.globalAlpha=1;
         }
       }
     }else if(!G.bossAlive){
@@ -51019,7 +51025,7 @@ function draw(){
       X.drawImage(_gtI,_treeCx-_gtW/2,_gateBaseY-_gtH/2,_gtW,_gtH);
     }
     // 포탈 = exit 타일 중심 (나무 입구 = mouth = gateY+2) — 잠김=빨강/개방=파랑
-    _drawPortalTinted(X,_treeCx,_exitCenterY,250,_now,!!G._bossUnlocked);
+    _drawPortalTinted(X,_treeCx,_exitCenterY,250,_now,_bossGateDisplayOpen());
   }
   // tile=3 대문 장식은 맵 캐시에서 처리됨 (출구 타일이 진입 역할)
   // [GLOW-ORI] 발광 오브젝트 렌더링 — 비활성화
@@ -59105,7 +59111,7 @@ function drawMM(){if(!G.on||!G.map)return;
         MX.fillStyle=ELC[_FB_ELS[_fi]];MX.beginPath();MX.arc(_fx,_fy,3,0,Math.PI*2);MX.fill();MX.strokeStyle='#000';MX.lineWidth=1;MX.stroke()}}
     }
     if(G.bossAlive&&!G._bossArena&&G._bossCx!=null&&G._gateY!=null){
-      _mmDrawLock(MX,ox+(G._bossCx+.5)*sc,oy+(G._gateY+.5)*sc,!!G._bossUnlocked)}
+      _mmDrawLock(MX,ox+(G._bossCx+.5)*sc,oy+(G._gateY+.5)*sc,_bossGateDisplayOpen())}
   }
   // 플레이어 (동적)
   const px=ox+(P.x/T)*sc,py=oy+(P.y/T)*sc;
@@ -59692,7 +59698,7 @@ let _raT=0,_raHas=0,_raX=0,_raY=0,_raCol='#ffc24d',_raLabel='';
 const _raSums=new Float64Array(12); // 지역별 생존몹 centroid 집계 버퍼 (x,y,cnt ×4)
 function _regionArrowTarget(){
   _raHas=0;const R=G._regions;if(!R)return;
-  if(G._bossUnlocked){ // 개방 후: 지옥문으로 안내 (게임 게이트 블루 — 네온 금지, 채도 완화)
+  if(_bossGateDisplayOpen()){ // 개방 후: 지옥문으로 안내 (게임 게이트 블루 — 네온 금지, 채도 완화)
     if(G._bossCx!=null&&G._gateY!=null){_raX=(G._bossCx+.5)*T;_raY=(G._gateY+2.5)*T;_raCol=_raDesat('#66ccff');_raLabel=_L('지옥문','Hell Gate');_raHas=1}
     return;
   }
