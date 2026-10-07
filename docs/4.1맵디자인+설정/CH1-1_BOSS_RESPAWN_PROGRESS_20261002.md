@@ -357,3 +357,34 @@ NEXT PASS:
 이는 실제 main 전역 시간왜곡 수명 보정이며 CH1 전용 또는 URL opt-in이 아니다. 이전 문서의 field backup 보존은 과거 arena/field 좌표 기록의 재사용 허가가 아니다. 실행 비용식은 기존 50+5×(lv−1) 그대로이며 Lv20=145로 DPS·유니크 표만 동기화했다. 기존 코드의 150 주석은 실행값 권한이 아니다.
 
 최종 source working4,113,146B/`30b33fab3c562cd2c98baa545954d0b79a4ee67be4a63d32d866da91987ed770`. 통제 actual wholefunction CPU Node1/VM13·7그룹74PASS/exit0은 이전 원소스 Node1/VM1 반례관측과 별도다. 실제 보스 진입/사망/귀환/시간왜곡 native 검수0, Chrome0·IAB13 old-loaded 무조작·새 시각평가 없음/전체 **RETOUCH**. 실제 pause/hidden 및 rejection 집계 인수0. 상세는 [2_1 정본](<../2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md>) 같은 TASK 절을 따른다.
+
+기존 필드 진행/좌표/배열 복원 및 재도전 권한은 그대로다. 이번 보충은 map identity가 교체된 뒤 남은 보스 인트로 표시의 소비만 중단하며 restore 함수 내부를 바꾸지 않는다.
+
+## 2026-10-08 보스 인트로의 맵 소유 소비 경계
+
+작업 ID: `ROOT-BOSS-INTRO-MAP-OWNER-CONSUMER-20261008`. 아래는 현재 소스 계약이며, 기존 인트로·재도전 검수 기록은 해당 시점의 이력으로 보존한다. 본편 공통 `_bossCine` 소비자이며 CH1 또는 특정 URL opt-in으로 제한하지 않는다.
+
+| 항목 | 현재 계약 |
+|---|---|
+| 초기 상태 | 기존 `_bossCine`에 `ownerMap:null` 추가 |
+| 소유 포착 | 기존 `bE && _bossCine.lastBossId!==bE` 인트로 시작 분기에서 `ownerMap=G.map` 포착. 기존 보스 객체/진입 판정 유지 |
+| 렌더 소비 | `draw()`의 기존 `if(!X)return;` 바로 뒤에서, active이고 `ownerMap!==G.map`이면 `active=false; _introFill=null;` |
+| 지연 경계 | 맵 교체와 동시에 원자적으로 해제하는 계약이 아니다. X가 있는 첫 draw에서 소비하며 X가 없으면 기존 early return으로 이번 해제도 수행하지 않음 |
+| 보존 | 같은 map의 active 상태 및 inactive 상태는 이 새 가드에서 변경하지 않음. t/maxT/name/phase/lastBossId 등 나머지 필드는 이 가드에서 초기화하지 않음 |
+| 기본 시간 | 첫 인트로 기존 180f, HP fill 기존 90f 유지 |
+| 조건부 Druid 재도전 | 기존 해당 분기의 60f 및 `_introFill=1` 유지. 일반 재도전 전체에 60f를 확대하지 않음 |
+| 변경 범위 | game.html 3 hunk, +141B. 필드 capture/restore·retry 분기·보스 HP/AI·피해/자원·저장·오디오·기존 UI 문구 변경 없음 |
+
+| 소스/검수 | 정확한 상태 |
+|---|---|
+| working game.html | 4114460B / `8d5c6db7d5c22dfad37ba5e4df22b814f45211b9fbe5789c2a9dac5d2e01ad97` |
+| owned game.html | 4114275B / `c64dc26429d09e5b87c0c702a305ae67e1c298ed80e08add14fd31b0ac7f9319` |
+| 바이트 보존 | ROOT implementation receipt의 working/owned inverse exact. game foreign185B는 미채택 |
+| CPU | 첫 통제 CPU Node1/new Function factory18/VM0, 8그룹26조건 PASS(동적23·정적3), FAIL/setup/미도달/계측unhandled0·exit0. before 잔류 반례1 및 same-map 한계 probe1은 별도이며 PASS 합산0. 실제 선언/producer·helper2/entry·render·fill·arrow guard 발췌+통제 ports; whole draw/restore handler/DOM/native 실행 아님 |
+| native/실화면 | NOT_RUN. 새 브라우저·실제 boss→field 왕복·실제 시각/청취/세이브 인수 없음 |
+| 시각 판정 | 이번 UI NOT_ASSESSED / 전체 VISUAL RETOUCH. 소스 정적 계약을 화면 PASS로 세지 않음 |
+| Git | ROOT 최종 completion/보존 영수증으로 확정. 이 초안은 commit/push 성공을 선기록하지 않음 |
+
+외부 근거: `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-boss-intro-map-owner-20261008/implementation-receipt.json`, `docs-search.json`, `docs-disposition.json`, `docs-sync-plan.json`. CPU 수치는 이번 validation-receipt.json 및 cpu-execution-receipt.json의 실제 결과를 사용했다. 옛 suite·route·native 결과와 합산하지 않는다.
+
+한계: update/HUD가 이 draw보다 먼저 소비하는 경계는 원자적으로 막지 않는다. 같은 map의 in-place 변경·관측 사이 A→B→A는 미식별이며, ownerMap은 종료 뒤 다음 producer까지 해당 map 참조를 유지한다. 기존 bossBar 2000ms timeout 수명은 별도다.

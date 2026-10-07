@@ -56607,3 +56607,12 @@ Source peer204 blocking0. 기존IAB13 무조작/이전 로드 유지. `RETOUCH/U
 | 정적·실행 한계 | Codex209 actual wholefunction 정적 blocking0 | timer 취소0, same tuple dead/off 재사용 미식별, 전역 오디오 owner 원자성·devicefree·nativeAudio·청취·실CH1 route·native6·보상·durable save 미인수 |
 
 working4114319B/`1a6577ef27e10d2679d93068761cd45eb1e252ac2d247241f693eab5ceace525`, owned4114134B/`2d7d80a03c21a3284c23e6dc26b93175fad0773e6174b5da94aefd987c8aa894`; foreign game185B·설정3.3 foreign2948B 미채택/IAB13 이전 로드 무조작. 현재 상세 계약은 사운드본문과 `SOUND_DEATH_REVIVE_PROGRESS_20261003.md`의 이번 append를 따른다. `RETOUCH/UI_NOT_ASSESSED/native NOT_RUN/NOT_LISTENED`; §23·검수는 외부 `ch1-death-bgm-callback-owner-20261008/visual-verdict.json`, `validation-receipt.json`, 최종 Git 보존은 `completion-receipt.json`의 실제 기록을 따른다.
+
+
+## 2026-10-08 보스 인트로 맵 소유 소비자
+
+`ROOT-BOSS-INTRO-MAP-OWNER-CONSUMER-20261008`: 본편 공통 `_bossCine.ownerMap`을 기존 새 보스 인트로 시작 분기에서 포착한다. X가 있는 첫 `draw()`에서 active 인트로의 map identity가 달라졌을 때만 `active=false; _introFill=null`로 소비를 중단한다. 맵 교체 즉시 원자적 해제가 아니며 X 없음·같은 map·inactive는 새 가드에서 보존한다. 첫180f/fill90f와 기존 조건부 Druid 재도전60f/fill1은 불변이다. 필드 복원/retry·전투·저장·오디오 변경0.
+
+3hunk/+141B. working4114460B/`8d5c6db7d5c22dfad37ba5e4df22b814f45211b9fbe5789c2a9dac5d2e01ad97`, owned4114275B/`c64dc26429d09e5b87c0c702a305ae67e1c298ed80e08add14fd31b0ac7f9319`; foreign185B 미채택/inverse exact는 ROOT implementation receipt 근거다. CPU: 첫 통제 CPU Node1/new Function factory18/VM0, 8그룹26조건 PASS(동적23·정적3), FAIL/setup/미도달/계측unhandled0·exit0. before 잔류 반례1 및 same-map 한계 probe1은 별도이며 PASS 합산0. 실제 선언/producer·helper2/entry·render·fill·arrow guard 발췌+통제 ports; whole draw/restore handler/DOM/native 실행 아님. native NOT_RUN/UI NOT_ASSESSED/전체 RETOUCH. 기존 검수는 당시 epoch이며 이번 결과에 합산0. Git는 ROOT 최종 completion 영수증으로 확정한다. 상세 현재 계약은 `/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/8.1보스디자인바이블/BOSS_BATTLE_SETTINGS.md`와 외부 `ch1-boss-intro-map-owner-20261008`의 implementation/search/disposition/sync-plan을 참조한다.
+
+한계: update/HUD가 이 draw보다 먼저 소비하는 경계는 원자적으로 막지 않는다. 같은 map의 in-place 변경·관측 사이 A→B→A는 미식별이며, ownerMap은 종료 뒤 다음 producer까지 해당 map 참조를 유지한다. 기존 bossBar 2000ms timeout 수명은 별도다.

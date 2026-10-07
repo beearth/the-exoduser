@@ -9142,7 +9142,7 @@ const _PP_STOPS=[[0,'rgba(30,140,0,.26)'],[.7,'rgba(20,100,0,.14)'],[1,'rgba(10,
 // scanline cache
 let _scanCvs=null,_scanW=0,_scanH=0;
 // ═══ [BOSS-CINE] 보스 시네마틱 ═══
-let _bossCine={active:false,t:0,maxT:180,name:'',phase:0,lastBossId:null};
+let _bossCine={active:false,t:0,maxT:180,name:'',phase:0,lastBossId:null,ownerMap:null};
 // ─── [S03c] HW_TIER — 하드웨어 티어 감지 ───
 let _hwTier='?',_hwGPU='unknown',_benchDone=false,_benchFrames=[],_benchStart=0;
 function detectTier(){
@@ -35454,7 +35454,7 @@ function update(){
     }
   }
   // [BOSS-CINE] 트리거
-  if(bE&&_bossCine.lastBossId!==bE){_bossCine.lastBossId=bE;_bossCine.active=true;_bossCine.t=0;_bossCine.maxT=180;_bossCine.name=STG[G.stage]?_T(STG[G.stage].bn):'???';
+  if(bE&&_bossCine.lastBossId!==bE){_bossCine.ownerMap=G.map;_bossCine.lastBossId=bE;_bossCine.active=true;_bossCine.t=0;_bossCine.maxT=180;_bossCine.name=STG[G.stage]?_T(STG[G.stage].bn):'???';
     _bossCine._introFill=0;_druidFinaleIntro(bE); // 재도전은 60f 카드, 실제 HP 즉시 표시
     const _bb=$('bossBar');_bb.classList.add('on','intro');setTimeout(()=>_bb.classList.remove('intro'),2000)}
   // 보스 HUD — 60Hz 틱에서 실행되므로 요소 캐시 + 변경분만 기록
@@ -51179,6 +51179,7 @@ function _drawBonfireBarrierScreen(a,b,c,d,e,f){
 }
 function draw(){
   if(!X)return;
+  if(_bossCine.active&&_bossCine.ownerMap!==G.map){_bossCine.active=false;_bossCine._introFill=null;}
   _ch1DruidBeginFrame();
   _refreshPetBubbleInput();
   // 유니크 유골함 1회 보장 지급(콜렉션 컨테이너 — 시작부터 보유, 기존 세이브 포함)

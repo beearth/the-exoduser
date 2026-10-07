@@ -878,3 +878,87 @@ X.translate(Math.round(C.width/2 - G.cam.x + sx), Math.round(C.height/2 - G.cam.
 외부 증거 디렉터리는 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-main-camera-aim-20261007/`이다. `implementation-receipt.json` 4,493B / `045a27500ee5504a75440a7d913359badd5a0c72ed885352a8072bd5d9423c86`의 exact replacements/inverse exact/foreign185 보존을 따른다. Git 사실은 같은 디렉터리 `remote-preservation-receipt.json`의 실제 normal commit/push/원격 정확 SHA를 참조하고 자기 commit SHA는 순환 삽입하지 않는다. 검수 epoch checkpoint 전·deploy0이다.
 
 최종 `aim-cpu-receipt.json` 1,124B / `f4a25b7ae304f8c4665d9f7f821ced2f89e23fbdeb8f168ae661cd39056b6c7c`, `native-result.json` 12,782B / `451a9070a4177502675978364ae877263d32ed7f6ba4e33ba98f216fa8dcf901`, `validation-receipt.json` 1,994B / `be8dc72efa2c1b886df9683a6f89ca7a4667ffd8fd9f05f9235c0d825ccf490e`, `visual-verdict.json` 4,764B / `22108e6e5e55733b0a4c83150f6ed31a791d3ce07900c29f85a94d8c740c593a`를 각각 보존한다. CPU28과 native3은 별도 검수이며 clean 전체 조건으로 합산하지 않는다. 0707 공식 raw6와 다음 retry 계획도 별도 원자료로, 이번 AIM 제품 인수에 합산하지 않는다.
+
+기존 카메라 intro 예약식 _bossCine.active?VH*.1:0 자체는 변경하지 않는다. 이번 보충은 active의 맵 소유 소비 경계만 다룬다.
+
+## 2026-10-08 보스 인트로의 맵 소유 소비 경계
+
+작업 ID: `ROOT-BOSS-INTRO-MAP-OWNER-CONSUMER-20261008`. 아래는 현재 소스 계약이며, 기존 인트로·재도전 검수 기록은 해당 시점의 이력으로 보존한다. 본편 공통 `_bossCine` 소비자이며 CH1 또는 특정 URL opt-in으로 제한하지 않는다.
+
+| 항목 | 현재 계약 |
+|---|---|
+| 초기 상태 | 기존 `_bossCine`에 `ownerMap:null` 추가 |
+| 소유 포착 | 기존 `bE && _bossCine.lastBossId!==bE` 인트로 시작 분기에서 `ownerMap=G.map` 포착. 기존 보스 객체/진입 판정 유지 |
+| 렌더 소비 | `draw()`의 기존 `if(!X)return;` 바로 뒤에서, active이고 `ownerMap!==G.map`이면 `active=false; _introFill=null;` |
+| 지연 경계 | 맵 교체와 동시에 원자적으로 해제하는 계약이 아니다. X가 있는 첫 draw에서 소비하며 X가 없으면 기존 early return으로 이번 해제도 수행하지 않음 |
+| 보존 | 같은 map의 active 상태 및 inactive 상태는 이 새 가드에서 변경하지 않음. t/maxT/name/phase/lastBossId 등 나머지 필드는 이 가드에서 초기화하지 않음 |
+| 기본 시간 | 첫 인트로 기존 180f, HP fill 기존 90f 유지 |
+| 조건부 Druid 재도전 | 기존 해당 분기의 60f 및 `_introFill=1` 유지. 일반 재도전 전체에 60f를 확대하지 않음 |
+| 변경 범위 | game.html 3 hunk, +141B. 필드 capture/restore·retry 분기·보스 HP/AI·피해/자원·저장·오디오·기존 UI 문구 변경 없음 |
+
+| 소스/검수 | 정확한 상태 |
+|---|---|
+| working game.html | 4114460B / `8d5c6db7d5c22dfad37ba5e4df22b814f45211b9fbe5789c2a9dac5d2e01ad97` |
+| owned game.html | 4114275B / `c64dc26429d09e5b87c0c702a305ae67e1c298ed80e08add14fd31b0ac7f9319` |
+| 바이트 보존 | ROOT implementation receipt의 working/owned inverse exact. game foreign185B는 미채택 |
+| CPU | 첫 통제 CPU Node1/new Function factory18/VM0, 8그룹26조건 PASS(동적23·정적3), FAIL/setup/미도달/계측unhandled0·exit0. before 잔류 반례1 및 same-map 한계 probe1은 별도이며 PASS 합산0. 실제 선언/producer·helper2/entry·render·fill·arrow guard 발췌+통제 ports; whole draw/restore handler/DOM/native 실행 아님 |
+| native/실화면 | NOT_RUN. 새 브라우저·실제 boss→field 왕복·실제 시각/청취/세이브 인수 없음 |
+| 시각 판정 | 이번 UI NOT_ASSESSED / 전체 VISUAL RETOUCH. 소스 정적 계약을 화면 PASS로 세지 않음 |
+| Git | ROOT 최종 completion/보존 영수증으로 확정. 이 초안은 commit/push 성공을 선기록하지 않음 |
+
+외부 근거: `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-boss-intro-map-owner-20261008/implementation-receipt.json`, `docs-search.json`, `docs-disposition.json`, `docs-sync-plan.json`. CPU 수치는 이번 validation-receipt.json 및 cpu-execution-receipt.json의 실제 결과를 사용했다. 옛 suite·route·native 결과와 합산하지 않는다.
+
+한계: update/HUD가 이 draw보다 먼저 소비하는 경계는 원자적으로 막지 않는다. 같은 map의 in-place 변경·관측 사이 A→B→A는 미식별이며, ownerMap은 종료 뒤 다음 producer까지 해당 map 참조를 유지한다. 기존 bossBar 2000ms timeout 수명은 별도다.
+
+### MAP PRODUCTION REPORT — 이번 consumer 단위
+
+| 항목 | 결과 |
+|---|---|
+| STAGE | global main boss intro map-owner consumer; CH1 field-return compatibility |
+| MASTER silhouette | unchanged / not assessed |
+| MASTER regions | unchanged |
+| MASTER main route | NOT_RUN |
+| MASTER side spaces | not assessed |
+| OUTER MASS LEFT | unchanged / not assessed |
+| OUTER MASS RIGHT | unchanged / not assessed |
+| OUTER MASS TOP | unchanged / not assessed |
+| OUTER MASS SOUTH | unchanged / not assessed |
+| OUTER MASS major holes | terrain/cliff materials/map blur/physical relief/common foot contact remain open |
+| LARGE source assets | unchanged |
+| LARGE composites | unchanged |
+| LARGE overlap | not assessed |
+| LARGE repeated silhouette | not assessed |
+| MEDIUM connections | unchanged |
+| MEDIUM remaining holes | not assessed |
+| GROUND shadow | unchanged |
+| GROUND contamination | unchanged |
+| GROUND structure integration | not assessed |
+| PLAYABLE main arenas | unchanged |
+| PLAYABLE travel space | unchanged |
+| PLAYABLE breathing space | not assessed |
+| PLAYABLE threat space | not assessed |
+| PLAYABLE combat readability | new map first valid draw closes old intro/fill in controlled slices; real pixels NOT_ASSESSED |
+| LANDMARK primary | unchanged |
+| LANDMARK secondary | unchanged |
+| LANDMARK tertiary | unchanged |
+| CAMERA QA | {"START": "NOT_RUN", "EARLY": "NOT_RUN", "ARENA": "NOT_RUN", "SIDE L": "NOT_RUN", "SIDE R": "NOT_RUN", "LANDMARK": "NOT_RUN", "LATE": "NOT_RUN", "EXIT": "NOT_RUN"} |
+| TECH QA route | NOT_RUN |
+| TECH QA collision | NOT_RUN |
+| TECH QA page error | NOT_RUN |
+| TECH QA 404 | NOT_RUN |
+| TECH QA seam | NOT_RUN |
+| TECH QA loading | NOT_RUN |
+| TECH QA performance | NOT_RUN |
+| TECH QA controlled CPU | 첫 통제 CPU Node1/new Function factory18/VM0, 8그룹26조건 PASS(동적23·정적3), FAIL/setup/미도달/계측unhandled0·exit0. before 잔류 반례1 및 same-map 한계 probe1은 별도이며 PASS 합산0. 실제 선언/producer·helper2/entry·render·fill·arrow guard 발췌+통제 ports; whole draw/restore handler/DOM/native 실행 아님 |
+| FILES stage-owned | ["game.html: _bossCine declaration / sole intro producer / draw entry (3 hunks, +141B)"] |
+| FILES concurrent touched | none; foreign game185B/settings3.3 2948B unadopted |
+| FILES unrelated touched | none |
+| GIT staged | PENDING; final completion receipt supersedes |
+| GIT commit | PENDING; final completion receipt supersedes |
+| GIT push | PENDING; final completion receipt supersedes |
+| GIT deploy | NOT_RUN |
+| VISUAL VERDICT | RETOUCH |
+| UI | UI_NOT_ASSESSED |
+| NATIVE | NOT_RUN |
+| AUDIO | NOT_LISTENED |
+| NEXT PASS | normal CH1 boss unlock/death/revive/retry real route and pixel acceptance; update-before-draw/hidden/no-X timing, same map reuse and existing DOM timeout remain outside this unit; audio/reward durable save not accepted |
