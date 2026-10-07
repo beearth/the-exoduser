@@ -1840,3 +1840,76 @@ clock 전 native5조건 부분 PASS와 최종 clock CPU 검수는 별도 epoch�
 | NEXT PASS | 둘러보기 진입/복귀를 유지하고 원화 흐림·인물/환경 스케일·발·실제 NPC 대화와 main 진행을 다음 단위에서 구체화한다. quest/reward ID 추정0. 실제 clear/native6/audio/durableSave는 별도 미인수. |
 
 **VISUAL VERDICT: RETOUCH.** 자동 조건 PASS를 맵 전체·시각 완성 PASS로 대체하지 않는다. 위 PNG3은 root의 직접 판독이며 문서 담당자는 새 화면/제품 검사를 실행하지 않았다.
+
+
+### 2026-10-07 ROOT-MAIN-RIFT-NPC-PRESENCE-20261007 · 둘러보기 주민 접근 안내
+
+view-only stage에 기존 nearest 이름/R 안내를 추가했다. 숨겨진 aside와 실제 대화 controller는 그대로다. 최종 source56848 B/`9dd71e4a9cbc898e4b7a20610735f78feee668dab723c67b25f431bafe005dd8`의 현재 계약은 [대화 consumer 정본](<../11내러티브·로어디자인/RIFT_DIALOGUE_PUBLIC_CONSUMER_20261007.md>)을 따른다.
+
+| 새 안내 | 현재 값·한계 |
+|---|---|
+| 생성·문구 | viewOnly=true만 .stage 안 #view-npc-prompt, initial hidden; role=status/aria-live=polite; `${nearestNpc.name.ko} · R로 대화`. |
+| 노출 | ready/live/visible/unpaused/error없음·document.hasFocus·world-canvas activeElement·대화닫힘·기존 nearestNpc. 조건실패/clearIntent/stopFrame/fatal/dispose는 숨김. |
+| 표시 수치 | bottom70px/left50%/translateX(-50%)/max-width calc(100% - 32px)/padding10px16px/background#101914ed/border1px#d2ba83/radius6px/color#ead9ab/font14px/center/pointer-events:none. |
+| 갱신 | 기존 time-lastUi >180ms. 이탈 직후 이전 안내가 잠깐 남을 수 있고 실제 R는 fresh 검사. 추가RAF/timer0·새 nearest/nav/대사/보상/save 경로0. |
+| CPU/native | 신규CPU4그룹27PASS(동적21/정적6·VM21), 준비pin Node1제품0+실Node1. 실제headed Chrome1/context1/page1/child1에서 N1/N2 PASS 뒤 storage equality FAIL1/exit1·manual return/post-return미도달. clean3PASS가 아니다. |
+| 격리 | API합성matsPOST1forward0/savePOST0/childAPI0/durableACKfalse, pageerror/HTTP0. requestfails5=font의도차단3+introabort2직접원인UNKNOWN. GL/물리GPU해제UNKNOWN·browserclosedtrue·추가Chrome0. |
+| 시각 | root PNG2의 근접안내와 도릭 정본대화 가독만 확인. 작은 어두운 몸·NPC/플레이어 겹침·확대흐림·cue/body 겹침 및 저장동등성 실패가 남아 전체RETOUCH. 이전view/host/release/cue 검수와합산0. |
+
+#### MAP PRODUCTION REPORT · 가이드 §23
+
+| 항목 | 현재 scope의 보고 |
+|---|---|
+| STAGE | actualmain의 지옥의 틈 view-only NPC 접근안내와 원래 경로의 도릭 대화 소비. 신규 맵 제작/geometry/nav 변경0. |
+| MASTER / silhouette | 승인 원화·씬의 실루엣 그대로. 새 이미지0. |
+| MASTER / regions | 기존 Rift 영역/부모CH1진행·clear 권한 그대로. |
+| MASTER / main route | canonical start(5480,3740)에서 도릭까지9구간, 이탈2구간 실제키보행. teleport0. |
+| MASTER / side spaces | 네주민 기존 배치 유지. 다른3주민 전체경로 재검수0. |
+| OUTER MASS / LEFT | 기존 좌측 외곽 그대로·이번 시각제작0. |
+| OUTER MASS / RIGHT | 기존 우측 외곽 그대로·이번 시각제작0. |
+| OUTER MASS / TOP | 기존 북쪽 연결/계단 그대로. |
+| OUTER MASS / SOUTH | 기존 남쪽과 시작점 그대로. |
+| OUTER MASS / major holes | 심연 geometry/crop/mask 그대로. |
+| LARGE / source assets | 기존 PNG/atlas/source핀 보존·새원화0. |
+| LARGE / composites | 기존 합성/legacy mask 그대로·흐림 잔여. |
+| LARGE / overlap | 인물겹침이 남으며 맵/원화 덮기 변경0. |
+| LARGE / repeated silhouette | 반복 실루엣 변경·재검수0. |
+| MEDIUM / connections | 기존 연결 그대로. 11구간 blocked0은 해당도릭route 관측이다. |
+| MEDIUM / remaining holes | 지형구멍/틈새수정0·전수인수0. |
+| GROUND / shadow | 원shadow/foot 그대로. |
+| GROUND / contamination | 원재질/오염 그대로. |
+| GROUND / structure integration | 바닥·구조접합변경0·해부학발/물리높이미인수. |
+| PLAYABLE / main arenas | Rift/부모main 전투권한/충돌/AI변경0·새arena검수0. |
+| PLAYABLE / travel space | radius12/range140/segment20 그대로. 도착(5187.3775169021155,2545.8089102189833), 이탈(5314.405055520887,2746.6504488377427). |
+| PLAYABLE / breathing space | 근접 이름/R leaf와 실제도릭대화/명시닫기 후 안내복귀는 관측. |
+| PLAYABLE / threat space | 적·전투·보상변경0. 최종부모복귀검사는 미도달. |
+| PLAYABLE / combat readability | 작은 어두운 몸·NPC/플레이어 겹침으로 미감RETOUCH. |
+| LANDMARK / primary | 기존 Rift 중심/심연 유지·새배치0. |
+| LANDMARK / secondary | 기존 북쪽계단/Dorik 유지. |
+| LANDMARK / tertiary | 기존 주민4·cue 그대로. 새 stage 정보leaf만; cue/body겹침의 mesh원인은 분리관측하지 않음. |
+| CAMERA QA / START | 원래(5480,3740) setup 관측. |
+| CAMERA QA / EARLY | 자연키보행9구간+이탈2구간 관측. |
+| CAMERA QA / ARENA | 이번범위 미검수. |
+| CAMERA QA / SIDE L | 이번범위 미검수. |
+| CAMERA QA / SIDE R | 이번범위 미검수. |
+| CAMERA QA / LANDMARK | dorik-near-prompt.png/dorik-dialogue.png root직접판독2. |
+| CAMERA QA / LATE | 이번범위 미검수. |
+| CAMERA QA / EXIT | manual host return/post-return은 storageFAIL 뒤 미도달. |
+| TECH QA / route | actualnative N1/N2 PASS, 뒤 parentwhole localStorage equality FAIL1/exit1. 네주민전체route/native6미인수. |
+| TECH QA / collision | 실제11구간 blocked0. nav원본/radius변경0·전수충돌인수0. |
+| TECH QA / pageerror | 0. |
+| TECH QA / 404 | HTTPerror0. requestfails5 중font3의도차단/introabort2직접원인UNKNOWN은 별도. |
+| TECH QA / seam | 새seam검수0·확대원화/legacy mask흐림은 그대로. |
+| TECH QA / loading | 실제childready/도릭접근/대화는 도달. 전체로딩/해제/GPU검수는 아님. |
+| TECH QA / performance | 기존UI >180ms주기·추가RAF/timer0. frame/GPU시간·할당·DOMmutation0 성능인수0. |
+| FILES / stage-owned | root child mjs1 및 현재정본4(HUD/RIFT_DIALOGUE/본slice/CHANGELOG). |
+| FILES / concurrent touched | 타인WIP/owner자료/3.3foreign2948/gameforeign185 보존. |
+| FILES / unrelated touched | 이번범위의타소스/원PNG/scene/nav/save파일쓰기0·보호2_3본문제외. |
+| GIT / staged | 문서담당stage0. root 완료소유 보존예정. |
+| GIT / commit | 문서작성시 미실행·SHA추정0. |
+| GIT / push | 문서작성시 미실행·root최종receipt가권위. |
+| GIT / deploy | 0. |
+| VISUAL VERDICT | RETOUCH. 자동조건PASS를 맵전체/미감PASS로대체하지 않는다. |
+| NEXT PASS | hellsave_demo writer원인분리·저장격리검토와 인물크기/겹침/원화흐림의다음생산단위. 추가Chrome0·미채택cue후보실행0. |
+
+근거는 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/main-rift-npc-presence-20261007/`의 validation-receipt.json(4086 B/7ba0ded21eb3d7b97013b45cda9ec2bcd3f32e0c616c09deaf08d7b5cac9ebfe) 및 visual-verdict.json(2361 B/ce12d93e67c19ab86e362c17f172b32205eca533154fec958532d4663b0c9114)이다. fresh localStorage의 hellsave_demo 변경 원인은 UNKNOWN이고 savePOST0을 저장동등성PASS로 읽지 않는다. 본편전체/native6/청취/실save/durable보상·quest/전8방향/해부학발/물리높이/A급 미인수다. 문서담당새제품실행0·rootPNG직접판독만기록했다.

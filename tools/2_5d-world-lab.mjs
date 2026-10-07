@@ -23,6 +23,9 @@ if(viewOnly){
   const style=document.createElement('style');
   style.textContent='body{overflow:hidden}body>header,body>footer,main>aside{display:none}main{display:block;height:100vh;padding:0;max-width:none;margin:0}main>.stage{width:100%;height:100%;aspect-ratio:auto;border:0;border-radius:0}';
   document.head.append(style);
+  const prompt=document.createElement('div');prompt.id='view-npc-prompt';prompt.className='view-npc-prompt';prompt.hidden=true;prompt.setAttribute('role','status');prompt.setAttribute('aria-live','polite');
+  document.querySelector('.stage').append(prompt);
+  style.textContent+='.view-npc-prompt{position:absolute;bottom:70px;left:50%;transform:translateX(-50%);max-width:calc(100% - 32px);padding:10px 16px;background:#101914ed;border:1px solid #d2ba83;border-radius:6px;color:#ead9ab;font-size:14px;text-align:center;pointer-events:none}';
   document.querySelector('.stage').setAttribute('aria-label','지옥의 틈');
   $('world-canvas').setAttribute('aria-label','WASD 또는 방향키 이동, Shift 달리기, J 공격, R 대화, Escape 전투로 돌아가기');
   $('loading-title').textContent='지옥의 틈으로 들어갑니다';
@@ -78,7 +81,14 @@ function prepareInitialCharacterDisplay(){
   Object.entries(rigs).forEach(([key,rig])=>{rig.object3d.visible=key===id;helpers[key].visible=false;});
   leaf('actor-name',CHARACTER_RIG_CATALOG[id].name);
 }
-function stopFrame(){if(state.raf)cancelAnimationFrame(state.raf);state.raf=0;state.lastTime=null;}
+function hideViewNpcPrompt(){const prompt=$('view-npc-prompt');if(prompt){prompt.hidden=true;leaf('view-npc-prompt','');}}
+function updateViewNpcPrompt(view){
+  if(!viewOnly)return;
+  const prompt=$('view-npc-prompt');if(!prompt)return;
+  if(!state.ready||state.paused||state.error||state.disposed||state.contextLost||document.hidden||!document.hasFocus()||document.activeElement!==$('world-canvas')||view||!nearestNpc){hideViewNpcPrompt();return;}
+  leaf('view-npc-prompt',`${nearestNpc.name.ko} · R로 대화`);prompt.hidden=false;
+}
+function stopFrame(){if(state.raf)cancelAnimationFrame(state.raf);state.raf=0;state.lastTime=null;hideViewNpcPrompt();}
 function fail(error){
   if(state.disposed)return;
   state.error=error instanceof Error?error.message:String(error);state.ready=false;stopFrame();keys.clear();cancelAnchorCheck('오류로 검사 중단');
@@ -103,6 +113,7 @@ function stopEssentialFailure(cause,phase,id,epoch,isCurrent){
   const report=operation=>{if(!reportingCurrent())return;try{operation();}catch{frameFatalReportFailures=Math.min(Number.MAX_SAFE_INTEGER,frameFatalReportFailures+1);}};
   if(raf)report(()=>cancelAnimationFrame(raf));
   for(const control of controls)report(()=>{control.disabled=true;});
+  report(()=>hideViewNpcPrompt());
   report(()=>leaf('loading-title','시험을 중단했습니다'));
   report(()=>leaf('loading-detail',FRAME_FATAL_ERROR));
   report(()=>{const loading=$('loading');if(loading)loading.hidden=false;});
@@ -132,7 +143,7 @@ function resize(){
 }
 function cancelAnchorCheck(reason){if(!anchorJob&&acceptance.status==='PENDING')return;anchorJob=null;acceptance={status:'PENDING',samples:0,reason,result:null};updateAcceptanceUi();}
 function cancelSpecial(){specialMotion?.setMotion('none');if(rigs[state.selected]){rigs[state.selected].object3d.visible=true;helpers[state.selected].visible=$('bones').checked;}if(shadow)shadow.visible=true;}
-function clearIntent(){residentCueGeneration=Object.freeze({});cancelAnchorCheck('입력·캐릭터·초점 변경으로 검사 중단');keys.clear();state.attackQueued=false;state.previewMode=null;poses[state.selected]?.release();cancelSpecial();}
+function clearIntent(){hideViewNpcPrompt();residentCueGeneration=Object.freeze({});cancelAnchorCheck('입력·캐릭터·초점 변경으로 검사 중단');keys.clear();state.attackQueued=false;state.previewMode=null;poses[state.selected]?.release();cancelSpecial();}
 function updateAcceptanceUi(){
   leaf('metric-check',acceptance.status==='RUNNING'?`관측 ${acceptance.samples} / ${anchorSamples}`:acceptance.status);
   leaf('check-detail',acceptance.reason);
@@ -253,6 +264,7 @@ function updateDialogue(){
   leaf('dialogue-session',observed?.stateKnown?`이번 화면의 선택 · 유품 ${observed.trial.gift.length} · 부탁 ${observed.trial.quest.length}`:'대화 상태 확인 중');
   nearestNpc=dialogue.nearest(dialoguePlayer);
   leaf('npc-near',nearestNpc?`${nearestNpc.name.ko} · R로 대화`:'주민에게 다가가면 R로 대화합니다.');
+  updateViewNpcPrompt(view);
   $('talk').disabled=!state.ready||state.paused||!nearestNpc;
   $('dialogue-panel').hidden=!view;
   const signature=view?JSON.stringify([view.npcId,view.nodeId,view.options]):'closed';

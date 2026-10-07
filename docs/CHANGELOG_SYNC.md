@@ -56144,3 +56144,12 @@ Main stage0 필드의 지역 label을 목표/Purged·Angler 조건·gate 사유3
 | 미인수 | native GL·물리GPU 해제 UNKNOWN. 실main 전체 진행/native6/청취/실세이브/A급 미인수. 해부학적 발·전8방향·주민 전체 경로·물리 높이 미인수. 원화 확대 흐림·작고 어두운 몸·복귀 bonfire/portrait/FX 중첩이 남아 전체 VISUAL VERDICT RETOUCH. |
 
 [최종 source3 fullSHA와 근거](<11내러티브·로어디자인/RIFT_DIALOGUE_PUBLIC_CONSUMER_20261007.md>)를 따른다. 기존 source/검수 이력은 바꾸지 않았고 root7/48·host9/41·최종release3/8·native3을 clean 합산하지 않았다. 문서 담당자의 코드/CPU/Chrome/Git 실행0, root 정상 checkpoint 예정.
+
+
+### 2026-10-07 ROOT-MAIN-RIFT-NPC-PRESENCE-20261007 · 둘러보기 주민 접근 안내
+
+view-only에서 기존 nearest 이름/R 안내를 .stage의 #view-npc-prompt로 복제표시했다. 최종 child56848 B/SHA256 `9dd71e4a9cbc898e4b7a20610735f78feee668dab723c67b25f431bafe005dd8`. ready/live/visible/unpaused·canvas포커스·대화닫힘·nearest 조건이며 clearIntent/stopFrame/fatal/dispose에 숨긴다. 기존 >180ms UI주기로 이탈직후 oldhint가 잠깐 남을 수 있고 실제R는fresh검사한다. 추가RAF/timer·nav/대사/보상/save권한변경0.
+
+ROOT CPU 신규4그룹27PASS(동적21/정적6·VM21), Node2는 준비pin실패1제품0+실검수1로구분한다. 실제headed Chrome1/context1/page1/child1에서 도릭근접안내 N1PASS·정본R대화/명시닫기/canvas복귀 N2PASS 뒤 parent전체localStorage assertion FAIL1(hellsave_demo변경·원인UNKNOWN), manualhostreturn/postreturn미도달·exit1·추가Chrome0. 이전view3/host9·41/release3·8과 clean합산0. pageerror/HTTP0/API합성matsPOST1forward0/savePOST0/childAPI0/durableACKfalse·browserclosedtrue·GLUNKNOWN. rootPNG2에서 안내가독만확인했고 인물겹침/확대흐림 등 전체RETOUCH·native6/audio/save/A급미인수다.
+
+[최신표시·source·실패경계](<11내러티브·로어디자인/RIFT_DIALOGUE_PUBLIC_CONSUMER_20261007.md>) / [HUD수치](<3.1 ui hud 디자인/SETTINGS_HUD_DETAIL_20260930.md>) / [§23전체보고](<4.1맵디자인+설정/HELL_RIFT_2_5D_SLICE_20261006.md>). MASTER/SSOT의 이전ROOT-MAIN-RIFT-VIEW appendix는원문이력으로보존·현재새4정본우선. 문서담당제품CPU/Chrome/Git0, 정상checkpoint는root예정이다.

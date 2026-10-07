@@ -999,3 +999,46 @@ NEXT PASS: alpha-aware 보수적 셀 점유 source/API 계약·원자료 수치�
 | 최초 native 원자료 | /Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/main-rift-view-consumer-20261007/native-first-only/result.json — 137809 B / 1c3c70bf9287530f3eef94702a8068e0dd8cf7ce9ff6c0d10041b857cacac50d |
 | 검색 범위 | 관련키워드 전체 검색1회:32경로/1007행/1118 occurrence. release 한정delta1회0매칭, child presentation 한정delta1회는 외부 검색영수증 값. 보호2_3 본문1경로/owner STATE·LOG6경로는 제외·path-only. archive 텍스트 일괄제외0. matching32문서 전부 full-read했다고 주장하지 않는다. |
 | 보존 상태 | 코드3+현재문서8의 정상 stage/commit/push는 root 소유로 예정. 현재 문서 작성자는 Git쓰기/CPU/Chrome실행0이며 자기 commit SHA를 추정하지 않는다. |
+
+
+### 2026-10-07 ROOT-MAIN-RIFT-NPC-PRESENCE-20261007 · 둘러보기 주민 접근 안내
+
+새 stage 안내는 기존 dialogue.nearest(dialoguePlayer)와 현재 view를 읽는 표시 소비자다. 기존 aside 숨김/초기 class 표시/부모 lease/ESC 복귀는 유지하며, 이번 소스와 검수 결과가 이 안내 계약의 최신값이다. 다른 문서의 ROOT-MAIN-RIFT-VIEW-CONSUMER 핀·native3은 그 이전 TASK의 이력으로 보존한다.
+
+| source | bytes | SHA256 | 이번 변경 |
+|---|---:|---|---|
+| tools/2_5d-world-lab.mjs | 56848 | 9dd71e4a9cbc898e4b7a20610735f78feee668dab723c67b25f431bafe005dd8 | stage 안내 leaf·표시/숨김·canvas focus guard |
+| game.html working | 4098926 | 229d570440c0199e5d73c661817ec0e909f865de9cd3f0724ea0c6fcbd9e6949 | 이전 view unit 소스 그대로; foreign185 미채택 보존 |
+| tools/2_5d/main-rift-host.mjs | 21121 | e6438f8651638bfe7b35b241b1d01a1fe69cba6362808eca7c3322198f3ba3b2 | 이전 host 그대로 |
+
+| 표시 계약 | 현재 값·경계 |
+|---|---|
+| 생성 | viewOnly=true일 때만 .stage에 div#view-npc-prompt.view-npc-prompt를 append. initial hidden=true; role=status; aria-live=polite. 일반 standalone/clear host와 기존 #npc-near·API는 유지. |
+| 원본 소비 | updateDialogue의 기존 nearestNpc=dialogue.nearest(dialoguePlayer) 뒤 updateViewNpcPrompt(view)를 호출한다. 원 range140/segment20/nav radius12·주민좌표를 바꾸거나 별도 nearest를 만들지 않는다. |
+| 문구·노출 | `${nearestNpc.name.ko} · R로 대화`. ready && !paused && !error && !disposed && !contextLost && !document.hidden && document.hasFocus() && activeElement===world-canvas && !view && nearestNpc. |
+| 숨김 | 조건 불충족은 hidden=true/leaf빈값. clearIntent/stopFrame/fatal report에서도 숨기며 dispose는 기존 stopFrame 경로를 따른다. 기존 leaf()의 children.length===0 가드를 사용한다. |
+| CSS 배치 | position:absolute;bottom:70px;left:50%;transform:translateX(-50%);max-width:calc(100% - 32px);padding:10px 16px. |
+| CSS 표시 | background:#101914ed;border:1px solid #d2ba83;border-radius:6px;color:#ead9ab;font-size:14px;text-align:center;pointer-events:none. 클릭버튼/44px 입력 target이 아니다. |
+| 시간·포커스 | 기존 time-lastUi >180ms 주기여서 이탈 직후 이전 힌트가 잠깐 남을 수 있다. R admission은 fresh 위치를 확인한다. 문서 포커스만으로는 canvas-only R를 받을 수 없어 activeElement 조건을 추가했다. |
+| 그대로인 권한 | R/Escape·부모 lease·대사/선택지/controller·보상/quest/sessionMap/save·nav/start·원PNG/scene·actor/body·카메라 변경0. 추가 RAF/timer0. |
+| 중간 이력 | 56804/d975ad28은 document.hasFocus만 있던 런타임 전 중간핀. 44B focus guard 추가 후56848/9dd71e4로 동결했다. 이전핀 결과를 최종 검수로 소급하지 않는다. |
+
+| 검수 epoch | 실제 결과·미인수 |
+|---|---|
+| ROOT CPU | 최종9dd source actual 함수/통제DOM 신규4그룹27조건 PASS, FAIL0/미도달0; 동적21/정적6, VM21. 물리Node2=준비pin 실패1(productVM0)+실검수Node1, GPU0. |
+| ROOT native | 최초 headed Chrome1/context1/page1/maxLivePage1/child동시1. N1 근접 안내 PASS, N2 정본Dorik R대화·명시닫기·canvas focus·안내복귀 PASS. 이어 parent whole localStorage assertion FAIL1/exit1. manual host return 및 post-return 검사는 미도달. raw의 미완료 복합검사1을 N3 전체 미진입으로 읽지 않는다. 추가Chrome0. |
+| 자연 보행 | 원래 시작(5480,3740)→도릭접근9구간→이탈2구간, 전체11구간 blocked0·teleport0·classSeed0. 도착(5187.3775169021155,2545.8089102189833), nearestNpc=rift-prepare-dorik. 이탈(5314.405055520887,2746.6504488377427), nearestNpc=null. 네주민 전체 경로 인수는 아니다. |
+| 실패 전 부모 표본 | on/paused/stage/stageCleared/bossAlive/bossArena/P/mats/exp/kills/regions/bag 표본을 storage 실패 전에 검사했다. 최종 부모 identity와 manual return은 미도달이므로 부모 전체수명 보존을 주장하지 않는다. |
+| 저장 실패 | fresh context의 hellsave_demo 변경을 관측해 storageFreezeAccepted=false. 직접 writer/stack/시점 원인은 UNKNOWN이며 소스 리뷰 대기다. savePOST0과 localStorage 불변은 다른 주장이다. |
+| 오류·격리 | pageerror0/HTTPerror0. requestFailures5=외부font 의도차단3+local intro abort2(직접원인UNKNOWN). 모든API합성, matsPOST1/forwardedMutations0/savePOST0/childAPI0/durableSaveACKfalse. browserclosed=true. GL/물리GPU해제UNKNOWN. |
+| root 시각 | dorik-near-prompt.png와 dorik-dialogue.png 직접판독2. 금색 이름/R와 정본대화/선택지는 보인다. 작고 어두운 몸·주민/플레이어 겹침·1254→8000 확대 및 기존mask 흐림·이 포즈 cue/body 겹침이 남는다. cue 원인 mesh 분리검수는 하지 않았으며 후보 미채택. |
+| 합산·완료 경계 | 새CPU27/native2PASS1FAIL과 기존view native3/host9·41/release3·8/cue/focus 검사를 clean 합산하지 않는다. native6/청취/실save/durable보상/해부학발/물리높이/전8방향/전체route/A급 미인수. 전체 VISUAL VERDICT RETOUCH. |
+
+| 근거 | 정확 핀 |
+|---|---|
+| validation-receipt.json | 4086 B / 7ba0ded21eb3d7b97013b45cda9ec2bcd3f32e0c616c09deaf08d7b5cac9ebfe |
+| visual-verdict.json | 2361 B / ce12d93e67c19ab86e362c17f172b32205eca533154fec958532d4663b0c9114 |
+| CPU execution-receipt.json | 2396 B / cd1a860fb0320d458ada70d9129781bce58e4b25e1caf2ed096ff31f90c6006e |
+| native-first-only/result.json | 70848 B / 927db63cdcb3ce3997749656914be81b5ddfe4b912c96310b44af40aa7b86a64 |
+
+근거 루트는 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/main-rift-npc-presence-20261007/`다. 문서 담당자는 지정 source/receipt와 필요한 정본만 읽었고 제품CPU/Chrome/Git 실행0이다. 신규 whole docs 검색1회는29경로142행142occurrence이며 보호2_3/owner 거대STATELOG 본문 제외·텍스트 archive 포함이다. 이를 29문서 전체 완독으로 표시하지 않는다. 새4정본이 현재 안내 계약을 우선하며 MASTER/SSOT의 직전TASK fullprefix는 그대로 보존한다. 정상 Git checkpoint는 root 후속 소유이며 완료SHA를 미리 적지 않는다.

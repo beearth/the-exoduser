@@ -139,3 +139,23 @@ Node 후보 연결과 root 보강 회귀61PASS. 게임 생성/드롭/저장라�
 | 미인수 | native GL·물리GPU 해제 UNKNOWN. 실main 전체 진행/native6/청취/실세이브/A급 미인수. 해부학적 발·전8방향·주민 전체 경로·물리 높이 미인수. 원화 확대 흐림·작고 어두운 몸·복귀 bonfire/portrait/FX 중첩이 남아 전체 VISUAL VERDICT RETOUCH. |
 
 [입력·수명·정확 source 핀 정본](<../11내러티브·로어디자인/RIFT_DIALOGUE_PUBLIC_CONSUMER_20261007.md>)과 [§23 전체 보고](<../4.1맵디자인+설정/HELL_RIFT_2_5D_SLICE_20261006.md>)를 따른다. 기존 설정 footer·OPT·BINDS 및 사용자 설정 저장 항목은 변경하지 않았다.
+
+
+### 2026-10-07 ROOT-MAIN-RIFT-NPC-PRESENCE-20261007 · 둘러보기 주민 접근 안내
+
+본편의 격리된 지옥의 틈 둘러보기에서 주민 접근 안내를 화면 안에 추가했다. 숨겨진 실험용 aside를 다시 노출하지 않고, 기존 대화 소비자의 읽기 결과만 stage 안에 표시한다. 아래는 새 단위의 현재 계약이며 이전 ROOT-MAIN-RIFT-VIEW-CONSUMER 검수는 해당 소스의 이력으로 보존한다.
+
+| 항목 | 현재 계약·한정 결과 |
+|---|---|
+| 범위·DOM | viewOnly=true에만 .stage 내부 div#view-npc-prompt.view-npc-prompt 생성. initial hidden=true, role=status, aria-live=polite. 일반 standalone/clear host의 aside와 #npc-near는 그대로다. |
+| 문구 | `${nearestNpc.name.ko} · R로 대화` |
+| 노출 | ready/live이며 paused/error/disposed/contextLost가 아니고, document.hidden=false, document.hasFocus()=true, activeElement가 world-canvas, 대화 view가 닫힘, 기존 nearestNpc가 있을 때만 표시한다. |
+| 숨김·입력 | 조건 불충족 또는 clearIntent/stopFrame/fatal/dispose 수명 경로에서 숨긴다. leaf()의 자식 없는 노드만 갱신한다. R는 기존 canvas handler이며 새 클릭버튼·키 바인딩·44px target을 추가하지 않는다. |
+| 배치 | position:absolute; bottom:70px; left:50%; transform:translateX(-50%); max-width:calc(100% - 32px); padding:10px 16px. |
+| 스타일 | background:#101914ed; border:1px solid #d2ba83; border-radius:6px; color:#ead9ab; font-size:14px; text-align:center; pointer-events:none. |
+| 갱신 한계 | 기존 time-lastUi >180ms UI 주기를 소비한다. 반경 이탈 직후 이전 안내가 잠깐 남을 수 있으며 R 실행은 fresh 위치로 검사한다. 추가 RAF/timer·매프레임 즉시 갱신 보장은 없다. |
+| 새 CPU | 최종9dd71e4 source 신규4그룹27조건 PASS(동적21/정적6), VM21. 물리Node2는 준비pin 실패1·제품VM0과 실제 검수Node1을 구분한다. |
+| 새 실제 화면 | 최초 headed Chrome1/context1/page1/child1. N1 도릭 근접 이름/R 안내 PASS, N2 실제R 정본대화·명시닫기·canvas focus·안내복귀 PASS. 뒤 parent 전체 localStorage 동등성 assertion은 hellsave_demo 변경으로 FAIL1, manual host return/post-return은 미도달, exit1. clean3PASS가 아니다. |
+| 시각·권한 | root PNG2에서 안내/대화 가독은 확인했지만 작은 어두운 몸·주민/플레이어 및 cue 겹침·원화 확대 흐림은 RETOUCH. nearest/range/nav/대사/보상/quest/save 권한은 변경하지 않았다. |
+
+최종 child source는 56848 B / SHA256 `9dd71e4a9cbc898e4b7a20610735f78feee668dab723c67b25f431bafe005dd8`다. 문서 담당자의 CPU/Chrome/Git 실행은 0이다. 저장소 동등성 실패의 원인과 실제 save/native6/청취/물리GPU·발·전8방향·전체주민 경로는 미인수다. [소스·검수 근거 정본](<../11내러티브·로어디자인/RIFT_DIALOGUE_PUBLIC_CONSUMER_20261007.md>)과 [§23 전체 보고](<../4.1맵디자인+설정/HELL_RIFT_2_5D_SLICE_20261006.md>)를 따른다.
