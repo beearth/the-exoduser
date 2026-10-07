@@ -2188,3 +2188,46 @@ production_finish LOCK의 맵 크기·좌표·통로·collision·outer mass를 �
 | GIT | 증거 epoch stage/commit/push 전; 실제 사실은 외부 remote-preservation-receipt.json 참조, deploy0 |
 | VISUAL VERDICT | RETOUCH |
 | NEXT PASS | 현재 death menu의 retry 1회 소비·pending save와 다음 death 독립 처리 계획, 실제 main boss lifecycle/normal route 품질. 다음 계획을 현재 구현/검수로 승격하지 않음 |
+
+
+## 2026-10-07 사망 메뉴의 재도전 1회 소비 — ROOT-CH1-RETRY-MENU-CONSUMER-20261007
+
+CH1 geometry/stage LOCK·field 복귀와 camera를 그대로 둔 death UI 소비다. 새 검수를 기존 필드·보스 사망 진행 전체 인수로 확대하지 않는다.
+
+현재 `game.html` working은 4,084,755B / `7e4002066c089e2a0d3fc6a6d2af5499d75aa4a3e677b08e4d10c9552f5080ec`, root owned HEAD+변경 blob은 4,084,570B / `8ba1a816d1a656d646f2967edc0431c087075d73b6bbedb75532d2aa0756402a`다. shared game의 타인 WIP185B를 보존한다. 변경은 현재 사망 메뉴가 첫 재시도 입력을 동기 소비하는 UI 접점이다. 기존 본문·EXP·field snapshot·자원·음악·save schema/API/backend를 변경하지 않는다.
+
+현재 connected retryBtn의 named onclick selfidentity와 connected death.on·replay off·P.dead·!G.on을 먼저 검사한다. 통과하면 외부 게임 helper 전에 death.on을 동기 제거하고 death 하위 focus만 blur하고 settings.on일 때만 기존 closePanel('settings')로 그 패널과 pause를 해제한 뒤 invalidate와 기존 본문을 실행한다. OPT/다른 panel은 유지하며 closeAllPanels0이다. repeat Enter/NumpadEnter/Space만 preventDefault+stopPropagation; 첫 입력/Tab/패드 click은 유지한다. `_retryBusy`/finally/새 state는 없으므로 저장 pending 중 새 실제 사망은 그 메뉴의 guard가 성립하면 독립 재시도한다. await 이후 UI mutation0, backend의 늦은 save 효과 UNKNOWN. 정확 표/순서는 `docs/2_5 부활+에너지쉴드시스템/RESPAWN_RESOURCE_RESET.md`의 같은 unit 절을 따른다.
+
+| 검수 | 현재 상태/경계 |
+|---|---|
+| 이전4249 CPU | 최초 Node1/VM21, 8그룹35복합조건 PASS/FAIL0/미도달0/unhandled0/exit0. 이 source 뒤 settings pause 반례를 추가 보정했으므로 최종7e4002 전체 PASS로 승격하지 않음. 재실행0 |
+| 최종7e4002 CPU | 최종7e400 source의 settings 한정 최초 Node1/VM3, 3그룹6조건 PASS/FAIL0/미도달0/unhandled0/exit0. 실제 전체 final handler+기존 closePanel을 추출하되 새 settings 소비만 검증; normal init/stats/refill/finale/QS는 통제 ports·_dbReady=false. 이전4249 35조건은 재실행하지 않았으며 clean41/최종전체PASS로 합산하지 않음 |
+| 신규 native | 최종7e400 source 최초 Chrome/context/page 각1: normal field 실제 적 피해10회→frame1109 HP0/P.dead/G.on false/death.on true의 자연사망 N1 PASS1. trusted Escape로 settings.on/G.paused true 관측은 재도전 전조건이다. trusted Tab40회에도 BODY에서 retryBtn 초점 미도달: phase/setupFAIL1·conditionFAIL0·N2/N3未도달2·exit1. 실제 retry activation/소비·settings closure·pause release·부활·재도전 후 이동·저장 미인수, 재실행0/추가Chrome0 |
+| visual | root가 death/first-failure PNG를 직접 판독: 중앙 “부활 불가 1s” countdown과 설정/사망 패널 겹침으로 RETOUCH. death.on snapshot은 retry 버튼이 visible/focusable이라는 증거가 아니며 Tab 미도달의 원인 UNKNOWN. 실제 재도전/전체 visual PASS 인수0 |
+| 브라우저 전 준비실패 | 최초 --root-ack 누락으로 CLI guard exit1/Chrome0/조건0/제품FAIL0. 원자료 보존 후 기존 root GO를 명시 인자로 공급한 실행이 위 최초 브라우저1회; 준비오류를 native condition FAIL이나 제품 suite 재시도로 합산하지 않음 |
+| 네트워크/GL/저장 | pageerror0/HTTP failure0이나 의도적 external font 차단3·intro media abort3는 별도 관측이다. GL=`UNKNOWN_NO_RENDERER_WRAPPING_OR_NEW_CONTEXT`로 실GL0 주장0. synthetic mats2는 서버 도달0, 실save0·durable ACK 미인수, physical GPU 해제 UNKNOWN |
+| 이력 | 이전 source별 retry/EXP/field46key/자원/음향 PASS는 해당 epoch 이력으로 보존. 이전 AIM28/native3/search51과 camera검사를 이번 메뉴 소비 성과로 재실행/합산하지 않음 |
+| 미인수 | 실제 retry activation/repeat guard/settings closure/pause release·부활/완충/재도전 후 이동·pending 실save 중 다음사망 생애·boss death/열린문·정상 route 전체/native6·audio/reward/durable save·backend 늦은 save 효과·시각 전체 PASS. N1은 자연 필드사망만이며 boss 사망/native6로 승격하지 않음 |
+
+외부 증거 디렉터리는 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-main-retry-menu-20261007/`이다. 이전 `implementation-receipt.json` 1,914B / `2491d197877b441d5703306b3ccf4a9c1b289d6d001ab2910f18c1a05310d909`와 `retry-cpu-receipt.json` 4,373B / `05082a5cef7fef3d8848d57e652567c5452a1fd3f74b896a2d19c515ba8ceae4`는4249 source 이력이다. 현재 `implementation-final-receipt.json` 2,737B / `781b5167f12c6f855cffd63998982e878799a345ee065c77eca5d3c8bdafeec6`의 exact2치환/inverse exact/foreign185 보존을 따른다. Git 사실은 같은 디렉터리 `remote-preservation-receipt.json`의 실제 normal commit/push/원격 정확 SHA를 참조하며 자기 commit SHA를 순환 삽입하지 않는다. 이 증거 epoch는 checkpoint 전이며 deploy0이다.
+
+최종 settings 한정 원문 `settings-receipt.json` 4,178B / `f2c077c5c7a57faa3df8e9c095f549f52eecd6bb6ec772434b0965cf31c80a9d`와 `settings-result.json` 7,267B / `812f248743b349671f522578d074d2ed459fcf596a74f66c2ec7a3c9fc0550d6`, 실제 native `native-retry-result.json` 133,977B / `b2dee048ac3e347415e7437c7df68daf8014e39ff8ca48677e7ba414bc780d55`, 브라우저 전 `native-cli-preflight-failure.json` 438B / `bc42a5c8fdea6b50bb73e4ec0e82949abade971f8bd16e508d2fe95b9f137d4a`, `validation-receipt.json` 6,019B / `3a367fd511c8819cbe74c2f2d75fa77c25ed4be3f820b7ee496d0f3b9f4d7978`, `visual-verdict.json` 5,268B / `e56ffe0466fd799cc972ff2cf63d883018170ff1604a3b5126fb930ea8af6aa7`를 별도로 보존한다. 새 editor N3 기대거절 원문 `codex-editor-import-official-manifest.json` 502B / `316193c436db197ec40a28b0e80dae5035b8e1718cde5debf01114ea123c6712`는 root가 미채택 보존한 자료이며 필수 hunk0·이번제품/검수채택0이다.
+
+### MAP PRODUCTION REPORT — 가이드 §23 경계 기록
+
+| 항목 | 이번 UI 소비 범위 |
+|---|---|
+| STAGE | actual main retry death-menu 입력 소비, field 진행 복귀 본문 유지 |
+| MASTER | silhouette/regions/main route/side spaces 변경0 |
+| OUTER MASS | LEFT/RIGHT/TOP/SOUTH/major holes 변경0 |
+| LARGE | source assets/composites/overlap/repeated silhouette 변경0 |
+| MEDIUM | connections/remaining holes 변경0 |
+| GROUND | shadow/contamination/structure integration 변경0 |
+| PLAYABLE | normal field의 trusted W 이동 y7420→7152.70336·실제 적 피해10회·자연사망만 관측. boss arena 미진입·EXP/field46key/자원 복귀 실제native 미인수, geometry/breathing/threat 설계 변경0. death countdown/겹친 설정·사망 UI 관측 |
+| LANDMARK | primary/secondary/tertiary 변경0 |
+| CAMERA QA | camera/zoom/mouse aim 변경0. START: trusted 시네마틱/가이드 Space·practice-skip UI의 실제 진입; EARLY: W/적 접촉·자연사망. ARENA 미진입, SIDE L/SIDE R/LANDMARK/LATE/EXIT 미관측. 검수 URL의 isolated3387 dual opt-in은 테스트 범위이며 새 retry handler 자체는 opt-in으로 제한되지 않음 |
+| TECH QA | 4249 CPU35와7e400 settings6 별도; native N1PASS1/phaseFAIL1/조건FAIL0/未도달2/exit1. source3 exact·pageerror/HTTP0, font 차단3·intro abort3 별도, GL UNKNOWN. field 부분관측·collision 변경0·성능 미인수; actual retry 소비/반복입력/저장 인수0 |
+| FILES | stage-owned game.html 정확2치환+현재 정본10, game foreign185B·3.3 foreign 순차이2,948B fullbytes 보존, unrelated touched0 |
+| GIT | 증거 epoch stage/commit/push 전. 실제 사실은 외부 remote-preservation-receipt.json 참조, deploy0 |
+| VISUAL VERDICT | RETOUCH |
+| NEXT PASS | source-specific death countdown/settings·Tab focus/visible eligibility 원인 진단 후 새 한정 native gate. 현재 원인 UNKNOWN·기존 blind Tab/native/옛suite 재시도0, backend 늦은 save 효과 별도 |

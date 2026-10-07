@@ -62020,9 +62020,23 @@ if($('deathReplayBtn'))$('deathReplayBtn').onclick=()=>{
   _deathDlgStop();
   _drPlay(()=>{if($('death').classList.contains('on'))_deathDlgStart()});
 };
-$('retryBtn').onclick=async()=>{
+$('retryBtn').addEventListener('keydown',e=>{
+  if(e.repeat&&['Enter','NumpadEnter','Space'].includes(e.code)){
+    e.preventDefault();e.stopPropagation();
+  }
+});
+$('retryBtn').onclick=async function _retryFromDeath(){
+  const button=$('retryBtn'),death=$('death');
+  if(!button?.isConnected||button.onclick!==_retryFromDeath||
+     !death?.isConnected||!death.classList.contains('on')||
+     $('deathReplay')?.classList.contains('on')||
+     !P||P.s!=='dead'||!G||G.on)return;
+  death.classList.remove('on');
+  const focused=document.activeElement;
+  if(focused&&death.contains(focused)&&typeof focused.blur==='function')focused.blur();
+  if($('settings').classList.contains('on'))closePanel('settings');
   _rootRiftInvalidate('retry');
-  $('death').classList.remove('on');$('victory').classList.remove('on');_drReset();if(typeof _deathDlgStop==='function')_deathDlgStop();
+  $('victory').classList.remove('on');_drReset();if(typeof _deathDlgStop==='function')_deathDlgStop();
   // 경험치 30% 손실
   const expLoss=~~(P.exp*0.3);
   P.exp=Math.max(0,P.exp-expLoss);
