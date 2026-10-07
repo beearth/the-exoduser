@@ -3439,6 +3439,25 @@ addEventListener('unhandledrejection',e=>{
 // ROOT-MAIN-RIFT-VIEW-CONSUMER-20261007 — a separate, non-progressing view lease.
 var _rootRiftViewEnabled=location.origin==='http://127.0.0.1:3387'&&new URLSearchParams(location.search).get('ch1RiftView')==='1';
 var _rootRiftViewJob=null,_rootRiftViewHost=null,_rootRiftViewLoading=null,_rootRiftViewDead=false,_rootRiftViewEpoch=0,_rootRiftViewReason='idle';
+// ROOT-MAIN-RIFT-SAVE-ADMISSION-20261007: preserve scheduled saves, wait before entry.
+var _rootRiftViewSaveStateReady=false,_rootRiftViewBootSaves=new Set();
+function _rootRiftViewSaveBusy(){
+  return !_rootRiftViewSaveStateReady||!_dbReady||_rootRiftViewBootSaves.size!==0||
+    !!(_saving||_saveDebounce||_pendingForce||dbSaveNow.pending);
+}
+function _rootRiftViewScheduleBootSave(){
+  if(!_rootRiftViewEnabled){setTimeout(()=>dbSave(),3000);return;}
+  const ticket={};_rootRiftViewBootSaves.add(ticket);
+  setTimeout(async()=>{try{await dbSave();}finally{_rootRiftViewBootSaves.delete(ticket)}},3000);
+}
+function _rootRiftViewUpdateButton(){
+  if(!_rootRiftViewEnabled||_rootRiftViewDead)return;
+  const button=$('root-rift-view-open');if(!button?.isConnected)return;
+  const busy=_rootRiftViewSaveBusy(),owned=!!_rootRiftViewJob;
+  if(button.disabled!==(busy||owned))button.disabled=busy||owned;
+  const text=owned?'지옥의 틈 둘러보는 중':busy?'저장 중 · 잠시 기다려주세요':'지옥의 틈 둘러보기';
+  if(button.children.length===0&&button.textContent!==text)button.textContent=text;
+}
 function _rootRiftViewSame(j){
   return !!j&&j===_rootRiftViewJob&&!j.closed&&!_rootRiftViewDead&&P===j.player&&G===j.context&&G.map===j.map&&
     G.stage===j.stage&&_charId===j.charId&&_charIdx===j.charIdx&&_rootRiftEpoch===j.stageEpoch&&!_rootRiftJob&&
@@ -3459,6 +3478,7 @@ function _rootRiftViewInvalidate(why,restore=false){
   try{_rootRiftViewHost?.cancel()}finally{_rootRiftViewRelease(j,why,restore)}return true;
 }
 function _rootRiftViewBlock(){
+  _rootRiftViewUpdateButton();
   const j=_rootRiftViewJob;if(!j)return false;
   if(j.releasing)return true;
   if(!_rootRiftViewSame(j))_rootRiftViewInvalidate('parent-context-changed',false);
@@ -3468,6 +3488,7 @@ async function _rootRiftViewOpen(){
   if(!_rootRiftViewEnabled||_rootRiftViewDead||document.hidden||_rootRiftViewJob||_rootRiftJob||!P||!G||
     G.on!==true||G.paused!==false||G.stage!==0||G.stageCleared!==false||G._bossArena||P.s!=='idle'||
     !Number.isFinite(P.hp)||P.hp<=0||![0,1].includes(_charIdx)||window._parryLesson?.active)return false;
+  if(_rootRiftViewSaveBusy()){_rootRiftViewReason='save-pending';return false;}
   const j={token:Object.freeze({}),epoch:++_rootRiftViewEpoch,player:P,context:G,map:G.map,stage:G.stage,
     charId:_charId,charIdx:_charIdx,character:_charIdx===1?'silvertail':'warrior',status:P.s,paused:G.paused,
     stageEpoch:_rootRiftEpoch,previousOn:G.on,closed:false};
@@ -3497,13 +3518,13 @@ if(_rootRiftViewEnabled){
     button.style.minHeight='44px';
     button.addEventListener('mousedown',event=>{event.preventDefault();event.stopPropagation()});
     for(const type of ['keydown','keyup'])button.addEventListener(type,event=>{if(['Enter','NumpadEnter','Space'].includes(event.code))event.stopPropagation()});
-    button.addEventListener('click',()=>{void _rootRiftViewOpen()});document.body.append(button);
+    button.addEventListener('click',()=>{void _rootRiftViewOpen()});document.body.append(button);_rootRiftViewUpdateButton();
   };
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install,{once:true});else install();
   document.addEventListener('visibilitychange',()=>{if(document.hidden)_rootRiftViewInvalidate('parent-hidden',true)});
   window.addEventListener('pagehide',()=>{_rootRiftViewDead=true;_rootRiftViewInvalidate('pagehide',false);_rootRiftViewHost?.dispose()});
   window.__riftMainView=Object.freeze({snapshot:()=>Object.freeze({enabled:true,owned:!!_rootRiftViewJob,epoch:_rootRiftViewEpoch,reason:_rootRiftViewReason,
-    host:_rootRiftViewHost?.snapshot()??null,saveWrites:0,rewardWrites:0,nextStageCalls:0,fullPlayerLinked:false,durableSaveAccepted:false})});
+    host:_rootRiftViewHost?.snapshot()??null,saveBusy:_rootRiftViewSaveBusy(),pendingBootSaves:_rootRiftViewBootSaves.size,saveWrites:0,rewardWrites:0,nextStageCalls:0,fullPlayerLinked:false,durableSaveAccepted:false})});
 }
 // END ROOT-MAIN-RIFT-VIEW-CONSUMER-20261007.
 
@@ -4140,6 +4161,7 @@ function _drainPendingSaveNow(){
 }
 // ═══ 강제 즉시 저장 (디바운스 없음) — 아이템 획득/레벨업 등 핵심 이벤트 ═══
 let _pendingForce=false;
+_rootRiftViewSaveStateReady=true;
 function dbSaveForce(){
   if(!_dbReady)return;
   // 최소 5초 간격 강제 (전투 중 저장 스팸 방지)
@@ -60996,7 +61018,7 @@ async function _startDemoTest(){
   setBootLoading(99,'미니맵 빌드 중...');
   await new Promise(r=>setTimeout(r,0));
   _dbReady=true;
-  startAutoSave();setTimeout(()=>dbSave(),3000);
+  startAutoSave();_rootRiftViewScheduleBootSave();
   _ensWarmDone=false;_wqLen=0;_wqIdx=0;_warmupEnsAtlas();
   if(!(_forceCutscene||(G.stage===0&&!G._cutsceneDone)))BGM.play(BGM.stageKey(G.stage)); // 컷신 예정 시 보류 — 전쟁 서사는 보이스 전용, 스테이지 BGM은 컷신 종료 후 시작 (2026-07-27)
   await _prepareStartMapView();
@@ -61117,7 +61139,7 @@ async function _startDemoNew(){
   hideBootLoading();
   _dbReady=true;
   startAutoSave();
-  setTimeout(()=>dbSave(),3000);
+  _rootRiftViewScheduleBootSave();
   if(G.stage===0&&!G._cutsceneDone){_startIntroCutscene();}
   else{G.on=true;P.iframes=300;if(G._bonfire)G._bonfire.t=300;}
 }
@@ -62854,7 +62876,7 @@ if((_isLocal&&!_charId)||new URLSearchParams(window.location.search).get('test')
   hideBootLoading();
     _dbReady=true;
     startAutoSave();
-    setTimeout(()=>dbSave(),3000);
+    _rootRiftViewScheduleBootSave();
     // 인트로 연출
     if(_bossTestReq>=0){G._cutsceneDone=true;G.on=true;if(P)P.iframes=300}
     else if(G.stage===0){
@@ -62969,7 +62991,7 @@ if((_isLocal&&!_charId)||new URLSearchParams(window.location.search).get('test')
     hideBootLoading();
     _dbReady=true;
     startAutoSave();
-    setTimeout(()=>dbSave(),3000);
+    _rootRiftViewScheduleBootSave();
     if(_bossTestReq>=0){G._cutsceneDone=true;G.on=true}
     else if(G.stage===0){_startIntroCutscene()}else{G.on=true;P.iframes=300;if(G._bonfire)G._bonfire.t=300}
   })();

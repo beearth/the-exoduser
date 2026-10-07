@@ -56153,3 +56153,12 @@ view-only에서 기존 nearest 이름/R 안내를 .stage의 #view-npc-prompt로 
 ROOT CPU 신규4그룹27PASS(동적21/정적6·VM21), Node2는 준비pin실패1제품0+실검수1로구분한다. 실제headed Chrome1/context1/page1/child1에서 도릭근접안내 N1PASS·정본R대화/명시닫기/canvas복귀 N2PASS 뒤 parent전체localStorage assertion FAIL1(hellsave_demo변경·원인UNKNOWN), manualhostreturn/postreturn미도달·exit1·추가Chrome0. 이전view3/host9·41/release3·8과 clean합산0. pageerror/HTTP0/API합성matsPOST1forward0/savePOST0/childAPI0/durableACKfalse·browserclosedtrue·GLUNKNOWN. rootPNG2에서 안내가독만확인했고 인물겹침/확대흐림 등 전체RETOUCH·native6/audio/save/A급미인수다.
 
 [최신표시·source·실패경계](<11내러티브·로어디자인/RIFT_DIALOGUE_PUBLIC_CONSUMER_20261007.md>) / [HUD수치](<3.1 ui hud 디자인/SETTINGS_HUD_DETAIL_20260930.md>) / [§23전체보고](<4.1맵디자인+설정/HELL_RIFT_2_5D_SLICE_20261006.md>). MASTER/SSOT의 이전ROOT-MAIN-RIFT-VIEW appendix는원문이력으로보존·현재새4정본우선. 문서담당제품CPU/Chrome/Git0, 정상checkpoint는root예정이다.
+
+
+### 2026-10-07 ROOT-MAIN-RIFT-SAVE-ADMISSION-20261007 · 저장 대기 후 둘러보기 입장
+
+main4100302 B/SHA256 `4166ed4b16d62fa87a47c39218553a3827a320b51c29cc553c64854901333c19`에서knownpending저장입장Gate를추가했다. 기존3000ms boot예약4곳을OFF원동작/ON고유Setticket+await dbSave finally cleanup으로소비한다. readiness/DB미준비·saving/debounce/pendingForce/dbSaveNow.pending을기존admission뒤검사하고 job/host생성전save-pending으로거절한다. 버튼문구는owned '지옥의 틈 둘러보는 중'/busy '저장 중 · 잠시 기다려주세요'/기본 '지옥의 틈 둘러보기'. defaultOFF/carry4제외·기존저장정책/nav/원PNG/scene/진행권한불변.
+
+신규CPU Node1/VM18/4그룹20PASS(동적18/정적2)·별도headedChrome/context/page/child각1의S1자연pending1→0/S2입장후8초부모·저장표본/S3manualreturn·timer0/iframe0·buttonenabled 신규3PASS, FAIL/미도달0·exit0. 이전NPC2PASS/storageFAIL1/hostreturn미도달은과거epoch동결·route재실행/clean합산0. admission은globalstoragelock아니며dbSave settle≠durableACK·실제writer직접원인미확정. pageerror/HTTP0/requestfail6(font의도3+introabort3원인UNKNOWN)/API합성matsPOST1forward0/savePOST0/childAPI0/usersave0/durableACKfalse·closedtrue·GLUNKNOWN. rootPNG1은몸/pet/복귀안내표시한정·전체RETOUCH·native6/audio/reward/save/A급미인수.
+
+[저장primary](<15 세이브+데이터구조/15 세이브+데이터구조.md>) / [소비자·정확근거](<11내러티브·로어디자인/RIFT_DIALOGUE_PUBLIC_CONSUMER_20261007.md>) / [HUD](<3.1 ui hud 디자인/SETTINGS_HUD_DETAIL_20260930.md>) / [§23전체보고](<4.1맵디자인+설정/HELL_RIFT_2_5D_SLICE_20261006.md>). 기존prefix/epoch보존·문서담당제품/Git실행0·정상checkpoint는root예정이다.

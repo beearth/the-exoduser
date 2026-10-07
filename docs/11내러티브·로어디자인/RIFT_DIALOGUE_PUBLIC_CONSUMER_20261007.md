@@ -1042,3 +1042,48 @@ NEXT PASS: alpha-aware 보수적 셀 점유 source/API 계약·원자료 수치�
 | native-first-only/result.json | 70848 B / 927db63cdcb3ce3997749656914be81b5ddfe4b912c96310b44af40aa7b86a64 |
 
 근거 루트는 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/main-rift-npc-presence-20261007/`다. 문서 담당자는 지정 source/receipt와 필요한 정본만 읽었고 제품CPU/Chrome/Git 실행0이다. 신규 whole docs 검색1회는29경로142행142occurrence이며 보호2_3/owner 거대STATELOG 본문 제외·텍스트 archive 포함이다. 이를 29문서 전체 완독으로 표시하지 않는다. 새4정본이 현재 안내 계약을 우선하며 MASTER/SSOT의 직전TASK fullprefix는 그대로 보존한다. 정상 Git checkpoint는 root 후속 소유이며 완료SHA를 미리 적지 않는다.
+
+
+### 2026-10-07 ROOT-MAIN-RIFT-SAVE-ADMISSION-20261007 · 저장 대기 후 둘러보기 입장
+
+앞 NPC 접근 단위의 저장동등성 실패를 완료로 덮지 않고, 부모의 알려진 저장 예약/진행이 남아 있을 때 view 입장을 기다리는 별도 consumer를 추가했다. 이전 ROOT-MAIN-RIFT-VIEW/NPC-PRESENCE 핀·결과는 각각 해당 epoch 이력이며 아래가 현재 save-admission 계약이다.
+
+| source | bytes | SHA256 |
+|---|---:|---|
+| game.html working | 4100302 | 4166ed4b16d62fa87a47c39218553a3827a320b51c29cc553c64854901333c19 |
+| game.html root owned | 4100117 | 1228f7c536cded491fc36b5c683322e7144fcc126922a8a65e1f3d23d33fe74f |
+| tools/2_5d/main-rift-host.mjs 그대로 | 21121 | e6438f8651638bfe7b35b241b1d01a1fe69cba6362808eca7c3322198f3ba3b2 |
+| tools/2_5d-world-lab.mjs 그대로 | 56848 | 9dd71e4a9cbc898e4b7a20610735f78feee668dab723c67b25f431bafe005dd8 |
+
+| 소비자 계약 | 현재 정확 값 |
+|---|---|
+| scope | 기존 http://127.0.0.1:3387 && ch1RiftView=1/defaultOFF/carry4제외. view·clear host의진행권한은별도유지. |
+| busy | `!_rootRiftViewSaveStateReady || !_dbReady || _rootRiftViewBootSaves.size!==0 || !!(_saving || _saveDebounce || _pendingForce || dbSaveNow.pending)`. ready는false로시작해_pendingForce 초기화직후true여서 lexicalstate접근순서를보호한다. |
+| 예약 | 기존3000ms boot저장4곳을 wrapper로소비. OFF는원setTimeout. ON은각고유ticket을Set에추가하고timer의await dbSave finally에서해당ticket만삭제. 저장취소/강제호출추가0. |
+| 입장 | 기존admission뒤 busy면 reason='save-pending'/false. job생성·G.onfalse·hostopen보다앞이다. |
+| 버튼 | connected/live일때 disabled=busy||owned; owned '지옥의 틈 둘러보는 중' 우선, busy '저장 중 · 잠시 기다려주세요', 그외 '지옥의 틈 둘러보기'. children.length===0 leaf만변경. 생성직후/기존Block에서갱신·추가제품RAF/interval0. |
+| readonly | __riftMainView.snapshot().saveBusy/pendingBootSaves. 기존saveWrites0/durableSaveAcceptedfalse는해당view권한이며부모전체storagefreeze/실ACK증거아님. |
+| 보존 | 기존500ms debounce/5000ms force/pendingdrain/dbSave/schema/API/backend·부모lease/clear/nextstage/보상·quest·child대사/R·nav/scene/원PNG/actor불변. gameforeign185·설정3.3foreign2948미채택보존. |
+| 한계 | 입장전knownpending의검사다. 소유중임의writer/다른document/globalstorage lock/외부실save격리보장0. dbSave return/Promise settle는durableACK아님. |
+
+| 새 검수 | 실제 결과·범위 |
+|---|---|
+| CPU | actual전체함수+통제DOM/timers/Promise/import. Node1/VM18/4그룹20PASS=동적18+정적2, FAIL0/미도달0/unhandled0/exit0. realbackend/native/GPU아님. |
+| native 실제수 | 최초headed Chrome1/context1/page1/child1/maxLivePage1/maxLiveChild1, 새3조건PASS/FAIL0/미도달0/exit0. |
+| S1 | 자연boot pendingBootSaves1·disabled에서settled0·enabled로전환관측. |
+| S2 | admitted view후8초의부모P/G/map/적/진행과freshcontext저장표본exact. 해당기간표본이지보편적no-write보장아님. |
+| S3 | manualreturn·같은부모identity·hosttimer0/iframe0/buttonenabled관측. |
+| 과거실패 | 이전NPC native N1/N2 PASS 뒤hellsave_demo동등성FAIL1/hostreturn미도달/exit1은동결. 도릭route재실행0·새20/3과clean합산0. 당시writer직접원인미확정. |
+| 오류·격리 | pageerror0/HTTPerror0; requestfail6=font의도차단3+introabort3직접원인UNKNOWN. API합성matsPOST1forward0/savePOST0/childAPI0/usersave0/durableACKfalse. context/browserclosed·GL/물리GPU해제UNKNOWN. |
+| root 시각 | save-admitted-rift.png 859587 B/c19efb7d81adb4822d4dc994aa48d295704ab0383e075aff3e49966c17557dbc 직접판독1. 원래시작의전사/pet/복귀버튼·힌트표시한정. 배경확대흐림·작고어두운몸으로전체RETOUCH. |
+| 미인수 | samepose미감A/B·전체NPC왕복·발/물리높이/전8방향·native6/청취/실save/durable보상·quest/A급완료0. |
+
+| 근거 | bytes / SHA256 |
+|---|---|
+| implementation-receipt.json | 3635 / c65613a24be2f3fbf4c54b5313b6addbff13b36c74b510467bb1b059a51d42ba |
+| cpu/execution-receipt.json | 2054 / ace436bc67115d315130a2ba6049059c534dfaa6e1ac4853896efa95c7a85e89 |
+| native-first-only/result.json | 19926 / 5cc2c3743b280e56c2bae05b13085e3a090f7ee636d7e7485ed3753087ab9d03 |
+| validation-receipt.json | 3944 / 0ce77c95729de88a110d846f0f6a3db23d9b82ddda3177e9657057ebe5467d64 |
+| visual-verdict.json | 4201 / 6b85abdb5e06776a0f4805d7b16428c91ee787e2be5c4c064b16437b8bcfc597 |
+
+근거 루트는 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/main-rift-save-admission-20261007/`다. Codex147 actualsource 정적review finding0은별도원문1033 B/518bda627967240e0216f6652ed11f48bf249aef72534af700f765b2b2b937c9이며실행PASS대체아님. 다른raw11은미채택이다. 준비단계의잘못된primary경로읽기실패1(write0)/Codex원문수집Pythonencoding실패1(rawwrite0)은제품FAIL로합산하지않는다. 신규whole docs검색1회는16경로39행51occurrence·보호2_3/owner거대본문제외·텍스트archive포함이며전수완독아니다. [저장primary](<../15 세이브+데이터구조/15 세이브+데이터구조.md>) / [§23전체보고](<../4.1맵디자인+설정/HELL_RIFT_2_5D_SLICE_20261006.md>). 본문원prefix/옛epoch유지·문서담당제품CPU/Chrome/Git0·root정상checkpoint예정.

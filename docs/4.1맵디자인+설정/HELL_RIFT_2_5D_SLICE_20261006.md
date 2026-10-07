@@ -1913,3 +1913,75 @@ view-only stage에 기존 nearest 이름/R 안내를 추가했다. 숨겨진 asi
 | NEXT PASS | hellsave_demo writer원인분리·저장격리검토와 인물크기/겹침/원화흐림의다음생산단위. 추가Chrome0·미채택cue후보실행0. |
 
 근거는 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/main-rift-npc-presence-20261007/`의 validation-receipt.json(4086 B/7ba0ded21eb3d7b97013b45cda9ec2bcd3f32e0c616c09deaf08d7b5cac9ebfe) 및 visual-verdict.json(2361 B/ce12d93e67c19ab86e362c17f172b32205eca533154fec958532d4663b0c9114)이다. fresh localStorage의 hellsave_demo 변경 원인은 UNKNOWN이고 savePOST0을 저장동등성PASS로 읽지 않는다. 본편전체/native6/청취/실save/durable보상·quest/전8방향/해부학발/물리높이/A급 미인수다. 문서담당새제품실행0·rootPNG직접판독만기록했다.
+
+
+### 2026-10-07 ROOT-MAIN-RIFT-SAVE-ADMISSION-20261007 · 저장 대기 후 둘러보기 입장
+
+부모의 알려진 저장 예약/진행이 남아있으면 둘러보기 job을 만들기 전에 기다리도록 했다. 지도/원화/geometry/nav 변경은 없으며 이전NPC route를 다시 실행하지 않았다. 현재main4100302 B/`4166ed4b16d62fa87a47c39218553a3827a320b51c29cc553c64854901333c19`; host21121/e643·child56848/9dd는그대로다.
+
+| 현재 연결 | 계약·한정 결과 |
+|---|---|
+| 입장대기 | readiness/DB미준비·boot Setticket·saving/debounce/pendingForce/dbSaveNow.pending이busy면기존admission뒤 save-pending/false. job/G.onfalse/hostopen보다앞이다. |
+| 예약·문구 | 기존3000ms4boot유지. ON은고유ticket add→await dbSave finally delete, OFF는원setTimeout. 버튼disabled=busy||owned; owned '지옥의 틈 둘러보는 중'/busy '저장 중 · 잠시 기다려주세요'/기본 '지옥의 틈 둘러보기'. leaf만갱신·추가제품RAF/interval0. |
+| 새결과 | CPU Node1/VM18/4그룹20PASS(동적18/정적2)·별도실headed Chrome1/context1/page1/child1의S1pending1→0/S2입장8초부모·저장표본exact/S3manualreturn·timer0/iframe0·buttonenabled의3PASS. FAIL/미도달0·exit0. |
+| 과거·한계 | 이전NPC native2PASS/storageFAIL1/hostreturn미도달/exit1동결·route반복0/clean합산0. admissionknownpending검사이지globalstoragelock/다른document/외부실save격리보장아님. dbSave settle≠durableACK. |
+
+#### MAP PRODUCTION REPORT · 가이드 §23
+
+| 항목 | 현재 저장 admission scope의 보고 |
+|---|---|
+| STAGE | 실제CH1-1 main이호스팅한Rift view의저장입장/복귀한정. 신규지형제작0. |
+| MASTER / silhouette | 승인Rift실루엣그대로. |
+| MASTER / regions | 승인주민registry·부모지역진행권한그대로. |
+| MASTER / main route | 원nav그대로·이전도릭키보행route재실행0. |
+| MASTER / side spaces | 기존배치그대로·재인수0. |
+| OUTER MASS / LEFT | 기존좌측원화그대로·재인수0. |
+| OUTER MASS / RIGHT | 기존우측원화그대로·재인수0. |
+| OUTER MASS / TOP | 기존상단원화그대로·재인수0. |
+| OUTER MASS / SOUTH | 기존하단/시작그대로·재인수0. |
+| OUTER MASS / major holes | 기존심연geometry/crop/mask그대로·재인수0. |
+| LARGE / source assets | 기존asset만·PNG수정0. |
+| LARGE / composites | 기존합성그대로. |
+| LARGE / overlap | 확대배경대비작고어두운몸은RETOUCH. |
+| LARGE / repeated silhouette | 기존실루엣그대로·새원화/나무카드0. |
+| MEDIUM / connections | 기존nav연결그대로. |
+| MEDIUM / remaining holes | geometry변경0·새전수증거0. |
+| GROUND / shadow | 기존shadow그대로. |
+| GROUND / contamination | 기존baked재질그대로. |
+| GROUND / structure integration | 물리높이0·해부학발/물리relief미인수. |
+| PLAYABLE / main arenas | 현재저장입장/복귀한정·전투값변경0. |
+| PLAYABLE / travel space | 이전NPCroute반복0. |
+| PLAYABLE / breathing space | 기존공간그대로. |
+| PLAYABLE / threat space | view소유중부모진행정지표본·전투변경0. G.paused를새로true로쓰지않는다. |
+| PLAYABLE / combat readability | 전투전체/native6미인수. |
+| LANDMARK / primary | 기존Rift시작그대로. |
+| LANDMARK / secondary | Dorik그대로·과거route증거는별도epoch. |
+| LANDMARK / tertiary | 나머지주민그대로·재인수0. |
+| CAMERA QA / START | root가실제1280×720 main-overlay PNG1직접판독. |
+| CAMERA QA / EARLY | 재인수0. |
+| CAMERA QA / ARENA | 재인수0. |
+| CAMERA QA / SIDE L | 재인수0. |
+| CAMERA QA / SIDE R | 재인수0. |
+| CAMERA QA / LANDMARK | 재인수0. |
+| CAMERA QA / LATE | 재인수0. |
+| CAMERA QA / EXIT | 스테이지출구재인수0. 별도S3는manualhostreturn만관측. |
+| TECH QA / route | 현재긴NPC경로증거없음·새입장/8초표본/복귀3조건만. |
+| TECH QA / collision | 원충돌/nav불변·새충돌검사0. |
+| TECH QA / pageerror | 0. |
+| TECH QA / 404 | HTTPerror0. requestfail6=font의도차단3+introabort3직접원인UNKNOWN은별도. |
+| TECH QA / seam | actualCPU동적18+정적2와별도native3. 지형seam새인수0. |
+| TECH QA / loading | 자연boot ticket pending1→0뒤입장관측. |
+| TECH QA / performance | 새성능인수0·추가제품RAF/interval0·기존4예약timerwrapper. |
+| FILES / stage-owned | root gameown변경과현재docs5(save15/HUD/대화/본slice/CHANGELOG). |
+| FILES / concurrent touched | foreigngame185B·설정3.3foreign2948B미채택보존·타인WIP되돌림0. |
+| FILES / unrelated touched | 타소스/원PNG/scene/nav/save/보호2_3변경0. |
+| GIT / staged | 문서담당stage0·root완료소유보존예정. |
+| GIT / commit | 문서작성시정상checkpoint예정·SHA추정0. |
+| GIT / push | rootremoteexact후속검증전·완료로기재하지않음. |
+| GIT / deploy | 0. |
+| VISUAL VERDICT | RETOUCH. 새저장입장3PASS를시각완성PASS로대체하지않는다. |
+| NEXT PASS | 인물접근scale/foot/맵선명도·실제CH1-1진행과별도durableSave Gate. 이전실패원문보존/자동재검사0. |
+
+root PNG `native-first-only/save-admitted-rift.png`는859587 B/SHA256 `c19efb7d81adb4822d4dc994aa48d295704ab0383e075aff3e49966c17557dbc`다. 시작전사/pet/복귀버튼·입력힌트가보이는한정관측이며배경확대흐림·작고어두운몸은남는다. sameposeOFF/ON미감A/B·globalparentstoragefreeze·실ACK·현재source전체NPC왕복·A급완료는주장하지않는다. API합성matsPOST1forward0/savePOST0/childAPI0/durableACKfalse/usersave0·context/browserclosed·GL/물리GPU해제UNKNOWN·native6/audio/reward미인수다.
+
+[상세저장계약](<../15 세이브+데이터구조/15 세이브+데이터구조.md>) / [최신source·검수원자료](<../11내러티브·로어디자인/RIFT_DIALOGUE_PUBLIC_CONSUMER_20261007.md>). 근거는외부main-rift-save-admission-20261007의validation-receipt.json3944/0ce77c95729de88a110d846f0f6a3db23d9b82ddda3177e9657057ebe5467d64와visual-verdict.json4201/6b85abdb5e06776a0f4805d7b16428c91ee787e2be5c4c064b16437b8bcfc597이다. 문서담당새제품CPU/Chrome/Git0·root직접PNG판독을기록했다.

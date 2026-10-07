@@ -159,3 +159,21 @@ Node 후보 연결과 root 보강 회귀61PASS. 게임 생성/드롭/저장라�
 | 시각·권한 | root PNG2에서 안내/대화 가독은 확인했지만 작은 어두운 몸·주민/플레이어 및 cue 겹침·원화 확대 흐림은 RETOUCH. nearest/range/nav/대사/보상/quest/save 권한은 변경하지 않았다. |
 
 최종 child source는 56848 B / SHA256 `9dd71e4a9cbc898e4b7a20610735f78feee668dab723c67b25f431bafe005dd8`다. 문서 담당자의 CPU/Chrome/Git 실행은 0이다. 저장소 동등성 실패의 원인과 실제 save/native6/청취/물리GPU·발·전8방향·전체주민 경로는 미인수다. [소스·검수 근거 정본](<../11내러티브·로어디자인/RIFT_DIALOGUE_PUBLIC_CONSUMER_20261007.md>)과 [§23 전체 보고](<../4.1맵디자인+설정/HELL_RIFT_2_5D_SLICE_20261006.md>)를 따른다.
+
+
+### 2026-10-07 ROOT-MAIN-RIFT-SAVE-ADMISSION-20261007 · 저장 대기 후 둘러보기 입장
+
+현재 둘러보기 버튼은 알려진 저장 예약/진행 중에는 입장을 기다리게 한다. 기존 위치·44px 최소높이·마우스/키 격리와 기본OFF 범위는 그대로이며, 새 저장설정 UI가 아니다.
+
+| 항목 | 현재 계약·한정 결과 |
+|---|---|
+| scope | 실제 main의 http://127.0.0.1:3387 && ch1RiftView=1. 기본OFF·carry4제외·OPT/BINDS추가0. |
+| disabled | _rootRiftViewSaveBusy() || !!_rootRiftViewJob. busy는 readiness/DB미준비·부팅 Set ticket·saving/debounce/pendingForce/dbSaveNow.pending을 본다. enabled는 저장대기 해제이지 다른 입장조건 전체충족을 뜻하지 않는다. |
+| 정확 문구·우선순위 | owned면 '지옥의 틈 둘러보는 중'; 그외 busy면 '저장 중 · 잠시 기다려주세요'; 그외 '지옥의 틈 둘러보기'. |
+| DOM 안전 | _rootRiftViewUpdateButton은 enabled/live와 connected button만 소비. children.length===0인 leaf 문구만 바꾸고 disabled/text 동일값 쓰기는 억제한다. 생성직후/기존 Block 경로 사용·추가RAF/interval0. |
+| 부팅 예약 | 기존3000ms 예약4곳은 유지한다. ON에서 각각 Set ticket을 add하고 await dbSave finally에서해당ticket만delete. OFF는원setTimeout 그대로. settle는저장ACK가아니다. |
+| 입장 Gate | 기존 stage/on/idle/class/lesson등 admission 뒤 busy면 save-pending으로 job/host생성 전에false. 저장취소/강제저장/진행권한변경0. |
+| 새 검사 | CPU Node1/VM18/4그룹20PASS(동적18/정적2)·별도 headed Chrome1/context1/page1/child1 신규S1예약1→0와disabled→enabled/S2입장8초부모·저장표본/S3manualreturn·timer0/iframe0·buttonenabled의3PASS. 모두FAIL/미도달0·exit0. |
+| 한계·이력 | 새표본은globalstorage lock/실saveACK가아님. 이전NPC native2PASS 뒤storageFAIL1/hostreturn미도달은과거source이력·재검사/합산0. rootPNG1에서몸/pet/복귀안내가보이는한정관측이며흐림/작고어두운몸으로전체RETOUCH. |
+
+최종 game4100302 B/SHA256 `4166ed4b16d62fa87a47c39218553a3827a320b51c29cc553c64854901333c19`. API합성matsPOST1forward0/savePOST0/childAPI0/durableACKfalse·GLUNKNOWN·native6/audio/save/reward미인수다. [저장 정본](<../15 세이브+데이터구조/15 세이브+데이터구조.md>) / [소비자·근거](<../11내러티브·로어디자인/RIFT_DIALOGUE_PUBLIC_CONSUMER_20261007.md>) / [§23보고](<../4.1맵디자인+설정/HELL_RIFT_2_5D_SLICE_20261006.md>). 문서담당 제품실행/Git0, root보존예정.
