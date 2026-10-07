@@ -68,7 +68,13 @@ function move(dt){
   let dy=Number(keys.has('KeyS')||keys.has('ArrowDown'))-Number(keys.has('KeyW')||keys.has('ArrowUp'));
   if(dx||dy){
     const n=Math.hypot(dx,dy),step=240*dt, x=player.x+dx/n*step,y=player.y+dy/n*step;
-    if(terrain.canWalk(x,y,12)){player.x=x;player.y=y;}else state.blocked++;
+    if(terrain.canWalk(x,y,12)){player.x=x;player.y=y;}else{
+      state.blocked++;
+      if(dx&&dy&&step>0){
+        if(terrain.canWalk(x,player.y,12))player.x=x;
+        if(terrain.canWalk(player.x,y,12))player.y=y;
+      }
+    }
   }
   marker.position.copy(terrain.worldToScene(player.x,player.y,8));
 }
