@@ -44233,6 +44233,9 @@ function _skDetailHTML(sk, slv){
 function _skSpecificDetails(sk,slv){
   const lv=Math.max(1,slv);
   const id=sk.id;
+  if(id==='venomBlade'){
+    return [[_L('투사체','Projectile'),String(Math.min(6,1+lv)),'#ffcc44']];
+  }
   if(id==='kiSlash'){
     const _ksDist=250+(lv-1)*15;
     return [

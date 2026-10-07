@@ -56578,3 +56578,12 @@ WOLF 파일 쓰기는 자동 승인 검토에서 dangerous로 거절됐고 구�
 | 범위 | 기존 라벨·색상·레벨·builder·전투 스펙·피해·비용·충전·save 불변 | 상세 표시 한 leaf만 변경. 사용자 기존 IAB13 무조작/이전 로드 유지, 본편 전체 보스 경로·실보상 인수 미완료 |
 
 정확 보존·§23 보고는 외부 `ch1-skycrusher-persist-display-20261008/completion-receipt.json` 및 `visual-verdict.json`을 따른다.
+
+## 2026-10-08 독사 상세 기본 발수 표시
+
+| 단위·적용 위치 | 현재 소비 | 한계·검수 |
+|---|---|---|
+| `ROOT-VENOMBLADE-SHOT-DETAIL-CONSUMER-20261008` / `_skSpecificDetails.venomBlade` | 기존 투사체/Projectile 행으로 `String(Math.min(6,1+lv))` 표시. 기본 preview0·Lv1=2, Lv4=5, Lv5부터6발 상한 | 실제 producer와 기본 유효 정수 Lv 정적 대조·source peer203 blocking0. 수치는 테스트 PASS가 아님 |
+| 범위 | 기존 builder의 고유 section+숫자 행 추가, 게임플레이/ST40/CD/숙련/save·번역 변경0 | 기본 설명·번역의 `1+Lv` 상한 누락은 남음. 새 CPU/native/Chrome/청취/save 실행0; oldIAB13 무조작/이전 로드 유지 |
+
+`UI_NOT_ASSESSED / native NOT_RUN / VISUAL VERDICT: RETOUCH`. 정확 보존·§23 보고는 외부 `ch1-venomblade-shot-detail-20261008/completion-receipt.json` 및 `visual-verdict.json`을 따른다.
