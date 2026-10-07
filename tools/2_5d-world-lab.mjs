@@ -161,7 +161,14 @@ function select(id){
   leaf('actor-name',read.value.name);applyState();
 }
 function reset(){invalidatePreview('reset');closeDialogue('reset');interactionCue?.onSceneChange('reset');clearIntent();poses[state.selected]?.reset();effects[state.selected]?.onActorChange('reset');state.x=5480;state.y=3740;if(!terrain.canWalk(state.x,state.y,12))throw new Error('대표 화면 시작 발 위치가 막혀 있습니다');state.direction=0;state.blocked=0;setMode('idle');placeWolf();applyState();}
-function closeDialogue(reason){const wasOpen=dialogue?.snapshot().isOpen;dialogue?.close(reason);if(wasOpen){keys.clear();state.attackQueued=false;state.previewMode=null;poses[state.selected]?.release('dialogue-close');}dialogueSignature='';updateDialogue();}
+function focusDialogueInput(open,actor=state.selected,epoch=lifecycleEpoch){
+  if(!state.ready||state.paused||state.error||state.disposed||state.contextLost||document.hidden||!document.hasFocus()||state.selected!==actor||lifecycleEpoch!==epoch)return;
+  const current=dialogue?.snapshot();if(!current||current.isOpen!==open)return;
+  const panel=$('dialogue-panel');if(open&&panel.hidden)return;
+  const target=open?$('dialogue-options').querySelector('button:not(:disabled)')||$('dialogue-close'):$('world-canvas');
+  try{target?.focus({preventScroll:true});}catch(_e){}
+}
+function closeDialogue(reason){const actor=state.selected,epoch=lifecycleEpoch,wasOpen=dialogue?.snapshot().isOpen;dialogue?.close(reason);if(wasOpen){keys.clear();state.attackQueued=false;state.previewMode=null;poses[state.selected]?.release('dialogue-close');}dialogueSignature='';updateDialogue();if(wasOpen&&(reason==='manual'||reason==='escape'))focusDialogueInput(false,actor,epoch);}
 function updateDialogue(){
   if(!dialogue)return;
   const snapshot=dialogue.snapshot(),view=snapshot.view;
@@ -174,14 +181,20 @@ function updateDialogue(){
   const signature=view?JSON.stringify([view.npcId,view.nodeId,view.options]):'closed';
   if(signature===dialogueSignature)return;dialogueSignature=signature;
   leaf('dialogue-name',view?.name.ko||'');leaf('dialogue-text',view?.text.ko||'');
-  leaf('dialogue-notice',view?.notice.ko||'');
+  leaf('dialogue-notice',view?(view.notice.ko||'')+' · Tab으로 이동 · Enter로 선택 · Escape로 닫기':'');
   const list=$('dialogue-options');while(list.firstChild)list.removeChild(list.firstChild);
   for(const option of view?.options||[]){
     const button=document.createElement('button');button.type='button';button.textContent=option.label.ko;
-    button.addEventListener('click',()=>{if(state.ready&&!state.paused){dialogue.choose(option.id);updateDialogue();}});list.appendChild(button);
+    const actor=state.selected,epoch=lifecycleEpoch;
+    button.addEventListener('click',()=>{
+      if(!state.ready||state.paused||!button.isConnected||!list.contains(button)||state.selected!==actor||lifecycleEpoch!==epoch||dialogueSignature!==signature)return;
+      const chosen=dialogue.choose(option.id);updateDialogue();
+      if(chosen?.isOpen)focusDialogueInput(true,actor,epoch);
+      else if(chosen?.closeReason==='dialogue.close')focusDialogueInput(false,actor,epoch);
+    });list.appendChild(button);
   }
 }
-function talk(){if(!state.ready||state.paused)return;const n=dialogue.nearest(dialoguePlayer);if(!n)return;clearIntent();state.direction=(Math.round(Math.atan2(n.x-state.x,n.y-state.y)/(Math.PI/4))+8)%8;dialogue.open(n.npcId,dialoguePlayer);applyState();updateDialogue();}
+function talk(){if(!state.ready||state.paused)return;const n=dialogue.nearest(dialoguePlayer);if(!n)return;const actor=state.selected,epoch=lifecycleEpoch;clearIntent();state.direction=(Math.round(Math.atan2(n.x-state.x,n.y-state.y)/(Math.PI/4))+8)%8;const opened=dialogue.open(n.npcId,dialoguePlayer);applyState();updateDialogue();if(opened?.isOpen)focusDialogueInput(true,actor,epoch);}
 function displayApproach(row){
   // Prefer lateral separation for two readable bodies; canonical foot/nav stay unchanged.
   for(const [dx,dy] of [[120,0],[-120,0],[80,80],[-80,80],[80,-80],[-80,-80],[0,120],[0,-120]]){
@@ -551,6 +564,7 @@ try{
   $('visit-resident').addEventListener('click',visitResident);
   $('talk').addEventListener('click',talk);
   $('dialogue-close').addEventListener('click',()=>closeDialogue('manual'));
+  $('dialogue-panel').addEventListener('keydown',event=>{if(event.code==='Escape'&&!event.repeat&&state.ready&&dialogue?.snapshot().isOpen){event.preventDefault();event.stopPropagation();closeDialogue('escape');}});
   $('wolf-near').addEventListener('click',()=>{placeWolf();render();updateUi();});
   for(const id of ['wolf-visible','wolf-mode','wolf-facing'])$(id).addEventListener('change',()=>{updateWolf(0);render();updateUi();});
 }catch(error){fail(error);}
