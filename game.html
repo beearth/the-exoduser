@@ -34867,11 +34867,57 @@ function update(){
   const _dfFrame=(_dfBoss&&(_dfBoss.alive||_dfBoss._reviveTimer>0||_dfHold))?_druidFinaleFrame(_dfBoss,P.x,P.y,VW,VH,G._druidFrame||(G._druidFrame={})):null;
   if(_dfFrame){targetX=_dfFrame.x;targetY=_dfFrame.y;}
   else if(_isDruidFinale(_dfBoss)){targetX=P.x+G._camLkX;targetY=P.y+G._camLkY;}
-  G.cam.x+=(targetX-G.cam.x)*camSpd;G.cam.y+=(targetY-G.cam.y)*camSpd;
-  G.cam.x=~~G.cam.x;G.cam.y=~~G.cam.y;
   const _czTgt=_dfFrame?_dfFrame.zoom:(G._bossRef&&G._bossRef.alive)?0.80:1.0;
+  const _z0=G._camZoom||1.0;
+  const _zRate=1-Math.pow(_dfFrame?(_czTgt<_z0?.88:.98):.94,_dtSp);
+  const _zNext=_z0+(_czTgt-_z0)*_zRate;
+  let _ch1CamFitY=false;
+
+  const _cb=G._bossRef,_cs=_CODEX_BOSS[0];
+  // ROOT-CH1-BOSS-CAMERA-Y-FRAMING-20261007: isolated3387 opt-in, normal single-boss body only.
+  if(_ch1DruidScope()&&!_EDITOR_MODE&&!_dfFrame&&G.on&&G.stage===0&&G._bossArena===true&&
+     Array.isArray(ens)&&ens.includes(_cb)&&_ch1DruidSingleBoss()&&
+     _cb&&_cs?.use2D&&_cs.anim&&_codexBossReady[0]&&_codexBossImg[0]&&
+     _ch1DruidIntent(_cb)==='normal'){
+    const _key=_stage1CodexBossMotionKey(_cb);
+    const _sheet=['slash','slam','windup'].includes(_key)||
+      _cb.s==='bossDruidVolleyWind'||_cb.s==='bossDruidVolley'
+      ?'attack':_key==='walk'?'walk':'base8';
+    if(_druidSheets[_sheet]?.ready){
+      const _mul=window._btScaleMul||1;
+      const _off=window._btOffsetY||0,_drop=_cb._teleDropY||0;
+      const _dw=_cb.r*_cs.dw,_dh=_cb.r*_cs.dh;
+      // Parent scale cancels body inverse scale; translations retain it.
+      const _base=_cb.y+_off+_mul*(_drop-6);
+      const _breath=_sheet==='base8'?Math.abs(_mul)*2:0;
+      const _left=Math.min(_cb.x-_dw/2,P.x-P.r);
+      const _right=Math.max(_cb.x+_dw/2,P.x+P.r);
+      const _top=Math.min(_base-_dh*.86-_breath,P.y-P.r);
+      const _bottom=Math.max(_base+_dh*.14+_breath,P.y+P.r);
+      // Reserve the existing maximum bars while the intro is active.
+      const _bar=_bossCine.active?VH*.1:0;
+      const _half=VH/(2*Math.max(.3,_zNext)),_mapH=G.mh*T;
+      const _mapLo=_mapH<=_half*2?_mapH/2:_half;
+      const _mapHi=_mapH<=_half*2?_mapH/2:_mapH-_half;
+      const _lo=Math.max(_bottom-(VH/2-_bar)/_zNext,_mapLo);
+      const _hi=Math.min(_top+(VH/2-_bar)/_zNext,_mapHi);
+      const _loInteger=Math.ceil(_lo),_hiInteger=Math.floor(_hi);
+      if([VW,VH,_zNext,_mul,_dw,_dh,P.r,targetY,camSpd,
+          _left,_right,_top,_bottom,_mapH,_loInteger,_hiInteger].every(Number.isFinite)&&
+         VW>0&&VH>0&&_zNext>0&&_mul>0&&_dw>0&&_dh>0&&P.r>0&&camSpd>0&&camSpd<=1&&
+         _mapH>0&&(_right-_left)*_zNext<=VW&&_loInteger<=_hiInteger){
+        targetY=Math.max(_loInteger,Math.min(_hiInteger,Math.round(targetY)));
+        _ch1CamFitY=true;
+      }
+    }
+  }
+
+  const _ch1CamYBefore=G.cam.y;
+  G.cam.x+=(targetX-G.cam.x)*camSpd;G.cam.y+=(targetY-G.cam.y)*camSpd;
+  // Advance toward an admitted integer target instead of losing subpixel progress.
+  G.cam.x=~~G.cam.x;G.cam.y=_ch1CamFitY?(_ch1CamYBefore<targetY?Math.ceil(G.cam.y):Math.floor(G.cam.y)):~~G.cam.y;
   if(!G._camZoom)G._camZoom=1.0;
-  G._camZoom+=(_czTgt-G._camZoom)*(1-Math.pow(_dfFrame?(_czTgt<G._camZoom?.88:.98):.94,_dtSp));}
+  G._camZoom+=(_czTgt-G._camZoom)*_zRate;}
   // [CAM-CLAMP] 카메라를 맵 bounds로 클램프 — 코너(예: 좌하단)에서 맵 밖 void 노출 차단. 줌아웃(보스전) 반영해 가시 반경 확장.
   if(!_EDITOR_MODE&&G.map){const _mwPx=G.mw*T,_mhPx=G.mh*T,_cz2=Math.max(0.3,G._camZoom||1),_hvw=VW/(2*_cz2),_hvh=VH/(2*_cz2);
     G.cam.x=(_mwPx<=_hvw*2)?_mwPx/2:Math.max(_hvw,Math.min(_mwPx-_hvw,G.cam.x));
