@@ -13118,7 +13118,7 @@ function _dispatchSkillSlot(slotIdx,keyCode){
       else showPH(_T('악의 부족! (')+_malCost(30)+')','#ff4444');break;
     case 'venomBlade':
       if((P._vbCd||0)>0){showPH(_T('쿨다운 중...'),'#44dd44');break}
-      {activateVenomBlade();P._vbCd=Math.max(600,~~(900*(1+_cdRed())));_skOk=true}break;
+      if(activateVenomBlade()===true){P._vbCd=Math.max(600,~~(900*(1+_cdRed())));_skOk=true}break;
     case 'ltnChaser':
       if((P._lcCd||0)>0){showPH(_T('쿨다운 중...'),'#ffdd00');break}
       {activateLtnChaser();P._lcCd=Math.max(480,~~(720*(1+_cdRed())));_skOk=true}break;
@@ -44670,7 +44670,7 @@ function activateMaliceHunt(){
 function activateVenomBlade(){
   const _vbLv=P.skills.venomBlade||1;
   const _vbStCost=40;
-  if(P.st<_vbStCost){showPH(_T('ST 부족!'),'#ff4444');return}
+  if(P.st<_vbStCost){showPH(_T('ST 부족!'),'#ff4444');return false}
   P.st=Math.max(0,P.st-_vbStCost);
   const _vbDmg=~~(bowRef()*statDex()*pBowMul()*_skMul('venomBlade')*_fuseMul('venomBlade'));
   const _vbRange=6000+(_vbLv-1)*300;
@@ -44696,6 +44696,7 @@ function activateVenomBlade(){
     pProjs[pProjs.length]=_pp;
   }
   SFX.magic(EL.D);addTxt(P.x,P.y-25,_T('🐍 독사!'),'#44dd44',35);
+  return true;
 }
 
 // ═══ 뇌전추격자 발동 (DEX+석궁 기반 전기 유도칼날 + 체인라이트닝) ═══
