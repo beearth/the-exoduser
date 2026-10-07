@@ -197,3 +197,20 @@ slow HUD와 paused 언어 refresh가 같은 helper를 소비한다. 최종 B8 CP
 최종 `game.html` working 4,092,122B / SHA256 `b8be6378b7d2805b32ca38f92cca03179f8f1ebb2732bebacec6300f5fe7ad3a`, ROOT owned 4,091,937B / SHA256 `05fa7031c8f1d4b1e02643e9fd9964f81c3a80a25d698ab22a002c2330f1ddc0`의 6개 hunk 기준이다. 기존 foreign 185B는 미채택 상태로 보존한다.
 
 전체 §23 및 증거: [MAP_RUNTIME_ARCHITECTURE.md](MAP_RUNTIME_ARCHITECTURE.md)의 `ROOT-CH1-REGION-PROGRESS-HUD-20261007` 절.
+
+## 2026-10-08 지역 배너와 시작 제목의 위치 계약 경계
+
+이번 기록은 **ROOT-CH1-AREA-TITLE-HUD-SEPARATION-20261008**의 현재 구현 계약이다. 이전 640×720 KO/EN 화면의 시작 제목·커진 HUD 겹침은 당시 관측 이력이며, 이번 소스만으로 시각 해결을 인수하지 않는다. 최종 working `game.html`은 4,112,493B / SHA256 `0b6beffafbb9d2335d668d14993a0b9b5d0e1f9a98a14d8668f019a0ff946e88`이다.
+
+| 구분 | 현재 계약 |
+|---|---|
+| 기존 지역 배너 | `#regionBanner` top28%·2.7s, 정화 flare1.4s 유지. 지역 tick15f·경계1.5tile·쿨다운300f·입장/정화 권한 변경0 |
+| 시작 제목 예외 | 기존18% 고정 배치만으로 비충돌을 보장하지 않는다. 재생 중 유효 지역 HUD 아래 resting top을 `max(18%, HUD 실제 bottom+15px+기존 gap8px)`로 계산 |
+| 실제 가시성 | 제목3.1s와 배너는 동시 표시 가능하나 실제 겹침 UNKNOWN. 종료 후 show class 잔류/opacity0 가능하므로 class 조합만으로 실제 동시 표시를 판정하지 않음 |
+| 초기 지역 | init의 스폰 현재 지역 기록은 유지. 정지 상태에서 입장 배너 자동 발생을 새로 추가하지 않음. 같은 update의 지역 tick/slow HUD 순서 유지 |
+| 수명 | 현재 DOM/root/playing/G.on/hidden/유한 bbox 가드·inline top 값/priority 소유 확인·외부 변경 yield·pagehide 정리 |
+| 권한 불변 | 지역 정화·Angler·fbDone·보스방 개방·entry/update/retry/save/화살표 권한 변경0 |
+
+본 문서의 옛 `areaTitle(18%)·펫 대사·구슬과 비충돌` 표현은 이전 배치 설계 이력이다. 현재 조건부 제목 top과의 실제 비충돌·전체 animation viewport fit을 인수한 표현으로 사용하지 않는다. 배너 위치 추가 patch0이며, 새 native 640×720/1280×720 KO/EN·font/resize/언어 Gate가 필요하다. Codex166의 source-only 동시 표시/초기 지역 설명은 미채택 source 검토 기록이며 실화면 검수가 아니다.
+
+검수는 실제 controller를 통제 DOM·MutationObserver·ResizeObserver·animation event에 연결한 Node1/VM9, 새6그룹25조건 PASS/FAIL0/준비실패0/미도달0/exit0이다. 이전 view zoom CPU25와 별도 epoch이며 합산하지 않는다. 새 Chrome/GPU/PNG0, native NOT_RUN, 이번 UI 시각 NOT_ASSESSED, 전체 **VISUAL VERDICT: RETOUCH**다. 사용자 IAB13의 이전 로드 화면은 재로드 없이 유지했다. 세부 계약·가이드 §23은 [MAP_RUNTIME_ARCHITECTURE](<../4.1맵디자인+설정/MAP_RUNTIME_ARCHITECTURE.md>)의 같은 TASK 절을 따른다.

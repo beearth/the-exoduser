@@ -1038,3 +1038,70 @@ OFF/준비 frame 없음/불가 mode/낡은 identity의 검사 범위에서는 co
 코드후 의무 related-keyword docs검색은 1회,137경로/605행/748매칭이다. 전체 문서 전수완독을 주장하지 않으며 giant owner subtree·SUPERVISOR STATE/LOG는 path-only/본문·hash0, 보호2_3본문0으로 제외했다. 텍스트 backup/archive와 원측정이력은 보존하고 binary와 일괄동일시하지 않았다. 현행필수7은 본문에새append하고원prefix/이력수치·핀은유지한다.
 
 외부 근거는 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-druid-corpse-consumer-20261007`의 `implementation-receipt.json`(1,102B/`299f04e4d5e2dd9c909605efd3a4e51a10d2ce88eaf17d9a7391bb7afbfd4822`), `validation-receipt.json`(20,425B/`74db21d0c3d0c933709df5377f6ea7243e3c3ad05b803511c852fa1d7e3908be`), `visual-verdict.json`(9,562B/`da1bb7a4dc8e5d84a2354f8c45345f83890a7bafb9eab5757e4b6e92e92ae9a1`)이다. Git stage/commit/push는 ROOT의 완료소유 보존 예정이며 이 부록에서 완료 SHA를 미리 주장하지 않는다.
+
+## 2026-10-08 ROOT-CH1-AREA-TITLE-HUD-SEPARATION-20261008
+
+### 현재 소스와 위치 소비
+
+이번 기록은 **ROOT-CH1-AREA-TITLE-HUD-SEPARATION-20261008**의 현재 구현 계약이다. 이전 640×720 KO/EN 화면의 시작 제목·커진 HUD 겹침은 당시 관측 이력이며, 이번 소스만으로 시각 해결을 인수하지 않는다. 최종 working `game.html`은 4,112,493B / SHA256 `0b6beffafbb9d2335d668d14993a0b9b5d0e1f9a98a14d8668f019a0ff946e88`이다.
+
+| 항목 | 정확 계약·근거 |
+|---|---|
+| working game | 4,112,493B / `0b6beffafbb9d2335d668d14993a0b9b5d0e1f9a98a14d8668f019a0ff946e88` |
+| owned game | 4,112,308B / `4ba56388cdcad7fa9387ee3a78f4a25c769a4e350923ee0618ad6b7028a85218`; foreign185B 미채택 보존 |
+| 수정2hunk | 기존 update 첫 줄/root block 앞 `_syncHudAreaTitleScope()`; region label 뒤 observer controller |
+| 위치 | `max(18%, calc(HUD의 actual bottom + 15px + var(--gap-md)))`; 기존 gap8px. 제목 resting top 조정이며 모든 animation frame의 화면 fit 보장 아님 |
+| 유지 | 제목3.1s·Y−15..+7px·문구·폰트, HUD3줄·scale 최소1/기본12CSSpx, 원 PNG/scene/nav/배치·충돌·전투·save |
+| 활성 조건 | 현재 title/panel/root identity·connected·playing·G.on·!document.hidden·panel.on/region-progress·title.show·유한 bottom 및 양수 width/height |
+| 측정 | MutationObserver: panel class/자식/문자 및 root style, ResizeObserver: panel, resize/visibility/animation event에서 bbox. update 활성 scope 확인은 layout read0; 비활성은 다음 기존 update 경계에서 복원. G.on 변경 callback의 즉시 원자성 주장0 |
+| 소유 | 첫 실제 top 쓰기 직전 inline 값과 priority를 저장. 자기 값+priority가 현재 모두 일치할 때만 복원. 외부 변경은 해당 animation yield하며 hidden-first 전환도 포함 |
+| 미지원·종료 | MutationObserver/ResizeObserver 미지원은 legacy. pagehide에서 observer/listener/helper 해제 및 자기 top 복원. RAF/timer 추가0 |
+
+기존 640×720 KO/EN HUD 가독 검수에서 남은 시작 제목 겹침 RETOUCH는 이전 source epoch로 보존한다. 옛 제목18%/regionBanner28%의 보편적 비충돌 설명은 현재 조건부 제목 top에 대한 보장이 아니다. 배너 top28%·2.7s/정화 flare1.4s와 tick15f/경계1.5tile/쿨다운300f는 그대로다. 두 show class의 잔류와 opacity0을 실제 동시 표시로 오인하지 않는다. 동시 재생 가능성은 source 계약이며 현재 실제 제목↔regionBanner 겹침은 UNKNOWN/추가 위치 patch0이다.
+
+### 검증·완료 경계
+
+| 단계 | 결과·범위 |
+|---|---|
+| 정적 후보 | scope signal/기준 priority/hidden-first yield gaps는 최초 CPU 전에 보정. 실제 사용 중 외부 writer 발생 또는 새 런타임 실패가 확인된 것으로 기록하지 않음 |
+| 새 actual controller CPU | Node1/VM9·6그룹25조건 PASS/FAIL0/준비실패0/미도달0/exit0. 통제 DOM/observer/animation ports, native animation delivery/layout 아님 |
+| 이전 검사 | view zoom CPU25·옛640 KO/EN native 등은 각 source epoch. 새25와 clean 합산0/재실행0 |
+| 새 화면 | Chrome0/GPU0/PNG0/native NOT_RUN/UI NOT_ASSESSED. 기존 user IAB13 old-loaded 유지/no reload/newgame |
+| 미인수 | 실제 animation/resize/font/language/regionBanner/viewport fit, 물리 높이·전체 route/6단계·audio·durable save ACK·전체맵 A급 |
+| 검증 영수증 | H2/validation-receipt.json 1,310B / `5175260e463cffbbae77ca56cb9c9e157f4c4131e741066be03643c040739623` |
+| CPU 원결과 | H2/cpu-result.json 1,025B / `707dd4aa40358385c3023d3304b64df752b26ee2ed2b0e1d5ca4e94c053adb59` |
+| 시각 경계 | H2/visual-verdict.json 4,149B / `1baa24724d61ef8785d6ece8debe47f7bd4906ba45e52472aa8fc758b2f29dc7`; UI NOT_ASSESSED/전체 RETOUCH |
+
+H2=`/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-area-title-hud-separation-20261008`. 초기 implementation-receipt의 중간 bd7be source는 이력이며 최종 검증 source는 위0b6be다. 새 관련 검색은 source 이후1회/27경로115행133occurrence, 원문 `H2/docs-plan/docs-keyword-search.txt` 111,099B / `28dc1bd2cfc17193a87b83f89fec544f1669d4fddac92bec45e4a3c1c8bbe50f`이다. 보호2_3·3.3 foreign·owner STATE/LOG/dispatch 본문을 제외했고 전 문서 full read를 주장하지 않는다. 현재 직접 배치 설명6정본만 append하며 이전 task report/QA raw·무변경 badge/번역/clear typography는 보존한다.
+
+### MAP PRODUCTION REPORT — 가이드 §23
+
+| 항목 | 이번 범위의 사실·Gate |
+|---|---|
+| STAGE | 실제 CH1 main 시작 지역 제목·지역 진행 HUD 분리 consumer. source/통제 CPU 범위, 새 native0 |
+| MASTER | silhouette/regions/main route/side spaces: 기존 scene/nav 권위 유지 |
+| OUTER MASS | LEFT/RIGHT/TOP/SOUTH/major holes 변경0; 기존 blur/품질 한계 남음 |
+| LARGE | source assets·composites 변경0; overlap: 기존640 KO/EN 겹침이 동기이나 새 위치 시각 NOT_ASSESSED; repeated silhouette 미해결 |
+| MEDIUM | connections 불변; remaining holes 새 관측0 |
+| GROUND | shadow/contamination 불변; structure integration의 물리 높이0 미해결 |
+| PLAYABLE | main arenas/travel/breathing/threat space 및 gameplay/input/geometry 불변; combat readability 새 실화면 인수0 |
+| LANDMARK | primary/secondary/tertiary 위치·원자료 불변; 새 관측0 |
+| CAMERA QA / START | NOT_ASSESSED; 사용자 old-loaded IAB13 유지 |
+| CAMERA QA / EARLY | NOT_ASSESSED |
+| CAMERA QA / ARENA | NOT_ASSESSED |
+| CAMERA QA / SIDE L | NOT_ASSESSED |
+| CAMERA QA / SIDE R | NOT_ASSESSED |
+| CAMERA QA / LANDMARK | NOT_ASSESSED |
+| CAMERA QA / LATE | NOT_ASSESSED |
+| CAMERA QA / EXIT | NOT_ASSESSED |
+| TECH QA / route | 경로 불변·새 route suite0 |
+| TECH QA / collision | map/nav/gameplay/충돌식 변경0 |
+| TECH QA / pageerror | native NOT_RUN; 새 실제 브라우저 오류 검수0 |
+| TECH QA / 404 | native NOT_RUN |
+| TECH QA / seam | 원화/맵 seam 변경0·새 시각 인수0 |
+| TECH QA / loading | actual controller 수명·DOM/observer/animation event는 통제 CPU만, native layout/animation delivery 미인수 |
+| TECH QA / performance | NOT_MEASURED; 새 RAF/timer0, update 활성 scope layout read0, observer-driven bbox. 실제 비용·DOM/animation 성능 인수0 |
+| FILES | stage-owned: ROOT game2hunk 및 현재 관련6docs. concurrent: foreign game185/settings2948/ownerWIP 보존. 이 문서 작업 unrelated touched0 |
+| GIT | stage/commit/push는 ROOT 완료소유 checkpoint 예정, 이 담당 Git쓰기0/새 SHA 추정0/deploy0 |
+| VISUAL VERDICT | **RETOUCH**; 이번 UI NOT_ASSESSED, 자동 CPU PASS를 미감 PASS로 대체0 |
+| NEXT PASS | 새 native640×720/1280×720 KO/EN의 모든 제목 animation phase·resize/font/language·regionBanner·viewport fit. 기존 IAB13 재로드 없이 별도 승인 검수 필요. 실제 main 품질 및 같은 후보6단계 인수 계속 필요 |

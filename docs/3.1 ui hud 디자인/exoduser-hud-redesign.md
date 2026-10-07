@@ -1195,3 +1195,19 @@ CSS 캐시 ui-refinement.css?v=20260927-3. 신규 이미지/아이템 데이터 
 최종 `game.html` working 4,092,122B / SHA256 `b8be6378b7d2805b32ca38f92cca03179f8f1ebb2732bebacec6300f5fe7ad3a`, ROOT owned 4,091,937B / SHA256 `05fa7031c8f1d4b1e02643e9fd9964f81c3a80a25d698ab22a002c2330f1ddc0`의 6개 hunk 기준이다. 기존 foreign 185B는 미채택 상태로 보존한다.
 
 전체 런타임 계약·검수 epoch·§23 보고는 [MAP_RUNTIME_ARCHITECTURE.md](../4.1맵디자인+설정/MAP_RUNTIME_ARCHITECTURE.md)의 `ROOT-CH1-REGION-PROGRESS-HUD-20261007` 절을 따른다.
+
+## 2026-10-08 시작 지역 제목의 조건부 HUD 회피
+
+이번 기록은 **ROOT-CH1-AREA-TITLE-HUD-SEPARATION-20261008**의 현재 구현 계약이다. 이전 640×720 KO/EN 화면의 시작 제목·커진 HUD 겹침은 당시 관측 이력이며, 이번 소스만으로 시각 해결을 인수하지 않는다. 최종 working `game.html`은 4,112,493B / SHA256 `0b6beffafbb9d2335d668d14993a0b9b5d0e1f9a98a14d8668f019a0ff946e88`이다.
+
+| id/상수 | 현재 값·소비 |
+|---|---|
+| `#areaTitle` | 기존 stage 변경 시 제목 표시·3.1s 유지. 재생 중 지역 진행 HUD가 유효하면 resting top `max(18%, HUD 실제 bottom+15px+var(--gap-md))` |
+| `--gap-md` | 기존8px. 제목 animation Y−15..+7px·문구·폰트 변경0 |
+| `#mmLvl.region-progress` | 기존3줄·scale 최소1/12CSSpx 유지. observer가 실제 bbox를 읽고 update 활성 scope 확인은 bbox0 |
+| 복원 | 첫 쓰기의 inline top 값/priority 캡처, 자기 값/priority 일치 시만 복원. 외부 변경 시 hidden-first도 해당 animation yield. observer 미지원 legacy/pagehide 정리 |
+| 권한 | 기존 stage/nav/충돌/입력/보상/save 불변, 새 state 권한·RAF·timer0 |
+
+앞선 지역 배너 행의 `top28% — areaTitle/펫대사/구슬 비충돌`과 기존 중앙 상단 고정 위치 설명은 해당 설계 epoch이다. 현재 제목은 위 조건부 계산을 우선하며, regionBanner top28% 자체는 변경하지 않았다. 두 요소의 show class는 종료 뒤 남고 opacity0이 될 수 있어 class 둘만으로 실제 동시 가시성/겹침을 판정하지 않는다. source 읽기상 동시 재생 가능성과 실제 화면 겹침은 구분하며, 실제 겹침은 UNKNOWN이다.
+
+검수는 실제 controller를 통제 DOM·MutationObserver·ResizeObserver·animation event에 연결한 Node1/VM9, 새6그룹25조건 PASS/FAIL0/준비실패0/미도달0/exit0이다. 이전 view zoom CPU25와 별도 epoch이며 합산하지 않는다. 새 Chrome/GPU/PNG0, native NOT_RUN, 이번 UI 시각 NOT_ASSESSED, 전체 **VISUAL VERDICT: RETOUCH**다. 사용자 IAB13의 이전 로드 화면은 재로드 없이 유지했다. 세부 계약·가이드 §23은 [MAP_RUNTIME_ARCHITECTURE](<../4.1맵디자인+설정/MAP_RUNTIME_ARCHITECTURE.md>)의 같은 TASK 절을 따른다.

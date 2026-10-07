@@ -56217,3 +56217,20 @@ pageerrorHTTP0/requestfail5(font3의도차단+introabort2직접원인UNKNOWN)·A
 근거는 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/main-rift-view-zoom-20261008`의 `validation-receipt.json`1236B/`e92f4a1c24fd4271f0663c4d72a3dcbfb72f66699cfc452924be982730b14e8f`, `cpu-result.json`3776B/`a48a7d172cdef5a83cb5126c57dfd237328c22d76bbb1bc1d0bdcaef50392bce`, `source-peer-review.json`18147B/`411cb174ff05f146a3bd66ba715d4cf5207659447ca5983dc44a43306836265f`, `visual-verdict.json`3495B/`7ce66d415ecb0c4ca951e8d633bf06b70e893d27f65d3c531d59bd2acdca7f80`다. 최종 소스는 7hunk/원 before 역변환 exact이며, 문서 담당의 새 제품 실행/Git0이다. 원총괄 Git 보존은 문서 작성 시 예정 상태로서 commit/push 완료를 미리 주장하지 않는다.
 
 [HUD](<3.1 ui hud 디자인/SETTINGS_HUD_DETAIL_20260930.md>) / [소비자](<11내러티브·로어디자인/RIFT_DIALOGUE_PUBLIC_CONSUMER_20261007.md>) / [§23 전체 보고](<4.1맵디자인+설정/HELL_RIFT_2_5D_SLICE_20261006.md>).
+
+## 2026-10-08 ROOT-CH1-AREA-TITLE-HUD-SEPARATION-20261008
+
+| 항목 | 현재 변경·상태 |
+|---|---|
+| 실제2hunk | update 첫 root block 앞 scope sync + region label 뒤 observer controller. 새 RAF/timer0 |
+| 표시 | 제목 resting top=`max(18%, HUD actual bottom+15px+var(--gap-md))`, 기존 gap8px. 제목3.1s·Y−15..+7·문구·폰트/HUD3줄·scale1 유지 |
+| 안전성 | current DOM/root/playing/G.on/visibility/show/region-progress·finite rect 가드, 첫 write baseline 값+priority 캡처, own 값+priority 일치 시 복원, 외부 변경은 hidden-first도 해당 animation yield |
+| 갱신·종료 | observer-driven bbox; 기존 update 활성 scope 확인 bbox0/비활성 다음 update에서 복원. observer 미지원 legacy/pagehide 정리 |
+| working game | 4,112,493B / `0b6beffafbb9d2335d668d14993a0b9b5d0e1f9a98a14d8668f019a0ff946e88` |
+| owned game | 4,112,308B / `4ba56388cdcad7fa9387ee3a78f4a25c769a4e350923ee0618ad6b7028a85218`; foreign185B 미채택 보존 |
+| 실제 controller CPU | Node1/VM9·새6그룹25조건 PASS/FAILsetup미도달0/exit0; 통제 DOM/observer, 이전 zoom25와 별도 epoch/합산0 |
+| 새 시각 검수 | Chrome/GPU/PNG0/native NOT_RUN/UI NOT_ASSESSED. user IAB13 이전 source 유지/no reload |
+| 보존·미인수 | 원PNG/scene/nav/충돌/AI/전투/save 불변. 옛640KOEN overlap RETOUCH 보존, 현재제목↔regionBanner/전 animation fit·native6/audio/saveACK 미인수 |
+| 문서 | source 이후 관련 검색1회27path115행133occurrence. 최소현재6정본 fullprefix append/working+HEAD 선백업, Git checkpoint ROOT 예정 |
+
+scope/priority/hidden-first static gaps는 최초 CPU 전에 보정했고 실제 외부 writer 발생을 확정하지 않았다. 기존18%/28% 보편적 비충돌 설명은 구 epoch이며 현재 조건부 제목 top을 우선한다. 추가 위치 patch0, 전체 **VISUAL VERDICT: RETOUCH**다. 근거 `H2/validation-receipt.json` 1,310B/`5175260e463cffbbae77ca56cb9c9e157f4c4131e741066be03643c040739623`, `H2/visual-verdict.json` 4,149B/`1baa24724d61ef8785d6ece8debe47f7bd4906ba45e52472aa8fc758b2f29dc7`이며 H2는 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-area-title-hud-separation-20261008`다. 전체 §23 보고는 [MAP_RUNTIME_ARCHITECTURE](<4.1맵디자인+설정/MAP_RUNTIME_ARCHITECTURE.md>) 같은 TASK 절에 기록한다.

@@ -31721,6 +31721,7 @@ function _editorUpdate(){
 // 벽 끼임 체크 — 모듈 레벨 (핫패스 클로저 할당 제거: 과거 적마다 매 프레임 생성)
 function _eWallStuck(px,py){const tx=~~(px/T),ty=~~(py/T);return tx<0||ty<0||tx>=G.mw||ty>=G.mh||G.map[ty][tx]===1}
 function update(){
+  _syncHudAreaTitleScope();
   if(_rootRiftBlock('update'))return;
   window._systemLesson?.tick();
   if(!G.on)return;
@@ -59546,6 +59547,94 @@ function _updateRegionKillLabel(r){
     !G._fbDone?_L('봉인: 앵글러','Sealed: Anglers'):_L('개방 대기','Gate pending');
   _hset(label,'text',[target,angler,gate].join('\n'));
 }
+// Display-only area-title separation; no additional frame loop or game state.
+function _syncHudAreaTitleScope(){
+  const sync=_syncHudAreaTitleScope.current;
+  if(typeof sync==='function')sync();
+}
+(()=>{
+  const title=$('areaTitle'),panel=$('mmLvl'),root=document.documentElement;
+  if(!title||!panel||typeof MutationObserver!=='function'||typeof ResizeObserver!=='function')return;
+  let playing=false,disposed=false,yielded=false,ownedTop=null,ownedPriority='';
+  let savedTop='',savedPriority='';
+  function current(){
+    return !disposed&&title===$('areaTitle')&&panel===$('mmLvl')&&
+      root===document.documentElement&&title.isConnected&&panel.isConnected;
+  }
+  function active(){
+    return current()&&playing&&!document.hidden&&G.on&&
+      panel.classList.contains('on')&&panel.classList.contains('region-progress')&&
+      title.classList.contains('show');
+  }
+  function owns(){
+    return ownedTop!==null&&title.style.getPropertyValue('top')===ownedTop&&
+      title.style.getPropertyPriority('top')===ownedPriority;
+  }
+  function restore(){
+    const own=owns();
+    if(ownedTop!==null&&!own)yielded=true;
+    if(own){
+      if(savedTop)title.style.setProperty('top',savedTop,savedPriority);
+      else title.style.removeProperty('top');
+    }
+    ownedTop=null;ownedPriority='';
+  }
+  function sync(){
+    if(disposed)return;
+    if(!active()){restore();return;}
+    if(yielded)return;
+    if(ownedTop!==null&&!owns()){
+      ownedTop=null;ownedPriority='';yielded=true;return;
+    }
+    const box=panel.getBoundingClientRect();
+    if(!Number.isFinite(box.bottom)||!Number.isFinite(box.width)||!Number.isFinite(box.height)||box.width<=0||box.height<=0){
+      restore();return;
+    }
+    if(!active()){restore();return;}
+    if(ownedTop!==null&&!owns()){
+      ownedTop=null;ownedPriority='';yielded=true;return;
+    }
+    if(ownedTop===null){
+      savedTop=title.style.getPropertyValue('top');
+      savedPriority=title.style.getPropertyPriority('top');
+    }
+    // Existing resting top18%, upward animation15px, design gap8px.
+    const next=`max(18%, calc(${box.bottom}px + 15px + var(--gap-md)))`;
+    if(title.style.getPropertyValue('top')!==next||title.style.getPropertyPriority('top')!=='')
+      title.style.setProperty('top',next);
+    ownedTop=title.style.getPropertyValue('top');
+    ownedPriority=title.style.getPropertyPriority('top');
+  }
+  function scopeSync(){if(!active())restore();}
+  function started(event){
+    if(disposed||event.target!==title||event.animationName!=='hudAreaTitle')return;
+    playing=true;yielded=false;sync();
+  }
+  function ended(event){
+    if(disposed||event.target!==title||event.animationName!=='hudAreaTitle')return;
+    playing=false;restore();
+  }
+  const mutations=new MutationObserver(sync);
+  mutations.observe(panel,{attributes:true,attributeFilter:['class'],childList:true,characterData:true,subtree:true});
+  mutations.observe(root,{attributes:true,attributeFilter:['style']});
+  const sizes=new ResizeObserver(sync);sizes.observe(panel);
+  _syncHudAreaTitleScope.current=scopeSync;
+  title.addEventListener('animationstart',started);
+  title.addEventListener('animationend',ended);
+  title.addEventListener('animationcancel',ended);
+  window.addEventListener('resize',sync);
+  document.addEventListener('visibilitychange',sync);
+  window.addEventListener('pagehide',()=>{
+    disposed=true;mutations.disconnect();sizes.disconnect();
+    if(_syncHudAreaTitleScope.current===scopeSync)_syncHudAreaTitleScope.current=null;
+    title.removeEventListener('animationstart',started);
+    title.removeEventListener('animationend',ended);
+    title.removeEventListener('animationcancel',ended);
+    window.removeEventListener('resize',sync);
+    document.removeEventListener('visibilitychange',sync);
+    restore();
+  },{once:true});
+})();
 function updateHUD(slow){
   // ── 빠른 경로: 구슬 수위 + 원형 링 (매 3프레임 = ~20회/초) ──
   P.mhp=~~P.mhp; // 소수점 방지

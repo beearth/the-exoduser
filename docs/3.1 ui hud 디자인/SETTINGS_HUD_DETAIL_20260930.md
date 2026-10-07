@@ -218,3 +218,21 @@ Node 후보 연결과 root 보강 회귀61PASS. 게임 생성/드롭/저장라�
 새 Chrome0/native **NOT_RUN**, 새 PNG0, 이번 UI 시각 **NOT_ASSESSED**다. 사용자 IAB tab13의 이전 로드 소스를 유지하고 reload/새 게임0이다. 전체 **VISUAL VERDICT: RETOUCH**. 실제 줌 가독성/버튼 겹침·전8카메라·발/물리높이/native6/audio/durable save는 이번에 인수하지 않았다.
 
 [소비자·정확 근거](<../11내러티브·로어디자인/RIFT_DIALOGUE_PUBLIC_CONSUMER_20261007.md>) / [§23 전체 보고](<../4.1맵디자인+설정/HELL_RIFT_2_5D_SLICE_20261006.md>).
+
+## 2026-10-08 시작 지역 제목과 지역 진행 HUD 분리
+
+이번 기록은 **ROOT-CH1-AREA-TITLE-HUD-SEPARATION-20261008**의 현재 구현 계약이다. 이전 640×720 KO/EN 화면의 시작 제목·커진 HUD 겹침은 당시 관측 이력이며, 이번 소스만으로 시각 해결을 인수하지 않는다. 최종 working `game.html`은 4,112,493B / SHA256 `0b6beffafbb9d2335d668d14993a0b9b5d0e1f9a98a14d8668f019a0ff946e88`이다.
+
+| 항목 | 현재 코드 계약 |
+|---|---|
+| 대상 | 재생 중인 `#areaTitle`과 표시 중인 `#mmLvl.on.region-progress` |
+| 제목 resting top | `max(18%, calc(HUD의 실제 bottom + 15px + var(--gap-md)))`; 기존 `--gap-md=8px` 유지 |
+| 유지 항목 | 제목3.1s·Y 이동−15..+7px·문구·폰트, 지역 HUD3줄·활성 scale 최소1/기본 글자12CSSpx 유지 |
+| 조건 | 현재 title/panel/root DOM identity·connected·playing·G.on·visible·show·유한 양수 rect가 유효할 때만 적용 |
+| 갱신 | observer/resize/visibility/animation 경계에서 실제 bbox 측정. 기존 update 첫 경계의 scope 확인은 활성 경로 bbox 읽기0; 비활성화는 다음 기존 update 경계에서 복원 |
+| 소유·복원 | 첫 쓰기 직전 inline top 값과 priority를 캡처. 자기 값·priority가 모두 일치할 때만 원복; 외부 변경이면 hidden-first 경계도 포함해 해당 animation에서 양보 |
+| 실패·종료 | observer 미지원이면 legacy 위치, pagehide에서 listener/observer 해제. 새 RAF/timer0, 게임 진행·저장 권한 변경0 |
+
+검수는 실제 controller를 통제 DOM·MutationObserver·ResizeObserver·animation event에 연결한 Node1/VM9, 새6그룹25조건 PASS/FAIL0/준비실패0/미도달0/exit0이다. 이전 view zoom CPU25와 별도 epoch이며 합산하지 않는다. 새 Chrome/GPU/PNG0, native NOT_RUN, 이번 UI 시각 NOT_ASSESSED, 전체 **VISUAL VERDICT: RETOUCH**다. 사용자 IAB13의 이전 로드 화면은 재로드 없이 유지했다. 세부 계약·가이드 §23은 [MAP_RUNTIME_ARCHITECTURE](<../4.1맵디자인+설정/MAP_RUNTIME_ARCHITECTURE.md>)의 같은 TASK 절을 따른다.
+
+제목과 regionBanner의 실제 겹침 및 640×720/1280×720 KO/EN 전체 animation·font/resize/언어·viewport fit은 아직 NOT_ASSESSED다. 기존 시작제목 겹침 RETOUCH를 현재 화면 개선 PASS로 바꾸지 않는다.

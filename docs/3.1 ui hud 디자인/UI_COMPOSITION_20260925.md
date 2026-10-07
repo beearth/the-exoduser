@@ -2808,3 +2808,19 @@ source28 고유앱3403은 이번 라벨 수정 전 코드다. 실제 launch1/liv
 | 범위 | 초당 기본 ST 표시. 소비량 감소·보너스를 포함한 최종 소비량 또는 틱당 `2`를 뜻하지 않음 |
 
 옛 고정 `ST/틱 2`는 변경 전 표시 이력이다. DOM 구조/레이아웃·입력·학습/강화 권한·틱·전투·저장은 변경하지 않았다. [자원 정본](../2_1%20스킬관리+합체시스템+자원/자원리젠+소모공식.md)의 같은 작업 절을 우선한다. 실제 소스 정적 대조와 한 행 역변환 exact만 확인했으며 CPU/Chrome/새 테스트 0, 새 native NOT_RUN이다. 실제 화면 가독성·언어 전환 검수는 이번 범위에서 수행하지 않았다.
+
+## 2026-10-08 시작 제목/HUD 배치 소비 갱신
+
+이번 기록은 **ROOT-CH1-AREA-TITLE-HUD-SEPARATION-20261008**의 현재 구현 계약이다. 이전 640×720 KO/EN 화면의 시작 제목·커진 HUD 겹침은 당시 관측 이력이며, 이번 소스만으로 시각 해결을 인수하지 않는다. 최종 working `game.html`은 4,112,493B / SHA256 `0b6beffafbb9d2335d668d14993a0b9b5d0e1f9a98a14d8668f019a0ff946e88`이다.
+
+| 합성 요소 | 유지·변경 |
+|---|---|
+| 시작 제목 | 문구·폰트·3.1s `hudAreaTitle`·Y−15..+7px 유지. 활성 지역 진행 HUD 아래로 resting top만 `max(18%, HUD bottom+15px+기존 gap8px)` 계산 |
+| 우상단 HUD | 기존3줄·scale 최소1·12CSSpx와 폭/offset/padding 유지. 배지 버튼/collection의 자식 구조와 기존 top offset 변경0 |
+| 관측·수명 | 현재 DOM/root/playing/G.on/visibility/show/region-progress·유한 rect 확인. observer-driven bbox, update 활성 scope 확인은 bbox0. 비활성은 다음 기존 update 경계에서 자기 top/priority일 때만 복원 |
+| 외부 스타일 | 첫 쓰기 baseline 값·priority 보존. 외부 변경은 해당 animation에서 yield하며 강제 덮어쓰기0; 실제 외부 writer 발생이 확인된 것은 아님 |
+| 종료·미지원 | pagehide 정리; observer 미지원은 legacy. RAF/timer 추가0·부모 컨테이너 내용 교체0 |
+
+검수는 실제 controller를 통제 DOM·MutationObserver·ResizeObserver·animation event에 연결한 Node1/VM9, 새6그룹25조건 PASS/FAIL0/준비실패0/미도달0/exit0이다. 이전 view zoom CPU25와 별도 epoch이며 합산하지 않는다. 새 Chrome/GPU/PNG0, native NOT_RUN, 이번 UI 시각 NOT_ASSESSED, 전체 **VISUAL VERDICT: RETOUCH**다. 사용자 IAB13의 이전 로드 화면은 재로드 없이 유지했다. 세부 계약·가이드 §23은 [MAP_RUNTIME_ARCHITECTURE](<../4.1맵디자인+설정/MAP_RUNTIME_ARCHITECTURE.md>)의 같은 TASK 절을 따른다.
+
+기존 지역 배너 top28%/제목18% 배치의 보편적 비충돌 설명은 이전 설계 범위다. 현재 제목 top은 조건부 계산되므로 regionBanner·펫 대사·구슬 및 viewport와의 전 animation 시각 비충돌은 별도 native Gate로 남긴다.
