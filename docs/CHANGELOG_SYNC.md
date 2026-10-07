@@ -56234,3 +56234,18 @@ pageerrorHTTP0/requestfail5(font3의도차단+introabort2직접원인UNKNOWN)·A
 | 문서 | source 이후 관련 검색1회27path115행133occurrence. 최소현재6정본 fullprefix append/working+HEAD 선백업, Git checkpoint ROOT 예정 |
 
 scope/priority/hidden-first static gaps는 최초 CPU 전에 보정했고 실제 외부 writer 발생을 확정하지 않았다. 기존18%/28% 보편적 비충돌 설명은 구 epoch이며 현재 조건부 제목 top을 우선한다. 추가 위치 patch0, 전체 **VISUAL VERDICT: RETOUCH**다. 근거 `H2/validation-receipt.json` 1,310B/`5175260e463cffbbae77ca56cb9c9e157f4c4131e741066be03643c040739623`, `H2/visual-verdict.json` 4,149B/`1baa24724d61ef8785d6ece8debe47f7bd4906ba45e52472aa8fc758b2f29dc7`이며 H2는 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-area-title-hud-separation-20261008`다. 전체 §23 보고는 [MAP_RUNTIME_ARCHITECTURE](<4.1맵디자인+설정/MAP_RUNTIME_ARCHITECTURE.md>) 같은 TASK 절에 기록한다.
+
+## 2026-10-08 ROOT-CH1-HOLY-PRISON-DEPLOY-IN-20261008
+
+| 항목 | 변경·한계 |
+|---|---|
+| 실제 제품1hunk | global holyPrison dedicated image draw의 `min(1,(1-t/maxT)×5)` → `min(1,t/15)`. t0부터15f 성장·t>=15 destination quad지름2r |
+| 유지 | alpha `(.5+.3sin(now×.003))×min(1,1-t/maxT)`/중심/회전/holyDome 근접5 skip·기존PNG·t 증가/만료제거·억제/반경/전투/save |
+| 정본 불일치 | primary10초 및 DPS10+Lv×.3초를 독립 producer `600+Lv×30`f=`10+Lv×.5`초로 동기화. Lv1=10.5/Lv10=15. 게임 수치 변경0 |
+| 별도 계약 | 실제 desc/descEn 고정10초/Duration10s 유지/미해결. fused prison은 holyDome의720+holyDomeLv×30f·HD반경 재사용 |
+| working / owned | 4,112,481B/`f198d7fd3efa75e010d07df27f396cef76e11806ff577f8fa8a4de58759b0139` / 4,112,296B/`866308b79af92997404e3f764e54f02fff7afc279cc60bd6018ff6af98cd2359`;foreign185 미채택 보존 |
+| 신규 한정 검수 | 실제 whole-main draw block+실PNG decode+통제 Image/softwarecanvas Node1/VM6·2그룹13조건 PASS/FAILsetup미도달0/exit0.  게임 simulation/native HTMLImage/GPU/Chrome0 |
+| 시각 | ROOT softwarePNG 직접판독 한정. t629 quad800/alpha.000809873/software alpha pixel0. actual main NOT_ASSESSED/전체 RETOUCH/실가시원=반경 및 만료직전 가시성 보장0 |
+| 문서·보존 | 새 관련검색1회22path52행60occurrence, 현재 최소5정본. PHASE_V1검색0·기존봉인 유지. working/HEAD 선백업·표한정교체+append inverse exact·EOF1/ownedHEAD. Git ROOT예정 |
+
+D=`/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-holy-prison-deploy-in-20261008`. validation2,624B/`2a40c2a515f3f33b930a1f5ee3fba9ef2bdb9d92723a1d528141e026f1bb7df9`, visual4,197B/`3b54cc8c2f80ccdcdaa5d0a76197034e189a90a310859a4cdc3b2d799a5185fa`, bitmap3,105B/`b57a542c310e3449f35d9384b28ea0453c45e4cf243622ce2785fa34c6cfd541`를 근거로 한다. 사용자 IAB13 old-loaded 무조작/no reload·새native0·native6/audio/reward/saveACK 미인수. §23 전체 보고는 [VFX 구현가이드](<5.1임펙트디자인/VFX_구현가이드.md>) 같은 TASK 절에 기록한다.

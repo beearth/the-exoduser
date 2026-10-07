@@ -4609,3 +4609,17 @@ working game의 foreign185B는 미채택 그대로이며 3.3 foreign2,948B·STAT
 [현재 source 핀·상세 정본](<../11내러티브·로어디자인/RIFT_DIALOGUE_PUBLIC_CONSUMER_20261007.md>) / [§23 전체 보고](<../4.1맵디자인+설정/HELL_RIFT_2_5D_SLICE_20261006.md>) 참조. 코드3+docs8은 root의 정상 보존 예정이며 stage/commit/push 완료로 미리 기록하지 않는다.
 
 별도 전문 원문 보존: root 제공1226/1246 provider end12의 manifest23625 B/SHA2564427311e526c22a7f07a6682430d2602954d505be5b883684518feefb9f417de, 원문37764 B. optional tool metadata 경계 때문에 firstsourceUNKNOWN12/exitUNKNOWN12이며 미채택·의미실행0이다. 이 원자료 수신을 이번 제품/CPU/native 완료로 계산하지 않는다.
+
+## 2026-10-08 ROOT-CH1-HOLY-PRISON-DEPLOY-IN-20261008 — 다음 실제 소비자 연결
+
+| 담당·산출 | 현재 관측·다음 Gate |
+|---|---|
+| ROOT 제품 구현 | game global holyPrison dedicated image draw1hunk, `_hpDeploy=min(1,t/15)`. 초기15f 성장/t>=15 destination지름2r. CH1/URL한정 아님 |
+| 정확 소스 | working4,112,481B/`f198d7fd3efa75e010d07df27f396cef76e11806ff577f8fa8a4de58759b0139`; owned4,112,296B/`866308b79af92997404e3f764e54f02fff7afc279cc60bd6018ff6af98cd2359` |
+| 문서 담당 | 기존 helper가 current5만 동기화. primary/DPS 지속 오류를 standalone600+Lv×30f로 정정; fused HD시간/반경 및 고정10초UI문구는 구분. 게임 balance 변경0 |
+| 의미·software 검수 | 실제 draw block+원PNG decode+통제 Image/softwarecanvas Node1/VM6·2그룹13조건 PASS/FAILsetup미도달0/exit0. 후보 source peer 차단finding0. 해당 범위만 종료 |
+| 시각·본편 미완료 | ROOT software PNG 판독 한정, actual main NOT_ASSESSED/전체 RETOUCH. 만료 직전software alpha pixel0/가시문양=반경 UNKNOWN. native/HTMLImage/GPU/Chrome0 |
+| 다음 실행 | 사용자 old-loaded IAB13 유지/no reload. 허용된 새 인게임 범위에서 실제 습득/설치·유지·만료·동시효과를 관찰해야 함. 전체 CH1-1/정상보스route/native6/audio/실보상save 인수와 별개 |
+| 보존 | foreign game185/settings2948·STATE/LOG·원PNGscene/nav 불변. 코드1+docs5 정상 checkpoint는 ROOT예정, 원격성공 미리 기재0 |
+
+D=`/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-holy-prison-deploy-in-20261008`의 validation2,624B/`2a40c2a515f3f33b930a1f5ee3fba9ef2bdb9d92723a1d528141e026f1bb7df9`·visual4,197B/`3b54cc8c2f80ccdcdaa5d0a76197034e189a90a310859a4cdc3b2d799a5185fa`에 검수 범위를 고정한다. 상세 현재 계약/§23은 [VFX 구현가이드](<../5.1임펙트디자인/VFX_구현가이드.md>) 같은 TASK 절을 따른다. 앞의 제작판과 전문팀 sent/source/end 관측은 각 작성 시점 이력으로 보존하며 이번 구현을 모든 팀의 새 착수·본편 완성으로 세지 않는다.

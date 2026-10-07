@@ -148,7 +148,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 | spikeTrap | 가시덫 (phys 탭) | 악의 | **10** | **600f (10초)** | INT×magicRef×pMagic×**_skMul('spikeTrap')×0.75** (b:14, g:11.2; `_skMul=14+(Lv-1)×11.2×0.5`), 슬로우 Lv1 91%(기존 대비 ×1.3)+Lv당2%p(최대95%)+출혈 | 25f 간격(초당2.4틱): 틱 계수10.5→90.3, 초당 계수25.2→216.72(Lv1→Lv20). 실제 DPS는 `floor(INT×magicRef×pMagic×틱계수)×2.4`, 출혈 별도. 직전 피해의50%. 범위 300→585 (Lv1→Lv20, slope +15/Lv — 코드 실측 `300+(Lv-1)*15`; 2026-05-29 밸런스로 base 200→300, slope는 +15 유지. 과거 문서/툴팁 +22 표기는 코드 불일치로 정정 2026-08-18) |
 | boneWall | 해골무덤 | 악의 | **12** | 25초/스택 (2→3스택) | floor(meleeRef×STR×pAtkMul×(9+(Lv-1)×3.6)) 솟을 때 | min(30,3+(Lv-1)×0.2)초 |
 | holyDome | 회복의 영역 | 없음 | 무료 | **1800f (30초)** | HP/MP/ST +10리젠, 회복×2, 쿨×2 | 12+Lv×0.5초 |
-| holyPrison | 구속의 영역 | 없음 | 무료 | **1800f (30초)** | 부활력 -15%~30%(Lv1=15%, Lv10=30%) | 10+Lv×0.3초 |
+| holyPrison | 구속의 영역 | 없음 | 무료 | **1800f (30초)** | 부활력 -15%~30%(Lv1=15%, Lv10=30%) | (600+Lv×30)f = (10+Lv×0.5)초 |
 | iceStorm | 아이스스톰 | MP | **40** | 15초/스택 (2→3스택) | 빙결저항 -50%, 게이지 축적+10%/Lv | 3초 |
 | weakPhys | 파쇄의 영역 | 없음 | 무료 | **1500f (25초)** | 물리방어 -10%+1%/Lv | 10+Lv×0.3초 |
 | weakMag | 침식의 영역 | 없음 | 무료 | **1500f (25초)** | 마법저항 -10%+1%/Lv | 10+Lv×0.3초 |
@@ -352,3 +352,15 @@ blur/hidden에서는 `_msAiming`·`_msCharging` 취소 후 다음 추출 프레�
 본문의 `30+(Lv-1)×5 ST/초` 행은 현재 기본식과 일치한다. §8의 회전참 `10→100/초 (Lv1→10)`는 과거 수치로 보존하며 현재 회전참 비용 기준으로 사용하지 않는다. 이 정정은 회전참 기본비용/표시만 다루며 다른 스킬의 피해·비교·순위·할인 공식의 현행성을 새로 검수한 것이 아니다. 소비량 감소 보정·보너스를 포함한 최종 소비량을 주장하지 않는다.
 
 제품 변경은 고정 `ST/틱 2`를 현재 기본비용으로 바꾼 표시 한 행뿐이다. 기존 실제 소비/공격/전투/저장 수식은 그대로이며, 소스 정적 대조와 한 행 역변환 exact를 확인했다. CPU/Chrome/새 테스트 0, native NOT_RUN; 위 레벨 표는 코드 계약값으로서 테스트 PASS가 아니다.
+
+## 2026-10-08 holyPrison 현재 지속시간 동기화
+
+| 범위 | 현재 producer·표기 |
+|---|---|
+| 독립 holyPrison | `600+Lv×30`f = 명목60f/s 기준 `10+Lv×0.5`초, Lv1=10.5초/Lv10=15초 |
+| 이전 DPS 표 | 해당 행의 `10+Lv×0.3초`는 옛 문서 불일치이며 위 .5초식으로 정정. 다른 스킬/자원/30초 쿨/억제력 값 변경0 |
+| 이전 primary/UI | primary 옛10초는 runtime식으로 정정했지만 game desc/descEn 고정10초/Duration10s는 여전히 현 UI문자열. 게임 설명 변경0/차이 미해결 |
+| 합체 | holyDome 동시설치 prison은 `_hdDur=720+holyDomeLv×30`f와 HD반경 재사용. 독립 발동의 지속/반경 표와 구분 |
+| 이번 제품 변경 | global dedicated draw의 성장계수만 `min(1,t/15)`, t>=15 quad지름2r. 게임 지속·damage/억제/simulation/save 변경0 |
+
+TASK `ROOT-CH1-HOLY-PRISON-DEPLOY-IN-20261008`, working game4,112,481B/`f198d7fd3efa75e010d07df27f396cef76e11806ff577f8fa8a4de58759b0139`. 실제 draw block+원PNG decode+통제 Image/softwarecanvas Node1/VM6·2그룹13조건 PASS는 게임 시뮬레이션/HTMLImage/GPU/native/실Save 검수가 아니다. t629 quad800/alpha.000809873에서도 software alpha pixel0이며 가시문양=판정반경 및 만료 직전 가시성 인수0이다. actual main NOT_ASSESSED/전체 RETOUCH. 세부 계약·영수증·§23은 [VFX 구현가이드](<../5.1임펙트디자인/VFX_구현가이드.md>) 같은 TASK 절을 따른다.

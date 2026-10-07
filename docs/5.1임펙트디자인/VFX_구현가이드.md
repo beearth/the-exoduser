@@ -1166,3 +1166,70 @@ working game의 foreign185B는 미채택 그대로이며 3.3 foreign2,948B·STAT
 | GIT | staged/commit/push는 ROOT 완료소유 checkpoint 예정, 이 담당 Git쓰기0·새 commit SHA 추정0; deploy0 |
 | VISUAL VERDICT | **RETOUCH** — 시작 본체 가림 개선 한정, 전체맵 A급/정상 route 완료 아님 |
 | NEXT PASS | 정상 route의 실제 지역80%+담당Angler→개방→보스전→death/retry·장비/회복을 같은 후보에서 이어 관측하고, 별도 zoom/shake/SSAA·postprocess색·라벨/FX 및 지형 가독성 Gate를 통과해야 함. 자동 재검사·임의 원화/geometry/nav 수정0 |
+
+## 2026-10-08 ROOT-CH1-HOLY-PRISON-DEPLOY-IN-20261008 — 전용 구속 문양 성장
+
+| 항목 | 현재 dedicated draw 계약 |
+|---|---|
+| 범위 | 기존 global `holyPrison` image draw. CH1/URL opt-in 한정0 |
+| ROOT1hunk | `_hpDeploy=Math.min(1,(1-_fz.t/_fz.maxT)*5)` → `Math.min(1,_fz.t/15)` |
+| 증가·크기 | t0 생성/기존 t 증가·만료제거 유지. 처음15f 성장, t>=15 `_hpSz=2r`. destination 정사각형 지름이며 visible alpha 경계/게임 반경 일치 인수0 |
+| 원본 | `sprites/holy_dome.png` 기존 Image 재사용. 원PNG 변경/새 생성0. 앞의 holyDome 라임 캐시·전처리·조명 계약은 이번 수정 대상0 |
+| alpha | `(.5+.3×sin(now×.003))×min(1,1-t/maxT)` 유지. 원 후반 fade를 없애지 않음 |
+| 위치·회전 | 원 x/y 중심 및 `rotate(-now×.00005)` 유지 |
+| 겹침 skip | holyDome의 `abs(dx)<5 && abs(dy)<5`일 때 기존 전용 문양 skip 유지 |
+| standalone 지속 | `600+holyPrisonLv×30`f = `10+Lv×0.5`초. Lv1=10.5초/Lv10=15초; 수치 변경 아님 |
+| fused 동시설치 | holyDome의 `720+holyDomeLv×30`f·`_hdR` 재사용, 독립 발동과 구분 |
+| UI 차이 | desc/descEn 고정10초/Duration10s는 그대로이며 producer 지속식과 불일치. 문서 primary/DPS 현재 지속만 동기화 |
+| 권한 | 피해/억제/반경/쿨다운/시뮬레이션/save·원 scene/nav·카메라 불변. 새 RAF/timer/Image/texture0 |
+
+### 정확 소스와 한정 검수
+
+| 근거 | 바이트 / SHA256 · 결과 |
+|---|---|
+| working game | 4,112,481 / `f198d7fd3efa75e010d07df27f396cef76e11806ff577f8fa8a4de58759b0139` |
+| owned game | 4,112,296 / `866308b79af92997404e3f764e54f02fff7afc279cc60bd6018ff6af98cd2359`; foreign185B 미채택 보존 |
+| D/implementation-receipt.json | 1,118 / `b60d6c42374f14da91c17fb4bdec15750211699b57039bcc5172d09f53abc292`;1hunk/inverse working·HEAD exact |
+| D/validation-receipt.json | 2,624 / `2a40c2a515f3f33b930a1f5ee3fba9ef2bdb9d92723a1d528141e026f1bb7df9` |
+| D/bitmap-result.json | 3,105 / `b57a542c310e3449f35d9384b28ea0453c45e4cf243622ce2785fa34c6cfd541` |
+| D/holy-prison-lifecycle-software.png | 196,701 / `f32324241c0727ed3b840dd05716d9b3abbdc18bfcde2ac44f6c90a2f7402bbc`; in-game screenshot 아님 |
+| D/visual-verdict.json | 4,197 / `3b54cc8c2f80ccdcdaa5d0a76197034e189a90a310859a4cdc3b2d799a5185fa` |
+| source peer | 9,806 / `de4acfd28e0ce29fc1ebaf3de20fec66eac0e5cd6657c2dad4c67ab2066e9e7d`; 차단 finding0, 실화면 인수 아님 |
+
+D=`/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-holy-prison-deploy-in-20261008`. 최초 actual whole-main 전용 draw block·실PNG decode·통제 Image port/softwarecanvas의 Node1/VM6·2그룹13조건 PASS/FAIL0/준비실패0/미도달0/exit0이다. fixture r400/maxT630/t1,8,15,315,600,629·software scale.3이며 actual game simulation/native HTMLImageElement/GPU/Chrome0이다. t15 이후 quad800 유지, 마지막 t629 alpha `0.0008098731133003451`/software nonzeroAlphaPixels0으로 크기와 가시성은 다르다.
+
+ROOT의 저장 software PNG 직접 판독은 금빛 문양의 초기 성장·후반 매우 어두움·하단 metadata caption의 sheet 경계 접촉이다. 실제 인게임 판독으로 바꾸지 않는다. 사용자 old-loaded IAB13 무조작/no reload, 실제 mainVisual NOT_ASSESSED/전체 **VISUAL VERDICT: RETOUCH**. 과거 검수와 clean 합산0, 같은 suite 재실행0.
+
+코드 이후 관련 검색은1회/eligible text839(그중 Markdown693)/매칭22path52행60occurrence다. binary/container/media251·foreign3.3의7path·owner 관리/provider evidence185path·protected2_3의1path는 path-only 제외했다. 제외 대상을 모두 바이너리로 부르거나 전체 문서 full read를 주장하지 않는다. 원문 `D/docs-plan/docs-related-keywords.txt` 8,570B/`d28e1def40e3179263ecc3f693823b37c4e1fcd3bf88efada20fe9f7357d179c`. PHASE_V1 매칭0이며 기존 MOTION/bladeDash/fireZone 조명 봉인과 이번 전용 PNG 성장은 별도다.
+
+### MAP PRODUCTION REPORT — 가이드 §23
+
+| 항목 | 이번 사실·Gate |
+|---|---|
+| STAGE | 실제 main holyPrison 전용 skill image draw·global scope. source/software 관측만 |
+| MASTER | silhouette/regions/main route/side spaces: 기존 authored map/route 유지 |
+| OUTER MASS | LEFT/RIGHT/TOP/SOUTH/major holes 변경0·기존 map blur 남음 |
+| LARGE | source assets: 기존 holy_dome PNG; composites: 원 중심/회전/alpha; overlap: 근접5 holyDome skip 유지/전체 겹침 NOT_ASSESSED; repeated silhouette 미해결 |
+| MEDIUM | connections 불변·remaining holes 미검수 |
+| GROUND | shadow/contamination 불변·physical relief0 미해결 |
+| PLAYABLE | main arenas/travel/breathing/threat space·gameplay/nav 변경0. combat readability 새 실제 게임 인수0 |
+| LANDMARK | primary/secondary/tertiary 불변 |
+| CAMERA QA / START | NOT_ASSESSED; 사용자 old IAB13 무조작 |
+| CAMERA QA / EARLY | NOT_ASSESSED |
+| CAMERA QA / ARENA | NOT_ASSESSED |
+| CAMERA QA / SIDE L | NOT_ASSESSED |
+| CAMERA QA / SIDE R | NOT_ASSESSED |
+| CAMERA QA / LANDMARK | NOT_ASSESSED |
+| CAMERA QA / LATE | NOT_ASSESSED |
+| CAMERA QA / EXIT | NOT_ASSESSED |
+| TECH QA / route | 불변·신규 route 검사0 |
+| TECH QA / collision | 충돌/억제 반경 권한 불변 |
+| TECH QA / pageerror | native NOT_RUN |
+| TECH QA / 404 | native NOT_RUN |
+| TECH QA / seam | 새 시각 인수0 |
+| TECH QA / loading | 기존 image loading/fallback 유지, 통제 ready image와 실PNG decode/software만 검수 |
+| TECH QA / performance | NOT_MEASURED; 새 RAF/timer/Image/texture0 |
+| FILES | stage-owned: ROOT game1hunk+현재docs5; concurrent: foreign game185/settings2948/owner STATELOG 보존; unrelated touched0 |
+| GIT | stage/commit/push ROOT 완료소유 checkpoint 예정, 이 문서 담당 Git0/새 SHA 추정0/deploy0 |
+| VISUAL VERDICT | **RETOUCH**; actual main NOT_ASSESSED/software PNG≠실게임 screenshot |
+| NEXT PASS | 사용자 화면을 보존하고 새 게임 실행/재로드 승인 범위에서 실제 습득 holyPrison 설치·유지·만료·동시효과 native 검수. CH1-1 맵/actor/정상boss/NPC 품질·같은 후보6단계/청취/실보상 저장 인수 계속 필요 |

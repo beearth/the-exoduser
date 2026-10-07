@@ -59175,7 +59175,7 @@ function drawP(){
     if(!G._holyDomeImg){G._holyDomeImg=new Image();G._holyDomeImg.src='sprites/holy_dome.png'}
     const _hpImg=G._holyDomeImg;
     if(_hpImg.complete&&_hpImg.naturalWidth>0){
-      const _hpDeploy=Math.min(1,(1-_fz.t/_fz.maxT)*5);
+      const _hpDeploy=Math.min(1,_fz.t/15);
       const _hpSz=_fz.r*2*_hpDeploy;
       X.globalAlpha=(.5+.3*Math.sin(_hpt*3))*_hpProg;
       X.save();X.translate(_fz.x,_fz.y);
