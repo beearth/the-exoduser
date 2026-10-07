@@ -30,7 +30,7 @@ const boneSpecs=Object.freeze([
 
 // Optional ready main atlas: scalar wrappers are copied, never the borrowed canvas/token.
 const PACKED_PATH='borrowed:silvertail-main-atlas';
-const PACKED_COUNTS=Object.freeze({idle:2,walk:4,run:4});
+const PACKED_COUNTS=Object.freeze({idle:2,walk:4,run:4,attack:9});
 const PACKED_FRAME_KEYS=Object.freeze(['generation','mode','direction','index','count','x','y','w','h','anchorX','anchorY','referenceHeight']);
 function ownFields(value,keys){
   if(!value||typeof value!=='object')throw new Error('빌린 아틀라스 own-data 계약 오류');
@@ -77,7 +77,8 @@ function readBorrowedAtlas(id,value){
 function readPackedFrame(value,atlas,mode,direction,index,count){
   const frame=ownFields(value,PACKED_FRAME_KEYS);
   if(frame.generation!==atlas.generation||frame.mode!==mode||frame.direction!==direction||frame.index!==index||frame.count!==count)throw new Error('빌린 프레임 세대/모션/방향/phase 계약 오류');
-  if(!Number.isInteger(frame.index)||!Number.isInteger(frame.count)||!Number.isInteger(frame.direction)||frame.w!==48||frame.h!==48||frame.anchorX!==24||frame.anchorY!==47||frame.referenceHeight!==45)throw new Error('실버테일 packed 셀/발 기준 계약 오류');
+  const attack=mode==='attack',cellSize=attack?80:48,anchorX=attack?40:24,anchorY=attack?40:47;
+  if(!Number.isInteger(frame.index)||!Number.isInteger(frame.count)||!Number.isInteger(frame.direction)||frame.w!==cellSize||frame.h!==cellSize||frame.anchorX!==anchorX||frame.anchorY!==anchorY||frame.referenceHeight!==45)throw new Error('실버테일 packed 셀/발 기준 계약 오류');
   if(!Number.isSafeInteger(frame.x)||frame.x<0||!Number.isSafeInteger(frame.y)||frame.y<0||frame.x>atlas.width-frame.w||frame.y>atlas.height-frame.h)throw new Error('빌린 프레임 아틀라스 경계 오류');
   const size=canvasSize(atlas.image);
   if(size[0]!==atlas.width||size[1]!==atlas.height)throw new Error('아틀라스 크기가 변경되었습니다.');

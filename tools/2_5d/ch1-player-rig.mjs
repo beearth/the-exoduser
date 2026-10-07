@@ -157,7 +157,7 @@ function packedCurrent(record,input){
     if(atlas.image!==record.image||atlas.generation!==record.atlasGeneration||atlas.width!==record.imageWidth||atlas.height!==record.imageHeight)return false;
     if(input.animator!==record.animator||input.frameMap!==record.frameMap||own(record.actor,'_sa')!==record.animator||own(record.animator,'img')!==record.image||own(record.animator,'fm')!==record.frameMap)return false;
     const native=input.native;
-    if(!native||own(record.animator,'anim')!==source.mode||own(record.animator,'f')!==source.index||own(record.frameMap,native.key)!==native.frames||!Array.isArray(native.frames)||own(native.frames,'length')!==source.count||own(native.frames,String(source.index))!==native.cell)return false;
+    if(!native||own(record.animator,'anim')!==native.anim||own(record.animator,'f')!==source.index||own(record.frameMap,native.key)!==native.frames||!Array.isArray(native.frames)||own(native.frames,'length')!==source.count||own(native.frames,String(source.index))!==native.cell)return false;
     if(!plain(native.cell)||!['x','y','w','h'].every(key=>own(native.cell,key)===source[key]))return false;
     return PACKED_FIELDS.every(key=>own(input.frameOwner,key)===source[key]);
   }catch(_){return false;}
@@ -183,18 +183,20 @@ function capture(input){
     value.packed=packed;
     if(packed){
       const atlasOwner=owners.borrowedAtlas,frameOwner=owners.sourceFrame;
-      if(value.id!=='silvertail'||value.heightWorld!==45||!['idle','walk','run'].includes(value.mode)||!plain(atlasOwner)||!plain(frameOwner))return null;
+      if(value.id!=='silvertail'||value.heightWorld!==45||!['idle','walk','run','attack'].includes(value.mode)||!plain(atlasOwner)||!plain(frameOwner))return null;
       const borrowedAtlas={image:own(atlasOwner,'image'),width:own(atlasOwner,'width'),height:own(atlasOwner,'height'),generation:own(atlasOwner,'generation')};
       if(!borrowedAtlas.generation||typeof borrowedAtlas.generation!=='object'||!owners.animator||typeof owners.animator!=='object'||!owners.frameMap||typeof owners.frameMap!=='object')return null;
       const size=canvasSize(borrowedAtlas.image);
       if(!size||size.width!==borrowedAtlas.width||size.height!==borrowedAtlas.height)return null;
       const sourceFrame={};for(const key of PACKED_FIELDS)sourceFrame[key]=own(frameOwner,key);
-      const count=value.mode==='idle'?2:4,index=Math.min(count-1,Math.floor(value.phase*count));
+      const attack=value.mode==='attack',count=attack?9:value.mode==='idle'?2:4,cellSize=attack?80:48,index=Math.min(count-1,Math.floor(value.phase*count));
       if(sourceFrame.generation!==borrowedAtlas.generation||sourceFrame.mode!==value.mode||sourceFrame.direction!==value.direction||sourceFrame.index!==index||sourceFrame.count!==count)return null;
-      if(!['x','y','w','h'].every(key=>Number.isSafeInteger(sourceFrame[key]))||sourceFrame.x<0||sourceFrame.y<0||sourceFrame.w!==48||sourceFrame.h!==48||sourceFrame.x+48>size.width||sourceFrame.y+48>size.height)return null;
-      if(sourceFrame.anchorX!==24||sourceFrame.anchorY!==47||sourceFrame.referenceHeight!==45)return null;
-      const key=value.mode+'_'+PACKED_DIRECTIONS[value.direction],frames=own(owners.frameMap,key),cell=own(frames,String(index));
-      const native=Object.freeze({key,frames,cell});
+      if(!['x','y','w','h'].every(key=>Number.isSafeInteger(sourceFrame[key]))||sourceFrame.x<0||sourceFrame.y<0||sourceFrame.w!==cellSize||sourceFrame.h!==cellSize||sourceFrame.x+cellSize>size.width||sourceFrame.y+cellSize>size.height)return null;
+      if(sourceFrame.anchorX!==(attack?40:24)||sourceFrame.anchorY!==(attack?40:47)||sourceFrame.referenceHeight!==45)return null;
+      const anim=own(owners.animator,'anim');
+      if(attack?!['atk2','atk3'].includes(anim):anim!==value.mode)return null;
+      const key=anim+'_'+PACKED_DIRECTIONS[value.direction],frames=own(owners.frameMap,key),cell=own(frames,String(index));
+      const native=Object.freeze({anim,key,frames,cell});
       Object.assign(value,{borrowedAtlas:Object.freeze(borrowedAtlas),sourceFrame:Object.freeze(sourceFrame),animator:owners.animator,frameMap:owners.frameMap,
         inputOwner:input,atlasOwner,frameOwner,owners:Object.freeze(owners),native});
       const record={actor:value.actor,image:borrowedAtlas.image,imageWidth:size.width,imageHeight:size.height,atlasGeneration:borrowedAtlas.generation,animator:value.animator,frameMap:value.frameMap};

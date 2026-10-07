@@ -1437,3 +1437,68 @@ factory36/combined15/main31/native3/final-limited4를 하나의 clean 전체 PAS
 
 
 외부 `druid-normal-main/remote-preservation-receipt.json`는 root가 이 completion의 정상 commit/push 뒤 exact SHA·remote를 기록하는 보존 참조다. 정본문서에 자기 commitSHA를 순환 기입하지 않으며 이 참조를 현재 push 완료로 미리 주장하지 않는다.
+
+
+## 2026-10-07 실버테일 일반 LMB 공격 표시 구현 보존 — ROOT-CH1-SILVERTAIL-LMB-ATTACK-20261007
+
+borrowed main atlas의 공격 표시 소비를 추가한 현재 계약을 기록한다. 기존 이동 표시 완료와 이번 미검수 공격 후보를 구분한다.
+
+이번 체크포인트는 완료된 표시 소비자 코드3개를 미인수 구현 후보로 보존한다. 구현 영수증 시점의 CPU·GPU·실제 브라우저 실행은0이었고, 이후 아래 main과 모듈의 별도 한정 CPU 결과가 도착했다. 실제 브라우저는 대기 또는 별도 진행 중이며 미인수다. 공격 전체 PASS·실제 화면 완료·제품 채택·전체 플레이 연결 완료로 승인하지 않는다. 이후 결과와 수치는 별도 절에 기록한다.
+
+| 현재 파일 | bytes | SHA256 |
+|---|---:|---|
+| game.html working | 4087535 | `72cf0d6036005affc773b0ba1e603b1c8ed4f4816a662cd89dfbb964b2327202` |
+| game.html 총괄 소유 파일 | 4087350 | `b5b42f23ac33679d1be9b620859c5b0b869e4b0d919a2cf9767b16cfe9791356` |
+| tools/2_5d/character-rigs.mjs | 23787 | `d666c9eb1a9aac11c224b496c8c025ef23a505030f931519392319d8f2c45f9a` |
+| tools/2_5d/ch1-player-rig.mjs | 33296 | `73d0a9e54fc78808ff4189b5de7403f983255845aa27e6a9849ed1f6406c0aa2` |
+
+| 표시 모드 | native animation | 프레임 수 | 셀 | 표시 원점 | referenceHeight / heightWorld | main 내부 이동 |
+|---|---|---:|---|---|---|---|
+| idle | idle | 2 | 48×48 | (24,47) | 45 / 45 | (0,23), 기존 유지 |
+| walk | walk | 4 | 48×48 | (24,47) | 45 / 45 | (0,23), 기존 유지 |
+| run | run | 4 | 48×48 | (24,47) | 45 / 45 | (0,23), 기존 유지 |
+| attack strike | atk2 + wSwing | 9 | 80×80 | (40,40) | 45 / 45 | (0,0) |
+| attack recovery | atk3 + wRecover | 9 | 80×80 | (40,40) | 45 / 45 | (0,0) |
+
+| 계약 | 현재 구현 범위 |
+|---|---|
+| 선택과 phase | 기존 native animator의 최종 f를 사용. attack f0..8, `phase=(f+.5)/9`; factory 선택은 `min(count-1,floor(phase*count))`. 별도 공격 시계·프레임 재선택 없음 |
+| 원점의 의미 | (40,40)은 native80셀을 중앙 배치하는 표시 원점이다. 기존 원본 공격의 crop 배치 기준(40,62)과 다름. (40,62)는 패커 여백이 포함된 crop 발배치 기준이며 해부학적 발 검수·접지·전체 sprite fit은 미인수 |
+| 부모 보정 | heightWorld45와 내부 translate만 지정. 기존 부모0.65 및 `_pScale`을 보존하며 같은 배율을 추가 적용하지 않음 |
+| 일반 LMB 소유 | private owner가 실제 actor/map/animator/classId와 strike·recovery phase를 보유. 현재 class0 또는1과 일치해야 하며 실버테일 소비는 class1에서만 수행. 보스방은 제외 |
+| 정상 상태 승계 | 실제 일반 wSwing에서 정상 wRecover로 갈 때만 recovery owner 승계. 기존 특수기 진입·windup 종료의 revoke와 release 정책은 유지 |
+| native 캡처 | main은 nativeAnim·bodyState·native 배열·현재 f·선택 cell·combatOwner/phase를 캡처. P.s와 animator.anim이 정확히 같아야 하며 idle↔attack·strike↔recovery 변화에 오래된 캡처를 재사용하지 않음 |
+| 현재 프레임 | 현재 atlas image·frameMap·animator·map·P·generation과 방향·f·mode/count·selected cell/crop을 재검증. main attack 배열은 own index0..8의 dense9셀을 검사 |
+| adapter 검사 | frozen native 캡처의 실제 anim/key/frames/cell과 현재 animator.anim 일치. native 배열의 정확 count와 선택 cell의 own crop을 확인. adapter만으로 새로운 dense 전체 배열 검수 완료를 주장하지 않음 |
+| ghost | 현재 packed owner와 bodyState/nativeAnim/owner phase가 같은 프레임일 때만 기존 canvas/matrix를 재사용. 두 번째 rig update나 별도 body 프레임 시계 없음 |
+| 공개 API | `createCharacterRig(id,{THREE,height,borrowedAtlas?,borrowedSheet?})`, rig.update와 adapter render/suspend/snapshot/dispose/canvas의 기존 공개 형태 유지. optional packed 경로의 attack9만 확장 |
+| sourceFrame | generation,mode,direction,index,count,x,y,w,h,anchorX,anchorY,referenceHeight 필드 유지. mode별 셀·원점·count를 검증하며 direction 표는 기존 유지 |
+| 원본과 소유 | sourceKind=`borrowed-main-atlas`, sourcePath=`borrowed:silvertail-main-atlas`. 실제 main의 borrowed atlas를 참조하며 catalog PNG hash를 섭취했다고 주장하지 않음. 원본 image 복제·resize·close 없음 |
+| 다른 소비자 | borrowed port 없는 public/catalog 실버테일, 전사와 다크드루이드 borrowedSheet, 원래 수명·pagehide·scope 검사를 역변환으로 보존. 전투·타이밍·저장 변경 없음 |
+| 기능 플래그 | silvertailAttackStrikeAccepted/recoveryAccepted의 true는 표시 경로 구현 범위. silvertailAttackAccepted와 fullPlayerLinked는 false로 유지 |
+
+범위는 localhost 또는127.0.0.1의3387에서 명시된 첫 query `ch1Three=1`과 `ch1Rig=1`, 본편 CH1 stage0·production_finish·smoothing·비보스 일반 필드의 살아 있는 class1이다. 기본값은 OFF다. 피해·비용·공격 시간·충돌·무기FX·저장·지도·navigation·LOCK·원본 PNG는 변경하지 않는다. 특수기·사망과 미지원 상태는 기존 native 표시를 유지한다.
+
+`silvertailAttackStrikeAccepted=true`·`silvertailAttackRecoveryAccepted=true`는 두 표시 경로의 구현 범위를 알리는 기능 플래그다. 실제 공격 검수 완료를 뜻하지 않는다. `silvertailAttackAccepted=false`와 `fullPlayerLinked=false`를 유지한다.
+
+### 이번 소스의 main 한정 CPU 결과
+
+| 항목 | 직접 확인한 새 결과와 한계 |
+|---|---|
+| 실행 범위 | 실제 main 함수 추출과 통제된 adapter 포트. 최초 Node1·VM29, 6그룹·29복합조건 통과, 실패0·미도달0·준비 실패0·비동기 미처리 오류0·exit0 |
+| 의미 경계 | owner·parent admission·native frame·현재성·재진입·ghost/읽기 경계. working72cf와 총괄 소유b5b42의 검수 전후 핀 정확 일치 |
+| 모듈·화면 | 이 main 검사는 통제 adapter를 사용하므로 실제 factory/adapter 모듈 실행·GPU 픽셀 검수가 아님. 모듈 검사는 아래 별도 결과이며 실제 브라우저는 미인수 |
+| 미인수 | 8방향 픽셀·발 접지·공격 시간/피해·FX·소리·실제 전투·저장·전체 경로·실제 GPU 해제. borrowed canvas의 generation 통지 없는 내부 픽셀 변경도 미관측 |
+| 근거 | `main-cpu-receipt.json` 8747B / `0fe9731125821395e9b64c86cb99eccc47ca611eee4fababbf4d1f5e439a349a`. 기존 검사나 다른 epoch의 수치와 합산하지 않음. 추가 실행·자동 재시도 없음 |
+
+### 이번 소스의 모듈 한정 CPU 결과 — main 검사와 별도
+
+| 항목 | 직접 확인한 새 결과와 한계 |
+|---|---|
+| 실행 범위 | 실제 factory·adapter 전체2개 SourceTextModule과 실제 Three609정점, 통제된 canvas·renderer. 최초 stdin1회, 7그룹·33조건 통과, 실패0·준비 실패0·미도달0·비동기 미처리 오류0·exit0, 검수 전후 소스 정확 일치 |
+| 결과의 구분 | 위 main6그룹29조건과 합산하지 않음. 실제 main·브라우저·PNG·ghost·GPU·저장 인수는 이 모듈 검사의 범위가 아님 |
+| 근거 | `modules-cpu-receipt.json` 7003B / `e266def0c06b5919673912f086fa724cf8326f1383db7e3e10682b6dcf170404`. 실제 브라우저는 아직 미인수이며 기존 검사 재실행·수치 합산 없음 |
+
+기존 실버테일 idle/run, 전사 strike/recovery와 다크드루이드의 완료·실패·한정 검수는 각 당시 소스의 이력으로 보존하며, 이번 공격 후보의 검수로 재실행하거나 합산하지 않는다.
+
+상세 모드·API·소스 핀·표시 원점과 해부학적 발 기준의 구분은 `docs/4.0케릭터스프라이트 디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md`의 이 절을 따른다. 구현 근거는 외부 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-main-silvertail-attack-20261007`의 `main-implementation-receipt.json`과 `modules-implementation-receipt.json`이다. 정상 commit·push·정확한 원격 SHA는 같은 디렉터리의 `remote-preservation-receipt.json`에서 체크포인트 뒤 확정하며, 구현 보존 전 상태를 원격 완료로 미리 표시하지 않는다.

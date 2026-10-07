@@ -2272,3 +2272,39 @@ CH1 geometry/stage LOCK·field 복귀와 camera를 그대로 둔 death UI 소비
 | NEXT PASS | 보스방 개방·보스 사망/부활/재도전·격리 저장 계약과 실제 ACK·안정된 전환 종료 화면. 이번 F1/F2 재실행 없음 |
 
 정확한 소스·구현·검수 원자료와 정상 커밋·push·원격 SHA는 외부 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-death-keyboard-focus-20261007`의 `implementation-final-receipt.json`, 최종 `validation-receipt.json`·`visual-verdict.json` 및 `remote-preservation-receipt.json`을 참조한다. 문서 작성 시점의 계획을 원격 보존 완료로 표시하지 않는다.
+
+
+## 2026-10-07 실버테일 일반 LMB 공격 표시 구현 보존 — ROOT-CH1-SILVERTAIL-LMB-ATTACK-20261007
+
+CH1 생산 상태에 미인수 일반 실버테일 공격 표시 후보를 기록한다. 지형·맵 이동·LOCK을 바꾸지 않는다.
+
+이번 체크포인트는 완료된 표시 소비자 코드3개를 미인수 구현 후보로 보존한다. 구현 영수증 시점의 CPU·GPU·실제 브라우저 실행은0이며, 새 검수는 대기 또는 별도 진행 중이다. 이 문서는 그 결과를 포함하지 않는다. 공격 전체 PASS·실제 화면 완료·제품 채택·전체 플레이 연결 완료로 승인하지 않는다. 검수 결과와 수치는 이후 별도 절에 기록한다.
+
+실버테일 일반 LMB의 `wSwing/atk2` strike와 정상 승계된 `wRecover/atk3` recovery에만 packed 공격 표시를 연결했다. 공격은 방향별9프레임·80×80셀·표시 원점(40,40)·referenceHeight45·heightWorld45·main 내부 translate(0,0)이다. 기존 idle2/walk4/run4는48×48셀·원점(24,47)·translate(0,23)을 유지한다. actor·map·animator·classId·nativeAnim·bodyState·현재 프레임과 strike/recovery owner를 재검증하며, 같은 프레임의 ghost는 기존 canvas/matrix만 재사용한다.
+
+범위는 localhost 또는127.0.0.1의3387에서 명시된 첫 query `ch1Three=1`과 `ch1Rig=1`, 본편 CH1 stage0·production_finish·smoothing·비보스 일반 필드의 살아 있는 class1이다. 기본값은 OFF다. 피해·비용·공격 시간·충돌·무기FX·저장·지도·navigation·LOCK·원본 PNG는 변경하지 않는다. 특수기·사망과 미지원 상태는 기존 native 표시를 유지한다.
+
+`silvertailAttackStrikeAccepted=true`·`silvertailAttackRecoveryAccepted=true`는 두 표시 경로의 구현 범위를 알리는 기능 플래그다. 실제 공격 검수 완료를 뜻하지 않는다. `silvertailAttackAccepted=false`와 `fullPlayerLinked=false`를 유지한다.
+
+### MAP PRODUCTION REPORT — 미인수 구현 보존 시점
+
+| 항목 | 이번 범위 |
+|---|---|
+| STAGE | CH1 일반 필드 실버테일 LMB 공격 본체 표시 후보. 이번 공격의 실제 화면은 미관측 |
+| MASTER | silhouette·regions·main route·side spaces 변경 없음. 전체 경로 미인수 |
+| OUTER MASS | LEFT·RIGHT·TOP·SOUTH·major holes 변경 없음 |
+| LARGE | 기존 원본 PNG·atlas 유지. composites·overlap·repeated silhouette의 새 화면 검수 없음 |
+| MEDIUM | connections·remaining holes 변경 없음 |
+| GROUND | shadow·contamination·structure integration 변경 없음. 기존 평면 지면·확대 흐림 문제의 해결을 주장하지 않음 |
+| PLAYABLE | main arenas·travel/breathing/threat space·전투 수치 변경 없음. 표시 후보이며 실제 공격·전투 가독성 미인수 |
+| LANDMARK | primary·secondary·tertiary 변경 없음 |
+| CAMERA QA | START·EARLY·ARENA·SIDE L·SIDE R·LANDMARK·LATE·EXIT의 이번 공격 화면 미관측 |
+| TECH QA | route·collision·navigation 유지. source3 핀과 구현 역변환 근거만 보존. CPU/native 결과 미포함; pageerror·404·GL·seam·loading·performance·음향·저장은 이번 후보에서 미인수 |
+| FILES | 완료 소유 code3+정본 docs13 보존 예정. game185B·설정 문서2948B의 동료 변경 보존. 관련 없는 파일 변경 없음 |
+| GIT | 문서 초안 시점 stage·commit·push 전. 정상 보존과 정확한 원격 SHA는 외부 remote-preservation-receipt.json으로 확정. 배포 없음 |
+| VISUAL VERDICT | RETOUCH. 신규 공격 화면 미관측으로 시각 PASS를 승인하지 않으며 기존 전체 RETOUCH 유지 |
+| NEXT PASS | 새 한정 CPU·실제 공격 strike/recovery·ghost·8방향·발 접지와 전환의 별도 검수. 실제 저장·전체 native6는 별도 인수 |
+
+기존 실버테일 idle/run, 전사 strike/recovery와 다크드루이드의 완료·실패·한정 검수는 각 당시 소스의 이력으로 보존하며, 이번 공격 후보의 검수로 재실행하거나 합산하지 않는다.
+
+상세 모드·API·소스 핀·표시 원점과 해부학적 발 기준의 구분은 `docs/4.0케릭터스프라이트 디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md`의 이 절을 따른다. 구현 근거는 외부 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-main-silvertail-attack-20261007`의 `main-implementation-receipt.json`과 `modules-implementation-receipt.json`이다. 정상 commit·push·정확한 원격 SHA는 같은 디렉터리의 `remote-preservation-receipt.json`에서 체크포인트 뒤 확정하며, 구현 보존 전 상태를 원격 완료로 미리 표시하지 않는다.

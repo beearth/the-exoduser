@@ -11477,22 +11477,25 @@ if(_ch1RigRequested){
 }
 function _ch1RigCombatOwnerCurrent(phase){
   const owned=_ch1RigStrikeOwner;
-  return !!owned&&owned.phase===phase&&owned.actor===P&&owned.map===G.map&&owned.animator===P._sa&&!!P._sa&&_ch1RigRequested&&_ch1RigAlive&&_charIdx===0&&P.hp>0&&G.on&&G.stage===0&&!G._bossArena&&_ch1StartOuterEnabled()&&_CH1_START_PHASE==='smoothing';
+  return !!owned&&owned.phase===phase&&owned.actor===P&&owned.map===G.map&&owned.animator===P._sa&&!!P._sa&&_ch1RigRequested&&_ch1RigAlive&&owned.classId===_charIdx&&(_charIdx===0||_charIdx===1)&&P.hp>0&&G.on&&G.stage===0&&!G._bossArena&&_ch1StartOuterEnabled()&&_CH1_START_PHASE==='smoothing';
 }
 function _ch1RigRememberStrike(){
-  _ch1RigStrikeOwner={actor:P,map:G.map,animator:P._sa,phase:'strike'};
+  _ch1RigStrikeOwner={actor:P,map:G.map,animator:P._sa,classId:_charIdx,phase:'strike'};
   if(P.s!=='wSwing'||!_ch1RigCombatOwnerCurrent('strike'))_ch1RigStrikeOwner=null;
 }
 function _ch1RigAdvanceRecovery(){
   // Only the existing normal LMB transition can inherit display ownership, even without an intervening draw.
   if(P.s==='wSwing'&&_ch1RigCombatOwnerCurrent('strike'))_ch1RigStrikeOwner.phase='recovery';else _ch1RigStrikeOwner=null;
 }
+function _ch1RigSilvertailBodyCurrent(){
+  return P.s==='idle'||(P.s==='wSwing'&&_ch1RigCombatOwnerCurrent('strike'))||(P.s==='wRecover'&&_ch1RigCombatOwnerCurrent('recovery'));
+}
 function _ch1RigBeginBodyFrame(){
   _ch1RigBodyFrame=null;
   if(_ch1RigStrikeOwner&&!((P.s==='wSwing'&&_ch1RigCombatOwnerCurrent('strike'))||(P.s==='wRecover'&&_ch1RigCombatOwnerCurrent('recovery'))))_ch1RigStrikeOwner=null;
   if(!_ch1RigRequested||!_ch1RigAlive)return;
   const scoped=(_charIdx===0||_charIdx===1)&&G.on&&G.stage===0&&!G._bossArena&&_ch1StartOuterEnabled()&&_CH1_START_PHASE==='smoothing';
-  if(_ch1RigPackedOwner&&(!scoped||_charIdx!==1||P.hp<=0||P.s!=='idle'||_ch1RigPackedOwner.actor!==P||_ch1RigPackedOwner.map!==G.map||_ch1RigPackedOwner.animator!==P._sa||_ch1RigPackedOwner.image!==P._sa?.img||_ch1RigPackedOwner.frameMap!==P._sa?.fm||_ch1RigPackedOwner.image.width!==_ch1RigPackedOwner.width||_ch1RigPackedOwner.image.height!==_ch1RigPackedOwner.height)){_ch1RigPackedOwner=null;if(_ch1PlayerRig)_ch1PlayerRig.suspend();}
+  if(_ch1RigPackedOwner&&(!scoped||_charIdx!==1||P.hp<=0||!_ch1RigSilvertailBodyCurrent()||_ch1RigPackedOwner.actor!==P||_ch1RigPackedOwner.map!==G.map||_ch1RigPackedOwner.animator!==P._sa||_ch1RigPackedOwner.image!==P._sa?.img||_ch1RigPackedOwner.frameMap!==P._sa?.fm||_ch1RigPackedOwner.image.width!==_ch1RigPackedOwner.width||_ch1RigPackedOwner.image.height!==_ch1RigPackedOwner.height)){_ch1RigPackedOwner=null;if(_ch1PlayerRig)_ch1PlayerRig.suspend();}
   const previous=_ch1RigClock,frame=_gameFrame;
   // Observe committed gameplay ticks; do not call update's Rift/lesson guards again.
   _ch1RigDelta=scoped&&previous&&previous.scoped&&previous.actor===P&&previous.map===G.map&&previous.classId===_charIdx&&Number.isSafeInteger(frame)&&Number.isSafeInteger(previous.frame)&&frame>=previous.frame&&!G.paused&&!document.hidden?Math.min(.05,(frame-previous.frame)*PHYS_STEP/1000):0;
@@ -11501,27 +11504,31 @@ function _ch1RigBeginBodyFrame(){
   _ch1RigScoped=!!scoped;
 }
 function _ch1RigPackedCurrent(owned){
-  return !!owned&&_ch1RigPackedOwner===owned&&_ch1RigRequested&&_ch1RigAlive&&_ch1RigScoped&&_charIdx===1&&P.hp>0&&P.s==='idle'&&G.on&&G.stage===0&&!G._bossArena&&_ch1StartOuterEnabled()&&_CH1_START_PHASE==='smoothing'&&owned.actor===P&&owned.map===G.map&&owned.animator===P._sa&&owned.image===P._sa?.img&&owned.frameMap===P._sa?.fm&&_atlasPReady&&owned.image===_atlasP_img&&owned.frameMap===_atlasP_frames&&owned.image.width===owned.width&&owned.image.height===owned.height;
+  return !!owned&&_ch1RigPackedOwner===owned&&_ch1RigRequested&&_ch1RigAlive&&_ch1RigScoped&&_charIdx===1&&P.hp>0&&_ch1RigSilvertailBodyCurrent()&&G.on&&G.stage===0&&!G._bossArena&&_ch1StartOuterEnabled()&&_CH1_START_PHASE==='smoothing'&&owned.actor===P&&owned.map===G.map&&owned.animator===P._sa&&owned.image===P._sa?.img&&owned.frameMap===P._sa?.fm&&_atlasPReady&&owned.image===_atlasP_img&&owned.frameMap===_atlasP_frames&&owned.image.width===owned.width&&owned.image.height===owned.height;
 }
 function _ch1RigPackedFrameCurrent(owned,capture){
-  if(!_ch1RigPackedCurrent(owned)||!capture||P._sa.anim!==capture.mode||P._sa.f!==capture.index||_playerSpriteDirection(P)!==capture.direction)return false;
+  if(!_ch1RigPackedCurrent(owned)||!capture||P.s!==capture.bodyState||P._sa.anim!==capture.nativeAnim||P._sa.f!==capture.index||_playerSpriteDirection(P)!==capture.direction)return false;
+  if(capture.combatOwner&&(capture.combatOwner!==_ch1RigStrikeOwner||!_ch1RigCombatOwnerCurrent(capture.combatPhase)))return false;
   const native=SpriteAnimator._fr(P._sa,capture.direction),cell=capture.cell,source=capture.sourceFrame;
-  return native===capture.native&&native===owned.frameMap[capture.mode+'_'+capture.direction]&&native.length===capture.count&&Object.hasOwn(native,capture.index)&&native[capture.index]===cell&&cell.x===source.x&&cell.y===source.y&&cell.w===source.w&&cell.h===source.h;
+  return native===capture.native&&native===owned.frameMap[capture.nativeAnim+'_'+capture.direction]&&native.length===capture.count&&Object.hasOwn(native,capture.index)&&native[capture.index]===cell&&cell.x===source.x&&cell.y===source.y&&cell.w===source.w&&cell.h===source.h;
 }
 function _drawCh1SilvertailRigBody(direction,alpha){
-  // ROOT-CH1-SILVERTAIL-PACKED-MAIN-20261007: borrow the final native atlas/cell; preserve parent .65 and body transform.
-  if(!_ch1RigRequested||!_ch1RigAlive||!_ch1PlayerRig||!_ch1RigScoped||_charIdx!==1||P.hp<=0||P.s!=='idle'||!P._sa||!_atlasPReady||P._sa.img!==_atlasP_img||P._sa.fm!==_atlasP_frames)return false;
-  const mode=P._sa.anim,index=_ch1RigDirections.indexOf(direction),count=mode==='idle'?2:(mode==='walk'||mode==='run'?4:0),native=SpriteAnimator._fr(P._sa,direction),image=P._sa.img,frameMap=P._sa.fm,width=image.width,height=image.height,f=P._sa.f;
-  if(!count||index<0||!Number.isInteger(f)||f<0||f>=count||!Array.isArray(native)||native.length!==count||native!==frameMap[mode+'_'+direction]||!Number.isSafeInteger(width)||!Number.isSafeInteger(height)||width<48||height<48)return false;
+  // ROOT-CH1-SILVERTAIL-LMB-ATTACK-20261007: display final native LMB strike/recovery cells; gameplay timing stays native.
+  if(!_ch1RigRequested||!_ch1RigAlive||!_ch1PlayerRig||!_ch1RigScoped||_charIdx!==1||P.hp<=0||!_ch1RigSilvertailBodyCurrent()||!P._sa||!_atlasPReady||P._sa.img!==_atlasP_img||P._sa.fm!==_atlasP_frames)return false;
+  const strike=P.s==='wSwing'&&P._sa.anim==='atk2'&&_ch1RigCombatOwnerCurrent('strike');
+  const recovery=P.s==='wRecover'&&P._sa.anim==='atk3'&&_ch1RigCombatOwnerCurrent('recovery'),attack=strike||recovery;
+  if(P.s!=='idle'&&!attack)return false;
+  const nativeAnim=P._sa.anim,mode=attack?'attack':nativeAnim,index=_ch1RigDirections.indexOf(direction),count=attack?9:mode==='idle'?2:(mode==='walk'||mode==='run'?4:0),cellSize=attack?80:48,native=SpriteAnimator._fr(P._sa,direction),image=P._sa.img,frameMap=P._sa.fm,width=image.width,height=image.height,f=P._sa.f;
+  if(!count||index<0||!Number.isInteger(f)||f<0||f>=count||!Array.isArray(native)||native.length!==count||native!==frameMap[nativeAnim+'_'+direction]||!Number.isSafeInteger(width)||!Number.isSafeInteger(height)||width<cellSize||height<cellSize)return false;
   for(let i=0;i<count;i++){
     const c=native[i];
-    if(!Object.hasOwn(native,i)||!c||!Number.isSafeInteger(c.x)||!Number.isSafeInteger(c.y)||c.x<0||c.y<0||c.w!==48||c.h!==48||c.x+48>width||c.y+48>height)return false;
+    if(!Object.hasOwn(native,i)||!c||!Number.isSafeInteger(c.x)||!Number.isSafeInteger(c.y)||c.x<0||c.y<0||c.w!==cellSize||c.h!==cellSize||c.x+cellSize>width||c.y+cellSize>height)return false;
   }
   if(!_ch1RigPackedCurrent(_ch1RigPackedOwner)){
     const generation={};_ch1RigPackedOwner={actor:P,map:G.map,animator:P._sa,image,frameMap,width,height,generation,atlas:Object.freeze({image,width,height,generation})};
   }
-  const owned=_ch1RigPackedOwner,cell=native[f],sourceFrame=Object.freeze({generation:owned.generation,mode,direction:index,index:f,count,x:cell.x,y:cell.y,w:48,h:48,anchorX:24,anchorY:47,referenceHeight:45});
-  const capture=Object.freeze({direction,mode,index:f,count,native,cell,sourceFrame});
+  const owned=_ch1RigPackedOwner,cell=native[f],sourceFrame=Object.freeze({generation:owned.generation,mode,direction:index,index:f,count,x:cell.x,y:cell.y,w:cellSize,h:cellSize,anchorX:attack?40:24,anchorY:attack?40:47,referenceHeight:45});
+  const capture=Object.freeze({direction,mode,nativeAnim,bodyState:P.s,index:f,count,native,cell,sourceFrame,combatOwner:attack?_ch1RigStrikeOwner:null,combatPhase:strike?'strike':recovery?'recovery':null});
   const frame=_ch1PlayerRig.render({stage:G.stage,map:G.map,actor:P,id:'silvertail',mode,direction:index,phase:(f+.5)/count,heightWorld:45,backingScale:_ssaa,dt:_ch1RigDelta,borrowedAtlas:owned.atlas,sourceFrame,animator:P._sa,frameMap});
   if(!frame){_ch1RigStats.legacyFrames++;_ch1RigStats.lastState='legacy-packed-pending-or-failed';return false;}
   const state=_ch1PlayerRig.snapshot(),publication=state.lastFrame;
@@ -11529,15 +11536,15 @@ function _drawCh1SilvertailRigBody(direction,alpha){
   let blitted=false;
   X.save();
   try{
-    X.globalAlpha=alpha;X.translate(0,23); // native 48px center -> packed crop baseline (24,47), not an anatomical foot.
+    X.globalAlpha=alpha;X.translate(0,attack?0:23); // Native80 cell center for attacks; 48px crop baseline otherwise. Neither is an anatomical foot claim.
     let matrix;if(_useGPU||_useGL)matrix=_mat().slice(0,6);else{const m=X.getTransform();matrix=[m.a,m.b,m.c,m.d,m.e,m.f];}
     if(matrix.length!==6||!matrix.every(Number.isFinite)||!_ch1RigPackedFrameCurrent(owned,capture))return false;
     X.drawImage(frame.canvas,frame.left,frame.top,frame.width,frame.height);blitted=true;
-    _ch1RigStats.bodyFrames++;_ch1RigStats.packedBodyFrames++;
+    _ch1RigStats.bodyFrames++;_ch1RigStats.packedBodyFrames++;if(strike)_ch1RigStats.attackFrames++;if(recovery)_ch1RigStats.recoveryFrames++;
     const after=_ch1PlayerRig.snapshot();
     if(_ch1RigPackedFrameCurrent(owned,capture)&&after.ready&&after.generation===state.generation&&after.lastFrame===publication){
       _ch1RigBodyFrame={frame,matrix,now:_now,map:G.map,actor:P,animator:P._sa,classId:_charIdx,generation:state.generation,publication,canvasVersion:frame.canvas._glVer,packedOwner:owned,packedCapture:capture};
-      _ch1RigStats.lastState='silvertail-packed-body-adopted';
+      _ch1RigStats.lastState=recovery?'silvertail-packed-recovery-adopted':strike?'silvertail-packed-strike-adopted':'silvertail-packed-body-adopted';
     }else{_ch1RigBodyFrame=null;_ch1RigStats.lastState='silvertail-packed-blit-retired';}
     // A completed synchronous parent blit cannot be rolled back; never request a second legacy body afterward.
     return true;
@@ -11584,7 +11591,7 @@ function _drawCh1PlayerRigGhost(alpha){
   if(owned.now!==_now||owned.map!==G.map||owned.actor!==P||owned.animator!==P._sa||owned.classId!==_charIdx||!state.ready||owned.generation!==state.generation||owned.publication!==state.lastFrame||owned.canvasVersion!==owned.frame.canvas._glVer)return false;
   X.save();try{X.globalAlpha=alpha;X.setTransform(...owned.matrix);const frame=owned.frame;X.drawImage(frame.canvas,frame.left,frame.top,frame.width,frame.height);_ch1RigStats.ghostFrames++;return true;}catch(_){return false;}finally{X.restore();}
 }
-globalThis.__ch1PlayerRigQA=()=>Object.freeze({requested:_ch1RigRequested,alive:_ch1RigAlive,importFailed:_ch1RigImportFailed,scope:_ch1RigScoped,..._ch1RigStats,adapter:_ch1PlayerRig?_ch1PlayerRig.snapshot():null,bodyCurrent:!!_ch1RigBodyFrame&&_ch1RigBodyFrame.now===_now,adoptedClass:'warrior/silvertail',adoptedModes:'warrior idle/walk/run/normal-LMB strike+recovery; silvertail packed idle/walk/run',silvertailAccepted:true,silvertailAttackAccepted:false,attackStrikeAccepted:true,attackRecoveryAccepted:true,attackStates:'LMB-origin wSwing/atk2 -> inherited wRecover/atk3',attackAccepted:false,fullPlayerLinked:false});
+globalThis.__ch1PlayerRigQA=()=>Object.freeze({requested:_ch1RigRequested,alive:_ch1RigAlive,importFailed:_ch1RigImportFailed,scope:_ch1RigScoped,..._ch1RigStats,adapter:_ch1PlayerRig?_ch1PlayerRig.snapshot():null,bodyCurrent:!!_ch1RigBodyFrame&&_ch1RigBodyFrame.now===_now,adoptedClass:'warrior/silvertail',adoptedModes:'warrior idle/walk/run/normal-LMB strike+recovery; silvertail packed idle/walk/run/normal-LMB strike+recovery',silvertailAccepted:true,silvertailAttackStrikeAccepted:true,silvertailAttackRecoveryAccepted:true,silvertailAttackAccepted:false,attackStrikeAccepted:true,attackRecoveryAccepted:true,attackStates:'LMB-origin wSwing/atk2 -> inherited wRecover/atk3',attackAccepted:false,fullPlayerLinked:false});
 // ROOT-CH1-DRUID-NORMAL-MAIN-20261007: borrowed final normal sheet; gameplay authority stays in G/e.
 let _ch1DruidRig=null,_ch1DruidAlive=true,_ch1DruidScene=null,_ch1DruidClock=null,_ch1DruidDelta=0;
 const _ch1DruidActors=new Map(),_ch1DruidDecoded=new WeakMap(),_ch1DruidLeases=new Set();
