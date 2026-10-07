@@ -4960,3 +4960,12 @@ WOLF 파일 쓰기는 자동 승인 검토에서 dangerous로 거절됐고 구�
 | 범위 | 기존 builder의 고유 section+숫자 행 추가, 게임플레이/ST40/CD/숙련/save·번역 변경0 | 기본 설명·번역의 `1+Lv` 상한 누락은 남음. 새 CPU/native/Chrome/청취/save 실행0; oldIAB13 무조작/이전 로드 유지 |
 
 `UI_NOT_ASSESSED / native NOT_RUN / VISUAL VERDICT: RETOUCH`. 정확 보존·§23 보고는 외부 `ch1-venomblade-shot-detail-20261008/completion-receipt.json` 및 `visual-verdict.json`을 따른다.
+
+## 2026-10-08 빔 샘플 콜백 소유권 수정
+
+| 단위·범위 | 결과·수치 | 한계 |
+|---|---|---|
+| `ROOT-BEAM-LOOP-CALLBACK-OWNER-20261008` / SFX 샘플 분기2hunk149B | next의 gain/function owner + onended의 source owner. stop은 캡처·전역3개 해제 후100ms fade와150ms captured-source stop | 전투/save·3sample·0.8×sfxVol·앞 oscillator/player-boss 공유 호출 불변 |
+| 최초 실제 함수 통제 CPU | Node1 / Function factory17 / VM0; 11그룹36 PASS(동작35+정적1), FAIL/setup/미도달/계측 unhandled0, exit0. 이전 반례2는 별도 | 원QA하니스 실행0→실행 전 한정보정 후 제품 suite1. nativeAudio/청취/Chrome/GPU/PNG/save0; 부분start·앞oscillator예외·device release 미인수 |
+
+Source peer204 blocking0. 기존IAB13 무조작/이전 로드 유지. `RETOUCH/UI_NOT_ASSESSED/native NOT_RUN/NOT_LISTENED`; §23·정확 보존은 외부 `ch1-beam-loop-callback-owner-20261008/completion-receipt.json`을 따른다.

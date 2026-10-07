@@ -12811,15 +12811,15 @@ const SFX={
       try{
         const lg=c.createGain();lg.gain.value=.8*sfxVol();lg.connect(mbus());
         _beamLoopGain=lg;
-        _beamLoopNext=function(){
-          if(!_beamLoopGain)return;
+        _beamLoopNext=function next(){
+          if(_beamLoopGain!==lg||_beamLoopNext!==next)return;
           const _bk=['beam_r1','beam_r2','beam_r3'];
           const buf=_audioBuffers[_bk[~~(Math.random()*3)]];
           if(!buf)return;
           const src=actx().createBufferSource();src.buffer=buf;src.loop=false;
-          src.connect(_beamLoopGain);src.start();
+          src.connect(lg);src.start();
           _beamLoopSrc=src;
-          src.onended=_beamLoopNext;
+          src.onended=()=>{if(_beamLoopSrc!==src)return;next();};
         };
         _beamLoopNext();
       }catch(e){}
@@ -12838,8 +12838,13 @@ const SFX={
       },200);
     }
     // 빔 루프 샘플 정지
-    _beamLoopNext=null;
-    if(_beamLoopSrc){try{_beamLoopGain.gain.exponentialRampToValueAtTime(.0001,actx().currentTime+.1);setTimeout(()=>{try{_beamLoopSrc.stop()}catch(e){}},150)}catch(e){}_beamLoopSrc=null;_beamLoopGain=null}
+    const src=_beamLoopSrc,gain=_beamLoopGain;
+    _beamLoopNext=null;_beamLoopSrc=null;_beamLoopGain=null;
+    if(src){
+      try{src.onended=null}catch(e){}
+      try{if(gain)gain.gain.exponentialRampToValueAtTime(.0001,actx().currentTime+.1)}catch(e){}
+      try{setTimeout(()=>{try{src.stop()}catch(e){}},150)}catch(e){}
+    }
   },
   // ── Hit (enemy damaged): meaty impact ──
   hit(){
