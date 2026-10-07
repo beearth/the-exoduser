@@ -4377,3 +4377,114 @@ API synthetic 10회는 모두 `POST /api/mats`, forwarded0이다. `POST /api/sav
 실제 주소는 `classic=1&test=1&slot=root-r-fresh-20261007&ch1Three=1&ch1Rig=1&webgpu=0`이고 `demo=1`은 없다. source2 HTTP 사전/실수신·전후 exact, pageerror/HTTP 오류0; 외부 폰트 차단3·로컬 intro 중단2(직접 원인 UNKNOWN)는 별도다. POST `/api/mats`1건만 synthetic, 서버 전달/변경0·실저장 ACK0·GL UNKNOWN이며 소유 context/browser를 닫았다. 총괄 PNG1 직접 판독은 금빛 FX의 몸·발 가림과 회색 반복 baked 평면이 남아 RETOUCH다. 상세 현재표는 3.3의 이번 절을 따른다.
 
 외부 근거는 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-interact-fresh-20261007/validation-receipt.json`4,621B / `c6595f90605f435f78213d11d9214d1ba255d4263cd272ec1046236f4c80579c`, `visual-verdict.json`1,884B / `d27d61ad99019f5eaf6aaf96e36f9a067af81db5ae551c4faf72663c9022bda2`다. helper native 영수증의 PNG PENDING은 당시 기록이고 후속 총괄 visual 판정이 현재다. Git 사실은 checkpoint 전 문구와 구분해 같은 디렉터리 `remote-preservation-receipt.json`의 실제 정상 commit/push/정확 원격 SHA로 확정한다.
+
+<!-- ROOT-CH1-START-BARRIER-LAYER-20261007 -->
+
+## 2026-10-07 시작 장벽 표시 계층 동기화 — ROOT-CH1-START-BARRIER-LAYER-20261007
+
+현재 source9230의 시작 장벽 표시 소비를 기록한다. 앞 절의 기존 검수/후보 기록은 각자의 source epoch으로 보존하며 이번 결과로 소급 승격하지 않는다.
+
+### 현재 표시 계약과 보존 값
+
+이 변경은 기존 CH1 시작 결계의 표시 순서 조정이다. CH1 해당 scope에 전역 적용되며 별도 opt-in은 없다. 본체 원화·rig·시뮬레이션·안전구역을 변경하지 않는다.
+
+| 항목 | 현재 값·적용 위치 | 보존·제한 |
+|---|---|---|
+| early 조건 | `G.stage===0 && !G._bossArena && !!(G._bonfire && G._bonfire.t>0)` | 이 조건에서만 base capture와 early 호출 |
+| base 행렬 | `X.clearRect` 직후 native `X.getTransform()`의 `a,b,c,d,e,f` 또는 GPU `_mat()[0..5]`를 6개 scalar로 복사 | 배열/DOMMatrix 참조 보관0, DPR/SSAA 재곱0 |
+| 표시 helper | `_drawBonfireBarrierScreen(a,b,c,d,e,f)` | `X.save()` 뒤 `try`에서 6인자 `setTransform`·translate·drawImage, `finally`에서 `X.restore()` |
+| CH1 active 호출 | 기존 `_levelUpVfx` behind 및 `drawP()`보다 앞에서 배리어1회 | 기존 `drawP()` 추가0, 별도 RAF/timer0 |
+| 그 외 호출 | `!_bfBeforePlayer`이면 기존 late helper1회 | 다른 stage/보스방의 기존 후반 위치 유지; expired/missing은 helper 내 무표시 |
+| 중심 | `C.width/2+(G._bonfire.x-G.cam.x)`, `C.height/2+(G._bonfire.y-G.cam.y)` | 기존 좌표식 유지; 화면 중앙/줌/shake 전수 정합을 새로 인수한 것은 아님 |
+| 시간·기본 반경 | `300f=5초`, `r=280px`, 기존 `t-=sp` | 생성/감소·적 이격·충돌·개방 권한 불변 |
+| alpha | `Math.min(1,t/120)*.9` | 실제 RGB/postprocess 색 동일성 미인수 |
+| 맥동·크기 | `1+Math.sin(_now/300)*.03`; drawR=`r*pulse`, size=`drawR*2` | 기존 수치 유지 |
+| 이미지 admission | `_bonfireBarrierWarmDone && image.complete && image.naturalWidth>0` | 원 `sprites/bonfire_barrier.png`(1536×1024) 차용, 신규 이미지/원PNG 수정0 |
+| 비용 범위 | CH1 early는 `_tDP0` 이전 및 옛 late `_pC1-_pC0` 밖 | wall/GPU시간·분류 영향·성능 개선 UNKNOWN |
+
+### 검수 epoch와 실제 인수 경계
+
+| 구분 | 실제 도달·결과 | 범위 |
+|---|---|---|
+| CPU 최초 준비 | 추출 준비 FAIL1, 조건0, 제품VM0, 8그룹 미도달, exit1 | 원문/원runner 유지; 제품 실패 또는 PASS로 바꾸지 않음 |
+| CPU 별도 제한 | actual source fragments 8그룹·46조건 PASS46/FAIL0/미도달0, exit0 | 물리 Node 총2, 실제 source 검수 epoch1; 통제 X/G/C/Image 준비 port이며 full draw/main·GPU0 |
+| 새 headed Chrome | 기존3387 Chrome1/context1/page1/maxLive1, 신규 phase3조건 PASS3/FAIL0/미도달0, exit0 | old suite0; CPU46과 합쳐 clean49PASS로 세지 않음 |
+| active | 관측frame/관측전/관측후 `t=272/272/241`, current body publication blit1, 배리어 호출1 | PNG와 snapshot이 같은 draw라는 주장0 |
+| fade | `t=88/88/56`, body1, 배리어1 | 감소 구간의 실제 표시 |
+| expired | `t=0/0/0`, body1, 배리어0 | 자연 만료 뒤 무표시 |
+| 오류·네트워크 | pageerror0/HTTPerror0; sourceHTTP4 exact(2파일×prelaunch/actual-body), local source2 전후exact | requestfailed5는 fonts 의도차단3+local intro abort2, intro 직접원인 UNKNOWN |
+| API·종료 | savePOST0; 합성 `/api/mats` POST1, forwarded0, durableACK=false; context/browser 닫힘 | 사용자 save/backend 성공·durable reward 미인수 |
+| 미인수 | GL UNKNOWN, audio0, native6=false, physical GPU해제 UNKNOWN, 정상 보스방 route·해부학 발·전체 A급0 | postprocess 색·줌/shake/SSAA 전수·성능 UNKNOWN |
+
+직접 PNG 판독의 한정 결과는 **현재 시작 본체가 active/fade 금빛 장벽 위에서 식별되고 expired에서 장벽이 없어짐**이다. 반복된 회색 baked 바닥, 큰 펫 대사/그림, 주변 적·라벨·FX 점유는 남아 있다. 몸 가림 개선만 인수하며 전체 **VISUAL VERDICT: RETOUCH**를 유지한다.
+
+### 별도 이전 epoch: 정상 route B의 제한 종료 기록
+
+이 부분은 `ROOT-CH1-NORMAL-BOSS-ROUTE-PARTIAL-OBSERVATION-ADJUDICATION-20261007`의 종료 영수증 판정이다. game **4,089,667B/f8302cd77d7726d4f2da7c444b1ad4a0cfda908c1f3553b3847f86cc6da8a49c** epoch이며 현재 배리어9230 검수와 분리한다. **19건은 관측이지 19PASS가 아니다.**
+
+| 관측 | 한정 사실 | 미인수 |
+|---|---|---|
+| map1 | kills2 뒤 필드 사망 | 보스전 사망 아님 |
+| 실제 retry 후 map2 | kills35/Lv3, 남서35/53, 담당 Angler 생존 HP16125 뒤 두 번째 필드 사망 | map1 kills2와 map2 kills35 합산0 |
+| 개방 | 지역 clear0/4, `_fbDone=false`, `_bossUnlocked=false` | 보스방 개방/진입/정상 boss death→retry0 |
+| 아이템·재시도 | 필드 retry1회 및 가방 신규5개 관측 한정 | 전투 전수/아이템 보상 durable저장 완료 아님 |
+| 전체 진행 | 같은 후보의 부분 필드 전투·이동·loot 관측 | 같은 후보6단계 완료·native6·청취/audio·durable save0 |
+
+원자료: `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-normal-boss-route-20261007/root-adjudication.json` — 38,145B / SHA256 `08c731423d0bb3884b4565f9e02c2a7c2d56ee0c0786a9f8cf0b7fb0c07b65c7`.
+
+### 정확 source·증거·검색 범위
+
+| 자료 | bytes / SHA256 |
+|---|---|
+| 현재 working game.html | 4,090,587 / `9230a686ed148891309132f8da3c1e5f67bac1d74d774b3f5a9cb2e33afbd489` |
+| ROOT owned game.html | 4,090,402 / `eefa78a08219cf1a56813d670513df05c3263ac7f039825d4048888e5e26742a` |
+| parry-lesson.js(변경0) | 52,747 / `f7113a41be241a5510ad84109bc55dc418f140dfc880857b1267171bbb624121` |
+| D/implementation-receipt.json | 1,771 / `0090e55a8e65b5ba5af6b0d3fbe634fa9b33196b4ddac86e2c5ee024882a50d3` |
+| D/cpu-limited-receipt.json | 9,521 / `38a674f8786a9d9fc572d54cfb378a44830643967baecfca9d62cccd0960ef08` |
+| D/native-first-only/result.json | 4,699 / `461d2783be8f5e5e98a2628a2a08ccad4a319813d9ad305013eb371b7beec95d` |
+| D/validation-receipt.json | 5,902 / `58793ba797c13018c7d574c584a07c119bda71724c058c0791ed7bfcfa7173a9` |
+| D/visual-verdict.json | 3,347 / `c6e34859e27c019c69d763219b34c466a7a499c8c6f1cc791caa7cbfa7919199` |
+
+D=`/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-start-barrier-layer-20261007`. 실제3PNG=`D/native-first-only/active.png`, `fade.png`, `expired.png`; ROOT 직접판독3장 및 문서 동기화 담당도 저장 PNG3장 읽기만 수행했다. 이 문서 작업의 CPU/Chrome/입력 재실행0.
+
+관련 검색1회는 eligible text1,016(그중 Markdown817), 매칭44path/82행/85occurrence이다. 관리 STATE/LOG8개(그중 Markdown4)와 보호2_3 본문은 제외했으므로 `docs 모든 파일 무제외 검색/전수 본문읽기`로 부르지 않는다. binary/archive258 분류는 이미지·압축·docx251 및 Python4·HTML백업3을 포함하며 전부 binary라는 뜻이 아니다. 일반 Markdown이 이258 목록에서 누락된 경우는0. 검색 원문은 `D/docs-plan/docs-related-keywords.raw.jsonl` 71,338B/SHA256 `402e632e65efe52fd91be01b00d46148909632ebeed95245ac66fa7cb1173bbc`, 영수증은 `D/docs-plan/search-receipt.json`이다. 역사 raw/과거 검수는 해당 epoch으로 보존한다.
+
+working game의 foreign185B는 미채택 그대로이며 3.3 foreign2,948B·STATE/LOG·보호2_3·원PNG/scene/nav/장비·save는 이번 문서 소유 밖으로 수정0이다. 선택 GOALS 문서는 이번10개 소유에서 제외한다.
+
+### MAP PRODUCTION REPORT — 가이드 §23
+
+| 항목 | 이번 범위의 사실·Gate |
+|---|---|
+| STAGE | 실제 CH1-1 기존 후보 시작 장벽의 본체 앞/뒤 합성 소비. 새 지형·원화 제작 없음 |
+| MASTER | silhouette/regions/main route/side spaces: 모두 기존 권위 유지 |
+| OUTER MASS | LEFT/RIGHT/TOP/SOUTH 불변; major holes 이번 해결 대상0 |
+| LARGE | source assets: 기존 barrier/맵 PNG; composites: active CH1 장벽 뒤 본체; overlap: current active/fade 본체 식별 한정 개선; repeated silhouette: 반복 baked바닥 미해결 |
+| MEDIUM | connections 불변; remaining holes 별도 검수/해결0 |
+| GROUND | shadow/contamination 불변; structure integration: 평평한 baked 지형 한계 유지 |
+| PLAYABLE | main arenas/travel/breathing/threat space 불변; combat readability: 시작 본체 가림 한정 개선, 라벨/펫/FX 겹침 RETOUCH |
+| LANDMARK | primary/secondary/tertiary 배치·원자료 불변; 새 랜드마크 시각 인수0 |
+
+| CAMERA QA 8뷰 | 현재 관측 |
+|---|---|
+| START | active/fade/expired 3phase 실제 PNG에서 한정 판독 |
+| EARLY | 같은 시작점 세 phase만; 다른 초기 지역/줌·shake/SSAA 전수 미인수 |
+| ARENA | 기존 late source 조건은 제한 CPU; 새 arena 실제화면0 |
+| SIDE L | 신규 관측0/UNKNOWN |
+| SIDE R | 신규 관측0/UNKNOWN |
+| LANDMARK | 신규 관측0/UNKNOWN |
+| LATE | 신규 관측0/UNKNOWN |
+| EXIT | 신규 관측0/UNKNOWN; 정상 보스방 route 개방 미인수 |
+
+| TECH QA | 사실·한계 |
+|---|---|
+| route | 경로 변경0; 별도 정상B는 부분 필드 관측, 6단계 완료 아님 |
+| collision | 원300f/r280 안전구역·nav·충돌식 불변; 신규 전수 충돌 QA0 |
+| pageerror | 새 headed phase3 run0 |
+| 404 | 새 run HTTPerror0; requestfailed5는 별도로 보존 |
+| seam | 새 원화/맵 seam 변경0; 전수 시각 seam 개선 인수0 |
+| loading | warm/image gate 제한 CPU, 실제 sourceHTTP4/local2 exact; intro abort2 직접원인 UNKNOWN |
+| performance | 신규 시간/비용 인수0, early CH1 비용은 옛 late 측정 범위 밖; GL UNKNOWN |
+| FILES | stage-owned: ROOT game 표시 hunk 및 지정 동기화 docs10; concurrent touched: game foreign185/3.3 foreign2948 미채택 보존; unrelated touched: 이 문서 작업0 |
+| GIT | staged/commit/push는 ROOT 완료소유 checkpoint 예정, 이 담당 Git쓰기0·새 commit SHA 추정0; deploy0 |
+| VISUAL VERDICT | **RETOUCH** — 시작 본체 가림 개선 한정, 전체맵 A급/정상 route 완료 아님 |
+| NEXT PASS | 정상 route의 실제 지역80%+담당Angler→개방→보스전→death/retry·장비/회복을 같은 후보에서 이어 관측하고, 별도 zoom/shake/SSAA·postprocess색·라벨/FX 및 지형 가독성 Gate를 통과해야 함. 자동 재검사·임의 원화/geometry/nav 수정0 |

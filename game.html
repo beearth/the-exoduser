@@ -50758,6 +50758,29 @@ function drawAtmosphere(ctx,w,h){
   ctx.globalCompositeOperation='source-over';ctx.globalAlpha=1;
   ctx.restore();
 }
+// 인자 6개: 프레임 시작 부모 변환 사용.
+// 인자 없음: 기존 늦은 screen 경로의 부모 변환 그대로 사용.
+function _drawBonfireBarrierScreen(a,b,c,d,e,f){
+  if(!(G._bonfire&&G._bonfire.t>0))return;
+  const _bfv=G._bonfire;
+  const _bfsx=C.width/2+(_bfv.x-G.cam.x);
+  const _bfsy=C.height/2+(_bfv.y-G.cam.y);
+  const _bfAlpha=Math.min(1,_bfv.t/120);
+  const _bfPulse=1+Math.sin(_now/300)*.03;
+  const _bfDrawR=_bfv.r*_bfPulse;
+  const _bfImg=_BONFIRE_BARRIER_IMG;
+  if(!(_bonfireBarrierWarmDone&&_bfImg.complete&&_bfImg.naturalWidth>0))return;
+  const _bfSz=_bfDrawR*2;
+  X.save();
+  try{
+    if(a!==undefined)X.setTransform(a,b,c,d,e,f);
+    X.translate(_bfsx,_bfsy);
+    X.globalAlpha=_bfAlpha*.9;
+    X.drawImage(_bfImg,-_bfSz/2,-_bfSz/2,_bfSz,_bfSz);
+  }finally{
+    X.restore();
+  }
+}
 function draw(){
   if(!X)return;
   _ch1DruidBeginFrame();
@@ -50779,6 +50802,19 @@ function draw(){
   // ── 프레임당 1회 사전 계산: 반복 Math.sin/cos 캐싱 ──
   const _sn100=Math.sin(_now*.01),_sn150=Math.sin(_now/150),_sn200=Math.sin(_now/200),_sn250=Math.sin(_now/250),_sn300=Math.sin(_now/300);
   X.clearRect(0,0,C.width,C.height); // 주의: GL 프록시 모드에서 clearRect는 프레임 리셋(GL 클리어+CT 텍스트 캔버스 클리어+상태 초기화) — 절대 제거 금지
+  const _bfBeforePlayer=G.stage===0&&!G._bossArena&&!!(G._bonfire&&G._bonfire.t>0);
+  let _bfBaseA,_bfBaseB,_bfBaseC,_bfBaseD,_bfBaseE,_bfBaseF;
+  if(_bfBeforePlayer){
+    if(typeof X.getTransform==='function'){
+      const m=X.getTransform();
+      _bfBaseA=m.a;_bfBaseB=m.b;_bfBaseC=m.c;
+      _bfBaseD=m.d;_bfBaseE=m.e;_bfBaseF=m.f;
+    }else{
+      const m=_mat();
+      _bfBaseA=m[0];_bfBaseB=m[1];_bfBaseC=m[2];
+      _bfBaseD=m[3];_bfBaseE=m[4];_bfBaseF=m[5];
+    }
+  }
   X.fillStyle='#000';X.fillRect(0,0,C.width,C.height); // 항상 순수 검정으로 먼저 채움
   const stg=STG[G.stage];
   let sx=0,sy=0;if(G.shake>0&&!_EDITOR_MODE){sx=(Math.random()-.5)*G.shake*2;sy=(Math.random()-.5)*G.shake*2}
@@ -53485,6 +53521,9 @@ function draw(){
   const _dd3=performance.now();
   if(_DCP.on){_DCP._mark('projectiles');_DCP._setSource(_DCP_SRC.PARTICLE_VFX)} // [DCPROF] 투사체 구간 종료
   if(_fc2d){var _dProj=_PERF_PROF._delta(_snapProj);_PERF_PROF._proj_di=_dProj.di;_PERF_PROF._proj_st=_dProj.st;_PERF_PROF._proj_fr=_dProj.fr;_PERF_PROF._proj_ga=_dProj.ga;var _snapPart=_PERF_PROF._snap()}
+  if(_bfBeforePlayer)
+    _drawBonfireBarrierScreen(
+      _bfBaseA,_bfBaseB,_bfBaseC,_bfBaseD,_bfBaseE,_bfBaseF);
   const _tDP0=performance.now();
   _levelUpVfx.draw(X,P,G.stage,false,IS_MOBILE||OPT.quality==='low');
   drawP();
@@ -54293,16 +54332,7 @@ function draw(){
   const _pC0=performance.now(); // postB=flash+chroma+lit+bloom+torch
   let _pC1=0,_pC2=0,_pC3=0,_pC4=0,_pC5=0;
   // ── 화톳불 배리어 비주얼 — 신성 마법진 이미지 ──
-  if(G._bonfire&&G._bonfire.t>0){const _bfv=G._bonfire;const _bfsx=C.width/2+(_bfv.x-G.cam.x),_bfsy=C.height/2+(_bfv.y-G.cam.y);
-    const _bfAlpha=Math.min(1,_bfv.t/120);const _bfPulse=1+Math.sin(_now/300)*.03;const _bfDrawR=_bfv.r*_bfPulse;
-    const _bfImg=_BONFIRE_BARRIER_IMG;
-    if(_bonfireBarrierWarmDone&&_bfImg.complete&&_bfImg.naturalWidth>0){
-      const _bfSz=_bfDrawR*2;
-      X.save();X.translate(_bfsx,_bfsy);
-      X.globalAlpha=_bfAlpha*.9;
-      X.drawImage(_bfImg,-_bfSz/2,-_bfSz/2,_bfSz,_bfSz);
-      X.restore();
-    }}
+  if(!_bfBeforePlayer)_drawBonfireBarrierScreen();
   _pC1=performance.now(); // bonfire end
   // [SMOG] 스모그 렌더 — 프리렌더 스탬프 + 회전
   if(OPT.fog&&_smogCnt>0&&OPT.quality!=='low'){
