@@ -62,7 +62,7 @@ function point(value) {
 function optionsOf(value) {
   if (value === undefined) value = {};
   if (!object(value) || Array.isArray(value)) throw new Error('cue options 객체가 필요합니다');
-  const o = { ...INTERACTION_CUE_DEFAULTS, orderFor: null, anchorFor: null };
+  const o = { ...INTERACTION_CUE_DEFAULTS, orderFor: null, anchorFor: null, openPointFor: null };
   for (const key of Object.keys(o)) {
     const supplied = data(value, key);
     if (supplied !== undefined) o[key] = supplied;
@@ -78,7 +78,7 @@ function optionsOf(value) {
     if (!Number.isInteger(o[key]) || o[key] < 0 || o[key] > 0xffffff) throw new Error('cue RGB 색상 범위 오류');
   }
   if (typeof o.reducedMotion !== 'boolean') throw new Error('cue reducedMotion은 boolean이어야 합니다');
-  for (const key of ['orderFor', 'anchorFor']) if (o[key] !== null && typeof o[key] !== 'function') throw new Error('cue 함수 옵션 오류: ' + key);
+  for (const key of ['orderFor', 'anchorFor', 'openPointFor']) if (o[key] !== null && typeof o[key] !== 'function') throw new Error('cue 함수 옵션 오류: ' + key);
   if (o.maxAnchors !== 4 || o.worldSize !== 8000 || o.orderOffset !== .5) throw new Error('cue 상한/world/정렬 오프셋은 고정입니다');
   return Object.freeze(o);
 }
@@ -88,10 +88,10 @@ export function createInteractionCueLifetime(deps = {}) {
   const originalOptions = data(deps, 'options'), opt = optionsOf(originalOptions);
   const resources = new Set(), cues = [], lastSeen = new Map();
   const stats = { active: false, reason: 'invalid-deps', error: null, disposed: false,
-    approachNpc: null, approachVisible: false, openNpc: null, openVisible: false, openAnchorUnknown: false,
+    approachNpc: null, approachVisible: false, openNpc: null, openVisible: false, openAnchorUnknown: false, openPointUnknown: false,
     reduced: opt.reducedMotion, spawned: 0, retired: 0, meshes: 0, allocatedMeshes: 0,
     occlusion: opt.orderFor ? 'injected-orderFor' : 'UNKNOWN-root-must-inject-orderFor' };
-  let clock = 0, disposed = false, reduced = opt.reducedMotion, providerRef = null;
+  let clock = 0, disposed = false, reduced = opt.reducedMotion, providerRef = null, lifetimeToken = {};
   let sceneAdd, sceneRemove, worldToScene, worldQuaternion, cameraQuaternion, approach, open;
   function sync() {
     stats.approachNpc = approach?.npcId ?? null; stats.approachVisible = !!approach?.mesh.visible;
@@ -103,7 +103,8 @@ export function createInteractionCueLifetime(deps = {}) {
     cue.mesh.visible = false;
   }
   function retire(reason) {
-    hide(approach); hide(open); sync(); stats.openAnchorUnknown = false; stats.reason = reason;
+    lifetimeToken = {};
+    hide(approach); hide(open); sync(); stats.openAnchorUnknown = false; stats.openPointUnknown = false; stats.reason = reason;
     return stats.retired;
   }
   function diagnostic(cue) {
@@ -151,10 +152,22 @@ export function createInteractionCueLifetime(deps = {}) {
       else cameraQuaternion.copy(data(camera, 'quaternion'));
       if (![cameraQuaternion.x, cameraQuaternion.y, cameraQuaternion.z, cameraQuaternion.w].every(finite)) throw new Error('cue camera quaternion 유한수 오류');
     }
+    let renderPoint = { x: px, y: py + (cue.kind === 'open' ? opt.openLift : opt.groundLift), z: pz };
+    if (cue.kind === 'open' && opt.openPointFor) {
+      const token = lifetimeToken;
+      let resolved, valid = false;
+      try {
+        resolved = opt.openPointFor.call(originalOptions, npcId, Object.freeze({ x: position.x, y: position.y }));
+        const x = data(resolved, 'x'), y = data(resolved, 'y'), z = data(resolved, 'z');
+        if (finite(x) && finite(y) && finite(z)) { renderPoint = { x, y, z }; valid = true; }
+      } catch (_error) { /* A bad optional resolver hides only the open cue. */ }
+      if (disposed || lifetimeToken !== token) return false;
+      if (!valid) { hide(cue); stats.openPointUnknown = true; return; }
+    }
     // Validate projection/order before publishing any new visible cue.
     if (cue.npcId !== npcId) { hide(cue); cue.npcId = npcId; stats.spawned++; }
     cue.x = position.x; cue.y = position.y;
-    cue.mesh.position.set(px, py + (cue.kind === 'open' ? opt.openLift : opt.groundLift), pz);
+    cue.mesh.position.set(renderPoint.x, renderPoint.y, renderPoint.z);
     if (cue.kind === 'open') cue.mesh.quaternion.copy(cameraQuaternion);
     else cue.mesh.rotation.x = -Math.PI / 2;
     appearance(cue); cue.mesh.renderOrder = order; cue.mesh.visible = true;
@@ -180,7 +193,7 @@ export function createInteractionCueLifetime(deps = {}) {
       }
       const period = opt.pulseHz > 0 ? 1000 / opt.pulseHz : 1;
       clock = (clock + clamp(dt, 0, .1) * 1000) % period;
-      stats.openAnchorUnknown = false;
+      stats.openAnchorUnknown = false; stats.openPointUnknown = false;
       reason = 'cue-render-error';
       if (!isOpen && nearPoint) show(approach, nearId, nearPoint); else hide(approach);
       if (isOpen) {
@@ -190,9 +203,9 @@ export function createInteractionCueLifetime(deps = {}) {
         const rawAnchor = opt.anchorFor ? opt.anchorFor.call(originalOptions, openId)
           : nearId === openId ? nearPoint : lastSeen.get(openId) ?? null;
         if (rawAnchor === null) { hide(open); stats.openAnchorUnknown = true; }
-        else { const anchor = point(rawAnchor); reason = 'cue-render-error'; show(open, openId, anchor); }
+        else { const anchor = point(rawAnchor); reason = 'cue-render-error'; if (show(open, openId, anchor) === false) return snapshot(); }
       } else hide(open);
-      sync(); stats.reason = stats.openAnchorUnknown ? 'open-anchor-unknown' : ''; stats.error = null;
+      sync(); stats.reason = stats.openAnchorUnknown ? 'open-anchor-unknown' : stats.openPointUnknown ? 'open-point-unknown' : ''; stats.error = null;
     } catch (error) {
       retire(reason); lastSeen.clear(); providerRef = null; clock = 0; stats.error = errorText(error);
     }

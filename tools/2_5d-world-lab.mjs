@@ -10,7 +10,7 @@ import { createCorruptedWolf } from './2_5d/corrupted-wolf.mjs';
 import { createActorEffectLifetime } from './2_5d/actor-effect-lifetime.mjs';
 import { checkFrameSpec, worldFootProvider, realNavFromTerrain, runV3, SLICE_ACCEPTANCE_PROVENANCE } from './2_5d/slice-acceptance.mjs';
 import { assessRegistration, SCENE_REGISTRATION_PROVENANCE } from './2_5d/scene-registration.mjs';
-import { createInteractionCueLifetime, INTERACTION_CUE_PROVENANCE } from './2_5d/interaction-cue-lifetime.mjs';
+import { createInteractionCueLifetime, INTERACTION_CUE_PROVENANCE, INTERACTION_CUE_DEFAULTS } from './2_5d/interaction-cue-lifetime.mjs';
 import { createRiftResidentBillboards, riftResidentFootOrder } from './2_5d/rift-resident-billboards.mjs';
 import { createRiftDialogue } from './map-scene-rift-dialogue.mjs';
 import { residentDialogueAnchors } from './map-scene-rift-residents.mjs';
@@ -30,6 +30,7 @@ let dialogueObservation, wolf, wolfPlacement=null, wolfError=null;
 const wolfAbort=new AbortController();
 const dialoguePlayer={x:0,y:0};
 let dialogueSignature='',nearestNpc=null;
+let residentCueGeneration=Object.freeze({});
 let foregroundShaderPrograms=[],contactShaderPrograms=[],contactUnderlay;
 let observeFoot, realNav, anchorJob=null, registration=null;
 let acceptance={status:'PENDING',samples:0,reason:'표시 위치 검사 전',result:null};
@@ -118,7 +119,7 @@ function resize(){
 }
 function cancelAnchorCheck(reason){if(!anchorJob&&acceptance.status==='PENDING')return;anchorJob=null;acceptance={status:'PENDING',samples:0,reason,result:null};updateAcceptanceUi();}
 function cancelSpecial(){specialMotion?.setMotion('none');if(rigs[state.selected]){rigs[state.selected].object3d.visible=true;helpers[state.selected].visible=$('bones').checked;}if(shadow)shadow.visible=true;}
-function clearIntent(){cancelAnchorCheck('입력·캐릭터·초점 변경으로 검사 중단');keys.clear();state.attackQueued=false;state.previewMode=null;poses[state.selected]?.release();cancelSpecial();}
+function clearIntent(){residentCueGeneration=Object.freeze({});cancelAnchorCheck('입력·캐릭터·초점 변경으로 검사 중단');keys.clear();state.attackQueued=false;state.previewMode=null;poses[state.selected]?.release();cancelSpecial();}
 function updateAcceptanceUi(){
   leaf('metric-check',acceptance.status==='RUNNING'?`관측 ${acceptance.samples} / ${anchorSamples}`:acceptance.status);
   leaf('check-detail',acceptance.reason);
@@ -161,6 +162,69 @@ function select(id){
   leaf('actor-name',read.value.name);applyState();
 }
 function reset(){invalidatePreview('reset');closeDialogue('reset');interactionCue?.onSceneChange('reset');clearIntent();poses[state.selected]?.reset();effects[state.selected]?.onActorChange('reset');state.x=5480;state.y=3740;if(!terrain.canWalk(state.x,state.y,12))throw new Error('대표 화면 시작 발 위치가 막혀 있습니다');state.direction=0;state.blocked=0;setMode('idle');placeWolf();applyState();}
+function residentCueOwn(value,key){
+  if(value===null||typeof value!=='object')throw new Error('주민 표시 데이터 오류');
+  const d=Object.getOwnPropertyDescriptor(value,key);
+  if(!d||!Object.hasOwn(d,'value'))throw new Error('주민 표시 accessor는 소비하지 않습니다');
+  return d.value;
+}
+function residentCueIdentity(node){
+  const p=residentCueOwn(node,'position'),q=residentCueOwn(node,'quaternion'),s=residentCueOwn(node,'scale');
+  return ['x','y','z'].every(k=>residentCueOwn(p,k)===0&&residentCueOwn(s,k)===1)&&residentCueOwn(q,'_x')===0&&residentCueOwn(q,'_y')===0&&residentCueOwn(q,'_z')===0&&residentCueOwn(q,'_w')===1;
+}
+function residentCueBodyAligned(body,foot,source,quaternion){
+  if(residentCueOwn(body,'parent')!==foot)return false;
+  const footScale=residentCueOwn(foot,'scale'),bodyPosition=residentCueOwn(body,'position'),bodyScale=residentCueOwn(body,'scale'),flipX=residentCueOwn(source,'flipX');
+  if(typeof flipX!=='boolean'||!['x','y','z'].every(k=>residentCueOwn(footScale,k)===1&&residentCueOwn(bodyPosition,k)===0)||residentCueOwn(bodyScale,'x')!==(flipX?-1:1)||residentCueOwn(bodyScale,'y')!==1||residentCueOwn(bodyScale,'z')!==1)return false;
+  const bodyQuaternion=residentCueOwn(body,'quaternion'),footQuaternion=residentCueOwn(foot,'quaternion');
+  if(residentCueOwn(bodyQuaternion,'_x')!==0||residentCueOwn(bodyQuaternion,'_y')!==0||residentCueOwn(bodyQuaternion,'_z')!==0||residentCueOwn(bodyQuaternion,'_w')!==1)return false;
+  let same=0,opposite=0;
+  for(const k of ['_x','_y','_z','_w']){
+    const a=residentCueOwn(footQuaternion,k),b=residentCueOwn(quaternion,k);if(!Number.isFinite(a)||!Number.isFinite(b))return false;
+    same=Math.max(same,Math.abs(a-b));opposite=Math.max(opposite,Math.abs(a+b));
+  }
+  // Repeated camera matrix decomposition may differ by a few double-precision ulps.
+  return Math.min(same,opposite)<=32*Number.EPSILON;
+}
+function createResidentOpenPointResolver(){
+  const residentOwner=residents,terrainOwner=terrain,cameraOwner=camera,sceneOwner=scene,dialogueOwner=dialogue,epoch=lifecycleEpoch;
+  const quaternion=new THREE.Quaternion(),up=new THREE.Vector3();
+  return (npcId,footAnchor)=>{
+    const actor=state.selected,rigOwner=rigs[actor],generation=residentCueGeneration;
+    const current=()=>state.ready&&!state.error&&!state.disposed&&!state.contextLost&&lifecycleEpoch===epoch&&residents===residentOwner&&terrain===terrainOwner&&camera===cameraOwner&&scene===sceneOwner&&dialogue===dialogueOwner&&state.selected===actor&&rigs[actor]===rigOwner&&residentCueGeneration===generation;
+    try{
+      if(!current())return null;
+      const x=residentCueOwn(footAnchor,'x'),y=residentCueOwn(footAnchor,'y');
+      if(!Number.isFinite(x)||!Number.isFinite(y))return null;
+      const rows=residentOwner.residents();if(!current()||!Array.isArray(rows))return null;
+      const length=residentCueOwn(rows,'length');if(length!==4)return null;
+      let row=null;
+      for(let i=0;i<length;i++){const candidate=residentCueOwn(rows,String(i));if(residentCueOwn(candidate,'npcId')===npcId){if(row)return null;row=candidate;}}
+      if(!row||residentCueOwn(row,'visible')!==true||residentCueOwn(row,'x')!==x||residentCueOwn(row,'y')!==y)return null;
+      const source=residentCueOwn(row,'source'),display=residentCueOwn(row,'display'),height=residentCueOwn(display,'sceneHeight'),pivotY=residentCueOwn(display,'pivotY');
+      if(residentCueOwn(source,'rotation')!==0||!Number.isFinite(height)||height<=0||!Number.isFinite(pivotY)||pivotY<0||pivotY>1||residentCueOwn(source,'pivotY')!==pivotY)return null;
+      const root=residentCueOwn(residentOwner,'object3d');
+      if(residentCueOwn(root,'parent')!==sceneOwner||residentCueOwn(sceneOwner,'parent')!==null||!residentCueIdentity(root)||!residentCueIdentity(sceneOwner))return null;
+      const children=residentCueOwn(root,'children'),count=residentCueOwn(children,'length');let foot=null;
+      for(let i=0;i<count;i++){const node=residentCueOwn(children,String(i));if(residentCueOwn(node,'name')===npcId+' · source foot'){if(foot)return null;foot=node;}}
+      if(!foot||residentCueOwn(foot,'parent')!==root)return null;
+      const meshChildren=residentCueOwn(foot,'children');if(residentCueOwn(meshChildren,'length')!==1)return null;
+      const body=residentCueOwn(meshChildren,'0'),bodyQuaternion=residentCueOwn(body,'quaternion');
+      if(residentCueOwn(body,'name')!==residentCueOwn(row,'objectId')||residentCueOwn(bodyQuaternion,'_x')!==0||residentCueOwn(bodyQuaternion,'_y')!==0||residentCueOwn(bodyQuaternion,'_z')!==0||residentCueOwn(bodyQuaternion,'_w')!==1)return null;
+      const mapped=terrainOwner.worldToScene(x,y);if(!current())return null;
+      const fx=residentCueOwn(mapped,'x'),fy=residentCueOwn(mapped,'y'),fz=residentCueOwn(mapped,'z'),position=residentCueOwn(foot,'position');
+      if(![fx,fy,fz].every(Number.isFinite)||residentCueOwn(position,'x')!==fx||residentCueOwn(position,'y')!==fy||residentCueOwn(position,'z')!==fz)return null;
+      const view=dialogueOwner.snapshot();if(!current()||residentCueOwn(view,'isOpen')!==true||residentCueOwn(residentCueOwn(view,'view'),'npcId')!==npcId)return null;
+      cameraOwner.getWorldQuaternion(quaternion);if(!current())return null;
+      if(![quaternion.x,quaternion.y,quaternion.z,quaternion.w].every(Number.isFinite))return null;
+      up.set(0,1,0).applyQuaternion(quaternion);
+      const lift=height*pivotY+.015+INTERACTION_CUE_DEFAULTS.openSize;
+      const result={x:fx+up.x*lift,y:fy+up.y*lift,z:fz+up.z*lift};
+      if(residentCueOwn(root,'parent')!==sceneOwner||residentCueOwn(sceneOwner,'parent')!==null||!residentCueIdentity(root)||!residentCueIdentity(sceneOwner)||residentCueOwn(foot,'parent')!==root||residentCueOwn(position,'x')!==fx||residentCueOwn(position,'y')!==fy||residentCueOwn(position,'z')!==fz||!residentCueBodyAligned(body,foot,source,quaternion))return null;
+      return Object.values(result).every(Number.isFinite)?result:null;
+    }catch(_error){return null;}
+  };
+}
 function focusDialogueInput(open,actor=state.selected,epoch=lifecycleEpoch){
   if(!state.ready||state.paused||state.error||state.disposed||state.contextLost||document.hidden||!document.hasFocus()||state.selected!==actor||lifecycleEpoch!==epoch)return;
   const current=dialogue?.snapshot();if(!current||current.isOpen!==open)return;
@@ -168,7 +232,7 @@ function focusDialogueInput(open,actor=state.selected,epoch=lifecycleEpoch){
   const target=open?$('dialogue-options').querySelector('button:not(:disabled)')||$('dialogue-close'):$('world-canvas');
   try{target?.focus({preventScroll:true});}catch(_e){}
 }
-function closeDialogue(reason){const actor=state.selected,epoch=lifecycleEpoch,wasOpen=dialogue?.snapshot().isOpen;dialogue?.close(reason);if(wasOpen){keys.clear();state.attackQueued=false;state.previewMode=null;poses[state.selected]?.release('dialogue-close');}dialogueSignature='';updateDialogue();if(wasOpen&&(reason==='manual'||reason==='escape'))focusDialogueInput(false,actor,epoch);}
+function closeDialogue(reason){const actor=state.selected,epoch=lifecycleEpoch,wasOpen=dialogue?.snapshot().isOpen;if(wasOpen)residentCueGeneration=Object.freeze({});dialogue?.close(reason);if(wasOpen){keys.clear();state.attackQueued=false;state.previewMode=null;poses[state.selected]?.release('dialogue-close');}dialogueSignature='';updateDialogue();if(wasOpen&&(reason==='manual'||reason==='escape'))focusDialogueInput(false,actor,epoch);}
 function updateDialogue(){
   if(!dialogue)return;
   const snapshot=dialogue.snapshot(),view=snapshot.view;
@@ -526,7 +590,7 @@ try{
   leaf('metric-editor',registration.editorRoundtrip.status);
   for(const occluder of terrain.occluders){occluder.object3d.renderOrder=30+(occluder.footY-4320)/8000*10;occluder.object3d.material.depthTest=false;occluder.object3d.material.depthWrite=false;occluder.object3d.material.transparent=true;}
   reducedQuery=matchMedia('(prefers-reduced-motion: reduce)');
-  interactionCue=createInteractionCueLifetime({THREE,scene,camera,terrain,options:{orderFor:riftResidentFootOrder,anchorFor:npcId=>residentDialogueAnchors(residentScene).find(a=>a.npcId===npcId)||null,reducedMotion:reducedQuery.matches}});
+  interactionCue=createInteractionCueLifetime({THREE,scene,camera,terrain,options:{orderFor:riftResidentFootOrder,openPointFor:createResidentOpenPointResolver(),anchorFor:npcId=>residentDialogueAnchors(residentScene).find(a=>a.npcId===npcId)||null,reducedMotion:reducedQuery.matches}});
   if(!interactionCue.snapshot().active)throw new Error('주민 접근 표시 초기화 실패');
   for(const id of ['warrior','silvertail','dark-druid']){
     rigs[id]=takeInitialized(await createCharacterRig(id,{THREE,height:heights[id]}),'rigs');scene.add(rigs[id].object3d);
