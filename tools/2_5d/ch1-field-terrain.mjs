@@ -43,6 +43,29 @@ export function createCh1FieldTerrain(){
     geometry.setAttribute('uv',new THREE.Float32BufferAttribute([lo,hi,hi,hi,hi,lo,lo,lo],2));
     geometry.setIndex([0,2,1,0,3,2]);geometry.computeBoundingSphere();
     const material=new THREE.MeshBasicMaterial({map:texture,side:THREE.DoubleSide,toneMapped:false});
+    // Existing one-pixel bleed is not enough for a sharpen kernel at the core
+    // edge: keep the original sample there, then fade in within the core.
+    const mapChunk=THREE.ShaderChunk.map_fragment, multiply='\tdiffuseColor *= sampledDiffuseColor;';
+    const canSharpen=renderer.capabilities.isWebGL2&&typeof mapChunk==='string'&&mapChunk.split(multiply).length===2;
+    material.customProgramCacheKey=()=>canSharpen?'ch1-painted-rgb-magnification-v1':'ch1-painted-original-v1';
+    material.onBeforeCompile=(shader,shaderRenderer)=>{
+      if(disposed||!canSharpen||shaderRenderer!==renderer||material.map!==texture||texture.image!==image||texture.colorSpace!==THREE.SRGBColorSpace||texture.channel!==0||!shader.fragmentShader.includes('#include <map_fragment>'))return;
+      shader.fragmentShader=shader.fragmentShader.replace('#include <map_fragment>',mapChunk.replace(multiply,`
+#ifndef DECODE_VIDEO_TEXTURE
+  float ch1FootprintX=length(dFdx(vMapUv*1026.0));
+  float ch1FootprintY=length(dFdy(vMapUv*1026.0));
+  if(ch1FootprintX>0.0&&ch1FootprintY>0.0&&ch1FootprintX<=1.0&&ch1FootprintY<=1.0){
+    vec2 ch1CoreDistance=min(vMapUv-vec2(1.0/1026.0),vec2(1025.0/1026.0)-vMapUv)*1026.0;
+    float ch1Edge=smoothstep(0.5,1.5,min(ch1CoreDistance.x,ch1CoreDistance.y));
+    if(ch1Edge>0.0){
+      vec2 ch1T=vec2(1.0/1026.0);
+      vec3 ch1Blur=0.25*(textureLod(map,vMapUv+vec2(ch1T.x,0.0),0.0).rgb+textureLod(map,vMapUv-vec2(ch1T.x,0.0),0.0).rgb+textureLod(map,vMapUv+vec2(0.0,ch1T.y),0.0).rgb+textureLod(map,vMapUv-vec2(0.0,ch1T.y),0.0).rgb);
+      sampledDiffuseColor.rgb=clamp(sampledDiffuseColor.rgb+0.35*ch1Edge*(sampledDiffuseColor.rgb-ch1Blur),0.0,1.0);
+    }
+  }
+#endif
+  diffuseColor *= sampledDiffuseColor;`));
+    };
     const mesh=new THREE.Mesh(geometry,material);mesh.name='CH1-1 production '+id;scene.add(mesh);
     stats.textureCreates++;return {mesh,texture,geometry,material,image};
   }

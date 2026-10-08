@@ -1366,7 +1366,9 @@ NEXT PASS: alpha-aware 보수적 셀 점유 source/API 계약·원자료 수치�
 
 MAP PRODUCTION REPORT (§23): STAGE=CH1-1 2.5D 캐릭터 기반 API; MASTER/OUTER/LARGE/MEDIUM/GROUND/PLAYABLE/LANDMARK/CAMERA 배치 변경0. TECH=신규 실제 rig CPU14그룹90조건 PASS, GPU/화면/청취/본편 플레이0. FILES=rig1+관련docs14; 타인 game/ownerWIP·원 PNG/scene/nav 보존. GIT=이 완료소유만 정상 보존, 배포0. VISUAL VERDICT: RETOUCH. NEXT PASS=실제 1-1 권위 map/P/카메라를 소비하는 2.5D 맵·캐릭터 연결.
 
-### ROOT-CH1-1-THREE-TERRAIN-CONSUMER-20261007 — 현재 상태
+### ROOT-CH1-1-THREE-TERRAIN-CONSUMER-20261007 — 2026-10-07 최초 연결 이력
+2026-10-08 현행 샘플링: `ROOT-CH1-PAINTED-MAGNIFICATION-SHARPNESS-20261008`. 기존 CH1 main `ch1Three=1` 지면에 WebGL2 확대 RGB 보정0.35를 연결했다. 양축 texel footprint가 각각 `(0,1]`일 때만 적용하며, core 경계 거리0.5~1.5 texel에 smoothstep을 적용해 경계는 원래 sample을 유지한다. Linear/noMip/clamp/sRGB·alpha·1026² Image·UV·map/nav·소유 캐시 수명은 기존 계약을 유지한다. 아래 옛 핀·CPU/native 수치는 2026-10-07 이력이다. 신규 검수는 통제 THREE/DOM/renderer에서 실제 전체 JS 8그룹만 통과했으며 GLSL/GPU/실화면/성능/청취/save는 미검수다. 현행 정본: [CH1 확대 보정](../4.1맵디자인+설정/CH1_1_PRODUCTION_FINISH_20260916.md#ch1-painted-sharpness-20261008).
+
 
 | 항목 | 현재 값·범위 |
 |---|---|

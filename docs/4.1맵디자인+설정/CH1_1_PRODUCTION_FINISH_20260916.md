@@ -1843,7 +1843,9 @@ Git쓰기승인후체크포인트실행을시도했으나승격실행기의Windo
 
 현행 공식·수치·검수는 [가려진 레이어 정리 SSOT](CH1_HIDDEN_UNDERLAY_20260929.md)를 따른다. 앞선 날짜별 회귀·FPS·아트 수치는 당시 검수 이력이다.
 
-### ROOT-CH1-1-THREE-TERRAIN-CONSUMER-20261007 — 실제 1-1 지면 연결
+### ROOT-CH1-1-THREE-TERRAIN-CONSUMER-20261007 — 2026-10-07 최초 연결 이력
+2026-10-08 현행 샘플링: `ROOT-CH1-PAINTED-MAGNIFICATION-SHARPNESS-20261008`. 기존 CH1 main `ch1Three=1` 지면에 WebGL2 확대 RGB 보정0.35를 연결했다. 양축 texel footprint가 각각 `(0,1]`일 때만 적용하며, core 경계 거리0.5~1.5 texel에 smoothstep을 적용해 경계는 원래 sample을 유지한다. Linear/noMip/clamp/sRGB·alpha·1026² Image·UV·map/nav·소유 캐시 수명은 기존 계약을 유지한다. 아래 옛 핀·CPU/native 수치는 2026-10-07 이력이다. 신규 검수는 통제 THREE/DOM/renderer에서 실제 전체 JS 8그룹만 통과했으며 GLSL/GPU/실화면/성능/청취/save는 미검수다. 현행 정본: [CH1 확대 보정](CH1_1_PRODUCTION_FINISH_20260916.md#ch1-painted-sharpness-20261008).
+
 
 | 항목 | 현재 구현·정확 경계 |
 |---|---|
@@ -2596,3 +2598,43 @@ working game의 foreign185B는 미채택 그대로이며 3.3 foreign2,948B·STAT
 | GIT | staged/commit/push는 ROOT 완료소유 checkpoint 예정, 이 담당 Git쓰기0·새 commit SHA 추정0; deploy0 |
 | VISUAL VERDICT | **RETOUCH** — 시작 본체 가림 개선 한정, 전체맵 A급/정상 route 완료 아님 |
 | NEXT PASS | 정상 route의 실제 지역80%+담당Angler→개방→보스전→death/retry·장비/회복을 같은 후보에서 이어 관측하고, 별도 zoom/shake/SSAA·postprocess색·라벨/FX 및 지형 가독성 Gate를 통과해야 함. 자동 재검사·임의 원화/geometry/nav 수정0 |
+
+
+<a id="ch1-painted-sharpness-20261008"></a>
+### ROOT-CH1-PAINTED-MAGNIFICATION-fd13e45c76595eb9b5ca63a39772cf3bece816d29a0dac042b5a935777e35a56RPNESS-20261008 — 본편 확대 샘플링
+
+| id / 적용 위치 | 현재 계약 |
+|---|---|
+| CH1_PAINTED_RGB / `tools/2_5d/ch1-field-terrain.mjs::make` | 기존 `game.html::_drawCh1StartOuter → _drawCh1ThreeTerrain`가 사용하는 material에 연결. 기존 localhost/3387/ch1Three=1·stage0·비boss opt-in 범위 유지. Rift child에는 적용하지 않음. |
+| SOURCE | 기존 decoded Image1026²/core1024/bleed1, world1000²/chunk·64청크. 원PNG·scene/nav·8192 master·geometry·UV1/1026..1025/1026 변경0. |
+| RGB | 기존 Three r160 map_fragment의 center sample을 유지하고, 상하좌우1texel RGB 4회 추가 sample. linear-space `clamp(center+0.35*edge*(center-average4),0,1)`; 원래 sampledDiffuseColor alpha와 multiply 유지. 원화에 없는 디테일 복원은 아님. |
+| MAGNIFICATION | `length(dFdx(vMapUv*1026))`와 Y footprint 모두 >0 && <=1일 때만. minification/퇴화 footprint에서는 원본. |
+| CORE_EDGE | `min(UV-lo,hi-UV)*1026`의 양축 최소 거리로 `edge=smoothstep(0.5,1.5,distance)`; edge0일 때 추가4tap을 생략. core 경계는 원본 sample 유지, 1px bleed 밖에서 이웃 색을 추정하지 않음. 실제 seam 화면은 미검수. |
+| SUPPORT | WebGL2·현재 renderer/material.map/texture.image·sRGB/channel0·r160 map marker 일치 시만 shader 교체. WebGL1/marker 불일치는 기존 map include 유지. cache key `ch1-painted-rgb-magnification-v1` 또는 `ch1-painted-original-v1`. |
+| LIFETIME | disposed callback은 noop. 기존 map identity/suspend/dispose·shaderFailed/contextlost/GLerror 폴백 유지. 새 Image/Texture 복제/RAF/timer/uniform/별도 draw0. colorSpace/channel이 compile 뒤 외부에서 바뀌는 모든 경우의 원자적 복원 보장은 없음. |
+| BUDGET | 기존 visible resource 각25/output4096/pixelRatio1/Linear/noMip/clamp 유지. 확대 interior에 texture fetch4회 추가; GPU 비용·실프레임 성능 UNKNOWN. |
+| SOURCE_PIN | module 9432 B/SHA256 `fd13e45c76595eb9b5ca63a39772cf3bece816d29a0dac042b5a935777e35a56`; 한 삽입 hunk, working/HEAD 선 fullbytes backup·inverse exact. game/settings3.3/타인 WIP 쓰기0. |
+| VALIDATION | 최초 신규 Node1: 실제 전체 module JS + 실제 vendor map_fragment 문자열, 통제 THREE/DOM/renderer 8그룹 통과/exit0. source injection·unsupported/currentness·dispose/cache 검수만. GLSL compile/GPU/PNGdecode/native 입력·실화면·audio·서버 save는 실행0. 이전 suite 합산/재실행0. |
+| STATE | `VISUAL VERDICT: RETOUCH`, `UI_NOT_ASSESSED`, `nativeNOT_RUN`, `NOT_LISTENED`. CH1 정상 boss개방/death-revive-retry/native6/durableSave/A급 미인수. 사용자 기존 탭 무조작, live 적용 확인0. |
+| EVIDENCE | 외부 `ch1-painted-magnification-sharpness-20261008/implementation.json`, `validation.json`, `docs-search.json`, `completion.json`. |
+
+#### §23 MAP PRODUCTION REPORT
+
+| 영역 | 결과 |
+|---|---|
+| STAGE | 실제 CH1-1/si0, 기존 2.5D opt-in 지면 material 1건. guide v0.9 전체와 SSOT/현행 production LOCK 적용. |
+| MASTER silhouette / regions / main route / side spaces | 기존53점/8구역·200²/T40/world8000·6시 START→12시 EXIT·우회 유지; geometry/nav 변경0. |
+| OUTER MASS LEFT / RIGHT / TOP / SOUTH / major holes | 기존 baked 외곽 그대로; 새 강/용암/외곽 질량 제작0. 남은 구멍·외곽 품질 미검수. |
+| LARGE source assets / composites / overlap / repeated silhouette | 기존64 production PNG 그대로. 새 원화·중복 forest42·배치0, 기존 반복 잔여. |
+| MEDIUM connections / remaining holes | 접합 구조 변경0·기존 부족함 미해결. |
+| GROUND shadow / contamination / structure integration | 원래 RGB sample의 확대 대비만 보정. alpha·그림자/오염 구조·평면높이0 유지, 원화 누락 detail 복원0. |
+| PLAYABLE main arenas / travel / breathing / threat / combat readability | 이동·전투 공간·AI·피해·경고·save 변경0; 실전 가독성은 미검수. |
+| LANDMARK primary / secondary / tertiary | 기존 배치 그대로, 신규 제작0. |
+| CAMERA QA START / EARLY / ARENA / SIDE L / SIDE R / LANDMARK / LATE / EXIT | 전부 신규 native NOT_RUN. CPU를 카메라 검수로 계산하지 않음. |
+| TECH QA route / collision | 코드 변경0; 신규 실제 이동 검수0. |
+| TECH QA pageerror / 404 / seam / loading | 신규 browser0, 실결과 UNKNOWN. seam은 경계 sample 원본 유지의 source 계약만 확인. |
+| TECH QA performance | 확대 추가 fetch4회, 실제 GPU 성능 UNKNOWN. |
+| FILES stage-owned / concurrent / unrelated | module1+관련 검색매칭 docs13만 소유; game/3.3·원PNG/scene/nav·owner giantSTATE·usersave 쓰기0. |
+| GIT staged / commit / push / deploy | 정확 소유14paths만 정상 보존, commit/push/remote exact는 외부 completion.json 최종값 참조. deploy0. |
+| VISUAL VERDICT | RETOUCH / UI_NOT_ASSESSED. |
+| NEXT PASS | 실제 허용 native 화면에서 선명도·halo·청크 seam·전투 가독성·GPU 비용 확인 전 visual PASS 금지. 추가 병렬 배정0. |

@@ -211,7 +211,9 @@
 
 3crop(기준+내부목질2개) 적용·앵커305동일·0/A픽셀불변·실제1/.62전후와공격/탄/처치/드롭/Q성공 확인. 40회귀PASS. 전체RETOUCH, 모티브잔여·M5전체경로미확인. [현행§8](CH1_BOUNDARY_EDGE_MAP020_20261001.md#8-뿌리3종-변주와-후속-실제-검수--2026-10-01). 1차PASS·줌이전미검수표현은해당시점이력.
 
-### ROOT-CH1-1-THREE-TERRAIN-CONSUMER-20261007 — 현재 상태
+### ROOT-CH1-1-THREE-TERRAIN-CONSUMER-20261007 — 2026-10-07 최초 연결 이력
+2026-10-08 현행 샘플링: `ROOT-CH1-PAINTED-MAGNIFICATION-SHARPNESS-20261008`. 기존 CH1 main `ch1Three=1` 지면에 WebGL2 확대 RGB 보정0.35를 연결했다. 양축 texel footprint가 각각 `(0,1]`일 때만 적용하며, core 경계 거리0.5~1.5 texel에 smoothstep을 적용해 경계는 원래 sample을 유지한다. Linear/noMip/clamp/sRGB·alpha·1026² Image·UV·map/nav·소유 캐시 수명은 기존 계약을 유지한다. 아래 옛 핀·CPU/native 수치는 2026-10-07 이력이다. 신규 검수는 통제 THREE/DOM/renderer에서 실제 전체 JS 8그룹만 통과했으며 GLSL/GPU/실화면/성능/청취/save는 미검수다. 현행 정본: [CH1 확대 보정](CH1_1_PRODUCTION_FINISH_20260916.md#ch1-painted-sharpness-20261008).
+
 
 | 항목 | 현재 값·범위 |
 |---|---|
