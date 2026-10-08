@@ -122,3 +122,7 @@ root helpers `character_preview`, `orders_checkpoint_readiness`, `rig_motion`은
 ## 2026-10-08 — 드루이드 실제 입체 본체 단위
 
 ROOT-CH1-DRUID-VOLUMETRIC-BOSS-20261008: 일반형 solid128/관절25/조명5를 actual character-rigs→ch1-player-rig→game에 연결. 사용자가 첫 모션을 거절한 뒤 양팔 two-bone IK/공통 staff grip/골반·다리 stance, 실제 Wind countdown anticipation·recover20f 표시 연결을 재구현했다. 같은 actor/map/owner/life에서만 sheet 전환 뒤 직전 공격 family를 이어받는다. 최종 새 Node1/7그룹PASS/80자세, 실제 IAB15 WebGL 양손 준비/전신 Slam 측면/Sweep 회전 관측. 이전8·shadow2·weaponFAIL1·수정Sweep4는 별도 source 이력/재실행·clean합산0. 미리보기 준비.6s/대기.5s는 관찰용, 실제전투시간 변경0. 기존IAB14 사용자게임 무조작/새기능live적용 주장0. 외형·타격 무게감 RETOUCH/사용자 승인 미인수. 특수·변신·사망/native6/audio/실보상save·전체보스전 미완료. 정본 DIRECTIONAL_CHARACTER_RIGS_20261006.md 입체 본체절, 최종보존 E/ch1-druid-volumetric-boss-20261008/completion.json. 천천히 실제 한 건씩 지시 우선; 동일검사/원문/검색/Git 반복0.
+
+### 2026-10-08 — 입체 드루이드 외형 후속
+
+위 `fd12d389` 입체 본체의 부품/geometry 수치는 당시 이력이다. 현재는 어깨 구형 덩어리를 겹치는 목질 뿌리로, 흉곽을 닫힌 비틀린 core로 교체: solid134+shadow9/geometry121·20,275정점·37,522삼각형. 관절25/material20/light5·양손 IK/준비·공격·회복 코드 불변. IAB15 정면·측면 외형 관측, 기존 suite 재실행0. RETOUCH/사용자 승인·본편 완주·성능·청취/save 미인수. [현행 수치·제한](../4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md).

@@ -70,6 +70,24 @@ export function createDruidBossVolume({THREE,height=1}={}){
     for(let row=0;row<rows;row++){const a=row*(radial+1),b=a+radial+1;edge(a,b);edge(b+radial,a+radial);}
     const geometry=ownGeometry(new THREE.BufferGeometry());geometry.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));geometry.setIndex(indices);geometry.computeVertexNormals();return geometry;
   }
+  // Closed, offset growth rings give the trunk a tapered, twisting wood mass.
+  // The broad ridges belong to its surface instead of a scaled round primitive.
+  function trunkGeometry(){
+    const rings=[[-.006,-.035,-.004,.065,.045,-.20],[.010,.010,-.006,.084,.060,-.11],[-.009,.065,-.006,.105,.073,.04],[-.018,.125,-.005,.121,.083,.20],
+      [.004,.188,-.005,.139,.087,.38],[.012,.242,-.008,.128,.081,.53],[-.009,.290,-.004,.095,.066,.69],[-.014,.316,.002,.052,.037,.84]];
+    const radial=18,positions=[],indices=[];
+    for(let i=0;i<rings.length;i++){
+      const [cx,y,cz,rx,rz,twist]=rings[i],t=i/(rings.length-1);
+      for(let j=0;j<radial;j++){
+        const angle=j/radial*TAU+twist,grain=1+.10*Math.cos(angle*5-twist*2)+.055*Math.sin(angle*3+i*.55);
+        positions.push(cx+Math.cos(angle)*rx*grain,y+.006*Math.sin(angle*3+twist)*Math.sin(Math.PI*t),cz+Math.sin(angle)*rz*grain);
+        if(i<rings.length-1){const a=i*radial+j,b=i*radial+(j+1)%radial,c=a+radial,d=b+radial;indices.push(a,c,b,b,c,d);}
+      }
+    }
+    const bottom=positions.length/3,first=rings[0],last=rings[rings.length-1];positions.push(first[0],first[1],first[2],last[0],last[1],last[2]);
+    for(let j=0;j<radial;j++){const next=(j+1)%radial,top=(rings.length-1)*radial;indices.push(bottom,j,next,bottom+1,top+next,top+j);}
+    const geometry=ownGeometry(new THREE.BufferGeometry());geometry.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));geometry.setIndex(indices);geometry.computeVertexNormals();return geometry;
+  }
   try{
     object3d=new THREE.Group();object3d.name='dark-druid-volumetric-boss';object3d.scale.setScalar(height);
     object3d.userData.representation='volumetric-boss';
@@ -100,17 +118,18 @@ export function createDruidBossVolume({THREE,height=1}={}){
     const waist=remember(group(body,'waist',0,.305,0));
     ellipsoid(waist,'root-pelvis',[0,.012,0],[.112,.079,.078],heartwood);
     const torso=remember(group(waist,'thorax',0,.045,0));
-    ellipsoid(torso,'bark-thorax',[0,.122,0],[.132,.178,.085],bark);
-    ellipsoid(torso,'hunched-back',[0,.19,-.055],[.147,.133,.075],heartwood);
-    ellipsoid(torso,'collar-root',[0,.278,.003],[.102,.075,.072],ridge);
-    // Layered rib roots, a split sternum, and winding bark seams integrate the trunk.
+    mesh(torso,'bark-thorax',trunkGeometry(),bark);
+    branch(torso,'hunched-back',[[-.064,.005,-.034],[-.090,.092,-.055],[-.040,.183,-.082],[.042,.255,-.054]],[.029,.046,.051,.018],heartwood,26,11);
+    branch(torso,'collar-root',[[-.125,.223,-.020],[-.060,.280,.005],[.016,.289,.018],[.119,.243,-.013]],[.022,.032,.028,.014],ridge,24,9);
+    // Uneven overlapping ribs and diagonal bark flanges follow the twisted core.
     for(let side of [-1,1])for(let i=0;i<5;i++){
-      const y=.055+i*.038;
-      branch(torso,`rib-${side}-${i}`,[[side*.012,y-.012,.081],[side*.07,y+.014,.092],[side*(.112-i*.005),y+.034,.046]],[.010,.007,.003],i%2?ridge:bark,10,7);
+      const y=.050+i*.039;
+      branch(torso,`rib-${side}-${i}`,[[side*.010,y-.010,.075],[side*.058,y+.010,.091],[side*(.105+.007*Math.sin(i*1.6)),y+.045,.045],[side*(.120-i*.008),y+.056,.008]],[.008,.013,.010,.001],i%2?ridge:bark,14,7);
     }
     for(let i=0;i<7;i++){
       const angle=(i/6-.5)*2.6;
-      branch(torso,`long-bark-seam-${i}`,[[Math.sin(angle)*.09,-.025,Math.cos(angle)*.062],[Math.sin(angle+.12)*.118,.12,Math.cos(angle+.12)*.082],[Math.sin(angle-.06)*.078,.255,Math.cos(angle-.06)*.055]],[.004,.007,.002],ridge,14,6);
+      branch(torso,`long-bark-seam-${i}`,[[Math.sin(angle)*.070,-.025,Math.cos(angle)*.049],[Math.sin(angle+.24)*.108-.010,.090,Math.cos(angle+.24)*.079],
+        [Math.sin(angle+.49)*.130+.005,.195,Math.cos(angle+.49)*.092],[Math.sin(angle+.69)*.080-.010,.292,Math.cos(angle+.69)*.062]],[.004,.009,.010,.002],ridge,16,7);
     }
     branch(torso,'split-sternum',[[0,.04,.09],[-.008,.125,.105],[.009,.225,.083]],[.009,.006,.002],heartwood,15,7);
     for(let i=0;i<3;i++){
@@ -138,7 +157,17 @@ export function createDruidBossVolume({THREE,height=1}={}){
     const arms=[];
     for(let side of [-1,1]){
       const upper=remember(group(torso,`upper-arm-${side}`,side*.151,.237,.005));
-      ellipsoid(upper,`gnarled-shoulder-${side}`,[0,-.012,0],[.057,.059,.054],ridge);
+      // A rooted shoulder overlaps the collar and tapers into the upper bough;
+      // separate winding growths break the ball-and-socket outline.
+      const shoulderBias=side<0?1.08:.94;
+      branch(upper,`gnarled-shoulder-${side}`,[[-side*.042,.024,-.012],[-side*.018,.008,.010],[side*.018,-.028,.016],[side*.014,-.078,.014]],
+        [.026,.042*shoulderBias,.036,.017],bark,18,9);
+      branch(upper,`shoulder-crown-root-${side}`,[[-side*.052,.014,-.028],[side*.008,.045,-.022],[side*.055,.018,.012],[side*.034,-.040,.031]],
+        [.014,.025,.019,.004],ridge,16,8);
+      branch(upper,`shoulder-front-braid-${side}`,[[-side*.044,.011,.023],[-side*.015,-.015,.044],[side*.018,-.069,.033],[0,-.110,.022]],
+        [.011,.019,.012,.002],ridge,18,7);
+      branch(upper,`shoulder-back-spur-${side}`,[[-side*.012,.021,-.043],[side*.055,.040,-.052],[side*.078,.079*shoulderBias,-.026]],
+        [.022,.013,.0008],heartwood,14,7);
       branch(upper,`upper-arm-bough-${side}`,[[0,0,0],[side*.016,-.076,.012],[0,-.151,.012]],[.041,.032,.023],bark,16,10);
       for(let j=0;j<3;j++)branch(upper,`arm-bark-ridge-${side}-${j}`,[[Math.sin(j*2)*.028,-.02,Math.cos(j*2)*.029],[Math.sin(j*2+.25)*.028,-.095,Math.cos(j*2+.25)*.027],[0,-.151,.022]],[.003,.005,.0015],ridge,12,6);
       const lower=remember(group(upper,`forearm-${side}`,0,-.151,.012));

@@ -4,7 +4,7 @@
  * Players use directional artwork; the normal Druid boss uses an articulated solid model.
  */
 import * as THREE from '../../assets/vendor/three-r160/build/three.module.js';
-import {createCharacterRig} from './character-rigs.mjs?v=druid-volume-20261008-v3';
+import {createCharacterRig} from './character-rigs.mjs?v=druid-volume-20261008-v4';
 import {CHARACTER_RIG_CATALOG,characterRigFrame} from './character-rig-catalog.mjs';
 
 export const CH1_PLAYER_RIG=Object.freeze({

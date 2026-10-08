@@ -1733,3 +1733,17 @@ OFF/불가mode/identity/준비 frame 부재의 검수에서는 core0이다. **co
 | 판정 | VISUAL VERDICT: RETOUCH. 양손·전신 연결을 구현했으나 외형 미감·타격 무게감·특수 상태·실전 가독성 후속 필요. 사용자의 모션 승인 완료로 세지 않음 |
 
 소유 code5/docs8·각 검수 epoch/실제 PNG/Git 결과의 최종 근거: 외부 `E/ch1-druid-volumetric-boss-20261008/completion.json`.
+
+## 2026-10-08 — 드루이드 어깨·흉곽 실루엣 후속
+
+`ROOT-CH1-DRUID-SOLID-SILHOUETTE-20261008`. 위 입체 본체 단위 `fd12d389`의 geometry/부품 수치는 변경 전 이력이다. 아래 외형만 후속 적용하며 양손 IK·관절·그립·준비/공격/회복 코드는 byteexact 보존했다.
+
+| 항목 | 현재 계약 |
+|---|---|
+| 어깨 | 구형 덩어리 대신 각 측면4갈래의 겹치는 비대칭 목질 뿌리. 관절 원점·상완 길이 불변 |
+| 흉곽 | 8개 성장 ring×18단면의 닫힌 비틀린 목질 core, 가지형 등/칼라·비대칭 rib·대각 bark seam. 기존 torso joint 아래에만 배치 |
+| 실제 preview snapshot | solid134+shadow9=143Mesh / 정점20,275·삼각형37,522 / geometry121·material20·light5·joint25 |
+| 소비 revision | volume query `v=0b6017df99483a54`, adapter/factory query `v=druid-volume-20261008-v4`; 동일 CH1 NORMAL opt-in 경로. 특수/피격/사망 시트 폴백·게임플레이/save 불변 |
+| 검수·한계 | 새 module syntax parse1 exit0, 동작 구간 byteexact 정적 확인. 기존 IK/CPU suite 재실행0. 기존 IAB15 정면/측면 실제 WebGL 외형과 위 snapshot 관측·console warn/error0. before 화면은 카메라 fit 누적 이력이 달라 pixel scale 대조 아님. 본편 완주·성능·청취·durableSave 미인수 |
+
+VISUAL VERDICT: **RETOUCH**. 어깨 구형 윤곽을 제거했으나 얼굴/외투·타격 무게감 및 전체 보스 아트는 미완성, 사용자 승인 미인수. 사용자 IAB14/기존 다른 탭 무조작·자동 적용 주장0. 최종보존: 외부 `E/ch1-druid-solid-silhouette-20261008/completion.json`.

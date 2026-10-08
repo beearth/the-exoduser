@@ -1,5 +1,5 @@
 import { CHARACTER_RIG_CATALOG as CATALOG, CHARACTER_RIG_CONFIG as C, characterRigFrame } from './character-rig-catalog.mjs';
-import {createDruidBossVolume} from './druid-boss-volume.mjs?v=02f9b884fa7d7bd4';
+import {createDruidBossVolume} from './druid-boss-volume.mjs?v=0b6017df99483a54';
 
 // Share decoded originals; each rig owns its own Texture transforms and GPU resources.
 const imageCache=new Map();
