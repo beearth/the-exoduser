@@ -1,0 +1,51 @@
+{
+  "created": "2026-10-08 KST",
+  "recording_date": "2026-10-06",
+  "source_repo": "exoduser-migration-20261001",
+  "recording_exact_commit": "UNKNOWN; historical recording, not asserted to be current HEAD",
+  "footage_audio": "no audio streams",
+  "bgm_source_doc": "docs/6사운드디자인/주제가_SUNO_프롬프트.md:70 in source repo",
+  "disclosure": "Pre-produced visual and music assets use AI-assisted tools; no generated gameplay footage. Rift development preview is distinct from released Steam demo.",
+  "files": [
+    {
+      "file": "resident-walk.webm",
+      "source": "/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/resident-layers-integration-20261006/accepted-qa-v2/resident-walk.webm",
+      "date": "2026-10-06",
+      "kind": "actual development walking capture",
+      "bytes": 3623467,
+      "sha256": "332e753dfcdb1e229a1488a92918abb39cc0b6bef9f5465fcc8a1ab4003a0e8d"
+    },
+    {
+      "file": "interactive-motion.webm",
+      "source": "/Users/fordeargamers/.codex/visualizations/rift-interactive-20261006/interactive-motion.webm",
+      "date": "2026-10-06",
+      "kind": "actual development movement capture",
+      "bytes": 522811,
+      "sha256": "bc9242b32242c40b450bd32502876750d7b76419c54dab5fa26d705042bdb0e0"
+    },
+    {
+      "file": "concept-20261005.png",
+      "source": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/map/hell_rift/interspace_20261005/hell-rift-painterly-v2.png",
+      "date": "2026-10-05",
+      "kind": "original concept art, not gameplay",
+      "bytes": 6892248,
+      "sha256": "a3d95a005924692626321cedf384d1e4e90282ba990d9e19e86a3aa73a1563d4"
+    },
+    {
+      "file": "prologue_theme.mp3",
+      "source": "/Users/fordeargamers/Projects/exoduser-migration-20261001/bgm/cutscene/prologue_theme.mp3",
+      "date": "existing project asset",
+      "kind": "editorial BGM; not recorded in Rift",
+      "bytes": 5356373,
+      "sha256": "9ab69e88008f6ebc625c4c694d7d8aa066dd1c6f465185cfc9e5d10be49e9865"
+    },
+    {
+      "file": "logo.png",
+      "source": "/Users/fordeargamers/.codex/worktrees/marketing-gameplay-20261008/the-exoduser/marketing/captures/20261008/logo.png",
+      "date": "existing project asset",
+      "kind": "game logo",
+      "bytes": 241583,
+      "sha256": "dffad452cffa7aaf074ff80d2fbb9258858fdef1cbde750e8b07f3f3b264efbd"
+    }
+  ]
+}
