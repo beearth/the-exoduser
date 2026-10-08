@@ -427,3 +427,13 @@ WOLF 파일 쓰기는 자동 승인 검토에서 dangerous로 거절됐고 구�
 ### 2026-10-08 — 헬거너 관통 창격 본편 시험 consumer
 
 전사 임시 외형에서 `test=1&kit=hellgunner` LMB를 실제 본편 투사체로 연결했다. ST6/쿨9f/기본28뎀/속도16/r5/거리960/field+ens 합계99 identity·1객체1회. Godot Resource 원칙으로 불변 수치와 runtime 상태를 분리했다. 정식 idx2/comingSoon 해제·RMB/SPACE·새sprite·최종 스케일/숙련·실화면/청취/보상save는 미완료다. 최종 통제CPU16그룹36확인과 classic inline4 syntax PASS; fixture port 누락2는 별도 준비 이력이다. 상세 정본: [신규캐릭 프로젝트](../2_1%20스킬관리+합체시스템+자원/신규캐릭_스킬프로젝트_20260930.md#hellgunner-pierce-main-20261008).
+
+### 2026-10-08 — 헬거너 혈탄 시험 기본값 (정식 DPS 밸런스 미인수)
+
+| id / tier | 임계 simulation frame | 기본 1객체 피해 | 혈탄 HP 차감만 계산¹ | 해제 MP | 반경 |
+|---|---:|---:|---:|---:|---:|
+| hellgunnerBlood / 1 | 24 | 140 | 5.28 | 10 | 9 |
+| hellgunnerBlood / 2 | 52 | 210 | 11.44 | 10 | 12 |
+| hellgunnerBlood / 3 | 84 | 280 | 18.48 | 10 | 15 |
+
+¹ HP100에서 다른 피해/회복·바닥 clamp 없이 .22×임계로 계산한 값이다. 실제 자체 차감 바닥12, 시작HP>18/MP≥10. tier3 뒤에도 홀드 비용은 바닥까지 지속한다. 취소/24f 미만 해제는 HP 환급·발사·MP 지불이 없다. 거리1400/speed20/원점24/최대99 identity, 유효 발사 뒤 회복9f이며 LMB 쿨 최소9f를 유지한다. 공식 DEX/bowRef/장비·레벨/숙련 스케일·실시간 DPS·정식 캐릭터 밸런스는 미이식/미인수다. [한정 본편 시험 계약·검수](../2_1%20스킬관리+합체시스템+자원/신규캐릭_스킬프로젝트_20260930.md#hellgunner-blood-main-20261008).

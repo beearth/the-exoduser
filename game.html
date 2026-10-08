@@ -3429,18 +3429,75 @@ const SUPABASE_KEY='sb_publishable_chAwadci1zVQNEKPC__s_w_7K3Oz_WP';
 const _isTestMode=new URLSearchParams(location.search).get('test')==='1';
 // Godot Resource-style immutable skill data; transient cast state stays outside saves.
 const _HELLGUNNER_PIERCE=Object.freeze({id:'hellgunnerPierce',st:6,cooldown:9,damage:28,speed:16,radius:5,offset:22,range:960,maxHits:99,color:'#ff8a4a'});
+const _HELLGUNNER_BLOOD=Object.freeze({id:'hellgunnerBlood',mp:10,hpStart:18,hpFloor:12,hpPerFrame:.22,tiers:Object.freeze([24,52,84]),damageBase:70,damagePerTier:70,speed:20,radiusBase:6,radiusPerTier:3,offset:24,range:1400,maxHits:99,recover:9,color:'#ff3a4a'});
 const _hellgunnerPrototype=_isTestMode&&new URLSearchParams(location.search).get('kit')==='hellgunner';
 let _hellgunnerCastState=null;
+var _hellgunnerBloodState=null,_hellgunnerBloodBlocked=false;
 function _hellgunnerPrototypeActive(){return _hellgunnerPrototype&&_charIdx===0&&!_EDITOR_MODE;}
-function _isHellgunnerPierce(p){return !!p._extraData&&p._extraData.resource===_HELLGUNNER_PIERCE;}
+function _isHellgunnerPierce(p){return !!p._extraData&&(p._extraData.resource===_HELLGUNNER_PIERCE||p._extraData.resource===_HELLGUNNER_BLOOD);}
 function _tickHellgunnerPrototype(sp){
   if(!_hellgunnerPrototypeActive()){_hellgunnerCastState=null;return;}
   if(!_hellgunnerCastState||_hellgunnerCastState.actor!==P||_hellgunnerCastState.map!==G.map)_hellgunnerCastState={actor:P,map:G.map,cooldown:0};
   _hellgunnerCastState.cooldown=Math.max(0,_hellgunnerCastState.cooldown-sp);
 }
+function _hellgunnerBloodBadge(){
+  const badge=document.getElementById('hellgunnerPrototypeBadge');if(!badge||badge.children.length)return;
+  const charge=_hellgunnerBloodState;
+  const text='헬거너 시험 · 전사 임시 외형 · LMB 관통 창격 · RMB 혈탄 (전사 선택 시)'+(charge?' · '+Math.min(100,Math.floor(charge.time/_HELLGUNNER_BLOOD.tiers[2]*100))+'% / '+charge.tier+'단':'');
+  if(badge.textContent!==text)badge.textContent=text;
+}
+function _cancelHellgunnerBlood(){
+  const hadCharge=!!_hellgunnerBloodState;_hellgunnerBloodState=null;_hellgunnerBloodBlocked=true;
+  if(hadCharge)_hellgunnerBloodBadge();
+}
+function _hellgunnerBloodAdmitted(){
+  return P.s==='idle'&&!P._ioActive&&!(P._seaParalyzed>0)&&!_dashActive&&!_harpActive&&!(P._msAiming||P._isAiming||P._bwAiming||P._ebAiming||P._hrAiming||P._tsAiming);
+}
+function _syncHellgunnerBloodLifetime(){
+  const charge=_hellgunnerBloodState;
+  if(!_hellgunnerPrototypeActive()||!G.on||G.paused||document.hidden||!_hellgunnerBloodAdmitted()||P.hp<=0||P.s==='fallen'||P.s==='dead'||(charge&&(charge.actor!==P||charge.game!==G||charge.map!==G.map||charge.stage!==G.stage||P.s!=='idle'))){_cancelHellgunnerBlood();return false;}
+  return true;
+}
+function _tickHellgunnerBlood(sp){
+  if(!_syncHellgunnerBloodLifetime())return;
+  const held=isHeld('beam'),spec=_HELLGUNNER_BLOOD;
+  if(_hellgunnerBloodBlocked){if(!held)_hellgunnerBloodBlocked=false;return;}
+  if(!_hellgunnerBloodState){
+    if(!held||!_hellgunnerBloodAdmitted()||P.mp<spec.mp||P.hp<=spec.hpStart)return;
+    _hellgunnerBloodState={actor:P,game:G,map:G.map,stage:G.stage,time:0,tier:0};
+  }
+  if(!held){_releaseHellgunnerBlood();return;}
+  const charge=_hellgunnerBloodState;
+  charge.time=Math.min(spec.tiers[2],charge.time+sp);
+  if(P.hp>spec.hpFloor)P.hp=Math.max(spec.hpFloor,P.hp-spec.hpPerFrame*sp);
+  const tier=spec.tiers.reduce((n,t)=>n+(charge.time>=t?1:0),0);
+  if(tier>charge.tier){charge.tier=tier;try{addTxt(P.x,P.y-30,'혈탄 '+tier+'단',spec.color,40);}catch(e){console.error('[VFX] hellgunner blood charge:',e);}}
+  _hellgunnerBloodBadge();
+}
+function _releaseHellgunnerBlood(){
+  if(!_syncHellgunnerBloodLifetime())return false;
+  const charge=_hellgunnerBloodState,spec=_HELLGUNNER_BLOOD;
+  if(!charge)return false;
+  _hellgunnerBloodState=null;_hellgunnerBloodBadge();
+  if(charge.tier===0||P.mp<spec.mp)return false;
+  if(_gpActive)_gpAutoAim(spec.range);
+  const a=P.facing,p=_getPProj(),tier=charge.tier;
+  p.x=P.x+Math.cos(a)*spec.offset;p.y=P.y+Math.sin(a)*spec.offset;
+  p.vx=Math.cos(a)*spec.speed;p.vy=Math.sin(a)*spec.speed;
+  p.dmg=spec.damageBase+spec.damagePerTier*tier;p.el=0;p.r=spec.radiusBase+spec.radiusPerTier*tier;p.maxDist=spec.range;p.dist=0;
+  p.normalBow=true;p.pierce=0;p.pierceMax=0;p._pierceCount=0;
+  p._extraData={resource:spec,actor:P,game:G,map:G.map,stage:G.stage,tier};
+  P.mp-=spec.mp;P.atkArc=a;P.s='bowRecover';P.st2=spec.recover;
+  if(_hellgunnerCastState&&_hellgunnerCastState.actor===P&&_hellgunnerCastState.map===G.map)_hellgunnerCastState.cooldown=Math.max(_hellgunnerCastState.cooldown,spec.recover);
+  pProjs[pProjs.length]=p;
+  if(G._pStats)G._pStats._atkC++;
+  try{playSample('crossbow_shot',.9,.8);}catch(e){console.error('[SFX] hellgunner blood:',e);}
+  try{addParts(p.x,p.y,spec.color,10+tier*4);}catch(e){console.error('[VFX] hellgunner blood:',e);}
+  return true;
+}
 function _fireHellgunnerPierce(){
   const owner=_hellgunnerCastState,spec=_HELLGUNNER_PIERCE;
-  if(!_hellgunnerPrototypeActive()||!G.on||G.paused||P.hp<=0||P.s!=='idle'||!owner||owner.actor!==P||owner.map!==G.map||owner.cooldown>0||P.st<spec.st)return false;
+  if(!_hellgunnerPrototypeActive()||!G.on||G.paused||P.hp<=0||P.s!=='idle'||!owner||owner.actor!==P||owner.map!==G.map||owner.cooldown>0||_hellgunnerBloodState||P.st<spec.st)return false;
   if(_gpActive)_gpAutoAim(spec.range);
   const a=P.facing,p=_getPProj();
   p.x=P.x+Math.cos(a)*spec.offset;p.y=P.y+Math.sin(a)*spec.offset;
@@ -3457,7 +3514,7 @@ function _fireHellgunnerPierce(){
 }
 if(_hellgunnerPrototype){
   const badge=document.createElement('div');badge.id='hellgunnerPrototypeBadge';
-  badge.textContent='헬거너 관통 창격 시험 · 전사 임시 외형 · LMB (전사 선택 시)';
+  badge.textContent='헬거너 시험 · 전사 임시 외형 · LMB 관통 창격 · RMB 혈탄 (전사 선택 시)';
   badge.style.cssText='position:fixed;bottom:8px;left:50%;transform:translateX(-50%);z-index:10000;color:#ffcf6a;background:#160d0de6;padding:6px 10px;font:12px sans-serif;pointer-events:none';
   document.body.appendChild(badge);
 }
@@ -13579,6 +13636,7 @@ addEventListener('keyup',e=>{
 // (홀드 중 alt-tab/OS알림/다른창 클릭 등으로 keyup을 못 받으면 KH['ShiftLeft'] 잔류 →
 //  착지마다 돌진 자동 재발사(26302 참조) → "입력 안 했는데 쉬프트 자동 연속 돌진" 버그)
 function _clearHeldInput(){
+  _cancelHellgunnerBlood();
   _resetInteractInput();
   for(const k in K)K[k]=false;
   for(const k in KH)KH[k]=false;
@@ -13724,6 +13782,7 @@ function _gpInjectKey(kc,pressed){
   else{K[kc]=pressed;const ev=new KeyboardEvent(pressed?'keydown':'keyup',{code:kc,key:kc,bubbles:true});ev._fromGp=true;document.dispatchEvent(ev);}
 }
 function _gpClearAll(){
+  _cancelHellgunnerBlood();
   _gpSynced=false; // [팬텀차단] 다음 패드모드 진입 시 held-버튼 재스냅샷 강제
   // 패드→키마 전환 시 패드가 주입한 키 전부 해제
   for(const bi in _GP_KEY){const kc=_GP_KEY[bi];if(_gpBtnsPrev['k'+bi]){_gpInjectKey(kc,false);_gpBtnsPrev['k'+bi]=false;}}
@@ -28641,6 +28700,7 @@ const _MAGIC_E_HANDLERS={
   },
 };
 function _execMagicE(){
+  if(_hellgunnerPrototypeActive())return;
   const _amsk=P.activeMagicSk||'fireball';
   // 1) 선택된 스킬의 전용 핸들러가 있으면 우선 실행
   const handler=_MAGIC_E_HANDLERS[_amsk];
@@ -31249,6 +31309,7 @@ function _spawnCh1StartMediumEyeMasses(si){
 }
 
 function initStage(si){
+  _cancelHellgunnerBlood();
   _rootRiftInvalidate('init-stage');
   _resetInteractInput();
   G._playerPortalPair=null;
@@ -31813,6 +31874,7 @@ function _editorUpdate(){
 // 벽 끼임 체크 — 모듈 레벨 (핫패스 클로저 할당 제거: 과거 적마다 매 프레임 생성)
 function _eWallStuck(px,py){const tx=~~(px/T),ty=~~(py/T);return tx<0||ty<0||tx>=G.mw||ty>=G.mh||G.map[ty][tx]===1}
 function update(){
+  _syncHellgunnerBloodLifetime();
   _syncHudAreaTitleScope();
   if(_rootRiftBlock('update'))return;
   window._systemLesson?.tick();
@@ -31838,7 +31900,7 @@ function update(){
     if(OPT.bladeAuto){addTxt(P.x,P.y-30,_T('기동칼날개 AUTO ON'),'#ff4466',40)}
     else{addTxt(P.x,P.y-30,_T('기동칼날개 AUTO OFF'),'#886688',40)}
   }
-  if(G.paused)return;
+  if(G.paused){_cancelHellgunnerBlood();return;}
   // null 엔트리 정리 (mkEn 실패 등)
   for(let _ni=ens.length-1;_ni>=0;_ni--){if(!ens[_ni])ens.splice(_ni,1)}
   // 백그라운드 초기화는 update() 끝에서 버짓 기반 처리 (게임 로직 스킵 안 함)
@@ -32724,6 +32786,7 @@ function update(){
       else if(P.mp<(10+((P.skills.bladeDash||1)-1)*5)*7/10){showPH(_T('MP 부족!'),'#4444ff')}
       P._bdTrigger=null;
     }
+    _tickHellgunnerBlood(sp);
     if(P._ioActive){P.s='iceOrb'} // 얼음보주 안: 모든 행동/이동 차단, 상태 강제 복구
     else if(P._seaParalyzed>0){} // 마비 중 모든 행동 차단
     else if(_dashActive||_harpActive){} // 사슬기동 중 행동 차단 (기동칼날개 등은 대시 블록에서 처리)
@@ -32736,6 +32799,7 @@ function update(){
     else if(isAct('parry')&&_qIsPeaceShield()&&P.mp>0&&(P._sbCd||0)<=0){_enterPeaceShield()} // Q: 평화의보호 (stormBeam)
     else if(isAct('parry')&&!_qIsIceOrb()&&!_qIsPeaceShield()&&(P._sbCd||0)<=0&&P.mp>=10){P.mp-=10;P.s='sBlock';P.st2=999;P._sbParryT=20;P._sbHoldT=0;P._sbReleaseR=0;P.parryT=0;P._qDetonateFired=false;P._sbCd=~~(30*(1+_eqAffix('shieldCdRed')));G._sbBurst={x:P.x,y:P.y,r:P.r+5,maxR:P.skills.detonate>=1?150+((P.skills.detonate||1)-1)*15:90,spd:8,det:P.skills.detonate>=1};playSample('shield_activate',.8,_r(1,.08));_startShieldLoop();if(Math.random()<.3)playSample(['voice_parry1','voice_parry2','voice_parry3','voice_parry4'][~~(Math.random()*4)],1,_r(1,.03));else playSample('male_grunt',1,_r(1,.15))} // Q: 보호막 (데미지 감소)
     // burstLoop는 E키(마법슬롯)에서 발동 → _execMagicE()에서 처리
+    else if(_hellgunnerPrototypeActive()&&isHeld('beam')){} // 혈탄 hold owns RMB; no legacy magic fallthrough
     else if(_hellgunnerPrototypeActive()&&isHeld('weapon')){_fireHellgunnerPierce()}
     else if(isHeld('weapon')&&P.skills.whirlwind&&P.activeLMBSk==='whirlwind'&&P.st>=2){P.s='whirlwind';P.wwAng=0;P._wwDetTimer=0;SFX._swIdx=0;SFX.slashSeq();if(_isFused('stormBeam')){P._eStormIdx=0;P._eStormT=0;P._eStormActive=true;playSample(['electric_storm','electric_storm2','electric_storm3','electric_storm4'][~~(Math.random()*4)],.6,_r(1,.1))}if(Math.random()<.45){playSample(['voice_flee','voice_storm_attack'][~~(Math.random()*2)],1,1)}else{const _ve=['voice_grunt','male_grunt'];playSample(_ve[~~(Math.random()*2)],1,_r(1,.15))}_addSkProf('whirlwind')}
     else if(isAct('weapon')&&useStPct('weapon')){if(_gpActive)_gpAutoAim(250);P._atkBon=~~(_lastCost*1.5);if(G._pStats)G._pStats._atkC++;
@@ -32752,7 +32816,7 @@ function update(){
       else if(P.mp>=100){if(_gpActive){mouse.x=P.x-G.cam.x+VW/2;mouse.y=P.y-G.cam.y+VH/2}P._hrAiming=true}
       else showPH(_T('MP 부족!'),'#4488ff');
     }
-    else if(isHeld('beam')&&(P.mp>=mpCost('magic'))){_execMagicE()}
+    else if(!_hellgunnerPrototypeActive()&&isHeld('beam')&&(P.mp>=mpCost('magic'))){_execMagicE()}
     // ── H키: 버스트루프 밀기/당기기 토글 (공격과 독립) ──
     if(_chkJust('KeyH')&&P.skills.burstLoop>=1){P._blPullMode=!P._blPullMode;addTxt(P.x,P.y-30,P._blPullMode?_T('🌀 당기기 모드'):_T('💥 밀어내기 모드'),P._blPullMode?'#44ccff':'#ff6644',40);playSample('shield_activate',.4,_r(1,.1));OPT.blPullMode=P._blPullMode;saveSettings();if($('optBlPullMode'))$('optBlPullMode').checked=P._blPullMode}
     // ── X키: 처형 (그로기 보스 전용, 보스HP 20%+무기뎀×12 + 보스HP30% 순수뎀, 쿨 10초) ──
@@ -33255,7 +33319,7 @@ function update(){
       else if(isAct('parry')&&_qIsPeaceShield()&&P.mp>0&&(P._sbCd||0)<=0){_enterPeaceShield()}
       else if(isAct('parry')&&!_qIsIceOrb()&&!_qIsPeaceShield()&&(P._sbCd||0)<=0&&P.mp>=10){P.mp-=10;P.s='sBlock';P.st2=999;P._sbParryT=20;P._sbHoldT=0;P._sbReleaseR=0;P.parryT=0;P._qDetonateFired=false;P._sbCd=~~(30*(1+_eqAffix('shieldCdRed')));G._sbBurst={x:P.x,y:P.y,r:P.r+5,maxR:P.skills.detonate>=1?150+((P.skills.detonate||1)-1)*15:90,spd:8,det:P.skills.detonate>=1};playSample('shield_activate',.8,_r(1,.08));_startShieldLoop()}
       else if(isJust('shield')||_sdTapOk()){_sdTapBuf=-999;P.s='sDraw';P._sdHold=0} // ═ 발도 게이팅: 탭=뗄 때 칼등처내기, 홀드=차징. 탭버퍼로 초고속 탭 씹힘 방지 ═
-      else if(isHeld('beam')&&(P.mp>=mpCost('magic'))){_execMagicE()}
+      else if(!_hellgunnerPrototypeActive()&&isHeld('beam')&&(P.mp>=mpCost('magic'))){_execMagicE()}
       else if(P.st2<=0){
         P.s='idle';
       }
@@ -33327,7 +33391,7 @@ function update(){
       else if(isAct('parry')&&!_qIsIceOrb()&&!_qIsPeaceShield()&&(P._sbCd||0)<=0&&P.mp>=10){P.mp-=10;P.s='sBlock';P.st2=999;P._sbParryT=20;P._sbHoldT=0;P._sbReleaseR=0;P.parryT=0;P._qDetonateFired=false;P._sbCd=~~(30*(1+_eqAffix('shieldCdRed')));G._sbBurst={x:P.x,y:P.y,r:P.r+5,maxR:P.skills.detonate>=1?150+((P.skills.detonate||1)-1)*15:90,spd:8,det:P.skills.detonate>=1};playSample('shield_activate',.8,_r(1,.08));_startShieldLoop()}
       else if(P.st2<=0){
       // 홀드 연사: E 누르고 있으면 즉시 재시전/빔/만화방창 전환
-      if(isHeld('beam')&&(P.mp>=mpCost('magic'))){_execMagicE()}
+      if(!_hellgunnerPrototypeActive()&&isHeld('beam')&&(P.mp>=mpCost('magic'))){_execMagicE()}
       else P.s='idle';
     }}
     break;
@@ -34841,7 +34905,7 @@ function update(){
   {let w=0;for(let i=0;i<pProjs.length;i++){
     const p=pProjs[i];
     const _hgPierce=_isHellgunnerPierce(p);
-    if(_hgPierce&&(!_hellgunnerPrototypeActive()||p._extraData.actor!==P||p._extraData.map!==G.map)){_recyclePProj(p);continue;}
+    if(_hgPierce&&(!_hellgunnerPrototypeActive()||p._extraData.actor!==P||p._extraData.map!==G.map||(p._extraData.resource===_HELLGUNNER_BLOOD&&(p._extraData.game!==G||p._extraData.stage!==G.stage)))){_recyclePProj(p);continue;}
     // 트레일 업데이트
     {const _tMax=p.arcMissile?16:(p.mhBlade||p.plagueBlade)?12:6;if(!p._trail){p._trail=new Array(_tMax);for(let _ti=0;_ti<_tMax;_ti++)p._trail[_ti]={x:0,y:0};p._trH=0;p._trLen=0}const _tSlot=p._trail[p._trH%_tMax];_tSlot.x=p.x;_tSlot.y=p.y;p._trH=(p._trH+1)%_tMax;if(p._trLen<_tMax)p._trLen++}
     const spd=Math.sqrt(p.vx*p.vx+p.vy*p.vy);
@@ -34944,8 +35008,8 @@ function update(){
     if(p._bladeEchoPath)_bladeEchoRecord(p._bladeEchoPath,p.x,p.y);
     if(dead){_bladeEchoFinish(p);continue}
     let hit=false;
-    if(_hurtFieldMobs(p.x,p.y,(p.r||6)+8,p.dmg||p.atk||10,p._hitSet,p._parryMagicShot?p:null,_hgPierce?_HELLGUNNER_PIERCE.maxHits:Infinity)){hit=true;if(!p.pierce&&!p.plagueBlade&&!p.venomBlade){if(!p._hitSet)p._hitSet=new Set()}}
-    if(_hgPierce){if(p._hitSet.size>=_HELLGUNNER_PIERCE.maxHits){_recyclePProj(p);continue;}hit=false;}
+    if(_hurtFieldMobs(p.x,p.y,(p.r||6)+8,p.dmg||p.atk||10,p._hitSet,p._parryMagicShot?p:null,_hgPierce?p._extraData.resource.maxHits:Infinity)){hit=true;if(!p.pierce&&!p.plagueBlade&&!p.venomBlade){if(!p._hitSet)p._hitSet=new Set()}}
+    if(_hgPierce){if(p._hitSet.size>=p._extraData.resource.maxHits){_recyclePProj(p);continue;}hit=false;}
     if(hit&&p._parryMagicShot){_recyclePProj(p);continue}
     const _neP=shQuery(p.x,p.y,p.r+20);
     for(let _ni=0;_ni<_neP.length;_ni++){const e=_neP[_ni];if(!e.alive)continue;
@@ -35240,7 +35304,7 @@ function update(){
             hit=true;break;
           }
         // Prototype hit budget includes field actors; no chance roll or per-hit damage loss.
-        if(_hgPierce){p._hitSet.add(e);if(p._hitSet.size>=_HELLGUNNER_PIERCE.maxHits){hit=true;break;}hit=false;continue;}
+        if(_hgPierce){p._hitSet.add(e);if(p._hitSet.size>=p._extraData.resource.maxHits){hit=true;break;}hit=false;continue;}
         // ── 투사체 관통: 확률 굴림 → 통과 (패시브 '관통' 전체 투사체 적용) ──
         if(!p.explosive&&p.pierce>0){
           const _pMax=p.pierceMax||1;
@@ -43269,6 +43333,7 @@ function _drPlay(onDone){
 function _drReset(){_drIdx=0;_drLen=0;_drCaptT=0} // 캔버스 50장은 재사용 (사망 반복 시 재할당 churn 방지) — _drLen=0이면 재생 로직상 빈 버퍼와 동일
 
 function die(){
+  _cancelHellgunnerBlood();
   try{ultUnmute()}catch(e){console.error('[SFX] death unmute error:',e)} // 궁극기 시전 중 사망 시 음소거 해제
   P._esAutoFire=false; // 마력연사 해제
   P._alActive=false;P._alBeam=null; // 얼음송곳 해제
@@ -58531,9 +58596,10 @@ function drawP(){
     const fa=Math.min(1,1-p.dist/p.maxDist*.3);
     if(_isHellgunnerPierce(p)){
       X.save();X.translate(p.x,p.y);X.rotate(ang);X.globalAlpha=fa;
-      X.strokeStyle=_HELLGUNNER_PIERCE.color;X.lineWidth=3;
+      const _hgSpec=p._extraData.resource,_hgBlood=_hgSpec===_HELLGUNNER_BLOOD;
+      X.strokeStyle=_hgSpec.color;X.lineWidth=_hgBlood?Math.max(3,p.r*.6):3;
       X.beginPath();X.moveTo(-20,0);X.lineTo(12,0);X.stroke();
-      X.fillStyle='#ffcf6a';X.beginPath();X.moveTo(18,0);X.lineTo(5,-5);X.lineTo(8,0);X.lineTo(5,5);X.closePath();X.fill();X.restore();
+      X.fillStyle=_hgBlood?'#ff6a7a':'#ffcf6a';X.beginPath();X.moveTo(_hgBlood?24:18,0);X.lineTo(5,_hgBlood?-p.r:-5);X.lineTo(8,0);X.lineTo(5,_hgBlood?p.r:5);X.closePath();X.fill();X.restore();
     }else if(p.normalBow&&_bowArrowReady){
       // ── 석궁 화살: 속성별 미리 틴트된 캔버스 사용 ──
       const _tSrc=_bowTinted[p.el||0]||_bowArrowImg;
