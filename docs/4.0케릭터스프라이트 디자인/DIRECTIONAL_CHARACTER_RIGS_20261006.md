@@ -176,7 +176,7 @@ pose strength=.012rad. cycle은 idle2.4 / walk7 / run11 / attack6 rad/초. wave=
 | load 수 | 드루이드3개, 전사9개, 실버테일17개(hires idle8+walk8+attack1), 총29개. 해당id의 모든 이미지 완료/정확 규격 확인 뒤 rig visible |
 | Texture | SRGBColorSpace, ClampToEdge, mipmap=false. 드루이드·실버테일 고해상도 idle/walk LinearFilter / 전사·실버테일80px 공격 NearestFilter |
 | UV | 각 셀 사방0.5px inset. repeat=(w−1)/W,(h−1)/H; offset=(x+.5)/W,1−(y+h−.5)/H. 인접 셀 sampling 혼입 방지 |
-| Material | MeshBasicMaterial, 원화의 기존 명암/색 사용, toneMapped=false. alphaTest=.08 / DoubleSide / depthWrite=true / transparent=false |
+| Material | MeshBasicMaterial, 원화 명암/색·toneMapped=false·DoubleSide. catalog/public/packed: alphaTest=.08/depthWrite=true/transparent=false. 본편 dark-druid borrowedSheet: alphaTest=1/255/depthWrite=false/transparent=true ([현행 알파](#druid-original-alpha-20261009)) |
 | GPU / scene | 모듈 자체 RAF·renderer·context 생성0. caller의 scene에 rig를 추가. object3d transform 유지. geometry 갱신은 cell 크기/anchor/referenceHeight가 바뀔 때만 수행 |
 | 고해상도 수명/성능 | 실버테일1254² RGBA Texture16장 약100641024 bytes(약95.98 MiB), 공격240²는230400 bytes 추가. decoded CPU image와 GPU texture가 각각 존재할 수 있음. mipmap0이므로 추가mip는 없음. 이 원본소비 시험을 모바일/최종메모리 인수로 계산하지 않음 |
 | 원화 pixel | Image 읽기, Texture 생성만. getImageData/putImageData/새PNG/원본 알파 변경0 |
@@ -1412,7 +1412,7 @@ factory의 기존 기본 height=2.2는 보존되며 main adapter가 height1 rig�
 | 로컬 변환 | heightWorld=dh×referenceHeight/ch; scaleX=dw×ch/(dh×cw); anchorLocalX=−dw/2+anchorX×dw/cw; anchorLocalY=−.86×dh+anchorY×dh/ch  HP/레벨의 후속 월드 앵커는 [현재 rig 상단 계약](#ch1-druid-rig-name-anchor-20261008)을 따름 |
 | 합성 | 20261007 당시 같은 rendered canvas/rect를 총3pass 재사용했다. 20261009 현행 normal 본체는 source-over sa 1회이며 상시 lighter2는 제거했다. 기존 finale tell/glow/name/leg fog, 원 PNG와 native special/death fallback 유지 |
 | renderer 한계 | local Three r160, padding2, backingScale≤4, backingDimension≤2048,dt≤.05; 반환 canvas,left,top,width,height. image 소유/추가 Image/fetch/clone/resize/clear/close0 |
-| factory 자원 | 소유 Texture·Geometry·Material·Skeleton만 release. 기존609정점/12본/alphaTest.08/UV inset.5/약변형 구조 유지. 591은 alpha 기준 캘리브레이션이며 해부학 발/실높이·full3D proof 아님 |
+| factory 자원 | 소유 Texture·Geometry·Material·Skeleton만 release. 609정점/12본/UV inset.5 유지. alphaTest는 catalog/public/packed .08, 본편 borrowedSheet 1/255이며 transparent=true/depthWrite=false. 범용 약변형은 public 경로이며 borrowedSheet는 authored pose를 보존한다. 591은 alpha 기준 캘리브레이션이며 해부학 발/실높이·full3D proof 아님 |
 
 | 최종 복수보스 guard | 현재 실제 제한 |
 |---|---|
@@ -1942,3 +1942,22 @@ VISUAL VERDICT: **RETOUCH**. 어깨 구형 윤곽을 제거했으나 얼굴/외�
 | 사용자 상태 | 기존 editor17 readonly snapshot exact/DOM쓰기0/save호출0; 사용자 main14·모션15·sprite16 무조작. 열린 oldloaded 본편에 자동 적용되었다고 주장하지 않음. API/storage/usersave 불변은 미계측 UNKNOWN |
 
 **VISUAL VERDICT: RETOUCH**. 통제 원화 자세는 구분되며 본편 정상 보스전·새 입체 외형/360°·A급은 미완료다. 최종 소유 Git·새 Gate·한계는 `E/druid-burst-sprite-engine-consumer-20261009/completion.json`, Canvas 비교는 `native-three-poses.png`가 우선한다.
+
+
+<a id="druid-original-alpha-20261009"></a>
+## 2026-10-09 — 본편 드루이드 원본 알파 소비
+
+`ROOT-DRUID-ORIGINAL-ALPHA-CONSUMER-20261009`: main borrowedSheet의 OPAQUE 처리로 사라지던 부분 알파를 보존한다. 새 모델·모션·원화 제작이 아니다.
+
+| 항목 | 현행 계약 |
+|---|---|
+| 적용 | `createCharacterRig`의 검증된 dark-druid borrowedSheet에만 alphaTest=1/255, transparent=true, depthWrite=false. sheet 없는 catalog/public/packed는 .08/false/true 그대로. DoubleSide·toneMapped=false 유지 |
+| 알파 의미 | r160 OPAQUE의 통과 픽셀 alpha1 덮어쓰기를 해제하고 기존 PNG/Linear sample 알파를 NormalBlending으로 합성. 1/255 미만의 양수 sample은 여전히 잘림. 원본 UV inset.5px 때문에 integer crop과 픽셀 완전 일치는 아님 |
+| import | main adapter 두 import=`ch1-player-rig.mjs?v=druid-original-alpha-20261009-v9`; adapter의 factory import=`character-rigs.mjs?v=druid-original-alpha-20261009-v8`. 편집기/public 예제의 이전 URL은 별도 소비처 |
+| 보존 | 원 PNG·RGB 입력·UV·609정점/12본·원화 자세·cache 수명·gameplay/save/RAF/timer 유지. 원화 알파 파일을 수정하지 않음. 기존 main 밝기·rim·합성은 별도이며 변경 없음 |
+| 비용 | transparent DoubleSide는 r160에서 BackSide→FrontSide 두 제출. 현재 평면의 뒤 pass는 cull되며 이중 알파 합성을 뜻하지 않음. 새 FPS/성능·device 자원 해제 보장 검수 없음 |
+| 최초 native | 실제 whole factory 전후 source를 Blob module로 로드(import와 import.meta.url의 URL만 fixture 재기준화), local Three r160/실제 PNG/분리된 WebGLRenderer로 idle414×620·attack2 221×222 비교. 19조건PASS/FAIL0, GL error0/실행 shader link 검사, pose/geometry/UV 전후 exact. 전체 main adapter·정상 줌·실제 보스전 검수 아님 |
+| 알파 관측 | 원본 softalpha(0<a<220) idle49846픽셀 평균 절대오차37.2665→4.4806/attack17761픽셀71.9614→6.0383(0..255). before partialalpha0, after idle158485/attack35118은 전체 crop의 부분알파 수이며 softmask 수와 다름. GPU 품질 전체 점수 아님 |
+| 사용자 상태 | 기존 cutout17 readonly snapshot exact·DOM에 canvas 추가0·사용자 main14/모션15/sprite16 무조작. API/storage/save 불변은 미계측 UNKNOWN. 열린 oldloaded main 자동적용 주장 없음 |
+
+**VISUAL VERDICT: RETOUCH**. 분리 GPU 비교에서 뿔·망토 경계와 녹색 잔광이 원본 알파에 가까워졌다. 본편 정상 줌 가독성·입체 외형·360도·새 모션·A급은 미인수. 증거: `E/druid-original-alpha-consumer-20261009/native-comparison.png`, 최종 소유 Git: 같은 폴더 `completion.json`.

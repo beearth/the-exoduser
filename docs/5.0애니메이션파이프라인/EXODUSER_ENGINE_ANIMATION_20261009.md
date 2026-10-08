@@ -9,7 +9,8 @@
 | 화면 | `tools/engine-motion-editor.html`; 기존3387의 `/tools/engine-motion-editor.html` |
 | UI consumer | `tools/engine-motion-editor.mjs?v=20261009-v5` |
 | 공통 코어 | `tools/engine/animation-clip.mjs?v=20261009-v1`; THREE/DOM/RAF/저장 의존성 없음 |
-| 예제 대상 | `character-rigs.mjs?v=engine-rig-motion-20261009-v7`의 dark-druid, height2.2; 기존 원화 스킨/12 Bone/1120삼각형. 원 PNG 수정 없음 |
+| 예제 대상 | 편집기/public 예제는 `character-rigs.mjs?v=engine-rig-motion-20261009-v7`의 dark-druid, height2.2; 기존 원화 스킨/12 Bone/1120삼각형. 원 PNG 수정 없음 |
+| 현행 본편 재질 | game adapter `druid-original-alpha-20261009-v9`/factory `druid-original-alpha-20261009-v8`. borrowedSheet만 alphaTest=1/255/transparent=true/depthWrite=false. [정확 알파 계약](../4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md#druid-original-alpha-20261009); 새 모델·본편 시각 완성 아님 |
 | 적용 경계 | 편집기와 factory/CH1 adapter의 명시 입력에서 재생. game의 현재 producer는 clip을 보내지 않아 본편 공격에 자동 적용되지 않음 |
 | 데이터 보관 | clip JSON 노출·가져오기·파일 내려받기 요청. localStorage/서버 API/사용자 save/자동 복구 캐시 사용 안 함. 브라우저 다운로드 완료는 미확인 |
 

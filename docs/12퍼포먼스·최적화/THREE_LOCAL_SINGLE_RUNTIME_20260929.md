@@ -1352,7 +1352,7 @@ root가 자연 종료 후 idle/strike PNG2를 직접 판독했다. 전사의 몸
 | 수명 | scene/game/map/ens/arena/규격,actor 제거,death/phase/lastStand/defeated/revive/live-band/intent 교체·pagehide에 owner/lease close·observer disconnect. borrowedimage는dispose하지 않음 |
 | rig 재사용 | 같은 life/sheet/image를 유지한 NORMAL frame 진행은 같은 rig; source/life/sheet 교체는 old owner retire. factory 첫 성공publication이 lifeGeneration/sheet를bind |
 | 시간 | 같은 map/ens의 active _gameFrame delta×PHYS_STEP/1000 cap.05; paused/hidden/불법frame0; _gameTime·독립RAF/timer·simulation0 |
-| bounded renderer | localThree r160,609정점/12본,alphaTest.08/UVinset.5,padding2,maxbacking2048,maxscale4. actual deformedbounds·pose/currentness를 renderer 전후 확인 |
+| bounded renderer | localThree r160,609정점/12본,본편 borrowedSheet alphaTest=1/255/transparent=true/depthWrite=false(20261009),UVinset.5,padding2,maxbacking2048,maxscale4. actual deformedbounds·pose/currentness를 renderer 전후 확인 |
 | 본체 합성 | 20261009 normal은 같은 renderedcanvas/rect의 source-over1회(당시3pass/lighter2는 이력). source/lifecurrent·successblit 후무효 처리·legacy중복0 유지, pixelrollback UNKNOWN |
 | 남은한계 | 동일sourcefingerprint 픽셀변경/silentupload/constructor미반환자원/disposeexceptionchain/FPS·전체relief·해부학발/전체runtime 未인수 |
 

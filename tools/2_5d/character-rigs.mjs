@@ -173,7 +173,7 @@ export async function createCharacterRig(id,{THREE,height=2.2,borrowedAtlas,borr
       if(parent)byName.get(parent).add(bone);
     }
     if(bones.length!==C.boneCount||bones.some(bone=>!Number.isFinite(bone.position.x)||!Number.isFinite(bone.position.y)))throw new Error('본 계층/좌표 계약 오류');
-    material=new THREE.MeshBasicMaterial({map:textures.get(assetInfos[0].path),alphaTest:C.alphaTest,side:THREE.DoubleSide,depthWrite:true,transparent:false,toneMapped:false});
+    material=new THREE.MeshBasicMaterial({map:textures.get(assetInfos[0].path),alphaTest:sheet?1/255:C.alphaTest,side:THREE.DoubleSide,depthWrite:!sheet,transparent:!!sheet,toneMapped:false});
     const mesh=new THREE.SkinnedMesh(geometry,material);mesh.name=`${id}-original-art-skin`;mesh.frustumCulled=false;
     mesh.add(bones[0]);skeleton=new THREE.Skeleton(bones);mesh.bind(skeleton);object3d.add(mesh);
     if(bossVolume&&id==='dark-druid'){volume=createDruidBossVolume({THREE,height});object3d.add(volume.object3d);mesh.visible=false;}
