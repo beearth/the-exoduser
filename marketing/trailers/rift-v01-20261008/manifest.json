@@ -1,0 +1,54 @@
+{
+  "duration": 15,
+  "fps": 30,
+  "shots": [
+    {
+      "key": "concept",
+      "at": 0,
+      "dur": 2,
+      "tag": "CONCEPT / 2026-10-05",
+      "kr": "전투 사이,\n망자들이 머무는 틈",
+      "en": "A SPACE BETWEEN BATTLES",
+      "note": "콘셉트 원화\n플레이 화면 아님"
+    },
+    {
+      "key": "residents",
+      "file": "residents.mp4",
+      "at": 2,
+      "dur": 2,
+      "sourceStart": 15.2,
+      "sourceEnd": 17.2,
+      "frames": 60,
+      "tag": "QA FOOTAGE / 2026-10-06",
+      "kr": "주민과 공간의\n첫 연결",
+      "en": "RESIDENT PLACEMENT CHECK",
+      "note": "자동 점검 동선 녹화\n자연인 플레이 녹화 아님"
+    },
+    {
+      "key": "path",
+      "file": "path.mp4",
+      "at": 4,
+      "dur": 3,
+      "sourceStart": 19.3,
+      "sourceEnd": 22.3,
+      "frames": 90,
+      "tag": "QA FOOTAGE / 2026-10-06",
+      "kr": "통로를 따라\n공간을 점검하다",
+      "en": "PATH / SPACE CHECK",
+      "note": "짧은 선별 컷\n연속 한 번의 플레이 아님"
+    },
+    {
+      "key": "stairs",
+      "file": "stairs.mp4",
+      "at": 7,
+      "dur": 3,
+      "sourceStart": 27.4,
+      "sourceEnd": 30.4,
+      "frames": 90,
+      "tag": "QA FOOTAGE / 2026-10-06",
+      "kr": "계단 너머로\n이어지는 틈",
+      "en": "STAIRS / DEPTH CHECK",
+      "note": "움직임과 연출 개선 중\n다음 기록에서 이어집니다"
+    }
+  ]
+}

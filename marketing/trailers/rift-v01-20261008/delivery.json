@@ -1,0 +1,32 @@
+{
+  "mp4": {
+    "path": "renders/EXODUSER_RIFT_DEVLOG_V01_20261008.mp4",
+    "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/f00570be-5669-49db-9c7b-93eb6cc72ca3.mp4",
+    "mediaId": "f00570be-5669-49db-9c7b-93eb6cc72ca3",
+    "confirmed": true,
+    "sha256": "8cdb4113b3bd1f299eaef55cd1f9b59249d1471e5c60b041cdf6cd3a3af38c74"
+  },
+  "zip": {
+    "path": "renders/EXODUSER_RIFT_DEVLOG_V01_EDITABLE_20261008.zip",
+    "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/13c3c2b0-fd20-48c4-b897-0ea5818e5dff.zip",
+    "mediaId": "13c3c2b0-fd20-48c4-b897-0ea5818e5dff",
+    "confirmed": true,
+    "sha256": "fa4d0768c063c721374627bebedea3e25051dad243976959928cc58e38ade241"
+  },
+  "qa": {
+    "path": "QA.json",
+    "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/78e89363-d9a4-4352-b0d2-81c126b95d36.json",
+    "mediaId": "78e89363-d9a4-4352-b0d2-81c126b95d36",
+    "confirmed": true,
+    "sha256": "01ce80daef5fdf56499973da7785d9aa06a655455c8269ed06a2660fe14cda6f"
+  },
+  "review": {
+    "path": "review/overview.jpg",
+    "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/90bc0ead-19dc-4480-b2c4-f62b73c2db10.jpg",
+    "mediaId": "90bc0ead-19dc-4480-b2c4-f62b73c2db10",
+    "confirmed": true
+  },
+  "verdict": "PASS_FOR_DISCLOSED_WIP_DEVLOG",
+  "authoringFrozen": true,
+  "oldFailedRiftOutputsUntouched": true
+}

@@ -1,0 +1,312 @@
+{
+  "version": "1",
+  "artifact": "EXODUSER_RIFT_DEVLOG_V01_20261008.mp4",
+  "date": "2026-10-08",
+  "verdict": "PASS_FOR_DISCLOSED_WIP_DEVLOG",
+  "verdictScope": "User authorized development v0.1 disclosure. This is not a natural human gameplay motion acceptance or finished Steam build certification.",
+  "media": {
+    "durationSeconds": 15,
+    "frames": 450,
+    "width": 1920,
+    "height": 1080,
+    "fps": "30/1",
+    "videoCodec": "h264",
+    "audioCodec": "aac",
+    "audioRate": 48000,
+    "audioChannels": 2,
+    "bytes": 12000463,
+    "sha256": "8cdb4113b3bd1f299eaef55cd1f9b59249d1471e5c60b041cdf6cd3a3af38c74"
+  },
+  "decode": {
+    "fullVideoAndAudioDecoded": true,
+    "errors": 0
+  },
+  "source": {
+    "conceptDate": "2026-10-05",
+    "footageDate": "2026-10-06",
+    "recording": "Automated resident-dialogue QA route; not human gameplay",
+    "chronological": true,
+    "continuousTake": false,
+    "currentGameRun": false,
+    "currentSteamBuildEquivalence": "UNVERIFIED",
+    "devlogEdition": "v0.1",
+    "gameBuildVersion": "UNVERIFIED; v0.1 is editorial devlog edition",
+    "existingAiAssistedArtAndMusic": true,
+    "newAiGeneration": false,
+    "silentOriginal": true,
+    "selectedRawTiming": [
+      {
+        "shot": "residents",
+        "sourceStart": 15.2,
+        "sourceEnd": 17.2,
+        "rawFramesInWindow": 41,
+        "dimensions": [
+          "980x862"
+        ],
+        "maxInternalPtsGap": 0.06700000000000017,
+        "gapsAbove100ms": 0
+      },
+      {
+        "shot": "path",
+        "sourceStart": 19.3,
+        "sourceEnd": 22.3,
+        "rawFramesInWindow": 60,
+        "dimensions": [
+          "980x862"
+        ],
+        "maxInternalPtsGap": 0.06599999999999895,
+        "gapsAbove100ms": 0
+      },
+      {
+        "shot": "stairs",
+        "sourceStart": 27.4,
+        "sourceEnd": 30.4,
+        "rawFramesInWindow": 60,
+        "dimensions": [
+          "980x862"
+        ],
+        "maxInternalPtsGap": 0.0519999999999996,
+        "gapsAbove100ms": 0
+      }
+    ]
+  },
+  "timeline": {
+    "duration": 15,
+    "fps": 30,
+    "shots": [
+      {
+        "key": "concept",
+        "at": 0,
+        "dur": 2,
+        "tag": "CONCEPT / 2026-10-05",
+        "kr": "전투 사이,\n망자들이 머무는 틈",
+        "en": "A SPACE BETWEEN BATTLES",
+        "note": "콘셉트 원화\n플레이 화면 아님"
+      },
+      {
+        "key": "residents",
+        "file": "residents.mp4",
+        "at": 2,
+        "dur": 2,
+        "sourceStart": 15.2,
+        "sourceEnd": 17.2,
+        "frames": 60,
+        "tag": "QA FOOTAGE / 2026-10-06",
+        "kr": "주민과 공간의\n첫 연결",
+        "en": "RESIDENT PLACEMENT CHECK",
+        "note": "자동 점검 동선 녹화\n자연인 플레이 녹화 아님"
+      },
+      {
+        "key": "path",
+        "file": "path.mp4",
+        "at": 4,
+        "dur": 3,
+        "sourceStart": 19.3,
+        "sourceEnd": 22.3,
+        "frames": 90,
+        "tag": "QA FOOTAGE / 2026-10-06",
+        "kr": "통로를 따라\n공간을 점검하다",
+        "en": "PATH / SPACE CHECK",
+        "note": "짧은 선별 컷\n연속 한 번의 플레이 아님"
+      },
+      {
+        "key": "stairs",
+        "file": "stairs.mp4",
+        "at": 7,
+        "dur": 3,
+        "sourceStart": 27.4,
+        "sourceEnd": 30.4,
+        "frames": 90,
+        "tag": "QA FOOTAGE / 2026-10-06",
+        "kr": "계단 너머로\n이어지는 틈",
+        "en": "STAIRS / DEPTH CHECK",
+        "note": "움직임과 연출 개선 중\n다음 기록에서 이어집니다"
+      }
+    ]
+  },
+  "review": {
+    "overviewTimes": [
+      0.8,
+      2.3,
+      3.3,
+      4.3,
+      5.3,
+      6.3,
+      7.3,
+      8.3,
+      9.3,
+      10.5,
+      12.5,
+      14.3
+    ],
+    "actorSamples": {
+      "start": 2,
+      "end": 9.9,
+      "step": 0.1,
+      "count": 80,
+      "visuallyInspected": true
+    },
+    "boundaryFrames": [
+      59,
+      60,
+      119,
+      120,
+      209,
+      210,
+      299,
+      300,
+      389,
+      390
+    ],
+    "cutBoundaryImagesVisuallyInspected": true,
+    "observations": "Selected 8s footage maintains visible character and stable viewport in all inspected 100ms samples. Minor automated facing turns remain, especially resident/path starts. No screen collapse, character disappearance or viewport resize seen in reviewed final samples. Intentional chronological hard cuts are disclosed.",
+    "text": "English and Korean titles, date labels, automated QA disclosure, WIP note and Steam CTA rendered without missing glyphs or cropping in reviewed full-frame samples.",
+    "blackdetect": "No >99.5%-black frames above 0.02s at pixel threshold 0.02; five cut-boundary pairs also reviewed visually.",
+    "limitations": "Not a full subjective auditory listen. 100ms samples cannot certify every subframe motion event."
+  },
+  "audio": {
+    "meanDb": -21.9,
+    "peakDb": -7.4,
+    "clippingDetected": false,
+    "fullListening": false,
+    "description": "Existing prologue_theme.mp3 14-29s, gain 0.55, fade in 0.5s / fade out 1.5s; no speech generated."
+  },
+  "pixelMatch": {
+    "samples": 8,
+    "bestOffsetFramesAll": 0,
+    "candidateSearchFrames": [
+      -3,
+      3
+    ],
+    "mseRange": [
+      2.257,
+      3.298
+    ],
+    "details": "review/pixel-correspondence.json",
+    "method": "Rendered inset vs corresponding pre-cut CFR source; resized to 471x414, mean RGB squared error. 8/8 expected offsets match exactly.",
+    "records": [
+      {
+        "timelineSeconds": 2.3,
+        "expectedSourceSeconds": 15.5,
+        "bestOffsetFrames": 0,
+        "bestOffsetSeconds": 0.0,
+        "mse": 2.589
+      },
+      {
+        "timelineSeconds": 3.3,
+        "expectedSourceSeconds": 16.5,
+        "bestOffsetFrames": 0,
+        "bestOffsetSeconds": 0.0,
+        "mse": 2.527
+      },
+      {
+        "timelineSeconds": 4.3,
+        "expectedSourceSeconds": 19.6,
+        "bestOffsetFrames": 0,
+        "bestOffsetSeconds": 0.0,
+        "mse": 2.331
+      },
+      {
+        "timelineSeconds": 5.3,
+        "expectedSourceSeconds": 20.6,
+        "bestOffsetFrames": 0,
+        "bestOffsetSeconds": 0.0,
+        "mse": 2.257
+      },
+      {
+        "timelineSeconds": 6.3,
+        "expectedSourceSeconds": 21.6,
+        "bestOffsetFrames": 0,
+        "bestOffsetSeconds": 0.0,
+        "mse": 2.536
+      },
+      {
+        "timelineSeconds": 7.3,
+        "expectedSourceSeconds": 27.7,
+        "bestOffsetFrames": 0,
+        "bestOffsetSeconds": 0.0,
+        "mse": 3.133
+      },
+      {
+        "timelineSeconds": 8.3,
+        "expectedSourceSeconds": 28.7,
+        "bestOffsetFrames": 0,
+        "bestOffsetSeconds": 0.0,
+        "mse": 3.298
+      },
+      {
+        "timelineSeconds": 9.3,
+        "expectedSourceSeconds": 29.7,
+        "bestOffsetFrames": 0,
+        "bestOffsetSeconds": 0.0,
+        "mse": 2.994
+      }
+    ]
+  },
+  "preservation": {
+    "oldRiftMotionFailedOutputs": "UNCHANGED; remain FAIL/rejected",
+    "gameServerBrowserGitChanges": 0
+  },
+  "artifacts": {
+    "nativeProject": "project/project.json",
+    "authoring": "edit.jsx",
+    "preparedRecipe": "prepare.py",
+    "overview": "review/overview.jpg",
+    "actorSheet": "review/actor-100ms.jpg",
+    "cutBoundaries": "review/cut-boundaries.jpg",
+    "provenance": "input/provenance.json",
+    "licenses": [
+      "input/OFL.txt",
+      "input/DM-Sans-OFL.txt"
+    ]
+  },
+  "archivePreflight": {
+    "nativeAssets": 8,
+    "missingAssets": 0,
+    "nativeAuthoringBytesEqual": true,
+    "assets": [
+      {
+        "name": "NotoSansKR.ttf",
+        "uri": "fs:media/194018e6b2b293a7964f037b25c0249ce1418bc9ab3c971060a03aa57861e252.ttf",
+        "sha256": "194018e6b2b293a7964f037b25c0249ce1418bc9ab3c971060a03aa57861e252"
+      },
+      {
+        "name": "concept-20261005.png",
+        "uri": "fs:media/a3d95a005924692626321cedf384d1e4e90282ba990d9e19e86a3aa73a1563d4.png",
+        "sha256": "a3d95a005924692626321cedf384d1e4e90282ba990d9e19e86a3aa73a1563d4"
+      },
+      {
+        "name": "bgm-v01.m4a",
+        "uri": "fs:media/ca1e127c2b9eb90df192f7343078fbb7856697adf11161f1c20d78459795e639.m4a",
+        "sha256": "ca1e127c2b9eb90df192f7343078fbb7856697adf11161f1c20d78459795e639"
+      },
+      {
+        "name": "residents.mp4",
+        "uri": "fs:media/d017286ce93998c3f98f32ed194c963ad4a658d13341c0dd2569c938f33e214f.mp4",
+        "sha256": "d017286ce93998c3f98f32ed194c963ad4a658d13341c0dd2569c938f33e214f"
+      },
+      {
+        "name": "path.mp4",
+        "uri": "fs:media/3e17e1665300ddab2803e779fbcaed024037f4ae52dbaa620eb8d51d28dace20.mp4",
+        "sha256": "3e17e1665300ddab2803e779fbcaed024037f4ae52dbaa620eb8d51d28dace20"
+      },
+      {
+        "name": "stairs.mp4",
+        "uri": "fs:media/6ff9c369d97ae10c0ccee08a7cc17065f4ac59cab5a65e46256b629e869a6dfc.mp4",
+        "sha256": "6ff9c369d97ae10c0ccee08a7cc17065f4ac59cab5a65e46256b629e869a6dfc"
+      },
+      {
+        "name": "fonts/dm-sans-400.woff2",
+        "uri": "fs:fonts/dm-sans-400.woff2",
+        "sha256": "f0a0ffc3882838b72d83fb011910b6c0f603f86c3ecbd2d1c1b5f3f9fcaed0a1"
+      },
+      {
+        "name": "fonts/dm-sans-700.woff2",
+        "uri": "fs:fonts/dm-sans-700.woff2",
+        "sha256": "d91b32eb570dce33ede97c7513b4dc465b9f5691edf5c532872d3f62959b1117"
+      }
+    ],
+    "zipExcludesFinalMp4AndFullCfrIntermediate": true,
+    "inputAndNativeMediaDuplication": "Intentional re-authoring sources plus portable native asset copies."
+  }
+}

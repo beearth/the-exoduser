@@ -1,0 +1,43 @@
+{
+  "productionDate": "2026-10-08",
+  "devlogEdition": "v0.1",
+  "gameBuildVersion": "UNKNOWN; v0.1 is not an asserted game-build version",
+  "conceptDate": "2026-10-05",
+  "footageDate": "2026-10-06",
+  "sourceRecording": "resident-walk.webm; automated resident-dialogue QA input, not human gameplay",
+  "sourceRecordingSha256": "332e753dfcdb1e229a1488a92918abb39cc0b6bef9f5465fcc8a1ab4003a0e8d",
+  "sourceRecordingOriginal": "/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/resident-layers-integration-20261006/accepted-qa-v2/resident-walk.webm",
+  "conceptOriginal": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/map/hell_rift/interspace_20261005/hell-rift-painterly-v2.png",
+  "conceptSha256": "a3d95a005924692626321cedf384d1e4e90282ba990d9e19e86a3aa73a1563d4",
+  "musicOriginal": "bgm/cutscene/prologue_theme.mp3",
+  "audio": "Source recording silent; existing theme added editorially",
+  "noNewAiAssets": true,
+  "existingAssetDisclosure": "Existing art and music are AI-assisted",
+  "excluded": "Viewport resize at 6.382–6.515; occlusion near 7.397–8.549 and 24.497–25.198; large >100ms gaps; interactive character/effect preview excluded",
+  "limitations": "Some automated route facing changes remain. No natural human-play motion acceptance or current Steam/demo equivalence is claimed.",
+  "selectedWindows": [
+    {
+      "file": "residents.mp4",
+      "sourceStart": 15.2,
+      "sourceEnd": 17.2,
+      "at": 2,
+      "dur": 2
+    },
+    {
+      "file": "path.mp4",
+      "sourceStart": 19.3,
+      "sourceEnd": 22.3,
+      "at": 4,
+      "dur": 3
+    },
+    {
+      "file": "stairs.mp4",
+      "sourceStart": 27.4,
+      "sourceEnd": 30.4,
+      "at": 7,
+      "dur": 3
+    }
+  ],
+  "orderedVisualReview": "0.1s actor crops and 0.25s context contacts reviewed before editing",
+  "currentGameExecuted": false
+}

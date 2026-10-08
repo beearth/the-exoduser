@@ -1,0 +1,56 @@
+{
+  "verdict": "PASS",
+  "zipEntries": 45,
+  "crc": "PASS",
+  "manifestChecksums": 44,
+  "nativeAssets": 8,
+  "missingAssets": 0,
+  "jsxCopiesBytesEqualToWorkspace": true,
+  "signedUrlsOrCredentialPatternsInTextFiles": [],
+  "sha256": "fa4d0768c063c721374627bebedea3e25051dad243976959928cc58e38ade241",
+  "bytes": 39655708,
+  "assets": [
+    {
+      "name": "NotoSansKR.ttf",
+      "uri": "fs:media/194018e6b2b293a7964f037b25c0249ce1418bc9ab3c971060a03aa57861e252.ttf",
+      "sha256": "194018e6b2b293a7964f037b25c0249ce1418bc9ab3c971060a03aa57861e252"
+    },
+    {
+      "name": "concept-20261005.png",
+      "uri": "fs:media/a3d95a005924692626321cedf384d1e4e90282ba990d9e19e86a3aa73a1563d4.png",
+      "sha256": "a3d95a005924692626321cedf384d1e4e90282ba990d9e19e86a3aa73a1563d4"
+    },
+    {
+      "name": "bgm-v01.m4a",
+      "uri": "fs:media/ca1e127c2b9eb90df192f7343078fbb7856697adf11161f1c20d78459795e639.m4a",
+      "sha256": "ca1e127c2b9eb90df192f7343078fbb7856697adf11161f1c20d78459795e639"
+    },
+    {
+      "name": "residents.mp4",
+      "uri": "fs:media/d017286ce93998c3f98f32ed194c963ad4a658d13341c0dd2569c938f33e214f.mp4",
+      "sha256": "d017286ce93998c3f98f32ed194c963ad4a658d13341c0dd2569c938f33e214f"
+    },
+    {
+      "name": "path.mp4",
+      "uri": "fs:media/3e17e1665300ddab2803e779fbcaed024037f4ae52dbaa620eb8d51d28dace20.mp4",
+      "sha256": "3e17e1665300ddab2803e779fbcaed024037f4ae52dbaa620eb8d51d28dace20"
+    },
+    {
+      "name": "stairs.mp4",
+      "uri": "fs:media/6ff9c369d97ae10c0ccee08a7cc17065f4ac59cab5a65e46256b629e869a6dfc.mp4",
+      "sha256": "6ff9c369d97ae10c0ccee08a7cc17065f4ac59cab5a65e46256b629e869a6dfc"
+    },
+    {
+      "name": "fonts/dm-sans-400.woff2",
+      "uri": "fs:fonts/dm-sans-400.woff2",
+      "sha256": "f0a0ffc3882838b72d83fb011910b6c0f603f86c3ecbd2d1c1b5f3f9fcaed0a1"
+    },
+    {
+      "name": "fonts/dm-sans-700.woff2",
+      "uri": "fs:fonts/dm-sans-700.woff2",
+      "sha256": "d91b32eb570dce33ede97c7513b4dc465b9f5691edf5c532872d3f62959b1117"
+    }
+  ],
+  "nativeProject": "/Users/fordeargamers/the-exoduser/output/rift_devlog_v01_20261008/editable/project/project.json",
+  "duplicateAssets": "Inputs plus native project/media copies are intentional. Full-CFR intermediate and final MP4 excluded from ZIP."
+}

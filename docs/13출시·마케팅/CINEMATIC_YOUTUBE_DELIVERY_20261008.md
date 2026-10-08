@@ -1,6 +1,6 @@
 # 네메시아·전사 컷씬 YouTube 준비 — 2026-10-08
 
-사용자 지시: 네메시아·전사 컷씬까지 FDG YouTube에 게시. 실제 채널은 **@fordeargamers / UCOLkkQsaZ9ACuXdvPblhfiA**. 기존 공개3개 보존. 전사·네메시아와 기존 전투 3편, 총 5편의 로컬 업로드 파일이 준비됐다. 신규 업로드·공개는 미완료이며, YouTube 업로더의 약관 동의에 대한 실행 직전 사용자 확인을 기다린다.
+사용자 지시: 네메시아·전사 컷씬까지 FDG YouTube에 게시. 실제 채널은 **@fordeargamers / UCOLkkQsaZ9ACuXdvPblhfiA**. 기존 공개3개 보존. 전사·네메시아와 기존 전투3편에 새 지옥의 틈 v0.1을 더해 총 **6편**의 로컬 업로드 파일이 준비됐다. 신규 업로드·공개는 미완료이며, YouTube 업로더의 약관 동의에 대한 실행 직전 사용자 확인을 기다린다.
 
 | 소재 | 정확 소스·현재 상태 |
 |---|---|
@@ -35,8 +35,17 @@
 | 기술 QA와 후속 시각 판정 | [렌더 당시 기술 QA](../../marketing/trailers/cinematics-20261008/nemesia-review/EXODUSER_NEMESIA_QA_20261008.json)는 시각 판정 전 원본 그대로 보존. [실제 export 후 시각 검수 receipt](../../marketing/trailers/cinematics-20261008/nemesia-review/VISUAL_REVIEW_RECEIPT_20261008.json)가 그 이후의 표본 PASS 근거 |
 | 아카이브 독립 검수 | [archive-review](../../marketing/trailers/cinematics-20261008/nemesia-review/archive-review.json) PASS. 62개 ZIP 항목 CRC, 25개 프로젝트 자산 URI, 21개 원화·27큐·18대사, JSX 2개 최신 바이트 대응 PASS. 중복 입력/프로젝트 자산 압축분 약 80.92MB. ZIP provenance에는 이후 로컬 검수 메모 1개가 없으며 자산·대사·JSX 차이 없음 |
 | 편집 패키지 | ZIP 165,442,344B, SHA256 `eead265dbbb0858f34621f2f8e01e98c85034fa9bbcb4ab9edecb9c90949fd35`. 클라우드 PUT 200·media confirm uploaded·로컬 다운로드 해시 일치. 100MB를 넘으므로 Git에 ZIP 중복 추가하지 않고 [확정 전달 URL](../../marketing/trailers/cinematics-20261008/nemesia-delivery-urls.json) 보존. 입력·JSX는 별도 Git 보존 |
-| 업로드 묶음 | [제목·설명·자막·공개 설정 5편](../../marketing/trailers/cinematics-20261008/upload-plan.json), [5개 MP4 크기·해시](../../marketing/trailers/cinematics-20261008/upload-hashes.json). 전투 37/16/26초 + 전사 96.4초 + 네메시아 121.7초 |
-| 현재 실제 게시 | **NOT UPLOADED**. FDG 정확 채널의 업로더에서 ‘제출하면 서비스 약관 및 커뮤니티 가이드에 동의’ 안내 확인. 컴퓨터 사용 도구의 binding agreement 실행 직전 확인 규칙에 따라 총 5편 약관 동의를 한 번 질문. 계정 로그인·영상 게시 권한 자체를 다시 묻는 것이 아님 |
-| 제외 | 지옥의 틈 가로34초·쇼츠20초·Discord720p20초 모션 QA FAIL 유지. 세계관 MP4는 별도 BGM 믹스가 빠져 있어 이번 5편 묶음에 포함하지 않음 |
+| 업로드 묶음 | [제목·설명·자막·공개 설정 6편](../../marketing/trailers/cinematics-20261008/upload-plan.json), [6개 MP4 크기·해시](../../marketing/trailers/cinematics-20261008/upload-hashes.json). 전투 37/16/26초 + 전사 96.4초 + 네메시아 121.7초 + 별도 틈 개발 기록 v0.1 15초 |
+| 현재 실제 게시 | **NOT UPLOADED**. FDG 정확 채널의 업로더에서 ‘제출하면 서비스 약관 및 커뮤니티 가이드에 동의’ 안내 확인. 컴퓨터 사용 도구의 binding agreement 실행 직전 확인 규칙에 따라 선행5편 질문 후 사용자 추가 지시로 제작한 v0.1을 더해 **최종6편** 약관 동의를 질문. 계정 로그인·영상 게시 권한 자체를 다시 묻는 것이 아님 |
+| 제외 | 지옥의 틈 가로34초·쇼츠20초·Discord720p20초 모션 QA FAIL 유지. 세계관 MP4는 별도 BGM 믹스가 빠져 있어 이번 6편 묶음에 포함하지 않음 |
 
 지옥의 틈 후속 확인은 **이전 녹화의 시각 실패**와 **현재 게임 런타임 버그**를 구분한다. 이전 녹화에서 실제 몸 소실·불연속 방향 전환·뷰포트 변경을 확인했지만, 현재 게임에서의 동일 원인 재현·수정 완료를 뜻하지 않는다.
+
+
+## 후속 사용자 기준·플랫폼 단계
+
+사용자는 보기 불편할 정도의 저품질만 제외하고 개발 단계부터 자주 공개하며 다음 버전을 이어서 올리도록 지시했다. 이 기준으로 [지옥의 틈 개발 기록 v0.1](RIFT_DEVLOG_V01_20261008.md)을 별도15초로 완성했다. 선행5편과 새 틈1편을 합쳐 최종6편 준비 완료이며 실제 신규 업로드는0이다.
+
+[Steam 영상 추가 단계](STEAM_TRAILER_UPDATE_20261008.md): 로그인 확인, 새 영상 metadata item1369319 생성. 파일 미전송·미공개이며, 이전의 모바일 로그인 대기 기록은 현재 상태가 아니다.
+
+AI 제작 공개는 기존 설명의 실제 자산 출처를 유지한다. YouTube의 [현행 GenAI 공개 안내](https://support.google.com/youtube/answer/14328491?co=GENIE.Platform%3DDesktop&hl=en)를 2026-10-08 확인했다. 게임 플레이·비사실적 판타지와 사전제작 합성 아트·음악을 구분하며, 설명 공개와 업로더 AI-use 항목을 실제 소재에 맞게 기입한다. UI 항목을 기입하기 전 상태를 저장 완료로 기록하지 않는다.

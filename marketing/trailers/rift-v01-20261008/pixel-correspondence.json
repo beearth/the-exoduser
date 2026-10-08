@@ -1,0 +1,58 @@
+[
+  {
+    "timelineSeconds": 2.3,
+    "expectedSourceSeconds": 15.5,
+    "bestOffsetFrames": 0,
+    "bestOffsetSeconds": 0.0,
+    "mse": 2.589
+  },
+  {
+    "timelineSeconds": 3.3,
+    "expectedSourceSeconds": 16.5,
+    "bestOffsetFrames": 0,
+    "bestOffsetSeconds": 0.0,
+    "mse": 2.527
+  },
+  {
+    "timelineSeconds": 4.3,
+    "expectedSourceSeconds": 19.6,
+    "bestOffsetFrames": 0,
+    "bestOffsetSeconds": 0.0,
+    "mse": 2.331
+  },
+  {
+    "timelineSeconds": 5.3,
+    "expectedSourceSeconds": 20.6,
+    "bestOffsetFrames": 0,
+    "bestOffsetSeconds": 0.0,
+    "mse": 2.257
+  },
+  {
+    "timelineSeconds": 6.3,
+    "expectedSourceSeconds": 21.6,
+    "bestOffsetFrames": 0,
+    "bestOffsetSeconds": 0.0,
+    "mse": 2.536
+  },
+  {
+    "timelineSeconds": 7.3,
+    "expectedSourceSeconds": 27.7,
+    "bestOffsetFrames": 0,
+    "bestOffsetSeconds": 0.0,
+    "mse": 3.133
+  },
+  {
+    "timelineSeconds": 8.3,
+    "expectedSourceSeconds": 28.7,
+    "bestOffsetFrames": 0,
+    "bestOffsetSeconds": 0.0,
+    "mse": 3.298
+  },
+  {
+    "timelineSeconds": 9.3,
+    "expectedSourceSeconds": 29.7,
+    "bestOffsetFrames": 0,
+    "bestOffsetSeconds": 0.0,
+    "mse": 2.994
+  }
+]

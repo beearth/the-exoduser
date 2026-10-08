@@ -31,8 +31,8 @@
 
 | 채널 | 상태와 다음 동작 |
 |---|---|
-| Steam | 기존 스토리/게임플레이 영상 유지. 새 37초 업로드·첫 순서 배치는 **미완료**. Steamworks 로그인은 Steam 모바일 승인 대기 |
-| YouTube | 37초 + 16/26초 파일·[문안/UTM](SOCIAL_VIDEO_COPY_20261008.md) 준비. 후속 확인: **@fordeargamers 공식 관리 채널 로그인 완료**, 한영 소개·Steam 프로필 링크 공개 반영. 새 3편은 **업로드 약관 제출 승인 대기**, 실제 업로드·공개 미완료. [채널 운영 기록](YOUTUBE_CHANNEL_OPERATIONS_20261008.md) |
+| Steam | 기존 스토리/게임플레이 영상2개 유지. Steamworks 로그인 완료 확인. 새37초 metadata 항목1369319 생성, 파일 미전송·첫 순서 배치·공개 **미완료**. [후속 실제 단계](STEAM_TRAILER_UPDATE_20261008.md) |
+| YouTube | 37초 + 16/26초 파일·[문안/UTM](SOCIAL_VIDEO_COPY_20261008.md) 준비. 후속 확인: **@fordeargamers 공식 관리 채널 로그인 완료**, 한영 소개·Steam 프로필 링크 공개 반영. 본 문서의 전투3편은 후속 컷씬2편·틈v0.1까지 총6편 묶음으로 **업로드 약관 동의 확인 대기**, 실제 업로드·공개 미완료. [채널 운영 기록](YOUTUBE_CHANNEL_OPERATIONS_20261008.md) |
 | Discord | 기존 FDG 서버·첫 데모 공지는 공개 유지. Mac 잠금은 후속 해제 확인. 새 16초 announcements 게시는 **미완료**, 이번 제출은 하지 않음 |
 | Threads / Instagram / Bluesky | [채널 조건·14일 실험](EXPOSURE_CHANNELS_20261008.md), 영상·문안 준비. 신규 계정 또는 이번 영상 게시 완료로 표시하지 않음 |
 | Reddit / itch.io | [기존 실제 공개 결과](DEMO_MARKETING_LAUNCH_20261008.md). 이번 영상 추가 게시는 미완료 |

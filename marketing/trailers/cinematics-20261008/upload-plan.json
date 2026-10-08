@@ -60,6 +60,16 @@
       "captionFiles": [],
       "publication": "public",
       "status": "READY_NOT_UPLOADED"
+    },
+    {
+      "filename": "EXODUSER_RIFT_DEVLOG_V01_20261008.mp4",
+      "title": "Rift Devlog v0.1 — Work in Progress | EXODUSER: HELL LORD",
+      "description": "The Rift, in development — a short record of EXODUSER: HELL LORD's space between battles.\n\nv0.1 is this devlog series label. This is a work-in-progress preview, with resident placement, passage and stair checks. Movement and visibility polish are planned for later development updates.\n\nSources: October 5, 2026 concept art and October 6, 2026 automated development QA footage. The selected clips are edited in chronological order. This is not a newly recorded human play session, and the Rift is not confirmed as included in the public Steam demo.\n\nPlay the separate free Windows demo on Steam:\nhttps://store.steampowered.com/app/4749590/EXODUSER_HELL_LORD/?utm_source=youtube&utm_medium=organic_video&utm_campaign=foreign_pilot_202610&utm_content=rift_devlog_v01\n\nExisting project music was added to the silent QA capture. This edit reuses pre-produced AI-assisted art and music; no new AI assets were generated for this video.\n\n지옥의 틈 개발 기록 v0.1 · 개발 중. 이번 v0.1은 영상 기록 버전입니다. 10월 5일 콘셉트와 10월 6일 자동 QA 이동 장면 중 일부를 시간순으로 편집했습니다. 이동·화면 안정성과 공간 연출은 다음 개발 기록에서 이어갑니다. 공개 Steam 데모 반영은 미확인입니다.\n\nFDG / FOR DEAR GAMERS",
+      "kind": "development_diary",
+      "language": "en",
+      "captionFiles": [],
+      "publication": "public",
+      "status": "READY_NOT_UPLOADED"
     }
   ]
 }

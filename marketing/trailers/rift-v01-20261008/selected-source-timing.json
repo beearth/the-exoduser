@@ -1,0 +1,35 @@
+[
+  {
+    "shot": "residents",
+    "sourceStart": 15.2,
+    "sourceEnd": 17.2,
+    "rawFramesInWindow": 41,
+    "dimensions": [
+      "980x862"
+    ],
+    "maxInternalPtsGap": 0.06700000000000017,
+    "gapsAbove100ms": 0
+  },
+  {
+    "shot": "path",
+    "sourceStart": 19.3,
+    "sourceEnd": 22.3,
+    "rawFramesInWindow": 60,
+    "dimensions": [
+      "980x862"
+    ],
+    "maxInternalPtsGap": 0.06599999999999895,
+    "gapsAbove100ms": 0
+  },
+  {
+    "shot": "stairs",
+    "sourceStart": 27.4,
+    "sourceEnd": 30.4,
+    "rawFramesInWindow": 60,
+    "dimensions": [
+      "980x862"
+    ],
+    "maxInternalPtsGap": 0.0519999999999996,
+    "gapsAbove100ms": 0
+  }
+]
