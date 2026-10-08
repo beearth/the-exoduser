@@ -103,3 +103,10 @@ root helpers `character_preview`, `orders_checkpoint_readiness`, `rig_motion`은
 ## 8. 다음 세션 시작 시 기억 확인
 
 이 파일 → MASTER의 최신 맨앞 지시 → GOALS/CONTINUATION/CONTINUOUS-DISPATCH의 현재 필드 → 두 owner의 마지막 cursor 이후 새 결과 순으로 읽는다. 지난 완료의 상세 suite/원문 보존은 각 영수증 참조로 대신한다. 현재 TASK·정확 소유·의존성·새 source/end·root 채택·다음 action만 갱신한다. 이 파일을 새 대형 STATE처럼 반복 복사하지 않는다.
+
+
+### 2026-10-08 — Codex 전문 연결의 후속 거절 관측
+
+이전 “UIUX/QUESTNPC 2건 거절·다른5 미송신”은 당시 관측 이력이다. 이후 Codex 감독의 공식 cursor231 / turn `01a118fd-a035-7e31-a50a-50f50c012a35`는 ITEM·SOUND·BUILD·BALANCE·MARKETING 다섯 기존 전문팀의 첫 공식 송신도 approval policy `never`로 거절됐다고 보고했다. 신규5의 전달·peer·source·end는0, retry0·STATE쓰기0이며, 앞선2건 거절과 구분한다. 전문7의 실제 새 착수나 가동 완료를 주장하지 않는다. 기존 감독의 별도 source 작업과 ROOT의 제품 통합은 전문팀 착수로 합산하지 않으며 다른 도구/경로/호스트/권한으로 거절 목적을 재시도하지 않는다.
+
+정확 단일 final 보존 근거: 외부 `team-goal-0045-official-20261008/codex-231-official/final.txt` 1,603B / `cc54b3515dbed685ab25dbceb81e26a34520ac5efb2a1b4910e227a221ba81fe`, manifest 2,207B / `d56447fd8b179739010ced644e7b543b44ac0779b8adb56bd0920644afa2507d`. 이 단위에서 해당 원문을 재추출·재hash하지 않고 이미 검증한 보존 핀을 참조했다.

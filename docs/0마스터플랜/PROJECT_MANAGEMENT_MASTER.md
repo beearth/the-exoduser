@@ -5,7 +5,7 @@
 | 현재 운영 항목 | 책임·근거 |
 |---|---|
 | 제작 편성 | ROOT1 + Codex전문7 + Claude전문8 =16. 감독2는 별도 송신·연결 역할이라 전체 역할18; helpers3은 지원. 아래17/11 등의표기는 이력 |
-| Codex팀 | UIUX/ITEM/BUILD/BALANCE/SOUND/QUESTNPC/MARKETING. 기존Codex7만송신. 전문7notLoaded/newsource0·실2송신거절과다른5미송신구분 |
+| Codex팀 | UIUX/ITEM/BUILD/BALANCE/SOUND/QUESTNPC/MARKETING. 기존Codex7만송신. 이전 UIUX·QUESTNPC 2건 거절 뒤 cursor231에서 나머지5의 첫 송신도 policynever 거절. 신규5 전달·peer·source·end0/retry0; 전문7 새 착수 근거0 |
 | Claude팀 | ART/MAP/SKILL/QA/ENEMY/ANIMVFX/BOSS/STORY. 기존Claude8만송신. 기존6의1617 end6는16:28:54Z owner새인계/원문대조전, ARTSTORY보류 |
 | 총괄 산출 | 실제CH1-1/Rift mainconsumer·정본계약·의미검수·실화면한계·docs동기화·정상원격보존·다음승인미완료실제연결 |
 | 직전 제품 완료 | ROOT-CH1-HOLY-PRISON-DEPLOY-IN-20261008 code1/docs5 remoteexact f777486e7eec73d625439a9100ebea9802deb83a. t/15 한행·software13PASS, nativeNOT_RUN/RETOUCH. E/ch1-holy-prison-deploy-in-20261008/completion-receipt.json 참조 |
@@ -38,7 +38,7 @@
 | 대상 | 현재 구분 | 총괄 조치 |
 |---|---|---|
 | 관리3 / 전문15 | 역할 구성이다. 관측 없이 전원이 계속 실행 중이라고 표시하지 않는다. | 위 담당 표의 실제 도구·원문·코드·검수 근거를 사용한다. |
-| Codex 전문7 | 마지막 역할 진단은 notLoaded/newsource0. UIUX·QUESTNPC 두 실제 송신은 approval 필요+policynever 거절/수신0, 다른5는 미송신. | 읽기·제안 중인 Codex 감독을 전문7 가동으로 계산0. 다른 tool/path/host/권한으로 거절 우회0. |
+| Codex 전문7 | 이전 UIUX·QUESTNPC 2건 거절과 후속 cursor231의 ITEM·SOUND·BUILD·BALANCE·MARKETING 첫 송신5건 거절을 구분. 신규5 전달·peer·source·end0/retry0·STATE쓰기0. 전문7 새 착수 미관측. | Codex 감독의 source 작업을 전문7 가동으로 계산0. 다른 tool/path/host/권한으로 거절 우회0. |
 | Claude 전문6 | 현재 TASK의 공식 종료·새 송신·첫 source는 owner 최신 기록과 provider 원문을 대조한다. 마지막 idle 관측을 지속 가동으로 바꾸지 않는다. | 완료 뒤 다음 독립 한 단위를 연결하며 ROOT 검수 중 독립팀 일괄 보류0. ART/STORY는 기존 hold 유지. |
 | BOSS1544 → 1548 | 1544는 새 source0·옛 관측 재사용 실패. 1548의 실제 문서 Read·새 Bash 성공·공식 end를 별도로 받았다. | 근거 복구는 새1548에만 결합. 설계 채택·인게임 완성으로 계산0. |
 | ROOT helpers | 기존 character_preview/docs, rig_motion/정적 peer, orders_checkpoint_readiness/원문 보존만 필요한 독립 범위에 재사용. | 새 팀·관리 채팅·Claude 실행 세션0. 결과가 끝나면 필요한 다음 범위에만 배정. |
@@ -5017,3 +5017,17 @@ working4114319B/`1a6577ef27e10d2679d93068761cd45eb1e252ac2d247241f693eab5ceace52
 **ROOT-RIFT-FOREGROUND-SHARPNESS-CONSUMER-20261008**: `tools/2_5d/rift-terrain.mjs`19,118B/`9625933e3f2284f5084e6302c6d5fd2b07c9ff217d7f7804b4e6f39d92d76bc7`, 1hunk/+2,302B. 기존 서/동/남3cutout RGB에 고정0.4 linear unsharp4탭을 multiply직전 연결한다. 첫CPU전 neighbor4만 textureLod LOD0로 보정했으며 기본map1+nav1유지/활성명목6fetch는 GPU실측이 아니다. Three160/WebGL2/동일renderer·등록1254²plate/channel0·양축footprint>0≤1 조건이며 영상/축소/미지원은 원map+nav 폴백이다.
 
 alpha/nav/crop/UV/geometry/opacity/renderOrder/resource/dispose·skirt/backplane 불변, 새texture/uniformsetter/RAFtimer0. 지면Q의view-only0.5/standaloneHTML0과독립이다. 첫 controlled CPU Node1은 S01 PASS1/S02 비교오라클 FAIL1/28미도달/exit1 보존. 원 expanded map chunk와 legacy include를 비교하던 하네스만 정정하고 S01을 제외한 새한정 Node1/8그룹29조건 PASS·FAIL/setup/미도달/unhandled/uncaught0/exit0. 물리Node총2, 제품변경0/30clean합산0; 각 epoch actual source factory2+scalar factory1/VM0, 최종 fixture20/hook19. native Three material·ShaderLib 문자열 hook와 별도JS scalar비교만 검수, GLSL/GPU/pixel 실행0 / Codex original sourcepeer1788B/40f18416… 및 LOD-only delta906B/db2464a0… blocking0. 첫 sourcepeer71542ms/LOD delta16688ms, CPU·GPU·화면 검수와 구분. 최초 CPU 검수 완료, 새native/GPU/Chrome/audio/PNG/save0·UI NOT_ASSESSED/NOT_LISTENED/RETOUCH. IAB14 old-loaded무조작·미재로드/HTTPexact·live반영미인수. 원detail복원0, oldAB153/13재실행·합산0. 현재 상세·§23은 HELL_RIFT_2_5D_SLICE_20261006.md 같은TASK절을 따른다. outerriver미채택후보/CH1썩은강·타적합지역용암은NEXT PASS/이번구현0이다.
+
+
+## 2026-10-08 — 일반 자동석궁의 ST 비용 누락 보정
+
+메인 `_autoFireBowSkill`의 normal 조기 반환 경로에도 일반 자동발사와 터렛 공통의 `(1.5+(P.skills.fanShot||0)*1.5)*_stDisc('bow')`를 연결했다. 발사 전 ST snapshot에서 비용을 빼고 0으로 clamp하며, `_gxFiring`의 반값은 기존 `_stDisc`가 한 번만 적용한다. 기존 ST20% caller·수동 `fireBow` 악의1·피해/시간/SFX/save 계약은 유지한다. SFX throw 등 예외의 부분 실행·터렛 복원 원자성은 보장하지 않는다. 최초 actual-source 통제 CPU Node1/factory2·instance31/VM0, 6그룹21PASS·FAIL/setup/미도달/계측unhandled0·exit0이다. before witness2는 별도다. native는 `NOT_RUN`이며 시각·청취·실저장은 미인수다. 자세한 식과 적용 순서는 `자원리젠+소모공식.md`의 같은 날짜 절을 따른다.
+
+
+### 2026-10-08 — Codex 전문 연결의 후속 거절 관측
+
+이전 “UIUX/QUESTNPC 2건 거절·다른5 미송신”은 당시 관측 이력이다. 이후 Codex 감독의 공식 cursor231 / turn `01a118fd-a035-7e31-a50a-50f50c012a35`는 ITEM·SOUND·BUILD·BALANCE·MARKETING 다섯 기존 전문팀의 첫 공식 송신도 approval policy `never`로 거절됐다고 보고했다. 신규5의 전달·peer·source·end는0, retry0·STATE쓰기0이며, 앞선2건 거절과 구분한다. 전문7의 실제 새 착수나 가동 완료를 주장하지 않는다. 기존 감독의 별도 source 작업과 ROOT의 제품 통합은 전문팀 착수로 합산하지 않으며 다른 도구/경로/호스트/권한으로 거절 목적을 재시도하지 않는다.
+
+정확 단일 final 보존 근거: 외부 `team-goal-0045-official-20261008/codex-231-official/final.txt` 1,603B / `cc54b3515dbed685ab25dbceb81e26a34520ac5efb2a1b4910e227a221ba81fe`, manifest 2,207B / `d56447fd8b179739010ced644e7b543b44ac0779b8adb56bd0920644afa2507d`. 이 단위에서 해당 원문을 재추출·재hash하지 않고 이미 검증한 보존 핀을 참조했다.
+
+작업 ID: `ROOT-AUTOBOW-NORMAL-ST-CONSUMER-20261008`. 실제 whole `_autoFireBowSkill`/`_fireXbow`/`_stDisc`와 bounded 자동발사 caller slice에 통제 target/RNG/audio/particle/cost ports를 사용했다. whole update·실입력·실장비 UI·음향장치·서버 save 인수가 아니다. 최종 근거는 외부 `ch1-autobow-normal-st-consumer-20261008/cpu-first/result.json`(25257B / `cbe1132abe3df4021144b5e483861e5f05950a03482f2c8f7d00c586d519f6c9`), `validation-receipt.json`, `completion-receipt.json`이다.

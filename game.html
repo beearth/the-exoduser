@@ -28382,7 +28382,13 @@ function _autoFireBowSkill(tx,ty){
   const _abs=P.activeBowSk||'normal';
   // ghostXbowTurret이 석궁슬롯에 남아있으면 normal 폴백
   const _effAbs=(_abs==='ghostXbowTurret')?'normal':_abs;
-  if(_effAbs==='normal'){_fireXbow(tx,ty);return}
+  if(_effAbs==='normal'){
+    const _xbSt=P.st;
+    _fireXbow(tx,ty);
+    const _xbStCost=(1.5+(P.skills.fanShot||0)*1.5)*_stDisc('bow');
+    P.st=Math.max(0,_xbSt-_xbStCost);
+    return
+  }
   const a=Math.atan2(ty-P.y,tx-P.x);
   const _sS=P.s,_sSt2=P.st2,_sSt=P.st;
   const _svF=P.facing,_svA=P.atkArc; // 백업 — 자동쇠뇌가 플레이어 방향에 관여하면 안 됨
