@@ -520,7 +520,7 @@ NEXT PASS: 실버테일 packed frame 연결·다크드루이드 body seam·발/�
 | scene owner | G/map/ens/arena/mw/mh identity로 scene를 교체. actor 제거·death/phase/lastStand/defeated/revive pending/live-band/intent 변경으로 owner/lifeGeneration 교체 |
 | image lease | image native decode+source fingerprint+src/srcset/sizes observer/takeRecords, scene+owner+life+sheetRecord binding. pending deadline30000ms/noRAF/timer,동일 미정산/실패 binding 재요청0 |
 | frame 권위 | 기존 native selector가 정한 frame/crop/direction만 전달. exact selectedFrame·state·sheetRecord/img·imageGeneration currentness를 adapter와main pass경계마다 재확인 |
-| 부모 공간 | 기존 translate(e.x,e.y+tdY−6+breath),inverse_btScaleMul·dw9.3r/dh14.1r 보존. heightWorld=dh×ref/ch,scaleX=dw×ch/(dh×cw),anchorLocal=(−dw/2+ax×dw/cw,−.86dh+ay×dh/ch) |
+| 부모 공간 | 기존 translate(e.x,e.y+tdY−6+breath),inverse_btScaleMul·dh14.1r 유지. normal walk/attack dw=dh×cw/ch,base8 dw9.3r·특수별 기존 분기. heightWorld=dh×ref/ch,scaleX=dw×ch/(dh×cw),anchorLocal=(−dw/2+ax×dw/cw,−.86dh+ay×dh/ch) |
 | frame 재사용 | 20261009 adapter canvas,left,top,width,height를 normal 본체 source-over1회에 사용(당시3pass/lighter2는 이력). 성공한 synchronousblit 후 stale이면 후속pass 중단·legacy 중복draw 없음; 이미그린pixelrollback UNKNOWN |
 
 상세 API·source3 전체 핀·검수 epoch와 한계는 `docs/4.0케릭터스프라이트 디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md`의 동일 completion 절을 따른다. 맵 제작 순서/LOCK/SSOT를 이 표시 접점이 덮어쓰지 않는다.
@@ -569,7 +569,7 @@ factory36/combined15/main31/native3/final-limited4를 하나의 clean 전체 PAS
 | 보간 | `camSpd=1-pow(P.s==='dodge'?.85:P.s==='attack'?.95:.92,_dtSp)`; lookahead=`P.vx/vy*25`, smooth=`1-pow(.9,_dtSp)` |
 | 기본 보스 추적 | `_btActive` 아님·살아 있는 bossRef이면 P/보스 각 .5 중간점+lookahead*.3; finale 기존 frame 우선 |
 | 다음 zoom | `_czTgt=finaleFrame?finaleFrame.zoom:aliveBoss?0.80:1.0`; `_z0=G._camZoom||1`; `_zRate=1-pow(finaleFrame?(_czTgt<_z0?.88:.98):.94,_dtSp)`; `_zNext=_z0+(_czTgt-_z0)*_zRate` |
-| 본체 | `_dw=cb.r*cs.dw`, `_dh=cb.r*cs.dh`; 현재 dw9.3/dh14.1 calibration 유지 |
+| 카메라 추정 본체 | `_dw=cb.r*cs.dw`, `_dh=cb.r*cs.dh`; 기존 spec dw9.3/dh14.1 calibration 유지. normal walk/attack 실제 표시 폭의 원본 비율 보정과 별도 |
 | 기준 Y | `_mul=_btScaleMul||1`, `_off=_btOffsetY||0`, `_drop=cb._teleDropY||0`; `_base=cb.y+_off+_mul*(_drop-6)` |
 | 호흡 | base8만 `_breath=abs(_mul)*2`, 그 외0. 부모 scale은 body 역scale과 상쇄하나 translation에는 남음 |
 | 합성 bounds | left=`min(cb.x-dw/2,P.x-P.r)`, right=`max(cb.x+dw/2,P.x+P.r)`, top=`min(base-dh*.86-breath,P.y-P.r)`, bottom=`max(base+dh*.14+breath,P.y+P.r)` |
@@ -1175,3 +1175,8 @@ field200×200와 CH1 arena128×108의 기존 맵 권위/진입·복귀 좌표는
 
 
 2026-10-09 normal 드루이드의 본체1회·밝기1.35/대비 제거·특수3회 유지 및 한정 native 검수의 정확 계약: [원본 명암 consumer](../4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md#druid-original-tone-20261009). 기존 검수 수치는 당시 epoch로 보존하며 본편/A급 완료로 세지 않는다.
+
+
+## 2026-10-09 — 드루이드 보행·공격 원본 비율 보정
+
+`ROOT-DRUID-ORIGINAL-ASPECT-CONSUMER-20261009`: actual main normal walk/attack의 폭만 dh×cw/ch로 원본 셀 비율을 소비한다. 높이14.1r·spec9.3·base8/특수·원PNG·전투/save 유지. 실제 whole draw/native Canvas+원본PNG 최초4그룹PASS(Node0), 대기·야수 픽셀 불변/임시 UI 제거 뒤 editor 편집 exact 보존. 실제 rig GPU/정상 본편 보스전·새입체 모델·A급은 미인수, **VISUAL VERDICT: RETOUCH**. [정확 계약](../4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md#druid-original-aspect-20261009). 최종 증거 `E/druid-original-aspect-consumer-20261009/completion.json`.

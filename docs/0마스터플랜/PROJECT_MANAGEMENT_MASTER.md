@@ -5180,3 +5180,8 @@ alpha/nav/crop/UV/geometry/opacity/renderOrder/resource/dispose·skirt/backplane
 ## 2026-10-09 — 자체 엔진의 원본 스프라이트 편집
 
 `ROOT-ENGINE-SPRITE-EDITOR-20261009`: 기존3387 `/tools/engine-sprite-editor.html`에서 원본4프레임×8방향행과 시간별 키를 편집·재생·undo/redo·JSON 입출력한다. 기존 sprite clip 코어를 재사용하며 관절 편집기에 진입 링크1개를 추가했다. 원본 crop·수치·한도·검수는 [현재 스프라이트 편집기 계약](../5.0애니메이션파이프라인/EXODUSER_ENGINE_ANIMATION_20261009.md#2026-10-09--원본-스프라이트-모션-편집기) 우선. 첫 v1은9PASS/키시각FAIL1·locator준비FAIL1 별도, 2hunk 보정 뒤 새 한정v2 UI5PASS/console warn-error0. 실제 파일 다운로드 완료·본편 자동 적용·새3D모델/공격 미감·A급은 미인수이며 **VISUAL VERDICT: RETOUCH**. 사용자 main/저장 무조작, 완료 CPU 재실행0. 최종 증거 `E/engine-sprite-editor-20261009/completion.json`.
+
+
+## 2026-10-09 — 드루이드 보행·공격 원본 비율 보정
+
+`ROOT-DRUID-ORIGINAL-ASPECT-CONSUMER-20261009`: actual main normal walk/attack의 폭만 dh×cw/ch로 원본 셀 비율을 소비한다. 높이14.1r·spec9.3·base8/특수·원PNG·전투/save 유지. 실제 whole draw/native Canvas+원본PNG 최초4그룹PASS(Node0), 대기·야수 픽셀 불변/임시 UI 제거 뒤 editor 편집 exact 보존. 실제 rig GPU/정상 본편 보스전·새입체 모델·A급은 미인수, **VISUAL VERDICT: RETOUCH**. [정확 계약](../4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md#druid-original-aspect-20261009). 최종 증거 `E/druid-original-aspect-consumer-20261009/completion.json`.

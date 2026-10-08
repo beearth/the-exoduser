@@ -11088,6 +11088,7 @@ function _drawDruidBoss(X,e,sa,tdY,spec,parentScale,parentYOffset){
   const sx=Math.round(_fc*iw/cols),sy=Math.round(_fr*ih/rows);
   const cw=Math.round((_fc+1)*iw/cols)-sx,ch=Math.round((_fr+1)*ih/rows)-sy; // 비정수 시트도 정수 픽셀 경계로 샘플링
   let dw=e.r*spec.dw,dh=e.r*spec.dh;
+  if(_ch1NormalIntent&&(sheet==='walk'||sheet==='attack'))dw=dh*cw/ch; // Preserve the original normal-motion cell aspect.
   if(sheet==='beast'||sheet==='dive'||sheet==='transform'){dh=e.r*spec.dh;dw=dh*(cw/ch)*1.12;} // [넉넉] 정사각/세로 셀(돌진 야수/다이빙/변신) 비율보존+12% 여유 — 안 짤리게
   const _breath=sheet==='base8'?Math.sin(_nw*.003)*2:0;
   X.save();try{X.translate(e.x,e.y+(tdY||0)-6+_breath);const _un=1/(window._btScaleMul||1);X.scale(_un,_un);e._nameTopOff=(tdY||0)-6+_breath-dh*.86*_un-10; // 네임플레이트/HP바를 스프라이트 상단 위로(2026-08 유저요청: 다리 겹침 해소)

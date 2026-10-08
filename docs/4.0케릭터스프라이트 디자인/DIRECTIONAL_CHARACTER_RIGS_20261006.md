@@ -1408,7 +1408,7 @@ factory의 기존 기본 height=2.2는 보존되며 main adapter가 height1 rig�
 
 | 배치·자원 | 실제 계약 |
 |---|---|
-| 기존 크기 | dw=e.r×9.3,dh=e.r×14.1. 기존 `translate(e.x,e.y+tdY-6+breath)`와 inverse `_btScaleMul` 안에서 표시; 부모 중복 적용0 |
+| 현재 본체 크기 | dh=e.r×14.1. normal intent의 walk/attack은 dw=dh×cw/ch(정수 crop 셀 원본 비율), base8·그 외는 기존 dw=e.r×9.3 및 특수별 aspect 분기 유지. 기존 translate/inverse `_btScaleMul`·부모 공간 유지. [현행 원본 비율 계약](#druid-original-aspect-20261009) |
 | 로컬 변환 | heightWorld=dh×referenceHeight/ch; scaleX=dw×ch/(dh×cw); anchorLocalX=−dw/2+anchorX×dw/cw; anchorLocalY=−.86×dh+anchorY×dh/ch  HP/레벨의 후속 월드 앵커는 [현재 rig 상단 계약](#ch1-druid-rig-name-anchor-20261008)을 따름 |
 | 합성 | 20261007 당시 같은 rendered canvas/rect를 총3pass 재사용했다. 20261009 현행 normal 본체는 source-over sa 1회이며 상시 lighter2는 제거했다. 기존 finale tell/glow/name/leg fog, 원 PNG와 native special/death fallback 유지 |
 | renderer 한계 | local Three r160, padding2, backingScale≤4, backingDimension≤2048,dt≤.05; 반환 canvas,left,top,width,height. image 소유/추가 Image/fetch/clone/resize/clear/close0 |
@@ -1868,3 +1868,24 @@ VISUAL VERDICT: **RETOUCH**. 어깨 구형 윤곽을 제거했으나 얼굴/외�
 ## 2026-10-09 — 자체 엔진의 원본 스프라이트 편집
 
 `ROOT-ENGINE-SPRITE-EDITOR-20261009`: 기존3387 `/tools/engine-sprite-editor.html`에서 원본4프레임×8방향행과 시간별 키를 편집·재생·undo/redo·JSON 입출력한다. 기존 sprite clip 코어를 재사용하며 관절 편집기에 진입 링크1개를 추가했다. 원본 crop·수치·한도·검수는 [현재 스프라이트 편집기 계약](../5.0애니메이션파이프라인/EXODUSER_ENGINE_ANIMATION_20261009.md#2026-10-09--원본-스프라이트-모션-편집기) 우선. 첫 v1은9PASS/키시각FAIL1·locator준비FAIL1 별도, 2hunk 보정 뒤 새 한정v2 UI5PASS/console warn-error0. 실제 파일 다운로드 완료·본편 자동 적용·새3D모델/공격 미감·A급은 미인수이며 **VISUAL VERDICT: RETOUCH**. 사용자 main/저장 무조작, 완료 CPU 재실행0. 최종 증거 `E/engine-sprite-editor-20261009/completion.json`.
+
+
+<a id="druid-original-aspect-20261009"></a>
+## 2026-10-09 — 본편 드루이드 보행·공격 원본 비율
+
+`ROOT-DRUID-ORIGINAL-ASPECT-CONSUMER-20261009`. 공격·보행의 정사각 셀을 대기 원화용 tall spec 비율9.3/14.1로 표시하던 가로 축소를 제거했다. main `_drawDruidBoss`의 normal intent이며 sheet가 walk 또는 attack일 때만 `dw=dh*cw/ch` 한 hunk를 적용한다.
+
+| 항목 | 정확한 현재 계약 |
+|---|---|
+| 원본/crop | walk·attack887×1774/4×8, 기존 round 정수 경계 그대로. cw/ch는 선택된 셀의221/222px 실제 크기. 원 PNG 수정0 |
+| 폭/높이 | dh=r×spec.dh=r×14.1 유지. normal walk/attack 폭=dh×cw/ch, 따라서 destination w/h=source cw/ch. spec.dw9.3 자체는 유지하며 normal base8·inactive/hit/death·special은 이 새 분기 대상 아님 |
+| 제외 | base8 기존 dw=r×9.3/dh=r×14.1. beast/dive/transform의 기존 dw=dh×cw/ch×1.12·emerge와 특수 동작은 그대로 |
+| native/rig | 같은 계산 dw/dh를 native drawImage와 `_drawCh1DruidRigBody` 인자에 전달. 기존 adapter scaleX=dw×ch/(dh×cw)는 새 대상에서1로 환산. 실제 rig GPU 픽셀 검수는 별도 미완료 |
+| 위치·전투 | 기존 source/방향/frame/clip·translate/부모 inverse·anchor 식·name/flash·공격 상태·준비/타격/회복 시간·피해·RNG·radius/collision/nav/save 불변. 맵 geometry/카메라 수정0 |
+| source 판단 | 기존 rig_motion 한정 source 조사: slam은 최종_CH1 moveset에서 도달 가능하지만 준비1/active2 뒤 recover 셀3은 미연결. 이 단위는 해당 모션 정책을 추가하지 않음. 원본 셀2는 시전 자세이며 내려찍기 작화 완성으로 세지 않음 |
+| 최초 실제 검수 | 새로운 actual whole `_drawDruidBoss`+`_drawDruidReadableBody`를 native Canvas/원PNG로 실행. 통제 state/direction/intent·rig false port, 4그룹 PASS/FAIL0: 보행/공격 원본 비율·높이 보존/동일 rig 폭 인자, 대기/야수변신 before-after pixel byteexact. Node CPU0·이전 완료 suite 재실행0 |
+| fixture | own IAB16의 임시 DOM 비교만. r16,parentScale4/inverse4,canvas464×246,performance.now600,표시방향0; 대기/야수 제외 검수는방향7. 실제 main·전체adapter·정상 줌 실전 아님 |
+| 정리 | 임시 DOM 제거 뒤 기존 편집기 clip/time/frame/history exact 보존·console warn/error0. 사용자 게임14·서버·save 무조작. HTTP응답 fullbyte/API/storage/save oracle 미측정 |
+| 판정 | **VISUAL VERDICT: RETOUCH**. 전후 Canvas에서 가로 눌림 해소 직접 관측. 새 입체 모델/360° 후면·공격 미감·본편 정상 보스전/native6/성능·청취/실보상save·A급 미완료 |
+
+외부 증거: `E/druid-original-aspect-consumer-20261009/`의 implementation.json/native-fixture.js/native-result.json/native-before-after.png 및 최종 completion.json. 현재 normal 모션 폭 계약이 이전 고정9.3r×14.1r 본체 설명보다 우선한다. corpse bitmap·카메라 추정 spec 계산은 기존 값 그대로이며 이번 표시 폭과 혼동하지 않는다.

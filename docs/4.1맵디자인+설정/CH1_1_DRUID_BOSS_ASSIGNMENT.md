@@ -16,7 +16,7 @@
 | 항목 | 현행 값 / 적용 위치 |
 |---|---|
 | 스테이지 / 표시 이름 | si0 / `HELL_BOSSES[0][0]='다크드루이드'`, `STG[0].bn`·보스 HUD·등장 타이틀 |
-| 외형 | `_CODEX_BOSS[0]=_CODEX_BOSS[3]`, use2D=true, anim=true, dw=9.3, dh=14.1 (기존 대비 1.5배, r=44 기준 높이 620.4px). 기본 대기는 `8dir_v3.png` 1656×1240/4×2 방향 셀(414×620), 이동/공격은 기존 `walk.png`/`attack.png` 4×8, 순간이동은 `emerge.png` 4×2 사용. 비정수 셀은 렌더에서 정수 픽셀 경계로 샘플링. 원본 walk/attack의 가장자리 손실은 후속 시트 보정 과제 |
+| 외형 | `_CODEX_BOSS[0]=_CODEX_BOSS[3]`, use2D=true, anim=true, spec dw=9.3, dh=14.1 (기존 대비 1.5배, r=44 기준 높이 620.4px); 20261009 normal walk/attack 표시 폭은 dh×cw/ch 우선. 기본 대기는 `8dir_v3.png` 1656×1240/4×2 방향 셀(414×620), 이동/공격은 기존 `walk.png`/`attack.png` 4×8, 순간이동은 `emerge.png` 4×2 사용. 비정수 셀은 렌더에서 정수 픽셀 경계로 샘플링. 원본 walk/attack의 가장자리 손실은 후속 시트 보정 과제 |
 | 3D / 거대 플래그 | use2D로 3D overlay 차단; `_enterBossArena`에서 si0 `_isLargeBoss=true` 할당 제거 |
 | 속성 | `STG` 생성 `be:th.be`; CH1 EL.P=0. 구 si0 EL.F 강제 지정 제거. 독 디버프는 전용 패턴의 기존 규칙 |
 | 무브셋 | `_BOSS_MOVESET[0]=new Set(_BOSS_MOVESET[3])`; 23종: slashCombo, slam, sweep, charge, jump, burst, shock, fan, groundFissure, poisonTrail, spin, grab, multiDash, tideWave, chaseAoe, elemBall, beanStorm, summon, mine, seekerMines, lavaPools, rapidMissile, burrowStrike |
@@ -34,7 +34,7 @@
 | 항목 | 계약 |
 |---|---|
 | 크기 원인 | 드루이드 전용 렌더의 `1/_btScaleMul`이 공통 확대를 상쇄한다. 구 기본 박스 높이 44×9.4=413.6px. 원래보다 작아진 이력 자체는 미확정이며 이번 수정은 명시적 1.5배 확대다 |
-| 크기 수정 | si0/si3 공유 spec dw=9.3, dh=14.1. 걷기/공격/변신/잠행 출현 모두 적용. 테스트베드 공통 배율 상쇄는 유지 |
+| 크기 수정 | si0/si3 공유 spec dw=9.3, dh=14.1은 유지. 20261009 normal 걷기/공격만 실제 dw=dh×cw/ch 우선, base8·변신/잠행은 기존 개별 분기. 테스트베드 공통 배율 상쇄 유지 |
 | 기술 차단 | `_BOSS_MOVESET[3].delete('cageTrap')` 후 si0 복제. 직접 cageTrap 실행도 si0/si3에서는 생성·소리 없이 recover/25f로 종료 |
 | 보존 | 다른 보스 cageTrap, 플레이어 boneWall/boneStorm, 공용 뼈감옥 이미지·효과는 유지 |
 | 회귀 검사 | 배정/강제 감옥 차단/공용 뼈감옥/문법 7개 PASS |
@@ -83,7 +83,7 @@
 | gate | localhost/127.0.0.1:3387·ch1Three=1·ch1Rig=1 명시 opt-in/defaultOFF; production_finish/smoothing. field200×200와 boss arena128×108 |
 | normal | base8 idle:방향8셀 중 최종셀,index0/count1/phase.5; walk/attack:4frame,phase=(index+.5)/4. special/death/hit/revive pending는 원시트 fallback |
 | 원시 픽셀 | base8 1656×1240/4×2/414×620, walk/attack887×1774/4×8/정수round경계. 추가 이미지 acquire/clone/resize0 |
-| 크기 | dw=e.r×9.3,dh=e.r×14.1,기존 tdY−6+breath와 inverse_btScaleMul 보존; idle anchor207,603/ref591,walk/attack anchor w/2,h/refh |
+| 크기 | dh=e.r×14.1,normal walk/attack의 dw=dh×cw/ch·base8의 dw=e.r×9.3,기존 tdY−6+breath와 inverse_btScaleMul 보존; idle anchor207,603/ref591,walk/attack anchor w/2,h/refh |
 | owner | 동일 G/map/ens/e + scene/lifeGeneration/imageGeneration/selectedFrame·sheetRecord. 죽음·부활·페이즈·특수의도 전환을 e identity만으로 승인하지 않음 |
 
 상세 API·source3 전체 핀·검수 epoch와 한계는 `docs/4.0케릭터스프라이트 디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md`의 동일 completion 절을 따른다. 기존 source23 착지 전조·source27 transient 등 과거 완료는 해당 원 epoch 그대로 보존한다.
@@ -163,3 +163,8 @@ CH1-1 보스 배정/arena geometry 변경0. 직전 드루이드 본체의 상단
 최종 `game.html` working **4,108,637B / SHA256 `e126009e20157a98c0561e3a3f111d94372b26df39bb45964e4d6591af31c757`**, ROOT owned **4,108,452B / `6787cb308cf3d085c5821d3b9eed95e2d760eb584473f3ceec2dbfcb816ed981`**의 2hunk 기준이다. foreign185B는 미채택 기존 바이트로 보존한다.
 
 전체 정확 source/currentness·실행 이력·§23 보고와 다음 Gate는 [MAP_RUNTIME_ARCHITECTURE](MAP_RUNTIME_ARCHITECTURE.md)의 같은 TASK 절을 따른다. ROOT 완료소유 Git 보존 전이며 새 게임·맵·원PNG/nav/scene 변경0이다.
+
+
+## 2026-10-09 — 드루이드 보행·공격 원본 비율 보정
+
+`ROOT-DRUID-ORIGINAL-ASPECT-CONSUMER-20261009`: actual main normal walk/attack의 폭만 dh×cw/ch로 원본 셀 비율을 소비한다. 높이14.1r·spec9.3·base8/특수·원PNG·전투/save 유지. 실제 whole draw/native Canvas+원본PNG 최초4그룹PASS(Node0), 대기·야수 픽셀 불변/임시 UI 제거 뒤 editor 편집 exact 보존. 실제 rig GPU/정상 본편 보스전·새입체 모델·A급은 미인수, **VISUAL VERDICT: RETOUCH**. [정확 계약](../4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md#druid-original-aspect-20261009). 최종 증거 `E/druid-original-aspect-consumer-20261009/completion.json`.

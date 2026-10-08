@@ -207,7 +207,7 @@ shake(14 + _bp*4)                              // 페이즈별 18~30
 
 ### `cageTrap` 뼈감옥 전투·VFX 계약 (2026-09-03)
 
-> 2026-09-06: 다크드루이드(si0/si3)는 cageTrap 사용 금지. 무브셋에서 제외하고 강제 실행도 recover/25f로 종료하며 감옥·생성음을 만들지 않는다. 다른 보스와 플레이어 뼈감옥은 아래 계약 유지. 드루이드 본체 dw=9.3/dh=14.1(1.5배), r=44 피격 판정 불변.
+> 2026-09-06: 다크드루이드(si0/si3)는 cageTrap 사용 금지. 무브셋에서 제외하고 강제 실행도 recover/25f로 종료하며 감옥·생성음을 만들지 않는다. 다른 보스와 플레이어 뼈감옥은 아래 계약 유지. 당시 드루이드 spec dw=9.3/dh=14.1(1.5배), r=44 피격 판정 불변. 20261009 normal walk/attack의 실제 폭은 원본 셀 비율 dw=dh×cw/ch를 우선하며 base8·특수는 기존 분기다.
 
 | ID | 한글명 | 생성 위치 | 반경 | 경고 | 총 수명 | 피해 | 타격 조건 |
 |---|---|---|---:|---:|---:|---:|---|
@@ -828,7 +828,7 @@ X.translate(Math.round(C.width/2 - G.cam.x + sx), Math.round(C.height/2 - G.cam.
 | 보간 | `camSpd=1-pow(P.s==='dodge'?.85:P.s==='attack'?.95:.92,_dtSp)`; lookahead=`P.vx/vy*25`, smooth=`1-pow(.9,_dtSp)` |
 | 기본 보스 추적 | `_btActive` 아님·살아 있는 bossRef이면 P/보스 각 .5 중간점+lookahead*.3; finale 기존 frame 우선 |
 | 다음 zoom | `_czTgt=finaleFrame?finaleFrame.zoom:aliveBoss?0.80:1.0`; `_z0=G._camZoom||1`; `_zRate=1-pow(finaleFrame?(_czTgt<_z0?.88:.98):.94,_dtSp)`; `_zNext=_z0+(_czTgt-_z0)*_zRate` |
-| 본체 | `_dw=cb.r*cs.dw`, `_dh=cb.r*cs.dh`; 현재 dw9.3/dh14.1 calibration 유지 |
+| 카메라 추정 본체 | `_dw=cb.r*cs.dw`, `_dh=cb.r*cs.dh`; 기존 spec dw9.3/dh14.1 calibration 유지. 실제 normal walk/attack 표시 폭의 원본 셀 비율 보정과 별도 |
 | 기준 Y | `_mul=_btScaleMul||1`, `_off=_btOffsetY||0`, `_drop=cb._teleDropY||0`; `_base=cb.y+_off+_mul*(_drop-6)` |
 | 호흡 | base8만 `_breath=abs(_mul)*2`, 그 외0. 부모 scale은 body 역scale과 상쇄하나 translation에는 남음 |
 | 합성 bounds | left=`min(cb.x-dw/2,P.x-P.r)`, right=`max(cb.x+dw/2,P.x+P.r)`, top=`min(base-dh*.86-breath,P.y-P.r)`, bottom=`max(base+dh*.14+breath,P.y+P.r)` |
@@ -1092,3 +1092,8 @@ X.translate(Math.round(C.width/2 - G.cam.x + sx), Math.round(C.height/2 - G.cam.
 ## 2026-10-09 — 자체 엔진 sprite clip의 확산탄 연결
 
 `ROOT-DRUID-FAN-SPRITE-ENGINE-CONSUMER-20261009`: 실제 fan 준비의 성공한 본체 표시 후, 기존 발사 prefix 완료를 소비해 원본 attack 셀1→2→3을 선택한다. 기존 recover45/보스 cap20을 유지하며 st2>6은 시전2(초기45 포함),0<st2<=6은 복귀3(정확 선택은 clip sample 수식). 새 pattern/update 진입 prune과 G/map/ens/life/phase 소유검사, module 미로드 기존폴백. 전투 시간·피해·탄·RNG·원PNG/save 변경0. transform clip 자동선택/새 입체 모델은 미구현이다. 최초 새 CPU7그룹 PASS/Node1·before1별도, native 원본3자세와 clock 진행은 통제fixture 한정. 사용자 main 무조작·실전/청취/save/A급 미완료, **VISUAL VERDICT: RETOUCH**. [정확 계약](../4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md#druid-fan-sprite-engine-20261009). 최종 소유 Git·증거는 `E/druid-fan-sprite-engine-consumer-20261009/completion.json`.
+
+
+## 2026-10-09 — 드루이드 보행·공격 원본 비율 보정
+
+`ROOT-DRUID-ORIGINAL-ASPECT-CONSUMER-20261009`: actual main normal walk/attack의 폭만 dh×cw/ch로 원본 셀 비율을 소비한다. 높이14.1r·spec9.3·base8/특수·원PNG·전투/save 유지. 실제 whole draw/native Canvas+원본PNG 최초4그룹PASS(Node0), 대기·야수 픽셀 불변/임시 UI 제거 뒤 editor 편집 exact 보존. 실제 rig GPU/정상 본편 보스전·새입체 모델·A급은 미인수, **VISUAL VERDICT: RETOUCH**. [정확 계약](../4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md#druid-original-aspect-20261009). 최종 증거 `E/druid-original-aspect-consumer-20261009/completion.json`.
