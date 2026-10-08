@@ -1,3 +1,5 @@
+2026-10-08 Rift native audio 보완: 무음 녹화에 기존 주제가의 편집 BGM을 audio spine으로 한 번 배치, 세로 KR tag는 Noto Sans KR asset shaping으로 지정. 해당 제작 정본에 동기화. ae82d96e에서 빠진 docs 기록을 즉시 보충한다.
+
 ## 2026-10-08 지옥의 틈 개발 기록 01 제작 시작
 
 | 항목 | 내용 |
