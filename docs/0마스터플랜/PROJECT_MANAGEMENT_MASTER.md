@@ -5159,3 +5159,8 @@ alpha/nav/crop/UV/geometry/opacity/renderOrder/resource/dispose·skirt/backplane
 ### 2026-10-08 — 본편 드루이드 원본 자세 보존
 
 2026-10-08 원본 복구 v5 뒤 당시 game adapter 두 import와 factory import는 `druid-authored-pose-20261008-v6`였다. 2026-10-09 소환 표시 후속의 현재 game adapter 두 import는 `druid-summon-display-20261009-v7`, 변경 없는 factory import는 v6 유지다. borrowedSheet Druid의 pose()는 rest 복구 후 범용 흔들림·공격 변형을 생략한다. 그려진 셀/방향·프레임시간·전투/save는 보존. sheet 없는 기존 경로는 유지한다. 최초 준비 URL 오류(제품未도달)와 보정 뒤6그룹 CPU PASS는 별도 이력이며 본편 화면/GPU·입체 모델·A급 인수는 미완료다. [정본 계약](../4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md).
+
+
+## 2026-10-09 — 자체 엔진의 키프레임 모션 편집 기능
+
+`ROOT-ENGINE-MOTION-EDITOR-20261009`: 공통 `animation-clip.mjs`와 실제 Bone을 소비하는 `engine-motion-editor.html/.mjs` 구현. 계층/XYZ 속성/키 기록·삭제/타임라인/linear·smooth·step/undo40/JSON 입출력. 기존 원화 스킨12 Bone/1120삼각형 예제이며 새 입체 모델·본편 적용·A급 완성이 아니다. 실제 코어 Node1/13그룹PASS, 첫 UI 기록 실패2건 보존 뒤 최종 실제 UI8동작PASS, native 다운로드 완료1미확인(10초 event timeout)·JSON 노출 대안. 게임/save/원PNG/scene/nav·사용자 main 무조작, RETOUCH. 사용자 “우리 앤진” 지시를 우선하고 사용량 목표/새 병렬 라운드 없이 한 기능씩 진행한다. [정확 API·한도·검수·남은 범위](../5.0애니메이션파이프라인/EXODUSER_ENGINE_ANIMATION_20261009.md).
