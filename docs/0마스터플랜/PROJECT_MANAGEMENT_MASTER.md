@@ -1,3 +1,7 @@
+## 2026-10-08 — 에디터 선택 맞춤 · Shift+F
+
+큰 이미지 또는 같은 층의 복수 선택을 회전·반전·pivot·시차까지 반영해 화면에 맞춘다. CSS 여백 min(40,축*.1), 줌 상한3; 카메라만 변경하고 배치/history/save는 유지한다. busy/play/dialogue/drag/pending 및 입력 폼 guard 적용. 최초 통제 검사10 PASS·2 setup FAIL 뒤 test port만 보정하여 실패2만 PASS; native 화면 미검수/**RETOUCH**. [정확 계약·§23 보고](../4.1맵디자인+설정/MAP_SCENE_EDITOR_20261005.md#editor-frame-selection-20261008). 최종 정상 보존 결과는 외부 `editor-frame-selection-20261008/completion.json`. 기존 열린 탭 재로드0/새 전문 배정0.
+
 ## 2026-10-08 — 1-1 양옆 골짜기 구현·팀 상태
 
 [정확 계약·검수·§23 보고](../4.1맵디자인+설정/CH1_SIDE_RAVINE_RELIEF_20261008.md). `ch1-side-ravines.js`를 실제 main 바닥에 연결: 서420/220/86·동500/300/128(width/renderDepth/renderRise), 기존 m_c1gedge 재질·live wall3×3 보호. 새 물리 고도/추락/보행/충돌 변경0. source-raster SIDE L/R만 검수, 실제 게임8camera·GPU·청취·save 미인수 / **RETOUCH**. 아래 기존 hill·경계·원화 설명은 각 모듈/시점 계약을 유지한다.

@@ -70,3 +70,33 @@ export function focusObjectFoot(scene,layerId,objectId) {
   if(!Number.isFinite(x) || !Number.isFinite(y)) throw new Error('객체 보기 카메라 좌표 오류');
   return {x,y};
 }
+
+/** Fit transformed selected image rectangles without changing scene or selection. */
+export function frameLayerObjects(scene,layerId,objectIds,screenWidth,screenHeight) {
+  if(!Array.isArray(objectIds) || !objectIds.length || objectIds.length>2000 || new Set(objectIds).size!==objectIds.length) throw new Error('선택 객체 목록 오류');
+  objectIds.forEach(id=>text(id,'객체 ID'));
+  number(screenWidth,1,100000,'화면 너비'); number(screenHeight,1,100000,'화면 높이');
+  const l=activeLayer(scene,layerId), p=l.parallax;
+  if(!l.visible || p===0) return null;
+  const w=record(scene.world,'월드');
+  number(w.cols,10,300,'월드 가로 타일'); number(w.rows,10,300,'월드 세로 타일'); number(w.tileSize,8,128,'월드 타일 크기');
+  if(!Number.isInteger(w.cols) || !Number.isInteger(w.rows)) throw new Error('월드 타일 수는 정수여야 합니다');
+  const byId=new Map(l.objects.map(o=>[o.id,o]));
+  let minX=Infinity,minY=Infinity,maxX=-Infinity,maxY=-Infinity;
+  for(const id of objectIds) {
+    const o=byId.get(id);if(!o) throw new Error('선택 객체를 찾을 수 없습니다');
+    number(o.pivotX,0,1,'기준점 x'); number(o.pivotY,0,1,'기준점 y'); number(o.rotation,-360,360,'회전');
+    if(typeof o.flipX!=='boolean') throw new Error('반전 설정 오류');
+    const a=o.rotation*Math.PI/180,c=Math.cos(a),s=Math.sin(a),sign=o.flipX?-1:1;
+    for(const u of [0,o.width]) for(const v of [0,o.height]) {
+      const dx=(u-o.width*o.pivotX)*sign,dy=v-o.height*o.pivotY;
+      const x=o.x+dx*c-dy*s,y=o.y+dx*s+dy*c;
+      minX=Math.min(minX,x);maxX=Math.max(maxX,x);minY=Math.min(minY,y);maxY=Math.max(maxY,y);
+    }
+  }
+  const padX=Math.min(40,screenWidth*.1),padY=Math.min(40,screenHeight*.1);
+  const zoom=Math.min(3,(screenWidth-padX*2)/(maxX-minX),(screenHeight-padY*2)/(maxY-minY));
+  const x=((minX+maxX)/2-(1-p)*w.cols*w.tileSize/2)/p,y=((minY+maxY)/2-(1-p)*w.rows*w.tileSize/2)/p;
+  if(![x,y,zoom].every(Number.isFinite) || zoom<=0) throw new Error('선택 맞춤 카메라 오류');
+  return {x,y,zoom};
+}

@@ -15,7 +15,7 @@
 | 구조·수학 | `tools/map-scene-core.js` — validate/decode/encode/local/hit/canWalk/resize/route/History/serializedBytes/projectSource/unityPlacement/placementDefaults/capturePlacement |
 | Unity 메타 | `tools/map-scene-unity.js` — 제한된 단일 Sprite TextureImporter 필드 reader, parseMeta |
 | 편집·렌더 | `tools/map-scene-editor.js` — preset/asset/변형/레이어/보행/저장·복원·내보내기 |
-| 객체 목록·카메라 조회 | `tools/map-scene-object-list.mjs` — inspectLayerObjects/focusObjectFoot, 선택/보기만 제어 (§18) |
+| 객체 목록·카메라 조회 | `tools/map-scene-object-list.mjs` — inspectLayerObjects/focusObjectFoot/frameLayerObjects, 목록·발 위치 보기·선택 맞춤 (§18 및 2026-10-08 선택 맞춤) |
 | 객체 목록 검수 | `tools/test-map-scene-object-list.cjs` — 신규14/14·실제1회 PASS (§18) |
 | 복수 이동 core·검수 | `tools/map-scene-core.js` translateObjects + `tools/test-map-scene-batch-translate.cjs` 신규13/13·실제1회 PASS (§19) |
 | 시험 캐릭터 | `tools/map-scene-actor.js` — 기존8방향 전사 idle/walk, 이미지 씬 전용 |
@@ -92,7 +92,7 @@
 | 길 브러시 | 반경0~12 tiles, 기본2, 원형 칠하기/막기. 드래그 구간은 T/2 간격 보간 |
 | 선택/길/막기 | V/B/E. 시작/출구는 툴 버튼, 월드 범위 clamp |
 | 화면 이동·확대 | Space+드래그/가운데 또는 오른쪽 버튼, 휠×1.12/÷1.12, 버튼×1.2/÷1.2, 줌 .025~3. 전체 fit·카메라 프레임 줌은 별도 계산 |
-| 단축키 | Ctrl/⌘S 저장, Ctrl/⌘Z Undo, Shift+Z 또는 Y Redo, Delete/Backspace 단일객체 삭제(복수선택중차단), ESC 선택/시험 종료. 입력 필드와 로딩 busy 동안 전역 편집 키 차단. 폼 focusin에서 기존 held 이동·Space 해제 (§19) |
+| 단축키 | Shift+F 선택 맞춤(편집 중 유효한 단일/복수 선택), Ctrl/⌘S 저장, Ctrl/⌘Z Undo, Shift+Z 또는 Y Redo, Delete/Backspace 단일객체 삭제(복수선택중차단), ESC 선택/시험 종료. 입력 필드와 로딩 busy 동안 전역 편집 키 차단. 폼 focusin에서 기존 held 이동·Space 해제 (§19) |
 | 캔버스 | DPR 최대2, 변경 또는 시험 이동 때 redraw |
 | 보행 시험 | MapSceneActor 기존8방향 PNG1008×48/21셀 중 첫10셀. source cell48², idle0~1/850ms, walk2~9/110ms, south 본체29px→80 world px의 고정80/29배율·source foot43, full frame alpha 보존 |
 | 방향 중심 | east/se/s/sw/w/nw/n/ne 순 source center [22.5,22.5,22,25.5,25,23.5,23.5,21.5], idle0 기준 고정. 프레임별 recenter/rescale0 |
@@ -2282,3 +2282,89 @@ GIT
 - deploy: NOT_RUN
 VISUAL VERDICT: RETOUCH / UI_NOT_ASSESSED
 NEXT PASS: permitted native selection→reveal→property editing workflow; actual CH1 gameplay/sprite/boss work remains unfinished.
+
+
+<a id="editor-frame-selection-20261008"></a>
+## 2026-10-08 — 선택 맞춤 · Shift+F
+
+`ROOT-EDITOR-FRAME-SELECTION-20261008`. 큰 절벽 이미지나 같은 층의 복수 선택을 한 화면에 맞추는 실제 에디터 카메라 기능이다. 인스펙터의 **선택 맞춤 · Shift+F** 버튼 또는 Shift+F를 사용한다. Godot의 [Frame to Selection 원리](https://docs.godotengine.org/en/stable/tutorials/2d/introduction_to_2d.html)를 현재 Canvas 에디터에 직접 구현했다. 기존 발 위치 보기와 전체 fit은 그대로 유지한다.
+
+| id / 적용 위치 | 현행 계약 |
+|---|---|
+| `frameLayerObjects(scene,layerId,objectIds,screenWidth,screenHeight)` | 활성 층의 선택 이미지 사각형 네 모서리에 pivot→flipX→rotation→world 위치를 적용하고 AABB 합집합 계산. 원본 alpha 실루엣/crop 내용 경계 추정0 |
+| 카메라 중심 | 시차 p>0에서 `(boundsCentre-(1-p)*worldCentre)/p`. 시차0·숨긴 층은 null. locked 층은 읽기 전용 보기 허용 |
+| 줌·여백 | 축별 CSS px 여백 `min(40,screenDimension*.1)`, `min(3,usableWidth/boundsWidth,usableHeight/boundsHeight)`. 전체 fit처럼 .025 하한을 적용하지 않아 매우 큰 선택도 수용. DPR 추가 곱0, frame 직후 world clamp0 |
+| 입력 검증 | objectIds 고유1..2000, 화면 각 축1..100000; 기존 world cols/rows 정수10..300·tileSize8..128 및 객체 좌표/크기 계약. 선택 pivot0..1/rotation−360..360/flipX boolean, 결과 finite·zoom>0 필수 |
+| `frameSelected()` | 같은 층의 batch가2개 이상이면 batchIds, 그 외 단일 selectedPair. viewport 교체·held 해제·dirty redraw·canvas focus만 수행. scene/선택/batch/history/nav/save 변경 호출0 |
+| 차단 | busy/play/dialogue/drag/history.pending/모듈 미준비/선택 없음/숨긴 층/시차0. 버튼 UI 갱신과 실행 시 내부 guard 모두 적용. drag 도중 버튼 외형 갱신 전에도 action guard 유효 |
+| 키보드 | 편집 중 Shift+F만, Ctrl/Meta/Alt/repeat/composition/contenteditable 차단. 기존 input/select/textarea guard 유지. 보행 시험의 기존 F 대화 분기 우선, 새 버튼의 Enter/Space 기본 동작 허용 |
+| 로드 | editor script `?v=20261008-frame-selection`, object-list import `?frame=20261008`. 새 Image/RAF/timer/저장 형식/에셋/scene/nav 파일0 |
+| 검수 | 신규 `tools/test-map-scene-frame-selection.cjs` 실제 helper/action/whole keydown의 통제 port 검사. 최초 Node: 12 중10 PASS·2 setup FAIL(MapSceneCore require 반환값 오인); test port만 globalThis.MapSceneCore로 보정한 다음 Node에서 실패했던2만 PASS/exit0. 이미 통과10 재실행0, 물리 Node2. 최초 literal Node exit 미기록(cat exit0과 구분), unhandled 별도계측0 |
+| 근거·한계 | 회전·반전·복수·시차·극대 선택·실제 기존 Rift 씬 read-only·입력/상태 guard 확인. 독립 source 정적 peer blocker0. browser boot/실제 DOM 배치·focus/네이티브 입력/640·1280/GPU/음향/실저장 미검수. 기존 열린 탭 재로드0 |
+
+### MAP PRODUCTION REPORT — 선택 맞춤 단위
+
+```text
+STAGE: 기존 이미지 씬 에디터의 선택 카메라 기능
+MASTER
+- silhouette: 변경0
+- regions: 변경0
+- main route: 변경0
+- side spaces: 변경0
+OUTER MASS
+- LEFT: 변경0
+- RIGHT: 변경0
+- TOP: 변경0
+- SOUTH: 변경0
+- major holes: 실제 에디터 화면/초점/장치 입력 미인수
+LARGE
+- source assets: 새 원화/PNG0; 기존 선택 이미지 bounds만 사용
+- composites: 변경0
+- overlap: 배치 변경0; alpha 실루엣 기준 fit 아님
+- repeated silhouette: 변경0
+MEDIUM
+- connections: 변경0
+- remaining holes: 기존 맵 연결 인수는 별도
+GROUND
+- shadow: 변경0
+- contamination: 변경0
+- structure integration: 변경0
+PLAYABLE
+- main arenas: 변경0
+- travel space: 변경0
+- breathing space: 변경0
+- threat space: 변경0
+- combat readability: 본편 미검수
+LANDMARK
+- primary: 변경0
+- secondary: 변경0
+- tertiary: 변경0
+CAMERA QA
+- START: native NOT_RUN
+- EARLY: native NOT_RUN
+- ARENA: native NOT_RUN
+- SIDE L: native NOT_RUN
+- SIDE R: native NOT_RUN
+- LANDMARK: native NOT_RUN
+- LATE: native NOT_RUN
+- EXIT: native NOT_RUN
+TECH QA
+- route: nav 변경0; 실제 왕복 미검수
+- collision: 변경0; 실제 충돌 미검수
+- pageerror: 실제 browser 미관측; whole editor classic 구문 통제 검사 포함
+- 404: 미관측
+- seam: 렌더/geometry 변경0; 실pixel 미검수
+- loading: script/import 버전 연결 정적 확인; 실제 boot 미검수
+- performance: 선택 때 bounds 계산; 실측 미실시
+FILES
+- stage-owned: editor.html / tools/map-scene-editor.js / tools/map-scene-object-list.mjs / tools/test-map-scene-frame-selection.cjs 및 관련docs5
+- concurrent touched: 타인 WIP 변경0
+- unrelated touched: game/settings3.3/기존PNG/scene/nav/save 변경0
+GIT
+- staged: 정확 소유 code4/docs5; 최종 결과는 외부 editor-frame-selection-20261008/completion.json
+- commit: 위 completion의 최종 commit 우선
+- push: 위 completion의 실제 일반 push/remoteexact 결과 우선
+- deploy: 없음
+VISUAL VERDICT: RETOUCH / UI_NOT_ASSESSED / native NOT_RUN
+NEXT PASS: 사용자가 정상 로드한 에디터에서 단일/복수 선택의 화면 맞춤·초점·모바일 버튼 배치 확인. 본편 높낮이/캐릭터2.5D/청취/보상save는 별도 미완료.
+```

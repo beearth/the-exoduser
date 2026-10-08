@@ -1,6 +1,6 @@
 ## 최신 직접 지시 — 2026-10-08: 실제 제작 한 건씩
 
-최신 제품은 `ROOT-HELLGUNNER-LEAP-MAIN-20261008`: 제한된 본편 시험 SPACE에 역추진 이동/충돌·ST비용·무적·반동 피해를 연결했다. LMB/RMB/SPACE 기본 시험 킷만 연결된 상태이고 정식 캐릭터·전용sprite/2.5D·native는 미완료다. 완료된 LMB/RMB/에디터 작업은 반복하지 않는다. [현재 수치·검수 정본](../2_1%20스킬관리+합체시스템+자원/신규캐릭_스킬프로젝트_20260930.md#hellgunner-leap-main-20261008)과 외부 `hellgunner-leap-main-20261008/completion.json`의 최종 원격 결과를 따른다.
+최신 제품·정확 HEAD는 [PROJECT_MANAGEMENT_MASTER 맨 앞](PROJECT_MANAGEMENT_MASTER.md)과 각 외부 completion 정본을 따른다. CH1 양옆 골짜기 렌더는 474b9aae4d5454a12e62589044b9dfa7abf2943f로 보존했고 물리 고도·native는 미인수다. 후속 `ROOT-EDITOR-FRAME-SELECTION-20261008`은 선택 맞춤(Shift+F)의 카메라 기능이며 [실제 계약](../4.1맵디자인+설정/MAP_SCENE_EDITOR_20261005.md#editor-frame-selection-20261008)과 외부 `editor-frame-selection-20261008/completion.json`을 따른다. 아래 헬거너·과거 팀 관측은 작성 시점 이력이다. LMB/RMB/SPACE 기본 시험 킷만 연결되어 정식 캐릭터·전용sprite/2.5D·native는 여전히 미완료이며 완료 작업을 반복하지 않는다.
 
 “천천히 해라”와 사용량 대비 결과물 지적이 과거 하루15% 사용·병렬속도 목표보다 우선한다. 사용량을 맞추거나 반복 조사/원문/보고서 확대를 위해 작업하지 않는다. 우선 제작은 틈과 보스·캐릭터 2.5D, 신규 캐릭터 스킬·스프라이트, 기존 에디터의 실용 기능이다. Godot/다른 엔진의 제작 원리를 현재 코드에 응용하며 별도 엔진 설치·교체는 하지 않는다.
 
