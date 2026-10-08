@@ -1,0 +1,58 @@
+[
+  {
+    "filename": "EXODUSER_STEAM_37S_1080P30.mp4",
+    "title": "EXODUSER: HELL LORD — Parry, Rage & Ice Orbs | Free Steam Demo",
+    "url": "https://youtu.be/WTwXcdeTCFg",
+    "status": "PUBLISHED",
+    "proof": "youtube-master-published.jpg"
+  },
+  {
+    "filename": "EXODUSER_SHORTS_A_16S_1080P30.mp4",
+    "title": "Parry, Reflect, Strike Back | EXODUSER: HELL LORD",
+    "url": "https://youtube.com/shorts/50eBpMxlkP0?feature=share",
+    "status": "PUBLISHED",
+    "proof": "youtube-1-published.jpg"
+  },
+  {
+    "filename": "EXODUSER_SHORTS_B_26S_1080P30.mp4",
+    "title": "Ice Orbs Against the Crowd | EXODUSER: HELL LORD",
+    "url": "https://youtube.com/shorts/NBOcxJgM-pA?feature=share",
+    "status": "PUBLISHED",
+    "proof": "youtube-2-published.jpg"
+  },
+  {
+    "filename": "EXODUSER_WARRIOR_STORY_V25_20261001.mp4",
+    "title": "The Warrior's Fall | EXODUSER: HELL LORD — Story Cinematic",
+    "url": "https://youtu.be/r_TTBUrA6p4",
+    "status": "PUBLISHED",
+    "proof": "youtube-3-published.jpg",
+    "captions": [
+      {
+        "language": "en",
+        "status": "PUBLISHED",
+        "source": "subtitles/warrior_en.vtt",
+        "cues": 22
+      },
+      {
+        "language": "ko",
+        "status": "PUBLISHED",
+        "source": "subtitles/warrior_ko.vtt",
+        "cues": 22
+      }
+    ]
+  },
+  {
+    "filename": "EXODUSER_NEMESIA_CINEMATIC_KR_EN_20261008.mp4",
+    "title": "Nemesia’s Descent | EXODUSER: HELL LORD — Opening Cinematic",
+    "url": "https://youtu.be/p-21GwkF65s",
+    "status": "PUBLISHED",
+    "proof": "youtube-4-published.jpg"
+  },
+  {
+    "filename": "EXODUSER_RIFT_DEVLOG_V01_20261008.mp4",
+    "title": "Rift Devlog v0.1 — Work in Progress | EXODUSER: HELL LORD",
+    "url": "https://youtu.be/i7ouSzivg4U",
+    "status": "PUBLISHED",
+    "proof": "youtube-5-published.jpg"
+  }
+]

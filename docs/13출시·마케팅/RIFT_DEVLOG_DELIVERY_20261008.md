@@ -49,4 +49,4 @@ GitHub 브랜치 **codex/marketing-gameplay-20261008**의 marketing/trailers/rif
 편집 ZIP은70,282,854B로 로컬과 확인된 클라우드에 보존하며 Git에는 넣지 않는다. SHA256: a0dfba0619a8dd2b57d3eb6f6d1b8ae38a7900393b284ff0f1d5aced953c58f5.
 [클라우드 납품 URL](../../marketing/trailers/rift-20261008/delivery_urls.json)은 6개 모두 PUT200·media_confirm 완료다.
 
-YouTube·Discord·Instagram·Threads·itch.io 등 **이번 신규 영상의 업로드·공개는 미완료**다. YouTube 업로드 화면의 약관 동의 확인은 기존 질문에 답변되지 않아 유지한다. 기존 전투영상37/16/26초의 준비·게시대기와 이번34/20초를 구분한다.
+**당시 제작·게시 이력:** 이 문서의 34초/20초/Discord 출력은 업로드하지 않은 FAIL 보존본이다. 후속 사용자의 「최종폴더 만들어서 검수후 다 배포하자」 응답으로 6편 공개 동의가 충족됐고, 전투37/16/26초·전사·네메시아·새 틈15초 v0.1은 YouTube 공개 완료했다. 새 틈 URL은 https://youtu.be/i7ouSzivg4U 이며 이 문서의 FAIL 출력과 다르다. 현재 연계 채널 상태는 [최종 배포 기록](FINAL_RELEASE_DEPLOYMENT_20261008.md)을 따른다. 이전 약관 질문을 현재 미응답 요청으로 재사용하지 않는다.

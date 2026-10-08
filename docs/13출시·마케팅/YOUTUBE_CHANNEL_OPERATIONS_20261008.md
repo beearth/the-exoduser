@@ -10,12 +10,14 @@
 | 기존 공개 영상 | [XrtYWudemdc](https://www.youtube.com/watch?v=XrtYWudemdc), [aBRQ9-5ACuQ](https://www.youtube.com/watch?v=aBRQ9-5ACuQ), [ossFl1oB_cM](https://www.youtube.com/watch?v=ossFl1oB_cM) **3개 보존**. 새 영상으로 삭제·교체하지 않음 |
 | 프로필 소개 | KR/EN의 한국 인디 스튜디오·핵앤슬래시 ARPG·탄막·투사체 패링·게임 소개/업데이트/개발 기록/캐릭터 소개 저장 및 **공개 About 한영 본문·Steam 링크 육안 PASS**. 기존 DIROI 소개·연락처·웹 링크 유지 |
 | 첫 외부 링크 | 제목 **EXODUSER — Free Steam Demo**. 아래 정확한 UTM URL 저장, 공개 About DOM의 리다이렉트 `q` 값까지 대조 완료 |
-| 기존 전투 시연 완성본 | 가로 **37초**, Shorts A **16초**, Shorts B **26초** 제작·기술/샘플 검수 완료. **첫 업로드 약관 제출 승인 대기**, 새 3개 공개 확인 미완료. [납품·검수 기록](VIDEO_DELIVERY_20261008.md) |
-| 네메시아·전사 컷씬 | 네메시아 **121.7초/1080p30** 새 편집 완성, 전사 최신 내용 v25 **96.4초/1080p60** 원본 확인·보존. 전투·컷씬 소계 **5편**, 새 틈 v0.1을 포함한 전체 **6편 업로드 파일 준비**. 실제 업로드는 약관 동의 실행 직전 확인 대기. [최종 파일·검수](CINEMATIC_YOUTUBE_DELIVERY_20261008.md) |
-| 지옥의 틈 새 개발 기록 v0.1 | **15초/450f/1080p30** 별도 native 편집 완성·사용자 기준 WIP 게시 적합 PASS. 10/5원화+10/6자동QA짧은컷8초, 출처·개발 중 표시. 기존 FAIL 출력과 별개이며 총6편 업로드 묶음 준비·약관 동의 대기. [최종 기록](RIFT_DEVLOG_V01_20261008.md) |
+| 기존 전투 시연 완성본 | 가로 **37초**, Shorts A **16초**, Shorts B **26초** 제작·기술/샘플 검수 완료. **전투3편 업로드·공개 확인 완료**. [납품·검수 기록](VIDEO_DELIVERY_20261008.md) |
+| 네메시아·전사 컷씬 | 네메시아 **121.7초/1080p30** 새 편집 완성, 전사 최신 내용 v25 **96.4초/1080p60** 원본 확인·보존. 전투·컷씬 소계 **5편**, 새 틈 v0.1을 포함한 전체 **6편 업로드·공개 확인 완료**. 전사 EN·KO 선택 자막 각22큐 게시 확인. [최종 파일·검수](CINEMATIC_YOUTUBE_DELIVERY_20261008.md) |
+| 지옥의 틈 새 개발 기록 v0.1 | **15초/450f/1080p30** 별도 native 편집 완성·사용자 기준 WIP 게시 적합 PASS. 10/5원화+10/6자동QA짧은컷8초, 출처·개발 중 표시. 기존 FAIL 출력과 별개이며 [새15초 공개 영상](https://youtu.be/i7ouSzivg4U)과 전체6편 업로드·공개 확인 완료. [최종 기록](RIFT_DEVLOG_V01_20261008.md) |
 | 지옥의 틈 개발 기록 | 별도 가로 **34초**·세로 **20초** 제작본은 후속 **모션 QA FAIL로 게시 제외·재촬영 필요**. 10/5 콘셉트와 10/6 기존 개발 녹화 재편집이며 10/8 신규 촬영이 아님. MP4·편집패키지는 이력 보존이며 공개 대상 아님. [제작·납품 기록](RIFT_DEVLOG_DELIVERY_20261008.md) · [화면·게시 문안](RIFT_DEVLOG_COPY_20261008.md) |
 | 정기 점검 | heartbeat **fdg**, **FDG 게임 개발기록·홍보 채널 운영**, **ACTIVE 등록 완료**. 화·금 **11:00 KST** 새 개발 변경 점검. 영상 제작·게시 완료와는 별도 상태 |
 | Steam 상점 영상 | Steamworks 로그인 확인. 37초 전투영상의 새 trailer metadata item1369319 생성, **파일 미전송·공개 미완료**. 드래그 전용 업로드와 기존 일괄 게시 대기 변경을 확인. [실제 단계 기록](STEAM_TRAILER_UPDATE_20261008.md) |
+| YouTube 배포 근거 | 최신 사용자 “최종 폴더 만들어 검수 후 다배포”로 선행6편 공개 동의 요청의 승인 확인 후 실행. [6편 공개 URL·최종 검수](CINEMATIC_YOUTUBE_DELIVERY_20261008.md). 제목·설명·English·Gaming·AI 사용 Yes 적용. 동일 해시 기존 QA 재사용, 주관적 전체 청취 미수행 |
+| Steam 개발 소식 | 사용자 최신 지시: **업데이트할 때 Steam에도 공지**한다. 이번 개발 소식은 실제 영상 URL을 넣은 한영 본문 준비·**Steam Community 로그인 대기**, 실제 공지 게시 미완료. 상점 영상 item1369319 파일 미전송과 별도 작업 |
 | 다른 채널 | 기존 Reddit·Discord·itch.io 공개 이력은 [데모 마케팅 실행 기록](DEMO_MARKETING_LAUNCH_20261008.md). 이번 영상의 추가 게시는 채널별 별도 확인 |
 
 프로필에 실제 적용한 첫 링크:
@@ -24,7 +26,7 @@
 https://store.steampowered.com/app/4749590/EXODUSER_HELL_LORD/?utm_source=youtube&utm_medium=channel_profile&utm_campaign=foreign_pilot_202610
 ```
 
-공개 About 증거: [한영 소개·Steam 링크 검수 이미지](/Users/fordeargamers/the-exoduser/output/marketing_video_20261008/review/youtube-channel-profile-20261008.png). 현재 로그인·프로필 상태는 이전 납품 기록의 YouTube 로그인 대기보다 최신 확인이다.
+공개 About 증거: [한영 소개·Steam 링크 검수 이미지](/Users/fordeargamers/the-exoduser/output/marketing_video_20261008/review/youtube-channel-profile-20261008.png). 현재 로그인·프로필 상태는 이전 납품 기록의 YouTube 로그인 대기보다 최신 확인이다. 이번 영상 설명의 외부 링크는 일회성 채널 인증 전 클릭 제한이 있어 프로필의 Steam 링크도 추가 안내했다. Shorts 설명 URL을 클릭 가능한 주 경로로 세지 않는다.
 
 등록된 정기 운영은 **변경이 없으면 조용히 유지**, **의미 있는 새 개발 한 건**을 중심으로 진행한다. 중복 게시와 이미 완료된 검증의 반복을 하지 않으며, 필요한 약관·로그인 조치는 한 번 안내한다. 예약 등록을 새 영상의 업로드·공개 완료로 세지 않는다.
 
@@ -48,7 +50,7 @@ https://store.steampowered.com/app/4749590/EXODUSER_HELL_LORD/?utm_source=youtub
 
 ## 3. 지옥의 틈 개발 기록·후속 캐릭터
 
-이전34/20초 편집안의 제목: **전투가 끝나면, 어디로 갈까? | 지옥의 틈 개발 기록 01**. 새15초 영상 제목은 **Rift Devlog v0.1 — Work in Progress | EXODUSER: HELL LORD**이며 별도 게시 후보이다.
+이전34/20초 편집안의 제목: **전투가 끝나면, 어디로 갈까? | 지옥의 틈 개발 기록 01**. 새15초 영상 제목은 **Rift Devlog v0.1 — Work in Progress | EXODUSER: HELL LORD**이며 [별도 공개 완료](https://youtu.be/i7ouSzivg4U)했다.
 
 | 구분 | 현재 공개 가능한 사실·표현 |
 |---|---|
@@ -69,7 +71,7 @@ https://store.steampowered.com/app/4749590/EXODUSER_HELL_LORD/?utm_source=youtub
 
 | 채널 | 같은 소재를 전달하는 방식 |
 |---|---|
-| YouTube | 전체 맥락·실제 변경·버전·남은 범위, Steam UTM. 시리즈/재생목록은 게임 소개·업데이트·개발 기록·캐릭터로 정리하는 제안이며 생성 완료로 세지 않음 |
+| YouTube | 전체 맥락·실제 변경·버전·남은 범위, Steam UTM. [첫 공식6편 재생목록](https://www.youtube.com/playlist?list=PLKmxsIw9Q0Hk) 공개 확인. 전투→컷씬→개발 기록 순서이며 후속 장르별 시리즈 구성은 제안 단계 |
 | Shorts/Reels | 행동 하나와 결과가 보이는 세로 컷, 원본/프로필의 검증된 링크로 연결. Shorts 설명 URL을 클릭 가능한 주 동선으로 가정하지 않음 |
 | Threads·Bluesky | 변경 요약·짧은 실제 영상·질문 하나·채널별 UTM. 동일 문안을 연속 재게시하지 않음 |
 | Discord | 실제 공개 영상 공지와 구체적인 피드백 질문. 같은 내용의 여러 채널 동시 도배 없음 |

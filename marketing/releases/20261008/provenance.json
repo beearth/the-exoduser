@@ -1,0 +1,496 @@
+{
+  "createdAt": "2026-10-08T09:25:38.748833+00:00",
+  "sourceMetadata": {
+    "path": "/Users/fordeargamers/the-exoduser/output/cutscene_youtube_20261008/upload-plan.json",
+    "sha256": "49b119286c52a3dc6e49cb9f61adf73ca0ab0167312fb1d05812b9abfcd76212",
+    "hashManifest": "/Users/fordeargamers/the-exoduser/output/cutscene_youtube_20261008/upload-hashes.json",
+    "hashManifestSha256": "4086c3afcaf4f09085f02cfd810ce2d2fe1c3ca756a23a9b471fbc9e32de0836"
+  },
+  "videos": [
+    {
+      "path": "videos/EXODUSER_STEAM_37S_1080P30.mp4",
+      "source": "/Users/fordeargamers/the-exoduser/output/cutscene_youtube_20261008/upload/EXODUSER_STEAM_37S_1080P30.mp4",
+      "sha256": "6f2ccaddc42346fbf5a4062886637f79da1536b5abc02615cb20a5c0c98f803e",
+      "bytes": 84605641,
+      "expectedHashMatch": true,
+      "priorFullDecode": {
+        "status": "PASS",
+        "errors": 0,
+        "reusedByExactHash": true,
+        "repeatedThisPackagingRun": false,
+        "evidence": "qa/combat-final.json"
+      },
+      "media": {
+        "duration": 37.0,
+        "frames": 1110,
+        "width": 1920,
+        "height": 1080,
+        "fps": "30/1",
+        "videoCodec": "h264",
+        "audioCodec": "aac",
+        "audioSampleRate": 48000,
+        "audioChannels": 2,
+        "decode": "PASS",
+        "sha256": "6f2ccaddc42346fbf5a4062886637f79da1536b5abc02615cb20a5c0c98f803e",
+        "qa": "qa/combat-final.json",
+        "visual": "PASS sampled final frames"
+      }
+    },
+    {
+      "path": "videos/EXODUSER_SHORTS_A_16S_1080P30.mp4",
+      "source": "/Users/fordeargamers/the-exoduser/output/cutscene_youtube_20261008/upload/EXODUSER_SHORTS_A_16S_1080P30.mp4",
+      "sha256": "7708d5c92f62896c3a70e77c48d299605e404d94d32c2e207fee49d7a1fac439",
+      "bytes": 18747491,
+      "expectedHashMatch": true,
+      "priorFullDecode": {
+        "status": "PASS",
+        "errors": 0,
+        "reusedByExactHash": true,
+        "repeatedThisPackagingRun": false,
+        "evidence": "qa/combat-final.json"
+      },
+      "media": {
+        "duration": 16.0,
+        "frames": 480,
+        "width": 1080,
+        "height": 1920,
+        "fps": "30/1",
+        "videoCodec": "h264",
+        "audioCodec": "aac",
+        "audioSampleRate": 48000,
+        "audioChannels": 2,
+        "decode": "PASS",
+        "sha256": "7708d5c92f62896c3a70e77c48d299605e404d94d32c2e207fee49d7a1fac439",
+        "qa": "qa/combat-final.json",
+        "visual": "PASS sampled final frames"
+      }
+    },
+    {
+      "path": "videos/EXODUSER_SHORTS_B_26S_1080P30.mp4",
+      "source": "/Users/fordeargamers/the-exoduser/output/cutscene_youtube_20261008/upload/EXODUSER_SHORTS_B_26S_1080P30.mp4",
+      "sha256": "193b3d4f894ee3bd287a453366d583c9979257437c1cba53b40cced553241be2",
+      "bytes": 34523684,
+      "expectedHashMatch": true,
+      "priorFullDecode": {
+        "status": "PASS",
+        "errors": 0,
+        "reusedByExactHash": true,
+        "repeatedThisPackagingRun": false,
+        "evidence": "qa/combat-final.json"
+      },
+      "media": {
+        "duration": 26.0,
+        "frames": 780,
+        "width": 1080,
+        "height": 1920,
+        "fps": "30/1",
+        "videoCodec": "h264",
+        "audioCodec": "aac",
+        "audioSampleRate": 48000,
+        "audioChannels": 2,
+        "decode": "PASS",
+        "sha256": "193b3d4f894ee3bd287a453366d583c9979257437c1cba53b40cced553241be2",
+        "qa": "qa/combat-final.json",
+        "visual": "PASS sampled final frames"
+      }
+    },
+    {
+      "path": "videos/EXODUSER_WARRIOR_STORY_V25_20261001.mp4",
+      "source": "/Users/fordeargamers/the-exoduser/output/cutscene_youtube_20261008/upload/EXODUSER_WARRIOR_STORY_V25_20261001.mp4",
+      "sha256": "fb1b47274ab3f793ab3254182b44f83349958e4db435e4331f03c879389007bd",
+      "bytes": 93670905,
+      "expectedHashMatch": true,
+      "priorFullDecode": {
+        "status": "PASS",
+        "errors": 0,
+        "reusedByExactHash": true,
+        "repeatedThisPackagingRun": false,
+        "evidence": "qa/warrior-source-QA.json"
+      },
+      "media": {
+        "duration": 96.4,
+        "frames": 5784,
+        "width": 1920,
+        "height": 1080,
+        "fps": "60/1",
+        "videoCodec": "h264",
+        "audioCodec": "aac",
+        "audioSampleRate": 48000,
+        "audioChannels": 2,
+        "decode": "PASS",
+        "sha256": "fb1b47274ab3f793ab3254182b44f83349958e4db435e4331f03c879389007bd",
+        "qa": "qa/warrior-source-QA.json",
+        "visual": "PASS"
+      }
+    },
+    {
+      "path": "videos/EXODUSER_NEMESIA_CINEMATIC_KR_EN_20261008.mp4",
+      "source": "/Users/fordeargamers/the-exoduser/output/cutscene_youtube_20261008/upload/EXODUSER_NEMESIA_CINEMATIC_KR_EN_20261008.mp4",
+      "sha256": "21f904176bfd09e9f7ec1352424a81195a1b590606b29da752ab971c9dcb8468",
+      "bytes": 24541207,
+      "expectedHashMatch": true,
+      "priorFullDecode": {
+        "status": "PASS",
+        "errors": 0,
+        "reusedByExactHash": true,
+        "repeatedThisPackagingRun": false,
+        "evidence": "qa/nemesia-technical.json"
+      },
+      "media": {
+        "duration": 121.7,
+        "frames": 3651,
+        "width": 1920,
+        "height": 1080,
+        "fps": "30/1",
+        "videoCodec": "h264",
+        "audioCodec": "aac",
+        "audioSampleRate": 48000,
+        "audioChannels": 2,
+        "decode": "PASS",
+        "sha256": "21f904176bfd09e9f7ec1352424a81195a1b590606b29da752ab971c9dcb8468",
+        "qa": "qa/nemesia-technical.json",
+        "visual": "PASS_STATIC_CUE_SAMPLES",
+        "visualReceipt": "qa/nemesia-visual-receipt.json"
+      }
+    },
+    {
+      "path": "videos/EXODUSER_RIFT_DEVLOG_V01_20261008.mp4",
+      "source": "/Users/fordeargamers/the-exoduser/output/cutscene_youtube_20261008/upload/EXODUSER_RIFT_DEVLOG_V01_20261008.mp4",
+      "sha256": "8cdb4113b3bd1f299eaef55cd1f9b59249d1471e5c60b041cdf6cd3a3af38c74",
+      "bytes": 12000463,
+      "expectedHashMatch": true,
+      "priorFullDecode": {
+        "status": "PASS",
+        "errors": 0,
+        "reusedByExactHash": true,
+        "repeatedThisPackagingRun": false,
+        "evidence": "qa/rift-v01-QA.json"
+      },
+      "media": {
+        "duration": 15,
+        "frames": 450,
+        "width": 1920,
+        "height": 1080,
+        "fps": "30/1",
+        "videoCodec": "h264",
+        "audioCodec": "aac",
+        "audioSampleRate": 48000,
+        "audioChannels": 2,
+        "decode": "PASS",
+        "sha256": "8cdb4113b3bd1f299eaef55cd1f9b59249d1471e5c60b041cdf6cd3a3af38c74",
+        "qa": "qa/rift-v01-QA.json",
+        "visual": "PASS_FOR_DISCLOSED_WIP_DEVLOG"
+      }
+    }
+  ],
+  "captions": [
+    {
+      "path": "subtitles/warrior_en.vtt",
+      "source": "/Users/fordeargamers/the-exoduser/output/cutscene_youtube_20261008/review/subtitles/warrior_en.vtt",
+      "sha256": "fd4e9d1e92aa45fbe872691a51399c035b9ea7e716309e88a7db5e34c46506c6",
+      "bytes": 1747,
+      "language": "en",
+      "video": "videos/EXODUSER_WARRIOR_STORY_V25_20261001.mp4",
+      "cueCount": 22,
+      "firstStart": 1.0,
+      "lastEnd": 95.6,
+      "timeLimitSeconds": 96.4,
+      "monotonicAndNonoverlapping": true,
+      "rangeErrors": 0
+    },
+    {
+      "path": "subtitles/warrior_ko.vtt",
+      "source": "/Users/fordeargamers/the-exoduser/output/cutscene_youtube_20261008/review/subtitles/warrior_ko.vtt",
+      "sha256": "37a50ddefc49d231cbf46eaa6af23428e71155418a7fc2a2a0fba8030c1e4d69",
+      "bytes": 1830,
+      "language": "ko",
+      "video": "videos/EXODUSER_WARRIOR_STORY_V25_20261001.mp4",
+      "cueCount": 22,
+      "firstStart": 1.0,
+      "lastEnd": 95.6,
+      "timeLimitSeconds": 96.4,
+      "monotonicAndNonoverlapping": true,
+      "rangeErrors": 0
+    }
+  ],
+  "qa": [
+    {
+      "path": "qa/combat-final.json",
+      "source": "/Users/fordeargamers/the-exoduser/output/marketing_video_20261008/review/EXODUSER_FINAL_QA.json",
+      "sha256": "7e5945bbfc2174f22bbb3eed8e0707fbf704a84b48eba091ad747ec216296f1c",
+      "bytes": 3378
+    },
+    {
+      "path": "qa/warrior-source-QA.json",
+      "source": "/Users/fordeargamers/the-exoduser/output/cutscene_youtube_20261008/review/FINAL_QA.json",
+      "sha256": "e1dad20d4ff194b0d4de3954e8680d851f3438ec47c70684b6ff701f8f6ce590",
+      "bytes": 3768
+    },
+    {
+      "path": "qa/warrior-decode-summary.json",
+      "source": "/Users/fordeargamers/the-exoduser/output/cutscene_youtube_20261008/review/warrior_decode_summary.json",
+      "sha256": "60bc0f33b2bec3cce77b4579abcbcb1a6ddcd41e09d06b6f9b131a1ebb161742",
+      "bytes": 1810
+    },
+    {
+      "path": "qa/nemesia-technical.json",
+      "source": "/Users/fordeargamers/the-exoduser/output/nemesia_cinematic_20261008/renders/EXODUSER_NEMESIA_QA_20261008.json",
+      "sha256": "723256e523a2f30a96594e513c4e53b50496bec3bee2b9ee5d7565ce5b02ea93",
+      "bytes": 4027
+    },
+    {
+      "path": "qa/nemesia-visual-receipt.json",
+      "source": "/Users/fordeargamers/.codex/worktrees/marketing-gameplay-20261008/the-exoduser/marketing/trailers/cinematics-20261008/nemesia-review/VISUAL_REVIEW_RECEIPT_20261008.json",
+      "sha256": "bd4d061e1d3e8c7c16370e47c391d99de47bf32e949bf425f0dbc72c62020111",
+      "bytes": 956
+    },
+    {
+      "path": "qa/nemesia-archive-review.json",
+      "source": "/Users/fordeargamers/the-exoduser/output/nemesia_cinematic_20261008/archive-review.json",
+      "sha256": "7bd0229f92072e82858dcdcee98975480e4e14e5f87a94e5979f3ea3518a3a49",
+      "bytes": 43991
+    },
+    {
+      "path": "qa/rift-v01-QA.json",
+      "source": "/Users/fordeargamers/the-exoduser/output/rift_devlog_v01_20261008/QA.json",
+      "sha256": "01ce80daef5fdf56499973da7785d9aa06a655455c8269ed06a2660fe14cda6f",
+      "bytes": 9458
+    },
+    {
+      "path": "qa/rift-v01-archive-review.json",
+      "source": "/Users/fordeargamers/the-exoduser/output/rift_devlog_v01_20261008/archive-review.json",
+      "sha256": "ff97c7215f14f031e4cbcf4dc8f206ebf869ad1b97986fd30a7e5128324bca61",
+      "bytes": 2280
+    },
+    {
+      "path": "qa/rift-v01-pixel-correspondence.json",
+      "source": "/Users/fordeargamers/the-exoduser/output/rift_devlog_v01_20261008/review/pixel-correspondence.json",
+      "sha256": "28b65a4ede785abcf685c405c4d44a06af65681c4db68c554735d98aa13debfe",
+      "bytes": 1170
+    }
+  ],
+  "reviewContactSheets": [
+    {
+      "path": "review/combat/EXODUSER_FINAL_REVIEW.jpg",
+      "source": "/Users/fordeargamers/the-exoduser/output/marketing_video_20261008/review/EXODUSER_FINAL_REVIEW.jpg",
+      "sha256": "5a53441e260f0dd81793cc86209c6c7f2703592ed8c493130f04e2f5640b87e4",
+      "bytes": 164458
+    },
+    {
+      "path": "review/warrior/warrior_12_samples.jpg",
+      "source": "/Users/fordeargamers/the-exoduser/output/cutscene_youtube_20261008/review/warrior_12_samples.jpg",
+      "sha256": "0e42eaf42cc7d3df8a5eaf1f4fa798e0d710582c3a4f407954de1372530f442c",
+      "bytes": 162024
+    },
+    {
+      "path": "review/warrior/warrior_motion_1.jpg",
+      "source": "/Users/fordeargamers/the-exoduser/output/cutscene_youtube_20261008/review/warrior_motion_1.jpg",
+      "sha256": "f21b73b152ee7003db08d21e42bfb59bb9eaa9a3f668f0f156607deed223441f",
+      "bytes": 165215
+    },
+    {
+      "path": "review/warrior/warrior_motion_2.jpg",
+      "source": "/Users/fordeargamers/the-exoduser/output/cutscene_youtube_20261008/review/warrior_motion_2.jpg",
+      "sha256": "67d8b1d7e8dea5bc553e9426dec072ad0dff4e2bb8d1fc1fc9a16156e6ea1133",
+      "bytes": 151357
+    },
+    {
+      "path": "review/warrior/warrior_boundaries.jpg",
+      "source": "/Users/fordeargamers/the-exoduser/output/cutscene_youtube_20261008/review/warrior_boundaries.jpg",
+      "sha256": "c7eccd6c278e33284bd6497dde1a10b0d16c7ec981ab442f8fe2e350333268ae",
+      "bytes": 203296
+    },
+    {
+      "path": "review/nemesia/EXODUSER_NEMESIA_REVIEW_20261008.jpg",
+      "source": "/Users/fordeargamers/the-exoduser/output/nemesia_cinematic_20261008/renders/EXODUSER_NEMESIA_REVIEW_20261008.jpg",
+      "sha256": "c1ab1c1906921cb3eb70b156b569ac46f25cfd1b4ff8a745dc61e71d341f9af0",
+      "bytes": 438575
+    },
+    {
+      "path": "review/nemesia/dialogue-14.jpg",
+      "source": "/Users/fordeargamers/the-exoduser/output/nemesia_cinematic_20261008/renders/dialogue-14.jpg",
+      "sha256": "be8b17448028d922e250351e273d9a41d79e11d348d2184cd120a467a4dff3cb",
+      "bytes": 217686
+    },
+    {
+      "path": "review/nemesia/dialogue-65.jpg",
+      "source": "/Users/fordeargamers/the-exoduser/output/nemesia_cinematic_20261008/renders/dialogue-65.jpg",
+      "sha256": "32cc86320bbe06ed5be56c8d35ca5659e1e192e621fb4b70542d5000cef3f7b0",
+      "bytes": 121596
+    },
+    {
+      "path": "review/nemesia/cta-119.jpg",
+      "source": "/Users/fordeargamers/the-exoduser/output/nemesia_cinematic_20261008/renders/cta-119.jpg",
+      "sha256": "ad2f46069f988215ed0cce92337e60d1c668293f121395e7b891807773a8bdaa",
+      "bytes": 37271
+    },
+    {
+      "path": "review/rift/overview.jpg",
+      "source": "/Users/fordeargamers/the-exoduser/output/rift_devlog_v01_20261008/review/overview.jpg",
+      "sha256": "1059109ed8ed634477a72a866fa51343d5d9f75231c6131570a0d1bbf1d5291b",
+      "bytes": 237372
+    },
+    {
+      "path": "review/rift/actor-100ms.jpg",
+      "source": "/Users/fordeargamers/the-exoduser/output/rift_devlog_v01_20261008/review/actor-100ms.jpg",
+      "sha256": "6451a5b9ca10c8e77008004f8a727c90e4d70170eae165abdde1a693d6315a01",
+      "bytes": 260168
+    },
+    {
+      "path": "review/rift/cut-boundaries.jpg",
+      "source": "/Users/fordeargamers/the-exoduser/output/rift_devlog_v01_20261008/review/cut-boundaries.jpg",
+      "sha256": "f710d76d54185a3b7a8337062f2bac42b26e14799ccb52c40558866270902884",
+      "bytes": 108662
+    }
+  ],
+  "editableArchives": [
+    {
+      "group": "combat",
+      "originalLocalPath": "/Users/fordeargamers/the-exoduser/output/marketing_video_20261008/renders/EXODUSER_EDITABLE_20261008_FINAL.zip",
+      "bytes": 355404715,
+      "sha256": "132d1ceb72f886ed8947f4b0fb33717bab0604687354d560d72ed4e891da28ac",
+      "cdn": [
+        {
+          "kind": "editable_zip",
+          "media_id": "0db4a87a-f7a7-4b78-a209-71ebb1a5debb",
+          "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/0db4a87a-f7a7-4b78-a209-71ebb1a5debb.zip"
+        }
+      ],
+      "copiedIntoPackage": false
+    },
+    {
+      "group": "nemesia",
+      "originalLocalPath": "/Users/fordeargamers/the-exoduser/output/nemesia_cinematic_20261008/renders/EXODUSER_NEMESIA_EDITABLE_20261008.zip",
+      "bytes": 165442344,
+      "sha256": "eead265dbbb0858f34621f2f8e01e98c85034fa9bbcb4ab9edecb9c90949fd35",
+      "cdn": [
+        {
+          "filename": "EXODUSER_NEMESIA_EDITABLE_20261008.zip",
+          "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/94c59887-bdf2-4885-a7f8-80c1668adf7a.zip",
+          "media_id": "94c59887-bdf2-4885-a7f8-80c1668adf7a"
+        }
+      ],
+      "copiedIntoPackage": false
+    },
+    {
+      "group": "rift-v01",
+      "originalLocalPath": "/Users/fordeargamers/the-exoduser/output/rift_devlog_v01_20261008/renders/EXODUSER_RIFT_DEVLOG_V01_EDITABLE_20261008.zip",
+      "bytes": 39655708,
+      "sha256": "fa4d0768c063c721374627bebedea3e25051dad243976959928cc58e38ade241",
+      "cdn": [
+        {
+          "path": "renders/EXODUSER_RIFT_DEVLOG_V01_EDITABLE_20261008.zip",
+          "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/13c3c2b0-fd20-48c4-b897-0ea5818e5dff.zip",
+          "mediaId": "13c3c2b0-fd20-48c4-b897-0ea5818e5dff",
+          "confirmed": true,
+          "sha256": "fa4d0768c063c721374627bebedea3e25051dad243976959928cc58e38ade241"
+        }
+      ],
+      "copiedIntoPackage": false
+    }
+  ],
+  "confirmedCdnReferences": {
+    "combat": [
+      {
+        "kind": "steam",
+        "media_id": "6ac0d4bc-924c-4b4f-9e52-14dd3c919462",
+        "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/6ac0d4bc-924c-4b4f-9e52-14dd3c919462.mp4"
+      },
+      {
+        "kind": "shorts_a",
+        "media_id": "d9c566cf-d2b2-4ad4-bbdf-da10f2637b01",
+        "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/d9c566cf-d2b2-4ad4-bbdf-da10f2637b01.mp4"
+      },
+      {
+        "kind": "shorts_b",
+        "media_id": "3f43f1a6-f7b3-44ac-8dab-7d454bb58903",
+        "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/3f43f1a6-f7b3-44ac-8dab-7d454bb58903.mp4"
+      },
+      {
+        "kind": "editable_zip",
+        "media_id": "0db4a87a-f7a7-4b78-a209-71ebb1a5debb",
+        "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/0db4a87a-f7a7-4b78-a209-71ebb1a5debb.zip"
+      },
+      {
+        "kind": "qa_json",
+        "media_id": "783487be-0713-4b8b-a649-2065c674fafb",
+        "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/783487be-0713-4b8b-a649-2065c674fafb.json"
+      },
+      {
+        "kind": "review_jpeg",
+        "media_id": "e39da8e2-edb6-400e-a3c6-fbf6f915d943",
+        "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/e39da8e2-edb6-400e-a3c6-fbf6f915d943.jpg"
+      }
+    ],
+    "nemesia": [
+      {
+        "filename": "EXODUSER_NEMESIA_CINEMATIC_KR_EN_20261008.mp4",
+        "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/e4115b43-f503-414a-9397-413d0f30691c.mp4",
+        "media_id": "e4115b43-f503-414a-9397-413d0f30691c"
+      },
+      {
+        "filename": "EXODUSER_NEMESIA_QA_20261008.json",
+        "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/d061b8ca-a28b-4f6f-9804-1bbf5f7d25d8.json",
+        "media_id": "d061b8ca-a28b-4f6f-9804-1bbf5f7d25d8"
+      },
+      {
+        "filename": "EXODUSER_NEMESIA_REVIEW_20261008.jpg",
+        "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/6298a92e-291b-400b-98ee-f079ca854959.jpg",
+        "media_id": "6298a92e-291b-400b-98ee-f079ca854959"
+      },
+      {
+        "filename": "EXODUSER_NEMESIA_EDITABLE_20261008.zip",
+        "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/94c59887-bdf2-4885-a7f8-80c1668adf7a.zip",
+        "media_id": "94c59887-bdf2-4885-a7f8-80c1668adf7a"
+      }
+    ],
+    "rift-v01": {
+      "mp4": {
+        "path": "renders/EXODUSER_RIFT_DEVLOG_V01_20261008.mp4",
+        "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/f00570be-5669-49db-9c7b-93eb6cc72ca3.mp4",
+        "mediaId": "f00570be-5669-49db-9c7b-93eb6cc72ca3",
+        "confirmed": true,
+        "sha256": "8cdb4113b3bd1f299eaef55cd1f9b59249d1471e5c60b041cdf6cd3a3af38c74"
+      },
+      "zip": {
+        "path": "renders/EXODUSER_RIFT_DEVLOG_V01_EDITABLE_20261008.zip",
+        "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/13c3c2b0-fd20-48c4-b897-0ea5818e5dff.zip",
+        "mediaId": "13c3c2b0-fd20-48c4-b897-0ea5818e5dff",
+        "confirmed": true,
+        "sha256": "fa4d0768c063c721374627bebedea3e25051dad243976959928cc58e38ade241"
+      },
+      "qa": {
+        "path": "QA.json",
+        "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/78e89363-d9a4-4352-b0d2-81c126b95d36.json",
+        "mediaId": "78e89363-d9a4-4352-b0d2-81c126b95d36",
+        "confirmed": true,
+        "sha256": "01ce80daef5fdf56499973da7785d9aa06a655455c8269ed06a2660fe14cda6f"
+      },
+      "review": {
+        "path": "review/overview.jpg",
+        "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/90bc0ead-19dc-4480-b2c4-f62b73c2db10.jpg",
+        "mediaId": "90bc0ead-19dc-4480-b2c4-f62b73c2db10",
+        "confirmed": true
+      },
+      "verdict": "PASS_FOR_DISCLOSED_WIP_DEVLOG",
+      "authoringFrozen": true,
+      "oldFailedRiftOutputsUntouched": true
+    }
+  },
+  "excluded": {
+    "oldRift34s20sDiscordMotionQaFail": true,
+    "rejectedVp9WindowTimingExports": true,
+    "ancestorStagedSource": true,
+    "manualDemoAuditNotAdvertising": true,
+    "unselectedWorldIntro": true
+  },
+  "limitations": [
+    "No new render/transcode. Exact source bytes copied.",
+    "Full decode/ffprobe/visual QA results reused only after exact SHA256 matches; fresh local FFmpeg headers checked.",
+    "Subjective full listening was not performed.",
+    "Combat is disclosed staged high-level demonstration; current Steam binary equivalence unverified.",
+    "Rift v0.1 is a devlog edition using Oct 5 concept and Oct 6 automated QA, not a game build version or current human play session.",
+    "Nemesia is a native cinematic reconstruction, not a gameplay capture."
+  ],
+  "scope": "Only this package directory created/modified; deployment/ is root-agent owned and excluded from package checksum snapshot."
+}

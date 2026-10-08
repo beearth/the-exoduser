@@ -2,7 +2,7 @@
 
 동기화: **2026-10-08**. 코드: [marketing_edit_20261008.jsx](../../tools/marketing_edit_20261008.jsx), [준비 입력 생성 도구](../../tools/marketing_prepare_20261008.py). 관련 기록: [최종 납품·검수·게시 상태](VIDEO_DELIVERY_20261008.md), [신규 정상 맵 촬영 manifest](FRESH_CAPTURE_MANIFEST_20261008.md), [촬영 스튜디오](INGAME_CAPTURE_STUDIO_20261008.md), [채널 조건](EXPOSURE_CHANNELS_20261008.md), [게시문안](SOCIAL_VIDEO_COPY_20261008.md).
 
-최종 편집은 **manual 제외·Steam 37초 / Shorts A 16초 / Shorts B 26초**다. 템플릿 초기 48초/Shorts A 24초와 중간 가로 42초안은 현재 납품 계약이 아니다. **보정 입력을 사용한 native build·최종 3종 render·전체 decode·원본 시간 대조·샘플 육안·오디오 신호 검사 완료**. 기술·시간·샘플 화면 검수는 §5의 실측 범위에서 PASS이며, **주관적인 전체 청취는 미수행**, 후속 Mac 잠금 해제·FDG YouTube 로그인은 확인했으며 새 영상은 업로드 약관 제출 승인, Steam은 모바일 인증 대기다. 완성 파일·해시·상세 검수·게시 상태는 [최종 납품 기록](VIDEO_DELIVERY_20261008.md)을 따른다.
+최종 편집은 **manual 제외·Steam 37초 / Shorts A 16초 / Shorts B 26초**다. 템플릿 초기 48초/Shorts A 24초와 중간 가로 42초안은 현재 납품 계약이 아니다. **보정 입력을 사용한 native build·최종 3종 render·전체 decode·원본 시간 대조·샘플 육안·오디오 신호 검사 완료**. 기술·시간·샘플 화면 검수는 §5의 실측 범위에서 PASS이며, **주관적인 전체 청취는 미수행**, 후속 Mac 잠금 해제·FDG YouTube 로그인은 확인했으며 새 전투3편은 YouTube 업로드·공개 완료, Steamworks 로그인은 완료됐으나 새 트레일러 파일 미전송·미공개다. 완성 파일·해시·상세 검수·게시 상태는 [최종 납품 기록](VIDEO_DELIVERY_20261008.md)을 따른다.
 
 네이티브 편집은 `video-editing`의 `SKILL.md`, `references/compose.md`, `assembly.md`, `clip-geometry.md`를 적용했다.
 
@@ -91,11 +91,11 @@
 | bitrate | 20,000,000 / 12,000,000bps 목표. 고정 비트레이트나 정확한 파일 크기를 보장하지 않음 |
 | native build / render | 최종 **Steam 37초 / Shorts A 16초 / Shorts B 26초 렌더 완료**. `--shards 1 --concurrency 1` 사용. 3개 프로젝트 check clean. 전체 decode·원본 시간 대조·샘플 화면 검수 PASS 범위는 §5 |
 | 오디오 검수 | 게임 구간 신호 **max 0dB**, 마지막 CTA 구간 **max −91dB**, AAC decode 정상. **주관적인 전체 청취 미수행**. 신호 수치만으로 청취·클리핑·음량 승인 완료로 표시하지 않음 |
-| Steam 공개 | **Steam Guard 휴대전화 인증 대기**. 기존 Steam 영상 교체·공개 상점 반영 미완료 |
-| YouTube 공개 | **FDG 관리 채널 로그인 확인**, 소개·프로필 Steam 링크 공개 반영. 새 3편은 업로드 약관 제출 승인 대기. [운영 기록](YOUTUBE_CHANNEL_OPERATIONS_20261008.md) |
+| Steam 공개 | **Steamworks 로그인 완료 / 새 item1369319 파일 미전송·미공개**. 사용자 파일 드래그 요청1회 전달. 기존 Steam 영상 교체·공개 상점 반영 미완료 |
+| YouTube 공개 | **FDG 관리 채널 로그인 확인**, 소개·프로필 Steam 링크 공개 반영. 새 전투3편을 포함한 **총6편 업로드·공개 확인 완료**. 전사 EN·KO 각22큐 게시 확인, English·Gaming·AI 사용 Yes 적용. [6편 공개 URL·최종 검수](CINEMATIC_YOUTUBE_DELIVERY_20261008.md) [운영 기록](YOUTUBE_CHANNEL_OPERATIONS_20261008.md) |
 | Discord | 기존 FDG 서버·첫 데모 공지 유지. 후속 Mac 잠금 해제 확인. 새 16초 영상 announcements 게시는 **미완료**, 실제 제출하지 않음 |
 
-남은 검수 범위는 **전체 청취**이며, 플랫폼 게시는 필요한 약관 제출 승인·Steam 인증 후 실제 게시 URL/Steam 노출로 확인한다. 아래는 **최종 제작 구성의 재현 명령**이다.
+남은 검수 범위는 **전체 청취**다. YouTube는 최종6편 실제 공개 URL로 게시 확인했고, 최종 폴더 RELEASE_READY는 동일 해시 파일의 기존 QA를 재사용했다. 설명 링크 클릭 제한으로 프로필 Steam 링크도 안내했다. Steam 영상 단계는 [별도 기록](STEAM_TRAILER_UPDATE_20261008.md)을 따른다. 아래는 **최종 제작 구성의 재현 명령**이다.
 
 ```sh
 higgsedit fonts add "DM Sans:400"
@@ -131,7 +131,7 @@ whole-script build는 해당 프로젝트 timeline을 대체하므로 타깃별 
 | 최종 3개 기술 검사 | 전체 decode 오류 없음. Steam **1,110f**, A **480f**, B **780f**, 모두 **30fps·H.264·AAC stereo 48kHz** | 기술 QA PASS |
 | 최종 화면 | **12프레임 contact sheet 육안 PASS**. 패링 폭발·피해 숫자·강타·불꽃·얼음·블랙홀·CTA·staged 표시 확인 | 기록한 샘플 화면 검수 범위. 모든 프레임의 주관적 시청을 수행했다는 의미가 아님 |
 | 최종 3개 오디오 | 게임 구간 신호 **max 0dB**, CTA 구간 **max −91dB**, AAC decode 정상 | 신호·decode 확인 완료. **주관적인 전체 청취 미수행**, 청취·클리핑·음량 승인 PASS 주장 없음 |
-| 공개 | Steam Guard 휴대전화 인증 / YouTube 신규 3편 약관 제출 승인 대기. FDG 로그인·Mac 잠금 해제는 후속 확인 | Steam 기존 영상 교체·YouTube 신규 게시·Discord 새 영상 제출 미완료 |
+| 공개 | Steamworks 로그인 완료·새 트레일러 파일 미전송 / YouTube 전투3편 포함 최종6편 업로드·공개 완료. FDG 로그인·Mac 잠금 해제는 후속 확인 | YouTube 실제6URL·전사 EN/KO22큐 게시 확인. Steam 기존 영상 교체·Discord 새 영상 제출 미완료 |
 
 ## 6. 폐기한 초기 렌더·컨테이너 감사 이력
 

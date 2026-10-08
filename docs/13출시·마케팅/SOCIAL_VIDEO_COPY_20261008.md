@@ -1,4 +1,4 @@
-> 후속 운영: [FDG 채널 관리·실제 프로필 반영·개발기록 시리즈](YOUTUBE_CHANNEL_OPERATIONS_20261008.md). 공식 YouTube 로그인 및 프로필 Steam 링크 공개 확인 완료. 새 영상 3편은 업로드 약관 제출 승인 대기이며 미게시다.
+> 후속 운영: [FDG 채널 관리·실제 프로필 반영·개발기록 시리즈](YOUTUBE_CHANNEL_OPERATIONS_20261008.md). 공식 YouTube 로그인 및 프로필 Steam 링크 공개 확인 완료. 새 전투3편을 포함한 총6편 YouTube 업로드·공개 확인 완료. English·Gaming·AI 사용 Yes 적용, 전사 EN·KO 각22큐 게시 확인. [6편 공개 URL·최종 검수](CINEMATIC_YOUTUBE_DELIVERY_20261008.md)
 
 # EXODUSER: HELL LORD — 영상 채널별 영어 게시문안
 
@@ -8,8 +8,8 @@
 
 | 항목 | 적용 |
 |---|---|
-| 현재 상태 | **문안 준비**. 이 파일 작성으로 계정 로그인·영상 업로드·게시·Steam 영상 교체가 완료된 것이 아님. 실제 결과 URL과 확인일은 총괄이 별도 기록 |
-| 촬영 입력 | 총괄 제공 기준 최신 Git **2f5aa0e8**, 2026-10-08 실제 인게임 재촬영 진행. 최종 렌더·장면 검수는 대기. Steam 배포 빌드와 동일성 **미검증** |
+| 현재 상태 | **전투3편 포함 총6편 YouTube 공개 확인 완료**. [6편 공개 URL·최종 검수](CINEMATIC_YOUTUBE_DELIVERY_20261008.md)에 최종 폴더 RELEASE_READY·실제 게시 기록 연결. 동일 해시 기존 QA 재사용·주관적 전체 청취 미수행. 다른 채널·Steam 영상 교체는 각각 별도 단계 |
+| 촬영 입력 | 총괄 제공 기준 최신 Git **2f5aa0e8**, 2026-10-08 실제 인게임 촬영·최종 렌더·기술/표본 장면 검수 완료. Steam 배포 빌드와 동일성 **미검증** |
 | 장면 구분 | 최종본은 고레벨 스킬 스테이징 시연 5종만 사용. 시연 구간에는 `Staged skill demonstration`/`Staged skill demo`와 개발 빌드 표시. 일반 Lv1 원본은 품질상 최종 편집 제외 |
 | 길이 | 최종 제작 길이 Steam/가로37초, A16초, B26초. 길이 수치를 게시 제목·본문에 넣지 않음 |
 | 공개 설명 | 게임의 AI 보조 아트·음향·음악을 공개. 현재 개발 빌드 촬영이며 Steam 데모와 차이가 있을 수 있다고 명시. 실제 플레이를 완전 AI 영상으로 대체하지 않음 |
@@ -33,6 +33,7 @@ Turn enemy projectiles back, build rage, and fight through the crowd.
 EXODUSER: HELL LORD is a dark fantasy action RPG from FOR DEAR GAMERS. This video shows staged high-level skill demonstrations, marked on screen.
 
 Play the free Windows demo on Steam. Open the store page and select “Download EXODUSER: HELL LORD Demo”:
+The Steam demo link is also available in our channel profile.
 https://store.steampowered.com/app/4749590/EXODUSER_HELL_LORD/?utm_source=youtube&utm_medium=organic_video&utm_campaign=foreign_pilot_202610&utm_content=master01
 
 Captured from the current development build; the Steam demo may differ. The game uses AI-assisted pre-produced art and audio, reviewed and edited by the developer. No AI generation runs during gameplay.
@@ -44,7 +45,7 @@ FDG / FOR DEAR GAMERS
 
 **CTA:** Play the free Windows demo on Steam.
 
-가로 설명의 외부 링크는 실제 클릭 가능 여부·고급 기능 접근을 확인한 뒤 사용한다. Shorts의 related video로 이 가로본을 연결했다면 이 링크의 유입은 가로본과 Shorts 경로가 섞일 수 있어 Shorts 단독 귀속으로 주장하지 않는다.
+이번 게시에서 설명 외부 링크는 일회성 채널 인증 전 클릭 제한이 있어 채널 프로필의 Steam 데모 링크도 추가 안내했다. Shorts의 related video로 이 가로본을 연결했다면 이 링크의 유입은 가로본과 Shorts 경로가 섞일 수 있어 Shorts 단독 귀속으로 주장하지 않는다.
 
 ## 3. YouTube Shorts A/B
 
@@ -240,7 +241,7 @@ TikTok 프로필 링크는 공식 도움말상 팔로워 1,000명 또는 Registe
 
 | 확인 | 상태·완료 기준 |
 |---|---|
-| 실제 영상·길이 | 재촬영/최종 렌더 대기. A/B에서 제목에 적은 장면·원음·작은 시연 표시 확인. 길이 숫자는 공개 문안에 없음 |
+| 실제 영상·길이 | 최종3편 렌더·기술/표본 장면 검수·YouTube 공개 확인 완료. A/B 장면·원음·시연 표시 검수 근거는 납품 기록 참조. 길이 숫자는 공개 문안에 없음 |
 | 개발 빌드·Steam | 촬영 Git 기준은 내부 기록. Steam 데모 동일 빌드라고 주장하지 않으며 문안의 개발 빌드/차이 가능성 공개 유지 |
 | 계정·권한 | 총괄이 현재 로그인·게시 권한·공식 소속·프로필 링크 상태 확인. 문안 준비를 게시 완료로 세지 않음 |
 | 공개 설정 | YouTube AI 합성 음악 관련 altered content, Meta AI info 대상, TikTok 자사 Promotional content·해당 AI 공개 UI 확인 |

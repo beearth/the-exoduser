@@ -1,0 +1,100 @@
+{
+  "dateKST": "2026-10-08",
+  "approval": "User requested final folder, review, and distribute all after the six-video public upload confirmation request; proceed with the six-video batch.",
+  "youtube": {
+    "channel": "UCOLkkQsaZ9ACuXdvPblhfiA",
+    "status": "PUBLISHED",
+    "items": [
+      {
+        "filename": "EXODUSER_STEAM_37S_1080P30.mp4",
+        "title": "EXODUSER: HELL LORD — Parry, Rage & Ice Orbs | Free Steam Demo",
+        "url": "https://youtu.be/WTwXcdeTCFg",
+        "status": "PUBLISHED",
+        "proof": "youtube-master-published.jpg"
+      },
+      {
+        "filename": "EXODUSER_SHORTS_A_16S_1080P30.mp4",
+        "title": "Parry, Reflect, Strike Back | EXODUSER: HELL LORD",
+        "url": "https://youtube.com/shorts/50eBpMxlkP0?feature=share",
+        "status": "PUBLISHED",
+        "proof": "youtube-1-published.jpg"
+      },
+      {
+        "filename": "EXODUSER_SHORTS_B_26S_1080P30.mp4",
+        "title": "Ice Orbs Against the Crowd | EXODUSER: HELL LORD",
+        "url": "https://youtube.com/shorts/NBOcxJgM-pA?feature=share",
+        "status": "PUBLISHED",
+        "proof": "youtube-2-published.jpg"
+      },
+      {
+        "filename": "EXODUSER_WARRIOR_STORY_V25_20261001.mp4",
+        "title": "The Warrior's Fall | EXODUSER: HELL LORD — Story Cinematic",
+        "url": "https://youtu.be/r_TTBUrA6p4",
+        "status": "PUBLISHED",
+        "proof": "youtube-3-published.jpg",
+        "captions": [
+          {
+            "language": "en",
+            "status": "PUBLISHED",
+            "source": "subtitles/warrior_en.vtt",
+            "cues": 22
+          },
+          {
+            "language": "ko",
+            "status": "PUBLISHED",
+            "source": "subtitles/warrior_ko.vtt",
+            "cues": 22
+          }
+        ]
+      },
+      {
+        "filename": "EXODUSER_NEMESIA_CINEMATIC_KR_EN_20261008.mp4",
+        "title": "Nemesia’s Descent | EXODUSER: HELL LORD — Opening Cinematic",
+        "url": "https://youtu.be/p-21GwkF65s",
+        "status": "PUBLISHED",
+        "proof": "youtube-4-published.jpg"
+      },
+      {
+        "filename": "EXODUSER_RIFT_DEVLOG_V01_20261008.mp4",
+        "title": "Rift Devlog v0.1 — Work in Progress | EXODUSER: HELL LORD",
+        "url": "https://youtu.be/i7ouSzivg4U",
+        "status": "PUBLISHED",
+        "proof": "youtube-5-published.jpg"
+      }
+    ],
+    "playlist": {
+      "url": "https://www.youtube.com/playlist?list=PLKmxsIw9Q0Hk",
+      "visibility": "PUBLIC",
+      "videos": 6,
+      "sort": "Published oldest first",
+      "proof": "youtube-playlist-public.jpg"
+    }
+  },
+  "steam": {
+    "newsStatus": "COMMUNITY_LOGIN_REQUIRED",
+    "trailerItem": 1369319,
+    "trailerStatus": "METADATA_ONLY_FILE_NOT_UPLOADED"
+  },
+  "discord": {
+    "status": "WEB_LOGIN_REQUIRED_NATIVE_INPUT_UNVERIFIED",
+    "draft": "channel-post-drafts.json",
+    "channel": "https://discord.com/channels/1557552000588054549/1557553207985701015",
+    "note": "Native account/server FDG visible, but input changes did not verify; no new post confirmed."
+  },
+  "itchio": {
+    "status": "LOGIN_REQUIRED",
+    "draft": "channel-post-drafts.json",
+    "project": "https://beearth.itch.io/exoduser"
+  },
+  "redditProfile": {
+    "status": "HUMANITY_CHALLENGE_REQUIRED",
+    "draft": "channel-post-drafts.json",
+    "profile": "https://www.reddit.com/user/fordeargamers/"
+  },
+  "otherChannels": {
+    "instagram": "NO_AUTHENTICATED_ACCOUNT_VERIFIED",
+    "threads": "NO_AUTHENTICATED_ACCOUNT_VERIFIED",
+    "bluesky": "NO_AUTHENTICATED_ACCOUNT_VERIFIED"
+  },
+  "packageQA": "RELEASE_READY"
+}

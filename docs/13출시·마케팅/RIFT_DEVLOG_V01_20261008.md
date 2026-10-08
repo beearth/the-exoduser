@@ -15,7 +15,7 @@
 | 배포 사실 | 지옥의 틈은 개발 프리뷰이며 Steam 공개 데모 반영 미확인. CTA는 별도 공개 Windows Steam 데모로 연결 |
 | 연속 기록 | v0.1 이후 실제 개선을 v0.2 등 다음 영상에 기록. 컷씬·서로 다른 전투·스킬·업데이트도 개별 게시 허용. 같은 파일·문안의 중복 게시와 구분 |
 | 운영 연결 | 기존 heartbeat **fdg / ACTIVE / 화·금 11:00 KST**의 프롬프트를 위 사용자 품질·빈도 기준으로 갱신. 일정·대상 스레드·알림 설정 유지, 새 자동화 0 |
-| 실제 게시 | **아직 업로드·공개 없음**. 전투3편·전사·네메시아·새 틈 v0.1 총 **6편** 로컬 파일·제목·설명 준비. 최종6편 약관 동의 실행 직전 확인 대기 |
+| 실제 게시 | **총6편 모두 업로드·공개 완료**. 새 틈 v0.1 [공개 영상](https://youtu.be/i7ouSzivg4U). 최신 사용자 배포 지시로 공개 승인 확인 후 실행. [6편 공개 URL·최종 검수](CINEMATIC_YOUTUBE_DELIVERY_20261008.md) |
 
 게임 코드·서버·사용자 게임 화면·세이브는 이번 편집 작업에서 변경하지 않는다. 현재 게임의 캐릭터 소실·떨림 원인을 영상 편집만으로 고쳤다고 보고하지 않는다.
 
@@ -57,4 +57,4 @@
 | 검수 기록 | [QA.json](../../marketing/trailers/rift-v01-20261008/QA.json), SHA256 `01ce80daef5fdf56499973da7785d9aa06a655455c8269ed06a2660fe14cda6f`; [archive-review.json](../../marketing/trailers/rift-v01-20261008/archive-review.json)에서 자산·CRC·체크섬 검증 |
 | 시각 근거 | [캐릭터0.1초 간격80표본](../../marketing/trailers/rift-v01-20261008/actor-100ms.jpg), [컷 경계](../../marketing/trailers/rift-v01-20261008/cut-boundaries.jpg), [픽셀 시간 대응](../../marketing/trailers/rift-v01-20261008/pixel-correspondence.json) |
 | 클라우드 인수 | [delivery.json](../../marketing/trailers/rift-v01-20261008/delivery.json)의 MP4·ZIP·QA·overview CDN 보존·업로드 confirmed. 서명 PUT URL·인증정보는 보존하지 않음 |
-| 플랫폼 게시 상태 | **YouTube 6편 모두 READY_NOT_UPLOADED**, 최종 6편 업로드에 따른 약관 동의 확인 대기. 영상 파일·CDN 인수 성공을 YouTube 게시 성공으로 세지 않음. Steam item1369319는 메타데이터만 저장, 파일 미전송·미공개 |
+| 플랫폼 게시 상태 | **YouTube 6편 모두 PUBLISHED·공개 확인 완료**. 전사 EN·KO 선택 자막 각22큐 게시 확인. [6편 공개 URL·최종 검수](CINEMATIC_YOUTUBE_DELIVERY_20261008.md)에 실제 게시 근거·최종 폴더·RELEASE_READY QA 연결. 영어·Gaming·AI 사용 Yes 적용, 설명 링크 클릭 제한으로 프로필 Steam 링크도 안내. 기존 검수 해시 재사용·주관적 전체 청취 미수행 유지. Steam item1369319는 메타데이터만 저장, 파일 미전송·미공개 |

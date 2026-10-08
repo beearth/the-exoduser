@@ -14,7 +14,7 @@
 | AI 사실 | 사전 제작 시각 자산·SFX·BGM의 AI 보조 사용을 공개. 개발자 검수·편집, 런타임 AI 생성 없음. Steam 공개 설명과 맞춘다 |
 | 최신 제작 방침 | **이번 자사 홍보용 미디어는 실제 인게임에서 시연 가능한 장면을 직접 녹화해 사용한다. 완전 AI 생성 영상으로 게임플레이·홍보 영상을 제작하거나 대체하지 않는다.** 게임 자체의 AI 보조 자산 공개와 촬영 영상의 출처는 구분한다 |
 | 영상 검증 | 현재 배포 데모/게임 버전과 촬영 원본을 대조한다. 장면·기능·조작은 실제 시연 근거를 남긴다. 제작·업로드 완료를 본 문서로 선언하지 않는다 |
-| 계정 | Steam에 연결된 [FOR DEAR GAMERS YouTube](https://youtube.com/@fordeargamers) 주소는 기존 실행 기록에서 확인. 후속 실행에서 **@fordeargamers / UCOLkkQsaZ9ACuXdvPblhfiA 관리 로그인·소개 수정·프로필 Steam 링크 공개 확인 완료**. 고급 기능·신규 영상 제출/공개는 미확인. [운영 기록](YOUTUBE_CHANNEL_OPERATIONS_20261008.md). Threads·Instagram·Bluesky·X·TikTok·IndieDB·Game Jolt·Facebook의 기존 계정·권한은 **미확인** |
+| 계정 | Steam에 연결된 [FOR DEAR GAMERS YouTube](https://youtube.com/@fordeargamers) 주소는 기존 실행 기록에서 확인. 후속 실행에서 **@fordeargamers / UCOLkkQsaZ9ACuXdvPblhfiA 관리 로그인·소개 수정·프로필 Steam 링크 공개 확인 완료**. 후속 배포에서 신규 영상 **6편 공개 완료**, 전사 한영 자막 각22큐 게시. [공식 영상 모음](https://www.youtube.com/playlist?list=PLKmxsIw9Q0Hk). 설명 외부 링크의 채널 인증 제한은 남아 프로필 Steam 링크를 안내하며, 고급 기능 인증 완료로 계산하지 않는다. [운영 기록](YOUTUBE_CHANNEL_OPERATIONS_20261008.md). Threads·Instagram·Bluesky·X·TikTok·IndieDB·Game Jolt·Facebook의 기존 계정·권한은 **미확인** |
 | 실제 실행 | 본 문서는 조사와 준비안이다. 이 조사에서 가입·계정 생성·외부 게시·댓글·DM·유료 집행·예약/자동 반복 발송을 하지 않음. 기존 Reddit·Discord·itch.io의 실제 실행 이력은 상위 실행 기록 참조 |
 | 설치·체험 | 공개 Steam 데모와 Windows 실제 설치·첫 실행 완료는 구분. 상위 실행 기록의 미검증 항목을 완료로 바꾸지 않는다 |
 

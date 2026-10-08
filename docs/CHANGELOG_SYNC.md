@@ -51701,3 +51701,12 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 - Steamworks 로그인 확인 후 새37초 trailer metadata item1369319 생성. 기존2영상보존·파일미전송·공개미완료. drag-only/no-video-file-input과 기존타상점미게시변경의일괄공개범위를확인. 게임·서버·세이브·출시/빌드설정변경0. 관련docs전체검색·현재기록동기화.
 
 - 틈 v0.1 편집 ZIP39,655,708B·45항목/44체크섬/8native자산 CRC·해시 일치와 MP4·ZIP·QA·overview CDN confirmed 인수를 보존. JSX 세 사본 SHA256 9a579301d71171fbe396cf5f7ed265749aeb09a7aee34fc010851ea959aee037 동일. 사용자 기준 WIP15초만 게시 후보이며 총6편 YouTube 미업로드·약관 동의 확인 대기, Steam1369319 메타데이터만 저장 상태 유지.
+
+## 2026-10-08 FDG 최종6편 YouTube 공개·배포 기록 보존
+
+- 선행 최종6편 공개 동의 요청 후 사용자 「최종폴더 만들어서 검수후 다 배포하자」 지시로 승인 확인, 전투37/16/26초·전사96.4초·네메시아121.7초·틈WIP15초 모두 실제 YouTube 공개 완료. 전사 EN·KO 선택 자막 각22큐 게시 확인.
+- 재생목록 https://www.youtube.com/playlist?list=PLKmxsIw9Q0Hk PUBLIC6·Published oldest first 확인. 제목·설명·English·Gaming·AI 사용Yes, 설명 외부링크 인증 전 클릭제한에 따른 프로필 Steam링크 안내 반영.
+- 원본 FDG_FINAL_RELEASE_20261008 RELEASE_READY·payload frozen·deployment checksum 제외. 동일 SHA256 기존 decode/시간/표본 시각 QA 재사용, 주관적 전체 청취 미수행 유지. 영상268,089,391B 재복사 없이 marketing/releases/20261008에 JSON·체크섬·공개 YouTube 증거만 보존.
+- Steam Community·itch 로그인/Discord웹로그인·네이티브입력미검증/Reddit사람확인 대기, 이번 연계채널 게시확인0. Steam trailer1369319 metadata만저장·파일미전송·사용자드래그요청1회 안내(총괄 실행보고). 기존 FAIL·과거 미게시 이력 보존.
+- 기존 fdg heartbeat ACTIVE·화금11KST 일정유지, 실제업데이트마다Steam공지(적용버전/주요변경/알려진문제/영상/데모링크)·개발소식/배포패치구분·6편중복업로드금지 프롬프트 갱신완료(총괄 실행보고). 다음소재Rift개발기록v0.2.
+- docs전체관련rg·보존본바이트/링크검증. 상세현재상태와6URL: [최종 배포 기록](13출시·마케팅/FINAL_RELEASE_DEPLOYMENT_20261008.md). 게임/서버/세이브·추가게시·Gitstage/commit 변경0.
