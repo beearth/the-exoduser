@@ -157,6 +157,10 @@ cd G:\exoduser
 8. **AI 이미지에 점(잔점·점묘·디더링·반짝이 점) 절대 금지** — 머리카락·갑옷·피부 어디에도. 레퍼런스는 블러로 뭉개 구도만 전달하고, 결과는 1x 확대로 점 유무를 확인한 뒤에만 채택한다.
 9. **이미지 생성 기본 서비스 = MagicLight Toolbox (2026-09-30 최신 사용자 지시)** — 포인트가 소진되거나 요청 비용에 부족할 때까지 `https://magiclight.ai/toolbox/`를 먼저 사용한다. 맵 오브젝트·배경·텍스처·지형 패치·일반 물체/아이템은 Seedream 5.0 Pro를 우선 시험한다. 디자인 LOCK 캐릭터·스토리 소품은 해당 서비스에서 적합한 GPT 이미지 모델을 확인해 사용한다. MagicLight 잔액 부족이 실제 확인되면 연결된 Higgsfield 모델로 전환한다. 절차·프롬프트 골격·키잉·검수: `docs/4.1맵디자인+설정/MAP_OBJECT_SEEDREAM_PIPELINE_20260930.md`, 서비스 우선순위: `docs/10ai에셋프롬프트모음/IMAGE_PROVIDER_PRIORITY_20260925.md`.
 
+### Steam 업데이트 규칙 (2026-10-09 사용자 확정)
+
+매일 오전 9시, 하루 최대 1회. 버전은 `release-version.json` 단일 기준(PATCH +1/일), 패치노트 `docs/13출시·마케팅/patch_notes/v<버전>.md`(한·영) 필수, 커밋된 HEAD로 빌드, Set Live·Steam 패치노트 게시는 사용자 확인 후. 상세: `docs/13출시·마케팅/STEAM_UPDATE_RULES.md`
+
 ### 원격 브라우저 작업 = Mac (2026-10-04 사용자 지시)
 
 - Claude in Chrome 등 **모든 원격 브라우저 작업은 Mac Chrome "Browser 2"**(macOS로 표시된 브라우저. deviceId는 재연결 때 바뀔 수 있음)로 한다. 상시 켜져 있으므로 브라우저 선택을 묻지 말고 바로 선택.
