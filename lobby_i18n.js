@@ -6,6 +6,7 @@
 const _LOBBY_I18N = {
 // ═══ 繁體中文 (Traditional Chinese) ═══
 zht:{
+'패치 노트':'更新日誌','닫기':'關閉','패치 노트가 없습니다':'目前沒有更新日誌',
 '지옥의 길':'地獄之路：EXODUSER','연결 중...':'連接中...','캐릭터를 선택하세요':'選擇你的角色','당신은 누구인가':'汝乃何人',
 'Google로 입장':'使用Google登入','캐릭터 선택':'角色選擇','로그아웃':'登出',
 '캐릭터가 없습니다. 새로 생성하세요.':'沒有角色，請創建新角色。',
@@ -63,6 +64,7 @@ zht:{
 '확인':'確認',},
 // ═══ Русский (Russian) ═══
 ru:{
+'패치 노트':'Список изменений','닫기':'Закрыть','패치 노트가 없습니다':'Пока нет списка изменений',
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Подключение...','캐릭터를 선택하세요':'Выберите персонажа','당신은 누구인가':'КТО ТЫ',
 'Google로 입장':'Войти через Google','캐릭터 선택':'Выбор персонажа','로그아웃':'Выход',
 '캐릭터가 없습니다. 새로 생성하세요.':'Нет персонажей. Создайте нового.',
@@ -120,6 +122,7 @@ ru:{
 '확인':'Подтвердить',},
 // ═══ Deutsch (German) ═══
 de:{
+'패치 노트':'Patch Notes','닫기':'Schließen','패치 노트가 없습니다':'Noch keine Patch Notes',
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Verbinde...','캐릭터를 선택하세요':'Wähle deinen Charakter','당신은 누구인가':'WER BIST DU',
 'Google로 입장':'Mit Google anmelden','캐릭터 선택':'Charakterwahl','로그아웃':'Abmelden',
 '캐릭터가 없습니다. 새로 생성하세요.':'Keine Charaktere. Erstelle einen neuen.',
@@ -177,6 +180,7 @@ de:{
 '확인':'Bestaetigen',},
 // ═══ Português do Brasil (Brazilian Portuguese) ═══
 ptbr:{
+'패치 노트':'Notas de atualização','닫기':'Fechar','패치 노트가 없습니다':'Ainda não há notas de atualização',
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Conectando...','캐릭터를 선택하세요':'Selecione seu personagem','당신은 누구인가':'QUEM ÉS TU',
 'Google로 입장':'Entrar com Google','캐릭터 선택':'Seleção de personagem','로그아웃':'Sair',
 '캐릭터가 없습니다. 새로 생성하세요.':'Sem personagens. Crie um novo.',
@@ -234,6 +238,7 @@ ptbr:{
 '확인':'Confirmar',},
 // ═══ Français (French) ═══
 fr:{
+'패치 노트':'Notes de mise à jour','닫기':'Fermer','패치 노트가 없습니다':'Aucune note de mise à jour pour le moment',
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Connexion...','캐릭터를 선택하세요':'Choisissez votre personnage','당신은 누구인가':'QUI ES-TU',
 'Google로 입장':'Se connecter avec Google','캐릭터 선택':'Sélection du personnage','로그아웃':'Déconnexion',
 '캐릭터가 없습니다. 새로 생성하세요.':'Aucun personnage. Créez-en un nouveau.',
@@ -291,6 +296,7 @@ fr:{
 '확인':'Confirmer',},
 // ═══ Polski (Polish) ═══
 pl:{
+'패치 노트':'Lista zmian','닫기':'Zamknij','패치 노트가 없습니다':'Brak listy zmian',
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Łączenie...','캐릭터를 선택하세요':'Wybierz postać','당신은 누구인가':'KIM JESTEŚ',
 'Google로 입장':'Zaloguj przez Google','캐릭터 선택':'Wybór postaci','로그아웃':'Wyloguj',
 '캐릭터가 없습니다. 새로 생성하세요.':'Brak postaci. Stwórz nową.',
@@ -348,6 +354,7 @@ pl:{
 '확인':'Potwierdz',},
 // ═══ Italiano (Italian) ═══
 it:{
+'패치 노트':'Note sulla patch','닫기':'Chiudi','패치 노트가 없습니다':'Nessuna nota sulla patch',
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Connessione...','캐릭터를 선택하세요':'Scegli il tuo personaggio','당신은 누구인가':'CHI SEI TU',
 'Google로 입장':'Accedi con Google','캐릭터 선택':'Selezione personaggio','로그아웃':'Esci',
 '캐릭터가 없습니다. 새로 생성하세요.':'Nessun personaggio. Creane uno nuovo.',
@@ -405,6 +412,7 @@ it:{
 '확인':'Conferma',},
 // ═══ Українська (Ukrainian) ═══
 uk:{
+'패치 노트':'Список змін','닫기':'Закрити','패치 노트가 없습니다':'Поки немає списку змін',
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Підключення...','캐릭터를 선택하세요':'Оберіть персонажа','당신은 누구인가':'ХТО ТИ',
 'Google로 입장':'Увійти через Google','캐릭터 선택':'Вибір персонажа','로그아웃':'Вихід',
 '캐릭터가 없습니다. 새로 생성하세요.':'Немає персонажів. Створіть нового.',
@@ -462,6 +470,7 @@ uk:{
 '확인':'Підтвердити',},
 // ═══ Türkçe (Turkish) ═══
 tr:{
+'패치 노트':'Yama notları','닫기':'Kapat','패치 노트가 없습니다':'Henüz yama notu yok',
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Bağlanıyor...','캐릭터를 선택하세요':'Karakterini seç','당신은 누구인가':'SEN KİMSİN',
 'Google로 입장':'Google ile giriş','캐릭터 선택':'Karakter seçimi','로그아웃':'Çıkış',
 '캐릭터가 없습니다. 새로 생성하세요.':'Karakter yok. Yeni bir tane oluştur.',
@@ -519,6 +528,7 @@ tr:{
 '확인':'Onayla',},
 // ═══ Tiếng Việt (Vietnamese) ═══
 vi:{
+'패치 노트':'Ghi chú bản vá','닫기':'Đóng','패치 노트가 없습니다':'Chưa có ghi chú bản vá',
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Đang kết nối...','캐릭터를 선택하세요':'Chọn nhân vật','당신은 누구인가':'NGƯƠI LÀ AI',
 'Google로 입장':'Đăng nhập bằng Google','캐릭터 선택':'Chọn nhân vật','로그아웃':'Đăng xuất',
 '캐릭터가 없습니다. 새로 생성하세요.':'Chưa có nhân vật. Hãy tạo mới.',
@@ -576,6 +586,7 @@ vi:{
 '확인':'Xac nhan',},
 // ═══ ไทย (Thai) ═══
 th:{
+'패치 노트':'บันทึกแพตช์','닫기':'ปิด','패치 노트가 없습니다':'ยังไม่มีบันทึกแพตช์',
 '지옥의 길':'HELL: EXODUSER','연결 중...':'กำลังเชื่อมต่อ...','캐릭터를 선택하세요':'เลือกตัวละคร','당신은 누구인가':'เจ้าเป็นใคร',
 'Google로 입장':'เข้าด้วย Google','캐릭터 선택':'เลือกตัวละคร','로그아웃':'ออกจากระบบ',
 '캐릭터가 없습니다. 새로 생성하세요.':'ไม่มีตัวละคร สร้างใหม่เลย',
@@ -633,6 +644,7 @@ th:{
 '확인':'ยืนยัน',},
 // ═══ Bahasa Indonesia (Indonesian) ═══
 id:{
+'패치 노트':'Catatan patch','닫기':'Tutup','패치 노트가 없습니다':'Belum ada catatan patch',
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Menghubungkan...','캐릭터를 선택하세요':'Pilih karaktermu','당신은 누구인가':'SIAPAKAH ENGKAU',
 'Google로 입장':'Masuk dengan Google','캐릭터 선택':'Pilih karakter','로그아웃':'Keluar',
 '캐릭터가 없습니다. 새로 생성하세요.':'Tidak ada karakter. Buat yang baru.',
@@ -690,6 +702,7 @@ id:{
 '확인':'Konfirmasi',},
 // ═══ العربية (Arabic) ═══
 ar:{
+'패치 노트':'ملاحظات التحديث','닫기':'إغلاق','패치 노트가 없습니다':'لا توجد ملاحظات تحديث بعد',
 '지옥의 길':'HELL: EXODUSER','연결 중...':'جارٍ الاتصال...','캐릭터를 선택하세요':'اختر شخصيتك','당신은 누구인가':'مَن أنتَ',
 'Google로 입장':'الدخول بحساب Google','캐릭터 선택':'اختيار الشخصية','로그아웃':'تسجيل الخروج',
 '캐릭터가 없습니다. 새로 생성하세요.':'لا توجد شخصيات. أنشئ واحدة جديدة.',
@@ -747,6 +760,7 @@ ar:{
 '확인':'تاكيد',},
 // ═══ Svenska (Swedish) ═══
 sv:{
+'패치 노트':'Patchanteckningar','닫기':'Stäng','패치 노트가 없습니다':'Inga patchanteckningar ännu',
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Ansluter...','캐릭터를 선택하세요':'Välj din karaktär','당신은 누구인가':'VEM ÄR DU',
 'Google로 입장':'Logga in med Google','캐릭터 선택':'Karaktärsval','로그아웃':'Logga ut',
 '캐릭터가 없습니다. 새로 생성하세요.':'Inga karaktärer. Skapa en ny.',
@@ -804,6 +818,7 @@ sv:{
 '확인':'Bekrafta',},
 // ═══ Dansk (Danish) ═══
 da:{
+'패치 노트':'Patchnoter','닫기':'Luk','패치 노트가 없습니다':'Ingen patchnoter endnu',
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Forbinder...','캐릭터를 선택하세요':'Vælg din karakter','당신은 누구인가':'HVEM ER DU',
 'Google로 입장':'Log ind med Google','캐릭터 선택':'Karaktervalg','로그아웃':'Log ud',
 '캐릭터가 없습니다. 새로 생성하세요.':'Ingen karakterer. Opret en ny.',
@@ -861,6 +876,7 @@ da:{
 '확인':'Bekraeft',},
 // ═══ Norsk (Norwegian) ═══
 no:{
+'패치 노트':'Patchnotater','닫기':'Lukk','패치 노트가 없습니다':'Ingen patchnotater ennå',
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Kobler til...','캐릭터를 선택하세요':'Velg din karakter','당신은 누구인가':'HVEM ER DU',
 'Google로 입장':'Logg inn med Google','캐릭터 선택':'Karaktervalg','로그아웃':'Logg ut',
 '캐릭터가 없습니다. 새로 생성하세요.':'Ingen karakterer. Opprett en ny.',
@@ -918,6 +934,7 @@ no:{
 '확인':'Bekreft',},
 // ═══ Suomi (Finnish) ═══
 fi:{
+'패치 노트':'Päivitystiedot','닫기':'Sulje','패치 노트가 없습니다':'Ei vielä päivitystietoja',
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Yhdistetään...','캐릭터를 선택하세요':'Valitse hahmosi','당신은 누구인가':'KUKA OLET',
 'Google로 입장':'Kirjaudu Googlella','캐릭터 선택':'Hahmon valinta','로그아웃':'Kirjaudu ulos',
 '캐릭터가 없습니다. 새로 생성하세요.':'Ei hahmoja. Luo uusi.',
@@ -975,6 +992,7 @@ fi:{
 '확인':'Vahvista',},
 // ═══ Čeština (Czech) ═══
 cs:{
+'패치 노트':'Poznámky k aktualizaci','닫기':'Zavřít','패치 노트가 없습니다':'Zatím žádné poznámky k aktualizaci',
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Připojování...','캐릭터를 선택하세요':'Vyber si postavu','당신은 누구인가':'KDO JSI',
 'Google로 입장':'Přihlásit se přes Google','캐릭터 선택':'Výběr postavy','로그아웃':'Odhlásit',
 '캐릭터가 없습니다. 새로 생성하세요.':'Žádné postavy. Vytvoř novou.',
@@ -1032,6 +1050,7 @@ cs:{
 '확인':'Potvrdit',},
 // ═══ Magyar (Hungarian) ═══
 hu:{
+'패치 노트':'Frissítési jegyzetek','닫기':'Bezárás','패치 노트가 없습니다':'Még nincsenek frissítési jegyzetek',
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Csatlakozás...','캐릭터를 선택하세요':'Válaszd ki a karaktered','당신은 누구인가':'KI VAGY TE',
 'Google로 입장':'Bejelentkezés Google-lal','캐릭터 선택':'Karakterválasztás','로그아웃':'Kijelentkezés',
 '캐릭터가 없습니다. 새로 생성하세요.':'Nincs karakter. Hozz létre egyet.',
@@ -1089,6 +1108,7 @@ hu:{
 '확인':'Megerosit',},
 // ═══ Română (Romanian) ═══
 ro:{
+'패치 노트':'Note de actualizare','닫기':'Închide','패치 노트가 없습니다':'Încă nu există note de actualizare',
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Se conectează...','캐릭터를 선택하세요':'Alege-ți personajul','당신은 누구인가':'CINE EȘTI',
 'Google로 입장':'Intră cu Google','캐릭터 선택':'Alegere personaj','로그아웃':'Deconectare',
 '캐릭터가 없습니다. 새로 생성하세요.':'Niciun personaj. Creează unul nou.',
@@ -1146,6 +1166,7 @@ ro:{
 '확인':'Confirma',},
 // ═══ Nederlands (Dutch) ═══
 nl:{
+'패치 노트':'Patchnotities','닫기':'Sluiten','패치 노트가 없습니다':'Nog geen patchnotities',
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Verbinden...','캐릭터를 선택하세요':'Kies je karakter','당신은 누구인가':'WIE BEN JIJ',
 'Google로 입장':'Inloggen met Google','캐릭터 선택':'Karakterkeuze','로그아웃':'Uitloggen',
 '캐릭터가 없습니다. 새로 생성하세요.':'Geen karakters. Maak een nieuw aan.',
@@ -1203,6 +1224,7 @@ nl:{
 '확인':'Bevestigen',},
 // ═══ Ελληνικά (Greek) ═══
 el:{
+'패치 노트':'Σημειώσεις ενημέρωσης','닫기':'Κλείσιμο','패치 노트가 없습니다':'Δεν υπάρχουν ακόμη σημειώσεις ενημέρωσης',
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Σύνδεση...','캐릭터를 선택하세요':'Διάλεξε χαρακτήρα','당신은 누구인가':'ΠΟΙΟΣ ΕΙΣΑΙ',
 'Google로 입장':'Σύνδεση με Google','캐릭터 선택':'Επιλογή χαρακτήρα','로그아웃':'Αποσύνδεση',
 '캐릭터가 없습니다. 새로 생성하세요.':'Δεν υπάρχουν χαρακτήρες. Δημιούργησε έναν.',
@@ -1260,6 +1282,7 @@ el:{
 '확인':'Επιβεβαίωση',},
 // ═══ Български (Bulgarian) ═══
 bg:{
+'패치 노트':'Бележки по версията','닫기':'Затвори','패치 노트가 없습니다':'Все още няма бележки по версията',
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Свързване...','캐릭터를 선택하세요':'Избери персонаж','당신은 누구인가':'КОЙ СИ ТИ',
 'Google로 입장':'Вход с Google','캐릭터 선택':'Избор на персонаж','로그아웃':'Изход',
 '캐릭터가 없습니다. 새로 생성하세요.':'Няма персонажи. Създай нов.',

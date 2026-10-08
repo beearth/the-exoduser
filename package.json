@@ -1,7 +1,7 @@
 {
   "name": "hell-exoduser-release",
   "private": true,
-  "version": "1.0.0",
+  "version": "0.7.0",
   "type": "module",
   "main": "http://localhost:3350/index.html",
   "node-main": "node-main.js",

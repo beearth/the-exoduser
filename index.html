@@ -2,6 +2,8 @@
 <html lang="ko">
 <head>
 <script src="build-target.js"></script>
+<script src="release-version.js"></script>
+<script src="patch-notes.js"></script>
 <meta charset="UTF-8">
 <script src="localization-runtime.js"></script>
 <script src="localization-data.js"></script>
@@ -667,9 +669,51 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
   <canvas class="lobby-ancestor-sprite" id="lobbyAncestorSprite" width="384" height="624" aria-hidden="true"></canvas>
     <video class="lobby-char-preview" id="lobbyCharPreview" muted loop playsinline></video>
     <img class="lobby-char-preview lobby-char-keyart" id="lobbyCharKeyart" alt="" aria-hidden="true">
+  <!-- 패치노트 패널 (버전 오버레이 클릭) — Hell Gothic: 흑철 반투명 + 금빛 헤어라인 + 뼈색 문자 -->
+  <style>
+  #patchNotesBackdrop{display:none;position:absolute;inset:0;z-index:220;background:rgba(2,1,1,.66)}
+  #patchNotesPanel{display:none;position:absolute;z-index:221;left:50%;top:50%;transform:translate(-50%,-50%);
+    flex-direction:column;width:min(560px,calc(100vw - 32px));max-height:min(74vh,660px);
+    background:linear-gradient(175deg,rgba(26,18,14,.97),rgba(12,8,7,.985));
+    border:1px solid rgba(164,147,115,.5);border-radius:3px;
+    box-shadow:0 0 0 1px rgba(10,6,4,.9),0 0 3px rgba(164,147,115,.18) inset,0 18px 60px rgba(0,0,0,.8),0 0 42px rgba(120,30,16,.12);
+    padding:20px 26px 18px}
+  #patchNotesPanel::before{content:'';position:absolute;inset:5px;pointer-events:none;border:1px solid rgba(164,147,115,.22);border-radius:2px}
+  #pnTitle{font-family:'Cinzel Decorative','Cinzel','Noto Serif KR',serif;font-size:1.02rem;letter-spacing:.3em;
+    color:#d9c08a;text-align:center;padding:2px 0 10px;text-shadow:0 0 14px rgba(196,88,48,.25)}
+  .pn-hairline{height:1px;margin:0 6px 10px;background:linear-gradient(90deg,transparent,rgba(164,147,115,.55),transparent)}
+  #pnBody{overflow-y:auto;min-height:60px;padding:2px 8px 6px;scrollbar-width:thin;scrollbar-color:rgba(120,90,60,.5) transparent}
+  .pn-ver{font-family:'Cinzel','Noto Serif KR',serif;font-size:.9rem;letter-spacing:.14em;color:#dfd6c2;margin:10px 0 2px}
+  .pn-ver:first-child{margin-top:0}
+  .pn-ver.pn-latest{font-size:1rem;color:#ecdfc4}
+  .pn-sec{font-family:'Nanum Myeongjo','Noto Serif KR','Cinzel',serif;font-size:.8rem;letter-spacing:.18em;
+    color:rgba(222,112,78,.88);margin:10px 0 3px;padding-bottom:3px;
+    border-bottom:1px solid rgba(164,147,115,.2)}
+  .pn-list{list-style:none;margin:0 0 4px;padding:0}
+  .pn-list li{position:relative;font-family:'Nanum Myeongjo','Noto Serif KR',serif;font-size:.8rem;line-height:1.72;
+    color:#e8d9c6;padding-left:14px}
+  .pn-list li::before{content:'';position:absolute;left:2px;top:.72em;width:5px;height:5px;transform:rotate(45deg);
+    background:linear-gradient(135deg,rgba(186,160,118,.85),rgba(110,91,64,.85))}
+  .pn-empty{font-family:'Nanum Myeongjo','Noto Serif KR',serif;font-size:.82rem;color:rgba(194,182,169,.8);
+    text-align:center;padding:26px 0;letter-spacing:.06em}
+  .pn-footer{display:flex;justify-content:center;padding-top:12px}
+  #pnClose{min-width:132px;min-height:36px;cursor:pointer;font-family:'Nanum Myeongjo','Noto Serif KR',serif;
+    font-size:.82rem;letter-spacing:.24em;color:#dccbb6;background:#1d1413;border:1px solid rgba(164,147,115,.5);
+    border-radius:2px;padding:7px 22px;transition:border-color .15s,color .15s,box-shadow .15s}
+  #pnClose:hover,#pnClose:focus-visible{color:#fff0df;border-color:rgba(214,120,70,.75);outline:none;
+    box-shadow:0 0 10px rgba(196,68,40,.35),0 0 2px rgba(214,120,70,.5) inset}
+  @media (max-width:560px){#patchNotesPanel{padding:14px 14px 12px}}
+  </style>
+  <div id="patchNotesBackdrop"></div>
+  <div id="patchNotesPanel" role="dialog" aria-modal="true" aria-labelledby="pnTitle">
+    <div id="pnTitle"></div>
+    <div class="pn-hairline"></div>
+    <div id="pnBody"></div>
+    <div class="pn-footer"><button id="pnClose" type="button"></button></div>
+  </div>
   <div class="lobby-left">
     <canvas id="lobbyParticles" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:5"></canvas>
-    <div id="lobbyVerOverlay" style="position:absolute;top:12px;left:14px;z-index:10;font-size:.75rem;color:rgba(160,130,90,.5);letter-spacing:.15em;line-height:1.6;pointer-events:none"></div>
+    <div id="lobbyVerOverlay" tabindex="0" role="button" aria-haspopup="dialog" style="position:absolute;top:12px;left:14px;z-index:10;font-size:.75rem;color:rgba(160,130,90,.5);letter-spacing:.15em;line-height:1.6;pointer-events:auto;cursor:pointer" title=""></div>
   <div class="char-disp-empty" id="charDispEmpty">
    <div class="char-disp-title" id="charDispTitle">묘왕 바르칸</div>
     <div class="char-disp-sub" id="charDispSub">선대 소환체</div>
@@ -1146,7 +1190,8 @@ const _LOBBY_QUOTES={
   demo:'멘트 준비 중',
 };
 const _LOBBY_VER_LABEL={full:'OFFICIAL',ea:'EARLY ACCESS',demo:'DEMO'};
-const _LOBBY_VER='v0.6.0 · 20260521';
+// 버전 단일 소스: release-version.json → release-version.js(window.EXODUSER_RELEASE). 로드 실패 시 구 표기 폴백.
+const _LOBBY_VER=(function(){const r=window.EXODUSER_RELEASE;return(r&&r.version)?('v'+r.version+' · '+String(r.date||'').replace(/-/g,'')):'v0.6.0 · 20260521';})();
 const _LOBBY_VER_LIMITS={
   full:'All Chapters · No Level Cap',
   ea:'Lv.500 · Chapter 1 (1-1~1-4) · 8~15h',
@@ -1172,6 +1217,7 @@ const sb=typeof supabase!=='undefined'?supabase.createClient(SUPABASE_URL,SUPABA
 
 // ═══ [LANG] 로비 다국어 ═══
 const _LOBBY_EN={
+  '패치 노트':'PATCH NOTES','닫기':'Close','패치 노트가 없습니다':'No patch notes yet.',
   '처치':'Kills','브라우저 저장':'Saved in this browser',
   '출시 준비 중':'Coming Soon',
   '로그인 필요':'Login Required','▶ 시네마틱':'▶ Cinematic','확인':'Confirm',
@@ -1231,6 +1277,7 @@ const _LOBBY_EN={
   '심연지옥':'Abyss Hell','뇌전지옥':'Thunder Hell','백골지옥':'Bone Hell','혼돈지옥':'Chaos Hell',
 };
 const _LOBBY_ZH={
+  '패치 노트':'更新日志','닫기':'关闭','패치 노트가 없습니다':'暂无更新日志',
   '지옥의 길':'地狱之路：EXODUSER','연결 중...':'连接中...','캐릭터를 선택하세요':'选择你的角色','당신은 누구인가':'汝乃何人',
   'Google로 입장':'使用Google登录','캐릭터 선택':'角色选择','로그아웃':'退出登录',
   '캐릭터가 없습니다. 새로 생성하세요.':'没有角色，请创建新角色。',
@@ -1296,6 +1343,7 @@ const _LOBBY_ZH={
 '▶ 시네마틱':'▶ 过场动画',
 '확인':'确认',};
 const _LOBBY_JA={
+  '패치 노트':'パッチノート','닫기':'閉じる','패치 노트가 없습니다':'パッチノートはまだありません',
   '지옥의 길':'地獄の道：EXODUSER','연결 중...':'接続中...','캐릭터를 선택하세요':'キャラクターを選択','당신은 누구인가':'汝は何者か',
   'Google로 입장':'Googleでログイン','캐릭터 선택':'キャラクター選択','로그아웃':'ログアウト',
   '캐릭터가 없습니다. 새로 생성하세요.':'キャラクターがありません。新規作成してください。',
@@ -1361,6 +1409,7 @@ const _LOBBY_JA={
 '▶ 시네마틱':'▶ シネマティック',
 '확인':'確認',};
 const _LOBBY_ES={
+  '패치 노트':'Notas del parche','닫기':'Cerrar','패치 노트가 없습니다':'Aún no hay notas del parche',
   '지옥의 길':'HELL: EXODUSER','연결 중...':'Conectando...','캐릭터를 선택하세요':'Selecciona tu personaje','당신은 누구인가':'¿QUIÉN ERES?',
   'Google로 입장':'Entrar con Google','캐릭터 선택':'Selección de personaje','로그아웃':'Cerrar sesión',
   '캐릭터가 없습니다. 새로 생성하세요.':'No hay personajes. Crea uno nuevo.',
@@ -3607,6 +3656,47 @@ function _swapLobbyBg(stage){
     const lm=_LOBBY_VER_LIMITS[_LOBBY_BUILD]||'';
     vo.innerHTML=label+'<br>'+_LOBBY_VER+'<br>'+mode+(lm?'<br><span style="color:rgba(200,120,80,.5)">'+lm+'</span>':'');
   }
+})();
+
+// ── 패치노트 패널 (버전 오버레이 클릭/Enter) — 데이터: patch-notes.js(window.EXODUSER_PATCH_NOTES) ──
+(function _initPatchNotes(){
+  const overlay=$('lobbyVerOverlay'),panel=$('patchNotesPanel'),backdrop=$('patchNotesBackdrop'),
+        titleEl=$('pnTitle'),body=$('pnBody'),closeBtn=$('pnClose');
+  if(!overlay||!panel||!backdrop||!titleEl||!body||!closeBtn)return;
+  let _pnOpen=false,_lastFocus=null;
+  overlay.title=_TL('패치 노트');
+  function _render(){
+    const list=Array.isArray(window.EXODUSER_PATCH_NOTES)?window.EXODUSER_PATCH_NOTES:[];
+    const lang=_lobbyLang()==='ko'?'ko':'en'; // KO 외 언어는 EN 표시
+    titleEl.textContent=_TL('패치 노트');
+    closeBtn.textContent=_TL('닫기');
+    while(body.firstChild)body.removeChild(body.firstChild);
+    if(!list.length){
+      const d=document.createElement('div');d.className='pn-empty';d.textContent=_TL('패치 노트가 없습니다');
+      body.appendChild(d);return;
+    }
+    list.forEach((e,i)=>{
+      const v=document.createElement('div');v.className='pn-ver'+(i===0?' pn-latest':'');
+      v.textContent='v'+e.version+' · '+String(e.date||'').replace(/-/g,'');
+      body.appendChild(v);
+      const L=(e[lang]&&e[lang].sections&&e[lang].sections.length)?e[lang]:(e.en||e.ko||{});
+      (L.sections||[]).forEach(sec=>{
+        const h=document.createElement('div');h.className='pn-sec';h.textContent=sec.title;body.appendChild(h);
+        const ul=document.createElement('ul');ul.className='pn-list';
+        (sec.items||[]).forEach(it=>{const li=document.createElement('li');li.textContent=it;ul.appendChild(li);});
+        body.appendChild(ul);
+      });
+    });
+    body.scrollTop=0;
+  }
+  function _open(){_lastFocus=document.activeElement;_render();backdrop.style.display='block';panel.style.display='flex';_pnOpen=true;closeBtn.focus();}
+  function _close(){backdrop.style.display='none';panel.style.display='none';_pnOpen=false;if(_lastFocus&&_lastFocus.focus){try{_lastFocus.focus()}catch(e){}}}
+  overlay.addEventListener('click',_open);
+  overlay.addEventListener('keydown',e=>{if(e.code==='Enter'||e.code==='Space'){e.preventDefault();_open();}});
+  closeBtn.addEventListener('click',_close);
+  backdrop.addEventListener('click',_close);
+  document.addEventListener('keydown',e=>{if(_pnOpen&&e.code==='Escape'){e.stopPropagation();_close();}},true);
+  window._openPatchNotes=_open;window._closePatchNotes=_close;
 })();
 
 // ── 입장 버튼 사운드 ──

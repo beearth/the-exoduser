@@ -15,6 +15,9 @@ const args=Object.fromEntries(process.argv.slice(2).map(arg=>{
  return [match[1],match[2]];
 }));
 const release=createReleaseConfig(args.target,args['build-id']);
+// 버전 단일 소스 (docs/13출시·마케팅/STEAM_UPDATE_RULES.md §2) — app.version은 release-version.json에서만 온다.
+const RELEASE_VERSION=JSON.parse(readFileSync('release-version.json','utf8')).version;
+if(!/^\d+\.\d+\.\d+$/.test(RELEASE_VERSION))throw new Error('Invalid release-version.json version');
 const integrationId=release.buildId; // strict missing-input checks apply to every release
 const DIST=release.dist,OUT=release.out;
 if (existsSync(DIST) || existsSync(OUT)) {
@@ -34,6 +37,7 @@ mkdirSync(DIST, { recursive: true });
 const FILES = [
   'index.html', 'game.html', 'credits.html',
   'build-target.js',
+  'release-version.js', 'patch-notes.js',
   'game-easy-test.html', 'game-guide.html',
   'player-attack-remaster.js',
   'warrior-bat-swing.js',
@@ -152,7 +156,7 @@ if(args.runtime){
   zip: false,
   app: {
     name: 'EXODUSER',
-    version: '1.0.0',
+    version: RELEASE_VERSION,
     icon: 'favicon.ico',
   },
 }).catch((e) => {
