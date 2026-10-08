@@ -2109,7 +2109,7 @@ code+docs 정상 commit/push 및 원격 exact SHA는 같은 디렉터리 remote-
 | NEXT PASS | 실제 캐릭터·NPC consumer와 본편 연결, 맵 해상도·레이어 접합 개선. 기존 완료 검사 반복0; 본편native6/청취/save/A급 완료 아님 |
 
 ## 2026-10-08 현재 — 에디터 제스처 포인터 소유권
-완료 ID: ROOT-EDITOR-POINTER-GESTURE-OWNER-20261008. 현재 source는 tools/map-scene-editor.js 82382B / SHA256 4f073ecdbddbc785042a7b905803a4e26137e9e63ad0a13ca536a7ba6f954a45다. 기존 종료 정책을 유지하면서 진행 중인 제스처에 다른 포인터가 개입하는 경로를 막았다.
+완료 ID: ROOT-EDITOR-POINTER-GESTURE-OWNER-20261008. 이 완료 시점의 source는 tools/map-scene-editor.js 82382B / SHA256 4f073ecdbddbc785042a7b905803a4e26137e9e63ad0a13ca536a7ba6f954a45다. 기존 종료 정책을 유지하면서 진행 중인 제스처에 다른 포인터가 개입하는 경로를 막았다.
 
 | 적용 위치 | 현재 계약 |
 |---|---|
@@ -2195,3 +2195,90 @@ GIT
 - deploy: NOT_RUN
 VISUAL VERDICT: RETOUCH
 NEXT PASS: permitted native competing-pointer/capture QA and remaining actual CH1 visual/route/audio/save acceptance. This unit accepts controlled input behavior only.
+
+
+## 2026-10-08 — 인스펙터에서 원본 재료 찾기
+
+완료 단위: `ROOT-EDITOR-ASSET-REVEAL-20261008`. Unity Inspector의 Ping처럼, 씬에서 고른 오브젝트를 유지한 채 원본 에셋을 팔레트에서 찾는다. Godot/Unity/Unreal의 제작 흐름을 현재 브라우저 에디터에 응용하라는 사용자 지시를 반영한 실제 consumer이며 엔진 교체·설치가 아니다.
+
+| 항목 | 현재 계약 |
+|---|---|
+| 진입 | 오브젝트 단일 선택 → 인스펙터 `원본 재료 찾기` 버튼(`#scene-reveal-asset`, type=button) |
+| 식별 | `selectedPair().o.assetId`와 팔레트 버튼 `data-asset-id`의 정확 일치. 같은 표시 이름도 구분 |
+| 표시 | 기존 필터로 안 보이면 `scene-search`만 빈 문자열로 바꾸고 기존 `palette()`로 다시 표시. 원본 버튼을 스크롤하여 파란 테두리(`#8fd6ff`, 2px, offset −2px)로 강조 |
+| 선택 보존 | 팔레트의 배치 onclick을 호출하지 않음. selected/paletteId/tool/layerId/batch/history/project/nav/storage 변경 없음. handler가 키보드 포커스를 이동하지 않음 |
+| 재료 범위 | 기존 LIBRARY 우선 + 공개된 프로젝트 에셋. internal 비공개 또는 누락 ID는 안내만 하고 필터·선택 유지 |
+| 가드 | busy/playing/dialogueOpen/drag/다중 선택/선택 없음이면 실행 차단. 잠긴 레이어도 읽기 전용 원본 찾기 가능 |
+| 입력·수명 | 찾기 버튼의 Enter/Space는 기존 전역 단축키가 가로채지 않음. 강조는 다음 팔레트 재작성 때 사라짐. 새 timer/RAF/파일·세이브 쓰기 없음(안내는 기존 toast 사용) |
+| 드래그 종료 | 기존 validate→history.end→changed/복구 순서 유지. `drag=null` 직후 `revealAssetUI()`를 갱신하여 캔버스 선택 직후 버튼이 켜짐. foreign-pointer 종료 거절 유지 |
+| 검수 | 첫 실제 palette/reveal/keydown 통제 검사 16그룹·56확인 PASS. peer에서 발견한 종료 UI 순서 1건 보정 뒤 별도 actual whole endDrag 검사 6그룹·17확인 PASS. 보정 전 비활성 잔존 반례 1건은 PASS에 합산하지 않음 |
+| 한계 | 통제 DOM/History 포트 검사이며 실제 브라우저·스크롤·CSS 픽셀·키보드 capture·자동저장/서버 save 인수 아님. 기존 열린 탭 재로드/조작 0 |
+| 보존 | code3(editor.html/JS/CSS)+docs4만 소유 blob으로 정상 commit/push, 정확 SHA와 실제 status 전후는 외부 completion.json 참조 |
+
+- 현재 `editor.html`: 258583B / SHA256 `e18c21c6461be5f8919cfbdf450374cb3a7a3753e416454157d54ededac26698`.
+- 현재 `tools/map-scene-editor.css`: 12242B / SHA256 `3f761d10906e565c2e475c0c80a2d387847e086c56fe7c0cf4b6d6c8cc3d4057`.
+- 현재 `tools/map-scene-editor.js`: 83515B / SHA256 `c4a1c12c3dbb1f46fc25903cd9c1cdab33abbe37fea721b3eb299392a0e88f5d`.
+
+================= MAP PRODUCTION REPORT =================
+STAGE: existing scene editor / asset reveal UI
+MASTER
+- silhouette: unchanged
+- regions: unchanged
+- main route: unchanged
+- side spaces: unchanged
+OUTER MASS
+- LEFT: unchanged
+- RIGHT: unchanged
+- TOP: unchanged
+- SOUTH: unchanged
+- major holes: native editor UI and actual CH1 route remain unaccepted
+LARGE
+- source assets: existing LIBRARY/project assetId references only
+- composites: unchanged
+- overlap: unchanged
+- repeated silhouette: unchanged
+MEDIUM
+- connections: inspector selection to exact palette source
+- remaining holes: no native scroll/pixel acceptance
+GROUND
+- shadow: unchanged
+- contamination: unchanged
+- structure integration: unchanged
+PLAYABLE
+- main arenas: unchanged
+- travel space: unchanged
+- breathing space: unchanged
+- threat space: unchanged
+- combat readability: NOT_ASSESSED
+LANDMARK
+- primary: unchanged
+- secondary: unchanged
+- tertiary: unchanged
+CAMERA QA
+- START: NOT_RUN
+- EARLY: NOT_RUN
+- ARENA: NOT_RUN
+- SIDE L: NOT_RUN
+- SIDE R: NOT_RUN
+- LANDMARK: NOT_RUN
+- LATE: NOT_RUN
+- EXIT: NOT_RUN
+TECH QA
+- route: unchanged
+- collision: unchanged
+- pageerror: native NOT_RUN; controlled suites passed
+- 404: NOT_OBSERVED
+- seam: unchanged
+- loading: unchanged; existing palette image loading retained
+- performance: NOT_MEASURED
+FILES
+- stage-owned: editor.html, tools/map-scene-editor.js, tools/map-scene-editor.css, current docs4
+- concurrent touched: existing foreign WIP preserved, unadopted
+- unrelated touched: none by ROOT in this unit
+GIT
+- staged: exact7 owned paths only; external completion.json records final result
+- commit: external completion.json records final SHA
+- push: external completion.json records normal push and remote exact comparison
+- deploy: NOT_RUN
+VISUAL VERDICT: RETOUCH / UI_NOT_ASSESSED
+NEXT PASS: permitted native selection→reveal→property editing workflow; actual CH1 gameplay/sprite/boss work remains unfinished.

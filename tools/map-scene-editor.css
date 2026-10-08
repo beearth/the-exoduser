@@ -29,6 +29,7 @@ body.scene-mode{font:13px/1.5 -apple-system,BlinkMacSystemFont,'Apple SD Gothic 
 #scene-workspace .scene-asset{padding:0;overflow:hidden;text-align:left;background:#131a14;white-space:normal}
 #scene-workspace .scene-asset img{display:block;width:100%;height:82px;object-fit:contain;background:repeating-conic-gradient(#1b241d 0% 25%,#151e17 0% 50%) 50%/16px 16px;padding:3px}
 #scene-workspace .scene-asset span{display:block;font-size:11px;padding:7px}
+#scene-workspace .scene-asset.revealed{outline:2px solid #8fd6ff;outline-offset:-2px}
 #scene-workspace .scene-stage{position:relative;overflow:hidden;min-width:0;background:#0e1410}
 #scene-workspace #scene-canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;outline:none;z-index:0}
 #scene-workspace .scene-tools{position:absolute;top:14px;left:14px;display:flex;gap:5px;flex-wrap:wrap;z-index:2;background:#111a13dd;padding:6px;border:1px solid #3a483b;border-radius:7px}
