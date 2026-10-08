@@ -1,0 +1,22 @@
+[
+  {
+    "path": "/Users/fordeargamers/.codex/visualizations/hell-rift-result-20261006/resident-layers-integration-20261006/accepted-qa-v2/resident-walk.webm",
+    "bytes": 3623467,
+    "sha256": "332e753dfcdb1e229a1488a92918abb39cc0b6bef9f5465fcc8a1ab4003a0e8d"
+  },
+  {
+    "path": "/Users/fordeargamers/.codex/visualizations/rift-interactive-20261006/interactive-motion.webm",
+    "bytes": 522811,
+    "sha256": "bc9242b32242c40b450bd32502876750d7b76419c54dab5fa26d705042bdb0e0"
+  },
+  {
+    "path": "/Users/fordeargamers/the-exoduser/output/rift_devlog_20261008/renders/EXODUSER_RIFT_DEVLOG_01_34S_1080P30.mp4",
+    "bytes": 37845441,
+    "sha256": "de05cefa3ae7e240668773f4b3d321e99bca9abac55000b9da614441a0f5b5ec"
+  },
+  {
+    "path": "/Users/fordeargamers/the-exoduser/output/rift_devlog_20261008/renders/EXODUSER_RIFT_SHORT_20S_1080P30.mp4",
+    "bytes": 19331842,
+    "sha256": "e7bbdd0faabc251e08428b59a911058f4ecc873e1fe3ce6a6fb079e3b189f14d"
+  }
+]

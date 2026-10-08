@@ -1,0 +1,56 @@
+RIFT DEVLOG MOTION QA — 2026-10-08
+
+VERDICT: FAIL for publishing the existing 34s and 20s renders.
+RECAPTURE REQUIRED to obtain an accepted, natural, continuous 8–12s walking take.
+This review does not prove a current migration/main-game runtime bug. It reviews historical Oct 6 recordings and their Oct 8 edits only.
+
+FINDINGS
+
+1. Character disappearance is already present in resident-walk.webm.
+   At source 7.397–8.549s, the body is repeatedly mostly hidden while a head/weapon/cape fragment remains. At source 24.497–25.048s, the body is almost entirely hidden, then reappears by 25.198s.
+   Both intervals keep the original 980x862 resolution and increasing timestamps. They are separate from the resize event. The visual pattern is consistent with source render/foreground occlusion; exact renderer/shader causation is unverified because no runtime was opened or changed.
+   Matching defects remain in the wide edit around 14.4–15.55s and 25.5–26.05s, and in the short around 4.4–5.55s and 12.5–13.05s.
+   Evidence: source-occlusion-7.15-8.8.png, source-occlusion-24.15-25.2.png, wide-occlusion-14.15-15.8.png, wide-occlusion-25.15-26.2.png, short-occlusion-12.15-13.2.png.
+
+2. A resize inside the source was allowed into both edits.
+   Decoded source frames 113 and 114 have dimensions 250x664 at PTS 6.382s and 6.498s; source frame 115 returns to 980x862 at 6.515s. This creates a sudden narrow-view enlargement/distortion around wide 13.38–13.52s and short 3.38–3.52s.
+   The recorder ran while its QA script resized the browser from 1500x960 to 390x844 and back. check-browser-v2.cjs lines 57, 65, 69 establish recording and those viewport changes. This is a QA capture artifact, not evidence of intentional gameplay zoom.
+   Evidence: source-resize-5-7.png; source-frames-index.json; source-walk-showinfo.txt.
+
+3. The source is a resident-dialogue keyboard QA route, not a natural showcase walk.
+   check-browser-v2.cjs lines 18–35 use a four-neighbor BFS route, axis-prioritized keyboard holds, and key release at every route target. Its browser-verification.json reports 30 turns / 5.329s, 48 turns / 7.667s, 10 turns / 2.746s, and 36 turns / 11.893s. Enlarged frame contacts show the cape-facing/side-facing sprite alternating repeatedly.
+   This explains much of the visible shivering and abrupt direction changes. It does not establish a broken animation atlas or current game input bug.
+   Evidence: source-actor-3-12.png; source-actor-12-20.png; source-actor-20-31.png; original browser-verification.json walks.
+
+4. The raw capture has irregular frame timing, and CFR conversion does not repair its motion.
+   resident-walk: 588 decoded frames; last PTS 31.331s; median gap 50ms; maximum gap 365ms (5.749→6.114s). Twelve source gaps exceed 100ms. The recorder requests captureStream(20), despite a 60 tbr container header.
+   interactive-motion: 77 decoded frames; last PTS 2.566s; maximum gap 67ms; it is too short for an 8–12s take and shows character/effect preview changes.
+   Both final renders decode at 30fps with monotonic ~33.33ms steps. That is a technical timing pass only. marketing_rift_prepare_20261008.py line 10 uses fps=30, which duplicates/drops frames rather than reconstructing missing movement.
+   Evidence: timing-summary.json and four *-showinfo.txt logs. Recording irregularity must not be reinterpreted as a current game performance measurement.
+
+5. The edit itself adds location/time discontinuities.
+   Wide source order: resident 12–16s → concept still → resident 3–12s → interactive 0.2–2.2s → resident 20–29s. The first motion shot is later than the walk shot that follows, so the position visibly returns to an earlier location. The interactive insert changes capture/character context.
+   Short source order: resident 3–9s → 12–18s → 24–28s. It skips time and location between cuts.
+   These are cuts, not reverse playback. They add apparent returning/jumping on top of the raw QA route's direction changes.
+   Evidence: marketing_rift_prepare_20261008.py line 5; marketing_rift_edit_20261008.jsx lines 8–20.
+
+SALVAGE / NEXT STEP
+
+No continuous 8–12s natural walking segment has been accepted from these sources. There are short individual moments with a visible actor, but every candidate spanning 8–12s includes repeated QA route direction changes, disappearance, resize, or a combination. Removing only the two resize frames cannot make the current videos pass.
+Use a separately authorized fresh capture from an identified development version, keep the viewport fixed throughout recording, use sustained human-like directional input, keep the actor fully visible, avoid mixing actor-preview footage into the same walk, and inspect the entire continuous take before editing. Verify the old source's occlusion is absent in that chosen runtime rather than assuming a newer HEAD fixes it. This review did not start a server, browser, game, new capture, or runtime modification.
+
+================= MAP PRODUCTION REPORT =================
+STAGE: historical Rift video motion QA only; no new map production.
+MASTER: existing source composition unchanged; no route/region redesign.
+OUTER MASS: existing left/right/top/south masses unchanged; no new full-map acceptance.
+LARGE: existing source assets unchanged; no new composites/overlap acceptance.
+MEDIUM: no connection edits; renderer/foreground body visibility needs a later authorized check.
+GROUND: source body visibility fails near two historical route intervals; exact layer cause unverified.
+PLAYABLE: only recorded motion observed; natural continuous walking acceptance FAIL; combat unobserved.
+LANDMARK: existing source landmarks unchanged; no new hierarchy acceptance.
+CAMERA QA: recorded source/edits compared; START/EARLY/ARENA/SIDE L/SIDE R/LANDMARK/LATE/EXIT current-runtime acceptance UNKNOWN.
+TECH QA: four local files decoded; final CFR timing passes. Current route/collision/pageerror/404/seam/loading/performance UNKNOWN. No runtime test performed.
+FILES: only output/rift_motion_qa_20261008/ created/updated. Concurrent/unrelated files changed 0.
+GIT: staged 0; commit 0; push 0; deploy 0.
+VISUAL VERDICT: FAIL for the current video deliverables. Existing whole-map RETOUCH is not overridden or promoted.
+NEXT PASS: recapture after a separately authorized fixed-viewport actor-visibility check, then full continuous motion review.

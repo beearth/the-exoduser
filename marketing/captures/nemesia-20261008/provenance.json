@@ -1,0 +1,586 @@
+{
+  "created_at": "2026-10-08T05:49:27.346106+00:00",
+  "production": "Existing in-game INTRO artwork, dialogue and music reconstructed as a fixed-duration native edit. Not a gameplay recording. No new source video, AI art, AI music, or AI voice generated for this edit.",
+  "original_asset_ai_disclosure": "Existing artwork and music are AI-assisted production assets. This reconstruction reuses those existing assets.",
+  "source_checkout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+  "source_head": "474b9aae4d5454a12e62589044b9dfa7abf2943f",
+  "source_state": "Working-tree bytes are the extraction authority; HEAD alone is not a claim of a clean checkout or released-demo equivalence.",
+  "source_files": [
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+      "bytes": 4126565,
+      "sha256": "29358bd1b5c2be5be19be4958b7b0d8f6a217ec4e0c008272c0abc755fe52ed7"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/localization-data.js",
+      "bytes": 3467232,
+      "sha256": "7a8c41960b964928174d336ac7153a5104c57f37cc43ffe62ddbc9a26c91a1d4"
+    },
+    {
+      "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/localization-runtime.js",
+      "bytes": 3404,
+      "sha256": "00cdae7b9ea4742d7a905394e62809f8b67869c00f91189781f96988f2074205"
+    }
+  ],
+  "extraction": {
+    "method": "Static JavaScript-literal token parsing for INTRO_CUTSCENE_LINES.ko; strict JSON parsing for globalThis.ExoduserLocalizationData.stories.en.intro. No game code evaluated or executed.",
+    "ko_array_first_line": 62072,
+    "cue_count": 27,
+    "spoken_or_text_cue_count": 18,
+    "unique_images": 21,
+    "english_mapping": "stories.en.intro[String(cue.id)] exactly as ExoduserI18n.localizeStory; empty source cues remain empty. Inline INTRO_CUTSCENE_LINES.en is stale (26 cues) and was not used.",
+    "mapping_check": "Every nonempty Korean cue has exactly one current English mapping, including 22b. No unused English INTRO mapping. All source line breaks preserved.",
+    "speaker_keys": {
+      "GODDESS": "Nemesia",
+      "DIROY": "DIROY",
+      "HECTOR": "HECTOR"
+    }
+  },
+  "units": {
+    "manifest_dur_at": "seconds",
+    "manifest_cam": "unchanged source camera fields; px/py are original reference pixel offsets, not normalized",
+    "manifest_fade": "unchanged source fade fields; in/out are milliseconds",
+    "provenance_original_t_dur": "milliseconds",
+    "frames": "30 fps"
+  },
+  "reconstruction_timing": {
+    "fps": 30,
+    "frames": 3531,
+    "duration_seconds": 117.7,
+    "rule": "max(original dur, max(English word count / 3, Korean character count including spaces and excluding linebreaks / 12) + 0.7 seconds); round each cue up to whole 30 fps frames. Blank cues keep original dur lower bound without added reading time.",
+    "original_dur_sum_seconds": 89.0,
+    "original_fixed_t_diagnostics": [
+      {
+        "previous_id": 9,
+        "id": 10,
+        "delta_ms": 2000,
+        "kind": "gap"
+      },
+      {
+        "previous_id": 11,
+        "id": 12,
+        "delta_ms": -2000,
+        "kind": "overlap"
+      },
+      {
+        "previous_id": "18b",
+        "id": 19,
+        "delta_ms": -2500,
+        "kind": "overlap"
+      },
+      {
+        "previous_id": 23,
+        "id": 24,
+        "delta_ms": -2500,
+        "kind": "overlap"
+      }
+    ],
+    "timing": [
+      {
+        "id": 1,
+        "original_t_ms": 0,
+        "original_dur_ms": 2500,
+        "reconstructed_at_frame": 0,
+        "reconstructed_frames": 75,
+        "ko_characters_including_spaces_excluding_linebreaks": 0,
+        "en_words": 0,
+        "reading_estimate_seconds": 0,
+        "english_key": null
+      },
+      {
+        "id": 2,
+        "original_t_ms": 2500,
+        "original_dur_ms": 1500,
+        "reconstructed_at_frame": 75,
+        "reconstructed_frames": 45,
+        "ko_characters_including_spaces_excluding_linebreaks": 0,
+        "en_words": 0,
+        "reading_estimate_seconds": 0,
+        "english_key": null
+      },
+      {
+        "id": 3,
+        "original_t_ms": 4000,
+        "original_dur_ms": 4500,
+        "reconstructed_at_frame": 120,
+        "reconstructed_frames": 141,
+        "ko_characters_including_spaces_excluding_linebreaks": 34,
+        "en_words": 12,
+        "reading_estimate_seconds": 4.7,
+        "english_key": "3"
+      },
+      {
+        "id": 5,
+        "original_t_ms": 8500,
+        "original_dur_ms": 5000,
+        "reconstructed_at_frame": 261,
+        "reconstructed_frames": 381,
+        "ko_characters_including_spaces_excluding_linebreaks": 90,
+        "en_words": 36,
+        "reading_estimate_seconds": 12.7,
+        "english_key": "5"
+      },
+      {
+        "id": 6,
+        "original_t_ms": 13500,
+        "original_dur_ms": 1500,
+        "reconstructed_at_frame": 642,
+        "reconstructed_frames": 45,
+        "ko_characters_including_spaces_excluding_linebreaks": 0,
+        "en_words": 0,
+        "reading_estimate_seconds": 0,
+        "english_key": null
+      },
+      {
+        "id": 7,
+        "original_t_ms": 15000,
+        "original_dur_ms": 2500,
+        "reconstructed_at_frame": 687,
+        "reconstructed_frames": 75,
+        "ko_characters_including_spaces_excluding_linebreaks": 0,
+        "en_words": 0,
+        "reading_estimate_seconds": 0,
+        "english_key": null
+      },
+      {
+        "id": 8,
+        "original_t_ms": 17500,
+        "original_dur_ms": 3000,
+        "reconstructed_at_frame": 762,
+        "reconstructed_frames": 181,
+        "ko_characters_including_spaces_excluding_linebreaks": 29,
+        "en_words": 16,
+        "reading_estimate_seconds": 6.033333333333333,
+        "english_key": "8"
+      },
+      {
+        "id": 9,
+        "original_t_ms": 20500,
+        "original_dur_ms": 2500,
+        "reconstructed_at_frame": 943,
+        "reconstructed_frames": 75,
+        "ko_characters_including_spaces_excluding_linebreaks": 0,
+        "en_words": 0,
+        "reading_estimate_seconds": 0,
+        "english_key": null
+      },
+      {
+        "id": 10,
+        "original_t_ms": 25000,
+        "original_dur_ms": 4500,
+        "reconstructed_at_frame": 1018,
+        "reconstructed_frames": 181,
+        "ko_characters_including_spaces_excluding_linebreaks": 47,
+        "en_words": 16,
+        "reading_estimate_seconds": 6.033333333333333,
+        "english_key": "10"
+      },
+      {
+        "id": "10c",
+        "original_t_ms": 29500,
+        "original_dur_ms": 2500,
+        "reconstructed_at_frame": 1199,
+        "reconstructed_frames": 81,
+        "ko_characters_including_spaces_excluding_linebreaks": 10,
+        "en_words": 6,
+        "reading_estimate_seconds": 2.7,
+        "english_key": "10c"
+      },
+      {
+        "id": 11,
+        "original_t_ms": 32000,
+        "original_dur_ms": 3000,
+        "reconstructed_at_frame": 1280,
+        "reconstructed_frames": 101,
+        "ko_characters_including_spaces_excluding_linebreaks": 24,
+        "en_words": 8,
+        "reading_estimate_seconds": 3.3666666666666663,
+        "english_key": "11"
+      },
+      {
+        "id": 12,
+        "original_t_ms": 33000,
+        "original_dur_ms": 3500,
+        "reconstructed_at_frame": 1381,
+        "reconstructed_frames": 211,
+        "ko_characters_including_spaces_excluding_linebreaks": 43,
+        "en_words": 19,
+        "reading_estimate_seconds": 7.033333333333333,
+        "english_key": "12"
+      },
+      {
+        "id": 13,
+        "original_t_ms": 36500,
+        "original_dur_ms": 4000,
+        "reconstructed_at_frame": 1592,
+        "reconstructed_frames": 121,
+        "ko_characters_including_spaces_excluding_linebreaks": 35,
+        "en_words": 10,
+        "reading_estimate_seconds": 4.033333333333333,
+        "english_key": "13"
+      },
+      {
+        "id": 14,
+        "original_t_ms": 40500,
+        "original_dur_ms": 5500,
+        "reconstructed_at_frame": 1713,
+        "reconstructed_frames": 221,
+        "ko_characters_including_spaces_excluding_linebreaks": 57,
+        "en_words": 20,
+        "reading_estimate_seconds": 7.366666666666667,
+        "english_key": "14"
+      },
+      {
+        "id": 15,
+        "original_t_ms": 46000,
+        "original_dur_ms": 3500,
+        "reconstructed_at_frame": 1934,
+        "reconstructed_frames": 131,
+        "ko_characters_including_spaces_excluding_linebreaks": 25,
+        "en_words": 11,
+        "reading_estimate_seconds": 4.366666666666666,
+        "english_key": "15"
+      },
+      {
+        "id": 16,
+        "original_t_ms": 49500,
+        "original_dur_ms": 5000,
+        "reconstructed_at_frame": 2065,
+        "reconstructed_frames": 150,
+        "ko_characters_including_spaces_excluding_linebreaks": 21,
+        "en_words": 8,
+        "reading_estimate_seconds": 3.3666666666666663,
+        "english_key": "16"
+      },
+      {
+        "id": 17,
+        "original_t_ms": 54500,
+        "original_dur_ms": 5500,
+        "reconstructed_at_frame": 2215,
+        "reconstructed_frames": 231,
+        "ko_characters_including_spaces_excluding_linebreaks": 45,
+        "en_words": 21,
+        "reading_estimate_seconds": 7.7,
+        "english_key": "17"
+      },
+      {
+        "id": 18,
+        "original_t_ms": 60000,
+        "original_dur_ms": 2500,
+        "reconstructed_at_frame": 2446,
+        "reconstructed_frames": 75,
+        "ko_characters_including_spaces_excluding_linebreaks": 0,
+        "en_words": 0,
+        "reading_estimate_seconds": 0,
+        "english_key": null
+      },
+      {
+        "id": "18b",
+        "original_t_ms": 62500,
+        "original_dur_ms": 5500,
+        "reconstructed_at_frame": 2521,
+        "reconstructed_frames": 201,
+        "ko_characters_including_spaces_excluding_linebreaks": 41,
+        "en_words": 18,
+        "reading_estimate_seconds": 6.7,
+        "english_key": "18b"
+      },
+      {
+        "id": 19,
+        "original_t_ms": 65500,
+        "original_dur_ms": 2500,
+        "reconstructed_at_frame": 2722,
+        "reconstructed_frames": 75,
+        "ko_characters_including_spaces_excluding_linebreaks": 0,
+        "en_words": 0,
+        "reading_estimate_seconds": 0,
+        "english_key": null
+      },
+      {
+        "id": 20,
+        "original_t_ms": 68000,
+        "original_dur_ms": 2000,
+        "reconstructed_at_frame": 2797,
+        "reconstructed_frames": 60,
+        "ko_characters_including_spaces_excluding_linebreaks": 0,
+        "en_words": 0,
+        "reading_estimate_seconds": 0,
+        "english_key": null
+      },
+      {
+        "id": 21,
+        "original_t_ms": 70000,
+        "original_dur_ms": 3500,
+        "reconstructed_at_frame": 2857,
+        "reconstructed_frames": 141,
+        "ko_characters_including_spaces_excluding_linebreaks": 24,
+        "en_words": 12,
+        "reading_estimate_seconds": 4.7,
+        "english_key": "21"
+      },
+      {
+        "id": 22,
+        "original_t_ms": 73500,
+        "original_dur_ms": 4000,
+        "reconstructed_at_frame": 2998,
+        "reconstructed_frames": 161,
+        "ko_characters_including_spaces_excluding_linebreaks": 28,
+        "en_words": 14,
+        "reading_estimate_seconds": 5.366666666666667,
+        "english_key": "22"
+      },
+      {
+        "id": "22b",
+        "original_t_ms": 77500,
+        "original_dur_ms": 2500,
+        "reconstructed_at_frame": 3159,
+        "reconstructed_frames": 101,
+        "ko_characters_including_spaces_excluding_linebreaks": 9,
+        "en_words": 8,
+        "reading_estimate_seconds": 3.3666666666666663,
+        "english_key": "22b"
+      },
+      {
+        "id": 23,
+        "original_t_ms": 80000,
+        "original_dur_ms": 2500,
+        "reconstructed_at_frame": 3260,
+        "reconstructed_frames": 151,
+        "ko_characters_including_spaces_excluding_linebreaks": 15,
+        "en_words": 13,
+        "reading_estimate_seconds": 5.033333333333333,
+        "english_key": "23"
+      },
+      {
+        "id": 24,
+        "original_t_ms": 80000,
+        "original_dur_ms": 2500,
+        "reconstructed_at_frame": 3411,
+        "reconstructed_frames": 75,
+        "ko_characters_including_spaces_excluding_linebreaks": 3,
+        "en_words": 0,
+        "reading_estimate_seconds": 0.95,
+        "english_key": "24"
+      },
+      {
+        "id": 25,
+        "original_t_ms": 82500,
+        "original_dur_ms": 1500,
+        "reconstructed_at_frame": 3486,
+        "reconstructed_frames": 45,
+        "ko_characters_including_spaces_excluding_linebreaks": 0,
+        "en_words": 0,
+        "reading_estimate_seconds": 0,
+        "english_key": null
+      }
+    ]
+  },
+  "runtime_difference": {
+    "game": "INTRO progresses in source array order. Text/speaker cues reveal text and wait for player input; a first input can reveal incomplete text, a later input advances. Blank cues auto-advance after dur. Source t is not a reliable continuous INTRO video timeline.",
+    "video": "All 27 cues advance automatically at cumulative at/dur values. Both KO primary and current EN supporting text are displayed together. Camera paths are retimed over reconstructed durations. Game VFX, gamepad vibration, input hints, typewriter timing and unverified SFX/voice are not asserted reproduced.",
+    "audio": "music.mp3 is the exact existing V3 track copied without conversion. Runtime INTRO schedules music after 400 ms and fades at exit; final native editor may align/trim/fade this same track for the fixed edit. No new dubbing. Final audio edit/listening QA remains with renderer.",
+    "exit": "Final source cue id25 has img:null and fade.out=1500 ms. Renderer must fade prior image to black or use black background; do not claim a new image."
+  },
+  "audio_source": {
+    "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/bgm/공통/네메시아의 강림 V3.mp3",
+    "bytes": 3557632,
+    "sha256": "d983380924b029a5f19c98f0bcded51c6607be06235346c10520dfcc7716d910",
+    "production_bgm_key": "cutscene_nemesis",
+    "documented_duration_seconds_approx": 145,
+    "verified_by_other_agent_duration_seconds": 145.03,
+    "verified_by_other_agent_format": "MP3 48kHz stereo"
+  },
+  "font_sources": {
+    "zip": "/Users/fordeargamers/the-exoduser/output/rift_devlog_20261008/renders/EXODUSER_RIFT_EDITABLE_20261008.zip",
+    "members": {
+      "rift-input/NotoSansKR.ttf": "NotoSansKR.ttf",
+      "rift-edits/portrait/fonts/dm-sans-400.woff2": "dm-sans-400.woff2",
+      "rift-edits/portrait/fonts/dm-sans-700.woff2": "dm-sans-700.woff2"
+    }
+  },
+  "assets": [
+    {
+      "file": "00.png",
+      "bytes": 4261852,
+      "sha256": "85037b0ee327dd9d3a4b17c5a0bdc86611c24e1741f977a05213fe1a3147894b",
+      "width": 2048,
+      "height": 1152
+    },
+    {
+      "file": "01.png",
+      "bytes": 4594206,
+      "sha256": "0cb2941e3080768c89aef7ca224b91579fe46f3cced2c84039f29794107ff3d6",
+      "width": 2048,
+      "height": 1152
+    },
+    {
+      "file": "02.png",
+      "bytes": 2217395,
+      "sha256": "eceb9dfb3d49a377dca3edc1ea940127dce1e1cf741cf38f2b9b21b7fd2e3ccc",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "file": "03.png",
+      "bytes": 4361613,
+      "sha256": "c1cb86d2d9fb171220c6c7e89ec7bcdabe4cbdbfc37be8bb2b505fcc4025cc31",
+      "width": 2048,
+      "height": 1152
+    },
+    {
+      "file": "04.png",
+      "bytes": 2941022,
+      "sha256": "3ccd9d840deaa1f6b5d9772cd2b5e91430afa93f10e1bf21718b7b9d44c4f6be",
+      "width": 2048,
+      "height": 1152
+    },
+    {
+      "file": "05.png",
+      "bytes": 3778638,
+      "sha256": "bce13bd426e8acf37347fa7bb747a213349e18c943277025b8c54b5bdd55ec9b",
+      "width": 2048,
+      "height": 1152
+    },
+    {
+      "file": "06.png",
+      "bytes": 3522569,
+      "sha256": "3aaca09a5a1e546358a53b6cb9d085106478e342baa22020f9e4f2f9f2caad41",
+      "width": 2048,
+      "height": 1152
+    },
+    {
+      "file": "07.png",
+      "bytes": 3570659,
+      "sha256": "c5ee0bbe42a72395dc4c640693a7dcab72062ea35f9d71ecf340b58cc19bac37",
+      "width": 2048,
+      "height": 1152
+    },
+    {
+      "file": "08.png",
+      "bytes": 4298747,
+      "sha256": "6ffe82091b31c5f0ada1586b1f4bfd6787f334b5e90ff73d2c649afb0c304e23",
+      "width": 2048,
+      "height": 1152
+    },
+    {
+      "file": "09.png",
+      "bytes": 3624668,
+      "sha256": "1170f53c0a2d743902bf9afd8c6bc6d38b793032aca85c7cc47b9100607d714d",
+      "width": 2048,
+      "height": 1152
+    },
+    {
+      "file": "10.png",
+      "bytes": 3403975,
+      "sha256": "2655eb252661279557a19916a1edec578835ba0c39a39e60e20568901957cc77",
+      "width": 2048,
+      "height": 1152
+    },
+    {
+      "file": "11.png",
+      "bytes": 1921711,
+      "sha256": "8a4ca66d95c9cd7015cb8483695656a825f667df26d42ceadaa28d838c451569",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "file": "12.png",
+      "bytes": 4350488,
+      "sha256": "2f5a7dd20c95d253c0c017f7f97b221fa7568fb4e39ad3e8112207f7ac8d2ab9",
+      "width": 2048,
+      "height": 1152
+    },
+    {
+      "file": "13.png",
+      "bytes": 3457243,
+      "sha256": "8595aa0670b061d813b25d39ab3971132945a9749e727d100b336f6385e319b9",
+      "width": 2048,
+      "height": 1152
+    },
+    {
+      "file": "14.png",
+      "bytes": 3257716,
+      "sha256": "c70649bb753549fd99aea8158034d2065c1726833a657dc7452738551ddc63c1",
+      "width": 2048,
+      "height": 1152
+    },
+    {
+      "file": "15.png",
+      "bytes": 2239732,
+      "sha256": "6bf8d2cfa3479b1f1f9fe05941e2731a8e22782f445637df072b233111704331",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "file": "16.png",
+      "bytes": 2236838,
+      "sha256": "56e68c9a91b8a3c58070fbfabaea02c1f50f0a86554bed32c6f4e3b54f4135a0",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "file": "17.png",
+      "bytes": 3880012,
+      "sha256": "2c7716f923a75021472344d249f0e8168e8741f754df05a2f353c69fde5b1c7f",
+      "width": 2048,
+      "height": 1152
+    },
+    {
+      "file": "18.png",
+      "bytes": 3819719,
+      "sha256": "90fce26672bdb5d3ab8631c6db60acd72f95f5eb148123c9bc3a970fdcf3fd0e",
+      "width": 2048,
+      "height": 1152
+    },
+    {
+      "file": "19.png",
+      "bytes": 4024123,
+      "sha256": "ba00a7ea6aaddf2e6cba210c9bd013f6a4782263b32b8f1b8417eba80fb8c255",
+      "width": 2048,
+      "height": 1152
+    },
+    {
+      "file": "20.png",
+      "bytes": 3196957,
+      "sha256": "bcfa0a1b6bfa881211cf20b0bdc97199b76a1c2d06d62e4e9842d550856a82c2",
+      "width": 2048,
+      "height": 1152
+    },
+    {
+      "file": "NotoSansKR.ttf",
+      "bytes": 10414588,
+      "sha256": "194018e6b2b293a7964f037b25c0249ce1418bc9ab3c971060a03aa57861e252"
+    },
+    {
+      "file": "dm-sans-400.woff2",
+      "bytes": 14124,
+      "sha256": "f0a0ffc3882838b72d83fb011910b6c0f603f86c3ecbd2d1c1b5f3f9fcaed0a1"
+    },
+    {
+      "file": "dm-sans-700.woff2",
+      "bytes": 14256,
+      "sha256": "d91b32eb570dce33ede97c7513b4dc465b9f5691edf5c532872d3f62959b1117"
+    },
+    {
+      "file": "manifest.json",
+      "bytes": 11262,
+      "sha256": "28f9fc74a09284cb026226f2005a952d8e14651f54dcd0f907e9b60a6b23f8f6"
+    },
+    {
+      "file": "music.mp3",
+      "bytes": 3557632,
+      "sha256": "d983380924b029a5f19c98f0bcded51c6607be06235346c10520dfcc7716d910"
+    }
+  ],
+  "boundaries": {
+    "game_execution": false,
+    "server_start": false,
+    "browser_action": false,
+    "game_or_docs_edits": false,
+    "held_story_wolf_candidate_access": false,
+    "new_ai_generation": false,
+    "new_source_video_generation": false,
+    "published": false,
+    "visual_or_listening_qa": "NOT_RUN by this asset preparation task"
+  }
+}

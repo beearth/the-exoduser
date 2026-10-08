@@ -1,0 +1,73 @@
+{
+  "verdict": "PASS",
+  "scope": "Completed runtime-linked cinematic MP4s only; no game, server, browser, held team candidate, source modification or publication.",
+  "warrior": {
+    "source": "/Users/fordeargamers/Projects/exoduser-migration-20261001/video/warrior_story_v23_clean.mp4",
+    "contentVersion": "v25 remaster 2026-10-01; filename retained v23",
+    "durationSeconds": 96.4,
+    "decodedFrames": 5784,
+    "resolution": "1920x1080",
+    "fps": 60,
+    "decoderErrors": 0,
+    "peakDbfs": -5.228781,
+    "rmsDbfs": -22.942509,
+    "blackIntervalsInterpretation": "Only final fade 96.2667s to end. Remaster cut boundaries manually inspected at 4.967/5.033,80.967/81.033,83.967/84.033,87.467/87.533,90.300/90.367,92.867/92.933.",
+    "audioDescription": "Embedded English narration and instrumental prologue theme per current cinematic documentation; AAC stereo fully decoded."
+  },
+  "world": {
+    "source": "/Users/fordeargamers/Projects/exoduser-migration-20261001/video/world_intro_v13_exodus_en.mp4",
+    "contentVersion": "v13 Exodus English narration",
+    "durationSeconds": 113.291667,
+    "decodedFrames": 2719,
+    "resolution": "1280x720",
+    "fps": 24,
+    "decoderErrors": 0,
+    "peakDbfs": -5.40714,
+    "rmsDbfs": -23.9751,
+    "blackIntervalsInterpretation": "108.833s-109.333s is cinematic ending fade followed by logo fade-in; 113.042s to end is logo fade-out. Inspected directly.",
+    "runtimeVttParity": "EN and KO external VTT each match actual v13 JS data: 32 cues; no text/timing mismatches to 0.00051s tolerance.",
+    "audioDescription": "Embedded English VO decodes correctly. Game cinematic music is a separate _cinBgm Audio object (index.html:2416), not established as embedded in this MP4. Source-only upload does not reproduce the runtime music mix."
+  },
+  "visualQa": {
+    "overviewSheets": "12 equally spaced samples per movie",
+    "motionSamples": "Each of 12 sample locations inspected at t, t+0.1, t+0.2s (nearest source frames): 36 frames per movie, in two contact sheets.",
+    "boundaryQa": "Additional 16 warrior and 12 world frames inspected.",
+    "reviewedViaViewImage": [
+      "warrior_12_samples.jpg",
+      "world_12_samples.jpg",
+      "warrior_motion_1.jpg",
+      "warrior_motion_2.jpg",
+      "world_motion_1.jpg",
+      "world_motion_2.jpg",
+      "warrior_boundaries.jpg",
+      "world_logo_boundaries.jpg"
+    ],
+    "finding": "No exposed browser/game/debug UI, missing scene subjects, unexpected black interval, full-frame flash, or visible render corruption in reviewed samples. Cinematic characters and environments remain consistently framed.",
+    "limits": "Not continuous human playback of every frame. Full decode and frame-level dimensions/PTS/luma checks cover complete timeline; visual assessment uses explicit samples."
+  },
+  "objectiveFrameChecks": {
+    "resolutionChanges": 0,
+    "nonIncreasingPts": 0,
+    "fullFrameLumaJumpsAtLeast45": 0,
+    "singleFrameBrightSpikesAtLeast40": 0,
+    "flashLimit": "These thresholds use full-frame average luma and do not certify absence of small/local visual flashes."
+  },
+  "audioQa": {
+    "fullDecode": true,
+    "nanInfValues": 0,
+    "clippingAbove0Dbfs": false,
+    "completeAuditoryListening": false,
+    "limitation": "No claim of full English speech intelligibility, accent, musical balance or native-language acceptance from waveform/statistics alone."
+  },
+  "subtitles": {
+    "directory": "/Users/fordeargamers/the-exoduser/output/cutscene_youtube_20261008/review/subtitles",
+    "files": [
+      "warrior_en.vtt",
+      "warrior_ko.vtt",
+      "world_en.vtt",
+      "world_ko.vtt"
+    ],
+    "type": "Sidecar subtitles; no hardcoded captions or embedded text-track stream in source MP4s."
+  },
+  "largeFilesCopied": false
+}

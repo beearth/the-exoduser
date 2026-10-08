@@ -1,0 +1,78 @@
+[
+  {
+    "kind": "warrior",
+    "lang": "en",
+    "source": "/Users/fordeargamers/Projects/exoduser-migration-20261001/video/subtitles/warrior_story_v23_en.vtt",
+    "copy": "/Users/fordeargamers/the-exoduser/output/cutscene_youtube_20261008/review/subtitles/warrior_en.vtt",
+    "bytes": 1747,
+    "cueCount": 22,
+    "first": {
+      "start": 1.0,
+      "end": 3.21,
+      "text": "A man who returned alive from war."
+    },
+    "last": {
+      "start": 92.9,
+      "end": 95.6,
+      "text": "\"You... who bear the weight of sin.\""
+    },
+    "invalidRanges": 0
+  },
+  {
+    "kind": "warrior",
+    "lang": "ko",
+    "source": "/Users/fordeargamers/Projects/exoduser-migration-20261001/video/subtitles/warrior_story_v23_ko.vtt",
+    "copy": "/Users/fordeargamers/the-exoduser/output/cutscene_youtube_20261008/review/subtitles/warrior_ko.vtt",
+    "bytes": 1830,
+    "cueCount": 22,
+    "first": {
+      "start": 1.0,
+      "end": 3.21,
+      "text": "전쟁에서 살아 돌아온 한 남자."
+    },
+    "last": {
+      "start": 92.9,
+      "end": 95.6,
+      "text": "\"죄의 무게를 짊어진 자여.\""
+    },
+    "invalidRanges": 0
+  },
+  {
+    "kind": "world",
+    "lang": "en",
+    "source": "/Users/fordeargamers/Projects/exoduser-migration-20261001/video/subtitles/world_intro_v6_en.vtt",
+    "copy": "/Users/fordeargamers/the-exoduser/output/cutscene_youtube_20261008/review/subtitles/world_en.vtt",
+    "bytes": 2193,
+    "cueCount": 32,
+    "first": {
+      "start": 0.08,
+      "end": 2.94,
+      "text": "There are countless worlds in the universe."
+    },
+    "last": {
+      "start": 109.6,
+      "end": 111.1,
+      "text": "Exoduser."
+    },
+    "invalidRanges": 0
+  },
+  {
+    "kind": "world",
+    "lang": "ko",
+    "source": "/Users/fordeargamers/Projects/exoduser-migration-20261001/video/subtitles/world_intro_v6_ko.vtt",
+    "copy": "/Users/fordeargamers/the-exoduser/output/cutscene_youtube_20261008/review/subtitles/world_ko.vtt",
+    "bytes": 2389,
+    "cueCount": 32,
+    "first": {
+      "start": 0.08,
+      "end": 2.94,
+      "text": "우주에는 셀 수 없는 세계가 있다."
+    },
+    "last": {
+      "start": 109.6,
+      "end": 111.1,
+      "text": "엑소듀서라 부른다."
+    },
+    "invalidRanges": 0
+  }
+]

@@ -1,0 +1,18 @@
+{
+  "date": "2026-10-08",
+  "publicationStatus": "REJECTED_MOTION_QA",
+  "appliesTo": [
+    "EXODUSER_RIFT_DEVLOG_01_34S_1080P30.mp4",
+    "EXODUSER_RIFT_SHORT_20S_1080P30.mp4",
+    "EXODUSER_RIFT_DISCORD_20S_720P30.mp4"
+  ],
+  "required": "New natural continuous fixed-viewport gameplay capture with full motion review",
+  "currentRuntimeBug": "NOT_ESTABLISHED",
+  "reason": [
+    "Historical QA route with frequent direction changes",
+    "Source body disappearance preserved in edits",
+    "Source viewport resize preserved in edits",
+    "Irregular source timestamps and editorial location jumps"
+  ],
+  "supersedes": "Earlier sampled visual acceptance; technical decoding and archive checks remain scoped results"
+}

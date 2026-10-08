@@ -50,4 +50,4 @@ git worktree add ..\exoduser-marketing-20261008 origin/codex/marketing-gameplay-
 
 클라우드 편집 패키지·검수 결과의 공개 링크는 [delivery_urls.json](../../marketing/trailers/20261008/delivery_urls.json)에 기록한다. 네이티브 프로젝트 3개와 import된 미디어·폰트가 들어 있는 ZIP은 Git 대용량 파일로 추가하지 않는다. ZIP CRC와 3개 프로젝트의 모든 asset URI 존재 검증 PASS. ZIP SHA256: `132d1ceb72f886ed8947f4b0fb33717bab0604687354d560d72ed4e891da28ac`.
 
-후속 별도 소재: [지옥의 틈 개발 기록01](RIFT_DEVLOG_DELIVERY_20261008.md) 가로34초·세로20초·Discord720p20초 제작/검수·보존 완료, 신규 게시 대기. 위 전투37/16/26초와 출처·음원을 구분한다.
+후속 별도 소재: [지옥의 틈 개발 기록01](RIFT_DEVLOG_DELIVERY_20261008.md) 가로34초·세로20초·Discord720p20초 이력 보존. 후속 모션 QA FAIL로 게시 제외·재촬영 필요. 위 전투37/16/26초와 출처·음원을 구분한다.

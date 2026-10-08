@@ -1,5 +1,5 @@
 {
-  "visual": "PASS for video edit samples; not a map-production acceptance",
+  "visual": "FAIL for publishing; superseded by motion-qa/MOTION_QA_REPORT.txt",
   "samples": {
     "landscape": [
       1.6,
@@ -25,5 +25,7 @@
     "fonts": "Noto Sans KR + DM Sans 400/700 + OFL1.1"
   },
   "subjectiveListening": "NOT_PERFORMED",
-  "gameMapQA": "NOT_PERFORMED"
+  "gameMapQA": "NOT_PERFORMED",
+  "historicalVisual": "PASS for video edit samples; not a map-production acceptance",
+  "publicationStatus": "REJECTED_MOTION_QA"
 }

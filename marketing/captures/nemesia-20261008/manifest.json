@@ -1,0 +1,498 @@
+{
+  "cues": [
+    {
+      "id": 1,
+      "img": "00.png",
+      "ko": "",
+      "en": "",
+      "speaker": null,
+      "dur": 2.5,
+      "at": 0.0,
+      "cam": {
+        "zs": 1,
+        "ze": 1.08,
+        "px": 0,
+        "py": 0,
+        "ease": "out"
+      },
+      "fade": {
+        "in": 800,
+        "out": 200,
+        "type": "cross"
+      }
+    },
+    {
+      "id": 2,
+      "img": "01.png",
+      "ko": "",
+      "en": "",
+      "speaker": null,
+      "dur": 1.5,
+      "at": 2.5,
+      "cam": {
+        "zs": 1.05,
+        "ze": 1.15,
+        "px": 0,
+        "py": 0,
+        "ease": "out"
+      },
+      "fade": {
+        "type": "cross",
+        "in": 300
+      }
+    },
+    {
+      "id": 3,
+      "img": "02.png",
+      "ko": "네놈의 그 짜릿한 복수극, 감명 깊게 잘 봤다. 명작이더구나.",
+      "en": "I was quite taken with that thrilling revenge of yours. A masterpiece.",
+      "speaker": "GODDESS",
+      "dur": 4.7,
+      "at": 4.0,
+      "cam": {
+        "zs": 1,
+        "ze": 1.05,
+        "px": 5,
+        "py": 0,
+        "ease": "linear"
+      },
+      "fade": {
+        "type": "cross",
+        "in": 400
+      }
+    },
+    {
+      "id": 5,
+      "img": "03.png",
+      "ko": "그토록 피를 묻히고도, 네놈 안의 선의는 아직 남아 있구나.\n네가 구해야 할 이가 누구인지… 잊지는 않았겠지?\n아직도 너를 기다리고 있다.\n서둘러라. 너무 늦기 전에.",
+      "en": "Even after all the blood you have spilled, goodness still lingers within you.\nYou have not forgotten whom you must save… have you?\nThey are still waiting for you.\nMake haste. Before it is too late.",
+      "speaker": "GODDESS",
+      "dur": 12.7,
+      "at": 8.7,
+      "cam": {
+        "zs": 1,
+        "ze": 1.2,
+        "px": 0,
+        "py": 10,
+        "ease": "inout"
+      },
+      "fade": {
+        "type": "cross",
+        "in": 500
+      }
+    },
+    {
+      "id": 6,
+      "img": "04.png",
+      "ko": "",
+      "en": "",
+      "speaker": null,
+      "dur": 1.5,
+      "at": 21.4,
+      "cam": {
+        "zs": 1.3,
+        "ze": 1,
+        "ease": "out"
+      },
+      "fade": {
+        "type": "cut",
+        "out": 200
+      }
+    },
+    {
+      "id": 7,
+      "img": "05.png",
+      "ko": "",
+      "en": "",
+      "speaker": null,
+      "dur": 2.5,
+      "at": 22.9,
+      "cam": {
+        "zs": 1,
+        "ze": 1.05,
+        "py": 5,
+        "ease": "linear"
+      },
+      "fade": {
+        "type": "cross",
+        "in": 600
+      }
+    },
+    {
+      "id": 8,
+      "img": "06.png",
+      "ko": "그 아이의 목마를 보니 망자도 정신이 드는가 보구나.",
+      "en": "So the sight of that child's rocking horse brings even a dead man to his senses.",
+      "speaker": "GODDESS",
+      "dur": 6.033333333333333,
+      "at": 25.4,
+      "cam": {
+        "zs": 1,
+        "ze": 1.1,
+        "ease": "out"
+      },
+      "fade": {
+        "type": "cross",
+        "in": 400
+      }
+    },
+    {
+      "id": 9,
+      "img": "07.png",
+      "ko": "",
+      "en": "",
+      "speaker": null,
+      "dur": 2.5,
+      "at": 31.433333333333334,
+      "cam": {
+        "zs": 1.05,
+        "ze": 1,
+        "ease": "out"
+      },
+      "fade": {
+        "type": "cross",
+        "in": 400
+      }
+    },
+    {
+      "id": 10,
+      "img": "08.png",
+      "ko": "그래, 이곳을 탈출하라. 내 친히 너를 도와주마.\n디로이와 핵터가 너를 안내할 것이다.",
+      "en": "Very well. Escape this place. I will personally help you.\nDiroy and Hector will guide you.",
+      "speaker": "GODDESS",
+      "dur": 6.033333333333333,
+      "at": 33.93333333333333,
+      "cam": {
+        "zs": 1.05,
+        "ze": 1.15,
+        "ease": "inout"
+      },
+      "fade": {
+        "type": "cross",
+        "in": 400
+      }
+    },
+    {
+      "id": "10c",
+      "img": "09.png",
+      "ko": "또 보자, 망자여.",
+      "en": "Until we meet again, dead one.",
+      "speaker": "GODDESS",
+      "dur": 2.7,
+      "at": 39.96666666666667,
+      "cam": {
+        "zs": 1.1,
+        "ze": 1,
+        "ease": "out"
+      },
+      "fade": {
+        "type": "cross",
+        "in": 600
+      }
+    },
+    {
+      "id": 11,
+      "img": "10.png",
+      "ko": "놀랄 거 없어. 인사나 하지. 내가 디로이.",
+      "en": "Don't be alarmed. Let's introduce ourselves. I'm Diroy.",
+      "speaker": "DIROY",
+      "dur": 3.3666666666666667,
+      "at": 42.666666666666664,
+      "cam": {
+        "zs": 1,
+        "ze": 1.08,
+        "ease": "out"
+      },
+      "fade": {
+        "type": "black",
+        "in": 500
+      }
+    },
+    {
+      "id": 12,
+      "img": "11.png",
+      "ko": "내가 핵터. 우릴 여신님의 가호라고 생각하면 돼.\n우리도 이곳을 나가야 하거든.",
+      "en": "I'm Hector. Think of us as a blessing from the goddess.\nWe need to get out of here too.",
+      "speaker": "HECTOR",
+      "dur": 7.033333333333333,
+      "at": 46.03333333333333,
+      "cam": {
+        "zs": 1,
+        "ze": 1.05,
+        "px": -10,
+        "ease": "linear"
+      },
+      "fade": {
+        "type": "cross",
+        "in": 400
+      }
+    },
+    {
+      "id": 13,
+      "img": "12.png",
+      "ko": "악마는 악의로 만들어진 존재야.\n본능적으로 선의를 공격하려 들어.",
+      "en": "Demons are beings made of malice.\nThey instinctively attack goodness.",
+      "speaker": "DIROY",
+      "dur": 4.033333333333333,
+      "at": 53.06666666666667,
+      "cam": {
+        "zs": 1.05,
+        "ze": 1.1,
+        "ease": "out"
+      },
+      "fade": {
+        "type": "cross",
+        "in": 400
+      }
+    },
+    {
+      "id": 14,
+      "img": "13.png",
+      "ko": "근데 너는 좀 특이해. 선의가 강하거든.\n악의는 일시적으로 폭발한 상태야. 그 기세도 곧 가라앉을 거야.",
+      "en": "But you're different. Your goodness is strong.\nYour malice has only erupted for a while. That outburst will fade soon.",
+      "speaker": "HECTOR",
+      "dur": 7.366666666666666,
+      "at": 57.1,
+      "cam": {
+        "zs": 1,
+        "ze": 1.15,
+        "ease": "out"
+      },
+      "fade": {
+        "type": "cross",
+        "in": 400
+      }
+    },
+    {
+      "id": 15,
+      "img": "14.png",
+      "ko": "그래서 악마들이 네 냄새를 맡고 몰려들 거야.",
+      "en": "So demons will catch your scent and come swarming toward you.",
+      "speaker": "DIROY",
+      "dur": 4.366666666666666,
+      "at": 64.46666666666667,
+      "cam": {
+        "zs": 1.1,
+        "ze": 1,
+        "ease": "in"
+      },
+      "fade": {
+        "type": "cross",
+        "in": 400
+      }
+    },
+    {
+      "id": 16,
+      "img": "15.png",
+      "ko": "여신님이 네게 무구를 내리셨어. 챙겨.",
+      "en": "The goddess has granted you armaments. Take them.",
+      "speaker": "DIROY",
+      "dur": 5.0,
+      "at": 68.83333333333333,
+      "cam": {
+        "zs": 1.2,
+        "ze": 1,
+        "px": 0,
+        "py": 0,
+        "ease": "out"
+      },
+      "fade": {
+        "type": "cross",
+        "in": 500
+      }
+    },
+    {
+      "id": 17,
+      "img": "16.png",
+      "ko": "여신님이 보내신 투영이야. 전장의 영혼이지.\n쇠뇌에 깃들어서 너랑 같이 싸울 거야.",
+      "en": "A projection sent by the goddess. A soul from the battlefield.\nIt will dwell in the crossbow and fight alongside you.",
+      "speaker": "HECTOR",
+      "dur": 7.7,
+      "at": 73.83333333333333,
+      "cam": {
+        "zs": 1.15,
+        "ze": 1,
+        "px": -15,
+        "py": 0,
+        "ease": "out"
+      },
+      "fade": {
+        "type": "cross",
+        "in": 500
+      }
+    },
+    {
+      "id": 18,
+      "img": "17.png",
+      "ko": "",
+      "en": "",
+      "speaker": null,
+      "dur": 2.5,
+      "at": 81.53333333333333,
+      "cam": {
+        "zs": 1,
+        "ze": 1.08,
+        "ease": "out"
+      },
+      "fade": {
+        "type": "cross",
+        "in": 500
+      }
+    },
+    {
+      "id": "18b",
+      "img": "18.png",
+      "ko": "그 악의띠도 차. 폭발한 악의가 너를\n미치게 하기 전에 정신을 잡아줄 거야.",
+      "en": "Put on that malice band too. It will steady your mind\nbefore the unleashed malice drives you mad.",
+      "speaker": "DIROY",
+      "dur": 6.7,
+      "at": 84.03333333333333,
+      "cam": {
+        "zs": 1.1,
+        "ze": 1.3,
+        "px": 40,
+        "py": 30,
+        "ease": "inout"
+      },
+      "fade": {
+        "type": "cross",
+        "in": 400
+      }
+    },
+    {
+      "id": 19,
+      "img": "19.png",
+      "ko": "",
+      "en": "",
+      "speaker": null,
+      "dur": 2.5,
+      "at": 90.73333333333333,
+      "cam": {
+        "zs": 1.08,
+        "ze": 1,
+        "py": 5,
+        "ease": "in"
+      },
+      "fade": {
+        "type": "cross",
+        "in": 400
+      }
+    },
+    {
+      "id": 20,
+      "img": "20.png",
+      "ko": "",
+      "en": "",
+      "speaker": null,
+      "dur": 2.0,
+      "at": 93.23333333333333,
+      "cam": {
+        "zs": 1,
+        "ze": 1.05,
+        "ease": "linear"
+      },
+      "fade": {
+        "type": "cross",
+        "in": 300
+      }
+    },
+    {
+      "id": 21,
+      "img": "20.png",
+      "ko": "이 인간 또 기절했네. 얼마나 안 잔 거야?",
+      "en": "This human passed out again. How long has he gone without sleep?",
+      "speaker": "HECTOR",
+      "dur": 4.7,
+      "at": 95.23333333333333,
+      "cam": {
+        "zs": 1,
+        "ze": 1
+      },
+      "fade": {
+        "type": "cross",
+        "in": 500
+      }
+    },
+    {
+      "id": 22,
+      "img": "20.png",
+      "ko": "복수만 생각하느라 며칠을 안 먹고 안 잔 모양이야.",
+      "en": "Looks like he spent days without food or sleep, thinking of nothing but revenge.",
+      "speaker": "DIROY",
+      "dur": 5.366666666666666,
+      "at": 99.93333333333334,
+      "cam": {
+        "zs": 1,
+        "ze": 1
+      },
+      "fade": {
+        "type": "cut"
+      }
+    },
+    {
+      "id": "22b",
+      "img": "20.png",
+      "ko": "놔두면 잡아먹혀.",
+      "en": "Leave him like this and he'll be eaten.",
+      "speaker": "DIROY",
+      "dur": 3.3666666666666667,
+      "at": 105.3,
+      "cam": {
+        "zs": 1,
+        "ze": 1
+      },
+      "fade": {
+        "type": "cut"
+      }
+    },
+    {
+      "id": 23,
+      "img": "20.png",
+      "ko": "악의라도 먹여서 깨워야 해.",
+      "en": "We need to wake him, even if we have to feed him malice.",
+      "speaker": "HECTOR",
+      "dur": 5.033333333333333,
+      "at": 108.66666666666667,
+      "cam": {
+        "zs": 1,
+        "ze": 1
+      },
+      "fade": {
+        "type": "cut"
+      }
+    },
+    {
+      "id": 24,
+      "img": "12.png",
+      "ko": "...",
+      "en": "...",
+      "speaker": "DIROY",
+      "dur": 2.5,
+      "at": 113.7,
+      "cam": {
+        "zs": 1,
+        "ze": 1.05,
+        "ease": "out"
+      },
+      "fade": {
+        "type": "cross",
+        "in": 400
+      }
+    },
+    {
+      "id": 25,
+      "img": null,
+      "ko": "",
+      "en": "",
+      "speaker": null,
+      "dur": 1.5,
+      "at": 116.2,
+      "cam": null,
+      "fade": {
+        "out": 1500,
+        "type": "black"
+      }
+    }
+  ],
+  "duration": 117.7
+}

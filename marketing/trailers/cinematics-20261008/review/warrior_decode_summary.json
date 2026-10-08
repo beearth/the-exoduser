@@ -1,0 +1,54 @@
+{
+  "source": "/Users/fordeargamers/Projects/exoduser-migration-20261001/video/warrior_story_v23_clean.mp4",
+  "exitCode": 0,
+  "elapsed": 15.06,
+  "decodedFrames": 5784,
+  "sizes": [
+    "1920x1080"
+  ],
+  "first": {
+    "n": 0,
+    "t": 0.0,
+    "size": "1920x1080",
+    "y": 64.0
+  },
+  "last": {
+    "n": 5783,
+    "t": 96.3833,
+    "size": "1920x1080",
+    "y": 17.0
+  },
+  "nonIncreasingPts": 0,
+  "blackIntervals": [
+    {
+      "start": 96.2667,
+      "end": 96.3833,
+      "duration": 0.116667
+    }
+  ],
+  "lumaJumps45": [],
+  "singleFrameBrightSpikes40": [],
+  "audioStats": [
+    "[Parsed_astats_0 @ 0x127604300] Peak level dB: -5.474019",
+    "[Parsed_astats_0 @ 0x127604300] RMS level dB: -22.940391",
+    "[Parsed_astats_0 @ 0x127604300] Flat factor: 0.000000",
+    "[Parsed_astats_0 @ 0x127604300] Peak count: 2",
+    "[Parsed_astats_0 @ 0x127604300] Number of NaNs: 0",
+    "[Parsed_astats_0 @ 0x127604300] Number of Infs: 0",
+    "[Parsed_astats_0 @ 0x127604300] Peak level dB: -5.228781",
+    "[Parsed_astats_0 @ 0x127604300] RMS level dB: -22.944627",
+    "[Parsed_astats_0 @ 0x127604300] Flat factor: 0.000000",
+    "[Parsed_astats_0 @ 0x127604300] Peak count: 2",
+    "[Parsed_astats_0 @ 0x127604300] Number of NaNs: 0",
+    "[Parsed_astats_0 @ 0x127604300] Number of Infs: 0",
+    "[Parsed_astats_0 @ 0x127604300] Overall",
+    "[Parsed_astats_0 @ 0x127604300] Peak level dB: -5.228781",
+    "[Parsed_astats_0 @ 0x127604300] RMS level dB: -22.942509",
+    "[Parsed_astats_0 @ 0x127604300] Flat factor: 0.000000",
+    "[Parsed_astats_0 @ 0x127604300] Peak count: 2.000000",
+    "[Parsed_astats_0 @ 0x127604300] Number of samples: 4627456",
+    "[Parsed_astats_0 @ 0x127604300] Number of NaNs: 0.000000",
+    "[Parsed_astats_0 @ 0x127604300] Number of Infs: 0.000000"
+  ],
+  "errors": []
+}

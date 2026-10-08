@@ -1,0 +1,59 @@
+{
+  "source": "/Users/fordeargamers/Projects/exoduser-migration-20261001/video/world_intro_v13_exodus_en.mp4",
+  "exitCode": 0,
+  "elapsed": 3.87,
+  "decodedFrames": 2719,
+  "sizes": [
+    "1280x720"
+  ],
+  "first": {
+    "n": 0,
+    "t": 0.0,
+    "size": "1280x720",
+    "y": 37.0
+  },
+  "last": {
+    "n": 2718,
+    "t": 113.25,
+    "size": "1280x720",
+    "y": 16.0
+  },
+  "nonIncreasingPts": 0,
+  "blackIntervals": [
+    {
+      "start": 108.833,
+      "end": 109.333,
+      "duration": 0.5
+    },
+    {
+      "start": 113.042,
+      "end": 113.25,
+      "duration": 0.208333
+    }
+  ],
+  "lumaJumps45": [],
+  "singleFrameBrightSpikes40": [],
+  "audioStats": [
+    "[Parsed_astats_0 @ 0x155916ae0] Peak level dB: -5.407140",
+    "[Parsed_astats_0 @ 0x155916ae0] RMS level dB: -23.974874",
+    "[Parsed_astats_0 @ 0x155916ae0] Flat factor: 0.000000",
+    "[Parsed_astats_0 @ 0x155916ae0] Peak count: 2",
+    "[Parsed_astats_0 @ 0x155916ae0] Number of NaNs: 0",
+    "[Parsed_astats_0 @ 0x155916ae0] Number of Infs: 0",
+    "[Parsed_astats_0 @ 0x155916ae0] Peak level dB: -5.407140",
+    "[Parsed_astats_0 @ 0x155916ae0] RMS level dB: -23.975326",
+    "[Parsed_astats_0 @ 0x155916ae0] Flat factor: 0.000000",
+    "[Parsed_astats_0 @ 0x155916ae0] Peak count: 2",
+    "[Parsed_astats_0 @ 0x155916ae0] Number of NaNs: 0",
+    "[Parsed_astats_0 @ 0x155916ae0] Number of Infs: 0",
+    "[Parsed_astats_0 @ 0x155916ae0] Overall",
+    "[Parsed_astats_0 @ 0x155916ae0] Peak level dB: -5.407140",
+    "[Parsed_astats_0 @ 0x155916ae0] RMS level dB: -23.975100",
+    "[Parsed_astats_0 @ 0x155916ae0] Flat factor: 0.000000",
+    "[Parsed_astats_0 @ 0x155916ae0] Peak count: 2.000000",
+    "[Parsed_astats_0 @ 0x155916ae0] Number of samples: 5438464",
+    "[Parsed_astats_0 @ 0x155916ae0] Number of NaNs: 0.000000",
+    "[Parsed_astats_0 @ 0x155916ae0] Number of Infs: 0.000000"
+  ],
+  "errors": []
+}

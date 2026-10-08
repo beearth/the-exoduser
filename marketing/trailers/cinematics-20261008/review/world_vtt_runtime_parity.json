@@ -1,0 +1,22 @@
+{
+  "en": {
+    "vttCount": 32,
+    "bundleCount": 32,
+    "mismatchedCueNumbers": [],
+    "exodusCue": [
+      "00:01:40.322",
+      "00:01:41.682",
+      "Exodus."
+    ]
+  },
+  "ko": {
+    "vttCount": 32,
+    "bundleCount": 32,
+    "mismatchedCueNumbers": [],
+    "exodusCue": [
+      "00:01:40.322",
+      "00:01:41.682",
+      "탈출."
+    ]
+  }
+}
