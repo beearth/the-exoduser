@@ -11054,8 +11054,10 @@ function _drawDruidBoss(X,e,sa,tdY,spec,parentScale,parentYOffset){
   const _ch1Selection=_ch1NormalIntent&&['base8','walk','attack'].includes(sheet)?Object.freeze({sheet,index:sheet==='base8'?0:frame,nativeDir:dir,sourceCol:_fc,sourceRow:_fr,columns:cols,rows,x:sx,y:sy,w:cw,h:ch}):null;
   if(!_drawCh1DruidRigBody(X,e,_ch1Selection,sa,dw,dh,(tdY||0)-6+_breath,_un,parentScale,parentYOffset)){
   X.globalAlpha=sa;if(_ch1NormalIntent)_drawDruidReadableBody(X,img,sx,sy,cw,ch,-dw/2,-dh*.86,dw,dh);else X.drawImage(img,sx,sy,cw,ch,-dw/2,-dh*.86,dw,dh);
-  X.globalCompositeOperation='lighter';X.globalAlpha=sa*.42;X.drawImage(img,sx,sy,cw,ch,-dw/2,-dh*.86,dw,dh); // 셀프 라이튼 ×2(어두운 아레나서 존재감)
+  if(!_ch1NormalIntent){
+  X.globalCompositeOperation='lighter';X.globalAlpha=sa*.42;X.drawImage(img,sx,sy,cw,ch,-dw/2,-dh*.86,dw,dh);
   X.globalAlpha=sa*.42;X.drawImage(img,sx,sy,cw,ch,-dw/2,-dh*.86,dw,dh);
+  } // Normal Druid artwork keeps its painted tone; special/native paths retain legacy lighting.
   if(_ch1NormalIntent)_drawDruidBodyHitFlash(X,e,sa,img,sx,sy,cw,ch,-dw/2,-dh*.86,dw,dh);
   }
   X.globalCompositeOperation='source-over';X.globalAlpha=1;
@@ -12081,7 +12083,7 @@ function _drawDruidReadableBody(ctx,img,sx,sy,sw,sh,x,y,w,h){
   const previous=ctx.filter;
   if(typeof previous!=='string'){ctx.drawImage(img,sx,sy,sw,sh,x,y,w,h);return;}
   try{
-    ctx.filter=(previous==='none'?'':previous+' ')+'brightness(1.2) contrast(1.08) drop-shadow(0px 0px 1.5px rgba(222,239,184,0.8))';
+    ctx.filter=(previous==='none'?'':previous+' ')+'brightness(1.35) drop-shadow(0px 0px 1.5px rgba(222,239,184,0.8))';
     ctx.drawImage(img,sx,sy,sw,sh,x,y,w,h);
   }finally{ctx.filter=previous;}
 }
@@ -12115,7 +12117,7 @@ function _drawCh1DruidRigBody(ctx,e,selection,sa,dw,dh,nameBaseY,inverseScale,pa
   ctx.save();
   try{
     ctx.translate(anchorLocalX,anchorLocalY);ctx.scale(scaleX,1);
-    for(let pass=0;pass<(volumetric?1:3);pass++){
+    for(let pass=0;pass<1;pass++){ // One body composite preserves original artwork highlights and folds.
       if(!_ch1DruidCurrent(owner,sourceFrame))return blitted;
       ctx.globalCompositeOperation=pass===0?'source-over':'lighter';ctx.globalAlpha=pass===0?sa:sa*.42;
       if(!_ch1DruidCurrent(owner,sourceFrame))return blitted;

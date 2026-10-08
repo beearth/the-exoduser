@@ -1281,8 +1281,8 @@ MAP PRODUCTION REPORT (§23): STAGE=CH1-1 전투 가독성 source consumer. MAST
 |---|---|
 | helper / Gate | `_drawDruidBodyHitFlash(ctx,e,sa,img,sx,sy,sw,sh,x,y,w,h)`, `e._hitFlash>0`일 때만 그리기. 타이머 설정·감쇠 변경0 |
 | 강도 / alpha / pop | `strength=Math.min(1,e._hitFlash/6)`; alpha=`strength*.8*sa`; pop=`1+.05*strength`. rect 중심 유지: `x+w*(1-pop)/2,y+h*(1-pop)/2,w*pop,h*pop` |
-| 합성 | 기존 상시3pass(source-over/sa, lighter/sa*.42 두 번) 뒤 피격1장. `lighter`, smoothing=false, `_setBlend(true)`→그리기→`_setBlend(false)`. Canvas 상태는 save/restore; blend 해제 예외에도 중첩 finally에서 restore 시도 |
-| 정상 rig | `_drawCh1DruidRigBody`의 실제 성공한 동일 `frame.canvas` 전체 crop=`0,0,canvas.width,canvas.height`, rect=`frame.left,frame.top,frame.width,frame.height`. 기존 anchor·scaleX·부모 변환 안에서 실행. body3pass 뒤 current owner guard 통과 시만 피격1장 |
+| 합성 | 20261009 normal 본체 source-over/sa1회 뒤 피격1장(당시 상시3pass는 이력). `lighter`, smoothing=false, `_setBlend(true)`→그리기→`_setBlend(false)`. Canvas 상태는 save/restore; blend 해제 예외에도 중첩 finally에서 restore 시도 |
+| 정상 rig | `_drawCh1DruidRigBody`의 실제 성공한 동일 `frame.canvas` 전체 crop=`0,0,canvas.width,canvas.height`, rect=`frame.left,frame.top,frame.width,frame.height`. 기존 anchor·scaleX·부모 변환 안에서 실행. 현재 body1회 뒤 current owner guard 통과 시만 피격1장 |
 | 정상 native 폴백 | `_drawDruidBoss`의 기존 normal intent일 때 같은 `img/sx/sy/cw/ch`와 `-dw/2,-dh*.86,dw,dh` 재사용. rig 실패/미준비일 때만 폴백하므로 rig와 배타적 |
 | 제외 / 중복 | special·hit-or-death·inactive 의도는 추가 피격0. `_enemyHFFrames`에 등록하지 않아 기존 공통 snapshot으로 이 보스를 다시 그리지 않음. 기존 보스 전조·상시 밝기는 피격 효과와 별도 |
 | 불변 | 기존 owner/이미지 lease·프레임 선택·이름/HP 앵커·피해·AI·hitFlash6/4 및 update 감쇠·PNG·scene/nav·save·RAF/timer·Image/fetch 변경0 |
@@ -1304,7 +1304,7 @@ MAP PRODUCTION REPORT (§23): STAGE=CH1-1 전투 가독성 source consumer. MAST
 | 범위 | 현재 코드 |
 |---|---|
 | 준비·발동 | SweepWind 셀1 유지. Sweep의 기존14f 진행도 clamp(1−st2/14,0,1)에서 .15<진행도<.85는 셀2, >=.85는 셀3, 나머지는 셀1. 공통 recover는 기존 idle 유지; 기타 공격은 150ms 선택 유지 |
-| 정상 본체 첫 pass | 밝기1.2·대비1.08·1.5px 윤곽(alpha .8); 기존 filter 합성·finally 복구. 비문자열 filter는 원 draw. rig/native 기존 crop·목적 영역, lighter2pass·hit flash 유지 |
+| 정상 본체 첫 pass | 20261009 밝기1.35·대비 보정 없음·1.5px 윤곽(alpha .8); 기존 filter 합성·finally 복구. 비문자열 filter는 원 draw. rig/native 기존 crop·목적 영역·hit flash 유지, normal 상시 lighter2pass 제거 |
 | 검증·한계 | 최초 통제 Node1/12그룹31PASS/FAIL0, before 반례1 별도. 실제 GPU·pixel·전체 모션·전투·청취·save 미인수. RETOUCH / UI_NOT_ASSESSED |
 
 [상태별 표시·정확 consumer 정본](../4.0케릭터스프라이트 디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md#druid-sweep-readability-20261008). 앞선 150ms 전체 공격 설명과 과거 검수는 각 당시 epoch이며 현재 Sweep 예외를 덮어쓰지 않는다. 원본 PNG·시간·AI·피해·세이브 변경0.
@@ -1319,3 +1319,6 @@ MAP PRODUCTION REPORT (§23): STAGE=CH1-1 전투 가독성 source consumer. MAST
 | 검증·한계 | 실제 whole Druid/rig/selector+통제 ports 최초 Node1·VM0·factory2/instances18·7그룹7PASS/FAIL0/exit0. before SlamWind wallclock 셀0→2 반례1 별도. 이전 Sweep31/다른 suite 재실행0. 실제 GPU·pixel·자세 미감·native·청취·실save 미검수/RETOUCH |
 
 앞선 Sweep 단위의 “기타 공격150ms”는 그 epoch이며 현재 Slam 예외가 우선한다. Sweep 셀 선택·첫 pass 밝기/윤곽·특수 상태·공통 recover·원본 PNG·AI·save 불변. [현행 표시 정본](../4.0케릭터스프라이트 디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md#druid-slam-readability-20261008).
+
+
+2026-10-09 normal 드루이드의 본체1회·밝기1.35/대비 제거·특수3회 유지 및 한정 native 검수의 정확 계약: [원본 명암 consumer](../4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md#druid-original-tone-20261009). 기존 검수 수치는 당시 epoch로 보존하며 본편/A급 완료로 세지 않는다.

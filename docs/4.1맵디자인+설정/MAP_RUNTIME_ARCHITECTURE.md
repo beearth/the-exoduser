@@ -521,7 +521,7 @@ NEXT PASS: 실버테일 packed frame 연결·다크드루이드 body seam·발/�
 | image lease | image native decode+source fingerprint+src/srcset/sizes observer/takeRecords, scene+owner+life+sheetRecord binding. pending deadline30000ms/noRAF/timer,동일 미정산/실패 binding 재요청0 |
 | frame 권위 | 기존 native selector가 정한 frame/crop/direction만 전달. exact selectedFrame·state·sheetRecord/img·imageGeneration currentness를 adapter와main pass경계마다 재확인 |
 | 부모 공간 | 기존 translate(e.x,e.y+tdY−6+breath),inverse_btScaleMul·dw9.3r/dh14.1r 보존. heightWorld=dh×ref/ch,scaleX=dw×ch/(dh×cw),anchorLocal=(−dw/2+ax×dw/cw,−.86dh+ay×dh/ch) |
-| frame 재사용 | adapter canvas,left,top,width,height를 source-over+lighter2의 기존3pass에 재사용. 성공한 synchronousblit 후 stale이면 후속pass 중단·legacy 중복draw 없음; 이미그린pixelrollback UNKNOWN |
+| frame 재사용 | 20261009 adapter canvas,left,top,width,height를 normal 본체 source-over1회에 사용(당시3pass/lighter2는 이력). 성공한 synchronousblit 후 stale이면 후속pass 중단·legacy 중복draw 없음; 이미그린pixelrollback UNKNOWN |
 
 상세 API·source3 전체 핀·검수 epoch와 한계는 `docs/4.0케릭터스프라이트 디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md`의 동일 completion 절을 따른다. 맵 제작 순서/LOCK/SSOT를 이 표시 접점이 덮어쓰지 않는다.
 
@@ -1172,3 +1172,6 @@ field200×200와 CH1 arena128×108의 기존 맵 권위/진입·복귀 좌표는
 | 보존 | main working/HEAD 선 fullbyte2백업·같은1hunk·inverseexact·foreign185B 미채택 유지. 원PNG/scene/nav/LOCK/새 RAF·timer·save 스키마 변경0. 실제 사용자 탭 reload/조작0; 새 코드 live 적용 주장 없음. |
 
 **VISUAL VERDICT: RETOUCH / UI_NOT_ASSESSED.** 외부 `ch1-warrior-contact-shadow-default-20261008/completion.json`의 §23 보고와 최종 GIT을 따른다.
+
+
+2026-10-09 normal 드루이드의 본체1회·밝기1.35/대비 제거·특수3회 유지 및 한정 native 검수의 정확 계약: [원본 명암 consumer](../4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md#druid-original-tone-20261009). 기존 검수 수치는 당시 epoch로 보존하며 본편/A급 완료로 세지 않는다.

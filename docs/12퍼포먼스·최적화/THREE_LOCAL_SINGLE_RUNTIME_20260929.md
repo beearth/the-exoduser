@@ -1353,7 +1353,7 @@ root가 자연 종료 후 idle/strike PNG2를 직접 판독했다. 전사의 몸
 | rig 재사용 | 같은 life/sheet/image를 유지한 NORMAL frame 진행은 같은 rig; source/life/sheet 교체는 old owner retire. factory 첫 성공publication이 lifeGeneration/sheet를bind |
 | 시간 | 같은 map/ens의 active _gameFrame delta×PHYS_STEP/1000 cap.05; paused/hidden/불법frame0; _gameTime·독립RAF/timer·simulation0 |
 | bounded renderer | localThree r160,609정점/12본,alphaTest.08/UVinset.5,padding2,maxbacking2048,maxscale4. actual deformedbounds·pose/currentness를 renderer 전후 확인 |
-| 3pass | 같은 renderedcanvas/rect를 기존source-over/lighter2에reuse; pass마다source/lifecurrent확인. successblit 후무효면 후속중단/legacy중복0, pixelrollback UNKNOWN |
+| 본체 합성 | 20261009 normal은 같은 renderedcanvas/rect의 source-over1회(당시3pass/lighter2는 이력). source/lifecurrent·successblit 후무효 처리·legacy중복0 유지, pixelrollback UNKNOWN |
 | 남은한계 | 동일sourcefingerprint 픽셀변경/silentupload/constructor미반환자원/disposeexceptionchain/FPS·전체relief·해부학발/전체runtime 未인수 |
 
 상세 API·source3 전체 핀·검수 epoch와 한계는 `docs/4.0케릭터스프라이트 디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md`의 동일 completion 절을 따른다. CPU 통제 이미지·renderer PASS를 실제decode/GL/texture upload/브라우저 전체 인수로 대체하지 않는다.
@@ -1395,3 +1395,6 @@ factory36/combined15/main31/native3/final-limited4를 하나의 clean 전체 PAS
 기존 실버테일 idle/run, 전사 strike/recovery와 다크드루이드의 완료·실패·한정 검수는 각 당시 소스의 이력으로 보존하며, 이번 공격 후보의 검수로 재실행하거나 합산하지 않는다.
 
 상세 모드·API·소스 핀·표시 원점과 해부학적 발 기준의 구분은 `docs/4.0케릭터스프라이트 디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md`의 이 절을 따른다. 구현 근거는 외부 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-main-silvertail-attack-20261007`의 `main-implementation-receipt.json`과 `modules-implementation-receipt.json`이다. 정상 commit·push·정확한 원격 SHA는 같은 디렉터리의 `remote-preservation-receipt.json`에서 체크포인트 뒤 확정하며, 구현 보존 전 상태를 원격 완료로 미리 표시하지 않는다.
+
+
+2026-10-09 normal 드루이드의 본체1회·밝기1.35/대비 제거·특수3회 유지 및 한정 native 검수의 정확 계약: [원본 명암 consumer](../4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md#druid-original-tone-20261009). 기존 검수 수치는 당시 epoch로 보존하며 본편/A급 완료로 세지 않는다.

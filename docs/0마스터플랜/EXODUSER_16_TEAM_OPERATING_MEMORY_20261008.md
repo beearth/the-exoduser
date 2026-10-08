@@ -144,3 +144,8 @@ ROOT-DRUID-ORIGINAL-RELIEF-20261009: 기존 rig_motion 한 담당이 신규 원�
 ### 2026-10-09 — 본편 원본 소환 자세 선택
 
 `ROOT-DRUID-AUTHORED-SUMMON-DISPLAY-20261009`: 실제 관측한 소환만 준비 attack 셀1→소환 후 recover st2>14 셀2→<=14 셀3. renderer 전용 WeakMap/같은 G·map·enemies·life tuple로 한정하며 다른 recover는 base8 유지. 전투 시간·원 PNG·save 불변. actual whole draw/current/helper+adapter pose 첫 Node9그룹 PASS, 실제 native3자세 표시 RETOUCH; 입체 관절/본편 실전/A급 미완료. [정확 계약](../4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md#druid-authored-summon-display-20261009).
+
+
+### 2026-10-09 — 드루이드 원본 명암 표시
+
+`ROOT-DRUID-ORIGINAL-TONE-CONSUMER-20261009`: game3hunk, normal native/rig 본체3→1회·brightness1.35/contrast 제거, 기존1.5px rim/피격 flash·특수 native3회 유지. 실제 whole draw/native Canvas 및 통제 rig publication 표시 비교, console warn/error0·CPU suite0. 원 PNG·전투/save 불변. RETOUCH이며 원본 합치 입체 관절/정상 줌 본편 보스전·A급 미완료. [정확 계약](../4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md#druid-original-tone-20261009). 임시 own preview byteexact 복원, 사용자 게임 무조작.

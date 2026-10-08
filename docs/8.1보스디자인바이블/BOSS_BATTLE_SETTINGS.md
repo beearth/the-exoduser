@@ -1057,7 +1057,7 @@ X.translate(Math.round(C.width/2 - G.cam.x + sx), Math.round(C.height/2 - G.cam.
 
 | id / 소비 위치 | 현재 계약 |
 |---|---|
-| `_nameTopOff` / NORMAL Druid 성공한 rig3pass | 실제 main 부모 scale/Y offset과 내부 inverse scale·anchorLocalY·frame.top을 합성하여 padded rig 상단에서10 world 단위 위에 배치. 마지막 current 검사 뒤에만 기록 |
+| `_nameTopOff` / NORMAL Druid 성공한 본체1회 blit(20261009) | 실제 main 부모 scale/Y offset과 내부 inverse scale·anchorLocalY·frame.top을 합성하여 padded rig 상단에서10 world 단위 위에 배치. 마지막 current 검사 뒤에만 기록 |
 | 폴백/내용 | 특수/로딩/실패·부모 인자 없는 preview는 기존 앵커. HP바·레벨 내용/HP·AI·모션 타이밍/전투/save 변경 없음 |
 | 검수 | 첫 후보69확인은 부모 없는 fixture였고 정적 blocker1로 보정. 새 부모 포함 통제10그룹78확인 PASS/Node1(총Node2), 최종 source blocker0. 실제 화면/GPU/청취/save 미검수, RETOUCH/UI_NOT_ASSESSED |
 
@@ -1078,3 +1078,6 @@ X.translate(Math.round(C.width/2 - G.cam.x + sx), Math.round(C.height/2 - G.cam.
 ### 2026-10-08 — 본편 드루이드 원본 자세 보존
 
 2026-10-08 원본 복구 v5 뒤 당시 game adapter 두 import와 factory import는 `druid-authored-pose-20261008-v6`였다. 2026-10-09 소환 표시 후속의 현재 game adapter 두 import는 `druid-summon-display-20261009-v7`, 변경 없는 factory import는 v6 유지다. borrowedSheet Druid의 pose()는 rest 복구 후 범용 흔들림·공격 변형을 생략한다. 그려진 셀/방향·프레임시간·전투/save는 보존. sheet 없는 기존 경로는 유지한다. 최초 준비 URL 오류(제품未도달)와 보정 뒤6그룹 CPU PASS는 별도 이력이며 본편 화면/GPU·입체 모델·A급 인수는 미완료다. [정본 계약](../4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md).
+
+
+2026-10-09 normal 드루이드의 본체1회·밝기1.35/대비 제거·특수3회 유지 및 한정 native 검수의 정확 계약: [원본 명암 consumer](../4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md#druid-original-tone-20261009). 기존 검수 수치는 당시 epoch로 보존하며 본편/A급 완료로 세지 않는다.

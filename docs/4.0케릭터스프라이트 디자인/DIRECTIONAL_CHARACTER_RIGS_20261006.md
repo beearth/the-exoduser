@@ -1410,7 +1410,7 @@ factory의 기존 기본 height=2.2는 보존되며 main adapter가 height1 rig�
 |---|---|
 | 기존 크기 | dw=e.r×9.3,dh=e.r×14.1. 기존 `translate(e.x,e.y+tdY-6+breath)`와 inverse `_btScaleMul` 안에서 표시; 부모 중복 적용0 |
 | 로컬 변환 | heightWorld=dh×referenceHeight/ch; scaleX=dw×ch/(dh×cw); anchorLocalX=−dw/2+anchorX×dw/cw; anchorLocalY=−.86×dh+anchorY×dh/ch  HP/레벨의 후속 월드 앵커는 [현재 rig 상단 계약](#ch1-druid-rig-name-anchor-20261008)을 따름 |
-| 합성 | 같은 rendered canvas/rect를 source-over sa 및 lighter sa×.42 두 번으로 총3pass 재사용. 기존 finale tell/glow/name/leg fog, 원 PNG와 native special/death fallback 유지 |
+| 합성 | 20261007 당시 같은 rendered canvas/rect를 총3pass 재사용했다. 20261009 현행 normal 본체는 source-over sa 1회이며 상시 lighter2는 제거했다. 기존 finale tell/glow/name/leg fog, 원 PNG와 native special/death fallback 유지 |
 | renderer 한계 | local Three r160, padding2, backingScale≤4, backingDimension≤2048,dt≤.05; 반환 canvas,left,top,width,height. image 소유/추가 Image/fetch/clone/resize/clear/close0 |
 | factory 자원 | 소유 Texture·Geometry·Material·Skeleton만 release. 기존609정점/12본/alphaTest.08/UV inset.5/약변형 구조 유지. 591은 alpha 기준 캘리브레이션이며 해부학 발/실높이·full3D proof 아님 |
 
@@ -1611,7 +1611,7 @@ OFF/불가mode/identity/준비 frame 부재의 검수에서는 core0이다. **co
 | 실제 rig top | 기존 `anchorLocalY=−.86*dh+anchorY*dh/ch`와 `frame.top` 소비. adapter top은 `−max.y*heightWorld−paddingLocal`. 새 머리 좌표/asset crop 보정 없음 |
 | 월드 앵커 | `nameTopOff=parentYOffset+parentScale*(nameBaseY+(anchorLocalY+frame.top)*inverseScale)-10`. 실제 main 부모·내부 transform을 모두 포함; 보스 world Y+nameTopOff는 padded rig 상단에서10 world 단위 위 |
 | 인자 가드 | nameBaseY/inverseScale/parentScale/parentYOffset finite, 두 scale>0 필수. scaleX/anchorLocalX/anchorLocalY/nameTopOff 계산 합도 finite 및 scaleX>0 필수. 불허 시 rig false→기존 legacy fallback |
-| commit 경계 | 기존3pass blit 완료 뒤 `_ch1DruidCurrent(owner,sourceFrame)`가 여전히 true일 때만 e._nameTopOff 갱신. owner가 partial/마지막 pass에서 이탈하면 이미 그린 픽셀은 유지하고 새 앵커를 기록하지 않음 |
+| commit 경계 | 현재 본체1회 blit 완료 뒤 `_ch1DruidCurrent(owner,sourceFrame)`가 여전히 true일 때만 e._nameTopOff 갱신. owner가 partial/마지막 pass에서 이탈하면 이미 그린 픽셀은 유지하고 새 앵커를 기록하지 않음 |
 | 기존 소비자 | HP/쉴드·그로기·프리즌 바는 e.y+_nameTopOff, 보스 레벨은 e.y+_nameTopOff−14, 속성 문양은 +4를 기존 방식 그대로 소비. 바 폭/색/내용/HP 조건은 변경 없음 |
 | 폴백·preview | rig 로딩/해독/준비/범위/특수/실패는 기존 앵커. 캡처된 부모 인자가 없는 직접 preview 호출은 rig false로 legacy 유지. 새로운 공개 adapter API/상태/DOM/RAF/timer/에셋 없음 |
 | 첫 후보 이력 | 첫 후보의 통제9그룹69확인 PASS/Node1은 부모 변환이 빠진 fixture 범위였다. 별도 정적 peer가 실제 바깥 scale/Y offset 누락 blocking1을 발견했으며 그 후보를 제품 인수로 사용하지 않음 |
@@ -1674,7 +1674,7 @@ OFF/불가mode/identity/준비 frame 부재의 검수에서는 core0이다. **co
 | _drawCodexBoss | 기존 static2D 및 clipped-sprite 폴백의 own save2곳을 각각 try/finally로 닫는다. 기존 false/true 반환과 draw/clip 순서는 유지. |
 | _drawDruidBoss | 기존 프레임 선택·sheet 준비 검사 뒤 공통 sheet 본문 save1곳을 try/finally로 닫는다. rig 또는 native body·피격 표시가 throw해도 해당 save 복구. Under의 별도 흙두둑 save는 이 범위 밖. |
 | main Codex 위임 | 성공한 기존 부모변환 뒤 _drawCodexBoss 호출의 예외만 catch. `_bScMul!==1||_bYOff!==0`이면 부모 save를1회 restore하고 `_bDrawError` 원 객체를 rethrow. 변환 없음이면 restore 추가0; 정상 경로의 기존 부모 restore 유지. |
-| inner rig | _drawCh1DruidRigBody의 기존 inner try/finally 유지. 현재 owner·name anchor 갱신·통계·3pass·hit flash 순서는 유지. |
+| inner rig | _drawCh1DruidRigBody의 기존 inner try/finally 유지. 당시 owner·name anchor 갱신·통계·3pass·hit flash 순서를 유지했다. 20261009 본체는1회이며 나머지 경계·순서는 유지. |
 | 부분 실행 | 이미 그린 픽셀·Canvas current path·actor name metadata/통계·기타 선행 부수효과를 롤백하지 않는다. catch로 오류를 삼키거나 성공/legacy fallback으로 바꾸지 않는다. |
 | 한계 | 부모 matrix 준비·첫 save·restore 자체 실패, Under/tell/다른 atlas의 내부 save와 전체 draw 복구는 미인수. restore가 throw하면 원 오류 보존도 보장하지 않는다. 장치/GPU 해제·전체 프레임 복구 보장0. |
 | 첫 검수 | 실제 whole Codex/Druid/rig 함수 + main 위임/기존 마지막 부모 restore의 한정 composition, 통제 Canvas affine/style/stack·adapter ports. 최초 Node1·newFunction factory2/instance29·VM0,11그룹25확인(24동적1source동등) PASS/FAIL0/exit0. 이전 second rig blit의 stack1→3 반례1은 별도. 정상4경로 draw명령/반환/actor·통계 동등, 오류 객체 identity·진입 stack/style/transform 복구 및 partial prefix 확인. |
@@ -1693,8 +1693,8 @@ OFF/불가mode/identity/준비 frame 부재의 검수에서는 core0이다. **co
 | `_drawDruidBoss`, `bossSweepWind` | 기존 attack 4×8 시트의 0기준 셀1을 유지. 방향·정수 crop·실제 준비 시간 불변 |
 | `bossSweep`, finite `e.st2` | `progress=clamp(1-e.st2/14,0,1)`. `.15<progress<.85`이면 셀2, `progress>=.85`이면 셀3, 나머지는 셀1. 기존 실제 타격 구간과 같은 경계 |
 | 다른 공격·이동 / 비유한 Sweep st2 | 기존 150ms 선택 유지. 공통 recover/특수 상태/공격 AI·피해·자원·시간 불변. Volley는 finale 전용이며 일반 CH1 도달 증거로 세지 않음 |
-| `_drawDruidReadableBody` | 정상 본체 첫 pass만 `brightness(1.2) contrast(1.08) drop-shadow(0px 0px 1.5px rgba(222,239,184,0.8))`. 기존 filter가 none 외 문자열이면 앞에 보존하고 finally로 원값 복구. filter 비문자열은 원 draw |
-| rig / native | rig 첫 pass는 같은 canvas 전체를 9인자 draw로 같은 목적 영역에 표시. native는 `_ch1NormalIntent`일 때 같은 crop/rect로 helper 사용. 후속 lighter 2pass·hit flash·anchor·owner·특수 native 불변 |
+| `_drawDruidReadableBody` | 정상 본체 첫 pass만 `brightness(1.35) drop-shadow(0px 0px 1.5px rgba(222,239,184,0.8))`(20261009 현행; 당시 brightness1.2/contrast1.08은 이력). 기존 filter가 none 외 문자열이면 앞에 보존하고 finally로 원값 복구. filter 비문자열은 원 draw |
+| rig / native | rig 첫 pass는 같은 canvas 전체를 9인자 draw로 같은 목적 영역에 표시. native는 `_ch1NormalIntent`일 때 같은 crop/rect로 helper 사용. 20261009 normal 후속 lighter2pass는 제거. hit flash·anchor·owner·특수 native는 유지 |
 | 최초 한정 Gate | 실제 whole motion selector/Druid draw/rig/helper + 통제 Canvas/adapter, Node1·VM0·factory2·instances40·12그룹31PASS/FAIL0/exit0. 이전 windup의 wallclock 셀0→2 반례1은 별도. GPU 필터·실pixel·성능·브라우저·입력·청취·실save 미검수 |
 
 원본 시트의 셀 경계 손실·작화 일관성·다른 모션의 가독성은 미완료다. 현재 열린 사용자 탭에 새 코드가 적용되었다고 주장하지 않는다. VISUAL VERDICT: **RETOUCH / UI_NOT_ASSESSED / native NOT_RUN**.
@@ -1820,3 +1820,21 @@ VISUAL VERDICT: **RETOUCH**. 어깨 구형 윤곽을 제거했으나 얼굴/외�
 | 품질 | VISUAL VERDICT: RETOUCH. 실제 보스전 전체·청취·durable reward save·원본 합치 입체 관절 모션·A급 이상 인수 미완료 |
 
 검수 화면/새 Gate·정확 보존핀은 `E/druid-representative-slam-20261009/completion.json`에 기록한다. 외부 폴더명의 slam은 최초 검토 방향이며 채택 제품은 소환 시전 표시에 한정한다.
+
+
+<a id="druid-original-tone-20261009"></a>
+## 2026-10-09 — 정상 드루이드 중복 밝기 합성 제거
+
+`ROOT-DRUID-ORIGINAL-TONE-CONSUMER-20261009`. 앞선3pass·밝기1.2/대비1.08은 각 당시 epoch다. 원본 표시의 과한 밝기 중첩을 줄이는 본편 수정이며 입체 관절/모션 완성을 뜻하지 않는다.
+
+| id / 적용 위치 | 현행 계약 |
+|---|---|
+| normal native `_drawDruidBoss` | `_ch1NormalIntent` 본체 source-over1회. 뒤의 lighter/sa*.42 두 번은 `!_ch1NormalIntent`에서만 실행. 특수 native는 기존3회 유지 |
+| rig `_drawCh1DruidRigBody` | 본체 loop `pass<1`. 같은 frame.canvas/rect·첫 pass helper·current 검사·이름 앵커·hit flash·finally 유지. 기존 volume1회도1회 유지하며 거절된 solid 모델 재채택0 |
+| `_drawDruidReadableBody` | brightness1.35, contrast 없음, 기존 drop-shadow(0px 0px 1.5px rgba(222,239,184,0.8)). filter prefix·finally 복원·비문자열 원 draw 유지. 밝기/rim 때문에 정확 RGB 복원 아님 |
+| 소유 범위 | game.html3hunk만. 시트/방향/정수 crop/anchor·전투 시간/피해/AI·원 PNG·scene/nav·save·adapter/factory·RAF/timer 변경0 |
+| 실제 표시 검수 | 기존 own IAB15/3387에 한시 fixture, actual whole draw/helper/rig blit를 통제 actor·publication ports와 native Canvas/원 PNG decode로 실행. normal native3→1, rig blit3→1, special native3→3. 최종 console warn/error0 |
+| 관측/이력 | 초기2hunk는 원 밝기1.2/대비1.08로 표시했으며 어두운 망토 주름 관찰 뒤 필터1hunk를 보정해 별도 최종 화면 저장. before/초기/최종을 clean suite로 합산하지 않음. CPU suite0 |
+| 한계/보존 | actual Three adapter GPU·정상 줌의 본편 보스전·연속 모션/청취/성능/실save·A급 인수 미완료. 임시 preview는 원 working/HEAD byteexact 복원, 사용자 main/editor 무조작. VISUAL VERDICT: RETOUCH |
+
+최종 비교 `E/druid-original-tone-consumer-20261009/original-tone-final.png`, 검수/소유 보존은 같은 폴더 completion.json을 따른다. 정면 카메라와 unlit 재질에 Z만 추가하는 변경은 화면 개선 근거가 없어 채택하지 않았다. 원본 f0 깊이를 다른 atlas 셀에 잘못 재사용하지 않는다.
