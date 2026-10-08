@@ -1,3 +1,9 @@
+## 2026-10-08 — 헬거너 혈탄 충전량 표시
+
+기존 본편 시험 RMB 홀드의 time/단계를 캐릭터 발밑 타원과3점으로 연결했다. 24/52/84f→1/2/3단계, 진행률 time/84. 지상 그림자 뒤에 표시하며 도약 높이를 더하지 않고 비용·발사·피해·입력/save는 유지한다. owner/admission 이탈은 무표시이며 충전량을 발사 가능 보장으로 쓰지 않는다. 최초 통제9그룹172확인/Node1 exit0·두 hunk 정적 peer blocking0. 실제 화면/GPU/청취/save 미검수, RETOUCH/UI_NOT_ASSESSED. 기존 탭 재로드0/새 전문 배정0. 최종 소유 보존은 외부 `hellgunner-blood-charge-visual-20261008/completion.json`.
+
+[정확 계약](../2_1%20스킬관리+합체시스템+자원/신규캐릭_스킬프로젝트_20260930.md#hellgunner-blood-charge-visual-20261008).
+
 ## 2026-10-08 — 헬거너 역추진의 시각 높이
 
 `ROOT-HELLGUNNER-LEAP-VISUAL-HEIGHT-20261008`: 기존 본편 시험 SPACE의 12f remaining으로 본체 높이 `-4*32*u*(1-u)`를 표시한다(u=1−remaining/12). 시작/종료0·중간−32 world Y. atlas/rig/outline/bright 부모·PNG fallback·depth snapshot에 동일 적용하고 지상 그림자·좌표·충돌·비용·피해는 유지한다. owner/admission/invalid remaining에서는 높이0. 새 프레임 시계·clip·asset·save 필드0. 최초 신규 통제11그룹93확인/Node1 exit0·source peer blocker0; 실제 화면/GPU/청취/save는 미검수, RETOUCH/UI_NOT_ASSESSED. 기존 탭 재로드0/새 전문 배정0. 최종 원격 보존은 외부 `hellgunner-leap-visual-height-20261008/completion.json`.
