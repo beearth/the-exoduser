@@ -1,3 +1,15 @@
+## 2026-10-08 최신 GitHub 개발본 실제 전투 촬영·마케팅 편집
+
+| 항목 | 결과 |
+|---|---|
+| 소스 동기화 | origin/main2f5aa0e8 별도 managed worktree, codex/marketing-gameplay-20261008. 기존 체크아웃·세이브·게임 소스 보존 |
+| 촬영 도구 | tools/marketing_capture_studio_20261008.html/js 신규. 격리 저장소·3338 기존 캡처 서버에 실제 canvas/audio WebM+감사JSON 자동 저장 |
+| 실제 촬영 | 정상CH1맵5종, Q실제패링22회, 강타·불꽃·얼음보주·탄막블랙홀 실제 발동 감사. 초기stage0 테스트·ancestor·품질미달 일반데모 제외 |
+| 원본 백업 | marketing/captures/20261008/의 staged5종 WebM+JSON·실제게임로고·SHA256. GitHub 별도 작업 브랜치로 백업 및 native 편집기 입력 전달 |
+| 편집 코드 | tools/marketing_edit_20261008.jsx, Steam37초·Shorts16/26초, 30fps H264 목표. 가로fullframe·세로detail+전체context·staged/development label·게임원음·마지막4초CTA |
+| 상태 | native렌더/픽셀/오디오 최종 검수 및 플랫폼 교체는 아직 pending. 공개 Steam 바이너리와의 동일성 미검증 |
+| 문서 | 촬영도구·원본manifest·편집안·추가노출채널·11개영문게시문/UTM 동기화. 게임 밸런스/맵/에셋 변경 없음 |
+
 ## 2026-10-01 — CH1-1 경계 가독성 MAP-020 (접지 그림자 + 뿌리 둑)
 
 신규 `ch1-boundary-edge.js`(game.html 태그 `?v=20261001-3`, `Ch1BorderForeground.drawBack` 직후 draw), `build-nwjs.mjs` 목록 추가, 테스트 `test/ch1BoundaryEdge.test.js` 4/4. 끄기 `?edgeShade=0`, 그림자만 `?edgeShade=a`. 문서 `docs/4.1맵디자인+설정/CH1_BOUNDARY_EDGE_MAP020_20261001.md`.

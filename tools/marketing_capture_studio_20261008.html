@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>EXODUSER · Local capture studio</title>
+  <style>
+    :root{color-scheme:dark;font:15px/1.45 system-ui,sans-serif;background:#111318;color:#edf0f4}
+    *{box-sizing:border-box}body{margin:0;padding:20px}main{max-width:1500px;margin:auto}
+    h1{font-size:24px;margin:0 0 8px}p{margin:8px 0}.muted{color:#aab2c0}.notice{padding:12px;border:1px solid #665421;background:#2b2415;border-radius:8px}
+    .row{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:12px 0}label{display:flex;align-items:center;gap:6px}
+    button,select,input{font:inherit;border:1px solid #485469;border-radius:6px;background:#202633;color:inherit;padding:8px 12px}
+    button{cursor:pointer}button:hover{background:#303c50}button:disabled{opacity:.45;cursor:default}.primary{background:#286350}.danger{background:#66352f}
+    input[type=text]{min-width:260px}input[type=number]{width:80px}.takes button{border-color:#917649}
+    #viewport{position:relative;width:100%;overflow:hidden;background:#000;border:1px solid #3c4655;border-radius:6px}
+    #game{display:block;width:1920px;height:1080px;border:0;transform-origin:top left}
+    #status{white-space:pre-wrap;background:#171d27;border:1px solid #3c4655;border-radius:6px;padding:12px;min-height:85px}
+    #errors{white-space:pre-wrap;color:#ffb0a5;max-height:200px;overflow:auto}video{width:100%;max-height:540px;background:#000}details{margin:12px 0}a{color:#b3d7ff}
+    body.embedded{padding:0;background:#000}body.embedded main{display:none}
+  </style>
+  <script defer src="/tools/marketing_capture_studio_20261008.js"></script>
+</head>
+<body>
+<main>
+  <h1>EXODUSER: HELL LORD · Local capture studio</h1>
+  <p class="notice"><strong>Two distinct sources:</strong> staged takes use the current runtime’s Lv500 test character, artificial enemy placement and 100,000,000 HP. Manual demo records real input without combat-value changes. Neither proves equivalence to the Steam build. Damage text, original animation timing and existing art remain visible.</p>
+  <div class="row">
+    <label>Character <select id="character"><option value="0">0 · first character</option><option value="1" selected>1 · second character</option></select></label>
+    <button id="boot" class="primary">Boot Lv500 showcase</button>
+    <button id="demo">Boot actual demo · manual</button>
+    <button id="audio">Enable real audio</button>
+    <button id="pause">Pause / resume</button>
+    <button id="english">English UI + 60 FPS cap</button>
+    <button id="skipIntro">Skip current intro / guide</button>
+  </div>
+  <p class="muted">Each boot creates a disposable storage prefix and slot. No ordinary save is read or written: API save requests are blocked before game scripts run. Only use this page on your local capture server. Keep this tab visible while recording.</p>
+  <div class="row takes">
+    <strong>Prepare staged take:</strong>
+    <button data-take="parry">Parry · 10s</button><button data-take="rage_slam">Rage slam · 8s</button>
+    <button data-take="fire">Fire · 11s</button><button data-take="ice_orb">Ice orb · 8s</button>
+    <button data-take="ancestor">Ancestor · 8s</button><button data-take="blackhole">Black hole · 10s</button>
+    <label><input id="restoreAnchor" type="checkbox"> Restore initial spawn coordinates</label>
+  </div>
+  <div class="row">
+    <strong>Manual input controls:</strong>
+    <button data-hold="KeyW">Hold / release W</button><button data-hold="KeyA">Hold / release A</button><button data-hold="KeyS">Hold / release S</button><button data-hold="KeyD">Hold / release D</button>
+    <button data-hold="LMB">Hold / release attack</button><button data-pulse="KeyQ">Q</button><button data-pulse="KeyE">E</button><button data-pulse="ShiftLeft">Shift</button><button data-pulse="Space">Space</button><button data-pulse="ControlLeft">Ctrl</button><button data-pulse="Digit1">1</button><button id="releaseInputs">Release all inputs</button>
+  </div>
+  <div class="row">
+    <label>Source git <input id="sourceGit" type="text" placeholder="Parent: verified source commit SHA"></label>
+    <label>Manual duration <input id="manualDuration" type="number" min="8" max="20" value="12"> seconds</label>
+    <label><input id="autoDownload" type="checkbox" checked> Auto-download WebM on stop</label>
+  </div>
+  <div class="row">
+    <button id="record" class="primary">Record prepared staged take</button>
+    <button id="manual" class="primary">Record manual demo</button>
+    <button id="stop" class="danger">Stop recording</button>
+    <button id="download" disabled>Download WebM</button><button id="json" disabled>Download audit JSON</button>
+    <button id="png">Download current PNG frame</button>
+  </div>
+  <p id="status" role="status">Ready to boot. The iframe renders at 1920×1080; its display is scaled to this page’s width. The recorder captures the actual canvas layers, excluding HTML HUD elements.</p>
+  <div id="viewport"><iframe id="game" title="Actual local EXODUSER runtime" allow="autoplay" src="about:blank"></iframe></div>
+  <details><summary>Errors and blocked writes</summary><pre id="errors"></pre></details>
+  <details open><summary>Last recording preview</summary><video id="preview" controls playsinline></video></details>
+</main>
+</body>
+</html>

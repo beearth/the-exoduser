@@ -1,0 +1,42 @@
+{
+  "parry.webm": {
+    "bytes": 35698510,
+    "sha256": "847e3be17fede10a9a4b76a861ea4a5d8815b447b6bcc1633a943e182d956a84"
+  },
+  "parry.json": {
+    "bytes": 86359,
+    "sha256": "5fca70099a01b35215555f69b6feca3314628419e9b64ad91fd8ea8031381ecc"
+  },
+  "rage_slam.webm": {
+    "bytes": 25858528,
+    "sha256": "3cb14ee05252d3e1fb9b7f0feabbe49ebe2a2e78f8664590ca43f862682b0f08"
+  },
+  "rage_slam.json": {
+    "bytes": 66925,
+    "sha256": "d5a8a54086026d25ad585b7acf8dc61f2a88945016cdff4e79b3dcf12ca2932b"
+  },
+  "fire.webm": {
+    "bytes": 38631830,
+    "sha256": "c40f5fce3bc0027068b4151f62781f96630f9eda7929a402ced09292d3cf1a2e"
+  },
+  "fire.json": {
+    "bytes": 109082,
+    "sha256": "fbba9abe8b1e54208b5c845913d927b963bdaea8f659701e6c9c4d7e4cd85672"
+  },
+  "ice_orb.webm": {
+    "bytes": 27042054,
+    "sha256": "e4098250336cf27fe6661dd51293c6fb9b66c8d8dd8a2c7324c81b08f2621472"
+  },
+  "ice_orb.json": {
+    "bytes": 70759,
+    "sha256": "b0c72e68bffcf95cc06d1763900c4ddfb2b092a7166f5fe74b7d0ea4c584b4ec"
+  },
+  "blackhole.webm": {
+    "bytes": 32753367,
+    "sha256": "5bfc0f093aa68e7c1aa83f5866eb26359622c04cd33a6c3c16a16122eeb4a552"
+  },
+  "blackhole.json": {
+    "bytes": 74773,
+    "sha256": "0539a3f867aa0379384f582519c342c2a4de248aa25d026a3b921151d4777f95"
+  }
+}
