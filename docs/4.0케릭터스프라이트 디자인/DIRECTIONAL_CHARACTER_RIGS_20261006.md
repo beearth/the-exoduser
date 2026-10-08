@@ -62,7 +62,7 @@ rig.update(dt, { mode: 'walk', direction: 2, speed: 1.35 });
 | walk | 0.15초 |
 | run | 0.10초 |
 | attack | 0.09초 |
-| 다크드루이드 walk/run/attack | 이동·기타 공격 0.15초. 2026-10-08 SweepWind는 셀1 유지, Sweep은 기존 st2/14 타격 구간에 셀1→2→3. 아래 현행 예외 참조 |
+| 다크드루이드 walk/run/attack | 이동·기타 공격 0.15초(Sweep·Slam 제외). SweepWind 셀1/Sweep 타격 구간 셀1→2→3; SlamWind 셀1/Slam 셀2 유지. 아래 2026-10-08 현행 예외 참조 |
 
 ### 높이·발 기준 분석
 
@@ -1698,3 +1698,15 @@ OFF/불가mode/identity/준비 frame 부재의 검수에서는 core0이다. **co
 | 최초 한정 Gate | 실제 whole motion selector/Druid draw/rig/helper + 통제 Canvas/adapter, Node1·VM0·factory2·instances40·12그룹31PASS/FAIL0/exit0. 이전 windup의 wallclock 셀0→2 반례1은 별도. GPU 필터·실pixel·성능·브라우저·입력·청취·실save 미검수 |
 
 원본 시트의 셀 경계 손실·작화 일관성·다른 모션의 가독성은 미완료다. 현재 열린 사용자 탭에 새 코드가 적용되었다고 주장하지 않는다. VISUAL VERDICT: **RETOUCH / UI_NOT_ASSESSED / native NOT_RUN**.
+
+
+<a id="druid-slam-readability-20261008"></a>
+## 2026-10-08 — 드루이드 내려찍기 준비/실행 표시 (Sweep 후속)
+
+| consumer | 현행 계약 |
+|---|---|
+| `_drawDruidBoss` | `bossSlamWind`는 기존 attack 셀1, `bossSlam`은 셀2 유지(0기준). wallclock150ms 순환에서 두 상태만 분리. 방향·crop·rig/native 연결 불변 |
+| 실제 전투와 구분 | 준비시간은 phase teleM/extraDelay 소비, 고정35f 보장 아님. 실행8f 뒤 st2<=0에서 실제 1회 타격→recover/40(공통 보스 cap20). 이 전투 코드·피해·recover idle는 수정0. 셀2는 실행 자세이며 실제 타격 구간/타격 후 자세 보장 아님 |
+| 검증·한계 | 실제 whole Druid/rig/selector+통제 ports 최초 Node1·VM0·factory2/instances18·7그룹7PASS/FAIL0/exit0. before SlamWind wallclock 셀0→2 반례1 별도. 이전 Sweep31/다른 suite 재실행0. 실제 GPU·pixel·자세 미감·native·청취·실save 미검수/RETOUCH |
+
+앞선 Sweep 단위의 “기타 공격150ms”는 그 epoch이며 현재 Slam 예외가 우선한다. Sweep 셀 선택·첫 pass 밝기/윤곽·특수 상태·공통 recover·원본 PNG·AI·save 불변.

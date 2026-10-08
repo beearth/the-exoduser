@@ -11020,9 +11020,10 @@ function _drawDruidBoss(X,e,sa,tdY,spec,parentScale,parentYOffset){
   else if(_isCharge&&_druidSheets.beast&&_druidSheets.beast.ready){sheet='beast';cols=4;rows=2;dirless=true;frame=dir;} // 돌진=야수 변신형(8방향 4x2, 셀=방향)
   else if(key==='slash'||key==='slam'||key==='windup'||e.s==='bossDruidVolleyWind'||e.s==='bossDruidVolley'){
     sheet='attack';cols=4;rows=8;frame=(~~(_nw/150))%4;
-    if(e.s==='bossSweepWind')frame=1;
+    if(e.s==='bossSweepWind'||e.s==='bossSlamWind')frame=1;
+    else if(e.s==='bossSlam')frame=2;
     else if(e.s==='bossSweep'&&Number.isFinite(e.st2)){const progress=Math.max(0,Math.min(1,1-e.st2/14));frame=progress>.15&&progress<.85?2:progress>=.85?3:1;}
-  } // Sweep pose follows existing active hit interval; other attacks retain 150ms cycling.
+  } // Sweep follows its hit interval; Slam holds distinct preparation/execution poses; other attacks retain 150ms cycling.
   else if(key==='walk'){sheet='walk';cols=4;rows=8;frame=(~~(_nw/150))%4;} // 이동 시 8방향 4프레임 보행 유지
   else{sheet='base8';cols=4;rows=2;frame=dir;dirless=true;} // 대기 또한 원본 방향 셀 사용; 미세 호흡은 배치 오프셋으로 표현
   const S=_druidSheets[sheet];if(!S||!S.ready)return false;

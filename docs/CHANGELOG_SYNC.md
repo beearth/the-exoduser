@@ -56761,3 +56761,14 @@ alpha/nav/crop/UV/geometry/opacity/renderOrder/resource/dispose·skirt/backplane
 | 검증·한계 | 최초 통제 Node1/12그룹31PASS/FAIL0, before 반례1 별도. 실제 GPU·pixel·전체 모션·전투·청취·save 미인수. RETOUCH / UI_NOT_ASSESSED |
 
 [상태별 표시·정확 consumer 정본](4.0케릭터스프라이트 디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md#druid-sweep-readability-20261008). 앞선 150ms 전체 공격 설명과 과거 검수는 각 당시 epoch이며 현재 Sweep 예외를 덮어쓰지 않는다. 원본 PNG·시간·AI·피해·세이브 변경0.
+
+
+## 2026-10-08 — 드루이드 내려찍기 준비/실행 표시 (Sweep 후속)
+
+| consumer | 현행 계약 |
+|---|---|
+| `_drawDruidBoss` | `bossSlamWind`는 기존 attack 셀1, `bossSlam`은 셀2 유지(0기준). wallclock150ms 순환에서 두 상태만 분리. 방향·crop·rig/native 연결 불변 |
+| 실제 전투와 구분 | 준비시간은 phase teleM/extraDelay 소비, 고정35f 보장 아님. 실행8f 뒤 st2<=0에서 실제 1회 타격→recover/40(공통 보스 cap20). 이 전투 코드·피해·recover idle는 수정0. 셀2는 실행 자세이며 실제 타격 구간/타격 후 자세 보장 아님 |
+| 검증·한계 | 실제 whole Druid/rig/selector+통제 ports 최초 Node1·VM0·factory2/instances18·7그룹7PASS/FAIL0/exit0. before SlamWind wallclock 셀0→2 반례1 별도. 이전 Sweep31/다른 suite 재실행0. 실제 GPU·pixel·자세 미감·native·청취·실save 미검수/RETOUCH |
+
+앞선 Sweep 단위의 “기타 공격150ms”는 그 epoch이며 현재 Slam 예외가 우선한다. Sweep 셀 선택·첫 pass 밝기/윤곽·특수 상태·공통 recover·원본 PNG·AI·save 불변. [현행 표시 정본](4.0케릭터스프라이트 디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md#druid-slam-readability-20261008).
