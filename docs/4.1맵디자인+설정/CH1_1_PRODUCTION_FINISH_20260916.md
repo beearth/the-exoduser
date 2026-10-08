@@ -1,3 +1,7 @@
+## 2026-10-08 — production_finish 좌우 골짜기 렌더 추가
+
+[정확 계약·검수·§23 보고](CH1_SIDE_RAVINE_RELIEF_20261008.md). `ch1-side-ravines.js`를 실제 main 바닥에 연결: 서420/220/86·동500/300/128(width/renderDepth/renderRise), 기존 m_c1gedge 재질·live wall3×3 보호. 새 물리 고도/추락/보행/충돌 변경0. source-raster SIDE L/R만 검수, 실제 게임8camera·GPU·청취·save 미인수 / **RETOUCH**. 아래 기존 hill·경계·원화 설명은 각 모듈/시점 계약을 유지한다.
+
 ## 2026-09-30 — CH1-1 나무 교체 이력 주석
 
 이 문서의 `m_ctree1/2/3/4/9/10/11/12` 손 배치와 과거 `m_ctree2 colSz66` 이동 검수는 당시 이력이다. 현행 1-1 나무는 기존 앵커와 scale을 계승한 `m_ctree13~20`이며 등록 메타의 `colSz`는 앞 6개 60, 뒤 2개 기본값이다. [88차 배치·원화·실제 게임 검수](CH1_SUNBURST_TREE_PASS88_20260930.md).

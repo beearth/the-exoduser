@@ -1,3 +1,7 @@
+## 2026-10-08 — CH1-1 양옆 골짜기 현행
+
+[정확 계약·검수·§23 보고](CH1_SIDE_RAVINE_RELIEF_20261008.md). `ch1-side-ravines.js`를 실제 main 바닥에 연결: 서420/220/86·동500/300/128(width/renderDepth/renderRise), 기존 m_c1gedge 재질·live wall3×3 보호. 새 물리 고도/추락/보행/충돌 변경0. source-raster SIDE L/R만 검수, 실제 게임8camera·GPU·청취·save 미인수 / **RETOUCH**. 아래 기존 hill·경계·원화 설명은 각 모듈/시점 계약을 유지한다.
+
 ## 2026-10-05 — 실제 이미지 씬 에디터 첫 버전
 
 [MAP_SCENE_EDITOR_20261005.md](MAP_SCENE_EDITOR_20261005.md): editor.html 기본 작업 영역, 원본 해상도와 world 크기 분리·pivot/레이어/보행/PNG·JSON 왕복. 기존 타일 편집은 ?workspace=tiles. core27/실제 Chrome UI15 PASS, 본편 맵·세이브 무변. 틈과 CH1 참조 스케치의 VISUAL RETOUCH/게임6단계 미인수는 유지한다.

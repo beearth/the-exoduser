@@ -1,3 +1,7 @@
+## 2026-10-08 — CH1-1 외곽 높낮이 첫 본편 렌더
+
+[정확 계약·검수·§23 보고](../4.1맵디자인+설정/CH1_SIDE_RAVINE_RELIEF_20261008.md). `ch1-side-ravines.js`를 실제 main 바닥에 연결: 서420/220/86·동500/300/128(width/renderDepth/renderRise), 기존 m_c1gedge 재질·live wall3×3 보호. 새 물리 고도/추락/보행/충돌 변경0. source-raster SIDE L/R만 검수, 실제 게임8camera·GPU·청취·save 미인수 / **RETOUCH**. 아래 기존 hill·경계·원화 설명은 각 모듈/시점 계약을 유지한다.
+
 # CH1 2.5D 캐릭터·맵 공통 제작 목표 — 2026-10-06
 
 ## 최신 사용자 확정

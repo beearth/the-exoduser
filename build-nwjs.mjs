@@ -44,6 +44,7 @@ const FILES = [
   'ch1-altar-moat.js',
   'ch1-border-foreground.js',
   'ch1-boundary-edge.js',
+  'ch1-side-ravines.js',
   'parry-lesson.js', 'parry-lesson.css', 'resource-practice.js',
   'system-lesson.js', 'system-lesson.css',
   'tutorial-badges.js', 'tutorial-badges.css',

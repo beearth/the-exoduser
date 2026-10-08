@@ -1,3 +1,9 @@
+## 2026-10-08 — 1-1 양옆 골짜기 구현·팀 상태
+
+[정확 계약·검수·§23 보고](../4.1맵디자인+설정/CH1_SIDE_RAVINE_RELIEF_20261008.md). `ch1-side-ravines.js`를 실제 main 바닥에 연결: 서420/220/86·동500/300/128(width/renderDepth/renderRise), 기존 m_c1gedge 재질·live wall3×3 보호. 새 물리 고도/추락/보행/충돌 변경0. source-raster SIDE L/R만 검수, 실제 게임8camera·GPU·청취·save 미인수 / **RETOUCH**. 아래 기존 hill·경계·원화 설명은 각 모듈/시점 계약을 유지한다.
+
+기존 Codex 전문7은 승인 거절·새 전달0. Codex 감독 idle / Claude 추가 배정 중단(기존 busy3 short-stop end 미확인)은 최근 관측이며 현재 전 팀 가동으로 선언하지 않는다. 사용자 감속 지시에 따라 ROOT 본편 한 건씩 진행, 사용량 목표·반복 감사·새 팀0.
+
 ## 2026-10-08 — 헬거너 역추진을 본편 시험 SPACE에 연결
 
 `ROOT-HELLGUNNER-LEAP-MAIN-20261008`: 제한된 시험 킷의 SPACE로 ST18/쿨42f·12f 감속 역이동·기존 충돌·iframe16 부여·시전 기본20 접촉 피해를 연결했다. 이동과 WASD를 겹치지 않고 취소 후 남은 이동을 재개하지 않는다. 잔류 KH.Space가 기존 칼날이동을 켜는 경계는 첫 CPU 전에 보정했다. 최초 통제20그룹250확인과 현재 JS구문을 통과했으며 native 화면/청취/저장은 미실시다.
