@@ -10970,7 +10970,21 @@ function _druidDir(e){
   let d=Math.round(ang/(Math.PI/4));d=((d%8)+8)%8;
   return _DRUID_DIRMAP[d];
 }
+// Renderer-owned history: only an observed summon may publish its cast/recovery cells.
+const _druidSummonDisplay=new WeakMap();
+function _druidSummonDisplayFrame(e,observe=false){
+  const s=e.s,live=G.stage===0&&G.on===true&&e.ib===true&&e.alive===true&&e.hp>0&&!e._druidDefeated&&!(e._reviveTimer>0)&&!(e.stunned>0)&&ens.includes(e);
+  const r=_druidSummonDisplay.get(e),same=!!r&&r.game===G&&r.map===G.map&&r.enemies===ens&&r.deaths===(e.deaths||0)&&r.phase===(e._bossPhase||0)&&r.lastStand===!!e._druidLastStand;
+  if(!live||(s!=='bossSummonWind'&&s!=='recover')){if(observe)_druidSummonDisplay.delete(e);return null;}
+  if(s==='bossSummonWind'){
+    if(observe&&!same)_druidSummonDisplay.set(e,{game:G,map:G.map,enemies:ens,deaths:e.deaths||0,phase:e._bossPhase||0,lastStand:!!e._druidLastStand});
+    return 1;
+  }
+  if(!same||!Number.isFinite(e.st2)){if(observe)_druidSummonDisplay.delete(e);return null;}
+  return e.st2>14?2:3;
+}
 function _drawDruidBoss(X,e,sa,tdY,spec,parentScale,parentYOffset){
+  const _summonFrame=_druidSummonDisplayFrame(e,true);
   const _ch1NormalIntent=_ch1DruidIntent(e)==='normal'; // Intent approval precedes image readiness and legacy selector fallback.
   _drawDruidFinaleTell(X,e);
   const key=_stage1CodexBossMotionKey(e);
@@ -11018,6 +11032,7 @@ function _drawDruidBoss(X,e,sa,tdY,spec,parentScale,parentYOffset){
   }
   else if(_isChgWind&&_druidSheets.transform&&_druidSheets.transform.ready){const _tp=Math.max(0,Math.min(1,1-e.st2/45));frame=Math.min(7,~~(_tp*8));sheet='transform';cols=8;rows=1;dirless=true;} // 돌진 와인드업=변신 시퀀스 0→7(서있는→야수)
   else if(_isCharge&&_druidSheets.beast&&_druidSheets.beast.ready){sheet='beast';cols=4;rows=2;dirless=true;frame=dir;} // 돌진=야수 변신형(8방향 4x2, 셀=방향)
+  else if(_summonFrame!==null){sheet='attack';cols=4;rows=8;frame=_summonFrame;}
   else if(key==='slash'||key==='slam'||key==='windup'||e.s==='bossDruidVolleyWind'||e.s==='bossDruidVolley'){
     sheet='attack';cols=4;rows=8;frame=(~~(_nw/150))%4;
     if(e.s==='bossSweepWind'||e.s==='bossSlamWind')frame=1;
@@ -11808,7 +11823,7 @@ let _ch1PlayerRig=null,_ch1RigAlive=true,_ch1RigImportFailed=false,_ch1RigBodyFr
 const _ch1RigStats={bodyFrames:0,attackFrames:0,recoveryFrames:0,packedBodyFrames:0,ghostFrames:0,legacyFrames:0,lastState:'awaiting-main-body'};
 if(_ch1RigRequested){
   window.addEventListener('pagehide',()=>{_ch1RigAlive=false;_ch1RigBodyFrame=null;_ch1RigGroundContact=null;if(_ch1PlayerRig){if(typeof _freeMapTex==='function')_freeMapTex(_ch1PlayerRig.canvas);_ch1PlayerRig.dispose();}},{once:true});
-  import('./tools/2_5d/ch1-player-rig.mjs?v=druid-authored-pose-20261008-v6').then(module=>{if(_ch1RigAlive)_ch1PlayerRig=module.createCh1PlayerRig();}).catch(()=>{_ch1RigImportFailed=true;});
+  import('./tools/2_5d/ch1-player-rig.mjs?v=druid-summon-display-20261009-v7').then(module=>{if(_ch1RigAlive)_ch1PlayerRig=module.createCh1PlayerRig();}).catch(()=>{_ch1RigImportFailed=true;});
 }
 function _ch1RigCombatOwnerCurrent(phase){
   const owned=_ch1RigStrikeOwner;
@@ -11959,7 +11974,7 @@ const _ch1DruidNative=_ch1DruidCaptureNative();
 const _ch1DruidStats={decodeStarts:0,decodeReady:0,decodeFailures:0,bodyFrames:0,legacyFrames:0,lifeChanges:0,lastState:'awaiting-normal-boss'};
 if(_ch1RigRequested){
   window.addEventListener('pagehide',()=>{_ch1DruidAlive=false;for(const r of _ch1DruidActors.values())r.active=false;_ch1DruidActors.clear();_ch1DruidScene=null;for(const lease of _ch1DruidLeases)_ch1DruidCloseLease(lease,'pagehide');if(_ch1DruidRig){try{if(typeof _freeMapTex==='function')_freeMapTex(_ch1DruidRig.canvas);}catch(_){}try{_ch1DruidRig.dispose();}catch(_){}}},{once:true});
-  import('./tools/2_5d/ch1-player-rig.mjs?v=druid-authored-pose-20261008-v6').then(module=>{if(_ch1DruidAlive)_ch1DruidRig=module.createCh1PlayerRig();}).catch(()=>{_ch1DruidStats.lastState='module-unavailable';});
+  import('./tools/2_5d/ch1-player-rig.mjs?v=druid-summon-display-20261009-v7').then(module=>{if(_ch1DruidAlive)_ch1DruidRig=module.createCh1PlayerRig();}).catch(()=>{_ch1DruidStats.lastState='module-unavailable';});
 }
 function _ch1DruidOwn(value,key){const d=value&&Object.getOwnPropertyDescriptor(value,key);return d&&Object.hasOwn(d,'value')?d.value:undefined;}
 function _ch1DruidSingleBoss(){let count=0;for(let i=0;i<ens.length;i++)if(_ch1DruidOwn(ens[i],'ib')===true&&++count>1)return false;return true;}
@@ -12057,7 +12072,7 @@ function _ch1DruidCurrent(owner,selection){
   if(!_ch1DruidScope()||!owner||owner.active!==true||owner.scene!==_ch1DruidScene||_ch1DruidActors.get(owner.actor)!==owner||owner.game!==G||owner.map!==G.map||owner.enemies!==ens||!ens.includes(owner.actor)||owner.selectedFrame!==selection||owner.lifeGeneration!==selection.lifeGeneration||owner.state!==owner.actor.s||_ch1DruidIntent(owner.actor)!=='normal')return false;
   const e=owner.actor;
   if((e.deaths||0)!==owner.deaths||(e._bossPhase||0)!==owner.bossPhase||!!e._druidLastStand!==owner.lastStand||!!e._druidDefeated!==owner.defeated||(e._reviveTimer>0)!==owner.pending||_druidDir(e)!==selection.nativeDir||owner.sheetRecord!==_druidSheets[selection.sheet]||owner.sheetRecord.ready!==true)return false;
-  const key=_stage1CodexBossMotionKey(e),expected=['slash','slam','windup'].includes(key)||e.s==='bossDruidVolleyWind'||e.s==='bossDruidVolley'?'attack':key==='walk'?'walk':'base8';
+  const key=_stage1CodexBossMotionKey(e),expected=_druidSummonDisplayFrame(e)!==null||['slash','slam','windup'].includes(key)||e.s==='bossDruidVolleyWind'||e.s==='bossDruidVolley'?'attack':key==='walk'?'walk':'base8';
   const b=owner.borrowed,f=_ch1DruidImage(b?.image),lease=b&&_ch1DruidDecoded.get(b.image);
   return expected===selection.sheet&&!!lease&&lease.borrowed===b&&_ch1DruidLeaseCurrent(lease)&&!!b&&owner.sheetRecord.img===b.image&&owner.imageGeneration===b.generation&&selection.generation===b.generation&&!!f&&f.naturalWidth===b.width&&f.naturalHeight===b.height&&f.src===b.srcSnapshot&&f.currentSrc===b.currentSrcSnapshot&&f.srcset===b.srcsetSnapshot&&f.sizes===b.sizesSnapshot;
 }

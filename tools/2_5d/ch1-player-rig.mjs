@@ -60,7 +60,7 @@ function imageSheet(image){
   if(complete!==true||!Number.isSafeInteger(width)||width<1||!Number.isSafeInteger(height)||height<1||![srcSnapshot,currentSrcSnapshot,srcsetSnapshot,sizesSnapshot].every(v=>typeof v==='string'))return null;
   return {width,height,srcSnapshot,currentSrcSnapshot,srcsetSnapshot,sizesSnapshot};
 }
-function druidPose(actor){
+function druidPose(actor,sourceFrame){
   const a=dataRecord(actor,DRUID_ACTOR_FIELDS);if(!a)return null;
   const number=value=>value===undefined?0:typeof value==='number'&&Number.isFinite(value)?value:null;
   const flag=value=>value===undefined?false:typeof value==='boolean'?value:null;
@@ -76,7 +76,7 @@ function druidPose(actor){
   else if(tail||['Slash','Sweep','Spin','Charge','Dash'].some(s=>state.includes(s)))key='slash';
   else if(['Wind','Aim','Hold'].some(s=>state.includes(s))||state==='eWindup')key='windup';
   else if(['eWalk','eChase','eApproach','bossRec'].includes(state))key='walk';
-  const mode=['slash','slam','windup'].includes(key)||state==='bossDruidVolleyWind'||state==='bossDruidVolley'?'attack':key==='walk'?'walk':'idle';
+  const mode=['slash','slam','windup'].includes(key)||state==='bossDruidVolleyWind'||state==='bossDruidVolley'||(state==='recover'&&sourceFrame?.sheet==='attack'&&[2,3].includes(sourceFrame.index))?'attack':key==='walk'?'walk':'idle';
   const angle=['eWalk','eChase','eApproach'].includes(state)&&(vx||vy)?Math.atan2(vy,vx):facing;
   const nativeDir=[6,7,0,1,2,3,4,5][((Math.round(angle/(Math.PI/4))%8)+8)%8];
   const countdown=number(a.st2),sweepDirection=number(a._sweepDir);
@@ -105,7 +105,7 @@ function sheetCurrent(record,input){
     if(game._bossArena!==undefined&&typeof game._bossArena!=='boolean')return false;
     if(game.mw!==(arena?128:200)||game.mh!==(arena?108:200)||own(record.map,'length')!==game.mh||own(record.map,'0')===undefined||own(own(record.map,'0'),'length')!==game.mw)return false;
     if(!Array.isArray(record.enemies)||own(record.enemies,String(input.enemyIndex))!==record.actor)return false;
-    const pose=druidPose(record.actor);
+    const pose=druidPose(record.actor,input.sourceFrame);
     if(!pose||pose.state!==input.actorPose.state||pose.mode!==input.mode||pose.nativeDir!==(8-input.direction)%8||['motionPhase','windRemaining','sweepDirection'].some(key=>pose[key]!==input.actorPose[key])||['deaths','bossPhase','lastStand','defeated','pending'].some(key=>pose[key]!==input.actorPose[key]||owner[key]!==pose[key]))return false;
     if(own(record.sheetRecord,'img')!==record.image||own(record.sheetRecord,'ready')!==true)return false;
     if(SHEET_FIELDS.some(key=>own(input.sheetOwner,key)!==sheet[key])||SHEET_FRAME_FIELDS.some(key=>own(input.frameOwner,key)!==source[key]))return false;
@@ -123,7 +123,7 @@ function captureSheet(input){
   }
   const sheetOwner=own(input,'borrowedSheet'),frameOwner=own(input,'sourceFrame'),owner=own(input,'owner');
   if(!plain(sheetOwner)||!plain(frameOwner)||!plain(owner))return null;
-  const borrowedSheet=dataRecord(sheetOwner,SHEET_FIELDS),sourceFrame=dataRecord(frameOwner,SHEET_FRAME_FIELDS),ownership=dataRecord(owner,DRUID_OWNER_FIELDS),actorPose=druidPose(value.actor);
+  const borrowedSheet=dataRecord(sheetOwner,SHEET_FIELDS),sourceFrame=dataRecord(frameOwner,SHEET_FRAME_FIELDS),ownership=dataRecord(owner,DRUID_OWNER_FIELDS),actorPose=druidPose(value.actor,sourceFrame);
   if(!borrowedSheet||!sourceFrame||!ownership||!actorPose||!sheetFrameValid(borrowedSheet,sourceFrame,value)||ownership.selectedFrame!==frameOwner||ownership.actor!==value.actor||ownership.map!==value.map||ownership.lifeGeneration!==sourceFrame.lifeGeneration)return null;
   const enemies=ownership.enemies,length=own(enemies,'length');if(!Array.isArray(enemies)||!Number.isSafeInteger(length))return null;
   let enemyIndex=-1;for(let i=0;i<length;i++)if(own(enemies,String(i))===value.actor){enemyIndex=i;break;}if(enemyIndex<0)return null;

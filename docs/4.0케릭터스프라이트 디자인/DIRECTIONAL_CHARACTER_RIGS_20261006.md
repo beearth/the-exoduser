@@ -1686,7 +1686,7 @@ OFF/불가mode/identity/준비 frame 부재의 검수에서는 core0이다. **co
 <a id="druid-sweep-readability-20261008"></a>
 ## 2026-10-08 — 드루이드 휩쓸기 자세·일반 본체 가독성
 
-`ROOT-CH1-DRUID-SWEEP-READABILITY-20261008`. 이전 150ms 공격 순환 설명은 당시 이력이며, 현재 Sweep 두 상태만 아래 예외를 소비한다. 일반 회복 상태 `recover`는 기존 대기 자세를 유지한다.
+`ROOT-CH1-DRUID-SWEEP-READABILITY-20261008`. 이전 150ms 공격 순환 설명은 당시 이력이며, 현재 Sweep 두 상태만 아래 예외를 소비한다. 이전 epoch의 일반 회복 상태 `recover`는 대기 자세였다. 현재는 아래 20261009 소환 관측 후속만 예외다.
 
 | 실제 consumer / 조건 | 현재 표시 계약 |
 |---|---|
@@ -1771,7 +1771,7 @@ VISUAL VERDICT: **RETOUCH**. 어깨 구형 윤곽을 제거했으나 얼굴/외�
 | 적용 범위 | readBorrowedSheet가 허용한 dark-druid 본편 borrowedSheet의 idle/walk/attack. 원본 셀·방향·crop/anchor/referenceHeight·프레임 타이밍은 그대로 |
 | 이후 처리 | return은 pose 함수만 종료. update의 skeleton/currentness/세대검증/posePublication 처리는 유지 |
 | 비대상 | sheet 없는 standalone Druid, warrior/silvertail 범용 pose와 optional volume.update는 기존 분기 유지. 거절 volume의 본편 재연결0 |
-| 실제 import | ch1-player-rig의 factory import와 game의 adapter import 두 곳 모두 druid-authored-pose-20261008-v6 |
+| 실제 import(당시 epoch) | 당시 factory/game adapter 모두 druid-authored-pose-20261008-v6. 현재 game adapter 두 곳은 아래 20261009 v7, factory v6 유지 |
 | 검수 | 첫 Node는 before fixture의 query를 파일명으로 인코딩한 준비 경로 오류로 제품 조건未도달. fixture URL만 보정한 최초 제품 suite: Node1/6그룹 PASS(5 dynamic·1 static), borrowed 자세72개에서 추가 정점 변형 최대2.7791596496545744e-8. before 추가변형0.009793138950770311은 별도 반례이며 PASS 합산0 |
 | 한계 | 통제 image getter와 실제 Three 수학 검수. PNG decode/GPU/본편 실제 화면·음향/save 검수0. 원본 프레임 자세 보존이며 입체 모델링·가독성 개선의 실화면 인수·A급 완료 아님 |
 
@@ -1797,3 +1797,26 @@ VISUAL VERDICT: **RETOUCH**. 어깨 구형 윤곽을 제거했으나 얼굴/외�
 | 품질 한계 | **VISUAL VERDICT: RETOUCH**. 정면 rest 비교 구현만 완료. 측면 원화 늘어짐/후면 재구성/독립 관절/공격 모션/본편 연결·보스전 route·성능 benchmark·청취·실save·A급 인수 미완료. main game/전투/사용자 기존게임·에디터탭 무조작 |
 
 최종 화면·실패/수정 이력·소유 보존은 `E/druid-original-relief-20261009/completion.json` 참조. 이 정지 비교를 본편 2.5D 보스 완성으로 세지 않는다.
+
+
+<a id="druid-authored-summon-display-20261009"></a>
+## 2026-10-09 — 원본 소환 준비·시전·회복 자세 선택
+
+`ROOT-DRUID-AUTHORED-SUMMON-DISPLAY-20261009`. 위 Sweep 절의 일반 recover=대기 및 v6 import 표는 이전 epoch다. 아래처럼 실제로 관측된 소환의 회복에만 예외를 추가한다. 원본 attack 셀2는 전방 시전 그림이며 내려찍기/Slam의 완성 모션이 아니다.
+
+| 항목 | 현재 코드 계약 |
+|---|---|
+| 본편 위치 | `game.html` `_druidSummonDisplayFrame` / `_drawDruidBoss` / `_ch1DruidCurrent`; adapter `tools/2_5d/ch1-player-rig.mjs`의 `druidPose`와 두 호출 |
+| 준비 | 실제 `bossSummonWind` 표시에서 기존 attack 4×8 시트의 0기준 셀1 고정. 해당 상태의 wallclock150ms 프레임 순환을 생략 |
+| 시전→회복 | 같은 소환의 관측 후 `recover`에서 기존 st2>14면 셀2, <=14면 셀3. 실제 summon finally의 st2=70과 다음 update의 ib cap20을 그대로 소비. 새 시간/판정/소환 시점 변경0 |
+| 표시 소유 | renderer WeakMap(actor)에 G/map/enemies identity·deaths·_bossPhase·_druidLastStand만 캡처. stage0/on/ib/alive/hp>0/비부활대기·비defeated·비stunned/ens 소속일 때만 허용 |
+| 폐기/한계 | 다른 상태·비live·tuple 변경의 표시 관측에서 삭제. 처음 본 상태가 recover면 승계0. current 검사는 read-only. 관측 사이 A→B→A·동일 tuple 재사용·생략된 준비는 식별/완전 재생 보장0 |
+| 기존 범위 | 다른 공격 뒤 recover는 기존 base8. Sweep/Slam·특수 시트·피격/사망·보행 및 원 8방향/정수 crop/anchor는 그대로. 1:1 보스 전체 모션 완성0 |
+| adapter | 복사한 sourceFrame의 recover+attack+index2/3만 mode attack 허용. selectedFrame/lifeGeneration/sheetFrameValid/current/lease 소유 검사 유지 |
+| 캐시 | game의 player/Druid adapter import 두 곳 `druid-summon-display-20261009-v7`; adapter의 변경 없는 character-rigs factory import는 v6 |
+| 코드 검수 | 최초 actual whole draw/current/helper 및 adapter pose + 통제 Canvas/rig/image/game ports Node1, 9그룹 PASS/FAIL0. before 준비 셀0→2 순환 반례1은 별도. source peer actionable/blocking0·peer 실행0 |
+| 실표시 | 기존 own IAB15에 한시 fixture로 actual whole draw/helper/readability를 그대로 넣고 native 원본 준비1/시전2/회복3을 화면 판독, console warn/error0. 이후 fixture를 제거하고 기존 preview working/HEAD와 byteexact 복원. 실본편/정상 줌/입체 rig GPU/애니메이션 연속재생/성능 인수 아님 |
+| 아트/보존 | 원 PNG·새 관절/후면/보간·전투 AI/피해/자원/회복시간/save/scene/nav/RAF/timer 수정0. 기존 Vinebound GLB는 원본과 달라 미채택. f0 relief 정지 외형 모듈 변경0 |
+| 품질 | VISUAL VERDICT: RETOUCH. 실제 보스전 전체·청취·durable reward save·원본 합치 입체 관절 모션·A급 이상 인수 미완료 |
+
+검수 화면/새 Gate·정확 보존핀은 `E/druid-representative-slam-20261009/completion.json`에 기록한다. 외부 폴더명의 slam은 최초 검토 방향이며 채택 제품은 소환 시전 표시에 한정한다.
