@@ -51719,3 +51719,14 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 - 기존JSX는새revision폴더 original-panel-edit.jsx로백업. 기존영상·공개URL·과거검수이력보존하며 원화가림을 놓친 표본PASS를 현재품질승인으로사용하지않음.
 - 상세 계약 docs/13출시·마케팅/NEMESIA_TEXT_ONLY_FIX_20261008.md. 실제native렌더·시각검수·YouTube수정본반영은이체크포인트에서PENDING.
 - 코드/docs 체크포인트17d9f3d6의 진행 로그 누락을 이 후속 커밋으로 보충. 게임소스·서버·사용자세이브 변경0.
+## 2026-10-08 — 홍보 품질 재검수 및 실제 데모 촬영
+
+| 항목 | 변경·현재 검증 |
+|---|---|
+| 사용자 품질 판정 | 기존37초 메인 트레일러 USER_REJECTED. 기술 decode PASS는 편집 품질 승인으로 해석하지 않음. 새 메인은 DRAFT_ONLY 검수본으로 제작. |
+| 기존 공개 영상 | WTwXcdeTCFg와 p-21GwkF65s 모두 일부 공개 저장 완료. 두 영상 모두 공식 공개 재생목록 선택 해제 후 저장 완료. 삭제하지 않고 이력 보존. |
+| 네메시아 수정 | 원화 위 EN단일언어32px·27텍스트cue, 불투명패널0. 1920×1080/30fps/3651프레임/121.7초 AAC 전체decode PASS. native14/27/65초 및 export14/40/65/119초 표본 확인. 전편 주관적 음향·모션 검수 미완료. |
+| 수정본 게시 | 0ERvrpHccZQ 일부 공개 검수 링크. EN27선택자막 게시 확인, KO27VTT파일 제공·YouTube KO게시 미완료. |
+| 자연 촬영 | 기존3333서버를 재시작하지 않고3338 localhost receiver로 GET/HEAD프록시·WebM/JSON POST저장. 200MiB 상한·타임스탬프파일명·덮어쓰기거부. game.html·전투수치·세이브·일반서버 변경 없음. |
+| 새 편집 도구 | marketing_trailer_rebuild_20261008.jsx: 사전trim H264/yuv420p CFR30·실제프레임PTS·AACstereo검사 후 native from0,24–40초 DRAFT_ONLY,투명텍스트·원본로고CTA·원음유지. 최종trim/렌더결과는 TRAILER_REBUILD_REVIEW에 추가. |
+| 문서 동기화 | 관련 전체docs 키워드검색 후 운영10문서에 최신 품질수정 안내. 새 receiver/재편집 문서 및 네메시아 검수 기록 동기화. 오래된6PUBLIC 기록은 당시 게시 이력. |

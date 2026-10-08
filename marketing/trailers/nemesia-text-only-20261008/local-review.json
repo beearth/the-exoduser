@@ -1,0 +1,36 @@
+{
+  "status": "TECHNICAL_PASS_VISUAL_REVIEW_PENDING",
+  "duration": 121.7,
+  "frames": 3651,
+  "resolution": "1920x1080",
+  "fps": 30,
+  "language": "en",
+  "art_cues": 27,
+  "dialogue_cues": 27,
+  "opaque_dialogue_panels": 0,
+  "top_brandbar": false,
+  "decode_errors": 0,
+  "audio_duration": "121.700000",
+  "source_commit": "9622a4469ca33b17a51d3f426f395f5ae001d6a9",
+  "sha256": "5d5b8480081d749d90770ad34cfbb11875a4092973901c9ae9a188f547a225b1",
+  "subjective_full_audio_review": "NOT_PERFORMED",
+  "caption_fix_visual_verdict": "PASS_WITHIN_REVIEWED_SAMPLES",
+  "reviewed_export_seconds": [
+    14,
+    40,
+    65,
+    119
+  ],
+  "reviewed_native_seconds": [
+    14,
+    65
+  ],
+  "visual_findings": [
+    "No opaque lower dialogue plate",
+    "No top brandbar",
+    "Single language only",
+    "Artwork visible to lower edge",
+    "Speaker and dialogue readable at inspected timestamps"
+  ],
+  "full_motion_and_subjective_audio_review": "NOT_PERFORMED; original sequence and music retained"
+}

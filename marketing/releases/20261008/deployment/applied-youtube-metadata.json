@@ -9,12 +9,14 @@
       "kind": "gameplay_trailer",
       "language": "en",
       "captionFiles": [],
-      "publication": "public",
-      "status": "PUBLISHED",
+      "publication": "unlisted",
+      "status": "UNLISTED_QUALITY_REVISION",
       "path": "videos/EXODUSER_STEAM_37S_1080P30.mp4",
       "url": "https://youtu.be/WTwXcdeTCFg",
       "aiDisclosure": true,
-      "category": "Gaming"
+      "category": "Gaming",
+      "qualityApproval": "USER_REJECTED",
+      "playlistIncluded": false
     },
     {
       "filename": "EXODUSER_SHORTS_A_16S_1080P30.mp4",
@@ -74,12 +76,14 @@
       "kind": "opening_cinematic_reconstruction",
       "language": "en",
       "captionFiles": [],
-      "publication": "public",
-      "status": "PUBLISHED",
+      "publication": "unlisted",
+      "status": "UNLISTED_QUALITY_REVISION",
       "path": "videos/EXODUSER_NEMESIA_CINEMATIC_KR_EN_20261008.mp4",
       "url": "https://youtu.be/p-21GwkF65s",
       "aiDisclosure": true,
-      "category": "Gaming"
+      "category": "Gaming",
+      "qualityApproval": "USER_REJECTED",
+      "playlistIncluded": false
     },
     {
       "filename": "EXODUSER_RIFT_DEVLOG_V01_20261008.mp4",
@@ -94,9 +98,37 @@
       "url": "https://youtu.be/i7ouSzivg4U",
       "aiDisclosure": true,
       "category": "Gaming"
+    },
+    {
+      "filename": "EXODUSER_NEMESIA_TEXT_ONLY_EN_20261008.mp4",
+      "title": "Nemesia’s Descent | EXODUSER: HELL LORD — Opening Cinematic",
+      "url": "https://youtu.be/0ERvrpHccZQ",
+      "status": "UNLISTED_REVIEW",
+      "visibility": "UNLISTED",
+      "playlistIncluded": false,
+      "qualityApproval": "PENDING_USER_REVIEW",
+      "captions": [
+        {
+          "language": "en",
+          "status": "PUBLISHED",
+          "cues": 27
+        },
+        {
+          "language": "ko",
+          "status": "FILE_READY_UPLOAD_PENDING",
+          "cues": 27
+        }
+      ],
+      "proof": "quality-revision/nemesia-revised-unlisted.png",
+      "publication": "unlisted",
+      "kind": "opening_cinematic_reconstruction_text_only",
+      "language": "en",
+      "aiDisclosure": true,
+      "category": "Gaming",
+      "path": "revisions/nemesia-text-only/EXODUSER_NEMESIA_TEXT_ONLY_EN_20261008.mp4"
     }
   ],
   "packageVersion": "FDG_FINAL_RELEASE_20261008",
-  "releaseStatus": "RELEASE_READY",
+  "releaseStatus": "QUALITY_REVISION_IN_PROGRESS",
   "pathBase": "Package directory; video and caption paths are relative."
 }

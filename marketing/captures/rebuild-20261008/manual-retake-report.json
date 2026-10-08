@@ -1,0 +1,1033 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-08",
+  "purpose": "Read-only source audit, contact-sheet visual inspection and full-length format preparation for parent-selected later edits.",
+  "outputDirectory": "/Users/fordeargamers/.codex/worktrees/marketing-gameplay-20261008/the-exoduser/marketing/captures/rebuild-20261008",
+  "sourceWebmCopiedToGitTree": false,
+  "transcode": {
+    "ffmpeg": "/Users/fordeargamers/the-exoduser/output/marketing_video_20261008/runtime/ffmpeg",
+    "version": "4.4",
+    "video": "H.264 libx264, CRF18, preset medium, 2 encoder threads, yuv420p, 1920x1080, fps=30, -vsync cfr",
+    "audio": "Original Opus audio encoded directly to AAC, 256k requested, 48000Hz stereo; aresample=async=1:first_pts=0 stabilizes sample clock. First two video streams were copied unchanged during this audio preparation; no second video encode.",
+    "timing": "No global slow motion, atempo, interpolation, crop, grade, captions, added music or audio replacement. Full captures retain their input clock; prepared clips use parent-approved exact trim and reset PTS to0. Resampling fills/trims timestamp discontinuities without changing the intended playback rate.",
+    "qualityStatus": "Technical decode PASS; actual listening and final trailer visual review remain parent tasks."
+  },
+  "visualReview": {
+    "method": "Viewed original requested times 0,3,6,9,12,15,18 seconds for both takes with view_image; additionally viewed take1 4,5,5.8,6.5,7.3,8,13,16 seconds. Full decode checks all video/audio packets, not human real-time viewing. Third take also inspected at0,3,6,9,12,15,18 seconds.",
+    "overall": "Use short selected shots. Dark scene, small avatar and low contrast limit a long uninterrupted trailer section.",
+    "tutorialAndDeath": "No tutorial prompt or death screen visible in the inspected source frames. HTML HUD/menu exclusion means this does not prove those were absent from the live iframe. Audit player never died and sampled HP remained 663.",
+    "claimsExcluded": [
+      "Steam binary equivalence",
+      "new region variety",
+      "boss battle",
+      "item equip/build selection",
+      "Q parry success in take2",
+      "additional kills in take2",
+      "continuous natural traversal throughout take2",
+      "successful Ctrl/Space action in take3: operator clicked after recording ended"
+    ]
+  },
+  "takes": [
+    {
+      "id": "demo_manual_1791458139761",
+      "character": 1,
+      "selectedFullCaptureForGit": true,
+      "sourceWebm": "/Users/fordeargamers/the-exoduser/output/marketing_video_20261008/natural-retake/demo_manual_1791458139761.webm",
+      "sourceBytes": 70848096,
+      "sourceSha256": "2f7548c62098e7f39b333cfecbf328b17525a0d8d8138678cd75b62d7f835f1b",
+      "sourceWebmCopiedToGitTree": false,
+      "audit": "/Users/fordeargamers/.codex/worktrees/marketing-gameplay-20261008/the-exoduser/marketing/captures/rebuild-20261008/demo_manual_1791458139761.audit.json",
+      "auditSha256": "8dedefd43643b4fa94f848f9f55e14ab2a04a80453677164c438d5ce46df4fcd",
+      "mp4": "/Users/fordeargamers/.codex/worktrees/marketing-gameplay-20261008/the-exoduser/marketing/captures/rebuild-20261008/demo_manual_1791458139761.mp4",
+      "mp4Bytes": 13352482,
+      "mp4Sha256": "7138f5ca7d2db1c7ce83f2ee89953d39f04ad8b7da4bcae1caa8af4d0785465e",
+      "mp4Metadata": {
+        "containerDurationSeconds": 20.066,
+        "tracks": [
+          {
+            "handler": "vide",
+            "timescale": 15360,
+            "durationTicks": 306688,
+            "mediaDurationSeconds": 19.966666666666665,
+            "sampleCount": 599,
+            "sttsEntryCount": 1,
+            "sampleDeltaMin": 512,
+            "sampleDeltaMax": 512,
+            "constantVideoFrameRate": true,
+            "fps": 30.0
+          },
+          {
+            "handler": "soun",
+            "timescale": 48000,
+            "durationTicks": 963168,
+            "mediaDurationSeconds": 20.066,
+            "sampleCount": 942,
+            "sttsEntryCount": 2,
+            "sampleDeltaMin": 608,
+            "sampleDeltaMax": 1024,
+            "constantVideoFrameRate": false,
+            "fps": null
+          }
+        ]
+      },
+      "firstDecodedPts": {
+        "videoFirstDecodedPtsSeconds": 0.0,
+        "audioFirstDecodedPtsSeconds": 0.0
+      },
+      "contactSheetQaOnly": "/Users/fordeargamers/.codex/worktrees/marketing-gameplay-20261008/the-exoduser/marketing/captures/rebuild-20261008/demo_manual_1791458139761_contact.jpg",
+      "sampleTimesSeconds": [
+        0,
+        3,
+        6,
+        9,
+        12,
+        15,
+        18
+      ],
+      "naturalManualEvidence": {
+        "mode": "demo",
+        "staged": false,
+        "manipulation": {
+          "combatValuesChanged": false,
+          "scriptedTake": false,
+          "spawnedEnemies": false,
+          "operatorButtonInputs": true
+        },
+        "spawn": null,
+        "plannedActions": [],
+        "operatorControls": [
+          {
+            "t": 0.27910000014305114,
+            "code": "KeyW",
+            "down": true,
+            "source": "operator UI button"
+          },
+          {
+            "t": 0.5499000000953674,
+            "code": "LMB",
+            "down": true,
+            "source": "operator UI button"
+          },
+          {
+            "t": 11.774700000047684,
+            "code": "ControlLeft",
+            "down": true,
+            "source": "operator UI button"
+          },
+          {
+            "t": 11.875799999952317,
+            "code": "ControlLeft",
+            "down": false,
+            "source": "operator UI button"
+          },
+          {
+            "t": 12.041299999952317,
+            "code": "KeyW",
+            "down": true,
+            "source": "operator UI button"
+          },
+          {
+            "t": 12.308799999952317,
+            "code": "KeyD",
+            "down": true,
+            "source": "operator UI button"
+          }
+        ],
+        "description": "Actual operator UI button inputs; not a prerecorded scripted take. No added combat values or artificial enemies reported."
+      },
+      "provenance": {
+        "sourceUrl": "http://127.0.0.1:3338/game.html?test=1&slot=marketing_capture_1791457782687_fj6f8i&demo=1",
+        "sourceGitReported": "ba660621e37cdc1635de8e8a370f1f48fd6f18ad; runtime hash in audit",
+        "sourceGitNote": "UI input is commit-like value plus annotation; not independent checkout/Steam proof.",
+        "gameSha256Reported": "11fba62cc6df197055103b4a9e3b2edaa58645a7b1db82a24da9d3611d9f3773",
+        "steamBuildEquivalence": "unverified",
+        "forcedBuildTarget": null,
+        "htmlHudCaptured": false,
+        "capturedLayers": [
+          "c",
+          "fogGL",
+          "burstCvs",
+          "ct",
+          "vfx3dCvs",
+          "boss3dCvs"
+        ]
+      },
+      "auditQA": {
+        "durationSeconds": 20.001900000095368,
+        "recorderDurationSeconds": 20.003700000047683,
+        "compositeFrameCount": 1102,
+        "measuredRenderFps": 55.06183829510217,
+        "requestedFps": 60,
+        "frameGapMaxMs": 111.69999980926514,
+        "frameGapsOver50Ms": 6,
+        "frameGapsOver100Ms": 1,
+        "errors": [],
+        "isolationErrors": [],
+        "installedBeforeGameScripts": true,
+        "blockedRequests": [],
+        "initialPlayer": {
+          "x": 4020,
+          "y": 7420,
+          "lv": 1,
+          "hp": 663,
+          "mhp": 663,
+          "mp": 258,
+          "st": 255,
+          "state": "idle",
+          "iframes": 557,
+          "dead": false,
+          "rage": 0
+        },
+        "finalPlayer": {
+          "x": 4783.11169999994,
+          "y": 7343.9604000000045,
+          "lv": 1,
+          "hp": 663,
+          "mhp": 663,
+          "mp": 258,
+          "st": 80.13125000000181,
+          "state": "idle",
+          "iframes": 0,
+          "dead": false,
+          "rage": 0
+        },
+        "sampledHpMin": 663,
+        "sampledHpMax": 663,
+        "anySampleDead": false,
+        "anySampleFallen": false,
+        "cumulativeKillsStart": 0,
+        "cumulativeKillsEnd": 4,
+        "killsDuringTake": 4,
+        "killEvents": [
+          {
+            "at": 5.811,
+            "cumulativeKills": 1
+          },
+          {
+            "at": 7.822600000143051,
+            "cumulativeKills": 4
+          }
+        ],
+        "skillCounts": {
+          "kiSlash": 18
+        },
+        "damageNumbers": {
+          "enabled": true,
+          "drawCalls": 130,
+          "lastNumber": "1352"
+        },
+        "audio": {
+          "contextState": "running",
+          "sampleRate": 44100,
+          "trackCount": 1
+        },
+        "audioNodeStarts": 80,
+        "xRange": [
+          4020,
+          4783.11169999994
+        ],
+        "yRange": [
+          7343.9604000000045,
+          7420
+        ]
+      },
+      "decodeQA": {
+        "sourceFullAV": "PASS -xerror exit0",
+        "finalMp4FullAV": "PASS -xerror exit0",
+        "decodedVideoFrameCounts": {
+          "source": 1089,
+          "mp4": 599
+        },
+        "cfr30VerifiedByMp4Stts": true,
+        "note": "Composite hook count, MediaRecorder encoded frames and CFR frames are distinct. Source nominal120tbr does not prove120fps."
+      },
+      "audioQA": {
+        "meanVolumeDb": -21.8,
+        "maxVolumeDb": 0.0,
+        "silenceThresholdDb": -50,
+        "minimumSilenceSeconds": 0.5,
+        "silenceWindows": [
+          {
+            "start": 0.0,
+            "end": 0.623333,
+            "duration": 0.623333
+          },
+          {
+            "start": 17.9925,
+            "end": 19.4087,
+            "duration": 1.41621
+          },
+          {
+            "start": 19.4249,
+            "end": 20.0747,
+            "duration": 0.649792
+          }
+        ],
+        "humanListening": "NOT PERFORMED"
+      },
+      "visualFindings": [
+        "0-4s large start protection bubble; avoid opening.",
+        "5-8.7s actual small combat, damage numbers and four kills.",
+        "9-12s blood/green loot pillars; no equip/build UI.",
+        "12.4-17.4s actual movement and camera follow in same forest; chosen move+close are continuous."
+      ],
+      "startingImmunityNote": "Existing initial iframes557 retained, not a no-immunity combat proof."
+    },
+    {
+      "id": "demo_manual_1791458198011",
+      "character": 1,
+      "selectedFullCaptureForGit": false,
+      "sourceWebm": "/Users/fordeargamers/the-exoduser/output/marketing_video_20261008/natural-retake/demo_manual_1791458198011.webm",
+      "sourceBytes": 71282366,
+      "sourceSha256": "52e70c3be3f6bfad7d368bb031749a09835e716c152c67a4ccc06ed2a270773f",
+      "sourceWebmCopiedToGitTree": false,
+      "audit": "/Users/fordeargamers/.codex/worktrees/marketing-gameplay-20261008/the-exoduser/marketing/captures/rebuild-20261008/demo_manual_1791458198011.audit.json",
+      "auditSha256": "80066d2c7c155172c166c1f8b490ce3ebfa7eb5bcebb476b5b34b85433e8f7b8",
+      "mp4": "/Users/fordeargamers/.codex/worktrees/marketing-gameplay-20261008/the-exoduser/marketing/captures/rebuild-20261008/demo_manual_1791458198011.mp4",
+      "mp4Bytes": 7200075,
+      "mp4Sha256": "a1e2ffc47ec95f7c49b6d1d764a1de615ca15314ebc68f6cd54cceb9037815f9",
+      "mp4Metadata": {
+        "containerDurationSeconds": 20.071,
+        "tracks": [
+          {
+            "handler": "vide",
+            "timescale": 15360,
+            "durationTicks": 306688,
+            "mediaDurationSeconds": 19.966666666666665,
+            "sampleCount": 599,
+            "sttsEntryCount": 1,
+            "sampleDeltaMin": 512,
+            "sampleDeltaMax": 512,
+            "constantVideoFrameRate": true,
+            "fps": 30.0
+          },
+          {
+            "handler": "soun",
+            "timescale": 48000,
+            "durationTicks": 963408,
+            "mediaDurationSeconds": 20.071,
+            "sampleCount": 942,
+            "sttsEntryCount": 2,
+            "sampleDeltaMin": 848,
+            "sampleDeltaMax": 1024,
+            "constantVideoFrameRate": false,
+            "fps": null
+          }
+        ]
+      },
+      "firstDecodedPts": {
+        "videoFirstDecodedPtsSeconds": 0.0,
+        "audioFirstDecodedPtsSeconds": 0.0
+      },
+      "contactSheetQaOnly": "/Users/fordeargamers/.codex/worktrees/marketing-gameplay-20261008/the-exoduser/marketing/captures/rebuild-20261008/demo_manual_1791458198011_contact.jpg",
+      "sampleTimesSeconds": [
+        0,
+        3,
+        6,
+        9,
+        12,
+        15,
+        18
+      ],
+      "naturalManualEvidence": {
+        "mode": "demo",
+        "staged": false,
+        "manipulation": {
+          "combatValuesChanged": false,
+          "scriptedTake": false,
+          "spawnedEnemies": false,
+          "operatorButtonInputs": true
+        },
+        "spawn": null,
+        "plannedActions": [],
+        "operatorControls": [
+          {
+            "t": 0.26389999985694884,
+            "code": "KeyW",
+            "down": true,
+            "source": "operator UI button"
+          },
+          {
+            "t": 0.5308999998569488,
+            "code": "LMB",
+            "down": true,
+            "source": "operator UI button"
+          },
+          {
+            "t": 0.7997999999523163,
+            "code": "ShiftLeft",
+            "down": true,
+            "source": "operator UI button"
+          },
+          {
+            "t": 0.9000999999046325,
+            "code": "ShiftLeft",
+            "down": false,
+            "source": "operator UI button"
+          },
+          {
+            "t": 10.703899999856949,
+            "code": "ControlLeft",
+            "down": true,
+            "source": "operator UI button"
+          },
+          {
+            "t": 10.804099999904633,
+            "code": "ControlLeft",
+            "down": false,
+            "source": "operator UI button"
+          },
+          {
+            "t": 10.971200000047684,
+            "code": "KeyQ",
+            "down": true,
+            "source": "operator UI button"
+          },
+          {
+            "t": 11.07189999985695,
+            "code": "KeyQ",
+            "down": false,
+            "source": "operator UI button"
+          }
+        ],
+        "description": "Actual operator UI button inputs; not a prerecorded scripted take. No added combat values or artificial enemies reported."
+      },
+      "provenance": {
+        "sourceUrl": "http://127.0.0.1:3338/game.html?test=1&slot=marketing_capture_1791457782687_fj6f8i&demo=1",
+        "sourceGitReported": "ba660621e37cdc1635de8e8a370f1f48fd6f18ad; runtime hash in audit",
+        "sourceGitNote": "UI input is commit-like value plus annotation; not independent checkout/Steam proof.",
+        "gameSha256Reported": "11fba62cc6df197055103b4a9e3b2edaa58645a7b1db82a24da9d3611d9f3773",
+        "steamBuildEquivalence": "unverified",
+        "forcedBuildTarget": null,
+        "htmlHudCaptured": false,
+        "capturedLayers": [
+          "c",
+          "fogGL",
+          "burstCvs",
+          "ct",
+          "vfx3dCvs",
+          "boss3dCvs"
+        ]
+      },
+      "auditQA": {
+        "durationSeconds": 20.00039999985695,
+        "recorderDurationSeconds": 20.001400000095366,
+        "compositeFrameCount": 1107,
+        "measuredRenderFps": 55.33929089666857,
+        "requestedFps": 60,
+        "frameGapMaxMs": 77.20000004768372,
+        "frameGapsOver50Ms": 3,
+        "frameGapsOver100Ms": 0,
+        "errors": [],
+        "isolationErrors": [],
+        "installedBeforeGameScripts": true,
+        "blockedRequests": [],
+        "initialPlayer": {
+          "x": 4783.11169999994,
+          "y": 7343.9604000000045,
+          "lv": 1,
+          "hp": 663,
+          "mhp": 663,
+          "mp": 258,
+          "st": 80.63125000000136,
+          "state": "idle",
+          "iframes": 0,
+          "dead": false,
+          "rage": 0
+        },
+        "finalPlayer": {
+          "x": 4783.11169999994,
+          "y": 7300.509200000009,
+          "lv": 1,
+          "hp": 663,
+          "mhp": 663,
+          "mp": 249.8424769999971,
+          "st": 67.77187499999837,
+          "state": "idle",
+          "iframes": 0,
+          "dead": false,
+          "rage": 0
+        },
+        "sampledHpMin": 663,
+        "sampledHpMax": 663,
+        "anySampleDead": false,
+        "anySampleFallen": false,
+        "cumulativeKillsStart": 4,
+        "cumulativeKillsEnd": 4,
+        "killsDuringTake": 0,
+        "killEvents": [],
+        "skillCounts": {
+          "kiSlash": 1,
+          "chargeBoost": 2
+        },
+        "damageNumbers": {
+          "enabled": true,
+          "drawCalls": 0,
+          "lastNumber": null
+        },
+        "audio": {
+          "contextState": "running",
+          "sampleRate": 44100,
+          "trackCount": 1
+        },
+        "audioNodeStarts": 19,
+        "xRange": [
+          4783.11169999994,
+          4783.11169999994
+        ],
+        "yRange": [
+          7300.509200000009,
+          7343.9604000000045
+        ]
+      },
+      "decodeQA": {
+        "sourceFullAV": "PASS -xerror exit0",
+        "finalMp4FullAV": "PASS -xerror exit0",
+        "decodedVideoFrameCounts": {
+          "source": 1097,
+          "mp4": 599
+        },
+        "cfr30VerifiedByMp4Stts": true,
+        "note": "Composite hook count, MediaRecorder encoded frames and CFR frames are distinct. Source nominal120tbr does not prove120fps."
+      },
+      "audioQA": {
+        "meanVolumeDb": -24.6,
+        "maxVolumeDb": -0.7,
+        "silenceThresholdDb": -50,
+        "minimumSilenceSeconds": 0.5,
+        "silenceWindows": [
+          {
+            "start": 0.0,
+            "end": 0.607229,
+            "duration": 0.607229
+          },
+          {
+            "start": 2.81446,
+            "end": 6.11073,
+            "duration": 3.29627
+          },
+          {
+            "start": 6.12696,
+            "end": 10.1048,
+            "duration": 3.97788
+          },
+          {
+            "start": 10.1197,
+            "end": 11.0792,
+            "duration": 0.959417
+          },
+          {
+            "start": 13.0599,
+            "end": 18.1387,
+            "duration": 5.07883
+          },
+          {
+            "start": 18.1544,
+            "end": 20.0747,
+            "duration": 1.92029
+          }
+        ],
+        "humanListening": "NOT PERFORMED"
+      },
+      "visualFindings": [
+        "Same forest/loot backdrop; x unchanged, y moves43.45px early.",
+        "Additional kills0 and damage draw calls0.",
+        "Late tail mostly silent and static; excluded from final trailer selection."
+      ]
+    },
+    {
+      "id": "demo_manual_1791458421435",
+      "character": 0,
+      "selectedFullCaptureForGit": true,
+      "sourceWebm": "/Users/fordeargamers/the-exoduser/output/marketing_video_20261008/natural-retake/demo_manual_1791458421435.webm",
+      "sourceBytes": 71955955,
+      "sourceSha256": "8c3d67659a377a2faf2e48222e3e7ec6768ccace637bff1eccc2aa4a60beb1ef",
+      "sourceWebmCopiedToGitTree": false,
+      "audit": "/Users/fordeargamers/.codex/worktrees/marketing-gameplay-20261008/the-exoduser/marketing/captures/rebuild-20261008/demo_manual_1791458421435.audit.json",
+      "auditSha256": "71056d181d871a07c5500abbdbcd259caef8e64f4cccfd472e9489f6ea40a19f",
+      "mp4": "/Users/fordeargamers/.codex/worktrees/marketing-gameplay-20261008/the-exoduser/marketing/captures/rebuild-20261008/demo_manual_1791458421435.mp4",
+      "mp4Bytes": 12170774,
+      "mp4Sha256": "0f6db095559db901ee365198402e24a7357fbcb3819fcacd3f24ac148870c08e",
+      "mp4Metadata": {
+        "containerDurationSeconds": 20.02,
+        "tracks": [
+          {
+            "handler": "vide",
+            "timescale": 15360,
+            "durationTicks": 306688,
+            "mediaDurationSeconds": 19.966666666666665,
+            "sampleCount": 599,
+            "sttsEntryCount": 1,
+            "sampleDeltaMin": 512,
+            "sampleDeltaMax": 512,
+            "constantVideoFrameRate": true,
+            "fps": 30.0
+          },
+          {
+            "handler": "soun",
+            "timescale": 48000,
+            "durationTicks": 960960,
+            "mediaDurationSeconds": 20.02,
+            "sampleCount": 940,
+            "sttsEntryCount": 2,
+            "sampleDeltaMin": 448,
+            "sampleDeltaMax": 1024,
+            "constantVideoFrameRate": false,
+            "fps": null
+          }
+        ]
+      },
+      "firstDecodedPts": {
+        "videoFirstDecodedPtsSeconds": 0.0,
+        "audioFirstDecodedPtsSeconds": 0.0
+      },
+      "contactSheetQaOnly": "/Users/fordeargamers/.codex/worktrees/marketing-gameplay-20261008/the-exoduser/marketing/captures/rebuild-20261008/demo_manual_1791458421435_contact.jpg",
+      "sampleTimesSeconds": [
+        0,
+        3,
+        6,
+        9,
+        12,
+        15,
+        18
+      ],
+      "naturalManualEvidence": {
+        "mode": "demo",
+        "staged": false,
+        "manipulation": {
+          "combatValuesChanged": false,
+          "scriptedTake": false,
+          "spawnedEnemies": false,
+          "operatorButtonInputs": true
+        },
+        "spawn": null,
+        "plannedActions": [],
+        "operatorControls": [
+          {
+            "t": 0.2621000001430511,
+            "code": "KeyW",
+            "down": true,
+            "source": "operator UI button"
+          },
+          {
+            "t": 0.5402999999523163,
+            "code": "LMB",
+            "down": true,
+            "source": "operator UI button"
+          }
+        ],
+        "description": "Actual operator UI button inputs; not a prerecorded scripted take. No added combat values or artificial enemies reported."
+      },
+      "provenance": {
+        "sourceUrl": "http://127.0.0.1:3338/game.html?test=1&slot=marketing_capture_1791458341643_76fft3&demo=1",
+        "sourceGitReported": "ba660621e37cdc1635de8e8a370f1f48fd6f18ad; runtime hash in audit",
+        "sourceGitNote": "UI input is commit-like value plus annotation; not independent checkout/Steam proof.",
+        "gameSha256Reported": "11fba62cc6df197055103b4a9e3b2edaa58645a7b1db82a24da9d3611d9f3773",
+        "steamBuildEquivalence": "unverified",
+        "forcedBuildTarget": null,
+        "htmlHudCaptured": false,
+        "capturedLayers": [
+          "c",
+          "fogGL",
+          "burstCvs",
+          "ct",
+          "vfx3dCvs",
+          "boss3dCvs"
+        ]
+      },
+      "auditQA": {
+        "durationSeconds": 20.00260000014305,
+        "recorderDurationSeconds": 20.004,
+        "compositeFrameCount": 1097,
+        "measuredRenderFps": 54.804110308273124,
+        "requestedFps": 60,
+        "frameGapMaxMs": 61.60000014305115,
+        "frameGapsOver50Ms": 2,
+        "frameGapsOver100Ms": 0,
+        "errors": [],
+        "isolationErrors": [],
+        "installedBeforeGameScripts": true,
+        "blockedRequests": [],
+        "initialPlayer": {
+          "x": 4020,
+          "y": 7420,
+          "lv": 1,
+          "hp": 563,
+          "mhp": 563,
+          "mp": 242,
+          "st": 245,
+          "state": "idle",
+          "iframes": 549,
+          "dead": false,
+          "rage": 0
+        },
+        "finalPlayer": {
+          "x": 4020.125134151826,
+          "y": 7374.054121214027,
+          "lv": 1,
+          "hp": 563,
+          "mhp": 563,
+          "mp": 242,
+          "st": 9.506250000003597,
+          "state": "idle",
+          "iframes": 0,
+          "dead": false,
+          "rage": 0
+        },
+        "sampledHpMin": 563,
+        "sampledHpMax": 563,
+        "anySampleDead": false,
+        "anySampleFallen": false,
+        "cumulativeKillsStart": 0,
+        "cumulativeKillsEnd": 7,
+        "killsDuringTake": 7,
+        "killEvents": [
+          {
+            "at": 3.4987999999523165,
+            "cumulativeKills": 1
+          },
+          {
+            "at": 7.149299999952317,
+            "cumulativeKills": 3
+          },
+          {
+            "at": 7.805600000143051,
+            "cumulativeKills": 4
+          },
+          {
+            "at": 9.114200000047683,
+            "cumulativeKills": 5
+          },
+          {
+            "at": 9.642299999952316,
+            "cumulativeKills": 6
+          },
+          {
+            "at": 11.902200000047683,
+            "cumulativeKills": 7
+          }
+        ],
+        "skillCounts": {
+          "kiSlash": 24
+        },
+        "damageNumbers": {
+          "enabled": true,
+          "drawCalls": 311,
+          "lastNumber": "1352"
+        },
+        "audio": {
+          "contextState": "running",
+          "sampleRate": 44100,
+          "trackCount": 1
+        },
+        "audioNodeStarts": 125,
+        "xRange": [
+          4019.5669166180996,
+          4020.125134151826
+        ],
+        "yRange": [
+          7373.027289483145,
+          7420
+        ]
+      },
+      "decodeQA": {
+        "sourceFullAV": "PASS -xerror exit0",
+        "finalMp4FullAV": "PASS -xerror exit0",
+        "decodedVideoFrameCounts": {
+          "source": 1070,
+          "mp4": 599
+        },
+        "cfr30VerifiedByMp4Stts": true,
+        "note": "Composite hook count, MediaRecorder encoded frames and CFR frames are distinct. Source nominal120tbr does not prove120fps."
+      },
+      "audioQA": {
+        "meanVolumeDb": -20.2,
+        "maxVolumeDb": -2.5,
+        "silenceThresholdDb": -50,
+        "minimumSilenceSeconds": 0.5,
+        "silenceWindows": [
+          {
+            "start": 0.0,
+            "end": 0.53075,
+            "duration": 0.53075
+          }
+        ],
+        "humanListening": "NOT PERFORMED"
+      },
+      "visualFindings": [
+        "0-4s start protection bubble; avoid opening.",
+        "5-12.6s actual combat/strikes/blood; seven total kills during take.",
+        "15-18s mostly empty bloodstained field; exclude filler.",
+        "Only W+LMB occurred in-record; no Ctrl/Space in audit."
+      ],
+      "startingImmunityNote": "Existing initial iframes549 retained, not a no-immunity combat proof."
+    }
+  ],
+  "prepared": {
+    "selection": "Approved by parent; staged three clips are prepared separately by parent.",
+    "fps": 30,
+    "naturalTotalFrames": 489,
+    "naturalTotalSeconds": 16.3,
+    "plannedWholeTrailerIncludingParentStaged": {
+      "frames": 789,
+      "seconds": 26.3
+    },
+    "orderConstraint": "natural1-move immediately followed by natural1-close at the end; contiguous original12.4-17.4s.",
+    "files": [
+      {
+        "name": "natural1-hook",
+        "path": "/Users/fordeargamers/.codex/worktrees/marketing-gameplay-20261008/the-exoduser/marketing/captures/rebuild-20261008/prepared/natural1-hook.mp4",
+        "bytes": 2531969,
+        "sha256": "7a766708f749700569ab21b20f266d53c0a4b28e840820c749b3edca47e1caa8",
+        "sourceFullMp4": "demo_manual_1791458139761.mp4",
+        "sourceInSeconds": 5,
+        "sourceOutSeconds": 8.7,
+        "durationSeconds": 3.7,
+        "frames": 111,
+        "metadata": {
+          "containerDurationSeconds": 3.7,
+          "tracks": [
+            {
+              "handler": "vide",
+              "timescale": 15360,
+              "durationTicks": 56832,
+              "mediaDurationSeconds": 3.7,
+              "sampleCount": 111,
+              "sttsEntryCount": 1,
+              "sampleDeltaMin": 512,
+              "sampleDeltaMax": 512,
+              "constantVideoFrameRate": true,
+              "fps": 30.0
+            },
+            {
+              "handler": "soun",
+              "timescale": 48000,
+              "durationTicks": 177600,
+              "mediaDurationSeconds": 3.7,
+              "sampleCount": 175,
+              "sttsEntryCount": 2,
+              "sampleDeltaMin": 448,
+              "sampleDeltaMax": 1024,
+              "constantVideoFrameRate": false,
+              "fps": null
+            }
+          ]
+        },
+        "firstDecodedPts": {
+          "videoFirstDecodedPtsSeconds": 0.0,
+          "audioFirstDecodedPtsSeconds": 0.0
+        },
+        "decodeQA": "PASS complete video+audio -xerror exit0",
+        "waveformSyncQA": {
+          "status": "PASS",
+          "reference": "Same original full capture at selected in point; 48000Hz mono PCM for analysis only.",
+          "secondsCompared": 2.0,
+          "zeroLagCorrelation": 0.999670015740511,
+          "peakLagSamples": 0,
+          "peakLagMs": 0.0,
+          "toleranceMs": 1
+        },
+        "firstPictureSourceMatchQA": {
+          "status": "PASS",
+          "method": "Prepared first picture vs source at approved in point, both decoded to320x180 RGB.",
+          "mse": 0.3080150462962963
+        },
+        "humanListening": "NOT PERFORMED"
+      },
+      {
+        "name": "natural0-combat",
+        "path": "/Users/fordeargamers/.codex/worktrees/marketing-gameplay-20261008/the-exoduser/marketing/captures/rebuild-20261008/prepared/natural0-combat.mp4",
+        "bytes": 4467658,
+        "sha256": "468453b6d4cca86d983869f25c84bc84fde1c28f4ede4836aa2f3837cfa13ada",
+        "sourceFullMp4": "demo_manual_1791458421435.mp4",
+        "sourceInSeconds": 5,
+        "sourceOutSeconds": 12.6,
+        "durationSeconds": 7.6,
+        "frames": 228,
+        "metadata": {
+          "containerDurationSeconds": 7.6,
+          "tracks": [
+            {
+              "handler": "vide",
+              "timescale": 15360,
+              "durationTicks": 116736,
+              "mediaDurationSeconds": 7.6,
+              "sampleCount": 228,
+              "sttsEntryCount": 1,
+              "sampleDeltaMin": 512,
+              "sampleDeltaMax": 512,
+              "constantVideoFrameRate": true,
+              "fps": 30.0
+            },
+            {
+              "handler": "soun",
+              "timescale": 48000,
+              "durationTicks": 364800,
+              "mediaDurationSeconds": 7.6,
+              "sampleCount": 358,
+              "sttsEntryCount": 2,
+              "sampleDeltaMin": 256,
+              "sampleDeltaMax": 1024,
+              "constantVideoFrameRate": false,
+              "fps": null
+            }
+          ]
+        },
+        "firstDecodedPts": {
+          "videoFirstDecodedPtsSeconds": 0.0,
+          "audioFirstDecodedPtsSeconds": 0.0
+        },
+        "decodeQA": "PASS complete video+audio -xerror exit0",
+        "waveformSyncQA": {
+          "status": "PASS",
+          "reference": "Same original full capture at selected in point; 48000Hz mono PCM for analysis only.",
+          "secondsCompared": 2.0,
+          "zeroLagCorrelation": 0.9994685327936164,
+          "peakLagSamples": 0,
+          "peakLagMs": 0.0,
+          "toleranceMs": 1
+        },
+        "firstPictureSourceMatchQA": {
+          "status": "PASS",
+          "method": "Prepared first picture vs source at approved in point, both decoded to320x180 RGB.",
+          "mse": 0.3360358796296296
+        },
+        "humanListening": "NOT PERFORMED"
+      },
+      {
+        "name": "natural1-move",
+        "path": "/Users/fordeargamers/.codex/worktrees/marketing-gameplay-20261008/the-exoduser/marketing/captures/rebuild-20261008/prepared/natural1-move.mp4",
+        "bytes": 1810495,
+        "sha256": "6c0e5ad6162e21748b89f1e77cc1b7f1433a2f7dfcc7ff4b29d618bea18da3bd",
+        "sourceFullMp4": "demo_manual_1791458139761.mp4",
+        "sourceInSeconds": 12.4,
+        "sourceOutSeconds": 14.4,
+        "durationSeconds": 2,
+        "frames": 60,
+        "metadata": {
+          "containerDurationSeconds": 2.0,
+          "tracks": [
+            {
+              "handler": "vide",
+              "timescale": 15360,
+              "durationTicks": 30720,
+              "mediaDurationSeconds": 2.0,
+              "sampleCount": 60,
+              "sttsEntryCount": 1,
+              "sampleDeltaMin": 512,
+              "sampleDeltaMax": 512,
+              "constantVideoFrameRate": true,
+              "fps": 30.0
+            },
+            {
+              "handler": "soun",
+              "timescale": 48000,
+              "durationTicks": 96000,
+              "mediaDurationSeconds": 2.0,
+              "sampleCount": 95,
+              "sttsEntryCount": 2,
+              "sampleDeltaMin": 768,
+              "sampleDeltaMax": 1024,
+              "constantVideoFrameRate": false,
+              "fps": null
+            }
+          ]
+        },
+        "firstDecodedPts": {
+          "videoFirstDecodedPtsSeconds": 0.0,
+          "audioFirstDecodedPtsSeconds": 0.0
+        },
+        "decodeQA": "PASS complete video+audio -xerror exit0",
+        "waveformSyncQA": {
+          "status": "PASS",
+          "reference": "Same original full capture at selected in point; 48000Hz mono PCM for analysis only.",
+          "secondsCompared": 2.0,
+          "zeroLagCorrelation": 0.9998976445898703,
+          "peakLagSamples": 0,
+          "peakLagMs": 0.0,
+          "toleranceMs": 1
+        },
+        "firstPictureSourceMatchQA": {
+          "status": "PASS",
+          "method": "Prepared first picture vs source at approved in point, both decoded to320x180 RGB.",
+          "mse": 0.5637905092592592
+        },
+        "humanListening": "NOT PERFORMED"
+      },
+      {
+        "name": "natural1-close",
+        "path": "/Users/fordeargamers/.codex/worktrees/marketing-gameplay-20261008/the-exoduser/marketing/captures/rebuild-20261008/prepared/natural1-close.mp4",
+        "bytes": 2607578,
+        "sha256": "aea8a88ae5b555d85b7c6d66bfaa06a81ae23f2467735b209369c820e440d591",
+        "sourceFullMp4": "demo_manual_1791458139761.mp4",
+        "sourceInSeconds": 14.4,
+        "sourceOutSeconds": 17.4,
+        "durationSeconds": 3,
+        "frames": 90,
+        "metadata": {
+          "containerDurationSeconds": 3.0,
+          "tracks": [
+            {
+              "handler": "vide",
+              "timescale": 15360,
+              "durationTicks": 46080,
+              "mediaDurationSeconds": 3.0,
+              "sampleCount": 90,
+              "sttsEntryCount": 1,
+              "sampleDeltaMin": 512,
+              "sampleDeltaMax": 512,
+              "constantVideoFrameRate": true,
+              "fps": 30.0
+            },
+            {
+              "handler": "soun",
+              "timescale": 48000,
+              "durationTicks": 144000,
+              "mediaDurationSeconds": 3.0,
+              "sampleCount": 142,
+              "sttsEntryCount": 2,
+              "sampleDeltaMin": 640,
+              "sampleDeltaMax": 1024,
+              "constantVideoFrameRate": false,
+              "fps": null
+            }
+          ]
+        },
+        "firstDecodedPts": {
+          "videoFirstDecodedPtsSeconds": 0.0,
+          "audioFirstDecodedPtsSeconds": 0.0
+        },
+        "decodeQA": "PASS complete video+audio -xerror exit0",
+        "waveformSyncQA": {
+          "status": "PASS",
+          "reference": "Same original full capture at selected in point; 48000Hz mono PCM for analysis only.",
+          "secondsCompared": 2.0,
+          "zeroLagCorrelation": 0.9999805162844825,
+          "peakLagSamples": 0,
+          "peakLagMs": 0.0,
+          "toleranceMs": 1
+        },
+        "firstPictureSourceMatchQA": {
+          "status": "PASS",
+          "method": "Prepared first picture vs source at approved in point, both decoded to320x180 RGB.",
+          "mse": 0.4989988425925926
+        },
+        "humanListening": "NOT PERFORMED"
+      }
+    ]
+  },
+  "gitCandidates": [
+    "/Users/fordeargamers/.codex/worktrees/marketing-gameplay-20261008/the-exoduser/marketing/captures/rebuild-20261008/demo_manual_1791458139761.mp4",
+    "/Users/fordeargamers/.codex/worktrees/marketing-gameplay-20261008/the-exoduser/marketing/captures/rebuild-20261008/demo_manual_1791458139761.audit.json",
+    "/Users/fordeargamers/.codex/worktrees/marketing-gameplay-20261008/the-exoduser/marketing/captures/rebuild-20261008/demo_manual_1791458421435.mp4",
+    "/Users/fordeargamers/.codex/worktrees/marketing-gameplay-20261008/the-exoduser/marketing/captures/rebuild-20261008/demo_manual_1791458421435.audit.json",
+    "/Users/fordeargamers/.codex/worktrees/marketing-gameplay-20261008/the-exoduser/marketing/captures/rebuild-20261008/demo_manual_1791458198011.audit.json",
+    "/Users/fordeargamers/.codex/worktrees/marketing-gameplay-20261008/the-exoduser/marketing/captures/rebuild-20261008/manual-retake-report.json",
+    "/Users/fordeargamers/.codex/worktrees/marketing-gameplay-20261008/the-exoduser/marketing/captures/rebuild-20261008/prepared/natural1-hook.mp4",
+    "/Users/fordeargamers/.codex/worktrees/marketing-gameplay-20261008/the-exoduser/marketing/captures/rebuild-20261008/prepared/natural0-combat.mp4",
+    "/Users/fordeargamers/.codex/worktrees/marketing-gameplay-20261008/the-exoduser/marketing/captures/rebuild-20261008/prepared/natural1-move.mp4",
+    "/Users/fordeargamers/.codex/worktrees/marketing-gameplay-20261008/the-exoduser/marketing/captures/rebuild-20261008/prepared/natural1-close.mp4"
+  ],
+  "qaOnlyDoNotStage": "Contact sheets and intermediate decode/transcode/audio logs are local review evidence. Excluded take2 full MP4 stays local. Parent stages selected full captures1/3, all three source audit JSON files, this report and four prepared MP4s only. Original WebM files remain durable at their existing output paths.",
+  "deliveryState": "FINAL - file writes complete; no stage/commit/push by worker."
+}

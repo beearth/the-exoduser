@@ -1,0 +1,202 @@
+{
+  "schemaVersion": 1,
+  "status": "DRAFT_SELECTED",
+  "publication": "DRAFT_ONLY",
+  "renderPerformed": false,
+  "fps": 30,
+  "width": 1920,
+  "height": 1080,
+  "targetSeconds": {
+    "minimum": 24,
+    "maximum": 40
+  },
+  "selectionContract": [
+    "This is a source/shot plan, not an approved final timeline or a render receipt.",
+    "Root selects exact from/dur values, verifies durable raw files and fills prepared paths.",
+    "from is the original selected interval for provenance; each prepared MP4 must contain exactly dur*30 decoded frames from PTS0.",
+    "Native cuts always use from=0 on separately prepared H.264/yuv420p CFR30 1920x1080 MP4s with one AAC stereo source-game audio track.",
+    "Reorder/remove/replace these proposed shots after actual viewing. Null trim values intentionally prevent build.",
+    "Set status=DRAFT_SELECTED only after actual file selection. Keep publication=DRAFT_ONLY.",
+    "The last shot is 2–4 seconds of actual gameplay with original audio; logo/Steam CTA overlays it without an added silent card.",
+    "No automatic render, generation, upload or publication. Root owns inspection/render and user review."
+  ],
+  "assets": {
+    "logo": {
+      "file": "logo.png",
+      "verifiedOriginal": true,
+      "repositoryCandidate": "img/brand/logo_transparent.png",
+      "instruction": "Root verifies the existing original game logo, copies that exact asset to inputDir and sets verifiedOriginal=true. No generated substitute."
+    }
+  },
+  "sources": {
+    "parry": {
+      "type": "staged",
+      "status": "DURABLE_FILE_VERIFIED",
+      "rawFile": "parry.original.webm",
+      "availablePreparedSeconds": 5,
+      "note": "Existing CH1 Lv500 staged skill demonstration; original interval 148/30–298/30s was used in the prior prepared file. New selection remains root-owned."
+    },
+    "rage_slam": {
+      "type": "staged",
+      "status": "DURABLE_FILE_VERIFIED",
+      "rawFile": "rage_slam.original.webm",
+      "availablePreparedSeconds": 7,
+      "note": "Existing CH1 Lv500 staged skill demonstration."
+    },
+    "fire": {
+      "type": "staged",
+      "status": "DURABLE_FILE_VERIFIED",
+      "rawFile": "fire.original.webm",
+      "availablePreparedSeconds": 8,
+      "note": "Existing CH1 Lv500 staged skill demonstration."
+    },
+    "ice_orb": {
+      "type": "staged",
+      "status": "DURABLE_FILE_VERIFIED",
+      "rawFile": "ice_orb.original.webm",
+      "availablePreparedSeconds": 7,
+      "note": "Existing CH1 Lv500 staged skill demonstration."
+    },
+    "blackhole": {
+      "type": "staged",
+      "status": "DURABLE_FILE_VERIFIED",
+      "rawFile": "blackhole.original.webm",
+      "availablePreparedSeconds": 7,
+      "note": "Existing CH1 Lv500 staged skill demonstration."
+    },
+    "natural1": {
+      "type": "natural",
+      "status": "DURABLE_FILE_VERIFIED",
+      "rawFile": "demo_manual_1791458139761.webm",
+      "preparedFullFile": "demo_manual_1791458139761.mp4",
+      "audit": "demo_manual_1791458139761.audit.json",
+      "character": 1,
+      "sourceGit": "ba660621e37cdc1635de8e8a370f1f48fd6f18ad; runtime hash in audit",
+      "gameSha256": "11fba62cc6df197055103b4a9e3b2edaa58645a7b1db82a24da9d3611d9f3773",
+      "rawFileLocation": "/Users/fordeargamers/the-exoduser/output/marketing_video_20261008/natural-retake/",
+      "note": "Manual real-input capture; no combat/enemy modifications; no HTML HUD; Steam build equivalence unverified."
+    },
+    "natural0": {
+      "type": "natural",
+      "status": "DURABLE_FILE_VERIFIED",
+      "rawFile": "demo_manual_1791458421435.webm",
+      "preparedFullFile": "demo_manual_1791458421435.mp4",
+      "audit": "demo_manual_1791458421435.audit.json",
+      "character": 0,
+      "sourceGit": "ba660621e37cdc1635de8e8a370f1f48fd6f18ad; runtime hash in audit",
+      "gameSha256": "11fba62cc6df197055103b4a9e3b2edaa58645a7b1db82a24da9d3611d9f3773",
+      "rawFileLocation": "/Users/fordeargamers/the-exoduser/output/marketing_video_20261008/natural-retake/",
+      "note": "Manual real-input capture; no combat/enemy modifications; no HTML HUD; Steam build equivalence unverified."
+    }
+  },
+  "shots": [
+    {
+      "id": "opening-natural",
+      "source": "natural1",
+      "type": "natural",
+      "from": 5,
+      "dur": 3.7,
+      "prepared": "natural1-hook.mp4",
+      "title": null,
+      "purpose": "Actual melee threat and kill impact immediately, no opening card."
+    },
+    {
+      "id": "core-natural",
+      "source": "natural0",
+      "type": "natural",
+      "from": 5,
+      "dur": 7.6,
+      "prepared": "natural0-combat.mp4",
+      "title": null,
+      "purpose": "Second character actual encounter and successive kills, retained real-time motion."
+    },
+    {
+      "id": "parry-counter",
+      "source": "parry",
+      "type": "staged",
+      "from": 4.933333333333334,
+      "dur": 3,
+      "prepared": "parry-counter.mp4",
+      "title": "parry",
+      "purpose": "Incoming projectile, verified successful Q counter."
+    },
+    {
+      "id": "rage-impact",
+      "source": "rage_slam",
+      "type": "staged",
+      "from": 2.966666666666667,
+      "dur": 3,
+      "prepared": "rage-impact.mp4",
+      "title": "skills",
+      "purpose": "Keep full actual slam activation and impact, source prepared clip2–5s."
+    },
+    {
+      "id": "combat-climax",
+      "source": "blackhole",
+      "type": "staged",
+      "from": 4,
+      "dur": 4,
+      "prepared": "blackhole-climax.mp4",
+      "title": null,
+      "purpose": "Original prepared blackhole clip3–7s retains explosion at5.8s."
+    },
+    {
+      "id": "exit-motion",
+      "source": "natural1",
+      "type": "natural",
+      "from": 12.4,
+      "dur": 2,
+      "prepared": "natural1-move.mp4",
+      "title": null,
+      "purpose": "Actual movement after encounter, contiguous source into closing."
+    },
+    {
+      "id": "closing-natural",
+      "source": "natural1",
+      "type": "natural",
+      "from": 14.4,
+      "dur": 3,
+      "prepared": "natural1-close.mp4",
+      "title": null,
+      "purpose": "Original logo and Steam CTA over continuous actual movement, no silent extra card."
+    }
+  ],
+  "cta": {
+    "shotId": "closing-natural",
+    "text": "PLAY THE FREE DEMO ON STEAM",
+    "overGameplay": true
+  },
+  "permittedPromotionalText": [
+    "PARRY & COUNTER",
+    "UNLEASH YOUR SKILLS",
+    "PLAY THE FREE DEMO ON STEAM"
+  ],
+  "stagedDisclosure": "Staged skill demo · Development build",
+  "buildEnvironment": {
+    "EXODUSER_REBUILD_INPUT_DIR": "REQUIRED: prepared MP4/logo input directory",
+    "EXODUSER_REBUILD_MANIFEST": "REQUIRED: absolute path of root-selected JSON manifest",
+    "EXODUSER_REBUILD_PROJECT_DIR": "REQUIRED: fresh native draft project directory",
+    "EXODUSER_FFPROBE": "OPTIONAL: ffprobe executable path, default ffprobe",
+    "EXODUSER_REBUILD_REPLACE_OWN_DRAFT": "OPTIONAL: 1 only for rebuilding this script's marked own draft"
+  },
+  "actualSelectedSeconds": 26.3,
+  "actualSelectedFrames": 789,
+  "soundtrack": {
+    "status": "SELECTED_EXISTING_GAME_MUSIC",
+    "method": "Post-native-render ffmpeg mix preserving original game audio; native editable timeline remains source-audio picture edit.",
+    "newGeneratedAudio": false,
+    "note": "Existing user-adopted game music; SSOT permits trailer reuse. Commercial plan receipts not independently verified. No new generated music.",
+    "source": "bgm/cutscene/prologue_theme.mp3",
+    "sourceSha256": "9ab69e88008f6ebc625c4c694d7d8aa066dd1c6f465185cfc9e5d10be49e9865",
+    "fromSeconds": 14,
+    "durationSeconds": 26.3,
+    "musicLinearGain": 0.18,
+    "sourceGameGain": 1,
+    "fadeInSeconds": 0.4,
+    "fadeOutSeconds": 2,
+    "limiter": {
+      "limit": 0.95,
+      "level": false
+    }
+  }
+}

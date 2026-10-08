@@ -3,8 +3,11 @@
     "filename": "EXODUSER_STEAM_37S_1080P30.mp4",
     "title": "EXODUSER: HELL LORD — Parry, Rage & Ice Orbs | Free Steam Demo",
     "url": "https://youtu.be/WTwXcdeTCFg",
-    "status": "PUBLISHED",
-    "proof": "youtube-master-published.jpg"
+    "status": "UNLISTED_QUALITY_REVISION",
+    "proof": "quality-revision/main-unlisted-playlist-removed.png",
+    "visibility": "UNLISTED",
+    "playlistIncluded": false,
+    "qualityApproval": "USER_REJECTED"
   },
   {
     "filename": "EXODUSER_SHORTS_A_16S_1080P30.mp4",
@@ -45,8 +48,11 @@
     "filename": "EXODUSER_NEMESIA_CINEMATIC_KR_EN_20261008.mp4",
     "title": "Nemesia’s Descent | EXODUSER: HELL LORD — Opening Cinematic",
     "url": "https://youtu.be/p-21GwkF65s",
-    "status": "PUBLISHED",
-    "proof": "youtube-4-published.jpg"
+    "status": "UNLISTED_QUALITY_REVISION",
+    "proof": "quality-revision/nemesia-old-unlisted.png",
+    "visibility": "UNLISTED",
+    "playlistIncluded": false,
+    "qualityApproval": "USER_REJECTED"
   },
   {
     "filename": "EXODUSER_RIFT_DEVLOG_V01_20261008.mp4",
@@ -54,5 +60,27 @@
     "url": "https://youtu.be/i7ouSzivg4U",
     "status": "PUBLISHED",
     "proof": "youtube-5-published.jpg"
+  },
+  {
+    "filename": "EXODUSER_NEMESIA_TEXT_ONLY_EN_20261008.mp4",
+    "title": "Nemesia’s Descent | EXODUSER: HELL LORD — Opening Cinematic",
+    "url": "https://youtu.be/0ERvrpHccZQ",
+    "status": "UNLISTED_REVIEW",
+    "visibility": "UNLISTED",
+    "playlistIncluded": false,
+    "qualityApproval": "PENDING_USER_REVIEW",
+    "captions": [
+      {
+        "language": "en",
+        "status": "PUBLISHED",
+        "cues": 27
+      },
+      {
+        "language": "ko",
+        "status": "FILE_READY_UPLOAD_PENDING",
+        "cues": 27
+      }
+    ],
+    "proof": "quality-revision/nemesia-revised-unlisted.png"
   }
 ]
