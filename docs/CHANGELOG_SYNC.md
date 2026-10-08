@@ -1,3 +1,14 @@
+## 2026-10-08 FDG YouTube 관리·개발기록 연계 운영
+
+| 항목 | 실제 실행 결과 |
+|---|---|
+| 채널 | @fordeargamers / UCOLkkQsaZ9ACuXdvPblhfiA 공식관리로그인확인. 기존public영상3보존 |
+| 프로필 | 한국indie·핵슬ARPG·탄막·투사체패링과개발기록/업데이트/캐릭터소개 KR/EN 저장. 첫Steam무료데모UTM링크추가, 공개About본문/redirectq/육안PASS |
+| 지속 운영 | fdg heartbeat ACTIVE 실제등록, 화·금11KST 실제개발변경한건점검. 변화없음조용/중복생산게시금지/필수조치1회안내. 예약을영상게시완료로계산하지않음 |
+| 다음 소재 | 별도migration개발본5ac24c04 지옥의틈 이동·4주민대화·본편복귀 프리뷰 확인. Steamdemo반영/유품지급/영속퀘스트미확인·미연결 유지. 신규캐릭터격리샌드박스를출시로홍보하지않음 |
+| 새 3영상 | 파일완성/검수완료 유지. FDG로그인·Mac잠금해제완료, 새제출은YouTube화면약관동의 작업시점승인대기. Steam모바일인증/교체·신규YouTube/Discord게시는미완료 |
+| docs | YOUTUBE_CHANNEL_OPERATIONS 신규와index/납품/편집/채널조건/게시문안 현행상태 동기화. 게임코드·소스에셋변경없음 |
+
 ## 2026-10-08 실제 인게임 홍보 영상 최종 납품·GitHub 동기화
 
 | 항목 | 최종 결과 |

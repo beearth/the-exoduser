@@ -1,3 +1,5 @@
+> 후속 운영: [FDG 채널 관리·실제 프로필 반영·개발기록 시리즈](YOUTUBE_CHANNEL_OPERATIONS_20261008.md). 공식 YouTube 로그인 및 프로필 Steam 링크 공개 확인 완료. 새 영상 3편은 업로드 약관 제출 승인 대기이며 미게시다.
+
 # EXODUSER: HELL LORD — 영상 채널별 영어 게시문안
 
 작성: **2026-10-08**. 상위 기준: [데모 공개·실행 기록](DEMO_MARKETING_LAUNCH_20261008.md), [추가 노출 채널 조건](EXPOSURE_CHANNELS_20261008.md), [영상 편집 준비안](VIDEO_EDIT_PLAN_20261008.md).
