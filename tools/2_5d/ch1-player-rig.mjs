@@ -4,7 +4,7 @@
  * Players and the normal Druid boss use their original directional artwork.
  */
 import * as THREE from '../../assets/vendor/three-r160/build/three.module.js';
-import {createCharacterRig} from './character-rigs.mjs?v=druid-volume-20261008-v4';
+import {createCharacterRig} from './character-rigs.mjs?v=druid-authored-pose-20261008-v6';
 import {CHARACTER_RIG_CATALOG,characterRigFrame} from './character-rig-catalog.mjs';
 
 export const CH1_PLAYER_RIG=Object.freeze({

@@ -229,6 +229,8 @@ export async function createCharacterRig(id,{THREE,height=2.2,borrowedAtlas,borr
     }
     function pose(mode,time,phase){
       bones.forEach((bone,i)=>{bone.position.copy(rest[i].position);bone.rotation.copy(rest[i].rotation);});
+      // Borrowed Druid frames already contain the authored pose; keep painted limbs and staff rigid.
+      if(sheet)return;
       const cycle=mode==='run'?11:mode==='walk'?7:mode==='attack'?6:2.4;
       const wave=Math.sin(time*cycle),counter=Math.cos(time*cycle),strength=C.poseStrength;
       byName.get('torso').rotation.z=wave*strength*(mode==='idle'?0.32:1);

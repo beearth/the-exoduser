@@ -1760,3 +1760,19 @@ VISUAL VERDICT: **RETOUCH**. 어깨 구형 윤곽을 제거했으나 얼굴/외�
 | 검증·제한 | 호출/기본 false/plane visible source 대조, adapter parse1 exit0. 기존 CPU/IK/GPU suite 재실행0. 사용자 기존 main 탭 재로드/조작0이므로 현재 화면 자동복구·새 본편 실전 PASS 주장0 |
 
 원본 `assets/sprites/boss/boss_dark_druid_f0.png`를 ROOT가 직접 판독했다. 크고 비대칭인 가지뿔, 길고 무거운 층상 외투, 가늘고 깊게 팬 얼굴, 정교한 지팡이/뼈 장식이 기존 임시 solid의 둥근 체형·단순 얼굴과 현저히 달랐다. 원본 합치와 본편 시각 검수 전에는 A급/2.5D 보스 완료로 보고하지 않는다. prototype preview는 사용자 거절 기록이며 인수 화면이 아니다. 최종보존: 외부 `E/ch1-druid-original-display-restore-20261008/completion.json`.
+
+## 2026-10-08 — 본편 드루이드의 원본 프레임 자세 보존
+
+`ROOT-CH1-DRUID-AUTHORED-POSE-PRESERVATION-20261008`. 앞선 원본 복구의 v5는 당시 epoch이다. 본편 borrowedSheet는 이미 그려진 자세를 프레임으로 소비하므로, 그 위에 좌표 구역 가중치의 범용 흔들림/공격 변형을 중복 적용하지 않는다.
+
+| 항목 | 현재 계약 |
+|---|---|
+| pose() | 12본의 rest 위치·회전을 복구한 직후 sheet 존재 시 return. 원본 프레임의 몸·장비에 범용 sine/attack 변형 추가0 |
+| 적용 범위 | readBorrowedSheet가 허용한 dark-druid 본편 borrowedSheet의 idle/walk/attack. 원본 셀·방향·crop/anchor/referenceHeight·프레임 타이밍은 그대로 |
+| 이후 처리 | return은 pose 함수만 종료. update의 skeleton/currentness/세대검증/posePublication 처리는 유지 |
+| 비대상 | sheet 없는 standalone Druid, warrior/silvertail 범용 pose와 optional volume.update는 기존 분기 유지. 거절 volume의 본편 재연결0 |
+| 실제 import | ch1-player-rig의 factory import와 game의 adapter import 두 곳 모두 druid-authored-pose-20261008-v6 |
+| 검수 | 첫 Node는 before fixture의 query를 파일명으로 인코딩한 준비 경로 오류로 제품 조건未도달. fixture URL만 보정한 최초 제품 suite: Node1/6그룹 PASS(5 dynamic·1 static), borrowed 자세72개에서 추가 정점 변형 최대2.7791596496545744e-8. before 추가변형0.009793138950770311은 별도 반례이며 PASS 합산0 |
+| 한계 | 통제 image getter와 실제 Three 수학 검수. PNG decode/GPU/본편 실제 화면·음향/save 검수0. 원본 프레임 자세 보존이며 입체 모델링·가독성 개선의 실화면 인수·A급 완료 아님 |
+
+새 code 범위는 factory 1hunk/adapter query1/game query2뿐이다. 원 PNG·시트·전투시간·AI·피해·save·사용자 열린 탭을 변경하지 않았다. source peer blocking0(정적). 전체 품질 RETOUCH / 본편 VISUAL NOT_ASSESSED. 검수 원문은 외부 `E/ch1-druid-authored-pose-preservation-20261008/`에 보존한다. 원본 합치와 실제 보스전 가독성을 충족해야 한다는 A급 이상 기준은 미달 상태로 유지한다.

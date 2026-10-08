@@ -5155,3 +5155,7 @@ alpha/nav/crop/UV/geometry/opacity/renderOrder/resource/dispose·skirt/backplane
 ### 2026-10-08 — 거절 모델 본편 제외 / 원본 유지
 
 사용자가 원본과 다른 solid 모델 자체를 거절했다. 위 입체 본체/외형 후속은 보존된 미채택 이력·품질 FAIL_USER_REJECTED이며 A급/완성 진척으로 세지 않는다. 실제 adapter의 bossVolume 인수를 제거해 기본 false/원본 borrowedSheet 표시로 복구, game 두 import는 druid-original-20261008-v5. 원 PNG·전투·save 불변, 기존 사용자 main 무조작·실화면 자동복구 주장0. MD의 A급 이상·기존 AAA 목표는 원본 합치와 본편 실검수로 판단한다. [현재 계약](../4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md).
+
+### 2026-10-08 — 본편 드루이드 원본 자세 보존
+
+원본 복구 v5 이후 현재 game adapter 두 import와 factory import는 `druid-authored-pose-20261008-v6`. borrowedSheet Druid의 pose()는 rest 복구 후 범용 흔들림·공격 변형을 생략한다. 그려진 셀/방향·프레임시간·전투/save는 보존. sheet 없는 기존 경로는 유지한다. 최초 준비 URL 오류(제품未도달)와 보정 뒤6그룹 CPU PASS는 별도 이력이며 본편 화면/GPU·입체 모델·A급 인수는 미완료다. [정본 계약](../4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md).
