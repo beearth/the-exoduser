@@ -1642,3 +1642,21 @@ OFF/불가mode/identity/준비 frame 부재의 검수에서는 core0이다. **co
 ## 2026-10-08 — 드루이드 본체 피격 플래시 연결
 
 `ROOT-CH1-DRUID-BODY-HIT-FEEDBACK-20261008`: normal rig의 현재 canvas 또는 native 폴백의 같은 crop에 기존 `min(1,_hitFlash/6)*.8*sa` alpha·`1+.05*min(1,_hitFlash/6)` 중심 pop을1장 적용한다. 상시3pass는 유지하고 special/hit/death는 제외한다. 현재 부모 변환 안에서 그리며 `_enemyHFFrames` 등록0·타이머/전투/save 변경0. [정확 계약](../5.1임펙트디자인/VFX_구현가이드.md#ch1-druid-body-hit-feedback-20261008). 최초 통제10그룹97확인/Node1 exit0·before 반례1 별도; 실제 화면/GPU/청취/save 미검수, RETOUCH/UI_NOT_ASSESSED. 외부 `ch1-druid-body-hit-feedback-20261008/completion.json`이 최종 보존 정본이다.
+
+## ROOT-CH1-WARRIOR-FINISHER-WINDUP-RIG-20261008 — 피니셔 준비 자세 표시
+<a id="ch1-warrior-finisher-windup-rig-20261008"></a>
+
+앞선 charge-finisher 완료 절의 “windup은 native”는 그 epoch의 이력이다. 이번에는 이미 소유된 전사 피니셔의 준비 본체도 기존 rig attack으로 표시한다. 일반 LMB의 별도3타 콤보·새 타격을 추가하지 않는다.
+
+| ID / 적용 위치 | 현재 계약 |
+|---|---|
+| admission | `_drawCh1PlayerRigBody`에서 class0 + `P.s==='wWindup'` + `P._sa.anim==='atk1'` + `_ch1RigCombatOwnerCurrent('finisher-windup')` 모두 필요. 기존 opt-in/생존/CH1 비보스 smoothing scope 유지 |
+| atlas / native frame | 기존 atlas identity와 `atk1_<direction>` identity, 방향별 dense own9셀/80×80, x=80*i/y=384+80*directionIndex 검증. WarriorBatSwing.apply가 atk1/atk2/atk3에 같은9셀 배열 배정 |
+| phase / 배치 | drawP가 이미 선택한 최종 `P._sa.f`를 `mode:'attack'`, `phase=(f+.5)/9`, heightWorld32, 내부 `(0,+18)`로 소비. 기존 windup0..2 포즈·speed.85/시간표·8방향·rig art를 재사용하며 새 시계 없음 |
+| owner / 제외 | 기존 finisher producer·windup→strike→recovery 승계 변경0. 일반 unowned/kiSlash windup·다른 actor/map/animator/class·실버테일 피니셔는 추가 채택0. 기존 실패 native 폴백 유지 |
+| 표시 계측 | windup도 bodyFrames에 포함, lastState=`warrior-finisher-windup-adopted`. attackFrames는 기존 strike만, recoveryFrames는 기존 recovery만. QA adoptedModes/attackStates 설명 확장; attackAccepted=false/fullPlayerLinked=false 유지 |
+| 불변 | 비용·피해·판정·입력·AI·회복시간·owner 생성/수명·스프라이트/PNG·scene/nav·save·RAF/timer·adapter 변경0 |
+| 신규 검수 | 첫 Node1/VM fixture32(원본 반례1+후보31)/suite1,7그룹108확인(106dynamic+소스flag/구문2), classic script4 parse, exit0/계측unhandled0. 원본의 current windup owner인데 rigfalse 반례1은 별도/PASS 합산0 |
+| 한계 / 시각 | 실제 whole owner/renderer/ghost와 WarriorBatSwing 모듈 + 통제 Canvas/adapter ports. 실제 drawP전체/Three 렌더·GPU·브라우저·음향·save 실행0. 현재 rig 내부 art와 원본의 시각 일치·가림/발·성능은 미인수. VISUAL VERDICT: RETOUCH / UI_NOT_ASSESSED / native NOT_RUN |
+
+기존 베기·회수·피니셔 suite 재실행0. 정적 delta peer blocking0. 기존 열린 게임 탭 무조작/새 전문 배정0. 소유 code+docs·원격 exact 최종은 외부 `ch1-warrior-finisher-windup-rig-20261008/completion.json`을 따른다.

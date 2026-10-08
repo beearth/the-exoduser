@@ -56717,3 +56717,7 @@ alpha/nav/crop/UV/geometry/opacity/renderOrder/resource/dispose·skirt/backplane
 ## 2026-10-08 — 드루이드 본체 피격 플래시 연결
 
 `ROOT-CH1-DRUID-BODY-HIT-FEEDBACK-20261008`: normal rig의 현재 canvas 또는 native 폴백의 같은 crop에 기존 `min(1,_hitFlash/6)*.8*sa` alpha·`1+.05*min(1,_hitFlash/6)` 중심 pop을1장 적용한다. 상시3pass는 유지하고 special/hit/death는 제외한다. 현재 부모 변환 안에서 그리며 `_enemyHFFrames` 등록0·타이머/전투/save 변경0. [정확 계약](5.1임펙트디자인/VFX_구현가이드.md#ch1-druid-body-hit-feedback-20261008). 최초 통제10그룹97확인/Node1 exit0·before 반례1 별도; 실제 화면/GPU/청취/save 미검수, RETOUCH/UI_NOT_ASSESSED. 외부 `ch1-druid-body-hit-feedback-20261008/completion.json`이 최종 보존 정본이다.
+
+## 2026-10-08 — 전사 돌진 피니셔 준비 자세의 2.5D 연결
+
+`ROOT-CH1-WARRIOR-FINISHER-WINDUP-RIG-20261008`: 기존 class0/finisher-windup 소유의 wWindup/atk1 최종 셀만 rig attack으로 표시한다. 앞선 준비 native 표기는 해당 epoch 이력이다. 기존9×80·phase(f+.5)/9·height32·위치(0,18)/speed.85를 재사용하며 새3타 콤보·공격 판정·비용·시간/save 변경0. [정확 계약](4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md#ch1-warrior-finisher-windup-rig-20261008). 첫 통제7그룹108확인/Node1 exit0·before 반례1 별도; 실제 화면/GPU/청취/save 미검수, RETOUCH/UI_NOT_ASSESSED. 최종 보존은 외부 `ch1-warrior-finisher-windup-rig-20261008/completion.json`.

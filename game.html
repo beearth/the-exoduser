@@ -11907,15 +11907,16 @@ function _drawCh1RigGroundContact(mode){
 function _drawCh1PlayerRigBody(direction,alpha){
   if(_charIdx===1)return _drawCh1SilvertailRigBody(direction,alpha);
   if(!_ch1RigRequested||!_ch1RigAlive||!_ch1PlayerRig||!_ch1RigScoped||P.hp<=0||!P._sa)return false;
-  // Normal LMB and the warrior charge finisher consume final native strike/recovery cells.
+  // Consume final native cells; only the owned warrior finisher may include its windup.
+  const windup=_charIdx===0&&P.s==='wWindup'&&P._sa.anim==='atk1'&&_ch1RigCombatOwnerCurrent('finisher-windup');
   const strike=P.s==='wSwing'&&P._sa.anim==='atk2'&&_ch1RigCombatOwnerCurrent('strike');
-  const recovery=P.s==='wRecover'&&P._sa.anim==='atk3'&&_ch1RigCombatOwnerCurrent('recovery'),attack=strike||recovery;
+  const recovery=P.s==='wRecover'&&P._sa.anim==='atk3'&&_ch1RigCombatOwnerCurrent('recovery'),attack=windup||strike||recovery;
   if(P.s!=='idle'&&!attack)return false;
   const mode=attack?'attack':P._sa.anim,native=SpriteAnimator._fr(P._sa,direction),index=_ch1RigDirections.indexOf(direction),count=attack?9:(mode==='idle'?2:(mode==='run'||mode==='walk'?8:0));
   if(!count||index<0||!native||native.length!==count||!Number.isInteger(P._sa.f)||P._sa.f<0||P._sa.f>=count){_ch1RigStats.lastState='legacy-state';return false;}
   // The 48px/8-frame fallback atlas is incompatible with the borrowed 80px bat artwork.
   if(attack){
-    if(!_atlasPReady||P._sa.img!==_atlasP_img||P._sa.fm!==_atlasP_frames||native!==P._sa.fm[(recovery?'atk3_':'atk2_')+direction]||_atlasP_img.width<720||_atlasP_img.height<1024){_ch1RigStats.lastState='legacy-strike-atlas';return false;}
+    if(!_atlasPReady||P._sa.img!==_atlasP_img||P._sa.fm!==_atlasP_frames||native!==P._sa.fm[(windup?'atk1_':recovery?'atk3_':'atk2_')+direction]||_atlasP_img.width<720||_atlasP_img.height<1024){_ch1RigStats.lastState='legacy-strike-atlas';return false;}
     for(let i=0;i<9;i++){
       const cell=native[i];
       if(!Object.hasOwn(native,i)||!cell||cell.x!==80*i||cell.y!==384+80*index||cell.w!==80||cell.h!==80){_ch1RigStats.lastState='legacy-strike-atlas';return false;}
@@ -11932,7 +11933,7 @@ function _drawCh1PlayerRigBody(direction,alpha){
     X.drawImage(frame.canvas,frame.left,frame.top,frame.width,frame.height);
     const state=_ch1PlayerRig.snapshot();
     _ch1RigBodyFrame={frame,matrix,now:_now,map:G.map,actor:P,animator:P._sa,classId:_charIdx,generation:state.generation,publication:state.lastFrame,canvasVersion:frame.canvas._glVer};
-    _ch1RigStats.bodyFrames++;if(strike)_ch1RigStats.attackFrames++;if(recovery)_ch1RigStats.recoveryFrames++;_ch1RigStats.lastState=recovery?'warrior-recovery-adopted':strike?'warrior-strike-adopted':'warrior-body-adopted';return true;
+    _ch1RigStats.bodyFrames++;if(strike)_ch1RigStats.attackFrames++;if(recovery)_ch1RigStats.recoveryFrames++;_ch1RigStats.lastState=windup?'warrior-finisher-windup-adopted':recovery?'warrior-recovery-adopted':strike?'warrior-strike-adopted':'warrior-body-adopted';return true;
   }catch(_){_ch1RigBodyFrame=null;_ch1RigStats.lastState='legacy-parent-blit-failed';return false;}
   finally{X.restore();}
 }
@@ -11945,7 +11946,7 @@ function _drawCh1PlayerRigGhost(alpha){
   if(owned.now!==_now||owned.map!==G.map||owned.actor!==P||owned.animator!==P._sa||owned.classId!==_charIdx||!state.ready||owned.generation!==state.generation||owned.publication!==state.lastFrame||owned.canvasVersion!==owned.frame.canvas._glVer)return false;
   X.save();try{X.globalAlpha=alpha;X.setTransform(...owned.matrix);const frame=owned.frame;X.drawImage(frame.canvas,frame.left,frame.top,frame.width,frame.height);_ch1RigStats.ghostFrames++;return true;}catch(_){return false;}finally{X.restore();}
 }
-globalThis.__ch1PlayerRigQA=()=>Object.freeze({requested:_ch1RigRequested,alive:_ch1RigAlive,importFailed:_ch1RigImportFailed,scope:_ch1RigScoped,..._ch1RigStats,adapter:_ch1PlayerRig?_ch1PlayerRig.snapshot():null,bodyCurrent:!!_ch1RigBodyFrame&&_ch1RigBodyFrame.now===_now,contactShadow:Object.freeze({requested:_ch1RigContactRequested,draws:_ch1RigContactDraws,accepted:false}),adoptedClass:'warrior/silvertail',adoptedModes:'warrior idle/walk/run/normal-LMB+charge-finisher strike+recovery; silvertail packed idle/walk/run/normal-LMB strike+recovery',silvertailAccepted:true,silvertailAttackStrikeAccepted:true,silvertailAttackRecoveryAccepted:true,silvertailAttackAccepted:false,attackStrikeAccepted:true,attackRecoveryAccepted:true,attackStates:'normal LMB or warrior charge-finisher wSwing/atk2 -> inherited wRecover/atk3',attackAccepted:false,fullPlayerLinked:false});
+globalThis.__ch1PlayerRigQA=()=>Object.freeze({requested:_ch1RigRequested,alive:_ch1RigAlive,importFailed:_ch1RigImportFailed,scope:_ch1RigScoped,..._ch1RigStats,adapter:_ch1PlayerRig?_ch1PlayerRig.snapshot():null,bodyCurrent:!!_ch1RigBodyFrame&&_ch1RigBodyFrame.now===_now,contactShadow:Object.freeze({requested:_ch1RigContactRequested,draws:_ch1RigContactDraws,accepted:false}),adoptedClass:'warrior/silvertail',adoptedModes:'warrior idle/walk/run/normal-LMB strike+recovery/charge-finisher windup+strike+recovery; silvertail packed idle/walk/run/normal-LMB strike+recovery',silvertailAccepted:true,silvertailAttackStrikeAccepted:true,silvertailAttackRecoveryAccepted:true,silvertailAttackAccepted:false,attackStrikeAccepted:true,attackRecoveryAccepted:true,attackStates:'normal LMB wSwing/atk2 -> inherited wRecover/atk3; owned warrior charge-finisher wWindup/atk1 -> wSwing/atk2 -> wRecover/atk3',attackAccepted:false,fullPlayerLinked:false});
 // ROOT-CH1-DRUID-NORMAL-MAIN-20261007: borrowed final normal sheet; gameplay authority stays in G/e.
 let _ch1DruidRig=null,_ch1DruidAlive=true,_ch1DruidScene=null,_ch1DruidClock=null,_ch1DruidDelta=0;
 const _ch1DruidActors=new Map(),_ch1DruidDecoded=new WeakMap(),_ch1DruidLeases=new Set();

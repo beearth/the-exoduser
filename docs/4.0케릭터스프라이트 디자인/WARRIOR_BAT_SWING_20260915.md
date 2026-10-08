@@ -101,3 +101,7 @@ root가 자연 종료 후 idle/strike PNG2를 직접 판독했다. 전사의 몸
 WarriorBatSwing의 기존 최종 f와 atk2/atk3 셀을 전사 돌진 뒤 피니셔에도 재사용한다. 프레임 선택·속도·windup/recovery 공식은 변경하지 않았다.
 
 현재 정확 계약·검증 한계는 [DIRECTIONAL_CHARACTER_RIGS_20261006.md](DIRECTIONAL_CHARACTER_RIGS_20261006.md)의 동일 단위 절을 따른다. 이전20261007 정상 LMB 검수/수치는 그 epoch 이력으로 보존한다.
+
+## 2026-10-08 — 전사 돌진 피니셔 준비 자세의 2.5D 연결
+
+`ROOT-CH1-WARRIOR-FINISHER-WINDUP-RIG-20261008`: 기존 class0/finisher-windup 소유의 wWindup/atk1 최종 셀만 rig attack으로 표시한다. 앞선 준비 native 표기는 해당 epoch 이력이다. 기존9×80·phase(f+.5)/9·height32·위치(0,18)/speed.85를 재사용하며 새3타 콤보·공격 판정·비용·시간/save 변경0. [정확 계약](DIRECTIONAL_CHARACTER_RIGS_20261006.md#ch1-warrior-finisher-windup-rig-20261008). 첫 통제7그룹108확인/Node1 exit0·before 반례1 별도; 실제 화면/GPU/청취/save 미검수, RETOUCH/UI_NOT_ASSESSED. 최종 보존은 외부 `ch1-warrior-finisher-windup-rig-20261008/completion.json`.
