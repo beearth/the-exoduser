@@ -29,6 +29,10 @@ export default async ({project}) => {
   const krFont=await p.add(`${INPUT}/NotoSansKR.ttf`);
   const krType={fontAssetId:krFont.id,axes:{wght:650},script:"hang",language:"ko",direction:"ltr"};
   const logo=await p.add(`${INPUT}/logo.png`);
+  // Editorial score from an existing project asset; source recordings are silent.
+  // The prepared audio has a measured fade and is placed once on the audio spine.
+  const music=await p.add(`${INPUT}/bgm-${target}.m4a`);
+  p.cut(music,{from:0,dur:plan.duration,at:0});
   const source={};
   for(const shot of plan.shots){
     const entry=prepared[shot.src];
@@ -56,7 +60,7 @@ export default async ({project}) => {
     }else{
       p.compose(
         <frame width={1080} height={1920} layout="none" background={BG}>
-          <text x={72} y={142} width={936} height={60} fontFamily="DM Sans" fontWeight={700} fontSize={27} color={GOLD}>{s.tag}</text>
+          <text x={72} y={142} width={936} height={60} typography={krType} fontSize={27} color={GOLD}>{s.tag}</text>
           <text x={72} y={238} width={936} height={250} typography={krType} fontSize={72} lineHeight={1.25} color={FG}>{s.kr}</text>
           <frame x={0} y={530} width={1080} height={950} layout="column" clip={true}>
             <media file={handle} trimStart={0} fit="contain" width="fill" height="fill"/>
