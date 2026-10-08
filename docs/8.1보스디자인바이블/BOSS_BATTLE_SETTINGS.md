@@ -1051,3 +1051,14 @@ X.translate(Math.round(C.width/2 - G.cam.x + sx), Math.round(C.height/2 - G.cam.
 | NEXT_PASS | - | Accept actual wall-adjacent summon and normal CH1 boss/death/revive/retry on an admitted runtime; no reuse of old suites or forced route. Current null search may retain blocked position. |
 
 **VISUAL VERDICT: RETOUCH** — 새 native 화면/UI는 NOT_ASSESSED. CPU PASS가 시각 PASS를 대신하지 않는다. 최종 소유 commit/push SHA는 외부 completion의 같은 MAP PRODUCTION REPORT에 확정한다.
+
+
+### 2026-10-08 — CH1 NORMAL rig의 HP·레벨 배치
+
+| id / 소비 위치 | 현재 계약 |
+|---|---|
+| `_nameTopOff` / NORMAL Druid 성공한 rig3pass | 실제 main 부모 scale/Y offset과 내부 inverse scale·anchorLocalY·frame.top을 합성하여 padded rig 상단에서10 world 단위 위에 배치. 마지막 current 검사 뒤에만 기록 |
+| 폴백/내용 | 특수/로딩/실패·부모 인자 없는 preview는 기존 앵커. HP바·레벨 내용/HP·AI·모션 타이밍/전투/save 변경 없음 |
+| 검수 | 첫 후보69확인은 부모 없는 fixture였고 정적 blocker1로 보정. 새 부모 포함 통제10그룹78확인 PASS/Node1(총Node2), 최종 source blocker0. 실제 화면/GPU/청취/save 미검수, RETOUCH/UI_NOT_ASSESSED |
+
+정확 수식·caller·예외는 [방향별 리깅 정본](../4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md#ch1-druid-rig-name-anchor-20261008)을 따른다.

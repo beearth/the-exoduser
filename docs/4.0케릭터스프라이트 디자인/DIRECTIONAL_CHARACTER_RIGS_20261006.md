@@ -1409,7 +1409,7 @@ factory의 기존 기본 height=2.2는 보존되며 main adapter가 height1 rig�
 | 배치·자원 | 실제 계약 |
 |---|---|
 | 기존 크기 | dw=e.r×9.3,dh=e.r×14.1. 기존 `translate(e.x,e.y+tdY-6+breath)`와 inverse `_btScaleMul` 안에서 표시; 부모 중복 적용0 |
-| 로컬 변환 | heightWorld=dh×referenceHeight/ch; scaleX=dw×ch/(dh×cw); anchorLocalX=−dw/2+anchorX×dw/cw; anchorLocalY=−.86×dh+anchorY×dh/ch |
+| 로컬 변환 | heightWorld=dh×referenceHeight/ch; scaleX=dw×ch/(dh×cw); anchorLocalX=−dw/2+anchorX×dw/cw; anchorLocalY=−.86×dh+anchorY×dh/ch  HP/레벨의 후속 월드 앵커는 [현재 rig 상단 계약](#ch1-druid-rig-name-anchor-20261008)을 따름 |
 | 합성 | 같은 rendered canvas/rect를 source-over sa 및 lighter sa×.42 두 번으로 총3pass 재사용. 기존 finale tell/glow/name/leg fog, 원 PNG와 native special/death fallback 유지 |
 | renderer 한계 | local Three r160, padding2, backingScale≤4, backingDimension≤2048,dt≤.05; 반환 canvas,left,top,width,height. image 소유/추가 Image/fetch/clone/resize/clear/close0 |
 | factory 자원 | 소유 Texture·Geometry·Material·Skeleton만 release. 기존609정점/12본/alphaTest.08/UV inset.5/약변형 구조 유지. 591은 alpha 기준 캘리브레이션이며 해부학 발/실높이·full3D proof 아님 |
@@ -1594,3 +1594,27 @@ OFF/불가mode/identity/준비 frame 부재의 검수에서는 core0이다. **co
 `ROOT-HELLGUNNER-LEAP-VISUAL-HEIGHT-20261008`: 기존 본편 시험 SPACE의 12f remaining으로 본체 높이 `-4*32*u*(1-u)`를 표시한다(u=1−remaining/12). 시작/종료0·중간−32 world Y. atlas/rig/outline/bright 부모·PNG fallback·depth snapshot에 동일 적용하고 지상 그림자·좌표·충돌·비용·피해는 유지한다. owner/admission/invalid remaining에서는 높이0. 새 프레임 시계·clip·asset·save 필드0. 최초 신규 통제11그룹93확인/Node1 exit0·source peer blocker0; 실제 화면/GPU/청취/save는 미검수, RETOUCH/UI_NOT_ASSESSED. 기존 탭 재로드0/새 전문 배정0. 최종 원격 보존은 외부 `hellgunner-leap-visual-height-20261008/completion.json`.
 
 [본편 표시 계약](../2_1%20스킬관리+합체시스템+자원/신규캐릭_스킬프로젝트_20260930.md#hellgunner-leap-visual-height-20261008).
+
+
+<a id="ch1-druid-rig-name-anchor-20261008"></a>
+## 2026-10-08 — NORMAL 드루이드 rig 상단의 HP·레벨 앵커
+
+`ROOT-CH1-DRUID-RIG-NAME-ANCHOR-20261008`. CH1 opt-in NORMAL 보스의 성공한 borrowed-sheet rig 렌더 결과로 기존 `_nameTopOff`를 갱신한다. 표시 상단은 패딩을 포함한 변형 geometry bounds이며 해부학적 머리 픽셀의 인수는 아니다. 모션 프레임 시계/보스 HP·AI·전투·맵·save는 변경하지 않았다.
+
+| id / 적용 위치 | 현재 계약 |
+|---|---|
+| 기존 scope | `_ch1DruidScope()`의 stage0/production_finish smoothing·ch1Three/ch1Rig 요청·살아있는 단일 NORMAL 보스 조건 유지. idle/walk/attack만, 특수/사망 범위 확대 없음 |
+| 부모 capture | 실제 main 보스 draw에서 캡처한 `_bScMul=window._btScaleMul||1`, `_bYOff=window._btOffsetY||0`를 기존 `_drawCodexBoss`→`_drawDruidBoss`→`_drawCh1DruidRigBody`의 추가 내부 인자로 전달 |
+| 내부 capture | `nameBaseY=(tdY||0)-6+_breath`, `inverseScale=_un=1/(window._btScaleMul||1)`. 실제 내부 translate/scale에 사용한 값을 전달. 외부 callback 중 window 값이 바뀌어도 전달한 변환과 혼동하지 않음 |
+| 실제 rig top | 기존 `anchorLocalY=−.86*dh+anchorY*dh/ch`와 `frame.top` 소비. adapter top은 `−max.y*heightWorld−paddingLocal`. 새 머리 좌표/asset crop 보정 없음 |
+| 월드 앵커 | `nameTopOff=parentYOffset+parentScale*(nameBaseY+(anchorLocalY+frame.top)*inverseScale)-10`. 실제 main 부모·내부 transform을 모두 포함; 보스 world Y+nameTopOff는 padded rig 상단에서10 world 단위 위 |
+| 인자 가드 | nameBaseY/inverseScale/parentScale/parentYOffset finite, 두 scale>0 필수. scaleX/anchorLocalX/anchorLocalY/nameTopOff 계산 합도 finite 및 scaleX>0 필수. 불허 시 rig false→기존 legacy fallback |
+| commit 경계 | 기존3pass blit 완료 뒤 `_ch1DruidCurrent(owner,sourceFrame)`가 여전히 true일 때만 e._nameTopOff 갱신. owner가 partial/마지막 pass에서 이탈하면 이미 그린 픽셀은 유지하고 새 앵커를 기록하지 않음 |
+| 기존 소비자 | HP/쉴드·그로기·프리즌 바는 e.y+_nameTopOff, 보스 레벨은 e.y+_nameTopOff−14, 속성 문양은 +4를 기존 방식 그대로 소비. 바 폭/색/내용/HP 조건은 변경 없음 |
+| 폴백·preview | rig 로딩/해독/준비/범위/특수/실패는 기존 앵커. 캡처된 부모 인자가 없는 직접 preview 호출은 rig false로 legacy 유지. 새로운 공개 adapter API/상태/DOM/RAF/timer/에셋 없음 |
+| 첫 후보 이력 | 첫 후보의 통제9그룹69확인 PASS/Node1은 부모 변환이 빠진 fixture 범위였다. 별도 정적 peer가 실제 바깥 scale/Y offset 누락 blocking1을 발견했으며 그 후보를 제품 인수로 사용하지 않음 |
+| 보정 검수 | capture 전달/수식 보정 후 실제 main 부모 transform slice + whole Codex/Druid/rig caller chain·통제 Canvas Y affine/adapter ports로 새10그룹78확인 PASS/Node1 exit0·VM fixture29. 현재 classic JS4개 구문 포함. 물리 Node총2; 이전69/옛 suite 합산·재실행 없음 |
+| 예외·한계 | inner rig finally restore 유지. 기존 Canvas 예외 때 바깥 main/Druid save 두 개가 복원되지 않는 경계는 그대로 관측/미해결. native GL/GPU·실제 픽셀·전체 draw/보스 route·화면 가림/가독성·장치·성능·청취/보상save 미검수 |
+| 정적/시각 | 최종8hunk source peer: 기존 blocker1 closed, 새 명백한 blocking0. VISUAL VERDICT: RETOUCH / UI_NOT_ASSESSED / native NOT_RUN. 기존 열린 탭 재로드·조작/새 전문 배정0 |
+
+외부 근거: `ch1-druid-rig-name-anchor-20261008/{implementation.json,parent-transform-correction.json,cpu-first-result.json,cpu-corrected-result.json,source-peer.json,completion.json}`. 기존 NORMAL·시체·캐릭터 suite를 반복하거나 이번 표시를 전체 보스 2.5D 완성으로 계산하지 않는다.

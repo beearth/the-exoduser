@@ -10913,7 +10913,7 @@ function _stage1CodexBossMotionKey(e){
   if(s==='eWalk'||s==='eChase'||s==='eApproach'||s==='bossRec')return 'walk';
   return 'idle';
 }
-function _drawCodexBoss(X,e,sa,tdY,si){
+function _drawCodexBoss(X,e,sa,tdY,si,parentScale,parentYOffset){
   if(si==null)si=G.stage;
   const spec=_CODEX_BOSS[si];
   if(!spec||!_codexBossReady[si]||!_codexBossImg[si])return false;
@@ -10922,7 +10922,7 @@ function _drawCodexBoss(X,e,sa,tdY,si){
   const dw=e.r*spec.dw*(m.sx+pulse),dh=e.r*spec.dh*(m.sy-pulse*.5);
   const glowA=sa*(m.glow+Math.max(0,Math.sin(t*.16))*.12);
   if(spec.use2D){
-    if(spec.anim&&_drawDruidBoss(X,e,sa,tdY,spec))return true; // 8방향 프레임 애니 (walk/attack/idle)
+    if(spec.anim&&_drawDruidBoss(X,e,sa,tdY,spec,parentScale,parentYOffset))return true; // 8방향 프레임 애니 (walk/attack/idle)
     // [2D-BOSS] 플레인 스프라이트 드로우 — 타원클립·그린 fillRect 없음(잘림/녹색박스 방지). 커스텀 투명PNG용
     // 테스트베드 ×N 배율(3D모델용)은 2D 스프라이트엔 과대 → 역보정해 실제 크기 고정
     X.save();X.translate(e.x+shake,e.y+(tdY||0)+m.y);const _un2d=1/(window._btScaleMul||1);X.scale(_un2d,_un2d);if(Math.abs(e.facing)>Math.PI/2)X.scale(-1,1);X.rotate(m.rot);
@@ -10970,7 +10970,7 @@ function _druidDir(e){
   let d=Math.round(ang/(Math.PI/4));d=((d%8)+8)%8;
   return _DRUID_DIRMAP[d];
 }
-function _drawDruidBoss(X,e,sa,tdY,spec){
+function _drawDruidBoss(X,e,sa,tdY,spec,parentScale,parentYOffset){
   const _ch1NormalIntent=_ch1DruidIntent(e)==='normal'; // Intent approval precedes image readiness and legacy selector fallback.
   _drawDruidFinaleTell(X,e);
   const key=_stage1CodexBossMotionKey(e);
@@ -11032,7 +11032,7 @@ function _drawDruidBoss(X,e,sa,tdY,spec){
   X.save();X.translate(e.x,e.y+(tdY||0)-6+_breath);const _un=1/(window._btScaleMul||1);X.scale(_un,_un);e._nameTopOff=(tdY||0)-6+_breath-dh*.86*_un-10; // 네임플레이트/HP바를 스프라이트 상단 위로(2026-08 유저요청: 다리 겹침 해소)
   if(window._BOSS_GLOW){X.globalAlpha=sa*.30;X.fillStyle=spec.glow;X.beginPath();X.ellipse(0,-dh*.40,dw*.24,dh*.22,0,0,Math.PI*2);X.fill();} // 글로우 게이트(2026-08-25 유저요청: 원형 잔상 제거, _BOSS_GLOW=true 시만 그림). 삭제X 게이트만
   const _ch1Selection=_ch1NormalIntent&&['base8','walk','attack'].includes(sheet)?Object.freeze({sheet,index:sheet==='base8'?0:frame,nativeDir:dir,sourceCol:_fc,sourceRow:_fr,columns:cols,rows,x:sx,y:sy,w:cw,h:ch}):null;
-  if(!_drawCh1DruidRigBody(X,e,_ch1Selection,sa,dw,dh)){
+  if(!_drawCh1DruidRigBody(X,e,_ch1Selection,sa,dw,dh,(tdY||0)-6+_breath,_un,parentScale,parentYOffset)){
   X.globalAlpha=sa;X.drawImage(img,sx,sy,cw,ch,-dw/2,-dh*.86,dw,dh);
   X.globalCompositeOperation='lighter';X.globalAlpha=sa*.42;X.drawImage(img,sx,sy,cw,ch,-dw/2,-dh*.86,dw,dh); // 셀프 라이튼 ×2(어두운 아레나서 존재감)
   X.globalAlpha=sa*.42;X.drawImage(img,sx,sy,cw,ch,-dw/2,-dh*.86,dw,dh);
@@ -12047,8 +12047,8 @@ function _ch1DruidCurrent(owner,selection){
   const b=owner.borrowed,f=_ch1DruidImage(b?.image),lease=b&&_ch1DruidDecoded.get(b.image);
   return expected===selection.sheet&&!!lease&&lease.borrowed===b&&_ch1DruidLeaseCurrent(lease)&&!!b&&owner.sheetRecord.img===b.image&&owner.imageGeneration===b.generation&&selection.generation===b.generation&&!!f&&f.naturalWidth===b.width&&f.naturalHeight===b.height&&f.src===b.srcSnapshot&&f.currentSrc===b.currentSrcSnapshot&&f.srcset===b.srcsetSnapshot&&f.sizes===b.sizesSnapshot;
 }
-function _drawCh1DruidRigBody(ctx,e,selection,sa,dw,dh){
-  if(!selection||!_ch1DruidRig||!_ch1DruidScope())return false;
+function _drawCh1DruidRigBody(ctx,e,selection,sa,dw,dh,nameBaseY,inverseScale,parentScale,parentYOffset){
+  if(!selection||!_ch1DruidRig||!_ch1DruidScope()||![nameBaseY,inverseScale,parentScale,parentYOffset].every(Number.isFinite)||inverseScale<=0||parentScale<=0)return false;
   const owner=_ch1DruidObserve(e);if(!owner||owner.intent!=='normal')return false;
   const S=_druidSheets[selection.sheet],borrowed=_ch1DruidDecodedSheet(S,owner);if(!borrowed){_ch1DruidStats.legacyFrames++;return false;}
   const mode=selection.sheet==='base8'?'idle':selection.sheet,count=mode==='idle'?1:4,index=mode==='idle'?0:selection.index;
@@ -12061,7 +12061,8 @@ function _drawCh1DruidRigBody(ctx,e,selection,sa,dw,dh){
   const state=_ch1DruidRig.snapshot(),published=state.lastFrame;
   if(!state.ready||state.id!=='dark-druid'||state.sourceKind!=='borrowed-main-sheet'||!published||published.mode!==mode||published.direction!==sourceFrame.direction||published.frame!==index||published.phase!==phase||!_ch1DruidCurrent(owner,sourceFrame))return false;
   const scaleX=dw*selection.h/(dh*selection.w),anchorLocalX=-dw/2+anchorX*dw/selection.w,anchorLocalY=-.86*dh+anchorY*dh/selection.h;
-  if(!Number.isFinite(scaleX+anchorLocalX+anchorLocalY)||scaleX<=0)return false;
+  const nameTopOff=parentYOffset+parentScale*(nameBaseY+(anchorLocalY+frame.top)*inverseScale)-10;
+  if(!Number.isFinite(scaleX+anchorLocalX+anchorLocalY+nameTopOff)||scaleX<=0)return false;
   let blitted=false;
   ctx.save();
   try{
@@ -12072,6 +12073,7 @@ function _drawCh1DruidRigBody(ctx,e,selection,sa,dw,dh){
       if(!_ch1DruidCurrent(owner,sourceFrame))return blitted;
       ctx.drawImage(frame.canvas,frame.left,frame.top,frame.width,frame.height);blitted=true;
     }
+    if(_ch1DruidCurrent(owner,sourceFrame))e._nameTopOff=nameTopOff;
     _ch1DruidStats.bodyFrames++;_ch1DruidStats.lastState=mode;return true;
   }finally{ctx.restore();}
 }
@@ -53184,7 +53186,7 @@ function draw(){
       const _bYOff=window._btOffsetY||0;
       if(_bScMul!==1||_bYOff!==0){X.save();X.translate(e.x,e.y+_bYOff);X.scale(_bScMul,_bScMul);X.translate(-e.x,-e.y)}
       if(!e._bDrawLog){e._bDrawLog=true;console.log('[BOSS_DRAW] extB:',_atlasExtBReady,'walkA:',_bossWalkAtlas.ready,'intB:',_atlasBReady,'stage:',G.stage,'scale:',_bScMul)}
-      if(!_bDrew&&_CODEX_BOSS[G.stage]){_bDrew=_drawCodexBoss(X,e,sa,_tdY,G.stage)}
+      if(!_bDrew&&_CODEX_BOSS[G.stage]){_bDrew=_drawCodexBoss(X,e,sa,_tdY,G.stage,_bScMul,_bYOff)}
       // ── 외부 보스 아틀라스 렌더링 (atlas_bosses.png, 최우선) ──
       if(!_bDrew&&_atlasExtBReady){
         const bKey='boss_'+G.stage;

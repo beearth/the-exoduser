@@ -1,3 +1,9 @@
+## 2026-10-08 — 1-1 보스 rig의 HP·레벨 앵커
+
+정상 드루이드의 성공한2.5D rig 상단 bounds를 기존 HP바·레벨 표시 위치에 연결했다. 실제 부모 scale/Y offset·내부 inverse scale을 합성하여 padded 상단보다10 world 단위 위에 둔다. 범위/실패/특수는 기존 배치, HP·AI·전투/save 변경0. 첫 후보 통제69확인의 부모 fixture 누락은 별도 source blocker1로 발견·보정했고, 새 부모 포함 통제10그룹78확인/Node1(총Node2) PASS·최종 source blocker0. 실제 화면/GPU/청취/save 미검수, RETOUCH/UI_NOT_ASSESSED. 기존 탭 재로드0/새 전문 배정0.
+
+[정확 계약](../4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md#ch1-druid-rig-name-anchor-20261008). 최종 소유 보존은 외부 `ch1-druid-rig-name-anchor-20261008/completion.json`.
+
 ## 2026-10-08 — 헬거너 혈탄 충전량 표시
 
 기존 본편 시험 RMB 홀드의 time/단계를 캐릭터 발밑 타원과3점으로 연결했다. 24/52/84f→1/2/3단계, 진행률 time/84. 지상 그림자 뒤에 표시하며 도약 높이를 더하지 않고 비용·발사·피해·입력/save는 유지한다. owner/admission 이탈은 무표시이며 충전량을 발사 가능 보장으로 쓰지 않는다. 최초 통제9그룹172확인/Node1 exit0·두 hunk 정적 peer blocking0. 실제 화면/GPU/청취/save 미검수, RETOUCH/UI_NOT_ASSESSED. 기존 탭 재로드0/새 전문 배정0. 최종 소유 보존은 외부 `hellgunner-blood-charge-visual-20261008/completion.json`.
