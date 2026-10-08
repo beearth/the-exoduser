@@ -16,5 +16,7 @@ test('bosstest keeps the player centered instead of moving the player to the bos
   assert.match(block, /window\._btBoss\s*=\s*ens\.find\(e=>e\.ib\)/);
   assert.doesNotMatch(block, /P\.x\s*=\s*window\._btBoss\.x/);
   assert.match(gameHtml, /if\(!window\._btActive&&G\._bossRef&&G\._bossRef\.alive\)/);
-  assert.match(gameHtml, /if\(!_EDITOR_MODE&&G\.map\)\{const _mwPx=G\.mw\*T,_mhPx=G\.mh\*T,_cz2=Math\.max\(0\.3,G\._camZoom\|\|1\),_hvw=VW\/\(2\*_cz2\),_hvh=VH\/\(2\*_cz2\);/);
+  // 2026-10-08: the map-bounds clamp moved into _clampCamToMap() (same formula) so spawn/intro frames use it too.
+  assert.match(gameHtml, /function _clampCamToMap\(\)\{\s*if\(_EDITOR_MODE\|\|!G\|\|!G\.map\)return;\s*const _mwPx=G\.mw\*T,_mhPx=G\.mh\*T,_cz2=Math\.max\(0\.3,G\._camZoom\|\|1\),_hvw=VW\/\(2\*_cz2\),_hvh=VH\/\(2\*_cz2\);/);
+  assert.match(gameHtml, /\/\/ \[CAM-CLAMP\][^\n]*\n\s*_clampCamToMap\(\);/, 'update() still clamps every frame');
 });

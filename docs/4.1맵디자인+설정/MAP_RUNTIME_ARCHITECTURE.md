@@ -1,3 +1,15 @@
+## 2026-10-08 — CH1-1 런타임 나무 층 + 시작 카메라 클램프
+
+| 순서/위치 | 내용 |
+|---|---|
+| 청크 바닥 직후 | `Ch1ForestSway.draw` → `Ch1FaceLife.draw`(군락 앵커 61) → **`Ch1RotTrees.draw`**(구운 나무 36그루 런타임 스프라이트: 5조각 shear 흔들림·전체 눈 깜빡임·혹/입) → `Ch1BorderForeground.drawBack`. 나무 본체는 더 이상 청크에 없음(헤일로만). 청크 cache key `20261008-rotforest-98` |
+| MAP_OBJS 패스 | `_OBJ_META[id].rotTree`가 있는 `m_ctree13~20`은 `Ch1RotTrees.drawObj`로 그림(실패 시 기존 `drawImage`). y정렬·occ 가림·충돌 불변 |
+| 엔티티 위 전경 | `Ch1BorderForeground.drawFront`의 나무 9그루 = `Ch1RotTrees.drawTreeBand`(같은 흔들림의 띠 사본) |
+| 카메라 | `_clampCamToMap()` 헬퍼 = 맵 bounds 클램프(기존 update 공식). `update()` 매 프레임 + `_loadZone`·`initStage`·`_startIntro` 카메라 세팅 직후 호출 — `G.on=false` 인트로/튜토리얼 정지 프레임에서도 맵 밖(구형 지형 폴백) 비노출 |
+| 첫 화면 준비 | `_prepareStartScene` pending에 `Ch1RotTrees.qa().pending` 합산 |
+
+SSOT: [CH1_ROTTEN_FOREST_RUNTIME_TREES_PASS98_20261008.md](CH1_ROTTEN_FOREST_RUNTIME_TREES_PASS98_20261008.md), 카메라는 [CH1_HIDDEN_UNDERLAY_20260929.md](CH1_HIDDEN_UNDERLAY_20260929.md) 10-08 절.
+
 ## 2026-10-01 — [DEPTH-SLICE] CH1-1 draw order 분할 (플래그 OFF 기본)
 
 `?depthSlice=1`(또는 `G._depthSlice=true`, CH1-1 한정) 활성 시 draw order가 다음처럼 바뀐다. **OFF(기본)에서는 기존 순서·수치와 동일**하며, MAP_OBJS 루프 본문이 `_drawMapObjOne(mo,_hellWinterTone)` 함수로 추출되어 호출되는 형태 차이만 있다(실행 경로 동일, test/depthSlice.test.js 잠금).

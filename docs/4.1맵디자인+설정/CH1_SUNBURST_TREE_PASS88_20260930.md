@@ -1,5 +1,7 @@
 # CH1-1 부패 생체나무 교체 88차 — 2026-09-30
 
+> **98차(2026-10-08)로 변경:** `m_ctree13~20` 원화 = 01·02·04·03·05·11·06·07(8그루 모두 다름), `rotTree` 메타로 `ch1-rot-trees.js`가 흔들림·깜빡임·혹 맥동 렌더. 현행: [CH1_ROTTEN_FOREST_RUNTIME_TREES_PASS98_20261008.md](CH1_ROTTEN_FOREST_RUNTIME_TREES_PASS98_20261008.md).
+
 > 90차에서 손 배치 8개의 원화를 눈·입·종양·부종이 있는 `rotforest_tree_01~04.png`로 교체했다. 아래 `sunburst_tree_` 파일명·원화별 좌표 표와 '현행' 표현은 88차 제작 이력이다. 현재 값은 [90차](CH1_ROTTEN_FOREST_PASS90_20260930.md)를 따른다.
 
 ## 제작 계약과 결과

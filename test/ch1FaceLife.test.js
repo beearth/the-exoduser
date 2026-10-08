@@ -1,4 +1,4 @@
-// CH1-1 pass 97: baked bio-tree face-life contracts.
+// CH1-1 pass 97/98: baked bio-mass face-life contracts (pass 98: trees moved to ch1-rot-trees.js).
 // - anchor table integrity (JSON == embedded table == placement/feature transform)
 // - sway displacement formula stays in lockstep with ch1-forest-sway.js
 // - game.html wiring (script tag, draw call after sway, chunk cache key)
@@ -19,9 +19,10 @@ const gameSrc=fs.readFileSync(path.join(ROOT,'game.html'),'utf8');
 const SIZE=8192;
 
 test('face anchors: version, bounds and kinds are valid',()=>{
-  assert.strictEqual(anchorsDoc.version,'20260930-rotforest-97');
+  assert.strictEqual(anchorsDoc.version,'20261008-rotforest-98');
   assert.strictEqual(anchorsDoc.bakeToWorld,1000/1024);
-  assert.ok(anchorsDoc.anchors.length>=100,'expected a substantial anchor set');
+  assert.ok(anchorsDoc.anchors.length>=40,'expected a substantial mass anchor set');
+  assert.ok(anchorsDoc.anchors.every(a=>/^mass/.test(a.src)),'pass 98: masses only (trees are runtime sprites)');
   for(const a of anchorsDoc.anchors){
     assert.ok(['eye','mouth','tumor'].includes(a.k));
     assert.ok(a.x>=0&&a.x<SIZE&&a.y>=0&&a.y<SIZE);
@@ -40,11 +41,6 @@ test('face anchors: every anchor comes from the placement x feature transform',(
       candidates.push([f.kind,x0+fx,y0+f.cy*sy]);
     }
   }
-  for(const [tx,ty,variant,scale] of placements.placements){
-    const side=Math.round(410*scale),s=side/1024;
-    const x0=Math.round(tx*SIZE/200-side/2),y0=Math.round(ty*SIZE/200-side*.74);
-    for(const f of features[`tree_0${variant}`])candidates.push([f.kind,x0+f.cx*s,y0+f.cy*s]);
-  }
   for(const a of anchorsDoc.anchors){
     const hit=candidates.some(([k,x,y])=>k===a.k&&Math.abs(x-a.x)<=1.1&&Math.abs(y-a.y)<=1.1 /* python banker rounding vs Math.round */);
     assert.ok(hit,`anchor ${a.k}@${a.x},${a.y} has no source placement/feature`);
@@ -52,7 +48,7 @@ test('face anchors: every anchor comes from the placement x feature transform',(
 });
 
 test('embedded anchor table matches face-anchors.json',()=>{
-  const m=moduleSrc.match(/\/\*ANCHORS-BEGIN 20260930-rotforest-97\*\/(.*?)\/\*ANCHORS-END\*\//s);
+  const m=moduleSrc.match(/\/\*ANCHORS-BEGIN 20261008-rotforest-98\*\/(.*?)\/\*ANCHORS-END\*\//s);
   assert.ok(m,'embedded table markers missing');
   const raw=JSON.parse(m[1]);
   assert.strictEqual(raw.length,anchorsDoc.anchors.length);
@@ -72,13 +68,15 @@ test('displacement formula stays identical to ch1-forest-sway.js',()=>{
 });
 
 test('game.html wiring: script tag, draw order and chunk cache key',()=>{
-  assert.ok(gameSrc.includes('<script src="ch1-face-life.js?v=20260930-97"></script>'));
+  assert.ok(gameSrc.includes('<script src="ch1-face-life.js?v=20261008-98"></script>'));
   const sway=gameSrc.indexOf('Ch1ForestSway.draw(X,G,_now');
   const face=gameSrc.indexOf('Ch1FaceLife.draw(X,G,_now');
   assert.ok(sway>0&&face>sway,'face life must draw after forest sway');
   assert.ok(face-sway<400,'face life draw call should sit right after the sway call');
   assert.strictEqual((gameSrc.match(/Ch1FaceLife\.draw\(/g)||[]).length,1);
-  assert.ok(gameSrc.includes("'20260930-rotforest-97'"),'production chunk cache key must be pass-96 bake key 97');
+  assert.ok(gameSrc.includes("'20261008-rotforest-98'"),'production chunk cache key must be the pass-98 bake key');
+  const rot=gameSrc.indexOf('Ch1RotTrees.draw(X,G,_now');
+  assert.ok(rot>face&&rot-face<400,'runtime trees draw right after face life (mass patches stay under the trees)');
 });
 
 // ---- runtime behavior on stubs ----
@@ -117,7 +115,7 @@ function fakeWorld(){
 
 test('runtime: culling, idle build and unsynchronized blinks',async()=>{
   const {api,flush}=loadModule();
-  assert.strictEqual(api.qa().version,'20260930-rotforest-97');
+  assert.strictEqual(api.qa().version,'20261008-rotforest-98');
   assert.strictEqual(api.qa().anchors,anchorsDoc.anchors.length);
   assert.ok(api.debugBlink(anchorsDoc.anchors.findIndex(a=>a.k==='eye'),500));
   assert.strictEqual(api.debugBlink(anchorsDoc.anchors.findIndex(a=>a.k==='tumor')),false);

@@ -1,5 +1,10 @@
 > 진행 프로젝트: [MAP_IMPROVEMENT_PROJECT.md](MAP_IMPROVEMENT_PROJECT.md) · 2.5D 깊이 기준: [DEPTH_2_5D_BENCHMARK_20260930.md](DEPTH_2_5D_BENCHMARK_20260930.md)
 
+## 2026-10-08 — CH1-1 썩은 생체나무 98차 현행 (런타임 나무·변형 12종·흔들림·전체 깜빡임)
+
+구운 나무 36그루를 청크에서 빼고(헤일로만 굽기) 신규 `ch1-rot-trees.js`가 런타임 스프라이트로 그린다: 밑동 고정 가지 흔들림(5조각 shear, 큰 나무 끝 ≈13px), **모든 눈 개별 깜빡임**, 혹 맥동·입 호흡. 원화 4종 → 12종(MagicLight Seedream 5.0 Pro 신규 8종) + 좌우반전, 보이는 나무 기준 같은 모양 최대 2번. 손배치 감염 나무 `m_ctree13~20`도 8종 모두 다른 원화 + 같은 런타임 렌더(y정렬·충돌 불변). bakeVersion `20261008-rotforest-98`, 청크 cache key `20261008-rotforest-98`, face-life는 군락 앵커 61개만. [수치·배정표·생성 기록·검증 SSOT](CH1_ROTTEN_FOREST_RUNTIME_TREES_PASS98_20261008.md). 아래 97/96/95/90차의 나무 관련 '현행' 표기는 당시 이력이다. 같은 날 시작 화면 카메라 클램프는 [CH1_HIDDEN_UNDERLAY_20260929.md](CH1_HIDDEN_UNDERLAY_20260929.md) 10-08 절.
+
+
 ## 2026-10-01 — CH1-1 경계 가독성 MAP-020
 
 신규 `ch1-boundary-edge.js`(기본 ON, 끄기 `?edgeShade=0`): `G.map` 경계 전체에 접지 그림자(바닥 AO .30·숲 recess .70)와 `prop_pool.png` 테두리 뿌리 둑. 충돌·베이크 불변, 새 그림 0. [CH1_BOUNDARY_EDGE_MAP020_20261001.md](CH1_BOUNDARY_EDGE_MAP020_20261001.md)

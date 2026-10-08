@@ -1,5 +1,7 @@
 # CH1-1 외곽 생체나무 군락 가독성 — 96차 (2026-09-30)
 
+> **98차(2026-10-08)로 변경:** 나무 36그루는 더 이상 굽지 않는다(헤일로만). 림라이트·글린트·밝기 변주·tree_fade는 `ch1-rot-trees.js`가 런타임에 같은 수식으로 재현. placements 행은 `[tx,ty,variant(1..12),scale,flip]`. 현행: [CH1_ROTTEN_FOREST_RUNTIME_TREES_PASS98_20261008.md](CH1_ROTTEN_FOREST_RUNTIME_TREES_PASS98_20261008.md).
+
 ## 목적과 범위
 
 95차 RETOUCH 잔여 항목 "외곽 군락이 어두운 장면에서 서로 뭉쳐 읽힌다"를 해소한다. 전투 바닥을 밝히지 않고, 어두운 지옥 팔레트 안에서 실루엣 개별 분리만 만든다. 53점 경계·8구역·RLE geometry·충돌·64청크(1026², core1024/bleed1)·89차 흔들림 계약·95차 `floor_transition93` 시각 전이는 전부 유지한다. 신규 원화 생성 없음(기존 Sunburst 원화의 절차적 가공만, 크레딧 0).

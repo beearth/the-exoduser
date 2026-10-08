@@ -41,6 +41,7 @@ const FILES = [
   'ch1-living-detail.js',
   'ch1-forest-sway.js',
   'ch1-face-life.js',
+  'ch1-rot-trees.js',
   'ch1-altar-moat.js',
   'ch1-border-foreground.js',
   'ch1-boundary-edge.js',

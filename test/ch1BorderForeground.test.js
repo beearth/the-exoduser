@@ -53,9 +53,9 @@ test('borderFg: 띠 마스크 수식 — polygon 밖=1, 경계에서 안쪽 170p
 });
 
 test('borderFg: 내장 표가 placements.json과 일치한다 (index·좌표·variant·scale/width·flip)', () => {
-  assert.equal(placements.version, '20260930-rotforest-96', 'placements 버전');
-  for (const [idx, tx, ty, variant, scale] of BFG._trees) {
-    assert.deepEqual(placements.placements[idx], [tx, ty, variant, scale], `T${idx}`);
+  assert.equal(placements.version, '20261008-rotforest-98', 'placements 버전 (98차: 변형 1..12 + 좌우반전)');
+  for (const [idx, tx, ty, variant, scale, , flip] of BFG._trees) {
+    assert.deepEqual(placements.placements[idx], [tx, ty, variant, scale, flip], `T${idx}`);
   }
   for (const [idx, tx, ty, variant, width, flip] of BFG._masses) {
     const j = placements.massPlacements[idx];
@@ -135,14 +135,23 @@ test('borderFg: 배선 — game.html 태그+호출 2줄 / easy-test 호출 2줄�
   assert.match(buildSrc, /'ch1-border-foreground\.js',/, 'NW.js 패키징 복사 목록');
 });
 
+test('borderFg: 98차 — 나무 띠 사본은 Ch1RotTrees.drawTreeBand(같은 흔들림)로, 모듈 없으면 자체 텍스처 폴백', () => {
+  const src = readFileSync(new URL('../ch1-border-foreground.js', import.meta.url), 'utf8');
+  assert.match(src, /rot\.setBandFn\(bandAlpha\)/, '띠 마스크 함수를 런타임 나무 모듈에 넘긴다');
+  assert.match(src, /rot\.drawTreeBand\(ctx,it\.idx,now,ctx\.globalAlpha\)/, '같은 흔들림의 띠 사본');
+  assert.match(src, /else ctx\.drawImage\(t,it\.x\+it\.cx\*B2W/, '모듈 없으면 기존 정지 텍스처');
+  for (const it of BFG._layout().filter(i => i.kind === 'tree')) assert.equal(typeof it.flip, 'boolean', `${it.id}: flip`);
+});
+
 test('borderFg: 소스 에셋 — 군락 2048×1152, 나무 1024² 이상 (텍스처 예산 근거)', async () => {
   for (const v of [1, 2]) {
     const img = await loadImage(fileURLToPath(new URL(`../assets/map/ch1/production_finish/outer90_sources/rotforest_mass_0${v}.png`, import.meta.url)));
     assert.equal(img.width, 2048, `mass_0${v} 폭`);
     assert.equal(img.height, 1152, `mass_0${v} 높이`);
   }
-  for (const v of [1, 2, 3, 4]) {
-    const img = await loadImage(fileURLToPath(new URL(`../assets/map/ch1/collision/rotforest_tree_0${v}.png`, import.meta.url)));
-    assert.ok(img.width >= 1024 && img.height >= 1024, `tree_0${v}`);
+  for (let v = 1; v <= 12; v++) {
+    const n = String(v).padStart(2, '0');
+    const img = await loadImage(fileURLToPath(new URL(`../assets/map/ch1/collision/rotforest_tree_${n}.png`, import.meta.url)));
+    assert.ok(img.width >= 1024 && img.height >= 1024, `tree_${n}`);
   }
 });

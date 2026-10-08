@@ -4,7 +4,8 @@ import { readFileSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { loadImage, createCanvas } from 'canvas';
 
-const variants = [1, 2, 4, 3, 3, 4, 2, 1];
+// pass 98: each hand-placed infected tree uses a different variant (arches 15/18 keep the ring exception)
+const variants = [1, 2, 4, 3, 5, 11, 6, 7];
 const positions = [[84,184],[80,150],[30,96],[80,36],[124,31],[176,96],[124,149],[124,179]];
 const ids = Array.from({ length: 8 }, (_, i) => `m_ctree${13 + i}`);
 
@@ -22,15 +23,15 @@ test('CH1-1 uses eight infected trees at the preserved anchors in both builds', 
     assert.deepEqual(trees.map(({id,x,y}) => [id,x,y]), ids.map((id,i) => [id,...positions[i]]), name);
     assert.ok(new Set(trees.map(tree => tree.scale)).size >= 6, 'varied scales avoid repeated silhouettes');
     for (let i = 0; i < ids.length; i++) {
-      const file = `rotforest_tree_0${variants[i]}.png`;
+      const file = `rotforest_tree_${String(variants[i]).padStart(2, '0')}.png`;
       assert.match(source, new RegExp(`\\{id:'${ids[i]}',file:'${file}',[^\\n]*stageMax:0[^\\n]*authoredOnly:1`), `${name}: ${ids[i]} is CH1-1 only`);
     }
   }
 });
 
-test('all four infected tree assets have real alpha, including transparent corners', async () => {
-  for (let variant = 1; variant <= 4; variant++) {
-    const path = fileURLToPath(new URL(`../assets/map/ch1/collision/rotforest_tree_0${variant}.png`, import.meta.url));
+test('all twelve infected tree assets have real alpha, including transparent corners', async () => {
+  for (let variant = 1; variant <= 12; variant++) {
+    const path = fileURLToPath(new URL(`../assets/map/ch1/collision/rotforest_tree_${String(variant).padStart(2, '0')}.png`, import.meta.url));
     assert.ok(existsSync(path), `missing ${path}`);
     const image = await loadImage(path);
     assert.ok(image.width >= 1024 && image.height >= 1024, 'game-scale source retains 2x resolution');

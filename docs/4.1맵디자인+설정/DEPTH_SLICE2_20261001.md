@@ -1,5 +1,7 @@
 # CH1-1 2.5D 깊이 슬라이스 2차 (BORDER FOREGROUND) — 2026-10-01
 
+> **98차(2026-10-08)로 변경:** 전경 나무 9그루 표에 `flip` 추가·원화 갱신(T3=01반전, T4=11, T5=06반전, T13=08반전, T16=11반전, T18=05, T19=08, T20=04반전, T24=10). 나무 띠 사본은 `Ch1RotTrees.drawTreeBand`(같은 흔들림·띠 강도만큼 눈꺼풀/혹)로 그리고, 모듈 부재 시 기존 정지 텍스처. 현행: [CH1_ROTTEN_FOREST_RUNTIME_TREES_PASS98_20261008.md](CH1_ROTTEN_FOREST_RUNTIME_TREES_PASS98_20261008.md).
+
 > 스펙: [MAP_IMPROVEMENT_PROJECT.md](MAP_IMPROVEMENT_PROJECT.md) §8(설계·분류표 8.4) — MAP-003 + MAP-004 + MAP-020(확인만). 1차 = [DEPTH_SLICE1_20261001.md](DEPTH_SLICE1_20261001.md).
 > 상태: **v2 팀장 VISUAL VERDICT PASS → 기본 ON (2026-10-01)** (`ch1-border-foreground.js` `DEFAULT_ON=true`, 스크립트 태그 `?v=20261001-3`). 끄기 `?borderFg=0`(2차만) / `?depthSlice=0`(1·2차 전체). 팀장 근거(`captures/depth_slice2/v2/` 직접 확인): 공터가 열리고 남쪽 나무가 플레이어 앞에 서며(qa_report_on), 띠 아래에서도 플레이어 판독(M1_north_on_crop), 이음매 없음(seam_T4_on). 약점: polygon 밖 걸을 수 있는 주머니(M5 남동)에서는 군락이 알파 1로 덮여 플레이어가 어둡게 보임 — 사용자 체감 확인 후 조정. 시험 `?borderFg=1`/`G._borderFg=true`, 2차만 끄기 `?borderFg=0`, `?depthSlice=0`이면 1·2차 모두 꺼짐.
 

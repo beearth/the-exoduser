@@ -51,16 +51,18 @@
   // ── placements.json 발췌 (index=배열 순서, 테스트가 json과 일치를 잠근다) ──
   // 분류: MAP_IMPROVEMENT_PROJECT §8.4 + 착수 확인 수정 — 인너 나무 T1 T10 T31~T35는
   // 베이크 완전 소거+무충돌로 보류(MAP-003b). 띠 규칙은 대·소 인스턴스에 동일 적용(균일 규칙이 이음매·일관성에 유리).
-  const TREES=[ // [idx, tx, ty, variant, scale, mode]
-    [3,179,101,4,3.4,'fg'],
-    [4,158,159,2,3.0,'fg'],
-    [5,122,187,3,3.2,'fg'],
-    [13,29,121,2,1.15,'fg'],
-    [16,46,172,2,1.1,'fg'],
-    [18,79,192,1,1.3,'fg'],
-    [19,122,196,2,1.15,'fg'],
-    [20,138,177,3,1.3,'fg'],
-    [24,176,115,1,1.3,'fg'],
+  // 98차(2026-10-08): 변형 1..12·좌우반전 추가 — 나무 본체는 ch1-rot-trees.js가 그리고(흔들림·깜빡임),
+  // 여기서는 같은 흔들림의 띠 사본을 Ch1RotTrees.drawTreeBand로 위에 얹는다(모듈 없으면 자체 정지 텍스처 폴백).
+  const TREES=[ // [idx, tx, ty, variant, scale, mode, flip]
+    [3,179,101,1,3.4,'fg',1],
+    [4,158,159,11,3.0,'fg',0],
+    [5,122,187,6,3.2,'fg',1],
+    [13,29,121,8,1.15,'fg',1],
+    [16,46,172,11,1.1,'fg',1],
+    [18,79,192,5,1.3,'fg',0],
+    [19,122,196,8,1.15,'fg',0],
+    [20,138,177,4,1.3,'fg',1],
+    [24,176,115,10,1.3,'fg',0],
   ];
   const MASSES=[ // [idx, tx, ty, variant, width, flip, mode]
     [1,31,125,2,2150,0,'split'],
@@ -70,10 +72,10 @@
   ];
   function layout(){
     const list=[];
-    for(const[idx,tx,ty,variant,scale,mode]of TREES){
+    for(const[idx,tx,ty,variant,scale,mode,flip]of TREES){
       const side=Math.round(410*scale);
       const bx=Math.round(tx*SIZE/GRID-side/2),by=Math.round(ty*SIZE/GRID-side*.74);
-      list.push({id:'T'+idx,kind:'tree',variant:variant,mode:mode,bakeW:side,bakeH:side,
+      list.push({id:'T'+idx,idx:idx,kind:'tree',variant:variant,flip:!!flip,mode:mode,bakeW:side,bakeH:side,
         x:bx*B2W,y:by*B2W,w:side*B2W,h:side*B2W,anchorY:ty*40,
         canopyB:by*B2W+side*B2W*.60,a:1,tex:null,cx:0,cy:0,cw:0,ch:0});
     }
@@ -91,11 +93,11 @@
   //    (86차 유휴 캐시 계약·ch1-forest-sway와 동일 패턴: 준비 전에는 안 그림 → 첫 프레임 히치 없음) ──
   const imgCache=new Map();
   let instPx=0,builds=0,sliceMsMax=0,lastDrawsBack=0,lastDrawsFront=0,ghostFrames=0;
-  const queue=[];let scheduled=false;
+  const queue=[];let scheduled=false,bandHooked=false;
   function cv(w,h){const c=root.document.createElement('canvas');c.width=w;c.height=h;return c;}
   function src(it){
     return it.kind==='tree'
-      ?'assets/map/ch1/collision/rotforest_tree_0'+it.variant+'.png'
+      ?'assets/map/ch1/collision/rotforest_tree_'+(it.variant<10?'0':'')+it.variant+'.png?v=20261008-rotforest-98'
       :'assets/map/ch1/production_finish/outer90_sources/rotforest_mass_0'+it.variant+'.png';
   }
   function img(it){
@@ -220,8 +222,10 @@
       const isFront=it.mode==='fg'||p.y<it.anchorY;
       if(isFront!==front)continue;
       if(it.x>right||it.x+it.w<left||it.y>bottom||it.y+it.h<top)continue;
-      const t=instTex(it);
-      if(!t)continue;
+      const rot=it.kind==='tree'&&root.Ch1RotTrees?root.Ch1RotTrees:null;
+      if(rot&&!bandHooked){rot.setBandFn(bandAlpha);bandHooked=true;}
+      const t=rot?null:instTex(it);
+      if(!rot&&!t)continue;
       if(front){
         const pHit=overlapsCanopy(it,p);
         const target=(pHit||enemyUnderCanopy(it))?FADE_MIN:1;
@@ -229,7 +233,8 @@
         let a=it.a;a+=(target-a)*FADE_K;if(Math.abs(target-a)<.01)a=target;it.a=a;
         ctx.globalAlpha=a;
       }else{it.a=1;ctx.globalAlpha=1;}
-      ctx.drawImage(t,it.x+it.cx*B2W,it.y+it.cy*B2W,it.cw*B2W,it.ch*B2W);
+      if(rot){if(!rot.drawTreeBand(ctx,it.idx,now,ctx.globalAlpha))continue;}
+      else ctx.drawImage(t,it.x+it.cx*B2W,it.y+it.cy*B2W,it.cw*B2W,it.ch*B2W);
       if(++draws>=MAX_DRAWS)break;
     }
     ctx.globalAlpha=prev;

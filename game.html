@@ -63,7 +63,8 @@ window._supabaseReady=new Promise(resolve=>{
 <script src="assets/map/ch1/production_finish/layout.js?v=20260916-finish-1"></script>
 <script src="ch1-living-detail.js?v=20261006-start-ready"></script>
 <script src="ch1-forest-sway.js?v=20261006-start-ready"></script>
-<script src="ch1-face-life.js?v=20260930-97"></script>
+<script src="ch1-face-life.js?v=20261008-98"></script>
+<script src="ch1-rot-trees.js?v=20261008-98"></script>
 <script src="ch1-altar-moat.js?v=20261001-3"></script>
 <script src="ch1-border-foreground.js?v=20261001-3"></script>
 <script src="ch1-boundary-edge.js?v=20261001-3"></script>
@@ -11182,7 +11183,7 @@ function _drawMapPaintWorld(ctx,x0,y0,x1,y1){
 const _CH1_START_OUTER={stage:0,chunkSize:_ROOTWORLD_ART_PREVIEW?256:1024,bleed:1,chunks:{}};
 const _CH1_START_PHASE=(()=>{if(typeof location==='undefined')return 'smoothing';const phase=new URLSearchParams(location.search).get('ch1StartPhase');return phase==='outer'?'outer':'smoothing'})();
 const _CH1_START_ROOT=_DIABLO_FIELD_QA?(_ROOTWORLD_ART_PREVIEW?'assets/map/ch1/rootworld_candidate':'assets/map/ch1/rootworld_outer'):_CH1_START_PHASE==='outer'?'assets/map/ch1/baked_start_outer':'assets/map/ch1/production_finish';
-for(let y=0;y<8;y++)for(let x=0;x<8;x++)_CH1_START_OUTER.chunks[x+','+y]=`${_CH1_START_ROOT}/chunk_${x}_${y}.png?v=${_DIABLO_FIELD_QA?'20260924-blockout-2':_CH1_START_PHASE==='outer'?'20260917-depth-2':'20260930-rotforest-97'}`;
+for(let y=0;y<8;y++)for(let x=0;x<8;x++)_CH1_START_OUTER.chunks[x+','+y]=`${_CH1_START_ROOT}/chunk_${x}_${y}.png?v=${_DIABLO_FIELD_QA?'20260924-blockout-2':_CH1_START_PHASE==='outer'?'20260917-depth-2':'20261008-rotforest-98'}`;
 const _CH1_START_OUTER_QUERY_ENABLED=typeof location==='undefined'||new URLSearchParams(location.search).get('ch1StartOuter')!=='0';
 const _CH1_LEGACY_UNDERLAY=typeof location!=='undefined'&&new URLSearchParams(location.search).get('ch1LegacyUnderlay')==='1';
 const _ch1StartOuterCache=Object.create(null),_ch1StartOuterWarmQ=[];
@@ -11267,7 +11268,7 @@ async function _prepareStartScene(){
     _startSceneWarmState.frames++;
     const pending=(_bgInitDone?0:1)+_streamBuildQCount+Math.max(0,_wqLen-_wqIdx)+
       (_mapCacheRefreshQueued?1:0)+(globalThis.Ch1ForestSway?.qa?.().pending||0)+
-      (globalThis.Ch1FaceLife?.qa?.().pending||0)+(globalThis.Ch1LivingDetail?.qa?.().pending||0)+
+      (globalThis.Ch1FaceLife?.qa?.().pending||0)+(globalThis.Ch1RotTrees?.qa?.().pending||0)+(globalThis.Ch1LivingDetail?.qa?.().pending||0)+
       (globalThis.Ch1BorderForeground?.qa?.().pending||0);
     const view=[G.cam.x,G.cam.y,G._camZoom||1,VW,VH].join(',');
     stable=pending===0&&view===lastView?stable+1:0;lastView=view;
@@ -16899,10 +16900,10 @@ const _CH_DECO={
     {id:'m_ctree14',file:'rotforest_tree_02.png',sz:400,large:1,col:1,dir:'collision',colSz:60,sharedAtlas:1,stageMax:0,authoredOnly:1},
     {id:'m_ctree15',file:'rotforest_tree_04.png',sz:400,large:1,col:1,dir:'collision',colSz:60,sharedAtlas:1,stageMax:0,authoredOnly:1},
     {id:'m_ctree16',file:'rotforest_tree_03.png',sz:400,large:1,col:1,dir:'collision',colSz:60,sharedAtlas:1,stageMax:0,authoredOnly:1},
-    {id:'m_ctree17',file:'rotforest_tree_03.png',sz:400,large:1,col:1,dir:'collision',colSz:60,sharedAtlas:1,stageMax:0,authoredOnly:1},
-    {id:'m_ctree18',file:'rotforest_tree_04.png',sz:400,large:1,col:1,dir:'collision',colSz:60,sharedAtlas:1,stageMax:0,authoredOnly:1},
-    {id:'m_ctree19',file:'rotforest_tree_02.png',sz:400,large:1,col:1,dir:'collision',sharedAtlas:1,stageMax:0,authoredOnly:1},
-    {id:'m_ctree20',file:'rotforest_tree_01.png',sz:400,large:1,col:1,dir:'collision',sharedAtlas:1,stageMax:0,authoredOnly:1},
+    {id:'m_ctree17',file:'rotforest_tree_05.png',sz:400,large:1,col:1,dir:'collision',colSz:60,sharedAtlas:1,stageMax:0,authoredOnly:1},
+    {id:'m_ctree18',file:'rotforest_tree_11.png',sz:400,large:1,col:1,dir:'collision',colSz:60,sharedAtlas:1,stageMax:0,authoredOnly:1},
+    {id:'m_ctree19',file:'rotforest_tree_06.png',sz:400,large:1,col:1,dir:'collision',sharedAtlas:1,stageMax:0,authoredOnly:1},
+    {id:'m_ctree20',file:'rotforest_tree_07.png',sz:400,large:1,col:1,dir:'collision',sharedAtlas:1,stageMax:0,authoredOnly:1},
     {id:'m_atree1',file:'anim_tree_01.png',sz:400,large:1,dir:'collision',hardAlpha:1},
     {id:'m_cage_gate',file:'cage_gate.png',sz:300,large:1,dir:'collision'},
     {id:'m_sword_pile',file:'sword_pile.png',sz:200,large:1,dir:'collision'},
@@ -17847,6 +17848,8 @@ for(const[ch,list]of Object.entries(_CH_DECO)){
 // footYF = 전후 분할 기준선. m_ctree*: 시각 밑동(size*.45, ch1-living-detail 접지그림자 동일). m_c1tree: 뿌리 치마는
 // 바닥이므로 몸통(트렁크)이 뿌리에서 솟는 선(원화 63% 지점 → 피벗.72 환산 -.058) — 뿌리 위를 걷는 플레이어는 가리지 않는다.
 // ring=1(부러진 아치 rotforest_tree_04): 고리 안에 서 있으면 가림 없음(단일 스프라이트라 앞뒤 분리 불가 — 예외 처리).
+// [ROT-TREES 98] 손배치 감염 나무 8그루 = ch1-rot-trees.js가 흔들림·깜빡임·혹 맥동으로 그린다(모듈 없으면 기존 drawImage)
+{const _rtObj={m_ctree13:[1,0],m_ctree14:[2,0],m_ctree15:[4,0],m_ctree16:[3,0],m_ctree17:[5,0],m_ctree18:[11,0],m_ctree19:[6,0],m_ctree20:[7,0]};for(const _k in _rtObj)if(_OBJ_META[_k])_OBJ_META[_k].rotTree=_rtObj[_k];}
 {const _dsOccFoot={m_ctree13:.45,m_ctree14:.45,m_ctree15:.45,m_ctree16:.45,m_ctree17:.45,m_ctree18:.45,m_ctree19:.45,m_ctree20:.45,m_c1tree:-.058};
  for(const _k in _dsOccFoot)if(_OBJ_META[_k]){_OBJ_META[_k].occ=1;_OBJ_META[_k].footYF=_dsOccFoot[_k]}
  if(_OBJ_META.m_ctree15)_OBJ_META.m_ctree15.ring=1;
@@ -50565,6 +50568,7 @@ function draw(){
   _drawCh1BakedSpike(X);
   if(globalThis.Ch1ForestSway)Ch1ForestSway.draw(X,G,_now,_ch1StartOuterCache,_ch1StartOuterStats.drawnIds,G.mw*T/8,_CH1_START_ROOT,VW,VH);
   if(globalThis.Ch1FaceLife)Ch1FaceLife.draw(X,G,_now,_ch1StartOuterCache,_ch1StartOuterStats.drawnIds,G.mw*T/8,_CH1_START_ROOT,VW,VH);
+  if(globalThis.Ch1RotTrees)Ch1RotTrees.draw(X,G,_now,_CH1_START_ROOT,VW,VH); // [ROT-TREES 98] 구운 청크에서 뺀 감염 나무 36그루(흔들림·깜빡임·혹)
   _drawCh1Hill(X);
   if(globalThis.Ch1AltarMoat)Ch1AltarMoat.draw(X,G,_now,_CH1_HILL,T,VW,VH); // 제단 둘레 막힌 띠를 독액 도랑으로 표시 (시각 전용)
   if(globalThis.Ch1BorderForeground)Ch1BorderForeground.drawBack(X,G,_now,VW,VH); // [DEPTH-SLICE2] 분할 군락 백 패스(플레이어가 밑동 남쪽일 때 수관 복원)
@@ -51080,7 +51084,7 @@ function draw(){
               _drawMapObjectCrop(X,_spr,_meta,0,0,_dw,_dh,.5,.5,!!_meta.anchorBottom);
               X.restore()}
             else _drawMapObjectCrop(X,_spr,_meta,mo.x,mo.y,_dw,_dh,.5,.5,!!_meta.anchorBottom);
-          }else X.drawImage(_spr,mo.x-sz/2,mo.y-sz/2,sz,sz);
+          }else if(!(_meta&&_meta.rotTree&&globalThis.Ch1RotTrees&&Ch1RotTrees.drawObj(X,mo,_meta.rotTree,sz,_now)))X.drawImage(_spr,mo.x-sz/2,mo.y-sz/2,sz,sz);
           // 눈알 오버레이 비활성화
           // 발광 오브젝트: 포인트라이트
           if(_meta&&_meta.light){X.globalAlpha=.15+Math.sin(_now/800+mo.x)*.05;X.fillStyle='rgba(255,180,80,0.3)';X.beginPath();X.arc(mo.x,mo.y,80,0,Math.PI*2);X.fill();X.globalAlpha=1}

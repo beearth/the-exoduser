@@ -251,6 +251,7 @@ ANIMVFX의 정규 부팅 GL 실화면 검수가 hidden 탭 때문에 막혀 있�
 | QA-B09 | P2 | 프로브 PANELS 견고성 | `tools/qa_frame_probe.mjs` | 조작마다 상태 확인·1회 재시도·미반영 시 구간 무효 | **완료(도구)** — 원인은 0ms 키 탭(§7.4). 70ms 탭으로 16개 조작 전부 반영 확인(T2 스모크) |
 | QA-B10 | P2 | `_ffBuild`·전투 시작 프레임 update 스파이크 | `_ffBuild`, `update` | 프로파일로 귀속 후 판단 | 등록 |
 | QA-B11 | P2 | `membrane()` `getImageData` 16~28ms, `ch1-face-life.js build()` 12.5ms | `ch1-living-detail.js`, `ch1-face-life.js` (**MAP팀 소유**) | — | MAP팀 전달 대기 |
+| QA-B11b | P2 | 2026-10-08 신규 `ch1-rot-trees.js`(나무 36+8 런타임): 그리기 평균 0.03~0.09ms/프레임(초광각 시작 9그루, draw 99~126), 유휴 빌드 슬라이스 최대 7.8ms(절반 해상도 블러·64줄 분할 후, 이전 12.9), 첫 노출 GPU 업로드 1회 ≈9.9ms, 캐시 상한 16M px. 97차 face-life의 나무 앵커는 제거(군락 61개만) | `ch1-rot-trees.js`, `ch1-face-life.js` (**MAP팀 소유**) | headless Chromium 측정, 실기 Mac 미측정 | 실기 프레임 확인 대기 |
 | QA-B12 | P2 | 장시간(10분+) 메모리·프레임 추이 | — | 힙·DOM 노드·텍스처 수 추이, 새로고침 회복 현상 재현 여부 | 등록 |
 | QA-B13 | P1 | 공용 적 루프 시간 예산 공정성 (ENEMY-F06 인수) | `update()`의 적 루프 `for(_ei…)` 타임버짓 break — **QA 소유** | §7.2. 총괄 방향: 예산을 넘어도 필수 전투 갱신(타이머·보스·근접)을 보존하는 후보 A 검토. 생산 루프 변경은 재현·계약 검증 뒤. 성능 향상 미리 주장 금지 | 검토 완료·재현 근거 대기(M2 묶음1은 진단 옵션 없이 비교 전용이라 break 계측 미포함) |
 | QA-B14 | P1 | 짧은 키 탭 유실: `keyup`이 `K[code]`를 지워 update 틱 사이의 탭이 사라짐 | `keyup` 핸들러, `_chkJust`, `isJust` | §7.4. 긴 프레임 중 탭이 실제로 유실되는지 M2에서 재현 후 판단 | 등록(코드 확인, 실사용 재현 미확보) |

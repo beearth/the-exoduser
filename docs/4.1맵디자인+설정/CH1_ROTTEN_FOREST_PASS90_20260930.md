@@ -1,5 +1,7 @@
 # CH1-1 살아 움직이는 썩은숲 90차 — 2026-09-30
 
+> **98차(2026-10-08)로 변경:** 원화 4종 → 12종(Seedream 신규 8종), 손배치 8그루 원화 재배정(01·02·04·03·05·11·06·07), 구운 나무 36그루는 런타임 스프라이트. 현행: [CH1_ROTTEN_FOREST_RUNTIME_TREES_PASS98_20261008.md](CH1_ROTTEN_FOREST_RUNTIME_TREES_PASS98_20261008.md).
+
 > 이 문서의 `20260930-rotforest-90`/cache `91` 및 36개 배치는 90차 제작 이력이다. 현행은 [95차 경계·대형 군락·청크 흔들림 보정](CH1_ROTTEN_FOREST_BOUNDARY_PASS95_20260930.md)의 bake `20260930-rotforest-95`/cache `20260930-rotforest-96`, 36나무+6대형 군락+1뿌리다.
 
 ## 콘셉트와 범위
