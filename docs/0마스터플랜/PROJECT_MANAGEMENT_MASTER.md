@@ -1,3 +1,9 @@
+## 2026-10-08 — 헬거너 역추진의 시각 높이
+
+`ROOT-HELLGUNNER-LEAP-VISUAL-HEIGHT-20261008`: 기존 본편 시험 SPACE의 12f remaining으로 본체 높이 `-4*32*u*(1-u)`를 표시한다(u=1−remaining/12). 시작/종료0·중간−32 world Y. atlas/rig/outline/bright 부모·PNG fallback·depth snapshot에 동일 적용하고 지상 그림자·좌표·충돌·비용·피해는 유지한다. owner/admission/invalid remaining에서는 높이0. 새 프레임 시계·clip·asset·save 필드0. 최초 신규 통제11그룹93확인/Node1 exit0·source peer blocker0; 실제 화면/GPU/청취/save는 미검수, RETOUCH/UI_NOT_ASSESSED. 기존 탭 재로드0/새 전문 배정0. 최종 원격 보존은 외부 `hellgunner-leap-visual-height-20261008/completion.json`.
+
+[정확 계약](../2_1%20스킬관리+합체시스템+자원/신규캐릭_스킬프로젝트_20260930.md#hellgunner-leap-visual-height-20261008).
+
 ## 2026-10-08 — 에디터 선택 맞춤 · Shift+F
 
 큰 이미지 또는 같은 층의 복수 선택을 회전·반전·pivot·시차까지 반영해 화면에 맞춘다. CSS 여백 min(40,축*.1), 줌 상한3; 카메라만 변경하고 배치/history/save는 유지한다. busy/play/dialogue/drag/pending 및 입력 폼 guard 적용. 최초 통제 검사10 PASS·2 setup FAIL 뒤 test port만 보정하여 실패2만 PASS; native 화면 미검수/**RETOUCH**. [정확 계약·§23 보고](../4.1맵디자인+설정/MAP_SCENE_EDITOR_20261005.md#editor-frame-selection-20261008). 최종 정상 보존 결과는 외부 `editor-frame-selection-20261008/completion.json`. 기존 열린 탭 재로드0/새 전문 배정0.

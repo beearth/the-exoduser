@@ -3431,7 +3431,7 @@ const _isTestMode=new URLSearchParams(location.search).get('test')==='1';
 // Godot Resource-style immutable skill data; transient cast state stays outside saves.
 const _HELLGUNNER_PIERCE=Object.freeze({id:'hellgunnerPierce',st:6,cooldown:9,damage:28,speed:16,radius:5,offset:22,range:960,maxHits:99,color:'#ff8a4a'});
 const _HELLGUNNER_BLOOD=Object.freeze({id:'hellgunnerBlood',mp:10,hpStart:18,hpFloor:12,hpPerFrame:.22,tiers:Object.freeze([24,52,84]),damageBase:70,damagePerTier:70,speed:20,radiusBase:6,radiusPerTier:3,offset:24,range:1400,maxHits:99,recover:9,color:'#ff3a4a'});
-const _HELLGUNNER_LEAP=Object.freeze({id:'hellgunnerLeap',st:18,cooldown:42,duration:12,speed:15,decay:.86,iframes:16,damage:20,range:60,color:'#ff8a4a'});
+const _HELLGUNNER_LEAP=Object.freeze({id:'hellgunnerLeap',st:18,cooldown:42,duration:12,speed:15,decay:.86,iframes:16,damage:20,range:60,visualLift:32,color:'#ff8a4a'});
 const _hellgunnerPrototype=_isTestMode&&new URLSearchParams(location.search).get('kit')==='hellgunner';
 let _hellgunnerCastState=null;
 var _hellgunnerBloodState=null,_hellgunnerBloodBlocked=false;
@@ -3446,6 +3446,12 @@ function _tickHellgunnerPrototype(sp){
   if(_hellgunnerLeapState)_hellgunnerLeapState.cooldown=Math.max(0,_hellgunnerLeapState.cooldown-sp);
 }
 function _hellgunnerLeapMoving(){return !!_hellgunnerLeapState&&_hellgunnerLeapState.remaining>0;}
+function _hellgunnerLeapLift(){
+  const leap=_hellgunnerLeapState,spec=_HELLGUNNER_LEAP;
+  if(!leap||leap.actor!==P||leap.game!==G||leap.map!==G.map||leap.stage!==G.stage||!_hellgunnerLeapAdmitted()||!Number.isFinite(leap.remaining)||leap.remaining<=0||leap.remaining>spec.duration)return 0;
+  const phase=1-leap.remaining/spec.duration;
+  return -4*spec.visualLift*phase*(1-phase);
+}
 function _cancelHellgunnerLeap(){if(_hellgunnerLeapState)_hellgunnerLeapState.remaining=0;}
 function _hellgunnerLeapAdmitted(){
   return _hellgunnerPrototypeActive()&&G.on&&!G.paused&&!document.hidden&&P.hp>0&&P.s==='idle'&&!P._ioActive&&!(P._seaGrabbed>0)&&!(P._seaParalyzed>0)&&!_dashActive&&!_harpActive&&!(P._msAiming||P._isAiming||P._bwAiming||P._ebAiming||P._hrAiming||P._tsAiming);
@@ -55027,6 +55033,7 @@ function drawP(){
   const fl=P.iframes>0&&~~(P.iframes/3)%2;if(fl)X.globalAlpha=.3;
   const t=_now;
   const _pScale=2,_pR=P.r*_pScale; // 캐릭터 비주얼 2배
+  const _hellgunnerLift=_hellgunnerLeapLift();
   _dsPSnap.on=0; // [DEPTH-SLICE] 아틀라스 본체 브랜치에서만 고스트 스냅샷 채움
   if(P._bladeEchoRun)_drawBladeEchoVfx(X,P._bladeEchoRun,P.x,P.y,t);
   else if(P._bladeEchoAfterglow&&P._bladeEchoAfterglow.until>t)_drawBladeEchoVfx(X,P._bladeEchoAfterglow,P.x,P.y,t,(P._bladeEchoAfterglow.until-t)/180);
@@ -58183,7 +58190,7 @@ function drawP(){
         try{SpriteAnimator.draw({img:_aiBr,fm:P._sa.fm,anim:s.anim,f:s.f,t:0,spd:8,loop:true,done:false},X,0,0,s.flip,s.dir)}catch(_e){}
         X.restore();}
       X.globalAlpha=1;}
-    X.save();X.translate(_px,_py+_skillAnimLift+_dashFlightLift);
+    X.save();X.translate(_px,_py+_skillAnimLift+_dashFlightLift+_hellgunnerLift);
     // 정면 실루엣 높이: 전사 29px / 실버테일 45px → 본체 크기 정렬.
     if(_charIdx===1)X.scale(.65,.65);
     if(_apDead){
@@ -58233,7 +58240,7 @@ function drawP(){
       P._sa.f=Math.min(_silvAtkN-1,~~(_silvBodyProgress*_silvAtkN));
     }
     const _pFlip=!_apHasDir&&Math.abs(_fa)>Math.PI/2,_pDk=_apHasDir?(_silvAtk?_silvAtk.spriteDir:_apDir):null;
-    if(_dsEnabled()){_dsPSnap.on=1;_dsPSnap.flip=_pFlip;_dsPSnap.dir=_pDk;_dsPSnap.lift=_skillAnimLift+_dashFlightLift;_dsPSnap.silv=_charIdx===1?.65:1;_dsPSnap.sc=_pScale} // [DEPTH-SLICE] 고스트 스냅샷
+    if(_dsEnabled()){_dsPSnap.on=1;_dsPSnap.flip=_pFlip;_dsPSnap.dir=_pDk;_dsPSnap.lift=_skillAnimLift+_dashFlightLift+_hellgunnerLift;_dsPSnap.silv=_charIdx===1?.65:1;_dsPSnap.sc=_pScale} // [DEPTH-SLICE] 고스트 스냅샷
     // ── [잔상] 이동기술 중 현재 스냅샷 기록 (월드좌표+프레임); 비활성 시 버퍼 비움 ──
     if(P._gwActive||P.s==='bladeDash'||_harpActive||_dashActive||(_apAnim&&_apAnim.indexOf('dash')===0)){
       (P._aiTrail||(P._aiTrail=[])).push({x:_px,y:_py,dir:_pDk,flip:_pFlip,anim:P._sa.anim,f:P._sa.f,sc:_pScale,lift:_skillAnimLift});
@@ -58280,7 +58287,7 @@ function drawP(){
 
     // Ori 영혼 글로우 제거
     // PNG 스프라이트 그리기 (메인 캔버스에 직접)
-    X.save();X.translate(_px+_ox,_py+_oy);
+    X.save();X.translate(_px+_ox,_py+_oy+_hellgunnerLift);
     if(Math.abs(_fa)>Math.PI/2)X.scale(-1,1);
     X.rotate(_rot);X.scale(_sx,_sy);
     if(_useActFrame&&_aS){const aw=_aS.width/4,ah=_aS.height/3;for(let _i=0;_i<4;_i++)X.drawImage(_aS,_aC*aw,_aR*ah,aw,ah,-bw/2,-bh/2-2,bw,bh);}

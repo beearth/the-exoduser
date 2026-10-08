@@ -1587,3 +1587,10 @@ OFF/불가mode/identity/준비 frame 부재의 검수에서는 core0이다. **co
 최종 `game.html` working **4,108,637B / SHA256 `e126009e20157a98c0561e3a3f111d94372b26df39bb45964e4d6591af31c757`**, ROOT owned **4,108,452B / `6787cb308cf3d085c5821d3b9eed95e2d760eb584473f3ceec2dbfcb816ed981`**의 2hunk 기준이다. foreign185B는 미채택 기존 바이트로 보존한다.
 
 [사망VFX 정본](<../5.1임펙트디자인/사망VFX_변경로그.md>) 및 [MAP_RUNTIME_ARCHITECTURE §23](<../4.1맵디자인+설정/MAP_RUNTIME_ARCHITECTURE.md>)의 같은 TASK 절을 따른다. 기존 완료/실패 검수 재실행·clean 합산0, ROOT 정상 Git 보존 전이다.
+
+
+## 2026-10-08 — 헬거너 역추진의 시각 높이
+
+`ROOT-HELLGUNNER-LEAP-VISUAL-HEIGHT-20261008`: 기존 본편 시험 SPACE의 12f remaining으로 본체 높이 `-4*32*u*(1-u)`를 표시한다(u=1−remaining/12). 시작/종료0·중간−32 world Y. atlas/rig/outline/bright 부모·PNG fallback·depth snapshot에 동일 적용하고 지상 그림자·좌표·충돌·비용·피해는 유지한다. owner/admission/invalid remaining에서는 높이0. 새 프레임 시계·clip·asset·save 필드0. 최초 신규 통제11그룹93확인/Node1 exit0·source peer blocker0; 실제 화면/GPU/청취/save는 미검수, RETOUCH/UI_NOT_ASSESSED. 기존 탭 재로드0/새 전문 배정0. 최종 원격 보존은 외부 `hellgunner-leap-visual-height-20261008/completion.json`.
+
+[본편 표시 계약](../2_1%20스킬관리+합체시스템+자원/신규캐릭_스킬프로젝트_20260930.md#hellgunner-leap-visual-height-20261008).
