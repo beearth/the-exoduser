@@ -95,7 +95,7 @@ for (const key of ['_D5K', '_DEMO_LS_KEY']) {
     const ctx = vm.createContext({
       P: { skills: {} }, INV: { bag: [], equipped: {} }, G: {},
       STATS: {}, PASSIVES: {}, _grit: 0, QSLOTS: [], BAG_MAX: 300, UPGRADES: {}, POT_LV: {},
-      SKILL_SLOTS: [], ULT_SLOT: null, _charIdx: 0, CRYSTAL_BAG: [], CRYSTAL_DUST: 0,
+      SKILL_SLOTS: [], ULT_SLOT: null, _charIdx: 0, CRYSTAL_BAG: [], CRYSTAL_DUST: 0, STONE_BAG: [],
       _passiveQueueItems: () => [],
       _D5K: 'demo500', _DEMO_LS_KEY: 'demo0', _lastSaveTime: 0,
       localStorage: { setItem() { if (reject) throw new Error('storage full'); } },
@@ -122,7 +122,7 @@ test('public demo save keeps growth, skill mastery, and time played across a res
     INV: { bag: [], equipped: {} }, G: { stage: 2, kills: 70, mats: 500, playTime: 3600,
       comboMax: 12, _taRecords: { run: 1 }, _irisSz: 24 },
     STATS: {}, PASSIVES: {}, _grit: 3, QSLOTS: [], BAG_MAX: 300, UPGRADES: {}, POT_LV: {},
-    SKILL_SLOTS: [], ULT_SLOT: null, _charIdx: 0, CRYSTAL_BAG: [], CRYSTAL_DUST: 0,
+    SKILL_SLOTS: [], ULT_SLOT: null, _charIdx: 0, CRYSTAL_BAG: [], CRYSTAL_DUST: 0, STONE_BAG: [],
     _passiveQueueItems: () => [], _DEMO_LS_KEY: 'demo0', _lastSaveTime: 0,
     localStorage: { setItem(key, value) { saved = JSON.parse(value); } }, console: { warn() {} },
   });
@@ -195,7 +195,7 @@ test('30-second autosave sends live progress to the selected cloud character and
     G: { on: true, stage: 2, kills: 70, mats: 100 },
     INV: { bag: [{ id: 'kept-item' }], equipped: {} },
     STATS: {}, PASSIVES: {}, _grit: 0, QSLOTS: [], BAG_MAX: 300,
-    CRYSTAL_BAG: [], CRYSTAL_DUST: 0, UPGRADES: {}, POT_LV: {},
+    CRYSTAL_BAG: [], CRYSTAL_DUST: 0, STONE_BAG: [], UPGRADES: {}, POT_LV: {},
     SKILL_SLOTS: ['spikeTrap'], ULT_SLOT: null, _charIdx: 1,
     _sanitizeCoreState() {}, _saveSharedMats() {}, _flushSharedStorage() {},
     console: { error() {} },

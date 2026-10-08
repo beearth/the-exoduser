@@ -169,6 +169,7 @@
 | 2026-10-06 | 대검전사 영상 첫 장면·로딩 rd13 칼자루 쥔 손 2차 교정(원화 GPT Image 2.5 sunburst 1장 → Hailuo 2.3 5초 → 첫 300프레임 교체), 사용자 원화 승인 후 진행 | MagicLight 450 (57,990→57,540) |
 | 2026-10-08 | 대검전사 영상 51~58초 킬루 응징 몽타주(원화 7장 중 3장 Hailuo 영상, 4장 카메라 연출), 사용자 컷 선별·전체 미리보기 승인 후 적용 — `docs/cinematic/WARINTRO_KILLU_MONTAGE_20261008.md` | MagicLight 2,950 (이미지 11장 2,200 + 영상 3개 750, 57,540→54,590) |
 | 2026-10-08 | 보석 소켓 세팅 그림 `img/ui/gem_socket_v1.png`(Seedream 1:1, 스타일=ossuary_socket_hf_v2) 생성·키잉·적용, 보석 탭 소켓 리디자인 — `docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md` 2026-10-08 절 | MagicLight 100 |
+| 2026-10-08 | 막힌 보석 홈 그림 `img/ui/gem_socket_sealed_v1.png` 256×256 RGBA — gem_socket_v1 raw를 Seedream 5.0 Pro 1:1 edit(흑철 봉인 뚜껑, 빈 홈을 막은 형태)로 파생, 회색 배경 원형 마스크 키잉, 원본 `output/gem_socket_20261008/seedream_sealed_raw_1920.png`. 보석 탭 5홈 고정 배치의 미개방 자리 표시 — UI_COMPOSITION 2026-10-08 소켓석 절 | MagicLight 100 |
 | 2026-10-08 | 유니크 아이템 외관: UI-01~22 최종 채택(Higgsfield 원본, UI-05만 하이힐 실루엣 때문에 Seedream 후보), 빈 부위 5종 UI-23 바지·24 도끼·25 메이스·26 곤봉·27 창 Seedream 5.0 Pro 1:1 생성(카탈로그 공통 프롬프트), 27종 게임용 256px `img/ui/unique-items/` — `docs/7아이템디자인/보라색_고유아이템_카탈로그_20260930.md` 2026-10-08 절 | MagicLight 500 (5장, 표시 54,390 기준) |
 | 2026-10-08 | CH1 생체나무 변형 8종 생성(MagicLight Seedream 5.0 Pro, 1:1, 100pt×8 성공, 서비스 일시 불가 실패 4건 환불 후 재시도) — 레퍼런스=기존 tree_01~04 회색 합성, 원본별 2종씩. 회색 키잉·잔편 제거·하단 정렬 1024²·기존 4종 평균색 게인 보정, 1x 확대로 점·회색 테두리 없음 확인(tree_11 회색 잔편 3구역 수동 제거). 12종 눈·입·혹 좌표 등록, 런타임 흔들림·전체 깜빡임 적용 — [PASS98](../4.1맵디자인+설정/CH1_ROTTEN_FOREST_RUNTIME_TREES_PASS98_20261008.md) |
 

@@ -3321,7 +3321,7 @@ async function dbSave(){
       bagMax:BAG_MAX,
       hellCleared:G.hellCleared||[],
       storage:{}, /* 창고는 localStorage 공유 */
-      crystalBag:CRYSTAL_BAG,crystalDust:CRYSTAL_DUST,
+      crystalBag:CRYSTAL_BAG,crystalDust:CRYSTAL_DUST,stoneBag:STONE_BAG,
       upgrades:{...UPGRADES},
       potLv:{...POT_LV},
       skills:{...P.skills},
@@ -3515,7 +3515,14 @@ function dbRestore(d){
   if(STORAGE[0]&&STORAGE[0].length>STORAGE_MAX){STORAGE[0].length=STORAGE_MAX;_persistSharedStorage()}
   // 결정 주머니 복원 + 마이그레이션
   CRYSTAL_BAG=d.crystalBag||[];CRYSTAL_DUST=d.crystalDust||0;
-  const _fixCr=it=>{if(!it)return;if(it.socketCount===undefined){const _r=Math.random();it.socketCount=_r<.5?1:_r<.8?2:_r<.95?3:4;it.crystals=new Array(it.socketCount).fill(null)}};
+  STONE_BAG=Array.isArray(d.stoneBag)?d.stoneBag.filter(s=>s&&typeof s.q==='number'&&s.q>=1&&s.q<=100):[];
+  CRYSTAL_BAG.forEach(cr=>{if(cr&&!(cr.q>=1&&cr.q<=100))cr.q=50});
+  const _fixCr=it=>{if(!it)return;if(it.socketCount===undefined){const _r=Math.random();it.socketCount=_r<.5?1:_r<.8?2:_r<.95?3:4;it.crystals=new Array(it.socketCount).fill(null)}
+    if(Array.isArray(it.crystals))it.crystals.forEach(cr=>{if(cr&&!(cr.q>=1&&cr.q<=100))cr.q=50});
+    const _n=Array.isArray(it.crystals)?it.crystals.length:0;
+    if(!Array.isArray(it.socketQ))it.socketQ=[];
+    for(let _i=0;_i<_n;_i++)if(!(it.socketQ[_i]>=1&&it.socketQ[_i]<=100))it.socketQ[_i]=1;
+    if(it.socketQ.length>_n)it.socketQ.length=_n;};
   if(INV.bag)INV.bag.forEach(_fixCr);for(const s of SLOT_NAMES)_fixCr(INV.equipped[s]);
   if(STORAGE)for(const k in STORAGE){const st=STORAGE[k];if(Array.isArray(st))st.forEach(_fixCr)}
   // Upgrades
@@ -7917,6 +7924,25 @@ const _EN={
 '쓰러짐...':'Falling...',
 '닫기 [V]':'Close [V]',
 '닫기 [C]':'Close [C]',
+// [GEM-SOCKET] 보석 품질·소켓석 시스템 (2026-10-08, No.3208~3225)
+'품질 {q} · {t}티어':'Quality {q} · Tier {t}',
+'소켓석':'Socket Stone',
+'소켓석 {t}티어 획득!':'Socket Stone Tier {t}!',
+'막힌 홈':'Sealed socket',
+'홈 개방':'Open socket',
+'홈 승급':'Upgrade socket',
+'홈 개방! {n}번째 홈 · 품질 {q} ({t}티어)':'Socket opened! Slot {n} · quality {q} (Tier {t})',
+'홈 승급! 품질 {a} → {b}':'Socket upgraded! Quality {a} → {b}',
+'홈 보너스 +{p}%':'Socket bonus +{p}%',
+'공명 ×2':'Resonance ×2',
+'공명':'Res.',
+'홈은 최대 5개입니다':'Sockets are capped at 5',
+'이 홈은 소켓석보다 품질이 낮지 않습니다':'This socket is not lower quality than the stone',
+'모든 홈이 이미 이 소켓석 이상 품질입니다':'Every socket already matches or exceeds this stone',
+'소켓석: 빛나는 막힌 홈 또는 카드를 클릭해 홈을 추가하세요':'Socket stone: click the glowing sealed hole or the card to add a socket',
+'소켓석 선택 중 — 카드를 클릭해 홈 추가, 5홈 장비는 낮은 품질 홈을 클릭해 승급':'Stone selected — click a card to add a socket; on 5-socket gear click a lower-quality socket to upgrade',
+'소켓석이 없습니다 — 정예·보스가 드물게 떨어뜨립니다.':'No socket stones — elites and bosses rarely drop them.',
+'같은 종류·성급·강화·품질은 한 칸에 모아 표시합니다.':'Matching type, star, enhancement and quality share one slot.',
 };
 // --- 장비명 조합 번역 (접두사 + 기본형) ---
 const _EN_PFX={'녹슨':'Rusty','강철':'Steel','흑요석':'Obsidian','미스릴':'Mithril','심판의':'Judgment','천벌의':'Divine Wrath','파멸의':'Destruction',
@@ -14118,11 +14144,66 @@ let CRYSTAL_BAG=[];
 let CRYSTAL_DUST=0;
 function crystalVal(cr){
   if(!cr)return 0;const d=CRYSTAL_DEFS[cr.id];if(!d)return 0;
-  return d.base*CRYSTAL_STAR[cr.star].mul*(1+(cr.enh||0)*0.1);
+  // 품질 q(1~100) 배율: 0.75+0.5×q/100 (q50=×1.00). 미보유(구세이브)=q50.
+  return d.base*CRYSTAL_STAR[cr.star].mul*(1+(cr.enh||0)*0.1)*_qGemMul(cr.q);
 }
 function crystalEnhCost(cr){
   if(!cr)return Infinity;
   return _malCost(Math.ceil(500*(1+(cr.enh||0)*0.5)*CRYSTAL_STAR_COST_MUL[cr.star]));
+}
+// ═══ 품질(q 1~100)·티어(1티어=최상, 10티어=최하) + 소켓석 — 2026-10-08 (game.html과 동일 로직) ═══
+const CR_Q_TIER_COL={iron:'#9aa0a8',bronze:'#d19a5c',silver:'#e7edf3',gold:'#f2d388',hell:'#ff8a50'};
+function _qRoll(){return 1+~~(Math.random()*100)}
+function _qTier(q){return 10-Math.floor((Math.min(100,Math.max(1,q||50))-1)/10)}
+function _qGrp(t){return t>=9?'iron':t>=7?'bronze':t>=5?'silver':t>=3?'gold':'hell'}
+function _qGemMul(q){return 0.75+0.5*Math.min(100,Math.max(1,q||50))/100}
+function _qLabel(q){const qq=Math.min(100,Math.max(1,q||50));return _L('품질 {q} · {t}티어','Quality {q} · Tier {t}',{q:qq,t:_qTier(qq)})}
+function _crFuseQ(list){if(!list||!list.length)return 50;return Math.max(1,Math.min(100,Math.round(list.reduce((a,c)=>a+Math.min(100,Math.max(1,(c&&c.q)||50)),0)/list.length)))}
+function socketMul(item,si){
+  const cr=item&&Array.isArray(item.crystals)?item.crystals[si]:null;if(!cr)return 1;
+  const q=Math.min(100,Math.max(1,(Array.isArray(item.socketQ)?item.socketQ[si]:1)||1)),b=(q-1)/99;
+  return 1+b*(_qTier(q)===_qTier(cr.q)?2:1);
+}
+function socketResonant(item,si){
+  const cr=item&&Array.isArray(item.crystals)?item.crystals[si]:null;if(!cr)return false;
+  const q=(Array.isArray(item.socketQ)?item.socketQ[si]:1)||1;
+  return q>1&&_qTier(q)===_qTier(cr.q);
+}
+const STONE_BAG_MAX=9999;
+let STONE_BAG=[];
+function _stoneTierRoll(){
+  const hi=(typeof SI_TO_HELL!=='undefined'&&typeof G!=='undefined'&&G&&G.stage&&SI_TO_HELL[G.stage])||0;
+  const B=Math.min(0.78,0.42+0.06*hi);
+  let tot=0;const w=[];
+  for(let t=10;t>=1;t--){const x=Math.pow(B,10-t);w.push([t,x]);tot+=x}
+  let r=Math.random()*tot;
+  for(const [t,x] of w){r-=x;if(r<0)return t}
+  return 10;
+}
+function mkSocketStone(){const t=_stoneTierRoll();return {q:(10-t)*10+1+~~(Math.random()*10)}}
+// 소켓석 자동 적용(간이판 UI): 최고 q 소켓석 1개 사용 — 5홈 미만=홈 개방, 5홈=가장 낮은 홈 승급
+function stoneAutoApply(slot){
+  const item=INV.equipped[slot];
+  if(!item||!STONE_BAG.length)return false;
+  const best=STONE_BAG.reduce((a,s)=>(s&&s.q>(a?a.q:0))?s:a,null);
+  if(!best)return false;
+  if(!Array.isArray(item.crystals))item.crystals=[];
+  if(!Array.isArray(item.socketQ))item.socketQ=new Array(item.crystals.length).fill(1);
+  if(item.crystals.length<5){
+    STONE_BAG.splice(STONE_BAG.indexOf(best),1);
+    item.crystals.push(null);item.socketQ.push(best.q);item.socketCount=item.crystals.length;
+    if(typeof SFX!=='undefined'&&typeof SFX.forge==='function')SFX.forge();
+    notify(_L('홈 개방! {n}번째 홈 · 품질 {q} ({t}티어)','Socket opened! Slot {n} · quality {q} (Tier {t})',{n:item.crystals.length,q:best.q,t:_qTier(best.q)}));
+    dbSaveNow();return true;
+  }
+  let lo=-1;for(let i=0;i<item.socketQ.length;i++){const qq=item.socketQ[i]||1;if(qq<best.q&&(lo<0||qq<(item.socketQ[lo]||1)))lo=i}
+  if(lo<0){notify(_T('모든 홈이 이미 이 소켓석 이상 품질입니다'));return false}
+  const cur=item.socketQ[lo]||1;
+  STONE_BAG.splice(STONE_BAG.indexOf(best),1);
+  item.socketQ[lo]=best.q;
+  if(typeof SFX!=='undefined'&&typeof SFX.forge==='function')SFX.forge();
+  notify(_L('홈 승급! 품질 {a} → {b}','Socket upgraded! Quality {a} → {b}',{a:cur,b:best.q}));
+  applyStats();dbSaveNow();return true;
 }
 // ═══ 결정 자동합성/강화 ═══
 // crAutoFuse: -1=꺼짐, 0~3=해당 성급 이하 자동합성 (3개→다음성급)
@@ -14138,8 +14219,9 @@ function _crAutoProcess(){
       const g={};
       for(let i=0;i<CRYSTAL_BAG.length;i++){const cr=CRYSTAL_BAG[i];if(cr.star>fuseCap||cr.star>=4)continue;const k=cr.id+'_'+cr.star;if(!g[k])g[k]={id:cr.id,star:cr.star,idxs:[]};g[k].idxs.push(i)}
       for(const k in g){const gr=g[k];if(gr.idxs.length<3)continue;
+        const _fq=_crFuseQ(gr.idxs.slice(0,3).map(ri=>CRYSTAL_BAG[ri])); // 결과 q = 소모 3개 평균
         gr.idxs.slice(0,3).sort((a,b)=>b-a).forEach(ri=>CRYSTAL_BAG.splice(ri,1));
-        CRYSTAL_BAG.push({id:gr.id,star:gr.star+1,enh:0});
+        CRYSTAL_BAG.push({id:gr.id,star:gr.star+1,enh:0,q:_fq});
         pass=true;did=true;break}
     }
   }
@@ -14212,7 +14294,7 @@ function renderCrystalBag(){
     visibleCount++;
     const sel=_crBagSel===i;
     h+='<button type="button" class="cr-picker-item" aria-label="'+_crDefN(d)+' · '+_crStarN(s)+' · '+_crValStr(cr)+'" onclick="'+(_crPickCb?'_crPickCb('+i+')':'_crBagSel='+i+';renderCrystalBag()')+'" style="cursor:pointer;border:1px solid '+(sel?'#bb88ff':'#66543d')+';background:'+(sel?'rgba(187,136,255,.12)':'rgba(0,0,0,.32)')+'">';
-    h+='<span class="cr-picker-art">'+_crIco(d,64)+'</span><span class="cr-picker-copy"><span class="cr-picker-rank" style="color:'+s.color+'">'+_crStarN(s)+(cr.enh?' · +'+cr.enh:'')+'</span>';
+    h+='<span class="cr-picker-art">'+_crIco(d,64)+'</span><span class="cr-picker-copy"><span class="cr-picker-rank" style="color:'+s.color+'">'+_crStarN(s)+(cr.enh?' · +'+cr.enh:'')+' · <span style="color:'+CR_Q_TIER_COL[_qGrp(_qTier(cr.q))]+'">T'+_qTier(cr.q)+' q'+Math.min(100,Math.max(1,cr.q||50))+'</span></span>';
     h+='<strong class="cr-picker-name">'+_crDefN(d)+'</strong><span class="cr-picker-options">'+_crValStr(cr)+'</span></span></button>';
   });
   if(visibleCount===0){
@@ -14582,6 +14664,7 @@ function mkItem(slot,tier,el,rarity,wtype){
   const _scR=Math.random();
   item.socketCount=_scR<.50?1:_scR<.80?2:_scR<.95?3:4;
   item.crystals=new Array(item.socketCount).fill(null);
+  item.socketQ=new Array(item.socketCount).fill(1); // 자연 홈 품질 = q1(10티어, +0%) — 소켓석으로만 승급
   // ═══ 유골함: 유니크 단일 아이템 고정 (2026-09-01 도감 개편) ═══
   // 랜덤 등급/티어/어픽스 롤 전부 무효 — 인자와 무관하게 '전대의 유골함' 1종 고정.
   // 소환 위력은 유골 도감(INV.ossCollect)의 부위 포인트에서 나온다. 획득: 첫 유골 부위 드랍 시 자동 지급.
@@ -14594,7 +14677,7 @@ function mkItem(slot,tier,el,rarity,wtype){
     item.legendarySpecial=null;item.uniqueSpecial=null;
     item._implicitStat='_iAncPow';item._implicitVal=10;item._implicitKo=(IMPLICIT_TABLE.ossuary&&IMPLICIT_TABLE.ossuary.ko)||'전대 위력 +X%';
     item.reqLv=0; // 자동 지급 즉시 장착 가능
-    item.socketCount=2;item.crystals=[null,null];
+    item.socketCount=2;item.crystals=[null,null];item.socketQ=[1,1];
   }
   return item;
 }
@@ -14739,6 +14822,7 @@ function equipItem(item){
     // 새 아이템 소켓 준비
     if(!item.socketCount)item.socketCount=0;
     if(!item.crystals)item.crystals=new Array(item.socketCount).fill(null);
+    if(!Array.isArray(item.socketQ))item.socketQ=new Array(item.crystals.length).fill(1);
     let _crMsg=[];
     for(let _ci=0;_ci<old.crystals.length;_ci++){
       const _cr=old.crystals[_ci];if(!_cr)continue;
@@ -14909,7 +14993,7 @@ function itemPower(it){
   if(it.legendarySpecial)p+=120;
   if(it.uniqueSpecial)p+=200;
   // ── 14) 결정 파워 ──
-  if(it.crystals)for(let _ci=0;_ci<it.crystals.length;_ci++){const _c=it.crystals[_ci];if(_c)p+=crystalVal(_c)*2}
+  if(it.crystals)for(let _ci=0;_ci<it.crystals.length;_ci++){const _c=it.crystals[_ci];if(_c)p+=crystalVal(_c)*2*socketMul(it,_ci)}
   return~~p;
 }
 function sortInvBag(){
@@ -25645,7 +25729,7 @@ function applyStats(){
   const _cr={hp:0,st:0,mp:0,atk:0,def:0,eDef:0,spd:0,crit:0,cdmg:0,fire:0,ice:0,dark:0,light:0,holy:0,hpR:0,stR:0,mpR:0,drop:0};
   for(const sl of SLOT_NAMES){const it=INV.equipped[sl];if(!it||!it.crystals)continue;
     for(let ci=0;ci<it.crystals.length;ci++){const c=it.crystals[ci];if(!c)continue;
-      const v=crystalVal(c);const d=CRYSTAL_DEFS[c.id];if(d)_cr[d.stat]+=v}}
+      const v=crystalVal(c)*socketMul(it,ci);const d=CRYSTAL_DEFS[c.id];if(d)_cr[d.stat]+=v}}
   P._crystalStats=_cr;
   P.mhp=~~(P.mhp+~~_cr.hp)+(PASSIVES.pHuman||0)*100+_gritHpFlat();P.hp=Math.min(P.hp,P.mhp); // 인간성: HP+100/Lv
   P.baseAtk+=~~_cr.atk;
@@ -29667,11 +29751,20 @@ function rollDrop(e){
       }else{
         _crStar=Math.random()<.8?0:1; // 일반 1~2성
       }
-      const _newCr={id:_crId,star:_crStar,enh:0};
+      const _newCr={id:_crId,star:_crStar,enh:0,q:_qRoll()}; // 품질 1~100 균등
       CRYSTAL_BAG.push(_newCr);
       const _crDef=CRYSTAL_DEFS[_crId];
       addTxt(e.x,e.y-40,_crStarN(CRYSTAL_STAR[_crStar])+' '+_crDefN(_crDef)+' '+_T('획득!'),CRYSTAL_STAR[_crStar].color,50);
       _crAutoProcess();
+    }
+  }
+  // ═══ 소켓석 드롭 — 일반 낮음, 정예·보스 높음. 티어는 챕터 깊이 가중 ═══
+  if(STONE_BAG.length<STONE_BAG_MAX){
+    const _ssCh=(_mTier==='chapterBoss'?0.40:_mTier==='stageBoss'?0.25:_mTier==='miniboss'?0.12:_mTier==='elite'?0.06:0.015)*dropBonus;
+    if(Math.random()<_ssCh){
+      const _ss=mkSocketStone(),_ssT=_qTier(_ss.q);
+      STONE_BAG.push(_ss);
+      addTxt(e.x,e.y-55,_L('소켓석 {t}티어 획득!','Socket Stone Tier {t}!',{t:_ssT}),CR_Q_TIER_COL[_qGrp(_ssT)],50);
     }
   }
 }
@@ -46516,15 +46609,20 @@ function _invRenderDetail(idx,source,preview=false){
     let ch='<div style="color:#bb88ff;font-size:.8rem;font-weight:700;margin-bottom:4px">'+_L('결정 슬롯','Crystal Slot')+' ('+it.socketCount+') — '+_L('클릭하여 장착/탈착','click to equip/detach')+'</div>';
     for(let ci=0;ci<it.socketCount;ci++){
       const cr=it.crystals?it.crystals[ci]:null;
-      if(cr){const cd=CRYSTAL_DEFS[cr.id],cs=CRYSTAL_STAR[cr.star],cv=_crValFmt(crystalVal(cr));
+      const _sq=(Array.isArray(it.socketQ)?it.socketQ[ci]:1)||1,_sqT=_qTier(_sq),_sqC=CR_Q_TIER_COL[_qGrp(_sqT)];
+      const _sqTag='<span style="color:'+_sqC+';font-size:.7rem;font-weight:700" title="'+_qLabel(_sq)+'">T'+_sqT+'</span>';
+      if(cr){const cd=CRYSTAL_DEFS[cr.id],cs=CRYSTAL_STAR[cr.star],cv=_crValFmt(crystalVal(cr)*socketMul(it,ci));
         ch+='<div title="'+_crDescTxt(cd)+'" onclick="detachCrystal(INV.equipped[\''+idx+'\'],'+ci+');renderInv();_invRenderDetail(\''+idx+'\',\'eq\')" style="cursor:pointer;padding:3px 6px;margin:2px 0;border:1px solid '+cs.color+'44;background:rgba(0,0,0,.2);border-radius:3px;display:flex;align-items:center;gap:4px" onmouseover="this.style.borderColor=\'#ff6644\'" onmouseout="this.style.borderColor=\''+cs.color+'44\'">';
-        ch+='<span style="color:'+cs.color+';font-size:.85rem">'+_crIco(cd,13)+' '+_crStarN(cs)+' '+_crDefN(cd)+(cr.enh>0?' +'+cr.enh:'')+'</span>';
+        ch+=_sqTag+'<span style="color:'+cs.color+';font-size:.85rem">'+_crIco(cd,13)+' '+_crStarN(cs)+' '+_crDefN(cd)+(cr.enh>0?' +'+cr.enh:'')+(socketResonant(it,ci)?' <span style="color:#ffb088">✦'+_L('공명','Res.')+'</span>':'')+'</span>';
         ch+='<span style="color:#88cc88;font-size:.8rem;margin-left:auto">'+(cd.pct?'+'+cv+'%':'+'+cv)+'</span>';
         ch+='<span style="color:#aa6644;font-size:.7rem">'+_T('탈착')+'</span></div>';
       }else{
         ch+='<div onclick="if(_selectedCrystal>=0&&CRYSTAL_BAG[_selectedCrystal]){attachCrystal(INV.equipped[\''+idx+'\'],'+ci+',CRYSTAL_BAG[_selectedCrystal],_selectedCrystal);_selectedCrystal=-1;renderInv();_invRenderDetail(\''+idx+'\',\'eq\')}else{openCrystalPicker(function(cr,bi){attachCrystal(INV.equipped[\''+idx+'\'],'+ci+',cr,bi);renderInv();_invRenderDetail(\''+idx+'\',\'eq\')},\''+idx+'\')}" style="cursor:pointer;padding:3px 6px;margin:2px 0;border:1px dashed '+(_selectedCrystal>=0?'#bb88ff':'#554433')+';background:'+(_selectedCrystal>=0?'rgba(187,136,255,.1)':'rgba(0,0,0,.15)')+';border-radius:3px;color:'+(_selectedCrystal>=0?'#bb88ff':'#665544')+';font-size:.8rem" onmouseover="this.style.borderColor=\'#bb88ff\'" onmouseout="this.style.borderColor=\''+(_selectedCrystal>=0?'#bb88ff':'#554433')+'\'">◇ '+_L('빈 슬롯','Empty Slot')+''+ (_selectedCrystal>=0?' — '+_L('클릭하여 선택결정 장착','Click to equip selected crystal'):' — '+_L('결정 선택 후 클릭','Select crystal then click'))+'</div>';
       }
     }
+    // 소켓석 적용 (간이판): 최고 q 소켓석 1개 사용 — 5홈 미만=홈 개방 / 5홈=가장 낮은 홈 승급
+    if(STONE_BAG.length>0&&(it.socketCount<5||(Array.isArray(it.socketQ)&&it.socketQ.some(qq=>(qq||1)<STONE_BAG.reduce((a,s)=>Math.max(a,s&&s.q||0),0)))))
+      ch+='<div onclick="if(stoneAutoApply(\''+idx+'\')){renderInv();_invRenderDetail(\''+idx+'\',\'eq\')}" style="cursor:pointer;padding:3px 6px;margin:2px 0;border:1px solid #c8b17a66;background:rgba(200,177,122,.08);border-radius:3px;color:#e6d6ad;font-size:.8rem">◈ '+_T('소켓석')+' ×'+STONE_BAG.length+' — '+(it.socketCount<5?_T('홈 개방'):_T('홈 승급'))+'</div>';
     cDiv.innerHTML=ch;rp.appendChild(cDiv);
   }
   // ── 3) 장착 아이템 ──
@@ -46678,9 +46776,11 @@ function _invCardFields(it){
     stats+='<div style="color:#bb88ff;font-size:.8rem;font-weight:700">'+(_L('결정 슬롯','Crystal Slot'))+' ('+it.socketCount+')</div>';
     for(let ci=0;ci<it.socketCount;ci++){
       const cr=it.crystals?it.crystals[ci]:null;
-      if(cr){const cd=CRYSTAL_DEFS[cr.id],cs=CRYSTAL_STAR[cr.star],cv=_crValFmt(crystalVal(cr));
-        stats+='<div style="color:'+cs.color+';font-size:.8rem">'+_crIco(cd,14)+' '+_crStarN(cs)+' '+_crDefN(cd)+(cr.enh>0?' +'+cr.enh:'')+ ' ('+(cd.pct?'+'+cv+'%':'+'+cv)+')</div>';
-      }else stats+='<div style="color:#555;font-size:.8rem">◇ '+(_L('빈 슬롯','Empty Slot'))+'</div>';
+      const _sq=(Array.isArray(it.socketQ)?it.socketQ[ci]:1)||1,_sqT=_qTier(_sq),_sqC=CR_Q_TIER_COL[_qGrp(_sqT)];
+      const _sqTag='<span style="color:'+_sqC+';font-weight:700">[T'+_sqT+']</span> ';
+      if(cr){const cd=CRYSTAL_DEFS[cr.id],cs=CRYSTAL_STAR[cr.star],cv=_crValFmt(crystalVal(cr)*socketMul(it,ci));
+        stats+='<div style="color:'+cs.color+';font-size:.8rem">'+_sqTag+_crIco(cd,14)+' '+_crStarN(cs)+' '+_crDefN(cd)+(cr.enh>0?' +'+cr.enh:'')+(socketResonant(it,ci)?' <span style="color:#ffb088">✦'+_L('공명','Res.')+'</span>':'')+ ' ('+(cd.pct?'+'+cv+'%':'+'+cv)+')</div>';
+      }else stats+='<div style="color:#555;font-size:.8rem">'+_sqTag+'◇ '+(_L('빈 슬롯','Empty Slot'))+'</div>';
     }
     stats+='</div>';
   }
@@ -47069,8 +47169,9 @@ function renderInv(){
       let _did=false;
       for(const k in _g){const _gr=_g[k];if(_gr.idxs.length<3)continue;
         const _times=~~(_gr.idxs.length/3);
+        const _fqs=[];for(let t=0;t<_times;t++)_fqs.push(_crFuseQ(_gr.idxs.slice(t*3,t*3+3).map(ri=>CRYSTAL_BAG[ri])));
         _gr.idxs.slice(0,_times*3).sort((a,b)=>b-a).forEach(ri=>CRYSTAL_BAG.splice(ri,1));
-        for(let t=0;t<_times;t++){CRYSTAL_BAG.push({id:_gr.id,star:_gr.star+1,enh:0});_total++}
+        for(let t=0;t<_times;t++){CRYSTAL_BAG.push({id:_gr.id,star:_gr.star+1,enh:0,q:_fqs[t]});_total++}
         _did=true;break}
       if(!_did)break}
     if(_total>0){SFX.forge();addTxt(P.x,P.y-20,_T('일괄합성 완료')+' ×'+_total,'#ffdd66',60);applyStats();renderInv();dbSaveNow()}
@@ -47133,8 +47234,9 @@ function renderInv(){
           let _did2=false;
           for(const k in _g){const _gr=_g[k];if(_gr.idxs.length<3)continue;
             const _times=~~(_gr.idxs.length/3);
+            const _fqs=[];for(let t=0;t<_times;t++)_fqs.push(_crFuseQ(_gr.idxs.slice(t*3,t*3+3).map(ri=>CRYSTAL_BAG[ri])));
             _gr.idxs.slice(0,_times*3).sort((a,b)=>b-a).forEach(ri=>CRYSTAL_BAG.splice(ri,1));
-            for(let t=0;t<_times;t++){CRYSTAL_BAG.push({id:_gr.id,star:_gr.star+1,enh:0});_synthCnt++}
+            for(let t=0;t<_times;t++){CRYSTAL_BAG.push({id:_gr.id,star:_gr.star+1,enh:0,q:_fqs[t]});_synthCnt++}
             _did2=true;_didAny=true;break}
           if(!_did2)break}
         if(!_didAny)break}
@@ -47764,8 +47866,9 @@ cInfo.innerHTML=_L('보유: ','Owned: ')+CRYSTAL_BAG.length+'/'+CRYSTAL_BAG_MAX+
             let _did2=false;
             for(const k in _g){const _gr=_g[k];if(_gr.idxs.length<3)continue;
               const _times=~~(_gr.idxs.length/3);
+              const _fqs=[];for(let t=0;t<_times;t++)_fqs.push(_crFuseQ(_gr.idxs.slice(t*3,t*3+3).map(ri=>CRYSTAL_BAG[ri])));
               _gr.idxs.slice(0,_times*3).sort((a,b)=>b-a).forEach(ri=>CRYSTAL_BAG.splice(ri,1));
-              for(let t=0;t<_times;t++){CRYSTAL_BAG.push({id:_gr.id,star:_gr.star+1,enh:0});_synthCnt++}
+              for(let t=0;t<_times;t++){CRYSTAL_BAG.push({id:_gr.id,star:_gr.star+1,enh:0,q:_fqs[t]});_synthCnt++}
               _did2=true;_didAny=true;break}
             if(!_did2)break;
           }
@@ -47844,10 +47947,11 @@ cInfo.innerHTML=_L('보유: ','Owned: ')+CRYSTAL_BAG.length+'/'+CRYSTAL_BAG_MAX+
             // 3개씩 합성 (여러 번 가능)
             const _times=~~(_gr.idxs.length/3);
             // 인덱스 내림차순 정렬 후 삭제
+            const _fqs=[];for(let t=0;t<_times;t++)_fqs.push(_crFuseQ(_gr.idxs.slice(t*3,t*3+3).map(ri=>CRYSTAL_BAG[ri])));
             const _toRemove=_gr.idxs.slice(0,_times*3).sort((a,b)=>b-a);
             _toRemove.forEach(ri=>CRYSTAL_BAG.splice(ri,1));
             for(let t=0;t<_times;t++){
-              CRYSTAL_BAG.push({id:_gr.id,star:_gr.star+1,enh:0});
+              CRYSTAL_BAG.push({id:_gr.id,star:_gr.star+1,enh:0,q:_fqs[t]});
               _total++;
             }
             _synthedOne=true;
@@ -47873,9 +47977,10 @@ cInfo.innerHTML=_L('보유: ','Owned: ')+CRYSTAL_BAG.length+'/'+CRYSTAL_BAG_MAX+
         const btn=document.createElement('button');btn.style.cssText='margin-left:auto;padding:3px 12px;font-size:.8rem;font-family:"Noto Sans KR";cursor:pointer;border:1px solid #44ccff;background:rgba(68,204,255,.1);color:#88eeff;border-radius:4px';
         btn.textContent=_T('합성');
         btn.onclick=()=>{
+          const _fq=_crFuseQ(g.idxs.slice(0,3).map(ri=>CRYSTAL_BAG[ri]));
           const rem=g.idxs.slice(0,3).sort((a,b)=>b-a);
           rem.forEach(ri=>CRYSTAL_BAG.splice(ri,1));
-          CRYSTAL_BAG.push({id:g.id,star:g.star+1,enh:0});
+          CRYSTAL_BAG.push({id:g.id,star:g.star+1,enh:0,q:_fq});
           SFX.forge();addTxt(P.x,P.y-20,_crStarN(ns)+' '+_crDefN(d)+' '+_T('합성!'),ns.color,60);
           applyStats();renderForge();dbSaveNow();
         };
@@ -47922,7 +48027,7 @@ const secHdr1=document.createElement('div');secHdr1.style.cssText='color:#ff8844
         craftDiv.innerHTML='<div style="color:'+s.color+';font-size:.9rem;font-weight:700">'+_crIco(cd,15)+' '+_crStarN(s)+' '+_crDefN(cd)+'</div><div style="color:#887766;font-size:.8rem">'+_L('제작 비용: 가루 ','Cost: Dust ')+dustCost+(CRYSTAL_DUST<dustCost?(' <span style="color:#ff4444">'+_L('(부족)','(insufficient)')+'</span>'):'')+'</div>';
         const btn=document.createElement('button');btn.style.cssText='margin-top:4px;padding:5px 20px;font-size:.85rem;font-family:"Noto Sans KR";font-weight:700;cursor:'+(ok?'pointer':'not-allowed')+';border:2px solid '+(ok?'#44ff88':'#332211')+';background:'+(ok?'rgba(68,255,136,.1)':'rgba(0,0,0,.2)')+';color:'+(ok?'#88ffcc':'#554433')+';border-radius:6px';
         btn.textContent=_T('🔨 제작');
-        btn.onclick=()=>{if(!ok)return;CRYSTAL_DUST-=dustCost;CRYSTAL_BAG.push({id:_crCraftType,star:_crCraftStar,enh:0});SFX.forge();addTxt(P.x,P.y-20,_crStarN(s)+' '+_crDefN(cd)+' '+_T('제작!'),s.color,60);renderForge();dbSaveNow()};
+        btn.onclick=()=>{if(!ok)return;CRYSTAL_DUST-=dustCost;CRYSTAL_BAG.push({id:_crCraftType,star:_crCraftStar,enh:0,q:_qRoll()});SFX.forge();addTxt(P.x,P.y-20,_crStarN(s)+' '+_crDefN(cd)+' '+_T('제작!'),s.color,60);renderForge();dbSaveNow()};
         craftDiv.appendChild(btn);grid.appendChild(craftDiv);
       }
       // ── 악의로 1성 결정 직접 제작 ──
@@ -47935,7 +48040,7 @@ const secHdr3=document.createElement('div');secHdr3.style.cssText='color:#cc66ff
         const ok2=G.mats>=_crMatsCost&&CRYSTAL_BAG.length<CRYSTAL_BAG_MAX;
         const b=document.createElement('span');b.style.cssText='cursor:'+(ok2?'pointer':'not-allowed')+';padding:2px 6px;font-size:.8rem;border:1px solid '+(ok2?'#cc66ff':'#332211')+';color:'+(ok2?'#ddaaff':'#554433')+';background:'+(ok2?'rgba(200,100,255,.1)':'rgba(0,0,0,.2)')+';border-radius:3px';
         b.innerHTML=_crIco(d,14)+' '+_crDefN(d);
-        b.onclick=()=>{if(G.mats<_crMatsCost){notify(_T('악의가 부족합니다!'));return}if(CRYSTAL_BAG.length>=CRYSTAL_BAG_MAX){notify(_T('결정 주머니 가득!'));return}G.mats-=_crMatsCost;CRYSTAL_BAG.push({id,star:0,enh:0});SFX.forge();addTxt(P.x,P.y-20,d.emoji+' '+_crStarN(CRYSTAL_STAR[0])+' '+_crDefN(d)+' '+_T('제작!'),'#cc66ff',50);renderForge();dbSaveNow()};
+        b.onclick=()=>{if(G.mats<_crMatsCost){notify(_T('악의가 부족합니다!'));return}if(CRYSTAL_BAG.length>=CRYSTAL_BAG_MAX){notify(_T('결정 주머니 가득!'));return}G.mats-=_crMatsCost;CRYSTAL_BAG.push({id,star:0,enh:0,q:_qRoll()});SFX.forge();addTxt(P.x,P.y-20,d.emoji+' '+_crStarN(CRYSTAL_STAR[0])+' '+_crDefN(d)+' '+_T('제작!'),'#cc66ff',50);renderForge();dbSaveNow()};
         mBar.appendChild(b);
       });
       grid.appendChild(mBar);
@@ -60124,7 +60229,7 @@ if((_isLocal&&!_charId)||new URLSearchParams(window.location.search).get('test')
         qslots:QSLOTS,
         game:{stage:G.stage,kills:G.kills,mats:0,irisSz:G._irisSz||20,taRecords:G._taRecords||{},clearRecords:G._clearRecords||{},comboMax:G.comboMax||0,playTime:G.playTime||0,cutsceneDone:G._cutsceneDone||false},
         bagMax:BAG_MAX,hellCleared:G.hellCleared||[],storage:{},
-        crystalBag:CRYSTAL_BAG,crystalDust:CRYSTAL_DUST,
+        crystalBag:CRYSTAL_BAG,crystalDust:CRYSTAL_DUST,stoneBag:STONE_BAG,
         upgrades:{...UPGRADES},potLv:{...POT_LV},skills:{...P.skills},
         fused:P._fused||{},skProf:P._skProf||{},fuseProfSec:P._fuseProfSec||{},cardProf:P._cardProf||{},catProf:P._catProf||{},
         activeChargeSk:P.activeChargeSk||'charge',
@@ -60280,7 +60385,7 @@ if((_isLocal&&!_charId)||new URLSearchParams(window.location.search).get('test')
         qslots:QSLOTS,
         game:{stage:G.stage,kills:G.kills,mats:0,irisSz:G._irisSz||20,taRecords:G._taRecords||{},clearRecords:G._clearRecords||{},comboMax:G.comboMax||0,playTime:G.playTime||0,cutsceneDone:G._cutsceneDone||false},
         bagMax:BAG_MAX,hellCleared:G.hellCleared||[],storage:{},
-        crystalBag:CRYSTAL_BAG,crystalDust:CRYSTAL_DUST,
+        crystalBag:CRYSTAL_BAG,crystalDust:CRYSTAL_DUST,stoneBag:STONE_BAG,
         upgrades:{...UPGRADES},potLv:{...POT_LV},skills:{...P.skills},
         fused:P._fused||{},skProf:P._skProf||{},fuseProfSec:P._fuseProfSec||{},cardProf:P._cardProf||{},catProf:P._catProf||{},
         activeChargeSk:P.activeChargeSk||'charge',

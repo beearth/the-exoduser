@@ -256,3 +256,76 @@ html.cr-relic-art-missing-1 .cr-relic-inline[data-sheet="1"] .cr-relic-fallback,
 #invPanel .inv-cr-socket[data-filled=true]::after{inset:10%;background:radial-gradient(circle,color-mix(in srgb,var(--socket-gem,#c8ad76) 70%,#fff) 0,color-mix(in srgb,var(--socket-gem,#c8ad76) 45%,transparent) 38%,transparent 72%);z-index:0;}
 #invPanel .inv-cr-socket[data-filled=true] .inv-cr-gem{position:relative;z-index:1;}
 #invPanel .inv-cr-socket[data-filled=true]{box-shadow:0 0 calc(var(--sock) * .3) color-mix(in srgb,var(--socket-gem,#c8ad76) 55%,transparent),0 3px 6px #000c;}
+
+/* 2026-10-08 3차: 고정 5홈 배치 — 아이템 그림 위 중앙+4모서리, 채움 순서 1중앙→2좌상→3우상→4좌하→5우하.
+   현재 홈 수 밖의 자리는 막힌 구멍(img/ui/gem_socket_sealed_v1.png) — 소켓석으로 개방.
+   홈 품질(q) 티어 그룹 틴트: T10-9 흑철(원본) / T8-7 청동 / T6-5 은 / T4-3 금 / T2-1 지옥불. */
+#invPanel .inv-cr-equipment-sockets{--sock:clamp(24px,30cqi,78px);position:absolute;top:calc(13px + 3%);bottom:3%;left:3%;right:3%;width:auto;max-width:none;margin:0;transform:none;padding:0;display:block;min-height:0;background:none;border-radius:0;}
+#invPanel .inv-cr-equipment-card:has(.inv-cr-socket) .inv-cr-equipment-icon{filter:brightness(.62) saturate(.85);}
+#invPanel .inv-cr-equipment-card:has(.inv-cr-socket):hover .inv-cr-equipment-icon{filter:none;}
+#invPanel .inv-cr-socket,
+#invPanel .inv-cr-socket[data-filled=false],
+#invPanel .inv-cr-socket[data-filled=true]{position:absolute;margin:0;box-shadow:0 4px 10px #000d,0 0 0 1px #0008;}
+#invPanel .inv-cr-socket[data-filled=true]{box-shadow:0 0 calc(var(--sock) * .3) color-mix(in srgb,var(--socket-gem,#c8ad76) 60%,transparent),0 4px 10px #000d;}
+/* 5점 고정 배치 */
+#invPanel .inv-cr-socket[data-pos=c]{left:50%;top:50%;transform:translate(-50%,-50%);width:calc(var(--sock) * 1.14);height:calc(var(--sock) * 1.14);min-width:0;}
+#invPanel .inv-cr-socket[data-pos=tl]{left:0;top:0;}
+#invPanel .inv-cr-socket[data-pos=tr]{right:0;top:0;}
+#invPanel .inv-cr-socket[data-pos=bl]{left:0;bottom:0;}
+#invPanel .inv-cr-socket[data-pos=br]{right:0;bottom:0;}
+#invPanel .inv-cr-socket[data-pos=c]:not(:disabled):hover{transform:translate(-50%,-50%) scale(1.06);}
+#invPanel #invCrystalsPanel[data-gem-dragging=true] .inv-cr-socket[data-pos=c][data-drop-target=true]{transform:translate(-50%,-50%) scale(1.14);}
+/* 홈 베젤 아트는 ::before 오버레이로 그리고 티어 그룹별 CSS 필터 틴트 */
+#invPanel .inv-cr-socket::before{content:'';position:absolute;inset:0;z-index:0;background:url('img/ui/gem_socket_v1.png') center/100% 100% no-repeat;pointer-events:none;}
+#invPanel .inv-cr-socket[data-grp=bronze]::before{filter:sepia(.9) saturate(1.9) hue-rotate(-14deg) brightness(.98);}
+#invPanel .inv-cr-socket[data-grp=silver]::before{filter:saturate(.22) brightness(1.42) contrast(1.05);}
+#invPanel .inv-cr-socket[data-grp=gold]::before{filter:sepia(.9) saturate(2.4) hue-rotate(-6deg) brightness(1.24);}
+#invPanel .inv-cr-socket[data-grp=hell]::before{filter:sepia(1) saturate(3.2) hue-rotate(-28deg) brightness(1.18) drop-shadow(0 0 calc(var(--sock) * .1) #ff6a35);}
+#invPanel .inv-cr-socket[data-grp=gold]{box-shadow:0 0 0 1px #a8832f88,0 0 calc(var(--sock) * .16) #e8c26855,0 4px 10px #000d;}
+#invPanel .inv-cr-socket[data-grp=hell]{box-shadow:0 0 0 1px #a8431f,0 0 calc(var(--sock) * .22) #ff7a4577,0 4px 10px #000d;animation:invSockHell 2.4s ease-in-out infinite;}
+@keyframes invSockHell{50%{box-shadow:0 0 0 1px #c85a2a,0 0 calc(var(--sock) * .36) #ff8a50aa,0 4px 10px #000d;}}
+#invPanel .inv-cr-socket .inv-cr-gem{position:relative;z-index:1;}
+/* 홈 티어 숫자 명판 (Cinzel) */
+#invPanel .inv-cr-socket-tier{position:absolute;right:-7%;bottom:-6%;z-index:2;padding:0 3px;font-family:'Cinzel',var(--font-hell-title,serif);font-size:clamp(8px,calc(var(--sock) * .24),12px);font-weight:700;line-height:1.5;color:#dfd6c2;background:linear-gradient(#20242a,#0c0f13);border:1px solid rgba(164,147,115,.5);border-radius:3px;box-shadow:0 1px 3px #000c;pointer-events:none;}
+#invPanel .inv-cr-socket[data-grp=bronze] .inv-cr-socket-tier{color:#e2b184;}
+#invPanel .inv-cr-socket[data-grp=silver] .inv-cr-socket-tier{color:#edf1f5;}
+#invPanel .inv-cr-socket[data-grp=gold] .inv-cr-socket-tier{color:#f2d388;}
+#invPanel .inv-cr-socket[data-grp=hell] .inv-cr-socket-tier{color:#ffb088;text-shadow:0 0 6px #ff6a35aa;}
+/* 막힌 구멍 — 소켓석 선택 시 다음 자리만 열림 표시 */
+#invPanel .inv-cr-socket-sealed::before{background:url('img/ui/gem_socket_sealed_v1.png') center/100% 100% no-repeat;filter:brightness(.8);}
+html.gem-sealed-art-missing #invPanel .inv-cr-socket-sealed::before{background:url('img/ui/gem_socket_v1.png') center/100% 100% no-repeat;filter:brightness(.4) saturate(.2);}
+#invPanel .inv-cr-socket.inv-cr-socket-sealed:disabled{opacity:.5;filter:none;}
+#invPanel .inv-cr-socket-sealed[data-next=true]:not(:disabled){opacity:1;cursor:pointer;box-shadow:0 0 0 2px #c8b17a,0 0 calc(var(--sock) * .35) #e2bd76,0 4px 10px #000d;animation:invSockPulse 1.6s ease-in-out infinite;}
+#invPanel .inv-cr-socket-sealed[data-next=true]:not(:disabled)::before{filter:brightness(1.02);}
+/* 승급 가능 홈(선택한 소켓석보다 낮은 품질) 하이라이트 */
+#invPanel .inv-cr-socket[data-upgradable=true]{cursor:pointer;box-shadow:0 0 0 2px #c8b17a,0 0 calc(var(--sock) * .3) #e2bd76aa,0 4px 10px #000d;}
+/* 소켓석 진열대 (보석함 아래) */
+#invPanel .inv-cr-collection{grid-template-rows:auto minmax(100px,1fr) auto 208px;}
+#invPanel .inv-cr-stones{border:1px solid #856d465c;background:radial-gradient(ellipse at 50% 0,#3c2f1a22,transparent 70%),#07090d;box-shadow:inset 0 0 0 3px #020508;padding:7px 9px 8px;}
+#invPanel .inv-cr-stones-head{display:flex;justify-content:space-between;align-items:center;padding-bottom:5px;}
+#invPanel .inv-cr-stones-title{margin:0;font:600 12px/1.3 'Noto Serif KR',serif;letter-spacing:.1em;color:#cbb892;}
+#invPanel .inv-cr-stones-count{font-size:10px;color:#a79a82;border:1px solid #7a644444;background:#080b0dd0;padding:2px 8px;}
+#invPanel .inv-cr-stones-grid{display:flex;flex-wrap:wrap;gap:6px;max-height:94px;overflow-y:auto;scrollbar-width:thin;}
+#invPanel .inv-cr-stones-grid .inv-cr-note{margin:2px 0;font-size:10px;color:#8d897d;}
+#invPanel .inv-cr-stone{position:relative;width:58px;height:64px;padding:0;border:1px solid #64573f80;background:linear-gradient(145deg,#1b2125,#0a0e12 70%);box-shadow:inset 0 0 0 2px #060a0d,0 2px 4px #0008;cursor:pointer;}
+#invPanel .inv-cr-stone-art{position:absolute;left:50%;top:42%;transform:translate(-50%,-50%);width:30px;height:30px;clip-path:polygon(50% 0,93% 25%,100% 62%,72% 100%,28% 100%,0 62%,7% 25%);background:linear-gradient(135deg,#fff3 0,transparent 32%,#0007 78%),linear-gradient(160deg,var(--stone-hi,#8d949c),var(--stone-lo,#33383e));box-shadow:inset 0 1px 1px #fff4,inset 0 -2px 3px #0009;}
+#invPanel .inv-cr-stone[data-grp=iron]{--stone-hi:#9aa0a8;--stone-lo:#2f343a;}
+#invPanel .inv-cr-stone[data-grp=bronze]{--stone-hi:#d19a5c;--stone-lo:#4c2f16;}
+#invPanel .inv-cr-stone[data-grp=silver]{--stone-hi:#e7edf3;--stone-lo:#596572;}
+#invPanel .inv-cr-stone[data-grp=gold]{--stone-hi:#f2d388;--stone-lo:#6e4e18;}
+#invPanel .inv-cr-stone[data-grp=hell]{--stone-hi:#ffa76a;--stone-lo:#731f0a;}
+#invPanel .inv-cr-stone[data-grp=hell] .inv-cr-stone-art{box-shadow:inset 0 1px 1px #fff5,inset 0 -2px 3px #0009,0 0 10px #ff6a3588;}
+#invPanel .inv-cr-stone-tier{position:absolute;top:2px;left:4px;font-family:'Cinzel',var(--font-hell-title,serif);font-size:10px;font-weight:700;color:#dfd6c2;}
+#invPanel .inv-cr-stone-q{position:absolute;bottom:2px;left:4px;font-size:9px;color:#b9ac92;font-variant-numeric:tabular-nums;}
+#invPanel .inv-cr-stone-count{position:absolute;bottom:2px;right:4px;font-size:10px;color:#e6d6ad;font-variant-numeric:tabular-nums;}
+#invPanel .inv-cr-stone[aria-pressed=true]{border-color:#d5b67a;box-shadow:inset 0 0 0 2px #11100b,inset 0 0 14px #b4914833,0 0 10px #caa06240;}
+#invPanel .inv-cr-stone:hover{border-color:#b09a6a;}
+#invPanel .inv-cr-stone:focus-visible{outline:2px solid #f2dbac;outline-offset:2px;}
+/* 소켓석 선택 중 장비 카드 상태: add(홈 추가 가능)/upgrade(승급만)/none(불가) */
+#invPanel .inv-cr-equipment-card[data-stone-state=add]{border-color:#dfc77e;box-shadow:inset 0 0 0 2px #090d10,inset 0 0 0 3px #b9a36235,0 0 13px #d1b76b34;cursor:pointer;opacity:1;}
+#invPanel .inv-cr-equipment-card[data-stone-state=upgrade]{border-color:#b6945e;box-shadow:inset 0 0 0 2px #090d10,0 0 9px #c8a25d22;opacity:1;}
+#invPanel .inv-cr-equipment-card[data-stone-state=none]{opacity:.45;}
+/* 보석 칸 품질 티어 배지 */
+#invPanel .inv-cr-q{position:absolute;top:5px;right:5px;font-family:'Cinzel',var(--font-hell-title,serif);font-size:9px;font-weight:700;color:#cbb892;}
+@media(max-width:900px){#invPanel .inv-cr-socket-tier{font-size:8px;}#invPanel .inv-cr-stone{width:50px;height:58px;}}
+@media(prefers-reduced-motion:reduce){#invPanel .inv-cr-socket[data-grp=hell],#invPanel .inv-cr-socket-sealed[data-next=true]:not(:disabled),#invPanel .inv-cr-socket[data-upgradable=true]{animation:none!important;}}

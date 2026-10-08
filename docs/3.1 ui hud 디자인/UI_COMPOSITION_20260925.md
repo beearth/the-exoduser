@@ -2783,3 +2783,19 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 아이템 그림 | 부위 공통 그림 | 유니크 원화 `img/ui/unique-items/ui-XX.png`(암자두 카드 바탕), 월드 드롭은 rembg 투명본 `ui-XX_cut.png` | `_itemSkin`, `_worldItemSkin` |
 
 1600×900 실측: 가방에서 유니크는 암자두 카드+자수정 테두리로 전설(금)·영웅(밝은 자홍)과 구분, 월드 드롭은 배경 판 없이 표시. 드롭 빛기둥 색은 기존 빔 시트 그대로(미변경).
+
+## 2026-10-08 보석 탭 소켓석·5홈 고정 배치 — 현행 SSOT
+
+2026-10-08 소켓 리디자인(위 절)의 후속. 시스템 규칙·수치: `docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md` §보석 품질·소켓석, `docs/14밸런스+수치테이블/보석품질_소켓석_수치표.md`.
+
+| 항목 | 계약 |
+|---|---|
+| 5홈 고정 배치 | 장착 카드마다 제목 아래 아이템 그림 위 **항상 5자리**: 중앙(#1, ×1.14 확대)+좌상(#2)+우상(#3)+좌하(#4)+우하(#5), `data-pos=c/tl/tr/bl/br` 절대 배치. 컨테이너 `.inv-cr-equipment-sockets` absolute(top 13px+3%/인셋 3%), `--sock:clamp(24px,30cqi,78px)` — 카드 container 단위라 1280×720에서도 24px 이상 |
+| 소켓 아트 | 열린 홈 `img/ui/gem_socket_v1.png`(element bg + `::before` 오버레이), 막힌 자리 `.inv-cr-socket-sealed`는 `::before`를 `img/ui/gem_socket_sealed_v1.png`(256×256 RGBA)로 교체, brightness .8 감광. 아트 실패 시 `html.gem-sealed-art-missing` 프로브 폴백(v1 감광) |
+| 티어 틴트 | 홈 품질 티어 그룹별 `data-grp` CSS 필터: T10~9 iron(원본)/T8~7 bronze(sepia)/T6~5 silver(desat+bright)/T4~3 gold(sepia+bright)/T2~1 hell(적금 발광+`invSockHell` 펄스, reduced-motion 시 정지) |
+| 티어 명판 | 홈 우하단 `.inv-cr-socket-tier` — Cinzel(`var(--font-hell-title)`), `T{n}`, 뼈색 #dfd6c2 기본·그룹별 색, 흑철 그라데이션판+금빛 헤어라인(rgba(164,147,115,.5)) |
+| 소켓석 진열대 | 보석함 그리드 아래 `.inv-cr-stones`(collection 4행 grid: head/grid/stones/detail 208px). 돌은 정확 q 그룹 버튼: CSS 칠각 보석 아트(`--stone-hi/lo` 그룹색), 좌상 `T{n}`(Cinzel)·좌하 `q{n}`·우하 `×{개수}`. 선택 시 금빛 테두리+발광 |
+| 선택 상태 | 돌 선택 중 카드 `data-stone-state=add/upgrade/none`(금빛 강조/보조 강조/45% 감광), **다음 막힌 홈만** `data-next=true` 금빛 펄스, 5홈 장비의 승급 가능 홈 `data-upgradable=true` 강조. 보석 선택과 상호 배타 |
+| 보석 품질 표기 | 보석함 칸 우상단 `.inv-cr-q` `T{n}`(Cinzel 9px), 상세 메타에 `품질 {q} · {t}티어`, 홈 보너스 줄 `홈 보너스 +{p}%`·`공명 ×2`. 피커·대장간 행에 보조 `q{n}` 수치 |
+| 캐시 | `inventory-gems-finish.css?v=20261008-socket-stones1` (game.html만 — 쉬운판은 이 CSS 미로드, 간이 툴팁 적용줄 사용) |
+| 폰트·색 규율 | 게임 토큰만(Cinzel/var(--font-hell-title), Noto Serif KR 제목) — 이모지 아이콘 없음, 뼈색 문자·금빛 헤어라인·흑철 배경 유지 |
