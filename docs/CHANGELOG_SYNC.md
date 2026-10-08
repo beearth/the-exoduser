@@ -56630,3 +56630,10 @@ working4114319B/`1a6577ef27e10d2679d93068761cd45eb1e252ac2d247241f693eab5ceace52
 `ROOT-MALICEHUNT-FAILURE-ADMISSION-20261008`: 본편 `activateMaliceHunt`의 거절5접점은 false, 기존 단독/합체 정상 공통 tail은 true로 연결했다. dispatcher는 strict true일 때만 기존 CD `max(600,trunc(900*(1+cdRed)))`와 성공 숙련을 승인한다. helper 직접 숙련0/dispatcher1회이며 metadata300→정상5초 환산은 실제 CD15초/최소10초와 별개다. 추적전격 선행 재입력 우선/추가 자원·숙련0은 유지한다. 실패 전 bladeEchoCast/Ready 변경과 부분 예외 prefix를 전부 원자적 불변으로 주장하지 않는다.
 
 7hunk/+57B, working4114627B/`b8d94f5b0009aad1e0137901bded23b7a6dc631edbe44c444f0013339bf4b830`, owned4114442B/`4a2fbad7bcc1a052d4c66e22c1a8ca132e6f6d2ffe8521299214c7c4ddeacbda`. inverse exact/foreign185B 보존은 ROOT implementation receipt 기준이다. CPU: First actual-source CPU Node1/newFunction2/fixture38/VM0: 26 cases PASS (25 dynamic, 1 static), FAIL/setup/unreached/instrumented-unhandled0, exit0; before ST49 CD900/prof5 witness1 separate. Original harness reporting/2 error oracles corrected before execution; no old suite replay.. native NOT_RUN/UI NOT_ASSESSED/전체 RETOUCH. 비용·피해·투사체·RNG·저장 변경0, easy/옛 감사·검수와 합산0. 상세 현재 계약은 2_1 스킬본문·자원공식·자원게이트 감사·추적전격 정본의 같은 작업 절과 외부 `ch1-malicehunt-admission-20261008` 영수증을 따른다. 최종 Git는 ROOT completion으로 확정한다.
+
+
+## 2026-10-08 메인 Rift 둘러보기 지면 선명도 기본값
+
+**ROOT-MAIN-RIFT-VIEW-SHARPNESS-CONSUMER-20261008**: `tools/2_5d-world-lab.mjs`60,594B/`3a5b3e650a99f36e5734d5539ea80e27f58d85f8a40315bb628951c2bd315960`의 초기terrain 앞1hunk/+48B로 view-only의 기존 plate-sharpness 요청값0.5만 연결했다. standalone/clearhost HTML 기본0 유지(브라우저 form restore 강제0 아님). 기존 ground RGB17 samples/픽셀별 derivative minification 원plate 폴백을 재사용하며 effective0.5≠pixel ACK, 원1254→world8000의 없는 디테일 복원0/절벽·뿌리 개선 미인수다.
+
+새CPU·Chrome·PNG0/native NOT_RUN/UI NOT_ASSESSED/RETOUCH; oldAB153·GUI13 재실행·합산0. 사용자 IAB14 viewOnly100% 미재로드·무조작, live 반영 주장0/다음 정상 재진입 소비다. CH1 외곽 썩은강·다른 적합 지역 용암은 NEXT PASS/이번구현0이며 좌표·geometry·배치·에셋 미확정이다. 현재 범위별 override와 §23 전체는 `HELL_RIFT_2_5D_SLICE_20261006.md`의 같은 TASK 절이 권위이며, 이전 defaultOFF/sourcepin은 해당 epoch 이력으로 보존한다. ROOT Git 보존은 별도 완료 영수증 확정 전 PENDING이다.

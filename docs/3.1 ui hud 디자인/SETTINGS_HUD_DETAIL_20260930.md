@@ -236,3 +236,12 @@ Node 후보 연결과 root 보강 회귀61PASS. 게임 생성/드롭/저장라�
 검수는 실제 controller를 통제 DOM·MutationObserver·ResizeObserver·animation event에 연결한 Node1/VM9, 새6그룹25조건 PASS/FAIL0/준비실패0/미도달0/exit0이다. 이전 view zoom CPU25와 별도 epoch이며 합산하지 않는다. 새 Chrome/GPU/PNG0, native NOT_RUN, 이번 UI 시각 NOT_ASSESSED, 전체 **VISUAL VERDICT: RETOUCH**다. 사용자 IAB13의 이전 로드 화면은 재로드 없이 유지했다. 세부 계약·가이드 §23은 [MAP_RUNTIME_ARCHITECTURE](<../4.1맵디자인+설정/MAP_RUNTIME_ARCHITECTURE.md>)의 같은 TASK 절을 따른다.
 
 제목과 regionBanner의 실제 겹침 및 640×720/1280×720 KO/EN 전체 animation·font/resize/언어·viewport fit은 아직 NOT_ASSESSED다. 기존 시작제목 겹침 RETOUCH를 현재 화면 개선 PASS로 바꾸지 않는다.
+
+
+## 2026-10-08 메인 Rift 둘러보기 지면 선명도 기본값
+
+**ROOT-MAIN-RIFT-VIEW-SHARPNESS-CONSUMER-20261008**는 숨겨진 기존 `plate-sharpness` select의 view-only 최초 요청값만0.5로 연결한다. 기존 −/+ 줌 leaf와80..220/step5/기본100% 계약은 유지하며 별도 사용자 설정UI를 추가하지 않는다. standalone·clearhost는 HTML 기본0이고 form restore 강제0는 주장하지 않는다. 기존 Number→terrain 소비/change handler/snapshot 유지, 1hunk/+48B다.
+
+소스는60,594B / SHA256 `3a5b3e650a99f36e5734d5539ea80e27f58d85f8a40315bb628951c2bd315960`이다. effective0.5는 픽셀 ACK가 아니며 minification은 원plate 폴백이다. oldAB153/GUI13은 이전 epoch로 보존·재검수/합산0. 새 CPU/Chrome/PNG0, native NOT_RUN/UI NOT_ASSESSED/전체 RETOUCH. 열린 IAB14 view-only100%는 무조작·미재로드이고 다음 정상 재진입 소비이며 live 적용 주장은0이다.
+
+현재 정적 계약과 §23 전 항목은 [HELL_RIFT_2_5D_SLICE](<../4.1맵디자인+설정/HELL_RIFT_2_5D_SLICE_20261006.md>)의 같은 TASK 절을 따른다. CH1 외곽 썩은강/다른 적합 지역 용암은 다음 제안이며 구현·stage/좌표/geometry/배치/에셋 확정0이다.

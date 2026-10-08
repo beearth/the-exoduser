@@ -2122,3 +2122,47 @@ root freshness-matching.png/freshness-after-out.png 직접판독2. 후자는첫f
 | NEXT PASS | 별도 승인된 격리 view 세션에서 native 범위/끝점/focus/컨트롤 배치 검수. 사용자 IAB13 강제 reload/중복0. 본편 정상 보스개방/death/revive/retry/audio/reward/save 인수는 별도 미완료. |
 
 근거는 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/main-rift-view-zoom-20261008`의 `validation-receipt.json`1236B/`e92f4a1c24fd4271f0663c4d72a3dcbfb72f66699cfc452924be982730b14e8f`, `cpu-result.json`3776B/`a48a7d172cdef5a83cb5126c57dfd237328c22d76bbb1bc1d0bdcaef50392bce`, `source-peer-review.json`18147B/`411cb174ff05f146a3bd66ba715d4cf5207659447ca5983dc44a43306836265f`, `visual-verdict.json`3495B/`7ce66d415ecb0c4ca951e8d633bf06b70e893d27f65d3c531d59bd2acdca7f80`다. 최종 소스는 7hunk/원 before 역변환 exact이며, 문서 담당의 새 제품 실행/Git0이다. 원총괄 Git 보존은 문서 작성 시 예정 상태로서 commit/push 완료를 미리 주장하지 않는다.
+
+
+## 2026-10-08 메인 Rift 둘러보기 지면 선명도 기본값
+
+이번 기록은 **ROOT-MAIN-RIFT-VIEW-SHARPNESS-CONSUMER-20261008**의 현재 소비 범위다. 기존 ROOT-RIFT-PLATE-SHARPNESS-AB-20261007의 default OFF와 153 CPU/13 GUI 조건은 당시 소스의 이력으로 보존한다. 아래 view-only 기본값이 현재 해당 범위에서 우선하며, 그 옛 검수를 다시 실행하거나 이번 소스의 성공 수로 합산하지 않았다.
+
+| 항목 | 현재 계약 |
+|---|---|
+| 제품 소스 | `tools/2_5d-world-lab.mjs` 60,594B / SHA256 `3a5b3e650a99f36e5734d5539ea80e27f58d85f8a40315bb628951c2bd315960` |
+| 변경 | 초기 terrain 생성 직전 `if(viewOnly)$('plate-sharpness').value='0.5';` 한 줄, 1hunk/+48B |
+| 범위별 요청값 | view-only에서 최초 생성 요청값0.5. standalone·기존 clearhost는 HTML 기본값0 유지; 브라우저 자체 form restore까지 강제로0이라는 주장은 하지 않는다 |
+| 기존 소비 | 기존 select 값을 Number로 factory에 전달하며 change handler·snapshot·setter 계약은 그대로다. 줌100%와 선명도0.5는 서로 다른 값이다 |
+| 원본 한계 | 등록1254×1254 plate를8000×8000 world에 사용한다. 기존 ground RGB의 Catmull-Rom16 추가 탭과 원본1=활성17 samples; 원본에 없는 디테일 생성·복원0 |
+| 픽셀별 폴백 | 기존 derivative의 양축 footprint가 >0 및 ≤1인 확대 RGB에만 적용. uniform effectiveStrength0.5도 각 축소 픽셀에서는 원plate를 읽을 수 있어 실제 픽셀 ACK가 아니다. 미지원 renderer/chunk/derivative 등의 기존 폴백 유지 |
+| 유지 | 원PNG/scene/nav/지형geometry/배치/actor 크기·카메라/입력·대사·보상·저장 권한 변경0. ground-only이며 절벽·뿌리·전경의 흐림 개선은 미인수 |
+| 정적 검토 | 기존 초기화/select/factory/setter/compile guards를 읽은 저위험 기본값 연결 검토. ROOT source-contract peer blocking0; 새 테스트·Node CPU·Chrome/GPU·PNG0, native NOT_RUN |
+| 현재 화면 | 사용자 IAB14의 view-only100% 이전 로드 화면은 reload/입력/닫기/복제0. 이번 기본값의 live 반영을 주장하지 않으며 다음 정상 재진입에서 새 child가 소비한다 |
+| 시각·한계 | 이번 UI NOT_ASSESSED / VISUAL VERDICT: RETOUCH. 실제 픽셀·성능·전체8카메라·route/native6/청취·durable save/A급 미인수 |
+| 다음 사용자 방향 | CH1 외곽 썩은강 방향과 다른 적합 지역의 용암 방향은 NEXT PASS다. 이번 구현0이며 stage/좌표/geometry/배치/에셋을 확정하지 않는다 |
+
+ROOT 근거는 외부 `main-rift-view-sharpness-consumer-20261008/implementation-receipt.json`, `validation-receipt.json`, `visual-verdict.json` 및 `final-delta-review.json`의 정적 검토다. 공식 원문2건은 미채택 보존 뒤 일부 소스 계약에만 소비했으며 원문 존재를 제품 실행·시각 완료로 세지 않는다.
+
+### §23 MAP PRODUCTION REPORT
+
+| 표준 항목 | 이번 범위의 보고 |
+|---|---|
+| STAGE | 기존 실제 main의 Rift view-only child; 등록 지면 RGB 확대 재구성 요청 기본값0.5 |
+| MASTER PLAN — silhouette / regions / main route / side spaces | 기존 등록 실루엣·지역·남쪽 START→북쪽 EXIT 보존. 곁공간 변경0. 제작 순서 MASTER→LARGE OUTER MASS→MEDIUM CONNECTION→GROUND CONNECTION→PLAYABLE/COMBAT→LANDMARK/CENTER→SMALL DETAIL→CAMERA QA→TECH QA를 유지하며 이번에는 기존 ground 소비 기본값만 연결 |
+| OUTER MASS — LEFT / RIGHT / TOP / SOUTH / major holes | 네 외곽 변경0/새 시각 미평가. 큰 빈 공간의 해결 인수0; 썩은강·용암은 다음 단계 제안 |
+| LARGE — source assets / composites / overlap / repeated silhouette | 신규 에셋·합성0. 겹침·반복 실루엣 새 평가0 |
+| MEDIUM — connections / remaining holes | 연결 변경0, 남은 구멍 새 평가0 |
+| GROUND — shadow / contamination / structure integration | 기존 그림자·구조 접지 유지. 등록 plate RGB 확대 재구성 기본값만0.5; 절벽·뿌리·전경 재구성0 |
+| PLAYABLE — main arenas / travel / breathing / threat / combat readability | 전투장·이동·휴식·위협 공간 변경0. 충돌/nav/전투 불변; 새 화면 전투 가독성 미평가 |
+| LANDMARK — primary / secondary / tertiary | 세 단계 랜드마크 변경0/새 시각 미평가 |
+| CAMERA QA — START / EARLY / ARENA / SIDE_L / SIDE_R / LANDMARK / LATE / EXIT | 모두 이번 native NOT_RUN. 기본 camera·줌·actor 좌표/크기 변경0 |
+| TECH QA — route / collision / pageerror / HTTP404 / seam / loading / performance | 새 route/실충돌 검수0, 충돌 코드 변경0. 새소스 pageerror/404/seam 미평가. loading은 초기 select→factory 정적 계약만. 활성17 samples의 새 GPU 비용 측정0 |
+| FILES — stage owned / concurrent touched / unrelated touched | 제품 소유는 world-lab1hunk와 이번 최소 관련 정본 append 계획. game foreign185B/3.3 foreign2948B는 미채택 보존; 타인 WIP 변경·회수0, unrelated 변경0 |
+| GIT — staged / commit / push / deploy | 이 계획 단계 repo append·stage·commit·push·deploy0. 최종 Git은 ROOT의 별도 완료 영수증으로만 확정 |
+| VISUAL VERDICT | RETOUCH; 새 source UI NOT_ASSESSED/native NOT_RUN. 자동·정적 계약 확인을 VISUAL PASS로 대체하지 않음 |
+| NEXT PASS | 현재 stage SSOT/LOCK에 따라 CH1 썩은강과 적합한 타지역 용암 외곽 방향을 구체화한다. 이번 위치/geometry/asset 승인0. 다음 정상 재진입의 실제 지면 가독성 확인은 별도 검수 범위이며 열린 tab14 자동 재로드0 |
+
+거절·보호 경계: held WOLF/STORY/tree-card 후보 payload의 내용·hash 추가 접근0, 거절된 ART 선택 목적의 우회0, 신규 원화·원PNG 생성/변환0. 기존 등록 scene/nav/원PNG와 stage LOCK 수치를 그대로 보존한다.
+
+이전 WOLF 파일 쓰기는 자동 승인 검토에서 `dangerous`로 거절됐으며 구체 사유는 제공되지 않았다. 해당 목적을 우회하지 않고 허용된 현재 표시 소비자만 작업한다.

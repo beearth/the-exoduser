@@ -626,6 +626,7 @@ try{
   scene=new THREE.Scene();scene.background=new THREE.Color(0x080e11);
   camera=new THREE.OrthographicCamera(-3,3,1.75,-1.75,.01,100);
   const angle=50*Math.PI/180;camera.position.set(0,Math.sin(angle)*16,Math.cos(angle)*16);camera.lookAt(0,0,0);
+  if(viewOnly)$('plate-sharpness').value='0.5';
   terrain=takeInitialized(await createRiftTerrain({THREE,angle:50,scale:400,renderer,plateSharpness:Number($('plate-sharpness').value)}),'terrain');scene.add(terrain.object3d);
   // Compile all authored foreground materials, including offscreen cutouts, once.
   renderer.compile(terrain.object3d,camera);

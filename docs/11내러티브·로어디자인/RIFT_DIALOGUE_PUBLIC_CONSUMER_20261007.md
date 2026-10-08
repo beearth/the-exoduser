@@ -1145,3 +1145,26 @@ NEXT PASS: alpha-aware 보수적 셀 점유 source/API 계약·원자료 수치�
 근거는 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/main-rift-view-zoom-20261008`의 `validation-receipt.json`1236B/`e92f4a1c24fd4271f0663c4d72a3dcbfb72f66699cfc452924be982730b14e8f`, `cpu-result.json`3776B/`a48a7d172cdef5a83cb5126c57dfd237328c22d76bbb1bc1d0bdcaef50392bce`, `source-peer-review.json`18147B/`411cb174ff05f146a3bd66ba715d4cf5207659447ca5983dc44a43306836265f`, `visual-verdict.json`3495B/`7ce66d415ecb0c4ca951e8d633bf06b70e893d27f65d3c531d59bd2acdca7f80`다. 최종 소스는 7hunk/원 before 역변환 exact이며, 문서 담당의 새 제품 실행/Git0이다. 원총괄 Git 보존은 문서 작성 시 예정 상태로서 commit/push 완료를 미리 주장하지 않는다.
 
 코드후 docs 전체 관련 검색 최초1회는43경로/142행/184 occurrence다. 보호2_3/설정3.3 및 거대 owner 본문·해시는 제외/path-only, 그 외 텍스트 이력은 검색범위에 포함했다. 43문서 전수 완독 주장은 없다. 직접 관련 정본4에만 추가하며, MASTER/SSOT의 이전 view 작업 핀은 해당 epoch로 보존하고 최신 계약은 이4정본을 따른다. 선행 준비 source핀 불일치1은 검색0/제품0/백업0의 준비 중단이며, 최종9e82 ACK 뒤 검색을 최초1회 수행했다.
+
+
+## 2026-10-08 메인 Rift 둘러보기 지면 선명도 기본값
+
+이번 기록은 **ROOT-MAIN-RIFT-VIEW-SHARPNESS-CONSUMER-20261008**의 현재 소비 범위다. 기존 ROOT-RIFT-PLATE-SHARPNESS-AB-20261007의 default OFF와 153 CPU/13 GUI 조건은 당시 소스의 이력으로 보존한다. 아래 view-only 기본값이 현재 해당 범위에서 우선하며, 그 옛 검수를 다시 실행하거나 이번 소스의 성공 수로 합산하지 않았다.
+
+| 항목 | 현재 계약 |
+|---|---|
+| 제품 소스 | `tools/2_5d-world-lab.mjs` 60,594B / SHA256 `3a5b3e650a99f36e5734d5539ea80e27f58d85f8a40315bb628951c2bd315960` |
+| 변경 | 초기 terrain 생성 직전 `if(viewOnly)$('plate-sharpness').value='0.5';` 한 줄, 1hunk/+48B |
+| 범위별 요청값 | view-only에서 최초 생성 요청값0.5. standalone·기존 clearhost는 HTML 기본값0 유지; 브라우저 자체 form restore까지 강제로0이라는 주장은 하지 않는다 |
+| 기존 소비 | 기존 select 값을 Number로 factory에 전달하며 change handler·snapshot·setter 계약은 그대로다. 줌100%와 선명도0.5는 서로 다른 값이다 |
+| 원본 한계 | 등록1254×1254 plate를8000×8000 world에 사용한다. 기존 ground RGB의 Catmull-Rom16 추가 탭과 원본1=활성17 samples; 원본에 없는 디테일 생성·복원0 |
+| 픽셀별 폴백 | 기존 derivative의 양축 footprint가 >0 및 ≤1인 확대 RGB에만 적용. uniform effectiveStrength0.5도 각 축소 픽셀에서는 원plate를 읽을 수 있어 실제 픽셀 ACK가 아니다. 미지원 renderer/chunk/derivative 등의 기존 폴백 유지 |
+| 유지 | 원PNG/scene/nav/지형geometry/배치/actor 크기·카메라/입력·대사·보상·저장 권한 변경0. ground-only이며 절벽·뿌리·전경의 흐림 개선은 미인수 |
+| 정적 검토 | 기존 초기화/select/factory/setter/compile guards를 읽은 저위험 기본값 연결 검토. ROOT source-contract peer blocking0; 새 테스트·Node CPU·Chrome/GPU·PNG0, native NOT_RUN |
+| 현재 화면 | 사용자 IAB14의 view-only100% 이전 로드 화면은 reload/입력/닫기/복제0. 이번 기본값의 live 반영을 주장하지 않으며 다음 정상 재진입에서 새 child가 소비한다 |
+| 시각·한계 | 이번 UI NOT_ASSESSED / VISUAL VERDICT: RETOUCH. 실제 픽셀·성능·전체8카메라·route/native6/청취·durable save/A급 미인수 |
+| 다음 사용자 방향 | CH1 외곽 썩은강 방향과 다른 적합 지역의 용암 방향은 NEXT PASS다. 이번 구현0이며 stage/좌표/geometry/배치/에셋을 확정하지 않는다 |
+
+ROOT 근거는 외부 `main-rift-view-sharpness-consumer-20261008/implementation-receipt.json`, `validation-receipt.json`, `visual-verdict.json` 및 `finaldelta`의 정적 검토다. 공식 원문2건은 미채택 보존 뒤 일부 소스 계약에만 소비했으며 원문 존재를 제품 실행·시각 완료로 세지 않는다.
+
+§23 전체와 WOLF/held 보호 경계는 [HELL_RIFT_2_5D_SLICE](<../4.1맵디자인+설정/HELL_RIFT_2_5D_SLICE_20261006.md>)의 같은 TASK 절을 따른다.
