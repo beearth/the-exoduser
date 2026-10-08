@@ -1,6 +1,6 @@
 # EXODUSER ENGINE — 키프레임 모션 편집 v1
 
-2026-10-09 / ROOT-ENGINE-MOTION-EDITOR-20261009. 사용자 “우리 앤진을 좀 만들자니깐”에 따라 자체 엔진의 첫 편집/재생 기능을 구현했다. 현재 구현 범위는 transform/sprite clip 코어·관절/원본 스프라이트 편집기·명시적 factory/본편 adapter 재생 consumer와 fan sprite producer다. 본편 전체 엔진 완성, 신규 입체 모델 또는 A급 보스 완성이 아니다.
+2026-10-09 / ROOT-ENGINE-MOTION-EDITOR-20261009. 사용자 “우리 앤진을 좀 만들자니깐”에 따라 자체 엔진의 첫 편집/재생 기능을 구현했다. 현재 구현 범위는 transform/sprite clip 코어·관절/원본 스프라이트 편집기·원화 부위/회전축 편집기·명시적 factory/본편 adapter 재생 consumer와 fan sprite producer다. 본편 전체 엔진 완성, 신규 입체 모델 또는 A급 보스 완성이 아니다.
 
 ## 실제 진입점과 소유
 
@@ -181,3 +181,31 @@ Godot 공식 [애니메이션 소개](https://docs.godotengine.org/en/stable/tut
 ## 2026-10-09 — 드루이드 Slam 복귀 표시
 
 `ROOT-DRUID-SLAM-RECOVERY-CONSUMER-20261009`: 실제 pattern 시작 receipt에서 준비·실행 본체 성공을 모두 관측하고 실제 타격 prefix가 끝난 뒤만 recover의 원본 attack 셀3을 표시한다. 준비1/실행2·active8f/recover40/기존cap20·피해/RNG/FX/원PNG/save 유지. 다른 recover/취소·미관측은 기존 폴백. 실제 원PNG 통제 Canvas3PASS/반례1별도, 사용자 main 무조작/새입체·전체보스전·A급 미완료, **VISUAL VERDICT: RETOUCH**. [정확 계약](../4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md#druid-slam-recovery-20261009). 최종 근거 `E/druid-slam-recovery-consumer-20261009/completion.json`.
+
+
+<a id="engine-cutout-editor-20261009"></a>
+## 2026-10-09 — 원화 부위와 회전축 편집기
+
+`ROOT-ENGINE-CUTOUT-EDITOR-20261009`: 원본을 닮은 관절 모션을 제작하기 위한 **부위 경계·회전축 authoring 도구**를 구현했다. 합쳐진 원화를 본편에서 임의로 휘는 대신 실제 원화의 선택 영역을 지정하고 분리 상태를 확인한다. 본편 관절 모션·새 입체 모델·360° 뒷면·A급 보스 완성을 뜻하지 않는다.
+
+| 항목 | 현재 코드 계약 |
+|---|---|
+| 진입점 | `tools/engine-cutout-editor.html` → `tools/engine-cutout-editor.mjs?v=20261009-v1`; 기존3387의 `/tools/engine-cutout-editor.html`. transform/sprite 두 편집기에 진입 링크 추가 |
+| 공통 코어 | `tools/engine/cutout-rig.mjs?v=20261009-v1`: `normalizeCutoutRig`, `normalizeCutoutPose`, `cutoutBounds`, `renderCutoutRig` |
+| JSON | `format:'exoduser-cutout-rig'`, `version:1`, `name`, 고정 `source`, `parts`, 선택 `pose`. 검증 뒤 canonical deep-frozen 복사본. own-data/plain/dense array만 허용하며 accessor는 실행하지 않음 |
+| 고정 원화 | `assets/sprites/boss/boss_dark_druid_8dir_v3.png`, 전체1656×1240, crop x0/y0/414×620 첫 셀. UI는 이 경로만 로드. 코어 자체는 전달 Image의 크기만 확인하므로 다른 같은 크기 Image의 출처까지 증명하지 않음 |
+| 부위 | 최대16; `id` 비공백 문자열≤80자, `name` 비공백≤100자; polygon3..64점, `pivot:[x,y]`. x0..414/y0..620의 유한 수. 중복id·자기교차·영면적·0길이변·역행·비인접 접촉·부위 간 교차/접촉/포함 거절 |
+| 리그 이름/입력 | name 비공백≤200자; JSON 텍스트 최대1,000,000자. 좌표 입력은 .01 source pixel로 반올림 |
+| 미리보기 pose | 각 기존 부위id당 `angleDegrees` −90..90°, x −414..414/y −620..620. 누락 부위는0. pivot 기준 절대회전+XY, 누적변형 없음. bounds는 원형과 변형 polygon의 합집합 |
+| 렌더 | 무변형은 원본 셀 draw1회. 변형 시 **변경 부위만** evenodd body mask에서 빼고 각 변경 부위 clip/draw1회. 나머지 부위는 body에 그대로 포함. 빈 곳은 투명이며 새 원화를 합성하지 않음 |
+| Canvas 경계 | 매 pass save/finally restore, alpha1/source-over/filter none/shadow transparent·offset0/blur0/smoothing false. caller transform·합성·shadow 상태 복원; Canvas current path는 save/restore 대상이 아니므로 caller가 관리 |
+| UI | 점 지정→영역 닫기→축 클릭→부위 저장. 원형/편집 비교, 부위 선택/삭제, 회전/XY, pose 원형 복귀, fit. undo/redo 각40. zoom25..200%/step5/초기100%, fit padding48px·최소1px, DPR≤2 |
+| JSON 저장 | 내려받기 **요청**과 textarea JSON 표시, 검증 후 가져오기. 파일 저장 완료·durable ACK는 미확인. object URL은 pagehide에서 revoke |
+| 수명/범위 | RAF/autoplay/timer/localStorage/API/save 쓰기 없음. pagehide에서 own listeners/ResizeObserver 정리. 상하 관절 계층·timeline clip 결합·여러 방향/공격 원화 등록·본편 consumer는 미구현 |
+| 최초 native core | 실제 원PNG+브라우저 Canvas7그룹/66assertions PASS/FAIL0. canonical/polygon/한도/getter/절대bounds/원형pixel exact·caller shadow/이동·빈 영역/throw 복원을 확인. Node/VM0; 본편 실행이나 Three GPU 모델 검수가 아님 |
+| 최초 UI 순서 | 실제 점5개·pivot(314,295) 저장/12°회전/undo-redo/원형 비교/JSON/거절 보존/정상 import/삭제undo/키보드 XY21/원형복귀undo의 유효조건13PASS. selector 준비 실패1과 기존 assertion 실패3을 별도 보존하며 16clean PASS로 합산하지 않음 |
+| 검사 한계/정정 | assertion3은 JSON property 순서 비교 오라클, validation을 render-error 필드로 보던 오라클, fill20이 native change를 발생시키지 않은 입력시도다. 앞2는 이미 관측한 데이터/안내로 정정, 마지막은 실제 ArrowUp+Tab으로21 commit 관측. 제품코드 재수정/전체 suite 재실행 없음 |
+| 미리보기 산출 | own tab17에서 지팡이 표면 polygon5/pivot(314,295)/angle12°/x21/y0의 **제작중 예시**. 이동으로 드러난 빈 부분·경계가 보여 추가 분리 원화가 필요함. 새 art 파일/원PNG 수정0 |
+| 시각 판정 | **VISUAL VERDICT: RETOUCH**. 부위/축 도구의 실제 조작 확인 한정. 본편 정상 줌 대표 공격·입체 외형·전체보스전·청취·성능·실보상save·A급 미인수 |
+
+코드 후 docs 관련검색은 전체1회+초기 크기 기준으로 누락된 `CHANGELOG_SYNC.md` 한 파일만 보정: 최종1026 UTF8 text/820 Markdown,33path99line143occ. 보호2_3·거대 owner/container·binary/symlink 제외, 33전수 fullread 주장은 하지 않는다. 현행6문서에 동기화하고 나머지27path의 아이템/VFX/옛 검수·맵용 cutout 계약은 유지했다. 최종 소유 Git·첫 검사와 실패 이력·정확 핀은 `E/engine-cutout-editor-20261009/completion.json`, 실제 화면은 `final-full.png`가 우선한다.

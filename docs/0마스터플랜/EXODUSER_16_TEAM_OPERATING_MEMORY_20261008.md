@@ -180,3 +180,8 @@ ROOT-DRUID-ORIGINAL-RELIEF-20261009: 기존 rig_motion 한 담당이 신규 원�
 ## 2026-10-09 — 드루이드 Slam 복귀 표시
 
 `ROOT-DRUID-SLAM-RECOVERY-CONSUMER-20261009`: 실제 pattern 시작 receipt에서 준비·실행 본체 성공을 모두 관측하고 실제 타격 prefix가 끝난 뒤만 recover의 원본 attack 셀3을 표시한다. 준비1/실행2·active8f/recover40/기존cap20·피해/RNG/FX/원PNG/save 유지. 다른 recover/취소·미관측은 기존 폴백. 실제 원PNG 통제 Canvas3PASS/반례1별도, 사용자 main 무조작/새입체·전체보스전·A급 미완료, **VISUAL VERDICT: RETOUCH**. [정확 계약](../4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md#druid-slam-recovery-20261009). 최종 근거 `E/druid-slam-recovery-consumer-20261009/completion.json`.
+
+
+## 2026-10-09 — 원화 부위와 회전축 편집기
+
+`ROOT-ENGINE-CUTOUT-EDITOR-20261009`: 자체 엔진에 `tools/engine-cutout-editor.html`과 cutout core/UI를 추가하고 기존 두 모션 편집기에 진입 링크를 연결했다. 고정 Druid base8 첫 셀414×620에서 polygon·pivot·각도/XY·원형 비교·undo/redo40·JSON 입출력을 제작한다. 원형 native pixel exact, core7그룹66assertions PASS; UI 유효13PASS와 selector 준비1/assertion3 실패 이력은 분리 보존한다. 움직여 드러난 빈 곳은 추가 원화가 필요하다. 본편 관절 모션·새3D/360°·A급은 미완료, **VISUAL VERDICT: RETOUCH**. [정확 수치·범위](../5.0애니메이션파이프라인/EXODUSER_ENGINE_ANIMATION_20261009.md#engine-cutout-editor-20261009). 최종 근거 `E/engine-cutout-editor-20261009/completion.json`, 화면 `final-full.png`.

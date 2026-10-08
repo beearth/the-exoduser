@@ -1912,3 +1912,8 @@ VISUAL VERDICT: **RETOUCH**. 어깨 구형 윤곽을 제거했으나 얼굴/외�
 | 임시 화면 | own editor16 비교 overlay 제거 후 clip/time/frame/row/재생/dirty/zoom/history exact 유지. console warn/error0. 사용자 main14·transform15 무조작, 서버 변경0 |
 
 **VISUAL VERDICT: RETOUCH**. 최종 Gate/Git·핀·한계 정본은 `E/druid-slam-recovery-consumer-20261009/completion.json`, 실제 원화 표시 비교는 `native-three-poses.png`다.
+
+
+## 2026-10-09 — 원화 부위와 회전축 편집기
+
+`ROOT-ENGINE-CUTOUT-EDITOR-20261009`: 자체 엔진에 `tools/engine-cutout-editor.html`과 cutout core/UI를 추가하고 기존 두 모션 편집기에 진입 링크를 연결했다. 고정 Druid base8 첫 셀414×620에서 polygon·pivot·각도/XY·원형 비교·undo/redo40·JSON 입출력을 제작한다. 원형 native pixel exact, core7그룹66assertions PASS; UI 유효13PASS와 selector 준비1/assertion3 실패 이력은 분리 보존한다. 움직여 드러난 빈 곳은 추가 원화가 필요하다. 본편 관절 모션·새3D/360°·A급은 미완료, **VISUAL VERDICT: RETOUCH**. [정확 수치·범위](../5.0애니메이션파이프라인/EXODUSER_ENGINE_ANIMATION_20261009.md#engine-cutout-editor-20261009). 최종 근거 `E/engine-cutout-editor-20261009/completion.json`, 화면 `final-full.png`.
