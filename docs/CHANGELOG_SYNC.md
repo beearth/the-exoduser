@@ -56797,4 +56797,4 @@ alpha/nav/crop/UV/geometry/opacity/renderOrder/resource/dispose·skirt/backplane
 
 ### 2026-10-09 — 본편 원본 소환 자세 선택
 
-`ROOT-DRUID-AUTHORED-SUMMON-DISPLAY-20261009`: 실제 관측한 소환만 준비 attack 셀1→소환 후 recover st2>14 셀2→<=14 셀3. renderer 전용 WeakMap/같은 G·map·enemies·life tuple로 한정하며 다른 recover는 base8 유지. 전투 시간·원 PNG·save 불변. actual whole draw/current/helper+adapter pose 첫 Node9그룹 PASS, 실제 native3자세 표시 RETOUCH; 입체 관절/본편 실전/A급 미완료. [정확 계약](../4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md#druid-authored-summon-display-20261009).
+`ROOT-DRUID-AUTHORED-SUMMON-DISPLAY-20261009`: 실제 관측한 소환만 준비 attack 셀1→소환 후 recover st2>14 셀2→<=14 셀3. renderer 전용 WeakMap/같은 G·map·enemies·life tuple로 한정하며 다른 recover는 base8 유지. 전투 시간·원 PNG·save 불변. actual whole draw/current/helper+adapter pose 첫 Node9그룹 PASS, 실제 native3자세 표시 RETOUCH; 입체 관절/본편 실전/A급 미완료. [정확 계약](4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md#druid-authored-summon-display-20261009).
