@@ -1,3 +1,14 @@
+## 2026-10-08 지옥의 틈 개발 기록01 최종 납품
+
+| 항목 | 실제 결과 |
+|---|---|
+| 완성 | 가로34초1020f·세로20초600f H264/AAC48k, Discord720p20초748409B. marketing/trailers/rift-20261008에 저장 |
+| 편집 | Hangul/Latin 분리·ASCII구분자·어절수동줄바꿈 native최종코드. 원본전체CFR정규화 후 정확컷/단일window |
+| 검수 | 3영상 전체decode·길이/프레임 PASS. 준비input0.6/1.6초 pixelbest0f·MAE1.335–1.408. 한글·CTA샘플육안PASS. 전체청취미수행 |
+| 패키지 | 70282854B ZIPCRC62항목·18assetURI/font/OFL PASS, edit.jsx최신SHA동일·prepareAST동일 |
+| 출처 | Oct5콘셉트+Oct6실제기존녹화, 무음원본+기존Suno주제가편집BGM. 신규Oct8촬영/배포동일성확정/대화시연0 |
+| 문서 | 관련키워드docs전체검색후 납품/문안/채널운영/index/기존납품연결 동기화. 신규플랫폼업로드·공개대기 |
+
 2026-10-08 Rift 한글 shaping 보완: ISO15924 Hang 사용, KR 태그의 Latin 혼합을 분리하고 영어줄바꿈은JSX문자열로명시. native프레임검증전코드/문안동기화.
 
 ## 2026-10-08 Rift VFR 준비와 공개 문안 동기화

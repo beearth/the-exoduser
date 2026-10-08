@@ -29,23 +29,23 @@
 
 | 구간 | 실제 소재 | KR | EN | 출처 태그 |
 |---|---|---|---|---|
-| 0–4초 | Oct 6 보행 hook | 전투가 끝나면, 어디로 갈까? | WHERE DO SOULS GO BETWEEN BATTLES? | 지옥의 틈 · 개발 기록 01 |
-| 4–10초 | Oct 5 콘셉트 원화 | 망자들이 머무는 틈 | A PLACE BETWEEN STAGES | 2026.10.05 · 콘셉트 원화 |
-| 10–19초 | Oct 6 실제 보행 | 그림 속으로 걸어 들어가다 | FROM PAINTING TO PLAYABLE SPACE | 2026.10.06 · 실제 보행 |
-| 19–21초 | 근거리 주민 이동 | 틈에 머무는 이들 | SOULS THAT LINGER | 2026.10.06 · 개발 녹화 |
-| 21–30초 | 보행·향후 이야기 예고 | 다음은, 망자들의 이야기 | NEXT: THE STORIES THEY LEFT BEHIND | 지옥의 틈 · 개발 중 |
-| 30–34초 | 로고·기존 공개 데모 CTA | 지옥의 틈 · 개발 기록 01 | FREE WINDOWS DEMO ON STEAM | 개발 중 화면 · 공개 데모와 다름 / Separate development build / FOR DEAR GAMERS |
+| 0–4초 | Oct 6 보행 hook | 전투가 끝나면,\n어디로 갈까? | WHERE DO SOULS GO BETWEEN BATTLES? | 지옥의 틈 / 개발 기록 01 |
+| 4–10초 | Oct 5 콘셉트 원화 | 망자들이\n머무는 틈 | A PLACE BETWEEN STAGES | 2026.10.05 / 콘셉트 원화 |
+| 10–19초 | Oct 6 실제 보행 | 그림 속으로\n걸어 들어가다 | FROM PAINTING TO PLAYABLE SPACE | 2026.10.06 / 실제 보행 |
+| 19–21초 | 근거리 주민 이동 | 틈에\n머무는 이들 | SOULS THAT LINGER | 2026.10.06 / 개발 녹화 |
+| 21–30초 | 보행·향후 이야기 예고 | 다음은,\n망자들의 이야기 | NEXT: THE STORIES THEY LEFT BEHIND | 지옥의 틈 / 개발 중 |
+| 30–34초 | 로고·기존 공개 데모 CTA | 지옥의 틈 / 개발 기록 01 | FREE WINDOWS DEMO ON STEAM | 개발 중 화면 / 공개 데모와 다름 / Separate development build / FOR DEAR GAMERS |
 
 ### 세로 20초
 
 | 구간 | 실제 소재 | KR | EN | 출처 태그 |
 |---|---|---|---|---|
 | 0–6초 | Oct 6 보행 | 전투가 끝나면,\n어디로 갈까? | BETWEEN BATTLES | 개발 기록 01 |
-| 6–12초 | Oct 6 보행 | 망자들이\n머무는 곳 | WHERE SOULS LINGER | 지옥의 틈 · 개발 중 |
-| 12–16초 | Oct 6 보행 | 그림에서\n걸어 다니는 공간으로 | FROM ART TO FIRST WALK | 2026.10.06 · 실제 개발 녹화 |
-| 16–20초 | 로고·기존 공개 데모 CTA | 지옥의 틈 · 개발 기록 01 | FREE WINDOWS DEMO ON STEAM | 개발 중 화면 · 공개 데모와 다름 / Separate development build / FOR DEAR GAMERS |
+| 6–12초 | Oct 6 보행 | 망자들이\n머무는 곳 | WHERE SOULS LINGER | 지옥의 틈 / 개발 중 |
+| 12–16초 | Oct 6 보행 | 그림에서\n걸어 다니는 공간으로 | FROM ART TO FIRST WALK | 2026.10.06 / 실제 개발 녹화 |
+| 16–20초 | 로고·기존 공개 데모 CTA | 지옥의 틈 / 개발 기록 01 | FREE WINDOWS DEMO ON STEAM | 개발 중 화면 / 공개 데모와 다름 / Separate development build / FOR DEAR GAMERS |
 
-공통 상태 표시는 **‘개발 중 화면 · 공개 데모와 다름’ / ‘Separate development build’**. ‘PLAYABLE SPACE’는 화면 속 보행 프리뷰를 뜻하며 공개 플레이 가능·퀘스트 완성·데모 업데이트 완료를 의미하지 않는다. ‘다음은, 망자들의 이야기’는 향후 개발 기록 소재이며 이번 영상에 대화창이 나온다는 설명이 아니다.
+공통 상태 표시는 **‘개발 중 화면 / 공개 데모와 다름’ / ‘Separate development build’**. ‘PLAYABLE SPACE’는 화면 속 보행 프리뷰를 뜻하며 공개 플레이 가능·퀘스트 완성·데모 업데이트 완료를 의미하지 않는다. ‘다음은, 망자들의 이야기’는 향후 개발 기록 소재이며 이번 영상에 대화창이 나온다는 설명이 아니다.
 
 ## 3. YouTube 가로 영상 제목·설명
 

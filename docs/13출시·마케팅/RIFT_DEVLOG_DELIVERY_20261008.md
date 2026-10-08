@@ -1,17 +1,48 @@
-# 지옥의 틈 개발 기록 01 — 제작·납품
+# 지옥의 틈 개발 기록 01 — 완성·납품
 
-2026-10-08 제작 시작. 실제 2026-10-06 개발 녹화와 10-05 콘셉트 원화를 재편집한다. 이번 신규 촬영·최신 Oct8 게임 화면으로 소개하지 않는다. 게임 코드·서버·사용자 게임·세이브는 수정하거나 실행하지 않는다.
+**가로 34초·세로 20초 제작 및 검수 완료, 플랫폼 게시 대기.** 2026-10-05 콘셉트 원화와 10-06 실제 개발 녹화를 10-08 편집했다. 이번 신규 촬영·Oct8 최신 게임 시연으로 소개하지 않는다. 게임 코드·서버·사용자 게임·세이브 변경은 0이다.
 
-| 항목 | 제작 계약 |
+| 납품 | 파일 | 길이·화면·프레임 | 크기 |
+|---|---|---|---:|
+| YouTube 개발 기록 | [EXODUSER_RIFT_DEVLOG_01_34S_1080P30.mp4](../../marketing/trailers/rift-20261008/EXODUSER_RIFT_DEVLOG_01_34S_1080P30.mp4) | 34초 · 1920×1080 · 30fps · 1020f | 37,845,441 B |
+| Shorts / Reels | [EXODUSER_RIFT_SHORT_20S_1080P30.mp4](../../marketing/trailers/rift-20261008/EXODUSER_RIFT_SHORT_20S_1080P30.mp4) | 20초 · 1080×1920 · 30fps · 600f | 19,331,842 B |
+| Discord 전송용 | [EXODUSER_RIFT_DISCORD_20S_720P30.mp4](../../marketing/trailers/rift-20261008/EXODUSER_RIFT_DISCORD_20S_720P30.mp4) | 20초 · 720×1280 · 30fps · 600f | 748,409 B |
+
+가로 구성: 실제 보행 hook4초 → 콘셉트6초 → 보행9초 → 근거리 이동2초 → 보행9초 → CTA4초. 세로는 보행6+6+4초 → CTA4초. 화면의 한영 문구·YouTube/Threads/Discord 게시문은 [문안 정본](RIFT_DEVLOG_COPY_20261008.md)을 따른다.
+
+## 출처와 표현
+
+| 항목 | 최종 기준 |
 |---|---|
-| 가로 | 34초, 1920×1080, 30fps. 실제 보행 hook4초 → 콘셉트6초 → 보행9초 → 근거리 이동2초 → 보행9초 → CTA4초 |
-| 세로 | 20초, 1080×1920, 30fps. 실제 보행6+6+4초 → CTA4초 |
-| 소재 | [원본·출처·SHA256](../../marketing/captures/rift-20261008/provenance.json). 주민 대화창은 녹화에 없으므로 대화·보상·퀘스트 시연으로 표현하지 않음 |
-| 음악 | 녹화2개는 오디오 스트림 없음. 기존 사용자 채택 Suno 주제가 prologue_theme.mp3를 편집 BGM으로 추가. 실제 Rift 녹음 원음과 구분. 출처 정본: migration repo docs/6사운드디자인/주제가_SUNO_프롬프트.md:70 |
-| 공개 문구 | 개발 중 화면·공개 데모와 다름. Steam 데모 무료 CTA와 개발 프리뷰를 분명히 구분. 사전 제작 아트·음악의 AI 보조 사용 공개 |
-| 편집 | [준비 도구](../../tools/marketing_rift_prepare_20261008.py) · [native JSX](../../tools/marketing_rift_edit_20261008.jsx). 원본 VFR 전체를 먼저 CFR30 H264로 정규화한 뒤 정확 프레임 컷 입력, native trim0/single-window. 기존 주제가의 fade 처리 편집 BGM을 native audio spine에 한 번만 배치. Noto Sans KR font asset shaping(script Hang, KR 태그에서 Latin 분리) + DM Sans 등록 |
-| 현재 상태 | 원본 보존·편집 코드 작성. native 렌더·육안·기술 검수·완성본 원격보존은 진행 중. 플랫폼 신규 게시 미완료 |
+| 원본 | [자료·SHA256](../../marketing/captures/rift-20261008/provenance.json). 녹화 정확 commit은 UNKNOWN. 원본은 실제 10/6 개발 화면이며 계정·주소창·민감 UI 노출 없음 |
+| 콘셉트 | 10/5 painterly-v2 원화, 실제 플레이와 화면 태그로 구분 |
+| 실제 화면 | 이동·주민 근거리 배치. 대화창·보상·퀘스트 시연 없음. 현재 개발 정본의 후속 기능을 이 녹화에서 보이는 것으로 설명하지 않음 |
+| 데모 | 별도 개발 빌드. 공개 Steam 배포 바이너리와의 동일성 UNKNOWN. 개발 중 표시와 공개 무료 Windows 데모 CTA를 분리 |
+| 음악 | 녹화2개에 오디오 스트림 없음. 기존 사용자 채택 Suno 주제가 ‘심연의 탈주’ prologue_theme.mp3의14초부터 편집 BGM 사용, fade in1초/out2초. 실제 Rift 녹음 원음·신규 생성곡·내레이션이 아님 |
+| AI 공개 | 사전 제작 아트·음악의 AI 보조 사용을 게시 문안에 명시. 실제 녹화를 새 AI 플레이 영상으로 대체하지 않음 |
+| 변경 범위 | 신규 게임 실행·게임 소스/맵·서버·세이브 변경0. 기존 맵 RETOUCH와 미완료 퀘스트/보상/영구저장 경계를 유지 |
 
-자료 사용은 기존 개발 녹화의 홍보 편집이다. 맵 제작·맵 품질 인수·최신 플레이 버전 acceptance를 수행한 것으로 계산하지 않는다. Rift 현재 구현/미완료 근거는 [운영 정본](YOUTUBE_CHANNEL_OPERATIONS_20261008.md)의 별도 migration SSOT 링크를 따른다.
+## 검수
 
-준비 과정에서 원본 VFR 직접 trim의 FFmpeg 출력 동기화가 프레임을 누락하는 현상을 검출했다. 원본 전체의 CFR30 변환 → H264의 정확 프레임 컷 → 길이·프레임 수 검증 순서로 변경한다. 실패한 준비 입력은 최종 렌더에 사용하지 않는다. 원본 자체의 최대 0.365초 프레임 간격은 남으며 실제 60fps 촬영으로 표시하지 않는다.
+| 항목 | 실제 결과 |
+|---|---|
+| 준비 | [Python 도구](../../tools/marketing_rift_prepare_20261008.py). 원본 VFR 전체를 CFR30 H264로 정규화 → H264 정확 프레임 컷 → 길이·프레임수 검증. 원본 직접 trim에서 검출된 필터 재초기화·출력동기화 누락 후보는 최종 입력에서 제외 |
+| native | [JSX](../../tools/marketing_rift_edit_20261008.jsx), 2프로젝트 check clean. 단일 window/worker, H264. 실제 Noto Sans KR variable font asset(script Hang, ASCII 구분자)와 DM Sans400/700. 최종 native diagnostics/fallbacks 없음 |
+| 기술 | 가로1020f/34초·세로600f/20초, H264/AAC48kHz. 파생720p600f/20초. 3개 전체 decode 오류 없음. [기술 QA](../../marketing/trailers/rift-20261008/EXODUSER_RIFT_QA.json) |
+| 시간 | 준비 입력 대비0.6/1.6초 실제MP4 픽셀 대조, 두마스터 모두 최적offset0f. MAE1.335–1.408/255. 원본 VFR 자체의 최대0.365초 프레임 간격은 남으며 60fps 촬영으로 표시하지 않음 |
+| 편집 육안 | 가로1.6/6/12/19.8/24/31초, 세로1.6/8/13.5/17초 실제 export 샘플 확인. 한글 어절 줄바꿈·영문·출처·개발 중 표시·CTA 정상. [검수 이미지](../../marketing/trailers/rift-20261008/EXODUSER_RIFT_REVIEW.jpg) |
+| 오디오 | 편집 음악 신호·AAC decode 정상, 가로평균−19.4/세로−19.8dB, 두마스터 peak−5.5dB. 주관적인 전체 청취는 수행하지 않음 |
+| 편집 패키지 | ZIP CRC62항목 PASS, 프로젝트2개의asset URI18개 실재·해시 일치. edit.jsx3개는최신source와바이트동일. prepare.py는선두주석2줄차이·AST동일. Noto Sans KR·DM Sans·OFL1.1 포함 |
+| 근거 | [샘플/패키지 검수](../../marketing/trailers/rift-20261008/visual_review.json) · [파일 SHA256](../../marketing/trailers/rift-20261008/sha256.json) |
+
+위 육안 PASS는 영상 편집 샘플 검사다. 맵 제작·최신 플레이 acceptance를 수행한 것으로 계산하지 않는다. 구현 상태 근거는 [채널 운영 정본](YOUTUBE_CHANNEL_OPERATIONS_20261008.md)의 별도 migration SSOT 링크를 따른다.
+
+## 보존과 게시
+
+GitHub 브랜치 **codex/marketing-gameplay-20261008**의 marketing/trailers/rift-20261008에 완성MP4·QA·검수 이미지·해시·공개 파일 URL을 보존한다. 원본은 marketing/captures/rift-20261008. 원격 브랜치 SHA는 push 후 읽어 대조한다. 메인 PC가 실제로 fetch한 것으로 계산하지 않는다.
+
+로컬 납품: /Users/fordeargamers/the-exoduser/output/rift_devlog_20261008/renders/.
+편집 ZIP은70,282,854B로 로컬과 확인된 클라우드에 보존하며 Git에는 넣지 않는다. SHA256: a0dfba0619a8dd2b57d3eb6f6d1b8ae38a7900393b284ff0f1d5aced953c58f5.
+[클라우드 납품 URL](../../marketing/trailers/rift-20261008/delivery_urls.json)은 6개 모두 PUT200·media_confirm 완료다.
+
+YouTube·Discord·Instagram·Threads·itch.io 등 **이번 신규 영상의 업로드·공개는 미완료**다. YouTube 업로드 화면의 약관 동의 확인은 기존 질문에 답변되지 않아 유지한다. 기존 전투영상37/16/26초의 준비·게시대기와 이번34/20초를 구분한다.
