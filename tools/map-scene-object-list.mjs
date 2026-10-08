@@ -1,4 +1,4 @@
-/* Read-only active-layer queries; source images and scene-wide validation stay with the caller. */
+/* Read-only object queries; source images and scene-wide validation stay with the caller. */
 export const OBJECT_LIST_PAGE_SIZE = 50;
 const record = (v,label) => {
   if(!v || typeof v!=='object' || Array.isArray(v)) throw new Error(label+' 오류');
@@ -39,21 +39,41 @@ function activeLayer(scene,layerId) {
   return layer;
 }
 
+function orderedMatches(l,needle) {
+  const ordered=l.objects.map((o,index)=>({o,index}));
+  if(l.sort==='foot') ordered.sort((a,b)=>a.o.y-b.o.y || a.index-b.index);
+  ordered.reverse();
+  return ordered.filter(({o})=>!needle || [o.name,o.id,o.assetId].some(v=>v.toLowerCase().includes(needle)));
+}
+
 /** Front-to-back rows from the active layer, matching stable renderer ordering. */
 export function inspectLayerObjects(scene,layerId,query='',page=0) {
   if(typeof query!=='string' || query.length>160) throw new Error('객체 검색어 오류');
   number(page,0,1000000,'객체 목록 페이지');
   if(!Number.isInteger(page)) throw new Error('객체 목록 페이지는 정수여야 합니다');
   const l=activeLayer(scene,layerId), needle=query.trim().toLowerCase();
-  const ordered=l.objects.map((o,index)=>({o,index}));
-  if(l.sort==='foot') ordered.sort((a,b)=>a.o.y-b.o.y || a.index-b.index);
-  ordered.reverse();
-  const matched=ordered.filter(({o})=>!needle || [o.name,o.id,o.assetId].some(v=>v.toLowerCase().includes(needle)));
+  const matched=orderedMatches(l,needle);
   const pages=Math.ceil(matched.length/OBJECT_LIST_PAGE_SIZE), selectedPage=pages?Math.min(page,pages-1):0;
   const rows=matched.slice(selectedPage*OBJECT_LIST_PAGE_SIZE,(selectedPage+1)*OBJECT_LIST_PAGE_SIZE).map(({o})=>({
     objectId:o.id,assetId:o.assetId,name:o.name,x:o.x,y:o.y,width:o.width,height:o.height
   }));
   return {layerId:l.id,layerName:l.name,locked:l.locked,visible:l.visible,total:l.objects.length,matched:matched.length,page:selectedPage,pages,rows};
+}
+
+/** Search every layer without changing the project; later layers appear first. */
+export function inspectSceneObjects(scene,query='',page=0) {
+  if(typeof query!=='string' || query.length>160) throw new Error('객체 검색어 오류');
+  number(page,0,1000000,'객체 목록 페이지');
+  if(!Number.isInteger(page)) throw new Error('객체 목록 페이지는 정수여야 합니다');
+  record(scene,'씬');
+  if(!Array.isArray(scene.layers) || !scene.layers.length) throw new Error('씬 레이어 목록 오류');
+  const needle=query.trim().toLowerCase(),matched=[];let total=0;
+  for(let i=scene.layers.length-1;i>=0;i--) {
+    const l=activeLayer(scene,scene.layers[i].id);total+=l.objects.length;
+    for(const {o} of orderedMatches(l,needle))matched.push({layerId:l.id,layerName:l.name,locked:l.locked,visible:l.visible,parallax:l.parallax,objectId:o.id,assetId:o.assetId,name:o.name,x:o.x,y:o.y,width:o.width,height:o.height});
+  }
+  const pages=Math.ceil(matched.length/OBJECT_LIST_PAGE_SIZE),selectedPage=pages?Math.min(page,pages-1):0;
+  return {layerId:null,layerName:'전체 층',locked:false,visible:true,total,matched:matched.length,page:selectedPage,pages,rows:matched.slice(selectedPage*OBJECT_LIST_PAGE_SIZE,(selectedPage+1)*OBJECT_LIST_PAGE_SIZE)};
 }
 
 /** Camera centre that puts the object's foot anchor at screen centre before caller clamping. */

@@ -607,21 +607,21 @@ core 의미검수=`tools/test-map-scene-placement-presets.cjs` 신규14/14·1회
 
 ## 18. 활성 레이어 객체 목록·발 위치 보기 — 2026-10-06
 
-목록은 현재 층의 **배치 인스턴스**를 보여 준다. 이미지 재료 팔레트나 레이어 이동 메뉴와 역할이 다르다. 승인 원화·독립 주민 등록과 무관하게 유효한 JSON v1 씬에서 사용할 수 있다.
+기본 목록은 현재 층의 **배치 인스턴스**를 보여 준다. 2026-10-08 추가한 검색 범위에서 전체 층도 선택한다. 이미지 재료 팔레트나 레이어 이동 메뉴와 역할이 다르다. 승인 원화·독립 주민 등록과 무관하게 유효한 JSON v1 씬에서 사용할 수 있다.
 
 | id/API/필드 | 정확 현행 계약 |
 |---|---|
 | 파일 | `tools/map-scene-object-list.mjs` 읽기 전용 모듈. 시작 시 dynamic import; 실패하면 목록 오류 안내를 표시하며 기존 씬 시작 경로 유지. `tools/test-map-scene-object-list.cjs`는 신규14그룹 의미검사 |
 | inspectLayerObjects | `(scene,layerId,query='',page=0)` → `{layerId,layerName,locked,visible,total,matched,page,pages,rows}`. rows 각 `{objectId,assetId,name,x,y,width,height}` fresh 값; 원본 객체/레이어 배열 참조 반환·쓰기0 |
 | 조회 한계 | caller가 전체 scene.validate를 완료한 계약. module은 format=`exoduser-map-scene`/version1/층1…24·층 ID 중복 및 현재층 fields만 검증. 현재층 objects≤2000·객체 ID 중복 거절, id/name/assetId는 비어 있지 않은 문자열≤160, visible/locked boolean, sort flat/foot, parallax 유한0…1. x/y 유한−40000…40000, width/height 유한1…32000 |
-| 비용 | 현재 층 정렬/검색만. source image/assets/nav/dataURI 읽기0, 전체씬 clone·validate0, RAF에 목록 query0. refresh·검색·페이지·busy/대화 상태 전환 때만 실행 |
+| 비용 | 기본은 현재 층 정렬/검색, 전체 범위는 모든 층의 객체를 검증·정렬·검색(최대24층·층당2000객체 계약, 비용 미측정). source image/assets/nav/dataURI 읽기0, 전체씬 clone·validate0, RAF에 목록 query0. refresh·검색·페이지·busy/대화 상태 전환 때만 실행 |
 | 검색·페이지 | query 문자열≤160, trim().toLowerCase()를 name/id/assetId의 소문자값에 includes. regex/DOM선택자 해석0. page 유한 정수0…1000000, `OBJECT_LIST_PAGE_SIZE=50`, pages=ceil(matched/50), 끝보다 큰 page는 pages−1. matched0은 page0/pages0/rows[] |
 | 순서 | flat: objects 배열 역순. foot: y 오름차순과 동률 원래 index 오름차순 정렬 후 역순. list는 화면의 앞쪽부터 표시한다. `selectAt`도 foot y 오름차순 안정정렬 후 reverse로 수정하여 동일y의 나중 객체를 먼저 검사한다. renderer·원본배열·alpha threshold8·mask hit 변경0 |
 | focusObjectFoot | `(scene,layerId,objectId)` exact 현재 객체 조회. world.cols/rows 정수10…300, tileSize 유한8…128. parallax p>0이면 `{x:(o.x−(1−p)×worldWidth/2)/p,y:(o.y−(1−p)×worldHeight/2)/p}` fresh camera 좌표; p0은null. unknown ID/잘못된 필드는 throw, 비유한 camera 거절 |
 | focus 한계 | module은 zoom/clamp 없이 발 anchor의 화면중심 해만 반환. root는 zoom=min(stageWidth/900,stageHeight/600)과 기존clampCamera 사용. 월드 가장자리의 clamp 때문에 화면중심이 아닐 수 있다. 객체의 rotation·flip·pivot·원본픽셀·기존 발 좌표를 이동하지 않는다 |
-| HTML | scene-object-search(maxlength160), object-summary(role=status/aria-livepolite), object-list, object-prev, object-next, object-page. 행 dataset.objectId, .scene-object-select(aria-pressed), .scene-object-focus(이름+발 위치 보기 aria-label). 새/리프 노드에만 textContent, 지정 목록 replaceChildren |
+| HTML | scene-object-scope(select:layer 기본/all 전체), scene-object-search(maxlength160), object-summary(role=status/aria-livepolite), object-list, object-prev, object-next, object-page. 행 dataset.objectId, .scene-object-select(aria-pressed), .scene-object-focus(이름+발 위치 보기 aria-label). 새/리프 노드에만 textContent, 지정 목록 replaceChildren |
 | 표시 | summary=현재층 이름+matched/total와 숨김/잠금 안내. page=`1 / 2쪽 · 한 번에 최대 50개` 또는 `검색 결과 없음`. 행=이름·assetId·발x/y·width×height, 수치 표시만 소수점2자리 반올림; JSON 정밀도 유지. 활성 층 변경 시 page0, 검색 입력 시 page0, 다른 refresh는 범위 clamp |
-| 입력·가드 | search와 prev/next는 busy/playing/dialogue 중 disabled+handler 가드. 행선택/보기는 여기에 locked/!visible 추가, stale layerId와 fresh objectId 확인. p0은 이름 선택만 허용. endDrag 이후 현재 씬 재조회; 새 선택 자체에 History 변경·autosave0 |
+| 입력·가드 | search와 prev/next는 busy/playing/dialogue 중 disabled+handler 가드. 행선택/보기는 각 행의 실제 층에 locked/!visible 추가, 클릭 시 현재 프로젝트에서 층·objectId 재조회. 다른 층은 전체 범위에서만 선택 가능. p0은 이름 선택만 허용. endDrag 이후 현재 씬 재조회; 새 선택에 History/autosave 호출 추가0. 진행 중 편집은 기존 endDrag가 commit·autosave할 수 있음 |
 | 선택·카메라 | 선택은 selected/layerId 설정, paletteId=null/tool=select, keys/space 해제, palette/refresh. 보기만 viewport 변경·clamp 및 canvas focus. ≤760px에서 보기 뒤 inspector닫힘; 이름선택은 패널 유지. 새목록/페이지 button Enter·Space는 전역Space팬 키 가드의 한정 예외로 기본click 유지 |
 | 치수 | 검색/이름선택/발보기/이전/다음 min-height44px. 목록gap7px, 행grid minmax(0,1fr)+auto/gap5px/padding6px/border1px/radius5px, 이름버튼 전체행/줄바꿈, 상세10px·overflow-wrap:anywhere. scene의 일반 CSS/화면예산 유지 |
 
@@ -2368,3 +2368,22 @@ GIT
 VISUAL VERDICT: RETOUCH / UI_NOT_ASSESSED / native NOT_RUN
 NEXT PASS: 사용자가 정상 로드한 에디터에서 단일/복수 선택의 화면 맞춤·초점·모바일 버튼 배치 확인. 본편 높낮이/캐릭터2.5D/청취/보상save는 별도 미완료.
 ```
+
+
+### ROOT-EDITOR-ALL-LAYER-OBJECT-SEARCH-20261008 — 전체 층에서 객체 찾기
+
+현재 층 검색은 기존 기능이다. 새 검색 범위는 기본 **현재 층**, 선택 **전체 층**이다. 어느 층에 배치했는지 모르는 NPC·절벽·소품을 찾아 소속 층을 확인하고 직접 선택한다.
+
+| ID / 접점 | 현재 계약 |
+|---|---|
+| inspectSceneObjects | `(scene,query='',page=0)` → 기존 report 형태와 layerId=null/layerName='전체 층'. fresh rows는 기존 객체 값 + layerId/layerName/locked/visible/parallax. scene·객체 변경0, assets/nav/source image 읽기0 |
+| 검증 / 순서 | 기존 JSON v1·층1…24·층당객체≤2000 및 필드 검증. 층 배열 뒤부터, 층 안은 기존 flat 역순/foot 안정정렬 후 역순. 숨김·잠금도 결과에 포함하되 선택·발보기 차단 |
+| 검색 / 페이지 | 기존 문자열≤160·trim/소문자 includes(name/id/assetId). 전체 합쳐50행/페이지, empty page0/pages0, 초과page는 마지막. scope/검색 변경은 page0; 전체 범위에서 활성층만 바뀌면 페이지 유지 |
+| UI / 선택 | scene-object-scope select layer/all, 전체 행 상세에 층 이름. busy/playing/dialogue 유지. 지정 목록 replaceChildren와 새/리프 text만. 클릭은 현재 scope → 기존 endDrag → fresh 층/객체 visible/locked → 기존 선택/held-key 정리. parallax0 이름 선택 가능, 발보기 거절 |
+| 묶음 이동 | 현재 층 체크만 허용. 다른 층은 체크 disabled, 이름 선택으로 그 층을 활성화한 뒤 사용. 층을 넘는 묶음 이동·새 좌표 변경0 |
+| 수명 / 저장 | scope는 DOM 값이며 프로젝트 JSON 새 필드0. 새 timer/RAF/Image/네트워크/저장 호출0. 기존 pending drag 종료는 commit·autosave할 수 있으므로 전체 handler 무쓰기 주장0 |
+| 비용 / 한계 | 전체 층의 정렬·매칭 및 fresh 행 할당이 추가된다. 최대량 성능 미측정. 실제 레이아웃·키보드/포인터·사용자cache/save 미검수 |
+
+최초 실제 module + objectListUI/selectListedObject 함수의 통제 DOM/ports 검사: Node1·9그룹34조건 PASS/exit0. 기본층 row shape/정렬, 전체층 순서/동률/페이지·readonly·잘못된 입력·숨김/잠금/p0·stale 클릭·local batch·scope/busy·기존 pending endDrag commit·실제 editor JS parse를 확인했다. 기존 suite 재실행0. 정적 source peer blocking0. 브라우저/GPU/audio/save 실행0, UI_NOT_ASSESSED/nativeNOT_RUN/VISUAL VERDICT: RETOUCH.
+
+guide 전체와 MAP_SSOT_INDEX의 현재 읽기 순서를 확인했다. JSON 조회·선택 도구만 변경하며 stage LOCK/geometry/배치/scene/nav/원PNG는 유지한다. §23 전체 보고·최종 Git은 외부 `E/editor-all-layer-object-search-20261008/completion.json`을 따른다. 열린 사용자 탭 조작·재로드0.

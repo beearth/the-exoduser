@@ -5090,3 +5090,8 @@ alpha/nav/crop/UV/geometry/opacity/renderOrder/resource/dispose·skirt/backplane
 전사 돌진 뒤 피니셔 strike/recovery의 실제 main 2.5D 표시 연결을 완료했다. 현재 준비는 native, 다른 캐릭터·보스방은 범위 밖이다. 기존 피니셔 소실 반례를 통제 검사로 확인했다. 마지막 구문 검사 도구의 importmap 오분류 exit1을 보존하고 별도 classic4 parse-only만 보정했다. 실화면/전체 전투 인수는 미완료다.
 
 현재 정확 계약·검증 한계는 [DIRECTIONAL_CHARACTER_RIGS_20261006.md](../4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md)의 동일 단위 절을 따른다. 이전20261007 정상 LMB 검수/수치는 그 epoch 이력으로 보존한다.
+
+
+### ROOT-EDITOR-ALL-LAYER-OBJECT-SEARCH-20261008
+
+기존 현재층 검색에 **전체 층** 범위를 추가했다. 이름/ID/assetId로 찾은 행의 층을 확인하고 직접 선택한다. 숨김·잠금·발보기 p0·현재층 묶음이동 제한은 유지하며 scene/nav/원PNG/save 필드 변경0. 기존 pending endDrag commit/autosave 경계 유지. 첫 Node1 통제9그룹34조건 PASS/exit0, source peer blocking0; 실브라우저/GPU/audio/save 미실행·RETOUCH. 현재 API/UI 계약은 [MAP_SCENE_EDITOR_20261005.md](../4.1맵디자인+설정/MAP_SCENE_EDITOR_20261005.md)의 동일 절, 외부 완료 영수증은 `E/editor-all-layer-object-search-20261008/completion.json`이다.
