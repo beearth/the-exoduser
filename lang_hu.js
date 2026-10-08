@@ -238,6 +238,7 @@ const _HU={"⛓️ 관통!":"⛓️ Átütés!","⛓️ 관통":"⛓️ Átüté
 'CT: 방어구체+빙결 (재입력: 파쇄)':'CT: Jéggömb+fagyás (újra: zúzás)',
 '근접':'Közel',
 '견갑':'Pajzs',
+'보조무기': 'Másodlagos fegyver',
 '사슬':'Lánc',
 '마법':'Mágia',
 '보막':'Védelem',

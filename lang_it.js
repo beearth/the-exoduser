@@ -256,6 +256,7 @@ const _IT={"⛓️ 관통!":"⛓️ Penetrazione!","⛓️ 관통":"⛓️ Penet
 'CT: 방어구체+빙결 (재입력: 파쇄)':'CT: Sfera ghiaccio+congela (ri-premere: frantuma)',
 '근접':'Mischia',
 '견갑':'Guardia',
+'보조무기': 'Mano secondaria',
 '사슬':'Rampone',
 '마법':'Magia',
 '보막':'Scudo',

@@ -2172,6 +2172,7 @@ const _CS_PFX={
 const _CS_BASE={
 '대검':'Obouruční meč','석궁':'Kuše','연사석궁':'Opakovací kuše','마력석궁':'Arkanová kuše',
 '견갑':'Nárameník','대견갑':'Velký nárameník','전투화':'Bojové boty','갑옷':'Brnění','갑주':'Plátová zbroj',
+'보조무기': 'Vedlejší zbraň',
 '왕관':'Koruna','장갑':'Rukavice','건틀릿':'Plátové rukavice','바지':'Kalhoty','각반':'Holenní chrániče',
 '허리띠':'Opasek','벨트':'Pás','부적':'Talisman','목걸이':'Náhrdelník','반지':'Prsten',
 '망토':'Plášť','악마팔찌':'Demon Bracelet','생명팔찌':'Life Bracelet','팔찌':'Náramek','귀걸이':'Náušnice',

@@ -2265,6 +2265,7 @@ const _SV_PFX={
 const _SV_BASE={
 '대검':'Tvåhandssvärd','석궁':'Armborst','연사석궁':'Repeterarmborst','마력석궁':'Magiskt Armborst',
 '견갑':'Sköld','대견갑':'Stor Sköld','전투화':'Stridsstövlar','갑옷':'Rustning','갑주':'Rustning',
+'보조무기': 'Sekundärt vapen',
 '왕관':'Krona','장갑':'Handskar','건틀릿':'Pansarhandskar','바지':'Byxor','각반':'Benskydd',
 '허리띠':'Bälte','벨트':'Bälte','부적':'Talisman','목걸이':'Halsband','반지':'Ring',
 '망토':'Kappa','팔찌':'Armband','귀걸이':'Örhänge',

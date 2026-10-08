@@ -238,6 +238,7 @@ const _ID={"⛓️ 관통!":"⛓️ Penetrasi!","⛓️ 관통":"⛓️ Penetras
 'CT: 방어구체+빙결 (재입력: 파쇄)':'CT: Bola es+beku (tekan lagi: pecah)',
 '근접':'Jarak Dekat',
 '견갑':'Penjaga',
+'보조무기': 'Senjata Sekunder',
 '사슬':'Rantai',
 '마법':'Sihir',
 '보막':'Perisai',

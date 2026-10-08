@@ -2264,6 +2264,7 @@ const _DA_PFX={
 const _DA_BASE={
 '대검':'Tohandssværd','석궁':'Armbryst','연사석궁':'Repeaterarmbryst','마력석궁':'Magisk Armbryst',
 '견갑':'Skjold','대견갑':'Stort Skjold','전투화':'Kampstøvler','갑옷':'Rustning','갑주':'Rustning',
+'보조무기': 'Sekundært våben',
 '왕관':'Krone','장갑':'Handsker','건틀릿':'Panserhandsker','바지':'Bukser','각반':'Benbeskyttelse',
 '허리띠':'Bælte','벨트':'Bælte','부적':'Talisman','목걸이':'Halskæde','반지':'Ring',
 '망토':'Kappe','팔찌':'Armbånd','귀걸이':'Øreringe',

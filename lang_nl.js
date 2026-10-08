@@ -2264,6 +2264,7 @@ const _NL_PFX={
 const _NL_BASE={
 '대검':'Grootzwaard','석궁':'Armborst','연사석궁':'Repeteerarmborst','마력석궁':'Magische Armborst',
 '견갑':'Schild','대견갑':'Groot Schild','전투화':'Gevechtslaars','갑옷':'Pantser','갑주':'Pantser',
+'보조무기': 'Secundair wapen',
 '왕관':'Kroon','장갑':'Handschoenen','건틀릿':'Pantserwanten','바지':'Broek','각반':'Beenbescherming',
 '허리띠':'Riem','벨트':'Riem','부적':'Talisman','목걸이':'Ketting','반지':'Ring',
 '망토':'Mantel','팔찌':'Armband','귀걸이':'Oorbel',

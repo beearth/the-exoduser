@@ -2267,6 +2267,7 @@ const _ES_PFX={'녹슨':'Oxidada','강철':'Acero','흑요석':'Obsidiana','미�
 '낡은':'Viejo','천':'Tela','가죽':'Cuero','강철사':'Acero Tejido','은':'Plata','은사':'Hilo de Plata','화염의':'Inferno','빙결의':'Hielo','암흑의':'Maldito','암전의':'Rayo'};
 const _ES_BASE={'대검':'Espadón','석궁':'Ballesta','연사석궁':'Repetidora','마력석궁':'Ballesta Arcana',
 '견갑':'Guardia','대견갑':'Gran Escudo','전투화':'Botas de Combate','갑옷':'Armadura','갑주':'Armadura',
+'보조무기': 'Mano secundaria',
 '투구':'Yelmo','왕관':'corona','장갑':'guantes','건틀릿':'Manoplas','바지':'pantalones','각반':'Grebas',
 '허리띠':'Cinturón','벨트':'Cinturón','부적':'Talismán','목걸이':'collar','반지':'Anillo',
 '망토':'Capa','악마팔찌':'Demon Bracelet','생명팔찌':'Life Bracelet','팔찌':'Brazalete','귀걸이':'Pendiente',

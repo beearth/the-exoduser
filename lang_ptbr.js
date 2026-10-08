@@ -2250,6 +2250,7 @@ const _PTBR_PFX={'녹슨':'Enferrujado','강철':'Aço','흑요석':'Obsidiana',
 '낡은':'Gasto','천':'Pano','가죽':'Couro','강철사':'Fio de Aço','은':'Prata','은사':'Fio de Prata','화염의':'Inferno','빙결의':'Congelado','암흑의':'Amaldiçoado','암전의':'do Raio'};
 const _PTBR_BASE={'대검':'Espadão','석궁':'Besta','연사석궁':'Repetidora','마력석궁':'Besta Arcana',
 '견갑':'Guarda','대견갑':'Grande Escudo','전투화':'Botas de Combate','갑옷':'Armadura','갑주':'Armadura',
+'보조무기': 'Arma secundária',
 '왕관':'coroa','장갑':'luvas','건틀릿':'Manoplas','바지':'calça','각반':'Caneleiras',
 '허리띠':'Cinto','벨트':'Cinto','부적':'Talismã','목걸이':'colar','반지':'Anel',
 '망토':'Capa','악마팔찌':'Demon Bracelet','생명팔찌':'Life Bracelet','팔찌':'Bracelete','귀걸이':'Brinco',

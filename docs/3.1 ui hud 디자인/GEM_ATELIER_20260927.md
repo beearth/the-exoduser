@@ -179,7 +179,7 @@
 | armor | 갑옷 | 1 | 2 |
 | necklace | 목걸이 | 5 | 2 |
 | weapon | 무기 | 1 | 3 |
-| shield | 견갑 | 5 | 3 |
+| shield | 보조무기 | 5 | 3 |
 | gloves | 장갑 | 1 | 4 |
 | bow | 석궁 | 5 | 4 |
 | ring1 | 반지1 | 1 | 5 |

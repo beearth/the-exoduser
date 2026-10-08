@@ -14353,8 +14353,8 @@ const ITEM_SIZE={weapon:[2,2],shield:[2,2],boots:[2,2],armor:[2,2],helmet:[2,2],
 const WTYPE_SIZE={sword:[2,2],dagger:[2,2],hammer:[2,2],mace:[2,2],club:[2,2],axe:[2,2],spear:[2,2]};
 const BTYPE_SIZE={crossbow:[2,2],repeater:[2,2],arcane:[2,2]};
 const INV_COLS=10;
-const SLOT_KR=['무기','견갑','부츠','갑옷','왕관','석궁','장갑','바지','벨트','목걸이','반지1','반지2','망토','팔찌','귀걸이','유골함'];
-const SLOT_EN=['Weapon','Shield','Boots','Armor','Helmet','Crossbow','Gloves','Pants','Belt','Necklace','Ring1','Ring2','Cape','Bracelet','Earring','Ossuary'];
+const SLOT_KR=['무기','보조무기','부츠','갑옷','왕관','석궁','장갑','바지','벨트','목걸이','반지1','반지2','망토','팔찌','귀걸이','유골함'];
+const SLOT_EN=['Weapon','Off-hand','Boots','Armor','Helmet','Crossbow','Gloves','Pants','Belt','Necklace','Ring1','Ring2','Cape','Bracelet','Earring','Ossuary'];
 function _slotName(i){return _L(SLOT_KR[i],SLOT_EN[i])}
 const SLOT_EMOJI=['⚔️','🛡️','👢','🦺','⛑️','🏹','🧤','👖','🪢','📿','💍','💍','🧣','⭕','🎀','⚱️'];
 // Paper doll slot positions [left, top] — indexed by SLOT_NAMES
@@ -47512,7 +47512,7 @@ $('forgeLore').textContent=_T('🔴화염→빙결 2배 | 🔵빙결→화염 2�
     weapon:{icon:'⚔️',ko:'무기',en:'Weapon',si:7,atlas:'v2'},
     bow:{icon:'🏹',ko:'활',en:'Bow',si:7,atlas:'v2'},
     armor:{icon:'🦺',ko:'갑옷',en:'Armor',si:0,atlas:'v2'},
-    shield:{icon:'🛡️',ko:'견갑',en:'Shield',si:6,atlas:'v2'},
+    shield:{icon:'🛡️',ko:'보조무기',en:'Off-hand',si:6,atlas:'v2'},
     helmet:{icon:'👑',ko:'왕관',en:'Crown',si:1,atlas:'v2'},
     pants:{icon:'👖',ko:'바지',en:'Pants',si:0,atlas:'v2'},
     gloves:{icon:'🧤',ko:'장갑',en:'Gloves',si:2,atlas:'v2'},
@@ -47566,7 +47566,7 @@ $('fgSelDesc').textContent=_forgeSel.desc+' — '+_T('악의')+' '+_forgeSel.cos
     const uhdr=document.createElement('div');uhdr.style.cssText='color:#ffaa44;font-size:.95rem;font-weight:700;margin-bottom:8px;letter-spacing:.1em;text-align:center';
 uhdr.textContent=_T('장비 강화 (실패 시 재료만 소멸)');grid.appendChild(uhdr);
     const _slotEN={weapon:'⚔️ Weapon',shield:'🛡️ Shield',armor:'🦺 Armor',helmet:'👑 Crown',boots:'👢 Boots',bow:'🏹 Bow',gloves:'🧤 Gloves',pants:'👖 Pants',belt:'🥋 Belt',necklace:'📿 Necklace',ring1:'💍 Ring1',ring2:'💍 Ring2',cape:'🧣 Cape',bracelet:'⭕ Bracelet',headband:'🎀 Earring',ossuary:'⚱️ Ossuary'};
-    const slots=[['weapon','⚔️ 무기'],['shield','🛡️ 견갑'],['armor','🦺 갑옷'],['helmet','👑 왕관'],['boots','👢 부츠'],['bow','🏹 활'],['gloves','🧤 장갑'],['pants','👖 바지'],['belt','🥋 벨트'],['necklace','📿 목걸이'],['ring1','💍 반지1'],['ring2','💍 반지2'],['cape','🧣 망토'],['bracelet','⭕ 팔찌'],['headband','🎀 귀걸이'],['ossuary','⚱️ 유골함']].map(([k,v])=>{const split=v.indexOf(' '),label=v.slice(split+1);return [k,v.slice(0,split+1)+_L(label,_slotEN[k].slice(_slotEN[k].indexOf(' ')+1))]});
+    const slots=[['weapon','⚔️ 무기'],['shield','🛡️ 보조무기'],['armor','🦺 갑옷'],['helmet','👑 왕관'],['boots','👢 부츠'],['bow','🏹 활'],['gloves','🧤 장갑'],['pants','👖 바지'],['belt','🥋 벨트'],['necklace','📿 목걸이'],['ring1','💍 반지1'],['ring2','💍 반지2'],['cape','🧣 망토'],['bracelet','⭕ 팔찌'],['headband','🎀 귀걸이'],['ossuary','⚱️ 유골함']].map(([k,v])=>{const split=v.indexOf(' '),label=v.slice(split+1);return [k,v.slice(0,split+1)+_L(label,_slotEN[k].slice(_slotEN[k].indexOf(' ')+1))]});
     let hasItem=false;
     slots.forEach(([slot,icon])=>{
       const it=INV.equipped[slot];if(!it)return;hasItem=true;
@@ -48049,7 +48049,7 @@ const secHdr3=document.createElement('div');secHdr3.style.cssText='color:#cc66ff
     // ═══ 제작 종합 — 모든 장비 한눈에 ═══
     grid.style.gridTemplateColumns='1fr';
     const _craftSlots=['weapon','bow','armor','shield','helmet','pants','gloves','boots','belt','necklace','ring','cape','bracelet','headband']; // ossuary 제외 (2026-09-01): 유니크 단일 지급 — 제작 불가
-    const _csNames={weapon:_L('무기','Weapon'),bow:_L('활','Bow'),armor:_L('갑옷','Armor'),shield:_L('견갑','Shield'),helmet:_L('왕관','Crown'),pants:_L('바지','Pants'),gloves:_L('장갑','Gloves'),boots:_L('부츠','Boots'),belt:_L('벨트','Belt'),necklace:_L('목걸이','Necklace'),ring:_L('반지','Ring'),cape:_L('망토','Cape'),bracelet:_L('팔찌','Bracelet'),headband:_L('귀걸이','Earring'),ossuary:_L('유골함','Ossuary')};
+    const _csNames={weapon:_L('무기','Weapon'),bow:_L('활','Bow'),armor:_L('갑옷','Armor'),shield:_L('보조무기','Off-hand'),helmet:_L('왕관','Crown'),pants:_L('바지','Pants'),gloves:_L('장갑','Gloves'),boots:_L('부츠','Boots'),belt:_L('벨트','Belt'),necklace:_L('목걸이','Necklace'),ring:_L('반지','Ring'),cape:_L('망토','Cape'),bracelet:_L('팔찌','Bracelet'),headband:_L('귀걸이','Earring'),ossuary:_L('유골함','Ossuary')};
     const _csEmoji={weapon:'⚔️',bow:'🏹',armor:'🦺',shield:'🛡️',helmet:'👑',pants:'👖',gloves:'🧤',boots:'👢',belt:'🥋',necklace:'📿',ring:'💍',cape:'🧣',bracelet:'⭕',headband:'🎀',ossuary:'⚱️'};
     // 헤더
     const chdr=document.createElement('div');chdr.style.cssText='text-align:center;padding:8px;color:#ffcc44;font-size:1.05rem;font-weight:700;letter-spacing:.15em';
@@ -48084,7 +48084,7 @@ const secHdr3=document.createElement('div');secHdr3.style.cssText='color:#cc66ff
     grid.style.gridTemplateColumns='1fr';
     const slot=G.forgeTab;
     const tier=Math.min(SI_TO_HELL[G.stage],4);
-    const slotNames={weapon:_L('무기','Weapon'),shield:_L('견갑','Shield'),armor:_L('갑옷','Armor'),helmet:_L('왕관','Crown'),boots:_L('부츠','Boots'),bow:_L('활','Bow'),gloves:_L('장갑','Gloves'),pants:_L('바지','Pants'),belt:_L('벨트','Belt'),necklace:_L('목걸이','Necklace'),ring:_L('반지','Ring'),cape:_L('망토','Cape'),bracelet:_L('팔찌','Bracelet'),headband:_L('귀걸이','Earring'),ossuary:_L('유골함','Ossuary')};
+    const slotNames={weapon:_L('무기','Weapon'),shield:_L('보조무기','Off-hand'),armor:_L('갑옷','Armor'),helmet:_L('왕관','Crown'),boots:_L('부츠','Boots'),bow:_L('활','Bow'),gloves:_L('장갑','Gloves'),pants:_L('바지','Pants'),belt:_L('벨트','Belt'),necklace:_L('목걸이','Necklace'),ring:_L('반지','Ring'),cape:_L('망토','Cape'),bracelet:_L('팔찌','Bracelet'),headband:_L('귀걸이','Earring'),ossuary:_L('유골함','Ossuary')};
     const slotEmoji={weapon:'⚔️',shield:'🛡️',armor:'🦺',helmet:'👑',boots:'👢',bow:'🏹',gloves:'🧤',pants:'👖',belt:'🥋',necklace:'📿',ring:'💍',cape:'🧣',bracelet:'⭕',headband:'🎀',ossuary:'⚱️'};
 
     // 현재 장착 표시
@@ -48295,7 +48295,7 @@ function renderStatSummary(){
     // ── 방어 ──
     `<div style="${_sHd}">🛡️ ${_L('방어','Defense')}</div>`+
     `<div style="${_sLn}">${_L('물리방어','Phys DEF')}: <span style="color:#ffaa44">${_sTotalPDef.toFixed(1)}</span> → <span style="color:#44ff88">${(_sPhysDR*100).toFixed(1)}%${_L('감소','red')}</span> <span style="color:#887766;font-size:1.1rem">(${_L('캡','cap')}${~~(DR_CAP*100)}%)</span></div>`+
-    `<div style="font-size:1rem;color:#887766;line-height:1.6;margin-left:12px">${_L('기본','base')}:${P.baseDef} | ${_L('제단','altar')}:${pDefAdd()} | ${_L('견갑','shield')}:${sh().def||0} | ${_L('갑옷','armor')}:${ar().def||0} | ${_L('부츠','boots')}:${bt().def||0} | ${_L('장갑','gloves')}:${gl().def||0} | ${_L('바지','pants')}:${pt().def||0} | ${_L('강화','enhance')}:${_sEnhDef}</div>`+
+    `<div style="font-size:1rem;color:#887766;line-height:1.6;margin-left:12px">${_L('기본','base')}:${P.baseDef} | ${_L('제단','altar')}:${pDefAdd()} | ${_L('보조무기','off-hand')}:${sh().def||0} | ${_L('갑옷','armor')}:${ar().def||0} | ${_L('부츠','boots')}:${bt().def||0} | ${_L('장갑','gloves')}:${gl().def||0} | ${_L('바지','pants')}:${pt().def||0} | ${_L('강화','enhance')}:${_sEnhDef}</div>`+
     `<div style="${_sLn}">${_L('속성방어','Elem DEF')}: <span style="color:#bb88ff">${_sTotalEDef}</span> → <span style="color:#44ff88">${(_sElemDR*100).toFixed(1)}%${_L('감소','red')}</span></div>`+
     `<div style="font-size:1rem;color:#887766;line-height:1.6;margin-left:12px">${_L('왕관','crown')}:${hm().eDef||0} | ${_L('목걸이','necklace')}:${nc().eDef||0} | ${_L('반지1','ring1')}:${rg1().eDef||0} | ${_L('반지2','ring2')}:${rg2().eDef||0}</div>`+
     `<div style="${_sLn}">${_L('반사','Reflect')}: <span style="color:${_afc('reflect','#aaaaff')}">${_afp('reflect')}</span> | ${_L('가시','Thorns')}: <span style="color:${_afc('thorns','#ff8844')}">${_af('thorns').toFixed(0)}</span> | ${_L('배리어','Barrier')}: <span style="color:${_afc('barrier','#4488ff')}">${_af('barrier').toFixed(0)}</span></div>`+
@@ -48337,7 +48337,7 @@ function renderStatSummary(){
     `<div style="${_sLn}">${_L('콤보뎀+','Combo DMG+')}: <span style="color:${_afc('comboBoost','#ff9944')}">${_afp('comboBoost')}</span> | ${_L('사슬뎀+','Chain DMG+')}: <span style="color:${_afc('dashBoost','#ff6644')}">${_afp('dashBoost')}</span> | ${_L('스킬뎀+','Skill DMG+')}: <span style="color:${_afc('skillBoost','#bb44ff')}">${_afp('skillBoost')}</span></div>`+
     `<div style="${_sLn}">${_L('패리+','Parry+')}: <span style="color:${_afc('parryBonus','#44ff88')}">${_afp('parryBonus')}</span> | ${_L('체인','Chain')}: <span style="color:${_afc('chainTarget','#ffcc44')}">+${_af('chainTarget').toFixed(0)}</span> | ${_L('정화','Purify')}: <span style="color:${_afc('statusClean','#44ff88')}">${_af('statusClean').toFixed(0)}${_L('회','x')}</span></div>`+
     `<div style="${_sLn}">${_L('불굴','Unyielding')}: <span style="color:${_afc('lastStand','#ffdd44')}">${_af('lastStand').toFixed(0)}</span> | ${_L('부활','Revive')}: <span style="color:${_afc('reviveOnce','#44ff88')}">${_af('reviveOnce')?~~(_af('reviveOnce')*100)+'%':'0'}</span></div>`+
-    `<div style="${_sLn}">✟ ${_L('신성력','Holy Power')}: <span style="color:${_afc('antiRevive','#ffdd88')}">${~~(_af('antiRevive')*100)}%</span> <span style="color:#887766;font-size:1.1rem">(${(()=>{const _slN={weapon:'무기',shield:'견갑',armor:'갑옷',helmet:'왕관',boots:'부츠',gloves:'장갑',pants:'바지',necklace:'목걸이',ring1:'반지1',ring2:'반지2',bracelet:'팔찌',cape:'망토',bow:'활'};const _parts=[];let _sum=0;for(const s of SLOT_NAMES){const it=INV.equipped[s];if(!it||!it.affixes)continue;for(let ai=0;ai<it.affixes.length;ai++){const a=it.affixes[ai];if(a.id==='antiRevive'){const v=~~(a.value*100);_sum+=v;_parts.push(_T(_slN[s]||s)+v+'%')}}}return _parts.length?_parts.join('+')+'='+_sum+'%':_L('없음','None')})()})</span></div>`+
+    `<div style="${_sLn}">✟ ${_L('신성력','Holy Power')}: <span style="color:${_afc('antiRevive','#ffdd88')}">${~~(_af('antiRevive')*100)}%</span> <span style="color:#887766;font-size:1.1rem">(${(()=>{const _slN={weapon:'무기',shield:'보조무기',armor:'갑옷',helmet:'왕관',boots:'부츠',gloves:'장갑',pants:'바지',necklace:'목걸이',ring1:'반지1',ring2:'반지2',bracelet:'팔찌',cape:'망토',bow:'활'};const _parts=[];let _sum=0;for(const s of SLOT_NAMES){const it=INV.equipped[s];if(!it||!it.affixes)continue;for(let ai=0;ai<it.affixes.length;ai++){const a=it.affixes[ai];if(a.id==='antiRevive'){const v=~~(a.value*100);_sum+=v;_parts.push(_T(_slN[s]||s)+v+'%')}}}return _parts.length?_parts.join('+')+'='+_sum+'%':_L('없음','None')})()})</span></div>`+
     `<div style="${_sLn}">☠ ${_L('악마력(부활력)','Demon Power(Revive)')}: <span style="color:#ff4444">${Math.max(0,Math.min(100,~~(P.lv*0.03)+(PASSIVES.pDemon||0)*2+~~((_af('revivePow')+_eqImplicit('_iRevPow')*.01)*100)-(PASSIVES.pHuman||0)*10))}%</span> <span style="color:#887766;font-size:1.1rem">(${_L('자연','natural')}${~~(P.lv*0.03)}+${_L('악마성','Demon')}${(PASSIVES.pDemon||0)*2}+${_L('장비','gear')}${~~((_af('revivePow')+_eqImplicit('_iRevPow')*.01)*100)}${(PASSIVES.pHuman||0)>0?'-'+_L('인간성','Humanity')+(PASSIVES.pHuman*10):''})</span></div>`+
     // ── 전투 통계 ──
     `<div style="${_sHd}">📈 ${_L('전투 통계','Combat Stats')}</div>`+
@@ -56985,7 +56985,7 @@ function updateHUD(slow){
   const _eqSet=(el,html,bc,bs)=>{if(!el)return;if(el._h!==html){el._h=html;el.innerHTML=html}if(el._bc!==bc){el._bc=bc;el.style.borderColor=bc}if(el._bs!==bs){el._bs=bs;el.style.boxShadow=bs}};
   _eqSet($('eq0'),(_eqW?`<span>${_slotGlyph(0,RARITY_C[_eqW.rarity||0],22)}</span><div class="ee" style="background:${ELC[_eqW.el]}"></div><div class="ed">${_eqW.wtype?_T(WTYPES[_eqW.wtype].name):(_L('무기','Weapon'))}</div>`:'<span style="opacity:.5">'+_glyph('fist','#555',20)+'</span><div class="ed" style="color:#555">'+(_L('맨손','Bare'))+'</div>'),
     _eqW?ELC[_eqW.el]:'#333',_eqW?`inset 0 0 10px ${ELC[_eqW.el]}33`:'none');
-  _eqSet($('eq1'),(_eqS?`<span>${_slotGlyph(1,RARITY_C[_eqS.rarity||0],22)}</span><div class="ee" style="background:${ELC[_eqS.el]}"></div><div class="ed">${_L('견갑','Shield')}</div>`:'<span style="color:#555">-</span><div class="ed" style="color:#555">'+(_L('없음','None'))+'</div>'),
+  _eqSet($('eq1'),(_eqS?`<span>${_slotGlyph(1,RARITY_C[_eqS.rarity||0],22)}</span><div class="ee" style="background:${ELC[_eqS.el]}"></div><div class="ed">${_L('보조무기','Off-hand')}</div>`:'<span style="color:#555">-</span><div class="ed" style="color:#555">'+(_L('없음','None'))+'</div>'),
     _eqS?ELC[_eqS.el]:'#333',_eqS?`inset 0 0 10px ${ELC[_eqS.el]}33`:'none');
   _eqSet($('eq2'),(_eqB?`<span>${_slotGlyph(2,RARITY_C[_eqB.rarity||0],22)}</span><div class="ee" style="background:${ELC[_eqB.el]}"></div><div class="ed">${_L('부츠','Boots')}</div>`:'<span style="color:#555">-</span><div class="ed" style="color:#555">'+(_L('없음','None'))+'</div>'),
     _eqB?ELC[_eqB.el]:'#333',_eqB?`inset 0 0 10px ${ELC[_eqB.el]}33`:'none');

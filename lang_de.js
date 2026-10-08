@@ -2230,6 +2230,7 @@ const _DE_PFX={'녹슨':'Rostig','강철':'Stahl','흑요석':'Obsidian','미스
 '낡은':'Abgenutzt','천':'Stoff','가죽':'Leder','강철사':'Stahlfaser','은':'Silber','은사':'Silberfaden','화염의':'Inferno','빙결의':'Eisgebunden','암흑의':'Finster','암전의':'Blitz'};
 const _DE_BASE={'대검':'Großschwert','석궁':'Armbrust','연사석궁':'Schnellfeuer-Armbrust','마력석궁':'Arkane Armbrust',
 '견갑':'Schulterplatte','대견갑':'Große Schulterplatte','전투화':'Kampfstiefel','갑옷':'Rüstung','갑주':'Panzerung',
+'보조무기': 'Nebenhand',
 '왕관':'Krone','장갑':'Handschuhe','건틀릿':'Panzerhandschuhe','바지':'Hose','각반':'Beinschienen',
 '허리띠':'Gürtel','벨트':'Gürtel','부적':'Talisman','목걸이':'Halskette','반지':'Ring',
 '망토':'Umhang','악마팔찌':'Demon Bracelet','생명팔찌':'Life Bracelet','팔찌':'Armreif','귀걸이':'Ohrring',

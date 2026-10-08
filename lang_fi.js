@@ -238,6 +238,7 @@ const _FI={"⛓️ 관통!":"⛓️ Läpäisy!","⛓️ 관통":"⛓️ Läpäis
 'CT: 방어구체+빙결 (재입력: 파쇄)':'CT: Jääpallo+jäätyminen (uudelleen: murskaus)',
 '근접':'Lähit.',
 '견갑':'Kilpi',
+'보조무기': 'Sivuase',
 '사슬':'Ketju',
 '마법':'Taianomainen',
 '보막':'Kilpi',

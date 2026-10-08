@@ -298,6 +298,7 @@ const _MS={
   "쇠뇌력": "Penguasaan Anak panah",
   "광전사": "Berserker",
   "추적자": "Penjejak",
+  "보조무기": "Senjata Sekunder",
   "물리관통": "Penetrasi Fisik",
   "마법관통": "Penetrasi Sihir",
   "녹슨 대검": "Pedang Besar Berkarat",

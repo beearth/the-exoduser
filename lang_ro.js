@@ -238,6 +238,7 @@ const _RO={"⛓️ 관통!":"⛓️ Penetrare!","⛓️ 관통":"⛓️ Penetrar
 'CT: 방어구체+빙결 (재입력: 파쇄)':'CT: Sferă gheață+îngheț (re-apasă: sfărâmă)',
 '근접':'Corp',
 '견갑':'Gardă',
+'보조무기': 'Armă secundară',
 '사슬':'Lanț',
 '마법':'Magie',
 '보막':'Scut',

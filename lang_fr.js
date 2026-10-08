@@ -2258,6 +2258,7 @@ const _FR_PFX={'녹슨':'Rouillé','강철':'Acier','흑요석':'Obsidienne','�
 '낡은':'Usé','천':'Tissu','가죽':'Cuir','강철사':'Fil d\'Acier','은':'Argent','은사':'Fil d\'Argent','화염의':'Infernal','빙결의':'Gelé','암흑의':'Ténébreux','암전의':'de Foudre'};
 const _FR_BASE={'대검':'Espadon','석궁':'Arbalète','연사석궁':'Répéteur','마력석궁':'Arbalète Arcanique',
 '견갑':'Garde','대견갑':'Grande Garde','전투화':'Bottes de Combat','갑옷':'Armure','갑주':'Armure',
+'보조무기': 'Main secondaire',
 '왕관':'Couronne','장갑':'Gants','건틀릿':'Gantelets','바지':'Pantalon','각반':'Jambières',
 '허리띠':'Ceinture','벨트':'Ceinture','부적':'Talisman','목걸이':'Collier','반지':'Anneau',
 '망토':'Cape','팔찌':'Bracelet','귀걸이':'Boucle d\'Oreille',

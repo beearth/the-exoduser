@@ -238,6 +238,7 @@ const _VI={"⛓️ 관통!":"⛓️ Xuyên Thấu!","⛓️ 관통":"⛓️ Xuy�
 'CT: 방어구체+빙결 (재입력: 파쇄)':'CT: Cầu băng+đóng băng (nhấn lại: vỡ)',
 '근접':'Cận Chiến',
 '견갑':'Hộ Vệ',
+'보조무기': 'Vũ khí phụ',
 '사슬':'Xích Móc',
 '마법':'Pháp Thuật',
 '보막':'Khiên',

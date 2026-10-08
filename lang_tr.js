@@ -256,6 +256,7 @@ const _TR={"⛓️ 관통!":"⛓️ Delme!","⛓️ 관통":"⛓️ Delme","⛓�
 'CT: 방어구체+빙결 (재입력: 파쇄)':'CT: Buz küresi+dondurma (tekrar: paramparça)',
 '근접':'Yakın',
 '견갑':'Kalkan',
+'보조무기': 'Yan Silah',
 '사슬':'Zincir',
 '마법':'Büyülü',
 '보막':'Kalkan',
