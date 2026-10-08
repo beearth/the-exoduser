@@ -1,14 +1,10 @@
 // Existing game art/dialogue/BGM, exported as a cinematic edit rather than a gameplay recording.
 import { readFileSync } from "node:fs";
-const INPUT=process.env.NEMESIA_INPUT||"/home/user/nemesia-input";
-const DIR=process.env.NEMESIA_PROJECT||"/home/user/nemesia-text-only-edit";
-const LANGUAGE=process.env.NEMESIA_LANGUAGE||"en";
+const INPUT="/home/user/nemesia-input", DIR="/home/user/nemesia-edit";
 const BG="#08090f", FG="#f0ece7", GOLD="#d9b788";
 export default async ({project})=>{
   const plan=JSON.parse(readFileSync(`${INPUT}/manifest.json`,"utf8"));
-  const captions=JSON.parse(readFileSync(`${INPUT}/caption-cues.json`,"utf8"));
   if(plan.cues.length!==27)throw new Error("Expected all 27 original Korean cues");
-  if(!["en","ko"].includes(LANGUAGE))throw new Error("Expected en or ko dialogue language");
   const duration=plan.duration+4;
   const p=await project({dir:DIR,size:"1920x1080",fps:30,background:BG});
   const kr=await p.add(`${INPUT}/NotoSansKR.ttf`);
@@ -21,22 +17,22 @@ export default async ({project})=>{
   for(const s of plan.cues){
     const dur=s.dur;
     if(!s.img){p.compose(<rect width={1920} height={1080} fill={BG}/>,{at:s.at,dur,name:`exit-${s.id}`});continue;}
+    const hasDialogue=!!(s.ko||s.en);
     p.compose(
       <frame width={1920} height={1080} layout="none" background={BG}>
         <frame width={1920} height={1080} layout="column" clip={true}>
           <media file={images[s.img]} fit="contain" width="fill" height="fill"/>
         </frame>
+        <rect x={0} y={0} width={1920} height={68} fill={BG}/>
+        <text x={48} y={19} width={900} height={35} fontFamily="DM Sans" fontWeight={700} fontSize={23} color={FG}>EXODUSER: HELL LORD</text>
+        <text x={1040} y={21} width={832} height={32} fontFamily="DM Sans" fontSize={20} align="right" color={GOLD}>NEMESIA / OPENING CINEMATIC</text>
+        {hasDialogue&&<frame x={0} y={730} width={1920} height={350} layout="none" background="#101019">
+          <text x={64} y={25} width={1792} height={36} fontFamily="DM Sans" fontWeight={700} fontSize={25} color={GOLD}>{labels[s.speaker]||s.speaker||""}</text>
+          <text x={64} y={82} width={1030} height={250} fontFamily="DM Sans" fontSize={30} lineHeight={1.28} color={FG}>{s.en}</text>
+          <rect x={1124} y={82} width={2} height={235} fill="#504b58"/>
+          <text x={1160} y={82} width={696} height={250} typography={krType} fontSize={26} lineHeight={1.4} color="#ccc6d0">{s.ko}</text>
+        </frame>}
       </frame>,{at:s.at,dur,name:`cue-${s.id}`});
-  }
-  // Original presentation: one language over the artwork, without a title bar or dialogue plate.
-  // The game dialogue has no recorded speech; these windows derive from authored reading cues.
-  for(const [index,c] of captions[LANGUAGE].entries()){
-    p.compose(<frame width={1920} height={1080} layout="none">
-      <text x={154} y={894} width={1612} height={34} fontFamily="DM Sans" fontWeight={700} fontSize={24} color={GOLD} shadow={{x:1,y:2,blur:3,color:"#000000"}}>{labels[c.speaker]||c.speaker||""}</text>
-      {LANGUAGE==="ko"
-        ? <text x={154} y={936} width={1612} height={96} typography={krType} fontSize={32} lineHeight={1.25} color={FG} shadow={{x:1,y:2,blur:3,color:"#000000"}}>{c.text}</text>
-        : <text x={154} y={936} width={1612} height={96} fontFamily="DM Sans" fontSize={32} lineHeight={1.25} color={FG} shadow={{x:1,y:2,blur:3,color:"#000000"}}>{c.text}</text>}
-    </frame>,{at:c.at,dur:c.dur,name:`dialogue-${LANGUAGE}-${index+1}-${c.originalCueId}`});
   }
   p.compose(<frame width={1920} height={1080} layout="none" background={BG}>
     <text x={160} y={290} width={1600} height={90} fontFamily="DM Sans" fontWeight={700} fontSize={65} align="center" color={FG}>EXODUSER: HELL LORD</text>
