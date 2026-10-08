@@ -422,3 +422,8 @@ TASK `ROOT-CH1-HOLY-PRISON-DEPLOY-IN-20261008`, working game4,112,481B/`f198d7fd
 | VISUAL VERDICT | RETOUCH, 이 단위 UI_NOT_ASSESSED/nativeNOT_RUN |
 
 WOLF 파일 쓰기는 자동 승인 검토에서 dangerous로 거절됐고 구체 사유는 제공되지 않았다. 해당 후보의 추가 접근·실행·검수·채택·Git 및 다른 tool/path/host/권한 우회0을 유지한다.
+
+
+### 2026-10-08 — 헬거너 관통 창격 본편 시험 consumer
+
+전사 임시 외형에서 `test=1&kit=hellgunner` LMB를 실제 본편 투사체로 연결했다. ST6/쿨9f/기본28뎀/속도16/r5/거리960/field+ens 합계99 identity·1객체1회. Godot Resource 원칙으로 불변 수치와 runtime 상태를 분리했다. 정식 idx2/comingSoon 해제·RMB/SPACE·새sprite·최종 스케일/숙련·실화면/청취/보상save는 미완료다. 최종 통제CPU16그룹36확인과 classic inline4 syntax PASS; fixture port 누락2는 별도 준비 이력이다. 상세 정본: [신규캐릭 프로젝트](../2_1%20스킬관리+합체시스템+자원/신규캐릭_스킬프로젝트_20260930.md#hellgunner-pierce-main-20261008).

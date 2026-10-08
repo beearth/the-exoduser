@@ -3427,6 +3427,41 @@ const _MOBILE_DPR_CAP=1.5; // 모바일 DPR 상한
 const SUPABASE_URL='https://tevlznuhjqcnzgewlswx.supabase.co';
 const SUPABASE_KEY='sb_publishable_chAwadci1zVQNEKPC__s_w_7K3Oz_WP';
 const _isTestMode=new URLSearchParams(location.search).get('test')==='1';
+// Godot Resource-style immutable skill data; transient cast state stays outside saves.
+const _HELLGUNNER_PIERCE=Object.freeze({id:'hellgunnerPierce',st:6,cooldown:9,damage:28,speed:16,radius:5,offset:22,range:960,maxHits:99,color:'#ff8a4a'});
+const _hellgunnerPrototype=_isTestMode&&new URLSearchParams(location.search).get('kit')==='hellgunner';
+let _hellgunnerCastState=null;
+function _hellgunnerPrototypeActive(){return _hellgunnerPrototype&&_charIdx===0&&!_EDITOR_MODE;}
+function _isHellgunnerPierce(p){return !!p._extraData&&p._extraData.resource===_HELLGUNNER_PIERCE;}
+function _tickHellgunnerPrototype(sp){
+  if(!_hellgunnerPrototypeActive()){_hellgunnerCastState=null;return;}
+  if(!_hellgunnerCastState||_hellgunnerCastState.actor!==P||_hellgunnerCastState.map!==G.map)_hellgunnerCastState={actor:P,map:G.map,cooldown:0};
+  _hellgunnerCastState.cooldown=Math.max(0,_hellgunnerCastState.cooldown-sp);
+}
+function _fireHellgunnerPierce(){
+  const owner=_hellgunnerCastState,spec=_HELLGUNNER_PIERCE;
+  if(!_hellgunnerPrototypeActive()||!G.on||G.paused||P.hp<=0||P.s!=='idle'||!owner||owner.actor!==P||owner.map!==G.map||owner.cooldown>0||P.st<spec.st)return false;
+  if(_gpActive)_gpAutoAim(spec.range);
+  const a=P.facing,p=_getPProj();
+  p.x=P.x+Math.cos(a)*spec.offset;p.y=P.y+Math.sin(a)*spec.offset;
+  p.vx=Math.cos(a)*spec.speed;p.vy=Math.sin(a)*spec.speed;
+  p.dmg=spec.damage;p.el=0;p.r=spec.radius;p.maxDist=spec.range;p.dist=0;
+  p.normalBow=true;p.pierce=0;p.pierceMax=0;p._pierceCount=0;
+  p._extraData={resource:spec,actor:P,map:G.map};
+  P.st-=spec.st;owner.cooldown=spec.cooldown;P.atkArc=a;P.s='bowRecover';P.st2=spec.cooldown;
+  pProjs[pProjs.length]=p;
+  if(G._pStats)G._pStats._atkC++;
+  try{playSample('crossbow_shot',.7,1);}catch(e){console.error('[SFX] hellgunner pierce:',e);}
+  try{addParts(p.x,p.y,spec.color,5);}catch(e){console.error('[VFX] hellgunner pierce:',e);}
+  return true;
+}
+if(_hellgunnerPrototype){
+  const badge=document.createElement('div');badge.id='hellgunnerPrototypeBadge';
+  badge.textContent='헬거너 관통 창격 시험 · 전사 임시 외형 · LMB (전사 선택 시)';
+  badge.style.cssText='position:fixed;bottom:8px;left:50%;transform:translateX(-50%);z-index:10000;color:#ffcf6a;background:#160d0de6;padding:6px 10px;font:12px sans-serif;pointer-events:none';
+  document.body.appendChild(badge);
+}
+
 let sb=(!_isTestMode&&typeof supabase!=='undefined')?supabase.createClient(SUPABASE_URL,SUPABASE_KEY):null;
 // Supabase 403 등 unhandled rejection 콘솔 빨간에러 억제
 addEventListener('unhandledrejection',e=>{
@@ -18568,9 +18603,10 @@ function _parryMagicHitFx(p){
   else _projHitFx(p.x,p.y,p.el,false);
   playSampleAt('bullet_hit',.3,1,p.x,p.y);
 }
-function _hurtFieldMobs(x,y,hitR,dmg,hitSet,parryShot){
+function _hurtFieldMobs(x,y,hitR,dmg,hitSet,parryShot,hitLimit=Infinity){
   var n=0,fbs=G._fieldBosses||(G._fieldBoss?[G._fieldBoss]:[]);
   for(var _fi=0;_fi<fbs.length;_fi++){
+    if(hitSet&&hitSet.size>=hitLimit)return n;
     var fb=fbs[_fi];if(!fb||!_fmCanHit(fb,1))continue;
     var fp=_fmXY(fb,1);
     if(dst(x,y,fp.x,fp.y)<hitR+(fb.r||120)&&!(hitSet&&hitSet.has(fb))){
@@ -18578,6 +18614,7 @@ function _hurtFieldMobs(x,y,hitR,dmg,hitSet,parryShot){
     }
   }
   var ws=G._worms;if(ws)for(var i=0;i<ws.length;i++){
+    if(hitSet&&hitSet.size>=hitLimit)return n;
     var w=ws[i];if(!w||!_fmCanHit(w,0))continue;
     if(dst(x,y,w.x,w.y)<hitR+(w.r||56)&&!(hitSet&&hitSet.has(w))){
       if(hitSet)hitSet.add(w);const applied=_fmApply(w,dmg,0);if(applied||parryShot)n++;if(parryShot)_parryMagicHitFx(parryShot);
@@ -18585,6 +18622,7 @@ function _hurtFieldMobs(x,y,hitR,dmg,hitSet,parryShot){
     }
   }
   var fds=G._fireDevils;if(fds)for(var i=0;i<fds.length;i++){
+    if(hitSet&&hitSet.size>=hitLimit)return n;
     var fd=fds[i];if(!fd||!_fmCanHit(fd,1))continue;
     if(dst(x,y,fd.x,fd.y)<hitR+(fd.r||100)&&!(hitSet&&hitSet.has(fd))){
       if(hitSet)hitSet.add(fd);const applied=_fmApply(fd,dmg,1);if(applied||parryShot)n++;if(parryShot)_parryMagicHitFx(parryShot);
@@ -32337,6 +32375,7 @@ function update(){
   // slowMo 완전 비활성
   G.slowMo=0;
   const sp=(G.slowMo>0?.35:1)*_dtSp;
+  _tickHellgunnerPrototype(sp);
   if(G.slowMo>0)G.slowMo-=_dtSp;
 
   // ═══ 플레이어 행동 카운터 (보스 AI용) ═══
@@ -32697,6 +32736,7 @@ function update(){
     else if(isAct('parry')&&_qIsPeaceShield()&&P.mp>0&&(P._sbCd||0)<=0){_enterPeaceShield()} // Q: 평화의보호 (stormBeam)
     else if(isAct('parry')&&!_qIsIceOrb()&&!_qIsPeaceShield()&&(P._sbCd||0)<=0&&P.mp>=10){P.mp-=10;P.s='sBlock';P.st2=999;P._sbParryT=20;P._sbHoldT=0;P._sbReleaseR=0;P.parryT=0;P._qDetonateFired=false;P._sbCd=~~(30*(1+_eqAffix('shieldCdRed')));G._sbBurst={x:P.x,y:P.y,r:P.r+5,maxR:P.skills.detonate>=1?150+((P.skills.detonate||1)-1)*15:90,spd:8,det:P.skills.detonate>=1};playSample('shield_activate',.8,_r(1,.08));_startShieldLoop();if(Math.random()<.3)playSample(['voice_parry1','voice_parry2','voice_parry3','voice_parry4'][~~(Math.random()*4)],1,_r(1,.03));else playSample('male_grunt',1,_r(1,.15))} // Q: 보호막 (데미지 감소)
     // burstLoop는 E키(마법슬롯)에서 발동 → _execMagicE()에서 처리
+    else if(_hellgunnerPrototypeActive()&&isHeld('weapon')){_fireHellgunnerPierce()}
     else if(isHeld('weapon')&&P.skills.whirlwind&&P.activeLMBSk==='whirlwind'&&P.st>=2){P.s='whirlwind';P.wwAng=0;P._wwDetTimer=0;SFX._swIdx=0;SFX.slashSeq();if(_isFused('stormBeam')){P._eStormIdx=0;P._eStormT=0;P._eStormActive=true;playSample(['electric_storm','electric_storm2','electric_storm3','electric_storm4'][~~(Math.random()*4)],.6,_r(1,.1))}if(Math.random()<.45){playSample(['voice_flee','voice_storm_attack'][~~(Math.random()*2)],1,1)}else{const _ve=['voice_grunt','male_grunt'];playSample(_ve[~~(Math.random()*2)],1,_r(1,.15))}_addSkProf('whirlwind')}
     else if(isAct('weapon')&&useStPct('weapon')){if(_gpActive)_gpAutoAim(250);P._atkBon=~~(_lastCost*1.5);if(G._pStats)G._pStats._atkC++;
       if(P.activeLMBSk==='kiSlash'&&_cresStep===2&&_cresComboT>0){_beginKiSlashThirdCharge()}
@@ -33194,7 +33234,7 @@ function update(){
     else if(P.s==='bowDraw'){P.s='idle'} // bowDraw는 더이상 사용되지 않음
     else if(P.s==='bowRecover'){
       // 활 회복 중 무기/돌진/패링으로 캔슬 가능
-      if(isAct('weapon')&&useStPct('weapon')){P._atkBon=~~(_lastCost*1.5);if(G._pStats)G._pStats._atkC++;
+      if(!_hellgunnerPrototypeActive()&&isAct('weapon')&&useStPct('weapon')){P._atkBon=~~(_lastCost*1.5);if(G._pStats)G._pStats._atkC++;
         if(P.activeLMBSk==='kiSlash'&&_cresStep===2&&_cresComboT>0){_beginKiSlashThirdCharge()}
         else{P.s='wSwing';P.st2=5;P.swProg=0;_ch1RigRememberStrike();_startSilvertailAttackMotion('lmb');P.atkArc=P.facing;if(Math.random()<.35){const _ve=['voice_grunt','male_grunt','voice_attack'];playSample(_ve[~~(Math.random()*3)],1,_r(1,.15))}
           if(P.activeLMBSk==='kiSlash')_fireKiSlashCrescent((_cresStep%3)+1);else SFX.slash()}}
@@ -34800,6 +34840,8 @@ function update(){
   // pProjs 캡 제거됨 — 투사체 무제한
   {let w=0;for(let i=0;i<pProjs.length;i++){
     const p=pProjs[i];
+    const _hgPierce=_isHellgunnerPierce(p);
+    if(_hgPierce&&(!_hellgunnerPrototypeActive()||p._extraData.actor!==P||p._extraData.map!==G.map)){_recyclePProj(p);continue;}
     // 트레일 업데이트
     {const _tMax=p.arcMissile?16:(p.mhBlade||p.plagueBlade)?12:6;if(!p._trail){p._trail=new Array(_tMax);for(let _ti=0;_ti<_tMax;_ti++)p._trail[_ti]={x:0,y:0};p._trH=0;p._trLen=0}const _tSlot=p._trail[p._trH%_tMax];_tSlot.x=p.x;_tSlot.y=p.y;p._trH=(p._trH+1)%_tMax;if(p._trLen<_tMax)p._trLen++}
     const spd=Math.sqrt(p.vx*p.vx+p.vy*p.vy);
@@ -34860,7 +34902,7 @@ function update(){
       dead=true}
     else if(isW(p.x,p.y)){
       const _bMax=p._maxBounce||3;
-      const canBounce=(p.magic||p.mhBlade)?(p.bounces||0)<_bMax:(!p.explosive&&p.dist<p.maxDist*0.5&&(p.bounces||0)<2);
+      const canBounce=!_hgPierce&&((p.magic||p.mhBlade)?(p.bounces||0)<_bMax:(!p.explosive&&p.dist<p.maxDist*0.5&&(p.bounces||0)<2));
       if(canBounce){
         p.x-=p.vx*sp;p.y-=p.vy*sp;
         // 벽 탈출: 스텝백 후에도 벽 안이면 추가로 밀어냄
@@ -34902,7 +34944,8 @@ function update(){
     if(p._bladeEchoPath)_bladeEchoRecord(p._bladeEchoPath,p.x,p.y);
     if(dead){_bladeEchoFinish(p);continue}
     let hit=false;
-    if(_hurtFieldMobs(p.x,p.y,(p.r||6)+8,p.dmg||p.atk||10,p._hitSet,p._parryMagicShot?p:null)){hit=true;if(!p.pierce&&!p.plagueBlade&&!p.venomBlade){if(!p._hitSet)p._hitSet=new Set()}}
+    if(_hurtFieldMobs(p.x,p.y,(p.r||6)+8,p.dmg||p.atk||10,p._hitSet,p._parryMagicShot?p:null,_hgPierce?_HELLGUNNER_PIERCE.maxHits:Infinity)){hit=true;if(!p.pierce&&!p.plagueBlade&&!p.venomBlade){if(!p._hitSet)p._hitSet=new Set()}}
+    if(_hgPierce){if(p._hitSet.size>=_HELLGUNNER_PIERCE.maxHits){_recyclePProj(p);continue;}hit=false;}
     if(hit&&p._parryMagicShot){_recyclePProj(p);continue}
     const _neP=shQuery(p.x,p.y,p.r+20);
     for(let _ni=0;_ni<_neP.length;_ni++){const e=_neP[_ni];if(!e.alive)continue;
@@ -35028,6 +35071,7 @@ function update(){
         if(p.explosive && !p.hitTriggered){ p.vx=0; p.vy=0; p.hitTriggered=true; } // 폭발탄은 멈춤
         {const _isTurretProj=!!p._fromTurret;
         const _ftV=_isTurretProj&&_gxTurret?Math.max(0,1-dst(P.x,P.y,_gxTurret.x,_gxTurret.y)/2000):1;
+        if(_hgPierce)p._hitSet.add(e); // Reserve identity before damage/audio callbacks.
         hurtE(e,dmg,ang,_isTurretProj||p.blueBean,p,p.el);
         if(p._parryMagicShot)_parryMagicHitFx(p);
         // 칼날 출혈 DOT: 적중데미지의 10% 축적, 무한 중첩, 15초 지속
@@ -35195,6 +35239,8 @@ function update(){
             }
             hit=true;break;
           }
+        // Prototype hit budget includes field actors; no chance roll or per-hit damage loss.
+        if(_hgPierce){p._hitSet.add(e);if(p._hitSet.size>=_HELLGUNNER_PIERCE.maxHits){hit=true;break;}hit=false;continue;}
         // ── 투사체 관통: 확률 굴림 → 통과 (패시브 '관통' 전체 투사체 적용) ──
         if(!p.explosive&&p.pierce>0){
           const _pMax=p.pierceMax||1;
@@ -58483,7 +58529,12 @@ function drawP(){
     if(p._sprFr==null)p._sprFr=Math.random()*8;p._sprFr+=.15;
     const ang=Math.atan2(p.vy,p.vx);const ac=p.plagueBlade?'#cc0033':(ELC[p.el]||'#fff');const ag=p.plagueBlade?'#880022':(ELG2[p.el]||'#fff');
     const fa=Math.min(1,1-p.dist/p.maxDist*.3);
-    if(p.normalBow&&_bowArrowReady){
+    if(_isHellgunnerPierce(p)){
+      X.save();X.translate(p.x,p.y);X.rotate(ang);X.globalAlpha=fa;
+      X.strokeStyle=_HELLGUNNER_PIERCE.color;X.lineWidth=3;
+      X.beginPath();X.moveTo(-20,0);X.lineTo(12,0);X.stroke();
+      X.fillStyle='#ffcf6a';X.beginPath();X.moveTo(18,0);X.lineTo(5,-5);X.lineTo(8,0);X.lineTo(5,5);X.closePath();X.fill();X.restore();
+    }else if(p.normalBow&&_bowArrowReady){
       // ── 석궁 화살: 속성별 미리 틴트된 캔버스 사용 ──
       const _tSrc=_bowTinted[p.el||0]||_bowArrowImg;
       const _aw=_tSrc.width,_ah=_tSrc.height;

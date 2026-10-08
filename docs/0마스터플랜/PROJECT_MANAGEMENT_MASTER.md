@@ -5033,3 +5033,8 @@ alpha/nav/crop/UV/geometry/opacity/renderOrder/resource/dispose·skirt/backplane
 정확 단일 final 보존 근거: 외부 `team-goal-0045-official-20261008/codex-231-official/final.txt` 1,603B / `cc54b3515dbed685ab25dbceb81e26a34520ac5efb2a1b4910e227a221ba81fe`, manifest 2,207B / `d56447fd8b179739010ced644e7b543b44ac0779b8adb56bd0920644afa2507d`. 이 단위에서 해당 원문을 재추출·재hash하지 않고 이미 검증한 보존 핀을 참조했다.
 
 작업 ID: `ROOT-AUTOBOW-NORMAL-ST-CONSUMER-20261008`. 실제 whole `_autoFireBowSkill`/`_fireXbow`/`_stDisc`와 bounded 자동발사 caller slice에 통제 target/RNG/audio/particle/cost ports를 사용했다. whole update·실입력·실장비 UI·음향장치·서버 save 인수가 아니다. 최종 근거는 외부 `ch1-autobow-normal-st-consumer-20261008/cpu-first/result.json`(25257B / `cbe1132abe3df4021144b5e483861e5f05950a03482f2c8f7d00c586d519f6c9`), `validation-receipt.json`, `completion-receipt.json`이다.
+
+
+### 2026-10-08 — 헬거너 관통 창격 본편 시험 consumer
+
+전사 임시 외형에서 `test=1&kit=hellgunner` LMB를 실제 본편 투사체로 연결했다. ST6/쿨9f/기본28뎀/속도16/r5/거리960/field+ens 합계99 identity·1객체1회. Godot Resource 원칙으로 불변 수치와 runtime 상태를 분리했다. 정식 idx2/comingSoon 해제·RMB/SPACE·새sprite·최종 스케일/숙련·실화면/청취/보상save는 미완료다. 최종 통제CPU16그룹36확인과 classic inline4 syntax PASS; fixture port 누락2는 별도 준비 이력이다. 상세 정본: [신규캐릭 프로젝트](../2_1%20스킬관리+합체시스템+자원/신규캐릭_스킬프로젝트_20260930.md#hellgunner-pierce-main-20261008).
