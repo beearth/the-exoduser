@@ -4,7 +4,8 @@
  * Players and the normal Druid boss use their original directional artwork.
  */
 import * as THREE from '../../assets/vendor/three-r160/build/three.module.js';
-import {createCharacterRig} from './character-rigs.mjs?v=druid-authored-pose-20261008-v6';
+import {createCharacterRig} from './character-rigs.mjs?v=engine-rig-motion-20261009-v7';
+import {prepareRigMotion} from '../engine/rig-motion.mjs?v=20261009-v1';
 import {CHARACTER_RIG_CATALOG,characterRigFrame} from './character-rig-catalog.mjs';
 
 export const CH1_PLAYER_RIG=Object.freeze({
@@ -167,7 +168,7 @@ function packedCurrent(record,input){
 }
 function capture(input){
   try{
-    if(own(input,'id')==='dark-druid')return captureSheet(input);
+    if(own(input,'id')==='dark-druid')return captureMotion(input,captureSheet(input));
     const borrowedSheet=Object.getOwnPropertyDescriptor(input,'borrowedSheet');
     if(borrowedSheet&&(!Object.hasOwn(borrowedSheet,'value')||borrowedSheet.value!==undefined))return null;
     const value={};for(const key of INPUT_FIELDS)value[key]=own(input,key);
@@ -205,8 +206,21 @@ function capture(input){
       const record={actor:value.actor,image:borrowedAtlas.image,imageWidth:size.width,imageHeight:size.height,atlasGeneration:borrowedAtlas.generation,animator:value.animator,frameMap:value.frameMap};
       if(!packedCurrent(record,value))return null;
     }
-    value.dt=Math.min(CH1_PLAYER_RIG.maxDelta,value.dt);return Object.freeze(value);
+    value.dt=Math.min(CH1_PLAYER_RIG.maxDelta,value.dt);return captureMotion(input,Object.freeze(value));
   }catch(_){return null;}
+}
+function captureMotion(input,value){
+  if(!value)return null;
+  const descriptor=Object.getOwnPropertyDescriptor(input,'authoredMotion');
+  if(descriptor&&!Object.hasOwn(descriptor,'value'))return null;
+  const source=descriptor?.value;
+  const prepared=prepareRigMotion(source,{height:CH1_PLAYER_RIG.rigHeight,rootTarget:`${value.id}-object`,artworkOnly:!!(value.packed||value.sheetBorrowed)});
+  const authoredMotion=prepared?Object.freeze({clip:prepared.sourceClip,authoredHeight:prepared.authoredHeight,time:prepared.time}):undefined;
+  return Object.freeze({...value,authoredMotion,motionInput:input,motionOwner:source,motionClip:prepared?own(source,'clip'):undefined});
+}
+function motionCurrent(input){
+  if(!input||own(input.motionInput,'authoredMotion')!==input.motionOwner)return false;
+  return !input.authoredMotion||(own(input.motionOwner,'clip')===input.motionClip&&own(input.motionOwner,'time')===input.authoredMotion.time&&own(input.motionOwner,'authoredHeight')===input.authoredMotion.authoredHeight);
 }
 function publication(rig,input){
   const state=rig.snapshot(),pose=own(state,'posePublication');
@@ -258,6 +272,7 @@ export function createCh1PlayerRig(){
   function owns(record,job){return !disposed&&!failed&&!lost&&current===record&&record.token===token&&(!job||renderJob===job);}
   function isCurrent(record,job){
     if(!owns(record,job))return false;
+    if(!motionCurrent(job?.input||record.input))return false;
     if(record.packed&&!packedCurrent(record,job?.input||record.input))return false;
     if(record.sheetBorrowed&&!sheetCurrent(record,job?.input||record.input))return false;
     if((record.packed||record.sheetBorrowed)&&job?.pose){
@@ -369,7 +384,7 @@ export function createCh1PlayerRig(){
         if(record.windState!==value.actorPose.state||remaining>record.windRemaining){record.windState=value.actorPose.state;record.windStart=Math.max(1,remaining);}
         record.windRemaining=remaining;bossAnticipation=Math.max(0,Math.min(1,1-remaining/record.windStart));
       }else{record.windState=null;record.windRemaining=null;}
-      record.rig.update(value.dt,{mode:value.mode,direction:value.direction,phase:value.phase,...(value.sheetBorrowed?{bossState:value.actorPose.state,bossPhase:value.actorPose.motionPhase,bossAnticipation,bossRecoveryFrom:value.actorPose.state==='recover'?record.lastDruidAction:'',sweepDirection:value.actorPose.sweepDirection}:{}),...(value.packed||value.sheetBorrowed?{sourceFrame:value.sourceFrame}:{})});
+      record.rig.update(value.dt,{mode:value.mode,direction:value.direction,phase:value.phase,authoredMotion:value.authoredMotion,...(value.sheetBorrowed?{bossState:value.actorPose.state,bossPhase:value.actorPose.motionPhase,bossAnticipation,bossRecoveryFrom:value.actorPose.state==='recover'?record.lastDruidAction:'',sweepDirection:value.actorPose.sweepDirection}:{}),...(value.packed||value.sheetBorrowed?{sourceFrame:value.sourceFrame}:{})});
       if(!isCurrent(record,job))return null;
       const pose=publication(record.rig,value);
       if(!isCurrent(record,job))return null;
@@ -403,7 +418,7 @@ export function createCh1PlayerRig(){
       if(!isCurrent(record,job))return null;
       canvas._glVer=(canvas._glVer||0)+1;bump(stats,'frames');reason='ready';
       lastFrame=Object.freeze({id:value.id,mode:value.mode,direction:value.direction,phase:value.phase,frame:own(pose,'frame'),elapsed:own(pose,'elapsed'),
-        representation:value.sheetBorrowed?'volumetric-boss':'artwork-skinned-plane',left,top,width,height,pixelWidth,pixelHeight,vertices:bounds.vertices,heightLocal:value.heightWorld,backingScale:value.backingScale,delta:value.dt,posePublicationMatched:true,
+        representation:own(pose,'representation'),authoredMotion:own(pose,'authoredMotion'),left,top,width,height,pixelWidth,pixelHeight,vertices:bounds.vertices,heightLocal:value.heightWorld,backingScale:value.backingScale,delta:value.dt,posePublicationMatched:true,
         sourceKind:value.sheetBorrowed?'borrowed-main-sheet':value.packed?'borrowed-main-atlas':'catalog-assets',sourcePath:value.sheetBorrowed?SHEET_PATH:value.packed?PACKED_PATH:own(own(pose,'source'),'path'),
         packedSource:value.packed?Object.freeze({path:PACKED_PATH,...value.sourceFrame}):null,
         sheetSource:value.sheetBorrowed?Object.freeze({path:SHEET_PATH,...value.sourceFrame}):null});

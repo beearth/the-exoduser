@@ -1,16 +1,16 @@
 # EXODUSER ENGINE — 키프레임 모션 편집 v1
 
-2026-10-09 / ROOT-ENGINE-MOTION-EDITOR-20261009. 사용자 “우리 앤진을 좀 만들자니깐”에 따라 자체 엔진의 첫 편집/재생 기능을 구현했다. 현재 구현 범위는 transform clip 코어와 이를 실제로 소비하는 브라우저 모션 편집기다. 본편 전체 엔진 완성, 신규 입체 모델 또는 A급 보스 완성이 아니다.
+2026-10-09 / ROOT-ENGINE-MOTION-EDITOR-20261009. 사용자 “우리 앤진을 좀 만들자니깐”에 따라 자체 엔진의 첫 편집/재생 기능을 구현했다. 현재 구현 범위는 transform clip 코어·브라우저 모션 편집기·명시적 factory/본편 adapter 재생 consumer다. 본편 전체 엔진 완성, 신규 입체 모델 또는 A급 보스 완성이 아니다.
 
 ## 실제 진입점과 소유
 
 | 항목 | 현재 구현 |
 |---|---|
 | 화면 | `tools/engine-motion-editor.html`; 기존3387의 `/tools/engine-motion-editor.html` |
-| UI consumer | `tools/engine-motion-editor.mjs?v=20261009-v4` |
+| UI consumer | `tools/engine-motion-editor.mjs?v=20261009-v5` |
 | 공통 코어 | `tools/engine/animation-clip.mjs?v=20261009-v1`; THREE/DOM/RAF/저장 의존성 없음 |
-| 예제 대상 | 기존 `character-rigs.mjs?v=druid-authored-pose-20261008-v6`의 dark-druid, height2.2; 기존 원화 스킨/12 Bone/1120삼각형. 원 PNG·factory 수정 없음 |
-| 적용 경계 | 이 편집기의 Bone에만 적용. game.html은 clip 코어를 아직 import/재생하지 않으며 본편 공격 판정/모션에 자동 적용되지 않음 |
+| 예제 대상 | `character-rigs.mjs?v=engine-rig-motion-20261009-v7`의 dark-druid, height2.2; 기존 원화 스킨/12 Bone/1120삼각형. 원 PNG 수정 없음 |
+| 적용 경계 | 편집기와 factory/CH1 adapter의 명시 입력에서 재생. game의 현재 producer는 clip을 보내지 않아 본편 공격에 자동 적용되지 않음 |
 | 데이터 보관 | clip JSON 노출·가져오기·파일 내려받기 요청. localStorage/서버 API/사용자 save/자동 복구 캐시 사용 안 함. 브라우저 다운로드 완료는 미확인 |
 
 Godot 공식 [애니메이션 소개](https://docs.godotengine.org/en/stable/tutorials/animation/introduction.html)의 노드 속성 트랙·시간별 키프레임·타임라인 원리를 참고했다. Godot 호환 포맷·엔진 전체 벤치마킹·PoE2 수준 아트 구현을 주장하지 않는다.
@@ -77,4 +77,29 @@ Godot 공식 [애니메이션 소개](https://docs.godotengine.org/en/stable/tut
 
 외부 증거: `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/engine-motion-editor-20261009/`의 `implementation-validation.json`, `cpu-first/result.json`, `ui-first-failure.json`, `ui-second-failure.json`, `ui-result.json`, `engine-motion-editor-final-v4.png`, `docs-search-final-summary.json`, `completion.json`. 최종 Git/§23 보고는 completion 우선. 이전 완료 Druid/terrain 단위는 재검수하지 않았다.
 
-다음 실제 기능은 이 clip 코어를 본편 보스의 표시 수명과 연결하고, 준비→타격→회복을 전투 상태로 재생하는 것이다. 이후 에디터 scene/prefab/material 공유를 한 단위씩 확장한다. 이 계획은 아직 구현으로 세지 않는다.
+표시 수명의 명시 consumer는 아래 v1로 연결됐다. 다음은 원본에 맞는 실제 모델·전용 공격 clip을 제작·검수한 뒤 본편 상태 producer가 명시적으로 선택하는 일이다. 자동 상태선택과 새 아트는 미구현이다.
+
+## 2026-10-09 — 자체 엔진의 리그 모션 재생 연결
+
+`ROOT-ENGINE-RIG-MOTION-CONSUMER-20261009`: 편집기와 실제 character-rigs/CH1 body adapter가 공통 clip을 소비한다. 명시 `authoredMotion={clip,authoredHeight,time}`만 적용하고 position은 rigHeight/authoredHeight로 환산한다. borrowed 그림은 전체 object position만 허용하며 Bone/회전/scale 덧변형은 거절한다. 기존 모션은 base pose 전에 복원하고 새 모션은 행렬·publication 전에 적용한다. 본편 producer의 자동 clip 선택은 아직 없으며 대표 공격·새 입체 모델·A급은 미완료다. 평면 Druid를 volumetric으로 잘못 보고하던 adapter/QA 값을 실제 artwork-skinned-plane으로 정정해 main의 기존 비율 보정 분기가 다시 선택된다. 실제 사용자 게임의 개선 픽셀은 미검수다.
+
+
+## 명시적 리그 모션 consumer v1 — 현재 계약
+
+| 항목 | 현재 코드 계약 |
+|---|---|
+| 공통 consumer | `tools/engine/rig-motion.mjs?v=20261009-v1`: prepareRigMotion/createRigMotion, clock/renderer/RAF/storage 없음 |
+| 실제 import | game adapter 두 곳 `engine-rig-motion-20261009-v8`; adapter와 편집기의 factory `engine-rig-motion-20261009-v7`; 편집기 UI `20261009-v5` |
+| 입력 | `rig.update(dt,{...,authoredMotion:{clip,authoredHeight,time}})`와 `adapter.render({...sameMainOwners,authoredMotion:{clip,authoredHeight,time}})`. 자체 own-data 필드만; clip JSON v1과 기존 제한 재사용. time은 호출자가 주는 유한 초이며 코어가0..duration clamp |
+| 단위 | authoredHeight 유한숫자(0,20], 실제 height는 기존 factory(0,20]. 유한 ratio=height/authoredHeight. position 모든키에 ratio, rotation/scale 그대로. editor height2.2→본편1은1/2.2; 원본 JSON은 변경하지 않음. overflow 비유한값은 거절 |
+| 대상 | `${id}-object`와 실제 Bone.name. catalog rig는 명시된 transform tracks, 모든 borrowed atlas/sheet는 전체 object position만. borrowed Bone/rotation/scale 거절. 스프라이트 셀·방향·sourceFrame/phase는 기존권한 유지 |
+| 재생 순서 | prepare검증→이전 binding 복원/교체해제→기존 base pose→clip seek→object3d world matrix/skeleton→currentness/source검사→immutable posePublication. 같은 clip/시각 반복에 delta누적 없음 |
+| 기본/해제 | 입력 undefined/null이면 기본 none. 생략/교체 때 clip 채널 rest를 pose 전에 복원. suspend/retire/rig.dispose가 binding을 복원·참조해제. 복원오류여도 finally의 기존 GPU/image lease 정리 경로는 실행하며 임의 외부 setter 무조건 복구는 보장하지 않음 |
+| 캐시 | clip별 환산 ratio 최대8개 immutable variant, 초과 시 가장 먼저 등록된 variant 제거. 활성 binding은 자신의 clip을 계속 보유하며 해제 시 target 참조 제거 |
+| publication | clip name/time/durationSeconds/authoredHeight/height/positionScale/trackCount를 snapshot·publication에 기록. renderer는 실제 representation을 받아 평면을 입체로 표시하지 않음 |
+| 소유 | adapter는 motion wrapper/clip identity/time/authoredHeight의 render 중 교체를 재검사한다. raw clip은 capture 시 canonical copy; 이후 같은 raw 내부변경은 현재 job copy에 영향 없으며 다음 render에서 새 copy를 소비. 기존 map/actor/life/source ownership 검사를 통과해야 게시 |
+| 편집기 | seek/재생/clip 교체가 actual factory update와 이 runtime을 소비. 미기록 draft는 reset 후 재생. 원화 스킨은 그대로이며 새3D 모델이 아님 |
+| main 현재상태 | game import로 runtime 경로는 연결됐으나 현재 main producer는 authoredMotion을 보내지 않는다. 자동으로 예제 Bone 모션을 본편 Druid에 적용하지 않음. 실제 원화 source frame 동작·전투 판정/시간/피해/AI/RNG/save 유지 |
+| representation 보정 | adapter의 borrowedSheet='volumetric-boss' 오표기를 factory publication의 실제 artwork-skinned-plane으로 변경. game의 기존 scaleX=dw*selection.h/(dh*selection.w) 분기가 평면에 적용된다. 기존 QA label도 artwork-skinned-plane. 시각 개선 인수는 별도 |
+
+새 CPU: 첫 Node에서6그룹 PASS 뒤 adapter pixel oracle(49.99999955372161 vs50, 허용오차1e−9) FAIL1/후속2그룹 미도달. Float32 display 기준1e−4로 oracle만 정정한 별도 adapter3그룹 PASS/Node1, 물리 Node총2·9clean 합산0. own IAB15 새 runtime seek/empty clip base 복원/기존 edited JSON 복구·재생3그룹 확인. arm-left 기본자세를0으로 가정한 UI assertion FAIL1은 실제 cos(0)×.012×.7=.0084 기준으로 정정/제품수정0. 기존 완료검사 재실행0, 사용자 main/save 무조작. **VISUAL VERDICT: RETOUCH**, 실전보스/native/audio/실save 인수0. 외부 `engine-rig-motion-consumer-20261009/completion.json`이 최종 보존 정본이다.

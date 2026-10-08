@@ -1,5 +1,6 @@
 import { CHARACTER_RIG_CATALOG as CATALOG, CHARACTER_RIG_CONFIG as C, characterRigFrame } from './character-rig-catalog.mjs';
 import {createDruidBossVolume} from './druid-boss-volume.mjs?v=0b6017df99483a54';
+import {prepareRigMotion,createRigMotion} from '../engine/rig-motion.mjs?v=20261009-v1';
 
 // Share decoded originals; each rig owns its own Texture transforms and GPU resources.
 const imageCache=new Map();
@@ -142,7 +143,7 @@ export async function createCharacterRig(id,{THREE,height=2.2,borrowedAtlas,borr
   const sheet=borrowedSheet===undefined?null:readBorrowedSheet(id,borrowedSheet),borrowed=packed||sheet,borrowedPath=packed?PACKED_PATH:DRUID_PATH;
   const assetInfos=borrowed?[{path:borrowedPath,width:borrowed.width,height:borrowed.height,sampling:packed?'nearest':'linear'}]:entry.assets;
   const leases=borrowed?[]:entry.assets.map(acquireImage),textures=new Map();
-  let geometry=null,material=null,skeleton=null,volume=null,disposed=false;
+  let geometry=null,material=null,skeleton=null,volume=null,motion=null,disposed=false;
   try{
     const images=borrowed?[borrowed.image]:await Promise.all(leases.map(lease=>lease.promise));
     images.forEach((image,i)=>{
@@ -178,6 +179,8 @@ export async function createCharacterRig(id,{THREE,height=2.2,borrowedAtlas,borr
     if(bossVolume&&id==='dark-druid'){volume=createDruidBossVolume({THREE,height});object3d.add(volume.object3d);mesh.visible=false;}
     object3d.visible=false;
     const rest=bones.map(bone=>({position:bone.position.clone(),rotation:bone.rotation.clone()}));
+    const motionTargets=new Map(bones.map(bone=>[bone.name,bone]));motionTargets.set(`${id}-object`,object3d);
+    motion=createRigMotion(name=>motionTargets.get(name));
     let elapsed=0,lastFrameKey='',frameInfo=null,lastMode='idle',lastDirection=0,frameIndex=0;
     let weightChecks=0,maxWeightError=0,posePublication=null,updateJob=null,updateDepth=0,sheetLife=null,sheetName=null;
 
@@ -285,16 +288,23 @@ export async function createCharacterRig(id,{THREE,height=2.2,borrowedAtlas,borr
           packedFrame=readDruidFrame(descriptor.value,sheet,mode,direction,frameIndex,frameCount,normalizedPhase,sheetLife,sheetName);
           if(disposed||updateJob!==job)return object3d;
         }
+        const motionDescriptor=Object.getOwnPropertyDescriptor(options,'authoredMotion');
+        if(motionDescriptor&&!Object.hasOwn(motionDescriptor,'value'))throw new TypeError('authoredMotion must be own data');
+        const authoredMotion=prepareRigMotion(motionDescriptor?.value,{height,rootTarget:`${id}-object`,artworkOnly:!!borrowed});
+        if(disposed||updateJob!==job)return object3d;
+        motion.beforePose(authoredMotion);
+        if(disposed||updateJob!==job)return object3d;
         setFrame(mode,direction,frameIndex,packedFrame);
         if(disposed||updateJob!==job)return object3d;
         pose(mode,elapsed,normalizedPhase);
+        motion.afterPose(authoredMotion);
         if(volume)volume.update({mode,direction,phase:Number.isFinite(bossPhase)?clamp(bossPhase,0,1):normalizedPhase,time:elapsed,state:typeof bossState==='string'?bossState:mode,delta,sweepDirection,anticipation:Number.isFinite(bossAnticipation)?clamp(bossAnticipation,0,1):1,recoveryFrom:typeof bossRecoveryFrom==='string'?bossRecoveryFrom:''});
         if(disposed||updateJob!==job)return object3d;
         lastMode=mode;lastDirection=direction;
         // No movement, damage, save, camera or caller transform is modified here. speed is observational.
         object3d.userData.motionSpeed=Number.isFinite(speed)?speed:0;
         if(disposed||updateJob!==job)return object3d;
-        mesh.updateMatrixWorld(true);
+        object3d.updateMatrixWorld(true);
         if(disposed||updateJob!==job)return object3d;
         skeleton.update();
         if(disposed||updateJob!==job)return object3d;
@@ -305,7 +315,7 @@ export async function createCharacterRig(id,{THREE,height=2.2,borrowedAtlas,borr
         }
         if(sheet){sheetCurrent(sheet);if(disposed||updateJob!==job)return object3d;}
         if(updateDepth===1){
-          posePublication=Object.freeze({normalizedPhase,mode,direction,frame:frameIndex,elapsed,source:frameInfo});
+          posePublication=Object.freeze({normalizedPhase,mode,direction,frame:frameIndex,elapsed,source:frameInfo,representation:volume?'volumetric-boss':'artwork-skinned-plane',authoredMotion:motion.snapshot()});
           if(sheet){sheetLife=packedFrame.lifeGeneration;sheetName=packedFrame.sheet;}
           if(borrowed)object3d.visible=true;
         }
@@ -326,7 +336,7 @@ export async function createCharacterRig(id,{THREE,height=2.2,borrowedAtlas,borr
         const bone=byName.get(key);sample[key]=Object.freeze({position:Object.freeze(bone.position.toArray()),quaternion:Object.freeze(bone.quaternion.toArray())});
       }
       return Object.freeze({id,name:entry.name,kind:entry.kind,height,mode:lastMode,direction:lastDirection,frame:frameIndex,
-        elapsed,disposed,posePublication,vertices:volume?volume.snapshot().vertices:count,triangles:volume?volume.snapshot().triangles:geometry.index.count/3,boneCount:bones.length,meshCount:volume?volume.snapshot().meshCount:1,
+        elapsed,disposed,posePublication,authoredMotion:motion.snapshot(),vertices:volume?volume.snapshot().vertices:count,triangles:volume?volume.snapshot().triangles:geometry.index.count/3,boneCount:bones.length,meshCount:volume?volume.snapshot().meshCount:1,
         representation:volume?'volumetric-boss':'artwork-skinned-plane',volume:volume?volume.snapshot():null,
         weightChecks,maxWeightError,source:Object.freeze({...frameInfo}),samples:Object.freeze(sample),
         assets:Object.freeze((borrowed?[]:entry.assets).map(info=>Object.freeze({path:info.path,sha256:info.sha256,bytes:info.bytes,sampling:info.sampling}))),
@@ -337,13 +347,17 @@ export async function createCharacterRig(id,{THREE,height=2.2,borrowedAtlas,borr
     function dispose(){
       posePublication=null;updateJob=null;
       if(disposed)return;disposed=true;object3d.visible=false;object3d.removeFromParent();
-      volume?.dispose();geometry.dispose();material.dispose();skeleton.dispose();textures.forEach(texture=>texture.dispose());
-      textures.clear();leases.forEach(lease=>lease.release());leases.length=0;
+      try{motion.dispose();}finally{
+        volume?.dispose();geometry.dispose();material.dispose();skeleton.dispose();textures.forEach(texture=>texture.dispose());
+        textures.clear();leases.forEach(lease=>lease.release());leases.length=0;
+      }
     }
     if(!borrowed){update(0,{mode:'idle',direction:0});object3d.visible=true;}
     return Object.freeze({object3d,update,snapshot,dispose});
   }catch(error){
-    volume?.dispose();geometry?.dispose();material?.dispose();skeleton?.dispose();textures.forEach(texture=>texture.dispose());
-    leases.forEach(lease=>lease.release());throw error;
+    try{motion?.dispose();}finally{
+      volume?.dispose();geometry?.dispose();material?.dispose();skeleton?.dispose();textures.forEach(texture=>texture.dispose());
+      leases.forEach(lease=>lease.release());
+    }throw error;
   }
 }

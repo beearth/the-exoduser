@@ -1,5 +1,5 @@
 import * as THREE from '../assets/vendor/three-r160/build/three.module.js';
-import {createCharacterRig} from './2_5d/character-rigs.mjs?v=druid-authored-pose-20261008-v6';
+import {createCharacterRig} from './2_5d/character-rigs.mjs?v=engine-rig-motion-20261009-v7';
 import {normalizeClip,bindClip} from './engine/animation-clip.mjs?v=20261009-v1';
 
 const $=id=>document.getElementById(id), axes=['x','y','z'];
@@ -25,7 +25,7 @@ function replaceClip(value,{remember=true}={}){
   try{player=bindClip(next,id=>nodes.get(id));}
   catch(error){resetTransforms();if(previous){player=bindClip(previous,id=>nodes.get(id));player.seek(time);}throw error;}
   if(previous&&remember){undo.push(copy(previous));if(undo.length>40)undo.shift();redo.length=0;}
-  clip=next;time=Math.min(time,clip.durationSeconds);dirty=remember||dirty;draft=false;player.seek(time);renderTracks();updateControls();schedule();return true;
+  clip=next;time=Math.min(time,clip.durationSeconds);dirty=remember||dirty;draft=false;applyRecordedPose();renderTracks();updateControls();schedule();return true;
 }
 function makeExample(){
   const frames=[0,.55,.85,1.3,1.8], poses={torso:[0,-8,12,3,0],head:[0,6,-10,-2,0],'arm-left':[0,-28,20,6,0],'arm-right':[0,18,-16,-4,0]};
@@ -63,7 +63,7 @@ function renderTracks(){
 function selectKeys(){for(const key of $('tracks').querySelectorAll('.key'))key.classList.toggle('selected',key.dataset.target===selected&&key.dataset.property===property&&Math.abs(Number(key.dataset.time)-time)<.000001);}
 function schedule(){if(!disposed&&!failed&&renderer&&!document.hidden&&!raf)raf=requestAnimationFrame(render);}
 function pause(){playing=false;lastTime=0;write('play','▶ 재생');$('play').setAttribute('aria-pressed','false');}
-function applyRecordedPose(){resetTransforms();player.seek(time);}
+function applyRecordedPose(){resetTransforms();rig.update(0,{mode:'idle',direction:0,phase:0,authoredMotion:{clip,authoredHeight:2.2,time}});}
 function seek(value){pause();time=Math.max(0,Math.min(clip.durationSeconds,value));draft=false;applyRecordedPose();setNotice('');updateControls();selectKeys();schedule();}
 function render(now){
   raf=0;if(disposed||failed||!renderer)return;
@@ -126,6 +126,6 @@ try{
     for(const input of document.querySelectorAll('button,input,select,textarea'))input.disabled=false;
     replaceClip(makeExample(),{remember:false});$('loading').hidden=true;dirty=false;updateControls();
     observer=new ResizeObserver(schedule);observer.observe(stage);schedule();
-    window.__exoduserMotionEditor=Object.freeze({snapshot:()=>({clip:copy(clip),time,playing,selected,property,draft,dirty,undo:undo.length,redo:redo.length,boneCount:[...nodes.values()].filter(n=>n.isBone).length,representation:rig.snapshot().representation,transforms:Object.fromEntries([...nodes].map(([id,node])=>[id,Object.fromEntries(['position','rotation','scale'].map(p=>[p,axes.map(axis=>node[p][axis])]))])),renderedTriangles:renderer.info.render.triangles,disposed})});
+    window.__exoduserMotionEditor=Object.freeze({snapshot:()=>({clip:copy(clip),time,playing,selected,property,draft,dirty,undo:undo.length,redo:redo.length,boneCount:[...nodes.values()].filter(n=>n.isBone).length,representation:rig.snapshot().representation,runtimeMotion:rig.snapshot().authoredMotion,transforms:Object.fromEntries([...nodes].map(([id,node])=>[id,Object.fromEntries(['position','rotation','scale'].map(p=>[p,axes.map(axis=>node[p][axis])]))])),renderedTriangles:renderer.info.render.triangles,disposed})});
   }
 }catch(error){fail(error);player?.dispose();rig?.dispose();renderer?.dispose();}

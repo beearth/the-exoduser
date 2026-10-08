@@ -1771,7 +1771,7 @@ VISUAL VERDICT: **RETOUCH**. 어깨 구형 윤곽을 제거했으나 얼굴/외�
 | 적용 범위 | readBorrowedSheet가 허용한 dark-druid 본편 borrowedSheet의 idle/walk/attack. 원본 셀·방향·crop/anchor/referenceHeight·프레임 타이밍은 그대로 |
 | 이후 처리 | return은 pose 함수만 종료. update의 skeleton/currentness/세대검증/posePublication 처리는 유지 |
 | 비대상 | sheet 없는 standalone Druid, warrior/silvertail 범용 pose와 optional volume.update는 기존 분기 유지. 거절 volume의 본편 재연결0 |
-| 실제 import(당시 epoch) | 당시 factory/game adapter 모두 druid-authored-pose-20261008-v6. 현재 game adapter 두 곳은 아래 20261009 v7, factory v6 유지 |
+| 실제 import(당시 epoch) | 당시 factory/game adapter 모두 druid-authored-pose-20261008-v6. 그 뒤 소환 표시 당시 game adapter v7/factory v6; 현재 아래 자체 엔진 consumer는 game adapter v8/factory v7 |
 | 검수 | 첫 Node는 before fixture의 query를 파일명으로 인코딩한 준비 경로 오류로 제품 조건未도달. fixture URL만 보정한 최초 제품 suite: Node1/6그룹 PASS(5 dynamic·1 static), borrowed 자세72개에서 추가 정점 변형 최대2.7791596496545744e-8. before 추가변형0.009793138950770311은 별도 반례이며 PASS 합산0 |
 | 한계 | 통제 image getter와 실제 Three 수학 검수. PNG decode/GPU/본편 실제 화면·음향/save 검수0. 원본 프레임 자세 보존이며 입체 모델링·가독성 개선의 실화면 인수·A급 완료 아님 |
 
@@ -1838,3 +1838,9 @@ VISUAL VERDICT: **RETOUCH**. 어깨 구형 윤곽을 제거했으나 얼굴/외�
 | 한계/보존 | actual Three adapter GPU·정상 줌의 본편 보스전·연속 모션/청취/성능/실save·A급 인수 미완료. 임시 preview는 원 working/HEAD byteexact 복원, 사용자 main/editor 무조작. VISUAL VERDICT: RETOUCH |
 
 최종 비교 `E/druid-original-tone-consumer-20261009/original-tone-final.png`, 검수/소유 보존은 같은 폴더 completion.json을 따른다. 정면 카메라와 unlit 재질에 Z만 추가하는 변경은 화면 개선 근거가 없어 채택하지 않았다. 원본 f0 깊이를 다른 atlas 셀에 잘못 재사용하지 않는다.
+
+## 2026-10-09 — 자체 엔진의 리그 모션 재생 연결
+
+`ROOT-ENGINE-RIG-MOTION-CONSUMER-20261009`: 편집기와 실제 character-rigs/CH1 body adapter가 공통 clip을 소비한다. 명시 `authoredMotion={clip,authoredHeight,time}`만 적용하고 position은 rigHeight/authoredHeight로 환산한다. borrowed 그림은 전체 object position만 허용하며 Bone/회전/scale 덧변형은 거절한다. 기존 모션은 base pose 전에 복원하고 새 모션은 행렬·publication 전에 적용한다. 본편 producer의 자동 clip 선택은 아직 없으며 대표 공격·새 입체 모델·A급은 미완료다. 평면 Druid를 volumetric으로 잘못 보고하던 adapter/QA 값을 실제 artwork-skinned-plane으로 정정해 main의 기존 비율 보정 분기가 다시 선택된다. 실제 사용자 게임의 개선 픽셀은 미검수다.
+
+새 CPU: 첫 Node에서6그룹 PASS 뒤 adapter pixel oracle(49.99999955372161 vs50, 허용오차1e−9) FAIL1/후속2그룹 미도달. Float32 display 기준1e−4로 oracle만 정정한 별도 adapter3그룹 PASS/Node1, 물리 Node총2·9clean 합산0. own IAB15 새 runtime seek/empty clip base 복원/기존 edited JSON 복구·재생3그룹 확인. arm-left 기본자세를0으로 가정한 UI assertion FAIL1은 실제 cos(0)×.012×.7=.0084 기준으로 정정/제품수정0. 기존 완료검사 재실행0, 사용자 main/save 무조작. **VISUAL VERDICT: RETOUCH**, 실전보스/native/audio/실save 인수0. 외부 `engine-rig-motion-consumer-20261009/completion.json`이 최종 보존 정본이다.
