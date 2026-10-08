@@ -28,6 +28,21 @@
 
 이미지는 원본 bitmap 크기와 `crop`을 가진다. 배치 객체의 `width/height`는 **월드 px**다. 투명 여백·원본 해상도가 다른 이미지도 월드 너비를 같은 값으로 지정하면 크기를 맞출 수 있다. 기본 발 기준점은 `(pivotX,pivotY)=(0.5,1)`, 회전0°, 불투명도1, 반전false다. 수치 너비/높이 변경은 발 기준점을 유지하며, 모서리 핸들은 회전·반전을 고려해 반대 모서리를 고정한다. 비율 유지 기본 ON, 비율은 필드 편집 시작 시 고정하고 빈 숫자·비유한 값·0 이하 크기는 모델에 반영하지 않는다.
 
+### 선택 객체 회전 초기화 (2026-10-08)
+
+`ROOT-EDITOR-RESET-OBJECT-ROTATION-20261008`: 속성 패널의 **회전 0°** 버튼은 선택한 그림의 회전만 초기화한다.
+
+| ID / 접점 | 현재 계약 |
+|---|---|
+| scene-reset-rotation | 회전 입력 바로 아래 버튼. 클릭 및 기존 Enter/Space 버튼 활성 경로 사용. |
+| rotationResetTarget | 단일 선택·표시/잠금 해제 층·유한한 rotation≠0일 때 허용. busy/보행 시험/대화/drag/History.pending/복수 선택이면 비활성 및 클릭 재검사. |
+| resetSelectedRotation | 기존 mutate 안에서 `o.rotation=0`만 변경. x/y·width/height·pivotX/Y·flipX·opacity·mask/feather/sourceParallax·다른 객체·원본 PNG·scene/nav/LOCK 파일은 유지. |
+| History / no-op | 기존 History.change/validate/undo/redo/검증 실패 rollback을 재사용. 무선택·비유한 값·이미0°·금지 상태는 mutate/changed 호출 없음. |
+| 저장 | 사용자 실행 시 기존 changed 및500ms 로컬 복구 저장 경로를 사용한다. 새 저장 호출·타이머·스키마 없음. 실제 사용자cache/save 인수는 미실시. |
+| 검수 | 저위험 단일 속성 동작의 신규 source 정적 검토 blocker0. 새 tests/Node/VM/CPU/브라우저/GPU/음향/저장 실행0; 완료된 기존 검사를 재실행하지 않았다. UI_NOT_ASSESSED/nativeNOT_RUN/VISUAL VERDICT: RETOUCH. |
+
+최종 §23 보고·보존 결과는 외부 `E/editor-reset-object-rotation-20261008/completion.json`을 따른다. stage 배치/geometry/collision 및 열린 사용자 탭은 이번에 변경하지 않았다.
+
 ### 선택 그림의 원본 비율 맞춤 (2026-10-08)
 
 `ROOT-EDITOR-ORIGINAL-ASPECT-FIT-20261008`: 속성 패널의 **원본 비율 맞춤**은 늘어난 선택 그림을 에셋의 표시 영역 비율로 되돌린다. 기존 비율 유지 체크박스는 편집 시작 시의 현재 비율을 유지하므로 별도 기능이다.

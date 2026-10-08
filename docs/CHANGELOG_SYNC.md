@@ -56729,3 +56729,7 @@ alpha/nav/crop/UV/geometry/opacity/renderOrder/resource/dispose·skirt/backplane
 ## 2026-10-08 — 전사 2.5D 시험 경로의 접지 core 기본 표시
 
 `ROOT-CH1-WARRIOR-CONTACT-SHADOW-DEFAULT-20261008`: 기존 local3387 `ch1Three=1&ch1Rig=1` 범위에서 전사의 idle/walk/run 접촉 core를 기본 표시하고 첫 `ch1FootAO=0`으로 끈다. 기존 alpha.10·반경.35/.4·현재 frame/map/actor/animator·단회 가드 및 accepted:false 유지. 표시 기본값1hunk/새CPU·native·실cache0, 정적 peer blocker0. 물리 고도와 전체 접지 인수는 미완료/RETOUCH. [현재 계약](4.1맵디자인+설정/MAP_RUNTIME_ARCHITECTURE.md#ch1-warrior-contact-shadow-default-20261008). 외부 `ch1-warrior-contact-shadow-default-20261008/completion.json`이 최종 보존 정본이다.
+
+## 2026-10-08 — 에디터 선택 객체 회전 초기화
+
+`ROOT-EDITOR-RESET-OBJECT-ROTATION-20261008`: 속성 패널 **회전 0°** 버튼으로 선택 그림의 위치·크기·피벗을 유지하고 회전만0°로 되돌린다. 단일 선택·표시/잠금·편집 상태·유한값/no-op을 재검사하고 기존 History undo/redo/validate 및 로컬 복구 저장 경로를 재사용한다. 신규 정적 source 검토 blocker0, 새CPU/native/GPU/cache 검수0/RETOUCH. [현재 계약](4.1맵디자인+설정/MAP_SCENE_EDITOR_20261005.md). 외부 `editor-reset-object-rotation-20261008/completion.json`이 최종 보존 정본이다.
