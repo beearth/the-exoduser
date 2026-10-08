@@ -59775,6 +59775,8 @@ function showTutorial(){
 // ═══ 사망 처리 (PoE2식) ═══
 function _refillRespawnResources(){
   P.hp=P.mhp;P.mp=P.mmp;P.st=P.mst;P.shield=P.mshield;
+  // 리스폰 공통: 죽기 전 지속 데미지·둔화 해제 (보스방 리트라이는 initStage를 거치지 않아 남아 있었음, 2026-10-08)
+  P.burnT=0;P.poison=0;P.bleed=0;P._rbPoison=[];P._rbBurn=[];P._webSlow=0;P._trapSlowT=0;P._freezeSlow=0;
   const chargeLv=P.skills.chargeBoost||0;
   const hasCharge=chargeLv>=1||(P.skills.magicBlink||0)>=1;
   const dim=isDimBreach();

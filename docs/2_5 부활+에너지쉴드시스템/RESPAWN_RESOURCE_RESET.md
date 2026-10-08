@@ -13,6 +13,7 @@
 | 공용 기동게이지 | _harpGauge = _HARP_GAUGE_MAX |
 | 돌진 스톡 | P.chargeStocks = P.maxChargeStocks, P.chargeCd = 0 |
 | 호출 위치 | retryBtn 공통 후처리에서 applyStats() 직후 _refillRespawnResources() |
+| 지속 데미지·둔화 해제 (2026-10-08) | P.burnT·P.poison·P.bleed = 0, P._rbPoison·P._rbBurn = [], P._webSlow·P._trapSlowT·P._freezeSlow = 0 |
 | 범위 제외 | 전투 중 악마화·장비 부활의 확률/회복 규칙, 화폐·물약 등 소모품 수량, 다른 스킬 쿨다운 변경 없음 |
 
 ## 최대치 계약
@@ -31,3 +32,14 @@
 원인: 기존 리스폰은 HP/MP/ST/쉴드·돌진 스톡만 충전했으며 독립 변수 _harpGauge는 초기화하지 않았다.
 
 검증: test/respawnResources.test.cjs에서 실제 리스폰 후처리 코드를 실행하여 기본·차지·차원돌파·dimThunder·dimRush 5개 상태 및 최대치 증가 후 완충을 검증한다.
+
+## 2026-10-08 리트라이 후 지속 데미지 잔존 수정
+
+사용자 리포트: "보스전에서 죽고 살아나서 리트라이 들어가는데 도트 데미지가 계속 들어온다". 일반 사망 리트라이는 `initStage`가 화상·중독을 지워 문제가 없었지만, 보스방 리트라이(게이트 복귀·드루이드 피날레 `_retryDruidFinale` → `_enterBossArena(true)`)는 `initStage`를 거치지 않아 죽기 전 `P.burnT`·`P.poison`·`P.bleed`·누적 목록이 그대로 남았다. 모든 리트라이가 거치는 `_refillRespawnResources()`에서 지속 데미지와 둔화를 해제한다(game.html·game-easy-test.html).
+
+| 검증 (`?bosstest=0` 드루이드 아레나, burnT900·poison6·bleed8 상태로 사망→리트라이) | 수정 전 | 수정 후 |
+|---|---|---|
+| 리트라이 직후 burnT / poison / bleed | 900 / 6 / 8 | 0 / 0 / 0 |
+| 6초 후 burnT | 583 (화상 지속) | 0 |
+
+6초 후 poison 1.1은 리트라이 뒤 보스가 다시 건 새 중독이며 정상이다.
