@@ -5121,3 +5121,14 @@ alpha/nav/crop/UV/geometry/opacity/renderOrder/resource/dispose·skirt/backplane
 ### ROOT-EDITOR-ALL-LAYER-OBJECT-SEARCH-20261008
 
 기존 현재층 검색에 **전체 층** 범위를 추가했다. 이름/ID/assetId로 찾은 행의 층을 확인하고 직접 선택한다. 숨김·잠금·발보기 p0·현재층 묶음이동 제한은 유지하며 scene/nav/원PNG/save 필드 변경0. 기존 pending endDrag commit/autosave 경계 유지. 첫 Node1 통제9그룹34조건 PASS/exit0, source peer blocking0; 실브라우저/GPU/audio/save 미실행·RETOUCH. 현재 API/UI 계약은 [MAP_SCENE_EDITOR_20261005.md](../4.1맵디자인+설정/MAP_SCENE_EDITOR_20261005.md)의 동일 절, 외부 완료 영수증은 `E/editor-all-layer-object-search-20261008/completion.json`이다.
+
+
+## 2026-10-08 — 드루이드 휩쓸기 가독성 현행 보충
+
+| 범위 | 현재 코드 |
+|---|---|
+| 준비·발동 | SweepWind 셀1 유지. Sweep의 기존14f 진행도 clamp(1−st2/14,0,1)에서 .15<진행도<.85는 셀2, >=.85는 셀3, 나머지는 셀1. 공통 recover는 기존 idle 유지; 기타 공격은 150ms 선택 유지 |
+| 정상 본체 첫 pass | 밝기1.2·대비1.08·1.5px 윤곽(alpha .8); 기존 filter 합성·finally 복구. 비문자열 filter는 원 draw. rig/native 기존 crop·목적 영역, lighter2pass·hit flash 유지 |
+| 검증·한계 | 최초 통제 Node1/12그룹31PASS/FAIL0, before 반례1 별도. 실제 GPU·pixel·전체 모션·전투·청취·save 미인수. RETOUCH / UI_NOT_ASSESSED |
+
+[상태별 표시·정확 consumer 정본](../4.0케릭터스프라이트 디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md#druid-sweep-readability-20261008). 앞선 150ms 전체 공격 설명과 과거 검수는 각 당시 epoch이며 현재 Sweep 예외를 덮어쓰지 않는다. 원본 PNG·시간·AI·피해·세이브 변경0.

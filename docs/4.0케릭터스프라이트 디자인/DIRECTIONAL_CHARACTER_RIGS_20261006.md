@@ -62,7 +62,7 @@ rig.update(dt, { mode: 'walk', direction: 2, speed: 1.35 });
 | walk | 0.15초 |
 | run | 0.10초 |
 | attack | 0.09초 |
-| 다크드루이드 walk/run/attack | 모두 0.15초(기존 원화 150ms 규칙 유지) |
+| 다크드루이드 walk/run/attack | 이동·기타 공격 0.15초. 2026-10-08 SweepWind는 셀1 유지, Sweep은 기존 st2/14 타격 구간에 셀1→2→3. 아래 현행 예외 참조 |
 
 ### 높이·발 기준 분석
 
@@ -1681,3 +1681,20 @@ OFF/불가mode/identity/준비 frame 부재의 검수에서는 core0이다. **co
 | 인수 구분 | 정적 source peer blocker0. middle atlas 분기는 composition에서 생략. whole draw/실제 Canvas·GPU·브라우저·픽셀·성능·음향·save 미검수, 기존 suite 재실행0. RETOUCH/UI_NOT_ASSESSED/nativeNOT_RUN. |
 
 외부 `E/ch1-boss-canvas-restore-20261008/completion.json`이 최종 Git·검수 한계·§23 보고 정본이다. 기존 열린 탭은 이번에 조작/재로드하지 않았다.
+
+
+<a id="druid-sweep-readability-20261008"></a>
+## 2026-10-08 — 드루이드 휩쓸기 자세·일반 본체 가독성
+
+`ROOT-CH1-DRUID-SWEEP-READABILITY-20261008`. 이전 150ms 공격 순환 설명은 당시 이력이며, 현재 Sweep 두 상태만 아래 예외를 소비한다. 일반 회복 상태 `recover`는 기존 대기 자세를 유지한다.
+
+| 실제 consumer / 조건 | 현재 표시 계약 |
+|---|---|
+| `_drawDruidBoss`, `bossSweepWind` | 기존 attack 4×8 시트의 0기준 셀1을 유지. 방향·정수 crop·실제 준비 시간 불변 |
+| `bossSweep`, finite `e.st2` | `progress=clamp(1-e.st2/14,0,1)`. `.15<progress<.85`이면 셀2, `progress>=.85`이면 셀3, 나머지는 셀1. 기존 실제 타격 구간과 같은 경계 |
+| 다른 공격·이동 / 비유한 Sweep st2 | 기존 150ms 선택 유지. 공통 recover/특수 상태/공격 AI·피해·자원·시간 불변. Volley는 finale 전용이며 일반 CH1 도달 증거로 세지 않음 |
+| `_drawDruidReadableBody` | 정상 본체 첫 pass만 `brightness(1.2) contrast(1.08) drop-shadow(0px 0px 1.5px rgba(222,239,184,0.8))`. 기존 filter가 none 외 문자열이면 앞에 보존하고 finally로 원값 복구. filter 비문자열은 원 draw |
+| rig / native | rig 첫 pass는 같은 canvas 전체를 9인자 draw로 같은 목적 영역에 표시. native는 `_ch1NormalIntent`일 때 같은 crop/rect로 helper 사용. 후속 lighter 2pass·hit flash·anchor·owner·특수 native 불변 |
+| 최초 한정 Gate | 실제 whole motion selector/Druid draw/rig/helper + 통제 Canvas/adapter, Node1·VM0·factory2·instances40·12그룹31PASS/FAIL0/exit0. 이전 windup의 wallclock 셀0→2 반례1은 별도. GPU 필터·실pixel·성능·브라우저·입력·청취·실save 미검수 |
+
+원본 시트의 셀 경계 손실·작화 일관성·다른 모션의 가독성은 미완료다. 현재 열린 사용자 탭에 새 코드가 적용되었다고 주장하지 않는다. VISUAL VERDICT: **RETOUCH / UI_NOT_ASSESSED / native NOT_RUN**.

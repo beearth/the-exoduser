@@ -11018,7 +11018,11 @@ function _drawDruidBoss(X,e,sa,tdY,spec,parentScale,parentYOffset){
   }
   else if(_isChgWind&&_druidSheets.transform&&_druidSheets.transform.ready){const _tp=Math.max(0,Math.min(1,1-e.st2/45));frame=Math.min(7,~~(_tp*8));sheet='transform';cols=8;rows=1;dirless=true;} // 돌진 와인드업=변신 시퀀스 0→7(서있는→야수)
   else if(_isCharge&&_druidSheets.beast&&_druidSheets.beast.ready){sheet='beast';cols=4;rows=2;dirless=true;frame=dir;} // 돌진=야수 변신형(8방향 4x2, 셀=방향)
-  else if(key==='slash'||key==='slam'||key==='windup'||e.s==='bossDruidVolleyWind'||e.s==='bossDruidVolley'){sheet='attack';cols=4;rows=8;frame=(~~(_nw/150))%4;} // 공격 150ms/frame (~6.7fps, 1사이클 0.6s)
+  else if(key==='slash'||key==='slam'||key==='windup'||e.s==='bossDruidVolleyWind'||e.s==='bossDruidVolley'){
+    sheet='attack';cols=4;rows=8;frame=(~~(_nw/150))%4;
+    if(e.s==='bossSweepWind')frame=1;
+    else if(e.s==='bossSweep'&&Number.isFinite(e.st2)){const progress=Math.max(0,Math.min(1,1-e.st2/14));frame=progress>.15&&progress<.85?2:progress>=.85?3:1;}
+  } // Sweep pose follows existing active hit interval; other attacks retain 150ms cycling.
   else if(key==='walk'){sheet='walk';cols=4;rows=8;frame=(~~(_nw/150))%4;} // 이동 시 8방향 4프레임 보행 유지
   else{sheet='base8';cols=4;rows=2;frame=dir;dirless=true;} // 대기 또한 원본 방향 셀 사용; 미세 호흡은 배치 오프셋으로 표현
   const S=_druidSheets[sheet];if(!S||!S.ready)return false;
@@ -11033,7 +11037,7 @@ function _drawDruidBoss(X,e,sa,tdY,spec,parentScale,parentYOffset){
   if(window._BOSS_GLOW){X.globalAlpha=sa*.30;X.fillStyle=spec.glow;X.beginPath();X.ellipse(0,-dh*.40,dw*.24,dh*.22,0,0,Math.PI*2);X.fill();} // 글로우 게이트(2026-08-25 유저요청: 원형 잔상 제거, _BOSS_GLOW=true 시만 그림). 삭제X 게이트만
   const _ch1Selection=_ch1NormalIntent&&['base8','walk','attack'].includes(sheet)?Object.freeze({sheet,index:sheet==='base8'?0:frame,nativeDir:dir,sourceCol:_fc,sourceRow:_fr,columns:cols,rows,x:sx,y:sy,w:cw,h:ch}):null;
   if(!_drawCh1DruidRigBody(X,e,_ch1Selection,sa,dw,dh,(tdY||0)-6+_breath,_un,parentScale,parentYOffset)){
-  X.globalAlpha=sa;X.drawImage(img,sx,sy,cw,ch,-dw/2,-dh*.86,dw,dh);
+  X.globalAlpha=sa;if(_ch1NormalIntent)_drawDruidReadableBody(X,img,sx,sy,cw,ch,-dw/2,-dh*.86,dw,dh);else X.drawImage(img,sx,sy,cw,ch,-dw/2,-dh*.86,dw,dh);
   X.globalCompositeOperation='lighter';X.globalAlpha=sa*.42;X.drawImage(img,sx,sy,cw,ch,-dw/2,-dh*.86,dw,dh); // 셀프 라이튼 ×2(어두운 아레나서 존재감)
   X.globalAlpha=sa*.42;X.drawImage(img,sx,sy,cw,ch,-dw/2,-dh*.86,dw,dh);
   if(_ch1NormalIntent)_drawDruidBodyHitFlash(X,e,sa,img,sx,sy,cw,ch,-dw/2,-dh*.86,dw,dh);
@@ -12057,6 +12061,14 @@ function _ch1DruidCurrent(owner,selection){
   return expected===selection.sheet&&!!lease&&lease.borrowed===b&&_ch1DruidLeaseCurrent(lease)&&!!b&&owner.sheetRecord.img===b.image&&owner.imageGeneration===b.generation&&selection.generation===b.generation&&!!f&&f.naturalWidth===b.width&&f.naturalHeight===b.height&&f.src===b.srcSnapshot&&f.currentSrc===b.currentSrcSnapshot&&f.srcset===b.srcsetSnapshot&&f.sizes===b.sizesSnapshot;
 }
 // Replay only the current normal Druid body, inside its existing parent transform.
+function _drawDruidReadableBody(ctx,img,sx,sy,sw,sh,x,y,w,h){
+  const previous=ctx.filter;
+  if(typeof previous!=='string'){ctx.drawImage(img,sx,sy,sw,sh,x,y,w,h);return;}
+  try{
+    ctx.filter=(previous==='none'?'':previous+' ')+'brightness(1.2) contrast(1.08) drop-shadow(0px 0px 1.5px rgba(222,239,184,0.8))';
+    ctx.drawImage(img,sx,sy,sw,sh,x,y,w,h);
+  }finally{ctx.filter=previous;}
+}
 function _drawDruidBodyHitFlash(ctx,e,sa,img,sx,sy,sw,sh,x,y,w,h){
   if(!(e._hitFlash>0))return;
   const strength=Math.min(1,e._hitFlash/6),pop=1+.05*strength;
@@ -12091,7 +12103,7 @@ function _drawCh1DruidRigBody(ctx,e,selection,sa,dw,dh,nameBaseY,inverseScale,pa
       if(!_ch1DruidCurrent(owner,sourceFrame))return blitted;
       ctx.globalCompositeOperation=pass===0?'source-over':'lighter';ctx.globalAlpha=pass===0?sa:sa*.42;
       if(!_ch1DruidCurrent(owner,sourceFrame))return blitted;
-      ctx.drawImage(frame.canvas,frame.left,frame.top,frame.width,frame.height);blitted=true;
+      if(pass===0)_drawDruidReadableBody(ctx,frame.canvas,0,0,frame.canvas.width,frame.canvas.height,frame.left,frame.top,frame.width,frame.height);else ctx.drawImage(frame.canvas,frame.left,frame.top,frame.width,frame.height);blitted=true;
     }
     if(_ch1DruidCurrent(owner,sourceFrame)){
       _drawDruidBodyHitFlash(ctx,e,sa,frame.canvas,0,0,frame.canvas.width,frame.canvas.height,frame.left,frame.top,frame.width,frame.height);

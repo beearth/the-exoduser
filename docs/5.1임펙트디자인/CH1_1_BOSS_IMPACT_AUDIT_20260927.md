@@ -108,3 +108,14 @@
 | 검수 / 적용 | 양판 각각 draw3접점만 수정, 역치환 source22 byte-exact. 신규8 PASS(원본4 PASS/4 FAIL); 실제 분기·기존 회귀 포함12 PASS | canvas는 호출 기록 대역이며 native·화면·GPU·시각 최종 인수 아님. source23 앱3398 포장·타이틀·HTTP 확인; source22/3397 앱은 기존 코드 보존 |
 
 상세 수치·실제 분기·한계·§23 보고는 [source23 전조 계약](CH1_BOSS_LANDING_FAN_TELEGRAPH_20261003.md)을 따른다. 피해·패링·타이밍·맵 geometry·카메라·기존 앱/세이브는 변경하지 않았다.
+
+
+## 2026-10-08 — 드루이드 휩쓸기 가독성 현행 보충
+
+| 범위 | 현재 코드 |
+|---|---|
+| 준비·발동 | SweepWind 셀1 유지. Sweep의 기존14f 진행도 clamp(1−st2/14,0,1)에서 .15<진행도<.85는 셀2, >=.85는 셀3, 나머지는 셀1. 공통 recover는 기존 idle 유지; 기타 공격은 150ms 선택 유지 |
+| 정상 본체 첫 pass | 밝기1.2·대비1.08·1.5px 윤곽(alpha .8); 기존 filter 합성·finally 복구. 비문자열 filter는 원 draw. rig/native 기존 crop·목적 영역, lighter2pass·hit flash 유지 |
+| 검증·한계 | 최초 통제 Node1/12그룹31PASS/FAIL0, before 반례1 별도. 실제 GPU·pixel·전체 모션·전투·청취·save 미인수. RETOUCH / UI_NOT_ASSESSED |
+
+[상태별 표시·정확 consumer 정본](../4.0케릭터스프라이트 디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md#druid-sweep-readability-20261008). 앞선 150ms 전체 공격 설명과 과거 검수는 각 당시 epoch이며 현재 Sweep 예외를 덮어쓰지 않는다. 원본 PNG·시간·AI·피해·세이브 변경0.
