@@ -1,10 +1,10 @@
 # EXODUSER: HELL LORD — 실제 스킬 시연 영상 편집 현행 계약
 
-동기화: **2026-10-08**. 코드: [marketing_edit_20261008.jsx](../../tools/marketing_edit_20261008.jsx). 관련 기록: [신규 정상 맵 촬영 manifest](FRESH_CAPTURE_MANIFEST_20261008.md), [촬영 스튜디오](INGAME_CAPTURE_STUDIO_20261008.md), [채널 조건](EXPOSURE_CHANNELS_20261008.md), [게시문안](SOCIAL_VIDEO_COPY_20261008.md).
+동기화: **2026-10-08**. 코드: [marketing_edit_20261008.jsx](../../tools/marketing_edit_20261008.jsx), [준비 입력 생성 도구](../../tools/marketing_prepare_20261008.py). 관련 기록: [최종 납품·검수·게시 상태](VIDEO_DELIVERY_20261008.md), [신규 정상 맵 촬영 manifest](FRESH_CAPTURE_MANIFEST_20261008.md), [촬영 스튜디오](INGAME_CAPTURE_STUDIO_20261008.md), [채널 조건](EXPOSURE_CHANNELS_20261008.md), [게시문안](SOCIAL_VIDEO_COPY_20261008.md).
 
-이 문서는 총괄의 최신 **manual 제외·Steam 37초** 편집 결정을 반영한다. 템플릿 초기 48초/Shorts A 24초와 중간 가로 42초안은 현재 납품 계약이 아니다. **cloud native build·frame·render·오디오·게시 검증은 대기**이며 코드/타임라인 대조를 영상 검수 PASS로 표시하지 않는다.
+최종 편집은 **manual 제외·Steam 37초 / Shorts A 16초 / Shorts B 26초**다. 템플릿 초기 48초/Shorts A 24초와 중간 가로 42초안은 현재 납품 계약이 아니다. **보정 입력을 사용한 native build·최종 3종 render·전체 decode·원본 시간 대조·샘플 육안·오디오 신호 검사 완료**. 기술·시간·샘플 화면 검수는 §5의 실측 범위에서 PASS이며, **주관적인 전체 청취는 미수행**, 플랫폼 게시는 인증·로그인·Mac 잠금 해제 대기다. 완성 파일·해시·상세 검수·게시 상태는 [최종 납품 기록](VIDEO_DELIVERY_20261008.md)을 따른다.
 
-제작 스킬 `video-editing`의 `SKILL.md`, `references/compose.md`, `assembly.md`, `clip-geometry.md`를 적용했다. 이번 동기화 담당 소유는 **본 문서 하나**다. JSX 변경·실제 hosted 입력/프로젝트/렌더·Steam 교체·게시·커밋은 총괄 책임이며 다른 파일은 수정하지 않는다.
+네이티브 편집은 `video-editing`의 `SKILL.md`, `references/compose.md`, `assembly.md`, `clip-geometry.md`를 적용했다.
 
 ## 1. 입력·선정·제외
 
@@ -12,14 +12,14 @@
 |---|---|
 | 촬영 출처 | 최신 촬영 Git `2f5aa0e88e32ff2d82a93f9c6098643d8d1f6427`의 실제 인게임. 정상 1장 맵·실제 이벤트 증거는 촬영 manifest 기준. 완전 AI 생성 영상으로 실제 플레이 대체 금지 |
 | Steam 동일성 | 개발 런타임 촬영이며 Steam 배포 데모 바이너리·전체 에셋 동일성은 **미검증**. 공개 문안은 개발 빌드와 데모 차이 가능성을 명시 |
-| 채택 5종 | `parry.webm`, `rage_slam.webm`, `fire.webm`, `ice_orb.webm`, `blackhole.webm`. 모두 **staged 고레벨 스킬 시연**이며 일반 데모 난이도·성장 수치의 증거가 아님 |
+| 채택 5종 | 원본 `parry.original.webm`, `rage_slam.original.webm`, `fire.original.webm`, `ice_orb.original.webm`, `blackhole.original.webm`에서 준비한 같은 key의 **`*.prepared.mp4`**를 native 입력으로 사용. 모두 **staged 고레벨 스킬 시연**이며 일반 데모 난이도·성장 수치의 증거가 아님 |
 | manual 제외 | 총괄의 최신 육안 판단: 튜토리얼 경고와 잦은 피격으로 자사 홍보 소재 품질 미달. 중간 가로본에 넣었던 5초를 최종 편집에서 제외. **raw 보존**, 일반 플레이를 staged 결과로 대체했다고 설명하지 않음 |
 | ancestor 제외 | 현행 장비·도감 발동 조건 미충족으로 실제 성공 신규 산출물 미확보. 최종 입력·타임라인에서 제외. 오래된 성공 촬영을 신규 원본으로 편입하지 않음 |
 | staging 공개 | 모든 채택 전투 컷에 작은 시연·개발 빌드 표시. 실제 원음 유지. 공개 문안에서 일반 Lv1 플레이 혼합이라고 설명하지 않음 |
-| 입력 위치 | 총괄이 hosted runtime에 준비할 `/home/user/exoduser-fresh/`. 소스 config에 manual/ancestor가 남아도 선택 타깃의 shots에 없으면 가져오지 않음 |
-| 실제 길이 | 기본 `sourceDuration=null`. 코드가 입력 디렉터리의 `probe.json`을 읽어 해당 source key의 숫자 초를 설정하며, 없으면 총괄이 config에 직접 입력. 유효한 길이·trim·파일 존재를 확인한 뒤 project 생성 |
+| 입력 위치 | 실제 hosted 입력은 `/home/user/exoduser-fresh/prepared.json`과 해당 manifest의 5개 `*.prepared.mp4`. 최종 cloud output root는 **`/home/user/exoduser-edits/final-20261008`**. 소스 config에 manual/ancestor가 남아도 선택 shots에 없으면 가져오지 않음 |
+| 실제 길이·native trim | `prepared.json`이 필수이며 없으면 build 중단. manifest의 `file`·`sourceDuration`이 원본 config와 선택적 `probe.json` 값을 덮어쓰고 모든 해당 native trim을 **0초**로 설정. 유효한 길이·파일 존재를 확인한 뒤 project 생성 |
 | 선택 로고 | `/home/user/exoduser-fresh/logo.png`가 있을 때만 import. 없으면 native EXODUSER 텍스트와 HELL LORD 부제를 사용 |
-| 폰트 | 코드 실제 `fontFamily="DM Sans"`. 설치 폰트 목록·실제 native 출력의 글리프/줄바꿈 검수는 총괄이 확인 |
+| 폰트 | 코드 실제 `fontFamily="DM Sans"`. hosted 환경에 **DM Sans:400**, **DM Sans:700** 설치·폰트 검사 완료, fallback 없음. 샘플 화면 검수 결과는 §5 |
 | 오디오 | 원본 게임 오디오만 사용. 새 AI 영상·보이스·음악·효과음 생성 없음. CTA 4초는 무음. 게임 자체 AI 보조 아트·SFX/BGM 공개는 유지 |
 
 촬영 manifest에는 일반 데모 원본의 실제 사망·입력 로그와 로컬 보존 사실도 기록했다. 최종 편집 입력에서는 제외한다.
@@ -41,7 +41,17 @@
 | ice_orb | **29/30초** | 7초 / **0.966667–7.966667** | B 7초 / **0.966667–7.966667** | **7.966667초** |
 | blackhole | **1초** | 7초 / **1–8** | B 7초 / **1–8** | **8초** |
 
-시간은 모두 초 단위이며 원본 위치와 편집 타임라인을 구분한다. `from + dur`가 probe 소스 길이를 초과하거나 30fps 경계에 맞지 않으면 코드가 오류로 중단한다. 자동 루프·정지 프레임·임의 속도 변경으로 부족분을 채우지 않는다. 촬영 원본의 측정 렌더 FPS와 최종 30fps 인코딩 FPS는 별도 값이다.
+위 표는 **보존한 원본 WebM의 구간**이며 native timeline의 trim은 모두 **0초**다. 준비 입력은 parry 5초, rage_slam 7초, fire 8초, ice_orb 7초, blackhole 7초로 먼저 잘라 인코딩했고 가로 parry만 그중 앞 4초를 사용한다. native 코드는 준비 입력의 `from + dur`·sourceDuration·30fps 경계를 검사한다. 자동 루프·부족분 정지 화면·임의 속도 변경으로 길이를 채우지 않는다. CFR30 변환은 원본 타임스탬프에 따른 프레임 선택·중복이며 움직임 보간이 아니다. 촬영 원본의 측정 렌더 FPS와 최종 30fps 인코딩 FPS는 별도 값이다.
+
+| key | 원본 trim / 길이 | 이번 원본 video packet 끝 실측 | 준비 입력 / 검증 프레임 수 | 원본 구간 coverage |
+|---|---|---:|---|---|
+| parry | 148/30초 / 5초 | **9.954초** | `parry.prepared.mp4` / **150f** | 끝 298/30초 < 9.954초 |
+| rage_slam | 29/30초 / 7초 | **7.977초** | `rage_slam.prepared.mp4` / **210f** | 끝 239/30초 < 7.977초 |
+| fire | 2초 / 8초 | **10.966초** | `fire.prepared.mp4` / **240f** | 끝 10초 < 10.966초 |
+| ice_orb | 29/30초 / 7초 | **7.974초** | `ice_orb.prepared.mp4` / **210f** | 끝 239/30초 < 7.974초 |
+| blackhole | 1초 / 7초 | **9.974초** | `blackhole.prepared.mp4` / **210f** | 끝 8초 < 9.974초 |
+
+이번 실제 5개 `*.original.webm`에는 format.duration이 없어 `max(video packet PTS + duration)`의 관측 끝값으로 원본 범위를 검증했다. 오디오 tail이나 remux format.duration을 원본 그림 길이로 대신하지 않았다. 이는 **이번 입력의 packet coverage 실측**이며, helper가 어떤 입력에서도 반드시 packet 감사를 수행한다는 보장은 아니다. 도구는 video stream duration → 사용 가능한 format.duration → packet extent 순서로 길이를 선택한다. 준비 출력은 각각 정확한 decoded frame count, 30fps, 원본 해상도, H.264/yuv420p·AAC를 검사한 뒤 5개 모두 통과할 때만 `prepared.json`을 발행한다.
 
 ## 3. 코드와 일치하는 화면·텍스트 좌표
 
@@ -74,45 +84,65 @@
 | 항목 | 확인·대기 상태 |
 |---|---|
 | API | `project({dir,size,fps,background})`, add/cut/compose, native frame/media/text. React/DOM 없음. 코드에 render/upload/게시 호출 없음 |
-| hosted 설치 확인 | 총괄이 설치 CLI의 `--bitrate`와 `/opt/fable/types/fable.d.ts` 존재를 확인했다고 전달. 이것은 이번 composition의 실제 build 성공 증거가 아님 |
-| 소스 preflight | probe.json 숫자 초 → 선택 타깃 sourceDuration/trim → 파일 존재 → project. 실제 hosted 입력 파일과 metadata 확인은 총괄 실행 대기 |
-| H.264 | 문서화된 depth8 native 기본. 추정 `codec:"h264"` override를 넣지 않음 |
-| AAC | 출력 요구 AAC. 읽은 render API에 오디오 코덱 필드가 없어 추정 필드 추가 없음. 렌더 후 ffprobe로 확인하고 필요 시 원음 유지 AAC 먹싱/재인코딩을 총괄이 결정 |
+| hosted 설치 확인 | CLI의 `--bitrate`, `/opt/fable/types/fable.d.ts`와 DM Sans 400/700 준비. 보정 입력으로 최종 3개 native 프로젝트 build·render 완료 |
+| 소스 preflight | 보존 원본의 이번 video packet coverage 확인 → CFR30 H.264 CRF12 + AAC256kbps 준비 → 출력 framecount·metadata 검사 → `prepared.json` → native trim0·길이·파일 확인 → project |
+| H.264 | depth8 native 기본 사용. 최종 마스터 3개 **H.264·30fps·정확한 프레임 수·전체 decode 정상** 확인 |
+| AAC | 준비 입력은 원본 게임 오디오를 AAC256kbps로 인코딩. 최종 마스터 3개 **AAC stereo 48kHz·decode 정상** 확인. 신호 검사와 전체 청취는 구분 |
 | bitrate | 20,000,000 / 12,000,000bps 목표. 고정 비트레이트나 정확한 파일 크기를 보장하지 않음 |
-| native build / render | **실행 대기**, 픽셀·청취·A/V 동기·클리핑·실제 장면 승인 **미검증** |
-| 코드·문서 대조 | source trim·컷 총합·좌표·DM Sans·원음 경로를 읽기 전용 대조. 이 확인을 영상 PASS로 표시하지 않음 |
-| Steam 공개 | 최종 렌더·검수·업로드·공개 상점 확인 전 기존 납품 영상 교체 완료로 표시하지 않음 |
+| native build / render | 최종 **Steam 37초 / Shorts A 16초 / Shorts B 26초 렌더 완료**. `--shards 1 --concurrency 1` 사용. 3개 프로젝트 check clean. 전체 decode·원본 시간 대조·샘플 화면 검수 PASS 범위는 §5 |
+| 오디오 검수 | 게임 구간 신호 **max 0dB**, 마지막 CTA 구간 **max −91dB**, AAC decode 정상. **주관적인 전체 청취 미수행**. 신호 수치만으로 청취·클리핑·음량 승인 완료로 표시하지 않음 |
+| Steam 공개 | **Steam Guard 휴대전화 인증 대기**. 기존 Steam 영상 교체·공개 상점 반영 미완료 |
+| YouTube 공개 | **FDG 채널 로그인 대기**. 새 영상·Shorts 게시 미완료 |
+| Discord | 기존 FDG 서버·첫 데모 공지 유지. 새 16초 영상 announcements 게시는 **Mac 잠금 해제 대기**, 실제 제출하지 않음 |
 
-총괄의 후속 순서: hosted 입력/probe 확인 → 타깃별 fresh project build → 첫 프레임·컷 경계·중앙 detail/전체 context·시연 표시·CTA contact sheet → 최종 render → ffprobe·재생/청취 → 플랫폼 공개 조건 대조 → 실제 게시 URL/Steam 노출 기록.
+남은 검수 범위는 **전체 청취**이며, 플랫폼 게시는 로그인·인증·Mac 잠금 해제 후 실제 게시 URL/Steam 노출로 확인한다. 아래는 **최종 제작 구성의 재현 명령**이다.
 
 ```sh
+higgsedit fonts add "DM Sans:400"
+higgsedit fonts add "DM Sans:700"
+python3 /home/user/marketing_prepare_20261008.py --input-dir /home/user/exoduser-fresh
 EXODUSER_EDIT_TARGET=steam higgsedit build /home/user/marketing_edit_20261008.jsx
 EXODUSER_EDIT_TARGET=shortsA higgsedit build /home/user/marketing_edit_20261008.jsx
 EXODUSER_EDIT_TARGET=shortsB higgsedit build /home/user/marketing_edit_20261008.jsx
-higgsedit frame /home/user/exoduser-edits/20261008/steam-master-37s 0.1 --out /home/user/exoduser-edits/20261008/parry-first.png
-higgsedit render /home/user/exoduser-edits/20261008/steam-master-37s --depth 8 --bitrate 20M --out /home/user/exoduser-edits/20261008/EXODUSER_STEAM_37S_1080P30.mp4
-higgsedit render /home/user/exoduser-edits/20261008/shorts-a-16s --depth 8 --bitrate 12M --out /home/user/exoduser-edits/20261008/EXODUSER_SHORTS_A_16S_1080P30.mp4
-higgsedit render /home/user/exoduser-edits/20261008/shorts-b-26s --depth 8 --bitrate 12M --out /home/user/exoduser-edits/20261008/EXODUSER_SHORTS_B_26S_1080P30.mp4
+higgsedit frame /home/user/exoduser-edits/final-20261008/steam-master-37s 0.1 --out /home/user/exoduser-edits/final-20261008/parry-first.png
+higgsedit render /home/user/exoduser-edits/final-20261008/steam-master-37s --depth 8 --bitrate 20M --shards 1 --concurrency 1 --out /home/user/exoduser-edits/final-20261008/EXODUSER_STEAM_37S_1080P30.mp4
+higgsedit render /home/user/exoduser-edits/final-20261008/shorts-a-16s --depth 8 --bitrate 12M --shards 1 --concurrency 1 --out /home/user/exoduser-edits/final-20261008/EXODUSER_SHORTS_A_16S_1080P30.mp4
+higgsedit render /home/user/exoduser-edits/final-20261008/shorts-b-26s --depth 8 --bitrate 12M --shards 1 --concurrency 1 --out /home/user/exoduser-edits/final-20261008/EXODUSER_SHORTS_B_26S_1080P30.mp4
 ```
 
-위는 총괄이 JSX를 hosted 경로로 옮긴 뒤 실행할 명령 예시이며 본 문서 동기화 담당은 실행하지 않았다. whole-script build는 해당 프로젝트 timeline을 대체하므로 독립 프로젝트를 사용한다.
+whole-script build는 해당 프로젝트 timeline을 대체하므로 타깃별 독립 프로젝트를 사용했다. 원본 VP9/Opus WebM은 보존하며 prepared MP4를 새 media ID로 가져왔다.
 
-## 5. 문서 동기화·추가 통합 필요
+## 5. 최종 렌더·원본 시간 대조 결과
 
-2026-10-08 docs 전체 관련 검색 결과, 과거 9월 영상은 제작·납품 이력으로 보존한다. 새 37초 영상으로 업로드 완료된 것이 아니다. 원본 provenance·staging은 신규 촬영 manifest와 함께 읽는다. 게임 아트/오디오 AI 공개 및 YouTube 합성 음악 공개 설정은 [채널 조건](EXPOSURE_CHANNELS_20261008.md)을 따른다.
+최종 cloud 산출물은 `/home/user/exoduser-edits/final-20261008/`의 `EXODUSER_STEAM_37S_1080P30.mp4`, `EXODUSER_SHORTS_A_16S_1080P30.mp4`, `EXODUSER_SHORTS_B_26S_1080P30.mp4`다. **3개 렌더·기술·시간·샘플 화면 검수 완료**. 보존 파일·검수 이미지·QA JSON·SHA256는 [최종 납품 기록](VIDEO_DELIVERY_20261008.md)에 연결되어 있다.
 
-**총괄 후속 수정 필요:** `SOCIAL_VIDEO_COPY_20261008.md`의 가로 설명 초안에는 일반 Lv1 플레이와 staged 스킬 혼합 문장이 남아 있다. 최종 가로본에서 manual이 제외됐으므로 **staged high-level skill demonstrations**로 수정해야 한다. 본 동기화에서는 지정 소유 밖 파일을 변경하지 않았다.
+| 최종 MP4 프레임 번호 n (0부터) | 출력 시각 n/30초 | Steam/A의 raw parry 원본 시각 | B의 raw fire 원본 시각 |
+|---:|---:|---:|---:|
+| 9 | 0.3초 | **5.233333초** | **2.3초** |
+| 39 | 1.3초 | **6.233333초** | **3.3초** |
+| 69 | 2.3초 | **7.233333초** | **4.3초** |
+| 99 | 3.3초 | **8.233333초** | **5.3초** |
 
-본 작업의 변경 파일은 이 문서 하나다. 게임 코드·JSX·원본·다른 문서·계정·게시·커밋은 변경하지 않았다.
+| 검수 대상 | 실제 결과 | 판정 범위·남은 검수 |
+|---|---|---|
+| Shorts A 최종 MP4 | 위 4개 프레임의 원본 대조 **MAE 1.69~1.98/255**, 30Hz 격자에서 source-time 오차 **0프레임** | 해당 패링 구간의 시간 진행 확인. 압축·리사이즈 후 픽셀이 완전히 동일하다는 의미가 아님 |
+| Steam 최종 MP4 | 같은 4개 프레임의 원본 대조 **MAE 1.23~1.53/255**, 30Hz 격자에서 source-time 오차 **0프레임** | 해당 패링 구간의 시간 진행 확인. 모든 컷·전체 타임라인의 시각 승인으로 확대하지 않음 |
+| Shorts B 최종 MP4 | 위 4개 프레임의 fire 원본 대조 **MAE 1.74~1.84/255**, 30Hz 격자에서 source-time 오차 **0프레임**. **9.3초 ice / 16.3초 blackhole / 24초 CTA 육안 PASS** | 최종 샘플 시간·화면 QA PASS |
+| 최종 3개 기술 검사 | 전체 decode 오류 없음. Steam **1,110f**, A **480f**, B **780f**, 모두 **30fps·H.264·AAC stereo 48kHz** | 기술 QA PASS |
+| 최종 화면 | **12프레임 contact sheet 육안 PASS**. 패링 폭발·피해 숫자·강타·불꽃·얼음·블랙홀·CTA·staged 표시 확인 | 기록한 샘플 화면 검수 범위. 모든 프레임의 주관적 시청을 수행했다는 의미가 아님 |
+| 최종 3개 오디오 | 게임 구간 신호 **max 0dB**, CTA 구간 **max −91dB**, AAC decode 정상 | 신호·decode 확인 완료. **주관적인 전체 청취 미수행**, 청취·클리핑·음량 승인 PASS 주장 없음 |
+| 공개 | Steam Guard 휴대전화 인증 / YouTube FDG 로그인 / Discord Mac 잠금 해제 대기 | Steam 기존 영상 교체·YouTube 신규 게시·Discord 새 영상 제출 미완료 |
 
-## 실제 입력 컨테이너 검수 보완
+## 6. 폐기한 초기 렌더·컨테이너 감사 이력
 
-원본 MediaRecorder WebM에는 format.duration 메타데이터가 없어 첫 probe가 실패했다. GitHub 원본 SHA256를 먼저 검증한 뒤 클라우드에서 FFmpeg `-map 0 -c copy`로 WebM 컨테이너만 다시 작성했다. 영상 VP9/음성 Opus를 재인코딩하지 않았으며 실제 picture/audio 편집은 Higgsedit로 수행한다. probe 길이는 parry10.000, rage_slam8.010, fire10.984, ice_orb7.991, blackhole9.990초. ice_orb의 1+7초 trim은 실제 컨테이너보다 0.009초 길어 검증에서 차단되었으므로 29/30초 시작으로 1프레임 앞당겼다. 최종 7초 컷·총 길이는 유지하고 자동 루프/부족분 정지프레임을 쓰지 않는다.
+원본 MediaRecorder WebM에는 format.duration 메타데이터가 없어 첫 probe가 실패했다. GitHub 원본 SHA256를 먼저 검증한 뒤 클라우드에서 FFmpeg `-map 0 -c copy`로 WebM 컨테이너를 다시 작성한 중간 경로가 있었다. 이 remux는 VP9/Opus를 재인코딩하지 않았고 format 길이는 parry10.000, rage_slam8.010, fire10.984, ice_orb7.991, blackhole9.990초였다. **이 중간 컨테이너 길이를 최종 원본 coverage로 사용하지 않으며**, 최종 준비 입력은 §2의 실제 video packet 끝값·원본 구간에 따른 CFR30 H.264/AAC다.
 
-## 최종 MP4 시간 진행 오류와 준비 입력 보정
+직접 VP9 WebM을 가져와 6개 window로 렌더한 첫 MP4는 파일·코덱·프레임 검사 후 실제 화면 감사에서 **채택 폐기**했다. Shorts A 1.3초의 inset은 기대 source6.3초가 아닌 source5.033초와 픽셀 MAE1.65/255로 일치했고, 2.667초 window 경계에서 원본 위치가 점프했다. 초기 MP4와 초기 editable ZIP은 **납품·게시 대상에서 제외**하며 이력만 보존한다. 파일 생성·기술 검사 성공을 영상 PASS로 바꾸지 않는다. 도구 내부 원인 확정 주장도 하지 않는다.
 
-직접 VP9 WebM을 가져와 6개 window로 렌더한 첫 MP4는 파일·코덱·프레임 검사를 통과했지만 실제 화면 검수에서 폐기했다. Shorts A 1.3초의 inset은 기대 source6.3초가 아닌 source5.033초와 픽셀 MAE1.65/255로 일치했고, 2.667초 window 경계에서 원본 위치가 점프했다. 따라서 초기 MP4와 초기 editable ZIP은 납품본이 아니다. 도구 내부 원인 확정 주장은 하지 않는다.
+준비된 패링 입력의 2초 시험에서는 native frame1.3초와 MP41.3초가 같은 실제 패링 폭발을 보여 보정 경로의 시간 진행을 확인했다. 이후 최종 3개를 새 media ID와 single-shard/single-concurrency로 렌더했고, Steam·A·B의 최종 MP4 대조 결과는 §5에 별도로 기록했다. 시험 성공과 최종 파일 감사는 별도 결과이며 전체 청취 승인으로 대신하지 않는다.
 
-`tools/marketing_prepare_20261008.py`로 원본의 선택 구간을 **CFR30 H.264 CRF12 + AAC256kbps** 준비 입력으로 만든다. 실제 원본 프레임을 선택하며 속도 변경·프레임 보간을 쓰지 않는다. 원본 VP9/Opus는 그대로 보존한다. prepared.json의 실제 file/sourceDuration을 읽은 뒤 native timeline trim은 0으로 설정하며 위 표는 원본상의 시작점/길이 기록으로 유지한다. 새 출력root는 `/home/user/exoduser-edits/final-20261008`이다. native export는 **shards1/concurrency1**로 수행한다. 준비된 패링 입력의 2초 시험에서 native frame1.3초와 MP41.3초가 같은 실제 패링 폭발을 보여 정상 시간 진행을 확인했다. 최종 3개도 새 media ID로 렌더하고 원본 시간 대조를 다시 해야 한다.
+## 7. 문서 동기화 범위
 
-최종 준비 preflight는 audio tail이 아닌 원본 video packet 끝을 직접 확인했다: parry9.954 / rage7.977 / fire10.966 / ice7.974 / blackhole9.974초. 따라서 parry 시작을148/30초, rage 시작을29/30초로 앞당겨 끝의 부족분을 차단한다. 결과 컷 길이5/7/8/7/7초와 최종37/16/26초는 유지한다. remux format.duration만으로 실제 그림 길이를 보증하지 않는다.
+2026-10-08 docs 전체에서 `marketing_prepare_20261008|marketing_edit_20261008|prepared.json|prepared.mp4|Higgsedit|steam-master-37s|final-20261008|CFR30`을 검색했다. 과거 9월 영상은 제작·납품 이력으로 보존한다. 새 37초 영상의 렌더 완료와 실제 플랫폼 게시 완료는 구분하며, 원본 provenance·staging은 신규 촬영 manifest와 함께 읽는다. 게임 아트/오디오 AI 공개 및 YouTube 합성 음악 공개 설정은 [채널 조건](EXPOSURE_CHANNELS_20261008.md)을 따른다.
+
+현재 게시문안은 **staged high-level skill demonstrations**로 동기화되어 있다. 최종 산출물·검수 자료·플랫폼별 실제 게시 상태는 [납품·동기화 기록](VIDEO_DELIVERY_20261008.md)을 기준으로 관리한다.

@@ -1,3 +1,14 @@
+## 2026-10-08 실제 인게임 홍보 영상 최종 납품·GitHub 동기화
+
+| 항목 | 최종 결과 |
+|---|---|
+| 영상 | Steam37초·ShortsA16초·B26초 H264/AAC/30fps 완성. Discord720p A16초 파생본 포함 marketing/trailers/20261008에 저장 |
+| 검증 | 3마스터 정확프레임수·전체decode·오디오신호·CTA무음 PASS. 원본시간A/Steam/B 30Hz오차0, 샘플육안PASS. 전체청취검수 미수행 |
+| native 수정 | 원본영상을 실제범위로 준비CFR30 H264인코딩·native single-window렌더. 초기VP9/window시간오류 산출물 납품/게시제외 |
+| 출처 | 최신개발소스2f5aa0e8 정상CH1 staged고레벨5종. 원본/코드/해시/검수/영문문안/채널계획을 별도codex/marketing-gameplay-20261008브랜치로 동기화 |
+| 게시 | 새영상 Steam/YouTube/Discord 게시미완료: Steam모바일승인·FDG관리계정로그인·Mac잠금해제대기. 기존 공개공지유지 |
+| 문서 | VIDEO_DELIVERY/VIDEO_EDIT_PLAN/마케팅index 최신상태 반영. 게임코드·맵·밸런스·보호된패링설계 변경없음 |
+
 2026-10-08 추가 packet 감사: 원본 video 끝 parry9.954/rage7.977초에 맞춰 원본 시작148/30·29/30초로 조정. 준비 input source5/7초, native timeline길이불변.
 
 ## 2026-10-08 영상 픽셀 시간 감사·native 입력 보정

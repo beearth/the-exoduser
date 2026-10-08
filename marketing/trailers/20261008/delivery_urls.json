@@ -1,0 +1,32 @@
+[
+  {
+    "kind": "steam",
+    "media_id": "6ac0d4bc-924c-4b4f-9e52-14dd3c919462",
+    "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/6ac0d4bc-924c-4b4f-9e52-14dd3c919462.mp4"
+  },
+  {
+    "kind": "shorts_a",
+    "media_id": "d9c566cf-d2b2-4ad4-bbdf-da10f2637b01",
+    "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/d9c566cf-d2b2-4ad4-bbdf-da10f2637b01.mp4"
+  },
+  {
+    "kind": "shorts_b",
+    "media_id": "3f43f1a6-f7b3-44ac-8dab-7d454bb58903",
+    "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/3f43f1a6-f7b3-44ac-8dab-7d454bb58903.mp4"
+  },
+  {
+    "kind": "editable_zip",
+    "media_id": "0db4a87a-f7a7-4b78-a209-71ebb1a5debb",
+    "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/0db4a87a-f7a7-4b78-a209-71ebb1a5debb.zip"
+  },
+  {
+    "kind": "qa_json",
+    "media_id": "783487be-0713-4b8b-a649-2065c674fafb",
+    "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/783487be-0713-4b8b-a649-2065c674fafb.json"
+  },
+  {
+    "kind": "review_jpeg",
+    "media_id": "e39da8e2-edb6-400e-a3c6-fbf6f915d943",
+    "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/e39da8e2-edb6-400e-a3c6-fbf6f915d943.jpg"
+  }
+]
