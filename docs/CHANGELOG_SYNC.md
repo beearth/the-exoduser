@@ -56733,3 +56733,7 @@ alpha/nav/crop/UV/geometry/opacity/renderOrder/resource/dispose·skirt/backplane
 ## 2026-10-08 — 에디터 선택 객체 회전 초기화
 
 `ROOT-EDITOR-RESET-OBJECT-ROTATION-20261008`: 속성 패널 **회전 0°** 버튼으로 선택 그림의 위치·크기·피벗을 유지하고 회전만0°로 되돌린다. 단일 선택·표시/잠금·편집 상태·유한값/no-op을 재검사하고 기존 History undo/redo/validate 및 로컬 복구 저장 경로를 재사용한다. 신규 정적 source 검토 blocker0, 새CPU/native/GPU/cache 검수0/RETOUCH. [현재 계약](4.1맵디자인+설정/MAP_SCENE_EDITOR_20261005.md). 외부 `editor-reset-object-rotation-20261008/completion.json`이 최종 보존 정본이다.
+
+## 2026-10-08 — 보스 렌더 예외의 Canvas 상태 복구
+
+`ROOT-CH1-BOSS-CANVAS-RESTORE-20261008`: Codex 자체save2·드루이드 공통 sheet 본문save1을 finally로 복구하고, main Codex 위임 예외에서는 기존 부모변환 save를 복구한 뒤 원 오류를 전달한다. 정상 draw 순서/반환·전투·save 유지. Under/tell/다른 atlas·부모 준비/restore 자체 실패와 픽셀 롤백은 보장하지 않는다. 첫 통제11그룹25확인 PASS/Node1 exit0·before 반례1 별도, 정적 source blocker0. 실제 화면/GPU/청취/save 미검수/RETOUCH. [정확 계약](4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md#ch1-boss-canvas-restore-20261008). 최종 외부 `ch1-boss-canvas-restore-20261008/completion.json`.

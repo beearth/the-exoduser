@@ -10925,18 +10925,18 @@ function _drawCodexBoss(X,e,sa,tdY,si,parentScale,parentYOffset){
     if(spec.anim&&_drawDruidBoss(X,e,sa,tdY,spec,parentScale,parentYOffset))return true; // 8방향 프레임 애니 (walk/attack/idle)
     // [2D-BOSS] 플레인 스프라이트 드로우 — 타원클립·그린 fillRect 없음(잘림/녹색박스 방지). 커스텀 투명PNG용
     // 테스트베드 ×N 배율(3D모델용)은 2D 스프라이트엔 과대 → 역보정해 실제 크기 고정
-    X.save();X.translate(e.x+shake,e.y+(tdY||0)+m.y);const _un2d=1/(window._btScaleMul||1);X.scale(_un2d,_un2d);if(Math.abs(e.facing)>Math.PI/2)X.scale(-1,1);X.rotate(m.rot);
+    X.save();try{X.translate(e.x+shake,e.y+(tdY||0)+m.y);const _un2d=1/(window._btScaleMul||1);X.scale(_un2d,_un2d);if(Math.abs(e.facing)>Math.PI/2)X.scale(-1,1);X.rotate(m.rot);
     X.globalAlpha=glowA*.55;X.fillStyle=spec.glow;X.beginPath();X.ellipse(0,-dh*.30,dw*.34,dh*.30,0,0,Math.PI*2);X.fill();
     X.globalAlpha=sa;X.drawImage(img,0,0,img.naturalWidth,img.naturalHeight,-dw/2,-dh*.86,dw,dh);
-    X.restore();
+    }finally{X.restore();}
     return true;
   }
-  X.save();X.translate(e.x+shake,e.y+(tdY||0)+m.y);if(Math.abs(e.facing)>Math.PI/2)X.scale(-1,1);X.rotate(m.rot);
+  X.save();try{X.translate(e.x+shake,e.y+(tdY||0)+m.y);if(Math.abs(e.facing)>Math.PI/2)X.scale(-1,1);X.rotate(m.rot);
   X.globalAlpha=glowA;X.fillStyle=spec.glow;X.beginPath();X.ellipse(0,-dh*.28,dw*.42,dh*.36,0,0,Math.PI*2);X.fill();
   X.globalAlpha=sa;X.beginPath();X.ellipse(0,-dh*.25,dw*.46,dh*.49,0,0,Math.PI*2);X.clip();
   X.drawImage(img,0,0,img.naturalWidth,img.naturalHeight,-dw/2,-dh*.74,dw,dh);
   X.globalCompositeOperation='screen';X.globalAlpha=glowA*.65;X.fillStyle=spec.scr;X.fillRect(-dw/2,-dh*.74,dw,dh);
-  X.restore();
+  }finally{X.restore();}
   return true;
 }
 function _drawStage1CodexBoss(X,e,sa,tdY){return _drawCodexBoss(X,e,sa,tdY,0)}
@@ -11029,7 +11029,7 @@ function _drawDruidBoss(X,e,sa,tdY,spec,parentScale,parentYOffset){
   let dw=e.r*spec.dw,dh=e.r*spec.dh;
   if(sheet==='beast'||sheet==='dive'||sheet==='transform'){dh=e.r*spec.dh;dw=dh*(cw/ch)*1.12;} // [넉넉] 정사각/세로 셀(돌진 야수/다이빙/변신) 비율보존+12% 여유 — 안 짤리게
   const _breath=sheet==='base8'?Math.sin(_nw*.003)*2:0;
-  X.save();X.translate(e.x,e.y+(tdY||0)-6+_breath);const _un=1/(window._btScaleMul||1);X.scale(_un,_un);e._nameTopOff=(tdY||0)-6+_breath-dh*.86*_un-10; // 네임플레이트/HP바를 스프라이트 상단 위로(2026-08 유저요청: 다리 겹침 해소)
+  X.save();try{X.translate(e.x,e.y+(tdY||0)-6+_breath);const _un=1/(window._btScaleMul||1);X.scale(_un,_un);e._nameTopOff=(tdY||0)-6+_breath-dh*.86*_un-10; // 네임플레이트/HP바를 스프라이트 상단 위로(2026-08 유저요청: 다리 겹침 해소)
   if(window._BOSS_GLOW){X.globalAlpha=sa*.30;X.fillStyle=spec.glow;X.beginPath();X.ellipse(0,-dh*.40,dw*.24,dh*.22,0,0,Math.PI*2);X.fill();} // 글로우 게이트(2026-08-25 유저요청: 원형 잔상 제거, _BOSS_GLOW=true 시만 그림). 삭제X 게이트만
   const _ch1Selection=_ch1NormalIntent&&['base8','walk','attack'].includes(sheet)?Object.freeze({sheet,index:sheet==='base8'?0:frame,nativeDir:dir,sourceCol:_fc,sourceRow:_fr,columns:cols,rows,x:sx,y:sy,w:cw,h:ch}):null;
   if(!_drawCh1DruidRigBody(X,e,_ch1Selection,sa,dw,dh,(tdY||0)-6+_breath,_un,parentScale,parentYOffset)){
@@ -11039,7 +11039,7 @@ function _drawDruidBoss(X,e,sa,tdY,spec,parentScale,parentYOffset){
   if(_ch1NormalIntent)_drawDruidBodyHitFlash(X,e,sa,img,sx,sy,cw,ch,-dw/2,-dh*.86,dw,dh);
   }
   X.globalCompositeOperation='source-over';X.globalAlpha=1;
-  X.restore();return true;
+  }finally{X.restore();}return true;
 }
 // ── 대형보스 글로벌 설정 ──
 window._BOSS_GLOW=false; // 보스 하단 원형 글로우 오라 기본 OFF (2026-08-25 유저요청: 원으로 보임·불필요). true 시만 _drawDruidBoss 글로우 렌더
@@ -53209,7 +53209,8 @@ function draw(){
       const _bYOff=window._btOffsetY||0;
       if(_bScMul!==1||_bYOff!==0){X.save();X.translate(e.x,e.y+_bYOff);X.scale(_bScMul,_bScMul);X.translate(-e.x,-e.y)}
       if(!e._bDrawLog){e._bDrawLog=true;console.log('[BOSS_DRAW] extB:',_atlasExtBReady,'walkA:',_bossWalkAtlas.ready,'intB:',_atlasBReady,'stage:',G.stage,'scale:',_bScMul)}
-      if(!_bDrew&&_CODEX_BOSS[G.stage]){_bDrew=_drawCodexBoss(X,e,sa,_tdY,G.stage,_bScMul,_bYOff)}
+      try{if(!_bDrew&&_CODEX_BOSS[G.stage]){_bDrew=_drawCodexBoss(X,e,sa,_tdY,G.stage,_bScMul,_bYOff)}}
+      catch(_bDrawError){if(_bScMul!==1||_bYOff!==0)X.restore();throw _bDrawError;}
       // ── 외부 보스 아틀라스 렌더링 (atlas_bosses.png, 최우선) ──
       if(!_bDrew&&_atlasExtBReady){
         const bKey='boss_'+G.stage;

@@ -1616,7 +1616,7 @@ OFF/불가mode/identity/준비 frame 부재의 검수에서는 core0이다. **co
 | 폴백·preview | rig 로딩/해독/준비/범위/특수/실패는 기존 앵커. 캡처된 부모 인자가 없는 직접 preview 호출은 rig false로 legacy 유지. 새로운 공개 adapter API/상태/DOM/RAF/timer/에셋 없음 |
 | 첫 후보 이력 | 첫 후보의 통제9그룹69확인 PASS/Node1은 부모 변환이 빠진 fixture 범위였다. 별도 정적 peer가 실제 바깥 scale/Y offset 누락 blocking1을 발견했으며 그 후보를 제품 인수로 사용하지 않음 |
 | 보정 검수 | capture 전달/수식 보정 후 실제 main 부모 transform slice + whole Codex/Druid/rig caller chain·통제 Canvas Y affine/adapter ports로 새10그룹78확인 PASS/Node1 exit0·VM fixture29. 현재 classic JS4개 구문 포함. 물리 Node총2; 이전69/옛 suite 합산·재실행 없음 |
-| 예외·한계 | inner rig finally restore 유지. 기존 Canvas 예외 때 바깥 main/Druid save 두 개가 복원되지 않는 경계는 그대로 관측/미해결. native GL/GPU·실제 픽셀·전체 draw/보스 route·화면 가림/가독성·장치·성능·청취/보상save 미검수 |
+| 예외·한계 (name-anchor 당시 이력) | 당시 inner rig finally 유지·바깥 main/Druid save 두 개 미복구를 관측했다. 현재 공통 sheet 본문/Codex 위임의 복구는 아래 ch1-boss-canvas-restore-20261008 계약이 우선하며 Under/tell·다른 atlas는 별도다. native GL/GPU·실제 픽셀·전체 draw/보스 route·가독성·장치·성능·청취/보상save는 미검수 |
 | 정적/시각 | 최종8hunk source peer: 기존 blocker1 closed, 새 명백한 blocking0. VISUAL VERDICT: RETOUCH / UI_NOT_ASSESSED / native NOT_RUN. 기존 열린 탭 재로드·조작/새 전문 배정0 |
 
 외부 근거: `ch1-druid-rig-name-anchor-20261008/{implementation.json,parent-transform-correction.json,cpu-first-result.json,cpu-corrected-result.json,source-peer.json,completion.json}`. 기존 NORMAL·시체·캐릭터 suite를 반복하거나 이번 표시를 전체 보스 2.5D 완성으로 계산하지 않는다.
@@ -1662,3 +1662,22 @@ OFF/불가mode/identity/준비 frame 부재의 검수에서는 core0이다. **co
 | 한계 / 시각 | 실제 whole owner/renderer/ghost와 WarriorBatSwing 모듈 + 통제 Canvas/adapter ports. 실제 drawP전체/Three 렌더·GPU·브라우저·음향·save 실행0. 현재 rig 내부 art와 원본의 시각 일치·가림/발·성능은 미인수. VISUAL VERDICT: RETOUCH / UI_NOT_ASSESSED / native NOT_RUN |
 
 기존 베기·회수·피니셔 suite 재실행0. 정적 delta peer blocking0. 기존 열린 게임 탭 무조작/새 전문 배정0. 소유 code+docs·원격 exact 최종은 외부 `ch1-warrior-finisher-windup-rig-20261008/completion.json`을 따른다.
+
+
+<a id="ch1-boss-canvas-restore-20261008"></a>
+## 2026-10-08 — 보스 본체 렌더 예외의 Canvas 상태 복구
+
+`ROOT-CH1-BOSS-CANVAS-RESTORE-20261008`: Codex/드루이드 시트 본체를 그리는 도중 예외가 발생하면 이 호출이 저장한 Canvas 상태를 복구하고 같은 오류를 호출자에게 전달한다. 정상 프레임의 모션 선택·draw 순서·반환·좌표·전투·저장은 유지한다.
+
+| 적용 위치 / ID | 현재 계약 |
+|---|---|
+| _drawCodexBoss | 기존 static2D 및 clipped-sprite 폴백의 own save2곳을 각각 try/finally로 닫는다. 기존 false/true 반환과 draw/clip 순서는 유지. |
+| _drawDruidBoss | 기존 프레임 선택·sheet 준비 검사 뒤 공통 sheet 본문 save1곳을 try/finally로 닫는다. rig 또는 native body·피격 표시가 throw해도 해당 save 복구. Under의 별도 흙두둑 save는 이 범위 밖. |
+| main Codex 위임 | 성공한 기존 부모변환 뒤 _drawCodexBoss 호출의 예외만 catch. `_bScMul!==1||_bYOff!==0`이면 부모 save를1회 restore하고 `_bDrawError` 원 객체를 rethrow. 변환 없음이면 restore 추가0; 정상 경로의 기존 부모 restore 유지. |
+| inner rig | _drawCh1DruidRigBody의 기존 inner try/finally 유지. 현재 owner·name anchor 갱신·통계·3pass·hit flash 순서는 유지. |
+| 부분 실행 | 이미 그린 픽셀·Canvas current path·actor name metadata/통계·기타 선행 부수효과를 롤백하지 않는다. catch로 오류를 삼키거나 성공/legacy fallback으로 바꾸지 않는다. |
+| 한계 | 부모 matrix 준비·첫 save·restore 자체 실패, Under/tell/다른 atlas의 내부 save와 전체 draw 복구는 미인수. restore가 throw하면 원 오류 보존도 보장하지 않는다. 장치/GPU 해제·전체 프레임 복구 보장0. |
+| 첫 검수 | 실제 whole Codex/Druid/rig 함수 + main 위임/기존 마지막 부모 restore의 한정 composition, 통제 Canvas affine/style/stack·adapter ports. 최초 Node1·newFunction factory2/instance29·VM0,11그룹25확인(24동적1source동등) PASS/FAIL0/exit0. 이전 second rig blit의 stack1→3 반례1은 별도. 정상4경로 draw명령/반환/actor·통계 동등, 오류 객체 identity·진입 stack/style/transform 복구 및 partial prefix 확인. |
+| 인수 구분 | 정적 source peer blocker0. middle atlas 분기는 composition에서 생략. whole draw/실제 Canvas·GPU·브라우저·픽셀·성능·음향·save 미검수, 기존 suite 재실행0. RETOUCH/UI_NOT_ASSESSED/nativeNOT_RUN. |
+
+외부 `E/ch1-boss-canvas-restore-20261008/completion.json`이 최종 Git·검수 한계·§23 보고 정본이다. 기존 열린 탭은 이번에 조작/재로드하지 않았다.

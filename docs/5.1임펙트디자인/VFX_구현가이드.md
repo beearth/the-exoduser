@@ -1292,3 +1292,8 @@ MAP PRODUCTION REPORT (§23): STAGE=CH1-1 전투 가독성 source consumer. MAST
 | 실제 화면 | 기존 탭 무조작. native/GPU/브라우저/PNG/audio/save 실행0, UI_NOT_ASSESSED / NOT_LISTENED / save UNKNOWN. VISUAL VERDICT: RETOUCH |
 
 최종 소유 code+docs·원격 보존은 외부 `ch1-druid-body-hit-feedback-20261008/completion.json`을 따른다. 첫 정적 peer의 blend reset 예외 restore blocker1은 첫 CPU 전에 중첩 finally로 보정했고 해당 closure 재검토 blocking0이다.
+
+
+### 2026-10-08 — 보스 본체 렌더 예외 복구
+
+`ROOT-CH1-BOSS-CANVAS-RESTORE-20261008`: 공통 Druid sheet 본문·Codex 폴백의 own save와 main Codex 위임의 부모 save를 한정 복구한 뒤 원 오류를 전달한다. 정상 모션·3pass/피격표시·전투/저장 순서는 유지. Under/tell/다른 atlas·부모 준비/restore 자체 실패 및 pixels rollback은 미보장. 첫 통제25확인/Node1 exit0·before 반례1 별도, 실화면/GPU/음향/save 미검수/RETOUCH. [현행 예외 경계](../4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md#ch1-boss-canvas-restore-20261008). 최종 외부 `ch1-boss-canvas-restore-20261008/completion.json`.
