@@ -1,0 +1,55 @@
+{
+  "dateKST": "2026-10-08",
+  "status": "USER_REJECTED_SOURCE_VERSION_MISMATCH",
+  "publicationAllowed": false,
+  "userFindings": [
+    "Cornered player taking hits is not a gameplay highlight",
+    "Ki slash and terrain are outdated"
+  ],
+  "excludedOutputs": [
+    "EXODUSER_HERO_TRAILER_30S_REVIEW_20261008.mp4",
+    "EXODUSER_GAMEPLAY_TEASER_REVIEW_V2_R1_20261008.mp4",
+    "Original 37 second gameplay trailer"
+  ],
+  "natural": {
+    "sourceGit": "ba660621e37cdc1635de8e8a370f1f48fd6f18ad",
+    "gameSha256": "11fba62cc6df197055103b4a9e3b2edaa58645a7b1db82a24da9d3611d9f3773",
+    "lastGameChangeCommit": "37435eab",
+    "lastGameChangeDateKST": "2026-09-12",
+    "latestDevelopmentEquivalent": false,
+    "missingComparedWithDevelopment": [
+      "Ki slash third-hit hold charge functions",
+      "Current CH1 terrain/rig consumers"
+    ]
+  },
+  "staged": {
+    "sourceGit": "2f5aa0e88e32ff2d82a93f9c6098643d8d1f6427",
+    "gameSha256": "bf38f6668d93cdc3bffa909250656d56675b734b27971a5103b3730edb3d1b3e",
+    "latestDevelopmentEquivalent": false,
+    "note": "Has Ki slash hold charge and production_finish but lacks later Three terrain/rig/side ravine consumers"
+  },
+  "developmentWorkingTree": {
+    "path": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "observedHeadShort": "5f51d5d1",
+    "observedHeadDateKST": "2026-10-08 22:53:40 +09:00",
+    "observedGameSha256": "d65c7216ecd84c71a43cf4eb586f613709577280a5317aa4c97650597212587c",
+    "uncommittedGameChanges": true,
+    "snapshotMayAdvance": true,
+    "steamBinaryEquivalence": "UNVERIFIED",
+    "renderActivationNote": "Observed Three preview requires localhost:3387 with ch1Three=1; rig additionally ch1Rig=1. File hash alone does not prove this preview is enabled or shipping."
+  },
+  "nextCaptureRequired": [
+    "Pin actual development snapshot and hashes for loaded modules/assets",
+    "Verify real running URL/flags and current Ki slash/terrain visibly",
+    "Perform active readable combat in open space; show approach/action/result",
+    "Do not reuse old footage as current game"
+  ],
+  "actionsThisReview": {
+    "gameEdits": false,
+    "serverChanges": false,
+    "saveChanges": false,
+    "renderedNewVideo": false,
+    "externalPublication": false
+  },
+  "scope": "Source version rejection and creative direction. Does not certify current development visual quality or all new preview features as released."
+}

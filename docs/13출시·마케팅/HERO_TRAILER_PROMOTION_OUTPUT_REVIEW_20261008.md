@@ -1,5 +1,7 @@
 # 30초 출력의 홍보팀 시각 검토
 
+> **최신 판정: USER_REJECTED / SOURCE_VERSION_MISMATCH / 배포 후보 제외.** 기존 RETOUCH는 버전 확인 전 이력이다. `marketing/trailers/hero-20261008/source-version-verdict.json` 참조.
+
 2026-10-08. 상세 정본: `marketing/trailers/hero-20261008/promotion-output-review.md`.
 
 | 항목 | 실제 상태 |
