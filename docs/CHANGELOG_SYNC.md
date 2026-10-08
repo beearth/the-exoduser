@@ -51684,3 +51684,10 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 파일 검증 | ui-panels.js 및 두 HTML 인라인4개씩 구문PASS, HTML2개/CSS/JS HTTP200 원본과 디스크 바이트 일치. verification.json/status-final.txt 보존. 브라우저 도구 재연결 실패로 QA 임시 viewport 수동 reset·닫기는 미확인, 생성 검수 탭은 턴 종료 자동 정리 대상 |
 | 문서 | docs 전체 키워드 검색 후 UI 현행 계약·UI composition·키바인딩/호버·i18n2문서·Steam 소스 번역 현황·CHANGELOG_SYNC 동기화 |
 | 상태 | 변경 전 백업 tmp/settings-choice-20260929. 기존 dirty/staged 작업 유지, .git 읽기 전용으로 커밋 미완료. 실제 게임패드/NW.js 패키징/Steam 업로드 미검증 |
+
+
+## 2026-10-08 FDG 컷씬 실제 export·5편 업로드 준비 동기화
+
+- 네메시아 native edit 최종 121.7초/3651프레임, 1080p30 H264/AAC48kHz. 21원화·27큐·18대사 순서와 기존 V3 음악 보존. 전체 decode PASS와 실제 export의 contact/최장 대사/CTA 표본 시각 PASS를 별도 receipt로 기록. 전구간 연속 재생·주관적 청취 미수행 범위를 명시.
+- 전사 내용 v25 96.4초 원본 보존, 총 5편 업로드 파일 해시·제목·설명·전사 EN/KO VTT 경로 고정. 실제 게시 0, 약관 동의 실행 직전 확인 대기. 지옥의 틈 3개 모션 FAIL 제외 유지.
+- 게임 코드·서버·세이브 변경 0. 관련 docs 전체 키워드 검색 후 마케팅 본문·채널 운영·납품 기록 동기화. 편집 입력과 JSX는 이전 커밋에 있으며 최종 MP4·QA·공유 URL을 후속 보존.

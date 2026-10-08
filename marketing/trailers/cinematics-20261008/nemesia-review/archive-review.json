@@ -1,0 +1,1192 @@
+{
+  "createdAt": "2026-10-08T06:03:57.732788+00:00",
+  "verdict": "PASS",
+  "archive": {
+    "path": "/Users/fordeargamers/the-exoduser/output/nemesia_cinematic_20261008/renders/EXODUSER_NEMESIA_EDITABLE_20261008.zip",
+    "bytes": 165442344,
+    "sha256": "eead265dbbb0858f34621f2f8e01e98c85034fa9bbcb4ab9edecb9c90949fd35",
+    "entryCount": 62,
+    "crcPass": true,
+    "firstBadCrcEntry": null,
+    "uncompressedBytes": 176835770,
+    "compressedPayloadBytes": 165431708
+  },
+  "nativeProject": {
+    "entry": "nemesia-edit/project.json",
+    "sceneCount": 1,
+    "assetCount": 25,
+    "assetUriChecks": [
+      {
+        "name": "fonts/dm-sans-400.woff2",
+        "uri": "fs:fonts/dm-sans-400.woff2",
+        "zipEntry": "nemesia-edit/fonts/dm-sans-400.woff2",
+        "exists": true,
+        "bytes": 14124,
+        "metadataByteSizeMatch": true,
+        "sha256": "f0a0ffc3882838b72d83fb011910b6c0f603f86c3ecbd2d1c1b5f3f9fcaed0a1",
+        "declaredHashMatch": null
+      },
+      {
+        "name": "fonts/dm-sans-700.woff2",
+        "uri": "fs:fonts/dm-sans-700.woff2",
+        "zipEntry": "nemesia-edit/fonts/dm-sans-700.woff2",
+        "exists": true,
+        "bytes": 14256,
+        "metadataByteSizeMatch": true,
+        "sha256": "d91b32eb570dce33ede97c7513b4dc465b9f5691edf5c532872d3f62959b1117",
+        "declaredHashMatch": null
+      },
+      {
+        "name": "NotoSansKR.ttf",
+        "uri": "fs:media/194018e6b2b293a7964f037b25c0249ce1418bc9ab3c971060a03aa57861e252.ttf",
+        "zipEntry": "nemesia-edit/media/194018e6b2b293a7964f037b25c0249ce1418bc9ab3c971060a03aa57861e252.ttf",
+        "exists": true,
+        "bytes": 10414588,
+        "metadataByteSizeMatch": true,
+        "sha256": "194018e6b2b293a7964f037b25c0249ce1418bc9ab3c971060a03aa57861e252",
+        "declaredHashMatch": true
+      },
+      {
+        "name": "music-prepared.m4a",
+        "uri": "fs:media/415bf4b287b2be5865111006af19c47c7b0e65b27034104cfff3d2bf586a357c.m4a",
+        "zipEntry": "nemesia-edit/media/415bf4b287b2be5865111006af19c47c7b0e65b27034104cfff3d2bf586a357c.m4a",
+        "exists": true,
+        "bytes": 2980730,
+        "metadataByteSizeMatch": true,
+        "sha256": "415bf4b287b2be5865111006af19c47c7b0e65b27034104cfff3d2bf586a357c",
+        "declaredHashMatch": true
+      },
+      {
+        "name": "00.png",
+        "uri": "fs:media/85037b0ee327dd9d3a4b17c5a0bdc86611c24e1741f977a05213fe1a3147894b.png",
+        "zipEntry": "nemesia-edit/media/85037b0ee327dd9d3a4b17c5a0bdc86611c24e1741f977a05213fe1a3147894b.png",
+        "exists": true,
+        "bytes": 4261852,
+        "metadataByteSizeMatch": true,
+        "sha256": "85037b0ee327dd9d3a4b17c5a0bdc86611c24e1741f977a05213fe1a3147894b",
+        "declaredHashMatch": true
+      },
+      {
+        "name": "01.png",
+        "uri": "fs:media/0cb2941e3080768c89aef7ca224b91579fe46f3cced2c84039f29794107ff3d6.png",
+        "zipEntry": "nemesia-edit/media/0cb2941e3080768c89aef7ca224b91579fe46f3cced2c84039f29794107ff3d6.png",
+        "exists": true,
+        "bytes": 4594206,
+        "metadataByteSizeMatch": true,
+        "sha256": "0cb2941e3080768c89aef7ca224b91579fe46f3cced2c84039f29794107ff3d6",
+        "declaredHashMatch": true
+      },
+      {
+        "name": "02.png",
+        "uri": "fs:media/eceb9dfb3d49a377dca3edc1ea940127dce1e1cf741cf38f2b9b21b7fd2e3ccc.png",
+        "zipEntry": "nemesia-edit/media/eceb9dfb3d49a377dca3edc1ea940127dce1e1cf741cf38f2b9b21b7fd2e3ccc.png",
+        "exists": true,
+        "bytes": 2217395,
+        "metadataByteSizeMatch": true,
+        "sha256": "eceb9dfb3d49a377dca3edc1ea940127dce1e1cf741cf38f2b9b21b7fd2e3ccc",
+        "declaredHashMatch": true
+      },
+      {
+        "name": "03.png",
+        "uri": "fs:media/c1cb86d2d9fb171220c6c7e89ec7bcdabe4cbdbfc37be8bb2b505fcc4025cc31.png",
+        "zipEntry": "nemesia-edit/media/c1cb86d2d9fb171220c6c7e89ec7bcdabe4cbdbfc37be8bb2b505fcc4025cc31.png",
+        "exists": true,
+        "bytes": 4361613,
+        "metadataByteSizeMatch": true,
+        "sha256": "c1cb86d2d9fb171220c6c7e89ec7bcdabe4cbdbfc37be8bb2b505fcc4025cc31",
+        "declaredHashMatch": true
+      },
+      {
+        "name": "04.png",
+        "uri": "fs:media/3ccd9d840deaa1f6b5d9772cd2b5e91430afa93f10e1bf21718b7b9d44c4f6be.png",
+        "zipEntry": "nemesia-edit/media/3ccd9d840deaa1f6b5d9772cd2b5e91430afa93f10e1bf21718b7b9d44c4f6be.png",
+        "exists": true,
+        "bytes": 2941022,
+        "metadataByteSizeMatch": true,
+        "sha256": "3ccd9d840deaa1f6b5d9772cd2b5e91430afa93f10e1bf21718b7b9d44c4f6be",
+        "declaredHashMatch": true
+      },
+      {
+        "name": "05.png",
+        "uri": "fs:media/bce13bd426e8acf37347fa7bb747a213349e18c943277025b8c54b5bdd55ec9b.png",
+        "zipEntry": "nemesia-edit/media/bce13bd426e8acf37347fa7bb747a213349e18c943277025b8c54b5bdd55ec9b.png",
+        "exists": true,
+        "bytes": 3778638,
+        "metadataByteSizeMatch": true,
+        "sha256": "bce13bd426e8acf37347fa7bb747a213349e18c943277025b8c54b5bdd55ec9b",
+        "declaredHashMatch": true
+      },
+      {
+        "name": "06.png",
+        "uri": "fs:media/3aaca09a5a1e546358a53b6cb9d085106478e342baa22020f9e4f2f9f2caad41.png",
+        "zipEntry": "nemesia-edit/media/3aaca09a5a1e546358a53b6cb9d085106478e342baa22020f9e4f2f9f2caad41.png",
+        "exists": true,
+        "bytes": 3522569,
+        "metadataByteSizeMatch": true,
+        "sha256": "3aaca09a5a1e546358a53b6cb9d085106478e342baa22020f9e4f2f9f2caad41",
+        "declaredHashMatch": true
+      },
+      {
+        "name": "07.png",
+        "uri": "fs:media/c5ee0bbe42a72395dc4c640693a7dcab72062ea35f9d71ecf340b58cc19bac37.png",
+        "zipEntry": "nemesia-edit/media/c5ee0bbe42a72395dc4c640693a7dcab72062ea35f9d71ecf340b58cc19bac37.png",
+        "exists": true,
+        "bytes": 3570659,
+        "metadataByteSizeMatch": true,
+        "sha256": "c5ee0bbe42a72395dc4c640693a7dcab72062ea35f9d71ecf340b58cc19bac37",
+        "declaredHashMatch": true
+      },
+      {
+        "name": "08.png",
+        "uri": "fs:media/6ffe82091b31c5f0ada1586b1f4bfd6787f334b5e90ff73d2c649afb0c304e23.png",
+        "zipEntry": "nemesia-edit/media/6ffe82091b31c5f0ada1586b1f4bfd6787f334b5e90ff73d2c649afb0c304e23.png",
+        "exists": true,
+        "bytes": 4298747,
+        "metadataByteSizeMatch": true,
+        "sha256": "6ffe82091b31c5f0ada1586b1f4bfd6787f334b5e90ff73d2c649afb0c304e23",
+        "declaredHashMatch": true
+      },
+      {
+        "name": "09.png",
+        "uri": "fs:media/1170f53c0a2d743902bf9afd8c6bc6d38b793032aca85c7cc47b9100607d714d.png",
+        "zipEntry": "nemesia-edit/media/1170f53c0a2d743902bf9afd8c6bc6d38b793032aca85c7cc47b9100607d714d.png",
+        "exists": true,
+        "bytes": 3624668,
+        "metadataByteSizeMatch": true,
+        "sha256": "1170f53c0a2d743902bf9afd8c6bc6d38b793032aca85c7cc47b9100607d714d",
+        "declaredHashMatch": true
+      },
+      {
+        "name": "10.png",
+        "uri": "fs:media/2655eb252661279557a19916a1edec578835ba0c39a39e60e20568901957cc77.png",
+        "zipEntry": "nemesia-edit/media/2655eb252661279557a19916a1edec578835ba0c39a39e60e20568901957cc77.png",
+        "exists": true,
+        "bytes": 3403975,
+        "metadataByteSizeMatch": true,
+        "sha256": "2655eb252661279557a19916a1edec578835ba0c39a39e60e20568901957cc77",
+        "declaredHashMatch": true
+      },
+      {
+        "name": "11.png",
+        "uri": "fs:media/8a4ca66d95c9cd7015cb8483695656a825f667df26d42ceadaa28d838c451569.png",
+        "zipEntry": "nemesia-edit/media/8a4ca66d95c9cd7015cb8483695656a825f667df26d42ceadaa28d838c451569.png",
+        "exists": true,
+        "bytes": 1921711,
+        "metadataByteSizeMatch": true,
+        "sha256": "8a4ca66d95c9cd7015cb8483695656a825f667df26d42ceadaa28d838c451569",
+        "declaredHashMatch": true
+      },
+      {
+        "name": "12.png",
+        "uri": "fs:media/2f5a7dd20c95d253c0c017f7f97b221fa7568fb4e39ad3e8112207f7ac8d2ab9.png",
+        "zipEntry": "nemesia-edit/media/2f5a7dd20c95d253c0c017f7f97b221fa7568fb4e39ad3e8112207f7ac8d2ab9.png",
+        "exists": true,
+        "bytes": 4350488,
+        "metadataByteSizeMatch": true,
+        "sha256": "2f5a7dd20c95d253c0c017f7f97b221fa7568fb4e39ad3e8112207f7ac8d2ab9",
+        "declaredHashMatch": true
+      },
+      {
+        "name": "13.png",
+        "uri": "fs:media/8595aa0670b061d813b25d39ab3971132945a9749e727d100b336f6385e319b9.png",
+        "zipEntry": "nemesia-edit/media/8595aa0670b061d813b25d39ab3971132945a9749e727d100b336f6385e319b9.png",
+        "exists": true,
+        "bytes": 3457243,
+        "metadataByteSizeMatch": true,
+        "sha256": "8595aa0670b061d813b25d39ab3971132945a9749e727d100b336f6385e319b9",
+        "declaredHashMatch": true
+      },
+      {
+        "name": "14.png",
+        "uri": "fs:media/c70649bb753549fd99aea8158034d2065c1726833a657dc7452738551ddc63c1.png",
+        "zipEntry": "nemesia-edit/media/c70649bb753549fd99aea8158034d2065c1726833a657dc7452738551ddc63c1.png",
+        "exists": true,
+        "bytes": 3257716,
+        "metadataByteSizeMatch": true,
+        "sha256": "c70649bb753549fd99aea8158034d2065c1726833a657dc7452738551ddc63c1",
+        "declaredHashMatch": true
+      },
+      {
+        "name": "15.png",
+        "uri": "fs:media/6bf8d2cfa3479b1f1f9fe05941e2731a8e22782f445637df072b233111704331.png",
+        "zipEntry": "nemesia-edit/media/6bf8d2cfa3479b1f1f9fe05941e2731a8e22782f445637df072b233111704331.png",
+        "exists": true,
+        "bytes": 2239732,
+        "metadataByteSizeMatch": true,
+        "sha256": "6bf8d2cfa3479b1f1f9fe05941e2731a8e22782f445637df072b233111704331",
+        "declaredHashMatch": true
+      },
+      {
+        "name": "16.png",
+        "uri": "fs:media/56e68c9a91b8a3c58070fbfabaea02c1f50f0a86554bed32c6f4e3b54f4135a0.png",
+        "zipEntry": "nemesia-edit/media/56e68c9a91b8a3c58070fbfabaea02c1f50f0a86554bed32c6f4e3b54f4135a0.png",
+        "exists": true,
+        "bytes": 2236838,
+        "metadataByteSizeMatch": true,
+        "sha256": "56e68c9a91b8a3c58070fbfabaea02c1f50f0a86554bed32c6f4e3b54f4135a0",
+        "declaredHashMatch": true
+      },
+      {
+        "name": "17.png",
+        "uri": "fs:media/2c7716f923a75021472344d249f0e8168e8741f754df05a2f353c69fde5b1c7f.png",
+        "zipEntry": "nemesia-edit/media/2c7716f923a75021472344d249f0e8168e8741f754df05a2f353c69fde5b1c7f.png",
+        "exists": true,
+        "bytes": 3880012,
+        "metadataByteSizeMatch": true,
+        "sha256": "2c7716f923a75021472344d249f0e8168e8741f754df05a2f353c69fde5b1c7f",
+        "declaredHashMatch": true
+      },
+      {
+        "name": "18.png",
+        "uri": "fs:media/90fce26672bdb5d3ab8631c6db60acd72f95f5eb148123c9bc3a970fdcf3fd0e.png",
+        "zipEntry": "nemesia-edit/media/90fce26672bdb5d3ab8631c6db60acd72f95f5eb148123c9bc3a970fdcf3fd0e.png",
+        "exists": true,
+        "bytes": 3819719,
+        "metadataByteSizeMatch": true,
+        "sha256": "90fce26672bdb5d3ab8631c6db60acd72f95f5eb148123c9bc3a970fdcf3fd0e",
+        "declaredHashMatch": true
+      },
+      {
+        "name": "19.png",
+        "uri": "fs:media/ba00a7ea6aaddf2e6cba210c9bd013f6a4782263b32b8f1b8417eba80fb8c255.png",
+        "zipEntry": "nemesia-edit/media/ba00a7ea6aaddf2e6cba210c9bd013f6a4782263b32b8f1b8417eba80fb8c255.png",
+        "exists": true,
+        "bytes": 4024123,
+        "metadataByteSizeMatch": true,
+        "sha256": "ba00a7ea6aaddf2e6cba210c9bd013f6a4782263b32b8f1b8417eba80fb8c255",
+        "declaredHashMatch": true
+      },
+      {
+        "name": "20.png",
+        "uri": "fs:media/bcfa0a1b6bfa881211cf20b0bdc97199b76a1c2d06d62e4e9842d550856a82c2.png",
+        "zipEntry": "nemesia-edit/media/bcfa0a1b6bfa881211cf20b0bdc97199b76a1c2d06d62e4e9842d550856a82c2.png",
+        "exists": true,
+        "bytes": 3196957,
+        "metadataByteSizeMatch": true,
+        "sha256": "bcfa0a1b6bfa881211cf20b0bdc97199b76a1c2d06d62e4e9842d550856a82c2",
+        "declaredHashMatch": true
+      }
+    ],
+    "referencedAssetIds": 23,
+    "missingReferencedAssetIds": [],
+    "allDeclaredAssetHashesMatch": true
+  },
+  "originalImages": {
+    "count": 21,
+    "allOriginalInputProjectProvenanceHashesMatch": true,
+    "files": [
+      {
+        "name": "00.png",
+        "original": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/cutscene/images/00.png",
+        "sourceSha256": "85037b0ee327dd9d3a4b17c5a0bdc86611c24e1741f977a05213fe1a3147894b",
+        "inputSha256": "85037b0ee327dd9d3a4b17c5a0bdc86611c24e1741f977a05213fe1a3147894b",
+        "projectSha256": "85037b0ee327dd9d3a4b17c5a0bdc86611c24e1741f977a05213fe1a3147894b",
+        "provenanceSha256": "85037b0ee327dd9d3a4b17c5a0bdc86611c24e1741f977a05213fe1a3147894b",
+        "allMatch": true
+      },
+      {
+        "name": "01.png",
+        "original": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/cutscene/images/01.png",
+        "sourceSha256": "0cb2941e3080768c89aef7ca224b91579fe46f3cced2c84039f29794107ff3d6",
+        "inputSha256": "0cb2941e3080768c89aef7ca224b91579fe46f3cced2c84039f29794107ff3d6",
+        "projectSha256": "0cb2941e3080768c89aef7ca224b91579fe46f3cced2c84039f29794107ff3d6",
+        "provenanceSha256": "0cb2941e3080768c89aef7ca224b91579fe46f3cced2c84039f29794107ff3d6",
+        "allMatch": true
+      },
+      {
+        "name": "02.png",
+        "original": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/cutscene/images/02.png",
+        "sourceSha256": "eceb9dfb3d49a377dca3edc1ea940127dce1e1cf741cf38f2b9b21b7fd2e3ccc",
+        "inputSha256": "eceb9dfb3d49a377dca3edc1ea940127dce1e1cf741cf38f2b9b21b7fd2e3ccc",
+        "projectSha256": "eceb9dfb3d49a377dca3edc1ea940127dce1e1cf741cf38f2b9b21b7fd2e3ccc",
+        "provenanceSha256": "eceb9dfb3d49a377dca3edc1ea940127dce1e1cf741cf38f2b9b21b7fd2e3ccc",
+        "allMatch": true
+      },
+      {
+        "name": "03.png",
+        "original": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/cutscene/images/03.png",
+        "sourceSha256": "c1cb86d2d9fb171220c6c7e89ec7bcdabe4cbdbfc37be8bb2b505fcc4025cc31",
+        "inputSha256": "c1cb86d2d9fb171220c6c7e89ec7bcdabe4cbdbfc37be8bb2b505fcc4025cc31",
+        "projectSha256": "c1cb86d2d9fb171220c6c7e89ec7bcdabe4cbdbfc37be8bb2b505fcc4025cc31",
+        "provenanceSha256": "c1cb86d2d9fb171220c6c7e89ec7bcdabe4cbdbfc37be8bb2b505fcc4025cc31",
+        "allMatch": true
+      },
+      {
+        "name": "04.png",
+        "original": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/cutscene/images/04.png",
+        "sourceSha256": "3ccd9d840deaa1f6b5d9772cd2b5e91430afa93f10e1bf21718b7b9d44c4f6be",
+        "inputSha256": "3ccd9d840deaa1f6b5d9772cd2b5e91430afa93f10e1bf21718b7b9d44c4f6be",
+        "projectSha256": "3ccd9d840deaa1f6b5d9772cd2b5e91430afa93f10e1bf21718b7b9d44c4f6be",
+        "provenanceSha256": "3ccd9d840deaa1f6b5d9772cd2b5e91430afa93f10e1bf21718b7b9d44c4f6be",
+        "allMatch": true
+      },
+      {
+        "name": "05.png",
+        "original": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/cutscene/images/05.png",
+        "sourceSha256": "bce13bd426e8acf37347fa7bb747a213349e18c943277025b8c54b5bdd55ec9b",
+        "inputSha256": "bce13bd426e8acf37347fa7bb747a213349e18c943277025b8c54b5bdd55ec9b",
+        "projectSha256": "bce13bd426e8acf37347fa7bb747a213349e18c943277025b8c54b5bdd55ec9b",
+        "provenanceSha256": "bce13bd426e8acf37347fa7bb747a213349e18c943277025b8c54b5bdd55ec9b",
+        "allMatch": true
+      },
+      {
+        "name": "06.png",
+        "original": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/cutscene/images/06.png",
+        "sourceSha256": "3aaca09a5a1e546358a53b6cb9d085106478e342baa22020f9e4f2f9f2caad41",
+        "inputSha256": "3aaca09a5a1e546358a53b6cb9d085106478e342baa22020f9e4f2f9f2caad41",
+        "projectSha256": "3aaca09a5a1e546358a53b6cb9d085106478e342baa22020f9e4f2f9f2caad41",
+        "provenanceSha256": "3aaca09a5a1e546358a53b6cb9d085106478e342baa22020f9e4f2f9f2caad41",
+        "allMatch": true
+      },
+      {
+        "name": "07.png",
+        "original": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/cutscene/images/07.png",
+        "sourceSha256": "c5ee0bbe42a72395dc4c640693a7dcab72062ea35f9d71ecf340b58cc19bac37",
+        "inputSha256": "c5ee0bbe42a72395dc4c640693a7dcab72062ea35f9d71ecf340b58cc19bac37",
+        "projectSha256": "c5ee0bbe42a72395dc4c640693a7dcab72062ea35f9d71ecf340b58cc19bac37",
+        "provenanceSha256": "c5ee0bbe42a72395dc4c640693a7dcab72062ea35f9d71ecf340b58cc19bac37",
+        "allMatch": true
+      },
+      {
+        "name": "08.png",
+        "original": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/cutscene/images/08.png",
+        "sourceSha256": "6ffe82091b31c5f0ada1586b1f4bfd6787f334b5e90ff73d2c649afb0c304e23",
+        "inputSha256": "6ffe82091b31c5f0ada1586b1f4bfd6787f334b5e90ff73d2c649afb0c304e23",
+        "projectSha256": "6ffe82091b31c5f0ada1586b1f4bfd6787f334b5e90ff73d2c649afb0c304e23",
+        "provenanceSha256": "6ffe82091b31c5f0ada1586b1f4bfd6787f334b5e90ff73d2c649afb0c304e23",
+        "allMatch": true
+      },
+      {
+        "name": "09.png",
+        "original": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/cutscene/images/09.png",
+        "sourceSha256": "1170f53c0a2d743902bf9afd8c6bc6d38b793032aca85c7cc47b9100607d714d",
+        "inputSha256": "1170f53c0a2d743902bf9afd8c6bc6d38b793032aca85c7cc47b9100607d714d",
+        "projectSha256": "1170f53c0a2d743902bf9afd8c6bc6d38b793032aca85c7cc47b9100607d714d",
+        "provenanceSha256": "1170f53c0a2d743902bf9afd8c6bc6d38b793032aca85c7cc47b9100607d714d",
+        "allMatch": true
+      },
+      {
+        "name": "10.png",
+        "original": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/cutscene/images/10.png",
+        "sourceSha256": "2655eb252661279557a19916a1edec578835ba0c39a39e60e20568901957cc77",
+        "inputSha256": "2655eb252661279557a19916a1edec578835ba0c39a39e60e20568901957cc77",
+        "projectSha256": "2655eb252661279557a19916a1edec578835ba0c39a39e60e20568901957cc77",
+        "provenanceSha256": "2655eb252661279557a19916a1edec578835ba0c39a39e60e20568901957cc77",
+        "allMatch": true
+      },
+      {
+        "name": "11.png",
+        "original": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/cutscene/images/11.png",
+        "sourceSha256": "8a4ca66d95c9cd7015cb8483695656a825f667df26d42ceadaa28d838c451569",
+        "inputSha256": "8a4ca66d95c9cd7015cb8483695656a825f667df26d42ceadaa28d838c451569",
+        "projectSha256": "8a4ca66d95c9cd7015cb8483695656a825f667df26d42ceadaa28d838c451569",
+        "provenanceSha256": "8a4ca66d95c9cd7015cb8483695656a825f667df26d42ceadaa28d838c451569",
+        "allMatch": true
+      },
+      {
+        "name": "12.png",
+        "original": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/cutscene/images/12.png",
+        "sourceSha256": "2f5a7dd20c95d253c0c017f7f97b221fa7568fb4e39ad3e8112207f7ac8d2ab9",
+        "inputSha256": "2f5a7dd20c95d253c0c017f7f97b221fa7568fb4e39ad3e8112207f7ac8d2ab9",
+        "projectSha256": "2f5a7dd20c95d253c0c017f7f97b221fa7568fb4e39ad3e8112207f7ac8d2ab9",
+        "provenanceSha256": "2f5a7dd20c95d253c0c017f7f97b221fa7568fb4e39ad3e8112207f7ac8d2ab9",
+        "allMatch": true
+      },
+      {
+        "name": "13.png",
+        "original": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/cutscene/images/13.png",
+        "sourceSha256": "8595aa0670b061d813b25d39ab3971132945a9749e727d100b336f6385e319b9",
+        "inputSha256": "8595aa0670b061d813b25d39ab3971132945a9749e727d100b336f6385e319b9",
+        "projectSha256": "8595aa0670b061d813b25d39ab3971132945a9749e727d100b336f6385e319b9",
+        "provenanceSha256": "8595aa0670b061d813b25d39ab3971132945a9749e727d100b336f6385e319b9",
+        "allMatch": true
+      },
+      {
+        "name": "14.png",
+        "original": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/cutscene/images/14.png",
+        "sourceSha256": "c70649bb753549fd99aea8158034d2065c1726833a657dc7452738551ddc63c1",
+        "inputSha256": "c70649bb753549fd99aea8158034d2065c1726833a657dc7452738551ddc63c1",
+        "projectSha256": "c70649bb753549fd99aea8158034d2065c1726833a657dc7452738551ddc63c1",
+        "provenanceSha256": "c70649bb753549fd99aea8158034d2065c1726833a657dc7452738551ddc63c1",
+        "allMatch": true
+      },
+      {
+        "name": "15.png",
+        "original": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/cutscene/images/15.png",
+        "sourceSha256": "6bf8d2cfa3479b1f1f9fe05941e2731a8e22782f445637df072b233111704331",
+        "inputSha256": "6bf8d2cfa3479b1f1f9fe05941e2731a8e22782f445637df072b233111704331",
+        "projectSha256": "6bf8d2cfa3479b1f1f9fe05941e2731a8e22782f445637df072b233111704331",
+        "provenanceSha256": "6bf8d2cfa3479b1f1f9fe05941e2731a8e22782f445637df072b233111704331",
+        "allMatch": true
+      },
+      {
+        "name": "16.png",
+        "original": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/cutscene/images/16.png",
+        "sourceSha256": "56e68c9a91b8a3c58070fbfabaea02c1f50f0a86554bed32c6f4e3b54f4135a0",
+        "inputSha256": "56e68c9a91b8a3c58070fbfabaea02c1f50f0a86554bed32c6f4e3b54f4135a0",
+        "projectSha256": "56e68c9a91b8a3c58070fbfabaea02c1f50f0a86554bed32c6f4e3b54f4135a0",
+        "provenanceSha256": "56e68c9a91b8a3c58070fbfabaea02c1f50f0a86554bed32c6f4e3b54f4135a0",
+        "allMatch": true
+      },
+      {
+        "name": "17.png",
+        "original": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/cutscene/images/17.png",
+        "sourceSha256": "2c7716f923a75021472344d249f0e8168e8741f754df05a2f353c69fde5b1c7f",
+        "inputSha256": "2c7716f923a75021472344d249f0e8168e8741f754df05a2f353c69fde5b1c7f",
+        "projectSha256": "2c7716f923a75021472344d249f0e8168e8741f754df05a2f353c69fde5b1c7f",
+        "provenanceSha256": "2c7716f923a75021472344d249f0e8168e8741f754df05a2f353c69fde5b1c7f",
+        "allMatch": true
+      },
+      {
+        "name": "18.png",
+        "original": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/cutscene/images/18.png",
+        "sourceSha256": "90fce26672bdb5d3ab8631c6db60acd72f95f5eb148123c9bc3a970fdcf3fd0e",
+        "inputSha256": "90fce26672bdb5d3ab8631c6db60acd72f95f5eb148123c9bc3a970fdcf3fd0e",
+        "projectSha256": "90fce26672bdb5d3ab8631c6db60acd72f95f5eb148123c9bc3a970fdcf3fd0e",
+        "provenanceSha256": "90fce26672bdb5d3ab8631c6db60acd72f95f5eb148123c9bc3a970fdcf3fd0e",
+        "allMatch": true
+      },
+      {
+        "name": "19.png",
+        "original": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/cutscene/images/19.png",
+        "sourceSha256": "ba00a7ea6aaddf2e6cba210c9bd013f6a4782263b32b8f1b8417eba80fb8c255",
+        "inputSha256": "ba00a7ea6aaddf2e6cba210c9bd013f6a4782263b32b8f1b8417eba80fb8c255",
+        "projectSha256": "ba00a7ea6aaddf2e6cba210c9bd013f6a4782263b32b8f1b8417eba80fb8c255",
+        "provenanceSha256": "ba00a7ea6aaddf2e6cba210c9bd013f6a4782263b32b8f1b8417eba80fb8c255",
+        "allMatch": true
+      },
+      {
+        "name": "20.png",
+        "original": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/cutscene/images/20.png",
+        "sourceSha256": "bcfa0a1b6bfa881211cf20b0bdc97199b76a1c2d06d62e4e9842d550856a82c2",
+        "inputSha256": "bcfa0a1b6bfa881211cf20b0bdc97199b76a1c2d06d62e4e9842d550856a82c2",
+        "projectSha256": "bcfa0a1b6bfa881211cf20b0bdc97199b76a1c2d06d62e4e9842d550856a82c2",
+        "provenanceSha256": "bcfa0a1b6bfa881211cf20b0bdc97199b76a1c2d06d62e4e9842d550856a82c2",
+        "allMatch": true
+      }
+    ]
+  },
+  "manifest": {
+    "cueCount": 27,
+    "sourceKoCueCount": 27,
+    "sequenceExact": true,
+    "ids": [
+      1,
+      2,
+      3,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      "10c",
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      "18b",
+      19,
+      20,
+      21,
+      22,
+      "22b",
+      23,
+      24,
+      25
+    ],
+    "dialogueCues": 18,
+    "blankCues": 9,
+    "sourceEnMappings": 18,
+    "missingEnglishKeys": [],
+    "unusedEnglishKeys": [],
+    "cueMappingChecks": [
+      {
+        "id": 1,
+        "koMatch": true,
+        "enMatch": true,
+        "imageMatch": true,
+        "speakerMatch": true
+      },
+      {
+        "id": 2,
+        "koMatch": true,
+        "enMatch": true,
+        "imageMatch": true,
+        "speakerMatch": true
+      },
+      {
+        "id": 3,
+        "koMatch": true,
+        "enMatch": true,
+        "imageMatch": true,
+        "speakerMatch": true
+      },
+      {
+        "id": 5,
+        "koMatch": true,
+        "enMatch": true,
+        "imageMatch": true,
+        "speakerMatch": true
+      },
+      {
+        "id": 6,
+        "koMatch": true,
+        "enMatch": true,
+        "imageMatch": true,
+        "speakerMatch": true
+      },
+      {
+        "id": 7,
+        "koMatch": true,
+        "enMatch": true,
+        "imageMatch": true,
+        "speakerMatch": true
+      },
+      {
+        "id": 8,
+        "koMatch": true,
+        "enMatch": true,
+        "imageMatch": true,
+        "speakerMatch": true
+      },
+      {
+        "id": 9,
+        "koMatch": true,
+        "enMatch": true,
+        "imageMatch": true,
+        "speakerMatch": true
+      },
+      {
+        "id": 10,
+        "koMatch": true,
+        "enMatch": true,
+        "imageMatch": true,
+        "speakerMatch": true
+      },
+      {
+        "id": "10c",
+        "koMatch": true,
+        "enMatch": true,
+        "imageMatch": true,
+        "speakerMatch": true
+      },
+      {
+        "id": 11,
+        "koMatch": true,
+        "enMatch": true,
+        "imageMatch": true,
+        "speakerMatch": true
+      },
+      {
+        "id": 12,
+        "koMatch": true,
+        "enMatch": true,
+        "imageMatch": true,
+        "speakerMatch": true
+      },
+      {
+        "id": 13,
+        "koMatch": true,
+        "enMatch": true,
+        "imageMatch": true,
+        "speakerMatch": true
+      },
+      {
+        "id": 14,
+        "koMatch": true,
+        "enMatch": true,
+        "imageMatch": true,
+        "speakerMatch": true
+      },
+      {
+        "id": 15,
+        "koMatch": true,
+        "enMatch": true,
+        "imageMatch": true,
+        "speakerMatch": true
+      },
+      {
+        "id": 16,
+        "koMatch": true,
+        "enMatch": true,
+        "imageMatch": true,
+        "speakerMatch": true
+      },
+      {
+        "id": 17,
+        "koMatch": true,
+        "enMatch": true,
+        "imageMatch": true,
+        "speakerMatch": true
+      },
+      {
+        "id": 18,
+        "koMatch": true,
+        "enMatch": true,
+        "imageMatch": true,
+        "speakerMatch": true
+      },
+      {
+        "id": "18b",
+        "koMatch": true,
+        "enMatch": true,
+        "imageMatch": true,
+        "speakerMatch": true
+      },
+      {
+        "id": 19,
+        "koMatch": true,
+        "enMatch": true,
+        "imageMatch": true,
+        "speakerMatch": true
+      },
+      {
+        "id": 20,
+        "koMatch": true,
+        "enMatch": true,
+        "imageMatch": true,
+        "speakerMatch": true
+      },
+      {
+        "id": 21,
+        "koMatch": true,
+        "enMatch": true,
+        "imageMatch": true,
+        "speakerMatch": true
+      },
+      {
+        "id": 22,
+        "koMatch": true,
+        "enMatch": true,
+        "imageMatch": true,
+        "speakerMatch": true
+      },
+      {
+        "id": "22b",
+        "koMatch": true,
+        "enMatch": true,
+        "imageMatch": true,
+        "speakerMatch": true
+      },
+      {
+        "id": 23,
+        "koMatch": true,
+        "enMatch": true,
+        "imageMatch": true,
+        "speakerMatch": true
+      },
+      {
+        "id": 24,
+        "koMatch": true,
+        "enMatch": true,
+        "imageMatch": true,
+        "speakerMatch": true
+      },
+      {
+        "id": 25,
+        "koMatch": true,
+        "enMatch": true,
+        "imageMatch": true,
+        "speakerMatch": true
+      }
+    ],
+    "nativeClipChecks": [
+      {
+        "id": 1,
+        "projectClip": "cue-1",
+        "present": true,
+        "timingMatch": true,
+        "koTextPresent": true,
+        "enTextPresent": true
+      },
+      {
+        "id": 2,
+        "projectClip": "cue-2",
+        "present": true,
+        "timingMatch": true,
+        "koTextPresent": true,
+        "enTextPresent": true
+      },
+      {
+        "id": 3,
+        "projectClip": "cue-3",
+        "present": true,
+        "timingMatch": true,
+        "koTextPresent": true,
+        "enTextPresent": true
+      },
+      {
+        "id": 5,
+        "projectClip": "cue-5",
+        "present": true,
+        "timingMatch": true,
+        "koTextPresent": true,
+        "enTextPresent": true
+      },
+      {
+        "id": 6,
+        "projectClip": "cue-6",
+        "present": true,
+        "timingMatch": true,
+        "koTextPresent": true,
+        "enTextPresent": true
+      },
+      {
+        "id": 7,
+        "projectClip": "cue-7",
+        "present": true,
+        "timingMatch": true,
+        "koTextPresent": true,
+        "enTextPresent": true
+      },
+      {
+        "id": 8,
+        "projectClip": "cue-8",
+        "present": true,
+        "timingMatch": true,
+        "koTextPresent": true,
+        "enTextPresent": true
+      },
+      {
+        "id": 9,
+        "projectClip": "cue-9",
+        "present": true,
+        "timingMatch": true,
+        "koTextPresent": true,
+        "enTextPresent": true
+      },
+      {
+        "id": 10,
+        "projectClip": "cue-10",
+        "present": true,
+        "timingMatch": true,
+        "koTextPresent": true,
+        "enTextPresent": true
+      },
+      {
+        "id": "10c",
+        "projectClip": "cue-10c",
+        "present": true,
+        "timingMatch": true,
+        "koTextPresent": true,
+        "enTextPresent": true
+      },
+      {
+        "id": 11,
+        "projectClip": "cue-11",
+        "present": true,
+        "timingMatch": true,
+        "koTextPresent": true,
+        "enTextPresent": true
+      },
+      {
+        "id": 12,
+        "projectClip": "cue-12",
+        "present": true,
+        "timingMatch": true,
+        "koTextPresent": true,
+        "enTextPresent": true
+      },
+      {
+        "id": 13,
+        "projectClip": "cue-13",
+        "present": true,
+        "timingMatch": true,
+        "koTextPresent": true,
+        "enTextPresent": true
+      },
+      {
+        "id": 14,
+        "projectClip": "cue-14",
+        "present": true,
+        "timingMatch": true,
+        "koTextPresent": true,
+        "enTextPresent": true
+      },
+      {
+        "id": 15,
+        "projectClip": "cue-15",
+        "present": true,
+        "timingMatch": true,
+        "koTextPresent": true,
+        "enTextPresent": true
+      },
+      {
+        "id": 16,
+        "projectClip": "cue-16",
+        "present": true,
+        "timingMatch": true,
+        "koTextPresent": true,
+        "enTextPresent": true
+      },
+      {
+        "id": 17,
+        "projectClip": "cue-17",
+        "present": true,
+        "timingMatch": true,
+        "koTextPresent": true,
+        "enTextPresent": true
+      },
+      {
+        "id": 18,
+        "projectClip": "cue-18",
+        "present": true,
+        "timingMatch": true,
+        "koTextPresent": true,
+        "enTextPresent": true
+      },
+      {
+        "id": "18b",
+        "projectClip": "cue-18b",
+        "present": true,
+        "timingMatch": true,
+        "koTextPresent": true,
+        "enTextPresent": true
+      },
+      {
+        "id": 19,
+        "projectClip": "cue-19",
+        "present": true,
+        "timingMatch": true,
+        "koTextPresent": true,
+        "enTextPresent": true
+      },
+      {
+        "id": 20,
+        "projectClip": "cue-20",
+        "present": true,
+        "timingMatch": true,
+        "koTextPresent": true,
+        "enTextPresent": true
+      },
+      {
+        "id": 21,
+        "projectClip": "cue-21",
+        "present": true,
+        "timingMatch": true,
+        "koTextPresent": true,
+        "enTextPresent": true
+      },
+      {
+        "id": 22,
+        "projectClip": "cue-22",
+        "present": true,
+        "timingMatch": true,
+        "koTextPresent": true,
+        "enTextPresent": true
+      },
+      {
+        "id": "22b",
+        "projectClip": "cue-22b",
+        "present": true,
+        "timingMatch": true,
+        "koTextPresent": true,
+        "enTextPresent": true
+      },
+      {
+        "id": 23,
+        "projectClip": "cue-23",
+        "present": true,
+        "timingMatch": true,
+        "koTextPresent": true,
+        "enTextPresent": true
+      },
+      {
+        "id": 24,
+        "projectClip": "cue-24",
+        "present": true,
+        "timingMatch": true,
+        "koTextPresent": true,
+        "enTextPresent": true
+      },
+      {
+        "id": 25,
+        "projectClip": "exit-25",
+        "present": true,
+        "timingMatch": true,
+        "koTextPresent": true,
+        "enTextPresent": true
+      }
+    ],
+    "continuityFailures": [],
+    "sourceDurationSeconds": 117.69999999999997,
+    "ctaSeconds": 4,
+    "nativeDurationSeconds": 121.7,
+    "nativeFps": 30,
+    "nativeFrames": 3651,
+    "nativeTimingPass": true,
+    "localManifestByteMatch": true
+  },
+  "latestJSX": {
+    "workspaceFile": "/Users/fordeargamers/.codex/worktrees/marketing-gameplay-20261008/the-exoduser/tools/marketing_nemesia_edit_20261008.jsx",
+    "sha256": "020de33ae1a601ef1bf9e5f450b79a188843f2d5a8dbcf80922204b3d705ee0b",
+    "copies": {
+      "nemesia-edit.jsx": {
+        "sha256": "020de33ae1a601ef1bf9e5f450b79a188843f2d5a8dbcf80922204b3d705ee0b",
+        "matchesLatestWorkspace": true
+      },
+      "nemesia-edit/nemesia-edit.jsx": {
+        "sha256": "020de33ae1a601ef1bf9e5f450b79a188843f2d5a8dbcf80922204b3d705ee0b",
+        "matchesLatestWorkspace": true
+      }
+    }
+  },
+  "sizeExplanation": {
+    "inputPngCount": 21,
+    "inputPngBytes": 72959883,
+    "inputPngCompressedBytes": 72579331,
+    "projectMediaDuplicatesInputImages": true,
+    "byteIdenticalDuplicateGroups": 26,
+    "compressedDuplicateBytes": 80920670,
+    "duplicateGroups": [
+      {
+        "sha256": "020de33ae1a601ef1bf9e5f450b79a188843f2d5a8dbcf80922204b3d705ee0b",
+        "entries": [
+          "nemesia-edit/nemesia-edit.jsx",
+          "nemesia-edit.jsx"
+        ],
+        "bytesPerCopy": 3402,
+        "compressedDuplicateBytes": 1437
+      },
+      {
+        "sha256": "d91b32eb570dce33ede97c7513b4dc465b9f5691edf5c532872d3f62959b1117",
+        "entries": [
+          "nemesia-edit/fonts/dm-sans-700.woff2",
+          "nemesia-input/dm-sans-700.woff2"
+        ],
+        "bytesPerCopy": 14256,
+        "compressedDuplicateBytes": 14222
+      },
+      {
+        "sha256": "f0a0ffc3882838b72d83fb011910b6c0f603f86c3ecbd2d1c1b5f3f9fcaed0a1",
+        "entries": [
+          "nemesia-edit/fonts/dm-sans-400.woff2",
+          "nemesia-input/dm-sans-400.woff2"
+        ],
+        "bytesPerCopy": 14124,
+        "compressedDuplicateBytes": 14080
+      },
+      {
+        "sha256": "2655eb252661279557a19916a1edec578835ba0c39a39e60e20568901957cc77",
+        "entries": [
+          "nemesia-edit/media/2655eb252661279557a19916a1edec578835ba0c39a39e60e20568901957cc77.png",
+          "nemesia-input/10.png"
+        ],
+        "bytesPerCopy": 3403975,
+        "compressedDuplicateBytes": 3369626
+      },
+      {
+        "sha256": "85037b0ee327dd9d3a4b17c5a0bdc86611c24e1741f977a05213fe1a3147894b",
+        "entries": [
+          "nemesia-edit/media/85037b0ee327dd9d3a4b17c5a0bdc86611c24e1741f977a05213fe1a3147894b.png",
+          "nemesia-input/00.png"
+        ],
+        "bytesPerCopy": 4261852,
+        "compressedDuplicateBytes": 4239585
+      },
+      {
+        "sha256": "3aaca09a5a1e546358a53b6cb9d085106478e342baa22020f9e4f2f9f2caad41",
+        "entries": [
+          "nemesia-edit/media/3aaca09a5a1e546358a53b6cb9d085106478e342baa22020f9e4f2f9f2caad41.png",
+          "nemesia-input/06.png"
+        ],
+        "bytesPerCopy": 3522569,
+        "compressedDuplicateBytes": 3500218
+      },
+      {
+        "sha256": "6bf8d2cfa3479b1f1f9fe05941e2731a8e22782f445637df072b233111704331",
+        "entries": [
+          "nemesia-edit/media/6bf8d2cfa3479b1f1f9fe05941e2731a8e22782f445637df072b233111704331.png",
+          "nemesia-input/15.png"
+        ],
+        "bytesPerCopy": 2239732,
+        "compressedDuplicateBytes": 2227653
+      },
+      {
+        "sha256": "0cb2941e3080768c89aef7ca224b91579fe46f3cced2c84039f29794107ff3d6",
+        "entries": [
+          "nemesia-edit/media/0cb2941e3080768c89aef7ca224b91579fe46f3cced2c84039f29794107ff3d6.png",
+          "nemesia-input/01.png"
+        ],
+        "bytesPerCopy": 4594206,
+        "compressedDuplicateBytes": 4580835
+      },
+      {
+        "sha256": "8595aa0670b061d813b25d39ab3971132945a9749e727d100b336f6385e319b9",
+        "entries": [
+          "nemesia-edit/media/8595aa0670b061d813b25d39ab3971132945a9749e727d100b336f6385e319b9.png",
+          "nemesia-input/13.png"
+        ],
+        "bytesPerCopy": 3457243,
+        "compressedDuplicateBytes": 3441143
+      },
+      {
+        "sha256": "c1cb86d2d9fb171220c6c7e89ec7bcdabe4cbdbfc37be8bb2b505fcc4025cc31",
+        "entries": [
+          "nemesia-edit/media/c1cb86d2d9fb171220c6c7e89ec7bcdabe4cbdbfc37be8bb2b505fcc4025cc31.png",
+          "nemesia-input/03.png"
+        ],
+        "bytesPerCopy": 4361613,
+        "compressedDuplicateBytes": 4345830
+      },
+      {
+        "sha256": "2c7716f923a75021472344d249f0e8168e8741f754df05a2f353c69fde5b1c7f",
+        "entries": [
+          "nemesia-edit/media/2c7716f923a75021472344d249f0e8168e8741f754df05a2f353c69fde5b1c7f.png",
+          "nemesia-input/17.png"
+        ],
+        "bytesPerCopy": 3880012,
+        "compressedDuplicateBytes": 3874252
+      },
+      {
+        "sha256": "bce13bd426e8acf37347fa7bb747a213349e18c943277025b8c54b5bdd55ec9b",
+        "entries": [
+          "nemesia-edit/media/bce13bd426e8acf37347fa7bb747a213349e18c943277025b8c54b5bdd55ec9b.png",
+          "nemesia-input/05.png"
+        ],
+        "bytesPerCopy": 3778638,
+        "compressedDuplicateBytes": 3761767
+      },
+      {
+        "sha256": "ba00a7ea6aaddf2e6cba210c9bd013f6a4782263b32b8f1b8417eba80fb8c255",
+        "entries": [
+          "nemesia-edit/media/ba00a7ea6aaddf2e6cba210c9bd013f6a4782263b32b8f1b8417eba80fb8c255.png",
+          "nemesia-input/19.png"
+        ],
+        "bytesPerCopy": 4024123,
+        "compressedDuplicateBytes": 4006208
+      },
+      {
+        "sha256": "c70649bb753549fd99aea8158034d2065c1726833a657dc7452738551ddc63c1",
+        "entries": [
+          "nemesia-edit/media/c70649bb753549fd99aea8158034d2065c1726833a657dc7452738551ddc63c1.png",
+          "nemesia-input/14.png"
+        ],
+        "bytesPerCopy": 3257716,
+        "compressedDuplicateBytes": 3235421
+      },
+      {
+        "sha256": "c5ee0bbe42a72395dc4c640693a7dcab72062ea35f9d71ecf340b58cc19bac37",
+        "entries": [
+          "nemesia-edit/media/c5ee0bbe42a72395dc4c640693a7dcab72062ea35f9d71ecf340b58cc19bac37.png",
+          "nemesia-input/07.png"
+        ],
+        "bytesPerCopy": 3570659,
+        "compressedDuplicateBytes": 3545463
+      },
+      {
+        "sha256": "bcfa0a1b6bfa881211cf20b0bdc97199b76a1c2d06d62e4e9842d550856a82c2",
+        "entries": [
+          "nemesia-edit/media/bcfa0a1b6bfa881211cf20b0bdc97199b76a1c2d06d62e4e9842d550856a82c2.png",
+          "nemesia-input/20.png"
+        ],
+        "bytesPerCopy": 3196957,
+        "compressedDuplicateBytes": 3173663
+      },
+      {
+        "sha256": "2f5a7dd20c95d253c0c017f7f97b221fa7568fb4e39ad3e8112207f7ac8d2ab9",
+        "entries": [
+          "nemesia-edit/media/2f5a7dd20c95d253c0c017f7f97b221fa7568fb4e39ad3e8112207f7ac8d2ab9.png",
+          "nemesia-input/12.png"
+        ],
+        "bytesPerCopy": 4350488,
+        "compressedDuplicateBytes": 4334037
+      },
+      {
+        "sha256": "1170f53c0a2d743902bf9afd8c6bc6d38b793032aca85c7cc47b9100607d714d",
+        "entries": [
+          "nemesia-edit/media/1170f53c0a2d743902bf9afd8c6bc6d38b793032aca85c7cc47b9100607d714d.png",
+          "nemesia-input/09.png"
+        ],
+        "bytesPerCopy": 3624668,
+        "compressedDuplicateBytes": 3587681
+      },
+      {
+        "sha256": "eceb9dfb3d49a377dca3edc1ea940127dce1e1cf741cf38f2b9b21b7fd2e3ccc",
+        "entries": [
+          "nemesia-edit/media/eceb9dfb3d49a377dca3edc1ea940127dce1e1cf741cf38f2b9b21b7fd2e3ccc.png",
+          "nemesia-input/02.png"
+        ],
+        "bytesPerCopy": 2217395,
+        "compressedDuplicateBytes": 2204468
+      },
+      {
+        "sha256": "194018e6b2b293a7964f037b25c0249ce1418bc9ab3c971060a03aa57861e252",
+        "entries": [
+          "nemesia-edit/media/194018e6b2b293a7964f037b25c0249ce1418bc9ab3c971060a03aa57861e252.ttf",
+          "nemesia-input/NotoSansKR.ttf"
+        ],
+        "bytesPerCopy": 10414588,
+        "compressedDuplicateBytes": 5345293
+      },
+      {
+        "sha256": "415bf4b287b2be5865111006af19c47c7b0e65b27034104cfff3d2bf586a357c",
+        "entries": [
+          "nemesia-edit/media/415bf4b287b2be5865111006af19c47c7b0e65b27034104cfff3d2bf586a357c.m4a",
+          "nemesia-input/music-prepared.m4a"
+        ],
+        "bytesPerCopy": 2980730,
+        "compressedDuplicateBytes": 2966307
+      },
+      {
+        "sha256": "3ccd9d840deaa1f6b5d9772cd2b5e91430afa93f10e1bf21718b7b9d44c4f6be",
+        "entries": [
+          "nemesia-edit/media/3ccd9d840deaa1f6b5d9772cd2b5e91430afa93f10e1bf21718b7b9d44c4f6be.png",
+          "nemesia-input/04.png"
+        ],
+        "bytesPerCopy": 2941022,
+        "compressedDuplicateBytes": 2925490
+      },
+      {
+        "sha256": "8a4ca66d95c9cd7015cb8483695656a825f667df26d42ceadaa28d838c451569",
+        "entries": [
+          "nemesia-edit/media/8a4ca66d95c9cd7015cb8483695656a825f667df26d42ceadaa28d838c451569.png",
+          "nemesia-input/11.png"
+        ],
+        "bytesPerCopy": 1921711,
+        "compressedDuplicateBytes": 1909601
+      },
+      {
+        "sha256": "56e68c9a91b8a3c58070fbfabaea02c1f50f0a86554bed32c6f4e3b54f4135a0",
+        "entries": [
+          "nemesia-edit/media/56e68c9a91b8a3c58070fbfabaea02c1f50f0a86554bed32c6f4e3b54f4135a0.png",
+          "nemesia-input/16.png"
+        ],
+        "bytesPerCopy": 2236838,
+        "compressedDuplicateBytes": 2223941
+      },
+      {
+        "sha256": "6ffe82091b31c5f0ada1586b1f4bfd6787f334b5e90ff73d2c649afb0c304e23",
+        "entries": [
+          "nemesia-edit/media/6ffe82091b31c5f0ada1586b1f4bfd6787f334b5e90ff73d2c649afb0c304e23.png",
+          "nemesia-input/08.png"
+        ],
+        "bytesPerCopy": 4298747,
+        "compressedDuplicateBytes": 4281080
+      },
+      {
+        "sha256": "90fce26672bdb5d3ab8631c6db60acd72f95f5eb148123c9bc3a970fdcf3fd0e",
+        "entries": [
+          "nemesia-edit/media/90fce26672bdb5d3ab8631c6db60acd72f95f5eb148123c9bc3a970fdcf3fd0e.png",
+          "nemesia-input/18.png"
+        ],
+        "bytesPerCopy": 3819719,
+        "compressedDuplicateBytes": 3811369
+      }
+    ],
+    "reason": "ZIP intentionally packages both nemesia-input original sources and native project media. Each of the 21 PNG artworks appears twice, as do prepared music, NotoSansKR and DM Sans files. PNG compression saves little, producing a 165.44 MB archive; this is not 165 MB of unique source artwork."
+  },
+  "provenanceNotes": [
+    "ZIP provenance lacks the later local extraction.independent_static_review note; source assets, cue data and production script are unchanged. This is metadata-note drift, not a byte-identical provenance claim."
+  ],
+  "localProvenanceDifferingTopLevelFields": [
+    "extraction"
+  ],
+  "boundaries": "Only this archive-review.json written. No extraction files, original changes, game/browser/server execution, Git operations, or held team candidate access. Video/audio perceptual QA is owned by parent and not certified by this archive audit.",
+  "errors": []
+}

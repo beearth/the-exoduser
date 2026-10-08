@@ -1,0 +1,24 @@
+{
+  "date": "2026-10-08",
+  "artifact": "EXODUSER_NEMESIA_CINEMATIC_KR_EN_20261008.mp4",
+  "sha256": "21f904176bfd09e9f7ec1352424a81195a1b590606b29da752ab971c9dcb8468",
+  "visualReview": "PASS_STATIC_CUE_SAMPLES",
+  "reviewed": [
+    "27 cue contact sheet from exported MP4",
+    "longest bilingual dialogue at 14 seconds",
+    "dialogue at 65 seconds",
+    "Steam CTA at 119 seconds"
+  ],
+  "findings": [
+    "All 27 cues present in order in contact sheet",
+    "English and Korean dialogue sample lines fit within separate panels",
+    "Artwork and speaker labels remain visible",
+    "No new actor animation added; native game camera/VFX not reconstructed"
+  ],
+  "limits": [
+    "Sample/contact inspection, not full continuous playback",
+    "Subjective full audio listening not performed",
+    "Cloud QA JSON retains original pre-inspection pending state; this is the later visual receipt"
+  ],
+  "publication": "NOT_UPLOADED_TERMS_CONSENT_PENDING"
+}
