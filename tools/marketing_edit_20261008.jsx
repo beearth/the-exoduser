@@ -6,7 +6,7 @@ import { existsSync, readFileSync } from "node:fs";
 export const CONFIG = {
   target: "steam", // steam | youtube | shortsA | shortsB; env overrides this field.
   inputDir: "/home/user/exoduser-fresh",
-  outputRoot: "/home/user/exoduser-edits/20261008",
+  outputRoot: "/home/user/exoduser-edits/final-20261008",
   fps: 30,
   fontFamily: "DM Sans",
   background: "#08090c",
@@ -103,7 +103,7 @@ export function resolvePlan(config = CONFIG, requested = config.target) {
     if (!Number.isInteger(shot.dur * config.fps) || !Number.isInteger(from * config.fps)) {
       throw new Error(`${key}/${shot.source}: durations and trim points must align to ${config.fps}fps.`);
     }
-    const entry = { ...shot, from, at, file: `${config.inputDir}/${source.file}` };
+    const entry = { ...shot, from, at, file: source.file.startsWith("/") ? source.file : `${config.inputDir}/${source.file}` };
     at += shot.dur;
     return entry;
   });
@@ -183,6 +183,14 @@ export default async ({ project }) => {
     for (const [key, seconds] of Object.entries(durations)) {
       if (CONFIG.sources[key]) CONFIG.sources[key].sourceDuration = Number(seconds);
     }
+  }
+  const preparedPath = `${CONFIG.inputDir}/prepared.json`;
+  if (!existsSync(preparedPath)) throw new Error("Run marketing_prepare_20261008.py to create prepared.json before native build.");
+  const prepared = JSON.parse(readFileSync(preparedPath, "utf8"));
+  for (const [key, entry] of Object.entries(prepared)) {
+    if (!CONFIG.sources[key]) continue;
+    CONFIG.sources[key] = { file: entry.file, sourceDuration: Number(entry.sourceDuration) };
+    for (const trims of Object.values(CONFIG.trims)) if (key in trims) trims[key] = 0;
   }
   const selected = process.env.EXODUSER_EDIT_TARGET || CONFIG.target;
   const plan = resolvePlan(CONFIG, selected); // Validate lengths BEFORE creating a project.

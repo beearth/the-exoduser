@@ -1,3 +1,13 @@
+## 2026-10-08 영상 픽셀 시간 감사·native 입력 보정
+
+| 항목 | 결과 |
+|---|---|
+| 폐기 | 직접VP9/6-window 초기렌더는 기술검사후 픽셀감사에서 source시간 지연·window점프 발견, 납품/게시제외 |
+| 준비도구 | marketing_prepare_20261008.py 신규, 실제원본범위/패킷·30fps framecount·H264/AAC 검사후 prepared.json 발행. 원본보존 |
+| native 보정 | 준비CFR30입력 + singlewindow native render. 2초패링시험에서 actual MP41.3초와 native frame1.3초 실제폭발일치 |
+| 기록 | 편집계약에 실제오류·선택범위·준비인코딩·새outputRoot final-20261008·미검증상태 기록 |
+| 운영 | 기존 Chrome YouTube 로그인은 FDG가 아닌채널. Steamworks는 저장된계정로그인후 모바일인증대기. 공개영상교체/YouTube게시 미완료 |
+
 ## 2026-10-08 최신 GitHub 개발본 실제 전투 촬영·마케팅 편집
 
 | 항목 | 결과 |

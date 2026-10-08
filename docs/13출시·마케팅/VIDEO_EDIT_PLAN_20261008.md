@@ -108,3 +108,9 @@ higgsedit render /home/user/exoduser-edits/20261008/shorts-b-26s --depth 8 --bit
 ## 실제 입력 컨테이너 검수 보완
 
 원본 MediaRecorder WebM에는 format.duration 메타데이터가 없어 첫 probe가 실패했다. GitHub 원본 SHA256를 먼저 검증한 뒤 클라우드에서 FFmpeg `-map 0 -c copy`로 WebM 컨테이너만 다시 작성했다. 영상 VP9/음성 Opus를 재인코딩하지 않았으며 실제 picture/audio 편집은 Higgsedit로 수행한다. probe 길이는 parry10.000, rage_slam8.010, fire10.984, ice_orb7.991, blackhole9.990초. ice_orb의 1+7초 trim은 실제 컨테이너보다 0.009초 길어 검증에서 차단되었으므로 29/30초 시작으로 1프레임 앞당겼다. 최종 7초 컷·총 길이는 유지하고 자동 루프/부족분 정지프레임을 쓰지 않는다.
+
+## 최종 MP4 시간 진행 오류와 준비 입력 보정
+
+직접 VP9 WebM을 가져와 6개 window로 렌더한 첫 MP4는 파일·코덱·프레임 검사를 통과했지만 실제 화면 검수에서 폐기했다. Shorts A 1.3초의 inset은 기대 source6.3초가 아닌 source5.033초와 픽셀 MAE1.65/255로 일치했고, 2.667초 window 경계에서 원본 위치가 점프했다. 따라서 초기 MP4와 초기 editable ZIP은 납품본이 아니다. 도구 내부 원인 확정 주장은 하지 않는다.
+
+`tools/marketing_prepare_20261008.py`로 원본의 선택 구간을 **CFR30 H.264 CRF12 + AAC256kbps** 준비 입력으로 만든다. 실제 원본 프레임을 선택하며 속도 변경·프레임 보간을 쓰지 않는다. 원본 VP9/Opus는 그대로 보존한다. prepared.json의 실제 file/sourceDuration을 읽은 뒤 native timeline trim은 0으로 설정하며 위 표는 원본상의 시작점/길이 기록으로 유지한다. 새 출력root는 `/home/user/exoduser-edits/final-20261008`이다. native export는 **shards1/concurrency1**로 수행한다. 준비된 패링 입력의 2초 시험에서 native frame1.3초와 MP41.3초가 같은 실제 패링 폭발을 보여 정상 시간 진행을 확인했다. 최종 3개도 새 media ID로 렌더하고 원본 시간 대조를 다시 해야 한다.
