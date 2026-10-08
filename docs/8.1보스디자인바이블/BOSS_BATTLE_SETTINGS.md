@@ -1097,3 +1097,8 @@ X.translate(Math.round(C.width/2 - G.cam.x + sx), Math.round(C.height/2 - G.cam.
 ## 2026-10-09 — 드루이드 보행·공격 원본 비율 보정
 
 `ROOT-DRUID-ORIGINAL-ASPECT-CONSUMER-20261009`: actual main normal walk/attack의 폭만 dh×cw/ch로 원본 셀 비율을 소비한다. 높이14.1r·spec9.3·base8/특수·원PNG·전투/save 유지. 실제 whole draw/native Canvas+원본PNG 최초4그룹PASS(Node0), 대기·야수 픽셀 불변/임시 UI 제거 뒤 editor 편집 exact 보존. 실제 rig GPU/정상 본편 보스전·새입체 모델·A급은 미인수, **VISUAL VERDICT: RETOUCH**. [정확 계약](../4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md#druid-original-aspect-20261009). 최종 증거 `E/druid-original-aspect-consumer-20261009/completion.json`.
+
+
+## 2026-10-09 — 드루이드 광역 발사 자세
+
+`ROOT-DRUID-BURST-SPRITE-ENGINE-CONSUMER-20261009`: actual main `burst`의 준비 본체 성공과 실제 발사 prefix 완료를 소비해 원본 attack 셀1→2→3을 표시한다. 기존 sprite clip·recover50/보스 cap20·전투/원PNG/save 유지. 다음 pattern/update prune과 rig sheet/index 현재성 연결, 미로드·미관측은 기존 폴백. native detached Canvas3PASS/이전 반복 반례1별도, editor17 편집 exact·사용자 main 무조작. 새 입체 모델·정상 보스전·A급 미인수, **VISUAL VERDICT: RETOUCH**. [정확 계약](../4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md#druid-burst-sprite-engine-20261009). 최종 증거 `E/druid-burst-sprite-engine-consumer-20261009/completion.json`.

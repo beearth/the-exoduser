@@ -1917,3 +1917,28 @@ VISUAL VERDICT: **RETOUCH**. 어깨 구형 윤곽을 제거했으나 얼굴/외�
 ## 2026-10-09 — 원화 부위와 회전축 편집기
 
 `ROOT-ENGINE-CUTOUT-EDITOR-20261009`: 자체 엔진에 `tools/engine-cutout-editor.html`과 cutout core/UI를 추가하고 기존 두 모션 편집기에 진입 링크를 연결했다. 고정 Druid base8 첫 셀414×620에서 polygon·pivot·각도/XY·원형 비교·undo/redo40·JSON 입출력을 제작한다. 원형 native pixel exact, core7그룹66assertions PASS; UI 유효13PASS와 selector 준비1/assertion3 실패 이력은 분리 보존한다. 움직여 드러난 빈 곳은 추가 원화가 필요하다. 본편 관절 모션·새3D/360°·A급은 미완료, **VISUAL VERDICT: RETOUCH**. [정확 수치·범위](../5.0애니메이션파이프라인/EXODUSER_ENGINE_ANIMATION_20261009.md#engine-cutout-editor-20261009). 최종 근거 `E/engine-cutout-editor-20261009/completion.json`, 화면 `final-full.png`.
+
+
+<a id="druid-burst-sprite-engine-20261009"></a>
+## 2026-10-09 — 광역 발사 준비·시전·복귀 표시
+
+`ROOT-DRUID-BURST-SPRITE-ENGINE-CONSUMER-20261009`: 실제 CH1 `burst` 준비 중 반복되던 attack 셀을 준비1로 고정하고, 준비 본체 표시와 실제 발사 prefix 성공 뒤 시전2→복귀3을 연결했다. 기존 원화·sprite clip 코어를 소비하며 새 관절 작화·입체 모델 완성이 아니다. fan/Slam/다른 recover의 이전 계약은 유지한다.
+
+| consumer / 값 | 현행 코드 계약 |
+|---|---|
+| `_druidBurstDisplay` | actor별 표시 전용 WeakMap. game/map/enemies identity, deaths 기본0,phase 기본0,lastStand boolean,observed 초기false,released 초기false. 전투 actor/save 새 필드 없음 |
+| `_druidBurstDisplayValid(e,r)` | 기존 fan valid(stage0/on===true/ib===true/alive===true/hp>0/비defeated/비reviveTimer/비stunned/현재 ens 포함/G·map·ens·deaths·phase·lastStand 일치) + `_ch1DruidIntent(e)==='normal'` |
+| 시작 | `_bossStartPattern` 진입마다 `_druidBurstDisplayBegin(e,mv.id)`로 이전 receipt 제거. move==='burst'와 valid일 때만 생성. 준비시간은 기존 teleM/extraDelay 및 `tele||55` 그대로 |
+| 준비 | `_drawDruidBoss`가 유효 bossBurstWind에서 attack4×8 셀1 고정. 기존 `_druidFanClips.wind`(`Druid fan preparation`, frameCount4/duration1초/key0:frame1)를 time0으로 재사용. duration1초는 실제 준비시간 보장이 아님 |
+| 성공 관측 | 선택된 burst 본체 draw 및 finally restore가 성공한 뒤 `_druidBurstDisplayObserve` 호출. module·이미지 미준비/early return/draw 또는 restore 예외는 관측 없음 |
+| 발사·release | 실제 bossBurstWind의 탄 생성→SFX/FX/flash prefix→recover/st2=50 뒤 `_druidBurstDisplayRelease`. valid+observed+recover+유한양수 st2에서만 released=true. 탄이나 FX prefix 예외 시 release 미도달; 기존 부분 생성은 rollback하지 않음 |
+| 시전·복귀 | 기존 `_druidFanClips.recovery`(`Druid fan cast and return`, frameCount4/duration20/60초, keys0:frame2·14/60:frame3) 재사용. caller time `(20-Math.min(20,e.st2))/60`; st2>6은2(초기50 포함),0<st2<=6은3, 만료/무소유는null. 다음 공통 recover의 기존 boss cap20 유지; 새 active 상태/실경과 보장 없음 |
+| prune | updateE 진입: 유효성 또는 유한 st2 위반은 삭제. 미release는 bossBurstWind만, release는 양수 recover만 유지. 다음 pattern/상태·life·phase·소유 변경/사망·경직·부활대기·off·특수·만료에서 무효. 관측 사이 동일 tuple 재사용을 모든 세대로 식별하지 않음 |
+| rig/native 현재성 | `_ch1DruidCurrent`의 기대 attack sheet/index도 burst frame을 재검사. 원본 방향8행·정수 crop·aspect·borrowed sourceFrame과 기존 native/rig 분기 유지. 새 timer/RAF/asset 없음 |
+| 미로드 폴백 | 기존 sprite-clip import `20261009-v1` 및 비동기 준비 재사용. 미로드/null일 때 기존 renderer가 계속 사용됨; 모든 로드 조건에서 준비1을 보장하지 않음 |
+| 전투 보존 | 원래 cnt/RNG/각도·속도·피해·blackBean/redBean·shield/Q규칙·SFX/FX·recover50/cap20·radius/AI/nav/save/PNG 불변. 새 ROOT 소유10literal/+1995B; foreign game185B·설정3.3 foreign2948B 미채택 보존 |
+| 최초 CPU | Node1/6그룹/24복합조건PASS/FAIL0, before witness 별도. 실제 whole 함수와 정확 case/cap slices+통제 ports이며 whole updateE/본편 정상 보스전/save가 아님. 정확 실행·fixture 수와 한계는 외부 Gate 결과 우선 |
+| 최초 native | 실제 whole draw/helper·burst case·real sprite clip·원PNG를 detached Canvas에서3복합조건PASS/FAIL0. 준비1→시전2→복귀3, 기존 Wind0→1→2→3 반복 반례1별도. r18/부모scale4/통제 clock·RNG/rig-false port; 실제 정상 줌 보스전·Three GPU·성능·청취·실보상save 검수 아님 |
+| 사용자 상태 | 기존 editor17 readonly snapshot exact/DOM쓰기0/save호출0; 사용자 main14·모션15·sprite16 무조작. 열린 oldloaded 본편에 자동 적용되었다고 주장하지 않음. API/storage/usersave 불변은 미계측 UNKNOWN |
+
+**VISUAL VERDICT: RETOUCH**. 통제 원화 자세는 구분되며 본편 정상 보스전·새 입체 외형/360°·A급은 미완료다. 최종 소유 Git·새 Gate·한계는 `E/druid-burst-sprite-engine-consumer-20261009/completion.json`, Canvas 비교는 `native-three-poses.png`가 우선한다.

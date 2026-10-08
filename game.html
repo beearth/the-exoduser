@@ -11009,6 +11009,36 @@ function _druidFanDisplayFrame(e){
   if(e.s==='recover'&&r.released&&e.st2>0)return _druidFanClips.sampleSpriteClip(_druidFanClips.recovery,(20-Math.min(20,e.st2))/60);
   return null;
 }
+// Burst has no active state: a completed projectile prefix owns its recovery poses.
+const _druidBurstDisplay=new WeakMap();
+function _druidBurstDisplayValid(e,r){
+  return _druidFanDisplayValid(e,r)&&_ch1DruidIntent(e)==='normal';
+}
+function _druidBurstDisplayBegin(e,move){
+  _druidBurstDisplay.delete(e);if(move!=='burst')return;
+  const r={game:G,map:G.map,enemies:ens,deaths:e.deaths||0,phase:e._bossPhase||0,lastStand:!!e._druidLastStand,observed:false,released:false};
+  if(_druidBurstDisplayValid(e,r))_druidBurstDisplay.set(e,r);
+}
+function _druidBurstDisplayPrune(e){
+  const r=_druidBurstDisplay.get(e);if(!r)return;
+  if(!_druidBurstDisplayValid(e,r)||!Number.isFinite(e.st2)||(e.s==='bossBurstWind'?r.released:e.s!=='recover'||!r.released||e.st2<=0))_druidBurstDisplay.delete(e);
+}
+function _druidBurstDisplayObserve(e){
+  const r=_druidBurstDisplay.get(e);
+  if(_druidFanClips&&_druidBurstDisplayValid(e,r)&&e.s==='bossBurstWind'&&!r.released)r.observed=true;
+}
+function _druidBurstDisplayRelease(e){
+  const r=_druidBurstDisplay.get(e);
+  if(_druidBurstDisplayValid(e,r)&&r.observed&&e.s==='recover'&&Number.isFinite(e.st2)&&e.st2>0)r.released=true;
+  else _druidBurstDisplay.delete(e);
+}
+function _druidBurstDisplayFrame(e){
+  const r=_druidBurstDisplay.get(e);
+  if(!_druidFanClips||!_druidBurstDisplayValid(e,r)||!Number.isFinite(e.st2))return null;
+  if(e.s==='bossBurstWind'&&!r.released)return _druidFanClips.sampleSpriteClip(_druidFanClips.wind,0);
+  if(e.s==='recover'&&r.released&&e.st2>0)return _druidFanClips.sampleSpriteClip(_druidFanClips.recovery,(20-Math.min(20,e.st2))/60);
+  return null;
+}
 // Display-only Slam receipt: both original poses must have completed a body draw.
 const _druidSlamDisplay=new WeakMap();
 function _druidSlamDisplayValid(e,r){
@@ -11054,6 +11084,7 @@ function _druidSummonDisplayFrame(e,observe=false){
 }
 function _drawDruidBoss(X,e,sa,tdY,spec,parentScale,parentYOffset){
   const _fanFrame=_druidFanDisplayFrame(e);
+  const _burstFrame=_druidBurstDisplayFrame(e);
   const _slamFrame=_druidSlamDisplayFrame(e);
   const _summonFrame=_druidSummonDisplayFrame(e,true);
   const _ch1NormalIntent=_ch1DruidIntent(e)==='normal'; // Intent approval precedes image readiness and legacy selector fallback.
@@ -11104,6 +11135,7 @@ function _drawDruidBoss(X,e,sa,tdY,spec,parentScale,parentYOffset){
   else if(_isChgWind&&_druidSheets.transform&&_druidSheets.transform.ready){const _tp=Math.max(0,Math.min(1,1-e.st2/45));frame=Math.min(7,~~(_tp*8));sheet='transform';cols=8;rows=1;dirless=true;} // 돌진 와인드업=변신 시퀀스 0→7(서있는→야수)
   else if(_isCharge&&_druidSheets.beast&&_druidSheets.beast.ready){sheet='beast';cols=4;rows=2;dirless=true;frame=dir;} // 돌진=야수 변신형(8방향 4x2, 셀=방향)
   else if(_fanFrame!==null){sheet='attack';cols=4;rows=8;frame=_fanFrame;}
+  else if(_burstFrame!==null){sheet='attack';cols=4;rows=8;frame=_burstFrame;}
   else if(_slamFrame!==null){sheet='attack';cols=4;rows=8;frame=_slamFrame;}
   else if(_summonFrame!==null){sheet='attack';cols=4;rows=8;frame=_summonFrame;}
   else if(key==='slash'||key==='slam'||key==='windup'||e.s==='bossDruidVolleyWind'||e.s==='bossDruidVolley'){
@@ -11135,7 +11167,7 @@ function _drawDruidBoss(X,e,sa,tdY,spec,parentScale,parentYOffset){
   if(_ch1NormalIntent)_drawDruidBodyHitFlash(X,e,sa,img,sx,sy,cw,ch,-dw/2,-dh*.86,dw,dh);
   }
   X.globalCompositeOperation='source-over';X.globalAlpha=1;
-  }finally{X.restore();}if(_fanFrame!==null)_druidFanDisplayObserve(e);_druidSlamDisplayObserve(e);return true;
+  }finally{X.restore();}if(_fanFrame!==null)_druidFanDisplayObserve(e);if(_burstFrame!==null)_druidBurstDisplayObserve(e);_druidSlamDisplayObserve(e);return true;
 }
 // ── 대형보스 글로벌 설정 ──
 window._BOSS_GLOW=false; // 보스 하단 원형 글로우 오라 기본 OFF (2026-08-25 유저요청: 원으로 보임·불필요). true 시만 _drawDruidBoss 글로우 렌더
@@ -12148,9 +12180,9 @@ function _ch1DruidCurrent(owner,selection){
   if(!_ch1DruidScope()||!owner||owner.active!==true||owner.scene!==_ch1DruidScene||_ch1DruidActors.get(owner.actor)!==owner||owner.game!==G||owner.map!==G.map||owner.enemies!==ens||!ens.includes(owner.actor)||owner.selectedFrame!==selection||owner.lifeGeneration!==selection.lifeGeneration||owner.state!==owner.actor.s||_ch1DruidIntent(owner.actor)!=='normal')return false;
   const e=owner.actor;
   if((e.deaths||0)!==owner.deaths||(e._bossPhase||0)!==owner.bossPhase||!!e._druidLastStand!==owner.lastStand||!!e._druidDefeated!==owner.defeated||(e._reviveTimer>0)!==owner.pending||_druidDir(e)!==selection.nativeDir||owner.sheetRecord!==_druidSheets[selection.sheet]||owner.sheetRecord.ready!==true)return false;
-  const fanFrame=_druidFanDisplayFrame(e),slamFrame=_druidSlamDisplayFrame(e);
-  if(fanFrame!==null&&selection.index!==fanFrame||slamFrame!==null&&selection.index!==slamFrame)return false;
-  const key=_stage1CodexBossMotionKey(e),expected=fanFrame!==null||slamFrame!==null||_druidSummonDisplayFrame(e)!==null||['slash','slam','windup'].includes(key)||e.s==='bossDruidVolleyWind'||e.s==='bossDruidVolley'?'attack':key==='walk'?'walk':'base8';
+  const fanFrame=_druidFanDisplayFrame(e),burstFrame=_druidBurstDisplayFrame(e),slamFrame=_druidSlamDisplayFrame(e);
+  if(fanFrame!==null&&selection.index!==fanFrame||burstFrame!==null&&selection.index!==burstFrame||slamFrame!==null&&selection.index!==slamFrame)return false;
+  const key=_stage1CodexBossMotionKey(e),expected=fanFrame!==null||burstFrame!==null||slamFrame!==null||_druidSummonDisplayFrame(e)!==null||['slash','slam','windup'].includes(key)||e.s==='bossDruidVolleyWind'||e.s==='bossDruidVolley'?'attack':key==='walk'?'walk':'base8';
   const b=owner.borrowed,f=_ch1DruidImage(b?.image),lease=b&&_ch1DruidDecoded.get(b.image);
   return expected===selection.sheet&&!!lease&&lease.borrowed===b&&_ch1DruidLeaseCurrent(lease)&&!!b&&owner.sheetRecord.img===b.image&&owner.imageGeneration===b.generation&&selection.generation===b.generation&&!!f&&f.naturalWidth===b.width&&f.naturalHeight===b.height&&f.src===b.srcSnapshot&&f.currentSrc===b.currentSrcSnapshot&&f.srcset===b.srcsetSnapshot&&f.sizes===b.sizesSnapshot;
 }
@@ -37650,7 +37682,7 @@ const _HELL_ABERRANT_FACE=new Set(['jump','charge','slashCombo','sweep','tailSwi
 // 빨간색 = 패링 가능, 보라색 = 패링 불가
 const _PARRYABLE_ATK=new Set(['charge','slashCombo','slam','sweep','tailSwipe','spin','multiDash','teleStrike','swordWave','jump','judgeCut','delaySlash','perilThrust','phantomSwords','crescendoCombo','tideWave','rewindStrike','mirrorClone','shieldBash2','mirrorGuard','chainLightning','cageTrap','doppelganger']);
 function _bossStartPattern(e,mv,d,phase,extraDelay){
-  _druidFanDisplayBegin(e,mv.id);_druidSlamDisplayBegin(e,mv.id);
+  _druidFanDisplayBegin(e,mv.id);_druidBurstDisplayBegin(e,mv.id);_druidSlamDisplayBegin(e,mv.id);
   e._atkParryable=_PARRYABLE_ATK.has(mv.id);
   let tele=~~(mv.tele*BOSS_PHASES[phase].teleM)+(extraDelay||0);
   if(G.stage===2)tele=~~(tele*1.4);
@@ -38499,7 +38531,7 @@ function atkTicketRelease(e){
 }
 // ─── [S16f] ENEMY_UPD — 적 업데이트 (AI/이동/공격) ───
 function updateE(e,sp){
-  _druidFanDisplayPrune(e);_druidSlamDisplayPrune(e);
+  _druidFanDisplayPrune(e);_druidBurstDisplayPrune(e);_druidSlamDisplayPrune(e);
   if(e._lessonEnemy&&window._parryLesson?.active)return;
   // ═══ 텔레그래프 VFX 타이머 감소 ═══
   if(e._telegraphT>0){e._telegraphT-=sp;e._telegraphR=e.r+20}
@@ -40483,7 +40515,7 @@ function updateE(e,sp){
         const _iR2=Math.random();const _isBKB=_iR2<.5;const _isRB=_iR2>=.5;
         _spawnBossProjectile(e,{x:e.x,y:e.y,vx:Math.cos(a)*(_isBKB?4.4:_isRB?4.0:3.2),vy:Math.sin(a)*(_isBKB?4.4:_isRB?4.0:3.2),dmg:~~(e.atk*(_isBKB?1.5:_isRB?2.5:1.2)),el:_isBKB?EL.P:e.el,friendly:false,life:400,ml:400,col:_isBKB?'#00aa00':_isRB?'#cc1100':e.col,sz:_isBKB?2.0:_isRB?1.8:1.2,redBean:_isRB||undefined,blackBean:_isBKB||undefined,homing:_isRB||undefined})}
       SFX.charge();deathFX(e.x,e.y,e.r,e.col,false,false,e.etype);G.shake=8*OPT.shake/100;G._flashT=4;G._flashCol='#ffffff';
-      e.s='recover';e.st2=50}break;
+      e.s='recover';e.st2=50;_druidBurstDisplayRelease(e)}break;
   // ── 부채꼴 충격파 (fanWave): 안내선 1.5초 → 충격파 ──
   case'bossFanWaveAim':{
     // 안내선 표시 중 (1.5초=90프레임) — 방향 고정

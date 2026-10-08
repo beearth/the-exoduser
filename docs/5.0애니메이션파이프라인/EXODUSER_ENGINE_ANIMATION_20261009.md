@@ -209,3 +209,8 @@ Godot 공식 [애니메이션 소개](https://docs.godotengine.org/en/stable/tut
 | 시각 판정 | **VISUAL VERDICT: RETOUCH**. 부위/축 도구의 실제 조작 확인 한정. 본편 정상 줌 대표 공격·입체 외형·전체보스전·청취·성능·실보상save·A급 미인수 |
 
 코드 후 docs 관련검색은 전체1회+초기 크기 기준으로 누락된 `CHANGELOG_SYNC.md` 한 파일만 보정: 최종1026 UTF8 text/820 Markdown,33path99line143occ. 보호2_3·거대 owner/container·binary/symlink 제외, 33전수 fullread 주장은 하지 않는다. 현행6문서에 동기화하고 나머지27path의 아이템/VFX/옛 검수·맵용 cutout 계약은 유지했다. 최종 소유 Git·첫 검사와 실패 이력·정확 핀은 `E/engine-cutout-editor-20261009/completion.json`, 실제 화면은 `final-full.png`가 우선한다.
+
+
+## 2026-10-09 — 드루이드 광역 발사 자세
+
+`ROOT-DRUID-BURST-SPRITE-ENGINE-CONSUMER-20261009`: actual main `burst`의 준비 본체 성공과 실제 발사 prefix 완료를 소비해 원본 attack 셀1→2→3을 표시한다. 기존 sprite clip·recover50/보스 cap20·전투/원PNG/save 유지. 다음 pattern/update prune과 rig sheet/index 현재성 연결, 미로드·미관측은 기존 폴백. native detached Canvas3PASS/이전 반복 반례1별도, editor17 편집 exact·사용자 main 무조작. 새 입체 모델·정상 보스전·A급 미인수, **VISUAL VERDICT: RETOUCH**. [정확 계약](../4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md#druid-burst-sprite-engine-20261009). 최종 증거 `E/druid-burst-sprite-engine-consumer-20261009/completion.json`.

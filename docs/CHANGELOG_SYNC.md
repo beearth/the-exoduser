@@ -56839,3 +56839,8 @@ alpha/nav/crop/UV/geometry/opacity/renderOrder/resource/dispose·skirt/backplane
 ## 2026-10-09 — 원화 부위와 회전축 편집기
 
 `ROOT-ENGINE-CUTOUT-EDITOR-20261009`: 자체 엔진에 `tools/engine-cutout-editor.html`과 cutout core/UI를 추가하고 기존 두 모션 편집기에 진입 링크를 연결했다. 고정 Druid base8 첫 셀414×620에서 polygon·pivot·각도/XY·원형 비교·undo/redo40·JSON 입출력을 제작한다. 원형 native pixel exact, core7그룹66assertions PASS; UI 유효13PASS와 selector 준비1/assertion3 실패 이력은 분리 보존한다. 움직여 드러난 빈 곳은 추가 원화가 필요하다. 본편 관절 모션·새3D/360°·A급은 미완료, **VISUAL VERDICT: RETOUCH**. [정확 수치·범위](5.0애니메이션파이프라인/EXODUSER_ENGINE_ANIMATION_20261009.md#engine-cutout-editor-20261009). 최종 근거 `E/engine-cutout-editor-20261009/completion.json`, 화면 `final-full.png`.
+
+
+## 2026-10-09 — 드루이드 광역 발사 자세
+
+`ROOT-DRUID-BURST-SPRITE-ENGINE-CONSUMER-20261009`: actual main `burst`의 준비 본체 성공과 실제 발사 prefix 완료를 소비해 원본 attack 셀1→2→3을 표시한다. 기존 sprite clip·recover50/보스 cap20·전투/원PNG/save 유지. 다음 pattern/update prune과 rig sheet/index 현재성 연결, 미로드·미관측은 기존 폴백. native detached Canvas3PASS/이전 반복 반례1별도, editor17 편집 exact·사용자 main 무조작. 새 입체 모델·정상 보스전·A급 미인수, **VISUAL VERDICT: RETOUCH**. [정확 계약](4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md#druid-burst-sprite-engine-20261009). 최종 증거 `E/druid-burst-sprite-engine-consumer-20261009/completion.json`.
