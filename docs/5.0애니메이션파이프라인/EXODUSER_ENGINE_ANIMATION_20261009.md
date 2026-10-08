@@ -103,3 +103,39 @@ Godot 공식 [애니메이션 소개](https://docs.godotengine.org/en/stable/tut
 | representation 보정 | adapter의 borrowedSheet='volumetric-boss' 오표기를 factory publication의 실제 artwork-skinned-plane으로 변경. game의 기존 scaleX=dw*selection.h/(dh*selection.w) 분기가 평면에 적용된다. 기존 QA label도 artwork-skinned-plane. 시각 개선 인수는 별도 |
 
 새 CPU: 첫 Node에서6그룹 PASS 뒤 adapter pixel oracle(49.99999955372161 vs50, 허용오차1e−9) FAIL1/후속2그룹 미도달. Float32 display 기준1e−4로 oracle만 정정한 별도 adapter3그룹 PASS/Node1, 물리 Node총2·9clean 합산0. own IAB15 새 runtime seek/empty clip base 복원/기존 edited JSON 복구·재생3그룹 확인. arm-left 기본자세를0으로 가정한 UI assertion FAIL1은 실제 cos(0)×.012×.7=.0084 기준으로 정정/제품수정0. 기존 완료검사 재실행0, 사용자 main/save 무조작. **VISUAL VERDICT: RETOUCH**, 실전보스/native/audio/실save 인수0. 외부 `engine-rig-motion-consumer-20261009/completion.json`이 최종 보존 정본이다.
+
+
+## 2026-10-09 — 스프라이트 clip과 실제 확산탄 producer
+
+`ROOT-DRUID-FAN-SPRITE-ENGINE-CONSUMER-20261009`. 자체 엔진에 아틀라스의 단일 재생 step clip을 추가하고 실제 CH1 드루이드 확산탄 상태에 연결했다. 앞 절의 `authoredMotion` transform 입력·편집기 계약은 그대로다. 이번 자동 선택은 별도의 sprite clip이며 Bone 모션 자동 선택/새 입체 모델 구현이 아니다.
+
+| 필드/API | 정확한 계약 |
+|---|---|
+| 모듈/import | `tools/engine/sprite-clip.mjs`; main dynamic import query `20261009-v1`. 실패/미로드 때 기존 selector |
+| `createSpriteClip(input)` | own-data `name`, `frameCount`, `durationSeconds`, `keys` 검증·복사. getter/inherited 필드 거절. 반환 deep-frozen `{format:'exoduser-sprite-clip',version:1,name,frameCount,durationSeconds,keys}` |
+| name / frameCount | 공백만 아닌 문자열 ≤200자 / 안전정수1..256 |
+| durationSeconds / keys | 유한 숫자 0초과3600이하 / 배열1..4096 |
+| key | own-data `{time,frame}`; time 유한0..duration, 첫 time0, 엄격한 오름차순. frame 안전정수0..frameCount−1 |
+| `sampleSpriteClip(clip,time)` | 이 모듈이 생성한 clip·유한 caller time만. 0..duration clamp 뒤 rightmost key.time≤time의 frame 반환; 정확한 다음 key에서 전환. 내부 clock/loop/renderer/image/RAF/storage 없음 |
+| 준비 clip | `Druid fan preparation`, frameCount4/duration1초/keys `[{time:0,frame:1}]`. 실제 준비시간1초를 뜻하지 않으며 Wind 동안 time0을 샘플 |
+| 시전·복귀 clip | `Druid fan cast and return`, frameCount4/duration20/60초/keys `[{time:0,frame:2},{time:14/60,frame:3}]` |
+| 실제 producer | `_bossStartPattern` 진입마다 `_druidFanDisplayBegin(e,mv.id)`로 이전 receipt 제거. 유효 fan만 신규 receipt. 기존 준비 `~~(mv.tele*BOSS_PHASES[phase].teleM)+(extraDelay||0)` 유지; 고정25f 보장 아님 |
+| 발사 승인 | 실제 `bossFanWind`의 기존 투사체/RNG→SFX→particle prefix가 끝나고 recover/st2=45 설정 뒤 release. 같은 receipt가 성공적으로 그려진 준비를 관측했고 recover/유한양수 st2일 때만 승인 |
+| 준비 관측 | `_drawDruidBoss` 전체 본체 draw와 Canvas restore 성공 뒤에만 observed=true. 이미지 미준비/early return/draw·restore 예외는 승인 없음. 프레임 조회는 read-only |
+| 회복 clock | 기존 다음 recover update의 보스 cap20 유지. `(20−min(20,e.st2))/60` 샘플: 초기45를 포함해 st2>6이면 셀2,0<st2<=6이면 셀3,0이하는 종료(정확 선택은 위 sample 수식). elapsed는 전투 st2/sp clock을 소비하며 실제 경과초 보장 아님 |
+| receipt 소유 | actor WeakMap에 G/map/enemies identity·deaths·_bossPhase·_druidLastStand 캡처. stage0/on/ib/alive/hp>0/비defeated·비reviveTimer·비stunned/current ens 일치 필요 |
+| 취소 | `updateE` 진입 prune. 다른 상태/다음 pattern/소유tuple 교체·death·stun·phase·lastStand·부활대기·off·ens제거·비유한 st2에서 무효. render 전 guard도 적용. 동일 tuple 재사용·관측 사이 전환의 무조건 세대 식별/즉시 timer취소를 보장하지 않음 |
+| 표시 consumer | `_drawDruidBoss` attack4×8의 기존8방향 정수 crop. `_ch1DruidCurrent`도 fan frame/sheet를 재검사해 오래된 rig 선택 거절. 기존 sourceFrame/native/rig publication 경로 재사용 |
+| 보존 | fan 탄수·방향·피해·RNG·SFX·FX·AI·준비/회복 시간·원PNG·지오메트리·nav·save 불변. 새 전역게임 필드/타이머/RAF0. 원본 시전 그림을 내려찍기 완성 모션으로 주장하지 않음 |
+
+| 검수 | 실제 결과와 한계 |
+|---|---|
+| source peer | 최초 observed 위치 blocker1을 첫 CPU 전에 보정, 한정 재검토 closed1/현재0. 제품 CPU 실패로 세지 않음 |
+| 최초 CPU | Node1/7그룹 PASS/exit0, newFunction factory2·world fixture29. 실제 whole start/draw·fan case·helper/clip + 통제 Canvas/rig/RNG/SFX/particle. 전후 투사체·난수·효과·actor 전투필드 동일. modulefallback/미관측·예외·취소/8방향 검수. whole update/실adapter/GPU/본편/save 아님 |
+| before 반례 | 기존 Wind wallclock 셀0→3 및 발사뒤 base8 관측1은 PASS 그룹에 합산하지 않음 |
+| 실제 화면 | 기존3387/own IAB15에서 실제 native Canvas+원본PNG의 준비1·시전2·복귀3 비교 화면 직접 판독. r20/dw9.3/dh14.1 통제fixture이며 본편 정상줌/실전 경로 아님. 재생 UI 첫0.1832초→후속10.6164초 clock 진행 확인; 연속 전투 state 전체 관측으로 세지 않음. console warn/error0 |
+| 임시 화면 복원 | own preview working/HEAD 선백업 후 임시 fixture, 원바이트 exact 복원. 기존 모션 editor clip/time0.55/torso 선택을 UI로 복원; undo history는 JSON import로 재생성되어 원본과 동일하지 않음. 사용자 main14 무조작/oldloaded에 자동 적용 주장0 |
+| 준비 실패 | 소유 비교 스크립트가 line index로 bytes를 slice한 assertion1. line-array 비교만 정정해 외부185B line pairs exact 확인. 제품/test 변경·재실행 없음 |
+| 품질/미완료 | **VISUAL VERDICT: RETOUCH**. 신규 입체 외형/후면·독립 관절/정상 본편 보스전/native6/청취/실save·A급 미인수 |
+
+최종 보존핀·실제 화면: `E/druid-fan-sprite-engine-consumer-20261009/completion.json`, `native-three-poses.png`. 이전 완료 suite는 재실행하지 않았다.

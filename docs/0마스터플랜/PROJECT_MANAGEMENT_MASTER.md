@@ -5170,3 +5170,8 @@ alpha/nav/crop/UV/geometry/opacity/renderOrder/resource/dispose·skirt/backplane
 ## 2026-10-09 — 자체 엔진의 키프레임 모션 편집 기능
 
 `ROOT-ENGINE-MOTION-EDITOR-20261009`: 공통 `animation-clip.mjs`와 실제 Bone을 소비하는 `engine-motion-editor.html/.mjs` 구현. 계층/XYZ 속성/키 기록·삭제/타임라인/linear·smooth·step/undo40/JSON 입출력. 기존 원화 스킨12 Bone/1120삼각형 예제이며 새 입체 모델·본편 적용·A급 완성이 아니다. 실제 코어 Node1/13그룹PASS, 첫 UI 기록 실패2건 보존 뒤 최종 실제 UI8동작PASS, native 다운로드 완료1미확인(10초 event timeout)·JSON 노출 대안. 게임/save/원PNG/scene/nav·사용자 main 무조작, RETOUCH. 사용자 “우리 앤진” 지시를 우선하고 사용량 목표/새 병렬 라운드 없이 한 기능씩 진행한다. [정확 API·한도·검수·남은 범위](../5.0애니메이션파이프라인/EXODUSER_ENGINE_ANIMATION_20261009.md).
+
+
+## 2026-10-09 — 자체 엔진 sprite clip의 확산탄 연결
+
+`ROOT-DRUID-FAN-SPRITE-ENGINE-CONSUMER-20261009`: 실제 fan 준비의 성공한 본체 표시 후, 기존 발사 prefix 완료를 소비해 원본 attack 셀1→2→3을 선택한다. 기존 recover45/보스 cap20을 유지하며 st2>6은 시전2(초기45 포함),0<st2<=6은 복귀3(정확 선택은 clip sample 수식). 새 pattern/update 진입 prune과 G/map/ens/life/phase 소유검사, module 미로드 기존폴백. 전투 시간·피해·탄·RNG·원PNG/save 변경0. transform clip 자동선택/새 입체 모델은 미구현이다. 최초 새 CPU7그룹 PASS/Node1·before1별도, native 원본3자세와 clock 진행은 통제fixture 한정. 사용자 main 무조작·실전/청취/save/A급 미완료, **VISUAL VERDICT: RETOUCH**. [정확 계약](../4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md#druid-fan-sprite-engine-20261009). 최종 소유 Git·증거는 `E/druid-fan-sprite-engine-consumer-20261009/completion.json`.

@@ -1844,3 +1844,22 @@ VISUAL VERDICT: **RETOUCH**. 어깨 구형 윤곽을 제거했으나 얼굴/외�
 `ROOT-ENGINE-RIG-MOTION-CONSUMER-20261009`: 편집기와 실제 character-rigs/CH1 body adapter가 공통 clip을 소비한다. 명시 `authoredMotion={clip,authoredHeight,time}`만 적용하고 position은 rigHeight/authoredHeight로 환산한다. borrowed 그림은 전체 object position만 허용하며 Bone/회전/scale 덧변형은 거절한다. 기존 모션은 base pose 전에 복원하고 새 모션은 행렬·publication 전에 적용한다. 본편 producer의 자동 clip 선택은 아직 없으며 대표 공격·새 입체 모델·A급은 미완료다. 평면 Druid를 volumetric으로 잘못 보고하던 adapter/QA 값을 실제 artwork-skinned-plane으로 정정해 main의 기존 비율 보정 분기가 다시 선택된다. 실제 사용자 게임의 개선 픽셀은 미검수다.
 
 새 CPU: 첫 Node에서6그룹 PASS 뒤 adapter pixel oracle(49.99999955372161 vs50, 허용오차1e−9) FAIL1/후속2그룹 미도달. Float32 display 기준1e−4로 oracle만 정정한 별도 adapter3그룹 PASS/Node1, 물리 Node총2·9clean 합산0. own IAB15 새 runtime seek/empty clip base 복원/기존 edited JSON 복구·재생3그룹 확인. arm-left 기본자세를0으로 가정한 UI assertion FAIL1은 실제 cos(0)×.012×.7=.0084 기준으로 정정/제품수정0. 기존 완료검사 재실행0, 사용자 main/save 무조작. **VISUAL VERDICT: RETOUCH**, 실전보스/native/audio/실save 인수0. 외부 `engine-rig-motion-consumer-20261009/completion.json`이 최종 보존 정본이다.
+
+
+<a id="druid-fan-sprite-engine-20261009"></a>
+## 2026-10-09 — 실제 확산탄의 원본 준비·시전·복귀
+
+`ROOT-DRUID-FAN-SPRITE-ENGINE-CONSUMER-20261009`: `tools/engine/sprite-clip.mjs`를 main `20261009-v1`로 소비한다. 원본 attack4×8의 준비 셀1→발사 시전 셀2→복귀 셀3이며, 소환의 기존 표시와 별도 receipt다. 앞 절의 transform `authoredMotion`을 자동 선택한 것이 아니다.
+
+| consumer | 현재 계약 |
+|---|---|
+| `_bossStartPattern` | 모든 pattern 진입에서 이전 fan receipt 삭제; stage0 유효 fan만 새 G/map/ens/deaths/phase/lastStand receipt |
+| `_drawDruidBoss` | Wind 셀1 유지. 실제 본체 draw와 `X.restore()` 모두 성공한 뒤 observed. 미준비·early return·예외는 observed 없음 |
+| `bossFanWind` 발사 | 기존 projectile/RNG/SFX/particle prefix 뒤 recover45 설정→release. observed 유효 receipt가 없으면 recovery 표시 승인 없음 |
+| 회복 | 기존 cap20·sp clock을 소비. clip20/60초, time=(20−min(20,st2))/60; 초기45를 포함해 st2>6이면 셀2,0<st2<=6이면 셀3(정확 선택은 위 sample 수식). 0이하/다른 상태/다음 pattern·life/map/phase/stun 등 무효. 별도 active state를 새로 만들지 않음 |
+| `_ch1DruidCurrent` / updateE | rig index/sheet currentness에 fan frame 추가, update 진입 prune. 방향8행/crop·sourceFrame·원화 native/rig 경로 유지 |
+| 보존/폴백 | import 미로드·실패는 기존 selector. AI/공격 판정·수량·피해·시간/RNG·원 PNG·nav/save 불변. same tuple의 모든 세대변화를 식별한다는 보장 없음 |
+| 검수 | source blocker1 첫 CPU 전 closed/현재0. 최초 Node1/7그룹PASS·factory2/fixtures29; before1별도. whole start/draw+fan case/통제ports이며 whole game/adapter GPU 아님. 실제 native 원본3자세·UI clock 진행 직접 판독/console0, 통제 r20 fixture한정 |
+| 시각 | **RETOUCH**. 사용자 main14/저장 무조작, oldloaded 실시간 적용 주장0. 새 입체 모델·본편 정상줌 보스전·청취/save/A급 미완료 |
+
+정확 API 한도/키/receipt·검수 범위는 [자체 엔진의 sprite clip 정본](../5.0애니메이션파이프라인/EXODUSER_ENGINE_ANIMATION_20261009.md#2026-10-09--스프라이트-clip과-실제-확산탄-producer). 최종 증거는 `E/druid-fan-sprite-engine-consumer-20261009/completion.json`.
