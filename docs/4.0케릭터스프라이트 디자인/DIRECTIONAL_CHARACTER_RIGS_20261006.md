@@ -1686,7 +1686,7 @@ OFF/불가mode/identity/준비 frame 부재의 검수에서는 core0이다. **co
 <a id="druid-sweep-readability-20261008"></a>
 ## 2026-10-08 — 드루이드 휩쓸기 자세·일반 본체 가독성
 
-`ROOT-CH1-DRUID-SWEEP-READABILITY-20261008`. 이전 150ms 공격 순환 설명은 당시 이력이며, 현재 Sweep 두 상태만 아래 예외를 소비한다. 이전 epoch의 일반 회복 상태 `recover`는 대기 자세였다. 현재는 아래 20261009 소환 관측 후속만 예외다.
+`ROOT-CH1-DRUID-SWEEP-READABILITY-20261008`. 이전 150ms 공격 순환 설명은 당시 이력이며, 현재 Sweep 두 상태만 아래 예외를 소비한다. 이전 epoch의 일반 회복 상태 `recover`는 대기 자세였다. 현재는 아래 20261009 소환·확산탄·완료 Slam 관측 후속이 각 소유 조건에서만 예외다.
 
 | 실제 consumer / 조건 | 현재 표시 계약 |
 |---|---|
@@ -1706,7 +1706,7 @@ OFF/불가mode/identity/준비 frame 부재의 검수에서는 core0이다. **co
 | consumer | 현행 계약 |
 |---|---|
 | `_drawDruidBoss` | `bossSlamWind`는 기존 attack 셀1, `bossSlam`은 셀2 유지(0기준). wallclock150ms 순환에서 두 상태만 분리. 방향·crop·rig/native 연결 불변 |
-| 실제 전투와 구분 | 준비시간은 phase teleM/extraDelay 소비, 고정35f 보장 아님. 실행8f 뒤 st2<=0에서 실제 1회 타격→recover/40(공통 보스 cap20). 이 전투 코드·피해·recover idle는 수정0. 셀2는 실행 자세이며 실제 타격 구간/타격 후 자세 보장 아님 |
+| 실제 전투와 구분 | 준비시간은 phase teleM/extraDelay 소비, 고정35f 보장 아님. 실행8f 뒤 st2<=0에서 실제 1회 타격→recover/40(공통 보스 cap20). 이 전투 코드·피해는 유지. recover idle는 20261008 이력이며, 현재는 20261009 완료 Slam receipt에 한해 attack 셀3 복귀 자세를 표시한다. 셀2는 실행 자세이며 타격 작화 완성을 뜻하지 않음 |
 | 검증·한계 | 실제 whole Druid/rig/selector+통제 ports 최초 Node1·VM0·factory2/instances18·7그룹7PASS/FAIL0/exit0. before SlamWind wallclock 셀0→2 반례1 별도. 이전 Sweep31/다른 suite 재실행0. 실제 GPU·pixel·자세 미감·native·청취·실save 미검수/RETOUCH |
 
 앞선 Sweep 단위의 “기타 공격150ms”는 그 epoch이며 현재 Slam 예외가 우선한다. Sweep 셀 선택·첫 pass 밝기/윤곽·특수 상태·공통 recover·원본 PNG·AI·save 불변.
@@ -1889,3 +1889,26 @@ VISUAL VERDICT: **RETOUCH**. 어깨 구형 윤곽을 제거했으나 얼굴/외�
 | 판정 | **VISUAL VERDICT: RETOUCH**. 전후 Canvas에서 가로 눌림 해소 직접 관측. 새 입체 모델/360° 후면·공격 미감·본편 정상 보스전/native6/성능·청취/실보상save·A급 미완료 |
 
 외부 증거: `E/druid-original-aspect-consumer-20261009/`의 implementation.json/native-fixture.js/native-result.json/native-before-after.png 및 최종 completion.json. 현재 normal 모션 폭 계약이 이전 고정9.3r×14.1r 본체 설명보다 우선한다. corpse bitmap·카메라 추정 spec 계산은 기존 값 그대로이며 이번 표시 폭과 혼동하지 않는다.
+
+
+<a id="druid-slam-recovery-20261009"></a>
+## 2026-10-09 — 완료된 내려찍기의 원본 복귀 자세
+
+`ROOT-DRUID-SLAM-RECOVERY-CONSUMER-20261009`. 준비·실행 뒤 공통 대기 그림으로 끊기던 Slam에 원본 attack 셀3의 복귀 자세를 연결했다. 원본 셀2는 전방 시전 그림이며 새 내려찍기 작화·입체 모델 완성이 아니다. 앞의 20261008 Slam 절에서 recover idle 설명은 당시 이력이며 이번 한정 예외가 우선한다.
+
+| consumer / 필드 | 현행 계약 |
+|---|---|
+| `_druidSlamDisplay` | actor별 renderer 전용 WeakMap. game/map/enemies identity, deaths(기본0),phase(기본0),lastStand boolean,observed 초기0,released 초기false. 전투 actor/save에 새 필드 없음 |
+| `_druidSlamDisplayValid(e,r)` | 기존 `_druidFanDisplayValid` 소유·생존 조건 + `_ch1DruidIntent(e)==='normal'`. stage0/on/ib/alive/hp>0·비defeated/비reviveTimer/비stunned·현재 ens 포함·G/map/ens/deaths/phase/lastStand 일치 |
+| `_druidSlamDisplayBegin(e,move)` | `_bossStartPattern` 진입마다 이전 receipt 제거. move==='slam'이고 valid일 때만 생성. `_lastMoves`나 단순 recover 상태를 완료 증거로 쓰지 않음 |
+| `_druidSlamDisplayObserve(e)` | 실제 `_drawDruidBoss` 본체 draw와 finally restore 성공 뒤만 호출. Wind 성공은 observed 비트1, active 성공은 비트2를 OR. 이미지 미준비/early return/draw·restore 예외는 관측 없음 |
+| `_druidSlamDisplayRelease(e)` | 실제 bossSlam의 피해·충격파·입자 prefix와 recover/st2=40 설정이 끝난 뒤 호출. valid + observed===3 + recover + 유한양수 st2에서만 released=true. 부족한 관측/실행 중 예외는 승인 없음 |
+| `_druidSlamDisplayFrame(e)` | valid/released/recover/유한양수 st2일 때만 3, 나머지는 null. Wind/active는 기존 셀1/2 유지; 승인된 회복은 attack4×8 셀3 고정. 새 시간·threshold·timer/RAF 없음 |
+| `_druidSlamDisplayPrune(e)` | updateE 진입에서 취소. 미release는 bossSlamWind/bossSlam만, release는 양수 recover만 유지. 다음 pattern, 다른 상태, tuple·life·phase 변경/사망/경직/부활대기/off/특수·비유한 st2/회복 종료에서 무효 |
+| rig/native 현재성 | `_drawDruidBoss`의 공격 시트 선택과 `_ch1DruidCurrent`의 기대 sheet/index를 함께 연결. 승인 회복에서 attack/index3만 허용; 낡은 frame2/base8은 거절. 실제 adapter GPU pixels는 미검수 |
+| 전투 보존 | 기존 준비 teleM/extraDelay, active8f, 실제 종료 타격→recover40와 다음 공통 cap20 유지. 피해/RNG/FX/AI/radius/nav/save/원PNG 불변. 렌더 생략·관측 사이 동일 tuple 재사용을 무조건 세대로 식별하지 않음 |
+| 최초 CPU Gate | actual whole start/draw/current/helper + 정확 SlamWind/Slam/recover case, 통제 VM ports. 물리 Node1/VM46/fixture46,7그룹26복합조건PASS/FAIL0/setup0/미도달0/unhandled0/exit0. before base8 반례1 별도. 대표 normal/parry/miss/charge/오류 prefix의 actor 전투필드·피해/RNG/FX 동등. whole updateE/실adapter/본편/native pixel 검수 아님 |
+| native 한정 검수 | actual whole draw/helper/receipt+원PNG의 통제 Canvas 최초3그룹PASS/FAIL0. 준비1→실행2→복귀3, 종료/무소유 recover는 기존 base8. before base8 반례1은 별도. r18/부모scale4/now600·rig false port, 실제 producer 전투 진행·정상 줌 보스전/청취/save/3D/360°/A급 아님 |
+| 임시 화면 | own editor16 비교 overlay 제거 후 clip/time/frame/row/재생/dirty/zoom/history exact 유지. console warn/error0. 사용자 main14·transform15 무조작, 서버 변경0 |
+
+**VISUAL VERDICT: RETOUCH**. 최종 Gate/Git·핀·한계 정본은 `E/druid-slam-recovery-consumer-20261009/completion.json`, 실제 원화 표시 비교는 `native-three-poses.png`다.

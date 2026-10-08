@@ -176,3 +176,8 @@ Godot 공식 [애니메이션 소개](https://docs.godotengine.org/en/stable/tut
 | 판정/미완료 | **VISUAL VERDICT: RETOUCH**. 편집 기능 화면 확인 한정. 본편 정상 보스전·새3D 모델/360° 뒷면·모션 미감·A급·responsive/device 전환·GPU 성능·청취·실save는 미인수 |
 
 코드 후 docs 관련검색1회(초기4MB eligibility에서 빠진 CHANGELOG1개만 보정 검색): 최종1028 UTF8 text,6path14line24occ. 거대 owner·보호2_3·binary·symlink는 제외 기록. 기존 계약은 보존하고 매칭6문서에 이번 편집기 범위만 동기화했다. 6전수 fullread·이전 완료검수 재실행을 주장하지 않는다. 최종 소유 Git/화면/한계는 `E/engine-sprite-editor-20261009/completion.json`과 `engine-sprite-editor-final-v2.png`를 우선한다.
+
+
+## 2026-10-09 — 드루이드 Slam 복귀 표시
+
+`ROOT-DRUID-SLAM-RECOVERY-CONSUMER-20261009`: 실제 pattern 시작 receipt에서 준비·실행 본체 성공을 모두 관측하고 실제 타격 prefix가 끝난 뒤만 recover의 원본 attack 셀3을 표시한다. 준비1/실행2·active8f/recover40/기존cap20·피해/RNG/FX/원PNG/save 유지. 다른 recover/취소·미관측은 기존 폴백. 실제 원PNG 통제 Canvas3PASS/반례1별도, 사용자 main 무조작/새입체·전체보스전·A급 미완료, **VISUAL VERDICT: RETOUCH**. [정확 계약](../4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md#druid-slam-recovery-20261009). 최종 근거 `E/druid-slam-recovery-consumer-20261009/completion.json`.

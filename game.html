@@ -11009,6 +11009,36 @@ function _druidFanDisplayFrame(e){
   if(e.s==='recover'&&r.released&&e.st2>0)return _druidFanClips.sampleSpriteClip(_druidFanClips.recovery,(20-Math.min(20,e.st2))/60);
   return null;
 }
+// Display-only Slam receipt: both original poses must have completed a body draw.
+const _druidSlamDisplay=new WeakMap();
+function _druidSlamDisplayValid(e,r){
+  return _druidFanDisplayValid(e,r)&&_ch1DruidIntent(e)==='normal';
+}
+function _druidSlamDisplayBegin(e,move){
+  _druidSlamDisplay.delete(e);if(move!=='slam')return;
+  const r={game:G,map:G.map,enemies:ens,deaths:e.deaths||0,phase:e._bossPhase||0,lastStand:!!e._druidLastStand,observed:0,released:false};
+  if(_druidSlamDisplayValid(e,r))_druidSlamDisplay.set(e,r);
+}
+function _druidSlamDisplayPrune(e){
+  const r=_druidSlamDisplay.get(e);if(!r)return;
+  const allowed=r.released?e.s==='recover'&&e.st2>0:e.s==='bossSlamWind'||e.s==='bossSlam';
+  if(!_druidSlamDisplayValid(e,r)||!Number.isFinite(e.st2)||!allowed)_druidSlamDisplay.delete(e);
+}
+function _druidSlamDisplayObserve(e){
+  const r=_druidSlamDisplay.get(e);
+  if(_druidSlamDisplayValid(e,r)&&!r.released){
+    if(e.s==='bossSlamWind')r.observed|=1;else if(e.s==='bossSlam')r.observed|=2;
+  }
+}
+function _druidSlamDisplayRelease(e){
+  const r=_druidSlamDisplay.get(e);
+  if(_druidSlamDisplayValid(e,r)&&r.observed===3&&e.s==='recover'&&Number.isFinite(e.st2)&&e.st2>0)r.released=true;
+  else _druidSlamDisplay.delete(e);
+}
+function _druidSlamDisplayFrame(e){
+  const r=_druidSlamDisplay.get(e);
+  return _druidSlamDisplayValid(e,r)&&r.released&&e.s==='recover'&&Number.isFinite(e.st2)&&e.st2>0?3:null;
+}
 // Renderer-owned history: only an observed summon may publish its cast/recovery cells.
 const _druidSummonDisplay=new WeakMap();
 function _druidSummonDisplayFrame(e,observe=false){
@@ -11024,6 +11054,7 @@ function _druidSummonDisplayFrame(e,observe=false){
 }
 function _drawDruidBoss(X,e,sa,tdY,spec,parentScale,parentYOffset){
   const _fanFrame=_druidFanDisplayFrame(e);
+  const _slamFrame=_druidSlamDisplayFrame(e);
   const _summonFrame=_druidSummonDisplayFrame(e,true);
   const _ch1NormalIntent=_ch1DruidIntent(e)==='normal'; // Intent approval precedes image readiness and legacy selector fallback.
   _drawDruidFinaleTell(X,e);
@@ -11073,6 +11104,7 @@ function _drawDruidBoss(X,e,sa,tdY,spec,parentScale,parentYOffset){
   else if(_isChgWind&&_druidSheets.transform&&_druidSheets.transform.ready){const _tp=Math.max(0,Math.min(1,1-e.st2/45));frame=Math.min(7,~~(_tp*8));sheet='transform';cols=8;rows=1;dirless=true;} // 돌진 와인드업=변신 시퀀스 0→7(서있는→야수)
   else if(_isCharge&&_druidSheets.beast&&_druidSheets.beast.ready){sheet='beast';cols=4;rows=2;dirless=true;frame=dir;} // 돌진=야수 변신형(8방향 4x2, 셀=방향)
   else if(_fanFrame!==null){sheet='attack';cols=4;rows=8;frame=_fanFrame;}
+  else if(_slamFrame!==null){sheet='attack';cols=4;rows=8;frame=_slamFrame;}
   else if(_summonFrame!==null){sheet='attack';cols=4;rows=8;frame=_summonFrame;}
   else if(key==='slash'||key==='slam'||key==='windup'||e.s==='bossDruidVolleyWind'||e.s==='bossDruidVolley'){
     sheet='attack';cols=4;rows=8;frame=(~~(_nw/150))%4;
@@ -11103,7 +11135,7 @@ function _drawDruidBoss(X,e,sa,tdY,spec,parentScale,parentYOffset){
   if(_ch1NormalIntent)_drawDruidBodyHitFlash(X,e,sa,img,sx,sy,cw,ch,-dw/2,-dh*.86,dw,dh);
   }
   X.globalCompositeOperation='source-over';X.globalAlpha=1;
-  }finally{X.restore();}if(_fanFrame!==null)_druidFanDisplayObserve(e);return true;
+  }finally{X.restore();}if(_fanFrame!==null)_druidFanDisplayObserve(e);_druidSlamDisplayObserve(e);return true;
 }
 // ── 대형보스 글로벌 설정 ──
 window._BOSS_GLOW=false; // 보스 하단 원형 글로우 오라 기본 OFF (2026-08-25 유저요청: 원으로 보임·불필요). true 시만 _drawDruidBoss 글로우 렌더
@@ -12116,9 +12148,9 @@ function _ch1DruidCurrent(owner,selection){
   if(!_ch1DruidScope()||!owner||owner.active!==true||owner.scene!==_ch1DruidScene||_ch1DruidActors.get(owner.actor)!==owner||owner.game!==G||owner.map!==G.map||owner.enemies!==ens||!ens.includes(owner.actor)||owner.selectedFrame!==selection||owner.lifeGeneration!==selection.lifeGeneration||owner.state!==owner.actor.s||_ch1DruidIntent(owner.actor)!=='normal')return false;
   const e=owner.actor;
   if((e.deaths||0)!==owner.deaths||(e._bossPhase||0)!==owner.bossPhase||!!e._druidLastStand!==owner.lastStand||!!e._druidDefeated!==owner.defeated||(e._reviveTimer>0)!==owner.pending||_druidDir(e)!==selection.nativeDir||owner.sheetRecord!==_druidSheets[selection.sheet]||owner.sheetRecord.ready!==true)return false;
-  const fanFrame=_druidFanDisplayFrame(e);
-  if(fanFrame!==null&&selection.index!==fanFrame)return false;
-  const key=_stage1CodexBossMotionKey(e),expected=fanFrame!==null||_druidSummonDisplayFrame(e)!==null||['slash','slam','windup'].includes(key)||e.s==='bossDruidVolleyWind'||e.s==='bossDruidVolley'?'attack':key==='walk'?'walk':'base8';
+  const fanFrame=_druidFanDisplayFrame(e),slamFrame=_druidSlamDisplayFrame(e);
+  if(fanFrame!==null&&selection.index!==fanFrame||slamFrame!==null&&selection.index!==slamFrame)return false;
+  const key=_stage1CodexBossMotionKey(e),expected=fanFrame!==null||slamFrame!==null||_druidSummonDisplayFrame(e)!==null||['slash','slam','windup'].includes(key)||e.s==='bossDruidVolleyWind'||e.s==='bossDruidVolley'?'attack':key==='walk'?'walk':'base8';
   const b=owner.borrowed,f=_ch1DruidImage(b?.image),lease=b&&_ch1DruidDecoded.get(b.image);
   return expected===selection.sheet&&!!lease&&lease.borrowed===b&&_ch1DruidLeaseCurrent(lease)&&!!b&&owner.sheetRecord.img===b.image&&owner.imageGeneration===b.generation&&selection.generation===b.generation&&!!f&&f.naturalWidth===b.width&&f.naturalHeight===b.height&&f.src===b.srcSnapshot&&f.currentSrc===b.currentSrcSnapshot&&f.srcset===b.srcsetSnapshot&&f.sizes===b.sizesSnapshot;
 }
@@ -37618,7 +37650,7 @@ const _HELL_ABERRANT_FACE=new Set(['jump','charge','slashCombo','sweep','tailSwi
 // 빨간색 = 패링 가능, 보라색 = 패링 불가
 const _PARRYABLE_ATK=new Set(['charge','slashCombo','slam','sweep','tailSwipe','spin','multiDash','teleStrike','swordWave','jump','judgeCut','delaySlash','perilThrust','phantomSwords','crescendoCombo','tideWave','rewindStrike','mirrorClone','shieldBash2','mirrorGuard','chainLightning','cageTrap','doppelganger']);
 function _bossStartPattern(e,mv,d,phase,extraDelay){
-  _druidFanDisplayBegin(e,mv.id);
+  _druidFanDisplayBegin(e,mv.id);_druidSlamDisplayBegin(e,mv.id);
   e._atkParryable=_PARRYABLE_ATK.has(mv.id);
   let tele=~~(mv.tele*BOSS_PHASES[phase].teleM)+(extraDelay||0);
   if(G.stage===2)tele=~~(tele*1.4);
@@ -38467,7 +38499,7 @@ function atkTicketRelease(e){
 }
 // ─── [S16f] ENEMY_UPD — 적 업데이트 (AI/이동/공격) ───
 function updateE(e,sp){
-  _druidFanDisplayPrune(e);
+  _druidFanDisplayPrune(e);_druidSlamDisplayPrune(e);
   if(e._lessonEnemy&&window._parryLesson?.active)return;
   // ═══ 텔레그래프 VFX 타이머 감소 ═══
   if(e._telegraphT>0){e._telegraphT-=sp;e._telegraphR=e.r+20}
@@ -41017,7 +41049,7 @@ function updateE(e,sp){
       for(let k=0;k<16;k++){const a=Math.PI*2*k/16;
         poolPart(e.x+Math.cos(a)*15,e.y+Math.sin(a)*15,Math.cos(a)*6,Math.sin(a)*6,'#996633',4+Math.random()*3,14)}
       for(let k=0;k<10;k++){poolPart(e.x+(Math.random()-.5)*40,e.y+(Math.random()-.5)*40,(Math.random()-.5)*3,-Math.random()*5-2,'#ff6600',2+Math.random()*2,10)}
-      e.s='recover';e.st2=40;
+      e.s='recover';e.st2=40;_druidSlamDisplayRelease(e);
     }break}
   // ═══ 횡두르기 (sweep) - 넓은 호 공격 ═══
   case'bossSweepWind':{
