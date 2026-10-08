@@ -8,7 +8,7 @@ function harness(entry,overrides={}){
  const c=vm.createContext({P:{s:'wSwing',activeLMBSk:'kiSlash',hp:100,mp:30,st2:4,_sbCd:0,x:20,y:30,r:12,skills:{},...overrides},G:{},pressed:true,attackContinued:false,loops:0,
   isAct:()=>c.pressed,_qIsIceOrb:()=>false,_qIsPeaceShield:()=>c.P.activeQSk==='peaceShield',
   _qDispatchIceOrb:()=>false,_enterPeaceShield:()=>{c.P.s='peaceShield';c.P._sbParryT=20;},
-  _eqAffix:()=>0,playSample:()=>{},_r:()=>1,_startShieldLoop:()=>{c.loops++;}});
+  _eqAffix:()=>0,_lSbParryT:()=>20,playSample:()=>{},_r:()=>1,_startShieldLoop:()=>{c.loops++;}});
  const start=src.indexOf('function _tryKiSlashQCancel(');
  if(start>=0)vm.runInContext(src.slice(start,src.indexOf('\n}',start)+2),c);
  const branch=src.indexOf("  case 'wWindup':case 'wSwing':case 'wRecover':");

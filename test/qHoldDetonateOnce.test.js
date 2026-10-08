@@ -19,6 +19,6 @@ test('Q hold auto-detonates only once until Q is released and pressed again', ()
   assert.match(block, /if\(P\.parryT>=120\)\{_detonateBlast\('자동기폭!',wp\(\)\.el\|\|0\);P\.parryT=0;P\._qDetonateFired=true\}/,
     'the first auto-detonation must latch the current Q hold');
 
-  const entries = gameHtml.match(/P\.s='sBlock';P\.st2=999;P\._sbParryT=20;P\._sbHoldT=0;P\._sbReleaseR=0;P\.parryT=0;P\._qDetonateFired=false;/g) || [];
+  const entries = gameHtml.match(/P\.s='sBlock';P\.st2=999;P\._sbParryT=_lSbParryT\(\);P\._sbHoldT=0;P\._sbReleaseR=0;P\.parryT=0;P\._qDetonateFired=false;/g) || [];
   assert.equal(entries.length, 6, 'every standard Q entry must clear stale charge and re-arm one detonation');
 });

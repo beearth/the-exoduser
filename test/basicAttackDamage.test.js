@@ -7,7 +7,7 @@ const noop=()=>{};
 function bowContext(){return vm.createContext({P:{x:0,y:0,facing:0},G:{mats:2},pProjs:[],
   bw:()=>({btype:'crossbow'}),BOWTYPES:{crossbow:{range:1000,atkMul:1.5}},
   bowRef:()=>100,pBowMul:()=>2,pXbowMul:()=>1.2,pBowRange:()=>1,pBowSpd:()=>1,
-  _autoBowSpec:()=>({range:1000,spd:13}),_eqAffix:()=>0,_getPProj:()=>({}),
+  _autoBowSpec:()=>({range:1000,spd:13}),_eqAffix:()=>0,_lEq:()=>0,_uEq:()=>0,_getPProj:()=>({}),
   XBOW_DMG:28,XBOW_PIERCE:false,_gxFiring:0,_gxTurret:{x:0,y:0},
   playSample:noop,playSampleAt:noop,poolPart:noop,_r:()=>1,SFX:{bow:noop}});}
 test('basic automatic crossbow triples damage including its flat bonus and keeps turret scaling',()=>{
@@ -22,7 +22,7 @@ test('manual normal bow triples damage and still consumes one malice',()=>{
 });
 test('basic melee swing triples its base without changing range or swing timing',()=>{
   const c=vm.createContext({P:{s:'wSwing',st2:3,baseAtk:20,atkArc:0},sp:1,
-    wp:()=>({atk:30,wRange:50,wArcW:.95,el:0}),enhMulAtk:()=>5,
+    wp:()=>({atk:30,wRange:50,wArcW:.95,el:0}),enhMulAtk:()=>5,_lEq:()=>0,_uEq:()=>0,
     hitArc:(...a)=>{c.hit=a;}});
   const start=html.indexOf("else if(P.s==='wSwing'){");
   vm.runInContext(html.slice(start+5,html.indexOf("else if(P.s==='wRecover')",start)),c);

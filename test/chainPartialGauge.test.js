@@ -32,6 +32,7 @@ for (const file of ['game.html', 'game-easy-test.html']) {
       _r: () => 1, _T: x => x, canMvBlink: () => !wall,
       dst: (x, y, a, b) => Math.hypot(a - x, b - y),
       playSample() {}, addTxt() {}, showPH() {}, _addSkProf() {}, addParts() {},
+      _uEq: () => 0, _lEq: () => 0, _uqMoveRefund() {},
       SFX: { magic() {}, slash() {} },
     });
     vm.runInContext(init + `\n_harpGauge=${gauge};`, c);

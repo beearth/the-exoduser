@@ -112,6 +112,7 @@
 |---|---|
 | 대검전사 스토리 영상 `video/warrior_story_v23_clean.mp4` (신규 캐릭터 생성 직후 재생) | ✅ v25 + 2026-10-06 첫 0~5초 칼을 쥔 오른손 교정. 이후 5484프레임·전체 오디오 동일, 실제 브라우저 재생기·KO 자막·Enter 검수. 캐시 `20261006-hand-grip`. 신규 캐릭터 생성 전체 흐름·NW.js 패키지 재검수 및 배포 미실시 — `docs/cinematic/WARINTRO_HAND_FIX_20261006.md` |
 | 구 전쟁 인트로 정지 이미지 `assets/cutscene/warintro/` 12장 (`?cutscene=1` 미리보기 전용) | 🟡 2026-10-01 마감: 12장 중 6장 교체(nemesia_hd·remember·war·throne·demonbattle·fallhell_custom), emg1 원본 유지(후보만 보존), 5장 미착수. 캐시 `?v=20261001-warstills2` — `docs/cinematic/WARINTRO_STILLS_AUDIT_20261001.md` |
+| 유니크 아이템 외관 27종 `assets/unique-items/ui-01~27.png`(원본) → `img/ui/unique-items/`(256px) | 🟡 2026-10-08 원화 채택·생성 완료(1x·4배 확대 점 검수 통과). 게임 연결(부위별 무작위 외관·이름·보라 등급색)은 진행 중 |
 | 캐릭터 선택 `portrait_warrior.png`(bust — 로비 캐릭터 썸네일·선택창 초상) | ✅ 2026-09-30 평범한 눈으로 교체 (`?v=20260930-eyefix`, 원본 `output/charselect_remaster_20260930/original/`) |
 | 맵 오브젝트 | 🧪 시험 1개 `output/mapobj_seedream_test_20260930/` (미배치) |
 | 캐릭터 선택 실버테일(`portrait_silvertail.png`·`silvertail_cut.png`)·배경(`bg_scene1/2.png`)·로비 포스터·엠블럼 | ✅ 점검(2026-10-01): 잔점 없음 |
@@ -167,6 +168,7 @@
 | 2026-10-06 | 대검전사 영상 첫 장면·로딩 rd13 칼자루 쥔 손 2차 교정(원화 GPT Image 2.5 sunburst 1장 → Hailuo 2.3 5초 → 첫 300프레임 교체), 사용자 원화 승인 후 진행 | MagicLight 450 (57,990→57,540) |
 | 2026-10-08 | 대검전사 영상 51~58초 킬루 응징 몽타주(원화 7장 중 3장 Hailuo 영상, 4장 카메라 연출), 사용자 컷 선별·전체 미리보기 승인 후 적용 — `docs/cinematic/WARINTRO_KILLU_MONTAGE_20261008.md` | MagicLight 2,950 (이미지 11장 2,200 + 영상 3개 750, 57,540→54,590) |
 | 2026-10-08 | 보석 소켓 세팅 그림 `img/ui/gem_socket_v1.png`(Seedream 1:1, 스타일=ossuary_socket_hf_v2) 생성·키잉·적용, 보석 탭 소켓 리디자인 — `docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md` 2026-10-08 절 | MagicLight 100 |
+| 2026-10-08 | 유니크 아이템 외관: UI-01~22 최종 채택(Higgsfield 원본, UI-05만 하이힐 실루엣 때문에 Seedream 후보), 빈 부위 5종 UI-23 바지·24 도끼·25 메이스·26 곤봉·27 창 Seedream 5.0 Pro 1:1 생성(카탈로그 공통 프롬프트), 27종 게임용 256px `img/ui/unique-items/` — `docs/7아이템디자인/보라색_고유아이템_카탈로그_20260930.md` 2026-10-08 절 | MagicLight 500 (5장, 표시 54,390 기준) |
 
 ### 지시 수신 기록
 

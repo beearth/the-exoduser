@@ -44,9 +44,9 @@ test('fallen player revival restores HP, MP, and ST to their maximums', () => {
   const _r = () => 1;
   const _T = (value) => value;
   const fn = Function(
-    'P', 'PASSIVES', 'G', 'OPT', 'SFX', 'playSample', 'addTxt', '_petSayCD', '_petOnDeath', 'poolPart', '_r', '_T',
+    'P', 'PASSIVES', 'G', 'OPT', 'SFX', 'playSample', 'addTxt', '_petSayCD', '_petOnDeath', 'poolPart', '_r', '_T', '_uEq',
     `${source}; return _fallenResolve;`,
-  )(P, PASSIVES, G, OPT, SFX, playSample, addTxt, _petSayCD, _petOnDeath, poolPart, _r, _T);
+  )(P, PASSIVES, G, OPT, SFX, playSample, addTxt, _petSayCD, _petOnDeath, poolPart, _r, _T, () => 0);
 
   fn();
 

@@ -16,6 +16,8 @@ function chargeContext() {
     canMv:()=>true,canMvBlink:()=>true,_harpDistTier:()=>300,
     SFX:{slash:noop,charge:noop},playSample:noop,_r:()=>1,addTxt:noop,_T:x=>x,_L:x=>x,
     _addSkProf:noop,shake:noop,doHitFlash:noop,poolPart:noop,addParts:noop,showPH:noop,
+    _uEq:()=>0,_lEq:()=>0,_uqMoveRefund:noop,
+    _uqS:{stage:-1,parryOrbT:0,kiPreT:0,warpT:0,gwRefund:0,iceCastId:0,iceUsed:0,iceHit:null,shieldBankT:0,shieldBankAmt:0,shieldBankCd:0,poiseOrbT:0,turretHits:0,lastShock:null,circuit:null,csEchoUsed:false,hdF:-1},
     magicRef:()=>1,statInt:()=>1,pMagicMul:()=>1,_skMul:()=>1,_isFused:()=>false,
     _kgRelease:(tier,mul)=>{ctx.released={tier,mul};ctx.P.s='sBash';ctx.P.st2=20;},
   });

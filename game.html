@@ -891,7 +891,7 @@ canvas{display:block;position:fixed;inset:0}
 .iskin.r2{box-shadow:inset 0 0 0 1px rgba(75,143,255,.55),0 0 5px rgba(75,143,255,.3)}
 .iskin.r3{box-shadow:inset 0 0 0 1px rgba(187,85,255,.6),0 0 6px rgba(187,85,255,.36)}
 .iskin.r4{box-shadow:inset 0 0 0 1.5px rgba(255,170,0,.85),0 0 9px rgba(255,170,0,.42)}
-.iskin.r5{box-shadow:inset 0 0 0 1.5px rgba(255,74,102,.9),0 0 11px rgba(255,74,102,.5)}
+.iskin.r5{box-shadow:inset 0 0 0 1.5px rgba(142,85,233,.95),0 0 12px rgba(142,85,233,.55)}
 /* 속성 틴트: 물리 base(용암 오렌지) → 속성색 hue-rotate (el0 물리 / el1 화염=원본) */
 .iskin-img.el2{filter:hue-rotate(175deg) saturate(1.25)}                    /* 빙결 blue */
 .iskin-img.el3{filter:hue-rotate(255deg) saturate(1.2)}                     /* 암흑 purple */
@@ -2402,7 +2402,8 @@ canvas{display:block;position:fixed;inset:0}
 #invPanel .inv-eq-slot.rarity-1{border-color:#65b65f!important;box-shadow:0 0 10px rgba(101,182,95,.2)!important}
 #invPanel .inv-eq-slot.rarity-2{border-color:#5ca8e8!important;box-shadow:0 0 10px rgba(92,168,232,.23)!important}
 #invPanel .inv-eq-slot.rarity-3{border-color:#b67de0!important;box-shadow:0 0 11px rgba(182,125,224,.25)!important}
-#invPanel .inv-eq-slot.rarity-4,#invPanel .inv-eq-slot.rarity-5{border-color:#e4bd58!important;box-shadow:0 0 13px rgba(228,189,88,.28)!important}
+#invPanel .inv-eq-slot.rarity-4{border-color:#e4bd58!important;box-shadow:0 0 13px rgba(228,189,88,.28)!important}
+#invPanel .inv-eq-slot.rarity-5{border-color:#8e55e9!important;box-shadow:0 0 13px rgba(142,85,233,.4)!important}
 #invPanel .inv-eq-slot.selected{border-color:#ffe0a0!important;background:rgba(190,126,53,.35)!important;box-shadow:0 0 20px rgba(242,173,84,.48),inset 0 0 12px rgba(255,209,143,.18)!important}
 #invPanel .inv-eq-slot.inv-eq-item:hover{
   transform:translateY(-1px);border-color:#d4a36c!important;
@@ -3667,7 +3668,7 @@ function dbRestore(d){
     for(const s of SLOT_NAMES)_fixWpnSpd(INV.equipped[s]);
     // 무기 표시명 마이그레이션: 구 wpNames(타입 무관 '대검') 저장분을 _weaponName(타입별 정합)으로 재생성.
     //   name(표시 문자열)만 갱신 — wtype/id/스탯 불변 → 세이브 타입 identity 유지.
-    const _fixWpnName=(it)=>{if(it&&it.slot==='weapon'&&it.wtype&&WTYPES[it.wtype]&&(it._nameMig||0)<1){
+    const _fixWpnName=(it)=>{if(it&&it.slot==='weapon'&&it.wtype&&WTYPES[it.wtype]&&!it.uniqueArt&&(it._nameMig||0)<1){ // 유니크 외관 이름은 보존
       it.name=_weaponName(it.wtype,it.el||0,it.tier||0);
       it._nameMig=1}};
     INV.bag.forEach(_fixWpnName);
@@ -6249,6 +6250,38 @@ const _EN={
 // --- CAT-90: Boss Move texts ---
 '⚡ 연격!':'⚡ Rapid Strike!','⚔ 난타!':'⚔ Barrage!','💥 강타!':'💥 Slam!','🌀 휘두르기!':'🌀 Sweep!',
 '방어↓':'DEF↓',
+// --- 유니크 특수 신규 25종 (2026-10-08, No.3125~3171) ---
+'하옵':'Low Roll','중옵':'Mid Roll','상옵':'High Roll',
+'약화!':'Weakened!','칼날 예열!':'Blade Primed!','기동 회수!':'Gauge Refund!','쿨 회수!':'CD Refund!',
+'잔불 분노!':'Ember Rage!','재점화!':'Rekindle!','파열 저장!':'Burst Stored!','파열 방출!':'Burst Unleashed!',
+'독성 파열!':'Toxic Burst!','증기 파열!':'Steam Burst!','반향!':'Echo!','폭심 충격파!':'Vortex Shock!',
+'잔상 칼날!':'Phantom Blade!','자식 덫!':'Offshoot Trap!','전류선!':'Current Link!','일제사격!':'Salvo!',
+'장판 수렴!':'Zones Converged!','MP 환류!':'MP Return!','독 파편!':'Venom Shard!',
+'분노가 가득 차면 분노스킬 쿨다운 {s}초 회복':'When Rage fills up: recover {s}s of Rage skill cooldown',
+'전격이동 경로의 적에게 약화 — 받는 피해 +{p}% (5초)':'Enemies in Flash Step path are weakened — damage taken +{p}% (5s)',
+'기검참 차징 3타 데미지 +{p}%':'Ki Slash charged 3rd hit damage +{p}%',
+'패링 후 5초 내 다음 악의구가 반향 구체 2발 추가 (각 {p}%)':'Within 5s after a parry, next Malice Orb adds 2 echo orbs ({p}% each)',
+'악의구 폭발이 중독 3중첩 적에게 2차 폭발 ({p}%)':'Malice Orb blast on 3+ poison stacks: secondary burst ({p}%)',
+'완충전 처내기 적중 시 다음 기검참 3타 차징 {s}초 선지급':'Fully charged Blade Parry hit: next Ki Slash 3rd-hit charge gets {s}s head start',
+'파쇄가 빙결 적을 맞히면 적당 얼음보주 쿨다운 {s}초 회복':'Shatter hitting frozen enemies: recover {s}s Ice Orb cooldown per enemy',
+'뇌전걸음 표식 적이 5초 내 죽으면 기동게이지 {p}% 회수':'Ghost Walk-marked enemy dies within 5s: recover {p}% mobility gauge',
+'시간왜곡 후 3초 내 첫 기동기 비용 {p}% 환급':'Within 3s after Time Warp: first mobility skill refunds {p}% of its cost',
+'3단 사슬기동이 적 3명 이상 적중 시 기동게이지 {p}% 회수':'Tier-3 chain dash hitting 3+ enemies: recover {p}% mobility gauge',
+'기동칼날개가 출혈 적 처치 시 잔상 칼날 1발 ({p}%)':'Chain Bladewing kill on bleeding enemy: 1 phantom blade ({p}%)',
+'전류장판 2개를 연속 설치하면 전류선으로 연결 (틱 {p}%)':'Two consecutive shock fields are linked by a current line (tick {p}%)',
+'지옥강타가 분노 100 이상 소모 시 {p}% 잔류 (최대 30)':'Hell Slam spending 100+ Rage: {p}% remains (max 30)',
+'천공쇄기가 적 체간을 붕괴시키면 충전 {s}초 회복':'Sky Crusher breaking enemy poise: recover {s}s of charge',
+'회복의 영역 안 Q 패링마다 영역 쿨다운 {s}초 회복':'Each Q parry inside Sacred Domain: recover {s}s of its cooldown',
+'가시덫 DOT 처치 시 자식 덫 생성 (틱 {p}%, 3초)':'Spike Trap DOT kill spawns an offshoot trap (tick {p}%, 3s)',
+'폭풍소환 소용돌이 안 악의구 폭발 시 추가 충격파 ({p}%)':'Malice Orb bursting inside a vortex: extra shockwave ({p}%)',
+'석궁이 중독 3중첩 적 적중 시 독 파편이 다른 적에게 ({p}%)':'Crossbow bolt on 3+ poison stacks: venom shard hits another enemy ({p}%)',
+'공성쇠뇌 철거 시 축적 탄 일제사격 (최대 {n}발)':'Dismantling Siege Crossbow fires stored bolts as a salvo (max {n})',
+'블랙 종료 시 주변 공격 장판 {n}개를 중심으로 수렴':'When Black Star ends: pull up to {n} nearby attack zones to its center',
+'탄막블랙홀 흡수 10발마다 최대 MP {p}% 환급 (상한 15%)':'Per 10 bullets absorbed by Bullet Black Hole: refund {p}% max MP (cap 15%)',
+'업화선 폭발이 빙결 적을 맞히면 증기 파열 ({p}%)':'Hellfire Beam blast on frozen enemy: steam burst ({p}%)',
+'에너지쉴드 파괴 시 3초 내 Q 패링에 파열 에너지 저장 ({p}%)':'Energy shield break: next Q parry within 3s stores burst energy ({p}%)',
+'악마화 부활 성공 시 분노 {n} 즉시 충전':'On successful Demon Revive: instantly charge {n} Rage',
+'체간 붕괴 후 5초 내 악의구가 균열 잔향 1발 ({p}%)':'Within 5s after breaking poise: next Malice Orb sends 1 fracture echo ({p}%)',
 // --- Skill Names ---
 '기검참':'Ki Slash','악의구':'Malice Orb','회전참':'Whirlwind','기폭팔':'Detonate',
 '칼등 처내기':'Blade Parry','만화방창':'Needle Barrage','멸살광선':'Annihilation Beam',
@@ -7211,6 +7244,42 @@ const _EN={
 '회피반격의':'Dodge Counter',
 '패링폭파의':'Parry Shatter',
 '검기막이의':'Bladeward',
+'극참의':'of the Final Cut',
+'잠식의':'of Erosion',
+'격노일섬의':'of Wrathful Strikes',
+'분쇄의':'of Shattering',
+'분노스킬 치명타율+':'Rage Skill Crit Chance+',
+'분노스킬 피해+':'Rage Skill DMG+',
+'악의 약화 단당+':'Malice Weakness per stack+',
+'기검참3단 확정치명·치명뎀':'Ki Slash full charge: guaranteed crit, +Crit DMG',
+'악의 약화':'Malice Weakness',
+'반향의 장막':'Veil of Echoes',
+'독심의 봉환':'Venomheart Coil',
+'삼획의 맹세':'Oath of Three Strokes',
+'빙편을 거두는 손':'Shard-Reaping Hand',
+'귀환자의 잔보':"Returner's Stride",
+'되감긴 고리':'Rewound Circlet',
+'셋째 사슬의 고삐':'Rein of the Third Chain',
+'혈흔을 따르는 날':'Bloodtrail Edge',
+'쌍극의 회로':'Bipolar Circuit',
+'꺼지지 않는 심갑':'Unquenched Heartplate',
+'체간을 깨는 추':'Poisebreaker Maul',
+'성역의 숨결':'Breath of the Sanctum',
+'번지는 뿌리의 띠':'Girdle of Spreading Roots',
+'폭심의 씨앗':'Seed of the Epicenter',
+'독을 기억하는 석궁':'Venom-Remembering Crossbow',
+'철거자의 명령':"Demolisher's Command",
+'무중력의 왕관':'Weightless Crown',
+'흡성의 목걸이':'Starsink Necklace',
+'증기 단조의 손':'Steamforged Hand',
+'파열을 품은 견갑':'Rupture-Bearing Pauldron',
+'돌아온 자의 흉갑':'Cuirass of the Returned',
+'균열을 보는 눈':'Eye That Sees the Rift',
+'봉인된 무릎의 각반':'Sealed-Knee Greaves',
+'균열을 문 도끼':'Rift-Bitten Axe',
+'갇힌 심장의 메이스':'Caged-Heart Mace',
+'결정 뿌리의 곤봉':'Crystal-Root Club',
+'갈고리 날개의 창':'Hookwing Spear',
 '블록치유의':'Block Heal',
 '블록영력의':'Block Mana',
 '회전참강화':'Spin Slash Boost',
@@ -7475,6 +7544,20 @@ const _EN={
 '처치 시 데빌포스 5% 회복':'Kill: restore 5% DevilForce',
 'HP 50% 이하 시 전 스킬 쿨다운 -30%':'Below 50% HP: all skill CD -30%',
 '물약 사용 시 5초간 피해 +15%':'Using Potion: DMG +15% for 5s',
+// --- Legendary Special 실구현 문구 (2026-10-08 무작위화+실효과 구현) ---
+'기검참 3타 콤보 완성 시 분노 20% 즉시 충전':'Complete 3-hit Ki Slash combo: instantly charge 20% Rage',
+'넉백 거리 2배 + 벽충돌 시 추가 데미지 50%':'Knockback distance ×2 + 50% bonus DMG on wall slam',
+'사슬기동 착지마다 8초간 데미지 +20% 중첩(최대5)':'Each chain-dash landing: DMG +20% for 8s (stacks, max 5)',
+'스킬 쿨다운 -20%':'Skill cooldown -20%',
+'속성 약점 적중 시 추가 폭발 (ATK×80%)':'On elemental weakness hit: bonus explosion (ATK×80%)',
+'처치 시 분노 5% 회복':'Kill: restore 5% Rage',
+'💥충격파!':'💥Shockwave!',
+'💥벽충돌!':'💥Wall Slam!',
+'🩸출혈 폭발!':'🩸Bleed Burst!',
+'⚡회피 일격!':'⚡Evasive Strike!',
+'⚔착지 중첩 ':'⚔Landing Stack ',
+'🧪피해 증가!':'🧪DMG Up!',
+'💥속성 폭발!':'💥Elemental Burst!',
 // --- Affix Desc (CAT-83) ---
 '독 DoT':'Poison DoT',
 '화상 DoT':'Fire DoT',
@@ -12527,6 +12610,7 @@ function _dispatchSkillSlot(slotIdx,keyCode){
     case 'ghostXbowTurret':
       if(_gxTurret){
         // 이미 설치됨 → 철거 → 이동식으로 복귀
+        _uqTurretSalvo(); // 유니크 u_d16: 수동 철거 일제사격 (축적 명중 10회/발, 자동회수·맵전환은 불발)
         _gxTurret=null;_xbowEquipped=true;
         // 공성유령 합체: 허수아비도 동반 철거 + 자원 회수 (쿨다운 없음)
         if(G._voidScarecrow&&G._voidScarecrow.siegeGhost){
@@ -12791,6 +12875,7 @@ addEventListener('keyup',e=>{
     const _hStCost=P.mst*0.01*_dashTier;
     if(_gCost>0&&P.st>=_hStCost){
       _harpGauge-=_gCost;P.st-=_hStCost;
+      _uqMoveRefund(_gCost); // 유니크 u_d06
       if(G._pStats)G._pStats._dC++;
       const _hSk=P.activeChargeSk||'charge';
       const _isDB=isDimBreach();
@@ -13749,7 +13834,7 @@ function _tryKiSlashQCancel(){
     _enterPeaceShield();return true;
   }
   if(P.mp<10)return false;
-  P.mp-=10;P.s='sBlock';P.st2=999;P._sbParryT=20;P._sbHoldT=0;P._sbReleaseR=0;P.parryT=0;P._qDetonateFired=false;
+  P.mp-=10;P.s='sBlock';P.st2=999;P._sbParryT=_lSbParryT();P._sbHoldT=0;P._sbReleaseR=0;P.parryT=0;P._qDetonateFired=false;
   P._sbCd=~~(30*(1+_eqAffix('shieldCdRed')));
   G._sbBurst={x:P.x,y:P.y,r:P.r+5,maxR:P.skills.detonate>=1?150+((P.skills.detonate||1)-1)*15:90,spd:8,det:P.skills.detonate>=1};
   playSample('shield_activate',.8,_r(1,.08));_startShieldLoop();
@@ -13763,7 +13848,7 @@ function _sBlockProjectileZone(distance,parryT){
   if(distance<=20)return 'absorb';
   return parryT>0&&distance<=100?'parry':'none';
 }
-function _enterPeaceShield(){P.s='peaceShield';P._psShieldR=100;P._psHoldT=0;P._sbHoldT=0;P._sbReleaseR=0;P._sbParryT=20;P.parryT=0;P.parryBank=0;playSample('shield_activate',.6,_r(.8,.1));_startShieldLoop();_addSkProf('peaceShield')}
+function _enterPeaceShield(){P.s='peaceShield';P._psShieldR=100;P._psHoldT=0;P._sbHoldT=0;P._sbReleaseR=0;P._sbParryT=_lSbParryT();P.parryT=0;P.parryBank=0;playSample('shield_activate',.6,_r(.8,.1));_startShieldLoop();_addSkProf('peaceShield')}
 function _qDispatchIceOrb(){
   if(!_qIsIceOrb())return false;
   if(P._ioActive){activateIceShatter();return true}
@@ -13792,7 +13877,7 @@ const RARITY=['common','uncommon','rare','epic','legend'];
 const RARITY_N=['일반','고급','희귀','영웅','전설','유니크'];
 const RARITY_N_EN=['Common','Uncommon','Rare','Epic','Legendary','Unique'];
 function _rarName(i){return _L(RARITY_N[i],RARITY_N_EN[i])}
-const RARITY_C=['#aaa','#44cc44','#4488ff','#bb44ff','#ffaa00','#ff4466'];
+const RARITY_C=['#aaa','#44cc44','#4488ff','#bb44ff','#ffaa00','#8e55e9']; // 유니크=자수정(영웅 #bb44ff보다 어둡고 푸른 보라, 보라색_고유아이템_카탈로그)
 const RARITY_MUL=[1, 1.2, 1.5, 1.8, 2.2, 2.5];
 // ═══ 바이블 상수 ═══
 const PLAYER_BASE_HP=100,HP_PER_STAGE=6,PLAYER_BASE_ATK=15,ATK_PER_STAGE=2;
@@ -13884,6 +13969,9 @@ const AFFIX_POOL=[
   // 분노(rage) — 패링 적립 / 지옥강타 1 소비 강화 (근접무기 전용, 석궁 제외)
   {id:'rageMaxFlat',type:0,tiers:[10,20,35,55,80],unit:'val',slots:['wpn'],group:'rgMx',weight:45},
   {id:'rageDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn'],group:'rgDm',weight:45},
+  // 분노 스킬(지옥강타 1·2, 천공쇄기) 적중 전용 — hurtE opts.rageSk
+  {id:'rageSkCrit',type:1,tiers:[.05,.08,.12,.18,.25],unit:'prob',slots:['wpn'],group:'rgSC',weight:40},
+  {id:'rageSkDmg',type:1,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['wpn'],group:'rgSD',weight:40},
 
   // ═══════════════════════════════════════════════════
   // 방어구 파트 PREFIX (armor,shield,gloves,pants,boots,cloak)
@@ -14048,11 +14136,14 @@ const AFFIX_POOL=[
   {id:'onBlockMana',type:1,tiers:[3,6,10,16,24],unit:'val',slots:['shield'],group:'oBMn',weight:40},
   // 유니크 전용(minGrade:5): 기검참 3타 발사 순간 20틱 물리 패링 판정 (E 칼등치기 판정 공유)
   {id:'kiSlashParry',type:1,tiers:[20,20,20,20,20],unit:'tick',slots:['wpn','gloves','bracelet'],group:'uKsP',weight:30,minGrade:5},
+  // 기검참 3단(3타 풀차지) 검기: 확정 치명타 + 치명 피해 +100% (중복 장착 비가산, 일반 랜덤 어픽스)
+  {id:'kiSlashFullCrit',type:1,tiers:[1,1,1,1,1],unit:'pct',slots:['wpn','gloves','bracelet'],group:'kSFC',weight:30},
 
   // ═══ Phase 3: 스킬 개별 강화 (20종) ═══
   {id:'skWhirlDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn'],group:'sWD',weight:40},
   {id:'skBeamDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['helm'],group:'sBD',weight:40},
   {id:'skFireballDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['helm'],group:'sFD',weight:40},
+  {id:'maliceWeakAmp',type:1,tiers:[.05,.08,.12,.16,.20],unit:'pct',slots:['helm'],group:'mWA',weight:35}, // 악의 약화 단당 증가율 +X%p (기본 30%에 합산)
   {id:'skMissileDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['xbow'],group:'sMD',weight:40},
   {id:'skBlueShotDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['xbow'],group:'sBSD',weight:40},
   {id:'skBlastShotDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['xbow'],group:'sBShD',weight:40},
@@ -14334,7 +14425,7 @@ const AFFIX_NAMES_KO={
   onHitFireball:'화구발사의',onHitChainL:'연쇄뇌격의',onHitFreeze:'동결타의',onHitStun:'경직타의',onHitPoison:'독침의',onHitBleed:'출혈의',onHitWeaken:'약화의',onHitSlow:'둔화의',onHitMark:'표적의',
   onCritExplode:'회심폭발의',onCritChain:'회심연쇄의',onCritFreeze:'회심빙결의',onCritHeal:'회심치유의',onCritMana:'회심영력의',onCritShield:'회심수호의',
   onHitDefBoost:'피격강화의',onHitThorns:'반격가시의',procIceNova:'빙결파동의',procDarkShield:'암흑보호의',procHealPulse:'치유파동의',procCorpseExplode:'시체폭발의',
-  onDodgeDmg:'회피반격의',onParryBurst:'패링폭파의',kiSlashParry:'검기막이의',onBlockHeal:'블록치유의',onBlockMana:'블록영력의',
+  onDodgeDmg:'회피반격의',onParryBurst:'패링폭파의',kiSlashParry:'검기막이의',kiSlashFullCrit:'극참의',maliceWeakAmp:'잠식의',rageSkCrit:'격노일섬의',rageSkDmg:'분쇄의',onBlockHeal:'블록치유의',onBlockMana:'블록영력의',
   skWhirlDmg:'회전참강화',skBeamDmg:'옴니빔강화',skFireballDmg:'화구강화',skMissileDmg:'미사일강화',skBlueShotDmg:'청탄강화',skBlastShotDmg:'폭렬탄강화',
   skHellRayDmg:'지옥광선강화',skMaliceStormDmg:'악의폭풍강화',skChainSlashDmg:'연쇄참강화',skGiantSlamDmg:'지옥강타 1 강화',
   skGhostWalkDmg:'유령보행강화',skMaliceMortarDmg:'악의박격강화',skFireAuraDmg:'화염오라강화',skIceOrbDmg:'빙구강화',skFireBeamDmg:'화염빔강화',
@@ -14416,7 +14507,7 @@ const _AFFIX_DESC={
   onHitFireball:'적중시화구',onHitChainL:'적중시연쇄뇌격',onHitFreeze:'적중빙결%',onHitStun:'적중스턴%',onHitPoison:'적중중독%',onHitBleed:'적중출혈%',onHitWeaken:'적중약화%',onHitSlow:'적중감속%',onHitMark:'적중표적%',
   onCritExplode:'크리폭발(HP%)',onCritChain:'크리연쇄(HP%)',onCritFreeze:'크리빙결%',onCritHeal:'크리HP+',onCritMana:'크리MP+',onCritShield:'크리쉴드+',
   onHitDefBoost:'피격방어+',onHitThorns:'반격가시',procIceNova:'빙결파동%',procDarkShield:'자동암흑막',procHealPulse:'주기치유',procCorpseExplode:'시체폭발%',
-  onDodgeDmg:'회피뎀+',onParryBurst:'패링폭발%',kiSlashParry:'기검참3타패링',onBlockHeal:'블록HP+',onBlockMana:'블록MP+',
+  onDodgeDmg:'회피뎀+',onParryBurst:'패링폭발%',kiSlashParry:'기검참3타패링',kiSlashFullCrit:'기검참3단 확정치명·치명뎀',maliceWeakAmp:'악의 약화 단당+',rageSkCrit:'분노스킬 치명타율+',rageSkDmg:'분노스킬 피해+',onBlockHeal:'블록HP+',onBlockMana:'블록MP+',
   skWhirlDmg:'회전참뎀+',skBeamDmg:'옴니빔뎀+',skFireballDmg:'화구뎀+',skMissileDmg:'미사일뎀+',skBlueShotDmg:'청탄뎀+',skBlastShotDmg:'폭렬탄뎀+',
   skHellRayDmg:'지옥광선뎀+',skMaliceStormDmg:'악의폭풍뎀+',skChainSlashDmg:'연쇄참뎀+',skGiantSlamDmg:'지옥강타 1 뎀+',
   skGhostWalkDmg:'유령보행뎀+',skMaliceMortarDmg:'악의박격뎀+',skFireAuraDmg:'화염오라뎀+',skIceOrbDmg:'빙구뎀+',skFireBeamDmg:'화염빔뎀+',
@@ -14471,29 +14562,55 @@ const IMPLICIT_TABLE={
   headband:{ko:'마법 데미지 +X%',  stat:'_iMagDmg',  val:[5,12]},
   ossuary: {ko:'전대 위력 +X%',    stat:'_iAncPow',  val:[5,15]},
 };
-// ─── 전설 특수 효과 (슬롯+무기타입별 고정 1개) ───
+// ─── 전설 특수 효과 (rarity>=4: 부위·무기종류 무관 19종 풀에서 무작위 1개, 유니크도 상속) ───
+// 키는 원래 출처 부위 표기용. 효과는 _lEq(stat)로 어느 부위에 장착해도 동작 (비가산, 첫 값 1개).
 const LEGENDARY_SPECIAL={
-  weapon_sword:    {ko:'5타 콤보 완성 시 데빌포스 20% 즉시 충전',         stat:'_lSwordCombo', val:0.20},
+  weapon_sword:    {ko:'기검참 3타 콤보 완성 시 분노 20% 즉시 충전',        stat:'_lSwordCombo', val:0.20},
   weapon_dagger:   {ko:'처치 시 이속 +40%(3초) + 다음 공격 크리 보장',    stat:'_lDaggerKill', val:1},
   weapon_hammer:   {ko:'스태거 발동 시 범위 충격파 (ATK×120%)',           stat:'_lHammerShock',val:1.20},
   weapon_mace:     {ko:'스태거 발동 시 범위 충격파 (ATK×100%)',           stat:'_lMaceShock',  val:1.00},
-  weapon_club:     {ko:'강타 시 적 넉백 거리 2배 + 벽충돌 추가뎀',        stat:'_lClubKB',     val:2},
+  weapon_club:     {ko:'넉백 거리 2배 + 벽충돌 시 추가 데미지 50%',        stat:'_lClubKB',     val:2},
   weapon_axe:      {ko:'출혈 대상 크리 시 잔여 DoT×300% 즉시 폭발',       stat:'_lAxeBleed',   val:3.00},
-  weapon_spear:    {ko:'사슬 착지 타격 수만큼 데미지 +20% 중첩(최대5)',    stat:'_lSpearStack', val:0.20},
+  weapon_spear:    {ko:'사슬기동 착지마다 8초간 데미지 +20% 중첩(최대5)',   stat:'_lSpearStack', val:0.20},
   bow:             {ko:'치명타 시 추가 투사체 1발 발사',                   stat:'_lBowCrit',    val:1},
   shield:          {ko:'패리 성공 시 반격 데미지 ×2',                     stat:'_lShieldParry',val:2},
   armor:           {ko:'피격 시 3초 쿨로 HP 5% 즉시 회복',               stat:'_lArmorRegen', val:0.05},
-  helmet:          {ko:'스킬 사용 시 20% 확률로 쿨다운 미소모',           stat:'_lHelmFree',   val:0.20},
+  helmet:          {ko:'스킬 쿨다운 -20%',                               stat:'_lHelmFree',   val:0.20},
   gloves:          {ko:'공격속도 +20% + 기본공격에 랜덤 원소 추가',       stat:'_lGloveElem',  val:1},
   pants:           {ko:'이동 중 지속 HP 재생 (초당 HP의 1%)',             stat:'_lPantsRegen', val:0.01},
   boots:           {ko:'회피 직후 첫 공격 데미지 +80%',                   stat:'_lBootsEvade', val:0.80},
   cape:            {ko:'패리 타이밍 판정 +50% 확대',                      stat:'_lCapeParry',  val:0.50},
-  ring1:           {ko:'원소 반응 발동 시 추가 폭발 (ATK×80%)',           stat:'_lRingElem',   val:0.80},
-  ring2:           {ko:'처치 시 데빌포스 5% 회복',                        stat:'_lRingKill',   val:0.05},
+  ring1:           {ko:'속성 약점 적중 시 추가 폭발 (ATK×80%)',           stat:'_lRingElem',   val:0.80},
+  ring2:           {ko:'처치 시 분노 5% 회복',                            stat:'_lRingKill',   val:0.05},
   necklace:        {ko:'HP 50% 이하 시 전 스킬 쿨다운 -30%',             stat:'_lNeckLow',    val:0.30},
   belt:            {ko:'물약 사용 시 5초간 피해 +15%',                    stat:'_lBeltBuff',   val:0.15},
 };
 // ─── 유니크 특수 효과 (rarity=5 전용, 아래 풀에서 무작위 1개 — 키는 원래 출처 부위 표기용) ───
+// ─── 유니크 외관 (부위별 원화 풀, img/ui/unique-items/ui-XX.png — docs/7아이템디자인/보라색_고유아이템_카탈로그_20260930.md) ───
+const UNIQUE_ART={
+  sword:[{id:'ui-03',ko:'삼획의 맹세'}],
+  dagger:[{id:'ui-08',ko:'혈흔을 따르는 날'}],
+  hammer:[{id:'ui-11',ko:'체간을 깨는 추'}],
+  axe:[{id:'ui-24',ko:'균열을 문 도끼'}],
+  mace:[{id:'ui-25',ko:'갇힌 심장의 메이스'}],
+  club:[{id:'ui-26',ko:'결정 뿌리의 곤봉'}],
+  spear:[{id:'ui-27',ko:'갈고리 날개의 창'}],
+  crossbow:[{id:'ui-15',ko:'독을 기억하는 석궁'}],
+  shield:[{id:'ui-12',ko:'성역의 숨결'},{id:'ui-20',ko:'파열을 품은 견갑'}],
+  armor:[{id:'ui-10',ko:'꺼지지 않는 심갑'},{id:'ui-21',ko:'돌아온 자의 흉갑'}],
+  helmet:[{id:'ui-17',ko:'무중력의 왕관'}],
+  gloves:[{id:'ui-04',ko:'빙편을 거두는 손'},{id:'ui-16',ko:'철거자의 명령'},{id:'ui-19',ko:'증기 단조의 손'}],
+  boots:[{id:'ui-05',ko:'귀환자의 잔보'}],
+  pants:[{id:'ui-23',ko:'봉인된 무릎의 각반'}],
+  belt:[{id:'ui-07',ko:'셋째 사슬의 고삐'},{id:'ui-13',ko:'번지는 뿌리의 띠'}],
+  necklace:[{id:'ui-14',ko:'폭심의 씨앗'},{id:'ui-18',ko:'흡성의 목걸이'}],
+  ring:[{id:'ui-02',ko:'독심의 봉환'}],
+  cape:[{id:'ui-01',ko:'반향의 장막'}],
+  bracelet:[{id:'ui-09',ko:'쌍극의 회로'}],
+  earring:[{id:'ui-06',ko:'되감긴 고리'},{id:'ui-22',ko:'균열을 보는 눈'}],
+};
+// _itemSkin과 같은 base 규칙 (무기=wtype, 활=btype→석궁, 반지/머리띠 통합)
+function _uniqueArtBase(it){let b=it.wtype||(it.slot==='bow'||it.btype?'crossbow':'')||it.slot||'';return({ring1:'ring',ring2:'ring',headband:'earring',headband2:'earring'})[b]||b}
 const UNIQUE_SPECIAL={
   weapon_sword:    {ko:'분노의 최대치가 100% 추가된다 (200%까지)',          stat:'_uRageMax',      val:100},
   weapon_dagger:   {ko:'패링한 탄막의 관통률이 100% 추가된다',              stat:'_uDaggerPierce', val:1.0},
@@ -14507,7 +14624,37 @@ const UNIQUE_SPECIAL={
   helmet:          {ko:'마법 스킬 데미지 +50% + 마나 소모 -50%',           stat:'_uHelmMagic',    val:0.50},
   gloves:          {ko:'공격속도 +40%',                                   stat:'_uGloveSpd',     val:0.40},
   cape:            {ko:'패링 성공 시 분노스킬 쿨다운 {s}초 회복',           stat:'_uParryRageCd',  val:30, roll:[30,60]},
+  // ─── 신규 25종 (2026-10-08, docs/7아이템디자인/유니크_어픽스_리스트.md B절+D절) ───
+  // roll=정수 균등. scale 있으면 item[stat]=롤값×scale(소수 저장), 없으면 롤값 그대로.
+  // 툴팁 치환: {s}=롤값/60초, {p}=롤값(%표기), {n}=롤값(개수/발수/분노). 구 12종 세이브는 scale 없어 무변경.
+  u_n01: {ko:'분노가 가득 차면 분노스킬 쿨다운 {s}초 회복',                    stat:'_uRageFullCd',        val:600,  roll:[600,1800]},
+  u_n02: {ko:'전격이동 경로의 적에게 약화 — 받는 피해 +{p}% (5초)',            stat:'_uBlinkWeak',         val:0.50, roll:[50,100], scale:0.01},
+  u_n03: {ko:'기검참 차징 3타 데미지 +{p}%',                                 stat:'_uKiChargeDmg',       val:0.50, roll:[50,100], scale:0.01},
+  u_d01: {ko:'패링 후 5초 내 다음 악의구가 반향 구체 2발 추가 (각 {p}%)',      stat:'_uParryOrbEcho',      val:0.20, roll:[20,40],  scale:0.01},
+  u_d02: {ko:'악의구 폭발이 중독 3중첩 적에게 2차 폭발 ({p}%)',               stat:'_uOrbPoisonBurst',    val:0.30, roll:[30,50],  scale:0.01},
+  u_d03: {ko:'완충전 처내기 적중 시 다음 기검참 3타 차징 {s}초 선지급',        stat:'_uKiPrecharge',       val:20,   roll:[20,40]},
+  u_d04: {ko:'파쇄가 빙결 적을 맞히면 적당 얼음보주 쿨다운 {s}초 회복',        stat:'_uIceShatterRefund',  val:60,   roll:[60,180]},
+  u_d05: {ko:'뇌전걸음 표식 적이 5초 내 죽으면 기동게이지 {p}% 회수',          stat:'_uGhostFuel',         val:0.10, roll:[10,30],  scale:0.01},
+  u_d06: {ko:'시간왜곡 후 3초 내 첫 기동기 비용 {p}% 환급',                   stat:'_uWarpStepRefund',    val:0.10, roll:[10,30],  scale:0.01},
+  u_d07: {ko:'3단 사슬기동이 적 3명 이상 적중 시 기동게이지 {p}% 회수',        stat:'_uChainCrowdRefund',  val:0.20, roll:[20,40],  scale:0.01},
+  u_d08: {ko:'기동칼날개가 출혈 적 처치 시 잔상 칼날 1발 ({p}%)',             stat:'_uChainBleedEcho',    val:0.25, roll:[25,45],  scale:0.01},
+  u_d09: {ko:'전류장판 2개를 연속 설치하면 전류선으로 연결 (틱 {p}%)',         stat:'_uDashCircuit',       val:0.20, roll:[20,40],  scale:0.01},
+  u_d10: {ko:'지옥강타가 분노 100 이상 소모 시 {p}% 잔류 (최대 30)',          stat:'_uSlamEmberRage',     val:0.10, roll:[10,20],  scale:0.01},
+  u_d11: {ko:'천공쇄기가 적 체간을 붕괴시키면 충전 {s}초 회복',               stat:'_uSkyPoiseRefund',    val:120,  roll:[120,300]},
+  u_d12: {ko:'회복의 영역 안 Q 패링마다 영역 쿨다운 {s}초 회복',              stat:'_uHolyParryCd',       val:60,   roll:[60,120]},
+  u_d13: {ko:'가시덫 DOT 처치 시 자식 덫 생성 (틱 {p}%, 3초)',               stat:'_uTrapOffshoot',      val:0.20, roll:[20,40],  scale:0.01},
+  u_d14: {ko:'폭풍소환 소용돌이 안 악의구 폭발 시 추가 충격파 ({p}%)',         stat:'_uVortexOrbPulse',    val:0.20, roll:[20,40],  scale:0.01},
+  u_d15: {ko:'석궁이 중독 3중첩 적 적중 시 독 파편이 다른 적에게 ({p}%)',      stat:'_uBowPoisonRicochet', val:0.25, roll:[25,45],  scale:0.01},
+  u_d16: {ko:'공성쇠뇌 철거 시 축적 탄 일제사격 (최대 {n}발)',                stat:'_uTurretSalvo',       val:2,    roll:[2,4]},
+  u_d17: {ko:'블랙 종료 시 주변 공격 장판 {n}개를 중심으로 수렴',             stat:'_uBlackZoneGather',   val:1,    roll:[1,3]},
+  u_d18: {ko:'탄막블랙홀 흡수 10발마다 최대 MP {p}% 환급 (상한 15%)',         stat:'_uBlackholeManaReturn',val:0.01,roll:[1,3],    scale:0.01},
+  u_d19: {ko:'업화선 폭발이 빙결 적을 맞히면 증기 파열 ({p}%)',               stat:'_uSteamBreak',        val:0.20, roll:[20,40],  scale:0.01},
+  u_d20: {ko:'에너지쉴드 파괴 시 3초 내 Q 패링에 파열 에너지 저장 ({p}%)',     stat:'_uShieldBreakBank',   val:0.20, roll:[20,40],  scale:0.01},
+  u_d21: {ko:'악마화 부활 성공 시 분노 {n} 즉시 충전',                        stat:'_uDemonRekindle',     val:20,   roll:[20,40]},
+  u_d22: {ko:'체간 붕괴 후 5초 내 악의구가 균열 잔향 1발 ({p}%)',             stat:'_uPoiseOrbFracture',  val:0.20, roll:[20,40],  scale:0.01},
 };
+// stat → 정의 역색인 (툴팁 하/중/상옵 라벨·roll 범위 조회용)
+const _UNIQ_BY_STAT={};for(const _uk in UNIQUE_SPECIAL){_UNIQ_BY_STAT[UNIQUE_SPECIAL[_uk].stat]=UNIQUE_SPECIAL[_uk]}
 // 어픽스 롤링 (아이템 생성 시 1회)
 function rollAffixes(grade,slot,brType){
   const aSlot=_AFSLOT[slot];if(!aSlot)return[];
@@ -15346,12 +15493,13 @@ function mkItem(slot,tier,el,rarity,wtype){
     item._implicitVal=+_iv.toFixed(2);
     item._implicitKo=_impl.ko;
   }
-  // ── 전설 특수 효과 ──
+  // ── 전설 특수 효과 (rarity>=4, 유니크 포함) ──
   item.legendarySpecial=null;
   if(rarity>=4){
-    const _lsKey=(slot==='weapon'&&item.wtype)?'weapon_'+item.wtype:slot;
-    const _ls=LEGENDARY_SPECIAL[_lsKey]||LEGENDARY_SPECIAL[slot];
-    if(_ls)item.legendarySpecial={ko:_ls.ko,stat:_ls.stat,val:_ls.val};
+    // 전설 효과는 부위·무기종류와 무관하게 19종 풀에서 무작위 1개 (효과는 _lEq로 어느 부위에서든 동작)
+    const _lsPool=Object.values(LEGENDARY_SPECIAL);
+    const _ls=_lsPool[~~(Math.random()*_lsPool.length)];
+    if(_ls){item.legendarySpecial={ko:_ls.ko,stat:_ls.stat,val:_ls.val};item[_ls.stat]=_ls.val}
   }
   // ── 유니크 특수 효과 (rarity=5 전용) ──
   item.uniqueSpecial=null;
@@ -15359,7 +15507,10 @@ function mkItem(slot,tier,el,rarity,wtype){
     // 고유 효과는 부위·무기종류와 무관하게 전체 풀에서 무작위 1개 (효과는 _uEq로 어느 부위에서든 동작)
     const _usPool=Object.values(UNIQUE_SPECIAL);
     const _us=_usPool[~~(Math.random()*_usPool.length)];
-    if(_us){let _uv=_us.val,_usc;if(_us.roll){_uv=_us.roll[0]+~~(Math.random()*(_us.roll[1]-_us.roll[0]+1));_usc=(_uv/60).toFixed(1)}item.uniqueSpecial={ko:_us.ko,stat:_us.stat,val:_uv,secs:_usc};item[_us.stat]=_uv}
+    // 유니크 외관: 부위(무기는 종류)에 맞는 유니크 원화 중 무작위 1장 + 그 원화의 이름 (유골함은 고정 단일 유니크라 제외)
+    const _uaArts=slot!=='ossuary'?UNIQUE_ART[_uniqueArtBase(item)]:null;
+    if(_uaArts&&_uaArts.length){const _ua=_uaArts[~~(Math.random()*_uaArts.length)];item.uniqueArt=_ua.id;item.name=_ua.ko}
+    if(_us){let _uv=_us.val,_usc,_ud;if(_us.roll){_ud=_us.roll[0]+~~(Math.random()*(_us.roll[1]-_us.roll[0]+1));_uv=_us.scale?+((_ud*_us.scale).toFixed(4)):_ud;_usc=(_ud/60).toFixed(1)}item.uniqueSpecial={ko:_us.ko,stat:_us.stat,val:_uv,secs:_usc,disp:_ud};item[_us.stat]=_uv}
   }
   // 아이템 레벨 = 캐릭터 레벨 기반, 10레벨 단위 (0~900), reqLv = itemLv-10
   const _pLv=P&&P.lv?P.lv:1;
@@ -15637,7 +15788,7 @@ function pickupItem(item){
   window._systemLesson?.pickedUp(item);dbSaveForce();return true;
 }
 function recalcSt(){
-  _eqAffixCache=null;_eqStatCache=null; // 어픽스/스탯 캐시 무효화
+  _eqAffixCache=null;_eqStatCache=null;_lEqCache=null; // 어픽스/스탯/전설특수 캐시 무효화
   const base=100+STATS.dex*2;
   let bonus=0,_enhSt2=0;
   const _stEnhSet=new Set(['ring1','ring2','belt']); // ST 강화 3종
@@ -15724,6 +15875,120 @@ function rg2(){return INV.equipped.ring2||{}}
 function cp(){return INV.equipped.cape||{}}
 // 유니크 특수 효과 체크: 임의 슬롯에서 해당 stat의 val 반환 (없으면 0)
 function _uEq(stat){for(let _ui=0;_ui<SLOT_NAMES.length;_ui++){const _it=INV.equipped[SLOT_NAMES[_ui]];if(_it&&_it[stat])return _it[stat]}return 0}
+// ═══ 유니크 특수 효과(신규 25종) 공유 상태 — 세이브 안 함, 스테이지 전환 시 초기화 ═══
+// 토큰/래치/누계는 전부 일시 상태. 재귀 차단: 2차 효과는 {dot:true,shieldHit:true}로만 피해를 주고 토큰을 다시 만들지 않는다.
+let _uqS={stage:-1,parryOrbT:0,kiPreT:0,warpT:0,gwRefund:0,iceCastId:0,iceUsed:0,iceHit:null,
+  shieldBankT:0,shieldBankAmt:0,shieldBankCd:0,poiseOrbT:0,turretHits:0,lastShock:null,circuit:null,
+  csEchoUsed:false,hdF:-1};
+let _uqFzCtx=null;   // 장판 틱 루프 중인 장판 (u_d13 가시덫 출처 태그)
+let _uqHitCtx=null;  // 피해 출처 태그 (u_d08 'chainSlash')
+let _uqScCtx=null;   // 천공쇄기 착탄 처리 중인 낙석 (u_d11)
+function _uqReset(){_uqS.parryOrbT=0;_uqS.kiPreT=0;_uqS.warpT=0;_uqS.gwRefund=0;_uqS.iceUsed=0;_uqS.iceHit=null;
+  _uqS.shieldBankT=0;_uqS.shieldBankAmt=0;_uqS.shieldBankCd=0;_uqS.poiseOrbT=0;_uqS.turretHits=0;
+  _uqS.lastShock=null;_uqS.circuit=null;_uqS.csEchoUsed=false;_uqS.hdF=-1;_uqFzCtx=null;_uqHitCtx=null;_uqScCtx=null;
+  if(typeof P!=='undefined'&&P)P._uqRageLatch=false;if(typeof G!=='undefined'&&G&&G._uqZoneQ)G._uqZoneQ.length=0}
+// u_d06 되감은 발걸음: 시간왜곡 후 3초 내 첫 기동기(사슬/전격이동) 비용 일부 환급 — 각 발사 지점에서 호출
+function _uqMoveRefund(cost){
+  if(_uqS.warpT<=0)return;
+  _uqS.warpT=0; // 첫 이동 1회만 (성공한 발동 시점에 호출됨)
+  const _wv=_uEq('_uWarpStepRefund');if(_wv<=0||!(cost>0))return;
+  const _back=Math.min(cost*_wv,Math.max(0,_HARP_GAUGE_MAX-_harpGauge));
+  if(_back>0){_harpGauge=Math.min(_HARP_GAUGE_MAX,_harpGauge+_back);addTxt(P.x,P.y-60,_T('기동 회수!')+' +'+(~~_back),'#8888ff',30)}
+}
+// u_d16 철거 일제사격: 터렛 수동 철거 시 축적 명중(10회/발)만큼 볼트 발사 — 발당 기본 석궁 피해 ×0.40
+function _uqTurretSalvo(){
+  const _tsN=~~_uEq('_uTurretSalvo');
+  const _shots=Math.min(_tsN,~~(_uqS.turretHits/10));
+  _uqS.turretHits=0;
+  if(_tsN<=0||_shots<=0||!_gxTurret)return;
+  const _tsD=Math.max(1,~~(bowRef()*statDex()*pBowMul()*0.40));
+  const _ne=shQuery(_gxTurret.x,_gxTurret.y,900);
+  const _tgts=[];
+  for(let i=0;i<_ne.length;i++){const e=_ne[i];if(e.alive)_tgts.push(e)}
+  if(!_tgts.length)return;
+  _tgts.sort((a,b)=>dst(_gxTurret.x,_gxTurret.y,a.x,a.y)-dst(_gxTurret.x,_gxTurret.y,b.x,b.y));
+  for(let i=0;i<_shots;i++){
+    const tg=_tgts[i%_tgts.length];
+    const a=Math.atan2(tg.y-_gxTurret.y,tg.x-_gxTurret.x);
+    const _pp=_getPProj();_pp.x=_gxTurret.x+Math.cos(a)*12;_pp.y=_gxTurret.y+Math.sin(a)*12;
+    _pp.vx=Math.cos(a)*18;_pp.vy=Math.sin(a)*18;_pp.dmg=_tsD;_pp.el=EL.P;_pp.maxDist=900;_pp.dist=0;_pp.r=3;
+    _pp.stagger=0;_pp.kb=0;_pp.pierce=0;_pp.pierceMax=0;_pp._pierceRate=0;_pp.normalBow=true;_pp._uqEcho=true;
+    pProjs[pProjs.length]=_pp;
+  }
+  addTxt(_gxTurret.x,_gxTurret.y-40,_T('일제사격!')+' ×'+_shots,'#88aadd',40);
+  playSample('crossbow_shot',.8,_r(1,.1));
+}
+// 매 프레임 1회 (플레이어 업데이트에서 호출): 토큰 타이머·분노 충만 에지·전류선 틱·자식 덫 큐
+function _uqFrame(sp){
+  if(G.stage!==_uqS.stage){_uqS.stage=G.stage;_uqReset()}
+  if(_uqS.parryOrbT>0)_uqS.parryOrbT-=sp;
+  if(_uqS.kiPreT>0)_uqS.kiPreT-=sp;
+  if(_uqS.warpT>0)_uqS.warpT-=sp;
+  if(_uqS.shieldBankT>0)_uqS.shieldBankT-=sp;
+  if(_uqS.shieldBankCd>0)_uqS.shieldBankCd-=sp;
+  if(_uqS.poiseOrbT>0)_uqS.poiseOrbT-=sp;
+  // u_n01 분노 충만: 최대치 도달 상승 에지 1회 → 분노스킬 쿨 회복 (가득 찬 동안 반복 금지, 래치)
+  if(P.rage>=_rageMax()){
+    if(!P._uqRageLatch){P._uqRageLatch=true;
+      const _rfV=_uEq('_uRageFullCd');
+      if(_rfV>0&&(P._gslCd>0||P._scCd>0)){
+        P._gslCd=Math.max(0,(P._gslCd||0)-_rfV);
+        if(P._scCd>0)_tickSkyCrusherRecharge(_rfV);
+        addTxt(P.x,P.y-120,_T('🔥분노스킬 쿨↓'),'#ffaa00',30);
+      }
+    }
+  }else P._uqRageLatch=false;
+  // u_d09 쌍극 전류: 전류선 틱 (15f 간격, 같은 적 60f당 1회, 폭 30px, 방어감소 미부여)
+  const _cc=_uqS.circuit;
+  if(_cc){
+    _cc.t+=sp;
+    if(_cc.t>=_cc.maxT||G._fireZones.indexOf(_cc.a)<0||G._fireZones.indexOf(_cc.b)<0){_uqS.circuit=null}
+    else{
+      _cc.tick+=sp;
+      if(_cc.tick>=15){
+        _cc.tick-=15;
+        const ax=_cc.a.x,ay=_cc.a.y,bx=_cc.b.x,by=_cc.b.y;
+        const dx=bx-ax,dy=by-ay;const _l2=dx*dx+dy*dy;
+        // 스파크 피드백 (전류장판 톤)
+        {const _ct=Math.random();poolPart(ax+dx*_ct,ay+dy*_ct,(Math.random()-.5)*2,-1-Math.random()*2,Math.random()>.5?'#44ddff':'#88eeff',1+Math.random()*2,6+Math.random()*5)}
+        if(_l2>0){
+          const mx=(ax+bx)/2,my=(ay+by)/2;
+          const _ne=shQuery(mx,my,Math.sqrt(_l2)/2+60);
+          for(let i=0;i<_ne.length;i++){const e=_ne[i];if(!e.alive)continue;
+            if((G.playTime||0)-(e._uqCircF||-9999)<60)continue;
+            let t=((e.x-ax)*dx+(e.y-ay)*dy)/_l2;t=Math.max(0,Math.min(1,t));
+            const px=ax+dx*t,py=ay+dy*t;
+            if(dst(e.x,e.y,px,py)>30+e.r)continue;
+            e._uqCircF=G.playTime||0;
+            hurtE(e,Math.max(1,_cc.dmg),Math.atan2(e.y-py,e.x-px),true,{dot:true,shieldHit:true},EL.L);
+          }
+        }
+      }
+    }
+  }
+  // u_d13 자식 덫 생성 큐 — 장판 제자리 순회 밖에서 비움 (순회 중 push 금지)
+  if(G._uqZoneQ&&G._uqZoneQ.length){for(let i=0;i<G._uqZoneQ.length;i++)G._fireZones.push(G._uqZoneQ[i]);G._uqZoneQ.length=0}
+}
+// ═══ 전설 특수 효과 체크 (_uEq와 동일 규칙: 장착 슬롯 순회·첫 값 1개·비가산) ═══
+// 핫패스(매 히트/매 프레임) 호출이 많아 장비 변경 시 재계산되는 캐시 사용 (_eqAffixCache와 동일 무효화 지점)
+let _lEqCache=null;
+function _lEqRebuild(){
+  _lEqCache={};
+  for(let _li=0;_li<SLOT_NAMES.length;_li++){
+    const _it=INV.equipped[SLOT_NAMES[_li]];if(!_it)continue;
+    const _ls=_it.legendarySpecial;if(!_ls||!_ls.stat)continue;
+    // 구세이브 폴백: legendarySpecial.stat/val만 있고 item[stat]이 없는 구버전 아이템 복원
+    if(_it[_ls.stat]===undefined)_it[_ls.stat]=_ls.val;
+    if(_lEqCache[_ls.stat]===undefined)_lEqCache[_ls.stat]=_it[_ls.stat];
+  }
+}
+function _lEq(stat){if(!_lEqCache)_lEqRebuild();return _lEqCache[stat]||0}
+// 전설 망토(_lCapeParry): 패링 윈도우 확대 — sBash 활성틱(기본 _PARRY_WIN=16/20, 캡20) · 보호막 패링틱(기본 20)
+function _lParryWinTicks(){return Math.min(20,~~(_PARRY_WIN*(1+_lEq('_lCapeParry'))))}
+function _lSbParryT(){return ~~(20*(1+_lEq('_lCapeParry')))}
+// 전설 효과 ko 표기: stat 기준 현재 테이블 문구 (구세이브의 옛 문구 자동 정규화)
+const _LS_BY_STAT={};for(const _lsk in LEGENDARY_SPECIAL)_LS_BY_STAT[LEGENDARY_SPECIAL[_lsk].stat]=LEGENDARY_SPECIAL[_lsk];
+function _legSpKo(ls){return ls&&ls.stat&&_LS_BY_STAT[ls.stat]?_LS_BY_STAT[ls.stat].ko:(ls?ls.ko:'')}
 
 // ═══════════════════════════════════════
 //  [S08] WORLD — Game State, Stages, Pools
@@ -15919,13 +16184,21 @@ function _fireKiSlashCrescent(step,chargeFrames=0){
   const _tier=step===3?_kiSlashHoldTier(chargeFrames):0;
   const _mul=step===3?_kiSlashHoldMultiplier(chargeFrames):1;
   const _scale=1+_tier*.4;
-  spawnCrescent(P.x,P.y,P.facing,~~(meleeRef()*7.0*statStr()*pAtkMul()*_skMul('kiSlash')*_mul),0,step,_ksDistMul,_scale);
+  // 유니크 u_n03 극검: 차징 1단 이상 걸린 3타 검기 피해 +50~100% (채택안: _tier>=1 적용)
+  const _ukcMul=(step===3&&_tier>=1&&_uEq('_uKiChargeDmg')>0)?(1+_uEq('_uKiChargeDmg')):1;
+  spawnCrescent(P.x,P.y,P.facing,~~(meleeRef()*7.0*statStr()*pAtkMul()*_skMul('kiSlash')*_mul*_ukcMul),0,step,_ksDistMul,_scale);
   if(step===3){const _kpw=_eqAffix('kiSlashParry');if(_kpw>0)P._kiParryT=Math.min(_KI_PARRY_WIN,_kpw)} // 유니크 어픽스: 3타 발사 순간 물리 패링 (중복 장착 비가산)
   addTxt(P.x,P.y-40,step+_L('타',' Hit')+(_mul>1?' ×'+_mul:''),step===3?'#ff4444':'#ffcc00',20);
+  // 전설 검(_lSwordCombo): 기검참 3타 콤보 완성 시 분노 20% 즉시 충전
+  if(step===3&&_lEq('_lSwordCombo')>0){const _lscM=_rageMax();P.rage=Math.min(_lscM,P.rage+Math.max(1,~~(_lscM*_lEq('_lSwordCombo'))));addTxt(P.x,P.y-60,_T('🔥분노+')+P.rage+'%','#ff4400',30)}
 }
 // 기검참 3타 홀드 차지 중 — 피격 경직 면역(포이즈는 계속 깎여 기절 pStun 시에만 끊김)
 function _isKiCharging(){return P.s==='wWindup'&&!!P._kiChargeActive}
-function _beginKiSlashThirdCharge(){P.s='wWindup';P.st2=999;P._kiChargeActive=true;P._kiChargeT=0;P.atkArc=P.facing}
+function _beginKiSlashThirdCharge(){P.s='wWindup';P.st2=999;P._kiChargeActive=true;P._kiChargeT=0;P.atkArc=P.facing;
+  // 유니크 u_d03 칼날 예열: 완충전 처내기 적중 토큰(300f) 소비 → 3타 홀드 진행도 선지급 (min(120, 기존+값))
+  {const _kpV=_uEq('_uKiPrecharge');
+   if(_kpV>0&&_uqS.kiPreT>0){_uqS.kiPreT=0;P._kiChargeT=Math.min(_KI_HOLD_MAX,P._kiChargeT+_kpV);addTxt(P.x,P.y-55,_T('칼날 예열!'),'#88ccff',30)}}
+}
 function _updateKiSlashThirdCharge(sp){
   P.atkArc=P.facing; // 홀드 중에도 차징 검기·공격 자세가 현재 조준 방향을 따른다.
   const _before=_kiSlashHoldMultiplier(P._kiChargeT);
@@ -18617,7 +18890,7 @@ function updateCrescents(sp){
       if(!e.alive||!isFinite(e.x)||!isFinite(e.y))continue;
       if(dst(c.x,c.y,e.x,e.y)<c.r+e.r&&!c._hitSet.has(e)&&hasLOS(c.x,c.y,e.x,e.y)){
         c._hitSet.add(e);
-        hurtE(e,c.dmg,Math.atan2(e.y-c.y,e.x-c.x),true,{poiseHit:true,kbMult:0.5,noImpact:true,_lessonAttack:'kiSlash',_lessonFullCharge:c.step===3&&c.chargeScale>=2.2-1e-6},c.el);
+        hurtE(e,c.dmg,Math.atan2(e.y-c.y,e.x-c.x),true,{poiseHit:true,kbMult:0.5,noImpact:true,_lessonAttack:'kiSlash',_lessonFullCharge:c.step===3&&c.chargeScale>=2.2-1e-6,_kiFull:c.step===3&&c.chargeScale>=2.2-1e-6},c.el);
         if(c.step===3){G.hitStop=Math.max(G.hitStop,6);shake(8);}
         else G.hitStop=Math.max(G.hitStop,3);
         _playKiSlashHit(c,e.x,e.y);
@@ -18764,6 +19037,13 @@ function _poiseHit(e, amt, label){
     e.stunned = Math.max(e.stunned||0, stunT);
     e._maxStunned = Math.max(e._maxStunned||0, stunT);
     if(e.ib) e._pImmune = 300; // 보스: 5초 면역
+    // 유니크 u_d11 체간 파쇄 충전: 천공쇄기 본체 충돌이 포이즈를 0으로 만든 경우 — 시전(낙석)당 1회 충전 회복
+    if(_uqScCtx&&!_uqScCtx._uqRef){
+      const _spV=_uEq('_uSkyPoiseRefund');
+      if(_spV>0){_uqScCtx._uqRef=true;_tickSkyCrusherRecharge(_spV);addTxt(e.x,e.y-40,_T('쿨 회수!'),'#d8b878',30)}
+    }
+    // 유니크 u_d22 균열 악의구: 플레이어 직격 포이즈 붕괴 → 5초 내 다음 악의구 폭발에 균열 잔향 토큰
+    if(_uEq('_uPoiseOrbFracture')>0)_uqS.poiseOrbT=300;
     SFX.groggy();
     addTxt(e.x, e.y-22, label||_T('💥 그로기!'), '#ff8800', 60);
     if(!(G._noHitStopT>0)) G.slowMo = 20;
@@ -23253,19 +23533,112 @@ function _buildAtlasB(){
 // ═══ 업화선 폭발 애니 풀 ═══
 const _fxAnims=[];
 function _spawnFxAnim(x,y,sz){_fxAnims.push({x,y,sz,f:0,t:0,ml:30})}
+// ═══ 악의 약화: 악의구(원본)에 맞을 때마다 적에게 1단씩 쌓여 다음 악의구 피해 +30%/단 합연산(×1.3/×1.6/×1.9/×2.2, 최대 4단), 3초(180f) 무적중 시 해제 ═══
+// 같은 악의구의 직격+폭발은 한 번만 쌓이고 같은 배율을 쓴다(p._mwMul 캐시). 반향 구체·업화선은 대상 아님.
+const _MW_MAX=4,_MW_T=180,_MW_STEP=0.3;
+function _isMaliceOrb(p){return !!(p&&p.fireball&&!p.fireBeamProj&&!p._uqEcho)}
+function _maliceWeakMul(p,e){
+  if(!p._mwMul)p._mwMul=new Map();
+  const c=p._mwMul.get(e);if(c!==undefined)return c;
+  const _stp=_MW_STEP+_eqAffix('maliceWeakAmp'); // 어픽스 잠식의: 단당 증가율 가산
+  const st=(e._mwT||0)>0?(e._mwStk||0):0,mul=1+st*_stp;
+  p._mwMul.set(e,mul);
+  const n=Math.min(_MW_MAX,st+1);e._mwStk=n;e._mwT=_MW_T;
+  if(n>st)addTxt(e.x,e.y-34,_T('악의 약화')+' +'+Math.round(n*_stp*100)+'%','#b07cff',24);
+  return mul;
+}
 function _fireballExplode(p){
   const r=p.explR||80,dmg=p.explDmg||~~(p.dmg*.6),el=p.el;
+  // ═══ 유니크 신규: 폭발 계열 트리거 (2차 효과는 {dot:true,shieldHit:true}로만 — 중독·폭발·토큰 재생성 없음, 재귀 차단) ═══
+  const _uqIsOrb=p.fireball&&!p.fireBeamProj&&!p._uqEcho; // 악의구 원본 폭발만 (반향 구체 등 2차 발사체 제외)
+  const _uqPbV=_uqIsOrb?_uEq('_uOrbPoisonBurst'):0;       // u_d02 독성 파열
+  const _uqSbV=(p.fireBeamProj&&!p._uqEcho)?_uEq('_uSteamBreak'):0; // u_d19 증기 파열 (업화선)
   const _ne=shQuery(p.x,p.y,r+20);
   for(let i=0;i<_ne.length;i++){const e=_ne[i];if(!e.alive)continue;
     if(dst(p.x,p.y,e.x,e.y)<r+e.r){
-      const a=Math.atan2(e.y-p.y,e.x-p.x),m=elMul(el,e.el);
+      const a=Math.atan2(e.y-p.y,e.x-p.x),m=elMul(el,e.el)*(_uqIsOrb?_maliceWeakMul(p,e):1); // 악의 약화 배율 (원본 악의구만)
       const _fireballKbOpts=!p.fireBeamProj&&p.fireball?{kbMult:0.1}:{};
+      // u_d19 증기 파열: 빙결 중인 적 적중 → 빙결 소비 + 증기 충격파 (시전당 최대 3명, 재상성·화상·빙결 없음)
+      // 판정은 원 타격 전에 — 원 폭발 피해로 빙결이 풀리기 전 상태(빙결 중 적중)를 기준으로 한다.
+      const _uqWasFrozen=(e._frozen||0)>0;
       hurtE(e,~~(dmg*m),a,false,_fireballKbOpts,el);
       // 업화선 폭발: 화상 부여
       if(p.fireBeamProj){e.burnT=Math.max(e.burnT||0,180);e.burnStk=Math.min(10,(e.burnStk||0)+1);if((e.burnStk||0)<10)e._burnPool=(e._burnPool||0)+pDotPool()*dmg*0.4}
       // 악의구 폭발: 중독 부여 (데미지×2, 10초, 최대10중첩)
       if(p.fireball&&!p.fireBeamProj){e.poison=1;e.poisonT=Math.max(e.poisonT||0,600);e.poisonStk=Math.min(10,(e.poisonStk||0)+1);if((e.poisonStk||0)<10)e._poisonPool=(e._poisonPool||0)+pDotPool()*dmg*2}
+      // u_d02 독성 파열: 중독 3중첩 이상 적 → 중첩 3개 소비, 반경 120px 2차 폭발 (적당 재발동 120f)
+      if(_uqPbV>0&&(e.poisonStk||0)>=3&&(G.playTime||0)-(e._uqPbF||-9999)>=120){
+        e._uqPbF=G.playTime||0;e.poisonStk-=3;
+        const _pbD=Math.max(1,~~(dmg*_uqPbV));
+        _shBufI++; // 바깥 _ne 버퍼 보호
+        const _pbQ=shQuery(e.x,e.y,140);
+        for(let _pbi=0;_pbi<_pbQ.length;_pbi++){const oe=_pbQ[_pbi];if(!oe.alive)continue;
+          if(dst(e.x,e.y,oe.x,oe.y)<120+oe.r)hurtE(oe,_pbD,Math.atan2(oe.y-e.y,oe.x-e.x),true,{dot:true,shieldHit:true},el)}
+        _shBufI--;
+        addTxt(e.x,e.y-40,_T('독성 파열!'),'#66cc44',32);
+        for(let _pk2=0;_pk2<8;_pk2++){const _pa2=Math.PI*2*_pk2/8;poolPart(e.x,e.y,Math.cos(_pa2)*4,Math.sin(_pa2)*4,'#66cc44',2+Math.random()*2,10+Math.random()*5)}
+      }
+      if(_uqSbV>0&&_uqWasFrozen&&(p._uqSteamN||0)<3){
+        p._uqSteamN=(p._uqSteamN||0)+1;e._frozen=0;
+        const _sbD=Math.max(1,~~(dmg*_uqSbV));
+        _shBufI++; // 바깥 _ne 버퍼 보호
+        const _sbQ=shQuery(e.x,e.y,140);
+        for(let _sbi=0;_sbi<_sbQ.length;_sbi++){const oe=_sbQ[_sbi];if(!oe.alive)continue;
+          if(dst(e.x,e.y,oe.x,oe.y)<120+oe.r)hurtE(oe,_sbD,Math.atan2(oe.y-e.y,oe.x-e.x),true,{dot:true,shieldHit:true},0)}
+        _shBufI--;
+        addTxt(e.x,e.y-40,_T('증기 파열!'),'#cceeff',32);
+        for(let _sk2=0;_sk2<8;_sk2++){const _sa2=Math.PI*2*_sk2/8;poolPart(e.x,e.y,Math.cos(_sa2)*4,Math.sin(_sa2)*4-1,'#dff4ff',2+Math.random()*2,10+Math.random()*5)}
+      }
     }}
+  // u_d14 폭심 악의구: 폭발 중심이 살아 있는 소용돌이(vortex/iceVortex) 안이면 그 소용돌이가 추가 충격파 1회 (소용돌이별 120f, 폭발 1건당 1개)
+  if(_uqIsOrb&&_uEq('_uVortexOrbPulse')>0&&G._fireZones){
+    const _vpV=_uEq('_uVortexOrbPulse');
+    for(let _vzi=0;_vzi<G._fireZones.length;_vzi++){const fz=G._fireZones[_vzi];
+      if((fz.type!=='vortex'&&fz.type!=='iceVortex')||fz.t>=fz.maxT)continue;
+      if(dst(p.x,p.y,fz.x,fz.y)>=fz.r)continue;
+      if((G.playTime||0)-(fz._uqPulseF||-9999)<120)continue;
+      fz._uqPulseF=G.playTime||0;
+      const _vpD=Math.max(1,~~(dmg*_vpV));const _vpR=Math.min(200,fz.r);
+      const _vpQ=shQuery(fz.x,fz.y,_vpR+20);
+      for(let _vpi=0;_vpi<_vpQ.length;_vpi++){const oe=_vpQ[_vpi];if(!oe.alive)continue;
+        if(dst(fz.x,fz.y,oe.x,oe.y)<_vpR+oe.r)hurtE(oe,_vpD,Math.atan2(oe.y-fz.y,oe.x-fz.x),true,{dot:true,shieldHit:true},fz.el||el)}
+      addTxt(fz.x,fz.y-30,_T('폭심 충격파!'),fz.type==='iceVortex'?'#aaeeff':'#cc88ff',34);
+      break; // 폭발 1건의 다중 소용돌이 중복 제한
+    }
+  }
+  // u_d22 균열 잔향: 체간 붕괴 토큰(300f) 소비 → 폭발 범위 밖 가장 가까운 다른 적 1명에게 잔향 피해
+  if(_uqIsOrb&&_uqS.poiseOrbT>0&&_uEq('_uPoiseOrbFracture')>0){
+    _uqS.poiseOrbT=0;
+    const _pfV=_uEq('_uPoiseOrbFracture');
+    let _pfT=null,_pfB=600;const _pfQ=shQuery(p.x,p.y,600);
+    for(let _pfi=0;_pfi<_pfQ.length;_pfi++){const oe=_pfQ[_pfi];if(!oe.alive)continue;
+      const od=dst(p.x,p.y,oe.x,oe.y);if(od<=r+oe.r)continue; // 폭발에 이미 맞은 적 제외 → "다른 적"
+      if(od<_pfB){_pfB=od;_pfT=oe}}
+    if(_pfT){
+      hurtE(_pfT,Math.max(1,~~(dmg*_pfV)),Math.atan2(_pfT.y-p.y,_pfT.x-p.x),true,{dot:true,shieldHit:true},el);
+      addTxt(_pfT.x,_pfT.y-35,_T('반향!'),'#ffcc66',30);
+      poolPart(_pfT.x,_pfT.y,(Math.random()-.5)*3,(Math.random()-.5)*3,'#ffcc66',3,10);
+    }
+  }
+  // u_d01 반향 구체: 패링 토큰(300f) 소비 → 보조 구체 2발 (가장 가까운 서로 다른 적 2명 추적, 폭발·중독·재분열 없음)
+  if(_uqIsOrb&&_uqS.parryOrbT>0&&_uEq('_uParryOrbEcho')>0){
+    _uqS.parryOrbT=0;
+    const _eoV=_uEq('_uParryOrbEcho');
+    const _eoD=Math.max(1,~~((p.dmg||dmg)*_eoV));
+    const _eoQ=shQuery(p.x,p.y,700);
+    const _eoTs=[];
+    for(let _eoi=0;_eoi<_eoQ.length;_eoi++){const oe=_eoQ[_eoi];if(oe.alive)_eoTs.push(oe)}
+    _eoTs.sort((a2,b2)=>dst(p.x,p.y,a2.x,a2.y)-dst(p.x,p.y,b2.x,b2.y));
+    let _eoN=0;
+    for(let _eoi=0;_eoi<_eoTs.length&&_eoN<2;_eoi++){
+      const tg=_eoTs[_eoi];const ta=Math.atan2(tg.y-p.y,tg.x-p.x);
+      const _pp=_getPProj();_pp.x=p.x;_pp.y=p.y;_pp.vx=Math.cos(ta)*8;_pp.vy=Math.sin(ta)*8;
+      _pp.dmg=_eoD;_pp.el=el;_pp.maxDist=900;_pp.dist=0;_pp.r=7;_pp.stagger=0;_pp.kb=0;
+      _pp.pierce=0;_pp.pierceMax=0;_pp._pierceRate=0;_pp.magic=true;_pp.bladeShard=true;_pp._uqEcho=true;_pp.col='#bb44ff';
+      pProjs[pProjs.length]=_pp;_eoN++;
+    }
+    if(_eoN>0)addTxt(p.x,p.y-30,_T('반향!')+' ×'+_eoN,'#bb44ff',32);
+  }
   // 업화선 전용 폭발 — Fire VFX (중앙 노랑, 외곽 붉은) — 캡 8개 (렉 방지)
   if(p.fireBeamProj){
     const _fbPx=p.x,_fbPy=p.y;
@@ -26369,7 +26742,7 @@ function _itemSkin(it,sz,col){
   const src=_itemSkinSrc(base,el);
   const srcPhys=_itemSkinSrc(base,'phys');       // 속성 전용 아트 없으면 물리 base로 폴백
   const cutoutSrc=_ITEM_CUTOUT_BASES.has(base)?'img/ui/item-cutouts/'+base+'_phys_cutout.png':'';
-  const renderSrc=cutoutSrc||src;                 // 컷아웃 실패 시 기존 원소별 원화를 복구한다.
+  const renderSrc=it.uniqueArt?'img/ui/unique-items/'+it.uniqueArt+'.png':(cutoutSrc||src); // 유니크는 고유 원화 우선, 컷아웃 실패 시 기존 원소별 원화를 복구한다.
   const fbAttr=(renderSrc!==srcPhys)?' data-fb="'+srcPhys+'"':'';
   // 이미지 노드가 있으면 폴백 SVG는 숨김. onerror: 속성→물리→최종 실패 시 이미지 제거→SVG 표시.
   return '<span class="iskin r'+(it.rarity||0)+'" style="width:'+sz+'px;height:'+sz+'px">'
@@ -26429,7 +26802,7 @@ function _worldItemSkin(it){
   const src=_itemSkinSrc(base,el);
   const fallback=_itemSkinSrc(base,'phys');
   const cutoutSrc=_ITEM_CUTOUT_BASES.has(base)?'img/ui/item-cutouts/'+base+'_phys_cutout.png':'';
-  const renderSrc=cutoutSrc||src;
+  const renderSrc=it.uniqueArt?'img/ui/unique-items/'+it.uniqueArt+'_cut.png':(cutoutSrc||src); // 유니크는 배경을 뺀 투명 원화(rembg)
   let img=_worldItemSkinCache.get(renderSrc);
   if(!img){
     img=new Image();
@@ -26438,7 +26811,7 @@ function _worldItemSkin(it){
     img.src=renderSrc;_worldItemSkinCache.set(renderSrc,img);
   }
   if(!img.complete||!img.naturalWidth)return null;
-  if(cutoutSrc)return img; // 알파가 보존된 투명 원화는 검정 마스킹을 다시 적용하지 않는다.
+  if(cutoutSrc||it.uniqueArt)return img; // 알파가 보존된 투명 원화는 검정 마스킹을 다시 적용하지 않는다.
   if(!img._worldDropMasked){
     const canvas=document.createElement('canvas');canvas.width=img.naturalWidth;canvas.height=img.naturalHeight;
     canvas.getContext('2d').drawImage(img,0,0);
@@ -26545,18 +26918,18 @@ window._testAffix=function(id,val){
   const ex=it.affixes.find(a=>a.id===id);
   if(ex){ex.value=val}else{it.affixes.push({id:id,value:val,tier:4})}
   it._testAffixes=it._testAffixes||[];if(!it._testAffixes.includes(id))it._testAffixes.push(id);
-  _eqAffixCache=null;if(typeof applyStats==='function')applyStats();
+  _eqAffixCache=null;_lEqCache=null;if(typeof applyStats==='function')applyStats();
   console.log('✓ '+id+'='+val+' (→'+slot+')');return val;
 };
 window._testAffixClear=function(){
   for(const s of SLOT_NAMES){const it=INV.equipped[s];if(it&&it._testAffixes){it.affixes=it.affixes.filter(a=>!it._testAffixes.includes(a.id));delete it._testAffixes}}
-  _eqAffixCache=null;if(typeof applyStats==='function')applyStats();
+  _eqAffixCache=null;_lEqCache=null;if(typeof applyStats==='function')applyStats();
   console.log('✓ 테스트 어픽스 전부 제거');
 };
 // 장비 임플리싯 합산 (stat명별)
 function _eqImplicit(stat){let v=0;for(const sl of SLOT_NAMES){const it=INV.equipped[sl];if(it&&it._implicitStat===stat)v+=it._implicitVal}return v}
 function statStr(){return 1} // STR은 ref 함수에서 직접 ATK로 더해짐 (1:1)
-function statDex(){return 1+(STATS.dex+_eqStat('Dex')+_lvB())*.0005+(gl().atkSpd||0)+_eqAffix('atkSpeed')+_eqImplicit('_iAtkSpd')*.01+(_uEq('_uGloveSpd')||0)}
+function statDex(){return 1+(STATS.dex+_eqStat('Dex')+_lvB())*.0005+(gl().atkSpd||0)+_eqAffix('atkSpeed')+_eqImplicit('_iAtkSpd')*.01+(_uEq('_uGloveSpd')||0)+(_lEq('_lGloveElem')>0?.20:0)} // 전설 장갑: 공격속도 +20%
 function statInt(){return 1} // INT는 ref 함수에서 직접 ATK로 더해짐 (1:1)
 function _eqLckTotal(){return STATS.lck+_lvB()+_eqStat('Lck')+_eqAffix('lckFlatN')+_eqAffix('lckFlatR')}
 function statCrit(){return _eqLckTotal()*.025+PASSIVES.pCrit*1.5+(rg1().critRate||0)+(rg2().critRate||0)+(nc().critRate||0)+_eqAffix('critRate')*100+(P._crystalStats?P._crystalStats.crit:0)} // critRate 어픽스 (무기 파트) pct단위 → %로 환산
@@ -26585,7 +26958,7 @@ function pDefAdd(){return (P._altDef||0)*30}   // 철벽 패시브 제거: 제�
 function pChargeRange(){return 1+PASSIVES.pCharge*.02}               // 사슬사거리 +2%/lv (10lv=+20%)
 function pChargeGauge(){return 1+PASSIVES.pCharge*.03}               // 사슬기동 게이지회복 +3%/lv (10lv=+30%)
 function pParryDmg(){return 1+PASSIVES.pParry*.50}     // 카운터뎀 +50%/lv (10lv=×6)
-function pParryProjDmg(bulletDmg,isQ){const scale=isQ?magicRef()*statInt()*pMagicMul(false):meleeRef()*statStr()*pAtkMul();const _gearBonus=Math.min(1,scale/300);const _base=bulletDmg*(1+_gearBonus)*0.5;const _afxPB=1+_eqAffix('parryBonus');const _legSP=(sh()._lShieldParry||0)>0?sh()._lShieldParry:1;const _calc=~~(_base*pParryDmg()*_afxPB*_legSP);const _kiFloor=~~(meleeRef()*14*statStr()*pAtkMul());return Math.max(_calc,_kiFloor);} // 탄뎀×0.5 베이스 + 장비보너스, 최소 기검참1방(14×) 보장
+function pParryProjDmg(bulletDmg,isQ){const scale=isQ?magicRef()*statInt()*pMagicMul(false):meleeRef()*statStr()*pAtkMul();const _gearBonus=Math.min(1,scale/300);const _base=bulletDmg*(1+_gearBonus)*0.5;const _afxPB=1+_eqAffix('parryBonus');const _legSP=_lEq('_lShieldParry')>0?_lEq('_lShieldParry'):1;/* 전설 방패: 패링 반격 데미지 ×2 (어느 부위에 있어도 동작) */const _calc=~~(_base*pParryDmg()*_afxPB*_legSP);const _kiFloor=~~(meleeRef()*14*statStr()*pAtkMul());return Math.max(_calc,_kiFloor);} // 탄뎀×0.5 베이스 + 장비보너스, 최소 기검참1방(14×) 보장
 function pParryRmbSpd(){return 1+PASSIVES.pParry*.10}  // E(칼등) 공속 +10%/lv (10lv=+100%)
 function pParryRainbowDR(){return Math.min(.50,PASSIVES.pParry*.10)} // 무지개탄 피해감소 +10%/lv (최대50%)
 function pMagicMul(forAttack=true){return _passDmgSum('magic')*(1+(_uEq('_uHelmMagic')||0))*(forAttack?2:1)} // 마법 공격 2배 (2026-09-10), 패링 장비스케일은 제외
@@ -26614,7 +26987,7 @@ function pAbundRegen(){return (PASSIVES.pAbund||0)*.05}  // 풍요: 회복력+5%
 function pPredDmg(e){return e&&e.hp<=e.mhp*.3?(PASSIVES.pPred||0)*.20:0}  // 약자포식: 적HP≤30% → 뎀+20%/lv (합연산)
 function pPredRegen(){return P.hp<=P.mhp*.3?(PASSIVES.pPred||0)*.10:0}    // 약자포식: 내HP≤30% → 회복력+10%/lv (합연산)
 function pPredSpd(){return P.hp<=P.mhp*.3?(PASSIVES.pPred||0)*.05:0}      // 약자포식: 내HP≤30% → 이속+5%/lv (합연산)
-function _cdRed(){return _eqAffix('cooldownRed')+_eqAffix('helmCooldown')+_eqAffix('endCooldownAll')+_eqAffix('skillCdRed')} // 쿨다운 감소 통합 (cooldownRed+helmCooldown+endCooldownAll+skillCdRed)
+function _cdRed(){return _eqAffix('cooldownRed')+_eqAffix('helmCooldown')+_eqAffix('endCooldownAll')+_eqAffix('skillCdRed')-_lEq('_lHelmFree')-(P.hp<=P.mhp*.5?_lEq('_lNeckLow'):0)} // 쿨다운 감소 통합 (cooldownRed+helmCooldown+endCooldownAll+skillCdRed) + 전설: 투구(-20%)·목걸이(HP50%↓ -30%)
 function pDotDmg(){return _passDmgSum('dot')}   // 침식 통합배율 (합연산)
 function pDotDur(){return 1+(PASSIVES.pDot||0)*.10}    // 침식: DOT 지속시간 +10%/lv (10lv=+100%)
 function pDotPool(){return 1+(PASSIVES.pDot||0)*.05}   // 침식: DOT 축적률 +5%/lv (10lv=+50%)
@@ -26769,6 +27142,8 @@ function useQuickslot(idx){
   }
 
   SFX.potion();
+  // ═══ 전설 벨트(_lBeltBuff): 물약 사용 시 5초간 피해 +15% ═══
+  if(_lEq('_lBeltBuff')>0){P._lBeltT=300;addTxt(P.x,P.y-45,_T('🧪피해 증가!'),'#ff8844',35)}
   const _potCdBase=420; // 7s base cooldown
   const _glPotCd=Math.min(gl().potCd||0,.2); // 장갑 최대 20%
   const _bltPotCd=Math.min(blt().potCd||0,.2); // 벨트 최대 20%
@@ -27236,6 +27611,11 @@ function fireBow(){
       const dmg=(~~(bowRef()*pBowMul()*10)+(P._bowBon||0))*3;P._bowBon=0; // 기본 석궁 데미지 3배
       const bdx=Math.cos(P.atkArc),bdy=Math.sin(P.atkArc);
       {const _pp=_getPProj();_pp.x=P.x+bdx*12;_pp.y=P.y+bdy*12;_pp.vx=bdx*bspd;_pp.vy=bdy*bspd;_pp.dmg=dmg;_pp.el=ael;_pp.maxDist=range;_pp.dist=0;_pp.r=3;_pp.stagger=0;_pp.kb=0;_pp.pierce=0;_pp.pierceMax=0;_pp.normalBow=true;pProjs[pProjs.length]=_pp;} // 관통 0
+      // 전설 활(_lBowCrit): 치명타 확률로 추가 투사체 1발 (약간 빗겨 발사)
+      if(_lEq('_lBowCrit')>0&&Math.random()*100<statCrit()){
+        const _lbA=P.atkArc+(Math.random()<.5?.12:-.12),_lbx=Math.cos(_lbA),_lby=Math.sin(_lbA);
+        const _pp2=_getPProj();_pp2.x=P.x+_lbx*12;_pp2.y=P.y+_lby*12;_pp2.vx=_lbx*bspd;_pp2.vy=_lby*bspd;_pp2.dmg=dmg;_pp2.el=ael;_pp2.maxDist=range;_pp2.dist=0;_pp2.r=3;_pp2.stagger=0;_pp2.kb=0;_pp2.pierce=0;_pp2.pierceMax=0;_pp2.normalBow=true;pProjs[pProjs.length]=_pp2;
+      }
       if((bw().btype||'')==='crossbow'){playSample('crossbow_shot',.7,_r(1,.1))}else SFX.bow();
       P.s='bowRecover';P.st2=~~(45/(pBowSpd()*(1+_eqAffix('bowAtkSpd'))));
       return true;
@@ -27254,6 +27634,11 @@ function _fireXbow(tx,ty){
   const _xbAtkMul=(BOWTYPES[b.btype||'crossbow']||BOWTYPES.crossbow).atkMul||1;
   const dmg=~~((bowRef()*pBowMul()*pXbowMul()*_xbAtkMul+XBOW_DMG)*(_gxFiring||1))*3; // 기본 자동 석궁 3배
   {const _pp=_getPProj();_pp.x=ox+cdx*10;_pp.y=oy+cdy*10;_pp.vx=cdx*_spec.spd;_pp.vy=cdy*_spec.spd;_pp.dmg=dmg;_pp.el=ael;_pp.maxDist=_spec.range;_pp.dist=0;_pp.r=3;_pp.stagger=0;_pp.kb=0;_pp.pierce=XBOW_PIERCE?0.5:0;_pp.pierceMax=XBOW_PIERCE?2:0;_pp.normalBow=true;_pp.ghostXbow=true;pProjs[pProjs.length]=_pp;}
+  // 전설 활(_lBowCrit): 자동 석궁도 치명타 확률로 추가 투사체 1발
+  if(_lEq('_lBowCrit')>0&&Math.random()*100<statCrit()){
+    const _lxA=ang+(Math.random()<.5?.12:-.12),_lxx=Math.cos(_lxA),_lxy=Math.sin(_lxA);
+    const _pp3=_getPProj();_pp3.x=ox+_lxx*10;_pp3.y=oy+_lxy*10;_pp3.vx=_lxx*_spec.spd;_pp3.vy=_lxy*_spec.spd;_pp3.dmg=dmg;_pp3.el=ael;_pp3.maxDist=_spec.range;_pp3.dist=0;_pp3.r=3;_pp3.stagger=0;_pp3.kb=0;_pp3.pierce=XBOW_PIERCE?0.5:0;_pp3.pierceMax=XBOW_PIERCE?2:0;_pp3.normalBow=true;_pp3.ghostXbow=true;pProjs[pProjs.length]=_pp3;
+  }
   if(xb)xb._ang=ang;
   if(_gxFiring)playSampleAt('crossbow_shot',.15,_r(1.2,.12),_gxTurret.x,_gxTurret.y);
   else playSample('crossbow_shot',.2,_r(1.2,.12));
@@ -30687,6 +31072,7 @@ function update(){
       const _afStCost=P.mst*0.01*3;
       if(_afGCost>0&&P.st>=_afStCost){
         _harpGauge-=_afGCost;P.st-=_afStCost;
+        _uqMoveRefund(_afGCost); // 유니크 u_d06
         if(G._pStats)G._pStats._dC++;
         const _afSk=P.activeChargeSk||'charge';
         const _afDB=isDimBreach();
@@ -30719,6 +31105,7 @@ function update(){
         const _awStCost=P.mst*0.01*_dashTier;
         if(_awGCost>0&&P.st>=_awStCost){
           _harpGauge-=_awGCost;P.st-=_awStCost;
+          _uqMoveRefund(_awGCost); // 유니크 u_d06
           if(G._pStats)G._pStats._dC++;
           const _awHSk=P.activeChargeSk||'charge';
           const _awDB=isDimBreach();
@@ -30757,7 +31144,7 @@ function update(){
     if(_harpHit&&!_dashActive){
       _dashActive=true;_dashIframe=_HARP_IFRAME[_harpTier];_dashPhase=2;P.poise=4; // 탈출기 poise 풀회복
       // 기동칼날개 자동 활성화 (사슬기동 시작 시 스킬 보유 시 무조건)
-      if((P.skills.chainSlash||0)>=1&&!P._chainSlashActive){const _csAC=15+(P.skills.chainSlash||1)*2;if(P.st>=_csAC){P.st-=_csAC;P._chainSlashActive=true;if(!P._chainSlashHits)P._chainSlashHits=[];else P._chainSlashHits.length=0;P._chainSlashTick=0;_addSkProf('chainSlash');SFX.slash();}}
+      if((P.skills.chainSlash||0)>=1&&!P._chainSlashActive){const _csAC=15+(P.skills.chainSlash||1)*2;if(P.st>=_csAC){P.st-=_csAC;P._chainSlashActive=true;if(!P._chainSlashHits)P._chainSlashHits=[];else P._chainSlashHits.length=0;P._chainSlashTick=0;_uqS.csEchoUsed=false;_addSkProf('chainSlash');SFX.slash();}}
       const _hd=dst(P.x,P.y,_harpX,_harpY);
       const _dur=_HARP_PULL_DUR[_harpTier];
       _dashLeft=_dur;
@@ -30822,7 +31209,9 @@ function update(){
         if(!P._chainSlashHits)P._chainSlashHits=[];
         P._chainSlashHits.push(e);
         const _eA=Math.atan2(e.y-P.y,e.x-P.x);
+        _uqHitCtx='chainSlash'; // 유니크 u_d08: 기동칼날개 직격 출처 태그
         hurtE(e,_csDmg,_eA,true,{kbMult:0,poiseHit:true,poiseMult:1.2},wp().el||0);
+        _uqHitCtx=null;
         e.bleedT=Math.max(e.bleedT||0,300);e.bleedStk=Math.min(10,(e.bleedStk||0)+1);if((e.bleedStk||0)<10)e._bleedPool=(e._bleedPool||0)+pDotPool()*_csDmg*0.10;e.bleed=1;
         addTxt(e.x,e.y-18,_T('⚔ 칼날!'),'#dcecff',25);
         playVFXAng('ice_slash',e.x,e.y,1.0,3,_eA,true);
@@ -30870,6 +31259,15 @@ function update(){
       P._chainSlashActive=false;P._chainSlashHits=null;P._chainSlashTick=0; // 기동칼날개 리셋
       const _slamLand=P._chainSlamReady||P._chainAssaultReady||P._chainBlastReady; // 기동파괴/기동불꽃/기동전폭 준비 시 착지 효과 강제
       _harpLandT=30; // 착지 애니메이션 항상 재생 (30프레임≈0.5초)
+      // 유니크 u_d07 관통 회수: 3단 사슬기동이 한 이동에서 서로 다른 적 3명 이상 적중 → 착지 후 게이지 45×값 회수 (시전당 1회)
+      if(_harpTier>=3&&_harpHits.length>=3&&_uEq('_uChainCrowdRefund')>0){
+        const _ccAdd=45*_uEq('_uChainCrowdRefund');
+        _harpGauge=Math.min(_HARP_GAUGE_MAX,_harpGauge+_ccAdd);
+        addTxt(P.x,P.y-50,_T('기동 회수!')+' +'+(~~_ccAdd),'#ffaa00',30);
+      }
+      // ═══ 전설: 부츠(회피=사슬기동 착지 후 첫 공격 +80%) · 창(착지마다 8초간 +20% 중첩, 최대5) ═══
+      if(_lEq('_lBootsEvade')>0)P._lBootsT=180;
+      if(_lEq('_lSpearStack')>0){P._lSpearStk=Math.min(5,(P._lSpearStk||0)+1);P._lSpearT=480;addTxt(P.x,P.y-35,_T('⚔착지 중첩 ')+P._lSpearStk,'#ffcc66',30)}
       // ── 착지 효과 ──
       if(_harpTier>=3)playSample('chain_land2',.7,_r(1,.1));else playSample('chain_land',1,_r(1,.1));
       if(!isDimBreach()||_slamLand){shake(_harpTier>=3?30:_harpTier>=2?20:10);_gpVibrate(_harpTier>=3?25:_harpTier>=2?15:6,_harpTier>=3?250:_harpTier>=2?150:80);addParts(P.x,P.y,'#ffaa44',8);addTxt(P.x,P.y-20,_T('💥 착지!'),'#ffaa00',30)}
@@ -31028,6 +31426,7 @@ function update(){
         const _rhStCost=P.mst*0.01*3;
         if(_rhGCost>0&&P.st>=_rhStCost){
           _harpGauge-=_rhGCost;P.st-=_rhStCost;
+          _uqMoveRefund(_rhGCost); // 유니크 u_d06
           if(G._pStats)G._pStats._dC++;
           const _rhSk=P.activeChargeSk||'charge';
           const _rhDB=isDimBreach();
@@ -31219,9 +31618,17 @@ function update(){
   }
   // 악마화 부활 쿨다운 감소
   if(P._demonRevCd>0)P._demonRevCd-=sp;
+  // ═══ 유니크 신규 25종: 토큰 타이머·분노 충만 에지·전류선·자식 덫 큐 (매 프레임 1회) ═══
+  _uqFrame(sp);
   // ═══ 어픽스: killSlayer 카운트다운 ═══
   if(P._killBuff>0)P._killBuff-=sp;
   if(P._okSpdBuff>0)P._okSpdBuff-=sp;
+  // ═══ 전설 특수 효과 타이머 ═══
+  if(P._lBeltT>0)P._lBeltT-=sp;       // 벨트: 물약 피해버프 5초
+  if(P._lBootsT>0)P._lBootsT-=sp;     // 부츠: 회피 후 첫 공격 3초 유예
+  if(P._lSpearT>0){P._lSpearT-=sp;if(P._lSpearT<=0)P._lSpearStk=0} // 창: 착지 중첩 8초
+  // 전설 바지(_lPantsRegen): 이동 중 초당 최대HP 1% 재생
+  if(P._walkMoving&&P.hp>0&&P.hp<P.mhp&&_lEq('_lPantsRegen')>0){P._lPantsT=(P._lPantsT||0)+sp;if(P._lPantsT>=60){P._lPantsT-=60;P.hp=Math.min(P.mhp,P.hp+Math.max(1,~~(P.mhp*_lEq('_lPantsRegen'))))}}
   // 콤보 타이머 감소 (20초)
   if(G.comboTimer>0){G.comboTimer-=sp;if(G.comboTimer<=0&&G.combo>0){if(G.combo>=10)addTxt(P.x,P.y-50,_T('콤보 종료: ')+G.combo,'#ff6644',60);G.combo=0}}
   // DPS 계산 (1초마다)
@@ -31535,7 +31942,7 @@ function update(){
     else if(isAct('charge')&&isJust('shield')&&G._fireZones&&_detonateAssaultFlames()){_sdTapBuf=-999} // E 소비됨 → 탭버퍼 클리어
     else if(isAct('parry')&&_qIsIceOrb()){_qDispatchIceOrb()} // Q: 얼음보주
     else if(isAct('parry')&&_qIsPeaceShield()&&P.mp>0&&(P._sbCd||0)<=0){_enterPeaceShield()} // Q: 평화의보호 (stormBeam)
-    else if(isAct('parry')&&!_qIsIceOrb()&&!_qIsPeaceShield()&&(P._sbCd||0)<=0&&P.mp>=10){P.mp-=10;P.s='sBlock';P.st2=999;P._sbParryT=20;P._sbHoldT=0;P._sbReleaseR=0;P.parryT=0;P._qDetonateFired=false;P._sbCd=~~(30*(1+_eqAffix('shieldCdRed')));G._sbBurst={x:P.x,y:P.y,r:P.r+5,maxR:P.skills.detonate>=1?150+((P.skills.detonate||1)-1)*15:90,spd:8,det:P.skills.detonate>=1};playSample('shield_activate',.8,_r(1,.08));_startShieldLoop();if(Math.random()<.3)playSample(['voice_parry1','voice_parry2','voice_parry3','voice_parry4'][~~(Math.random()*4)],1,_r(1,.03));else playSample('male_grunt',1,_r(1,.15))} // Q: 보호막 (데미지 감소)
+    else if(isAct('parry')&&!_qIsIceOrb()&&!_qIsPeaceShield()&&(P._sbCd||0)<=0&&P.mp>=10){P.mp-=10;P.s='sBlock';P.st2=999;P._sbParryT=_lSbParryT();P._sbHoldT=0;P._sbReleaseR=0;P.parryT=0;P._qDetonateFired=false;P._sbCd=~~(30*(1+_eqAffix('shieldCdRed')));G._sbBurst={x:P.x,y:P.y,r:P.r+5,maxR:P.skills.detonate>=1?150+((P.skills.detonate||1)-1)*15:90,spd:8,det:P.skills.detonate>=1};playSample('shield_activate',.8,_r(1,.08));_startShieldLoop();if(Math.random()<.3)playSample(['voice_parry1','voice_parry2','voice_parry3','voice_parry4'][~~(Math.random()*4)],1,_r(1,.03));else playSample('male_grunt',1,_r(1,.15))} // Q: 보호막 (데미지 감소)
     // burstLoop는 E키(마법슬롯)에서 발동 → _execMagicE()에서 처리
     else if(isHeld('weapon')&&P.skills.whirlwind&&P.activeLMBSk==='whirlwind'&&P.st>=2){P.s='whirlwind';P.wwAng=0;P._wwDetTimer=0;SFX._swIdx=0;SFX.slashSeq();if(_isFused('stormBeam')){P._eStormIdx=0;P._eStormT=0;P._eStormActive=true;playSample(['electric_storm','electric_storm2','electric_storm3','electric_storm4'][~~(Math.random()*4)],.6,_r(1,.1))}if(Math.random()<.45){playSample(['voice_flee','voice_storm_attack'][~~(Math.random()*2)],1,1)}else{const _ve=['voice_grunt','male_grunt'];playSample(_ve[~~(Math.random()*2)],1,_r(1,.15))}_addSkProf('whirlwind')}
     else if(isAct('weapon')&&useStPct('weapon')){if(_gpActive)_gpAutoAim(250);P._atkBon=~~(_lastCost*1.5);if(G._pStats)G._pStats._atkC++;
@@ -31845,10 +32252,12 @@ function update(){
       if(P.st2<=3&&P.st2+sp>3){
         const _wRange=(wp().wRange||50)+(wp().bonusRange||0)*4;
         const _wArc=(wp().wArcW||.95);
-        hitArc(P.atkArc,_wRange,_wArc,~~(((P.baseAtk+(wp().atk||0)+enhMulAtk(wp().enh||0))+15)*6),wp().el,'weapon');
+        // 전설 장갑(_lGloveElem): 무속성 기본공격에 랜덤 원소(화염/냉기/암흑/전기) 부여
+        const _wEl=(wp().el||0)||(_lEq('_lGloveElem')>0?1+~~(Math.random()*4):0);
+        hitArc(P.atkArc,_wRange,_wArc,~~(((P.baseAtk+(wp().atk||0)+enhMulAtk(wp().enh||0))+15)*6),_wEl,'weapon');
       }
       if(P.st2<=0){P.s='wRecover';P.st2=~~(16/((wp().spd||.3)*statDex()*(1+_eqAffix('meleeAtkSpd')+_eqAffix('glovesAtkSpd'))))}}
-    else if(P.s==='wRecover'){if(P.st2<=0){if(isAct('parry')&&_qIsIceOrb()){_qDispatchIceOrb()}else if(isAct('parry')&&_qIsPeaceShield()&&P.mp>0&&(P._sbCd||0)<=0){_enterPeaceShield()}else if(isAct('parry')&&!_qIsIceOrb()&&!_qIsPeaceShield()&&(P._sbCd||0)<=0&&P.mp>=10){P.mp-=10;P.s='sBlock';P.st2=999;P._sbParryT=20;P._sbHoldT=0;P._sbReleaseR=0;P.parryT=0;P._qDetonateFired=false;P._sbCd=~~(30*(1+_eqAffix('shieldCdRed')));G._sbBurst={x:P.x,y:P.y,r:P.r+5,maxR:P.skills.detonate>=1?150+((P.skills.detonate||1)-1)*15:90,spd:8,det:P.skills.detonate>=1};playSample('shield_activate',.8,_r(1,.08));_startShieldLoop()}else P.s='idle'}}
+    else if(P.s==='wRecover'){if(P.st2<=0){if(isAct('parry')&&_qIsIceOrb()){_qDispatchIceOrb()}else if(isAct('parry')&&_qIsPeaceShield()&&P.mp>0&&(P._sbCd||0)<=0){_enterPeaceShield()}else if(isAct('parry')&&!_qIsIceOrb()&&!_qIsPeaceShield()&&(P._sbCd||0)<=0&&P.mp>=10){P.mp-=10;P.s='sBlock';P.st2=999;P._sbParryT=_lSbParryT();P._sbHoldT=0;P._sbReleaseR=0;P.parryT=0;P._qDetonateFired=false;P._sbCd=~~(30*(1+_eqAffix('shieldCdRed')));G._sbBurst={x:P.x,y:P.y,r:P.r+5,maxR:P.skills.detonate>=1?150+((P.skills.detonate||1)-1)*15:90,spd:8,det:P.skills.detonate>=1};playSample('shield_activate',.8,_r(1,.08));_startShieldLoop()}else P.s='idle'}}
     else if(P.s==='sBash'){
       // ═══ 실버테일 차징 릴리즈: 전진 돌진 패링 (lunging parry) — 대검/타캐릭·기본 E탭(mult=1)은 제자리 무변경 ═══
       if(_charIdx===1&&(P._sBashChgMul||1)>1){
@@ -31901,6 +32310,12 @@ function update(){
         // 우클릭(칼등 처내기): meleeRef × 2.0 (200%), Lv20=1000% (5배 성장, +21%/Lv 곱연산)
         const _gsDmg2=~~(meleeRef()*2.0*(1+(_sdLv>=1?(_sdLv-1)*0.21:0))*statStr()*pShieldMul()*_chgM)+(P._atkBon||0);P._atkBon=0;
         // ═══ 불꽃칼날 충격파 히트 (_gSlamHit 방식) ═══
+        // 유니크 u_d03: 완충전(배율 3) 처내기 적중 판정 — 타격 전 범위 내 생존 적 존재 확인 (탄막 적중은 doParry에서)
+        let _uqKgHit=false;
+        if(_chgM>=3&&_uEq('_uKiPrecharge')>0){
+          const _kqNe=shQuery(P.x,P.y,_gsRange2+20);
+          for(let _kqi=0;_kqi<_kqNe.length;_kqi++){const _kqe=_kqNe[_kqi];if(_kqe.alive&&dst(P.x,P.y,_kqe.x,_kqe.y)<=_gsRange2+_kqe.r){_uqKgHit=true;break}}
+        }
         G._noHitStopT=40;
         _gSlamHit(P.facing,_gsRange2,Math.PI*0.8,_gsDmg2,wp().el||0,1.5,0.8);
         G.hitStop=0;G.slowMo=0;
@@ -31985,6 +32400,11 @@ function update(){
             }
           }
         }
+        // 유니크 u_d03: 완충전 처내기가 적 또는 탄막에 적중 → 다음 기검참 3타 차징 선지급 토큰 (300f)
+        if(_chgM>=3&&(_uqKgHit||_bashParried>0)&&_uEq('_uKiPrecharge')>0){
+          if(_uqS.kiPreT<=0)addTxt(P.x,P.y-60,_T('칼날 예열!'),'#88ccff',30);
+          _uqS.kiPreT=300;
+        }
         // [헛침 조기 폭발 제거] 이 지점(치는 순간 st2=12)은 패링 창(16틱)이 아직 열려 있어,
         // 곧 정상 패링될 탄까지 미리 터뜨려 E패링이 불안정("잘 쳐도 터짐")했음.
         // → 빗나간 탄은 몸에 닿을 때 일반 피격 임팩트(통일된 큰 폭발)로 자연히 터짐.
@@ -32022,7 +32442,7 @@ function update(){
       }
       else if(isAct('parry')&&_qIsIceOrb()){_qDispatchIceOrb()}
       else if(isAct('parry')&&_qIsPeaceShield()&&P.mp>0&&(P._sbCd||0)<=0){_enterPeaceShield()}
-      else if(isAct('parry')&&!_qIsIceOrb()&&!_qIsPeaceShield()&&(P._sbCd||0)<=0&&P.mp>=10){P.mp-=10;P.s='sBlock';P.st2=999;P._sbParryT=20;P._sbHoldT=0;P._sbReleaseR=0;P.parryT=0;P._qDetonateFired=false;P._sbCd=~~(30*(1+_eqAffix('shieldCdRed')));G._sbBurst={x:P.x,y:P.y,r:P.r+5,maxR:P.skills.detonate>=1?150+((P.skills.detonate||1)-1)*15:90,spd:8,det:P.skills.detonate>=1};playSample('shield_activate',.8,_r(1,.08));_startShieldLoop()}
+      else if(isAct('parry')&&!_qIsIceOrb()&&!_qIsPeaceShield()&&(P._sbCd||0)<=0&&P.mp>=10){P.mp-=10;P.s='sBlock';P.st2=999;P._sbParryT=_lSbParryT();P._sbHoldT=0;P._sbReleaseR=0;P.parryT=0;P._qDetonateFired=false;P._sbCd=~~(30*(1+_eqAffix('shieldCdRed')));G._sbBurst={x:P.x,y:P.y,r:P.r+5,maxR:P.skills.detonate>=1?150+((P.skills.detonate||1)-1)*15:90,spd:8,det:P.skills.detonate>=1};playSample('shield_activate',.8,_r(1,.08));_startShieldLoop()}
       else if(P.st2<=0){
         P._stWingT=0; // sRecover 종료 시 날개 비주얼 즉시 해제
         P._sBashChgMul=1; // 차징 검격 배율 리셋 (다음 기본 E탭에 안 남게)
@@ -32053,7 +32473,7 @@ function update(){
       }
       else if(isAct('parry')&&_qIsIceOrb()){_qDispatchIceOrb()}
       else if(isAct('parry')&&_qIsPeaceShield()&&P.mp>0&&(P._sbCd||0)<=0){_enterPeaceShield()}
-      else if(isAct('parry')&&!_qIsIceOrb()&&!_qIsPeaceShield()&&(P._sbCd||0)<=0&&P.mp>=10){P.mp-=10;P.s='sBlock';P.st2=999;P._sbParryT=20;P._sbHoldT=0;P._sbReleaseR=0;P.parryT=0;P._qDetonateFired=false;P._sbCd=~~(30*(1+_eqAffix('shieldCdRed')));G._sbBurst={x:P.x,y:P.y,r:P.r+5,maxR:P.skills.detonate>=1?150+((P.skills.detonate||1)-1)*15:90,spd:8,det:P.skills.detonate>=1};playSample('shield_activate',.8,_r(1,.08));_startShieldLoop()}
+      else if(isAct('parry')&&!_qIsIceOrb()&&!_qIsPeaceShield()&&(P._sbCd||0)<=0&&P.mp>=10){P.mp-=10;P.s='sBlock';P.st2=999;P._sbParryT=_lSbParryT();P._sbHoldT=0;P._sbReleaseR=0;P.parryT=0;P._qDetonateFired=false;P._sbCd=~~(30*(1+_eqAffix('shieldCdRed')));G._sbBurst={x:P.x,y:P.y,r:P.r+5,maxR:P.skills.detonate>=1?150+((P.skills.detonate||1)-1)*15:90,spd:8,det:P.skills.detonate>=1};playSample('shield_activate',.8,_r(1,.08));_startShieldLoop()}
       else if(isJust('shield')||_sdTapOk()){_sdTapBuf=-999;P.s='sDraw';P._sdHold=0} // ═ 발도 게이팅: 탭=뗄 때 칼등처내기, 홀드=차징. 탭버퍼로 초고속 탭 씹힘 방지 ═
       else if(isHeld('beam')&&(P.mp>=mpCost('magic'))){_execMagicE()}
       else if(P.st2<=0){
@@ -32124,7 +32544,7 @@ function update(){
     else if(P.s==='magicRecover'){
       if(isAct('parry')&&_qIsIceOrb()){_qDispatchIceOrb()}
       else if(isAct('parry')&&_qIsPeaceShield()&&P.mp>0&&(P._sbCd||0)<=0){_enterPeaceShield()}
-      else if(isAct('parry')&&!_qIsIceOrb()&&!_qIsPeaceShield()&&(P._sbCd||0)<=0&&P.mp>=10){P.mp-=10;P.s='sBlock';P.st2=999;P._sbParryT=20;P._sbHoldT=0;P._sbReleaseR=0;P.parryT=0;P._qDetonateFired=false;P._sbCd=~~(30*(1+_eqAffix('shieldCdRed')));G._sbBurst={x:P.x,y:P.y,r:P.r+5,maxR:P.skills.detonate>=1?150+((P.skills.detonate||1)-1)*15:90,spd:8,det:P.skills.detonate>=1};playSample('shield_activate',.8,_r(1,.08));_startShieldLoop()}
+      else if(isAct('parry')&&!_qIsIceOrb()&&!_qIsPeaceShield()&&(P._sbCd||0)<=0&&P.mp>=10){P.mp-=10;P.s='sBlock';P.st2=999;P._sbParryT=_lSbParryT();P._sbHoldT=0;P._sbReleaseR=0;P.parryT=0;P._qDetonateFired=false;P._sbCd=~~(30*(1+_eqAffix('shieldCdRed')));G._sbBurst={x:P.x,y:P.y,r:P.r+5,maxR:P.skills.detonate>=1?150+((P.skills.detonate||1)-1)*15:90,spd:8,det:P.skills.detonate>=1};playSample('shield_activate',.8,_r(1,.08));_startShieldLoop()}
       else if(P.st2<=0){
       // 홀드 연사: E 누르고 있으면 즉시 재시전/빔/만화방창 전환
       if(isHeld('beam')&&(P.mp>=mpCost('magic'))){_execMagicE()}
@@ -33861,6 +34281,7 @@ function update(){
         }
         const ang=Math.atan2(e.y-p.y,e.x-p.x);
         const mult=elMul(p.el,e.el);let dmg=~~(p.dmg*mult);
+        if(_isMaliceOrb(p))dmg=~~(dmg*_maliceWeakMul(p,e)); // 악의 약화: 맞을 때마다 다음 악의구 ×2 (최대 ×16)
         // 푸른비 중첩 보너스: 1중첩당 +10% 뎀증, 10초 지속
         if(p.blueBean){const _bbStk=Math.min(50,e._bbStk||0);dmg=~~(dmg*(1+_bbStk*0.1));e._bbStk=Math.min(50,_bbStk+1);e._bbStkT=600}
         // 패링 블루콩 → 보스 MHP 10% 추가 데미지
@@ -33877,6 +34298,37 @@ function update(){
           e.bleedT=Math.max(e.bleedT||0,900); // 15초(60fps)
           e.bleedStk=(e.bleedStk||0)+1; // 무한 중첩
           if((e.bleedStk||0)<10)e._bleedPool=(e._bleedPool||0)+pDotPool()*_bladeBleed;
+        }
+        // 유니크 u_d16 철거 일제사격: 터렛 볼트 명중 축적 (10회당 1발, 일제사격 파편은 제외)
+        if(p._fromTurret&&p.normalBow&&!p._uqEcho&&_gxTurret)_uqS.turretHits++;
+        // 유니크 u_d04 파쇄 회수: 빙결(프리즌) 적을 맞힌 파쇄 칼날 → 적별 1회 얼음보주 쿨 회복 (시전당 360f 상한, 빙결 비소비)
+        // 주의: 아래 통일 관통 분기가 iceBlade 전용 블록보다 먼저 continue하므로 반드시 이 위치(hurtE 직후)에서 처리
+        if(p.iceBlade&&p._uqIceCast===_uqS.iceCastId&&(e._frozen||0)>0&&_uqS.iceUsed<360){
+          const _irV=_uEq('_uIceShatterRefund');
+          if(_irV>0){
+            if(!_uqS.iceHit)_uqS.iceHit=new Set();
+            if(!_uqS.iceHit.has(e)){
+              _uqS.iceHit.add(e);
+              const _irCut=Math.min(_irV,360-_uqS.iceUsed);_uqS.iceUsed+=_irCut;
+              if(P._ioCd>0){P._ioCd=Math.max(0,P._ioCd-_irCut);addTxt(e.x,e.y-35,_T('쿨 회수!'),'#aaeeff',28)}
+            }
+          }
+        }
+        // 유니크 u_d15 독 추적: 기본 석궁 볼트가 중독 3중첩 적 적중 → 중첩 1 소비, 가장 가까운 다른 적에게 독성 파편 (볼트당 1회, 파편은 중독·재도약·관통 없음)
+        if(p.normalBow&&!p._uqRico&&!p._uqEcho){
+          const _prcV=_uEq('_uBowPoisonRicochet');
+          if(_prcV>0&&(e.poisonStk||0)>=3){
+            p._uqRico=true;e.poisonStk-=1;
+            _shBufI++; // 바깥 _neP 버퍼 보호
+            let _rcT=null,_rcB=300;const _rcQ=shQuery(e.x,e.y,300);
+            for(let _rci=0;_rci<_rcQ.length;_rci++){const oe=_rcQ[_rci];if(!oe.alive||oe===e)continue;const od=dst(e.x,e.y,oe.x,oe.y);if(od<_rcB){_rcB=od;_rcT=oe}}
+            _shBufI--;
+            if(_rcT){
+              hurtE(_rcT,Math.max(1,~~(dmg*_prcV)),Math.atan2(_rcT.y-e.y,_rcT.x-e.x),true,{dot:true,shieldHit:true},EL.P);
+              addTxt(_rcT.x,_rcT.y-30,_T('독 파편!'),'#66cc44',28);
+              poolPart(_rcT.x,_rcT.y,(Math.random()-.5)*3,(Math.random()-.5)*3,'#66cc44',3,10);
+            }
+          }
         }
         if(!_isTurretProj||_ftV>0.01){
           if(p.bladeShard||p.maliceHunt||p.iceBlade){playSampleAt('chain_fly',.3*_ftV,_r(1.2,.2),e.x,e.y,_SFX_PRI.PROJ);playVFXAng('magic_burst',e.x,e.y,0.3,1,ang)}
@@ -34332,6 +34784,8 @@ function update(){
     P.hp=Math.min(P.mhp,P.hp+v);
     if(_systemRecoveryBefore)window._systemLesson.recovered(_systemRecoveryBefore,{hp:P.hp,mats:G.mats,cooldown:autoPotCd});
     SFX.potion();
+    // ═══ 전설 벨트(_lBeltBuff): 자동 물약도 5초간 피해 +15% ═══
+    if(_lEq('_lBeltBuff')>0){P._lBeltT=300;addTxt(P.x,P.y-45,_T('🧪피해 증가!'),'#ff8844',35)}
     addTxt(P.x,P.y-25,_T('👿 악의 추출: +')+v+' HP','#33ff33',40);
     if(G._pStats)G._pStats._hC++;if(G._sStats)G._sStats.potions++;
   }
@@ -34940,15 +35394,18 @@ function update(){
   if((P._gcCd||0)>0)P._gcCd-=sp;
   // ═══ 천공쇄기 — 쿨다운 + 낙하/파편 충돌 ═══
   _tickSkyCrusherRecharge(sp+_hdCdBonus);
-  if(G._skyCrushers){for(let _sci=G._skyCrushers.length-1;_sci>=0;_sci--){const sc=G._skyCrushers[_sci];sc.t+=sp;
+  if(G._skyCrushers){P._rageSkCtx=true; // 천공쇄기 착탄·화염·파편 = 분노 스킬 피해 구간
+  for(let _sci=G._skyCrushers.length-1;_sci>=0;_sci--){const sc=G._skyCrushers[_sci];sc.t+=sp;
     if(!sc.impacted&&sc.t>=sc.impactT){sc.impacted=true;
       sc.nextDotT=sc.impactT+sc.dotEvery;
       const _scTargets=shQuery(sc.x,sc.y,sc.r+40);
+      _uqScCtx=sc; // 유니크 u_d11: 본체 충돌 중 포이즈 붕괴 감지 (_poiseHit에서 참조)
       for(let _sei=0;_sei<_scTargets.length;_sei++){const e=_scTargets[_sei];if(!e.alive||dst(sc.x,sc.y,e.x,e.y)>sc.r+e.r)continue;
         const a=Math.atan2(e.y-sc.y,e.x-sc.x);
         hurtE(e,sc.dmg,a,false,{magic:true,explode:true,poiseHit:true,poiseMult:2,kbMult:1.6},EL.P);
         if(dst(sc.x,sc.y,e.x,e.y)<sc.r*.35&&!e.ib)e.stunned=Math.max(e.stunned||0,30);
       }
+      _uqScCtx=null;
       for(let _spi=0;_spi<28;_spi++){const _sa=Math.PI*2*_spi/28+(Math.random()-.5)*.18,_ss=4+Math.random()*9;poolPart(sc.x,sc.y,Math.cos(_sa)*_ss,Math.sin(_sa)*_ss-2,_spi%3?'#756653':'#b6a078',3+Math.random()*5,24+Math.random()*18)}
       _detonateAssaultFlames(); // 천공쇄기 착탄: 활성 기동불꽃 전량 즉시 기폭
       _addBoom(sc.x,sc.y,sc.r,30,'dark');SFX.skyCrusherImpact();shake(28);G.hitStop=Math.max(G.hitStop,8);
@@ -34970,7 +35427,7 @@ function update(){
       shake(12);
     }
     if(sc.t>=sc.maxT)G._skyCrushers.splice(_sci,1);
-  }}
+  }P._rageSkCtx=false;} // 분노 스킬 피해 구간 종료
   // 공성쇠뇌 쿨다운 제거됨
   // ═══ 폭풍소환 — 조준 (마우스=방향, 키 홀드=거리 충전, 릴리즈=발사) ═══
   if(P._mmAiming){
@@ -35835,6 +36292,7 @@ function update(){
         const _fzCapType=fz.type==='darkPillar'||fz.type==='spikeTrap';
         const _fzNe=shQuery(fz.x,fz.y,fz.r); // 깊이 버퍼 — .slice() 제거
         _shBufI++;
+        _uqFzCtx=fz; // 유니크 u_d13: 이 틱의 피해 출처 장판 (hurtE 처치 블록에서 참조)
         for(let _fei=0;_fei<_fzNe.length;_fei++){
           const e=_fzNe[_fei];if(!e.alive)continue;
           const _fed=dst(fz.x,fz.y,e.x,e.y);if(_fed>fz.r)continue;
@@ -35900,6 +36358,7 @@ function update(){
             e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);if((e.burnStk||0)<10)e._burnPool=(e._burnPool||0)+pDotPool()*fz.dmg*0.10;
           }
         }
+        _uqFzCtx=null; // 유니크 u_d13: 출처 태그 해제
         _shBufI--;
       }
       // 파티클 (간헐적)
@@ -36879,7 +37338,7 @@ function _kgRelease(tier,mult){
   if(Math.random()<.5){const _kv=['voice_grunt','male_grunt','voice_attack'];playSample(_kv[~~(Math.random()*3)],1,_r(1,.12))}
   if(P.skills.shieldThrow>=1&&(P._stCd||0)<=0)_autoShieldThrow();
 }
-function isPWin(){return (P.s==='sBash'&&P.st2>(20-_PARRY_WIN))||P._kiParryT>0||(P.s==='sBlock'&&P._sbParryT>0)||(P.s==='peaceShield'&&P._sbParryT>0)||(P.s!=='whirlwind'&&P.s!=='beam'&&P.s!=='elecRepent'&&P._sbParryT>0)} // 칼등치기 앞 _PARRY_WIN틱만 패링(뒤 후딜) + 보호막 + 평화보호 패링윈도우
+function isPWin(){return (P.s==='sBash'&&P.st2>(20-_lParryWinTicks()))||P._kiParryT>0||(P.s==='sBlock'&&P._sbParryT>0)||(P.s==='peaceShield'&&P._sbParryT>0)||(P.s!=='whirlwind'&&P.s!=='beam'&&P.s!=='elecRepent'&&P._sbParryT>0)} // 칼등치기 앞 _PARRY_WIN틱만 패링(뒤 후딜) + 보호막 + 평화보호 패링윈도우
 function doParry(_inDmg,_px,_py,_forceQ,_parryEl,_resourceMul,_impactKind){const _lesson=window._parryLesson;_lesson?.physicalParry(_px,_py);if(_px===undefined)_px=P.x;if(_py===undefined)_py=P.y;if(_parryEl===undefined)_parryEl=0;const _resourceBonus=Math.max(1,_resourceMul||1);_petOnParry();if(G._pStats)G._pStats._pH++;if(G._sStats)G._sStats.parries++;const _isQ=_forceQ||P.s==='sBlock'||P.s==='peaceShield'||P._sbParryT>0;if(_isQ){playSample('q_parry',.9,_r(1,.08))}else{playSample('sword_parry',1,_r(1,.1));playSample(['sword_back','sword_back2','sword_back3'][~~(Math.random()*3)],.5,_r(1.1,.1))}if(Math.random()<.5)playSample(['voice_parry1','voice_parry2','voice_parry3','voice_parry4'][~~(Math.random()*4)],1,_r(1,.03));else playSample('male_grunt',1,_r(1,.15));
   P.iframes=Math.max(P.iframes,18);
   // 패링 성공 → 그로기 해제 + 포이즈 복원
@@ -36920,6 +37379,34 @@ function doParry(_inDmg,_px,_py,_forceQ,_parryEl,_resourceMul,_impactKind){const
     P._gslCd=Math.max(0,(P._gslCd||0)-_physicalParryCut-_prRageCd);
     if(P._scCd>0)_tickSkyCrusherRecharge(_scParryCut+_prRageCd);
     addTxt(P.x,P.y-120,_T('🔥분노스킬 쿨↓'),'#ffaa00',30);
+  }
+  // ═══ 유니크 신규 25종 — 패링 트리거 묶음 ═══
+  // u_d01 반향: 패링 성공 → 5초 내 다음 악의구 토큰 (패링 1회당 토큰 1개, 갱신만 허용)
+  if(_uEq('_uParryOrbEcho')>0)_uqS.parryOrbT=300;
+  // u_d03 칼날 예열: 완충전(차지 배율 3) 처내기 중 탄막 패링 성공 → 토큰 (적 타격은 sBash 블록에서 처리)
+  if(P.s==='sBash'&&(P._sBashChgMul||1)>=3&&_uEq('_uKiPrecharge')>0){
+    if(_uqS.kiPreT<=0)addTxt(P.x,P.y-60,_T('칼날 예열!'),'#88ccff',30);
+    _uqS.kiPreT=300;
+  }
+  // u_d12 수호 호흡: 본인이 설치한 회복의 영역 안 Q 패링 → _hdCd 회복 (영역당 누계 300f, 같은 프레임 1회)
+  if(_isQParry&&_uqS.hdF!==(G.playTime||0)&&P._hdCd>0&&_uEq('_uHolyParryCd')>0&&G._fireZones){
+    const _hpV=_uEq('_uHolyParryCd');
+    for(let _zi=0;_zi<G._fireZones.length;_zi++){const _fz2=G._fireZones[_zi];
+      if(_fz2.type!=='holyDome'||_fz2.t>=_fz2.maxT)continue;
+      if(dst(P.x,P.y,_fz2.x,_fz2.y)>=_fz2.r)continue;
+      const _hpUsed=_fz2._uqHpUsed||0;if(_hpUsed>=300)break;
+      const _hpCut=Math.min(_hpV,300-_hpUsed);_fz2._uqHpUsed=_hpUsed+_hpCut;
+      P._hdCd=Math.max(0,P._hdCd-_hpCut);
+      _uqS.hdF=G.playTime||0;
+      addTxt(P.x,P.y-135,_T('쿨 회수!'),'#b6ff54',30);
+      break; // 여러 영역 중첩 시 1개만
+    }
+  }
+  // u_d20 파열 방출: 쉴드 파괴 후 3초 내 Q 패링 성공 → 저장된 파열 에너지를 기폭 뱅크에 1회 투입
+  if(_isQParry&&_uqS.shieldBankT>0&&_uqS.shieldBankAmt>0){
+    P.parryBank=(P.parryBank||0)+_uqS.shieldBankAmt;
+    addTxt(P.x,P.y-105,_T('파열 방출!')+' +'+_uqS.shieldBankAmt,'#66ddff',40);
+    _uqS.shieldBankT=0;_uqS.shieldBankAmt=0;
   }
   // 분노 대사 (적립 후 체크)
   if(P.rage>=100)_petSayCD('rage_full','crow','…분노가 끓어넘친다. 스페이스로 적들에게 폭발시켜!',4,300,'cat','분노는 스페이스키 분노스킬로 폭발시킬 수 있어! 지금이야!!!',4);
@@ -37034,6 +37521,8 @@ function updateE(e,sp){
   if(e._iceShardRes>0){e._iceShardRes-=0.002*sp;if(e._iceShardRes<0)e._iceShardRes=0} // 얼음파편 저항깎기 서서히 회복 (~5초에 10%)
   if(e._weakT>0){e._weakT-=sp;if(e._weakT<=0){e._weakPhys=0;e._weakMag=0;e._weakPj=0}} // 영역 디버프 해제
   if(e._shockDRT>0){e._shockDRT-=sp;if(e._shockDRT<=0)e._shockDR=0} // 전류장판 방어감소 해제
+  if(e._blinkWeakT>0){e._blinkWeakT-=sp;if(e._blinkWeakT<=0)e._blinkWeak=0} // 유니크 u_n02 전격 약화 해제
+  if(e._mwT>0){e._mwT-=sp;if(e._mwT<=0)e._mwStk=0} // 악의 약화 해제 (3초 무적중)
   if(e._freezeGauge>0){e._freezeGauge=Math.max(0,e._freezeGauge-sp*.3)} // 안 맞으면 게이지 자연 감소
   // _pImmune 감소는 루프 초반(22629)에서 처리됨 — 여기서 중복 감소 제거
 
@@ -40584,6 +41073,10 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
   if(P.hp<P.mhp*.3&&_eqAffix('crisisBoost')>0)dmg=~~(dmg*(1+_eqAffix('crisisBoost')));
   // ═══ 어픽스: killSlayer (처치보너스) — 처치 후 3초간 뎀업 ═══
   if(P._killBuff>0)dmg=~~(dmg*(1+P._killMul));
+  // ═══ 전설: 벨트(물약 후 5초 피해+15%) · 부츠(회피 후 첫 공격 +80%, 1회 소모) · 창(사슬 착지 중첩 +20%×스택) ═══
+  if(P._lBeltT>0&&_lEq('_lBeltBuff')>0)dmg=~~(dmg*(1+_lEq('_lBeltBuff')));
+  if(P._lBootsT>0&&!isDot&&_lEq('_lBootsEvade')>0){dmg=~~(dmg*(1+_lEq('_lBootsEvade')));P._lBootsT=0;addTxt(e.x,e.y-30,_T('⚡회피 일격!'),'#88ddff',30)}
+  if(P._lSpearT>0&&(P._lSpearStk||0)>0&&_lEq('_lSpearStack')>0)dmg=~~(dmg*(1+_lEq('_lSpearStack')*P._lSpearStk));
   // 장신구 데미지 보너스 (목걸이/반지/벨트/팔찌/귀걸이)
   {const _eq=INV.equipped;const _accDmg=((nc().dmgBonus||0)+(rg1().dmgBonus||0)+(rg2().dmgBonus||0)+((_eq.belt||{}).dmgBonus||0)+((_eq.bracelet||{}).dmgBonus||0)+((_eq.headband||{}).dmgBonus||0)+((_eq.headband2||{}).dmgBonus||0))*0.01;if(_accDmg>0)dmg=~~(dmg*(1+_accDmg))}
   // ═══ 패시브: 약자포식 — 적HP≤50% 시 합연산 추가 (풍요는 _passDmgSum에 통합) ═══
@@ -40646,6 +41139,8 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
   if(!_isPure&&e._weakPj>0&&_isArrow)dmg=~~(dmg*(1+e._weakPj)); // 투사체 피격 증가
   // ═══ 전류장판 방어력 감소: 모든 데미지 증가 ═══
   if(!_isPure&&(e._shockDR||0)>0)dmg=~~(dmg*(1+e._shockDR));
+  // ═══ 유니크 u_n02 전격 약화: 전격이동 통과 디버프 — 전류장판과 별도 변수·곱연산 ═══
+  if(!_isPure&&(e._blinkWeak||0)>0&&(e._blinkWeakT||0)>0)dmg=~~(dmg*(1+e._blinkWeak));
   // 약점노출: 어픽스(comboBoost) + 패시브(pCombo) — 직접 공격으로 몬스터별 스택 축적, +3%/중첩
   // DOT/장판 제외, 빔 4틱당 1스택, 초당 20% 감소, 5초 미피격 리셋
   const _cbAf=_eqAffix('comboBoost');
@@ -40659,12 +41154,19 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     }
     if((e._comboStk||0)>0){dmg=~~(dmg*(1+e._comboStk*0.03))}
   }
+  const _isRageSk=!!P._rageSkCtx; // 분노 스킬(지옥강타 1·2·천공쇄기) 피해 구간
+  if(_isRageSk){const _rsd=_eqAffix('rageSkDmg');if(_rsd>0)dmg=~~(dmg*(1+_rsd))} // 어픽스: 분노 스킬 피해 +%
   // 크리티컬 판정 (서브타입 크리 보너스 합산)
   {let _crBonus=0;
+  if(_isRageSk)_crBonus+=_eqAffix('rageSkCrit')*100; // 어픽스: 분노 스킬 치명타율 +%
   if(!_isMagicDmg&&!_isArrow)_crBonus+=_eqAffix('critRateMelee')*100;
   if(_isMagicDmg||(opts&&opts.beam))_crBonus+=_eqAffix('critRateSpell')*100;
   if(_isArrow)_crBonus+=_eqAffix('critRateBow')*100;
-  var _isCrit=false;if(Math.random()*100<statCrit()+_crBonus){dmg=~~(dmg*statCritDmg());_isCrit=true;if(G._sStats)G._sStats.crits++;
+  var _isCrit=false;const _lDagForce=!isDot&&(P._lNextCrit||0)>0&&_lEq('_lDaggerKill')>0; // 전설 단검: 처치 후 다음 공격 크리 보장 (1회 소모)
+  const _ksFC=!isDot&&opts&&opts._kiFull?Math.min(1,_eqAffix('kiSlashFullCrit')):0; // 어픽스 극참의: 기검참 3단 풀차지 검기 확정 치명 + 치명 피해 +100%
+  if(Math.random()*100<statCrit()+_crBonus||_lDagForce||_ksFC>0){if(_lDagForce)P._lNextCrit=0;dmg=~~(dmg*(statCritDmg()+_ksFC));_isCrit=true;if(G._sStats)G._sStats.crits++;
+    // ═══ 전설 도끼(_lAxeBleed): 출혈 대상 크리 시 잔여 출혈 DoT×300% 즉시 폭발 (출혈 소멸) ═══
+    if(!isDot&&_lEq('_lAxeBleed')>0&&(e.bleedT||0)>0&&(e.bleedPool||0)>0){const _abD=Math.max(1,~~(e.bleedPool*_lEq('_lAxeBleed')));e.bleedPool=0;e.bleedT=0;if(e.bleed)e.bleed=0;dmg+=_abD;addTxt(e.x,e.y-55,_T('🩸출혈 폭발!'),'#ff2244',40)}
     // ═══ onCrit 프록 (크리 시 발동) ═══
     const _ocExpl=_eqAffix('onCritExplode');if(_ocExpl>0){const _ocR=80;const _ocD=~~(dmg*_ocExpl);for(let _oi=0;_oi<ens.length;_oi++){const _oe=ens[_oi];if(_oe&&_oe.alive&&_oe!==e&&dst(e.x,e.y,_oe.x,_oe.y)<_ocR){hurtE(_oe,_ocD,Math.atan2(_oe.y-e.y,_oe.x-e.x),false,{pure:true})}}addParts(e.x,e.y,'#ff6622',12)}
     const _ocChain=_eqAffix('onCritChain');if(_ocChain>0){let _ocTgt=null,_ocMin=250;for(let _oi=0;_oi<ens.length;_oi++){const _oe=ens[_oi];if(_oe&&_oe.alive&&_oe!==e){const _od=dst(e.x,e.y,_oe.x,_oe.y);if(_od<_ocMin){_ocMin=_od;_ocTgt=_oe}}}if(_ocTgt){hurtE(_ocTgt,~~(dmg*_ocChain),Math.atan2(_ocTgt.y-e.y,_ocTgt.x-e.x),false,{pure:true})}}
@@ -40673,6 +41175,14 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     const _ocMana=_eqAffix('onCritMana');if(_ocMana>0)P.mp=Math.min(P.mmp,P.mp+_ocMana);
     const _ocShld=_eqAffix('onCritShield');if(_ocShld>0&&P.eShieldMax>0){P.eShield=Math.min(P.eShieldMax,P.eShield+_ocShld)}
   }}
+  // ═══ 전설 반지(_lRingElem): 속성 약점 적중 시 추가 폭발 (ATK×80%, 적당 2초 내부쿨) ═══
+  if(!isDot&&atkEl>0&&_lEq('_lRingElem')>0&&elMul(atkEl,e.el)>=2&&(G.playTime||0)-(e._lReactF||-9999)>=120){
+    e._lReactF=G.playTime||0;
+    const _reD=Math.max(1,~~(meleeRef()*statStr()*pAtkMul()*_lEq('_lRingElem')));
+    const _reQ=shQuery(e.x,e.y,100);
+    for(let _ri2=0;_ri2<_reQ.length;_ri2++){const _re=_reQ[_ri2];if(_re.alive&&_re!==e)hurtE(_re,_reD,Math.atan2(_re.y-e.y,_re.x-e.x),true,{dot:true,shieldHit:true})}
+    addTxt(e.x,e.y-40,_T('💥속성 폭발!'),ELC[atkEl]||'#ffdd44',35);addParts(e.x,e.y,ELP[atkEl]||'#ffdd44',10);
+  }
   // 스턴/그로기 상태 → 데미지 +50% (×1.5)
   if(e.stunned>0&&!isDot){dmg=~~(dmg*1.5)}
   // 프리즌(빙결) 상태 → 데미지 1.5배
@@ -40810,7 +41320,14 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
   const _isMagicProj=opts&&opts.magic; // 마법투사체(원소추적탄/악의구 등): 넉백 80% 감소
   const _kbScale=_isMagicProj?.2:1;
   const _noKB=opts&&opts.noKB;
-  if(ang!==undefined&&!_isRanged&&!isDot&&!_isMH&&!_isBB&&!_noKB){const _kbAmt=Math.min(dmg*.25*finalKbM*_kbScale,15*finalKbM*_kbScale);
+  if(ang!==undefined&&!_isRanged&&!isDot&&!_isMH&&!_isBB&&!_noKB){let _kbAmt=Math.min(dmg*.25*finalKbM*_kbScale,15*finalKbM*_kbScale);
+    // ═══ 전설 둔기(_lClubKB): 넉백 거리 2배 + 벽에 부딪히면 추가 데미지 50% ═══
+    if(_lEq('_lClubKB')>0&&!(opts&&opts._lClubWall)){_kbAmt*=_lEq('_lClubKB');
+      if(!e.ib&&_kbAmt>2&&!canMv(e.x+Math.cos(ang)*(e.r+24),e.y+Math.sin(ang)*(e.r+24),e.r)){
+        hurtE(e,Math.max(1,~~(dmg*.5)),undefined,true,{dot:true,shieldHit:true,_lClubWall:true});
+        if(e.alive)addTxt(e.x,e.y-35,_T('💥벽충돌!'),'#ffaa44',30);
+      }
+    }
     // 뷰포트 밖 적: 넉백 벡터 대신 즉시 위치 이동 (컬링 지연 버그 방지)
     const _kbInView=e.ib||e.hurt>0||(e.x>G.cam.x-VW/2-300&&e.x<G.cam.x+VW/2+300&&e.y>G.cam.y-VH/2-300&&e.y<G.cam.y+VH/2+300);
     if(_kbInView){e.kb.x+=Math.cos(ang)*_kbAmt;e.kb.y+=Math.sin(ang)*_kbAmt}
@@ -40824,6 +41341,11 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     if(_poiseHit(e, amt)){
       // 어픽스: staggerExplosion
       if(_eqAffix('staggerExplosion')>0){const _seD=~~(dmg*_eqAffix('staggerExplosion'));const _seQ=shQuery(e.x,e.y,100);for(let _si=0;_si<_seQ.length;_si++){const se=_seQ[_si];if(se!==e&&se.alive)hurtE(se,_seD,0,true,{dot:true,shieldHit:true},atkEl)}}
+      // ═══ 전설 망치/철퇴(_lHammerShock/_lMaceShock): 스태거(그로기) 발동 시 범위 충격파 (ATK×120%/100%, 비가산 최대값) ═══
+      const _lShk=Math.max(_lEq('_lHammerShock'),_lEq('_lMaceShock'));
+      if(_lShk>0){const _lsD=Math.max(1,~~(meleeRef()*statStr()*pAtkMul()*_lShk));const _lsQ=shQuery(e.x,e.y,120);
+        for(let _li2=0;_li2<_lsQ.length;_li2++){const _se2=_lsQ[_li2];if(_se2.alive&&_se2!==e)hurtE(_se2,_lsD,Math.atan2(_se2.y-e.y,_se2.x-e.x),true,{dot:true,shieldHit:true},atkEl)}
+        addTxt(e.x,e.y-30,_T('💥충격파!'),'#ffaa44',35);addParts(e.x,e.y,'#ffaa44',12)}
     }
   }
   if(e.hp<=0){
@@ -40989,6 +41511,43 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     // ═══ 유니크 On-Kill 효과 ═══
     // _uMaceExplode: 적 처치 시 폭발 (최대HP의 30% AoE)
     if(_uEq('_uMaceExplode')>0){const _exD=~~(e.mhp*_uEq('_uMaceExplode'));const _exQ=shQuery(e.x,e.y,150);for(let _ei=0;_ei<_exQ.length;_ei++){if(_exQ[_ei].alive&&_exQ[_ei]!==e)hurtE(_exQ[_ei],_exD,Math.atan2(_exQ[_ei].y-e.y,_exQ[_ei].x-e.x),true,{dot:true})}addTxt(e.x,e.y-20,_T('💥유니크 폭발!'),'#ff4466',40)}
+    // 유니크 u_d05 귀환 연료: 뇌전걸음 표식(귀환 후 5초) 적 사망 → 기동게이지 45×값 회수, 시전당 총 27 상한 (처치 출처 무관)
+    if(e._uqGwExp&&(G.playTime||0)<e._uqGwExp){
+      e._uqGwExp=0;
+      const _gfV=_uEq('_uGhostFuel');
+      if(_gfV>0&&_uqS.gwRefund<27){
+        const _gfAdd=Math.min(45*_gfV,27-_uqS.gwRefund);_uqS.gwRefund+=_gfAdd;
+        _harpGauge=Math.min(_HARP_GAUGE_MAX,_harpGauge+_gfAdd);
+        addTxt(e.x,e.y-45,_T('기동 회수!')+' +'+(~~_gfAdd),'#44ddff',28);
+      }
+    }
+    // 유니크 u_d08 잔상 추격: 기동칼날개 직격으로 출혈 적 처치 → 추적 잔상 칼날 1발 (사슬 시전당 1발, 재발동·출혈 없음)
+    if(_uqHitCtx==='chainSlash'&&!_uqS.csEchoUsed&&(e.bleed>0||e.bleedT>0)&&_uEq('_uChainBleedEcho')>0){
+      _uqS.csEchoUsed=true;
+      const _ceD=Math.max(1,~~(dmg*_uEq('_uChainBleedEcho')));
+      let _ceT=null,_ceB=600;const _ceQ=shQuery(e.x,e.y,600);
+      for(let _ci3=0;_ci3<_ceQ.length;_ci3++){const oe=_ceQ[_ci3];if(!oe.alive||oe===e)continue;const od=dst(e.x,e.y,oe.x,oe.y);if(od<_ceB){_ceB=od;_ceT=oe}}
+      if(_ceT){
+        const _ca2=Math.atan2(_ceT.y-e.y,_ceT.x-e.x);
+        const _pp=_getPProj();_pp.x=e.x;_pp.y=e.y;_pp.vx=Math.cos(_ca2)*10;_pp.vy=Math.sin(_ca2)*10;
+        _pp.dmg=_ceD;_pp.el=EL.P;_pp.maxDist=900;_pp.dist=0;_pp.r=6;_pp.stagger=0;_pp.kb=0;
+        _pp.pierce=0;_pp.pierceMax=0;_pp._pierceRate=0;_pp.magic=true;_pp.bladeShard=true;_pp._uqEcho=true;_pp.col='#cc4444';
+        pProjs[pProjs.length]=_pp;
+        addTxt(e.x,e.y-35,_T('잔상 칼날!'),'#cc4444',30);
+      }
+    }
+    // 유니크 u_d13 번지는 뿌리: 원본 가시덫 DOT 처치 → 사망 위치에 자식 덫 1개 (시전당 1개, 자식·기둥가시 제외, 큐로 지연 생성)
+    if(_uqFzCtx&&_uqFzCtx.type==='spikeTrap'&&!_uqFzCtx._uqChild&&!_uqFzCtx._pillarSpike&&!_uqFzCtx._uqSpawned&&_uEq('_uTrapOffshoot')>0){
+      _uqFzCtx._uqSpawned=true;
+      if(!G._uqZoneQ)G._uqZoneQ=[];
+      G._uqZoneQ.push({x:e.x,y:e.y,r:150,t:0,maxT:180,dmg:Math.max(1,~~(_uqFzCtx.dmg*_uEq('_uTrapOffshoot'))),el:EL.P,lv:_uqFzCtx.lv||1,type:'spikeTrap',_uqChild:true});
+      addTxt(e.x,e.y-35,_T('자식 덫!'),'#88cc44',30);
+    }
+    // ═══ 전설 On-Kill 효과 ═══
+    // _lDaggerKill: 처치 시 이속 +40%(3초) + 다음 공격 크리 보장
+    if(_lEq('_lDaggerKill')>0){P._okSpdBuff=Math.max(P._okSpdBuff||0,180);P._okSpdMul=Math.max(P._okSpdMul||0,.40);P._lNextCrit=1}
+    // _lRingKill: 처치 시 분노 5% 회복 (최대치 비례)
+    if(_lEq('_lRingKill')>0){const _lrM=_rageMax();P.rage=Math.min(_lrM,P.rage+Math.max(1,~~(_lrM*_lEq('_lRingKill'))))}
     const _isBurnDeath=(atkEl===EL.F||(opts&&opts.beam))&&!(opts&&opts.explode); // explode: 화염이어도 고어/시체 정상 출력
     const _isWhirlKill=(P.s==='whirlwind'&&!(opts&&opts.detonate));
     atkTicketRelease(e);e.alive=false;G.kills++;G._stageKills=(G._stageKills||0)+1;_regKill(e);_petOnKill(e);
@@ -41723,6 +42282,7 @@ function hurtP(dmg,opts){
   if(!(opts&&opts.dot)){
     const _dodgePct=Math.min(35,(STATS.dex+_lvB()+_eqStat('Dex'))*.05+_eqAffix('dodgeChance')*100);
     if(Math.random()*100<_dodgePct){if(G._sStats)G._sStats.dodges++;
+      if(_lEq('_lBootsEvade')>0)P._lBootsT=180; // 전설 부츠: 회피 판정 성공도 '회피'로 간주 — 직후 첫 공격 강화
       return}
   }
   const _isDotEarly=opts&&opts.dot;
@@ -41837,6 +42397,13 @@ function hurtP(dmg,opts){
     P.shieldRegenT=180;
     if(a>=P.shield){
       const overflow=a-P.shield;P.shield=0;
+      // 유니크 u_d20 파열 저장: 쉴드 양수→0 에지 → 3초(180f) 내 다음 Q 패링에 파열 에너지 (내부쿨 1200f)
+      {const _sbkV=_uEq('_uShieldBreakBank');
+       if(_sbkV>0&&_uqS.shieldBankCd<=0){
+         _uqS.shieldBankCd=1200;_uqS.shieldBankT=180;
+         _uqS.shieldBankAmt=Math.max(1,Math.min(~~(P.mshield*_sbkV),a));
+         addTxt(P.x,P.y-45,_T('파열 저장!'),'#66ddff',40);
+       }}
       addTxt(P.x,P.y-30,_T('⚡쉴드 파괴!'),'#4488ff',50);
       for(let k=0;k<10;k++){const sa=Math.PI*2*k/10;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#4488ff',3+Math.random()*2,15+Math.random()*8)}
       a=overflow; // 오버플로우→HP (HP와 동일한 내구성)
@@ -41855,6 +42422,8 @@ function hurtP(dmg,opts){
   _logDmg(dmg,a,_dlSrc);
   if(G._sStats)G._sStats.dmgTaken+=a;
   P.hp-=a;
+  // ═══ 전설 갑옷(_lArmorRegen): 피격 시 3초 내부쿨로 최대HP 5% 즉시 회복 ═══
+  if(a>0&&P.hp>0&&_lEq('_lArmorRegen')>0&&(G.playTime||0)-(P._lArmorF||-9999)>=180){P._lArmorF=G.playTime||0;const _laH=Math.max(1,~~(P.mhp*_lEq('_lArmorRegen')));P.hp=Math.min(P.mhp,P.hp+_laH);addTxt(P.x,P.y-50,'+'+_laH,'#33ff33',30)}
   if(a>0&&opts&&opts.druidPoison)P.poison=(P.poison||0)+3;
   if(_isDot){
     // DOT: 넉백/경직/화면흔들림/포이즈 없음
@@ -42013,7 +42582,7 @@ function die(){
   P.iframes=9999; // 쓰러진 동안 무적
   P._fallenAng=P.facing+Math.PI; // 쓰러지는 방향
   G.slowMo=Math.max(G.slowMo,30); // 슬로모 연출
-  if(_gxTurret){_gxTurret=null;_xbowEquipped=false;addTxt(P.x,P.y-10,_T('감시 회수'),'#bbbbbb',20)} // 공성쇠뇌 자동 회수
+  if(_gxTurret){_gxTurret=null;_xbowEquipped=false;_uqS.turretHits=0;addTxt(P.x,P.y-10,_T('감시 회수'),'#bbbbbb',20)} // 공성쇠뇌 자동 회수 (유니크 u_d16 축적 소멸)
   SFX.beamStop();_stopShieldLoop();
   playSample('player_dead'+(1+~~(Math.random()*4)),.8,_r(1,.1),1);
   shake(20);
@@ -42138,6 +42707,9 @@ function _fallenResolve(){
     SFX.levelup();playSample('voice_demon_revive',1,_r(1,.1));
     addTxt(P.x,P.y-50,_T('악마화 부활!'),'#ff2200',120);
     addTxt(P.x,P.y-25,_T('부활력 ')+P._fallenRevChance+'%','#ff8844',50);
+    // 유니크 u_d21 재점화: 부활 성공 시에만 분노 20~40 즉시 충전 (부활 보상은 무변경)
+    {const _rkV=~~_uEq('_uDemonRekindle');
+     if(_rkV>0){P.rage=Math.min(_rageMax(),P.rage+_rkV);addTxt(P.x,P.y-75,_T('재점화!')+' +'+_rkV,'#ff4466',50)}}
     if(P.lv<=500)_petSayCD('revive_tip','cat','데미지 부족하면 무기 강화!',5,30,'crow','G키 대장간. 강화 안 하면 계속 죽어.',4);
     if(typeof _petOnDeath==='function')_petOnDeath();
     for(let k=0;k<30;k++){const a=Math.PI*2*k/30;poolPart(P.x,P.y,Math.cos(a)*8,Math.sin(a)*8,k%2===0?'#ff0000':'#ff8800',5,20)}
@@ -42442,7 +43014,7 @@ const SKILL_LIST=[
   {id:'ghostWalk',name:'뇌전걸음',cat:'def',act:true,emoji:'⚡',desc:'5초간 유령화 — 무적+이동. 통과한 적/탄막 수만큼 종료 시 암전 폭발(+10%/회) + 전기줄기 방사(3회 체인). 카운트 캡=Lv×5(최대50). 쿨 20초. Lv당 뎀+15% 범위+10',descEn:'5s ghost form — invincible+move. Blackout explosion on end (+10%/enemy passed) + lightning arc (3 chains). Count cap=Lv×5 (max 50). CD 20s. Per Lv DMG+15% range+10',spCost:10,matCost:100,cd:1200,up:true,upSp:5,upMat:0},
   {id:'bladeDash',name:'전격이동',cat:'move',desc:'[이동기] 방향키 더블탭으로 발동. 경직/기절 중에도 탈출 가능. 250유닛 순간이동, 무적(15프레임). MP[(10+(Lv-1)×5)×0.7] + 공용 기동게이지 0.7칸(31.5)을 소모한다. 기본 기동게이지 5칸, Shift 사슬과 공유. 착지 시 전류장판(10초+Lv×0.5초): INT 틱뎀 + 방어력↓(1렙10%, 렙당+5%, 캡50%)',descEn:'[Mobility] Double-tap to activate. Escapes stagger/stun. 250-unit blink, invincible 15f. Costs MP[(10+(Lv-1)×5)×0.7] plus 0.7 shared mobility-gauge cells (31.5). Base gauge has 5 cells and is shared with Shift chain. Landing shock field(10s+Lv×0.5s): INT tick DMG + DEF↓(Lv1=10%, +5%/Lv, cap 50%)',spCost:10,matCost:60,up:true,upSp:6,upMat:0},
   {id:'kiSlash',name:'기검참',cat:'phys',desc:'좌클 스킬: 3단 검기. 3타를 홀드해 2초에 걸쳐 최대 3단 충전(약 0.67초당 1단). 검기 피해 2/4/8배, 놓으면 발사. ST 10+Lv당2. 거리+15px/Lv',descEn:'LMB skill: 3-hit ki blade. Hold the third hit to charge up to stage 3 over 2 seconds (one stage every ~0.67s). Blade damage ×2/×4/×8; release to fire. ST 10+2/Lv; +15px range/Lv',spCost:10,matCost:0,up:true,upSp:5,upMat:0,default:true},
-  {id:'fireball',name:'악의구',cat:'magic',desc:'[기본: E] 어둠 마법 오브 발사. 범위폭발. 넉백 0.5%. Lv당 크기+50% (뎀은 _skMul 계수 적용)',descEn:'[Default: E] Dark magic orb fired. AoE explosion. Knockback 0.5%. Per Lv size+50% (DMG uses _skMul)',spCost:10,matCost:0,up:true,upSp:5,upMat:0,default:true},
+  {id:'fireball',name:'악의구',cat:'magic',desc:'[기본: E] 어둠 마법 오브 발사. 범위폭발. 넉백 0.5%. Lv당 크기+50% (뎀은 _skMul 계수 적용). 맞은 적에게 악의 약화 — 다음 악의구 피해 +30%씩 누적(최대 +120%), 3초간 안 맞으면 해제',descEn:'[Default: E] Dark magic orb fired. AoE explosion. Knockback 0.5%. Per Lv size+50% (DMG uses _skMul). Hits apply Malice Weakness — next orb DMG +30% per stack (max +120%), resets after 3s without a hit',spCost:10,matCost:0,up:true,upSp:5,upMat:0,default:true},
   {id:'whirlwind',name:'회전참',cat:'phys',desc:'무기 홀드 → 전진 회전 공격. 360도 광역, ST 지속소모. Lv당 범위+5 뎀+5%',descEn:'Hold weapon → forward spin attack. 360° AoE, continuous ST drain. Per Lv range+5 DMG+5%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'detonate',name:'기폭팔',cat:'def',desc:'패링 3초 홀드 → 흡수 데미지 광역 폭발. Lv당 범위+15 (1렙150, 10렙285)',descEn:'Parry 3s hold → absorbed DMG AoE explosion. Per Lv range+15 (Lv1: 150, Lv10: 285)',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'maliceSwipe',name:'칼등 처내기',cat:'def',desc:'기본 E 불꽃칼날. E 홀드 충전: 풀차지 1.5초. 스킬 Lv당 범위 +5%.',descEn:'Base E Flame Blade. Hold E to charge fully in 1.5s. +5% range per skill level.',spCost:10,matCost:80,up:true,upSp:5,upMat:0},
@@ -43653,7 +44225,18 @@ function _tickBladeDash(sp){
         _thBr.push(bPts)}
       G._fireZones.push({x:P.x,y:P.y,r:_sfR,t:0,maxT:600+(_sfLv-1)*30,dmg:_sfDmg,el:EL.L,lv:_sfLv,type:'shockField',defRed:_sfDR,
         _thunder:[{pts:_thPts,br:_thBr,life:18,maxLife:18,baseW:_thBW}]});
-      addTxt(P.x,P.y-30,'⚡'+~~(_sfDR*100)+'% '+_L('방어↓','DEF↓'),'#44ddff',28)}
+      addTxt(P.x,P.y-30,'⚡'+~~(_sfDR*100)+'% '+_L('방어↓','DEF↓'),'#44ddff',28);
+      // 유니크 u_d09 쌍극 전류: 직전 전류장판이 살아 있으면 두 장판 사이 전류선 1개 연결 (300f, 틱 20~40%, 방어감소 미부여)
+      {const _dcV=_uEq('_uDashCircuit');
+       const _nz=G._fireZones[G._fireZones.length-1];
+       if(_dcV>0){
+         const _pz=_uqS.lastShock;
+         if(_pz&&_pz!==_nz&&_pz.t<_pz.maxT&&G._fireZones.indexOf(_pz)>=0){
+           _uqS.circuit={a:_pz,b:_nz,t:0,maxT:300,tick:0,dmg:Math.max(1,~~(_nz.dmg*_dcV))};
+           addTxt((_pz.x+_nz.x)/2,(_pz.y+_nz.y)/2-20,_T('전류선!'),'#44ddff',32);
+         }
+       }
+       _uqS.lastShock=_nz;}}
       // ── 전격의창 합체: 2번째 전격이동 착지 시 뇌전창 자동 설치 ──
       if(_isFused('thunderGhost')&&P.skills.thunderStake>=1){
         P._tgCnt=(P._tgCnt||0)+1;
@@ -43693,6 +44276,22 @@ function activateBladeDash(dir){
   if(P.mp<_bdCost||_harpGauge<_bdGaugeCost)return;
   P.mp-=_bdCost;if(P.mp<0)P.mp=0;
   _harpGauge=Math.max(0,_harpGauge-_bdGaugeCost);
+  _uqMoveRefund(_bdGaugeCost); // 유니크 u_d06: 시간왜곡 후 첫 기동기 비용 환급
+  // 유니크 u_n02 전격 약화: 이동 경로(시작점→도착점 250px 선분)에 걸린 적에게 받는 피해 +50~100% (5초, 갱신·Math.max, 보스 동일 효율)
+  {const _bwV=_uEq('_uBlinkWeak');
+   if(_bwV>0){
+     const _bx0=P.x,_by0=P.y,_bx1=P.x+Math.cos(_bdAng)*250,_by1=P.y+Math.sin(_bdAng)*250;
+     const _bdx=_bx1-_bx0,_bdy=_by1-_by0;const _bl2=_bdx*_bdx+_bdy*_bdy;
+     const _bne=shQuery((_bx0+_bx1)/2,(_by0+_by1)/2,205);
+     for(let _bi=0;_bi<_bne.length;_bi++){const e=_bne[_bi];if(!e.alive)continue;
+       let t=_bl2>0?((e.x-_bx0)*_bdx+(e.y-_by0)*_bdy)/_bl2:0;t=Math.max(0,Math.min(1,t));
+       const px=_bx0+_bdx*t,py=_by0+_bdy*t;
+       if(dst(e.x,e.y,px,py)>e.r+20)continue;
+       const _was=(e._blinkWeakT||0)>0;
+       e._blinkWeak=Math.max(e._blinkWeak||0,_bwV);e._blinkWeakT=300;
+       if(!_was)addTxt(e.x,e.y-30,_T('약화!'),'#bb66ff',30);
+     }
+   }}
   const _bdCells=Math.floor(_harpGauge/_bdGaugeCost),_bdMaxCells=Math.floor(_HARP_GAUGE_MAX/_bdGaugeCost);
   addTxt(P.x,P.y-45,'⚡ '+_bdCells+'/'+_bdMaxCells,'#44ddff',30);showPH('⚡ '+_bdCells+'/'+_bdMaxCells,'#44ddff');
   P._bdAng=_bdAng;
@@ -43775,6 +44374,7 @@ function activateGhostXbowTurret(){
   // activeBowSk 유지 — 터렛이 현재 세팅된 석궁 스킬로 발사
   // 기존 터렛이 있으면 위치만 갱신 (재소환)
   _gxTurret={x:P.x,y:P.y-40,timer:0,ang:0};
+  _uqS.turretHits=0; // 유니크 u_d16: 설치 시 축적 명중 초기화
   playSample('bow_release',.6,_r(.8,.1));
   // ── 공성유령 합체: 허수아비 자동 동반 소환 (쿨다운 없음, 자동회수 없음) ──
   if(_isFused('siegeGhost')&&P.skills.voidScarecrow>=1){
@@ -44725,9 +45325,15 @@ function activateGiantSlam(srcId){
     }
     P.rage=0;
     window._parryLesson?.rageCast(_rageP);
+    // 유니크 u_d10 잔불 분노: 분노 100 이상 소모 시 소모 분노의 10~20% 잔류 (최대 30) — 피해 계산은 소모 전 분노 그대로
+    {const _emV=_uEq('_uSlamEmberRage');
+     if(_emV>0&&_rageP>=100){
+       const _emAmt=Math.min(30,~~(_rageP*_emV));
+       if(_emAmt>0){P.rage=Math.min(_rageMax(),_emAmt);addTxt(P.x,P.y-70,_T('잔불 분노!')+' +'+_emAmt,'#ff6633',40)}
+     }}
   }
   const _gs1El=wp().el||0;
-  _gSlamHit(P.facing,_gs1R,Math.PI,_gs1Dmg,_gs1El,0,1.0);
+  P._rageSkCtx=true;_gSlamHit(P.facing,_gs1R,Math.PI,_gs1Dmg,_gs1El,0,1.0);P._rageSkCtx=false; // 분노 스킬 피해 구간 표시 — 어픽스 rageSkCrit/rageSkDmg (_gSlamHit 공용 사용 스킬과 구분)
   G.hitStop=0;G.slowMo=0;
   G.shake=14*OPT.shake/100;
   const _slamKind=(srcId==='giantSlam2'&&_isFused('infernoSlam'))?'inferno':'giant';
@@ -44833,6 +45439,8 @@ function activateTimeWarp(){
   P.x=snap.x;P.y=snap.y;P.hp=snap.hp;P.mp=Math.min(P.mp,snap.mp);P.st=snap.st;P.shield=snap.shield;
   // 쿨다운 시작
   P._twCd=_isFused('timeStep')?1200:(P.skills.timeWarp>=1?(_skById('timeWarp').cd||2700):2700); // 시간걸음 합체: 20초(걸음 시리즈 통일)
+  // 유니크 u_d06 되감은 발걸음: 3초(180f) 안 첫 사슬/전격이동 비용 일부 환급 토큰
+  if(_uEq('_uWarpStepRefund')>0)_uqS.warpT=180;
   // 버퍼 리셋 (연속 사용 방지)
   _twFilled=0;_twIdx=0;
   // VFX + 피드백
@@ -44882,6 +45490,12 @@ function _finishGhostWalk(){
   SFX.detonate();
   addTxt(P.x,P.y-35,_T('⚡ 레인라이트닝! x')+P._gwCount,'#44ddff',55);
   G._gwLightning={pts:P._rlRev,ptsBack:_gwPts.slice(),t:0,maxT:60,stk:P._gwCount,w:P._rlW};
+  // 유니크 u_d05 귀환 연료: 귀환 시점에 통과(표식) 적들에게 5초(300f) 사망 표식 — 시전당 회수 누계 리셋
+  if(_uEq('_uGhostFuel')>0&&P._gwMarkedEns&&P._gwMarkedEns.length){
+    _uqS.gwRefund=0;
+    const _gfExp=(G.playTime||0)+300;
+    for(let _gi=0;_gi<P._gwMarkedEns.length;_gi++){const _ge=P._gwMarkedEns[_gi];if(_ge&&_ge.alive)_ge._uqGwExp=_gfExp}
+  }
   P._gwActive=false;P._gwT=0;P._gwCount=0;P._gwHitSet=null;P._gwPath=null;P._gwMarkedEns=null;
   P.iframes=Math.max(P.iframes,120);
 }
@@ -44985,13 +45599,15 @@ function activateIceShatter(){
   const baseDmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('iceOrb'))+(P._ioBon||0);P._ioBon=0; // 통일공식: _skMul
   const bladeDmg=Math.max(1,~~(baseDmg*0.3)); // 다수 발사 보정, 최소1
   const cx=P.x,cy=P.y;
+  // 유니크 u_d04 파쇄 회수: 시전 식별자 — 이번 파쇄 칼날만 인정, 적별 1회·시전당 360f 상한
+  _uqS.iceCastId++;_uqS.iceUsed=0;_uqS.iceHit=null;
   // 전방위 얼음파편 방사 (큰 파편)
   const _ioLvScale=1+(slv-1)*.1; // 렙당 +10%, 10렙=1.9x
   const _ioSpawnR=(P.r+32)*_ioLvScale; // 구체 표면에서 발사
   for(let i=0;i<nBlades;i++){
     const ang=(Math.PI*2/nBlades)*i+(Math.random()-.5)*.15; // 약간 불규칙
     const spd=7+Math.random()*3;
-    {const _pp=_getPProj();_pp.x=cx+Math.cos(ang)*_ioSpawnR;_pp.y=cy+Math.sin(ang)*_ioSpawnR;_pp.vx=Math.cos(ang)*spd;_pp.vy=Math.sin(ang)*spd;_pp.dmg=bladeDmg;_pp.el=EL.I;_pp.maxDist=3000;_pp.dist=0;_pp.r=12;_pp.magic=true;_pp.iceBlade=true;_pp._hitSet.clear();_pp.pierce=0.95;_pp.stagger=0;_pp.kb=0;_pp._iceAng=ang;_pp._iceT=0;pProjs[pProjs.length]=_pp;}
+    {const _pp=_getPProj();_pp.x=cx+Math.cos(ang)*_ioSpawnR;_pp.y=cy+Math.sin(ang)*_ioSpawnR;_pp.vx=Math.cos(ang)*spd;_pp.vy=Math.sin(ang)*spd;_pp.dmg=bladeDmg;_pp.el=EL.I;_pp.maxDist=3000;_pp.dist=0;_pp.r=12;_pp.magic=true;_pp.iceBlade=true;_pp._hitSet.clear();_pp.pierce=0.95;_pp.stagger=0;_pp.kb=0;_pp._iceAng=ang;_pp._iceT=0;_pp._uqIceCast=_uqS.iceCastId;pProjs[pProjs.length]=_pp;}
   }
   // 파쇄 범위 데미지 (근접)
   const shatterR=(100+slv*5)*_ioLvScale;
@@ -45056,6 +45672,21 @@ function fireBlackStar(){
   SFX.detonate();shake(45);
   if(G.slowMo<=0)G.slowMo=30;G.hitStop=~~(_HS.blackStar*OPT.hitStop/100);
   P.iframes=Math.max(P.iframes,60);
+  // 유니크 u_d17 장판 수렴: 흡인 종료 시 600px 안 공격 장판(가시덫·악의폭풍·고정형 지옥진)을 최대 N개 중심으로 이동
+  // 남은 시간·피해·레벨·출처 유지, 추적형 fireAura(follow:true)는 다음 프레임 복귀하므로 제외 (HOOK_REVIEW 2026-10-01)
+  {const _zgN=~~_uEq('_uBlackZoneGather');
+   if(_zgN>0&&G._fireZones&&G._fireZones.length){
+     let _zgMoved=0;
+     for(let _zi=0;_zi<G._fireZones.length&&_zgMoved<_zgN;_zi++){const fz=G._fireZones[_zi];
+       if(fz.t>=fz.maxT)continue;
+       const _zt=fz.type;
+       if(!(_zt==='spikeTrap'||_zt==='storm'||(_zt==='fireAura'&&!fz.follow)))continue;
+       if(dst(fz.x,fz.y,cx,cy)>600)continue;
+       if(Math.abs(fz.x-cx)<1&&Math.abs(fz.y-cy)<1)continue;
+       fz.x=cx;fz.y=cy;_zgMoved++;
+     }
+     if(_zgMoved>0)addTxt(cx,cy-70,_T('장판 수렴!')+' ×'+_zgMoved,'#bb88ff',45);
+   }}
   addTxt(cx,cy-40,_T('⛧ 블랙!'),'#aa00ff',80);
   G._ultBurst={kind:'black',x:cx,y:cy,t:0,maxT:72,rot:0};
 }
@@ -45123,6 +45754,12 @@ function fireLavaSummon(){
   SFX.detonate();shake(40);
   if(G.slowMo<=0)G.slowMo=22;G.hitStop=Math.max(G.hitStop||0,8);P.iframes=Math.max(P.iframes,60);
   addTxt(cx,cy-40,_T('🕳 탄막블랙홀 붕괴!')+(_released>0?' ('+_released+')':''),'#ff5522',80);
+  // 유니크 u_d18 흡수 환류: 흡수 탄막 10발마다 최대 MP 1~3% 환급, 총 상한 15% — 폭발 후 1회 정산 (재흡수·재방출 미집계)
+  {const _mrV=_uEq('_uBlackholeManaReturn');
+   if(_mrV>0&&_absorbed>=10){
+     const _mrAmt=Math.min(~~(P.mmp*0.15),~~(Math.floor(_absorbed/10)*_mrV*P.mmp));
+     if(_mrAmt>0){P.mp=Math.min(P.mmp,P.mp+_mrAmt);addTxt(cx,cy-60,_T('MP 환류!')+' +'+_mrAmt,'#4488ff',45)}
+   }}
   P._lvAbsorbed=0;P._lvDmgPool=0;P._lvCaptured=[];
   setTimeout(()=>{SFX.detonate();shake(18);},900);
 }
@@ -47873,13 +48510,28 @@ function _invCardFields(it){
   if(it.legendarySpecial){
     stats+='<div style="margin-top:6px;padding:4px 6px;background:rgba(255,170,0,.12);border:1px solid #ffaa00;border-radius:3px">';
     stats+='<div style="color:#ffaa00;font-size:.75rem;font-weight:700;margin-bottom:2px">\u25C8 '+_T('전설 특수')+'</div>';
-    stats+='<div style="color:#ffdd88;font-size:.8rem">'+_T(it.legendarySpecial.ko)+'</div></div>';
+    stats+='<div style="color:#ffdd88;font-size:.8rem">'+_T(_legSpKo(it.legendarySpecial))+'</div></div>';
   }
   // 유니크 특수 효과 표시
   if(it.uniqueSpecial){
-    stats+='<div style="margin-top:6px;padding:4px 6px;background:rgba(255,68,102,.15);border:1px solid #ff4466;border-radius:3px">';
-    stats+='<div style="color:#ff4466;font-size:.75rem;font-weight:700;margin-bottom:2px">\u2726 '+_T('유니크 특수')+'</div>';
-    stats+='<div style="color:#ffaacc;font-size:.8rem">'+_T(it.uniqueSpecial.ko).replace('{s}',it.uniqueSpecial.secs!==undefined?it.uniqueSpecial.secs:'')+'</div></div>';
+    const _usp=it.uniqueSpecial;
+    const _usDef=typeof _UNIQ_BY_STAT!=='undefined'?_UNIQ_BY_STAT[_usp.stat]:null;
+    // 롤 원본값: 신규는 생성 시 disp 저장, 구세이브(망토 등)는 scale 없어 val=프레임 그대로
+    const _usRaw=_usp.disp!==undefined?_usp.disp:(_usDef&&_usDef.scale?Math.round(_usp.val/_usDef.scale):_usp.val);
+    let _usTxt=_T(_usp.ko);
+    _usTxt=_usTxt.replace('{s}',_usp.secs!==undefined?_usp.secs:'').replace('{p}',_usRaw).replace('{n}',_usRaw);
+    // 하/중/상옵 라벨: roll 구간 3등분 위치 (roll 있는 효과만)
+    let _usLab='';
+    if(_usDef&&_usDef.roll&&_usDef.roll[1]>_usDef.roll[0]){
+      const _usT=(_usRaw-_usDef.roll[0])/(_usDef.roll[1]-_usDef.roll[0]);
+      const _usG=_usT>=2/3?2:_usT>=1/3?1:0;
+      const _usLN=[_T('하옵'),_T('중옵'),_T('상옵')][_usG];
+      const _usLC=['#9a8f80','#dfd6c2','#d8b878'][_usG];
+      _usLab=' <span style="color:'+_usLC+';font-size:.68rem;border:1px solid rgba(164,147,115,.5);border-radius:2px;padding:0 3px;vertical-align:1px">'+_usLN+'</span>';
+    }
+    stats+='<div style="margin-top:6px;padding:4px 6px;background:rgba(23,12,37,.55);border:1px solid #8e55e9;border-radius:3px">';
+    stats+='<div style="color:#d9b8ff;font-size:.75rem;font-weight:700;margin-bottom:2px">\u2726 '+_T('유니크 특수')+_usLab+'</div>';
+    stats+='<div style="color:#ffaacc;font-size:.8rem">'+_usTxt+'</div></div>';
   }
   // ═══ 결정 슬롯 표시 ═══
   if(it.socketCount>0){
@@ -48336,7 +48988,7 @@ function renderInv(){
     const ip=itemPower(item);
     const _eSz=_GC>=48?(Math.min(w,h)>1?'1.8rem':'1.3rem'):(Math.min(w,h)>1?'1.3rem':'1rem');
     const _ipSz=_GC>=48?'9px':'8px';
-    const _nmHtml=(w*h>=4&&_GC>=42)?`<div style="font-size:${_GC>=48?'.65rem':'.55rem'};color:${RARITY_C[item.rarity]}88;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:${w*_GC-6}px;pointer-events:none;line-height:1;margin-top:1px">${_T(item.name)}</div>`:'';
+    const _nmHtml=(w*h>=4&&_GC>=42)?`<div style="font-size:${_GC>=48?'.65rem':'.55rem'};color:${item.rarity===5?'#d9b8ffdd':RARITY_C[item.rarity]+'88'};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:${w*_GC-6}px;pointer-events:none;line-height:1;margin-top:1px">${_T(item.name)}</div>`:'';
     // 스킨은 셀(w*_GC × h*_GC)을 꽉 채우도록 스케일 — 이름 라벨 있으면 그 높이만큼 양보
     const _skSz=Math.max(24,Math.min(w,h)*_GC-(_nmHtml?16:6));
     div.innerHTML=`${_itemSkin(item,_skSz,RARITY_C[item.rarity])}${_nmHtml}<div class="rarity-dot" style="background:${RARITY_C[item.rarity]}"></div>${_markHtml}<div class="ui-item-power" style="font-size:${_ipSz};color:#aa9977;position:absolute;bottom:1px;right:2px;pointer-events:none">${ip}</div>${isSal?'<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:1.6rem;color:#ff3333;text-shadow:0 0 6px #000;pointer-events:none;font-weight:900">✕</div>':''}`;
@@ -48829,7 +49481,7 @@ rHdr.textContent=_L('리롤 — 접두/접미 재설정 | 악의 '+REROLL_COST,'
       let _implHtml='';
       if(rIt._implicitKo&&rIt._implicitVal!==undefined){_implHtml='<div style="color:#aaddff;font-size:.8rem">\u25C6 '+_T(rIt._implicitKo).replace('X',rIt._implicitVal)+'</div>'}
       let _legHtml='';
-      if(rIt.legendarySpecial){_legHtml='<div style="color:#ffaa00;font-size:.8rem;margin-top:4px">\u25C8 '+_T(rIt.legendarySpecial.ko)+'</div>'}
+      if(rIt.legendarySpecial){_legHtml='<div style="color:#ffaa00;font-size:.8rem;margin-top:4px">\u25C8 '+_T(_legSpKo(rIt.legendarySpecial))+'</div>'}
       detDiv.innerHTML=`<div style="text-align:center;color:${rc};font-size:1rem;font-weight:700;margin-bottom:8px">${_itemIco(rIt,rc,15)} ${itemDispName(rIt)}${rIt.enh?' <span style="color:'+enhColor(rIt.enh)+'">+'+rIt.enh+'</span>':''}</div>
         ${_implHtml}<div style="margin-bottom:10px;text-align:center">${_afxHtml}</div>${_legHtml}`;
       const btnRow=document.createElement('div');btnRow.style.cssText='display:flex;gap:6px;justify-content:center;flex-wrap:wrap';

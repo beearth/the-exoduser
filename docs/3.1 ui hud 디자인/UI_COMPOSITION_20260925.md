@@ -2770,3 +2770,16 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 비호환 | opacity .45, 채도 .3 |
 | 파일 | `inventory-gems-finish.css` 말미(로드 순서상 기존 규칙 덮음), 캐시 `?v=20261008-socket-art1`(game.html. game-easy-test.html은 이 CSS를 로드하지 않음) |
 | 검수 | 1280×720·1920×1080·2582×1231 실제 보석 탭 캡처. 소켓 한 줄(maxRows 1), 장착 보석 1920 25×28px·2582 36×39px, pageerror 0 |
+
+## 2026-10-08 유니크(등급 5) 외관
+
+| 요소 | 이전 | 현재 | 위치 |
+|---|---|---|---|
+| `RARITY_C[5]` | `#ff4466` | **`#8e55e9`** 자수정 (영웅 `#bb44ff`보다 어둡고 푸른 보라) | game.html `RARITY_C` |
+| 아이템 그림 테두리 `.iskin.r5` | 붉은 inset+glow | 자수정 inset 1.5px + glow 12px | CSS |
+| 장착칸 `.inv-eq-slot.rarity-5` | 전설과 같은 금색 | 자수정 테두리·glow (전설 금색과 분리) | CSS |
+| 툴팁 '유니크 특수' 블록 | 붉은 배경/테두리/제목 | 암자두 `rgba(23,12,37,.55)` + 자수정 테두리 + 라일락 `#d9b8ff` 제목 | `_invCardFields` |
+| 가방 칸 이름 글자 | `RARITY_C+'88'` | 유니크만 라일락 `#d9b8ffdd` (보라 바탕 위 가독성) | `renderInv` |
+| 아이템 그림 | 부위 공통 그림 | 유니크 원화 `img/ui/unique-items/ui-XX.png`(암자두 카드 바탕), 월드 드롭은 rembg 투명본 `ui-XX_cut.png` | `_itemSkin`, `_worldItemSkin` |
+
+1600×900 실측: 가방에서 유니크는 암자두 카드+자수정 테두리로 전설(금)·영웅(밝은 자홍)과 구분, 월드 드롭은 배경 판 없이 표시. 드롭 빛기둥 색은 기존 빔 시트 그대로(미변경).

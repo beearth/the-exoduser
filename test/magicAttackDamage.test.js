@@ -5,7 +5,7 @@ import vm from 'node:vm';
 const html=readFileSync(new URL('../game.html',import.meta.url),'utf8');
 function fn(name){const start=html.indexOf('function '+name+'(');assert.ok(start>=0);let n=0;for(let i=html.indexOf('{',start);i<html.length;i++){if(html[i]==='{')n++;if(html[i]==='}'&&!--n)return html.slice(start,i+1);}}
 function context(){const c=vm.createContext({P:{skills:{},_altAtk:0},PASSIVES:{pAtk:0,pMagic:0,pBow:0,pParry:0},
-  _eqAffix:()=>0,_eqImplicit:()=>0,_uEq:()=>0,magicRef:()=>100,statInt:()=>1,
+  _eqAffix:()=>0,_eqImplicit:()=>0,_uEq:()=>0,_lEq:()=>0,magicRef:()=>100,statInt:()=>1,
   meleeRef:()=>1,statStr:()=>1,sh:()=>({})});
  vm.runInContext(['_passDmgSum','pMagicMul','pAtkMul','pBowMul','pMagicCost','pMagicSpd','pParryDmg','pParryProjDmg','_spikeTrapDmg'].map(fn).join('\n')+html.slice(html.indexOf('const _SK_MUL='),html.indexOf('function _fuseMul(')),c);return c;}
 test('magic damage doubles at zero and invested passives while cost, speed and physical multipliers stay unchanged',()=>{

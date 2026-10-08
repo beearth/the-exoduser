@@ -329,34 +329,65 @@ Object.freeze(AFFIX_POOL);
 
 **위치**: AFFIX_POOL 바로 아래에 추가
 
+> **2026-10-08 전면 개편 — 무작위화 + 실효과 구현 완료.**
+> 전설 특수는 더 이상 "슬롯+무기타입별 고정 1개"가 아니다. **rarity>=4 아이템은 부위·무기종류와 무관하게 아래 19종 풀에서 무작위 1개**를 받으며(유니크 rarity=5도 동일하게 상속), 효과는 `_lEq(stat)` 헬퍼로 **어느 부위에 장착해도 동작**한다. 키 이름(weapon_sword 등)은 원래 출처 부위 표기용일 뿐이다. 과거 문서의 greatsword/longsword 항목과 구(舊) 수치(armor 8%/helmet 25%확률/neck -50%/belt 스태미나/cape 무적)는 폐기 — 현행 코드 기준은 아래 표다.
+
 ```javascript
-// ─── 전설 특수 효과 (슬롯+무기타입별 고정 1개) ───
-const LEGENDARY_SPECIAL = {
-  // 무기 (wtype별)
-  weapon_dagger:    {ko:'처치 시 이속 +40%(3초) + 다음 공격 크리 보장',   stat:'_lDaggerKill',  val:1},
-  weapon_sword:     {ko:'5타 콤보 완성 시 데빌포스 20% 즉시 충전',          stat:'_lSwordCombo',  val:0.20},
-  weapon_greatsword:{ko:'체간 파괴 시 2초 슬로우모션 + 데미지 +60%',        stat:'_lGSPosture',   val:0.60},
-  weapon_spear:     {ko:'돌진 관통 타격 수만큼 데미지 +20% 중첩(최대5)',     stat:'_lSpearStack',  val:0.20},
-  weapon_hammer:    {ko:'스태거 발동 시 범위 충격파 (ATK×120%)',             stat:'_lHammerShock', val:1.20},
-  weapon_axe:       {ko:'출혈 대상 크리 시 잔여 DoT×300% 즉시 폭발',         stat:'_lAxeBleed',    val:3.00},
-  weapon_longsword: {ko:'회전참 패턴에 장착 원소 자동 부여',                  stat:'_lLSRotate',    val:1},
-  bow:              {ko:'치명타 시 추가 투사체 1발 발사',                      stat:'_lBowCrit',     val:1},
-  shield:           {ko:'패리 성공 시 2초 무적 + 반격 데미지 ×2',            stat:'_lShieldParry', val:2},
-  // 방어구 슬롯
-  armor:    {ko:'피격 시 3초 쿨로 HP 8% 즉시 회복',                          stat:'_lArmorRegen',  val:0.08},
-  helmet:   {ko:'스킬 사용 시 25% 확률로 쿨다운 미소모',                      stat:'_lHelmFree',    val:0.25},
-  gloves:   {ko:'공격속도 +20% + 기본공격에 랜덤 원소 추가',                  stat:'_lGloveElem',   val:1},
-  pants:    {ko:'이동 중 지속 HP 재생 (초당 HP의 1%)',                        stat:'_lPantsRegen',  val:0.01},
-  boots:    {ko:'회피 직후 첫 공격 데미지 +80%',                              stat:'_lBootsEvade',  val:0.80},
-  cape:     {ko:'패리 성공 시 무적 2초 부여',                                  stat:'_lCapeParry',   val:2},
-  // 악세사리
-  ring1:    {ko:'원소 반응 발동 시 추가 폭발 (ATK×80%)',                       stat:'_lRingElem',    val:0.80},
-  ring2:    {ko:'처치 시 데빌포스 5% 회복',                                    stat:'_lRingKill',    val:0.05},
-  necklace: {ko:'HP 50% 이하 시 전 스킬 쿨다운 -50%',                         stat:'_lNeckLow',     val:0.50},
-  belt:     {ko:'스태미나 완전 회복 시 5초간 피해 +15%',                       stat:'_lBeltSt',      val:0.15},
+// ─── 전설 특수 효과 (rarity>=4: 부위·무기종류 무관 19종 풀에서 무작위 1개, 유니크도 상속) ───
+// 키는 원래 출처 부위 표기용. 효과는 _lEq(stat)로 어느 부위에 장착해도 동작 (비가산, 첫 값 1개).
+const LEGENDARY_SPECIAL={
+  weapon_sword:    {ko:'기검참 3타 콤보 완성 시 분노 20% 즉시 충전',        stat:'_lSwordCombo', val:0.20},
+  weapon_dagger:   {ko:'처치 시 이속 +40%(3초) + 다음 공격 크리 보장',    stat:'_lDaggerKill', val:1},
+  weapon_hammer:   {ko:'스태거 발동 시 범위 충격파 (ATK×120%)',           stat:'_lHammerShock',val:1.20},
+  weapon_mace:     {ko:'스태거 발동 시 범위 충격파 (ATK×100%)',           stat:'_lMaceShock',  val:1.00},
+  weapon_club:     {ko:'넉백 거리 2배 + 벽충돌 시 추가 데미지 50%',        stat:'_lClubKB',     val:2},
+  weapon_axe:      {ko:'출혈 대상 크리 시 잔여 DoT×300% 즉시 폭발',       stat:'_lAxeBleed',   val:3.00},
+  weapon_spear:    {ko:'사슬기동 착지마다 8초간 데미지 +20% 중첩(최대5)',   stat:'_lSpearStack', val:0.20},
+  bow:             {ko:'치명타 시 추가 투사체 1발 발사',                   stat:'_lBowCrit',    val:1},
+  shield:          {ko:'패리 성공 시 반격 데미지 ×2',                     stat:'_lShieldParry',val:2},
+  armor:           {ko:'피격 시 3초 쿨로 HP 5% 즉시 회복',               stat:'_lArmorRegen', val:0.05},
+  helmet:          {ko:'스킬 쿨다운 -20%',                               stat:'_lHelmFree',   val:0.20},
+  gloves:          {ko:'공격속도 +20% + 기본공격에 랜덤 원소 추가',       stat:'_lGloveElem',  val:1},
+  pants:           {ko:'이동 중 지속 HP 재생 (초당 HP의 1%)',             stat:'_lPantsRegen', val:0.01},
+  boots:           {ko:'회피 직후 첫 공격 데미지 +80%',                   stat:'_lBootsEvade', val:0.80},
+  cape:            {ko:'패리 타이밍 판정 +50% 확대',                      stat:'_lCapeParry',  val:0.50},
+  ring1:           {ko:'속성 약점 적중 시 추가 폭발 (ATK×80%)',           stat:'_lRingElem',   val:0.80},
+  ring2:           {ko:'처치 시 분노 5% 회복',                            stat:'_lRingKill',   val:0.05},
+  necklace:        {ko:'HP 50% 이하 시 전 스킬 쿨다운 -30%',             stat:'_lNeckLow',    val:0.30},
+  belt:            {ko:'물약 사용 시 5초간 피해 +15%',                    stat:'_lBeltBuff',   val:0.15},
 };
-Object.freeze(LEGENDARY_SPECIAL);
 ```
+
+### 전설 특수 효과 — 구현 상세 19종 (2026-10-08, 전부 실동작 구현·Playwright A/B 검증)
+
+| # | 출처 키 | stat | 툴팁 문구 (현행 ko) | 수치 | 실제 적용 위치 (game.html) | 해석 메모 (원문→현행 메커니즘) |
+|---|---|---|---|---|---|---|
+| 1 | weapon_sword | `_lSwordCombo` | 기검참 3타 콤보 완성 시 분노 20% 즉시 충전 | 분노최대치의 20% | `_fireKiSlashCrescent()` step===3 분기 | 원문 "5타 콤보+데빌포스"는 존재하지 않음 → 기검참(kiSlash) 3타 콤보 + 분노(P.rage)로 재해석 |
+| 2 | weapon_dagger | `_lDaggerKill` | 처치 시 이속 +40%(3초) + 다음 공격 크리 보장 | 이속 0.40·180f, 크리 1회 | `hurtE()` on-kill 블록(`P._okSpdBuff/_okSpdMul` 재사용, `P._lNextCrit=1`) + 크리 판정부에서 강제크리 소모 | 원문 그대로. 이속은 onKillSpeed 어픽스 버프 채널 재사용 |
+| 3 | weapon_hammer | `_lHammerShock` | 스태거 발동 시 범위 충격파 (ATK×120%) | ×1.20, 반경120 | `hurtE()` poiseHit→`_poiseHit()` 성공 블록 (staggerExplosion 어픽스 옆) | 스태거=포이즈 격파(그로기). ATK=meleeRef×statStr×pAtkMul. `{dot:true,shieldHit:true}`로 재귀 차단 |
+| 4 | weapon_mace | `_lMaceShock` | 스태거 발동 시 범위 충격파 (ATK×100%) | ×1.00, 반경120 | 상동 (hammer와 공유, 둘 다 장착 시 비가산 최대값) | 상동 |
+| 5 | weapon_club | `_lClubKB` | 넉백 거리 2배 + 벽충돌 시 추가 데미지 50% | kb×2, 벽충돌 +dmg×0.5 | `hurtE()` 넉백 블록 (`_kbAmt*=2`, `canMv` 벽 판정 → 추가 hurtE, `opts._lClubWall` 재귀 가드, 보스 제외) | 원문 "강타 시"는 미정의 → 넉백 발생 공격 전반으로 재해석, 문구 수정 |
+| 6 | weapon_axe | `_lAxeBleed` | 출혈 대상 크리 시 잔여 DoT×300% 즉시 폭발 | bleedPool×3.0 | `hurtE()` 크리 성공 블록 (`e.bleedT>0&&e.bleedPool>0` → dmg 가산, 출혈 소멸) | 원문 그대로. 잔여 DoT=`e.bleedPool` |
+| 7 | weapon_spear | `_lSpearStack` | 사슬기동 착지마다 8초간 데미지 +20% 중첩(최대5) | +0.20/스택, 최대5, 480f | 사슬기동 착지 블록(`_harpLandT=30` 지점)에서 스택+1 → `hurtE()` 플레이어 공격 배율 | 원문 "사슬 착지 타격 수"→착지 횟수 스택으로 재해석, 문구 수정 |
+| 8 | bow | `_lBowCrit` | 치명타 시 추가 투사체 1발 발사 | 치명타 확률로 1발 | `fireBow()`·`_fireXbow()` 발사 시 `statCrit()` 확률로 투사체 1발 추가 (±0.12rad) | 피격 시점이 아니라 발사 시점에 크리확률 판정으로 구현 |
+| 9 | shield | `_lShieldParry` | 패리 성공 시 반격 데미지 ×2 | ×2 | `pParryProjDmg()` `_legSP` (기존 죽은 참조 `sh()._lShieldParry` → `_lEq()`로 수정) | 원문 그대로. 반격=패링 반사탄 데미지 |
+| 10 | armor | `_lArmorRegen` | 피격 시 3초 쿨로 HP 5% 즉시 회복 | mhp×0.05, ICD 180f | `hurtP()` `P.hp-=a` 직후 (`P._lArmorF`=G.playTime 기준 ICD) | 원문 그대로 (구 문서 8%→현행 5%) |
+| 11 | helmet | `_lHelmFree` | 스킬 쿨다운 -20% | -0.20 | `_cdRed()` 합산 | 원문 "20% 확률 쿨다운 미소모"는 중앙 쿨다운 설정부가 없어 기대값 동일한 쿨감 -20%로 재해석, 문구 수정 |
+| 12 | gloves | `_lGloveElem` | 공격속도 +20% + 기본공격에 랜덤 원소 추가 | 공속 +0.20, 원소 1~4 | `statDex()` + wSwing 히트 `hitArc()` 호출부(무속성 무기일 때 화염/냉기/암흑/전기 랜덤) | 원문 그대로. 유속성 무기는 무기 속성 유지 |
+| 13 | pants | `_lPantsRegen` | 이동 중 지속 HP 재생 (초당 HP의 1%) | mhp×0.01/초 | update 루프 전설 타이머 블록 (`P._walkMoving` 중 60f마다) | 원문 그대로 ("HP의 1%"=최대HP 기준) |
+| 14 | boots | `_lBootsEvade` | 회피 직후 첫 공격 데미지 +80% | ×1.8, 1회, 3초 유예 | 사슬기동 착지 블록 + `hurtP()` 회피 판정 성공 → `P._lBootsT=180`, `hurtE()`에서 소모 | 회피=사슬기동(Shift) 착지 + DEX 회피 판정 성공 양쪽 |
+| 15 | cape | `_lCapeParry` | 패리 타이밍 판정 +50% 확대 | ×1.5 (캡) | `isPWin()`의 `_lParryWinTicks()`(sBash 16→20틱, 캡20) + `_lSbParryT()`(보호막/평화보호 20→30틱, 7개소) | 원문 그대로. sBash는 20틱 전체가 상한 |
+| 16 | ring1 | `_lRingElem` | 속성 약점 적중 시 추가 폭발 (ATK×80%) | ×0.80, 반경100, 적당 ICD 120f | `hurtE()` 크리 블록 뒤 (`atkEl>0 && elMul>=2`, `e._lReactF` ICD) | 원문 "원소 반응"은 미존재 → 속성 상성 약점(elMul≥2) 적중으로 재해석, 문구 수정 |
+| 17 | ring2 | `_lRingKill` | 처치 시 분노 5% 회복 | 분노최대치의 5% | `hurtE()` on-kill 블록 | 원문 "데빌포스"→분노(P.rage)로 재해석, 문구 수정 |
+| 18 | necklace | `_lNeckLow` | HP 50% 이하 시 전 스킬 쿨다운 -30% | -0.30 (조건부) | `_cdRed()` 합산 (`P.hp<=P.mhp*.5` 시) | 원문 그대로 (구 문서 -50%→현행 -30%). "전 스킬"=_cdRed 사용 스킬 전체 |
+| 19 | belt | `_lBeltBuff` | 물약 사용 시 5초간 피해 +15% | ×1.15, 300f | `useQuickslot()`·자동물약 → `P._lBeltT=300`, `hurtE()` 배율 | 원문 그대로 (구 문서 "스태미나 완전 회복 시"는 폐기된 설계) |
+
+**헬퍼 함수 (2026-10-08 추가, `_uEq` 바로 아래 game.html ~15745):**
+- `_lEq(stat)` — `_uEq`와 동일 규칙(장착 슬롯 순회·첫 값 1개·비가산)이되, 핫패스 비용 때문에 **장비 변경 시 재계산되는 캐시**(`_lEqCache`) 사용. 무효화 지점은 `_eqAffixCache`와 동일(recalcSt·_testAffix·_testAffixClear).
+- **구세이브 폴백**: `_lEqRebuild()`가 `item[stat]`이 없고 `legendarySpecial.stat/val`만 있는 구버전 아이템에서 `item[stat]=legendarySpecial.val`을 복원한다 → 옛 세이브의 전설 아이템도 그대로 동작.
+- `_legSpKo(ls)` — 툴팁 표기는 저장된 `ko` 문자열이 아니라 **stat 기준 현행 테이블 문구**를 사용(`_LS_BY_STAT`), 구세이브의 옛 문구가 자동 정규화된다.
+- `_lParryWinTicks()`/`_lSbParryT()` — 망토(_lCapeParry) 패링 윈도우 확대 전용.
+- 발동 피드백 텍스트(28언어 등록): `💥충격파!` `💥벽충돌!` `🩸출혈 폭발!` `⚡회피 일격!` `⚔착지 중첩 ` `🧪피해 증가!` `💥속성 폭발!` + 분노 적립은 기존 `🔥분노+` 재사용.
 
 ### 유니크 등급 (rarity=5, 2026-06-08 추가)
 
@@ -390,7 +421,7 @@ const UNIQUE_SPECIAL = {
 
 > **롤링 유니크**: `cape`는 `roll:[min,max]`(프레임)을 가지는 최초의 롤링 유니크 특수효과다. 아이템 생성 시 `_uv = roll[0] + ~~(rnd*(roll[1]-roll[0]+1))` 로 30~60프레임(0.5~1.0초) 중 하나가 결정되고, `uniqueSpecial.secs=(_uv/60).toFixed(1)` 로 초 표기값을 별도 저장한다. 표시용 `ko`에는 `{s}` 플레이스홀더를 유지하고, 툴팁 렌더(`_T(it.uniqueSpecial.ko).replace('{s}',secs)`)에서 치환한다 → 번역 테이블에는 `{s}` 포함 템플릿을 등록.
 
-> **유니크 어픽스 전체 목록·신규 후보(2026-09-30):** [유니크_어픽스_리스트.md](유니크_어픽스_리스트.md) — 현행 12종 + 신규 후보 3종(분노 충만 쿨회복 10~30초 / 전격이동 통과 약화 50~100% / 기검참 차징 피해 +50~100%, 부위 미정·미구현).
+> **유니크 어픽스 전체 목록(2026-10-08 신규 25종 구현):** [유니크_어픽스_리스트.md](유니크_어픽스_리스트.md) — 기존 12종 + B절 3종(U-N01~03) + D절 22종(U-D01~22) = **총 37종**, 전부 부위 무관 무작위 1개 풀. 신규 키는 `u_n01`~`u_d22`(id 기반). 신규 롤링 계약: `roll:[min,max]` 정수 균등 + 선택적 `scale:0.01`(% 롤은 `item[stat]=롤×scale` 소수 저장), 롤 원본 정수는 `uniqueSpecial.disp`에 보존. 툴팁 치환 `{s}`(초)·`{p}`(%)·`{n}`(개수) + 롤 3등분 **하/중/상옵 라벨**(`_invCardFields`, 뼈회색/뼈색/금빛). 구세이브 12종은 scale 없음 → 마이그레이션 불필요. 25종 적용 위치·채택안·검증 결과는 유니크_어픽스_리스트.md **G절** 표가 단일 기준이다.
 
 #### 유니크 특수 효과 — 구현 상세 (2026-06-08)
 
@@ -411,7 +442,7 @@ const UNIQUE_SPECIAL = {
 
 **헬퍼 함수**: `_uEq(stat)` — 전 장비 슬롯에서 해당 stat 값 반환 (없으면 0). 위치: `game.html:12376`
 
-**mkItem 저장**: `item[_us.stat] = _us.val` (롤링 유니크는 `_uv`) — 유니크 특수 효과의 stat/val을 아이템 객체에 직접 프로퍼티로 저장. `_uEq()`가 `INV.equipped[slot][stat]`으로 접근. 롤링 유니크(cape)는 추가로 `uniqueSpecial.secs`(초 표기)를 저장하고 `ko`엔 `{s}` 템플릿 유지.
+**mkItem 저장 (2026-10-08 확장)**: `item[_us.stat] = _us.val` (롤링 유니크는 `_uv`) — 유니크 특수 효과의 stat/val을 아이템 객체에 직접 프로퍼티로 저장. `_uEq()`가 `INV.equipped[slot][stat]`으로 접근. 롤링 유니크는 `uniqueSpecial.secs`(초 표기)와 **`uniqueSpecial.disp`(롤 원본 정수, 2026-10-08 신설)** 를 함께 저장하고, `scale`이 있으면 `_uv=+(롤×scale).toFixed(4)`(소수)를 저장한다. `ko`엔 `{s}`/`{p}`/`{n}` 템플릿 유지 — 툴팁(`_invCardFields`)에서 secs/disp로 치환하고 roll 3등분 하/중/상옵 라벨을 붙인다. 구세이브 아이템(disp 없음)은 scale 유무로 역산 폴백.
 
 > **분노스킬 정의**: "분노스킬"=Space 전용 **지옥강타 1·2**(`giantSlam`/`giantSlam2`)와 `cat:'rage'` **천공쇄기**(`skyCrusher`). 쿨다운 변수는 각각 `P._gslCd`, `P._scCd`이다. `_uParryRageCd`는 활성 쿨다운 둘을 함께 차감하고, 천공쇄기는 장비와 무관한 기본 30f(0.5초) 충전 회복에 어픽스 30~60f가 추가된다. 패링은 근접(`doParry` 근접 호출)·탄막 반사(투사체당 `doParry` 호출) 모두 트리거하므로, 어픽스 추가량은 `G.frame` 기준 프레임당1회만 적용. 2026-09-10부터 물리탄은 장비 없이도 한 발마다 지옥강타 1·2와 천공쇄기에 기본30f(0.5초) 회복이 누적된다. 천공쇄기 기존 기본30f와 중복 합산하지 않으며 비물리 패링 기본30f는 프레임당1회 유지.
 
@@ -528,12 +559,12 @@ const UNIQUE_SPECIAL = {
   item.prefix = item.affixes.find(function(a){ return a.type === 0; }) || null;
   item.suffix = item.affixes.find(function(a){ return a.type === 1; }) || null;
 
-  // ── 전설 특수 효과 ──
+  // ── 전설 특수 효과 (2026-10-08 무작위화: 부위 무관 19종 풀에서 1개, item[stat]도 저장) ──
   item.legendarySpecial = null;
   if(rarity >= 4){
-    const _lsKey = (slot === 'weapon' && item.wtype) ? 'weapon_' + item.wtype : slot;
-    const _ls = LEGENDARY_SPECIAL[_lsKey] || LEGENDARY_SPECIAL[slot];
-    if(_ls) item.legendarySpecial = {ko: _ls.ko, stat: _ls.stat, val: _ls.val};
+    const _lsPool = Object.values(LEGENDARY_SPECIAL);
+    const _ls = _lsPool[~~(Math.random() * _lsPool.length)];
+    if(_ls){ item.legendarySpecial = {ko: _ls.ko, stat: _ls.stat, val: _ls.val}; item[_ls.stat] = _ls.val; }
   }
 
   // 아이템 레벨 = 캐릭터 레벨 기반, 10레벨 단위 (0~900)
@@ -596,7 +627,7 @@ function applyAffixStats(item){
       }
     }
   }
-  // 전설 특수
+  // 전설 특수 — ※ 실제 구현(2026-10-08)은 P[stat]이 아니라 item[stat] + _lEq(stat) 캐시 조회 방식
   if(item.legendarySpecial){
     P[item.legendarySpecial.stat] = item.legendarySpecial.val;
   }

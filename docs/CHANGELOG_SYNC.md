@@ -1,3 +1,11 @@
+## 2026-10-08 — 유니크 특수 효과 신규 25종 구현 (U-N01~03 + U-D01~22, 풀 12→37종)
+
+`docs/7아이템디자인/유니크_어픽스_리스트.md` B·D절 25종을 `UNIQUE_SPECIAL`에 `u_n01`~`u_d22` 키로 추가 (부위 무관 무작위 1개, 사용자 지시 "RPG는 다 무작위다"). 롤 인프라: `scale:0.01`(% 롤 소수 저장)·`uniqueSpecial.disp`(롤 원본 정수) 신설, 툴팁 `{p}`/`{n}` 치환 + roll 3등분 **하/중/상옵 라벨**(`_invCardFields`, 뼈회색/뼈색/금빛 — 구 롤링 망토에도 적용). 구세이브 12종은 scale 없음 → 마이그레이션 불필요. 효과 훅: 공유 일시 상태 `_uqS` + `_uqFrame(sp)`(분노 충만 에지·토큰 감쇠·쌍극 전류선 틱·자식 덫 지연 생성 큐), 출처 태그(`_uqFzCtx`/`_uqHitCtx`/`_uqScCtx`)로 재귀·중복 발동 차단, 2차 피해는 전부 `{dot:true,shieldHit:true}`. 채택 미결안: U-N01 천공쇄기도 같은 {s} / U-N02 대상 bladeDash·300f·보스 동일 효율·전류장판 곱연산 / U-N03 `_tier>=1`. 번역 47건 No.3125~3171 등록 + ko→en 사전 + lang 27개 전파(node --check 통과). 검증: 격리 Playwright 25/25 장착 대조 PASS·롤 8000회 분포/scale 전수 정상·툴팁 37종 치환/라벨 전수 정상·pageerror 0·1600×900 눈검수. 상세 표: `유니크_어픽스_리스트.md` G절.
+
+## 2026-10-08 — 전설 특수 효과(LEGENDARY_SPECIAL) 무작위화 + 19종 실효과 구현
+
+rarity>=4 전설(유니크 상속 포함) 특수 효과를 UNIQUE_SPECIAL과 동일하게 **부위·무기종류 무관 19종 풀 무작위 1개**로 변경(`mkItem`에서 `item[stat]` 저장), 기존 툴팁 전용이던 19종을 전부 실동작으로 구현. 신규 헬퍼 `_lEq(stat)`(장착 슬롯 순회·첫 값·비가산, `_lEqCache` 장비변경 시 재계산) + 구세이브 `item[stat]` 폴백(`legendarySpecial.stat/val`에서 복원) + 툴팁 ko 정규화(`_legSpKo`). 죽은 참조 `sh()._lShieldParry` → `_lEq` 수정. 문구 6종 실동작 맞춤 교체(기검참 3타 분노/넉백2배+벽충돌/사슬기동 착지 중첩/스킬 쿨-20%/속성 약점 폭발/처치 분노5%) + 발동 텍스트 7종 신규 — 번역 No.3112~3124, 28언어 전파. Playwright A/B 19/19 검증(분포 1900개 19종 전부·rarity≤3 0건), pageerror 0. 상세: `docs/7아이템디자인/exoduser-item-system-full.md` STEP 2 표.
+
 ## 2026-10-01 — CH1-1 경계 가독성 MAP-020 (접지 그림자 + 뿌리 둑)
 
 신규 `ch1-boundary-edge.js`(game.html 태그 `?v=20261001-3`, `Ch1BorderForeground.drawBack` 직후 draw), `build-nwjs.mjs` 목록 추가, 테스트 `test/ch1BoundaryEdge.test.js` 4/4. 끄기 `?edgeShade=0`, 그림자만 `?edgeShade=a`. 문서 `docs/4.1맵디자인+설정/CH1_BOUNDARY_EDGE_MAP020_20261001.md`.
