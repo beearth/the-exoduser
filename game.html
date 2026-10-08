@@ -11036,6 +11036,7 @@ function _drawDruidBoss(X,e,sa,tdY,spec,parentScale,parentYOffset){
   X.globalAlpha=sa;X.drawImage(img,sx,sy,cw,ch,-dw/2,-dh*.86,dw,dh);
   X.globalCompositeOperation='lighter';X.globalAlpha=sa*.42;X.drawImage(img,sx,sy,cw,ch,-dw/2,-dh*.86,dw,dh); // 셀프 라이튼 ×2(어두운 아레나서 존재감)
   X.globalAlpha=sa*.42;X.drawImage(img,sx,sy,cw,ch,-dw/2,-dh*.86,dw,dh);
+  if(_ch1NormalIntent)_drawDruidBodyHitFlash(X,e,sa,img,sx,sy,cw,ch,-dw/2,-dh*.86,dw,dh);
   }
   X.globalCompositeOperation='source-over';X.globalAlpha=1;
   X.restore();return true;
@@ -12054,6 +12055,17 @@ function _ch1DruidCurrent(owner,selection){
   const b=owner.borrowed,f=_ch1DruidImage(b?.image),lease=b&&_ch1DruidDecoded.get(b.image);
   return expected===selection.sheet&&!!lease&&lease.borrowed===b&&_ch1DruidLeaseCurrent(lease)&&!!b&&owner.sheetRecord.img===b.image&&owner.imageGeneration===b.generation&&selection.generation===b.generation&&!!f&&f.naturalWidth===b.width&&f.naturalHeight===b.height&&f.src===b.srcSnapshot&&f.currentSrc===b.currentSrcSnapshot&&f.srcset===b.srcsetSnapshot&&f.sizes===b.sizesSnapshot;
 }
+// Replay only the current normal Druid body, inside its existing parent transform.
+function _drawDruidBodyHitFlash(ctx,e,sa,img,sx,sy,sw,sh,x,y,w,h){
+  if(!(e._hitFlash>0))return;
+  const strength=Math.min(1,e._hitFlash/6),pop=1+.05*strength;
+  ctx.save();
+  try{
+    ctx.imageSmoothingEnabled=false;ctx.globalCompositeOperation='lighter';_setBlend(true);
+    ctx.globalAlpha=strength*.8*sa;
+    ctx.drawImage(img,sx,sy,sw,sh,x+w*(1-pop)/2,y+h*(1-pop)/2,w*pop,h*pop);
+  }finally{try{_setBlend(false)}finally{ctx.restore();}}
+}
 function _drawCh1DruidRigBody(ctx,e,selection,sa,dw,dh,nameBaseY,inverseScale,parentScale,parentYOffset){
   if(!selection||!_ch1DruidRig||!_ch1DruidScope()||![nameBaseY,inverseScale,parentScale,parentYOffset].every(Number.isFinite)||inverseScale<=0||parentScale<=0)return false;
   const owner=_ch1DruidObserve(e);if(!owner||owner.intent!=='normal')return false;
@@ -12080,7 +12092,10 @@ function _drawCh1DruidRigBody(ctx,e,selection,sa,dw,dh,nameBaseY,inverseScale,pa
       if(!_ch1DruidCurrent(owner,sourceFrame))return blitted;
       ctx.drawImage(frame.canvas,frame.left,frame.top,frame.width,frame.height);blitted=true;
     }
-    if(_ch1DruidCurrent(owner,sourceFrame))e._nameTopOff=nameTopOff;
+    if(_ch1DruidCurrent(owner,sourceFrame)){
+      _drawDruidBodyHitFlash(ctx,e,sa,frame.canvas,0,0,frame.canvas.width,frame.canvas.height,frame.left,frame.top,frame.width,frame.height);
+      if(_ch1DruidCurrent(owner,sourceFrame))e._nameTopOff=nameTopOff;
+    }
     _ch1DruidStats.bodyFrames++;_ch1DruidStats.lastState=mode;return true;
   }finally{ctx.restore();}
 }

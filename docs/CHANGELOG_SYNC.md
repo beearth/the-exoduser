@@ -56713,3 +56713,7 @@ alpha/nav/crop/UV/geometry/opacity/renderOrder/resource/dispose·skirt/backplane
 ### ROOT-EDITOR-ALL-LAYER-OBJECT-SEARCH-20261008
 
 기존 현재층 검색에 **전체 층** 범위를 추가했다. 이름/ID/assetId로 찾은 행의 층을 확인하고 직접 선택한다. 숨김·잠금·발보기 p0·현재층 묶음이동 제한은 유지하며 scene/nav/원PNG/save 필드 변경0. 기존 pending endDrag commit/autosave 경계 유지. 첫 Node1 통제9그룹34조건 PASS/exit0, source peer blocking0; 실브라우저/GPU/audio/save 미실행·RETOUCH. 현재 API/UI 계약은 [MAP_SCENE_EDITOR_20261005.md](4.1맵디자인+설정/MAP_SCENE_EDITOR_20261005.md)의 동일 절, 외부 완료 영수증은 `E/editor-all-layer-object-search-20261008/completion.json`이다.
+
+## 2026-10-08 — 드루이드 본체 피격 플래시 연결
+
+`ROOT-CH1-DRUID-BODY-HIT-FEEDBACK-20261008`: normal rig의 현재 canvas 또는 native 폴백의 같은 crop에 기존 `min(1,_hitFlash/6)*.8*sa` alpha·`1+.05*min(1,_hitFlash/6)` 중심 pop을1장 적용한다. 상시3pass는 유지하고 special/hit/death는 제외한다. 현재 부모 변환 안에서 그리며 `_enemyHFFrames` 등록0·타이머/전투/save 변경0. [정확 계약](5.1임펙트디자인/VFX_구현가이드.md#ch1-druid-body-hit-feedback-20261008). 최초 통제10그룹97확인/Node1 exit0·before 반례1 별도; 실제 화면/GPU/청취/save 미검수, RETOUCH/UI_NOT_ASSESSED. 외부 `ch1-druid-body-hit-feedback-20261008/completion.json`이 최종 보존 정본이다.

@@ -1271,3 +1271,24 @@ ROOT의 저장 software PNG 직접 판독은 금빛 문양의 초기 성장·후
 MAP PRODUCTION REPORT (§23): STAGE=CH1-1 전투 가독성 source consumer. MASTER(silhouette/regions/main route/side spaces), OUTER MASS(LEFT/RIGHT/TOP/SOUTH/major holes), LARGE(assets/composites/overlap/repetition), MEDIUM(connections/remaining holes), GROUND(shadow/contamination/integration), PLAYABLE(arenas/travel/breathing/threat/readability), LANDMARK(primary/secondary/tertiary), CAMERA QA(START/EARLY/ARENA/SIDE L/SIDE R/LANDMARK/LATE/EXIT), TECH QA(route/collision/pageerror/404/seam/loading/performance), FILES/GIT의 표준 세부 항목은 위 외부 `visual-verdict.json`에 기록했다. 이번 geometry·원화·nav 변경0, 실카메라/환경 시각 QA NOT_RUN, physical relief0/확대 흐림/절벽 전경·공통 발 접지는 미완료다. GIT의 최종 staged/commit/push는 같은 단위 completion/remote 영수증을 우선하며 이 절의 검수 시점을 사후 성공으로 바꾸지 않는다.
 
 **VISUAL VERDICT: RETOUCH.** 이번 기능의 실화면 미검수이며 통제 CPU PASS를 시각 PASS로 승격하지 않는다. 다음은 허용된 새 실제 화면의 피격 가독성·normal CH1-1 보스 개방/사망/부활/재도전·청취·실보상 save 인수다.
+
+## 2026-10-08 — 정상 드루이드 현재 본체 피격 플래시
+<a id="ch1-druid-body-hit-feedback-20261008"></a>
+
+`ROOT-CH1-DRUID-BODY-HIT-FEEDBACK-20261008`: 기존 일반 적의 피격 강도·pop을 정상 드루이드의 현재 본체에도 연결했다. 기존 일반 적 snapshot 계약과 이전 검수 이력은 그대로이며 보스 전체·특수 동작 인수를 뜻하지 않는다.
+
+| id / 적용 위치 | 현재 계약 |
+|---|---|
+| helper / Gate | `_drawDruidBodyHitFlash(ctx,e,sa,img,sx,sy,sw,sh,x,y,w,h)`, `e._hitFlash>0`일 때만 그리기. 타이머 설정·감쇠 변경0 |
+| 강도 / alpha / pop | `strength=Math.min(1,e._hitFlash/6)`; alpha=`strength*.8*sa`; pop=`1+.05*strength`. rect 중심 유지: `x+w*(1-pop)/2,y+h*(1-pop)/2,w*pop,h*pop` |
+| 합성 | 기존 상시3pass(source-over/sa, lighter/sa*.42 두 번) 뒤 피격1장. `lighter`, smoothing=false, `_setBlend(true)`→그리기→`_setBlend(false)`. Canvas 상태는 save/restore; blend 해제 예외에도 중첩 finally에서 restore 시도 |
+| 정상 rig | `_drawCh1DruidRigBody`의 실제 성공한 동일 `frame.canvas` 전체 crop=`0,0,canvas.width,canvas.height`, rect=`frame.left,frame.top,frame.width,frame.height`. 기존 anchor·scaleX·부모 변환 안에서 실행. body3pass 뒤 current owner guard 통과 시만 피격1장 |
+| 정상 native 폴백 | `_drawDruidBoss`의 기존 normal intent일 때 같은 `img/sx/sy/cw/ch`와 `-dw/2,-dh*.86,dw,dh` 재사용. rig 실패/미준비일 때만 폴백하므로 rig와 배타적 |
+| 제외 / 중복 | special·hit-or-death·inactive 의도는 추가 피격0. `_enemyHFFrames`에 등록하지 않아 기존 공통 snapshot으로 이 보스를 다시 그리지 않음. 기존 보스 전조·상시 밝기는 피격 효과와 별도 |
+| 불변 | 기존 owner/이미지 lease·프레임 선택·이름/HP 앵커·피해·AI·hitFlash6/4 및 update 감쇠·PNG·scene/nav·save·RAF/timer·Image/fetch 변경0 |
+| 한계 | 동일 canvas의 동기 pixel 재쓰기/재진입 원자성·proxy 제출·실밝기·GPU 비용 미인수. 기존 native caller의 바깥 save는 draw 예외 시 unwind하지 않으며 이번 helper의 내부 restore와 구분 |
+| 신규 검수 | 최초 Node1/VM fixture24/제품suite1,10그룹97확인(96dynamic+classic parse 확인1, 실제 classic script4), exit0/계측unhandled0. before 정상 native hit6인데 body3장·flash blend0 반례1은 별도이며 PASS 합산0 |
+| 검수 범위 | 실제 whole helper/rig body/native selector/intent·motion key + 통제 Canvas/rig/owner ports. 현재 crop·변환·중심·6/4/분수/상한·미피격·특수제외·stale owner·draw/blend 예외·기존 이름 앵커 확인. 전체 draw/update/실 Three 렌더 검수 아님 |
+| 실제 화면 | 기존 탭 무조작. native/GPU/브라우저/PNG/audio/save 실행0, UI_NOT_ASSESSED / NOT_LISTENED / save UNKNOWN. VISUAL VERDICT: RETOUCH |
+
+최종 소유 code+docs·원격 보존은 외부 `ch1-druid-body-hit-feedback-20261008/completion.json`을 따른다. 첫 정적 peer의 blend reset 예외 restore blocker1은 첫 CPU 전에 중첩 finally로 보정했고 해당 closure 재검토 blocking0이다.

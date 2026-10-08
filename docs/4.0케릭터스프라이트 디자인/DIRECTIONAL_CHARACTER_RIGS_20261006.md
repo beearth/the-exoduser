@@ -1638,3 +1638,7 @@ OFF/불가mode/identity/준비 frame 부재의 검수에서는 core0이다. **co
 검증: 최초 Node의 실제 owner/renderer 함수·피니셔 producer 및 weapon 전이 slice/통제 ports에서 7그룹35조건과 소스 역치환3조건이 마지막 구문 검사 예외 전에 통과했다. 마지막 검사는 importmap을 JavaScript로 오분류한 하니스 SyntaxError로 exit1이었다. 첫 stderr/exit를 보존하고 제품 suite를 반복하지 않았다. 별도 parse-only Node1에서 importmap/module/external을 제외한 실제 classic4 script 구문 검사만 통과(exit0). 물리 Node총2이며 첫 실행을 clean exit0로 기록하지 않는다. 원 코드의 피니셔 owner 소실 반례1은 별도다. 정적 peer blocking0. 실제 GPU/브라우저/음향/저장 미실행, VISUAL VERDICT: RETOUCH / UI_NOT_ASSESSED / nativeNOT_RUN.
 
 근거: 외부 `E/ch1-warrior-charge-finisher-rig-20261008/`의 implementation.json, gate-first.cjs, cpu-stderr.txt/cpu-exit.txt, validation.json, parse-only-result.json. 열린 사용자 탭 조작·재로드 없이 코드와 관련 문서를 보존한다.
+
+## 2026-10-08 — 드루이드 본체 피격 플래시 연결
+
+`ROOT-CH1-DRUID-BODY-HIT-FEEDBACK-20261008`: normal rig의 현재 canvas 또는 native 폴백의 같은 crop에 기존 `min(1,_hitFlash/6)*.8*sa` alpha·`1+.05*min(1,_hitFlash/6)` 중심 pop을1장 적용한다. 상시3pass는 유지하고 special/hit/death는 제외한다. 현재 부모 변환 안에서 그리며 `_enemyHFFrames` 등록0·타이머/전투/save 변경0. [정확 계약](../5.1임펙트디자인/VFX_구현가이드.md#ch1-druid-body-hit-feedback-20261008). 최초 통제10그룹97확인/Node1 exit0·before 반례1 별도; 실제 화면/GPU/청취/save 미검수, RETOUCH/UI_NOT_ASSESSED. 외부 `ch1-druid-body-hit-feedback-20261008/completion.json`이 최종 보존 정본이다.

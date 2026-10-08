@@ -343,3 +343,7 @@ source9 기준의 완료 ENEMY·ANIMVFX 원패치2를 불변 보존한다. sourc
 MAP PRODUCTION REPORT (§23): STAGE=CH1-1 전투 가독성 source consumer. MASTER(silhouette/regions/main route/side spaces), OUTER MASS(LEFT/RIGHT/TOP/SOUTH/major holes), LARGE(assets/composites/overlap/repetition), MEDIUM(connections/remaining holes), GROUND(shadow/contamination/integration), PLAYABLE(arenas/travel/breathing/threat/readability), LANDMARK(primary/secondary/tertiary), CAMERA QA(START/EARLY/ARENA/SIDE L/SIDE R/LANDMARK/LATE/EXIT), TECH QA(route/collision/pageerror/404/seam/loading/performance), FILES/GIT의 표준 세부 항목은 위 외부 `visual-verdict.json`에 기록했다. 이번 geometry·원화·nav 변경0, 실카메라/환경 시각 QA NOT_RUN, physical relief0/확대 흐림/절벽 전경·공통 발 접지는 미완료다. GIT의 최종 staged/commit/push는 같은 단위 completion/remote 영수증을 우선하며 이 절의 검수 시점을 사후 성공으로 바꾸지 않는다.
 
 **VISUAL VERDICT: RETOUCH.** 이번 기능의 실화면 미검수이며 통제 CPU PASS를 시각 PASS로 승격하지 않는다. 다음은 허용된 새 실제 화면의 피격 가독성·normal CH1-1 보스 개방/사망/부활/재도전·청취·실보상 save 인수다.
+
+## 2026-10-08 — 드루이드 본체 피격 플래시 연결
+
+`ROOT-CH1-DRUID-BODY-HIT-FEEDBACK-20261008`: normal rig의 현재 canvas 또는 native 폴백의 같은 crop에 기존 `min(1,_hitFlash/6)*.8*sa` alpha·`1+.05*min(1,_hitFlash/6)` 중심 pop을1장 적용한다. 상시3pass는 유지하고 special/hit/death는 제외한다. 현재 부모 변환 안에서 그리며 `_enemyHFFrames` 등록0·타이머/전투/save 변경0. [정확 계약](VFX_구현가이드.md#ch1-druid-body-hit-feedback-20261008). 최초 통제10그룹97확인/Node1 exit0·before 반례1 별도; 실제 화면/GPU/청취/save 미검수, RETOUCH/UI_NOT_ASSESSED. 외부 `ch1-druid-body-hit-feedback-20261008/completion.json`이 최종 보존 정본이다.

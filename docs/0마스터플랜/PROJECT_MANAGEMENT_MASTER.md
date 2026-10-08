@@ -1,3 +1,7 @@
+## 2026-10-08 — 드루이드 본체 피격 플래시 연결
+
+`ROOT-CH1-DRUID-BODY-HIT-FEEDBACK-20261008`: normal rig의 현재 canvas 또는 native 폴백의 같은 crop에 기존 `min(1,_hitFlash/6)*.8*sa` alpha·`1+.05*min(1,_hitFlash/6)` 중심 pop을1장 적용한다. 상시3pass는 유지하고 special/hit/death는 제외한다. 현재 부모 변환 안에서 그리며 `_enemyHFFrames` 등록0·타이머/전투/save 변경0. [정확 계약](../5.1임펙트디자인/VFX_구현가이드.md#ch1-druid-body-hit-feedback-20261008). 최초 통제10그룹97확인/Node1 exit0·before 반례1 별도; 실제 화면/GPU/청취/save 미검수, RETOUCH/UI_NOT_ASSESSED. 외부 `ch1-druid-body-hit-feedback-20261008/completion.json`이 최종 보존 정본이다.
+
 ## 2026-10-08 — 1-1 보스 rig의 HP·레벨 앵커
 
 정상 드루이드의 성공한2.5D rig 상단 bounds를 기존 HP바·레벨 표시 위치에 연결했다. 실제 부모 scale/Y offset·내부 inverse scale을 합성하여 padded 상단보다10 world 단위 위에 둔다. 범위/실패/특수는 기존 배치, HP·AI·전투/save 변경0. 첫 후보 통제69확인의 부모 fixture 누락은 별도 source blocker1로 발견·보정했고, 새 부모 포함 통제10그룹78확인/Node1(총Node2) PASS·최종 source blocker0. 실제 화면/GPU/청취/save 미검수, RETOUCH/UI_NOT_ASSESSED. 기존 탭 재로드0/새 전문 배정0.
