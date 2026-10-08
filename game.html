@@ -13119,7 +13119,7 @@ function _dispatchSkillSlot(slotIdx,keyCode){
     case 'maliceHunt':
       if(_bladeEchoTryStart())break;
       if((P._mhCd||0)>0){break}
-      if(G.mats>=_malCost(30)){activateMaliceHunt();P._mhCd=Math.max(600,~~(900*(1+_cdRed())));_skOk=true}
+      if(G.mats>=_malCost(30)){if(activateMaliceHunt()===true){P._mhCd=Math.max(600,~~(900*(1+_cdRed())));_skOk=true}}
       else showPH(_T('악의 부족! (')+_malCost(30)+')','#ff4444');break;
     case 'venomBlade':
       if((P._vbCd||0)>0){showPH(_T('쿨다운 중...'),'#44dd44');break}
@@ -44601,7 +44601,7 @@ function _drawBladeEchoVfx(ctx,run,px,py,t,fade=1){
 
 // ═══ 악의 사냥 발동 (선택기술) ═══
 function activateMaliceHunt(){
-  if(G.mats<_malCost(30)){showPH(_T('악의 부족! (')+_malCost(30)+')','#ff4444');return}
+  if(G.mats<_malCost(30)){showPH(_T('악의 부족! (')+_malCost(30)+')','#ff4444');return false}
   const _mhStCost=50;
   const _mhLv=P.skills.maliceHunt||1;
   const _bladeEchoCast=_isFused('bladeEcho')&&P.skills.bladeDash>=1?(P._bladeEchoCast=(P._bladeEchoCast||0)+1):0;
@@ -44609,12 +44609,12 @@ function activateMaliceHunt(){
   const _mhShotCnt=Math.min(6,1+_mhLv); // 1렙=2발, 2렙=3, ... 5렙+=6발
   const _mhGF=P.skills.guardian>=1&&_isFused('bladeFuse');
   if(_mhGF){
-    if(P.st<_mhStCost){showPH(_T('ST 부족!'),'#ff4444');return}
+    if(P.st<_mhStCost){showPH(_T('ST 부족!'),'#ff4444');return false}
     // 합체: 궤도 칼날 전부 발사
-    if(!P._gOrbs||P._gOrbs.length===0){showPH(_T('칼날 없음!'),'#cccccc');return}
+    if(!P._gOrbs||P._gOrbs.length===0){showPH(_T('칼날 없음!'),'#cccccc');return false}
     const _isPlagueGF=P.skills.plagueBurst>=1&&(_isFused('plagueFuse')||_isFused('plagueVenom'));
     const _isPlagueVenomGF=_isPlagueGF&&P.skills.venomBlade>=1&&_isFused('plagueVenom');
-    if(_isPlagueGF&&(P._pbCd||0)>0){return}
+    if(_isPlagueGF&&(P._pbCd||0)>0){return false}
     G.mats-=_malCost(30);P.st=Math.max(0,P.st-_mhStCost);
     if(_isPlagueGF)P._pbCd=Math.max(600,~~(900*(1+_cdRed()))); // 독혈해방 15초, 최소 10초
     const _goCntRaw=P._gOrbs.length;
@@ -44675,7 +44675,7 @@ function activateMaliceHunt(){
     SFX.slash();playSample(Math.random()<.5?'voice_dark_skill':'voice_bladefuse',1,_r(1,.05));    shake(6);
   }else{
     // 단독: 1발, 레벨 스케일 데미지, 10회 관통
-    if(P.st<_mhStCost){showPH(_T('ST 부족!'),'#ff4444');return}
+    if(P.st<_mhStCost){showPH(_T('ST 부족!'),'#ff4444');return false}
     G.mats-=_malCost(30);P.st=Math.max(0,P.st-_mhStCost);
     const _mhDmg=~~(meleeRef()*statStr()*pAtkMul()*_skMul('maliceHuntBurst'));
     const _bladePierceBonus=~~((bw().bowPierce||0)*300+(PASSIVES.pPierce||0)*30)+_eqAffix('pierceFlat');
@@ -44685,6 +44685,7 @@ function activateMaliceHunt(){
     {const _pp=_getPProj();_pp.x=P.x+_mdx*16;_pp.y=P.y+_mdy*16;_pp.vx=_mdx*18;_pp.vy=_mdy*18;_pp.dmg=_mhDmg;_pp.el=EL.P;_pp.maxDist=_mhRange;_pp.dist=0;_pp.r=10;_pp.stagger=8;_pp.kb=0;_pp.magic=true;_pp.maliceHunt=true;_pp.mhBlade=true;_pp._pierced=0;_pp._mhMaxPierce=_mhPierce;_pp._hitSet.clear();_pp._maxBounce=10;if(_bladeEchoCast){_pp._bladeEchoCast=_bladeEchoCast;_pp._bladeEchoPath=[{x:_pp.x,y:_pp.y}]}pProjs[pProjs.length]=_pp;}
     SFX.slash();playSample(Math.random()<.5?'voice_dark_skill':'voice_bladefuse',.8,_r(1,.08));addTxt(P.x,P.y-25,_T('⚔ 악의사냥!'),'#ffffff',35);
   }
+  return true;
 }
 
 // ═══ 독사 발동 (DEX+석궁 기반 독 DOT 추적칼날) ═══
