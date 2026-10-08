@@ -1,0 +1,19 @@
+{
+  "dateKST": "2026-10-08",
+  "status": "DRAFT_ONLY_USER_REVIEW_PENDING",
+  "youtubeUploaded": false,
+  "steamUploaded": false,
+  "current": "R1",
+  "localDirectory": "/Users/fordeargamers/the-exoduser/output/FDG_FINAL_RELEASE_20261008/revisions/gameplay-teaser-v2",
+  "urls": {
+    "mp4": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/fe286adc-6644-4e84-a600-2a3a00266984.mp4",
+    "contact": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/e1b7a5c3-21cf-4540-a4e2-f4efa30e3788.jpg",
+    "qa": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/98ffba07-ccab-4903-a6d3-eb1a0d824a6d.json",
+    "editable": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/4ef143ff-c3e5-4220-af6a-3f593858d5b1.zip"
+  },
+  "sourceCommit": "261eb1a4bd3607a5eb3989ba1d4402738ff40d02",
+  "mainPreviousVideo": "https://youtu.be/WTwXcdeTCFg",
+  "mainPreviousState": "UNLISTED_REMOVED_FROM_PUBLIC_PLAYLIST",
+  "nemesiaRevisedReview": "https://youtu.be/0ERvrpHccZQ",
+  "approval": "User review pending; do not publish new main or old rejected37s to Steam."
+}

@@ -1,0 +1,402 @@
+{
+  "schemaVersion": 1,
+  "status": "TECHNICAL_PASS_USER_REVIEW_PENDING",
+  "publication": "DRAFT_ONLY",
+  "sourceGit": "261eb1a4bd3607a5eb3989ba1d4402738ff40d02",
+  "revision": "R1",
+  "file": "EXODUSER_GAMEPLAY_TEASER_REVIEW_V2_R1_20261008.mp4",
+  "bytes": 39116121,
+  "sha256": "d402dc9ec9750ec20b3c556fdfe4c87fce1e89f8ba07105e30bf8ebd1266dc34",
+  "width": 1920,
+  "height": 1080,
+  "fps": 30,
+  "frames": 789,
+  "seconds": 26.3,
+  "renderedManifest": {
+    "schemaVersion": 1,
+    "status": "DRAFT_SELECTED",
+    "publication": "DRAFT_ONLY",
+    "renderPerformed": false,
+    "fps": 30,
+    "width": 1920,
+    "height": 1080,
+    "targetSeconds": {
+      "minimum": 24,
+      "maximum": 40
+    },
+    "selectionContract": [
+      "This is a source/shot plan, not an approved final timeline or a render receipt.",
+      "Root selects exact from/dur values, verifies durable raw files and fills prepared paths.",
+      "from is the original selected interval for provenance; each prepared MP4 must contain exactly dur*30 decoded frames from PTS0.",
+      "Native cuts always use from=0 on separately prepared H.264/yuv420p CFR30 1920x1080 MP4s with one AAC stereo source-game audio track.",
+      "Reorder/remove/replace these proposed shots after actual viewing. Null trim values intentionally prevent build.",
+      "Set status=DRAFT_SELECTED only after actual file selection. Keep publication=DRAFT_ONLY.",
+      "The last shot is 2\u20134 seconds of actual gameplay with original audio; logo/Steam CTA overlays it without an added silent card.",
+      "No automatic render, generation, upload or publication. Root owns inspection/render and user review."
+    ],
+    "assets": {
+      "logo": {
+        "file": "logo.png",
+        "verifiedOriginal": true,
+        "repositoryCandidate": "img/brand/logo_transparent.png",
+        "instruction": "Root verifies the existing original game logo, copies that exact asset to inputDir and sets verifiedOriginal=true. No generated substitute."
+      }
+    },
+    "sources": {
+      "parry": {
+        "type": "staged",
+        "status": "DURABLE_FILE_VERIFIED",
+        "rawFile": "parry.original.webm",
+        "availablePreparedSeconds": 5,
+        "note": "Existing CH1 Lv500 staged skill demonstration; original interval 148/30\u2013298/30s was used in the prior prepared file. New selection remains root-owned."
+      },
+      "rage_slam": {
+        "type": "staged",
+        "status": "DURABLE_FILE_VERIFIED",
+        "rawFile": "rage_slam.original.webm",
+        "availablePreparedSeconds": 7,
+        "note": "Existing CH1 Lv500 staged skill demonstration."
+      },
+      "fire": {
+        "type": "staged",
+        "status": "DURABLE_FILE_VERIFIED",
+        "rawFile": "fire.original.webm",
+        "availablePreparedSeconds": 8,
+        "note": "Existing CH1 Lv500 staged skill demonstration."
+      },
+      "ice_orb": {
+        "type": "staged",
+        "status": "DURABLE_FILE_VERIFIED",
+        "rawFile": "ice_orb.original.webm",
+        "availablePreparedSeconds": 7,
+        "note": "Existing CH1 Lv500 staged skill demonstration."
+      },
+      "blackhole": {
+        "type": "staged",
+        "status": "DURABLE_FILE_VERIFIED",
+        "rawFile": "blackhole.original.webm",
+        "availablePreparedSeconds": 7,
+        "note": "Existing CH1 Lv500 staged skill demonstration."
+      },
+      "natural1": {
+        "type": "natural",
+        "status": "DURABLE_FILE_VERIFIED",
+        "rawFile": "demo_manual_1791458139761.webm",
+        "preparedFullFile": "demo_manual_1791458139761.mp4",
+        "audit": "demo_manual_1791458139761.audit.json",
+        "character": 1,
+        "sourceGit": "ba660621e37cdc1635de8e8a370f1f48fd6f18ad; runtime hash in audit",
+        "gameSha256": "11fba62cc6df197055103b4a9e3b2edaa58645a7b1db82a24da9d3611d9f3773",
+        "rawFileLocation": "/Users/fordeargamers/the-exoduser/output/marketing_video_20261008/natural-retake/",
+        "note": "Manual real-input capture; no combat/enemy modifications; no HTML HUD; Steam build equivalence unverified."
+      },
+      "natural0": {
+        "type": "natural",
+        "status": "DURABLE_FILE_VERIFIED",
+        "rawFile": "demo_manual_1791458421435.webm",
+        "preparedFullFile": "demo_manual_1791458421435.mp4",
+        "audit": "demo_manual_1791458421435.audit.json",
+        "character": 0,
+        "sourceGit": "ba660621e37cdc1635de8e8a370f1f48fd6f18ad; runtime hash in audit",
+        "gameSha256": "11fba62cc6df197055103b4a9e3b2edaa58645a7b1db82a24da9d3611d9f3773",
+        "rawFileLocation": "/Users/fordeargamers/the-exoduser/output/marketing_video_20261008/natural-retake/",
+        "note": "Manual real-input capture; no combat/enemy modifications; no HTML HUD; Steam build equivalence unverified."
+      }
+    },
+    "shots": [
+      {
+        "id": "opening-natural",
+        "source": "natural1",
+        "type": "natural",
+        "from": 5,
+        "dur": 3.7,
+        "prepared": "natural1-hook.mp4",
+        "title": null,
+        "purpose": "Actual melee threat and kill impact immediately, no opening card."
+      },
+      {
+        "id": "core-natural",
+        "source": "natural0",
+        "type": "natural",
+        "from": 5,
+        "dur": 7.6,
+        "prepared": "natural0-combat.mp4",
+        "title": null,
+        "purpose": "Second character actual encounter and successive kills, retained real-time motion."
+      },
+      {
+        "id": "parry-counter",
+        "source": "parry",
+        "type": "staged",
+        "from": 4.933333333333334,
+        "dur": 3,
+        "prepared": "parry-counter.mp4",
+        "title": "parry",
+        "purpose": "Incoming projectile, verified successful Q counter."
+      },
+      {
+        "id": "ice-surge",
+        "source": "ice_orb",
+        "type": "staged",
+        "from": 3.466666666666667,
+        "dur": 3,
+        "prepared": "ice-surge.mp4",
+        "title": "skills",
+        "purpose": "Ice orb shatter instead of slam shot with visible original-source rectangular border."
+      },
+      {
+        "id": "combat-climax",
+        "source": "blackhole",
+        "type": "staged",
+        "from": 4,
+        "dur": 4,
+        "prepared": "blackhole-climax.mp4",
+        "title": null,
+        "purpose": "Original prepared blackhole clip3\u20137s retains explosion at5.8s."
+      },
+      {
+        "id": "exit-motion",
+        "source": "natural1",
+        "type": "natural",
+        "from": 12.4,
+        "dur": 2,
+        "prepared": "natural1-move.mp4",
+        "title": null,
+        "purpose": "Actual movement after encounter, contiguous source into closing."
+      },
+      {
+        "id": "closing-natural",
+        "source": "natural1",
+        "type": "natural",
+        "from": 14.4,
+        "dur": 3,
+        "prepared": "natural1-close.mp4",
+        "title": null,
+        "purpose": "Original logo and Steam CTA over continuous actual movement, no silent extra card."
+      }
+    ],
+    "cta": {
+      "shotId": "closing-natural",
+      "text": "PLAY THE FREE DEMO ON STEAM",
+      "overGameplay": true
+    },
+    "permittedPromotionalText": [
+      "PARRY & COUNTER",
+      "UNLEASH YOUR SKILLS",
+      "PLAY THE FREE DEMO ON STEAM"
+    ],
+    "stagedDisclosure": "Staged skill demo \u00b7 Development build",
+    "buildEnvironment": {
+      "EXODUSER_REBUILD_INPUT_DIR": "REQUIRED: prepared MP4/logo input directory",
+      "EXODUSER_REBUILD_MANIFEST": "REQUIRED: absolute path of root-selected JSON manifest",
+      "EXODUSER_REBUILD_PROJECT_DIR": "REQUIRED: fresh native draft project directory",
+      "EXODUSER_FFPROBE": "OPTIONAL: ffprobe executable path, default ffprobe",
+      "EXODUSER_REBUILD_REPLACE_OWN_DRAFT": "OPTIONAL: 1 only for rebuilding this script's marked own draft"
+    },
+    "actualSelectedSeconds": 26.3,
+    "actualSelectedFrames": 789,
+    "soundtrack": {
+      "status": "SELECTED_EXISTING_GAME_MUSIC",
+      "method": "Post-native-render ffmpeg mix preserving original game audio; native editable timeline remains source-audio picture edit.",
+      "newGeneratedAudio": false,
+      "note": "Existing user-adopted game music; SSOT permits trailer reuse. Commercial plan receipts not independently verified. No new generated music.",
+      "source": "bgm/cutscene/prologue_theme.mp3",
+      "sourceSha256": "9ab69e88008f6ebc625c4c694d7d8aa066dd1c6f465185cfc9e5d10be49e9865",
+      "fromSeconds": 14,
+      "durationSeconds": 26.3,
+      "musicLinearGain": 0.18,
+      "sourceGameGain": 1,
+      "fadeInSeconds": 0.4,
+      "fadeOutSeconds": 2,
+      "limiter": {
+        "limit": 0.95,
+        "level": false
+      }
+    },
+    "revisionBeforeUserReview": "R1 replaced source-border-artifact slam shot with ice orb; duration and mix unchanged."
+  },
+  "manifestSha256": "09b169016f949ac383aba18758210c4a3ceeac15d8c093a628d1f443a23ebb17",
+  "builderSha256": "7d819cd6e68f64ab0971d1adee0f1400f205f2898bcde84b13ba1d2d8fc259d5",
+  "fullDecode": {
+    "status": "PASS",
+    "errorLogBytes": 0
+  },
+  "actualNativeSamplesInspectedSeconds": [
+    1.2,
+    12.8,
+    18.5,
+    24.7
+  ],
+  "actualExportContactSheetInspectedSeconds": [
+    1.2,
+    6,
+    12.8,
+    15.3,
+    20.5,
+    24.7
+  ],
+  "visualVerdict": "DRAFT_REVIEW_REQUIRED",
+  "limitations": [
+    "Full subjective real-time viewing/listening and user final approval pending.",
+    "Dark natural source and small avatar limit readability.",
+    "Brief original ice-combat red damage flash visible at export15.3s. No new full-frame overlay was added.",
+    "No boss, new biome, HUD/menu, build choice or Steam binary equivalence is demonstrated."
+  ],
+  "r1Correction": "Rejected original slam source rectangular border artifact after source/export comparison; replaced3s with existing ice orb source, no game code edits.",
+  "audio": {
+    "sampleRate": 48000,
+    "channels": 2,
+    "codec": "AAC",
+    "decodedSamplePeak": 0.9568819403648376,
+    "decodedSamplePeakDbfs": -0.38283283925840184,
+    "decodedRmsDbfs": -14.43676396717436,
+    "fullScaleSamples": 0,
+    "decodedAudioSeconds": 26.304,
+    "ebur128Summary": "Integrated loudness:\n    I:         -14.0 LUFS\n    Threshold: -24.9 LUFS\n\n  Loudness range:\n    LRA:        19.0 LU\n    Threshold: -34.6 LUFS\n    LRA low:   -27.5 LUFS\n    LRA high:   -8.5 LUFS\n\n  True peak:\n    Peak:       -0.4 dBFS",
+    "mix": "Game original1.0 + existing theme0.18, theme14\u201340.3s, fades0.4/2s, original endfade0.15s, limiter0.95 level=false latency=true",
+    "musicSha256": "9ab69e88008f6ebc625c4c694d7d8aa066dd1c6f465185cfc9e5d10be49e9865",
+    "musicSource": "docs/6\uc0ac\uc6b4\ub4dc\ub514\uc790\uc778/\uc8fc\uc81c\uac00_SUNO_\ud504\ub86c\ud504\ud2b8.md",
+    "rightsVerification": "User-adopted game music and SSOT trailer-reuse permission checked; commercial-plan receipts not independently verified.",
+    "actualListening": "NOT_PERFORMED"
+  },
+  "freezeDetectionLog": "Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'delivery/EXODUSER_GAMEPLAY_TEASER_REVIEW_V2_R1_20261008.mp4':\n  Metadata:\n    major_brand     : isom\n    minor_version   : 512\n    compatible_brands: isomiso2avc1mp41\n    encoder         : Lavf59.27.100\n  Duration: 00:00:26.30, start: 0.000000, bitrate: 11898 kb/s\n  Stream #0:0[0x1](und): Video: h264 (High) (avc1 / 0x31637661), yuv420p(tv, bt709, progressive), 1920x1080, 11633 kb/s, 30 fps, 30 tbr, 15360 tbn (default)\n    Metadata:\n      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc59.37.100 libx264\n  Stream #0:1[0x2](und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 255 kb/s (default)\n    Metadata:\n      handler_name    : SoundHandler\n      vendor_id       : [0][0][0][0]\nStream mapping:\n  Stream #0:0 -> #0:0 (h264 (native) -> wrapped_avframe (native))\nPress [q] to stop, [?] for help\nOutput #0, null, to 'pipe:':\n  Metadata:\n    major_brand     : isom\n    minor_version   : 512\n    compatible_brands: isomiso2avc1mp41\n    encoder         : Lavf59.27.100\n  Stream #0:0(und): Video: wrapped_avframe, yuv420p(tv, bt709, progressive), 1920x1080, q=2-31, 200 kb/s, 30 fps, 30 tbn (default)\n    Metadata:\n      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc59.37.100 wrapped_avframe\nframe=  789 fps=485 q=-0.0 Lsize=N/A time=00:00:26.30 bitrate=N/A speed=16.2x    \nvideo:364kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: unknown\n",
+  "nativeProjectEditable": true,
+  "nativeTimelineMusicBed": "Postmix is external; postmix.sh and exact original music included for reproducibility.",
+  "technicalProbe": {
+    "streams": [
+      {
+        "index": 0,
+        "codec_name": "h264",
+        "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+        "profile": "High",
+        "codec_type": "video",
+        "codec_tag_string": "avc1",
+        "codec_tag": "0x31637661",
+        "width": 1920,
+        "height": 1080,
+        "coded_width": 1920,
+        "coded_height": 1088,
+        "closed_captions": 0,
+        "film_grain": 0,
+        "has_b_frames": 2,
+        "pix_fmt": "yuv420p",
+        "level": 40,
+        "color_range": "tv",
+        "color_space": "bt709",
+        "color_transfer": "bt709",
+        "color_primaries": "bt709",
+        "chroma_location": "left",
+        "field_order": "progressive",
+        "refs": 4,
+        "is_avc": "true",
+        "nal_length_size": "4",
+        "id": "0x1",
+        "r_frame_rate": "30/1",
+        "avg_frame_rate": "30/1",
+        "time_base": "1/15360",
+        "start_pts": 0,
+        "start_time": "0.000000",
+        "duration_ts": 403968,
+        "duration": "26.300000",
+        "bit_rate": "11633905",
+        "bits_per_raw_sample": "8",
+        "nb_frames": "789",
+        "nb_read_frames": "789",
+        "extradata_size": 49,
+        "disposition": {
+          "default": 1,
+          "dub": 0,
+          "original": 0,
+          "comment": 0,
+          "lyrics": 0,
+          "karaoke": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "visual_impaired": 0,
+          "clean_effects": 0,
+          "attached_pic": 0,
+          "timed_thumbnails": 0,
+          "captions": 0,
+          "descriptions": 0,
+          "metadata": 0,
+          "dependent": 0,
+          "still_image": 0
+        },
+        "tags": {
+          "language": "und",
+          "handler_name": "VideoHandler",
+          "vendor_id": "[0][0][0][0]",
+          "encoder": "Lavc59.37.100 libx264"
+        }
+      },
+      {
+        "index": 1,
+        "codec_name": "aac",
+        "codec_long_name": "AAC (Advanced Audio Coding)",
+        "profile": "LC",
+        "codec_type": "audio",
+        "codec_tag_string": "mp4a",
+        "codec_tag": "0x6134706d",
+        "sample_fmt": "fltp",
+        "sample_rate": "48000",
+        "channels": 2,
+        "channel_layout": "stereo",
+        "bits_per_sample": 0,
+        "id": "0x2",
+        "r_frame_rate": "0/0",
+        "avg_frame_rate": "0/0",
+        "time_base": "1/48000",
+        "start_pts": 0,
+        "start_time": "0.000000",
+        "duration_ts": 1262400,
+        "duration": "26.300000",
+        "bit_rate": "255156",
+        "nb_frames": "1234",
+        "nb_read_frames": "1233",
+        "extradata_size": 5,
+        "disposition": {
+          "default": 1,
+          "dub": 0,
+          "original": 0,
+          "comment": 0,
+          "lyrics": 0,
+          "karaoke": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "visual_impaired": 0,
+          "clean_effects": 0,
+          "attached_pic": 0,
+          "timed_thumbnails": 0,
+          "captions": 0,
+          "descriptions": 0,
+          "metadata": 0,
+          "dependent": 0,
+          "still_image": 0
+        },
+        "tags": {
+          "language": "und",
+          "handler_name": "SoundHandler",
+          "vendor_id": "[0][0][0][0]"
+        }
+      }
+    ],
+    "format": {
+      "filename": "/home/user/fdg-rebuild-v2/delivery/EXODUSER_GAMEPLAY_TEASER_REVIEW_V2_R1_20261008.mp4",
+      "nb_streams": 2,
+      "nb_programs": 0,
+      "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+      "format_long_name": "QuickTime / MOV",
+      "start_time": "0.000000",
+      "duration": "26.300000",
+      "size": "39116121",
+      "bit_rate": "11898439",
+      "probe_score": 100,
+      "tags": {
+        "major_brand": "isom",
+        "minor_version": "512",
+        "compatible_brands": "isomiso2avc1mp41",
+        "encoder": "Lavf59.27.100"
+      }
+    }
+  }
+}

@@ -17,7 +17,7 @@
     "Native cuts always use from=0 on separately prepared H.264/yuv420p CFR30 1920x1080 MP4s with one AAC stereo source-game audio track.",
     "Reorder/remove/replace these proposed shots after actual viewing. Null trim values intentionally prevent build.",
     "Set status=DRAFT_SELECTED only after actual file selection. Keep publication=DRAFT_ONLY.",
-    "The last shot is 2–4 seconds of actual gameplay with original audio; logo/Steam CTA overlays it without an added silent card.",
+    "The last shot is 2\u20134 seconds of actual gameplay with original audio; logo/Steam CTA overlays it without an added silent card.",
     "No automatic render, generation, upload or publication. Root owns inspection/render and user review."
   ],
   "assets": {
@@ -34,7 +34,7 @@
       "status": "DURABLE_FILE_VERIFIED",
       "rawFile": "parry.original.webm",
       "availablePreparedSeconds": 5,
-      "note": "Existing CH1 Lv500 staged skill demonstration; original interval 148/30–298/30s was used in the prior prepared file. New selection remains root-owned."
+      "note": "Existing CH1 Lv500 staged skill demonstration; original interval 148/30\u2013298/30s was used in the prior prepared file. New selection remains root-owned."
     },
     "rage_slam": {
       "type": "staged",
@@ -128,7 +128,7 @@
       "dur": 3,
       "prepared": "ice-surge.mp4",
       "title": "skills",
-      "purpose": "Ice orb activation, shatter and shards; replace slam source with unwanted rectangular edge artifact discovered during actual export inspection."
+      "purpose": "Ice orb shatter instead of slam shot with visible original-source rectangular border."
     },
     {
       "id": "combat-climax",
@@ -138,7 +138,7 @@
       "dur": 4,
       "prepared": "blackhole-climax.mp4",
       "title": null,
-      "purpose": "Original prepared blackhole clip3–7s retains explosion at5.8s."
+      "purpose": "Original prepared blackhole clip3\u20137s retains explosion at5.8s."
     },
     {
       "id": "exit-motion",
@@ -171,7 +171,7 @@
     "UNLEASH YOUR SKILLS",
     "PLAY THE FREE DEMO ON STEAM"
   ],
-  "stagedDisclosure": "Staged skill demo · Development build",
+  "stagedDisclosure": "Staged skill demo \u00b7 Development build",
   "buildEnvironment": {
     "EXODUSER_REBUILD_INPUT_DIR": "REQUIRED: prepared MP4/logo input directory",
     "EXODUSER_REBUILD_MANIFEST": "REQUIRED: absolute path of root-selected JSON manifest",
@@ -199,5 +199,5 @@
       "level": false
     }
   },
-  "revisionBeforeUserReview": "R1: replaced 3-second slam source with ice-orb shot after detecting full-frame border artifact in original slam recording. Timing/music/layout unchanged."
+  "revisionBeforeUserReview": "R1 replaced source-border-artifact slam shot with ice orb; duration and mix unchanged."
 }

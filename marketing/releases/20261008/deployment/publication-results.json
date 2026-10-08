@@ -95,12 +95,12 @@
       "visibility": "PUBLIC",
       "videos": 4,
       "sort": "Published oldest first",
-      "proof": "youtube-playlist-public.jpg",
+      "proof": "quality-revision/playlist-four-public.png",
       "removedVideoIds": [
         "WTwXcdeTCFg",
         "p-21GwkF65s"
       ],
-      "verification": "Both video playlist selectors unchecked and save confirmed; remaining four membership inferred from previous six minus these two, public playlist count not independently revisited."
+      "verification": "Public playlist UI independently verified: 4 videos, order Short A / Short B / Warrior / Rift. Both withdrawn videos absent."
     }
   },
   "steam": {
@@ -131,10 +131,11 @@
   },
   "packageQA": "TECHNICAL_PASS_HISTORICAL_USER_QUALITY_REJECTED",
   "qualityRevision": {
-    "main": "New actual-gameplay review draft in production; no replacement public release approved.",
+    "main": "26.3s R1 actual-gameplay teaser review draft delivered locally with native editable ZIP and QA. No new YouTube or Steam upload; user review pending.",
     "nemesia": "Text-only correction uploaded UNLISTED. Original bad-panel video UNLISTED and removed from playlist.",
     "unchangedPublicVideos": 4,
     "doNotPublishOldMainToSteam": true,
-    "newMainPublication": "DRAFT_ONLY_PENDING_USER_REVIEW"
+    "newMainPublication": "DRAFT_ONLY_PENDING_USER_REVIEW",
+    "mainDelivery": "revisions/gameplay-teaser-v2/EXODUSER_GAMEPLAY_TEASER_REVIEW_V2_R1_20261008.mp4"
   }
 }

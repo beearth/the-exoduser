@@ -1,0 +1,144 @@
+{
+  "source": "/Users/fordeargamers/.codex/worktrees/marketing-gameplay-20261008/the-exoduser/bgm/cutscene/prologue_theme.mp3",
+  "bytes": 5356373,
+  "sha256": "9ab69e88008f6ebc625c4c694d7d8aa066dd1c6f465185cfc9e5d10be49e9865",
+  "decoder": "macOS afconvert LEF32",
+  "sampleRate": 48000,
+  "channels": 2,
+  "decodedFrames": 10710144,
+  "decodedSeconds": 223.128,
+  "whole": {
+    "samplePeak": 0.98980712890625,
+    "samplePeakDbfs": -0.08898845172786356,
+    "rmsDbfs": -12.081294783580521,
+    "samplesAtOrAboveFullScale": 0,
+    "samplesNearFullScale_0_999": 0,
+    "zeroSamples": 39682,
+    "sampleValues": 21420288
+  },
+  "candidateWindows": [
+    {
+      "from": 0,
+      "duration": 30.0,
+      "samplePeak": 0.95025634765625,
+      "samplePeakDbfs": -0.44318441307386464,
+      "rmsDbfs": -14.856161611235665,
+      "samplesAtOrAboveFullScale": 0,
+      "samplesNearFullScale_0_999": 0,
+      "zeroSamples": 38389,
+      "sampleValues": 2880000
+    },
+    {
+      "from": 14,
+      "duration": 30.0,
+      "samplePeak": 0.95025634765625,
+      "samplePeakDbfs": -0.44318441307386464,
+      "rmsDbfs": -14.117648358396053,
+      "samplesAtOrAboveFullScale": 0,
+      "samplesNearFullScale_0_999": 0,
+      "zeroSamples": 225,
+      "sampleValues": 2880000
+    },
+    {
+      "from": 18,
+      "duration": 30.0,
+      "samplePeak": 0.95025634765625,
+      "samplePeakDbfs": -0.44318441307386464,
+      "rmsDbfs": -13.900468032470174,
+      "samplesAtOrAboveFullScale": 0,
+      "samplesNearFullScale_0_999": 0,
+      "zeroSamples": 228,
+      "sampleValues": 2880000
+    },
+    {
+      "from": 30,
+      "duration": 30.0,
+      "samplePeak": 0.927734375,
+      "samplePeakDbfs": -0.6515270270192837,
+      "rmsDbfs": -14.095775150469304,
+      "samplesAtOrAboveFullScale": 0,
+      "samplesNearFullScale_0_999": 0,
+      "zeroSamples": 207,
+      "sampleValues": 2880000
+    },
+    {
+      "from": 60,
+      "duration": 30.0,
+      "samplePeak": 0.865875244140625,
+      "samplePeakDbfs": -1.2508935380439457,
+      "rmsDbfs": -12.489825005968866,
+      "samplesAtOrAboveFullScale": 0,
+      "samplesNearFullScale_0_999": 0,
+      "zeroSamples": 153,
+      "sampleValues": 2880000
+    },
+    {
+      "from": 90,
+      "duration": 30.0,
+      "samplePeak": 0.924957275390625,
+      "samplePeakDbfs": -0.6775665450166224,
+      "rmsDbfs": -11.513017928004075,
+      "samplesAtOrAboveFullScale": 0,
+      "samplesNearFullScale_0_999": 0,
+      "zeroSamples": 154,
+      "sampleValues": 2880000
+    },
+    {
+      "from": 120,
+      "duration": 30.0,
+      "samplePeak": 0.937103271484375,
+      "samplePeakDbfs": -0.5642509193970807,
+      "rmsDbfs": -10.692361692935142,
+      "samplesAtOrAboveFullScale": 0,
+      "samplesNearFullScale_0_999": 0,
+      "zeroSamples": 111,
+      "sampleValues": 2880000
+    },
+    {
+      "from": 150,
+      "duration": 30.0,
+      "samplePeak": 0.98980712890625,
+      "samplePeakDbfs": -0.08898845172786356,
+      "rmsDbfs": -9.963952982360656,
+      "samplesAtOrAboveFullScale": 0,
+      "samplesNearFullScale_0_999": 0,
+      "zeroSamples": 113,
+      "sampleValues": 2880000
+    },
+    {
+      "from": 180,
+      "duration": 30.0,
+      "samplePeak": 0.80224609375,
+      "samplePeakDbfs": -1.9138477773746285,
+      "rmsDbfs": -12.734725588836815,
+      "samplesAtOrAboveFullScale": 0,
+      "samplesNearFullScale_0_999": 0,
+      "zeroSamples": 131,
+      "sampleValues": 2880000
+    }
+  ],
+  "audition": "NOT_PERFORMED",
+  "envelope100ms": {
+    "maxPeak": 0.98980712890625,
+    "minPeak": 9.1552734375e-05,
+    "zeroPeakWindows": 0,
+    "framesPerWindow": 4800
+  },
+  "selectedWindow26_3s": {
+    "from": 14,
+    "to": 40.3,
+    "duration": 26.3,
+    "framesPerChannel": 1262400,
+    "peak": 0.95025634765625,
+    "peakDbfs": -0.44318441307386464,
+    "rmsDbfs": -14.190780508532155,
+    "fullscaleSamples": 0,
+    "nearFullscaleSamples_0_999": 0,
+    "gain": 0.18,
+    "gainDb": -14.89454989793388,
+    "postGainUnfadedPeakDbfs": -15.337734311007743,
+    "postGainUnfadedRmsDbfs": -29.08533040646603,
+    "audition": "NOT_PERFORMED",
+    "truePeak": "NOT_MEASURED"
+  }
+}

@@ -32,5 +32,10 @@
     "Artwork visible to lower edge",
     "Speaker and dialogue readable at inspected timestamps"
   ],
-  "full_motion_and_subjective_audio_review": "NOT_PERFORMED; original sequence and music retained"
+  "full_motion_and_subjective_audio_review": "NOT_PERFORMED; original sequence and music retained",
+  "additionalNativeSample": {
+    "seconds": 27,
+    "reason": "Longest English cue",
+    "observed": "Single line fits; no opaque panel; underlying art visible."
+  }
 }

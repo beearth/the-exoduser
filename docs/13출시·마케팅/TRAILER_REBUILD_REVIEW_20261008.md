@@ -232,7 +232,7 @@ macOS `afinfo`의 패킷 추정 길이는 **223.152초**다. `afconvert -f WAVE 
 | 설치 타입 `/opt/fable/types/fable.d.ts` | `Project.add(file)`·`Project.cut(handle,{from,dur,at,fit})` 지원. `Project.audio` 없음. `CutOptions`에 volume/gain/trackIndex 없음 |
 | 설치 구현 `/opt/fable/dist-node/cli.mjs` | `add`는 MP3를 audio asset으로 import 가능. `cut`은 항상 **lane0**에 배치하므로 영상 spine과 별도 BGM 트랙을 같은 호출로 안전하게 나누는 API가 아님 |
 | 설치 CLI help | `place --trackIndex`·`animate --property volume --keyframes`·`duck --trackIndex --db --rampSec` 지원 확인. 별도 audio verb 없음 |
-| [video-editing assembly](../../../../../../.codex/plugins/cache/openai-curated-remote/app-6a3293e129088191abf0875820e839da/2.1.0/skills/video-editing/references/assembly.md) | composed media는 picture-only, 추가 audio bed는 별도 mix 또는 FFmpeg mux/mix 경로 사용 가능. 실제 skill 경로는 아래 주석과 동일 |
+| [video-editing assembly](/Users/fordeargamers/.codex/plugins/cache/openai-curated-remote/app-6a3293e129088191abf0875820e839da/2.1.0/skills/video-editing/references/assembly.md) | composed media는 picture-only, 추가 audio bed는 별도 mix 또는 FFmpeg mux/mix 경로 사용 가능. 실제 skill 경로는 아래 absolute 경로와 동일 |
 | 이번 채택 | native 추가 트랙·`p.audio`·gain 인자를 임의로 만들지 않음. **현재 builder 변경 없이 native 렌더 후 FFmpeg로 1회 연속 음악 bed를 합성** |
 
 참고 skill absolute 경로: `/Users/fordeargamers/.codex/plugins/cache/openai-curated-remote/app-6a3293e129088191abf0875820e839da/2.1.0/skills/video-editing/references/assembly.md`.
@@ -285,3 +285,26 @@ root가 새 native editable ZIP에 다음을 **함께 포함**한다. 아직 패
 - native 원음 render와 postmix 최종 MP4를 구분하는 receipt·체크섬·최종 오디오 검수 결과. 음악이 없는 native timeline만으로 최종 soundtrack까지 재현 가능하다고 보고하지 않음.
 
 이번 후속 작업은 이 문서 §10 추가와 원본의 임시 PCM·파형·수치 측정만 수행했다. 기존 root 선별표·builder·JSON·게임 코드·원본 음악·Git 인덱스·커밋·게시 상태는 변경하지 않았다.
+
+
+## Root 실제 export 수정 R1
+
+첫26.3초export15.3초에서회색직사각테두리를발견했다. rage준비원본1.0초와export15.3초를직접대조해동일테두리가원본에이미있음을확인했다. 홍보검수에서제외한다. 3초슬램shot을기존ice_orb prepared2.5–5.5초(원본104/30–194/30초)로교체. 전체26.3초/789프레임·음악·CTA는동일. 위최초선별표의4번슬램은R1이전이력이며현재선택은edit-plan.json의ice-surge가우선한다. 두ice원본표본2.5/4초에서테두리없음·실제얼음오브/파편확인. 첫export는기술검사이력으로만보존,사용자검수본은R1. 새버전은계속DRAFT_ONLY.
+
+
+## 최종 검수용 인도 — R1 / 26.3초
+
+| 항목 | 실제 결과 |
+|---|---|
+| 현재 파일 | `EXODUSER_GAMEPLAY_TEASER_REVIEW_V2_R1_20261008.mp4`,1920×1080,H264/AACstereo48k,30fps,789프레임,26.3초 |
+| 실제 MP4 | 39,116,121B,SHA256 `d402dc9ec9750ec20b3c556fdfe4c87fce1e89f8ba07105e30bf8ebd1266dc34` |
+| 영상 구성 | 실제char1근접전3.7s→실제char0연속교전7.6s→Q패링3s→얼음오브3s→블랙홀4s→실제이동2s→원본로고·SteamCTA3s. 별도무음카드·원화가리는불투명자막판없음 |
+| 실제 검사 | nativecheck clean,renderdiagnostics/fallback0,전체A/VdecodePASS,실제789f/CFR30검사. native1.2/12.8/18.5/24.7초·export1.2/6/12.8/15.3/20.5/24.7초실제표본확인 |
+| 오디오 | 기존원음+원본주제가연속postmix완료. 최종AACdecode samplepeak0.9568819403648376(-0.38283283925840184dBFS),fullscaleclipped0. 실제청취·사용자최종승인미수행. 정확한ebur128truepeak/LUFS및freeze로그는final-qa.json보존 |
+| 시각 한계 | 자연촬영숲이 어둡고아바타작음. 얼음전투15.3초기존피격빨간flash포함. 새지역/보스/장비빌드선택/Steambinary동일성입증아님. 이결과를완성상점트레일러로자동승인하지않음 |
+| 최종 상태 | **DRAFT_ONLY / USER_REVIEW_PENDING**, YouTube새메인업로드0·Steam업로드0 |
+| 인도 폴더 | `/Users/fordeargamers/the-exoduser/output/FDG_FINAL_RELEASE_20261008/revisions/gameplay-teaser-v2/` — MP4/contact sheet/QA/editable ZIP/체크섬/URL·상태manifest |
+| 재현 보존 | 원본음악·채택SSOT·nativeproject/폰트/선택MP4·실제rendered-edit-plan·postmix.sh·native원음render·최종mixMP4를editable ZIP에포함. 마지막음악bed는nativeproject외부postmix이므로스크립트함께필요 |
+| 공개 정리 | 기존메인과badpanel네메시아는일부공개·공식playlist제외,공개playlist4편독립확인. 네메시아글씨수정본은0ERvrpHccZQ일부공개·EN27자막게시·KO파일준비/YouTube게시미완료 |
+
+현재출력의정확한기계검수·음원및소스manifest는 [final-qa.json](../../marketing/trailers/rebuild-20261008/final-qa.json), [실제rendered-edit-plan](../../marketing/trailers/rebuild-20261008/rendered-edit-plan.json), [인도URL·게시상태](../../marketing/trailers/rebuild-20261008/delivery-urls.json)로추적한다. 전구간주관적시청/청취와사용자검수승인전새main공개하지않는다.

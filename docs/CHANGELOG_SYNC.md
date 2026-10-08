@@ -51730,3 +51730,26 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 자연 촬영 | 기존3333서버를 재시작하지 않고3338 localhost receiver로 GET/HEAD프록시·WebM/JSON POST저장. 200MiB 상한·타임스탬프파일명·덮어쓰기거부. game.html·전투수치·세이브·일반서버 변경 없음. |
 | 새 편집 도구 | marketing_trailer_rebuild_20261008.jsx: 사전trim H264/yuv420p CFR30·실제프레임PTS·AACstereo검사 후 native from0,24–40초 DRAFT_ONLY,투명텍스트·원본로고CTA·원음유지. 최종trim/렌더결과는 TRAILER_REBUILD_REVIEW에 추가. |
 | 문서 동기화 | 관련 전체docs 키워드검색 후 운영10문서에 최신 품질수정 안내. 새 receiver/재편집 문서 및 네메시아 검수 기록 동기화. 오래된6PUBLIC 기록은 당시 게시 이력. |
+
+
+## 2026-10-08 — 트레일러 검수본 26.3초 R1 · 공개 재생목록 정리 확인
+
+| 항목 | 확인값 |
+|---|---|
+| 새 실제 소스 | char1/char0 자연 플레이2개선별·rawlocal보존·Gitprepared4개총489f/16.3초. 실제framePTS0/CFR30/AACstereo·전체decodePASS·원본PCM시차0ms. 무교전추가take는제외. |
+| 편집 길이 | 최소길이guard24초로조정·실제26.3초789프레임. 자연플레이16.3초+staged패링3초/얼음오브3초/블랙홀4초. 게임런타임수정없음. |
+| R1 변경 | 첫nativeexport15.3초슬램원본의회색테두리발견·원본1.0초대조확인. 원본테두리없는얼음오브prepared2.5–5.5초로교체. 전체길이/음악/CTA동일. 사용자에게첫초안승인요청하지않고검수중수정. |
+| 음악 | 기존프로젝트주제가prologue_theme.mp3 14–40.3초,원음1+music0.18·fade0.4/2초·limiter0.95 level=false. native후postmix,새음원생성없음. |
+| 공개 목록 | 공식공개playlist직접확인4편:ShortA/ShortB/전사/틈. 기존main/oldNemesia부재. screenshot보존. |
+| 이후 공개 | 새메인DRAFT_ONLY·사용자검수전추가공개금지. 실제렌더/파일검사결과는TRAILER_REBUILD_REVIEW에최종인도기록추가. |
+
+
+## 2026-10-08 — R1 검수 영상 인도
+
+| 항목 | 결과 |
+|---|---|
+| 현재 영상 | 26.3초/789프레임/1080p30 H264AAC,39,116,121B,SHA256d402dc9ec9750ec20b3c556fdfe4c87fce1e89f8ba07105e30bf8ebd1266dc34. 전체decodePASS. |
+| 편집 소스 | 새자연플레이16.3초와기존stagedQ패링/얼음오브/블랙홀10초. 슬램원본테두리문제로제외·R1수정. |
+| 음악 | native후정확한기존주제가mix,최종AACsamplepeak0.95688194/fullscaleclipped0. 실제청취·사용자승인대기. |
+| 보존 | 최종폴더revisions/gameplay-teaser-v2 MP4/QA/contact/editableZIP·SHA. repo에는URL/QA/renderedmanifest/postmix/음원실측증거와운영docs동기화. |
+| 게시 | 새main은DRAFT_ONLY,YouTube/Steam미업로드. 기존main/oldNemesia일부공개·공식playlist제외·공개4편독립확인. |
