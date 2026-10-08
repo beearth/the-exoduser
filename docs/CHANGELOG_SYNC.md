@@ -56702,3 +56702,9 @@ alpha/nav/crop/UV/geometry/opacity/renderOrder/resource/dispose·skirt/backplane
 ### 2026-10-08 — 헬거너 관통 창격 본편 시험 consumer
 
 전사 임시 외형에서 `test=1&kit=hellgunner` LMB를 실제 본편 투사체로 연결했다. ST6/쿨9f/기본28뎀/속도16/r5/거리960/field+ens 합계99 identity·1객체1회. Godot Resource 원칙으로 불변 수치와 runtime 상태를 분리했다. 정식 idx2/comingSoon 해제·RMB/SPACE·새sprite·최종 스케일/숙련·실화면/청취/보상save는 미완료다. 최종 통제CPU16그룹36확인과 classic inline4 syntax PASS; fixture port 누락2는 별도 준비 이력이다. 상세 정본: [신규캐릭 프로젝트](2_1%20스킬관리+합체시스템+자원/신규캐릭_스킬프로젝트_20260930.md#hellgunner-pierce-main-20261008).
+
+### ROOT-CH1-WARRIOR-CHARGE-FINISHER-RIG-20261008
+
+전사 cRecover 피니셔의 private windup owner 보존→기존 strike/recovery 연결. 전투·원본 에셋·맵·save 변경 없음. 통제 전이 검사와 한정 구문 검사 보정 완료, native/GPU/audio/save 미실행.
+
+현재 정확 계약·검증 한계는 [DIRECTIONAL_CHARACTER_RIGS_20261006.md](4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md)의 동일 단위 절을 따른다. 이전20261007 정상 LMB 검수/수치는 그 epoch 이력으로 보존한다.

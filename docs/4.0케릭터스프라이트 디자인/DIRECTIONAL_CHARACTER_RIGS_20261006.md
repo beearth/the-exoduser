@@ -1618,3 +1618,23 @@ OFF/불가mode/identity/준비 frame 부재의 검수에서는 core0이다. **co
 | 정적/시각 | 최종8hunk source peer: 기존 blocker1 closed, 새 명백한 blocking0. VISUAL VERDICT: RETOUCH / UI_NOT_ASSESSED / native NOT_RUN. 기존 열린 탭 재로드·조작/새 전문 배정0 |
 
 외부 근거: `ch1-druid-rig-name-anchor-20261008/{implementation.json,parent-transform-correction.json,cpu-first-result.json,cpu-corrected-result.json,source-peer.json,completion.json}`. 기존 NORMAL·시체·캐릭터 suite를 반복하거나 이번 표시를 전체 보스 2.5D 완성으로 계산하지 않는다.
+
+### ROOT-CH1-WARRIOR-CHARGE-FINISHER-RIG-20261008 — 전사 돌진 뒤 피니셔 표시 연결
+
+20261007 정상 LMB 회수 절의 finisher revoke는 당시 구현 이력이다. 현재 전사 class0의 돌진 회복 `cRecover`에서 weapon 입력으로 시작한 피니셔만 아래 표시 소유를 추가한다. 일반 3타 콤보나 실버테일 피니셔를 새로 구현한 것은 아니다.
+
+| ID / 접점 | 현재 계약 |
+|---|---|
+| scope | 기존 `ch1Three=1&ch1Rig=1`, class0·생존·G.on·stage0·비보스·CH1 production smoothing. 기본 OFF와 기존 지역/렌더 gate 유지 |
+| producer | 실제 cRecover 피니셔에서 기존 비용 지급·wWindup/st2/atkArc 설정 뒤 `_ch1RigRememberFinisherWindup()` 호출. private owner에 actor/map/animator/classId와 phase=`finisher-windup` 저장. class1·scope 실패는 null |
+| windup | begin-body에서 현재 class0/wWindup owner만 유지. 준비 몸체는 기존 native atk1이며 rig 준비 동작 추가 없음 |
+| strike / recovery | 기존 정상 windup 종료에서 `_ch1RigAdvanceFinisherStrike()`가 현재 finisher owner만 strike 승계. 기존 wSwing 종료의 `_ch1RigAdvanceRecovery()`로 recovery 승계. 중간 draw 없이도 전이 가능 |
+| 실제 셀 소비 | 기존 wSwing/atk2와 wRecover/atk3의 최종 native 정수 f0…8을 `(f+.5)/9`로 소비. 8방향·9개80×80셀·atlas identity/dense gate·heightWorld32·공격 내부 Y+18 유지. 새 사이클·새 스프라이트 없음 |
+| revoke / 다른 경로 | actor/map/animator/class·생존·scope·상태 변경은 기존 정리에서 null. 기존 성공 Q 취소·kiSlash 진입/해제·whirlwind revoke 유지. 일반 unowned windup 및 class1 피니셔는 승격하지 않음 |
+| 전투 불변 | 원 비용, 진입 즉시360° 피해·이후 기존 hitArc, 수량/RNG/FX/입력·windup/strike/recovery 시간 그대로. SFX 예외 뒤 기존 부분 실행은 rollback하지 않으며 이미 진입한 windup 표시 owner는 남을 수 있음 |
+| QA 표시 | adoptedModes/attackStates는 일반 LMB와 전사 charge-finisher strike+recovery를 명시. 기존 attackAccepted=false/fullPlayerLinked=false 유지; capability를 실화면 인수로 세지 않음 |
+| 한계 | 동일 tuple의 미관측 중간 상태 왕복은 세대 미식별. 숨김/장치/실제 입력·실픽셀 가림/성능·전체CH1 경로/보상save 미검수 |
+
+검증: 최초 Node의 실제 owner/renderer 함수·피니셔 producer 및 weapon 전이 slice/통제 ports에서 7그룹35조건과 소스 역치환3조건이 마지막 구문 검사 예외 전에 통과했다. 마지막 검사는 importmap을 JavaScript로 오분류한 하니스 SyntaxError로 exit1이었다. 첫 stderr/exit를 보존하고 제품 suite를 반복하지 않았다. 별도 parse-only Node1에서 importmap/module/external을 제외한 실제 classic4 script 구문 검사만 통과(exit0). 물리 Node총2이며 첫 실행을 clean exit0로 기록하지 않는다. 원 코드의 피니셔 owner 소실 반례1은 별도다. 정적 peer blocking0. 실제 GPU/브라우저/음향/저장 미실행, VISUAL VERDICT: RETOUCH / UI_NOT_ASSESSED / nativeNOT_RUN.
+
+근거: 외부 `E/ch1-warrior-charge-finisher-rig-20261008/`의 implementation.json, gate-first.cjs, cpu-stderr.txt/cpu-exit.txt, validation.json, parse-only-result.json. 열린 사용자 탭 조작·재로드 없이 코드와 관련 문서를 보존한다.
