@@ -126,3 +126,7 @@ ROOT-CH1-DRUID-VOLUMETRIC-BOSS-20261008: 일반형 solid128/관절25/조명5를 
 ### 2026-10-08 — 입체 드루이드 외형 후속
 
 위 `fd12d389` 입체 본체의 부품/geometry 수치는 당시 이력이다. 현재는 어깨 구형 덩어리를 겹치는 목질 뿌리로, 흉곽을 닫힌 비틀린 core로 교체: solid134+shadow9/geometry121·20,275정점·37,522삼각형. 관절25/material20/light5·양손 IK/준비·공격·회복 코드 불변. IAB15 정면·측면 외형 관측, 기존 suite 재실행0. RETOUCH/사용자 승인·본편 완주·성능·청취/save 미인수. [현행 수치·제한](../4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md).
+
+### 2026-10-08 — 거절 모델 본편 제외 / 원본 유지
+
+사용자가 원본과 다른 solid 모델 자체를 거절했다. 위 입체 본체/외형 후속은 보존된 미채택 이력·품질 FAIL_USER_REJECTED이며 A급/완성 진척으로 세지 않는다. 실제 adapter의 bossVolume 인수를 제거해 기본 false/원본 borrowedSheet 표시로 복구, game 두 import는 druid-original-20261008-v5. 원 PNG·전투·save 불변, 기존 사용자 main 무조작·실화면 자동복구 주장0. MD의 A급 이상·기존 AAA 목표는 원본 합치와 본편 실검수로 판단한다. [현재 계약](../4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md).

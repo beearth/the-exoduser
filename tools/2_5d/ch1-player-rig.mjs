@@ -1,7 +1,7 @@
 /* ROOT-CH1-1-PLAYER-RIG-CONSUMER-20261007
  * Main body-only display adapter. Caller owns P/G, movement, phase and the existing
  * body-local X transform. Returned rectangles are relative to the calibrated foot (0,0).
- * Players use directional artwork; the normal Druid boss uses an articulated solid model.
+ * Players and the normal Druid boss use their original directional artwork.
  */
 import * as THREE from '../../assets/vendor/three-r160/build/three.module.js';
 import {createCharacterRig} from './character-rigs.mjs?v=druid-volume-20261008-v4';
@@ -295,7 +295,7 @@ export function createCh1PlayerRig(){
       image:input.borrowedSheet.image,lifeGeneration:input.sourceFrame.lifeGeneration,sheetName:input.sourceFrame.sheet,sheetGeneration:input.borrowedSheet.generation,borrowedSheet:input.borrowedSheet});
     bump(stats,'loadStarts');
     try{
-      createCharacterRig(input.id,{THREE,height:CH1_PLAYER_RIG.rigHeight,bossVolume:input.sheetBorrowed===true,...(input.packed?{borrowedAtlas:input.borrowedAtlas}:input.sheetBorrowed?{borrowedSheet:input.borrowedSheet}:{})}).then(rig=>{
+      createCharacterRig(input.id,{THREE,height:CH1_PLAYER_RIG.rigHeight,...(input.packed?{borrowedAtlas:input.borrowedAtlas}:input.sheetBorrowed?{borrowedSheet:input.borrowedSheet}:{})}).then(rig=>{
         if(!isCurrent(record)){if(owns(record))retire('packed-owner-changed');releaseRig(rig,true);return;}
         try{
           record.rig=rig;scene.add(rig.object3d);

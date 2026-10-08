@@ -1747,3 +1747,16 @@ OFF/불가mode/identity/준비 frame 부재의 검수에서는 core0이다. **co
 | 검수·한계 | 새 module syntax parse1 exit0, 동작 구간 byteexact 정적 확인. 기존 IK/CPU suite 재실행0. 기존 IAB15 정면/측면 실제 WebGL 외형과 위 snapshot 관측·console warn/error0. before 화면은 카메라 fit 누적 이력이 달라 pixel scale 대조 아님. 본편 완주·성능·청취·durableSave 미인수 |
 
 VISUAL VERDICT: **RETOUCH**. 어깨 구형 윤곽을 제거했으나 얼굴/외투·타격 무게감 및 전체 보스 아트는 미완성, 사용자 승인 미인수. 사용자 IAB14/기존 다른 탭 무조작·자동 적용 주장0. 최종보존: 외부 `E/ch1-druid-solid-silhouette-20261008/completion.json`.
+
+## 2026-10-08 — 사용자 거절 모델의 본편 제외·원본 표시 복구
+
+`ROOT-CH1-DRUID-ORIGINAL-DISPLAY-RESTORE-20261008`. 사용자가 원본과 닮지 않은 모델 자체를 거절했다. 앞선 `fd12d389`/`8e5c9bb1`의 solid 모델 및 실루엣 수정은 보존된 미채택 이력이며 **품질 FAIL_USER_REJECTED**, 게임 아트 완성으로 세지 않는다. MD의 A급 이상 기준·기존 AAA 목표를 테스트/커밋으로 대체한 판단은 폐기한다.
+
+| 실제 consumer | 현재 계약 |
+|---|---|
+| ch1-player-rig createCharacterRig 호출 | bossVolume 인수 제거. factory 기본값 false를 소비하여 원본 borrowedSheet의 original-art-skin plane을 표시. 거절 모델 생성/plane 숨김 분기 미진입 |
+| game import | player/Druid 두 기존 adapter URL은 `v=druid-original-20261008-v5`. 기존 opt-in 조건과 sourceFrame/owner/life/crop 검증 유지 |
+| 원본·전투 | 기존 PNG/시트·방향·타격·AI·전투시간·save 변경0. prototype 파일은 삭제/rollback 없이 보존하지만 본편 채택0 |
+| 검증·제한 | 호출/기본 false/plane visible source 대조, adapter parse1 exit0. 기존 CPU/IK/GPU suite 재실행0. 사용자 기존 main 탭 재로드/조작0이므로 현재 화면 자동복구·새 본편 실전 PASS 주장0 |
+
+원본 `assets/sprites/boss/boss_dark_druid_f0.png`를 ROOT가 직접 판독했다. 크고 비대칭인 가지뿔, 길고 무거운 층상 외투, 가늘고 깊게 팬 얼굴, 정교한 지팡이/뼈 장식이 기존 임시 solid의 둥근 체형·단순 얼굴과 현저히 달랐다. 원본 합치와 본편 시각 검수 전에는 A급/2.5D 보스 완료로 보고하지 않는다. prototype preview는 사용자 거절 기록이며 인수 화면이 아니다. 최종보존: 외부 `E/ch1-druid-original-display-restore-20261008/completion.json`.
