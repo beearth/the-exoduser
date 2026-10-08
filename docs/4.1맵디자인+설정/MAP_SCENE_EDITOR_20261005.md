@@ -2416,3 +2416,95 @@ NEXT PASS: 사용자가 정상 로드한 에디터에서 단일/복수 선택의
 최초 실제 module + objectListUI/selectListedObject 함수의 통제 DOM/ports 검사: Node1·9그룹34조건 PASS/exit0. 기본층 row shape/정렬, 전체층 순서/동률/페이지·readonly·잘못된 입력·숨김/잠금/p0·stale 클릭·local batch·scope/busy·기존 pending endDrag commit·실제 editor JS parse를 확인했다. 기존 suite 재실행0. 정적 source peer blocking0. 브라우저/GPU/audio/save 실행0, UI_NOT_ASSESSED/nativeNOT_RUN/VISUAL VERDICT: RETOUCH.
 
 guide 전체와 MAP_SSOT_INDEX의 현재 읽기 순서를 확인했다. JSON 조회·선택 도구만 변경하며 stage LOCK/geometry/배치/scene/nav/원PNG는 유지한다. §23 전체 보고·최종 Git은 외부 `E/editor-all-layer-object-search-20261008/completion.json`을 따른다. 열린 사용자 탭 조작·재로드0.
+
+
+<a id="engine-editor-object-order-20261008"></a>
+## 2026-10-08 — 엔진 제작 흐름: 같은 층의 앞뒤 순서
+
+`ENGINE-EDITOR-OBJECT-ORDER-20261008`. 같은 층에서 겹친 그림의 앞뒤를 인스펙터에서 한 단계씩 조절한다. 기존 레이어 전체 순서 이동과 구분하는 단일 객체 기능이다.
+
+| 엔진 근거 | 현재 적용 |
+|---|---|
+| [Godot Canvas layers](https://docs.godotengine.org/en/stable/tutorials/2d/canvas_layers.html) | 2D 객체의 scene panel 순서로 앞뒤를 정하는 제작 원리. 기존 flat 배열의 나중 객체가 앞에 그려지는 계약에 직접 적용 |
+| [Unity Hierarchy의 Reorder items](https://docs.unity3d.com/6000.0/Documentation/Manual/Hierarchy.html) | 생성 순서에 머물지 않고 제작자가 객체 순서를 바꾸는 흐름을 참고. Unity 일반 GameObject 순서가 렌더 순서라는 주장은 아님 |
+
+| id / 적용 위치 | 현재 코드 계약 |
+|---|---|
+| 진입 | TRANSFORM 인스펙터 `#scene-object-forward` / `#scene-object-backward`, type=button·min-height44px. `한 단계 앞으로` / `한 단계 뒤로` |
+| `objectOrderTarget(delta)` | delta는 1 또는 −1. fresh selectedPair의 층이 visible·unlocked·sort=flat일 때만 허용. 선택 index와 index+delta가 배열 범위 안이어야 함 |
+| 공통 차단 | busy / playing / dialogueOpen / drag / history.pending / batchIds.size>1 / 선택 없음 / 숨긴 층 / 잠긴 층 / foot 정렬 / 배열 양 끝. 버튼 disabled와 실행 시 내부 guard 모두 적용 |
+| `moveObjectOrder(delta)` | 현재 선택 객체와 인접 객체의 배열 자리만 swap. 기존 mutate→history.change→validate/end→changed를 1회 사용. 좌표·크기·pivot·rotation·opacity·flipX·assetId·층·nav 값 변경0 |
+| 앞뒤 정의 | +1=나중에 그리는 앞, −1=먼저 그리는 뒤. 기존 flat draw·hit selection·객체 목록 역순이 같은 배열을 사용. foot 층의 발 Y 자동 정렬은 그대로 유지 |
+| `objectOrderUI()` | frameSelectionUI→revealAssetUI의 기존 갱신 경로에서 버튼과 leaf `#scene-object-order-note`를 갱신. flat는 `그리기 순서 i / N · 뒤 → 앞`, foot는 발 기준 Y 정렬 안내, 복수 선택은 단일 객체 안내 |
+| 선택·Undo·저장 | 실행 후 selected ID/배치 도구/카메라 유지. 기존 Undo/Redo로 배열 순서 복원; 기존 JSON objects 배열에 순서 보존. 기존 changed가 자동저장을 예약하므로 무쓰기 기능이 아님. 신규 schema/storage key/timer/network 0 |
+| 키보드·로드 | 새 버튼의 Enter/Space는 기존 전역 keydown 예외에 포함하여 native 버튼 동작 허용. 새 단축키0. editor script query는 `?v=20261008-object-order` |
+| 검수 | 실제 JS의 Node --check exit0. source 배선·guard·배열 순서·기존 History 경로를 정적으로 확인. 새 test 파일0·기존 suite 재실행0. 실제 브라우저/DOM 레이아웃·native pointer/key·GPU·자동저장/서버 save 미검수 |
+| docs 검색 | eligible text 1,004개·7경로8행 관련 키워드 확인. owner/held/보호2_3/LOCK/foreign WIP/container 제외. 최초 LOG 이름 제외에 걸린 CHANGELOG2개만 같은 키워드로 stream 보충(매칭0); docs 전체 재검색0. 현재 에디터 정본만 새 기능 추가, 나머지6경로는 별개 시스템의 동음/과거 계약으로 보존 |
+| 보존 | 외부 `engine-editor-workflow-20261008/`에 working/HEAD fullbyte 백업·exact own replacement·inverse/owned blob 영수증. Git stage/commit/push는 ROOT가 완료 소유만 수행하며 이 담당 Git쓰기0 |
+
+### MAP PRODUCTION REPORT — 가이드 §23
+
+```text
+STAGE: 기존 이미지 씬 에디터의 단일 객체 그리기 순서 편집
+MASTER
+- silhouette: geometry 변경0
+- regions: 변경0
+- main route: 변경0
+- side spaces: 변경0
+OUTER MASS
+- LEFT: 변경0
+- RIGHT: 변경0
+- TOP: 변경0
+- SOUTH: 변경0
+- major holes: 기존 맵 시각 인수 미완료
+LARGE
+- source assets: 기존 참조 ID만 사용; 원PNG 접근/변경0
+- composites: 사용자 인접 배열순서 편집만 추가
+- overlap: flat 층의 앞뒤 편집; native pixel 미검수
+- repeated silhouette: 개선 인수0
+MEDIUM
+- connections: 지형 변경0
+- remaining holes: 기존 맵 연결 인수 별도
+GROUND
+- shadow: 변경0
+- contamination: 변경0
+- structure integration: 변경0
+PLAYABLE
+- main arenas: 변경0
+- travel space: 변경0
+- breathing space: 변경0
+- threat space: 변경0
+- combat readability: 본편 미검수
+LANDMARK
+- primary: 변경0
+- secondary: 변경0
+- tertiary: 변경0
+CAMERA QA
+- START: NOT_RUN
+- EARLY: NOT_RUN
+- ARENA: NOT_RUN
+- SIDE L: NOT_RUN
+- SIDE R: NOT_RUN
+- LANDMARK: NOT_RUN
+- LATE: NOT_RUN
+- EXIT: NOT_RUN
+TECH QA
+- route: nav 접근/변경0; 실제 이동 미검수
+- collision: 변경0
+- pageerror: browser NOT_RUN; 실제 classic JS syntax exit0
+- 404: NOT_OBSERVED
+- seam: 렌더/geometry 변경0; 실제pixel 미검수
+- loading: script query 정적 확인; 실제 boot NOT_RUN
+- performance: 선택 때 indexOf와 인접 swap; 실측 없음
+FILES
+- stage-owned: editor.html / tools/map-scene-editor.js / MAP_SCENE_EDITOR_20261005.md 새 절
+- concurrent touched: 타인 WIP 보존; 이 담당 변경0
+- unrelated touched: game/settings/ownerSTATELOG/PNG/scene/nav/LOCK/usersave 변경0
+GIT
+- staged: 이 담당0; ROOT 완료소유 checkpoint 예정
+- commit: ROOT 최종 영수증을 따름
+- push: ROOT 실제 remote exact 결과를 따름
+- deploy: NOT_RUN
+VISUAL VERDICT: RETOUCH / UI_NOT_ASSESSED / native NOT_RUN
+NEXT PASS: 허용된 정상 로드 에디터에서 겹친 두 그림의 앞뒤·목록·Undo/Redo·JSON 왕복을 확인. 기존 열린 사용자 탭 재로드/조작0.
+```

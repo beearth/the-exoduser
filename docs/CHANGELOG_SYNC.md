@@ -56737,3 +56737,16 @@ alpha/nav/crop/UV/geometry/opacity/renderOrder/resource/dispose·skirt/backplane
 ## 2026-10-08 — 보스 렌더 예외의 Canvas 상태 복구
 
 `ROOT-CH1-BOSS-CANVAS-RESTORE-20261008`: Codex 자체save2·드루이드 공통 sheet 본문save1을 finally로 복구하고, main Codex 위임 예외에서는 기존 부모변환 save를 복구한 뒤 원 오류를 전달한다. 정상 draw 순서/반환·전투·save 유지. Under/tell/다른 atlas·부모 준비/restore 자체 실패와 픽셀 롤백은 보장하지 않는다. 첫 통제11그룹25확인 PASS/Node1 exit0·before 반례1 별도, 정적 source blocker0. 실제 화면/GPU/청취/save 미검수/RETOUCH. [정확 계약](4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md#ch1-boss-canvas-restore-20261008). 최종 외부 `ch1-boss-canvas-restore-20261008/completion.json`.
+
+
+## 2026-10-08 — 엔진 참고 에디터: flat 객체 앞뒤 순서
+
+| 항목 | 현재 구현 |
+|---|---|
+| 적용 | `editor.html` 인스펙터의 한 단계 앞으로/뒤로, `tools/map-scene-editor.js` |
+| 동작 | visible·unlocked·sort=flat의 선택 객체 1개를 인접 배열 항목과 swap. delta는 +1/−1만 허용. 좌표·ID·회전·크기 유지 |
+| 차단 | busy/play/dialogue/drag/History pending/복수선택/hidden/locked/foot/배열 끝. foot 층은 기존 발 Y 정렬 유지 |
+| 기존 경로 | mutate 1회 → History/검증/changed. 기존 Undo/Redo·JSON·자동저장 경로 사용. 새 스키마·타이머·저장 키 없음 |
+| 검증 | JS syntax 및 소유 hunk/inverse exact, ROOT 정적 source review blocking 0. 새 CPU suite/브라우저/실입력/저장 검수 없음. VISUAL VERDICT: RETOUCH / UI_NOT_ASSESSED |
+
+정본: [MAP_SCENE_EDITOR_20261005.md](4.1맵디자인+설정/MAP_SCENE_EDITOR_20261005.md#engine-editor-object-order-20261008). Godot Canvas layers와 Unity Hierarchy의 순서 편집 흐름을 참고한 첫 기능이다. 엔진 전반 벤치마킹 완료나 실제 화면 인수를 뜻하지 않는다.
