@@ -1447,6 +1447,8 @@ const _PL={"⛓️ 관통!":"⛓️ Przebicie!","⛓️ 관통":"⛓️ Przebici
 '시체폭발%':'Wybuch Zwłok%',
 '회피뎀+':'Obrażenia po Uniku+',
 '패링폭발%':'Wybuch Parowania%',
+'검기막이의':'Ostrzochronny',
+'기검참3타패링':'Parowanie 3. ciosem Ki Slash',
 '블록HP+':'HP z Bloku+',
 '블록MP+':'MP z Bloku+',
 '회전참뎀+':'Obrażenia Wichru+',

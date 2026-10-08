@@ -1,3 +1,16 @@
+## 2026-10-08 — 시작 화면 하단 구형 지형 밴드 차단 (카메라 클램프)
+
+사용자 보고: 초광각(4838×1439) 시작 튜토리얼 화면 하단에 구형 지형스킨 띠가 보임.
+
+| id / 적용 위치 | 현행 계약 |
+|---|---|
+| 원인 | START 스폰 cam.y≈7369(world8000²). `_startIntro()`가 `G.on=false`로 두고 `G.cam=P`를 날것으로 세팅, `update()`는 `if(!G.on)return`이라 틱의 맵 bounds 클램프가 인트로·튜토리얼 동안 실행되지 않음. 뷰 높이 1439에서 하단=7369+719.5>8000 → `_ch1StartOuterCoversView` false(맵 밖 노출) → HIDDEN_1~3 폴백(구형 바닥)이 그려지고 완성 청크가 없는 남쪽 경계 밖에 띠로 노출 |
+| CAM-CLAMP / game.html:`_clampCamToMap()` | 신설 헬퍼(기존 틱 인라인 클램프와 동일 공식). 에디터 모드·G.map 없음이면 무시. cz=max(.3,G._camZoom 또는1), hvw=VW/(2cz), hvh=VH/(2cz). 맵폭(높이)≤2hv면 중앙, 아니면 cam.x∈[hvw,mw×T−hvw], cam.y∈[hvh,mh×T−hvh] |
+| 호출 위치 | `update()` 카메라 블록(기존 인라인 대체, 동작 불변) · `_loadZone()` 스폰 직후 · `initStage()` 스폰 직후 · `_startIntro()` cam 세팅 직후 |
+| 효과 | 인트로/튜토리얼 정지 프레임부터 뷰가 맵 안 → 남쪽 밖 구형 지형 띠 미노출. 첫 이동 후 틱 클램프가 같은 값을 유지해 카메라 튐0. 폴백 판정·청크·아트·충돌 변경0. 보스아레나(`_enterBossArena`)·리스폰은 미변경 |
+| 잔여 | 클램프된 START에서도 COVERAGE margin1px 때문에 하단이 정확히 월드 끝이면 covered=false(폴백 유지)지만 띠 두께는 ≤1worldpx로 시각 노출 없음. 초광각 실화면 육안 검수는 배포 후 사용자 확인 |
+| QA | mapStartupReady·lightingCameraCoverage·worldIntroPlayer 41/41 PASS |
+
 ## 2026-09-29 — CH1-1 피부–사목 접합85차 적용
 
 현행 cache/bakeVersion은 **20260929-outer-85**, 빌드 레이어는 **21개**다. 서측 하단의 피부 바닥–사목 어깨를 낮은 부패 수피·괴사막으로 연결했다. 비보행101764px만 변경/보행0/고목 핵심 보호3579735px 변경0, 변경chunk1_6 1개·동일63개. 새로고침한 본편8기본 카메라+접합·전투2위치, 이벤트 기반 S/W 이동·24적 공격/Q, 게임error·contextloss0/64청크 응답실패0. 기존 회귀55PASS,21레이어 전체 마스터 재현·224경계 동일. 새 모션0/geometry·충돌 변경0. 전체 **VISUAL VERDICT: RETOUCH**.

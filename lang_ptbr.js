@@ -1471,6 +1471,8 @@
 '시체폭발%':'Explosão Cadáver%',
 '회피뎀+':'Dano ao Esquivar+',
 '패링폭발%':'Explosão Aparar%',
+'검기막이의':'do Guarda-lâmina',
+'기검참3타패링':'Aparo no 3º golpe do Ki Slash',
 '블록HP+':'HP ao Bloquear+',
 '블록MP+':'MP ao Bloquear+',
 '회전참뎀+':'Dano Redemoinho+',

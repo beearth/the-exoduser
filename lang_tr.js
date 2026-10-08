@@ -1870,6 +1870,8 @@ const _TR={"⛓️ 관통!":"⛓️ Delme!","⛓️ 관통":"⛓️ Delme","⛓�
 '시체폭발%':'Ceset Patlama%',
 '회피뎀+':'Kaçınma Hasar+',
 '패링폭발%':'Savuşturma Patlama%',
+'검기막이의':'Kılıçsavar',
+'기검참3타패링':'Ki Slash 3. vuruş savuşturma',
 '블록HP+':'Blok HP+',
 '블록MP+':'Blok MP+',
 '회전참뎀+':'Kasırga Hasar+',

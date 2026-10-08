@@ -46,3 +46,21 @@
 - 실행 안내·해시 안내 내용과 3사 접근 권한 확인. 본편 Steam 상점 공개 상태 및 회사 홈페이지 HTTP 200 확인.
 - `output/applications/publisher-send-20261001/delivery-confirmation.json`과 `drive-delivery-complete.jpg`에 최종 근거 보존. 기존 메일 준비 `delivery-readiness.json`은 `SENT_3_VERIFIED`로 갱신.
 - Gmail 발송 확인은 수신자가 읽거나 내부 심사를 완료했다는 의미가 아님. 회신·검토·계약 결과는 아직 확인하지 않음.
+
+## 2026-10-03 동일 다운로드 주소 최신본 갱신 완료
+
+사용자 지시 “이미받았으면 어쩔수없고 주말이니까 최신으로 업데이트해줘”에 따라 기존3사 메일의 ZIP·실행·SHA 안내 링크는 그대로 유지하고 파일만 갱신했다. 앞선10월1일 파일명/해시는 당시 발송 이력이며 현재다운로드는 아래095500이다. 이미 내려받은ZIP은 자동갱신되지 않는다. 이메일 재발송/복원/추가발송과제안서PDF 변경은0건이다.
+
+| 항목 | 최종 재조회 결과 |
+|---|---|
+| 소스 | 빌드기반f43+보존한로컬명패/빌드분리+난이도마커·유골함즉시MP갱신.10:16외부일괄커밋후실제GitHub main/로컬HEAD `2a053a37a0986d28b5e0a3fc7d020ff26c2c9390`,핵심19입력·비변환배포파일14개SHA일치 |
+| 현재 ZIP | `02_EXODUSER_DEMO_WIN64_20261003-095500.zip`,7,063,995,191bytes/6,630파일 |
+| 동일 ZIP ID | `1izf6QYvSqiFx_lrBFIFZZ4jwUQZYtmO5`;10:17:28 KST 업로드완료·10:18:19 표시명갱신후 파일명/용량/현재revision 일치 |
+| 로컬 SHA-256 | `912c66594ca9eedbee5b025c38d84d0ee44fbe5ae1031937bcbdece86eb6a310`; 전체CRC·멤버SHA/길이PASS, 중복/개인/인증/세이브/로그/위험경로0 |
+| 실행/SHA 안내 | 기존ID `1yPW9g0-QUFfAY06MJnzQvHIy4-CW16gD`/`1uYr_Pw6diz-2TwusVGx1NcfNrevI2yJ6`,2,705/110bytes. 최신원격전체본문/바이트가 최종로컬파일과 일치 |
+| 권한/이전 버전 | ZIP/두안내의 기존3사 reader+owner 동일. 총3revision 모두keepForever=true,9월29일/10월1일 이전버전 보존 |
+| 최신 UI/저장 | 관련회귀82/82·격리headless 정상UI저장/프로세스종료/재시작38/38PASS. ptbr S/M 제목범위·diff5/marker1·HP514·최대MP449·장비16/가방10복원. 원문MP회복/아이템마커차이 별도분류보존 |
+| 미검수/별도작업 | 최종Windows 정상전투/자연다음스테이지/전체진행/음향/FPS, 원격ZIP 전체재다운로드·서버해시대조 미검수. Steam 본편 새업로드/브랜치/설치본/재심사도 미완료 |
+| 근거 | `tmp/publisher-update-20261003/delivery-confirmation.json`, `drive-updated.jpg`, 최종출력 `archive-verification.json`, [최신본 갱신 대장](PUBLISHER_UPDATE_20261003.md) |
+
+Steam 데모5337590 업로드/재심사·공개출시/가격변경·GitHub push/PR은 하지 않았다. 공유작업파일/인덱스/기존실행본/사용자세이브를 보존했으며 퍼블리셔 사본은 publisher-review/demo 및AppID/DepotID null로Steam에잘못업로드되지 않게 검증한다.

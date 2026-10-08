@@ -1443,6 +1443,8 @@
 '시체폭발%':'Leichenexplosion%',
 '회피뎀+':'Ausweich-Schaden+',
 '패링폭발%':'Parade-Explosion%',
+'검기막이의':'Klingenwehr-',
+'기검참3타패링':'Ki-Schnitt 3. Schlag pariert',
 '블록HP+':'Block-HP+',
 '블록MP+':'Block-MP+',
 '회전참뎀+':'Wirbelwindschaden+',

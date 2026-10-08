@@ -1481,6 +1481,8 @@ const _NO={"⛓️ 관통!":"⛓️ Gjennomtrengning!","⛓️ 관통":"⛓️ G
 '시체폭발%':'Lik Eksplosjon%',
 '회피뎀+':'Unnvikelse SKD+',
 '패링폭발%':'Parering Eksplosjon%',
+'검기막이의':'Klingevernets',
+'기검참3타패링':'Ki Slash 3. slag-parering',
 '블록HP+':'Blokk HP+',
 '블록MP+':'Blokk MP+',
 '회전참뎀+':'Hvirvelvind SKD+',

@@ -61,8 +61,8 @@ window._supabaseReady=new Promise(resolve=>{
 <script src="maps_data.js"></script>
 <script src="assets/map/ch1/geometry/ch1_si1_geometry.js"></script>
 <script src="assets/map/ch1/production_finish/layout.js?v=20260916-finish-1"></script>
-<script src="ch1-living-detail.js?v=20260929-87"></script>
-<script src="ch1-forest-sway.js?v=20260930-90"></script>
+<script src="ch1-living-detail.js?v=20261006-start-ready"></script>
+<script src="ch1-forest-sway.js?v=20261006-start-ready"></script>
 <script src="ch1-face-life.js?v=20260930-97"></script>
 <script src="ch1-altar-moat.js?v=20261001-3"></script>
 <script src="ch1-border-foreground.js?v=20261001-3"></script>
@@ -7210,6 +7210,7 @@ const _EN={
 '시체폭발의':'Corpse Explosion',
 '회피반격의':'Dodge Counter',
 '패링폭파의':'Parry Shatter',
+'검기막이의':'Bladeward',
 '블록치유의':'Block Heal',
 '블록영력의':'Block Mana',
 '회전참강화':'Spin Slash Boost',
@@ -7601,6 +7602,7 @@ const _EN={
 '시체폭발%':'Corpse Explode%',
 '회피뎀+':'Dodge DMG+',
 '패링폭발%':'Parry Burst%',
+'기검참3타패링':'Ki Slash 3rd-Hit Parry',
 '블록HP+':'Block HP+',
 '블록MP+':'Block MP+',
 '회전참뎀+':'Whirlwind DMG+',
@@ -11163,9 +11165,43 @@ function _ch1StartOuterViewIds(){
 function _preloadCh1StartOuter(){
   for(const id of _ch1StartOuterViewIds())_requestCh1StartOuter(id);
 }
+const _startSceneWarmState={status:'idle',frames:0,elapsedMs:0,pending:0};
+async function _prepareStartScene(){
+  if(!G.map||!P||!X)return;
+  const started=performance.now();
+  let deadline=started+20000,stable=0,lastView='';
+  Object.assign(_startSceneWarmState,{status:'preparing',frames:0,pending:0});
+  setBootLoading(99,_L('맵과 움직임 준비 중...','Preparing map and motion...'));
+  await _waitObjSprites(8000);
+  _warmupEnsAtlas();
+  while(true){
+    if(document.hidden){deadline=performance.now()+20000;await new Promise(resolve=>setTimeout(resolve,30));continue;}
+    if(_bootMapBuildPromise)await _bootMapBuildPromise;
+    _tickBgInit(4);
+    if(_streamMap&&_streamBuildQCount>0)_tickStreamChunkBuild(4,2);
+    draw();
+    if(_useGL||_useGPU)_glFlush();
+    _startSceneWarmState.frames++;
+    const pending=(_bgInitDone?0:1)+_streamBuildQCount+Math.max(0,_wqLen-_wqIdx)+
+      (_mapCacheRefreshQueued?1:0)+(globalThis.Ch1ForestSway?.qa?.().pending||0)+
+      (globalThis.Ch1FaceLife?.qa?.().pending||0)+(globalThis.Ch1LivingDetail?.qa?.().pending||0)+
+      (globalThis.Ch1BorderForeground?.qa?.().pending||0);
+    const view=[G.cam.x,G.cam.y,G._camZoom||1,VW,VH].join(',');
+    stable=pending===0&&view===lastView?stable+1:0;lastView=view;
+    _startSceneWarmState.pending=pending;
+    _startSceneWarmState.elapsedMs=performance.now()-started;
+    if(stable>=2){_startSceneWarmState.status='ready';return;}
+    if(performance.now()>=deadline){
+      _startSceneWarmState.status='timeout';
+      console.warn('[START MAP] Scene preparation timed out; retaining existing render fallbacks.');
+      return;
+    }
+    await new Promise(resolve=>setTimeout(resolve,30));
+  }
+}
 async function _prepareStartMapView(){
   _ch1StartOuterBootFallback=false;
-  if(!_ch1StartOuterEnabled())return;
+  if(!_ch1StartOuterEnabled()){await _prepareStartScene();return;}
   setBootLoading(98,_L('시작 화면 준비 중...','Preparing starting view...'));
   let deadline=performance.now()+12000;
   const visibleAgain=()=>{if(!document.hidden)deadline=performance.now()+12000};
@@ -11174,10 +11210,11 @@ async function _prepareStartMapView(){
     while(_ch1StartOuterEnabled()){
       const ids=_ch1StartOuterViewIds();
       _preloadCh1StartOuter();
-      if(ids.every(id=>_ch1StartOuterCache[id]?.status==='ready'))return;
+      if(ids.every(id=>_ch1StartOuterCache[id]?.status==='ready')){await _prepareStartScene();return;}
       if(ids.some(id=>_ch1StartOuterCache[id]?.status==='error')||(!document.hidden&&performance.now()>=deadline)){
         _ch1StartOuterBootFallback=true;
         console.warn('[START MAP] Initial view unavailable; using the stable terrain fallback.');
+        await _prepareStartScene();
         return;
       }
       await new Promise(resolve=>setTimeout(resolve,30));
@@ -11348,6 +11385,14 @@ globalThis.__ch1BakedSpikeQA=()=>({
   stats:{..._ch1BakedSpikeStats,visibleIds:[..._ch1BakedSpikeStats.visibleIds],drawnIds:[..._ch1BakedSpikeStats.drawnIds]}
 });
 // CH1 PAINTED START SPIKE END
+// [CAM-CLAMP] 카메라를 맵 bounds 안으로 가둔다 — 코너/시작 프레이밍에서 맵 밖(구형 지형 폴백) 노출 차단.
+// 줌아웃(보스전) 반영해 가시 반경 확장. 스폰 세팅 직후에도 호출해 튜토리얼 정지 프레임에서 경계 밖이 안 보이게 함.
+function _clampCamToMap(){
+  if(_EDITOR_MODE||!G||!G.map)return;
+  const _mwPx=G.mw*T,_mhPx=G.mh*T,_cz2=Math.max(0.3,G._camZoom||1),_hvw=VW/(2*_cz2),_hvh=VH/(2*_cz2);
+  G.cam.x=(_mwPx<=_hvw*2)?_mwPx/2:Math.max(_hvw,Math.min(_mwPx-_hvw,G.cam.x));
+  G.cam.y=(_mhPx<=_hvh*2)?_mhPx/2:Math.max(_hvh,Math.min(_mhPx-_hvh,G.cam.y));
+}
 function _fillMapPaint(c,tx0,ty0,tx1,ty1,local){
   const wx0=tx0*T,wy0=ty0*T,wx1=tx1*T,wy1=ty1*T;
   const ox=local?-wx0:0,oy=local?-wy0:0;
@@ -14001,6 +14046,8 @@ const AFFIX_POOL=[
   {id:'onParryBurst',type:1,tiers:[.15,.25,.40,.60,.85],unit:'pct',slots:['shield'],group:'opBs',weight:30},
   {id:'onBlockHeal',type:1,tiers:[5,10,18,28,40],unit:'val',slots:['shield'],group:'oBHl',weight:40},
   {id:'onBlockMana',type:1,tiers:[3,6,10,16,24],unit:'val',slots:['shield'],group:'oBMn',weight:40},
+  // 유니크 전용(minGrade:5): 기검참 3타 발사 순간 20틱 물리 패링 판정 (E 칼등치기 판정 공유)
+  {id:'kiSlashParry',type:1,tiers:[20,20,20,20,20],unit:'tick',slots:['wpn','gloves','bracelet'],group:'uKsP',weight:30,minGrade:5},
 
   // ═══ Phase 3: 스킬 개별 강화 (20종) ═══
   {id:'skWhirlDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn'],group:'sWD',weight:40},
@@ -14287,7 +14334,7 @@ const AFFIX_NAMES_KO={
   onHitFireball:'화구발사의',onHitChainL:'연쇄뇌격의',onHitFreeze:'동결타의',onHitStun:'경직타의',onHitPoison:'독침의',onHitBleed:'출혈의',onHitWeaken:'약화의',onHitSlow:'둔화의',onHitMark:'표적의',
   onCritExplode:'회심폭발의',onCritChain:'회심연쇄의',onCritFreeze:'회심빙결의',onCritHeal:'회심치유의',onCritMana:'회심영력의',onCritShield:'회심수호의',
   onHitDefBoost:'피격강화의',onHitThorns:'반격가시의',procIceNova:'빙결파동의',procDarkShield:'암흑보호의',procHealPulse:'치유파동의',procCorpseExplode:'시체폭발의',
-  onDodgeDmg:'회피반격의',onParryBurst:'패링폭파의',onBlockHeal:'블록치유의',onBlockMana:'블록영력의',
+  onDodgeDmg:'회피반격의',onParryBurst:'패링폭파의',kiSlashParry:'검기막이의',onBlockHeal:'블록치유의',onBlockMana:'블록영력의',
   skWhirlDmg:'회전참강화',skBeamDmg:'옴니빔강화',skFireballDmg:'화구강화',skMissileDmg:'미사일강화',skBlueShotDmg:'청탄강화',skBlastShotDmg:'폭렬탄강화',
   skHellRayDmg:'지옥광선강화',skMaliceStormDmg:'악의폭풍강화',skChainSlashDmg:'연쇄참강화',skGiantSlamDmg:'지옥강타 1 강화',
   skGhostWalkDmg:'유령보행강화',skMaliceMortarDmg:'악의박격강화',skFireAuraDmg:'화염오라강화',skIceOrbDmg:'빙구강화',skFireBeamDmg:'화염빔강화',
@@ -14369,7 +14416,7 @@ const _AFFIX_DESC={
   onHitFireball:'적중시화구',onHitChainL:'적중시연쇄뇌격',onHitFreeze:'적중빙결%',onHitStun:'적중스턴%',onHitPoison:'적중중독%',onHitBleed:'적중출혈%',onHitWeaken:'적중약화%',onHitSlow:'적중감속%',onHitMark:'적중표적%',
   onCritExplode:'크리폭발(HP%)',onCritChain:'크리연쇄(HP%)',onCritFreeze:'크리빙결%',onCritHeal:'크리HP+',onCritMana:'크리MP+',onCritShield:'크리쉴드+',
   onHitDefBoost:'피격방어+',onHitThorns:'반격가시',procIceNova:'빙결파동%',procDarkShield:'자동암흑막',procHealPulse:'주기치유',procCorpseExplode:'시체폭발%',
-  onDodgeDmg:'회피뎀+',onParryBurst:'패링폭발%',onBlockHeal:'블록HP+',onBlockMana:'블록MP+',
+  onDodgeDmg:'회피뎀+',onParryBurst:'패링폭발%',kiSlashParry:'기검참3타패링',onBlockHeal:'블록HP+',onBlockMana:'블록MP+',
   skWhirlDmg:'회전참뎀+',skBeamDmg:'옴니빔뎀+',skFireballDmg:'화구뎀+',skMissileDmg:'미사일뎀+',skBlueShotDmg:'청탄뎀+',skBlastShotDmg:'폭렬탄뎀+',
   skHellRayDmg:'지옥광선뎀+',skMaliceStormDmg:'악의폭풍뎀+',skChainSlashDmg:'연쇄참뎀+',skGiantSlamDmg:'지옥강타 1 뎀+',
   skGhostWalkDmg:'유령보행뎀+',skMaliceMortarDmg:'악의박격뎀+',skFireAuraDmg:'화염오라뎀+',skIceOrbDmg:'빙구뎀+',skFireBeamDmg:'화염빔뎀+',
@@ -14446,7 +14493,7 @@ const LEGENDARY_SPECIAL={
   necklace:        {ko:'HP 50% 이하 시 전 스킬 쿨다운 -30%',             stat:'_lNeckLow',    val:0.30},
   belt:            {ko:'물약 사용 시 5초간 피해 +15%',                    stat:'_lBeltBuff',   val:0.15},
 };
-// ─── 유니크 특수 효과 (rarity=5 전용, 슬롯+무기타입별 고정 1개) ───
+// ─── 유니크 특수 효과 (rarity=5 전용, 아래 풀에서 무작위 1개 — 키는 원래 출처 부위 표기용) ───
 const UNIQUE_SPECIAL={
   weapon_sword:    {ko:'분노의 최대치가 100% 추가된다 (200%까지)',          stat:'_uRageMax',      val:100},
   weapon_dagger:   {ko:'패링한 탄막의 관통률이 100% 추가된다',              stat:'_uDaggerPierce', val:1.0},
@@ -14481,11 +14528,11 @@ function rollAffixes(grade,slot,brType){
     const _baseTier=grade>=4?2:grade>=3?1:0;
     const _lvBonus=~~((P?P.lv:1)/200);
     // 가중치 선택 (중복 그룹 제외, T1이 null이면 제외)
-    let tw=0;for(let j=0;j<pool.length;j++){if(!usedG[pool[j].group]&&pool[j].tiers[0]!=null)tw+=pool[j].weight}
+    let tw=0;for(let j=0;j<pool.length;j++){if(!usedG[pool[j].group]&&pool[j].tiers[0]!=null&&!(pool[j].minGrade>grade))tw+=pool[j].weight}
     if(tw<=0)continue;
     let r=Math.random()*tw;
     for(let j=0;j<pool.length;j++){
-      const a=pool[j];if(usedG[a.group]||a.tiers[0]==null)continue;
+      const a=pool[j];if(usedG[a.group]||a.tiers[0]==null||a.minGrade>grade)continue;
       r-=a.weight;if(r<=0){
         // 티어 상한: 등급 + 200렙 보너스, 어픽스별 cap
         const maxTier=Math.min(a.tiers.length-1,_baseTier+_lvBonus);
@@ -15309,8 +15356,9 @@ function mkItem(slot,tier,el,rarity,wtype){
   // ── 유니크 특수 효과 (rarity=5 전용) ──
   item.uniqueSpecial=null;
   if(rarity>=5){
-    const _usKey=(slot==='weapon'&&item.wtype)?'weapon_'+item.wtype:slot;
-    const _us=UNIQUE_SPECIAL[_usKey]||UNIQUE_SPECIAL[slot];
+    // 고유 효과는 부위·무기종류와 무관하게 전체 풀에서 무작위 1개 (효과는 _uEq로 어느 부위에서든 동작)
+    const _usPool=Object.values(UNIQUE_SPECIAL);
+    const _us=_usPool[~~(Math.random()*_usPool.length)];
     if(_us){let _uv=_us.val,_usc;if(_us.roll){_uv=_us.roll[0]+~~(Math.random()*(_us.roll[1]-_us.roll[0]+1));_usc=(_uv/60).toFixed(1)}item.uniqueSpecial={ko:_us.ko,stat:_us.stat,val:_uv,secs:_usc};item[_us.stat]=_uv}
   }
   // 아이템 레벨 = 캐릭터 레벨 기반, 10레벨 단위 (0~900), reqLv = itemLv-10
@@ -15862,7 +15910,7 @@ function spawnCrescent(x,y,ang,dmg,el,step,distMul,chargeScale=1){
 }
 function _kiSlashHoldTier(frames){return Math.min(3,Math.floor(Math.max(0,frames||0)/_KI_HOLD_STEP))}
 // 기검참 3타 홀드: 40f(≈0.67초)마다 1단, 120f(2초)에 풀차지 3단 — 배율 2/4/8배는 동일
-const _KI_HOLD_STEP=40,_KI_HOLD_MAX=_KI_HOLD_STEP*3;
+const _KI_HOLD_STEP=40,_KI_HOLD_MAX=_KI_HOLD_STEP*3,_KI_PARRY_WIN=20;
 function _kiSlashHoldMultiplier(frames){return 2**_kiSlashHoldTier(frames)}
 function _fireKiSlashCrescent(step,chargeFrames=0){
   _addSkProf('kiSlash');_cresStep=step;_cresComboT=120;_cresCd=step===3?20:12;
@@ -15872,6 +15920,7 @@ function _fireKiSlashCrescent(step,chargeFrames=0){
   const _mul=step===3?_kiSlashHoldMultiplier(chargeFrames):1;
   const _scale=1+_tier*.4;
   spawnCrescent(P.x,P.y,P.facing,~~(meleeRef()*7.0*statStr()*pAtkMul()*_skMul('kiSlash')*_mul),0,step,_ksDistMul,_scale);
+  if(step===3){const _kpw=_eqAffix('kiSlashParry');if(_kpw>0)P._kiParryT=Math.min(_KI_PARRY_WIN,_kpw)} // 유니크 어픽스: 3타 발사 순간 물리 패링 (중복 장착 비가산)
   addTxt(P.x,P.y-40,step+_L('타',' Hit')+(_mul>1?' ×'+_mul:''),step===3?'#ff4444':'#ffcc00',20);
 }
 // 기검참 3타 홀드 차지 중 — 피격 경직 면역(포이즈는 계속 깎여 기절 pStun 시에만 끊김)
@@ -28679,7 +28728,7 @@ function _loadZone(zid,sx,sy){
     console.log('[ZONE] spawn corrected ('+sx+','+sy+') → ('+_spX+','+_spY+')');
   }
   P.x=(_spX+.5)*T;P.y=(_spY+.5)*T;P.s='idle';P.iframes=90;P.kb={x:0,y:0};
-  G.cam.x=P.x;G.cam.y=P.y;
+  G.cam.x=P.x;G.cam.y=P.y;_clampCamToMap();
   // 펫 리셋
   if(G.pets){for(const k in G.pets){G.pets[k].x=P.x;G.pets[k].y=P.y;G.pets[k].tx=P.x;G.pets[k].ty=P.y}}
   // 보스 상태 리셋 (존별 독립)
@@ -30127,7 +30176,7 @@ function initStage(si){
   if(_MAP_QA_MODE&&!_MAP_QA_COMBAT){ens.length=0;G.spawnHoles.length=0;G._gateGuard=null;G._fieldBoss=null;G._fieldBosses=null;G._fireDevils=null;}
   if(_MAP_QA_MODE)G._bonfire=null;
   _regionInit(si); // [REGION] 4분면 지역 분할 + 지역별 스폰 total 계산 (소환굴 확정 후)
-  G.cam.x=P.x;G.cam.y=P.y;
+  G.cam.x=P.x;G.cam.y=P.y;_clampCamToMap();
   G.pets={crow:{x:P.x,y:P.y-20,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:0},cat:{x:P.x,y:P.y+10,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:~~(Math.random()*100)},xbow:{x:P.x-30,y:P.y-28,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:25,_atkCd:0,_ang:0},iris:{x:P.x+20,y:P.y-34,tx:P.x,ty:P.y,s:'follow',t:50,sz:G._irisSz||20,_feedT:0}};
   // ── 즉시 초기화 (게임 시작 전 필수) ──
   if(_bootMapBuildDefer){_queueBootMapBuild()}else{buildMapCache();} // 타일맵 렌더 + 카메라 주변 청크
@@ -31214,6 +31263,7 @@ function update(){
     else _setMouseFacing();
   }
   if(P.iframes>0)P.iframes=Math.max(0,P.iframes-sp); // 무적판정 자연 감소
+  if(P._kiParryT>0)P._kiParryT=Math.max(0,P._kiParryT-sp); // 기검참 3타 패링 윈도우
   if(P._hurtCd>0)P._hurtCd=Math.max(0,P._hurtCd-sp); // 다중히트 방지 쿨다운
   // 돌진 스톡 재충전 (기본 3, chargeBoost Lv10마다 +1, 장비 보너스, 캡 5)
   const _cbLvSt=P.skills.chargeBoost||0;
@@ -33270,7 +33320,7 @@ function update(){
     const _sbPW=P.s==='sBlock'&&P._sbParryT>0;
     const _sbPWDet=_sbPW&&P.skills.detonate>=1;
     const _anyPW=_sbPW||(P._sbParryT>0&&P.s!=='whirlwind'&&P.s!=='beam'&&P.s!=='elecRepent');
-    const _sbActive=P.s==='sBash'&&P.st2>(20-_PARRY_WIN); // 칼등치기 앞 _PARRY_WIN틱만 패링, 뒤 후딜(무방비→피격 시 포이즈 소모)
+    const _sbActive=P.s==='sBash'&&P.st2>(20-_PARRY_WIN)||P._kiParryT>0; // 기검참 3타 패링(유니크 어픽스)도 E 물리 패링으로 취급. 칼등치기 앞 _PARRY_WIN틱만 패링, 뒤 후딜(무방비→피격 시 포이즈 소모)
     const _normalR=_sbActive?(_bigBall?_pCollR+4:_pCollR*3+12)*_eSkillRangeMul():_sbPWDet?(_bigBall?_pParryR:_pCollR*3+12):_anyPW?(_bigBall?_pParryR:_pCollR*3+8):_pCollR+4;
     // redBean 전용: 방패스킬 공격범위와 동일한 넓은 판정
     const _sdLvD=P.skills.maliceSwipe||0;
@@ -34121,9 +34171,7 @@ function update(){
   if(!G._camZoom)G._camZoom=1.0;
   G._camZoom+=(_czTgt-G._camZoom)*(1-Math.pow(_dfFrame?(_czTgt<G._camZoom?.88:.98):.94,_dtSp));}
   // [CAM-CLAMP] 카메라를 맵 bounds로 클램프 — 코너(예: 좌하단)에서 맵 밖 void 노출 차단. 줌아웃(보스전) 반영해 가시 반경 확장.
-  if(!_EDITOR_MODE&&G.map){const _mwPx=G.mw*T,_mhPx=G.mh*T,_cz2=Math.max(0.3,G._camZoom||1),_hvw=VW/(2*_cz2),_hvh=VH/(2*_cz2);
-    G.cam.x=(_mwPx<=_hvw*2)?_mwPx/2:Math.max(_hvw,Math.min(_mwPx-_hvw,G.cam.x));
-    G.cam.y=(_mhPx<=_hvh*2)?_mhPx/2:Math.max(_hvh,Math.min(_mhPx-_hvh,G.cam.y));}
+  _clampCamToMap();
   _syncDruidFinaleMouse();
   if(G._druidVictory)G._druidVictory.t=Math.min(210,G._druidVictory.t+_dtSp);
   if(G._druidActCue)G._druidActCue.t=Math.min(120,G._druidActCue.t+_dtSp);
@@ -36831,7 +36879,7 @@ function _kgRelease(tier,mult){
   if(Math.random()<.5){const _kv=['voice_grunt','male_grunt','voice_attack'];playSample(_kv[~~(Math.random()*3)],1,_r(1,.12))}
   if(P.skills.shieldThrow>=1&&(P._stCd||0)<=0)_autoShieldThrow();
 }
-function isPWin(){return (P.s==='sBash'&&P.st2>(20-_PARRY_WIN))||(P.s==='sBlock'&&P._sbParryT>0)||(P.s==='peaceShield'&&P._sbParryT>0)||(P.s!=='whirlwind'&&P.s!=='beam'&&P.s!=='elecRepent'&&P._sbParryT>0)} // 칼등치기 앞 _PARRY_WIN틱만 패링(뒤 후딜) + 보호막 + 평화보호 패링윈도우
+function isPWin(){return (P.s==='sBash'&&P.st2>(20-_PARRY_WIN))||P._kiParryT>0||(P.s==='sBlock'&&P._sbParryT>0)||(P.s==='peaceShield'&&P._sbParryT>0)||(P.s!=='whirlwind'&&P.s!=='beam'&&P.s!=='elecRepent'&&P._sbParryT>0)} // 칼등치기 앞 _PARRY_WIN틱만 패링(뒤 후딜) + 보호막 + 평화보호 패링윈도우
 function doParry(_inDmg,_px,_py,_forceQ,_parryEl,_resourceMul,_impactKind){const _lesson=window._parryLesson;_lesson?.physicalParry(_px,_py);if(_px===undefined)_px=P.x;if(_py===undefined)_py=P.y;if(_parryEl===undefined)_parryEl=0;const _resourceBonus=Math.max(1,_resourceMul||1);_petOnParry();if(G._pStats)G._pStats._pH++;if(G._sStats)G._sStats.parries++;const _isQ=_forceQ||P.s==='sBlock'||P.s==='peaceShield'||P._sbParryT>0;if(_isQ){playSample('q_parry',.9,_r(1,.08))}else{playSample('sword_parry',1,_r(1,.1));playSample(['sword_back','sword_back2','sword_back3'][~~(Math.random()*3)],.5,_r(1.1,.1))}if(Math.random()<.5)playSample(['voice_parry1','voice_parry2','voice_parry3','voice_parry4'][~~(Math.random()*4)],1,_r(1,.03));else playSample('male_grunt',1,_r(1,.15));
   P.iframes=Math.max(P.iframes,18);
   // 패링 성공 → 그로기 해제 + 포이즈 복원
@@ -47470,7 +47518,7 @@ if($('resetNo'))$('resetNo').onclick=()=>{$('resetConfirm').style.display='none'
 const _qb=$('quitBtn');if(_qb)_qb.onclick=()=>{
   if(IS_NW){window.nw.App.quit();}
   else if(IS_ELECTRON&&window.electronAPI?.quitApp){window.electronAPI.quitApp();}
-  else{window.close();}
+  else{window.close();setTimeout(()=>goToLobby(),150);}
 };}
 if($('resetYes'))$('resetYes').onclick=async()=>{
   $('resetConfirm').style.display='none';
@@ -48394,6 +48442,7 @@ function _affixValStr(af){
   if(!u)return String(af.value);
   if(u.unit==='pct'||u.unit==='prob')return(af.value>0?'+':'')+~~(af.value*100)+'%';
   if(u.unit==='dps')return af.value+'/s';
+  if(u.unit==='tick')return(af.value/60).toFixed(2)+_L('초','s');
   if(u.unit==='atk')return'ATK×'+~~(af.value*100)+'%';
   if(u.unit==='hp')return~~(af.value*100)+'%HP';
   return(af.value>0?'+':'')+af.value;
@@ -60820,6 +60869,7 @@ function _startIntro(){
   G._intro=true;G.on=false;P.iframes=9999;P.s='idle';
   if(!G.cam)G.cam={x:P.x,y:P.y};
   else{G.cam.x=P.x;G.cam.y=P.y}
+  _clampCamToMap(); // [CAM-CLAMP] 인트로/튜토리얼은 G.on=false로 틱 정지 → 여기서 직접 클램프해 맵 밖(구형 지형) 노출 차단
   // 부트 로딩 즉시 숨김
   const _bl=$('stageTransition');if(_bl){_bl.style.opacity='0';_bl.style.pointerEvents='none'}
   // 커튼 보이기 + 닫힌 상태

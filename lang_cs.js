@@ -1391,6 +1391,8 @@ const _CS={"⛓️ 관통!":"⛓️ Průraz!","⛓️ 관통":"⛓️ Průraz","
 '시체폭발%':'Výbuch mrtvoly%',
 '회피뎀+':'Poškození po úhybu+',
 '패링폭발%':'Výbuch parírování%',
+'검기막이의':'Čepelového štítu',
+'기검참3타패링':'Kryt 3. úderem Ki Slash',
 '블록HP+':'Blokování HP+',
 '블록MP+':'Blokování MP+',
 '회전참뎀+':'Poškození víru+',

@@ -159,7 +159,7 @@ cd G:\exoduser
 
 ### 원격 브라우저 작업 = Mac (2026-10-04 사용자 지시)
 
-- Claude in Chrome 등 **모든 원격 브라우저 작업은 Mac Chrome "Browser 2"**(deviceId `8d31c84b-12ed-430a-aa45-58d2ca395b34`)로 한다. 상시 켜져 있으므로 브라우저 선택을 묻지 말고 바로 선택.
+- Claude in Chrome 등 **모든 원격 브라우저 작업은 Mac Chrome "Browser 2"**(macOS로 표시된 브라우저. deviceId는 재연결 때 바뀔 수 있음)로 한다. 상시 켜져 있으므로 브라우저 선택을 묻지 말고 바로 선택.
 - Windows 로컬 파일(scratchpad 등)도 `file_upload`로 Mac 브라우저에 업로드된다(확인됨).
 - 사이트 로그인이 풀려 있으면 사용자에게 Mac에서 직접 로그인 요청(대리 로그인 금지).
 

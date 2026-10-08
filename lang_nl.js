@@ -1482,6 +1482,8 @@ const _NL={"⛓️ 관통!":"⛓️ Penetratie!","⛓️ 관통":"⛓️ Penetra
 '시체폭발%':'Lijk Explosie%',
 '회피뎀+':'Ontwijking Schade+',
 '패링폭발%':'Pareer Explosie%',
+'검기막이의':'Klingweer-',
+'기검참3타패링':'Ki Slash 3e slag pareren',
 '블록HP+':'Blokkeer HP+',
 '블록MP+':'Blokkeer MP+',
 '회전참뎀+':'Wervelwind Schade+',

@@ -1472,6 +1472,8 @@ const _ES={"⛓️ 관통!":"⛓️ Penetración!","⛓️ 관통":"⛓️ Penet
 '시체폭발%':'Explosión Cadáver%',
 '회피뎀+':'Daño Esquiva+',
 '패링폭발%':'Explosión Parada%',
+'검기막이의':'del Filoguarda',
+'기검참3타패링':'Parada del 3.er golpe de Ki Slash',
 '블록HP+':'HP Bloqueo+',
 '블록MP+':'MP Bloqueo+',
 '회전참뎀+':'Daño Torbellino+',

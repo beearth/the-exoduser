@@ -63,3 +63,24 @@ test('forest overlay mask leaves the combat floor transparent',()=>{
   assert.equal(alpha(63,32),0,'deep background outside the near-forest band stays fixed');
   assert.equal(h.forest.qa().pending,0);
 });
+
+test('ultrawide visible chunks stay cached instead of rebuilding every frame',()=>{
+  const setup=harness(),context=setup.makeContext();
+  const game={stage:0,map:forestMap(),cam:{x:4000,y:6500},_camZoom:1};
+  const visible=[],chunks={};
+  for(let row=5;row<8;row++)for(let column=0;column<8;column++){
+    const id=column+','+row;visible.push(id);
+    chunks[id]={status:'ready',img:{complete:true,naturalWidth:1026}};
+  }
+  const draw=()=>setup.forest.draw(context,game,0,chunks,visible,1000,'assets/map/ch1/production_finish',5120,1384);
+  draw();setup.drain();draw();setup.drain();
+  const builds=setup.forest.qa().builds;
+  for(let frame=0;frame<5;frame++){draw();setup.drain();}
+  assert.equal(setup.forest.qa().builds,builds,'a stationary viewport must not evict its own chunks');
+  assert.equal(setup.forest.qa().pending,0);
+  assert.ok(setup.forest.qa().cached>12,'ultrawide view requires more than twelve resident chunks');
+  game.cam={x:500,y:500};
+  setup.forest.draw(context,game,0,cache,['0,0'],1000,'assets/map/ch1/production_finish',1000,1000);
+  setup.drain();
+  assert.ok(setup.forest.qa().cached<=12,'offscreen entries are evicted again for a small viewport');
+});

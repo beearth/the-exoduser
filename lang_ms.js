@@ -1907,6 +1907,8 @@ const _MS={
   "시체폭발%": "Letupan Mayat%",
   "회피뎀+": "DMG Elak+",
   "패링폭발%": "Letupan Parry%",
+  "검기막이의": "Penangkis Bilah",
+  "기검참3타패링": "Tangkisan Pukulan ke-3 Ki Slash",
   "블록HP+": "HP Blok+",
   "블록MP+": "MP Blok+",
   "회전참뎀+": "DMG Angin Puyuh+",

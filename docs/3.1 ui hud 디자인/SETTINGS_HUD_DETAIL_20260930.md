@@ -31,7 +31,7 @@
 | `settings-tab-system` / `settings-page-system` | 독립 시스템 탭/페이지 | 제거. 표시 항목은 삭제하지 않음 |
 | `optLang`, `charSelectGrid` | 시스템 페이지 | 게임 페이지의 시스템 구역. 기존 언어 옵션·캐릭터 카드 보존 |
 | `saveP1`, `saveP2`, `loadP1`, `loadP2`, `saveMsg` | 시스템 페이지 | 같은 시스템 구역의 프리셋 카드. 저장·불러오기 피드백 보존 |
-| `toLobbyBtn2`, `resetBtn`, `quitBtn`, 전체화면 버튼 | 시스템 페이지 | 같은 시스템 구역의 액션 카드. 확인 UI와 핸들러 보존 |
+| `toLobbyBtn2`, `resetBtn`, `quitBtn`, 전체화면 버튼 | 시스템 페이지 | 같은 시스템 구역의 액션 카드. 확인 UI 보존. 2026-10-06 `quitBtn`의 일반 브라우저 경로는 탭 닫기 시도 후 150ms 뒤 페이지가 남아 있으면 기존 `goToLobby()`로 저장·로비 복귀. 데스크톱 종료 경로 유지. 상세: `GAME_QUIT_BROWSER_FALLBACK_20261006.md` |
 | `optDiff`, `optAutoPot`, `optMinRar`, `optMinLv`, `optCrAutoFuse`, `optCrAutoEnh`, `optXbowAuto`, `optBlPullMode`, `optBladeAuto`, `optBossDbg` | 게임 페이지 | 시스템 구역 다음의 게임 설정 카드. 값·리스너·저장 정책 불변 |
 | 화면/사운드/조작 탭 | 각 페이지 | 유지. 설정 탭 순서는 게임 → 화면 → 사운드 → 조작 |
 

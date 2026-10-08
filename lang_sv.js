@@ -1481,6 +1481,8 @@ const _SV={"⛓️ 관통!":"⛓️ Genomträngning!","⛓️ 관통":"⛓️ Ge
 '시체폭발%':'Lik Explosion%',
 '회피뎀+':'Undvikande Skada+',
 '패링폭발%':'Parering Explosion%',
+'검기막이의':'Klingvärnets',
+'기검참3타패링':'Ki Slash 3:e slag-parering',
 '블록HP+':'Block HP+',
 '블록MP+':'Block MP+',
 '회전참뎀+':'Virvelvind Skada+',

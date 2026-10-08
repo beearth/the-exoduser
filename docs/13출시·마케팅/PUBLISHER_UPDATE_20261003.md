@@ -2,13 +2,15 @@
 
 사용자 지시: “이미받았으면 어쩔수없고 주말이니까 최신으로 업데이트해줘”. 컴투스·카카오·스마일게이트에 발송한 기존 Drive ZIP의 새 버전을 올리고, 실행 안내와 SHA 안내를 함께 갱신한다. 새 이메일 발송·공개 출시·가격 변경·Steam 데모 재제출·GitHub push/PR은 이 작업에 포함하지 않는다.
 
+**최종 배포 확인: 2026-10-03 10:17:28 KST ZIP 업로드 완료,10:18:19 표시명 갱신 후 동일ID·파일명·용량·현재revision·3사 reader권한 재조회 PASS. 실행/SHA 안내도 같은ID로 갱신하고 원격전체바이트가 로컬 최종파일과 일치했다.** 기존 이메일 링크에서 새 다운로드는095500을 받으며, 이미 내려받은 파일은 자동으로 바뀌지 않는다.
+
 ## 소스와 배포 계약
 
 | 항목 | 현재 값 / 근거 |
 |---|---|
-| 최신 GitHub main / 로컬 HEAD | `f43a24e6e261e8b5c769d2f3ab4babcb064a0005`, 2026-10-03 작업 시작·최종095500 빌드 전 실제 `git ls-remote` 일치 |
+| 빌드 기반 / 최종 GitHub main | 최종095500은 `f43a24e6e261e8b5c769d2f3ab4babcb064a0005` + 당시 로컬변경.10:16:04 외부세션의 일괄커밋 후 실제GitHub main·로컬HEAD `2a053a37a0986d28b5e0a3fc7d020ff26c2c9390` 일치. 새커밋19개 핵심입력과 검증된배포본 입력SHA 모두동일 |
 | 로컬 변경 | 기존 S/M/L 제목판, 언어 지역 표기, 본편/데모 분리 등 보존. 주요 입력 19개 백업·SHA와 공용 인덱스 복사·binary diff 확보 |
-| 공용 인덱스 | 빌드 전후 SHA-256 `00ca6a48d227b681ebfc8871bc0686d152f84ffed351a027fc7bf3cf044f2eea` 일치 |
+| 공용 인덱스 | 본빌드/QA 전후 `00ca6a48d227b681ebfc8871bc0686d152f84ffed351a027fc7bf3cf044f2eea` 일치.10:16:04 외부커밋 뒤 `27296804155d4c8cf56f4d029c83ed05504195389a9f4dd0e3eda817226b05e8`로변경감지; 본작업은공유index/HEAD를쓰지않음 |
 | 소스 복구 자료 | `tmp/publisher-update-20261003/before.json`, `source-backup/`, `shared-index.before`, `working-tree.before.patch` |
 | 실제 입력 변경 | 최신 인벤토리 종합지수 정렬·기본 자동 정렬 및 문법 복구 + 로컬 제목판 수정 + 아래 저장 수정2건. 정렬 관련 8개 함수는 최신 HEAD와 동일 |
 | 기본 빌드 | `build-nwjs.mjs --target=demo --build-id=20261003-095500 --runtime=tmp/steam-main-resubmit-20261002/verified-runtime` |
@@ -47,16 +49,30 @@
 
 | 대상 | 기존 ID / 상태 |
 |---|---|
-| Windows ZIP | `1izf6QYvSqiFx_lrBFIFZZ4jwUQZYtmO5` / Chrome 기존 파일의 새 버전 업로드 진행 중, 완료 미확인 |
+| Windows ZIP | `1izf6QYvSqiFx_lrBFIFZZ4jwUQZYtmO5` /10:17:28 KST 새버전 업로드 완료.10:18:19 표시명 갱신 후 `02_EXODUSER_DEMO_WIN64_20261003-095500.zip`·7,063,995,191bytes 일치 |
 | 실행 안내 | `1yPW9g0-QUFfAY06MJnzQvHIy4-CW16gD` /10:07:26 KST 동일ID 갱신,2,705bytes. 원격 전체본문/바이트/용량이 최종로컬파일과 일치 |
 | SHA 안내 | `1uYr_Pw6diz-2TwusVGx1NcfNrevI2yJ6` /10:07:33 KST 동일ID 갱신,110bytes. 최종095500 파일명·912c6659… 해시 본문 일치 |
 | 공유 폴더 | `1l2FNevWyd-jc116P_hUB38KbWAme2tAI` / 위치 보존 |
-| 수신자 권한 | 컴투스·카카오·스마일게이트 reader 3명 + 사용자 owner, 변경 전 live metadata 확인 |
-| 기존 revision | 2개 모두 `keepForever=true`, 보존 |
+| 수신자 권한 | 컴투스·카카오·스마일게이트 reader3명+사용자owner, ZIP/두 안내 모두 갱신 전후 동일. 추가/삭제/공개권한 변경0 |
+| revision | 새현재 `0B2aTp8CkL9T4RXgvR3RVR2txdXRTbmdLT1Z2ait1ZkpwaE1RPQ`, 총3개 모두 `keepForever=true`.9월29일/10월1일 이전 두 버전 보존 |
 | 업로드 방식 | 연결 도구의 기존 512MiB 한도를 고려하여 대용량 ZIP은 Chrome Drive ‘새 버전 업로드’. 작은 안내는 연결 도구로 같은 ID 바이트 교체 |
-| 최종 확인 | 새 버전 업로드 완료 UI, 파일명·크기·수정 시각·revision·3사 권한·안내문 재조회 전에는 완료 처리하지 않음 |
+| 최종 확인 | 새현재버전 UI·메타데이터·3revision·3사권한·안내문 전체바이트 재조회 PASS. 폴더 새로고침 뒤 최신ZIP과10:07 안내 두 개의 표시도 확인 |
+| 확인 근거 | `tmp/publisher-update-20261003/delivery-confirmation.json`, `drive-guides-readback.json`, `drive-updated.jpg`, 최종출력 `archive-verification.json` |
+| 외부 변경 범위 | 기존ZIP/실행/SHA 안내만 갱신. 이메일 재발송0·PDF 변경0·Steam 데모5337590 업로드/재심사0·GitHub push/PR0 |
 
 상세 입력·준비 검수 근거는 `tmp/publisher-update-20261003/`와 출력 폴더에 보존한다. 원격 ZIP 전체 재다운로드 또는 서버 체크섬 검증 여부는 최종 결과에서 별도로 표시한다.
+
+원격 메타데이터 도구는 요청한ZIP 서버 체크섬을 반환하지 않았고, 원격ZIP 전체를 다시 다운로드해 해시를 대조한 것은 아니다. 로컬ZIP 전체검사와Drive업로드 완료·원격파일명/바이트/버전/권한 확인을 구분한다. 최종095500 네이티브 Windows 전투·자연 다음스테이지·전체진행·청취·FPS는 미검수다. 본편 Steam 새BuildID·브랜치 반영·설치본 검수·재심사 접수도 아직 미완료다.
+
+코드수정은 신규 난이도 마커 및 유골함 자동 장착 갱신으로 한정했고, 관련 설정·인벤토리·저장SSOT와 UI4문서에 동기화했다. 아래091200/094000은 실패발견과 교체의 이전 이력이며 최종배포095500의 상태는 위 표를 따른다. 본작업의원격push/PR은0이다. 다른세션의외부커밋/원격반영은아래별도사실로기록하며되돌리지않는다.
+
+## 10:16 외부 일괄커밋과 안전 검사 인수
+
+업로드 중 외부세션이 `chore: 세션 작업분 일괄 반영 (사용자 지시 '다 배포')` 커밋 `2a053a37a0986d28b5e0a3fc7d020ff26c2c9390`을 만들고GitHub main에 반영했다. f43의직계자식이며, 기존dirty작업을포함했다. 본작업이 실행한 commit/push는 아니다.10:20후속검사에서발견해 f43/index00ca 기준으로 준비한45파일격리백업은 **Git객체/ref/index를쓰기전 안전gate에서중단**했다. 새HEAD/index를원래값으로되돌리거나강제로우회하지않았다.
+
+읽기전용 대조에서 현재2a의Gitblob19개 = 현재작업파일19개 =095500빌드전스냅샷19개 =manifest sourceImportantFiles19개가 모두동일했다. 실제배포패키지의비변환핵심14개도현재파일/manifestSHA와동일하다. 나머지는의도한publisher config 변환 또는빌드도구/테스트용 비배송파일이다. 이미검수한ZIP/manifest의 f43+로컬변경 provenance는 바꾸지않으며 새커밋 코드와같은배포내용임을별도확인했다.
+
+초기f43 작업파일·00ca인덱스복사·binary patch·091200/094000/095500과최종전달자료는모두보존했다. 후속복구는현재2a를부모로최종퍼블리셔문서3개만격리로저장하고, 공유HEAD/index/staging/외부변경을그대로유지한다. 이복구ref는GitHub에push하지않는다. 최종ref/검증결과는체크포인트기록을따른다.
 
 ## 09:35 저장 검수에서 발견한 기존 난이도 이관 문제 — 이전 후보 이력
 

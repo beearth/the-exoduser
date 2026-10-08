@@ -1852,6 +1852,8 @@ const _RO={"⛓️ 관통!":"⛓️ Penetrare!","⛓️ 관통":"⛓️ Penetrar
 '시체폭발%':'Explozie Cadavru%',
 '회피뎀+':'Daune Eschivare+',
 '패링폭발%':'Explozie Parare%',
+'검기막이의':'Scutului de Tăiș',
+'기검참3타패링':'Parare la lovitura a 3-a Ki Slash',
 '블록HP+':'HP Blocare+',
 '블록MP+':'MP Blocare+',
 '회전참뎀+':'Daune Vârtej+',

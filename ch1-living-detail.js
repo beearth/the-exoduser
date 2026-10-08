@@ -1064,5 +1064,5 @@
     }
     return true;
   }
-  root.Ch1LivingDetail=Object.freeze({draw,deform,shadows,hideDuplicate,groundSprite,swamp,pit,organic});
+  root.Ch1LivingDetail=Object.freeze({draw,deform,shadows,hideDuplicate,groundSprite,swamp,pit,organic,qa:()=>({pending:organicJobs.length})});
 })(globalThis);

@@ -1471,6 +1471,8 @@
 '시체폭발%':'Explosion Cadavre%',
 '회피뎀+':'Dégâts Esquive+',
 '패링폭발%':'Explosion Parade%',
+'검기막이의':'du Garde-lame',
+'기검참3타패링':'Parade au 3e coup de Ki Slash',
 '블록HP+':'Blocage HP+',
 '블록MP+':'Blocage MP+',
 '회전참뎀+':'Dégâts Tourbillon+',

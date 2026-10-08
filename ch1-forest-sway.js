@@ -74,6 +74,7 @@
     const started=root.performance.now();
     if(mapRef!==g.map){mapRef=g.map;entries.clear();queue.length=0;}
     const zoom=Math.max(.3,g._edZoom||g._camZoom||1),left=g.cam.x-width/(2*zoom)-6,right=g.cam.x+width/(2*zoom)+6,top=g.cam.y-height/(2*zoom)-6,bottom=g.cam.y+height/(2*zoom)+6;
+    const pinned=new Set(visibleIds),capacity=Math.max(MAX_CACHED,pinned.size);
     c.save();c.imageSmoothingEnabled=true;
     for(const id of visibleIds){
       const [cx,cy]=id.split(',').map(Number),wx=cx*chunkSize,wy=cy*chunkSize;
@@ -84,10 +85,6 @@
       if(!entry){
         entry={id,img:src.img,status:'pending',layer:null,job:null};
         entry.job=build(entry,g.map,cx,cy);entries.set(id,entry);queue.push(entry);schedule();
-        while(entries.size>MAX_CACHED){
-          const oldest=entries.keys().next().value,evicted=entries.get(oldest);
-          entries.delete(oldest);const qi=queue.indexOf(evicted);if(qi>=0)queue.splice(qi,1);
-        }
       }else{entries.delete(id);entries.set(id,entry);}
       if(entry.status!=='ready')continue;
       const band=CHUNK_PX/STRIPS;
@@ -98,6 +95,11 @@
       lastDraws++;
     }
     c.restore();
+    for(const [id,entry] of entries){
+      if(entries.size<=capacity)break;
+      if(pinned.has(id))continue;
+      entries.delete(id);const queuedIndex=queue.indexOf(entry);if(queuedIndex>=0)queue.splice(queuedIndex,1);
+    }
     const ms=root.performance.now()-started;drawSamples++;totalDrawMs+=ms;if(ms>maxDrawMs)maxDrawMs=ms;
     return lastDraws;
   }

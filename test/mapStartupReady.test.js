@@ -21,9 +21,9 @@ for(const file of ['game.html','game-easy-test.html']){
   const ctx=vm.createContext({G:{mw:200,cam:{x:4020,y:7420},_camZoom:1},T:40,VW:5074,VH:1318,_EDITOR_MODE:false,
    _CH1_START_ROOT:'assets/map/ch1/production_finish',_CH1_START_OUTER:{chunkSize:1024,chunks},_ch1StartOuterCache:cache,_ch1StartOuterBootFallback:false,
    _ch1StartOuterEnabled:()=>enabled&&!ctx._ch1StartOuterBootFallback,_requestCh1StartOuter(id){if(!cache[id]){cache[id]={status:'loading'};requests.push(id)}},
-   document,performance:{now:()=>now},setTimeout(cb,ms){timers.push({cb,ms})},_L:(ko,en)=>en,setBootLoading(){},console:{warn(...args){warnings.push(args)}}});
+   _prepareStartScene:async()=>{},document,performance:{now:()=>now},setTimeout(cb,ms){timers.push({cb,ms})},_L:(ko,en)=>en,setBootLoading(){},console:{warn(...args){warnings.push(args)}}});
   vm.runInContext(fn('_ch1StartOuterViewIds')+'\n'+fn('_preloadCh1StartOuter')+'\n'+fn('_prepareStartMapView',true),ctx);
-  return{ctx,cache,requests,warnings,document,visibility,async tick(){const t=timers.shift();assert.ok(t);now+=t.ms;t.cb();await Promise.resolve();await Promise.resolve();}};
+  return{ctx,cache,requests,warnings,document,visibility,async tick(){const t=timers.shift();assert.ok(t);now+=t.ms;t.cb();await new Promise(setImmediate);}};
  }
  test(file+': first-view preparation waits for every visible and neighbor GPU upload',async()=>{
   const h=harness();let done=false;const p=h.ctx._prepareStartMapView().then(()=>done=true);await Promise.resolve();assert.equal(h.requests.length,24);assert.equal(done,false);

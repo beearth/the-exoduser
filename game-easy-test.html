@@ -10685,9 +10685,43 @@ function _ch1StartOuterViewIds(){
 function _preloadCh1StartOuter(){
   for(const id of _ch1StartOuterViewIds())_requestCh1StartOuter(id);
 }
+const _startSceneWarmState={status:'idle',frames:0,elapsedMs:0,pending:0};
+async function _prepareStartScene(){
+  if(!G.map||!P||!X)return;
+  const started=performance.now();
+  let deadline=started+20000,stable=0,lastView='';
+  Object.assign(_startSceneWarmState,{status:'preparing',frames:0,pending:0});
+  setBootLoading(99,_L('맵과 움직임 준비 중...','Preparing map and motion...'));
+  await _waitObjSprites(8000);
+  _warmupEnsAtlas();
+  while(true){
+    if(document.hidden){deadline=performance.now()+20000;await new Promise(resolve=>setTimeout(resolve,30));continue;}
+    if(_bootMapBuildPromise)await _bootMapBuildPromise;
+    _tickBgInit(4);
+    if(_streamMap&&_streamBuildQCount>0)_tickStreamChunkBuild(4,2);
+    draw();
+    if(_useGL||_useGPU)_glFlush();
+    _startSceneWarmState.frames++;
+    const pending=(_bgInitDone?0:1)+_streamBuildQCount+Math.max(0,_wqLen-_wqIdx)+
+      (_mapCacheRefreshQueued?1:0)+(globalThis.Ch1ForestSway?.qa?.().pending||0)+
+      (globalThis.Ch1FaceLife?.qa?.().pending||0)+(globalThis.Ch1LivingDetail?.qa?.().pending||0)+
+      (globalThis.Ch1BorderForeground?.qa?.().pending||0);
+    const view=[G.cam.x,G.cam.y,G._camZoom||1,VW,VH].join(',');
+    stable=pending===0&&view===lastView?stable+1:0;lastView=view;
+    _startSceneWarmState.pending=pending;
+    _startSceneWarmState.elapsedMs=performance.now()-started;
+    if(stable>=2){_startSceneWarmState.status='ready';return;}
+    if(performance.now()>=deadline){
+      _startSceneWarmState.status='timeout';
+      console.warn('[START MAP] Scene preparation timed out; retaining existing render fallbacks.');
+      return;
+    }
+    await new Promise(resolve=>setTimeout(resolve,30));
+  }
+}
 async function _prepareStartMapView(){
   _ch1StartOuterBootFallback=false;
-  if(!_ch1StartOuterEnabled())return;
+  if(!_ch1StartOuterEnabled()){await _prepareStartScene();return;}
   setBootLoading(98,_L('시작 화면 준비 중...','Preparing starting view...'));
   let deadline=performance.now()+12000;
   const visibleAgain=()=>{if(!document.hidden)deadline=performance.now()+12000};
@@ -10696,10 +10730,11 @@ async function _prepareStartMapView(){
     while(_ch1StartOuterEnabled()){
       const ids=_ch1StartOuterViewIds();
       _preloadCh1StartOuter();
-      if(ids.every(id=>_ch1StartOuterCache[id]?.status==='ready'))return;
+      if(ids.every(id=>_ch1StartOuterCache[id]?.status==='ready')){await _prepareStartScene();return;}
       if(ids.some(id=>_ch1StartOuterCache[id]?.status==='error')||(!document.hidden&&performance.now()>=deadline)){
         _ch1StartOuterBootFallback=true;
         console.warn('[START MAP] Initial view unavailable; using the stable terrain fallback.');
+        await _prepareStartScene();
         return;
       }
       await new Promise(resolve=>setTimeout(resolve,30));
@@ -46345,7 +46380,7 @@ if($('resetNo'))$('resetNo').onclick=()=>{$('resetConfirm').style.display='none'
 const _qb=$('quitBtn');if(_qb)_qb.onclick=()=>{
   if(IS_NW){window.nw.App.quit();}
   else if(IS_ELECTRON&&window.electronAPI?.quitApp){window.electronAPI.quitApp();}
-  else{window.close();}
+  else{window.close();setTimeout(()=>goToLobby(),150);}
 };}
 if($('resetYes'))$('resetYes').onclick=async()=>{
   $('resetConfirm').style.display='none';

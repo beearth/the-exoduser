@@ -1481,6 +1481,8 @@ const _DA={"⛓️ 관통!":"⛓️ Gennemtrængning!","⛓️ 관통":"⛓️ G
 '시체폭발%':'Lig Eksplosion%',
 '회피뎀+':'Undvige Skade+',
 '패링폭발%':'Parér Eksplosion%',
+'검기막이의':'Klingeværnets',
+'기검참3타패링':'Ki Slash 3. slag-parade',
 '블록HP+':'Blok HP+',
 '블록MP+':'Blok MP+',
 '회전참뎀+':'Hvirvelvind Skade+',

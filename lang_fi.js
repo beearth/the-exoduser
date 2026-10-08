@@ -1852,6 +1852,8 @@ const _FI={"⛓️ 관통!":"⛓️ Läpäisy!","⛓️ 관통":"⛓️ Läpäis
 '시체폭발%':'Ruumisräjähdys%',
 '회피뎀+':'Väistövahinko+',
 '패링폭발%':'Torjuntaräjähdys%',
+'검기막이의':'Teräsuojan',
+'기검참3타패링':'Ki Slashin 3. iskun torjunta',
 '블록HP+':'Torjunta HP+',
 '블록MP+':'Torjunta MP+',
 '회전참뎀+':'Pyörreiskuvahinko+',

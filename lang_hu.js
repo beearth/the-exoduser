@@ -1852,6 +1852,8 @@ const _HU={"⛓️ 관통!":"⛓️ Átütés!","⛓️ 관통":"⛓️ Átüté
 '시체폭발%':'Holttest Robbanás%',
 '회피뎀+':'Kitérés Seb.+',
 '패링폭발%':'Hárítás Robbanás%',
+'검기막이의':'Pengevédő',
+'기검참3타패링':'Ki Slash 3. ütés hárítás',
 '블록HP+':'Blokk HP+',
 '블록MP+':'Blokk MP+',
 '회전참뎀+':'Forgószél Seb.+',

@@ -1853,6 +1853,8 @@ const _VI={"⛓️ 관통!":"⛓️ Xuyên Thấu!","⛓️ 관통":"⛓️ Xuy�
 '시체폭발%':'Nổ Xác%',
 '회피뎀+':'Sát Thương Né+',
 '패링폭발%':'Nổ Đỡ%',
+'검기막이의':'Hộ Kiếm',
+'기검참3타패링':'Đỡ đòn bằng đòn 3 Ki Slash',
 '블록HP+':'HP Chặn+',
 '블록MP+':'MP Chặn+',
 '회전참뎀+':'Sát Thương Toàn Phong+',

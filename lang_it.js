@@ -1870,6 +1870,8 @@ const _IT={"⛓️ 관통!":"⛓️ Penetrazione!","⛓️ 관통":"⛓️ Penet
 '시체폭발%':'Esplos. Cadavere%',
 '회피뎀+':'Danni Schivata+',
 '패링폭발%':'Esplos. Parata%',
+'검기막이의':'del Paralama',
+'기검참3타패링':'Parata al 3º colpo di Ki Slash',
 '블록HP+':'HP Blocco+',
 '블록MP+':'MP Blocco+',
 '회전참뎀+':'Danni Turbine+',
