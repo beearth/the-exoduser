@@ -11796,7 +11796,7 @@ function _drawCh1ThreeTerrain(ctx){
 globalThis.__ch1FieldTerrainQA=()=>_ch1ThreeTerrain?_ch1ThreeTerrain.snapshot():Object.freeze({requested:_ch1ThreeRequested,importFailed:_ch1ThreeImportFailed,alive:_ch1ThreeAlive,ready:false});
 // ROOT-CH1-1-PLAYER-RIG-CONSUMER-20261007: body display only, default OFF.
 const _ch1RigRequested=_ch1ThreeRequested&&new URLSearchParams(location.search).get('ch1Rig')==='1';
-const _ch1RigContactRequested=_ch1RigRequested&&new URLSearchParams(location.search).get('ch1FootAO')==='1';
+const _ch1RigContactRequested=_ch1RigRequested&&new URLSearchParams(location.search).get('ch1FootAO')!=='0';
 let _ch1RigGroundContact=null,_ch1RigContactDraws=0;
 const _ch1RigDirections=Object.freeze(['s','se','e','ne','n','nw','w','sw']);
 let _ch1PlayerRig=null,_ch1RigAlive=true,_ch1RigImportFailed=false,_ch1RigBodyFrame=null,_ch1RigClock=null,_ch1RigDelta=0,_ch1RigScoped=false,_ch1RigStrikeOwner=null,_ch1RigPackedOwner=null;

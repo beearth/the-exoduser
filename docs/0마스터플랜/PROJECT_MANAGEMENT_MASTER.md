@@ -1,3 +1,7 @@
+## 2026-10-08 — 전사 2.5D 시험 경로의 접지 core 기본 표시
+
+`ROOT-CH1-WARRIOR-CONTACT-SHADOW-DEFAULT-20261008`: 기존 local3387 `ch1Three=1&ch1Rig=1` 범위에서 전사의 idle/walk/run 접촉 core를 기본 표시하고 첫 `ch1FootAO=0`으로 끈다. 기존 alpha.10·반경.35/.4·현재 frame/map/actor/animator·단회 가드 및 accepted:false 유지. 표시 기본값1hunk/새CPU·native·실cache0, 정적 peer blocker0. 물리 고도와 전체 접지 인수는 미완료/RETOUCH. [현재 계약](../4.1맵디자인+설정/MAP_RUNTIME_ARCHITECTURE.md#ch1-warrior-contact-shadow-default-20261008). 외부 `ch1-warrior-contact-shadow-default-20261008/completion.json`이 최종 보존 정본이다.
+
 ## 2026-10-08 — 에디터 선택 그림의 원본 비율 맞춤
 
 `ROOT-EDITOR-ORIGINAL-ASPECT-FIT-20261008`: 속성 패널 버튼으로 선택 그림의 높이와 발 기준 위치를 유지하고 `width=height*asset.crop.w/asset.crop.h`를 복원한다. 단일 선택·층 표시/잠금·편집 상태·1…32000 범위를 재검사하고 기존 History undo/redo/rollback을 사용한다. 기존 비율 유지 체크박스와 구분한다. 첫 로더 setup 실패1/제품 미도달 뒤 한정 보정한 제품 suite6그룹96확인/Node1 exit0(물리 Node2), 정적 source blocker0. 실제 화면/키보드/cache/GPU 미검수, RETOUCH/UI_NOT_ASSESSED. 정확 계약: [맵 씬 에디터](../4.1맵디자인+설정/MAP_SCENE_EDITOR_20261005.md). 최종 보존: 외부 `editor-original-aspect-fit-20261008/completion.json`.
@@ -4639,6 +4643,8 @@ working game의 foreign185B는 미채택 그대로이며 3.3 foreign2,948B·STAT
 전체 런타임 계약·검수 epoch·§23 보고는 [MAP_RUNTIME_ARCHITECTURE.md](../4.1맵디자인+설정/MAP_RUNTIME_ARCHITECTURE.md)의 `ROOT-CH1-REGION-PROGRESS-HUD-20261007` 절을 따른다.
 
 ## 2026-10-07 전사 rig 접촉 AO 후보 — ROOT-CH1-RIG-CONTACT-SHADOW-20261007
+
+> 2026-10-08 현행: 시험3387 ch1Three/ch1Rig의 접지 core는 기본ON, 첫 ch1FootAO=0만OFF다. 아래 defaultOFF/명시1·검수는2026-10-07 opt-in 이력이다. [현재 계약](../4.1맵디자인+설정/MAP_RUNTIME_ARCHITECTURE.md#ch1-warrior-contact-shadow-default-20261008).
 
 사용자의 실제 인게임 관찰 요청에 따라 ROOT는 B8 Main을 별도로 관찰한 뒤, 몸크기·충돌·기존 shadow를 보존한 작은 contact core 후보를 CBC source에 구현했다. 새 native는 자연 bonfire 종료 뒤 idle/trusted W+D run 도달을 관측했으며 기존 UI/route 검사를 반복한 것이 아니다.
 

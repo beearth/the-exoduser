@@ -860,6 +860,8 @@ ROOT owned 이외 foreign185B는 MB paused guard와 DOT3 모두 미채택 기존
 
 ## 2026-10-07 전사 rig 접촉 AO 후보 — ROOT-CH1-RIG-CONTACT-SHADOW-20261007
 
+> 2026-10-08 현행: 시험3387 ch1Three/ch1Rig의 접지 core는 기본ON, 첫 ch1FootAO=0만OFF다. 아래 defaultOFF/명시1·검수는2026-10-07 opt-in 이력이다. [현재 계약](MAP_RUNTIME_ARCHITECTURE.md#ch1-warrior-contact-shadow-default-20261008).
+
 사용자의 “인게임에서 한번 보고 구체화” 요청에 따라 실제 Main을 관찰한 뒤, 기존 그림자·캐릭터 크기·충돌을 유지하는 작은 접촉 AO를 **defaultOFF 미감 후보**로 추가했다. 본편 전체 rig·실높이·해부학 발/IK 완료를 뜻하지 않는다.
 
 ### 현재 source 계약
@@ -1152,3 +1154,21 @@ field200×200와 CH1 arena128×108의 기존 맵 권위/진입·복귀 좌표는
 | Git | ROOT 최종 completion 및 remote-preservation 영수증에서 소유 code/docs 정상 보존 여부를 확인한다 |
 
 외부 근거: `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-druid-summon-safe-position-20261008/implementation-receipt.json`, `docs-search.json`, `docs-disposition.json`, `docs-sync-plan.json`. CPU 수치는 ROOT의 cpu-corrected-execution-receipt.json 기준이며 native/시각·청취·durable save로 승격하지 않는다.
+
+
+<a id="ch1-warrior-contact-shadow-default-20261008"></a>
+## 2026-10-08 — 전사 2.5D 시험 경로의 접지 core 기본 표시
+
+`ROOT-CH1-WARRIOR-CONTACT-SHADOW-DEFAULT-20261008`: 기존 접촉 AO의 요청 상수 한 곳만 변경했다. 아래는 표시 기본값 계약이며 물리 고도·시각 승인 완료를 뜻하지 않는다.
+
+| 항목 | 현재 계약 |
+|---|---|
+| 요청 | `_ch1RigRequested && new URLSearchParams(location.search).get('ch1FootAO')!=='0'`. hostname127.0.0.1/localhost·port3387·`ch1Three=1&ch1Rig=1` 시험 경로 안에서 기본 ON. 첫 query값이 정확히0일 때 OFF; 누락·1·그 밖의 값은 ON. 일반 게임 기본 옵션 추가 없음. |
+| 캐리 | 기존 로비 carry4키에 ch1FootAO를 추가하지 않는다. 명시0의 왕복 유지 보장은 없고, 생략된 복귀 URL은 시험 경로의 새 기본ON을 따른다. |
+| 기존 대상·현재성 | class0/HP>0/P.s idle/idle·walk·run, 같은 now/frame/map/actor/animator 및 alive/scope, 준비된 body frame·현재 record의 단회 가드 그대로. 다른 캐릭터·공격·점프·사망 확대0. |
+| 기존 표시 | 원래 shadow 유지. 같은 중심, core rx=shW*.35 / ry=(_pR*.35)*.4 / black alpha.10 / ground matrix6 scalar 후 restore. 본체 geometry·발 좌표·바닥 Y=0 불변. |
+| 한계 | body blit 직전 AO이므로 이후 blit throw/silent upload 실패의 픽셀 rollback 없음. crop 하단의 해부학 발·물리 고도·전체 fallback pixel 동일성·native/A급 승인 보장 없음. contactShadow.accepted:false 등 승인 플래그 불변. |
+| 검수 | 저위험 표시 기본값1hunk이므로 새 tests/Node/VM/GPU/Chrome/audio/PNG/save0. 새 actual source 요청→기존 capture/body consumer 정적 대조와 peer blocker0만. 기존52조건/native2 관측은2026-10-07 이력으로 재실행·합산0. |
+| 보존 | main working/HEAD 선 fullbyte2백업·같은1hunk·inverseexact·foreign185B 미채택 유지. 원PNG/scene/nav/LOCK/새 RAF·timer·save 스키마 변경0. 실제 사용자 탭 reload/조작0; 새 코드 live 적용 주장 없음. |
+
+**VISUAL VERDICT: RETOUCH / UI_NOT_ASSESSED.** 외부 `ch1-warrior-contact-shadow-default-20261008/completion.json`의 §23 보고와 최종 GIT을 따른다.

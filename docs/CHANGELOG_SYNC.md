@@ -56725,3 +56725,7 @@ alpha/nav/crop/UV/geometry/opacity/renderOrder/resource/dispose·skirt/backplane
 ## 2026-10-08 — 에디터 선택 그림의 원본 비율 맞춤
 
 `ROOT-EDITOR-ORIGINAL-ASPECT-FIT-20261008`: 속성 패널 버튼으로 선택 그림의 높이와 발 기준 위치를 유지하고 `width=height*asset.crop.w/asset.crop.h`를 복원한다. 단일 선택·층 표시/잠금·편집 상태·1…32000 범위를 재검사하고 기존 History undo/redo/rollback을 사용한다. 기존 비율 유지 체크박스와 구분한다. 첫 로더 setup 실패1/제품 미도달 뒤 한정 보정한 제품 suite6그룹96확인/Node1 exit0(물리 Node2), 정적 source blocker0. 실제 화면/키보드/cache/GPU 미검수, RETOUCH/UI_NOT_ASSESSED. 정확 계약: [맵 씬 에디터](4.1맵디자인+설정/MAP_SCENE_EDITOR_20261005.md). 최종 보존: 외부 `editor-original-aspect-fit-20261008/completion.json`.
+
+## 2026-10-08 — 전사 2.5D 시험 경로의 접지 core 기본 표시
+
+`ROOT-CH1-WARRIOR-CONTACT-SHADOW-DEFAULT-20261008`: 기존 local3387 `ch1Three=1&ch1Rig=1` 범위에서 전사의 idle/walk/run 접촉 core를 기본 표시하고 첫 `ch1FootAO=0`으로 끈다. 기존 alpha.10·반경.35/.4·현재 frame/map/actor/animator·단회 가드 및 accepted:false 유지. 표시 기본값1hunk/새CPU·native·실cache0, 정적 peer blocker0. 물리 고도와 전체 접지 인수는 미완료/RETOUCH. [현재 계약](4.1맵디자인+설정/MAP_RUNTIME_ARCHITECTURE.md#ch1-warrior-contact-shadow-default-20261008). 외부 `ch1-warrior-contact-shadow-default-20261008/completion.json`이 최종 보존 정본이다.

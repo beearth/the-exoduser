@@ -107,6 +107,8 @@
 
 ## 2026-10-07 전사 rig 접촉 AO 후보 — ROOT-CH1-RIG-CONTACT-SHADOW-20261007
 
+> 2026-10-08 현행: 시험3387 ch1Three/ch1Rig의 접지 core는 기본ON, 첫 ch1FootAO=0만OFF다. 아래 defaultOFF/명시1·검수는2026-10-07 opt-in 이력이다. [현재 계약](MAP_RUNTIME_ARCHITECTURE.md#ch1-warrior-contact-shadow-default-20261008).
+
 DS-4의 기본ON 플레이어 alpha.38/적 alpha.30·SE offset·기존 shadow stamp128² 계약은 그대로다. 아래 새 core는 Main rig 소비자의 **별도 defaultOFF opt-in**이며 기존 DS-4를 대체하지 않는다. 이 문서의 과거 PASS/성능 수치를 새 core에 소급하지 않으며 Easy 공통 적용으로 확대하지 않는다.
 
 | 항목 | 새 별도 후보 |

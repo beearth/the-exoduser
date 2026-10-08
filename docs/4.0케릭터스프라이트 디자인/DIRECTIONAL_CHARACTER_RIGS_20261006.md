@@ -1547,6 +1547,8 @@ borrowed main atlas의 공격 표시 소비를 추가한 현재 계약을 기록
 
 ## 2026-10-07 전사 rig 접촉 AO 후보 — ROOT-CH1-RIG-CONTACT-SHADOW-20261007
 
+> 2026-10-08 현행: 시험3387 ch1Three/ch1Rig의 접지 core는 기본ON, 첫 ch1FootAO=0만OFF다. 아래 defaultOFF/명시1·검수는2026-10-07 opt-in 이력이다. [현재 계약](../4.1맵디자인+설정/MAP_RUNTIME_ARCHITECTURE.md#ch1-warrior-contact-shadow-default-20261008).
+
 현재 Main 전사 rig의 크기·motion/frame/UV/bone·발 세계좌표는 유지하고, 원래 ground shadow에 작은 접촉 core만 별도 opt-in으로 겹친다. crop 하단이 해부학 발이라는 주장은 하지 않는다.
 
 `ch1FootAO`는 기존 로비 옵션 carry4키에 포함되지 않는다. 직접 Main 시험 URL의 명시값1에 한정하며 로비 왕복 자동 유지/일반 설정 UI/새 query 메뉴 추가는 없다.
