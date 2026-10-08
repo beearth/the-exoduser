@@ -22,8 +22,8 @@ import sys
 
 
 SPECS = (
-    ("parry", Fraction(5), 5),
-    ("rage_slam", Fraction(1), 7),
+    ("parry", Fraction(148, 30), 5),
+    ("rage_slam", Fraction(29, 30), 7),
     ("fire", Fraction(2), 8),
     ("ice_orb", Fraction(29, 30), 7),
     ("blackhole", Fraction(1), 7),

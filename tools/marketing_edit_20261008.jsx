@@ -33,8 +33,8 @@ export const CONFIG = {
   // Every value is source seconds; adjust after looking at the actual footage.
   // Keep shot durations fixed to preserve the requested deliverable runtimes.
   trims: {
-    steam: { manual: 8, parry: 5, rage_slam: 1, fire: 2, ice_orb: 29 / 30, blackhole: 1 },
-    shortsA: { parry: 5, rage_slam: 1 },
+    steam: { manual: 8, parry: 148 / 30, rage_slam: 29 / 30, fire: 2, ice_orb: 29 / 30, blackhole: 1 },
+    shortsA: { parry: 148 / 30, rage_slam: 29 / 30 },
     shortsB: { fire: 2, ice_orb: 29 / 30, blackhole: 1 },
   },
   // Editorial descriptions, not promises of official localized skill names.

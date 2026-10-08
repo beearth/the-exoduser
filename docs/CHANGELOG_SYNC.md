@@ -1,3 +1,5 @@
+2026-10-08 추가 packet 감사: 원본 video 끝 parry9.954/rage7.977초에 맞춰 원본 시작148/30·29/30초로 조정. 준비 input source5/7초, native timeline길이불변.
+
 ## 2026-10-08 영상 픽셀 시간 감사·native 입력 보정
 
 | 항목 | 결과 |
