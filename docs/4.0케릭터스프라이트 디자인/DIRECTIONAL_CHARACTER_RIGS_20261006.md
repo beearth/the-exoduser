@@ -1863,3 +1863,8 @@ VISUAL VERDICT: **RETOUCH**. 어깨 구형 윤곽을 제거했으나 얼굴/외�
 | 시각 | **RETOUCH**. 사용자 main14/저장 무조작, oldloaded 실시간 적용 주장0. 새 입체 모델·본편 정상줌 보스전·청취/save/A급 미완료 |
 
 정확 API 한도/키/receipt·검수 범위는 [자체 엔진의 sprite clip 정본](../5.0애니메이션파이프라인/EXODUSER_ENGINE_ANIMATION_20261009.md#2026-10-09--스프라이트-clip과-실제-확산탄-producer). 최종 증거는 `E/druid-fan-sprite-engine-consumer-20261009/completion.json`.
+
+
+## 2026-10-09 — 자체 엔진의 원본 스프라이트 편집
+
+`ROOT-ENGINE-SPRITE-EDITOR-20261009`: 기존3387 `/tools/engine-sprite-editor.html`에서 원본4프레임×8방향행과 시간별 키를 편집·재생·undo/redo·JSON 입출력한다. 기존 sprite clip 코어를 재사용하며 관절 편집기에 진입 링크1개를 추가했다. 원본 crop·수치·한도·검수는 [현재 스프라이트 편집기 계약](../5.0애니메이션파이프라인/EXODUSER_ENGINE_ANIMATION_20261009.md#2026-10-09--원본-스프라이트-모션-편집기) 우선. 첫 v1은9PASS/키시각FAIL1·locator준비FAIL1 별도, 2hunk 보정 뒤 새 한정v2 UI5PASS/console warn-error0. 실제 파일 다운로드 완료·본편 자동 적용·새3D모델/공격 미감·A급은 미인수이며 **VISUAL VERDICT: RETOUCH**. 사용자 main/저장 무조작, 완료 CPU 재실행0. 최종 증거 `E/engine-sprite-editor-20261009/completion.json`.

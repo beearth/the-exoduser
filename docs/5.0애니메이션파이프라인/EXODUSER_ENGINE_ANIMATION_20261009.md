@@ -1,6 +1,6 @@
 # EXODUSER ENGINE — 키프레임 모션 편집 v1
 
-2026-10-09 / ROOT-ENGINE-MOTION-EDITOR-20261009. 사용자 “우리 앤진을 좀 만들자니깐”에 따라 자체 엔진의 첫 편집/재생 기능을 구현했다. 현재 구현 범위는 transform clip 코어·브라우저 모션 편집기·명시적 factory/본편 adapter 재생 consumer다. 본편 전체 엔진 완성, 신규 입체 모델 또는 A급 보스 완성이 아니다.
+2026-10-09 / ROOT-ENGINE-MOTION-EDITOR-20261009. 사용자 “우리 앤진을 좀 만들자니깐”에 따라 자체 엔진의 첫 편집/재생 기능을 구현했다. 현재 구현 범위는 transform/sprite clip 코어·관절/원본 스프라이트 편집기·명시적 factory/본편 adapter 재생 consumer와 fan sprite producer다. 본편 전체 엔진 완성, 신규 입체 모델 또는 A급 보스 완성이 아니다.
 
 ## 실제 진입점과 소유
 
@@ -139,3 +139,40 @@ Godot 공식 [애니메이션 소개](https://docs.godotengine.org/en/stable/tut
 | 품질/미완료 | **VISUAL VERDICT: RETOUCH**. 신규 입체 외형/후면·독립 관절/정상 본편 보스전/native6/청취/실save·A급 미인수 |
 
 최종 보존핀·실제 화면: `E/druid-fan-sprite-engine-consumer-20261009/completion.json`, `native-three-poses.png`. 이전 완료 suite는 재실행하지 않았다.
+
+
+## 2026-10-09 — 원본 스프라이트 모션 편집기
+
+`ROOT-ENGINE-SPRITE-EDITOR-20261009`. 기존 본편 fan이 소비하는 sprite clip 형식으로 원본 프레임과 키 시간을 편집하는 화면을 추가했다. 기존 관절 편집기와 서로 이동할 수 있다. 편집 JSON의 본편 자동 등록·새 입체 모델·완성된 보스 모션 제작은 별도 미완료다.
+
+| 항목 | 현재 구현 계약 |
+|---|---|
+| 진입/소유 | 기존3387의 `/tools/engine-sprite-editor.html`, controller `engine-sprite-editor.mjs?v=20261009-v2`. 기존 `engine-motion-editor.html`은 새 화면 링크1개만 추가 |
+| 공통 재생 코어 | 기존 `engine/sprite-clip.mjs?v=20261009-v1`의 create/sample 재사용. 코어·본편 producer·game 코드 변경 없음 |
+| 입력 원본 | 기존 `assets/sprites/boss/boss_dark_druid_attack.png`, 실제887×1774px, 4열×8행. 편집기는 frameCount4만, frame 정수0..3/방향행 정수0..7. 방향행은 미리보기 선택이며 clip에 저장하지 않음 |
+| 원본 crop | sx=floor(frame×W/4), sy=floor(row×H/8), sw=floor((frame+1)×W/4)−sx, sh=floor((row+1)×H/8)−sy. 원본 크기가 나누어떨어지지 않아 셀 너비·높이는221 또는222px. main의 기존 crop과 pixel 동일하다고 보장하지 않음 |
+| 화면/발 기준 | Canvas2D, DPR1..2 clamp. fit=min(1,max(1,화면W−48)/ceil(원본W/4),max(1,화면H−48)/ceil(원본H/8)), scale=fit×zoom/100. 셀 비율 유지·하단중앙 anchor(화면W/2,max(0,화면H−24)). zoom75..175%/step5/초기100 |
+| 표시 원형 | globalAlpha1/filter none/source-over/imageSmoothingEnabled=false. 원 PNG·재질·색조·지오메트리 변경 없음. 이 하단 anchor는 해부학적 발 접지의 인수가 아님 |
+| 초기/프리셋 | 초기 recovery: `Druid fan cast and return`, duration20/60초, keys0:frame2·14/60:frame3. prepare: `Druid fan preparation`, duration1초, key0:frame1. 편집기 caller clock이며 실제 본편 Wind 시간과 별개 |
+| 이름/길이/키 | 이름 공백만 아닌 문자열≤200자; duration 유한0초과3600이하. 첫 키0, time0..duration 엄격한 오름차순. UI 최대2048키; 코어 자체4096한도는 변경 없음 |
+| 기록/삭제 | 입력 중인 키 시각을 frame 선택 전에 검증·캡처. 기록 클릭도 현재 입력 재검증. 정확히 같은 time은 교체, 아니면 오름차순 삽입. 삭제는 정확히 같은 time 키만; 첫0키·마지막 남은 키 삭제 거절. 부동소수 근사 병합/자동 retime 없음 |
+| seek/키 선택 | 앞 키의 프레임 유지, 정확한 새 키 time부터 전환. slider는 runtime에서 step any. 키 버튼은 원래 저장된 time으로 seek하고 현재 구간 키를 강조 |
+| 길이 변경 | 마지막 키보다 짧아지는 길이는 거절·기존 clip 보존. 키 시각 자동 이동 없음 |
+| 편집 이력 | clip/time/샘플 frame/dirty를 undo·redo 각각최대40 보관. 새 clip 변경은 redo 제거. 미기록 셀 draft는 이력/내보내기에 포함하지 않음 |
+| 재생 | RAF는 재생 중에만 연속 요청, dt는[0,0.05]초 clamp. UI 반복은 modulo, 비반복 마지막시각 정지. 처음으로는 time0 정지. 재생 중 재생 버튼 비활성; 입력시간 편집·seek·clip변경·blur/hidden 시 중지, 자동 재개 없음 |
+| 가져오기 | JSON 최대1,000,000자. envelope format `exoduser-sprite-clip`/숫자version1 필수. 기존 코어로 canonical 검증 후 교체. 유효성 실패는 clip/clock/pose/history 변경 전에 거절. schema 오류는 한국어 안내, JSON 문법 오류는 JSON.parse의 원래 메시지 |
+| 내보내기 | canonical clip만 textarea JSON으로 노출하고 Blob 다운로드 요청. 파일명 안전문자 치환·최대100자 뒤 `.sprite.json`. dirty 유지. 실제 파일 저장 성공은 미측정 |
+| 해제/보관 | pagehide 시 RAF 중지·observer/listener/image src/이력 정리·생성 Blob URL 모두 revoke. URL은 pagehide까지 유지하며 요청 수 상한 없음; 즉시 메모리 반환 보장 없음. 이 편집기는 localStorage/서버 API/게임 save 자동 적용 경로를 추가하지 않음 |
+| 읽기 진단 | `window.__exoduserSpriteEditor.snapshot()`의 immutable 상태를 UI검수에 사용. main에 적용하는 쓰기 API가 아님 |
+| DOM | 특정 리프만 textContent, 키 트랙은 생성 노드로 replaceChildren. 부모의 textContent 교체 없음 |
+
+| 실제 검수 | 결과·한계 |
+|---|---|
+| 소스 | owner 최초 inline 모듈 공식종료 뒤 ROOT whole-module 정적검토 blocking0. ROOT가 실제 UI 실패를 보고 2hunk 보정: pending time 보존/한국어 schema 안내. 기존 완료 CPU suite 재실행0·새 Node CPU0 |
+| 최초 v1 화면 | own IAB16/기존3387. 9PASS·키 입력 시간 덮어쓰기 FAIL1, 별도 label locator 준비실패1. 초기 프리셋·14/60 경계·row7 crop·AX 입력기록·undo·redo·미기록 export 제외·invalid import 보존·JSON roundtrip 검수. 실패를 clean PASS에 합산하지 않음 |
+| 보정 v2 화면 | own16만 명시 reload1. 새 한정5PASS/FAIL0: 원래 pending-time 동작 보정, 한국어 schema 거절, 키 삭제, 길이 거절 보존, 반복 clock 진행/처음으로 정지. v1 전체검수 재실행·합산0 |
+| 최종 화면 | 원본887×1774 준비 완료, 정상100%/row0/frame3/time14/60 및 편집한0.15초 frame1키 표시. script URL v2 관측·console warn/error0. HTTP 응답 fullbyte 일치나 실제 main 픽셀 인수는 아님 |
+| 파일 | `edited-motion.sprite.json`은 ROOT가 readonly snapshot으로 외부 보존한 JSON, 브라우저 다운로드 완료 파일이 아님 |
+| 판정/미완료 | **VISUAL VERDICT: RETOUCH**. 편집 기능 화면 확인 한정. 본편 정상 보스전·새3D 모델/360° 뒷면·모션 미감·A급·responsive/device 전환·GPU 성능·청취·실save는 미인수 |
+
+코드 후 docs 관련검색1회(초기4MB eligibility에서 빠진 CHANGELOG1개만 보정 검색): 최종1028 UTF8 text,6path14line24occ. 거대 owner·보호2_3·binary·symlink는 제외 기록. 기존 계약은 보존하고 매칭6문서에 이번 편집기 범위만 동기화했다. 6전수 fullread·이전 완료검수 재실행을 주장하지 않는다. 최종 소유 Git/화면/한계는 `E/engine-sprite-editor-20261009/completion.json`과 `engine-sprite-editor-final-v2.png`를 우선한다.

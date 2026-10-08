@@ -165,3 +165,8 @@ ROOT-DRUID-ORIGINAL-RELIEF-20261009: 기존 rig_motion 한 담당이 신규 원�
 ## 2026-10-09 — 자체 엔진 sprite clip의 확산탄 연결
 
 `ROOT-DRUID-FAN-SPRITE-ENGINE-CONSUMER-20261009`: 실제 fan 준비의 성공한 본체 표시 후, 기존 발사 prefix 완료를 소비해 원본 attack 셀1→2→3을 선택한다. 기존 recover45/보스 cap20을 유지하며 st2>6은 시전2(초기45 포함),0<st2<=6은 복귀3(정확 선택은 clip sample 수식). 새 pattern/update 진입 prune과 G/map/ens/life/phase 소유검사, module 미로드 기존폴백. 전투 시간·피해·탄·RNG·원PNG/save 변경0. transform clip 자동선택/새 입체 모델은 미구현이다. 최초 새 CPU7그룹 PASS/Node1·before1별도, native 원본3자세와 clock 진행은 통제fixture 한정. 사용자 main 무조작·실전/청취/save/A급 미완료, **VISUAL VERDICT: RETOUCH**. [정확 계약](../4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md#druid-fan-sprite-engine-20261009). 최종 소유 Git·증거는 `E/druid-fan-sprite-engine-consumer-20261009/completion.json`.
+
+
+## 2026-10-09 — 자체 엔진의 원본 스프라이트 편집
+
+`ROOT-ENGINE-SPRITE-EDITOR-20261009`: 기존3387 `/tools/engine-sprite-editor.html`에서 원본4프레임×8방향행과 시간별 키를 편집·재생·undo/redo·JSON 입출력한다. 기존 sprite clip 코어를 재사용하며 관절 편집기에 진입 링크1개를 추가했다. 원본 crop·수치·한도·검수는 [현재 스프라이트 편집기 계약](../5.0애니메이션파이프라인/EXODUSER_ENGINE_ANIMATION_20261009.md#2026-10-09--원본-스프라이트-모션-편집기) 우선. 첫 v1은9PASS/키시각FAIL1·locator준비FAIL1 별도, 2hunk 보정 뒤 새 한정v2 UI5PASS/console warn-error0. 실제 파일 다운로드 완료·본편 자동 적용·새3D모델/공격 미감·A급은 미인수이며 **VISUAL VERDICT: RETOUCH**. 사용자 main/저장 무조작, 완료 CPU 재실행0. 최종 증거 `E/engine-sprite-editor-20261009/completion.json`.
