@@ -1165,6 +1165,6 @@ NEXT PASS: alpha-aware 보수적 셀 점유 source/API 계약·원자료 수치�
 | 시각·한계 | 이번 UI NOT_ASSESSED / VISUAL VERDICT: RETOUCH. 실제 픽셀·성능·전체8카메라·route/native6/청취·durable save/A급 미인수 |
 | 다음 사용자 방향 | CH1 외곽 썩은강 방향과 다른 적합 지역의 용암 방향은 NEXT PASS다. 이번 구현0이며 stage/좌표/geometry/배치/에셋을 확정하지 않는다 |
 
-ROOT 근거는 외부 `main-rift-view-sharpness-consumer-20261008/implementation-receipt.json`, `validation-receipt.json`, `visual-verdict.json` 및 `finaldelta`의 정적 검토다. 공식 원문2건은 미채택 보존 뒤 일부 소스 계약에만 소비했으며 원문 존재를 제품 실행·시각 완료로 세지 않는다.
+ROOT 근거는 외부 `main-rift-view-sharpness-consumer-20261008/implementation-receipt.json`, `validation-receipt.json`, `visual-verdict.json` 및 `final-delta-review.json`의 정적 검토다. 공식 원문2건은 미채택 보존 뒤 일부 소스 계약에만 소비했으며 원문 존재를 제품 실행·시각 완료로 세지 않는다.
 
 §23 전체와 WOLF/held 보호 경계는 [HELL_RIFT_2_5D_SLICE](<../4.1맵디자인+설정/HELL_RIFT_2_5D_SLICE_20261006.md>)의 같은 TASK 절을 따른다.
