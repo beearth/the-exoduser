@@ -1,4 +1,5 @@
 import { CHARACTER_RIG_CATALOG as CATALOG, CHARACTER_RIG_CONFIG as C, characterRigFrame } from './character-rig-catalog.mjs';
+import {createDruidBossVolume} from './druid-boss-volume.mjs?v=02f9b884fa7d7bd4';
 
 // Share decoded originals; each rig owns its own Texture transforms and GPU resources.
 const imageCache=new Map();
@@ -131,7 +132,7 @@ function readDruidFrame(value,sheet,mode,direction,index,count,phase,life,boundS
   sheetCurrent(sheet);return Object.freeze({path:DRUID_PATH,...frame});
 }
 
-export async function createCharacterRig(id,{THREE,height=2.2,borrowedAtlas,borrowedSheet}={}){
+export async function createCharacterRig(id,{THREE,height=2.2,borrowedAtlas,borrowedSheet,bossVolume=false}={}){
   const entry=CATALOG[id];
   if(!entry)throw new Error(`지원하지 않는 캐릭터: ${id}`);
   if(!THREE?.SkinnedMesh||!THREE?.Bone||!THREE?.Skeleton)throw new Error('Three.js 스킨 리깅 런타임이 필요합니다.');
@@ -141,7 +142,7 @@ export async function createCharacterRig(id,{THREE,height=2.2,borrowedAtlas,borr
   const sheet=borrowedSheet===undefined?null:readBorrowedSheet(id,borrowedSheet),borrowed=packed||sheet,borrowedPath=packed?PACKED_PATH:DRUID_PATH;
   const assetInfos=borrowed?[{path:borrowedPath,width:borrowed.width,height:borrowed.height,sampling:packed?'nearest':'linear'}]:entry.assets;
   const leases=borrowed?[]:entry.assets.map(acquireImage),textures=new Map();
-  let geometry=null,material=null,skeleton=null,disposed=false;
+  let geometry=null,material=null,skeleton=null,volume=null,disposed=false;
   try{
     const images=borrowed?[borrowed.image]:await Promise.all(leases.map(lease=>lease.promise));
     images.forEach((image,i)=>{
@@ -174,6 +175,7 @@ export async function createCharacterRig(id,{THREE,height=2.2,borrowedAtlas,borr
     material=new THREE.MeshBasicMaterial({map:textures.get(assetInfos[0].path),alphaTest:C.alphaTest,side:THREE.DoubleSide,depthWrite:true,transparent:false,toneMapped:false});
     const mesh=new THREE.SkinnedMesh(geometry,material);mesh.name=`${id}-original-art-skin`;mesh.frustumCulled=false;
     mesh.add(bones[0]);skeleton=new THREE.Skeleton(bones);mesh.bind(skeleton);object3d.add(mesh);
+    if(bossVolume&&id==='dark-druid'){volume=createDruidBossVolume({THREE,height});object3d.add(volume.object3d);mesh.visible=false;}
     object3d.visible=false;
     const rest=bones.map(bone=>({position:bone.position.clone(),rotation:bone.rotation.clone()}));
     let elapsed=0,lastFrameKey='',frameInfo=null,lastMode='idle',lastDirection=0,frameIndex=0;
@@ -254,7 +256,7 @@ export async function createCharacterRig(id,{THREE,height=2.2,borrowedAtlas,borr
       const job={};updateJob=job;
       try{
         if(disposed)throw new Error('해제된 캐릭터 리깅입니다.');
-        const {mode='idle',direction=0,phase,speed}=options;
+        const {mode='idle',direction=0,phase,speed,bossState,bossPhase,bossAnticipation,bossRecoveryFrom,sweepDirection}=options;
         if(disposed||updateJob!==job)return object3d;
         if(!['idle','walk','run','attack'].includes(mode)||!Number.isInteger(direction)||direction<0||direction>7)throw new Error('모션/8방향 계약 오류');
         if(packed&&(!Object.hasOwn(PACKED_COUNTS,mode)||!Number.isFinite(phase)||phase<0||phase>1))throw new Error('실버테일 packed 모션/명시 phase 계약 오류');
@@ -284,6 +286,7 @@ export async function createCharacterRig(id,{THREE,height=2.2,borrowedAtlas,borr
         setFrame(mode,direction,frameIndex,packedFrame);
         if(disposed||updateJob!==job)return object3d;
         pose(mode,elapsed,normalizedPhase);
+        if(volume)volume.update({mode,direction,phase:Number.isFinite(bossPhase)?clamp(bossPhase,0,1):normalizedPhase,time:elapsed,state:typeof bossState==='string'?bossState:mode,delta,sweepDirection,anticipation:Number.isFinite(bossAnticipation)?clamp(bossAnticipation,0,1):1,recoveryFrom:typeof bossRecoveryFrom==='string'?bossRecoveryFrom:''});
         if(disposed||updateJob!==job)return object3d;
         lastMode=mode;lastDirection=direction;
         // No movement, damage, save, camera or caller transform is modified here. speed is observational.
@@ -321,23 +324,24 @@ export async function createCharacterRig(id,{THREE,height=2.2,borrowedAtlas,borr
         const bone=byName.get(key);sample[key]=Object.freeze({position:Object.freeze(bone.position.toArray()),quaternion:Object.freeze(bone.quaternion.toArray())});
       }
       return Object.freeze({id,name:entry.name,kind:entry.kind,height,mode:lastMode,direction:lastDirection,frame:frameIndex,
-        elapsed,disposed,posePublication,vertices:count,triangles:geometry.index.count/3,boneCount:bones.length,meshCount:1,
+        elapsed,disposed,posePublication,vertices:volume?volume.snapshot().vertices:count,triangles:volume?volume.snapshot().triangles:geometry.index.count/3,boneCount:bones.length,meshCount:volume?volume.snapshot().meshCount:1,
+        representation:volume?'volumetric-boss':'artwork-skinned-plane',volume:volume?volume.snapshot():null,
         weightChecks,maxWeightError,source:Object.freeze({...frameInfo}),samples:Object.freeze(sample),
         assets:Object.freeze((borrowed?[]:entry.assets).map(info=>Object.freeze({path:info.path,sha256:info.sha256,bytes:info.bytes,sampling:info.sampling}))),
         metadata:Object.freeze((borrowed?[]:(entry.metadata||[])).map(info=>Object.freeze({...info}))),
         ...(packed?{sourceKind:'borrowed-main-atlas',sourcePath:PACKED_PATH}:sheet?{sourceKind:'borrowed-main-sheet',sourcePath:DRUID_PATH}:{}),
-        limits:'원화 평면 스킨 / 정사영 카메라향 billboard 필요 / 완전 3D 인체 아님 / 전투·저장 미연결'});
+        limits:volume?'입체 드루이드 정상 본체 / 특수 잠수·변신·사망은 기존 시트 / 전투·저장 권한 없음':'원화 평면 스킨 / 정사영 카메라향 billboard 필요 / 완전 3D 인체 아님 / 전투·저장 미연결'});
     }
     function dispose(){
       posePublication=null;updateJob=null;
       if(disposed)return;disposed=true;object3d.visible=false;object3d.removeFromParent();
-      geometry.dispose();material.dispose();skeleton.dispose();textures.forEach(texture=>texture.dispose());
+      volume?.dispose();geometry.dispose();material.dispose();skeleton.dispose();textures.forEach(texture=>texture.dispose());
       textures.clear();leases.forEach(lease=>lease.release());leases.length=0;
     }
     if(!borrowed){update(0,{mode:'idle',direction:0});object3d.visible=true;}
     return Object.freeze({object3d,update,snapshot,dispose});
   }catch(error){
-    geometry?.dispose();material?.dispose();skeleton?.dispose();textures.forEach(texture=>texture.dispose());
+    volume?.dispose();geometry?.dispose();material?.dispose();skeleton?.dispose();textures.forEach(texture=>texture.dispose());
     leases.forEach(lease=>lease.release());throw error;
   }
 }

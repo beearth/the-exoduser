@@ -1,10 +1,10 @@
 /* ROOT-CH1-1-PLAYER-RIG-CONSUMER-20261007
  * Main body-only display adapter. Caller owns P/G, movement, phase and the existing
  * body-local X transform. Returned rectangles are relative to the calibrated foot (0,0).
- * This is directional artwork on a skinned plane, not a full 3D player model.
+ * Players use directional artwork; the normal Druid boss uses an articulated solid model.
  */
 import * as THREE from '../../assets/vendor/three-r160/build/three.module.js';
-import {createCharacterRig} from './character-rigs.mjs';
+import {createCharacterRig} from './character-rigs.mjs?v=druid-volume-20261008-v3';
 import {CHARACTER_RIG_CATALOG,characterRigFrame} from './character-rig-catalog.mjs';
 
 export const CH1_PLAYER_RIG=Object.freeze({
@@ -23,7 +23,7 @@ const SHEET_PATH='borrowed:dark-druid-main-sheet';
 const SHEET_FIELDS=Object.freeze(['image','width','height','generation','decodedGeneration','srcSnapshot','currentSrcSnapshot','srcsetSnapshot','sizesSnapshot']);
 const SHEET_FRAME_FIELDS=Object.freeze(['generation','lifeGeneration','sheet','mode','direction','index','count','sourceCol','sourceRow','columns','rows','x','y','w','h','anchorX','anchorY','referenceHeight']);
 const DRUID_OWNER_FIELDS=Object.freeze(['active','game','enemies','map','actor','lifeGeneration','sheetRecord','imageGeneration','selectedFrame','state','deaths','bossPhase','lastStand','defeated','pending']);
-const DRUID_ACTOR_FIELDS=Object.freeze(['ib','alive','hp','s','deaths','_bossPhase','_druidLastStand','_druidDefeated','_reviveTimer','stunned','_isTail','facing','vx','vy']);
+const DRUID_ACTOR_FIELDS=Object.freeze(['ib','alive','hp','s','deaths','_bossPhase','_druidLastStand','_druidDefeated','_reviveTimer','stunned','_isTail','facing','vx','vy','st2','_sweepDir']);
 const bump=(object,key)=>{object[key]=Math.min(Number.MAX_SAFE_INTEGER,object[key]+1);};
 function own(object,key){
   if(object===null||(typeof object!=='object'&&typeof object!=='function'))return undefined;
@@ -79,7 +79,10 @@ function druidPose(actor){
   const mode=['slash','slam','windup'].includes(key)||state==='bossDruidVolleyWind'||state==='bossDruidVolley'?'attack':key==='walk'?'walk':'idle';
   const angle=['eWalk','eChase','eApproach'].includes(state)&&(vx||vy)?Math.atan2(vy,vx):facing;
   const nativeDir=[6,7,0,1,2,3,4,5][((Math.round(angle/(Math.PI/4))%8)+8)%8];
-  return {state,deaths,bossPhase,lastStand,defeated,pending:false,mode,nativeDir};
+  const countdown=number(a.st2),sweepDirection=number(a._sweepDir);
+  if(countdown===null||sweepDirection===null)return null;
+  const motionPhase=state==='bossSlam'?Math.max(0,Math.min(1,1-countdown/8)):state==='bossSweep'?Math.max(0,Math.min(1,1-countdown/14)):state==='recover'?Math.max(0,Math.min(1,1-countdown/20)):null;
+  return {state,deaths,bossPhase,lastStand,defeated,pending:false,mode,nativeDir,motionPhase,windRemaining:['bossSlamWind','bossSweepWind'].includes(state)?countdown:null,sweepDirection:sweepDirection<0?-1:1};
 }
 function sheetFrameValid(sheet,source,input){
   if(!plain(sheet.generation)||sheet.decodedGeneration!==sheet.generation||!plain(source.lifeGeneration)||source.generation!==sheet.generation||source.mode!==input.mode||source.direction!==input.direction)return false;
@@ -103,7 +106,7 @@ function sheetCurrent(record,input){
     if(game.mw!==(arena?128:200)||game.mh!==(arena?108:200)||own(record.map,'length')!==game.mh||own(record.map,'0')===undefined||own(own(record.map,'0'),'length')!==game.mw)return false;
     if(!Array.isArray(record.enemies)||own(record.enemies,String(input.enemyIndex))!==record.actor)return false;
     const pose=druidPose(record.actor);
-    if(!pose||pose.state!==input.actorPose.state||pose.mode!==input.mode||pose.nativeDir!==(8-input.direction)%8||['deaths','bossPhase','lastStand','defeated','pending'].some(key=>pose[key]!==input.actorPose[key]||owner[key]!==pose[key]))return false;
+    if(!pose||pose.state!==input.actorPose.state||pose.mode!==input.mode||pose.nativeDir!==(8-input.direction)%8||['motionPhase','windRemaining','sweepDirection'].some(key=>pose[key]!==input.actorPose[key])||['deaths','bossPhase','lastStand','defeated','pending'].some(key=>pose[key]!==input.actorPose[key]||owner[key]!==pose[key]))return false;
     if(own(record.sheetRecord,'img')!==record.image||own(record.sheetRecord,'ready')!==true)return false;
     if(SHEET_FIELDS.some(key=>own(input.sheetOwner,key)!==sheet[key])||SHEET_FRAME_FIELDS.some(key=>own(input.frameOwner,key)!==source[key]))return false;
     const nativeDir=Object.getOwnPropertyDescriptor(input.frameOwner,'nativeDir');
@@ -292,7 +295,7 @@ export function createCh1PlayerRig(){
       image:input.borrowedSheet.image,lifeGeneration:input.sourceFrame.lifeGeneration,sheetName:input.sourceFrame.sheet,sheetGeneration:input.borrowedSheet.generation,borrowedSheet:input.borrowedSheet});
     bump(stats,'loadStarts');
     try{
-      createCharacterRig(input.id,{THREE,height:CH1_PLAYER_RIG.rigHeight,...(input.packed?{borrowedAtlas:input.borrowedAtlas}:input.sheetBorrowed?{borrowedSheet:input.borrowedSheet}:{})}).then(rig=>{
+      createCharacterRig(input.id,{THREE,height:CH1_PLAYER_RIG.rigHeight,bossVolume:input.sheetBorrowed===true,...(input.packed?{borrowedAtlas:input.borrowedAtlas}:input.sheetBorrowed?{borrowedSheet:input.borrowedSheet}:{})}).then(rig=>{
         if(!isCurrent(record)){if(owns(record))retire('packed-owner-changed');releaseRig(rig,true);return;}
         try{
           record.rig=rig;scene.add(rig.object3d);
@@ -316,20 +319,29 @@ export function createCh1PlayerRig(){
   function boundsFor(record,job){
     const root=record.rig.object3d,meshes=[];root.updateMatrixWorld(true);
     if(!isCurrent(record,job))return null;
-    root.traverse(object=>{if(object.isSkinnedMesh&&object.visible)meshes.push(object);});
-    if(meshes.length!==1||!root.visible)return null;
-    const mesh=meshes[0],positions=mesh.geometry.getAttribute('position'),vector=new THREE.Vector3();
-    if(!positions||!Number.isSafeInteger(positions.count)||positions.count<1)return null;
-    const box=new THREE.Box3();
-    for(let i=0;i<positions.count;i++){
-      mesh.getVertexPosition(i,vector);
-      if(!isCurrent(record,job))return null;
-      vector.applyMatrix4(mesh.matrixWorld);
-      if(![vector.x,vector.y,vector.z].every(Number.isFinite))return null;
-      box.expandByPoint(vector);
+    root.traverseVisible(object=>{if(object.isMesh&&(object.userData.excludeBounds!==true||object.userData.druidVolumeShadow===true))meshes.push(object);});
+    if(!meshes.length||(!record.sheetBorrowed&&meshes.length!==1)||!root.visible)return null;
+    const vector=new THREE.Vector3(),box=new THREE.Box3();let vertices=0;
+    for(const mesh of meshes){
+      const positions=mesh.geometry.getAttribute('position');
+      if(!positions||!Number.isSafeInteger(positions.count)||positions.count<1)return null;
+      vertices+=positions.count;
+      if(!mesh.isSkinnedMesh){
+        if(!mesh.geometry.boundingBox)mesh.geometry.computeBoundingBox();
+        const part=mesh.geometry.boundingBox.clone().applyMatrix4(mesh.matrixWorld);
+        if(![...part.min.toArray(),...part.max.toArray()].every(Number.isFinite)||!isCurrent(record,job))return null;
+        box.union(part);continue;
+      }
+      for(let i=0;i<positions.count;i++){
+        mesh.getVertexPosition(i,vector);
+        if(!isCurrent(record,job))return null;
+        vector.applyMatrix4(mesh.matrixWorld);
+        if(![vector.x,vector.y,vector.z].every(Number.isFinite))return null;
+        box.expandByPoint(vector);
+      }
     }
     if(!isCurrent(record,job)||box.isEmpty()||box.max.x<=box.min.x||box.max.y<=box.min.y)return null;
-    return {box,vertices:positions.count};
+    return {box,vertices};
   }
   function render(input){
     bump(stats,'renderAttempts');frame=null;
@@ -339,7 +351,10 @@ export function createCh1PlayerRig(){
     const value=capture(input);
     if(!value){retire('unsupported-main-body');return reject('unsupported-main-body');}
     let record=current;
-    if(!matches(record,value))record=begin(value);
+    if(!matches(record,value)){
+      const carry=value.sheetBorrowed&&record?.sheetBorrowed&&record.map===value.map&&record.actor===value.actor&&record.owner===value.owner&&record.lifeGeneration===value.sourceFrame.lifeGeneration?record.lastDruidAction:'';
+      record=begin(value);if(record&&['bossSlam','bossSweep'].includes(carry))record.lastDruidAction=carry;
+    }
     if(!record||!owns(record))return null;
     record.input=value;
     if(!isCurrent(record))return null;
@@ -347,7 +362,14 @@ export function createCh1PlayerRig(){
     if(record.state!=='ready'||!record.rig)return reject('rig-load-failed');
     const job={input:value};renderJob=job;
     try{
-      record.rig.update(value.dt,{mode:value.mode,direction:value.direction,phase:value.phase,...(value.packed||value.sheetBorrowed?{sourceFrame:value.sourceFrame}:{})});
+      if(value.sheetBorrowed&&value.actorPose.state!=='recover')record.lastDruidAction=['bossSlam','bossSweep'].includes(value.actorPose.state)?value.actorPose.state:'';
+      let bossAnticipation=1;
+      if(value.sheetBorrowed&&value.actorPose.windRemaining!==null){
+        const remaining=value.actorPose.windRemaining;
+        if(record.windState!==value.actorPose.state||remaining>record.windRemaining){record.windState=value.actorPose.state;record.windStart=Math.max(1,remaining);}
+        record.windRemaining=remaining;bossAnticipation=Math.max(0,Math.min(1,1-remaining/record.windStart));
+      }else{record.windState=null;record.windRemaining=null;}
+      record.rig.update(value.dt,{mode:value.mode,direction:value.direction,phase:value.phase,...(value.sheetBorrowed?{bossState:value.actorPose.state,bossPhase:value.actorPose.motionPhase,bossAnticipation,bossRecoveryFrom:value.actorPose.state==='recover'?record.lastDruidAction:'',sweepDirection:value.actorPose.sweepDirection}:{}),...(value.packed||value.sheetBorrowed?{sourceFrame:value.sourceFrame}:{})});
       if(!isCurrent(record,job))return null;
       const pose=publication(record.rig,value);
       if(!isCurrent(record,job))return null;
@@ -381,7 +403,7 @@ export function createCh1PlayerRig(){
       if(!isCurrent(record,job))return null;
       canvas._glVer=(canvas._glVer||0)+1;bump(stats,'frames');reason='ready';
       lastFrame=Object.freeze({id:value.id,mode:value.mode,direction:value.direction,phase:value.phase,frame:own(pose,'frame'),elapsed:own(pose,'elapsed'),
-        left,top,width,height,pixelWidth,pixelHeight,vertices:bounds.vertices,heightLocal:value.heightWorld,backingScale:value.backingScale,delta:value.dt,posePublicationMatched:true,
+        representation:value.sheetBorrowed?'volumetric-boss':'artwork-skinned-plane',left,top,width,height,pixelWidth,pixelHeight,vertices:bounds.vertices,heightLocal:value.heightWorld,backingScale:value.backingScale,delta:value.dt,posePublicationMatched:true,
         sourceKind:value.sheetBorrowed?'borrowed-main-sheet':value.packed?'borrowed-main-atlas':'catalog-assets',sourcePath:value.sheetBorrowed?SHEET_PATH:value.packed?PACKED_PATH:own(own(pose,'source'),'path'),
         packedSource:value.packed?Object.freeze({path:PACKED_PATH,...value.sourceFrame}):null,
         sheetSource:value.sheetBorrowed?Object.freeze({path:SHEET_PATH,...value.sourceFrame}):null});
@@ -394,7 +416,7 @@ export function createCh1PlayerRig(){
   }
   function suspend(){if(disposed)return false;retire('inactive-main-body');return true;}
   function snapshot(){return Object.freeze({...stats,ready:reason==='ready'&&!!frame&&!disposed&&!failed&&!lost,reason,disposed,failed,lost,generation,
-    loadState:current?.state||'none',id:current?.id||null,rigReady:!!current?.rig,renderOwnerActive:!!renderJob,lastFrame,
+    volume:current?.sheetBorrowed&&current?.rig?current.rig.snapshot().volume:null,loadState:current?.state||'none',id:current?.id||null,rigReady:!!current?.rig,renderOwnerActive:!!renderJob,lastFrame,
     sourceKind:current?(current.sheetBorrowed?'borrowed-main-sheet':current.packed?'borrowed-main-atlas':'catalog-assets'):null,sourcePath:current?.sheetBorrowed?SHEET_PATH:current?.packed?PACKED_PATH:null,
     borrowedPixelsGenerationRequired:!!current?.packed,borrowedSameCanvasPixelMutationAccepted:false,
     borrowedSheetGenerationRequired:!!current?.sheetBorrowed,borrowedSheetDecodeRequired:!!current?.sheetBorrowed,

@@ -1474,3 +1474,7 @@ API synthetic 10회는 모두 `POST /api/mats`, forwarded0이다. `POST /api/sav
 상세 현재 정본은 `CH1_1_PRODUCTION_FINISH_20260916.md`의 이번 후속 절이다.
 
 현재 상세 근거는 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-normal-play-20261007/root-partial-coverage/validation-receipt.json` (35791B / `627816f881f7fd6c5c981a503be792bbffa66430a7d38bd20ed68ff9841c6e4e`), `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-normal-play-20261007/root-partial-coverage/visual-verdict.json` (3310B / `805409879cfa1bb2e301ab07be882fc0d361d2d3b624403ded60627eaaf1ce85`)이다. 완료 원문은 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-normal-play-20261007/run-normal01/`, session 영수증은 3509449B / `4de3f0bfab85d9a55665173fc4c6ebbe599ab67f37bd24f013a4d97b2a5e42db`이다. Git 정상 보존 사실은 같은 `root-partial-coverage/remote-preservation-receipt.json`의 commit/push/원격 정확 SHA로 확정하며 문서 자기 commit SHA를 순환 기입하지 않는다.
+
+## 2026-10-08 — 드루이드 입체 본체 현행
+
+`ROOT-CH1-DRUID-VOLUMETRIC-BOSS-20261008`: 기존 CH1 2.5D opt-in의 NORMAL idle/walk/attack은 새 solid 관절 드루이드가 소비된다. 평면·셀/밝기 보정 설명은 당시 이력으로 보존한다. 128solid+9shadow/25관절, 조명5, 양손 two-bone IK·골반/다리 stance, 실제 준비 countdown·Slam8f/Sweep14f·recover20f의 표시 연결, 본체 source-over1회. 특수·피격·사망은 기존 시트; 전체 보스 입체/실전·청취/save 완료 아님. 사용자 첫 모션 거절 뒤 양손·전신 연결을 재구현해 새7그룹/80자세와 실제 WebGL 미리보기로 한정검수. 이전 검수 이력과 합산0, 외형·타격 무게감/사용자 승인 미인수. VISUAL VERDICT: RETOUCH. 수치·API·검수·제한의 현행 정본: [입체 드루이드](../4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md). 기존 원본/전투/save 불변.

@@ -1062,3 +1062,7 @@ X.translate(Math.round(C.width/2 - G.cam.x + sx), Math.round(C.height/2 - G.cam.
 | 검수 | 첫 후보69확인은 부모 없는 fixture였고 정적 blocker1로 보정. 새 부모 포함 통제10그룹78확인 PASS/Node1(총Node2), 최종 source blocker0. 실제 화면/GPU/청취/save 미검수, RETOUCH/UI_NOT_ASSESSED |
 
 정확 수식·caller·예외는 [방향별 리깅 정본](../4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md#ch1-druid-rig-name-anchor-20261008)을 따른다.
+
+## 2026-10-08 — 드루이드 입체 본체 현행
+
+`ROOT-CH1-DRUID-VOLUMETRIC-BOSS-20261008`: 기존 CH1 2.5D opt-in의 NORMAL idle/walk/attack은 새 solid 관절 드루이드가 소비된다. 평면·셀/밝기 보정 설명은 당시 이력으로 보존한다. 128solid+9shadow/25관절, 조명5, 양손 two-bone IK·골반/다리 stance, 실제 준비 countdown·Slam8f/Sweep14f·recover20f의 표시 연결, 본체 source-over1회. 특수·피격·사망은 기존 시트; 전체 보스 입체/실전·청취/save 완료 아님. 사용자 첫 모션 거절 뒤 양손·전신 연결을 재구현해 새7그룹/80자세와 실제 WebGL 미리보기로 한정검수. 이전 검수 이력과 합산0, 외형·타격 무게감/사용자 승인 미인수. VISUAL VERDICT: RETOUCH. 수치·API·검수·제한의 현행 정본: [입체 드루이드](../4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md). 기존 원본/전투/save 불변.

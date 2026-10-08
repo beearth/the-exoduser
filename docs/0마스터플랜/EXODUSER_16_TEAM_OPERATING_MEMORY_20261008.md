@@ -118,3 +118,7 @@ root helpers `character_preview`, `orders_checkpoint_readiness`, `rig_motion`은
 이전 “UIUX/QUESTNPC 2건 거절·다른5 미송신”은 당시 관측 이력이다. 이후 Codex 감독의 공식 cursor231 / turn `01a118fd-a035-7e31-a50a-50f50c012a35`는 ITEM·SOUND·BUILD·BALANCE·MARKETING 다섯 기존 전문팀의 첫 공식 송신도 approval policy `never`로 거절됐다고 보고했다. 신규5의 전달·peer·source·end는0, retry0·STATE쓰기0이며, 앞선2건 거절과 구분한다. 전문7의 실제 새 착수나 가동 완료를 주장하지 않는다. 기존 감독의 별도 source 작업과 ROOT의 제품 통합은 전문팀 착수로 합산하지 않으며 다른 도구/경로/호스트/권한으로 거절 목적을 재시도하지 않는다.
 
 정확 단일 final 보존 근거: 외부 `team-goal-0045-official-20261008/codex-231-official/final.txt` 1,603B / `cc54b3515dbed685ab25dbceb81e26a34520ac5efb2a1b4910e227a221ba81fe`, manifest 2,207B / `d56447fd8b179739010ced644e7b543b44ac0779b8adb56bd0920644afa2507d`. 이 단위에서 해당 원문을 재추출·재hash하지 않고 이미 검증한 보존 핀을 참조했다.
+
+## 2026-10-08 — 드루이드 실제 입체 본체 단위
+
+ROOT-CH1-DRUID-VOLUMETRIC-BOSS-20261008: 일반형 solid128/관절25/조명5를 actual character-rigs→ch1-player-rig→game에 연결. 사용자가 첫 모션을 거절한 뒤 양팔 two-bone IK/공통 staff grip/골반·다리 stance, 실제 Wind countdown anticipation·recover20f 표시 연결을 재구현했다. 같은 actor/map/owner/life에서만 sheet 전환 뒤 직전 공격 family를 이어받는다. 최종 새 Node1/7그룹PASS/80자세, 실제 IAB15 WebGL 양손 준비/전신 Slam 측면/Sweep 회전 관측. 이전8·shadow2·weaponFAIL1·수정Sweep4는 별도 source 이력/재실행·clean합산0. 미리보기 준비.6s/대기.5s는 관찰용, 실제전투시간 변경0. 기존IAB14 사용자게임 무조작/새기능live적용 주장0. 외형·타격 무게감 RETOUCH/사용자 승인 미인수. 특수·변신·사망/native6/audio/실보상save·전체보스전 미완료. 정본 DIRECTIONAL_CHARACTER_RIGS_20261006.md 입체 본체절, 최종보존 E/ch1-druid-volumetric-boss-20261008/completion.json. 천천히 실제 한 건씩 지시 우선; 동일검사/원문/검색/Git 반복0.

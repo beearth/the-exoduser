@@ -11808,7 +11808,7 @@ let _ch1PlayerRig=null,_ch1RigAlive=true,_ch1RigImportFailed=false,_ch1RigBodyFr
 const _ch1RigStats={bodyFrames:0,attackFrames:0,recoveryFrames:0,packedBodyFrames:0,ghostFrames:0,legacyFrames:0,lastState:'awaiting-main-body'};
 if(_ch1RigRequested){
   window.addEventListener('pagehide',()=>{_ch1RigAlive=false;_ch1RigBodyFrame=null;_ch1RigGroundContact=null;if(_ch1PlayerRig){if(typeof _freeMapTex==='function')_freeMapTex(_ch1PlayerRig.canvas);_ch1PlayerRig.dispose();}},{once:true});
-  import('./tools/2_5d/ch1-player-rig.mjs').then(module=>{if(_ch1RigAlive)_ch1PlayerRig=module.createCh1PlayerRig();}).catch(()=>{_ch1RigImportFailed=true;});
+  import('./tools/2_5d/ch1-player-rig.mjs?v=druid-volume-20261008-v3').then(module=>{if(_ch1RigAlive)_ch1PlayerRig=module.createCh1PlayerRig();}).catch(()=>{_ch1RigImportFailed=true;});
 }
 function _ch1RigCombatOwnerCurrent(phase){
   const owned=_ch1RigStrikeOwner;
@@ -11959,7 +11959,7 @@ const _ch1DruidNative=_ch1DruidCaptureNative();
 const _ch1DruidStats={decodeStarts:0,decodeReady:0,decodeFailures:0,bodyFrames:0,legacyFrames:0,lifeChanges:0,lastState:'awaiting-normal-boss'};
 if(_ch1RigRequested){
   window.addEventListener('pagehide',()=>{_ch1DruidAlive=false;for(const r of _ch1DruidActors.values())r.active=false;_ch1DruidActors.clear();_ch1DruidScene=null;for(const lease of _ch1DruidLeases)_ch1DruidCloseLease(lease,'pagehide');if(_ch1DruidRig){try{if(typeof _freeMapTex==='function')_freeMapTex(_ch1DruidRig.canvas);}catch(_){}try{_ch1DruidRig.dispose();}catch(_){}}},{once:true});
-  import('./tools/2_5d/ch1-player-rig.mjs').then(module=>{if(_ch1DruidAlive)_ch1DruidRig=module.createCh1PlayerRig();}).catch(()=>{_ch1DruidStats.lastState='module-unavailable';});
+  import('./tools/2_5d/ch1-player-rig.mjs?v=druid-volume-20261008-v3').then(module=>{if(_ch1DruidAlive)_ch1DruidRig=module.createCh1PlayerRig();}).catch(()=>{_ch1DruidStats.lastState='module-unavailable';});
 }
 function _ch1DruidOwn(value,key){const d=value&&Object.getOwnPropertyDescriptor(value,key);return d&&Object.hasOwn(d,'value')?d.value:undefined;}
 function _ch1DruidSingleBoss(){let count=0;for(let i=0;i<ens.length;i++)if(_ch1DruidOwn(ens[i],'ib')===true&&++count>1)return false;return true;}
@@ -12093,18 +12093,18 @@ function _drawCh1DruidRigBody(ctx,e,selection,sa,dw,dh,nameBaseY,inverseScale,pa
   if(!frame||!_ch1DruidCurrent(owner,sourceFrame)){_ch1DruidStats.legacyFrames++;return false;}
   const state=_ch1DruidRig.snapshot(),published=state.lastFrame;
   if(!state.ready||state.id!=='dark-druid'||state.sourceKind!=='borrowed-main-sheet'||!published||published.mode!==mode||published.direction!==sourceFrame.direction||published.frame!==index||published.phase!==phase||!_ch1DruidCurrent(owner,sourceFrame))return false;
-  const scaleX=dw*selection.h/(dh*selection.w),anchorLocalX=-dw/2+anchorX*dw/selection.w,anchorLocalY=-.86*dh+anchorY*dh/selection.h;
+  const volumetric=published.representation==='volumetric-boss',scaleX=volumetric?1:dw*selection.h/(dh*selection.w),anchorLocalX=-dw/2+anchorX*dw/selection.w,anchorLocalY=-.86*dh+anchorY*dh/selection.h;
   const nameTopOff=parentYOffset+parentScale*(nameBaseY+(anchorLocalY+frame.top)*inverseScale)-10;
   if(!Number.isFinite(scaleX+anchorLocalX+anchorLocalY+nameTopOff)||scaleX<=0)return false;
   let blitted=false;
   ctx.save();
   try{
     ctx.translate(anchorLocalX,anchorLocalY);ctx.scale(scaleX,1);
-    for(let pass=0;pass<3;pass++){
+    for(let pass=0;pass<(volumetric?1:3);pass++){
       if(!_ch1DruidCurrent(owner,sourceFrame))return blitted;
       ctx.globalCompositeOperation=pass===0?'source-over':'lighter';ctx.globalAlpha=pass===0?sa:sa*.42;
       if(!_ch1DruidCurrent(owner,sourceFrame))return blitted;
-      if(pass===0)_drawDruidReadableBody(ctx,frame.canvas,0,0,frame.canvas.width,frame.canvas.height,frame.left,frame.top,frame.width,frame.height);else ctx.drawImage(frame.canvas,frame.left,frame.top,frame.width,frame.height);blitted=true;
+      if(pass===0&&!volumetric)_drawDruidReadableBody(ctx,frame.canvas,0,0,frame.canvas.width,frame.canvas.height,frame.left,frame.top,frame.width,frame.height);else ctx.drawImage(frame.canvas,frame.left,frame.top,frame.width,frame.height);blitted=true;
     }
     if(_ch1DruidCurrent(owner,sourceFrame)){
       _drawDruidBodyHitFlash(ctx,e,sa,frame.canvas,0,0,frame.canvas.width,frame.canvas.height,frame.left,frame.top,frame.width,frame.height);
@@ -12113,7 +12113,7 @@ function _drawCh1DruidRigBody(ctx,e,selection,sa,dw,dh,nameBaseY,inverseScale,pa
     _ch1DruidStats.bodyFrames++;_ch1DruidStats.lastState=mode;return true;
   }finally{ctx.restore();}
 }
-globalThis.__ch1DruidRigQA=()=>Object.freeze({requested:_ch1RigRequested,alive:_ch1DruidAlive,..._ch1DruidStats,adapter:_ch1DruidRig?_ch1DruidRig.snapshot():null,adoptedModes:'normal idle/walk/attack',specialDeathAccepted:false,fullBossLinked:false,mainPlayableAccepted:false});
+globalThis.__ch1DruidRigQA=()=>Object.freeze({requested:_ch1RigRequested,alive:_ch1DruidAlive,..._ch1DruidStats,adapter:_ch1DruidRig?_ch1DruidRig.snapshot():null,adoptedModes:'volumetric normal idle/walk/attack',representation:'volumetric-boss',specialDeathAccepted:false,fullBossLinked:false,mainPlayableAccepted:false});
 
 function _drawCh1StartOuter(ctx){
   if(_drawCh1ThreeTerrain(ctx))return;

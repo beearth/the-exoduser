@@ -1710,3 +1710,26 @@ OFF/불가mode/identity/준비 frame 부재의 검수에서는 core0이다. **co
 | 검증·한계 | 실제 whole Druid/rig/selector+통제 ports 최초 Node1·VM0·factory2/instances18·7그룹7PASS/FAIL0/exit0. before SlamWind wallclock 셀0→2 반례1 별도. 이전 Sweep31/다른 suite 재실행0. 실제 GPU·pixel·자세 미감·native·청취·실save 미검수/RETOUCH |
 
 앞선 Sweep 단위의 “기타 공격150ms”는 그 epoch이며 현재 Slam 예외가 우선한다. Sweep 셀 선택·첫 pass 밝기/윤곽·특수 상태·공통 recover·원본 PNG·AI·save 불변.
+
+## 2026-10-08 — 다크드루이드 입체 본체·관절 렌더
+
+`ROOT-CH1-DRUID-VOLUMETRIC-BOSS-20261008`. 1:1 보스전 품질 우선으로 NORMAL 본체를 실제 solid 모델로 연결했다. 이전 평면·셀/밝기 보정 절은 당시 이력이다. 최초 staff 단독 회전을 사용자가 거절해, 아래 양손·전신 연결이 최종 현행이다. 외형과 타격의 무게감은 RETOUCH이며 완성 모션 인수로 세지 않는다.
+
+| 항목 | 현재 구현 |
+|---|---|
+| 모델/구조 | `tools/2_5d/druid-boss-volume.mjs`: solid 가면·눈·뿔·목재 흉곽·팔 상하관절·손·staff/orb·외투8·뿌리발. solid128+shadow9=137Mesh/관절25/20,579정점/37,464삼각형/geometry110/material20/light5. 원 PNG·PixelLab 생성0, 공유자원 unique dispose |
+| 조명/좌표 | Standard 재질·ambient1/hemisphere1/directional3(key/rim/fill), contact shadow9. body/shadow pitch0.24rad, 발0·기준높이1·정면+Z/방향×π/4. 실제 보이는 모든 Mesh(그림자 포함)의 transformed local AABB 합집합; 원 SkinnedMesh는 변형정점 bounds |
+| API | createDruidBossVolume({THREE,height=1})→{object3d,update,snapshot,dispose}; update({mode,direction,phase,time,state,delta,sweepDirection,anticipation=1,recoveryFrom=''}) / local Three r160. anticipation 유한0..1, recoveryFrom은 ''/bossSlam/bossSweep |
+| 양손/다리 | upper/lower segment 길이 보존 two-bone IK. staff local grip 오른손[-.004,.055,.002]/왼손[-.010,-.055,.003], palm local[0,-.027,.029]. 양팔 reach 교집합 안으로 공통 staff frame을 옮겨 두 손을 함께 고정. 골반에 연결된 다리 IK/발 stance·흉곽 coil·외투 follow-through. 무기만 독립 공중회전하는 첫 후보는 미채택 이력 |
+| 실제 준비 | bossSlamWind/bossSweepWind의 첫 표시 관측 st2를 renderer record에만 저장. 같은 Wind의 countdown 감소율 clamp(1-remaining/start,0,1)를 bossAnticipation으로 전달. 상태 변경/remaining 증가면 새 준비로 재기준화. 늦은 첫 관측/생략 프레임은 전체 준비 동작 보장 아님 |
+| 실제 공격/회복 | Slam clamp(1-st2/8), Sweep clamp(1-st2/14), recover clamp(1-st2/20); 실제 공통 boss recover20f cap을 표시만 소비. 준비0→idle/준비1→active0 연속. 회복0→직전 타격 끝/회복1→idle 연속. attack→idle 시트가 rig를 교체하므로 같은 map/actor/owner/life일 때만 직전 Slam/Sweep 표시 family를 새 record로 carry; 이미지·geometry·Gstate 이관0 |
+| 소비/합성 | character-rigs bossVolume을 CH1 borrowedSheet Druid만 켬. 원 plane 숨김·sourceFrame/life/map/actor 검증/publication 유지. borrowed-main-sheet는 소유/폴백 출처이며 원화에서 geometry를 추출했다는 뜻 아님. _drawCh1DruidRigBody volume X비율1/source-over1회; 밝기 filter/lighter2회 미적용, 기존 hitflash/name anchor/finally 유지 |
+| 적용 범위 | 기존 ch1Three=1&ch1Rig=1 / CH1 production_finish/smoothing / 단일보스 / field200²·arena128×108 / NORMAL idle/walk/attack/recover. 다른 플레이어는 원 plane. 잠수·돌진·변신·피격·사망은 기존 시트 폴백. 전체 보스 입체 완료 아님 |
+| 미리보기 | 기존3387 `tools/druid-boss-volume-preview.html`이 동일 production module을 소비. 전면/측면/후면·8방향·배속0.1..2/줌70..160, SRGB/NoToneMapping/exposure1. 연결 재생: 관찰용 준비0.6s→실행8/60s 또는14/60s→회복20/60s→관찰용 대기0.5s. 준비/대기는 본편 시간이 아님. 슬라이더는 연결재생을 끄고 단일 자세 표시 |
+| 최종 모듈 revision | preview/factory volume query v=02f9b884fa7d7bd4, game adapter 및 adapter factory query v=druid-volume-20261008-v3. 캐시된 첫 Wind 화면을 최종 인수에서 제외. 기존 사용자 IAB14/다른 탭 무조작·자동적용 주장0 |
+| 최종 새 의미 검수 | 실제 Three IK/전체 module 및 actual actor-pose/wind/carry slices 최초 Node1/7그룹PASS/80자세 fixtures/FAIL0/source전후exact. 양손 grip/발 anchor 오차<1e-5, 준비·공격·새 rig 회복의 끝점 연속. CPU는 미감 인수 아님. 정적 peer blocking0/peer실행0 |
+| 검수 이력 | 초기 Node8그룹PASS·shadow 후속2PASS·weapon 최초 선행3확인PASS 후 Sweep assertion FAIL1·수정 Sweep 별도4확인PASS/16fixtures는 이전 source epoch로 보존. 사용자 거절 뒤 최종 IK7과 합산/재실행0. syntax parse4는 제품 suite/PASS 합산0 |
+| 실제 화면/제한 | 새 IAB15에서 최종 revision의 양손 준비, 발 지지·전신 굽힘 Slam100% 측면, 몸통/골반 twist Sweep85% 정면, 연결재생 준비 관측. console warn/error0. 실제 본편 보스전 완주·fullbyte HTTP 대조·성능 benchmark·native6/audio/보상save는 미인수. 전투시간/피해/AI/자원/save/원PNG/scene/nav/새게임 RAF·timer 변경0 |
+| 판정 | VISUAL VERDICT: RETOUCH. 양손·전신 연결을 구현했으나 외형 미감·타격 무게감·특수 상태·실전 가독성 후속 필요. 사용자의 모션 승인 완료로 세지 않음 |
+
+소유 code5/docs8·각 검수 epoch/실제 PNG/Git 결과의 최종 근거: 외부 `E/ch1-druid-volumetric-boss-20261008/completion.json`.
