@@ -1725,7 +1725,7 @@ OFF/불가mode/identity/준비 frame 부재의 검수에서는 core0이다. **co
 | 실제 공격/회복 | Slam clamp(1-st2/8), Sweep clamp(1-st2/14), recover clamp(1-st2/20); 실제 공통 boss recover20f cap을 표시만 소비. 준비0→idle/준비1→active0 연속. 회복0→직전 타격 끝/회복1→idle 연속. attack→idle 시트가 rig를 교체하므로 같은 map/actor/owner/life일 때만 직전 Slam/Sweep 표시 family를 새 record로 carry; 이미지·geometry·Gstate 이관0 |
 | 소비/합성 | character-rigs bossVolume을 CH1 borrowedSheet Druid만 켬. 원 plane 숨김·sourceFrame/life/map/actor 검증/publication 유지. borrowed-main-sheet는 소유/폴백 출처이며 원화에서 geometry를 추출했다는 뜻 아님. _drawCh1DruidRigBody volume X비율1/source-over1회; 밝기 filter/lighter2회 미적용, 기존 hitflash/name anchor/finally 유지 |
 | 적용 범위 | 기존 ch1Three=1&ch1Rig=1 / CH1 production_finish/smoothing / 단일보스 / field200²·arena128×108 / NORMAL idle/walk/attack/recover. 다른 플레이어는 원 plane. 잠수·돌진·변신·피격·사망은 기존 시트 폴백. 전체 보스 입체 완료 아님 |
-| 미리보기 | 기존3387 `tools/druid-boss-volume-preview.html`이 동일 production module을 소비. 전면/측면/후면·8방향·배속0.1..2/줌70..160, SRGB/NoToneMapping/exposure1. 연결 재생: 관찰용 준비0.6s→실행8/60s 또는14/60s→회복20/60s→관찰용 대기0.5s. 준비/대기는 본편 시간이 아님. 슬라이더는 연결재생을 끄고 단일 자세 표시 |
+| 미리보기(거절 후보 이력) | 당시3387 `tools/druid-boss-volume-preview.html`이 동일 production module을 소비. 전면/측면/후면·8방향·배속0.1..2/줌70..160, SRGB/NoToneMapping/exposure1. 연결 재생: 관찰용 준비0.6s→실행8/60s 또는14/60s→회복20/60s→관찰용 대기0.5s. 준비/대기는 본편 시간이 아님. 슬라이더는 연결재생을 끄고 단일 자세 표시 |
 | 최종 모듈 revision | preview/factory volume query v=02f9b884fa7d7bd4, game adapter 및 adapter factory query v=druid-volume-20261008-v3. 캐시된 첫 Wind 화면을 최종 인수에서 제외. 기존 사용자 IAB14/다른 탭 무조작·자동적용 주장0 |
 | 최종 새 의미 검수 | 실제 Three IK/전체 module 및 actual actor-pose/wind/carry slices 최초 Node1/7그룹PASS/80자세 fixtures/FAIL0/source전후exact. 양손 grip/발 anchor 오차<1e-5, 준비·공격·새 rig 회복의 끝점 연속. CPU는 미감 인수 아님. 정적 peer blocking0/peer실행0 |
 | 검수 이력 | 초기 Node8그룹PASS·shadow 후속2PASS·weapon 최초 선행3확인PASS 후 Sweep assertion FAIL1·수정 Sweep 별도4확인PASS/16fixtures는 이전 source epoch로 보존. 사용자 거절 뒤 최종 IK7과 합산/재실행0. syntax parse4는 제품 suite/PASS 합산0 |
@@ -1776,3 +1776,24 @@ VISUAL VERDICT: **RETOUCH**. 어깨 구형 윤곽을 제거했으나 얼굴/외�
 | 한계 | 통제 image getter와 실제 Three 수학 검수. PNG decode/GPU/본편 실제 화면·음향/save 검수0. 원본 프레임 자세 보존이며 입체 모델링·가독성 개선의 실화면 인수·A급 완료 아님 |
 
 새 code 범위는 factory 1hunk/adapter query1/game query2뿐이다. 원 PNG·시트·전투시간·AI·피해·save·사용자 열린 탭을 변경하지 않았다. source peer blocking0(정적). 전체 품질 RETOUCH / 본편 VISUAL NOT_ASSESSED. 검수 원문은 외부 `E/ch1-druid-authored-pose-preservation-20261008/`에 보존한다. 원본 합치와 실제 보스전 가독성을 충족해야 한다는 A급 이상 기준은 미달 상태로 유지한다.
+
+
+<a id="druid-original-relief-20261009"></a>
+## 2026-10-09 — 원본 외형을 보존한 정지 2.5D 표면
+
+`ROOT-DRUID-ORIGINAL-RELIEF-20261009`. 기존 거절 solid의 기본 미리보기를 원본과 정지 relief 비교로 교체했다. **본편 드루이드·공격 모션은 이번 변경에 연결하지 않았다.** 본편은 앞 절의 원본 프레임/v6 계약을 유지한다.
+
+| 항목 | 실제 구현·검수 범위 |
+|---|---|
+| 소스/API | 신규 `tools/2_5d/druid-original-relief.mjs`; `createDruidOriginalRelief({THREE,image,height=1})` → `{object3d,dispose,snapshot}`. local Three r160/이미 decode된 원본355×541만 허용, height 유한0초과20이하 |
+| 원본 보존 | 기존 `boss_dark_druid_f0.png`의 원본 크기로 canvas draw1/readback1. RGB/알파·비율·UV 유지, 원 PNG 파일 변경0. X=(u-.5)×height×355/541, Y=(1-v)×height, 전면+Z/위+Y/발 기준은 이미지 아래 중앙 |
+| 표면 | 알파0인 네 모서리 cell만 생략. 160,677정점/317,264삼각형/geometry1·material1·texture1. 망토·얼굴·뿔·지팡이·손·발의 부드러운 이미지 좌표 영역으로 깊이를 작성했으며 독립 해부학 파트 분할이 아님 |
+| 깊이 | 최초 후보 깊이를0.4배로 축소, 상한0.044×height. height1 실제 snapshot 깊이0..0.043957258145589144. 깊이를 원화의 물리 두께/정확 해부학으로 주장하지 않음 |
+| 색·텍스처 | MeshBasicMaterial/sRGB/toneMapped=false, alphaTest.000001/transparent/DoubleSide/depthWrite, Linear/noMip/Clamp. 고정355×541 samplingCanvas를 Texture로 소비해 화면 축소 HTMLImage의 표시 크기와 GPU 저장 크기 의존을 제거 |
+| 기존 미리보기 | `tools/druid-boss-volume-preview.html`: 원본/표면 나란히 표시, 정면·좌우22°, 줌75..150%(초기100). module query `b29dba3352a56a37`. orthographic viewHeight1.14/zoom, radius2.8·중심Y.5, DPR최대2/sRGB/NoToneMapping |
+| 실행·수명 | on-demand RAF만 사용(load/resize/방향/줌/visibility), 정지 렌더 buffer 보존. dispose 중복 방지·실패 시 오류 표시·pagehide에 소유 geometry/material/texture/renderer 해제 시도. 원본 image는 caller 소유. 장치·메모리 완전해제/bfcache 복귀 재초기화 보장 아님 |
+| 실제 화면 | 기존3387/자체IAB15에서 최종 정면·좌우22° 직접 판독, 원본 전면 형태·색 표시 확인. 오른쪽/왼쪽 손·지팡이 늘어짐 때문에 깊이를0.4배로 줄였다. 최종 console warn/error0. GPU render triangles634,528은 투명 양면2pass 값이며 geometry면수와 구분 |
+| 검수 이력 | 초기 정적 peer blocker0 뒤 실제 GPU texture공백 발견. buffer 보존만으로 미해결, 단색 geometry 정상/RGB texture 검정 진단. samplingCanvas 및 새 query 소비 뒤 정상표시. 이 실패를 삭제하거나 clean PASS 합산하지 않음. syntax exit0, 새 CPU suite0/옛 suite 재실행0 |
+| 품질 한계 | **VISUAL VERDICT: RETOUCH**. 정면 rest 비교 구현만 완료. 측면 원화 늘어짐/후면 재구성/독립 관절/공격 모션/본편 연결·보스전 route·성능 benchmark·청취·실save·A급 인수 미완료. main game/전투/사용자 기존게임·에디터탭 무조작 |
+
+최종 화면·실패/수정 이력·소유 보존은 `E/druid-original-relief-20261009/completion.json` 참조. 이 정지 비교를 본편 2.5D 보스 완성으로 세지 않는다.

@@ -56788,3 +56788,8 @@ alpha/nav/crop/UV/geometry/opacity/renderOrder/resource/dispose·skirt/backplane
 ### 2026-10-08 — 본편 드루이드 원본 자세 보존
 
 원본 복구 v5 이후 현재 game adapter 두 import와 factory import는 `druid-authored-pose-20261008-v6`. borrowedSheet Druid의 pose()는 rest 복구 후 범용 흔들림·공격 변형을 생략한다. 그려진 셀/방향·프레임시간·전투/save는 보존. sheet 없는 기존 경로는 유지한다. 최초 준비 URL 오류(제품未도달)와 보정 뒤6그룹 CPU PASS는 별도 이력이며 본편 화면/GPU·입체 모델·A급 인수는 미완료다. [정본 계약](4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md).
+
+
+## 2026-10-09 — 다크드루이드 원본 기반 정지 relief
+
+신규 `druid-original-relief.mjs`와 기존 volume-preview의 원본/표면 비교를 구현했다. 원355×541/색·알파·비율을 유지하며 깊이상한0.044×height, 초기readback1회, 정면·좌우22° 실제 표시 확인. 초기texture공백 수정이력은 보존하며 정지외형 RETOUCH/공격모션·본편연결·A급 인수는 미완료다. [현행 계약](4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md#druid-original-relief-20261009).
