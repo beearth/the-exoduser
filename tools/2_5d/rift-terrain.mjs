@@ -182,6 +182,30 @@ float riftBoundaryAlpha(vec2 p){
         shader.vertexShader=shader.vertexShader.replace('#include <common>','#include <common>\nattribute vec2 riftForegroundUV;\nvarying vec2 riftForegroundWorldUV;').replace('#include <begin_vertex>','#include <begin_vertex>\nriftForegroundWorldUV=riftForegroundUV;');
         shader.fragmentShader=shader.fragmentShader.replace('#include <common>','#include <common>\nuniform sampler2D riftForegroundNav;\nvarying vec2 riftForegroundWorldUV;').replace('#include <map_fragment>','#include <map_fragment>\ndiffuseColor.a*=1.0-step(.5,texture2D(riftForegroundNav,riftForegroundWorldUV).r);');
       };
+      // Same-source foreground RGB only; preserve the original nav/alpha hook.
+      const navCompile=m.onBeforeCompile;
+      const originalMapChunk="#ifdef USE_MAP\n\tvec4 sampledDiffuseColor = texture2D( map, vMapUv );\n\t#ifdef DECODE_VIDEO_TEXTURE\n\t\tsampledDiffuseColor = vec4( mix( pow( sampledDiffuseColor.rgb * 0.9478672986 + vec3( 0.0521327014 ), vec3( 2.4 ) ), sampledDiffuseColor.rgb * 0.0773993808, vec3( lessThanEqual( sampledDiffuseColor.rgb, vec3( 0.04045 ) ) ) ), sampledDiffuseColor.w );\n\t\n\t#endif\n\tdiffuseColor *= sampledDiffuseColor;\n#endif";
+      let sharpnessSupported=false;
+      try {sharpnessSupported=THREE.REVISION==='160'&&renderer?.capabilities?.isWebGL2===true&&THREE.ShaderChunk?.map_fragment===originalMapChunk&&THREE.ShaderChunk?.map_pars_fragment==='#ifdef USE_MAP\n\tuniform sampler2D map;\n#endif';} catch {}
+      m.customProgramCacheKey=()=>`rift-foreground-canonical-nav-sharp-webgl2-v1-${sharpnessSupported?1:0}`;
+      m.onBeforeCompile=(shader,shaderRenderer)=>{
+        if(disposed)return;
+        navCompile(shader,shaderRenderer);
+        const image=plate.image;
+        if(!sharpnessSupported||shaderRenderer!==renderer||m.map!==plate||plate.colorSpace!==THREE.SRGBColorSpace||plate.channel!==0||(image?.naturalWidth??image?.width)!==1254||(image?.naturalHeight??image?.height)!==1254||!shader.fragmentShader.includes('#include <map_pars_fragment>')||!shader.fragmentShader.includes('#include <map_fragment>'))return;
+        const sharpenedMapChunk=originalMapChunk.replace('\tdiffuseColor *= sampledDiffuseColor;',`
+#ifndef DECODE_VIDEO_TEXTURE
+  float fgFootprintX=length(dFdx(vMapUv*1254.0));
+  float fgFootprintY=length(dFdy(vMapUv*1254.0));
+  if(fgFootprintX>0.0&&fgFootprintY>0.0&&fgFootprintX<=1.0&&fgFootprintY<=1.0){
+    vec2 fgT=vec2(1.0/1254.0);
+    vec3 fgBlur=0.25*(textureLod(map,vMapUv+vec2(fgT.x,0.0),0.0).rgb+textureLod(map,vMapUv-vec2(fgT.x,0.0),0.0).rgb+textureLod(map,vMapUv+vec2(0.0,fgT.y),0.0).rgb+textureLod(map,vMapUv-vec2(0.0,fgT.y),0.0).rgb);
+    sampledDiffuseColor.rgb=clamp(sampledDiffuseColor.rgb+0.4*(sampledDiffuseColor.rgb-fgBlur),0.0,1.0);
+  }
+#endif
+  diffuseColor *= sampledDiffuseColor;`);
+        shader.fragmentShader=shader.fragmentShader.replace('#include <map_fragment>',sharpenedMapChunk);
+      };
       const cutout=new THREE.Mesh(g,m);cutout.name=o.id;cutout.position.copy(worldToScene(o.x,o.y));cutout.rotation.x=-theta;cutout.renderOrder=30+(o.y-4320)/8000*10;object3d.add(cutout);
       occluders.push({objectId:o.id,footY:o.y,object3d:cutout,polygon:points.map(p=>({x:p[0],y:p[1]})),triangles:triangles.length,sourceCrop:{...a.crop},feather:0});
     }

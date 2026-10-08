@@ -1168,3 +1168,28 @@ NEXT PASS: alpha-aware 보수적 셀 점유 source/API 계약·원자료 수치�
 ROOT 근거는 외부 `main-rift-view-sharpness-consumer-20261008/implementation-receipt.json`, `validation-receipt.json`, `visual-verdict.json` 및 `final-delta-review.json`의 정적 검토다. 공식 원문2건은 미채택 보존 뒤 일부 소스 계약에만 소비했으며 원문 존재를 제품 실행·시각 완료로 세지 않는다.
 
 §23 전체와 WOLF/held 보호 경계는 [HELL_RIFT_2_5D_SLICE](<../4.1맵디자인+설정/HELL_RIFT_2_5D_SLICE_20261006.md>)의 같은 TASK 절을 따른다.
+
+
+## 2026-10-08 Rift 전경 3 cutout 선명도 소비
+
+**ROOT-RIFT-FOREGROUND-SHARPNESS-CONSUMER-20261008**의 현재 계약이다. 기존 지면 A/B와 원본 전경 흐림 기록은 해당 epoch로 보존하며 실제 디테일 복원·화면 개선 PASS로 바꾸지 않는다.
+
+| 항목 | 최종 소비 계약 |
+|---|---|
+| 소스 | `tools/2_5d/rift-terrain.mjs`19,118B / SHA256 `9625933e3f2284f5084e6302c6d5fd2b07c9ff217d7f7804b4e6f39d92d76bc7`; 초기HEAD 대비1hunk/+2,302B |
+| 첫 CPU 전 보정 | 직전19,098B/`cd83393b...`는 이전 준비 epoch. neighbor4만 `textureLod(map,uv±texel,0.0)` 명시base level로 보정; 기본 map1+nav1 유지/새검색 재실행0 |
+| 대상 | `obj-west-root/obj-east-horn/obj-south-root` 기존 material만. 해당 terrain 생성 소비자에 공통이며 view-only 전용이 아님 |
+| RGB | 원 샘플과 상하좌우1texel4개의 평균으로 `clamp(originalRGB+0.4*(originalRGB-blurRGB),0,1)`; linear RGB unsharp 고정0.4. 원 sampledDiffuseColor multiply 직전 RGB만 변경 |
+| 지원 | Three160의 정확 map/map_pars chunk·WebGL2·동일 renderer·material.map===등록plate·SRGBColorSpace·channel0·실image1254² |
+| 픽셀 경계 | derivative 양축footprint 각각>0 및≤1인 확대 픽셀에만. 영상 DECODE_VIDEO_TEXTURE는 재구성 제외. 축소·미지원·정의 불일치에서는 기존 원map+nav 폴백 |
+| 명목 비용 | 원map1+nav1=2fetch에 RGB4추가탭으로 활성 확대6fetch. 실제 GPU 시간·GLSL LINK·성능·메모리 미인수 |
+| 수명 | disposed이면 navCompile보다 먼저 no-op. 기존 nav hook을 먼저 연결한 뒤 RGB만 보강; 새texture/uniformsetter/RAFtimer0, 원resource/dispose 동일 |
+| 유지 | alpha/nav/crop/UV/geometry/opacity/renderOrder/원PNG/scene/배치/충돌 불변. skirt/backplane·대사/입력/보상/진행/save 변경0 |
+| 지면 분리 | Q의 ground view-only 요청0.5/standalone·clearhost HTML 기본0 그대로. 전경0.4와 독립; 브라우저 form restore 강제0 주장0 |
+| 원본 한계 | 등록1254² plate→8000² world의 없는 detail을 복원하지 않음. shader 정적 계약은 실제 pixel ACK·선명도 인수가 아님 |
+| 결과 삽입 | 첫 controlled CPU Node1은 S01 PASS1/S02 비교오라클 FAIL1/28미도달/exit1 보존. 원 expanded map chunk와 legacy include를 비교하던 하네스만 정정하고 S01을 제외한 새한정 Node1/8그룹29조건 PASS·FAIL/setup/미도달/unhandled/uncaught0/exit0. 물리Node총2, 제품변경0/30clean합산0; 각 epoch actual source factory2+scalar factory1/VM0, 최종 fixture20/hook19. native Three material·ShaderLib 문자열 hook와 별도JS scalar비교만 검수, GLSL/GPU/pixel 실행0 / Codex original sourcepeer1788B/40f18416… 및 LOD-only delta906B/db2464a0… blocking0. 첫 sourcepeer71542ms/LOD delta16688ms, CPU·GPU·화면 검수와 구분. 실제 최초 CPU 결과 반영; 원 draft PENDING은 준비 이력 |
+| 시각 | 새native/GPU/Chrome/PNG/save0, audio NOT_LISTENED, UI NOT_ASSESSED/VISUAL RETOUCH. 사용자 IAB14 old-loaded100% 무조작·미재로드·복제0, live반영/HTTPexact미인수·정상재진입소비 예정 |
+
+정적 후보227 원안은 보류 후 ROOT가 범위·수명·LOD를 한정 보정하여 부분 소비했다. 기존 ground153/GUI13 또는 후보 원문을 이번 제품 검수로 재실행·합산하지 않는다.
+
+§23 전체·보호경계는 [HELL_RIFT_2_5D_SLICE](<../4.1맵디자인+설정/HELL_RIFT_2_5D_SLICE_20261006.md>) 같은 TASK 절을 따른다.

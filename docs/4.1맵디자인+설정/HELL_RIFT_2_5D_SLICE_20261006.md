@@ -2166,3 +2166,47 @@ ROOT 근거는 외부 `main-rift-view-sharpness-consumer-20261008/implementation
 거절·보호 경계: held WOLF/STORY/tree-card 후보 payload의 내용·hash 추가 접근0, 거절된 ART 선택 목적의 우회0, 신규 원화·원PNG 생성/변환0. 기존 등록 scene/nav/원PNG와 stage LOCK 수치를 그대로 보존한다.
 
 이전 WOLF 파일 쓰기는 자동 승인 검토에서 `dangerous`로 거절됐으며 구체 사유는 제공되지 않았다. 해당 목적을 우회하지 않고 허용된 현재 표시 소비자만 작업한다.
+
+
+## 2026-10-08 Rift 전경 3 cutout 선명도 소비
+
+**ROOT-RIFT-FOREGROUND-SHARPNESS-CONSUMER-20261008**의 현재 계약이다. 기존 지면 A/B와 원본 전경 흐림 기록은 해당 epoch로 보존하며 실제 디테일 복원·화면 개선 PASS로 바꾸지 않는다.
+
+| 항목 | 최종 소비 계약 |
+|---|---|
+| 소스 | `tools/2_5d/rift-terrain.mjs`19,118B / SHA256 `9625933e3f2284f5084e6302c6d5fd2b07c9ff217d7f7804b4e6f39d92d76bc7`; 초기HEAD 대비1hunk/+2,302B |
+| 첫 CPU 전 보정 | 직전19,098B/`cd83393b...`는 이전 준비 epoch. neighbor4만 `textureLod(map,uv±texel,0.0)` 명시base level로 보정; 기본 map1+nav1 유지/새검색 재실행0 |
+| 대상 | `obj-west-root/obj-east-horn/obj-south-root` 기존 material만. 해당 terrain 생성 소비자에 공통이며 view-only 전용이 아님 |
+| RGB | 원 샘플과 상하좌우1texel4개의 평균으로 `clamp(originalRGB+0.4*(originalRGB-blurRGB),0,1)`; linear RGB unsharp 고정0.4. 원 sampledDiffuseColor multiply 직전 RGB만 변경 |
+| 지원 | Three160의 정확 map/map_pars chunk·WebGL2·동일 renderer·material.map===등록plate·SRGBColorSpace·channel0·실image1254² |
+| 픽셀 경계 | derivative 양축footprint 각각>0 및≤1인 확대 픽셀에만. 영상 DECODE_VIDEO_TEXTURE는 재구성 제외. 축소·미지원·정의 불일치에서는 기존 원map+nav 폴백 |
+| 명목 비용 | 원map1+nav1=2fetch에 RGB4추가탭으로 활성 확대6fetch. 실제 GPU 시간·GLSL LINK·성능·메모리 미인수 |
+| 수명 | disposed이면 navCompile보다 먼저 no-op. 기존 nav hook을 먼저 연결한 뒤 RGB만 보강; 새texture/uniformsetter/RAFtimer0, 원resource/dispose 동일 |
+| 유지 | alpha/nav/crop/UV/geometry/opacity/renderOrder/원PNG/scene/배치/충돌 불변. skirt/backplane·대사/입력/보상/진행/save 변경0 |
+| 지면 분리 | Q의 ground view-only 요청0.5/standalone·clearhost HTML 기본0 그대로. 전경0.4와 독립; 브라우저 form restore 강제0 주장0 |
+| 원본 한계 | 등록1254² plate→8000² world의 없는 detail을 복원하지 않음. shader 정적 계약은 실제 pixel ACK·선명도 인수가 아님 |
+| 결과 삽입 | 첫 controlled CPU Node1은 S01 PASS1/S02 비교오라클 FAIL1/28미도달/exit1 보존. 원 expanded map chunk와 legacy include를 비교하던 하네스만 정정하고 S01을 제외한 새한정 Node1/8그룹29조건 PASS·FAIL/setup/미도달/unhandled/uncaught0/exit0. 물리Node총2, 제품변경0/30clean합산0; 각 epoch actual source factory2+scalar factory1/VM0, 최종 fixture20/hook19. native Three material·ShaderLib 문자열 hook와 별도JS scalar비교만 검수, GLSL/GPU/pixel 실행0 / Codex original sourcepeer1788B/40f18416… 및 LOD-only delta906B/db2464a0… blocking0. 첫 sourcepeer71542ms/LOD delta16688ms, CPU·GPU·화면 검수와 구분. 실제 최초 CPU 결과 반영; 원 draft PENDING은 준비 이력 |
+| 시각 | 새native/GPU/Chrome/PNG/save0, audio NOT_LISTENED, UI NOT_ASSESSED/VISUAL RETOUCH. 사용자 IAB14 old-loaded100% 무조작·미재로드·복제0, live반영/HTTPexact미인수·정상재진입소비 예정 |
+
+정적 후보227 원안은 보류 후 ROOT가 범위·수명·LOD를 한정 보정하여 부분 소비했다. 기존 ground153/GUI13 또는 후보 원문을 이번 제품 검수로 재실행·합산하지 않는다.
+
+### §23 MAP PRODUCTION REPORT
+
+| 표준 항목 | 이번 scope 보고 |
+|---|---|
+| STAGE | 등록 Rift terrain의 전경3cutout RGB 확대 재구성 소비 |
+| MASTER PLAN — silhouette / regions / main route / side spaces | 기존 실루엣·지역·남START/북EXIT·곁공간 보존. MASTER→LARGE OUTER MASS→MEDIUM CONNECTION→GROUND CONNECTION→PLAYABLE/COMBAT→LANDMARK/CENTER→SMALL DETAIL→CAMERA QA→TECH QA 순서를 적용하며 이번은 기존material 소비만 |
+| OUTER MASS — LEFT / RIGHT / TOP / SOUTH / major holes | 네 외곽 변경0/새평가0. 큰 구멍·원화의 없는 detail 해결 인수0 |
+| LARGE — source assets / composites / overlap / repeated silhouette | 새에셋·합성0, 겹침/반복실루엣 변경0·새평가0 |
+| MEDIUM — connections / remaining holes | 연결·빈공간 변경0/새평가0 |
+| GROUND — shadow / contamination / structure integration | 기존 지면0.5/그림자/오염/구조접지 유지. 이번 전경RGB0.4 외 배치변경0 |
+| PLAYABLE — main arenas / travel / breathing / threat / combat readability | 전투장·이동·휴식·위협공간/nav/충돌/진행 변경0. 새전경 실제전투가독성 미평가 |
+| LANDMARK — primary / secondary / tertiary | 세 단계 변경0/새평가0 |
+| CAMERA QA — START / EARLY / ARENA / SIDE_L / SIDE_R / LANDMARK / LATE / EXIT | 전부 이번native NOT_RUN. 카메라/actor크기/발좌표 변경0 |
+| TECH QA — route / collision / pageerror / HTTP404 / seam / loading / performance | 첫 controlled CPU Node1은 S01 PASS1/S02 비교오라클 FAIL1/28미도달/exit1 보존. 원 expanded map chunk와 legacy include를 비교하던 하네스만 정정하고 S01을 제외한 새한정 Node1/8그룹29조건 PASS·FAIL/setup/미도달/unhandled/uncaught0/exit0. 물리Node총2, 제품변경0/30clean합산0; 각 epoch actual source factory2+scalar factory1/VM0, 최종 fixture20/hook19. native Three material·ShaderLib 문자열 hook와 별도JS scalar비교만 검수, GLSL/GPU/pixel 실행0. 최초 CPU 검수 완료. route/실충돌/pageerror/404/seam/loading/HTTP exact native미검수. 지원식 정적대조만, 확대명목6fetch의 GPU/GLSL LINK 미인수 |
+| FILES — stage owned / concurrent touched / unrelated touched | ROOT terrain1hunk와 관련정본5append만. 타인WIP/gameforeign185B/3.3foreign2948B 미채택보존, unrelated수정0 |
+| GIT — staged / commit / push / deploy | 정확 소유code1/docs5 보존 예정, 최종 commit/push는 외부 completion-receipt.json §23 최종GIT 우선/deploy NOT_RUN |
+| VISUAL VERDICT | RETOUCH / UI NOT_ASSESSED / native NOT_RUN / NOT_LISTENED. 정적·자동성공을 실제화면PASS로 승격하지 않음 |
+| NEXT PASS | 별도 미채택 outer-river 후보를 stage SSOT/LOCK 및 사용자방향으로검토. CH1썩은강/타적합지역용암은 이번구현0·stage/좌표/geometry/배치/asset미확정. 정상재진입의 실제선명도/HTTP/픽셀은 별도Gate |
+
+보호 경계: 원PNG/scene/nav/stageLOCK 불변. held WOLF/STORY/tree-card payload 내용·hash 추가접근0, 거절 ART선택 우회0. 기존등록원본만소비하며 신규원화/디테일 생성·복원 주장은0이다.
