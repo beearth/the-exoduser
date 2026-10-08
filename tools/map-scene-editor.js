@@ -405,7 +405,21 @@
   function autosave() { clearTimeout(autosaveTimer); autosaveTimer = setTimeout(() => { try { localStorage.setItem(CACHE_KEY, JSON.stringify(current())); $('status').textContent = '로컬 복구 저장됨 · 프로젝트 JSON으로 보존하세요'; } catch (e) { $('status').textContent = '복구 저장 공간 부족 · 프로젝트 저장을 사용하세요'; } }, 500); }
   function changed(message) { groundDetail?.invalidate();groundDetail?.prepare(current());residentPreviewOrigin=null;invalidateResidentAccess(); ambienceScene = null; dialogueScene = null; residentGroundingScene = null; closeDialogue('scene-edited'); dirty = true; refresh(); autosave(); if (message) toast(message); }
   function mutate(fn, message) { if (busy) return; try { history.change(fn); changed(message); } catch (e) { toast(e.message); refresh(); } }
+  function originalAspectTarget() {
+    if(busy||playing||dialogueOpen||drag||history?.pending||batchIds.size>1)return null;
+    const pair=selectedPair();if(!pair||pair.l.locked||!pair.l.visible)return null;
+    const a=current().assets.find(a=>a.id===pair.o.assetId);
+    if(!a||![pair.o.height,a.crop?.w,a.crop?.h].every(v=>Number.isFinite(v)&&v>0))return null;
+    const width=pair.o.height*a.crop.w/a.crop.h;
+    if(!Number.isFinite(width)||width<1||width>32000||width===pair.o.width)return null;
+    return {o:pair.o,width};
+  }
+  function restoreOriginalAspect() {
+    const target=originalAspectTarget();if(!target)return;
+    mutate(()=>{target.o.width=target.width;},'원본 비율을 맞췄습니다 · 높이와 발 기준 위치 유지');
+  }
   function frameSelectionUI() {
+    $('original-aspect').disabled=!originalAspectTarget();
     const pair=selectedPair();
     $('frame-selection').disabled=busy||playing||dialogueOpen||!!drag||!!history?.pending||!objectFrameFactory||!pair?.l.visible||pair.l.parallax===0;
   }
@@ -634,6 +648,7 @@
   $('batch-move').onclick=moveBatch;
   $('workspace').addEventListener('focusin',e=>{if(['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))releaseHeld();});
   $('placement-save').onclick=()=>savePlacement(false);$('placement-reset').onclick=()=>savePlacement(true);
+  $('original-aspect').onclick=restoreOriginalAspect;
   $('pivot-pick').onclick=()=>{if(busy||playing||dialogueOpen)return;const q=selectedPair();if(!q||q.l.locked||!q.l.visible||batchIds.size>1)return;endDrag();tool=tool==='pivot'?'select':'pivot';paletteId=null;keys.clear();space=false;if(tool==='pivot'&&matchMedia('(max-width:760px)').matches)$('inspector').classList.add('mobile-hidden');palette();refresh();canvas.focus();};
   $('layer-sort').onchange=()=>mutate(p=>{p.layers.find(l=>l.id===layerId).sort=$('layer-sort').value;});
   $('layer-name').onchange=()=>mutate(p=>{p.layers.find(l=>l.id===layerId).name=$('layer-name').value;});
@@ -688,7 +703,7 @@
       else if(e.ctrlKey||e.metaKey||e.altKey||!['tab','enter',' ','arrowup','arrowdown','pageup','pagedown','home','end'].includes(key)||(e.repeat&&['enter',' '].includes(key)))e.preventDefault();
       return;
     }
-    if(['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;const key=e.key.toLowerCase();if(e.target.tagName==='BUTTON'&&[' ','enter'].includes(key)&&(e.target.closest('#scene-object-list')||e.target.matches('button[data-resident-preview]')||['scene-reveal-asset','scene-frame-selection','scene-object-prev','scene-object-next','scene-batch-all','scene-batch-clear','scene-batch-move'].includes(e.target.id)))return;if((e.ctrlKey||e.metaKey)&&key==='s'){e.preventDefault();$('save').click();return;}if((e.ctrlKey||e.metaKey)&&(key==='z'||key==='y')){e.preventDefault();(key==='y'||e.shiftKey?$('redo'):$('undo')).click();return;}if(key===' '){space=true;e.preventDefault();}if(playing){if(key==='f'&&!e.repeat&&!e.ctrlKey&&!e.metaKey&&!e.altKey){e.preventDefault();talk();return;}if(['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright'].includes(key)){keys.add(key);e.preventDefault();}if(key==='escape')$('play').click();return;}if(key==='f'&&e.shiftKey&&!e.ctrlKey&&!e.metaKey&&!e.altKey&&!e.repeat&&!e.isComposing&&!e.target.isContentEditable){if(frameSelected())e.preventDefault();return;}if(key==='escape'){if(tool==='pivot'){tool='select';if(matchMedia('(max-width:760px)').matches)$('inspector').classList.remove('mobile-hidden');refresh();return;}paletteId=null;clearBatch();selected=null;palette();refresh();}if(key==='delete'||key==='backspace'){e.preventDefault();$('delete').click();}if(key==='v')document.querySelector('[data-scene-tool="select"]').click();if(key==='b')document.querySelector('[data-scene-tool="walk"]').click();if(key==='e')document.querySelector('[data-scene-tool="block"]').click();});
+    if(['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;const key=e.key.toLowerCase();if(e.target.tagName==='BUTTON'&&[' ','enter'].includes(key)&&(e.target.closest('#scene-object-list')||e.target.matches('button[data-resident-preview]')||['scene-original-aspect','scene-reveal-asset','scene-frame-selection','scene-object-prev','scene-object-next','scene-batch-all','scene-batch-clear','scene-batch-move'].includes(e.target.id)))return;if((e.ctrlKey||e.metaKey)&&key==='s'){e.preventDefault();$('save').click();return;}if((e.ctrlKey||e.metaKey)&&(key==='z'||key==='y')){e.preventDefault();(key==='y'||e.shiftKey?$('redo'):$('undo')).click();return;}if(key===' '){space=true;e.preventDefault();}if(playing){if(key==='f'&&!e.repeat&&!e.ctrlKey&&!e.metaKey&&!e.altKey){e.preventDefault();talk();return;}if(['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright'].includes(key)){keys.add(key);e.preventDefault();}if(key==='escape')$('play').click();return;}if(key==='f'&&e.shiftKey&&!e.ctrlKey&&!e.metaKey&&!e.altKey&&!e.repeat&&!e.isComposing&&!e.target.isContentEditable){if(frameSelected())e.preventDefault();return;}if(key==='escape'){if(tool==='pivot'){tool='select';if(matchMedia('(max-width:760px)').matches)$('inspector').classList.remove('mobile-hidden');refresh();return;}paletteId=null;clearBatch();selected=null;palette();refresh();}if(key==='delete'||key==='backspace'){e.preventDefault();$('delete').click();}if(key==='v')document.querySelector('[data-scene-tool="select"]').click();if(key==='b')document.querySelector('[data-scene-tool="walk"]').click();if(key==='e')document.querySelector('[data-scene-tool="block"]').click();});
   window.addEventListener('keyup',e=>{keys.delete(e.key.toLowerCase());if(e.key===' ')space=false;});window.addEventListener('blur',()=>{closeDialogue('focus-lost');keys.clear();space=false;endDrag();});
   try{try{const module=await import('./map-scene-rift-dialogue.mjs');dialogueSceneSupport=module.supportsRiftDialogueScene;
       const response=await fetch('tools/team-followup-20261005/hell-rift/STORY/rift-dialogue.json',{cache:'no-store',redirect:'error'});

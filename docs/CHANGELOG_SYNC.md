@@ -56721,3 +56721,7 @@ alpha/nav/crop/UV/geometry/opacity/renderOrder/resource/dispose·skirt/backplane
 ## 2026-10-08 — 전사 돌진 피니셔 준비 자세의 2.5D 연결
 
 `ROOT-CH1-WARRIOR-FINISHER-WINDUP-RIG-20261008`: 기존 class0/finisher-windup 소유의 wWindup/atk1 최종 셀만 rig attack으로 표시한다. 앞선 준비 native 표기는 해당 epoch 이력이다. 기존9×80·phase(f+.5)/9·height32·위치(0,18)/speed.85를 재사용하며 새3타 콤보·공격 판정·비용·시간/save 변경0. [정확 계약](4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md#ch1-warrior-finisher-windup-rig-20261008). 첫 통제7그룹108확인/Node1 exit0·before 반례1 별도; 실제 화면/GPU/청취/save 미검수, RETOUCH/UI_NOT_ASSESSED. 최종 보존은 외부 `ch1-warrior-finisher-windup-rig-20261008/completion.json`.
+
+## 2026-10-08 — 에디터 선택 그림의 원본 비율 맞춤
+
+`ROOT-EDITOR-ORIGINAL-ASPECT-FIT-20261008`: 속성 패널 버튼으로 선택 그림의 높이와 발 기준 위치를 유지하고 `width=height*asset.crop.w/asset.crop.h`를 복원한다. 단일 선택·층 표시/잠금·편집 상태·1…32000 범위를 재검사하고 기존 History undo/redo/rollback을 사용한다. 기존 비율 유지 체크박스와 구분한다. 첫 로더 setup 실패1/제품 미도달 뒤 한정 보정한 제품 suite6그룹96확인/Node1 exit0(물리 Node2), 정적 source blocker0. 실제 화면/키보드/cache/GPU 미검수, RETOUCH/UI_NOT_ASSESSED. 정확 계약: [맵 씬 에디터](4.1맵디자인+설정/MAP_SCENE_EDITOR_20261005.md). 최종 보존: 외부 `editor-original-aspect-fit-20261008/completion.json`.

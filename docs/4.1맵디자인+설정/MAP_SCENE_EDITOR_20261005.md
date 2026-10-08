@@ -28,6 +28,20 @@
 
 이미지는 원본 bitmap 크기와 `crop`을 가진다. 배치 객체의 `width/height`는 **월드 px**다. 투명 여백·원본 해상도가 다른 이미지도 월드 너비를 같은 값으로 지정하면 크기를 맞출 수 있다. 기본 발 기준점은 `(pivotX,pivotY)=(0.5,1)`, 회전0°, 불투명도1, 반전false다. 수치 너비/높이 변경은 발 기준점을 유지하며, 모서리 핸들은 회전·반전을 고려해 반대 모서리를 고정한다. 비율 유지 기본 ON, 비율은 필드 편집 시작 시 고정하고 빈 숫자·비유한 값·0 이하 크기는 모델에 반영하지 않는다.
 
+### 선택 그림의 원본 비율 맞춤 (2026-10-08)
+
+`ROOT-EDITOR-ORIGINAL-ASPECT-FIT-20261008`: 속성 패널의 **원본 비율 맞춤**은 늘어난 선택 그림을 에셋의 표시 영역 비율로 되돌린다. 기존 비율 유지 체크박스는 편집 시작 시의 현재 비율을 유지하므로 별도 기능이다.
+
+| 항목 | 현재 계약 |
+|---|---|
+| 입력·계산 | 선택 객체의 높이를 유지하고 `width=height*asset.crop.w/asset.crop.h`. 전체 bitmap 비율·투명 alpha 경계·placementPreset 크기는 사용하지 않는다. |
+| 유지 | x/y·pivotX/Y·height·rotation·flipX·opacity·정규화 mask/feather/sourceParallax, 원본 crop·보행 그리드·카메라·다른 객체 |
+| 허용 | 단일 선택, 표시되고 잠기지 않은 층. busy/보행 시험/대화/drag/History.pending/복수 선택이면 버튼 비활성 및 클릭 재검사. |
+| 범위·no-op | height와 crop w/h가 유한 양수이고 계산된 width가1…32000일 때만 적용. 에셋 누락·동일 너비·범위 밖은 History/changed 호출0. |
+| 연결 | `originalAspectTarget` → `restoreOriginalAspect` → 기존 `mutate/History.change/validate`. 성공1회 undo, redo 가능; 검증 실패는 기존 rollback. Enter/Space 버튼 기본 활성 유지. |
+| 저장 | 사용자가 실행하면 기존 changed/500ms 로컬 복구 저장 경로를 사용한다. 새 저장 방식·스키마·타이머 없음. 이번 검수는 실제 cache/파일/save 쓰기를 실행하지 않았다. |
+| 검수 | 최초 하네스 모듈 로더 setup FAIL1로 제품 조건 미도달. 로더만 보정한 최초 제품 suite6그룹96확인/Node1·VM0/exit0(물리 Node총2). 실제 core validate/History와 전체 선택·변경 함수, 통제 DOM/changed 포트. 실제 화면·키보드·GPU·자동저장 미검수, RETOUCH/UI_NOT_ASSESSED. |
+
 아래 표는 자산별 `placementPreset`이 없을 때의 기본값이다. 명시 저장한 크기·피벗이 Unity 또는 일반 기본값보다 우선한다(§17).
 
 | 에셋 ID | 원본 px | 기본 배치 너비 world px | 제안 층 | 실제 출처 |
