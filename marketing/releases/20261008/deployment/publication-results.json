@@ -167,6 +167,9 @@
     "noRepeatedLoginRequests": true,
     "followupState": "WAITING_FOR_BOSS_REDESIGN",
     "pollIntervalMinutes": 60,
-    "watchState": "marketing/operations/boss-redesign-watch-20261009.json"
+    "watchState": "marketing/operations/boss-redesign-watch-20261009.json",
+    "lastCheckedAtUTC": "2026-10-09T05:48:38.271Z",
+    "producerCompletionConfirmed": false,
+    "producerLastReport": "드루이드 사선 원화 제작. 45° 방향 불명확으로 본편 적용 보류."
   }
 }
