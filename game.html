@@ -19747,6 +19747,48 @@ function _drawDruidRootsClip(v,sh,mix,dw,dh,alpha){
 
 registerVFX('druid_trail','assets/vfx/druid_trail.png',256,256,5,5);
 registerVFX('druid_dust','assets/vfx/druid_dust.png',256,256,8,8);
+// Authored burrow-ring frames share the legacy VFX phase and lifetime.
+const _druidDustClip={ready:false,image:null,clip:null,sample:null,rects:null};
+(async function _loadDruidDustClip(){
+  try{
+    const [runtime,response]=await Promise.all([
+      import('./tools/2_5d/atlas-clip-runtime.mjs?v=20261009-v1'),
+      fetch('assets/vfx/boss/druid_dust_24_20261010.clip.json?v=20261010-v1')
+    ]);
+    if(!response.ok)throw new Error('Druid dust resource unavailable');
+    const data=await response.json();
+    if(data.format!=='exoduser-atlas-clip'||data.version!==1||data.name!=='druid_dust'
+      ||data.sourcePath!=='assets/vfx/boss/druid_dust_24_20261010.png'
+      ||data.columns!==6||data.rows!==4||data.frameCount!==24||data.fps!==180/7||data.loop!==false)
+      throw new Error('Invalid Druid dust resource');
+    const clip=runtime.createAtlasClip(data),image=new Image();
+    image.onload=()=>{try{
+      const rects=Object.freeze(Array.from({length:clip.frameCount},(_,frame)=>
+        Object.freeze(runtime.getAtlasFrameRect(image,clip,frame,1))));
+      Object.assign(_druidDustClip,{image,clip,sample:runtime.sampleAtlasClip,rects,ready:true});
+    }catch(_){_druidDustClip.ready=false;}};
+    image.onerror=()=>{_druidDustClip.ready=false;};
+    image.src=data.sourcePath+'?v=20261010-v1';
+  }catch(_){_druidDustClip.ready=false;}
+})();
+function _drawDruidDustClip(v,sh,mix,dw,dh,alpha){
+  const state=_druidDustClip;if(!state.ready)return false;
+  // Restore the legacy visible ring radius; authored band occupies a smaller cell fraction.
+  dw*=1.2;dh*=1.2;
+  const fraction=v.bornGameTime!==undefined?mix:v.t/v.frameTime;
+  const progress=(v.frame+fraction)/v.maxFrames;
+  const frame=state.sample(state.clip,progress*state.clip.durationSeconds).frame;
+  const rect=state.rects[frame];
+  if(_vfxGLMode&&_queueVfxGL(state.image,rect.sx,rect.sy,rect.sw,rect.sh,
+    VW*.5+(v.x-G.cam.x),VH*.5+(v.y-G.cam.y),dw,dh,v.ang||0,alpha))return true;
+  X.save();try{
+    X.globalCompositeOperation=sh.blend||'lighter';X.globalAlpha=alpha;
+    X.translate(v.x,v.y);if(v.ang)X.rotate(v.ang);
+    X.drawImage(state.image,rect.sx,rect.sy,rect.sw,rect.sh,-dw/2,-dh/2,dw,dh);
+  }finally{X.restore();}
+  return true;
+}
+
 // (삭제됨: purple_impact, blue_impact, vfx_burn_death — 파일 미존재)
 registerVFX('explode_scarecrow','assets/vfx/scarecrow_boom.png',64,64,9,9); // 폭발허수아비 전용 대형폭발 (9x1, 9프레임, 불속성)
 // ─── 악의폭풍 Power Lightning 스프라이트 (3레이어, 스카이블루 틴트) ───
@@ -54589,6 +54631,9 @@ function draw(){
         if(_vw!==vi)_vfxAnims[_vw]=v;_vw++;continue;
       }
       if(v.id==='druid_hit'&&_drawDruidHitClip(v,sh,_vfMix,dw,dh,_vAlpha)){
+        if(_vw!==vi)_vfxAnims[_vw]=v;_vw++;continue;
+      }
+      if(v.id==='druid_dust'&&_drawDruidDustClip(v,sh,_vfMix,dw,dh,_vAlpha)){
         if(_vw!==vi)_vfxAnims[_vw]=v;_vw++;continue;
       }
       if(v.bornGameTime!==undefined){

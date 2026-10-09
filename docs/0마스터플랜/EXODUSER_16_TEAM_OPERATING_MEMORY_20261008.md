@@ -269,3 +269,8 @@ ROOT-DRUID-ORIGINAL-RELIEF-20261009: 기존 rig_motion 한 담당이 신규 원�
 ## 2026-10-10 — Druid 중앙 임팩트24 본편 표시 소비
 
 actual main druid_hit의4caller(드루이드 추적장판 폭발·균열 종착·ORB 폭발·bossDruidErupt 중앙 분출)가 새24셀을 소비한다. 기존 frame/maxFrames8/t/frameTime normalized phase, scale/angle/alpha·GLadditive/Canvaslighter·cull/budget5/종료·전투/RNG/save는 불변이다. 리소스6×4/24/fps180/7/loopfalse를 기존 진행에 재매핑하며 speed3은명목24, speed7은명목56render진행 단위이다. 안정게임초·24FPS·모든셀 자연노출 보장은0. 원본362×543/8셀은pending/실패 폴백으로 유지한다. 독립Canvas proof는본편정상줌·전체전투·GPU·동시성능·청취·실save·AAA인수와 구분하며 RETOUCH다. 다른임팩트도 필요한장수를 사용하되 성능검수전 렉없음·전체교체완료 주장은0. [정본](../5.1임펙트디자인/DRUID_HIT24_ENGINE_20261010.md).
+
+
+## 2026-10-10 — Druid 땅굴 진입·이탈 링24 본편 표시 소비
+
+actual main burrowStrike의 땅굴 진입·이탈 druid_dust 2caller가 새24셀 링을 소비한다. 원등록256×256/8셀8열·frameTime7·명목56render진행·기본 표시 진입2e.r/이탈2.6e.r·새링 draw×1.2(2.4e.r/3.12e.r)·원8폴백×1·원본중앙여백 정체성(후기 입자 미인수)·angle0·alpha/GLadditive/Canvaslighter·종료/cull/budget5/압축은 보존한다. 리소스6×4/24/fps180/7/loopfalse는 기존normalized phase로 매핑하며 새clock0/24FPS·안정게임초·모든셀 자연노출 보장0이다. 원8셀 pending/실패폴백·전투/RNG/save/SFX/원PNG 유지. 독립 actualmain helper Canvas proof는 본편 정상줌/전체전투/GPU/동시성능/청취/실save/AAA 인수와 구분한다. 다른임팩트도 필요한장수를 사용하되 성능검수전 렉없음·전체교체완료 주장은0. [정본](../5.1임펙트디자인/DRUID_DUST24_ENGINE_20261010.md).

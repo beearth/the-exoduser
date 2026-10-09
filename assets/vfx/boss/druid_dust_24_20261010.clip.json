@@ -1,0 +1,17 @@
+{
+  "format": "exoduser-atlas-clip",
+  "version": 1,
+  "name": "druid_dust",
+  "sourcePath": "assets/vfx/boss/druid_dust_24_20261010.png",
+  "columns": 6,
+  "rows": 4,
+  "frameCount": 24,
+  "fps": 25.714285714285715,
+  "loop": false,
+  "frameWidth": 544,
+  "frameHeight": 544,
+  "pivot": {
+    "x": 0.5,
+    "y": 0.5
+  }
+}
