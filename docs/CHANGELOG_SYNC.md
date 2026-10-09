@@ -56963,3 +56963,8 @@ nonfinal `bossCharge`의 세 `canMv` 시도 모두 막힌 분기에 기존 `boss
 ### 2026-10-10 보스 사망 혈흔24
 
 actual isBoss=true blood만 새640셀24원화로 표시하고 원16 alias·128×scale geometry/speed6·명목96진행/RNG/basealpha1.5·사망/음향/save를 보존한다. ready 지면override가우선/false몹16/새clip실패원16generic폴백. 새ready는Canvas source-over한셀(유효alpha clamp), 원GLadditive폴백은불변. [현재 정본](5.1임펙트디자인/BOSS_DEATH_BLOOD24_ENGINE_20261010.md). clip15FPS/1.6초는reference이며 실제게임시간 보장0; 새RGBA37.5MiB·원1MiB는정적환산/peak미검수. 실제보스전·성능/AAA미인수, VISUAL RETOUCH.
+
+
+### 2026-10-10 보스 화염비 용암24
+
+실제main fireRain착탄만 boss_lava_erupt24/640셀/6×4/32FPSreference.75초로표시하고 원9alias/768geometry/speed5·명목45진행/지면(.5,.75)/alpha.85·전투/RNG/save를유지한다. fireRain시작prefetch/초기자동로드0/sharedImage1·실패자동retry0. 새readyCanvaslighter한셀/원9generic폴백; elite·DarkPillar원9·easy-test미반영. [현재 정본](5.1임펙트디자인/BOSS_LAVA_ERUPT24_ENGINE_20261010.md). 새RGBA37.5MiB/원20.25MiB는정적환산/실peak·동시성능미검수. actualmain/정상줌/전체보스전/AAA미인수, VISUAL RETOUCH.

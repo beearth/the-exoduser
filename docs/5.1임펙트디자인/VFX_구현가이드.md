@@ -889,8 +889,8 @@ Ori 수준 대기 깊이감. 광원 근처에서 존재감 나는 미세 입자.
 | 대상 | 예고 중 바닥 | 폭발 순간 |
 |---|---|---|
 | 엘리트 M30 충격파·M32 포격 | 기존 `img/vfx_pentagram_red.png`를 피해반경 중심에 지름 `1.76×r`로 그린다. 회전 `now×0.00028rad`, alpha `.15+q×.13` (`q=clamp(1−t/dur,0,1)`). M19 낙뢰는 노란 속성 전조를 유지한다. | 각 장판 피해 판정 직후 `lava_erupt` 시트를 1회 재생한다. |
-| 보스 화염비 | 같은 붉은 마법진을 지름 `1.76×r`, 회전 `now×0.00028rad`, alpha `.12+min(1,t/delay)×.15`로 표시한다. `game.html`과 `game-easy-test.html`에 동일하게 적용한다. | 착탄 판정 프레임에 `lava_erupt`를 1회 재생한다. 이후 프레임에는 재시작하지 않는다. |
-| 분출 시트·위치 | 기존 `assets/vfx/boss/vfx_lava_erupt.png`, 3×3/9프레임, 셀 768×768을 재사용한다. | `playVFXAng('lava_erupt',x,y−size×.25,size/768,5,0,false,.85)`, `size=min(r×2.5,360)`; 약 45f 동안 바닥에서 위로 솟는다. 로딩 전에는 기존 폭발 파티클이 남는다. |
+| 보스 화염비 | 같은 붉은 마법진을 지름 `1.76×r`, 회전 `now×0.00028rad`, alpha `.12+min(1,t/delay)×.15`로 표시한다. 예고·판정은 불변. 이번 신규 소비는 `game.html`만이며 `game-easy-test.html`에는 반영하지 않았다. | `!hit && t>=delay`의 원 hit설정 뒤 `boss_lava_erupt` alias를 1회 요청한다. 새ready24/원9폴백이며 이후 프레임 재시작0. |
+| 분출 시트·위치 | 원 `assets/vfx/boss/vfx_lava_erupt.png`2304²/3×3/9/768셀은 엘리트M30/M32·악의기둥 직접3열0..8/3..8소비에 유지. 보스 alias는 원9객체·Image이고 새ready `boss_lava_erupt_24_20261010.png`3840×2560/640셀/6×4/24를 표시한다. | 원 `size=min(r×2.5,360)`,center(x,y−size×.25),scale=size/768,speed5/alpha.85/angle0 보존. 원9×5=45는 명목render진행; 새JSON32FPS/.75초는reference. fireRain시작prefetch/초기로딩0, 미준비원9·원입자폴백. [정본](BOSS_LAVA_ERUPT24_ENGINE_20261010.md) |
 
 이 마법진과 분출은 시각 전용이다. 기존 반경·피해·전조 시간·화염비 착탄 후 페이드 및 폭발 SFX를 변경하지 않는다. 회귀 검사는 `test/groundHazardImpact.test.cjs`와 `test/eliteTelegraphVisibility.test.js`를 사용한다.
 
@@ -1348,3 +1348,8 @@ nonfinal `bossCharge`의 세 `canMv` 시도 모두 막힌 분기에 기존 `boss
 ### 2026-10-10 보스 사망 혈흔24
 
 actual isBoss=true blood만 새640셀24원화로 표시하고 원16 alias·128×scale geometry/speed6·명목96진행/RNG/basealpha1.5·사망/음향/save를 보존한다. ready 지면override가우선/false몹16/새clip실패원16generic폴백. 새ready는Canvas source-over한셀(유효alpha clamp), 원GLadditive폴백은불변. [현재 정본](BOSS_DEATH_BLOOD24_ENGINE_20261010.md). clip15FPS/1.6초는reference이며 실제게임시간 보장0; 새RGBA37.5MiB·원1MiB는정적환산/peak미검수. 실제보스전·성능/AAA미인수, VISUAL RETOUCH.
+
+
+### 2026-10-10 보스 화염비 용암24
+
+실제main fireRain착탄만 boss_lava_erupt24/640셀/6×4/32FPSreference.75초로표시하고 원9alias/768geometry/speed5·명목45진행/지면(.5,.75)/alpha.85·전투/RNG/save를유지한다. fireRain시작prefetch/초기자동로드0/sharedImage1·실패자동retry0. 새readyCanvaslighter한셀/원9generic폴백; elite·DarkPillar원9·easy-test미반영. [현재 정본](BOSS_LAVA_ERUPT24_ENGINE_20261010.md). 새RGBA37.5MiB/원20.25MiB는정적환산/실peak·동시성능미검수. actualmain/정상줌/전체보스전/AAA미인수, VISUAL RETOUCH.

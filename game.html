@@ -19629,6 +19629,74 @@ registerVFX('dark_beam','assets/vfx/boss/vfx_dark_beam.png',768,768,9,3);
 registerVFX('holy_burst','assets/vfx/boss/vfx_holy_burst.png',768,768,9,3);
 registerVFX('void_black','assets/vfx/boss/vfx_void_black.png',768,768,9,3);
 registerVFX('lava_erupt','assets/vfx/boss/vfx_lava_erupt.png',768,768,9,3);
+// Boss fireRain only: original9 lifecycle/image fallback, authored24 Canvas clip.
+const _bossLavaEruptClip={ready:false,failed:false,image:null,clip:null,sample:null,rects:null,loadPromise:null};
+function _loadBossLavaEruptClip(){
+  if(_bossLavaEruptClip.loadPromise)return _bossLavaEruptClip.loadPromise;
+  _bossLavaEruptClip.loadPromise=(async()=>{
+    try{
+      const [response,runtime]=await Promise.all([
+        fetch('assets/vfx/boss/boss_lava_erupt_24_20261010.clip.json?v=20261010-v1'),
+        import('./tools/2_5d/atlas-clip-runtime.mjs?v=20261009-v1')
+      ]);
+      if(!response.ok)throw new Error('boss_lava_erupt metadata HTTP '+response.status);
+      const metadata=await response.json();
+      const keys=['format','version','name','sourcePath','columns','rows','frameCount','fps','loop'];
+      if(!metadata||typeof metadata!=='object'||Array.isArray(metadata)||
+        Object.keys(metadata).length!==keys.length||!keys.every(key=>Object.prototype.hasOwnProperty.call(metadata,key))||
+        metadata.format!=='exoduser-atlas-clip'||metadata.version!==1||metadata.name!=='boss_lava_erupt'||
+        metadata.sourcePath!=='assets/vfx/boss/boss_lava_erupt_24_20261010.png'||
+        metadata.columns!==6||metadata.rows!==4||metadata.frameCount!==24||metadata.fps!==32||metadata.loop!==false)
+        throw new Error('boss_lava_erupt metadata contract');
+      if(typeof runtime.createAtlasClip!=='function'||typeof runtime.sampleAtlasClip!=='function'||typeof runtime.getAtlasFrameRect!=='function')
+        throw new Error('boss_lava_erupt atlas runtime');
+      const clip=runtime.createAtlasClip(metadata);
+      if(clip.durationSeconds!==.75)throw new Error('boss_lava_erupt clip duration');
+      const image=new Image();
+      image.decoding='async';
+      await new Promise((resolve,reject)=>{
+        image.onload=()=>{image.onload=null;image.onerror=null;resolve();};
+        image.onerror=()=>{image.onload=null;image.onerror=null;reject(new Error('boss_lava_erupt image load'));};
+        image.src=metadata.sourcePath+'?v=20261010-v1';
+      });
+      const cell=image.naturalWidth/clip.columns;
+      if(!image.complete||(cell!==512&&cell!==640&&cell!==768)||image.naturalHeight/clip.rows!==cell)
+        throw new Error('boss_lava_erupt image grid');
+      const rects=Object.freeze(Array.from({length:clip.frameCount},(_,frame)=>Object.freeze(runtime.getAtlasFrameRect(image,clip,frame,1))));
+      _bossLavaEruptClip.image=image;
+      _bossLavaEruptClip.clip=clip;
+      _bossLavaEruptClip.sample=runtime.sampleAtlasClip;
+      _bossLavaEruptClip.rects=rects;
+      _bossLavaEruptClip.ready=true;
+    }catch(error){
+      _bossLavaEruptClip.ready=false;
+      _bossLavaEruptClip.failed=true;
+      console.warn('[VFX] boss_lava_erupt24 original9 fallback',error);
+    }
+  })();
+  return _bossLavaEruptClip.loadPromise;
+}
+function _drawBossLavaEruptClip(v,sh,_vfMix,dw,dh,_vAlpha){
+  if(!_bossLavaEruptClip.ready)return false;
+  let saved=false;
+  try{
+    const fraction=v.bornGameTime!==undefined?_vfMix:v.t/v.frameTime;
+    const progress=(v.frame+fraction)/v.maxFrames;
+    const sampled=_bossLavaEruptClip.sample(_bossLavaEruptClip.clip,progress*_bossLavaEruptClip.clip.durationSeconds);
+    const rect=_bossLavaEruptClip.rects[sampled.frame];
+    if(!rect)return false;
+    X.save();saved=true;
+    X.globalCompositeOperation='lighter';
+    X.globalAlpha=Math.max(0,Math.min(1,_vAlpha));
+    X.translate(v.x,v.y);if(v.ang)X.rotate(v.ang);
+    X.drawImage(_bossLavaEruptClip.image,rect.sx,rect.sy,rect.sw,rect.sh,-dw/2,-dh/2,dw,dh);
+    return true;
+  }catch(error){
+    return false;
+  }finally{
+    if(saved)X.restore();
+  }
+}
 registerVFX('chain_assault_impact','assets/vfx/chain_assault_impact_realistic.png',418,418,9,3);
 registerVFX('fire_burst','assets/vfx/fire_burst_radial.webp',512,288,41,7);
 // registerVFX('center_explode','assets/vfx/center_explode.webp',480,270,32,8); // 에셋 미존재 — 준비 시 복원
@@ -37507,7 +37575,7 @@ function update(){
   // ═══ 용암 장판 업데이트 ═══
   if(G._lavaPools&&G._lavaPools.length>0){let _lpW=0;for(let li=0;li<G._lavaPools.length;li++){const lp=G._lavaPools[li];lp.t+=sp;if(lp.t>=lp.warnT){lp.tickT=(lp.tickT||0)+sp;if(dst(P.x,P.y,lp.x,lp.y)<lp.r+P.r&&P.iframes<=0&&lp.tickT>=30){lp.tickT=0;hurtP(~~(lp.dmg*.4*elMul(lp.el,ar().el)));addTxt(P.x,P.y-15,'🔥','#ff4400',20)}}if(lp.t<lp.maxT)G._lavaPools[_lpW++]=lp}G._lavaPools.length=_lpW}
   // ═══ 화염비 업데이트 ═══
-  if(G._fireRains&&G._fireRains.length>0){let _frW=0;for(let fi=0;fi<G._fireRains.length;fi++){const fr=G._fireRains[fi];fr.t+=sp;if(!fr.hit&&fr.t>=fr.delay){fr.hit=true;SFX.detonate();shake(4);const _flameSize=Math.min(fr.r*2.5,360);playVFXAng('lava_erupt',fr.x,fr.y-_flameSize*.25,_flameSize/768,5,0,false,.85);if(dst(P.x,P.y,fr.x,fr.y)<fr.r+P.r&&P.iframes<=0&&P.s!=='charge'){hurtP(~~(fr.dmg*elMul(fr.el,ar().el)));const ka=Math.atan2(P.y-fr.y,P.x-fr.x);P.kb.x+=Math.cos(ka)*6;P.kb.y+=Math.sin(ka)*6}for(let k=0;k<8;k++){const a=Math.PI*2*k/8;poolPart(fr.x,fr.y,Math.cos(a)*4,Math.sin(a)*4,'#ff6600',3,8)}}if(fr.hit){fr._fadeT=(fr._fadeT||0)+sp;if(fr._fadeT>=20)continue}else if(fr.t>fr.delay+30)continue;G._fireRains[_frW++]=fr}G._fireRains.length=_frW}
+  if(G._fireRains&&G._fireRains.length>0){let _frW=0;for(let fi=0;fi<G._fireRains.length;fi++){const fr=G._fireRains[fi];fr.t+=sp;if(!fr.hit&&fr.t>=fr.delay){fr.hit=true;SFX.detonate();shake(4);const _flameSize=Math.min(fr.r*2.5,360);{const _frSheet=_VFX_SHEETS.lava_erupt;if(_frSheet?.img)_VFX_SHEETS.boss_lava_erupt=_frSheet;playVFXAng(_frSheet?.img?'boss_lava_erupt':'lava_erupt',fr.x,fr.y-_flameSize*.25,_flameSize/768,5,0,false,.85);}if(dst(P.x,P.y,fr.x,fr.y)<fr.r+P.r&&P.iframes<=0&&P.s!=='charge'){hurtP(~~(fr.dmg*elMul(fr.el,ar().el)));const ka=Math.atan2(P.y-fr.y,P.x-fr.x);P.kb.x+=Math.cos(ka)*6;P.kb.y+=Math.sin(ka)*6}for(let k=0;k<8;k++){const a=Math.PI*2*k/8;poolPart(fr.x,fr.y,Math.cos(a)*4,Math.sin(a)*4,'#ff6600',3,8)}}if(fr.hit){fr._fadeT=(fr._fadeT||0)+sp;if(fr._fadeT>=20)continue}else if(fr.t>fr.delay+30)continue;G._fireRains[_frW++]=fr}G._fireRains.length=_frW}
   // ═══ 전격 격자 업데이트 ═══
   if(G._shockGrids&&G._shockGrids.length>0){let _sgW=0;for(let si=0;si<G._shockGrids.length;si++){const sg=G._shockGrids[si];sg.t+=sp;if(sg.t>=sg.warnT){sg.tickT=(sg.tickT||0)+sp;if(sg.tickT>=25&&P.iframes<=0){const _dx=P.x-sg.x,_dy=P.y-sg.y;const _parD=Math.cos(sg.ang)*_dx+Math.sin(sg.ang)*_dy;const _perpD=Math.abs(-Math.sin(sg.ang)*_dx+Math.cos(sg.ang)*_dy);if(_parD>0&&_parD<sg.len&&_perpD<sg.w){sg.tickT=0;hurtP(~~(sg.dmg*.3*elMul(sg.el,ar().el)));addTxt(P.x,P.y-15,'⚡','#44ccff',20)}}}if(sg.t<sg.maxT)G._shockGrids[_sgW++]=sg}G._shockGrids.length=_sgW}
   // ═══ 도넛 장판 업데이트 ═══
@@ -38498,6 +38566,7 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
       const _frW=(G.mw||50)*T,_frH=(G.mh||42)*T;
       const _frCx=_frW/2,_frCy=_frH/2;
       const _frN=12+_frPh*4; // 12~28발
+      _loadBossLavaEruptClip();
       for(let fi=0;fi<_frN;fi++){
         G._fireRains.push({x:_frCx+(Math.random()-.5)*(_frW*.7),
           y:_frCy+(Math.random()-.5)*(_frH*.7),
@@ -54786,6 +54855,9 @@ function draw(){
       if(_vAlpha<0.05&&!v.isSkill)continue;
       if(v.x<_vl-dw||v.x>_vr+dw||v.y<_vt-dh||v.y>_vb+dh){if(_vw!==vi)_vfxAnims[_vw]=v;_vw++;continue}
       if(++_vDrw>_vfxBudgetCap&&!v.isSkill){if(_vw!==vi)_vfxAnims[_vw]=v;_vw++;continue}
+      if(v.id==='boss_lava_erupt'&&_drawBossLavaEruptClip(v,sh,_vfMix,dw,dh,_vAlpha)){
+        if(_vw!==vi)_vfxAnims[_vw]=v;_vw++;continue;
+      }
       if(v.id==='boss_death_blood'&&_drawBossDeathBloodClip(v,sh,_vfMix,dw,dh,_vAlpha)){
         if(_vw!==vi)_vfxAnims[_vw]=v;_vw++;continue;
       }
