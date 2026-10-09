@@ -41403,6 +41403,7 @@ function updateE(e,sp){
       for(let k=0;k<16;k++){const a=Math.PI*2*k/16;
         poolPart(e.x+Math.cos(a)*15,e.y+Math.sin(a)*15,Math.cos(a)*6,Math.sin(a)*6,'#996633',4+Math.random()*3,14)}
       for(let k=0;k<10;k++){poolPart(e.x+(Math.random()-.5)*40,e.y+(Math.random()-.5)*40,(Math.random()-.5)*3,-Math.random()*5-2,'#ff6600',2+Math.random()*2,10)}
+      playVFXAng('boss_meteor_hit',e.x,e.y,150/768,2,0,false);
       e.s='recover';e.st2=40;_druidSlamDisplayRelease(e);
     }break}
   // ═══ 횡두르기 (sweep) - 넓은 호 공격 ═══
