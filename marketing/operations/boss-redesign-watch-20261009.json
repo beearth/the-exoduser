@@ -13,10 +13,10 @@
     "threadId": "01a0faa9-b453-7673-be39-98adedb4c2b3",
     "hostId": "local",
     "title": "맥북에서 총괄 시작하기",
-    "afterCursor": "b2476eee-d767-4cd1-8064-9706586fb10a:16",
+    "afterCursor": "b2476eee-d767-4cd1-8064-9706586fb10a:17",
     "lastObservedStatus": "active",
     "lastObservedTurnStatus": "inProgress",
-    "lastObservedTurnId": "01a12240-e32b-7162-a0db-726ff5d7234e",
+    "lastObservedTurnId": "01a1225c-59c8-7451-9bec-3de815890f90",
     "lastObservedReport": "보스 점프 착지에 기존 24장 지면 충격 효과를 연결하고 커밋·푸시했다는 보고. 피 효과와 중복 없이 이미지 미준비 시 기존 효과 유지. 실제 전투 화면·렉 검수는 남아 있음."
   },
   "completionConfirmed": false,
@@ -34,6 +34,6 @@
     "게임·서버·사용자 탭·세이브 무조작",
     "완성 후 검수본부터 인도, 사용자 검수 전 자동 공개 금지"
   ],
-  "lastCheckedAtUTC": "2026-10-09T20:05:10.243Z",
+  "lastCheckedAtUTC": "2026-10-09T21:05:10.140Z",
   "lastCheckResult": "총괄의 새 턴이 inProgress이며 새 보고는 아직 없음. 보스전 전체 리디자인 완료·정상 본편 촬영 가능 상태 미확인. 촬영·제작·게시 및 반복 요청 없음."
 }
