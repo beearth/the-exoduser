@@ -17,6 +17,7 @@
   document.addEventListener('DOMContentLoaded',()=>{const n=document.createElement('div');n.id='bossReviewNotice';n.textContent='보스 연습 · 저장 차단';n.style.cssText='position:fixed;bottom:8px;left:50%;transform:translateX(-50%);z-index:80;padding:5px 12px;border:1px solid #776244;border-radius:6px;background:#151119e8;color:#e6d3af;font:12px sans-serif;pointer-events:none';document.body.append(n);},{once:true});
 })();
 </script>
+<script src="tools/2_5d/druid-art-review.js?v=20261009-max-sw"></script>
 <script src="player-attack-remaster.js?v=20260915-spin-speed15"></script>
 <script src="warrior-bat-swing.js?v=20260915-speed85"></script>
 <script src="warrior-dash-flight.js?v=20260924-flight1"></script>
@@ -11110,6 +11111,7 @@ function _druidSummonDisplayFrame(e,observe=false){
 }
 const _druidTransformWind=new WeakMap(); // Display timing only; no combat clock changes.
 function _drawDruidBoss(X,e,sa,tdY,spec,parentScale,parentYOffset){
+  if(window._druidArtReview?.draw(X,e,sa,tdY,spec,G.stage,_druidDir(e)))return true;
   const _fanFrame=_druidFanDisplayFrame(e);
   const _burstFrame=_druidBurstDisplayFrame(e);
   const _slamFrame=_druidSlamDisplayFrame(e);
@@ -63884,6 +63886,7 @@ _btWait(()=>{
     if(window._btBoss){window._btBoss._origSpd=window._btBoss.speed;_btUpdateInfo()}
     // _btScaleMul / _btOffsetY는 전역 기본값(4.0 / 0) 그대로 사용
     _btBuildUI();
+    window._druidArtReview?.attach(window._btBoss);
   },500);
 },50);
 

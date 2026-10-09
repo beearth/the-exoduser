@@ -1,3 +1,7 @@
+## 2026-10-09 — 고품질 원화의 본편 정지 비교
+
+Higgsfield GPT Image 2.5 max/4K 요청의 SW 원화1장(실제2336×3504)을 본편의 명시 bossReview/bosstest0/bossArtReview=druid-sw-max에서 frozen idle/nativeDir1만 소비한다. 원본/후보 비교이며 기존 8방향·공격·리그·전투는 유지한다. [등록·폴백·검수 정본](DRUID_HIGGSFIELD_MAX_ART_REVIEW_20261009.md). 생성 픽셀/CPU30조건/소스 peer0만 확인, 실제 main·정상 줌·3D·A급 미인수, VISUAL RETOUCH.
+
 # 원화 방향 시트 기반 2.5D 캐릭터 스킨 리깅 시험 — 2026-10-06
 
 ## 2026-10-09 — 새 변신 원화와 원본 NORMAL rig 범위

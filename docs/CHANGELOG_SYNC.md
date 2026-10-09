@@ -1,3 +1,7 @@
+## 2026-10-09 — ROOT-DRUID-MAX-QUALITY-SW-20261009
+
+Higgsfield GPT Image 2.5 sunburst/max/4k/transparent/2:3/count1의 실제2336×3504 PNG1장과 본편 review 전용 소비를 추가했다. game 헤더/actual draw 진입/기존 test UI attach의 own3hunk, tools/2_5d/druid-art-review.js. bossReview=1·bosstest=0·bossArtReview=druid-sw-max의 frozen idle SW만 후보를 표시하며 원본 버튼/로딩 실패/AI 재개/공격은 기존 소비다. 원본 PNG·시트·전투/save 불변. 등록/프롬프트/규격/검수는 [정본](4.0케릭터스프라이트%20디자인/DRUID_HIGGSFIELD_MAX_ART_REVIEW_20261009.md). 최초 Node1/7그룹30조건 PASS·정적 source peer0, 생성 픽셀 RETOUCH; actual main/정상 줌/성능/청취/save/다방향·3D·A급 미인수.
+
 ## 2026-10-09 — Higgsfield Ultra 제작 경로 전환
 
 사용자 직접 지시에 따라 AGENTS의 신규 에셋 제작 경로를 Higgsfield 우선으로 전환하고 [공급자 정본](10ai에셋프롬프트모음/IMAGE_PROVIDER_PRIORITY_20260925.md)·운영 메모리를 동기화했다. 이전 MagicLight 잔여 포인트 우선/고갈 후 전환 규칙은 이력이다. 연결 계정 Ultra/3000크레딧을1회 확인했으며, 무료·무제한·3D 호출 가능을 단정하지 않는다. 이번은 정책/담당 지시 전환이고 새 생성 job·제품 코드·에셋 쓰기0이다. 원본·승인본·held·타인 WIP·save·사용자 탭/서버를 보존한다. 최종 보존은 외부 `higgsfield-ultra-provider-policy-20261009/completion.json`이다.

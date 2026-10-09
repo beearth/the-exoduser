@@ -1,3 +1,7 @@
+## 2026-10-09 — Druid 최대 품질 원화의 SW 정지 검토
+
+[현행 원화 비교 계약](../4.0케릭터스프라이트%20디자인/DRUID_HIGGSFIELD_MAX_ART_REVIEW_20261009.md). bossReview=1/bosstest=0/bossArtReview=druid-sw-max에서 현재 Druid·stage0·frozen idle·nativeDir1·image ready만 새 정지원화를 표시한다. AI 재개·공격·실패는 기존 consumer로 복귀한다. 기존 dh14.1r·idle body591/foot603/셀620에 후보 body3356/foot3386을 고정 등록하며 전투/판정/기존 모션·save를 바꾸지 않는다. 실제 main 화면·다방향/리깅/A급 미인수, RETOUCH.
+
 # 보스 배틀 세팅 바이블
 
 2026-10-09 현행: [Druid 독탄 core/잔광/키 배치](../5.1임펙트디자인/DRUID_PROJECTILE_READABILITY_20261009.md)와 [공개 발사·피격음](../6사운드디자인/DRUID_POISON_PUBLIC_SFX_20261009.md)을 main에 시험 연결했다. blackBean Q전용/E불가·물리E원/마법Q마름모·전투 수치는 유지하며, 본편 정상줌·실전 음질·A급은 미인수/RETOUCH다.

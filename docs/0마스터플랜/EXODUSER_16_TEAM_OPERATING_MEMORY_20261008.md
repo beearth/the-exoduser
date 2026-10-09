@@ -1,3 +1,7 @@
+## 2026-10-09 — 최신 본편 연결: 최고 품질 Druid 원화 비교
+
+ROOT-DRUID-MAX-QUALITY-SW-20261009: Higgsfield max/4K 요청의 SW 정지1장(2336×3504)과 actual main opt-in 비교를 연결했다. [정확 계약](../4.0케릭터스프라이트%20디자인/DRUID_HIGGSFIELD_MAX_ART_REVIEW_20261009.md). 원본 정체성은 유지됐지만 깃털 밀도·골반/양발 방향·접지는 RETOUCH. 일반 보스 외형/걷기/공격/3D 교체0, actual main 정상 줌·성능·청취/save/A급 미인수. 첫 Node1/7그룹30조건과 소스 peer0은 본편 화면 인수를 대신하지 않는다. 기존3387 복구/Mac 잠금 해제 질문 미응답, 서버/native/사용자 탭 무조작. 완료 검사의 반복·새팀round·거대STATE 확대0. 외부 E/druid-max-quality-sw-20261009/completion.json을 최종 보존 정본으로 사용한다.
+
 ## 최신 직접 지시 — 2026-10-08: 실제 제작 한 건씩
 
 2026-10-09 사용자 Ultra 업그레이드·전환 지시에 따라 신규 에셋 제작은 연결된 Higgsfield를 우선 사용한다. [공급자 정본](../10ai에셋프롬프트모음/IMAGE_PROVIDER_PRIORITY_20260925.md)을 따른다. 이번 계정 관측은 ultra/3000크레딧이며 무료·무제한·3D 실행 가능으로 확대하지 않는다. 이전 MagicLight 잔여 포인트 우선 규칙은 이력으로 전환했다. 원본/승인본/held/타인WIP/본편/사용자환경 보호와 기존3387 복구·잠금 해제 질문 대기는 유지한다.

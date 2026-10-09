@@ -1,3 +1,7 @@
+## 2026-10-09 — 최고 품질의 첫 Druid 본편 비교 후보
+
+사용자 최고 품질 제작 지시로 Higgsfield gpt_image_2_5/sunburst, max/4k/transparent/2:3/count1을 실제 사용했다. [원본 참조·프롬프트·출력·비용·consumer 정본](../4.0케릭터스프라이트%20디자인/DRUID_HIGGSFIELD_MAX_ART_REVIEW_20261009.md). 실제 결과2336×3504/원화1장이며 3D·전체 모션·A급 완료를 뜻하지 않는다. estimate15 credits와 최종 청구 UNKNOWN을 구분한다. 잔액 반복조회·구매0.
+
 # 에셋 생성 서비스 우선순위 — 2026-10-09 Higgsfield Ultra 전환
 
 ## 현행 규칙 (2026-10-09 사용자 직접 지시)
