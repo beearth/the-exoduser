@@ -4,7 +4,7 @@
  * Players and the normal Druid boss use their original directional artwork.
  */
 import * as THREE from '../../assets/vendor/three-r160/build/three.module.js';
-import {createCharacterRig} from './character-rigs.mjs?v=druid-original-alpha-20261009-v8';
+import {createCharacterRig} from './character-rigs.mjs?v=locomotion-phase-20261009-v9';
 import {prepareRigMotion} from '../engine/rig-motion.mjs?v=20261009-v1';
 import {CHARACTER_RIG_CATALOG,characterRigFrame} from './character-rig-catalog.mjs';
 

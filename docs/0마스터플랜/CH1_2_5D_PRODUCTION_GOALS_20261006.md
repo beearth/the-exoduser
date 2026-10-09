@@ -1489,7 +1489,7 @@ API synthetic 10회는 모두 `POST /api/mats`, forwarded0이다. `POST /api/sav
 
 ### 2026-10-08 — 본편 드루이드 원본 자세 보존
 
-2026-10-08 원본 복구 v5 뒤 당시 game adapter 두 import와 factory import는 `druid-authored-pose-20261008-v6`였다. 2026-10-09 소환 표시 당시 game adapter 두 import는 `druid-summon-display-20261009-v7`, factory는 v6였다. 자체 엔진 모션 연결 당시 game adapter v8/factory v7이었다. 현행 본편은 game adapter `druid-original-alpha-20261009-v9`/factory `druid-original-alpha-20261009-v8`이며 borrowedSheet에만 alphaTest=1/255·transparent=true·depthWrite=false를 적용한다. 아래 모션 계약과 DIRECTIONAL의 `druid-original-alpha-20261009` 현행 재질 계약을 함께 따른다. borrowedSheet Druid의 pose()는 rest 복구 후 범용 흔들림·공격 변형을 생략한다. 그려진 셀/방향·프레임시간·전투/save는 보존. sheet 없는 기존 경로는 유지한다. 최초 준비 URL 오류(제품未도달)와 보정 뒤6그룹 CPU PASS는 별도 이력이며 본편 화면/GPU·입체 모델·A급 인수는 미완료다. [정본 계약](../4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md).
+2026-10-08 원본 복구 v5 뒤 당시 game adapter 두 import와 factory import는 `druid-authored-pose-20261008-v6`였다. 2026-10-09 소환 표시 당시 game adapter 두 import는 `druid-summon-display-20261009-v7`, factory는 v6였다. 자체 엔진 모션 연결 당시 game adapter v8/factory v7이었다. 현행 본편은 game adapter `locomotion-phase-20261009-v10`/factory `locomotion-phase-20261009-v9`이며 borrowedSheet에만 alphaTest=1/255·transparent=true·depthWrite=false를 적용한다. 아래 모션 계약과 DIRECTIONAL의 `druid-original-alpha-20261009` 현행 재질 계약을 함께 따른다. borrowedSheet Druid의 pose()는 rest 복구 후 범용 흔들림·공격 변형을 생략한다. 그려진 셀/방향·프레임시간·전투/save는 보존. sheet 없는 기존 경로는 유지한다. 최초 준비 URL 오류(제품未도달)와 보정 뒤6그룹 CPU PASS는 별도 이력이며 본편 화면/GPU·입체 모델·A급 인수는 미완료다. [정본 계약](../4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md).
 
 ## 2026-10-09 — 자체 엔진의 리그 모션 재생 연결
 

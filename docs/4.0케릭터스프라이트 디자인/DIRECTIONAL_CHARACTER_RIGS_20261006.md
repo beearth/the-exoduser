@@ -41,7 +41,7 @@ rig.update(dt, { mode: 'walk', direction: 2, speed: 1.35 });
 | `createCharacterRig(id,{THREE,height=2.2})` | Promise. 지원 id와 실제 Three SkinnedMesh/Bone/Skeleton 확인. 높이는 finite, 0 초과 20 이하. 모든 해당 이미지의 정확 크기 검사 후에만 visible=true |
 | 반환 | frozen `{object3d,update,snapshot,dispose}`. caller의 object3d position/quaternion/scale 소유권 유지 |
 | `update(dt,{mode,direction,phase?,speed?})` | mode=`idle/walk/run/attack`, direction 정수0…7. dt finite이면0…0.05초 clamp, 그렇지 않으면0. 모드 변경 시 elapsed=0. bone pose 및 선택 셀 갱신 |
-| `phase` | finite값이면0…1 clamp 후 시트 프레임 선택에 사용. 생략하면 elapsed의 loop phase. 공격0…1 진행과 pose를 caller가 명시할 수 있음 |
+| `phase` | finite값이면0…1 clamp 후 시트 프레임 선택과 walk/run Bone angle=normalizedPhase×2π에 함께 사용. 생략하면 elapsed의 loop phase. 공격0…1 진행은 기존 hit pose에 사용 |
 | `speed` | finite값을 object3d.userData.motionSpeed에 관찰용 기록. world position·이동량·피해·공격속도에 적용하지 않음 |
 | `snapshot()` | source rectangle/anchor/pins와 metadata 핀, 현재 mode/direction/frame/elapsed, 실제 bone pose, vertex/triangle/bone/mesh 수, weight 검증 횟수·최대오차, disposed와 한계 반환; nullable `posePublication`(frozen record 자체 identity token: normalizedPhase/mode/direction/frame/elapsed/source)을 함께 반환. publication은 rig 내부 mesh/skeleton 갱신 완료만 뜻하며 caller world post-transform·texture 제자리 변경까지 증명하지 않음 |
 | `dispose()` | idempotent. 이 rig의 geometry/material/skeleton/Texture GPU 자원과 이미지 lease 해제, visible=false/removeFromParent. caller renderer/카메라/세이브/RAF를 해제하지 않음 |
@@ -169,7 +169,7 @@ idle X anchor=(right−left)/2, Y anchor=h, referenceHeight=h. walk/run X anchor
 | 그 외 | torso | .45 |
 | 외곽 abs(X/height)>.60 | torso | .15(앞 조건을 덮어씀) |
 
-pose strength=.012rad. cycle은 idle2.4 / walk7 / run11 / attack6 rad/초. wave=sin(time×cycle), counter=cos(time×cycle). torso Z회전 wave×strength(idle는×.32), head −wave×strength×.55. waist Y이동 abs(wave)×height×strength×(idle .12 / 그외 .45). robe-left wave×strength / robe-right −counter×strength. 양팔은 counter×strength×.7의 반대 부호, 전완은 wave×strength×.5의 반대 부호. walk/run 발 Bone의 Y는 max(0,±wave)×height×strength×.45. attack은 sin(π×phase)에 torso×strength×1.4, 양팔×strength×1.8의 반대 부호를 추가한다.
+pose strength=.012rad. walk/run은 frame 선택에 사용한 normalizedPhase×2π를 angle로 사용한다. idle2.4 / attack6 rad/초는 기존 time×cycle을 유지한다. wave=sin(angle), counter=cos(angle). 명시 phase가 있으면 walk/run의 Bone pose는 별도 elapsed history와 무관하며, 생략하면 기존 interval×frameCount의 loop phase에 맞춘다. torso Z회전 wave×strength(idle는×.32), head −wave×strength×.55. waist Y이동 abs(wave)×height×strength×(idle .12 / 그외 .45). robe-left wave×strength / robe-right −counter×strength. 양팔은 counter×strength×.7의 반대 부호, 전완은 wave×strength×.5의 반대 부호. walk/run 발 Bone의 Y는 max(0,±wave)×height×strength×.45. attack은 sin(π×phase)에 torso×strength×1.4, 양팔×strength×1.8의 반대 부호를 추가한다.
 
 이 변형은 원화 장비 실루엣을 보존하기 위한 작은 기술 후보다. 실제 사람의 복잡한 관절각·옷 시뮬레이션·입체 전신 외형·관절 분리 원본이 생긴 것으로 설명하지 않는다. 원본 보행/공격 셀 변화와 Bone 연속 변형을 함께 확인해야 한다.
 
@@ -1958,7 +1958,7 @@ VISUAL VERDICT: **RETOUCH**. 어깨 구형 윤곽을 제거했으나 얼굴/외�
 |---|---|
 | 적용 | `createCharacterRig`의 검증된 dark-druid borrowedSheet에만 alphaTest=1/255, transparent=true, depthWrite=false. sheet 없는 catalog/public/packed는 .08/false/true 그대로. DoubleSide·toneMapped=false 유지 |
 | 알파 의미 | r160 OPAQUE의 통과 픽셀 alpha1 덮어쓰기를 해제하고 기존 PNG/Linear sample 알파를 NormalBlending으로 합성. 1/255 미만의 양수 sample은 여전히 잘림. 원본 UV inset.5px 때문에 integer crop과 픽셀 완전 일치는 아님 |
-| import | main adapter 두 import=`ch1-player-rig.mjs?v=druid-original-alpha-20261009-v9`; adapter의 factory import=`character-rigs.mjs?v=druid-original-alpha-20261009-v8`. 편집기/public 예제의 이전 URL은 별도 소비처 |
+| import | main adapter 두 import=`ch1-player-rig.mjs?v=locomotion-phase-20261009-v10`; adapter의 factory import=`character-rigs.mjs?v=locomotion-phase-20261009-v9`. 편집기/public 예제의 이전 URL은 별도 소비처 |
 | 보존 | 원 PNG·RGB 입력·UV·609정점/12본·원화 자세·cache 수명·gameplay/save/RAF/timer 유지. 원화 알파 파일을 수정하지 않음. 기존 main 밝기·rim·합성은 별도이며 변경 없음 |
 | 비용 | transparent DoubleSide는 r160에서 BackSide→FrontSide 두 제출. 현재 평면의 뒤 pass는 cull되며 이중 알파 합성을 뜻하지 않음. 새 FPS/성능·device 자원 해제 보장 검수 없음 |
 | 최초 native | 실제 whole factory 전후 source를 Blob module로 로드(import와 import.meta.url의 URL만 fixture 재기준화), local Three r160/실제 PNG/분리된 WebGLRenderer로 idle414×620·attack2 221×222 비교. 19조건PASS/FAIL0, GL error0/실행 shader link 검사, pose/geometry/UV 전후 exact. 전체 main adapter·정상 줌·실제 보스전 검수 아님 |
@@ -1966,3 +1966,27 @@ VISUAL VERDICT: **RETOUCH**. 어깨 구형 윤곽을 제거했으나 얼굴/외�
 | 사용자 상태 | 기존 cutout17 readonly snapshot exact·DOM에 canvas 추가0·사용자 main14/모션15/sprite16 무조작. API/storage/save 불변은 미계측 UNKNOWN. 열린 oldloaded main 자동적용 주장 없음 |
 
 **VISUAL VERDICT: RETOUCH**. 분리 GPU 비교에서 뿔·망토 경계와 녹색 잔광이 원본 알파에 가까워졌다. 본편 정상 줌 가독성·입체 외형·360도·새 모션·A급은 미인수. 증거: `E/druid-original-alpha-consumer-20261009/native-comparison.png`, 최종 소유 Git: 같은 폴더 `completion.json`.
+
+
+## 2026-10-09 — 본편 보행 셀과 리그 위상 동기화
+
+`ROOT-PLAYER-LOCOMOTION-PHASE-CONSUMER-20261009`. 기존 주인공의 원화 스프라이트 셀과 발·허리 변형이 서로 다른 시계로 진행되던 표시 계약을 맞춘다.
+
+| 항목 | 현행 계약 |
+|---|---|
+| 보행/달리기 | `angle=(mode==='walk'||mode==='run')?phase*Math.PI*2:time*cycle`. 여기 phase는 update에서 선택 셀에 사용한 normalizedPhase이며 wave/counter는 sin/cos(angle) |
+| 보존 | idle/attack의 기존 elapsed 파형·attack hit, poseStrength=.012, 프레임 수/PNG/UV/발anchor/geometry/전투/이동/save 불변. borrowed Druid는 기존 rest 복구 후 return하여 합쳐진 원화에 관절 변형을 덧붙이지 않음 |
+| 연결 | actual main adapter 두 import=`locomotion-phase-20261009-v10`, adapter factory import=`locomotion-phase-20261009-v9`. 기존 편집기의 별도 URL은 유지 |
+| 남은 범위 | 새3D 모델·새24자세·양발IK·미끄러짐 제거·정상 본편 시각/A급 완료를 뜻하지 않음. VISUAL VERDICT: UI_NOT_ASSESSED/RETOUCH |
+
+외부 증거: `E/player-locomotion-phase-consumer-20261009/`의 `preflight.json`, `own-change-receipt.json`, `completion.json`. 실제 실행과 최종 Git 결과는 completion 우선.
+
+| 실제 검수 epoch | 결과와 범위 |
+|---|---|
+| 최초 준비 | VM loader link 실패, 제품 조건 미도달·exit1 |
+| 최초 actual Three | 15PASS/1FAIL·exit1. borrowed raw 정점에 1e-12 동일을 요구한 oracle 실패 이력 보존 |
+| 한정 delta | 이전 통과 그룹 재실행 없이 14PASS/0FAIL·exit0. borrowed before/final 본·actual 정점 차이0, 기존 Float32 weight 오차의 독립 예측 잔차0 |
+| 시각 인수 | 본편·GPU·정상 줌·발 미끄러짐·새 3D·24자세·A급 미인수. UI_NOT_ASSESSED / RETOUCH |
+| 외형 별도 후보 | Seedream 5.0 Pro 7514186928503943168, `druid-clean-front-original.png` 2964079B / ae5a8394fb51c89b1cba85cd328a129d1fb8c3d528e64cfdb9c04b705717bfc1. 해골·뿔 유지/깃털·뿌리·발광 축소한 정면 정지 1장만 제작. 가슴 녹색 장식2 관측. 본편 채택0·다방향/공격/3D 미제작 |
+
+검수 원문은 `player-locomotion-phase-consumer-20261009/own-change-receipt.json`의 별도 epoch를 따른다. PASS 합산0. 외형 후보는 동작/방향 일관성을 확보하기 전 본편 완성으로 표시하지 않는다.

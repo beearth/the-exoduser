@@ -11956,7 +11956,7 @@ let _ch1PlayerRig=null,_ch1RigAlive=true,_ch1RigImportFailed=false,_ch1RigBodyFr
 const _ch1RigStats={bodyFrames:0,attackFrames:0,recoveryFrames:0,packedBodyFrames:0,ghostFrames:0,legacyFrames:0,lastState:'awaiting-main-body'};
 if(_ch1RigRequested){
   window.addEventListener('pagehide',()=>{_ch1RigAlive=false;_ch1RigBodyFrame=null;_ch1RigGroundContact=null;if(_ch1PlayerRig){if(typeof _freeMapTex==='function')_freeMapTex(_ch1PlayerRig.canvas);_ch1PlayerRig.dispose();}},{once:true});
-  import('./tools/2_5d/ch1-player-rig.mjs?v=druid-original-alpha-20261009-v9').then(module=>{if(_ch1RigAlive)_ch1PlayerRig=module.createCh1PlayerRig();}).catch(()=>{_ch1RigImportFailed=true;});
+  import('./tools/2_5d/ch1-player-rig.mjs?v=locomotion-phase-20261009-v10').then(module=>{if(_ch1RigAlive)_ch1PlayerRig=module.createCh1PlayerRig();}).catch(()=>{_ch1RigImportFailed=true;});
 }
 function _ch1RigCombatOwnerCurrent(phase){
   const owned=_ch1RigStrikeOwner;
@@ -12107,7 +12107,7 @@ const _ch1DruidNative=_ch1DruidCaptureNative();
 const _ch1DruidStats={decodeStarts:0,decodeReady:0,decodeFailures:0,bodyFrames:0,legacyFrames:0,lifeChanges:0,lastState:'awaiting-normal-boss'};
 if(_ch1RigRequested){
   window.addEventListener('pagehide',()=>{_ch1DruidAlive=false;for(const r of _ch1DruidActors.values())r.active=false;_ch1DruidActors.clear();_ch1DruidScene=null;for(const lease of _ch1DruidLeases)_ch1DruidCloseLease(lease,'pagehide');if(_ch1DruidRig){try{if(typeof _freeMapTex==='function')_freeMapTex(_ch1DruidRig.canvas);}catch(_){}try{_ch1DruidRig.dispose();}catch(_){}}},{once:true});
-  import('./tools/2_5d/ch1-player-rig.mjs?v=druid-original-alpha-20261009-v9').then(module=>{if(_ch1DruidAlive)_ch1DruidRig=module.createCh1PlayerRig();}).catch(()=>{_ch1DruidStats.lastState='module-unavailable';});
+  import('./tools/2_5d/ch1-player-rig.mjs?v=locomotion-phase-20261009-v10').then(module=>{if(_ch1DruidAlive)_ch1DruidRig=module.createCh1PlayerRig();}).catch(()=>{_ch1DruidStats.lastState='module-unavailable';});
 }
 function _ch1DruidOwn(value,key){const d=value&&Object.getOwnPropertyDescriptor(value,key);return d&&Object.hasOwn(d,'value')?d.value:undefined;}
 function _ch1DruidSingleBoss(){let count=0;for(let i=0;i<ens.length;i++)if(_ch1DruidOwn(ens[i],'ib')===true&&++count>1)return false;return true;}

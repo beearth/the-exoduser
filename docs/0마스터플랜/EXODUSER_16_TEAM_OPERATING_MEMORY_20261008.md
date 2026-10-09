@@ -138,7 +138,7 @@ ROOT-CH1-DRUID-VOLUMETRIC-BOSS-20261008: 일반형 solid128/관절25/조명5를 
 
 ### 2026-10-08 — 본편 드루이드 원본 자세 보존
 
-2026-10-08 원본 복구 v5 뒤 당시 game adapter 두 import와 factory import는 `druid-authored-pose-20261008-v6`였다. 2026-10-09 소환 표시 당시 game adapter 두 import는 `druid-summon-display-20261009-v7`, factory는 v6였다. 자체 엔진 모션 연결 당시 game adapter v8/factory v7이었다. 현행 본편은 game adapter `druid-original-alpha-20261009-v9`/factory `druid-original-alpha-20261009-v8`이며 borrowedSheet에만 alphaTest=1/255·transparent=true·depthWrite=false를 적용한다. 아래 모션 계약과 DIRECTIONAL의 `druid-original-alpha-20261009` 현행 재질 계약을 함께 따른다. borrowedSheet Druid의 pose()는 rest 복구 후 범용 흔들림·공격 변형을 생략한다. 그려진 셀/방향·프레임시간·전투/save는 보존. sheet 없는 기존 경로는 유지한다. 최초 준비 URL 오류(제품未도달)와 보정 뒤6그룹 CPU PASS는 별도 이력이며 본편 화면/GPU·입체 모델·A급 인수는 미완료다. [정본 계약](../4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md).
+2026-10-08 원본 복구 v5 뒤 당시 game adapter 두 import와 factory import는 `druid-authored-pose-20261008-v6`였다. 2026-10-09 소환 표시 당시 game adapter 두 import는 `druid-summon-display-20261009-v7`, factory는 v6였다. 자체 엔진 모션 연결 당시 game adapter v8/factory v7이었다. 현행 본편은 game adapter `locomotion-phase-20261009-v10`/factory `locomotion-phase-20261009-v9`이며 borrowedSheet에만 alphaTest=1/255·transparent=true·depthWrite=false를 적용한다. 아래 모션 계약과 DIRECTIONAL의 `druid-original-alpha-20261009` 현행 재질 계약을 함께 따른다. borrowedSheet Druid의 pose()는 rest 복구 후 범용 흔들림·공격 변형을 생략한다. 그려진 셀/방향·프레임시간·전투/save는 보존. sheet 없는 기존 경로는 유지한다. 최초 준비 URL 오류(제품未도달)와 보정 뒤6그룹 CPU PASS는 별도 이력이며 본편 화면/GPU·입체 모델·A급 인수는 미완료다. [정본 계약](../4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md).
 
 
 ## 2026-10-09 — 드루이드 실제 원본표면 제작
@@ -206,3 +206,27 @@ ROOT-DRUID-ORIGINAL-RELIEF-20261009: 기존 rig_motion 한 담당이 신규 원�
 | 새 본편 엔진 변경 | ROOT-BOSS3D-PAUSE-CLOCK-CONSUMER-20261009: ready/pivot 가드를 통과한 콜백마다 `_b3clock`을 소비하면서 `G.paused`면 mixer·dt flash에0 전달. STEP/AI/wallclock stun 미변경 |
 | 검증 | 최초 Node1/실제 whole 함수·로컬THREE mixer/8그룹38조건PASS, before witness1별도. 새 본편 화면·GLB/GPU/audio/save/A급 미인수 |
 | 정본 | 애니메이션 정본 및 BOSS_BATTLE_SETTINGS의 2026-10-09 절, 외부 boss3d-pause-clock-consumer-20261009/completion.json 최종 Git 우선 |
+
+
+## 2026-10-09 — 본편 보행 셀과 리그 위상 동기화
+
+`ROOT-PLAYER-LOCOMOTION-PHASE-CONSUMER-20261009`. 기존 주인공의 원화 스프라이트 셀과 발·허리 변형이 서로 다른 시계로 진행되던 표시 계약을 맞춘다.
+
+| 항목 | 현행 계약 |
+|---|---|
+| 보행/달리기 | `angle=(mode==='walk'||mode==='run')?phase*Math.PI*2:time*cycle`. 여기 phase는 update에서 선택 셀에 사용한 normalizedPhase이며 wave/counter는 sin/cos(angle) |
+| 보존 | idle/attack의 기존 elapsed 파형·attack hit, poseStrength=.012, 프레임 수/PNG/UV/발anchor/geometry/전투/이동/save 불변. borrowed Druid는 기존 rest 복구 후 return하여 합쳐진 원화에 관절 변형을 덧붙이지 않음 |
+| 연결 | actual main adapter 두 import=`locomotion-phase-20261009-v10`, adapter factory import=`locomotion-phase-20261009-v9`. 기존 편집기의 별도 URL은 유지 |
+| 남은 범위 | 새3D 모델·새24자세·양발IK·미끄러짐 제거·정상 본편 시각/A급 완료를 뜻하지 않음. VISUAL VERDICT: UI_NOT_ASSESSED/RETOUCH |
+
+외부 증거: `E/player-locomotion-phase-consumer-20261009/`의 `preflight.json`, `own-change-receipt.json`, `completion.json`. 실제 실행과 최종 Git 결과는 completion 우선.
+
+| 실제 검수 epoch | 결과와 범위 |
+|---|---|
+| 최초 준비 | VM loader link 실패, 제품 조건 미도달·exit1 |
+| 최초 actual Three | 15PASS/1FAIL·exit1. borrowed raw 정점에 1e-12 동일을 요구한 oracle 실패 이력 보존 |
+| 한정 delta | 이전 통과 그룹 재실행 없이 14PASS/0FAIL·exit0. borrowed before/final 본·actual 정점 차이0, 기존 Float32 weight 오차의 독립 예측 잔차0 |
+| 시각 인수 | 본편·GPU·정상 줌·발 미끄러짐·새 3D·24자세·A급 미인수. UI_NOT_ASSESSED / RETOUCH |
+| 외형 별도 후보 | Seedream 5.0 Pro 7514186928503943168, `druid-clean-front-original.png` 2964079B / ae5a8394fb51c89b1cba85cd328a129d1fb8c3d528e64cfdb9c04b705717bfc1. 해골·뿔 유지/깃털·뿌리·발광 축소한 정면 정지 1장만 제작. 가슴 녹색 장식2 관측. 본편 채택0·다방향/공격/3D 미제작 |
+
+검수 원문은 `player-locomotion-phase-consumer-20261009/own-change-receipt.json`의 별도 epoch를 따른다. PASS 합산0. 외형 후보는 동작/방향 일관성을 확보하기 전 본편 완성으로 표시하지 않는다.
