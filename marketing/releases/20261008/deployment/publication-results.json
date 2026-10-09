@@ -131,11 +131,39 @@
   },
   "packageQA": "TECHNICAL_PASS_HISTORICAL_USER_QUALITY_REJECTED",
   "qualityRevision": {
-    "main": "26.3s R1 actual-gameplay teaser review draft delivered locally with native editable ZIP and QA. No new YouTube or Steam upload; user review pending.",
+    "main": "Latest 18s V3 current-development combat teaser review candidate delivered locally. No new YouTube/Steam upload; visual scope limited to short teaser, listening and user approval pending. Prior26.3s R1 retained as history.",
     "nemesia": "Text-only correction uploaded UNLISTED. Original bad-panel video UNLISTED and removed from playlist.",
     "unchangedPublicVideos": 4,
     "doNotPublishOldMainToSteam": true,
     "newMainPublication": "DRAFT_ONLY_PENDING_USER_REVIEW",
-    "mainDelivery": "revisions/gameplay-teaser-v2/EXODUSER_GAMEPLAY_TEASER_REVIEW_V2_R1_20261008.mp4"
+    "mainDelivery": "revisions/gameplay-teaser-v2/EXODUSER_GAMEPLAY_TEASER_REVIEW_V2_R1_20261008.mp4",
+    "previousMainReview": "26.3s R1 actual-gameplay teaser review draft delivered locally with native editable ZIP and QA. No new YouTube or Steam upload; user review pending.",
+    "latestMainReview": {
+      "status": "DRAFT_ONLY_PENDING_USER_REVIEW",
+      "file": "/Users/fordeargamers/the-exoduser/output/trailer-production-20261009/FINAL_REVIEW/EXODUSER_NewVersion_CombatTeaser_20261009_REVIEW_V3.mp4",
+      "durationSeconds": 18,
+      "sha256": "c02056b2ab3675dbc8ccd0ca2f75667cfa9afc0e44ecaa9297a225eea1dc5e82",
+      "sourceHeadAtCapture": "c34da0ec5de7ac0b2c1be0d2383e734b6ba7307b",
+      "captureKind": [
+        "NORMAL_TUTORIAL",
+        "NORMAL_PLAY"
+      ],
+      "stagedSourceIncluded": false,
+      "visualScope": "SHORT_TEASER_PASS",
+      "audioListening": "UNHEARD",
+      "mainTrailerSufficient": false,
+      "publicPostingPerformed": false
+    }
+  },
+  "lastOperationsCheck": {
+    "dateKST": "2026-10-09",
+    "newPosts": 0,
+    "nextMaterial": "Dark Druid boss transformation and combat guidance development record",
+    "developmentCommit": "12c29afeeb9a1ae079e4d99bbdfdc81ba872e585",
+    "sceneStatus": "RETOUCH_TESTBED_STILLS_ONLY_NO_VERIFIED_CONTINUOUS_GAMEPLAY_RECORDING",
+    "newPlayerCharacter": false,
+    "steamDemoApplied": "UNVERIFIED",
+    "automationPromptUpdated": true,
+    "noRepeatedLoginRequests": true
   }
 }

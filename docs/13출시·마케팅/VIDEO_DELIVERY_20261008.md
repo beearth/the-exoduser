@@ -1,8 +1,22 @@
 # 2026-10-08 인게임 홍보 영상 납품·동기화
 
+## 2026-10-09 최신 운영 상태 — 이 절이 아래 과거 기록보다 우선
+
+| 항목 | 실제 확인·운영 결과 |
+|---|---|
+| 최신 인도본 | **18초 V3 전투 티저 검수본**, `output/trailer-production-20261009/FINAL_REVIEW/EXODUSER_NewVersion_CombatTeaser_20261009_REVIEW_V3.mp4`, SHA256 `c02056b2ab3675dbc8ccd0ca2f75667cfa9afc0e44ecaa9297a225eea1dc5e82`. 출처는 촬영 당시 현행 개발 checkout의 c34da0ec 계열 및 정확한 두 working-file snapshot이며 새12c29afee 촬영본이 아님 |
+| 검수·공개 | NORMAL_TUTORIAL/초반 실제 입력 촬영, 구 staged 소재 없음. 짧은 티저 시각 PASS, 실제 청취 UNHEARD, 대표 메인트레일러 충분성 미충족, 사용자 공개 승인 없음. **이번 YouTube/Steam/연계채널 신규 게시0**. 파생 Shorts/Reels도 자동 공개 금지 |
+| 과거 본 | 26.3초 R1과 구37초는 역사적 검수/거절 이력. 최신 인도본으로 재사용하지 않음. 공개4편·구메인/구네메시아 일부공개·수정네메시아 일부공개 및 KO 미게시 상태는 기존 플랫폼 증거를 유지하며 재확인·재게시하지 않음 |
+| 새 개발 변경1건 | `/Users/fordeargamers/Projects/exoduser-migration-20261001` commit `12c29afeeb9a1ae079e4d99bbdfdc81ba872e585` — 다크드루이드 **보스** 변신24포즈·야수 정지8방향 및 전투 안내. 신규 플레이어 선택 캐릭터가 아님. 기존 선택·저장 스키마 변경을 소개하지 않음 |
+| 실제 장면 상태 | 개발 증거 `druid-transform-guide-consumer-20261009`는 본편 테스트베드 GOD/보스크기22/시각배율4/프레임STEP 화면, **RETOUCH**. MP4/WebM/MOV0개. raw atlas GIF는 인게임 녹화가 아님. 정상 연속 플레이·원음·청취·정상 저장 검수 미인수 |
+| 다음 소재 한 건 | **다크드루이드 보스 변신·전투 안내 개발 기록**. 정상 플레이에서 행동과 결과가 이어지는 실제 영상·원음을 확보·검수한 뒤 제작. 현재 신규 촬영·영상 제작·공개 없음, Steam 데모 적용 미확인 |
+| 운영 설정 | fdg의 기존 일정·대상·ACTIVE를 유지하고 최신 V3 검수 상태·드루이드 보스 소재와 미인수 범위를 프롬프트에 반영 완료. 같은 로그인/약관 요청을 반복하지 않음 |
+
+출처·실물·제한된 판정: [신버전 제작 기록](NEW_VERSION_TRAILER_PRODUCTION_20261009.md), [V3 독립 검수](../../marketing/trailers/new-version-20261009/final-render-independent-review.md). 드루이드 근거: 개발 정본 `docs/8.1보스디자인바이블/BOSS_BATTLE_SETTINGS.md` 및 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/druid-transform-guide-consumer-20261009/completion.json`. 게임·서버·사용자 탭·세이브를 변경하거나 재시작하지 않았다.
+
 ## 2026-10-08 현재 품질 수정 상태 — 이전 6편 공개 기록 정정
 
-**현재 상태는 이 안내가 아래 최초 배포 기록보다 우선한다.** 사용자가 네메시아 자막 배경의 화면 가림과 메인 트레일러의 편집 완성도를 지적했다. 기존 기술·표본 검사 PASS는 사용자 편집·예술 검수 승인을 의미하지 않는다. 기존 메인 트레일러는 **USER REJECTED / 편집 품질 FAIL**, 새 메인은 실제 데모 녹화 회수·재제작 중인 **DRAFT / 최종 승인 대기**다.
+**이 2026-10-08 안내는 당시 품질 수정 기록이며, 위 2026-10-09 최신 운영 상태가 우선한다.** 사용자가 네메시아 자막 배경의 화면 가림과 메인 트레일러의 편집 완성도를 지적했다. 기존 기술·표본 검사 PASS는 사용자 편집·예술 검수 승인을 의미하지 않는다. 기존 메인 트레일러는 **USER REJECTED / 편집 품질 FAIL**, 새 메인은 실제 데모 녹화 회수·재제작 중인 **DRAFT / 최종 승인 대기**다.
 
 | 대상 | 이번 안내 갱신 시점의 실제 상태 |
 |---|---|
