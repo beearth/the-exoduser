@@ -13,10 +13,10 @@
     "threadId": "01a0faa9-b453-7673-be39-98adedb4c2b3",
     "hostId": "local",
     "title": "맥북에서 총괄 시작하기",
-    "afterCursor": "b2476eee-d767-4cd1-8064-9706586fb10a:4",
+    "afterCursor": "b2476eee-d767-4cd1-8064-9706586fb10a:5",
     "lastObservedStatus": "idle",
     "lastObservedTurnStatus": "completed",
-    "lastObservedTurnId": "01a11f98-149d-76e1-9aa5-618f629706a8",
+    "lastObservedTurnId": "01a11fcf-0332-7770-8b45-6a9751e03de5",
     "lastObservedReport": "서버 복구 허용과 Mac 잠금 해제 답변 대기. 완료 검사 반복·사용자 환경 변경 없음."
   },
   "completionConfirmed": false,
@@ -34,6 +34,6 @@
     "게임·서버·사용자 탭·세이브 무조작",
     "완성 후 검수본부터 인도, 사용자 검수 전 자동 공개 금지"
   ],
-  "lastCheckedAtUTC": "2026-10-09T07:56:02.966Z",
+  "lastCheckedAtUTC": "2026-10-09T09:01:02.649Z",
   "lastCheckResult": "이전 점검과 같은 대기 상태. 서버 복구·잠금 해제에 관한 새 답변 및 보스전 전체 리디자인 완료 보고 없음. 촬영·제작·게시 0, 반복 요청 없음."
 }
