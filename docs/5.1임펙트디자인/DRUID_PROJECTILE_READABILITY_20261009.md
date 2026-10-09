@@ -1,6 +1,6 @@
 ## 2026-10-09 후속 접촉 임팩트
 
-이 문서의 비행 core/tail과 E·Q 외부 안내는 유지한다. 적대 Druid blackBean 접촉만 4겹 `rainbow_light`에서 `druid_poison_hit`로 분리했다. 정확 수치·폴백·검증 한계는 [독탄 접촉 임팩트 정본](DRUID_POISON_CONTACT_IMPACT_20261009.md). 통제 native 재생/종료 확인이며 실제 정상 줌의 본편 인수는 미완료다.
+이 문서의 비행 core/tail과 E·Q 외부 안내는 유지한다. 현재 `druid_poison_hit`의 splash는 새6×4/24셀 one-shot을 fps60·age/60으로 첫24틱(.4게임초)에 소비한다. 새셀1회, 미준비·실패는 기존8셀 보간 폴백이며 전체72틱 잔향·r120·작은 핵·최대6파편·첫5틱 섬광·전투/Q/RNG/SFX/save는 유지한다. [정본](DRUID_POISON_HIT24_ENGINE_20261009.md). 이전8셀의 통제 native 재생/종료는 이력이며 이번24셀 본편 정상줌 인수를 뜻하지 않는다.
 
 # 드루이드 독탄 중심·진행 방향 표시 — 2026-10-09
 
@@ -29,3 +29,8 @@
 원본 실제 PNG와 native Canvas에서 전후 픽셀을 비교했다. default6, fallback+trail off, 첫0/마지막15에서 상태복구/객체불변을 확인했다. 겹침과 핵/꼬리 분리가 개선됐지만 Q 안내가 질감보다 도드라지며, 정상 줌·진행 중 보스전·성능·실제 음질·save는 미인수다. **VISUAL VERDICT: RETOUCH**. 3387 연결 거부와 Mac 잠금 때문에 본편/오디오 재생 검수가 아직 진행되지 않았다. 서버 재시작·잠금 우회는 하지 않았다.
 
 외부 정본 `E/druid-projectile-core-readability-20261009/completion.json`은 실제 소유 Git 보존과 미완료 검수를 구분한다. 최초 sound CPU source gate7그룹 PASS, importmap을 JS로 읽은 준비 실패1은 별도 이력이다. 도구 픽셀/CPU를 본편/A급 인수로 대체하지 않는다.
+
+
+## 2026-10-09 — 독탄 접촉24 공통 엔진 소비
+
+`ROOT-ENGINE-DRUID-POISON-HIT24-20261009`: 새6×4/24셀 one-shot을 fps60·age/60으로 첫24틱(.4게임초)에 소비한다. 새셀1회, 미준비·실패는 기존8셀 보간 폴백이며 전체72틱 잔향·r120·작은 핵·최대6파편·첫5틱 섬광·전투/Q/RNG/SFX/save는 유지한다. [현행 리소스·수치·폴백·검수 정본](DRUID_POISON_HIT24_ENGINE_20261009.md). 원화24장 검수와 실제 첫 화면에서 전24셀 표시 인수는 구분한다(첫age1 가능). 이번 native/실보스전/GPU/성능/청취/save/A급은 미인수, **VISUAL VERDICT: RETOUCH**. 기존8셀/native 기록은 당시 구현 이력이며 현재 새24검수로 합산하지 않는다. 외부 `engine-druid-poison-hit24-20261009/completion.json` 최종.

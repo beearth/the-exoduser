@@ -1,0 +1,17 @@
+{
+  "format": "exoduser-atlas-clip",
+  "version": 1,
+  "name": "druid_poison_hit",
+  "sourcePath": "assets/vfx/boss/druid_poison_hit_24_20261009.png",
+  "columns": 6,
+  "rows": 4,
+  "frameCount": 24,
+  "fps": 60,
+  "loop": false,
+  "frameWidth": 640,
+  "frameHeight": 640,
+  "pivot": {
+    "x": 0.5,
+    "y": 0.5
+  }
+}

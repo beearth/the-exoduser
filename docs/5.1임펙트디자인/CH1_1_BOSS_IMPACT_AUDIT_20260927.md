@@ -1,6 +1,6 @@
 ## 2026-10-09 현재 독탄 접촉 표시
 
-기존 감사 항목은 작성 당시 이력이다. 현재 적대 Druid blackBean 접촉 예외는 `druid_poison_hit`(r120/72틱/첫8셀의24틱 보간 창/최대6잔여 파편)이다. [독탄 접촉 임팩트 정본](DRUID_POISON_CONTACT_IMPACT_20261009.md). 실제 정상 줌·전체 보스전은 미검수, VISUAL RETOUCH.
+기존 감사 항목은 작성 당시 이력이다. 현재 적대 Druid blackBean 접촉 예외는 `druid_poison_hit`이며 새6×4/24셀 one-shot을 fps60·age/60으로 첫24틱(.4게임초)에 소비한다. 새셀1회, 미준비·실패는 기존8셀 보간 폴백이며 전체72틱 잔향·r120·작은 핵·최대6파편·첫5틱 섬광·전투/Q/RNG/SFX/save는 유지한다. [정본](DRUID_POISON_HIT24_ENGINE_20261009.md). 정상 줌·전체 보스전은 미검수, VISUAL RETOUCH.
 
 # 1-1 다크드루이드 임팩트 23종 조사 — 2026-09-27
 
@@ -136,3 +136,8 @@
 | 검증·한계 | 실제 whole Druid/rig/selector+통제 ports 최초 Node1·VM0·factory2/instances18·7그룹7PASS/FAIL0/exit0. before SlamWind wallclock 셀0→2 반례1 별도. 이전 Sweep31/다른 suite 재실행0. 실제 GPU·pixel·자세 미감·native·청취·실save 미검수/RETOUCH |
 
 앞선 Sweep 단위의 “기타 공격150ms”는 그 epoch이며 현재 Slam 예외가 우선한다. Sweep 셀 선택·첫 pass 밝기/윤곽·특수 상태·공통 recover·원본 PNG·AI·save 불변. [현행 표시 정본](../4.0케릭터스프라이트 디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md#druid-slam-readability-20261008).
+
+
+## 2026-10-09 — 독탄 접촉24 공통 엔진 소비
+
+`ROOT-ENGINE-DRUID-POISON-HIT24-20261009`: 새6×4/24셀 one-shot을 fps60·age/60으로 첫24틱(.4게임초)에 소비한다. 새셀1회, 미준비·실패는 기존8셀 보간 폴백이며 전체72틱 잔향·r120·작은 핵·최대6파편·첫5틱 섬광·전투/Q/RNG/SFX/save는 유지한다. [현행 리소스·수치·폴백·검수 정본](DRUID_POISON_HIT24_ENGINE_20261009.md). 원화24장 검수와 실제 첫 화면에서 전24셀 표시 인수는 구분한다(첫age1 가능). 이번 native/실보스전/GPU/성능/청취/save/A급은 미인수, **VISUAL VERDICT: RETOUCH**. 기존8셀/native 기록은 당시 구현 이력이며 현재 새24검수로 합산하지 않는다. 외부 `engine-druid-poison-hit24-20261009/completion.json` 최종.

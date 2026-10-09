@@ -1,6 +1,6 @@
 ## 2026-10-09 현재 접촉 표시
 
-적대 Druid blackBean의 패링되지 않은 접촉은 `druid_poison_hit`로 표시한다. 반경120/72틱·Q전용 패링·피해·중독·비행 표시·SFX는 그대로다. 첫8스플래시 셀을 24틱 창에서 보간하고 잔향은 기존72틱에 종료한다. [독탄 접촉 임팩트 정본](DRUID_POISON_CONTACT_IMPACT_20261009.md). 본편 정상 줌/전체 전투 미검수, VISUAL RETOUCH.
+적대 Druid blackBean의 패링되지 않은 접촉은 `druid_poison_hit`로 표시한다. 새6×4/24셀 one-shot을 fps60·age/60으로 첫24틱(.4게임초)에 소비한다. 새셀1회, 미준비·실패는 기존8셀 보간 폴백이며 전체72틱 잔향·r120·작은 핵·최대6파편·첫5틱 섬광·전투/Q/RNG/SFX/save는 유지한다. blackBean Q전용/E불가·비행 표시 불변. [정본](DRUID_POISON_HIT24_ENGINE_20261009.md). 본편 정상 줌/전체 전투 미검수, VISUAL RETOUCH.
 
 # 드루이드 녹색 독탄 — 2026-09-06
 
@@ -101,3 +101,8 @@
 ## 2026-10-09 — 독립 ORB24 공통 엔진 연결
 
 `ROOT-ENGINE-DRUID-ORB24-20261009`: 실제 `G._druidOrbs`만 새6×4/24셀/640px, fps300/7·loop .56초로 표시한다. `o.t/60`과 기존R=r×2.4·접촉/피해/반사불가를 유지하며 원본4×2/8셀·벽시간70ms는 실패 폴백이다. [현재 원화·리소스·시간·검수 계약](DRUID_ORB24_ENGINE_20261009.md). 기존 장판24·blackBean Q전용·SFX/save 불변. 마지막→첫 연결/실보스전·GPU·정상줌·청취/save/A급은 RETOUCH/미인수.
+
+
+## 2026-10-09 — 독탄 접촉24 공통 엔진 소비
+
+`ROOT-ENGINE-DRUID-POISON-HIT24-20261009`: 새6×4/24셀 one-shot을 fps60·age/60으로 첫24틱(.4게임초)에 소비한다. 새셀1회, 미준비·실패는 기존8셀 보간 폴백이며 전체72틱 잔향·r120·작은 핵·최대6파편·첫5틱 섬광·전투/Q/RNG/SFX/save는 유지한다. [현행 리소스·수치·폴백·검수 정본](DRUID_POISON_HIT24_ENGINE_20261009.md). 원화24장 검수와 실제 첫 화면에서 전24셀 표시 인수는 구분한다(첫age1 가능). 이번 native/실보스전/GPU/성능/청취/save/A급은 미인수, **VISUAL VERDICT: RETOUCH**. 기존8셀/native 기록은 당시 구현 이력이며 현재 새24검수로 합산하지 않는다. 외부 `engine-druid-poison-hit24-20261009/completion.json` 최종.

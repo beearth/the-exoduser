@@ -176,7 +176,7 @@ WebGL 가산 및 Canvas2D 폴백에 동일한 baseAlpha를 전달한다. RGB `[2
 | black(폭독혈) | 66 (1.1초) | 16 | Dark_DarkSmoke_FBF_4x4 | 낮음 |
 | redbean(빨콩) | 72 (1.2초) | 16 | Fire_FBF_4x4 | 낮음 |
 | rainbow_light(일반 무지개 적중/블루콩) | 72 (1.2초, 기존60틱/초 기준) | 16×4 (4레이어) | Poison_MediumImpact + Dark_DarkSmoke + Light_ImpactLight + Ice_ImpactIce (각 90° 회전+시차+lighter 합성) | 중간 (drawImage 4회/프레임) |
-| druid_poison_hit(적대 드루이드 독탄 접촉) | 72틱 (기존 boom 수명) | 첫8셀 / 첫24틱 보간 창 | Poison_MediumImpact만 최대2샘플, 작은 핵·최대6파편·첫5틱 섬광. 정확 공식은 [정본](DRUID_POISON_CONTACT_IMPACT_20261009.md) | 정상줌 성능 미검수 / VISUAL RETOUCH |
+| druid_poison_hit(적대 드루이드 독탄 접촉) | 72틱 (기존 boom 수명) | 새24셀/fps60/loopfalse·첫24틱 | 공통atlas 새셀1회, 실패 시 원본첫8셀 보간최대2회. 작은 핵·최대6파편·첫5틱 섬광 유지. [정본](DRUID_POISON_HIT24_ENGINE_20261009.md) | 정상줌 성능 미검수 / VISUAL RETOUCH |
 | rainbow(무지개 소멸) | 72 (1.2초) | 16+36+9 (3레이어) | Dark_DarkSmoke_FBF + Dark_Smoke_6x6 + Dark_BasicImpact | 중간 |
 | dark02(패링) | 72 (1.2초) | 16 | Dark_MediumImpact | 낮음 |
 | physical_parry(물리탄 E패링) | 12f(0.2초) | 4 | `Fire_ImpactFire_Sheet.png` 첫 행 흰 틴트, `_addBoom(x,y,60,12,'physical')`, 최대180px | `redBean+EL.P`·일반/관통 입탄·`titanEye`의 physicalProjectile 분기. 파편12개·flash0.25도 #ffffff. Q·무지개·기타 E 효과 불변 |
@@ -1323,3 +1323,8 @@ MAP PRODUCTION REPORT (§23): STAGE=CH1-1 전투 가독성 source consumer. MAST
 
 
 2026-10-09 normal 드루이드의 본체1회·밝기1.35/대비 제거·특수3회 유지 및 한정 native 검수의 정확 계약: [원본 명암 consumer](../4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md#druid-original-tone-20261009). 기존 검수 수치는 당시 epoch로 보존하며 본편/A급 완료로 세지 않는다.
+
+
+## 2026-10-09 — 독탄 접촉24 공통 엔진 소비
+
+`ROOT-ENGINE-DRUID-POISON-HIT24-20261009`: 새6×4/24셀 one-shot을 fps60·age/60으로 첫24틱(.4게임초)에 소비한다. 새셀1회, 미준비·실패는 기존8셀 보간 폴백이며 전체72틱 잔향·r120·작은 핵·최대6파편·첫5틱 섬광·전투/Q/RNG/SFX/save는 유지한다. [현행 리소스·수치·폴백·검수 정본](DRUID_POISON_HIT24_ENGINE_20261009.md). 원화24장 검수와 실제 첫 화면에서 전24셀 표시 인수는 구분한다(첫age1 가능). 이번 native/실보스전/GPU/성능/청취/save/A급은 미인수, **VISUAL VERDICT: RETOUCH**. 기존8셀/native 기록은 당시 구현 이력이며 현재 새24검수로 합산하지 않는다. 외부 `engine-druid-poison-hit24-20261009/completion.json` 최종.

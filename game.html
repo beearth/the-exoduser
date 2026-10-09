@@ -61389,7 +61389,33 @@ function _fdFireEnergy(m){
   if(typeof SFX!=='undefined'&&SFX.magic)SFX.magic(1);
   shake(16);
 }
-// Druid contact presentation: existing poison artwork, update-owned age, no RNG.
+// Druid contact splash: shared once clip, update-owned age, old artwork fallback.
+const _druidPoisonHitClip={ready:false,image:null,clip:null,rects:null,sample:null};
+(async function _loadDruidPoisonHitClip(){
+  try{
+    const runtime=await import('./tools/2_5d/atlas-clip-runtime.mjs?v=20261009-v1');
+    const response=await fetch('assets/vfx/boss/druid_poison_hit_24_20261009.clip.json?v=20261009-v1');
+    if(!response.ok)return;
+    const data=await response.json();
+    if(data.format!=='exoduser-atlas-clip'||data.version!==1||data.name!=='druid_poison_hit'||data.sourcePath!=='assets/vfx/boss/druid_poison_hit_24_20261009.png'||data.frameCount!==24||data.fps!==60||data.loop!==false)return;
+    const clip=runtime.createAtlasClip(data),image=new Image();
+    image.onload=()=>{
+      try{
+        const rects=Object.freeze(Array.from({length:clip.frameCount},(_,f)=>runtime.getAtlasFrameRect(image,clip,f,1)));
+        _druidPoisonHitClip.image=image;_druidPoisonHitClip.clip=clip;_druidPoisonHitClip.rects=rects;_druidPoisonHitClip.sample=runtime.sampleAtlasClip;_druidPoisonHitClip.ready=true;
+      }catch(e){_druidPoisonHitClip.ready=false;}
+    };
+    image.onerror=()=>{_druidPoisonHitClip.ready=false;};
+    image.src=data.sourcePath+'?v=20261009-v1';
+  }catch(e){_druidPoisonHitClip.ready=false;}
+})();
+function _drawDruidPoisonHitClip(X,age,size){
+  const state=_druidPoisonHitClip;if(!state.ready)return false;
+  const frame=state.sample(state.clip,age/60).frame,rect=state.rects[frame];
+  const height=size*rect.sh/rect.sw;
+  X.drawImage(state.image,rect.sx,rect.sy,rect.sw,rect.sh,-size/2,-height/2,size,height);
+  return true;
+}
 function _drawDruidPoisonImpact(X,b,images){
   if(!b||!Number.isFinite(b.t)||!Number.isFinite(b.mt)||b.mt<=0||!Number.isFinite(b.r)||b.r<=0||!Number.isFinite(b.x)||!Number.isFinite(b.y))return;
   const age=Math.max(0,b.t),p=Math.min(1,age/b.mt);if(p>=1)return;
@@ -61402,14 +61428,16 @@ function _drawDruidPoisonImpact(X,b,images){
     const glow=X.createRadialGradient(0,0,0,0,0,b.r*.22);
     glow.addColorStop(0,'#c9eca9');glow.addColorStop(.28,'#709f42');glow.addColorStop(1,'#28462200');
     X.globalAlpha=fade*.16;X.fillStyle=glow;X.beginPath();X.arc(0,0,b.r*.22,0,Math.PI*2);X.fill();
-    if(burst>0&&ready){
-      const cw=Math.floor(img.naturalWidth/4),ch=Math.floor(img.naturalHeight/4),frame=Math.min(7,age/24*7),lo=Math.floor(frame),mix=frame-lo;
-      const size=b.r*(.72+.32*grow),height=size*ch/cw;
-      // Only the eight authored splashes; the atlas's ring/solid-ball variants are excluded.
-      for(let k=0;k<2;k++){
-        const f=Math.min(7,lo+k),weight=k===0?1-mix:mix;if(weight<=0)continue;
-        X.globalAlpha=.9*burst*burst*weight;
-        X.drawImage(img,(f%4)*cw+1,Math.floor(f/4)*ch+1,cw-2,ch-2,-size/2,-height/2,size,height);
+    if(burst>0){
+      const size=b.r*(.72+.32*grow);X.globalAlpha=.9*burst*burst;
+      if(!_drawDruidPoisonHitClip(X,age,size)&&ready){
+        const cw=Math.floor(img.naturalWidth/4),ch=Math.floor(img.naturalHeight/4),frame=Math.min(7,age/24*7),lo=Math.floor(frame),mix=frame-lo,height=size*ch/cw;
+        // Preserve the original eight-splash blend when the once clip is unavailable.
+        for(let k=0;k<2;k++){
+          const f=Math.min(7,lo+k),weight=k===0?1-mix:mix;if(weight<=0)continue;
+          X.globalAlpha=.9*burst*burst*weight;
+          X.drawImage(img,(f%4)*cw+1,Math.floor(f/4)*ch+1,cw-2,ch-2,-size/2,-height/2,size,height);
+        }
       }
     }
     // Reuse the already spawned arms. Drawing never consumes combat RNG or changes the boom.
