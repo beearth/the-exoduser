@@ -137,7 +137,7 @@ WebGL 가산 및 Canvas2D 폴백에 동일한 baseAlpha를 전달한다. RGB `[2
 | `silvertailChargeRange` | `img/vfx/silvertail_charge_range_api_v1.png` | 1254×1254 RGB, 근검정 배경, 개방형 은빛 룬 아크 | 지름 `range×2.24×(1+sin(frame×.16)×.018)`; 글로우 alpha `.12+tier×.035`, 본체 `.34+tier×.10` | 같은 `_makeBlackAdditiveCutout(24,72)` 캐시 후 `lighter`, `rotate(facing+π)` | `_drawSilvertailChargeRange`; `sDraw/kiGather` |
 
 - `elemBall`은 `EL.P/EL.I`일 때 크라켄 탄두를 쓰고, `EL.F/D/L/H/E`는 `proj_elem_orb.png`의 해당 속성 행을 쓴다. 양쪽 모두 실패할 때만 `proj_bolt_comet.png`로 폴백한다.
-- 비행 외형은 기존 유지: waterBean=`water_blue_projectile_sheet.png` 4×2 8프레임, `30×16×_sSc`; 물리/빙 elemBall=`proj_kraken_shot_api_v1.png` 170px; fbEnergy=`proj_kraken_water.png` 4×4 16프레임 240px. 교체는 충돌 임팩트만 적용한다.
+- 비행 외형은 기존 유지: waterBean=`water_blue_projectile_sheet.png` 4×2 8프레임, `30×16×_sSc`; 물리/빙 elemBall=`proj_kraken_shot_api_v1.png` 170px; fbEnergy는새 kraken_water_orb24 6×4/24·240px/원16폴백. 기존 Water 충돌 임팩트와 waterBean 비행은유지한다.
 - 물 파란콩 Q 패링은 `_waterBeanIceBurst(...,true)`만 Water Impact를 생성하고, `doParry(...,_impactKind='waterBean')`가 공통 `dark02` 임팩트를 건너뛰어 단발 패링에서 스프라이트가 중첩되지 않는다.
 - 차지 범위는 2026-09-10 반경 공식 `_eSwingRadius(C)=floor((70+방패range×4)×(1+(E스킬Lv−1)×0.05)×C)`을 사용한다. 실제0.5/1/1.5초에 충전 C=1.5/2/3이며 자동릴리즈는1.55초다. 구 radial-gradient 원, 전방 부채꼴 채움, 9/7 점선 아크는 제거하고 내부가 빈 API 룬 아크만 표시한다.
 
@@ -349,18 +349,18 @@ path: '/v1/images/generations'
 
 ## 크라켄 에너지탄 비행 스프라이트 — 기존 물 소용돌이 유지 (2026-09-07 정정)
 
-크라켄 비행 외형은 기존 물 소용돌이 시트를 유지한다. Water 효과 교체는 충돌 임팩트만 대상이다.
+크라켄 실제 fbEnergy 비행은 새24 물 소용돌이로 개선했다(2026-10-10). 원16은폴백이며 기존 Water 충돌 임팩트·waterBean 비행은변경없다.
 
 | 항목 | 값 |
 |---|---|
-| 파일 | `img/proj_kraken_water.png`, 1254×1254, 4×4 |
-| 시트 | 4열×4행 전체16프레임, `fw=W/4`, `fh=H/4`, 셀 내부 크롭 없음 |
-| 함수 | `_fbDrawFly(p)`, 기존 무회전 중심 정렬 |
-| 합성 | `lighter` (검정 배경 자동 투명) |
+| 파일 | 새 `assets/vfx/fieldboss/kraken_water_orb_24_20261010.png`3840×2560. 원 `img/proj_kraken_water.png`1254²/4×4는폴백 |
+| 시트 | 새6×4/24/640²/inset1 한셀. 원16 전체fractional313.5²/fw=W/4/fh=H/4 폴백 |
+| 함수 | `_fbDrawFly(p)` 원readyguard뒤 `_drawKrakenWaterOrbClip` 우선, `_loadKrakenWaterOrbClip` lazypromise/Image1·무회전 중심정렬 |
+| 합성 | 새RGBA 한셀 `lighter`/alpha1명시/save-finallyrestore. 원16검정배경 lighter폴백 |
 | 회전 | **없음** — 방사형 대칭 구체라 방향성 무관. 중심 정렬만 |
 | 크기 | **`dw=240`**, `dh=dw×(ch/cw)=240` — 화마귀 `fdEnergy`와 동일 화면 크기 (구 336px에서 축소) |
 | 앵커 | `drawImage(...,-dw/2,-dh/2,...)` — 구체 중심을 탄 중심에 정렬. 접촉 판정은 작은 spawn r26이 아니라 보이는 핵 `max(r,sz)` 사용 |
-| 프레임 | `((p._sprFr||0)|0)%16`, 기존 프레임 진행 유지 |
+| 프레임 | 새phase=(_sprFr||0)/16×clip.durationSeconds→24. helper증가0/pass2가시+.12·null RNG초기화 유지. resource10.8FPS는참고값. 원16폴백은((p._sprFr||0)|0)%16 |
 | 렌더 분기 | pass-2 `if(p.fbEnergy){_fbDrawFly(p)}` (elemBall glow 앞). pass-1 글로우 언더레이 `p.fbEnergy` skip |
 | 로더 | `_fbFlyImg` |
 | Q패링 출력 | 거대 시트 제거 후 동일 속성 **혜성형 일반 마법탄 5발**. `magic` 충돌 경로와 r8 규격은 유지하되 `_parryMagicShot` 전용 시각 분기로 기존 `img/balls/proj_bolt_comet.png` 8프레임 시트를 `_drawCometBullet` 길이 **246.4px**(일반 마법탄 최종 sz4 실크기 `20×2.8×2.2=123.2px`의 2배)로 그린다. 일반탄과 `_normalMagicCometLength`를 공유하되 대형탄 분열 연출에만 ×2를 적용한다. `arcMissile`·발사 잠금·튕김과 일반 `_projEmit` 먼지는 사용하지 않는다. 총 반사 피해를 5등분하며 `EL.F` 빨강, `EL.I` 파랑, 암/뇌는 `ELC` 속성색. HP/ST/MP·작살 게이지·분노·악의·parryBank 자원회수는 일반 Q의 ×10(각 자원 상한 적용) |
@@ -1358,3 +1358,8 @@ actual isBoss=true blood만 새640셀24원화로 표시하고 원16 alias·128×
 ## 2026-10-10 — 화마귀 fdEnergy 비행 용암구24
 
 실제 fdEnergy 비행만 새6×4/24 원화를 lazy 공유Image1로 소비한다. 원 성공render counter+.22/16주기·240²/중심/lighter·원16폴백과 Druid 파생재료·전투/Q/save를 유지한다. resource19.8FPS는60render/s 가정 참고값이며 안정게임초·24FPS 보장0. 원life320은 화면근처 life1 연장이 있어 고정종료수명이 아니다. 독립source/Canvas 검수와 actualmain·동시성능 인수를 구분하고 현재 RETOUCH다. [정본](FIREDEVIL_ORB24_ENGINE_20261010.md).
+
+
+## 2026-10-10 — 크라켄 fbEnergy 비행 물구체24
+
+실제 fbEnergy 비행을 새6×4/24/640² 물구체 원화와 lazy 공유Image1로 연결했다. 원16폴백/240²/중심/lighter/alpha1·pass2가시counter+.12÷16주기(helper증가0)·전투/Q회수5·접촉/SFX/save를 유지한다. resource10.8FPS는60가시render호출/s 가정의참고값으로24FPS·안정게임초 보장0. 원life320은화면근처1연장이있어고정종료아님. actualwhole source와독립Canvas의24셀·문맥복원검수는통과, 약6%반경·포말인접점프/루프자연연결·actualmain·동시성능은RETOUCH/미인수다. [정본](KRAKEN_WATER_ORB24_ENGINE_20261010.md).

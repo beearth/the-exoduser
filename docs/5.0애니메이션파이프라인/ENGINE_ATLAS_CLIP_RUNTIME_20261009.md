@@ -122,3 +122,8 @@ actual isBoss=true blood만 새640셀24원화로 표시하고 원16 alias·128×
 ## 2026-10-10 — 화마귀 fdEnergy 비행 용암구24
 
 실제 fdEnergy 비행만 새6×4/24 원화를 lazy 공유Image1로 소비한다. 원 성공render counter+.22/16주기·240²/중심/lighter·원16폴백과 Druid 파생재료·전투/Q/save를 유지한다. resource19.8FPS는60render/s 가정 참고값이며 안정게임초·24FPS 보장0. 원life320은 화면근처 life1 연장이 있어 고정종료수명이 아니다. 독립source/Canvas 검수와 actualmain·동시성능 인수를 구분하고 현재 RETOUCH다. [정본](../5.1임펙트디자인/FIREDEVIL_ORB24_ENGINE_20261010.md).
+
+
+## 2026-10-10 — 크라켄 fbEnergy 비행 물구체24
+
+실제 fbEnergy 비행을 새6×4/24/640² 물구체 원화와 lazy 공유Image1로 연결했다. 원16폴백/240²/중심/lighter/alpha1·pass2가시counter+.12÷16주기(helper증가0)·전투/Q회수5·접촉/SFX/save를 유지한다. resource10.8FPS는60가시render호출/s 가정의참고값으로24FPS·안정게임초 보장0. 원life320은화면근처1연장이있어고정종료아님. actualwhole source와독립Canvas의24셀·문맥복원검수는통과, 약6%반경·포말인접점프/루프자연연결·actualmain·동시성능은RETOUCH/미인수다. [정본](../5.1임펙트디자인/KRAKEN_WATER_ORB24_ENGINE_20261010.md).

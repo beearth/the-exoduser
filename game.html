@@ -24521,8 +24521,68 @@ const _titanEyeImg=new Image();_titanEyeImg.src='img/proj_titan_eye.png';let _ti
 _titanEyeImg.onload=function(){_titanEyeReady=true};
 // ── 크라켄 거대 에너지탄: 기존 물 소용돌이 비행 시트 유지 ──
 const _fbFlyImg=new Image();_fbFlyImg.src='img/proj_kraken_water.png';
+// Kraken flight only: pass2 owns the original .12/16 counter; this clip never advances it.
+const _krakenWaterOrbClip={ready:false,failed:false,image:null,clip:null,sample:null,rects:null,loadPromise:null};
+function _loadKrakenWaterOrbClip(){
+  if(_krakenWaterOrbClip.loadPromise)return _krakenWaterOrbClip.loadPromise;
+  _krakenWaterOrbClip.loadPromise=(async()=>{
+    try{
+      const [response,runtime]=await Promise.all([
+        fetch('data/vfx/kraken_water_orb24_20261010.json?v=20261010-v1'),
+        import('./tools/2_5d/atlas-clip-runtime.mjs?v=20261009-v1')
+      ]);
+      if(!response.ok)throw new Error('kraken_water_orb metadata HTTP '+response.status);
+      const metadata=await response.json();
+      const keys=['format','version','name','sourcePath','columns','rows','frameCount','fps','loop'];
+      if(!metadata||typeof metadata!=='object'||Array.isArray(metadata)||
+        Object.keys(metadata).length!==keys.length||!keys.every(key=>Object.prototype.hasOwnProperty.call(metadata,key))||
+        metadata.format!=='exoduser-atlas-clip'||metadata.version!==1||metadata.name!=='kraken_water_orb'||
+        metadata.sourcePath!=='assets/vfx/fieldboss/kraken_water_orb_24_20261010.png'||
+        metadata.columns!==6||metadata.rows!==4||metadata.frameCount!==24||metadata.fps!==10.8||metadata.loop!==true)
+        throw new Error('kraken_water_orb metadata contract');
+      if(typeof runtime.createAtlasClip!=='function'||typeof runtime.sampleAtlasClip!=='function'||typeof runtime.getAtlasFrameRect!=='function')
+        throw new Error('kraken_water_orb atlas runtime');
+      const clip=runtime.createAtlasClip(metadata);
+      const image=new Image();image.decoding='async';
+      await new Promise((resolve,reject)=>{
+        image.onload=()=>{image.onload=null;image.onerror=null;resolve();};
+        image.onerror=()=>{image.onload=null;image.onerror=null;reject(new Error('kraken_water_orb image load'));};
+        image.src=metadata.sourcePath+'?v=20261010-v1';
+      });
+      const cell=image.naturalWidth/clip.columns;
+      if(!image.complete||(cell!==512&&cell!==640)||image.naturalHeight/clip.rows!==cell)
+        throw new Error('kraken_water_orb image grid');
+      const rects=Object.freeze(Array.from({length:clip.frameCount},(_,frame)=>Object.freeze(runtime.getAtlasFrameRect(image,clip,frame,1))));
+      _krakenWaterOrbClip.image=image;_krakenWaterOrbClip.clip=clip;
+      _krakenWaterOrbClip.sample=runtime.sampleAtlasClip;_krakenWaterOrbClip.rects=rects;
+      _krakenWaterOrbClip.ready=true;
+    }catch(error){
+      _krakenWaterOrbClip.ready=false;_krakenWaterOrbClip.failed=true;
+      console.warn('[VFX] kraken_water_orb24 original16 fallback',error);
+    }
+  })();
+  return _krakenWaterOrbClip.loadPromise;
+}
+function _drawKrakenWaterOrbClip(p){
+  _loadKrakenWaterOrbClip();
+  if(!_krakenWaterOrbClip.ready)return false;
+  let saved=false;
+  try{
+    const sampled=_krakenWaterOrbClip.sample(_krakenWaterOrbClip.clip,(p._sprFr||0)/16*_krakenWaterOrbClip.clip.durationSeconds);
+    const rect=_krakenWaterOrbClip.rects[sampled.frame];
+    if(!rect)return false;
+    X.save();saved=true;X.translate(p.x,p.y);X.globalCompositeOperation='lighter';X.globalAlpha=1;
+    X.drawImage(_krakenWaterOrbClip.image,rect.sx,rect.sy,rect.sw,rect.sh,-120,-120,240,240);
+    return true;
+  }catch(error){
+    return false;
+  }finally{
+    if(saved)X.restore();
+  }
+}
 function _fbDrawFly(p){
   if(!_fbFlyImg.complete||!_fbFlyImg.naturalWidth)return false;
+  if(_drawKrakenWaterOrbClip(p))return true;
   var cw=_fbFlyImg.naturalWidth/4, ch=_fbFlyImg.naturalHeight/4;
   var fr=((p._sprFr||0)|0)%16, col=fr%4, row=(fr/4)|0;
   var dw=240, dh=dw*(ch/cw);
@@ -61341,6 +61401,7 @@ function _fbEnergyBoom(p){
 }
 function _fbFireEnergy(fb){
   if(!_fieldEnemyCanShoot(fb))return;
+  _loadKrakenWaterOrbClip();
   var a=Math.atan2(P.y-fb.y,P.x-fb.x),m=_fbEsca(fb),col=ELC[EL.I];
   spawnProj({x:m.x,y:m.y,vx:Math.cos(a)*10,vy:Math.sin(a)*10,dmg:~~(fb.atk*2.8),el:EL.I,friendly:false,life:320,ml:320,col:col,sz:48,r:20,elemBall:true,_typed:true,_commit:true,fbEnergy:true});
   if(typeof SFX!=='undefined'&&SFX.magic)SFX.magic(1);

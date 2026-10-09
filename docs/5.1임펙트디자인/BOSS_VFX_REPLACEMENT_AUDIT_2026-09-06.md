@@ -54,7 +54,7 @@
 | 대상 | 분류 / 조치 |
 |---|---|
 | fdEnergy | 실제 비행 새24/lazy공유Image1, `_fdDrawFly` 기준240px·원16폴백/성공render+.22÷16주기 보존. 원16은Druid파생재료·시각reference에도유지 |
-| fbEnergy | 크라켄 물 시트 전용 경로. 원형 도형 교체 대상과 혼동하지 않음 |
+| fbEnergy | 실제크라켄 물구체24/6×4/640²·240²/lighter/alpha1·lazyImage1/원16폴백. pass2+.12/16cycle·Q/접촉불변; 도형대체와분리 |
 | 드루이드 ORB | `_druidSheets.orb` 8f 정상 경로. 이번 주황 원 신고와 별개. 영상 품질 검수는 추가 필요 |
 | 드루이드 독/가시 장판 | si0/si3에서 aoe 8f 시트 사용. 로드 실패시 일반 절차식 경로가 노출될 수 있음 |
 | elemBall | 크라켄/속성 시트→혜성 폴백 경로. 단색 원 본체는 현재 코드에서 이미 폐기 |
@@ -84,3 +84,8 @@
 ## 2026-10-10 — 화마귀 fdEnergy 비행 용암구24
 
 실제 fdEnergy 비행만 새6×4/24 원화를 lazy 공유Image1로 소비한다. 원 성공render counter+.22/16주기·240²/중심/lighter·원16폴백과 Druid 파생재료·전투/Q/save를 유지한다. resource19.8FPS는60render/s 가정 참고값이며 안정게임초·24FPS 보장0. 원life320은 화면근처 life1 연장이 있어 고정종료수명이 아니다. 독립source/Canvas 검수와 actualmain·동시성능 인수를 구분하고 현재 RETOUCH다. [정본](FIREDEVIL_ORB24_ENGINE_20261010.md).
+
+
+## 2026-10-10 — 크라켄 fbEnergy 비행 물구체24
+
+실제 fbEnergy 비행을 새6×4/24/640² 물구체 원화와 lazy 공유Image1로 연결했다. 원16폴백/240²/중심/lighter/alpha1·pass2가시counter+.12÷16주기(helper증가0)·전투/Q회수5·접촉/SFX/save를 유지한다. resource10.8FPS는60가시render호출/s 가정의참고값으로24FPS·안정게임초 보장0. 원life320은화면근처1연장이있어고정종료아님. actualwhole source와독립Canvas의24셀·문맥복원검수는통과, 약6%반경·포말인접점프/루프자연연결·actualmain·동시성능은RETOUCH/미인수다. [정본](KRAKEN_WATER_ORB24_ENGINE_20261010.md).
