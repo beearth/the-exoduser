@@ -1,4 +1,5 @@
 import { createSpriteClip, sampleSpriteClip, spriteClipCell } from './engine/sprite-clip.mjs?v=20261009-atlas-v2';
+import { createAtlasClip, sampleAtlasClip, getAtlasFrameRect } from './2_5d/atlas-clip-runtime.mjs?v=20261009-v1';
 
 // This editor owns its clock and loop. The shared runtime only selects a frame.
 const MAX_KEYS = 2048;
@@ -9,7 +10,7 @@ const DEFAULT_ATLAS = Object.freeze({ sourcePath: 'assets/sprites/boss/boss_dark
 const IDS = ['viewport', 'stage', 'status', 'notice', 'preset', 'row', 'frame',
   'key-time', 'duration', 'clip-name', 'record', 'remove', 'play', 'stop', 'loop',
   'seek', 'time', 'undo', 'redo', 'export', 'tracks', 'json', 'import', 'zoom',
-  'source-path', 'columns', 'rows', 'layout', 'frames-per-row', 'frame-count', 'apply-source', 'source-summary', 'sequence'];
+  'source-path', 'columns', 'rows', 'layout', 'frames-per-row', 'frame-count', 'apply-source', 'source-summary', 'sequence', 'playback-mode', 'fps', 'export-resource'];
 
 function leafText(node, value) {
   if (node && node.children.length === 0) node.textContent = value;
@@ -43,6 +44,52 @@ function presetClip(preset) {
   });
 }
 
+// A resource describes uniform row-major playback; keys remain a separate format.
+function resourceFromClip(clip, fps, loop) {
+  if (clip.atlas.layout !== 'linear') throw new Error('FPS 리소스는 격자 순서 배치에서 사용합니다. 원본 설정을 먼저 적용하세요.');
+  try {
+    const resource = createAtlasClip({ columns: clip.atlas.columns, rows: clip.atlas.rows,
+      frameCount: clip.frameCount, fps, loop });
+    if (!Number.isFinite(resource.durationSeconds) || resource.durationSeconds <= 0) throw new Error('Unrepresentable duration');
+    return resource;
+  } catch { throw new Error('FPS는 0보다 큰 유한 숫자, 프레임 수는 격자 용량 안의 양의 안전정수여야 합니다. 모션 길이도 유한한 양수로 표현되어야 합니다.'); }
+}
+
+function makeResource(raw) {
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) throw new Error('아틀라스 리소스 JSON을 확인하세요.');
+  const value = key => {
+    const field = Object.getOwnPropertyDescriptor(raw, key);
+    if (!field || !('value' in field)) throw new Error('리소스 필드가 없습니다: ' + key);
+    return field.value;
+  };
+  if (value('format') !== 'exoduser-atlas-clip' || value('version') !== 1) {
+    throw new Error('exoduser-atlas-clip / version 1 JSON만 가져올 수 있습니다.');
+  }
+  const columns = value('columns');
+  const clip = makeClip({ name: value('name'), frameCount: value('frameCount'),
+    durationSeconds: 1, keys: [{ time: 0, frame: 0 }], atlas: {
+      sourcePath: value('sourcePath'), columns, rows: value('rows'),
+      layout: 'linear', framesPerRow: columns, directionRow: 0,
+    } });
+  return { clip, resource: resourceFromClip(clip, value('fps'), value('loop')) };
+}
+
+function resourceJSON(clip, resource) {
+  return Object.freeze({ format: 'exoduser-atlas-clip', version: 1, name: clip.name,
+    sourcePath: clip.atlas.sourcePath, columns: resource.columns, rows: resource.rows,
+    frameCount: resource.frameCount, fps: resource.fps, loop: resource.loop });
+}
+
+function clipDuration(clip, resource) { return resource ? resource.durationSeconds : clip.durationSeconds; }
+function clipFrame(clip, at, resource) { return resource ? sampleAtlasClip(resource, at).frame : sampleSpriteClip(clip, at); }
+function clipCell(clip, resource, image, frame, row = clip.atlas.directionRow) {
+  if (!resource) return spriteClipCell(clip, frame, image.naturalWidth, image.naturalHeight, row);
+  // The editor displays the full authored cell. Main may explicitly use an inset.
+  const rect = getAtlasFrameRect(image, resource, frame, 0);
+  return Object.freeze({ x: rect.sx, y: rect.sy, width: rect.sw, height: rect.sh,
+    column: frame % resource.columns, row: Math.floor(frame / resource.columns) });
+}
+
 function initialize() {
   const ui = Object.fromEntries(IDS.map(id => [id, document.getElementById(id)]));
   for (const id of IDS) if (!ui[id]) throw new Error('필수 UI가 없습니다: #' + id);
@@ -52,6 +99,7 @@ function initialize() {
   if (!context) throw new Error('Canvas2D를 초기화하지 못했습니다.');
 
   let clip = presetClip('recovery');
+  let resource = null;
   let time = 0;
   let frame = sampleSpriteClip(clip, time);
   let row = 0;
@@ -78,7 +126,7 @@ function initialize() {
   let image = new Image();
   const inputs = ['preset', 'row', 'frame', 'key-time', 'duration', 'clip-name',
     'record', 'remove', 'play', 'stop', 'loop', 'seek', 'undo', 'redo', 'export',
-    'json', 'import', 'zoom', 'sequence'];
+    'json', 'import', 'zoom', 'sequence', 'playback-mode', 'fps', 'export-resource'];
   const sourceInputs = ['source-path', 'columns', 'rows', 'layout', 'frames-per-row', 'frame-count', 'apply-source'];
 
   function notice(message, error = false) {
@@ -95,6 +143,11 @@ function initialize() {
     for (const button of keyButtons) button.disabled = unavailable;
     if (unavailable) return;
     ui.row.disabled = clip.atlas.layout === 'linear';
+    ui.fps.disabled = !resource;
+    ui['export-resource'].disabled = !resource;
+    ui.export.disabled = !!resource;
+    for (const id of ['duration', 'frame', 'record', 'remove', 'sequence']) ui[id].disabled = !!resource;
+    for (const button of keyButtons) button.disabled = !!resource;
     ui.play.disabled = playing;
     ui.stop.disabled = !playing && time === 0;
     ui.undo.disabled = undo.length === 0;
@@ -144,22 +197,22 @@ function initialize() {
 
   function enteredTime() {
     const value = finiteInput(ui['key-time'], '키 시각');
-    if (value < 0 || value > clip.durationSeconds) throw new Error('키 시각은 0..clip 길이 사이여야 합니다.');
+    if (value < 0 || value > clipDuration(clip, resource)) throw new Error('키 시각은 0..clip 길이 사이여야 합니다.');
     return value;
   }
 
   function currentState() {
     // A draft cell preview is not a recorded pose and must not leak into undo.
-    return { clip, time, frame: sampleSpriteClip(clip, time), dirty, image };
+    return { clip, resource, time, frame: clipFrame(clip, time, resource), dirty, image };
   }
 
   function syncClock() {
     ui.seek.value = String(time);
     ui['key-time'].value = String(time);
     ui.frame.value = String(frame);
-    leafText(ui.time, time.toFixed(4) + ' / ' + clip.durationSeconds.toFixed(4) + ' s');
-    let next = 0;
-    while (next + 1 < clip.keys.length && clip.keys[next + 1].time <= time) next++;
+    leafText(ui.time, time.toFixed(4) + ' / ' + clipDuration(clip, resource).toFixed(4) + ' s');
+    let next = resource ? -1 : 0;
+    while (!resource && next + 1 < clip.keys.length && clip.keys[next + 1].time <= time) next++;
     if (next !== activeKey) {
       if (keyButtons[activeKey]) keyButtons[activeKey].setAttribute('aria-current', 'false');
       if (keyButtons[next]) keyButtons[next].setAttribute('aria-current', 'true');
@@ -182,14 +235,18 @@ function initialize() {
     leafText(ui['source-summary'], atlas.columns + '열 × ' + atlas.rows + '행 · ' + clip.frameCount +
       '프레임 · ' + (atlas.layout === 'linear' ? '격자 순서' : '방향행별 모션'));
     ui['clip-name'].value = clip.name;
-    ui.duration.value = String(clip.durationSeconds);
+    const duration = clipDuration(clip, resource);
+    ui['playback-mode'].value = resource ? 'fps' : 'keys';
+    ui.fps.value = String(resource ? resource.fps : 24);
+    if (resource) ui.loop.checked = resource.loop;
+    ui.duration.value = String(duration);
     ui['key-time'].min = '0';
-    ui['key-time'].max = String(clip.durationSeconds);
+    ui['key-time'].max = String(duration);
     ui.seek.min = '0';
-    ui.seek.max = String(clip.durationSeconds);
+    ui.seek.max = String(duration);
     ui.seek.step = 'any';
     const fragment = document.createDocumentFragment();
-    keyButtons = clip.keys.map((key, index) => {
+    keyButtons = (resource ? [] : clip.keys).map((key, index) => {
       const button = document.createElement('button');
       button.type = 'button';
       button.className = 'sprite-key';
@@ -200,6 +257,12 @@ function initialize() {
       fragment.append(button);
       return button;
     });
+    if (resource) {
+      const label = document.createElement('span');
+      leafText(label, resource.frameCount + ' 프레임 · ' + resource.fps + ' FPS · ' +
+        (resource.loop ? '반복' : '한 번 재생') + ' · 격자 순서');
+      fragment.append(label);
+    }
     ui.tracks.replaceChildren(fragment);
     activeKey = -1;
     syncClock();
@@ -229,7 +292,7 @@ function initialize() {
         return false;
       }
       // Integer partitions retain every source pixel, including a non-divisible edge.
-      const cell = spriteClipCell(clip, frame, image.naturalWidth, image.naturalHeight, row);
+      const cell = clipCell(clip, resource, image, frame, row);
       const { x: sx, y: sy, width: sw, height: sh } = cell;
       const fitScale = Math.min(1, Math.max(1, width - 48) / Math.ceil(image.naturalWidth / clip.atlas.columns),
         Math.max(1, height - 48) / Math.ceil(image.naturalHeight / clip.atlas.rows));
@@ -244,6 +307,8 @@ function initialize() {
       drawCount++;
       renderMetadata = Object.freeze({
         rendered: true, renderer: 'Canvas2D', drawCount, frame, row, time,
+        playbackMode: resource ? 'fps' : 'keys',
+        sample: resource ? Object.freeze(sampleAtlasClip(resource, time)) : null,
         source: cell,
         destination: Object.freeze({ x: dx, y: dy, width: dw, height: dh }),
         footAnchor: Object.freeze({ x: anchorX, y: anchorY }),
@@ -262,8 +327,8 @@ function initialize() {
     if (!Number.isFinite(nextTime)) throw new Error('시각은 유한한 숫자여야 합니다.');
     if (cancelPending()) notice('이전 원본 준비를 취소하고 현재 모션을 표시합니다.');
     stopPlayback(false);
-    time = Math.max(0, Math.min(clip.durationSeconds, nextTime));
-    frame = sampleSpriteClip(clip, time);
+    time = Math.max(0, Math.min(clipDuration(clip, resource), nextTime));
+    frame = clipFrame(clip, time, resource);
     syncClock();
     render();
   }
@@ -278,9 +343,10 @@ function initialize() {
   }
 
   // Called only after schema, sampling and loaded image capacity all succeeded.
-  function commitClip(nextClip, boundedTime, nextImage, message) {
-    const nextFrame = sampleSpriteClip(nextClip, boundedTime);
-    const changed = JSON.stringify(nextClip) !== JSON.stringify(clip);
+  function commitClip(nextClip, boundedTime, nextImage, message, nextResource) {
+    const nextFrame = clipFrame(nextClip, boundedTime, nextResource);
+    const changed = JSON.stringify(nextClip) !== JSON.stringify(clip) ||
+      JSON.stringify(nextResource) !== JSON.stringify(resource);
     if (changed && imageState === 'ready') {
       undo.push(currentState());
       if (undo.length > HISTORY_LIMIT) undo.shift();
@@ -288,6 +354,7 @@ function initialize() {
     }
     stopPlayback(false);
     clip = nextClip;
+    resource = nextResource;
     image = nextImage;
     imageState = 'ready';
     row = clip.atlas.directionRow;
@@ -302,15 +369,16 @@ function initialize() {
 
   // A new source remains a candidate until its dimensions are validated. Failed
   // imports cannot change the active clip, image, clock, pose or undo history.
-  function replaceClip(raw, nextTime = time, message = '') {
+  function replaceClip(raw, nextTime = time, message = '', resourceOptions = null) {
     const nextClip = makeClip(raw);
+    const nextResource = resourceOptions ? resourceFromClip(nextClip, resourceOptions.fps, resourceOptions.loop) : null;
     if (!Number.isFinite(nextTime)) throw new Error('시각은 유한한 숫자여야 합니다.');
-    const boundedTime = Math.max(0, Math.min(nextClip.durationSeconds, nextTime));
-    const nextFrame = sampleSpriteClip(nextClip, boundedTime);
+    const boundedTime = Math.max(0, Math.min(clipDuration(nextClip, nextResource), nextTime));
+    const nextFrame = clipFrame(nextClip, boundedTime, nextResource);
     if (imageState === 'ready' && nextClip.atlas.sourcePath === clip.atlas.sourcePath) {
-      spriteClipCell(nextClip, nextFrame, image.naturalWidth, image.naturalHeight);
+      clipCell(nextClip, nextResource, image, nextFrame);
       cancelPending();
-      return commitClip(nextClip, boundedTime, image, message);
+      return commitClip(nextClip, boundedTime, image, message, nextResource);
     }
     cancelPending();
     const serial = loadSerial;
@@ -319,10 +387,10 @@ function initialize() {
     candidate.onload = () => {
       if (!current()) return;
       try {
-        spriteClipCell(nextClip, nextFrame, candidate.naturalWidth, candidate.naturalHeight);
+        clipCell(nextClip, nextResource, candidate, nextFrame);
         candidate.onload = candidate.onerror = null;
         pendingImage = null;
-        commitClip(nextClip, boundedTime, candidate, message || '원본 아틀라스를 적용했습니다.');
+        commitClip(nextClip, boundedTime, candidate, message || '원본 아틀라스를 적용했습니다.', nextResource);
       } catch (error) {
         candidate.onload = candidate.onerror = null;
         pendingImage = null;
@@ -359,14 +427,15 @@ function initialize() {
     const previous = from[from.length - 1];
     const nextFrame = previous.frame;
     // History contains immutable module-created clips; no raw JSON is retained.
-    sampleSpriteClip(previous.clip, previous.time);
-    spriteClipCell(previous.clip, nextFrame, previous.image.naturalWidth, previous.image.naturalHeight);
+    clipFrame(previous.clip, previous.time, previous.resource);
+    clipCell(previous.clip, previous.resource, previous.image, nextFrame);
     cancelPending();
     to.push(currentState());
     if (to.length > HISTORY_LIMIT) to.shift();
     from.pop();
     stopPlayback(false);
     clip = previous.clip;
+    resource = previous.resource;
     image = previous.image;
     imageState = 'ready';
     row = clip.atlas.directionRow;
@@ -390,9 +459,11 @@ function initialize() {
       const dt = lastTimestamp === null ? 0 : Math.max(0, Math.min(0.05, (timestamp - lastTimestamp) / 1000));
       lastTimestamp = timestamp;
       const nextTime = time + dt;
-      time = ui.loop.checked ? nextTime % clip.durationSeconds : Math.min(clip.durationSeconds, nextTime);
-      frame = sampleSpriteClip(clip, time);
-      if (!ui.loop.checked && nextTime >= clip.durationSeconds) stopPlayback(false);
+      const duration = clipDuration(clip, resource);
+      const loop = resource ? resource.loop : ui.loop.checked;
+      time = loop ? nextTime % duration : Math.min(duration, nextTime);
+      frame = clipFrame(clip, time, resource);
+      if (!loop && nextTime >= duration) stopPlayback(false);
       syncClock();
       if (render() && playing) raf = requestAnimationFrame(playFrame);
     } catch (error) { fail(error); }
@@ -402,14 +473,32 @@ function initialize() {
     if (imageState !== 'ready' || disposed || fatalError || playing) return;
     if (document.hidden) throw new Error('창이 숨겨진 동안에는 재생을 시작하지 않습니다.');
     if (cancelPending()) notice('이전 원본 준비를 취소하고 현재 모션을 재생합니다.');
-    if (time >= clip.durationSeconds) time = 0;
-    frame = sampleSpriteClip(clip, time);
+    if (time >= clipDuration(clip, resource)) time = 0;
+    frame = clipFrame(clip, time, resource);
     playing = true;
     lastTimestamp = null;
     syncClock();
     if (render()) raf = requestAnimationFrame(playFrame);
   }
 
+  listen(ui['playback-mode'], 'change', () => {
+    const mode = ui['playback-mode'].value;
+    if (!['keys', 'fps'].includes(mode)) throw new Error('재생 방식을 선택하세요.');
+    try {
+      replaceClip(clip, 0, mode === 'fps' ? 'FPS 리소스로 재생합니다. 키 모션은 별도로 보존합니다.' :
+        '기록한 키 모션으로 재생합니다.', mode === 'fps' ? { fps: finiteInput(ui.fps, 'FPS'), loop: ui.loop.checked } : null);
+    } finally { ui['playback-mode'].value = resource ? 'fps' : 'keys'; }
+  });
+  listen(ui.fps, 'change', () => {
+    if (!resource) return;
+    try { replaceClip(clip, time, '리소스 FPS를 변경했습니다.', { fps: finiteInput(ui.fps, 'FPS'), loop: resource.loop }); }
+    finally { ui.fps.value = String(resource.fps); }
+  });
+  listen(ui.loop, 'change', () => {
+    if (!resource) return;
+    try { replaceClip(clip, time, '리소스 반복 설정을 변경했습니다.', { fps: resource.fps, loop: ui.loop.checked }); }
+    finally { ui.loop.checked = resource.loop; }
+  });
   listen(ui.preset, 'change', () => {
     if (!['prepare', 'recovery'].includes(ui.preset.value)) throw new Error('알 수 없는 preset입니다.');
     replaceClip(presetClip(ui.preset.value), 0, '기존 Druid 4×8 프리셋을 불러왔습니다.');
@@ -437,7 +526,7 @@ function initialize() {
     replaceClip({ ...clip, durationSeconds }, time, 'clip 길이를 변경했습니다. 기존 키 시각은 이동하지 않습니다.');
   });
   listen(ui['clip-name'], 'change', () => {
-    replaceClip({ ...clip, name: ui['clip-name'].value }, time, 'clip 이름을 변경했습니다.');
+    replaceClip({ ...clip, name: ui['clip-name'].value }, time, 'clip 이름을 변경했습니다.', resource);
   });
   listen(ui.record, 'click', () => {
     // Read the fields on click, including a value whose change event has not fired.
@@ -495,7 +584,7 @@ function initialize() {
       framesPerRow: layout === 'linear' ? columns : finiteInput(ui['frames-per-row'], '행당 프레임 수'),
       directionRow: layout === 'linear' ? 0 : finiteInput(ui.row, '방향행') };
     replaceClip({ ...clip, frameCount: finiteInput(ui['frame-count'], '모션 프레임 수'), atlas }, time,
-      '원본 설정을 적용했습니다. 전체 프레임 순서 배치로 각 포즈를 재생할 수 있습니다.');
+      '원본 설정을 적용했습니다. 전체 프레임 순서 배치로 각 포즈를 재생할 수 있습니다.', resource);
   });
   listen(ui.sequence, 'click', () => {
     if (clip.frameCount > MAX_KEYS) throw new Error('한 번에 배치할 수 있는 키는 2048개입니다. 필요한 포즈를 선택해 기록할 수 있습니다.');
@@ -506,11 +595,17 @@ function initialize() {
   listen(ui.import, 'click', () => {
     const text = ui.json.value;
     if (text.length > MAX_JSON_LENGTH) throw new Error('JSON은 1,000,000자 이하여야 합니다.');
-    const imported = makeClip(JSON.parse(text), true);
-    replaceClip(imported, 0, 'sprite clip JSON을 가져왔습니다. 게임이나 저장 데이터에는 적용하지 않습니다.');
+    const raw = JSON.parse(text);
+    if (raw && raw.format === 'exoduser-atlas-clip') {
+      const imported = makeResource(raw);
+      replaceClip(imported.clip, 0, 'FPS 리소스 JSON을 가져왔습니다. 게임이나 저장 데이터에는 자동 적용하지 않습니다.', imported.resource);
+    } else {
+      const imported = makeClip(raw, true);
+      replaceClip(imported, 0, 'sprite clip JSON을 가져왔습니다. 게임이나 저장 데이터에는 적용하지 않습니다.');
+    }
   });
-  listen(ui.export, 'click', () => {
-    const text = JSON.stringify(clip, null, 2);
+  function exportJSON(value, suffix) {
+    const text = JSON.stringify(value, null, 2);
     ui.json.value = text;
     ui.json.hidden = false;
     // The textarea may live inside a disclosure owned by the page.
@@ -525,7 +620,7 @@ function initialize() {
       objectURLs.add(url);
       anchor = document.createElement('a');
       anchor.href = url;
-      anchor.download = (clip.name.replace(/[^a-zA-Z0-9가-힣_-]+/g, '-').slice(0, 100) || 'sprite-clip') + '.sprite.json';
+      anchor.download = (clip.name.replace(/[^a-zA-Z0-9가-힣_-]+/g, '-').slice(0, 100) || 'sprite-clip') + suffix;
       anchor.hidden = true;
       document.body.append(anchor);
       anchor.click();
@@ -539,6 +634,12 @@ function initialize() {
       // Keep the URL valid for an asynchronous browser download; pagehide revokes it.
       if (requested) notice('다운로드를 요청했습니다. 저장 완료는 확인하지 않았습니다. 아래 JSON도 복사할 수 있습니다.');
     }
+  }
+  listen(ui.export, 'click', () => exportJSON(clip, '.sprite.json'));
+  listen(ui['export-resource'], 'click', () => {
+    if (!resource) throw new Error('FPS 리소스 재생을 선택하세요.');
+    clipCell(clip, resource, image, clipFrame(clip, time, resource));
+    exportJSON(resourceJSON(clip, resource), '.atlas.json');
   });
   listen(window, 'resize', render);
   listen(window, 'blur', () => {
@@ -555,7 +656,9 @@ function initialize() {
   const hook = Object.freeze({
     snapshot() {
       return Object.freeze({
-        clip, atlas: clip.atlas, time, frame, sampledFrame: sampleSpriteClip(clip, time), row, playing, dirty, zoom,
+        clip, atlas: clip.atlas, resource: resource ? resourceJSON(clip, resource) : null,
+        playbackMode: resource ? 'fps' : 'keys', durationSeconds: clipDuration(clip, resource),
+        time, frame, sampledFrame: clipFrame(clip, time, resource), row, playing, dirty, zoom,
         history: Object.freeze({ undo: undo.length, redo: redo.length, limit: HISTORY_LIMIT }),
         dimensions, render: renderMetadata,
         image: Object.freeze({ state: imageState, width: image.naturalWidth, height: image.naturalHeight,

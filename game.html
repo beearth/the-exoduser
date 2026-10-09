@@ -10964,6 +10964,44 @@ function _drawCodexBoss(X,e,sa,tdY,si,parentScale,parentYOffset){
 function _drawStage1CodexBoss(X,e,sa,tdY){return _drawCodexBoss(X,e,sa,tdY,0)}
 // ═══ [다크드루이드] 8방향 프레임 애니메이션 렌더러 (walk/attack=4열8행, 대기=8dir 4열2행) ═══
 const _druidSheets={};
+// Shared atlas resource: rendered from existing pool game time, never a new clock.
+const _druidPoolClip={ready:false,image:null,clip:null,sample:null,rects:null};
+(function _loadDruidPoolClip(){
+  Promise.all([
+    import('./tools/2_5d/atlas-clip-runtime.mjs?v=20261009-v1'),
+    fetch('assets/vfx/boss/druid_poison_pool_24_20261009.clip.json?v=20261009-v1')
+      .then(response=>{if(!response.ok)throw new Error('Druid pool resource unavailable');return response.json();})
+  ]).then(([runtime,data])=>{
+    if(data.format!=='exoduser-atlas-clip'||data.version!==1||typeof data.sourcePath!=='string'
+      ||!data.sourcePath.startsWith('assets/')||/[\\?#%:\x00-\x1f]/.test(data.sourcePath)
+      ||data.sourcePath.split('/').some(part=>!part||part==='.'||part==='..')
+      ||typeof data.loop!=='boolean')throw new Error('Invalid Druid pool resource');
+    const clip=runtime.createAtlasClip(data),image=new Image();
+    image.onload=()=>{try{
+      const rects=Object.freeze(Array.from({length:clip.frameCount},(_,frame)=>
+        Object.freeze(runtime.getAtlasFrameRect(image,clip,frame,1))));
+      Object.assign(_druidPoolClip,{image,clip,sample:runtime.sampleAtlasClip,rects,ready:true});
+    }catch(_){_druidPoolClip.ready=false;}};
+    image.onerror=()=>{_druidPoolClip.ready=false;};
+    image.src=data.sourcePath+'?v=20261009-v1';
+  }).catch(()=>{});
+})();
+function _drawDruidPoolClip(ctx,pool,alpha){
+  if(!_druidPoolClip.ready)return false;
+  const frame=_druidPoolClip.sample(_druidPoolClip.clip,pool.t/60).frame;
+  const rect=_druidPoolClip.rects[frame],R=pool.r*1.12;
+  // Registered atlas alpha bounds fit this fixed 1.12 scale inside the hazard.
+  // This also works in the WebGL Canvas proxy, whose clip() is a no-op.
+  ctx.save();try{ctx.globalAlpha=alpha;
+    ctx.drawImage(_druidPoolClip.image,rect.sx,rect.sy,rect.sw,rect.sh,
+      pool.x-R,pool.y-R,R*2,R*2);
+  }finally{ctx.restore();}
+  ctx.save();try{ctx.globalAlpha=alpha*.55;ctx.fillStyle='#a9d76a';
+    ctx.beginPath();ctx.arc(pool.x,pool.y,pool.r,0,Math.PI*2);
+    ctx.arc(pool.x,pool.y,Math.max(0,pool.r-1.2),0,Math.PI*2,true);ctx.fill();
+  }finally{ctx.restore();}
+  return true;
+}
 const _druidGroundRing=new Image();
 _druidGroundRing.src='assets/vfx/boss/druid_corruption_ring.svg?v=20260928';
 function _drawDruidGroundRing(ctx,x,y,r,alpha,angle=0,innerFraction=0){
@@ -17443,7 +17481,8 @@ function _drawDruidFinaleTell(ctx,e){
 }
 function _drawDruidFinalePool(ctx,lp,sheet,strokeFn){
   const armed=lp.t>=lp.warnT,fade=Math.min(1,(lp.maxT-lp.t)/60);
-  const artReady=_drawDruidGroundRing(ctx,lp.x,lp.y,lp.r,(armed?.72:.36)*fade,lp.x*.007+lp.y*.003);
+  const artReady=_drawDruidPoolClip(ctx,lp,(armed?.72:.36)*fade)
+    ||_drawDruidGroundRing(ctx,lp.x,lp.y,lp.r,(armed?.72:.36)*fade,lp.x*.007+lp.y*.003);
   ctx.save();
   if(!artReady&&sheet){
     const im=sheet.img,cw=im.naturalWidth/4,ch=im.naturalHeight/2,fr=Math.min(7,~~(lp.t/lp.maxT*8)),artR=lp.r*Math.SQRT1_2;
@@ -57312,9 +57351,12 @@ function drawP(){
   if(G._lavaPools&&G._lavaPools.length>0){
     for(let li=0;li<G._lavaPools.length;li++){
       const lp=G._lavaPools[li];
-      // [다크드루이드] stage3 lavaPools = 커스텀 녹색 가시 장판 아트(빨간원 대체)
+      // [다크드루이드] 공통 24셀 장판 clip 우선, 기존 SVG/8셀은 미로드 폴백
       const _dzl=((G.stage===0||G.stage===3)&&typeof _druidSheets!=='undefined'&&_druidSheets.aoe&&_druidSheets.aoe.ready)?_druidSheets.aoe:null;
       if(_isDruidFinale(G._bossRef)){_drawDruidFinalePool(X,lp,_dzl,__strokeBak);continue;}
+      if(G.stage===0||G.stage===3){
+        const _la=lp.t<lp.warnT?lp.t/lp.warnT*.42:lp.t>lp.maxT*.8?(1-(lp.t-lp.maxT*.8)/(lp.maxT*.2))*.65:.65;
+        if(_drawDruidPoolClip(X,lp,_la))continue;}
       if((G.stage===0||G.stage===3)&&_druidGroundRing.complete&&_druidGroundRing.naturalWidth){
         const _la=lp.t<lp.warnT?lp.t/lp.warnT*.42:lp.t>lp.maxT*.8?(1-(lp.t-lp.maxT*.8)/(lp.maxT*.2))*.65:.65;
         _drawDruidGroundRing(X,lp.x,lp.y,lp.r,_la,li*.73);continue;}
@@ -57775,8 +57817,9 @@ function drawP(){
   if(G._poisonPools&&G._poisonPools.length>0){
     for(let pi=0;pi<G._poisonPools.length;pi++){
       const pp=G._poisonPools[pi];const _ppF=pp.t>pp.maxT*.8?(1-(pp.t-pp.maxT*.8)/(pp.maxT*.2)):Math.min(1,pp.t*5/pp.maxT);
-      // [다크드루이드] stage3 독장판 = 커스텀 8프레임 솟는 장판 아트
+      // [다크드루이드] 공통 24셀 장판 clip, 기존 SVG/8셀은 미로드 폴백
       const _dz=((G.stage===0||G.stage===3)&&typeof _druidSheets!=='undefined'&&_druidSheets.aoe&&_druidSheets.aoe.ready)?_druidSheets.aoe:null;
+      if((G.stage===0||G.stage===3)&&_drawDruidPoolClip(X,pp,_ppF*.68))continue;
       if((G.stage===0||G.stage===3)&&_druidGroundRing.complete&&_druidGroundRing.naturalWidth){
         _drawDruidGroundRing(X,pp.x,pp.y,pp.r,_ppF*.68,pi*.81);continue;}
       if(_dz){const im=_dz.img,cw=im.naturalWidth/4,ch=im.naturalHeight/2,fr=Math.min(7,~~(pp.t/pp.maxT*8)),sx=(fr%4)*cw,sy=(~~(fr/4))*ch,R=pp.r*1.5;

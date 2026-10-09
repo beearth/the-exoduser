@@ -244,3 +244,8 @@ ROOT-DRUID-ORIGINAL-RELIEF-20261009: 기존 rig_motion 한 담당이 신규 원�
 | 외형 별도 후보 | Seedream 5.0 Pro 7514186928503943168, `druid-clean-front-original.png` 2964079B / ae5a8394fb51c89b1cba85cd328a129d1fb8c3d528e64cfdb9c04b705717bfc1. 해골·뿔 유지/깃털·뿌리·발광 축소한 정면 정지 1장만 제작. 가슴 녹색 장식2 관측. 본편 채택0·다방향/공격/3D 미제작 |
 
 검수 원문은 `player-locomotion-phase-consumer-20261009/own-change-receipt.json`의 별도 epoch를 따른다. PASS 합산0. 외형 후보는 동작/방향 일관성을 확보하기 전 본편 완성으로 표시하지 않는다.
+
+
+## 2026-10-09 — 엔진팀 · 독액장판24 공통 리소스
+
+`ROOT-ENGINE-POISON-PUDDLE24-20261009`: 사용자 직접 승인으로 엔진 런타임·애니메이션·에디터3담당과 ROOT 통합을 실제 진행했다. 실제24기포 원화·768px 6×4/fps24/looptrue 공통JSON을 에디터와 main si0/si3/피날레 장판이 소비하며 Godot SpriteFrames/AtlasTexture loader를 작성했다. [현행 수치·시간·crop·Godot·검수 계약](../5.1임펙트디자인/DRUID_POISON_PUDDLE24_ENGINE_20261009.md). 기존 SVG/aoe8셀은 실패 폴백, chaseAoe/groundFissure·전투/save/원PNG는 유지. 다른보스/캐릭터 전체24/새3D/전체Godot이식 완료는 아니다. controlled actualPNG Canvas 검수와 본편 정상줌/성능/청취/save/A급은 구분하며 **VISUAL VERDICT: RETOUCH**. 같은완료검수 반복0. 최종 보존은 외부 `engine-poison-puddle24-20261009/completion.json`.

@@ -153,7 +153,7 @@ Godot 공식 [애니메이션 소개](https://docs.godotengine.org/en/stable/tut
 
 | 항목 | 현재 구현 계약 |
 |---|---|
-| 진입/소유 | 기존3387의 `/tools/engine-sprite-editor.html`, controller `engine-sprite-editor.mjs?v=20261009-atlas-v3`. 기존 `engine-motion-editor.html`의 화면 링크 유지 |
+| 진입/소유 | 기존3387의 `/tools/engine-sprite-editor.html`, controller `engine-sprite-editor.mjs?v=20261009-resource-v4`. 기존 `engine-motion-editor.html`의 화면 링크 유지 |
 | 공통 재생 코어 | `engine/sprite-clip.mjs?v=20261009-atlas-v2`의 create/sample 및 atlas 정규화/crop API 재사용. 이번 프레임 확장은 HTML/controller/core3파일이며 본편 producer·game·원PNG 변경은 포함하지 않음 |
 | 입력 원본 | 기본은 `assets/sprites/boss/boss_dark_druid_attack.png`, 기존887×1774px/4열×8행/frameCount4. sourcePath·columns·rows·layout·framesPerRow·frameCount·directionRow를 UI에서 지정. frame/방향행은 실제 범위의 숫자 입력으로 구성하며 대량 option을 생성하지 않음. 방향행은 현행 atlas JSON/이력에 저장; linear는0으로 고정 |
 | 원본 crop | `spriteClipCell`의 column/row로 sx=floor(column×W/columns), sy=floor(row×H/rows), sw=floor((column+1)×W/columns)−sx, sh=floor((row+1)×H/rows)−sy. 기본4×8의 셀 너비·높이221 또는222px 계약 유지. main crop과 pixel 동일하다고 보장하지 않음 |
@@ -257,3 +257,8 @@ Godot 공식 [애니메이션 소개](https://docs.godotengine.org/en/stable/tut
 | 인수 범위 | 통제 CPU 실행. 새 GLB 로드/GPU/실제 본편 화면·정상줌·청취·성능·save 검증 없음. Druid `use2D` 경로의 새 모델·모션 제작이 아님. VISUAL VERDICT: UI_NOT_ASSESSED/RETOUCH |
 
 외부 증거: `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/boss3d-pause-clock-consumer-20261009/`의 `preflight.json`, `cpu-first-result.json`, `completion.json`. 최종 Git 상태는 completion 기록을 따른다.
+
+
+## 2026-10-09 — 엔진팀 · 독액장판24 공통 리소스
+
+`ROOT-ENGINE-POISON-PUDDLE24-20261009`: 사용자 직접 승인으로 엔진 런타임·애니메이션·에디터3담당과 ROOT 통합을 실제 진행했다. 실제24기포 원화·768px 6×4/fps24/looptrue 공통JSON을 에디터와 main si0/si3/피날레 장판이 소비하며 Godot SpriteFrames/AtlasTexture loader를 작성했다. [현행 수치·시간·crop·Godot·검수 계약](../5.1임펙트디자인/DRUID_POISON_PUDDLE24_ENGINE_20261009.md). 기존 SVG/aoe8셀은 실패 폴백, chaseAoe/groundFissure·전투/save/원PNG는 유지. 다른보스/캐릭터 전체24/새3D/전체Godot이식 완료는 아니다. controlled actualPNG Canvas 검수와 본편 정상줌/성능/청취/save/A급은 구분하며 **VISUAL VERDICT: RETOUCH**. 같은완료검수 반복0. 최종 보존은 외부 `engine-poison-puddle24-20261009/completion.json`.
