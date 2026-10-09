@@ -1,5 +1,10 @@
 
 
+## 2026-10-10 — 화마귀 Q 불탄 임팩트24 연결
+
+fdEnergy&&EL.F의 전용 Q 표시를 bossFireQImpact로 연결했다. 기존 승인 fire24·공유Image1을 재사용하며 새그림·리소스등록·JSON은 추가하지 않는다. 원Dark02의 r80/72·최대240²·Q반사5/자원×10/44armRNG·공통효과를 유지하고, 새ready는24 한셀·미준비/실패는원Q Dark16이다. 정상줌·실전시각·동시성능未인수/UI_NOT_ASSESSED RETOUCH. [정본](5.1임펙트디자인/BOSS_FIRE_Q_IMPACT24_ENGINE_20261010.md).
+
+
 ## 2026-10-10 — 화마귀 불탄 접촉 임팩트24
 
 actual _fbEnergyBoom의 fdEnergy&&EL.F 접촉만 bossFireImpact 새24/640²로 연결했다(r220/90·최대660²). 일반fire16/Q/기존비행24·물보스24와전투/RNG/SFX/save는유지한다. t/mt·3r성장/alpha·부모blend상속/lazyImage1/원16폴백, resource16FPS는참고값이다. actualwhole source·독립Canvas·editor 검수와시각RETOUCH의세부범위는정본을따르며 actualmain/정상줌/동시성능/청취/save未인수다. [정본](5.1임펙트디자인/BOSS_FIRE_IMPACT24_ENGINE_20261010.md).

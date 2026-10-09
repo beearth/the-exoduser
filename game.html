@@ -17784,7 +17784,7 @@ function _resolveBigEnergyParry(p,totalDmg){
   _splitParriedBigEnergy(p,totalDmg);
   P.parryBank=(P.parryBank||0)+totalDmg*_bigResourceMul;
   addParts(p.x,p.y,ELC[p.el]||'#ffffff',20);
-  doParry(totalDmg,p.x,p.y,true,p.el,_bigResourceMul,p.fbEnergy&&p.el===EL.I?'waterEnergy':undefined);
+  doParry(totalDmg,p.x,p.y,true,p.el,_bigResourceMul,p.fbEnergy&&p.el===EL.I?'waterEnergy':p.fdEnergy&&p.el===EL.F?'fireEnergy':undefined);
 }
 for(var _i2=0;_i2<_PPROJ_POOL;_i2++)_pprojFree.push(_mkPProj());
 // ── 성능 디버그 ──
@@ -39152,6 +39152,9 @@ function doParry(_inDmg,_px,_py,_forceQ,_parryEl,_resourceMul,_impactKind){const
   }else if(_impactKind==='waterEnergy'){
     _loadBossWaterImpactClip();
     _addBoom(_px,_py,96,72,'bossWaterImpact');
+  }else if(_impactKind==='fireEnergy'&&_forceQ===true&&_parryEl===EL.F){
+    _loadBossFireImpactClip();
+    _addBoom(_px,_py,80,72,'bossFireQImpact');
   }else if(_parryEl==='rainbow'){
     _rainbowImpact(_px,_py);
   }else if(_isQParry){
@@ -57516,6 +57519,7 @@ function drawP(){
       lightning:['Lightning_ImpactLightning_Sheet.png','Lightning_Lightning_FBF_4x3.png'],
       dark:['Dark_MediumImpact.png','Dark_DarkSmoke_FBF_4x4.png'],
       dark02:['Dark_MediumImpact.png'],
+      bossFireQImpact:['Dark_MediumImpact.png'],
       explosion:['Fire_ImpactFire_Sheet.png'],
       fire_medium:['Fire_MediumImpact.png'],
     };
@@ -57528,6 +57532,8 @@ function drawP(){
       // The new single cell is complete; the original generic path is its failure fallback.
     }else if(_bv.col==='bossFireImpact'&&_drawBossFireImpactClip(X,_bv,_ep)){
       // One authored fire-contact cell; originalfire16 stays the failure fallback.
+    }else if(_bv.col==='bossFireQImpact'&&_tvfx2Imgs['Dark_MediumImpact.png']?.complete&&_drawBossFireImpactClip(X,_bv,_ep)){
+      // FD fire Q reuses the approved24 clip; originalDark16 remains its fallback.
     }else if(_bv.col==='druid_poison_hit'){
       _drawDruidPoisonImpact(X,_bv,_tvfx2Imgs);
     }else if(_bv.col==='plague'){

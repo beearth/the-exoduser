@@ -8,7 +8,7 @@
 | 분열 | 기존 _splitParriedBigEnergy가 원본 p.el을 보존하므로 물 속성 magic/_parryMagicShot 5발. 발당 max(1,floor(totalDmg/5)), 속도7.5·r8·사거리900·혜성 시각246.4px 유지 |
 | 패링 효과 | _resolveBigEnergyParry가 fbEnergy&&p.el===EL.I일 때 doParry의7번째 인수 impactKind=waterEnergy 전달. 이 경우 bossWaterImpact 새24/원16폴백 r96/72f(최대288px) 물보라 사용. 물 파란콩의 waterBean 분기와 구분 |
 | 충돌·폭발 | _fbEnergyBoom의 fbEnergy&&EL.I 경로만 bossWaterImpact 새24/원16폴백 r220/90f, 물 bigImpact, 파란 플래시0.32·파티클42·흔들림32. 플레이어·벽 충돌 공통 |
-| 유지 | 화마귀 fdEnergy의 불속성·Q불분열·폭발수치는유지하며 fdEnergy&&EL.F 접촉boom표시만 bossFireImpact 새24/원16폴백으로개선했다. 크라켄의 별도 물리 눈알탄 titanEye 3연사와 E패링은 기존 경로. 대형 에너지탄 Q패링·자원회수×10 및 이전 착지 피해½·밀침2배 유지 |
+| 유지 | 화마귀 fdEnergy의 불속성·Q5불분열·폭발수치는유지하며 접촉bossFireImpact24/원Fire16폴백과 전용Q bossFireQImpact 승인24재사용/원Dark16폴백(r80/72/max240²)을 구분한다. 크라켄의 별도 물리 눈알탄 titanEye 3연사와 E패링은 기존 경로. 대형 에너지탄 Q패링·자원회수×10 및 이전 착지 피해½·밀침2배 유지 |
 | 적용 | game.html / game-easy-test.html |
 | 자동 검증 | test/krakenWaterEnergy.test.js: 두 HTML×4개체 속성의 실제 발사→분열→폭발 함수 실행, 화마귀 불 속성 보존, 전용 물 패링 분기12개 PASS. 기존 bigEnergyParrySplit13개 PASS |
 | 브라우저 | 실제 spawnProj·분열·폭발 경로로 네 속성 크라켄의 물 탄과 물 분열5발 확인. output/kraken_water_20260913/qa.json 및 화면. 키 입력 기반 패링 전체 플레이 검증은 기존 경로 검사와 구분 |
@@ -46,3 +46,8 @@
 ## 2026-10-10 — 화마귀 불탄 접촉 임팩트24
 
 actual _fbEnergyBoom의 fdEnergy&&EL.F 접촉만 bossFireImpact 새24/640²로 연결했다(r220/90·최대660²). 일반fire16/Q/기존비행24·물보스24와전투/RNG/SFX/save는유지한다. t/mt·3r성장/alpha·부모blend상속/lazyImage1/원16폴백, resource16FPS는참고값이다. actualwhole source·독립Canvas·editor 검수와시각RETOUCH의세부범위는정본을따르며 actualmain/정상줌/동시성능/청취/save未인수다. [정본](../5.1임펙트디자인/BOSS_FIRE_IMPACT24_ENGINE_20261010.md).
+
+
+## 2026-10-10 — 화마귀 Q 불탄 임팩트24 연결
+
+fdEnergy&&EL.F의 전용 Q 표시를 bossFireQImpact로 연결했다. 기존 승인 fire24·공유Image1을 재사용하며 새그림·리소스등록·JSON은 추가하지 않는다. 원Dark02의 r80/72·최대240²·Q반사5/자원×10/44armRNG·공통효과를 유지하고, 새ready는24 한셀·미준비/실패는원Q Dark16이다. 정상줌·실전시각·동시성능未인수/UI_NOT_ASSESSED RETOUCH. [정본](../5.1임펙트디자인/BOSS_FIRE_Q_IMPACT24_ENGINE_20261010.md).

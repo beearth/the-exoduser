@@ -174,6 +174,7 @@ WebGL 가산 및 Canvas2D 폴백에 동일한 baseAlpha를 전달한다. RGB `[2
 |------|---------|-------------|------|----------|
 | fire | 66 (1.1초) | 16 | Fire_FBF_4x4 | 낮음 (drawImage 1회/프레임) |
 | bossFireImpact(화마귀접촉) | 90틱 (원boom수명) | 새24/참고16FPS/nonloop | boss_fire_impact24·실패원Fire16·중앙최대660²/3r성장/부모blend상속 | 동시효과성능未검수/VISUAL RETOUCH |
+| bossFireQImpact(화마귀Q) | 72틱 (원Qboom수명) | 승인24 재사용·normalized72/참고1.2초 | boss_fire_impact24·실패원Q Dark16·최대240²/3r성장/부모blend상속·원Darkcomplete가드 | 실전시각/동시효과성능未검수 |
 | black(폭독혈) | 66 (1.1초) | 16 | Dark_DarkSmoke_FBF_4x4 | 낮음 |
 | redbean(빨콩) | 72 (1.2초) | 16 | Fire_FBF_4x4 | 낮음 |
 | rainbow_light(일반 무지개 적중/블루콩) | 72 (1.2초, 기존60틱/초 기준) | 16×4 (4레이어) | Poison_MediumImpact + Dark_DarkSmoke + Light_ImpactLight + Ice_ImpactIce (각 90° 회전+시차+lighter 합성) | 중간 (drawImage 4회/프레임) |
@@ -778,7 +779,7 @@ Ori 수준 대기 깊이감. 광원 근처에서 존재감 나는 미세 입자.
 | _projHitFx | r60, 물리12f/기타48f. 실제 el 우선. isRed는 EL.F일 때만 redbean 폭발·붉은 파티클14개·플래시0.18. 물리는 #ffffff, 나머지는 ELC[el] 파티클12개·플래시0.15, shake6 |
 | 물리탄 수명 만료 (2026-09-08) | 공통 만료 분기의 `p.redBean && _projectileParryClass(p)==='physical'`만 `_addBoom(x,y,60,12,'physical')`: 기존 흰 Fire Impact 첫 행4프레임, 최대180px/0.2초. 흰 파편 `#ffffff` 12개·shake3, 화염 boom·추가 explosion 임팩트·피격 플래시 없음. `redBean+EL.P`와 물리 정체성의 titanEye(EL.F 포함)에 적용. 비물리 redBean은 기존 r40/72f redbean·붉은 파편12·explosion·shake3 유지 |
 | 물리 P | physical → Fire_ImpactFire_Sheet.png 첫 행 섬광·파편4프레임(index0~3) 흰색 틴트. 원본4×4 중 나머지12셀 제외, 최대180px, 12f(0.2초). _physicalImpactSheet는 이미지별 WeakMap 캐시, _tintHolyDome(img,255,255,255): RGB255/alpha=반올림(max(원본RGB)×원본alpha/255). 기존 Fire FBF 흰 연기 연결 제거. 원본/다른 속성/탄 비행/패링 효과 유지 |
-| 화염 F | 일반 fire/redbean → Fire_FBF_4x4.png 원16 유지. 화마귀 fdEnergy&&EL.F 접촉만 bossFireImpact 새24/원16폴백(r220/90/max660²); Q는이번변경제외 |
+| 화염 F | 일반 fire/redbean → Fire_FBF_4x4.png 원16 유지. 화마귀 fdEnergy&&EL.F 접촉 bossFireImpact 새24/원Fire16폴백(r220/90/max660²), 전용 fireEnergy Q는 bossFireQImpact 승인24재사용/원Dark16폴백(r80/72/max240²) |
 | 얼음 I | ice → Ice_ImpactIce_Sheet.png + Ice_MistSmoke_FBF_4x4.png (물파란콩은 기존 별도 Water Impact 경로 유지) |
 | 어둠 D | dark → Dark_MediumImpact.png + Dark_DarkSmoke_FBF_4x4.png |
 | 번개 L | lightning → Lightning_ImpactLightning_Sheet.png + Lightning_Lightning_FBF_4x3.png |
@@ -1374,3 +1375,8 @@ actual isBoss=true blood만 새640셀24원화로 표시하고 원16 alias·128×
 ## 2026-10-10 — 화마귀 불탄 접촉 임팩트24
 
 actual _fbEnergyBoom의 fdEnergy&&EL.F 접촉만 bossFireImpact 새24/640²로 연결했다(r220/90·최대660²). 일반fire16/Q/기존비행24·물보스24와전투/RNG/SFX/save는유지한다. t/mt·3r성장/alpha·부모blend상속/lazyImage1/원16폴백, resource16FPS는참고값이다. actualwhole source·독립Canvas·editor 검수와시각RETOUCH의세부범위는정본을따르며 actualmain/정상줌/동시성능/청취/save未인수다. [정본](BOSS_FIRE_IMPACT24_ENGINE_20261010.md).
+
+
+## 2026-10-10 — 화마귀 Q 불탄 임팩트24 연결
+
+fdEnergy&&EL.F의 전용 Q 표시를 bossFireQImpact로 연결했다. 기존 승인 fire24·공유Image1을 재사용하며 새그림·리소스등록·JSON은 추가하지 않는다. 원Dark02의 r80/72·최대240²·Q반사5/자원×10/44armRNG·공통효과를 유지하고, 새ready는24 한셀·미준비/실패는원Q Dark16이다. 정상줌·실전시각·동시성능未인수/UI_NOT_ASSESSED RETOUCH. [정본](BOSS_FIRE_Q_IMPACT24_ENGINE_20261010.md).
