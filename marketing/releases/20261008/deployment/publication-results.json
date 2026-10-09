@@ -168,8 +168,8 @@
     "followupState": "WAITING_FOR_BOSS_REDESIGN",
     "pollIntervalMinutes": 60,
     "watchState": "marketing/operations/boss-redesign-watch-20261009.json",
-    "lastCheckedAtUTC": "2026-10-09T06:57:08.045Z",
+    "lastCheckedAtUTC": "2026-10-09T09:58:08.241Z",
     "producerCompletionConfirmed": false,
-    "producerLastReport": "서버 복구 허용과 Mac 잠금 해제 답변 대기. 완료 검사 반복·사용자 환경 변경 없음."
+    "producerLastReport": "기존 주요 장식은 유지하고 깃털·뿌리를 줄이는 원화 실루엣 재작업 및 정상 크기 가독성 확인 진행 보고."
   }
 }
