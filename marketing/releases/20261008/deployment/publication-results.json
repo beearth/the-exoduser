@@ -158,12 +158,15 @@
   "lastOperationsCheck": {
     "dateKST": "2026-10-09",
     "newPosts": 0,
-    "nextMaterial": "Dark Druid boss transformation and combat guidance development record",
+    "nextMaterial": "Actual redesigned boss fight trailer after producer completion and normal-gameplay capture readiness",
     "developmentCommit": "12c29afeeb9a1ae079e4d99bbdfdc81ba872e585",
     "sceneStatus": "RETOUCH_TESTBED_STILLS_ONLY_NO_VERIFIED_CONTINUOUS_GAMEPLAY_RECORDING",
     "newPlayerCharacter": false,
     "steamDemoApplied": "UNVERIFIED",
     "automationPromptUpdated": true,
-    "noRepeatedLoginRequests": true
+    "noRepeatedLoginRequests": true,
+    "followupState": "WAITING_FOR_BOSS_REDESIGN",
+    "pollIntervalMinutes": 60,
+    "watchState": "marketing/operations/boss-redesign-watch-20261009.json"
   }
 }

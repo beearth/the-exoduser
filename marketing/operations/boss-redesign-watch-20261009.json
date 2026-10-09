@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "dateKST": "2026-10-09",
+  "status": "WAITING_FOR_BOSS_REDESIGN",
+  "userInstruction": "지금 보스전 총괄이 리디자인하고있으니까 경과보고 끝나면 만들어",
+  "automation": {
+    "id": "fdg",
+    "status": "ACTIVE",
+    "pollIntervalMinutes": 60,
+    "restoreAfterTrailerDelivery": "화·금 11:00 KST 공식 채널 운영"
+  },
+  "producer": {
+    "threadId": "01a0faa9-b453-7673-be39-98adedb4c2b3",
+    "hostId": "local",
+    "title": "맥북에서 총괄 시작하기",
+    "afterCursor": "b2476eee-d767-4cd1-8064-9706586fb10a:1",
+    "lastObservedStatus": "inProgress"
+  },
+  "completionConfirmed": false,
+  "captureStarted": false,
+  "publicationAllowed": false,
+  "nextMaterial": "리디자인 완료 버전의 실제 보스전 대표 트레일러",
+  "completionGate": [
+    "총괄이 보스전 전체 리디자인 완료를 보고",
+    "정상 본편·정상 배율에서 공격 예고→플레이어 대응→결과의 실제 녹화와 원음 확보 가능"
+  ],
+  "currentReviewVideo": "/Users/fordeargamers/the-exoduser/output/trailer-production-20261009/FINAL_REVIEW/EXODUSER_NewVersion_CombatTeaser_20261009_REVIEW_V3.mp4",
+  "notes": [
+    "단일 기술 수정이나 테스트베드 RETOUCH를 전체 완료로 해석하지 않음",
+    "변경 없는 경과·기존 로그인 요청·촬영 요청을 반복하지 않음",
+    "게임·서버·사용자 탭·세이브 무조작",
+    "완성 후 검수본부터 인도, 사용자 검수 전 자동 공개 금지"
+  ]
+}
