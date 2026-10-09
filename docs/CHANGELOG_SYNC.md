@@ -1,5 +1,10 @@
 ## 2026-10-08 — 1-1 보스 rig의 HP·레벨 앵커
 
+## 2026-10-09 — ROOT-DRUID-TRANSFORM-GUIDE-CONSUMER-20261009
+
+[변신·보스 안내 현행 계약](8.1보스디자인바이블/BOSS_BATTLE_SETTINGS.md#druid-transform-guide-20261009). code7: game actual 24자세/발정렬·야수8정지방향·F1 보스 안내/탄막 Q·E 표식, new PNG2·guide module1, editor3 선택atlas/상한해제. 기존 원PNG/전투수치/save schema 유지. 실제 main 검토18(testbed r22/GOD/frameSTEP) 새변신·야수·Q마름모 확인, 가이드/native와 CPU 범위를 분리. **RETOUCH**/걷기 및 다른 주요캐릭터 전환·A급 미완료. 에디터/캐릭터 정본 포함 docs10 동기화. 최종검수·Git은 E/druid-transform-guide-consumer-20261009/completion.json.
+
+
 정상 드루이드의 성공한2.5D rig 상단 bounds를 기존 HP바·레벨 표시 위치에 연결했다. 실제 부모 scale/Y offset·내부 inverse scale을 합성하여 padded 상단보다10 world 단위 위에 둔다. 범위/실패/특수는 기존 배치, HP·AI·전투/save 변경0. 첫 후보 통제69확인의 부모 fixture 누락은 별도 source blocker1로 발견·보정했고, 새 부모 포함 통제10그룹78확인/Node1(총Node2) PASS·최종 source blocker0. 실제 화면/GPU/청취/save 미검수, RETOUCH/UI_NOT_ASSESSED. 기존 탭 재로드0/새 전문 배정0.
 
 [정확 계약](4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md#ch1-druid-rig-name-anchor-20261008). 최종 소유 보존은 외부 `ch1-druid-rig-name-anchor-20261008/completion.json`.

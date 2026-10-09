@@ -2,6 +2,8 @@
 
 2026-10-09 / ROOT-ENGINE-MOTION-EDITOR-20261009. 사용자 “우리 앤진을 좀 만들자니깐”에 따라 자체 엔진의 첫 편집/재생 기능을 구현했다. 현재 구현 범위는 transform/sprite clip 코어·관절/원본 스프라이트 편집기·원화 부위/회전축 편집기·명시적 factory/본편 adapter 재생 consumer와 fan sprite producer다. 본편 전체 엔진 완성, 신규 입체 모델 또는 A급 보스 완성이 아니다.
 
+사용자 최신 지시는 **주요 캐릭터의 걷기·공격 등 모션을24프레임을 출발점으로 늘리고, 고정 프레임 상한 없이 자연스럽게 제작**하는 것이다. 현재 완료는 [스프라이트 편집기의 가변 아틀라스/프레임 계약](#engine-sprite-atlas-frames-20261009)이며, Druid 변신24포즈는 본편 검토 후보로 통합·표시 확인했다. Druid 보행의 기존4프레임/150ms와 다른 주요 캐릭터는 이 편집기 변경으로 전환되지 않았다.
+
 ## 실제 진입점과 소유
 
 | 항목 | 현재 구현 |
@@ -112,12 +114,15 @@ Godot 공식 [애니메이션 소개](https://docs.godotengine.org/en/stable/tut
 
 | 필드/API | 정확한 계약 |
 |---|---|
-| 모듈/import | `tools/engine/sprite-clip.mjs`; main dynamic import query `20261009-v1`. 실패/미로드 때 기존 selector |
-| `createSpriteClip(input)` | own-data `name`, `frameCount`, `durationSeconds`, `keys` 검증·복사. getter/inherited 필드 거절. 반환 deep-frozen `{format:'exoduser-sprite-clip',version:1,name,frameCount,durationSeconds,keys}` |
-| name / frameCount | 공백만 아닌 문자열 ≤200자 / 안전정수1..256 |
+| 모듈/import | `tools/engine/sprite-clip.mjs`; fan 최초 연결의 main dynamic import query는 `20261009-v1` 이력. 실패/미로드 때 기존 selector. 현행 편집기 import는 `20261009-atlas-v2` |
+| `createSpriteClip(input)` | own-data `name`, `frameCount`, `durationSeconds`, `keys` 검증·복사. getter/inherited 필드 거절. 반환 deep-frozen `{format:'exoduser-sprite-clip',version:1,name,frameCount,durationSeconds,keys}`; own `atlas`를 지정한 경우에만 검증·복사한 `atlas` 필드 추가. 메타데이터 없는 기존JSON의 반환 구조 유지 |
+| name / frameCount | 공백만 아닌 문자열 ≤200자 / 양의 안전정수. 이전256 상한은 제거. `atlas` 지정 시 아래 레이아웃의 셀 용량도 검증; 생략 시 이미지 선택/용량 확인은 caller 책임 |
 | durationSeconds / keys | 유한 숫자 0초과3600이하 / 배열1..4096 |
 | key | own-data `{time,frame}`; time 유한0..duration, 첫 time0, 엄격한 오름차순. frame 안전정수0..frameCount−1 |
 | `sampleSpriteClip(clip,time)` | 이 모듈이 생성한 clip·유한 caller time만. 0..duration clamp 뒤 rightmost key.time≤time의 frame 반환; 정확한 다음 key에서 전환. 내부 clock/loop/renderer/image/RAF/storage 없음 |
+| `normalizeSpriteAtlas(input,frameCount)` | 선택 메타데이터 `{sourcePath,columns,rows,layout,framesPerRow,directionRow}`를 검증·복사·freeze. `sourcePath`는 프로젝트 기준 `assets/...`만, 앞뒤 공백/빈 경로조각/`.`/`..`/역슬래시/`?`/`#`/`%`/`:`/제어문자 거절, 최대1000자. columns·rows·framesPerRow 양의 안전정수, columns×rows도 안전정수, framesPerRow≤columns |
+| atlas 레이아웃 | `directional`: frameCount≤framesPerRow, directionRow 정수0..rows−1. `linear`: framesPerRow=columns, directionRow=0, frameCount≤columns×rows. 한 방향행의 가로24포즈와6×4의 단일24포즈 순회를 모두 표현 |
+| `spriteClipCell(clip,frame,width,height,directionRow?)` | 이 모듈에서 생성한 atlas clip만. frame0..frameCount−1, 실제 이미지 너비·높이 양의 안전정수 및 width≥columns/height≥rows. directional은 column=frame/row=지정행, linear는 column=frame%columns/row=floor(frame/columns). 정수 분할 crop을 frozen `{x,y,width,height,column,row}`로 반환. 이미지 로드/픽셀 확인은 수행하지 않음 |
 | 준비 clip | `Druid fan preparation`, frameCount4/duration1초/keys `[{time:0,frame:1}]`. 실제 준비시간1초를 뜻하지 않으며 Wind 동안 time0을 샘플 |
 | 시전·복귀 clip | `Druid fan cast and return`, frameCount4/duration20/60초/keys `[{time:0,frame:2},{time:14/60,frame:3}]` |
 | 실제 producer | `_bossStartPattern` 진입마다 `_druidFanDisplayBegin(e,mv.id)`로 이전 receipt 제거. 유효 fan만 신규 receipt. 기존 준비 `~~(mv.tele*BOSS_PHASES[phase].teleM)+(extraDelay||0)` 유지; 고정25f 보장 아님 |
@@ -148,26 +153,29 @@ Godot 공식 [애니메이션 소개](https://docs.godotengine.org/en/stable/tut
 
 | 항목 | 현재 구현 계약 |
 |---|---|
-| 진입/소유 | 기존3387의 `/tools/engine-sprite-editor.html`, controller `engine-sprite-editor.mjs?v=20261009-v2`. 기존 `engine-motion-editor.html`은 새 화면 링크1개만 추가 |
-| 공통 재생 코어 | 기존 `engine/sprite-clip.mjs?v=20261009-v1`의 create/sample 재사용. 코어·본편 producer·game 코드 변경 없음 |
-| 입력 원본 | 기존 `assets/sprites/boss/boss_dark_druid_attack.png`, 실제887×1774px, 4열×8행. 편집기는 frameCount4만, frame 정수0..3/방향행 정수0..7. 방향행은 미리보기 선택이며 clip에 저장하지 않음 |
-| 원본 crop | sx=floor(frame×W/4), sy=floor(row×H/8), sw=floor((frame+1)×W/4)−sx, sh=floor((row+1)×H/8)−sy. 원본 크기가 나누어떨어지지 않아 셀 너비·높이는221 또는222px. main의 기존 crop과 pixel 동일하다고 보장하지 않음 |
-| 화면/발 기준 | Canvas2D, DPR1..2 clamp. fit=min(1,max(1,화면W−48)/ceil(원본W/4),max(1,화면H−48)/ceil(원본H/8)), scale=fit×zoom/100. 셀 비율 유지·하단중앙 anchor(화면W/2,max(0,화면H−24)). zoom75..175%/step5/초기100 |
+| 진입/소유 | 기존3387의 `/tools/engine-sprite-editor.html`, controller `engine-sprite-editor.mjs?v=20261009-atlas-v3`. 기존 `engine-motion-editor.html`의 화면 링크 유지 |
+| 공통 재생 코어 | `engine/sprite-clip.mjs?v=20261009-atlas-v2`의 create/sample 및 atlas 정규화/crop API 재사용. 이번 프레임 확장은 HTML/controller/core3파일이며 본편 producer·game·원PNG 변경은 포함하지 않음 |
+| 입력 원본 | 기본은 `assets/sprites/boss/boss_dark_druid_attack.png`, 기존887×1774px/4열×8행/frameCount4. sourcePath·columns·rows·layout·framesPerRow·frameCount·directionRow를 UI에서 지정. frame/방향행은 실제 범위의 숫자 입력으로 구성하며 대량 option을 생성하지 않음. 방향행은 현행 atlas JSON/이력에 저장; linear는0으로 고정 |
+| 원본 crop | `spriteClipCell`의 column/row로 sx=floor(column×W/columns), sy=floor(row×H/rows), sw=floor((column+1)×W/columns)−sx, sh=floor((row+1)×H/rows)−sy. 기본4×8의 셀 너비·높이221 또는222px 계약 유지. main crop과 pixel 동일하다고 보장하지 않음 |
+| 화면/발 기준 | Canvas2D, DPR1..2 clamp. fit=min(1,max(1,화면W−48)/ceil(원본W/columns),max(1,화면H−48)/ceil(원본H/rows)), scale=fit×zoom/100. 셀 비율 유지·하단중앙 anchor(화면W/2,max(0,화면H−24)). zoom75..175%/step5/초기100 |
 | 표시 원형 | globalAlpha1/filter none/source-over/imageSmoothingEnabled=false. 원 PNG·재질·색조·지오메트리 변경 없음. 이 하단 anchor는 해부학적 발 접지의 인수가 아님 |
 | 초기/프리셋 | 초기 recovery: `Druid fan cast and return`, duration20/60초, keys0:frame2·14/60:frame3. prepare: `Druid fan preparation`, duration1초, key0:frame1. 편집기 caller clock이며 실제 본편 Wind 시간과 별개 |
 | 이름/길이/키 | 이름 공백만 아닌 문자열≤200자; duration 유한0초과3600이하. 첫 키0, time0..duration 엄격한 오름차순. UI 최대2048키; 코어 자체4096한도는 변경 없음 |
+| 아틀라스 적용/전체 키 | 새 원본은 후보 Image 로드와 실제 이미지 크기/crop 검증 성공 뒤에만 clip/clock/pose/history를 교체. 실패·늦게 완료된 취소 요청은 현재 상태를 덮어쓰지 않음; 로드 대기 중 기존 재생 clock은 진행 가능. 전체 프레임 키 버튼은 frameCount≤2048일 때 `{time:i/frameCount×duration,frame:i}` 생성. 더 큰 frameCount도 범위 안의 프레임을 수동 기록 가능; 키 한도는 별도 유지 |
 | 기록/삭제 | 입력 중인 키 시각을 frame 선택 전에 검증·캡처. 기록 클릭도 현재 입력 재검증. 정확히 같은 time은 교체, 아니면 오름차순 삽입. 삭제는 정확히 같은 time 키만; 첫0키·마지막 남은 키 삭제 거절. 부동소수 근사 병합/자동 retime 없음 |
 | seek/키 선택 | 앞 키의 프레임 유지, 정확한 새 키 time부터 전환. slider는 runtime에서 step any. 키 버튼은 원래 저장된 time으로 seek하고 현재 구간 키를 강조 |
 | 길이 변경 | 마지막 키보다 짧아지는 길이는 거절·기존 clip 보존. 키 시각 자동 이동 없음 |
-| 편집 이력 | clip/time/샘플 frame/dirty를 undo·redo 각각최대40 보관. 새 clip 변경은 redo 제거. 미기록 셀 draft는 이력/내보내기에 포함하지 않음 |
+| 편집 이력 | clip/time/샘플 frame/dirty와 해당 Image 참조를 undo·redo 각각최대40 보관. 원본/crop도 함께 복원. 새 clip 변경은 redo 제거. 미기록 셀 draft는 이력/내보내기에 포함하지 않음 |
 | 재생 | RAF는 재생 중에만 연속 요청, dt는[0,0.05]초 clamp. UI 반복은 modulo, 비반복 마지막시각 정지. 처음으로는 time0 정지. 재생 중 재생 버튼 비활성; 입력시간 편집·seek·clip변경·blur/hidden 시 중지, 자동 재개 없음 |
-| 가져오기 | JSON 최대1,000,000자. envelope format `exoduser-sprite-clip`/숫자version1 필수. 기존 코어로 canonical 검증 후 교체. 유효성 실패는 clip/clock/pose/history 변경 전에 거절. schema 오류는 한국어 안내, JSON 문법 오류는 JSON.parse의 원래 메시지 |
+| 가져오기 | JSON 최대1,000,000자. envelope format `exoduser-sprite-clip`/숫자version1 필수. core canonical 검증 후 후보 이미지까지 검증하고 교체. atlas 없는 기존JSON은 편집기에서 기본 Druid attack4×8 메타데이터를 보충하므로 기존4프레임 JSON 호환. 유효성/이미지 실패는 clip/clock/pose/history를 교체하지 않음; 대기 중 기존 clock 진행은 위 계약을 따름. schema 오류는 한국어 안내, JSON 문법 오류는 JSON.parse의 원래 메시지 |
 | 내보내기 | canonical clip만 textarea JSON으로 노출하고 Blob 다운로드 요청. 파일명 안전문자 치환·최대100자 뒤 `.sprite.json`. dirty 유지. 실제 파일 저장 성공은 미측정 |
-| 해제/보관 | pagehide 시 RAF 중지·observer/listener/image src/이력 정리·생성 Blob URL 모두 revoke. URL은 pagehide까지 유지하며 요청 수 상한 없음; 즉시 메모리 반환 보장 없음. 이 편집기는 localStorage/서버 API/게임 save 자동 적용 경로를 추가하지 않음 |
-| 읽기 진단 | `window.__exoduserSpriteEditor.snapshot()`의 immutable 상태를 UI검수에 사용. main에 적용하는 쓰기 API가 아님 |
+| 해제/보관 | pagehide 시 후보 이미지 요청 취소·RAF 중지·observer/listener/현재 및 이력 image src/이력 정리·생성 Blob URL 모두 revoke. URL은 pagehide까지 유지하며 요청 수 상한 없음; 즉시 메모리 반환 보장 없음. 이 편집기는 localStorage/서버 API/게임 save 자동 적용 경로를 추가하지 않음 |
+| 읽기 진단 | `window.__exoduserSpriteEditor.snapshot()`의 immutable 상태. 기존 clip/time/frame/row/render 정보에 atlas·image.pending 및 crop column/row 포함. main에 적용하는 쓰기 API가 아님 |
 | DOM | 특정 리프만 textContent, 키 트랙은 생성 노드로 replaceChildren. 부모의 textContent 교체 없음 |
 
-| 실제 검수 | 결과·한계 |
+아래 표는 최초 고정4프레임 편집기 v1/v2의 **검수 이력**이다. 현행 atlas 확장의 한정 검수는 [별도 절](#engine-sprite-atlas-frames-20261009)에 기록하며, 과거 화면 PASS와 합산하지 않는다.
+
+| v1/v2 실제 검수 이력 | 결과·한계 |
 |---|---|
 | 소스 | owner 최초 inline 모듈 공식종료 뒤 ROOT whole-module 정적검토 blocking0. ROOT가 실제 UI 실패를 보고 2hunk 보정: pending time 보존/한국어 schema 안내. 기존 완료 CPU suite 재실행0·새 Node CPU0 |
 | 최초 v1 화면 | own IAB16/기존3387. 9PASS·키 입력 시간 덮어쓰기 FAIL1, 별도 label locator 준비실패1. 초기 프리셋·14/60 경계·row7 crop·AX 입력기록·undo·redo·미기록 export 제외·invalid import 보존·JSON roundtrip 검수. 실패를 clean PASS에 합산하지 않음 |
@@ -176,7 +184,7 @@ Godot 공식 [애니메이션 소개](https://docs.godotengine.org/en/stable/tut
 | 파일 | `edited-motion.sprite.json`은 ROOT가 readonly snapshot으로 외부 보존한 JSON, 브라우저 다운로드 완료 파일이 아님 |
 | 판정/미완료 | **VISUAL VERDICT: RETOUCH**. 편집 기능 화면 확인 한정. 본편 정상 보스전·새3D 모델/360° 뒷면·모션 미감·A급·responsive/device 전환·GPU 성능·청취·실save는 미인수 |
 
-코드 후 docs 관련검색1회(초기4MB eligibility에서 빠진 CHANGELOG1개만 보정 검색): 최종1028 UTF8 text,6path14line24occ. 거대 owner·보호2_3·binary·symlink는 제외 기록. 기존 계약은 보존하고 매칭6문서에 이번 편집기 범위만 동기화했다. 6전수 fullread·이전 완료검수 재실행을 주장하지 않는다. 최종 소유 Git/화면/한계는 `E/engine-sprite-editor-20261009/completion.json`과 `engine-sprite-editor-final-v2.png`를 우선한다.
+최초 v1/v2 코드 후 docs 관련검색 이력1회(초기4MB eligibility에서 빠진 CHANGELOG1개만 보정 검색): 당시1028 UTF8 text,6path14line24occ. 거대 owner·보호2_3·binary·symlink는 제외 기록. 기존 계약은 보존하고 매칭6문서에 당시 편집기 범위만 동기화했다. 6전수 fullread·이전 완료검수 재실행을 주장하지 않는다. 이 epoch의 소유 Git/화면/한계는 `E/engine-sprite-editor-20261009/completion.json`과 `engine-sprite-editor-final-v2.png`를 우선한다.
 
 
 ## 2026-10-09 — 드루이드 Slam 복귀 표시
@@ -215,3 +223,22 @@ Godot 공식 [애니메이션 소개](https://docs.godotengine.org/en/stable/tut
 ## 2026-10-09 — 드루이드 광역 발사 자세
 
 `ROOT-DRUID-BURST-SPRITE-ENGINE-CONSUMER-20261009`: actual main `burst`의 준비 본체 성공과 실제 발사 prefix 완료를 소비해 원본 attack 셀1→2→3을 표시한다. 기존 sprite clip·recover50/보스 cap20·전투/원PNG/save 유지. 다음 pattern/update prune과 rig sheet/index 현재성 연결, 미로드·미관측은 기존 폴백. native detached Canvas3PASS/이전 반복 반례1별도, editor17 편집 exact·사용자 main 무조작. 새 입체 모델·정상 보스전·A급 미인수, **VISUAL VERDICT: RETOUCH**. [정확 계약](../4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md#druid-burst-sprite-engine-20261009). 최종 증거 `E/druid-burst-sprite-engine-consumer-20261009/completion.json`.
+
+
+<a id="engine-sprite-atlas-frames-20261009"></a>
+## 2026-10-09 — 24프레임 이상 아틀라스 편집과 주요 캐릭터 제작
+
+사용자 “걷기모션이든 24프레임, 상한없이 최대한 자연스럽게”, “주요 캐릭터 스프라이트도 프레임 늘리자” 지시를 반영한다.24는 제작 출발점이며 고정 최대치가 아니다. 실제 새 자세·접지·실루엣·속도감을 제작/검수해야 하며, 프레임 수 증가나 같은 셀 반복만으로 자연스러운 모션 완성을 판정하지 않는다. [캐릭터별 전환 상태](../4.0케릭터스프라이트%20디자인/4.0케릭터스프라이트%20디자인.md#character-frame-expansion-20261009).
+
+| 범위 | 현재 상태·제약 |
+|---|---|
+| 완료한 제품 | sprite editor의4프레임 고정과 core의256프레임 상한 제거. 선택 atlas 메타데이터로 가로 방향행/linear grid 편집·crop·재생·JSON 입출력. format/version1 및 기존4프레임 JSON 호환 |
+| 허용 프레임 수 | 양의 안전정수와 명시 atlas 셀 용량으로 제한. 편집기는 실제 로드 이미지의 각 셀이 최소1px인지도 확인. UI2048키/core4096키/JSON1,000,000자·브라우저 이미지/메모리 한도는 유지; 무한 크기 파일 지원 주장이 아님 |
+| 24포즈 배열 | 가로24열의 방향행: directional/frameCount24/framesPerRow24.6열×4행의 단일24포즈: linear/frameCount24/framesPerRow6/directionRow0. 실제 원본과 일치하는 columns/rows/sourcePath를 명시하며 grid 행을 방향으로 해석하지 않음 |
+| 본편 Druid 변신 | 별도24포즈 consumer의 본편 검토 후보 통합·표시 확인. ROOT actual main18의 testbed r22/GOD/frame STEP에서 chargeWind 중간 새변신·charge 새야수·Q마름모 표시 확인. 정상줌·자연연속성·A급 미인수/RETOUCH이며, 편집기 Node 검수와 별도 |
+| 본편 Druid 걷기 | 기존4프레임/150ms 유지.24이상 보행 원화·실제 본편 consumer 전환은 아직 완료하지 않음 |
+| 다른 주요 캐릭터 | 전사·실버테일 등 기존 캐릭터별 원화/재생 계약 유지.24이상 제작·패킹·본편 연결·자연스러움 검수는 전환 대기 |
+| 이번 한정 실행 | Node1/8그룹/46assertion PASS/FAIL0. 기존4호환,24방향행·linear 경계/용량,256초과·own-data, 편집기의 적용/전체 키/JSON/재생/undo·redo/거절/늦은 이미지 취소/pagehide 경로. 통제 DOM·Image·RAF fixture 사용 |
+| 검수 한계 | 실제 PNG 픽셀·브라우저/native·다운로드 저장·본편 정상줌/전투·주요 캐릭터 완성모션·새3D/A급 인수 없음. 이전 v1/v2 화면/실패와 합산·재실행하지 않음 |
+
+이 편집기 단위의 working/HEAD 선백업·ownhunk/inverse·소스 핀 및 한정 실행은 `E/druid-transform-guide-consumer-20261009/editor-frame-before/own-change-receipt.json`, `limited-gate-result.json`에 보존한다. 문서 동기화는 ROOT의 기존 검색 결과 `engine-frame-docs-new-scope.txt`를 재사용하며 이 문서 담당에서 검색·CPU/UI 재실행하지 않았다.

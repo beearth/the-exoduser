@@ -1,5 +1,10 @@
 # 원화 방향 시트 기반 2.5D 캐릭터 스킨 리깅 시험 — 2026-10-06
 
+## 2026-10-09 — 새 변신 원화와 원본 NORMAL rig 범위
+
+[변신·보스 안내 현행 계약](../8.1보스디자인바이블/BOSS_BATTLE_SETTINGS.md#druid-transform-guide-20261009) 우선. main authored transform6×4/24자세와 beast4×2/8정지방향은 공통512×768/foot660로 특수 Canvas 소비한다. NORMAL borrowed rig·원본 walk4/150ms·attack4는 유지한다. 새3D 관절/360° 모델이나 전체 캐릭터24전환은 아니다. 이전 특수 시트 유지·초기 고정4 editor 기술은 당시 이력이며 현행 편집기는 [선택 atlas 계약](../5.0애니메이션파이프라인/EXODUSER_ENGINE_ANIMATION_20261009.md)을 따른다. 중간자세/후면/방향전환 추가보정 필요, **RETOUCH**.
+
+
 사용자는 다크드루이드·전사·실버테일의 움직임과 맵에 2.5D를 접목하도록 요청했다. 현재 플레이어용 3D skeleton/mesh 원본이 확인되지 않았으므로, 승인된 방향별 PNG를 보존하면서 **실제 Three.js `SkinnedMesh` + `Bone`의 약한 연속 변형**을 붙인 기술 시험을 구현한다. 원화 평면에 본을 붙인 방식이며, 전사·실버테일의 완전한 3D 인체나 새 3D 외형 제작 완료를 뜻하지 않는다.
 
 ## 적용 범위와 1차 레퍼런스

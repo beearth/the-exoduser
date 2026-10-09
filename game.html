@@ -1,6 +1,22 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<script>
+(function(){
+  if(new URLSearchParams(location.search).get('bossReview')!=='1')return;
+  const audit={isolated:false,storageWrites:0,blockedRequests:0};
+  const memory=()=>{const m=new Map();return{getItem:k=>m.has(String(k))?m.get(String(k)):null,setItem(k,v){audit.storageWrites++;m.set(String(k),String(v));},removeItem:k=>m.delete(String(k)),clear:()=>m.clear(),key:i=>[...m.keys()][i]??null,get length(){return m.size;}};};
+  Object.defineProperty(window,'localStorage',{value:memory()});Object.defineProperty(window,'sessionStorage',{value:memory()});
+  const nativeFetch=window.fetch.bind(window);
+  window.fetch=(input,init)=>{const u=new URL(input instanceof Request?input.url:String(input),location.href),method=String(init?.method||(input instanceof Request?input.method:'GET')).toUpperCase();
+    if(u.pathname.startsWith('/api/')||!['GET','HEAD'].includes(method)){audit.blockedRequests++;return Promise.resolve(new Response('{}',{status:403,headers:{'Content-Type':'application/json'}}));}return nativeFetch(input,init);};
+  const open=XMLHttpRequest.prototype.open,send=XMLHttpRequest.prototype.send;
+  XMLHttpRequest.prototype.open=function(method,url,...rest){this._bossReviewBlocked=new URL(url,location.href).pathname.startsWith('/api/')||!['GET','HEAD'].includes(String(method).toUpperCase());return open.call(this,method,url,...rest);};
+  XMLHttpRequest.prototype.send=function(...args){if(this._bossReviewBlocked){audit.blockedRequests++;this.abort();return;}return send.apply(this,args);};
+  navigator.sendBeacon=()=>{audit.blockedRequests++;return false;};audit.isolated=true;window.__bossReview=audit;
+  document.addEventListener('DOMContentLoaded',()=>{const n=document.createElement('div');n.id='bossReviewNotice';n.textContent='보스 연습 · 저장 차단';n.style.cssText='position:fixed;bottom:8px;left:50%;transform:translateX(-50%);z-index:80;padding:5px 12px;border:1px solid #776244;border-radius:6px;background:#151119e8;color:#e6d3af;font:12px sans-serif;pointer-events:none';document.body.append(n);},{once:true});
+})();
+</script>
 <script src="player-attack-remaster.js?v=20260915-spin-speed15"></script>
 <script src="warrior-bat-swing.js?v=20260915-speed85"></script>
 <script src="warrior-dash-flight.js?v=20260924-flight1"></script>
@@ -381,6 +397,7 @@ canvas{display:block;position:fixed;inset:0}
 
 #bossBar{position:fixed;top:calc(var(--ui-inset-top,0px) + env(safe-area-inset-top, 0px) + 18px * var(--ui-scale));left:50%;transform:translateX(-50%) scale(var(--ui-scale));z-index:22;pointer-events:none;opacity:0;transition:opacity .6s;text-align:center;transform-origin:top center}
 #bossBar.on{opacity:1}
+#bossBar:not(.on) button{display:none}
 #bossBar.intro .bn{animation:bossNameIn .8s ease-out both}
 #bossBar.intro .bhw{animation:bossBarIn 1.2s ease-out .4s both}
 #bossBar.intro .bpw{animation:bossBarIn 1.2s ease-out .6s both}
@@ -2690,13 +2707,14 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
   <div style="color:#666;margin-top:4px;font-size:1rem">클릭하면 닫힘</div>
 </div>
 
-<div id="bossBar"><div class="bn" id="bossName"></div><div class="bhw"><div class="bhf" id="bossHpF"></div><div class="bhsf" id="bossShieldF" style="position:absolute;top:0;left:0;height:100%;background:linear-gradient(90deg,#2266cc,#44aaff);opacity:.7;pointer-events:none;transition:width .15s;width:0"></div></div><div class="bpow"><div class="bpof" id="bossPoiseF"></div><span class="bpol" id="bossPoiseLbl">포이즈</span></div><div class="bst" id="bossStatus"></div></div>
+<div id="bossBar"><div class="bn" id="bossName"></div><div class="bhw"><div class="bhf" id="bossHpF"></div><div class="bhsf" id="bossShieldF" style="position:absolute;top:0;left:0;height:100%;background:linear-gradient(90deg,#2266cc,#44aaff);opacity:.7;pointer-events:none;transition:width .15s;width:0"></div></div><div class="bpow"><div class="bpof" id="bossPoiseF"></div><span class="bpol" id="bossPoiseLbl">포이즈</span></div><div class="bst" id="bossStatus"></div><button type="button" onclick="openBossCombatGuide()" style="pointer-events:auto;margin-top:6px;border:1px solid #806348;border-radius:6px;background:#171213dc;color:#ecd7b4;padding:5px 12px;font:inherit;font-size:12px;cursor:pointer">보스전 가이드 · F1</button></div>
 <div id="bossPostureBox"><div class="bpw" id="bossPostureW"><div class="bpf" id="bossPostureF"></div></div><div id="bossPostureLbl">체간</div></div>
 
 <!-- SETTINGS PANEL -->
 <div class="panel" id="settings">
   <div class="pbox window-frame-bg" style="display:flex;flex-direction:column;overflow:visible;">
     <div class="ptitle" style="font-size:2.2rem;margin-bottom:12px;">설정</div>
+    <button type="button" onclick="openBossCombatGuide()" style="align-self:flex-start;margin-bottom:10px;padding:8px 14px">보스전 가이드 · F1</button>
     <div class="set-range-row" style="margin-bottom:10px;"><span class="set-name">Language</span>
       <select id="optLang" style="flex:1;background:#1a1008;border:1px solid #443322;color:#ddc;font-family:'Noto Sans KR';font-size:.9rem;padding:4px 8px;border-radius:4px">
         <option value="ko">한국어</option><option value="en">English</option><option value="zh">中文简体</option><option value="zht">繁體中文</option><option value="ja">日本語</option><option value="es">Español (España)</option><option value="ru">Русский</option><option value="de">Deutsch</option><option value="ptbr">Português (Brasil)</option><option value="fr">Français</option><option value="pl">Polski</option><option value="it">Italiano</option><option value="uk">Українська</option><option value="tr">Türkçe</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option><option value="id">Bahasa Indonesia</option><option value="ms">Bahasa Melayu</option><option value="ar">العربية</option><option value="sv">Svenska</option><option value="da">Dansk</option><option value="no">Norsk</option><option value="fi">Suomi</option><option value="cs">Čeština</option><option value="hu">Magyar</option><option value="ro">Română</option><option value="nl">Nederlands</option><option value="el">Ελληνικά</option><option value="bg">Български</option>
@@ -10960,7 +10978,12 @@ function _drawDruidGroundRing(ctx,x,y,r,alpha,angle=0,innerFraction=0){
   const files={base8:'8dir_v3.png',walk:'walk.png',attack:'attack.png',idle:'idle.png',aoe:'aoe.png',orb:'orb.png',beast:'beast.png',transform:'transform.png',dive:'dive.png',emerge:'emerge.png'};
   for(const k in files){const im=new Image();_druidSheets[k]={img:im,ready:false};
     im.onload=(function(kk){return function(){_druidSheets[kk].ready=true}})(k);
-    im.src='assets/sprites/boss/boss_dark_druid_'+files[k]+'?v=20260927-edge3';}
+    const legacy='assets/sprites/boss/boss_dark_druid_'+files[k]+'?v=20260927-edge3';
+    if(k==='transform'||k==='beast'){
+      _druidSheets[k].authored=true;
+      im.onerror=()=>{im.onerror=null;_druidSheets[k].authored=false;im.src=legacy;};
+      im.src='assets/sprites/boss/boss_dark_druid_'+k+'_20261009.png?v=3';
+    }else im.src=legacy;}
 })();
 // facing/이동각 → 0..7 방향 (행 순서: S,SW,W,NW,N,NE,E,SE — 검증 후 조정)
 const _DRUID_DIRMAP=[6,7,0,1,2,3,4,5];
@@ -11082,6 +11105,7 @@ function _druidSummonDisplayFrame(e,observe=false){
   if(!same||!Number.isFinite(e.st2)){if(observe)_druidSummonDisplay.delete(e);return null;}
   return e.st2>14?2:3;
 }
+const _druidTransformWind=new WeakMap(); // Display timing only; no combat clock changes.
 function _drawDruidBoss(X,e,sa,tdY,spec,parentScale,parentYOffset){
   const _fanFrame=_druidFanDisplayFrame(e);
   const _burstFrame=_druidBurstDisplayFrame(e);
@@ -11132,7 +11156,7 @@ function _drawDruidBoss(X,e,sa,tdY,spec,parentScale,parentYOffset){
     frame=(e.s==='bossTelePrep')?Math.min(7,~~(_pg*8)):Math.max(0,7-~~(_pg*8)); // Prep=땅속 침강(0→7), Warn=기어나옴(7→0)
     sheet='emerge';cols=4;rows=2;dirless=true;
   }
-  else if(_isChgWind&&_druidSheets.transform&&_druidSheets.transform.ready){const _tp=Math.max(0,Math.min(1,1-e.st2/45));frame=Math.min(7,~~(_tp*8));sheet='transform';cols=8;rows=1;dirless=true;} // 돌진 와인드업=변신 시퀀스 0→7(서있는→야수)
+  else if(_isChgWind&&_druidSheets.transform&&_druidSheets.transform.ready){const _tw=_druidTransformWind.get(e);const _tp=Math.max(0,Math.min(1,1-e.st2/(_tw&&_tw.state===e.s?_tw.max:45)));const _tf=_druidSheets.transform.authored?24:8;frame=Math.min(_tf-1,Math.floor(_tp*_tf));sheet='transform';cols=_druidSheets.transform.authored?6:8;rows=_druidSheets.transform.authored?4:1;dirless=true;} // 24 authored poses over the actual wind duration; legacy fallback has 8 poses.
   else if(_isCharge&&_druidSheets.beast&&_druidSheets.beast.ready){sheet='beast';cols=4;rows=2;dirless=true;frame=dir;} // 돌진=야수 변신형(8방향 4x2, 셀=방향)
   else if(_fanFrame!==null){sheet='attack';cols=4;rows=8;frame=_fanFrame;}
   else if(_burstFrame!==null){sheet='attack';cols=4;rows=8;frame=_burstFrame;}
@@ -11153,14 +11177,15 @@ function _drawDruidBoss(X,e,sa,tdY,spec,parentScale,parentYOffset){
   const cw=Math.round((_fc+1)*iw/cols)-sx,ch=Math.round((_fr+1)*ih/rows)-sy; // 비정수 시트도 정수 픽셀 경계로 샘플링
   let dw=e.r*spec.dw,dh=e.r*spec.dh;
   if(_ch1NormalIntent&&(sheet==='walk'||sheet==='attack'))dw=dh*cw/ch; // Preserve the original normal-motion cell aspect.
-  if(sheet==='beast'||sheet==='dive'||sheet==='transform'){dh=e.r*spec.dh;dw=dh*(cw/ch)*1.12;} // [넉넉] 정사각/세로 셀(돌진 야수/다이빙/변신) 비율보존+12% 여유 — 안 짤리게
+  if(sheet==='beast'||sheet==='dive'||sheet==='transform'){dh=e.r*spec.dh;dw=dh*(cw/ch)*1.12;}
+  if(S.authored){dh=e.r*spec.dh*1.23;dw=dh*cw/ch;} // Shared 512x768 canvas and y=660 foot anchor; preserve crouching height. // [넉넉] 정사각/세로 셀(돌진 야수/다이빙/변신) 비율보존+12% 여유 — 안 짤리게
   const _breath=sheet==='base8'?Math.sin(_nw*.003)*2:0;
   X.save();try{X.translate(e.x,e.y+(tdY||0)-6+_breath);const _un=1/(window._btScaleMul||1);X.scale(_un,_un);e._nameTopOff=(tdY||0)-6+_breath-dh*.86*_un-10; // 네임플레이트/HP바를 스프라이트 상단 위로(2026-08 유저요청: 다리 겹침 해소)
   if(window._BOSS_GLOW){X.globalAlpha=sa*.30;X.fillStyle=spec.glow;X.beginPath();X.ellipse(0,-dh*.40,dw*.24,dh*.22,0,0,Math.PI*2);X.fill();} // 글로우 게이트(2026-08-25 유저요청: 원형 잔상 제거, _BOSS_GLOW=true 시만 그림). 삭제X 게이트만
   const _ch1Selection=_ch1NormalIntent&&['base8','walk','attack'].includes(sheet)?Object.freeze({sheet,index:sheet==='base8'?0:frame,nativeDir:dir,sourceCol:_fc,sourceRow:_fr,columns:cols,rows,x:sx,y:sy,w:cw,h:ch}):null;
   if(!_drawCh1DruidRigBody(X,e,_ch1Selection,sa,dw,dh,(tdY||0)-6+_breath,_un,parentScale,parentYOffset)){
   X.globalAlpha=sa;if(_ch1NormalIntent)_drawDruidReadableBody(X,img,sx,sy,cw,ch,-dw/2,-dh*.86,dw,dh);else X.drawImage(img,sx,sy,cw,ch,-dw/2,-dh*.86,dw,dh);
-  if(!_ch1NormalIntent){
+  if(!_ch1NormalIntent&&!S.authored){
   X.globalCompositeOperation='lighter';X.globalAlpha=sa*.42;X.drawImage(img,sx,sy,cw,ch,-dw/2,-dh*.86,dw,dh);
   X.globalAlpha=sa*.42;X.drawImage(img,sx,sy,cw,ch,-dw/2,-dh*.86,dw,dh);
   } // Normal Druid artwork keeps its painted tone; special/native paths retain legacy lighting.
@@ -13708,6 +13733,8 @@ addEventListener('keydown',e=>{
   // F11 전체화면 토글
   if(e.code==='F11'){e.preventDefault();toggleFullscreen();return}
   if(e.code==='F10'){togglePanel('settings');e.preventDefault();return}
+  if(e.code==='F1'&&G.on){e.preventDefault();if(!e.repeat)openBossCombatGuide();return;}
+  if($('bossCombatGuide')?.classList.contains('on')&&e.code!=='Escape')return;
   if(e.code==='F8'){e.preventDefault();if(window._v3fx&&P){const _v3keys=['fire','ice','lightning','dark','poison'];window._v3fx(_v3keys[window._v3ti||0],P.x,P.y);addTxt(P.x,P.y-30,'3D: '+_v3keys[window._v3ti||0],'#ffcc44',30);window._v3ti=((window._v3ti||0)+1)%_v3keys.length}else{_tvfx2Spawn()}return}
   if(e.code==='F4'){e.preventDefault();const _nf=!OPT.fog;OPT.fog=_nf;OPT.bossFog=_nf;saveSettings();showPH(_nf?_L('안개 ON','Fog ON'):_L('안개 OFF','Fog OFF'),_nf?'#8899cc':'#888888');return}
   if(window._parryLesson?.active&&!window._parryLesson.allowKey(e.code)){e.preventDefault();return;}
@@ -38211,6 +38238,7 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
       e.s='recover';e.st2=30;break;
     }
   }
+  if(e.ib&&(G.stage===0||G.stage===3)&&['bossChargeWind','bossJumpWind','bossMultiDashWind'].includes(e.s)&&e.st2>0)_druidTransformWind.set(e,{state:e.s,max:e.st2});
 }
 // ── 보스 페이즈 체크: 매 프레임 호출 (idle 아니어도 전환) ──
 const _BOSS_PHASE_AURA=['none','#ff8800','#cc2200','#aa0022','#8800cc'];
@@ -43908,6 +43936,19 @@ function _injectPanelNav(activeId){
     pbox.insertBefore(nav,pbox.firstChild);
   });
 }
+let _bossGuide=null,_bossGuideReturn=null;
+const _bossGuideReady=import('./tools/engine/boss-combat-guide.mjs?v=20261009-2').then(m=>{
+  _bossGuide=m.installBossCombatGuide({
+    getState:()=>({parryKey:BINDS.shield,magicKey:BINDS.parry,qMode:P.activeQSk==='iceOrb'?'iceOrb':_qIsPeaceShield()?'peaceShield':'shield',executionLevel:P.skills.execution||0,executionCooldown:P._execCd||0,hp:P.hp,mp:P.mp,st:P.st,maxHp:P.mhp,maxMp:P.mmp,maxSt:P.mst,bossGroggy:!!(G._bossRef?.alive&&G._bossRef.stunned>0),canAct:P.s==='idle'&&!P._ioActive&&!P._seaParalyzed&&!_harpActive&&!_dashActive&&!P._hrAiming&&!P._msAiming&&!P._isAiming&&!P._bwAiming&&!P._ebAiming&&!P._tsAiming}),
+    keyLabel:code=>keyName(code,true),onClose:()=>{if(_bossGuideReturn==='settings')openPanel('settings');else closeAllPanels();}
+  });return _bossGuide;
+}).catch(()=>null);
+function openBossCombatGuide(){
+  if(_bossGuide?.element.classList.contains('on')){_bossGuide.close();return;}
+  const guide=_bossGuide;if(!guide){showPH(_L('보스전 안내를 준비 중입니다. 잠시 후 다시 열어주세요.','Boss guide is loading. Please open it again shortly.'),'#ddaa77');return;}
+  _bossGuideReturn=$('settings')?.classList.contains('on')?'settings':null;
+  openPanel('bossCombatGuide');guide.render();
+}
 function togglePanel(id){if(id==='invPanel'&&!$('invPanel').classList.contains('on'))_inventoryFocus.begin();const el=$(id);const isOn=el.classList.contains('on');closeAllPanels(id==='invPanel'&&!isOn);const _rc=$('resetConfirm');if(_rc)_rc.style.display='none';if(!isOn){el.classList.add('on');G.paused=true;_injectPanelNav(id);if(id==='invPanel')renderInv();if(id==='settings'){const _rc2=$('resetConfirm');if(_rc2)_rc2.style.display='none';renderSettings();}if(id==='statPanel')renderStatPanel();if(id==='skillPanel')renderSkillPanel()}}
 function openPanel(id){if(id==='invPanel')_inventoryFocus.begin();closeAllPanels(id==='invPanel');$(id).classList.add('on');G.paused=true;_injectPanelNav(id);if(id==='invPanel')renderInv();if(id==='settings')renderSettings();if(id==='forge')renderForge();if(id==='statPanel')renderStatPanel();if(id==='skillPanel')renderSkillPanel()}
 function openInventoryStorage(){
@@ -43931,14 +43972,14 @@ function _panelBack(){
   // Character growth summary is a nested view: Back closes it first.
   const gs=$('growthSummaryDrawer');if($('statPanel').classList.contains('on')&&gs&&!gs.hidden){toggleStatSummary();return true}
   // 6. 열린 패널 닫기
-  const op=['invPanel','forge','statPanel','skillPanel'].find(id=>$(id)&&$(id).classList.contains('on'));
+  const op=['bossCombatGuide','invPanel','forge','statPanel','skillPanel'].find(id=>$(id)&&$(id).classList.contains('on'));
   if(op){closeAllPanels();return true}
   // 7. 설정 패널
   if($('settings')&&$('settings').classList.contains('on')){closePanel('settings');return true}
   return false
 }
 function closePanel(id){$(id).classList.remove('on');G.paused=false;if(id==='invPanel')_inventoryFocus.close();}
-function closeAllPanels(preserveInventoryFocus=false){const inventoryWasOpen=$('invPanel')?.classList.contains('on');$('resetConfirm')&&($('resetConfirm').style.display='none');['settings','invPanel','forge','statPanel','skillPanel'].forEach(id=>{$(id).classList.remove('on')});G.paused=false;_skPopOwnsPause=false;if(G.forgeOpen)BGM.play(BGM.stageKey(G.stage));G.forgeOpen=false;_fuseSelId=null;_skExpandedId=null;const _sp=$('skSlotPop');if(_sp)_sp.style.display='none';const _cf=$('invCompareFloat');if(_cf)_cf.style.display='none';const _rc=$('resetConfirm');if(_rc)_rc.style.display='none';if(inventoryWasOpen&&!preserveInventoryFocus)_inventoryFocus.close();/* 패드 UI 잔류 정리 */for(let i=0;i<16;i++){const el=$('qs'+i);if(el)el.classList.remove('sk-drop-hover')}const _uc=$('ultSlot');if(_uc){_uc.classList.remove('sk-drop-hover');_uc.style.outline='';_uc.style.outlineOffset=''}document.querySelectorAll('[style*="outline"]').forEach(el=>{if(el.style.outline){el.style.outline='';el.style.outlineOffset=''}})}
+function closeAllPanels(preserveInventoryFocus=false){const inventoryWasOpen=$('invPanel')?.classList.contains('on');$('resetConfirm')&&($('resetConfirm').style.display='none');['settings','bossCombatGuide','invPanel','forge','statPanel','skillPanel'].forEach(id=>{$(id)?.classList.remove('on')});G.paused=false;_skPopOwnsPause=false;if(G.forgeOpen)BGM.play(BGM.stageKey(G.stage));G.forgeOpen=false;_fuseSelId=null;_skExpandedId=null;const _sp=$('skSlotPop');if(_sp)_sp.style.display='none';const _cf=$('invCompareFloat');if(_cf)_cf.style.display='none';const _rc=$('resetConfirm');if(_rc)_rc.style.display='none';if(inventoryWasOpen&&!preserveInventoryFocus)_inventoryFocus.close();/* 패드 UI 잔류 정리 */for(let i=0;i<16;i++){const el=$('qs'+i);if(el)el.classList.remove('sk-drop-hover')}const _uc=$('ultSlot');if(_uc){_uc.classList.remove('sk-drop-hover');_uc.style.outline='';_uc.style.outlineOffset=''}document.querySelectorAll('[style*="outline"]').forEach(el=>{if(el.style.outline){el.style.outline='';el.style.outlineOffset=''}})}
 
 // ═══ 스킬 패널 ═══
 const SKILL_CATS=[
@@ -53876,7 +53917,7 @@ function draw(){
     const _isSpecial=p.redBean||p.blackBean||p.blueBean||p.bwBean||p.gbBean||p.waterBean||p.elemBall;
     if(_isSpecial){}else{}
     const fa=(p.mine||p.bomb)?Math.min(1,p.life/(p.ml||60)):1;
-    if(p._druidPoison&&!p.friendly){_drawDruidPoisonShot(p,fa);X.globalAlpha=1;continue;}
+    if(p._druidPoison&&!p.friendly){_drawDruidPoisonShot(p,fa);_drawDruidParryCue(p,fa);X.globalAlpha=1;continue;}
     if(p.bomb&&!p.blueBean){
       // 폭탄: 심플 원 + 깜빡임
       const _bCol=ELC[p.el]||'#ff8800';
@@ -61248,6 +61289,15 @@ function _fdFireEnergy(m){
   spawnProj({x:e.x,y:e.y,vx:Math.cos(a)*6,vy:Math.sin(a)*6,dmg:~~(m.atk*2.8),el:EL.F,friendly:false,life:320,ml:320,col:'#ff5522',sz:48,r:18,elemBall:true,_typed:true,_commit:true,fdEnergy:true});
   if(typeof SFX!=='undefined'&&SFX.magic)SFX.magic(1);
   shake(16);
+}
+function _drawDruidParryCue(p,alpha){
+  const kind=_projectileParryClass(p);if(kind==='forbidden')return;
+  const radius=Math.max(9,(p.r||p.sz||4)*1.4),magic=kind==='magic';
+  X.save();try{X.globalAlpha=alpha==null?1:alpha;X.lineWidth=2.5;X.strokeStyle=magic?'#d4a6ff':'#fff0cf';X.fillStyle='#111019d9';X.beginPath();
+    if(magic){X.moveTo(p.x,p.y-radius);X.lineTo(p.x+radius,p.y);X.lineTo(p.x,p.y+radius);X.lineTo(p.x-radius,p.y);X.closePath();}
+    else X.arc(p.x,p.y,radius,0,Math.PI*2);
+    X.fill();X.stroke();X.fillStyle=magic?'#e5c4ff':'#fff0cf';X.font='bold 11px sans-serif';X.textAlign='center';X.textBaseline='middle';X.fillText(keyName(magic?BINDS.parry:BINDS.shield,true),p.x,p.y);
+  }finally{X.restore();}
 }
 let _druidPoisonFly=null;
 function _drawDruidPoisonShot(p,alpha){

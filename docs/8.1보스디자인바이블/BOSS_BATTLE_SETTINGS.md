@@ -1,5 +1,31 @@
 # 보스 배틀 세팅 바이블
 
+<a id="druid-transform-guide-20261009"></a>
+## 2026-10-09 — 변신 24자세·야수 외형·보스전 안내
+
+사용자가 승인한 해골·뿔 왕관을 유지하고 장식/발광을 줄인 새 원화의 **본편 검토 후보**다. 이 절이 아래 이전 특수 시트 유지 기록보다 우선한다. 24는 고정 상한이나 24fps가 아니며 실제 wind 시간 전체에 24자세를 배분한다. 일반 보행·공격은 아직 원본4프레임이며 전체 주요 캐릭터 전환 완료가 아니다.
+
+| id / 적용 위치 | 현재 계약 |
+|---|---|
+| transform source | assets/sprites/boss/boss_dark_druid_transform_20261009.png?v=3; 3072×3072, 6×4/24자세; 8,549,347B/SHA256 0f4b9f9499b2aede0d2ac8eba913ccc27181c9f070dcf516333cc05bf230cfcc |
+| beast source | assets/sprites/boss/boss_dark_druid_beast_20261009.png?v=3; 2048×1536, 4×2/S·SW·W·NW·N·NE·E·SE 정지8방향; 1,710,709B/SHA256 c1845f5c1dd74515cab82eed120175d8008fdf37087978d516c1ed13cbf83063 |
+| 제작/정렬 | MagicLight Seedream5.0 Pro; 변신은 실제24 source pose, 불균등 원시 격자의 alpha 연결구간을 추출해 동일배율로 배치. 야수는 방향별 높이388px, 후면2개 별도 source. 공통 cell512×768/footY660; 원PNG 불변 |
+| _druidTransformWind / _bossStartPattern | si0/si3 ib의 Charge/Jump/MultiDashWind 실제 state/max를 WeakMap에 캡처. 렌더 progress=clamp(1−st2/max,0,1), capture 불일치 fallback45; frame=min(23,floor(progress×24)). 짧은 wind/렌더 건너뜀에서24셀 모두 표시 보장 없음 |
+| _loadDruidSheets | authored transform/beast 실패 시 1회 원본 경로 fallback; authored=false. 원본 transform8×1/8자세, beast4×2/8방향 유지 |
+| _drawDruidBoss | authored dh=r×spec.dh×1.23, dw=dh×cw/ch, 목적지 y=−dh×.86; 소스발660과 런타임660.48의 완전 일치 주장 없음. 몸 부피/웅크림 높이는 보존하고 legacy lighter2패스는 authored에 생략. Canvas 특수경로이며 새3D/360° 아님 |
+| 본편 소비 제외 | walk4×8/150ms, 기존 NORMAL borrowed rig·기타 공격/잠행/등장 원화, 판정·피해·수량·RNG·회복·전투 상태 시간·보상·save schema 그대로 |
+| 보스전 가이드 진입 | 보스바 ‘보스전 가이드 · F1’, 설정 버튼 및 F1 토글. tools/engine/boss-combat-guide.mjs?v=20261009-2; dialog z-index100000, Escape/닫기/배경 닫기·focus 복귀. 설치 전 클릭은 loading 반환; 지연 open 없음 |
+| 패링 탄막 | physical=크림색 원/현재 E(sBash) 바인딩, magic=보라색 마름모/현재 Q(sBlock) 바인딩. blackBean은 Q 전용, E 불가·Q 성공 시 blueBean 유도반사. 표식 반경 max(9,1.4×(r 또는 sz)), 글자11px |
+| 독립 오브/바닥 | 큰 독립 ORB 반사 불가, 패링창은 접촉을 막을 수 있으나 회피 권장. 바닥 장판은 회피. Q 현재 모드(iceOrb/peaceShield/base)도 안내하며 EL.P만으로 Q/E를 정하지 않음 |
+| 그로기 처형 | X 고정. 습득/쿨다운0/실제 살아있는 grog보스/idle·행동없음/자원 충족 필요. HP·MP·ST 각각 floor(max×.1), HP>비용·MP/ST≥비용. 기존 CD300기준frame/5초, 보스 HP최소1 남김·추가 타격 필요. Z는 일반 필살기 |
+| 검토용 bossReview=1 | 문서 로컬 memory storage; fetch /api/ 및 non-GET/HEAD 차단403, XHR 동일 목적 차단·beacon false. 일반 URL 무변경. 통제 Gate 검증이며 실제 API호출0·durable save 불변 인수 아님 |
+| 실행 증거 | 신규24 actual whole draw 통제Node1/4그룹PASS; legacy8fallback 별도. 에디터 새Node1/8그룹46조건PASS. 최초14구그림 Gate/5 delta Gate/준비실패 이력과 합산하지 않음 |
+| 실제 화면 | 기존3387의 별도 actual main 검토18: chargeWind 중간 새변신·charge 새야수·Q마름모·가이드 위/아래·F1 focus 확인. testbed/GOD/r22/시각스케일4·frame STEP 통제; 정상CH1 unlock route/정상줌/전체24재생 연속성·성능·청취·보상save 인수 아님 |
+| 시각 판정 | **VISUAL VERDICT: RETOUCH**. 중간 자세 점프·마지막변신→야수 팔/높이 변화·후면 부분직립·어두운 전투장 VFX 가림 남음. 사용자 검토표시 blocking0; A급/전체2.5D 완료 아님 |
+
+변신 및 주요 캐릭터 프레임 제작 기준은 [엔진 애니메이션 정본](../5.0애니메이션파이프라인/EXODUSER_ENGINE_ANIMATION_20261009.md)과 [캐릭터 정본](../4.0케릭터스프라이트%20디자인/4.0케릭터스프라이트%20디자인.md)을 따른다. 최종 증거: E/druid-transform-guide-consumer-20261009/completion.json.
+
+
 > **2026-09-09 피날레 v0.4:** 데모/bic 마지막 si3 보스의 HP는 `floor(22278×(1+.055n+.0015n²)×dm)`, n=max(0,monLv−1); 초기 쉴드=HP, 부활력20, 최대1회 35% HP 저항(확률clamp(1−신성력,0,1)), phase ATK는 base×1/1.12/1.25/1.4/1.6이다. 3막 음악·HUD·120f 카드 및 보스 바로 재도전/60f 인트로의 [현행 계약·검증](DARK_DRUID_FINALE_PACING_v04.md)을 따른다. 일반 모드와 공용 패링 계약은 기존대로다. 아래 이전 버전의 HP/부활 유지 표현은 당시 이력이다.
 
 

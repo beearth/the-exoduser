@@ -1,5 +1,10 @@
 ## 최신 직접 지시 — 2026-10-08: 실제 제작 한 건씩
 
+## 2026-10-09 — 현재 한 건: Druid 변신24·보스 안내
+
+[변신·보스 안내 현행 계약](../8.1보스디자인바이블/BOSS_BATTLE_SETTINGS.md#druid-transform-guide-20261009). 최신 직접 승인으로 같은 Druid 디자인 새 공격/변신 원화 제작 대기는 해소됐다. 주요 캐릭터는24자세를 출발점으로 자연스럽게 늘리되 현재 적용은 Druid transform24와 beast8정지방향뿐이다. 본편 walk4/150ms·다른 주요 캐릭터·새3D360°·A급 미완료. editor fixed4/256cap 제거는 별도 도구 완료, 본편 프레임 제작 완료와 동일시하지 않는다. actual main 검토18에서 새 변신/야수·Q마름모·F1 가이드 표시 관측. **RETOUCH**: 중간자세와 마지막→야수 높이/팔 전환, 후면 부분직립, VFX 가림. 다음은 Druid 보행/대표공격 한 건씩; 사용량 목표·새팀round·중복 감사 금지. 이전 완료단위 재실행0. 최종보존 E/druid-transform-guide-consumer-20261009/completion.json.
+
+
 최신 제품·정확 HEAD는 [PROJECT_MANAGEMENT_MASTER 맨 앞](PROJECT_MANAGEMENT_MASTER.md)과 각 외부 completion 정본을 따른다. CH1 양옆 골짜기 렌더는 474b9aae4d5454a12e62589044b9dfa7abf2943f로 보존했고 물리 고도·native는 미인수다. 후속 `ROOT-EDITOR-FRAME-SELECTION-20261008`은 선택 맞춤(Shift+F)의 카메라 기능이며 [실제 계약](../4.1맵디자인+설정/MAP_SCENE_EDITOR_20261005.md#editor-frame-selection-20261008)과 외부 `editor-frame-selection-20261008/completion.json`을 따른다. 아래 헬거너·과거 팀 관측은 작성 시점 이력이다. LMB/RMB/SPACE 기본 시험 킷만 연결되어 정식 캐릭터·전용sprite/2.5D·native는 여전히 미완료이며 완료 작업을 반복하지 않는다.
 
 “천천히 해라”와 사용량 대비 결과물 지적이 과거 하루15% 사용·병렬속도 목표보다 우선한다. 사용량을 맞추거나 반복 조사/원문/보고서 확대를 위해 작업하지 않는다. 우선 제작은 틈과 보스·캐릭터 2.5D, 신규 캐릭터 스킬·스프라이트, 기존 에디터의 실용 기능이다. Godot/다른 엔진의 제작 원리를 현재 코드에 응용하며 별도 엔진 설치·교체는 하지 않는다.
