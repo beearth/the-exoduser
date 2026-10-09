@@ -47,3 +47,8 @@ ANIMVFX0247 실제 완료 UUID `76c91e7a-f06e-4ae3-af78-521c3dc2efb5`, UTC2026-1
 | GIT | 원총괄 own14 코드+docs checkpoint/push 및 원격 정확SHA 영수증으로 확인. 배포0 |
 | VISUAL VERDICT | RETOUCH — 기존 전체 CH1 환경 판정 유지. 이번 패치 실제 화면은 미검수이며 테스트로 visual PASS 승격0 |
 | NEXT PASS | source23 별도 패키지와 동일 후보 정상 CH1 시작→전투/획득/장착→4지역/보스문→보스 사망/부활→재도전. 경고 대비·벽막힘 중심·실제청취/성능 검수 |
+
+
+### 2026-10-10 보스 점프 착지의 선택 임팩트24
+
+bossJump 착지의 기본 피16만 이미지 ready 시 기존 중성 지면24로 단일 교체한다(겹침0·미준비16 폴백). 중앙150²/speed2/angle0/defaultalpha1이며 원 `_partCnt<=300`·angle RNG·흰 링/flash·음향·경고/판정300·후속 충격파를 보존한다. [현재 정본](BOSS_JUMP_IMPACT24_ENGINE_20261010.md). 실제150px/정상줌 전투·동시성능은 미검수, VISUAL RETOUCH/UI_NOT_ASSESSED.

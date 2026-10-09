@@ -103,7 +103,7 @@ QA용 독립 런타임 PID28212의 실행 경로를 확인한 뒤 종료했다. 
 | 항목 | 실제 반영 / 한계 |
 |---|---|
 | 변경 | 양판 `_queueCombatTextureWarmup()`의 VFX selector에 `death_blood` 조건만 각20B 추가. source5 공용 확인창 가드는 유지 |
-| 실제 소비 | `deathFX` → `playVFXAng('death_blood',...)`. 기존 `_partCnt<=300`, 보스 speed6/일반4, `_deathBloodScale(r)`와 판정·RNG 불변 |
+| 실제 소비 | 기본 `deathFX`는 `death_blood`16(기존 scale·보스 speed6/일반4·randomangle·alpha1.5). bossJump만 선택8번째 `impactId`와 이미지 ready에 따라 `boss_meteor_hit`24/150²/speed2/angle0/defaultalpha1로 단일 교체하며 미준비는 원16 폴백. `_partCnt<=300`·원angle RNG 선소비·판정/SFX 불변 |
 | 자산 | `assets/vfx/Blood_FBF_4x4.png` / 실제512×512 / frame128×128 /16프레임 /4열 /`source-over`. GPU RGBA 기본량1MiB, 부가 메모리·시간은 별도 미측정 |
 | 준비 | 완료된 동일 Image만 기존 큐→`_warmImageGpu`→기존 GPU texture 경로로 전달. `complete`·`naturalWidth>0`, 일반cap80·버퍼120·중복 Set·유휴1장·180f 재검사 유지 |
 | 제외 | `death_smoke`는 현재 등록만 있고 소비0이므로 추가하지 않음. 실제1024×1024/RGBA 기본4MiB의 별도 시트·기존 등록은 불변 |
@@ -112,3 +112,8 @@ QA용 독립 런타임 PID28212의 실행 경로를 확인한 뒤 종료했다. 
 | 실제 성능 / 품질 | 첫 처치 시간·실GPU·픽셀·CPU 폴백 회복·청취 미측정. 과거 Windows 및 머리 캡처 실측을 이번 효과로 재사용하지 않음. 이전 등록·업로드 실패 폴백의 복구 보장도 추가하지 않음 |
 
 2026-09-29 배포 스냅샷·기존 실측은 이력이며 이번 source6의 측정값이 아니다.
+
+
+### 2026-10-10 보스 점프 착지의 선택 임팩트24
+
+bossJump 착지의 기본 피16만 이미지 ready 시 기존 중성 지면24로 단일 교체한다(겹침0·미준비16 폴백). 중앙150²/speed2/angle0/defaultalpha1이며 원 `_partCnt<=300`·angle RNG·흰 링/flash·음향·경고/판정300·후속 충격파를 보존한다. [현재 정본](../5.1임펙트디자인/BOSS_JUMP_IMPACT24_ENGINE_20261010.md). 실제150px/정상줌 전투·동시성능은 미검수, VISUAL RETOUCH/UI_NOT_ASSESSED.

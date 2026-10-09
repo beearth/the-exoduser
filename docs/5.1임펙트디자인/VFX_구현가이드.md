@@ -1013,7 +1013,7 @@ UIUX 식별 결과 dry variant는 0/1/2 중 UNKNOWN이다. 기존99ms 사건을 
 | 항목 | 실제 반영 / 한계 |
 |---|---|
 | 변경 | 양판 `_queueCombatTextureWarmup()`의 VFX selector에 `death_blood` 조건만 각20B 추가. source5 공용 확인창 가드는 유지 |
-| 실제 소비 | `deathFX` → `playVFXAng('death_blood',...)`. 기존 `_partCnt<=300`, 보스 speed6/일반4, `_deathBloodScale(r)`와 판정·RNG 불변 |
+| 실제 소비 | 기본 `deathFX`는 `death_blood`16(기존 scale·보스 speed6/일반4·randomangle·alpha1.5). bossJump만 선택8번째 `impactId`와 이미지 ready에 따라 `boss_meteor_hit`24/150²/speed2/angle0/defaultalpha1로 단일 교체하며 미준비는 원16 폴백. `_partCnt<=300`·원angle RNG 선소비·판정/SFX 불변 |
 | 자산 | `assets/vfx/Blood_FBF_4x4.png` / 실제512×512 / frame128×128 /16프레임 /4열 /`source-over`. GPU RGBA 기본량1MiB, 부가 메모리·시간은 별도 미측정 |
 | 준비 | 완료된 동일 Image만 기존 큐→`_warmImageGpu`→기존 GPU texture 경로로 전달. `complete`·`naturalWidth>0`, 일반cap80·버퍼120·중복 Set·유휴1장·180f 재검사 유지 |
 | 제외 | `death_smoke`는 현재 등록만 있고 소비0이므로 추가하지 않음. 실제1024×1024/RGBA 기본4MiB의 별도 시트·기존 등록은 불변 |
@@ -1333,3 +1333,8 @@ MAP PRODUCTION REPORT (§23): STAGE=CH1-1 전투 가독성 source consumer. MAST
 ## 2026-10-10 — 보스 내려찍기 착지24 리소스 재사용
 
 실제 bossSlam 착지 중심150²에 기존 boss_meteor_hit24를 재사용한다. 원shock/피해·26파티클/RNG66·recover40/복귀receipt·공통cap20을 유지하며 새그림·이미지·등록·runtime변경0. 이전 복귀 단위의 FX불변은 당시 변경 이력이다. [현재 소비·시간·검수 정본](BOSS_SLAM_IMPACT24_ENGINE_20261010.md). 이번 실제150px/전투·동시성능은 미검수, RETOUCH/UI_NOT_ASSESSED.
+
+
+### 2026-10-10 보스 점프 착지의 선택 임팩트24
+
+bossJump 착지의 기본 피16만 이미지 ready 시 기존 중성 지면24로 단일 교체한다(겹침0·미준비16 폴백). 중앙150²/speed2/angle0/defaultalpha1이며 원 `_partCnt<=300`·angle RNG·흰 링/flash·음향·경고/판정300·후속 충격파를 보존한다. [현재 정본](BOSS_JUMP_IMPACT24_ENGINE_20261010.md). 실제150px/정상줌 전투·동시성능은 미검수, VISUAL RETOUCH/UI_NOT_ASSESSED.

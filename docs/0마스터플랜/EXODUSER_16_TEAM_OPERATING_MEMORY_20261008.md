@@ -289,3 +289,8 @@ bossMeteor의 기존 동작·전투값을 유지하며 착탄 표시 boss_meteor
 ## 2026-10-10 — 보스 내려찍기 착지24 리소스 재사용
 
 실제 bossSlam 착지 중심150²에 기존 boss_meteor_hit24를 재사용한다. 원shock/피해·26파티클/RNG66·recover40/복귀receipt·공통cap20을 유지하며 새그림·이미지·등록·runtime변경0. 이전 복귀 단위의 FX불변은 당시 변경 이력이다. [현재 소비·시간·검수 정본](../5.1임펙트디자인/BOSS_SLAM_IMPACT24_ENGINE_20261010.md). 이번 실제150px/전투·동시성능은 미검수, RETOUCH/UI_NOT_ASSESSED.
+
+
+### 2026-10-10 보스 점프 착지의 선택 임팩트24
+
+bossJump 착지의 기본 피16만 이미지 ready 시 기존 중성 지면24로 단일 교체한다(겹침0·미준비16 폴백). 중앙150²/speed2/angle0/defaultalpha1이며 원 `_partCnt<=300`·angle RNG·흰 링/flash·음향·경고/판정300·후속 충격파를 보존한다. [현재 정본](../5.1임펙트디자인/BOSS_JUMP_IMPACT24_ENGINE_20261010.md). 실제150px/정상줌 전투·동시성능은 미검수, VISUAL RETOUCH/UI_NOT_ASSESSED.

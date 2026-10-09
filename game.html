@@ -24854,7 +24854,7 @@ let _deathSfxFrameMark=-1,_deathSfxFrameN=0,_deathSfxThrottled=false; // 동시-
 let _hitSfxCd=0; // 히트사운드 쿨다운
 let _mSfxPlaying=0; // 몬스터 이동음 동시 재생 카운터 (프레임당 3개 제한)
 function _deathBloodScale(r){return Math.max(.8,Math.min(4.8,.35+Math.max(1,Number(r)||8)*.075))}
-function deathFX(x,y,r,col,isBoss,noSound,et){
+function deathFX(x,y,r,col,isBoss,noSound,et,impactId){
   if(!noSound){try{
     // 프레임 경계에서 동시-사망 버스트 카운터 리셋 + 이번 프레임 throttle 판정(1회)
     if(_deathSfxFrameMark!==_sfxFrameT){
@@ -24906,7 +24906,9 @@ function deathFX(x,y,r,col,isBoss,noSound,et){
   // 6) 사망 피 이펙트 — 모든 몹
   if(!_tooMany){
     const _dbScale=_deathBloodScale(r);
-    playVFXAng('death_blood',x,y,_dbScale,isBoss?6:4,Math.random()*Math.PI*2,false,1.5);
+    const _dbAngle=Math.random()*Math.PI*2;
+    if(impactId==='boss_meteor_hit'&&_VFX_SHEETS.boss_meteor_hit?.img)playVFXAng('boss_meteor_hit',x,y,150/768,2,0,false);
+    else playVFXAng('death_blood',x,y,_dbScale,isBoss?6:4,_dbAngle,false,1.5);
   }
 }
 
@@ -40962,7 +40964,7 @@ function updateE(e,sp){
       e.shockR=0;e.shockMax=800+G.stage*50;
       e.s='bossShock';e.st2=25;
       G.shake=25*OPT.shake/100;SFX.groggy();G._flashT=5;G._flashCol='#ffaa00';
-      deathFX(e.x,e.y,e.r,e.col,false,false,e.etype); // 착지 충격파 이펙트 (스파크 링)
+      deathFX(e.x,e.y,e.r,e.col,false,false,e.etype,'boss_meteor_hit'); // 착지 충격파 이펙트 (스파크 링)
       // Landing damage to nearby player
       if(dst(P.x,P.y,e.x,e.y)<300&&P.iframes<=0&&P.s!=='charge'){
         hurtP(~~(e.atk*1.8*elMul(e.el,ar().el)));
