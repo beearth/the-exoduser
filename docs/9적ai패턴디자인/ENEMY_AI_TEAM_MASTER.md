@@ -85,7 +85,7 @@ CH1에도 등장 가능. 대표: 90 방랑기사(3연 콤보 st2 18/12/10, d<60 
 - `ib=true`, etype는 0으로 강제(`mkEn` `ib?0`). 보스 식별은 `e.ib` 플래그. 이름 테이블 stage0='다크드루이드'.
 - 무브셋 `_BOSS_MOVESET[0]`(=[3] 복제) 23종: slashCombo, slam, sweep, charge, jump, burst, shock, fan, groundFissure, poisonTrail, spin, grab, multiDash, tideWave, chaseAoe, elemBall, beanStorm, summon, mine, seekerMines, lavaPools, rapidMissile, burrowStrike. **cageTrap 전 보스 금지**(생성·소리 없이 recover/25f 종료).
 - 보스 수치: idle 3~8f, recover→idle st2 max 20 클램프, 근접 사거리 `50+P.r+18≈68~70px`, `bossPatCd:35`, HP ×24, poise=HP. 페이즈 80/60/40/20%HP 전환(무적 90f·순간이동·충격파·방사탄). 부활 시 100% + ATK×1.5/SPD×1.25/poise×1.5.
-- 탄: 녹색 EL.P 독탄(HP 피해 시 중독+3), seekerMines=녹색 240px 구체(드루이드 한정).
+- 탄: 녹색 EL.P 독탄(HP 피해 시 중독+3), seekerMines는 드루이드 한정 크기입력S240/core144/외곽177.6px. [현행 독탄 core·외곽·꼬리 계약](../5.1임펙트디자인/DRUID_PROJECTILE_READABILITY_20261009.md) 및 [공개 발사·피격음](../6사운드디자인/DRUID_POISON_PUBLIC_SFX_20261009.md) 적용, AI·중독·추적/수명 수치는 불변.
 
 ---
 

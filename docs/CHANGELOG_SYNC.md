@@ -1,3 +1,11 @@
+## 2026-10-09 — ROOT-DRUID-PROJECTILE-CORE-READABILITY-20261009
+
+드루이드 적대 독탄의 중심·짧은 잔광·분리된 E/Q 안내를 본편 렌더러에 연결했다. 물리탄은 방향성 타원, 마법탄은 원형 중심과 마름모 안내를 사용한다. 실제 충돌 반경·탄 수·전투 수치·원PNG·save schema는 유지한다. [현재 표시 계약](5.1임펙트디자인/DRUID_PROJECTILE_READABILITY_20261009.md).
+
+OpenGameArt의 CC0 원본 2개를 발사·독탄 피격에 연결했다. 발사는 실제 적대 독탄이 생성된 웨이브마다 1회, 피격은 기존 공유 100ms 게이트를 유지하며 일반 피격음과 중복 재생하지 않는다. 원본·저자·라이선스와 .35/.55 볼륨·우선순위 계약은 [사운드 정본](6사운드디자인/DRUID_POISON_PUBLIC_SFX_20261009.md)에 기록했다. 기존 SOUND 담당자의 원본 수신·완료와 본편 코드 연결을 구분한다.
+
+최초 소스 실행 7그룹 PASS와 별도 실제 Canvas 전후/폴백/프레임0·15 관측을 보존했다. importmap 파서 준비 실패는 별도 이력이며 실제 게임 인수로 합산하지 않는다. source/docs peer 최종 blocker0. 정상 줌·전체 보스전·성능·청취·실저장은 미검수다. **VISUAL VERDICT: RETOUCH** — 작은 마법탄에서 Q 외곽 안내가 중심보다 두드러진다. 기존3387 연결 거부·Mac 잠금으로 본편/오디오 재생 검수는 대기한다. 최종 소유 보존 영수증은 외부 `druid-projectile-core-readability-20261009/completion.json`이다.
+
 ## 2026-10-08 — 1-1 보스 rig의 HP·레벨 앵커
 
 ## 2026-10-09 — ROOT-DRUID-TRANSFORM-GUIDE-CONSUMER-20261009

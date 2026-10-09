@@ -10234,6 +10234,9 @@ function playVoiceDirect(key,vol,rate){
 
 // ── Sample-based audio (Web Audio API AudioBuffer pooling — GC-free) ──
 const _sampleFiles={
+  // OpenGameArt CC0 originals — sfx/boss/DRUID_POISON_ATTRIBUTION_20261009.md
+  boss_druid_poison_launch:'sfx/boss/druid_poison_launch_oga.wav',
+  druid_poison_impact:'sfx/boss/druid_poison_impact_oga.mp3',
   // swing/ — 휘두르기
   sword_slash:'sfx/swing/sword_swing1.mp3',
   sword_swing1:'sfx/swing/sword_swing1.mp3',
@@ -17190,11 +17193,22 @@ function spawnProj(props){
 }
 function _hurtProjectilePlayer(p,dmg,opts){hurtP(dmg,{...opts,druidPoison:!!p._druidPoison,projectileHitSfx:true,mouthProjectile:p});}
 let _projectileHitSfxAt=-Infinity;
-function _playProjectileHitSfx(){
+function _playProjectileHitSfx(p){
   const now=performance.now();
   if(now-_projectileHitSfxAt<100)return;
   _projectileHitSfxAt=now;
-  playSample('player_projectile_impact',.55,1,true);
+  if(p&&p._druidPoison&&!p.friendly){
+    try{playSampleAt('druid_poison_impact',.55,1,p.x,p.y,_SFX_PRI.PLAYER_HIT);}
+    catch(err){console.warn('[SFX] druid impact:',err);}
+  }else playSample('player_projectile_impact',.55,1,true);
+}
+function _playDruidPoisonLaunch(e,fired){
+  if(!e.ib||(G.stage!==0&&G.stage!==3))return false;
+  if(fired){
+    try{playSampleAt('boss_druid_poison_launch',.35,1,e.x,e.y);}
+    catch(err){console.warn('[SFX] druid launch:',err);}
+  }
+  return true;
 }
 function _recycleProj(p){if(p._hitSet)p._hitSet.clear();if(_projFree.length<_PROJ_POOL)_projFree.push(p)}
 
@@ -17346,14 +17360,16 @@ function _druidFinaleNextMove(e,d){
 function _druidFinaleVolley(e){
   const count=_druidParryVolleySpec(e._bossPhase||0,0).count;
   const aim=Math.atan2(P.y-e.y,P.x-e.x),spread=Math.PI*.48;
+  let _druidFired=false;
   for(let i=0;i<count;i++){
     const a=aim-spread/2+spread*i/(count-1);
-    _spawnBossProjectile(e,{x:e.x+Math.cos(a)*e.r,y:e.y-36+Math.sin(a)*e.r,
+    const _druidShot=_spawnBossProjectile(e,{x:e.x+Math.cos(a)*e.r,y:e.y-36+Math.sin(a)*e.r,
       vx:Math.cos(a)*6,vy:Math.sin(a)*6,dmg:~~(e.atk*.35),el:EL.F,
       friendly:false,life:90,ml:90,col:'#66dd22',sz:2,r:10,
       fireMagic:true,_typed:true,_druidParryVolley:true});
+    if(_druidShot&&_druidShot._druidPoison&&!_druidShot.friendly)_druidFired=true;
   }
-  addTxt(e.x,e.y-60,'Q!','#66dd22',32);SFX.magic(1);
+  addTxt(e.x,e.y-60,'Q!','#66dd22',32);if(!_playDruidPoisonLaunch(e,_druidFired))SFX.magic(1);
 }
 function _druidFinaleTrackBurrow(e,sp){
   if(e._druidTargetLocked)return;
@@ -40539,10 +40555,11 @@ function updateE(e,sp){
   case'bossBurstWind':
     if(e.st2<=0){
       const cnt=~~(Math.max(10,(6+Math.min(G.stage,6)))*(1+(e._bossPhase-1)*.12)); // 최소 10발, 최대 ~16발
+      let _druidFired=false;
       for(let i=0;i<cnt;i++){const a=Math.PI*2*i/cnt;
         const _iR2=Math.random();const _isBKB=_iR2<.5;const _isRB=_iR2>=.5;
-        _spawnBossProjectile(e,{x:e.x,y:e.y,vx:Math.cos(a)*(_isBKB?4.4:_isRB?4.0:3.2),vy:Math.sin(a)*(_isBKB?4.4:_isRB?4.0:3.2),dmg:~~(e.atk*(_isBKB?1.5:_isRB?2.5:1.2)),el:_isBKB?EL.P:e.el,friendly:false,life:400,ml:400,col:_isBKB?'#00aa00':_isRB?'#cc1100':e.col,sz:_isBKB?2.0:_isRB?1.8:1.2,redBean:_isRB||undefined,blackBean:_isBKB||undefined,homing:_isRB||undefined})}
-      SFX.charge();deathFX(e.x,e.y,e.r,e.col,false,false,e.etype);G.shake=8*OPT.shake/100;G._flashT=4;G._flashCol='#ffffff';
+        const _druidShot=_spawnBossProjectile(e,{x:e.x,y:e.y,vx:Math.cos(a)*(_isBKB?4.4:_isRB?4.0:3.2),vy:Math.sin(a)*(_isBKB?4.4:_isRB?4.0:3.2),dmg:~~(e.atk*(_isBKB?1.5:_isRB?2.5:1.2)),el:_isBKB?EL.P:e.el,friendly:false,life:400,ml:400,col:_isBKB?'#00aa00':_isRB?'#cc1100':e.col,sz:_isBKB?2.0:_isRB?1.8:1.2,redBean:_isRB||undefined,blackBean:_isBKB||undefined,homing:_isRB||undefined});if(_druidShot&&_druidShot._druidPoison&&!_druidShot.friendly)_druidFired=true;}
+      if(!_playDruidPoisonLaunch(e,_druidFired))SFX.charge();deathFX(e.x,e.y,e.r,e.col,false,false,e.etype);G.shake=8*OPT.shake/100;G._flashT=4;G._flashCol='#ffffff';
       e.s='recover';e.st2=50;_druidBurstDisplayRelease(e)}break;
   // ── 부채꼴 충격파 (fanWave): 안내선 1.5초 → 충격파 ──
   case'bossFanWaveAim':{
@@ -40623,10 +40640,11 @@ function updateE(e,sp){
   case'bossFanWind':
     if(e.st2<=0){
       const fanW=Math.PI*(.7+e._bossPhase*.06);const cnt=~~(Math.max(10,(4+Math.min(G.stage,5)))*(1+(e._bossPhase-1)*.12)); // 최소 10발, 최대 ~15발
+      let _druidFired=false;
       for(let i=0;i<cnt;i++){const a=e.facing-fanW/2+fanW*i/(cnt-1);
         const _iR3=Math.random();const _isBKF=_iR3<.5;const _isRF=_iR3>=.5;
-        _spawnBossProjectile(e,{x:e.x,y:e.y,vx:Math.cos(a)*(_isBKF?4.4:_isRF?4.4:3.8),vy:Math.sin(a)*(_isBKF?4.4:_isRF?4.4:3.8),dmg:~~(e.atk*(_isBKF?1.5:_isRF?2.8:1.3)),el:_isBKF?EL.P:e.el,friendly:false,life:400,ml:400,col:_isBKF?'#00aa00':_isRF?'#cc1100':e.col,sz:_isBKF?2.0:_isRF?1.8:1.2,redBean:_isRF||undefined,blackBean:_isBKF||undefined,homing:_isRF||undefined})}
-      SFX.magic(e.el===1?1:e.el===2?2:e.el===4?4:0);addParts(e.x,e.y,e.col,12);
+        const _druidShot=_spawnBossProjectile(e,{x:e.x,y:e.y,vx:Math.cos(a)*(_isBKF?4.4:_isRF?4.4:3.8),vy:Math.sin(a)*(_isBKF?4.4:_isRF?4.4:3.8),dmg:~~(e.atk*(_isBKF?1.5:_isRF?2.8:1.3)),el:_isBKF?EL.P:e.el,friendly:false,life:400,ml:400,col:_isBKF?'#00aa00':_isRF?'#cc1100':e.col,sz:_isBKF?2.0:_isRF?1.8:1.2,redBean:_isRF||undefined,blackBean:_isBKF||undefined,homing:_isRF||undefined});if(_druidShot&&_druidShot._druidPoison&&!_druidShot.friendly)_druidFired=true;}
+      if(!_playDruidPoisonLaunch(e,_druidFired))SFX.magic(e.el===1?1:e.el===2?2:e.el===4?4:0);addParts(e.x,e.y,e.col,12);
       e.s='recover';e.st2=45;_druidFanDisplayRelease(e)}break;
   // ── 보스 돌진: 빠른 대쉬 ──
   case'bossChargeWind':
@@ -43431,7 +43449,7 @@ function hurtP(dmg,opts){
   // 최소 데미지: 최대HP의 0.5% (순수뎀, 방어 무시)
   const _minDmg=Math.max(1,~~(P.mhp*0.005));
   if(a<_minDmg)a=_minDmg;
-  if(!_isDot&&opts&&opts.projectileHitSfx&&a>0){_playProjectileHitSfx();if(opts.mouthProjectile)_addPhysicalBite(opts.mouthProjectile);}
+  if(!_isDot&&opts&&opts.projectileHitSfx&&a>0){_playProjectileHitSfx(opts.mouthProjectile);if(opts.mouthProjectile)_addPhysicalBite(opts.mouthProjectile);}
   // ═══ 에너지쉴드 — 추가 HP바 (색만 다름, 모든 DR 적용 후 처리) ═══
   // 모든 방어 계산 완료 후 쉴드 먼저 흡수 → 오버플로우만 HP로
   let _shFullBlock=false;
@@ -53879,7 +53897,7 @@ function draw(){
   for(let _pi3=0;_pi3<projs.length;_pi3++){const p=projs[_pi3];
     if(p.x<_vl||p.x>_vr||p.y<_vt||p.y>_vb)continue;
     _visProjs.push(_pi3);
-    if(OPT.trail&&!p.mine&&!p.trap&&!p.dimRift&&!p.web&&!p.poisonZone&&!p.fdEnergy&&!p.waterBean&&!p.elemBall&&p._trail&&p._trLen>1){
+    if(OPT.trail&&(!p._druidPoison||p.friendly)&&!p.mine&&!p.trap&&!p.dimRift&&!p.web&&!p.poisonZone&&!p.fdEnergy&&!p.waterBean&&!p.elemBall&&p._trail&&p._trLen>1){
       // 올챙이불 꼬리: 연속 테이퍼 스트로크(끊김 없음, 궤적 추종)
       const _tc=p.friendly?'#ffdd00':ELC[p.el]||p.col||'#ff4444';
       const _tN=p._trLen,_tLen2=p._trail.length,_tHd=p._trH;
@@ -61290,36 +61308,64 @@ function _fdFireEnergy(m){
   if(typeof SFX!=='undefined'&&SFX.magic)SFX.magic(1);
   shake(16);
 }
+function _druidPoisonBodySize(p){
+  const mul=_physicalProjectileMultiplier(p,2),large=p._druidMine||p.elemBall;
+  const size=(large?240:Math.max(96,Math.min(180,(p.sz||4)*24)))*mul;
+  return large?size*.6:Math.min(size*.48,Math.max(32,(p.r||p.sz||4)*3.2)*mul);
+}
 function _drawDruidParryCue(p,alpha){
   const kind=_projectileParryClass(p);if(kind==='forbidden')return;
   const radius=Math.max(9,(p.r||p.sz||4)*1.4),magic=kind==='magic';
-  X.save();try{X.globalAlpha=alpha==null?1:alpha;X.lineWidth=2.5;X.strokeStyle=magic?'#d4a6ff':'#fff0cf';X.fillStyle='#111019d9';X.beginPath();
+  const core=_druidPoisonBodySize(p),physical=!magic&&!p._druidMine&&!p.elemBall;
+  const ang=Math.atan2(p.vy||0,p.vx||0),w=core*(physical?1.1:1),h=core*(physical?.72:1);
+  const labelY=p.y-(Math.abs(Math.sin(ang))*w+Math.abs(Math.cos(ang))*h)*.5-13;
+  X.save();try{X.globalAlpha=alpha==null?1:alpha;X.globalCompositeOperation='source-over';X.beginPath();
     if(magic){X.moveTo(p.x,p.y-radius);X.lineTo(p.x+radius,p.y);X.lineTo(p.x,p.y+radius);X.lineTo(p.x-radius,p.y);X.closePath();}
     else X.arc(p.x,p.y,radius,0,Math.PI*2);
-    X.fill();X.stroke();X.fillStyle=magic?'#e5c4ff':'#fff0cf';X.font='bold 11px sans-serif';X.textAlign='center';X.textBaseline='middle';X.fillText(keyName(magic?BINDS.parry:BINDS.shield,true),p.x,p.y);
+    X.strokeStyle='#102018';X.lineWidth=4.5;X.stroke();X.strokeStyle=magic?'#d4a6ff':'#fff0cf';X.lineWidth=2.5;X.stroke();
+    X.fillStyle=magic?'#e5c4ff':'#fff0cf';X.font='bold 11px sans-serif';X.textAlign='center';X.textBaseline='middle';
+    const label=keyName(magic?BINDS.parry:BINDS.shield,true);X.strokeStyle='#0a100b';X.lineWidth=4;
+    X.strokeText(label,p.x,labelY);X.fillText(label,p.x,labelY);
   }finally{X.restore();}
 }
 let _druidPoisonFly=null;
 function _drawDruidPoisonShot(p,alpha){
-  if(!_druidPoisonFly&&(!_fdFlyImg.complete||!_fdFlyImg.naturalWidth)){
-    // The caller always continues after this draw: never leave an invisible damaging shot.
-    const size=(p._druidMine||p.elemBall?240:Math.max(96,Math.min(180,(p.sz||4)*24)))*_physicalProjectileMultiplier(p,2);
-    X.save();X.globalAlpha=alpha==null?1:alpha;
-    X.fillStyle='#66dd22';X.strokeStyle='#102008';X.lineWidth=3;
-    X.beginPath();X.arc(p.x,p.y,size*.42,0,Math.PI*2);X.fill();X.stroke();
-    X.strokeStyle='#ddffb8';X.lineWidth=Math.max(2,size*.025);
-    X.beginPath();X.arc(p.x,p.y,size*.27,-Math.PI*.85,Math.PI*.35);X.stroke();
-    X.restore();return true;
-  }
-  if(!_druidPoisonFly){
+  const large=p._druidMine||p.elemBall,mul=_physicalProjectileMultiplier(p,2);
+  const size=(large?240:Math.max(96,Math.min(180,(p.sz||4)*24)))*mul;
+  const core=_druidPoisonBodySize(p),physical=_projectileParryClass(p)==='physical'&&!large;
+  const w=core*(physical?1.1:1),h=core*(physical?.72:1),a=alpha==null?1:alpha;
+  if(!_druidPoisonFly&&_fdFlyImg.complete&&_fdFlyImg.naturalWidth){
     const c=document.createElement('canvas');c.width=_fdFlyImg.naturalWidth;c.height=_fdFlyImg.naturalHeight;
     const cx=c.getContext('2d');cx.filter='grayscale(1)';cx.drawImage(_fdFlyImg,0,0);cx.filter='none';
     cx.globalCompositeOperation='multiply';cx.fillStyle='#66dd22';cx.fillRect(0,0,c.width,c.height);
     cx.globalCompositeOperation='destination-in';cx.drawImage(_fdFlyImg,0,0);_druidPoisonFly=c;
   }
-  const cw=_druidPoisonFly.width/4,ch=_druidPoisonFly.height/4,fr=Math.floor(performance.now()/70)%16;
-  const dw=(p._druidMine||p.elemBall?240:Math.max(96,Math.min(180,(p.sz||4)*24)))*_physicalProjectileMultiplier(p,2),dh=dw*ch/cw;
-  X.save();X.globalAlpha=alpha==null?1:alpha;X.drawImage(_druidPoisonFly,(fr%4)*cw,Math.floor(fr/4)*ch,cw,ch,p.x-dw/2,p.y-dh/2,dw,dh);X.restore();return true;
+  X.save();try{
+    X.globalCompositeOperation='source-over';X.translate(p.x,p.y);X.rotate(Math.atan2(p.vy||0,p.vx||0));
+    if(_druidPoisonFly){
+      const cw=_druidPoisonFly.width/4,ch=_druidPoisonFly.height/4,fr=Math.floor(performance.now()/70)%16;
+      const sx=(fr%4)*cw,sy=Math.floor(fr/4)*ch,aspect=ch/cw,halo=size*.74;
+      X.globalAlpha=a*.12;X.drawImage(_druidPoisonFly,sx,sy,cw,ch,-halo/2,-halo*aspect/2,halo,halo*aspect);
+      if(OPT.trail&&!large&&(p.vx||p.vy)){
+        const tail=core*(physical?1.2:.8);X.globalAlpha=a*.2;
+        X.drawImage(_druidPoisonFly,sx,sy,cw,ch,-w/2-tail,-h*.35,tail+w*.42,h*.7);
+      }
+      X.globalAlpha=a;if(typeof X.filter==='string')X.filter='brightness(1.35)';
+      X.drawImage(_druidPoisonFly,sx,sy,cw,ch,-w/2,-h*aspect/2,w,h*aspect);
+      if(typeof X.filter==='string')X.filter='none';
+    }else{
+      const halo=X.createRadialGradient(0,0,core*.3,0,0,size*.37);
+      halo.addColorStop(0,'#80cb46');halo.addColorStop(1,'#23491b00');
+      X.globalAlpha=a*.12;X.fillStyle=halo;X.beginPath();X.arc(0,0,size*.37,0,Math.PI*2);X.fill();
+      const body=X.createRadialGradient(w*.08,-h*.1,0,0,0,core*.6);
+      body.addColorStop(0,'#efffcb');body.addColorStop(.25,'#b8f46c');body.addColorStop(.65,'#568c29');body.addColorStop(1,'#12271c');
+      X.globalAlpha=a;X.fillStyle=body;X.beginPath();X.ellipse(0,0,w*.5,h*.5,0,0,Math.PI*2);X.fill();
+    }
+    const glint=X.createRadialGradient(w*.1,-h*.1,0,w*.1,-h*.1,core*.22);
+    glint.addColorStop(0,'#f4ffd4b8');glint.addColorStop(.35,'#b6f57355');glint.addColorStop(1,'#8bdd4000');
+    X.globalAlpha=a;X.fillStyle=glint;X.beginPath();X.ellipse(w*.1,-h*.1,core*.22,core*.18,0,0,Math.PI*2);X.fill();
+  }finally{X.restore();}
+  return true;
 }
 function _fdDrawFly(p){
   if(!_fdFlyImg.complete||!_fdFlyImg.naturalWidth)return false;

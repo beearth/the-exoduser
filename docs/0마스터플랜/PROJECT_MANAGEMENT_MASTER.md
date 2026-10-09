@@ -1,5 +1,9 @@
 ## 2026-10-09 — 자체 엔진의 리그 모션 재생 연결
 
+## 2026-10-09 — 보스전 독탄 중심과 공개 효과음
+
+`ROOT-DRUID-PROJECTILE-CORE-READABILITY-20261009`: 실제 main 독탄 핵·잔광·짧은 방향 꼬리·바깥 키 표시와 공개 원본2개를 성공 발사 웨이브/피격에 연결했다. [표시 정본](../5.1임펙트디자인/DRUID_PROJECTILE_READABILITY_20261009.md)·[SOUND 정본](../6사운드디자인/DRUID_POISON_PUBLIC_SFX_20261009.md). native Canvas 전후 통제 픽셀과 sound source7그룹을 확인했지만 3387 연결 거부·Mac 잠금으로 main/실제 청취/성능/save는 미인수, RETOUCH. 서버 복구 질문·잠금 해제 질문 대기/우회0. source/end는 기존 SOUND 담당의 새 작업1건으로 확인, 기존 전문7 전체가동으로 합산0. 최종 외부 영수증 `E/druid-projectile-core-readability-20261009/completion.json`.
+
 ## 2026-10-09 — ROOT-DRUID-TRANSFORM-GUIDE-CONSUMER-20261009
 
 [변신·보스 안내 현행 계약](../8.1보스디자인바이블/BOSS_BATTLE_SETTINGS.md#druid-transform-guide-20261009). 실제 main에 transform24자세·정렬된 야수8방향·보스 가이드/탄막 키표시를 통합한 검토 후보다. editor는 선택 atlas·양의 safeinteger frameCount로 고정4/256상한을 제거했고 실제 이미지 atlas용량으로 검증한다. 사용자 디자인 선택은 해골·뿔 왕관 유지/장식·발광 축소. 새 원화 제작 직접승인 이후의 결과이며 이전 원화확인대기는 종료했다. walk4/150ms와 다른 주요 캐릭터는 아직 전환 전. 중간자세·후면·전투 VFX 가림 보정 필요, **VISUAL VERDICT: RETOUCH**. 실제 검토18의 main testbed 표시와 정상루트/정상줌/청취/성능/save/A급은 구분한다. 최종 Git/검수 증거 E/druid-transform-guide-consumer-20261009/completion.json.

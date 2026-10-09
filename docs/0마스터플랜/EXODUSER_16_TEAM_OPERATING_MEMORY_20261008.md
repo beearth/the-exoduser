@@ -1,5 +1,7 @@
 ## 최신 직접 지시 — 2026-10-08: 실제 제작 한 건씩
 
+2026-10-09 최신 직접 지시는 보스전 퀄리티·탄막·임팩트·사운드 제작 우선이다. 사용량을 채우기 위한 조사 없이 실제 결과를 제작한다. 기존 SOUND 담당에게 새 독립 작업1건이 전달·수신·source/end 완료되어 CC0 원본2개를 확보했고 ROOT가 main 발사/피격에 시험 연결했다. [독탄 표시](../5.1임펙트디자인/DRUID_PROJECTILE_READABILITY_20261009.md)·[음원 계약](../6사운드디자인/DRUID_POISON_PUBLIC_SFX_20261009.md). native 전후 통제 Canvas만 확인, actual main/청취/성능/save/A급은 미인수. 3387 복구와 Mac 잠금 해제는 질문 대기, 우회0. 새 E측면 원화는 서비스 실패·환급 표시 후 retry0/미채택. 이전 완료검사·새팀round·거대STATE·이미 보고한 경계 반복0.
+
 ## 2026-10-09 — 현재 한 건: Druid 변신24·보스 안내
 
 [변신·보스 안내 현행 계약](../8.1보스디자인바이블/BOSS_BATTLE_SETTINGS.md#druid-transform-guide-20261009). 최신 직접 승인으로 같은 Druid 디자인 새 공격/변신 원화 제작 대기는 해소됐다. 주요 캐릭터는24자세를 출발점으로 자연스럽게 늘리되 현재 적용은 Druid transform24와 beast8정지방향뿐이다. 본편 walk4/150ms·다른 주요 캐릭터·새3D360°·A급 미완료. editor fixed4/256cap 제거는 별도 도구 완료, 본편 프레임 제작 완료와 동일시하지 않는다. actual main 검토18에서 새 변신/야수·Q마름모·F1 가이드 표시 관측. **RETOUCH**: 중간자세와 마지막→야수 높이/팔 전환, 후면 부분직립, VFX 가림. 다음은 Druid 보행/대표공격 한 건씩; 사용량 목표·새팀round·중복 감사 금지. 이전 완료단위 재실행0. 최종보존 E/druid-transform-guide-consumer-20261009/completion.json.

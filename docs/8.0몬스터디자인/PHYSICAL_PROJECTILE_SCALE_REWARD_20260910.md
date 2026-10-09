@@ -13,12 +13,12 @@
 | fast 물리 | 빠른 입탄 | 공통 이빨입 높이=`22.05×_sSc×0.55`, 가로=높이×2. 최대 **135.828×67.914px** |
 | titanEye | 혈안 눈알 | 가로/세로=`21.7×_sSc`, 최대 **121.52px** (기존60.76) |
 | draw `_hr` | 궤적 굵기 | `max(2.5,(sz||1)×2.2)×_flk×_physicalProjectileMultiplier(p,2)×(_isBitingPhysicalProjectile(p)?0.55:1)`. 궤적 길이/수명은 기존값 |
-| `_drawDruidPoisonShot` | 드루이드 원본 물리 독탄 | 기존 dw에 `_physicalProjectileMultiplier(p,2)`를 곱하고 dh=dw×ch/cw. 일반 원본 물리는 **192~360px**. 원본 마법은96~180px, elemBall/지뢰240px |
+| `_drawDruidPoisonShot` | 드루이드 독탄 별도 핵/외곽 | 2026-10-09: 기존192~360/96~180/240은 외곽 계산 입력S 이력. 현재 핵B=대형.6S, 일반min(.48S,max(32,(r\|\|sz\|\|4)*3.2)*mul); ordinary physical 폭1.1B/높이.72B. [현행 독탄 core·외곽·꼬리 계약](../5.1임펙트디자인/DRUID_PROJECTILE_READABILITY_20261009.md) |
 | friendly | 반사 블루콩 | multiplier1, 기존 반사 외형 |
 
 시트 폴백도 공통 `_sSc`를 사용한다. 분류가 physical인 검기파·관통·환영검·일반탄은 혈안탄을 제외하고 이빨입 외형으로 통일한다. 시트 미준비 시에도 같은 크기의 불투명 입 실루엣을 표시하며 작은 원/회전구체 폴백은 사용하지 않는다. [가시성 계약](PHYSICAL_PROJECTILE_VISIBILITY_20260914.md). 지뢰·덫·폭탄·장판 및 대형 에너지탄은 기존 원본 분류에 따라 확대하지 않는다. 드루이드의 피해 속성 EL.P와 원본 패링 분류는 별개이므로 Q 독탄까지 커지지 않는다.
 
-`sz/r/dmg/vx/vy/life`와 충돌/패링 반경은 변경하지 않는다. 별도 광원·글로우 반경과 패링 임팩트 크기도 기존값이다.
+`sz/r/dmg/vx/vy/life`와 충돌/패링 반경은 변경하지 않는다. 일반 물리탄의 광원·글로우 반경과 패링 임팩트 크기는 기존값이다. 드루이드 독탄의 외곽 alpha/크기·꼬리/키 배치만 위 현행 계약을 따른다.
 
 ## 자원 회복
 

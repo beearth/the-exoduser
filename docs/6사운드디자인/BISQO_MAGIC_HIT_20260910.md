@@ -1,5 +1,7 @@
 # Bisqo Dark Magic Impact 적용 — 2026-09-10
 
+2026-10-09 현행: [전용 독탄 음원](DRUID_POISON_PUBLIC_SFX_20261009.md)가 독탄 표시/음향 변경의 정본이다. 기존 전투 수치와 일반 샘플은 유지하며 이전 검수 이력은 새 main/청취 인수로 합산하지 않는다. **RETOUCH**, 실제 보스전 검수 대기.
+
 사용자가 Freesound 후보③을 선택하여 적 탄막→플레이어 피격음으로 편집·교체했다. 기존 피격 조건, 신음, 음량0.55,100ms 재생 간격, 우선순위8은 유지한다.
 
 | 항목 | 현재 값 |
@@ -48,7 +50,7 @@
 |---|---|---|
 | bullet_hit | sfx/hit/player_projectile_impact.wav?v=bisqo-855371-v1 | 일반/마법 탄막→적. playSampleAt,volume0.15×터렛거리계수,위치=e.x/e.y,rate=_r(1,.15) |
 | bean_hit | sfx/hit/player_projectile_impact.wav?v=bisqo-855371-v1 | 블루콩→적. playSample,volume0.1×터렛거리계수,rate=_r(1,.15),기존 P._bbHitCd=4 유지 |
-| player_projectile_impact | 같은 URL | 적 탄막→플레이어. volume0.55,100ms 간격,PLAYER_HIT8 유지 |
+| player_projectile_impact | 같은 URL | 기타 적 탄막→플레이어. volume0.55,100ms 간격,PLAYER_HIT8 유지. 적대 Druid는 전용CC0 공간음 예외 |
 
 bullet_hit·bean_hit은 PROJ1,동시재생 데스크톱5/모바일2 제한을 유지한다. 터렛거리계수는 `max(0,1-dst(P,터렛)/2000)`,0.01 이하이면 기존처럼 명중음을 생략한다. 공통 playSample 피치 변동도 기존대로다. 칼날류 chain_fly,일반 활 bow_hit,arcMissile의 별도 분기와 반사 폭발음은 기존대로다. 신규 세이브 필드·음원 복제 없음.
 

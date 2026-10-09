@@ -1,5 +1,7 @@
 # 보스 배틀 세팅 바이블
 
+2026-10-09 현행: [Druid 독탄 core/잔광/키 배치](../5.1임펙트디자인/DRUID_PROJECTILE_READABILITY_20261009.md)와 [공개 발사·피격음](../6사운드디자인/DRUID_POISON_PUBLIC_SFX_20261009.md)을 main에 시험 연결했다. blackBean Q전용/E불가·물리E원/마법Q마름모·전투 수치는 유지하며, 본편 정상줌·실전 음질·A급은 미인수/RETOUCH다.
+
 <a id="druid-transform-guide-20261009"></a>
 ## 2026-10-09 — 변신 24자세·야수 외형·보스전 안내
 
