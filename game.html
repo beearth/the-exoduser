@@ -11002,6 +11002,37 @@ function _drawDruidPoolClip(ctx,pool,alpha){
   }finally{ctx.restore();}
   return true;
 }
+// Independent airborne orb: the same resource engine, driven by o.t/60.
+const _druidOrbClip={ready:false,image:null,clip:null,sample:null,rects:null};
+(function _loadDruidOrbClip(){
+  Promise.all([
+    import('./tools/2_5d/atlas-clip-runtime.mjs?v=20261009-v1'),
+    fetch('assets/vfx/boss/druid_orb_24_20261009.clip.json?v=20261009-v1')
+      .then(response=>{if(!response.ok)throw new Error('Druid orb resource unavailable');return response.json();})
+  ]).then(([runtime,data])=>{
+    if(data.format!=='exoduser-atlas-clip'||data.version!==1
+      ||data.sourcePath!=='assets/vfx/boss/druid_orb_24_20261009.png'
+      ||data.loop!==true)throw new Error('Invalid Druid orb resource');
+    const clip=runtime.createAtlasClip(data),image=new Image();
+    image.onload=()=>{try{
+      const rects=Object.freeze(Array.from({length:clip.frameCount},(_,frame)=>
+        Object.freeze(runtime.getAtlasFrameRect(image,clip,frame,1))));
+      Object.assign(_druidOrbClip,{image,clip,sample:runtime.sampleAtlasClip,rects,ready:true});
+    }catch(_){_druidOrbClip.ready=false;}};
+    image.onerror=()=>{_druidOrbClip.ready=false;};
+    image.src=data.sourcePath+'?v=20261009-v1';
+  }).catch(()=>{});
+})();
+function _drawDruidOrbClip(ctx,orb){
+  if(!_druidOrbClip.ready)return false;
+  const frame=_druidOrbClip.sample(_druidOrbClip.clip,orb.t/60).frame;
+  const rect=_druidOrbClip.rects[frame],R=orb.r*2.4;
+  ctx.save();try{
+    ctx.drawImage(_druidOrbClip.image,rect.sx,rect.sy,rect.sw,rect.sh,
+      orb.x-R,orb.y-R,R*2,R*2);
+  }finally{ctx.restore();}
+  return true;
+}
 const _druidGroundRing=new Image();
 _druidGroundRing.src='assets/vfx/boss/druid_corruption_ring.svg?v=20260928';
 function _drawDruidGroundRing(ctx,x,y,r,alpha,angle=0,innerFraction=0){
@@ -57807,11 +57838,14 @@ function drawP(){
       X.closePath();X.fill();
     }X.globalAlpha=1;
   }
-  // ══ [다크드루이드] orb 탄막 렌더 (8프레임 회전) ══
-  if(G._druidOrbs&&G._druidOrbs.length&&typeof _druidSheets!=='undefined'&&_druidSheets.orb&&_druidSheets.orb.ready){
-    const im=_druidSheets.orb.img,cw=im.naturalWidth/4,ch=im.naturalHeight/2;
-    for(let oi=0;oi<G._druidOrbs.length;oi++){const o=G._druidOrbs[oi];const fr=(~~(_now/70))%8,sx=(fr%4)*cw,sy=(~~(fr/4))*ch,R=o.r*2.4;
-      X.drawImage(im,sx,sy,cw,ch,o.x-R,o.y-R,R*2,R*2);}
+  // ══ [다크드루이드] 독립 orb 탄막 — 24셀/game time, 원본8셀 폴백 ══
+  if(G._druidOrbs&&G._druidOrbs.length){
+    const legacy=typeof _druidSheets!=='undefined'&&_druidSheets.orb&&_druidSheets.orb.ready?_druidSheets.orb.img:null;
+    for(let oi=0;oi<G._druidOrbs.length;oi++){const o=G._druidOrbs[oi];
+      if(_drawDruidOrbClip(X,o))continue;
+      if(!legacy)continue;
+      const cw=legacy.naturalWidth/4,ch=legacy.naturalHeight/2,fr=(~~(_now/70))%8,sx=(fr%4)*cw,sy=(~~(fr/4))*ch,R=o.r*2.4;
+      X.drawImage(legacy,sx,sy,cw,ch,o.x-R,o.y-R,R*2,R*2);}
   }
   // ══ 독웅덩이 렌더 ══
   if(G._poisonPools&&G._poisonPools.length>0){

@@ -234,3 +234,8 @@ HP는 **현재 생명 주기의 `hp/mhp`**다. 부활 이후에는 이 구성이
 `ROOT-ENGINE-POISON-PUDDLE24-20261009`: 사용자 직접 승인으로 엔진 런타임·애니메이션·에디터3담당과 ROOT 통합을 실제 진행했다. 실제24기포 원화·768px 6×4/fps24/looptrue 공통JSON을 에디터와 main si0/si3/피날레 장판이 소비하며 Godot SpriteFrames/AtlasTexture loader를 작성했다. [현행 수치·시간·crop·Godot·검수 계약](../5.1임펙트디자인/DRUID_POISON_PUDDLE24_ENGINE_20261009.md). 기존 SVG/aoe8셀은 실패 폴백, chaseAoe/groundFissure·전투/save/원PNG는 유지. 다른보스/캐릭터 전체24/새3D/전체Godot이식 완료는 아니다. controlled actualPNG Canvas 검수와 본편 정상줌/성능/청취/save/A급은 구분하며 **VISUAL VERDICT: RETOUCH**. 같은완료검수 반복0. 최종 보존은 외부 `engine-poison-puddle24-20261009/completion.json`.
 
 위 “독늪 시각”의 aoe4×2/.14/.32/.06/.16/.85/3/5px은 과거 구현 이력이다. 현행 `_drawDruidFinalePool`는 공통24clip 우선·SVG/원8셀폴백, 기존경고/활성alpha.36/.72×fade 및 외곽/전조링1.5px/.38fade다. 원8셀폴백은 r√.5 내접박스/알파.10/.24, 새24clip은 등록PNG alpha검수에 근거한 r×1.12로 원판정반경안에 표시한다.
+
+
+## 2026-10-09 — 독립 ORB24 공통 엔진 연결
+
+`ROOT-ENGINE-DRUID-ORB24-20261009`: 실제 `G._druidOrbs`만 새6×4/24셀/640px, fps300/7·loop .56초로 표시한다. `o.t/60`과 기존R=r×2.4·접촉/피해/반사불가를 유지하며 원본4×2/8셀·벽시간70ms는 실패 폴백이다. [현재 원화·리소스·시간·검수 계약](../5.1임펙트디자인/DRUID_ORB24_ENGINE_20261009.md). 기존 장판24·blackBean Q전용·SFX/save 불변. 마지막→첫 연결/실보스전·GPU·정상줌·청취/save/A급은 RETOUCH/미인수.

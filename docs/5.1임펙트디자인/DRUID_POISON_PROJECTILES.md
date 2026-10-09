@@ -31,7 +31,7 @@
 | 피격 | `_hurtProjectilePlayer`가 druidPoison 옵션 전달. hurtP에서 최종 HP 피해 a>0일 때 P.poison+=3. 무적/회피/무피해에는 신규 독 부여 없음. 기존 중독 감소/틱 공식 재사용 |
 | 화상 | 드루이드 빨콩의 기존 _rbBurn 추가는 금지. 중독으로 대체 |
 | 추적지뢰 | `_druidMine` 소유 표식, 녹색 질감 핵144px/외곽177.6px(S240), 대기alpha .65/활성1. 실제 피해시 중독+3. 기존 추적/준비/수명 유지 |
-| 독립 ORB | 이미 녹색 드루이드 8f 시트와 중독+3/속박을 쓰는 별도 G._druidOrbs 경로 유지 |
+| 독립 ORB | 별도 G._druidOrbs: 신규24셀·fps300/7·o.t/60 우선, 원본8f는 미로드 폴백. 중독+3/속박·반사불가 보존. [현행](DRUID_ORB24_ENGINE_20261009.md) |
 | 풀 재사용 | spawnProj 재사용시 _druidPoison=false, _druidParryClass=null 초기화. 다른 적에게 표식 누수 방지 |
 | 범위 제외 | 보스 근접공격 및 모든 장판 재디자인은 이번 탄막 요청 범위가 아님. 보스 VFX 교체 목록 전체 작업은 별도 |
 
@@ -96,3 +96,8 @@
 | 물리 영수증 | `tmp/mac-migration-runtime/continued-review-20261003/ch1-source28-build/physical-receipt.json` 32859B / SHA256 `2b677de448db516036e2d32069f5b326e5aec535104f7db0072c57b5d21e5bda` |
 
 파생 port3403·격리 user-state는 원본 서버3333·저장 schema 변경이 아니다. source27 부분 플레이를 source28 제품 인수로 합산하지 않는다. 상세 successor 경로·SHA·장착 표는 `docs/13출시·마케팅/MAC_CH1_SOURCE27_CANDIDATE_20261003.md`의 후속 기록을 따른다.
+
+
+## 2026-10-09 — 독립 ORB24 공통 엔진 연결
+
+`ROOT-ENGINE-DRUID-ORB24-20261009`: 실제 `G._druidOrbs`만 새6×4/24셀/640px, fps300/7·loop .56초로 표시한다. `o.t/60`과 기존R=r×2.4·접촉/피해/반사불가를 유지하며 원본4×2/8셀·벽시간70ms는 실패 폴백이다. [현재 원화·리소스·시간·검수 계약](DRUID_ORB24_ENGINE_20261009.md). 기존 장판24·blackBean Q전용·SFX/save 불변. 마지막→첫 연결/실보스전·GPU·정상줌·청취/save/A급은 RETOUCH/미인수.

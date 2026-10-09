@@ -1,0 +1,17 @@
+{
+  "name": "druid_orb",
+  "format": "exoduser-atlas-clip",
+  "version": 1,
+  "sourcePath": "assets/vfx/boss/druid_orb_24_20261009.png",
+  "columns": 6,
+  "rows": 4,
+  "frameCount": 24,
+  "fps": 42.857142857142854,
+  "loop": true,
+  "frameWidth": 640,
+  "frameHeight": 640,
+  "pivot": {
+    "x": 0.5,
+    "y": 0.5
+  }
+}
