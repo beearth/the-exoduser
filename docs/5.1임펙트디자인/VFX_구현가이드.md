@@ -173,6 +173,7 @@ WebGL 가산 및 Canvas2D 폴백에 동일한 baseAlpha를 전달한다. RGB `[2
 | 타입 | 지속시간 | 애니 프레임 수 | 시트 | 성능 영향 |
 |------|---------|-------------|------|----------|
 | fire | 66 (1.1초) | 16 | Fire_FBF_4x4 | 낮음 (drawImage 1회/프레임) |
+| bossFireImpact(화마귀접촉) | 90틱 (원boom수명) | 새24/참고16FPS/nonloop | boss_fire_impact24·실패원Fire16·중앙최대660²/3r성장/부모blend상속 | 동시효과성능未검수/VISUAL RETOUCH |
 | black(폭독혈) | 66 (1.1초) | 16 | Dark_DarkSmoke_FBF_4x4 | 낮음 |
 | redbean(빨콩) | 72 (1.2초) | 16 | Fire_FBF_4x4 | 낮음 |
 | rainbow_light(일반 무지개 적중/블루콩) | 72 (1.2초, 기존60틱/초 기준) | 16×4 (4레이어) | Poison_MediumImpact + Dark_DarkSmoke + Light_ImpactLight + Ice_ImpactIce (각 90° 회전+시차+lighter 합성) | 중간 (drawImage 4회/프레임) |
@@ -401,7 +402,7 @@ path: '/v1/images/generations'
 | 크기 | `dw=240`, `dh=dw×(ch/cw)=240` |
 | 합성 | 실제 RGBA 투명도를 유지하고 `lighter` 합성 |
 | 적용 | `p.fdEnergy`만 새24. pending/invalid/drawfailure 원16폴백, 원이미지미준비는 기존EL.F `proj_elem_orb` 속성행 폴백. 일반 elemBall보다 우선/Druid·Kraken·Q분열은불변 |
-| 판정 | 스폰 r18→23.4, 최종 sz96. 플레이어 상대 스윕 히트 `P.r+max(p.r,sz)`=`P.r+96`(보이는 핵). 벽은 이동 구간의 중심+원주 8점 스윕. Q패링 `P.r+sz+90`→기본 `magic` 판정 r8의 빨간 혜성형 마법탄 5발(`_parryMagicShot`, `_drawCometBullet` 246.4px, 일반 먼지 없음, 총 반사 피해 5등분)+HP/ST/MP·작살·분노·악의·parryBank 자원회수 ×10. 플레이어·벽 접촉은 항상 `_fbEnergyBoom` r220+`bigImpact` 방향 링/스파크+속성 플래시/색수차+파티클42+흔들림32 후 소멸한다. 비무적·비돌진 접촉은 피해 계산 전 진행 방향 슬라이드100을 시작하므로 민첩 회피에도 관성이 유지되고 평화의보호 비패링 흡수도 동일하다. 첫 프레임 50px, 열린 공간 감쇠 누적 약 142.9px다. 무적 프레임/돌진 중에는 폭발만 하고 피해·슬라이드는 0 |
+| 판정 | 스폰 r18→23.4, 최종 sz96. 플레이어 상대 스윕 히트 `P.r+max(p.r,sz)`=`P.r+96`(보이는 핵). 벽은 이동 구간의 중심+원주 8점 스윕. Q패링 `P.r+sz+90`→기본 `magic` 판정 r8의 빨간 혜성형 마법탄 5발(`_parryMagicShot`, `_drawCometBullet` 246.4px, 일반 먼지 없음, 총 반사 피해 5등분)+HP/ST/MP·작살·분노·악의·parryBank 자원회수 ×10. 플레이어·벽 접촉은 항상 `_fbEnergyBoom` r220+`bigImpact` 방향 링/스파크+속성 플래시/색수차+파티클42+흔들림32 후 소멸한다. 해당 fdEnergy&&EL.F 접촉의 boom표시는 bossFireImpact 새24/원16폴백(r220/90/max660²)이며 Q효과는유지한다. 비무적·비돌진 접촉은 피해 계산 전 진행 방향 슬라이드100을 시작하므로 민첩 회피에도 관성이 유지되고 평화의보호 비패링 흡수도 동일하다. 첫 프레임 50px, 열린 공간 감쇠 누적 약 142.9px다. 무적 프레임/돌진 중에는 폭발만 하고 피해·슬라이드는 0 |
 | 비행 | raw 6×1.8=10.8, **직선(무유도)**. 공격 텀 180f(3초) |
 | 제외 | 올챙이 머리 원은 **전 탄** 폐기(2026-09-01). 화마귀는 패스1 글로우도 스킵 |
 | 원본 | 유저 제공 Downloads `ChatGPT Image 2026년 9월 2일 오후 03_47_47.png`를 픽셀 손실 없이 사용 |
@@ -777,7 +778,7 @@ Ori 수준 대기 깊이감. 광원 근처에서 존재감 나는 미세 입자.
 | _projHitFx | r60, 물리12f/기타48f. 실제 el 우선. isRed는 EL.F일 때만 redbean 폭발·붉은 파티클14개·플래시0.18. 물리는 #ffffff, 나머지는 ELC[el] 파티클12개·플래시0.15, shake6 |
 | 물리탄 수명 만료 (2026-09-08) | 공통 만료 분기의 `p.redBean && _projectileParryClass(p)==='physical'`만 `_addBoom(x,y,60,12,'physical')`: 기존 흰 Fire Impact 첫 행4프레임, 최대180px/0.2초. 흰 파편 `#ffffff` 12개·shake3, 화염 boom·추가 explosion 임팩트·피격 플래시 없음. `redBean+EL.P`와 물리 정체성의 titanEye(EL.F 포함)에 적용. 비물리 redBean은 기존 r40/72f redbean·붉은 파편12·explosion·shake3 유지 |
 | 물리 P | physical → Fire_ImpactFire_Sheet.png 첫 행 섬광·파편4프레임(index0~3) 흰색 틴트. 원본4×4 중 나머지12셀 제외, 최대180px, 12f(0.2초). _physicalImpactSheet는 이미지별 WeakMap 캐시, _tintHolyDome(img,255,255,255): RGB255/alpha=반올림(max(원본RGB)×원본alpha/255). 기존 Fire FBF 흰 연기 연결 제거. 원본/다른 속성/탄 비행/패링 효과 유지 |
-| 화염 F | fire 또는 redbean → Fire_FBF_4x4.png |
+| 화염 F | 일반 fire/redbean → Fire_FBF_4x4.png 원16 유지. 화마귀 fdEnergy&&EL.F 접촉만 bossFireImpact 새24/원16폴백(r220/90/max660²); Q는이번변경제외 |
 | 얼음 I | ice → Ice_ImpactIce_Sheet.png + Ice_MistSmoke_FBF_4x4.png (물파란콩은 기존 별도 Water Impact 경로 유지) |
 | 어둠 D | dark → Dark_MediumImpact.png + Dark_DarkSmoke_FBF_4x4.png |
 | 번개 L | lightning → Lightning_ImpactLightning_Sheet.png + Lightning_Lightning_FBF_4x3.png |
@@ -1368,3 +1369,8 @@ actual isBoss=true blood만 새640셀24원화로 표시하고 원16 alias·128×
 ## 2026-10-10 — 보스 물 에너지탄 접촉·Q 물보라24
 
 크라켄 fbEnergy+EL.I 접촉(r220/90·최대660²)과 waterEnergy Q(r96/72·최대288²)만 bossWaterImpact 새24원화로 연결했다. 원공용 waterImpact16/물반사탄적중·waterBean·원전투/RNG/SFX/save는유지한다. 기존 t/mt·성장/alpha·부모합성상속/lazy Image1/원16폴백, resource16FPS는참고값이다. actualwhole source·독립Canvas·editor의 검수범위와 시각RETOUCH는정본을따른다. actualmain/정상줌/동시성능/청취/save未인수. [정본](BOSS_WATER_IMPACT24_ENGINE_20261010.md).
+
+
+## 2026-10-10 — 화마귀 불탄 접촉 임팩트24
+
+actual _fbEnergyBoom의 fdEnergy&&EL.F 접촉만 bossFireImpact 새24/640²로 연결했다(r220/90·최대660²). 일반fire16/Q/기존비행24·물보스24와전투/RNG/SFX/save는유지한다. t/mt·3r성장/alpha·부모blend상속/lazyImage1/원16폴백, resource16FPS는참고값이다. actualwhole source·독립Canvas·editor 검수와시각RETOUCH의세부범위는정본을따르며 actualmain/정상줌/동시성능/청취/save未인수다. [정본](BOSS_FIRE_IMPACT24_ENGINE_20261010.md).

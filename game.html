@@ -9108,6 +9108,68 @@ function _addBoom(x,y,r,dur,col){
   b.x=x;b.y=y;b.r=r;b.t=0;b.mt=Math.max(66,dur||66);b.col=col||'fire';b.active=true; // 최소 1.1초, 기존 72는 유지
   b.arms=[];const nc=8+~~(r/25);for(let i=0;i<nc;i++)b.arms.push({a:Math.PI*2*i/nc+(Math.random()-.5)*.4,len:.5+Math.random()*.6,w:5+Math.random()*7,spd:.7+Math.random()*.5});
 }
+// Firedevil contact only: _booms retains its existing90-unit lifetime and shared fire16 fallback.
+const _bossFireImpactClip={ready:false,failed:false,image:null,clip:null,sample:null,rects:null,loadPromise:null};
+function _loadBossFireImpactClip(){
+  if(_bossFireImpactClip.loadPromise)return _bossFireImpactClip.loadPromise;
+  _bossFireImpactClip.loadPromise=(async()=>{
+    try{
+      const [response,runtime]=await Promise.all([
+        fetch('data/vfx/boss_fire_impact24_20261010.json?v=20261010-v1'),
+        import('./tools/2_5d/atlas-clip-runtime.mjs?v=20261009-v1')
+      ]);
+      if(!response.ok)throw new Error('boss_fire_impact metadata HTTP '+response.status);
+      const metadata=await response.json();
+      const keys=['format','version','name','sourcePath','columns','rows','frameCount','fps','loop'];
+      if(!metadata||typeof metadata!=='object'||Array.isArray(metadata)||
+        Object.keys(metadata).length!==keys.length||!keys.every(key=>Object.prototype.hasOwnProperty.call(metadata,key))||
+        metadata.format!=='exoduser-atlas-clip'||metadata.version!==1||metadata.name!=='boss_fire_impact'||
+        metadata.sourcePath!=='assets/vfx/fieldboss/boss_fire_impact_24_20261010.png'||
+        metadata.columns!==6||metadata.rows!==4||metadata.frameCount!==24||metadata.fps!==16||metadata.loop!==false)
+        throw new Error('boss_fire_impact metadata contract');
+      if(typeof runtime.createAtlasClip!=='function'||typeof runtime.sampleAtlasClip!=='function'||typeof runtime.getAtlasFrameRect!=='function')
+        throw new Error('boss_fire_impact atlas runtime');
+      const clip=runtime.createAtlasClip(metadata);
+      const image=new Image();image.decoding='async';
+      await new Promise((resolve,reject)=>{
+        image.onload=()=>{image.onload=null;image.onerror=null;resolve();};
+        image.onerror=()=>{image.onload=null;image.onerror=null;reject(new Error('boss_fire_impact image load'));};
+        image.src=metadata.sourcePath+'?v=20261010-v1';
+      });
+      if(!image.complete||image.naturalWidth!==640*clip.columns||image.naturalHeight!==640*clip.rows)
+        throw new Error('boss_fire_impact image grid');
+      const rects=Object.freeze(Array.from({length:clip.frameCount},(_,frame)=>Object.freeze(runtime.getAtlasFrameRect(image,clip,frame,1))));
+      _bossFireImpactClip.image=image;_bossFireImpactClip.clip=clip;
+      _bossFireImpactClip.sample=runtime.sampleAtlasClip;_bossFireImpactClip.rects=rects;
+      _bossFireImpactClip.ready=true;
+    }catch(error){
+      _bossFireImpactClip.ready=false;_bossFireImpactClip.failed=true;
+      console.warn('[VFX] boss_fire_impact24 original16 fallback',error);
+    }
+  })();
+  return _bossFireImpactClip.loadPromise;
+}
+function _drawBossFireImpactClip(ctx,bv,progress){
+  const original=_tvfx2Imgs['Fire_FBF_4x4.png'];
+  if(!original||!original.complete)return false;
+  _loadBossFireImpactClip();
+  if(!_bossFireImpactClip.ready)return false;
+  let saved=false;
+  try{
+    const sampled=_bossFireImpactClip.sample(_bossFireImpactClip.clip,progress*_bossFireImpactClip.clip.durationSeconds);
+    const rect=_bossFireImpactClip.rects[sampled.frame];
+    if(!rect)return false;
+    const size=bv.r*3*Math.pow(Math.min(1,progress*3),.5);
+    ctx.save();saved=true;ctx.globalAlpha=Math.max(0,1-progress*.5);
+    ctx.drawImage(_bossFireImpactClip.image,rect.sx,rect.sy,rect.sw,rect.sh,bv.x-size/2,bv.y-size/2,size,size);
+    return true;
+  }catch(error){
+    return false;
+  }finally{
+    if(saved)ctx.restore();
+  }
+}
+
 // Boss fbEnergy contact/Q only: _booms owns t/mt; all shared waterImpact16 consumers stay original.
 const _bossWaterImpactClip={ready:false,failed:false,image:null,clip:null,sample:null,rects:null,loadPromise:null};
 function _loadBossWaterImpactClip(){
@@ -57444,6 +57506,7 @@ function drawP(){
       plague:null, // 전용 스프라이트
       redbean:['Fire_FBF_4x4.png'],
       fire:['Fire_FBF_4x4.png'],
+      bossFireImpact:['Fire_FBF_4x4.png'],
       ice:['Ice_ImpactIce_Sheet.png','Ice_MistSmoke_FBF_4x4.png'],
       waterImpact:['Water_ImpactWater_Sheet.png'],
       bossWaterImpact:['Water_ImpactWater_Sheet.png'],
@@ -57463,6 +57526,8 @@ function drawP(){
     };
     if(_bv.col==='bossWaterImpact'&&_drawBossWaterImpactClip(X,_bv,_ep)){
       // The new single cell is complete; the original generic path is its failure fallback.
+    }else if(_bv.col==='bossFireImpact'&&_drawBossFireImpactClip(X,_bv,_ep)){
+      // One authored fire-contact cell; originalfire16 stays the failure fallback.
     }else if(_bv.col==='druid_poison_hit'){
       _drawDruidPoisonImpact(X,_bv,_tvfx2Imgs);
     }else if(_bv.col==='plague'){
@@ -61460,7 +61525,9 @@ function _fbEnergyBoom(p){
   var el=p.el,col=_fbElCol(p);
   const _bossWaterImpact=p.fbEnergy&&el===EL.I;
   if(_bossWaterImpact)_loadBossWaterImpactClip();
-  _addBoom(p.x,p.y,220,90,el===EL.I?(_bossWaterImpact?'bossWaterImpact':'waterImpact'):el===EL.L?'lightning':el===EL.D?'dark':'fire');
+  const _bossFireImpact=p.fdEnergy&&el===EL.F;
+  if(_bossFireImpact)_loadBossFireImpactClip();
+  _addBoom(p.x,p.y,220,90,el===EL.I?(_bossWaterImpact?'bossWaterImpact':'waterImpact'):el===EL.L?'lightning':el===EL.D?'dark':_bossFireImpact?'bossFireImpact':'fire');
   _addBlastLight(p.x,p.y,280,24,parseInt((col||'#66e5ff').slice(1,3),16)||102,parseInt((col||'#66e5ff').slice(3,5),16)||221,parseInt((col||'#66e5ff').slice(5,7),16)||255);
   bigImpact(p.x,p.y,el,Math.atan2(p.vy||0,p.vx||0));
   doHitFlash(col,.32);G._flashT=Math.max(G._flashT||0,8);G._flashCol=col;G._chromaT=Math.max(G._chromaT||0,8);

@@ -324,3 +324,8 @@ actual isBoss=true blood만 새640셀24원화로 표시하고 원16 alias·128×
 ## 2026-10-10 — 보스 물 에너지탄 접촉·Q 물보라24
 
 크라켄 fbEnergy+EL.I 접촉(r220/90·최대660²)과 waterEnergy Q(r96/72·최대288²)만 bossWaterImpact 새24원화로 연결했다. 원공용 waterImpact16/물반사탄적중·waterBean·원전투/RNG/SFX/save는유지한다. 기존 t/mt·성장/alpha·부모합성상속/lazy Image1/원16폴백, resource16FPS는참고값이다. actualwhole source·독립Canvas·editor의 검수범위와 시각RETOUCH는정본을따른다. actualmain/정상줌/동시성능/청취/save未인수. [정본](../5.1임펙트디자인/BOSS_WATER_IMPACT24_ENGINE_20261010.md).
+
+
+## 2026-10-10 — 화마귀 불탄 접촉 임팩트24
+
+actual _fbEnergyBoom의 fdEnergy&&EL.F 접촉만 bossFireImpact 새24/640²로 연결했다(r220/90·최대660²). 일반fire16/Q/기존비행24·물보스24와전투/RNG/SFX/save는유지한다. t/mt·3r성장/alpha·부모blend상속/lazyImage1/원16폴백, resource16FPS는참고값이다. actualwhole source·독립Canvas·editor 검수와시각RETOUCH의세부범위는정본을따르며 actualmain/정상줌/동시성능/청취/save未인수다. [정본](../5.1임펙트디자인/BOSS_FIRE_IMPACT24_ENGINE_20261010.md).
