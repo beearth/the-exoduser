@@ -1,3 +1,7 @@
+## 2026-10-09 — Higgsfield Ultra 제작 경로 전환
+
+사용자 직접 지시에 따라 AGENTS의 신규 에셋 제작 경로를 Higgsfield 우선으로 전환하고 [공급자 정본](10ai에셋프롬프트모음/IMAGE_PROVIDER_PRIORITY_20260925.md)·운영 메모리를 동기화했다. 이전 MagicLight 잔여 포인트 우선/고갈 후 전환 규칙은 이력이다. 연결 계정 Ultra/3000크레딧을1회 확인했으며, 무료·무제한·3D 호출 가능을 단정하지 않는다. 이번은 정책/담당 지시 전환이고 새 생성 job·제품 코드·에셋 쓰기0이다. 원본·승인본·held·타인 WIP·save·사용자 탭/서버를 보존한다. 최종 보존은 외부 `higgsfield-ultra-provider-policy-20261009/completion.json`이다.
+
 ## 2026-10-09 — ROOT-DRUID-PROJECTILE-CORE-READABILITY-20261009
 
 드루이드 적대 독탄의 중심·짧은 잔광·분리된 E/Q 안내를 본편 렌더러에 연결했다. 물리탄은 방향성 타원, 마법탄은 원형 중심과 마름모 안내를 사용한다. 실제 충돌 반경·탄 수·전투 수치·원PNG·save schema는 유지한다. [현재 표시 계약](5.1임펙트디자인/DRUID_PROJECTILE_READABILITY_20261009.md).
