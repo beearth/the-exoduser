@@ -1,5 +1,10 @@
 
 
+## 2026-10-10 — Druid 중앙 임팩트24 본편 표시 소비
+
+actual main druid_hit의4caller(드루이드 추적장판 폭발·균열 종착·ORB 폭발·bossDruidErupt 중앙 분출)가 새24셀을 소비한다. 기존 frame/maxFrames8/t/frameTime normalized phase, scale/angle/alpha·GLadditive/Canvaslighter·cull/budget5/종료·전투/RNG/save는 불변이다. 리소스6×4/24/fps180/7/loopfalse를 기존 진행에 재매핑하며 speed3은명목24, speed7은명목56render진행 단위이다. 안정게임초·24FPS·모든셀 자연노출 보장은0. 원본362×543/8셀은pending/실패 폴백으로 유지한다. 독립Canvas proof는본편정상줌·전체전투·GPU·동시성능·청취·실save·AAA인수와 구분하며 RETOUCH다. 다른임팩트도 필요한장수를 사용하되 성능검수전 렉없음·전체교체완료 주장은0. [정본](../5.1임펙트디자인/DRUID_HIT24_ENGINE_20261010.md).
+
+
 ## 2026-10-10 — Druid 뿌리 분출48 본편 표시 소비
 
 기존 `bossDruidErupt`의 `druid_roots` 표시만 새48셀 아틀라스로 연결했다. 원본10셀·frameTime7·종료/렌더 진행·budget5·cull·GL·Canvas 폴백과 전투 계약은 유지한다. 새 resource `8×6 / frameCount48 / fps288/7 / loop=false`의 시간은 기존 `(frame+fraction)/maxFrames`로 매핑한다. 명목70 렌더 진행 단위이며 안정된 게임 초·48FPS·자연 재생 중 모든 셀 노출을 뜻하지 않는다. 실제 normal zoom/전체 전투/동시 효과 성능·GPU·청취·save는 미인수, 독립 Canvas 검토만 별도 기록한다. 보스전 밖의 효과도 필요한 장수를 사용하되 실제 성능 확인 전 전체 교체·렉 없음·AAA급 완료로 표시하지 않는다. [정본](../5.1임펙트디자인/DRUID_ROOTS48_ENGINE_20261010.md).
