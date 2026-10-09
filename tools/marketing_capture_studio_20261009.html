@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>EXODUSER · Verified manual capture</title>
+  <style>
+    :root{color-scheme:dark;font:15px/1.45 system-ui,sans-serif;background:#111318;color:#edf0f4}*{box-sizing:border-box}body{margin:0;padding:20px}main{max-width:1500px;margin:auto}h1{font-size:24px;margin:0 0 8px}p{margin:8px 0}.notice{padding:12px;border:1px solid #665421;background:#2b2415;border-radius:8px}.muted{color:#aab2c0}.row{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:12px 0}label{display:flex;align-items:center;gap:6px}button,input,select{font:inherit;border:1px solid #485469;border-radius:6px;background:#202633;color:inherit;padding:8px 12px}button{cursor:pointer}button:disabled{opacity:.45;cursor:default}button[aria-pressed=true]{background:#765220}.primary{background:#286350}.danger{background:#66352f}.hashes label{display:grid;grid-template-columns:220px 1fr;margin:8px 0}.hashes input{width:100%;font-family:monospace}input[type=number]{width:85px}#viewport{position:relative;width:100%;overflow:hidden;background:#000;border:1px solid #3c4655}#game{display:block;width:1920px;height:1080px;border:0;transform-origin:top left}#status,#snapshot,#errors{white-space:pre-wrap;overflow-wrap:anywhere;background:#171d27;border:1px solid #3c4655;padding:12px}#errors{color:#ffb0a5;max-height:220px;overflow:auto}#snapshot{max-height:300px;overflow:auto}video{width:100%;max-height:540px;background:#000}body.embedded{padding:0;background:#000}body.embedded main{display:none}
+    @media(min-width:1000px){body{padding:12px;font-size:13px}main{display:grid;grid-template-columns:340px minmax(0,1fr);gap:8px 14px;align-items:start}main>h1,main>.row,main>#status,main>#setup{grid-column:1;margin:0}h1{font-size:19px}.row{gap:6px}button,input,select{padding:6px 9px}#setup>summary{cursor:pointer;padding:7px;background:#202633;border:1px solid #485469;border-radius:5px}.hashes label{display:block}.hashes input{font-size:11px}#viewport{grid-column:2;grid-row:1 / span 8;position:sticky;top:12px}main>details:not(#setup){grid-column:2;margin:0}#status{font-size:12px;max-height:145px;overflow:auto}#snapshot{max-height:180px}}
+  </style>
+  <script defer src="/tools/marketing_capture_studio_20261009.js"></script>
+</head>
+<body><main>
+  <h1>EXODUSER · Verified manual capture</h1>
+  <details id="setup"><summary>Source verification and isolated boot</summary>
+  <p class="notice">Local <strong>127.0.0.1 / localhost:3387 only</strong>. Enter the independently verified SHA256 values of the approved migration snapshot. Any mismatch stops boot or rejects the take. This records ordinary manual play with disposable storage; no staging or combat-value changes.</p>
+  <div class="hashes">
+    <label>Expected game.html SHA256 <input id="expectedGame" type="text" maxlength="64" autocomplete="off" spellcheck="false"></label>
+    <label>Expected terrain.mjs SHA256 <input id="expectedTerrain" type="text" maxlength="64" autocomplete="off" spellcheck="false"></label>
+    <label>Expected player-rig.mjs SHA256 <input id="expectedRig" type="text" maxlength="64" autocomplete="off" spellcheck="false"></label>
+    <label>Verified source commit / note <input id="sourceGit" type="text" autocomplete="off" placeholder="Recorded as operator assertion; not a substitute for SHA256"></label>
+  </div>
+  <div class="row">
+    <label>Character <select id="character"><option value="0" selected>0 · warrior</option><option value="1">1 · silvertail</option></select></label>
+    <label>Renderer <select id="renderer"><option value="auto" selected>Auto · normal game policy</option><option value="gl">GL · existing webgpu=0 query</option></select></label>
+    <button id="boot" class="primary">Verify snapshot and boot isolated manual demo</button>
+    <button id="skipIntro">Use normal intro / guide skip</button><button id="skipPractice">Use normal practice skip</button>
+  </div>
+  <p class="muted">Only boot after the team has verified the existing 3387 server and isolated SAVE_DIR. This page starts no server and never POSTs recordings. Game scripts run only after the hash gate and save isolation. Keep this tab visible. Normal HUD / HTML menus are excluded from Canvas recording.</p>
+  </details>
+  <div class="row"><button id="audio">Enable real game audio</button><button id="pause">Pause / resume</button></div>
+  <div class="row"><strong>Hold / release inputs:</strong>
+    <button data-hold="KeyW">W</button><button data-hold="KeyA">A</button><button data-hold="KeyS">S</button><button data-hold="KeyD">D</button><button data-hold="LMB">Attack hold / release</button><button data-hold="KeyQ">Q hold / release</button><button data-hold="KeyE">E hold / release</button><button id="releaseInputs">Release all inputs</button>
+  </div>
+  <div class="row"><strong>Operator aim:</strong>
+    <button data-aim="nw">↖</button><button data-aim="n">↑</button><button data-aim="ne">↗</button><button data-aim="w">←</button><button data-aim="e">→</button><button data-aim="sw">↙</button><button data-aim="s">↓</button><button data-aim="se">↘</button>
+  </div>
+  <div class="row"><strong>100ms key pulse:</strong>
+    <button data-pulse="KeyQ">Q</button><button data-pulse="KeyE">E</button><button data-pulse="ShiftLeft">Shift</button><button data-pulse="Space">Space</button><button data-pulse="ControlLeft">Ctrl</button><button data-pulse="Digit1">1</button><button data-pulse="Digit2">2</button><button data-pulse="Digit3">3</button><button data-pulse="Digit4">4</button><button data-pulse="Digit5">5</button>
+  </div>
+  <div class="row"><label>Codec <select id="codec" aria-label="Recording codec"></select></label><label>Capture FPS <select id="captureFps"><option value="30" selected>30</option><option value="60">60</option></select></label><label>Duration <input id="duration" type="number" min="20" max="60" value="30"> seconds</label><button id="record" class="primary">Verify again and record manual play</button><button id="stop" class="danger">Stop recording</button><button id="download" disabled>Download video</button><button id="json" disabled>Download audit JSON</button><button id="png">Download current PNG</button></div>
+  <p id="status" role="status">Enter all three expected hashes. No game has been loaded.</p>
+  <div id="viewport"><iframe id="game" title="Verified isolated EXODUSER runtime" allow="autoplay" sandbox="allow-scripts allow-same-origin" src="about:blank"></iframe></div>
+  <details><summary>Read-only runtime / source QA</summary><pre id="snapshot"></pre></details>
+  <details><summary>Actual browser codec support</summary><pre id="codecSupport"></pre></details>
+  <details><summary>Errors and blocked requests</summary><pre id="errors"></pre></details>
+  <details><summary>Last take preview · watch and listen before selection</summary><video id="preview" controls playsinline></video></details>
+</main></body></html>

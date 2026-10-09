@@ -1,0 +1,255 @@
+{
+  "schemaVersion": 1,
+  "status": "REVIEW_CANDIDATE",
+  "language": "en",
+  "_instructions": [
+    "이 파일을 EXODUSER_PRODUCTION_DIR/shot-plan.json으로 복사합니다. REVIEW_CANDIDATE는 미승인·미청취 상태를 정직하게 유지한 검수용 작성·렌더를 허용하며 공개 승인을 뜻하지 않습니다.",
+    "좋은 실제 전투14–20초+정적 브랜드4초를 우선합니다. 총18–50초를 허용합니다. 부족한 장면은 템플릿에서 명시적으로 제거하고, 옛 영상·placeholder·반복 빈길·감속으로 길이를 채우지 않습니다.",
+    "입력은 현재 migration의 NORMAL_PLAY 또는 게임 자체 NORMAL_TUTORIAL입니다. 구3333·staged 영상·에이전트 적 소환/전투 수치 변경은 금지합니다.",
+    "expectedBuilds에는 허용할 정확한 checkout/전체commit/실제gameSHA 삼중항을 나열합니다. source마다 하나와 일치하고 audit는 그 source와 같은 삼중항이어야 합니다. expectedBuilds를 삭제하면 기존 단일 expectedBuild를 사용할 수 있습니다.",
+    "9c185b81/03092eec는 총괄 보고의 게임 snapshot 접두사일 뿐 전체 SHA가 아닙니다. 각 take 감사자료의 전체값을 입력합니다.",
+    "원본의 검증된 exact 구간을 실제 속도 그대로 ffmpeg trim+H264CRF18/CFR30/AAC48k로 준비할 수 있습니다. rawSHA와 originalIN/OUT·파생방식을 audit.derivation에 보존합니다. 보간·슬로모션은 금지합니다.",
+    "원본29.7fps/VFR H264도 실제 source time으로 처리할 수 있습니다. fromSeconds는 해당 입력 파일 시작으로부터의 실제 초이며 durationFrames는 출력30fps 시간입니다. source의 실제 decoded frame index와 혼동하지 않습니다. 미리 trim한 입력은 일반적으로 fromSeconds=0입니다.",
+    "선택한 모든 shot은 실제 sourceSHA/정확한fromSeconds·durationFrames와 visualPass=true·시각 근거가 필요합니다. source 전체 visualReview는 후보에서 PARTIAL이어도 됩니다. 후보 status는 REVIEW_CANDIDATE/PASS, approved=false를 유지할 수 있습니다.",
+    "source와 audit의 captureKind를 일치시키고 agentSpawnedEnemies=false·agentModifiedCombatValues=false를 실제 관측에 따라 기록합니다. 기본 튜토리얼 생성은 baseGameTutorialSpawns로 별도 기록하며 NORMAL_PLAY에서는 false여야 합니다.",
+    "sourceAudioHeard=false·audioReview=UNHEARD·shot.audioPass=false로 후보 렌더가 가능합니다. 오디오 부재/FAIL도 공개 차단 사유로 기록합니다. 렌더하려고 미청취를 PASS로 바꾸지 않습니다.",
+    "APPROVED_FOR_BUILD에는 source/audit/shot/CTA 실제PASS·승인, 원음청취PASS, 최종 전체시청·청취PASS가 필요합니다. 스크립트는 어느 모드에서도 게시하지 않으며 publicationAllowed=false를 기록합니다.",
+    "게임 위 카피는 검증된 parry/kiSlash 각각 최대1개,60–90출력프레임입니다. magic/trap/parry/kiSlash 역할은 해당 실제 행동 featureVerified가 필요합니다. 보스WIP는 선택하지 않습니다.",
+    "crop 기본값은 null/contain입니다. 선택할 경우 원본1920x1080내 명확한16:9 픽셀영역과 crop.visualPass=true·검수근거가 필요합니다. 원본파일은 수정하지 않고 네이티브에서 그림만 crop하며 원음은 p.cut에 유지합니다.",
+    "CTA.mode=STATIC이면 검증된 네이티브 브랜드 화면4초를 실제 게임 샷 뒤에 붙입니다. OVER_GAMEPLAY를 선택할 때만 마지막4초 ctaClear 검수가 필요합니다. 움직이는 게임closing은 필수가 아닙니다.",
+    "input/originallogo.png,dm-sans-400.woff2,dm-sans-700.woff2,DM-Sans-OFL.txt의 기존 원본을 준비합니다. EXODUSER_PRODUCTION_DIR/project는 없어야 하며 root가 native검사·렌더·전체검수를 담당합니다."
+  ],
+  "expectedBuild": {
+    "checkout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "commit": null,
+    "gameSha256": null
+  },
+  "sources": {
+    "current_capture_001": {
+      "file": "input/current-capture-001.mp4",
+      "sha256": null,
+      "auditFile": "input/current-capture-001.audit.json",
+      "approved": false,
+      "status": "REVIEW_CANDIDATE",
+      "build": {
+        "checkout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "commit": null,
+        "gameSha256": null
+      },
+      "captureKind": null
+    }
+  },
+  "_sourceAuditRequiredShape": {
+    "status": "REVIEW_CANDIDATE",
+    "approved": false,
+    "mediaSha256": null,
+    "build": {
+      "checkout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "commit": null,
+      "gameSha256": null
+    },
+    "captureKind": null,
+    "serverPort": "UNKNOWN",
+    "staged": false,
+    "agentSpawnedEnemies": null,
+    "agentModifiedCombatValues": null,
+    "baseGameTutorialSpawns": null,
+    "tutorialSteps": [],
+    "currentVersionVerified": false,
+    "visualReview": "PENDING",
+    "audioReview": "UNHEARD",
+    "sourceAudioHeard": false,
+    "reviewedBy": null,
+    "reviewedAt": null,
+    "evidence": null,
+    "_note": "이것은 형식 예시이며 승인자료가 아닙니다. captureKind·파일/빌드 identity·튜토리얼 생성여부를 관측자료로 채웁니다. serverPort=null은 서버가 없는 네이티브 촬영임이 확인된 경우만 쓰며 UNKNOWN을 숨기는 값으로 사용하지 않습니다.",
+    "derivation": {
+      "rawSha256": null,
+      "originalInSeconds": null,
+      "originalOutSeconds": null,
+      "method": "FFMPEG_TRIM_H264_CRF18_CFR30_AAC48K_REALTIME",
+      "speed": 1,
+      "interpolation": false,
+      "_note": "파생 입력이면 실제 원본SHA와IN/OUT을 채웁니다. 파생 없이 원본 입력을 그대로 사용한다면 derivation=null로 명시합니다."
+    }
+  },
+  "shots": [
+    {
+      "id": "opening-impact",
+      "order": 1,
+      "role": "hook",
+      "sourceId": "current_capture_001",
+      "fromSeconds": null,
+      "durationFrames": null,
+      "status": "REVIEW_CANDIDATE",
+      "approved": false,
+      "crop": null,
+      "copy": null,
+      "review": {
+        "status": "REVIEW_CANDIDATE",
+        "sourceSha256": null,
+        "fromSeconds": null,
+        "durationFrames": null,
+        "visualPass": false,
+        "audioPass": false,
+        "featureVerified": false,
+        "topLeftClear": false,
+        "ctaClear": false,
+        "evidence": null
+      },
+      "_purpose": "현재 정상플레이/튜토리얼에서 첫타격의준비와결과가읽히는exact구간. 첫장면카드는없습니다."
+    },
+    {
+      "id": "combat-flow",
+      "order": 2,
+      "role": "combat",
+      "sourceId": "current_capture_001",
+      "fromSeconds": null,
+      "durationFrames": null,
+      "status": "REVIEW_CANDIDATE",
+      "approved": false,
+      "crop": null,
+      "copy": null,
+      "review": {
+        "status": "REVIEW_CANDIDATE",
+        "sourceSha256": null,
+        "fromSeconds": null,
+        "durationFrames": null,
+        "visualPass": false,
+        "audioPass": false,
+        "featureVerified": false,
+        "topLeftClear": false,
+        "ctaClear": false,
+        "evidence": null
+      },
+      "_purpose": "실제검수한전투흐름. 필요한경우여러독립검수구간으로나누며실제시간을유지합니다."
+    },
+    {
+      "id": "magic-hit",
+      "order": 3,
+      "role": "magic",
+      "sourceId": "current_capture_001",
+      "fromSeconds": null,
+      "durationFrames": null,
+      "status": "REVIEW_CANDIDATE",
+      "approved": false,
+      "crop": null,
+      "copy": null,
+      "review": {
+        "status": "REVIEW_CANDIDATE",
+        "sourceSha256": null,
+        "fromSeconds": null,
+        "durationFrames": null,
+        "visualPass": false,
+        "audioPass": false,
+        "featureVerified": false,
+        "topLeftClear": false,
+        "ctaClear": false,
+        "evidence": null
+      },
+      "_purpose": "실제확인한마법시전·투사체·적중구간만사용합니다."
+    },
+    {
+      "id": "trap-trigger",
+      "order": 4,
+      "role": "trap",
+      "sourceId": "current_capture_001",
+      "fromSeconds": null,
+      "durationFrames": null,
+      "status": "REVIEW_CANDIDATE",
+      "approved": false,
+      "crop": null,
+      "copy": null,
+      "review": {
+        "status": "REVIEW_CANDIDATE",
+        "sourceSha256": null,
+        "fromSeconds": null,
+        "durationFrames": null,
+        "visualPass": false,
+        "audioPass": false,
+        "featureVerified": false,
+        "topLeftClear": false,
+        "ctaClear": false,
+        "evidence": null
+      },
+      "_purpose": "실제확인한트랩설치·작동·결과구간만사용합니다."
+    },
+    {
+      "id": "kislash-charge-release",
+      "order": 5,
+      "role": "kiSlash",
+      "sourceId": "current_capture_001",
+      "fromSeconds": null,
+      "durationFrames": null,
+      "status": "REVIEW_CANDIDATE",
+      "approved": false,
+      "crop": null,
+      "copy": null,
+      "review": {
+        "status": "REVIEW_CANDIDATE",
+        "sourceSha256": null,
+        "fromSeconds": null,
+        "durationFrames": null,
+        "visualPass": false,
+        "audioPass": false,
+        "featureVerified": false,
+        "topLeftClear": false,
+        "ctaClear": false,
+        "evidence": null
+      },
+      "_purpose": "총괄이9c185b81튜토리얼7.70–9.80초후보를보고했습니다. 실제파일/SHA/정확한구간을확인하고이일반sourceID가그파일이라고추정하거나2.1초동작을늘리지않습니다."
+    }
+  ],
+  "cta": {
+    "status": "REVIEW_CANDIDATE",
+    "approved": false,
+    "demoUrl": null,
+    "demoAvailable": false,
+    "footageIsDemoBuild": null,
+    "descriptionDisclosure": null,
+    "evidence": null,
+    "_copy": [
+      "PLAY THE FREE DEMO",
+      "ON STEAM"
+    ],
+    "_note": "STATIC은검증된브랜드화면4초입니다. 후보에서는데모링크/빌드대응미확인상태를유지할수있으며공개승인은차단됩니다.",
+    "mode": "STATIC"
+  },
+  "_suggestedTotalSeconds": 22,
+  "_optionalParryCopy": {
+    "key": "parry",
+    "offsetFrames": 0,
+    "durationFrames": 72,
+    "_note": "반격 성공이 검증된 parry역할 샷에서만 사용합니다. 기검참은key=kiSlash이며2.1초샷이면카피는최대63프레임입니다."
+  },
+  "_optionalCropShape": {
+    "x": 160,
+    "y": 180,
+    "width": 1600,
+    "height": 900,
+    "visualPass": false,
+    "evidence": null,
+    "_note": "활성 crop이 아닌 형식 예시입니다. 실제선택영역과시각근거를채워야합니다. 기본crop=null입니다."
+  },
+  "finalReview": {
+    "status": "PENDING",
+    "visualPass": false,
+    "audioPass": false,
+    "evidence": null
+  },
+  "expectedBuilds": [
+    {
+      "checkout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "commit": null,
+      "gameSha256": null,
+      "_captureReport": "03/04/06: root-reported9c185b81 prefix only; fill exact40-character commit and64-character loaded gameSHA from capture evidence."
+    },
+    {
+      "checkout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "commit": null,
+      "gameSha256": null,
+      "_captureReport": "07/08: root-reported03092eec prefix only; fill exact snapshot identity from capture evidence."
+    }
+  ],
+  "_legacyExpectedBuildNote": "단일 expectedBuild를 사용하려면 expectedBuilds를 삭제합니다. expectedBuilds가 있으면 그 배열이 명시한 허용목록만 사용합니다."
+}
