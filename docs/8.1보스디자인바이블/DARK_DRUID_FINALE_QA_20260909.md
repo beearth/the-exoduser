@@ -154,3 +154,8 @@
 외부 증거 디렉터리는 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-main-camera-aim-20261007/`이다. `implementation-receipt.json` 4,493B / `045a27500ee5504a75440a7d913359badd5a0c72ed885352a8072bd5d9423c86`의 exact replacements/inverse exact/foreign185 보존을 따른다. Git 사실은 같은 디렉터리 `remote-preservation-receipt.json`의 실제 normal commit/push/원격 정확 SHA를 참조하고 자기 commit SHA는 순환 삽입하지 않는다. 검수 epoch checkpoint 전·deploy0이다.
 
 최종 `aim-cpu-receipt.json` 1,124B / `f4a25b7ae304f8c4665d9f7f821ced2f89e23fbdeb8f168ae661cd39056b6c7c`, `native-result.json` 12,782B / `451a9070a4177502675978364ae877263d32ed7f6ba4e33ba98f216fa8dcf901`, `validation-receipt.json` 1,994B / `be8dc72efa2c1b886df9683a6f89ca7a4667ffd8fd9f05f9235c0d825ccf490e`, `visual-verdict.json` 4,764B / `22108e6e5e55733b0a4c83150f6ed31a791d3ce07900c29f85a94d8c740c593a`를 각각 보존한다. CPU28과 native3은 별도 검수이며 clean 전체 조건으로 합산하지 않는다. 0707 공식 raw6와 다음 retry 계획도 별도 원자료로, 이번 AIM 제품 인수에 합산하지 않는다.
+
+
+## 2026-10-10 — Druid 뿌리 충격링24 공통 본편 표시 소비
+
+actual main druid_shockring 공통ID는 새24실변화 원화를 소비하며 원512²×8열8장은 pending/실패 폴백이다. 네 실제 caller: _reviveDruidFinale 및 _bossPhaseCheck의막전환 scale=e.r*3/256/frameTime5/표시6e.r/명목40진행, _finishDruidFinale 승리 scale=max(.5,e.r*4/256)/frameTime6/표시max(256,8e.r)/명목48진행, updateE bossShockWind 종료(stage0/3) scale=e.r*2.5/256/frameTime7/표시5e.r/명목56진행. resource6×4/24/fps180/7/loopfalse를 caller별 normalizedphase로 매핑하므로 모든caller56/24FPS/안정game초 보장0이다. 기존guard·worldcenter/angle0/isSkillfalse·alpha·GLadditive/Canvaslighter·종료/cull/budget5/압축·producer·전투/RNG/SFX/save/원PNG 유지. 독립 actualmain helper Canvas proof는 actualnormalmain/정상줌/전체전투/GPU/동시성능/청취/실save/AAA 인수와 구분한다. 현재시각판정과 원화규격·실제검수는정본참조. 과거검수/전투수치 이력은유지한다. [정본](../5.1임펙트디자인/DRUID_SHOCKRING24_ENGINE_20261010.md).

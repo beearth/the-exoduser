@@ -113,3 +113,8 @@
 외부 근거: `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/ch1-boss-intro-map-owner-20261008/implementation-receipt.json`, `docs-search.json`, `docs-disposition.json`, `docs-sync-plan.json`. CPU 수치는 이번 validation-receipt.json 및 cpu-execution-receipt.json의 실제 결과를 사용했다. 옛 suite·route·native 결과와 합산하지 않는다.
 
 한계: update/HUD가 이 draw보다 먼저 소비하는 경계는 원자적으로 막지 않는다. 같은 map의 in-place 변경·관측 사이 A→B→A는 미식별이며, ownerMap은 종료 뒤 다음 producer까지 해당 map 참조를 유지한다. 기존 bossBar 2000ms timeout 수명은 별도다.
+
+
+## 2026-10-10 — Druid 뿌리 충격링24 공통 본편 표시 소비
+
+actual main druid_shockring 공통ID는 새24실변화 원화를 소비하며 원512²×8열8장은 pending/실패 폴백이다. 네 실제 caller: _reviveDruidFinale 및 _bossPhaseCheck의막전환 scale=e.r*3/256/frameTime5/표시6e.r/명목40진행, _finishDruidFinale 승리 scale=max(.5,e.r*4/256)/frameTime6/표시max(256,8e.r)/명목48진행, updateE bossShockWind 종료(stage0/3) scale=e.r*2.5/256/frameTime7/표시5e.r/명목56진행. resource6×4/24/fps180/7/loopfalse를 caller별 normalizedphase로 매핑하므로 모든caller56/24FPS/안정game초 보장0이다. 기존guard·worldcenter/angle0/isSkillfalse·alpha·GLadditive/Canvaslighter·종료/cull/budget5/압축·producer·전투/RNG/SFX/save/원PNG 유지. 독립 actualmain helper Canvas proof는 actualnormalmain/정상줌/전체전투/GPU/동시성능/청취/실save/AAA 인수와 구분한다. 현재시각판정과 원화규격·실제검수는정본참조. 과거검수/전투수치 이력은유지한다. [정본](../5.1임펙트디자인/DRUID_SHOCKRING24_ENGINE_20261010.md).

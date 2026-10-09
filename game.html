@@ -19704,6 +19704,46 @@ function _drawDruidHitClip(v,sh,mix,dw,dh,alpha){
 // [다크드루이드 전용 이펙트 시트] blend 생략=기본 lighter(가산). 파일 부재 시 playVFXAng 조용히 no-op
 registerVFX('druid_poison','assets/vfx/druid_poison.png',256,256,8,8);
 registerVFX('druid_shockring','assets/vfx/druid_shockring.png',512,512,8,8);
+// Authored shock-ring frames share the legacy VFX phase and lifetime.
+const _druidShockringClip={ready:false,image:null,clip:null,sample:null,rects:null};
+(async function _loadDruidShockringClip(){
+  try{
+    const [runtime,response]=await Promise.all([
+      import('./tools/2_5d/atlas-clip-runtime.mjs?v=20261009-v1'),
+      fetch('assets/vfx/boss/druid_shockring_24_20261010.clip.json?v=20261010-v1')
+    ]);
+    if(!response.ok)throw new Error('Druid shockring resource unavailable');
+    const data=await response.json();
+    if(data.format!=='exoduser-atlas-clip'||data.version!==1||data.name!=='druid_shockring'
+      ||data.sourcePath!=='assets/vfx/boss/druid_shockring_24_20261010.png'
+      ||data.columns!==6||data.rows!==4||data.frameCount!==24||data.fps!==180/7||data.loop!==false)
+      throw new Error('Invalid Druid shockring resource');
+    const clip=runtime.createAtlasClip(data),image=new Image();
+    image.onload=()=>{try{
+      const rects=Object.freeze(Array.from({length:clip.frameCount},(_,frame)=>
+        Object.freeze(runtime.getAtlasFrameRect(image,clip,frame,1))));
+      Object.assign(_druidShockringClip,{image,clip,sample:runtime.sampleAtlasClip,rects,ready:true});
+    }catch(_){_druidShockringClip.ready=false;}};
+    image.onerror=()=>{_druidShockringClip.ready=false;};
+    image.src=data.sourcePath+'?v=20261010-v1';
+  }catch(_){_druidShockringClip.ready=false;}
+})();
+function _drawDruidShockringClip(v,sh,mix,dw,dh,alpha){
+  const state=_druidShockringClip;if(!state.ready)return false;
+  const fraction=v.bornGameTime!==undefined?mix:v.t/v.frameTime;
+  const progress=(v.frame+fraction)/v.maxFrames;
+  const frame=state.sample(state.clip,progress*state.clip.durationSeconds).frame;
+  const rect=state.rects[frame];
+  if(_vfxGLMode&&_queueVfxGL(state.image,rect.sx,rect.sy,rect.sw,rect.sh,
+    VW*.5+(v.x-G.cam.x),VH*.5+(v.y-G.cam.y),dw,dh,v.ang||0,alpha))return true;
+  X.save();try{
+    X.globalCompositeOperation=sh.blend||'lighter';X.globalAlpha=alpha;
+    X.translate(v.x,v.y);if(v.ang)X.rotate(v.ang);
+    X.drawImage(state.image,rect.sx,rect.sy,rect.sw,rect.sh,-dw/2,-dh/2,dw,dh);
+  }finally{X.restore();}
+  return true;
+}
+
 registerVFX('druid_roots','assets/vfx/druid_roots.png',256,256,10,10);
 // Authored roots frames share the legacy VFX phase and lifetime.
 const _druidRootsClip={ready:false,image:null,clip:null,sample:null,rects:null};
@@ -54634,6 +54674,9 @@ function draw(){
         if(_vw!==vi)_vfxAnims[_vw]=v;_vw++;continue;
       }
       if(v.id==='druid_dust'&&_drawDruidDustClip(v,sh,_vfMix,dw,dh,_vAlpha)){
+        if(_vw!==vi)_vfxAnims[_vw]=v;_vw++;continue;
+      }
+      if(v.id==='druid_shockring'&&_drawDruidShockringClip(v,sh,_vfMix,dw,dh,_vAlpha)){
         if(_vw!==vi)_vfxAnims[_vw]=v;_vw++;continue;
       }
       if(v.bornGameTime!==undefined){

@@ -287,3 +287,8 @@ actual main druid_hit의4caller(드루이드 추적장판 폭발·균열 종착�
 ## 2026-10-10 — Druid 땅굴 진입·이탈 링24 본편 표시 소비
 
 actual main burrowStrike의 땅굴 진입·이탈 druid_dust 2caller가 새24셀 링을 소비한다. 원등록256×256/8셀8열·frameTime7·명목56render진행·기본 표시 진입2e.r/이탈2.6e.r·새링 draw×1.2(2.4e.r/3.12e.r)·원8폴백×1·원본중앙여백 정체성(후기 입자 미인수)·angle0·alpha/GLadditive/Canvaslighter·종료/cull/budget5/압축은 보존한다. 리소스6×4/24/fps180/7/loopfalse는 기존normalized phase로 매핑하며 새clock0/24FPS·안정게임초·모든셀 자연노출 보장0이다. 원8셀 pending/실패폴백·전투/RNG/save/SFX/원PNG 유지. 독립 actualmain helper Canvas proof는 본편 정상줌/전체전투/GPU/동시성능/청취/실save/AAA 인수와 구분한다. 다른임팩트도 필요한장수를 사용하되 성능검수전 렉없음·전체교체완료 주장은0. [정본](../5.1임펙트디자인/DRUID_DUST24_ENGINE_20261010.md).
+
+
+## 2026-10-10 — Druid 뿌리 충격링24 공통 본편 표시 소비
+
+actual main druid_shockring 공통ID는 새24실변화 원화를 소비하며 원512²×8열8장은 pending/실패 폴백이다. 네 실제 caller: _reviveDruidFinale 및 _bossPhaseCheck의막전환 scale=e.r*3/256/frameTime5/표시6e.r/명목40진행, _finishDruidFinale 승리 scale=max(.5,e.r*4/256)/frameTime6/표시max(256,8e.r)/명목48진행, updateE bossShockWind 종료(stage0/3) scale=e.r*2.5/256/frameTime7/표시5e.r/명목56진행. resource6×4/24/fps180/7/loopfalse를 caller별 normalizedphase로 매핑하므로 모든caller56/24FPS/안정game초 보장0이다. 기존guard·worldcenter/angle0/isSkillfalse·alpha·GLadditive/Canvaslighter·종료/cull/budget5/압축·producer·전투/RNG/SFX/save/원PNG 유지. 독립 actualmain helper Canvas proof는 actualnormalmain/정상줌/전체전투/GPU/동시성능/청취/실save/AAA 인수와 구분한다. 현재시각판정과 원화규격·실제검수는정본참조. 과거검수/전투수치 이력은유지한다. [정본](../5.1임펙트디자인/DRUID_SHOCKRING24_ENGINE_20261010.md).

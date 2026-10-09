@@ -244,3 +244,8 @@ HP는 **현재 생명 주기의 `hp/mhp`**다. 부활 이후에는 이 구성이
 ## 2026-10-10 — Druid 뿌리 분출48 본편 표시 소비
 
 기존 `bossDruidErupt`의 `druid_roots` 표시만 새48셀 아틀라스로 연결했다. 원본10셀·frameTime7·종료/렌더 진행·budget5·cull·GL·Canvas 폴백과 전투 계약은 유지한다. 새 resource `8×6 / frameCount48 / fps288/7 / loop=false`의 시간은 기존 `(frame+fraction)/maxFrames`로 매핑한다. 명목70 렌더 진행 단위이며 안정된 게임 초·48FPS·자연 재생 중 모든 셀 노출을 뜻하지 않는다. 원본 생성 gate와 일반/DEMO/finale stage 조건은 불변이다. 실제 normal zoom/전체 전투/동시 효과 성능·GPU·청취·save는 미인수, 독립 Canvas 검토만 별도 기록한다. 보스전 밖의 효과도 필요한 장수를 사용하되 실제 성능 확인 전 전체 교체·렉 없음·AAA급 완료로 표시하지 않는다. [정본](../5.1임펙트디자인/DRUID_ROOTS48_ENGINE_20261010.md).
+
+
+## 2026-10-10 — Druid 뿌리 충격링24 공통 본편 표시 소비
+
+actual main druid_shockring 공통ID는 새24실변화 원화를 소비하며 원512²×8열8장은 pending/실패 폴백이다. 네 실제 caller: _reviveDruidFinale 및 _bossPhaseCheck의막전환 scale=e.r*3/256/frameTime5/표시6e.r/명목40진행, _finishDruidFinale 승리 scale=max(.5,e.r*4/256)/frameTime6/표시max(256,8e.r)/명목48진행, updateE bossShockWind 종료(stage0/3) scale=e.r*2.5/256/frameTime7/표시5e.r/명목56진행. resource6×4/24/fps180/7/loopfalse를 caller별 normalizedphase로 매핑하므로 모든caller56/24FPS/안정game초 보장0이다. 기존guard·worldcenter/angle0/isSkillfalse·alpha·GLadditive/Canvaslighter·종료/cull/budget5/압축·producer·전투/RNG/SFX/save/원PNG 유지. 독립 actualmain helper Canvas proof는 actualnormalmain/정상줌/전체전투/GPU/동시성능/청취/실save/AAA 인수와 구분한다. 현재시각판정과 원화규격·실제검수는정본참조. 과거검수/전투수치 이력은유지한다. [정본](../5.1임펙트디자인/DRUID_SHOCKRING24_ENGINE_20261010.md).
