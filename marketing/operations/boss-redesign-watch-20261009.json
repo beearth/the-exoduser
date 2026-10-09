@@ -13,11 +13,11 @@
     "threadId": "01a0faa9-b453-7673-be39-98adedb4c2b3",
     "hostId": "local",
     "title": "맥북에서 총괄 시작하기",
-    "afterCursor": "b2476eee-d767-4cd1-8064-9706586fb10a:12",
-    "lastObservedStatus": "active",
-    "lastObservedTurnStatus": "inProgress",
-    "lastObservedTurnId": "01a12143-3c04-70f2-8d1e-2ffbfd0b3a56",
-    "lastObservedReport": "뿌리 분출 효과의 본편 코드 연결·256px 비교 검토 완료 보고. 후반 잔가지 재성장은 보정 대상으로 남았고 코드·에셋·문서 백업 진행 중."
+    "afterCursor": "b2476eee-d767-4cd1-8064-9706586fb10a:13",
+    "lastObservedStatus": "idle",
+    "lastObservedTurnStatus": "completed",
+    "lastObservedTurnId": "01a1217e-ca25-7610-8f1f-506a8d0ab55a",
+    "lastObservedReport": "드루이드 땅굴 입출구 초록 링 24장 애니메이션의 본편 코드 연결 및 독립 렌더 검토 영상 제작 보고. 후반 파편·실전 가독성은 추가 보정 필요, 인게임 성능 미확인."
   },
   "completionConfirmed": false,
   "captureStarted": false,
@@ -34,6 +34,6 @@
     "게임·서버·사용자 탭·세이브 무조작",
     "완성 후 검수본부터 인도, 사용자 검수 전 자동 공개 금지"
   ],
-  "lastCheckedAtUTC": "2026-10-09T15:56:39.628Z",
-  "lastCheckResult": "단일 효과 연결·비교 검토의 부분 진척이며 총괄 턴은 inProgress. 보스전 전체 리디자인 완료·정상 연속 플레이 촬영 가능 상태 미확인. 촬영·제작·게시 및 반복 요청 없음."
+  "lastCheckedAtUTC": "2026-10-09T16:58:09.486Z",
+  "lastCheckResult": "단일 땅굴 효과 제작 턴 종료이며 보스전 전체 리디자인 완료는 아님. 독립 렌더 검토 영상을 정상 연속 본편 녹화로 대체하지 않음. 정상 플레이 촬영 가능 상태 미확인, 촬영·제작·게시 및 반복 요청 없음."
 }
