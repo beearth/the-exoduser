@@ -1,3 +1,9 @@
+## 2026-10-09 ROOT-DRUID-POISON-IMPACT-20261009
+
+- code1/정본 및 관련docs10: 적대 Druid blackBean 접촉만 `druid_poison_hit`, r120/72틱·전투/Q패링/RNG/save 유지. Poison_MediumImpact 첫8셀24틱 보간 창/최대6파편/5틱 섬광; renderer 새함수 소비. 원PNG·새생성·SFX 변경0.
+- 관련 docs 최초검색10path31line; 직접 영향 문서에 계약 동기화, 기존rainbow_light의4시트 이름/실제 renderer 설명 정정. 원문·외부working/HEAD 선백업·동일ownhunk/inverseexact·ownedblob stage.
+- 첫 실제source Node1/8그룹59조건 PASS, 정적peer0. Mac 기존 own Chrome 통제Canvas 재생/72종료 확인; 외부 비교 종료가드 누락1만 정정. 정상줌/실보스전/청취/save/A급 미인수, RETOUCH. 기존3387 GET1 거부; 서버 재시작0.
+
 ## 2026-10-09 — ROOT-DRUID-MAX-QUALITY-SW-20261009
 
 Higgsfield GPT Image 2.5 sunburst/max/4k/transparent/2:3/count1의 실제2336×3504 PNG1장과 본편 review 전용 소비를 추가했다. game 헤더/actual draw 진입/기존 test UI attach의 own3hunk, tools/2_5d/druid-art-review.js. bossReview=1·bosstest=0·bossArtReview=druid-sw-max의 frozen idle SW만 후보를 표시하며 원본 버튼/로딩 실패/AI 재개/공격은 기존 소비다. 원본 PNG·시트·전투/save 불변. 등록/프롬프트/규격/검수는 [정본](4.0케릭터스프라이트%20디자인/DRUID_HIGGSFIELD_MAX_ART_REVIEW_20261009.md). 최초 Node1/7그룹30조건 PASS·정적 source peer0, 생성 픽셀 RETOUCH; actual main/정상 줌/성능/청취/save/다방향·3D·A급 미인수.

@@ -1,3 +1,7 @@
+## 2026-10-09 후속 접촉 임팩트
+
+이 문서의 비행 core/tail과 E·Q 외부 안내는 유지한다. 적대 Druid blackBean 접촉만 4겹 `rainbow_light`에서 `druid_poison_hit`로 분리했다. 정확 수치·폴백·검증 한계는 [독탄 접촉 임팩트 정본](DRUID_POISON_CONTACT_IMPACT_20261009.md). 통제 native 재생/종료 확인이며 실제 정상 줌의 본편 인수는 미완료다.
+
 # 드루이드 독탄 중심·진행 방향 표시 — 2026-10-09
 
 `ROOT-DRUID-PROJECTILE-CORE-READABILITY-20261009`. main `game.html`의 적대 `_druidPoison` 경로만 수정한다. 큰 불투명 구체와 중심 키 배지가 안전 간격을 가리던 표시를 작은 질감 핵·희미한 외곽·짧은 방향 꼬리로 나눈다. 패링/충돌/피해/속도/수명/발수/중독 수치는 변경하지 않는다.

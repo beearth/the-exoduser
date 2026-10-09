@@ -1,3 +1,9 @@
+## 2026-10-09 ROOT-DRUID-POISON-IMPACT-20261009
+
+본편 적대 Druid blackBean 접촉의 다색4겹 폭발을 `druid_poison_hit`로 분리했다. 기존 Poison_MediumImpact 첫8셀의24틱 보간 창·최대6독색 파편·작은 핵/5틱 섬광, 기존r120/72틱/pool12/전투/Q전용 패링/RNG/save/SFX 유지. [정본](../5.1임펙트디자인/DRUID_POISON_CONTACT_IMPACT_20261009.md). 최초 실제source Node1/8그룹59조건 PASS, 정적peer0. 기존 ROOT Chrome 통제Canvas에서 실제 재생/72종료 확인; 정상줌/실보스전/성능/청취/save/A급은 미인수, RETOUCH. 외부 영수증 `druid-poison-impact-20261009/completion.json` 최종.
+
+사용자 직접 “멈췄음 다시 시도를해야지”에 따라 독립 승인 제작을 실제 재개했다. 환경 상태1회 재시도에서 Mac은 잠금 해제·기존 own Chrome 검토 가능, 기존3387 GET은 HTTP000/exit7이다. 기존 서버 restart/entry/SAVE_DIR 접근·권한거절 목적 우회0. Mac 잠금 대기로 독립 제작 전체를 멈추지 않는다. 변경 없는 경계·동일 완료 검사 반복0. 사용자 탭/원PNG/타인WIP/저장 보존.
+
 ## 2026-10-09 — 최신 본편 연결: 최고 품질 Druid 원화 비교
 
 ROOT-DRUID-MAX-QUALITY-SW-20261009: Higgsfield max/4K 요청의 SW 정지1장(2336×3504)과 actual main opt-in 비교를 연결했다. [정확 계약](../4.0케릭터스프라이트%20디자인/DRUID_HIGGSFIELD_MAX_ART_REVIEW_20261009.md). 원본 정체성은 유지됐지만 깃털 밀도·골반/양발 방향·접지는 RETOUCH. 일반 보스 외형/걷기/공격/3D 교체0, actual main 정상 줌·성능·청취/save/A급 미인수. 첫 Node1/7그룹30조건과 소스 peer0은 본편 화면 인수를 대신하지 않는다. 기존3387 복구/Mac 잠금 해제 질문 미응답, 서버/native/사용자 탭 무조작. 완료 검사의 반복·새팀round·거대STATE 확대0. 외부 E/druid-max-quality-sw-20261009/completion.json을 최종 보존 정본으로 사용한다.

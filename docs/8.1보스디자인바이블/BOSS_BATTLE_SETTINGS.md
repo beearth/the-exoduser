@@ -1,3 +1,7 @@
+## 2026-10-09 독탄 접촉 표시 소비
+
+적대 Druid blackBean의 패링되지 않은 접촉만 `druid_poison_hit`로 분리했다. 반경120·수명72틱·피해·중독·Q전용 패링·SFX는 유지한다. [정본](../5.1임펙트디자인/DRUID_POISON_CONTACT_IMPACT_20261009.md). Node1/8그룹59조건 PASS와 통제 native Canvas 재생/종료 확인; 실제 정상 줌 보스전·청취·save는 미검수, RETOUCH.
+
 ## 2026-10-09 — Druid 최대 품질 원화의 SW 정지 검토
 
 [현행 원화 비교 계약](../4.0케릭터스프라이트%20디자인/DRUID_HIGGSFIELD_MAX_ART_REVIEW_20261009.md). bossReview=1/bosstest=0/bossArtReview=druid-sw-max에서 현재 Druid·stage0·frozen idle·nativeDir1·image ready만 새 정지원화를 표시한다. AI 재개·공격·실패는 기존 consumer로 복귀한다. 기존 dh14.1r·idle body591/foot603/셀620에 후보 body3356/foot3386을 고정 등록하며 전투/판정/기존 모션·save를 바꾸지 않는다. 실제 main 화면·다방향/리깅/A급 미인수, RETOUCH.

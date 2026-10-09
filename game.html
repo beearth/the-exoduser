@@ -35013,7 +35013,7 @@ function update(){
           if(dst(p.x,p.y,be.x,be.y)>_bkR)continue;
           hurtE(be,_bkDmg,Math.atan2(be.y-p.y,be.x-p.x),false,{noPoise:true},p.el);
         }
-        _addBoom(p.x,p.y,_bkR,72,'rainbow_light');
+        _addBoom(p.x,p.y,_bkR,72,p._druidPoison&&!p.friendly?'druid_poison_hit':'rainbow_light');
         _pHit=true;
     }
     // ══ 화이트볼: isPWin()으로 패링 (빨콩과 동일 로직) ══
@@ -56896,7 +56896,9 @@ function drawP(){
       'Ice_ImpactIce_Sheet.png':{c:4,r:4},'Ice_MistSmoke_FBF_4x4.png':{c:4,r:4},
       'Lightning_ImpactLightning_Sheet.png':{c:4,r:4},
     };
-    if(_bv.col==='plague'){
+    if(_bv.col==='druid_poison_hit'){
+      _drawDruidPoisonImpact(X,_bv,_tvfx2Imgs);
+    }else if(_bv.col==='plague'){
       if(_plagueBoomSpr.ready&&_plagueBoomSpr.img){
         const _fi=Math.min(5,~~(_ep*6));
         const _drawSz=_bv.r*3.2*Math.pow(Math.min(1,_ep*3),.5);
@@ -61309,6 +61311,44 @@ function _fdFireEnergy(m){
   spawnProj({x:e.x,y:e.y,vx:Math.cos(a)*6,vy:Math.sin(a)*6,dmg:~~(m.atk*2.8),el:EL.F,friendly:false,life:320,ml:320,col:'#ff5522',sz:48,r:18,elemBall:true,_typed:true,_commit:true,fdEnergy:true});
   if(typeof SFX!=='undefined'&&SFX.magic)SFX.magic(1);
   shake(16);
+}
+// Druid contact presentation: existing poison artwork, update-owned age, no RNG.
+function _drawDruidPoisonImpact(X,b,images){
+  if(!b||!Number.isFinite(b.t)||!Number.isFinite(b.mt)||b.mt<=0||!Number.isFinite(b.r)||b.r<=0||!Number.isFinite(b.x)||!Number.isFinite(b.y))return;
+  const age=Math.max(0,b.t),p=Math.min(1,age/b.mt);if(p>=1)return;
+  const fade=(1-p)*(1-p),burst=Math.max(0,1-age/24),grow=1-Math.pow(1-Math.min(1,age/10),3);
+  const img=images&&images['Poison_MediumImpact.png'];
+  const ready=!!(img&&img.complete&&img.naturalWidth>=8&&img.naturalHeight>=8);
+  X.save();try{
+    X.translate(b.x,b.y);X.globalCompositeOperation='lighter';X.filter='none';
+    // Small contact nucleus; it never becomes an expanding danger disk.
+    const glow=X.createRadialGradient(0,0,0,0,0,b.r*.22);
+    glow.addColorStop(0,'#c9eca9');glow.addColorStop(.28,'#709f42');glow.addColorStop(1,'#28462200');
+    X.globalAlpha=fade*.16;X.fillStyle=glow;X.beginPath();X.arc(0,0,b.r*.22,0,Math.PI*2);X.fill();
+    if(burst>0&&ready){
+      const cw=Math.floor(img.naturalWidth/4),ch=Math.floor(img.naturalHeight/4),frame=Math.min(7,age/24*7),lo=Math.floor(frame),mix=frame-lo;
+      const size=b.r*(.72+.32*grow),height=size*ch/cw;
+      // Only the eight authored splashes; the atlas's ring/solid-ball variants are excluded.
+      for(let k=0;k<2;k++){
+        const f=Math.min(7,lo+k),weight=k===0?1-mix:mix;if(weight<=0)continue;
+        X.globalAlpha=.9*burst*burst*weight;
+        X.drawImage(img,(f%4)*cw+1,Math.floor(f/4)*ch+1,cw-2,ch-2,-size/2,-height/2,size,height);
+      }
+    }
+    // Reuse the already spawned arms. Drawing never consumes combat RNG or changes the boom.
+    const arms=b.arms||[],travel=1-Math.pow(1-p,3);
+    for(let i=0;i<Math.min(6,arms.length);i++){
+      const arm=arms[Math.floor(i*arms.length/Math.min(6,arms.length))],a=arm.a,d=b.r*(.1+.52*travel*arm.len);
+      const x=Math.cos(a)*d,y=Math.sin(a)*d+b.r*.18*p*p;
+      const len=b.r*(.025+.018*arm.spd)*(1-p*.55),width=b.r*.011*(1-p*.7);
+      X.globalAlpha=fade*.48;X.fillStyle=i%2?'#82b64f':'#b3d77a';
+      X.beginPath();X.ellipse(x,y,len,width,a,0,Math.PI*2);X.fill();
+    }
+    if(age<5){
+      const flash=1-age/5;X.globalAlpha=flash*.72;X.fillStyle='#f0fbd9';
+      X.beginPath();X.ellipse(0,0,b.r*.09*(.7+.3*grow),b.r*.045,0,0,Math.PI*2);X.fill();
+    }
+  }finally{X.restore();}
 }
 function _druidPoisonBodySize(p){
   const mul=_physicalProjectileMultiplier(p,2),large=p._druidMine||p.elemBall;
