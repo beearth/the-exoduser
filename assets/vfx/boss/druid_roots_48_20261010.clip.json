@@ -1,0 +1,17 @@
+{
+  "format": "exoduser-atlas-clip",
+  "version": 1,
+  "name": "druid_roots",
+  "sourcePath": "assets/vfx/boss/druid_roots_48_20261010.png",
+  "columns": 8,
+  "rows": 6,
+  "frameCount": 48,
+  "fps": 41.142857142857146,
+  "loop": false,
+  "frameWidth": 448,
+  "frameHeight": 448,
+  "pivot": {
+    "x": 0.5,
+    "y": 0.5
+  }
+}

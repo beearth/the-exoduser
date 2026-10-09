@@ -19665,6 +19665,46 @@ registerVFX('druid_hit','assets/vfx/druid_hit_impact.png',362,543,8,4); // [다�
 registerVFX('druid_poison','assets/vfx/druid_poison.png',256,256,8,8);
 registerVFX('druid_shockring','assets/vfx/druid_shockring.png',512,512,8,8);
 registerVFX('druid_roots','assets/vfx/druid_roots.png',256,256,10,10);
+// Authored roots frames share the legacy VFX phase and lifetime.
+const _druidRootsClip={ready:false,image:null,clip:null,sample:null,rects:null};
+(async function _loadDruidRootsClip(){
+  try{
+    const [runtime,response]=await Promise.all([
+      import('./tools/2_5d/atlas-clip-runtime.mjs?v=20261009-v1'),
+      fetch('assets/vfx/boss/druid_roots_48_20261010.clip.json?v=20261010-v1')
+    ]);
+    if(!response.ok)throw new Error('Druid roots resource unavailable');
+    const data=await response.json();
+    if(data.format!=='exoduser-atlas-clip'||data.version!==1||data.name!=='druid_roots'
+      ||data.sourcePath!=='assets/vfx/boss/druid_roots_48_20261010.png'
+      ||data.columns!==8||data.rows!==6||data.frameCount!==48||data.fps!==288/7||data.loop!==false)
+      throw new Error('Invalid Druid roots resource');
+    const clip=runtime.createAtlasClip(data),image=new Image();
+    image.onload=()=>{try{
+      const rects=Object.freeze(Array.from({length:clip.frameCount},(_,frame)=>
+        Object.freeze(runtime.getAtlasFrameRect(image,clip,frame,1))));
+      Object.assign(_druidRootsClip,{image,clip,sample:runtime.sampleAtlasClip,rects,ready:true});
+    }catch(_){_druidRootsClip.ready=false;}};
+    image.onerror=()=>{_druidRootsClip.ready=false;};
+    image.src=data.sourcePath+'?v=20261010-v1';
+  }catch(_){_druidRootsClip.ready=false;}
+})();
+function _drawDruidRootsClip(v,sh,mix,dw,dh,alpha){
+  const state=_druidRootsClip;if(!state.ready)return false;
+  const fraction=v.bornGameTime!==undefined?mix:v.t/v.frameTime;
+  const progress=(v.frame+fraction)/v.maxFrames;
+  const frame=state.sample(state.clip,progress*state.clip.durationSeconds).frame;
+  const rect=state.rects[frame];
+  if(_vfxGLMode&&_queueVfxGL(state.image,rect.sx,rect.sy,rect.sw,rect.sh,
+    VW*.5+(v.x-G.cam.x),VH*.5+(v.y-G.cam.y),dw,dh,v.ang||0,alpha))return true;
+  X.save();try{
+    X.globalCompositeOperation=sh.blend||'lighter';X.globalAlpha=alpha;
+    X.translate(v.x,v.y);if(v.ang)X.rotate(v.ang);
+    X.drawImage(state.image,rect.sx,rect.sy,rect.sw,rect.sh,-dw/2,-dh/2,dw,dh);
+  }finally{X.restore();}
+  return true;
+}
+
 registerVFX('druid_trail','assets/vfx/druid_trail.png',256,256,5,5);
 registerVFX('druid_dust','assets/vfx/druid_dust.png',256,256,8,8);
 // (삭제됨: purple_impact, blue_impact, vfx_burn_death — 파일 미존재)
@@ -54505,6 +54545,9 @@ function draw(){
       if(_vAlpha<0.05&&!v.isSkill)continue;
       if(v.x<_vl-dw||v.x>_vr+dw||v.y<_vt-dh||v.y>_vb+dh){if(_vw!==vi)_vfxAnims[_vw]=v;_vw++;continue}
       if(++_vDrw>_vfxBudgetCap&&!v.isSkill){if(_vw!==vi)_vfxAnims[_vw]=v;_vw++;continue}
+      if(v.id==='druid_roots'&&_drawDruidRootsClip(v,sh,_vfMix,dw,dh,_vAlpha)){
+        if(_vw!==vi)_vfxAnims[_vw]=v;_vw++;continue;
+      }
       if(v.bornGameTime!==undefined){
         const _vf1=Math.min(v.maxFrames-1,v.frame+1);
         _drawTimedVfxFrame(v,sh,v.frame,_vAlpha*(1-_vfMix),dw,dh);
