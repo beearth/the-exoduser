@@ -94,3 +94,21 @@ HELL: EXODUSER
 신규 대검전사 생성 직후 v22는 MP4에 합성한 영어 음성+심연의 탈주 BGM을 재생하고 로비 BGM을 멈춘다. 완료·스킵·미디어 오류 후 신규 캐릭터는 네메시스 INTRO로 이어진다. BGM.fadeOut(300),400ms 후 cutscene_nemesis를 재생하며 구 전쟁 _proVoice는 정지한다. INTRO 종료 후 기상 연출과 스테이지 음악을 복구한다. 완료 저장은 바로 플레이하며 구 전쟁 PRO는 명시적 cutscene=1에서만 재생한다. [현재 계약](../cinematic/WARINTRO_CREATION_RUNTIME_20260910.md).
 
 전사 영상의 음악은 prologue_theme.mp3 처음96.4초를 사용한다. 대사 중 음악을 절반으로 낮추고 부분 스킵에서도 함께 이동한다. [v22 믹스](../cinematic/WARINTRO_BGM_V22_20260910.md).
+
+### 2026-10-08 트레일러 30초 1차 편집본
+
+기존 채택곡 `prologue_theme.mp3`의 **60–90초**를 재사용했다. 이 선택은 새 트레일러에만 적용하며 인게임·기존 전사 영상의 재생 계약을 바꾸지 않는다. 패링 진입11.8–13.3초에서 음악 gain0.055, 다른 구간0.12–0.24; 음악 시작0.25초/끝2.5초fade다. 원래 혼합 게임 오디오1회와 합성 후 loudnorm 목표I−14/TP−1.2/LRA11을 적용했다. 최종 AAC 실측은 **−14.2LUFS / true peak−1.1dBFS / LRA10.4LU**. 주관적 전편 청취 완료를 주장하지 않는다. [실제 편집·믹스·검수 기록](../13출시·마케팅/HERO_TRAILER_PRODUCTION_20261008.md).
+
+
+### 2026-10-09 신버전 전투 티저 V3
+
+| 항목 | 이번 영상에만 적용한 값 |
+|---|---|
+| 음악 | 기존 채택곡 `prologue_theme.mp3` **35–53초**,18초 사용. 인게임·전사 영상 재생 계약은 변경 없음 |
+| 원음 | native cut spine의 혼합 게임 오디오1회, gain0.85,13.8초부터0.2초 fade |
+| 음악 bed | loudnorm 목표I−24/TP−6/LRA8; 시작0.08초 fade,16.5초부터1.5초 fade |
+| 최종 master | PCM24/48k 중간본을 측정한2-pass loudnorm 목표I−14/TP−2/LRA9; 영상은 stream copy, AAC256k/48k/stereo |
+| 실제 최종 AAC | **−15.34LUFS / true peak−1.94dBFS / LRA7.3LU**. loudnorm 분석의 input 실측값 |
+| 청감/공개 | 원음·완성본 실제 청취 **UNHEARD**, 공개 미승인. 음량 분석으로 청취 PASS를 대신하지 않음 |
+
+[실제 타임라인·수정·파일 SHA·검수 결과](../13출시·마케팅/NEW_VERSION_TRAILER_PRODUCTION_20261009.md).

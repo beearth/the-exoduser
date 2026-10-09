@@ -319,7 +319,8 @@ function croppedPictureNode(handle, shot) {
   </frame>;
 }
 function endcardNode(logo, bold, regular, staticEndcard) {
-  return <frame width={1920} height={1080} layout="none" background={staticEndcard ? "#08090c" : undefined} animate={opacityFade(4)}>
+  return <frame width={1920} height={1080} layout="none" background={staticEndcard ? "#08090c" : undefined}>
+    <frame width={1920} height={1080} layout="none" animate={opacityFade(4)}>
     <frame x={440} y={216} width={1040} height={520} layout="column">
       <media file={logo} fit="contain" width="fill" height="fill" />
     </frame>
@@ -332,6 +333,7 @@ function endcardNode(logo, bold, regular, staticEndcard) {
       typography={{ fontAssetId: regular.id, language: "en", direction: "ltr" }}
       fontSize={28} letterSpacing={5} color={CONTRACT.foreground}
       shadow={{ x: 0, y: 2, blur: 5, color: "#000000" }}>ON STEAM</text>
+    </frame>
   </frame>;
 }
 

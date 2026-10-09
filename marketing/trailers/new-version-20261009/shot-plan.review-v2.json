@@ -1,0 +1,329 @@
+{
+  "schemaVersion": 1,
+  "status": "REVIEW_CANDIDATE",
+  "language": "en",
+  "title": "EXODUSER — Development Combat Teaser — 2026-10-09",
+  "expectedBuilds": [
+    {
+      "checkout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "commit": "c34da0ec5de7ac0b2c1be0d2383e734b6ba7307b",
+      "gameSha256": "9c185b814d28590a198a79a468737b3b20ebf9d7f5b42372ef31a5af05556f34"
+    },
+    {
+      "checkout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "commit": "c34da0ec5de7ac0b2c1be0d2383e734b6ba7307b",
+      "gameSha256": "03092eec100a10be64b9c61f7efb093e160548fee9e710ed8f735eacf7ab8b1b"
+    }
+  ],
+  "sources": {
+    "charge-hook": {
+      "status": "REVIEW_CANDIDATE",
+      "approved": false,
+      "file": "input/charge-hook.mp4",
+      "auditFile": "input/charge-hook.audit.json",
+      "sha256": "f14e41e980af509f191c90e47f8e21b62f8b43dc0221b122c42b4124ca74c810",
+      "build": {
+        "checkout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "commit": "c34da0ec5de7ac0b2c1be0d2383e734b6ba7307b",
+        "gameSha256": "9c185b814d28590a198a79a468737b3b20ebf9d7f5b42372ef31a5af05556f34"
+      },
+      "captureKind": "NORMAL_TUTORIAL",
+      "selectedDurationFrames": 81,
+      "originalFromSeconds": 7.1,
+      "reviewFile": "evidence/candidate-take-03-review.md"
+    },
+    "field-movement": {
+      "status": "REVIEW_CANDIDATE",
+      "approved": false,
+      "file": "input/field-movement.mp4",
+      "auditFile": "input/field-movement.audit.json",
+      "sha256": "062a96e3073a6e7724ade497d38186d068e8bae44ec8727d39f82123459e800f",
+      "build": {
+        "checkout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "commit": "c34da0ec5de7ac0b2c1be0d2383e734b6ba7307b",
+        "gameSha256": "03092eec100a10be64b9c61f7efb093e160548fee9e710ed8f735eacf7ab8b1b"
+      },
+      "captureKind": "NORMAL_PLAY",
+      "selectedDurationFrames": 72,
+      "originalFromSeconds": 5.8,
+      "reviewFile": "evidence/candidate-take-08-review.md"
+    },
+    "weapon-strikes": {
+      "status": "REVIEW_CANDIDATE",
+      "approved": false,
+      "file": "input/weapon-strikes.mp4",
+      "auditFile": "input/weapon-strikes.audit.json",
+      "sha256": "ed382f4fee7261489e1d6e55b879a05b9d9b48f03c24b57ae21adc80079e4fd2",
+      "build": {
+        "checkout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "commit": "c34da0ec5de7ac0b2c1be0d2383e734b6ba7307b",
+        "gameSha256": "9c185b814d28590a198a79a468737b3b20ebf9d7f5b42372ef31a5af05556f34"
+      },
+      "captureKind": "NORMAL_TUTORIAL",
+      "selectedDurationFrames": 48,
+      "originalFromSeconds": 0.4,
+      "reviewFile": "evidence/candidate-take-03-review.md"
+    },
+    "magic-impact": {
+      "status": "REVIEW_CANDIDATE",
+      "approved": false,
+      "file": "input/magic-impact.mp4",
+      "auditFile": "input/magic-impact.audit.json",
+      "sha256": "0afabe93291c87b71e2731dc311e85767119710d7da7deecaf5ec70d0d72cceb",
+      "build": {
+        "checkout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "commit": "c34da0ec5de7ac0b2c1be0d2383e734b6ba7307b",
+        "gameSha256": "9c185b814d28590a198a79a468737b3b20ebf9d7f5b42372ef31a5af05556f34"
+      },
+      "captureKind": "NORMAL_TUTORIAL",
+      "selectedDurationFrames": 48,
+      "originalFromSeconds": 7.3,
+      "reviewFile": "evidence/candidate-take-04-review.md"
+    },
+    "trap-retreat": {
+      "status": "REVIEW_CANDIDATE",
+      "approved": false,
+      "file": "input/trap-retreat.mp4",
+      "auditFile": "input/trap-retreat.audit.json",
+      "sha256": "238b6fad06c7f5c7f9791d7e80282369190356787b5c06a269b0529876986746",
+      "build": {
+        "checkout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "commit": "c34da0ec5de7ac0b2c1be0d2383e734b6ba7307b",
+        "gameSha256": "9c185b814d28590a198a79a468737b3b20ebf9d7f5b42372ef31a5af05556f34"
+      },
+      "captureKind": "NORMAL_TUTORIAL",
+      "selectedDurationFrames": 81,
+      "originalFromSeconds": 21.4,
+      "reviewFile": "evidence/candidate-take-04-review.md"
+    },
+    "field-charge": {
+      "status": "REVIEW_CANDIDATE",
+      "approved": false,
+      "file": "input/field-charge.mp4",
+      "auditFile": "input/field-charge.audit.json",
+      "sha256": "58fa8438bbaf253e514d4d32db354cb6a55f19e3f46f7a3d52b7e75a9ed84d80",
+      "build": {
+        "checkout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "commit": "c34da0ec5de7ac0b2c1be0d2383e734b6ba7307b",
+        "gameSha256": "03092eec100a10be64b9c61f7efb093e160548fee9e710ed8f735eacf7ab8b1b"
+      },
+      "captureKind": "NORMAL_TUTORIAL",
+      "selectedDurationFrames": 90,
+      "originalFromSeconds": 8.5,
+      "reviewFile": "evidence/candidate-take-07-review.md"
+    }
+  },
+  "shots": [
+    {
+      "id": "field-charge",
+      "order": 1,
+      "role": "hook",
+      "sourceId": "field-charge",
+      "fromSeconds": 0,
+      "durationFrames": 90,
+      "status": "REVIEW_CANDIDATE",
+      "approved": false,
+      "crop": {
+        "x": 192,
+        "y": 108,
+        "width": 1536,
+        "height": 864,
+        "visualPass": true,
+        "evidence": "evidence/crop-contact.png; root inspected before native build, native final QA remains pending"
+      },
+      "copy": null,
+      "review": {
+        "status": "REVIEW_CANDIDATE",
+        "sourceSha256": "58fa8438bbaf253e514d4d32db354cb6a55f19e3f46f7a3d52b7e75a9ed84d80",
+        "fromSeconds": 0,
+        "durationFrames": 90,
+        "visualPass": true,
+        "audioPass": false,
+        "featureVerified": true,
+        "topLeftClear": false,
+        "ctaClear": false,
+        "evidence": "evidence/candidate-take-07-review.md; evidence/crop-contact.png; root accepts bounded short teaser interval, no whole-take approval"
+      }
+    },
+    {
+      "id": "weapon-strikes",
+      "order": 2,
+      "role": "combat",
+      "sourceId": "weapon-strikes",
+      "fromSeconds": 0,
+      "durationFrames": 48,
+      "status": "REVIEW_CANDIDATE",
+      "approved": false,
+      "crop": {
+        "x": 320,
+        "y": 180,
+        "width": 1280,
+        "height": 720,
+        "visualPass": true,
+        "evidence": "evidence/crop-contact.png; root inspected before native build, native final QA remains pending"
+      },
+      "copy": null,
+      "review": {
+        "status": "REVIEW_CANDIDATE",
+        "sourceSha256": "ed382f4fee7261489e1d6e55b879a05b9d9b48f03c24b57ae21adc80079e4fd2",
+        "fromSeconds": 0,
+        "durationFrames": 48,
+        "visualPass": true,
+        "audioPass": false,
+        "featureVerified": false,
+        "topLeftClear": false,
+        "ctaClear": false,
+        "evidence": "evidence/candidate-take-03-review.md; evidence/crop-contact.png; root accepts bounded short teaser interval, no whole-take approval"
+      }
+    },
+    {
+      "id": "magic-impact",
+      "order": 3,
+      "role": "magic",
+      "sourceId": "magic-impact",
+      "fromSeconds": 0,
+      "durationFrames": 48,
+      "status": "REVIEW_CANDIDATE",
+      "approved": false,
+      "crop": {
+        "x": 320,
+        "y": 180,
+        "width": 1280,
+        "height": 720,
+        "visualPass": true,
+        "evidence": "evidence/crop-contact.png; root inspected before native build, native final QA remains pending"
+      },
+      "copy": null,
+      "review": {
+        "status": "REVIEW_CANDIDATE",
+        "sourceSha256": "0afabe93291c87b71e2731dc311e85767119710d7da7deecaf5ec70d0d72cceb",
+        "fromSeconds": 0,
+        "durationFrames": 48,
+        "visualPass": true,
+        "audioPass": false,
+        "featureVerified": true,
+        "topLeftClear": false,
+        "ctaClear": false,
+        "evidence": "evidence/candidate-take-04-review.md; evidence/crop-contact.png; root accepts bounded short teaser interval, no whole-take approval"
+      }
+    },
+    {
+      "id": "trap-retreat",
+      "order": 4,
+      "role": "trap",
+      "sourceId": "trap-retreat",
+      "fromSeconds": 0,
+      "durationFrames": 81,
+      "status": "REVIEW_CANDIDATE",
+      "approved": false,
+      "crop": {
+        "x": 320,
+        "y": 180,
+        "width": 1280,
+        "height": 720,
+        "visualPass": true,
+        "evidence": "evidence/crop-contact.png; root inspected before native build, native final QA remains pending"
+      },
+      "copy": null,
+      "review": {
+        "status": "REVIEW_CANDIDATE",
+        "sourceSha256": "238b6fad06c7f5c7f9791d7e80282369190356787b5c06a269b0529876986746",
+        "fromSeconds": 0,
+        "durationFrames": 81,
+        "visualPass": true,
+        "audioPass": false,
+        "featureVerified": true,
+        "topLeftClear": false,
+        "ctaClear": false,
+        "evidence": "evidence/candidate-take-04-review.md; evidence/crop-contact.png; root accepts bounded short teaser interval, no whole-take approval"
+      }
+    },
+    {
+      "id": "field-movement",
+      "order": 5,
+      "role": "movement",
+      "sourceId": "field-movement",
+      "fromSeconds": 0,
+      "durationFrames": 72,
+      "status": "REVIEW_CANDIDATE",
+      "approved": false,
+      "crop": {
+        "x": 192,
+        "y": 108,
+        "width": 1536,
+        "height": 864,
+        "visualPass": true,
+        "evidence": "evidence/crop-contact.png; root inspected before native build, native final QA remains pending"
+      },
+      "copy": null,
+      "review": {
+        "status": "REVIEW_CANDIDATE",
+        "sourceSha256": "062a96e3073a6e7724ade497d38186d068e8bae44ec8727d39f82123459e800f",
+        "fromSeconds": 0,
+        "durationFrames": 72,
+        "visualPass": true,
+        "audioPass": false,
+        "featureVerified": false,
+        "topLeftClear": false,
+        "ctaClear": false,
+        "evidence": "evidence/candidate-take-08-review.md; evidence/crop-contact.png; root accepts bounded short teaser interval, no whole-take approval"
+      }
+    },
+    {
+      "id": "charge-hook",
+      "order": 6,
+      "role": "combat",
+      "sourceId": "charge-hook",
+      "fromSeconds": 0,
+      "durationFrames": 81,
+      "status": "REVIEW_CANDIDATE",
+      "approved": false,
+      "crop": {
+        "x": 320,
+        "y": 180,
+        "width": 1280,
+        "height": 720,
+        "visualPass": true,
+        "evidence": "evidence/crop-contact.png; root inspected before native build, native final QA remains pending"
+      },
+      "copy": null,
+      "review": {
+        "status": "REVIEW_CANDIDATE",
+        "sourceSha256": "f14e41e980af509f191c90e47f8e21b62f8b43dc0221b122c42b4124ca74c810",
+        "fromSeconds": 0,
+        "durationFrames": 81,
+        "visualPass": true,
+        "audioPass": false,
+        "featureVerified": false,
+        "topLeftClear": false,
+        "ctaClear": false,
+        "evidence": "evidence/candidate-take-03-review.md; evidence/crop-contact.png; root accepts bounded short teaser interval, no whole-take approval; root reviewed original7.10–9.80s with additional0.6s preparation"
+      }
+    }
+  ],
+  "cta": {
+    "mode": "STATIC",
+    "status": "REVIEW_CANDIDATE",
+    "approved": false,
+    "demoUrl": "https://store.steampowered.com/app/4749590/EXODUSER_HELL_LORD/",
+    "demoAvailable": true,
+    "footageIsDemoBuild": false,
+    "evidence": "2026-10-09 fresh public Steam page displayed Download EXODUSER: HELL LORD Demo; install app5337590",
+    "descriptionDisclosure": "Development footage from the in-game tutorial and early field combat. The currently downloadable Steam demo may differ.",
+    "durationFrames": 120
+  },
+  "finalReview": {
+    "status": "PENDING",
+    "visualPass": false,
+    "audioPass": false,
+    "evidence": "Review edit v1 native output inspected at 0.25s intervals; first strong field impact moved to opening. Review edit v2 rendering pending."
+  },
+  "audioPlan": {
+    "sourceAudioHeard": false,
+    "sourceAudioPreserved": true,
+    "musicMix": "Native original audio gain0.85 + existing prologue_theme.mp3 source35–53s bed target-24LUFS/-6dBTP/LRA8, final target-14LUFS/-1.5dBTP/LRA9, actual measurements after render.",
+    "publicationApproved": false
+  },
+  "note": "Two exact current-development capture snapshots; no old3333/staged/Lv500 sources. 18s short teaser, no boss or Rift. Canvas-only capture excludes HTML HUD. Field movement ends before red damage flash.",
+  "editRevision": "REVIEW_EDIT_V2_ACTION_FIRST"
+}

@@ -1,0 +1,29 @@
+{
+  "status": "REVIEW_CANDIDATE",
+  "visualScope": "SHORT_COMBAT_TEASER_PASS",
+  "audioListening": "UNHEARD",
+  "publicPostingPerformed": false,
+  "mainTrailerSufficient": false,
+  "duration": 18,
+  "frames": 540,
+  "width": 1920,
+  "height": 1080,
+  "fps": 30,
+  "measuredAudio": {
+    "integratedLUFS": -15.34,
+    "truePeakDBFS": -1.94,
+    "loudnessRangeLU": 7.3
+  },
+  "files": [
+    {
+      "name": "EXODUSER_NewVersion_CombatTeaser_20261009_REVIEW_V3.mp4",
+      "sizeBytes": 38372930,
+      "sha256": "c02056b2ab3675dbc8ccd0ca2f75667cfa9afc0e44ecaa9297a225eea1dc5e82"
+    },
+    {
+      "name": "EXODUSER_NewVersion_ProductionPackage_20261009.zip",
+      "sizeBytes": 105525467,
+      "sha256": "4334742c5b27264d5b2703d3d37d73bcd663fc85819100f336ba0709a1bb0fde"
+    }
+  ]
+}
