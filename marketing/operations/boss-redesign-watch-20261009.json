@@ -13,11 +13,11 @@
     "threadId": "01a0faa9-b453-7673-be39-98adedb4c2b3",
     "hostId": "local",
     "title": "맥북에서 총괄 시작하기",
-    "afterCursor": "b2476eee-d767-4cd1-8064-9706586fb10a:18",
+    "afterCursor": "b2476eee-d767-4cd1-8064-9706586fb10a:19",
     "lastObservedStatus": "idle",
     "lastObservedTurnStatus": "completed",
-    "lastObservedTurnId": "01a12298-53f2-7122-ad38-6caff8b508f1",
-    "lastObservedReport": "크라켄 물탄 충돌·Q 패링 물보라를 새 24장으로 제작해 게임 코드에 반영했다는 보고. 일부 물방울 연결은 추가 수정이 필요하고 실제 보스전·동시 효과 성능 검수는 아직. 실제 렌더 함수 반복 미리보기만 확인된 부분 작업이다."
+    "lastObservedTurnId": "01a122cf-4168-7b33-b330-6b7cbd22e68f",
+    "lastObservedReport": "화마귀 불탄 Q 패링 효과에도 기존 24장 불꽃을 연결하고 저장했다는 보고. 실제 보스전 화면과 성능 확인은 남아 있음. 단일 효과 연결의 부분 작업이다."
   },
   "completionConfirmed": false,
   "captureStarted": false,
@@ -34,6 +34,6 @@
     "게임·서버·사용자 탭·세이브 무조작",
     "완성 후 검수본부터 인도, 사용자 검수 전 자동 공개 금지"
   ],
-  "lastCheckedAtUTC": "2026-10-09T22:01:40.752Z",
-  "lastCheckResult": "크라켄 물보라 단일 효과 반영 보고이며 보스전 전체 리디자인 완료가 아니다. 정상 본편 촬영 가능 상태 미확인으로 촬영·제작·게시 대기를 유지했다. 반복 요청 없음."
+  "lastCheckedAtUTC": "2026-10-09T23:05:10.862Z",
+  "lastCheckResult": "화마귀 불꽃 단일 효과 연결 보고이며 보스전 전체 리디자인 완료가 아니다. 정상 본편 촬영 가능 상태 미확인으로 촬영·제작·게시 대기를 유지했다. 반복 요청 없음."
 }
