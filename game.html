@@ -61683,6 +61683,65 @@ const _fdIdleImg=new Image();_fdIdleImg.src='img/fieldboss_firedevil_idle.png';
 const _fdDirImg=new Image();_fdDirImg.src='img/fieldboss_firedevil_dir.png';
 const _fdChargeImg=new Image();_fdChargeImg.src='img/fieldboss_firedevil_charge.png?v=052910';
 const _fdFlyImg=new Image();_fdFlyImg.src='img/proj_firedevil_orb.png'; // 화마귀 대형탄: 용암 회전구 4x4 16프레임 RGBA 시트
+// Fire Devil flight only: lazy authored24 clip; original image/counter16 stay shared.
+const _firedevilOrb24={ready:false,failed:false,image:null,clip:null,sample:null,rects:null,loadPromise:null};
+function _loadFiredevilOrb24(){
+  if(_firedevilOrb24.loadPromise)return _firedevilOrb24.loadPromise;
+  _firedevilOrb24.loadPromise=(async()=>{
+    try{
+      const [response,runtime]=await Promise.all([
+        fetch('data/vfx/firedevil_orb24_20261010.json?v=20261010-v1'),
+        import('./tools/2_5d/atlas-clip-runtime.mjs?v=20261009-v1')
+      ]);
+      if(!response.ok)throw new Error('firedevil_orb metadata HTTP '+response.status);
+      const metadata=await response.json();
+      const keys=['format','version','name','sourcePath','columns','rows','frameCount','fps','loop'];
+      if(!metadata||typeof metadata!=='object'||Array.isArray(metadata)||
+        Object.keys(metadata).length!==keys.length||!keys.every(key=>Object.prototype.hasOwnProperty.call(metadata,key))||
+        metadata.format!=='exoduser-atlas-clip'||metadata.version!==1||metadata.name!=='firedevil_orb'||
+        metadata.sourcePath!=='assets/vfx/fieldboss/firedevil_orb_24_20261010.png'||
+        metadata.columns!==6||metadata.rows!==4||metadata.frameCount!==24||metadata.fps!==19.8||metadata.loop!==true)
+        throw new Error('firedevil_orb metadata contract');
+      if(typeof runtime.createAtlasClip!=='function'||typeof runtime.sampleAtlasClip!=='function'||typeof runtime.getAtlasFrameRect!=='function')
+        throw new Error('firedevil_orb atlas runtime');
+      const clip=runtime.createAtlasClip(metadata);
+      const image=new Image();image.decoding='async';
+      await new Promise((resolve,reject)=>{
+        image.onload=()=>{image.onload=null;image.onerror=null;resolve();};
+        image.onerror=()=>{image.onload=null;image.onerror=null;reject(new Error('firedevil_orb image load'));};
+        image.src=metadata.sourcePath+'?v=20261010-v1';
+      });
+      const cell=image.naturalWidth/clip.columns;
+      if(!image.complete||(cell!==512&&cell!==640)||image.naturalHeight/clip.rows!==cell)
+        throw new Error('firedevil_orb image grid');
+      const rects=Object.freeze(Array.from({length:clip.frameCount},(_,frame)=>Object.freeze(runtime.getAtlasFrameRect(image,clip,frame,1))));
+      _firedevilOrb24.image=image;_firedevilOrb24.clip=clip;
+      _firedevilOrb24.sample=runtime.sampleAtlasClip;_firedevilOrb24.rects=rects;
+      _firedevilOrb24.ready=true;
+    }catch(error){
+      _firedevilOrb24.ready=false;_firedevilOrb24.failed=true;
+      console.warn('[VFX] firedevil_orb24 original16 fallback',error);
+    }
+  })();
+  return _firedevilOrb24.loadPromise;
+}
+function _drawFiredevilOrb24(p){
+  _loadFiredevilOrb24();
+  if(!_firedevilOrb24.ready)return false;
+  let saved=false;
+  try{
+    const sampled=_firedevilOrb24.sample(_firedevilOrb24.clip,p._sprFr/16*_firedevilOrb24.clip.durationSeconds);
+    const rect=_firedevilOrb24.rects[sampled.frame];
+    if(!rect)return false;
+    X.save();saved=true;X.translate(p.x,p.y);X.globalCompositeOperation='lighter';
+    X.drawImage(_firedevilOrb24.image,rect.sx,rect.sy,rect.sw,rect.sh,-120,-120,240,240);
+    return true;
+  }catch(error){
+    return false;
+  }finally{
+    if(saved)X.restore();
+  }
+}
 const _FD_WALK_DEFS={
   1:{src:'img/fieldboss_firedevil_walk_1.png',cols:4,rows:2,frames:8},
   3:{src:'img/fieldboss_firedevil_walk_3.png',cols:4,rows:1,frames:4},
@@ -61755,6 +61814,7 @@ function _fdTips(m){
 }
 function _fdFireEnergy(m){
   if(!_fieldEnemyCanShoot(m))return;
+  _loadFiredevilOrb24();
   var a=Math.atan2(P.y-m.y,P.x-m.x),e=_fdEye(m);
   spawnProj({x:e.x,y:e.y,vx:Math.cos(a)*6,vy:Math.sin(a)*6,dmg:~~(m.atk*2.8),el:EL.F,friendly:false,life:320,ml:320,col:'#ff5522',sz:48,r:18,elemBall:true,_typed:true,_commit:true,fdEnergy:true});
   if(typeof SFX!=='undefined'&&SFX.magic)SFX.magic(1);
@@ -61888,6 +61948,7 @@ function _drawDruidPoisonShot(p,alpha){
 function _fdDrawFly(p){
   if(!_fdFlyImg.complete||!_fdFlyImg.naturalWidth)return false;
   p._sprFr=(p._sprFr||0)+.22;
+  if(_drawFiredevilOrb24(p))return true;
   var cw=_fdFlyImg.naturalWidth/4, ch=_fdFlyImg.naturalHeight/4;
   var fr=((p._sprFr)|0)%16, col=fr%4, row=(fr/4)|0;
   var dw=240, dh=dw*(ch/cw);

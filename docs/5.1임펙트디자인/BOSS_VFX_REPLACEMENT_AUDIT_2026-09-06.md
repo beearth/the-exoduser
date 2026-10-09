@@ -53,7 +53,7 @@
 
 | 대상 | 분류 / 조치 |
 |---|---|
-| fdEnergy | 화마귀 용암구 16f, `_fdDrawFly`, 기준 렌더240px. 사용자 지정 품질 레퍼런스 |
+| fdEnergy | 실제 비행 새24/lazy공유Image1, `_fdDrawFly` 기준240px·원16폴백/성공render+.22÷16주기 보존. 원16은Druid파생재료·시각reference에도유지 |
 | fbEnergy | 크라켄 물 시트 전용 경로. 원형 도형 교체 대상과 혼동하지 않음 |
 | 드루이드 ORB | `_druidSheets.orb` 8f 정상 경로. 이번 주황 원 신고와 별개. 영상 품질 검수는 추가 필요 |
 | 드루이드 독/가시 장판 | si0/si3에서 aoe 8f 시트 사용. 로드 실패시 일반 절차식 경로가 노출될 수 있음 |
@@ -79,3 +79,8 @@
 ## 2026-10-09 — 독립 ORB24 공통 엔진 연결
 
 `ROOT-ENGINE-DRUID-ORB24-20261009`: 실제 `G._druidOrbs`만 새6×4/24셀/640px, fps300/7·loop .56초로 표시한다. `o.t/60`과 기존R=r×2.4·접촉/피해/반사불가를 유지하며 원본4×2/8셀·벽시간70ms는 실패 폴백이다. [현재 원화·리소스·시간·검수 계약](DRUID_ORB24_ENGINE_20261009.md). 기존 장판24·blackBean Q전용·SFX/save 불변. 마지막→첫 연결/실보스전·GPU·정상줌·청취/save/A급은 RETOUCH/미인수.
+
+
+## 2026-10-10 — 화마귀 fdEnergy 비행 용암구24
+
+실제 fdEnergy 비행만 새6×4/24 원화를 lazy 공유Image1로 소비한다. 원 성공render counter+.22/16주기·240²/중심/lighter·원16폴백과 Druid 파생재료·전투/Q/save를 유지한다. resource19.8FPS는60render/s 가정 참고값이며 안정게임초·24FPS 보장0. 원life320은 화면근처 life1 연장이 있어 고정종료수명이 아니다. 독립source/Canvas 검수와 actualmain·동시성능 인수를 구분하고 현재 RETOUCH다. [정본](FIREDEVIL_ORB24_ENGINE_20261010.md).

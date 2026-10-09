@@ -394,13 +394,13 @@ path: '/v1/images/generations'
 
 | 항목 | 값 |
 |---|---|
-| 파일 | `img/proj_firedevil_orb.png` (1254×1254 RGBA, alpha 0~255, 원형 용암 구체) |
-| 시트 | 4열×4행 전체16프레임, `fw=W/4`, `fh=H/4`, 셀 내부 크롭 없음 |
-| 로더 | `_fdFlyImg` / `_fdDrawFly` |
+| 파일 | 새 `assets/vfx/fieldboss/firedevil_orb_24_20261010.png` 3840×2560 RGBA/24실용암흐름. 원 `img/proj_firedevil_orb.png`1254²/16은 폴백·Druid공유재료로 보존 |
+| 시트 | 새6×4/24/640²/inset1 한셀. 원4×4/16·fw=W/4/fh=H/4 전체fractionalcell 폴백 |
+| 로더 | `_fdFlyImg` guard 유지, `_loadFiredevilOrb24` lazy공유promise/Image1, `_fdDrawFly` counter+.22 뒤 `_drawFiredevilOrb24` 우선. 16주기 phase를24에매핑/resource19.8FPS는참고값 |
 | 회전/앵커 | 방사형 대칭이므로 속도 방향 회전 없음. `drawImage(...,-dw/2,-dh/2,...)`로 투사체·히트박스 중심에 정렬 |
 | 크기 | `dw=240`, `dh=dw×(ch/cw)=240` |
 | 합성 | 실제 RGBA 투명도를 유지하고 `lighter` 합성 |
-| 적용 | `p.fdEnergy` 탄. 일반 `elemBall` 분기보다 먼저 그림. 시트 미로드 시 `EL.F`의 `proj_elem_orb` 속성행 폴백 |
+| 적용 | `p.fdEnergy`만 새24. pending/invalid/drawfailure 원16폴백, 원이미지미준비는 기존EL.F `proj_elem_orb` 속성행 폴백. 일반 elemBall보다 우선/Druid·Kraken·Q분열은불변 |
 | 판정 | 스폰 r18→23.4, 최종 sz96. 플레이어 상대 스윕 히트 `P.r+max(p.r,sz)`=`P.r+96`(보이는 핵). 벽은 이동 구간의 중심+원주 8점 스윕. Q패링 `P.r+sz+90`→기본 `magic` 판정 r8의 빨간 혜성형 마법탄 5발(`_parryMagicShot`, `_drawCometBullet` 246.4px, 일반 먼지 없음, 총 반사 피해 5등분)+HP/ST/MP·작살·분노·악의·parryBank 자원회수 ×10. 플레이어·벽 접촉은 항상 `_fbEnergyBoom` r220+`bigImpact` 방향 링/스파크+속성 플래시/색수차+파티클42+흔들림32 후 소멸한다. 비무적·비돌진 접촉은 피해 계산 전 진행 방향 슬라이드100을 시작하므로 민첩 회피에도 관성이 유지되고 평화의보호 비패링 흡수도 동일하다. 첫 프레임 50px, 열린 공간 감쇠 누적 약 142.9px다. 무적 프레임/돌진 중에는 폭발만 하고 피해·슬라이드는 0 |
 | 비행 | raw 6×1.8=10.8, **직선(무유도)**. 공격 텀 180f(3초) |
 | 제외 | 올챙이 머리 원은 **전 탄** 폐기(2026-09-01). 화마귀는 패스1 글로우도 스킵 |
@@ -1353,3 +1353,8 @@ actual isBoss=true blood만 새640셀24원화로 표시하고 원16 alias·128×
 ### 2026-10-10 보스 화염비 용암24
 
 실제main fireRain착탄만 boss_lava_erupt24/640셀/6×4/32FPSreference.75초로표시하고 원9alias/768geometry/speed5·명목45진행/지면(.5,.75)/alpha.85·전투/RNG/save를유지한다. fireRain시작prefetch/초기자동로드0/sharedImage1·실패자동retry0. 새readyCanvaslighter한셀/원9generic폴백; elite·DarkPillar원9·easy-test미반영. [현재 정본](BOSS_LAVA_ERUPT24_ENGINE_20261010.md). 새RGBA37.5MiB/원20.25MiB는정적환산/실peak·동시성능미검수. actualmain/정상줌/전체보스전/AAA미인수, VISUAL RETOUCH.
+
+
+## 2026-10-10 — 화마귀 fdEnergy 비행 용암구24
+
+실제 fdEnergy 비행만 새6×4/24 원화를 lazy 공유Image1로 소비한다. 원 성공render counter+.22/16주기·240²/중심/lighter·원16폴백과 Druid 파생재료·전투/Q/save를 유지한다. resource19.8FPS는60render/s 가정 참고값이며 안정게임초·24FPS 보장0. 원life320은 화면근처 life1 연장이 있어 고정종료수명이 아니다. 독립source/Canvas 검수와 actualmain·동시성능 인수를 구분하고 현재 RETOUCH다. [정본](FIREDEVIL_ORB24_ENGINE_20261010.md).
