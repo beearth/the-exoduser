@@ -195,3 +195,14 @@ ROOT-DRUID-ORIGINAL-RELIEF-20261009: 기존 rig_motion 한 담당이 신규 원�
 ## 2026-10-09 — 드루이드 광역 발사 자세
 
 `ROOT-DRUID-BURST-SPRITE-ENGINE-CONSUMER-20261009`: actual main `burst`의 준비 본체 성공과 실제 발사 prefix 완료를 소비해 원본 attack 셀1→2→3을 표시한다. 기존 sprite clip·recover50/보스 cap20·전투/원PNG/save 유지. 다음 pattern/update prune과 rig sheet/index 현재성 연결, 미로드·미관측은 기존 폴백. native detached Canvas3PASS/이전 반복 반례1별도, editor17 편집 exact·사용자 main 무조작. 새 입체 모델·정상 보스전·A급 미인수, **VISUAL VERDICT: RETOUCH**. [정확 계약](../4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md#druid-burst-sprite-engine-20261009). 최종 증거 `E/druid-burst-sprite-engine-consumer-20261009/completion.json`.
+
+
+## 2026-10-09 — 최신 혼합 제작 지시와 일반3D pause 수정
+
+| 구분 | 현재 사실 |
+|---|---|
+| 사용자 방향 | 2.5D 시점 유지, 적합한 보스·캐릭터는 실제3D 리깅/보간, 변신·VFX는 필요한 프레임. 모든 동작24강제 철회·복제수채우기 금지 |
+| 모델 경계 | Druid 승인3D 모델 없음. 새 보행2종 미채택. 기존 Vinebound·거절solid로 대체 금지. 원화→3D callable 부재는 보고 완료, 같은 탐색/생성 반복 금지 |
+| 새 본편 엔진 변경 | ROOT-BOSS3D-PAUSE-CLOCK-CONSUMER-20261009: ready/pivot 가드를 통과한 콜백마다 `_b3clock`을 소비하면서 `G.paused`면 mixer·dt flash에0 전달. STEP/AI/wallclock stun 미변경 |
+| 검증 | 최초 Node1/실제 whole 함수·로컬THREE mixer/8그룹38조건PASS, before witness1별도. 새 본편 화면·GLB/GPU/audio/save/A급 미인수 |
+| 정본 | 애니메이션 정본 및 BOSS_BATTLE_SETTINGS의 2026-10-09 절, 외부 boss3d-pause-clock-consumer-20261009/completion.json 최종 Git 우선 |

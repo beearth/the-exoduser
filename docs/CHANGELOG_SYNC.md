@@ -56849,3 +56849,11 @@ alpha/nav/crop/UV/geometry/opacity/renderOrder/resource/dispose·skirt/backplane
 ## 2026-10-09 — 드루이드 광역 발사 자세
 
 `ROOT-DRUID-BURST-SPRITE-ENGINE-CONSUMER-20261009`: actual main `burst`의 준비 본체 성공과 실제 발사 prefix 완료를 소비해 원본 attack 셀1→2→3을 표시한다. 기존 sprite clip·recover50/보스 cap20·전투/원PNG/save 유지. 다음 pattern/update prune과 rig sheet/index 현재성 연결, 미로드·미관측은 기존 폴백. native detached Canvas3PASS/이전 반복 반례1별도, editor17 편집 exact·사용자 main 무조작. 새 입체 모델·정상 보스전·A급 미인수, **VISUAL VERDICT: RETOUCH**. [정확 계약](4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md#druid-burst-sprite-engine-20261009). 최종 증거 `E/druid-burst-sprite-engine-consumer-20261009/completion.json`.
+
+
+## 2026-10-09 — ROOT-BOSS3D-PAUSE-CLOCK-CONSUMER-20261009
+
+- 실제 `game.html::_b3animate`: 일반 `G.paused`에서 AnimationMixer와 dt 기반 flash의 시간0. 기존 `_b3clock.getDelta()`는 ready/pivot 가드를 통과한 콜백마다 소비하여 재개 때 pause 시간이 누적되지 않음. 1hunk/+105B, 전투 수치·save·에셋 변경 없음.
+- 최초 새 Node1/whole 함수 전후 factory2/fixture16·실제 로컬THREE mixer, 8그룹38조건PASS/exit0. pause 중 전진하는 before witness1별도. 새 본편 화면/GPU/청취/save 인수 없음. STEP/AI 정지와 wallclock 스턴 흔들림은 미변경.
+- 최신 제작 기준은 2.5D 시점+적합한3D 리깅/보간+필요한 sprite 프레임의 혼합이며 모든 동작24강제는 철회. Druid 승인3D 모델은 아직 없음.
+- 관련 정본: `5.0애니메이션파이프라인/EXODUSER_ENGINE_ANIMATION_20261009.md`, `8.1보스디자인바이블/BOSS_BATTLE_SETTINGS.md`. 외부 boss3d-pause-clock-consumer-20261009/completion.json이 최종 보존 상태를 기록한다.

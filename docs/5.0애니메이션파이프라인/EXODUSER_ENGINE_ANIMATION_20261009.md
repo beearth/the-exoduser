@@ -2,7 +2,7 @@
 
 2026-10-09 / ROOT-ENGINE-MOTION-EDITOR-20261009. 사용자 “우리 앤진을 좀 만들자니깐”에 따라 자체 엔진의 첫 편집/재생 기능을 구현했다. 현재 구현 범위는 transform/sprite clip 코어·관절/원본 스프라이트 편집기·원화 부위/회전축 편집기·명시적 factory/본편 adapter 재생 consumer와 fan sprite producer다. 본편 전체 엔진 완성, 신규 입체 모델 또는 A급 보스 완성이 아니다.
 
-사용자 최신 지시는 **주요 캐릭터의 걷기·공격 등 모션을24프레임을 출발점으로 늘리고, 고정 프레임 상한 없이 자연스럽게 제작**하는 것이다. 현재 완료는 [스프라이트 편집기의 가변 아틀라스/프레임 계약](#engine-sprite-atlas-frames-20261009)이며, Druid 변신24포즈는 본편 검토 후보로 통합·표시 확인했다. Druid 보행의 기존4프레임/150ms와 다른 주요 캐릭터는 이 편집기 변경으로 전환되지 않았다.
+당시 사용자 지시는 **주요 캐릭터의 걷기·공격 등 모션을24프레임을 출발점으로 늘리고, 고정 프레임 상한 없이 자연스럽게 제작**하는 것이었다. 이후 최신 지시는 적합한 캐릭터·보스의 실제 skinned3D 리깅·동작 보간과 필요한 스프라이트 프레임을 함께 사용하는 것으로 바뀌었다. [현행 혼합 제작 기준](../4.0케릭터스프라이트%20디자인/캐릭터_몬스터_보스_최적화디자인_v1.md#2026-10-09--리깅프레임-혼합-제작-기준)을 따르며 모든 동작24장 일괄 교체를 요구하지 않는다. 현재 완료는 [스프라이트 편집기의 가변 아틀라스/프레임 계약](#engine-sprite-atlas-frames-20261009)이며, Druid 변신24포즈는 본편 검토 후보로 통합·표시 확인했다. Druid 보행의 기존4프레임/150ms와 다른 주요 캐릭터는 이 편집기 변경으로 전환되지 않았다.
 
 ## 실제 진입점과 소유
 
@@ -226,9 +226,9 @@ Godot 공식 [애니메이션 소개](https://docs.godotengine.org/en/stable/tut
 
 
 <a id="engine-sprite-atlas-frames-20261009"></a>
-## 2026-10-09 — 24프레임 이상 아틀라스 편집과 주요 캐릭터 제작
+## 2026-10-09 — 24프레임 이상 아틀라스 편집과 주요 캐릭터 제작 (당시 지시 이력)
 
-사용자 “걷기모션이든 24프레임, 상한없이 최대한 자연스럽게”, “주요 캐릭터 스프라이트도 프레임 늘리자” 지시를 반영한다.24는 제작 출발점이며 고정 최대치가 아니다. 실제 새 자세·접지·실루엣·속도감을 제작/검수해야 하며, 프레임 수 증가나 같은 셀 반복만으로 자연스러운 모션 완성을 판정하지 않는다. [캐릭터별 전환 상태](../4.0케릭터스프라이트%20디자인/4.0케릭터스프라이트%20디자인.md#character-frame-expansion-20261009).
+당시 사용자 “걷기모션이든 24프레임, 상한없이 최대한 자연스럽게”, “주요 캐릭터 스프라이트도 프레임 늘리자” 지시를 반영한 편집기 변경 이력이다. 당시24는 제작 출발점이며 고정 최대치가 아니었다. 현행 캐릭터 제작은 위에 연결한 리깅·프레임 혼합 기준을 따르며, 아래 가변 아틀라스 계약은 필요한 프레임 제작에 계속 사용한다. 실제 새 자세·접지·실루엣·속도감을 제작/검수해야 하며, 프레임 수 증가나 같은 셀 반복만으로 자연스러운 모션 완성을 판정하지 않는다. [캐릭터별 전환 상태](../4.0케릭터스프라이트%20디자인/4.0케릭터스프라이트%20디자인.md#character-frame-expansion-20261009).
 
 | 범위 | 현재 상태·제약 |
 |---|---|
@@ -242,3 +242,18 @@ Godot 공식 [애니메이션 소개](https://docs.godotengine.org/en/stable/tut
 | 검수 한계 | 실제 PNG 픽셀·브라우저/native·다운로드 저장·본편 정상줌/전투·주요 캐릭터 완성모션·새3D/A급 인수 없음. 이전 v1/v2 화면/실패와 합산·재실행하지 않음 |
 
 이 편집기 단위의 working/HEAD 선백업·ownhunk/inverse·소스 핀 및 한정 실행은 `E/druid-transform-guide-consumer-20261009/editor-frame-before/own-change-receipt.json`, `limited-gate-result.json`에 보존한다. 문서 동기화는 ROOT의 기존 검색 결과 `engine-frame-docs-new-scope.txt`를 재사용하며 이 문서 담당에서 검색·CPU/UI 재실행하지 않았다.
+
+
+## 2026-10-09 — 실제 3D 보스 일반 일시정지 시간
+
+`ROOT-BOSS3D-PAUSE-CLOCK-CONSUMER-20261009`. `game.html::_b3animate`는 일반 `G.paused` 동안 실제 3D 보스의 AnimationMixer와 dt 기반 피격 flash 시간을 멈춘다. `_b3clock.getDelta()`는 ready/pivot 가드를 통과한 콜백마다 기존 위치에서 소비하여 재개 때 정지 시간이 누적되지 않게 한다.
+
+| 항목 | 현행 계약 |
+|---|---|
+| 코드 | `const _b3elapsed=_b3clock.getDelta(); const dt=typeof G!=='undefined'&&G.paused?0:_b3elapsed; if(_b3mixer)_b3mixer.update(dt);` |
+| 적용 | 일반 설정·인벤토리 등 `G.paused`의 truthy 값. mixer pose와 `_b3flashT-=dt`만 dt0. 렌더·상태선택·기존 visibility 가드 유지 |
+| 유지·미해결 | `_btFramePause/STEP`, `_btFrozen` AI 정지, `performance.now()` 기반 스턴 흔들림은 이 수정에서 변경하지 않음. 전체 시각 효과 동결·전투 상태와 clip 진행률 일치는 보장하지 않음 |
+| 실제 검증 | 최초 신규 Node1, 실제 whole `_b3animate` 전후 source factory2/fixture16 및 로컬 Three.js AnimationMixer·NumberKeyframeTrack. 8그룹38조건 PASS/exit0. 기존 코드가 pause 중 전진한 before witness1은 별도. 30초 정지 clock 소비 후 재개 delta0.02초 확인 |
+| 인수 범위 | 통제 CPU 실행. 새 GLB 로드/GPU/실제 본편 화면·정상줌·청취·성능·save 검증 없음. Druid `use2D` 경로의 새 모델·모션 제작이 아님. VISUAL VERDICT: UI_NOT_ASSESSED/RETOUCH |
+
+외부 증거: `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/boss3d-pause-clock-consumer-20261009/`의 `preflight.json`, `cpu-first-result.json`, `completion.json`. 최종 Git 상태는 completion 기록을 따른다.

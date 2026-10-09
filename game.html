@@ -64754,7 +64754,8 @@ const _b3clock=new THREE.Clock();
 function _b3animate(){
   requestAnimationFrame(_b3animate);
   if(!_b3ready||!_b3pivot)return;
-  const dt=_b3clock.getDelta();
+  const _b3elapsed=_b3clock.getDelta(); // consume wall time even while paused
+  const dt=typeof G!=='undefined'&&G.paused?0:_b3elapsed;
   if(_b3mixer)_b3mixer.update(dt);
 
   // 게임 상태 읽기 (같은 윈도우) — 비활성 시 전환 프레임 1회만 렌더(캔버스 클리어)하고 이후 스킵

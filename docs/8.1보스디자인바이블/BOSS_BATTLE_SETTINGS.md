@@ -1128,3 +1128,18 @@ X.translate(Math.round(C.width/2 - G.cam.x + sx), Math.round(C.height/2 - G.cam.
 ## 2026-10-09 — 드루이드 광역 발사 자세
 
 `ROOT-DRUID-BURST-SPRITE-ENGINE-CONSUMER-20261009`: actual main `burst`의 준비 본체 성공과 실제 발사 prefix 완료를 소비해 원본 attack 셀1→2→3을 표시한다. 기존 sprite clip·recover50/보스 cap20·전투/원PNG/save 유지. 다음 pattern/update prune과 rig sheet/index 현재성 연결, 미로드·미관측은 기존 폴백. native detached Canvas3PASS/이전 반복 반례1별도, editor17 편집 exact·사용자 main 무조작. 새 입체 모델·정상 보스전·A급 미인수, **VISUAL VERDICT: RETOUCH**. [정확 계약](../4.0케릭터스프라이트%20디자인/DIRECTIONAL_CHARACTER_RIGS_20261006.md#druid-burst-sprite-engine-20261009). 최종 증거 `E/druid-burst-sprite-engine-consumer-20261009/completion.json`.
+
+
+## 2026-10-09 — 실제 3D 보스 일반 일시정지 시간
+
+`ROOT-BOSS3D-PAUSE-CLOCK-CONSUMER-20261009`. `game.html::_b3animate`는 일반 `G.paused` 동안 실제 3D 보스의 AnimationMixer와 dt 기반 피격 flash 시간을 멈춘다. `_b3clock.getDelta()`는 ready/pivot 가드를 통과한 콜백마다 기존 위치에서 소비하여 재개 때 정지 시간이 누적되지 않게 한다.
+
+| 항목 | 현행 계약 |
+|---|---|
+| 코드 | `const _b3elapsed=_b3clock.getDelta(); const dt=typeof G!=='undefined'&&G.paused?0:_b3elapsed; if(_b3mixer)_b3mixer.update(dt);` |
+| 적용 | 일반 설정·인벤토리 등 `G.paused`의 truthy 값. mixer pose와 `_b3flashT-=dt`만 dt0. 렌더·상태선택·기존 visibility 가드 유지 |
+| 유지·미해결 | `_btFramePause/STEP`, `_btFrozen` AI 정지, `performance.now()` 기반 스턴 흔들림은 이 수정에서 변경하지 않음. 전체 시각 효과 동결·전투 상태와 clip 진행률 일치는 보장하지 않음 |
+| 실제 검증 | 최초 신규 Node1, 실제 whole `_b3animate` 전후 source factory2/fixture16 및 로컬 Three.js AnimationMixer·NumberKeyframeTrack. 8그룹38조건 PASS/exit0. 기존 코드가 pause 중 전진한 before witness1은 별도. 30초 정지 clock 소비 후 재개 delta0.02초 확인 |
+| 인수 범위 | 통제 CPU 실행. 새 GLB 로드/GPU/실제 본편 화면·정상줌·청취·성능·save 검증 없음. Druid `use2D` 경로의 새 모델·모션 제작이 아님. VISUAL VERDICT: UI_NOT_ASSESSED/RETOUCH |
+
+외부 증거: `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/boss3d-pause-clock-consumer-20261009/`의 `preflight.json`, `cpu-first-result.json`, `completion.json`. 최종 Git 상태는 completion 기록을 따른다.
