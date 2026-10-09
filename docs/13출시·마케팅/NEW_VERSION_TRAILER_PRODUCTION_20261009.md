@@ -81,3 +81,9 @@
 | 재현 | [render_review.sh](../../marketing/trailers/new-version-20261009/render_review.sh) — native check/render→PCM mix→measured2-pass master→probe/decode/SHA. 공개 기능 없음 |
 
 V1/V2 출력·진단은 `output/trailer-production-20261009/review-history/before-static-endcard-fix/`에 보존한다. FINAL_REVIEW에는 수정한 V3와 편집 패키지·검수 자료만 둔다. source/shot의 `approved=false` 및 `sourceAudioHeard=false`는 그대로 보존하며 실제 최종 검사 결과는 별도 검수 기록에 남긴다. 인수 시점의 authored receipt는 render 이전 기록이므로 그 안의 `renderPerformed=false`를 현재 완료 상태로 오독하지 않는다.
+
+## 총괄 후속 협의 전달 상태
+
+V3 영상과 제작 기록을 기존 총괄 chat `맥북에서 총괄 시작하기`로 전달하려 했으나, 앱 도구가 두 차례 `The app could not load this tool`을 반환하여 이번 후속 메시지는 전송하지 못했다. 전달·합의 완료로 보고하지 않는다. 동 도구의 영상 패널 열기도 실패했으며 실제 로컬 MP4와 ZIP 파일은 정상 보존되어 있다.
+
+다음 협의 항목은 서로 다른 완성 전투 구간, 보스 예고→대응→적중 결과, 캐릭터별 대표 행동을 실제로 촬영 가능한 상태, 지옥의 틈 캐릭터 사라짐/떨림, 공격 중 숫자·군집의 행동 가림이다. 이는 후속 촬영을 위한 검토 요청이며 이번 마케팅 작업에서 해당 게임 코드를 변경하거나 새 개발 작업을 지시·완료했다는 뜻은 아니다.
