@@ -127,3 +127,8 @@ actual isBoss=true blood만 새640셀24원화로 표시하고 원16 alias·128×
 ## 2026-10-10 — 크라켄 fbEnergy 비행 물구체24
 
 실제 fbEnergy 비행을 새6×4/24/640² 물구체 원화와 lazy 공유Image1로 연결했다. 원16폴백/240²/중심/lighter/alpha1·pass2가시counter+.12÷16주기(helper증가0)·전투/Q회수5·접촉/SFX/save를 유지한다. resource10.8FPS는60가시render호출/s 가정의참고값으로24FPS·안정게임초 보장0. 원life320은화면근처1연장이있어고정종료아님. actualwhole source와독립Canvas의24셀·문맥복원검수는통과, 약6%반경·포말인접점프/루프자연연결·actualmain·동시성능은RETOUCH/미인수다. [정본](../5.1임펙트디자인/KRAKEN_WATER_ORB24_ENGINE_20261010.md).
+
+
+## 2026-10-10 — 보스 물 에너지탄 접촉·Q 물보라24
+
+크라켄 fbEnergy+EL.I 접촉(r220/90·최대660²)과 waterEnergy Q(r96/72·최대288²)만 bossWaterImpact 새24원화로 연결했다. 원공용 waterImpact16/물반사탄적중·waterBean·원전투/RNG/SFX/save는유지한다. 기존 t/mt·성장/alpha·부모합성상속/lazy Image1/원16폴백, resource16FPS는참고값이다. actualwhole source·독립Canvas·editor의 검수범위와 시각RETOUCH는정본을따른다. actualmain/정상줌/동시성능/청취/save未인수. [정본](../5.1임펙트디자인/BOSS_WATER_IMPACT24_ENGINE_20261010.md).

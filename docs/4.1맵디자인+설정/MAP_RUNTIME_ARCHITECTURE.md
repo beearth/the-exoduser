@@ -305,7 +305,7 @@ PHASE 순서로 **비침습 데이터 확장 → 렌더 재활성 → 마커 →
 | 분열 / _splitParriedBigEnergy | 크라켄 fbEnergy와 화마귀 fdEnergy 공통. 5발·원형 균등 72° 간격·반지름12px 스폰·속도7.5·r8·사거리900·발당 max(1,floor(totalDmg/5))·magic/_parryMagicShot·혜성 길이246.4px 유지. Q 보상×10 유지 |
 | 탐색 / 플레이어 투사체 유도 루프 | _parryMagicShot만 탐색 반경900px, 최대 선회0.7×_dtSp rad/갱신, (G._gcT+i)%2===0에서 갱신. 일반 magic은 기존250px/0.35 유지. 반사 쿨다운 동안 유도 중단 유지 |
 | 필드 타깃 / _parryMagicFieldTarget | 일반 적 후보와 G._fieldBosses(없으면 G._fieldBoss)·G._fireDevils·G._worms를 거리로 비교. asleep, 사망, _fmCanHit 불가, _hitSet 포함 대상 제외. 크라켄 TP 중 _fmXY의 tpX/tpY를 추적하며 화마귀·뱀장어는 실제 충돌과 동일한 x/y 사용. 타깃이 사라지면 다음 갱신에 재탐색 |
-| 물 적중 / _parryMagicHitFx | EL.I: waterImpact r72/66f, Water_ImpactWater_Sheet.png 전체16프레임, 최대 표시216px. 분열 시작 Q 물보라는 기존 r96/72f·최대288px. 임팩트 위치는 탄 접촉 x/y |
+| 물 적중 / _parryMagicHitFx | EL.I: waterImpact r72/66f, Water_ImpactWater_Sheet.png 전체16프레임, 최대 표시216px. 보스 waterEnergy Q 물보라는 bossWaterImpact 새24/원16폴백 r96/72f·최대288px. 물반사탄 적중은 원16 유지. 임팩트 위치는 탄 접촉 x/y |
 | 기타 속성·소리 | 물 이외에는 기존 _projHitFx(x,y,el,false). 모든 분열탄 적중에 playSampleAt('bullet_hit',0.3,1,x,y). 일반 적 magic 타격음 중복 호출 제외 |
 | 필드 접촉 / _hurtFieldMobs(...,parryShot) | 선택적 여섯째 인수에 분열탄 전달. 유효한 필드몹 접촉 시 임팩트·음향·탄 회수를 보장하고 일반 적 충돌까지 중복 진행하지 않음. 기존 _fmApply의 hitCd=8 피해 간격 유지: 쿨다운 중에는 추가 피해 없이 접촉 효과 후 소멸. 기존 다른 호출은 피해 적용 횟수 반환 유지 |
 | 적용 / 검증 | game.html 및 game-easy-test.html. test/parryMagicTrackingImpact.test.js: 5발 모두600px 크라켄 도달, 일반 적600px 포착, 일반 magic 범위 보존, 필드 쿨다운 접촉 효과·소멸 계약, TP 좌표·비활성 타깃 제외. 백업 tmp/kraken_parry_20260916/ |
@@ -1190,3 +1190,8 @@ field200×200와 CH1 arena128×108의 기존 맵 권위/진입·복귀 좌표는
 ## 2026-10-10 — 크라켄 fbEnergy 비행 물구체24
 
 실제 fbEnergy 비행을 새6×4/24/640² 물구체 원화와 lazy 공유Image1로 연결했다. 원16폴백/240²/중심/lighter/alpha1·pass2가시counter+.12÷16주기(helper증가0)·전투/Q회수5·접촉/SFX/save를 유지한다. resource10.8FPS는60가시render호출/s 가정의참고값으로24FPS·안정게임초 보장0. 원life320은화면근처1연장이있어고정종료아님. actualwhole source와독립Canvas의24셀·문맥복원검수는통과, 약6%반경·포말인접점프/루프자연연결·actualmain·동시성능은RETOUCH/미인수다. [정본](../5.1임펙트디자인/KRAKEN_WATER_ORB24_ENGINE_20261010.md).
+
+
+## 2026-10-10 — 보스 물 에너지탄 접촉·Q 물보라24
+
+크라켄 fbEnergy+EL.I 접촉(r220/90·최대660²)과 waterEnergy Q(r96/72·최대288²)만 bossWaterImpact 새24원화로 연결했다. 원공용 waterImpact16/물반사탄적중·waterBean·원전투/RNG/SFX/save는유지한다. 기존 t/mt·성장/alpha·부모합성상속/lazy Image1/원16폴백, resource16FPS는참고값이다. actualwhole source·독립Canvas·editor의 검수범위와 시각RETOUCH는정본을따른다. actualmain/정상줌/동시성능/청취/save未인수. [정본](../5.1임펙트디자인/BOSS_WATER_IMPACT24_ENGINE_20261010.md).
