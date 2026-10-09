@@ -168,8 +168,8 @@
     "followupState": "WAITING_FOR_BOSS_REDESIGN",
     "pollIntervalMinutes": 60,
     "watchState": "marketing/operations/boss-redesign-watch-20261009.json",
-    "lastCheckedAtUTC": "2026-10-09T05:48:38.271Z",
+    "lastCheckedAtUTC": "2026-10-09T06:57:08.045Z",
     "producerCompletionConfirmed": false,
-    "producerLastReport": "드루이드 사선 원화 제작. 45° 방향 불명확으로 본편 적용 보류."
+    "producerLastReport": "서버 복구 허용과 Mac 잠금 해제 답변 대기. 완료 검사 반복·사용자 환경 변경 없음."
   }
 }

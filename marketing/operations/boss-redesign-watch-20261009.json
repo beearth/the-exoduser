@@ -13,11 +13,11 @@
     "threadId": "01a0faa9-b453-7673-be39-98adedb4c2b3",
     "hostId": "local",
     "title": "맥북에서 총괄 시작하기",
-    "afterCursor": "b2476eee-d767-4cd1-8064-9706586fb10a:2",
+    "afterCursor": "b2476eee-d767-4cd1-8064-9706586fb10a:3",
     "lastObservedStatus": "idle",
     "lastObservedTurnStatus": "completed",
-    "lastObservedTurnId": "01a11f1b-30de-76e0-af26-94b35a2d0f55",
-    "lastObservedReport": "드루이드 사선 원화 제작. 45° 방향 불명확으로 본편 적용 보류."
+    "lastObservedTurnId": "01a11f60-c4e4-7080-b881-afeb76c1a049",
+    "lastObservedReport": "서버 복구 허용과 Mac 잠금 해제 답변 대기. 완료 검사 반복·사용자 환경 변경 없음."
   },
   "completionConfirmed": false,
   "captureStarted": false,
@@ -34,6 +34,6 @@
     "게임·서버·사용자 탭·세이브 무조작",
     "완성 후 검수본부터 인도, 사용자 검수 전 자동 공개 금지"
   ],
-  "lastCheckedAtUTC": "2026-10-09T05:48:38.271Z",
-  "lastCheckResult": "부분 원화 작업 턴만 종료. 보스전 전체 리디자인 완료·정상 본편 촬영 가능 상태 미확인. 촬영·제작·게시 0."
+  "lastCheckedAtUTC": "2026-10-09T06:57:08.045Z",
+  "lastCheckResult": "총괄의 기존 사용자 조치 답변 대기. 보스전 전체 리디자인 완료·정상 본편 촬영 가능 상태 미확인. 마케팅의 촬영·제작·게시 0, 같은 요청 반복 없음."
 }
