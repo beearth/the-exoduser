@@ -12,15 +12,18 @@
 
 ## 별도 원화 티저 제작 교차참조 — 2026-10-09
 
-사용자가 「기존 스팀페이지나 최신이미지들로 바꿔봐 케릭터들 뉴버전들도 있고 이미지 많잖아」라고 지시한 별도 채팅 **AAA 게임 트레일러 기획서 양식 조사**(`01a11b36-1a6e-7d61-b28a-68311b12f7d1`)에서 **30초 구성의 Character & World Art Teaser를 native 편집 중**이다. 이 문서의 리디자인 완료 대기·새 제작0은 **보스전·게임플레이 트레일러 작업**의 상태이며, 별도 기존 원화 티저 편집을 막는 조건으로 해석하지 않는다.
+사용자가 「기존 스팀페이지나 최신이미지들로 바꿔봐 케릭터들 뉴버전들도 있고 이미지 많잖아」라고 지시한 별도 채팅 **AAA 게임 트레일러 기획서 양식 조사**(`01a11b36-1a6e-7d61-b28a-68311b12f7d1`)에서 **30초 Character & World Art Teaser의 native 렌더·기술 검사·연속 표본 검수를 마쳐 사용자 검토용으로 납품**했다. 실시간 전편 감상·주관적 청취·사용자 creative/공개 승인은 미완료이며 게시0이다. 이 문서의 리디자인 완료 대기·새 제작0은 **보스전·게임플레이 트레일러 작업**의 상태이며, 별도 기존 원화 티저 편집을 막는 조건으로 해석하지 않는다.
 
 | 별도 작업 | 담당 채팅 보고·참조 |
 |---|---|
 | 소재 | 현행 Steam page background 2회와 공식 홈페이지 공개 원화6장(orbit/costume/lancer/duo/ruins/red-moon). 컨펌 대기 변성술사 v5 미사용 |
 | 프로젝트 | `/Users/fordeargamers/the-exoduser/marketing/trailers/art-refresh-20261009` |
 | native 소스 | [marketing_art_trailer_20261009.jsx](/Users/fordeargamers/the-exoduser/tools/marketing_art_trailer_20261009.jsx) |
-| 정본 기록 | 담당 채팅이 `docs/13출시·마케팅/TRAILER_ART_REFRESH_20261009.md` 작성 예정. 이 교차참조 시점에는 해당 문서 미생성 |
-| 상태 구분 | 제작 중이며 렌더·검수·사용자 공개 승인 완료를 뜻하지 않음. 개발 중 직업의 플레이 가능 주장0, 새 보스/일반전투 캡처0, 게임 코드 변경0, 게시0 |
+| 정본 기록 | [TRAILER_ART_REFRESH_20261009.md](/Users/fordeargamers/the-exoduser/docs/13출시·마케팅/TRAILER_ART_REFRESH_20261009.md) 생성·납품 기록 확인 완료 |
+| 검토본 MP4 | [EXODUSER_ART_TEASER_30S_20261009.mp4](/Users/fordeargamers/the-exoduser/output/trailer-art-refresh-20261009/EXODUSER_ART_TEASER_30S_20261009.mp4), 1920×1080/30fps/900f/30.0초. SHA256 `8f469bab8510653ce359a5e6f5022efd574653e2268b74a79ecde48c65854ce4` |
+| 편집 ZIP | [EXODUSER_ART_TEASER_EDITABLE_20261009.zip](/Users/fordeargamers/the-exoduser/output/trailer-art-refresh-20261009/EXODUSER_ART_TEASER_EDITABLE_20261009.zip), 원본7파일·native·폰트·음악·계획·QA 포함 |
+| 제한된 검수 | 담당 정본은 전체AV decode·30표본·창끝 확인 및 ZIP 원본해시·상대경로 검사 PASS를 기록. 기존 주제가60–90초, 최종 AAC −13.84LUFS/TP−2.91dBFS/LRA2.6LU. 이 마케팅 채팅에서 검사를 반복하거나 주관적 청취·실시간 전편 감상 PASS로 확대하지 않음 |
+| 상태 구분 | 사용자 검토용·공개 미승인. 개발 중 직업의 플레이 가능 주장0, 새 보스/일반전투 캡처0, 게임 코드 변경0, 게시0. 보스 리디자인 완료·Steam 데모 적용을 뜻하지 않음 |
 | 소유·협업 | 해당 채팅이 편집·렌더·검수·인도를 담당. 이 마케팅 채팅은 자료 전달과 교차참조만 수행하며 별도 프로젝트·sandbox·렌더·게시를 중복 실행하지 않음 |
 
 보스전 전체 리디자인 완료 후 정상 플레이를 새로 촬영하는 계획과 기존18초V3 검수·공개 미승인 상태는 그대로 유지한다.
