@@ -107,3 +107,8 @@ bossJump 착지의 기본 피16만 이미지 ready 시 기존 중성 지면24로
 ### 2026-10-10 보스 돌진 벽충돌의 중성 지면24
 
 nonfinal `bossCharge`의 세 `canMv` 시도 모두 막힌 분기에 기존 `boss_meteor_hit`24/중앙150²/speed2/angle0/defaultalpha1 요청1회만 연결했다. 원 shockMax800/bossShock20·카메라25·SFX 및 이동·피해·RNG/save를 보존하며 Finale·단축 미끄러짐은 제외한다. 새원화 제작이나 원8장 교체가 아니다. [현재 정본](../5.1임펙트디자인/BOSS_CHARGE_WALL_IMPACT24_ENGINE_20261010.md). 실제 전투·동시성능 미검수, VISUAL RETOUCH/UI_NOT_ASSESSED.
+
+
+### 2026-10-10 보스 사망 혈흔24
+
+actual isBoss=true blood만 새640셀24원화로 표시하고 원16 alias·128×scale geometry/speed6·명목96진행/RNG/basealpha1.5·사망/음향/save를 보존한다. ready 지면override가우선/false몹16/새clip실패원16generic폴백. 새ready는Canvas source-over한셀(유효alpha clamp), 원GLadditive폴백은불변. [현재 정본](../5.1임펙트디자인/BOSS_DEATH_BLOOD24_ENGINE_20261010.md). clip15FPS/1.6초는reference이며 실제게임시간 보장0; 새RGBA37.5MiB·원1MiB는정적환산/peak미검수. 실제보스전·성능/AAA미인수, VISUAL RETOUCH.

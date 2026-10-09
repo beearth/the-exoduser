@@ -524,7 +524,7 @@ path: '/v1/images/generations'
 
 | 단계 | 함수 | 앵글러 (필드보스, r=120, ib 취급) | 지상뱀장어 (r=56) |
 |---|---|---|---|
-| 사망음+혈흔 VFX | `deathFX` | `isBoss` → `death_boss`. `death_blood` scale `clamp(0.35+r×0.075,0.8,4.8)` = **4.8** | et 50 → `death_demon`. 같은 공식 = **4.55** |
+| 사망음+혈흔 VFX | `deathFX` | `isBoss` → 사망음 `death_boss` 및 boss_death_blood24/원16폴백. scale `clamp(0.35+r×0.075,0.8,4.8)` = **4.8** | et 50 → 사망음 `death_demon`. actual isBoss=false면 death_blood16, 같은 공식 = **4.55** |
 | 대형 파티클 | `_spawnLargeMonsterDeathFx` | 26발 `#ff5577/#ffccdd` (ib) | 16발 `#ffaa66/#ffd9aa` (`r>=18` 또는 `mhp>=220`로 발동) |
 | 시체 래그돌 | `_addCorpse` | `_fbSheet` 8방향 현재 프레임 → 128×128. sz=`max(80,r*2.5)`=**300**. 수명 600. 파워 `max(5, dmg/mhp*20)` cap 8 → 비행 spd max 5 | `_wmSheet[face]` 현재 프레임. sz=`min(200,r*2.2)`≈**123**. 수명 420. 파워 min 2 |
 | 바닥 잔류 | `_addFloorTrace` | 핏자국 **56** + 살점 1. 시체 팬케이크 sz **66** (구 300). 핏자국 7초 유지 + 2초 페이드, 살점은 맵 전환까지 | 핏자국 **36**(7초 유지 + 2초 페이드) + 살점 1(맵 전환까지). 시체 sz **42** |
@@ -1013,8 +1013,8 @@ UIUX 식별 결과 dry variant는 0/1/2 중 UNKNOWN이다. 기존99ms 사건을 
 | 항목 | 실제 반영 / 한계 |
 |---|---|
 | 변경 | 양판 `_queueCombatTextureWarmup()`의 VFX selector에 `death_blood` 조건만 각20B 추가. source5 공용 확인창 가드는 유지 |
-| 실제 소비 | 기본 `deathFX`는 `death_blood`16(기존 scale·보스 speed6/일반4·randomangle·alpha1.5). bossJump만 선택8번째 `impactId`와 이미지 ready에 따라 `boss_meteor_hit`24/150²/speed2/angle0/defaultalpha1로 단일 교체하며 미준비는 원16 폴백. `_partCnt<=300`·원angle RNG 선소비·판정/SFX 불변 |
-| 자산 | `assets/vfx/Blood_FBF_4x4.png` / 실제512×512 / frame128×128 /16프레임 /4열 /`source-over`. GPU RGBA 기본량1MiB, 부가 메모리·시간은 별도 미측정 |
+| 실제 소비 | ready 지면 `impactId` override가 우선. 그 외 `isBoss=true`는 `boss_death_blood` logical alias(원16sheet/128셀/speed6/명목96진행), 새resource ready 시24셀·Canvas source-over 단일표시/실패 원16generic. false는 원 `death_blood`16/speed4. 기존 scale·원angle RNG·basealpha1.5·`_partCnt<=300`·판정/SFX 불변. 지면override150²/speed2/defaultalpha1 유지 |
+| 자산 | 원 `assets/vfx/Blood_FBF_4x4.png`512²/128셀/16장/4열/원시RGBA8환산1MiB 유지. 새 `assets/vfx/boss/boss_death_blood_24_20261010.png`3840×2560/640셀/24장/6×4/fps15/nonloop/유도1.6초/환산37.5MiB. 원+새38.5MiB는정적환산이며 실제복사/피크 미측정. 새 ready Canvas source-over·원generic GL additive/Canvas source-over 폴백 구분 |
 | 준비 | 완료된 동일 Image만 기존 큐→`_warmImageGpu`→기존 GPU texture 경로로 전달. `complete`·`naturalWidth>0`, 일반cap80·버퍼120·중복 Set·유휴1장·180f 재검사 유지 |
 | 제외 | `death_smoke`는 현재 등록만 있고 소비0이므로 추가하지 않음. 실제1024×1024/RGBA 기본4MiB의 별도 시트·기존 등록은 불변 |
 | 완료 시점 | 부트에서 준비 시작 후 완료를 기다리지 않음. 늦은 로드·큐상한·재검사 때문에 첫 처치 전 준비 완료 보장0 |
@@ -1343,3 +1343,8 @@ bossJump 착지의 기본 피16만 이미지 ready 시 기존 중성 지면24로
 ### 2026-10-10 보스 돌진 벽충돌의 중성 지면24
 
 nonfinal `bossCharge`의 세 `canMv` 시도 모두 막힌 분기에 기존 `boss_meteor_hit`24/중앙150²/speed2/angle0/defaultalpha1 요청1회만 연결했다. 원 shockMax800/bossShock20·카메라25·SFX 및 이동·피해·RNG/save를 보존하며 Finale·단축 미끄러짐은 제외한다. 새원화 제작이나 원8장 교체가 아니다. [현재 정본](BOSS_CHARGE_WALL_IMPACT24_ENGINE_20261010.md). 실제 전투·동시성능 미검수, VISUAL RETOUCH/UI_NOT_ASSESSED.
+
+
+### 2026-10-10 보스 사망 혈흔24
+
+actual isBoss=true blood만 새640셀24원화로 표시하고 원16 alias·128×scale geometry/speed6·명목96진행/RNG/basealpha1.5·사망/음향/save를 보존한다. ready 지면override가우선/false몹16/새clip실패원16generic폴백. 새ready는Canvas source-over한셀(유효alpha clamp), 원GLadditive폴백은불변. [현재 정본](BOSS_DEATH_BLOOD24_ENGINE_20261010.md). clip15FPS/1.6초는reference이며 실제게임시간 보장0; 새RGBA37.5MiB·원1MiB는정적환산/peak미검수. 실제보스전·성능/AAA미인수, VISUAL RETOUCH.

@@ -19944,6 +19944,75 @@ registerVFX('boss_gwLightning','assets/vfx/boss/boss_gwLightning.webp',512,512,1
 registerVFX('boss_cageTrap','assets/vfx/boss/boss_cageTrap.webp',512,512,6,3,'source-over');
 registerVFX('death_smoke','assets/vfx/Dark_Smoke_BW_6x6.png',170,170,36,6,'source-over');
 registerVFX('death_blood','assets/vfx/Blood_FBF_4x4.png',128,128,16,4,'source-over');
+// Boss death: original16 lifecycle/image fallback, authored24 Canvas clip.
+const _bossDeathBloodClip={ready:false,failed:false,image:null,clip:null,sample:null,rects:null,loadPromise:null};
+function _loadBossDeathBloodClip(){
+  if(_bossDeathBloodClip.loadPromise)return _bossDeathBloodClip.loadPromise;
+  _bossDeathBloodClip.loadPromise=(async()=>{
+    try{
+      const [response,runtime]=await Promise.all([
+        fetch('assets/vfx/boss/boss_death_blood_24_20261010.clip.json?v=20261010-v1'),
+        import('./tools/2_5d/atlas-clip-runtime.mjs?v=20261009-v1')
+      ]);
+      if(!response.ok)throw new Error('boss_death_blood metadata HTTP '+response.status);
+      const metadata=await response.json();
+      const keys=['format','version','name','sourcePath','columns','rows','frameCount','fps','loop'];
+      if(!metadata||typeof metadata!=='object'||Array.isArray(metadata)||
+        Object.keys(metadata).length!==keys.length||!keys.every(key=>Object.prototype.hasOwnProperty.call(metadata,key))||
+        metadata.format!=='exoduser-atlas-clip'||metadata.version!==1||metadata.name!=='boss_death_blood'||
+        metadata.sourcePath!=='assets/vfx/boss/boss_death_blood_24_20261010.png'||
+        metadata.columns!==6||metadata.rows!==4||metadata.frameCount!==24||metadata.fps!==15||metadata.loop!==false)
+        throw new Error('boss_death_blood metadata contract');
+      if(typeof runtime.createAtlasClip!=='function'||typeof runtime.sampleAtlasClip!=='function'||typeof runtime.getAtlasFrameRect!=='function')
+        throw new Error('boss_death_blood atlas runtime');
+      const clip=runtime.createAtlasClip(metadata);
+      if(clip.durationSeconds!==1.6)throw new Error('boss_death_blood clip duration');
+      const image=new Image();
+      image.decoding='async';
+      await new Promise((resolve,reject)=>{
+        image.onload=()=>{image.onload=null;image.onerror=null;resolve();};
+        image.onerror=()=>{image.onload=null;image.onerror=null;reject(new Error('boss_death_blood image load'));};
+        image.src=metadata.sourcePath+'?v=20261010-v1';
+      });
+      const cell=image.naturalWidth/clip.columns;
+      if(!image.complete||(cell!==512&&cell!==640)||image.naturalHeight/clip.rows!==cell)
+        throw new Error('boss_death_blood image grid');
+      const rects=Object.freeze(Array.from({length:clip.frameCount},(_,frame)=>Object.freeze(runtime.getAtlasFrameRect(image,clip,frame,1))));
+      _bossDeathBloodClip.image=image;
+      _bossDeathBloodClip.clip=clip;
+      _bossDeathBloodClip.sample=runtime.sampleAtlasClip;
+      _bossDeathBloodClip.rects=rects;
+      _bossDeathBloodClip.ready=true;
+    }catch(error){
+      _bossDeathBloodClip.ready=false;
+      _bossDeathBloodClip.failed=true;
+      console.warn('[VFX] boss_death_blood24 original16 fallback',error);
+    }
+  })();
+  return _bossDeathBloodClip.loadPromise;
+}
+function _drawBossDeathBloodClip(v,sh,_vfMix,dw,dh,_vAlpha){
+  if(!_bossDeathBloodClip.ready)return false;
+  let saved=false;
+  try{
+    const fraction=v.bornGameTime!==undefined?_vfMix:v.t/v.frameTime;
+    const progress=(v.frame+fraction)/v.maxFrames;
+    const sampled=_bossDeathBloodClip.sample(_bossDeathBloodClip.clip,progress*_bossDeathBloodClip.clip.durationSeconds);
+    const rect=_bossDeathBloodClip.rects[sampled.frame];
+    if(!rect)return false;
+    X.save();saved=true;
+    X.globalCompositeOperation='source-over';
+    X.globalAlpha=Math.max(0,Math.min(1,_vAlpha));
+    X.translate(v.x,v.y);if(v.ang)X.rotate(v.ang);
+    X.drawImage(_bossDeathBloodClip.image,rect.sx,rect.sy,rect.sw,rect.sh,-dw/2,-dh/2,dw,dh);
+    return true;
+  }catch(error){
+    return false;
+  }finally{
+    if(saved)X.restore();
+  }
+}
+_loadBossDeathBloodClip();
 
 // ═══ 빙결 틴트용 오프스크린 캔버스 (몬스터 실루엣 파란 틴트) ═══
 const _iceTintC=document.createElement('canvas');
@@ -24908,7 +24977,12 @@ function deathFX(x,y,r,col,isBoss,noSound,et,impactId){
     const _dbScale=_deathBloodScale(r);
     const _dbAngle=Math.random()*Math.PI*2;
     if(impactId==='boss_meteor_hit'&&_VFX_SHEETS.boss_meteor_hit?.img)playVFXAng('boss_meteor_hit',x,y,150/768,2,0,false);
-    else playVFXAng('death_blood',x,y,_dbScale,isBoss?6:4,_dbAngle,false,1.5);
+    else{
+      const _dbSheet=_VFX_SHEETS.death_blood;
+      let _dbId='death_blood';
+      if(isBoss&&_dbSheet?.img){_VFX_SHEETS.boss_death_blood=_dbSheet;_dbId='boss_death_blood';}
+      playVFXAng(_dbId,x,y,_dbScale,isBoss?6:4,_dbAngle,false,1.5);
+    }
   }
 }
 
@@ -54712,6 +54786,9 @@ function draw(){
       if(_vAlpha<0.05&&!v.isSkill)continue;
       if(v.x<_vl-dw||v.x>_vr+dw||v.y<_vt-dh||v.y>_vb+dh){if(_vw!==vi)_vfxAnims[_vw]=v;_vw++;continue}
       if(++_vDrw>_vfxBudgetCap&&!v.isSkill){if(_vw!==vi)_vfxAnims[_vw]=v;_vw++;continue}
+      if(v.id==='boss_death_blood'&&_drawBossDeathBloodClip(v,sh,_vfMix,dw,dh,_vAlpha)){
+        if(_vw!==vi)_vfxAnims[_vw]=v;_vw++;continue;
+      }
       if(v.id==='druid_roots'&&_drawDruidRootsClip(v,sh,_vfMix,dw,dh,_vAlpha)){
         if(_vw!==vi)_vfxAnims[_vw]=v;_vw++;continue;
       }

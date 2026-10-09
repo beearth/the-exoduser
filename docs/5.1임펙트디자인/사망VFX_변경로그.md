@@ -32,7 +32,7 @@
 
 ### 변경 요약
 - 일반 몬스터 반지름이 주로 `8~18`인데 기존 데드 임팩트가 `clamp(r×2.2, 40, 120)`의 최솟값 40에 묶여 대부분 같은 크기로 보이던 문제를 수정.
-- `blood_impact_2/3/4` 데드 임팩트와 `death_blood` 시트 애니메이션을 모두 몬스터 원본 반지름 `r`에 따른 연속 공식으로 통일했다. 보스 여부는 재생 속도에만 남고 크기를 강제로 고정하지 않는다.
+- `blood_impact_2/3/4` 데드 임팩트와 blood 시트 크기는 몬스터 원본 반지름 `r`의 연속 공식을 유지한다. 보스 여부는 원 speed6/일반4 외에 logical blood alias도 선택한다: true는 새24/원16폴백, false는 원16. 표시 geometry128×scale·명목보스96진행을 보존하며 크기를 강제 고정하지 않는다.
 - 독립 필드몹 `_fmDeathFx`도 축소 반지름 `min(32,r×0.28)` 대신 원본 `r`을 `_addDeathImpact`에 전달한다.
 
 ### 수치/공식 테이블
@@ -165,7 +165,7 @@
 | `fmGoreN` | 고어 파편 수 | 공통 2 + 앵글러 추가 3 | 앵글러 **5**, 뱀장어 **2** | `_addGorePiece` |
 | `fmGoreFling` | 카메라 플링 | 기존 30%, 프레임당 최대 5 | 30% | `_addGorePiece` |
 | `fmDeathImpact` | 혈흔 폭발 | (당시) `maxSz=r*4` | 현재 앵글러 **240** / 뱀장어 **168** | `_addDeathImpact` |
-| `fmDeathBlood` | death_blood 스케일 | (당시) `isBoss?3.6:(r>20?2.1:…)` | 현재 앵글러 **4.8** / 뱀장어 **4.55** | `deathFX` → `playVFXAng('death_blood')` |
+| `fmDeathBlood` | blood 연속 scale | (당시) `isBoss?3.6:(r>20?2.1:…)` | 현재 앵글러 **4.8** / 뱀장어 **4.55** | `deathFX`의 actual isBoss=true는 boss_death_blood24/원16폴백, false는 death_blood16. 이름·etype·radius로 true 추정0 |
 | `fmDeathShake` | 사망 셰이크 | 체급 분기 | 앵글러 18 / 뱀장어 8 | `shake` |
 | `fmDeathFlash` | 앵글러 플래시 | 필드보스만 | `_flashT=4` `#66ddff`, `_chromaT=3` | `_fmDeathFx` |
 
@@ -284,8 +284,8 @@
 | 항목 | 실제 반영 / 한계 |
 |---|---|
 | 변경 | 양판 `_queueCombatTextureWarmup()`의 VFX selector에 `death_blood` 조건만 각20B 추가. source5 공용 확인창 가드는 유지 |
-| 실제 소비 | 기본 `deathFX`는 `death_blood`16(기존 scale·보스 speed6/일반4·randomangle·alpha1.5). bossJump만 선택8번째 `impactId`와 이미지 ready에 따라 `boss_meteor_hit`24/150²/speed2/angle0/defaultalpha1로 단일 교체하며 미준비는 원16 폴백. `_partCnt<=300`·원angle RNG 선소비·판정/SFX 불변 |
-| 자산 | `assets/vfx/Blood_FBF_4x4.png` / 실제512×512 / frame128×128 /16프레임 /4열 /`source-over`. GPU RGBA 기본량1MiB, 부가 메모리·시간은 별도 미측정 |
+| 실제 소비 | ready 지면 `impactId` override가 우선. 그 외 `isBoss=true`는 `boss_death_blood` logical alias(원16sheet/128셀/speed6/명목96진행), 새resource ready 시24셀·Canvas source-over 단일표시/실패 원16generic. false는 원 `death_blood`16/speed4. 기존 scale·원angle RNG·basealpha1.5·`_partCnt<=300`·판정/SFX 불변. 지면override150²/speed2/defaultalpha1 유지 |
+| 자산 | 원 `assets/vfx/Blood_FBF_4x4.png`512²/128셀/16장/4열/원시RGBA8환산1MiB 유지. 새 `assets/vfx/boss/boss_death_blood_24_20261010.png`3840×2560/640셀/24장/6×4/fps15/nonloop/유도1.6초/환산37.5MiB. 원+새38.5MiB는정적환산이며 실제복사/피크 미측정. 새 ready Canvas source-over·원generic GL additive/Canvas source-over 폴백 구분 |
 | 준비 | 완료된 동일 Image만 기존 큐→`_warmImageGpu`→기존 GPU texture 경로로 전달. `complete`·`naturalWidth>0`, 일반cap80·버퍼120·중복 Set·유휴1장·180f 재검사 유지 |
 | 제외 | `death_smoke`는 현재 등록만 있고 소비0이므로 추가하지 않음. 실제1024×1024/RGBA 기본4MiB의 별도 시트·기존 등록은 불변 |
 | 완료 시점 | 부트에서 준비 시작 후 완료를 기다리지 않음. 늦은 로드·큐상한·재검사 때문에 첫 처치 전 준비 완료 보장0 |
@@ -322,3 +322,8 @@
 ### 2026-10-10 보스 점프 착지의 선택 임팩트24
 
 bossJump 착지의 기본 피16만 이미지 ready 시 기존 중성 지면24로 단일 교체한다(겹침0·미준비16 폴백). 중앙150²/speed2/angle0/defaultalpha1이며 원 `_partCnt<=300`·angle RNG·흰 링/flash·음향·경고/판정300·후속 충격파를 보존한다. [현재 정본](BOSS_JUMP_IMPACT24_ENGINE_20261010.md). 실제150px/정상줌 전투·동시성능은 미검수, VISUAL RETOUCH/UI_NOT_ASSESSED.
+
+
+### 2026-10-10 보스 사망 혈흔24
+
+actual isBoss=true blood만 새640셀24원화로 표시하고 원16 alias·128×scale geometry/speed6·명목96진행/RNG/basealpha1.5·사망/음향/save를 보존한다. ready 지면override가우선/false몹16/새clip실패원16generic폴백. 새ready는Canvas source-over한셀(유효alpha clamp), 원GLadditive폴백은불변. [현재 정본](BOSS_DEATH_BLOOD24_ENGINE_20261010.md). clip15FPS/1.6초는reference이며 실제게임시간 보장0; 새RGBA37.5MiB·원1MiB는정적환산/peak미검수. 실제보스전·성능/AAA미인수, VISUAL RETOUCH.
