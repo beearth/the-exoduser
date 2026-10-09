@@ -40940,7 +40940,7 @@ function updateE(e,sp){
       // 양축 모두 막힘 → Wall slam shockwave
       if(_isDruidFinale(e)){e.s='recover';e.st2=96;SFX.groggy();break;}
       e.shockR=0;e.shockMax=800;e.s='bossShock';e.st2=20;
-      G.shake=25*OPT.shake/100;SFX.groggy();break}
+      G.shake=25*OPT.shake/100;SFX.groggy();playVFXAng('boss_meteor_hit',e.x,e.y,150/768,2,0,false);break}
     if(dst(P.x,P.y,e.x,e.y)<P.r+e.r+80&&P.iframes<=0){
       if(isPWin()){const _pd=~~(((P.baseAtk+(wp().atk||0)+enhMulAtk(wp().enh||0)))*5*pParryDmg());
         if(P.skills.detonate){P.parryBank=(P.parryBank||0)+_pd;e.stunned=60;addTxt(P.x,P.y-25,_T('⚡패링!'),'#ffdd00',35)}
