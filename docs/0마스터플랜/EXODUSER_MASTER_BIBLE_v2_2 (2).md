@@ -2279,3 +2279,8 @@ MAP_BG_LAYERS = {
 *마지막 업데이트: 2026-03-11 (CIN_LINES 확정 / Ori 비주얼 공식 통합 / 사운드 상세화 / 에셋 발주 스펙)*
 *소스: MASTER_BIBLE_v2.1 + 인트로 대사 확정본 + God Mode AI 프롬프트 + 젤다 사운드 상세*
 *다음 업데이트 트리거: Phase 1 Unity 뼈대 완료 시 → v2.3*
+
+
+## 2026-10-10 — 보스 유성 착탄24 본편 표시
+
+bossMeteor의 기존 동작·전투값을 유지하며 착탄 표시 boss_meteor_hit(24장)을 새로 연결했다. [실제 producer·리소스·폴백·검수 정본](../5.1임펙트디자인/BOSS_METEOR_IMPACT24_ENGINE_20261010.md). 실제 전체 보스전·동시 성능 미인수, VISUAL RETOUCH.

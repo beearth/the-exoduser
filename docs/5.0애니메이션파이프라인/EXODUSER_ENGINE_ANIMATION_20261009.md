@@ -292,3 +292,8 @@ actual main burrowStrike의 땅굴 진입·이탈 druid_dust 2caller가 새24셀
 ## 2026-10-10 — Druid 뿌리 충격링24 공통 본편 표시 소비
 
 actual main druid_shockring 공통ID는 새24실변화 원화를 소비하며 원512²×8열8장은 pending/실패 폴백이다. 네 실제 caller: _reviveDruidFinale 및 _bossPhaseCheck의막전환 scale=e.r*3/256/frameTime5/표시6e.r/명목40진행, _finishDruidFinale 승리 scale=max(.5,e.r*4/256)/frameTime6/표시max(256,8e.r)/명목48진행, updateE bossShockWind 종료(stage0/3) scale=e.r*2.5/256/frameTime7/표시5e.r/명목56진행. resource6×4/24/fps180/7/loopfalse를 caller별 normalizedphase로 매핑하므로 모든caller56/24FPS/안정game초 보장0이다. 기존guard·worldcenter/angle0/isSkillfalse·alpha·GLadditive/Canvaslighter·종료/cull/budget5/압축·producer·전투/RNG/SFX/save/원PNG 유지. 독립 actualmain helper Canvas proof는 actualnormalmain/정상줌/전체전투/GPU/동시성능/청취/실save/AAA 인수와 구분한다. 현재시각판정과 원화규격·실제검수는정본참조. 과거검수/전투수치 이력은유지한다. [정본](../5.1임펙트디자인/DRUID_SHOCKRING24_ENGINE_20261010.md).
+
+
+## 2026-10-10 — 보스 유성 착탄24 본편 표시
+
+bossMeteor의 기존 동작·전투값을 유지하며 착탄 표시 boss_meteor_hit(24장)을 새로 연결했다. [실제 producer·리소스·폴백·검수 정본](../5.1임펙트디자인/BOSS_METEOR_IMPACT24_ENGINE_20261010.md). 실제 전체 보스전·동시 성능 미인수, VISUAL RETOUCH.
