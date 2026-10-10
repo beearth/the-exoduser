@@ -13,11 +13,11 @@
     "threadId": "01a0faa9-b453-7673-be39-98adedb4c2b3",
     "hostId": "local",
     "title": "맥북에서 총괄 시작하기",
-    "afterCursor": "b2476eee-d767-4cd1-8064-9706586fb10a:27",
+    "afterCursor": "b2476eee-d767-4cd1-8064-9706586fb10a:28",
     "lastObservedStatus": "idle",
     "lastObservedTurnStatus": "completed",
-    "lastObservedTurnId": "01a124a8-9d03-78e0-96c3-6a278a6f9775",
-    "lastObservedReport": "총괄은 입구·출구 표식이 가려지는 문제 수정과 새 화면 확인을 보고. 출구의 지면 정렬은 미완료이며 같은 맵팀에 원본 그림 땅 영역 측정과 실제 배치 수정을 지시했다. 맵 부분 진행 보고이며 보스전 전체 리디자인 완료 보고는 없음."
+    "lastObservedTurnId": "01a124df-8a7a-75a1-a3a9-ca7603e13992",
+    "lastObservedReport": "총괄은 실제 방향키로 입구→휴식 지점 이동을 확인했으나 출구까지 이동은 미완료라고 보고. 엔진팀에 화면 잘림·편집 흐름 수정을 우선 지시했고 결과 인수까지 맵·보스 제작 확대를 보류했다. 보스전 전체 리디자인 완료 보고는 없음."
   },
   "completionConfirmed": false,
   "captureStarted": false,
@@ -34,6 +34,6 @@
     "게임·서버·사용자 탭·세이브 무조작",
     "완성 후 검수본부터 인도, 사용자 검수 전 자동 공개 금지"
   ],
-  "lastCheckedAtUTC": "2026-10-10T07:21:12.405Z",
-  "lastCheckResult": "입구·출구 표식 수정과 잔여 배치 작업의 진행 보고다. 보스전 전체 리디자인 완료·정상 본편 실제 전투 촬영 가능 상태 미확인으로 촬영·제작·게시 대기를 유지했다. 반복 요청 없음."
+  "lastCheckedAtUTC": "2026-10-10T08:20:42.209Z",
+  "lastCheckResult": "엔진 화면·편집 흐름 수정 결과 인수 전 맵·보스 제작 확대 보류 상태다. 정상 본편 보스전 전체 완료·실제 전투 촬영 가능 상태 미확인으로 촬영·제작·게시 대기를 유지했다. 반복 요청 없음."
 }
