@@ -170,7 +170,7 @@ export async function createForge3D(container){
       toWorld(d.x,d.y,20,u.tgt);if(!u.s)u.cur.copy(u.tgt);u.ts=d.r*(d.on?1.08:1);u.on=d.on;u.empty=d.empty;u.host=d.host;u.fused=d.fused;setIcon(o,d.icon)});
     // altar
     const a=s.altar;
-    toWorld(a.x,a.y,-60,altar.position);const R=a.R*1.32*(D+60)/D;altar.scale.setScalar(R);
+    toWorld(a.x,a.y,-60,altar.position);const R=Math.max(a.R*1.32,a.R+a.nodeR*1.3)*(D+60)/D;altar.scale.setScalar(R); // 소켓 바깥 가장자리까지 원판 안에
     const pos=altar.position;
     let i=0;const m4=new THREE.Matrix4(),q=new THREE.Quaternion();
     for(let k=0;k<36;k++){const ang=k/36*Math.PI*2;q.setFromAxisAngle(new THREE.Vector3(0,0,1),ang);m4.compose(new THREE.Vector3(Math.cos(ang)*1.02,Math.sin(ang)*1.02,0),q,new THREE.Vector3(1,1,1));spikes.setMatrixAt(k,m4)}

@@ -378,7 +378,7 @@
   function want3d(){return qs.get('skillForge3d')!=='0'}
   function load3d(){
     if(threeTried||!want3d())return;threeTried=true;
-    import('./skill-forge-3d.js?v=20261010-forge2').then(mod=>mod.createForge3D(parts.canvasWrap)).then(t=>{
+    import('./skill-forge-3d.js?v=20261010-forge3').then(mod=>mod.createForge3D(parts.canvasWrap)).then(t=>{
       three=t;if(three){el.classList.add('sf-3d');layout3d();}
     }).catch(err=>{root.console&&root.console.warn('[SkillForge] 3D unavailable, 2D fallback',err);el.classList.remove('sf-3d')});
   }
@@ -393,7 +393,8 @@
     const nodes=(st.geo?st.geo.nodes:[]).map(n=>({id:n.id||'ghost',kind:n.kind,x:n.x+ar.left-base.left,y:n.y+ar.top-base.top,icon:iconUrl(n.id)}));
     const coreP=rel(parts.core.getBoundingClientRect());
     three.setState({width:base.width,height:base.height,slots,
-      altar:{x:ar.left+ar.width/2-base.left,y:ar.top+ar.height/2-base.top,R:st.geo?st.geo.R:120,nodeR:st.geo?st.geo.nodeSize/2:40,
+      // 원판 중심 = 소켓 고리 중심(st.geo.cx/cy). 영역 정중앙을 쓰면 아래 안내 띠만큼 어긋나 고리와 원판이 틀어진다
+      altar:{x:ar.left+(st.geo?st.geo.cx:ar.width/2)-base.left,y:ar.top+(st.geo?st.geo.cy:ar.height/2)-base.top,R:st.geo?st.geo.R:120,nodeR:st.geo?st.geo.nodeSize/2:40,
         core:{...coreP,icon:iconUrl(m.set.length>1&&k?hostOf(k):m.host),ready:!!m.ready,fused:!!k,empty:!m.host},
         color:g.color||'#ec7958',color2:g.color2||'#ffb070',nodes}});
   }
