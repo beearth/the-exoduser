@@ -334,3 +334,8 @@ actual _fbEnergyBoom의 fdEnergy&&EL.F 접촉만 bossFireImpact 새24/640²로 �
 ## 2026-10-10 — 화마귀 Q 불탄 임팩트24 연결
 
 fdEnergy&&EL.F의 전용 Q 표시를 bossFireQImpact로 연결했다. 기존 승인 fire24·공유Image1을 재사용하며 새그림·리소스등록·JSON은 추가하지 않는다. 원Dark02의 r80/72·최대240²·Q반사5/자원×10/44armRNG·공통효과를 유지하고, 새ready는24 한셀·미준비/실패는원Q Dark16이다. 정상줌·실전시각·동시성능未인수/UI_NOT_ASSESSED RETOUCH. [정본](../5.1임펙트디자인/BOSS_FIRE_Q_IMPACT24_ENGINE_20261010.md).
+
+
+## 2026-10-10 최신 직접 지시 — 제작 정형화·1-1·월드맵 병렬 배정
+
+오늘 직접 지시와 세 담당 지시의 정본은 [EXODUSER_DIRECT_ORDERS_20261010.md](EXODUSER_DIRECT_ORDERS_20261010.md)이다. 별도 FDG 엔진팀은 실제 제작 흐름·높이 있는 지형·지역 지도/월드맵/이동을 구현하고, 기존 MAP와 BOSS/ANIMVFX/SKILL/QA는 독립 manifest/배치·event 요구표를 병렬 제작한다. ROOT는 감독·인수만 맡는다. 최신 사용자 병렬 지시는 이 새 독립 산출 범위에 적용하며 이전 단일 작업/완전 idle 지시보다 우선한다. 원game/save/PNG/nav/LOCK·완료검수·실제 거절/held 경계는 보존한다. 전달 accepted와 제품/전체엔진 인수를 구분한다.
