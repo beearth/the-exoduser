@@ -133,7 +133,7 @@ export async function createForge3D(container){
     emissive:0xff5a28,emissiveIntensity:.6,envMapIntensity:1.3}));
   coreGroup.add(coreOrb);
   const coreIcon=new THREE.Mesh(iconDisc(.96,.84),new THREE.MeshBasicMaterial({transparent:true,toneMapped:false}));coreIcon.position.z=1.02;coreGroup.add(coreIcon);
-  const coreRing=new THREE.Mesh(new THREE.TorusGeometry(1.08,.07,20,128),goldMat);coreGroup.add(coreRing);
+  const coreRing=new THREE.Mesh(new THREE.TorusGeometry(1.08,.07,20,128),goldMat);coreRing.position.z=.95;coreGroup.add(coreRing); // 테를 아이콘 면 깊이에 — 시차 제거
   const coreGlow=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex,color:FIRE,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false,opacity:.9}));coreGlow.scale.setScalar(4);coreGroup.add(coreGlow);
 
   // ── embers ──
@@ -163,11 +163,11 @@ export async function createForge3D(container){
   const slotObjs=[],nodeObjs=new Map();
   function makeOrb(){
     const g=new THREE.Group();
-    const ring=new THREE.Mesh(new THREE.TorusGeometry(1,.11,24,96),iron);g.add(ring);
+    const ring=new THREE.Mesh(new THREE.TorusGeometry(1,.11,24,96),iron);ring.scale.z=.3;g.add(ring); // 납작한 테: 앞면이 아이콘 면과 거의 같은 깊이 → 화면 가장자리에서도 원근 시차로 아이콘이 홈 안에서 쏠리지 않음
     const band=new THREE.Mesh(new THREE.TorusGeometry(1.0,.035,12,96),goldMat);band.position.z=.06;g.add(band);
-    const face=new THREE.Mesh(iconDisc(.97,.84),new THREE.MeshStandardMaterial({color:0xffffff,metalness:0,roughness:.6,emissive:0xffffff,emissiveIntensity:.12,transparent:true}));
-    face.position.z=.02;g.add(face);
-    const dome=new THREE.Mesh(new THREE.SphereGeometry(.97,48,24,0,Math.PI*2,0,Math.PI/2),glass);dome.rotation.x=Math.PI/2;dome.scale.z=.35;g.add(dome);
+    const face=new THREE.Mesh(iconDisc(.92,.8),new THREE.MeshStandardMaterial({color:0xffffff,metalness:0,roughness:.6,emissive:0xffffff,emissiveIntensity:.12,transparent:true}));
+    face.position.z=.04;g.add(face);
+    const dome=new THREE.Mesh(new THREE.SphereGeometry(.92,48,24,0,Math.PI*2,0,Math.PI/2),glass);dome.rotation.x=Math.PI/2;dome.position.z=.04;dome.scale.z=.3;g.add(dome);
     const glow=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex,color:FIRE,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false,opacity:0}));glow.scale.setScalar(2.6);glow.position.z=-.3;g.add(glow);
     const halo=new THREE.Mesh(new THREE.TorusGeometry(1.22,.03,8,96),new THREE.MeshBasicMaterial({color:FIRE,transparent:true,opacity:0,toneMapped:false}));g.add(halo);
     g.userData={ring,band,face,glow,halo,dome,cur:new THREE.Vector3(),tgt:new THREE.Vector3(),s:0,ts:1,iconUrl:undefined};
