@@ -44,6 +44,9 @@ function ironNoise(){
   const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;return t;
 }
 
+// Icon disc: fills the ring's inner edge and crops the icon art's own dark rim (UV zoom).
+function iconDisc(r,crop){const g=new THREE.CircleGeometry(r,96);const uv=g.attributes.uv;for(let i=0;i<uv.count;i++)uv.setXY(i,.5+(uv.getX(i)-.5)*crop,.5+(uv.getY(i)-.5)*crop);uv.needsUpdate=true;return g}
+
 export async function createForge3D(container){
   const canvas=document.createElement('canvas');canvas.className='sf-gl';container.appendChild(canvas);
   let renderer;
@@ -106,7 +109,7 @@ export async function createForge3D(container){
   const coreOrb=new THREE.Mesh(new THREE.SphereGeometry(1,64,48),new THREE.MeshPhysicalMaterial({color:0x2a0c08,metalness:.2,roughness:.15,clearcoat:1,
     emissive:0xff5a28,emissiveIntensity:.6,envMapIntensity:1.3}));
   coreGroup.add(coreOrb);
-  const coreIcon=new THREE.Mesh(new THREE.CircleGeometry(.72,96),new THREE.MeshBasicMaterial({transparent:true,toneMapped:false}));coreIcon.position.z=1.02;coreGroup.add(coreIcon);
+  const coreIcon=new THREE.Mesh(iconDisc(.96,.84),new THREE.MeshBasicMaterial({transparent:true,toneMapped:false}));coreIcon.position.z=1.02;coreGroup.add(coreIcon);
   const coreRing=new THREE.Mesh(new THREE.TorusGeometry(1.08,.07,20,128),goldMat);coreGroup.add(coreRing);
   const coreGlow=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex,color:FIRE,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false,opacity:.9}));coreGlow.scale.setScalar(4);coreGroup.add(coreGlow);
 
@@ -139,9 +142,9 @@ export async function createForge3D(container){
     const g=new THREE.Group();
     const ring=new THREE.Mesh(new THREE.TorusGeometry(1,.11,24,96),iron);g.add(ring);
     const band=new THREE.Mesh(new THREE.TorusGeometry(1.0,.035,12,96),goldMat);band.position.z=.06;g.add(band);
-    const face=new THREE.Mesh(new THREE.CircleGeometry(.9,72),new THREE.MeshStandardMaterial({color:0xffffff,metalness:0,roughness:.6,emissive:0xffffff,emissiveIntensity:.12,transparent:true}));
+    const face=new THREE.Mesh(iconDisc(.97,.84),new THREE.MeshStandardMaterial({color:0xffffff,metalness:0,roughness:.6,emissive:0xffffff,emissiveIntensity:.12,transparent:true}));
     face.position.z=.02;g.add(face);
-    const dome=new THREE.Mesh(new THREE.SphereGeometry(.9,48,24,0,Math.PI*2,0,Math.PI/2),glass);dome.rotation.x=Math.PI/2;dome.scale.z=.35;g.add(dome);
+    const dome=new THREE.Mesh(new THREE.SphereGeometry(.97,48,24,0,Math.PI*2,0,Math.PI/2),glass);dome.rotation.x=Math.PI/2;dome.scale.z=.35;g.add(dome);
     const glow=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex,color:FIRE,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false,opacity:0}));glow.scale.setScalar(2.6);glow.position.z=-.3;g.add(glow);
     const halo=new THREE.Mesh(new THREE.TorusGeometry(1.22,.03,8,96),new THREE.MeshBasicMaterial({color:FIRE,transparent:true,opacity:0,toneMapped:false}));g.add(halo);
     g.userData={ring,band,face,glow,halo,dome,cur:new THREE.Vector3(),tgt:new THREE.Vector3(),s:0,ts:1,iconUrl:undefined};

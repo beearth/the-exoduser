@@ -378,7 +378,7 @@
   function want3d(){return qs.get('skillForge3d')!=='0'}
   function load3d(){
     if(threeTried||!want3d())return;threeTried=true;
-    import('./skill-forge-3d.js?v=20261010-forge1').then(mod=>mod.createForge3D(parts.canvasWrap)).then(t=>{
+    import('./skill-forge-3d.js?v=20261010-forge2').then(mod=>mod.createForge3D(parts.canvasWrap)).then(t=>{
       three=t;if(three){el.classList.add('sf-3d');layout3d();}
     }).catch(err=>{root.console&&root.console.warn('[SkillForge] 3D unavailable, 2D fallback',err);el.classList.remove('sf-3d')});
   }
