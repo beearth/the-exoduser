@@ -1,5 +1,8 @@
 ﻿// 지옥의 길 — Norsk (no)
 const _NO={
+// ── 포션 퀵슬롯 폐지 (2026-10-10, 번역대상 No.3276) ──
+'스킬 슬롯':'Ferdighetsplasser',
+
 // ── Skill Forge (2026-10-10, 번역대상 No.3232~3275) ──
 '스킬 합성':'Ferdighetssmie',
 '비어 있음':'Tom',

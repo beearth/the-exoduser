@@ -34,7 +34,7 @@ if (fs.existsSync(_envPath)) {
   });
 }
 
-const PORT = 3333;
+const PORT = Number(process.env.PORT) || 3333; // forge-lab.cmd 등 별도 포트 실행 지원
 const ROOT = __dirname;
 const SAVE_DIR = path.join(ROOT, 'saves');
 const FAVICON_ICO_PATH = path.join(ROOT, 'favicon.ico');

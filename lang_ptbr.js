@@ -1,4 +1,7 @@
 ﻿const _PTBR={
+// ── 포션 퀵슬롯 폐지 (2026-10-10, 번역대상 No.3276) ──
+'스킬 슬롯':'Espaços de habilidade',
+
 // ── Skill Forge (2026-10-10, 번역대상 No.3232~3275) ──
 '스킬 합성':'Forja de habilidades',
 '비어 있음':'Vazio',

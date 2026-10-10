@@ -2688,7 +2688,7 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
   <div><b style="color:#fff">우클릭</b> — 마법 (탭=투사체, 홀드=빔)</div>
   <div><b style="color:#fff">Q</b> — 데빌포스 흡수</div>
   <div><b style="color:#fff">R</b> — 아이템 줍기</div>
-  <div><b style="color:#fff">1~4</b> — 물약 / 스킬슬롯</div>
+  <div><b style="color:#fff">1~4</b> — 스킬 슬롯</div>
   <div><b style="color:#fff">Z / L-CTRL</b> — 필살기 / CT스킬</div>
   <div><b style="color:#fff">L</b> — 스킬 슬롯 배정</div>
   <div><b style="color:#fff">K</b> — 스킬  |  <b style="color:#fff">C</b> — 능력치</div>
@@ -3130,7 +3130,7 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
         <div style="color:#886644;font-weight:700;margin-bottom:6px;font-size:.9rem;letter-spacing:.1em">이동 / 상호작용</div>
         <div style="margin-bottom:3px"><span class="tkey">W A S D</span> 이동</div>
         <div style="margin-bottom:3px"><span class="tkey">R</span> 아이템 줍기</div>
-        <div style="margin-bottom:3px"><span class="tkey">1~4</span> 물약 / 스킬슬롯</div>
+        <div style="margin-bottom:3px"><span class="tkey">1~4</span> 스킬 슬롯</div>
         <div style="margin-bottom:3px"><span class="tkey">F</span> 스킬슬롯 5</div>
         <div style="margin-bottom:3px"><span class="tkey">Z</span> 필살기</div>
         <div style="margin-bottom:3px"><span class="tkey">L-CTRL</span> CT스킬 (유령걸음/얼음보주)</div>
@@ -7876,7 +7876,7 @@ const _EN={
 '무기 공격':'Weapon Attack','칼등 처내기 (투사체 반사, 홀드 연사)':'Blade Parry (reflect, hold for rapid)',
 '연속 처내기':'Continuous Parry','영역 스킬 (폭풍소환 등)':'Area Skill (Vortex Summon etc)',
 '사슬 발사':'Chain Launch','마법 (탭=투사체, 홀드=빔)':'Magic (tap=projectile, hold=beam)',
-'데빌포스 흡수':'Devilforce Absorb','물약 / 스킬슬롯':'Potions / Skill Slots',
+'데빌포스 흡수':'Devilforce Absorb','스킬 슬롯':'Skill Slots',
 '스킬슬롯 5 / 필살기 / CT스킬':'Slot 5 / Ultimate / CT Skill','필살기 / CT스킬':'Ultimate / CT Skill','스킬 슬롯 배정':'Skill Slot Assign',
 // --- Loading screen ---
 '불러오는 중...':'Loading...','로딩중...':'Loading...',
@@ -12823,8 +12823,7 @@ addEventListener('keydown',e=>{
   // ═══ Digit1~4 스킬슬롯 (통합 디스패치) ═══
   // 꾹 누르고 있는 동안 aim 조준 키홀드 유지 — e.repeat 이벤트는 무시 (dispatch 재호출 시 aim 취소되는 버그 방지)
   for(let _di=0;_di<4;_di++){if(e.code==='Digit'+(_di+1)){
-    if(!e.repeat){if(SKILL_SLOTS[_di]){_dispatchSkillSlot(_di,'Digit'+(_di+1))}
-    else{useQuickslot(_di)}}
+    if(!e.repeat&&SKILL_SLOTS[_di])_dispatchSkillSlot(_di,'Digit'+(_di+1)); // 포션 퀵슬롯 폐지 — 포션은 자동 물약만
     e.preventDefault();
   }}
   // Space키: 얼음보주 진입 중 → 즉시 산산조각
@@ -27360,6 +27359,7 @@ function addPotion(type,count){
     addTxt(P.x,P.y-20,`+${count}`,'#cc66ff',25);
     return true;
   }
+  if(!POT[type])return false; // 포션 퀵슬롯 폐지(2026-10-10): HP만 존재(즉시 악의 전환), 그 외 종류는 버린다
   // Try to stack onto existing slot of same type
   for(let i=0;i<4;i++){if(QSLOTS[i].type===type){QSLOTS[i].count+=count;SFX.pickup();_requestQSRefresh();return true}}
   // Try to put in empty slot
@@ -27369,7 +27369,7 @@ function addPotion(type,count){
 }
 function updateQS(){
   for(let i=0;i<6;i++){
-    const el=$('qs'+i);if(!el)continue;const s=i<4?QSLOTS[i]:{type:null,count:0};
+    const el=$('qs'+i);if(!el)continue;const s={type:null,count:0}; // 포션 퀵슬롯 폐지 — 빈 칸 표시
     // ── 스킬 슬롯 우선 표시 ──
     const _ssid=SKILL_SLOTS[i];
     if(_ssid){
@@ -27689,10 +27689,8 @@ for(let i=0;i<4;i++){
       addTxt(P.x,P.y-20,_T('슬롯')+(i+1)+_T(' 스킬 해제'),'#ff6644',30);
       updateQS();dbSaveNow();return;
     }
-    qsAuto[i]=!qsAuto[i];
-    if(qsAuto[i])addTxt(P.x,P.y-20,_T('슬롯')+(i+1)+_T(' 자동 ON'),'#44ff88',30);
-    else addTxt(P.x,P.y-20,_T('슬롯')+(i+1)+_T(' 자동 OFF'),'#bbbbbb',30);
-    updateQS();
+    // 빈 칸: 스킬 배정 팝업 (구 포션 자동 ON/OFF 토글 폐지)
+    _openSkillSlotPop(i);
   });
   el.addEventListener('contextmenu',(ev)=>{
     ev.preventDefault();ev.stopPropagation();
@@ -44017,7 +44015,7 @@ function _openSkillSlotPop(slotIdx){
   pop.appendChild(_slotHead);
   // 해제 옵션
   const dNone=document.createElement('div');
-  const _unsetDesc=slotIdx<4?_L('포션 슬롯으로 복원','Restore to potion slot'):_L('슬롯 비우기','Clear slot');
+  const _unsetDesc=_L('슬롯 비우기','Clear slot');
   dNone.className='sk-opt';dNone.innerHTML='<span class="sk-opt-emoji">❌</span><span class="sk-opt-name">'+_T('해제')+'</span><span class="sk-opt-desc">'+_unsetDesc+'</span>';
   dNone.onclick=()=>{SKILL_SLOTS[slotIdx]=null;pop.style.display='none';updateQS();dbSaveNow();const _slL=(slotIdx<4?_L('슬롯','Slot ')+(slotIdx+1):slotIdx===4?_L('Space 슬롯','Space Slot'):_L('F슬롯','F Slot'));addTxt(P.x,P.y-20,_slL+_L(' 해제',' Unset'),'#bbbbbb',30)};
   pop.appendChild(dNone);
@@ -47965,7 +47963,7 @@ function _applyLang(){try{
   const _ho=$('keyGuide');if(_ho){
     const _ht=_ho.querySelector('div[style*="ffcc66"]');if(_ht)_ht.textContent=_T('⌨ 조작법');
     const _hDivs=_ho.querySelectorAll('div');
-    const _hMap=[['WASD','이동'],['좌클릭','무기 공격'],['E 탭','칼등 처내기 (투사체 반사, 홀드 연사)'],['E 홀드','연속 처내기'],['SPACE','분노 폭발 스킬 전용'],['F','영역 스킬 전용'],['SHIFT','사슬 발사'],['우클릭','마법 (탭=투사체, 홀드=빔)'],['Q','데빌포스 흡수'],['R','아이템 줍기'],['1~4','물약 / 스킬슬롯'],['Z / L-CTRL','필살기 / CT스킬'],['L','스킬 슬롯 배정'],['K','스킬'],['C','능력치'],['TAB','인벤토리'],['G','대장간'],['N','보관함'],['ESC','설정']];
+    const _hMap=[['WASD','이동'],['좌클릭','무기 공격'],['E 탭','칼등 처내기 (투사체 반사, 홀드 연사)'],['E 홀드','연속 처내기'],['SPACE','분노 폭발 스킬 전용'],['F','영역 스킬 전용'],['SHIFT','사슬 발사'],['우클릭','마법 (탭=투사체, 홀드=빔)'],['Q','데빌포스 흡수'],['R','아이템 줍기'],['1~4','스킬 슬롯'],['Z / L-CTRL','필살기 / CT스킬'],['L','스킬 슬롯 배정'],['K','스킬'],['C','능력치'],['TAB','인벤토리'],['G','대장간'],['N','보관함'],['ESC','설정']];
     _hDivs.forEach(d=>{const b=d.querySelector(':scope > b');if(!b||b.children.length)return;const k=b.dataset.ko||(b.dataset.ko=b.textContent);const m=_hMap.find(h=>h[0]===k);if(!m)return;b.textContent=_localizedControlKey(k);const tail=[...d.childNodes].find(n=>n.nodeType===3&&n.textContent.includes('—'));if(tail)tail.nodeValue=' — '+_T(m[1]);});
     const _lastD=_ho.querySelector('div[style*="color:#666"]');if(_lastD)_lastD.textContent=_T('클릭하면 닫힘');
   }
@@ -48022,7 +48020,7 @@ function _applyLang(){try{
     const _tuFt=_tu.querySelector('div[style*="554433"]');if(_tuFt&&(_tuFt.textContent.trim()==='아무 키를 눌러 시작'||_tuFt.dataset.ko==='아무 키를 눌러 시작')){_tuFt.dataset.ko='아무 키를 눌러 시작';_tuFt.textContent=_T('아무 키를 눌러 시작')}
     // Tutorial key descriptions
     const _tkMap={'좌클릭':'좌클릭','E 탭':'E 탭','E 홀드':'E 홀드','SHIFT':'SHIFT','SPACE':'SPACE','우클릭':'우클릭','Q':'Q','W A S D':'W A S D','R':'R','1~4':'1~4','F':'F','Z':'Z','L-CTRL':'L-CTRL','K':'K','C':'C','TAB':'TAB','G':'G','V':'V','L':'L','ESC':'ESC','F11':'F11'};
-    const _tkDesc={'무기 공격':'무기 공격','칼등 처내기':'칼등 처내기','연속 처내기':'연속 처내기','사슬 발사':'사슬 발사','영역스킬':'영역스킬','석궁자동':'석궁자동','마법 (탭=투사체, 홀드=빔)':'마법 (탭=투사체, 홀드=빔)','데빌포스 흡수 (HP→에너지)':'데빌포스 흡수 (HP→에너지)','이동':'이동','아이템 줍기':'아이템 줍기','물약 / 스킬슬롯':'물약 / 스킬슬롯','스킬슬롯 5':'스킬슬롯 5','필살기':'필살기','CT스킬 (유령걸음/얼음보주)':'CT스킬 (유령걸음/얼음보주)','스킬 (전투스킬 습득)':'스킬 (전투스킬 습득)','능력치 (스탯/패시브)':'능력치 (스탯/패시브)','인벤토리':'인벤토리','대장간 (제작)':'대장간 (제작)','창고':'창고','스킬 슬롯 배정':'스킬 슬롯 배정','설정':'설정','전체화면':'전체화면'};
+    const _tkDesc={'무기 공격':'무기 공격','칼등 처내기':'칼등 처내기','연속 처내기':'연속 처내기','사슬 발사':'사슬 발사','영역스킬':'영역스킬','석궁자동':'석궁자동','마법 (탭=투사체, 홀드=빔)':'마법 (탭=투사체, 홀드=빔)','데빌포스 흡수 (HP→에너지)':'데빌포스 흡수 (HP→에너지)','이동':'이동','아이템 줍기':'아이템 줍기','스킬 슬롯':'스킬 슬롯','스킬슬롯 5':'스킬슬롯 5','필살기':'필살기','CT스킬 (유령걸음/얼음보주)':'CT스킬 (유령걸음/얼음보주)','스킬 (전투스킬 습득)':'스킬 (전투스킬 습득)','능력치 (스탯/패시브)':'능력치 (스탯/패시브)','인벤토리':'인벤토리','대장간 (제작)':'대장간 (제작)','창고':'창고','스킬 슬롯 배정':'스킬 슬롯 배정','설정':'설정','전체화면':'전체화면'};
     const rows=new Set([..._tu.querySelectorAll('.tkey')].map(key=>key.parentElement));
     rows.forEach(d=>{
       for(const node of d.childNodes){if(node.nodeType!==3)continue;const ko=node._controlSource??(node._controlSource=node.textContent);node.nodeValue=ko.replace(/^(\s*)(.*?)(\s*)$/,(all,left,text,right)=>{let tr=_T(text);if(tr===text&&text.endsWith(' /'))tr=_T(text.slice(0,-2))+' /';return left+tr+right;});}
@@ -60882,6 +60880,29 @@ async function _startDemoNew(){
   if(G.stage===0&&!G._cutsceneDone){_startIntroCutscene();}
   else{G.on=true;P.iframes=300;if(G._bonfire)G._bonfire.t=300;}
 }
+// ═══ 스킬 합성 랩 (?forgelab=1, 로컬 전용 — 2026-10-10 "테스트 만랩서버 스킬합성 전용") ═══
+// 만렙·전 스킬 Lv1(숨김 포함)·합체 0·SP/악의 무한·정식판 합체 전부 허용·저장 없음(새로고침=처음 상태)·K 창 자동 오픈.
+// 실행: forge-lab.cmd (포트 3334) 또는 http://localhost:3333/game.html?forgelab=1&tutorial=0&resourceTutorial=0
+const _FORGE_LAB=(()=>{try{const q=new URLSearchParams(location.search);const local=location.hostname==='localhost'||location.hostname==='127.0.0.1'||location.protocol==='file:';return local&&q.get('forgelab')==='1'}catch(e){return false}})();
+function _forgeLabState(){
+  // 저장 차단: 실제 세이브 슬롯을 절대 덮지 않는다
+  dbSave=async function(){};dbSaveNow=function(){};dbSaveForce=function(){};
+  P.lv=1000;P.exp=0;P.maxExp=_calcMaxExp(1000);P.sp=99999;P.ap=200;
+  for(const s of SKILL_LIST)P.skills[s.id]=1;
+  P._fused={};
+  for(const k of Object.keys(_FUSE_PAIRS))_DEMO_FUSE_ALLOWED.add(k);
+  for(let i=0;i<SKILL_SLOTS.length;i++)SKILL_SLOTS[i]=null;
+  for(const h of ['maliceHunt','maliceStorm','maliceMortar','darkPillar','voidScarecrow','giantSlam2','holyDome']){const i=_findAutoSkillSlot(h);if(i>=0&&!SKILL_SLOTS.includes(h))SKILL_SLOTS[i]=h}
+  {const u=SKILL_LIST.find(s=>s.ult);ULT_SLOT=u?u.id:null}
+  P.activeLMBSk='whirlwind';P.activeRMBSk='maliceSwipe';P.activeChargeSk='chargeBoost';P.activeMagicSk='omniBeam';P.activeQSk='parry';P.activeCtSk='timeWarp';
+  G.mats=99999999;
+}
+function _forgeLabOpen(){
+  G.mats=99999999;P.sp=99999;
+  if(window._parryLesson)window._parryLesson.seen=true;
+  setTimeout(()=>{try{ens.length=0;if(G.spawnHoles)G.spawnHoles.length=0}catch(e){}openPanel('skillPanel');
+    if(typeof notify==='function')notify(_L('스킬 합성 랩 — 저장되지 않습니다 (새로고침하면 처음 상태)','Skill Forge Lab — nothing is saved (reload to reset)'))},700);
+}
 // ═══ 테스트 캐릭터 (localhost ?testchar=1 전용) ═══
 async function _startTestChar(){
   showBootLoading('TEST CHAR 로딩...');
@@ -60931,6 +60952,7 @@ async function _startTestChar(){
   P.activeCtSk='timeWarp';P.activeMagicSk='fireball';P.activeBowSk='needleShot';
   P.activeLMBSk='whirlwind';P.activeRMBSk='maliceSwipe';P.activeQSk='detonate';
   P.activeChargeSk='magicBlink';
+  if(_FORGE_LAB)_forgeLabState();
   // 장비: 전 슬롯 Tier4 전설
   const _tSlots=['weapon','shield','boots','armor','helmet','bow','gloves','pants','belt','necklace','ring1','ring2','cape','bracelet','headband','ossuary','headband2'];
   const _tWt={weapon:'sword',bow:'crossbow'};
@@ -60972,6 +60994,7 @@ async function _startTestChar(){
     const _wait=Math.max(0,3000-_elapsed)+200;
     setTimeout(()=>{if(_el){_el.style.opacity='0';_el.style.pointerEvents='none';}if(G.stage===0&&!G._cutsceneDone){_startIntroCutscene();}else{G.on=true;P.iframes=_MAP_QA_MODE?999999:120;}r();},_wait); // 데모 첫 시작 시 인트로 컷신 (2026-07-27)
   });
+  if(_FORGE_LAB)_forgeLabOpen();
 }
 // ═══ DB-aware startup ═══
 async function startGameFromDB(){
@@ -62410,6 +62433,8 @@ if(_EDITOR_MODE){
     },'*')}catch(e){}
     console.log('[EDITOR] ready stage='+G.stage+' map='+G.mw+'x'+G.mh);
   })();
+}else if(_FORGE_LAB){
+  _startTestChar(); // 스킬 합성 랩 — 로컬 웹은 데모 빌드로 판정되므로 데모 분기보다 먼저
 }else if(_DEMO_MODE){
   if(localStorage.getItem('_dLv500')==='1'){ // BIC도 일반 신규(Lv1+시네마틱)로 시작 (2026-07-27 유저 지시, 구: _BIC||...)
     localStorage.removeItem('_dLv500');
