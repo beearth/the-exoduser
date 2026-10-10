@@ -1,0 +1,35 @@
+{
+  "topicId": "skill-ki-slash",
+  "checkedAtUTC": "2026-10-10T11:25:39Z",
+  "checkout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+  "head": "9a4534b42f74093095ebc3364a25dd104e93b379",
+  "workingFileSha256": "5212e3a33c201eec08d09b132092c1a063fea88f36fccef494ea351f3565d2cd",
+  "workingFileDiffPresent": true,
+  "coreSectionsEqualToHead": true,
+  "observedScope": [
+    "game.html:6544 default left mouse weapon input",
+    "game.html:33692 normal attack combo caller",
+    "game.html:17195 projectile creation",
+    "game.html:17223 damage and scale",
+    "game.html:17235 charge and release",
+    "game.html:29665 default loadout",
+    "game.html:33994 ordinary update consumer",
+    "game.html:44836 English display name Ki Slash"
+  ],
+  "facts": [
+    "first two blade waves, third attack charge while left mouse held, release in current aim direction",
+    "third strike gets stronger with charge",
+    "existing feature; no new change since previous skill preparation"
+  ],
+  "excludedClaims": [
+    "all characters share this attack",
+    "exactly three discrete clicks required",
+    "new patch or new skill added",
+    "current public Steam demo applied",
+    "normal video or audio QA completed"
+  ],
+  "sourceAuditBy": "indie_devlog_patterns read-only scoped review",
+  "normalGameplayCaptureUsed": false,
+  "publicDemoApplied": "NOT_CONFIRMED",
+  "gameServerSaveChanged": false
+}

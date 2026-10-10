@@ -1,0 +1,51 @@
+{
+  "topicId": "skill-ki-slash",
+  "updatedAtKST": "2026-10-10 20:27",
+  "publicationScope": "기존 개발 기능 소개. 새 패치/공개 데모 적용/신규 녹화 아님.",
+  "youtube": {
+    "status": "PUBLIC_VERIFIED",
+    "url": "https://www.youtube.com/post/Ugkxpb6uTCUIAd3Ypj4_1vsi9cv2BKT-F93l",
+    "copyFile": "youtube-community-ki-slash.txt"
+  },
+  "threads": {
+    "status": "COPY_ONLY_OFFICIAL_LOGIN_UNCONFIRMED",
+    "textKO": "기검참은 1·2타의 검기 뒤 세 번째 공격을 충전합니다. 바로 놓아 공격을 잇거나, 더 모아 강한 3타를 노릴 수 있습니다. 빠른 연계와 더 강한 한 방, 어느 쪽이 취향인가요?\nEXODUSER 기존 스킬 개발 노트입니다. 공개 데모와 개발 내용은 다를 수 있습니다. 게임은 AI 보조 아트·음향을 사용합니다.\n무료 데모: https://store.steampowered.com/app/4749590"
+  },
+  "bluesky": {
+    "status": "COPY_ONLY_OFFICIAL_LOGIN_UNCONFIRMED",
+    "text": "Ki Slash: two blade waves, then a charged third strike. Release early or charge longer? EXODUSER development skill notes; public demo may differ. The game uses AI-assisted art/audio. Free demo: https://store.steampowered.com/app/4749590",
+    "characterCount": 236
+  },
+  "discord": {
+    "status": "COPY_ONLY_EXISTING_WEB_LOGIN_PENDING",
+    "textKO": "개발 노트 — 기검참\n1·2타의 검기 뒤 세 번째 공격을 충전하고, 좌클릭을 놓으면 조준 방향으로 검기를 발사합니다. 바로 놓아 연계를 이어갈지, 더 충전해 강한 3타를 노릴지 선택하는 스킬입니다.\n빠르게 잇는 공격과 오래 모으는 공격 중 어떤 쪽이 더 편하신가요? 조작 설명에서 헷갈리는 부분도 알려주세요.\n기존 기능 소개이며 새 공개 데모 패치 공지는 아닙니다. 개발 내용은 데모와 다를 수 있습니다. AI 보조 아트·음향을 사용합니다.\n스킬 노트: https://www.youtube.com/post/Ugkxpb6uTCUIAd3Ypj4_1vsi9cv2BKT-F93l\n무료 데모: https://store.steampowered.com/app/4749590"
+  },
+  "itch": {
+    "status": "COPY_ONLY_EXISTING_LOGIN_PENDING",
+    "title": "Skill notes: Ki Slash — choosing when to release",
+    "bodyEN": "Today we are introducing an existing skill in EXODUSER: HELL LORD. Ki Slash sends out blade waves on its first two attacks. During the third attack, holding the left mouse button charges the blade; releasing fires it in the current aim direction.\n\nThe choice is between releasing early to continue attacking and charging longer for a stronger third strike. Which rhythm feels more appealing to you? We would also like to hear whether this input description is clear.\n\nThis entry explains a development feature. It does not announce a new public-demo patch, and development content may differ from the public demo. No new gameplay recording is included in this post. We will keep the feature note separate from a future normal-play demonstration.\n\nThe game uses AI-assisted art and audio.\nRead the official skill note: https://www.youtube.com/post/Ugkxpb6uTCUIAd3Ypj4_1vsi9cv2BKT-F93l\nFree Steam demo: https://store.steampowered.com/app/4749590"
+  },
+  "instagramReelsAndYouTubeShorts": {
+    "status": "SHOT_PLAN_ONLY_NO_NEW_VIDEO",
+    "targetSeconds": 15,
+    "sequence": [
+      "normal 1-2 blade-wave attacks",
+      "hold left mouse during the third attack",
+      "release toward enemies and show the result"
+    ],
+    "required": [
+      "real normal gameplay footage",
+      "original game audio",
+      "visual and listening review",
+      "deliver review copy before automatic publication"
+    ],
+    "excluded": [
+      "old R1/V3/art teaser",
+      "staged footage presented as new natural play"
+    ]
+  },
+  "reddit": {
+    "status": "NO_PUBLICATION",
+    "reason": "기존 사람 확인 대기·재요청 없음. 실제 게시 전 해당 커뮤니티의 현행 규칙·AI 조건을 확인해야 함."
+  }
+}

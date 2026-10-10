@@ -1,0 +1,21 @@
+EXODUSER 스킬 노트 | 기검참
+세 번째 검기는 바로 놓을까, 더 모을까?
+
+기검참은 1·2타의 검기 뒤, 세 번째 공격을 충전할 수 있는 스킬입니다. 좌클릭을 유지해 충전하고, 놓으면 현재 조준 방향으로 검기를 발사합니다.
+일찍 놓아 공격을 이어갈지, 더 충전해 강한 3타를 노릴지 선택할 수 있습니다.
+
+빠른 연계와 더 강한 한 방, 어느 쪽이 취향인가요?
+
+Skill notes | Ki Slash
+Ki Slash fires blade waves on its first two attacks. During the third attack, hold the left mouse button to charge, then release to fire in your current aim direction.
+Release early to keep attacking, or charge longer for a stronger third strike. Which style do you prefer?
+
+이번 글은 개발 중인 게임의 기존 스킬 소개입니다. 공개 Steam 데모에 새로 적용된 패치 공지는 아니며, 개발 내용은 공개 데모와 다를 수 있습니다.
+This is a feature note from development. It does not announce a new public-demo patch; development content may differ from the demo.
+
+무료 데모: 공식 채널 프로필의 Steam 링크
+Free demo: use the Steam link on our channel profile.
+https://store.steampowered.com/app/4749590/EXODUSER_HELL_LORD/?utm_source=youtube&utm_medium=community&utm_campaign=skill_ki_slash_20261010
+
+AI 보조 아트·음향 사용 / The game uses AI-assisted art and audio.
+#EXODUSER #IndieGame #Devlog

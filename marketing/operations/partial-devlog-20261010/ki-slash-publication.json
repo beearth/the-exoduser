@@ -1,0 +1,35 @@
+{
+  "topicId": "skill-ki-slash",
+  "kind": "기존 스킬 소개 / 한영 글",
+  "publicationStatus": "PUBLIC_VERIFIED",
+  "channel": "YouTube Community",
+  "ownedChannel": "@fordeargamers",
+  "channelId": "UCOLkkQsaZ9ACuXdvPblhfiA",
+  "publishedAtKST": "2026-10-10 20:27",
+  "copyFile": "youtube-community-ki-slash.txt",
+  "copySha256": "1e0a570ef48fba90d611fe7d36b4cf4d850644c327c56fd75a7dcdabe4837d8c",
+  "sourceCheckout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+  "sourceHead": "9a4534b42f74093095ebc3364a25dd104e93b379",
+  "sourceCheckFile": "ki-slash-source-check.json",
+  "sourceScope": "기검참 기본 지급·정상 공격 consumer와 충전·해제 핵심 구간의 읽기 확인. 작업 파일에 기존 타인 변경이 있지만 해당 핵심 구간은 HEAD와 같음. 새 변경이나 Steam 배포의 근거가 아님.",
+  "publicDemoApplied": "NOT_CONFIRMED",
+  "newUpdateClaim": false,
+  "normalGameplayCaptureUsed": false,
+  "unapprovedTrailerUsed": false,
+  "publicUrl": "https://www.youtube.com/post/Ugkxpb6uTCUIAd3Ypj4_1vsi9cv2BKT-F93l",
+  "screenshots": [
+    {
+      "file": "youtube-ki-slash-post-public.jpg",
+      "sha256": "af937f033e3b779f2e69b843325b62b117e816f0b3884f7527b1217a8f3f5990",
+      "scope": "공개 상세 페이지·공식 작성자·한영 본문·개발/데모 구분. viewport 아래 AI 공개/해시태그는 AX 본문 확인"
+    }
+  ],
+  "verification": "공식 채널ID 소유자 편집 링크·공개 게시 기능 확인 → 새 게시 URL → 공개 상세 페이지 작성자·한영 본문 확인",
+  "linkDelivery": {
+    "postExternalLinkClickable": false,
+    "fallback": "기존 채널 프로필 Steam 링크 안내; 같은 일회성 인증 안내를 요청·우회하지 않음"
+  },
+  "nextMaterial": "skill-spike-trap 가시덫 개별 소개; 설치·적 접근·결과의18초 정상 시연안 및 한영 글",
+  "otherChannels": "채널별 맞춤 문안 준비; 기존 로그인/공식 소유 미확인 상태 유지·실제 추가 게시 없음",
+  "newVideoReady": false
+}
