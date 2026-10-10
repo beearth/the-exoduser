@@ -1,8 +1,8 @@
 {
   "schemaVersion": 2,
-  "updatedAtKST": "2026-10-10 23:24",
-  "updatedAtUTC": "2026-10-10T14:24:23Z",
-  "policy": "UI·스킬·캐릭터 제작 과정·부분 업데이트는 전체 보스전 완료와 관계없이 각 소재의 실제 근거·검수 범위에 맞게 독립 제작·게시한다. 전체 완료 대기는 보스전 대표 메인트레일러에만 적용한다.",
+  "updatedAtKST": "2026-10-10 23:40",
+  "updatedAtUTC": "2026-10-10T14:40:36Z",
+  "policy": "실제 화면·영상 또는 단계가 명확한 기존 원화와 간결한 설명을 함께 준비하고, 공개 전 완성 미리보기를 먼저 인도한다. 동일 영상의 확대 화면과 전체 화면을 동시에 복제하지 않으며 원화를 가리는 불투명 자막판을 사용하지 않는다. 매시간 점검을 긴 글 연속 게시 빈도로 해석하지 않는다. UI·스킬·캐릭터의 독립 준비를 계속하고 대표 보스전 완료 영상만 총괄 완료를 기다린다.",
   "developmentObservation": {
     "checkout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
     "commit": "9a4534b42f74093095ebc3364a25dd104e93b379",
@@ -10,9 +10,9 @@
     "lastCheckedAtUTC": "2026-10-10T14:24:23Z",
     "latestResult": "HEAD 동일. 지옥강타 1의 기존 발동·분노 강화/전량 소모·주변 범위·Space·이름을 좁게 확인해 한영 글 공개. 새 구현 변경·새 영상0. 총괄 cursor34의 별도 엔진 경사로/절벽/저장 검수는 보스전 전체 완료 아님."
   },
-  "nextMaterial": "skill-malice-orb 악의구 개별 소개·12초 정상 시연안",
-  "newPublicationReadyCount": 10,
-  "publicationEvidenceDate": "2026-10-08 기존 영상 게시 검증 + 2026-10-10 UI·기검참·가시덫·회복의 영역·지옥강타 1 글 공개 상세 검증",
+  "nextMaterial": "skill-malice-orb 악의구 실제 시연/스틸 확보와 공개 전 완성 미리보기; 원고와12초 시연안은 준비, 새 영상0",
+  "newPublicationReadyCount": 0,
+  "publicationEvidenceDate": "2026-10-08 과거 영상 게시 검증 + 2026-10-10 개발 글5건 공개 검증 및 Shorts A/B 비공개·공식 목록 제외 확인",
   "items": [
     {
       "id": "art-teaser-30",
@@ -85,17 +85,27 @@
       "id": "shorts-public",
       "name": "패링·얼음오브 Shorts A/B",
       "kind": "기존 게시",
-      "state": "2편 YouTube 공개",
+      "state": "두 화면 구성 품질 거부·2편 PRIVATE·공식 재생목록 제외",
       "ready": false,
-      "action": "기존 고레벨 staged 시연 이력. 신버전 보스전 영상으로 소개하지 않음",
+      "action": "재공개 금지. 같은 소스를 두 화면으로 복제하지 않는 한 화면 수정 검토본을 먼저 시청/청취·사용자 미리보기 검수",
       "demo": "공개 데모 동일 빌드 단정 불가",
       "urls": [
         "https://youtube.com/shorts/50eBpMxlkP0",
         "https://youtube.com/shorts/NBOcxJgM-pA"
       ],
       "evidence": [
-        "/Users/fordeargamers/.codex/worktrees/marketing-gameplay-20261008/the-exoduser/marketing/releases/20261008/deployment/publication-results.json"
-      ]
+        "/Users/fordeargamers/.codex/worktrees/marketing-gameplay-20261008/the-exoduser/marketing/releases/20261008/deployment/publication-results.json",
+        "marketing/operations/shorts-quality-withdrawal-20261010/withdrawal.json"
+      ],
+      "activePublicURLs": [],
+      "withdrawnURLs": [
+        "https://youtube.com/shorts/50eBpMxlkP0",
+        "https://youtube.com/shorts/NBOcxJgM-pA"
+      ],
+      "publicationStateByVideo": {
+        "50eBpMxlkP0": "PRIVATE; official playlist removed; saved verified",
+        "NBOcxJgM-pA": "PRIVATE; official playlist removed; saved verified"
+      }
     },
     {
       "id": "druid-poison",
@@ -282,7 +292,7 @@
       "name": "흑철·청동 보석 소켓",
       "kind": "UI 부분 개발 소식",
       "state": "개별 문안·시연안 준비",
-      "ready": true,
+      "ready": false,
       "readyFormat": "설명 글/기존 원화 소개",
       "action": "기존 소켓 PNG의 재질 소개 후 실제 장비창 사용 화면 확보",
       "demo": "미확인",
@@ -301,7 +311,9 @@
       "sourceMedia": [
         "/Users/fordeargamers/.codex/worktrees/marketing-gameplay-20261008/the-exoduser/img/ui/gem_socket_v1.png"
       ],
-      "sourceMediaScope": "UI 아트 원본 PNG, 인게임 캡처가 아님"
+      "sourceMediaScope": "UI 아트 원본 PNG, 인게임 캡처가 아님",
+      "draftPrepared": true,
+      "publicationPreviewState": "시각 묶음·완성 미리보기 검수 대기"
     },
     {
       "id": "ui-ch1-region-goals",
@@ -335,7 +347,7 @@
       "name": "변성술사",
       "kind": "캐릭터 콘셉트 원화 소개",
       "state": "기존 공개 원화·개별 소개 문안 준비",
-      "ready": true,
+      "ready": false,
       "readyFormat": "기존 원화+개발 설명 글",
       "action": "원본 원화와 무기·실루엣 설명으로 독립 소개. 미검수 모션 영상 사용하지 않음",
       "demo": "플레이 가능한 신규 직업·공개 데모 연결 미확인",
@@ -352,14 +364,16 @@
       "newUpdateClaim": false,
       "videoReady": false,
       "copyKO": "변성술사 캐릭터 개발 콘셉트: 푸른 코어 장갑·순수 에너지 낫·활 원화 연구. 원화 제작 과정을 소개하며 플레이 가능한 신규 직업 출시 공지가 아닙니다.\n개발 중인 내용은 공개 데모와 다를 수 있습니다. 무료 데모는 공식 채널 프로필의 Steam 링크에서 확인할 수 있습니다. AI 보조 아트·음향을 사용합니다.",
-      "copyEN": "변성술사 character art preview. A concept study of the blue core gauntlet, energy scythe and bow. This is a concept-art preview, not an announcement of a playable new class.\nDevelopment content may differ from the public demo. The free demo is linked from our official channel profile. The game uses AI-assisted art and audio."
+      "copyEN": "변성술사 character art preview. A concept study of the blue core gauntlet, energy scythe and bow. This is a concept-art preview, not an announcement of a playable new class.\nDevelopment content may differ from the public demo. The free demo is linked from our official channel profile. The game uses AI-assisted art and audio.",
+      "draftPrepared": true,
+      "publicationPreviewState": "시각 묶음·완성 미리보기 검수 대기"
     },
     {
       "id": "character-hell-hunter-art",
       "name": "헬 헌터",
       "kind": "캐릭터 콘셉트 원화 소개",
       "state": "기존 공개 원화·개별 소개 문안 준비",
-      "ready": true,
+      "ready": false,
       "readyFormat": "기존 원화+개발 설명 글",
       "action": "원본 원화와 무기·실루엣 설명으로 독립 소개. 미검수 모션 영상 사용하지 않음",
       "demo": "플레이 가능한 신규 직업·공개 데모 연결 미확인",
@@ -376,14 +390,16 @@
       "newUpdateClaim": false,
       "videoReady": false,
       "copyKO": "헬 헌터 캐릭터 개발 콘셉트: 실린더 총기·견착·절제된 붉은 천의 원화. 원화 제작 과정을 소개하며 플레이 가능한 신규 직업 출시 공지가 아닙니다.\n개발 중인 내용은 공개 데모와 다를 수 있습니다. 무료 데모는 공식 채널 프로필의 Steam 링크에서 확인할 수 있습니다. AI 보조 아트·음향을 사용합니다.",
-      "copyEN": "헬 헌터 character art preview. A concept study of the cylinder firearm, braced stance and restrained red cloth. This is a concept-art preview, not an announcement of a playable new class.\nDevelopment content may differ from the public demo. The free demo is linked from our official channel profile. The game uses AI-assisted art and audio."
+      "copyEN": "헬 헌터 character art preview. A concept study of the cylinder firearm, braced stance and restrained red cloth. This is a concept-art preview, not an announcement of a playable new class.\nDevelopment content may differ from the public demo. The free demo is linked from our official channel profile. The game uses AI-assisted art and audio.",
+      "draftPrepared": true,
+      "publicationPreviewState": "시각 묶음·완성 미리보기 검수 대기"
     },
     {
       "id": "character-arcane-lancer-art",
       "name": "아케인 랜서",
       "kind": "캐릭터 콘셉트 원화 소개",
       "state": "기존 공개 원화·개별 소개 문안 준비",
-      "ready": true,
+      "ready": false,
       "readyFormat": "기존 원화+개발 설명 글",
       "action": "원본 원화와 무기·실루엣 설명으로 독립 소개. 미검수 모션 영상 사용하지 않음",
       "demo": "플레이 가능한 신규 직업·공개 데모 연결 미확인",
@@ -400,7 +416,9 @@
       "newUpdateClaim": false,
       "videoReady": false,
       "copyKO": "아케인 랜서 캐릭터 개발 콘셉트: 창과 고리·갑옷 실루엣의 원화. 원화 제작 과정을 소개하며 플레이 가능한 신규 직업 출시 공지가 아닙니다.\n개발 중인 내용은 공개 데모와 다를 수 있습니다. 무료 데모는 공식 채널 프로필의 Steam 링크에서 확인할 수 있습니다. AI 보조 아트·음향을 사용합니다.",
-      "copyEN": "아케인 랜서 character art preview. A concept study of the spear, ring elements and armor silhouette. This is a concept-art preview, not an announcement of a playable new class.\nDevelopment content may differ from the public demo. The free demo is linked from our official channel profile. The game uses AI-assisted art and audio."
+      "copyEN": "아케인 랜서 character art preview. A concept study of the spear, ring elements and armor silhouette. This is a concept-art preview, not an announcement of a playable new class.\nDevelopment content may differ from the public demo. The free demo is linked from our official channel profile. The game uses AI-assisted art and audio.",
+      "draftPrepared": true,
+      "publicationPreviewState": "시각 묶음·완성 미리보기 검수 대기"
     },
     {
       "id": "skill-ki-slash",
@@ -517,7 +535,7 @@
       "skillId": "fireball",
       "kind": "기존 스킬 개별 소개",
       "state": "현행 소스 동작 확인·한영 문안·짧은 시연안 준비",
-      "ready": true,
+      "ready": false,
       "readyFormat": "기능 소개 글; 인게임 영상은 신규 정상 시연 필요",
       "action": "한 스킬·한 판단·한 결과의 짧은 시연. 기존 staged/미승인 티저를 새 정상 영상으로 사용하지 않음",
       "demo": "현행 소스 지급/학습 경로 확인; Steam 배포 동일성·실행 시연 미확인",
@@ -533,7 +551,9 @@
       "shotSequence": "거리 유지 → 구체 발사 → 범위폭발 → 접근",
       "targetSeconds": 12,
       "copyKO": "EXODUSER 스킬 소개 | 악의구\n붙기 전에 군집을 흔든다\n거리 유지 → 구체 발사 → 범위폭발 → 접근의 흐름을 소개합니다. 현재 개발 소스의 기능 소개이며 이번에 새로 배포한 패치 공지가 아닙니다.\n개발 중인 내용은 공개 데모와 다를 수 있습니다. 무료 데모는 공식 채널 프로필의 Steam 링크에서 확인할 수 있습니다. AI 보조 아트·음향을 사용합니다.",
-      "copyEN": "EXODUSER skill spotlight | 악의구\nSend an orb into a group before closing the distance.\nA feature spotlight from the current development source, not a newly released patch announcement.\nDevelopment content may differ from the public demo. The free demo is linked from our official channel profile. The game uses AI-assisted art and audio."
+      "copyEN": "EXODUSER skill spotlight | 악의구\nSend an orb into a group before closing the distance.\nA feature spotlight from the current development source, not a newly released patch announcement.\nDevelopment content may differ from the public demo. The free demo is linked from our official channel profile. The game uses AI-assisted art and audio.",
+      "draftPrepared": true,
+      "publicationPreviewState": "시각 묶음·완성 미리보기 검수 대기"
     },
     {
       "id": "skill-whirlwind",
@@ -541,7 +561,7 @@
       "skillId": "whirlwind",
       "kind": "기존 스킬 개별 소개",
       "state": "현행 소스 동작 확인·한영 문안·짧은 시연안 준비",
-      "ready": true,
+      "ready": false,
       "readyFormat": "기능 소개 글; 인게임 영상은 신규 정상 시연 필요",
       "action": "한 스킬·한 판단·한 결과의 짧은 시연. 기존 staged/미승인 티저를 새 정상 영상으로 사용하지 않음",
       "demo": "현행 소스 지급/학습 경로 확인; Steam 배포 동일성·실행 시연 미확인",
@@ -557,7 +577,9 @@
       "shotSequence": "군집 진입 → 이동하며 회전 → ST 소모를 보고 해제·이탈",
       "targetSeconds": 15,
       "copyKO": "EXODUSER 스킬 소개 | 회전참\n얼마나 오래 돌 것인가?\n군집 진입 → 이동하며 회전 → ST 소모를 보고 해제·이탈의 흐름을 소개합니다. 현재 개발 소스의 기능 소개이며 이번에 새로 배포한 패치 공지가 아닙니다.\n개발 중인 내용은 공개 데모와 다를 수 있습니다. 무료 데모는 공식 채널 프로필의 Steam 링크에서 확인할 수 있습니다. AI 보조 아트·음향을 사용합니다.",
-      "copyEN": "EXODUSER skill spotlight | 회전참\nMove through the group while spinning, then stop before stamina runs out.\nA feature spotlight from the current development source, not a newly released patch announcement.\nDevelopment content may differ from the public demo. The free demo is linked from our official channel profile. The game uses AI-assisted art and audio."
+      "copyEN": "EXODUSER skill spotlight | 회전참\nMove through the group while spinning, then stop before stamina runs out.\nA feature spotlight from the current development source, not a newly released patch announcement.\nDevelopment content may differ from the public demo. The free demo is linked from our official channel profile. The game uses AI-assisted art and audio.",
+      "draftPrepared": true,
+      "publicationPreviewState": "시각 묶음·완성 미리보기 검수 대기"
     },
     {
       "id": "skill-malice-mortar",
@@ -565,7 +587,7 @@
       "skillId": "maliceMortar",
       "kind": "기존 스킬 개별 소개",
       "state": "현행 소스 동작 확인·한영 문안·짧은 시연안 준비",
-      "ready": true,
+      "ready": false,
       "readyFormat": "기능 소개 글; 인게임 영상은 신규 정상 시연 필요",
       "action": "한 스킬·한 판단·한 결과의 짧은 시연. 기존 staged/미승인 티저를 새 정상 영상으로 사용하지 않음",
       "demo": "현행 소스 지급/학습 경로 확인; Steam 배포 동일성·실행 시연 미확인",
@@ -582,7 +604,9 @@
       "shotSequence": "조준 거리 변화 → 해제·설치 → 흡인된 적에게 후속 공격",
       "targetSeconds": 20,
       "copyKO": "EXODUSER 스킬 소개 | 폭풍소환\n적이 모일 지점을 고른다\n조준 거리 변화 → 해제·설치 → 흡인된 적에게 후속 공격의 흐름을 소개합니다. 현재 개발 소스의 기능 소개이며 이번에 새로 배포한 패치 공지가 아닙니다.\n개발 중인 내용은 공개 데모와 다를 수 있습니다. 무료 데모는 공식 채널 프로필의 Steam 링크에서 확인할 수 있습니다. AI 보조 아트·음향을 사용합니다.",
-      "copyEN": "EXODUSER skill spotlight | 폭풍소환\nPick where enemies will gather, aim the placement and follow up on the pull.\nA feature spotlight from the current development source, not a newly released patch announcement.\nDevelopment content may differ from the public demo. The free demo is linked from our official channel profile. The game uses AI-assisted art and audio."
+      "copyEN": "EXODUSER skill spotlight | 폭풍소환\nPick where enemies will gather, aim the placement and follow up on the pull.\nA feature spotlight from the current development source, not a newly released patch announcement.\nDevelopment content may differ from the public demo. The free demo is linked from our official channel profile. The game uses AI-assisted art and audio.",
+      "draftPrepared": true,
+      "publicationPreviewState": "시각 묶음·완성 미리보기 검수 대기"
     },
     {
       "id": "skill-omni-beam",
@@ -590,7 +614,7 @@
       "skillId": "omniBeam",
       "kind": "기존 스킬 개별 소개",
       "state": "현행 소스 동작 확인·한영 문안·짧은 시연안 준비",
-      "ready": true,
+      "ready": false,
       "readyFormat": "기능 소개 글; 인게임 영상은 신규 정상 시연 필요",
       "action": "한 스킬·한 판단·한 결과의 짧은 시연. 기존 staged/미승인 티저를 새 정상 영상으로 사용하지 않음",
       "demo": "현행 소스 지급/학습 경로 확인; Steam 배포 동일성·실행 시연 미확인",
@@ -606,7 +630,9 @@
       "shotSequence": "접근선 잡기 → 광선 유지 → MP 소모를 보고 끊기",
       "targetSeconds": 15,
       "copyKO": "EXODUSER 스킬 소개 | 멸살광선\n적을 한 줄로 맞춘다\n접근선 잡기 → 광선 유지 → MP 소모를 보고 끊기의 흐름을 소개합니다. 현재 개발 소스의 기능 소개이며 이번에 새로 배포한 패치 공지가 아닙니다.\n개발 중인 내용은 공개 데모와 다를 수 있습니다. 무료 데모는 공식 채널 프로필의 Steam 링크에서 확인할 수 있습니다. AI 보조 아트·음향을 사용합니다.",
-      "copyEN": "EXODUSER skill spotlight | 멸살광선\nLine up approaching enemies, maintain the beam and watch the mana cost.\nA feature spotlight from the current development source, not a newly released patch announcement.\nDevelopment content may differ from the public demo. The free demo is linked from our official channel profile. The game uses AI-assisted art and audio."
+      "copyEN": "EXODUSER skill spotlight | 멸살광선\nLine up approaching enemies, maintain the beam and watch the mana cost.\nA feature spotlight from the current development source, not a newly released patch announcement.\nDevelopment content may differ from the public demo. The free demo is linked from our official channel profile. The game uses AI-assisted art and audio.",
+      "draftPrepared": true,
+      "publicationPreviewState": "시각 묶음·완성 미리보기 검수 대기"
     },
     {
       "id": "skill-dark-pillar",
@@ -614,7 +640,7 @@
       "skillId": "darkPillar",
       "kind": "기존 스킬 개별 소개",
       "state": "현행 소스 동작 확인·한영 문안·짧은 시연안 준비",
-      "ready": true,
+      "ready": false,
       "readyFormat": "기능 소개 글; 인게임 영상은 신규 정상 시연 필요",
       "action": "한 스킬·한 판단·한 결과의 짧은 시연. 기존 staged/미승인 티저를 새 정상 영상으로 사용하지 않음",
       "demo": "현행 소스 지급/학습 경로 확인; Steam 배포 동일성·실행 시연 미확인",
@@ -629,7 +655,9 @@
       "shotSequence": "적 접근 → 현재 위치에 설치 → 순차 기둥 → 영역 내 교전",
       "targetSeconds": 18,
       "copyKO": "EXODUSER 스킬 소개 | 악의기둥\n자신이 선 자리를 전장으로 만든다\n적 접근 → 현재 위치에 설치 → 순차 기둥 → 영역 내 교전의 흐름을 소개합니다. 현재 개발 소스의 기능 소개이며 이번에 새로 배포한 패치 공지가 아닙니다.\n개발 중인 내용은 공개 데모와 다를 수 있습니다. 무료 데모는 공식 채널 프로필의 Steam 링크에서 확인할 수 있습니다. AI 보조 아트·음향을 사용합니다.",
-      "copyEN": "EXODUSER skill spotlight | 악의기둥\nTurn your current position into an area of sequential pillars.\nA feature spotlight from the current development source, not a newly released patch announcement.\nDevelopment content may differ from the public demo. The free demo is linked from our official channel profile. The game uses AI-assisted art and audio."
+      "copyEN": "EXODUSER skill spotlight | 악의기둥\nTurn your current position into an area of sequential pillars.\nA feature spotlight from the current development source, not a newly released patch announcement.\nDevelopment content may differ from the public demo. The free demo is linked from our official channel profile. The game uses AI-assisted art and audio.",
+      "draftPrepared": true,
+      "publicationPreviewState": "시각 묶음·완성 미리보기 검수 대기"
     },
     {
       "id": "skill-thunder-stake",
@@ -637,7 +665,7 @@
       "skillId": "thunderStake",
       "kind": "기존 스킬 개별 소개",
       "state": "현행 소스 동작 확인·한영 문안·짧은 시연안 준비",
-      "ready": true,
+      "ready": false,
       "readyFormat": "기능 소개 글; 인게임 영상은 신규 정상 시연 필요",
       "action": "한 스킬·한 판단·한 결과의 짧은 시연. 기존 staged/미승인 티저를 새 정상 영상으로 사용하지 않음",
       "demo": "현행 소스 지급/학습 경로 확인; Steam 배포 동일성·실행 시연 미확인",
@@ -654,14 +682,16 @@
       "shotSequence": "두 지점 설치 → 연결 아크 → 적의 선 통과",
       "targetSeconds": 20,
       "copyKO": "EXODUSER 스킬 소개 | 뇌전창\n두 창 사이에 공격선을 만든다\n두 지점 설치 → 연결 아크 → 적의 선 통과의 흐름을 소개합니다. 현재 개발 소스의 기능 소개이며 이번에 새로 배포한 패치 공지가 아닙니다.\n개발 중인 내용은 공개 데모와 다를 수 있습니다. 무료 데모는 공식 채널 프로필의 Steam 링크에서 확인할 수 있습니다. AI 보조 아트·음향을 사용합니다.",
-      "copyEN": "EXODUSER skill spotlight | 뇌전창\nPlace two stakes and make the line between them part of the battlefield.\nA feature spotlight from the current development source, not a newly released patch announcement.\nDevelopment content may differ from the public demo. The free demo is linked from our official channel profile. The game uses AI-assisted art and audio."
+      "copyEN": "EXODUSER skill spotlight | 뇌전창\nPlace two stakes and make the line between them part of the battlefield.\nA feature spotlight from the current development source, not a newly released patch announcement.\nDevelopment content may differ from the public demo. The free demo is linked from our official channel profile. The game uses AI-assisted art and audio.",
+      "draftPrepared": true,
+      "publicationPreviewState": "시각 묶음·완성 미리보기 검수 대기"
     }
   ],
   "channels": [
     {
       "name": "YouTube",
-      "state": "기존 공개 영상4편·검토용 일부 공개 별도 + 개발 글5건(UI1·스킬4) 실제 게시",
-      "next": "개별 스킬/캐릭터/작은UI 개발 소식 계속 운영; 기존 미승인 영상 자동 공개 금지"
+      "state": "기존 공개 영상2편·Shorts2편 비공개 회수·검토용 일부 공개 별도 + 개발 글5건(UI1·스킬4)",
+      "next": "실제 시각 자료와 간결한 설명의 완성 미리보기 먼저. 긴 글 자동 연속 게시 중단; 미승인 영상 자동 공개 금지"
     },
     {
       "name": "Steam 상점",
@@ -715,5 +745,12 @@
   "contentSeries": "marketing/operations/partial-devlog-20261010/content-series.json",
   "catalogRecordCount": 31,
   "countsScope": "기존 묶음과 독립 소개 항목을 함께 보존한31개 기록; 독립 추가 소재18건(UI5·캐릭터3·스킬10)",
-  "developmentPostCount": 5
+  "developmentPostCount": 5,
+  "latestQualityAction": {
+    "kind": "Shorts A/B 비공개 회수",
+    "source": "marketing/operations/shorts-quality-withdrawal-20261010/withdrawal.json",
+    "publicVideoCount": 2
+  },
+  "publicationPreviewGate": "완성 시각 자료+간결한 문안 인도·화면 구성·시청/청취·사용자 검수 전 자동 공개 금지",
+  "readyCountScope": "공개 검수 완료0; 원고/원화 준비10은 유지하며 실제 영상·완성 시각 묶음 및 사용자 미리보기 검수와 구별"
 }

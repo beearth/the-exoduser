@@ -1,0 +1,56 @@
+{
+  "updatedAtUTC": "2026-10-10T14:40:36Z",
+  "updatedAtKST": "2026-10-10 23:40",
+  "channelId": "UCOLkkQsaZ9ACuXdvPblhfiA",
+  "authorization": "사용자: 왜저따구야 내려라. 같은 구성이 확인된 A도 품질 수정 범위에서 함께 비공개 회수",
+  "reason": "same video duplicated as central enlarged detail and bottom context; user rejected confusing split composition",
+  "videos": [
+    {
+      "videoId": "50eBpMxlkP0",
+      "title": "Parry, Reflect, Strike Back | EXODUSER: HELL LORD",
+      "url": "https://youtube.com/shorts/50eBpMxlkP0",
+      "studioUrl": "https://studio.youtube.com/video/50eBpMxlkP0/edit",
+      "previousVisibility": "PUBLIC",
+      "currentVisibility": "PRIVATE",
+      "officialPlaylistRemoved": true,
+      "savedVerified": true,
+      "verification": "YouTube Studio private selected; official playlist selection empty; all changes saved; Save disabled",
+      "file": "/Users/fordeargamers/the-exoduser/output/FDG_FINAL_RELEASE_20261008/videos/EXODUSER_SHORTS_A_16S_1080P30.mp4",
+      "sha256": "7708d5c92f62896c3a70e77c48d299605e404d94d32c2e207fee49d7a1fac439",
+      "bytes": 18747491,
+      "proof": "marketing/operations/shorts-quality-withdrawal-20261010/youtube-shorts-a-private.jpg",
+      "proofSHA256": "3f3cf9d1e7555da5c3a4f40edbf4ed02f099e5e577b7b6c20a079050faa249d3"
+    },
+    {
+      "videoId": "NBOcxJgM-pA",
+      "title": "Ice Orbs Against the Crowd | EXODUSER: HELL LORD",
+      "url": "https://youtube.com/shorts/NBOcxJgM-pA",
+      "studioUrl": "https://studio.youtube.com/video/NBOcxJgM-pA/edit",
+      "previousVisibility": "PUBLIC",
+      "currentVisibility": "PRIVATE",
+      "officialPlaylistRemoved": true,
+      "savedVerified": true,
+      "verification": "YouTube Studio private selected; official playlist selection empty; all changes saved; Save disabled",
+      "file": "/Users/fordeargamers/the-exoduser/output/FDG_FINAL_RELEASE_20261008/videos/EXODUSER_SHORTS_B_26S_1080P30.mp4",
+      "sha256": "193b3d4f894ee3bd287a453366d583c9979257437c1cba53b40cced553241be2",
+      "bytes": 34523684,
+      "proof": "marketing/operations/shorts-quality-withdrawal-20261010/youtube-shorts-b-private.jpg",
+      "proofSHA256": "89e7842cc20cb435a57464d61d4636748dadaf1d2aea6246fa7d390da51175df"
+    }
+  ],
+  "permanentDeletion": false,
+  "reupload": false,
+  "newGameCapture": false,
+  "gameCodeServerSaveChanges": false,
+  "remainingPublicVideoCount": 2,
+  "remainingPublicVideoIDs": [
+    "r_TTBUrA6p4",
+    "i7ouSzivg4U"
+  ],
+  "countScope": "prior verified playlist4 minus two Studio-verified removals; remaining videos not re-audited this run",
+  "existingCommunityPostCount": 5,
+  "communityPostsRemoved": false,
+  "policy": "실제 화면·영상 또는 단계가 명확한 기존 원화와 간결한 설명을 함께 준비하고, 공개 전 완성 미리보기를 먼저 인도한다. 동일 영상의 확대 화면과 전체 화면을 동시에 복제하지 않으며 원화를 가리는 불투명 자막판을 사용하지 않는다. 매시간 점검을 긴 글 연속 게시 빈도로 해석하지 않는다. UI·스킬·캐릭터의 독립 준비를 계속하고 대표 보스전 완료 영상만 총괄 완료를 기다린다.",
+  "nextMaterial": "skill-malice-orb 악의구 실제 시연/스틸 확보와 공개 전 완성 미리보기; 원고와12초 시연안은 준비, 새 영상0",
+  "sourceLayoutAudit": "marketing/operations/shorts-quality-withdrawal-20261010/source-layout-audit.json"
+}

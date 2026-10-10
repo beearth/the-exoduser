@@ -1,0 +1,34 @@
+{
+  "checkedAtUTC": "2026-10-10T14:40:36Z",
+  "compositionSource": "tools/marketing_edit_20261008.jsx",
+  "sourceLines": [
+    65,
+    140,
+    141,
+    142,
+    143,
+    144,
+    145,
+    146
+  ],
+  "planningSource": "docs/13출시·마케팅/VIDEO_EDIT_PLAN_20261008.md:85",
+  "cause": "vertical gameplayPanel duplicates the same source and trimStart into center detail and bottom context views",
+  "center": {
+    "x": 0,
+    "y": 445,
+    "width": 1080,
+    "height": 880,
+    "fit": "cover"
+  },
+  "bottom": {
+    "x": 120,
+    "y": 1390,
+    "width": 840,
+    "height": 472,
+    "fit": "contain"
+  },
+  "bothShortsAffected": true,
+  "ffmpegPrepFilter": "fps=30; did not introduce split layout",
+  "fixPlan": "single gameplay view; preserve readable attack, player response and outcome; transparent concise text; actual original sound; visual/watch/listen review and user preview before publish",
+  "newRenderCreated": false
+}

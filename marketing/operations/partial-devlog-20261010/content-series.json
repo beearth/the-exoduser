@@ -1,6 +1,6 @@
 {
   "createdAtKST": "2026-10-10 19:47",
-  "policy": "각 소재를 전체 보스전 완료와 관계없이 독립 제작한다. 기존 스킬 소개를 새 패치로, 콘셉트 원화를 플레이 가능한 직업으로 표기하지 않는다.",
+  "policy": "실제 화면·영상 또는 단계가 명확한 기존 원화와 간결한 설명을 함께 준비하고, 공개 전 완성 미리보기를 먼저 인도한다. 동일 영상의 확대 화면과 전체 화면을 동시에 복제하지 않으며 원화를 가리는 불투명 자막판을 사용하지 않는다. 매시간 점검을 긴 글 연속 게시 빈도로 해석하지 않는다. UI·스킬·캐릭터의 독립 준비를 계속하고 대표 보스전 완료 영상만 총괄 완료를 기다린다.",
   "publishedTopic": "https://www.youtube.com/post/UgkxfJtDWBoJglf9RWKueZFsGwOBIRBYWULb",
   "nextTopic": "skill-malice-orb",
   "items": [
@@ -454,7 +454,10 @@
     "실행 중 사용자 게임/세이브/서버 조작·재시작 금지",
     "정상 시연 입력만 사용; 자원·적·레벨 변경으로 자연 플레이처럼 만들지 않음",
     "인게임 영상은 실제 화면·원음 사용",
-    "기존 R1/V3/30초 검토본 사용자 미승인 파일 재사용·자동 게시 금지"
+    "기존 R1/V3/30초 검토본 사용자 미승인 파일 재사용·자동 게시 금지",
+    "같은 소스·시점의 확대 화면+전체 화면 동시 복제 금지",
+    "한 화면에서 공격 예고→대응→결과를 읽을 수 있는 구성과 원음 시청/청취 검수",
+    "매시간 점검을 긴 글 연속 게시 빈도로 해석하지 않음"
   ],
   "knownDescriptionDifferences": [
     "기본 마법 입력은 우클릭, 일부 옛 스킬 설명의 E는 사용하지 않음",
@@ -466,7 +469,7 @@
     "신규3종은 선택창 잠금·comingSoon. 전투 캐릭터 목록과 생성·저장 연결 미확인",
     "FDG reference-motion24는 gameplayApplied/modelAvailable=false; 공개 콘셉트 원화와 분리"
   ],
-  "updatedAtKST": "2026-10-10 23:24",
+  "updatedAtKST": "2026-10-10 23:40",
   "latestPublishedTopic": "https://www.youtube.com/post/UgkxrTYuXuoASizWPYhlrpJyCF-7pcSqJT8-",
   "publicationHistory": [
     {
@@ -494,5 +497,6 @@
       "url": "https://www.youtube.com/post/UgkxrTYuXuoASizWPYhlrpJyCF-7pcSqJT8-",
       "evidence": "giant-slam-publication.json"
     }
-  ]
+  ],
+  "publicationPreviewGate": "시각 자료+간결한 설명의 완성 미리보기 인도·검수 전 자동 게시 금지"
 }
