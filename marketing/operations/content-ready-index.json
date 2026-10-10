@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
-  "updatedAtKST": "2026-10-10 23:40",
-  "updatedAtUTC": "2026-10-10T14:40:36Z",
+  "updatedAtKST": "2026-10-10 23:52",
+  "updatedAtUTC": "2026-10-10T14:52:54Z",
   "policy": "실제 화면·영상 또는 단계가 명확한 기존 원화와 간결한 설명을 함께 준비하고, 공개 전 완성 미리보기를 먼저 인도한다. 동일 영상의 확대 화면과 전체 화면을 동시에 복제하지 않으며 원화를 가리는 불투명 자막판을 사용하지 않는다. 매시간 점검을 긴 글 연속 게시 빈도로 해석하지 않는다. UI·스킬·캐릭터의 독립 준비를 계속하고 대표 보스전 완료 영상만 총괄 완료를 기다린다.",
   "developmentObservation": {
     "checkout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
@@ -752,5 +752,15 @@
     "publicVideoCount": 2
   },
   "publicationPreviewGate": "완성 시각 자료+간결한 문안 인도·화면 구성·시청/청취·사용자 검수 전 자동 공개 금지",
-  "readyCountScope": "공개 검수 완료0; 원고/원화 준비10은 유지하며 실제 영상·완성 시각 묶음 및 사용자 미리보기 검수와 구별"
+  "readyCountScope": "공개 검수 완료0; 원고/원화 준비10은 유지하며 실제 영상·완성 시각 묶음 및 사용자 미리보기 검수와 구별",
+  "gameMotionQuality": {
+    "intent": "디자인보다 게임 전체 품질이 낮아 홍보가 어려움. 실제 게임 모션의 프레임과 연결을 부드럽게 높인다.",
+    "state": "SOURCE_AUDITED; implementation not started",
+    "source": "marketing/operations/game-motion-quality-20261010/request.json",
+    "handoffAuthorization": "pending direct user answer",
+    "gameImplemented": false,
+    "improvedFramesProduced": 0,
+    "productionSequence": "게임 품질 개선·검수→사용자 직접 플레이→assistant 실제 화면/원음 녹화·편집→완성 미리보기 검수"
+  },
+  "recordingPolicy": "사용자가 실제 플레이하고 assistant는 화면 전체와 원음을 녹화·편집; 사용자 게임·서버·세이브·입력 임의 변경 금지; staged/자동 이동을 사용자 자연 플레이로 표시하지 않음"
 }

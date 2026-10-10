@@ -1,0 +1,143 @@
+{
+  "createdAtUTC": "2026-10-10T14:52:54Z",
+  "createdAtKST": "2026-10-10 23:52",
+  "userIntent": "디자인보다 게임 전체 품질이 낮아 홍보가 어려움. 실제 게임 모션의 프레임과 연결을 부드럽게 높인다.",
+  "state": "SOURCE_AUDITED; implementation not started",
+  "authoritativeGameCheckout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+  "observedGameHEAD": "9a4534b42f74093095ebc3364a25dd104e93b379",
+  "gameSHA256": "5212e3a33c201eec08d09b132092c1a063fea88f36fccef494ea351f3565d2cd",
+  "engineCheckoutIsSeparate": "/Users/fordeargamers/the-exoduser: codex/fdg-engine-studio-20261010; not legacy game consumer completion",
+  "currentGameAudit": {
+    "character": "전사",
+    "idle": {
+      "slots": 2,
+      "uniquePoses": 1,
+      "cadence": "48 render calls per slot plus body breathing"
+    },
+    "walk": {
+      "slots": 8,
+      "uniquePoses": 8,
+      "cellPx": 48,
+      "cadence": "256px travelled per gait cycle"
+    },
+    "attack": {
+      "slots": 9,
+      "uniquePoses": 8,
+      "cellPx": 80,
+      "lastDuplicatesFirst": true,
+      "cadence": "P.s/P.st2 state clock; normal uses2..8"
+    },
+    "block": "Q uses idle frames; no independent blocking sprite",
+    "shift": "start2/fly2/land2;4 render calls per frame",
+    "gSlam": "current normal skill is immediate effect; old state aliases preserved for save compatibility"
+  },
+  "clockIssue": {
+    "fixedSimulationHz": 60,
+    "renderUpdate": "drawP SpriteAnimator.update(_dtSp), _dtSp=1 set per rAF",
+    "genericSpd8PosesPerSecond": {
+      "renderFPS30": 3.75,
+      "renderFPS60": 7.5,
+      "renderFPS120": 15
+    },
+    "shiftSpd4PosesPerSecond": {
+      "renderFPS30": 7.5,
+      "renderFPS60": 15,
+      "renderFPS120": 30
+    },
+    "landingTimer": "_harpLandT decrements in draw",
+    "exceptions": [
+      "walking distance clock",
+      "warrior normal/E attack state clock"
+    ],
+    "status": "source-derived; actual 30/60/120 runtime reproduction not performed"
+  },
+  "withdrawnShortsSource": {
+    "videoID": "50eBpMxlkP0",
+    "sourceCheckout": "marketing-gameplay-20261008 original capture",
+    "sourceGameSHA_prefix": "bf38f666",
+    "characterID": 1,
+    "character": "실버테일",
+    "Q": "block aliases idle2 duplicate poses, effectively1 unique pose per direction",
+    "gSlam": "old atk4 alias reused; no independent slam body sequence",
+    "captureFPS": {
+      "parry": 56.36,
+      "slam": 55.5
+    },
+    "exportFPS": 30,
+    "scope": "historical captured version, not current migration playback evidence",
+    "shortsMapping": {
+      "parry": "Short0..5 <- raw4.933333..9.933333",
+      "slam": "Short5..12 <- raw0.966667..7.966667",
+      "QsuccessShortSeconds": 0.8661,
+      "slamCastShortSeconds": 7.8498
+    }
+  },
+  "workUnits": [
+    {
+      "order": 1,
+      "goal": "make visual clip and landing timer elapsed simulation based, preserving appearance at60 renderFPS",
+      "owner": "existing original producer; not marketing-owned game edit",
+      "gate": "30/60/120 render conditions same pose times and duration; locomotion/state clock not double advanced; input/combat/save unchanged"
+    },
+    {
+      "order": 2,
+      "goal": "warrior walk8 ->24 genuinely distinct poses as first complete motion benchmark",
+      "constraints": "keep existing design,8directions,foot anchor/weapon/body consistency,256px gait cycle; no duplicated slots advertised as new poses",
+      "gate": "normal scale idle→walk→turn→stop; foot contact/no sliding/no direction jump; memory/concurrent performance measured separately"
+    },
+    {
+      "order": 3,
+      "goal": "Silvertail Q enter/hold/recover and attack body sequence based on observed promotional footage defect",
+      "constraints": "Q magic-only classification and timings unchanged; no false new playable class or new demo claim",
+      "gate": "body motion readable and not replaced/hidden by huge VFX; real sound and normal gameplay review"
+    }
+  ],
+  "preserve": [
+    "existing Q/E contract; protected2_3 docs untouched",
+    "normal attack5ticks hit after2; E20ticks hit after8",
+    "cooldown/damage/resource/RNG/save unchanged",
+    "no user game/server restart or save mutation",
+    "no PixelLab character generation",
+    "current other team changes and owners preserved"
+  ],
+  "acceptance": "same-game normal scale actual motion before/after, real audio, continuous watch/listen, visual verdict separate from automated technical tests",
+  "handoff": {
+    "threadID": "01a0faa9-b453-7673-be39-98adedb4c2b3",
+    "hostID": "local",
+    "title": "맥북에서 총괄 시작하기",
+    "authorization": "pending direct user answer to concise messaging question",
+    "messageSent": false,
+    "producerCursor": "b2476eee-d767-4cd1-8064-9706586fb10a:35"
+  },
+  "evidence": [
+    "game.html:10714",
+    "game.html:10757",
+    "game.html:10868",
+    "warrior-bat-swing.js:27",
+    "game.html:59020",
+    "game.html:59053",
+    "game.html:59063",
+    "game.html:62380",
+    "game.html:62407",
+    "game.html:62432",
+    "docs/4.0케릭터스프라이트 디자인/4.0케릭터스프라이트 디자인.md:12"
+  ],
+  "limits": [
+    "no code/asset edit",
+    "no game/server/save action",
+    "no new frames or improved-game recording produced",
+    "higher video exportFPS alone not considered an improvement"
+  ],
+  "latestUserDirection": "게임 퀄리티를 먼저 올리고 사용자가 직접 게임플레이, assistant가 그 플레이를 녹화·편집한다.",
+  "productionSequence": [
+    "game quality improvement and normal-scale review",
+    "human user gameplay",
+    "capture actual full gameplay screen and original sound without controlling/restarting user game",
+    "edit natural decision/action/outcome sequence",
+    "deliver final preview for user review before publication"
+  ],
+  "recordingOwner": "human user plays; assistant captures/edits actual source",
+  "captureState": "not started; quality first and user gameplay session not started",
+  "noSyntheticGameplay": true,
+  "shortsSourceQAEffectNote": "historical captured WT Q aura20cells consumes first2 only; current migration applicability unverified"
+}
