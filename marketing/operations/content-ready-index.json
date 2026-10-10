@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
-  "updatedAtKST": "2026-10-11 00:01",
-  "updatedAtUTC": "2026-10-10T15:01:57Z",
+  "updatedAtKST": "2026-10-11T08:27:45+09:00",
+  "updatedAtUTC": "2026-10-10T23:27:45.076Z",
   "policy": "실제 화면·영상 또는 단계가 명확한 기존 원화와 간결한 설명을 함께 준비하고, 공개 전 완성 미리보기를 먼저 인도한다. 동일 영상의 확대 화면과 전체 화면을 동시에 복제하지 않으며 원화를 가리는 불투명 자막판을 사용하지 않는다. 매시간 점검을 긴 글 연속 게시 빈도로 해석하지 않는다. UI·스킬·캐릭터의 독립 준비를 계속하고 대표 보스전 완료 영상만 총괄 완료를 기다린다.",
   "developmentObservation": {
     "checkout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
@@ -776,14 +776,25 @@
     "state": "PREVIEW_DELIVERED; REPLACEMENT_NOT_STARTED"
   },
   "latestProducerObservation": {
-    "checkedAtUTC": "2026-10-10T20:26:08Z",
-    "cursor": "b2476eee-d767-4cd1-8064-9706586fb10a:41",
+    "checkedAtUTC": "2026-10-10T23:27:45.076Z",
+    "cursor": "b2476eee-d767-4cd1-8064-9706586fb10a:44",
     "status": "idle",
     "completionConfirmed": false,
-    "scope": "별도 FDG 엔진",
+    "scope": "별도 FDG 제작 엔진의 틈 R10 ENGINE_AUTHORING 흐름",
     "partialSceneFlowAccepted": true,
-    "visualCandidateState": "FOREGROUND_ROOT_OCCLUSION_RETOUCH_PENDING",
+    "projectPreviewSaveReopenAcceptedByProducer": true,
+    "runtimeContinuationRestored": false,
+    "visualCandidateState": "R10_AUTHORING_FLOW_ACCEPTED_VISUAL_RETOUCH",
+    "mainGameApplied": "NOT_CONFIRMED",
+    "steamDemoApplied": "NOT_CONFIRMED",
+    "normalGameplayVideoWithOriginalAudio": "NOT_OBSERVED",
     "requiresUserAction": false,
-    "report": "별도 FDG 엔진 경사 지면의 전경 뿌리 가림을 기존 담당이 보정 중. 시각 마감 미완료·사용자 조치 불필요. 기존 Play/저장 기본 흐름 이력과 본편/보스전 전체 완료를 구별."
+    "report": "총괄은 별도 FDG 제작 엔진의 틈 R10 구간에서 실제 이동과 제작 project/preview 저장·재열기를 한정 인수했다. 재열기 시 캐릭터 위치와 시간은 시작 상태로 초기화된다. 확대 흐림·가장자리 보정은 RETOUCH/production UNADOPTED이며, 다음 tailSwipe 동작·임팩트 후보는 기존 담당에게 배정된 단계다. EXODUSER 본편·보스전 전체 리디자인·모션 개선 완료나 Steam 데모 반영으로 해석하지 않는다.",
+    "evidence": {
+      "producerTurnId": "01a1281b-389f-7842-beb1-9e8a4a0d6689",
+      "producerReportedProof": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-rift-first-slice-20261010/engine-preview-r10-first/v018-save-reopen-contract-proof.json",
+      "marketingReviewScope": "새 총괄 보고와 해당 turn의 소유/인수 범위만 읽음. 마케팅 담당의 원본 proof 재검사·새 실화면/시청·청취 없음."
+    },
+    "nextProducerUnit": "HellAberrant tailSwipe idx57의 FDG 동작·임팩트 첫 소비 후보; 배정 단계·실제 재생/제품 완료 미확인"
   }
 }
