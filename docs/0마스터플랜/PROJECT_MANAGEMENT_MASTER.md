@@ -1,3 +1,7 @@
+## 2026-10-10 — FDG 장면 이미지 자원 수명 연결
+
+기존 엔진3담당+ROOT가 독립 FDG의 managed image lease·legacy manual pin·명시 eviction·pending 세대 격리를 구현했다. renderer는 장면 교체/삭제/clip 변경에서 이전 URL만 반납하고 공통/다른renderer 공유이미지를 유지한다. 샘플 종료는 RAF/입력리스너/에디터/renderer 참조도 정리한다. core 최초6그룹14조건, renderer7그룹, editorconsumer6그룹30조건/setup3별도, demo13조건은 별도epoch PASS/FAIL0이며 PNGdecode/완료suite재실행0. editor source/원게임/원PNG/save 불변. 엔진 참조 정리이며 실RAM/GPU 감소·native/BFCache·전체이식/성능/AAA 인수는 아니다. [실제 API·검수 정본](FDG_ENGINE_20261010.md#2026-10-10-후속--장면-이미지-자원-수명-관리). 다음은 실제 보스 consumer의 독립 FDG 장면 연결과 성능 검수다.
+
 ## 2026-10-10 — FDG Engine 별도 패키지와 Scene Studio
 
 사용자 “fdg엔진을 따로 만들어라고” 지시에 따라 기존 엔진3담당+ROOT가 `fdg-engine/` 0.1을 구현했다. Node/SceneTree·고정60Hz·공유ResourceStore, 초 단위 SpriteFrames/Animator, Canvas2.5D 렌더러, 씬 트리·속성·pause/step·JSON 에디터와 실행 샘플을 분리했다. actualdemo/에디터/Canvas 연결 최초18검사PASS; 모듈 경계 초기FAIL과 애니메이션 누산오차 수정은 별도 이력으로 보존한다. 저장복원 자동ID 충돌1건은 생성자396B 한정수정·독립7조건PASS로 닫았다. 기존 game/settings/원PNG/save 변경0. 이는 별도 엔진 기반이며 EXODUSER 전체이식·실browser/GPU/동시성능/3D/AAA완료가 아니다. [실제 모듈·수치·검수 정본](FDG_ENGINE_20261010.md). 다음은 FDG 장면 계약의 보스전 격리 이식과 성능 검수다.

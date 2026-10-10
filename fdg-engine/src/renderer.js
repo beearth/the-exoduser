@@ -18,9 +18,70 @@
       this.stats = {};
       this._hits = [];
       this._bound = new WeakMap();
+      this._leases = new Map();
+      this._disposed = false;
     }
 
-    setTree(tree) { this.tree = tree; this.selection = null; return this; }
+    _assertLive() {
+      if (this._disposed) throw new Error('Renderer25D has been disposed');
+    }
+
+    _sceneImageUrls(tree) {
+      const urls = new Set();
+      if (tree === null || tree === undefined) return urls;
+      if (!tree.root) throw new TypeError('A SceneTree is required');
+      const visit = node => {
+        if (!node || !Array.isArray(node.children)) throw new TypeError('Invalid scene node');
+        if (typeof node.getDrawState === 'function') {
+          const state = node.getDrawState();
+          if (!state || typeof state !== 'object') throw new TypeError('Invalid sprite draw state');
+          const url = state.imageUrl;
+          if (url !== undefined && url !== null && url !== '') {
+            if (typeof url !== 'string' || !url.trim()) throw new TypeError('Invalid sprite image URL');
+            urls.add(url);
+          }
+        }
+        for (const child of node.children) visit(child);
+      };
+      visit(tree.root);
+      return urls;
+    }
+
+    _releaseUnused(urls) {
+      let changed = false, failure = null;
+      for (const [url, lease] of this._leases) {
+        if (urls.has(url)) continue;
+        try { lease.release(); }
+        catch (error) { if (!failure) failure = error; }
+        this._leases.delete(url);
+        changed = true;
+      }
+      if (changed) this._bound = new WeakMap();
+      if (failure) throw failure;
+    }
+
+    setTree(tree) {
+      this._assertLive();
+      const urls = this._sceneImageUrls(tree);
+      this._releaseUnused(urls);
+      this.tree = tree;
+      this.selection = null;
+      this._hits = [];
+      return this;
+    }
+
+    dispose() {
+      if (this._disposed) return false;
+      try { this._releaseUnused(new Set()); }
+      finally {
+        this._bound = new WeakMap();
+        this._hits = [];
+        this.selection = null;
+        this.tree = null;
+        this._disposed = true;
+      }
+      return true;
+    }
 
     _validateCamera() {
       const c = this.camera;
@@ -71,11 +132,16 @@
     }
 
     _image(url) {
+      this._assertLive();
+      if (!this._leases.has(url)) {
+        const lease = this.resources.acquireImage(url);
+        this._leases.set(url, lease);
+        // One rejection observer per owned lease; render does not retry a failed generation.
+        lease.promise.catch(() => {});
+      }
       const image = this.resources.getImage(url);
       if (image) return image;
-      // ResourceStore shares both pending requests and failures. Render never retries a failure.
       if (this.resources.getState(url) === 'failed') { this.stats.errors++; return null; }
-      this.resources.loadImage(url).catch(() => {});
       this.stats.pending++;
       return null;
     }
@@ -123,8 +189,11 @@
     }
 
     render(tree = this.tree) {
+      this._assertLive();
       if (!tree || !tree.root) throw new TypeError('A SceneTree is required');
+      const urls = this._sceneImageUrls(tree);
       this._validateCamera();
+      this._releaseUnused(urls);
       const ctx = this.ctx, list = [];
       this.stats = { draws: 0, sprites: 0, shapes: 0, pending: 0, errors: 0, culled: 0 };
       this._hits = [];

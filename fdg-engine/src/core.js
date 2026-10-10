@@ -318,21 +318,38 @@
     constructor({ imageFactory } = {}) {
       if (imageFactory !== undefined && typeof imageFactory !== 'function') throw new TypeError('imageFactory must be a function');
       this._imageFactory = imageFactory || (() => { if (typeof global.Image !== 'function') throw new Error('Image is unavailable; inject imageFactory'); return new global.Image(); });
-      this._entries = new Map();
+      this._entries = new Map(); this._leases = new WeakMap(); this._nextGeneration = 1;
     }
-    loadImage(url) {
+    _current(entry) {
+      const current = this._entries.get(entry.url);
+      return current === entry && current.generation === entry.generation;
+    }
+    _detach(entry) { const cleanup = entry.cleanup; entry.cleanup = null; if (cleanup) cleanup(); }
+    _entry(url, pinned) {
       text(url, 'url');
-      const cached = this._entries.get(url); if (cached) return cached.promise;
-      const entry = { url, state: 'loading', image: null, error: null, cleanup: null, resolve: null, reject: null };
+      const cached = this._entries.get(url);
+      if (cached) { if (pinned) cached.pinned = true; return cached; }
+      if (!Number.isSafeInteger(this._nextGeneration)) throw new RangeError('Resource generation counter exhausted');
+      const entry = { url, generation: this._nextGeneration++, state: 'loading', image: null, error: null, cleanup: null,
+        resolve: null, reject: null, started: false, refCount: 0, pinned };
       entry.promise = new Promise((resolve, reject) => { entry.resolve = resolve; entry.reject = reject; });
       entry.promise.catch(() => {}); this._entries.set(url, entry);
+      return entry;
+    }
+    _start(entry) {
+      if (entry.started || !this._current(entry) || entry.state !== 'loading') return;
+      entry.started = true;
       const fail = error => {
-        if (entry.state !== 'loading') return;
-        entry.cleanup?.(); entry.state = 'failed'; entry.error = error instanceof Error ? error : new Error('Image failed: ' + url); entry.reject(entry.error);
+        if (!this._current(entry) || entry.state !== 'loading') return;
+        this._detach(entry); entry.state = 'failed'; entry.error = error instanceof Error ? error : new Error('Image failed: ' + entry.url);
+        entry.reject(entry.error); entry.resolve = null; entry.reject = null;
       };
       const ready = () => {
-        if (entry.state !== 'loading') return;
-        try { imageSize(entry.image); entry.cleanup?.(); entry.state = 'ready'; entry.resolve(entry.image); } catch (error) { fail(error); }
+        if (!this._current(entry) || entry.state !== 'loading') return;
+        try {
+          imageSize(entry.image); this._detach(entry); entry.state = 'ready';
+          entry.resolve(entry.image); entry.resolve = null; entry.reject = null;
+        } catch (error) { fail(error); }
       };
       try {
         const image = this._imageFactory();
@@ -348,26 +365,77 @@
           image.onload = load; image.onerror = error;
           entry.cleanup = () => { if (image.onload === load) image.onload = oldLoad; if (image.onerror === error) image.onerror = oldError; };
         }
-        image.src = url;
+        image.src = entry.url;
         if (image.complete) { try { imageSize(image); ready(); } catch (_) { /* Await the load/error event. */ } }
       } catch (error) { fail(error); }
-      return entry.promise;
+    }
+    loadImage(url) {
+      const entry = this._entry(url, true); this._start(entry); return entry.promise;
+    }
+    acquireImage(url) {
+      const entry = this._entry(url, false);
+      if (!Number.isSafeInteger(entry.refCount + 1)) throw new RangeError('Image reference counter exhausted');
+      let lease;
+      lease = Object.freeze({ url: entry.url, generation: entry.generation, promise: entry.promise,
+        release: () => this.releaseImage(lease), get released() { return store._leases.get(lease).released; } });
+      const store = this;
+      this._leases.set(lease, { entry, released: false }); entry.refCount++;
+      this._start(entry); return lease;
+    }
+    releaseImage(lease) {
+      const owner = this._leases.get(lease);
+      if (!owner) throw new TypeError('Expected a lease from this ResourceStore');
+      if (owner.released) return false;
+      const entry = owner.entry; owner.released = true; owner.entry = null; entry.refCount--;
+      if (!entry.refCount && !entry.pinned) this._remove(entry);
+      return true;
+    }
+    _remove(entry) {
+      if (!this._current(entry) || entry.refCount) return false;
+      const pending = entry.state === 'loading', reject = entry.reject;
+      this._entries.delete(entry.url); entry.state = 'released'; entry.pinned = false;
+      try { this._detach(entry); }
+      finally {
+        entry.image = null; entry.resolve = null; entry.reject = null;
+        if (pending) {
+          const error = new Error('Image resource released: ' + entry.url);
+          error.name = 'AbortError'; error.code = 'FDG_RESOURCE_RELEASED'; entry.error = error; reject(error);
+        } else entry.error = null;
+      }
+      return true;
+    }
+    evictImage(url) {
+      text(url, 'url'); const entry = this._entries.get(url); return entry ? this._remove(entry) : false;
+    }
+    clearUnused() {
+      let count = 0;
+      for (const entry of [...this._entries.values()]) if (this._remove(entry)) count++;
+      return count;
     }
     registerImage(url, image) {
       text(url, 'url'); imageSize(image);
       const current = this._entries.get(url);
       if (current?.state === 'loading') {
-        current.cleanup?.(); current.image = image; current.state = 'ready'; current.resolve(image); return image;
+        this._detach(current); current.pinned = true; current.image = image; current.state = 'ready'; current.started = true;
+        current.resolve(image); current.resolve = null; current.reject = null; return image;
       }
-      if (current?.state === 'ready' && current.image === image) return image;
-      this._entries.set(url, { url, state: 'ready', image, error: null, promise: Promise.resolve(image) });
+      if (current) {
+        current.pinned = true;
+        if (current.state === 'ready' && current.image === image) return image;
+        current.image = image; current.state = 'ready'; current.error = null; current.started = true; current.promise = Promise.resolve(image);
+      } else {
+        const entry = this._entry(url, true); entry.image = image; entry.state = 'ready'; entry.started = true;
+        entry.resolve(image); entry.resolve = null; entry.reject = null;
+      }
       return image;
     }
     getImage(url) { const entry = this._entries.get(url); return entry?.state === 'ready' ? entry.image : null; }
     getState(url) { return this._entries.get(url)?.state || 'missing'; }
     query(url) {
       const entry = this._entries.get(url);
-      return Object.freeze({ url, state: entry?.state || 'missing', image: entry?.state === 'ready' ? entry.image : null, error: entry?.error || null });
+      return Object.freeze({ url, state: entry?.state || 'missing', image: entry?.state === 'ready' ? entry.image : null,
+        error: entry?.state === 'failed' ? entry.error : null, refCount: entry?.refCount || 0,
+        pinned: entry?.pinned || false, generation: entry?.generation ?? null });
     }
     states() { return Object.freeze([...this._entries.keys()].map(url => this.query(url))); }
   }

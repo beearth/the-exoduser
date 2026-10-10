@@ -3,6 +3,12 @@
   if (typeof document === 'undefined') return;
   const FDG = root.FDG, canvas = document.getElementById('fdg-viewport');
   const keys = new Set();
+  const listeners = [];
+  let disposed = false, frameRequest = null;
+  function listen(target, type, handler, options) {
+    target.addEventListener(type, handler, options);
+    listeners.push(() => target.removeEventListener(type, handler, options));
+  }
   class DemoActor extends FDG.Node {
     constructor(options = {}) { super(Object.assign({}, options, { type: 'DemoActor' })); }
     _physicsProcess(dt) {
@@ -45,48 +51,59 @@
     for (const child of node.children) { const value = find(id, child); if (value) return value; }
     return null;
   };
-  document.getElementById('fdg-effect').addEventListener('click', () => {
+  listen(document.getElementById('fdg-effect'), 'click', () => {
     const node = find('effect');
     if (node instanceof FDG.SpriteNode && node.clip) {
       node.animator.play(node.animator.name || 'default'); tree.paused = false; editor.refresh();
     }
   });
-  document.getElementById('fdg-projection').addEventListener('click', event => {
+  listen(document.getElementById('fdg-projection'), 'click', event => {
     renderer.camera.projection = renderer.camera.projection === 'isometric' ? 'topdown' : 'isometric';
     event.currentTarget.textContent = renderer.camera.projection === 'isometric' ? '시점: 2.5D' : '시점: 탑다운';
   });
-  document.getElementById('fdg-camera-reset').addEventListener('click', () => {
+  listen(document.getElementById('fdg-camera-reset'), 'click', () => {
     Object.assign(renderer.camera, { x: 0, y: 0, zoom: 1 });
   });
   const position = event => { const rect = canvas.getBoundingClientRect(); return {
     x: (event.clientX - rect.left) * canvas.width / rect.width,
     y: (event.clientY - rect.top) * canvas.height / rect.height }; };
   let pan = null;
-  canvas.addEventListener('pointerdown', event => {
+  listen(canvas, 'pointerdown', event => {
     canvas.focus();
     if (event.button === 1) { event.preventDefault(); pan = position(event); canvas.setPointerCapture(event.pointerId); }
     else if (event.button === 0) { const p = position(event); const node = renderer.hitTest(p.x, p.y); if (node) editor.select(node); }
   });
-  canvas.addEventListener('pointermove', event => {
+  listen(canvas, 'pointermove', event => {
     if (!pan) return;
     const p = position(event);
     renderer.camera.x -= (p.x - pan.x) / renderer.camera.zoom;
     renderer.camera.y -= (p.y - pan.y) / renderer.camera.zoom; pan = p;
   });
   const clearPan = () => { pan = null; };
-  canvas.addEventListener('pointerup', clearPan); canvas.addEventListener('pointercancel', clearPan);
-  canvas.addEventListener('wheel', event => {
+  listen(canvas, 'pointerup', clearPan); listen(canvas, 'pointercancel', clearPan);
+  listen(canvas, 'wheel', event => {
     event.preventDefault(); renderer.camera.zoom = Math.max(.25, Math.min(3, renderer.camera.zoom * Math.exp(-event.deltaY * .001)));
   }, { passive: false });
   const movementKeys = new Set(['w', 'a', 's', 'd', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright']);
-  canvas.addEventListener('keydown', event => { const key = event.key.toLowerCase(); if (movementKeys.has(key)) { keys.add(key); event.preventDefault(); } });
-  canvas.addEventListener('keyup', event => keys.delete(event.key.toLowerCase()));
-  canvas.addEventListener('blur', () => keys.clear());
-  root.addEventListener('blur', () => { keys.clear(); pan = null; });
-  document.addEventListener('visibilitychange', () => { if (document.hidden) { keys.clear(); previous = null; } });
+  listen(canvas, 'keydown', event => { const key = event.key.toLowerCase(); if (movementKeys.has(key)) { keys.add(key); event.preventDefault(); } });
+  listen(canvas, 'keyup', event => keys.delete(event.key.toLowerCase()));
+  listen(canvas, 'blur', () => keys.clear());
+  listen(root, 'blur', () => { keys.clear(); pan = null; });
+  listen(document, 'visibilitychange', () => { if (document.hidden) { keys.clear(); previous = null; } });
+  listen(root, 'pagehide', event => { if (!event.persisted) dispose(); });
   const statsLeaf = document.getElementById('fdg-stats');
   let previous = null, nextStats = 0;
+  function dispose() {
+    if (disposed) return false;
+    disposed = true;
+    if (frameRequest !== null && typeof root.cancelAnimationFrame === 'function') root.cancelAnimationFrame(frameRequest);
+    frameRequest = null; keys.clear(); pan = null; previous = null;
+    editor.destroy(); renderer.dispose();
+    for (const remove of listeners.splice(0)) remove();
+    return true;
+  }
   function frame(timestamp) {
+    if (disposed) return;
     const dt = previous === null ? 0 : (timestamp - previous) / 1000; previous = timestamp;
     tree.advance(dt);
     renderer.selection = editor.selected;
@@ -97,8 +114,9 @@
       nextStats = timestamp + 200;
       if (typeof editor.refresh === 'function') editor.refresh();
     }
-    root.requestAnimationFrame(frame);
+    frameRequest = root.requestAnimationFrame(frame);
   }
-  root.FDGDemo = { get tree() { return tree; }, renderer, editor, factories, report: () => tree.toJSON() };
-  root.requestAnimationFrame(frame);
+  root.FDGDemo = { get tree() { return tree; }, get disposed() { return disposed; },
+    renderer, editor, factories, report: () => tree.toJSON(), dispose };
+  frameRequest = root.requestAnimationFrame(frame);
 })(typeof globalThis !== 'undefined' ? globalThis : this);

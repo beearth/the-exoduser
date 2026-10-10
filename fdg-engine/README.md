@@ -26,14 +26,29 @@ renderer.render();
 
 | 모듈 | 구현된 계약 |
 |---|---|
-| `core.js` | Node 계층/순환·중복 ID 차단, affine 변환+높이, ready/exit/physics/process hooks, SceneTree 고정 시간·정지·한 스텝, 안전한 JSON, 공유 Image 캐시 |
+| `core.js` | Node 계층/순환·중복 ID 차단, affine 변환+높이, ready/exit/physics/process hooks, SceneTree 고정 시간·정지·한 스텝, 안전한 JSON, 공유 Image lease·manual cache·명시 eviction |
 | `animation.js` | SpriteFrames grid·실이미지 용량 검증, 임의 장수 clip, 초 단위 Animator, loop/one-shot, SpriteNode 직렬화 |
-| `renderer.js` | Canvas 2.5D/탑다운 카메라, 깊이 정렬, billboard atlas 한 셀 표시, 부모 affine 변환, 선택 hit-test, 보수적 화면 culling, context 복원 |
+| `renderer.js` | Canvas 2.5D/탑다운 카메라, 깊이 정렬, billboard atlas 한 셀 표시, 부모 affine 변환, 선택 hit-test, 보수적 화면 culling, context 복원, 장면 URL 소유·해제·dispose |
 | `editor.js` | 씬 트리/속성, 재생·정지·한 스텝, 노드 추가/삭제, 검증 후 JSON 교체, 자체 DOM/리스너 정리 |
 
 기본 시뮬레이션은 60Hz입니다. 한 화면 갱신의 입력 dt는 최대 .25초로 제한하며 최대 8틱을 처리하고 초과 시간을 보고합니다. 이는 느린 기기에서 무한 따라잡기를 피하는 정책이며 모든 경과 시간을 시뮬레이션한다는 뜻은 아닙니다. 표시 FPS와 애니메이션 장수/FPS는 별개입니다. 샘플 효과는 기존 24장 불꽃을 16FPS, 1.5초 one-shot으로 재사용합니다.
 
 Godot의 [SceneTree](https://docs.godotengine.org/en/stable/tutorials/scripting/scene_tree.html)와 [고정 처리/프레임 처리 분리](https://docs.godotengine.org/en/stable/tutorials/scripting/idle_and_physics_processing.html)를 설계 참고로 사용했습니다. FDG 소스와 JSON은 독립 구현이며 Godot 포맷 호환을 제공하지 않습니다.
+
+## 자원 소유와 종료
+
+렌더러는 표시한 URL당 managed lease 한 개를 소유합니다. 같은 이미지를 다른 렌더러도 쓰면 공유하고, 장면 교체·노드 삭제·clip URL 변경으로 참조가 사라지면 자기 lease만 반납합니다. 같은 URL의 장면 교체는 이미지 세대를 유지합니다. 이미 로드된 숨김/화면밖 노드는 scene에 남아 있으면 유지하며 새로운 숨김 URL을 미리 로드하지 않습니다.
+
+직접 `resources.acquireImage(url)`를 호출한 쪽은 `lease.promise` 결과/오류를 소비하고 사용 종료 시 `lease.release()`를 호출하세요. 마지막 managed lease는 자동 퇴출되지만 기존 `loadImage/registerImage`의 manual pin은 `evictImage(url)` 또는 `clearUnused()`로 명시 정리합니다. 활성 lease가 있는 entry는 강제로 퇴출하지 않습니다. pending 해제는 AbortError/code FDG_RESOURCE_RELEASED이며 네트워크 취소나 실제 GPU/메모리 감소를 보장하지 않습니다. 외부가 이미 받은 Image/Promise/lease를 계속 보관하면 객체가 남을 수 있습니다.
+
+앱 소유자가 `renderer.dispose()`를 호출하면 자기 이미지·선택·hit/clip 참조를 정리하고 해당 렌더러는 종료됩니다. `editor.destroy()`는 외부 렌더러를 임의 종료하지 않습니다. 샘플은 `FDGDemo.dispose()`로 RAF·입력·에디터·렌더러를 함께 종료하고, pagehide의 persisted=false에서 자동 호출합니다(BFCache persisted=true는 유지).
+
+새 수명 관리 소비 검수는 원화 디코딩/Canvas 패키지 없이 실행합니다.
+
+```sh
+FDG_TEST_OUTPUT=/absolute/path/to/resource-review \
+node fdg-engine/tests/resource-lifecycle.cjs
+```
 
 ## 검수와 다음 단계
 

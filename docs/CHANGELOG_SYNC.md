@@ -56998,3 +56998,7 @@ actual isBoss=true blood만 새640셀24원화로 표시하고 원16 alias·128×
 ### 2026-10-10 — 독립 FDG Engine 0.1
 
 `ROOT-FDG-ENGINE-FOUNDATION-20261010`: 기존 엔진3담당과 ROOT가 별도 `fdg-engine/` 패키지에 장면 코어·고정 시간·공유이미지·아틀라스 애니메이션·Canvas2.5D 렌더러·Scene Studio/JSON 에디터·실행 샘플을 구현했다. core7그룹31조건, animationdelta8그룹, editordelta2그룹27조건, ROOT최초통합18검사는 별도epoch이며 합산0. 실제browser/file다운로드·GPU·동시성능/전체게임이식 미인수. 저장복원 자동ID 충돌1건은 생성자396B 한정수정·독립7조건PASS로 닫았다. 기존 game/settings/원PNG/save 불변, [전체 API·규격·검수 정본](0마스터플랜/FDG_ENGINE_20261010.md). 엔진 기반 완료이며 전체 게임/Godot/3D/AAA완료가 아니다.
+
+### 2026-10-10 — FDG 이미지 자원 소유·해제
+
+`ROOT-FDG-RESOURCE-LIFECYCLE-20261010`: acquireImage/releaseImage lease·manual pin·evictImage/clearUnused·pending AbortError/세대 격리, renderer의 장면 URL diff/공통 lease 유지/dispose, FDGDemo RAF/리스너/소유 renderer 종료를 구현했다. 기존 에디터 연결을 소비하며 editor source 변경0. 신규 core14조건/renderer7그룹/editor30조건+setup3별도/demo13조건은 별도epoch PASS/FAIL0; PNG/완료foundation 재실행0. 원게임·save·PNG 불변, 엔진 참조 정리와 실제 메모리/GPU/성능 인수는 구분한다. [현재 계약·범위](0마스터플랜/FDG_ENGINE_20261010.md#2026-10-10-후속--장면-이미지-자원-수명-관리). UI_NOT_ASSESSED/RETOUCH.

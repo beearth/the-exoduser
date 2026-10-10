@@ -35,7 +35,7 @@ Godot의 [씬 트리](https://docs.godotengine.org/en/stable/tutorials/scripting
 | scene JSON | format=`fdg-scene`, version=1, settings{fixedStep,maxFrameDelta,maxSteps,paused}, root 노드 계층 |
 | 복원 | custom factories[type]+properties hooks; unknown type은 일반 Node로 데이터 보존; simulation clock/accumulator는 새0에서 시작 |
 | JSON 안전 | plain JSON·finite값·연속 배열만, prototype/accessor/숨은 속성/순환/unsafe key와 중복 ID 차단 |
-| ResourceStore | URL당 공유 promise/Image, ready 캐시, 실패 캐시/자동 재시도0, 명시 registerImage 가능; unload/eviction/cancel 미구현 |
+| ResourceStore | URL당 공유 promise/Image·실패 캐시/자동 재시도0. acquireImage lease refCount·마지막 managed lease 해제·manual pin·evictImage/clearUnused·pending 세대 격리 구현. 실제 네트워크 취소/GPU 강제 해제는 제공하지 않음 |
 
 ## 애니메이션/표시/에디터 계약
 
@@ -74,4 +74,36 @@ Godot의 [씬 트리](https://docs.godotengine.org/en/stable/tutorials/scripting
 
 서로 다른 epoch/담당의 조건을 합산해 한 검수로 표시하지 않는다. 외부 `E/fdg-engine-foundation-20261010/`의 각 first/end/integration witness를 보존한다. Canvas viewport proof는 **신규 FDG 엔진 독립 렌더**이며 EXODUSER 인게임 캡처/브라우저 UI 녹화가 아니다. ROOT 직접 판독에서 노드·선택·불꽃 표시를 확인했으나 **VISUAL VERDICT: RETOUCH / UI_NOT_ASSESSED**다. 실제 browser UI/file 다운로드·GPU/동시효과 성능·EXODUSER 이식·전체 보스전·청취/save/AAA 인수는 미완료다.
 
-후속은 FDG 장면/자원 계약을 사용한 실제 보스전 격리 이식과 성능 측정이다. 충돌/내비게이션·오디오 믹서·자원 해제·실제 skinned3D는 별도 구현이 필요하다. 전체 게임 엔진 전환 완료나 Godot 전체 구현으로 보고하지 않는다. 본 단위는 기존 game/settings/save/원PNG/보호 설계·타인 WIP를 변경하지 않는다.
+후속은 FDG 장면/자원 계약을 사용한 실제 보스전 격리 이식과 성능 측정이다. 충돌/내비게이션·오디오 믹서·실제 skinned3D는 별도 구현이 필요하다. 자원 참조 수명 관리는 아래 후속 단위에서 구현했으며 물리 메모리/성능 인수는 남아 있다. 전체 게임 엔진 전환 완료나 Godot 전체 구현으로 보고하지 않는다. 본 단위는 기존 game/settings/save/원PNG/보호 설계·타인 WIP를 변경하지 않는다.
+
+## 2026-10-10 후속 — 장면 이미지 자원 수명 관리
+
+`ROOT-FDG-RESOURCE-LIFECYCLE-20261010`은 같은 독립 FDG 0.1 패키지의 자원 소유·장면 교체·샘플 종료 연결이다. 기존 엔진3담당을 재사용했다. 원게임/설정/save/원PNG/애니메이션 clip·시간·에디터 source는 변경하지 않았다. legacy 직접 캐시 소비와 managed renderer 소유를 분리한다.
+
+| API/경계 | 현행 계약 |
+|---|---|
+| acquireImage(url) | URL 원문 exact key; 동기 frozen lease `{url,generation,promise,release(),released}`. URL의 같은 현재 세대는 promise/Image 공유, acquire마다 독립 refCount+1. generation은 store마다1부터 증가하는 positive safeinteger, generation 소진/refCount 증가 초과는 RangeError. 자동 재시도0 |
+| releaseImage(lease)/lease.release() | 같은 store의 유효 handle만 허용. 최초 true/refCount−1, 재해제 false, 위조·타store handle TypeError. 마지막 refCount0이며 pinned=false일 때 entry 제거 |
+| legacy loadImage/registerImage | pinned=true manual cache 유지. renderer는 acquire만 사용해 manual pin을 만들지 않음. 명시 registerImage의 교체는 현재 image를 갱신하지만 이미 resolve된 외부 promise의 값은 바꾸지 않음 |
+| evictImage(url) | refCount>0이면 false이며 pin 유지. lease0 entry만 제거, missing=false |
+| clearUnused() | lease0인 ready/failed/loading/manual-pinned entry를 제거하고 count 반환; 활성 owner entry 보존 |
+| query(url)/states() | frozen snapshot `{url,state,image,error,refCount,pinned,generation}`. state missing/loading/ready/failed; image는 ready만/error는 failed만, missing은 refCount0/pinnedfalse/null 세대 |
+| pending 제거 | Image handlers·store image/entry 참조 정리, promise는 AbortError/code FDG_RESOURCE_RELEASED reject. 이전 세대의 저장된 load/error callback도 새 entry에 영향0 |
+| 외부 참조/실메모리 | 해제는 엔진 참조 정리다. 외부가 Image/query snapshot/resolved promise/lease를 유지하면 객체가 남을 수 있음. src 변경·네트워크 취소·GPU 강제 disposal·GC/실RAM 감소 보장0 |
+| renderer 소유 | 렌더러별 URL lease1. 실제 visible/cull 통과 최초 이미지 소비에서만 acquire; hidden/offscreen 신규 URL eager load0. 이미 acquired URL은 숨김/화면밖이어도 현재 scene 참조가 있으면 유지 |
+| render 동기화 | 현재 tree 전체 sprite URL 집합에서 사라진 lease를 draw 전에 반납. 노드 삭제/clip URL 변경은 다음 render에 반영. 어떤 lease 반납에서도 clip→Image WeakMap 재생성 |
+| setTree(next) | 새 URL 집합 수집·검증 후 교체; 공통 URL lease/현재 세대 유지, 사라진 URL 즉시 반납. 선택/hit 참조 정리. 수집 실패 시 이전 tree/lease 보존 |
+| renderer.dispose() | 최초 true/이후 false, terminal. 모든 자기 lease/clip cache/hits/selection/tree 반납, shared store 전체 dispose 호출0. dispose 뒤 render/setTree는 Error |
+| editor 연결 | 기존 importJSON→setTree, deleteSelected→render를 통해 새 자원 정책 소비. editor.destroy는 자기 DOM/리스너만 제거하며 외부 renderer를 임의 dispose하지 않음; editor.js 변경0 |
+| 샘플 dispose | FDGDemo.dispose(): 최초 true/이후 false. queued RAF 취소·late callback 무진행/재예약0·입력 keys/pan 정리·editor/renderer 종료·자기 입력 리스너 제거/타인 리스너 및 host 자식 보존 |
+| pagehide | persisted=false면 샘플 dispose; persisted=true(BFCache)는 live scene/lease 유지. 실제 브라우저 BFCache 동작은 미인수 |
+| 신규 검수 명령 | `node fdg-engine/tests/resource-lifecycle.cjs` / package script test:resources. FDG_TEST_OUTPUT으로 외부 witness 경로 선택. fakeImage/no-op Canvas/minimal DOM 사용, PNG decode0 |
+
+| 이번 최초 검수 epoch | 결과/범위 |
+|---|---|
+| core lifecycle | Node1/6그룹14조건 PASS/FAIL0. manual pin·공유 handle·마지막 참조·pending AbortError·옛 callback 직접 호출/새 세대 보존·active eviction/clearUnused. 통제 imageFactory14 |
+| renderer lifecycle | Node1/7그룹 PASS/FAIL0. fakelease store로 URL 소유·hidden/cull·변경/삭제·setTree 공통 유지/수집 실패·dispose. actualcore/PNG0 |
+| 실제 editor consumer | Node1/6그룹30조건 PASS/FAIL0, fixture setup3 별도. 실제 core/renderer/editor의 JSON 교체·공통 URL·불법 입력 보존·삭제·editor.destroy/renderer.dispose; controlled FakeImage3/PNG0 |
+| 실제 sample consumer | Node1/13조건 PASS/FAIL0. 실제 5스크립트·공유 renderer·pagehide persisted 경계·RAF취소/late callback·리스너/host 보존·pending 종료. controlled Image2/PNG0 |
+
+각 epoch는 합산하지 않고 기존 foundation suite/PNG/Canvas pixel 검수는 재실행하지 않았다. 이번 새 source 최초 실행 후 제품 수정0. 원문과 source pin·ownhunk inverseexact는 `E/fdg-resource-lifecycle-20261010/`에 보존한다. **UI_NOT_ASSESSED / VISUAL VERDICT: RETOUCH**. 새 원화나 표시 geometry 변경이 없으며 native browser/실네트워크/GC·GPU peak·동시성능/EXODUSER 전체 이식·보스전/청취·save/AAA 인수는 미완료다.
