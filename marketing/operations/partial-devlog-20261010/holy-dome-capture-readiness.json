@@ -1,0 +1,26 @@
+{
+  "topicId": "skill-holy-dome",
+  "checkedAtUTC": "2026-10-10T13:33:09Z",
+  "status": "NOT_RUNNABLE_CURRENTLY",
+  "readOnlyAuditBy": "latest_capture_tool",
+  "isolatedCaptureTool": "/Users/fordeargamers/the-exoduser/tools/marketing_capture_studio_20261009.html",
+  "observations": [
+    "3387 LISTEN absent; game.html request connection refused",
+    "no current server process, so cwd and SAVE_DIR isolation not verified",
+    "approved SHA is manual input; current served source match not verified",
+    "operator bridge allowed keys do not include F; real keyboard normal F behavior requires runtime check"
+  ],
+  "normalShotPlanSeconds": 20,
+  "shotSequence": "정상 전투로 자원 소모 → 현재 위치에 영역 설치 → 살아 있는 플레이어가 영역 안에서 HP·MP·ST 회복",
+  "remainingQA": [
+    "approved isolated runtime/source identity",
+    "normal skill use without resource/enemy/save manipulation",
+    "real continuous recording and original audio",
+    "full visual watch and actual audio listening",
+    "review delivery before video publication"
+  ],
+  "serverStartedOrRestarted": false,
+  "gameOrSaveModified": false,
+  "capturePerformed": false,
+  "userRequestRepeated": false
+}

@@ -1,8 +1,8 @@
 # FDG 홍보 준비 콘텐츠 현황
 
-최근 정리: **2026-10-10 21:29 KST**. 사용자 지시 「홍보준비 최신컨텐츠 업데이트됀거 정리해서 항상 정리해놔」를 반영한 지속 갱신 문서다. 기술 구현, 실제 게임 화면 검수, 공개 데모 배포, 영상 게시를 별도로 확인한다.
+최근 정리: **2026-10-10 22:33 KST**. 사용자 지시 「홍보준비 최신컨텐츠 업데이트됀거 정리해서 항상 정리해놔」를 반영한 지속 갱신 문서다. 기술 구현, 실제 게임 화면 검수, 공개 데모 배포, 영상 게시를 별도로 확인한다.
 
-**UI 개발 소식1건과 스킬 노트2건(기검참·가시덫)을 공식 YouTube에 게시하고 공개 페이지를 확인했다.** [UI](https://www.youtube.com/post/UgkxfJtDWBoJglf9RWKueZFsGwOBIRBYWULb) · [기검참](https://www.youtube.com/post/Ugkxpb6uTCUIAd3Ypj4_1vsi9cv2BKT-F93l) · [가시덫](https://www.youtube.com/post/UgkxhEsTSyRHSuYPkuEXJmUg-xnYL90AU9nj). 가시덫은 현재 위치 설치·감속·출혈·지속 피해와 거리를 벌리는 선택을 소개했다. 기존 기능 소개이며 새 패치·신규 촬영 영상으로 표기하지 않았다. **전체 보스전 완료를 기다리는 대상은 리디자인 완료 대표 메인트레일러다.** UI·기존 스킬·캐릭터 원화/제작 과정은 각 소재의 실제 근거와 검수 범위에 맞게 계속 제작한다. 기존 원화30초·전투18초V3·R1 검토본과 새 대표 영상의 미승인 자동 공개 금지는 유지한다.
+**UI 개발 소식1건과 스킬 노트3건(기검참·가시덫·회복의 영역)을 공식 YouTube에 게시하고 공개 페이지를 확인했다.** [UI](https://www.youtube.com/post/UgkxfJtDWBoJglf9RWKueZFsGwOBIRBYWULb) · [기검참](https://www.youtube.com/post/Ugkxpb6uTCUIAd3Ypj4_1vsi9cv2BKT-F93l) · [가시덫](https://www.youtube.com/post/UgkxhEsTSyRHSuYPkuEXJmUg-xnYL90AU9nj) · [회복의 영역](https://www.youtube.com/post/Ugkx2UIc57jBgsgkolbqytX0Nn3bgmkAz6if). 회복의 영역은 현재 위치의 회복 공간과 살아 있는 플레이어의 범위 내 HP·MP·ST 회복을 소개했다. 기존 기능 소개이며 새 패치·신규 촬영 영상으로 표기하지 않았다. **전체 보스전 완료를 기다리는 대상은 리디자인 완료 대표 메인트레일러다.** UI·기존 스킬·캐릭터 원화/제작 과정은 각 소재의 실제 근거와 검수 범위에 맞게 계속 제작한다. 기존 원화30초·전투18초V3·R1 검토본과 새 대표 영상의 미승인 자동 공개 금지는 유지한다.
 
 ## 우선순위와 다음 소재
 
@@ -13,7 +13,7 @@
 | 3 | 소재별 공개·피드백·다음 기록 | 공식 소유/게시권한·공개 URL·같은 문안 중복 방지 |
 | 4 | 리디자인 완료 대표 보스전 영상 | 총괄 전체 완료 + 정상 본편 예고→대응→결과 촬영 가능 + 사용자 검토 |
 
-**다음 제작 소재 한 건:** 회복의 영역 — 개별 한영 소개 글과20초 정상 시연안이 준비됐다. 정상 전투로 자원을 소모한 뒤 영역 설치→HP·MP·ST 회복 흐름을 기록하는 시연안이다. [준비 문안](../../marketing/operations/partial-devlog-20261010/skill-holy-dome.txt) · [18건 제작 묶음](../../marketing/operations/partial-devlog-20261010/content-series.json). 가시덫 글은 [게시 결과·근거·증거](../../marketing/operations/partial-devlog-20261010/spike-trap-publication.json)에 보존했으며 정상 시연 영상·원음 검수는 별도로 남아 있다.
+**다음 제작 소재 한 건:** 지옥강타1 — 개별 한영 소개 글과18초 정상 시연안이 준비됐다. 정상 공격으로 분노 누적→군집에 강타→분노 소모·타격 흐름이다. [준비 문안](../../marketing/operations/partial-devlog-20261010/skill-giant-slam.txt) · [18건 제작 묶음](../../marketing/operations/partial-devlog-20261010/content-series.json). 회복의 영역은 [게시 결과·근거·증거](../../marketing/operations/partial-devlog-20261010/holy-dome-publication.json)에 보존했다. 정상 시연 영상·원음 검수는 남아 있으며, [촬영 경로 점검](../../marketing/operations/partial-devlog-20261010/holy-dome-capture-readiness.json)에서 격리3387 서버가 없고 F 브리지 미지원임을 확인했다. 서버나 사용자 게임을 임의로 시작·조작하지 않았다.
 
 ## 콘텐츠 준비표
 
@@ -49,7 +49,7 @@
 | 캐릭터 콘셉트 원화 소개 | 아케인 랜서 | 기존 공개 원화·개별 소개 문안 준비 | 원본 원화와 무기·실루엣 설명으로 독립 소개. 미검수 모션 영상 사용하지 않음 |
 | 기존 스킬 개별 소개 | 기검참 | 한영 스킬 노트 공개·시연안 준비·신규 촬영 없음 | 같은 글 중복 게시 금지. 후속 실제 시연·원음 검수 |
 | 기존 스킬 개별 소개 | 가시덫 | 한영 스킬 노트 공개·시연안 준비·신규 촬영 없음 | 현재 위치 설치·자연스러운 적 접근·감속/출혈 결과의 후속 실제 시연 |
-| 기존 스킬 개별 소개 | 회복의 영역 | 현행 소스 동작 확인·한영 문안·짧은 시연안 준비 | 정상 전투로 자원 소모 → 영역 설치 → HP·MP·ST 회복 |
+| 기존 스킬 개별 소개 | 회복의 영역 | 한영 스킬 노트 공개·20초 시연안·신규 촬영 없음 | 현재 위치 고정 영역·살아 있는 범위 내 회복의 후속 정상 시연·원음 검수 |
 | 기존 스킬 개별 소개 | 지옥강타1 | 현행 소스 동작 확인·한영 문안·짧은 시연안 준비 | 정상 공격으로 분노 누적 → 군집에 강타 → 분노 소모·타격 |
 | 기존 스킬 개별 소개 | 악의구 | 현행 소스 동작 확인·한영 문안·짧은 시연안 준비 | 거리 유지 → 구체 발사 → 범위폭발 → 접근 |
 | 기존 스킬 개별 소개 | 회전참 | 현행 소스 동작 확인·한영 문안·짧은 시연안 준비 | 군집 진입 → 이동하며 회전 → ST 소모를 보고 해제·이탈 |
@@ -66,11 +66,11 @@ UI3종은 마케팅 제작 브랜치의 코드와 docs에 존재하고, 실제�
 
 ## 채널 배포 상태
 
-과거 영상 상태는 기존 게시 증거를 재사용했다. 이번에는 공식 YouTube 소유자 편집·게시 기능을 확인하고 UI 개발 소식1건 및 기검참·가시덫 스킬 소개2건의 작성자·한영 본문·공개 상세 페이지를 직접 검증했다. [UI 게시 증거](../../marketing/operations/partial-devlog-20261010/publication.json) · [기검참 게시 증거](../../marketing/operations/partial-devlog-20261010/ki-slash-publication.json) · [가시덫 게시 증거](../../marketing/operations/partial-devlog-20261010/spike-trap-publication.json). 다른 채널 로그인·과거 영상 재검증은 반복하지 않았다.
+과거 영상 상태는 기존 게시 증거를 재사용했다. 이번에는 공식 YouTube 소유자 편집·게시 기능을 확인하고 UI 개발 소식1건 및 기검참·가시덫·회복의 영역 스킬 소개3건의 작성자·한영 본문·공개 상세 페이지를 직접 검증했다. [UI 게시 증거](../../marketing/operations/partial-devlog-20261010/publication.json) · [기검참 게시 증거](../../marketing/operations/partial-devlog-20261010/ki-slash-publication.json) · [가시덫 게시 증거](../../marketing/operations/partial-devlog-20261010/spike-trap-publication.json) · [회복의 영역 게시 증거](../../marketing/operations/partial-devlog-20261010/holy-dome-publication.json). 다른 채널 로그인·과거 영상 재검증은 반복하지 않았다.
 
 | 채널 | 기록된 상태 | 운영 기준 |
 |---|---|---|
-| YouTube | 기존 공개 영상4편·검토용 일부 공개 별도 + 개발 글3건(UI1·스킬2) | 개별 소재 운영 계속; 미승인 기존/대표 영상 자동 공개 금지 |
+| YouTube | 기존 공개 영상4편·검토용 일부 공개 별도 + 개발 글4건(UI1·스킬3) | 개별 소재 운영 계속; 미승인 기존/대표 영상 자동 공개 금지 |
 | Steam 상점 | 새 영상 항목1369319 메타데이터만 저장 | 파일 미전송. 구37초 전송 제외 |
 | Steam 이벤트/공지 | 한영 초안 준비·Community 로그인 대기 | 실제 배포 때 적용 버전·변경·알려진 문제·영상·데모 링크 |
 | Discord | FDG 계정/서버 이력, 웹 로그인/게시 확인 미완료 | 이전에 전달한 요청은 반복하지 않음 |

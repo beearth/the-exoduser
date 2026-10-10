@@ -1,5 +1,11 @@
 # 2026-10-08 인게임 홍보 영상 납품·동기화
 
+## 2026-10-10 22:33 KST — 회복의 영역 독립 스킬 노트 공개
+
+회복의 영역 한영 글을 공식 @fordeargamers에 [게시·공개 상세 확인](https://www.youtube.com/post/Ugkx2UIc57jBgsgkolbqytX0Nn3bgmkAz6if)했다. 현재 위치의 고정 영역과 살아 있는 플레이어의 범위 내 HP·MP·ST 회복을 소개했다. 현행 개발 HEAD `9a4534b42f74093095ebc3364a25dd104e93b379`의 기존 기능 소개이며 새 업데이트·Steam 공개 데모 패치·영상 완성으로 기록하지 않는다. [원고·소스·증거·타 채널 문안](../../marketing/operations/partial-devlog-20261010/holy-dome-publication.json)을 보존했다. UI·기검참·가시덫·회복의 영역 글은 중복 게시하지 않는다.
+
+신규 정상 시연 영상0건. 촬영 경로 읽기 점검에서 격리3387 서버 없음·F 브리지 미지원이 확인됐으며 서버·게임·세이브 변경0. 총괄 cursor33의 1-1 FDG 엔진 미리보기는 보스전 전체 완료가 아니다. 다음 소재는 **지옥강타1 개별 소개·18초 정상 시연안**이다. 기존 미승인 영상 자동 공개 금지·기존 로그인/약관/외부 링크 인증 요청 비반복을 유지한다.
+
 ## 2026-10-10 21:29 KST — 가시덫 개별 스킬 글 공개
 
 가시덫의 현재 플레이어 위치 설치·범위 감속·출혈·지속 피해를 한영 스킬 노트로 [공식 YouTube에 게시](https://www.youtube.com/post/UgkxhEsTSyRHSuYPkuEXJmUg-xnYL90AU9nj)하고 공개 상세 페이지의 작성자·한영 본문을 확인했다. [게시 결과·증거](../../marketing/operations/partial-devlog-20261010/spike-trap-publication.json) · [소스 확인](../../marketing/operations/partial-devlog-20261010/spike-trap-source-check.json) · [타 채널 맞춤 원고](../../marketing/operations/partial-devlog-20261010/spike-trap-channel-copy.json). 개발 HEAD `9a4534b4…`는 동일하고 기존 핵심 설치/효과/지급 구간도 HEAD와 같았다. 마우스 조준 설치·즉발 폭발·완전 고정·흡인 기능으로 쓰지 않았고, 새 업데이트나 공개 Steam 데모 패치로 주장하지 않았다.

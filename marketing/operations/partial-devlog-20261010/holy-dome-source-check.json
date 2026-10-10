@@ -1,0 +1,38 @@
+{
+  "topicId": "skill-holy-dome",
+  "checkedAtUTC": "2026-10-10T13:33:09Z",
+  "checkout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+  "head": "9a4534b42f74093095ebc3364a25dd104e93b379",
+  "workingFileSha256": "5212e3a33c201eec08d09b132092c1a063fea88f36fccef494ea351f3565d2cd",
+  "workingFileDiffPresent": true,
+  "coreSectionsEqualToHead": true,
+  "observedScope": [
+    "game.html:47200 current-position fixed zone",
+    "game.html:33348 alive player inside zone recovers HP/MP/ST capped at max",
+    "game.html:62717 initial loadout F slot",
+    "game.html:14018 F dispatch; game.html:13722 cooldown",
+    "game.html:8775 effective English name Holy Dome",
+    "docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:296 initial grant"
+  ],
+  "facts": [
+    "current player position; fixed zone, no mouse-aim placement or following",
+    "alive player inside zone recovers own HP, MP and stamina up to maximum",
+    "standing still is not a recovery requirement",
+    "new development demo character default F; F dispatches currently equipped skill",
+    "existing feature; no new implementation or public-demo deployment confirmed"
+  ],
+  "excludedClaims": [
+    "must stand still",
+    "instant full heal",
+    "resurrection or invincibility or damage blocking",
+    "pet/summon healing",
+    "heals anywhere after placement",
+    "same F skill for every saved character",
+    "new patch or public Steam demo applied",
+    "normal gameplay video or original-audio QA completed"
+  ],
+  "sourceAuditBy": "indie_devlog_patterns scoped read-only review",
+  "normalGameplayCaptureUsed": false,
+  "publicDemoApplied": "NOT_CONFIRMED",
+  "gameServerSaveChanged": false
+}

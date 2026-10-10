@@ -1,0 +1,53 @@
+{
+  "topicId": "skill-holy-dome",
+  "createdAtKST": "2026-10-10 22:33",
+  "sourceCheckout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+  "sourceHead": "9a4534b42f74093095ebc3364a25dd104e93b379",
+  "newUpdateClaim": false,
+  "publicDemoApplied": "NOT_CONFIRMED",
+  "YouTube": {
+    "status": "PUBLIC_VERIFIED",
+    "url": "https://www.youtube.com/post/Ugkx2UIc57jBgsgkolbqytX0Nn3bgmkAz6if",
+    "copyFile": "youtube-community-holy-dome.txt"
+  },
+  "Threads": {
+    "status": "DRAFT_ONLY",
+    "copyKO": "EXODUSER 스킬 노트 | 회복의 영역\n다음 공격을 준비할 회복 공간\n\n회복의 영역은 현재 서 있는 자리에 회복 공간을 만드는 스킬입니다. 살아 있는 플레이어가 영역 안에 있는 동안 HP·MP·ST가 회복됩니다.\n계속 적을 추격할지, 영역 안에서 자원을 회복하며 다음 행동을 준비할지 선택할 수 있습니다.\n\n추격을 이어가는 것과 영역 안에서 다음 행동을 준비하는 것, 어느 쪽이 취향인가요?\n\n개발 중인 기존 스킬 소개이며 공개 데모와 다를 수 있습니다. AI 보조 아트·음향 사용. 무료 데모는 공식 채널 프로필 Steam 링크.",
+    "feedbackQuestion": "추격과 영역 내 회복 중 어느 쪽이 취향인가요?"
+  },
+  "Bluesky": {
+    "status": "DRAFT_ONLY",
+    "copyEN": "Holy Dome creates a recovery zone at your position, restoring HP, MP and stamina while you are alive inside. Pursue enemies or recover first? Existing development feature; demo may differ. AI-assisted art/audio. Free demo: https://store.steampowered.com/app/4749590/",
+    "characters": 266
+  },
+  "Discord": {
+    "status": "DRAFT_ONLY",
+    "copyKO": "EXODUSER 스킬 노트 | 회복의 영역\n다음 공격을 준비할 회복 공간\n\n회복의 영역은 현재 서 있는 자리에 회복 공간을 만드는 스킬입니다. 살아 있는 플레이어가 영역 안에 있는 동안 HP·MP·ST가 회복됩니다.\n계속 적을 추격할지, 영역 안에서 자원을 회복하며 다음 행동을 준비할지 선택할 수 있습니다.\n\n추격을 이어가는 것과 영역 안에서 다음 행동을 준비하는 것, 어느 쪽이 취향인가요?\n\n개발 소식: 기존 스킬 소개입니다. Steam 공개 데모 패치 공지가 아닙니다. AI 보조 아트·음향 사용.",
+    "sourcePost": "https://www.youtube.com/post/Ugkx2UIc57jBgsgkolbqytX0Nn3bgmkAz6if",
+    "feedbackQuestion": "회복 공간을 어느 순간에 활용하고 싶나요?"
+  },
+  "itch.io": {
+    "status": "DRAFT_ONLY",
+    "title": "Development skill notes: Holy Dome",
+    "copyEN": "Skill notes | Holy Dome\nHoly Dome creates a recovery zone at your current position. While your character is alive and inside the zone, it restores HP, MP, and stamina.\nChoose whether to keep pursuing enemies or recover resources inside the zone before your next move. Which approach suits your playstyle?\n\nExisting development feature; not a new public-demo patch. Development content may differ from the demo. The game uses AI-assisted art and audio. Free demo: https://store.steampowered.com/app/4749590/",
+    "sourcePost": "https://www.youtube.com/post/Ugkx2UIc57jBgsgkolbqytX0Nn3bgmkAz6if"
+  },
+  "ShortsReels": {
+    "status": "NORMAL_RECORDING_REQUIRED",
+    "targetSeconds": 20,
+    "shotSequence": "정상 전투로 자원 소모 → 현재 위치에 영역 설치 → 살아 있는 플레이어가 영역 안에서 HP·MP·ST 회복",
+    "footage": null,
+    "originalAudio": null,
+    "remainingQA": [
+      "approved isolated runtime/source identity",
+      "normal skill use without resource/enemy/save manipulation",
+      "real continuous recording and original audio",
+      "full visual watch and actual audio listening",
+      "review delivery before video publication"
+    ]
+  },
+  "Reddit": {
+    "status": "NO_PUBLICATION",
+    "reason": "공식 로그인/보안 확인과 대상 커뮤니티 현재 규칙·AI 조건 확인 필요. 기존 요청 반복하지 않음"
+  }
+}

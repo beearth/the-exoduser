@@ -1,0 +1,37 @@
+{
+  "topicId": "skill-holy-dome",
+  "kind": "기존 스킬 소개 / 한영 글",
+  "publicationStatus": "PUBLIC_VERIFIED",
+  "channel": "YouTube Community",
+  "ownedChannel": "@fordeargamers",
+  "channelId": "UCOLkkQsaZ9ACuXdvPblhfiA",
+  "publishedAtKST": "2026-10-10 22:33",
+  "copyFile": "youtube-community-holy-dome.txt",
+  "copySha256": "689536e6a4d722bc9b094b9c6b67df6b04ae56edb4857e1e77f50b66e8b8aa64",
+  "sourceCheckout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+  "sourceHead": "9a4534b42f74093095ebc3364a25dd104e93b379",
+  "sourceCheckFile": "holy-dome-source-check.json",
+  "sourceScope": "현재 위치 고정 영역·살아 있는 플레이어의 범위 내 HP/MP/ST 회복·기본 F 지급/입력·유효 영문 이름을 좁게 읽기 확인. 핵심 구간은 HEAD와 동일. 새 구현 변경·Steam 배포·정상 시연 확인은 아님.",
+  "publicDemoApplied": "NOT_CONFIRMED",
+  "newUpdateClaim": false,
+  "normalGameplayCaptureUsed": false,
+  "unapprovedTrailerUsed": false,
+  "publicUrl": "https://www.youtube.com/post/Ugkx2UIc57jBgsgkolbqytX0Nn3bgmkAz6if",
+  "screenshots": [
+    {
+      "file": "youtube-holy-dome-post-public.jpg",
+      "sha256": "8ffdbc7dcdbcfd9d4c6621a5b95ea9d0d7c8e79b175186be7f4de8fdebd6b7f6",
+      "scope": "공개 상세 페이지·공식 작성자·한영 본문·개발/데모 구분. viewport 아래 AI 공개/해시태그는 AX 본문 확인"
+    }
+  ],
+  "verification": "공식 채널ID 소유자 편집·공개 작성 권한 → 새 게시 URL → 공개 상세 페이지 공식 작성자·한영 본문 확인",
+  "linkDelivery": {
+    "postExternalLinkClickable": false,
+    "fallback": "기존 공식 채널 프로필 Steam 링크. 같은 외부 링크 일회성 인증 요청·우회 없음"
+  },
+  "nextMaterial": "skill-giant-slam 지옥강타1 개별 소개·18초 정상 시연안",
+  "otherChannels": "맞춤 문안 준비; 로그인·공식 소유 미확인/기존 미해결 상태 유지·실제 추가 게시0",
+  "newVideoReady": false,
+  "gameServerSaveChanged": false,
+  "captureReadinessFile": "holy-dome-capture-readiness.json"
+}
