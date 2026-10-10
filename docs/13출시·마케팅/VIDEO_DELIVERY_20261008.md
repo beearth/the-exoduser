@@ -1,5 +1,11 @@
 # 2026-10-08 인게임 홍보 영상 납품·동기화
 
+## 2026-10-10 21:29 KST — 가시덫 개별 스킬 글 공개
+
+가시덫의 현재 플레이어 위치 설치·범위 감속·출혈·지속 피해를 한영 스킬 노트로 [공식 YouTube에 게시](https://www.youtube.com/post/UgkxhEsTSyRHSuYPkuEXJmUg-xnYL90AU9nj)하고 공개 상세 페이지의 작성자·한영 본문을 확인했다. [게시 결과·증거](../../marketing/operations/partial-devlog-20261010/spike-trap-publication.json) · [소스 확인](../../marketing/operations/partial-devlog-20261010/spike-trap-source-check.json) · [타 채널 맞춤 원고](../../marketing/operations/partial-devlog-20261010/spike-trap-channel-copy.json). 개발 HEAD `9a4534b4…`는 동일하고 기존 핵심 설치/효과/지급 구간도 HEAD와 같았다. 마우스 조준 설치·즉발 폭발·완전 고정·흡인 기능으로 쓰지 않았고, 새 업데이트나 공개 Steam 데모 패치로 주장하지 않았다.
+
+이번 신규 정상 촬영·영상/원음 검수·미승인 영상 사용·게임/서버/세이브 변경0이다. 총괄 cursor32는 active/inProgress로 새 완료 보고 없음. 기존 글과 영상을 반복 게시·검증하지 않았다. 기존 로그인·외부 링크 인증 요청도 반복하지 않았으며, 타 채널은 원고만 준비·실제 추가 게시0이다. 다음 소재 한 건은 **회복의 영역** 소개와20초 정상 시연안이다.
+
 ## 2026-10-10 20:27 KST — 기검참 개별 스킬 글 공개
 
 기존 기검참의 1·2타 검기→3타 충전·해제 선택을 한영 스킬 노트로 [공식 YouTube에 게시](https://www.youtube.com/post/Ugkxpb6uTCUIAd3Ypj4_1vsi9cv2BKT-F93l)하고 공개 상세 페이지의 공식 작성자·본문을 확인했다. [게시 결과·해시·증거](../../marketing/operations/partial-devlog-20261010/ki-slash-publication.json) · [소스 확인 범위](../../marketing/operations/partial-devlog-20261010/ki-slash-source-check.json). 실제개발 HEAD는 `9a4534b4…`로 동일하고, 기존 작업 파일의 기검참 핵심 구간은 HEAD와 같다. 기존 기능 소개이며 새 업데이트·Steam 공개 데모 적용·신규 영상 완성으로 보고하지 않는다. 글·원고·증거를 보존하고 같은 글은 재게시하지 않는다.

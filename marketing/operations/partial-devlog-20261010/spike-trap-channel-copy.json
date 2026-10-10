@@ -1,0 +1,53 @@
+{
+  "topicId": "skill-spike-trap",
+  "updatedAtKST": "2026-10-10 21:29",
+  "publicationScope": "기존 기능 소개. 개발 내용·공개 데모 적용·정상 촬영 구별.",
+  "youtube": {
+    "status": "PUBLIC_VERIFIED",
+    "url": "https://www.youtube.com/post/UgkxhEsTSyRHSuYPkuEXJmUg-xnYL90AU9nj",
+    "copyFile": "youtube-community-spike-trap.txt"
+  },
+  "threads": {
+    "status": "COPY_ONLY_OFFICIAL_LOGIN_UNCONFIRMED",
+    "textKO": "가시덫은 현재 서 있는 자리에 설치합니다. 범위 안의 적을 느리게 만들고 출혈·지속 피해를 줍니다. 적이 다가올 때 덫을 놓을 자리와 거리를 벌릴 방향을 선택하는 스킬입니다. 어떤 전투에서 써보고 싶으신가요?\nEXODUSER 기존 스킬 개발 노트. 개발 내용은 공개 데모와 다를 수 있습니다. AI 보조 아트·음향을 사용합니다.\n무료 데모: https://store.steampowered.com/app/4749590"
+  },
+  "bluesky": {
+    "status": "COPY_ONLY_OFFICIAL_LOGIN_UNCONFIRMED",
+    "text": "Spike Trap is placed at your feet, slows nearby enemies and causes bleed damage. Where would you use it? EXODUSER development skill notes; public demo may differ. The game uses AI-assisted art/audio. Demo: https://store.steampowered.com/app/4749590",
+    "characterCount": 248
+  },
+  "discord": {
+    "status": "COPY_ONLY_EXISTING_WEB_LOGIN_PENDING",
+    "textKO": "개발 노트 — 가시덫\n현재 서 있는 곳에 설치해 범위 안의 적에게 감속·출혈·지속 피해를 주는 스킬입니다. 적이 다가올 때 덫을 놓을 자리와 이후 거리를 벌릴 방향을 선택할 수 있습니다.\n어떤 적이나 전투에서 사용해 보고 싶으신가요? 설치 위치 설명이 명확한지도 알려주세요.\n기존 기능 소개이며 새 공개 데모 패치 공지는 아닙니다. 개발 내용은 데모와 다를 수 있습니다. AI 보조 아트·음향을 사용합니다.\n스킬 노트: https://www.youtube.com/post/UgkxhEsTSyRHSuYPkuEXJmUg-xnYL90AU9nj\n무료 데모: https://store.steampowered.com/app/4749590"
+  },
+  "itch": {
+    "status": "COPY_ONLY_EXISTING_LOGIN_PENDING",
+    "title": "Skill notes: Spike Trap — choose the ground first",
+    "bodyEN": "Today we are introducing an existing skill in EXODUSER: HELL LORD. Spike Trap is placed at your current position. It slows enemies within its area, applies bleed, and deals damage over time.\n\nAs enemies approach, you can choose the position where you will place the trap and the direction in which you will retreat. In what kind of encounter would you use it? We would also like to hear whether the placement description is clear.\n\nThis entry explains a development feature. It does not announce a new public-demo patch, and development content may differ from the public demo. No new gameplay recording is included here. A future normal-play demonstration should show placement at the player position, natural enemy movement through the area, and the result with original game audio.\n\nThe game uses AI-assisted art and audio.\nOfficial skill note: https://www.youtube.com/post/UgkxhEsTSyRHSuYPkuEXJmUg-xnYL90AU9nj\nFree Steam demo: https://store.steampowered.com/app/4749590"
+  },
+  "instagramReelsAndYouTubeShorts": {
+    "status": "SHOT_PLAN_ONLY_NO_NEW_VIDEO",
+    "targetSeconds": 18,
+    "sequence": [
+      "place at the current player position",
+      "move away while natural enemies approach",
+      "show enemies entering the area, slowed movement and damage/bleed result"
+    ],
+    "required": [
+      "real normal gameplay footage",
+      "original game audio",
+      "visual and listening review",
+      "deliver review copy before automatic publication"
+    ],
+    "excluded": [
+      "mouse-target placement depiction",
+      "explosion or full immobilization claims",
+      "old R1/V3/art teaser",
+      "staged footage presented as new natural play"
+    ]
+  },
+  "reddit": {
+    "status": "NO_PUBLICATION",
+    "reason": "기존 사람 확인 대기·재요청 없음. 실제 게시 전 커뮤니티 현행 규칙·AI 조건 확인."
+  }
+}

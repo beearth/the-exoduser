@@ -1,0 +1,36 @@
+{
+  "topicId": "skill-spike-trap",
+  "kind": "기존 스킬 소개 / 한영 글",
+  "publicationStatus": "PUBLIC_VERIFIED",
+  "channel": "YouTube Community",
+  "ownedChannel": "@fordeargamers",
+  "channelId": "UCOLkkQsaZ9ACuXdvPblhfiA",
+  "publishedAtKST": "2026-10-10 21:29",
+  "copyFile": "youtube-community-spike-trap.txt",
+  "copySha256": "148abb14d9a468076b106f1865a873490ba472b12d03c970cae4d650caa646ae",
+  "sourceCheckout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+  "sourceHead": "9a4534b42f74093095ebc3364a25dd104e93b379",
+  "sourceCheckFile": "spike-trap-source-check.json",
+  "sourceScope": "현재 위치 설치·장판 판정·감속/출혈 소비자·기본 지급 경로를 좁게 읽기 확인. 해당 핵심 구간은 HEAD와 동일. 새 구현 변경이나 공개 Steam 배포 근거 아님.",
+  "publicDemoApplied": "NOT_CONFIRMED",
+  "newUpdateClaim": false,
+  "normalGameplayCaptureUsed": false,
+  "unapprovedTrailerUsed": false,
+  "publicUrl": "https://www.youtube.com/post/UgkxhEsTSyRHSuYPkuEXJmUg-xnYL90AU9nj",
+  "screenshots": [
+    {
+      "file": "youtube-spike-trap-post-public.jpg",
+      "sha256": "8635a5cfcbce2671f94e112ce8314d10c350a75e74f3e4965c1bde7e512eec09",
+      "scope": "공개 상세 페이지·공식 작성자·한영 본문·개발/데모 구분. viewport 아래 AI 공개/해시태그는 AX 본문 확인"
+    }
+  ],
+  "verification": "공식 채널ID 소유자 편집·공개 작성 권한 → 새 게시 URL → 공개 상세 페이지 공식 작성자·한영 본문 확인",
+  "linkDelivery": {
+    "postExternalLinkClickable": false,
+    "fallback": "기존 공식 채널 프로필 Steam 링크. 같은 외부 링크 일회성 인증 요청·우회 없음"
+  },
+  "nextMaterial": "skill-holy-dome 회복의 영역 개별 소개·20초 정상 시연안",
+  "otherChannels": "맞춤 문안 준비; 로그인·공식 소유 미확인/기존 미해결 상태 유지·실제 추가 게시0",
+  "newVideoReady": false,
+  "gameServerSaveChanged": false
+}

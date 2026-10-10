@@ -2,7 +2,7 @@
   "createdAtKST": "2026-10-10 19:47",
   "policy": "각 소재를 전체 보스전 완료와 관계없이 독립 제작한다. 기존 스킬 소개를 새 패치로, 콘셉트 원화를 플레이 가능한 직업으로 표기하지 않는다.",
   "publishedTopic": "https://www.youtube.com/post/UgkxfJtDWBoJglf9RWKueZFsGwOBIRBYWULb",
-  "nextTopic": "skill-spike-trap",
+  "nextTopic": "skill-holy-dome",
   "items": [
     {
       "id": "ui-settings-fit",
@@ -227,10 +227,10 @@
       "name": "가시덫",
       "skillId": "spikeTrap",
       "kind": "기존 스킬 개별 소개",
-      "state": "현행 소스 동작 확인·한영 문안·짧은 시연안 준비",
-      "ready": true,
-      "readyFormat": "기능 소개 글; 인게임 영상은 신규 정상 시연 필요",
-      "action": "한 스킬·한 판단·한 결과의 짧은 시연. 기존 staged/미승인 티저를 새 정상 영상으로 사용하지 않음",
+      "state": "공식 YouTube 한영 스킬 노트 공개·시연안 준비·신규 영상 없음",
+      "ready": false,
+      "readyFormat": "소개 글 공개됨; 신규 정상 시연·원음 검수 필요",
+      "action": "같은 글 중복 게시 금지. 후속 영상은 정상 실제 시연·원음으로 검토본부터 인도",
       "demo": "현행 소스 지급/학습 경로 확인; Steam 배포 동일성·실행 시연 미확인",
       "sourceCheckout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
       "evidence": [
@@ -240,10 +240,14 @@
       "newUpdateClaim": false,
       "videoReady": false,
       "hook": "적이 지나갈 자리를 먼저 만든다",
-      "shotSequence": "설치 → 자연스럽게 접근한 적을 유도 → 감속·출혈 확인",
+      "shotSequence": "현재 플레이어 위치에 설치 → 이동·자연스러운 적 접근 → 감속·출혈·지속 피해 결과",
       "targetSeconds": 18,
       "copyKO": "EXODUSER 스킬 소개 | 가시덫\n적이 지나갈 자리를 먼저 만든다\n설치 → 자연스럽게 접근한 적을 유도 → 감속·출혈 확인의 흐름을 소개합니다. 현재 개발 소스의 기능 소개이며 이번에 새로 배포한 패치 공지가 아닙니다.\n개발 중인 내용은 공개 데모와 다를 수 있습니다. 무료 데모는 공식 채널 프로필의 Steam 링크에서 확인할 수 있습니다. AI 보조 아트·음향을 사용합니다.",
-      "copyEN": "EXODUSER skill spotlight | 가시덫\nChoose the ground first, then draw approaching enemies into the trap.\nA feature spotlight from the current development source, not a newly released patch announcement.\nDevelopment content may differ from the public demo. The free demo is linked from our official channel profile. The game uses AI-assisted art and audio."
+      "copyEN": "EXODUSER skill spotlight | 가시덫\nChoose the ground first, then draw approaching enemies into the trap.\nA feature spotlight from the current development source, not a newly released patch announcement.\nDevelopment content may differ from the public demo. The free demo is linked from our official channel profile. The game uses AI-assisted art and audio.",
+      "publishedUrl": "https://www.youtube.com/post/UgkxhEsTSyRHSuYPkuEXJmUg-xnYL90AU9nj",
+      "publicationEvidence": "marketing/operations/partial-devlog-20261010/spike-trap-publication.json",
+      "publishedAtKST": "2026-10-10 21:29",
+      "verifiedPlacement": "current_player_position_no_mouse_target"
     },
     {
       "id": "skill-holy-dome",
@@ -454,8 +458,8 @@
     "신규3종은 선택창 잠금·comingSoon. 전투 캐릭터 목록과 생성·저장 연결 미확인",
     "FDG reference-motion24는 gameplayApplied/modelAvailable=false; 공개 콘셉트 원화와 분리"
   ],
-  "updatedAtKST": "2026-10-10 20:27",
-  "latestPublishedTopic": "https://www.youtube.com/post/Ugkxpb6uTCUIAd3Ypj4_1vsi9cv2BKT-F93l",
+  "updatedAtKST": "2026-10-10 21:29",
+  "latestPublishedTopic": "https://www.youtube.com/post/UgkxhEsTSyRHSuYPkuEXJmUg-xnYL90AU9nj",
   "publicationHistory": [
     {
       "id": "ui-small-improvements-20261010",
@@ -466,6 +470,11 @@
       "id": "skill-ki-slash",
       "url": "https://www.youtube.com/post/Ugkxpb6uTCUIAd3Ypj4_1vsi9cv2BKT-F93l",
       "evidence": "ki-slash-publication.json"
+    },
+    {
+      "id": "skill-spike-trap",
+      "url": "https://www.youtube.com/post/UgkxhEsTSyRHSuYPkuEXJmUg-xnYL90AU9nj",
+      "evidence": "spike-trap-publication.json"
     }
   ]
 }

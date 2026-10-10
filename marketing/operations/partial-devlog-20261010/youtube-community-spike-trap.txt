@@ -1,0 +1,21 @@
+EXODUSER 스킬 노트 | 가시덫
+적이 지나갈 자리를 먼저 만든다
+
+가시덫은 현재 서 있는 자리에 설치하는 스킬입니다. 범위 안의 적을 느리게 만들고, 출혈과 지속 피해를 줍니다.
+적이 다가올 때 덫을 놓을 위치와 이후 거리를 벌릴 방향을 선택할 수 있습니다.
+
+다가오는 적의 길목에 덫을 놓고 빠지는 방식, 어떤 전투에서 써보고 싶으신가요?
+
+Skill notes | Spike Trap
+Spike Trap is placed at your current position. It slows enemies within its area, applies bleed, and deals damage over time.
+As enemies approach, choose where to place it and which direction to retreat. In what kind of encounter would you use this skill?
+
+이번 글은 개발 중인 게임의 기존 스킬 소개입니다. 공개 Steam 데모에 새로 적용된 패치 공지는 아니며, 개발 내용은 공개 데모와 다를 수 있습니다.
+This is a feature note from development. It does not announce a new public-demo patch; development content may differ from the demo.
+
+무료 데모: 공식 채널 프로필의 Steam 링크
+Free demo: use the Steam link on our channel profile.
+https://store.steampowered.com/app/4749590/EXODUSER_HELL_LORD/?utm_source=youtube&utm_medium=community&utm_campaign=skill_spike_trap_20261010
+
+AI 보조 아트·음향 사용 / The game uses AI-assisted art and audio.
+#EXODUSER #IndieGame #Devlog

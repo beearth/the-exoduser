@@ -1,0 +1,40 @@
+{
+  "topicId": "skill-spike-trap",
+  "checkedAtUTC": "2026-10-10T12:27:48Z",
+  "checkout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+  "head": "9a4534b42f74093095ebc3364a25dd104e93b379",
+  "workingFileSha256": "5212e3a33c201eec08d09b132092c1a063fea88f36fccef494ea351f3565d2cd",
+  "workingFileDiffPresent": true,
+  "coreSectionsEqualToHead": true,
+  "observedScope": [
+    "game.html:46018 placement at current player position",
+    "game.html:38095 area damage, slow and bleed application",
+    "game.html:35024 slow movement consumer",
+    "game.html:39325 bleed damage consumer",
+    "game.html:62718 initial loadout slot1",
+    "game.html:13991 number-slot input",
+    "game.html:13737 resource and cooldown conditions",
+    "game.html:6773 display name Spike Trap",
+    "docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md initial loadout and save contract"
+  ],
+  "facts": [
+    "placed at current player position; no mouse-target confirmation",
+    "living enemies in area receive slow and bleed and damage over time",
+    "default slot1 for new development demo characters, movable into slots1-4",
+    "existing feature; no new implementation change confirmed"
+  ],
+  "excludedClaims": [
+    "place anywhere with mouse aim",
+    "explodes on placement",
+    "fully roots or traps enemies",
+    "automatically pulls enemies",
+    "always independently usable after fusion",
+    "new patch added",
+    "current public Steam demo applied",
+    "normal video or audio QA completed"
+  ],
+  "sourceAuditBy": "indie_devlog_patterns scoped read-only review",
+  "normalGameplayCaptureUsed": false,
+  "publicDemoApplied": "NOT_CONFIRMED",
+  "gameServerSaveChanged": false
+}
