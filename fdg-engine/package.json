@@ -6,6 +6,7 @@
   "main": "src/index.cjs",
   "scripts": {
     "test": "node tests/integration.cjs",
-    "test:resources": "node tests/resource-lifecycle.cjs"
+    "test:resources": "node tests/resource-lifecycle.cjs",
+    "test:roots": "node tests/druid-roots-consumer.cjs"
   }
 }

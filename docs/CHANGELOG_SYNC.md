@@ -1,3 +1,7 @@
+## 2026-10-10 — FDG 드루이드 뿌리48 첫 전용 consumer
+
+기존 엔진3담당+ROOT가 본편7인자 roots 요청·외부phase를 받는 DruidRootsNode와 Scene Studio 버튼/독립preview driver를 연결했다. node 자체 clock0, 원256×scale/center·inset1·alpha·48셀을 유지하며 일시draw gate는 cache유지/끝은URL반납이다. 독립 샘플은r80→400²/fixed1/60/70step이며 본편 renderclock 이식이 아니다. 새 source16PASS·pixel159PASS/decode1·actual7scripts Scene Studio28PASS/setup3은 별도epoch, 실제main/전체보스전/GPU·동시성능/청취/save/AAA 미인수·RETOUCH. 원게임/원PNG·JSON/전투 변경0. [API·소유·시간·검수 정본](5.1임펙트디자인/FDG_DRUID_ROOTS_CONSUMER_20261010.md).
+
 
 
 ## 2026-10-10 — 화마귀 Q 불탄 임팩트24 연결

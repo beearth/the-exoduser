@@ -10,7 +10,7 @@ EXODUSER와 분리된 장면 기반 엔진과 Scene Studio입니다. 엔진 소�
 
 ## 엔진 사용
 
-브라우저는 `core.js → animation.js → renderer.js → editor.js` 순서로 classic script를 로드합니다. CommonJS에서는 `require('./fdg-engine')`가 같은 `FDG` 객체의 코어·애니메이션·렌더러·에디터를 제공합니다. `demo.js`는 샘플 앱이며 재사용 코어에 포함되지 않습니다.
+브라우저 Scene Studio는 `core.js → animation.js → exoduser.js → druid-roots-preview.js → renderer.js → editor.js → demo.js` 순서로 classic script를 로드합니다. CommonJS에서는 `require('./fdg-engine')`가 같은 `FDG` 객체의 앞6모듈을 제공합니다. `demo.js`는 샘플 앱이며 재사용 코어에 포함되지 않습니다.
 
 ```js
 const tree = new FDG.SceneTree({ fixedStep: 1 / 60 });
@@ -30,6 +30,8 @@ renderer.render();
 | `animation.js` | SpriteFrames grid·실이미지 용량 검증, 임의 장수 clip, 초 단위 Animator, loop/one-shot, SpriteNode 직렬화 |
 | `renderer.js` | Canvas 2.5D/탑다운 카메라, 깊이 정렬, billboard atlas 한 셀 표시, 부모 affine 변환, 선택 hit-test, 보수적 화면 culling, context 복원, 장면 URL 소유·해제·dispose |
 | `editor.js` | 씬 트리/속성, 재생·정지·한 스텝, 노드 추가/삭제, 검증 후 JSON 교체, 자체 DOM/리스너 정리 |
+| `exoduser.js` | DruidRootsNode: 원7인자 요청+외부10frame/fraction 진행을 기존48장에 매핑, 자체 clock0, gate/끝·scene JSON factory |
+| `druid-roots-preview.js` | Scene Studio의 독립60틱/초 참고 재생,70step끝/pause·step·import snapshot·삭제/종료 |
 
 기본 시뮬레이션은 60Hz입니다. 한 화면 갱신의 입력 dt는 최대 .25초로 제한하며 최대 8틱을 처리하고 초과 시간을 보고합니다. 이는 느린 기기에서 무한 따라잡기를 피하는 정책이며 모든 경과 시간을 시뮬레이션한다는 뜻은 아닙니다. 표시 FPS와 애니메이션 장수/FPS는 별개입니다. 샘플 효과는 기존 24장 불꽃을 16FPS, 1.5초 one-shot으로 재사용합니다.
 
@@ -63,3 +65,9 @@ node fdg-engine/tests/integration.cjs
 이 버전은 별도 엔진 기반과 실행 샘플입니다. EXODUSER 전체 이식, 물리 충돌/내비게이션, 오디오 믹서, 실제 skinned 3D 렌더링, 그래픽 에셋 제작 도구는 아직 구현되지 않았습니다. 브라우저 조작·실게임 이식·GPU·동시효과 성능은 별도 인수가 필요합니다. 다음은 엔진 장면 계약을 사용한 실제 EXODUSER 보스전의 격리 이식과 성능 측정입니다. 현재 원화·전투·저장 데이터는 유지합니다.
 
 상세 수치·소유권·검수 정본: [FDG_ENGINE_20261010.md](../docs/0마스터플랜/FDG_ENGINE_20261010.md).
+
+## EXODUSER 보스 효과 소비
+
+드루이드 뿌리48장 버튼이 실제7인자 표시 요청을 받아 기존 원화를400×400 샘플로 재생합니다. DruidRootsNode는 외부 진행값으로만 표시하며 본편 clock을 바꾸지 않습니다. 임시 표시 gate는 이미지를 유지하고 효과 끝은 URL을 반납합니다. 저장/불러오기는 같은 phase를 유지하며 다시 재생할 때만 독립 driver가 연결됩니다. 최초 새 source16조건·pixel159조건·Scene Studio28조건/setup3은 각각 별도epoch PASS이며 실브라우저/GPU/성능·전체보스전은 미인수입니다.
+
+상세 API·시간·소유·시각RETOUCH: [FDG 드루이드 roots 소비](../docs/5.1임펙트디자인/FDG_DRUID_ROOTS_CONSUMER_20261010.md). 새 검수: `node fdg-engine/tests/druid-roots-consumer.cjs` (`test:roots`).

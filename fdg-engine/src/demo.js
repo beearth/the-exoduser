@@ -22,7 +22,9 @@
     }
   }
   const factories = { Sprite: payload => new FDG.SpriteNode({ id: payload.id, name: payload.name }),
-    DemoActor: payload => new DemoActor({ id: payload.id, name: payload.name }) };
+    DemoActor: payload => new DemoActor({ id: payload.id, name: payload.name }),
+    DruidRoots: FDG.ExoduserFactories.DruidRoots,
+    DruidRootsPreviewDriver: payload => new FDG.DruidRootsPreviewDriver({ id: payload.id, name: payload.name }) };
   let tree = new FDG.SceneTree();
   const actor = new DemoActor({ id: 'actor', name: '이동 테스트 노드' });
   actor.properties = { shape: 'actor', color: '#789eac', width: 42, height: 86, controlled: true, speed: 120 };
@@ -42,8 +44,18 @@
   effect.position.x = -130; effect.position.y = 55;
   tree.root.addChild(effect);
   const renderer = new FDG.Renderer25D(canvas, { tree });
+  function visit(node, callback) {
+    callback(node);
+    for (const child of node.children) visit(child, callback);
+  }
+  function stopRootsDrivers(currentTree) {
+    visit(currentTree.root, node => { if (node instanceof FDG.DruidRootsPreviewDriver) node.stop(); });
+  }
   const editor = new FDG.Editor({ tree, renderer, rootElement: document.getElementById('fdg-editor'), factories,
-    onTreeChange: next => { tree = next; renderer.setTree(next); } });
+    onTreeChange: next => {
+      if (next !== tree) stopRootsDrivers(tree);
+      tree = next; renderer.setTree(next);
+    } });
   editor.mount();
   editor.select(actor);
   const find = (id, node = tree.root) => {
@@ -51,6 +63,39 @@
     for (const child of node.children) { const value = find(id, child); if (value) return value; }
     return null;
   };
+  function rootsNode() {
+    let result = null;
+    visit(tree.root, node => { if (!result && node instanceof FDG.DruidRootsNode) result = node; });
+    return result;
+  }
+  const rootsStatusLeaf = document.getElementById('fdg-roots-status');
+  function refreshRootsStatus() {
+    const node = rootsNode();
+    if (!node) { rootsStatusLeaf.textContent = '뿌리 미리보기: 버튼을 눌러 생성'; return; }
+    const driver = node.children.find(child => child instanceof FDG.DruidRootsPreviewDriver);
+    const state = !node.alive ? '종료 · 버튼으로 다시 재생' : !driver || !driver.running ? '저장된 장면 · 버튼으로 다시 재생' : tree.paused ? '일시정지' : '재생';
+    rootsStatusLeaf.textContent = '뿌리 미리보기: ' + state + ' · 원화 ' + (node.currentFrame() + 1) + '/48 · ' + node.width + '×' + node.height + ' 표시';
+  }
+  listen(document.getElementById('fdg-druid-roots'), 'click', () => {
+    try {
+      if (tree.fixedStep !== 1 / 60) throw new Error('뿌리 미리보기는 고정 시간 1/60초인 씬에서 재생할 수 있습니다.');
+      let node = rootsNode();
+      if (!node) {
+        node = new FDG.DruidRootsNode({ name: '드루이드 뿌리 48장' });
+        tree.root.addChild(node);
+      }
+      const previewRadius = 80;
+      node.request('druid_roots', 0, -170, (previewRadius + 120) * 2 / 256, 7, 0, false);
+      let driver = node.children.find(child => child instanceof FDG.DruidRootsPreviewDriver);
+      if (!driver) {
+        driver = new FDG.DruidRootsPreviewDriver({ name: '뿌리 미리보기 진행' });
+        node.addChild(driver);
+      }
+      driver.bind(node);
+      editor.select(node); tree.paused = false; editor.refresh();
+      refreshRootsStatus();
+    } catch (error) { rootsStatusLeaf.textContent = error.message; }
+  });
   listen(document.getElementById('fdg-effect'), 'click', () => {
     const node = find('effect');
     if (node instanceof FDG.SpriteNode && node.clip) {
@@ -98,6 +143,7 @@
     disposed = true;
     if (frameRequest !== null && typeof root.cancelAnimationFrame === 'function') root.cancelAnimationFrame(frameRequest);
     frameRequest = null; keys.clear(); pan = null; previous = null;
+    stopRootsDrivers(tree);
     editor.destroy(); renderer.dispose();
     for (const remove of listeners.splice(0)) remove();
     return true;
@@ -112,11 +158,13 @@
       statsLeaf.textContent = '게임 시간 ' + tree.simulationTime.toFixed(2) + 's · 고정 틱 ' + (1 / tree.fixedStep).toFixed(1) + 'Hz · 표시 ' + stats.draws +
         ' · 아틀라스 ' + stats.sprites + ' · 로딩 대기 ' + stats.pending + ' · 오류 ' + stats.errors;
       nextStats = timestamp + 200;
+      refreshRootsStatus();
       if (typeof editor.refresh === 'function') editor.refresh();
     }
     frameRequest = root.requestAnimationFrame(frame);
   }
   root.FDGDemo = { get tree() { return tree; }, get disposed() { return disposed; },
+    get rootsNode() { return rootsNode(); },
     renderer, editor, factories, report: () => tree.toJSON(), dispose };
   frameRequest = root.requestAnimationFrame(frame);
 })(typeof globalThis !== 'undefined' ? globalThis : this);

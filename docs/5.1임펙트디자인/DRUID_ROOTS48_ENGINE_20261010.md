@@ -55,3 +55,7 @@
 | WebP 미리보기 | 제품loopfalse와 별개로 반복하는 독립helper proof. 70nominal단계+400ms빈구간, 합1567ms |
 
 JSON frameWidth/frameHeight448/pivot(.5,.5)는 보조정보이며 실제표시는 기존256×scale geometry를 사용한다. editor normalization에서 이 보조정보가 버려져도 기본 clip 계약은 유지된다. Native/GPU/전체전투 성능·실청취/save 인수는 여전히0이다.
+
+## 2026-10-10 후속 — 별도 FDG 표시 소비
+
+기존 roots48 제품/본편 consumer는 위 계약대로 동결한다. 신규 FDG DruidRootsNode는 같은7인자 요청과 외부frame/fraction을 표시하는 별도 장면 adapter다. 원게임 clock/전투/원PNG·JSON 변경0. 독립 Scene Studio의60tick reference preview를 본편70render진행 시간과 혼동하지 않는다. [새 consumer 계약·검수/RETOUCH](FDG_DRUID_ROOTS_CONSUMER_20261010.md).

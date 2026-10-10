@@ -1,3 +1,7 @@
+## 2026-10-10 — FDG 드루이드 뿌리48 첫 전용 consumer
+
+기존 엔진3담당+ROOT가 본편7인자 roots 요청·외부phase를 받는 DruidRootsNode와 Scene Studio 버튼/독립preview driver를 연결했다. node 자체 clock0, 원256×scale/center·inset1·alpha·48셀을 유지하며 일시draw gate는 cache유지/끝은URL반납이다. 독립 샘플은r80→400²/fixed1/60/70step이며 본편 renderclock 이식이 아니다. 새 source16PASS·pixel159PASS/decode1·actual7scripts Scene Studio28PASS/setup3은 별도epoch, 실제main/전체보스전/GPU·동시성능/청취/save/AAA 미인수·RETOUCH. 원게임/원PNG·JSON/전투 변경0. [API·소유·시간·검수 정본](../5.1임펙트디자인/FDG_DRUID_ROOTS_CONSUMER_20261010.md).
+
 ## 2026-10-10 — FDG 장면 이미지 자원 수명 연결
 
 기존 엔진3담당+ROOT가 독립 FDG의 managed image lease·legacy manual pin·명시 eviction·pending 세대 격리를 구현했다. renderer는 장면 교체/삭제/clip 변경에서 이전 URL만 반납하고 공통/다른renderer 공유이미지를 유지한다. 샘플 종료는 RAF/입력리스너/에디터/renderer 참조도 정리한다. core 최초6그룹14조건, renderer7그룹, editorconsumer6그룹30조건/setup3별도, demo13조건은 별도epoch PASS/FAIL0이며 PNGdecode/완료suite재실행0. editor source/원게임/원PNG/save 불변. 엔진 참조 정리이며 실RAM/GPU 감소·native/BFCache·전체이식/성능/AAA 인수는 아니다. [실제 API·검수 정본](FDG_ENGINE_20261010.md#2026-10-10-후속--장면-이미지-자원-수명-관리). 다음은 실제 보스 consumer의 독립 FDG 장면 연결과 성능 검수다.

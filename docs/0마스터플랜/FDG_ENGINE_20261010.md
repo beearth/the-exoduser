@@ -14,7 +14,7 @@
 | `fdg-engine/package.json`, `src/index.cjs` / ROOT | version0.1.0/private/commonjs 독립 경계, 단일 모듈 export |
 | `fdg-engine/tests/integration.cjs` / ROOT | 실제 5스크립트 데모·에디터·Canvas 연결 통제 검수 |
 
-브라우저는 classic script `core→animation→renderer→editor→demo` 순서다. 런타임 외부 패키지/Three.js/서버/빌드가 필요하지 않도록 작성했다. 실제 `file://` 브라우저 실행은 미인수다. CommonJS `require('./fdg-engine')`는 동일 FDG 객체에 네 모듈을 제공하고 demo는 자동 실행하지 않는다. 기존 상위 저장소 `type:module`과 독립되도록 하위 `type:commonjs`를 명시했다.
+현재 브라우저는 classic script `core→animation→exoduser→druid-roots-preview→renderer→editor→demo` 순서다. foundation 당시5스크립트에서 후속 roots 소비2모듈을 추가했다. 런타임 외부 패키지/Three.js/서버/빌드가 필요하지 않도록 작성했다. 실제 `file://` 브라우저 실행은 미인수다. 현재 CommonJS `require('./fdg-engine')`는 동일 FDG 객체에 core/animation/exoduser/druid-roots-preview/renderer/editor6모듈을 제공하고 demo는 자동 실행하지 않는다. 기존 상위 저장소 `type:module`과 독립되도록 하위 `type:commonjs`를 명시했다.
 
 Godot의 [씬 트리](https://docs.godotengine.org/en/stable/tutorials/scripting/scene_tree.html)와 [고정 처리/프레임 처리 분리](https://docs.godotengine.org/en/stable/tutorials/scripting/idle_and_physics_processing.html)를 구조 참고로 사용했다. 소스는 독립 구현이며 Godot 전체 기능이나 `.tscn` 호환을 제공하지 않는다.
 
@@ -107,3 +107,16 @@ Godot의 [씬 트리](https://docs.godotengine.org/en/stable/tutorials/scripting
 | 실제 sample consumer | Node1/13조건 PASS/FAIL0. 실제 5스크립트·공유 renderer·pagehide persisted 경계·RAF취소/late callback·리스너/host 보존·pending 종료. controlled Image2/PNG0 |
 
 각 epoch는 합산하지 않고 기존 foundation suite/PNG/Canvas pixel 검수는 재실행하지 않았다. 이번 새 source 최초 실행 후 제품 수정0. 원문과 source pin·ownhunk inverseexact는 `E/fdg-resource-lifecycle-20261010/`에 보존한다. **UI_NOT_ASSESSED / VISUAL VERDICT: RETOUCH**. 새 원화나 표시 geometry 변경이 없으며 native browser/실네트워크/GC·GPU peak·동시성능/EXODUSER 전체 이식·보스전/청취·save/AAA 인수는 미완료다.
+
+## 2026-10-10 후속 — EXODUSER 드루이드 뿌리48 외부 진행 소비
+
+별도 `DruidRootsNode`가 본편의7인자 요청·외부legacy frame/fraction/maxFrames10을 기존48 atlas에 매핑하며 자기 clock0을 유지한다. renderer는 drawAllowedfalse 표시만 skip해 일시 gate의 acquired lease를 유지하고, alivefalse URL retire는 다음 render에 반납한다. Scene Studio의 별도 preview driver는 fixed1/60에서70step 참고 진행·pause/step·JSON snapshot/import·반복재생/삭제/dispose를 연결했다. 원게임/전투/RNG/save/원PNG·JSON 변경0이다.
+
+| 신규 소유 | 현재 범위 |
+|---|---|
+| engine_runtime | src/exoduser.js, tests/druid-roots-consumer.cjs |
+| engine_editor | src/demo.js, src/druid-roots-preview.js, index.html, src/index.cjs, package.json |
+| ROOT | renderer drawAllowed 단1hunk, 현재docs·정상 소유checkpoint |
+| engine_animation | 새adapter 실제CPU Canvas pixel/proof, 제품편집0 |
+
+최초 source7그룹16PASS·별도 actualPNG159PASS/decode1·별도 actual7scripts Scene Studio9그룹28PASS/setup3은 합산하지 않는다. 첫 관련 실행후 제품수정0. ROOT 직접48contact 판독은 RETOUCH이며 기존후기원화변화/실browser·GPU/성능/전체보스전未인수다. [요청·phase·gate·driver·검수 정본](../5.1임펙트디자인/FDG_DRUID_ROOTS_CONSUMER_20261010.md). 본편 born/renderclock·원10폴백/GLqueue를 FDG로 이식한 단위가 아니다.

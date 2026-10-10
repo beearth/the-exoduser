@@ -148,7 +148,7 @@
 
     _sprite(node) {
       const state = node.getDrawState();
-      if (!state.imageUrl) return false;
+      if (state.drawAllowed === false || !state.imageUrl) return false;
       const image = this._image(state.imageUrl);
       if (!image) return false;
       const clip = node.clip;
