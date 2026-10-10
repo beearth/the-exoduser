@@ -181,10 +181,11 @@
     const TOP=10,BOT=78,usable=Math.max(160,H-TOP-BOT),cx=W/2,cy=TOP+usable/2;
     const cnt=Math.max(1,m.set.length+1);
     let R=Math.max(70,Math.min(W*.3,usable*.4));
-    let nodeSize=Math.max(44,Math.min(92,R*.6,2*Math.PI*R/cnt*.72));
+    let nodeSize=Math.max(34,Math.min(92,R*.56,2*Math.PI*R/cnt*.72));
     R=Math.max(64,Math.min(R,usable/2-nodeSize/2-16));
-    nodeSize=Math.max(44,Math.min(nodeSize,2*Math.PI*R/cnt*.72));
-    const coreSize=Math.max(70,Math.min(150,R*1.02));
+    nodeSize=Math.max(34,Math.min(nodeSize,2*Math.PI*R/cnt*.72));
+    // 코어는 소켓 안쪽 가장자리와 간격을 둔다(소켓이 많아 커지면 코어 테에 닿던 문제)
+    const coreSize=Math.max(48,Math.min(150,R*1.02,(R-nodeSize/2)*1.3));
     parts.core.style.top=cy+'px';parts.core.style.width=coreSize+'px';
     parts.nodes.replaceChildren();parts.altarBtns.replaceChildren();
     st.geo={cx,cy,R,nodeSize,W,H,nodes:[]};
@@ -378,7 +379,7 @@
   function want3d(){return qs.get('skillForge3d')!=='0'}
   function load3d(){
     if(threeTried||!want3d())return;threeTried=true;
-    import('./skill-forge-3d.js?v=20261010-forge3').then(mod=>mod.createForge3D(parts.canvasWrap)).then(t=>{
+    import('./skill-forge-3d.js?v=20261010-forge4').then(mod=>mod.createForge3D(parts.canvasWrap)).then(t=>{
       three=t;if(three){el.classList.add('sf-3d');layout3d();}
     }).catch(err=>{root.console&&root.console.warn('[SkillForge] 3D unavailable, 2D fallback',err);el.classList.remove('sf-3d')});
   }

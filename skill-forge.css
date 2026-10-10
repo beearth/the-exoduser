@@ -26,8 +26,11 @@
 #skillForge .sf-slot-disc{position:relative;display:grid;place-items:center;width:clamp(44px,4.2vw,70px);aspect-ratio:1;border-radius:50%;
   background:radial-gradient(circle at 50% 38%,#2b2220,#0e0a0a 70%);border:2px solid #5a4b3c;box-shadow:inset 0 0 0 1px #0008,0 2px 6px #000a;transition:transform .15s,box-shadow .15s;}
 #skillForge .sf-slot-disc .sf-ico{width:92%;height:92%;border-radius:50%;overflow:hidden;display:grid;place-items:center;}
-#skillForge :is(.sf-ico,.sf-chip-ico,.sf-node-ico,.sf-core-ico,.sf-info-ico,.sf-mini-ico) img{width:100%;height:100%;object-fit:cover;display:block;transform:scale(1.18);}
-#skillForge :is(.sf-ico,.sf-chip-ico,.sf-node-ico,.sf-core-ico,.sf-info-ico,.sf-mini-ico){display:grid;place-items:center;overflow:hidden;font-family:var(--font-hell-title);color:var(--sf-bone2);}
+/* 이미지는 절대 배치 — 세로형 원화(840×1024 등)의 고유 높이가 원을 타원으로 늘리지 않게(3D 구슬이 홈보다 아래로 밀리던 원인) */
+#skillForge :is(.sf-ico,.sf-chip-ico,.sf-node-ico,.sf-core-ico,.sf-info-ico,.sf-mini-ico) img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transform:scale(1.18);}
+#skillForge :is(.sf-ico,.sf-chip-ico,.sf-node-ico,.sf-core-ico,.sf-info-ico,.sf-mini-ico){position:relative;display:grid;place-items:center;overflow:hidden;font-family:var(--font-hell-title);color:var(--sf-bone2);}
+#skillForge .sf-slot-disc{height:auto;min-height:0;}
+#skillForge .sf-slot-disc .sf-ico{aspect-ratio:1;height:auto;}
 #skillForge .sf-slot-key{font-family:var(--font-hell-title);font-size:11px;letter-spacing:.08em;color:var(--sf-gold);line-height:1;}
 #skillForge .sf-slot-name{font-size:11px;line-height:1.15;color:var(--sf-bone2);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:center;}
 #skillForge .sf-slot.empty .sf-slot-name{color:var(--sf-dim);}

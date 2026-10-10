@@ -18,23 +18,42 @@ function softSprite(){
   g.fillStyle=r;g.fillRect(0,0,128,128);const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;return t;
 }
 // Rune circle for the altar disc: concentric rails, ticks and sigils in hairline gold on dark iron.
+// 홈 배치는 실제 코어·소켓 크기에 맞춘다(kc=코어 바깥 반지름, kt=소켓 궤도 반지름, kn=소켓 반지름 — 모두 원판 반지름 대비 비율).
+// 고정 그림이면 코어 테·소켓 궤도와 레일이 어긋나 "홈과 이미지가 안 맞는" 느낌이 난다.
 function runeTexture(){
-  const S=1024,c=document.createElement('canvas');c.width=c.height=S;const g=c.getContext('2d');
-  const C=S/2;g.fillStyle='#000';g.fillRect(0,0,S,S);
-  g.strokeStyle='#fff';g.lineCap='round';
-  const ring=(r,w)=>{g.lineWidth=w;g.beginPath();g.arc(C,C,r,0,Math.PI*2);g.stroke()};
-  ring(500,6);ring(470,2);ring(440,3);ring(330,2);ring(300,5);ring(170,2);ring(150,4);
-  for(let i=0;i<120;i++){const a=i/120*Math.PI*2,l=i%10===0?28:i%5===0?18:9;g.lineWidth=i%10===0?4:2;
-    g.beginPath();g.moveTo(C+Math.cos(a)*(440+2),C+Math.sin(a)*(440+2));g.lineTo(C+Math.cos(a)*(440+2+l),C+Math.sin(a)*(440+2+l));g.stroke();}
-  // star polygons
-  const star=(r,n,k,w)=>{g.lineWidth=w;g.beginPath();for(let i=0;i<=n;i++){const a=-Math.PI/2+(i*k%n)/n*Math.PI*2;const x=C+Math.cos(a)*r,y=C+Math.sin(a)*r;i?g.lineTo(x,y):g.moveTo(x,y)}g.stroke()};
-  star(300,7,3,2);star(300,5,2,3);
-  // sigils between rails
-  g.font='bold 30px serif';g.fillStyle='#fff';g.textAlign='center';g.textBaseline='middle';
-  const sig='ᚠᚢᚦᚨᚱᚲᚷᚹᚺᚾᛁᛃᛇᛈᛉᛊᛏᛒᛖᛗᛚᛜᛞᛟ';
-  for(let i=0;i<24;i++){const a=i/24*Math.PI*2;g.save();g.translate(C+Math.cos(a)*386,C+Math.sin(a)*386);g.rotate(a+Math.PI/2);g.fillText(sig[i],0,0);g.restore();}
-  for(let i=0;i<12;i++){const a=i/12*Math.PI*2+.13;g.lineWidth=2;g.beginPath();g.arc(C+Math.cos(a)*230,C+Math.sin(a)*230,16,0,Math.PI*2);g.stroke();}
-  const t=new THREE.CanvasTexture(c);t.anisotropy=8;return t;
+  const S=1024,c=document.createElement('canvas');c.width=c.height=S;
+  const t=new THREE.CanvasTexture(c);t.anisotropy=8;t.userData={key:''};
+  t.userData.draw=(kc,kt,kn)=>{
+    const key=[kc,kt,kn].map(v=>v.toFixed(3)).join(',');if(t.userData.key===key)return;t.userData.key=key;
+    const g=c.getContext('2d'),C=S/2,U=500;
+    g.setTransform(1,0,0,1,0,0);g.fillStyle='#000';g.fillRect(0,0,S,S);g.strokeStyle='#fff';g.fillStyle='#fff';g.lineCap='round';
+    const ring=(r,w)=>{if(r<=0)return;g.lineWidth=w;g.beginPath();g.arc(C,C,r,0,Math.PI*2);g.stroke()};
+    const rc=kc*U,rt=kt*U,hw=kn*U*1.16;           // 코어 바깥, 궤도 중심, 궤도 반폭(소켓 + 여유)
+    const tIn=rt-hw,tOut=rt+hw;
+    const ticks=(r0,dir,n,big,small,w)=>{for(let i=0;i<n;i++){const a=i/n*Math.PI*2,l=(i%6===0?big:small)*dir;g.lineWidth=i%6===0?w*1.6:w;
+      g.beginPath();g.moveTo(C+Math.cos(a)*r0,C+Math.sin(a)*r0);g.lineTo(C+Math.cos(a)*(r0+l),C+Math.sin(a)*(r0+l));g.stroke();}};
+    // 바깥 테
+    ring(U-2,6);ring(U-15,2);
+    // 눈금 띠: 궤도 바깥 ~ 바깥 테 사이
+    const bandIn=tOut+12,bandOut=U-24;
+    if(bandOut-bandIn>8){ring(bandIn,3);ticks(bandIn,1,96,Math.min(bandOut-bandIn,24),Math.min(bandOut-bandIn,12),3);}
+    // 소켓 궤도(홈 채널): 양쪽 굵은 레일 + 가는 안쪽 레일 + 룬 문자
+    ring(tOut,5);ring(tOut-9,2);ring(tIn,5);ring(tIn+9,2);
+    const sig='ᚠᚢᚦᚨᚱᚲᚷᚹᚺᚾᛁᛃᛇᛈᛉᛊᛏᛒᛖᛗᛚᛜᛞᛟ';const fs=Math.max(18,Math.min(34,hw*.34));
+    g.font=`bold ${fs|0}px serif`;g.textAlign='center';g.textBaseline='middle';g.globalAlpha=.7;
+    const nSig=Math.max(12,Math.min(48,Math.round(2*Math.PI*rt/(fs*2.2))));
+    for(let i=0;i<nSig;i++){const a=i/nSig*Math.PI*2;g.save();g.translate(C+Math.cos(a)*rt,C+Math.sin(a)*rt);g.rotate(a+Math.PI/2);g.fillText(sig[i%sig.length],0,0);g.restore();}
+    g.globalAlpha=1;
+    // 안쪽: 코어 테 ~ 궤도 안쪽 사이 별 문양 + 안쪽 눈금
+    const sIn=rc+16,sOut=tIn-14;
+    if(sOut-sIn>12){const star=(r,n,k,w)=>{g.lineWidth=w;g.beginPath();for(let i=0;i<=n;i++){const a=-Math.PI/2+(i*k%n)/n*Math.PI*2;const x=C+Math.cos(a)*r,y=C+Math.sin(a)*r;i?g.lineTo(x,y):g.moveTo(x,y)}g.stroke()};
+      g.save();g.beginPath();g.arc(C,C,sOut,0,Math.PI*2);g.arc(C,C,sIn,0,Math.PI*2,true);g.clip();
+      star(sOut,7,3,2);star(sOut,5,2,3);g.restore();ring(sOut,3);ticks(sOut,-1,72,Math.min(14,sOut-sIn),7,2.5);}
+    // 코어 받침 홈
+    ring(rc+5,5);ring(rc+15,2);
+    t.needsUpdate=true;
+  };
+  t.userData.draw(.39,.76,.23);return t;
 }
 function ironNoise(){
   const S=512,c=document.createElement('canvas');c.width=c.height=S;const g=c.getContext('2d'),im=g.createImageData(S,S);
@@ -64,7 +83,11 @@ export async function createForge3D(container){
   const bloom=new UnrealBloomPass(new THREE.Vector2(256,256),.62,.5,.86);composer.addPass(bloom);
   composer.addPass(new OutputPass());
   const loader=new THREE.TextureLoader();const texCache=new Map();
-  const tex=url=>{if(!url)return null;let t=texCache.get(url);if(!t){t=loader.load(url);t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=8;texCache.set(url,t)}return t};
+  // 스킬 아이콘 원화는 세로형(840×1024·420×512 등)이 대부분 → DOM의 object-fit:cover 와 같은 가운데 정사각형 크롭.
+  // 그대로 원판에 펴면 가로로 늘어나고 그림 중심이 홈과 어긋난다.
+  const coverSquare=t=>{const im=t.image;if(!im||!im.width||!im.height)return;const a=im.width/im.height;
+    if(a<1)(t.repeat.set(1,a),t.offset.set(0,(1-a)/2));else (t.repeat.set(1/a,1),t.offset.set((1-1/a)/2,0));t.needsUpdate=true};
+  const tex=url=>{if(!url)return null;let t=texCache.get(url);if(!t){t=loader.load(url,coverSquare);t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=8;texCache.set(url,t)}return t};
   const glowTex=softSprite(),runeTex=runeTexture(),noiseTex=ironNoise();
 
   // ── lights ──
@@ -154,6 +177,15 @@ export async function createForge3D(container){
     const u=o.userData;if(u.iconUrl===url)return;u.iconUrl=url;
     const m=u.face.material;m.map=url?tex(url):null;m.emissiveMap=m.map;m.color.set(url?0xffffff:0x241a18);m.emissive.set(url?0xffffff:0x000000);m.needsUpdate=true;
   }
+  const wells=new Map();
+  const wellFloor=new THREE.MeshStandardMaterial({color:0x080505,metalness:.6,roughness:.7,roughnessMap:noiseTex});
+  const wellGeo=new THREE.CircleGeometry(1,64),wellLip=new THREE.TorusGeometry(1,.045,12,96),wellLip2=new THREE.TorusGeometry(.9,.012,8,96);
+  // 홈 테: 블룸에 걸리지 않게 흑철 + 낮은 반사 청동 가는 선
+  const bronze=new THREE.MeshStandardMaterial({color:0x6e5530,metalness:.9,roughness:.55,envMapIntensity:.35});
+  function makeWell(){const g=new THREE.Group();g.add(new THREE.Mesh(wellGeo,wellFloor));
+    const lip=new THREE.Mesh(wellLip,iron);lip.position.z=.02;lip.scale.z=.5;g.add(lip);
+    const in2=new THREE.Mesh(wellLip2,bronze);in2.position.z=.01;g.add(in2);
+    scene.add(g);return g}
   const links=new Map();
   function link(id,col){let l=links.get(id);if(!l){l=new THREE.Mesh(new THREE.PlaneGeometry(1,1),linkMat(col));scene.add(l);links.set(id,l)}l.material.uniforms.c.value.set(col);return l}
 
@@ -170,7 +202,11 @@ export async function createForge3D(container){
       toWorld(d.x,d.y,20,u.tgt);if(!u.s)u.cur.copy(u.tgt);u.ts=d.r*(d.on?1.08:1);u.on=d.on;u.empty=d.empty;u.host=d.host;u.fused=d.fused;setIcon(o,d.icon)});
     // altar
     const a=s.altar;
-    toWorld(a.x,a.y,-60,altar.position);const R=Math.max(a.R*1.32,a.R+a.nodeR*1.3)*(D+60)/D;altar.scale.setScalar(R); // 소켓 바깥 가장자리까지 원판 안에
+    const discCss=Math.max(a.R*1.32,a.R+a.nodeR*1.3); // 소켓 바깥 가장자리까지 원판 안에
+    toWorld(a.x,a.y,-60,altar.position);const R=discCss*(D+60)/D;altar.scale.setScalar(R);
+    // 홈을 실제 화면 크기에 맞춰 다시 새긴다 (원근 보정: 깊이 z 물체의 화면 크기 = 크기×D/(D-z))
+    const coreTs=Math.max(26,a.core.r*.95);
+    runeTex.userData.draw(Math.min(.6,coreTs*1.15*D/(D-40)/discCss),a.R/discCss,a.nodeR*D/(D-30)/discCss);
     const pos=altar.position;
     let i=0;const m4=new THREE.Matrix4(),q=new THREE.Quaternion();
     for(let k=0;k<36;k++){const ang=k/36*Math.PI*2;q.setFromAxisAngle(new THREE.Vector3(0,0,1),ang);m4.compose(new THREE.Vector3(Math.cos(ang)*1.02,Math.sin(ang)*1.02,0),q,new THREE.Vector3(1,1,1));spikes.setMatrixAt(k,m4)}
@@ -187,10 +223,14 @@ export async function createForge3D(container){
       const id=n.id+'|'+n.kind;seen.add(id);let o=nodeObjs.get(id);
       if(!o){o=makeOrb();nodeObjs.set(id,o);toWorld(a.core.x,a.core.y,30,o.userData.cur);o.userData.s=.01}
       const u=o.userData;toWorld(n.x,n.y,30,u.tgt);u.ts=a.nodeR*(n.kind==='ghost'?.86:1);u.kind=n.kind;setIcon(o,n.id==='ghost'?null:n.icon);
+      // 소켓 홈: 원판에 파인 우물(어두운 바닥 + 금테). 원판은 돌지만 홈은 소켓 자리에 고정
+      let w=wells.get(id);if(!w){w=makeWell();wells.set(id,w)}
+      toWorld(n.x,n.y,-52,w.position);w.scale.setScalar(a.nodeR*D/(D-30)*1.16*(D+52)/D);
       u.col=n.kind==='host'?GOLD:n.kind==='staged'?new THREE.Color('#ffb347'):n.kind==='ghost'?BONE:col2;
       if(n.kind!=='ghost')link(id,n.kind==='staged'?'#ffb347':a.color2);
     }
     for(const [id,o] of nodeObjs)if(!seen.has(id)){scene.remove(o);nodeObjs.delete(id)}
+    for(const [id,w] of wells)if(!seen.has(id)){scene.remove(w);wells.delete(id)}
     for(const [id,l] of links)if(!seen.has(id)){scene.remove(l);l.geometry.dispose();l.material.dispose();links.delete(id)}
     // embers spread across the altar area
     for(let k=0;k<EMB;k++){embPos[k*3]=altar.position.x+(Math.random()-.5)*R*2.6;embPos[k*3+1]=altar.position.y+(Math.random()-.5)*R*2.2;embPos[k*3+2]=Math.random()*120}
