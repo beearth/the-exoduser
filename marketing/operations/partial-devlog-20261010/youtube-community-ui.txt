@@ -1,0 +1,21 @@
+EXODUSER 개발 기록 | 작은 UI도 계속 다듬습니다
+
+이번에는 전투 사이에 자주 쓰는 UI 작업을 소개합니다.
+• 설정 창을 화면에 맞춰 펼치는 옵션
+• 안내 글자와 자막 크기 조절
+• 즐겨찾기와 장비 등급을 반영하는 가방 정렬
+
+현재 소개하는 내용은 개발 중인 UI 작업 기록입니다. 공개 Steam 데모에 적용된 패치 공지가 아니며, 실제 배포가 확인되면 적용 내용을 따로 안내하겠습니다.
+
+글자 크기와 가방 정렬 중 어떤 개선이 더 필요하신가요?
+
+Dev diary | Small UI improvements in EXODUSER
+We're refining panel sizing, guide text and subtitle size, and inventory sorting that respects favorites and equipment tiers.
+This is a work-in-progress development diary, not a patch announcement for the public Steam demo. Which would help you more: text sizing or inventory sorting?
+
+무료 데모는 채널 프로필의 Steam 링크에서도 확인할 수 있습니다.
+Free demo: use the Steam link on our channel profile.
+https://store.steampowered.com/app/4749590/EXODUSER_HELL_LORD/?utm_source=youtube&utm_medium=community&utm_campaign=devlog_ui_20261010
+
+AI 보조 아트·음향 사용 / AI-assisted art and audio are used in the game.
+#EXODUSER #IndieGame #Devlog

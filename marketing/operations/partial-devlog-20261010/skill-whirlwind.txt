@@ -1,0 +1,9 @@
+EXODUSER 스킬 소개 | 회전참
+얼마나 오래 돌 것인가?
+군집 진입 → 이동하며 회전 → ST 소모를 보고 해제·이탈의 흐름을 소개합니다. 현재 개발 소스의 기능 소개이며 이번에 새로 배포한 패치 공지가 아닙니다.
+개발 중인 내용은 공개 데모와 다를 수 있습니다. 무료 데모는 공식 채널 프로필의 Steam 링크에서 확인할 수 있습니다. AI 보조 아트·음향을 사용합니다.
+
+EXODUSER skill spotlight | 회전참
+Move through the group while spinning, then stop before stamina runs out.
+A feature spotlight from the current development source, not a newly released patch announcement.
+Development content may differ from the public demo. The free demo is linked from our official channel profile. The game uses AI-assisted art and audio.

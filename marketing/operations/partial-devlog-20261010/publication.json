@@ -1,0 +1,42 @@
+{
+  "topicId": "ui-small-improvements-20261010",
+  "kind": "부분 개발 소식 / 글",
+  "publicationStatus": "PUBLIC_VERIFIED",
+  "channel": "YouTube Community",
+  "ownedChannel": "@fordeargamers",
+  "channelId": "UCOLkkQsaZ9ACuXdvPblhfiA",
+  "createdAtKST": "2026-10-10 19:40",
+  "copyFile": "youtube-community-ui.txt",
+  "copySha256": "5965f122818a2aa7c580f2281d51af67fd46edc3a1deddf9530eec6c3b8c1145",
+  "sourceCheckout": "/Users/fordeargamers/.codex/worktrees/marketing-gameplay-20261008/the-exoduser",
+  "sourceCommits": [
+    "342cfabe",
+    "d9a0f5e8",
+    "e4786fd0"
+  ],
+  "evidence": [
+    "docs/3.1 ui hud 디자인/UI_SCALING_20260929.md",
+    "docs/3.3 키바인딩+설정/3.3 키바인딩+설정.md",
+    "docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md"
+  ],
+  "publicDemoApplied": "NOT_CONFIRMED",
+  "normalGameplayCaptureUsed": false,
+  "unapprovedTrailerUsed": false,
+  "publicUrl": "https://www.youtube.com/post/UgkxfJtDWBoJglf9RWKueZFsGwOBIRBYWULb",
+  "screenshots": [
+    {
+      "file": "youtube-ui-post-public.jpg",
+      "sha256": "b659bd45cdadf0495779d9e9df382e1a08cbaa0730e646feb529a5c5ccf69039",
+      "scope": "공개 상세 페이지·펼친 본문; viewport 아래 내용은 화면 밖이지만 AX 본문 확인 완료"
+    }
+  ],
+  "nextMaterial": "기검참: 기본 스킬 1개의 역할·입력·범위를 소개하는 짧은 개발 기록",
+  "publishedAtKST": "2026-10-10 19:43",
+  "verification": "공식 소유자 편집 기능 및 해당 채널ID 확인 → 게시물 작성됨 → 공개 상세 페이지의 작성자·한영 본문 확인",
+  "linkDelivery": {
+    "postExternalLinkClickable": false,
+    "reason": "YouTube 외부 링크 클릭 기능의 일회성 인증 안내",
+    "fallback": "소유 채널 프로필의 기존 Steam 링크 안내; 추가 인증 요청하지 않음"
+  },
+  "sourceScope": "UI3종은 마케팅 제작 브랜치의 실제 코드/문서에 존재. 실제개발 migration 및 FDG스튜디오 현재 checkout과 적용 차이 존재; Steam 패치로 소개하지 않음"
+}

@@ -1,214 +1,9 @@
 {
-  "schemaVersion": 2,
-  "updatedAtKST": "2026-10-10 19:49",
-  "updatedAtUTC": "2026-10-10T10:49:32Z",
-  "policy": "UI·스킬·캐릭터 제작 과정·부분 업데이트는 전체 보스전 완료와 관계없이 각 소재의 실제 근거·검수 범위에 맞게 독립 제작·게시한다. 전체 완료 대기는 보스전 대표 메인트레일러에만 적용한다.",
-  "developmentObservation": {
-    "checkout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
-    "commit": "9a4534b42f74093095ebc3364a25dd104e93b379",
-    "scope": "12c29afe 이후 docs·커밋·관련 소비 연결의 읽기 전용 조사. 미커밋 상태나 Steam 배포 상태를 HEAD로 증명하지 않음"
-  },
-  "nextMaterial": "기검참: 세 번째 검기를 언제 놓을까 — 한영 기능 소개 글과15초 정상 시연안",
-  "newPublicationReadyCount": 14,
-  "publicationEvidenceDate": "2026-10-08 게시 증거·2026-10-09 운영 기록; 이번 플랫폼 재검증 없음",
+  "createdAtKST": "2026-10-10 19:47",
+  "policy": "각 소재를 전체 보스전 완료와 관계없이 독립 제작한다. 기존 스킬 소개를 새 패치로, 콘셉트 원화를 플레이 가능한 직업으로 표기하지 않는다.",
+  "publishedTopic": "https://www.youtube.com/post/UgkxfJtDWBoJglf9RWKueZFsGwOBIRBYWULb",
+  "nextTopic": "skill-ki-slash",
   "items": [
-    {
-      "id": "art-teaser-30",
-      "name": "캐릭터·세계관 원화 티저 30초",
-      "kind": "원화 소개",
-      "state": "검토본 인도·미게시",
-      "ready": false,
-      "action": "전편 감상·청취·사용자 검토 후 배포 판단",
-      "demo": "새 캐릭터 플레이 가능·새 데모 업데이트 주장 불가",
-      "evidence": [
-        "/Users/fordeargamers/the-exoduser/docs/13출시·마케팅/TRAILER_ART_REFRESH_20261009.md",
-        "/Users/fordeargamers/the-exoduser/output/trailer-art-refresh-20261009/EXODUSER_ART_TEASER_30S_20261009.mp4"
-      ],
-      "sha256": "8f469bab8510653ce359a5e6f5022efd574653e2268b74a79ecde48c65854ce4"
-    },
-    {
-      "id": "combat-v3-18",
-      "name": "현행 개발본 전투 티저 V3 18초",
-      "kind": "과거 검토 이력",
-      "state": "짧은 티저 시각 검수·청취 미완료·공개 미승인",
-      "ready": false,
-      "action": "본편 대표 트레일러 충분성 미충족. 리디자인 완료 영상으로 재사용하지 않음",
-      "demo": "촬영 개발본과 공개 데모의 일치 미확인",
-      "evidence": [
-        "/Users/fordeargamers/.codex/worktrees/marketing-gameplay-20261008/the-exoduser/docs/13출시·마케팅/NEW_VERSION_TRAILER_PRODUCTION_20261009.md",
-        "/Users/fordeargamers/the-exoduser/output/trailer-production-20261009/FINAL_REVIEW/EXODUSER_NewVersion_CombatTeaser_20261009_REVIEW_V3.mp4"
-      ],
-      "sha256": "c02056b2ab3675dbc8ccd0ca2f75667cfa9afc0e44ecaa9297a225eea1dc5e82"
-    },
-    {
-      "id": "nemesia-text-review",
-      "name": "네메시아 자막 배경 제거 수정본",
-      "kind": "컷씬",
-      "state": "일부 공개 검토용·EN27 게시·KO27 파일 준비",
-      "ready": false,
-      "action": "한국어 자막 게시와 사용자 검토가 남음. 공개 교체 완료로 기록하지 않음",
-      "demo": "스토리 원화 재구성, 새 인게임 촬영 아님",
-      "url": "https://youtu.be/0ERvrpHccZQ",
-      "evidence": [
-        "/Users/fordeargamers/.codex/worktrees/marketing-gameplay-20261008/the-exoduser/docs/13출시·마케팅/NEMESIA_TEXT_ONLY_FIX_20261008.md"
-      ]
-    },
-    {
-      "id": "warrior-public",
-      "name": "전사 컷씬",
-      "kind": "기존 게시",
-      "state": "YouTube 공개·EN/KO 각22큐 게시",
-      "ready": false,
-      "action": "기존 공개 URL 안내. 같은 파일 재업로드하지 않음",
-      "demo": "컷씬 소개",
-      "url": "https://youtu.be/r_TTBUrA6p4",
-      "evidence": [
-        "/Users/fordeargamers/.codex/worktrees/marketing-gameplay-20261008/the-exoduser/marketing/releases/20261008/deployment/publication-results.json"
-      ]
-    },
-    {
-      "id": "rift-v01-public",
-      "name": "지옥의 틈 개발 기록 v0.1",
-      "kind": "기존 게시",
-      "state": "YouTube 공개·개발 중",
-      "ready": false,
-      "action": "후속 v0.2는 새 개선·새 증거가 있어야 준비. 기존 영상 중복 게시하지 않음",
-      "demo": "별도 개발 거점 프리뷰. 공개 데모 적용 미확인",
-      "url": "https://youtu.be/i7ouSzivg4U",
-      "evidence": [
-        "/Users/fordeargamers/.codex/worktrees/marketing-gameplay-20261008/the-exoduser/docs/13출시·마케팅/RIFT_DEVLOG_V01_20261008.md"
-      ]
-    },
-    {
-      "id": "shorts-public",
-      "name": "패링·얼음오브 Shorts A/B",
-      "kind": "기존 게시",
-      "state": "2편 YouTube 공개",
-      "ready": false,
-      "action": "기존 고레벨 staged 시연 이력. 신버전 보스전 영상으로 소개하지 않음",
-      "demo": "공개 데모 동일 빌드 단정 불가",
-      "urls": [
-        "https://youtube.com/shorts/50eBpMxlkP0",
-        "https://youtube.com/shorts/NBOcxJgM-pA"
-      ],
-      "evidence": [
-        "/Users/fordeargamers/.codex/worktrees/marketing-gameplay-20261008/the-exoduser/marketing/releases/20261008/deployment/publication-results.json"
-      ]
-    },
-    {
-      "id": "druid-poison",
-      "name": "드루이드 독탄 가독성·접촉 효과·효과음",
-      "kind": "새 개발 소재",
-      "state": "본편 소비 연결·개발 중·실전 검수 미인수",
-      "ready": false,
-      "action": "정상 배율 탄막 가독성·연속 전투·원음 청취·동시 성능 확보 후 촬영 후보",
-      "demo": "미확인",
-      "commits": [
-        "95cd06b3",
-        "848f4cdb",
-        "7c3e691a"
-      ],
-      "evidence": [
-        "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/5.1임펙트디자인/DRUID_PROJECTILE_READABILITY_20261009.md",
-        "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/5.1임펙트디자인/DRUID_POISON_HIT24_ENGINE_20261009.md",
-        "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/6사운드디자인/DRUID_POISON_PUBLIC_SFX_20261009.md"
-      ]
-    },
-    {
-      "id": "druid-roots",
-      "name": "드루이드 뿌리 분출 48장",
-      "kind": "새 개발 소재",
-      "state": "본편 연결·RETOUCH",
-      "ready": false,
-      "action": "후기 잔가지·접지·가림 수정과 실제 보스전 검수 필요. helper WebP는 인게임 녹화가 아님",
-      "demo": "미확인",
-      "commits": [
-        "91ac00bc"
-      ],
-      "evidence": [
-        "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/5.1임펙트디자인/DRUID_ROOTS48_ENGINE_20261010.md"
-      ]
-    },
-    {
-      "id": "boss-ground-impact",
-      "name": "보스 내려찍기·점프·벽충돌 충격",
-      "kind": "새 개발 소재",
-      "state": "24장 효과 공유 연결·실제 caller 장면 미검수",
-      "ready": false,
-      "action": "정상 배율에서 예고→회피/대응→착지 결과 및 화면 가림·동시 성능 검수",
-      "demo": "미확인",
-      "commits": [
-        "b1a620fe",
-        "6be8c225",
-        "95be212d",
-        "a1d4d993"
-      ],
-      "evidence": [
-        "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/5.1임펙트디자인/BOSS_JUMP_IMPACT24_ENGINE_20261010.md",
-        "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/5.1임펙트디자인/BOSS_SLAM_IMPACT24_ENGINE_20261010.md",
-        "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/5.1임펙트디자인/BOSS_CHARGE_WALL_IMPACT24_ENGINE_20261010.md"
-      ]
-    },
-    {
-      "id": "kraken-water",
-      "name": "크라켄 물구체·접촉·Q 패링 물보라",
-      "kind": "새 개발 소재",
-      "state": "본편 연결·RETOUCH",
-      "ready": false,
-      "action": "포말 연결·후기 원점·실전 합성 조화·정상 연속 전투와 청취 검수 필요",
-      "demo": "미확인",
-      "commits": [
-        "a359bcd4",
-        "91d49434"
-      ],
-      "evidence": [
-        "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/5.1임펙트디자인/KRAKEN_WATER_ORB24_ENGINE_20261010.md",
-        "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/5.1임펙트디자인/BOSS_WATER_IMPACT24_ENGINE_20261010.md"
-      ]
-    },
-    {
-      "id": "firedevil-orb",
-      "name": "화마귀 용암구·접촉·Q 패링 임팩트",
-      "kind": "새 개발 소재",
-      "state": "본편 연결·최신 Q 실제 화면 미검수",
-      "ready": false,
-      "action": "비행·접촉·Q 각각 실제 사용 크기의 정상 보스전 검수. 접촉 helper로 Q 검수를 대체하지 않음",
-      "demo": "미확인",
-      "commits": [
-        "5a3247e6",
-        "04abab63",
-        "82777bb2"
-      ],
-      "evidence": [
-        "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/5.1임펙트디자인/FIREDEVIL_ORB24_ENGINE_20261010.md",
-        "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/5.1임펙트디자인/BOSS_FIRE_Q_IMPACT24_ENGINE_20261010.md"
-      ]
-    },
-    {
-      "id": "new-character-art",
-      "name": "변성술사·헬 헌터/크루시폼·아케인 랜서 원화",
-      "kind": "공개 아트 소재",
-      "state": "공식 홈페이지 원화·새 직업 구현 미확정",
-      "ready": false,
-      "action": "원화·개발 콘셉트로 표기. 선택·전투·아틀라스·저장 연결 확인 후 플레이 소개",
-      "demo": "신규3종 플레이 가능 미확인",
-      "evidence": [
-        "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/10ai에셋프롬프트모음/VIDEO_CHARACTER_BASES_20260928.md",
-        "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/13출시·마케팅/FDG_HOMEPAGE_CHARACTERS_20260928.md"
-      ]
-    },
-    {
-      "id": "withdrawn-old",
-      "name": "기존 메인37초·구 네메시아·과거 R1",
-      "kind": "배포 제외 이력",
-      "state": "구 메인/네메시아 일부 공개·공식 목록 제외. R1 과거 검토본",
-      "ready": false,
-      "action": "재업로드·Steam 전송·신버전 재포장 제외",
-      "demo": "현행 버전 홍보 근거로 사용하지 않음",
-      "evidence": [
-        "/Users/fordeargamers/.codex/worktrees/marketing-gameplay-20261008/the-exoduser/marketing/releases/20261008/deployment/publication-results.json"
-      ]
-    },
     {
       "id": "ui-settings-fit",
       "name": "설정 창 화면 맞춤",
@@ -640,62 +435,20 @@
       "copyEN": "EXODUSER skill spotlight | 뇌전창\nPlace two stakes and make the line between them part of the battlefield.\nA feature spotlight from the current development source, not a newly released patch announcement.\nDevelopment content may differ from the public demo. The free demo is linked from our official channel profile. The game uses AI-assisted art and audio."
     }
   ],
-  "channels": [
-    {
-      "name": "YouTube",
-      "state": "기존 공개 영상4편·검토용 일부 공개 별도 + UI 한영 개발 소식1건 실제 게시",
-      "next": "개별 스킬/캐릭터/작은UI 개발 소식 계속 운영; 기존 미승인 영상 자동 공개 금지"
-    },
-    {
-      "name": "Steam 상점",
-      "state": "새 영상 항목1369319 메타데이터만 저장",
-      "next": "파일 미전송. 구37초 전송 제외"
-    },
-    {
-      "name": "Steam 이벤트/공지",
-      "state": "한영 초안 준비·Community 로그인 대기",
-      "next": "실제 배포 때 적용 버전·변경·알려진 문제·영상·데모 링크"
-    },
-    {
-      "name": "Discord",
-      "state": "FDG 계정/서버 이력, 웹 로그인/게시 확인 미완료",
-      "next": "이전에 전달한 요청은 반복하지 않음"
-    },
-    {
-      "name": "itch.io",
-      "state": "프로젝트 존재·개발일지 로그인 대기",
-      "next": "초안·파일 준비 상태만 관리"
-    },
-    {
-      "name": "Reddit",
-      "state": "공식 프로필·사람 확인 대기",
-      "next": "게시 전 해당 커뮤니티 현행 규칙·AI 조건 확인"
-    },
-    {
-      "name": "Instagram / Threads / Bluesky",
-      "state": "공식 소유/로그인 확인 미완료",
-      "next": "문안 재사용 후보, 게시 완료로 기록하지 않음"
-    }
+  "captureRules": [
+    "실행 중 사용자 게임/세이브/서버 조작·재시작 금지",
+    "정상 시연 입력만 사용; 자원·적·레벨 변경으로 자연 플레이처럼 만들지 않음",
+    "인게임 영상은 실제 화면·원음 사용",
+    "기존 R1/V3/30초 검토본 사용자 미승인 파일 재사용·자동 게시 금지"
   ],
-  "researchDocument": "docs/13출시·마케팅/EARLY_ACCESS_MARKETING_BENCHMARK_20261010.md",
-  "watchFile": "marketing/operations/boss-redesign-watch-20261009.json",
-  "maintenance": {
-    "automationId": "fdg",
-    "promptUpdated": true,
-    "currentSchedule": "매시간",
-    "restoreAfterBossTrailerDelivery": "화·금11:00 KST",
-    "mirrorRoot": "/Users/fordeargamers/the-exoduser"
-  },
-  "newVideoPublicationReadyCount": 0,
-  "representativeBossTrailerGate": "총괄 보스전 전체 리디자인 완료 + 정상 본편 촬영 가능 확인; 기존 미승인 검토본 자동 공개 금지",
-  "newTextOrArtTopicPreparedCount": 14,
-  "latestPublication": {
-    "topicId": "ui-small-improvements-20261010",
-    "url": "https://www.youtube.com/post/UgkxfJtDWBoJglf9RWKueZFsGwOBIRBYWULb",
-    "kind": "YouTube 한영 개발 소식 글",
-    "source": "marketing/operations/partial-devlog-20261010/publication.json"
-  },
-  "contentSeries": "marketing/operations/partial-devlog-20261010/content-series.json",
-  "catalogRecordCount": 31,
-  "countsScope": "기존 묶음과 독립 소개 항목을 함께 보존한31개 기록; 독립 추가 소재18건(UI5·캐릭터3·스킬10)"
+  "knownDescriptionDifferences": [
+    "기본 마법 입력은 우클릭, 일부 옛 스킬 설명의 E는 사용하지 않음",
+    "기검참·회복영역·뇌전창의 옛 설명과 현행 소비자 수치 차이 있어 원고에서 숫자를 제외",
+    "기검참 통제 렌더 PNG는 보호막·팝업·큰효과 가림으로 다음 정상 플레이 영상의 대체 자료로 선택하지 않음"
+  ],
+  "sourceMediaNotes": [
+    "UI3종은 마케팅 제작라인에 구현; migration/FDG스튜디오 현재 게임과 적용 차이 있음",
+    "신규3종은 선택창 잠금·comingSoon. 전투 캐릭터 목록과 생성·저장 연결 미확인",
+    "FDG reference-motion24는 gameplayApplied/modelAvailable=false; 공개 콘셉트 원화와 분리"
+  ]
 }

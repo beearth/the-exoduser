@@ -30,10 +30,17 @@
   "currentReviewVideo": "/Users/fordeargamers/the-exoduser/output/trailer-production-20261009/FINAL_REVIEW/EXODUSER_NewVersion_CombatTeaser_20261009_REVIEW_V3.mp4",
   "notes": [
     "단일 기술 수정이나 테스트베드 RETOUCH를 전체 완료로 해석하지 않음",
-    "변경 없는 경과·기존 로그인 요청·촬영 요청을 반복하지 않음",
+    "변경 없는 경과·기존 로그인 요청·대표 보스전 촬영 요청을 반복하지 않음",
     "게임·서버·사용자 탭·세이브 무조작",
-    "완성 후 검수본부터 인도, 사용자 검수 전 자동 공개 금지"
+    "완성 후 검수본부터 인도, 사용자 검수 전 자동 공개 금지",
+    "2026-10-10 사용자 정정: 전체 대기를 모든 콘텐츠로 확대하지 않음; UI·스킬·캐릭터 부분 개발 소식 계속 운영"
   ],
   "lastCheckedAtUTC": "2026-10-10T10:21:42.613Z",
-  "lastCheckResult": "총괄 최신 턴은 completed/idle이지만 완료된 범위는 시험 장면의 지역 이동·저장 검수다. 보스전 전체 리디자인 완료 및 정상 본편 전투 촬영 가능 상태는 미확인이다. 개발 HEAD는 준비표의 9a4534b42f74093095ebc3364a25dd104e93b379와 같아 새 콘텐츠 변경은 없고, 촬영·제작·게시 대기를 유지했다. 반복 요청 없음."
+  "lastCheckResult": "총괄 최신 턴은 completed/idle이지만 완료된 범위는 시험 장면의 지역 이동·저장 검수다. 보스전 전체 리디자인 완료 및 정상 본편 전투 촬영 가능 상태는 미확인이다. 개발 HEAD는 준비표의 9a4534b42f74093095ebc3364a25dd104e93b379와 같아 새 콘텐츠 변경은 없고, 촬영·제작·게시 대기를 유지했다. 반복 요청 없음.",
+  "publicationScope": "보스전 전체 리디자인 완료 대표 메인트레일러",
+  "partialDevelopmentNewsAllowed": true,
+  "partialDevelopmentNewsPolicy": "UI·기존 스킬·캐릭터 제작 과정 등 각 소재는 전체 보스전 완료와 관계없이 실제 근거와 개별 검수 범위 확인 후 독립 제작·게시한다.",
+  "partialDevelopmentNextMaterial": "skill-ki-slash 기검참 개별 소개",
+  "partialLastPublication": "https://www.youtube.com/post/UgkxfJtDWBoJglf9RWKueZFsGwOBIRBYWULb",
+  "partialPublishedCount": 1
 }
