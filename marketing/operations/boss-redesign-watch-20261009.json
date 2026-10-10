@@ -13,10 +13,10 @@
     "threadId": "01a0faa9-b453-7673-be39-98adedb4c2b3",
     "hostId": "local",
     "title": "맥북에서 총괄 시작하기",
-    "afterCursor": "b2476eee-d767-4cd1-8064-9706586fb10a:24",
-    "lastObservedStatus": "idle",
-    "lastObservedTurnStatus": "completed",
-    "lastObservedTurnId": "01a123e8-5625-7360-ad4d-719965d7b996",
+    "afterCursor": "b2476eee-d767-4cd1-8064-9706586fb10a:25",
+    "lastObservedStatus": "active",
+    "lastObservedTurnStatus": "inProgress",
+    "lastObservedTurnId": "01a1243a-bced-7f82-baa6-bf880bd1b999",
     "lastObservedReport": "총괄은 FDG 엔진 v0.4에서 실제 3D 뼈대·가중치 편집, 동작 전환, 색 재질 교체와 저장·재열기 완료를 보고. 텍스처·의상 교체는 남아 있고 리깅을 일반 장면 편집·재생에 연결하는 작업을 다음으로 배정했다. 보스전 전체 리디자인 완료 보고는 없음."
   },
   "completionConfirmed": false,
@@ -34,6 +34,6 @@
     "게임·서버·사용자 탭·세이브 무조작",
     "완성 후 검수본부터 인도, 사용자 검수 전 자동 공개 금지"
   ],
-  "lastCheckedAtUTC": "2026-10-10T04:11:11.859Z",
-  "lastCheckResult": "FDG 엔진 일부 리깅 기능 완료이며 장면 연결과 텍스처·의상 교체는 후속 작업이다. 이를 게임 빌드 버전이나 보스전 전체 완료로 해석하지 않았다. 정상 본편 실제 전투 촬영 가능 상태 미확인으로 촬영·제작·게시 대기를 유지했다. 반복 요청 없음."
+  "lastCheckedAtUTC": "2026-10-10T05:15:11.643Z",
+  "lastCheckResult": "총괄의 새 턴이 inProgress이며 새 보고는 아직 없음. 보스전 전체 리디자인 완료·정상 본편 촬영 가능 상태 미확인. 촬영·제작·게시 대기를 유지했고 반복 요청 없음."
 }
