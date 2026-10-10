@@ -1,0 +1,36 @@
+{
+  "topicId": "skill-giant-slam",
+  "kind": "기존 스킬 소개 / 한영 글",
+  "publicationStatus": "PUBLIC_VERIFIED",
+  "channel": "YouTube Community",
+  "ownedChannel": "@fordeargamers",
+  "channelId": "UCOLkkQsaZ9ACuXdvPblhfiA",
+  "publishedAtKST": "2026-10-10 23:24",
+  "copyFile": "youtube-community-giant-slam.txt",
+  "copySha256": "16917abc4b121528f79babfda58e5032093908a1d3126df765fa238e665919a4",
+  "sourceCheckout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+  "sourceHead": "9a4534b42f74093095ebc3364a25dd104e93b379",
+  "sourceCheckFile": "giant-slam-source-check.json",
+  "sourceScope": "발동 자원/쿨다운·분노 피해 강화와 전량 소모·실제 주변 범위·Space 지급/입력·유효 이름을 좁게 읽기 확인. 핵심 구간 HEAD와 동일. 기존 기능 소개이며 새 구현·Steam 배포·정상 촬영 근거 아님.",
+  "publicDemoApplied": "NOT_CONFIRMED",
+  "newUpdateClaim": false,
+  "normalGameplayCaptureUsed": false,
+  "unapprovedTrailerUsed": false,
+  "publicUrl": "https://www.youtube.com/post/UgkxrTYuXuoASizWPYhlrpJyCF-7pcSqJT8-",
+  "screenshots": [
+    {
+      "file": "youtube-giant-slam-post-public.jpg",
+      "sha256": "e97e7da2e9620ac0e74fe466d8dd9c070bac1d79e2a7117bf901b32b0b5c83d2",
+      "scope": "공개 상세·공식 작성자·한영 본문·개발/데모 구분. viewport 아래 AI 공개/해시태그는 AX 본문 확인"
+    }
+  ],
+  "verification": "공식 채널ID 소유자 편집·공개 작성 권한 → 새 게시 URL → 공개 상세 페이지 공식 작성자·한영 본문 확인",
+  "linkDelivery": {
+    "postExternalLinkClickable": false,
+    "fallback": "기존 공식 채널 프로필 Steam 링크. 같은 외부 링크 일회성 인증 요청·우회 없음"
+  },
+  "nextMaterial": "skill-malice-orb 악의구 개별 소개·12초 정상 시연안",
+  "otherChannels": "맞춤 문안 준비; 로그인·공식 소유 미확인/기존 미해결 상태 유지·실제 추가 게시0",
+  "newVideoReady": false,
+  "gameServerSaveChanged": false
+}

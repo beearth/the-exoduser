@@ -1,5 +1,11 @@
 # FDG YouTube·연계 채널 운영 — 2026-10-08
 
+## 2026-10-10 23:24 KST — 지옥강타 1 독립 스킬 노트 공개
+
+지옥강타 1 / Hell Slam I 한영 글을 공식 @fordeargamers에 [게시·공개 상세 확인](https://www.youtube.com/post/UgkxrTYuXuoASizWPYhlrpJyCF-7pcSqJT8-)했다. 주변 적 타격·분노의 피해 강화와 소모를 소개하며, 분노가 없어도 다른 발동 조건을 만족하면 사용할 수 있음을 명시했다. 개발 HEAD `9a4534b42f74093095ebc3364a25dd104e93b379`와 해당 소비 구간은 동일하다. [원고·소스·증거·타 채널 문안](../../marketing/operations/partial-devlog-20261010/giant-slam-publication.json)을 보존했다. 기존 스킬 소개이며 새 패치·Steam 공개 데모 적용·영상 완성으로 기록하지 않는다.
+
+신규 정상 시연 영상0건·본편/서버/세이브 변경0. 총괄 cursor34의 별도 FDG 엔진 경사로·절벽·저장 검수는 보스전 전체 완료가 아니다. 다음 소재는 **악의구 개별 소개·12초 정상 시연안**이다. UI 글과 기존 스킬 글4건은 중복 게시하지 않고 기존 미승인 영상 자동 공개 금지·로그인/약관/외부 링크 인증 요청 비반복을 유지한다.
+
 ## 2026-10-10 22:33 KST — 회복의 영역 독립 스킬 노트 공개
 
 회복의 영역 한영 글을 공식 @fordeargamers에 [게시·공개 상세 확인](https://www.youtube.com/post/Ugkx2UIc57jBgsgkolbqytX0Nn3bgmkAz6if)했다. 현재 위치의 고정 영역과 살아 있는 플레이어의 범위 내 HP·MP·ST 회복을 소개했다. 현행 개발 HEAD `9a4534b42f74093095ebc3364a25dd104e93b379`의 기존 기능 소개이며 새 업데이트·Steam 공개 데모 패치·영상 완성으로 기록하지 않는다. [원고·소스·증거·타 채널 문안](../../marketing/operations/partial-devlog-20261010/holy-dome-publication.json)을 보존했다. UI·기검참·가시덫·회복의 영역 글은 중복 게시하지 않는다.

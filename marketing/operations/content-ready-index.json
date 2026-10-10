@@ -1,18 +1,18 @@
 {
   "schemaVersion": 2,
-  "updatedAtKST": "2026-10-10 22:33",
-  "updatedAtUTC": "2026-10-10T13:33:09Z",
+  "updatedAtKST": "2026-10-10 23:24",
+  "updatedAtUTC": "2026-10-10T14:24:23Z",
   "policy": "UI·스킬·캐릭터 제작 과정·부분 업데이트는 전체 보스전 완료와 관계없이 각 소재의 실제 근거·검수 범위에 맞게 독립 제작·게시한다. 전체 완료 대기는 보스전 대표 메인트레일러에만 적용한다.",
   "developmentObservation": {
     "checkout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
     "commit": "9a4534b42f74093095ebc3364a25dd104e93b379",
     "scope": "12c29afe 이후 docs·커밋·관련 소비 연결의 읽기 전용 조사. 미커밋 상태나 Steam 배포 상태를 HEAD로 증명하지 않음",
-    "lastCheckedAtUTC": "2026-10-10T13:33:09Z",
-    "latestResult": "HEAD 동일. 회복의 영역 위치·살아 있는 범위 내 회복·기본 F와 이름의 기존 기능을 확인해 글 공개. 촬영 격리 서버 없음/F 브리지 미지원 확인; 새 영상·게임 변경0. 총괄의 1-1 엔진 미리보기는 보스전 전체 완료 아님."
+    "lastCheckedAtUTC": "2026-10-10T14:24:23Z",
+    "latestResult": "HEAD 동일. 지옥강타 1의 기존 발동·분노 강화/전량 소모·주변 범위·Space·이름을 좁게 확인해 한영 글 공개. 새 구현 변경·새 영상0. 총괄 cursor34의 별도 엔진 경사로/절벽/저장 검수는 보스전 전체 완료 아님."
   },
-  "nextMaterial": "skill-giant-slam 지옥강타1 개별 소개·18초 정상 시연안",
-  "newPublicationReadyCount": 11,
-  "publicationEvidenceDate": "2026-10-08 기존 영상 게시 검증 + 2026-10-10 UI·기검참·가시덫·회복의 영역 글 공개 상세 검증",
+  "nextMaterial": "skill-malice-orb 악의구 개별 소개·12초 정상 시연안",
+  "newPublicationReadyCount": 10,
+  "publicationEvidenceDate": "2026-10-08 기존 영상 게시 검증 + 2026-10-10 UI·기검참·가시덫·회복의 영역·지옥강타 1 글 공개 상세 검증",
   "items": [
     {
       "id": "art-teaser-30",
@@ -486,26 +486,30 @@
     },
     {
       "id": "skill-giant-slam",
-      "name": "지옥강타1",
+      "name": "지옥강타 1",
       "skillId": "giantSlam",
       "kind": "기존 스킬 개별 소개",
-      "state": "현행 소스 동작 확인·한영 문안·짧은 시연안 준비",
-      "ready": true,
-      "readyFormat": "기능 소개 글; 인게임 영상은 신규 정상 시연 필요",
+      "state": "한영 스킬 노트 공개·18초 정상 시연안 준비·신규 촬영 없음",
+      "ready": false,
+      "readyFormat": "한영 글 공개 완료; 인게임 영상은 신규 정상 시연·원음 검수 필요",
       "action": "한 스킬·한 판단·한 결과의 짧은 시연. 기존 staged/미승인 티저를 새 정상 영상으로 사용하지 않음",
       "demo": "현행 소스 지급/학습 경로 확인; Steam 배포 동일성·실행 시연 미확인",
       "sourceCheckout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
       "evidence": [
         "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html:46956"
       ],
-      "currentDefaultInput": "새 캐릭터 기본Space",
+      "currentDefaultInput": "새 개발 데모 캐릭터 기본 Space; 현재 장착된 분노 스킬 호출",
       "newUpdateClaim": false,
       "videoReady": false,
-      "hook": "쌓은 분노를 한 번에 쓴다",
-      "shotSequence": "정상 공격으로 분노 누적 → 군집에 강타 → 분노 소모·타격",
+      "hook": "지금 내려칠까, 분노를 더 모을까?",
+      "shotSequence": "정상 전투로 분노 누적 → 플레이어 주변 적에게 강타 → 분노 소모·타격 결과",
       "targetSeconds": 18,
-      "copyKO": "EXODUSER 스킬 소개 | 지옥강타1\n쌓은 분노를 한 번에 쓴다\n정상 공격으로 분노 누적 → 군집에 강타 → 분노 소모·타격의 흐름을 소개합니다. 현재 개발 소스의 기능 소개이며 이번에 새로 배포한 패치 공지가 아닙니다.\n개발 중인 내용은 공개 데모와 다를 수 있습니다. 무료 데모는 공식 채널 프로필의 Steam 링크에서 확인할 수 있습니다. AI 보조 아트·음향을 사용합니다.",
-      "copyEN": "EXODUSER skill spotlight | 지옥강타1\nBuild rage through combat, then commit it to a heavy slam.\nA feature spotlight from the current development source, not a newly released patch announcement.\nDevelopment content may differ from the public demo. The free demo is linked from our official channel profile. The game uses AI-assisted art and audio."
+      "copyKO": "EXODUSER 스킬 노트 | 지옥강타 1\n지금 내려칠까, 분노를 더 모을까?\n\n지옥강타 1은 주변 적을 타격하는 원형 충격파 스킬입니다. 쌓인 분노가 피해를 강화하며, 사용하면 그 분노를 소모합니다.\n분노가 없어도 다른 발동 조건을 만족하면 사용할 수 있습니다. 지금 광역 타격을 쓰거나, 분노를 더 모아 강한 한 방을 노릴지 선택할 수 있습니다.\n\n바로 공격하는 것과 더 모아 강하게 내려치는 것, 어느 쪽이 취향인가요?",
+      "copyEN": "Skill notes | Hell Slam I\nHell Slam I strikes nearby enemies with a circular shockwave. Stored rage increases its damage and is consumed when used.\nIt can also be used without rage if its other activation requirements are met. Strike now or build more rage for a stronger hit—which approach suits your playstyle?",
+      "englishName": "Hell Slam I",
+      "publishedURL": "https://www.youtube.com/post/UgkxrTYuXuoASizWPYhlrpJyCF-7pcSqJT8-",
+      "publishedAtKST": "2026-10-10 23:24",
+      "publicationEvidence": "marketing/operations/partial-devlog-20261010/giant-slam-publication.json"
     },
     {
       "id": "skill-malice-orb",
@@ -656,7 +660,7 @@
   "channels": [
     {
       "name": "YouTube",
-      "state": "기존 공개 영상4편·검토용 일부 공개 별도 + 개발 글4건(UI1·스킬3) 실제 게시",
+      "state": "기존 공개 영상4편·검토용 일부 공개 별도 + 개발 글5건(UI1·스킬4) 실제 게시",
       "next": "개별 스킬/캐릭터/작은UI 개발 소식 계속 운영; 기존 미승인 영상 자동 공개 금지"
     },
     {
@@ -701,15 +705,15 @@
   },
   "newVideoPublicationReadyCount": 0,
   "representativeBossTrailerGate": "총괄 보스전 전체 리디자인 완료 + 정상 본편 촬영 가능 확인; 기존 미승인 검토본 자동 공개 금지",
-  "newTextOrArtTopicPreparedCount": 11,
+  "newTextOrArtTopicPreparedCount": 10,
   "latestPublication": {
-    "topicId": "skill-holy-dome",
-    "url": "https://www.youtube.com/post/Ugkx2UIc57jBgsgkolbqytX0Nn3bgmkAz6if",
+    "topicId": "skill-giant-slam",
+    "url": "https://www.youtube.com/post/UgkxrTYuXuoASizWPYhlrpJyCF-7pcSqJT8-",
     "kind": "YouTube 한영 스킬 소개 글",
-    "source": "marketing/operations/partial-devlog-20261010/holy-dome-publication.json"
+    "source": "marketing/operations/partial-devlog-20261010/giant-slam-publication.json"
   },
   "contentSeries": "marketing/operations/partial-devlog-20261010/content-series.json",
   "catalogRecordCount": 31,
   "countsScope": "기존 묶음과 독립 소개 항목을 함께 보존한31개 기록; 독립 추가 소재18건(UI5·캐릭터3·스킬10)",
-  "developmentPostCount": 4
+  "developmentPostCount": 5
 }

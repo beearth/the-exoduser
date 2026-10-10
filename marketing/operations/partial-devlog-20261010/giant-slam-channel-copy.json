@@ -1,0 +1,51 @@
+{
+  "topicId": "skill-giant-slam",
+  "createdAtKST": "2026-10-10 23:24",
+  "sourceCheckout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+  "sourceHead": "9a4534b42f74093095ebc3364a25dd104e93b379",
+  "newUpdateClaim": false,
+  "publicDemoApplied": "NOT_CONFIRMED",
+  "YouTube": {
+    "status": "PUBLIC_VERIFIED",
+    "url": "https://www.youtube.com/post/UgkxrTYuXuoASizWPYhlrpJyCF-7pcSqJT8-",
+    "copyFile": "youtube-community-giant-slam.txt"
+  },
+  "Threads": {
+    "status": "DRAFT_ONLY",
+    "copyKO": "EXODUSER 스킬 노트 | 지옥강타 1\n지금 내려칠까, 분노를 더 모을까?\n\n지옥강타 1은 주변 적을 타격하는 원형 충격파 스킬입니다. 쌓인 분노가 피해를 강화하며, 사용하면 그 분노를 소모합니다.\n분노가 없어도 다른 발동 조건을 만족하면 사용할 수 있습니다. 지금 광역 타격을 쓰거나, 분노를 더 모아 강한 한 방을 노릴지 선택할 수 있습니다.\n\n바로 공격하는 것과 더 모아 강하게 내려치는 것, 어느 쪽이 취향인가요?\n\n개발 중인 기존 스킬 소개이며 공개 데모와 다를 수 있습니다. AI 보조 아트·음향 사용. 무료 데모는 공식 채널 프로필 Steam 링크.",
+    "feedbackQuestion": "바로 강타하기와 분노를 더 모으기 중 어느 쪽이 취향인가요?"
+  },
+  "Bluesky": {
+    "status": "DRAFT_ONLY",
+    "copyEN": "Hell Slam I hits nearby enemies in a circle. Stored rage boosts damage and is consumed; full rage is not required. Strike now or build more? Existing development feature; demo may differ. AI-assisted art/audio. Free demo: https://store.steampowered.com/app/4749590/",
+    "characters": 265
+  },
+  "Discord": {
+    "status": "DRAFT_ONLY",
+    "copyKO": "EXODUSER 스킬 노트 | 지옥강타 1\n지금 내려칠까, 분노를 더 모을까?\n\n지옥강타 1은 주변 적을 타격하는 원형 충격파 스킬입니다. 쌓인 분노가 피해를 강화하며, 사용하면 그 분노를 소모합니다.\n분노가 없어도 다른 발동 조건을 만족하면 사용할 수 있습니다. 지금 광역 타격을 쓰거나, 분노를 더 모아 강한 한 방을 노릴지 선택할 수 있습니다.\n\n바로 공격하는 것과 더 모아 강하게 내려치는 것, 어느 쪽이 취향인가요?\n\n개발 소식: 기존 스킬 소개입니다. Steam 공개 데모 패치 공지가 아닙니다. AI 보조 아트·음향 사용.",
+    "sourcePost": "https://www.youtube.com/post/UgkxrTYuXuoASizWPYhlrpJyCF-7pcSqJT8-",
+    "feedbackQuestion": "주변 적에게 강타할 순간을 어떻게 고르나요?"
+  },
+  "itch.io": {
+    "status": "DRAFT_ONLY",
+    "title": "Development skill notes: Hell Slam I",
+    "copyEN": "Skill notes | Hell Slam I\nHell Slam I strikes nearby enemies with a circular shockwave. Stored rage increases its damage and is consumed when used.\nIt can also be used without rage if its other activation requirements are met. Strike now or build more rage for a stronger hit—which approach suits your playstyle?\n\nExisting development feature; not a new public-demo patch. Development content may differ from the demo. The game uses AI-assisted art and audio. Free demo: https://store.steampowered.com/app/4749590/",
+    "sourcePost": "https://www.youtube.com/post/UgkxrTYuXuoASizWPYhlrpJyCF-7pcSqJT8-"
+  },
+  "ShortsReels": {
+    "status": "NORMAL_RECORDING_REQUIRED",
+    "targetSeconds": 18,
+    "shotSequence": "정상 전투로 분노 누적 → 플레이어 주변 적에게 강타 → 분노 소모·타격 결과",
+    "footage": null,
+    "originalAudio": null,
+    "remainingQA": [
+      "정상 시연과 실제 원음 신규 확보",
+      "전구간 시청·실제 청취·화면 가림/성능 검수",
+      "검토본 인도 후 공개 검수"
+    ]
+  },
+  "Reddit": {
+    "status": "NO_PUBLICATION",
+    "reason": "공식 로그인/보안 확인과 대상 커뮤니티 현재 규칙·AI 조건 확인 필요. 기존 요청 반복하지 않음"
+  }
+}

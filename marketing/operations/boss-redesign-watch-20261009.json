@@ -13,11 +13,11 @@
     "threadId": "01a0faa9-b453-7673-be39-98adedb4c2b3",
     "hostId": "local",
     "title": "맥북에서 총괄 시작하기",
-    "afterCursor": "b2476eee-d767-4cd1-8064-9706586fb10a:33",
+    "afterCursor": "b2476eee-d767-4cd1-8064-9706586fb10a:34",
     "lastObservedStatus": "idle",
     "lastObservedTurnStatus": "completed",
-    "lastObservedTurnId": "01a125f5-e1e7-78f2-8050-4d6ddeb62dfb",
-    "lastObservedReport": "1-1 제작 미리보기가 실제 엔진 화면에 표시됐습니다. 버튼 이동·카메라·저장 복원까지 연결됐으며, 바닥·실제 충돌·높이는 아직 미완료입니다. FDG 엔진 부분 미리보기이며 보스전 전체 리디자인 완료 보고 아님."
+    "lastObservedTurnId": "01a1262c-cf69-7621-855d-7e1074bae052",
+    "lastObservedReport": "별도 검수 위치에서 버튼 이동으로 경사로 상승·절벽 차단·저장 복원을 확인했습니다. 캐릭터 가림과 높이 표현을 보정하도록 이어 지시했습니다. 실제 오브젝트 충돌과 시작점부터의 종주는 아직 미완료입니다. FDG 엔진 부분 검수이며 보스전 전체 리디자인 완료 보고 아님."
   },
   "completionConfirmed": false,
   "captureStarted": false,
@@ -35,12 +35,12 @@
     "완성 후 검수본부터 인도, 사용자 검수 전 자동 공개 금지",
     "2026-10-10 사용자 정정: 전체 대기를 모든 콘텐츠로 확대하지 않음; UI·스킬·캐릭터 부분 개발 소식 계속 운영"
   ],
-  "lastCheckedAtUTC": "2026-10-10T13:33:09Z",
-  "lastCheckResult": "총괄 cursor33의 FDG 1-1 엔진 부분 미리보기 완료와 보스전 전체 완료를 구별. 개발 HEAD 동일. 별도 회복의 영역 글 공개 검증; 신규 영상·게임/서버/세이브 조작0.",
+  "lastCheckedAtUTC": "2026-10-10T14:24:23Z",
+  "lastCheckResult": "총괄 cursor34의 별도 FDG 엔진 경사로/절벽/저장 검수와 보스전 전체 완료를 구별. 개발 HEAD 동일. 별도 지옥강타 1 기존 스킬 글 공개 검증; 새 영상·게임/서버/세이브 조작0.",
   "publicationScope": "보스전 전체 리디자인 완료 대표 메인트레일러",
   "partialDevelopmentNewsAllowed": true,
   "partialDevelopmentNewsPolicy": "UI·기존 스킬·캐릭터 제작 과정 등 각 소재는 전체 보스전 완료와 관계없이 실제 근거와 개별 검수 범위 확인 후 독립 제작·게시한다.",
-  "partialDevelopmentNextMaterial": "skill-giant-slam 지옥강타1 개별 소개·18초 정상 시연안",
-  "partialLastPublication": "https://www.youtube.com/post/Ugkx2UIc57jBgsgkolbqytX0Nn3bgmkAz6if",
-  "partialPublishedCount": 4
+  "partialDevelopmentNextMaterial": "skill-malice-orb 악의구 개별 소개·12초 정상 시연안",
+  "partialLastPublication": "https://www.youtube.com/post/UgkxrTYuXuoASizWPYhlrpJyCF-7pcSqJT8-",
+  "partialPublishedCount": 5
 }

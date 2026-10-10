@@ -1,0 +1,40 @@
+{
+  "topicId": "skill-giant-slam",
+  "checkedAtUTC": "2026-10-10T14:24:23Z",
+  "checkout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+  "head": "9a4534b42f74093095ebc3364a25dd104e93b379",
+  "workingFileSha256": "5212e3a33c201eec08d09b132092c1a063fea88f36fccef494ea351f3565d2cd",
+  "workingFileDiffPresent": true,
+  "coreSectionsEqualToHead": true,
+  "observedScope": [
+    "docs/2_1 스킬관리+합체시스템+자원/2_1 스킬관리+합체시스템.md:384 current behavior table",
+    "game.html:13726 ST/malice/cooldown conditions; no rage minimum",
+    "game.html:46956 ST/malice consumption and stored-rage damage/consumption",
+    "game.html:46991 radius call; game.html:47029 actual hit판정",
+    "game.html:62716 new character Space loadout; game.html:14014 equipped rage-skill Space dispatch",
+    "game.html:44833 effective display names 지옥강타 1 / Hell Slam I"
+  ],
+  "facts": [
+    "zero rage is allowed when other activation requirements are met",
+    "uses ST and malice and cooldown",
+    "stored rage increases damage and is consumed completely",
+    "hits nearby enemies in a circle around player; effect image extent is not hit radius proof",
+    "normal-enemy stun and boss poise handling differ",
+    "new development demo character default Space; saved loadout may differ",
+    "existing feature; no new source change or public-demo deployment confirmed"
+  ],
+  "excludedClaims": [
+    "requires full rage or minimum rage",
+    "always stuns bosses",
+    "hits the entire screen",
+    "all visible shockwave pixels deal damage",
+    "rage accumulates only from normal attacks",
+    "same Space skill in every saved character",
+    "new patch or public Steam demo applied",
+    "normal gameplay capture/audio QA completed"
+  ],
+  "sourceAuditBy": "indie_devlog_patterns scoped read-only review",
+  "normalGameplayCaptureUsed": false,
+  "publicDemoApplied": "NOT_CONFIRMED",
+  "gameServerSaveChanged": false
+}
