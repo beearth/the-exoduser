@@ -17,41 +17,53 @@ function softSprite(){
   r.addColorStop(0,'rgba(255,255,255,1)');r.addColorStop(.25,'rgba(255,255,255,.55)');r.addColorStop(1,'rgba(255,255,255,0)');
   g.fillStyle=r;g.fillRect(0,0,128,128);const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;return t;
 }
-// Rune circle for the altar disc: concentric rails, ticks and sigils in hairline gold on dark iron.
-// 홈 배치는 실제 코어·소켓 크기에 맞춘다(kc=코어 바깥 반지름, kt=소켓 궤도 반지름, kn=소켓 반지름 — 모두 원판 반지름 대비 비율).
-// 고정 그림이면 코어 테·소켓 궤도와 레일이 어긋나 "홈과 이미지가 안 맞는" 느낌이 난다.
+// Rune circle for the altar disc: 흑철 위 금빛 각인. 고딕 장미창 시길(img/ui/blackiron/sigil.png — UI 디자인 언어와 같은 원화)을
+// 밝기 마스크로 써서 안쪽(코어 홈~소켓 궤도)에는 중심 별·눈금 링, 바깥(궤도~테두리)에는 사엽 장식 띠·이중 테를 새긴다.
+// 홈 배치는 실제 코어·소켓 크기에 맞춘다(kc=코어 바깥 반지름, kt=소켓 궤도 반지름, kn=소켓 반지름 — 원판 반지름 대비 비율).
+// 시길 원화 기준 반지름(1024 반폭 대비): 중심 별 허브 .155, 눈금 링 .347, 사엽 띠 .74~.82, 이중 테 .848, 첨탑 끝 .98
+const SIGIL_URL='img/ui/blackiron/sigil.png';
 function runeTexture(){
-  const S=1024,c=document.createElement('canvas');c.width=c.height=S;
-  const t=new THREE.CanvasTexture(c);t.anisotropy=8;t.userData={key:''};
+  const S=1024,c=document.createElement('canvas');c.width=c.height=S;           // 발광 마스크(룬·레일만 지옥불)
+  const cc=document.createElement('canvas');cc.width=cc.height=S;               // 색 맵(흑철 + 시길 원화 각인, 원래 음영 유지)
+  const t=new THREE.CanvasTexture(c);t.anisotropy=8;
+  const ct=new THREE.CanvasTexture(cc);ct.anisotropy=8;ct.colorSpace=THREE.SRGBColorSpace;
+  t.userData={key:'',last:[.39,.76,.23],img:null,colorTex:ct};
+  const img=new Image();img.decoding='async';
+  img.onload=()=>{t.userData.img=img;t.userData.key='';t.userData.draw(...t.userData.last);if(t.userData.onReady)t.userData.onReady()};
+  img.onerror=()=>console.warn('[SkillForge] sigil load fail');
+  img.src=SIGIL_URL;
   t.userData.draw=(kc,kt,kn)=>{
-    const key=[kc,kt,kn].map(v=>v.toFixed(3)).join(',');if(t.userData.key===key)return;t.userData.key=key;
-    const g=c.getContext('2d'),C=S/2,U=500;
-    g.setTransform(1,0,0,1,0,0);g.fillStyle='#000';g.fillRect(0,0,S,S);g.strokeStyle='#fff';g.fillStyle='#fff';g.lineCap='round';
-    const ring=(r,w)=>{if(r<=0)return;g.lineWidth=w;g.beginPath();g.arc(C,C,r,0,Math.PI*2);g.stroke()};
+    t.userData.last=[kc,kt,kn];const art=t.userData.img;
+    const key=[kc,kt,kn].map(v=>v.toFixed(3)).join(',')+(art?'a':'');if(t.userData.key===key)return;t.userData.key=key;
+    const C=S/2,U=500;
     const rc=kc*U,rt=kt*U,hw=kn*U*1.16;           // 코어 바깥, 궤도 중심, 궤도 반폭(소켓 + 여유)
     const tIn=rt-hw,tOut=rt+hw;
-    const ticks=(r0,dir,n,big,small,w)=>{for(let i=0;i<n;i++){const a=i/n*Math.PI*2,l=(i%6===0?big:small)*dir;g.lineWidth=i%6===0?w*1.6:w;
-      g.beginPath();g.moveTo(C+Math.cos(a)*r0,C+Math.sin(a)*r0);g.lineTo(C+Math.cos(a)*(r0+l),C+Math.sin(a)*(r0+l));g.stroke();}};
-    // 바깥 테
-    ring(U-2,6);ring(U-15,2);
-    // 눈금 띠: 궤도 바깥 ~ 바깥 테 사이
-    const bandIn=tOut+12,bandOut=U-24;
-    if(bandOut-bandIn>8){ring(bandIn,3);ticks(bandIn,1,96,Math.min(bandOut-bandIn,24),Math.min(bandOut-bandIn,12),3);}
-    // 소켓 궤도(홈 채널): 양쪽 굵은 레일 + 가는 안쪽 레일 + 룬 문자
-    ring(tOut,5);ring(tOut-9,2);ring(tIn,5);ring(tIn+9,2);
+    const prep=g=>{g.setTransform(1,0,0,1,0,0);g.globalAlpha=1;g.globalCompositeOperation='source-over';g.lineCap='round'};
+    const ringOn=(g,r,w)=>{if(r<=0)return;g.lineWidth=w;g.beginPath();g.arc(C,C,r,0,Math.PI*2);g.stroke()};
+    const annulus=(g,r0,r1)=>{g.beginPath();g.arc(C,C,r1,0,Math.PI*2);g.arc(C,C,Math.max(0,r0),0,Math.PI*2,true);g.clip()};
+    // ── 색 맵 ──
+    const h=cc.getContext('2d');prep(h);
+    const iron=h.createRadialGradient(C,C,rc,C,C,U);iron.addColorStop(0,'#1d1714');iron.addColorStop(1,'#120e0c');
+    h.fillStyle=iron;h.fillRect(0,0,S,S);
+    if(art){const half=(U-12)/.848;h.save();annulus(h,rc+8,U);h.drawImage(art,C-half,C-half,half*2,half*2);h.restore();
+      // 원화 바탕색(#14100f)을 흑철 톤에 녹이기: 어두운 부분만 살짝 눌러 각인만 떠오르게
+      h.save();annulus(h,rc+8,U);h.globalCompositeOperation='multiply';h.fillStyle='#d8cfc4';h.fillRect(0,0,S,S);h.restore();}
+    // 궤도 채널: 파낸 홈 — 바닥을 어둡게, 양쪽 모서리 금속 레일
+    h.save();annulus(h,tIn,tOut);h.globalAlpha=.72;h.fillStyle='#070505';h.fillRect(0,0,S,S);h.restore();
+    h.strokeStyle='#9a7a46';ringOn(h,tOut,6);ringOn(h,tIn,6);h.strokeStyle='#5d4a2e';ringOn(h,tOut-10,2);ringOn(h,tIn+10,2);
+    // 코어 받침 홈 + 바깥 테
+    h.strokeStyle='#a8874f';ringOn(h,rc+5,6);h.strokeStyle='#5d4a2e';ringOn(h,rc+16,2);
+    h.strokeStyle='#8f7142';ringOn(h,U-3,7);
+    // ── 발광 마스크 ──
+    const g=c.getContext('2d');prep(g);g.fillStyle='#000';g.fillRect(0,0,S,S);g.strokeStyle='#fff';g.fillStyle='#fff';
+    g.globalAlpha=.55;ringOn(g,tOut-10,2);ringOn(g,tIn+10,2);ringOn(g,rc+16,2);g.globalAlpha=1;
     const sig='ᚠᚢᚦᚨᚱᚲᚷᚹᚺᚾᛁᛃᛇᛈᛉᛊᛏᛒᛖᛗᛚᛜᛞᛟ';const fs=Math.max(18,Math.min(34,hw*.34));
-    g.font=`bold ${fs|0}px serif`;g.textAlign='center';g.textBaseline='middle';g.globalAlpha=.7;
+    g.font=`bold ${fs|0}px serif`;g.textAlign='center';g.textBaseline='middle';g.globalAlpha=.85;
     const nSig=Math.max(12,Math.min(48,Math.round(2*Math.PI*rt/(fs*2.2))));
     for(let i=0;i<nSig;i++){const a=i/nSig*Math.PI*2;g.save();g.translate(C+Math.cos(a)*rt,C+Math.sin(a)*rt);g.rotate(a+Math.PI/2);g.fillText(sig[i%sig.length],0,0);g.restore();}
     g.globalAlpha=1;
-    // 안쪽: 코어 테 ~ 궤도 안쪽 사이 별 문양 + 안쪽 눈금
-    const sIn=rc+16,sOut=tIn-14;
-    if(sOut-sIn>12){const star=(r,n,k,w)=>{g.lineWidth=w;g.beginPath();for(let i=0;i<=n;i++){const a=-Math.PI/2+(i*k%n)/n*Math.PI*2;const x=C+Math.cos(a)*r,y=C+Math.sin(a)*r;i?g.lineTo(x,y):g.moveTo(x,y)}g.stroke()};
-      g.save();g.beginPath();g.arc(C,C,sOut,0,Math.PI*2);g.arc(C,C,sIn,0,Math.PI*2,true);g.clip();
-      star(sOut,7,3,2);star(sOut,5,2,3);g.restore();ring(sOut,3);ticks(sOut,-1,72,Math.min(14,sOut-sIn),7,2.5);}
-    // 코어 받침 홈
-    ring(rc+5,5);ring(rc+15,2);
-    t.needsUpdate=true;
+    if(!art){ringOn(g,U-2,6);ringOn(g,tOut,5);ringOn(g,tIn,5);ringOn(g,rc+5,5);}
+    t.needsUpdate=true;ct.needsUpdate=true;
   };
   t.userData.draw(.39,.76,.23);return t;
 }
@@ -89,6 +101,7 @@ export async function createForge3D(container){
     if(a<1)(t.repeat.set(1,a),t.offset.set(0,(1-a)/2));else (t.repeat.set(1/a,1),t.offset.set((1-1/a)/2,0));t.needsUpdate=true};
   const tex=url=>{if(!url)return null;let t=texCache.get(url);if(!t){t=loader.load(url,coverSquare);t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=8;texCache.set(url,t)}return t};
   const glowTex=softSprite(),runeTex=runeTexture(),noiseTex=ironNoise();
+  runeTex.userData.onReady=()=>resume(); // 시길 원화 로드 후 다시 그리기
 
   // ── lights ──
   scene.add(new THREE.HemisphereLight(0x8a6f5a,0x120808,.35));
@@ -119,11 +132,11 @@ export async function createForge3D(container){
 
   // ── altar ──
   const altar=new THREE.Group();scene.add(altar);
-  const disc=new THREE.Mesh(new THREE.CircleGeometry(1,128),new THREE.MeshStandardMaterial({color:0x1b1514,metalness:.85,roughness:.5,roughnessMap:noiseTex,
-    emissive:0xff5a28,emissiveMap:runeTex,emissiveIntensity:.55,map:null}));
+  const disc=new THREE.Mesh(new THREE.CircleGeometry(1,128),new THREE.MeshStandardMaterial({color:0xffffff,metalness:.62,roughness:.48,roughnessMap:noiseTex,
+    emissive:0xff5a28,emissiveMap:runeTex,emissiveIntensity:.55,map:runeTex.userData.colorTex}));
   altar.add(disc);
   const discGold=new THREE.Mesh(new THREE.CircleGeometry(1,128),new THREE.MeshStandardMaterial({color:GOLD,metalness:1,roughness:.3,alphaMap:runeTex,transparent:true,opacity:.55,depthWrite:false}));
-  discGold.position.z=.5;altar.add(discGold);
+  discGold.position.z=.003;altar.add(discGold); // 원판 표면에 밀착 — 띄우면 원근 시차로 룬이 두 겹으로 보인다
   const outer=new THREE.Mesh(new THREE.TorusGeometry(1,.035,24,192),iron);altar.add(outer);
   const outerGold=new THREE.Mesh(new THREE.TorusGeometry(1,.012,12,192),goldMat);altar.add(outerGold);
   const spikeGeo=new THREE.ConeGeometry(.03,.12,6);spikeGeo.rotateZ(-Math.PI/2);spikeGeo.translate(.06,0,0);
@@ -199,7 +212,7 @@ export async function createForge3D(container){
     // slots
     while(slotObjs.length<s.slots.length)slotObjs.push(makeOrb());
     slotObjs.forEach((o,i)=>{const d=s.slots[i];o.visible=!!d;if(!d)return;const u=o.userData;
-      toWorld(d.x,d.y,20,u.tgt);if(!u.s)u.cur.copy(u.tgt);u.ts=d.r*(d.on?1.08:1);u.on=d.on;u.empty=d.empty;u.host=d.host;u.fused=d.fused;setIcon(o,d.icon)});
+      toWorld(d.x,d.y,d.on?36:20,u.tgt);/* 선택 시 앞으로 띄우되 그 깊이에서 같은 화면 위치(원근으로 위로 밀리던 문제) */if(!u.s)u.cur.copy(u.tgt);u.ts=d.r*(d.on?1.08:1);u.on=d.on;u.empty=d.empty;u.host=d.host;u.fused=d.fused;setIcon(o,d.icon)});
     // altar
     const a=s.altar;
     const discCss=Math.max(a.R*1.32,a.R+a.nodeR*1.3); // 소켓 바깥 가장자리까지 원판 안에
@@ -251,7 +264,7 @@ export async function createForge3D(container){
     raf=0;if(!isOpen()){running=false;return}
     const dt=Math.min(.05,(now-last)/1000);last=now;t+=dt;
     backMat.uniforms.t.value=t;
-    altar.rotation.z+=dt*.05;discGold.rotation.z=-altar.rotation.z*1.6;
+    altar.rotation.z+=dt*.05; // 금빛 룬 층은 원판과 함께 돈다(역회전하면 발광 룬과 이중으로 어긋남)
     const pulse=.5+.5*Math.sin(t*3.2);
     // core
     const cu=coreGroup.userData;const cs=(cu.ts||40)*(cu.ready?1+.06*pulse:1);coreGroup.scale.lerp(new THREE.Vector3(cs,cs,cs),.18);
@@ -262,7 +275,7 @@ export async function createForge3D(container){
     rim.intensity=2.5+hoverV*2;
     // slots
     for(const o of slotObjs){const u=o.userData;if(!o.visible)continue;u.cur.lerp(u.tgt,.25);u.s+=(u.ts-u.s)*.2;o.position.copy(u.cur);
-      o.position.z+=u.on?16:0;o.scale.setScalar(u.s);
+      o.scale.setScalar(u.s);
       u.glow.material.opacity=u.on?.5+.15*pulse:u.fused?.15:0;u.glow.material.color.copy(u.fused&&!u.on?GOLD:FIRE);
       u.halo.material.opacity=u.on?.9:0;u.halo.rotation.z+=dt*.8;
       u.face.material.emissiveIntensity=u.empty?0:u.on?.2:.1;u.dome.material=u.empty?glassEmpty:glass;}
