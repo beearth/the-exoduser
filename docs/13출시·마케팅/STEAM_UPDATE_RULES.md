@@ -54,6 +54,7 @@
 
 | 날짜 | 버전 | BuildID | 공개 | 패치노트 |
 |---|---|---|---|---|
+| 2026-10-10 | 0.7.0 | 25842101 | 대기 (Set Live 사용자 확인) | v0.7.0.md (final), Steam 게시 대기 |
 
 ## 7. 구현 도구 (2026-10-09 구축)
 
@@ -99,3 +100,13 @@ schtasks /Create /TN "EXODUSER_DailySteamRelease" /TR "cmd /c G:\exoduser-steam\
 4. 제목 `v<version> Update (YYYY-MM-DD)` — 본문은 노트 EN 섹션 붙여넣기(스팀 BBCode: `[h2]New[/h2]` `[list][*]…[/list]`), 한국어는 동일 이벤트의 언어 탭에 KO 섹션 입력
 5. 미리보기 확인 → **Publish**(사용자 직접 클릭) → §6 기록표에 한 줄 추가
 6. 공개 후 `git push origin main v<version>` (태그 push는 공개 이후에만 — §4.7)
+
+## 8. 첫 실행(2026-10-10) 결함과 수정
+
+| 결함 | 증상 | 수정 |
+|---|---|---|
+| robocopy 종료코드 | 빌드 성공 후 robocopy 1(=복사함)을 실패로 오판, 09:00 실행 중단 | steam_update.ps1: 8 이상만 실패, 이후 LASTEXITCODE 0 |
+| worktree 정리 | 남은 worktree를 `worktree remove --force`로 지우며 node_modules junction을 따라 **메인 node_modules 삭제** (npm ci로 복구) | daily_release.ps1: junction을 `rmdir`로 먼저 끊고, 진짜 폴더면 중단 |
+| smoke 포트 | 3333 고정 → 정식판 3350 미대응, 타 세션 dev 서버와 충돌 | steam_smoke.mjs: package.nw/release-config.json 포트 사용, 빈 세이브 `/api/load` 404만 정상 처리 |
+| 생성 VDF 경로 | output\daily의 VDF가 depot VDF 상대경로를 못 찾아 preview 실패 | daily_release.ps1: depot VDF를 scripts 절대경로로 치환 |
+| 실행 로그 | 예약 실행 출력이 남지 않음 | daily_release.ps1: Start-Transcript → G:\exoduser-steam\logs\daily_release_*.log |
