@@ -5322,3 +5322,19 @@ actual isBoss=true blood만 새640셀24원화로 표시하고 원16 alias·128×
 ### 2026-10-10 보스 화염비 용암24
 
 실제main fireRain착탄만 boss_lava_erupt24/640셀/6×4/32FPSreference.75초로표시하고 원9alias/768geometry/speed5·명목45진행/지면(.5,.75)/alpha.85·전투/RNG/save를유지한다. fireRain시작prefetch/초기자동로드0/sharedImage1·실패자동retry0. 새readyCanvaslighter한셀/원9generic폴백; elite·DarkPillar원9·easy-test미반영. [현재 정본](../5.1임펙트디자인/BOSS_LAVA_ERUPT24_ENGINE_20261010.md). 새RGBA37.5MiB/원20.25MiB는정적환산/실peak·동시성능미검수. actualmain/정상줌/전체보스전/AAA미인수, VISUAL RETOUCH.
+
+
+## 2026-10-10 — ROOT-GAME-DIRECTION-ENGINE-OWNER-SPLIT-20261010
+
+사용자 직접 지시 “엔진제작 팀따로 만들었으니까 너는 틈이나 보스 등 전체기획 총괄 지시나해”에 따라 원총괄은 지옥의 틈·맵·보스전의 전체 방향, 우선순위, 담당 배정과 완료 인수를 소유한다. 별도 `Find 앤진개발팀 FDG` 채팅이 엔진 제작을 소유한다. 이쪽 AudioMixer 준비는 제품 파일 작성·실행0에서 보류했다. 두 checkout을 같은 것으로 간주하거나 자동 덮어쓰지 않는다.
+
+| 우선순위 / 소유 | 실제 지시 | 한 단위 완료 기준 | 현재 상태 |
+|---|---|---|---|
+| 1 / Claude8→기존 허용 BOSS·ANIMVFX | 드루이드 준비→타격→회복, 본체·플레이어·전조·피해 핵의 표시 조화를 묶고 실제 미완료 consumer 한 곳만 선택 | 정확 소유 파일·연결 시점, 원전투/Q·E/save 보존, 새 meaningful 검수·화면 판정. 완료24/48 및 held 후보 재검사·재생성0 | 오더 담당 새 turn·보스 작업 연결 의사 확인. BOSS 전문 수신·착수·완료는 미확인 |
+| 2 / Claude8→기존 허용 MAP | 지옥의 틈 생활공간과 CH1-1 전투 맵을 구분해 잠기지 않은 자기 소유 공간 한 건 완성 | guide 전체·SSOT/LOCK 선행, 외곽→연결→바닥→전투→랜드마크→디테일, §23 보고·VISUAL VERDICT. 원PNG/scene/nav/LOCK·둘러보기 보상/진행/save 권한 보존 | 같은 오더1에 포함; 새 맵 산출/시각 인수0 |
+| 3 / Codex7→기존 허용 SOUND | 보스 강타 착지의 핵이 읽히는 짧은 타격음 한 건. 승인 샘플 재사용 또는 합법적 공개 원본 후보 | 연결 시점·volume/priority·종료 소유·공식 출처. 프로그램 재생과 실제 청취/연타/동시성능 분리. Druid 원본2 반복검사0 | Codex7 보고로 SOUND 새 turn·담당 응답 확인. source 도구 성공·산출·청취 미확인 |
+| 별도 / 엔진 제작 채팅 | 기존 FDG 기반과 현재 Studio의 소유·프로젝트 포맷·에셋 경로 및 게임 통합 인터페이스 구분 | 엔진 구현은 별도 팀 담당. 새 팀/중복 기반/checkout 자동 덮어쓰기0, 원총괄 fdg-engine 추가 구현0 | 역할 수신·기존 기반 확인·연결 인터페이스 정리 응답 확인. 신규 완료 미확인 |
+
+킬 체인 `G.rifts`, 플레이어 쌍 포탈, 2.5D 지옥의 틈 둘러보기는 다른 계약이다. 이번 지시는 수치·전투·save·원화·엔진 코드 변경이 아니다. 같은 후보에서 틈/필드/보스가 읽히는 실제 플레이 구간을 목표로 하며 CPU/그림 한 장을 전체 인수로 세지 않는다. 24장은 VFX 출발점이며 장수·재생FPS·화면FPS를 구분한다.
+
+기존 거절 전문 송신·held ART/STORY/treecard/WOLF은 재시도·대체·우회·내용/hash/실행/채택0을 유지한다. 서버3387 복구·Mac 잠금 답변 경계와 사용자 탭/저장 무조작을 보존한다. 변경 없는 idle·완료 검사·문서/인계 반복은 하지 않는다. 전송 수락은 전문팀의 수신·Read·새 tool·완료와 다르다. 가이드·_MAP_SSOT_INDEX 및 각 현행 보스/사운드 정본을 따른다.

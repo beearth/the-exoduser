@@ -57006,3 +57006,8 @@ actual isBoss=true blood만 새640셀24원화로 표시하고 원16 alias·128×
 ### 2026-10-10 — FDG 이미지 자원 소유·해제
 
 `ROOT-FDG-RESOURCE-LIFECYCLE-20261010`: acquireImage/releaseImage lease·manual pin·evictImage/clearUnused·pending AbortError/세대 격리, renderer의 장면 URL diff/공통 lease 유지/dispose, FDGDemo RAF/리스너/소유 renderer 종료를 구현했다. 기존 에디터 연결을 소비하며 editor source 변경0. 신규 core14조건/renderer7그룹/editor30조건+setup3별도/demo13조건은 별도epoch PASS/FAIL0; PNG/완료foundation 재실행0. 원게임·save·PNG 불변, 엔진 참조 정리와 실제 메모리/GPU/성능 인수는 구분한다. [현재 계약·범위](0마스터플랜/FDG_ENGINE_20261010.md#2026-10-10-후속--장면-이미지-자원-수명-관리). UI_NOT_ASSESSED/RETOUCH.
+
+
+### 2026-10-10 ROOT-GAME-DIRECTION-ENGINE-OWNER-SPLIT-20261010
+- 사용자 최신 직접 지시에 따라 별도 엔진 제작과 원총괄의 틈·맵·보스 전체 기획/지시를 분리했다. 엔진 채팅 및 기존 Claude8/Codex7 오더 채팅에 각1회 구체적인 범위·완료 기준을 전달했다. 전문팀 착수/산출 완료는 미확인이다.
+- 원총괄 AudioMixer 준비는 코드/실행0에서 보류. 제품·전투·save·기존 완료물 변경0, 관리 정본의 소유/우선순위 표만 동기화했다. 거절/held·사용자 환경·원PNG/nav/LOCK·타인WIP 경계 유지.
