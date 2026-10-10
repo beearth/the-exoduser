@@ -56993,3 +56993,8 @@ actual isBoss=true blood만 새640셀24원화로 표시하고 원16 alias·128×
 ### 2026-10-10 보스 화염비 용암24
 
 실제main fireRain착탄만 boss_lava_erupt24/640셀/6×4/32FPSreference.75초로표시하고 원9alias/768geometry/speed5·명목45진행/지면(.5,.75)/alpha.85·전투/RNG/save를유지한다. fireRain시작prefetch/초기자동로드0/sharedImage1·실패자동retry0. 새readyCanvaslighter한셀/원9generic폴백; elite·DarkPillar원9·easy-test미반영. [현재 정본](5.1임펙트디자인/BOSS_LAVA_ERUPT24_ENGINE_20261010.md). 새RGBA37.5MiB/원20.25MiB는정적환산/실peak·동시성능미검수. actualmain/정상줌/전체보스전/AAA미인수, VISUAL RETOUCH.
+
+
+### 2026-10-10 — 독립 FDG Engine 0.1
+
+`ROOT-FDG-ENGINE-FOUNDATION-20261010`: 기존 엔진3담당과 ROOT가 별도 `fdg-engine/` 패키지에 장면 코어·고정 시간·공유이미지·아틀라스 애니메이션·Canvas2.5D 렌더러·Scene Studio/JSON 에디터·실행 샘플을 구현했다. core7그룹31조건, animationdelta8그룹, editordelta2그룹27조건, ROOT최초통합18검사는 별도epoch이며 합산0. 실제browser/file다운로드·GPU·동시성능/전체게임이식 미인수. 저장복원 자동ID 충돌1건은 생성자396B 한정수정·독립7조건PASS로 닫았다. 기존 game/settings/원PNG/save 불변, [전체 API·규격·검수 정본](0마스터플랜/FDG_ENGINE_20261010.md). 엔진 기반 완료이며 전체 게임/Godot/3D/AAA완료가 아니다.

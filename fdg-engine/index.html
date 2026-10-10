@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>FDG Engine · Scene Studio</title>
+  <style>
+    :root{color-scheme:dark;font-family:system-ui,sans-serif;background:#0c1119;color:#dbe4ef}*{box-sizing:border-box}
+    body{margin:0}header{height:76px;display:flex;align-items:center;justify-content:space-between;padding:16px 24px;border-bottom:1px solid #293443}
+    h1{font-size:21px;letter-spacing:.08em;margin:0}header p{color:#9dacc0;font-size:12px;margin:5px 0 0}.badge{color:#ffcd78;font-size:12px}
+    main{display:grid;grid-template-columns:minmax(0,1fr) 340px;min-height:calc(100vh - 76px)}.stage{padding:18px;min-width:0}
+    .viewport{position:relative;border:1px solid #303f52;border-radius:12px;overflow:hidden;background:#111722}canvas{display:block;width:100%;height:auto;aspect-ratio:8/5;outline:none;touch-action:none}
+    .controls{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.help{font-size:12px;color:#9aacc3;line-height:1.7}.stats{font-variant-numeric:tabular-nums;color:#b7d5ec;font-size:12px}
+    button,input,select,textarea{font:inherit;color:inherit;background:#172231;border:1px solid #36485c;border-radius:6px;padding:7px 9px}button{cursor:pointer}button:hover{border-color:#9fb7d0}button:focus-visible,input:focus-visible,textarea:focus-visible,canvas:focus-visible{outline:2px solid #ffcd78;outline-offset:2px}
+    #fdg-editor{padding:16px;border-left:1px solid #293443;background:#101823;min-width:0}.fdg-editor-toolbar{display:flex;flex-wrap:wrap;gap:6px}.fdg-editor-panels{display:grid;gap:18px;margin:20px 0}.fdg-tree-list{display:flex;flex-direction:column;gap:4px}.fdg-tree-list button{text-align:left;width:100%}.fdg-editor-field{display:flex;align-items:center;justify-content:space-between;margin:7px 0;gap:8px}.fdg-editor-field input{max-width:150px;width:50%}.fdg-editor-json textarea,textarea.fdg-editor-json{width:100%;min-height:160px;font:11px ui-monospace,monospace;resize:vertical}.fdg-editor-status{font-size:12px;line-height:1.5;color:#ffcd78;margin-top:10px}h2,h3{font-size:13px;color:#b5c9df}label{font-size:12px}
+    @media(max-width:850px){main{grid-template-columns:1fr}#fdg-editor{border-left:0;border-top:1px solid #293443}header{padding:12px 16px}}
+  </style>
+</head>
+<body>
+  <header><div><h1>FDG ENGINE</h1><p>Scene Studio · 2.5D / 고정 시간 / 아틀라스 애니메이션</p></div><span class="badge">Foundation 0.1</span></header>
+  <main>
+    <section class="stage" aria-label="장면 미리보기">
+      <div class="viewport"><canvas id="fdg-viewport" width="960" height="600" tabindex="0" aria-label="FDG 장면. WASD로 테스트 노드 이동"></canvas></div>
+      <div class="controls"><button id="fdg-projection" type="button">시점: 2.5D</button><button id="fdg-effect" type="button">24장 효과 재생</button><button id="fdg-camera-reset" type="button">카메라 초기화</button></div>
+      <p class="help">화면을 클릭한 뒤 WASD / 방향키: 이동 · 노드 클릭: 선택 · 휠: 확대 · 가운데 버튼: 카메라 이동<br>도형은 엔진 기능 확인용 노드입니다. 효과는 기존 EXODUSER 불꽃 아틀라스를 재사용합니다.</p>
+      <p class="stats" id="fdg-stats" role="status">엔진 초기화 중</p>
+    </section>
+    <aside id="fdg-editor" aria-label="장면 에디터"></aside>
+  </main>
+  <script src="src/core.js"></script><script src="src/animation.js"></script><script src="src/renderer.js"></script><script src="src/editor.js"></script><script src="src/demo.js"></script>
+</body>
+</html>

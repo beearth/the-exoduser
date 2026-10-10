@@ -1,3 +1,8 @@
+## 2026-10-10 — FDG Engine 별도 패키지와 Scene Studio
+
+사용자 “fdg엔진을 따로 만들어라고” 지시에 따라 기존 엔진3담당+ROOT가 `fdg-engine/` 0.1을 구현했다. Node/SceneTree·고정60Hz·공유ResourceStore, 초 단위 SpriteFrames/Animator, Canvas2.5D 렌더러, 씬 트리·속성·pause/step·JSON 에디터와 실행 샘플을 분리했다. actualdemo/에디터/Canvas 연결 최초18검사PASS; 모듈 경계 초기FAIL과 애니메이션 누산오차 수정은 별도 이력으로 보존한다. 저장복원 자동ID 충돌1건은 생성자396B 한정수정·독립7조건PASS로 닫았다. 기존 game/settings/원PNG/save 변경0. 이는 별도 엔진 기반이며 EXODUSER 전체이식·실browser/GPU/동시성능/3D/AAA완료가 아니다. [실제 모듈·수치·검수 정본](FDG_ENGINE_20261010.md). 다음은 FDG 장면 계약의 보스전 격리 이식과 성능 검수다.
+
+
 
 
 ## 2026-10-10 — 화마귀 Q 불탄 임팩트24 연결
