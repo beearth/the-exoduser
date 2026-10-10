@@ -7,8 +7,8 @@
     "checkout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
     "commit": "9a4534b42f74093095ebc3364a25dd104e93b379",
     "scope": "12c29afe 이후 docs·커밋·관련 소비 연결의 읽기 전용 조사. 미커밋 상태나 Steam 배포 상태를 HEAD로 증명하지 않음",
-    "lastCheckedAtUTC": "2026-10-10T14:24:23Z",
-    "latestResult": "HEAD 동일. 지옥강타 1의 기존 발동·분노 강화/전량 소모·주변 범위·Space·이름을 좁게 확인해 한영 글 공개. 새 구현 변경·새 영상0. 총괄 cursor34의 별도 엔진 경사로/절벽/저장 검수는 보스전 전체 완료 아님."
+    "lastCheckedAtUTC": "2026-10-10T15:29:38Z",
+    "latestResult": "개발 HEAD9a4534b4 동일. 새 코드/PNG/동일 영상/웹 조사 재열람 없음. 총괄 cursor36은 시작점 실제 종주 마감 미완료이며 별도 FDG 엔진 경과·보스전 전체 완료 아님. 전사10/8 미리보기 공개 승인·교체 상태 변화 없음."
   },
   "nextMaterial": "전사 인트로10/8 최신본의 완성 미리보기 검수와 교체 판단; 악의구 원고·12초 시연안은 후속 준비 유지",
   "newPublicationReadyCount": 0,
@@ -773,5 +773,12 @@
     "latestVersion": "2026-10-08 killu montage",
     "previewPath": "/Users/fordeargamers/the-exoduser/output/warrior-intro-latest-20261011/REVIEW/EXODUSER_WARRIOR_INTRO_20261008_REVIEW.mp4",
     "state": "PREVIEW_DELIVERED; REPLACEMENT_NOT_STARTED"
+  },
+  "latestProducerObservation": {
+    "checkedAtUTC": "2026-10-10T15:29:38Z",
+    "cursor": "b2476eee-d767-4cd1-8064-9706586fb10a:36",
+    "status": "idle",
+    "completionConfirmed": false,
+    "report": "1-1 시작점부터의 실제 종주 마감 결과가 아직 없음; 보스전 전체 완료 보고 없음"
   }
 }
