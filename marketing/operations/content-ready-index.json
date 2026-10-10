@@ -7,8 +7,9 @@
     "checkout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
     "commit": "9a4534b42f74093095ebc3364a25dd104e93b379",
     "scope": "12c29afe 이후 docs·커밋·관련 소비 연결의 읽기 전용 조사. 미커밋 상태나 Steam 배포 상태를 HEAD로 증명하지 않음",
-    "lastCheckedAtUTC": "2026-10-10T18:29:05Z",
-    "latestResult": "개발 HEAD9a4534b4 동일. 코드/PNG/docs 재열람 없음. 총괄 cursor39 별도 엔진 시각 보완 후보 규격 실패·수정 중·기존 Play/저장 기본 흐름 유지. 본편 변경/보스전 전체 완료와 구별. 전사10/8 미리보기 승인·교체 변화 없음."
+    "lastCheckedAtUTC": "2026-10-10T19:29:10Z",
+    "latestResult": "본편 HEAD9a4534b4와 game.html SHA5212e3a3 모두 동일. 동일 코드/PNG/docs 의미 분석 재열람 없음. 총괄cursor40 별도 FDG 엔진 수정 후보 첫 적용 검수 대기·실제 화면 판정 없음. 본편 완료·촬영 가능으로 확대 해석하지 않음. 전사10/8 검토/교체 변화 없음.",
+    "gameHtmlSha256": "5212e3a33c201eec08d09b132092c1a063fea88f36fccef494ea351f3565d2cd"
   },
   "nextMaterial": "전사 인트로10/8 최신본의 완성 미리보기 검수와 교체 판단; 악의구 원고·12초 시연안은 후속 준비 유지",
   "newPublicationReadyCount": 0,
@@ -775,14 +776,14 @@
     "state": "PREVIEW_DELIVERED; REPLACEMENT_NOT_STARTED"
   },
   "latestProducerObservation": {
-    "checkedAtUTC": "2026-10-10T18:29:05Z",
-    "cursor": "b2476eee-d767-4cd1-8064-9706586fb10a:39",
+    "checkedAtUTC": "2026-10-10T19:29:10Z",
+    "cursor": "b2476eee-d767-4cd1-8064-9706586fb10a:40",
     "status": "idle",
     "completionConfirmed": false,
     "scope": "별도 FDG 엔진",
     "partialSceneFlowAccepted": true,
-    "visualCandidateState": "IMPORT_VALIDATION_FAILED; EXISTING_OWNER_REWORK",
+    "visualCandidateState": "CORRECTED_CANDIDATE_FIRST_APPLICATION_QA_PENDING",
     "requiresUserAction": false,
-    "report": "별도 FDG 엔진1-1 시각 보완 후보가 불러오기 규격 검증 실패(투명도·흙 밝기·저장 기록). 기존 맵팀이 지원되는 보정값으로 수정 중; 앞서 인수한 Play·저장 기본 흐름 유지. EXODUSER 본편 변경/보스전 전체 완료/촬영 가능 완료 아님."
+    "report": "별도 FDG 엔진 수정 후보의 저장 기록/원본값 일치를 확인하고 엔진팀 첫 적용 검수에 연결. 실제 화면 판정 전. 기존 기본 Play/저장 부분 인수 유지; 본편 업데이트/보스전 전체 완료 보고 아님."
   }
 }

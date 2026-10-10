@@ -13,11 +13,11 @@
     "threadId": "01a0faa9-b453-7673-be39-98adedb4c2b3",
     "hostId": "local",
     "title": "맥북에서 총괄 시작하기",
-    "afterCursor": "b2476eee-d767-4cd1-8064-9706586fb10a:39",
+    "afterCursor": "b2476eee-d767-4cd1-8064-9706586fb10a:40",
     "lastObservedStatus": "idle",
     "lastObservedTurnStatus": "completed",
-    "lastObservedTurnId": "01a12708-8c40-79f1-87ff-732b59d3e265",
-    "lastObservedReport": "별도 FDG 엔진1-1 시각 보완 후보가 불러오기 규격 검증 실패(투명도·흙 밝기·저장 기록). 기존 맵팀이 지원되는 보정값으로 수정 중; 앞서 인수한 Play·저장 기본 흐름 유지. EXODUSER 본편 변경/보스전 전체 완료/촬영 가능 완료 아님."
+    "lastObservedTurnId": "01a1273f-7ce3-79f2-9a42-f69db9551b36",
+    "lastObservedReport": "별도 FDG 엔진 수정 후보의 저장 기록/원본값 일치를 확인하고 엔진팀 첫 적용 검수에 연결. 실제 화면 판정 전. 기존 기본 Play/저장 부분 인수 유지; 본편 업데이트/보스전 전체 완료 보고 아님."
   },
   "completionConfirmed": false,
   "captureStarted": false,
@@ -35,8 +35,8 @@
     "완성 후 검수본부터 인도, 사용자 검수 전 자동 공개 금지",
     "2026-10-10 사용자 정정: 전체 대기를 모든 콘텐츠로 확대하지 않음; UI·스킬·캐릭터 부분 개발 소식 계속 운영"
   ],
-  "lastCheckedAtUTC": "2026-10-10T18:29:05Z",
-  "lastCheckResult": "cursor39 별도 엔진 시각 후보 규격 실패→기존 담당 수정 중, 기존 Play/저장 인수 유지. 본편 HEAD9a4534b4 동일·보스전 전체 완료 아님. 전사 최신 미리보기 승인/교체 변화 없음. 게시·촬영·동일 요청·게임/서버/세이브 변경0.",
+  "lastCheckedAtUTC": "2026-10-10T19:29:10Z",
+  "lastCheckResult": "cursor40 별도 엔진 수정 후보 첫 적용 검수 대기·화면 판정 없음. 본편 HEAD9a4534b4와 game.html SHA5212e3a3 모두 동일. 전사10/8 미리보기 공개 승인/교체 변화 없음. 촬영/게시/같은 요청 및 게임/서버/세이브 변경0.",
   "publicationScope": "보스전 전체 리디자인 완료 대표 메인트레일러",
   "partialDevelopmentNewsAllowed": true,
   "partialDevelopmentNewsPolicy": "UI·기존 스킬·캐릭터 제작 과정 등 각 소재는 전체 보스전 완료와 관계없이 실제 근거와 개별 검수 범위 확인 후 독립 제작·게시한다.",
