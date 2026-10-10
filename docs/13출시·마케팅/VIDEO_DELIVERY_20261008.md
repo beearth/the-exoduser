@@ -1,5 +1,11 @@
 # 2026-10-08 인게임 홍보 영상 납품·동기화
 
+## 2026-10-11 00:01 KST — 전사 인트로 구본 게시 확인·최신본 검토 인도
+
+공개 `r_TTBUrA6p4`의 실제 업로드 원본은 migration10/1 v25(SHA `fb1b4727…`), 같은 파일명인 마케팅 체크아웃의 최신10/8 수정본(SHA `277fbe09…`)과 다르다. 최신 제작 경로·해시 대조 누락으로 구본을 게시했다. 최신본은 첫0~5초 손·칼자루 교정과51~58초 킬루 장면7컷을 포함한다. [96.4초 최신 완성 미리보기](/Users/fordeargamers/the-exoduser/output/warrior-intro-latest-20261011/REVIEW/EXODUSER_WARRIOR_INTRO_20261008_REVIEW.mp4) · [정확 해시·소비 경로·근거·검수 한계](../../marketing/operations/warrior-intro-version-audit-20261011/audit.json). KO/EN22큐 및 기존 원음 패킷 스트림은 동일하다.
+
+**신규 업로드0·공개 교체 미완료·구본 공개 상태 유지**. 최신본은 미리보기 검토 후 교체 판단하며 기존 게임 반영 검토를 새 공개 승인으로 해석하지 않는다. 이번 전편 시청·청취와 공개 승인은 미완료다. 아래10/1 v25를 최신으로 표현한 과거 인도 기록은 역사적 게시 근거이며 최신 소스 선택에는 이 정정을 우선한다. 게임 코드·소비 경로·서버·세이브 변경0.
+
 ## 2026-10-10 23:40 KST — 두 화면 Shorts 회수·공개 전 미리보기 기준
 
 사용자가 혼란스러운 화면 구성을 지적하고 회수를 지시해, 얼음오브 `NBOcxJgM-pA`와 같은 구성의 패링 `50eBpMxlkP0`를 **비공개로 저장하고 공식 재생목록에서 제외**했다. 공식 채널 `UCOLkkQsaZ9ACuXdvPblhfiA`의 Studio에서 저장 완료·비공개 선택·빈 재생목록 선택을 확인했다. 영상 영구 삭제나 재업로드는 하지 않았다. [회수 결과·증거](../../marketing/operations/shorts-quality-withdrawal-20261010/withdrawal.json) · [편집 원인](../../marketing/operations/shorts-quality-withdrawal-20261010/source-layout-audit.json).

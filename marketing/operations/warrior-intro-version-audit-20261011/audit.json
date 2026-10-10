@@ -1,0 +1,93 @@
+{
+  "checkedAtUTC": "2026-10-10T15:01:57Z",
+  "checkedAtKST": "2026-10-11 00:01",
+  "userRequest": "전사인트로도 왜 구형이지 신형최신도 있는데",
+  "state": "LATEST_SOURCE_CONFIRMED; PREVIEW_DELIVERED; PUBLIC_REPLACEMENT_NOT_STARTED",
+  "publicVideo": {
+    "id": "r_TTBUrA6p4",
+    "url": "https://www.youtube.com/watch?v=r_TTBUrA6p4",
+    "sourceVersion": "2026-10-01 v25",
+    "sourcePath": "/Users/fordeargamers/the-exoduser/output/FDG_FINAL_RELEASE_20261008/videos/EXODUSER_WARRIOR_STORY_V25_20261001.mp4",
+    "bytes": 93670905,
+    "sha256": "fb1b47274ab3f793ab3254182b44f83349958e4db435e4331f03c879389007bd",
+    "sourceCheckout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "originalName": "video/warrior_story_v23_clean.mp4"
+  },
+  "latestVideo": {
+    "sourcePath": "/Users/fordeargamers/.codex/worktrees/marketing-gameplay-20261008/the-exoduser/video/warrior_story_v23_clean.mp4",
+    "version": "2026-10-08 killu montage + 2026-10-06 hand fix",
+    "commit": "65fd47a684c77d253164a5c119079aaa63bb1a74",
+    "bytes": 97796468,
+    "sha256": "277fbe09c4f5c0b70a98aae6376a8d820a7377cbd6f96a3bc62365cf0a166b34",
+    "durationSeconds": 96.4,
+    "width": 1920,
+    "height": 1080,
+    "fps": 60,
+    "frames": 5784,
+    "runtimeConsumer": "character-story-player.js?v=20261008-killu-montage",
+    "previewPath": "/Users/fordeargamers/the-exoduser/output/warrior-intro-latest-20261011/REVIEW/EXODUSER_WARRIOR_INTRO_20261008_REVIEW.mp4"
+  },
+  "changes": [
+    {
+      "date": "2026-10-06",
+      "intervalSeconds": [
+        0,
+        5
+      ],
+      "description": "첫 장면의 손잡이를 감싸 쥔 모습 2차 교정",
+      "commit": "3b53d6876e11698376329937199345dad948c285",
+      "document": "docs/cinematic/WARINTRO_HAND_FIX_20261006.md"
+    },
+    {
+      "date": "2026-10-08",
+      "intervalSeconds": [
+        51,
+        58
+      ],
+      "description": "킬루 응징 장면7컷 반영; 재인코딩 구간50.5~59.5초",
+      "commit": "65fd47a684c77d253164a5c119079aaa63bb1a74",
+      "document": "docs/cinematic/WARINTRO_KILLU_MONTAGE_20261008.md"
+    }
+  ],
+  "cause": "게시용 고정 복사본을 migration의10/1 파일에서 만들고, 같은 이름을 쓰는 마케팅 체크아웃의10/8 최신 파일·소비 경로·해시와 대조하지 않았다. 파일명v23만으로 콘텐츠 버전을 판단할 수 없다.",
+  "audio": {
+    "state": "UNCHANGED_ORIGINAL_AUDIO_PACKET_STREAM",
+    "packetMD5": "636aead84fb925c515f55790ff0b7868",
+    "freshFullListening": "NOT_PERFORMED"
+  },
+  "subtitles": [
+    {
+      "language": "ko",
+      "path": "/Users/fordeargamers/the-exoduser/output/warrior-intro-latest-20261011/REVIEW/EXODUSER_WARRIOR_INTRO_20261008_ko.vtt",
+      "sha256": "37a50ddefc49d231cbf46eaa6af23428e71155418a7fc2a2a0fba8030c1e4d69",
+      "cueCount": 22
+    },
+    {
+      "language": "en",
+      "path": "/Users/fordeargamers/the-exoduser/output/warrior-intro-latest-20261011/REVIEW/EXODUSER_WARRIOR_INTRO_20261008_en.vtt",
+      "sha256": "fd4e9d1e92aa45fbe872691a51399c035b9ea7e716309e88a7db5e34c46506c6",
+      "cueCount": 22
+    }
+  ],
+  "qa": {
+    "existingProductionReport": "전체 디코딩 PASS·런타임 KO 자막/미디어 오류 없음·사용자 게임 반영 검토 이력",
+    "freshPreviewCopy": "SOURCE_AND_COPY_SHA256_MATCH",
+    "fullSubjectiveWatchingThisTurn": "NOT_PERFORMED",
+    "fullSubjectiveListeningThisTurn": "NOT_PERFORMED",
+    "externalPublicationApproval": "PENDING_PREVIEW_REVIEW"
+  },
+  "publication": {
+    "newUploadCount": 0,
+    "publicVisibilityChanges": 0,
+    "existingPublicCount": 2,
+    "next": "최신본 완성 미리보기 확인 후 공개 교체 판단; 구본을 최신이라고 안내하지 않음"
+  },
+  "gameChanges": {
+    "code": 0,
+    "assets": 0,
+    "runtimeConsumer": 0,
+    "server": 0,
+    "save": 0,
+    "newRecording": 0
+  }
+}

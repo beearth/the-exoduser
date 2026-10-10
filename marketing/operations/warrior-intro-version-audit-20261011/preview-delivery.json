@@ -1,0 +1,27 @@
+{
+  "deliveredAtUTC": "2026-10-10T15:01:57Z",
+  "video": {
+    "path": "/Users/fordeargamers/the-exoduser/output/warrior-intro-latest-20261011/REVIEW/EXODUSER_WARRIOR_INTRO_20261008_REVIEW.mp4",
+    "sha256": "277fbe09c4f5c0b70a98aae6376a8d820a7377cbd6f96a3bc62365cf0a166b34",
+    "bytes": 97796468
+  },
+  "subtitles": [
+    {
+      "language": "ko",
+      "path": "/Users/fordeargamers/the-exoduser/output/warrior-intro-latest-20261011/REVIEW/EXODUSER_WARRIOR_INTRO_20261008_ko.vtt",
+      "sha256": "37a50ddefc49d231cbf46eaa6af23428e71155418a7fc2a2a0fba8030c1e4d69",
+      "cueCount": 22
+    },
+    {
+      "language": "en",
+      "path": "/Users/fordeargamers/the-exoduser/output/warrior-intro-latest-20261011/REVIEW/EXODUSER_WARRIOR_INTRO_20261008_en.vtt",
+      "sha256": "fd4e9d1e92aa45fbe872691a51399c035b9ea7e716309e88a7db5e34c46506c6",
+      "cueCount": 22
+    }
+  ],
+  "classification": "스토리 컷씬 · 실제 인게임 전투 녹화 아님",
+  "draftTitle": "EXODUSER: HELL LORD | 대검전사 스토리 — 2026.10.08 수정본 [KO / EN]",
+  "draftDescription": "대검전사의 스토리 컷씬 수정본입니다. 첫 장면의 손과 칼자루, 51~58초 킬루 장면을 수정했습니다. 한국어·영어 선택형 자막을 함께 준비했습니다.\n\nStory cinematic revision. Updated the opening hand and sword grip and the Killu sequence at 51–58 seconds. Korean and English subtitle files are prepared.\n\n이 영상은 AI 보조 원화·영상·음향을 활용한 스토리 컷씬이며, 실제 플레이 녹화나 Steam 공개 데모 업데이트 공지가 아닙니다.\nThis story cinematic uses AI-assisted artwork, video and audio; it is not a gameplay recording or a public demo patch announcement.\n\nSteam: https://store.steampowered.com/app/4749590/",
+  "state": "REVIEW_ONLY; NOT_UPLOADED",
+  "next": "전체 화면 구성·음성/음악·선택형 자막 및 사용자 미리보기 검수 후 게시"
+}

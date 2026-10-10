@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
-  "updatedAtKST": "2026-10-10 23:52",
-  "updatedAtUTC": "2026-10-10T14:52:54Z",
+  "updatedAtKST": "2026-10-11 00:01",
+  "updatedAtUTC": "2026-10-10T15:01:57Z",
   "policy": "실제 화면·영상 또는 단계가 명확한 기존 원화와 간결한 설명을 함께 준비하고, 공개 전 완성 미리보기를 먼저 인도한다. 동일 영상의 확대 화면과 전체 화면을 동시에 복제하지 않으며 원화를 가리는 불투명 자막판을 사용하지 않는다. 매시간 점검을 긴 글 연속 게시 빈도로 해석하지 않는다. UI·스킬·캐릭터의 독립 준비를 계속하고 대표 보스전 완료 영상만 총괄 완료를 기다린다.",
   "developmentObservation": {
     "checkout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
@@ -10,7 +10,7 @@
     "lastCheckedAtUTC": "2026-10-10T14:24:23Z",
     "latestResult": "HEAD 동일. 지옥강타 1의 기존 발동·분노 강화/전량 소모·주변 범위·Space·이름을 좁게 확인해 한영 글 공개. 새 구현 변경·새 영상0. 총괄 cursor34의 별도 엔진 경사로/절벽/저장 검수는 보스전 전체 완료 아님."
   },
-  "nextMaterial": "skill-malice-orb 악의구 실제 시연/스틸 확보와 공개 전 완성 미리보기; 원고와12초 시연안은 준비, 새 영상0",
+  "nextMaterial": "전사 인트로10/8 최신본의 완성 미리보기 검수와 교체 판단; 악의구 원고·12초 시연안은 후속 준비 유지",
   "newPublicationReadyCount": 0,
   "publicationEvidenceDate": "2026-10-08 과거 영상 게시 검증 + 2026-10-10 개발 글5건 공개 검증 및 Shorts A/B 비공개·공식 목록 제외 확인",
   "items": [
@@ -59,14 +59,18 @@
       "id": "warrior-public",
       "name": "전사 컷씬",
       "kind": "기존 게시",
-      "state": "YouTube 공개·EN/KO 각22큐 게시",
+      "state": "YouTube 공개본10/1 v25; 최신10/8 수정본 확인·완성 미리보기 인도·교체 미완료",
       "ready": false,
-      "action": "기존 공개 URL 안내. 같은 파일 재업로드하지 않음",
+      "action": "10/8 첫 장면/킬루 장면 수정본의 전체 시청·청취·미리보기 검수 후 교체. 구10/1을 최신으로 안내하지 않음",
       "demo": "컷씬 소개",
       "url": "https://youtu.be/r_TTBUrA6p4",
       "evidence": [
-        "/Users/fordeargamers/.codex/worktrees/marketing-gameplay-20261008/the-exoduser/marketing/releases/20261008/deployment/publication-results.json"
-      ]
+        "/Users/fordeargamers/.codex/worktrees/marketing-gameplay-20261008/the-exoduser/marketing/releases/20261008/deployment/publication-results.json",
+        "/Users/fordeargamers/.codex/worktrees/marketing-gameplay-20261008/the-exoduser/marketing/operations/warrior-intro-version-audit-20261011/audit.json"
+      ],
+      "latestSourceVersion": "2026-10-08 killu montage",
+      "previewPath": "/Users/fordeargamers/the-exoduser/output/warrior-intro-latest-20261011/REVIEW/EXODUSER_WARRIOR_INTRO_20261008_REVIEW.mp4",
+      "latestSourceSha256": "277fbe09c4f5c0b70a98aae6376a8d820a7377cbd6f96a3bc62365cf0a166b34"
     },
     {
       "id": "rift-v01-public",
@@ -762,5 +766,12 @@
     "improvedFramesProduced": 0,
     "productionSequence": "게임 품질 개선·검수→사용자 직접 플레이→assistant 실제 화면/원음 녹화·편집→완성 미리보기 검수"
   },
-  "recordingPolicy": "사용자가 실제 플레이하고 assistant는 화면 전체와 원음을 녹화·편집; 사용자 게임·서버·세이브·입력 임의 변경 금지; staged/자동 이동을 사용자 자연 플레이로 표시하지 않음"
+  "recordingPolicy": "사용자가 실제 플레이하고 assistant는 화면 전체와 원음을 녹화·편집; 사용자 게임·서버·세이브·입력 임의 변경 금지; staged/자동 이동을 사용자 자연 플레이로 표시하지 않음",
+  "warriorIntroVersionAudit": {
+    "source": "marketing/operations/warrior-intro-version-audit-20261011/audit.json",
+    "publicVersion": "2026-10-01 v25",
+    "latestVersion": "2026-10-08 killu montage",
+    "previewPath": "/Users/fordeargamers/the-exoduser/output/warrior-intro-latest-20261011/REVIEW/EXODUSER_WARRIOR_INTRO_20261008_REVIEW.mp4",
+    "state": "PREVIEW_DELIVERED; REPLACEMENT_NOT_STARTED"
+  }
 }
