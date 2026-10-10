@@ -62,6 +62,7 @@ const FILES = [
   'inventory-paperdoll.js', 'knight-portrait.css',
   'inventory-oss-balance.css', 'inventory-gems-balance.css',
   'skill-workspace.css',
+  'skill-forge.css', 'skill-forge.js', 'skill-forge-3d.js',
   'ui-panels.js',
   'localization-runtime.js', 'localization-data.js', 'localization.css',
   'lobby-stage-info.js', 'character-story-player.js', 'level-up-vfx.js',

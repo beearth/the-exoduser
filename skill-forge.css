@@ -1,0 +1,157 @@
+/* Skill Forge — K 스킬 창 전면 교체 (2026-10-10). Hell Gothic: 흑철·뼈색 문자·금빛 헤어라인·지옥불.
+   3D(.sf-3d)일 때는 원·아이콘을 WebGL이 그리고 DOM은 글자와 클릭/드롭 영역만 남는다.
+   3D가 없으면 같은 DOM이 CSS 원형으로 보인다(폴백). */
+#skillPanel .skill-pbox.sf-on{display:flex!important;flex-direction:column!important;}
+#skillPanel .skill-pbox.sf-on>.frame-inner-panel-stack{display:none!important;}
+#skillPanel .skill-pbox.sf-on #skSlotBar{display:none!important;}
+#skillPanel .skill-pbox.sf-on>.ptitle{flex:0 0 auto;}
+#skillPanel .skill-pbox.sf-on>.skill-close{flex:0 0 auto;}
+
+#skillForge{
+  --sf-bone:#dfd6c2;--sf-bone2:#b9ab92;--sf-dim:#7d7264;--sf-line:rgba(164,147,115,.5);--sf-fire:#ec7958;--sf-fire2:#a34d3f;--sf-gold:#c9a663;
+  position:relative;flex:1 1 0;min-height:0;display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:8px;
+  margin:4px 0 8px;padding:10px 12px 10px;border:3px double #3b332c;border-radius:4px;overflow:hidden;
+  font-family:var(--font-hell);color:var(--sf-bone);background:#0b0809;user-select:none;
+}
+#skillForge .sf-canvas{position:absolute;inset:0;z-index:0;pointer-events:none;}
+#skillForge .sf-canvas canvas{display:block;position:absolute!important;inset:0!important;left:0!important;top:0!important;width:100%!important;height:100%!important;z-index:0!important;transform:none!important;pointer-events:none!important;}
+#skillForge>:not(.sf-canvas){position:relative;z-index:1;}
+
+/* ── 키 슬롯 13 ── */
+#skillForge .sf-slots{display:flex;justify-content:center;align-items:flex-start;gap:clamp(4px,.8vw,14px);padding:4px 0 2px;flex-wrap:nowrap;}
+#skillForge .sf-slot{all:unset;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;gap:3px;width:clamp(56px,5.6vw,92px);cursor:pointer;}
+#skillForge .sf-slot-disc{position:relative;display:grid;place-items:center;width:clamp(44px,4.2vw,70px);aspect-ratio:1;border-radius:50%;
+  background:radial-gradient(circle at 50% 38%,#2b2220,#0e0a0a 70%);border:2px solid #5a4b3c;box-shadow:inset 0 0 0 1px #0008,0 2px 6px #000a;transition:transform .15s,box-shadow .15s;}
+#skillForge .sf-slot-disc .sf-ico{width:78%;height:78%;border-radius:50%;overflow:hidden;display:grid;place-items:center;}
+#skillForge :is(.sf-ico,.sf-chip-ico,.sf-node-ico,.sf-core-ico,.sf-info-ico,.sf-mini-ico) img{width:100%;height:100%;object-fit:cover;display:block;}
+#skillForge :is(.sf-ico,.sf-chip-ico,.sf-node-ico,.sf-core-ico,.sf-info-ico,.sf-mini-ico){display:grid;place-items:center;overflow:hidden;font-family:var(--font-hell-title);color:var(--sf-bone2);}
+#skillForge .sf-slot-key{font-family:var(--font-hell-title);font-size:11px;letter-spacing:.08em;color:var(--sf-gold);line-height:1;}
+#skillForge .sf-slot-name{font-size:11px;line-height:1.15;color:var(--sf-bone2);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:center;}
+#skillForge .sf-slot.empty .sf-slot-name{color:var(--sf-dim);}
+#skillForge .sf-slot.on .sf-slot-disc{border-color:var(--sf-fire);box-shadow:0 0 0 2px #ec795855,0 0 18px #ec795899;transform:translateY(-2px) scale(1.06);}
+#skillForge .sf-slot.on .sf-slot-name{color:var(--sf-bone);}
+#skillForge .sf-slot.fused .sf-slot-disc{border-color:var(--sf-gold);}
+#skillForge .sf-slot:focus-visible .sf-slot-disc{outline:2px solid #d6bd89;outline-offset:3px;}
+#skillForge .sf-slot.drop-ok .sf-slot-disc{box-shadow:0 0 0 3px #e6c77a,0 0 22px #e6c77acc;}
+#skillForge .sf-slot.drop-no .sf-slot-disc{box-shadow:0 0 0 3px #8a2a22;}
+
+/* ── 가운데 3단 ── */
+#skillForge .sf-mid{display:grid;grid-template-columns:clamp(240px,21vw,360px) minmax(0,1fr) clamp(240px,21vw,360px);gap:12px;min-height:0;}
+#skillForge .sf-info,#skillForge .sf-road{min-height:0;overflow:auto;padding:14px 14px 12px;border:1px solid var(--sf-line);border-radius:3px;
+  background:linear-gradient(180deg,rgba(20,15,14,.86),rgba(12,9,9,.9));box-shadow:inset 0 0 0 1px #0009;scrollbar-width:thin;scrollbar-color:#75674f #121113;}
+#skillForge .sf-info-head{display:flex;gap:12px;align-items:center;padding-bottom:10px;margin-bottom:10px;border-bottom:1px solid var(--sf-line);}
+#skillForge .sf-info-ico{flex:0 0 64px;height:64px;border-radius:50%;overflow:hidden;border:2px solid #5a4b3c;}
+#skillForge .sf-info-name{font-family:var(--font-hell-title);font-size:18px;line-height:1.2;color:var(--sf-bone);letter-spacing:.03em;}
+#skillForge .sf-info-sub{font-size:12px;color:var(--sf-gold);margin-top:3px;}
+#skillForge .sf-info-desc{font-size:13px;line-height:1.65;color:#d8ccb8;margin:0 0 10px;}
+#skillForge .sf-info-cost{display:flex;flex-wrap:wrap;gap:6px 10px;font-size:12px;color:var(--sf-bone2);margin-bottom:10px;}
+#skillForge .sf-warn{color:#e08a6a;}
+#skillForge .sf-info-btns{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;}
+#skillForge .sf-info-res{font-family:var(--font-hell-title);font-size:12px;color:var(--sf-bone2);letter-spacing:.04em;padding-top:8px;border-top:1px solid var(--sf-line);}
+#skillForge .sf-info-empty,#skillForge .sf-empty{font-size:12px;color:var(--sf-dim);padding:6px 2px;}
+
+#skillForge .sf-btn{all:unset;box-sizing:border-box;cursor:pointer;min-height:32px;padding:6px 14px;font-family:var(--font-hell);font-size:13px;color:var(--sf-bone);
+  border:1px solid #6b5843;border-radius:2px;background:linear-gradient(180deg,#2a211c,#16110f);box-shadow:inset 0 1px 0 #ffffff12,0 1px 3px #000a;text-align:center;}
+#skillForge .sf-btn:hover:not(:disabled){filter:brightness(1.18);}
+#skillForge .sf-btn:focus-visible{outline:2px solid #d6bd89;outline-offset:2px;}
+#skillForge .sf-btn:disabled{opacity:.42;filter:saturate(.3);cursor:default;}
+#skillForge .sf-btn-fire{border-color:#a34d3f;background:linear-gradient(180deg,#6e2418,#3a120d);color:#fff0df;}
+#skillForge .sf-btn-ghost{background:transparent;color:var(--sf-bone2);}
+
+/* ── 제단 ── */
+#skillForge .sf-altar{position:relative;min-height:300px;}
+#skillForge .sf-core{position:absolute;left:50%;top:50%;width:120px;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;
+  display:grid;place-items:center;background:radial-gradient(circle,#4a1a10 0,#1a0c0a 62%,#0b0808 100%);border:3px solid #6b5843;box-shadow:0 0 30px #ec795866,inset 0 0 20px #000;}
+#skillForge .sf-core-ico{width:72%;height:72%;border-radius:50%;overflow:hidden;}
+#skillForge .sf-core.empty{opacity:.4;}
+#skillForge .sf-core.ready{border-color:var(--sf-fire);animation:sfPulse 1.6s ease-in-out infinite;}
+#skillForge .sf-core.fused{border-color:var(--sf-gold);}
+/* 합성 이름 명패: 제단 왼쪽 위 (아래 소켓을 가리지 않게) */
+#skillForge .sf-core-name{position:absolute;left:14px;top:10px;max-width:40%;font-family:var(--font-hell-title);font-size:clamp(16px,1.25vw,22px);letter-spacing:.06em;color:var(--sf-bone);
+  padding:6px 16px 4px 12px;border-left:2px solid var(--sf-fire);background:linear-gradient(90deg,rgba(10,7,7,.88),rgba(10,7,7,0));text-shadow:0 1px 2px #000;pointer-events:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#skillForge .sf-core-star{position:absolute;left:28px;top:calc(10px + clamp(16px,1.25vw,22px) * 1.45 + 12px);font-size:13px;letter-spacing:.2em;color:var(--sf-gold);text-shadow:0 0 6px #000;pointer-events:none;}
+#skillForge .sf-nodes{position:absolute;inset:0;}
+#skillForge .sf-node{position:absolute;transform:translate(-50%,-50%);border-radius:50%;display:grid;place-items:center;
+  background:radial-gradient(circle at 50% 38%,#2b2220,#0e0a0a 70%);border:2px solid #6b5843;box-shadow:0 2px 8px #000c;transition:left .35s cubic-bezier(.2,.8,.2,1),top .35s cubic-bezier(.2,.8,.2,1);}
+#skillForge .sf-node-ico{width:80%;height:80%;border-radius:50%;overflow:hidden;}
+#skillForge .sf-node-name{position:absolute;top:calc(100% + 3px);left:50%;transform:translateX(-50%);white-space:nowrap;font-size:12px;color:var(--sf-bone);text-shadow:0 0 6px #000,0 1px 2px #000;padding:1px 6px;border-radius:2px;background:rgba(10,7,7,.72);}
+#skillForge .sf-node.sf-host{border-color:var(--sf-gold);}
+#skillForge .sf-node.sf-staged{border-color:#ffb347;cursor:grab;animation:sfPulse 1.2s ease-in-out infinite;}
+#skillForge .sf-node.sf-ghost{background:transparent;border:2px dashed #b9ab9288;}
+#skillForge .sf-plus{font-family:var(--font-hell-title);font-size:28px;color:#b9ab92aa;}
+#skillForge .sf-crown{position:absolute;top:-10px;left:50%;transform:translateX(-50%);padding:1px 7px;font-size:10px;letter-spacing:.08em;line-height:1.5;
+  color:#1b130c;background:linear-gradient(180deg,#e6c77a,#a8843f);border:1px solid #5a431c;border-radius:2px;white-space:nowrap;}
+#skillForge .sf-altar-hint{position:absolute;left:50%;bottom:44px;transform:translateX(-50%);max-width:92%;text-align:center;font-size:13px;color:var(--sf-bone);text-shadow:0 0 6px #000;pointer-events:none;
+  padding:4px 14px;border:1px solid #6b584355;border-radius:2px;background:linear-gradient(90deg,transparent,rgba(10,7,7,.82) 12%,rgba(10,7,7,.82) 88%,transparent);}
+#skillForge .sf-altar-hint:empty{display:none;}
+#skillForge .sf-altar-btns{position:absolute;left:50%;bottom:4px;transform:translateX(-50%);display:flex;gap:8px;}
+#skillForge .sf-altar.drop-ok .sf-core{box-shadow:0 0 0 4px #e6c77a,0 0 40px #e6c77acc;}
+#skillForge .sf-altar.drop-no .sf-core{box-shadow:0 0 0 4px #8a2a22;}
+
+/* ── 로드맵 ── */
+#skillForge .sf-road-title{font-family:var(--font-hell-title);font-size:16px;letter-spacing:.08em;color:var(--sf-bone);padding-bottom:8px;margin-bottom:8px;border-bottom:1px solid var(--sf-line);}
+#skillForge .sf-road-row{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:2px 8px;padding:8px 8px 8px 10px;margin-bottom:6px;border-left:2px solid #5a4b3c;background:#ffffff06;}
+#skillForge .sf-road-star{font-size:11px;color:var(--sf-gold);letter-spacing:.1em;}
+#skillForge .sf-road-name{font-size:13px;color:var(--sf-bone);}
+#skillForge .sf-road-state{font-size:11px;color:var(--sf-bone2);}
+#skillForge .sf-road-ing{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:4px;margin-top:4px;}
+#skillForge .sf-road-mat{width:24px;height:24px;border-radius:50%;overflow:hidden;border:1px solid #4a3f35;opacity:.45;filter:grayscale(.8);}
+#skillForge .sf-road-mat.have{opacity:1;filter:none;border-color:#8a7350;}
+#skillForge .sf-mini-ico{display:block;width:100%;height:100%;}
+#skillForge .sf-road-row.done{border-left-color:var(--sf-gold);}
+#skillForge .sf-road-row.done .sf-road-state{color:var(--sf-gold);}
+#skillForge .sf-road-row.now,#skillForge .sf-road-row.can{border-left-color:var(--sf-fire);background:#ec795812;}
+#skillForge .sf-road-row.now .sf-road-state,#skillForge .sf-road-row.can .sf-road-state{color:#ffb08a;}
+#skillForge .sf-road-row.locked{opacity:.5;}
+
+/* ── 트레이 ── */
+#skillForge .sf-tray{padding:8px 12px 10px;border:1px solid var(--sf-line);border-radius:3px;background:linear-gradient(180deg,rgba(18,13,12,.92),rgba(10,8,8,.95));}
+#skillForge .sf-tray-head{display:flex;align-items:baseline;gap:14px;margin-bottom:6px;}
+#skillForge .sf-tray-title{font-family:var(--font-hell-title);font-size:14px;letter-spacing:.06em;color:var(--sf-bone);}
+#skillForge .sf-tray-sub{font-size:12px;color:var(--sf-dim);}
+#skillForge .sf-tray-row{display:flex;align-items:center;gap:8px;overflow-x:auto;padding:12px 2px 6px;scrollbar-width:thin;scrollbar-color:#75674f #121113;}
+#skillForge .sf-row-label{flex:0 0 64px;font-size:12px;color:var(--sf-gold);letter-spacing:.06em;}
+#skillForge .sf-chip{position:relative;flex:0 0 auto;display:flex;align-items:center;gap:8px;min-width:150px;max-width:210px;padding:6px 12px 6px 6px;cursor:grab;
+  border:1px solid #4d4136;border-radius:28px;background:linear-gradient(180deg,#241c18,#120e0d);box-shadow:0 2px 5px #000a;}
+#skillForge .sf-chip:focus-visible{outline:2px solid #d6bd89;outline-offset:2px;}
+#skillForge .sf-chip-ico{flex:0 0 40px;height:40px;border-radius:50%;overflow:hidden;border:1px solid #5a4b3c;}
+#skillForge .sf-chip-text{display:flex;flex-direction:column;min-width:0;}
+#skillForge .sf-chip-name{font-size:13px;color:var(--sf-bone);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#skillForge .sf-chip-lv{font-size:11px;color:var(--sf-bone2);}
+#skillForge .sf-chip .sf-crown{top:-9px;left:22px;transform:none;}
+#skillForge .sf-chip-badge{position:absolute;right:8px;top:-8px;padding:0 6px;font-size:10px;line-height:16px;color:var(--sf-bone2);background:#1a1310;border:1px solid #4d4136;border-radius:2px;}
+#skillForge .sf-chip.on{border-color:var(--sf-gold);box-shadow:0 0 0 1px #c9a66355,0 2px 5px #000a;}
+#skillForge .sf-chip.glow{border-color:var(--sf-fire);animation:sfChip 1.8s ease-in-out infinite;}
+#skillForge .sf-chip.dim{opacity:.45;filter:saturate(.35);cursor:pointer;}
+#skillForge .sf-chip.sealed{opacity:.5;filter:grayscale(1) brightness(.5);cursor:default;}
+#skillForge.dragging .sf-chip.glow{animation:none;}
+.sf-drag-ghost{position:fixed;left:0;top:0;width:56px;height:56px;border-radius:50%;overflow:hidden;z-index:100000;pointer-events:none;border:2px solid #ec7958;box-shadow:0 0 18px #ec7958aa;}
+.sf-drag-ghost img{width:100%;height:100%;object-fit:cover;display:block;}
+
+/* ── 3D 모드: 원·아이콘은 WebGL이 그린다 ── */
+#skillForge.sf-3d .sf-slot-disc,#skillForge.sf-3d .sf-node,#skillForge.sf-3d .sf-core{background:transparent;border-color:transparent;box-shadow:none;animation:none;}
+#skillForge.sf-3d .sf-slot-disc>.sf-ico,#skillForge.sf-3d .sf-node>.sf-node-ico,#skillForge.sf-3d .sf-node>.sf-plus,#skillForge.sf-3d .sf-core>.sf-core-ico{opacity:0;}
+#skillForge.sf-3d .sf-slot.on .sf-slot-disc{transform:none;}
+#skillForge.sf-3d .sf-slot.drop-ok .sf-slot-disc,#skillForge.sf-3d .sf-altar.drop-ok .sf-core{box-shadow:0 0 0 3px #e6c77acc;}
+#skillForge.sf-3d .sf-slot.drop-no .sf-slot-disc,#skillForge.sf-3d .sf-altar.drop-no .sf-core{box-shadow:0 0 0 3px #8a2a22cc;}
+
+@keyframes sfPulse{0%,100%{box-shadow:0 0 14px #ec795855}50%{box-shadow:0 0 30px #ec7958cc}}
+@keyframes sfChip{0%,100%{box-shadow:0 0 0 1px #ec795833,0 0 8px #ec795833}50%{box-shadow:0 0 0 1px #ec7958aa,0 0 16px #ec795888}}
+@media (prefers-reduced-motion:reduce){#skillForge *{animation:none!important;transition:none!important;}}
+@media (max-width:1180px){#skillForge .sf-mid{grid-template-columns:minmax(0,1fr) clamp(220px,30vw,300px);} #skillForge .sf-info{display:none;}}
+/* 낮은 화면(1280×720 등): 제목판 비율 축소·슬롯 이름 숨김·트레이 한 줄(장착 | 합성 재료) */
+@media (max-height:860px){
+  #skillPanel .skill-pbox.sf-on>.ptitle{zoom:.62;}
+  #skillForge{gap:6px;padding:6px 10px 8px;margin:2px 0 6px;}
+  #skillForge .sf-slot-name{display:none;}
+  #skillForge .sf-slot-disc{width:clamp(38px,3.4vw,52px);}
+  #skillForge .sf-altar{min-height:200px;}
+  #skillForge .sf-tray{display:grid;grid-template-columns:auto minmax(0,1fr) minmax(0,1.4fr);grid-template-rows:auto;align-items:center;gap:0 10px;padding:6px 10px;}
+  #skillForge .sf-tray-head{flex-direction:column;align-items:flex-start;gap:2px;margin:0;}
+  #skillForge .sf-tray-sub{display:none;}
+  #skillForge .sf-tray-row{padding:10px 2px 4px;}
+  #skillForge .sf-row-label{flex-basis:auto;writing-mode:horizontal-tb;}
+  #skillForge .sf-chip{min-width:118px;padding:4px 10px 4px 4px;}
+  #skillForge .sf-chip-ico{flex-basis:32px;height:32px;}
+  #skillForge .sf-info-desc{font-size:12px;line-height:1.5;}
+}

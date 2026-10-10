@@ -1,5 +1,10 @@
 # UI 구성 개편 — 2026-09-25
 
+## 2026-10-10 K 스킬 창 = Skill Forge — 현행
+
+`#skillPanel` 본문은 `#skillForge`(skill-forge.css/js, 3D skill-forge-3d.js·three r186)로 전면 교체. 13 키 슬롯 원형·합성 제단·로드맵·트레이, 구 카드형 본문과 `#skSlotBar`는 숨김(폴백 `?skillForge=0`). 상세·검수: [SKILL_FORGE_20261010.md](SKILL_FORGE_20261010.md). 아래 2026-09-27~28 스킬 작업공간 절은 구 카드형 창 이력이다.
+
+
 ## 2026-10-02 공통 제목 명패 S/M/L — 현행 SSOT
 
 설정·전투 스킬·대장간·능력치의 제목은 번역된 글자 폭에 맞춰 S/M/L 금속판을 고른다. 기사 장식은 선택한 금속판 폭에 따라 가로로 늘리지 않는다. 기존 `header.png` 기사 장식과 `button.webp` 금속판을 각각 표시하며 제목 글자는 기존 리프 DOM에 남긴다. 이 절은 아래 제작 이력의 제목 크기·장식·캐시 값 및 `20261002-settings-title-fit`의 440px 설정 전용 규격보다 우선한다.
