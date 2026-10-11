@@ -1,6 +1,6 @@
 # FDG 홍보 준비 콘텐츠 현황
 
-최근 정리: **2026-10-11 22:40 KST**. 사용자 지시 「홍보준비 최신컨텐츠 업데이트됀거 정리해서 항상 정리해놔」를 반영한 지속 갱신 문서다. 기술 구현, 실제 게임 화면 검수, 공개 데모 배포, 영상 게시를 별도로 확인한다.
+최근 정리: **2026-10-11 23:41 KST**. 사용자 지시 「홍보준비 최신컨텐츠 업데이트됀거 정리해서 항상 정리해놔」를 반영한 지속 갱신 문서다. 기술 구현, 실제 게임 화면 검수, 공개 데모 배포, 영상 게시를 별도로 확인한다.
 
 **UI 개발 소식1건과 스킬 노트4건(기검참·가시덫·회복의 영역·지옥강타 1)을 공식 YouTube에 게시하고 공개 페이지를 확인했다.** [UI](https://www.youtube.com/post/UgkxfJtDWBoJglf9RWKueZFsGwOBIRBYWULb) · [기검참](https://www.youtube.com/post/Ugkxpb6uTCUIAd3Ypj4_1vsi9cv2BKT-F93l) · [가시덫](https://www.youtube.com/post/UgkxhEsTSyRHSuYPkuEXJmUg-xnYL90AU9nj) · [회복의 영역](https://www.youtube.com/post/Ugkx2UIc57jBgsgkolbqytX0Nn3bgmkAz6if) · [지옥강타 1](https://www.youtube.com/post/UgkxrTYuXuoASizWPYhlrpJyCF-7pcSqJT8-). 지옥강타 1은 주변 원형 범위 타격과 분노의 피해 강화·소모를 소개했다. 분노 최소량은 발동 조건이 아니다. 기존 기능 소개이며 새 패치·신규 촬영 영상으로 표기하지 않았다. **전체 보스전 완료를 기다리는 대상은 리디자인 완료 대표 메인트레일러다.** UI·기존 스킬·캐릭터 원화/제작 과정은 각 소재의 실제 근거와 검수 범위에 맞게 계속 제작한다. 기존 원화30초·전투18초V3·R1 검토본과 새 대표 영상의 미승인 자동 공개 금지는 유지한다.
 
@@ -18,20 +18,21 @@
 
 우선 단위는 **범용 visual clock 일관성 → 전사 보행8→24 실제 고유 중간 자세 → 실버테일 방어·공격 연결**이다. 타격·Q/E·자원·save·이동 주기를 보존하고 정상 배율의 실제 게임 전후 장면으로 검수한다. 새 프레임·게임 코드 수정·개선 영상은 아직0이며 완성으로 표시하지 않는다. [실제 근거·범위·인수 조건](../../marketing/operations/game-motion-quality-20261010/request.json). 게임 본편 공유 파일은 기존 총괄 소유이므로 전달 허가 질문의 직접 응답 전 다른 채팅으로 지시하지 않는다. UI·원화 등 독립 홍보 준비와 공개 전 미리보기 기준은 유지한다.
 
-## 총괄 새 관측 — 2026-10-11 22:40 KST
+## 총괄 새 관측 — 2026-10-11 23:41 KST
 
 | 항목 | 현재 확인 범위 |
 |---|---|
-| 최신 부분 인수 | cursor58: 별도 FDG 엔진 `dark-druid-combat-readability-r8`의 이름표·지역 제목 가림과 펫 표시 배율 개선, 격리 native AI 교전의 물리탄 E 패링1회·평타 접촉 쉴드감소178을 총괄이 한정 인수했다. 누적 쉴드감소8107을 모두 평타 피해로 귀속하지 않는다. |
-| 남은 결과 | Q 마법 패링 성공0·플레이어 사망·보스 생존·처치 미관측. 특정 반사 탄의 동일성을 입증한 기록으로 확대하지 않는다. |
-| 시각 상태 | **RETOUCH**: frame0040 보라색VFX가 양쪽 접촉부의 손·무기·피격 자세를 가린다. 기존 담당이 이 렌더 경로를 마감한다. 전체 보스전 완료가 아니다. |
-| 실제 자료 | [격리 교전 샘플 GIF](/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-dark-druid-combat-readability-r8/derived/native-ai-play-all-99.gif): 640×360·99 관측 화면·7.890초·19,184,533B·SHA256 `b2e38303…`. 매8 native frame 샘플, CDP 구간7.852초·벽시계8.054초·마지막 미관측40ms hold를 구별한다. 전 프레임 녹화·새 고유 자세 수·사용자 자연 플레이·원음 영상으로 표시하지 않는다. |
-| 설명 자료 | [서로 다른 시점의 전신4화면 비교판](/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-dark-druid-combat-readability-r8/derived/r8-four-full-frames-board.png): 2632×1758·3,897,667B·SHA256 `e953296e…`. 개발 검토용 설명판이며 두 화면 Shorts 재편집이나 공개 검수 완료가 아니다. |
-| 적용 경계 | 담당 로컬 커밋 `4105ae90`·push/deploy 없음. migration HEAD는 `9a4534b4`와 동일하며 본편·Steam 데모 적용은 미확인이다. |
-| 과거 자료 보존 | cursor56 내려찍기 접촉 r5, cursor50 꼬리치기 readability-r5 및 이전 r3/R10 근거를 구조화 이력에 보존했다. 서로 다른 단위를 같은 r5 결과로 덮어쓰지 않는다. |
-| 홍보 상태 | 총괄이 이미 사용자에게 부분 교전 자료를 제시했다. 마케팅 전편 시청·청취·공개 승인은 미완료, 새 홍보촬영·영상 제작·게시0건이다. 전사 최신본 검토와 악의구 후속 준비는 유지한다. |
+| 최신 부분 자료 | cursor59: 별도 FDG 엔진 `dark-druid-contact-vfx-live-fix`에서 보라색 `shockField` 장판 잔광을 줄이고 수정 후 테스트장 교전 자료를 인도했다. 실제 소비부 관측23draw 중21보정·초기native2이며 기본 게임은 opt-in하지 않았다. |
+| 시각 상태 | **RETOUCH**: 지속 잔광 가림은 줄었으나 다른 근접 core/impact의 접촉부 가림이 남아 있다. 전체 보스전 완료가 아니다. |
+| 교전 결과 | 이번 E2회/Q2회 시도에서 성공은 각각0. 평타 접촉1회·쉴드감소302, 플레이어 HP571→0·보스 HP21017·생존·처치 없음. 요청 피해275와 실제 감소302를 구별하며 cursor58의 E성공1은 이전 별도 교전 이력에 보존한다. |
+| 실제 자료 | [수정 후 테스트장 GIF](/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-dark-druid-contact-vfx-live-fix/fixed/normal-combat.gif): 1280×720·83프레임·4.460초·61,801,580B·SHA256 `100ce97e…`. 캡처 구간4.414201초·벽시간4.587초, crop/overlay 없음으로 기록됐다. 샘플 주기·절대 시작 시각·양자화·마지막 hold는 미기재다. 이전 r8의 매8프레임/40ms를 가져오지 않으며 사용자 자연 플레이·원음 영상으로 표시하지 않는다. |
+| 스틸 자료 | [준비](/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-dark-druid-contact-vfx-live-fix/fixed/prep-full.png) · [접촉](/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-dark-druid-contact-vfx-live-fix/fixed/contact-full.png) · [회복](/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-dark-druid-contact-vfx-live-fix/fixed/recovery-full.png): 서로 다른 시점의 원본 전체화면 각1280×720. 파일 크기·해시를 구조화 기록에 보존했다. 공개 검수 완료나 두 화면 Shorts 편집이 아니다. |
+| 적용 경계 | 담당 로컬 커밋 `49620b90`·push/deploy 없음. migration HEAD는 `9a4534b4`와 동일하며 본편·Steam 데모 적용은 미확인이다. |
+| 후속 개발 단위 | 기존 담당이 나무 가시 물리탄8발+마법탄4발 혼합 패턴을 제작 중이다. 아직 구현 완료·성공 패링·보스 처치 결과로 소개하지 않는다. |
+| 과거 자료 보존 | cursor58 교전 readability-r8, cursor56 내려찍기 접촉 r5, cursor50 꼬리치기 readability-r5 및 이전 r3/R10 근거를 구조화 이력에 보존했다. |
+| 홍보 상태 | 총괄이 이미 사용자에게 새 테스트장 자료를 보여줬다. 마케팅 전편 시청·청취·공개 승인은 미완료, 새 홍보촬영·영상 제작·게시0건이다. 전사 최신본 검토와 악의구 후속 준비는 유지한다. |
 
-마케팅 담당은 새 종료 보고·영수증의 필요한 범위와 파일 존재·크기·해시만 처음 대조했다. 제품 코드·성능·기존 suite·완료된 화면 QA를 다시 실행하지 않았다. [구조화 관측](../../marketing/operations/boss-redesign-watch-20261009.json). 대표 영상의 본편 전체 완료·정상 사용자 플레이·원음·공개 검토 조건은 아직 충족되지 않았다.
+마케팅 담당은 새 종료 보고·영수증 필요한 범위와 파일 존재·크기·해시만 처음 대조했다. 제품 코드·성능·기존 suite·완료된 화면 QA를 다시 실행하지 않았다. [구조화 관측](../../marketing/operations/boss-redesign-watch-20261009.json). 대표 영상의 본편 전체 완료·정상 사용자 플레이·원음·공개 검토 조건은 아직 충족되지 않았다.
 
 ## 우선순위와 다음 소재
 
