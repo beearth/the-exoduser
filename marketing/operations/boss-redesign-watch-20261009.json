@@ -13,11 +13,11 @@
     "threadId": "01a0faa9-b453-7673-be39-98adedb4c2b3",
     "hostId": "local",
     "title": "맥북에서 총괄 시작하기",
-    "afterCursor": "b2476eee-d767-4cd1-8064-9706586fb10a:49",
+    "afterCursor": "b2476eee-d767-4cd1-8064-9706586fb10a:50",
     "lastObservedStatus": "idle",
     "lastObservedTurnStatus": "completed",
-    "lastObservedTurnId": "01a1292d-e685-7400-afb4-eb71f6352c85",
-    "lastObservedReport": "총괄은 별도 FDG 제작 엔진의 r3 보스 꼬리 연결부 시각 보정과 실제 재생·저장·재열기를 한정 인수했다고 보고했다. 기존 PNG/리그의 authored 변형이며 전체 2.5D 제품은 숨은 표면 등 RETOUCH 상태다. 본체 동작과 임팩트의 같은 시간 시퀀스 연결은 다음 작업이다. EXODUSER 본편 모션·보스전 전체 완료나 정상 사용자 플레이 원음 녹화로 해석하지 않는다."
+    "lastObservedTurnId": "01a12964-d414-7323-ab98-c4a47575201f",
+    "lastObservedReport": "총괄은 별도 FDG 제작 엔진의 r5 꼬리치기 궤적·강약·준비/타격/회복 가독성과 불꽃의 본체 가림 감소를 한정 인수했다고 보고했다. 전체 모델은 2.5D 시제품 수준이며 대기→공격→대기 전환은 같은 담당이 마감 중이다. 본편 보스전·정상 사용자 플레이/원음 영상·전체 모션 개선 완료와 구별한다."
   },
   "completionConfirmed": false,
   "captureStarted": false,
@@ -35,8 +35,8 @@
     "완성 후 검수본부터 인도, 사용자 검수 전 자동 공개 금지",
     "2026-10-10 사용자 정정: 전체 대기를 모든 콘텐츠로 확대하지 않음; UI·스킬·캐릭터 부분 개발 소식 계속 운영"
   ],
-  "lastCheckedAtUTC": "2026-10-11T04:27:46.001Z",
-  "lastCheckResult": "cursor49 별도 FDG r3 꼬리 연결부 한정 인수·실제 재생/저장/재열기 보고와 동작/임팩트 시간 연결 미완료를 기록. 기존 GIF 근거와 전체 RETOUCH 구분. 본편 HEAD/game.html 동일·공개 승인 변화 없음·새 홍보 제작/촬영/게시0.",
+  "lastCheckedAtUTC": "2026-10-11T05:32:16.206Z",
+  "lastCheckResult": "cursor50 별도 FDG r5 동작 가독성/가림 감소 한정 인수·2.5D 시제품·대기/공격 전환 미완료 구분. 기존 GIF 크기/해시 저장. 본편 HEAD/game.html 동일·전사 공개 승인 변화 없음·새 홍보 제작/촬영/게시0.",
   "publicationScope": "보스전 전체 리디자인 완료 대표 메인트레일러",
   "partialDevelopmentNewsAllowed": true,
   "partialDevelopmentNewsPolicy": "UI·기존 스킬·캐릭터 제작 과정 등 각 소재는 전체 보스전 완료와 관계없이 실제 근거와 개별 검수 범위 확인 후 독립 제작·게시한다.",
@@ -44,8 +44,8 @@
   "partialLastPublication": "https://www.youtube.com/post/UgkxrTYuXuoASizWPYhlrpJyCF-7pcSqJT8-",
   "partialPublishedCount": 5,
   "latestPartialProducerEvidence": {
-    "checkedAtUTC": "2026-10-11T04:27:46.001Z",
-    "cursor": "b2476eee-d767-4cd1-8064-9706586fb10a:49",
+    "checkedAtUTC": "2026-10-11T05:32:16.206Z",
+    "cursor": "b2476eee-d767-4cd1-8064-9706586fb10a:50",
     "status": "idle",
     "completionConfirmed": false,
     "scope": "별도 FDG 제작 엔진의 틈 R10 ENGINE_AUTHORING 흐름",
@@ -57,14 +57,23 @@
     "steamDemoApplied": "NOT_CONFIRMED",
     "normalGameplayVideoWithOriginalAudio": "NOT_OBSERVED",
     "requiresUserAction": false,
-    "report": "총괄은 별도 FDG 제작 엔진의 r3 보스 꼬리 연결부 시각 보정과 실제 재생·저장·재열기를 한정 인수했다고 보고했다. 기존 PNG/리그의 authored 변형이며 전체 2.5D 제품은 숨은 표면 등 RETOUCH 상태다. 본체 동작과 임팩트의 같은 시간 시퀀스 연결은 다음 작업이다. EXODUSER 본편 모션·보스전 전체 완료나 정상 사용자 플레이 원음 녹화로 해석하지 않는다.",
+    "report": "총괄은 별도 FDG 제작 엔진의 r5 꼬리치기 궤적·강약·준비/타격/회복 가독성과 불꽃의 본체 가림 감소를 한정 인수했다고 보고했다. 전체 모델은 2.5D 시제품 수준이며 대기→공격→대기 전환은 같은 담당이 마감 중이다. 본편 보스전·정상 사용자 플레이/원음 영상·전체 모션 개선 완료와 구별한다.",
     "evidence": {
-      "producerTurnId": "01a1292d-e685-7400-afb4-eb71f6352c85",
-      "marketingReviewScope": "새 총괄 보고·r3 authored API/data note·기존 GIF 파일 크기/해시만 확인. 마케팅 담당의 전편 시청/청취·실행·촬영 없음.",
+      "producerTurnId": "01a12964-d414-7323-ab98-c4a47575201f",
+      "marketingReviewScope": "새 compact 총괄 보고와 그 turn의 실화면/미리보기 경로 및 GIF 크기/해시만 확인. 마케팅 담당의 전편 시청·청취·새 실행/촬영 없음.",
       "previousR10ProducerReportedProof": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-rift-first-slice-20261010/engine-preview-r10-first/v018-save-reopen-contract-proof.json",
-      "currentEvidence": "새 총괄 보고와 r3 authored note; 한정 시각 인수와 전체 RETOUCH 구분",
-      "authoringNote": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-boss-first-slice-20261011/engine-tail-swipe-continuity-r3/r3-api-and-authoring-note.md",
+      "currentEvidence": "r5 총괄의 동작 가독성 한정 인수 보고·기존 body-only 엔진 GIF",
       "sourcePreviewGif": {
+        "path": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-boss-first-slice-20261011/engine-tail-swipe-readability-r5/actual-tail-readability-body-only.gif",
+        "bytes": 12186853,
+        "sha256": "61879b4bfdca433cdc3acc18e46318d544f78ed47edd874393546dfbbf8e3698",
+        "kind": "별도 FDG 제작 엔진의 body-only 리그 동작 GIF; 본편 게임플레이/원음 녹화 아님",
+        "publicReady": false,
+        "visualScope": "총괄의 꼬리치기 궤적·강약·준비/타격/회복 가독성 한정 인수; 전체 모델 2.5D 시제품",
+        "completeWatchAndListenByMarketing": false
+      },
+      "previousR3AuthoringNote": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-boss-first-slice-20261011/engine-tail-swipe-continuity-r3/r3-api-and-authoring-note.md",
+      "previousR3SourcePreviewGif": {
         "path": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-boss-first-slice-20261011/engine-tail-swipe-continuity-r3/actual-tail-continuity-playback.gif",
         "bytes": 11606742,
         "sha256": "b89cb152300ddda99af812b68a6b9ae9b83e28f9acb5b4b7a699430600b1bd8e",
@@ -79,14 +88,17 @@
         }
       }
     },
-    "nextProducerUnit": "기존 FDG 엔진 담당이 본체 동작과 임팩트를 같은 재생 시퀀스로 연결; 아직 완료 미확인",
-    "bossCandidateState": "R3_TAIL_CONTINUITY_ACCEPTED_MOTION_IMPACT_TIMING_PENDING",
+    "nextProducerUnit": "같은 FDG 엔진 담당의 대기→공격→대기 전환 마감; 새 종료 결과 전 반복 재검수하지 않음",
+    "bossCandidateState": "R5_AUTHORING_READABILITY_ACCEPTED_IDLE_ATTACK_TRANSITION_PENDING",
     "bossProductMotionAccepted": false,
-    "marketingReviewScope": "새 총괄 보고·r3 authored API/data note·기존 GIF 파일 크기/해시만 확인. 마케팅 담당의 전편 시청/청취·실행·촬영 없음.",
+    "marketingReviewScope": "새 compact 총괄 보고와 그 turn의 실화면/미리보기 경로 및 GIF 크기/해시만 확인. 마케팅 담당의 전편 시청·청취·새 실행/촬영 없음.",
     "fixturePlaybackSaveReportedByProducer": true,
     "fixtureImpactFrameCount": 24,
     "fixtureImpactFrameCountScope": "시험용 임팩트 에셋 장수; 보스 본체 장수·clip FPS·화면 FPS가 아님",
     "bossBodyAuthoringContinuityAcceptedByProducer": true,
-    "motionImpactTimingLinked": false
+    "motionImpactTimingLinked": false,
+    "authoringAttackReadabilityAcceptedByProducer": true,
+    "overallModelQuality": "2.5D 시제품·보완 남음",
+    "idleAttackIdleTransitionComplete": false
   }
 }
