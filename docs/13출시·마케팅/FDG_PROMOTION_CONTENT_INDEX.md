@@ -1,6 +1,6 @@
 # FDG 홍보 준비 콘텐츠 현황
 
-최근 정리: **2026-10-11 00:01 KST**. 사용자 지시 「홍보준비 최신컨텐츠 업데이트됀거 정리해서 항상 정리해놔」를 반영한 지속 갱신 문서다. 기술 구현, 실제 게임 화면 검수, 공개 데모 배포, 영상 게시를 별도로 확인한다.
+최근 정리: **2026-10-11 20:36 KST**. 사용자 지시 「홍보준비 최신컨텐츠 업데이트됀거 정리해서 항상 정리해놔」를 반영한 지속 갱신 문서다. 기술 구현, 실제 게임 화면 검수, 공개 데모 배포, 영상 게시를 별도로 확인한다.
 
 **UI 개발 소식1건과 스킬 노트4건(기검참·가시덫·회복의 영역·지옥강타 1)을 공식 YouTube에 게시하고 공개 페이지를 확인했다.** [UI](https://www.youtube.com/post/UgkxfJtDWBoJglf9RWKueZFsGwOBIRBYWULb) · [기검참](https://www.youtube.com/post/Ugkxpb6uTCUIAd3Ypj4_1vsi9cv2BKT-F93l) · [가시덫](https://www.youtube.com/post/UgkxhEsTSyRHSuYPkuEXJmUg-xnYL90AU9nj) · [회복의 영역](https://www.youtube.com/post/Ugkx2UIc57jBgsgkolbqytX0Nn3bgmkAz6if) · [지옥강타 1](https://www.youtube.com/post/UgkxrTYuXuoASizWPYhlrpJyCF-7pcSqJT8-). 지옥강타 1은 주변 원형 범위 타격과 분노의 피해 강화·소모를 소개했다. 분노 최소량은 발동 조건이 아니다. 기존 기능 소개이며 새 패치·신규 촬영 영상으로 표기하지 않았다. **전체 보스전 완료를 기다리는 대상은 리디자인 완료 대표 메인트레일러다.** UI·기존 스킬·캐릭터 원화/제작 과정은 각 소재의 실제 근거와 검수 범위에 맞게 계속 제작한다. 기존 원화30초·전투18초V3·R1 검토본과 새 대표 영상의 미승인 자동 공개 금지는 유지한다.
 
@@ -18,18 +18,19 @@
 
 우선 단위는 **범용 visual clock 일관성 → 전사 보행8→24 실제 고유 중간 자세 → 실버테일 방어·공격 연결**이다. 타격·Q/E·자원·save·이동 주기를 보존하고 정상 배율의 실제 게임 전후 장면으로 검수한다. 새 프레임·게임 코드 수정·개선 영상은 아직0이며 완성으로 표시하지 않는다. [실제 근거·범위·인수 조건](../../marketing/operations/game-motion-quality-20261010/request.json). 게임 본편 공유 파일은 기존 총괄 소유이므로 전달 허가 질문의 직접 응답 전 다른 채팅으로 지시하지 않는다. UI·원화 등 독립 홍보 준비와 공개 전 미리보기 기준은 유지한다.
 
-## 총괄 새 관측 — 2026-10-11 14:32 KST
+## 총괄 새 관측 — 2026-10-11 20:36 KST
 
-| 구분 | 확인 범위 |
+| 항목 | 현재 확인 범위 |
 |---|---|
-| 별도 FDG 제작 엔진의 틈 R10 | 총괄 cursor44가 실제 이동과 제작 project/preview 저장·재열기 흐름을 한정 인수했다고 보고했다. 본편 적용 완료가 아니다. |
-| 저장 경계 | 재열기 시 캐릭터 위치·시간은 시작 상태로 초기화된다. 본편 게임 세이브 이어하기 개선으로 소개하지 않는다. |
-| 남은 틈 검수 | 확대 흐림·가장자리 보정은 RETOUCH/production UNADOPTED. 틈 인수 범위는 별도 제작 흐름에 한정한다. |
-| 새 보스 후보 | cursor50: 별도 FDG 엔진 r5의 꼬리치기 궤적·강약·준비/타격/회복 가독성과 불꽃의 본체 가림 감소를 총괄이 한정 인수했다. 전체 모델은 2.5D 시제품이며 대기→공격→대기 전환은 같은 담당이 마감 중이다. 본편 모션·보스전 전체 완료가 아니다. |
-| 시각 근거 단계 | r5 기존 body-only 엔진 GIF(12,186,853B·SHA256 `61879b4b…`)와 총괄 보고 경로를 구조화 관측에 기록했다. r3 이전 근거도 보존한다. 리그 보간·시험용 임팩트를 신규 고유 스프라이트 자세 수나 본편 화면 FPS 개선으로 소개하지 않는다. 마케팅 담당의 전편 시청·청취와 공개 검수는 미완료다. |
-| 홍보 상태 | 본편 소스는 이전 관측과 동일. 새 정상 게임 영상·원음·Steam 데모 적용·대표 보스전 전체 완료·공개 승인 근거는 없다. 전사 최신본 검토와 다음 소재는 유지한다. |
+| 최신 한정 인수 | cursor56: 별도 FDG 엔진 `dark-druid-slam-contact-r5`의 지팡이 전방/하향 접촉, 몸통→어깨→팔→손 연결, 외투 지연·회복을 총괄이 2.5D 전투 크기 범위로 한정 인수했다. 전체 시각은 **RETOUCH**다. |
+| 적용 경계 | 담당의 로컬 커밋 `c3729147`, push0·deploy0 보고다. 실제 개발 migration HEAD는 `9a4534b4`와 동일하며 본편·공개 Steam 데모 적용은 미확인이다. |
+| 실제 자료 | [격리 native QA 재생 GIF](/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-dark-druid-slam-contact-r5/native-play/slam-native-play.gif): 640×360·87 관측 화면·3.88초·15,698,823B·SHA256 `f40e803a…`. 관측 벽시간3.84159초와 마지막 미관측40ms hold를 구별한다. 원음·사용자 자연 플레이 영상이 아니다. |
+| 포즈 비교 자료 | [전신5포즈 비교판](/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-dark-druid-slam-contact-r5/frames/slam-five-poses-full-body-board.png): 2632×2488·4,950,170B·SHA256 `f1a14f04…`. QA 원본 전신 화면5장을 설명용으로 놓은 개발 자료이며, 두 화면 Shorts 재편집이나 고유 스프라이트5장 추가로 표시하지 않는다. |
+| 남은 검수 | 어두운 대비·주변 효과 혼재·원화 없는 뒤/겨드랑이/옷 속 `SOURCE_GAP1`. 실제 class별 E/Q 성공·보스 처치·전체 성능·본편 보스전 완성은 미인수다. 기존 담당의 `dark-druid-parry-encounter-r6` 후속 교전 결과를 기다린다. |
+| 과거 자료 보존 | 이전 꼬리치기 `engine-tail-swipe-readability-r5`와 이번 내려찍기 `engine-dark-druid-slam-contact-r5`는 다른 단위다. cursor50과 r3/R10 근거를 구조화 이력에 보존했다. |
+| 홍보 상태 | 총괄이 이미 개발 검토 자료를 사용자에게 제시했다. 마케팅 담당의 전편 시청·청취와 공개 승인은 미완료이며 새 촬영·홍보 영상·게시0건이다. 전사 최신본 검토와 악의구 후속 준비를 유지한다. |
 
-마케팅 담당은 이전 R10 인수 범위와 이번 compact 총괄 보고를 구분해 기록했다. 새 후보 파일·실화면의 재검사·촬영·시청·청취는 하지 않았다. [구조화 관측](../../marketing/operations/boss-redesign-watch-20261009.json).
+마케팅 담당은 새 종료 보고와 영수증의 필요한 범위, 파일 존재·크기·해시만 처음 확인했다. 제품 코드·기존 suite·완료된 화면 QA를 다시 실행하지 않았다. [구조화 관측](../../marketing/operations/boss-redesign-watch-20261009.json). 대표 보스전 전체 완료와 정상 사용자 플레이/원음 촬영 조건은 충족되지 않았다.
 
 ## 우선순위와 다음 소재
 
