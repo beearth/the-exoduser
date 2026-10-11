@@ -11,3 +11,15 @@
 ## 명중광
 
 > Production game VFX sprite sheet for a spectacular sword-energy hit impact. Square, exactly 2 equal columns by 2 equal rows, four centered frames on pure black #000000 additive background. Dominant horizontal razor slash pointing right through a compact white-hot contact nucleus, intersected by two oblique curved azure/cobalt energy blades. Frames: initial cross flash → bright broad cutting crest → elongated unwinding blade streaks → sparse dim fading filaments. Readable at100px; smooth luminous gradients, crisp clean ribbons and large needle streaks. At least48px empty margin in each cell. No explosion fireball, orb, flower, snowflake, dots, particle cloud, grit, stippling, grain, checkerboard, grid, border, text, label, weapon, character, or scene. Exactly four row-major frames.
+
+## 실버 재생성 (2026-10-11, MagicLight GPT Image 2.5 sunburst, 1:1)
+
+비행 — 레퍼런스: 기존 `ki_slash_radiant_sheet.png`
+
+> Game VFX sprite sheet, exactly 3x3 grid, 9 frames, keep the reference's layout, cell centers and right-facing crescent sword-energy slash shapes. Recolor fully to chrome silver: white-hot silver cutting edge, layered polished steel ribbons, cold metallic sheen. Monochrome silver-white only, no blue or any hue. Pure black background for additive blending, generous margins. No text, grid lines, dots, particles, grain, stippling or noise.
+
+명중 — 레퍼런스: 기존 `ki_slash_hit_radiant_sheet.png`(검정 배경 합성본)
+
+> Game VFX sprite sheet, exactly 2x2 grid, 4 frames, keep the reference's layout and centered right-pointing sword-slash hit impact shapes. Recolor fully to chrome silver: white-hot silver contact nucleus, polished steel blade streaks, cold metallic sheen. Monochrome silver-white only, no blue or any hue. Pure black background for additive blending, wide margins. No text, grid lines, dots, particles, grain, stippling or noise.
+
+검은 층은 생성하지 않고 런타임에서 시트 밝기로 만든다(가산 배경 시트에 검정을 그려도 가산 합성에서는 보이지 않기 때문).

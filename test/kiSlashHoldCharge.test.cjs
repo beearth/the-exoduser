@@ -121,7 +121,7 @@ for(const file of ['game.html','game-easy-test.html']){
     const hitEnd=html.indexOf('\n}',hitStart);
     assert.ok(hitStart>=0&&hitEnd>hitStart);
     const scales=[];
-    const scope={_kiSlashPalette:()=>2,_VFX_SHEETS:{ki_slash_hit_2:{fw:627}},
+    const scope={_kiSlashPalette:()=>2,_VFX_SHEETS:{ki_slash_hit_2:{fw:627}},_kiHitShadowImg:null,_kiHitShadows:[],_gameFrame:0,
       playVFXAng:(id,x,y,scale)=>scales.push(scale)};
     const play=vm.runInNewContext(html.slice(hitStart,hitEnd+2)+';_playKiSlashHit',scope);
     for(const chargeScale of [1,1.4,1.8,2.2])play({step:3,ang:0,chargeScale},0,0);

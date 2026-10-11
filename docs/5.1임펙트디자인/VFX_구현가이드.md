@@ -202,7 +202,7 @@ WebGL 가산 및 Canvas2D 폴백에 동일한 baseAlpha를 전달한다. RGB `[2
 
 | 항목 | 코드값 | 적용 위치 | 설명 |
 |---|---:|---|---|
-| 좌클릭 원본 | `assets/vfx/ki_slash_radiant_sheet.png`, 1254×1254 RGB, 3×3·9프레임 | 전사·실버테일 기검참 공통 | 백열 칼날, 청색 겹검기, 연속 리본 잔광. 검정 배경 `lighter` 합성 |
+| 좌클릭 원본 | `assets/vfx/ki_slash_silver_sheet.png`, 1254×1254 RGB, 3×3·9프레임 (2026-10-11, 구 `ki_slash_radiant_sheet.png` 청색) | 전사·실버테일 기검참 공통 | 백열 실버 칼날, 연마 강철 겹검기, 리본 잔광(무채색). 검정 배경 `lighter` 합성 + 뒤에 검은 잉크 층 `source-over` |
 | 좌클릭 로더 | `_KI_SLASH_IMG` → `_kiSlashRadiant` | `game.html`, `game-easy-test.html` | 로드 시 원색/40°/150° 세 팔레트 준비. 구 `_silvKiSlashSurface`는 폴백 |
 | 좌클릭 동세 | `min(8,floor(clamp(1−life/ml,0,1)×9))` | `_drawRadiantKiSlash()` | 비행 수명에 맞춘 9프레임. 진행률 60% 이후 `min(1,(1−progress)×2.5)`로 페이드 |
 | 좌클릭 크기 | 1·2타 192px, 3타 252px | 동일 | 정사각 비율 유지. 충돌 반경 55/55/120px는 유지 |
@@ -216,7 +216,7 @@ WebGL 가산 및 Canvas2D 폴백에 동일한 baseAlpha를 전달한다. RGB `[2
 
 | 입력 | 전용 플래그·에셋 | 프레임·색 | 판정 영향 |
 |---|---|---|---|
-| 좌클릭 기검참 | `_kiSlashRadiant`, `ki_slash_radiant_sheet.png` (1254×1254 RGB, 3×3) | 9프레임, 실버테일 40° hue 캐시, 3타 공통150° 캐시. 무충전 폭192/252px. 3타 홀드 단계T=0/1/2/3에 폭·높이×(1+T×0.4), 판정 반경120/168/216/264px. 3타 명중광 폭184/257.6/331.2/404.8px, 1·2타 140px. 홀드 중 몸 중심의 차징 검기는 0/60/120/180f에 78/91/104/117px로 커지고 밝아진다. 180f 완료 순간에는 몸 중심 `ki_slash_hit_2` 섬광 약163px·8f 1회, 미로드 시 `parry_impact` 폴백. 구 `silvertail_ki_slash_realistic.png`는 로드 실패 폴백 | 3타 홀드 60/120/180f에 검기 피해 2/4/8배. 거리·자원 불변 |
+| 좌클릭 기검참 | `_kiSlashRadiant`, `ki_slash_silver_sheet.png` (1254×1254 RGB, 3×3) | 9프레임, 1·2·3타·캐릭터 공통 실버(틴트 폐지), `_kiSlashRadiant.shadow` 검은 층 1.14배·alpha .9×비행alpha 일반 합성. 무충전 폭192/252px. 3타 홀드 단계T=0/1/2/3에 폭·높이×(1+T×0.4), 판정 반경120/168/216/264px. 3타 명중광 폭184/257.6/331.2/404.8px, 1·2타 140px. 홀드 중 몸 중심의 차징 검기는 0/60/120/180f에 78/91/104/117px로 커지고 밝아진다. 180f 완료 순간에는 몸 중심 `ki_slash_hit_2` 섬광 약163px·8f 1회, 미로드 시 `parry_impact` 폴백. 구 `silvertail_ki_slash_realistic.png`는 로드 실패 폴백 | 3타 홀드 60/120/180f에 검기 피해 2/4/8배. 거리·자원 불변 |
 | 우클릭 악의구 | `p.fireball`, `silvertail_malice_orb_sheet_v3.png` (1536×1024 RGB, 녹색 크로마, 3×2 배열·6프레임) | 실버테일(`_charIdx===1`)만 검은 공허 핵·은빛 초승달 칼날 3장으로 구성한 구체를 지름 `p.r×6.2`로 표시하고 크기 맥동 없이 시계방향 600ms/회전을 적용. 핵 중심 정렬 432×432 소스, 80ms 간격·정방향 480ms 반복. 다른 캐릭터는 공용 7×3/20프레임 시트 유지 | 악의구 피해·폭발·중독·사거리·자원 그대로 |
 | KeyE 칼등 처내기 | `_drawSilvertailEArc(ctx, pose, scale)`, `silvertail_violet_arc_anim_api_v3.png` (2132×738 RGBA, 폭 6등분) | `pose.kind==='shield'`에서만 `floor(spinProgress×6)`으로 재생. `hue-rotate(-28deg) saturate(2.05) contrast(1.28) brightness(1.28)`, 강화 E는 brightness1.6+−0.10rad·alpha×0.20 잔광1장. 9프레임 몸과 동일160ms 진행률(폴백240ms). 기본 폭 200→230px이며 차징 릴리즈는 `min(3,max(1,P._sBashChgMul||1))×(1+(E스킬Lv−1)×0.05)`을 곱한다. Lv1 풀차지600→690px, Lv10 풀차지870→1000.5px | 기본 E의 피해·반사·자원·입력은 그대로. E 아크는 충전 C와 스킬 레벨 범위 M을 함께 곱하며 좌클릭·우클릭 악의구에는 적용하지 않음 |
 

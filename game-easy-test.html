@@ -15150,19 +15150,20 @@ let _projNext=0;
 const _CRES_IMG=new Image();_CRES_IMG.src='assets/vfx/crescent_slash.webp';
 // 기검참: 생성 9프레임 검기 + 4프레임 명중광. 색 변환은 로드 때 한 번만 캐시.
 let _kiSlashRadiant=null;
-function _kiSlashPalette(c){return c.step===3?2:c.silvArc?1:0}
-function _kiSlashTintSurfaces(img){
-  const surfaces=[img];
-  for(const hue of [40,150]){
-    const cv=document.createElement('canvas');cv.width=img.naturalWidth;cv.height=img.naturalHeight;
-    const ctx=cv.getContext('2d');ctx.filter='hue-rotate('+hue+'deg)';ctx.drawImage(img,0,0);
-    surfaces.push(cv);
-  }
-  return surfaces;
+// 2026-10-11 실버+블랙: 물리 피해라 무채색. 1·2·3타 모두 같은 실버 시트, 뒤에 검은 잉크 그림자(일반 합성).
+function _kiSlashPalette(c){return 0}
+function _kiSlashTintSurfaces(img){return [img,img,img]} // 색 변환(hue-rotate) 폐지 — 인덱스 호환용 동일 참조
+// 검은 층: 시트 밝기→알파, 살짝 번져 칼날보다 두껍게. 가산 합성에서는 검정이 기여하지 않으므로 별도 일반 합성 패스로 그린다.
+function _kiSlashShadowSurface(img){
+  const w=img.naturalWidth,h=img.naturalHeight,cv=document.createElement('canvas');cv.width=w;cv.height=h;
+  const g=cv.getContext('2d');g.filter='blur('+Math.max(2,Math.round(w/260))+'px)';g.drawImage(img,0,0);g.filter='none';
+  const d=g.getImageData(0,0,w,h),p=d.data;
+  for(let i=0;i<p.length;i+=4){const l=Math.max(p[i],p[i+1],p[i+2])*(p[i+3]/255);p[i+3]=Math.min(255,l*2.4);p[i]=5;p[i+1]=4;p[i+2]=6}
+  g.putImageData(d,0,0);return cv;
 }
 const _KI_SLASH_IMG=new Image();
-_KI_SLASH_IMG.onload=()=>{_kiSlashRadiant={surfaces:_kiSlashTintSurfaces(_KI_SLASH_IMG),fw:_KI_SLASH_IMG.naturalWidth/3,fh:_KI_SLASH_IMG.naturalHeight/3}};
-_KI_SLASH_IMG.src='assets/vfx/ki_slash_radiant_sheet.png';
+_KI_SLASH_IMG.onload=()=>{_kiSlashRadiant={surfaces:_kiSlashTintSurfaces(_KI_SLASH_IMG),shadow:_kiSlashShadowSurface(_KI_SLASH_IMG),fw:_KI_SLASH_IMG.naturalWidth/3,fh:_KI_SLASH_IMG.naturalHeight/3}};
+_KI_SLASH_IMG.src='assets/vfx/ki_slash_silver_sheet.png';
 
 const _CHAIN_BLADE_IMG=new Image();let _chainBladeReady=false;_CHAIN_BLADE_IMG.onload=()=>{_chainBladeReady=_CHAIN_BLADE_IMG.naturalWidth>0};_CHAIN_BLADE_IMG.src='img/vfx/chain_blade_cyclone_8f.png';
 const _SKY_CRUSHER_IMG=new Image();let _skyCrusherImgReady=false;_SKY_CRUSHER_IMG.src='img/vfx/sky_crusher_iron_wedge.png';_SKY_CRUSHER_IMG.onload=()=>{_skyCrusherImgReady=true};
@@ -17560,6 +17561,12 @@ function _drawRadiantKiSlash(ctx,c){
   const size=(c.step===3?252:192)*(c.chargeScale||1),height=size*sheet.fh/sheet.fw;
   const alpha=Math.min(1,(1-progress)*2.5);
   const img=sheet.surfaces[_kiSlashPalette(c)];
+  if(sheet.shadow){ // 검은 잉크 층(일반 합성) — 실버 칼날 뒤
+    const gpu=ctx.canvas===C&&(_useGPU||_useGL);if(gpu)_setBlend(false);
+    ctx.save();ctx.globalCompositeOperation='source-over';ctx.translate(c.x,c.y);ctx.rotate(c.ang);ctx.globalAlpha=alpha*.9;
+    ctx.drawImage(sheet.shadow,sx,sy,sheet.fw,sheet.fh,-size*.57,-height*.57,size*1.14,height*1.14);ctx.restore();
+    if(gpu)_setBlend(true);
+  }
   ctx.save();ctx.globalCompositeOperation='lighter';
   // 점 스탬프 대신 이동 경로에 실제 칼날 잔상을 두 장 남긴다.
   for(let n=2;n>=1;n--){
@@ -17592,7 +17599,7 @@ function _drawKiSlashCharge(ctx){
     ctx.globalAlpha=.58+.08*tier;
     _drawKiSlashFrame(ctx,img,sx,0,sheet.fw,sheet.fh,-size*.41,-size*.43,size*.82,size*.86);
   }else{
-    ctx.strokeStyle='#ff596d';ctx.lineWidth=5+tier;ctx.globalAlpha=.7;
+    ctx.strokeStyle='#d9dbe0';ctx.lineWidth=5+tier;ctx.globalAlpha=.7;
     ctx.beginPath();ctx.moveTo(-size*.32,-size*.34);
     for(let i=1;i<=12;i++){const t=i/12,u=1-t;ctx.lineTo(-size*.32*(u*u+t*t)+size*.96*u*t,size*.34*(t*t-u*u))}
     ctx.stroke();
@@ -17600,12 +17607,13 @@ function _drawKiSlashCharge(ctx){
   // Lit diagonal cuts show each completed damage tier without floating text.
   for(let i=0;i<3;i++){
     const nx=-size*.23+i*12,ny=size*.29;
-    ctx.strokeStyle=i<tier?'#fff4df':'#8c3445';ctx.lineWidth=i<tier?4:2;ctx.globalAlpha=i<tier?0.9:0.45;
+    ctx.strokeStyle=i<tier?'#f4f5f7':'#3a3a40';ctx.lineWidth=i<tier?4:2;ctx.globalAlpha=i<tier?0.9:0.45;
     ctx.beginPath();ctx.moveTo(nx,ny);ctx.lineTo(nx+9,ny-12);ctx.stroke();
   }
   ctx.restore();if(gpu)_setBlend(false);
 }
 function renderCrescents(X){
+  _drawKiHitShadows(X);
   const _cImg=_CRES_IMG;
   const _cReady=_cImg.complete&&_cImg.naturalWidth>0;
   const gpu=!!_kiSlashRadiant&&X.canvas===C&&(_useGPU||_useGL);
@@ -17619,7 +17627,7 @@ function renderCrescents(X){
     const _is3=c.step===3;
     if(_drawRadiantKiSlash(X,c))continue;
     // 트레일 글로우 (stamp drawImage)
-    {const _trSt=_getSparkStamp(_is3?'#ff3322':'#66bbff'),_trR=_is3?14:8;
+    {const _trSt=_getSparkStamp(_is3?'#e8e9ee':'#c9ccd3'),_trR=_is3?14:8;
     for(let t=0;t<5;t++){
       const tr=c.trail[t];
       X.globalAlpha=((t+1)/5)*0.4*alpha;
@@ -17705,11 +17713,24 @@ const _KI_SLASH_HIT_IMG=new Image();
 _KI_SLASH_HIT_IMG.onload=()=>{
   const surfaces=_kiSlashTintSurfaces(_KI_SLASH_HIT_IMG);
   for(let i=0;i<surfaces.length;i++)_VFX_SHEETS['ki_slash_hit_'+i]={img:surfaces[i],fw:_KI_SLASH_HIT_IMG.naturalWidth/2,fh:_KI_SLASH_HIT_IMG.naturalHeight/2,frames:4,cols:2,blend:'lighter'};
+  _kiHitShadowImg=_kiSlashShadowSurface(_KI_SLASH_HIT_IMG);
 };
-_KI_SLASH_HIT_IMG.src='assets/vfx/ki_slash_hit_radiant_sheet.png';
+_KI_SLASH_HIT_IMG.src='assets/vfx/ki_slash_hit_silver_sheet.png';
+// 명중광 검은 층: 공용 VFX 풀은 가산 전용(GL 인스턴싱)이라 renderCrescents 앞에서 일반 합성으로 직접 그린다. 최대8개·12f(3f×4)
+let _kiHitShadowImg=null;const _kiHitShadows=[];
+function _drawKiHitShadows(X){
+  if(!_kiHitShadows.length||!_kiHitShadowImg)return;
+  const img=_kiHitShadowImg,fw=img.width/2,fh=img.height/2;let w=0;
+  X.save();X.globalCompositeOperation='source-over';
+  for(const s of _kiHitShadows){const age=_gameFrame-s.f0,fr=Math.floor(age/3);if(fr<0||fr>3)continue;_kiHitShadows[w++]=s;
+    X.save();X.translate(s.x,s.y);X.rotate(s.ang);X.globalAlpha=.85*(1-fr*.18);
+    X.drawImage(img,(fr%2)*fw,Math.floor(fr/2)*fh,fw,fh,-s.size*.57,-s.size*.57*fh/fw,s.size*1.14,s.size*1.14*fh/fw);X.restore();}
+  _kiHitShadows.length=w;X.restore();
+}
 function _playKiSlashHit(c,x,y){
   const id='ki_slash_hit_'+_kiSlashPalette(c),sheet=_VFX_SHEETS[id];
   const scale=c.step===3?(c.chargeScale||1):1;
+  if(sheet&&_kiHitShadowImg){if(_kiHitShadows.length>=8)_kiHitShadows.shift();_kiHitShadows.push({x,y,ang:c.ang,size:c.step===3?184*scale:140,f0:_gameFrame})}
   if(sheet)playVFXAng(id,x,y,(c.step===3?184*scale:140)/sheet.fw,3,c.ang,true);
   else playVFXAng('ice_slash',x,y,c.step===3?1.25*scale:.9,3,c.ang,true);
 }
@@ -21282,7 +21303,7 @@ function _queueCombatTextureWarmup(){
   if(typeof _waterBlueFlightImg!=='undefined')ready(_waterBlueFlightImg);
   if(typeof _ch1StartMediumImgs!=='undefined')for(const key in _ch1StartMediumImgs)ready(_ch1StartMediumImgs[key]);
   if(typeof _mineTrapWardSheet!=='undefined')ready(_mineTrapWardSheet);
-  if(typeof _kiSlashRadiant!=='undefined'&&_kiSlashRadiant)for(const img of _kiSlashRadiant.surfaces)ready(img);
+  if(typeof _kiSlashRadiant!=='undefined'&&_kiSlashRadiant){for(const img of _kiSlashRadiant.surfaces)ready(img);if(_kiSlashRadiant.shadow)ready(_kiSlashRadiant.shadow);}
   if(typeof _goreImgs!=='undefined')for(const key in _goreImgs)ready(_goreImgs[key]);
   if(typeof _diImgs!=='undefined')for(const key in _diImgs)ready(_diImgs[key]);
   if(typeof _corpses!=='undefined')for(let i=0;i<Math.min(16,_corpses.length);i++)ready(_corpses[i].c);
@@ -60068,7 +60089,7 @@ function _preloadAssets(){
       'img/crow/south.png','img/cat_pet/south.png',
       // VFX
       'assets/vfx/chain_shuriken_2.webp','assets/vfx/crescent_slash.webp',
-      'assets/vfx/ki_slash_radiant_sheet.png','assets/vfx/ki_slash_hit_radiant_sheet.png',
+      'assets/vfx/ki_slash_silver_sheet.png','assets/vfx/ki_slash_hit_silver_sheet.png',
       'assets/vfx/impact_basic_sheet.png','assets/vfx/lightning_burst_sheet.png',
       'assets/vfx/ground_crack_sheet.png','assets/vfx/parry_impact_rainbow.png',
       'assets/vfx/parry_impact_red.png','assets/vfx/malice_dome.png',
