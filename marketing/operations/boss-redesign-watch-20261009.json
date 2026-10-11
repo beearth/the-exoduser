@@ -13,11 +13,11 @@
     "threadId": "01a0faa9-b453-7673-be39-98adedb4c2b3",
     "hostId": "local",
     "title": "맥북에서 총괄 시작하기",
-    "afterCursor": "b2476eee-d767-4cd1-8064-9706586fb10a:56",
+    "afterCursor": "b2476eee-d767-4cd1-8064-9706586fb10a:58",
     "lastObservedStatus": "idle",
     "lastObservedTurnStatus": "completed",
-    "lastObservedTurnId": "01a12ab8-81f4-7c61-bbb2-f838d52c2512",
-    "lastObservedReport": "총괄 cursor56은 별도 FDG 엔진 dark-druid-slam-contact-r5의 지팡이 전방/하향 접촉과 몸통–어깨–팔–손 연결, 외투 지연·회복을 2.5D 전투 크기 범위로 한정 인수했다. 전체 시각은 RETOUCH이며 패링 교전과 처치·본편 적용은 미인수다. 과거 꼬리치기 readability-r5와 별도 단위다."
+    "lastObservedTurnId": "01a12b26-61ee-7933-85dd-82f6d5a244fe",
+    "lastObservedReport": "총괄 cursor58은 별도 FDG 엔진 combat-readability-r8의 이름표/제목 가림·펫 표시 배율 개선과 격리 native AI 교전 중 평타 쉴드감소178, 물리탄 E 패링1회를 한정 인수했다. 접촉부를 가리는 보라색VFX는 RETOUCH이며 Q 성공0·플레이어 사망·보스 생존으로 끝났다. 본편/Steam 적용·사용자 자연 플레이·원음·공개 승인은 확인되지 않았다."
   },
   "completionConfirmed": false,
   "captureStarted": false,
@@ -35,8 +35,8 @@
     "완성 후 검수본부터 인도, 사용자 검수 전 자동 공개 금지",
     "2026-10-10 사용자 정정: 전체 대기를 모든 콘텐츠로 확대하지 않음; UI·스킬·캐릭터 부분 개발 소식 계속 운영"
   ],
-  "lastCheckedAtUTC": "2026-10-11T11:36:47.341Z",
-  "lastCheckResult": "cursor56 격리 native QA 내려찍기 접촉·몸 연결 한정 인수/전체 RETOUCH, GIF·5포즈 보드 크기·해시 보존. migration HEAD 동일·공개 승인 변화 없음·새 홍보 제작/촬영/게시0. 전사 최신본 검토와 악의구 후속 준비 유지.",
+  "lastCheckedAtUTC": "2026-10-11T13:40:17.830Z",
+  "lastCheckResult": "cursor58 표시/펫 배율 개선과 native AI 물리탄E1회·평타 쉴드감소178 부분 인수, 접촉VFX RETOUCH·Q0·플레이어사망·보스생존. sampled99 GIF/4화면판 근거 보존. migration HEAD 동일·새 홍보촬영/게시0·전사 최신본 검토와 악의구 후속 준비 유지.",
   "publicationScope": "보스전 전체 리디자인 완료 대표 메인트레일러",
   "partialDevelopmentNewsAllowed": true,
   "partialDevelopmentNewsPolicy": "UI·기존 스킬·캐릭터 제작 과정 등 각 소재는 전체 보스전 완료와 관계없이 실제 근거와 개별 검수 범위 확인 후 독립 제작·게시한다.",
@@ -44,64 +44,73 @@
   "partialLastPublication": "https://www.youtube.com/post/UgkxrTYuXuoASizWPYhlrpJyCF-7pcSqJT8-",
   "partialPublishedCount": 5,
   "latestPartialProducerEvidence": {
-    "checkedAtUTC": "2026-10-11T11:36:47.341Z",
-    "cursor": "b2476eee-d767-4cd1-8064-9706586fb10a:56",
+    "checkedAtUTC": "2026-10-11T13:40:17.830Z",
+    "cursor": "b2476eee-d767-4cd1-8064-9706586fb10a:58",
     "status": "idle",
     "completionConfirmed": false,
-    "scope": "별도 FDG 엔진 dark-druid-slam-contact-r5 격리 native QA의 내려찍기 접촉 동작",
-    "report": "총괄 cursor56은 별도 FDG 엔진 dark-druid-slam-contact-r5의 지팡이 전방/하향 접촉과 몸통–어깨–팔–손 연결, 외투 지연·회복을 2.5D 전투 크기 범위로 한정 인수했다. 전체 시각은 RETOUCH이며 패링 교전과 처치·본편 적용은 미인수다. 과거 꼬리치기 readability-r5와 별도 단위다.",
+    "scope": "별도 FDG 엔진 dark-druid-combat-readability-r8 격리 native AI 교전의 표시·물리탄 E 패링 부분 인수",
+    "report": "총괄 cursor58은 별도 FDG 엔진 combat-readability-r8의 이름표/제목 가림·펫 표시 배율 개선과 격리 native AI 교전 중 평타 쉴드감소178, 물리탄 E 패링1회를 한정 인수했다. 접촉부를 가리는 보라색VFX는 RETOUCH이며 Q 성공0·플레이어 사망·보스 생존으로 끝났다. 본편/Steam 적용·사용자 자연 플레이·원음·공개 승인은 확인되지 않았다.",
     "mainGameApplied": "NOT_CONFIRMED",
     "steamDemoApplied": "NOT_CONFIRMED",
     "normalGameplayVideoWithOriginalAudio": "NOT_OBSERVED",
     "humanNaturalGameplayCaptured": false,
     "requiresUserAction": false,
     "publicationAllowed": false,
-    "visualCandidateState": "CONTACT_MOTION_SCOPED_ACCEPTED_OVERALL_RETOUCH",
+    "visualCandidateState": "NATIVE_AI_READABILITY_PARTIAL_ACCEPTED_CONTACT_VFX_RETOUCH",
     "bossProductMotionAccepted": false,
-    "producerReportedLocalCommit": "c37291472fd8d1caf2a735d3db57b79411430a38",
-    "producerReportedPush": 0,
-    "producerReportedDeploy": 0,
-    "nativeQaContactMotionAcceptedByProducer": true,
-    "actualClassParrySuccess": "NOT_OBSERVED",
-    "bossVictory": "NOT_OBSERVED",
-    "overallModelQuality": "2.5D 시제품·어두운 대비/주변 효과 혼재·SOURCE_GAP1",
+    "producerReportedLocalCommit": "4105ae90af1a03eea2bdfe9bda2b6bff3c940f4a",
+    "producerReportedPush": false,
+    "producerReportedDeploy": false,
+    "combatObserved": {
+      "physicalProjectileParryECount": 1,
+      "magicParryQCount": 0,
+      "meleeShieldDeltaObserved": 178,
+      "shieldDeltaScope": "평타 접촉1건의 관측 감소; 누적8107을 모두 평타 피해로 귀속하지 않음",
+      "specificReflectedProjectileIdentity": "NOT_PROVEN",
+      "playerOutcome": "DEAD",
+      "bossOutcome": "ALIVE; KILL_NOT_OBSERVED"
+    },
+    "wholeEngineComplete": false,
+    "overallVisualVerdict": "RETOUCH",
+    "exactVisualResidual": "COMBAT_VFX_CONTACT_OVERLAP: frame0040 보라색 효과가 손·무기·피격 자세를 가림",
     "evidence": {
-      "producerTurnId": "01a12ab8-81f4-7c61-bbb2-f838d52c2512",
-      "finalReceipt": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-dark-druid-slam-contact-r5/final-receipt.json",
-      "nativePlaybackReceipt": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-dark-druid-slam-contact-r5/native-play/slam-native-play-receipt.json",
-      "boardReceipt": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-dark-druid-slam-contact-r5/frames/slam-five-poses-full-body-board-receipt.json",
+      "producerTurnId": "01a12b26-61ee-7933-85dd-82f6d5a244fe",
+      "finalReceipt": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-dark-druid-combat-readability-r8/r8-final-receipt.json",
+      "derivedCaptureReceipt": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-dark-druid-combat-readability-r8/derived/r8-derived-captures-receipt.json",
       "sourcePreviewGif": {
-        "path": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-dark-druid-slam-contact-r5/native-play/slam-native-play.gif",
-        "bytes": 15698823,
-        "sha256": "f40e803ab2ab3de87ac9cea893755a75c783691edef4f6c59de54f31bc6b766f",
+        "path": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-dark-druid-combat-readability-r8/derived/native-ai-play-all-99.gif",
+        "bytes": 19184533,
+        "sha256": "b2e38303da3ae464d3caadf3412e76c12187e9c1f9d1697f6fb9fcd2329dc865",
         "size": [
           640,
           360
         ],
-        "encodedFrameCount": 87,
-        "actualObservedWallSeconds": 3.8415918350219727,
-        "gifDurationSeconds": 3.88,
+        "encodedFrameCount": 99,
+        "captureSamplingEveryNativeFrames": 8,
+        "observedCdpSpanSeconds": 7.852,
+        "observedWallSeconds": 8.054,
+        "gifDurationSeconds": 7.89,
         "finalUnobservedHoldMs": 40,
-        "kind": "기존 격리 native QA 실제 재생 GIF·재현 준비/테스트 입력; 정상 사용자 자연 플레이·원음 영상 아님",
+        "kind": "격리 native AI 교전의 샘플 화면 GIF; 사용자 자연 플레이·원음 홍보 영상 아님",
         "publicReady": false,
         "completeWatchAndListenByMarketing": false
       },
-      "sourcePoseBoard": {
-        "path": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-dark-druid-slam-contact-r5/frames/slam-five-poses-full-body-board.png",
-        "bytes": 4950170,
-        "sha256": "f1a14f044140cedfe4e691fc3d4bd058a58049e80ab43e2d897eb9bb040f6251",
+      "sourceFrameBoard": {
+        "path": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-dark-druid-combat-readability-r8/derived/r8-four-full-frames-board.png",
+        "bytes": 3897667,
+        "sha256": "e953296e076c00c9083d98296e6749ef58e66a788d4271746a615a0dcf040a06",
         "size": [
           2632,
-          2488
+          1758
         ],
-        "panelCount": 5,
-        "kind": "실제 QA 전신 5포즈 비교판·별도 단계 설명; 두 화면 Shorts 편집본 아님",
+        "panelCount": 4,
+        "kind": "서로 다른 시점의 전신 원본 화면4장 설명판; 두 화면 Shorts 재편집 아님",
         "publicReady": false
       },
-      "frameCountScope": "87은 인코딩된 관측 화면 수, 5는 비교 포즈 수다. 새 고유 스프라이트 프레임 수·전체 모션 품질 PASS로 표시하지 않는다.",
-      "marketingReviewScope": "총괄 새 종료 보고·영수증의 필요한 범위와 파일 존재/크기/해시만 첫 확인. 재생·시청·청취·성능·코드·기존 suite 재검수 및 새 촬영 없음."
+      "frameCountScope": "99는 매8 native frame 샘플한 관측 화면 수다. 전 프레임 무누락 녹화·고유 스프라이트 추가·FPS 개선으로 주장하지 않는다.",
+      "marketingReviewScope": "총괄 새 종료 보고·영수증 필요한 범위와 파일 존재/크기/해시만 처음 대조. 새 재생·전편 시청/청취·제품/성능/기존 suite QA·촬영 없음."
     },
-    "nextProducerUnit": "기존 담당 dark-druid-parry-encounter-r6 실제 class별 E/Q 성공·정상 속도 짧은 교전 결과 대기; 반복 지시/촬영 요청 없음"
+    "nextProducerUnit": "같은 담당의 보라색 접촉VFX 가림 마감·공격/패링이 읽히는 교전 결과 대기; 반복 지시/촬영 요청 없음"
   },
   "previousPartialProducerEvidence": [
     {
@@ -161,6 +170,66 @@
       "authoringAttackReadabilityAcceptedByProducer": true,
       "overallModelQuality": "2.5D 시제품·보완 남음",
       "idleAttackIdleTransitionComplete": false
+    },
+    {
+      "checkedAtUTC": "2026-10-11T11:36:47.341Z",
+      "cursor": "b2476eee-d767-4cd1-8064-9706586fb10a:56",
+      "status": "idle",
+      "completionConfirmed": false,
+      "scope": "별도 FDG 엔진 dark-druid-slam-contact-r5 격리 native QA의 내려찍기 접촉 동작",
+      "report": "총괄 cursor56은 별도 FDG 엔진 dark-druid-slam-contact-r5의 지팡이 전방/하향 접촉과 몸통–어깨–팔–손 연결, 외투 지연·회복을 2.5D 전투 크기 범위로 한정 인수했다. 전체 시각은 RETOUCH이며 패링 교전과 처치·본편 적용은 미인수다. 과거 꼬리치기 readability-r5와 별도 단위다.",
+      "mainGameApplied": "NOT_CONFIRMED",
+      "steamDemoApplied": "NOT_CONFIRMED",
+      "normalGameplayVideoWithOriginalAudio": "NOT_OBSERVED",
+      "humanNaturalGameplayCaptured": false,
+      "requiresUserAction": false,
+      "publicationAllowed": false,
+      "visualCandidateState": "CONTACT_MOTION_SCOPED_ACCEPTED_OVERALL_RETOUCH",
+      "bossProductMotionAccepted": false,
+      "producerReportedLocalCommit": "c37291472fd8d1caf2a735d3db57b79411430a38",
+      "producerReportedPush": 0,
+      "producerReportedDeploy": 0,
+      "nativeQaContactMotionAcceptedByProducer": true,
+      "actualClassParrySuccess": "NOT_OBSERVED",
+      "bossVictory": "NOT_OBSERVED",
+      "overallModelQuality": "2.5D 시제품·어두운 대비/주변 효과 혼재·SOURCE_GAP1",
+      "evidence": {
+        "producerTurnId": "01a12ab8-81f4-7c61-bbb2-f838d52c2512",
+        "finalReceipt": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-dark-druid-slam-contact-r5/final-receipt.json",
+        "nativePlaybackReceipt": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-dark-druid-slam-contact-r5/native-play/slam-native-play-receipt.json",
+        "boardReceipt": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-dark-druid-slam-contact-r5/frames/slam-five-poses-full-body-board-receipt.json",
+        "sourcePreviewGif": {
+          "path": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-dark-druid-slam-contact-r5/native-play/slam-native-play.gif",
+          "bytes": 15698823,
+          "sha256": "f40e803ab2ab3de87ac9cea893755a75c783691edef4f6c59de54f31bc6b766f",
+          "size": [
+            640,
+            360
+          ],
+          "encodedFrameCount": 87,
+          "actualObservedWallSeconds": 3.8415918350219727,
+          "gifDurationSeconds": 3.88,
+          "finalUnobservedHoldMs": 40,
+          "kind": "기존 격리 native QA 실제 재생 GIF·재현 준비/테스트 입력; 정상 사용자 자연 플레이·원음 영상 아님",
+          "publicReady": false,
+          "completeWatchAndListenByMarketing": false
+        },
+        "sourcePoseBoard": {
+          "path": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-dark-druid-slam-contact-r5/frames/slam-five-poses-full-body-board.png",
+          "bytes": 4950170,
+          "sha256": "f1a14f044140cedfe4e691fc3d4bd058a58049e80ab43e2d897eb9bb040f6251",
+          "size": [
+            2632,
+            2488
+          ],
+          "panelCount": 5,
+          "kind": "실제 QA 전신 5포즈 비교판·별도 단계 설명; 두 화면 Shorts 편집본 아님",
+          "publicReady": false
+        },
+        "frameCountScope": "87은 인코딩된 관측 화면 수, 5는 비교 포즈 수다. 새 고유 스프라이트 프레임 수·전체 모션 품질 PASS로 표시하지 않는다.",
+        "marketingReviewScope": "총괄 새 종료 보고·영수증의 필요한 범위와 파일 존재/크기/해시만 첫 확인. 재생·시청·청취·성능·코드·기존 suite 재검수 및 새 촬영 없음."
+      },
+      "nextProducerUnit": "기존 담당 dark-druid-parry-encounter-r6 실제 class별 E/Q 성공·정상 속도 짧은 교전 결과 대기; 반복 지시/촬영 요청 없음"
     }
   ]
 }
