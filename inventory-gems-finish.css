@@ -308,13 +308,18 @@ html.gem-sealed-art-missing #invPanel .inv-cr-socket-sealed::before{background:u
 #invPanel .inv-cr-stones-grid{display:flex;flex-wrap:wrap;gap:6px;max-height:94px;overflow-y:auto;scrollbar-width:thin;}
 #invPanel .inv-cr-stones-grid .inv-cr-note{margin:2px 0;font-size:10px;color:#8d897d;}
 #invPanel .inv-cr-stone{position:relative;width:58px;height:64px;padding:0;border:1px solid #64573f80;background:linear-gradient(145deg,#1b2125,#0a0e12 70%);box-shadow:inset 0 0 0 2px #060a0d,0 2px 4px #0008;cursor:pointer;}
-#invPanel .inv-cr-stone-art{position:absolute;left:50%;top:42%;transform:translate(-50%,-50%);width:30px;height:30px;clip-path:polygon(50% 0,93% 25%,100% 62%,72% 100%,28% 100%,0 62%,7% 25%);background:linear-gradient(135deg,#fff3 0,transparent 32%,#0007 78%),linear-gradient(160deg,var(--stone-hi,#8d949c),var(--stone-lo,#33383e));box-shadow:inset 0 1px 1px #fff4,inset 0 -2px 3px #0009;}
+#invPanel .inv-cr-stone-art{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);width:40px;height:40px;background:center/contain no-repeat url(img/ui/socket-stones/stone_iron.png);filter:drop-shadow(0 2px 2px #000c);} /* 2026-10-10 소켓석 원화(Seedream) — 티어 그룹별 재질 그림 */
 #invPanel .inv-cr-stone[data-grp=iron]{--stone-hi:#9aa0a8;--stone-lo:#2f343a;}
+#invPanel .inv-cr-stone[data-grp=iron] .inv-cr-stone-art{background-image:url(img/ui/socket-stones/stone_iron.png);}
 #invPanel .inv-cr-stone[data-grp=bronze]{--stone-hi:#d19a5c;--stone-lo:#4c2f16;}
+#invPanel .inv-cr-stone[data-grp=bronze] .inv-cr-stone-art{background-image:url(img/ui/socket-stones/stone_bronze.png);}
 #invPanel .inv-cr-stone[data-grp=silver]{--stone-hi:#e7edf3;--stone-lo:#596572;}
+#invPanel .inv-cr-stone[data-grp=silver] .inv-cr-stone-art{background-image:url(img/ui/socket-stones/stone_silver.png);}
 #invPanel .inv-cr-stone[data-grp=gold]{--stone-hi:#f2d388;--stone-lo:#6e4e18;}
+#invPanel .inv-cr-stone[data-grp=gold] .inv-cr-stone-art{background-image:url(img/ui/socket-stones/stone_gold.png);}
 #invPanel .inv-cr-stone[data-grp=hell]{--stone-hi:#ffa76a;--stone-lo:#731f0a;}
-#invPanel .inv-cr-stone[data-grp=hell] .inv-cr-stone-art{box-shadow:inset 0 1px 1px #fff5,inset 0 -2px 3px #0009,0 0 10px #ff6a3588;}
+#invPanel .inv-cr-stone[data-grp=hell] .inv-cr-stone-art{background-image:url(img/ui/socket-stones/stone_hell.png);}
+#invPanel .inv-cr-stone[data-grp=hell] .inv-cr-stone-art{filter:drop-shadow(0 2px 2px #000c) drop-shadow(0 0 6px #ff6a3577);}
 #invPanel .inv-cr-stone-tier{position:absolute;top:2px;left:4px;font-family:'Cinzel',var(--font-hell-title,serif);font-size:10px;font-weight:700;color:#dfd6c2;}
 #invPanel .inv-cr-stone-q{position:absolute;bottom:2px;left:4px;font-size:9px;color:#b9ac92;font-variant-numeric:tabular-nums;}
 #invPanel .inv-cr-stone-count{position:absolute;bottom:2px;right:4px;font-size:10px;color:#e6d6ad;font-variant-numeric:tabular-nums;}

@@ -180,6 +180,8 @@
 | 2026-10-01 | 사용자 | 한국어 응대, `TEAM_CONTINUATION_POLICY_20261001.md` 적용, 검수·기록 후 승인 백로그 계속, 푸시·패키지 상태 각각 검증 | 적용. 4.4 배포·동기화 표 작성, 영상 v25·인트로 06 완료 |
 | 2026-10-01 | 총괄 | ① 캐시 `intro-lock6→7` 각 1줄, 타 팀 diff 보존·본인 hunk만 커밋 ② 브라우저에서 새 쿼리 06 로드 확인 ③ NW.js 재생은 BUILD 인계 ④ 구 전쟁 인트로 정지 이미지 신원·잔점 검수 ⑤ 신규 3종 초상은 LOCK 선행 유지, 새 캐릭터·보호 전투 설계 변경 금지 | ①②④ 완료, ③⑤ 백로그에 인계·보류로 기록 |
 | 2026-10-01 | 총괄(추가 인수) | ① `cin_remember` 1장 구도·LOCK·대사 보존 보정 후보 ② 영상 프레임은 동일 장면·품질 개선 시만 재사용, 아니면 MagicLight 우선 ③ 나머지 10장은 미리보기 검수 후 ④ 원본 보존, 채택 근거·프롬프트·비용 기록 ⑤ 구 PNG 2개 참조 조사 전 삭제 금지 ⑥ warintro 캐시 누락을 본인 로더 경로에 한정 수정 ⑦ QA M2 측정 중 대형 인코딩·새 게임 실행 금지 | ①②④⑤⑥ 완료(영상 프레임은 동일 장면 아님→MagicLight). ③ 대기. ⑦ 준수: 게임 실행·인코딩 없음, 정지 프레임 4장 추출만 수행 |
+| 2026-10-10 | 소켓석 원화 5종(철·청동·은·금·지옥, 티어 그룹 `_qGrp`) Seedream 5.0 Pro 1:1 생성 → rembg 투명·여백 통일 128px `img/ui/socket-stones/stone_{grp}.png`, 원본 `assets/socket-stones/`. 기존 CSS 단색 팔각 도형 교체(`inventory-gems-finish.css` `.inv-cr-stone-art`, v=20261010-socket-stone-art). 1x·2배 크롭 검수 | MagicLight 500 (5장, 표시 51,990 기준) |
+| 2026-10-10 | 화면 가장자리 방향 화살표 원화 `img/ui/region_arrow.png` — 사용자 지시 "힉스필드 최고퀄"로 Higgsfield GPT Image 2.5 sunburst·max·2K·투명 1장 채택(비교용 MagicLight Seedream 2장은 검은 배경 판이라 불채택). 1x·3배 검수 | Higgsfield 9 (잔액 2,730→) + MagicLight 200(비교용) |
 
 ### 사고 기록 (재발 방지)
 

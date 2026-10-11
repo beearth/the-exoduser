@@ -168,7 +168,7 @@
     if (!root || !body) return;
     const equip = root.querySelector('.inv-equip');
     if (equip) equip.id = 'inventory-page-equipment';
-    const entries = [['equipment','장비','Equipment'],['ossuary','유골함','Ossuary'],['crystals','보석','Gems'],['storage','보관함','Storage']];
+    const entries = [['equipment','장비','Equipment'],['ossuary','유골함','Ossuary'],['crystals','유물','Relics'],['storage','보관함','Storage']];
     const targets = {equipment:equip,ossuary:document.getElementById('invOssuaryPanel'),crystals:document.getElementById('invCrystalsPanel'),storage:document.getElementById('invStorageCol')};
     const nav = tabBar(entries, key => {
       // Initial composition precedes player creation; only refresh on later switches.

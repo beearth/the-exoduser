@@ -2556,7 +2556,7 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
 <link rel="stylesheet" href="growth-tree-information.css?v=20260927-info1">
 <script defer src="ui-panels.js?v=20261006-panel-fit"></script>
 <link rel="stylesheet" href="inventory-gems.css?v=20260927-jewel-finish">
-<link rel="stylesheet" href="inventory-gems-finish.css?v=20261008-socket-stones1">
+<link rel="stylesheet" href="inventory-gems-finish.css?v=20261010-socket-stone-art">
 <link rel="stylesheet" href="inventory-space.css?v=20260928-relic-frame1">
 <link rel="stylesheet" href="skill-workspace.css?v=20260928-fixed-categories5">
 <link rel="stylesheet" href="skill-forge.css?v=20261010-forge6">
@@ -2817,8 +2817,8 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
           <div class="set-range-row"><span class="set-name">자동 물약</span><input type="range" id="optAutoPot" min="30" max="99" step="1" value="99"><span class="set-range-val" id="optAutoPotVal">HP 99% 이하</span></div>
           <div class="set-range-row"><span class="set-name">최소 줍기 등급</span><input type="range" id="optMinRar" min="0" max="4" value="0"><span class="set-range-val" id="optMinRarVal">일반 이상</span></div>
           <div class="set-range-row"><span class="set-name">최소 줍기 티어</span><input type="range" id="optMinLv" min="0" max="7" value="0"><span class="set-range-val" id="optMinLvVal">사용 안 함</span></div>
-          <div class="set-range-row"><span class="set-name">결정 자동합성</span><input type="range" id="optCrAutoFuse" min="-1" max="3" step="1" value="-1"><span class="set-range-val" id="optCrAutoFuseVal">사용 안 함</span></div>
-          <div class="set-range-row"><span class="set-name">결정 자동강화</span><input type="range" id="optCrAutoEnh" min="-1" max="4" step="1" value="-1"><span class="set-range-val" id="optCrAutoEnhVal">사용 안 함</span></div>
+          <div class="set-range-row"><span class="set-name">유물 자동합성</span><input type="range" id="optCrAutoFuse" min="-1" max="3" step="1" value="-1"><span class="set-range-val" id="optCrAutoFuseVal">사용 안 함</span></div>
+          <div class="set-range-row"><span class="set-name">유물 자동강화</span><input type="range" id="optCrAutoEnh" min="-1" max="4" step="1" value="-1"><span class="set-range-val" id="optCrAutoEnhVal">사용 안 함</span></div>
           <div class="set-range-row"><span class="set-name">FPS 제한</span><input type="range" id="optFps" min="0" max="5" step="1" value="5"><span class="set-range-val" id="optFpsVal">제한없음</span></div>
           <div class="set-range-row"><span class="set-name">해상도 스케일</span><input type="range" id="optResScale" min="50" max="100" step="10" value="100"><span class="set-range-val" id="optResScaleVal">100%</span></div>
 
@@ -2947,7 +2947,7 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
           </div>
           <div class="inv-equip-readout" aria-label="장착 현황">
             <div><span>장착 부위</span><strong id="invEquippedCount">0 / 0</strong></div>
-            <div><span>보석 홈</span><strong id="invSocketCount">0 / 0</strong></div>
+            <div><span>유물 홈</span><strong id="invSocketCount">0 / 0</strong></div>
             <div><span>전투력</span><strong id="invEquipPower">0</strong></div>
           </div>
         </div>
@@ -3000,7 +3000,7 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
         <div id="invCompareArea" style="border-top:1px solid #332211;margin-top:8px;padding-top:8px;flex:1;min-height:0;overflow-y:auto;display:none"></div>
       </div>
       <!-- RIGHT: 아이템 상세 + 비교 -->
-      <div class="inv-right" id="invRight"><div class="inv-detail-empty"><span class="inv-detail-empty-mark" aria-hidden="true">◇</span><strong>아이템 정보</strong><p>가방이나 장착 부위를 가리키면 능력치와 보석 홈을 확인할 수 있습니다.</p></div></div>
+      <div class="inv-right" id="invRight"><div class="inv-detail-empty"><span class="inv-detail-empty-mark" aria-hidden="true">◇</span><strong>아이템 정보</strong><p>가방이나 장착 부위를 가리키면 능력치와 유물 홈을 확인할 수 있습니다.</p></div></div>
     </div>
     <div class="inv-actions">
       <span id="invActionBtns" style="display:inline-flex;gap:6px"></span>
@@ -3753,7 +3753,7 @@ function dbRestore(d){
   STONE_BAG=Array.isArray(d.stoneBag)?d.stoneBag.filter(s=>s&&typeof s.q==='number'&&s.q>=1&&s.q<=100):[];
   const _migrateCr=cr=>{if(!cr)return;if(_CR_LEGACY_IDS[cr.id])cr.id=_CR_LEGACY_IDS[cr.id];if(!(cr.q>=1&&cr.q<=100))cr.q=50};
   CRYSTAL_BAG.forEach(_migrateCr);
-  const _fixCr=it=>{if(!it)return;if(it.socketCount===undefined){const _r=Math.random();it.socketCount=_r<.5?1:_r<.8?2:_r<.95?3:4;it.crystals=new Array(it.socketCount).fill(null)}if(Array.isArray(it.crystals))it.crystals.forEach(_migrateCr);
+  const _fixCr=it=>{if(!it)return;if(it.socketCount===undefined){it.socketCount=0;it.crystals=[]}if(Array.isArray(it.crystals))it.crystals.forEach(_migrateCr);
     // 홈 품질(socketQ) 마이그레이션: 기존 홈 → q=1(10티어, 보너스 +0%) — crystals 배열과 길이 동기화
     const _n=Array.isArray(it.crystals)?it.crystals.length:0;
     if(!Array.isArray(it.socketQ))it.socketQ=[];
@@ -6393,7 +6393,7 @@ const _EN={
 // --- Inventory/Storage ---
 '가방에 공간이 없습니다!':'No space in bag!','가방이 가득 찼습니다!':'Bag is full!',
 '창고가 가득 찼습니다!':'Storage is full!','퀵슬롯이 가득 찼습니다!':'Quick slot is full!',
-'결정 주머니가 가득 찼습니다!':'Crystal pouch is full!','결정 주머니 가득!':'Crystal pouch full!',
+'유물 주머니가 가득 찼습니다!':'Relic pouch is full!','유물 주머니 가득!':'Relic pouch full!',
 '악의가 부족합니다!':'Not enough Malice!','가방이 비어있습니다':'Bag is empty',
 '창고가 비어있습니다':'Storage is empty','비어있음':'Empty','어픽스 없음':'No affix',
 '장착!':'Equipped!','해제':'Unequipped','보관':'Deposit','꺼내기':'Withdraw',
@@ -6435,16 +6435,16 @@ const _EN={
 '냉기결정':'Ice Crystal','암흑결정':'Dark Crystal','번개결정':'Lightning Crystal',
 '신성결정':'Holy Crystal','생명결정':'Life Crystal','기력결정':'Stamina Crystal',
 '마력결정':'Mana Crystal','행운결정':'Luck Crystal',
-'조각':'Fragment','파편':'Shard','순수결정':'Pure Crystal','완전결정':'Perfect Crystal',
-'결정 주머니':'Crystal Pouch','결정이 없습니다':'No crystals','가루':'Dust',
+'조각':'Fragment','파편':'Shard','순수유물':'Pure Relic','완전유물':'Perfect Relic',
+'유물 주머니':'Relic Pouch','유물이 없습니다':'No relics','가루':'Dust',
 '전체':'All','스탯':'Stat','원소':'Elem','유틸':'Util',
 '현재':'Current','최대 강화 달성 (+20)':'Max enhanced (+20)','강화 시':'After enhance',
 '강화':'Enhance','합성':'Synthesize','제작':'Craft',
-'같은 종류·같은 성급 결정 3개 → 1성급 상승 (강화 리셋)':'3 crystals of same type & grade → upgrade 1 grade (enhance reset)',
-'합성 가능한 결정이 없습니다 (같은 종류·성급 3개 필요)':'No synthesizable crystals (need 3 of same type & grade)',
-'결정 분해 → 결정 가루':'Crystal Decompose → Crystal Dust',
-'분해할 결정이 없습니다':'No crystals to decompose',
-'결정 제작 (가루 → 결정)':'Craft Crystal (Dust → Crystal)',
+'같은 종류·같은 성급 유물 3개 → 1성급 상승 (강화 리셋)':'3 relics of same type & grade → upgrade 1 grade (enhance reset)',
+'합성 가능한 유물이 없습니다 (같은 종류·성급 3개 필요)':'No synthesizable relics (need 3 of same type & grade)',
+'유물 분해 → 유물 가루':'Relic Decompose → Relic Dust',
+'분해할 유물이 없습니다':'No relics to decompose',
+'유물 제작 (가루 → 유물)':'Craft Relic (Dust → Relic)',
 '탈착':'Detach','빈 슬롯':'Empty slot',
 '결정 선택 후 클릭':'Select crystal then click','클릭하여 선택결정 장착':'Click to equip selected crystal',
 '획득!':'Obtained!','제작!':'Crafted!','합성!':'Synthesized!','최상위 일괄합성':'Bulk Synth to Top','일괄합성 완료':'Bulk synth done',
@@ -6929,8 +6929,8 @@ const _EN={
 '전체 선택':'Select All','전체 해제':'Deselect All',
 '희귀 이하':'Rare or Below',
 '어픽스 리롤!':'Affix Reroll!',
-'결정 분해 → 결정 가루':'Crystal Decompose → Crystal Dust',
-'결정 제작 (가루 → 결정)':'Craft Crystal (Dust → Crystal)',
+'유물 분해 → 유물 가루':'Relic Decompose → Relic Dust',
+'유물 제작 (가루 → 유물)':'Craft Relic (Dust → Relic)',
 '물리':'Physical','영웅':'Heroic','전설':'Legendary',
 '무기 타입':'Weapon Type','활 타입':'Bow Type',
 '보스방':'Boss Room','ST 부족':'Not enough ST',
@@ -7081,8 +7081,8 @@ const _EN={
 // --- Settings Panel (UI — Phase 26) ---
 '석궁 자동발사 (T)':'Auto Crossbow (T)',
 '버스트루프 당기기 (H)':'Burst Loop Pull (H)',
-'결정 자동합성':'Crystal Auto-Fuse',
-'결정 자동강화':'Crystal Auto-Enhance',
+'유물 자동합성':'Relic Auto-Fuse',
+'유물 자동강화':'Relic Auto-Enhance',
 '✓ 설정 자동 저장':'✓ Settings auto-saved',
 '세팅 프리셋 저장/불러오기':'Save/Load setting presets',
 '세팅1 저장':'Save Preset 1','세팅1':'Preset 1',
@@ -7254,6 +7254,8 @@ const _EN={
 '회피반격의':'Dodge Counter',
 '패링폭파의':'Parry Shatter',
 '검기막이의':'Bladeward',
+'패링한 탄이 2발로 분열, 반격 피해 +{p}%':'Parried shots split into 2, counter DMG +{p}%',
+'패링한 탄에 시전자 관통력 적용 + 관통력 {n}':'Parried shots use your Pierce + {n} Pierce',
 '극참의':'of the Final Cut',
 '잠식의':'of Erosion',
 '격노일섬의':'of Wrathful Strikes',
@@ -7858,7 +7860,7 @@ const _EN={
 '── 공통 ──':'── Common ──',
 '⌨ 조작법':'⌨ Controls','클릭하면 닫힘':'Click to close',
 // --- Panel labels ---
-'전투력':'CP','가방':'Bag','결정':'Crystal',
+'전투력':'CP','가방':'Bag','유물':'Relic',
 '↕ 정렬':'↕ Sort','쓰레기 전체선택':'Select All Junk','쓰레기 전부 분해':'Salvage All Junk',
 '창고':'Storage','스탯 포인트':'Stat Points','능력치 요약':'Stat Summary','올 리셋':'Reset All',
 '대장간':'Forge','스킬':'Skills','능력치':'Stats',
@@ -8445,6 +8447,7 @@ const _EN={
 '품질 {q} · {t}티어':'Quality {q} · Tier {t}',
 '소켓석':'Socket Stone',
 '소켓석 {t}티어 획득!':'Socket Stone Tier {t}!',
+'{g} 소켓석 획득!':'{g} Socket Stone!','품질 {q} · {g}':'Quality {q} · {g}','홈 개방! {n}번째 홈 · 품질 {q} ({g})':'Socket opened! Slot {n} · quality {q} ({g})','동':'Bronze','금':'Gold',
 '막힌 홈':'Sealed socket',
 '홈 개방':'Open socket',
 '홈 승급':'Upgrade socket',
@@ -8460,6 +8463,36 @@ const _EN={
 '소켓석 선택 중 — 카드를 클릭해 홈 추가, 5홈 장비는 낮은 품질 홈을 클릭해 승급':'Stone selected — click a card to add a socket; on 5-socket gear click a lower-quality socket to upgrade',
 '소켓석이 없습니다 — 정예·보스가 드물게 떨어뜨립니다.':'No socket stones — elites and bosses rarely drop them.',
 '같은 종류·성급·강화·품질은 한 칸에 모아 표시합니다.':'Matching type, star, enhancement and quality share one slot.',
+// [RELIC] 보석/결정 → 유물 명칭 변경 (2026-10-10, No.3276~3304)
+'유물함':'Relic Vault',
+'유물 분류':'Relic categories',
+'보유 유물':'Owned relics',
+'전체 장비 부위와 유물 홈':'All equipment and relic sockets',
+'유물 선택':'Choose relic',
+'빈 홈: 장착 · 유물이 든 홈: 탈착':'Empty socket: equip · Filled socket: remove',
+'유물을 선택하세요':'Select a relic',
+'장비의 빈 홈에 끼워 능력치를 더합니다.':'Add stats by placing relics in empty equipment sockets.',
+'강화·합성·분해는 대장간 → 유물에서 할 수 있습니다.':'Enhance, fuse and dismantle at Forge → Relic.',
+'이 분류의 유물이 없습니다.':'No relics in this category.',
+'아직 보유한 유물이 없습니다.':'No relics collected yet.',
+'장착 가능한 유물':'Equipable relics',
+'보유한 유물이 없습니다':'No relics owned',
+'이 홈에 맞는 유물이 없습니다':'No relics fit this socket',
+'선택한 분류에 유물이 없습니다':'No relics in this filter',
+'다른 장비 홈을 선택하거나 호환 유물을 획득하세요.':'Choose another socket or collect a matching relic.',
+'다른 성급 또는 분류를 선택하면 장착 후보가 표시됩니다.':'Choose another rank or category to see matching relics.',
+'전체 호환 유물 보기':'Show all fitting relics',
+'유물 가루 ':'Relic dust ',
+'💎 유물 주머니로: ':'💎 Relic to bag: ',
+'💎 유물 자동 전승 완료':'💎 Relics transferred',
+'유물 슬롯':'Relic Slot',
+'클릭하여 유물 선택':'Click to choose a relic',
+'유물 장착':'Sockets',
+'이 분류에 유물이 없습니다':'No relics in this category',
+'(재료 유물 없음)':'(no feed relic)',
+'유물 ×1':'Relic ×1',
+'이 분류에 분해할 유물이 없습니다':'No relics to decompose in this category',
+'일괄 작업은 선택한 분류에만 적용됩니다. 장착·해제는 인벤의 장비 소켓에서 가능합니다.':'Bulk actions affect the selected category. Equip or detach relics through inventory sockets.',
 };
 // --- 장비명 조합 번역 (접두사 + 기본형) ---
 const _EN_PFX={'녹슨':'Rusty','강철':'Steel','흑요석':'Obsidian','미스릴':'Mithril','심판의':'Judgment','천벌의':'Divine Wrath','파멸의':'Destruction',
@@ -14680,6 +14713,8 @@ const UNIQUE_SPECIAL={
   u_d20: {ko:'에너지쉴드 파괴 시 3초 내 Q 패링에 파열 에너지 저장 ({p}%)',     stat:'_uShieldBreakBank',   val:0.20, roll:[20,40],  scale:0.01},
   u_d21: {ko:'악마화 부활 성공 시 분노 {n} 즉시 충전',                        stat:'_uDemonRekindle',     val:20,   roll:[20,40]},
   u_d22: {ko:'체간 붕괴 후 5초 내 악의구가 균열 잔향 1발 ({p}%)',             stat:'_uPoiseOrbFracture',  val:0.20, roll:[20,40],  scale:0.01},
+  u_p01: {ko:'패링한 탄이 2발로 분열, 반격 피해 +{p}%',                  stat:'_uParrySplit',        val:1.00, roll:[100,1000],scale:0.01},
+  u_p02: {ko:'패링한 탄에 시전자 관통력 적용 + 관통력 {n}',               stat:'_uParryPierce',       val:10,   roll:[10,100]},
 };
 // stat → 정의 역색인 (툴팁 하/중/상옵 라벨·roll 범위 조회용)
 const _UNIQ_BY_STAT={};for(const _uk in UNIQUE_SPECIAL){_UNIQ_BY_STAT[UNIQUE_SPECIAL[_uk].stat]=UNIQUE_SPECIAL[_uk]}
@@ -14832,9 +14867,9 @@ if(typeof Image!=='undefined'){
 const CRYSTAL_STAR=[
   {name:'조각',en:'Fragment',mul:1.0,color:'#888888'},
   {name:'파편',en:'Shard',mul:2.0,color:'#44cc44'},
-  {name:'결정',en:'Crystal',mul:3.5,color:'#4488ff'},
-  {name:'순수결정',en:'Pure Crystal',mul:6.0,color:'#cc44ff'},
-  {name:'완전결정',en:'Perfect Crystal',mul:10.0,color:'#ffaa00'},
+  {name:'유물',en:'Relic',mul:3.5,color:'#4488ff'},
+  {name:'순수유물',en:'Pure Relic',mul:6.0,color:'#cc44ff'},
+  {name:'완전유물',en:'Perfect Relic',mul:10.0,color:'#ffaa00'},
 ];
 function _crStarN(s){return _L(s.name,s.en)}
 function _crDefN(d){return _L(d.ko,d.en)}
@@ -14859,22 +14894,31 @@ function crystalEnhCost(cr){
 const CR_Q_TIER_COL={iron:'#9aa0a8',bronze:'#d19a5c',silver:'#e7edf3',gold:'#f2d388',hell:'#ff8a50'};
 function _qRoll(){return 1+~~(Math.random()*100)}
 function _qTier(q){return 10-Math.floor((Math.min(100,Math.max(1,q||50))-1)/10)}
-function _qGrp(t){return t>=9?'iron':t>=7?'bronze':t>=5?'silver':t>=3?'gold':'hell'}
+// ═══ 등급(2026-10-10 단순화): 동·은·금 3등급, q 기준. 상위 등급(예: 다이아)은 Q_GRADES 끝에 {id,ko,en,min,col} 한 줄 추가 ═══
+// 공명·색·이름·소켓석 그림(data-grp) 모두 이 표를 따른다. 내부 q(1~100)·홈 보너스 b=(q−1)/99는 그대로.
+const Q_GRADES=[
+  {id:'bronze',ko:'동',en:'Bronze',min:1, col:'#d19a5c'},
+  {id:'silver',ko:'은',en:'Silver',min:41,col:'#e7edf3'},
+  {id:'gold',  ko:'금',en:'Gold',  min:81,col:'#f2d388'},
+];
+function _qGradeOf(q){const qq=Math.min(100,Math.max(1,q||50));let g=Q_GRADES[0];for(const x of Q_GRADES)if(qq>=x.min)g=x;return g}
+function _qGradeName(q){const g=_qGradeOf(q);return _L(g.ko,g.en)}
+function _qGrp(t){return _qGradeOf((10-t)*10+5).id} // 기존 호출부(티어 인자) 호환: 티어 중앙 q의 등급
 function _qGemMul(q){return 0.75+0.5*Math.min(100,Math.max(1,q||50))/100}
-function _qLabel(q){const qq=Math.min(100,Math.max(1,q||50));return _L('품질 {q} · {t}티어','Quality {q} · Tier {t}',{q:qq,t:_qTier(qq)})}
+function _qLabel(q){const qq=Math.min(100,Math.max(1,q||50));return _L('품질 {q} · {g}','Quality {q} · {g}',{q:qq,g:_qGradeName(qq)})}
 // 합성 결과 q = 소모 보석 q의 반올림 평균
 function _crFuseQ(list){if(!list||!list.length)return 50;return Math.max(1,Math.min(100,Math.round(list.reduce((a,c)=>a+Math.min(100,Math.max(1,(c&&c.q)||50)),0)/list.length)))}
-// 홈 보너스 b=(q홈−1)/99 (q100=+100%, q1=+0%). 홈 티어==보석 티어(공명)면 보너스 ×2.
+// 홈 보너스 b=(q홈−1)/99 (q100=+100%, q1=+0%). 홈 등급==유물 등급(공명, 동·은·금)이면 보너스 ×2.
 // 최종 효과 = crystalEffects(cr) × (1 + b×(공명?2:1)). 최대 = q100홈+1티어보석 = ×3.00.
 function socketMul(item,si){
   const cr=item&&Array.isArray(item.crystals)?item.crystals[si]:null;if(!cr)return 1;
   const q=Math.min(100,Math.max(1,(Array.isArray(item.socketQ)?item.socketQ[si]:1)||1)),b=(q-1)/99;
-  return 1+b*(_qTier(q)===_qTier(cr.q)?2:1);
+  return 1+b*(_qGradeOf(q).id===_qGradeOf(cr.q).id?2:1);
 }
 function socketResonant(item,si){
   const cr=item&&Array.isArray(item.crystals)?item.crystals[si]:null;if(!cr)return false;
   const q=(Array.isArray(item.socketQ)?item.socketQ[si]:1)||1;
-  return q>1&&_qTier(q)===_qTier(cr.q);
+  return q>1&&_qGradeOf(q).id===_qGradeOf(cr.q).id;
 }
 // ═══ 소켓석 — 드랍 재료: 장비 홈 개방(최대 5홈)·홈 품질 승급 ═══
 const STONE_BAG_MAX=9999;
@@ -14961,22 +15005,22 @@ function renderInvCrystals(){
   const groups=_crBagGroups(_invCrFilter);
   if(!groups.some(g=>g.idxs.some(i=>CRYSTAL_BAG[i]===_invCrSelected)))_invCrSelected=null;
   const head=make('header','inv-cr-head');
-  head.append(make('h3','inv-cr-heading',_L('보석함','Gem collection')),
+  head.append(make('h3','inv-cr-heading',_L('유물함','Relic Vault')),
     make('span','inv-cr-capacity',_L('보유 ','Owned ')+CRYSTAL_BAG.length+' / '+CRYSTAL_BAG_MAX));
-  const filters=make('div','inv-cr-filters');filters.setAttribute('aria-label',_L('보석 분류','Gem categories'));
+  const filters=make('div','inv-cr-filters');filters.setAttribute('aria-label',_L('유물 분류','Relic categories'));
   for(const [key,ko,en] of [['all','전체','All'],['atk','공격','Attack'],['def','방어','Defense'],['acc','자원','Resource']]){
     const b=button('inv-cr-filter',_L(ko,en),()=>{_invCrFilter=key;renderInvCrystals();
       panel.querySelector('[data-filter="'+key+'"]')?.focus();});
     b.dataset.filter=key;b.setAttribute('aria-pressed',String(_invCrFilter===key));filters.append(b);
   }
   const body=make('div','inv-cr-body'),grid=make('div','inv-cr-grid'),detail=make('aside','inv-cr-detail');
-  grid.setAttribute('aria-label',_L('보유 보석','Owned gems'));
+  grid.setAttribute('aria-label',_L('보유 유물','Owned relics'));
   const gem=cr=>{const d=CRYSTAL_DEFS[cr.id],n=make('span','inv-cr-gem'),art=_crArt(d);
     n.style.setProperty('--gem-color',d.col||'#88aacc');n.dataset.form=d.form;n.dataset.sigil=d.sigil;
     if(art){n.dataset.sheet=String(art.sheet);n.style.setProperty('--relic-sheet','url(assets/gems/cursed_relics_'+art.sheet+'.svg)');n.style.setProperty('--relic-x',art.x+'%');n.style.setProperty('--relic-y',art.y+'%');}
     n.setAttribute('aria-hidden','true');return n;};
   const equipment=make('section','inv-cr-equipment');
-  equipment.setAttribute('aria-label',_L('전체 장비 부위와 보석 홈','All equipment and gem sockets'));
+  equipment.setAttribute('aria-label',_L('전체 장비 부위와 유물 홈','All equipment and relic sockets'));
   const renderEquipment=()=>{
     const list=make('div','inv-cr-equipment-list');
     const portrait=make('div','inv-cr-portrait');portrait.setAttribute('aria-hidden','true');
@@ -15056,7 +15100,7 @@ function renderInvCrystals(){
         if(upgradable)b.dataset.upgradable='true';
         b.dataset.ready=String(!value&&!!selected&&compatible&&stoneQ==null);
         if(value||selected)b.style.setProperty('--socket-gem',CRYSTAL_DEFS[(value||selected).id]?.col||'#c8ad76');
-        const action=stoneQ!=null?(upgradable?_L('홈 승급','Upgrade socket'):''):value?_L('탈착','Remove'):selected?compatible?_L('장착','Equip'):_L('호환되지 않음','Incompatible'):_L('보석 선택','Choose gem');
+        const action=stoneQ!=null?(upgradable?_L('홈 승급','Upgrade socket'):''):value?_L('탈착','Remove'):selected?compatible?_L('장착','Equip'):_L('호환되지 않음','Incompatible'):_L('유물 선택','Choose relic');
         const qInfo=_qLabel(sq)+(value&&socketResonant(item,si)?' · '+_L('공명 ×2','Resonance ×2'):'');
         b.setAttribute('aria-label',label+' · '+qInfo+(value?' · '+_crLabel(value):'')+(action?' · '+action:''));
         b.title=(value?_crLabel(value)+' '+_crValStr(value,socketMul(item,si))+' · ':label+' · ')+qInfo+(action?' · '+action:'');
@@ -15066,7 +15110,7 @@ function renderInvCrystals(){
           b.onmouseenter=b.onfocus=()=>showDetail(value,slot,si);
           b.onmouseleave=b.onblur=()=>showDetail(_invCrSelected);
         }else b.append(make('span','inv-cr-socket-empty','◇'));
-        b.append(make('span','inv-cr-socket-tier','T'+sTier));
+        b.append(make('span','inv-cr-socket-tier',_qGradeName(sq)));
         sockets.append(b);
       }
       card.append(sockets);list.append(card);
@@ -15078,14 +15122,14 @@ function renderInvCrystals(){
       _T('소켓석 선택 중 — 카드를 클릭해 홈 추가, 5홈 장비는 낮은 품질 홈을 클릭해 승급'):
       active?
       _L('장착 가능한 빈 홈 '+readyCount+'개 · 빛나는 홈을 선택','Compatible empty sockets: '+readyCount+' · Choose a glowing socket'):
-      _L('빈 홈: 장착 · 보석이 든 홈: 탈착','Empty socket: equip · Filled socket: remove');
+      _L('빈 홈: 장착 · 유물이 든 홈: 탈착','Empty socket: equip · Filled socket: remove');
     equipment.replaceChildren(equipmentHead,make('p','inv-cr-note inv-cr-equipment-help',instruction),list);
   };
   const showDetail=(cr,equippedSlot=null,sockIdx=null)=>{
     if(!cr||(!CRYSTAL_BAG.includes(cr)&&!equippedSlot)){
-      detail.replaceChildren(make('p','inv-cr-help',_L('보석을 선택하세요','Select a gem')),
-        make('p','inv-cr-note',_L('장비의 빈 홈에 끼워 능력치를 더합니다.','Add stats by placing gems in empty equipment sockets.')),
-        make('p','inv-cr-note',_L('강화·합성·분해는 대장간 → 결정에서 할 수 있습니다.','Enhance, fuse and dismantle at Forge → Crystal.')));return;
+      detail.replaceChildren(make('p','inv-cr-help',_L('유물을 선택하세요','Select a relic')),
+        make('p','inv-cr-note',_L('장비의 빈 홈에 끼워 능력치를 더합니다.','Add stats by placing relics in empty equipment sockets.')),
+        make('p','inv-cr-note',_L('강화·합성·분해는 대장간 → 유물에서 할 수 있습니다.','Enhance, fuse and dismantle at Forge → Relic.')));return;
     }
     const d=CRYSTAL_DEFS[cr.id],s=CRYSTAL_STAR[cr.star];
     const name=make('h4','inv-cr-name',_crDefN(d));name.style.color=s.color;
@@ -15192,7 +15236,7 @@ function renderInvCrystals(){
     cell.setAttribute('aria-pressed',String(group.idxs.some(i=>CRYSTAL_BAG[i]===_invCrSelected)));
     cell.setAttribute('aria-label',_crDefN(d)+' · '+_crStarN(s)+' · '+_qLabel(cr.q)+' · '+_crValStr(cr)+(cr.enh?' · +'+cr.enh:'')+' · ×'+group.idxs.length);
     cell.title=_crDefN(d)+' · '+_qLabel(cr.q);
-    cell.append(gem(cr),make('span','inv-cr-tier',(cr.star+1)+'◆'),make('span','inv-cr-q','T'+_qTier(cr.q)),make('span','inv-cr-count',String(group.idxs.length)));
+    cell.append(gem(cr),make('span','inv-cr-tier',(cr.star+1)+'◆'),make('span','inv-cr-q',_qGradeName(cr.q)),make('span','inv-cr-count',String(group.idxs.length)));
     cell.append(make('span','inv-cr-label',_crDefN(d)));
     if(cr.enh)cell.append(make('span','inv-cr-enh','+'+cr.enh));
     cell.onmouseenter=()=>showDetail(cr);cell.onmouseleave=()=>showDetail(_invCrSelected);
@@ -15201,10 +15245,10 @@ function renderInvCrystals(){
     cells.push([cell,cr]);grid.append(cell);
   }
   if(!groups.length)grid.append(make('p','inv-cr-empty',CRYSTAL_BAG.length?
-    _L('이 분류의 보석이 없습니다.','No gems in this category.'):_L('아직 보유한 보석이 없습니다.','No gems collected yet.')));
+    _L('이 분류의 유물이 없습니다.','No relics in this category.'):_L('아직 보유한 유물이 없습니다.','No relics collected yet.')));
   const collection=make('section','inv-cr-collection');
   const collectionHead=make('div','inv-cr-collection-head');
-  collectionHead.append(make('h4','inv-cr-collection-title',_L('보유 보석','Owned gems')),filters);
+  collectionHead.append(make('h4','inv-cr-collection-title',_L('보유 유물','Owned relics')),filters);
   // ═══ 소켓석 진열대 — 정확 q 단위 그룹, 선택 후 장비 카드에 적용 ═══
   const stones=make('section','inv-cr-stones');
   stones.setAttribute('aria-label',_L('소켓석','Socket Stones'));
@@ -15226,7 +15270,7 @@ function renderInvCrystals(){
       sb.setAttribute('aria-pressed',String(_invStoneSelQ===q));
       sb.title=_L('소켓석','Socket Stone')+' · '+_qLabel(q)+' ×'+n;
       sb.setAttribute('aria-label',sb.title);
-      sb.append(make('span','inv-cr-stone-tier','T'+t),make('span','inv-cr-stone-art'),
+      sb.append(make('span','inv-cr-stone-tier',_qGradeName(q)),make('span','inv-cr-stone-art'),
         make('span','inv-cr-stone-q','q'+q),make('span','inv-cr-stone-count','×'+n));
       stonesGrid.append(sb);
     });
@@ -15237,13 +15281,13 @@ function renderInvCrystals(){
   body.append(collection,equipment);renderEquipment();
   const footer=make('footer','inv-cr-footer');
   footer.append(make('span','inv-cr-note',_L('같은 종류·성급·강화·품질은 한 칸에 모아 표시합니다.','Matching type, star, enhancement and quality share one slot.')),
-    make('span','inv-cr-dust',_L('결정 가루 ','Crystal dust ')+CRYSTAL_DUST));
+    make('span','inv-cr-dust',_L('유물 가루 ','Relic dust ')+CRYSTAL_DUST));
   panel.replaceChildren(head,body,footer);showDetail(_invCrSelected);
 }
 function renderCrystalBag(){
   let pop=$('crBagPop');
   if(!pop){pop=document.createElement('div');pop.id='crBagPop';pop.style.cssText='position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:380px;max-height:70vh;background:#1a1008;border:2px solid #553388;border-radius:8px;z-index:9999;display:flex;flex-direction:column;padding:10px;box-shadow:0 0 30px rgba(100,0,200,.3)';document.body.appendChild(pop);}
-  pop.setAttribute('role','dialog');pop.setAttribute('aria-label',_crPickSlot?_L('장착 가능한 보석','Equipable gems'):_L('보유 보석','Owned gems'));
+  pop.setAttribute('role','dialog');pop.setAttribute('aria-label',_crPickSlot?_L('장착 가능한 유물','Equipable relics'):_L('보유 유물','Owned relics'));
   pop.onkeydown=event=>{
     if(event.key==='Escape'){event.preventDefault();event.stopPropagation();closeCrystalPicker();return;}
     if(event.key!=='Tab')return;
@@ -15260,7 +15304,7 @@ function renderCrystalBag(){
   const compatibleGems=CRYSTAL_BAG.filter(cr=>{const d=CRYSTAL_DEFS[cr.id];return d&&(!_crPickSlot||d.slots?.includes(_crPickSlot));});
   const compatibleCount=compatibleGems.length;
   const slotLabel=_crPickSlot?document.querySelector('.inv-cr-equipment-card[data-slot="'+_crPickSlot+'"] .inv-cr-equipment-name')?.textContent:'';
-  let h='<div class="cr-picker-head"><span class="cr-picker-heading"><span class="cr-picker-eyebrow">RELIC SOCKET</span><strong class="cr-picker-title">'+(_crPickSlot?_L('장착 가능한 보석','Equipable gems'):_L('보유 보석','Owned gems'))+'</strong><span class="cr-picker-target">'+(slotLabel?slotLabel+' · '+_L('빈 홈','Empty socket'):_L('보석을 선택하세요','Choose a gem'))+'</span></span><span class="cr-picker-count"><small>'+_L('호환','Fit')+'</small><b>'+compatibleCount+'</b><i>/</i><small>'+_L('보유','Owned')+' '+CRYSTAL_BAG.length+'</small></span>';
+  let h='<div class="cr-picker-head"><span class="cr-picker-heading"><span class="cr-picker-eyebrow">RELIC SOCKET</span><strong class="cr-picker-title">'+(_crPickSlot?_L('장착 가능한 유물','Equipable relics'):_L('보유 유물','Owned relics'))+'</strong><span class="cr-picker-target">'+(slotLabel?slotLabel+' · '+_L('빈 홈','Empty socket'):_L('유물을 선택하세요','Choose a relic'))+'</span></span><span class="cr-picker-count"><small>'+_L('호환','Fit')+'</small><b>'+compatibleCount+'</b><i>/</i><small>'+_L('보유','Owned')+' '+CRYSTAL_BAG.length+'</small></span>';
   h+='<button type="button" class="cr-picker-close" aria-label="'+_L('닫기','Close')+'" onclick="closeCrystalPicker()">✕</button></div>';
   h+='<div class="cr-picker-filters">';
   [['all','전체','All'],['atk','공격','Attack'],['def','방어','Defense'],['acc','자원','Resource']].forEach(([k,ko,en])=>{
@@ -15284,15 +15328,15 @@ function renderCrystalBag(){
     visibleCount++;
     const sel=_crBagSel===i;
     h+='<button type="button" class="cr-picker-item" aria-label="'+_crDefN(d)+' · '+_crStarN(s)+' · '+_crValStr(cr)+'" onclick="'+(_crPickCb?'_crPickCb('+i+')':'_crBagSel='+i+';renderCrystalBag()')+'" style="cursor:pointer;border:1px solid '+(sel?'#bb88ff':'#66543d')+';background:'+(sel?'rgba(187,136,255,.12)':'rgba(0,0,0,.32)')+'">';
-    h+='<span class="cr-picker-art">'+_crIco(d,64)+'</span><span class="cr-picker-copy"><span class="cr-picker-rank" style="color:'+s.color+'">'+_crStarN(s)+(cr.enh?' · +'+cr.enh:'')+' · <span style="color:'+CR_Q_TIER_COL[_qGrp(_qTier(cr.q))]+'">T'+_qTier(cr.q)+' q'+Math.min(100,Math.max(1,cr.q||50))+'</span></span>';
+    h+='<span class="cr-picker-art">'+_crIco(d,64)+'</span><span class="cr-picker-copy"><span class="cr-picker-rank" style="color:'+s.color+'">'+_crStarN(s)+(cr.enh?' · +'+cr.enh:'')+' · <span style="color:'+_qGradeOf(cr.q).col+'">'+_qGradeName(cr.q)+' q'+Math.min(100,Math.max(1,cr.q||50))+'</span></span>';
     h+='<strong class="cr-picker-name">'+_crDefN(d)+'</strong><span class="cr-picker-options">'+_crValStr(cr)+'</span></span></button>';
   });
   if(visibleCount===0){
     const noOwned=CRYSTAL_BAG.length===0,noFit=compatibleCount===0;
-    const title=noOwned?_L('보유한 보석이 없습니다','No gems owned'):noFit?_L('이 홈에 맞는 보석이 없습니다','No gems fit this socket'):_L('선택한 분류에 보석이 없습니다','No gems in this filter');
-    const hint=noFit?_L('다른 장비 홈을 선택하거나 호환 보석을 획득하세요.','Choose another socket or collect a matching gem.'):_L('다른 성급 또는 분류를 선택하면 장착 후보가 표시됩니다.','Choose another rank or category to see matching gems.');
+    const title=noOwned?_L('보유한 유물이 없습니다','No relics owned'):noFit?_L('이 홈에 맞는 유물이 없습니다','No relics fit this socket'):_L('선택한 분류에 유물이 없습니다','No relics in this filter');
+    const hint=noFit?_L('다른 장비 홈을 선택하거나 호환 유물을 획득하세요.','Choose another socket or collect a matching relic.'):_L('다른 성급 또는 분류를 선택하면 장착 후보가 표시됩니다.','Choose another rank or category to see matching relics.');
     h+='<div class="cr-picker-empty" role="status"><span class="cr-picker-empty-mark" aria-hidden="true">◇</span><span class="cr-picker-empty-kicker">NO RELIC FOUND</span><strong>'+title+'</strong><p>'+hint+'</p>';
-    if(!noOwned&&!noFit&&_crBagFilter!=='all')h+='<button type="button" class="cr-picker-reset" onclick="_crBagFilter=\'all\';renderCrystalBag();_crPickerFocusStart()">'+_L('전체 호환 보석 보기','Show all fitting gems')+' <span aria-hidden="true">↗</span></button>';
+    if(!noOwned&&!noFit&&_crBagFilter!=='all')h+='<button type="button" class="cr-picker-reset" onclick="_crBagFilter=\'all\';renderCrystalBag();_crPickerFocusStart()">'+_L('전체 호환 유물 보기','Show all fitting relics')+' <span aria-hidden="true">↗</span></button>';
     h+='</div>';
   }
   h+='</div>';pop.replaceChildren(document.createRange().createContextualFragment(h));
@@ -15336,7 +15380,7 @@ function attachCrystal(item,slotIdx,cr,bagIdx){
 }
 function detachCrystal(item,slotIdx){
   if(!item||!item.crystals||!item.crystals[slotIdx])return false;
-  if(CRYSTAL_BAG.length>=CRYSTAL_BAG_MAX){notify(_T('결정 주머니가 가득 찼습니다!'));return false;}
+  if(CRYSTAL_BAG.length>=CRYSTAL_BAG_MAX){notify(_T('유물 주머니가 가득 찼습니다!'));return false;}
   CRYSTAL_BAG.push(item.crystals[slotIdx]);item.crystals[slotIdx]=null;applyStats();return true;
 }
 // ═══ 소켓석 적용 — 홈 개방(5홈 미만): 다음 자리에 소켓석 q의 빈 홈 추가 ═══
@@ -15351,7 +15395,7 @@ function stoneUnseal(slot){
   STONE_BAG.splice(bi,1);
   item.crystals.push(null);item.socketQ.push(q);item.socketCount=item.crystals.length;
   if(typeof SFX!=='undefined'&&typeof SFX.forge==='function')SFX.forge();
-  notify(_L('홈 개방! {n}번째 홈 · 품질 {q} ({t}티어)','Socket opened! Slot {n} · quality {q} (Tier {t})',{n:item.crystals.length,q,t:_qTier(q)}));
+  notify(_L('홈 개방! {n}번째 홈 · 품질 {q} ({g})','Socket opened! Slot {n} · quality {q} ({g})',{n:item.crystals.length,q,g:_qGradeName(q)}));
   if(!STONE_BAG.some(s=>s&&s.q===q))_invStoneSelQ=null;
   dbSaveNow();renderInvCrystals();
   return true;
@@ -15692,11 +15736,10 @@ function mkItem(slot,tier,el,rarity,wtype){
   const itemLv=Math.min(900,Math.floor(_pLv/10)*10); // 10단위 내림, 캡 900
   item.itemLv=itemLv;
   item.reqLv=Math.max(0,itemLv-10);
-  // ═══ 결정 슬롯 생성 (1~4소켓 랜덤) ═══
-  const _scR=Math.random();
-  item.socketCount=_scR<.50?1:_scR<.80?2:_scR<.95?3:4;
-  item.crystals=new Array(item.socketCount).fill(null);
-  item.socketQ=new Array(item.socketCount).fill(1); // 자연 홈 품질 = q1(10티어, +0%) — 소켓석으로만 승급
+  // ═══ 홈: 신규 장비는 전부 닫힌 상태(0홈) — 소켓석을 꽂아야 열린다 (2026-10-10 사용자 지시, 자연 홈 1~4 롤 폐지) ═══
+  item.socketCount=0;
+  item.crystals=[];
+  item.socketQ=[];
   // ═══ 유골함: 유니크 단일 아이템 고정 (2026-09-01 도감 개편) ═══
   // 랜덤 등급/티어/어픽스 롤 전부 무효 — 인자와 무관하게 '전대의 유골함' 1종 고정.
   // 소환 위력은 유골 도감(INV.ossCollect)의 부위 포인트에서 나온다. 획득: 첫 유골 부위 드랍 시 자동 지급.
@@ -15709,7 +15752,7 @@ function mkItem(slot,tier,el,rarity,wtype){
     item.legendarySpecial=null;item.uniqueSpecial=null;
     item._implicitStat='_iAncPow';item._implicitVal=10;item._implicitKo=(IMPLICIT_TABLE.ossuary&&IMPLICIT_TABLE.ossuary.ko)||'전대 위력 +X%';
     item.reqLv=0; // 자동 지급 즉시 장착 가능
-    item.socketCount=2;item.crystals=[null,null];item.socketQ=[1,1];
+    item.socketCount=0;item.crystals=[];item.socketQ=[]; // 유골함도 닫힌 상태로 시작
   }
   return item;
 }
@@ -15875,15 +15918,15 @@ function equipItem(item){
       }
       if(!_placed){
         // 슬롯 부족 → 주머니로 자동 탈착 (CRYSTAL_BAG_MAX 제한)
-        if(CRYSTAL_BAG.length>=CRYSTAL_BAG_MAX){notify(_T('결정 주머니가 가득 찼습니다!'));continue}
+        if(CRYSTAL_BAG.length>=CRYSTAL_BAG_MAX){notify(_T('유물 주머니가 가득 찼습니다!'));continue}
         CRYSTAL_BAG.push(_cr);
         const _cd=CRYSTAL_DEFS[_cr.id];
         _crMsg.push((_cd?_cd.sigil:'💎')+(_cd?_crDefN(_cd):_cr.id));
       }
       old.crystals[_ci]=null;
     }
-    if(_crMsg.length>0)notify(_L('💎 결정 주머니로: ','💎 Crystal to bag: ')+_crMsg.join(', '));
-    else if(item.crystals.some(c=>c))notify(_L('💎 결정 자동 전승 완료','💎 Crystals transferred'));
+    if(_crMsg.length>0)notify(_L('💎 유물 주머니로: ','💎 Relic to bag: ')+_crMsg.join(', '));
+    else if(item.crystals.some(c=>c))notify(_L('💎 유물 자동 전승 완료','💎 Relics transferred'));
   }
   // 새 아이템의 그리드 위치를 old에 넘기기 (같은 자리에 교체)
   const _swapGx=item._gx,_swapGy=item._gy;
@@ -16411,6 +16454,7 @@ function _mkProj(){return{x:0,y:0,vx:0,vy:0,dmg:0,el:0,friendly:false,life:0,ml:
 for(let _i=0;_i<_PROJ_POOL;_i++)_projFree.push(_mkProj());
 function _resetProj(p){
   p.x=p.y=p.vx=p.vy=p.dmg=p.dist=0;
+  p._uqFoe=p._uqSplit=false;p._pierced=0;
   p.el=0;p.friendly=false;p.life=p.ml=0;p.col='';p.sz=1;p.r=4;
   p.redBean=p.blackBean=p.bwBean=p.gbBean=p.homing=p.blueBean=p.fireMagic=p.waterBean=false;p.parryBlueBean=false;p._cCol=null;
   p.mine=p.bomb=p.trap=p.web=p.dimRift=p.poisonZone=false;
@@ -27159,6 +27203,19 @@ function pDefAdd(){return (P._altDef||0)*30}   // 철벽 패시브 제거: 제�
 function pChargeRange(){return 1+PASSIVES.pCharge*.02}               // 사슬사거리 +2%/lv (10lv=+20%)
 function pChargeGauge(){return 1+PASSIVES.pCharge*.03}               // 사슬기동 게이지회복 +3%/lv (10lv=+30%)
 function pParryDmg(){return 1+PASSIVES.pParry*.50}     // 카운터뎀 +50%/lv (10lv=×6)
+// 유니크 u_p01 분열 반격: 적 탄이 패링으로 아군 탄이 된 첫 프레임에 ±8° 2발로 분열 (분열탄 재분열 없음)
+function _uqSplitParried(p){
+  p._uqSplit=true;
+  const q=_projFree.length?_projFree.pop():_mkProj();_resetProj(q);
+  for(const k in p)q[k]=p[k];
+  q._trail=null;q._trH=0;q._trLen=0;q._hitSet=null;q._pierced=0;q._uqSplit=true;
+  const sp=Math.hypot(p.vx,p.vy),a=Math.atan2(p.vy,p.vx),d=0.14;
+  if(sp>0){p.vx=Math.cos(a-d)*sp;p.vy=Math.sin(a-d)*sp;q.vx=Math.cos(a+d)*sp;q.vy=Math.sin(a+d)*sp}
+  else{q.x+=8;q.y+=8}
+  projs.push(q);
+}
+// 유니크 u_p02 관통 반격: 시전자 관통력(통일 관통 50+장비 관통력) + 롤 관통력
+function _uqParryPierceRate(){const v=_uEq('_uParryPierce')||0;return v>0?50+(_eqAffix('pierceFlat')||0)+v:0}
 function pParryProjDmg(bulletDmg,isQ){const scale=isQ?magicRef()*statInt()*pMagicMul(false):meleeRef()*statStr()*pAtkMul();const _gearBonus=Math.min(1,scale/300);const _base=bulletDmg*(1+_gearBonus)*0.5;const _afxPB=1+_eqAffix('parryBonus');const _legSP=_lEq('_lShieldParry')>0?_lEq('_lShieldParry'):1;/* 전설 방패: 패링 반격 데미지 ×2 (어느 부위에 있어도 동작) */const _calc=~~(_base*pParryDmg()*_afxPB*_legSP);const _kiFloor=~~(meleeRef()*14*statStr()*pAtkMul());return Math.max(_calc,_kiFloor);} // 탄뎀×0.5 베이스 + 장비보너스, 최소 기검참1방(14×) 보장
 function pParryRmbSpd(){return 1+PASSIVES.pParry*.10}  // E(칼등) 공속 +10%/lv (10lv=+100%)
 function pParryRainbowDR(){return Math.min(.50,PASSIVES.pParry*.10)} // 무지개탄 피해감소 +10%/lv (최대50%)
@@ -31177,7 +31234,7 @@ function rollDrop(e){
     if(Math.random()<_ssCh){
       const _ss=mkSocketStone(),_ssT=_qTier(_ss.q);
       STONE_BAG.push(_ss);
-      addTxt(e.x,e.y-55,_L('소켓석 {t}티어 획득!','Socket Stone Tier {t}!',{t:_ssT}),CR_Q_TIER_COL[_qGrp(_ssT)],50);
+      addTxt(e.x,e.y-55,_L('{g} 소켓석 획득!','{g} Socket Stone!',{g:_qGradeName(_ss.q)}),_qGradeOf(_ss.q).col,50);
     }
   }
 }
@@ -33763,6 +33820,10 @@ function update(){
   {let pw=0;_resetParryHomingCache();const _camX=G.cam?G.cam.x:P.x,_camY=G.cam?G.cam.y:P.y;
   for(let i=0;i<projs.length;i++){
     const p=projs[i];
+    if(!p.friendly)p._uqFoe=true; // 적 탄 출신 표시 (패링 반사 판별용)
+    else if(p._uqFoe&&!p._uqSplit&&_uEq('_uParrySplit')>0){ // 유니크 u_p01: 반사된 첫 프레임 1회 — 반격 피해 ×(1+값) 후 2발 분열
+      const _psM=1+_uEq('_uParrySplit');p.dmg=~~(p.dmg*_psM);if(p._aoeDmg)p._aoeDmg=~~(p._aoeDmg*_psM);if(p.bombAtk)p.bombAtk=~~(p.bombAtk*_psM);
+      _uqSplitParried(p)}
     // 카메라에서 2500px 이상 떨어진 탄 즉사 (정적 장판 제외) — 화면 밖 큰 여유
     if(!p.mine&&!p.trap&&!p.poisonZone&&!p.iceZone&&!p.dimRift&&!p._coralSpike){
       const _cdx=p.x-_camX,_cdy=p.y-_camY;if(_cdx*_cdx+_cdy*_cdy>6250000){_recycleProj(p);continue}}
@@ -34196,7 +34257,7 @@ function update(){
         _pHit=p.life<=0;
       }
     }
-    if(!_pHit&&p.friendly&&!_bigBall){const _fHitR=Math.max(6,(p.r||4)+Math.min(18,Math.sqrt(p.vx*p.vx+p.vy*p.vy)*0.5));const _ne3=shQuery(p.x,p.y,_fHitR+20);for(let ni=0;ni<_ne3.length;ni++){const e=_ne3[ni];if(!e.alive)continue;if(e._bluHitCD>0)continue;if(dst(p.x,p.y,e.x,e.y)<e.r+_fHitR){if(p.friendly&&p.redBean)e._bluHitCD=3;
+    if(!_pHit&&p.friendly&&!_bigBall){const _fHitR=Math.max(6,(p.r||4)+Math.min(18,Math.sqrt(p.vx*p.vx+p.vy*p.vy)*0.5));const _ne3=shQuery(p.x,p.y,_fHitR+20);for(let ni=0;ni<_ne3.length;ni++){const e=_ne3[ni];if(!e.alive)continue;if(e._bluHitCD>0)continue;if(p._hitSet&&p._hitSet.has(e))continue;if(dst(p.x,p.y,e.x,e.y)<e.r+_fHitR){if(p.friendly&&p.redBean)e._bluHitCD=3;
       if(p.bomb){
         // 반사 폭발탄: 착탄 시 광역 폭발
         const _rbR=p.bombR||80;const _rbD=p.bombAtk||p.dmg*2;
@@ -34225,6 +34286,11 @@ function update(){
         else if(p._fromRainbow){_rainbowImpact(p.x,p.y)}else{_addBoom(p.x,p.y,_blR,72,'redbean')}SFX.detonate();
         G.shake=18*OPT.shake/100;if(G.slowMo<=0)G.slowMo=25;
         addParts(p.x,p.y,'#00ccff',20);addTxt(p.x,p.y-20,_T('💥반사 폭발!'),'#00e5ff',50)}
+      // 유니크 u_p02 관통 반격: 통일 관통 규칙(관통력×91/1000회 보장 + 초과 10회 확률 감소)으로 생존 시 계속 비행
+      {const _ppr=p._uqFoe?_uqParryPierceRate():0;
+       if(_ppr>0){if(!p._hitSet)p._hitSet=new Set();p._hitSet.add(e);p._pierced=(p._pierced||0)+1;
+         const _gtd=Math.floor(_ppr*91/1000);
+         if(p._pierced<=_gtd||Math.random()<Math.max(0,1-(p._pierced-_gtd)*0.1)){addTxt(p.x,p.y-34,_T('관통!'),'#44ffcc',25);break}}}
       _pHit=true;break}}}
     if(!_pHit)projs[pw++]=p;else _recycleProj(p);
   }projs.length=pw;}
@@ -47995,7 +48061,7 @@ function _applyLang(){try{
   const _invP=$('invPanel');if(_invP){
     const _pt=_invP.querySelector('.ptitle');if(_pt)_pt.textContent=_T('인벤토리');
     const _cpLbl=_invP.querySelector('#combatPower>span:first-child');if(_cpLbl)_cpLbl.textContent=_T('전투력');
-    const _crBtn=_invP.querySelector('#combatPower')?.nextElementSibling;if(_crBtn&&(_crBtn.textContent.includes('결정')||_crBtn.dataset.ko==='결정')){_crBtn.dataset.ko='결정';_crBtn.textContent=_T('결정')}
+    const _crBtn=_invP.querySelector('#combatPower')?.nextElementSibling;if(_crBtn&&(_crBtn.textContent.includes('결정')||_crBtn.textContent.includes('유물')||_crBtn.dataset.ko==='결정'||_crBtn.dataset.ko==='유물')){_crBtn.dataset.ko='유물';_crBtn.textContent=_T('유물')}
     const _eqLbl=_invP.querySelector('.inv-equip>div');if(_eqLbl&&(_eqLbl.textContent.includes('장착')||_eqLbl.dataset.ko==='장착 중')){_eqLbl.dataset.ko='장착 중';_eqLbl.textContent=_T('장착 중')}
     const _stTgl=_invP.querySelector('.inv-storage-toggle>span');if(_stTgl&&(_stTgl.textContent.includes('지옥창고')||_stTgl.dataset.ko==='지옥창고')){_stTgl.dataset.ko='지옥창고';_stTgl.textContent=_T('지옥창고')}
     const _bagLbl=_invP.querySelector('#invCenter>div>div');if(_bagLbl&&_bagLbl.firstChild?.nodeType===3)_bagLbl.firstChild.nodeValue=_T('가방')+' (';
@@ -48604,18 +48670,18 @@ function _invRenderDetail(idx,source,preview=false){
   // ── 2.5) 결정 슬롯 인터랙티브 UI (장착 아이템만) ──
   if(source==='eq'&&it.socketCount>0){
     const cDiv=document.createElement('div');cDiv.style.cssText='margin-top:6px;padding:6px;border:1px solid #553388;border-radius:4px;background:rgba(100,0,200,.06)';
-    let ch='<div style="color:#bb88ff;font-size:.8rem;font-weight:700;margin-bottom:4px">'+_L('결정 슬롯','Crystal Slot')+' ('+it.socketCount+') — '+_L('클릭하여 장착/탈착','click to equip/detach')+'</div>';
+    let ch='<div style="color:#bb88ff;font-size:.8rem;font-weight:700;margin-bottom:4px">'+_L('유물 슬롯','Relic Slot')+' ('+it.socketCount+') — '+_L('클릭하여 장착/탈착','click to equip/detach')+'</div>';
     for(let ci=0;ci<it.socketCount;ci++){
       const cr=it.crystals?it.crystals[ci]:null;
-      const _sq=(Array.isArray(it.socketQ)?it.socketQ[ci]:1)||1,_sqT=_qTier(_sq),_sqC=CR_Q_TIER_COL[_qGrp(_sqT)];
-      const _sqTag='<span style="color:'+_sqC+';font-size:.7rem;font-weight:700" title="'+_qLabel(_sq)+'">T'+_sqT+'</span>';
+      const _sq=(Array.isArray(it.socketQ)?it.socketQ[ci]:1)||1,_sqC=_qGradeOf(_sq).col;
+      const _sqTag='<span style="color:'+_sqC+';font-size:.7rem;font-weight:700" title="'+_qLabel(_sq)+'">'+_qGradeName(_sq)+'</span>';
       if(cr){const cd=CRYSTAL_DEFS[cr.id],cs=CRYSTAL_STAR[cr.star],_sm=socketMul(it,ci);
         ch+='<div title="'+_crDescTxt(cd)+'" onclick="detachCrystal(INV.equipped[\''+idx+'\'],'+ci+');renderInv();_invRenderDetail(\''+idx+'\',\'eq\')" style="cursor:pointer;padding:3px 6px;margin:2px 0;border:1px solid '+cs.color+'44;background:rgba(0,0,0,.2);border-radius:3px;display:flex;align-items:center;gap:4px" onmouseover="this.style.borderColor=\'#ff6644\'" onmouseout="this.style.borderColor=\''+cs.color+'44\'">';
         ch+=_sqTag+'<span style="color:'+cs.color+';font-size:.85rem">'+_crIco(cd,13)+' '+_crStarN(cs)+' '+_crDefN(cd)+(cr.enh>0?' +'+cr.enh:'')+(socketResonant(it,ci)?' <span style="color:#ffb088">✦'+_L('공명','Res.')+'</span>':'')+'</span>';
         ch+='<span style="color:#88cc88;font-size:.72rem;margin-left:auto;max-width:54%;text-align:right">'+_crValStr(cr,_sm)+'</span>';
         ch+='<span style="color:#aa6644;font-size:.7rem">'+_T('탈착')+'</span></div>';
       }else{
-        ch+='<div onclick="openCrystalPicker(function(cr,bi){attachCrystal(INV.equipped[\''+idx+'\'],'+ci+',cr,bi);renderInv();_invRenderDetail(\''+idx+'\',\'eq\')},\''+idx+'\')" style="cursor:pointer;padding:3px 6px;margin:2px 0;border:1px dashed #554433;background:rgba(0,0,0,.15);border-radius:3px;color:#aa9988;font-size:.8rem" onmouseover="this.style.borderColor=\'#bb88ff\'" onmouseout="this.style.borderColor=\'#554433\'">'+_sqTag+' ◇ '+_L('빈 슬롯','Empty Slot')+' — '+_L('클릭하여 결정 선택','Click to choose a crystal')+'</div>';
+        ch+='<div onclick="openCrystalPicker(function(cr,bi){attachCrystal(INV.equipped[\''+idx+'\'],'+ci+',cr,bi);renderInv();_invRenderDetail(\''+idx+'\',\'eq\')},\''+idx+'\')" style="cursor:pointer;padding:3px 6px;margin:2px 0;border:1px dashed #554433;background:rgba(0,0,0,.15);border-radius:3px;color:#aa9988;font-size:.8rem" onmouseover="this.style.borderColor=\'#bb88ff\'" onmouseout="this.style.borderColor=\'#554433\'">'+_sqTag+' ◇ '+_L('빈 슬롯','Empty Slot')+' — '+_L('클릭하여 유물 선택','Click to choose a relic')+'</div>';
       }
     }
     cDiv.innerHTML=ch;rp.appendChild(cDiv);
@@ -48679,7 +48745,7 @@ function _invRenderEmptyDetail(){
   const metrics=document.createElement('div');metrics.className='inv-detail-metrics';
   for(const [label,value] of [
     [_L('공격','Attack'),cp.atk],[_L('방어','Defense'),cp.def],
-    [_L('추가 효과','Extra'),cp.extra],[_L('보석 장착','Sockets'),`${socketFilled} / ${socketTotal}`]
+    [_L('추가 효과','Extra'),cp.extra],[_L('유물 장착','Sockets'),`${socketFilled} / ${socketTotal}`]
   ]){
     const row=document.createElement('div');
     const name=document.createElement('span');name.textContent=label;
@@ -48844,11 +48910,11 @@ function _invCardFields(it){
   // ═══ 결정 슬롯 표시 ═══
   if(it.socketCount>0){
     stats+='<div style="margin-top:6px;border-top:1px solid #553388;padding-top:4px">';
-    stats+='<div style="color:#bb88ff;font-size:.8rem;font-weight:700">'+(_L('결정 슬롯','Crystal Slot'))+' ('+it.socketCount+')</div>';
+    stats+='<div style="color:#bb88ff;font-size:.8rem;font-weight:700">'+(_L('유물 슬롯','Relic Slot'))+' ('+it.socketCount+')</div>';
     for(let ci=0;ci<it.socketCount;ci++){
       const cr=it.crystals?it.crystals[ci]:null;
-      const _sq=(Array.isArray(it.socketQ)?it.socketQ[ci]:1)||1,_sqT=_qTier(_sq),_sqC=CR_Q_TIER_COL[_qGrp(_sqT)];
-      const _sqTag='<span style="color:'+_sqC+';font-weight:700">[T'+_sqT+']</span> ';
+      const _sq=(Array.isArray(it.socketQ)?it.socketQ[ci]:1)||1,_sqC=_qGradeOf(_sq).col;
+      const _sqTag='<span style="color:'+_sqC+';font-weight:700">['+_qGradeName(_sq)+']</span> ';
       if(cr){const cd=CRYSTAL_DEFS[cr.id],cs=CRYSTAL_STAR[cr.star],_sm=socketMul(it,ci);
         stats+='<div style="color:'+cs.color+';font-size:.8rem">'+_sqTag+_crIco(cd,14)+' '+_crStarN(cs)+' '+_crDefN(cd)+(cr.enh>0?' +'+cr.enh:'')+(socketResonant(it,ci)?' <span style="color:#ffb088">✦'+_L('공명','Res.')+'</span>':'')+' ('+_crValStr(cr,_sm)+')</div>';
       }else stats+='<div style="color:#555;font-size:.8rem">'+_sqTag+'◇ '+(_L('빈 슬롯','Empty Slot'))+'</div>';
@@ -49497,7 +49563,7 @@ $('forgeLore').textContent=_T('🔴화염→빙결 2배 | 🔵빙결→화염 2�
     potion:{icon:'🧪',ko:'물약',en:'Potion',si:3,atlas:'v1'},
     salvage:{icon:'🔥',ko:'분해',en:'Salvage',si:9,atlas:'v1'},
     reroll:{icon:'🔄',ko:'리롤',en:'Reroll',si:10,atlas:'v1'},
-    crystal:{icon:'💎',ko:'결정',en:'Crystal',si:8,atlas:'v1'},
+    crystal:{icon:'💎',ko:'유물',en:'Relic',si:8,atlas:'v1'},
     weapon:{icon:'⚔️',ko:'무기',en:'Weapon',si:7,atlas:'v2'},
     bow:{icon:'🏹',ko:'활',en:'Bow',si:7,atlas:'v2'},
     armor:{icon:'🦺',ko:'갑옷',en:'Armor',si:0,atlas:'v2'},
@@ -49832,7 +49898,7 @@ cInfo.innerHTML=_L('보유: ','Owned: ')+CRYSTAL_BAG.length+'/'+CRYSTAL_BAG_MAX+
     });
     grid.appendChild(cFilters);
     const cHint=document.createElement('div');cHint.style.cssText='text-align:center;color:#aa9988;font-size:.8rem;margin-bottom:8px';
-    cHint.textContent=_L('일괄 작업은 선택한 분류에만 적용됩니다. 장착·해제는 인벤의 장비 소켓에서 가능합니다.','Bulk actions affect the selected category. Equip or detach crystals through inventory sockets.');
+    cHint.textContent=_L('일괄 작업은 선택한 분류에만 적용됩니다. 장착·해제는 인벤의 장비 소켓에서 가능합니다.','Bulk actions affect the selected category. Equip or detach relics through inventory sockets.');
     grid.appendChild(cHint);
     const crystalGroups=_crBagGroups(_crForgeFilter);
 
@@ -49888,10 +49954,10 @@ cInfo.innerHTML=_L('보유: ','Owned: ')+CRYSTAL_BAG.length+'/'+CRYSTAL_BAG_MAX+
         const i=group.idxs.includes(_crForgeSel)?_crForgeSel:group.idxs[0],cr=CRYSTAL_BAG[i];
         const d=CRYSTAL_DEFS[cr.id],s=CRYSTAL_STAR[cr.star],sel=_crForgeSel===i;
         const row=document.createElement('div');row.style.cssText='cursor:pointer;display:flex;align-items:center;gap:6px;padding:4px 8px;border:1px solid '+(sel?'#bb88ff':'#332211')+';background:'+(sel?'rgba(187,136,255,.12)':'rgba(0,0,0,.2)')+';border-radius:3px';
-        row.innerHTML='<span>'+_crIco(d,16)+'</span><span style="color:'+s.color+';font-size:.85rem;font-weight:700">'+_crStarN(s)+'</span><span style="color:#ccaa88;font-size:.85rem">'+_crDefN(d)+'</span>'+(cr.enh>0?'<span style="color:#44ccff;font-size:.8rem">+'+cr.enh+'</span>':'')+'<span style="color:'+CR_Q_TIER_COL[_qGrp(_qTier(cr.q))]+';font-size:.75rem">q'+Math.min(100,Math.max(1,cr.q||50))+'</span><span style="color:#ddbb88;font-size:.85rem">×'+group.idxs.length+'</span><span style="color:#88cc88;font-size:.8rem;margin-left:auto">'+_crValStr(cr)+'</span>';
+        row.innerHTML='<span>'+_crIco(d,16)+'</span><span style="color:'+s.color+';font-size:.85rem;font-weight:700">'+_crStarN(s)+'</span><span style="color:#ccaa88;font-size:.85rem">'+_crDefN(d)+'</span>'+(cr.enh>0?'<span style="color:#44ccff;font-size:.8rem">+'+cr.enh+'</span>':'')+'<span style="color:'+_qGradeOf(cr.q).col+';font-size:.75rem">q'+Math.min(100,Math.max(1,cr.q||50))+'</span><span style="color:#ddbb88;font-size:.85rem">×'+group.idxs.length+'</span><span style="color:#88cc88;font-size:.8rem;margin-left:auto">'+_crValStr(cr)+'</span>';
         row.onclick=()=>{_crForgeSel=i;renderForge()};cList.appendChild(row);
       });
-      if(crystalGroups.length===0){const em=document.createElement('div');em.style.cssText='color:#554433;text-align:center;padding:20px';em.textContent=_L('이 분류에 결정이 없습니다','No crystals in this category');cList.appendChild(em)}
+      if(crystalGroups.length===0){const em=document.createElement('div');em.style.cssText='color:#554433;text-align:center;padding:20px';em.textContent=_L('이 분류에 유물이 없습니다','No relics in this category');cList.appendChild(em)}
       grid.appendChild(cList);
       // 선택된 결정 상세+강화 버튼
       if(_crForgeSel>=0&&_crForgeSel<CRYSTAL_BAG.length){
@@ -49907,10 +49973,10 @@ cInfo.innerHTML=_L('보유: ','Owned: ')+CRYSTAL_BAG.length+'/'+CRYSTAL_BAG_MAX+
           +(maxed?'<div style="color:#ffaa00;font-size:.85rem;margin-top:4px">'+_T('최대 강화 달성 (+20)')+'</div>'
           :'<div style="color:#aaaaaa;font-size:.85rem;margin-top:4px">'+_T('강화 시')+': '+_crValStr({...cr,enh:(cr.enh||0)+1})+'</div>'
           +'<div style="color:#cc66ff;font-size:.85rem">'+_L('비용','Cost')+': 👿'+cost+' + 💎'+_crStarN(s)+' '+_crDefN(d)+' ×1'
-          +(ok?'':(!hasFeed?' <span style="color:#ff4444">'+_L('(재료 결정 없음)','(no feed crystal)')+'</span>':' <span style="color:#ff4444">'+_L('(악의 부족)','(insufficient)')+'</span>'))+'</div>');
+          +(ok?'':(!hasFeed?' <span style="color:#ff4444">'+_L('(재료 유물 없음)','(no feed relic)')+'</span>':' <span style="color:#ff4444">'+_L('(악의 부족)','(insufficient)')+'</span>'))+'</div>');
         if(!maxed){
           const btn=document.createElement('button');btn.style.cssText='margin-top:6px;padding:6px 24px;font-size:.9rem;font-family:"Noto Sans KR";font-weight:700;cursor:'+(ok?'pointer':'not-allowed')+';border:2px solid '+(ok?'#bb88ff':'#443322')+';background:'+(ok?'rgba(187,136,255,.15)':'rgba(0,0,0,.2)')+';color:'+(ok?'#ffcc44':'#554433')+';border-radius:6px';
-          btn.textContent=_T('강화')+' ('+_L('악의 ','Malice ')+cost+' + '+_L('결정 ×1','Crystal ×1')+')';
+          btn.textContent=_T('강화')+' ('+_L('악의 ','Malice ')+cost+' + '+_L('유물 ×1','Relic ×1')+')';
           btn.onclick=()=>{if(G.mats<cost||!hasFeed)return;G.mats-=cost;
             // 재료 결정 소모 (다시 찾기 — 인덱스 변동 대비)
             const _fi=CRYSTAL_BAG.findIndex((c,ci)=>ci!==_crForgeSel&&c.id===cr.id&&c.star===cr.star);
@@ -49923,7 +49989,7 @@ cInfo.innerHTML=_L('보유: ','Owned: ')+CRYSTAL_BAG.length+'/'+CRYSTAL_BAG_MAX+
     }else if(_crForgeTab==='synth'){
       // ── 결정 합성: 같은 종류+같은 성급 3개 → 1성급 상승 ──
       const hdr=document.createElement('div');hdr.style.cssText='color:#44ccff;font-size:.9rem;text-align:center;margin-bottom:6px';
-      hdr.textContent=_T('같은 종류·같은 성급 결정 3개 → 1성급 상승 (강화 리셋)');grid.appendChild(hdr);
+      hdr.textContent=_T('같은 종류·같은 성급 유물 3개 → 1성급 상승 (강화 리셋)');grid.appendChild(hdr);
       // ── 최상위 일괄합성 버튼 ──
       // 합성 가능 여부 미리 체크 (1회 이상 합성 가능하면 활성)
       const _canBulk=(()=>{
@@ -49988,10 +50054,10 @@ cInfo.innerHTML=_L('보유: ','Owned: ')+CRYSTAL_BAG.length+'/'+CRYSTAL_BAG_MAX+
         };
         row.appendChild(btn);grid.appendChild(row);
       }
-      if(!hasGroup){const em=document.createElement('div');em.style.cssText='color:#554433;text-align:center;padding:20px';em.textContent=_T('합성 가능한 결정이 없습니다 (같은 종류·성급 3개 필요)');grid.appendChild(em)}
+      if(!hasGroup){const em=document.createElement('div');em.style.cssText='color:#554433;text-align:center;padding:20px';em.textContent=_T('합성 가능한 유물이 없습니다 (같은 종류·성급 3개 필요)');grid.appendChild(em)}
     }else if(_crForgeTab==='decomp'){
       // ── 분해 / 제작 ──
-const secHdr1=document.createElement('div');secHdr1.style.cssText='color:#ff8844;font-size:.9rem;font-weight:700;margin-bottom:4px';secHdr1.textContent=_T('결정 분해 → 결정 가루');grid.appendChild(secHdr1);
+const secHdr1=document.createElement('div');secHdr1.style.cssText='color:#ff8844;font-size:.9rem;font-weight:700;margin-bottom:4px';secHdr1.textContent=_T('유물 분해 → 유물 가루');grid.appendChild(secHdr1);
       const dList=document.createElement('div');dList.id='crDecompList';dList.style.cssText='display:flex;flex-direction:column;gap:2px;max-height:24vh;overflow-y:auto;margin-bottom:8px';
       crystalGroups.forEach(group=>{
         const i=group.idxs[0],cr=CRYSTAL_BAG[i];
@@ -50002,10 +50068,10 @@ const secHdr1=document.createElement('div');secHdr1.style.cssText='color:#ff8844
         row.onclick=()=>{CRYSTAL_BAG.splice(i,1);CRYSTAL_DUST+=dustGet;_crForgeSel=-1;SFX.forge();addTxt(P.x,P.y-20,_T('분해! 가루 +')+dustGet,'#ff8844',50);renderForge();dbSaveNow()};
         dList.appendChild(row);
       });
-      if(crystalGroups.length===0){const em=document.createElement('div');em.style.cssText='color:#554433;text-align:center;padding:10px';em.textContent=_L('이 분류에 분해할 결정이 없습니다','No crystals to decompose in this category');dList.appendChild(em)}
+      if(crystalGroups.length===0){const em=document.createElement('div');em.style.cssText='color:#554433;text-align:center;padding:10px';em.textContent=_L('이 분류에 분해할 유물이 없습니다','No relics to decompose in this category');dList.appendChild(em)}
       grid.appendChild(dList);
       // ── 제작 ──
-      const secHdr2=document.createElement('div');secHdr2.style.cssText='color:#44ff88;font-size:.9rem;font-weight:700;margin-bottom:4px;margin-top:8px;border-top:1px solid #332211;padding-top:6px';secHdr2.textContent=_T('결정 제작 (가루 → 결정)');grid.appendChild(secHdr2);
+      const secHdr2=document.createElement('div');secHdr2.style.cssText='color:#44ff88;font-size:.9rem;font-weight:700;margin-bottom:4px;margin-top:8px;border-top:1px solid #332211;padding-top:6px';secHdr2.textContent=_T('유물 제작 (가루 → 유물)');grid.appendChild(secHdr2);
       // 종류 선택
       const typeBar=document.createElement('div');typeBar.style.cssText='display:flex;flex-wrap:wrap;gap:2px;margin-bottom:4px';
       CRYSTAL_IDS.forEach(id=>{
@@ -50036,7 +50102,7 @@ const secHdr1=document.createElement('div');secHdr1.style.cssText='color:#ff8844
       }
       // ── 악의로 1성 결정 직접 제작 ──
       const _crMatsCost=_malCost(50);
-const secHdr3=document.createElement('div');secHdr3.style.cssText='color:#cc66ff;font-size:.9rem;font-weight:700;margin-bottom:4px;margin-top:8px;border-top:1px solid #332211;padding-top:6px';secHdr3.textContent=_L('악의로 1성 결정 제작 ('+_crMatsCost+' 악의)','Craft 1★ Crystal ('+_crMatsCost+' Malice)');grid.appendChild(secHdr3);
+const secHdr3=document.createElement('div');secHdr3.style.cssText='color:#cc66ff;font-size:.9rem;font-weight:700;margin-bottom:4px;margin-top:8px;border-top:1px solid #332211;padding-top:6px';secHdr3.textContent=_L('악의로 1성 유물 제작 ('+_crMatsCost+' 악의)','Craft 1★ Relic ('+_crMatsCost+' Malice)');grid.appendChild(secHdr3);
       const mBar=document.createElement('div');mBar.style.cssText='display:flex;flex-wrap:wrap;gap:3px;margin-bottom:4px';
       CRYSTAL_IDS.forEach(id=>{
         const d=CRYSTAL_DEFS[id];
@@ -50044,7 +50110,7 @@ const secHdr3=document.createElement('div');secHdr3.style.cssText='color:#cc66ff
         const ok2=G.mats>=_crMatsCost&&CRYSTAL_BAG.length<CRYSTAL_BAG_MAX;
         const b=document.createElement('span');b.style.cssText='cursor:'+(ok2?'pointer':'not-allowed')+';padding:2px 6px;font-size:.8rem;border:1px solid '+(ok2?'#cc66ff':'#332211')+';color:'+(ok2?'#ddaaff':'#554433')+';background:'+(ok2?'rgba(200,100,255,.1)':'rgba(0,0,0,.2)')+';border-radius:3px';
         b.innerHTML=_crIco(d,14)+' '+_crDefN(d);
-        b.onclick=()=>{if(G.mats<_crMatsCost){notify(_T('악의가 부족합니다!'));return}if(CRYSTAL_BAG.length>=CRYSTAL_BAG_MAX){notify(_T('결정 주머니 가득!'));return}G.mats-=_crMatsCost;CRYSTAL_BAG.push({id,star:0,enh:0,q:_qRoll()});SFX.forge();addTxt(P.x,P.y-20,d.emoji+' '+_crStarN(CRYSTAL_STAR[0])+' '+_crDefN(d)+' '+_T('제작!'),'#cc66ff',50);renderForge();dbSaveNow()};
+        b.onclick=()=>{if(G.mats<_crMatsCost){notify(_T('악의가 부족합니다!'));return}if(CRYSTAL_BAG.length>=CRYSTAL_BAG_MAX){notify(_T('유물 주머니 가득!'));return}G.mats-=_crMatsCost;CRYSTAL_BAG.push({id,star:0,enh:0,q:_qRoll()});SFX.forge();addTxt(P.x,P.y-20,d.emoji+' '+_crStarN(CRYSTAL_STAR[0])+' '+_crDefN(d)+' '+_T('제작!'),'#cc66ff',50);renderForge();dbSaveNow()};
         mBar.appendChild(b);
       });
       grid.appendChild(mBar);
@@ -50315,7 +50381,7 @@ function renderStatSummary(){
     (_sBowAtk?`<div style="${_sLn}">${_L('활 공격력','Bow ATK')}: <span style="color:#66dd66">${_sBowAtk}</span> <span style="color:#887766;font-size:1.1rem">((${_L('기본','base')}${P.baseAtk} + ${_L('석궁','xbow')}${~~((bw().atk||0)+enhMulAtk(bw().enh||0))} + DEX${STATS.dex+_eqStat('Dex')}) × ${_L('정밀','Prec')}${pBowMul().toFixed(2)})</span></div>`:'')+
     `<div style="${_sLn}">${_L('마법 공격력','Magic ATK')}: <span style="color:#66aaff">${_sMagicAtk}</span> <span style="color:#887766;font-size:1.1rem">((${_L('기본','base')}${P.baseAtk} + ${_L('왕관','crown')}${~~((hm().atk||0)+enhMulAtk(hm().enh||0))} + INT${STATS.int+_eqStat('Int')}) × ${_L('마력','Arcane')}${pMagicMul().toFixed(2)})</span></div>`+
     `<div style="${_sLn}">${_L('공격속도','Atk Speed')}: <span style="color:#ffcc44">×${statDex().toFixed(2)}</span></div>`+
-    `<div style="${_sLn}">${_L('크리티컬','Critical')}: <span style="color:#ff6666">${statCrit().toFixed(1)}%</span> (+${((_sCritMul-1)*100).toFixed(0)}% ${_L('데미지','dmg')}) <span style="color:#887766;font-size:1.1rem">${_L('확률','Rate')}: LCK${(_eqLckTotal()*.025).toFixed(1)}%+${_L('패시브','passive')}${(PASSIVES.pCrit*1.5).toFixed(1)}%+${_L('어픽스','affix')}${(_eqAffix('critRate')*100).toFixed(1)}%+${_L('레거시','legacy')}${(((rg1().critRate||0)+(rg2().critRate||0)+(nc().critRate||0))*100).toFixed(1)}%+${_L('결정','crystal')}${(P._crystalStats?P._crystalStats.crit:0).toFixed(1)}% | ${_L('추가뎀','bonus')}: ${_L('기본','base')}50%+LCK${(_eqLckTotal()*.2).toFixed(0)}%+${_L('패시브','passive')}${(PASSIVES.pCrit*8).toFixed(0)}%+${_L('어픽스','affix')}${((_eqAffix('critDmgA')+_eqAffix('critDmgB')+_eqAffix('critDmgW'))*100).toFixed(0)}%+${_L('결정','crystal')}${(P._crystalStats?P._crystalStats.cdmg:0).toFixed(0)}%</span></div>`+
+    `<div style="${_sLn}">${_L('크리티컬','Critical')}: <span style="color:#ff6666">${statCrit().toFixed(1)}%</span> (+${((_sCritMul-1)*100).toFixed(0)}% ${_L('데미지','dmg')}) <span style="color:#887766;font-size:1.1rem">${_L('확률','Rate')}: LCK${(_eqLckTotal()*.025).toFixed(1)}%+${_L('패시브','passive')}${(PASSIVES.pCrit*1.5).toFixed(1)}%+${_L('어픽스','affix')}${(_eqAffix('critRate')*100).toFixed(1)}%+${_L('레거시','legacy')}${(((rg1().critRate||0)+(rg2().critRate||0)+(nc().critRate||0))*100).toFixed(1)}%+${_L('유물','relic')}${(P._crystalStats?P._crystalStats.crit:0).toFixed(1)}% | ${_L('추가뎀','bonus')}: ${_L('기본','base')}50%+LCK${(_eqLckTotal()*.2).toFixed(0)}%+${_L('패시브','passive')}${(PASSIVES.pCrit*8).toFixed(0)}%+${_L('어픽스','affix')}${((_eqAffix('critDmgA')+_eqAffix('critDmgB')+_eqAffix('critDmgW'))*100).toFixed(0)}%+${_L('유물','relic')}${(P._crystalStats?P._crystalStats.cdmg:0).toFixed(0)}%</span></div>`+
     `<div style="${_sLn}">${_L('패링 카운터뎀','Parry Counter DMG')}: <span style="color:#44ff88">×${_sParryDmg.toFixed(2)}</span> | ${_L('E공속','E Spd')}: <span style="color:#ffdd00">×${_sRmbSpd.toFixed(2)}</span> | ${_L('무지개탄DR','Rainbow DR')}: <span style="color:#ff44ff">${~~(_sRainDR*100)}%</span></div>`+
     `<div style="${_sLn}">${_L('포이즈파괴','Poise Break')}: <span style="color:${_afc('staggerBns','#ffaa44')}">${_af('staggerBns').toFixed(0)}</span> | ${_L('방어관통','Armor Pen')}: <span style="color:${_afc('armorPen','#ff8844')}">${_afp('armorPen')}</span></div>`+
     (()=>{const _ppLv=PASSIVES.pPierce||0;const _bpB=(bw().bowPierce||0);const _totalP=Math.min(0.95,_bpB+_ppLv*0.05);return`<div style="${_sLn}">🔱 ${_L('관통력','Pierce')}: <span style="color:${_totalP>0?'#44ffcc':'#555544'}">${~~(_totalP*100)}%</span> <span style="color:#887766;font-size:1.1rem">(${_L('패시브','passive')}${_ppLv}lv+${_L('장비','gear')}${~~(_bpB*100)}%)</span></div>`})()+
@@ -50343,10 +50409,10 @@ function renderStatSummary(){
     (()=>{const _stgH=G.on?100+((G.stage||1)-1)*6:100;const _lvH=P.lv;const _strH=(P._effStats?P._effStats.str:0);let _eqH=0,_enhH=0;const _ds2=['shield','armor','boots','helmet','gloves','pants','belt','necklace','ring1','ring2','cape','bracelet','headband','headband2'];for(const sl of _ds2){const it=INV.equipped[sl];if(it){_eqH+=(it.bonusHp||0);if(it.enh>0)_enhH+=it.enh}};const _afF=_eqAffix('maxHPFlat'),_afP=_eqAffix('maxHPPct')+_eqAffix('lifeMaxHP'),_imH=_eqImplicit('_iMaxHP'),_imP=_eqImplicit('_iMaxHPPct')+_eqImplicit('_iLifeHPPct');const _pMel=(PASSIVES.pMelee||0)*.03;const _mul=1+_afP+_imP*.01+_pMel;const _base=_stgH+_lvH+_strH+_eqH+_afF+_imH+_enhH;return`<div style="font-size:1rem;color:#665544;margin-left:8px">${_L('기본','base')}${_stgH} + Lv${_lvH} + STR${_strH} + ${_L('장비HP','gearHP')}${_eqH}${_afF?(' + '+_L('어픽스','affix')+_afF):''}${_imH?(' + '+_L('임플','impl')+_imH):''}${_enhH?(' + '+_L('강화','enh')+_enhH):''} = ${~~_base} × ${_mul.toFixed(2)} = ${~~(_base*_mul)}</div>`})()+
     (P.mshield>0?(()=>{const _sInt=P._effStats?P._effStats.int:0;const _srBase=0.3,_srInt=_sInt*0.003;const _srTotal=(_srBase+_srInt)*pMRegenMul()*60;const _shBase=150,_shLv=~~(P.lv*.5),_shInt=~~((_sInt-100)*2.5);let _shEq=0;const _ds3=['shield','armor','boots','helmet','gloves','pants','belt','necklace','ring1','ring2','cape','bracelet','headband','headband2'];for(const sl of _ds3){const it=INV.equipped[sl];if(it)_shEq+=(it.bonusShield||0)};const _shAf=_eqAffix('shieldFlat');return`<div style="${_sLn}">${_L('에너지쉴드','Energy Shield')}: <span style="color:#4488ff">${~~P.shield}/${P.mshield}</span> <span style="color:#887766;font-size:1.1rem">(+${_srTotal.toFixed(1)}/${_L('초','s')})</span></div>`+`<div style="font-size:1rem;color:#665544;margin-left:8px">${_L('기본','base')}${_shBase} + Lv${_shLv} + INT${_shInt}${_shEq?' + '+_L('장비','gear')+_shEq:''}${_shAf?' + '+_L('어픽스','affix')+_shAf:''}</div>`+`<div style="font-size:1rem;color:#665544;margin-left:8px">${_L('리젠','Regen')}: ${_L('기본','base')}${_srBase} + INT${_srInt.toFixed(3)} = ${(_srBase+_srInt).toFixed(3)}/f × ${_L('패시브','passive')}${pMRegenMul().toFixed(2)} = ${_srTotal.toFixed(1)}/${_L('초','s')}</div>`})():'')+
     (()=>{const _gEq=(wp().stRegen||0)+(sh().stRegen||0)+(bt().stRegen||0)+(ar().stRegen||0)+(hm().stRegen||0)+(bw().stRegen||0)+(gl().stRegen||0)+(pt().stRegen||0)+(nc().stRegen||0)+(rg1().stRegen||0)+(rg2().stRegen||0)+(cp().stRegen||0);const _stTot=((P.stR+_gEq)*pRegenMul()/8*60).toFixed(1);return`<div style="${_sLn}">${_L('스태미나','Stamina')}: <span style="color:#44dd44">${~~P.st}/${P.mst}</span> <span style="color:#887766;font-size:1.1rem">(+${_stTot}/${_L('초','s')})</span></div>`})()+
-    (()=>{const _stBase=100,_stLv=~~(P.lv*.5),_stDex=(P._effStats?P._effStats.dex:0);let _stEq=0;for(const sl of SLOT_NAMES){const it=INV.equipped[sl];if(it&&it.bonusSt)_stEq+=it.bonusSt}const _stCr=~~(P._crystalStats?P._crystalStats.st:0);const _stGrit=_gritStFlat();return`<div style="font-size:1rem;color:#665544;margin-left:8px">${_L('기본','base')}${_stBase} + Lv${_stLv} + DEX${_stDex}${_stEq?' + '+_L('장비','gear')+_stEq:''}${_stCr?' + '+_L('결정','crystal')+_stCr:''}${_stGrit?' + '+_L('성장','grit')+_stGrit:''} = ${P.mst}</div>`})()+
+    (()=>{const _stBase=100,_stLv=~~(P.lv*.5),_stDex=(P._effStats?P._effStats.dex:0);let _stEq=0;for(const sl of SLOT_NAMES){const it=INV.equipped[sl];if(it&&it.bonusSt)_stEq+=it.bonusSt}const _stCr=~~(P._crystalStats?P._crystalStats.st:0);const _stGrit=_gritStFlat();return`<div style="font-size:1rem;color:#665544;margin-left:8px">${_L('기본','base')}${_stBase} + Lv${_stLv} + DEX${_stDex}${_stEq?' + '+_L('장비','gear')+_stEq:''}${_stCr?' + '+_L('유물','relic')+_stCr:''}${_stGrit?' + '+_L('성장','grit')+_stGrit:''} = ${P.mst}</div>`})()+
     (()=>{const _dex=(P._effStats?P._effStats.dex:0);const _rBase=.05,_rDex=_dex*.005,_rLv=P.lv*.0015;const _rRaw=_rBase+_rDex+_rLv;const _rPas=pRegenMul();const _gEq=(wp().stRegen||0)+(sh().stRegen||0)+(bt().stRegen||0)+(ar().stRegen||0)+(hm().stRegen||0)+(bw().stRegen||0)+(gl().stRegen||0)+(pt().stRegen||0)+(nc().stRegen||0)+(rg1().stRegen||0)+(rg2().stRegen||0)+(cp().stRegen||0);const _rTotal=(_rRaw+_gEq)/8*60*_rPas;return`<div style="font-size:1rem;color:#665544;margin-left:8px">${_L('리젠','Regen')}: (${_L('기본','base')}${_rBase} + DEX×0.005=${_rDex.toFixed(3)} + Lv×0.0015=${_rLv.toFixed(3)}${_gEq?' + '+_L('장비','gear')+_gEq.toFixed(2):''}) = ${(_rRaw+_gEq).toFixed(3)}/f × ${_L('패시브','passive')}${_rPas.toFixed(2)} = ${_rTotal.toFixed(1)}/${_L('초','s')}</div>`})()+
     (()=>{const _gEq=(wp().mpRegen||0)+(sh().mpRegen||0)+(bt().mpRegen||0)+(ar().mpRegen||0)+(hm().mpRegen||0)+(bw().mpRegen||0)+(gl().mpRegen||0)+(pt().mpRegen||0)+(nc().mpRegen||0)+(rg1().mpRegen||0)+(rg2().mpRegen||0)+(cp().mpRegen||0);const _mpTot=((P.mpR+_gEq)*pMRegenMul()/8*60).toFixed(1);return`<div style="${_sLn}">MP: <span style="color:#4488ff">${~~P.mp}/${P.mmp}</span> <span style="color:#887766;font-size:1.1rem">(+${_mpTot}/${_L('초','s')})</span></div>`})()+
-    (()=>{const _mpBase=100,_mpLv=~~(P.lv*.5),_mpInt=(P._effStats?P._effStats.int:0);const _mpCr=~~(P._crystalStats?P._crystalStats.mp:0);const _mpGrit=_gritMpFlat();const _mpPct=_eqAffix('maxMPPct');const _mpPre=_mpBase+_mpLv+_mpInt;const _mpMul=1+_mpPct;return`<div style="font-size:1rem;color:#665544;margin-left:8px">${_L('기본','base')}${_mpBase} + Lv${_mpLv} + INT${_mpInt} = ${_mpPre} × ${_mpMul.toFixed(2)}${_mpPct?' ('+_L('MP%어픽스','MP% affix')+' +'+~~(_mpPct*100)+'%)':''}${_mpCr?' + '+_L('결정','crystal')+_mpCr:''}${_mpGrit?' + '+_L('성장','grit')+_mpGrit:''} = ${P.mmp}</div>`})()+
+    (()=>{const _mpBase=100,_mpLv=~~(P.lv*.5),_mpInt=(P._effStats?P._effStats.int:0);const _mpCr=~~(P._crystalStats?P._crystalStats.mp:0);const _mpGrit=_gritMpFlat();const _mpPct=_eqAffix('maxMPPct');const _mpPre=_mpBase+_mpLv+_mpInt;const _mpMul=1+_mpPct;return`<div style="font-size:1rem;color:#665544;margin-left:8px">${_L('기본','base')}${_mpBase} + Lv${_mpLv} + INT${_mpInt} = ${_mpPre} × ${_mpMul.toFixed(2)}${_mpPct?' ('+_L('MP%어픽스','MP% affix')+' +'+~~(_mpPct*100)+'%)':''}${_mpCr?' + '+_L('유물','relic')+_mpCr:''}${_mpGrit?' + '+_L('성장','grit')+_mpGrit:''} = ${P.mmp}</div>`})()+
     (()=>{const _int=(P._effStats?P._effStats.int:0);const _rBase=.05,_rInt=_int*.005,_rLv=P.lv*.0015;const _rRaw=_rBase+_rInt+_rLv;const _rPas=pMRegenMul();const _gEq=(wp().mpRegen||0)+(sh().mpRegen||0)+(bt().mpRegen||0)+(ar().mpRegen||0)+(hm().mpRegen||0)+(bw().mpRegen||0)+(gl().mpRegen||0)+(pt().mpRegen||0)+(nc().mpRegen||0)+(rg1().mpRegen||0)+(rg2().mpRegen||0)+(cp().mpRegen||0);const _rTotal=(_rRaw+_gEq)/8*60*_rPas;return`<div style="font-size:1rem;color:#665544;margin-left:8px">${_L('리젠','Regen')}: (${_L('기본','base')}${_rBase} + INT×0.005=${_rInt.toFixed(3)} + Lv×0.0015=${_rLv.toFixed(3)}${_gEq?' + '+_L('장비','gear')+_gEq.toFixed(2):''}) = ${(_rRaw+_gEq).toFixed(3)}/f × ${_L('패시브','passive')}${_rPas.toFixed(2)} = ${_rTotal.toFixed(1)}/${_L('초','s')}</div>`})()+
     `<div style="${_sLn}">${_L('이동속도','Move Speed')}: <span style="color:#ffcc44">${P.speed.toFixed(2)}</span> <span style="color:#665544;font-size:1rem">(${_L('기본','base')}2.6 + DEX×0.005${_eqAffix('movSpeed')?' + '+_L('어픽스','affix')+(_eqAffix('movSpeed')*100).toFixed(0)+'%':''})</span></div>`+
     `<div style="${_sLn}">${_L('포이즈','Poise')}: <span style="color:#ffdd44">${~~(P.poise||0)}/${~~P.maxPoise}</span> <span style="color:#665544;font-size:1rem">(${_L('기본','base')}80 + STR×0.2)</span></div>`+
@@ -59718,6 +59784,18 @@ function _raMeasureSafe(){
     if(r)_raSafe.rects.push({x0:r.left-pad,y0:r.top-pad,x1:r.right+pad,y1:r.bottom+pad})}
   _raSafe.x0=x0;_raSafe.y0=Math.min(y0,VH*.4);_raSafe.x1=Math.max(x1,x0+40);_raSafe.y1=Math.max(y1,VH*.55);
 }
+// 방향 화살표 원화 (Higgsfield GPT Image 2.5 sunburst max, 투명 — docs/17게임아트팀/ART_TEAM_MASTER.md 2026-10-10)
+const _RA_IMG=new Image();_RA_IMG.src='img/ui/region_arrow.png';
+const _raGlowCache=new Map(); // 목표 색별 뒤 글로우 (실루엣 블러 + 색 채움) — 색당 1회 생성
+function _raGlow(col){
+  let g=_raGlowCache.get(col);if(g)return g;
+  if(!_RA_IMG.complete||!_RA_IMG.naturalWidth)return null;
+  const pad=18,w=_RA_IMG.naturalWidth+pad*2,h=_RA_IMG.naturalHeight+pad*2;
+  g=document.createElement('canvas');g.width=w;g.height=h;const c=g.getContext('2d');
+  c.filter='blur(9px)';c.drawImage(_RA_IMG,pad,pad);c.filter='none';
+  c.globalCompositeOperation='source-in';c.fillStyle=col;c.fillRect(0,0,w,h);
+  _raGlowCache.set(col,g);return g;
+}
 function _drawRegionArrow(){
   if(!G.on||!P||!G._regions||G._bossArena||G._bossLoadPhase>0||G.stageCleared||G.paused)return;
   if(typeof _bossCine!=='undefined'&&_bossCine.active)return;
@@ -59743,7 +59821,14 @@ function _drawRegionArrow(){
   const pulse=.72+.16*Math.sin(_gameFrame*.09); // 절제된 펄스
   X.save();X.setTransform(_ssaa,0,0,_ssaa,0,0);
   X.translate(ax,ay);X.rotate(ang);
-  // ── 고딕 창날(spearhead): 미늘+꼬리 홈, 흑철 외곽 + 내부 엠버 코어 ──
+  const _raImgOk=_RA_IMG.complete&&_RA_IMG.naturalWidth>0;
+  if(_raImgOk){ // ── 원화 화살표: 끝점 x=40, 너비 96 — 뒤에 목표 색 글로우 ──
+    const W=96,H=W*_RA_IMG.naturalHeight/_RA_IMG.naturalWidth,x0=40-W;
+    const gl=_raGlow(_raCol);
+    if(gl){const k=W/_RA_IMG.naturalWidth;X.globalAlpha=Math.min(1,pulse*1.25);X.drawImage(gl,x0-18*k,-H/2-18*k,gl.width*k,gl.height*k);X.drawImage(gl,x0-18*k,-H/2-18*k,gl.width*k,gl.height*k)}
+    X.globalAlpha=Math.min(1,pulse+.2);X.drawImage(_RA_IMG,x0,-H/2,W,H);
+  }else{
+  // ── 고딕 창날(spearhead): 미늘+꼬리 홈, 흑철 외곽 + 내부 엠버 코어 ── (원화 로드 전 폴백)
   const _raPath=()=>{X.beginPath();X.moveTo(32,0);X.lineTo(0,-11.5);X.lineTo(-10,-18);X.lineTo(-6,-6.5);X.lineTo(-18,0);X.lineTo(-6,6.5);X.lineTo(-10,18);X.lineTo(0,11.5);X.closePath()};
   X.globalAlpha=pulse*.5;X.translate(1.5,2);_raPath();X.fillStyle='rgba(0,0,0,.75)';X.fill();X.translate(-1.5,-2); // 드롭 섀도
   X.globalAlpha=pulse;
@@ -59753,12 +59838,13 @@ function _drawRegionArrow(){
   X.beginPath();X.moveTo(23,0);X.lineTo(1,-5);X.lineTo(-6,0);X.lineTo(1,5);X.closePath();
   X.fillStyle='rgba(244,229,198,.92)';X.fill();
   X.shadowBlur=0;
+  }
   X.rotate(-ang);
   X.globalAlpha=1; // 라벨은 펄스 알파 미적용
   // ── 라벨: 명조 뼈색 이름 + Cinzel 거리 숫자 — GPU 프록시에서 strokeText 금지, fillText 8방향 오프셋 그림자 ──
   const dm=~~(Math.sqrt((_raX-P.x)*(_raX-P.x)+(_raY-P.y)*(_raY-P.y))/64); // 64px=1m
   X.textAlign='center';X.textBaseline='middle';
-  const _lx=-Math.cos(ang)*42,_ly=-Math.sin(ang)*42;
+  const _lx=-Math.cos(ang)*68,_ly=-Math.sin(ang)*68; // 원화 화살 꼬리(-56) 뒤로 라벨
   if(_raLabel){
     X.font="700 14px 'Nanum Myeongjo','Noto Serif KR',serif";
     X.fillStyle='rgba(0,0,0,.9)';
