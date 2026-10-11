@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
-  "updatedAtKST": "2026-10-11T23:41:18.009+09:00",
-  "updatedAtUTC": "2026-10-11T14:41:18.009Z",
+  "updatedAtKST": "2026-10-12T00:42:14.261+09:00",
+  "updatedAtUTC": "2026-10-11T15:42:14.261Z",
   "policy": "실제 화면·영상 또는 단계가 명확한 기존 원화와 간결한 설명을 함께 준비하고, 공개 전 완성 미리보기를 먼저 인도한다. 동일 영상의 확대 화면과 전체 화면을 동시에 복제하지 않으며 원화를 가리는 불투명 자막판을 사용하지 않는다. 매시간 점검을 긴 글 연속 게시 빈도로 해석하지 않는다. UI·스킬·캐릭터의 독립 준비를 계속하고 대표 보스전 완료 영상만 총괄 완료를 기다린다.",
   "developmentObservation": {
     "checkout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
@@ -776,125 +776,125 @@
     "state": "PREVIEW_DELIVERED; REPLACEMENT_NOT_STARTED"
   },
   "latestProducerObservation": {
-    "checkedAtUTC": "2026-10-11T14:41:18.009Z",
-    "cursor": "b2476eee-d767-4cd1-8064-9706586fb10a:59",
+    "checkedAtUTC": "2026-10-11T15:42:14.261Z",
+    "cursor": "b2476eee-d767-4cd1-8064-9706586fb10a:60",
     "status": "idle",
     "completionConfirmed": false,
-    "scope": "별도 FDG 엔진 dark-druid-contact-vfx-live-fix의 보라색 shockField 잔광 감소·테스트장 교전 자료 인수",
-    "report": "총괄 cursor59는 별도 FDG 엔진 contact-vfx-live-fix의 보라색 shockField 잔광 감소와 수정 후 테스트장 교전 자료를 인도했다. 다른 근접 core/impact 가림은 RETOUCH이며 이번 E/Q 성공0·플레이어 사망·보스 생존·처치 없음이다. 나무 가시8발+마법탄4발 패턴은 제작 중이며 본편/Steam 적용·사용자 자연 플레이·원음·공개 승인은 미확인이다.",
+    "scope": "별도 FDG 엔진 dark-druid-thorn-volley-first의 선택 강제 나무가시 혼합 발사·별도 UI E 물리반사 부분 인수",
+    "report": "총괄 cursor60은 별도 FDG 엔진 thorn-volley-first의 선택 강제 fan에서 물리 나무가시8+마법탄4=12발·직선 이동과 별도 UI E 물리반사1을 한정 인수하고 발사 스틸을 제시했다. 두 교전 GIF의 패링은 각각0, 자연 AI fan/가시 미관측·플레이어 사망·보스 생존이며 held-Q는 미시험이다. 전체 시각 RETOUCH, 본편/Steam 적용·사용자 자연 플레이·원음·공개 승인은 미확인이다.",
     "mainGameApplied": "NOT_CONFIRMED",
     "steamDemoApplied": "NOT_CONFIRMED",
     "normalGameplayVideoWithOriginalAudio": "NOT_OBSERVED",
     "humanNaturalGameplayCaptured": false,
     "requiresUserAction": false,
     "publicationAllowed": false,
-    "visualCandidateState": "SHOCK_FIELD_AFTERGLOW_REDUCED_CONTACT_CORES_RETOUCH",
+    "visualCandidateState": "CONTROLLED_12_SHOT_RELEASE_AND_E_ACCEPTED_NATIVE_AI_FAN_Q_PENDING_RETOUCH",
     "bossProductMotionAccepted": false,
-    "producerReportedLocalCommit": "49620b90a94b0d7d9ce71550dda7823a7b8ac380",
+    "producerReportedLocalCommit": "c812461acb97d979aceb157814b64da9ad260265",
     "producerReportedPush": false,
     "producerReportedDeploy": false,
-    "combatObserved": {
-      "physicalProjectileParryEAttempts": 2,
-      "physicalProjectileParryECount": 0,
-      "magicParryQAttempts": 2,
+    "producerCheckpointAtKST": "2026-10-11T23:59:42+09:00",
+    "controlledUiObservation": {
+      "runtimeShots": 12,
+      "physicalShots": 8,
+      "magicShots": 4,
+      "runtimeVelocityMaxDeltaAcrossSteps18_26_38": 0.0,
+      "physicalProjectileParryECount": 1,
       "magicParryQCount": 0,
-      "ordinaryWeaponContacts": 1,
-      "ordinaryWeaponRequested": 275,
-      "meleeShieldDeltaObserved": 302,
-      "shieldDeltaScope": "이번 테스트 평타 접촉1건의 관측 감소; 요청275와 실제 쉴드감소302를 구별",
-      "playerHPStart": 571,
-      "playerHPEnd": 0,
-      "playerOutcome": "DEAD",
-      "bossHP": 21017,
-      "bossShield": 13075,
-      "bossOutcome": "ALIVE; KILL_NOT_OBSERVED",
-      "previousEParryScope": "cursor58 r8의 E성공1은 이전 별도 교전 이력에 보존; 이번 성공0과 합산하지 않음"
+      "heldQ": "NOT_TESTED",
+      "scope": "선택 강제 fan 발사와 별도 UI 공개 제어 E 검수; 자연 AI 선택·홍보 공개 완료 아님"
     },
-    "drawConsumerObservation": {
-      "kind": "shockField",
-      "observedDraws": 23,
-      "appliedDraws": 21,
-      "earlyNativeDraws": 2,
-      "sample": {
-        "gameFrame": 72,
-        "sheetFrame": 10,
-        "age": 33,
-        "maxAge": 600,
-        "worldSize": 281.6,
-        "nativeAlpha": 0.85,
-        "actualAlpha": 0.102
+    "combatCaptureObservation": {
+      "forcedPattern": {
+        "patternStarts": 1,
+        "thornShots": 12,
+        "parryCount": 0,
+        "playerOutcome": "ALIVE; pStun",
+        "playerHPEnd": 125.59375000000232,
+        "bossOutcome": "ALIVE; KILL_NOT_OBSERVED",
+        "bossHP": 21017
       },
-      "scope": "drawP/_msStormImg2/X.drawImage/WebGPU textured quad의 한정 소비부 보정; 기본 게임 opt-in 없음"
+      "nativeAi": {
+        "fanObserved": false,
+        "thornShots": 0,
+        "parryCount": 0,
+        "playerOutcome": "DEAD",
+        "playerHPEnd": 0,
+        "bossOutcome": "ALIVE; KILL_NOT_OBSERVED",
+        "bossHP": 21017
+      },
+      "scope": "강제 선택/자연 AI/별도 E 제어는 다른 샘플. E1을 두 GIF의 성공 패링으로 표시하지 않으며 주변 field·화마귀가 포함된 HP 감소를 fan 피해에 모두 귀속하지 않음"
     },
     "wholeEngineComplete": false,
     "overallVisualVerdict": "RETOUCH",
-    "exactVisualResidual": "COMBAT_VFX_CONTACT_OVERLAP: 다른 근접 core/impact가 손·무기·피격 접촉을 가리는 구간 잔존",
+    "exactVisualResidual": "THORN_VOLLEY_COMBAT_ACCEPTANCE: 작은 brown 가시 대비·전투 text/주변 field·회복 중 본체 투영, 자연 AI fan·held-Q 수용 미완료",
     "evidence": {
-      "producerTurnId": "01a12b5d-4fcd-7e91-a463-50981642e32a",
-      "finalReceipt": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-dark-druid-contact-vfx-live-fix/final-receipt.json",
-      "sourceReceipt": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-dark-druid-contact-vfx-live-fix/fixed/source-receipt.json",
-      "sourcePreviewGif": {
-        "path": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-dark-druid-contact-vfx-live-fix/fixed/normal-combat.gif",
-        "bytes": 61801580,
-        "sha256": "100ce97ebab7fe316546946290b17f8af7ff26d250fcd093bcb4e051fde7ce27",
+      "producerTurnId": "01a12b94-3f08-76b0-86d8-7a9340b85ae8",
+      "numericsReceipt": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-dark-druid-thorn-volley-first/final-numerics.json",
+      "checkpointReceipt": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-dark-druid-thorn-volley-first/checkpoint-final-receipt.json",
+      "derivedCaptureReceipt": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-dark-druid-thorn-volley-first/derived/thorn-capture-derivatives-receipt.json",
+      "sourcePreviewGifs": [
+        {
+          "path": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-dark-druid-thorn-volley-first/derived/normal-speed-forced-all-frames.gif",
+          "bytes": 84126122,
+          "sha256": "b69510db432bf9a8b0450c43c6b4057b24b57654bc7be56ae64d1ab704f1b11f",
+          "size": [
+            1280,
+            720
+          ],
+          "encodedFrameCount": 114,
+          "gifDurationSeconds": 4.94,
+          "captureSpanSeconds": 4.895174,
+          "observedWallSeconds": 5.095,
+          "observedIntervalMedianMs": 40.652,
+          "captureSamplingEveryNativeFrames": "NOT_SPECIFIED",
+          "timestampQuantizationMs": 10,
+          "maximumCumulativeQuantizationErrorMs": 4.973,
+          "finalUnobservedHoldMs": 40,
+          "kind": "UI로 선택한 강제 패턴의 실제 화면 GIF; 자연 AI 선택·사용자 자연 플레이·원음 영상 아님",
+          "containsAudio": false,
+          "publicReady": false,
+          "completeWatchAndListenByMarketing": false
+        },
+        {
+          "path": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-dark-druid-thorn-volley-first/derived/native-ai-all-frames.gif",
+          "bytes": 125879931,
+          "sha256": "3d6ecb66fc436bcefad0c48a04889ca9b8ef2528fad8a4d6d6b4933797768c76",
+          "size": [
+            1280,
+            720
+          ],
+          "encodedFrameCount": 172,
+          "gifDurationSeconds": 6.99,
+          "captureSpanSeconds": 6.947742,
+          "observedWallSeconds": 7.037,
+          "observedIntervalMedianMs": 41.0,
+          "captureSamplingEveryNativeFrames": "NOT_SPECIFIED",
+          "timestampQuantizationMs": 10,
+          "maximumCumulativeQuantizationErrorMs": 7.645,
+          "finalUnobservedHoldMs": 40,
+          "kind": "별도 baseline 자연 AI 교전의 실제 화면 GIF; 신규 fan 미관측·사용자 자연 플레이·원음 영상 아님",
+          "containsAudio": false,
+          "publicReady": false,
+          "completeWatchAndListenByMarketing": false
+        }
+      ],
+      "sourceReleaseStill": {
+        "path": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-dark-druid-thorn-volley-first/derived/forced-release-frame-0006-full.png",
+        "bytes": 1139569,
+        "sha256": "da943f437c0fc509bfd47b98632449877ef82b098b0017fa0818808fc402390b",
         "size": [
           1280,
           720
         ],
-        "encodedFrameCount": 83,
-        "captureSpanSeconds": 4.414201,
-        "observedWallSeconds": 4.587,
-        "gifDurationSeconds": 4.46,
-        "normalTimestampsReported": true,
-        "cropOrOverlay": false,
-        "captureSamplingEveryNativeFrames": "NOT_SPECIFIED",
-        "absoluteCaptureStartTime": "NOT_SPECIFIED",
-        "timestampQuantization": "NOT_SPECIFIED",
-        "finalUnobservedHoldMs": "NOT_SPECIFIED",
-        "kind": "별도 테스트장 정상 입력 교전의 화면 GIF; 사용자 자연 플레이·원음 홍보 영상 아님",
-        "containsAudio": false,
-        "publicReady": false,
-        "completeWatchAndListenByMarketing": false
+        "stateAssociation": "근접 시간 추정; 상태 poll과 동일 프레임 보장 없음",
+        "publicReady": false
       },
-      "sourceFullFrames": [
-        {
-          "phase": "prep",
-          "frame": 26,
-          "path": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-dark-druid-contact-vfx-live-fix/fixed/prep-full.png",
-          "bytes": 1030264,
-          "sha256": "639a2e82b15b35e723725934e9839fcf952fd7326ead03287cf991f88c428ee9",
-          "size": [
-            1280,
-            720
-          ]
-        },
-        {
-          "phase": "contact",
-          "frame": 31,
-          "path": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-dark-druid-contact-vfx-live-fix/fixed/contact-full.png",
-          "bytes": 1035476,
-          "sha256": "5be84270f30421ec6af61dfa2225fb4a4fc8931842687fd0b77b156341c12fbb",
-          "size": [
-            1280,
-            720
-          ]
-        },
-        {
-          "phase": "recovery",
-          "frame": 35,
-          "path": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-dark-druid-contact-vfx-live-fix/fixed/recovery-full.png",
-          "bytes": 1197551,
-          "sha256": "c29cbec1b22d63e5aefa07c9b6fdbef26e31caf14e1f783890d0b07b772f1ced",
-          "size": [
-            1280,
-            720
-          ]
-        }
-      ],
-      "frameCountScope": "83은観측 캡처 GIF 프레임 수다. 샘플 주기·마지막 hold는 영수증 미기재이므로 이전 r8의 매8프레임/40ms 값을 가져오지 않는다. 전 프레임 무누락 녹화·새 고유 스프라이트·FPS 개선으로 주장하지 않는다.",
-      "marketingReviewScope": "총괄 새 종료 보고·영수증 필요한 필드와 새 파일 존재/크기/해시만 처음 대조. 재생·전편 시청/청취·제품/성능/기존 suite QA·촬영 없음."
+      "frameCountScope": "114/172는 관측 캡처 GIF 프레임 수다. 원본 프레임별 파생 보존과 native 전체 프레임 무누락·새 고유 스프라이트·FPS 개선을 구별한다. 설정 샘플 주기는 미기재이며 관측 간격 중앙값만 확인했다.",
+      "timestampLimits": "10ms 양자화+마지막 미관측40ms hold. 자연 AI에서 관측1.072ms 간격1건은 GIF10ms로 유지되므로 원본 연속 시간과 정확히 같다고 주장하지 않음.",
+      "marketingReviewScope": "총괄 새 종료 보고·새 영수증 필요한 필드와 지정 파일 존재/크기/해시만 처음 대조. 재생·전편 시청/청취·제품/성능/기존 suite QA·촬영 없음."
     },
-    "nextProducerUnit": "기존 담당의 나무 가시 물리탄8발+마법탄4발 혼합 패턴 제작 중; 구현·E/Q 성공·보스 처치 결과는 아직 미인수"
+    "nextProducerUnit": "기존 담당의 같은 혼합 가시 공격 THORN_VOLLEY_COMBAT_ACCEPTANCE 마감: held-Q·자연 AI fan·실전 가독성 결과 대기; 반복 지시/촬영 요청 없음"
   },
   "previousProducerObservations": [
     {
@@ -1083,6 +1083,127 @@
         "marketingReviewScope": "총괄 새 종료 보고·영수증 필요한 범위와 파일 존재/크기/해시만 처음 대조. 새 재생·전편 시청/청취·제품/성능/기존 suite QA·촬영 없음."
       },
       "nextProducerUnit": "같은 담당의 보라색 접촉VFX 가림 마감·공격/패링이 읽히는 교전 결과 대기; 반복 지시/촬영 요청 없음"
+    },
+    {
+      "checkedAtUTC": "2026-10-11T14:41:18.009Z",
+      "cursor": "b2476eee-d767-4cd1-8064-9706586fb10a:59",
+      "status": "idle",
+      "completionConfirmed": false,
+      "scope": "별도 FDG 엔진 dark-druid-contact-vfx-live-fix의 보라색 shockField 잔광 감소·테스트장 교전 자료 인수",
+      "report": "총괄 cursor59는 별도 FDG 엔진 contact-vfx-live-fix의 보라색 shockField 잔광 감소와 수정 후 테스트장 교전 자료를 인도했다. 다른 근접 core/impact 가림은 RETOUCH이며 이번 E/Q 성공0·플레이어 사망·보스 생존·처치 없음이다. 나무 가시8발+마법탄4발 패턴은 제작 중이며 본편/Steam 적용·사용자 자연 플레이·원음·공개 승인은 미확인이다.",
+      "mainGameApplied": "NOT_CONFIRMED",
+      "steamDemoApplied": "NOT_CONFIRMED",
+      "normalGameplayVideoWithOriginalAudio": "NOT_OBSERVED",
+      "humanNaturalGameplayCaptured": false,
+      "requiresUserAction": false,
+      "publicationAllowed": false,
+      "visualCandidateState": "SHOCK_FIELD_AFTERGLOW_REDUCED_CONTACT_CORES_RETOUCH",
+      "bossProductMotionAccepted": false,
+      "producerReportedLocalCommit": "49620b90a94b0d7d9ce71550dda7823a7b8ac380",
+      "producerReportedPush": false,
+      "producerReportedDeploy": false,
+      "combatObserved": {
+        "physicalProjectileParryEAttempts": 2,
+        "physicalProjectileParryECount": 0,
+        "magicParryQAttempts": 2,
+        "magicParryQCount": 0,
+        "ordinaryWeaponContacts": 1,
+        "ordinaryWeaponRequested": 275,
+        "meleeShieldDeltaObserved": 302,
+        "shieldDeltaScope": "이번 테스트 평타 접촉1건의 관측 감소; 요청275와 실제 쉴드감소302를 구별",
+        "playerHPStart": 571,
+        "playerHPEnd": 0,
+        "playerOutcome": "DEAD",
+        "bossHP": 21017,
+        "bossShield": 13075,
+        "bossOutcome": "ALIVE; KILL_NOT_OBSERVED",
+        "previousEParryScope": "cursor58 r8의 E성공1은 이전 별도 교전 이력에 보존; 이번 성공0과 합산하지 않음"
+      },
+      "drawConsumerObservation": {
+        "kind": "shockField",
+        "observedDraws": 23,
+        "appliedDraws": 21,
+        "earlyNativeDraws": 2,
+        "sample": {
+          "gameFrame": 72,
+          "sheetFrame": 10,
+          "age": 33,
+          "maxAge": 600,
+          "worldSize": 281.6,
+          "nativeAlpha": 0.85,
+          "actualAlpha": 0.102
+        },
+        "scope": "drawP/_msStormImg2/X.drawImage/WebGPU textured quad의 한정 소비부 보정; 기본 게임 opt-in 없음"
+      },
+      "wholeEngineComplete": false,
+      "overallVisualVerdict": "RETOUCH",
+      "exactVisualResidual": "COMBAT_VFX_CONTACT_OVERLAP: 다른 근접 core/impact가 손·무기·피격 접촉을 가리는 구간 잔존",
+      "evidence": {
+        "producerTurnId": "01a12b5d-4fcd-7e91-a463-50981642e32a",
+        "finalReceipt": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-dark-druid-contact-vfx-live-fix/final-receipt.json",
+        "sourceReceipt": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-dark-druid-contact-vfx-live-fix/fixed/source-receipt.json",
+        "sourcePreviewGif": {
+          "path": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-dark-druid-contact-vfx-live-fix/fixed/normal-combat.gif",
+          "bytes": 61801580,
+          "sha256": "100ce97ebab7fe316546946290b17f8af7ff26d250fcd093bcb4e051fde7ce27",
+          "size": [
+            1280,
+            720
+          ],
+          "encodedFrameCount": 83,
+          "captureSpanSeconds": 4.414201,
+          "observedWallSeconds": 4.587,
+          "gifDurationSeconds": 4.46,
+          "normalTimestampsReported": true,
+          "cropOrOverlay": false,
+          "captureSamplingEveryNativeFrames": "NOT_SPECIFIED",
+          "absoluteCaptureStartTime": "NOT_SPECIFIED",
+          "timestampQuantization": "NOT_SPECIFIED",
+          "finalUnobservedHoldMs": "NOT_SPECIFIED",
+          "kind": "별도 테스트장 정상 입력 교전의 화면 GIF; 사용자 자연 플레이·원음 홍보 영상 아님",
+          "containsAudio": false,
+          "publicReady": false,
+          "completeWatchAndListenByMarketing": false
+        },
+        "sourceFullFrames": [
+          {
+            "phase": "prep",
+            "frame": 26,
+            "path": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-dark-druid-contact-vfx-live-fix/fixed/prep-full.png",
+            "bytes": 1030264,
+            "sha256": "639a2e82b15b35e723725934e9839fcf952fd7326ead03287cf991f88c428ee9",
+            "size": [
+              1280,
+              720
+            ]
+          },
+          {
+            "phase": "contact",
+            "frame": 31,
+            "path": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-dark-druid-contact-vfx-live-fix/fixed/contact-full.png",
+            "bytes": 1035476,
+            "sha256": "5be84270f30421ec6af61dfa2225fb4a4fc8931842687fd0b77b156341c12fbb",
+            "size": [
+              1280,
+              720
+            ]
+          },
+          {
+            "phase": "recovery",
+            "frame": 35,
+            "path": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-dark-druid-contact-vfx-live-fix/fixed/recovery-full.png",
+            "bytes": 1197551,
+            "sha256": "c29cbec1b22d63e5aefa07c9b6fdbef26e31caf14e1f783890d0b07b772f1ced",
+            "size": [
+              1280,
+              720
+            ]
+          }
+        ],
+        "frameCountScope": "83은観측 캡처 GIF 프레임 수다. 샘플 주기·마지막 hold는 영수증 미기재이므로 이전 r8의 매8프레임/40ms 값을 가져오지 않는다. 전 프레임 무누락 녹화·새 고유 스프라이트·FPS 개선으로 주장하지 않는다.",
+        "marketingReviewScope": "총괄 새 종료 보고·영수증 필요한 필드와 새 파일 존재/크기/해시만 처음 대조. 재생·전편 시청/청취·제품/성능/기존 suite QA·촬영 없음."
+      },
+      "nextProducerUnit": "기존 담당의 나무 가시 물리탄8발+마법탄4발 혼합 패턴 제작 중; 구현·E/Q 성공·보스 처치 결과는 아직 미인수"
     }
   ]
 }
