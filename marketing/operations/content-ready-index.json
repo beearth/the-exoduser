@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
-  "updatedAtKST": "2026-10-11T10:24:15+09:00",
-  "updatedAtUTC": "2026-10-11T01:24:15.359Z",
+  "updatedAtKST": "2026-10-11T13:27:46+09:00",
+  "updatedAtUTC": "2026-10-11T04:27:46.001Z",
   "policy": "실제 화면·영상 또는 단계가 명확한 기존 원화와 간결한 설명을 함께 준비하고, 공개 전 완성 미리보기를 먼저 인도한다. 동일 영상의 확대 화면과 전체 화면을 동시에 복제하지 않으며 원화를 가리는 불투명 자막판을 사용하지 않는다. 매시간 점검을 긴 글 연속 게시 빈도로 해석하지 않는다. UI·스킬·캐릭터의 독립 준비를 계속하고 대표 보스전 완료 영상만 총괄 완료를 기다린다.",
   "developmentObservation": {
     "checkout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
@@ -776,8 +776,8 @@
     "state": "PREVIEW_DELIVERED; REPLACEMENT_NOT_STARTED"
   },
   "latestProducerObservation": {
-    "checkedAtUTC": "2026-10-11T01:24:15.359Z",
-    "cursor": "b2476eee-d767-4cd1-8064-9706586fb10a:46",
+    "checkedAtUTC": "2026-10-11T04:27:46.001Z",
+    "cursor": "b2476eee-d767-4cd1-8064-9706586fb10a:49",
     "status": "idle",
     "completionConfirmed": false,
     "scope": "별도 FDG 제작 엔진의 틈 R10 ENGINE_AUTHORING 흐름",
@@ -789,20 +789,36 @@
     "steamDemoApplied": "NOT_CONFIRMED",
     "normalGameplayVideoWithOriginalAudio": "NOT_OBSERVED",
     "requiresUserAction": false,
-    "report": "총괄은 별도 FDG 제작 엔진에서 기존 정적 보스 이미지와 24프레임 시험용 임팩트의 실제 재생·저장까지 확인했다고 보고했다. 꼬리치기 본체의 준비→타격→회복 애니메이션은 없어 제품 동작 제작이 막힌 상태다. 시험용 임팩트 장수를 본체 모션 프레임/FPS 개선이나 본편 보스전 전체 완료로 표시하지 않는다. 새 본편 소스·정상 사용자 플레이 영상/원음·공개 승인 근거는 없다.",
+    "report": "총괄은 별도 FDG 제작 엔진의 r3 보스 꼬리 연결부 시각 보정과 실제 재생·저장·재열기를 한정 인수했다고 보고했다. 기존 PNG/리그의 authored 변형이며 전체 2.5D 제품은 숨은 표면 등 RETOUCH 상태다. 본체 동작과 임팩트의 같은 시간 시퀀스 연결은 다음 작업이다. EXODUSER 본편 모션·보스전 전체 완료나 정상 사용자 플레이 원음 녹화로 해석하지 않는다.",
     "evidence": {
-      "producerTurnId": "01a1288b-7a04-78f0-ac26-3ca7399e85ef",
-      "marketingReviewScope": "새 compact 총괄 보고만 관측. 새 후보/소스/실화면 재검사·촬영·시청·청취 없음.",
+      "producerTurnId": "01a1292d-e685-7400-afb4-eb71f6352c85",
+      "marketingReviewScope": "새 총괄 보고·r3 authored API/data note·기존 GIF 파일 크기/해시만 확인. 마케팅 담당의 전편 시청/청취·실행·촬영 없음.",
       "previousR10ProducerReportedProof": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-rift-first-slice-20261010/engine-preview-r10-first/v018-save-reopen-contract-proof.json",
-      "currentEvidence": "총괄 compact 완료 보고; 시험용 재생/저장은 담당 보고로 구분"
+      "currentEvidence": "새 총괄 보고와 r3 authored note; 한정 시각 인수와 전체 RETOUCH 구분",
+      "authoringNote": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-boss-first-slice-20261011/engine-tail-swipe-continuity-r3/r3-api-and-authoring-note.md",
+      "sourcePreviewGif": {
+        "path": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-boss-first-slice-20261011/engine-tail-swipe-continuity-r3/actual-tail-continuity-playback.gif",
+        "bytes": 11606742,
+        "sha256": "b89cb152300ddda99af812b68a6b9ae9b83e28f9acb5b4b7a699430600b1bd8e",
+        "kind": "별도 FDG 제작 엔진의 리그 변형 재생 GIF; 본편 게임플레이/원음 녹화 아님",
+        "publicReady": false,
+        "visualScope": "총괄의 꼬리 가시 영역 연결부 한정 인수; 전체 제품 RETOUCH",
+        "authoringClock": {
+          "clipFps": 24,
+          "durationSeconds": 3,
+          "timeKeyCount": 9,
+          "meaning": "기존 rig clip 보간 시계/키; 신규 스프라이트 고유 자세 수나 본편 화면 FPS 개선이 아님"
+        }
+      }
     },
-    "nextProducerUnit": "기존 담당의 실제 보스 꼬리치기 본체 애니메이션 근거 확보; 새 결과 전 동일 재생·저장 조회/검수 반복하지 않음",
-    "bossCandidateState": "ENGINE_FIXTURE_PLAYBACK_SAVE_REPORTED_BOSS_BODY_ANIMATION_MISSING",
+    "nextProducerUnit": "기존 FDG 엔진 담당이 본체 동작과 임팩트를 같은 재생 시퀀스로 연결; 아직 완료 미확인",
+    "bossCandidateState": "R3_TAIL_CONTINUITY_ACCEPTED_MOTION_IMPACT_TIMING_PENDING",
     "bossProductMotionAccepted": false,
-    "marketingReviewScope": "새 compact 총괄 보고만 관측. 새 후보/소스/실화면 재검사·촬영·시청·청취 없음.",
+    "marketingReviewScope": "새 총괄 보고·r3 authored API/data note·기존 GIF 파일 크기/해시만 확인. 마케팅 담당의 전편 시청/청취·실행·촬영 없음.",
     "fixturePlaybackSaveReportedByProducer": true,
     "fixtureImpactFrameCount": 24,
     "fixtureImpactFrameCountScope": "시험용 임팩트 에셋 장수; 보스 본체 장수·clip FPS·화면 FPS가 아님",
-    "missingBossBodyMotion": "준비→타격→회복"
+    "bossBodyAuthoringContinuityAcceptedByProducer": true,
+    "motionImpactTimingLinked": false
   }
 }
