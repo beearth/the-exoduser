@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
-  "updatedAtKST": "2026-10-13T02:19:24.143+09:00",
-  "updatedAtUTC": "2026-10-12T17:19:24.143Z",
+  "updatedAtKST": "2026-10-13T08:23:25.501+09:00",
+  "updatedAtUTC": "2026-10-12T23:23:25.501Z",
   "policy": "실제 화면·영상 또는 단계가 명확한 기존 원화와 간결한 설명을 함께 준비하고, 공개 전 완성 미리보기를 먼저 인도한다. 동일 영상의 확대 화면과 전체 화면을 동시에 복제하지 않으며 원화를 가리는 불투명 자막판을 사용하지 않는다. 매시간 점검을 긴 글 연속 게시 빈도로 해석하지 않는다. UI·스킬·캐릭터의 독립 준비를 계속하고 대표 보스전 완료 영상만 총괄 완료를 기다린다.",
   "developmentObservation": {
     "checkout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
@@ -776,13 +776,13 @@
     "state": "PREVIEW_DELIVERED; REPLACEMENT_NOT_STARTED"
   },
   "latestProducerObservation": {
-    "checkedAtUTC": "2026-10-12T17:19:24.143Z",
-    "cursor": "bd9703ff-6089-48ea-90e5-8df178a39cf6:24",
-    "status": "idle; completed",
+    "checkedAtUTC": "2026-10-12T23:23:25.501Z",
+    "cursor": "bd9703ff-6089-48ea-90e5-8df178a39cf6:30",
+    "status": "active; inProgress",
     "completionConfirmed": false,
-    "scope": "총괄이 회수한 별도 FDG 엔진 실행본/최신 본편 기검참 불일치의 담당 보고만 기록. 마케팅 source/suite/Git·실제 PC 실행·화면 재검수0.",
-    "report": "총괄 cursor24는 맥북 엔진 작업본의 기검참3타 즉시 발사와 별도 본편 작업본의3타 홀드·새 검기가 연결되지 않은 불일치를 보고했다. 현재 프로젝트 목록에 메인PC 작업본이 관측되지 않아 직접 실행 검수는 미확인이다. 별도 안개100%/20% 검수 탭에 대한 담당의 인간 승인 반영 보고는 마케팅 촬영·기존 사용자 게임 조작 승인으로 사용하지 않는다.",
-    "mainGameApplied": "NOT_CONFIRMED; LATEST_MAIN_INTEGRATION_MISMATCH_REPORTED",
+    "scope": "총괄 채팅의 실제 사용자 엔진 전환 요청과 진행 중 응답만 기록. Godot 작업본·실행·프레임 성능·본편 통합은 마케팅이 확인하지 않았다.",
+    "report": "사용자가 며칠째 실행 가능한 결과물이 나오지 않는다며 Godot 마이그레이션과 Unity/Godot 전환을 요청했다. 총괄은 기존 방식에서 Godot 이식으로 전환해 기존 스프라이트·전투 규칙과 최신 기검참3타 홀드·새 검기를 기준으로 첫 실행 플레이본을 만들겠다고 응답했다. 아직 진행 중인 방향·첫 제작 범위이며 실제 이식 완료·성능 개선 보고가 아니다.",
+    "mainGameApplied": "NOT_CONFIRMED; GODOT_MIGRATION_DIRECTION_REPORTED_ONLY",
     "steamDemoApplied": "NOT_CONFIRMED",
     "normalGameplayVideoWithOriginalAudio": false,
     "humanNaturalGameplayCaptured": false,
@@ -794,30 +794,23 @@
     "overallVisualVerdict": "NO_NEW_VISUAL_REVIEW",
     "producerReportedLocalCommit": null,
     "producerPushReported": null,
-    "integrationIssue": {
-      "reportOnly": true,
-      "engineKiSlash": "3타 즉시 발사",
-      "separateMainKiSlash": "3타 홀드·새 검기",
-      "latestMainConnected": false,
-      "mainPCExecutionObserved": false,
-      "mainPCMissingFromCurrentProjectList": "NOT_EVIDENCE_OF_PC_LOSS_OR_ALL_REMOTE_UNAVAILABLE",
-      "sourceCheckoutCommitForReportedDifference": "NOT_REVALIDATED_BY_MARKETING"
-    },
-    "environmentProgress": {
-      "priorCodeDocsAnd11Tests": "HISTORICAL_OWNER_REPORT_ONLY",
-      "fog100vs20VisualComparison": "PENDING; NO_NEW_PIXELS_OBSERVED",
-      "separateFogReviewTabApproval": "REPORTED_FOR_EXISTING_OWNER_ONLY; NOT_MARKETING_CAPTURE_AUTHORIZATION",
-      "environmentClose": false
+    "migrationDirection": {
+      "reportedTarget": "Godot",
+      "userRequestObservedInProducerThread": true,
+      "producerResponse": "전환·첫 실행 플레이본 제작 계획",
+      "plannedBaseline": "기존 스프라이트·전투 규칙·최신 기검참3타 홀드·새 검기",
+      "newGodotProjectInspectedByMarketing": false,
+      "actualRunnablePortObservedByMarketing": false,
+      "rootGameCodeOrOtherThreadWorkAuthorizedByThisObservation": false,
+      "performanceImprovementMeasured": false,
+      "performanceComparison": "NOT_MEASURED; ENGINE_NAME_ALONE_DOES_NOT_ESTABLISH_FASTER_FRAMES",
+      "wholeBossCompletion": false
     },
     "evidence": {
-      "type": "producer compact + latest-turn narrowly filtered report",
+      "type": "producer compact + latest-turn user and assistant messages only",
       "producerTitle": "맥북에서 총괄 시작하기",
       "producerThreadId": "01a0faa9-b453-7673-be39-98adedb4c2b3",
-      "producerTurnId": "01a1311c-a877-7763-b2c3-cceda2022692",
-      "ownerTitle": "Find 앤진개발팀 FDG",
-      "ownerThreadId": "01a1235a-f2b8-73d1-bf58-c51c7dfb7638",
-      "ownerTurnId": "01a1310e-1326-7951-b237-0bc1d650d6b5",
-      "ownerCursor": "fdd4cbf3-6a80-4b9d-897c-c2f6ba2bebe7:153",
+      "producerTurnId": "01a13269-e6d5-7682-8f3a-9105693118bd",
       "sourceReceiptsNewlyRead": 0,
       "sourceFilesRevalidated": 0,
       "newMarketingPixels": 0,
@@ -825,7 +818,7 @@
       "newGameManipulations": 0,
       "newOrdersSent": 0
     },
-    "nextProducerUnit": "기존 담당의 실행본/최신 본편 연결 확인 보고 대기. 전체 보스전·환경 완료 미확정."
+    "nextProducerUnit": "기존 총괄의 첫 실제 실행 Godot 플레이본과 최신 본편 연결·실측 결과 보고 대기. 기존 홍보 미리보기 검수와 게임 품질 개선→사용자 플레이→실제 화면·원음 녹화 순서 유지."
   },
   "previousProducerObservations": [
     {
@@ -1972,6 +1965,58 @@
         "marketingReviewScope": "총괄 compact·새 종료 보고와 저장된 최신 한정 관측 문장만 읽기 전용 확인. 미디어/소스/검사/Git 재검증·게임/서버/사용자탭/세이브 조작 없음."
       },
       "nextProducerUnit": "기존 담당의 안개100%/20% 실제 비교·환경 consumer 검수 새 결과만 대기; 마케팅 반복 지시/촬영 요청 없음"
+    },
+    {
+      "checkedAtUTC": "2026-10-12T17:19:24.143Z",
+      "cursor": "bd9703ff-6089-48ea-90e5-8df178a39cf6:24",
+      "status": "idle; completed",
+      "completionConfirmed": false,
+      "scope": "총괄이 회수한 별도 FDG 엔진 실행본/최신 본편 기검참 불일치의 담당 보고만 기록. 마케팅 source/suite/Git·실제 PC 실행·화면 재검수0.",
+      "report": "총괄 cursor24는 맥북 엔진 작업본의 기검참3타 즉시 발사와 별도 본편 작업본의3타 홀드·새 검기가 연결되지 않은 불일치를 보고했다. 현재 프로젝트 목록에 메인PC 작업본이 관측되지 않아 직접 실행 검수는 미확인이다. 별도 안개100%/20% 검수 탭에 대한 담당의 인간 승인 반영 보고는 마케팅 촬영·기존 사용자 게임 조작 승인으로 사용하지 않는다.",
+      "mainGameApplied": "NOT_CONFIRMED; LATEST_MAIN_INTEGRATION_MISMATCH_REPORTED",
+      "steamDemoApplied": "NOT_CONFIRMED",
+      "normalGameplayVideoWithOriginalAudio": false,
+      "humanNaturalGameplayCaptured": false,
+      "requiresUserAction": false,
+      "publicationAllowed": false,
+      "visualCandidateState": "NO_NEW_MARKETING_MEDIA",
+      "bossProductMotionAccepted": false,
+      "wholeEngineComplete": false,
+      "overallVisualVerdict": "NO_NEW_VISUAL_REVIEW",
+      "producerReportedLocalCommit": null,
+      "producerPushReported": null,
+      "integrationIssue": {
+        "reportOnly": true,
+        "engineKiSlash": "3타 즉시 발사",
+        "separateMainKiSlash": "3타 홀드·새 검기",
+        "latestMainConnected": false,
+        "mainPCExecutionObserved": false,
+        "mainPCMissingFromCurrentProjectList": "NOT_EVIDENCE_OF_PC_LOSS_OR_ALL_REMOTE_UNAVAILABLE",
+        "sourceCheckoutCommitForReportedDifference": "NOT_REVALIDATED_BY_MARKETING"
+      },
+      "environmentProgress": {
+        "priorCodeDocsAnd11Tests": "HISTORICAL_OWNER_REPORT_ONLY",
+        "fog100vs20VisualComparison": "PENDING; NO_NEW_PIXELS_OBSERVED",
+        "separateFogReviewTabApproval": "REPORTED_FOR_EXISTING_OWNER_ONLY; NOT_MARKETING_CAPTURE_AUTHORIZATION",
+        "environmentClose": false
+      },
+      "evidence": {
+        "type": "producer compact + latest-turn narrowly filtered report",
+        "producerTitle": "맥북에서 총괄 시작하기",
+        "producerThreadId": "01a0faa9-b453-7673-be39-98adedb4c2b3",
+        "producerTurnId": "01a1311c-a877-7763-b2c3-cceda2022692",
+        "ownerTitle": "Find 앤진개발팀 FDG",
+        "ownerThreadId": "01a1235a-f2b8-73d1-bf58-c51c7dfb7638",
+        "ownerTurnId": "01a1310e-1326-7951-b237-0bc1d650d6b5",
+        "ownerCursor": "fdd4cbf3-6a80-4b9d-897c-c2f6ba2bebe7:153",
+        "sourceReceiptsNewlyRead": 0,
+        "sourceFilesRevalidated": 0,
+        "newMarketingPixels": 0,
+        "newOriginalAudio": 0,
+        "newGameManipulations": 0,
+        "newOrdersSent": 0
+      },
+      "nextProducerUnit": "기존 담당의 실행본/최신 본편 연결 확인 보고 대기. 전체 보스전·환경 완료 미확정."
     }
   ],
   "indieMarketingCampaign": {
