@@ -1,14 +1,14 @@
 {
   "schemaVersion": 2,
-  "updatedAtKST": "2026-10-12T15:56:21.699+09:00",
-  "updatedAtUTC": "2026-10-12T06:56:21.699Z",
+  "updatedAtKST": "2026-10-13T00:07:23.577+09:00",
+  "updatedAtUTC": "2026-10-12T15:07:23.577Z",
   "policy": "실제 화면·영상 또는 단계가 명확한 기존 원화와 간결한 설명을 함께 준비하고, 공개 전 완성 미리보기를 먼저 인도한다. 동일 영상의 확대 화면과 전체 화면을 동시에 복제하지 않으며 원화를 가리는 불투명 자막판을 사용하지 않는다. 매시간 점검을 긴 글 연속 게시 빈도로 해석하지 않는다. UI·스킬·캐릭터의 독립 준비를 계속하고 대표 보스전 완료 영상만 총괄 완료를 기다린다.",
   "developmentObservation": {
     "checkout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
     "commit": "9a4534b42f74093095ebc3364a25dd104e93b379",
     "scope": "12c29afe 이후 docs·커밋·관련 소비 연결의 읽기 전용 조사. 미커밋 상태나 Steam 배포 상태를 HEAD로 증명하지 않음",
-    "lastCheckedAtUTC": "2026-10-12T06:56:21.699Z",
-    "latestResult": "실제 migration HEAD9a4534b4 동일. 새 관측은 별도 FDG 자연 발사 한 사건의 생성/이동/국소 가시성 부분 인수이며 exact first-render·입 소켓/owner귀속은 미확정, 전체씬 RETOUCH다. 기존 몬스터 저작 배치 consumer 제작 중. 사용자 직접 플레이/원음·본편/Steam·전체 보스전 완료/공개 승인 미확인, 전사10/8 검토/교체와 악의구 후속 준비 유지, 새 홍보촬영/게시0.",
+    "lastCheckedAtUTC": "2026-10-12T15:07:23.577Z",
+    "latestResult": "총괄 cursor bd9703ff:22가 별도 FDG 편집기 안개 조절·복원→인게임 consumer의 코드/docs 작업과 신규 검사11 PASS 담당 부분보고를 회수했다. 실제 안개100%/20% 화면 비교는 다음 검수이며 export/reimport→실consumer의 새 원본 비교·정상checkpoint는 미관측, EDITOR_ENVIRONMENT_NATIVE_FIRST 완료0이다. 실제 migration HEAD9a4534b4 동일, 새 홍보촬영/원음/공개 승인 없음.",
     "gameHtmlSha256": "5212e3a33c201eec08d09b132092c1a063fea88f36fccef494ea351f3565d2cd"
   },
   "nextMaterial": "전사 인트로10/8 최신본의 완성 미리보기 검수와 교체 판단; 악의구 원고·12초 시연안은 후속 준비 유지",
@@ -776,140 +776,56 @@
     "state": "PREVIEW_DELIVERED; REPLACEMENT_NOT_STARTED"
   },
   "latestProducerObservation": {
-    "checkedAtUTC": "2026-10-12T06:56:21.699Z",
-    "cursor": "bd9703ff-6089-48ea-90e5-8df178a39cf6:14",
+    "checkedAtUTC": "2026-10-12T15:07:23.577Z",
+    "cursor": "bd9703ff-6089-48ea-90e5-8df178a39cf6:22",
     "status": "idle",
     "completionConfirmed": false,
-    "scope": "별도 FDG 자연 발사 한 사건의 생성·이동·국소 가시성 한정 인수; 정확 first-render 미확정·전체 씬 RETOUCH·본편/보스전 완료 아님",
-    "report": "총괄 cursor bd9703ff:14는 별도 FDG 자연 발사 한 사건의 탄 생성·이동과 국소 화면 가시성을 한정 인수했다. native update2745 탄0→2746 dist9.187(1step 이동)→2747 dist18.375(2step)이며 append 거리0·정확 first-render·입 소켓 정합은 미확정이다. first-visible 캡처는2747→2776에 걸쳐 반환됐고 owner=null로 유일 충전 actor0의2→0 연결 이상 귀속을 확정하지 않는다. 최종HP64.116·적1·생존·완료false, 전체씬 RETOUCH다. 새 기존 몬스터 저작 배치 consumer는 제작 중이며 사용자 플레이·원음·본편/Steam·공개 승인 미확인이다.",
+    "scope": "별도 FDG 안개 consumer 제작 중 부분보고; 실제 화면 비교·환경 단위 완료 미관측",
+    "report": "총괄 cursor bd9703ff:22가 별도 FDG 편집기 안개 조절·복원→인게임 consumer의 코드/docs 작업과 신규 검사11 PASS 담당 부분보고를 회수했다. 실제 안개100%/20% 화면 비교는 다음 검수이며 export/reimport→실consumer의 새 원본 비교·정상checkpoint는 미관측, EDITOR_ENVIRONMENT_NATIVE_FIRST 완료0이다. 실제 migration HEAD9a4534b4 동일, 새 홍보촬영/원음/공개 승인 없음.",
     "mainGameApplied": "NOT_CONFIRMED",
     "steamDemoApplied": "NOT_CONFIRMED",
     "normalGameplayVideoWithOriginalAudio": "NOT_OBSERVED",
     "humanNaturalGameplayCaptured": false,
     "requiresUserAction": false,
     "publicationAllowed": false,
-    "visualCandidateState": "SEPARATE_ENGINE_NATURAL_PROJECTILE_EVENT_PARTIAL_FIRST_RENDER_UNCONFIRMED",
+    "visualCandidateState": "SEPARATE_ENGINE_FOG_CONSUMER_REPORTED_IMPLEMENTATION_REAL_SCREEN_COMPARISON_PENDING",
     "bossProductMotionAccepted": false,
     "wholeEngineComplete": false,
-    "overallVisualVerdict": "NOT_ACCEPTED_FOR_EXODUSER_REPRESENTATIVE_TRAILER",
-    "sourceCheckpointCommit": "c2da92519b63fb3e1f524e7c39621a799a04bee7",
-    "sourceCheckpointScope": "sourceCheckpoint receipt필드; 이 자료에서 새 코드/Git쓰기0이며 실행 checkout·본편 적용·push/배포는 미보고",
+    "overallVisualVerdict": "NOT_REVIEWED_FOR_MARKETING",
+    "producerReportedLocalCommit": null,
     "producerPushReported": null,
-    "deployReported": null,
-    "nativeEmitterAcceptance": {
-      "producerAcceptedScope": "자연 발사 한 사건의 native 생성·다음 이동·국소 가시성",
-      "wholeSceneOwnerVerdict": "RETOUCH",
-      "nativeEvent": {
-        "prepareUpdate": 2745,
-        "prepareProjectileCount": 0,
-        "firstObservedUpdate": 2746,
-        "firstObservedDistance": 9.187,
-        "firstObservedDistanceScope": "생성 update에서 이미1step 이동; append 거리0 관측 아님",
-        "nextObservedUpdate": 2747,
-        "nextObservedDistance": 18.375,
-        "nextObservedDistanceScope": "2step 이동"
-      },
-      "exactAppendMomentObserved": false,
-      "zeroDistanceRenderObserved": false,
-      "exactFirstRenderConfirmed": false,
-      "screenshotNativeFrameConfirmed": false,
-      "mouthSocketCenterAlignmentConfirmed": false,
-      "sameEventImageUpdateRange": [
-        2747,
-        2776
+    "environmentProgress": {
+      "unit": "EDITOR_ENVIRONMENT_NATIVE_FIRST",
+      "editorFogAdjustmentAndRestoreCodeDocsReported": true,
+      "newTechnicalTestsPassedReported": 11,
+      "technicalTestReportScope": "기존 담당 보고; 마케팅 source/suite/Git 재검증 없음",
+      "realScreenFogComparisonPlanned": [
+        100,
+        20
       ],
-      "emitterLink": {
-        "projectileOwner": null,
-        "uniqueChargingActorIndex": 0,
-        "actorChargeBefore": 2,
-        "actorChargeAfter": 0,
-        "explicitOwnerIdentityConfirmed": false
-      },
-      "retainedObjectObservation": {
-        "update": 2777,
-        "activeIndex": -1,
-        "sameActiveObject": false,
-        "retainedObjectAccessible": true,
-        "stillInActiveProjectiles": false,
-        "removalCauseConfirmed": false,
-        "scope": "retained 접근값을 활성 비행 화면/제거원인 증거로 해석하지 않음"
-      },
-      "difficultyObserved": {
-        "index": 5,
-        "multiplier": 1,
-        "level": 1,
-        "normalLabelConfirmed": false
-      },
-      "backend": "WebGPU",
-      "projection": "perspective",
-      "cameraZoom": 0.82,
-      "viewport": [
-        1280,
-        720
-      ],
-      "pixelScale": 1,
-      "entryMode": "local public QA test=1; 온라인 게시 아님",
-      "inputActor": "NOT_RECORDED_IN_RECEIPT",
-      "publicTSTapMovementObserved": false,
-      "executingCheckout": "NOT_REPORTED",
-      "loadedResourceHashVerified": false,
-      "codeWritesReported": 0,
-      "testWritesReported": 0,
-      "gitWritesReported": 0,
-      "forcedAiReviveMovementWritesReported": 0,
-      "persistentWritesReported": 0,
-      "finalObservation": {
-        "playerHp": 64.116,
-        "remainingEnemyCount": 1,
-        "alive": true,
-        "completed": false
-      },
+      "realScreenFogComparisonComplete": false,
+      "exportReimportRealConsumerNewOriginalComparisonObserved": false,
+      "normalCheckpointObserved": false,
+      "unitCompletionConfirmed": false,
+      "newMarketingCaptureCount": 0,
       "originalAudioObserved": false,
-      "marketingWatchAndListenComplete": false
+      "publicApprovalObserved": false
     },
     "evidence": {
       "producerThreadId": "01a0faa9-b453-7673-be39-98adedb4c2b3",
-      "producerTurnId": "01a12eda-ee1f-7331-99e8-5e16ec7fcd12",
-      "sceneOwnerThreadId": "01a1235a-f2b8-73d1-bf58-c51c7dfb7638",
-      "receipts": [
-        "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-map-pack-emitter-first/emitter-event-receipt.json",
-        "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-map-pack-emitter-first/source-read-receipt.json",
-        "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-map-pack-emitter-first/native-png-metadata.json",
-        "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-map-pack-emitter-first/birth-jpeg-metadata.json",
-        "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-map-pack-emitter-first/final-state.json",
-        "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-map-pack-emitter-first/entry-url.txt"
-      ],
-      "newStillMetadata": [
-        {
-          "path": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-map-pack-emitter-first/boundary-png/first-visible.png",
-          "bytes": 2551035,
-          "sha256": "44a24640195d9de57cb1d3ee8ac55c8daca5edce54ad96ddf3072b413e87da09",
-          "actualFormat": "PNG",
-          "size": [
-            2560,
-            1440
-          ],
-          "scope": "같은 사건 후속 가시 화면; 정확 첫 렌더 frame/입 소켓 정합은 미확정",
-          "visuallyReviewedByMarketing": false,
-          "publicReady": false
-        },
-        {
-          "path": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-map-pack-emitter-first/boundary-png/prepare.png",
-          "bytes": 2593136,
-          "sha256": "8f99db25708e91cca1f25aa3498249bdc6450255d330238466c31debfddac27b",
-          "actualFormat": "PNG",
-          "size": [
-            2560,
-            1440
-          ],
-          "scope": "같은 사건 준비 화면",
-          "visuallyReviewedByMarketing": false,
-          "publicReady": false
-        }
-      ],
-      "marketingReviewScope": "총괄 새 인도·한정 인수/다음 배치 제작 지시 문장, 새5JSON+entry URL 필요한 필드 및 지정2PNG 존재·크기·형식·최초해시를 읽기 전용 대조. 실제 화면 보기/영상 재생/원음 청취·추가 QA·게임/서버/사용자탭/세이브/타인파일 변경 없음."
+      "producerTurnId": "01a13093-517e-70c0-9277-b3ed0c939b03",
+      "ownerThreadId": "01a1235a-f2b8-73d1-bf58-c51c7dfb7638",
+      "ownerReportedTurnId": "01a1308b-f81d-7b91-a620-cd17218b2fd4",
+      "ownerReportedCursor": "fdd4cbf3-6a80-4b9d-897c-c2f6ba2bebe7:152",
+      "ownerReportedStatus": "completed/idle",
+      "reportOnly": true,
+      "marketingNewFilesInspected": 0,
+      "marketingSourceOrTestsVerified": false,
+      "marketingVisualReviewComplete": false,
+      "marketingWatchAndListenComplete": false,
+      "marketingReviewScope": "총괄 compact·새 종료 보고와 저장된 최신 한정 관측 문장만 읽기 전용 확인. 미디어/소스/검사/Git 재검증·게임/서버/사용자탭/세이브 조작 없음."
     },
-    "nextProducerUnit": "EDITOR_ENCOUNTER_PLACEMENT_NATIVE_FIRST: 기존 몬스터 저작X/Y→JSON재가져오기→native factory 소비 연결 제작 중; 새 완료/산출물만 대기, 마케팅 반복 지시/촬영 요청 없음"
+    "nextProducerUnit": "기존 담당의 안개100%/20% 실제 비교·환경 consumer 검수 새 결과만 대기; 마케팅 반복 지시/촬영 요청 없음"
   },
   "previousProducerObservations": [
     {
@@ -1868,6 +1784,142 @@
       "nextProducerUnit": "기존 담당 동쪽 적/구울 가림 보정의 새 완료·산출물 대기; 마케팅 반복 지시/촬영 요청 없음",
       "checkpointCommitReceiptField": "commit",
       "normalCheckpointFieldPresent": false
+    },
+    {
+      "checkedAtUTC": "2026-10-12T06:56:21.699Z",
+      "cursor": "bd9703ff-6089-48ea-90e5-8df178a39cf6:14",
+      "status": "idle",
+      "completionConfirmed": false,
+      "scope": "별도 FDG 자연 발사 한 사건의 생성·이동·국소 가시성 한정 인수; 정확 first-render 미확정·전체 씬 RETOUCH·본편/보스전 완료 아님",
+      "report": "총괄 cursor bd9703ff:14는 별도 FDG 자연 발사 한 사건의 탄 생성·이동과 국소 화면 가시성을 한정 인수했다. native update2745 탄0→2746 dist9.187(1step 이동)→2747 dist18.375(2step)이며 append 거리0·정확 first-render·입 소켓 정합은 미확정이다. first-visible 캡처는2747→2776에 걸쳐 반환됐고 owner=null로 유일 충전 actor0의2→0 연결 이상 귀속을 확정하지 않는다. 최종HP64.116·적1·생존·완료false, 전체씬 RETOUCH다. 새 기존 몬스터 저작 배치 consumer는 제작 중이며 사용자 플레이·원음·본편/Steam·공개 승인 미확인이다.",
+      "mainGameApplied": "NOT_CONFIRMED",
+      "steamDemoApplied": "NOT_CONFIRMED",
+      "normalGameplayVideoWithOriginalAudio": "NOT_OBSERVED",
+      "humanNaturalGameplayCaptured": false,
+      "requiresUserAction": false,
+      "publicationAllowed": false,
+      "visualCandidateState": "SEPARATE_ENGINE_NATURAL_PROJECTILE_EVENT_PARTIAL_FIRST_RENDER_UNCONFIRMED",
+      "bossProductMotionAccepted": false,
+      "wholeEngineComplete": false,
+      "overallVisualVerdict": "NOT_ACCEPTED_FOR_EXODUSER_REPRESENTATIVE_TRAILER",
+      "sourceCheckpointCommit": "c2da92519b63fb3e1f524e7c39621a799a04bee7",
+      "sourceCheckpointScope": "sourceCheckpoint receipt필드; 이 자료에서 새 코드/Git쓰기0이며 실행 checkout·본편 적용·push/배포는 미보고",
+      "producerPushReported": null,
+      "deployReported": null,
+      "nativeEmitterAcceptance": {
+        "producerAcceptedScope": "자연 발사 한 사건의 native 생성·다음 이동·국소 가시성",
+        "wholeSceneOwnerVerdict": "RETOUCH",
+        "nativeEvent": {
+          "prepareUpdate": 2745,
+          "prepareProjectileCount": 0,
+          "firstObservedUpdate": 2746,
+          "firstObservedDistance": 9.187,
+          "firstObservedDistanceScope": "생성 update에서 이미1step 이동; append 거리0 관측 아님",
+          "nextObservedUpdate": 2747,
+          "nextObservedDistance": 18.375,
+          "nextObservedDistanceScope": "2step 이동"
+        },
+        "exactAppendMomentObserved": false,
+        "zeroDistanceRenderObserved": false,
+        "exactFirstRenderConfirmed": false,
+        "screenshotNativeFrameConfirmed": false,
+        "mouthSocketCenterAlignmentConfirmed": false,
+        "sameEventImageUpdateRange": [
+          2747,
+          2776
+        ],
+        "emitterLink": {
+          "projectileOwner": null,
+          "uniqueChargingActorIndex": 0,
+          "actorChargeBefore": 2,
+          "actorChargeAfter": 0,
+          "explicitOwnerIdentityConfirmed": false
+        },
+        "retainedObjectObservation": {
+          "update": 2777,
+          "activeIndex": -1,
+          "sameActiveObject": false,
+          "retainedObjectAccessible": true,
+          "stillInActiveProjectiles": false,
+          "removalCauseConfirmed": false,
+          "scope": "retained 접근값을 활성 비행 화면/제거원인 증거로 해석하지 않음"
+        },
+        "difficultyObserved": {
+          "index": 5,
+          "multiplier": 1,
+          "level": 1,
+          "normalLabelConfirmed": false
+        },
+        "backend": "WebGPU",
+        "projection": "perspective",
+        "cameraZoom": 0.82,
+        "viewport": [
+          1280,
+          720
+        ],
+        "pixelScale": 1,
+        "entryMode": "local public QA test=1; 온라인 게시 아님",
+        "inputActor": "NOT_RECORDED_IN_RECEIPT",
+        "publicTSTapMovementObserved": false,
+        "executingCheckout": "NOT_REPORTED",
+        "loadedResourceHashVerified": false,
+        "codeWritesReported": 0,
+        "testWritesReported": 0,
+        "gitWritesReported": 0,
+        "forcedAiReviveMovementWritesReported": 0,
+        "persistentWritesReported": 0,
+        "finalObservation": {
+          "playerHp": 64.116,
+          "remainingEnemyCount": 1,
+          "alive": true,
+          "completed": false
+        },
+        "originalAudioObserved": false,
+        "marketingWatchAndListenComplete": false
+      },
+      "evidence": {
+        "producerThreadId": "01a0faa9-b453-7673-be39-98adedb4c2b3",
+        "producerTurnId": "01a12eda-ee1f-7331-99e8-5e16ec7fcd12",
+        "sceneOwnerThreadId": "01a1235a-f2b8-73d1-bf58-c51c7dfb7638",
+        "receipts": [
+          "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-map-pack-emitter-first/emitter-event-receipt.json",
+          "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-map-pack-emitter-first/source-read-receipt.json",
+          "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-map-pack-emitter-first/native-png-metadata.json",
+          "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-map-pack-emitter-first/birth-jpeg-metadata.json",
+          "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-map-pack-emitter-first/final-state.json",
+          "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-map-pack-emitter-first/entry-url.txt"
+        ],
+        "newStillMetadata": [
+          {
+            "path": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-map-pack-emitter-first/boundary-png/first-visible.png",
+            "bytes": 2551035,
+            "sha256": "44a24640195d9de57cb1d3ee8ac55c8daca5edce54ad96ddf3072b413e87da09",
+            "actualFormat": "PNG",
+            "size": [
+              2560,
+              1440
+            ],
+            "scope": "같은 사건 후속 가시 화면; 정확 첫 렌더 frame/입 소켓 정합은 미확정",
+            "visuallyReviewedByMarketing": false,
+            "publicReady": false
+          },
+          {
+            "path": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-map-pack-emitter-first/boundary-png/prepare.png",
+            "bytes": 2593136,
+            "sha256": "8f99db25708e91cca1f25aa3498249bdc6450255d330238466c31debfddac27b",
+            "actualFormat": "PNG",
+            "size": [
+              2560,
+              1440
+            ],
+            "scope": "같은 사건 준비 화면",
+            "visuallyReviewedByMarketing": false,
+            "publicReady": false
+          }
+        ],
+        "marketingReviewScope": "총괄 새 인도·한정 인수/다음 배치 제작 지시 문장, 새5JSON+entry URL 필요한 필드 및 지정2PNG 존재·크기·형식·최초해시를 읽기 전용 대조. 실제 화면 보기/영상 재생/원음 청취·추가 QA·게임/서버/사용자탭/세이브/타인파일 변경 없음."
+      },
+      "nextProducerUnit": "EDITOR_ENCOUNTER_PLACEMENT_NATIVE_FIRST: 기존 몬스터 저작X/Y→JSON재가져오기→native factory 소비 연결 제작 중; 새 완료/산출물만 대기, 마케팅 반복 지시/촬영 요청 없음"
     }
   ]
 }
