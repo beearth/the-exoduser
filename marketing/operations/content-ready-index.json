@@ -1,14 +1,14 @@
 {
   "schemaVersion": 2,
-  "updatedAtKST": "2026-10-13T02:13:04.313359+09:00",
-  "updatedAtUTC": "2026-10-12T17:13:04.313359+00:00",
+  "updatedAtKST": "2026-10-13T02:19:24.143+09:00",
+  "updatedAtUTC": "2026-10-12T17:19:24.143Z",
   "policy": "실제 화면·영상 또는 단계가 명확한 기존 원화와 간결한 설명을 함께 준비하고, 공개 전 완성 미리보기를 먼저 인도한다. 동일 영상의 확대 화면과 전체 화면을 동시에 복제하지 않으며 원화를 가리는 불투명 자막판을 사용하지 않는다. 매시간 점검을 긴 글 연속 게시 빈도로 해석하지 않는다. UI·스킬·캐릭터의 독립 준비를 계속하고 대표 보스전 완료 영상만 총괄 완료를 기다린다.",
   "developmentObservation": {
     "checkout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
     "commit": "9a4534b42f74093095ebc3364a25dd104e93b379",
     "scope": "12c29afe 이후 docs·커밋·관련 소비 연결의 읽기 전용 조사. 미커밋 상태나 Steam 배포 상태를 HEAD로 증명하지 않음",
-    "lastCheckedAtUTC": "2026-10-12T15:07:23.577Z",
-    "latestResult": "총괄 cursor bd9703ff:22가 별도 FDG 편집기 안개 조절·복원→인게임 consumer의 코드/docs 작업과 신규 검사11 PASS 담당 부분보고를 회수했다. 실제 안개100%/20% 화면 비교는 다음 검수이며 export/reimport→실consumer의 새 원본 비교·정상checkpoint는 미관측, EDITOR_ENVIRONMENT_NATIVE_FIRST 완료0이다. 실제 migration HEAD9a4534b4 동일, 새 홍보촬영/원음/공개 승인 없음.",
+    "lastCheckedAtUTC": "2026-10-12T17:19:24.143Z",
+    "latestResult": "총괄 cursor24는 맥북 엔진 작업본의 기검참3타 즉시 발사와 별도 본편 작업본의3타 홀드·새 검기가 연결되지 않은 불일치를 보고했다. 현재 프로젝트 목록에 메인PC 작업본이 관측되지 않아 직접 실행 검수는 미확인이다. 별도 안개100%/20% 검수 탭에 대한 담당의 인간 승인 반영 보고는 마케팅 촬영·기존 사용자 게임 조작 승인으로 사용하지 않는다. actual migration HEAD9a4534b4 동일, 전사 정적 캠페인 검토 대기·새 게시0.",
     "gameHtmlSha256": "5212e3a33c201eec08d09b132092c1a063fea88f36fccef494ea351f3565d2cd"
   },
   "nextMaterial": "이 스틸·짧은 글 캠페인 미리보기 검수·게시 판단; 최신 인트로 전편 검수와 교체 판단 유지. 다음 인게임 소재는 품질 개선 후 사용자 플레이 녹화.",
@@ -776,56 +776,56 @@
     "state": "PREVIEW_DELIVERED; REPLACEMENT_NOT_STARTED"
   },
   "latestProducerObservation": {
-    "checkedAtUTC": "2026-10-12T15:07:23.577Z",
-    "cursor": "bd9703ff-6089-48ea-90e5-8df178a39cf6:22",
-    "status": "idle",
+    "checkedAtUTC": "2026-10-12T17:19:24.143Z",
+    "cursor": "bd9703ff-6089-48ea-90e5-8df178a39cf6:24",
+    "status": "idle; completed",
     "completionConfirmed": false,
-    "scope": "별도 FDG 안개 consumer 제작 중 부분보고; 실제 화면 비교·환경 단위 완료 미관측",
-    "report": "총괄 cursor bd9703ff:22가 별도 FDG 편집기 안개 조절·복원→인게임 consumer의 코드/docs 작업과 신규 검사11 PASS 담당 부분보고를 회수했다. 실제 안개100%/20% 화면 비교는 다음 검수이며 export/reimport→실consumer의 새 원본 비교·정상checkpoint는 미관측, EDITOR_ENVIRONMENT_NATIVE_FIRST 완료0이다. 실제 migration HEAD9a4534b4 동일, 새 홍보촬영/원음/공개 승인 없음.",
-    "mainGameApplied": "NOT_CONFIRMED",
+    "scope": "총괄이 회수한 별도 FDG 엔진 실행본/최신 본편 기검참 불일치의 담당 보고만 기록. 마케팅 source/suite/Git·실제 PC 실행·화면 재검수0.",
+    "report": "총괄 cursor24는 맥북 엔진 작업본의 기검참3타 즉시 발사와 별도 본편 작업본의3타 홀드·새 검기가 연결되지 않은 불일치를 보고했다. 현재 프로젝트 목록에 메인PC 작업본이 관측되지 않아 직접 실행 검수는 미확인이다. 별도 안개100%/20% 검수 탭에 대한 담당의 인간 승인 반영 보고는 마케팅 촬영·기존 사용자 게임 조작 승인으로 사용하지 않는다.",
+    "mainGameApplied": "NOT_CONFIRMED; LATEST_MAIN_INTEGRATION_MISMATCH_REPORTED",
     "steamDemoApplied": "NOT_CONFIRMED",
-    "normalGameplayVideoWithOriginalAudio": "NOT_OBSERVED",
+    "normalGameplayVideoWithOriginalAudio": false,
     "humanNaturalGameplayCaptured": false,
     "requiresUserAction": false,
     "publicationAllowed": false,
-    "visualCandidateState": "SEPARATE_ENGINE_FOG_CONSUMER_REPORTED_IMPLEMENTATION_REAL_SCREEN_COMPARISON_PENDING",
+    "visualCandidateState": "NO_NEW_MARKETING_MEDIA",
     "bossProductMotionAccepted": false,
     "wholeEngineComplete": false,
-    "overallVisualVerdict": "NOT_REVIEWED_FOR_MARKETING",
+    "overallVisualVerdict": "NO_NEW_VISUAL_REVIEW",
     "producerReportedLocalCommit": null,
     "producerPushReported": null,
+    "integrationIssue": {
+      "reportOnly": true,
+      "engineKiSlash": "3타 즉시 발사",
+      "separateMainKiSlash": "3타 홀드·새 검기",
+      "latestMainConnected": false,
+      "mainPCExecutionObserved": false,
+      "mainPCMissingFromCurrentProjectList": "NOT_EVIDENCE_OF_PC_LOSS_OR_ALL_REMOTE_UNAVAILABLE",
+      "sourceCheckoutCommitForReportedDifference": "NOT_REVALIDATED_BY_MARKETING"
+    },
     "environmentProgress": {
-      "unit": "EDITOR_ENVIRONMENT_NATIVE_FIRST",
-      "editorFogAdjustmentAndRestoreCodeDocsReported": true,
-      "newTechnicalTestsPassedReported": 11,
-      "technicalTestReportScope": "기존 담당 보고; 마케팅 source/suite/Git 재검증 없음",
-      "realScreenFogComparisonPlanned": [
-        100,
-        20
-      ],
-      "realScreenFogComparisonComplete": false,
-      "exportReimportRealConsumerNewOriginalComparisonObserved": false,
-      "normalCheckpointObserved": false,
-      "unitCompletionConfirmed": false,
-      "newMarketingCaptureCount": 0,
-      "originalAudioObserved": false,
-      "publicApprovalObserved": false
+      "priorCodeDocsAnd11Tests": "HISTORICAL_OWNER_REPORT_ONLY",
+      "fog100vs20VisualComparison": "PENDING; NO_NEW_PIXELS_OBSERVED",
+      "separateFogReviewTabApproval": "REPORTED_FOR_EXISTING_OWNER_ONLY; NOT_MARKETING_CAPTURE_AUTHORIZATION",
+      "environmentClose": false
     },
     "evidence": {
+      "type": "producer compact + latest-turn narrowly filtered report",
+      "producerTitle": "맥북에서 총괄 시작하기",
       "producerThreadId": "01a0faa9-b453-7673-be39-98adedb4c2b3",
-      "producerTurnId": "01a13093-517e-70c0-9277-b3ed0c939b03",
+      "producerTurnId": "01a1311c-a877-7763-b2c3-cceda2022692",
+      "ownerTitle": "Find 앤진개발팀 FDG",
       "ownerThreadId": "01a1235a-f2b8-73d1-bf58-c51c7dfb7638",
-      "ownerReportedTurnId": "01a1308b-f81d-7b91-a620-cd17218b2fd4",
-      "ownerReportedCursor": "fdd4cbf3-6a80-4b9d-897c-c2f6ba2bebe7:152",
-      "ownerReportedStatus": "completed/idle",
-      "reportOnly": true,
-      "marketingNewFilesInspected": 0,
-      "marketingSourceOrTestsVerified": false,
-      "marketingVisualReviewComplete": false,
-      "marketingWatchAndListenComplete": false,
-      "marketingReviewScope": "총괄 compact·새 종료 보고와 저장된 최신 한정 관측 문장만 읽기 전용 확인. 미디어/소스/검사/Git 재검증·게임/서버/사용자탭/세이브 조작 없음."
+      "ownerTurnId": "01a1310e-1326-7951-b237-0bc1d650d6b5",
+      "ownerCursor": "fdd4cbf3-6a80-4b9d-897c-c2f6ba2bebe7:153",
+      "sourceReceiptsNewlyRead": 0,
+      "sourceFilesRevalidated": 0,
+      "newMarketingPixels": 0,
+      "newOriginalAudio": 0,
+      "newGameManipulations": 0,
+      "newOrdersSent": 0
     },
-    "nextProducerUnit": "기존 담당의 안개100%/20% 실제 비교·환경 consumer 검수 새 결과만 대기; 마케팅 반복 지시/촬영 요청 없음"
+    "nextProducerUnit": "기존 담당의 실행본/최신 본편 연결 확인 보고 대기. 전체 보스전·환경 완료 미확정."
   },
   "previousProducerObservations": [
     {
@@ -1920,6 +1920,58 @@
         "marketingReviewScope": "총괄 새 인도·한정 인수/다음 배치 제작 지시 문장, 새5JSON+entry URL 필요한 필드 및 지정2PNG 존재·크기·형식·최초해시를 읽기 전용 대조. 실제 화면 보기/영상 재생/원음 청취·추가 QA·게임/서버/사용자탭/세이브/타인파일 변경 없음."
       },
       "nextProducerUnit": "EDITOR_ENCOUNTER_PLACEMENT_NATIVE_FIRST: 기존 몬스터 저작X/Y→JSON재가져오기→native factory 소비 연결 제작 중; 새 완료/산출물만 대기, 마케팅 반복 지시/촬영 요청 없음"
+    },
+    {
+      "checkedAtUTC": "2026-10-12T15:07:23.577Z",
+      "cursor": "bd9703ff-6089-48ea-90e5-8df178a39cf6:22",
+      "status": "idle",
+      "completionConfirmed": false,
+      "scope": "별도 FDG 안개 consumer 제작 중 부분보고; 실제 화면 비교·환경 단위 완료 미관측",
+      "report": "총괄 cursor bd9703ff:22가 별도 FDG 편집기 안개 조절·복원→인게임 consumer의 코드/docs 작업과 신규 검사11 PASS 담당 부분보고를 회수했다. 실제 안개100%/20% 화면 비교는 다음 검수이며 export/reimport→실consumer의 새 원본 비교·정상checkpoint는 미관측, EDITOR_ENVIRONMENT_NATIVE_FIRST 완료0이다. 실제 migration HEAD9a4534b4 동일, 새 홍보촬영/원음/공개 승인 없음.",
+      "mainGameApplied": "NOT_CONFIRMED",
+      "steamDemoApplied": "NOT_CONFIRMED",
+      "normalGameplayVideoWithOriginalAudio": "NOT_OBSERVED",
+      "humanNaturalGameplayCaptured": false,
+      "requiresUserAction": false,
+      "publicationAllowed": false,
+      "visualCandidateState": "SEPARATE_ENGINE_FOG_CONSUMER_REPORTED_IMPLEMENTATION_REAL_SCREEN_COMPARISON_PENDING",
+      "bossProductMotionAccepted": false,
+      "wholeEngineComplete": false,
+      "overallVisualVerdict": "NOT_REVIEWED_FOR_MARKETING",
+      "producerReportedLocalCommit": null,
+      "producerPushReported": null,
+      "environmentProgress": {
+        "unit": "EDITOR_ENVIRONMENT_NATIVE_FIRST",
+        "editorFogAdjustmentAndRestoreCodeDocsReported": true,
+        "newTechnicalTestsPassedReported": 11,
+        "technicalTestReportScope": "기존 담당 보고; 마케팅 source/suite/Git 재검증 없음",
+        "realScreenFogComparisonPlanned": [
+          100,
+          20
+        ],
+        "realScreenFogComparisonComplete": false,
+        "exportReimportRealConsumerNewOriginalComparisonObserved": false,
+        "normalCheckpointObserved": false,
+        "unitCompletionConfirmed": false,
+        "newMarketingCaptureCount": 0,
+        "originalAudioObserved": false,
+        "publicApprovalObserved": false
+      },
+      "evidence": {
+        "producerThreadId": "01a0faa9-b453-7673-be39-98adedb4c2b3",
+        "producerTurnId": "01a13093-517e-70c0-9277-b3ed0c939b03",
+        "ownerThreadId": "01a1235a-f2b8-73d1-bf58-c51c7dfb7638",
+        "ownerReportedTurnId": "01a1308b-f81d-7b91-a620-cd17218b2fd4",
+        "ownerReportedCursor": "fdd4cbf3-6a80-4b9d-897c-c2f6ba2bebe7:152",
+        "ownerReportedStatus": "completed/idle",
+        "reportOnly": true,
+        "marketingNewFilesInspected": 0,
+        "marketingSourceOrTestsVerified": false,
+        "marketingVisualReviewComplete": false,
+        "marketingWatchAndListenComplete": false,
+        "marketingReviewScope": "총괄 compact·새 종료 보고와 저장된 최신 한정 관측 문장만 읽기 전용 확인. 미디어/소스/검사/Git 재검증·게임/서버/사용자탭/세이브 조작 없음."
+      },
+      "nextProducerUnit": "기존 담당의 안개100%/20% 실제 비교·환경 consumer 검수 새 결과만 대기; 마케팅 반복 지시/촬영 요청 없음"
     }
   ],
   "indieMarketingCampaign": {
