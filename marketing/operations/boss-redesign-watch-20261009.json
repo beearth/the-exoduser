@@ -13,11 +13,11 @@
     "threadId": "01a0faa9-b453-7673-be39-98adedb4c2b3",
     "hostId": "local",
     "title": "맥북에서 총괄 시작하기",
-    "afterCursor": "bd9703ff-6089-48ea-90e5-8df178a39cf6:12",
+    "afterCursor": "bd9703ff-6089-48ea-90e5-8df178a39cf6:14",
     "lastObservedStatus": "idle",
     "lastObservedTurnStatus": "completed",
-    "lastObservedTurnId": "01a12e6d-0d1d-73d0-8529-201d93e42d8c",
-    "lastObservedReport": "총괄 cursor bd9703ff:12는 별도 FDG 맵 편집→JSON 재가져오기→인게임 소비 연결과 편집 배치의 실제 교전·출구 도달을 인도했다. prop-035 (43,53)→(44,53) 이동·38기존오브젝트·fragment 소비가 일치하고 마지막 관측은 completed true·적0·HP520·사망false다. 연결/편집prop만 PASS, 전체 씬 RETOUCH이며 동쪽 적/구울 가림 보정이 진행 중이다. 352원본14.030129초는 별도 재시작 교전으로 전체 출구 완주 연속영상이 아니다. 입력주체·적용checkout·원음·본편/Steam 적용·공개 승인 미확인이다."
+    "lastObservedTurnId": "01a12eda-ee1f-7331-99e8-5e16ec7fcd12",
+    "lastObservedReport": "총괄 cursor bd9703ff:14는 별도 FDG 자연 발사 한 사건의 탄 생성·이동과 국소 화면 가시성을 한정 인수했다. native update2745 탄0→2746 dist9.187(1step 이동)→2747 dist18.375(2step)이며 append 거리0·정확 first-render·입 소켓 정합은 미확정이다. first-visible 캡처는2747→2776에 걸쳐 반환됐고 owner=null로 유일 충전 actor0의2→0 연결 이상 귀속을 확정하지 않는다. 최종HP64.116·적1·생존·완료false, 전체씬 RETOUCH다. 새 기존 몬스터 저작 배치 consumer는 제작 중이며 사용자 플레이·원음·본편/Steam·공개 승인 미확인이다."
   },
   "completionConfirmed": false,
   "captureStarted": false,
@@ -35,8 +35,8 @@
     "완성 후 검수본부터 인도, 사용자 검수 전 자동 공개 금지",
     "2026-10-10 사용자 정정: 전체 대기를 모든 콘텐츠로 확대하지 않음; UI·스킬·캐릭터 부분 개발 소식 계속 운영"
   ],
-  "lastCheckedAtUTC": "2026-10-12T04:56:21.481Z",
-  "lastCheckResult": "총괄 cursor bd9703ff:12의 별도 FDG 맵 편집→재가져오기→인게임 연결·출구 도달 한정 완료 인도 회수. 전체 씬 RETOUCH·동쪽 적/구울 가림 보정 중. 352원본14.030129초는 별도 재시작 교전이며 출구 전과정 연속영상 아님. migration 동일·본편/Steam/원음/공개 승인 미확인·새 홍보촬영/게시0. 전사 최신본 검토와 악의구 후속 준비 유지.",
+  "lastCheckedAtUTC": "2026-10-12T06:56:21.699Z",
+  "lastCheckResult": "총괄 cursor bd9703ff:14 별도 FDG 자연 발사 update2746 생성/2747이동·국소 가시성만 부분 인수. 정확 first-render/append거리0/입소켓·owner귀속 미확정, 전체씬 RETOUCH·기존몬스터저작 배치consumer 제작중. migration 동일·본편/Steam/사용자직접플레이/원음/공개 승인 미확인·새 홍보촬영/게시0. 전사 최신본 검토와 악의구 후속 준비 유지.",
   "publicationScope": "보스전 전체 리디자인 완료 대표 메인트레일러",
   "partialDevelopmentNewsAllowed": true,
   "partialDevelopmentNewsPolicy": "UI·기존 스킬·캐릭터 제작 과정 등 각 소재는 전체 보스전 완료와 관계없이 실제 근거와 개별 검수 범위 확인 후 독립 제작·게시한다.",
@@ -44,49 +44,63 @@
   "partialLastPublication": "https://www.youtube.com/post/UgkxrTYuXuoASizWPYhlrpJyCF-7pcSqJT8-",
   "partialPublishedCount": 5,
   "latestPartialProducerEvidence": {
-    "checkedAtUTC": "2026-10-12T04:56:21.481Z",
-    "cursor": "bd9703ff-6089-48ea-90e5-8df178a39cf6:12",
+    "checkedAtUTC": "2026-10-12T06:56:21.699Z",
+    "cursor": "bd9703ff-6089-48ea-90e5-8df178a39cf6:14",
     "status": "idle",
     "completionConfirmed": false,
-    "scope": "별도 FDG 맵 편집 데이터 재가져오기·인게임 소비 연결 한정 완료; 전체 씬 RETOUCH·본편/전체 보스전 완료 아님",
-    "report": "총괄 cursor bd9703ff:12는 별도 FDG 맵 편집→JSON 재가져오기→인게임 소비 연결과 편집 배치의 실제 교전·출구 도달을 인도했다. prop-035 (43,53)→(44,53) 이동·38기존오브젝트·fragment 소비가 일치하고 마지막 관측은 completed true·적0·HP520·사망false다. 연결/편집prop만 PASS, 전체 씬 RETOUCH이며 동쪽 적/구울 가림 보정이 진행 중이다. 352원본14.030129초는 별도 재시작 교전으로 전체 출구 완주 연속영상이 아니다. 입력주체·적용checkout·원음·본편/Steam 적용·공개 승인 미확인이다.",
+    "scope": "별도 FDG 자연 발사 한 사건의 생성·이동·국소 가시성 한정 인수; 정확 first-render 미확정·전체 씬 RETOUCH·본편/보스전 완료 아님",
+    "report": "총괄 cursor bd9703ff:14는 별도 FDG 자연 발사 한 사건의 탄 생성·이동과 국소 화면 가시성을 한정 인수했다. native update2745 탄0→2746 dist9.187(1step 이동)→2747 dist18.375(2step)이며 append 거리0·정확 first-render·입 소켓 정합은 미확정이다. first-visible 캡처는2747→2776에 걸쳐 반환됐고 owner=null로 유일 충전 actor0의2→0 연결 이상 귀속을 확정하지 않는다. 최종HP64.116·적1·생존·완료false, 전체씬 RETOUCH다. 새 기존 몬스터 저작 배치 consumer는 제작 중이며 사용자 플레이·원음·본편/Steam·공개 승인 미확인이다.",
     "mainGameApplied": "NOT_CONFIRMED",
     "steamDemoApplied": "NOT_CONFIRMED",
     "normalGameplayVideoWithOriginalAudio": "NOT_OBSERVED",
     "humanNaturalGameplayCaptured": false,
     "requiresUserAction": false,
     "publicationAllowed": false,
-    "visualCandidateState": "SEPARATE_ENGINE_MAP_PACK_CONNECTION_ACCEPTED_SCENE_RETOUCH_NO_AUDIO_OR_PUBLIC_APPROVAL",
+    "visualCandidateState": "SEPARATE_ENGINE_NATURAL_PROJECTILE_EVENT_PARTIAL_FIRST_RENDER_UNCONFIRMED",
     "bossProductMotionAccepted": false,
     "wholeEngineComplete": false,
     "overallVisualVerdict": "NOT_ACCEPTED_FOR_EXODUSER_REPRESENTATIVE_TRAILER",
-    "producerReportedCheckpointCommit": "e5fc65f5c9cb937b2a8a5198f719418c6b0e566e",
-    "checkpointCommitScope": "총괄이 정상 checkpoint로 보고한 commit; 이 실행에서 본편 구현/적용 commit으로 확인하지 않음",
-    "producerPushReported": false,
-    "deployReported": false,
-    "mapPackAcceptance": {
-      "connectionComplete": true,
-      "editedPropOwnerVerdict": "PASS",
+    "sourceCheckpointCommit": "c2da92519b63fb3e1f524e7c39621a799a04bee7",
+    "sourceCheckpointScope": "sourceCheckpoint receipt필드; 이 자료에서 새 코드/Git쓰기0이며 실행 checkout·본편 적용·push/배포는 미보고",
+    "producerPushReported": null,
+    "deployReported": null,
+    "nativeEmitterAcceptance": {
+      "producerAcceptedScope": "자연 발사 한 사건의 native 생성·다음 이동·국소 가시성",
       "wholeSceneOwnerVerdict": "RETOUCH",
-      "ownerNextUnit": "동쪽 적/구울 가림·화면층/깊이 보정 진행 중",
-      "propId": "prop-035",
-      "assetId": "m_c1sbone",
-      "tileBefore": [
-        43,
-        53
+      "nativeEvent": {
+        "prepareUpdate": 2745,
+        "prepareProjectileCount": 0,
+        "firstObservedUpdate": 2746,
+        "firstObservedDistance": 9.187,
+        "firstObservedDistanceScope": "생성 update에서 이미1step 이동; append 거리0 관측 아님",
+        "nextObservedUpdate": 2747,
+        "nextObservedDistance": 18.375,
+        "nextObservedDistanceScope": "2step 이동"
+      },
+      "exactAppendMomentObserved": false,
+      "zeroDistanceRenderObserved": false,
+      "exactFirstRenderConfirmed": false,
+      "screenshotNativeFrameConfirmed": false,
+      "mouthSocketCenterAlignmentConfirmed": false,
+      "sameEventImageUpdateRange": [
+        2747,
+        2776
       ],
-      "tileAfter": [
-        44,
-        53
-      ],
-      "existingObjectCount": 38,
-      "nativeSource": "fragment",
-      "compileExampleScope": "map-pack-compile-receipt의 prop-001 quarter 예시는 실제 prop-035 저작과 별개",
-      "lastObservation": {
-        "completed": true,
-        "remainingEnemyCount": 0,
-        "playerHp": 520,
-        "dead": false
+      "emitterLink": {
+        "projectileOwner": null,
+        "uniqueChargingActorIndex": 0,
+        "actorChargeBefore": 2,
+        "actorChargeAfter": 0,
+        "explicitOwnerIdentityConfirmed": false
+      },
+      "retainedObjectObservation": {
+        "update": 2777,
+        "activeIndex": -1,
+        "sameActiveObject": false,
+        "retainedObjectAccessible": true,
+        "stillInActiveProjectiles": false,
+        "removalCauseConfirmed": false,
+        "scope": "retained 접근값을 활성 비행 화면/제거원인 증거로 해석하지 않음"
       },
       "difficultyObserved": {
         "index": 5,
@@ -94,73 +108,76 @@
         "level": 1,
         "normalLabelConfirmed": false
       },
-      "inputActor": "NOT_RECORDED_IN_RECEIPT",
-      "inputMethod": "NOT_RECORDED_IN_RECEIPT",
-      "appliedCheckout": "NOT_RECORDED_IN_RECEIPT",
+      "backend": "WebGPU",
+      "projection": "perspective",
       "cameraZoom": 0.82,
-      "recordDevice": [
+      "viewport": [
         1280,
         720
       ],
-      "pageScale": 1,
+      "pixelScale": 1,
+      "entryMode": "local public QA test=1; 온라인 게시 아님",
+      "inputActor": "NOT_RECORDED_IN_RECEIPT",
+      "publicTSTapMovementObserved": false,
+      "executingCheckout": "NOT_REPORTED",
+      "loadedResourceHashVerified": false,
+      "codeWritesReported": 0,
+      "testWritesReported": 0,
+      "gitWritesReported": 0,
+      "forcedAiReviveMovementWritesReported": 0,
+      "persistentWritesReported": 0,
+      "finalObservation": {
+        "playerHp": 64.116,
+        "remainingEnemyCount": 1,
+        "alive": true,
+        "completed": false
+      },
+      "originalAudioObserved": false,
       "marketingWatchAndListenComplete": false
     },
     "evidence": {
       "producerThreadId": "01a0faa9-b453-7673-be39-98adedb4c2b3",
-      "producerTurnId": "01a12e6d-0d1d-73d0-8529-201d93e42d8c",
+      "producerTurnId": "01a12eda-ee1f-7331-99e8-5e16ec7fcd12",
       "sceneOwnerThreadId": "01a1235a-f2b8-73d1-bf58-c51c7dfb7638",
-      "ownerFollowupObservedTurnId": "01a12e71-06fa-72f0-a5dc-ed908e1c7c34",
-      "ownerFollowupObservedStatus": "inProgress",
       "receipts": [
-        "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-map-pack-native-first/final-receipt.json",
-        "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-map-pack-native-first/authored-editor.json",
-        "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-map-pack-native-first/play-observations.json",
-        "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-map-pack-native-first/map-pack-compile-receipt.json",
-        "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-map-pack-native-first/map-pack-worker-receipt.json",
-        "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-map-pack-native-first/verified-frame-metadata.json",
-        "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-map-pack-native-first/verified-replay-state.json"
+        "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-map-pack-emitter-first/emitter-event-receipt.json",
+        "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-map-pack-emitter-first/source-read-receipt.json",
+        "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-map-pack-emitter-first/native-png-metadata.json",
+        "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-map-pack-emitter-first/birth-jpeg-metadata.json",
+        "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-map-pack-emitter-first/final-state.json",
+        "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-map-pack-emitter-first/entry-url.txt"
       ],
-      "newArtifactMetadata": [
+      "newStillMetadata": [
         {
-          "path": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-map-pack-native-first/authored-editor.json",
-          "bytes": 5768,
-          "sha256": "ee4690a21093897eebc73193788b2e6fd70e59f82b144c73037e3b57b2621fc5",
-          "kind": "편집 저작 fragment 데이터"
-        },
-        {
-          "path": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-map-pack-native-first/verified-frame-metadata.json",
-          "bytes": 74596,
-          "sha256": "c604f186c3a6d0c2898ad1325c374295237631e55a0fc636742a1aad4a982c24",
-          "kind": "별도 재시작 교전 기록 metadata",
-          "recordedFrameCount": 352,
-          "recordedDurationSeconds": 14.030129,
-          "medianObservationIntervalMs": 41.203,
-          "fullRouteVideo": false,
-          "replayEndCompleted": false,
-          "replayEndRemainingEnemyCount": 3,
-          "perFrameHashesRecorded": false,
-          "originalAudioObserved": false
-        },
-        {
-          "path": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-map-pack-native-first/editor-reimported.png",
-          "bytes": 44834,
-          "sha256": "6122298be25d309ff1c1e1746163735f80b674344862769e5eefb9fa22892d7d",
-          "actualFormat": "JPEG",
+          "path": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-map-pack-emitter-first/boundary-png/first-visible.png",
+          "bytes": 2551035,
+          "sha256": "44a24640195d9de57cb1d3ee8ac55c8daca5edce54ad96ddf3072b413e87da09",
+          "actualFormat": "PNG",
           "size": [
-            1280,
-            720
+            2560,
+            1440
           ],
-          "kind": "재가져오기 화면 파일; 확장자와 실제 형식 불일치",
-          "visuallyReviewedByMarketing": false
+          "scope": "같은 사건 후속 가시 화면; 정확 첫 렌더 frame/입 소켓 정합은 미확정",
+          "visuallyReviewedByMarketing": false,
+          "publicReady": false
+        },
+        {
+          "path": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-map-pack-emitter-first/boundary-png/prepare.png",
+          "bytes": 2593136,
+          "sha256": "8f99db25708e91cca1f25aa3498249bdc6450255d330238466c31debfddac27b",
+          "actualFormat": "PNG",
+          "size": [
+            2560,
+            1440
+          ],
+          "scope": "같은 사건 준비 화면",
+          "visuallyReviewedByMarketing": false,
+          "publicReady": false
         }
       ],
-      "producerDeliveredStill": {
-        "path": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-map-pack-native-first/native-exit.png",
-        "scope": "총괄이 인도한 출구 도착 스틸 경로; 마케팅에서 재열람/해시/시각 인수하지 않음"
-      },
-      "marketingReviewScope": "총괄 새 종료 보고·현재 담당 보정 진행 문장, 새7JSON 필요한 필드와 지정 metadata/저작 fragment/재가져오기 화면 파일 최초해시·형식만 읽기 전용 대조. 이미지/영상 재생·원음 청취·반복 QA·게임/서버/사용자탭/세이브/타인파일 조작 없음."
+      "marketingReviewScope": "총괄 새 인도·한정 인수/다음 배치 제작 지시 문장, 새5JSON+entry URL 필요한 필드 및 지정2PNG 존재·크기·형식·최초해시를 읽기 전용 대조. 실제 화면 보기/영상 재생/원음 청취·추가 QA·게임/서버/사용자탭/세이브/타인파일 변경 없음."
     },
-    "nextProducerUnit": "기존 담당 동쪽 적/구울 가림 보정의 새 완료·산출물 대기; 마케팅 반복 지시/촬영 요청 없음"
+    "nextProducerUnit": "EDITOR_ENCOUNTER_PLACEMENT_NATIVE_FIRST: 기존 몬스터 저작X/Y→JSON재가져오기→native factory 소비 연결 제작 중; 새 완료/산출물만 대기, 마케팅 반복 지시/촬영 요청 없음"
   },
   "previousPartialProducerEvidence": [
     {
@@ -998,6 +1015,127 @@
         "marketingReviewScope": "총괄 compact 종료와 직전 인도/해당 담당 종료를 필요한 문장만 확인. 새4receipt 필요한 필드·지정GIF 존재/크기/최초해시 대조만. 원화/영상 재생·원음 청취·반복 QA·게임/서버/사용자탭/세이브 조작 없음."
       },
       "nextProducerUnit": "폐허 숲길 관측 마감 이후 기존 담당의 새 지시/산출물만 대기; 마케팅 반복 지시/촬영 요청 없음"
+    },
+    {
+      "checkedAtUTC": "2026-10-12T04:56:21.481Z",
+      "cursor": "bd9703ff-6089-48ea-90e5-8df178a39cf6:12",
+      "status": "idle",
+      "completionConfirmed": false,
+      "scope": "별도 FDG 맵 편집 데이터 재가져오기·인게임 소비 연결 한정 완료; 전체 씬 RETOUCH·본편/전체 보스전 완료 아님",
+      "report": "총괄 cursor bd9703ff:12는 별도 FDG 맵 편집→JSON 재가져오기→인게임 소비 연결과 편집 배치의 실제 교전·출구 도달을 인도했다. prop-035 (43,53)→(44,53) 이동·38기존오브젝트·fragment 소비가 일치하고 마지막 관측은 completed true·적0·HP520·사망false다. 연결/편집prop만 PASS, 전체 씬 RETOUCH이며 동쪽 적/구울 가림 보정이 진행 중이다. 352원본14.030129초는 별도 재시작 교전으로 전체 출구 완주 연속영상이 아니다. 입력주체·적용checkout·원음·본편/Steam 적용·공개 승인 미확인이다.",
+      "mainGameApplied": "NOT_CONFIRMED",
+      "steamDemoApplied": "NOT_CONFIRMED",
+      "normalGameplayVideoWithOriginalAudio": "NOT_OBSERVED",
+      "humanNaturalGameplayCaptured": false,
+      "requiresUserAction": false,
+      "publicationAllowed": false,
+      "visualCandidateState": "SEPARATE_ENGINE_MAP_PACK_CONNECTION_ACCEPTED_SCENE_RETOUCH_NO_AUDIO_OR_PUBLIC_APPROVAL",
+      "bossProductMotionAccepted": false,
+      "wholeEngineComplete": false,
+      "overallVisualVerdict": "NOT_ACCEPTED_FOR_EXODUSER_REPRESENTATIVE_TRAILER",
+      "producerReportedCheckpointCommit": "e5fc65f5c9cb937b2a8a5198f719418c6b0e566e",
+      "checkpointCommitScope": "총괄이 정상 checkpoint로 보고한 commit. 이전에 읽은 final-receipt의 실제 필드는 commit이며 normalCheckpoint 필드는 없음. 이 실행에서 본편 구현/적용 commit이나 정상 checkpoint 성립을 재검증하지 않음.",
+      "producerPushReported": false,
+      "deployReported": false,
+      "mapPackAcceptance": {
+        "connectionComplete": true,
+        "editedPropOwnerVerdict": "PASS",
+        "wholeSceneOwnerVerdict": "RETOUCH",
+        "ownerNextUnit": "동쪽 적/구울 가림·화면층/깊이 보정 진행 중",
+        "propId": "prop-035",
+        "assetId": "m_c1sbone",
+        "tileBefore": [
+          43,
+          53
+        ],
+        "tileAfter": [
+          44,
+          53
+        ],
+        "existingObjectCount": 38,
+        "nativeSource": "fragment",
+        "compileExampleScope": "map-pack-compile-receipt의 prop-001 quarter 예시는 실제 prop-035 저작과 별개",
+        "lastObservation": {
+          "completed": true,
+          "remainingEnemyCount": 0,
+          "playerHp": 520,
+          "dead": false
+        },
+        "difficultyObserved": {
+          "index": 5,
+          "multiplier": 1,
+          "level": 1,
+          "normalLabelConfirmed": false
+        },
+        "inputActor": "NOT_RECORDED_IN_RECEIPT",
+        "inputMethod": "NOT_RECORDED_IN_RECEIPT",
+        "appliedCheckout": "NOT_RECORDED_IN_RECEIPT",
+        "cameraZoom": 0.82,
+        "recordDevice": [
+          1280,
+          720
+        ],
+        "pageScale": 1,
+        "marketingWatchAndListenComplete": false
+      },
+      "evidence": {
+        "producerThreadId": "01a0faa9-b453-7673-be39-98adedb4c2b3",
+        "producerTurnId": "01a12e6d-0d1d-73d0-8529-201d93e42d8c",
+        "sceneOwnerThreadId": "01a1235a-f2b8-73d1-bf58-c51c7dfb7638",
+        "ownerFollowupObservedTurnId": "01a12e71-06fa-72f0-a5dc-ed908e1c7c34",
+        "ownerFollowupObservedStatus": "inProgress",
+        "receipts": [
+          "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-map-pack-native-first/final-receipt.json",
+          "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-map-pack-native-first/authored-editor.json",
+          "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-map-pack-native-first/play-observations.json",
+          "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-map-pack-native-first/map-pack-compile-receipt.json",
+          "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-map-pack-native-first/map-pack-worker-receipt.json",
+          "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-map-pack-native-first/verified-frame-metadata.json",
+          "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-map-pack-native-first/verified-replay-state.json"
+        ],
+        "newArtifactMetadata": [
+          {
+            "path": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-map-pack-native-first/authored-editor.json",
+            "bytes": 5768,
+            "sha256": "ee4690a21093897eebc73193788b2e6fd70e59f82b144c73037e3b57b2621fc5",
+            "kind": "편집 저작 fragment 데이터"
+          },
+          {
+            "path": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-map-pack-native-first/verified-frame-metadata.json",
+            "bytes": 74596,
+            "sha256": "c604f186c3a6d0c2898ad1325c374295237631e55a0fc636742a1aad4a982c24",
+            "kind": "별도 재시작 교전 기록 metadata",
+            "recordedFrameCount": 352,
+            "recordedDurationSeconds": 14.030129,
+            "medianObservationIntervalMs": 41.203,
+            "fullRouteVideo": false,
+            "replayEndCompleted": false,
+            "replayEndRemainingEnemyCount": 3,
+            "perFrameHashesRecorded": false,
+            "originalAudioObserved": false
+          },
+          {
+            "path": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-map-pack-native-first/editor-reimported.png",
+            "bytes": 44834,
+            "sha256": "6122298be25d309ff1c1e1746163735f80b674344862769e5eefb9fa22892d7d",
+            "actualFormat": "JPEG",
+            "size": [
+              1280,
+              720
+            ],
+            "kind": "재가져오기 화면 파일; 확장자와 실제 형식 불일치",
+            "visuallyReviewedByMarketing": false
+          }
+        ],
+        "producerDeliveredStill": {
+          "path": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-map-pack-native-first/native-exit.png",
+          "scope": "총괄이 인도한 출구 도착 스틸 경로; 마케팅에서 재열람/해시/시각 인수하지 않음"
+        },
+        "marketingReviewScope": "총괄 새 종료 보고·현재 담당 보정 진행 문장, 새7JSON 필요한 필드와 지정 metadata/저작 fragment/재가져오기 화면 파일 최초해시·형식만 읽기 전용 대조. 이미지/영상 재생·원음 청취·반복 QA·게임/서버/사용자탭/세이브/타인파일 조작 없음."
+      },
+      "nextProducerUnit": "기존 담당 동쪽 적/구울 가림 보정의 새 완료·산출물 대기; 마케팅 반복 지시/촬영 요청 없음",
+      "checkpointCommitReceiptField": "commit",
+      "normalCheckpointFieldPresent": false
     }
   ]
 }

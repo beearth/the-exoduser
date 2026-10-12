@@ -1,6 +1,6 @@
 # FDG 홍보 준비 콘텐츠 현황
 
-최근 정리: **2026-10-12 13:56 KST**. 사용자 지시 「홍보준비 최신컨텐츠 업데이트됀거 정리해서 항상 정리해놔」를 반영한 지속 갱신 문서다. 기술 구현, 실제 게임 화면 검수, 공개 데모 배포, 영상 게시를 별도로 확인한다.
+최근 정리: **2026-10-12 15:56 KST**. 사용자 지시 「홍보준비 최신컨텐츠 업데이트됀거 정리해서 항상 정리해놔」를 반영한 지속 갱신 문서다. 기술 구현, 실제 게임 화면 검수, 공개 데모 배포, 영상 게시를 별도로 확인한다.
 
 **UI 개발 소식1건과 스킬 노트4건(기검참·가시덫·회복의 영역·지옥강타 1)을 공식 YouTube에 게시하고 공개 페이지를 확인했다.** [UI](https://www.youtube.com/post/UgkxfJtDWBoJglf9RWKueZFsGwOBIRBYWULb) · [기검참](https://www.youtube.com/post/Ugkxpb6uTCUIAd3Ypj4_1vsi9cv2BKT-F93l) · [가시덫](https://www.youtube.com/post/UgkxhEsTSyRHSuYPkuEXJmUg-xnYL90AU9nj) · [회복의 영역](https://www.youtube.com/post/Ugkx2UIc57jBgsgkolbqytX0Nn3bgmkAz6if) · [지옥강타 1](https://www.youtube.com/post/UgkxrTYuXuoASizWPYhlrpJyCF-7pcSqJT8-). 지옥강타 1은 주변 원형 범위 타격과 분노의 피해 강화·소모를 소개했다. 분노 최소량은 발동 조건이 아니다. 기존 기능 소개이며 새 패치·신규 촬영 영상으로 표기하지 않았다. **전체 보스전 완료를 기다리는 대상은 리디자인 완료 대표 메인트레일러다.** UI·기존 스킬·캐릭터 원화/제작 과정은 각 소재의 실제 근거와 검수 범위에 맞게 계속 제작한다. 기존 원화30초·전투18초V3·R1 검토본과 새 대표 영상의 미승인 자동 공개 금지는 유지한다.
 
@@ -18,14 +18,26 @@
 
 우선 단위는 **범용 visual clock 일관성 → 전사 보행8→24 실제 고유 중간 자세 → 실버테일 방어·공격 연결**이다. 타격·Q/E·자원·save·이동 주기를 보존하고 정상 배율의 실제 게임 전후 장면으로 검수한다. 새 프레임·게임 코드 수정·개선 영상은 아직0이며 완성으로 표시하지 않는다. [실제 근거·범위·인수 조건](../../marketing/operations/game-motion-quality-20261010/request.json). 게임 본편 공유 파일은 기존 총괄 소유이므로 전달 허가 질문의 직접 응답 전 다른 채팅으로 지시하지 않는다. UI·원화 등 독립 홍보 준비와 공개 전 미리보기 기준은 유지한다.
 
-## 총괄 새 관측 — 2026-10-12 13:56 KST
+## 총괄 새 관측 — 2026-10-12 15:56 KST
+
+| 항목 | 현재 확인 범위 |
+|---|---|
+| 국소 발사 인수 | 총괄 cursor `bd9703ff:14`가 별도 FDG **자연 발사 한 사건의 탄 생성·다음 이동·국소 가시성**만 한정 인수했다. native update2745 탄0→2746 dist9.187(이미1step 이동)→2747 dist18.375(2step)이다. **전체 씬 RETOUCH**, 정확 append 순간/거리0 렌더·첫 렌더 프레임·입 소켓과 탄 중심 정합은 미확정이다. |
+| 화면·귀속 한계 | first-visible 캡처가2747→2776 업데이트에 걸쳐 반환되어 정확 native frame은 미확정이다. 탄 `owner=null`, 유일한 충전actor0의 charge2→0과 생성 연결을 확정 owner ID로 확대하지 않는다. frame2777의 retained객체는 접근 가능하지만 activeIndex−1·sameActiveObject false로 활성 `projs`에서 제거됐다. 이를 활성 비행 화면이나 제거 원인의 증거로 사용하지 않는다. |
+| 새 실제 화면 자료 | 같은 사건 준비/후속 가시 PNG2560×1440 두 장만 최초 메타데이터 대조했다. `prepare.png` 2,593,136B·SHA `8f99db25…`, `first-visible.png` 2,551,035B·SHA `44a24640…`. 총괄이 후속 화면을 이미 인도했다. 마케팅 화면 재열람·시각 인수·원음 청취/영상 제작은 하지 않았다. |
+| 실행·적용 경계 | receipt 난이도 index5·배율1·level1, WebGPU·perspective·zoom0.82·viewport1280×720·pixelScale1, 로컬 공개 QA `test=1`이다. 입력 주체·실행 checkout 미기록, loaded-resource hash 미검증이며 사용자 직접 플레이/NORMAL 명칭으로 확정하지 않는다. sourceCheckpoint `c2da92519b63fb3e1f524e7c39621a799a04bee7`; 이 자료의 코드/테스트/Git·강제 AI/부활/이동·persistent쓰기0, push/배포 미보고. 실제 migration HEAD `9a4534b4` 동일. 최종HP64.116·적1·생존·완료false이며 원음·본편/Steam 적용·공개 승인 미확인이다. |
+| 근거·후속 제작 | 새 `emitter-event-receipt.json`·`source-read-receipt.json`·두metadata·`final-state.json`·entry URL 필요한 필드와 지정2PNG 존재/형식/크기/최초hash만 읽었다. 다음 **기존 몬스터 저작 배치→JSON 재가져오기→native factory 소비**는 제작 중이며 새 완료로 표시하지 않는다. **전사10/8 미리보기 검수·교체 판단** 우선, 악의구 원고·12초 시연안 후속 준비 유지. 새 홍보촬영/영상 제작/게시0, 공개 준비0이다. |
+
+[구조화 관측](../../marketing/operations/boss-redesign-watch-20261009.json)에 새 사건의 한정 인수와 과거 씬/연결 범위를 구별해 보존했다. 이번 메타데이터 대조를 정상 본편 촬영·전체 보스전 완료·마케팅 공개 승인으로 사용하지 않으며 이미 전달된 알림/촬영 요청을 반복하지 않는다.
+
+## 직전 맵 연결 이력 — 2026-10-12 13:56 KST
 
 | 항목 | 현재 확인 범위 |
 |---|---|
 | 연결 기능 한정 완료 | 총괄 cursor `bd9703ff:12`가 별도 FDG **맵 편집 → JSON 재가져오기 → 인게임 소비 연결**과 편집 배치의 교전·출구 도달을 인도했다. 편집 prop/연결만 PASS, **전체 씬 RETOUCH**다. 동쪽 적·구울 가림의 화면층/깊이 보정은 기존 담당이 진행 중이다. 아래 직전 씬 관측 마감과 적용 범위를 구별한다. |
 | 저작·실제 관측 | `prop-035 / m_c1sbone`의 타일(43,53)→(44,53) 이동, 기존38오브젝트와 native `fragment` 소비가 일치한다. compile receipt의 `prop-001` quarter 편집 예시는 별도 샘플이다. 마지막 관측은 completed true·적0·HP520·사망false. 난이도 index5·multiplier1·level1은 관측값이며 NORMAL이라는 명칭은 확정하지 않는다. 입력 주체·방식·적용 checkout은 미기록이다. |
 | 새 화면·기록 경계 | 총괄이 출구 도착 스틸을 이미 인도했다. 별도 재시작 교전 metadata는1280×720·352장·14.030129초·관측 간격 중앙값41.203ms, camera zoom0.82·pageScale1이다. `fullRouteVideo:false`, replay 종료는 완료false·적3이므로 출구 도달 관측과 섞어 **연속 전체 경로 완료 영상**으로 소개하지 않는다. 원음 증거 없음·개별 이미지 hash 미기록이다. |
-| 적용·검수 경계 | 총괄이 정상 checkpoint로 보고한 commit `e5fc65f5c9cb937b2a8a5198f719418c6b0e566e`, push/deploy false. 본편 구현/적용 commit으로 확대하지 않는다. 실제 migration HEAD `9a4534b4` 동일. 본편·Steam 적용, 사용자 직접 플레이·원음·전편 시청/청취·공개 승인 미확인. 새 홍보촬영/영상 제작/게시0건이다. |
+| 적용·검수 경계 | 총괄이 정상 checkpoint로 보고한 commit `e5fc65f5c9cb937b2a8a5198f719418c6b0e566e`, push/deploy false. 기존 읽은 receipt의 실제 필드는 `commit`이며 `normalCheckpoint` 필드는 없다. 정상 checkpoint는 총괄 보고 표현으로 한정한다. 본편 구현/적용 commit으로 확대하지 않는다. 실제 migration HEAD `9a4534b4` 동일. 본편·Steam 적용, 사용자 직접 플레이·원음·전편 시청/청취·공개 승인 미확인. 새 홍보촬영/영상 제작/게시0건이다. |
 | 근거·다음 소재 | 새7JSON의 필요한 필드와 저작 fragment(5,768B·SHA `ee4690a2…`), verified metadata(74,596B·SHA `c604f186…`), 재가져오기 화면 파일(44,834B·SHA `6122298b…`) 최초대조만 했다. `editor-reimported.png`는 실제 JPEG이며 타인 파일을 수정하지 않았다. 화면 재열람·반복 QA·게임/서버/사용자탭/세이브 조작 없음. **전사10/8 완성 미리보기 검수와 교체 판단**이 우선이고 악의구 원고·12초 시연안은 후속 준비다. |
 
 [구조화 관측](../../marketing/operations/boss-redesign-watch-20261009.json)에 이번 연결 기능 한정 완료와 직전 씬 마감·후보 거절 이력을 구별해 보존했다. 총괄이 이미 사용자에게 인도한 알림을 반복하지 않으며 전체 보스전 대표 영상 gate는 미충족이다.
