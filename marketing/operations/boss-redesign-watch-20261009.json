@@ -13,11 +13,11 @@
     "threadId": "01a0faa9-b453-7673-be39-98adedb4c2b3",
     "hostId": "local",
     "title": "맥북에서 총괄 시작하기",
-    "afterCursor": "bd9703ff-6089-48ea-90e5-8df178a39cf6:7",
+    "afterCursor": "bd9703ff-6089-48ea-90e5-8df178a39cf6:10",
     "lastObservedStatus": "idle",
     "lastObservedTurnStatus": "completed",
-    "lastObservedTurnId": "01a12d53-eaf8-7540-beeb-0f6a7fc49ebd",
-    "lastObservedReport": "총괄 cursor bd9703ff:7에서 사용자가 악마보스 후보를 영웅처럼 보인다고 정정했다. 총괄은 해당 검은 드루이드 원화 후보를 보스 디자인에서 제외하고 기존 담당에게 악마형 체형·몸에서 이어진 뿌리 공격기관 기준을 전달했다고 보고했다. 이는 디자인 거절·방향 정정이며 새 모델·애니메이션·실제 콤보 완료가 아니다. 새 산출물·본편/Steam 적용·공개 승인 증거는 없다."
+    "lastObservedTurnId": "01a12def-a209-7121-82dd-f89fedededdb",
+    "lastObservedReport": "총괄 cursor bd9703ff:10의 직전 인도 turn에서 별도 FDG 폐허 숲길의 교전·동쪽 가림·북쪽 출구 완주를 씬 관측 범위로 마감했다. 제작자 receipt는 현재 WebGPU scene만 PASS/CLOSED, 사망0·잔여actor0·최종HP547.978이며 전체 엔진/보스전·다른 backend 완료가 아니다. 새 GIF는4개 발췌 컷과 완료 스틸1초hold의11.780초 요약으로 원음이 없다. 난이도 실값·조작 주체 미기록으로 NORMAL 난이도나 사용자 자연 플레이를 확정하지 않는다. 본편/Steam 적용·공개 승인 미확인이다."
   },
   "completionConfirmed": false,
   "captureStarted": false,
@@ -35,8 +35,8 @@
     "완성 후 검수본부터 인도, 사용자 검수 전 자동 공개 금지",
     "2026-10-10 사용자 정정: 전체 대기를 모든 콘텐츠로 확대하지 않음; UI·스킬·캐릭터 부분 개발 소식 계속 운영"
   ],
-  "lastCheckedAtUTC": "2026-10-11T23:49:50.449Z",
-  "lastCheckResult": "총괄 cursor bd9703ff:7 인간 외형 정정으로 영웅형 검은 드루이드 후보 디자인 제외; 방향 전달은 제작 완료 아님. 새 모델/애니메이션/콤보 산출물0·migration 동일·공개 승인 없음·촬영/게시0. 전사 최신본 검토와 악의구 후속 준비 유지.",
+  "lastCheckedAtUTC": "2026-10-12T02:53:50.792Z",
+  "lastCheckResult": "총괄 cursor bd9703ff:10 직전 폐허 숲길 관측 씬 마감 인도 회수; 제작자WebGPU scene PASS/CLOSED, 새4컷GIF11.780초/무음·난이도실값/조작주체미기록. 본편·Steam·전체 보스전 완료 불확인·migration 동일·공개 승인 없음·홍보촬영/게시0. 전사 최신본 검토와 악의구 후속 준비 유지.",
   "publicationScope": "보스전 전체 리디자인 완료 대표 메인트레일러",
   "partialDevelopmentNewsAllowed": true,
   "partialDevelopmentNewsPolicy": "UI·기존 스킬·캐릭터 제작 과정 등 각 소재는 전체 보스전 완료와 관계없이 실제 근거와 개별 검수 범위 확인 후 독립 제작·게시한다.",
@@ -44,47 +44,81 @@
   "partialLastPublication": "https://www.youtube.com/post/UgkxrTYuXuoASizWPYhlrpJyCF-7pcSqJT8-",
   "partialPublishedCount": 5,
   "latestPartialProducerEvidence": {
-    "checkedAtUTC": "2026-10-11T23:49:50.449Z",
-    "cursor": "bd9703ff-6089-48ea-90e5-8df178a39cf6:7",
+    "checkedAtUTC": "2026-10-12T02:53:50.792Z",
+    "cursor": "bd9703ff-6089-48ea-90e5-8df178a39cf6:10",
     "status": "idle",
     "completionConfirmed": false,
-    "scope": "총괄 채팅의 인간 외형 정정과 해당 드루이드 후보 디자인 거절; 새 산출물 없음",
-    "report": "총괄 cursor bd9703ff:7에서 사용자가 악마보스 후보를 영웅처럼 보인다고 정정했다. 총괄은 해당 검은 드루이드 원화 후보를 보스 디자인에서 제외하고 기존 담당에게 악마형 체형·몸에서 이어진 뿌리 공격기관 기준을 전달했다고 보고했다. 이는 디자인 거절·방향 정정이며 새 모델·애니메이션·실제 콤보 완료가 아니다. 새 산출물·본편/Steam 적용·공개 승인 증거는 없다.",
+    "scope": "별도 FDG 폐허 숲길 WebGPU scene의 교전·경로·가림 관측 범위 마감; 본편/전체 보스전 완료 아님",
+    "report": "총괄 cursor bd9703ff:10의 직전 인도 turn에서 별도 FDG 폐허 숲길의 교전·동쪽 가림·북쪽 출구 완주를 씬 관측 범위로 마감했다. 제작자 receipt는 현재 WebGPU scene만 PASS/CLOSED, 사망0·잔여actor0·최종HP547.978이며 전체 엔진/보스전·다른 backend 완료가 아니다. 새 GIF는4개 발췌 컷과 완료 스틸1초hold의11.780초 요약으로 원음이 없다. 난이도 실값·조작 주체 미기록으로 NORMAL 난이도나 사용자 자연 플레이를 확정하지 않는다. 본편/Steam 적용·공개 승인 미확인이다.",
     "mainGameApplied": "NOT_CONFIRMED",
     "steamDemoApplied": "NOT_CONFIRMED",
     "normalGameplayVideoWithOriginalAudio": "NOT_OBSERVED",
     "humanNaturalGameplayCaptured": false,
     "requiresUserAction": false,
     "publicationAllowed": false,
-    "visualCandidateState": "HUMAN_REJECTED_HEROIC_DRUID_CANDIDATE_NO_NEW_MODEL",
+    "visualCandidateState": "SEPARATE_ENGINE_SCENE_OWNER_OBSERVED_PASS_NO_ORIGINAL_AUDIO_OR_PUBLIC_APPROVAL",
     "bossProductMotionAccepted": false,
     "wholeEngineComplete": false,
-    "overallVisualVerdict": "NOT_ACCEPTED",
-    "candidateReview": {
-      "userQuote": "악마보스를 무슨 영웅같이 만들어놨어",
-      "candidatePath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/sprites/boss/review/druid_sw_higgsfield_max_20261009.png",
-      "identitySource": "총괄 최신 turn의 담당 전달 기록; 이번 원화 파일 재열람/해시/시각 재검수 없음",
-      "designRejected": true,
-      "approvedNewCombatModel": false,
-      "priorIdentityQuestionState": "WITHDRAWN_FOR_THIS_REJECTED_CANDIDATE",
-      "sourceAndForeignWipDisposition": "PRESERVE; NO_DELETION_OR_ROLLBACK",
-      "reportedDirection": "앞으로 쏠린 거대한 흉곽·비대칭 목질 팔·뒤틀린 짐승 관절·몸에서 이어진 뿌리 공격기관",
-      "reportedFirstPatternIntent": "뿌리 공격기관 접지→가시 탄막→뽑으며 전신 반동",
-      "directionIsImplementationEvidence": false,
-      "newModelArtifactObserved": false,
-      "newAnimationArtifactObserved": false,
-      "newComboCompletionObserved": false
+    "overallVisualVerdict": "NOT_ACCEPTED_FOR_EXODUSER_REPRESENTATIVE_TRAILER",
+    "producerReportedLocalCommit": "1355ee7fbcd4fc4e63731bcca8c7b50b4320a4a3",
+    "producerPushReported": false,
+    "sceneAcceptance": {
+      "ownerReportedState": "PASS/CLOSED",
+      "scope": "현재 관측 WebGPU 폐허 숲길 scene만",
+      "entireEngineAccepted": false,
+      "otherBackendsAccepted": false,
+      "bossRedesignAccepted": false,
+      "routeComplete": true,
+      "exitGuideObserved": true,
+      "deathCount": 0,
+      "remainingActorCount": 0,
+      "finalPlayerHp": 547.978,
+      "publicActionsOnly": true,
+      "stateInjectionCount": 0,
+      "difficultyChanged": false,
+      "difficultyValue": "NOT_RECORDED",
+      "inputActor": "NOT_RECORDED_IN_RECEIPT",
+      "normalCheckpoint": true,
+      "normalCheckpointScope": "체크포인트 필드이며 NORMAL 난이도·사용자 직접 플레이의 증거가 아님",
+      "persistentWritesReported": false,
+      "marketingWatchAndListenComplete": false
     },
     "evidence": {
       "producerThreadId": "01a0faa9-b453-7673-be39-98adedb4c2b3",
-      "producerTurnId": "01a12d53-eaf8-7540-beeb-0f6a7fc49ebd",
-      "producerUserMessageId": "01a12d53-ebb7-7551-ad17-5e0a08d61bff",
-      "producerFinalMessageId": "msg_0b4482c0db3683ae016acc1e0c6fd487d0a775db23883214da",
-      "previousPlaybackEvidenceCursor": "bd9703ff-6089-48ea-90e5-8df178a39cf6:2",
-      "newArtifactCount": 0,
-      "marketingReviewScope": "compact snapshot 뒤 최신 turn의 사용자 정정/총괄 종료와 후보 식별·담당 전달 범위만 확인. 새 원화/영상 재생·원음 청취·전체 로그/저장소 재조사·추가 QA·게임/서버/세이브 조작 없음."
+      "producerTurnId": "01a12def-a209-7121-82dd-f89fedededdb",
+      "completionDeliveryTurnId": "01a12dd4-2658-7860-9701-5430a464b2ad",
+      "sceneOwnerThreadId": "01a1235a-f2b8-73d1-bf58-c51c7dfb7638",
+      "sceneOwnerTurnId": "01a12db7-91d4-77b1-9b80-70dd40772e16",
+      "receipts": [
+        "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-ruined-forest-route-close/final-route-receipt.json",
+        "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-ruined-forest-route-close/checkpoint-receipt.json",
+        "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-ruined-forest-route-close/highlight-receipt.json",
+        "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-ruined-forest-route-close/final-visual-verdict.json"
+      ],
+      "sourcePreviewGifs": [
+        {
+          "path": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-ruined-forest-route-close/ruined-forest-route-close-highlights.gif",
+          "bytes": 9595689,
+          "sha256": "e026c36702b020be92e9fa7609846abb7cad964ce6985e33f7beefc9b1762b37",
+          "size": [
+            960,
+            540
+          ],
+          "encodedFrameCount": 52,
+          "gifDurationSeconds": 11.78,
+          "kind": "새 교전→동쪽 이동→북쪽→출구4컷 발췌 요약; 연속 전체 경로 영상 아님",
+          "editorialFinalStillHoldSeconds": 1,
+          "finalStillHoldIsMeasuredGameplayDuration": false,
+          "previousSampleUsed": false,
+          "newMotionFramesGenerated": false,
+          "containsAudio": false,
+          "publicReady": false,
+          "completeWatchAndListenByMarketing": false
+        }
+      ],
+      "marketingReviewScope": "총괄 compact 종료와 직전 인도/해당 담당 종료를 필요한 문장만 확인. 새4receipt 필요한 필드·지정GIF 존재/크기/최초해시 대조만. 원화/영상 재생·원음 청취·반복 QA·게임/서버/사용자탭/세이브 조작 없음."
     },
-    "nextProducerUnit": "기존 담당의 정정과 일치하는 승인 악마형 자원 유무·실제 consumer 근거 회수 결과 대기; 마케팅 반복 지시/촬영 요청 없음"
+    "nextProducerUnit": "폐허 숲길 관측 마감 이후 기존 담당의 새 지시/산출물만 대기; 마케팅 반복 지시/촬영 요청 없음"
   },
   "previousPartialProducerEvidence": [
     {
@@ -802,6 +836,49 @@
         "marketingReviewScope": "총괄 새 종료 보고·playback-result 필요한 필드와 지정4GIF 존재/크기/해시만 처음 대조. 재생·이미지 보기·시청/청취·추가 QA·게임/서버/세이브 조작 없음."
       },
       "nextProducerUnit": "기존 담당의 신형 실제 모델 연결·대기→공격→대기 저작 동작·지팡이 꽂기 복합 공격 완료와 새 실화면 대기; 반복 지시/촬영 요청 없음"
+    },
+    {
+      "checkedAtUTC": "2026-10-11T23:49:50.449Z",
+      "cursor": "bd9703ff-6089-48ea-90e5-8df178a39cf6:7",
+      "status": "idle",
+      "completionConfirmed": false,
+      "scope": "총괄 채팅의 인간 외형 정정과 해당 드루이드 후보 디자인 거절; 새 산출물 없음",
+      "report": "총괄 cursor bd9703ff:7에서 사용자가 악마보스 후보를 영웅처럼 보인다고 정정했다. 총괄은 해당 검은 드루이드 원화 후보를 보스 디자인에서 제외하고 기존 담당에게 악마형 체형·몸에서 이어진 뿌리 공격기관 기준을 전달했다고 보고했다. 이는 디자인 거절·방향 정정이며 새 모델·애니메이션·실제 콤보 완료가 아니다. 새 산출물·본편/Steam 적용·공개 승인 증거는 없다.",
+      "mainGameApplied": "NOT_CONFIRMED",
+      "steamDemoApplied": "NOT_CONFIRMED",
+      "normalGameplayVideoWithOriginalAudio": "NOT_OBSERVED",
+      "humanNaturalGameplayCaptured": false,
+      "requiresUserAction": false,
+      "publicationAllowed": false,
+      "visualCandidateState": "HUMAN_REJECTED_HEROIC_DRUID_CANDIDATE_NO_NEW_MODEL",
+      "bossProductMotionAccepted": false,
+      "wholeEngineComplete": false,
+      "overallVisualVerdict": "NOT_ACCEPTED",
+      "candidateReview": {
+        "userQuote": "악마보스를 무슨 영웅같이 만들어놨어",
+        "candidatePath": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/sprites/boss/review/druid_sw_higgsfield_max_20261009.png",
+        "identitySource": "총괄 최신 turn의 담당 전달 기록; 이번 원화 파일 재열람/해시/시각 재검수 없음",
+        "designRejected": true,
+        "approvedNewCombatModel": false,
+        "priorIdentityQuestionState": "WITHDRAWN_FOR_THIS_REJECTED_CANDIDATE",
+        "sourceAndForeignWipDisposition": "PRESERVE; NO_DELETION_OR_ROLLBACK",
+        "reportedDirection": "앞으로 쏠린 거대한 흉곽·비대칭 목질 팔·뒤틀린 짐승 관절·몸에서 이어진 뿌리 공격기관",
+        "reportedFirstPatternIntent": "뿌리 공격기관 접지→가시 탄막→뽑으며 전신 반동",
+        "directionIsImplementationEvidence": false,
+        "newModelArtifactObserved": false,
+        "newAnimationArtifactObserved": false,
+        "newComboCompletionObserved": false
+      },
+      "evidence": {
+        "producerThreadId": "01a0faa9-b453-7673-be39-98adedb4c2b3",
+        "producerTurnId": "01a12d53-eaf8-7540-beeb-0f6a7fc49ebd",
+        "producerUserMessageId": "01a12d53-ebb7-7551-ad17-5e0a08d61bff",
+        "producerFinalMessageId": "msg_0b4482c0db3683ae016acc1e0c6fd487d0a775db23883214da",
+        "previousPlaybackEvidenceCursor": "bd9703ff-6089-48ea-90e5-8df178a39cf6:2",
+        "newArtifactCount": 0,
+        "marketingReviewScope": "compact snapshot 뒤 최신 turn의 사용자 정정/총괄 종료와 후보 식별·담당 전달 범위만 확인. 새 원화/영상 재생·원음 청취·전체 로그/저장소 재조사·추가 QA·게임/서버/세이브 조작 없음."
+      },
+      "nextProducerUnit": "기존 담당의 정정과 일치하는 승인 악마형 자원 유무·실제 consumer 근거 회수 결과 대기; 마케팅 반복 지시/촬영 요청 없음"
     }
   ]
 }

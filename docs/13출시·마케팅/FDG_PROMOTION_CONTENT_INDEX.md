@@ -1,6 +1,6 @@
 # FDG 홍보 준비 콘텐츠 현황
 
-최근 정리: **2026-10-12 08:49 KST**. 사용자 지시 「홍보준비 최신컨텐츠 업데이트됀거 정리해서 항상 정리해놔」를 반영한 지속 갱신 문서다. 기술 구현, 실제 게임 화면 검수, 공개 데모 배포, 영상 게시를 별도로 확인한다.
+최근 정리: **2026-10-12 11:53 KST**. 사용자 지시 「홍보준비 최신컨텐츠 업데이트됀거 정리해서 항상 정리해놔」를 반영한 지속 갱신 문서다. 기술 구현, 실제 게임 화면 검수, 공개 데모 배포, 영상 게시를 별도로 확인한다.
 
 **UI 개발 소식1건과 스킬 노트4건(기검참·가시덫·회복의 영역·지옥강타 1)을 공식 YouTube에 게시하고 공개 페이지를 확인했다.** [UI](https://www.youtube.com/post/UgkxfJtDWBoJglf9RWKueZFsGwOBIRBYWULb) · [기검참](https://www.youtube.com/post/Ugkxpb6uTCUIAd3Ypj4_1vsi9cv2BKT-F93l) · [가시덫](https://www.youtube.com/post/UgkxhEsTSyRHSuYPkuEXJmUg-xnYL90AU9nj) · [회복의 영역](https://www.youtube.com/post/Ugkx2UIc57jBgsgkolbqytX0Nn3bgmkAz6if) · [지옥강타 1](https://www.youtube.com/post/UgkxrTYuXuoASizWPYhlrpJyCF-7pcSqJT8-). 지옥강타 1은 주변 원형 범위 타격과 분노의 피해 강화·소모를 소개했다. 분노 최소량은 발동 조건이 아니다. 기존 기능 소개이며 새 패치·신규 촬영 영상으로 표기하지 않았다. **전체 보스전 완료를 기다리는 대상은 리디자인 완료 대표 메인트레일러다.** UI·기존 스킬·캐릭터 원화/제작 과정은 각 소재의 실제 근거와 검수 범위에 맞게 계속 제작한다. 기존 원화30초·전투18초V3·R1 검토본과 새 대표 영상의 미승인 자동 공개 금지는 유지한다.
 
@@ -18,7 +18,19 @@
 
 우선 단위는 **범용 visual clock 일관성 → 전사 보행8→24 실제 고유 중간 자세 → 실버테일 방어·공격 연결**이다. 타격·Q/E·자원·save·이동 주기를 보존하고 정상 배율의 실제 게임 전후 장면으로 검수한다. 새 프레임·게임 코드 수정·개선 영상은 아직0이며 완성으로 표시하지 않는다. [실제 근거·범위·인수 조건](../../marketing/operations/game-motion-quality-20261010/request.json). 게임 본편 공유 파일은 기존 총괄 소유이므로 전달 허가 질문의 직접 응답 전 다른 채팅으로 지시하지 않는다. UI·원화 등 독립 홍보 준비와 공개 전 미리보기 기준은 유지한다.
 
-## 총괄 새 관측 — 2026-10-12 08:49 KST
+## 총괄 새 관측 — 2026-10-12 11:53 KST
+
+| 항목 | 현재 확인 범위 |
+|---|---|
+| 씬 마감 | 총괄 cursor `bd9703ff:10` 직전 인도에서 별도 FDG 폐허 숲길의 교전·동쪽 캐릭터 가림·북쪽 출구 완주를 해당 관측 씬으로 마감했다. 제작자 receipt는 **현재 WebGPU scene만 PASS/CLOSED**다. 전체 엔진·다른 backend·EXODUSER 본편·보스전 리디자인 완료로 확대하지 않는다. |
+| 전투·경로 근거 | receipt상 경로 완료·출구 안내 관측·사망0·잔여actor0·최종HP547.978. `publicActionsOnly:true`, 상태 주입0·난이도 변경 없음·persistent쓰기 없음. 실제 난이도 값과 조작 주체는 미기록이며 `normalCheckpoint:true`는 체크포인트 필드다. NORMAL 난이도나 사용자 직접 자연 플레이로 확정하지 않는다. |
+| 새 시각 자료 | [새4컷 요약 GIF](/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-ruined-forest-route-close/ruined-forest-route-close-highlights.gif): 960×540·52장·11.780초·9,595,689B·SHA `e026c367…`. 교전→동쪽 이동→북쪽→출구 발췌4컷이며 연속 전체 경로 촬영이 아니다. 끝 완료 스틸1초hold를 실제 플레이1초 지속의 실측으로 해석하지 않는다. 기존sample 사용·새 동작 프레임 생성 없음, GIF 원음 없음. 총괄이 이미 사용자에게 인도했다. |
+| 적용·검수 경계 | 제작자 코드·문서 local commit `1355ee7fbcd4fc4e63731bcca8c7b50b4320a4a3`, push false. 실제 migration HEAD `9a4534b4` 동일, 본편·Steam 적용 미확인. 마케팅 시청/청취·사용자 공개 승인은 미완료이며 새 홍보촬영/영상 제작/게시0건이다. |
+| 근거·다음 소재 | 새 `final-route-receipt.json`·`checkpoint-receipt.json`·`highlight-receipt.json`·`final-visual-verdict.json` 필요한 필드와 지정GIF 존재·크기·최초해시만 대조했다. 재생·시각 인수·반복 QA·게임/서버/탭/세이브 조작 없음. **전사10/8 완성 미리보기 검수와 교체 판단**이 우선이며 악의구 원고·12초 시연안은 후속 준비다. |
+
+[구조화 관측](../../marketing/operations/boss-redesign-watch-20261009.json)에 새 씬 마감과 이전 후보 거절·시험 재생 근거를 각각 보존했다. 이 씬의 한정 마감을 대표 보스전 영상의 완료 gate로 사용하지 않으며 이미 전달된 인도 알림을 반복하지 않는다.
+
+## 후보 정정 이력 — 2026-10-12 08:49 KST
 
 | 항목 | 현재 확인 범위 |
 |---|---|
