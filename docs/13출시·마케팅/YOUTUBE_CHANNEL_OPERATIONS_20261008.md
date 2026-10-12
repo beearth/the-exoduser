@@ -1,5 +1,12 @@
 # FDG YouTube·연계 채널 운영 — 2026-10-08
 
+## 2026-10-13 — 인디 사례 적용·전사 수정 스틸 미리보기 인도
+
+전사 인트로10/1 공개본과10/8 제작 수정본의 같은2초 스틸을 실제 MP4에서 추출해, 한 화면 구/신형 전환과 짧은 설명·피드백 질문·Steam CTA로 묶었다. [완성 미리보기](/Users/fordeargamers/the-exoduser/output/indie-marketing-20261013/REVIEW/preview.html)와 itch.io 한영 개발일지·7채널 한영 문안을 준비했다. [실행 기록](INDIE_MARKETING_EXECUTION_20261013.md) · [출처·파일·해시·검수·측정](../../marketing/operations/indie-campaign-20261013/campaign.json).
+
+**정적 미리보기1묶음·새 게시0·공개 승인0·새 인게임 영상0**. 데스크톱·모바일의 스틸/레이아웃·버전/언어 전환을 확인했다. AI 보조 스토리 컷씬 제작 기록이며10/13 게임 패치나 공개 데모 적용으로 소개하지 않는다. 최신96.4초 인트로 전편 시청·청취와 공개 교체는 별도 미완료다. 이번 미리보기 사용자 검수와 승인된 계정/권한 확인 후 게시 여부를 판단한다. 기존 로그인·동일 미리보기 요청은 반복하지 않는다. 기존 공개2편·개발 글5건·Shorts2편 비공개 이력을 유지한다.
+
+
 ## 2026-10-11 00:01 KST — 전사 인트로 구본 게시 확인·최신본 검토 인도
 
 공개 `r_TTBUrA6p4`의 실제 업로드 원본은 migration10/1 v25(SHA `fb1b4727…`), 같은 파일명인 마케팅 체크아웃의 최신10/8 수정본(SHA `277fbe09…`)과 다르다. 최신 제작 경로·해시 대조 누락으로 구본을 게시했다. 최신본은 첫0~5초 손·칼자루 교정과51~58초 킬루 장면7컷을 포함한다. [96.4초 최신 완성 미리보기](/Users/fordeargamers/the-exoduser/output/warrior-intro-latest-20261011/REVIEW/EXODUSER_WARRIOR_INTRO_20261008_REVIEW.mp4) · [정확 해시·소비 경로·근거·검수 한계](../../marketing/operations/warrior-intro-version-audit-20261011/audit.json). KO/EN22큐 및 기존 원음 패킷 스트림은 동일하다.

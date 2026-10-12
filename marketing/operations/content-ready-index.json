@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
-  "updatedAtKST": "2026-10-13T00:07:23.577+09:00",
-  "updatedAtUTC": "2026-10-12T15:07:23.577Z",
+  "updatedAtKST": "2026-10-13T02:13:04.313359+09:00",
+  "updatedAtUTC": "2026-10-12T17:13:04.313359+00:00",
   "policy": "실제 화면·영상 또는 단계가 명확한 기존 원화와 간결한 설명을 함께 준비하고, 공개 전 완성 미리보기를 먼저 인도한다. 동일 영상의 확대 화면과 전체 화면을 동시에 복제하지 않으며 원화를 가리는 불투명 자막판을 사용하지 않는다. 매시간 점검을 긴 글 연속 게시 빈도로 해석하지 않는다. UI·스킬·캐릭터의 독립 준비를 계속하고 대표 보스전 완료 영상만 총괄 완료를 기다린다.",
   "developmentObservation": {
     "checkout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
@@ -11,7 +11,7 @@
     "latestResult": "총괄 cursor bd9703ff:22가 별도 FDG 편집기 안개 조절·복원→인게임 consumer의 코드/docs 작업과 신규 검사11 PASS 담당 부분보고를 회수했다. 실제 안개100%/20% 화면 비교는 다음 검수이며 export/reimport→실consumer의 새 원본 비교·정상checkpoint는 미관측, EDITOR_ENVIRONMENT_NATIVE_FIRST 완료0이다. 실제 migration HEAD9a4534b4 동일, 새 홍보촬영/원음/공개 승인 없음.",
     "gameHtmlSha256": "5212e3a33c201eec08d09b132092c1a063fea88f36fccef494ea351f3565d2cd"
   },
-  "nextMaterial": "전사 인트로10/8 최신본의 완성 미리보기 검수와 교체 판단; 악의구 원고·12초 시연안은 후속 준비 유지",
+  "nextMaterial": "이 스틸·짧은 글 캠페인 미리보기 검수·게시 판단; 최신 인트로 전편 검수와 교체 판단 유지. 다음 인게임 소재는 품질 개선 후 사용자 플레이 녹화.",
   "newPublicationReadyCount": 0,
   "publicationEvidenceDate": "2026-10-08 과거 영상 게시 검증 + 2026-10-10 개발 글5건 공개 검증 및 Shorts A/B 비공개·공식 목록 제외 확인",
   "items": [
@@ -1921,5 +1921,17 @@
       },
       "nextProducerUnit": "EDITOR_ENCOUNTER_PLACEMENT_NATIVE_FIRST: 기존 몬스터 저작X/Y→JSON재가져오기→native factory 소비 연결 제작 중; 새 완료/산출물만 대기, 마케팅 반복 지시/촬영 요청 없음"
     }
-  ]
+  ],
+  "indieMarketingCampaign": {
+    "id": "warrior_grip_20261013",
+    "state": "STATIC_PREVIEW_DELIVERED; USER_REVIEW_PENDING; NOT_PUBLISHED",
+    "file": "marketing/operations/indie-campaign-20261013/campaign.json",
+    "preview": "/Users/fordeargamers/the-exoduser/output/indie-marketing-20261013/REVIEW/preview.html",
+    "staticPreviewBundleCount": 1,
+    "userPublicationApproval": false,
+    "newPosts": 0,
+    "newGameplayVideos": 0,
+    "measurementState": "NOT_OBSERVED",
+    "originalPreparedTextArtCount": 10
+  }
 }

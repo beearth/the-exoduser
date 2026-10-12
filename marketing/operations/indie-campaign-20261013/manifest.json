@@ -1,0 +1,66 @@
+{
+  "id": "warrior_grip_20261013",
+  "generatedAtUTC": "2026-10-12T17:15:24.718720+00:00",
+  "state": "REVIEW_ONLY; NO_NEW_PUBLICATION",
+  "files": [
+    {
+      "path": "campaign.json",
+      "bytes": 4058,
+      "sha256": "0ffb16babfff0bebc112e477adeca8c732aac8b543d0611724589d8f53f6ed68"
+    },
+    {
+      "path": "channel-copy.json",
+      "bytes": 8122,
+      "sha256": "20e5b787dd14a8e823e3fd2e2a920a5189ba559f89d3f9bf7c989038b4dcef8e"
+    },
+    {
+      "path": "extraction.json",
+      "bytes": 967,
+      "sha256": "fb201a463fca09a3515dcff6f9c800f073707d0c7bf93484f280d82af9e9b2f0"
+    },
+    {
+      "path": "itch-devlog.md",
+      "bytes": 2036,
+      "sha256": "22342abf94c8e656515eeb4e4a235b5d8aba27ef13a9eb1e8691d751e9366104"
+    },
+    {
+      "path": "preview-desktop.png",
+      "bytes": 955293,
+      "sha256": "e7aab24abe73df9a4f6665e6a6906db879886162768115db2efc8595d0fb0cc4"
+    },
+    {
+      "path": "preview-first-screen.png",
+      "bytes": 841703,
+      "sha256": "e0f9432aea8c7cbd98f3d0dfb170c3e09c0ce8dddd855919137c06fbcc16073c"
+    },
+    {
+      "path": "preview-mobile.png",
+      "bytes": 297859,
+      "sha256": "4576868628f5904205584e80ed5461e3bc80cbc4d8c1805fae7d793d47b5b9e0"
+    },
+    {
+      "path": "preview-qa.json",
+      "bytes": 671,
+      "sha256": "3f01fa6a2e3f7c21b4618079960428343e1a3939b8cba751421f5e229ab6ebdd"
+    },
+    {
+      "path": "preview.html",
+      "bytes": 15471,
+      "sha256": "bb84873287a01ef9dae9e9886a0b7308322bf66af6449e82f1105a046d2d65d3"
+    },
+    {
+      "path": "warrior-new-02s.png",
+      "bytes": 4104069,
+      "sha256": "2bc021ddd1fe640f5b45b8596636cd92e97f22ba24a70d199acff0cbccdddae2"
+    },
+    {
+      "path": "warrior-old-02s.png",
+      "bytes": 4200772,
+      "sha256": "2c7db9bedf49a9e123bf11438b548809c482b21bb215678ea347bcb9bff8ec67"
+    }
+  ],
+  "publicationURL": null,
+  "newPosts": 0,
+  "newGameplayVideos": 0,
+  "sourceGamesModified": 0
+}

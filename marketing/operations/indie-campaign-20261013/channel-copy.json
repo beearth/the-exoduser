@@ -1,0 +1,81 @@
+{
+  "itch": {
+    "title": {
+      "ko": "대검을 쥔 손부터 다시 — 전사 인트로 제작 기록",
+      "en": "A firmer grip — refining the Warrior's opening cinematic"
+    },
+    "type": "Game Design / 제작 과정",
+    "images": [
+      "warrior-old-02s.png",
+      "warrior-new-02s.png"
+    ],
+    "ko": "지옥에서 다시 일어선 전사. 첫 장면의 작은 어색함부터 다듬었습니다.\n\nEXODUSER: HELL LORD 전사 인트로의 첫 5초에서 손과 칼자루의 접촉을 수정했습니다. 위 비교는 10월 1일 공개본과 10월 8일 제작 수정본의 같은 2초 시점입니다. 손잡이를 감싼 손과 드러난 폼멜을 확인해 주세요.\n\n이번 글은 AI 보조 원화·영상·음향을 활용한 스토리 컷씬 제작 기록입니다. 플레이 화면이나 Steam 공개 데모 패치 안내는 아닙니다.\n\n손과 칼자루가 닿는 모습이 더 자연스럽게 읽히나요?\n\n탄막·패링·핵앤슬래시 ARPG가 궁금하다면 Steam에서 무료 데모를 확인해 주세요.\nhttps://store.steampowered.com/app/4749590/?utm_source=itchio&utm_campaign=warrior_grip_20261013",
+    "en": "A warrior rises from hell. We started by refining a small detail in his opening shot.\n\nFor EXODUSER: HELL LORD, we revised the hand-to-hilt contact in the first five seconds of the Warrior's story cinematic. The images compare the October 1 public version with the October 8 production revision at the same two-second mark. Look at the fingers around the grip and the visible pommel.\n\nThis is a production note for a story cinematic made with AI-assisted artwork, video and audio. These are cinematic stills, not gameplay screenshots or a public demo patch announcement.\n\nDoes the hand-to-hilt contact read more naturally?\n\nCurious about our bullet-pattern, parry and hack-and-slash ARPG? Try the free demo on Steam.\nhttps://store.steampowered.com/app/4749590/?utm_source=itchio&utm_campaign=warrior_grip_20261013",
+    "status": "LOCAL_REVIEW_ONLY; LOGIN_NOT_RECHECKED"
+  },
+  "youtube": {
+    "images": [
+      "warrior-old-02s.png",
+      "warrior-new-02s.png"
+    ],
+    "ko": "대검을 쥔 손부터 다시.\n전사 인트로 첫 5초의 손과 칼자루 접촉을 다듬었습니다. 10/1 공개본 → 10/8 제작 수정본, 같은 2초 장면입니다.\n더 자연스럽게 읽히나요?\n\nAI 보조 스토리 컷씬 제작 기록입니다. 인게임 화면·공개 데모 패치가 아닙니다.\n무료 데모: 공식 채널 프로필의 Steam 링크",
+    "en": "A firmer grip. We refined the hand-to-hilt contact in the Warrior's opening cinematic.\nOctober 1 public version → October 8 production revision, both at 0:02. Does it read more naturally?\nAI-assisted cinematic production, not gameplay or a demo patch.\nFree demo: Steam link in our channel profile.",
+    "status": "LOCAL_REVIEW_ONLY",
+    "trackedLink": null,
+    "attribution": "기존 프로필 Steam 링크 유지; 이 게시물의 독립 UTM 전환으로 귀속하지 않음"
+  },
+  "instagram": {
+    "format": "기존 시네마틱 스틸2장 carousel 후보; Reels 영상 아님",
+    "images": [
+      "warrior-old-02s.png",
+      "warrior-new-02s.png"
+    ],
+    "ko": "대검을 쥔 손부터 다시.\n10/1 공개본과10/8 제작 수정본의 같은 2초 장면입니다. 전사 인트로 첫 5초에서 손과 칼자루 접촉을 다듬었습니다.\n더 자연스럽게 읽히나요?\n\nAI 보조 시네마틱 제작 기록 · 인게임 화면 아님.\nEXODUSER: HELL LORD — 탄막·패링·핵앤슬래시 ARPG.\n공식 소유·로그인 및 실제 프로필 Steam 링크 확인 후에만 CTA 추가.",
+    "en": "A firmer grip. Same shot, revised hand-to-hilt contact.\nOctober 1 public version → October 8 production revision, both at 0:02.\nDoes the grip read more naturally?\nAI-assisted cinematic production stills, not gameplay.\nEXODUSER: HELL LORD — bullet patterns, parries and hack-and-slash combat.",
+    "status": "OFFICIAL_ACCOUNT_UNVERIFIED; LOCAL_COPY_ONLY",
+    "candidateLink": "https://store.steampowered.com/app/4749590/?utm_source=instagram&utm_campaign=warrior_grip_20261013"
+  },
+  "threads": {
+    "images": [
+      "warrior-new-02s.png"
+    ],
+    "ko": "대검을 쥔 손부터 다시. 전사 인트로 첫 5초의 손과 칼자루 접촉을 다듬었습니다. 더 자연스럽게 읽히나요?\nAI 보조 시네마틱 제작 스틸입니다. 인게임 화면·데모 패치가 아닙니다.\n무료 데모: https://store.steampowered.com/app/4749590/?utm_source=threads&utm_campaign=warrior_grip_20261013",
+    "en": "A firmer grip. We refined the Warrior's hand-to-hilt contact in the opening shot. Does it read more naturally?\nAI-assisted cinematic still, not gameplay or a demo patch.\nFree demo: https://store.steampowered.com/app/4749590/?utm_source=threads&utm_campaign=warrior_grip_20261013",
+    "status": "OFFICIAL_ACCOUNT_UNVERIFIED; LOCAL_COPY_ONLY"
+  },
+  "bluesky": {
+    "images": [
+      "warrior-new-02s.png"
+    ],
+    "ko": "대검을 쥔 손부터 다시. 전사 인트로의 손·칼자루 접촉을 다듬었습니다. 더 자연스럽게 읽히나요?\nAI 보조 시네마틱 스틸 · 인게임·데모 패치 아님.\n무료 데모: https://store.steampowered.com/app/4749590/?utm_source=bluesky&utm_campaign=warrior_grip_20261013",
+    "en": "A firmer grip in the Warrior's opening shot. Does it read more naturally?\nAI-assisted cinematic still; not gameplay or a demo patch.\nFree demo: https://store.steampowered.com/app/4749590/?utm_source=bluesky&utm_campaign=warrior_grip_20261013",
+    "status": "OFFICIAL_ACCOUNT_UNVERIFIED; LOCAL_COPY_ONLY"
+  },
+  "discord": {
+    "images": [
+      "warrior-old-02s.png",
+      "warrior-new-02s.png"
+    ],
+    "ko": "전사 인트로 제작 기록: 첫 5초의 손과 칼자루 접촉을 다듬었습니다.\n비교 스틸은10/1 공개본과10/8 제작 수정본의 같은2초 시점입니다. 손잡이를 감싼 손이 더 자연스럽게 읽히나요?\nAI 보조 원화·영상·음향을 활용한 시네마틱 제작 기록이며 인게임·공개 데모 패치 안내가 아닙니다.\n무료 데모: https://store.steampowered.com/app/4749590/?utm_source=discord&utm_campaign=warrior_grip_20261013",
+    "en": "Warrior cinematic production note: we refined hand-to-hilt contact in the opening five seconds.\nThese stills compare the October 1 public version and October 8 production revision at 0:02. Does the grip read more naturally?\nAI-assisted cinematic artwork, video and audio; not gameplay or a public demo patch.\nFree demo: https://store.steampowered.com/app/4749590/?utm_source=discord&utm_campaign=warrior_grip_20261013",
+    "status": "FOLLOWUP_WEB_LOGIN_PENDING; LOCAL_REVIEW_ONLY"
+  },
+  "steam": {
+    "title": {
+      "ko": "전사 인트로 제작 기록 — 손과 칼자루 접촉 수정",
+      "en": "Warrior cinematic production note — refining the grip"
+    },
+    "type": "Development news; NOT PATCH",
+    "images": [
+      "warrior-old-02s.png",
+      "warrior-new-02s.png"
+    ],
+    "ko": "전사 스토리 컷씬의 첫5초에서 손과 칼자루 접촉을 수정했습니다. 10/1 공개본과10/8 제작 수정본의 같은2초 스틸을 비교합니다. 더 자연스럽게 읽히나요?\nAI 보조 원화·영상·음향 제작 기록입니다. 이번 글은 공개 데모 적용 패치 안내가 아닙니다.",
+    "en": "We refined hand-to-hilt contact in the first five seconds of the Warrior's story cinematic. These stills compare the October 1 public version with the October 8 production revision at 0:02. Does the grip read more naturally?\nAI-assisted artwork, video and audio production note; not a public demo patch announcement.",
+    "status": "COMMUNITY_LOGIN_PENDING; LOCAL_REVIEW_ONLY"
+  },
+  "reddit": {
+    "status": "HOLD; CURRENT_COMMUNITY_RULES_AND_AI_POLICY_REQUIRED; NO_SUBMISSION",
+    "reason": "실제 사용자 플레이 중심 후속 소재 확보 후 커뮤니티 규칙·AI 조건부터 확인. 이번 시네마틱 스틸을 플레이 체험으로 제출하지 않음."
+  }
+}

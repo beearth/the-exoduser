@@ -1,0 +1,26 @@
+[
+  {
+    "version": "old",
+    "source": "/Users/fordeargamers/the-exoduser/output/FDG_FINAL_RELEASE_20261008/videos/EXODUSER_WARRIOR_STORY_V25_20261001.mp4",
+    "output": "/Users/fordeargamers/.codex/worktrees/marketing-gameplay-20261008/the-exoduser/marketing/operations/indie-campaign-20261013/warrior-old-02s.png",
+    "requestedSeconds": 2,
+    "width": 1920,
+    "height": 1080,
+    "duration": 96.4,
+    "currentTime": 2,
+    "mediaTime": 2,
+    "presentedFrames": 1
+  },
+  {
+    "version": "new",
+    "source": "/Users/fordeargamers/the-exoduser/output/warrior-intro-latest-20261011/REVIEW/EXODUSER_WARRIOR_INTRO_20261008_REVIEW.mp4",
+    "output": "/Users/fordeargamers/.codex/worktrees/marketing-gameplay-20261008/the-exoduser/marketing/operations/indie-campaign-20261013/warrior-new-02s.png",
+    "requestedSeconds": 2,
+    "width": 1920,
+    "height": 1080,
+    "duration": 96.4,
+    "currentTime": 2,
+    "mediaTime": 2,
+    "presentedFrames": 1
+  }
+]

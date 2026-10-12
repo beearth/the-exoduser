@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="ko">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>EXODUSER · 전사 인트로 제작 기록 · 미리보기</title>
+<style>
+:root{color-scheme:dark;--ink:#eee7df;--muted:#b2a59b;--line:#44382f;--accent:#ffb478}
+*{box-sizing:border-box}body{margin:0;background:#151311;color:var(--ink);font-family:Arial,"Apple SD Gothic Neo",sans-serif;line-height:1.65}
+main{max-width:960px;margin:auto;padding:30px 30px 56px}.top{display:flex;justify-content:space-between;align-items:center;font-size:12px;letter-spacing:1.5px;border-bottom:1px solid var(--line);padding-bottom:15px}.status{font-size:12px;letter-spacing:0;color:var(--accent)}
+.kicker{font-size:12px;letter-spacing:2px;color:var(--accent);margin:27px 0 6px}h1{font-size:38px;line-height:1.28;margin:0 0 14px;letter-spacing:-1.2px}.intro{font-size:17px;color:var(--muted);margin:0 0 22px}
+button,a{font:inherit}button{border:1px solid var(--line);background:transparent;color:var(--muted);padding:8px 13px;border-radius:4px;cursor:pointer}button[aria-pressed=true]{background:#ead7c4;color:#24190f;border-color:#ead7c4}button:hover{border-color:#bd8963}button:focus-visible,a:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.controls{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px}.frame{margin:0}img{width:100%;height:auto;aspect-ratio:16/9;display:block;border-radius:3px}figcaption{display:flex;justify-content:space-between;gap:12px;font-size:12px;color:var(--muted);margin-top:8px}
+.notes{font-size:15px;margin:18px 0 24px;max-width:780px}.notes p{margin:10px 0}.cta{display:inline-block;background:#d18447;color:#170f09;font-weight:700;text-decoration:none;padding:11px 18px;border-radius:4px;margin:2px 0 7px}.disclosure{font-size:12px;color:var(--muted);margin:12px 0 30px}
+.copy-area{border-top:1px solid var(--line);padding-top:20px}h2{font-size:19px;margin:0 0 10px}.lang{margin-left:auto}.channel-row{display:flex;gap:6px;flex-wrap:wrap}.bodycopy{padding:14px 0;color:#ded4ca;font-size:14px}.bodycopy p{margin:0 0 13px;white-space:pre-line;overflow-wrap:anywhere}.bodycopy a{color:var(--accent)}
+.footer{font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px}.footer p{margin:6px 0}.divider{height:12px}
+@media(max-width:600px){main{padding:21px 17px 38px}h1{font-size:28px}.intro{font-size:15px}.controls button,.channel-row button{font-size:12px;padding:7px 9px}figcaption{display:block}figcaption span{display:block}.top{font-size:10px}.status{font-size:10px}.lang{margin-left:0}.notes{font-size:14px}}
+</style></head>
+<body><main>
+<div class="top"><span>FOR DEAR GAMERS · EXODUSER</span><span class="status">공개 전 미리보기 · 미게시</span></div>
+<p class="kicker">CINEMATIC PRODUCTION NOTE</p><h1>대검을 쥔 손부터 다시.</h1>
+<p class="intro">지옥에서 다시 일어선 전사. 첫 장면의 작은 어색함부터 다듬었습니다.</p>
+<div class="controls" aria-label="같은 시점의 두 버전 비교">
+<button id="newButton" aria-pressed="true">10/8 제작 수정본</button><button id="oldButton" aria-pressed="false">10/1 공개본</button>
+</div>
+<figure class="frame"><img id="still" src="warrior-new-02s.png" alt="10월8일 제작 수정본의2초 시점. 전사가 대검의 칼자루를 쥔 장면. AI 보조 스토리 시네마틱 스틸.">
+<figcaption><span id="version">10/8 제작 수정본 · 00:02</span><span>기존 시네마틱에서 추출 · 원본 화면 전체</span></figcaption></figure>
+<div class="notes"><p>전사 인트로 첫 5초의 손과 칼자루 접촉을 수정했습니다.<br>손잡이를 감싼 손과 드러난 폼멜을 확인해 주세요.</p><p><strong>손과 칼자루가 닿는 모습이 더 자연스럽게 읽히나요?</strong></p></div>
+<a class="cta" href="https://store.steampowered.com/app/4749590/EXODUSER_HELL_LORD/" target="_blank" rel="noreferrer">Steam 무료 데모 보기 ↗</a>
+<p class="disclosure">AI 보조 원화·영상·음향을 활용한 스토리 컷씬 제작 기록입니다.<br>인게임 화면이나 Steam 공개 데모 패치 안내는 아닙니다.</p>
+<section class="copy-area"><h2>채널별 완성 문안</h2>
+<div class="channel-row"><button data-channel="itch" aria-pressed="true">itch.io 개발일지</button><button data-channel="youtube" aria-pressed="false">YouTube</button><button data-channel="threads" aria-pressed="false">Threads</button><button data-channel="bluesky" aria-pressed="false">Bluesky</button><button data-channel="discord" aria-pressed="false">Discord</button><button class="lang" id="ko" aria-pressed="true">한국어</button><button id="en" aria-pressed="false">English</button></div>
+<div class="bodycopy" id="bodycopy"></div><p class="footer" id="channelState"></p></section>
+<div class="footer"><p>이번 인도: 원본 스틸2장 + 한영 개발일지·채널 문안. 새 게임플레이 영상·외부 게시0.</p><p>기존 로그인 요청은 반복하지 않았습니다. 최신 인트로 전체 영상의 시청·청취 및 공개 교체 검토는 별도입니다.</p><p>검토 페이지의 Steam 버튼은 일반 링크입니다. 게시용 채널 문안에는 채널별 측정 링크를 준비했습니다.</p></div>
+</main>
+<script type="application/json" id="copies">{"itch":{"title":{"ko":"대검을 쥔 손부터 다시 — 전사 인트로 제작 기록","en":"A firmer grip — refining the Warrior's opening cinematic"},"type":"Game Design / 제작 과정","images":["warrior-old-02s.png","warrior-new-02s.png"],"ko":"지옥에서 다시 일어선 전사. 첫 장면의 작은 어색함부터 다듬었습니다.\n\nEXODUSER: HELL LORD 전사 인트로의 첫 5초에서 손과 칼자루의 접촉을 수정했습니다. 위 비교는 10월 1일 공개본과 10월 8일 제작 수정본의 같은 2초 시점입니다. 손잡이를 감싼 손과 드러난 폼멜을 확인해 주세요.\n\n이번 글은 AI 보조 원화·영상·음향을 활용한 스토리 컷씬 제작 기록입니다. 플레이 화면이나 Steam 공개 데모 패치 안내는 아닙니다.\n\n손과 칼자루가 닿는 모습이 더 자연스럽게 읽히나요?\n\n탄막·패링·핵앤슬래시 ARPG가 궁금하다면 Steam에서 무료 데모를 확인해 주세요.\nhttps://store.steampowered.com/app/4749590/?utm_source=itchio&utm_campaign=warrior_grip_20261013","en":"A warrior rises from hell. We started by refining a small detail in his opening shot.\n\nFor EXODUSER: HELL LORD, we revised the hand-to-hilt contact in the first five seconds of the Warrior's story cinematic. The images compare the October 1 public version with the October 8 production revision at the same two-second mark. Look at the fingers around the grip and the visible pommel.\n\nThis is a production note for a story cinematic made with AI-assisted artwork, video and audio. These are cinematic stills, not gameplay screenshots or a public demo patch announcement.\n\nDoes the hand-to-hilt contact read more naturally?\n\nCurious about our bullet-pattern, parry and hack-and-slash ARPG? Try the free demo on Steam.\nhttps://store.steampowered.com/app/4749590/?utm_source=itchio&utm_campaign=warrior_grip_20261013","status":"LOCAL_REVIEW_ONLY; LOGIN_NOT_RECHECKED"},"youtube":{"images":["warrior-old-02s.png","warrior-new-02s.png"],"ko":"대검을 쥔 손부터 다시.\n전사 인트로 첫 5초의 손과 칼자루 접촉을 다듬었습니다. 10/1 공개본 → 10/8 제작 수정본, 같은 2초 장면입니다.\n더 자연스럽게 읽히나요?\n\nAI 보조 스토리 컷씬 제작 기록입니다. 인게임 화면·공개 데모 패치가 아닙니다.\n무료 데모: 공식 채널 프로필의 Steam 링크","en":"A firmer grip. We refined the hand-to-hilt contact in the Warrior's opening cinematic.\nOctober 1 public version → October 8 production revision, both at 0:02. Does it read more naturally?\nAI-assisted cinematic production, not gameplay or a demo patch.\nFree demo: Steam link in our channel profile.","status":"LOCAL_REVIEW_ONLY","trackedLink":null,"attribution":"기존 프로필 Steam 링크 유지; 이 게시물의 독립 UTM 전환으로 귀속하지 않음"},"instagram":{"format":"기존 시네마틱 스틸2장 carousel 후보; Reels 영상 아님","images":["warrior-old-02s.png","warrior-new-02s.png"],"ko":"대검을 쥔 손부터 다시.\n10/1 공개본과10/8 제작 수정본의 같은 2초 장면입니다. 전사 인트로 첫 5초에서 손과 칼자루 접촉을 다듬었습니다.\n더 자연스럽게 읽히나요?\n\nAI 보조 시네마틱 제작 기록 · 인게임 화면 아님.\nEXODUSER: HELL LORD — 탄막·패링·핵앤슬래시 ARPG.\n공식 소유·로그인 및 실제 프로필 Steam 링크 확인 후에만 CTA 추가.","en":"A firmer grip. Same shot, revised hand-to-hilt contact.\nOctober 1 public version → October 8 production revision, both at 0:02.\nDoes the grip read more naturally?\nAI-assisted cinematic production stills, not gameplay.\nEXODUSER: HELL LORD — bullet patterns, parries and hack-and-slash combat.","status":"OFFICIAL_ACCOUNT_UNVERIFIED; LOCAL_COPY_ONLY","candidateLink":"https://store.steampowered.com/app/4749590/?utm_source=instagram&utm_campaign=warrior_grip_20261013"},"threads":{"images":["warrior-new-02s.png"],"ko":"대검을 쥔 손부터 다시. 전사 인트로 첫 5초의 손과 칼자루 접촉을 다듬었습니다. 더 자연스럽게 읽히나요?\nAI 보조 시네마틱 제작 스틸입니다. 인게임 화면·데모 패치가 아닙니다.\n무료 데모: https://store.steampowered.com/app/4749590/?utm_source=threads&utm_campaign=warrior_grip_20261013","en":"A firmer grip. We refined the Warrior's hand-to-hilt contact in the opening shot. Does it read more naturally?\nAI-assisted cinematic still, not gameplay or a demo patch.\nFree demo: https://store.steampowered.com/app/4749590/?utm_source=threads&utm_campaign=warrior_grip_20261013","status":"OFFICIAL_ACCOUNT_UNVERIFIED; LOCAL_COPY_ONLY"},"bluesky":{"images":["warrior-new-02s.png"],"ko":"대검을 쥔 손부터 다시. 전사 인트로의 손·칼자루 접촉을 다듬었습니다. 더 자연스럽게 읽히나요?\nAI 보조 시네마틱 스틸 · 인게임·데모 패치 아님.\n무료 데모: https://store.steampowered.com/app/4749590/?utm_source=bluesky&utm_campaign=warrior_grip_20261013","en":"A firmer grip in the Warrior's opening shot. Does it read more naturally?\nAI-assisted cinematic still; not gameplay or a demo patch.\nFree demo: https://store.steampowered.com/app/4749590/?utm_source=bluesky&utm_campaign=warrior_grip_20261013","status":"OFFICIAL_ACCOUNT_UNVERIFIED; LOCAL_COPY_ONLY"},"discord":{"images":["warrior-old-02s.png","warrior-new-02s.png"],"ko":"전사 인트로 제작 기록: 첫 5초의 손과 칼자루 접촉을 다듬었습니다.\n비교 스틸은10/1 공개본과10/8 제작 수정본의 같은2초 시점입니다. 손잡이를 감싼 손이 더 자연스럽게 읽히나요?\nAI 보조 원화·영상·음향을 활용한 시네마틱 제작 기록이며 인게임·공개 데모 패치 안내가 아닙니다.\n무료 데모: https://store.steampowered.com/app/4749590/?utm_source=discord&utm_campaign=warrior_grip_20261013","en":"Warrior cinematic production note: we refined hand-to-hilt contact in the opening five seconds.\nThese stills compare the October 1 public version and October 8 production revision at 0:02. Does the grip read more naturally?\nAI-assisted cinematic artwork, video and audio; not gameplay or a public demo patch.\nFree demo: https://store.steampowered.com/app/4749590/?utm_source=discord&utm_campaign=warrior_grip_20261013","status":"FOLLOWUP_WEB_LOGIN_PENDING; LOCAL_REVIEW_ONLY"},"steam":{"title":{"ko":"전사 인트로 제작 기록 — 손과 칼자루 접촉 수정","en":"Warrior cinematic production note — refining the grip"},"type":"Development news; NOT PATCH","images":["warrior-old-02s.png","warrior-new-02s.png"],"ko":"전사 스토리 컷씬의 첫5초에서 손과 칼자루 접촉을 수정했습니다. 10/1 공개본과10/8 제작 수정본의 같은2초 스틸을 비교합니다. 더 자연스럽게 읽히나요?\nAI 보조 원화·영상·음향 제작 기록입니다. 이번 글은 공개 데모 적용 패치 안내가 아닙니다.","en":"We refined hand-to-hilt contact in the first five seconds of the Warrior's story cinematic. These stills compare the October 1 public version with the October 8 production revision at 0:02. Does the grip read more naturally?\nAI-assisted artwork, video and audio production note; not a public demo patch announcement.","status":"COMMUNITY_LOGIN_PENDING; LOCAL_REVIEW_ONLY"},"reddit":{"status":"HOLD; CURRENT_COMMUNITY_RULES_AND_AI_POLICY_REQUIRED; NO_SUBMISSION","reason":"실제 사용자 플레이 중심 후속 소재 확보 후 커뮤니티 규칙·AI 조건부터 확인. 이번 시네마틱 스틸을 플레이 체험으로 제출하지 않음."}}</script>
+<script>
+const copies=JSON.parse(document.getElementById('copies').textContent);
+let channel='itch',language='ko';
+function renderCopy(){
+ const x=copies[channel];
+ const nodes=x[language].split('\n\n').map(t=>{
+  const p=document.createElement('p');
+  const lines=t.split('\n');
+  lines.forEach((line,i)=>{
+   if(i)p.append(document.createElement('br'));
+   const at=line.indexOf('https://');
+   if(at>=0){p.append(document.createTextNode(line.slice(0,at)));const a=document.createElement('a');a.href=line.slice(at);a.textContent=line.slice(at);a.target='_blank';a.rel='noreferrer';p.append(a);}
+   else p.append(document.createTextNode(line));
+  });return p;
+ });
+ document.getElementById('bodycopy').replaceChildren(...nodes);
+ document.getElementById('channelState').textContent=(channel==='itch'?'itch.io 로그인·게시 미확인':channel==='youtube'?'YouTube 기존 게시 이력 유지 · 이번 글 미게시':channel==='discord'?'Discord 후속 웹 로그인·게시 미확인':'공식 소유 계정·현재 로그인 미확인')+' · 검토용 문안';
+ document.querySelectorAll('[data-channel]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.channel===channel)));
+ document.getElementById('ko').setAttribute('aria-pressed',String(language==='ko'));
+ document.getElementById('en').setAttribute('aria-pressed',String(language==='en'));
+}
+function chooseVersion(version){
+ const isNew=version==='new';const label=isNew?'10/8 제작 수정본':'10/1 공개본';
+ document.getElementById('still').src='warrior-'+version+'-02s.png';
+ document.getElementById('still').alt=label+'의2초 시점. 전사가 대검의 칼자루를 쥔 장면. AI 보조 스토리 시네마틱 스틸.';
+ document.getElementById('version').textContent=label+' · 00:02';
+ document.getElementById('newButton').setAttribute('aria-pressed',String(isNew));
+ document.getElementById('oldButton').setAttribute('aria-pressed',String(!isNew));
+}
+document.getElementById('newButton').addEventListener('click',()=>chooseVersion('new'));
+document.getElementById('oldButton').addEventListener('click',()=>chooseVersion('old'));
+document.querySelectorAll('[data-channel]').forEach(b=>b.addEventListener('click',()=>{channel=b.dataset.channel;renderCopy();}));
+document.getElementById('ko').addEventListener('click',()=>{language='ko';renderCopy();});
+document.getElementById('en').addEventListener('click',()=>{language='en';renderCopy();});
+renderCopy();
+</script></body></html>

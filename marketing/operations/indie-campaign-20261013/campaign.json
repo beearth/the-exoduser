@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "id": "warrior_grip_20261013",
+  "createdAtKST": "2026-10-13 02:13 KST",
+  "state": "STATIC_PREVIEW_DELIVERED; USER_REVIEW_PENDING; NOT_PUBLISHED",
+  "humanInstruction": "서브노티카등 최고퍼포먼스 인디마케딩을 좀 해봐라고",
+  "approach": "실제 볼거리1개 → 짧은 제작 이유 → 무료 데모/Steam 유입 → 질문1개 → 실제 피드백·후속 변경",
+  "topic": "전사 인트로 첫5초 손·칼자루 접촉 수정",
+  "topicDate": "2026-10-06 modification; present in 2026-10-08 cinematic",
+  "classification": "기존 AI 보조 시네마틱 제작 과정·인게임 아님",
+  "assets": [
+    {
+      "version": "10/1 공개본",
+      "path": "warrior-old-02s.png",
+      "mediaTimeSeconds": 2,
+      "sourceSHA256FromExistingAudit": "fb1b47274ab3f793ab3254182b44f83349958e4db435e4331f03c879389007bd",
+      "bytes": 4200772,
+      "sha256": "2c7db9bedf49a9e123bf11438b548809c482b21bb215678ea347bcb9bff8ec67",
+      "width": 1920,
+      "height": 1080,
+      "transform": "FULL_FRAME; NO_CROP; NO_IMAGE_GENERATION"
+    },
+    {
+      "version": "10/8 제작 수정본",
+      "path": "warrior-new-02s.png",
+      "mediaTimeSeconds": 2,
+      "sourceSHA256FromExistingAudit": "277fbe09c4f5c0b70a98aae6376a8d820a7377cbd6f96a3bc62365cf0a166b34",
+      "bytes": 4104069,
+      "sha256": "2bc021ddd1fe640f5b45b8596636cd92e97f22ba24a70d199acff0cbccdddae2",
+      "width": 1920,
+      "height": 1080,
+      "transform": "FULL_FRAME; NO_CROP; NO_IMAGE_GENERATION"
+    }
+  ],
+  "sourceAudit": "marketing/operations/warrior-intro-version-audit-20261011/audit.json",
+  "sourceDocument": "docs/cinematic/WARINTRO_HAND_FIX_20261006.md",
+  "migrationHEAD": "9a4534b42f74093095ebc3364a25dd104e93b379",
+  "sourceVideosFreshRehashed": false,
+  "measurement": {
+    "primary": "게시 후 채널별 Steam UTM visits / tracked visits / attributed wishlists",
+    "actualValues": null,
+    "baseline": "NOT_OBSERVED; 기존 수치를0으로 채우지 않음",
+    "checks": "실제 게시시각부터72시간·7일, 승인된 분석 접근이 있을 때",
+    "steamAttributionWindowHours": 72,
+    "conversionDenominator": "wishlist conversions / tracked visits; 분모0 또는미확인은N/A",
+    "limits": [
+      "UTM 기본게임 링크의 Demo 다운로드는 전환 집계에 포함되지 않음",
+      "앱/브라우저/기기 변경으로 일부유입 귀속불가",
+      "기존 YouTube프로필 링크 유입은 개별 게시물과 직접 귀속하지 않음"
+    ],
+    "goals": "수치 목표는 첫 실측 후 설정; 성과 보장/최고 순위 주장은 없음",
+    "paidSpend": 0
+  },
+  "publicationGate": {
+    "userPreviewApproval": false,
+    "officialAccountAndCurrentAuthorityRequired": true,
+    "publicationAllowed": false,
+    "existingLoginRequestsRepeated": false,
+    "latestFullVideoWatch": false,
+    "latestFullVideoListen": false,
+    "videoPublicationAllowed": false,
+    "sourceGameOrSaveChanges": 0,
+    "newGameplayCapture": 0
+  },
+  "nextMaterial": "이 스틸·짧은 글 캠페인 미리보기 검수·게시 판단; 최신 인트로 전편 검수와 교체 판단 유지. 다음 인게임 소재는 품질 개선 후 사용자 플레이 녹화.",
+  "createdAtUTC": "2026-10-12T17:13:04.313359+00:00",
+  "qa": {
+    "sourceStillsVisualViewed": true,
+    "desktopAndMobileVisualViewed": true,
+    "interactionAndLayout": "PASS within static preview scope",
+    "sourceVideoFullWatching": false,
+    "sourceVideoFullListening": false,
+    "userPublicationApproval": false,
+    "sourceVideoHashes": "FROM_EXISTING_AUDIT; NO_FRESH_VIDEO_REHASH",
+    "report": "preview-qa.json"
+  },
+  "benchmarkSources": [
+    "https://unknownworlds.com/en/news/habitat-update-released",
+    "https://www.supergiantgames.com/blog/hades-dive-into-the-blood-price-update/",
+    "https://store.steampowered.com/news/posts/?appids=892970&enddate=1613407176&feed=steam_community_announcements"
+  ],
+  "copyScope": "7 channels KO/EN local copy; Reddit held; no new video or publication"
+}

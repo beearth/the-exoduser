@@ -1,5 +1,13 @@
 # 서브노티카·얼리액세스 개발 공개 마케팅 벤치마킹
 
+## 2026-10-13 — 사례를 실제 캠페인 제작에 적용
+
+사용자 지시 「서브노티카등 최고퍼포먼스 인디마케딩을 좀 해봐라고」를 반영해 [전사 인트로 손·칼자루 수정 스틸 캠페인](INDIE_MARKETING_EXECUTION_20261013.md)을 제작했다. 기존 구/신형 MP4에서 같은2초 스틸을 직접 추출하고, 한 화면 비교·itch.io 한영 개발일지·짧은 채널 문안·질문1개·Steam 링크를 묶었다. 새 게시0·공개 승인 대기, 원화를 인게임 장면으로 표현하지 않는다.
+
+Subnautica의 볼거리·이미지·짧은 설명·Steam 연결은 [Habitat 공식 글](https://unknownworlds.com/en/news/habitat-update-released)에서, Hades의 볼거리·상세 기록 연결은 [Blood Price](https://www.supergiantgames.com/blog/hades-dive-into-the-blood-price-update/)에서, 작은 배포·체험·피드백의 연결은 [Valheim 공식 기록](https://store.steampowered.com/news/posts/?appids=892970&enddate=1613407176&feed=steam_community_announcements)에서 확인했다. 성공 규모의 별도 공식 근거로 Hades 출시 글의 얼리액세스 참여자70만 이상과 Valheim 첫 주 판매100만 건을 확인했다. 이를 특정 홍보 구성의 효과나 업계 최고 순위로 해석하지 않는다. [Hades 출시](https://www.supergiantgames.com/blog/hades-now-out-of-early-access/)
+
+측정은 [Steamworks UTM](https://partner.steamgames.com/doc/marketing/utm_analytics?l=english)의 채널별 유입·tracked visits·위시리스트를 이용하되 실제 분석값은 아직 미측정이다.72시간 귀속·교차 앱/브라우저 한계를 기록하고 기본 게임 UTM에 데모 다운로드 전환을 포함하지 않는다. [itch.io 공식 개발일지](https://itch.io/updates/introducing-devlogs)는 이미지·영상·댓글·팔로워 접점을 확인하는 근거이며 게시 빈도 증가나 노출 보장의 근거로 쓰지 않는다.
+
 조사일: **2026-10-10 KST**. 사용자 지시: 최신 홍보 준비 콘텐츠를 계속 정리하고, 유명 게임이 얼리액세스와 개발 과정을 공개하며 운영한 마케팅 기법을 조사·벤치마킹한다.
 
 ## 최신 운영 정정: 시각 홍보 품질과 공개 전 미리보기

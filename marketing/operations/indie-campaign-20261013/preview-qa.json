@@ -1,0 +1,27 @@
+{
+  "errors": [],
+  "versionSwitch": {
+    "old": "warrior-old-02s.png",
+    "latest": "warrior-new-02s.png"
+  },
+  "englishCopyLoaded": true,
+  "mobile": {
+    "width": 390,
+    "scrollWidth": 390,
+    "imgCount": 1,
+    "loaded": 1920
+  },
+  "screenshotFiles": [
+    "preview-desktop.png",
+    "preview-mobile.png",
+    "preview-first-screen.png"
+  ],
+  "scope": "Static still and copy preview only; no full video or audio review; no publication",
+  "visualReview": {
+    "sourceOldStill": "VIEWED",
+    "sourceNewStill": "VIEWED",
+    "desktop": "VIEWED",
+    "mobile": "VIEWED",
+    "verdict": "PASS for static preview scope; user publication approval pending"
+  }
+}
