@@ -1,14 +1,14 @@
 {
   "schemaVersion": 2,
-  "updatedAtKST": "2026-10-13T10:24:56.043+09:00",
-  "updatedAtUTC": "2026-10-13T01:24:56.043Z",
+  "updatedAtKST": "2026-10-13T20:29:28.518+09:00",
+  "updatedAtUTC": "2026-10-13T11:29:28.518Z",
   "policy": "실제 화면·영상 또는 단계가 명확한 기존 원화와 간결한 설명을 함께 준비하고, 공개 전 완성 미리보기를 먼저 인도한다. 동일 영상의 확대 화면과 전체 화면을 동시에 복제하지 않으며 원화를 가리는 불투명 자막판을 사용하지 않는다. 매시간 점검을 긴 글 연속 게시 빈도로 해석하지 않는다. UI·스킬·캐릭터의 독립 준비를 계속하고 대표 보스전 완료 영상만 총괄 완료를 기다린다.",
   "developmentObservation": {
     "checkout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
     "commit": "9a4534b42f74093095ebc3364a25dd104e93b379",
     "scope": "12c29afe 이후 docs·커밋·관련 소비 연결의 읽기 전용 조사. 미커밋 상태나 Steam 배포 상태를 HEAD로 증명하지 않음",
-    "lastCheckedAtUTC": "2026-10-13T01:24:56.043Z",
-    "latestResult": "actual migration HEAD9a4534b4 동일. 별도 Godot PC 고정 소스 검토 사본의 입력 없는 시작 검사만 인도됨. GUI·플레이·원음·성능·Steam 적용·공개 승인 미확인. 전사 정적 캠페인 검토 대기·새 게시0.",
+    "lastCheckedAtUTC": "2026-10-13T11:29:28.518Z",
+    "latestResult": "actual migration HEAD9a4534b4 동일. 총괄 cursor42의 M29 돌진·소환 생성기·몬스터 AI 코드 준비 및 AI 신규 검사6 PASS 보고. 투사체·효과/플레이 화면 연결 미완료, 웹 빌드 범위 동일·새 홍보 자료/게시/공개 승인0.",
     "gameHtmlSha256": "5212e3a33c201eec08d09b132092c1a063fea88f36fccef494ea351f3565d2cd"
   },
   "nextMaterial": "이 스틸·짧은 글 캠페인 미리보기 검수·게시 판단; 최신 인트로 전편 검수와 교체 판단 유지. 다음 인게임 소재는 품질 개선 후 사용자 플레이 녹화.",
@@ -782,13 +782,26 @@
     "state": "PREVIEW_DELIVERED; REPLACEMENT_NOT_STARTED"
   },
   "latestProducerObservation": {
-    "checkedAtUTC": "2026-10-13T01:24:56.043Z",
-    "cursor": "bd9703ff-6089-48ea-90e5-8df178a39cf6:32",
-    "status": "systemError; failed; unchanged since previous human turn",
+    "checkedAtUTC": "2026-10-13T11:29:28.518Z",
+    "cursor": "bd9703ff-6089-48ea-90e5-8df178a39cf6:42",
+    "status": "active; inProgress",
     "completionConfirmed": false,
-    "scope": "총괄 compact snapshot의 변경 없음과 별도 사용자 지시로 이미 인도한 Godot 고정 소스 검토 패키지 영수증을 반영. 원본 소스·영상·시작 검사·공식 콘솔 조사 재검증0.",
-    "report": "총괄 cursor32의 작업 스트림 실패 상태는 직전 사용자 응답에서 이미 관측했으며 이번 compact snapshot은 changed=false다. 사용자 Godot 체험·플스 고려 지시에 따라 별도 PC 소스 검토 사본과 headless 가져오기·5프레임 시작 검사를 이미 인도했다. 실제 게임플레이·패드·원음·성능·전체 본편 이식은 미확인이고 새 홍보 소재가 아니다.",
-    "mainGameApplied": "FIXED_PC_REVIEW_SOURCE_ONLY; FULL_NATIVE_MIGRATION_NOT_CONFIRMED",
+    "scope": "총괄 compact snapshot의 진행 중 부분 구현·기술 검사 보고만 기록. 원본 코드·검사·플레이 화면·영상·원음 재검증0.",
+    "report": "총괄은 M29 돌진·소환 생성기·몬스터 AI 코드 준비와 신규 몬스터 AI 검사6개 통과를 보고했다. 실제 투사체·효과 연결과 플레이 화면 검증은 남아 있고 기존 웹 빌드 지원 범위는 동일하다고 명시했다. 구현 준비·검사 보고를 실제 플레이·전체 이식·품질 개선 완료로 확대하지 않는다.",
+    "partialGodotImplementationReport": {
+      "reportedReadyCodeUnits": [
+        "M29 돌진",
+        "소환 생성기",
+        "몬스터 AI"
+      ],
+      "reportedMonsterAITestPassCount": 6,
+      "testEvidenceScope": "PRODUCER_REPORT_ONLY; SUITE_NOT_RERUN_BY_MARKETING",
+      "projectileAndEffectIntegration": "NOT_COMPLETE",
+      "actualGameplayScreenValidation": "NOT_COMPLETE",
+      "existingWebBuildSupportScope": "UNCHANGED_AS_REPORTED",
+      "newWebBuildDeliveredInThisObservation": false
+    },
+    "mainGameApplied": "NOT_CONFIRMED; GODOT_CODE_PREPARATION_REPORTED_ONLY",
     "steamDemoApplied": "NOT_CONFIRMED",
     "normalGameplayVideoWithOriginalAudio": false,
     "humanNaturalGameplayCaptured": false,
@@ -800,35 +813,22 @@
     "overallVisualVerdict": "NO_NEW_VISUAL_REVIEW",
     "producerReportedLocalCommit": null,
     "producerPushReported": null,
-    "migrationDirection": {
-      "reportedTarget": "Godot",
-      "humanRequestInThisThread": true,
-      "newGodotProjectInspectedByMarketing": true,
-      "isolatedHeadlessStartupObserved": true,
-      "actualContinuousGameplayObservedByMarketing": false,
-      "performanceImprovementMeasured": false,
-      "wholeBossCompletion": false,
-      "rootGameSourceMutation": false,
-      "otherOwnerThreadMessagingAuthorization": false,
-      "sourceReviewReceipt": "marketing/operations/godot-console-20261013/receipt.json"
-    },
     "evidence": {
-      "type": "unchanged producer compact snapshot + previously delivered own review receipt",
+      "type": "producer compact snapshot commentary only",
       "producerTitle": "맥북에서 총괄 시작하기",
       "producerThreadId": "01a0faa9-b453-7673-be39-98adedb4c2b3",
-      "producerTurnId": "01a132c6-6810-7912-9b49-fc67c180386f",
-      "producerSnapshotChanged": false,
+      "producerTurnId": "01a134e8-0034-7ff1-aed2-ffe60997b936",
       "migrationHead": "9a4534b42f74093095ebc3364a25dd104e93b379",
       "migrationHeadChanged": false,
       "sourceFilesRevalidated": 0,
-      "headlessChecksRepeated": 0,
-      "mediaReplayed": 0,
+      "testSuitesRepeated": 0,
+      "sourceReceiptsNewlyRead": 0,
       "newMarketingPixels": 0,
       "newOriginalAudio": 0,
       "newGameManipulations": 0,
       "newOrdersSent": 0
     },
-    "nextProducerUnit": "기존 담당의 Godot 소규모 전투 실제 플레이·패드·성능 결과 대기. 게임 품질 개선→사용자 플레이→실제 화면 전체·원음 녹화→완성 미리보기 순서 유지."
+    "nextProducerUnit": "기존 담당의 투사체·효과 연결과 실제 플레이 화면 검수 결과 대기. 다음 홍보 소재는 기존 전사 수정 스틸 미리보기 검수·게시 판단. 게임 품질 개선→사용자 플레이→실제 전체 화면·원음 녹화→완성 미리보기 기준 유지."
   },
   "previousProducerObservations": [
     {
@@ -2072,6 +2072,55 @@
         "newOrdersSent": 0
       },
       "nextProducerUnit": "기존 총괄의 첫 실제 실행 Godot 플레이본과 최신 본편 연결·실측 결과 보고 대기. 기존 홍보 미리보기 검수와 게임 품질 개선→사용자 플레이→실제 화면·원음 녹화 순서 유지."
+    },
+    {
+      "checkedAtUTC": "2026-10-13T01:24:56.043Z",
+      "cursor": "bd9703ff-6089-48ea-90e5-8df178a39cf6:32",
+      "status": "systemError; failed; unchanged since previous human turn",
+      "completionConfirmed": false,
+      "scope": "총괄 compact snapshot의 변경 없음과 별도 사용자 지시로 이미 인도한 Godot 고정 소스 검토 패키지 영수증을 반영. 원본 소스·영상·시작 검사·공식 콘솔 조사 재검증0.",
+      "report": "총괄 cursor32의 작업 스트림 실패 상태는 직전 사용자 응답에서 이미 관측했으며 이번 compact snapshot은 changed=false다. 사용자 Godot 체험·플스 고려 지시에 따라 별도 PC 소스 검토 사본과 headless 가져오기·5프레임 시작 검사를 이미 인도했다. 실제 게임플레이·패드·원음·성능·전체 본편 이식은 미확인이고 새 홍보 소재가 아니다.",
+      "mainGameApplied": "FIXED_PC_REVIEW_SOURCE_ONLY; FULL_NATIVE_MIGRATION_NOT_CONFIRMED",
+      "steamDemoApplied": "NOT_CONFIRMED",
+      "normalGameplayVideoWithOriginalAudio": false,
+      "humanNaturalGameplayCaptured": false,
+      "requiresUserAction": false,
+      "publicationAllowed": false,
+      "visualCandidateState": "NO_NEW_MARKETING_MEDIA",
+      "bossProductMotionAccepted": false,
+      "wholeEngineComplete": false,
+      "overallVisualVerdict": "NO_NEW_VISUAL_REVIEW",
+      "producerReportedLocalCommit": null,
+      "producerPushReported": null,
+      "migrationDirection": {
+        "reportedTarget": "Godot",
+        "humanRequestInThisThread": true,
+        "newGodotProjectInspectedByMarketing": true,
+        "isolatedHeadlessStartupObserved": true,
+        "actualContinuousGameplayObservedByMarketing": false,
+        "performanceImprovementMeasured": false,
+        "wholeBossCompletion": false,
+        "rootGameSourceMutation": false,
+        "otherOwnerThreadMessagingAuthorization": false,
+        "sourceReviewReceipt": "marketing/operations/godot-console-20261013/receipt.json"
+      },
+      "evidence": {
+        "type": "unchanged producer compact snapshot + previously delivered own review receipt",
+        "producerTitle": "맥북에서 총괄 시작하기",
+        "producerThreadId": "01a0faa9-b453-7673-be39-98adedb4c2b3",
+        "producerTurnId": "01a132c6-6810-7912-9b49-fc67c180386f",
+        "producerSnapshotChanged": false,
+        "migrationHead": "9a4534b42f74093095ebc3364a25dd104e93b379",
+        "migrationHeadChanged": false,
+        "sourceFilesRevalidated": 0,
+        "headlessChecksRepeated": 0,
+        "mediaReplayed": 0,
+        "newMarketingPixels": 0,
+        "newOriginalAudio": 0,
+        "newGameManipulations": 0,
+        "newOrdersSent": 0
+      },
+      "nextProducerUnit": "기존 담당의 Godot 소규모 전투 실제 플레이·패드·성능 결과 대기. 게임 품질 개선→사용자 플레이→실제 화면 전체·원음 녹화→완성 미리보기 순서 유지."
     }
   ],
   "indieMarketingCampaign": {

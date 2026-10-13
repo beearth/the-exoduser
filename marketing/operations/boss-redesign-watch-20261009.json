@@ -13,11 +13,11 @@
     "threadId": "01a0faa9-b453-7673-be39-98adedb4c2b3",
     "hostId": "local",
     "title": "맥북에서 총괄 시작하기",
-    "afterCursor": "bd9703ff-6089-48ea-90e5-8df178a39cf6:32",
-    "lastObservedStatus": "systemError",
-    "lastObservedTurnStatus": "failed",
-    "lastObservedTurnId": "01a132c6-6810-7912-9b49-fc67c180386f",
-    "lastObservedReport": "총괄 cursor32의 작업 스트림 실패 상태는 직전 사용자 응답에서 이미 관측했으며 이번 compact snapshot은 changed=false다. 사용자 Godot 체험·플스 고려 지시에 따라 별도 PC 소스 검토 사본과 headless 가져오기·5프레임 시작 검사를 이미 인도했다. 실제 게임플레이·패드·원음·성능·전체 본편 이식은 미확인이고 새 홍보 소재가 아니다."
+    "afterCursor": "bd9703ff-6089-48ea-90e5-8df178a39cf6:42",
+    "lastObservedStatus": "active",
+    "lastObservedTurnStatus": "inProgress",
+    "lastObservedTurnId": "01a134e8-0034-7ff1-aed2-ffe60997b936",
+    "lastObservedReport": "총괄은 M29 돌진·소환 생성기·몬스터 AI 코드 준비와 신규 몬스터 AI 검사6개 통과를 보고했다. 실제 투사체·효과 연결과 플레이 화면 검증은 남아 있고 기존 웹 빌드 지원 범위는 동일하다고 명시했다. 구현 준비·검사 보고를 실제 플레이·전체 이식·품질 개선 완료로 확대하지 않는다."
   },
   "completionConfirmed": false,
   "captureStarted": false,
@@ -35,8 +35,8 @@
     "완성 후 검수본부터 인도, 사용자 검수 전 자동 공개 금지",
     "2026-10-10 사용자 정정: 전체 대기를 모든 콘텐츠로 확대하지 않음; UI·스킬·캐릭터 부분 개발 소식 계속 운영"
   ],
-  "lastCheckedAtUTC": "2026-10-13T01:24:56.043Z",
-  "lastCheckResult": "총괄 cursor32의 작업 스트림 실패 상태는 직전 사용자 응답에서 이미 관측했으며 이번 compact snapshot은 changed=false다. 사용자 Godot 체험·플스 고려 지시에 따라 별도 PC 소스 검토 사본과 headless 가져오기·5프레임 시작 검사를 이미 인도했다. 실제 게임플레이·패드·원음·성능·전체 본편 이식은 미확인이고 새 홍보 소재가 아니다.",
+  "lastCheckedAtUTC": "2026-10-13T11:29:28.518Z",
+  "lastCheckResult": "총괄은 M29 돌진·소환 생성기·몬스터 AI 코드 준비와 신규 몬스터 AI 검사6개 통과를 보고했다. 실제 투사체·효과 연결과 플레이 화면 검증은 남아 있고 기존 웹 빌드 지원 범위는 동일하다고 명시했다. 구현 준비·검사 보고를 실제 플레이·전체 이식·품질 개선 완료로 확대하지 않는다.",
   "publicationScope": "보스전 전체 리디자인 완료 대표 메인트레일러",
   "partialDevelopmentNewsAllowed": true,
   "partialDevelopmentNewsPolicy": "UI·기존 스킬·캐릭터 제작 과정 등 각 소재는 전체 보스전 완료와 관계없이 실제 근거와 개별 검수 범위 확인 후 독립 제작·게시한다.",
@@ -44,13 +44,26 @@
   "partialLastPublication": "https://www.youtube.com/post/UgkxrTYuXuoASizWPYhlrpJyCF-7pcSqJT8-",
   "partialPublishedCount": 5,
   "latestPartialProducerEvidence": {
-    "checkedAtUTC": "2026-10-13T01:24:56.043Z",
-    "cursor": "bd9703ff-6089-48ea-90e5-8df178a39cf6:32",
-    "status": "systemError; failed; unchanged since previous human turn",
+    "checkedAtUTC": "2026-10-13T11:29:28.518Z",
+    "cursor": "bd9703ff-6089-48ea-90e5-8df178a39cf6:42",
+    "status": "active; inProgress",
     "completionConfirmed": false,
-    "scope": "총괄 compact snapshot의 변경 없음과 별도 사용자 지시로 이미 인도한 Godot 고정 소스 검토 패키지 영수증을 반영. 원본 소스·영상·시작 검사·공식 콘솔 조사 재검증0.",
-    "report": "총괄 cursor32의 작업 스트림 실패 상태는 직전 사용자 응답에서 이미 관측했으며 이번 compact snapshot은 changed=false다. 사용자 Godot 체험·플스 고려 지시에 따라 별도 PC 소스 검토 사본과 headless 가져오기·5프레임 시작 검사를 이미 인도했다. 실제 게임플레이·패드·원음·성능·전체 본편 이식은 미확인이고 새 홍보 소재가 아니다.",
-    "mainGameApplied": "FIXED_PC_REVIEW_SOURCE_ONLY; FULL_NATIVE_MIGRATION_NOT_CONFIRMED",
+    "scope": "총괄 compact snapshot의 진행 중 부분 구현·기술 검사 보고만 기록. 원본 코드·검사·플레이 화면·영상·원음 재검증0.",
+    "report": "총괄은 M29 돌진·소환 생성기·몬스터 AI 코드 준비와 신규 몬스터 AI 검사6개 통과를 보고했다. 실제 투사체·효과 연결과 플레이 화면 검증은 남아 있고 기존 웹 빌드 지원 범위는 동일하다고 명시했다. 구현 준비·검사 보고를 실제 플레이·전체 이식·품질 개선 완료로 확대하지 않는다.",
+    "partialGodotImplementationReport": {
+      "reportedReadyCodeUnits": [
+        "M29 돌진",
+        "소환 생성기",
+        "몬스터 AI"
+      ],
+      "reportedMonsterAITestPassCount": 6,
+      "testEvidenceScope": "PRODUCER_REPORT_ONLY; SUITE_NOT_RERUN_BY_MARKETING",
+      "projectileAndEffectIntegration": "NOT_COMPLETE",
+      "actualGameplayScreenValidation": "NOT_COMPLETE",
+      "existingWebBuildSupportScope": "UNCHANGED_AS_REPORTED",
+      "newWebBuildDeliveredInThisObservation": false
+    },
+    "mainGameApplied": "NOT_CONFIRMED; GODOT_CODE_PREPARATION_REPORTED_ONLY",
     "steamDemoApplied": "NOT_CONFIRMED",
     "normalGameplayVideoWithOriginalAudio": false,
     "humanNaturalGameplayCaptured": false,
@@ -62,35 +75,22 @@
     "overallVisualVerdict": "NO_NEW_VISUAL_REVIEW",
     "producerReportedLocalCommit": null,
     "producerPushReported": null,
-    "migrationDirection": {
-      "reportedTarget": "Godot",
-      "humanRequestInThisThread": true,
-      "newGodotProjectInspectedByMarketing": true,
-      "isolatedHeadlessStartupObserved": true,
-      "actualContinuousGameplayObservedByMarketing": false,
-      "performanceImprovementMeasured": false,
-      "wholeBossCompletion": false,
-      "rootGameSourceMutation": false,
-      "otherOwnerThreadMessagingAuthorization": false,
-      "sourceReviewReceipt": "marketing/operations/godot-console-20261013/receipt.json"
-    },
     "evidence": {
-      "type": "unchanged producer compact snapshot + previously delivered own review receipt",
+      "type": "producer compact snapshot commentary only",
       "producerTitle": "맥북에서 총괄 시작하기",
       "producerThreadId": "01a0faa9-b453-7673-be39-98adedb4c2b3",
-      "producerTurnId": "01a132c6-6810-7912-9b49-fc67c180386f",
-      "producerSnapshotChanged": false,
+      "producerTurnId": "01a134e8-0034-7ff1-aed2-ffe60997b936",
       "migrationHead": "9a4534b42f74093095ebc3364a25dd104e93b379",
       "migrationHeadChanged": false,
       "sourceFilesRevalidated": 0,
-      "headlessChecksRepeated": 0,
-      "mediaReplayed": 0,
+      "testSuitesRepeated": 0,
+      "sourceReceiptsNewlyRead": 0,
       "newMarketingPixels": 0,
       "newOriginalAudio": 0,
       "newGameManipulations": 0,
       "newOrdersSent": 0
     },
-    "nextProducerUnit": "기존 담당의 Godot 소규모 전투 실제 플레이·패드·성능 결과 대기. 게임 품질 개선→사용자 플레이→실제 화면 전체·원음 녹화→완성 미리보기 순서 유지."
+    "nextProducerUnit": "기존 담당의 투사체·효과 연결과 실제 플레이 화면 검수 결과 대기. 다음 홍보 소재는 기존 전사 수정 스틸 미리보기 검수·게시 판단. 게임 품질 개선→사용자 플레이→실제 전체 화면·원음 녹화→완성 미리보기 기준 유지."
   },
   "previousPartialProducerEvidence": [
     {
@@ -1334,6 +1334,55 @@
         "newOrdersSent": 0
       },
       "nextProducerUnit": "기존 총괄의 첫 실제 실행 Godot 플레이본과 최신 본편 연결·실측 결과 보고 대기. 기존 홍보 미리보기 검수와 게임 품질 개선→사용자 플레이→실제 화면·원음 녹화 순서 유지."
+    },
+    {
+      "checkedAtUTC": "2026-10-13T01:24:56.043Z",
+      "cursor": "bd9703ff-6089-48ea-90e5-8df178a39cf6:32",
+      "status": "systemError; failed; unchanged since previous human turn",
+      "completionConfirmed": false,
+      "scope": "총괄 compact snapshot의 변경 없음과 별도 사용자 지시로 이미 인도한 Godot 고정 소스 검토 패키지 영수증을 반영. 원본 소스·영상·시작 검사·공식 콘솔 조사 재검증0.",
+      "report": "총괄 cursor32의 작업 스트림 실패 상태는 직전 사용자 응답에서 이미 관측했으며 이번 compact snapshot은 changed=false다. 사용자 Godot 체험·플스 고려 지시에 따라 별도 PC 소스 검토 사본과 headless 가져오기·5프레임 시작 검사를 이미 인도했다. 실제 게임플레이·패드·원음·성능·전체 본편 이식은 미확인이고 새 홍보 소재가 아니다.",
+      "mainGameApplied": "FIXED_PC_REVIEW_SOURCE_ONLY; FULL_NATIVE_MIGRATION_NOT_CONFIRMED",
+      "steamDemoApplied": "NOT_CONFIRMED",
+      "normalGameplayVideoWithOriginalAudio": false,
+      "humanNaturalGameplayCaptured": false,
+      "requiresUserAction": false,
+      "publicationAllowed": false,
+      "visualCandidateState": "NO_NEW_MARKETING_MEDIA",
+      "bossProductMotionAccepted": false,
+      "wholeEngineComplete": false,
+      "overallVisualVerdict": "NO_NEW_VISUAL_REVIEW",
+      "producerReportedLocalCommit": null,
+      "producerPushReported": null,
+      "migrationDirection": {
+        "reportedTarget": "Godot",
+        "humanRequestInThisThread": true,
+        "newGodotProjectInspectedByMarketing": true,
+        "isolatedHeadlessStartupObserved": true,
+        "actualContinuousGameplayObservedByMarketing": false,
+        "performanceImprovementMeasured": false,
+        "wholeBossCompletion": false,
+        "rootGameSourceMutation": false,
+        "otherOwnerThreadMessagingAuthorization": false,
+        "sourceReviewReceipt": "marketing/operations/godot-console-20261013/receipt.json"
+      },
+      "evidence": {
+        "type": "unchanged producer compact snapshot + previously delivered own review receipt",
+        "producerTitle": "맥북에서 총괄 시작하기",
+        "producerThreadId": "01a0faa9-b453-7673-be39-98adedb4c2b3",
+        "producerTurnId": "01a132c6-6810-7912-9b49-fc67c180386f",
+        "producerSnapshotChanged": false,
+        "migrationHead": "9a4534b42f74093095ebc3364a25dd104e93b379",
+        "migrationHeadChanged": false,
+        "sourceFilesRevalidated": 0,
+        "headlessChecksRepeated": 0,
+        "mediaReplayed": 0,
+        "newMarketingPixels": 0,
+        "newOriginalAudio": 0,
+        "newGameManipulations": 0,
+        "newOrdersSent": 0
+      },
+      "nextProducerUnit": "기존 담당의 Godot 소규모 전투 실제 플레이·패드·성능 결과 대기. 게임 품질 개선→사용자 플레이→실제 화면 전체·원음 녹화→완성 미리보기 순서 유지."
     }
   ],
   "godotPCReviewTrial": {
