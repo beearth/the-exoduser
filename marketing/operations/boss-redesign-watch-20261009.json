@@ -13,11 +13,11 @@
     "threadId": "01a0faa9-b453-7673-be39-98adedb4c2b3",
     "hostId": "local",
     "title": "맥북에서 총괄 시작하기",
-    "afterCursor": "bd9703ff-6089-48ea-90e5-8df178a39cf6:42",
+    "afterCursor": "bd9703ff-6089-48ea-90e5-8df178a39cf6:45",
     "lastObservedStatus": "active",
     "lastObservedTurnStatus": "inProgress",
-    "lastObservedTurnId": "01a134e8-0034-7ff1-aed2-ffe60997b936",
-    "lastObservedReport": "총괄은 M29 돌진·소환 생성기·몬스터 AI 코드 준비와 신규 몬스터 AI 검사6개 통과를 보고했다. 실제 투사체·효과 연결과 플레이 화면 검증은 남아 있고 기존 웹 빌드 지원 범위는 동일하다고 명시했다. 구현 준비·검사 보고를 실제 플레이·전체 이식·품질 개선 완료로 확대하지 않는다."
+    "lastObservedTurnId": "01a1356f-2903-7712-b3dc-deb764a4af09",
+    "lastObservedReport": "중앙 Godot 통합 체크포인트3a6ac050이 생성됐다. type3 binding·World phase·element/FX·private assembly의 새 고유 기술12 PASS이며 전체 시각 판정 RETOUCH다. constructor overlay6→7을 실제 Main 자동등록으로 해석하지 않는다. 실제 Main admission·자연 소환/교전·full Q/E·패링·M29 event 연결과 공개 화면·최저사양1080p240 검수는 미완료다."
   },
   "completionConfirmed": false,
   "captureStarted": false,
@@ -35,8 +35,8 @@
     "완성 후 검수본부터 인도, 사용자 검수 전 자동 공개 금지",
     "2026-10-10 사용자 정정: 전체 대기를 모든 콘텐츠로 확대하지 않음; UI·스킬·캐릭터 부분 개발 소식 계속 운영"
   ],
-  "lastCheckedAtUTC": "2026-10-13T11:29:28.518Z",
-  "lastCheckResult": "총괄은 M29 돌진·소환 생성기·몬스터 AI 코드 준비와 신규 몬스터 AI 검사6개 통과를 보고했다. 실제 투사체·효과 연결과 플레이 화면 검증은 남아 있고 기존 웹 빌드 지원 범위는 동일하다고 명시했다. 구현 준비·검사 보고를 실제 플레이·전체 이식·품질 개선 완료로 확대하지 않는다.",
+  "lastCheckedAtUTC": "2026-10-13T13:35:59.051Z",
+  "lastCheckResult": "중앙 Godot 통합 체크포인트3a6ac050이 생성됐다. type3 binding·World phase·element/FX·private assembly의 새 고유 기술12 PASS이며 전체 시각 판정 RETOUCH다. constructor overlay6→7을 실제 Main 자동등록으로 해석하지 않는다. 실제 Main admission·자연 소환/교전·full Q/E·패링·M29 event 연결과 공개 화면·최저사양1080p240 검수는 미완료다.",
   "publicationScope": "보스전 전체 리디자인 완료 대표 메인트레일러",
   "partialDevelopmentNewsAllowed": true,
   "partialDevelopmentNewsPolicy": "UI·기존 스킬·캐릭터 제작 과정 등 각 소재는 전체 보스전 완료와 관계없이 실제 근거와 개별 검수 범위 확인 후 독립 제작·게시한다.",
@@ -44,26 +44,46 @@
   "partialLastPublication": "https://www.youtube.com/post/UgkxrTYuXuoASizWPYhlrpJyCF-7pcSqJT8-",
   "partialPublishedCount": 5,
   "latestPartialProducerEvidence": {
-    "checkedAtUTC": "2026-10-13T11:29:28.518Z",
-    "cursor": "bd9703ff-6089-48ea-90e5-8df178a39cf6:42",
+    "checkedAtUTC": "2026-10-13T13:35:59.051Z",
+    "cursor": "bd9703ff-6089-48ea-90e5-8df178a39cf6:45",
     "status": "active; inProgress",
     "completionConfirmed": false,
-    "scope": "총괄 compact snapshot의 진행 중 부분 구현·기술 검사 보고만 기록. 원본 코드·검사·플레이 화면·영상·원음 재검증0.",
-    "report": "총괄은 M29 돌진·소환 생성기·몬스터 AI 코드 준비와 신규 몬스터 AI 검사6개 통과를 보고했다. 실제 투사체·효과 연결과 플레이 화면 검증은 남아 있고 기존 웹 빌드 지원 범위는 동일하다고 명시했다. 구현 준비·검사 보고를 실제 플레이·전체 이식·품질 개선 완료로 확대하지 않는다.",
-    "partialGodotImplementationReport": {
-      "reportedReadyCodeUnits": [
-        "M29 돌진",
-        "소환 생성기",
-        "몬스터 AI"
-      ],
-      "reportedMonsterAITestPassCount": 6,
-      "testEvidenceScope": "PRODUCER_REPORT_ONLY; SUITE_NOT_RERUN_BY_MARKETING",
-      "projectileAndEffectIntegration": "NOT_COMPLETE",
-      "actualGameplayScreenValidation": "NOT_COMPLETE",
-      "existingWebBuildSupportScope": "UNCHANGED_AS_REPORTED",
-      "newWebBuildDeliveredInThisObservation": false
+    "scope": "총괄의 새 부분 통합 체크포인트 보고와 해당 로컬 commit 메타데이터·한 문서의 커밋 저장 내용을 최소 읽기 전용 대조. 실제 코드·기존 성공 검사·게임/미디어 재실행0.",
+    "report": "중앙 Godot 통합 체크포인트3a6ac050이 생성됐다. type3 binding·World phase·element/FX·private assembly의 새 고유 기술12 PASS이며 전체 시각 판정 RETOUCH다. constructor overlay6→7을 실제 Main 자동등록으로 해석하지 않는다. 실제 Main admission·자연 소환/교전·full Q/E·패링·M29 event 연결과 공개 화면·최저사양1080p240 검수는 미완료다.",
+    "godotPartialCheckpoint": {
+      "checkout": "/Users/fordeargamers/the-exoduser",
+      "commit": "3a6ac050f60af0aef9660827751fad6c7757efc9",
+      "parent": "b921fc4017703d8b37cc2a9de8fdb5781992165e",
+      "subject": "Integrate native owner phases and six-element projectile bindings",
+      "commitTimeKST": "2026-10-13 22:26:37 KST",
+      "commitMetadataVerifiedReadOnly": true,
+      "changedEngineDocCount": 14,
+      "oneDocumentRead": "docs/engine/FDG_GODOT_TYPE7_INTEGRATION_20261013.md",
+      "documentAtCommitAlsoChecked": true,
+      "documentExplicitlyNamesNewCommitSha": false,
+      "technicalPassCount": 12,
+      "technicalPassBreakdown": {
+        "type3Binding": 4,
+        "worldPhase": 2,
+        "elementFX": 4,
+        "privateRuntimeAssembly": 2
+      },
+      "sourceSupported": 6,
+      "sourceUnsupported": 10,
+      "frozenDeliverySupported": 5,
+      "frozenDeliveryUnsupported": 11,
+      "constructorFixtureOverlay": "6 to 7; private assembly only",
+      "actualMainAutomaticRegistration": false,
+      "mainGameAdmission": false,
+      "naturalSummoningAndCombatValidated": false,
+      "fullQEAndParryValidated": false,
+      "publicPixelsValidated": false,
+      "minimumSpecification1080p240FPSValidated": false,
+      "visualVerdict": "RETOUCH",
+      "suiteRerunsByMarketing": 0,
+      "runtimeStartsByMarketing": 0
     },
-    "mainGameApplied": "NOT_CONFIRMED; GODOT_CODE_PREPARATION_REPORTED_ONLY",
+    "mainGameApplied": "LOCAL_GODOT_TECHNICAL_CHECKPOINT; NO_MAIN_ADMISSION",
     "steamDemoApplied": "NOT_CONFIRMED",
     "normalGameplayVideoWithOriginalAudio": false,
     "humanNaturalGameplayCaptured": false,
@@ -72,25 +92,25 @@
     "visualCandidateState": "NO_NEW_MARKETING_MEDIA",
     "bossProductMotionAccepted": false,
     "wholeEngineComplete": false,
-    "overallVisualVerdict": "NO_NEW_VISUAL_REVIEW",
-    "producerReportedLocalCommit": null,
+    "overallVisualVerdict": "RETOUCH; PRODUCER_DOCUMENT_SCOPE_ONLY",
+    "producerReportedLocalCommit": "3a6ac050f60af0aef9660827751fad6c7757efc9",
     "producerPushReported": null,
     "evidence": {
-      "type": "producer compact snapshot commentary only",
+      "type": "producer compact + bounded current-turn commentary + read-only local commit metadata and one committed engine document",
       "producerTitle": "맥북에서 총괄 시작하기",
       "producerThreadId": "01a0faa9-b453-7673-be39-98adedb4c2b3",
-      "producerTurnId": "01a134e8-0034-7ff1-aed2-ffe60997b936",
+      "producerTurnId": "01a1356f-2903-7712-b3dc-deb764a4af09",
       "migrationHead": "9a4534b42f74093095ebc3364a25dd104e93b379",
       "migrationHeadChanged": false,
-      "sourceFilesRevalidated": 0,
+      "checkpointDocsRead": 1,
+      "gameSourceFilesRead": 0,
       "testSuitesRepeated": 0,
-      "sourceReceiptsNewlyRead": 0,
       "newMarketingPixels": 0,
       "newOriginalAudio": 0,
       "newGameManipulations": 0,
       "newOrdersSent": 0
     },
-    "nextProducerUnit": "기존 담당의 투사체·효과 연결과 실제 플레이 화면 검수 결과 대기. 다음 홍보 소재는 기존 전사 수정 스틸 미리보기 검수·게시 판단. 게임 품질 개선→사용자 플레이→실제 전체 화면·원음 녹화→완성 미리보기 기준 유지."
+    "nextProducerUnit": "기존 담당의 실제 Native Player Q/E·패링과 M29 owner event→impact→SOUND 연결 및 실제 정상 플레이 검수. 홍보는 기존 전사 수정 스틸 미리보기 검수·게시 판단과 품질 개선→사용자 직접 플레이→실제 화면 전체·원음 녹화→완성 미리보기 기준을 유지한다."
   },
   "previousPartialProducerEvidence": [
     {
@@ -1383,6 +1403,55 @@
         "newOrdersSent": 0
       },
       "nextProducerUnit": "기존 담당의 Godot 소규모 전투 실제 플레이·패드·성능 결과 대기. 게임 품질 개선→사용자 플레이→실제 화면 전체·원음 녹화→완성 미리보기 순서 유지."
+    },
+    {
+      "checkedAtUTC": "2026-10-13T11:29:28.518Z",
+      "cursor": "bd9703ff-6089-48ea-90e5-8df178a39cf6:42",
+      "status": "active; inProgress",
+      "completionConfirmed": false,
+      "scope": "총괄 compact snapshot의 진행 중 부분 구현·기술 검사 보고만 기록. 원본 코드·검사·플레이 화면·영상·원음 재검증0.",
+      "report": "총괄은 M29 돌진·소환 생성기·몬스터 AI 코드 준비와 신규 몬스터 AI 검사6개 통과를 보고했다. 실제 투사체·효과 연결과 플레이 화면 검증은 남아 있고 기존 웹 빌드 지원 범위는 동일하다고 명시했다. 구현 준비·검사 보고를 실제 플레이·전체 이식·품질 개선 완료로 확대하지 않는다.",
+      "partialGodotImplementationReport": {
+        "reportedReadyCodeUnits": [
+          "M29 돌진",
+          "소환 생성기",
+          "몬스터 AI"
+        ],
+        "reportedMonsterAITestPassCount": 6,
+        "testEvidenceScope": "PRODUCER_REPORT_ONLY; SUITE_NOT_RERUN_BY_MARKETING",
+        "projectileAndEffectIntegration": "NOT_COMPLETE",
+        "actualGameplayScreenValidation": "NOT_COMPLETE",
+        "existingWebBuildSupportScope": "UNCHANGED_AS_REPORTED",
+        "newWebBuildDeliveredInThisObservation": false
+      },
+      "mainGameApplied": "NOT_CONFIRMED; GODOT_CODE_PREPARATION_REPORTED_ONLY",
+      "steamDemoApplied": "NOT_CONFIRMED",
+      "normalGameplayVideoWithOriginalAudio": false,
+      "humanNaturalGameplayCaptured": false,
+      "requiresUserAction": false,
+      "publicationAllowed": false,
+      "visualCandidateState": "NO_NEW_MARKETING_MEDIA",
+      "bossProductMotionAccepted": false,
+      "wholeEngineComplete": false,
+      "overallVisualVerdict": "NO_NEW_VISUAL_REVIEW",
+      "producerReportedLocalCommit": null,
+      "producerPushReported": null,
+      "evidence": {
+        "type": "producer compact snapshot commentary only",
+        "producerTitle": "맥북에서 총괄 시작하기",
+        "producerThreadId": "01a0faa9-b453-7673-be39-98adedb4c2b3",
+        "producerTurnId": "01a134e8-0034-7ff1-aed2-ffe60997b936",
+        "migrationHead": "9a4534b42f74093095ebc3364a25dd104e93b379",
+        "migrationHeadChanged": false,
+        "sourceFilesRevalidated": 0,
+        "testSuitesRepeated": 0,
+        "sourceReceiptsNewlyRead": 0,
+        "newMarketingPixels": 0,
+        "newOriginalAudio": 0,
+        "newGameManipulations": 0,
+        "newOrdersSent": 0
+      },
+      "nextProducerUnit": "기존 담당의 투사체·효과 연결과 실제 플레이 화면 검수 결과 대기. 다음 홍보 소재는 기존 전사 수정 스틸 미리보기 검수·게시 판단. 게임 품질 개선→사용자 플레이→실제 전체 화면·원음 녹화→완성 미리보기 기준 유지."
     }
   ],
   "godotPCReviewTrial": {

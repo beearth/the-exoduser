@@ -1,10 +1,19 @@
 # FDG 홍보 준비 콘텐츠 현황
 
-최근 정리: **2026-10-13 20:29 KST**. 사용자 지시 「홍보준비 최신컨텐츠 업데이트됀거 정리해서 항상 정리해놔」를 반영한 지속 갱신 문서다. 기술 구현, 실제 게임 화면 검수, 공개 데모 배포, 영상 게시를 별도로 확인한다.
+최근 정리: **2026-10-13 22:35 KST**. 사용자 지시 「홍보준비 최신컨텐츠 업데이트됀거 정리해서 항상 정리해놔」를 반영한 지속 갱신 문서다. 기술 구현, 실제 게임 화면 검수, 공개 데모 배포, 영상 게시를 별도로 확인한다.
 
 **UI 개발 소식1건과 스킬 노트4건(기검참·가시덫·회복의 영역·지옥강타 1)을 공식 YouTube에 게시하고 공개 페이지를 확인했다.** [UI](https://www.youtube.com/post/UgkxfJtDWBoJglf9RWKueZFsGwOBIRBYWULb) · [기검참](https://www.youtube.com/post/Ugkxpb6uTCUIAd3Ypj4_1vsi9cv2BKT-F93l) · [가시덫](https://www.youtube.com/post/UgkxhEsTSyRHSuYPkuEXJmUg-xnYL90AU9nj) · [회복의 영역](https://www.youtube.com/post/Ugkx2UIc57jBgsgkolbqytX0Nn3bgmkAz6if) · [지옥강타 1](https://www.youtube.com/post/UgkxrTYuXuoASizWPYhlrpJyCF-7pcSqJT8-). 지옥강타 1은 주변 원형 범위 타격과 분노의 피해 강화·소모를 소개했다. 분노 최소량은 발동 조건이 아니다. 기존 기능 소개이며 새 패치·신규 촬영 영상으로 표기하지 않았다. **전체 보스전 완료를 기다리는 대상은 리디자인 완료 대표 메인트레일러다.** UI·기존 스킬·캐릭터 원화/제작 과정은 각 소재의 실제 근거와 검수 범위에 맞게 계속 제작한다. 기존 원화30초·전투18초V3·R1 검토본과 새 대표 영상의 미승인 자동 공개 금지는 유지한다.
 
 **최신 품질 조치:** 얼음오브·패링 Shorts는 같은 영상이 두 화면으로 복제된 구성을 사용해 **두 편 모두 비공개·공식 목록 제외**로 회수했다. [회수 결과·증거](../../marketing/operations/shorts-quality-withdrawal-20261010/withdrawal.json). 실제 화면·영상 또는 단계가 명확한 기존 원화와 간결한 설명을 함께 준비하고, 공개 전 완성 미리보기를 먼저 인도한다. 동일 영상의 확대 화면과 전체 화면을 동시에 복제하지 않으며 원화를 가리는 불투명 자막판을 사용하지 않는다. 매시간 점검을 긴 글 연속 게시 빈도로 해석하지 않는다. UI·스킬·캐릭터의 독립 준비를 계속하고 대표 보스전 완료 영상만 총괄 완료를 기다린다.
+
+## Godot 부분 통합 체크포인트 — 2026-10-13 22:35 KST
+
+| 항목 | 확인 범위 |
+|---|---|
+| 실제 버전·근거 | `/Users/fordeargamers/the-exoduser`의 commit **`3a6ac050f60af0aef9660827751fad6c7757efc9`**, parent `b921fc4017703d8b37cc2a9de8fdb5781992165e`, 22:26:37 KST. 제목 `Integrate native owner phases and six-element projectile bindings`. commit 존재·메타데이터·변경 docs 경로14개와 [한 문서](../engine/FDG_GODOT_TYPE7_INTEGRATION_20261013.md)의 해당 커밋 저장 내용만 대조했다. 문서는 새 SHA 자체를 명시하지 않으므로 SHA의 문서 명시와 실제 commit 대조를 구별한다. |
+| 부분 기술 검수 | 새 고유 기술12 PASS = type3 binding4 + World phase2 + element/FX4 + private runtime assembly2. source 지원6/미이식10, 동결 배송5/미11. constructor fixture overlay6→7은 실제 Main 자동 설치가 아니다. 마케팅 코드 읽기·suite 재실행·원본 에셋 재해시·게임 시작0이다. |
+| 완성·촬영 경계 | **RETOUCH**. Main 자동등록0·본편 admission0, 자연 소환/교전·full Q/E·패링·M29 실제 event/impact/SOUND·공개 픽셀·최저사양1080p240 검수 미완료. Godot 첫 기술 통합을 본편 전체 완료·성능 개선·새 공개 데모로 소개하지 않는다. 기존 고정 PC 검토 사본도 갱신하지 않았다. |
+| 홍보·다음 소재 | migration HEAD `9a4534b4` 동일. 새 정상 플레이 영상/원음/공개 승인/게시0·공개 준비0 유지. 다음 소재는 **기존 전사 수정 스틸 미리보기 검수·게시 판단**이다. 최신 인트로 전편 검수·교체 판단과 품질 개선→사용자 플레이→실제 화면 전체·원음 녹화→완성 미리보기 기준을 유지하며 같은 요청을 반복하지 않는다. |
 
 ## Godot 부분 구현 보고 — 2026-10-13 20:29 KST
 
