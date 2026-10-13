@@ -1,14 +1,14 @@
 {
   "schemaVersion": 2,
-  "updatedAtKST": "2026-10-13T08:23:25.501+09:00",
-  "updatedAtUTC": "2026-10-12T23:23:25.501Z",
+  "updatedAtKST": "2026-10-13T10:24:56.043+09:00",
+  "updatedAtUTC": "2026-10-13T01:24:56.043Z",
   "policy": "실제 화면·영상 또는 단계가 명확한 기존 원화와 간결한 설명을 함께 준비하고, 공개 전 완성 미리보기를 먼저 인도한다. 동일 영상의 확대 화면과 전체 화면을 동시에 복제하지 않으며 원화를 가리는 불투명 자막판을 사용하지 않는다. 매시간 점검을 긴 글 연속 게시 빈도로 해석하지 않는다. UI·스킬·캐릭터의 독립 준비를 계속하고 대표 보스전 완료 영상만 총괄 완료를 기다린다.",
   "developmentObservation": {
     "checkout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
     "commit": "9a4534b42f74093095ebc3364a25dd104e93b379",
     "scope": "12c29afe 이후 docs·커밋·관련 소비 연결의 읽기 전용 조사. 미커밋 상태나 Steam 배포 상태를 HEAD로 증명하지 않음",
-    "lastCheckedAtUTC": "2026-10-12T17:19:24.143Z",
-    "latestResult": "총괄 cursor24는 맥북 엔진 작업본의 기검참3타 즉시 발사와 별도 본편 작업본의3타 홀드·새 검기가 연결되지 않은 불일치를 보고했다. 현재 프로젝트 목록에 메인PC 작업본이 관측되지 않아 직접 실행 검수는 미확인이다. 별도 안개100%/20% 검수 탭에 대한 담당의 인간 승인 반영 보고는 마케팅 촬영·기존 사용자 게임 조작 승인으로 사용하지 않는다. actual migration HEAD9a4534b4 동일, 전사 정적 캠페인 검토 대기·새 게시0.",
+    "lastCheckedAtUTC": "2026-10-13T01:24:56.043Z",
+    "latestResult": "actual migration HEAD9a4534b4 동일. 별도 Godot PC 고정 소스 검토 사본의 입력 없는 시작 검사만 인도됨. GUI·플레이·원음·성능·Steam 적용·공개 승인 미확인. 전사 정적 캠페인 검토 대기·새 게시0.",
     "gameHtmlSha256": "5212e3a33c201eec08d09b132092c1a063fea88f36fccef494ea351f3565d2cd"
   },
   "nextMaterial": "이 스틸·짧은 글 캠페인 미리보기 검수·게시 판단; 최신 인트로 전편 검수와 교체 판단 유지. 다음 인게임 소재는 품질 개선 후 사용자 플레이 녹화.",
@@ -736,7 +736,13 @@
     "promptUpdated": true,
     "currentSchedule": "매시간",
     "restoreAfterBossTrailerDelivery": "화·금11:00 KST",
-    "mirrorRoot": "/Users/fordeargamers/the-exoduser"
+    "mirrorRoot": "/Users/fordeargamers/the-exoduser",
+    "latestInstructionSync": {
+      "automationId": "fdg",
+      "userGodotTrialAndConsoleConsiderationPreserved": true,
+      "scheduleChanged": false,
+      "repeatedRequests": 0
+    }
   },
   "newVideoPublicationReadyCount": 0,
   "representativeBossTrailerGate": "총괄 보스전 전체 리디자인 완료 + 정상 본편 촬영 가능 확인; 기존 미승인 검토본 자동 공개 금지",
@@ -776,13 +782,13 @@
     "state": "PREVIEW_DELIVERED; REPLACEMENT_NOT_STARTED"
   },
   "latestProducerObservation": {
-    "checkedAtUTC": "2026-10-12T23:23:25.501Z",
-    "cursor": "bd9703ff-6089-48ea-90e5-8df178a39cf6:30",
-    "status": "active; inProgress",
+    "checkedAtUTC": "2026-10-13T01:24:56.043Z",
+    "cursor": "bd9703ff-6089-48ea-90e5-8df178a39cf6:32",
+    "status": "systemError; failed; unchanged since previous human turn",
     "completionConfirmed": false,
-    "scope": "총괄 채팅의 실제 사용자 엔진 전환 요청과 진행 중 응답만 기록. Godot 작업본·실행·프레임 성능·본편 통합은 마케팅이 확인하지 않았다.",
-    "report": "사용자가 며칠째 실행 가능한 결과물이 나오지 않는다며 Godot 마이그레이션과 Unity/Godot 전환을 요청했다. 총괄은 기존 방식에서 Godot 이식으로 전환해 기존 스프라이트·전투 규칙과 최신 기검참3타 홀드·새 검기를 기준으로 첫 실행 플레이본을 만들겠다고 응답했다. 아직 진행 중인 방향·첫 제작 범위이며 실제 이식 완료·성능 개선 보고가 아니다.",
-    "mainGameApplied": "NOT_CONFIRMED; GODOT_MIGRATION_DIRECTION_REPORTED_ONLY",
+    "scope": "총괄 compact snapshot의 변경 없음과 별도 사용자 지시로 이미 인도한 Godot 고정 소스 검토 패키지 영수증을 반영. 원본 소스·영상·시작 검사·공식 콘솔 조사 재검증0.",
+    "report": "총괄 cursor32의 작업 스트림 실패 상태는 직전 사용자 응답에서 이미 관측했으며 이번 compact snapshot은 changed=false다. 사용자 Godot 체험·플스 고려 지시에 따라 별도 PC 소스 검토 사본과 headless 가져오기·5프레임 시작 검사를 이미 인도했다. 실제 게임플레이·패드·원음·성능·전체 본편 이식은 미확인이고 새 홍보 소재가 아니다.",
+    "mainGameApplied": "FIXED_PC_REVIEW_SOURCE_ONLY; FULL_NATIVE_MIGRATION_NOT_CONFIRMED",
     "steamDemoApplied": "NOT_CONFIRMED",
     "normalGameplayVideoWithOriginalAudio": false,
     "humanNaturalGameplayCaptured": false,
@@ -796,29 +802,33 @@
     "producerPushReported": null,
     "migrationDirection": {
       "reportedTarget": "Godot",
-      "userRequestObservedInProducerThread": true,
-      "producerResponse": "전환·첫 실행 플레이본 제작 계획",
-      "plannedBaseline": "기존 스프라이트·전투 규칙·최신 기검참3타 홀드·새 검기",
-      "newGodotProjectInspectedByMarketing": false,
-      "actualRunnablePortObservedByMarketing": false,
-      "rootGameCodeOrOtherThreadWorkAuthorizedByThisObservation": false,
+      "humanRequestInThisThread": true,
+      "newGodotProjectInspectedByMarketing": true,
+      "isolatedHeadlessStartupObserved": true,
+      "actualContinuousGameplayObservedByMarketing": false,
       "performanceImprovementMeasured": false,
-      "performanceComparison": "NOT_MEASURED; ENGINE_NAME_ALONE_DOES_NOT_ESTABLISH_FASTER_FRAMES",
-      "wholeBossCompletion": false
+      "wholeBossCompletion": false,
+      "rootGameSourceMutation": false,
+      "otherOwnerThreadMessagingAuthorization": false,
+      "sourceReviewReceipt": "marketing/operations/godot-console-20261013/receipt.json"
     },
     "evidence": {
-      "type": "producer compact + latest-turn user and assistant messages only",
+      "type": "unchanged producer compact snapshot + previously delivered own review receipt",
       "producerTitle": "맥북에서 총괄 시작하기",
       "producerThreadId": "01a0faa9-b453-7673-be39-98adedb4c2b3",
-      "producerTurnId": "01a13269-e6d5-7682-8f3a-9105693118bd",
-      "sourceReceiptsNewlyRead": 0,
+      "producerTurnId": "01a132c6-6810-7912-9b49-fc67c180386f",
+      "producerSnapshotChanged": false,
+      "migrationHead": "9a4534b42f74093095ebc3364a25dd104e93b379",
+      "migrationHeadChanged": false,
       "sourceFilesRevalidated": 0,
+      "headlessChecksRepeated": 0,
+      "mediaReplayed": 0,
       "newMarketingPixels": 0,
       "newOriginalAudio": 0,
       "newGameManipulations": 0,
       "newOrdersSent": 0
     },
-    "nextProducerUnit": "기존 총괄의 첫 실제 실행 Godot 플레이본과 최신 본편 연결·실측 결과 보고 대기. 기존 홍보 미리보기 검수와 게임 품질 개선→사용자 플레이→실제 화면·원음 녹화 순서 유지."
+    "nextProducerUnit": "기존 담당의 Godot 소규모 전투 실제 플레이·패드·성능 결과 대기. 게임 품질 개선→사용자 플레이→실제 화면 전체·원음 녹화→완성 미리보기 순서 유지."
   },
   "previousProducerObservations": [
     {
@@ -2017,6 +2027,51 @@
         "newOrdersSent": 0
       },
       "nextProducerUnit": "기존 담당의 실행본/최신 본편 연결 확인 보고 대기. 전체 보스전·환경 완료 미확정."
+    },
+    {
+      "checkedAtUTC": "2026-10-12T23:23:25.501Z",
+      "cursor": "bd9703ff-6089-48ea-90e5-8df178a39cf6:30",
+      "status": "active; inProgress",
+      "completionConfirmed": false,
+      "scope": "총괄 채팅의 실제 사용자 엔진 전환 요청과 진행 중 응답만 기록. Godot 작업본·실행·프레임 성능·본편 통합은 마케팅이 확인하지 않았다.",
+      "report": "사용자가 며칠째 실행 가능한 결과물이 나오지 않는다며 Godot 마이그레이션과 Unity/Godot 전환을 요청했다. 총괄은 기존 방식에서 Godot 이식으로 전환해 기존 스프라이트·전투 규칙과 최신 기검참3타 홀드·새 검기를 기준으로 첫 실행 플레이본을 만들겠다고 응답했다. 아직 진행 중인 방향·첫 제작 범위이며 실제 이식 완료·성능 개선 보고가 아니다.",
+      "mainGameApplied": "NOT_CONFIRMED; GODOT_MIGRATION_DIRECTION_REPORTED_ONLY",
+      "steamDemoApplied": "NOT_CONFIRMED",
+      "normalGameplayVideoWithOriginalAudio": false,
+      "humanNaturalGameplayCaptured": false,
+      "requiresUserAction": false,
+      "publicationAllowed": false,
+      "visualCandidateState": "NO_NEW_MARKETING_MEDIA",
+      "bossProductMotionAccepted": false,
+      "wholeEngineComplete": false,
+      "overallVisualVerdict": "NO_NEW_VISUAL_REVIEW",
+      "producerReportedLocalCommit": null,
+      "producerPushReported": null,
+      "migrationDirection": {
+        "reportedTarget": "Godot",
+        "userRequestObservedInProducerThread": true,
+        "producerResponse": "전환·첫 실행 플레이본 제작 계획",
+        "plannedBaseline": "기존 스프라이트·전투 규칙·최신 기검참3타 홀드·새 검기",
+        "newGodotProjectInspectedByMarketing": false,
+        "actualRunnablePortObservedByMarketing": false,
+        "rootGameCodeOrOtherThreadWorkAuthorizedByThisObservation": false,
+        "performanceImprovementMeasured": false,
+        "performanceComparison": "NOT_MEASURED; ENGINE_NAME_ALONE_DOES_NOT_ESTABLISH_FASTER_FRAMES",
+        "wholeBossCompletion": false
+      },
+      "evidence": {
+        "type": "producer compact + latest-turn user and assistant messages only",
+        "producerTitle": "맥북에서 총괄 시작하기",
+        "producerThreadId": "01a0faa9-b453-7673-be39-98adedb4c2b3",
+        "producerTurnId": "01a13269-e6d5-7682-8f3a-9105693118bd",
+        "sourceReceiptsNewlyRead": 0,
+        "sourceFilesRevalidated": 0,
+        "newMarketingPixels": 0,
+        "newOriginalAudio": 0,
+        "newGameManipulations": 0,
+        "newOrdersSent": 0
+      },
+      "nextProducerUnit": "기존 총괄의 첫 실제 실행 Godot 플레이본과 최신 본편 연결·실측 결과 보고 대기. 기존 홍보 미리보기 검수와 게임 품질 개선→사용자 플레이→실제 화면·원음 녹화 순서 유지."
     }
   ],
   "indieMarketingCampaign": {
@@ -2030,5 +2085,94 @@
     "newGameplayVideos": 0,
     "measurementState": "NOT_OBSERVED",
     "originalPreparedTextArtCount": 10
+  },
+  "godotPCReviewTrial": {
+    "humanInstruction": "고도한번 해보자 뭐 플스이식같은것도 생각해야지",
+    "status": "FIXED_REVIEW_PACKAGE_READY_STARTUP_ONLY",
+    "recordedAtUTC": "2026-10-13T01:23:11.679792+00:00",
+    "packageRoot": "/Users/fordeargamers/the-exoduser/output/godot-first-review-20261013",
+    "project": "/Users/fordeargamers/the-exoduser/output/godot-first-review-20261013/snapshot/project.godot",
+    "guide": "/Users/fordeargamers/the-exoduser/output/godot-first-review-20261013/README.md",
+    "sourceCheckout": "/Users/fordeargamers/the-exoduser/godot",
+    "sourceCommitAtCopy": "08e5cac1c4f51f0a3e89af87b02b21f0646490a8",
+    "sourceOwnerWipIncludedInFixedCopy": [
+      " M godot/scripts/enemy_projectile_physical.gd",
+      " M godot/scripts/player.gd"
+    ],
+    "sourceDigest": "41e3131b7c5523d4ae626616e407f5b6eeb4f1773f619ddcd8cebf2c61085c22",
+    "manifestSha256": "68aeb6869a1f48fb216b9e3422424c5b77c72ee1d8a243dc6fbea5b507a7c373",
+    "snapshotConfigSha256": "9897f7e9d411b83694ed22948d9bcbddb1870704b0b07c304b8db545b6fa43c7",
+    "godotVersion": "4.7.2.stable.official.ed1daf0bf",
+    "checksAlreadyPerformed": {
+      "headlessImport": "PASS; 1 run",
+      "inputlessStartup": "PASS; 5 frames; 1 run",
+      "guiLauncherExecuted": false,
+      "originalUserDataUnchanged": true,
+      "cameraInterpolationWarning": "PRESERVED; not fixed in owner source"
+    },
+    "remainingQA": [
+      "GUI rendering",
+      "continuous gameplay",
+      "subjective visual quality",
+      "audio/listening",
+      "controller support",
+      "Q parry integration",
+      "browser save migration",
+      "dense combat performance",
+      "low specification Windows performance",
+      "Windows launch",
+      "console export or certification",
+      "full EXODUSER migration"
+    ],
+    "inputRecovery": {
+      "branch": "codex/backup-godot-review-20261013-bf58def0ea",
+      "ref": "refs/heads/codex/backup-godot-review-20261013-bf58def0ea",
+      "commit": "be81cece7563161f36e33022b98f0e404b2d49f4",
+      "base_parent": "565004248ee8d4cf48e07991aa408e37ef8bfc22",
+      "source_head": "08e5cac1c4f51f0a3e89af87b02b21f0646490a8",
+      "included_prefix": "recovery/godot-review-20261013",
+      "input_count": 285,
+      "cache_and_userdata_included": false,
+      "shared_index_unchanged": true,
+      "current_head_unchanged": true,
+      "preservation_stage": "remote_ref_verified",
+      "remote_ref_sha": "be81cece7563161f36e33022b98f0e404b2d49f4",
+      "remote_verified_at_utc": "2026-10-13T01:23:11.678827+00:00",
+      "url": "https://github.com/beearth/the-exoduser/tree/codex/backup-godot-review-20261013-bf58def0ea/recovery/godot-review-20261013"
+    },
+    "ownRecordCommit": "13ffe008e857fa54ef92e60552701d8a89984f9d",
+    "receipt": "marketing/operations/godot-console-20261013/receipt.json",
+    "consolePlanning": {
+      "status": "PLANNING_ONLY_NOT_IMPLEMENTED",
+      "godot_foundation_official_console_port": false,
+      "sony_partner_approval_and_sdk_access": "NOT_VERIFIED_FOR_FDG",
+      "w4_public_ps5_versions": [
+        "4.4",
+        "4.5",
+        "4.6"
+      ],
+      "current_pc_version_supported_by_w4": "NOT_CONFIRMED_4.7.2_NOT_IN_PUBLIC_LIST",
+      "sources": [
+        "https://godotengine.org/consoles/",
+        "https://sonyinteractive.com/en/news/blog/showing-your-game-to-playstation/",
+        "https://www.w4games.com/w4consoles"
+      ],
+      "signup_or_contract_or_purchase_or_outreach_performed": false,
+      "game_source_changed_by_root": false,
+      "other_owner_thread_messaged_by_root": false,
+      "next_implementation_candidate": "Controller move/aim/attack/cancel and pause menu in the same small Godot combat slice; existing owner scope preserved",
+      "input_save_platform_separation": "DOCUMENTED_REQUIREMENTS_NOT_APPLIED",
+      "automatic_promotion_publication": false
+    },
+    "readyFormat": "FIXED_PC_SOURCE_REVIEW; NOT_PROMOTION_MEDIA",
+    "newPromotionalPixels": 0,
+    "newGameplayRecording": 0,
+    "newOriginalAudioRecording": 0,
+    "publicApproval": false,
+    "steamDemoApplied": "NOT_CONFIRMED",
+    "wholeBossCompletion": false,
+    "gameSourceChangedByRoot": false,
+    "otherOwnerThreadMessagedByRoot": false,
+    "nextAction": "기존 담당 소유를 유지하며 같은 소규모 PC 전투의 실제 플레이·패드·성능 검수. 홍보 촬영은 게임 품질 개선 후 사용자 직접 플레이와 원음 경로 확인을 따른다."
   }
 }
