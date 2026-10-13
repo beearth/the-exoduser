@@ -1,10 +1,19 @@
 # FDG 홍보 준비 콘텐츠 현황
 
-최근 정리: **2026-10-13 23:33 KST**. 사용자 지시 「홍보준비 최신컨텐츠 업데이트됀거 정리해서 항상 정리해놔」를 반영한 지속 갱신 문서다. 기술 구현, 실제 게임 화면 검수, 공개 데모 배포, 영상 게시를 별도로 확인한다.
+최근 정리: **2026-10-14 00:31 KST**. 사용자 지시 「홍보준비 최신컨텐츠 업데이트됀거 정리해서 항상 정리해놔」를 반영한 지속 갱신 문서다. 기술 구현, 실제 게임 화면 검수, 공개 데모 배포, 영상 게시를 별도로 확인한다.
 
 **UI 개발 소식1건과 스킬 노트4건(기검참·가시덫·회복의 영역·지옥강타 1)을 공식 YouTube에 게시하고 공개 페이지를 확인했다.** [UI](https://www.youtube.com/post/UgkxfJtDWBoJglf9RWKueZFsGwOBIRBYWULb) · [기검참](https://www.youtube.com/post/Ugkxpb6uTCUIAd3Ypj4_1vsi9cv2BKT-F93l) · [가시덫](https://www.youtube.com/post/UgkxhEsTSyRHSuYPkuEXJmUg-xnYL90AU9nj) · [회복의 영역](https://www.youtube.com/post/Ugkx2UIc57jBgsgkolbqytX0Nn3bgmkAz6if) · [지옥강타 1](https://www.youtube.com/post/UgkxrTYuXuoASizWPYhlrpJyCF-7pcSqJT8-). 지옥강타 1은 주변 원형 범위 타격과 분노의 피해 강화·소모를 소개했다. 분노 최소량은 발동 조건이 아니다. 기존 기능 소개이며 새 패치·신규 촬영 영상으로 표기하지 않았다. **전체 보스전 완료를 기다리는 대상은 리디자인 완료 대표 메인트레일러다.** UI·기존 스킬·캐릭터 원화/제작 과정은 각 소재의 실제 근거와 검수 범위에 맞게 계속 제작한다. 기존 원화30초·전투18초V3·R1 검토본과 새 대표 영상의 미승인 자동 공개 금지는 유지한다.
 
 **최신 품질 조치:** 얼음오브·패링 Shorts는 같은 영상이 두 화면으로 복제된 구성을 사용해 **두 편 모두 비공개·공식 목록 제외**로 회수했다. [회수 결과·증거](../../marketing/operations/shorts-quality-withdrawal-20261010/withdrawal.json). 실제 화면·영상 또는 단계가 명확한 기존 원화와 간결한 설명을 함께 준비하고, 공개 전 완성 미리보기를 먼저 인도한다. 동일 영상의 확대 화면과 전체 화면을 동시에 복제하지 않으며 원화를 가리는 불투명 자막판을 사용하지 않는다. 매시간 점검을 긴 글 연속 게시 빈도로 해석하지 않는다. UI·스킬·캐릭터의 독립 준비를 계속하고 대표 보스전 완료 영상만 총괄 완료를 기다린다.
+
+## Godot 지면 자원 기술 연결 — 2026-10-14 00:31 KST
+
+| 항목 | 확인 범위 |
+|---|---|
+| 새 버전·근거 | main checkout commit `f58ae5d5d3f8e36dcb8427e5b8cf420f69f17295`, parent `f070f8a4129073acbc1b00d4b8750e70e32fda2e`, 00:02:42 KST. 제목 `Bind original CH1 soil and litter textures to the native World`. commit 메타데이터·변경 engine docs8경로와 [지면 자원 연결 문서](../engine/FDG_GODOT_GROUND_SURFACE_BINDING_20261013.md)의 커밋 저장 내용1개만 읽었다. 총괄의 전체 docs9 보고와 engine docs8을 구별한다. |
+| 기술 검수·시각 한계 | 원본 soil/litter 두 자원의 World 정적 underlay 연결은 새 고유3 **FIRST PASS**다. 원 자원2 첫 import는 별도 성공 이력으로 합산하지 않는다. 기존 opaque chunk가 위에 남아 전체 맵 시각 개선 완료가 아니다. physics·Main/save·GUI·public play/pixels0, Camera/GPU·seam·교전 시각·Windows1080p240 검수 미완료, **RETOUCH**. 마케팅 맵 제작/카메라 QA·코드/원PNG·suite·게임 실행0. |
+| 적용·보류 경계 | source 지원6/미10·동결 Web/Windows 배송5/미11 유지. zones mask/SVG/zone blend는 **HOLD 유지·대체/검사/우회0**이다. Q 블랙콩의 속도/수명/피해 실제 반사 연결은 총괄 진행 보고이며 완성 시연으로 소개하지 않는다. |
+| 홍보·다음 소재 | migration HEAD `9a4534b4` 동일. 새 정상 플레이 영상/원음/공개 승인/게시0·공개 준비0 유지. 다음 소재는 **기존 전사 수정 스틸 미리보기 검수·게시 판단**이다. 품질 개선→사용자 플레이→전체 화면·원음 녹화→완성 미리보기 기준과 같은 요청 비반복을 유지한다. |
 
 ## Godot 전투 텍스트 연결 — 2026-10-13 23:33 KST
 
