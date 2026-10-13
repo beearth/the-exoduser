@@ -1,0 +1,62 @@
+{
+  "schema": "fdg-godot-review-receipt-v1",
+  "package_root": "/Users/fordeargamers/the-exoduser/output/godot-first-review-20261013",
+  "project": "/Users/fordeargamers/the-exoduser/output/godot-first-review-20261013/snapshot/project.godot",
+  "launch": "/Users/fordeargamers/the-exoduser/output/godot-first-review-20261013/run-review.command",
+  "guide": "/Users/fordeargamers/the-exoduser/output/godot-first-review-20261013/README.md",
+  "manifest": "/Users/fordeargamers/the-exoduser/output/godot-first-review-20261013/manifest.json",
+  "manifest_sha256": "68aeb6869a1f48fb216b9e3422424c5b77c72ee1d8a243dc6fbea5b507a7c373",
+  "snapshot_config_sha256": "9897f7e9d411b83694ed22948d9bcbddb1870704b0b07c304b8db545b6fa43c7",
+  "launch_sha256": "6fec3137edf0034577816d682d72e8fdb090c1fcc85e773720d6bb2fcdbb44f4",
+  "source_head": "08e5cac1c4f51f0a3e89af87b02b21f0646490a8",
+  "source_wip": [
+    " M godot/scripts/enemy_projectile_physical.gd",
+    " M godot/scripts/player.gd"
+  ],
+  "source_file_count": 285,
+  "source_bytes": 190164244,
+  "source_digest": "41e3131b7c5523d4ae626616e407f5b6eeb4f1773f619ddcd8cebf2c61085c22",
+  "fixed_copy_attempts": 1,
+  "godot_version": "4.7.2.stable.official.ed1daf0bf",
+  "godot_runtime_sha256": "c7cccbf8fb143e34e02fd6521e09be2c2b974f0d5db080b19071c9c570718ccf",
+  "import_exit_code": 0,
+  "startup_exit_code": 0,
+  "startup_ready_marker_count": 1,
+  "headless_import_count": 1,
+  "headless_runtime_count": 1,
+  "launch_script_syntax_exit_code": 0,
+  "launch_script_executed": false,
+  "unique_userdata": "/Users/fordeargamers/Library/Application Support/EXODUSER-Godot-Review-20261013-bf58def0ea",
+  "original_userdata_unchanged": true,
+  "qa_report_created_by_smoke": false,
+  "source_byte_changes_after_import": 0,
+  "original_source_mutations_by_packager": 0,
+  "source_changes_by_other_owner_after_copy": [
+    "README.md"
+  ],
+  "not_verified": [
+    "GUI rendering",
+    "continuous gameplay",
+    "subjective visual quality",
+    "audio/listening",
+    "controller support",
+    "Q parry integration",
+    "browser save migration",
+    "dense combat performance",
+    "low specification Windows performance",
+    "Windows launch",
+    "console export or certification",
+    "full EXODUSER migration"
+  ],
+  "status": "FIXED_REVIEW_PACKAGE_READY_STARTUP_ONLY",
+  "original_config": "/Users/fordeargamers/the-exoduser/output/godot-first-review-20261013/original-project.godot.txt",
+  "original_config_sha256": "fec3401153bf7be19d14edef2dec7784f85f84ae9f7ad1d16476b848dd763d5d",
+  "source_maximum_individual_file": {
+    "path": "assets/fonts/NotoSansKR.ttf",
+    "bytes": 10414588,
+    "sha256": "194018e6b2b293a7964f037b25c0249ce1418bc9ab3c971060a03aa57861e252"
+  },
+  "cache_files_copied": 0,
+  "existing_userdata_files_copied": 0,
+  "new_import_cache_requires_exclusion_from_git_backup": true
+}

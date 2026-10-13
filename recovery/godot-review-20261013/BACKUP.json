@@ -1,0 +1,2110 @@
+{
+  "schema": "fdg-godot-fixed-input-recovery-v1",
+  "created_at_utc": "2026-10-13T01:22:04.123002+00:00",
+  "purpose": "WIP fixed review input recovery after startup smoke; not a release or integration commit",
+  "base_parent": "565004248ee8d4cf48e07991aa408e37ef8bfc22",
+  "source_head": "08e5cac1c4f51f0a3e89af87b02b21f0646490a8",
+  "source_digest": "41e3131b7c5523d4ae626616e407f5b6eeb4f1773f619ddcd8cebf2c61085c22",
+  "source_wip": [
+    " M godot/scripts/enemy_projectile_physical.gd",
+    " M godot/scripts/player.gd"
+  ],
+  "source_input_count": 285,
+  "source_input_bytes": 190164244,
+  "review_changes": [
+    {
+      "key": "application/config/name",
+      "from": "지옥의 길 · Godot 첫 이식본",
+      "to": "EXODUSER · Godot 독립 검토본 20261013"
+    },
+    {
+      "key": "application/config/custom_user_dir_name",
+      "from": "EXODUSER-Godot-Native-First",
+      "to": "EXODUSER-Godot-Review-20261013-bf58def0ea"
+    }
+  ],
+  "included_prefix": "recovery/godot-review-20261013",
+  "existing_shared_index_changed": false,
+  "excluded": [
+    ".godot import cache",
+    "user data and game saves",
+    "generated smoke-only test UID",
+    "Godot executable/SDK",
+    "unrelated owner files"
+  ],
+  "stage": "PC source review only; GUI/controller/Windows/console unverified",
+  "entries": [
+    {
+      "path": "recovery/godot-review-20261013/snapshot/.gitignore",
+      "bytes": 22,
+      "sha256": "74cb520752f25668495ee58e3d5621b6e1c49e74557b62c97330553877af2e2e",
+      "blob": "d626594add3b4af7d4a08c4b7eaeaaef306ff52e",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/README.md",
+      "bytes": 3912,
+      "sha256": "d228c9c3402575209493fc98d7b37c67cbc28e6434bd111924ee68d554c046e1",
+      "blob": "f44039d24bdaa36f18254af38566f4b79c4616c4",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/enemy/atlas_ch1_8dir_east.png",
+      "bytes": 693012,
+      "sha256": "2b4cbc2cb2f8b33f1ce10cdce6e17b4e6b7c75fff13e0fd60787ddb3e803a81a",
+      "blob": "9aa3ac6f4811268564eb24c369cc7a820829723d",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/enemy/atlas_ch1_8dir_east.png.import",
+      "bytes": 974,
+      "sha256": "cbf2b428bd950cec9af3d9ad47c2dab05075152695110c58e74425b4015ae596",
+      "blob": "b6f2a3e5b90112db4903f5930529251f1feac9b9",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/enemy/atlas_ch1_8dir_north.png",
+      "bytes": 761588,
+      "sha256": "7c4e569e3c7e35c50e72e0b9ecb7c8fffe3ee73e3b98be976ced6d7a34a8d252",
+      "blob": "250a8be6ca73cfa66e278953f36284fea2ccb75e",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/enemy/atlas_ch1_8dir_north.png.import",
+      "bytes": 977,
+      "sha256": "56d725bd642ec763054a4a213246915961ba2c33dea87120ec4d2f24c1124762",
+      "blob": "19bd7165889c95d8d3629d24bc301a769375d41b",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/enemy/atlas_ch1_8dir_north_east.png",
+      "bytes": 729568,
+      "sha256": "b63ed215d947a6eb6b4709dc03fe169bb9482fe34814ef2a78f1a7efd3b2fff3",
+      "blob": "46e508d43abd68fa05e38511bbb6f8bfa5d75129",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/enemy/atlas_ch1_8dir_north_east.png.import",
+      "bytes": 991,
+      "sha256": "3e3591b8852b2527c0cac66d683cd6f8f487b73426e9732033f3ca7419953de7",
+      "blob": "3524fa9e12f639d8e26ba450feabed8d005a51b5",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/enemy/atlas_ch1_8dir_north_west.png",
+      "bytes": 722767,
+      "sha256": "e48798ba3d89e7a80ee8942be10439126d57b876bcb5228888df9a289b586d69",
+      "blob": "264ccf1be05a8ccfb4d12c8ef3f33e3e5855b0d6",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/enemy/atlas_ch1_8dir_north_west.png.import",
+      "bytes": 992,
+      "sha256": "4fcdc0f5f586d51aab7181e4d1f37cf7552dc51b85e993737b582e0bd1601c14",
+      "blob": "78c6f08c470948736e4073b4e3d8d72040e7dbd3",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/enemy/atlas_ch1_8dir_south.png",
+      "bytes": 798229,
+      "sha256": "156e76481bc26682afe7d85c01c94477e66e1718bbe88f9d67baddbcc561da23",
+      "blob": "dcde058d9d0e207e08e255463c20f1ec691f71cb",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/enemy/atlas_ch1_8dir_south.png.import",
+      "bytes": 977,
+      "sha256": "dd6fe3673f7c1fb77f1569e99b78f0c69051d4d1fcaa5632a87d239f5620dcc9",
+      "blob": "fceda69c9ec3daace9391fefa32d6759f56da67b",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/enemy/atlas_ch1_8dir_south_east.png",
+      "bytes": 808193,
+      "sha256": "ed7693ea4052cf27c4318864f6e54edc846e941a8c8e12afecf3e03c904075ba",
+      "blob": "a5d696dafa0ad6e84948be16448f1a38894ec9e0",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/enemy/atlas_ch1_8dir_south_east.png.import",
+      "bytes": 991,
+      "sha256": "431ca691ccbef4732ab961d360b6895c9933b91d607fcb8beefbf13d05a5bbd2",
+      "blob": "69326d8a258453667f90f067d8d78726412da091",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/enemy/atlas_ch1_8dir_south_west.png",
+      "bytes": 804413,
+      "sha256": "4801bd016a0804fedbfaa5d7b97eda7924cb093565d2a7864402570df6add64e",
+      "blob": "6a5bfa0f85bfbc35e71fa588e8e4fe3b7d610c5d",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/enemy/atlas_ch1_8dir_south_west.png.import",
+      "bytes": 992,
+      "sha256": "2c140e9d98914751c7add7c13f208a81d2fa5e8bee84b7a12591e36a4ea930dc",
+      "blob": "b4fcf1cd88f8603a15eb2a4716b4a6b271b9b912",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/enemy/atlas_ch1_8dir_walk_east.png",
+      "bytes": 1972388,
+      "sha256": "95acdda361d2d74add386083fc51dd44c8ea20d7883b299d1a00be618343c854",
+      "blob": "fcabaad54cf7b583cb4c0a31c04f825678dbef2a",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/enemy/atlas_ch1_8dir_walk_east.png.import",
+      "bytes": 989,
+      "sha256": "11534c35135ff23e0f328e9e2b129418922c1db843edf7d247840444859de6e2",
+      "blob": "fbe5c13862759ca6a130dee3610b672cb05fa786",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/enemy/atlas_ch1_8dir_walk_north.png",
+      "bytes": 2119638,
+      "sha256": "04471ea9d4b695cc79dd8285ce78316c4bb01749d24c4319936befa066d96538",
+      "blob": "962a04ee884fa6e9c46d1602e21be4032d18c2e1",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/enemy/atlas_ch1_8dir_walk_north.png.import",
+      "bytes": 992,
+      "sha256": "8f13fa8f1568e0459e6c648ecf4068d2597c5ad1768d2b7d47adeb5ceac9f7bc",
+      "blob": "104788c94ea64e08ae60e99be041daa97b5abc87",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/enemy/atlas_ch1_8dir_walk_north_east.png",
+      "bytes": 2060929,
+      "sha256": "ebc2ba5f5f995e0c104c81829d97162d39b888ed92ffca35f016715a9396e41f",
+      "blob": "7736792116be1bbf25c5c6c658b52b788cafa22f",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/enemy/atlas_ch1_8dir_walk_north_east.png.import",
+      "bytes": 1007,
+      "sha256": "a284e6312000294601ae5ecdcbbc738ae5db9433899f1865dd47967058b7dfa0",
+      "blob": "366a3aa5bfbe56b8b73273ee0dbcde766fb77d92",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/enemy/atlas_ch1_8dir_walk_north_west.png",
+      "bytes": 2102807,
+      "sha256": "6a89356bb56928a991f5e7f8dd0f0234ff0597d064af271fbe6673f3f4000e6c",
+      "blob": "af9eaeed3a78d91f59e36df40186c49df974ed61",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/enemy/atlas_ch1_8dir_walk_north_west.png.import",
+      "bytes": 1006,
+      "sha256": "134b1331f3c519e8ea4a618f1007dba660d8aeedae13ecef45c3939b509134c9",
+      "blob": "7b3dd273ecfdb9758df6f4626d2192e383f162e8",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/enemy/atlas_ch1_8dir_walk_south.png",
+      "bytes": 2232971,
+      "sha256": "5de3eb47f666d60c72da13b9cee90a1544b1f325db62e9ce2624551205f58429",
+      "blob": "26048819f05c2a2227da1b01edac10c1780e01a1",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/enemy/atlas_ch1_8dir_walk_south.png.import",
+      "bytes": 992,
+      "sha256": "1ae3fb20c278d845c35cda727e6c846eeba1c154297a5d6ccb01d64bf9d8a945",
+      "blob": "ec960cdd6528246fd2a06e9864eed141054d067f",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/enemy/atlas_ch1_8dir_walk_south_east.png",
+      "bytes": 2174353,
+      "sha256": "b5c16fd3b82d402e33d42cb087bdaf85aa1459b423aab9f8f654f74ea0142070",
+      "blob": "b1d0474fef5f70600a7df66afbee25a173812c24",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/enemy/atlas_ch1_8dir_walk_south_east.png.import",
+      "bytes": 1007,
+      "sha256": "e789ee8f540ce6f7af6bfdf83f8a5caffdcdb8d8bb08b06f813d4bbc59655a1e",
+      "blob": "383ad7d5751265c3d8be46fc3155ede02c21de90",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/enemy/atlas_ch1_8dir_walk_south_west.png",
+      "bytes": 2090379,
+      "sha256": "2bcf554056a6cc4fa8bd250b69644d251d85366b645fb726399ec3b1b7fa50e3",
+      "blob": "b849dbc7ffa4caa07317a4d75c639ebe6fcc924a",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/enemy/atlas_ch1_8dir_walk_south_west.png.import",
+      "bytes": 1006,
+      "sha256": "4fbea5327089823aa2af187b23a2c748d3c284bfd29176041474f5ddea954bef",
+      "blob": "8149d255e3f09edf10ca81566b2838710a2f5341",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/enemy/atlas_ch1_8dir_walk_west.png",
+      "bytes": 2008571,
+      "sha256": "564b5f56042aaeb73e585ff1b68ab44faaac08f2f07abc3b1431710c2f30ac58",
+      "blob": "6ee3871b767700e023ee16e5f5c9a62e295bf4fc",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/enemy/atlas_ch1_8dir_walk_west.png.import",
+      "bytes": 989,
+      "sha256": "e04d942925f333e5bfcb4896fbc28d759a764d6f7d35a7ed5069c7624f7d15bd",
+      "blob": "0e9282f3b9e98cf8712bb5a90efde7c30010bf1a",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/enemy/atlas_ch1_8dir_west.png",
+      "bytes": 655038,
+      "sha256": "d14e94607e70a14c068402a6d1047e78ab0cd710d07c61c42ec090f592acc27f",
+      "blob": "231ad8aeebf5b170b6d0e9d913c3269edbefab78",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/enemy/atlas_ch1_8dir_west.png.import",
+      "bytes": 974,
+      "sha256": "7313080202134f45219326cf128d9dbf0cda0343cf735f475d93d9442afc04ae",
+      "blob": "5eecbbd3f7003d971030e99dfa595dcc00f01137",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/enemy/ch1_1_eye_slime_8dir_4frame_clean.png",
+      "bytes": 1001394,
+      "sha256": "a9e908e5b9eb0b779ef2e95544105b3703bcad193fb94fb7eb0d0a16ff4dfa41",
+      "blob": "ca67e276f6d4ebbc6b549a6e84c5e53654f223ba",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/enemy/ch1_1_eye_slime_8dir_4frame_clean.png.import",
+      "bytes": 1015,
+      "sha256": "86d2a9cb43b6defa6f7300418148386c31a41f1268468ba0fe12353e8a3c21db",
+      "blob": "395096144737dadea7bdd331d0f8cd4679bc06ee",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/enemy/proj_phys_mouth.png",
+      "bytes": 3991401,
+      "sha256": "4207e233848d5394648bf98829044956c53cc79ac5ebd6d08f2b1800d89b7c13",
+      "blob": "4ef605b0454eb99b0143e6f19829dcc334652736",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/enemy/proj_phys_mouth.png.import",
+      "bytes": 962,
+      "sha256": "f099f609cc43d943af093cda840ebb835ce390d36309efc052fe85f67e9a29ca",
+      "blob": "8f66eba5b284a891632af1a1da5624ecdbd8ffee",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/fonts/NotoSansKR.ttf",
+      "bytes": 10414588,
+      "sha256": "194018e6b2b293a7964f037b25c0249ce1418bc9ab3c971060a03aa57861e252",
+      "blob": "b386890ba945e1f39448a6b59f20c5d194f58808",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/fonts/NotoSansKR.ttf.import",
+      "bytes": 768,
+      "sha256": "d358c4c082cbe83bd5c3b99ee9aec6fb9a68f6541e14429ba7c1010efcae2a83",
+      "blob": "1ea36c4b8af7fd0ec2648ee6c05d243b7ac975d9",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_0_0.png",
+      "bytes": 1968680,
+      "sha256": "c09ef8fecc2f753e539183abf3cc52068e3e27e4004ae36f7624f2a7d98e4390",
+      "blob": "99ac30c98e84aa5a6efd60a361e45af4ed405216",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_0_0.png.import",
+      "bytes": 960,
+      "sha256": "ebfa587b4b2339c3c2f25454fd13759fa6f92f5ca625c61eb238199748d16ab0",
+      "blob": "d8082fa0b05b7397330315da4c94048bca8c0f75",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_0_1.png",
+      "bytes": 2161311,
+      "sha256": "9f63c0a8abad95cd0eb81f30c488ea8b4a7a02dc673c87be61e7231753050884",
+      "blob": "61c1a93503f8de0096547eedd6a61fe437c4dbc0",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_0_1.png.import",
+      "bytes": 959,
+      "sha256": "c55716a6e69e6060d755911c0edfd982f146325d0bd9fcb08bdf7d8b9e1fe20f",
+      "blob": "acf59cc9f2f60449c66180fdcdf3486fdb11463b",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_0_2.png",
+      "bytes": 2223282,
+      "sha256": "d8a5d31ade208a237f58b3739733b86cd9cab04c1a77b9361ff37adc9a79c2fb",
+      "blob": "f6ee12751b53483971e7d308fd3a57b68ead1a00",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_0_2.png.import",
+      "bytes": 959,
+      "sha256": "605f44318ca1967fb42ef2522cad320cd17dfdea1e8a1e228c86f39e76120d7b",
+      "blob": "0f8294478fb1cbfe3be068ceb5f44bb1a9d7e6b5",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_0_3.png",
+      "bytes": 2702985,
+      "sha256": "b37a30a0e491df553133fd79c7200b72ac4eec8215ca592728692e92d64fc4ae",
+      "blob": "715b2ed892683497564ff9323d2322a321b56f60",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_0_3.png.import",
+      "bytes": 959,
+      "sha256": "bd902ed44a5d77e5878bfcaf11631301f956ab2f6565a41084ca30c9ae407de7",
+      "blob": "b218e6cb5a563684757edc53b56523fcc2ff9301",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_0_4.png",
+      "bytes": 2180498,
+      "sha256": "f388b6a2535dde7ee79ca57e4efb5d76e3d9992753b358f221365a0ce60f71a3",
+      "blob": "447181c4c5623819ffe2edb9121cff7e5a9988c3",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_0_4.png.import",
+      "bytes": 960,
+      "sha256": "0cdbdc89251da910395220b36f1685333d333ad34972e6ef1c5fce2b76d706d9",
+      "blob": "be3bdbd23ea4dfed66115bdd1ec0bed1c5b14c1d",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_0_5.png",
+      "bytes": 2235123,
+      "sha256": "e8504f48c18a7bd00631055f99ed98eb79b6fe469526def40e6c83b19d889c29",
+      "blob": "d252ba3d6b5bba38381f6928b3b0cb683e876484",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_0_5.png.import",
+      "bytes": 960,
+      "sha256": "8a6ed66deaf0b5103a6fb4140fa8982e5b28fc632a4355d0dbb5ba0e4284e8f4",
+      "blob": "84cd2cf0e5ee6a5153966014a810554bc5e44c15",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_0_6.png",
+      "bytes": 2227354,
+      "sha256": "409786f0443bfba9f39808ab19b9fbb654fcdfef67b0c98943feca1de98c3557",
+      "blob": "b231d4bfc1d60fb76c9a6008b2ac00b383a1456d",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_0_6.png.import",
+      "bytes": 960,
+      "sha256": "6b42956511fb064075387a7d4a5181b530401d13aaac8cd64e74c7055af7425b",
+      "blob": "a78ae786ea28ed84284512bd278068ae5623071e",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_0_7.png",
+      "bytes": 1941675,
+      "sha256": "32343cf79521b2815a3a5ca2fab37894b0d62c5323780042bc1ecfe92fe49205",
+      "blob": "fb40eb5fa4727778a912d1c9a5c6a4ab1bc76a84",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_0_7.png.import",
+      "bytes": 960,
+      "sha256": "013227ed57b0900c369d0c9306e83cba50a9faf532b98161ebef1d9300b193d9",
+      "blob": "5f6c6c2e3a8faf9f06882cb9506f421ab3bea357",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_1_0.png",
+      "bytes": 2168222,
+      "sha256": "17c3177456e2f3e89c12d3a8ef926e831436b1c9abd074bf9c9b7b2c8cca2cbe",
+      "blob": "ee03c800dd9df8bf4231174086f9dab0b2571247",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_1_0.png.import",
+      "bytes": 959,
+      "sha256": "215bd9c2a00b5a77d7a4bb6e955682c4fb212182574225fb2c75e5f14f951e3a",
+      "blob": "7c7651e55b76dde10349fba9363041e67a360eee",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_1_1.png",
+      "bytes": 2001115,
+      "sha256": "5ba4ee529da67817db10df7fb5738d58029b0c40333728c84c6ce246c766a7f1",
+      "blob": "23de67ff499ce546df8804bf38a2245ca12b0524",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_1_1.png.import",
+      "bytes": 959,
+      "sha256": "0ca619298090e52fe5396c7c4bb9a2b3b087e1c2e9fada124dba1dbbef481800",
+      "blob": "389a71088c5ef4ce49ecc5e19f7822827174cf04",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_1_2.png",
+      "bytes": 2107345,
+      "sha256": "435c6351740e7ac7ac096424ac15aa9fb6e8fe4c2c0c33dcad8cb4cd1c3c7726",
+      "blob": "dd4c51d10046c359fd5af013f1e9516e74a40d9d",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_1_2.png.import",
+      "bytes": 960,
+      "sha256": "1da6451ef470774d0ea380d776a35193d6ea0ca3e5764a5584908c6522e650db",
+      "blob": "567e1b39ea4dcf27606dbe63c4d7c89c068c210e",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_1_3.png",
+      "bytes": 2083667,
+      "sha256": "0b21ba13241b142002a6b76cab76b74c262167d403ceb583fb1ce01a07bc89b0",
+      "blob": "dc0f4b0898f09abcdf8a8a03c04dde4c52f50c8a",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_1_3.png.import",
+      "bytes": 960,
+      "sha256": "6101dde7cdebb00882c6eb5c3b864fa9dc1f33b277b86ae762cf056749ae458c",
+      "blob": "05fef810bfa115f3ae8ff0d1da1ce34b2581d06c",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_1_4.png",
+      "bytes": 2157187,
+      "sha256": "71caa3f5769ba0321a0409746b8203d865eb9b42da7012f2003ba4bd364b47dd",
+      "blob": "78cdceab028fb3c2231a5d8338764715c9e6dfb1",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_1_4.png.import",
+      "bytes": 960,
+      "sha256": "25191fe1c50e36be459c50b66003ed157ad75dc4a19f4d6bafc0e3c4081d8d9f",
+      "blob": "e6d52bab5a18c7f4105a052b6b7982b446175554",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_1_5.png",
+      "bytes": 2209130,
+      "sha256": "6489701bd92a5f23c2227975a0578432383b49e2f8e3ee60f17c6b83cf579d8a",
+      "blob": "d5c090c7c475d3893a1bf2e472bceca54e473be2",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_1_5.png.import",
+      "bytes": 960,
+      "sha256": "a4e523b50a058f82e90ca144aa3cf94546d5e02f3a2a02b750cbd0e3282eb839",
+      "blob": "dfed14252d8ffb3a07f4b4f8a7011178e737b8c0",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_1_6.png",
+      "bytes": 2245419,
+      "sha256": "5b543996d306246f9f8b08b4c7c7d309f069d1b16ce90bb7f3cedf5279c2f37d",
+      "blob": "68a964209f34e5dde7f589d02eb4d12f0d0f596c",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_1_6.png.import",
+      "bytes": 960,
+      "sha256": "71a44fb15fb3ca4edac542b51eda68f567c66d8f23889f005d1cccc35c8fae80",
+      "blob": "cfad751634576daa310385cb930533215218ee53",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_1_7.png",
+      "bytes": 2031233,
+      "sha256": "394a32554994a5481d9b4e8e443fc65e267ab03b02f90c69bef47cfccb931821",
+      "blob": "306ee6ca331b86a6094f0d6fe32f86e1101a51cf",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_1_7.png.import",
+      "bytes": 959,
+      "sha256": "f8e76d513850d33ecccce7f71372f2b6ed2fa07fdede3ebfcabc265c0a8c43e0",
+      "blob": "5d7a9e397f6ccc8a9443b48ea83f9e689df6794e",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_2_0.png",
+      "bytes": 2477474,
+      "sha256": "51cbd12aae46a424a3df1a04168eff1ffa1c7ae81b2d179b400cc92134851975",
+      "blob": "caa96661133026853616b46f2b2038a4db1461ae",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_2_0.png.import",
+      "bytes": 959,
+      "sha256": "a30227793ed2d3e247a0621fb3d39c960b74de4e997a10fd6898671387e4f18a",
+      "blob": "940f5f9b83bf7811c100f898e5cc4adcf8eba996",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_2_1.png",
+      "bytes": 1998282,
+      "sha256": "c0f4eec555bd873b8737c7924c3a5f9f85ab372ec76250909a58d77233446044",
+      "blob": "111d995b2aa1fee5aa0192f2b6b73df3bb9f68f3",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_2_1.png.import",
+      "bytes": 959,
+      "sha256": "063540a129c6ff584dd673518704c18d6be8c608d9e272f1b27e3eeca46e0da7",
+      "blob": "ffc19c08179f0c641f495b0459f1103ffec69190",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_2_2.png",
+      "bytes": 1826720,
+      "sha256": "c6b449b3bdb6644fe65015893af1d9625320f0b5ead2f3f67b013e040506c962",
+      "blob": "3c50b4e87b2d9d56a09fdc57ab6845246bb89140",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_2_2.png.import",
+      "bytes": 960,
+      "sha256": "a517f981c272076cb0654a21fe3fcb9df38960aaf31f346b647b7e95b663fb4f",
+      "blob": "98173b32a982d0fbd36f50d134d7f9e6706ebe13",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_2_3.png",
+      "bytes": 1777485,
+      "sha256": "fd9520b6061b930699955d45509b395d3798d25bbb2bcd15436d0456148bcea5",
+      "blob": "f34eb81294f173005c7f0d1e87400514989a54bd",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_2_3.png.import",
+      "bytes": 960,
+      "sha256": "ac56fd8e77ddd4a53e0828257f7b5b0c42d2a8c89b544c7498ac8f95f3e76f81",
+      "blob": "10cab734d3607ccb9b3db278d1f0c62e6b218e08",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_2_4.png",
+      "bytes": 1861274,
+      "sha256": "f9b3ee5465e0531460267886157146c86900ac61f56f8cbd3c8e108f5499a5ac",
+      "blob": "1e1368fd5d3690e6decde781910ed86701e8586b",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_2_4.png.import",
+      "bytes": 960,
+      "sha256": "88ab6ba01580721f21d1f37aaddf832a058bfe511bd86800de9a07bcaf94f53b",
+      "blob": "3f6e5a5088d9f3da26909ef399dd966595dbb07e",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_2_5.png",
+      "bytes": 2002903,
+      "sha256": "c11edb9c9094fcc700df048934dd0404d4a312c1eed0252105415a34af735b73",
+      "blob": "232de8d3ae21b57f8cef32cc0b0db757cd0211d4",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_2_5.png.import",
+      "bytes": 959,
+      "sha256": "8a6835c05c76e157f2e105dd8ba21a9a91ff3d3df156a805da51f4187d60304a",
+      "blob": "d38dd4e0a6f0ab7044a1823ea9e63dd47107935b",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_2_6.png",
+      "bytes": 1955885,
+      "sha256": "1db13f2a6a655d9cb0e3cc39a3b9068ed73d6bedb4a012aabecf8a92f95069d1",
+      "blob": "f46b471d1bda9629f271f984f5a7baca4f1a3b64",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_2_6.png.import",
+      "bytes": 959,
+      "sha256": "617cd80794429f21abd2c2df92fd2fe7bf5a9074053512e5d595f3bd96fb20a1",
+      "blob": "9ffa289982fbbcc69ec4b525281279ace4201c1b",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_2_7.png",
+      "bytes": 2321455,
+      "sha256": "7e001cb620654946fbfe86ba0906e73962518f52c7ef0f0ad0f865cd6372c667",
+      "blob": "e19b41bcf155af6b68ca364e56adc59979499843",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_2_7.png.import",
+      "bytes": 960,
+      "sha256": "62e840ad5c4b4189802093a5929ac3fe858ae3cdb2ef5d4ac0e3144b473acf84",
+      "blob": "e74e4fcef7bbe8e1992fa6fcd95ce686e6401666",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_3_0.png",
+      "bytes": 2288430,
+      "sha256": "02a097552da48d7b3cd67e0baddb134c8b1844fe3f6a7a626e8eb9d8a263984c",
+      "blob": "294fc86c4395edd701d8eef0c0aeebb790f1bf35",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_3_0.png.import",
+      "bytes": 959,
+      "sha256": "3b64029a0b92d2b04daca479d3b7a98cd240b0f0a853fe9c9124de49b258d036",
+      "blob": "11e1f9d7176173e445fca7d3d60bc5e4cac138e8",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_3_1.png",
+      "bytes": 1939521,
+      "sha256": "34b76851c27450eb2e430fe4787b8e4c31a0dea8ed6dca4d87b62d555d2a1e26",
+      "blob": "41ce69908da8b75d8e6270630d5478ddb85f6397",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_3_1.png.import",
+      "bytes": 960,
+      "sha256": "d0bd48e98f6f2864b949b72ea255fc5e73b908465a361d2930b744526897ad4d",
+      "blob": "c87b80f788ea58cfc53c56acee35c4be2cb5dab9",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_3_2.png",
+      "bytes": 1762366,
+      "sha256": "5f5d22151cb3496bacca65b583c72bbb96437854dccec24465b529fbc16e166c",
+      "blob": "f6e4ab04a104c626057b6dfbbfc78587eb3e0ada",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_3_2.png.import",
+      "bytes": 960,
+      "sha256": "c9e4200b9f52508e616c32182e80b0aa4ed12f8280e743eb32302542329caa64",
+      "blob": "5a9dc9a19b0df2e8062f370eb8f60b20176c2630",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_3_3.png",
+      "bytes": 1870619,
+      "sha256": "12c05a382f66f324b0dd1edd19699091e5c79b08f8696eb6576ab784d17f007a",
+      "blob": "0d9d0fad7fc7e6e91a05b0d82f92a75ac53bcda5",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_3_3.png.import",
+      "bytes": 959,
+      "sha256": "c9b0f25b5741f6758c947dea6de432f24f2867e9f75748fa88942cab69902260",
+      "blob": "ba1451547b97940d8c75c687fe154f209b6239b1",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_3_4.png",
+      "bytes": 1742237,
+      "sha256": "865cd4a6cac744b98db78d5c0bed5d4a0dfed4a3c62273c1cecf98762d01182d",
+      "blob": "6e85cf7d61d4446cb2851e4cfa7bfba94f86f6f8",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_3_4.png.import",
+      "bytes": 960,
+      "sha256": "648ba909466612890c12cc8eb6043876c791bc7b867a84348764f5690ffbfc21",
+      "blob": "bc861e0dbe26aca3ba1de8f451a26a8c2c59a0b8",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_3_5.png",
+      "bytes": 1711171,
+      "sha256": "df2cb18b357923326a5be761b0390ad625689247e3066ae9acd35c2e5a9701ab",
+      "blob": "93626c91b16d36a4b3f1febc05d388726a34429b",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_3_5.png.import",
+      "bytes": 960,
+      "sha256": "fb80d2f8998a9ee9a5bba7e6ae24cb74f5b6a2784f1b2d821f81322d040745a7",
+      "blob": "c139d4e27c7f2c653a750bebf59f636e9f9775af",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_3_6.png",
+      "bytes": 1817351,
+      "sha256": "8c74f1a860b289008b895709a7deb679f30dc87601cda779b529b3e850606817",
+      "blob": "51e1caf0e52db02fe487ccd9fc426bdce4f8ba32",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_3_6.png.import",
+      "bytes": 959,
+      "sha256": "07a74d6afdebbdfa948bee1fc6aa9551c7356116d90bfa76b7a6b548d5143cfe",
+      "blob": "18022d1509cc54f4d22560dcd225974f9dcd7d4a",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_3_7.png",
+      "bytes": 2168626,
+      "sha256": "2fa76afbb08489f1fc6bee73f89da7d818a0cb25ff79ae2d54267f9054b18e36",
+      "blob": "7262b3cda03a53792208532b910cbeae2574f779",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_3_7.png.import",
+      "bytes": 960,
+      "sha256": "c18e06e65a7bc4c21dbc0c23d0e9075d736c5722da1ffd0c1ca106da0f00609a",
+      "blob": "e15c487ab0481016fb6fd5bb4b883d9d064efbd3",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_4_0.png",
+      "bytes": 2257906,
+      "sha256": "8cbed03ec60687349e80097649e6970641af4027c85ccc94b4f04c2ca2dd64e2",
+      "blob": "6ba60d93e4acdf9a3cebc62d692ce937f2f2d0b2",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_4_0.png.import",
+      "bytes": 959,
+      "sha256": "1504ef626ac3db0ff6310857507416bbe98ce16d3aacb4fb2896f5da76127623",
+      "blob": "64b3f9a041fb54df69db29624502fe0b3f7ec2fe",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_4_1.png",
+      "bytes": 1806877,
+      "sha256": "e0d153eb1275a7ef613bab38e759ff13ed429091d41ffe5cb678d367b5ae2056",
+      "blob": "5fa8500633961d0f65e5704f58a96b06a2c27e8f",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_4_1.png.import",
+      "bytes": 960,
+      "sha256": "8dc5432a0880ed610b15500389d28a35a1cbc82d22a4217649bee48a4f292c65",
+      "blob": "c2d25de95bcea0daa0407c4065b894d5d509cbcc",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_4_2.png",
+      "bytes": 1802626,
+      "sha256": "e56929cf0c1923a8ee851a29adeb5571cdc99d2816a3a8de8b3d80a6620cc45d",
+      "blob": "784b2a991b09cd852c0c41acf0e87f6eeff4aef6",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_4_2.png.import",
+      "bytes": 960,
+      "sha256": "265d9ac88d2f468ccf741795e885f0a0fc3a316f956a7049584a647cf09395e9",
+      "blob": "8b0243593ebe4ea639fc48d11edf7391db682866",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_4_3.png",
+      "bytes": 2007121,
+      "sha256": "db9ec72289972319882ccf584ac3bc4e0622fe6b5c06fb884fe9625918c4080f",
+      "blob": "c02c7690b7915c3db3ed76d9993a4debbb3bf4a1",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_4_3.png.import",
+      "bytes": 960,
+      "sha256": "2068af29a037cd3166ac15056dec32366015c83a6508f697056fdc12eed4a102",
+      "blob": "5442c2e26578366d9688c2091b95ab3f644bbc64",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_4_4.png",
+      "bytes": 1835248,
+      "sha256": "efd8251d0eea7853d1c714238a52ad868b9f4a1f91c6b2c00aa3a354abf326a9",
+      "blob": "50568a6c914b46cd177760283b7e7f44e05133be",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_4_4.png.import",
+      "bytes": 960,
+      "sha256": "7dfa288b28d29d49c602597a7856ed935560b2f8becb09c3bca18154b0d5b8a4",
+      "blob": "42b4bb68b5507ff6d14cf2f8ee86f73e23ab8794",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_4_5.png",
+      "bytes": 1756185,
+      "sha256": "b5cb5e015768bc05b6d1acbc598b1a686b4197af026a30af9b08e6cda6d664d5",
+      "blob": "dd7ced63b2ee66a20a3a1763edd68589ddbc8ac0",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_4_5.png.import",
+      "bytes": 960,
+      "sha256": "039d091b5a3baadea211ab742e4722af5fca92761c813999a0d3f8c0ae2a2670",
+      "blob": "437b2acb09618624dd3031a416c93b73c6e0709e",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_4_6.png",
+      "bytes": 1817900,
+      "sha256": "39958400755ea462b05b5fa97b969bf195ed764c3ed49224cd57825cc82d8752",
+      "blob": "26334d8d6d3f5fee06710450fceccccd0dc11ea0",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_4_6.png.import",
+      "bytes": 960,
+      "sha256": "50e381d6f8ba0bea28756213ba8f72ee200041cff6c805d7f0da7d2f545ab325",
+      "blob": "dc2c6308122e71ca4fb39152b82eba0c68259155",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_4_7.png",
+      "bytes": 2090540,
+      "sha256": "d36b21bd7603fe7a77660264bd3eea3c4cf6a82b54c2b77f013728b97d91a600",
+      "blob": "0b6e66f96fd219951e80f8e8de2fde9aa1473e82",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_4_7.png.import",
+      "bytes": 960,
+      "sha256": "e9b9be2338dfaa9e23379be9413c82e1568f9cf387c9cdd63056d168a7cdb856",
+      "blob": "508a123fe375484c5e05cf99c8acdd5f19c41d56",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_5_0.png",
+      "bytes": 2267143,
+      "sha256": "7b5fc498c98bd7fa665e22feab70cc84a1a2a992d9f80d47856c59536cafb47a",
+      "blob": "13605ec269f00da5499a8e4967fce7d818c6f540",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_5_0.png.import",
+      "bytes": 960,
+      "sha256": "0ac372e34d45d2238a4f7272a5a01bafd1398b7bfef2cb962c58a97457a76c81",
+      "blob": "c55254e99f6dbce511560e926767820208e27f8c",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_5_1.png",
+      "bytes": 1954754,
+      "sha256": "324bb7ff361766562f7adc5ab5f25e5a53343f6eabbfe9765a2be5231b25aaaf",
+      "blob": "c031101d26ef95df016a4aa99c138315b24739cc",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_5_1.png.import",
+      "bytes": 960,
+      "sha256": "2635b50fbd8c3aaf07ef313917c071839293907ec2192b530c0131f7573f7a43",
+      "blob": "6ff405dbbb76fc7571124bd3d9f1e79ccaf84154",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_5_2.png",
+      "bytes": 1806758,
+      "sha256": "2e52cc93a43b64fd4ef02d443e412f185fb4aa4bbd42070cf1a057a159d1722e",
+      "blob": "9c6ae00ee70b47bbcb2e02760c352746ad7a2e24",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_5_2.png.import",
+      "bytes": 960,
+      "sha256": "fa433d7992ab5c875bcc05ec710b184385e8e19ed42a17d59d638de08745a238",
+      "blob": "c556790a15c8b6ae53c8c3a6e922a14d26cce1b0",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_5_3.png",
+      "bytes": 1765298,
+      "sha256": "2879fb43b7885fe839566467649cf982fd6f6159b8836dc1d4f91c9daa27d878",
+      "blob": "a826f0358346ef95ce69fc9656004b4eff1bbfdf",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_5_3.png.import",
+      "bytes": 960,
+      "sha256": "aa05421c0667e4e5aaaaa1eaa0a68eea2c2fd482b11517f48f884df3f81d2e0b",
+      "blob": "91968885e69ea21830d10fb4c347af212b152543",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_5_4.png",
+      "bytes": 2062989,
+      "sha256": "851f41dfeb65b2186e9b753ae8e4764ed9e2b63d83aae031aa561656b14ff0fd",
+      "blob": "7f8666f6913604a8e0bf8dac4dc2dddbd4b1c9b4",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_5_4.png.import",
+      "bytes": 960,
+      "sha256": "1fe1e4b74b0a3fe54933ddf4ccbd2f381bb99cc767cd3f8f3b65cc4284b5d35a",
+      "blob": "735c0e47a78d6b36621d34d138220b9669090699",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_5_5.png",
+      "bytes": 1801743,
+      "sha256": "f19dec4ab01a114c0e618082ec814900a3d8a62eede8abe4f16287dc3bcbdcaa",
+      "blob": "ec049ebbfddd4fb45561a7b74024d47cef64f62b",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_5_5.png.import",
+      "bytes": 960,
+      "sha256": "983cd4b90a2b71e6a60adf0692b9fb9049c9b7ed98a2f23d685f3bd2f0531769",
+      "blob": "1da20f4bb1025589af29a97f4e72207b086a8050",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_5_6.png",
+      "bytes": 2049759,
+      "sha256": "9a902f772652f9b0d1b4aa2c583c59ba4198288c3db5c1801f6d9d5edbb35906",
+      "blob": "81bea1e69428476cf64a2cdfb731e9ca084b8a4d",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_5_6.png.import",
+      "bytes": 960,
+      "sha256": "4c1d96f4d25f72e2bf2882b3a94d1478fbd3c1e2bc3bb73a90412faaa170939f",
+      "blob": "dae9cb4720093173eaa8e930b02a845619c3e147",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_5_7.png",
+      "bytes": 2389619,
+      "sha256": "d6f2b1cb4a8231139e1e0052949bc0471bf8cd9fdd4217b0c150bf955cad12cf",
+      "blob": "b9122e46a75b921890314c021e3177e2b6e8eb01",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_5_7.png.import",
+      "bytes": 960,
+      "sha256": "028c9fe861048780f3402b3be1f8e97ccb41f825026ec49c077d81218dd63876",
+      "blob": "57427ec15b07fc6baf8dbbea26618422aa71eeda",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_6_0.png",
+      "bytes": 2131985,
+      "sha256": "eb5296d597bb02dc8409b1ee6dd90e4ddeec4a041e8470125f6f2a6eaebdab72",
+      "blob": "e43ded1548ba58f1746188f1081a4ba1959cfdb0",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_6_0.png.import",
+      "bytes": 959,
+      "sha256": "dee72d3598368118f13a9bced640a553b8e052895f5798ade71cfdf310ae2bc3",
+      "blob": "9316f03cd288241a43ea3e45eb8c3e998418d412",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_6_1.png",
+      "bytes": 1907589,
+      "sha256": "767a27ee7b956f2558a609640408f5e4d0276e9fd642eaa2508e386d8c8f40f3",
+      "blob": "a87b58ce4d63126e1428806052efcfa25b0439e3",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_6_1.png.import",
+      "bytes": 960,
+      "sha256": "e5f9ad4ae706a3c49d74cfcd2384b3c36284ed9b225bab5f272e20455c240785",
+      "blob": "27e4318237ca9ce08d4d05c7dfab7e8bb9f7e1ee",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_6_2.png",
+      "bytes": 2027495,
+      "sha256": "96302d5496f9f8bbb90b7b6d2ef5993e038e5f00eee75218b5d6a8b5f11f11d1",
+      "blob": "ecc6e66bacede723751512836d9111c277b5e218",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_6_2.png.import",
+      "bytes": 960,
+      "sha256": "f9980c82a592814dee317e30797a2ffccba5d813a66b04a7b21aaea5e1282fb2",
+      "blob": "d95a97ecfa7892f658fd743ed1a70db57ac0a582",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_6_3.png",
+      "bytes": 2007345,
+      "sha256": "602e7992ea4b52f00befb4c278a034313dc759b5c05c78f4891b4befd1b52c84",
+      "blob": "ab727bb962b83969e891b629ebfbd71f81ab2929",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_6_3.png.import",
+      "bytes": 959,
+      "sha256": "839bde7459a909f1d9c74c540ea685e15fa5a099eff7ac07ec9244dea51f45b5",
+      "blob": "78b8263099d196d669da8a0b8470d616d576f493",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_6_4.png",
+      "bytes": 2260640,
+      "sha256": "a5e9b2f533effcdf2febfef15c83530e548108770be2b73653ff4b898599ab49",
+      "blob": "6d710d5b24dd846a60d497723819270144b40336",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_6_4.png.import",
+      "bytes": 959,
+      "sha256": "9f19a72b1eac4021fa08d539860e2f2ca7c3bf846884758203e05804d1a3e672",
+      "blob": "2963a4d34c3724782c93a8f284cbc3b41757d6d0",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_6_5.png",
+      "bytes": 1879628,
+      "sha256": "d3aa49f571f26932aaab80d5107021a9493463c58ee802bb7f830e7c0c6f30a4",
+      "blob": "4766891e9b3cb576c024228c5e8eac15a4b96d42",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_6_5.png.import",
+      "bytes": 959,
+      "sha256": "763cf0b6613a446b773b87b0801eab43041fe7bef021d7b9eb25e7ddb5b9698d",
+      "blob": "2118adf94c5e6e150e423215964f41f4d6f754c9",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_6_6.png",
+      "bytes": 2394154,
+      "sha256": "25e89955143350e6953d56c5f7bf1ac87abb905d9423fbfb5bdbd4b2a2226ec8",
+      "blob": "97f09d0d8fea0f714d0ca7ed8a13799e402b04ea",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_6_6.png.import",
+      "bytes": 959,
+      "sha256": "fc3a078c0aeb67a76f11831a65dbbcf814d41e2780dcfbf612901bec6ded03e1",
+      "blob": "447010fd51439862dd986cb51318d817d4ea2ddd",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_6_7.png",
+      "bytes": 2008437,
+      "sha256": "27beaeeb0f1931e07837c3f85cffe4f80ed6c2313055654e77f46fda810793b5",
+      "blob": "22084b37c39e9e73622fbc8257987c0dcc91fbd3",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_6_7.png.import",
+      "bytes": 960,
+      "sha256": "da5a7a9f0c0ca15cbb4ac1106245f9ff3d5cb5f889707f8da2e3b023bf74db2c",
+      "blob": "4a6a5c95fd28ce867aa30d7914c6e959c2ddd3db",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_7_0.png",
+      "bytes": 1890789,
+      "sha256": "332dc58292a8df4885f82da25b02c31d25e67c7b1c9dc256cd35655a079572b3",
+      "blob": "f4a96878fe979b1327355c3edd2106e4331e2814",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_7_0.png.import",
+      "bytes": 960,
+      "sha256": "b47f403a99cda212ad96b6344b99c9768b7a08243a9daa430cc050fd02a50aee",
+      "blob": "c3e0c5c2fa5d5302e20fe381d7fabea5ecfdab9d",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_7_1.png",
+      "bytes": 2266304,
+      "sha256": "790e33b874c72268215bb5d6e510e931c2b5e376a6c67aa49d99ee1820b7a65e",
+      "blob": "1da5f9a895d999ced9afc51459685ed45d6ea681",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_7_1.png.import",
+      "bytes": 960,
+      "sha256": "481bcca8859e752672aeacca034b93ede6e75d759ee97f7c8471c8379fd793ff",
+      "blob": "da12e79c4db7d8eaa8ceffd1cff229b649789c29",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_7_2.png",
+      "bytes": 2332015,
+      "sha256": "41091316e05ac4e1eb64267c700daadfd857d9479b5ad4e241b31d4b5752748e",
+      "blob": "3a6908e7ce265b529409c29c09693e2cc2f34151",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_7_2.png.import",
+      "bytes": 960,
+      "sha256": "469b357431b00a566887d0023133bf2addd8f720bea4b279209f1983b78aab49",
+      "blob": "457ae6dd9a5a2436e6821fa17fa47f5342db6195",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_7_3.png",
+      "bytes": 2560306,
+      "sha256": "e81fe0181db1507588880a62bc1e0198a4c42d177c8903552f92711494d1d7a4",
+      "blob": "5df5b51e5b8e827431d64ca8a086d17ce3743980",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_7_3.png.import",
+      "bytes": 958,
+      "sha256": "c1be72e533a2ca9e11d83a81a3769a9773f0c3f1e4fec1709f6ca8a7367efbb8",
+      "blob": "6a6540e3d86a7a39473f297ac2d2c4eced5cde1f",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_7_4.png",
+      "bytes": 2615489,
+      "sha256": "90e811ba43ef0879d3122876822a9960a1423414832b2c38aa32e3052f59fcb7",
+      "blob": "f31410ba4118e18df178a9bf56850246ec5d8368",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_7_4.png.import",
+      "bytes": 960,
+      "sha256": "e313aa3809b59921cf4bf820996c6a11959b8f71890ff9bf1d6d2511e5741397",
+      "blob": "177c9110dc537740614b502af3ef7ef19ce3db4f",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_7_5.png",
+      "bytes": 2310148,
+      "sha256": "b3ef6e99b2a780d700aa2dd2fff84bd21f8909a76cfaf6da943a9c2138721aa2",
+      "blob": "2674d548542575b1cdc53c055090d5d5f36c2125",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_7_5.png.import",
+      "bytes": 960,
+      "sha256": "f34589d948612aa41b525f17d852b82aedb67c810111f8cd038bbaa0a5532021",
+      "blob": "a5c723b172bcd0df3900bc392aa7b332001a8444",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_7_6.png",
+      "bytes": 2247817,
+      "sha256": "f0069921a7d59f259f9c56b2cf1f6e33c59127dfe0822f0bc924390c6c430cfa",
+      "blob": "3d346bb6badaea402345561e866cb577cc14600d",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_7_6.png.import",
+      "bytes": 960,
+      "sha256": "07070f528c2262f2dce0de8af78f249b1ff98111d3f3a87312fd7dabe88e3520",
+      "blob": "f9a262b3df0b82504de2e7101fa4f5dcb9bc615f",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_7_7.png",
+      "bytes": 1913508,
+      "sha256": "8e4b4e6f31c7297fb0d231c6368b1dd89da91fea5211347d30cb7dc120cc8a11",
+      "blob": "6fe63eb5db09e44e206c9cbc110463ef7872ff58",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/production_finish/chunk_7_7.png.import",
+      "bytes": 959,
+      "sha256": "97a43e369dbbbec021ee2e32c9372dfed77d1d3c75450e80d09512ebfd3e6743",
+      "blob": "318f5fba57e3edff026a0424f49bbce239766d73",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/props/bone_arch.png",
+      "bytes": 153345,
+      "sha256": "df27ca9bbbb319d2aab2a7ae9034377d8a806b1a9a129ada6d10dbb4a8c57db7",
+      "blob": "2e5de4f2b0345dd268434618621b0976679f34d5",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/props/bone_arch.png.import",
+      "bytes": 948,
+      "sha256": "fb3aeab0b1bdbc2f68eda024cf8c876a32f10a3dba3854c8e69bf69943ea92cd",
+      "blob": "72e2aea6dc8070c454205eec47ccb479c456f231",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/props/corpse.png",
+      "bytes": 1701,
+      "sha256": "a36ee12436c99166caec2dbc642a74c2ce07c24a306b3d574ba44aea2df692f1",
+      "blob": "a2f22b3502d590f0ad9674c905ad3329785a98ec",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/props/corpse.png.import",
+      "bytes": 939,
+      "sha256": "55326d2f54c8a84912ebea14eec732f924696d9eba1b7196b98d1bd86d36feb6",
+      "blob": "4bf9cfcdceee91ee12bdcf70ab764d9ee3c1e41c",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/props/frozen_bones.png",
+      "bytes": 726,
+      "sha256": "8e0e200d8b750f7b1a84ef73831f2cca60cff028964258b7824691743aa46c7f",
+      "blob": "296d59bf182dded6804cd1acc463ae2a7b191791",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/props/frozen_bones.png.import",
+      "bytes": 957,
+      "sha256": "d8b8711c1b94566ec91968c971aac7ae95c6061b6dabceb86253bbeb99a7d32c",
+      "blob": "74788b37adaebfda627bd36b495751030ddcaf2a",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/props/glow_flower_yellow.png",
+      "bytes": 431,
+      "sha256": "2fe8a923b8b1e70fe5d8d9a0d27fce4b7ef413b79c9bcdb804560fb099db7dee",
+      "blob": "5b90abead165dadb11c604a4f2e451b490e22735",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/props/glow_flower_yellow.png.import",
+      "bytes": 975,
+      "sha256": "671751862affc2dec9985eacc222efb33de122f454edcfbf2db5b5fc88b640d8",
+      "blob": "ce2f064bc9166b179826253c11925ef10c71cea2",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/props/hang_cage.png",
+      "bytes": 93930,
+      "sha256": "750727d9a7b1e1af2770ee3a6e5cb5915c9c17984e3e40f08bb62d6e0ff30ecc",
+      "blob": "f101c9497eefe821fc349b62afaee3877f5eb14d",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/props/hang_cage.png.import",
+      "bytes": 948,
+      "sha256": "21e41ebd8437813cd57b13f316bb8b1069a36ebec9421f4c05ad2cbced50ab03",
+      "blob": "7387b7bde47dc39227827ae70080da8432bbc20b",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/props/penta_circle.png",
+      "bytes": 140551,
+      "sha256": "0fc81baaf9987fdeb227bed51c1dae9abdcac234f88ce5e5bd1e60bb0e43143b",
+      "blob": "b2f59ef36140b4dc8a491d7b0db20a23952db912",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/props/penta_circle.png.import",
+      "bytes": 957,
+      "sha256": "2a9400ff4e4a26e9e295961c4a784f3b46d566295dbe64c95d63b6b23122a7c1",
+      "blob": "225964f3f50555fa1613743ba068e3200ff94933",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/props/pit_poison.png",
+      "bytes": 18758,
+      "sha256": "3bc7234d9abb7be4205450157df55abefc5bbf5e230c1aa139e77799a6a70041",
+      "blob": "dafc3833aabe708649baefcf1c90e984f0a7072c",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/props/pit_poison.png.import",
+      "bytes": 950,
+      "sha256": "ada6838b444655323eb75b71a4ab1279ad19d877007c4eab1c4d28a65e4c963d",
+      "blob": "2f4b8ab3881954c4683748579d7f0eb2686c12bc",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/props/prop_altar.png",
+      "bytes": 875276,
+      "sha256": "027517c91210701dafb90dda9104be691e5050ca293ebc7c1fe68b72656900c9",
+      "blob": "3bba5813b1510a1ca27ff4ff72a8db9b9d68acd2",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/props/prop_altar.png.import",
+      "bytes": 951,
+      "sha256": "92b143f8e5879fee084e6fc3bb41b55fb423a54d7545d7d43e7b097fe0c2215c",
+      "blob": "eb2c9947b2219913f33ed0a447c6ab87e09f0b4f",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/props/prop_camp.png",
+      "bytes": 878193,
+      "sha256": "d9ecd4d4b1bf8f79b37f21813f109f2360b56c5b57e9319ad3525cfebda21ebf",
+      "blob": "7f59f3a154570c421d99f255c568e8c6c62f9b8f",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/props/prop_camp.png.import",
+      "bytes": 948,
+      "sha256": "7f8a6ea83f2f5956a0f748ab841545b968371d6cc2a822106d093e9ff60c9eba",
+      "blob": "123feb1d25d6ae4630cfdda8f3a27677cd086878",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/props/prop_cocoon.png",
+      "bytes": 828379,
+      "sha256": "a13dd0375a4cf8cca2fa09f89184b69bc8cd5ea305744bbef19848a6e7f81403",
+      "blob": "daeb5767c6dd996fc52876dedb70ea3d54e3afcf",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/props/prop_cocoon.png.import",
+      "bytes": 954,
+      "sha256": "51b48e9d9f57eb8922845eb57c59c324548d974c37c3e47263881da32db8ca08",
+      "blob": "d8bdc5baa7801255b808d59eae4de4f4cb21a520",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/props/prop_corpsetree.png",
+      "bytes": 2072135,
+      "sha256": "fcc9a3bf420f6f0806bd4b8daa875196543c2a8c92268b5b358a52b48a8a9de8",
+      "blob": "7582d3d9f9a8f3708c417aa607248318cc8d70ac",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/props/prop_corpsetree.png.import",
+      "bytes": 965,
+      "sha256": "f9e026b08df13c37ea7e427c4840a2e31035305eb47c5af89de5848e35440f83",
+      "blob": "79a20eec254f59f8f20107512791ae994c9aa638",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/props/prop_g_root.png",
+      "bytes": 1525796,
+      "sha256": "3aa9a299c9042750d67cd992035b3d4381154ce1f90dca7043534d4821c2d3dc",
+      "blob": "c9540ba896b474b799631b4e65b2c9c6856cf4e4",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/props/prop_g_root.png.import",
+      "bytes": 953,
+      "sha256": "40b166ef104d0f9fca6213bad6c3bb1dee57980b11ed59ea6ce4e52afa259847",
+      "blob": "f5f3ba570760ec61387ec22abda8467c9e92ea7c",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/props/prop_g_toxic.png",
+      "bytes": 1440562,
+      "sha256": "9d1486cb138c19f64f038bda9504565f8a389d86c0beaa35e75b8bc9d547b84a",
+      "blob": "9367ee29021977d792c533310d9cfe5d60b14595",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/props/prop_g_toxic.png.import",
+      "bytes": 957,
+      "sha256": "6b4a4007d567c39ef5dcd8abfc49922ac3c0b0e80706da38139a9c21f347844d",
+      "blob": "c4ddc383133ceba265610bb41ce9ceacab02e6fa",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/props/prop_pool.png",
+      "bytes": 788954,
+      "sha256": "9596d6656170dd7775a2800165a76e11a04445293d7a691b00dbbe25db353f57",
+      "blob": "437017fa3ca3e7e051c57b911c30b9e00c0f48ea",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/props/prop_pool.png.import",
+      "bytes": 948,
+      "sha256": "cb983b205e7ea0de00a5be42412b596b82eb9eb41340ed9944b2aba37da4ee77",
+      "blob": "b34cdea664e1915b1b8637494c8f84f9e91ce751",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/props/prop_s_bone.png",
+      "bytes": 223981,
+      "sha256": "182f559766a79600ed7396e9d5d15f9905aa9e2d80ac8c467f0d9d219212772f",
+      "blob": "100cdbcbc090d9be131bb5e38bdb022feaef9dfd",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/props/prop_s_bone.png.import",
+      "bytes": 954,
+      "sha256": "df58231388394fb56fbb5874164d3d6c9252f29484985deacbb953857182fd70",
+      "blob": "59548c18a82209d57f309c294247072c067d5e4c",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/props/prop_s_pod.png",
+      "bytes": 250733,
+      "sha256": "781fc9fd93415a60c49b80e718ca48a8f890db683d0cb3310b8d256388caf624",
+      "blob": "31650d9569a0f99ec4ba557b2dc537475ba77fe9",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/props/prop_s_pod.png.import",
+      "bytes": 951,
+      "sha256": "7a2b57d5ba34605153621dcba8d702d296054474917a0c063f8b14d75b39093c",
+      "blob": "520b41f09f50237b00d5dee0d32e4a4c6869421b",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/props/prop_s_root.png",
+      "bytes": 255349,
+      "sha256": "af2d2c2fa1869cacd468c1368863d63a911fe395cda7f017218e36ca6bef0ff2",
+      "blob": "0c498c8981378a803057fcc51f1a5a20c111ea0a",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/props/prop_s_root.png.import",
+      "bytes": 953,
+      "sha256": "039a364f841a602c087cde679c693f5a65453a9c30b610a3b5e5834f766e33f9",
+      "blob": "7f3701f9ba5d5fb17fa832ddb35f85750d20de39",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/props/rotforest_tree_01.png",
+      "bytes": 1249558,
+      "sha256": "ae69e33cda3191fe22bf1d0b692f27cb7b222f3f48cae6df28e44e5f78a3c789",
+      "blob": "3184ebe25bb6440c2d01716a17224762e996c8de",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/props/rotforest_tree_01.png.import",
+      "bytes": 972,
+      "sha256": "61575c99c2da78e9b3a416b6f3d8ec91185a04ca04e5b1b932215b8e773b460b",
+      "blob": "76d5814b825a68a36681e14a94152c26cfa7869c",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/props/rotforest_tree_02.png",
+      "bytes": 1426429,
+      "sha256": "6dbb59de20274628c7a4e989ed6977fc4af93c6da70443ec153d763b723c3c2e",
+      "blob": "3536faa91ece55c9dbb0cfc73155c38a376e0e01",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/props/rotforest_tree_02.png.import",
+      "bytes": 972,
+      "sha256": "d9a4a5b203f8ba06b73d5f99786c3522ffc14539e3ea43906849a78a6f3c889f",
+      "blob": "d5a1fb60a22598e92238cb87e76b8f1b5a59be8d",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/props/rotforest_tree_03.png",
+      "bytes": 1229370,
+      "sha256": "97f22daaca0ffc1048988f718db00816d6943517ea67bec5be7b199fbc353a53",
+      "blob": "f6717274e6aaed8b9b9a78f1c1bc912e9af85fa3",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/props/rotforest_tree_03.png.import",
+      "bytes": 972,
+      "sha256": "8bb3cac9ed5712fbbbfa108639603c14621988ecf4e3472cb0b678a1cf6212bf",
+      "blob": "7a07dc77bb29491b5aac1fddbd65896ebd4e3d00",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/props/rotforest_tree_04.png",
+      "bytes": 1622752,
+      "sha256": "79f7da5a5f67319bada820f18a0aa116c4e42273063c52b6861a4256e632a81b",
+      "blob": "f91b5c8feb6975844a306c6bddf5aa5a21096c6f",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/props/rotforest_tree_04.png.import",
+      "bytes": 972,
+      "sha256": "774e0aea90b0f988e85712a8a392fb370c4e9ea1778fce8e22633e0b54ce33e0",
+      "blob": "ac66502f1c2fbf07959f6c504f56f79680212148",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/props/skull_totem.png",
+      "bytes": 33032,
+      "sha256": "4c5255905708bd025b07e0d377488467e98a91db6bd39c206264d8b164ed3f64",
+      "blob": "e1380eb9d86f34e49fedeefd02321d54514d24bf",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/props/skull_totem.png.import",
+      "bytes": 954,
+      "sha256": "919ff85a90b878fed292ecacfb4a9cb14b5f9903c6c10f7c2ae0addaa39e33c1",
+      "blob": "7028950c3e7fe41f3af6ba1f8424905511061767",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/props/sword_pile.png",
+      "bytes": 124536,
+      "sha256": "3cd5cbf4dd31b5ccbff5354133c4ea15a82c2a0a12755431f389cdc74f577379",
+      "blob": "5358522b483696d5e51d30b990e675b1601d75f6",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/map/props/sword_pile.png.import",
+      "bytes": 951,
+      "sha256": "1466f39f26c5574aa996b30002ae7250ca7063b423748b7ac892dc9dcdf07066",
+      "blob": "24ca9b80f2cb43b8610fe00f027dacab76981b65",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/player/attack-bat-v1.png",
+      "bytes": 131631,
+      "sha256": "f198e5639a9da1e8e71ac103d44ffa2c7b396cd9a76c17d529eb3a4da3a393b6",
+      "blob": "4967a462a3e79bce90d1cfd72d95890770356dca",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/player/attack-bat-v1.png.import",
+      "bytes": 957,
+      "sha256": "8620995ab832347abd7cb968d9356047e0292abd67621ff9052c1a918e379ce5",
+      "blob": "012079d0fb6d32faca12bdff03c193a9851dc197",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/player/east.png",
+      "bytes": 27539,
+      "sha256": "3e26c01d8d032440572b5fbe72a91adc4946c5e340b70921044f1a533e99588b",
+      "blob": "ef40e97b8d14ddb9b62e395a340ac0b08d406523",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/player/east.png.import",
+      "bytes": 930,
+      "sha256": "e014624c4fac295c303b224292418d256a00ff6e4dbacb63b1c3883d3187fb80",
+      "blob": "1c7b670ec67b551e1b574330319dd3a475dfade1",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/player/north-east.png",
+      "bytes": 23941,
+      "sha256": "a2875563ac73f7a5d500aa2cac252c06ba6be2cab06c7f31f9f595adbba27aaa",
+      "blob": "8239f749a5f05d9a6229246c26d917bd2ecdbeab",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/player/north-east.png.import",
+      "bytes": 948,
+      "sha256": "5cc3fc33968882dec75a9d100318e24b2f9f2c0c729347923a3c7a554ee73b85",
+      "blob": "cf5151c5320fe327d4eed3f227c05e1be66db99a",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/player/north-west.png",
+      "bytes": 27573,
+      "sha256": "e44b06d474bb7a5a414aa01cf455088d4fbe9847be2a8455e5dc0ff479fc4ead",
+      "blob": "892ec1830d2b32004669be6390fffe986089c2e5",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/player/north-west.png.import",
+      "bytes": 948,
+      "sha256": "ea44404601089003040bc1371a3abfc8fa3d2c118133338d612e340676181d21",
+      "blob": "34f95e0ca9ddd478ad14a948a1bced9e81db458a",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/player/north.png",
+      "bytes": 24495,
+      "sha256": "d573be371b59d3aa4b1b2c7414b56460f85c12d7459c8d5ad2db65d5721bc65d",
+      "blob": "ebe7e54551f19b80584ead49acde8a88d375e3e8",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/player/north.png.import",
+      "bytes": 933,
+      "sha256": "6c771716f5206b732a28c3047575fa6efeade1127e36575355c927cf24711223",
+      "blob": "fb041a8734a3fb19b9a6ec6b55f90bc86a571a69",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/player/south-east.png",
+      "bytes": 29283,
+      "sha256": "7d316415b0994330bc758af9c5f901db74b5a78d03478d57d129a57f0ea01efe",
+      "blob": "a9cbc777af096b8a5e93b7790aca73233d72bc7e",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/player/south-east.png.import",
+      "bytes": 948,
+      "sha256": "f1f49635e451c3e4ed954d3909ca98204fcb6f482ebc59e46cbed0b4ef7dba67",
+      "blob": "9d30510321ea265a1685d551c041ea74336fc23f",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/player/south-west.png",
+      "bytes": 25858,
+      "sha256": "df74da2698138c42c6906d6d7531da9befe21a292cc45313c174f0d79826236f",
+      "blob": "7537c55497cdb16f80032f412c025b1b2d9e770c",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/player/south-west.png.import",
+      "bytes": 948,
+      "sha256": "1e2051bf8285f9b6ef744e05c73bb3d4f13b58743628f71f52088dfb012f947c",
+      "blob": "81707b6d3b09b448ba64f69f5e12d1606377e517",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/player/south.png",
+      "bytes": 32485,
+      "sha256": "d04c5a3e7831b4a349908a5f31361c39f9993e5fdccc5f792585bce8e601d467",
+      "blob": "f115c7ba34e9e77d09f76ca9d7119bb2bab98545",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/player/south.png.import",
+      "bytes": 932,
+      "sha256": "b9affc393d815458502fb10c100d513bf1ec746372be0ad613d6340799154935",
+      "blob": "e8119538b1dd9ec0d5b9029e660cd011ec4c34c5",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/player/west.png",
+      "bytes": 27385,
+      "sha256": "2dec33ee14852f08ee2b2e0266dbd4b8cdf6176659ab71285d53df18c6f2b067",
+      "blob": "c8c8ce9bfbc3fe1f1dab4dd13c57712a2a0637d9",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/player/west.png.import",
+      "bytes": 930,
+      "sha256": "c55f9ed65bbbb247b00aaa53a2104cc4dcd24f0be41e77b703112529e79e26ff",
+      "blob": "4e1c3289ccfe203d740e72dcf9c2360574ba32fa",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/ui/ui_bar_only.png",
+      "bytes": 445043,
+      "sha256": "4ab30a74f58668edd9bbd52a87aa42bb6a9d3c3e91aa67967259345f73b7f6d1",
+      "blob": "d1856095edd47ab3ba2baff7bcfdaba43d0ff9f2",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/ui/ui_bar_only.png.import",
+      "bytes": 947,
+      "sha256": "6af208d83e13ce2d99bf42bf4d6c75306cbfc1a28d58933859df39a058c61d1f",
+      "blob": "82175667278d9ad6cdfe0e9635f508d20bc52ab3",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/ui/ui_globe_hp.png",
+      "bytes": 228985,
+      "sha256": "9af17976009b5ae1574d7244a0e053fa73e9a9f107e7da1b0e4f75c723784bcb",
+      "blob": "d8c621c9f7d1a6ceb250a9a311d7a961a9e9d6f3",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/ui/ui_globe_hp.png.import",
+      "bytes": 947,
+      "sha256": "04a3b16e463d3a10ae1b6923250d264f43c1df5955d7d4dcb4e32a367634fd0c",
+      "blob": "399a63934e7706210e534a39624cc6b5a99b5b75",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/ui/ui_globe_mp.png",
+      "bytes": 228985,
+      "sha256": "9af17976009b5ae1574d7244a0e053fa73e9a9f107e7da1b0e4f75c723784bcb",
+      "blob": "d8c621c9f7d1a6ceb250a9a311d7a961a9e9d6f3",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/ui/ui_globe_mp.png.import",
+      "bytes": 947,
+      "sha256": "2e1ec88d89748dc2d5d801731fd62226f2440824881b913eb683d9e096ab96d8",
+      "blob": "e2594c7e48c5c93b3060d434b4dff0d9895647b7",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/vfx/ki_slash_hit_radiant_sheet.png",
+      "bytes": 1047813,
+      "sha256": "bce7e58dc835ea3de34c14d875924b4a803be9847968ed43177d3b2b367287ad",
+      "blob": "6076baca35e0d1bfcfc404d168d1b256ef01bfae",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/vfx/ki_slash_hit_radiant_sheet.png.import",
+      "bytes": 993,
+      "sha256": "368fc2319b9d52bfda4cec1672234036c6103c10f6fb33a08269e53a8c912e1d",
+      "blob": "c3bf948745bfe08aa7cd2c827fe5fd6ed4f88152",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/vfx/ki_slash_radiant_sheet.png",
+      "bytes": 1249060,
+      "sha256": "016f134afca23a4b2624f0874e0630d452b9a1e2f8639048436120a3c220076b",
+      "blob": "12f59b0cf6c917fa016601689362ed2e0a1580ad",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/vfx/ki_slash_radiant_sheet.png.import",
+      "bytes": 980,
+      "sha256": "25926db34f15cd55d0ab98df405647756b62843299e8ff5275bcc1bd6a77bcb8",
+      "blob": "d8df9a0da2ec88dee8fe3f3c20a155c4c2445514",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/vfx/radiant.gdshader",
+      "bytes": 695,
+      "sha256": "7a44f5120a8336fbe7126c9528a7aef4eccfad3786c1e424112d8898994f60c5",
+      "blob": "1e10039a35cf35495583474e4d620e31e103e1ef",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/assets/vfx/radiant.gdshader.uid",
+      "bytes": 19,
+      "sha256": "c75c36ab9b68492ed5399e7ec9cc881922273cf980e2db5cf5e640b2c4851a2a",
+      "blob": "7b3eb7e2199637f63b7b698df3a90c8b062f55bb",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/data/combat.json",
+      "bytes": 5031,
+      "sha256": "bfb7ef185c3776893a5fb890cf61c0a20da3b92d3540dae9c8c96ada0b535dba",
+      "blob": "afb90b471d71739502d2c6475a4f60878f1dbbdc",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/data/encounters.json",
+      "bytes": 344544,
+      "sha256": "91fd1a88b394152cd8b0de653f1bde5139b7829f331787581616f7ef3c0724fa",
+      "blob": "1795a476afc9ae5a76afc890d6683cd1f94d2b31",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/data/enemy.json",
+      "bytes": 1604,
+      "sha256": "52393b09c27e78fd060af80eb6911cf3c959c2d76c24a037e79c6a466f977f38",
+      "blob": "3f7d7b318de1abe30676f16bd30fbb9728c9fa8f",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/data/etype0_physical_flesh_crawler.json",
+      "bytes": 29585,
+      "sha256": "f8b0a168d2c7cb39ede3a0acf4942ff73a0016f70cc58ac581b3a29a96508300",
+      "blob": "d128ff106a0354ba2eeaa67e3a80aa7bffcaa1c8",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/data/map.json",
+      "bytes": 111469,
+      "sha256": "ce740d386d6bc6bc80666657b2de7ba2fe7fbb94077977f7ac40832f8ad543a3",
+      "blob": "69815feb66bb8b5c99f452cfbfc37055fca93ea5",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/project.godot",
+      "bytes": 949,
+      "sha256": "9897f7e9d411b83694ed22948d9bcbddb1870704b0b07c304b8db545b6fa43c7",
+      "blob": "57bbbfad1ef69b274991ae494f6131a5f2cfa6fa",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/run.command",
+      "bytes": 167,
+      "sha256": "41b3fcb7a7555ef1836862380ad55a2fc25b0e416154c0ef4d25c771a379a790",
+      "blob": "51487b6b2bdc18b5cdcde4809855c9d83f3c3200",
+      "mode": "100755"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/scenes/main.tscn",
+      "bytes": 173,
+      "sha256": "e9ee11fd78c8fcea995f37526334ab837cdcf6ffda076c1542ac55860c974344",
+      "blob": "fc430ae12c58690091e71d149c961cf3f3234e93",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/scripts/crescent.gd",
+      "bytes": 8552,
+      "sha256": "40c5eda258bea5ed2316870f9d96b441393fef39667fce2e59de75da438b9009",
+      "blob": "169a6560f12d8956fb16300d6879dd194a2adee2",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/scripts/crescent.gd.uid",
+      "bytes": 19,
+      "sha256": "55acedeed00447e8b34044cd73613ca25e30eab3cb62285fd814ac2c89723994",
+      "blob": "bc7af55823263d11078412ac79431f4c4e4ae7cb",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/scripts/enemy.gd",
+      "bytes": 9916,
+      "sha256": "bb3fb21b0c1efd190cd0c3d7c7291c15b14f2d32fdb784c797cd44a558ae6782",
+      "blob": "65c0dfc47629e737b75f86ee9a86173b1f21a94d",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/scripts/enemy.gd.uid",
+      "bytes": 20,
+      "sha256": "c5ff058d67b75f4732b86e70f3875359aa646126facf05873755b379815ed4a7",
+      "blob": "01a00b446f5f3dfde805c1b24cbfca7dd1065784",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/scripts/enemy_factory.gd",
+      "bytes": 24531,
+      "sha256": "f4ae95b743761215deb89e5a2c2b30f42804fd80d8b964a0d259b774219b5bdf",
+      "blob": "e80713fef91b661c49d36c5864c1267e713fb980",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/scripts/enemy_factory.gd.uid",
+      "bytes": 20,
+      "sha256": "4ded87779b494f425dff8da27e81d28b1360dda02db202dbda350fa61b07880a",
+      "blob": "6b5df5a5baacef08e65382f25a87f625dee55ce2",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/scripts/enemy_melee_flesh_crawler.gd",
+      "bytes": 14432,
+      "sha256": "ddc6e6d4224ba361722fd9b415ca688f8aa9a3dbcfb9f0877b52a9a57c0c9a97",
+      "blob": "ff78cc79cc27d25299668312eb115e982290785a",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/scripts/enemy_melee_flesh_crawler.gd.uid",
+      "bytes": 20,
+      "sha256": "942b65fb08e4162175c4f1663b6fe1ed74b5b5ab480f3538cd458c6b21374d32",
+      "blob": "6aea2a2c5ed0c25c8fcdce4f9d20e20c3b325fcc",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/scripts/enemy_projectile.gd",
+      "bytes": 3133,
+      "sha256": "941618cc40af3d207cb863f559610fec709fc27383aea77669e6ab8965001582",
+      "blob": "d27f6dbdd8ea716713a4d79159f6fcf57c8d6a83",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/scripts/enemy_projectile.gd.uid",
+      "bytes": 20,
+      "sha256": "2e77be83d4d7bc786ed67ae0f16c305efc68c3dccf4570d273314a7a708962d9",
+      "blob": "4680f30d330177c012f5cf5cc6453ffbaa3535df",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/scripts/enemy_projectile_physical.gd",
+      "bytes": 6870,
+      "sha256": "e1374e85b479d7efa941fb909433313d29f722be3cf08a1ed27209802e07969a",
+      "blob": "e20ae03c7be4b13fb2b4f94a0315a45757fa3367",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/scripts/enemy_projectile_physical.gd.uid",
+      "bytes": 20,
+      "sha256": "1bb5c17e101ccac21e85153ae56095bab646b0af9ae0f2a17d9205e5d548f089",
+      "blob": "214ee5dcef71e909666d284c28fcb98099d4e685",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/scripts/hit_effect.gd",
+      "bytes": 1945,
+      "sha256": "8118272a2a902b92663077875b1c87800dd2268c2a71091a1fb0c5d6755b47d4",
+      "blob": "fb2cd63baf605e9135a6a030cc2de6ef527d7873",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/scripts/hit_effect.gd.uid",
+      "bytes": 20,
+      "sha256": "053bab417de7392f1eac63dfcb98ba84cc4a3074f31acb446b5528b92c49839f",
+      "blob": "2e270a307228dce3cefc9399da04f2a1d5c85f21",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/scripts/hud.gd",
+      "bytes": 12572,
+      "sha256": "69bbacad0e2b48227485b00541e612ce95091543bbe4bb7a9548cc779ec41623",
+      "blob": "4e15818f0a807ebd8969a678ab1a2a3482132fe4",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/scripts/hud.gd.uid",
+      "bytes": 20,
+      "sha256": "763c2ef4a13f08e3fa980fa8cbe3d1da0b5f89af292c9ef7bdd9f39717500728",
+      "blob": "49d16a5e2eff3e5c4f492daa329df6c0da4a63ff",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/scripts/main.gd",
+      "bytes": 6887,
+      "sha256": "f0af262ba71389690b2f515d30e1f5b31fe2b53224847154f1c912bdfbe3f065",
+      "blob": "ba7876465ead3b9dd4b4ff71b28815a8a5a9cf8a",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/scripts/main.gd.uid",
+      "bytes": 20,
+      "sha256": "8911608dad72d5003cefbb7714c026359628520518af37175f90795681f18675",
+      "blob": "4f514445ad0038c84567126249ded9763646f785",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/scripts/performance_capture.gd",
+      "bytes": 10688,
+      "sha256": "068706d454d493538e9395aa3d0125703fb2f4d45a4a578c795837b4a14b3779",
+      "blob": "5d012e94493babbae5dd6098cb1bb1b7c1299764",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/scripts/performance_capture.gd.uid",
+      "bytes": 20,
+      "sha256": "b4a67d460648fc8d8e4d796d5fc280a6c39f8fc5f9d32fb02e8a8653c1dfb83d",
+      "blob": "2325b2734cfc8c51b107a4fa718a971608bacf78",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/scripts/player.gd",
+      "bytes": 22054,
+      "sha256": "5dd8121097e11aa0274bc1cd1103fad295aebfa01456b9cf0ec92748889d3c2c",
+      "blob": "59f60cd7399f0f3b9c2d54c98fc1bd52890a1488",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/scripts/player.gd.uid",
+      "bytes": 20,
+      "sha256": "91c6915de2d9c3cb06e6d4d8aaf61be79385cc3109cea454271875e1cde7605c",
+      "blob": "01010cf8f2cd21c5050347c697ac7871dcddc664",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/scripts/world.gd",
+      "bytes": 12244,
+      "sha256": "07cab607a525dc0e509d01155364eaff5f3f7e259716bc379a77c934d82cd065",
+      "blob": "9e0e92f208047fbd4e9efb414ac25c68af7f7450",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/scripts/world.gd.uid",
+      "bytes": 20,
+      "sha256": "6d69a0485ed88f29cbb6a569161c6e4288dff8abcf60e6b9470b637101ff03d6",
+      "blob": "fd6a542da0a58f14b3936e7a08fbeb69fa3c0645",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/tests/test_contracts.gd",
+      "bytes": 18539,
+      "sha256": "cac9953655527124c174278e590098448527ea980badc6f98c569522c9dcf8b2",
+      "blob": "772a63e0693605b0b67ef23ce1de0baac28eeb82",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/tests/test_contracts.gd.uid",
+      "bytes": 20,
+      "sha256": "f0f74a5183c63faf1f8121a796d0c9ec024a8319f69149b2c1a95a1f9dba95c1",
+      "blob": "74b8dfd39b40d135c0c5f826c2d17fa5487845e8",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/tests/test_encounter_factory.gd",
+      "bytes": 17365,
+      "sha256": "4cd59117eb3a3ebcd846837da02da4515f81f99a7df15398872cda8e965f1d90",
+      "blob": "18f39279707db587fc1d634696e6fa9921619f26",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/tests/test_encounter_factory.gd.uid",
+      "bytes": 20,
+      "sha256": "7d3106fd278d8a78cb87fda7fd67c3a534c54ae196760348633f7b849dbe81e6",
+      "blob": "7c3c4d0f672e807d349bab5998bb7893f1926b84",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/tests/test_etype0_physical_burn.gd",
+      "bytes": 17032,
+      "sha256": "053013ab45471276cfaf22e73fa0853f57c71067a81185375a657a7a26c86848",
+      "blob": "a44c20309c2f53f9b15db58e034a5c5105612a55",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/tests/test_etype0_physical_flesh_crawler.gd",
+      "bytes": 16888,
+      "sha256": "baf13d3852e0e2ba422e51317fee5dbc2223f4c053f6660f0f20a6ae124ff562",
+      "blob": "f02aeede49a7ea2518041ca2e6625c6448081567",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/tests/test_etype0_physical_flesh_crawler.gd.uid",
+      "bytes": 20,
+      "sha256": "3f20fb5dc7f6a95af2a865523e766699da37748cc929c599c35431968f7e5599",
+      "blob": "f206ef93e0e95ab353b7807db450aa59ffac121e",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/tools/export_encounters.mjs",
+      "bytes": 16793,
+      "sha256": "ceef7ee4c8b8689d4c3d563dee14b3b0382a4bb4919276a6c8456f09c24b5fe7",
+      "blob": "84b0e4eb49b5f87ca4023fea2e7fb6b7397deafd",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/snapshot/tools/export_world.mjs",
+      "bytes": 11127,
+      "sha256": "1b676ee52495a9523bb99f44ca842a260a30ea8235d098eb2e3e47f1c76caa46",
+      "blob": "a3f49657989a756ccaf898559440f310626666fa",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/run-review.command",
+      "bytes": 447,
+      "sha256": "6fec3137edf0034577816d682d72e8fdb090c1fcc85e773720d6bb2fcdbb44f4",
+      "blob": "cb2a17b99655f7c525384c19f165a5d211ea5899",
+      "mode": "100755"
+    },
+    {
+      "path": "recovery/godot-review-20261013/README.md",
+      "bytes": 1946,
+      "sha256": "9c7bfe9b2e6912a25b2b262d66dc7ec583f8dca497ea4a9c7e2abfde030f5021",
+      "blob": "5b215f0873af3daced132f7e151dc4264c67881b",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/logs/import.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/logs/import.stdout.log",
+      "bytes": 28970,
+      "sha256": "f26d773db8e761b78a5282e6d17d5ad8eda838d6bc39f707ff9306fcae830186",
+      "blob": "07d1aef511e32dda4c4c2c9c7e2aef8d6f88fe50",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/logs/startup.stderr.log",
+      "bytes": 249,
+      "sha256": "fb84b12020f8d88e1fdcf01d1254bb292e39ddd7bda82b6d6e105c9f041f2194",
+      "blob": "c52259403030b0aa419b9ccad6909c7927300e32",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/logs/startup.stdout.log",
+      "bytes": 235,
+      "sha256": "de855f20d3f1f5e409ab380bd2ddf59743e78ee26ecc97f9bd747330e1eadbbf",
+      "blob": "73e447c36600e61f0696dfcaf8a1b385f0928150",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/logs/version.stdout.log",
+      "bytes": 32,
+      "sha256": "edff16c1721dd4ae989cadf29a01f574ae8d51b118221f664725bd6980bbba5d",
+      "blob": "7cfa5cc95b8c302dfb6743b0aa6bd001a42f0655",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/original-project.godot.txt",
+      "bytes": 928,
+      "sha256": "fec3401153bf7be19d14edef2dec7784f85f84ae9f7ad1d16476b848dd763d5d",
+      "blob": "295e5d3eaaaa2ab32bb53c9a60ef9880b419dd6a",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/manifest.json",
+      "bytes": 97569,
+      "sha256": "68aeb6869a1f48fb216b9e3422424c5b77c72ee1d8a243dc6fbea5b507a7c373",
+      "blob": "4b95da2e130b7e95e52d122e59fe1f9cd36aeacc",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/receipt.json",
+      "bytes": 2842,
+      "sha256": "ec73692aa964c249e438e988f0f5f1d0b61795715a0cf1d3410d005792059201",
+      "blob": "bf8e888861b0077615421a00080edd51764e3d57",
+      "mode": "100644"
+    },
+    {
+      "path": "recovery/godot-review-20261013/console-readiness.md",
+      "bytes": 8975,
+      "sha256": "00c9ec60ac93fc969cd27a1561409afb947a766f0bcc2aaeae617b58b4c71bcb",
+      "blob": "bc630da1a53272744949251e7f7b87ecd89949bb",
+      "mode": "100644"
+    }
+  ]
+}

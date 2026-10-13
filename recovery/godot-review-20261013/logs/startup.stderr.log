@@ -1,0 +1,4 @@
+WARNING: Camera2D overridden to physics process mode due to use of physics interpolation.
+     at: _update_process_callback (scene/2d/camera_2d.cpp:88)
+     GDScript backtrace (most recent call first):
+         [0] _ready (res://scripts/main.gd:47)
