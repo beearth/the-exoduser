@@ -1,10 +1,19 @@
 # FDG 홍보 준비 콘텐츠 현황
 
-최근 정리: **2026-10-13 22:35 KST**. 사용자 지시 「홍보준비 최신컨텐츠 업데이트됀거 정리해서 항상 정리해놔」를 반영한 지속 갱신 문서다. 기술 구현, 실제 게임 화면 검수, 공개 데모 배포, 영상 게시를 별도로 확인한다.
+최근 정리: **2026-10-13 23:33 KST**. 사용자 지시 「홍보준비 최신컨텐츠 업데이트됀거 정리해서 항상 정리해놔」를 반영한 지속 갱신 문서다. 기술 구현, 실제 게임 화면 검수, 공개 데모 배포, 영상 게시를 별도로 확인한다.
 
 **UI 개발 소식1건과 스킬 노트4건(기검참·가시덫·회복의 영역·지옥강타 1)을 공식 YouTube에 게시하고 공개 페이지를 확인했다.** [UI](https://www.youtube.com/post/UgkxfJtDWBoJglf9RWKueZFsGwOBIRBYWULb) · [기검참](https://www.youtube.com/post/Ugkxpb6uTCUIAd3Ypj4_1vsi9cv2BKT-F93l) · [가시덫](https://www.youtube.com/post/UgkxhEsTSyRHSuYPkuEXJmUg-xnYL90AU9nj) · [회복의 영역](https://www.youtube.com/post/Ugkx2UIc57jBgsgkolbqytX0Nn3bgmkAz6if) · [지옥강타 1](https://www.youtube.com/post/UgkxrTYuXuoASizWPYhlrpJyCF-7pcSqJT8-). 지옥강타 1은 주변 원형 범위 타격과 분노의 피해 강화·소모를 소개했다. 분노 최소량은 발동 조건이 아니다. 기존 기능 소개이며 새 패치·신규 촬영 영상으로 표기하지 않았다. **전체 보스전 완료를 기다리는 대상은 리디자인 완료 대표 메인트레일러다.** UI·기존 스킬·캐릭터 원화/제작 과정은 각 소재의 실제 근거와 검수 범위에 맞게 계속 제작한다. 기존 원화30초·전투18초V3·R1 검토본과 새 대표 영상의 미승인 자동 공개 금지는 유지한다.
 
 **최신 품질 조치:** 얼음오브·패링 Shorts는 같은 영상이 두 화면으로 복제된 구성을 사용해 **두 편 모두 비공개·공식 목록 제외**로 회수했다. [회수 결과·증거](../../marketing/operations/shorts-quality-withdrawal-20261010/withdrawal.json). 실제 화면·영상 또는 단계가 명확한 기존 원화와 간결한 설명을 함께 준비하고, 공개 전 완성 미리보기를 먼저 인도한다. 동일 영상의 확대 화면과 전체 화면을 동시에 복제하지 않으며 원화를 가리는 불투명 자막판을 사용하지 않는다. 매시간 점검을 긴 글 연속 게시 빈도로 해석하지 않는다. UI·스킬·캐릭터의 독립 준비를 계속하고 대표 보스전 완료 영상만 총괄 완료를 기다린다.
+
+## Godot 전투 텍스트 연결 — 2026-10-13 23:33 KST
+
+| 항목 | 확인 범위 |
+|---|---|
+| 새 버전·근거 | main checkout commit `f070f8a4129073acbc1b00d4b8750e70e32fda2e`, parent `3a6ac050f60af0aef9660827751fad6c7757efc9`, 23:12:55 KST. 제목 `Bind native floating text to the World post phase`. commit 메타데이터·변경 docs7경로와 [전투 텍스트 연결 문서](../engine/FDG_GODOT_FLOATING_TEXT_BINDING_20261013.md)의 커밋 저장 내용1개만 읽었다. 이전 코드/검사/미디어 재검증0. |
+| 기술·완성 상태 | 실제 World/HitFX 연결의 새 고유4 PASS는 **첫3 + 별도 lifecycle1**이다. 기존 성공3·옛 suite 재실행0이며 같은 실행4개로 합치지 않는다. `number_atlas_gap=true`·숫자atlas 미공급, 이번 Main/GUI0, 공개 자연 교전·canvas 비교·glyph/AA·240FPS 미확인, **RETOUCH**다. Main6/동결배송5 및 Q/E·M29 연결 진행은 총괄 보고이며 이 한 문서의 독립 확정값이 아니다. |
+| 별도 작업 보류 | 총괄은 Claude 지도 마스크 파일 쓰기가 자동 승인 심사에서 위험 판단으로 거절됐고 상세 이유가 제공되지 않았다고 이미 알렸다. 해당 담당 작업의 보류이며 마케팅에서 재시도·우회·권한 질문을 하지 않았다. 반사탄·방패 버스트의 제작 시작을 새 정상 전투 완료로 세지 않는다. |
+| 홍보·다음 소재 | migration HEAD `9a4534b4` 동일. 새 정상 플레이 영상/원음/공개 승인/게시0·공개 준비0 유지. 다음 소재는 **기존 전사 수정 스틸 미리보기 검수·게시 판단**이다. 품질 개선→사용자 플레이→실제 화면 전체·원음 녹화→완성 미리보기 기준과 같은 요청 비반복을 유지한다. |
 
 ## Godot 부분 통합 체크포인트 — 2026-10-13 22:35 KST
 
