@@ -25,7 +25,7 @@ test('subtitle ranges preserve narration boundaries and leave the final title cl
 });
 test('runtime uses clean movie and language-aware subtitle layer',()=>{
  const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
- assert.ok(html.includes('video/world_intro_v14_remaster_en.mp4'));
+ assert.ok(html.includes('video/world_intro_v15_clean_en.mp4'));
  assert.ok(html.includes('world-intro-subtitles.js'));
  assert.ok(html.includes('WorldIntroSubtitles.attach(movie)'));
  assert.ok(!html.includes('.world-intro-active #cinLang,'),'language choice remains visible');
