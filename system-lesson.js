@@ -65,7 +65,7 @@ window._systemLesson = {
     this.skip = this.node('button', this.t("이 항목 건너뛰기","Skip this step")); this.skip.type = 'button';
     this.skip.onclick = () => {
       const step = this.current();
-      if (step) { this.skipped.add(step.id); this.lastStatus={id:step.id,skipped:true}; this.render(); }
+      if (step) { this.skipped.add(step.id); this.lastStatus={id:step.id,skipped:true}; this.render(); this.finishFlow(); }
     };
     const close = this.close = this.node('button', this.t("안내 종료","Close guide")); close.type = 'button';
     close.onclick = () => { this.closed = true; this.active = false; this.panel.remove(); };
@@ -89,6 +89,25 @@ window._systemLesson = {
     this.lastStatus={id:step.id,skipped:false};
     this.render();
     window._tutorialBadges?.complete('systems',this.steps.map(entry=>this.checks.has(entry.id)));
+    this.finishFlow();
+  },
+  // 전 항목 처리 시: 전부 완료면 패널 안에 배지 메달 표시, 5초 뒤 자동으로 서서히 닫힘 (2026-10-10 사용자 지시 — 완료 후 방치 금지)
+  finishFlow() {
+    if (this.current() || this._finishT) return;
+    const earned = !this.skipped.size && this.checks.size === this.steps.length;
+    const def = earned ? window._tutorialBadges?.definitions?.find(d => d.id === 'systems') : null;
+    if (def && !this.medal) {
+      const medal = this.medal = this.node('div', undefined, 'system-lesson-medal');
+      medal.style.setProperty('--medal', def.color);
+      const text = this.node('span');
+      text.append(this.node('small', this.t('배지 획득', 'Badge earned')), this.node('strong', this.t(def.name, def.nameEn)));
+      medal.append(window._tutorialBadges.icon(def), text);
+      this.body.insertBefore(medal, this.list);
+    }
+    this._finishT = setTimeout(() => {
+      this.panel.classList.add('closing');
+      setTimeout(() => { this.closed = true; this.active = false; this.panel.remove(); }, 700);
+    }, 5000);
   },
   pickedUp(item) {
     if (item && item.slot !== 'bonePart' && (INV.bag.includes(item) || Object.values(INV.equipped).includes(item))) this.record('pickup');
@@ -113,7 +132,7 @@ window._systemLesson = {
     this.body.hidden = this.collapsed;
     this.counter.textContent = this.t('{done} / {total} 완료','{done} / {total} complete',{done:this.checks.size,total:this.steps.length});
     this.title.textContent = step ? step.title : this.skipped.size ? this.t("시스템 안내를 마쳤습니다","System guide finished") : this.t("시스템 기본을 익혔습니다","System basics complete");
-    this.hint.textContent = step ? step.text(step.action ? this.key(step.action) : '') : this.skipped.size ? this.t('{done}개 완료 · {skipped}개 건너뜀. 안내 종료를 누르면 닫힙니다.','{done} complete · {skipped} skipped. Select Close guide to dismiss this panel.',{done:this.checks.size,skipped:this.skipped.size}) : this.t("획득·장비·성장 메뉴와 자동 회복을 모두 확인했습니다. 안내 종료를 누르면 닫힙니다.","You have explored loot, equipment, progression menus and auto-healing. Select Close guide to dismiss this panel.");
+    this.hint.textContent = step ? step.text(step.action ? this.key(step.action) : '') : this.skipped.size ? this.t('{done}개 완료 · {skipped}개 건너뜀. 잠시 후 안내가 닫힙니다.','{done} complete · {skipped} skipped. This guide will close shortly.',{done:this.checks.size,skipped:this.skipped.size}) : this.t("획득·장비·성장 메뉴와 자동 회복을 모두 확인했습니다. 잠시 후 안내가 닫힙니다.","You have explored loot, equipment, progression menus and auto-healing. This guide will close shortly.");
     this.skip.hidden = !step;
     this.rows.forEach(({ row, mark, label }, i) => {
       const entry = this.steps[i], done = this.checks.has(entry.id), skipped = this.skipped.has(entry.id);

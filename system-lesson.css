@@ -15,3 +15,10 @@
 #systemLesson .system-lesson-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
 @media(max-height:700px){#systemLesson{top:72px;max-height:calc(100vh - 100px)}}
 @media(max-width:760px){#systemLesson{top:72px;right:10px;width:min(290px,calc(100vw - 20px));max-height:55vh}}
+#systemLesson{transition:opacity .7s ease,transform .7s ease}
+#systemLesson.closing{opacity:0;transform:translateX(12px);pointer-events:none}
+#systemLesson .system-lesson-medal{display:flex;align-items:center;gap:12px;margin:12px 0 4px;padding:10px 12px;border:1px solid rgba(164,147,115,.5);background:linear-gradient(90deg,rgba(40,30,16,.75),rgba(12,10,8,.4));color:var(--medal,#e9d18b);animation:systemLessonMedal .6s ease-out}
+#systemLesson .system-lesson-medal svg{width:30px;height:40px;flex:none;filter:drop-shadow(0 0 6px color-mix(in srgb,var(--medal,#e9d18b) 55%,transparent))}
+#systemLesson .system-lesson-medal small{display:block;color:#ae9878;font-size:10px;letter-spacing:.2em}
+#systemLesson .system-lesson-medal strong{display:block;font:600 16px/1.35 var(--font-hell,serif);color:var(--medal,#e9d18b)}
+@keyframes systemLessonMedal{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:none}}
