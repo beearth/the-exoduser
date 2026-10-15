@@ -53641,3 +53641,11 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 | docs/0마스터플랜/POE2_REFERENCE_ANALYSIS_DOT_20261012.md | P01 조사 당시 기록과 이번 부분 이식을 구분. 전체 전리품 보존/표시 분리/정산/실전 검증 미완 유지 |
 | docs/engine/FDG_PC_MAC_GIT_SYNC_20261016.md | 독립 범위·사전 보존·합성 검사·실행 한계 기록 |
 | 검증 | actual _wiPush + 합성 레코드/음향 대역 신규6군·구문1 PASS. 실제 보스/드롭/수거/HPclock/맵/save/API/창 실행0 |
+## 2026-10-16 R 플레이어 투사체 풀 kbMult 잔류 수정
+
+| 경로 | 변경 |
+|---|---|
+| game.html | R h141. 재사용 _resetPProj의 kbMult=undefined 추가. 이전 스킬 배율 잔류를 제거하고 기존 hurtE 기본 선택을 사용 |
+| docs/12퍼포먼스·최적화, docs/2_1 스킬관리+합체시스템+자원 | 필드 수명·기존 명시 배율/풀·공식 보존 및 합성 검사 범위 동기화 |
+| docs/engine/FDG_PC_MAC_GIT_SYNC_20261016.md | 독립 이식·baseline 검사기 중첩 try 추출 수정 이력·실행 한계 기록 |
+| 검증 | actual pool함수4 + actual kbM 문장/합성 레코드 신규6군·구문1 PASS. 실제 피해·KB벡터·충돌·스폰·HPclock/save/API/native/창 실행0 |

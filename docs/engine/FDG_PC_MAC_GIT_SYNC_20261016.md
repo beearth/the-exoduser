@@ -438,3 +438,17 @@ R의 기존 gameConfirm pending resolver 가드 한 줄을 main에 결합했다.
 | 미포함 | P01 전체 보존/필터·정산 큐, 맵 제작/배치, CP/refund/inventory UI·native·db56 및 모든 타 HOLD. 기인수 proof 재연0 |
 
 외부 단위 기록: R-world-item-chest-retention-integration-20261016. 최신전체/PC/native/visualPASS 주장0.
+## 2026-10-16 R 플레이어 투사체 KB 필드 독립 이식
+
+| 항목 | 이번 범위 |
+|---|---|
+| 출발 main | b3f2b4268b6ebb1811c29889f71faa378ee1e0a0 |
+| R 원본 선택 | h141 _resetPProj의 p.kbMult=undefined |
+| 실제 누락 | 악의구가0.1을 쓴 객체의 회수/대여 후 값이 남고, 기존 p→hurtE opts 경로 및 kbM 초기 선택이 이를 읽는 연결 확인 |
+| 보존 | 같은 객체/_hitSet·풀120·기존 관통/부가 필드·피해/KB 공식과 명시 배율·HPQE·생성/반납 정책·RNG 유지 |
+| 사전 보존 | code1/docs4의 5경로 WORK/HEAD를 첫 코드 수정 전에 바이트 백업 |
+| 신규 검사 | actual _mkPProj/_resetPProj/_recyclePProj/_getPProj + actual hurtE kbM 선택 문장, 합성 pool/record 및 affix대역6군·구문1 PASS. 실제 producer/hit routes는 정적 확인 |
+| 검사 도구 이력 | 코드 수정 전 baseline 추출기가 hurtE의 기존 try 내부 kbM을 직접 body 문장에서만 찾아 실패. own-function 중첩 블록 탐색으로 검사기만 수정 후 실패 경로 재현. 제품 교정/성공 검사 재연0, firstWholeClean=false |
+| 한계 | 실제 hurtE/피해/KB벡터/충돌/프로젝타일 스폰/HPclock/native/save/API/창 실행0. 전체최신/PC/native/visual/성능PASS 아님 |
+
+외부 단위 기록: R-player-projectile-kb-reset-integration-20261016. db56/타HOLD 및 인접 원본 변경은 자동 채택하지 않는다.
