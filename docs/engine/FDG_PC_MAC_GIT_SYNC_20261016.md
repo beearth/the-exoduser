@@ -243,3 +243,17 @@ R의 기존 gameConfirm pending resolver 가드 한 줄을 main에 결합했다.
 | 기존 강제 저장 | 뒤따르는 _pendingForce 처리와 Date.now()-_lastSaveTime>=5000 식 유지. 자동 저장 간격 30000ms·최근 성공 10000ms 게이트 및 dbSaveForce 최소 5000ms 정책 불변 |
 | 저장 권위 | 실제 dbSave의 QA/연습/준비·busy admission, backend·직렬화·성공 시각은 원 함수 소유. helper는 성공을 기록하지 않고 기존 저장을 요청할 뿐. 최신 상태의 영구 저장 완료 보장은 아님 |
 | 범위·검수 | 자기 합성 소유자·가짜 timeout callback·목적 primitive stub로 실제 helper/공통 완료 tail을 검수. 실제 시계·게임 타이머·세이브/API·부팅 실행 없음. native helper/current collector·HOLD·3387 수정 없음 |
+
+## 2026-10-16 기존 R BGM 페이드 타이머 소유자 방어
+
+| id / 적용 위치 | 현재 계약 |
+|---|---|
+| 채택 | R h23~h28의 BGM _onEnded/play/stop/fadeOut만. 현재 본편 death·victory·INTRO의 fadeOut 호출에서 쓰는 기존 객체이며 다른 구현으로 재정의되지 않음 |
+| stop | 기존 _fade를 지역 fade로 캡처하고 _fade=null 후 fade!==null이면 clearInterval. 기존 onended 해제/pause/currentTime=0/_cur·_curKey 정리 유지 |
+| fadeOut | 현재 Audio a와 step=a.volume/(dur/50), 50ms interval 유지. 이전 fade 정리 뒤 지역 interval 핸들 fade를 저장하고 this._fade=fade |
+| 늦은 callback | this._fade!==fade이면 즉시 반환하여 새 fade를 건드리지 않음. this._cur!==a이면 자신의 fade만 clearInterval/null 후 반환. 같은 캐시 Audio를 다시 재생해도 이전 callback은 새 재생 음량을 바꾸지 않음 |
+| 정상 완료 | a.volume=Math.max(0,a.volume-step). 0 도달 시 캡처한 fade만 해제하고 기존 Audio의 onended=null/pause/currentTime=0, 동일 _cur의 참조·키 정리 |
+| 곡 종료 전환 | _onEnded가 다음 src를 찾은 뒤 기존 fade를 해제/null로 만들고 기존 다음 곡 재생 경로를 실행. 다음 src가 없으면 기존 return 유지 |
+| bgmTrack 입력 | 개별 트랙 잠금은 !force && typeof OPT.bgmTrack==='string' && OPT.bgmTrack.startsWith('t:'). 비문자 truthy 설정에서 startsWith 예외 방지. 설정값을 교정·저장하거나 새 기본값을 만들지 않음 |
+| 기존 계약 | _vol=0.3·트랙 목록·장 우선/전체 랜덤·t: 직접 선택·force·INTRO 게이트 및 300/500/800ms fadeOut 호출 유지. autoplay 지연 재생·오디오 캐시 정책 변경 없음 |
+| 검수 경계 | 실제 BGM 객체와 공개 메서드를 자기 Audio/interval 대역에서 검수. 실제 오디오·시계·게임 창·설정/API 변경 없음. 음질·주관 청취·실제 브라우저 autoplay/전체 플레이 검수의 증거는 아님 |
