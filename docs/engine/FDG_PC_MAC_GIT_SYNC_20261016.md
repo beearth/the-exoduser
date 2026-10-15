@@ -317,3 +317,16 @@ R의 기존 gameConfirm pending resolver 가드 한 줄을 main에 결합했다.
 | DOM 안전 | _petBubbleShow는 textOnly에서 missing/non-leaf면 반환, 일반 표시도 leaf일 때만 텍스트 설정. _refreshPetBubbleInput도 children.length===0을 확인. 부모/자식 노드 구조를 교체하지 않음 |
 | 일반 표시 보존 | portrait v4·480px·기존 crow/cat 박스·연습 패널 옆 cat 위치·ui-scale×1.5·opacity .6·폰트/기존 페이드 유지. 정상 발화/우선순위/h58 firstItem/음성/저장/전투 변경 없음 |
 | 검수·한계 | 자기 DOM/매핑/슬롯/번역 대역에서 실제 함수와 draw entry의 guard/call만 검수. 전체 draw/speech/실물 패드/브라우저/설정·localStorage/API·사용자 창 검수 아님. 캐시 밖 외부 DOM 변경 전반의 자동 복구나 모든 번역 언어 키 토큰 지원을 주장하지 않음 |
+
+## 2026-10-16 기존 R 샘플 SFX 등록 노드·프레임 큐 예외 정리
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 채택 | R h79~85. _playSampleNow의 노드 등록 뒤 connect/start 구간 try/catch 및 _sfxFrameReset의 큐 dispatch try/finally만. 음원·호출·버스·우선순위·동시재생/프레임 한도 유지 |
+| 등록된 노드 | 기존 _activeNodeCnt++/목록 등록 뒤 try. panner 경로는 _nd._dn을 panner 정리 wrapper로 설치한 다음 src/panner connect. connect/start 예외는 현재 _nd._dn 호출 후 원 예외를 다시 throw |
+| 정리 의미 | 기존 _dn의 중복 counter 감소·목록 제거 방지 유지. src/gain과 할당된 panner의 기존 disconnect 처리 사용. 기존 onended/(_dur+.5)×1000 timeout 유지하며 실제 가청 성공을 보장하지 않음 |
+| 프레임 큐 | 기존 for dispatch가 throw해도 finally에서 동일 _sfxQueue 배열 length=0, _sfxFrameCnt 각 값=0, SFX._sbSndCd>0이면 기존 1 감소. 원 예외 전파 유지. 다음 프레임에 실패 큐를 재생하지 않음 |
+| 원 경계 | actx 획득·등록 전 allocation/gain bus connect는 이번 try 범위 밖. _resumeAudioCtx(false)는 finally 뒤 기존 위치 유지. 모든 WebAudio 예외를 완전 복구하는 새 정책 아님 |
+| 현행 한도 | 데스크톱/모바일: _MAX_ACTIVE_NODES=48/16, _SFX_MAX=2/1, _SFX_PER_FRAME=6/3, _MAX_PROJ_NODES=5/2, _MAX_HIT_NODES=3/2. _MAX_STEP_NODES=2. 기존 priority/eviction·동일 키 감쇠식·RNG 불변 |
+| 파라미터 | 기존 rate\|\|1, gain=min(1,(vol\|\|1)×sfxVol()), pan clamp[-1,1] 및 abs(pan)>.05, startTime\|\|0, duration\|\|2 유지. 새 음원/로더·음량·타이머/샘플/전투 상태 없음 |
+| 새 검수 | 자기 AudioContext/node/timeout 대역으로 실제 _playSampleNow/_sfxFrameReset을 호출. 연결·start 오류 전파/등록 노드 counter·queue 정리와 정상 panned/unpanned·한도 경로만. 실제 WebAudio·가청/성능·사용자 창·저장/API 검수 아님 |
