@@ -53742,3 +53742,10 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 |---|---|
 | game.html _worldItemSkin | 새 Image 실제 src 기록+공통컷아웃 source 일치 guard. 기존 phys fallback은 원 마스크/재사용 경로로, main uniqueArt 우회는 성공/기존fallback 모두 유지. 원 paths/loader/mask/boot/PNG 정책 유지 |
 | 새 검증 | 실제 helper/own Image·Canvas/mask/resolver/자기 load-error callback 새5그룹/main inline1. 실제 Image·네트워크·알파/픽셀·PNG·사용자cache/GUI/saveAPI/native/PC 검증 아님 |
+
+## 2026-10-16 — R h172+h448 source scratch/head2D 준비
+
+| 대상 | 변경·검증 범위 |
+|---|---|
+| game.html | 원 helper/관련 선언과 pct>=100 optional helper→기존 hide tail만 연결. 원 GL/G.off/deathFx·atlasready/크기·inactive split guard/one-shot·finally두clear 유지, 기존DOM/bootgate/epoch/head consumer·render/NativeHUD 보존 |
+| 새 검증 | 실제 helper+tail/own atlas·scratch/split/performance/hide 대역6그룹/main inline1 첫기능PASS. 실canvas/GL/픽셀·head캡처/UI/clock/saveAPI/native/PC·성능·READY 검증 아님 |

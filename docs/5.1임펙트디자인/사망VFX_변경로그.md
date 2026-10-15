@@ -277,3 +277,17 @@
 | `_goreImgs` / `_diImgs` / `void_black` | 완료 고어·피격·부활 대기 시트를 먼저 제출. 중복 Set·유휴1장·180f 재검사 유지 |
 
 시체 수·크기·수명·피해·고어 원본·부활 수치는 변경하지 않는다. [실측·검증 SSOT](../12퍼포먼스·최적화/COMBAT_TEXTURE_WARMUP_20260929.md).
+
+## 2026-10-16 R h172+h448 기존 머리 파편 2D 경로의 선택적 준비
+
+| 항목 | 현재 source HTML 계약 |
+|---|---|
+| 연결 | 원 R h172의 _headCaptureWarmDone=false/_headCaptureWarmMs=0 및 _warmHeadCapture2d와 h448 setBootLoading의 pct>=100 tail만 |
+| 진입 | 성공 one-shot 미완료·_useGL·!G.on·OPT.deathFx. 기존 chapter1/south atlas meta/ready/image.complete·크기≥(meta.cell 또는 원256), 첫 split 존재/비활성 |
+| 기존 리소스 | _gibX/_gibC scratch와 _splits[0].ctx만 사용. scratch clear48×48→atlas cell을48×48로 draw→split cell clear→scratch48×14를 _SPLIT_CELL(현재64)²로 draw. 새 canvas/active debris 생성·상태 변경 없음 |
+| 종료 | finally에서 scratch48×48과 split cell을 각각 독립 clear 시도, 실패 시 prepared=false. 원 performance 차이 ms 기록과 done=prepared 반환. flag는 호출 경로 완료 표시이며 픽셀/GL/READY 판정 아님 |
+| caller | 기존 pct>=100에서 try helper/catch{} 뒤 기존 hideBootLoading. guard skip/실패에도 원 hide 유지, hide 자체 예외는 전파. 기존 DOM/pct/hide 본문·bootgate/epoch 유지 |
+| 보존 | 실제 _addHeadGib/frame 선택·bodyfallback/GL·봉인 atlas warm본문·Native HUD·h49/h173 및 다른 HTML byte 유지. 새 epoch/default/준비READY·retry/비동기wait 정책 없음 |
+| 검증 | 실제 helper+tail을 own G/OPT/atlas/scratch/split/performance/hide로 새6그룹/main inline1 확인. 실제 canvas/GL/이미지/픽셀·보호캡처/UI·clock/saveAPI·Native·PC 실행 없음. own ms/spy는 성능·첫사망·head픽셀 성공 증거 아님 |
+
+이번 단위는 기존 scratch/head 리소스를 비활성 조건에서 준비하는 source 연결이다. 실제 head consumer나 프레임 캡처 선택을 교체하지 않는다. 현재 main의 같은 이름 _addHeadGib 선언 둘 중 마지막 binding을 구분하며 두 원문 모두 보존한다.

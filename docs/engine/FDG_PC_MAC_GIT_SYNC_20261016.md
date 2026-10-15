@@ -618,3 +618,23 @@ code1/docs4 exact5의 WORK/HEAD 개별10 기록은 첫 제품쓰기 전이다. �
 | 테스트 한계 | own onerror는 함수 호출이 반환된 뒤 자기 객체에서 호출. 실제 image event timing·네트워크·픽셀/알파·새로고침/사용자 cache를 검증한 것이 아님. 기존 사용자 cache metadata를 이식/수리하는 정책 없음 |
 | 보호 | image/PNG/asset/hash/import/transform·대체 pipeline/new art·부트/h173·HOLD/WIP/2_3·실창/saveAPI/process 조작 없음. 초기 조회에 인접 기존 스탯 helper 행이 표시됐으나 읽기만/수리·검사 없음 |
 | 완료 한계 | 새 합성5/main inline1만. 옛 성공검사/proof 재연 없고 전체 최신 게임·visual/native/PC 완료 아님 |
+
+## 2026-10-16 R h172+h448 source head2D 선택적 준비 이식
+
+| 항목 | 현재 source HTML 계약 |
+|---|---|
+| 연결 | 원 R h172의 _headCaptureWarmDone=false/_headCaptureWarmMs=0 및 _warmHeadCapture2d와 h448 setBootLoading의 pct>=100 tail만 |
+| 진입 | 성공 one-shot 미완료·_useGL·!G.on·OPT.deathFx. 기존 chapter1/south atlas meta/ready/image.complete·크기≥(meta.cell 또는 원256), 첫 split 존재/비활성 |
+| 기존 리소스 | _gibX/_gibC scratch와 _splits[0].ctx만 사용. scratch clear48×48→atlas cell을48×48로 draw→split cell clear→scratch48×14를 _SPLIT_CELL(현재64)²로 draw. 새 canvas/active debris 생성·상태 변경 없음 |
+| 종료 | finally에서 scratch48×48과 split cell을 각각 독립 clear 시도, 실패 시 prepared=false. 원 performance 차이 ms 기록과 done=prepared 반환. flag는 호출 경로 완료 표시이며 픽셀/GL/READY 판정 아님 |
+| caller | 기존 pct>=100에서 try helper/catch{} 뒤 기존 hideBootLoading. guard skip/실패에도 원 hide 유지, hide 자체 예외는 전파. 기존 DOM/pct/hide 본문·bootgate/epoch 유지 |
+| 보존 | 실제 _addHeadGib/frame 선택·bodyfallback/GL·봉인 atlas warm본문·Native HUD·h49/h173 및 다른 HTML byte 유지. 새 epoch/default/준비READY·retry/비동기wait 정책 없음 |
+| 검증 | 실제 helper+tail을 own G/OPT/atlas/scratch/split/performance/hide로 새6그룹/main inline1 확인. 실제 canvas/GL/이미지/픽셀·보호캡처/UI·clock/saveAPI·Native·PC 실행 없음. own ms/spy는 성능·첫사망·head픽셀 성공 증거 아님 |
+
+| 보존·교정 | 범위 |
+|---|---|
+| fresh 보존 | 이전 미사용5쌍 snapshot은 불변·읽기/재사용 없음. resume1에서 현재 code1/docs4 exact5 WORK/HEAD 개별10을 새 기록하고 첫 제품쓰기 전에 보존 |
+| 정적 교정 이력 | 앞선 정적 조사에서 _addHeadGib 첫 선언을 활성으로 고른 한계를 별도 교정해 마지막 top-level binding으로 분리했다. 두 consumer 본문 변경/실행 없음. 이 이력을 보존해 firstWholeClean=false, 새 기능검사는 첫 PASS |
+| 검증 한계 | 현재 tail의 own baseline은 hide만 관찰했으며 성능 결함 재현이 아님. 신규 own clock/spy6그룹을 실머리캡처·성능/GL·READY 인수로 쓰지 않음 |
+| 보호 | 이전 정적 leaf/기인수 h49/h173·옛 proof 재열람/재연 없음. nativeHUD/bodyfallback/atlas warm 봉인·HOLD/WIP/2_3·실창/saveAPI/process 유지. 동일 거절operation 해제나 대체pipeline 아님 |
+| 완료 한계 | source HTML helper/tail 단위만. 전체 R/native/PC/최신 게임 완료 아님 |
