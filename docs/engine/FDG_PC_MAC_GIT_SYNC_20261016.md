@@ -290,3 +290,15 @@ R의 기존 gameConfirm pending resolver 가드 한 줄을 main에 결합했다.
 | HOLD 분리 | ENEMY_GL_2D_BODY_FALLBACK_GATE의 body 실패·fallback/stride/queue/draw 권위는 미해결·미인수 유지. 보류된 general-Image warm branch도 포함하지 않음 |
 | 비용·한계 | Map/Set와 hit 중 per-layer 배열 추가, 비용 UNKNOWN. zoom/shake/native billboard pixel 정렬·base+walk 밝기·실화면 미인수. borrowed close/dispose·새 Image/fetch/RAF/timer/셰이더·맵/에셋 변경 없음 |
 | 새 검수 범위 | 자기 actor/Image/Proxy/GL로 실제 본체/walk call·flash if·queue wrapper·제출 뒤 marker·reset·중형 call seam만. 전체 draw/prepare/중형 함수·실GPU/카메라/사용자 창 실행 아님. 기존 통과 검사·에셋·픽셀 proof 재실행 없음 |
+
+## 2026-10-16 기존 R 첫 아이템 안내의 발화 수락
+
+| id / 적용 위치 | 현재 계약 |
+|---|---|
+| 변경 | R h58의 _checkPetDialogue 첫 아이템 분기 1개만 통합. _petSayCD가 true를 반환한 뒤에만 _petTut.firstItem=true 및 해당 분기 return |
+| 기존 조건 | 튜토리얼 바깥 si===0 && P.lv<=200, 안쪽 !firstItem && INV.bag.length>=1 유지 |
+| 거절 | 현재 말풍선·id 쿨다운·티어 쿨다운·MAP QA 등의 기존 _petSayCD gate로 false이면 firstItem을 소비하지 않고 이후 기존 대사 검사로 진행. 다음 eligible 호출에서 재시도 가능 |
+| 실제 티어 | _petTierOf('tut_firstItem')=1. 기존 _PET_TIER_COOL[1]=720프레임. 새 티어·우선순위·쿨다운 기본값을 만들지 않음 |
+| 수락 시 보존 | id=tut_firstItem, crow 5초(300프레임), 기존 cat 응답 4초(240프레임), id 쿨다운9999초(599940프레임), 원문·번역키·음성/표시 호출 유지 |
+| 범위 | 다른 tutorial 플래그·말풍선 발화/입찰 정책·pad/언어/리프 DOM 표시·전투·인벤토리·세이브 변경 없음. firstItem 수락 후 기존 일회성 유지 |
+| 새 검수 | 자기 말풍선 상태에서 실제 outer predicate/firstItem if 및 _petTierOf/_petSayCD/_petSay를 실행. 표시·음성·번역 목적만 대역. 전체 _checkPetDialogue/update/실제 게임 시계·사용자 창·세이브/API 검수 아님 |
