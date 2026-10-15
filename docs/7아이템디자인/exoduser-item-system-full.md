@@ -398,7 +398,7 @@ const LEGENDARY_SPECIAL={
 | 19 | belt | `_lBeltBuff` | 물약 사용 시 5초간 피해 +15% | ×1.15, 300f | `useQuickslot()`·자동물약 → `P._lBeltT=300`, `hurtE()` 배율 | 원문 그대로 (구 문서 "스태미나 완전 회복 시"는 폐기된 설계) |
 
 **헬퍼 함수 (2026-10-08 추가, `_uEq` 바로 아래 game.html ~15745):**
-- `_lEq(stat)` — `_uEq`와 동일 규칙(장착 슬롯 순회·첫 값 1개·비가산)이되, 핫패스 비용 때문에 **장비 변경 시 재계산되는 캐시**(`_lEqCache`) 사용. 무효화 지점은 `_eqAffixCache`와 동일(recalcSt·_testAffix·_testAffixClear).
+- `_lEq(stat)` — `_uEq`와 동일 규칙(장착 슬롯 순회·첫 값 1개·비가산)이되, 핫패스 비용 때문에 **장비 변경 시 재계산되는 캐시**(`_lEqCache`) 사용. 무효화 지점은 `_eqAffixCache`와 동일(_refreshEquipmentStats·recalcSt·_testAffix·_testAffixClear).
 - **구세이브 폴백**: `_lEqRebuild()`가 `item[stat]`이 없고 `legendarySpecial.stat/val`만 있는 구버전 아이템에서 `item[stat]=legendarySpecial.val`을 복원한다 → 옛 세이브의 전설 아이템도 그대로 동작.
 - `_legSpKo(ls)` — 툴팁 표기는 저장된 `ko` 문자열이 아니라 **stat 기준 현행 테이블 문구**를 사용(`_LS_BY_STAT`), 구세이브의 옛 문구가 자동 정규화된다.
 - `_lParryWinTicks()`/`_lSbParryT()` — 망토(_lCapeParry) 패링 윈도우 확대 전용.
@@ -1035,3 +1035,12 @@ renderAffixTooltip(item) → 인벤토리 툴팁 표시
 - **소켓석(신규 드랍 아이템, `STONE_BAG` {q:1~100})**: 장비 홈 개방(최대 5홈)·홈 품질 승급 재료. 드랍률 일반 1.5% / 정예 6% / 미니보스 12% / 장보스 25% / 챕터보스 40% (×dropBonus). 티어는 챕터 깊이 가중 `w(t)=B^(10−t)`, `B=min(0.78,0.42+0.06×SI_TO_HELL[stage])` — 1장 T10~T7 96.9%, T1 0.024%.
 - **아이템 홈**: 드랍 홈 수 1~4 롤 유지, 자연 홈 품질 전부 q=1(T10,+0%) — 홈 품질은 소켓석으로만 올린다. 홈 보너스 b=(q−1)/99, 홈·유물 티어 일치(공명) 시 ×2, 최상 q100홈+1티어 유물 = 유물 효과 ×3.00.
 - 상세 수치·워크드 예시: `docs/14밸런스+수치테이블/보석품질_소켓석_수치표.md`, 시스템 규칙: `docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md`.
+## 2026-10-16 수동 장비 갱신 캐시 보존
+
+| 적용 위치 | 계약 |
+|---|---|
+| _refreshEquipmentStats | 현재 자원 보관 후 _eqAffixCache/_eqStatCache/_lEqCache를 모두 null로 만들고 기존 applyStats를 호출 |
+| _lEqCache | 기존 recalcSt의 전설 캐시 무효화를 새 공통 갱신에서도 스탯 계산 전에 유지. R helper의 캐시2만 복사해 현재 main의 세 번째 캐시 계약을 잃지 않도록 통합 |
+| 유지 범위 | 전설 스탯·배율·슬롯 순서·구세이브 복원·패링/공격 판정 및 _lEq 구현 변경 없음. applyStats 끝 recalcSt도 그대로 |
+
+실제 새 helper/장착 호출부에 합성 통계 제공자를 연결해 선행 캐시3 무효화를 확인했다. 실제 전설 효과·전체 스탯식·실HP·전투·native·세이브 검증은 아니다.

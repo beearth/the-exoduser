@@ -53623,3 +53623,12 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 | docs/2_1 스킬관리+합체시스템+자원, docs/14밸런스+수치테이블 | 실제 최대ST100/raw DEX·기존 강화/결정/패시브/투지/정수화 식 동기화. 코드의 base/배율 변경 아님 |
 | docs/engine/FDG_PC_MAC_GIT_SYNC_20261016.md | 독립 범위·사전 보존·actual 함수 합성 검사와 전체 실행 미검증 기록 |
 | 검증 | 신규6군+구문1 PASS. 실제 equip/restore/native/HP/시계/save/API/창 실행0. 기존 통과 검사 재연0 |
+## 2026-10-16 R 수동 장비 스탯 갱신 소비자 이식
+
+| 경로 | 변경 |
+|---|---|
+| game.html | R h120/h121/h123/h126. 공통 _refreshEquipmentStats를 장착/해제 성공 및 저장 전에 소비하고 귀걸이 중복 계산만 제거. 현재 main의 _lEqCache 선행 무효화 보존 |
+| docs/2_7 인벤토리+장비시스템, docs/15 세이브+데이터구조 | 전체 파생 스탯 갱신 순서·기존 현재 자원 유지·저장 경계 및 합성 검증 한계 동기화 |
+| docs/7아이템디자인/exoduser-item-system-full.md | 장비 변경의 전설 캐시 무효화 적용 위치 추가 |
+| docs/engine/FDG_PC_MAC_GIT_SYNC_20261016.md | 독립 범위·현재 main 보정·인접 bool/UI 미채택·실행 한계 기록 |
+| 검증 | actual caller/helper + 합성 통계/자원/저장 목적지 신규6군·구문1 PASS. 실제 전체 applyStats·equip UI/복원/native/HP/clock/save/API/창 실행0 |

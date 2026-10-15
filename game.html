@@ -16281,9 +16281,15 @@ function _equipEarringTo(item,slot){
   _earringEquipTarget=slot;
   try{equipItem(item)}finally{_earringEquipTarget=null}
   if(INV.equipped[slot]!==item)item.slot=previous;
-  applyStats();INV.selected=INV.equipped[slot]===item?'eq:'+slot:INV.bag.indexOf(item);renderInv();
+  INV.selected=INV.equipped[slot]===item?'eq:'+slot:INV.bag.indexOf(item);renderInv();
 }
 let _earringEquipTarget=null;
+function _refreshEquipmentStats(){
+  const _eqHP=P.hp,_eqMP=P.mp,_eqST=P.st,_eqShield=P.shield;
+  _eqAffixCache=null;_eqStatCache=null;_lEqCache=null;
+  applyStats();
+  P.hp=Math.min(P.mhp,_eqHP);P.mp=Math.min(P.mmp,_eqMP);P.st=Math.min(P.mst,_eqST);P.shield=Math.min(P.mshield,_eqShield);
+}
 function equipItem(item){
   // 유골 부위: 장착 대신 도감 등록 (2026-09-01 도감 개편)
   if(item&&item.slot==='bonePart'){registerBonePart(item);return}
@@ -16354,7 +16360,7 @@ function equipItem(item){
     const pos=_invFindSpace(ow,oh,-1,old);
     if(pos){old._gx=pos.x;old._gy=pos.y}
   }
-  recalcSt();playEquipSfx(item);notify(_T(item.name)+_T(' 장착!'));
+  _refreshEquipmentStats();playEquipSfx(item);notify(_T(item.name)+_T(' 장착!'));
   window._systemLesson?.equipped(item);
   dbSaveForce();
 }
@@ -16367,7 +16373,7 @@ function unequipItem(slot){
   if(!pos){INV.bag.pop();notify(_T('가방에 공간이 없습니다!'));return}
   item._gx=pos.x;item._gy=pos.y;
   INV.equipped[slot]=null;
-  recalcSt();
+  _refreshEquipmentStats();
   notify(_T(item.name)+_T(' 해제'));
   try{playFM(300,120,200,.04,.02,'sine',350);playNoise(.02,4000,.015,2000,.001,'bandpass')}catch(e){}
   dbSaveForce();

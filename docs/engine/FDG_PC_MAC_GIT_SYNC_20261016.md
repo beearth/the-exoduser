@@ -411,3 +411,17 @@ R의 기존 gameConfirm pending resolver 가드 한 줄을 main에 결합했다.
 | 미포함 | 인접 inventory CP/장착 UI·새 owner·prototype, native 파이프라인·db56 및 모든 타 HOLD. 전체최신/PC/native/visualPASS 주장0 |
 
 외부 단위 기록: R-equipment-stamina-number-integration-20261016. 관련 원·native 이력의 검사 증거는 재실행하거나 덮어쓰지 않는다.
+## 2026-10-16 R 수동 장비 공통 자원 갱신 독립 이식
+
+| 항목 | 이번 범위 |
+|---|---|
+| 출발 main | f2f8167f4289397eed23ed7c0931b7f574581b89 |
+| R 원본 선택 | h120 중복 귀걸이 applyStats 제거, h121 _refreshEquipmentStats, h123 equipItem/h126 unequipItem 성공 소비 |
+| 실제 누락 | 일반 장착/해제가 recalcSt만 호출한 뒤 기존 dbSaveForce에 도달. 귀걸이만 외부 applyStats로 보완하던 경로 |
+| main 보존 보정 | R helper의 어픽스/스탯 캐시2 외 현재 main의 _lEqCache=null도 선행 무효화에 유지. 실제 수치·HP/QE·예외/저장 권위는 새로 만들지 않음 |
+| 사전 보존 | code1/docs5의 6경로 WORK/HEAD를 첫 코드 수정 전에 바이트 백업 |
+| 검증 | actual equipItem/unequipItem/_equipEarringTo/helper + 합성 장비/자원/저장 목적지 신규6군·구문1 PASS. applyStats/recalcSt는 대역이며 전체 실제 스탯식·실HP/clock/save/API/native/창 실행0 |
+| 인접 미채택 | h124/125/127 bool은 R UI의 결과 소비와 종속. 현재 main caller는 반환값을 읽지 않거나 장비 후조건을 확인하므로 이번 범위에서 채택하지 않음. 원R9a 보존·해당UI 승인은 추론하지 않음 |
+| 기타 범위 | CP preview/refund/chestcap/새 inventory UI는 별도 판정. native HUD·db56 및 모든 타 HOLD 미포함. 기인수 ST 검사·oldproof 재연0 |
+
+외부 단위 기록: R-equipment-resource-refresh-integration-20261016. 소스 정렬을 최신 전체 실행·PC/native·visualPASS로 승격하지 않는다.
