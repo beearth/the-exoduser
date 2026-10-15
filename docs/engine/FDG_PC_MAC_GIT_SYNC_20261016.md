@@ -452,3 +452,16 @@ R의 기존 gameConfirm pending resolver 가드 한 줄을 main에 결합했다.
 | 한계 | 실제 hurtE/피해/KB벡터/충돌/프로젝타일 스폰/HPclock/native/save/API/창 실행0. 전체최신/PC/native/visual/성능PASS 아님 |
 
 외부 단위 기록: R-player-projectile-kb-reset-integration-20261016. db56/타HOLD 및 인접 원본 변경은 자동 채택하지 않는다.
+## 2026-10-16 R 숫자 소비자 독립 묶음 이식
+
+| 항목 | 이번 범위 |
+|---|---|
+| 출발 main | df8c60f3207236d9aee0fe73ec9dc11bef18bad1 |
+| 원R 명시 선택 | h176–183 및 h191–192, 총10구간. 기존 숫자 소비 위치의 unary+/falsy0만 |
+| main 3way | h181 statDex의 gl().atkSpd만 변환. 현재 _lGloveElem 전설장갑 +0.20 꼬리·공식·순서 유지 |
+| 사전 보존 | code1/docs6의 7경로 WORK/HEAD를 첫 코드 수정 전에 바이트 백업 |
+| 신규 검사 | actual 함수12개 및 actual applyStats의 두 루프/슬롯·강화세트 선언만 합성 제공자로 신규8군·구문1 PASS. 캐시/getter·numeric/string 동등·명시 invalid fallback·Infinity 유지 확인 |
+| 한계 | 전체 applyStats/파생 HP·MP·쉴드/공격/피해·속도·RNG·native·실HPclock/save/API/창 실행0. fixture의 장비스탯/유니크·전설/강화 공급자는 대역 |
+| 제외 | 인접 h184–190 경제/사운드·다른 유사 stat/함수 확장 수정·새 finite/cap·DB마이그레이션0. db56 및 모든 타 HOLD 보존 |
+
+외부 단위 기록: R-equipment-numeric-consumers-integration-20261016. 전체 R 의미판정·최신 전체 실행·PC/native/visual/성능 완료 주장0, 기인수 proof 재연0.

@@ -27869,7 +27869,7 @@ function _hunterMul(e){return(e&&(e.isBoss||e.isElite||e.etype>=90))?1+(PASSIVES
 let _grit=0; // 근성 레벨
 function _gritCost(){return 1;} // 일반 스탯처럼 SP 1당 근성 1
 function _gritBatchCost(n){return Math.max(0,n);} // +10 = SP 10
-function _gritTotal(){return _grit+_lvB()+_eqStat('Grit')+_eqAffix('gritFlatN')+_eqAffix('gritFlatR')}
+function _gritTotal(){return (+_grit||0)+_lvB()+_eqStat('Grit')+_eqAffix('gritFlatN')+_eqAffix('gritFlatR')}
 function _gritHpFlat(){return _gritTotal();}
 function _gritMpFlat(){return _gritTotal();}
 function _gritStFlat(){return _gritTotal();}
@@ -27877,7 +27877,7 @@ function _gritStFlat(){return _gritTotal();}
 function applyStats(){
   // 장비 보너스 스탯 합산
   let _eqStr=0,_eqDex=0,_eqInt=0;
-  for(const sl of SLOT_NAMES){const it=INV.equipped[sl];if(it){_eqStr+=(it.bStr||0);_eqDex+=(it.bDex||0);_eqInt+=(it.bInt||0)}}
+  for(const sl of SLOT_NAMES){const it=INV.equipped[sl];if(it){_eqStr+=(+it.bStr||0);_eqDex+=(+it.bDex||0);_eqInt+=(+it.bInt||0)}}
   const _lb=_lvB();
   const s={str:STATS.str+_eqStr+_lb+~~_eqAffix('strFlat'),dex:STATS.dex+_eqDex+_lb+~~_eqAffix('dexFlat'),int:STATS.int+_eqInt+_lb+~~_eqAffix('intFlat'),vit:~~_eqAffix('vitFlat'),lck:STATS.lck+_lb};
   P._effStats=s; // 유효 스탯 캐시 (UI 표시용)
@@ -27891,7 +27891,7 @@ function applyStats(){
   const _allDefSlots=['shield','armor','boots','gloves','pants','belt','necklace','ring1','ring2','cape','bracelet','headband','ossuary','headband2'];
   const _hpEnhSet=new Set(['gloves','pants','boots']); // HP 강화 3종
   const _mpEnhSet=new Set(['bracelet','necklace','headband','headband2','ossuary']); // MP 강화 4종 + 유골함
-  for(let _di=0;_di<_allDefSlots.length;_di++){const _dit=INV.equipped[_allDefSlots[_di]];if(_dit){_totalBonusHp+=(_dit.bonusHp||0);_totalBonusShield+=(_dit.bonusShield||0);_totalBonusMp+=(_dit.bonusMp||0);if(_dit.enh>0){if(_hpEnhSet.has(_allDefSlots[_di]))_enhHp+=_dit.enh*1.0;if(_mpEnhSet.has(_allDefSlots[_di]))_enhMp+=_dit.enh*0.2}}}
+  for(let _di=0;_di<_allDefSlots.length;_di++){const _dit=INV.equipped[_allDefSlots[_di]];if(_dit){_totalBonusHp+=(+_dit.bonusHp||0);_totalBonusShield+=(+_dit.bonusShield||0);_totalBonusMp+=(+_dit.bonusMp||0);if(_dit.enh>0){if(_hpEnhSet.has(_allDefSlots[_di]))_enhHp+=_dit.enh*1.0;if(_mpEnhSet.has(_allDefSlots[_di]))_enhMp+=_dit.enh*0.2}}}
   P.mhp=~~((_stgHp+s.str*5+s.vit*3+_totalBonusHp+_afHpF+_imHp+_enhHp)*(1+_afHpP+_imHpP*.01+(PASSIVES.pMelee||0)*.03));
   P.baseDef=2;
   P.maxPoise=4; // 4칸 고정 (해골 눈알 4개)
@@ -27942,7 +27942,7 @@ function _eqStatRebuild(){_eqStatCache={};for(let si=0;si<SLOT_NAMES.length;si++
 function _eqStat(k){if(!_eqStatCache)_eqStatRebuild();return _eqStatCache[k]||0}
 // 장비 어픽스 합산 (id별 value 합계)
 let _eqAffixCache=null,_eqAffixVer=0;
-function _eqAffixRebuild(){_eqAffixCache={};for(let si=0;si<SLOT_NAMES.length;si++){const it=INV.equipped[SLOT_NAMES[si]];if(it&&it.affixes)for(let i=0;i<it.affixes.length;i++){const a=it.affixes[i];_eqAffixCache[a.id]=(_eqAffixCache[a.id]||0)+a.value}}}
+function _eqAffixRebuild(){_eqAffixCache={};for(let si=0;si<SLOT_NAMES.length;si++){const it=INV.equipped[SLOT_NAMES[si]];if(it&&it.affixes)for(let i=0;i<it.affixes.length;i++){const a=it.affixes[i];_eqAffixCache[a.id]=(_eqAffixCache[a.id]||0)+(+a.value||0)}}}
 function _eqAffix(id){if(!_eqAffixCache)_eqAffixRebuild();return _eqAffixCache[id]||0}
 // ═══ 테스트용: 콘솔에서 어픽스 강제 주입/제거/확인 ═══
 // _testAffix('onCritExplode', 0.5)  → 장착 무기에 어픽스 강제 추가
@@ -27964,11 +27964,11 @@ window._testAffixClear=function(){
   console.log('✓ 테스트 어픽스 전부 제거');
 };
 // 장비 임플리싯 합산 (stat명별)
-function _eqImplicit(stat){let v=0;for(const sl of SLOT_NAMES){const it=INV.equipped[sl];if(it&&it._implicitStat===stat)v+=it._implicitVal}return v}
+function _eqImplicit(stat){let v=0;for(const sl of SLOT_NAMES){const it=INV.equipped[sl];if(it&&it._implicitStat===stat)v+=(+it._implicitVal||0)}return v}
 function statStr(){return 1} // STR은 ref 함수에서 직접 ATK로 더해짐 (1:1)
-function statDex(){return 1+(STATS.dex+_eqStat('Dex')+_lvB())*.0005+(gl().atkSpd||0)+_eqAffix('atkSpeed')+_eqImplicit('_iAtkSpd')*.01+(_uEq('_uGloveSpd')||0)+(_lEq('_lGloveElem')>0?.20:0)} // 전설 장갑: 공격속도 +20%
+function statDex(){return 1+(STATS.dex+_eqStat('Dex')+_lvB())*.0005+(+gl().atkSpd||0)+_eqAffix('atkSpeed')+_eqImplicit('_iAtkSpd')*.01+(_uEq('_uGloveSpd')||0)+(_lEq('_lGloveElem')>0?.20:0)} // 전설 장갑: 공격속도 +20%
 function statInt(){return 1} // INT는 ref 함수에서 직접 ATK로 더해짐 (1:1)
-function _eqLckTotal(){return STATS.lck+_lvB()+_eqStat('Lck')+_eqAffix('lckFlatN')+_eqAffix('lckFlatR')}
+function _eqLckTotal(){return (+STATS.lck||0)+_lvB()+_eqStat('Lck')+_eqAffix('lckFlatN')+_eqAffix('lckFlatR')}
 function statCrit(){return _eqLckTotal()*.025+PASSIVES.pCrit*1.5+(rg1().critRate||0)+(rg2().critRate||0)+(nc().critRate||0)+_eqAffix('critRate')*100+(P._crystalStats?P._crystalStats.crit:0)} // critRate 어픽스 (무기 파트) pct단위 → %로 환산
 function statCritDmg(){return 1.5+_eqLckTotal()*.002+PASSIVES.pCrit*.08+_eqAffix('critDmgA')+_eqAffix('critDmgB')+_eqAffix('critDmgW')+_eqAffix('neckCritDmg')+_eqAffix('glovesCritDmg')+(P._crystalStats?P._crystalStats.cdmg*0.01:0)} // 기본 1.5, LCK 1당 +0.2% (LCK1000=+200%, 1.5→3.5), critDmgW+neckCritDmg+glovesCritDmg
 function statDropBonus(){return 1+_eqLckTotal()*.0015+PASSIVES.pDrop*.08+_eqAffix('dropRate')+(P._crystalStats?P._crystalStats.drop*0.01:0)}
@@ -28012,7 +28012,7 @@ function pParryProjDmg(bulletDmg,isQ){const scale=isQ?magicRef()*statInt()*pMagi
 function pParryRmbSpd(){return 1+PASSIVES.pParry*.10}  // E(칼등) 공속 +10%/lv (10lv=+100%)
 function pParryRainbowDR(){return Math.min(.50,PASSIVES.pParry*.10)} // 무지개탄 피해감소 +10%/lv (최대50%)
 function pMagicMul(forAttack=true){return _passDmgSum('magic')*(1+(_uEq('_uHelmMagic')||0))*(forAttack?2:1)} // 마법 공격 2배 (2026-09-10), 패링 장비스케일은 제외
-function pBeamMul(){return 1+Math.max(0,(hm().beamDmg||0))*0.08} // 투구 beamDmg를 실제 레이저 전용 배율로 환산
+function pBeamMul(){return 1+Math.max(0,(+hm().beamDmg||0))*0.08} // 투구 beamDmg를 실제 레이저 전용 배율로 환산
 function pMagicCost(){return Math.max(.40,1-PASSIVES.pMagic*.04-_eqAffix('mpCostRed')-(_uEq('_uHelmMagic')||0))} // MP비용 -4%/lv + 귀걸이 어픽스 + 유니크
 function pBowMul(){return _passDmgSum('bow')}         // 석궁/관통 통합배율 (합연산)
 function pBowCost(){return Math.max(.60,1-PASSIVES.pBow*.04)} // ST비용(석궁) -4%/lv (10lv=-40%)
@@ -28730,13 +28730,13 @@ function _autoFireBowSkill(tx,ty){
   P.st=Math.max(0,_sSt-_xbStCost);
   P.s=_sS;P.st2=_sSt2;P.facing=_svF;P.atkArc=_svA;
 }
-function _slotFlatAtk(it){if(!it||!it.affixes)return 0;let s=0;for(let i=0;i<it.affixes.length;i++){const a=it.affixes[i];if(a.id==='sharpAtk'||a.id==='brutalAtk'||a.id==='ruinAtk')s+=a.value}return s}
+function _slotFlatAtk(it){if(!it||!it.affixes)return 0;let s=0;for(let i=0;i<it.affixes.length;i++){const a=it.affixes[i];if(a.id==='sharpAtk'||a.id==='brutalAtk'||a.id==='ruinAtk')s+=(+a.value||0)}return s}
 // 레벨 자동 성장: 비하인드 적용 (UI에 안 보임, 장비처럼 계산에만 반영)
 function _lvB(){return~~(P.lv*.5)}
 
-function meleeRef(){return(((wp().atk||0)+enhMulAtk(wp().enh||0))+_slotFlatAtk(wp())+P.baseAtk+(STATS.str+_eqStat('Str')+_lvB()))*(P._weaponSeal>0?.3:1)}
-function bowRef(){return(((bw().atk||0)+enhMulAtk(bw().enh||0))+_slotFlatAtk(bw())+P.baseAtk+(STATS.dex+_eqStat('Dex')+_lvB()))*(P._weaponSeal>0?.3:1)}
-function magicRef(){return(((hm().atk||0)+enhMulAtk(hm().enh||0))+_slotFlatAtk(hm())+P.baseAtk+(STATS.int+_eqStat('Int')+_lvB()))*(P._weaponSeal>0?.3:1)}
+function meleeRef(){return(((+wp().atk||0)+enhMulAtk(wp().enh||0))+_slotFlatAtk(wp())+P.baseAtk+(STATS.str+_eqStat('Str')+_lvB()))*(P._weaponSeal>0?.3:1)}
+function bowRef(){return(((+bw().atk||0)+enhMulAtk(bw().enh||0))+_slotFlatAtk(bw())+P.baseAtk+(STATS.dex+_eqStat('Dex')+_lvB()))*(P._weaponSeal>0?.3:1)}
+function magicRef(){return(((+hm().atk||0)+enhMulAtk(hm().enh||0))+_slotFlatAtk(hm())+P.baseAtk+(STATS.int+_eqStat('Int')+_lvB()))*(P._weaponSeal>0?.3:1)}
 const DPS_BAL={bow:0.77,magic:0.475,beam:0.0080};
 function beamCost(){return(75+((P.skills.omniBeam||1)-1)*8)/60*pMagicCost()} // 틱당: 초당75+lv*8 소비 (패시브 할인 적용)
 // ═══ E키 마법 라우팅 — 합체/스킬 상태 → beam/magicCast 자동 분기 ═══

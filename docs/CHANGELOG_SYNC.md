@@ -53649,3 +53649,12 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 | docs/12퍼포먼스·최적화, docs/2_1 스킬관리+합체시스템+자원 | 필드 수명·기존 명시 배율/풀·공식 보존 및 합성 검사 범위 동기화 |
 | docs/engine/FDG_PC_MAC_GIT_SYNC_20261016.md | 독립 이식·baseline 검사기 중첩 try 추출 수정 이력·실행 한계 기록 |
 | 검증 | actual pool함수4 + actual kbM 문장/합성 레코드 신규6군·구문1 PASS. 실제 피해·KB벡터·충돌·스폰·HPclock/save/API/native/창 실행0 |
+## 2026-10-16 R 명시 장비·스탯 숫자 소비 묶음
+
+| 경로 | 변경 |
+|---|---|
+| game.html | R h176–183/191–192 기존 숫자 소비10구간 unary+/falsy0. statDex의 current main 전설장갑+20% 꼬리 보존 |
+| docs/2_7 인벤토리+장비시스템, docs/14밸런스+수치테이블 | 실제 _lvB/장비스탯/어픽스 항 및 근성·행운 소비식 동기화. 수치/계수·순서 변경 아님 |
+| docs/7아이템디자인, docs/2_1 스킬관리+합체시스템+자원 | 캐시/implicit/슬롯ATK·장비 입력 숫자 소비와 원 데이터 보존 기록 |
+| docs/engine/FDG_PC_MAC_GIT_SYNC_20261016.md | 명시 범위·main 3way·사전 보존·합성검사 한계 기록 |
+| 검증 | 실제 소형함수12/실영향루프2+합성 제공자 신규8군·구문1 PASS. 전체 applyStats·실HPclock/피해/native/save/API/창 실행0 |

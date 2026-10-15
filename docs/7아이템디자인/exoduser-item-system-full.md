@@ -1044,3 +1044,15 @@ renderAffixTooltip(item) → 인벤토리 툴팁 표시
 | 유지 범위 | 전설 스탯·배율·슬롯 순서·구세이브 복원·패링/공격 판정 및 _lEq 구현 변경 없음. applyStats 끝 recalcSt도 그대로 |
 
 실제 새 helper/장착 호출부에 합성 통계 제공자를 연결해 선행 캐시3 무효화를 확인했다. 실제 전설 효과·전체 스탯식·실HP·전투·native·세이브 검증은 아니다.
+## 2026-10-16 어픽스·implicit·로컬 ATK 숫자 소비
+
+| 소비자 | 현행 동작 |
+|---|---|
+| _eqAffixRebuild | 각 기존 a.id별 a.value를 unary + 후 falsy0으로 합산. _eqAffix의 lazy rebuild/캐시/조회 반환 정책은 유지 |
+| _eqImplicit(stat) | 기존 stat 일치 필터 아래 _implicitVal을 숫자로 소비 |
+| _slotFlatAtk(it) | 기존 sharpAtk/brutalAtk/ruinAtk 세 id만 숫자 합산. 다른 id와 장비 슬롯 선택은 변경하지 않음 |
+| atk/공속/빔 소비 | meleeRef/bowRef/magicRef의 슬롯 atk, statDex의 장갑 atkSpd, pBeamMul의 투구 beamDmg가 같은 숫자 소비를 적용 |
+| main 전설 장갑 | statDex의 _lGloveElem 공속+0.20은 현재 main 계약 그대로. 원R 함수를 통째로 덮어 이 항목을 제거하지 않음 |
+| 원 데이터 | affix/item 필드를 변환 저장하지 않음. 캐시 무효화·구세이브 복원·전설/유니크 스탯 값·판정·RNG 정책 변경 없음 |
+
+R h179/180/181/183/191/192의 숫자 소비 변경이다. 새 Math.max·상한·finite 검사·어픽스 id/수치/확률을 추가하지 않았다. 신규8군·구문1의 합성 소형 소비자 검사이며 실제 전설/유니크 효과·피해·공격속도·스폰·전체 applyStats·실HP/native/save/창 검증은 아니다.
