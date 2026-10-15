@@ -397,3 +397,17 @@ R의 기존 gameConfirm pending resolver 가드 한 줄을 main에 결합했다.
 | 한계 | 소스 수준의 필수 입력 소비자 이식. 최신 전체 게임·PC/native 실행·visual PASS 증거가 아님 |
 
 외부 단위 기록: R-death-menu-keyboard-integration-20261016. general-image warm db56 및 타 HOLD의 해제로 해석하지 않는다.
+## 2026-10-16 R 장비 ST 숫자 합산 독립 이식
+
+| 항목 | 이번 범위 |
+|---|---|
+| 출발 main | 420ed98f4d1da95a0a5e94645c66abea015710a8 |
+| R 원본 선택 | h128. recalcSt의 기존 truthy it.bonusSt 합산에 unary + 및 falsy 0 처리 |
+| 실제 소비자 / 문제 | 기존 equipItem/unequipItem/스탯 재계산 호출의 recalcSt. 숫자 문자열이 장비 ST 총합을 문자열 이어붙이기로 바꾸는 문제 재현 |
+| 코드 보존 | 실제 17슬롯/순서·원본 item 필드·캐시3 무효화·base100/raw DEX*2·강화0.2·어픽스·결정·패시브·투지·~~·현재ST 상한 및 HP/QE 그대로 |
+| 사전 보존 | code1/docs5의 6경로 WORK/HEAD를 이번 첫 코드 수정 전에 바이트 백업 |
+| docs 정정 | 자원 문서의 최대ST 200/s.dex 잔여 표기를 기존 실제100/raw STATS.dex로 수정. 밸런스 표의 기존 강화·패시브·투지·정수화 항목을 완전 표기 |
+| 검증 | actual recalcSt/SLOT_NAMES + 합성 장비/자원 6군 및 구문1 PASS. affix/grit 대역, 전체 equip/restore/native·실자원/HP/시계/save/API/창 실행0 |
+| 미포함 | 인접 inventory CP/장착 UI·새 owner·prototype, native 파이프라인·db56 및 모든 타 HOLD. 전체최신/PC/native/visualPASS 주장0 |
+
+외부 단위 기록: R-equipment-stamina-number-integration-20261016. 관련 원·native 이력의 검사 증거는 재실행하거나 덮어쓰지 않는다.
