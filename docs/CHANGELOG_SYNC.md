@@ -53667,3 +53667,12 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 | docs/14밸런스+수치테이블 | 실행식/확률·~~환수 보존, PM-013-D 미결정 및 h122/187 미채택 명시 |
 | docs/engine/FDG_PC_MAC_GIT_SYNC_20261016.md | 독립 범위·선행 보존·합성 검수 한계 기록 |
 | 검증 | actual wrapper+합성 제공자/요청 목적지 신규6군·구문1 PASS. 실제 강화/RNG/스탯/HPclock/saveAPI/native/창 실행0 |
+## 2026-10-16 R 자동 물약 CD 입력 숫자 소비
+
+| 경로 | 변경 |
+|---|---|
+| game.html | h237 자동 물약 glove/belt potCd 두 operand만 unary+/falsy0. cap/regen/기준CD/최소/발동·회복·소비 불변 |
+| docs/2_8 퀵슬롯+물약시스템 | 실제CD420/최소6·각0.2/regen0.03·0.3·기존 회복량 ~~ 표기 및 수동UI 폐지/h188 미채택 동기화 |
+| docs/7아이템디자인 | potCd 소비와 원 데이터·기존 장비효과 보존 기록 |
+| docs/engine/FDG_PC_MAC_GIT_SYNC_20261016.md | 독립 범위·사전 보존·선행 설명 정정·검사 한계 기록 |
+| 검증 | actual CD const4+대입1·합성 제공자 신규6군·구문1 PASS. 전체 update/실HP/악의/clock/saveAPI/UI/native 실행0 |

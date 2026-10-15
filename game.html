@@ -35865,8 +35865,8 @@ function update(){
     const _systemRecoveryBefore=window._systemLesson?.active?{hp:P.hp,mats:G.mats}:null;
     G.mats--;
     const _potCdBase=420;
-    const _glPotCd=Math.min(gl().potCd||0,.2);
-    const _bltPotCd=Math.min(blt().potCd||0,.2);
+    const _glPotCd=Math.min(+gl().potCd||0,.2);
+    const _bltPotCd=Math.min(+blt().potCd||0,.2);
     const _regenPotCd=Math.min(PASSIVES.pRegen*.03,.3);
     autoPotCd=Math.max(6,~~(_potCdBase*(1-_glPotCd-_bltPotCd-_regenPotCd)));
     const v=~~(potHeal('hp')*(1+_eqAffix('potionPower')));

@@ -478,3 +478,16 @@ R의 기존 gameConfirm pending resolver 가드 한 줄을 main에 결합했다.
 | 한계 | save 요청만 검사, 영속 완료 아님. 실제 Forge UI/랜덤 시도/전체 applyStats/HPclock/DB/save/API/native/창0. 기인수 저장/숫자/투사체 등 proof 재연0 |
 
 외부 단위 기록: R-ai-enhance-save-integration-20261016. 인접 PM-013 과거 보고 행을 선행 문서에서 읽었으나 그 검사 산출물을 재실행/재계산하지 않았다. db56/모든 타 HOLD 보존, full/PC/native/최신 전체/visual/성능PASS 주장0.
+## 2026-10-16 R 자동 물약 CD 입력 독립 이식
+
+| 항목 | 이번 범위 |
+|---|---|
+| 출발 main | 7a985c144001b41912d25e884c91cdd9f258bd3a |
+| R 선택 / 미채택 | h237 update의 glove/belt potCd unary+/falsy0 두 변환만. h188은 현행 수동 포션 UI 폐지·본편 caller0 근거로 미채택/원R9a 보존 |
+| 실제 누락 | truthy 비숫자 gear potCd가 기존 Math.min→NaN→~~0 경로로 최소6 CD를 만드는 입력. 실제 생산 CD 문장으로 재현 |
+| 사전 보존 | code1/docs4의 5경로 WORK/HEAD를 첫 코드 수정 전에 바이트 백업 |
+| 신규 검사 | 실제 const4/대입1 + 합성 gear/passive/cooldown 신규6군·구문1 PASS. 전체update/트리거·실HP/회복·악의/clock/save/API/UI/native0 |
+| 선행 설명 정정 | 최초 계획의 regen cap0.5는 미확인 오기였으며 첫 제품쓰기 전 실제 pRegen*0.03/cap0.3으로 정정·fixture는 실제 선언 추출. 이를 맞추기 위한 코드/통과검사 변경0 |
+| 보존 | 기존420 CD기준/6최소·glove/belt각0.2·regen0.03/0.3·~~/Math·실발동/소비/HPQE/효과/튜토리얼/autoPotThr·수동UI/데이터형식 그대로 |
+
+외부 단위 기록: R-auto-potion-cooldown-input-integration-20261016. 기인수 proof 재연0·db56/타HOLD보존·최신 전체/Rparent/PC/native/visual/성능 완료 주장0.
