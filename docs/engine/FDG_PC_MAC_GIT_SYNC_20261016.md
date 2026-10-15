@@ -706,3 +706,21 @@ code1/docs4 exact5의 WORK/HEAD 개별10 기록은 첫 제품쓰기 전이다. �
 | DOM 경계 | 프리뷰 canvas를 card.appendChild로 추가. 새 helper·consumer는 부모 textContent/innerHTML을 교체하지 않으며 기존 자식 sentinel 보존을 own DOM 대역으로 확인 |
 | 새 검사 | 실제 원 helper·consumer + own 알파 배열/Canvas/Image/DOM 대역 신규6군 및 main inline 구문1 첫 통과. 첫 셀·전체 알파 제약·빈 이미지·read 실패·known/unknown fallback·load/error·자식 보존·원 R와 현 main의3way byte 비교 |
 | 검수 한계 | 실제 PNG/atlas/asset byte·실 canvas 픽셀을 읽거나 가공하지 않음. 실 모델/rig/게임 내 sprite·설정 UI창/native/HUD/PC 미검수. 합성 draw 관측은 실제 미리보기·잘림 품질 PASS, 모델 수정, 신규 캐릭터·24장/24FPS 완료 증거가 아님 |
+
+## 2026-10-16 후보 장비 CP 계산·복원 — R h331+h342
+
+| 항목 | 현행 구현 계약 |
+|---|---|
+| 실제 소비 | _invRenderDetail의 가방 후보/현재 장비 비교 → _invBuildCompare의 CP try 구간에서 _inventoryEquipCP(item,_slot).total 호출. calcCP 공식·CP 차이의 표시 형식은 유지 |
+| 기준·범위 | 원 R의 helper와 실제 비교 caller만 이식. 원 R 정렬용 두 consumer를 복구하지 않으며 현행 itemPower 정렬을 변경하지 않음 |
+| 조기 반환 | item/slot 없음, 장착 컨테이너에 own slot 없음, 현재 장비와 같은 item, item.reqLv보다 낮은 P.lv이면 기존 calcCP 결과 반환. 새 입력 보정·레벨/장비 정책 없음 |
+| 원 참조 보관 | _player=P, _equipped=INV.equipped, _affixCache=_eqAffixCache, _statCache=_eqStatCache를 보관 |
+| 강화 미리보기 | 이전 장비 enh>0이면 기존 xferCost(이전 enh)를 G.mats와 비교. 부족하면 현재 calcCP 반환. 충족 시 preview.enh를 이전 enh로 덮어씀. 비용 차감·이전 장비 enh 수정 없음 |
+| 보석 미리보기 | 이전 장비 crystals가 있으면 후보 배열을 slice하거나 socketCount 또는0 길이 null 배열 생성. 이전의 비어 있지 않은 보석을 첫 빈칸부터 채우고 여유 없으면 추가하지 않음. 원 보석/배열을 수정하지 않음 |
+| 계산 순서 | preview={...item}, P={..._player}, INV.equipped={..._equipped,[slot]:preview}. 두 어픽스/스탯 cache=null → applyStats() → calcCP() 결과 반환. 얕은 복사이며 모든 외부 공급자의 무부작용을 보장하는 규칙은 아님 |
+| finally 복원 | 성공·조기반환·오류에서 원 P/INV.equipped/_eqAffixCache/_eqStatCache 참조 복원. helper는 새 catch를 추가하지 않으며 비교 구간의 기존 외부 catch는 유지 |
+| 전설 cache 경계 | _lEqCache는 원 helper의 보관·복원 대상이 아님. 현재 정적 callee에서 정상 applyStats→recalcSt 종료는 null 무효화. clear 전 오류는 이전 참조, clear 후 오류는 null로 구분. 현재 resolve된 callee에는 후보 전설 cache를 구성하는 경로가 없으며 새 세 번째 cache snapshot 정책을 추가하지 않음 |
+| cache 한계 | 위 경계는 현재 committed plain-data·builtin Array/Set/Math의 정적 callee 범위. 임의 override/Proxy/getter/재진입·전역 cache identity 보존이나 모든 공급자 부작용까지 일반화하지 않음 |
+| 저장·자원 | 직접 장착·강화 실행·저장 호출을 추가하지 않음. own fixture에서 원 레코드/직렬화 및 현재 자원 값 복원을 관측했으며 실 P/장비·applyStats/calcCP·save/API를 실행한 검수는 아님 |
+| 신규 검사 | 실제 helper와 실제 CP try fragment + own providers/state 6군 및 main inline 구문1 통과. 오류 시 old own 장착 참조 잔류와 새 finally 복원, 조기반환·기존비용·강화/보석·오류/원 catch·나머지 HTML byte 보존 확인 |
+| 검사 이력·한계 | 준비 Python quoting과 own 자금부족 fixture 초기 snapshot 오류를 수정해 firstWholeClean=false 유지. 통과2군·조기반환5사례 재실행 없이 실패1사례와 미실행 나머지만 진행했고 제품 코드를 검사에 맞춰 변경하지 않음. 실제 UI·전투력 수치·장착/저장·native·PC·전체 최신 이식 검수 아님 |

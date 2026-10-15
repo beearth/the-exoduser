@@ -49464,6 +49464,26 @@ if($('resetYes'))$('resetYes').onclick=async()=>{
 };
 
 // ═══ COMBAT POWER ═══
+function _inventoryEquipCP(item,slot){
+  const _player=P,_equipped=INV.equipped,_affixCache=_eqAffixCache,_statCache=_eqStatCache;
+  try{
+    if(!item||!slot||!Object.prototype.hasOwnProperty.call(_equipped,slot)||item===_equipped[slot]||(item.reqLv&&_player.lv<item.reqLv))return calcCP();
+    const _old=_equipped[slot],_preview={...item};
+    if(_old&&(_old.enh||0)>0){
+      if((G.mats||0)<xferCost(_old.enh||0))return calcCP();
+      _preview.enh=_old.enh||0;
+    }
+    if(_old&&_old.crystals&&_old.crystals.length>0){
+      _preview.crystals=item.crystals?item.crystals.slice():new Array(item.socketCount||0).fill(null);
+      for(const _crystal of _old.crystals){if(!_crystal)continue;const _empty=_preview.crystals.findIndex(c=>!c);if(_empty>=0)_preview.crystals[_empty]=_crystal;}
+    }
+    P={..._player};INV.equipped={..._equipped,[slot]:_preview};
+    _eqAffixCache=null;_eqStatCache=null;
+    applyStats();
+    return calcCP();
+  }finally{P=_player;INV.equipped=_equipped;_eqAffixCache=_affixCache;_eqStatCache=_statCache;}
+}
+
 function calcCP(){
   let atk=0,def=0,extra=0;
   // Player base + stats
@@ -49877,9 +49897,7 @@ function _invBuildCompare(item,curEq){
     if(_slot&&INV&&INV.equipped&&Object.prototype.hasOwnProperty.call(INV.equipped,_slot)){
       const _prev=INV.equipped[_slot];
       const _cpOld=calcCP().total;
-      INV.equipped[_slot]=item;
-      const _cpNew=calcCP().total;
-      INV.equipped[_slot]=_prev;
+      const _cpNew=_inventoryEquipCP(item,_slot).total;
       const _cpDiff=_cpNew-_cpOld;
       if(_cpDiff!==0){
         const _c=_cpDiff>0?'#44cc44':'#cc4444';
