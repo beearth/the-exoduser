@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="parry-lesson.css?v=20261006-guide-scale">
 <script src="resource-practice.js?v=20260916-recovery2"></script>
 <script src="parry-lesson.js?v=20261001-kislash-2sec"></script>
+<script src="engine/fdg/druid-qa-storage.js?v=native-encounter-r4"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HELL: EXODUSER</title>
@@ -3529,6 +3530,7 @@ function _sanitizeCoreState(){
 
 // ─── [S01c] SAVE/LOAD — 세이브/로드, 자동저장 ───
 async function dbSave(){
+  if(window._FDGDruidQaStorage.active){window._FDGDruidQaStorage.note('character-save-skip');return;}
   if(window._parryLesson?.active)return;
   if(!_charId||!_dbReady||_saving)return;
   if(!P)return;
@@ -3936,6 +3938,7 @@ function doAutoSave(){
 }
 
 function startAutoSave(){
+  if(window._FDGDruidQaStorage.active){window._FDGDruidQaStorage.note('autosave-timer-skip');return;}
   if(_autoSaveTimer)clearInterval(_autoSaveTimer);
   _autoSaveTimer=setInterval(doAutoSave,30000); // 30초마다 자동저장
 }
@@ -4313,7 +4316,7 @@ let _ssaa=1;          // 현재 적용 슈퍼샘플 배율 (1 / 1.5 / 2)
 function _xIdentity(){X.setTransform(1,0,0,1,0,0);}
 // _xWorld(): 월드 좌표계 변환 = ss스케일 + 카메라 평행이동 (논리 VW/VH 기준).
 // 기존 X.setTransform(1,0,0,1, C.width/2-cam.x, C.height/2-cam.y) 의 ss-aware 대체.
-function _xWorld(){X.setTransform(_ssaa,0,0,_ssaa,(VW/2-G.cam.x)*_ssaa,(VH/2-G.cam.y)*_ssaa);}
+function _xWorld(){if(_fdgNativePerspective?.active){_fdgNativePerspective.resetWorld();return;}X.setTransform(_ssaa,0,0,_ssaa,(VW/2-G.cam.x)*_ssaa,(VH/2-G.cam.y)*_ssaa);}
 let _lastRw=0,_lastRh=0,_lastCssW='',_lastCssH='';
 let _rzThrottle=0; // rz() throttle timer (ms)
 let _vignCvs=null,_vignW=0,_vignH=0;
@@ -4709,6 +4712,13 @@ var _drawOdd=0;        // 프레임 카운터 (홀수/짝수 판정)
 // ─── [S02c] RENDERER — WebGPU → WebGL2 → Canvas2D 초기화 ───
 
 // ── 공통 상수/버퍼/함수 포인터 ──
+const _fdgProjectiveTextureGate=window._FDGDruidQaStorage?.active===true&&new URLSearchParams(location.search).get('fdgPerspective')==='first';
+const _FDG_RUINED_FOREST_FIRST=_fdgProjectiveTextureGate&&new URLSearchParams(location.search).get('fdgScene')==='ruined-forest-first';
+let _fdgRuinedForestModule=null,_fdgRuinedForestUi=null,_fdgRuinedForestCompleted=false;
+const _FDG_NATIVE_MAP_PACK_FIRST=_FDG_RUINED_FOREST_FIRST&&new URLSearchParams(location.search).get('fdgMapPack')==='first';
+const _FDG_NATIVE_ENCOUNTER_PLACEMENT_FIRST=_FDG_NATIVE_MAP_PACK_FIRST&&new URLSearchParams(location.search).get('fdgEncounter')==='placement-first';
+let _fdgNativeMapPackBundle=null,_fdgNativeMapPackLoad=null,_fdgNativeEncounterSpawns=null;
+if(_FDG_RUINED_FOREST_FIRST){window._btGod=false;window._btActive=false;window._btBoss=null;window._btPaused=false;window._btSpeedMul=1;}
 const _MQ=65536,_FPV=11;
 const _buf=new Float32Array(_MQ*4*_FPV);
 let _qCnt=0,_bufOff=0;
@@ -4826,7 +4836,7 @@ const _DCP_SRC_NAME=['unknown','map/cache','tile/fallback','world object','playe
 const _DCP_FAULT_CACHE_DELAY=(function(){try{const n=+new URLSearchParams(location.search).get('dcprofCacheDelay');return Number.isFinite(n)?Math.max(0,Math.min(600,~~n)):0}catch(e){return 0}})();
 let _dcpCacheDelayLeft=0,_dcpCacheFaultActive=false;
 const _DCP={
-  on:(function(){try{return /[?&]dcprof\b/.test(location.search)||(typeof localStorage!=='undefined'&&localStorage.getItem('dcprof')==='1')}catch(e){return false}})(),
+  on:(function(){try{return /[?&]dcprof\b/.test(location.search)||(typeof localStorage!=='undefined'&&(window._FDGDruidQaStorage.active?window._FDGDruidQaStorage.getItem('dcprof'):localStorage.getItem('dcprof'))==='1')}catch(e){return false}})(),
   reason:'explicit',   // 현재 flush 사유 (setTex/setBlend/quad가 flush 직전 세팅)
   frame:0, drawInvokes:0, // drawInvokes: 프레임당 draw() 호출 횟수 (중복 traversal 감지)
   transState:'idle', transMap:'', transTTL:0, // 맵 전환 상태 태그 (buildMapCache 후 N프레임 유지)
@@ -5094,6 +5104,7 @@ void main(){vec4 c=texture(uAtlas,vUV);if(c.a<=0.001)discard;oC=vec4(c.rgb*vAlph
   }catch(e){console.warn('[VFX-GL] instancing 초기화 실패:',e.message||e);_resetVfxInstanced()}
 }
 function _queueVfxGL(img,sx,sy,sw,sh,x,y,dw,dh,ang,alpha){
+  if(_fdgNativePerspective?.active)return false; // existing X fallback consumes the same world camera
   if(!_vfxGLMode||_vfxGLCount>=_VFX_GL_MAX)return false;
   const tex=_getTex(img);if(!tex)return false;
   // 텍스처 변경 시 기존 배치 flush
@@ -5129,7 +5140,7 @@ function _flushVfxGL(){
 function _prepEnemyInstanced(_vl,_vr,_vt,_vb,_now,_E_RMAX){
   _dbgEnsGL=0;_dbgEns8GL=0;_dbgEns8GLDraws=0;_ensGLCount=0;_ens8GLTotal=0;_ens8GLCounts.fill(0);
   for(let _egi=0;_egi<ens.length;_egi++)if(ens[_egi])ens[_egi]._ensGLMode=0;
-  if(!_useGL||!GL||!_ensGLProg)return 0;
+  if(_fdgNativePerspective?.active||!_useGL||!GL||!_ensGLProg)return 0;
   const _t0=performance.now();
   // [DEPTH-SLICE][MAP-013] 화면 y 순서로 큐잉 — 같은 인스턴싱 버킷 안에서만 앞뒤가 보정됨(버킷 간 순서는 잔여)
   const _dsOn2=_dsEnabled();
@@ -5473,7 +5484,7 @@ struct O{@builtin(position)p:vec4f,@location(0)u:vec2f,@location(1)c:vec4f,@loca
 @group(0)@binding(0)var<uniform> res:vec2f;
 @group(1)@binding(0)var tex:texture_2d<f32>;
 @group(1)@binding(1)var smp:sampler;
-@vertex fn vs(v:V)->O{var o:O;let n=v.p/res*2.0-1.0;o.p=vec4f(n.x,-n.y,0,1);o.u=v.u;o.c=v.c;o.s=u32(v.s);o.r=v.r;return o;}
+@vertex fn vs(v:V)->O{var o:O;let n=v.p/res*2.0-1.0;let w=${_fdgProjectiveTextureGate?'select(1.0,v.r.y,v.s==5.0&&v.r.y>0.0)':'1.0'};o.p=vec4f(n.x*w,-n.y*w,0.0,w);o.u=v.u;o.c=v.c;o.s=u32(v.s);o.r=v.r;return o;}
 @fragment fn fs(i:O)->@location(0)vec4f{
 if(i.s==5u){return textureSampleLevel(tex,smp,i.u,0.0)*i.c;}
 var c=i.c;
@@ -5660,7 +5671,7 @@ function _initWebGL(){
   const _VS=`#version 300 es
 layout(location=0)in vec2 aP;layout(location=1)in vec2 aU;layout(location=2)in vec4 aC;layout(location=3)in float aS;layout(location=4)in vec2 aR;
 uniform vec2 uR;out vec2 vU;out vec4 vC;flat out int vS;out vec2 vR;
-void main(){vec2 c=aP/uR*2.0-1.0;c.y=-c.y;gl_Position=vec4(c,0,1);vU=aU;vC=aC;vS=int(aS);vR=aR;}`;
+void main(){vec2 c=aP/uR*2.0-1.0;c.y=-c.y;float w=${_fdgProjectiveTextureGate?'((int(aS)==5&&aR.y>0.0)?aR.y:1.0)':'1.0'};gl_Position=vec4(c*w,0.0,w);vU=aU;vC=aC;vS=int(aS);vR=aR;}`;
   const _FS=`#version 300 es
 precision mediump float;in vec2 vU;in vec4 vC;flat in int vS;in vec2 vR;uniform sampler2D uT;out vec4 oC;
 void main(){
@@ -6022,6 +6033,24 @@ strokeText(t,x,y,mw){_syncTextFont();_txCtx.textAlign=_ta;_txCtx.textBaseline=_t
 _txCtx.strokeStyle=_ss;_txCtx.globalAlpha=_ga;_txCtx.lineWidth=_lw;const p=_tp(x,y);
 if(mw!==undefined)_txCtx.strokeText(t,p[0],p[1],mw);else _txCtx.strokeText(t,p[0],p[1])},
 measureText(t){_syncTextFont();return _txCtx.measureText(t)},
+// Opt-in world camera sink: existing texture upload/quad/index/shader contracts.
+// Patch source UV after _quad, because that call may flush the current batch.
+get projectiveTextureProjection(){return _fdgProjectiveTextureGate;},
+drawProjectedTriangle(img,vertices,alpha){
+if(img instanceof HTMLImageElement&&(!img.complete||img.naturalWidth===0))return;
+if(img instanceof HTMLCanvasElement)_uploadCanvasTex(img);else _setTex(_getTex(img));
+const m=_mat(),a=vertices[0],b=vertices[1],c=vertices[2];
+const ax=m[0]*a.x+m[2]*a.y+m[4],ay=m[1]*a.x+m[3]*a.y+m[5];
+const bx=m[0]*b.x+m[2]*b.y+m[4],by=m[1]*b.x+m[3]*b.y+m[5];
+const cx=m[0]*c.x+m[2]*c.y+m[4],cy=m[1]*c.x+m[3]*c.y+m[5];
+if(_qCnt>=16383)_flush(); // existing Uint16 index limit; do not treat _MQ as the index capacity
+_quad(ax,ay,bx,by,cx,cy,cx,cy,0,0,1,1,1,1,1,alpha,5,0,0);
+const o=(_bufOff+_qCnt-1)*4*_FPV,w=img.width||1,h=img.height||1;
+_buf[o+2]=a.u/w;_buf[o+3]=a.v/h;_buf[o+13]=b.u/w;_buf[o+14]=b.v/h;
+_buf[o+24]=c.u/w;_buf[o+25]=c.v/h;_buf[o+35]=c.u/w;_buf[o+36]=c.v/h;
+_buf[o+10]=Number.isFinite(a.w)&&a.w>0?a.w:1;_buf[o+21]=Number.isFinite(b.w)&&b.w>0?b.w:1;
+_buf[o+32]=Number.isFinite(c.w)&&c.w>0?c.w:1;_buf[o+43]=_buf[o+32];
+},
 drawImage(img){
 if(img instanceof HTMLImageElement&&(!img.complete||img.naturalWidth===0))return;
 if(img instanceof HTMLCanvasElement){_uploadCanvasTex(img)}
@@ -8953,7 +8982,7 @@ function _benchTick(){
     const combined=Math.min(_gpuScoreCache,fpsScore);
     _hwTier=combined>=4?'S':combined>=3?'A':combined>=2?'B':'C';
     // auto-apply quality preset only on first run (no saved settings)
-    const _saved=localStorage.getItem('hellcave_settings');
+    const _saved=(window._FDGDruidQaStorage.active?window._FDGDruidQaStorage.getItem('hellcave_settings'):localStorage.getItem('hellcave_settings'));
     if(!_saved||typeof OPT.bloom==='undefined'){
       _applyTierPreset(_hwTier);
     }else{
@@ -10169,7 +10198,7 @@ const CHAR_LIST=[
   {id:'exoduser_silvertail',name:'실버테일',desc:'블레이드 댄서. 회전대검, 단검 하나',folder:'img/exoduser_silvertail',fw:48,fh:48,idleN:2,walkN:4,atkN:4,whirlN:0,throwN:0,chainN:0,dashN:0},
 ];
 let _charIdx=0;
-try{const _sv=localStorage.getItem('_charIdx');if(_sv!=null)_charIdx=+_sv;}catch(e){}
+try{const _sv=(window._FDGDruidQaStorage.active?window._FDGDruidQaStorage.getItem('_charIdx'):localStorage.getItem('_charIdx'));if(_sv!=null)_charIdx=+_sv;}catch(e){}
 const _charPreviews=[];
 CHAR_LIST.forEach((ch,ci)=>{
   const im=new Image();im.src=ch.folder+'/south.png';
@@ -10186,7 +10215,7 @@ const _SILVERTAIL_CLOCK_FILES={south:'6','south-east':'5',east:'3','north-east':
 const _SILVERTAIL_ASSET_VERSION='20260915-walk-v3';
 function _loadCharAtlas(idx){
   if(idx<0||idx>=CHAR_LIST.length)idx=0;
-  _charIdx=idx;try{localStorage.setItem('_charIdx',''+idx);}catch(e){}
+  _charIdx=idx;try{if(window._FDGDruidQaStorage.active)window._FDGDruidQaStorage.setItem('_charIdx',''+idx);else localStorage.setItem('_charIdx',''+idx);}catch(e){}
   const ch=CHAR_LIST[idx];
   const _animInfo=ch.idleN?{idleN:ch.idleN,walkN:ch.walkN||0,atkN:ch.atkN||0,whirlN:ch.whirlN||0,throwN:ch.throwN||0,chainN:ch.chainN||0,dashN:ch.dashN||0}:null;
   // mask 버전 (folder) 로드
@@ -10518,6 +10547,12 @@ function _drawCodexBoss(X,e,sa,tdY,si){
 function _drawStage1CodexBoss(X,e,sa,tdY){return _drawCodexBoss(X,e,sa,tdY,0)}
 // ═══ [다크드루이드] 8방향 프레임 애니메이션 렌더러 (walk/attack=4열8행, 대기=8dir 4열2행) ═══
 const _druidSheets={};
+const _druidDrawnSources=new WeakMap();
+const _druidV3Source=Object.freeze({id:'dark-druid-idle-8dir-v3',src:'assets/sprites/boss/boss_dark_druid_8dir_v3.png',width:1656,height:1240,sha256:'ceb3843fc1d612601b63dcb33035298da9b92d4ae39e88d986805ec4216e1549'});
+const _druidLegacyRigExplicit=new URL(location.href).searchParams.get('fdgDruidSource')==='legacy-f0';
+window._FDGDruidSourceSelection=Object.freeze({idleSource:_druidV3Source,legacyRigExplicit:_druidLegacyRigExplicit,
+  isReady:()=>_druidLegacyRigExplicit?!!window._FDGDruidSlamBridge:!!_druidSheets.base8?.ready,
+  getDrawnSource:e=>{const rig=window._FDGDruidSlamBridge?.getRenderSnapshot(e);if(rig?.sourceIdentity)return {...rig.sourceIdentity,kind:'legacy-rig'};const drawn=_druidDrawnSources.get(e);return drawn?{...drawn}:null;}});
 const _druidGroundRing=new Image();
 _druidGroundRing.src='assets/vfx/boss/druid_corruption_ring.svg?v=20260928';
 function _drawDruidGroundRing(ctx,x,y,r,alpha,angle=0,innerFraction=0){
@@ -10543,11 +10578,12 @@ const _DRUID_DIRMAP=[6,7,0,1,2,3,4,5];
 function _druidDir(e){
   let ang=e.facing||0;
   if((e.s==='eWalk'||e.s==='eChase'||e.s==='eApproach')&&(e.vx||e.vy))ang=Math.atan2(e.vy,e.vx);
+  if(_fdgNativePerspective?.active)ang=_fdgNativePerspective.screenFacing(e.x,e.y,ang);
   let d=Math.round(ang/(Math.PI/4));d=((d%8)+8)%8;
   return _DRUID_DIRMAP[d];
 }
 function _drawDruidBoss(X,e,sa,tdY,spec){
-  _drawDruidFinaleTell(X,e);
+  if(_fdgNativePerspective?.active)_fdgNativePerspective.withGround(()=>_drawDruidFinaleTell(X,e));else _drawDruidFinaleTell(X,e);
   const key=_stage1CodexBossMotionKey(e);
   let sheet,cols,rows,frame,dir=_druidDir(e),dirless=false;
   const _nw=performance.now(); // 시간기반 프레임(프레임레이트 독립 — 고FPS서 빨라짐 방지)
@@ -10557,6 +10593,7 @@ function _drawDruidBoss(X,e,sa,tdY,spec){
   const _isCharge=e.s&&!_isChgWind&&(e.s==='bossJump'||e.s.indexOf('Charge')>=0||e.s.indexOf('charge')>=0||e.s.indexOf('Dash')>=0||e.s.indexOf('multiDash')>=0); // 실제 돌진=야수(8방향)
   const _isDive=e.s==='bossDruidDive'||e.s==='bossDruidUnder'||e.s==='bossDruidErupt'; // [전용] 지네돌진: dive시트(침강0→7/잠행7/분출7→0)
   if(e.s==='bossDruidUnder'){ // 완전히 땅속: 스프라이트 숨김·이동하는 흙두둑만(꼼장어 잠행) → Erupt에서 역순 기어나옴
+    _druidDrawnSources.delete(e);
     X.save();X.translate(e.x,e.y+(tdY||0));const _unU=1/(window._btScaleMul||1);X.scale(_unU,_unU);
     const _mr=e.r*5.5,_tick=_nw*.003;
     X.globalAlpha=.42;X.fillStyle='#090d0a';X.beginPath();X.ellipse(0,_mr*.13,_mr*1.12,_mr*.42,0,0,Math.PI*2);X.fill();
@@ -10596,19 +10633,25 @@ function _drawDruidBoss(X,e,sa,tdY,spec){
   else if(key==='slash'||key==='slam'||key==='windup'||e.s==='bossDruidVolleyWind'||e.s==='bossDruidVolley'){sheet='attack';cols=4;rows=8;frame=(~~(_nw/150))%4;} // 공격 150ms/frame (~6.7fps, 1사이클 0.6s)
   else if(key==='walk'){sheet='walk';cols=4;rows=8;frame=(~~(_nw/150))%4;} // 이동 시 8방향 4프레임 보행 유지
   else{sheet='base8';cols=4;rows=2;frame=dir;dirless=true;} // 대기 또한 원본 방향 셀 사용; 미세 호흡은 배치 오프셋으로 표현
-  const S=_druidSheets[sheet];if(!S||!S.ready)return false;
+  const S=_druidSheets[sheet];if(!S||!S.ready){_druidDrawnSources.delete(e);return false;}
   const img=S.img,iw=img.naturalWidth,ih=img.naturalHeight;
   const _fc=dirless?frame%cols:frame,_fr=dirless?~~(frame/cols):dir;
   const sx=Math.round(_fc*iw/cols),sy=Math.round(_fr*ih/rows);
   const cw=Math.round((_fc+1)*iw/cols)-sx,ch=Math.round((_fr+1)*ih/rows)-sy; // 비정수 시트도 정수 픽셀 경계로 샘플링
   let dw=e.r*spec.dw,dh=e.r*spec.dh;
+  if(sheet==='base8')dw=dh*cw/ch; // Preserve the new source silhouette and complete cloak/feet.
   if(sheet==='beast'||sheet==='dive'||sheet==='transform'){dh=e.r*spec.dh;dw=dh*(cw/ch)*1.12;} // [넉넉] 정사각/세로 셀(돌진 야수/다이빙/변신) 비율보존+12% 여유 — 안 짤리게
   const _breath=sheet==='base8'?Math.sin(_nw*.003)*2:0;
   X.save();X.translate(e.x,e.y+(tdY||0)-6+_breath);const _un=1/(window._btScaleMul||1);X.scale(_un,_un);e._nameTopOff=(tdY||0)-6+_breath-dh*.86*_un-10; // 네임플레이트/HP바를 스프라이트 상단 위로(2026-08 유저요청: 다리 겹침 해소)
   if(window._BOSS_GLOW){X.globalAlpha=sa*.30;X.fillStyle=spec.glow;X.beginPath();X.ellipse(0,-dh*.40,dw*.24,dh*.22,0,0,Math.PI*2);X.fill();} // 글로우 게이트(2026-08-25 유저요청: 원형 잔상 제거, _BOSS_GLOW=true 시만 그림). 삭제X 게이트만
   X.globalAlpha=sa;X.drawImage(img,sx,sy,cw,ch,-dw/2,-dh*.86,dw,dh);
+  if(sheet!=='base8'){
   X.globalCompositeOperation='lighter';X.globalAlpha=sa*.42;X.drawImage(img,sx,sy,cw,ch,-dw/2,-dh*.86,dw,dh); // 셀프 라이튼 ×2(어두운 아레나서 존재감)
   X.globalAlpha=sa*.42;X.drawImage(img,sx,sy,cw,ch,-dw/2,-dh*.86,dw,dh);
+  }
+  const drawnSource=_druidDrawnSources.get(e);
+  if(!drawnSource||drawnSource.sheet!==sheet||drawnSource.nativeDir!==dir||drawnSource.frame!==frame||drawnSource.width!==iw||drawnSource.height!==ih)
+    _druidDrawnSources.set(e,{id:sheet==='base8'?_druidV3Source.id:'legacy-druid-'+sheet,src:sheet==='base8'?_druidV3Source.src:'assets/sprites/boss/boss_dark_druid_'+sheet+'.png',width:iw,height:ih,sha256:sheet==='base8'?_druidV3Source.sha256:null,kind:sheet==='base8'?'directional-idle':'legacy-motion',sheet,nativeDir:dir,frame});
   X.globalCompositeOperation='source-over';X.globalAlpha=1;
   X.restore();return true;
 }
@@ -10860,11 +10903,13 @@ function _vistaImgForStage(){
 }
 function _voidVistaReady(){const im=_vistaImgForStage();return !!(im&&im.complete&&im.naturalWidth>8)}
 function _isVistaMap(){
+  if(_FDG_RUINED_FOREST_FIRST)return false;
   if(typeof G!=='undefined'&&G._plateSrc)return true;
   const p=_MAP_COMPOSE[typeof G!=='undefined'?G.stage:-1];
   return !!(p&&(p.vista||p.plate));
 }
 function _isPlateMap(){
+  if(_FDG_RUINED_FOREST_FIRST)return false;
   if(typeof G!=='undefined'&&G._plateSrc)return true;
   const p=_MAP_COMPOSE[typeof G!=='undefined'?G.stage:-1];
   return !!(p&&p.plate);
@@ -11166,7 +11211,8 @@ function _fillVoidWithFloor(ctx){
     // [VOID-VP] 타일링 범위 = 카메라 뷰포트 렉트(줌 반영) + 1타일 마진. 맵 렉트 기준이 아니라 실제 보이는 영역만.
     const _vz=Math.max(0.3,((_EDITOR_MODE&&G._edZoom)?G._edZoom:1)*(!_EDITOR_MODE?(G._camZoom||1):1)),_vpm=1/_vz;
     const _vhw=VW/2*_vpm+_vts,_vhh=VH/2*_vpm+_vts;
-    const _vl=Math.floor((G.cam.x-_vhw)/_vts)*_vts,_vt=Math.floor((G.cam.y-_vhh)/_vts)*_vts,_vr=G.cam.x+_vhw,_vb=G.cam.y+_vhh;
+    const _vpGround=_fdgNativePerspective?.active?_fdgNativePerspective.bounds():null;
+    const _vl=Math.floor((_vpGround?.left??G.cam.x-_vhw)/_vts)*_vts,_vt=Math.floor((_vpGround?.top??G.cam.y-_vhh)/_vts)*_vts,_vr=(_vpGround?.right??G.cam.x+_vhw)+_vts,_vb=(_vpGround?.bottom??G.cam.y+_vhh)+_vts;
     ctx.imageSmoothingEnabled=false;
     for(let _py=_vt;_py<_vb;_py+=_vts)for(let _px=_vl;_px<_vr;_px+=_vts)ctx.drawImage(_fimg,_px,_py,_vts,_vts);
     // 맵 경계(walkable 끝) 밖 4방향 밴드 → 못 가는 곳 명시. [EDGE-FADE] 하드 엣지 대신 경계에서 floor→어둠 알파 페이드(보기 좋게). 어둠 색/최대알파(#050507/.82) 불변.
@@ -11213,6 +11259,7 @@ _pathBgImg.onload=()=>{
 _pathBgImg.src='assets/map/ch1/map_1-2.jpg?v=20260817-paint2';
 function _pathBgReady(){return _pathBgImg&&_pathBgImg.complete&&_pathBgImg.naturalWidth>8}
 function _isMapPaint(){
+  if(_FDG_RUINED_FOREST_FIRST)return false;
   const p=_MAP_COMPOSE[typeof G!=='undefined'?G.stage:-1];
   return !!(p&&p.path&&p.path.paint);
 }
@@ -11251,7 +11298,7 @@ const _ch1StartOuterCache=Object.create(null),_ch1StartOuterWarmQ=[];
 let _ch1StartOuterWarmBusy=false,_ch1StartOuterBootFallback=false;
 const _ch1StartOuterStats={requests:0,ready:0,errors:0,decodeCount:0,warmCount:0,maxWarmMs:0,drawSamples:0,maxDrawMs:0,underlaySkippedFrames:0,underlayFallbackFrames:0,visibleIds:[],drawnIds:[]};
 function _ch1StartOuterEnabled(){
-  if(_ch1StartOuterBootFallback)return false;
+  if(_ch1StartOuterBootFallback||_FDG_RUINED_FOREST_FIRST)return false;
   if(typeof G==='undefined'||typeof location==='undefined')return false;
   if(!(G.stage===_CH1_START_OUTER.stage)||G._bossArena)return false;
   return _CH1_START_OUTER_QUERY_ENABLED;
@@ -12808,7 +12855,7 @@ addEventListener('keydown',e=>{
   if(['Space','Enter','NumpadEnter','Tab'].includes(e.code)&&e.target instanceof Element&&e.target.closest('#invPanel.on button,#crBagPop button,#settings.on button,#settings.on input,#settings.on select'))return;
   K[e.code]=true;KH[e.code]=true;
   // E(shield) 탭 버퍼: 초고속 탭에서 keyup이 K를 지우기 전에 press 사실을 프레임 스탬프로 보존 (게임패드 synth 키다운도 경유)
-  if(!e.repeat&&G&&G.on&&!G.paused&&(e.code===BINDS.shield||e.code===BINDS2.shield))_sdTapBuf=G.frame;
+  if(!e.repeat&&G&&G.on&&!G.paused&&(e.code===BINDS.shield||e.code===BINDS2.shield))_sdTapBuf=_gameFrame;
   if(['Space','Tab','Escape','KeyE','KeyQ','KeyZ','KeyX','KeyC','KeyB','KeyN','KeyH','KeyJ','KeyK','KeyL','KeyR','KeyF','KeyG','KeyV','ControlLeft','ControlRight','ShiftLeft','ShiftRight','CapsLock'].includes(e.code))e.preventDefault();
   // ── T키 석궁 자동발사 토글 ──
   if(e.code==='KeyT'&&G.on&&!G.paused&&!e.repeat){
@@ -13038,14 +13085,14 @@ let _gpActive=false;    // 패드 모드 활성 (실제 입력 감지 시 true, 
 let _gpHasRStick=false; // 우스틱 실재 확인 (좌스틱과 독립적인 움직임 감지 시 true)
 let _gpSynced=false;    // [팬텀차단] 패드모드 재진입 시 held-버튼 prev 재동기화 필요 플래그 (조이스틱 드리프트 stuck-key 방지)
 // 자동 감지: localStorage 힌트로 초기값 설정, 이후 실시간 전환
-if(localStorage.getItem('inputMode')==='pad'){_gpActive=true;document.body.style.cursor='none'}
+if((window._FDGDruidQaStorage.active?window._FDGDruidQaStorage.getItem('inputMode'):localStorage.getItem('inputMode'))==='pad'){_gpActive=true;document.body.style.cursor='none'}
 addEventListener('gamepadconnected',e=>{
   if(!_gpConnected)try{notify('🎮 패드 연결됨')}catch(e2){}
   _gpConnected=true;
   _gpVibRef=e.gamepad; // vibrationActuator 캐시 (이 객체에만 존재)
   console.log('[GAMEPAD] 연결:',e.gamepad.id,'vibrator:',!!e.gamepad.vibrationActuator);
   // 패드 연결 즉시 모드 전환 (자동 감지)
-  if(!_gpActive){_gpActive=true;document.body.style.cursor='none';if(typeof C!=='undefined'&&C)C.style.cursor='none';localStorage.setItem('inputMode','pad')}
+  if(!_gpActive){_gpActive=true;document.body.style.cursor='none';if(typeof C!=='undefined'&&C)C.style.cursor='none';(window._FDGDruidQaStorage.active?window._FDGDruidQaStorage.setItem('inputMode','pad'):localStorage.setItem('inputMode','pad'))}
 });
 // 시작 시 이미 꽂혀있는 패드 감지 (gamepadconnected 이벤트가 안 오는 경우)
 (function _gpBootDetect(){
@@ -13055,7 +13102,7 @@ addEventListener('gamepadconnected',e=>{
       _gpConnected=true;
       _gpVibRef=gps[i];
       console.log('[GAMEPAD] 부팅 감지:',gps[i].id,'vibrator:',!!gps[i].vibrationActuator);
-      if(!_gpActive){_gpActive=true;document.body.style.cursor='none';localStorage.setItem('inputMode','pad')}
+      if(!_gpActive){_gpActive=true;document.body.style.cursor='none';(window._FDGDruidQaStorage.active?window._FDGDruidQaStorage.setItem('inputMode','pad'):localStorage.setItem('inputMode','pad'))}
       return;
     }
   }
@@ -13063,10 +13110,10 @@ addEventListener('gamepadconnected',e=>{
   if(!_gpBootDetect._n)_gpBootDetect._n=0;
   if(++_gpBootDetect._n<5)setTimeout(_gpBootDetect,1000);
 })();
-addEventListener('gamepaddisconnected',e=>{try{_gpClearAll()}catch(e3){}if(_gpConnected)try{notify('🎮 패드 연결 끊김')}catch(e4){}_gpConnected=false;_gpActive=false;_gpad=null;_gpVibRef=null;localStorage.setItem('inputMode','kbm');try{_applyCursor()}catch(e2){document.body.style.cursor=''}console.log('[GAMEPAD] 해제')});
+addEventListener('gamepaddisconnected',e=>{try{_gpClearAll()}catch(e3){}if(_gpConnected)try{notify('🎮 패드 연결 끊김')}catch(e4){}_gpConnected=false;_gpActive=false;_gpad=null;_gpVibRef=null;(window._FDGDruidQaStorage.active?window._FDGDruidQaStorage.setItem('inputMode','kbm'):localStorage.setItem('inputMode','kbm'));try{_applyCursor()}catch(e2){document.body.style.cursor=''}console.log('[GAMEPAD] 해제')});
 // 키보드/마우스 입력 → 패드모드 해제 + 패드 주입 키 정리
-addEventListener('mousemove',e=>{if(_gpActive&&(Math.abs(e.movementX)+Math.abs(e.movementY)>3)){_gpActive=false;localStorage.setItem('inputMode','kbm');try{_applyCursor()}catch(e2){document.body.style.cursor=''}_gpClearAll();}},{passive:true});
-addEventListener('keydown',e=>{if(_gpActive&&!e._fromGp){_gpActive=false;localStorage.setItem('inputMode','kbm');try{_applyCursor()}catch(e2){document.body.style.cursor=''}_gpClearAll();}},{passive:true});
+addEventListener('mousemove',e=>{if(_gpActive&&(Math.abs(e.movementX)+Math.abs(e.movementY)>3)){_gpActive=false;(window._FDGDruidQaStorage.active?window._FDGDruidQaStorage.setItem('inputMode','kbm'):localStorage.setItem('inputMode','kbm'));try{_applyCursor()}catch(e2){document.body.style.cursor=''}_gpClearAll();}},{passive:true});
+addEventListener('keydown',e=>{if(_gpActive&&!e._fromGp){_gpActive=false;(window._FDGDruidQaStorage.active?window._FDGDruidQaStorage.setItem('inputMode','kbm'):localStorage.setItem('inputMode','kbm'));try{_applyCursor()}catch(e2){document.body.style.cursor=''}_gpClearAll();}},{passive:true});
 
 // 게임패드 자동 에임: 가장 가까운 적 방향으로 facing 보정
 function _gpAutoAim(range){
@@ -13092,11 +13139,11 @@ let _GP_KEY=Object.assign({},_GP_KEY_DEFAULT);
 let _GP_KEYIDX={}; // [release-sync] 키코드→버튼인덱스 역맵 (누르기=엣지, 떼기=레벨 동기화용). _GP_KEY 변경 시 _rebuildGpKeyIdx로 갱신
 function _rebuildGpKeyIdx(){_GP_KEYIDX={};for(var _rk in _GP_KEY)_GP_KEYIDX[_GP_KEY[_rk]]=+_rk;}
 // 저장된 패드 매핑 로드
-try{const _s=localStorage.getItem('gpKeyMap');if(_s){const _m=JSON.parse(_s);for(const k in _m){const _ki=+k;if(_ki>=12&&_ki<=15)continue;_GP_KEY[_ki]=_m[k]}}}catch(e){}
+try{const _s=(window._FDGDruidQaStorage.active?window._FDGDruidQaStorage.getItem('gpKeyMap'):localStorage.getItem('gpKeyMap'));if(_s){const _m=JSON.parse(_s);for(const k in _m){const _ki=+k;if(_ki>=12&&_ki<=15)continue;_GP_KEY[_ki]=_m[k]}}}catch(e){}
 // 2026-07-27 키스왑 마이그레이션: 구 기본 패드맵(X=mouse2, R3=KeyE) → 신 기본(X=KeyE, R3=mouse2)
 if(_GP_KEY[2]==='mouse2'&&_GP_KEY[11]==='KeyE'){_GP_KEY[2]='KeyE';_GP_KEY[11]='mouse2';_saveGpKeyMap()}
 _rebuildGpKeyIdx(); // 초기 역맵 빌드 (로드/마이그레이션 반영 후 1회)
-function _saveGpKeyMap(){_rebuildGpKeyIdx();try{localStorage.setItem('gpKeyMap',JSON.stringify(_GP_KEY))}catch(e){}}
+function _saveGpKeyMap(){_rebuildGpKeyIdx();try{(window._FDGDruidQaStorage.active?window._FDGDruidQaStorage.setItem('gpKeyMap',JSON.stringify(_GP_KEY)):localStorage.setItem('gpKeyMap',JSON.stringify(_GP_KEY)))}catch(e){}}
 function _resetGpKeyMap(){_GP_KEY=Object.assign({},_GP_KEY_DEFAULT);_saveGpKeyMap()}
 var _gpInjHeld={}; // [release-sync] 게임패드가 주입해 현재 눌림으로 기록한 키코드 (falling-edge 유실 대비 레벨 동기화용)
 function _gpInjectKey(kc,pressed){
@@ -16449,7 +16496,7 @@ function _mkProj(){return{x:0,y:0,vx:0,vy:0,dmg:0,el:0,friendly:false,life:0,ml:
   beam:false,maliceHunt:false,bladeShard:false,iceBlade:false,
   bombR:0,bombAtk:0,_tickCd:0,_tickRate:0,_aoeR:0,_aoeDmg:0,
   _trail:null,_trH:0,_typed:false,_sprFr:0,bounces:0,
-  parryable:false,rainbow:false,_lavaPool:false,_lvPull:false,blackHoleBurst:false,_druidParryVolley:false,_labProjectile:false,parryClass:'',_bluHitCD:0,_hitSet:null,
+  parryable:false,rainbow:false,_lavaPool:false,_lvPull:false,blackHoleBurst:false,_druidParryVolley:false,_druidStraight:false,_druidThornVolley:false,_druidThornLane:-1,_labProjectile:false,parryClass:'',_bluHitCD:0,_hitSet:null,
   dx:0,dy:0,type:'',owner:null}}
 for(let _i=0;_i<_PROJ_POOL;_i++)_projFree.push(_mkProj());
 function _resetProj(p){
@@ -16464,7 +16511,7 @@ function _resetProj(p){
   p.beam=p.maliceHunt=p.bladeShard=p.iceBlade=p._fromRainbow=false;
   p.bombR=p.bombAtk=p._tickCd=p._tickRate=0;p._aoeR=p._aoeDmg=0;
   p._trail=null; p._trH=0;p._typed=false;p._sprFr=0;p.bounces=0;
-  p.parryable=p.rainbow=p._lavaPool=p._lvPull=p.blackHoleBurst=p._druidParryVolley=p.noParry=p._labProjectile=false;p.parryClass='';p._bluHitCD=0;p._hitSet=null;p._eyeSkin=0;p.titanEye=false;p._commit=false;p.fbEnergy=false;p.fdEnergy=false;
+  p.parryable=p.rainbow=p._lavaPool=p._lvPull=p.blackHoleBurst=p._druidParryVolley=p._druidStraight=p._druidThornVolley=p.noParry=p._labProjectile=false;p._druidThornLane=-1;p.parryClass='';p._bluHitCD=0;p._hitSet=null;p._eyeSkin=0;p.titanEye=false;p._commit=false;p.fbEnergy=false;p.fdEnergy=false;
   p.dx=p.dy=0;p.type='';p.owner=null;
 }
 // 적 투사체: 발사자(ex,ey) 기준 가까운 대상 반환 (플레이어 vs 허수아비 vs 철갑 전대)
@@ -16520,8 +16567,12 @@ function _prepareDarkSphere(p){
   if(!p.gbBean||p.friendly)return;
   p.el=EL.D;p.col='#a44cff';p.parryClass='';
 }
+function _isNormalDruidBoss(e){return !!(e&&e.ib&&(G.stage===0||G.stage===3)&&!_isDruidFinale(e))}
+const _FDG_DRUID_THORN_FIRST=!!(window._FDGDruidQaStorage?.active&&new URL(location.href).searchParams.get('fdgDruidThorn')==='first');
 function _spawnBossProjectile(e,props){
   props._druidPoison=!!(e&&e.ib&&(G.stage===0||G.stage===3));
+  props._druidStraight=!!(props._druidStraight&&_isNormalDruidBoss(e));
+  props._druidThornVolley=!!(props._druidThornVolley&&_FDG_DRUID_THORN_FIRST&&_isNormalDruidBoss(e));
   if(e&&!e.ib&&!props.friendly&&(props.vx||props.vy))return _emitEnemyShot(e,props);
   return spawnProj(props);
 }
@@ -16542,17 +16593,17 @@ function spawnProj(props){
   if(!p.friendly){
     const _moving=(p.vx*p.vx+p.vy*p.vy)>0;
     const _speedBandBullet=_moving&&!p.titanEye&&!p.web&&!p.mine&&!p.trap&&!p.bomb&&!p.swordWave&&!p.elemBall&&!p._coralSpike&&!p.phantomSword&&!p.pierce&&!p.poisonZone&&!p.iceZone&&!p.blizzard&&!p.dimRift;
-    if(_speedBandBullet&&_isEnemyMagicBullet(p))p.homing=true; // 일반 마법탄 약 22.5°/s 유도. 대형 elemBall 등 특수 직선탄 제외
+    if(_speedBandBullet&&_isEnemyMagicBullet(p)&&!(window._FDGDruidQaStorage?.active&&p._druidStraight))p.homing=true; // 일반 마법탄 약 22.5°/s 유도. 대형 elemBall 등 특수 직선탄 제외
     // 물리 이동 프로필 = 이빨형 E패링 빨콩·EL.P 이빨·혈안탄: 300px/s 고정, 선회 .00436332 ≈15°/s
     if(_moving&&p.titanEye){
       p.homing=true;p.redBean=true;_normalizeEnemyBulletSpeed(p); // 그림만 titanEye, 이동 프로필은 물리탄 공통
     }else if(_moving&&p.el===EL.P&&p.parryClass==='physical'&&!p.blackBean&&!p.gbBean&&!p.blueBean&&!p.waterBean&&!p.fireMagic&&!p.web&&!p.mine&&!p.trap&&!p.bomb&&!p.swordWave&&!p.elemBall&&!p._coralSpike&&!p.phantomSword&&!p.pierce&&!p.poisonZone&&!p.iceZone&&!p.blizzard&&!p.dimRift){
-      p.homing=true;
+      p.homing=!p._druidStraight;
       if(!p.redBean){p.vx*=1.3;p.vy*=1.3;p.redBean=true}
     }
     if(_moving&&!p.titanEye){ // titanEye: 1/3드랍·전역배율 면제. _commit/드루이드 리듬탄: 드랍만 면제, 배율은 적용
       // 탄막 밀도 1/3 — 이동 탄만 3발 중 1발 통과. 전조 완료탄·드루이드 E/Q 리듬 웨이브는 개수 계약을 보존
-      if(!p._commit&&!p._druidParryVolley){_eProjDropCnt=(_eProjDropCnt+1)%3;if(_eProjDropCnt!==0){_recycleProj(p);return null;}}
+      if(!p._commit&&!p._druidParryVolley&&!p._druidThornVolley){_eProjDropCnt=(_eProjDropCnt+1)%3;if(_eProjDropCnt!==0){_recycleProj(p);return null;}}
       p.sz*=2;p.r*=1.3;    // 크기·피격판정(sz) 2배, r 1.3배
       p.vx*=1.8;p.vy*=1.8; // 속도 최종 ×1.8
       p.dmg=~~(p.dmg*2.0); // 이동 탄 데미지 ×2.0
@@ -16562,7 +16613,7 @@ function spawnProj(props){
     if(_speedBandBullet)_normalizeEnemyBulletSpeed(p); // 이빨형 E빨콩·물리이빨 300, 기타 마법·물파란콩·무지개 500~600px/s
     // 정지 위험물(vx=vy=0): 데미지 배율 미적용(원본 유지)
     // 허수아비·철갑 전대: 가까운 대상으로 발사 방향 변경 (무지개콩 제외, 보스탄 포함)
-    if((G._voidScarecrow&&G._voidScarecrow.aggroOn||G._explodeScarecrow&&G._explodeScarecrow.aggroOn||_ancestorTargetForEnemy(p.x,p.y))&&!p.blackBean){
+    if((G._voidScarecrow&&G._voidScarecrow.aggroOn||G._explodeScarecrow&&G._explodeScarecrow.aggroOn||_ancestorTargetForEnemy(p.x,p.y))&&!p.blackBean&&!p._druidThornVolley){
       const _t=_aggroXY(p.x,p.y);
       const _spd2=Math.sqrt(p.vx*p.vx+p.vy*p.vy);
       if(_spd2>0){
@@ -16689,9 +16740,16 @@ function _druidFinaleFrame(e,px,py,vw,vh,out){
   out.x=(left+right)*.5;out.y=(top+bottom)*.5+(padBottom-padTop)/(2*out.zoom);
   return out;
 }
+let _fdgNativePerspective=null; // only installed by exact r4 + fdgPerspective=first
 function _syncDruidFinaleMouse(){
   if(_gpActive||!Number.isFinite(mouse._screenX)||!Number.isFinite(mouse._screenY))return;
-  const zoom=(!_EDITOR_MODE&&_DEMO_MODE&&G.stage===3&&G.stage===_DEMO_LAST_STAGE&&G._bossArena)?Math.max(.3,G._camZoom||1):1;
+  if(_fdgNativePerspective){
+    const target=_fdgNativePerspective.inversePointer(mouse._screenX,mouse._screenY);
+    if(target){mouse.x=target.x;mouse.y=target.y;}
+    return;
+  }
+  const _qaCombat=window._FDGDruidQaStorage?.active&&window._FDGDruidEncounterQa?.combatFraming;
+  const zoom=(!_EDITOR_MODE&&((_DEMO_MODE&&G.stage===3&&G.stage===_DEMO_LAST_STAGE&&G._bossArena)||_qaCombat))?Math.max(.3,G._camZoom||1):1;
   mouse.x=VW/2+(mouse._screenX-VW/2)/zoom;mouse.y=VH/2+(mouse._screenY-VH/2)/zoom;
 }
 function _finishDruidFinale(e){
@@ -26018,6 +26076,7 @@ function _buildCh1HillSmoothingTex(edge){
   return _featherCh1HillSkirt(out);
 }
 function _drawCh1Hill(ctx){
+  if(_FDG_RUINED_FOREST_FIRST)return;
   if(G.stage!==0)return;
   const edge=_OBJ_SPR['m_c1gedge'];
   const smoothing=_CH1_START_PHASE==='smoothing'&&_ch1StartOuterEnabled();
@@ -29466,6 +29525,14 @@ function genFromTemplate(tmpl,si){
     for(let y=1;y<mh-1;y++)for(let x=1;x<mw-1;x++)if(map[y][x]===0)G._floorTiles.push({tx:x,ty:y});
   }
 
+  // Independent template consumes native tiles/crops without importing a stage gate.
+  if(_FDG_RUINED_FOREST_FIRST&&tmpl._fdgIndependentScene==='ruined-forest-first'){
+    G.rooms=rooms;G.map=map;G.mw=mw;G.mh=mh;G.exits=[];_cacheExitCenter();
+    G._testbed=true;G._pathImgTerrain=false;G._mapPaint=false;G._plateSrc=null;G._kitField=false;G._plateNative=false;
+    G.bossAlive=false;G.bossGate=[];G.bossGateOpen=true;G.bossSealed=false;G.spawnHoles=[];
+    MAP_OBJS=tmpl.objs.map(o=>({type:o.id,x:o.x*T,y:o.y*T,scale:o.scale||1,noCol:o.noCol,hell:0,_fdgUpright:!!o.fdgUpright,...(o._fdgInstanceId?{_fdgInstanceId:o._fdgInstanceId}:{})}));
+    return;
+  }
   // ── 5. 보스방 처리 ──
   // tileRLE 맵: 보스방+복도를 tileRLE 위에 다시 카빙 (에디터 맵에 보스방이 포함 안 됨)
   if(_hasTileRLE&&tmpl._testbed){
@@ -30727,7 +30794,7 @@ function initStage(si){
   G._druidVictory=null;G._druidFinaleBoss=null;G._druidActCue=null;
   if(si>=TOTAL_STAGES)si=TOTAL_STAGES-1; // 35스테이지 초과 시 마지막 스테이지 폴백
   // ?bosstest=N: 필드/고정맵 생성 금지 — 원형 아레나 직행 (부트 initStage가 필드로 덮어쓰는 경합 방지)
-  if(_bossTestReq>=0){
+  if(_bossTestReq>=0&&!_FDG_RUINED_FOREST_FIRST){
     G.stage=_bossTestReq;
     _load8DirAtlas(1);
     if(!G.map){G.map=[[4]];G.mw=1;G.mh=1;G.rooms=[];G.exits=[]}
@@ -30746,6 +30813,7 @@ function initStage(si){
   G._darkZones=[];G._mirrorClones=[];G._fissures=[];G._tideWaves=[];G._seekerMines=[];
   G._rewindMarks=[];G._gravityWells=[];G._wallPushes=[];G._poisonPools=[];G._cageTraps=[];
   G._chainLights=[];G._orbWeaves=[];G._soulAnchors=[];G._chaseAoes=[];G._lavaPools=[];G._fireRains=[];G._shockGrids=[];G._donutSlams=[];G._safeCorners=[];G._crossWipes=[];G._tidalWipes=[];G._gSlamWave=[];G._skyCrushers=[];G._lavaField=null;G._gwPillar=null;
+  if(_FDG_RUINED_FOREST_FIRST)return _initRuinedForestNativeScene();
   let _fixedMap=_getFixedMapForStage(si);G._fieldRebuildQA=false;G._fieldRebuildRegions=null;
   if(_DIABLO_FIELD_QA&&si===0&&_fixedMap){const _field=_buildDiabloField(0,200,200);_fixedMap=Object.assign({},_fixedMap,{tileRLE:_field.tileRLE,rooms:_field.rooms,corridors:[],spawnHoles:_field.spawnHoles.map(h=>({x:h.x,y:h.y,size:h.type})),portals:[],objects:[],_testbed:true});G._fieldRebuildQA=true;G._fieldRebuildRegions=_field.regions}
   if(_fixedMap){genFromTemplate(_fixedMap,si);G.mapType=_fixedMap._testbed?'fixed_testbed':'fixed'}
@@ -30883,12 +30951,14 @@ function _ch1HillRampAt(tx,ty){
   return Math.abs(ty-h.rampY)<=half?t:-1;
 }
 function _ch1HillBandBlocks(px,py){
+  if(_FDG_RUINED_FOREST_FIRST)return false;
   if(G.stage!==0)return false;
   const tx=px/T,ty=py/T;if(_ch1HillRampAt(tx,ty)>=0)return false;
   const h=_CH1_HILL,dx=(tx-h.cx)/h.rx,dy=(ty-h.cy)/h.ry,d=Math.sqrt(dx*dx+dy*dy);
   return d>=h.inner&&d<=h.outer;
 }
 function _ch1HillHeightAt(px,py){
+  if(_FDG_RUINED_FOREST_FIRST)return 0;
   if(G.stage!==0)return 0;
   const tx=px/T,ty=py/T,r=_ch1HillRampAt(tx,ty);if(r>=0)return r*r*(3-2*r);
   const h=_CH1_HILL,dx=(tx-h.cx)/h.rx,dy=(ty-h.cy)/h.ry,d=Math.sqrt(dx*dx+dy*dy);
@@ -33949,7 +34019,7 @@ function update(){
       nx=p.x; ny=p.y;
     } else {
       // 빨콩/무지개콩 유도: 가까운 플레이어/소환체 방향으로 선회 (무지개콩은 Q 전용이라 전대를 추적하지 않음)
-      if((p.homing||p.blackBean)&&!p.friendly&&p.life>30){
+      if((p.homing||p.blackBean)&&!p._druidStraight&&!p.friendly&&p.life>30){
         const _vsT=!p._lessonShot&&G._voidScarecrow&&G._voidScarecrow.aggroOn&&!p.blackBean;
         const _ancT=!p._lessonShot&&!p.blackBean?_ancestorTargetForEnemy(p.x,p.y):null;
         const _hTx=_vsT?G._voidScarecrow.x:_ancT?_ancT.x:P.x;
@@ -34241,6 +34311,7 @@ function update(){
           if(_npTgt){const _npA=Math.atan2(_npTgt.y-P.y,_npTgt.x-P.x);const _npSpd=Math.max(5,Math.sqrt(p.vx*p.vx+p.vy*p.vy));p.vx=Math.cos(_npA)*_npSpd;p.vy=Math.sin(_npA)*_npSpd}
           else{p.vx*=-2;p.vy*=-2}
           {p.friendly=true;p.dmg=_npDmg;p.life=180;p.ml=180;p.waterBean=false;p.blueBean=true;p.parryBlueBean=true;p.magic=true;p.homing=true;p._fromRainbow=!!p.blackBean;p.col='#00e5ff';p._aoeR=0;p._aoeDmg=0;}
+          if(p._druidStraight&&p.elemBall)p.elemBall=false; // NORMAL 드루이드 원소구도 기존 Q 성공 블루콩 표현 사용
           P.parryBank=(P.parryBank||0)+(p.dmg||10);
           if(_waterBeanParry)_waterBeanIceBurst(p.x,p.y,true);
           addTxt(P.x,P.y-28,_T('⚡💎 블루콩!'),'#00e5ff',35);doParry(p.dmg,p.x,p.y,false,p.blackBean?'rainbow':p.el,undefined,_waterBeanParry?'waterBean':undefined);projs[pw++]=p;_pHit=true;continue}}
@@ -34923,10 +34994,15 @@ function update(){
   G._camZoom+=(_czTgt-G._camZoom)*(1-Math.pow(_dfFrame?(_czTgt<G._camZoom?.88:.98):.94,_dtSp));}
   // [CAM-CLAMP] 카메라를 맵 bounds로 클램프 — 코너(예: 좌하단)에서 맵 밖 void 노출 차단. 줌아웃(보스전) 반영해 가시 반경 확장.
   _clampCamToMap();
+  // Explicit r4 frame inspection freezes the observed camera, never actor coordinates.
+  const _druidQaCamera=window._FDGDruidQaStorage?.active&&window._FDGDruidEncounterQa?.cameraLock;
+  if(_druidQaCamera){G.cam.x=_druidQaCamera.x;G.cam.y=_druidQaCamera.y;G._camZoom=_druidQaCamera.zoom;}
+  const _qaCombatFrame=window._FDGDruidQaStorage?.active&&window._FDGDruidEncounterQa?.frameCombatCamera?.({width:VW,height:VH,dt:_dtSp,mapBounds:{left:0,top:0,right:G.mw*T,bottom:G.mh*T}});
+  if(_qaCombatFrame?.ok){G.cam.x=_qaCombatFrame.x;G.cam.y=_qaCombatFrame.y;G._camZoom=_qaCombatFrame.zoom;}
   _syncDruidFinaleMouse();
   if(G._druidVictory)G._druidVictory.t=Math.min(210,G._druidVictory.t+_dtSp);
   if(G._druidActCue)G._druidActCue.t=Math.min(120,G._druidActCue.t+_dtSp);
-  if(_isDruidFinale(G._bossRef)&&_mouseFacingReady&&Number.isFinite(mouse._screenX))_setMouseFacing();
+  if((_isDruidFinale(G._bossRef)||(window._FDGDruidQaStorage?.active&&window._FDGDruidEncounterQa?.combatFraming)||_fdgNativePerspective)&&_mouseFacingReady&&Number.isFinite(mouse._screenX))_setMouseFacing();
   if(G.shake>0){G.shake*=.86**(_hsActive?_hsDtOrig:sp);if(G.shake<.3)G.shake=0}
   // [TORCH] 반경 업데이트
   if(OPT.torch){let _tTarget=_TORCH.baseRadius;
@@ -36884,7 +36960,7 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
   }
   switch(mv.id){
     case'burst':e.s='bossBurstWind';e.st2=tele||55;addTxt(e.x,e.y-30,_T('⚠ 광역 발사!'),'#ff6600',50);SFX.charge();break;
-    case'fan':e.s='bossFanWind';e.st2=tele||30;addTxt(e.x,e.y-30,_T('🔥 확산!'),'#ff4444',35);SFX.charge();break;
+    case'fan':e.s='bossFanWind';e.st2=tele||30;if(_FDG_DRUID_THORN_FIRST&&_isNormalDruidBoss(e)&&(e._bossPhase||0)<=1){e._druidFanWindMax=e.st2;e.facing=Math.atan2(P.y-e.y,P.x-e.x);}addTxt(e.x,e.y-30,_T('🔥 확산!'),'#ff4444',35);SFX.charge();break;
     case'charge':e.s='bossChargeWind';e.st2=tele||55;addTxt(e.x,e.y-30,_T('⚠ 돌진!'),'#ffaa00',50);SFX.charge();break;
     case'jump':{let jx=P.x,jy=P.y;
       if(!canMv(jx,jy,e.r)){const _jp=safePt(jx,jy,e.r);if(_jp){jx=_jp.x;jy=_jp.y}else{jx=e.x;jy=e.y}}
@@ -36941,6 +37017,7 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
     }
     case'elemBall':{
       // 속성 덩어리 부채꼴 10발 — 빠르고 유도
+      const _normalDruidBall=_isNormalDruidBoss(e);
       e.facing=Math.atan2(P.y-e.y,P.x-e.x);
       const _ebSpd=6;const _ebR=16;
       const _ebDmg=~~(e.atk*3);
@@ -36951,7 +37028,8 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
         _spawnBossProjectile(e,{x:e.x+Math.cos(_ba)*30,y:e.y+Math.sin(_ba)*30,
           vx:Math.cos(_ba)*_ebSpd,vy:Math.sin(_ba)*_ebSpd,
           dmg:_ebDmg,el:e.el,friendly:false,life:400,ml:400,
-          col:ELC[e.el]||e.col,sz:_ebR,elemBall:true,homing:true,
+          col:ELC[e.el]||e.col,sz:_ebR,elemBall:true,homing:!_normalDruidBall,
+          parryClass:_normalDruidBall?'magic':'',_druidStraight:_normalDruidBall,
           r:_ebR});
       }
       addTxt(e.x,e.y-30,_T('💥 속성탄!'),ELC[e.el]||'#ff8844',45);
@@ -37615,7 +37693,7 @@ function _bossAI(e,sp,d){
 // ═══ E 탭 버퍼: 초고속 탭(keydown+keyup이 update의 isJust 읽기 전에 완료) 씹힘 방지 ═══
 // keyup이 K latch를 지워도(11823) keydown 시점에 기록된 버퍼가 살아남아 sDraw 진입을 보장. TTL 3프레임.
 var _sdTapBuf=-999;
-function _sdTapOk(){if(_sdTapBuf>=0&&G.frame-_sdTapBuf<=3){_sdTapBuf=-999;return true}return false}
+function _sdTapOk(){if(_sdTapBuf>=0&&_gameFrame-_sdTapBuf<=3){_sdTapBuf=-999;return true}return false}
 // ═══ 칼등처내기 발동 (release-triggered): sDraw 탭 확정 시 호출 — 기존 sBash 진입 코드 그대로 (패링 윈도우/반사 무변경) ═══
 function _sBashFire(){
   if(!useStPct('shield'))return false;
@@ -37848,7 +37926,7 @@ function updateE(e,sp){
   // 시야 어그로: 거리 800 이내 + LOS 확보 시에만 알림 (벽 뒤는 무시)
   if(!e._alerted&&d<800&&(e.s==='idle'||e.s==='recover')&&hasLOS(e.x,e.y,P.x,P.y))e._alerted=true;
   // ── 방향 추적: 어그로 상태일 때만 플레이어를 바라봄 ──
-  const _druidAimLocked=_isDruidFinale(e)&&(e.s==='bossCharge'||(e.s==='bossChargeWind'&&e.st2<=18+sp));
+  const _druidAimLocked=(_isDruidFinale(e)||_isNormalDruidBoss(e))&&(e.s==='bossCharge'||(e.s==='bossChargeWind'&&e.st2<=18+sp));
   if(d<800&&e._alerted&&!_druidAimLocked){e.facing=Math.atan2(P.y-e.y,P.x-e.x)}
   // 어그로 추적: 사거리별 AI (초근접/단거리=밀착, 중거리+=사거리 유지)
   if(e._alerted&&(e.s==='idle'||e.s==='recover')){
@@ -39811,16 +39889,25 @@ function updateE(e,sp){
     }break}
   // ── 부채꼴 발사: 전방 확산 ──
   case'bossFanWind':
+    if(_FDG_DRUID_THORN_FIRST&&_isNormalDruidBoss(e)&&(e._bossPhase||0)<=1)e.facing=Math.atan2(P.y-e.y,P.x-e.x);
     if(e.st2<=0){
-      const fanW=Math.PI*(.7+e._bossPhase*.06);const cnt=~~(Math.max(10,(4+Math.min(G.stage,5)))*(1+(e._bossPhase-1)*.12)); // 최소 10발, 최대 ~15발
-      for(let i=0;i<cnt;i++){const a=e.facing-fanW/2+fanW*i/(cnt-1);
+      const _normalDruidFan=_isNormalDruidBoss(e);
+      const _thornFan=_FDG_DRUID_THORN_FIRST&&_normalDruidFan&&(e._bossPhase||0)<=1;
+      const fanW=Math.PI*(.7+e._bossPhase*.06);const cnt=_thornFan?12:~~(Math.max(_normalDruidFan?12:10,(4+Math.min(G.stage,5)))*(1+(e._bossPhase-1)*.12));
+      const _fanAim=_thornFan?Math.atan2(P.y-e.y,P.x-e.x):e.facing;
+      for(let i=0;i<cnt;i++){const a=_fanAim-fanW/2+fanW*i/(cnt-1);
+        if(_normalDruidFan){
+          const _lane=i/(cnt-1),_physical=_thornFan?i%3!==2:_lane<.28||_lane>.72,_black=(e._bossPhase||0)>=2&&i%4===1;
+          _spawnBossProjectile(e,{x:e.x,y:e.y,vx:Math.cos(a)*4.4,vy:Math.sin(a)*4.4,dmg:~~(e.atk*(_black?1.5:1.3)),el:_physical&&!_black?EL.P:e.el,friendly:false,life:400,ml:400,col:_black?'#00aa00':_physical?'#8a5a2a':e.col,sz:_black?2:1.2,blackBean:_black,parryClass:_physical&&!_black?'physical':'magic',homing:false,_druidStraight:true,_druidThornVolley:_thornFan,_druidThornLane:_thornFan?i:-1});
+          continue;
+        }
         const _iR3=Math.random();const _isBKF=_iR3<.5;const _isRF=_iR3>=.5;
         _spawnBossProjectile(e,{x:e.x,y:e.y,vx:Math.cos(a)*(_isBKF?4.4:_isRF?4.4:3.8),vy:Math.sin(a)*(_isBKF?4.4:_isRF?4.4:3.8),dmg:~~(e.atk*(_isBKF?1.5:_isRF?2.8:1.3)),el:_isBKF?EL.P:e.el,friendly:false,life:400,ml:400,col:_isBKF?'#00aa00':_isRF?'#cc1100':e.col,sz:_isBKF?2.0:_isRF?1.8:1.2,redBean:_isRF||undefined,blackBean:_isBKF||undefined,homing:_isRF||undefined})}
       SFX.magic(e.el===1?1:e.el===2?2:e.el===4?4:0);addParts(e.x,e.y,e.col,12);
       e.s='recover';e.st2=45}break;
   // ── 보스 돌진: 빠른 대쉬 ──
   case'bossChargeWind':
-    if(!_isDruidFinale(e)||e.st2>18)e.facing=Math.atan2(P.y-e.y,P.x-e.x); // 피날레는 타격 전 18f 방향 고정
+    if(!(_isDruidFinale(e)||_isNormalDruidBoss(e))||e.st2>18)e.facing=Math.atan2(P.y-e.y,P.x-e.x); // 드루이드만 타격 전 마지막 18f 방향 고정
     if(e.st2<=0){e.s='bossCharge';e.st2=50;e.echDx=Math.cos(e.facing);e.echDy=Math.sin(e.facing);
       SFX.charge();addParts(e.x,e.y,e.col,8)}break;
   case'bossCharge':{
@@ -40923,6 +41010,14 @@ function _updateSlimes(){
   }
 }
 function checkRooms(){
+  if(_FDG_RUINED_FOREST_FIRST){
+    const scene=_fdgRuinedForestModule?.RUINED_FOREST_SCENE;
+    if(scene&&!_fdgRuinedForestCompleted&&P.hp>0&&!ens.some(e=>e.alive||e._reviveTimer>0)
+      &&Math.hypot(P.x-(scene.exit.x+.5)*T,P.y-(scene.exit.y+.5)*T)<65){
+      _fdgRuinedForestCompleted=true;window._FDGDruidQaStorage.note('forest-scene-exit-reached');
+    }
+    return;
+  }
   // 현재 방 추적 (매 프레임 — 가벼움)
   const px=P.x/T,py=P.y/T;
   for(let i=0;i<G.rooms.length;i++){
@@ -45874,7 +45969,8 @@ function _iceOrbFormationFrame(ticks){return 8*(1-Math.min(1,Math.max(0,ticks)/6
 function _drawTimedVfxFrame(v,sh,frame,alpha,dw,dh){
   if(alpha<=0)return;
   const sx=(frame%sh.cols)*sh.fw,sy=Math.floor(frame/sh.cols)*sh.fh;
-  if(_vfxGLMode&&_queueVfxGL(sh.img,sx,sy,sh.fw,sh.fh,VW*.5+(v.x-G.cam.x),VH*.5+(v.y-G.cam.y),dw,dh,v.ang||0,alpha))return;
+  const _vRead=window._FDGDruidEncounterQa?.projectReadabilitySprite?.(v.x,v.y,dw,dh);
+  if(_vfxGLMode&&_queueVfxGL(sh.img,sx,sy,sh.fw,sh.fh,_vRead?.x??VW*.5+(v.x-G.cam.x),_vRead?.y??VH*.5+(v.y-G.cam.y),_vRead?.width??dw,_vRead?.height??dh,v.ang||0,alpha))return;
   X.save();X.globalCompositeOperation=sh.blend||'lighter';X.globalAlpha=alpha;
   X.translate(v.x,v.y);if(v.ang)X.rotate(v.ang);
   X.drawImage(sh.img,sx,sy,sh.fw,sh.fh,-dw/2,-dh/2,dw,dh);X.restore();
@@ -47646,20 +47742,20 @@ function _renderSkillRow(sk,grid){
 // ═══ 계정 전체 공유 창고 (localStorage) ═══
 const _SHARED_STORAGE_KEY='hellcave_sharedStorage';
 const _SHARED_MATS_KEY='hellcave_sharedMats';
-function _loadSharedStorage(){try{const raw=localStorage.getItem(_SHARED_STORAGE_KEY);if(raw){const arr=JSON.parse(raw);if(Array.isArray(arr))return arr}}catch(e){}return[]}
-function _saveSharedStorage(arr){try{localStorage.setItem(_SHARED_STORAGE_KEY,JSON.stringify(arr||[]))}catch(e){}}
+function _loadSharedStorage(){if(window._FDGDruidQaStorage.active)return JSON.parse(window._FDGDruidQaStorage.getItem(_SHARED_STORAGE_KEY)||'[]');try{const raw=localStorage.getItem(_SHARED_STORAGE_KEY);if(raw){const arr=JSON.parse(raw);if(Array.isArray(arr))return arr}}catch(e){}return[]}
+function _saveSharedStorage(arr){if(window._FDGDruidQaStorage.active){window._FDGDruidQaStorage.setItem(_SHARED_STORAGE_KEY,JSON.stringify(arr||[]));return;}try{localStorage.setItem(_SHARED_STORAGE_KEY,JSON.stringify(arr||[]))}catch(e){}}
 // 악의 저장/로드: ~~v 대신 Math.floor 사용 (32비트 오버플로우 방지)
 // 음수/NaN 방어 + 안전 정수 캡 (Number.MAX_SAFE_INTEGER)
-function _loadSharedMats(){try{const v=localStorage.getItem(_SHARED_MATS_KEY);if(!v)return 0;const n=parseInt(v,10);return(isFinite(n)&&n>=0)?Math.min(n,Number.MAX_SAFE_INTEGER):0}catch(e){return 0}}
+function _loadSharedMats(){if(window._FDGDruidQaStorage.active)return Math.max(0,Math.min(+window._FDGDruidQaStorage.getItem(_SHARED_MATS_KEY)||0,Number.MAX_SAFE_INTEGER));try{const v=localStorage.getItem(_SHARED_MATS_KEY);if(!v)return 0;const n=parseInt(v,10);return(isFinite(n)&&n>=0)?Math.min(n,Number.MAX_SAFE_INTEGER):0}catch(e){return 0}}
 let _matsSavedVal=-1; // 값 미변경 시 localStorage 쓰기+서버 POST 생략
-function _saveSharedMats(v){try{const n=Math.max(0,Math.min(Math.floor(+v||0),Number.MAX_SAFE_INTEGER));if(n===_matsSavedVal)return;_matsSavedVal=n;localStorage.setItem(_SHARED_MATS_KEY,String(n));_saveSharedMatsToServer(n)}catch(e){}}
+function _saveSharedMats(v){if(window._FDGDruidQaStorage.active){window._FDGDruidQaStorage.setItem(_SHARED_MATS_KEY,String(Math.max(0,Math.min(Math.floor(+v||0),Number.MAX_SAFE_INTEGER))));return;}try{const n=Math.max(0,Math.min(Math.floor(+v||0),Number.MAX_SAFE_INTEGER));if(n===_matsSavedVal)return;_matsSavedVal=n;localStorage.setItem(_SHARED_MATS_KEY,String(n));_saveSharedMatsToServer(n)}catch(e){}}
 // ═══ 악의 서버 동기화 ═══
 let _matsSyncTimer=0,_matsSyncLast=0,_matsSyncDirty=false,_matsPrev=0;
 const _isLocalServer=location.hostname==='localhost'||location.hostname==='127.0.0.1'||location.protocol==='file:';
-function _saveSharedMatsToServer(n){if(!_isLocalServer)return;try{fetch('/api/mats',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mats:n})}).catch(()=>{})}catch(e){}}
+function _saveSharedMatsToServer(n){if(window._FDGDruidQaStorage.active){window._FDGDruidQaStorage.note('mats-server-skip');return;}if(!_isLocalServer)return;try{fetch('/api/mats',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mats:n})}).catch(()=>{})}catch(e){}}
 // 디바운스 동기화: mats 변경 시 호출, 3초 이내 중복 방지
 function _matsDirty(){if(!isFinite(G.mats)){console.warn('[MATS] NaN detected!',new Error().stack);G.mats=0;}_matsSyncDirty=true;const now=Date.now();if(now-_matsSyncLast>=3000){_matsSyncLast=now;_matsSyncDirty=false;_saveSharedMats(G.mats||0)}else if(!_matsSyncTimer){_matsSyncTimer=setTimeout(()=>{_matsSyncTimer=0;if(_matsSyncDirty){_matsSyncLast=Date.now();_matsSyncDirty=false;_saveSharedMats(G.mats||0)}},3000-(now-_matsSyncLast))}}
-async function _loadSharedMatsFromServer(){if(!_isLocalServer)return _loadSharedMats();try{const r=await fetch('/api/mats');if(r.ok){const j=await r.json();if(j.ok&&isFinite(j.mats)&&j.mats>=0){const n=Math.min(j.mats,Number.MAX_SAFE_INTEGER);localStorage.setItem(_SHARED_MATS_KEY,String(n));return n}}return _loadSharedMats()}catch(e){return _loadSharedMats()}}
+async function _loadSharedMatsFromServer(){if(window._FDGDruidQaStorage.active)return _loadSharedMats();if(!_isLocalServer)return _loadSharedMats();try{const r=await fetch('/api/mats');if(r.ok){const j=await r.json();if(j.ok&&isFinite(j.mats)&&j.mats>=0){const n=Math.min(j.mats,Number.MAX_SAFE_INTEGER);localStorage.setItem(_SHARED_MATS_KEY,String(n));return n}}return _loadSharedMats()}catch(e){return _loadSharedMats()}}
 function _getStore(){
   // 계정 공유 창고: localStorage에서 로드, STORAGE[0]은 참조만 유지
   if(!STORAGE[0]||!STORAGE._synced){
@@ -47981,7 +48077,7 @@ function renderSettings(){
 $('setClose').onclick=()=>closePanel('settings');
 if($('showTutorialBtn'))$('showTutorialBtn').onclick=()=>{closePanel('settings');showTutorial()};
 // ── 자동 저장 함수 ──
-function saveSettings(){OPT.diffV2=1;try{localStorage.setItem('hellcave_settings',JSON.stringify({binds:{...BINDS},binds2:{...BINDS2},opt:{...OPT}}));localStorage.setItem('hellLang',OPT.lang)}catch(e){}}
+function saveSettings(){OPT.diffV2=1;if(window._FDGDruidQaStorage?.active){window._FDGDruidQaStorage.setItem('hellcave_settings',JSON.stringify({binds:{...BINDS},binds2:{...BINDS2},opt:{...OPT}}));window._FDGDruidQaStorage.setItem('hellLang',OPT.lang);return;}try{localStorage.setItem('hellcave_settings',JSON.stringify({binds:{...BINDS},binds2:{...BINDS2},opt:{...OPT}}));localStorage.setItem('hellLang',OPT.lang)}catch(e){}}
 
 // ══ 2026-04-17 UI 고정 디자인 시스템 — Reference Resolution 1920×1080 ══
 // 창 크기·페이지 줌에 맞춰 HUD 비율을 유지하는 순수 자동 스케일.
@@ -48324,7 +48420,7 @@ if(IS_ELECTRON&&window.electronAPI){
     const best=info.list.reduce((prev,r)=>{const d=Math.abs(r[0]-info.current[0])+Math.abs(r[1]-info.current[1]);return d<prev.d?{v:r[0]+'x'+r[1],d}:prev},{v:curStr,d:9999});
     sel.value=best.v;
     // 저장된 설정 복원
-    try{const saved=localStorage.getItem('hellcave_screen');
+    try{const saved=(window._FDGDruidQaStorage.active?window._FDGDruidQaStorage.getItem('hellcave_screen'):localStorage.getItem('hellcave_screen'));
       if(saved){const d=JSON.parse(saved);
         if(d.mode)$('optDispMode').value=d.mode;
         if(d.res){sel.value=d.res;
@@ -48343,7 +48439,7 @@ if(IS_ELECTRON&&window.electronAPI){
   $('optDispMode').onchange=function(){
     if(this.value==='windowed'){_renderRes=null;rz()}
     window.electronAPI.setFullscreen(this.value);
-    try{localStorage.setItem('hellcave_screen',JSON.stringify({mode:this.value,res:$('optRes').value}))}catch(e){}
+    try{(window._FDGDruidQaStorage.active?window._FDGDruidQaStorage.setItem('hellcave_screen',JSON.stringify({mode:this.value,res:$('optRes').value})):localStorage.setItem('hellcave_screen',JSON.stringify({mode:this.value,res:$('optRes').value})))}catch(e){}
   };
   $('optRes').onchange=function(){
     const p=this.value.split('x');
@@ -48359,7 +48455,7 @@ if(IS_ELECTRON&&window.electronAPI){
       _renderRes={w,h};
     }
     rz();
-    try{localStorage.setItem('hellcave_screen',JSON.stringify({mode,res:this.value}))}catch(e){}
+    try{(window._FDGDruidQaStorage.active?window._FDGDruidQaStorage.setItem('hellcave_screen',JSON.stringify({mode,res:this.value})):localStorage.setItem('hellcave_screen',JSON.stringify({mode,res:this.value})))}catch(e){}
   };
 }
 // ── 하드웨어 진단 UI ──
@@ -48400,14 +48496,14 @@ setInterval(_updateDiagUI,1000);
 // ── 세팅 프리셋 저장/불러오기 ──
 function _savePreset(slot){
   const key='hellcave_preset_'+slot;
-  try{localStorage.setItem(key,JSON.stringify({binds:{...BINDS},binds2:{...BINDS2},opt:{...OPT}}))}catch(e){}
+  try{(window._FDGDruidQaStorage.active?window._FDGDruidQaStorage.setItem(key,JSON.stringify({binds:{...BINDS},binds2:{...BINDS2},opt:{...OPT}})):localStorage.setItem(key,JSON.stringify({binds:{...BINDS},binds2:{...BINDS2},opt:{...OPT}})))}catch(e){}
   $('saveMsg').style.color='#44cc88';$('saveMsg').textContent=_L('세팅'+slot+' 저장 완료!','Preset '+slot+' saved!');
   setTimeout(()=>{$('saveMsg').textContent=''},2000);
 }
 function _loadPreset(slot){
   const key='hellcave_preset_'+slot;
   try{
-    const raw=localStorage.getItem(key);
+    const raw=window._FDGDruidQaStorage.active?window._FDGDruidQaStorage.getItem(key):localStorage.getItem(key);
     if(!raw){$('saveMsg').style.color='#ffaa44';$('saveMsg').textContent=_L('세팅'+slot+' 저장된 설정 없음','Preset '+slot+' no saved data');setTimeout(()=>{$('saveMsg').textContent=''},2000);return}
     const data=JSON.parse(raw);
     if(data.binds){for(const k in data.binds){if(k in BINDS)BINDS[k]=data.binds[k]}}
@@ -48502,7 +48598,7 @@ function syncSettingsUI(){
 // 게임 시작 시 자동 불러오기
 let _settingsMigrated=false;
 try{
-  const raw=localStorage.getItem('hellcave_settings');
+  const raw=(window._FDGDruidQaStorage.active?window._FDGDruidQaStorage.getItem('hellcave_settings'):localStorage.getItem('hellcave_settings'));
   if(raw){const data=JSON.parse(raw);
     if(data.binds){for(const k in data.binds){if(k in BINDS)BINDS[k]=data.binds[k]}}
     if(data.binds2){for(const k in data.binds2){if(k in BINDS2||k in BINDS)BINDS2[k]=data.binds2[k]}}
@@ -48510,7 +48606,7 @@ try{
     if(OPT.atmos===undefined)OPT.atmos=2; // ATMOS 구저장본 호환
     // 2026-07-30 난이도 개편 마이그레이션: 구 0~10(0=일반) → 신 0~10(5=일반, -5~+5단)
     // 저장 원본의 마커로 판정: 신규 OPT의 diffV2 기본값이 구세이브 이관을 가리지 않는다.
-    if(data.opt&&!data.opt.diffV2&&data.opt.diff!=null){OPT.diff=Math.min(10,(+OPT.diff||0)+5)}
+    if(!window._FDGDruidQaStorage?.active&&data.opt&&!data.opt.diffV2&&data.opt.diff!=null){OPT.diff=Math.min(10,(+OPT.diff||0)+5)}
     if(OPT.diff==null)OPT.diff=5;
     OPT.diffV2=1;
     // 2026-05-19 마이그레이션: 기본 커서 다크커서 강제
@@ -48537,7 +48633,7 @@ try{
   }
 }catch(e){}
 // 첫 진입이나 손상된 설정에서도 로비의 언어 선택을 독립적으로 복원한다.
-try{const _lobbyLang=ExoduserI18n.resolveLanguage(localStorage.getItem('hellLang'));if(_lobbyLang)OPT.lang=_lobbyLang}catch(e){}
+try{const _lobbyLang=ExoduserI18n.resolveLanguage((window._FDGDruidQaStorage.active?window._FDGDruidQaStorage.getItem('hellLang'):localStorage.getItem('hellLang')));if(_lobbyLang)OPT.lang=_lobbyLang}catch(e){}
 OPT.lang=ExoduserI18n.resolveLanguage(OPT.lang)||'ko';
 // Persist migrations only after restoring the independent, newer lobby choice.
 if(_settingsMigrated)try{saveSettings()}catch(e){}
@@ -48554,6 +48650,7 @@ const _qb=$('quitBtn');if(_qb)_qb.onclick=()=>{
   else{window.close();setTimeout(()=>goToLobby(),150);}
 };}
 if($('resetYes'))$('resetYes').onclick=async()=>{
+  if(window._FDGDruidQaStorage.active){$('resetConfirm').style.display='none';window._FDGDruidQaStorage.note('user-save-reset-skip');return;}
   $('resetConfirm').style.display='none';
   const _isLocalReset=location.hostname==='localhost'||location.hostname==='127.0.0.1';
   if(_isLocalReset){
@@ -50783,6 +50880,11 @@ function drawAtmosphere(ctx,w,h){
 }
 function draw(){
   if(!X)return;
+  // Paused authoring still fits the current bodies; this never advances native physics.
+  if(window._btFramePause&&window._FDGDruidQaStorage?.active){
+    const frame=window._FDGDruidEncounterQa?.frameCombatCamera?.({width:VW,height:VH,dt:0,mapBounds:{left:0,top:0,right:G.mw*T,bottom:G.mh*T}});
+    if(frame?.ok){G.cam.x=frame.x;G.cam.y=frame.y;G._camZoom=frame.zoom;_syncDruidFinaleMouse();}
+  }
   // 유니크 유골함 1회 보장 지급(콜렉션 컨테이너 — 시작부터 보유, 기존 세이브 포함)
   if(!window._ossGrantChk&&typeof _grantOssuaryIfNeeded==='function'&&typeof P!=='undefined'&&P&&typeof INV!=='undefined'&&INV.equipped){window._ossGrantChk=1;try{_grantOssuaryIfNeeded()}catch(e){}}
   if(!_atmReady)_atmBuild(); else if(_atmVigW!==C.width||_atmVigH!==C.height)_atmBuildVig(); // ATMOS 부팅1회 빌드 + 비네트 리사이즈 재생성
@@ -50799,6 +50901,7 @@ function draw(){
   const _fc2d=(typeof _PERF_PROF!=='undefined'&&_PERF_PROF.enabled);
   // ── 프레임당 1회 사전 계산: 반복 Math.sin/cos 캐싱 ──
   const _sn100=Math.sin(_now*.01),_sn150=Math.sin(_now/150),_sn200=Math.sin(_now/200),_sn250=Math.sin(_now/250),_sn300=Math.sin(_now/300);
+  if(_fdgNativePerspective?.active)X=_fdgNativePerspective.end(); // recover only an interrupted own world pass
   X.clearRect(0,0,C.width,C.height); // 주의: GL 프록시 모드에서 clearRect는 프레임 리셋(GL 클리어+CT 텍스트 캔버스 클리어+상태 초기화) — 절대 제거 금지
   X.fillStyle='#000';X.fillRect(0,0,C.width,C.height); // 항상 순수 검정으로 먼저 채움
   const stg=STG[G.stage];
@@ -50807,13 +50910,20 @@ function draw(){
   const _cz=(!_EDITOR_MODE)?(G._camZoom||1):1; // 보스 줌아웃
   const _tzoom=_ez*_cz;
   const _vpMul=1/Math.max(0.3,_tzoom); // 줌아웃 시 뷰포트 범위 확장 배수
+  const _nativePerspective=_fdgNativePerspective;
+  if(_nativePerspective){_nativePerspective.begin(X,{x:sx,y:sy});X=_nativePerspective.context;}
   X.save();
+  if(!_nativePerspective){
   // SSAA: 월드 베이스 변환 맨 앞에 ss 스케일. 이후 모든 월드 좌표는 논리(VW/VH) 기준 → ss배 백킹으로 확대. ss=1이면 no-op.
   if(_ssaa!==1)X.scale(_ssaa,_ssaa);
   if(_tzoom!==1){X.translate(VW/2,VH/2);X.scale(_tzoom,_tzoom);X.translate(-VW/2,-VH/2)}
   X.translate(Math.round(VW/2-G.cam.x+sx),Math.round(VH/2-G.cam.y+sy));
-  const s1=Math.max(0,~~((G.cam.x-VW/2*_vpMul)/T)-1),e1=Math.min(G.mw,Math.ceil((G.cam.x+VW/2*_vpMul)/T)+1);
-  const s2=Math.max(0,~~((G.cam.y-VH/2*_vpMul)/T)-1),e2=Math.min(G.mh,Math.ceil((G.cam.y+VH/2*_vpMul)/T)+1);
+  }
+  const _worldViewBounds=_nativePerspective?.bounds();
+  const _readQa=!_nativePerspective&&window._FDGDruidEncounterQa?.combatReadability?window._FDGDruidEncounterQa:null;
+  _readQa?.beginReadabilityFrame({transform:[_ssaa*_tzoom,0,0,_ssaa*_tzoom,_ssaa*(VW/2+_tzoom*(Math.round(VW/2-G.cam.x+sx)-VW/2)),_ssaa*(VH/2+_tzoom*(Math.round(VH/2-G.cam.y+sy)-VH/2))],pixelScale:_ssaa,viewport:{width:VW,height:VH}});
+  const s1=Math.max(0,Math.floor((_worldViewBounds?.left??G.cam.x-VW/2*_vpMul)/T)-1),e1=Math.min(G.mw,Math.ceil((_worldViewBounds?.right??G.cam.x+VW/2*_vpMul)/T)+1);
+  const s2=Math.max(0,Math.floor((_worldViewBounds?.top??G.cam.y-VH/2*_vpMul)/T)-1),e2=Math.min(G.mh,Math.ceil((_worldViewBounds?.bottom??G.cam.y+VH/2*_vpMul)/T)+1);
   const _ch1CoveredBase=_ch1StartOuterCoversView();
   if(_ch1StartOuterEnabled())_ch1StartOuterStats[_ch1CoveredBase?'underlaySkippedFrames':'underlayFallbackFrames']++;
   // ── 패럴랙스 배경 레이어 ──
@@ -51322,13 +51432,21 @@ function draw(){
     }
   }
   // ═══ MAP_OBJS 렌더 ═══
+  if(_FDG_RUINED_FOREST_FIRST&&_fdgRuinedForestModule){
+    const exit=_fdgRuinedForestModule.RUINED_FOREST_SCENE.exit,ex=(exit.x+.5)*T,ey=(exit.y+.5)*T;
+    const ready=!ens.some(e=>e.alive||e._reviveTimer>0);
+    X.save();X.globalAlpha=.7;X.strokeStyle=ready?'#b5e6a2':'#bdab72';X.lineWidth=3;
+    X.beginPath();X.ellipse(ex,ey,54,32,0,0,Math.PI*2);X.stroke();
+    X.fillStyle=ready?'#d6f5cb':'#dccba3';X.textAlign='center';X.font='bold 15px sans-serif';
+    X.fillText(ready?'북쪽 출구':'북쪽 출구 · 적을 처치하세요',ex,ey-48);X.restore();
+  }
   const _tMObj=performance.now();
   if(_fc2d){var _dTile=_PERF_PROF._delta(_snapTile);_PERF_PROF._tile_di=_dTile.di}
   if(_DCP.on){_DCP._mark('map');_DCP._entry.world++;_DCP._setSource(_DCP_SRC.WORLD_OBJECT)} // [DCPROF] 맵/지형(타일 캐시+포탈+출구+데코) 구간 종료
   var _snapMobj=_fc2d?_PERF_PROF._snap():null;
   _dsFrontObjs.length=0;const _dsOn=_dsEnabled()&&!_EDITOR_MODE; // [DEPTH-SLICE] 프레임 시작: 프런트 목록 리셋 + 활성 판정 1회
-  const _moCull=_mapObjectCullBounds(G.cam.x,G.cam.y,VW,VH,_EDITOR_MODE?G._edZoom:1);
-  if(!_EDITOR_MODE&&_ch1StartOuterEnabled()&&G._camZoom&&G._camZoom!==1)Object.assign(_moCull,_mapObjectCullBounds(G.cam.x,G.cam.y,VW,VH,G._camZoom));
+  const _moCull=_worldViewBounds||_mapObjectCullBounds(G.cam.x,G.cam.y,VW,VH,_EDITOR_MODE?G._edZoom:1);
+  if(!_worldViewBounds&&!_EDITOR_MODE&&_ch1StartOuterEnabled()&&G._camZoom&&G._camZoom!==1)Object.assign(_moCull,_mapObjectCullBounds(G.cam.x,G.cam.y,VW,VH,G._camZoom));
   const _wvl=_moCull.left,_wvr=_moCull.right,_wvt=_moCull.top,_wvb=_moCull.bottom;
   const _hellWinterTone=G.stage===10;
   if(_hellWinterTone){X.save();X.filter='brightness(.46) contrast(1.34) saturate(.18)'}
@@ -51419,6 +51537,7 @@ function draw(){
         const _swayActive=_diabloNatureSway(X,mo,_meta,(_meta?_meta.sz||32:32)*(mo.scale||1),_now);
         const _ch1TissueActive=globalThis.Ch1LivingDetail&&Ch1LivingDetail.deform(X,G,mo,_now,_meta);
         if(_spr&&_spr.complete&&_spr.naturalWidth>1){
+          if(mo._fdgUpright&&_fdgNativePerspective?.active)_fdgNativePerspective.pushBillboard(mo.x,mo.y,_FDG_NATIVE_MAP_PACK_FIRST?{kind:'occluder'}:undefined);
           const sz=(_meta?_meta.sz||32:32)*(mo.scale||1);
           if(globalThis.Ch1LivingDetail?.swamp?.(X,G,mo,_now,_meta,_spr)){/* Water pockets move; rock base stays fixed. */}
           else if(globalThis.Ch1LivingDetail?.organic?.(X,G,mo,_now,_meta,_spr)){/* Local living material. */}
@@ -51485,6 +51604,7 @@ function draw(){
               X.restore()}
             else _drawMapObjectCrop(X,_spr,_meta,mo.x,mo.y,_dw,_dh,.5,.5,!!_meta.anchorBottom);
           }else if(!(_meta&&_meta.rotTree&&globalThis.Ch1RotTrees&&Ch1RotTrees.drawObj(X,mo,_meta.rotTree,sz,_now)))X.drawImage(_spr,mo.x-sz/2,mo.y-sz/2,sz,sz);
+          if(mo._fdgUpright&&_fdgNativePerspective?.active)_fdgNativePerspective.popBillboard();
           // 눈알 오버레이 비활성화
           // 발광 오브젝트: 포인트라이트
           if(_meta&&_meta.light){X.globalAlpha=.15+Math.sin(_now/800+mo.x)*.05;X.fillStyle='rgba(255,180,80,0.3)';X.beginPath();X.arc(mo.x,mo.y,80,0,Math.PI*2);X.fill();X.globalAlpha=1}
@@ -51726,7 +51846,7 @@ function draw(){
   }
   // Enemies (화면 내만 렌더, 최대 렌더 수 제한)
   const _eVpad=_hiFPS?120:200;
-  const _vl=G.cam.x-VW/2-_eVpad,_vr=G.cam.x+VW/2+_eVpad,_vt=G.cam.y-VH/2-_eVpad,_vb=G.cam.y+VH/2+_eVpad;
+  const _vl=(_worldViewBounds?.left??G.cam.x-VW/2)-_eVpad,_vr=(_worldViewBounds?.right??G.cam.x+VW/2)+_eVpad,_vt=(_worldViewBounds?.top??G.cam.y-VH/2)-_eVpad,_vb=(_worldViewBounds?.bottom??G.cam.y+VH/2)+_eVpad;
   let _eRCnt=0;const _E_RMAX=_dynERMax;
   if(!_ensWarmDone)_warmupEnsAtlas(); // 실제 GPU 워밍업 시작 (로딩 중 즉시, 플레이 중 유휴 콜백)
   else if(++_warmRescanFrame>=180){_warmRescanFrame=0;_ensWarmDone=false;_warmupEnsAtlas()} // 늦게 로드된 아틀라스만 추가 준비
@@ -51786,9 +51906,13 @@ function draw(){
       // 그림자 (공통)
       X.globalAlpha=.2;X.fillStyle='#000';X.beginPath();
       X.ellipse(e.x,e.y+e.r*.6,e.r*(et===100?1.4:1.1),e.r*.25,0,0,Math.PI*2);X.fill();
+      // Keep the native shadow on the ground; submit the ghoul body and HP at its own depth.
+      const _fdgGhoulBillboard=_FDG_NATIVE_MAP_PACK_FIRST&&_nativePerspective;
+      if(_fdgGhoulBillboard)_nativePerspective.pushBillboard(e.x,e.y,{kind:'actor'});
+      try{
       // 스프라이트 렌더
       if(_ghoulReady[et]){
-        const dir=_ghoulDir(e.facing);
+        const dir=_ghoulDir(_fdgGhoulBillboard?_nativePerspective.screenFacing(e.x,e.y,e.facing):e.facing);
         const img=_ghoulImgs[et][dir];
         if(img&&img.complete&&img.naturalWidth>0){
           const sc=e.r*2.8/img.naturalWidth;
@@ -51807,22 +51931,28 @@ function draw(){
         }
         const _gA8=_ch8Atlas[1];
         if(_gA8){if(P){const _fdG2=dst2(P.x,P.y,e.x,e.y);if(_fdG2<640000&&P.hp>0)e.facing=Math.atan2(P.y-e.y,P.x-e.x)}
-          let _gD=_gA8.dirs[_mobFacingDir8(e.facing)];if(!_gD||!_gD.ready)_gD=_gA8.dirs['south'];
+          const _gViewFacing=_fdgGhoulBillboard?_nativePerspective.screenFacing(e.x,e.y,e.facing):e.facing;
+          let _gD=_gA8.dirs[_mobFacingDir8(_gViewFacing)];if(!_gD||!_gD.ready)_gD=_gA8.dirs['south'];
           if(_gD&&_gD.ready){const _gc=(_gA8.meta?_gA8.meta.cell:256),_gsz=Math.max(e.r*7,80);
             const _gIdx=e._mob8Row*_MOB8_COLS+e._mob8Col;
             const _gHasW=_gA8.walkDirs&&_gA8.walkMeta&&_gA8.walkMeta._idxSet&&_gA8.walkMeta._idxSet.has(_gIdx);
             X.save();X.translate(e.x,e.y);X.globalAlpha=.9;X.imageSmoothingEnabled=false;
             X.drawImage(_gD.img,e._mob8Col*_gc,e._mob8Row*_gc,_gc,_gc,-_gsz/2,-_gsz/2,_gsz,_gsz);
-            if(e._isMoving&&_gHasW){const _gW=_gA8.walkDirs[_mobFacingDir8(e.facing)];
+            if(e._isMoving&&_gHasW){const _gW=_gA8.walkDirs[_mobFacingDir8(_gViewFacing)];
               if(_gW&&_gW.ready){const _gwf=_gA8.walkMeta.framesPerMob||4;const _gwFr=~~((e._walkDist||0)/128)%_gwf;X.drawImage(_gW.img,(e._mob8Col*_gwf+_gwFr)*_gc,e._mob8Row*_gc,_gc,_gc,-_gsz/2,-_gsz/2,_gsz,_gsz)}}
             X.restore();}}
       }
 
       X.globalAlpha=1;
+      if(_fdgGhoulBillboard&&e._atkWindup>0){
+        X.globalAlpha=.9;X.fillStyle='#ff4444';X.font='bold 16px "Noto Sans KR"';X.textAlign='center';
+        X.fillText('❗',e.x,e.y-e.r-8);X.globalAlpha=1;
+      }
       // HP바 (공통)
       {const bw=e.r*2+6,bx=e.x-bw/2;let by=e.y-e.r-14;
       if(e.hp<e.mhp||(e.eShieldMax||0)>0&&e.eShield<e.eShieldMax){X.fillStyle='rgba(0,0,0,.6)';X.fillRect(bx,by,bw,4);X.fillStyle='#cc0000';X.fillRect(bx,by,bw*(e.hp/e.mhp),4);if(e.eShieldMax>0&&e.eShield>0){X.fillStyle='#44aaff';X.fillRect(bx,by,bw*Math.min(1,e.eShield/e.eShieldMax),4)}by-=5}
       if(e.stunned>0){const _grMax=e._maxStunned||(e.ib?180:90);X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#ff8800';X.fillRect(bx,by,bw*Math.min(1,e.stunned/_grMax),3);by-=4}}
+      }finally{if(_fdgGhoulBillboard)_nativePerspective.popBillboard();}
       continue;
     }
     // ── 슬라임 괴물 전용 렌더 ──
@@ -51905,7 +52035,8 @@ function draw(){
     const isStunned=e.stunned>0;
     const isReviving=e.reviveIframes>0;
     const _isStealth=(e.modT&&e.modT.stealthT>0)||e._cloaked;
-    const _spAlpha=e._spawnT>0?Math.max(0,1-e._spawnT/20):1;
+    const _nativeSpawnAlpha=e._spawnT>0?Math.max(0,1-e._spawnT/20):1;
+    const _spAlpha=window._FDGDruidEncounterQa?.frozenBossAlpha?.(e,_nativeSpawnAlpha)??_nativeSpawnAlpha;
     const sa=_spAlpha*(_isStealth?(.08+Math.sin(_now/300)*.05):(isReviving?(.2+Math.sin(_now/40)*.5):(isStunned?.6:1)));X.globalAlpha=sa;
     const _ensGLQueued=e._ensGLMode||0;
     // Stun glow ring
@@ -52100,14 +52231,15 @@ function draw(){
       X.globalAlpha=sa;
       if(e._rlFx.t>=e._rlFx.maxT)e._rlFx=null;
     }
-    if(e.s==='bossFanWind'){const p=1-e.st2/30;
+    if(e.s==='bossFanWind'){const _thornTell=_FDG_DRUID_THORN_FIRST&&_isNormalDruidBoss(e)&&(e._bossPhase||0)<=1;const p=_thornTell?Math.max(0,Math.min(1,1-e.st2/(e._druidFanWindMax||30))):1-e.st2/30;
       // 부채꼴 바닥 위험구역
-      const fw=Math.PI*.6,fanR=120+G.stage*3;
-      X.globalAlpha=p*.12;X.fillStyle='#ff2200';X.beginPath();X.moveTo(e.x,e.y);X.arc(e.x,e.y,fanR,e.facing-fw/2,e.facing+fw/2);X.fill();
-      X.globalAlpha=p*.35;X.strokeStyle='#ff4400';X.lineWidth=2;X.beginPath();X.arc(e.x,e.y,fanR,e.facing-fw/2,e.facing+fw/2);X.stroke();
+      const fw=_thornTell?Math.PI*(.7+e._bossPhase*.06):Math.PI*.6,fanR=120+G.stage*3;
+      const _fanTellAim=_thornTell?Math.atan2(P.y-e.y,P.x-e.x):e.facing;
+      X.globalAlpha=p*.12;X.fillStyle='#ff2200';X.beginPath();X.moveTo(e.x,e.y);X.arc(e.x,e.y,fanR,_fanTellAim-fw/2,_fanTellAim+fw/2);X.fill();
+      X.globalAlpha=p*.35;X.strokeStyle='#ff4400';X.lineWidth=2;X.beginPath();X.arc(e.x,e.y,fanR,_fanTellAim-fw/2,_fanTellAim+fw/2);X.stroke();
       // 오브 (기존)
       X.globalAlpha=p*.6;X.fillStyle=e.col;
-      for(let i=0;i<5;i++){const a=e.facing-fw/2+fw*i/4;
+      for(let i=0;i<5;i++){const a=_fanTellAim-fw/2+fw*i/4;
         X.beginPath();X.arc(e.x+Math.cos(a)*(15+p*20),e.y+Math.sin(a)*(15+p*20),3+p*3,0,Math.PI*2);X.fill()}X.globalAlpha=sa}
     // ═══ 빨강(패링가능) / 무지개(패링불가) 표시 (윈드업 상태) ═══
     if(e.ib&&e._atkParryable!==undefined&&(e.s.includes('Wind')||e.s.includes('Aim')||e.s==='bossTeleDrop'||e.s==='bossTelePrep'||e.s==='bossTeleWarn'||e.s==='bossMirrorGuard')){
@@ -52568,6 +52700,7 @@ function draw(){
         X.globalAlpha=.3*(1-Math.abs(_tdY)/80);X.fillStyle='#000';
         X.beginPath();X.ellipse(e.x,e.y,_shR,_shR*.4,0,0,Math.PI*2);X.fill();X.globalAlpha=1;
       }
+      _nativePerspective?.pushBillboard(e.x,e.y);
       let _bDrew=false;
       const _bScMul=window._btScaleMul||1;
       const _bYOff=window._btOffsetY||0;
@@ -52634,6 +52767,7 @@ function draw(){
       }
       if(!_bDrew){X.save();X.translate(0,_tdY);drawBossBody(X,e,_now,sa);X.restore()}
       if(_bScMul!==1||_bYOff!==0)X.restore();
+      _nativePerspective?.popBillboard();
       // ── 보스 다리 안개 (노이즈 텍스처 프레임 애니메이션) ──
       if(e.alive){
         const _bfHell=SI_TO_HELL[G.stage];
@@ -52655,6 +52789,7 @@ function draw(){
       }
     }else{
       // ── 일반 적 렌더링 (8dir 단일 경로) ──
+      _nativePerspective?.pushBillboard(e.x,e.y,_FDG_NATIVE_MAP_PACK_FIRST?{kind:'actor'}:undefined);
       let _eDrew=!!_ensGLQueued;
       if(e._ch1StartMedium&&_ch1StartMediumReady.sheet){
         _eDrew=_drawCh1StartMediumEyeMass(X,e,_now,sa);
@@ -52671,7 +52806,8 @@ function draw(){
         if(_a8){
           if(P){const _fdM2=dst2(P.x,P.y,e.x,e.y);if(_fdM2<640000&&P.hp>0)e.facing=Math.atan2(P.y-e.y,P.x-e.x)}
           const _baseSz=Math.max(e.r*7,80);
-          const _dk8=_mobFacingDir8(e.facing);
+          const _viewFacing=_nativePerspective?_nativePerspective.screenFacing(e.x,e.y,e.facing):e.facing;
+          const _dk8=_mobFacingDir8(_viewFacing);
           let _da8=_a8.dirs[_dk8];
           if(!_da8||!_da8.ready)_da8=_a8.dirs['south'];
           if(_da8&&_da8.ready){
@@ -52690,11 +52826,15 @@ function draw(){
         if(!_eDrew){_usedSpr=true;}
       }
     }
+      if(!e.ib)_nativePerspective?.popBillboard();
     // ═══ 근접 공격 예비동작 전조 (❗ 텍스트만, 원형 제거) ═══
     if(e._atkWindup>0){
+      if(_FDG_NATIVE_MAP_PACK_FIRST)_nativePerspective?.pushBillboard(e.x,e.y,{kind:'actor'});
+      try{
       X.globalAlpha=.9;X.fillStyle='#ff4444';X.font='bold 16px "Noto Sans KR"';X.textAlign='center';
       X.fillText('❗',e.x,e.y-e.r-8);
       X.globalAlpha=sa;
+      }finally{if(_FDG_NATIVE_MAP_PACK_FIRST)_nativePerspective?.popBillboard();}
     }
     // ═══ 피격 플래시 — 히트 시 스프라이트 가산 발광(흑철 지옥 톤 유지, 타격 피드백) ═══
     // GL 인스턴싱으로 그려진 몹(_ensGLQueued)은 GL 경로 플래시(_prepEnemyInstanced)에서 처리하므로 2D 폴백에선 건너뛴다(이중 방지).
@@ -53024,12 +53164,15 @@ function draw(){
       let _hw=0;for(let _li=0;_li<_allLines.length;_li++){const w=X.measureText(_allLines[_li]).width;if(w>_hw)_hw=w}
       _hw+=16;
       const _hh=_allLines.length*15+8;
-      const _hx=e.x-_hw/2,_hy=e.y-e.r-35-_hh;
+      const _hoverAnchor={x:e.x,y:e.y-e.r-35-_hh/2};
+      const _hoverPlaced=_readQa?.placeReadabilityLabel(_hoverAnchor,_hw,_hh);
+      const _hoverX=_hoverPlaced?.x??e.x,_hoverY=_hoverPlaced?.y??_hoverAnchor.y;
+      const _hx=_hoverPlaced?_hoverX-_hw/2:e.x-_hw/2,_hy=_hoverPlaced?_hoverY-_hh/2:e.y-e.r-35-_hh;
       X.fillStyle='rgba(0,0,0,.8)';X.fillRect(_hx,_hy,_hw,_hh);
       X.strokeStyle='#665544';X.lineWidth=1;X.strokeRect(_hx,_hy,_hw,_hh);
-      X.fillStyle=e.elite?ELITE_TIERS[e.elite].col:'#cccccc';X.fillText(_hLine1,e.x,_hy+14);
-      X.fillStyle='#ffffff';X.font='11px monospace';X.fillText(_hLine2,e.x,_hy+28);
-      if(_hLine3){X.fillStyle='#ff6644';X.fillText(_hLine3,e.x,_hy+42)}
+      X.fillStyle=e.elite?ELITE_TIERS[e.elite].col:'#cccccc';X.fillText(_hLine1,_hoverX,_hy+14);
+      X.fillStyle='#ffffff';X.font='11px monospace';X.fillText(_hLine2,_hoverX,_hy+28);
+      if(_hLine3){X.fillStyle='#ff6644';X.fillText(_hLine3,_hoverX,_hy+42)}
       X.textAlign='left'}}
     // (포이즈 바 제거됨)
     // ═══ 엘리트/문지기 이름 + 모디파이어 레이블 ═══
@@ -53108,6 +53251,9 @@ function draw(){
   X.globalCompositeOperation='source-over';X.globalAlpha=1;
   // 패스 2: 메인 드로우 (shadowBlur 특수탄만)
   for(let _vi=0;_vi<_visProjs.length;_vi++){const p=projs[_visProjs[_vi]];
+    const _sceneBillboard=_FDG_RUINED_FOREST_FIRST&&_fdgNativePerspective?.active&&!p.trap&&!p.mine&&!p.iceZone&&!p.blizzard;
+    if(_sceneBillboard)_fdgNativePerspective.pushBillboard(p.x,p.y);
+    try{
     if(p._sprFr==null)p._sprFr=Math.random()*8;p._sprFr+=.12;
     const pc=p.friendly?'#ffdd00':ELC[p.el]||p.col||'#ff4444';
     const _isSpecial=p.redBean||p.blackBean||p.blueBean||p.bwBean||p.gbBean||p.waterBean||p.elemBall;
@@ -53314,7 +53460,7 @@ function draw(){
     }
     if(!p._eyeSkin){X.globalAlpha=fa*.08;X.fillStyle=ELC[_nEl]||'#ff6633';X.beginPath();X.arc(p.x,p.y,_nSz*.5,0,Math.PI*2);X.fill()}
     X.globalAlpha=1;}
-    
+    }finally{if(_sceneBillboard)_fdgNativePerspective.popBillboard();}
   }
 
   // ══ MAGIC CAST animation ══
@@ -53617,7 +53763,8 @@ function draw(){
       const col=v.frame%sh.cols,row=~~(v.frame/sh.cols);
       const _sx=col*sh.fw,_sy=row*sh.fh;
       // GL instancing (additive blend 자체 처리)
-      if(_vfxGLMode&&_queueVfxGL(sh.img,_sx,_sy,sh.fw,sh.fh,VW*.5+(v.x-G.cam.x),VH*.5+(v.y-G.cam.y),dw,dh,v.ang||0,_vAlpha)){
+      const _vRead=_readQa?.projectReadabilitySprite(v.x,v.y,dw,dh);
+      if(_vfxGLMode&&_queueVfxGL(sh.img,_sx,_sy,sh.fw,sh.fh,_vRead?.x??VW*.5+(v.x-G.cam.x),_vRead?.y??VH*.5+(v.y-G.cam.y),_vRead?.width??dw,_vRead?.height??dh,v.ang||0,_vAlpha)){
         // queued
       }else{
         // Canvas2D 폴백 (lighter 컨텍스트 필요)
@@ -53746,9 +53893,10 @@ function draw(){
         }else{
           const _ic=Math.cos(_ia),_is=Math.sin(_ia);
           X.globalAlpha=inv*0.4;
-          X.setTransform(_ic*_ssaa,_is*_ssaa,-_is*_ssaa,_ic*_ssaa,im.x*_ssaa,im.y*_ssaa);
+          if(_nativePerspective){X.save();X.translate(im.x,im.y);X.rotate(_ia);}
+          else X.setTransform(_ic*_ssaa,_is*_ssaa,-_is*_ssaa,_ic*_ssaa,im.x*_ssaa,im.y*_ssaa);
           X.drawImage(_wwImpCanvas,fc*_wwImpFW,frow*_wwImpFH,_wwImpFW,_wwImpFH,-drawSz/2,-drawSz/2,drawSz,drawSz);
-          X.setTransform(1,0,0,1,0,0);
+          if(_nativePerspective)X.restore();else X.setTransform(1,0,0,1,0,0);
         }
       }else{
         const sprite=_impactSpriteFor(im);
@@ -53852,14 +54000,23 @@ function draw(){
     if(t.sz>=28&&t._numStr){
       const _ci=t.c==='#66ddff'?2:t.c==='#dd2200'||t.c==='#cc0000'||t.c==='#ff0000'?1:0;
       const _sc=(_bSz/48)*_bn;
+      let _numX=t.x+_sk,_numY=t.y-_NUM_H*_sc/2;
+      if(_readQa){
+        const _ng=~~((_NUM_W-30)*_sc),_nw=~~(_NUM_W*_sc),_nh=~~(_NUM_H*_sc),_ns=String(t._numStr),_nWidth=(_ns.length-1)*_ng+_nw;
+        const _numAnchor={x:_numX+(_nw-_ng)/2,y:_numY+_nh/2};
+        const _numPlaced=_readQa.placeReadabilityLabel(_numAnchor,_nWidth,_nh);
+        if(_numPlaced){_numX=_numPlaced.x-(_nw-_ng)/2;_numY=_numPlaced.y-_nh/2;}
+      }
       X.save();X.globalAlpha=_ta;
-      drawNumStr(X,t._numStr,t.x+_sk,t.y-_NUM_H*_sc/2,_ci,_sc);
+      drawNumStr(X,t._numStr,_numX,_numY,_ci,_sc);
       X.restore();
     }else{
       // 일반 텍스트: 흰색 fill + 얇은 외곽선
       const _fSz=~~(_bSz*_bn);
-      X.save();X.translate(t.x+_sk,t.y);
+      X.save();
       X.font='900 '+_fSz+'px "Noto Sans KR","Malgun Gothic",sans-serif';
+      const _txtPlaced=_readQa?.placeReadabilityLabel({x:t.x+_sk,y:t.y},X.measureText(t.t).width+Math.max(2,~~(_fSz*.06)*2),_fSz*1.2);
+      X.translate(_txtPlaced?.x??t.x+_sk,_txtPlaced?.y??t.y);
       X.globalAlpha=_ta;
       // 외곽선도 fillText(동일 GPU 경로)로 — strokeText는 별도 2D 오버레이라 GPU 모드에서 속이 비어 보임
       const _ow=Math.max(1,~~(_fSz*.06));
@@ -53871,6 +54028,7 @@ function draw(){
     }
   }X.globalAlpha=1;X.textBaseline='alphabetic'}if(_DEBUG_PERF)_dbgTxt=performance.now()-_t0;}
   X.restore();
+  if(_nativePerspective)X=_nativePerspective.end();
   if(_wantPlateTest()){
     X.save();X.setTransform(_ssaa||1,0,0,_ssaa||1,0,0);
     const _plb='PLATE 1장 '+(G.mw||'?')+'x'+(G.mh||'?');
@@ -54453,11 +54611,18 @@ const ELG=['rgba(200,200,200,','rgba(255,100,20,','rgba(50,140,255,','rgba(160,5
 const ELG2=['#ffffff','#ffaa44','#88ccff','#cc77ff','#ffffaa','#ffccee']; // bright tips
 const ELP=['#dddddd','#ff6622','#44aaff','#bb55ee','#ffee44','#ffdd55']; // particle colors
 
+// Isolated live contact QA: only the confirmed shock-field decoration consumers opt in.
+const _fdgDruidLiveContactFix=window._FDGDruidQaStorage?.active&&new URL(location.href).searchParams.get('fdgDruidLiveFix')==='contact';
+function _fdgDruidDecorAlpha(nativeAlpha,age,active=_fdgDruidLiveContactFix){
+  if(!active||age<=8)return nativeAlpha;
+  return nativeAlpha*(1-.88*Math.min(1,(age-8)/8));
+}
 function drawP(){
   if(_DCP.on)_DCP._setSource(_DCP_SRC.PLAYER);
   const _dpStart=performance.now();
   const sp=(G.slowMo>0?.35:1)*_dtSp;
-  const _vl=G.cam.x-VW/2-60,_vr=G.cam.x+VW/2+60,_vt=G.cam.y-VH/2-60,_vb=G.cam.y+VH/2+60;
+  const _pViewBounds=_fdgNativePerspective?.active?_fdgNativePerspective.bounds():null;
+  const _vl=(_pViewBounds?.left??G.cam.x-VW/2)-60,_vr=(_pViewBounds?.right??G.cam.x+VW/2)+60,_vt=(_pViewBounds?.top??G.cam.y-VH/2)-60,_vb=(_pViewBounds?.bottom??G.cam.y+VH/2)+60;
   const fl=P.iframes>0&&~~(P.iframes/3)%2;if(fl)X.globalAlpha=.3;
   const t=_now;
   const _pScale=2,_pR=P.r*_pScale; // 캐릭터 비주얼 2배
@@ -54941,7 +55106,7 @@ function drawP(){
           const fi2=~~((s.f1+_spT*0.18)%12);
           const sx2=(fi2%4)*fw2, sy2=~~(fi2/4)*fh2;
           const sz2=fw2*s.sc*1.1;
-          X.globalAlpha=_sfFade;
+          X.globalAlpha=_fdgDruidDecorAlpha(_sfFade,fz.t);
           X.save();X.translate(fz.x,fz.y);X.rotate(s.rot+0.5);X.scale(s.flip,1);
           X.drawImage(_msStormImg2,sx2,sy2,fw2,fh2,-sz2/2,-sz2/2,sz2,sz2);
           X.restore();
@@ -54970,7 +55135,7 @@ function drawP(){
           // 기둥 2레이어: 파랑메인→흰코어 (4→2레이어로 절반 감소)
           const _lA={wMul:1.3,col:'#6677ee',alp:.7};const _lB={wMul:.5,col:'#eeeeff',alp:.9};
           for(let li=0;li<2;li++){const L=li===0?_lA:_lB;
-            X.strokeStyle=L.col;X.lineWidth=th.baseW*L.wMul;X.globalAlpha=L.alp*ta*flash*_sfFade;
+            X.strokeStyle=L.col;X.lineWidth=th.baseW*L.wMul;X.globalAlpha=li===0?_fdgDruidDecorAlpha(L.alp*ta*flash*_sfFade,th.maxLife-th.life):L.alp*ta*flash*_sfFade;
             X.beginPath();X.moveTo(th.pts[0].x,th.pts[0].y);
             for(let p=1;p<th.pts.length;p++)X.lineTo(th.pts[p].x,th.pts[p].y);
             X.stroke();
@@ -56053,6 +56218,9 @@ function drawP(){
     const _er=_bv.r*Math.pow(_ep,.35);
     const _isIce=_bv.col==='ice',_isLtn=_bv.col==='lightning',_isDark=_bv.col==='dark',_isRb=_bv.col==='rainbow',_isBlk=_bv.col==='black';
     const _bvPrevAlpha=X.globalAlpha;
+    if(window._FDGDruidParryContact?.draw(X,{kind:_bv.col,x:bx,y:by,ageFrames:_bv.t,active:!!(window._FDGDruidQaStorage?.active&&_FDG_DRUID_THORN_FIRST)})){
+      X.globalAlpha=_bvPrevAlpha;continue;
+    }
     // ═══ 모든 boom: 스프라이트시트 기반 (링 제거) ═══
     // 속성별 시트 매핑
     const _boomSheetMap={
@@ -56138,7 +56306,9 @@ function drawP(){
         const _sFi=Math.min(_sTotal-1,~~(_sEp*_sTotal));
         const _sFc=_sFi%_sCols,_sFr=~~(_sFi/_sCols);
         const _sSz=_bv.r*(3.0+_si*.4)*Math.pow(Math.min(1,_sEp*3),.5);
-        X.globalAlpha=_bAlpha*(1-_si*.2);
+        const _sNativeAlpha=_bAlpha*(1-_si*.2);
+        const _sContactQa=window._FDGDruidEncounterQa?.contactVfxReadability?window._FDGDruidEncounterQa:null;
+        X.globalAlpha=_sContactQa?_sContactQa.contactVfxAlpha({kind:_bv.col,sheet:_sheets[_si],frame:_sFi,progress:_ep,alpha:_sNativeAlpha,x:bx,y:by,size:_sSz}):_sNativeAlpha;
         const _sDraw=_bv.col==='physical'?_physicalImpactSheet(_sImg):_sImg;
         X.drawImage(_sDraw,_sFc*_sFw,_sFr*_sFh,_sFw,_sFh,bx-_sSz/2,by-_sSz/2,_sSz,_sSz);
       }
@@ -57544,6 +57714,7 @@ function drawP(){
   }
   // 캐릭터 선택 아틀라스는 캔버스에 조립된다. 기본 PNG의 GPU 워밍 플래그를
   // 기다리면 준비가 끝난 실버테일까지 절차적 외눈 폴백으로 남는다.
+  if(_fdgNativePerspective?.active)_fdgNativePerspective.pushBillboard(P.x,P.y,_FDG_NATIVE_MAP_PACK_FIRST?{kind:'actor'}:undefined);
   const _playerAtlasNoWarmupNeeded=_atlasP_img&&typeof _atlasP_img.getContext==='function';
   if(_atlasPReady&&(_playerAtlasGpuWarmDone||_playerAtlasNoWarmupNeeded)&&(P._sa||(P._sa=SpriteAnimator.create(_atlasP_img,_atlasP_frames,'idle')))){
     // ── Atlas P 스프라이트 렌더링 (8방향) + Ori 영혼 글로우 ──
@@ -57559,7 +57730,10 @@ function drawP(){
     else if(_harpLandT>0&&(_charIdx>=2||typeof WarriorDashFlight==='undefined'||WarriorDashFlight.landing(true,P.s,_apMv)))_apAnim='dash_land';
     else if(_apMv)_apAnim='run';
     const _dashFlightPose=_charIdx<2&&typeof WarriorDashFlight!=='undefined'&&_apAnim.startsWith('dash');
-    const _apDir=_dashFlightPose?_facingDir8(WarriorDashFlight.direction(_dashActive,_harpActive,_harpLandT,_dashVX,_dashVY,_harpVX,_harpVY,P.facing)):_playerSpriteDirection(P);
+    const _worldSpriteDir=_dashFlightPose?_facingDir8(WarriorDashFlight.direction(_dashActive,_harpActive,_harpLandT,_dashVX,_dashVY,_harpVX,_harpVY,P.facing)):_playerSpriteDirection(P);
+    const _spriteFacing=_fdgNativePerspective?.active?_fdgNativePerspective.screenFacing(P.x,P.y,P.facing):P.facing;
+    const _worldSpriteDirIndex=_DIR8.indexOf(_worldSpriteDir);
+    const _apDir=_fdgNativePerspective?.active&&_worldSpriteDirIndex>=0?_facingDir8(_fdgNativePerspective.screenFacing(P.x,P.y,_worldSpriteDirIndex*Math.PI/4)):_worldSpriteDir;
     const _apHasDir=!!P._sa.fm[_apAnim+'_'+_apDir];
     if(!_apHasDir&&!P._sa.fm[_apAnim])_apAnim=(_apAnim==='whirlwind'||_apAnim==='stun'||_apAnim==='cast'||_apAnim==='ghost'||_apAnim.startsWith('gSlam')||_apAnim.startsWith('charge')||_apAnim==='atk3'||_apAnim.startsWith('dash'))?'dash':'idle';
     if(!P._sa.fm[_apAnim]&&!P._sa.fm[_apAnim+'_'+_apDir])_apAnim='idle';
@@ -57665,7 +57839,7 @@ function drawP(){
       const _silvBodyProgress=_silvAtk.spinProgress;
       P._sa.f=Math.min(_silvAtkN-1,~~(_silvBodyProgress*_silvAtkN));
     }
-    const _pFlip=!_apHasDir&&Math.abs(_fa)>Math.PI/2,_pDk=_apHasDir?(_silvAtk?_silvAtk.spriteDir:_apDir):null;
+    const _pFlip=!_apHasDir&&Math.abs(_fdgNativePerspective?.active?_spriteFacing:_fa)>Math.PI/2,_pDk=_apHasDir?(_silvAtk?_silvAtk.spriteDir:_apDir):null;
     if(_dsEnabled()){_dsPSnap.on=1;_dsPSnap.flip=_pFlip;_dsPSnap.dir=_pDk;_dsPSnap.lift=_skillAnimLift+_dashFlightLift;_dsPSnap.silv=_charIdx===1?.65:1;_dsPSnap.sc=_pScale} // [DEPTH-SLICE] 고스트 스냅샷
     // ── [잔상] 이동기술 중 현재 스냅샷 기록 (월드좌표+프레임); 비활성 시 버퍼 비움 ──
     if(P._gwActive||P.s==='bladeDash'||_harpActive||_dashActive||(_apAnim&&_apAnim.indexOf('dash')===0)){
@@ -57859,6 +58033,7 @@ function drawP(){
   }
 
   _drawKiSlashCharge(X);
+  if(_fdgNativePerspective?.active){_fdgNativePerspective.popBillboard();_fdgNativePerspective.flushBillboards();}
   _s6PlayerEnd=performance.now();
   // ══ 쓰러짐 카운트다운 렌더 ══
   if(P.s==='fallen'){
@@ -59195,7 +59370,7 @@ function _hudCompactNumber(n){n=Number(n)||0;return n>=1e9?(n/1e9).toFixed(2)+'B
 const _hudNumberFormatter=new Intl.NumberFormat('en-US',{maximumFractionDigits:0});
 function _hudReadableNumber(n){return _hudNumberFormatter.format(Math.max(0,Math.floor(Number(n)||0)))}
 function _hudPulse(id,value){const el=$(id);if(!el)return;if(el._hudValue!==undefined&&el._hudValue!==value){el.classList.remove('hud-pulse');void el.offsetWidth;el.classList.add('hud-pulse')}el._hudValue=value}
-function _showHudAreaTitle(stage,st){if(_hudAreaStage===stage)return;_hudAreaStage=stage;const title=$('areaTitle');const kr=$('areaTitleKr');const en=$('areaTitleEn');if(!title||!kr||!en)return;kr.textContent=_L('제{n}구역 · {name}','AREA {n} · {name}',{n:stage+1,name:_L(st.kr,st.n)});en.textContent=`THE ${String(st.n||st.kr).toUpperCase()}`;title.classList.remove('show');void title.offsetWidth;title.classList.add('show')}
+function _showHudAreaTitle(stage,st){if(_hudAreaStage===stage)return;_hudAreaStage=stage;const title=$('areaTitle');const kr=$('areaTitleKr');const en=$('areaTitleEn');if(!title||!kr||!en)return;kr.textContent=_FDG_RUINED_FOREST_FIRST?'폐허 숲길':_L('제{n}구역 · {name}','AREA {n} · {name}',{n:stage+1,name:_L(st.kr,st.n)});en.textContent=_FDG_RUINED_FOREST_FIRST?'RUINED FOREST · NATIVE PERSPECTIVE':`THE ${String(st.n||st.kr).toUpperCase()}`;title.classList.remove('show');void title.offsetWidth;title.classList.add('show')}
 // ── HUD 요소 캐시 + 변경분만 기록 (20Hz 호출 대비 스타일 재계산/문자열 churn 절감) ──
 let _hudE=null;
 function _hudRefreshEls(){_hudE={hpLiquid:$('hpLiquid'),hpCur:$('hpCur'),hpMax:$('hpMax'),hpShield:$('hpShield'),shieldRing:$('shieldRing'),mobilityRing:$('mobilityRing'),mobilityRingTicks:$('mobilityRingTicks'),hpGlass:document.querySelector('.hp-globe .globe-glass'),mpGlass:document.querySelector('.mp-globe .globe-glass'),stFill:$('stFill'),mpFill:$('mpFill'),mpCur:$('mpCur'),mpMax:$('mpMax'),stCur:$('stCur'),stMax:$('stMax'),hpPotCd:$('hpPotCd'),expF:$('expF'),expTxt:$('expTxt'),skBar:$('skBar'),skSlot0:$('skSlot0')}}
@@ -59997,6 +60172,7 @@ function _fbMk(tx,ty,el){
   return {x:x,y:y,homeX:x,homeY:y,r:120,hp:hp,mhp:hp,alive:true,t:0,frame:0,atk:~~((20+P.lv*3)*1.2),hitCd:0,shotCd:120,tpCd:0,tpT:0,tpMax:54,tpX:x,tpY:y,hid:1,burst:0,burstGap:0,spawnIn:1,asleep:1,enChg:0,el:el};
 }
 function _fbTick(){
+  if(_FDG_RUINED_FOREST_FIRST)return;
   if(window._parryLesson?.active)return;
   if(!G.on||!P){return}
   if(G._bossArena&&G.stage===0){_fbClear();return}
@@ -60210,6 +60386,7 @@ function _wmContactHit(w,scale){
   P.kb.x+=ux*28;P.kb.y+=uy*28;
 }
 function _wmTick(){
+  if(_FDG_RUINED_FOREST_FIRST)return;
   if(window._parryLesson?.active)return;
   if(!G.on||!P||!G.map){return}
   if(G._bossArena&&(G.stage===0||(_DEMO_MODE&&G.stage===3&&G.stage===_DEMO_LAST_STAGE))){if(G._worms)G._worms.length=0;return;}
@@ -60394,7 +60571,27 @@ function _fdFireEnergy(m){
   shake(16);
 }
 let _druidPoisonFly=null;
+// ENGINE_AUTHORING: this volley owns its wood silhouette; no new bitmap or hitbox.
+function _drawDruidThornShot(p,alpha){
+  const _np=_fdgNativePerspective?.active?_fdgNativePerspective:null;_np?.pushBillboard(p.x,p.y);
+  X.save();X.translate(p.x,p.y);X.rotate(Math.atan2(p.vy,p.vx));X.globalAlpha=alpha==null?1:alpha;
+  if(p.parryClass==='physical'){
+    // Native GPU fill accepts one triangle/quad per path, so each bark barb is a face.
+    X.fillStyle='#2b1a11';X.beginPath();X.moveTo(32,0);X.lineTo(-8,-7);X.lineTo(-27,0);X.lineTo(-7,7);X.closePath();X.fill();
+    X.beginPath();X.moveTo(-14,-3);X.lineTo(-25,-10);X.lineTo(-21,0);X.closePath();X.fill();
+    X.beginPath();X.moveTo(-20,0);X.lineTo(-24,10);X.lineTo(-12,4);X.closePath();X.fill();
+    X.fillStyle='#a77943';X.beginPath();X.moveTo(31,0);X.lineTo(-8,-5);X.lineTo(-20,0);X.lineTo(-8,4);X.closePath();X.fill();
+    X.fillStyle='#dfc18b';X.beginPath();X.moveTo(32,0);X.lineTo(3,-2);X.lineTo(-13,-1);X.lineTo(4,1);X.closePath();X.fill();
+    X.strokeStyle='#50321a';X.lineWidth=1.5;X.beginPath();X.moveTo(-13,3);X.lineTo(12,1);X.moveTo(-15,-3);X.lineTo(-2,-2);X.stroke();
+  }else{
+    X.globalAlpha=(alpha==null?1:alpha)*.45;X.strokeStyle='#78eac7';X.lineWidth=3;X.beginPath();X.moveTo(-30,0);X.lineTo(-8,0);X.stroke();
+    X.globalAlpha=alpha==null?1:alpha;X.fillStyle='#185744';X.beginPath();X.moveTo(18,0);X.lineTo(0,-12);X.lineTo(-15,0);X.lineTo(0,12);X.closePath();X.fill();
+    X.strokeStyle='#7de6b2';X.lineWidth=2;X.stroke();X.fillStyle='#efffd4';X.beginPath();X.moveTo(13,0);X.lineTo(0,-4);X.lineTo(-8,0);X.lineTo(0,4);X.closePath();X.fill();
+  }
+  X.restore();_np?.popBillboard();return true;
+}
 function _drawDruidPoisonShot(p,alpha){
+  if(window._FDGDruidQaStorage?.active&&p._druidThornVolley&&!p.friendly)return _drawDruidThornShot(p,alpha);
   if(!_druidPoisonFly&&(!_fdFlyImg.complete||!_fdFlyImg.naturalWidth)){
     // The caller always continues after this draw: never leave an invisible damaging shot.
     const size=(p._druidMine||p.elemBall?240:Math.max(96,Math.min(180,(p.sz||4)*24)))*_physicalProjectileMultiplier(p,2);
@@ -60413,7 +60610,8 @@ function _drawDruidPoisonShot(p,alpha){
   }
   const cw=_druidPoisonFly.width/4,ch=_druidPoisonFly.height/4,fr=Math.floor(performance.now()/70)%16;
   const dw=(p._druidMine||p.elemBall?240:Math.max(96,Math.min(180,(p.sz||4)*24)))*_physicalProjectileMultiplier(p,2),dh=dw*ch/cw;
-  X.save();X.globalAlpha=alpha==null?1:alpha;X.drawImage(_druidPoisonFly,(fr%4)*cw,Math.floor(fr/4)*ch,cw,ch,p.x-dw/2,p.y-dh/2,dw,dh);X.restore();return true;
+  const _np=_fdgNativePerspective?.active?_fdgNativePerspective:null;_np?.pushBillboard(p.x,p.y);
+  X.save();X.globalAlpha=alpha==null?1:alpha;X.drawImage(_druidPoisonFly,(fr%4)*cw,Math.floor(fr/4)*ch,cw,ch,p.x-dw/2,p.y-dh/2,dw,dh);X.restore();_np?.popBillboard();return true;
 }
 function _fdDrawFly(p){
   if(!_fdFlyImg.complete||!_fdFlyImg.naturalWidth)return false;
@@ -60438,12 +60636,14 @@ function _fdMk(tx,ty){
 function _fdDrawEmerge(frame,wx,wy,scale){
   var sh=_fdEnsureSheet(_fdEmergeImg,'emerge');if(!sh)return;
   var fr=((frame|0)%8+8)%8,col=fr%4,row=(fr/4)|0,dsz=280*(scale||1);
-  var sx=C.width/2+(wx-G.cam.x),sy=C.height/2+(wy-G.cam.y);
-  X.save();X.setTransform(1,0,0,1,0,0);
+  var _fdReadTx=window._FDGDruidEncounterQa?.readabilityWorldTransform;
+  var sx=_fdReadTx?wx:C.width/2+(wx-G.cam.x),sy=_fdReadTx?wy:C.height/2+(wy-G.cam.y);
+  X.save();if(_fdReadTx)X.setTransform(..._fdReadTx);else X.setTransform(1,0,0,1,0,0);
   X.drawImage(sh,col*300,row*300,300,300,sx-dsz/2,sy-dsz*.55,dsz,dsz);
   X.restore();
 }
 function _fdTick(){
+  if(_FDG_RUINED_FOREST_FIRST)return;
   if(window._parryLesson?.active)return;
   if(!G.on||!P)return;
   if(G._bossArena&&G.stage===0){_fdClear();return}
@@ -60530,8 +60730,9 @@ function _fdDrawCharge(m){
   var prog=1-m.enChg/_FD_EN_CHG;
   var fr=Math.min(11,(prog*12)|0), col=fr%4, row=(fr/4)|0;
   var eye=_fdEye(m);
-  var mx=C.width/2+(eye.x-G.cam.x), my=C.height/2+(eye.y-G.cam.y), dsz=200;
-  X.save();X.setTransform(1,0,0,1,0,0);X.globalCompositeOperation='lighter';
+  var _fdReadTx=window._FDGDruidEncounterQa?.readabilityWorldTransform;
+  var mx=_fdReadTx?eye.x:C.width/2+(eye.x-G.cam.x), my=_fdReadTx?eye.y:C.height/2+(eye.y-G.cam.y), dsz=200;
+  X.save();if(_fdReadTx)X.setTransform(..._fdReadTx);else X.setTransform(1,0,0,1,0,0);X.globalCompositeOperation='lighter';
   X.drawImage(sh,col*300,row*300,300,300,mx-dsz/2,my-dsz/2,dsz,dsz);
   X.globalCompositeOperation='source-over';X.globalAlpha=1;X.restore();
 }
@@ -60551,8 +60752,9 @@ function _fdDrawOne(m){
   var walkReady=!!(walkImg&&walkImg.complete&&walkImg.naturalWidth);
   var sh=null;if(!walkReady)sh=_fdEnsureSheet(_fdDirImg,'dir');
   if(!walkReady&&!sh)return;
-  var sx=C.width/2+(m.x-G.cam.x),sy=C.height/2+(m.y-G.cam.y),dsz=280;
-  X.save();X.setTransform(1,0,0,1,0,0);
+  var _fdReadTx=window._FDGDruidEncounterQa?.readabilityWorldTransform;
+  var sx=_fdReadTx?m.x:C.width/2+(m.x-G.cam.x),sy=_fdReadTx?m.y:C.height/2+(m.y-G.cam.y),dsz=280;
+  X.save();if(_fdReadTx)X.setTransform(..._fdReadTx);else X.setTransform(1,0,0,1,0,0);
   var bob=Math.sin(m.t*.05)*4;
   if(walkReady){
     var walkFrame=_fdAnimFrame(m,def.frames);
@@ -61035,8 +61237,117 @@ function _forgeLabOpen(){
   setTimeout(()=>{try{ens.length=0;if(G.spawnHoles)G.spawnHoles.length=0}catch(e){}openPanel('skillPanel');
     if(typeof notify==='function')notify(_L('스킬 합성 랩 — 저장되지 않습니다 (새로고침하면 처음 상태)','Skill Forge Lab — nothing is saved (reload to reset)'))},700);
 }
+// Isolated r4 QA baseline; native actor state never becomes a user slot.
+function _fdgRuinedForestSnapshot(){
+  return {id:'ruined-forest-first',running:!window._btFramePause&&!G.paused&&G.on,completed:_fdgRuinedForestCompleted,
+    dead:P.hp<=0,hp:P.hp,mhp:P.mhp,alive:ens.filter(e=>e.alive||e._reviveTimer>0).length,fps:_fpsCur,
+    difficulty:{index:OPT.diff,multiplier:DIFF_MUL[OPT.diff],level:P.lv},player:{x:P.x,y:P.y,state:P.s,facing:P.facing},
+    enemies:ens.map(e=>({etype:e.etype,skin:e._mob8Skin,x:e.x,y:e.y,hp:e.hp,mhp:e.mhp,shield:e.eShield,alive:e.alive,state:e.s,windup:e._atkWindup||e._shotCharge||0})),
+    projectiles:projs.filter(p=>p.alive!==false).map(p=>({x:p.x,y:p.y,vx:p.vx,vy:p.vy,life:p.life,parryClass:p.parryClass,blackBean:!!p.blackBean,friendly:!!p.friendly})),
+    stats:{...G._sStats},map:{width:G.mw,height:G.mh,tileSize:T,objects:MAP_OBJS.length},
+    camera:window._FDGNativePerspectiveQa?.snapshot(),storage:window._FDGDruidQaStorage.receipt(),
+    prof:{..._prof},renderer:_useGPU?'WebGPU':_useGL?'WebGL2':'Canvas2D',...(_fdgNativeMapPackBundle?{mapPack:_fdgNativeMapPackSnapshot()}: {})};
+}
+// JSON authoring data only. The factory still owns native combat values and time.
+async function _prepareNativeMapPack(sceneModule){
+  if(!_FDG_NATIVE_MAP_PACK_FIRST)return null;
+  if(!_fdgNativeMapPackLoad)_fdgNativeMapPackLoad=import('./engine/fdg/native-map-pack.js?v=encounter-placement-first-20261012').then(module=>{
+    const baseline={scene:sceneModule.RUINED_FOREST_SCENE,template:sceneModule.createRuinedForestTemplate()};
+    const compiled=module.decodeNativeMapPackFragment(location.hash,baseline);
+    if(compiled.pack.version===2&&!_FDG_NATIVE_ENCOUNTER_PLACEMENT_FIRST)throw new Error('몬스터 배치는 편집기의 인게임 플레이 링크로 실행하세요.');
+    _fdgNativeMapPackBundle=compiled;
+    return _fdgNativeMapPackBundle;
+  }).catch(error=>{
+    const alert=document.createElement('p');alert.id='fdgNativeMapPackError';alert.setAttribute('role','alert');
+    alert.style.cssText='position:fixed;z-index:10000;inset:35% 15% auto;padding:24px;background:#1b1717;color:#ffe7dc;border:1px solid #bc7665;font:16px sans-serif';
+    alert.textContent='맵팩을 불러올 수 없습니다: '+error.message;document.body.append(alert);throw error;
+  });
+  return _fdgNativeMapPackLoad;
+}
+function _fdgNativeMapPackSnapshot(){
+  if(!_fdgNativeMapPackBundle)return null;
+  return {...structuredClone(_fdgNativeMapPackBundle.receipt),name:_fdgNativeMapPackBundle.pack.name,
+    appliedObjects:MAP_OBJS.filter(o=>o._fdgInstanceId).map(o=>({instanceId:o._fdgInstanceId,id:o.type,x:o.x,y:o.y,scale:o.scale,noCol:o.noCol,upright:o._fdgUpright})),
+    ...(_fdgNativeMapPackBundle.pack.version===2?{
+      spawnedEnemies:structuredClone(_fdgNativeEncounterSpawns||[]),
+      appliedEnemies:ens.filter(e=>e._fdgInstanceId).map(e=>({instanceId:e._fdgInstanceId,etype:e.etype,skin:e._mob8Skin,x:e.x,y:e.y,hp:e.hp,mhp:e.mhp,alive:e.alive,state:e.s,isGhoul:!!e._isGhoul}))
+    }: {})};
+}
+function _initRuinedForestNativeScene(){
+  const scene=_fdgNativeMapPackBundle?.scene||_fdgRuinedForestModule.RUINED_FOREST_SCENE;
+  genFromTemplate(_fdgNativeMapPackBundle?.template||_fdgRuinedForestModule.createRuinedForestTemplate(),0);G.mapType='fdg_ruined_forest';
+  P.x=(scene.start.x+.5)*T;P.y=(scene.start.y+.5)*T;P.s='idle';P.iframes=0;P.kb={x:0,y:0};
+  G.stageTime=0;G._stageDiffOff=0;G._bossArena=false;G._bossRef=null;G._bossLoadPhase=0;G._bossLoadFade=0;G._bossUnlocked=false;
+  G.stageCleared=false;G._deathSpawned=false;G._stageKills=0;G._bonfire=null;G._fieldBoss=null;G._fieldBosses=null;G._fireDevils=null;G._worms=[];
+  G._sStats={deaths:0,dmgDealt:0,dmgTaken:0,parries:0,potions:0,items:0,dodges:0,crits:0,maxHit:0,dashDist:0,dashCount:0,walked:0,_prevX:0,_prevY:0};
+  G.cam.x=P.x;G.cam.y=P.y;G._camZoom=1;G._fow=new Uint8Array(G.mw*G.mh);G._fowDirty=true;
+  G.pets={crow:{x:P.x,y:P.y-20,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:0},cat:{x:P.x,y:P.y+10,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:0},xbow:{x:P.x-30,y:P.y-28,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:25,_atkCd:0,_ang:0},iris:{x:P.x+20,y:P.y-34,tx:P.x,ty:P.y,s:'follow',t:50,sz:20,_feedT:0}};
+  _skinSeqIdx=0;
+  if(_fdgNativeMapPackBundle?.pack.version===2)_fdgNativeEncounterSpawns=[];
+  for(const spawn of scene.enemies){
+    const meta=_ch8Atlas[1].meta.mobs[spawn.skin];
+    const e=mkEn((spawn.x+.5)*T,(spawn.y+.5)*T,0,spawn.etype,false,EL.P,-1);
+    if(!e)throw new Error('Scene spawn blocked: '+spawn.skin);
+    if(spawn._fdgInstanceId){
+      e._fdgInstanceId=spawn._fdgInstanceId;
+      _fdgNativeEncounterSpawns.push({instanceId:spawn._fdgInstanceId,etype:spawn.etype,skin:spawn.skin,authored:{x:spawn.x,y:spawn.y},world:{x:e.x,y:e.y}});
+    }
+    e._mob8Skin=spawn.skin;e._mob8Col=meta.col;e._mob8Row=meta.row;ens.push(e);
+  }
+  _fdgRuinedForestCompleted=false;_mmDirty=1;_shDirty=true;_colObjsSrc=null;_colObjsN=-1;
+  _bgInitQueue=[];_bgInitDone=true;_bgInitIdx=0;buildMapCache();initTorchLights();updateHUD(true);
+  window._FDGRuinedForestScene=Object.freeze({snapshot:_fdgRuinedForestSnapshot});
+  if(_fdgNativeMapPackBundle)window._FDGNativeMapPack=Object.freeze({snapshot:_fdgNativeMapPackSnapshot});
+}
+async function _loadRuinedForestNativeScene(){
+  _fdgRuinedForestModule=await import('./engine/fdg/ruined-forest-scene.js?v=forest-route-close-20261012');
+  await _prepareNativeMapPack(_fdgRuinedForestModule);
+  _load8DirAtlas(1);
+  const deadline=performance.now()+10000;
+  while(!_ch8Atlas[1]?.meta||!_ch8Atlas[1]?.walkMeta||Object.values(_ch8Atlas[1].dirs).some(d=>!d.ready)
+    ||Object.values(_ch8Atlas[1].walkDirs).some(d=>!d.ready)){
+    if(performance.now()>deadline)throw new Error('기존 몬스터 아틀라스 로딩 실패');
+    await new Promise(resolve=>setTimeout(resolve,40));
+  }
+  for(const spawn of (_fdgNativeMapPackBundle?.scene||_fdgRuinedForestModule.RUINED_FOREST_SCENE).enemies){
+    if(!_ch8Atlas[1].meta.mobs[spawn.skin]||!_ch8Atlas[1].walkMeta.mobs[spawn.skin])throw new Error('Scene model missing: '+spawn.skin);
+  }
+  OPT.diff=5; // NORMAL in isolated memory; no settings write.
+  _fdgRuinedForestUi?.uninstall();
+  _fdgRuinedForestUi=_fdgRuinedForestModule.installRuinedForestSceneUi({getState:_fdgRuinedForestSnapshot,
+    start:()=>{window._btFramePause=false;G.paused=false;G.on=true;window._FDGDruidQaStorage.note('forest-scene-play-start');},restart:_startDruidQaChar});
+  if(_fdgNativeMapPackBundle){
+    const badge=document.createElement('p');badge.id='fdgNativeMapPackBadge';
+    badge.textContent=_fdgNativeMapPackBundle.pack.name+(_fdgNativeMapPackBundle.pack.version===2?
+      ' · 몬스터 위치 '+_fdgNativeMapPackBundle.receipt.changedEnemies.length+'개 · 소품 위치 '+_fdgNativeMapPackBundle.receipt.changedObjects.length+'개 적용':
+      ' · 편집 배치 '+_fdgNativeMapPackBundle.receipt.changedObjects.length+'개 적용');
+    const pause=document.createElement('button');pause.type='button';pause.id='fdgNativeMapPackPause';pause.textContent='재생 / 일시정지';
+    pause.style.cssText='margin:4px 6px 0 0;padding:7px 10px;border:1px solid #789083;border-radius:4px;background:#273e31;color:#edf0da;font:inherit;cursor:pointer';
+    pause.addEventListener('click',()=>{window._btFramePause=!window._btFramePause;pause.textContent=window._btFramePause?'플레이 재개':'플레이 일시정지';});
+    document.getElementById('fdgRuinedForestPanel').append(badge,pause);
+  }
+}
+async function _startDruidQaChar(){
+  const deathScreen=$('death'),deathTransition=deathScreen.style.transition;
+  deathScreen.style.transition='none';deathScreen.classList.remove('on');
+  deathScreen.style.removeProperty('opacity');deathScreen.style.removeProperty('pointer-events');
+  void deathScreen.offsetWidth; // Finish hiding before restoring the native death-screen transition.
+  deathScreen.style.transition=deathTransition;_drReset();_deathDlgStop();
+  showBootLoading(_FDG_RUINED_FOREST_FIRST?'폐허 숲길 · NORMAL Lv1':'DRUID QA r4 · Lv1 기본 캐릭터');
+  if(_FDG_RUINED_FOREST_FIRST)await _loadRuinedForestNativeScene();
+  P=mkP();_charName=_FDG_RUINED_FOREST_FIRST?'폐허 숲길':'DRUID QA';
+  for(const item of defaultItems())INV.equipped[item.slot]=item;
+  recalcSt();applyStats();P.hp=P.mhp;P.mp=P.mmp;P.st=P.mst;
+  G.stage=0;G.mats=0;G._cutsceneDone=true;window._btFramePause=true;G.paused=false;G.stageCleared=false;G._deathSpawned=false;
+  ['hud','hudTop','hudCorner','mmWrap','skBar','mmLvl','globeHP','globeMP'].forEach(id=>$(id).classList.add('on'));
+  updateQS();updateSkSlot();initStage(0);
+  _dbReady=true;G.on=true;P.iframes=0;
+  setBootLoading(100,_FDG_RUINED_FOREST_FIRST?'폐허 숲길 준비 완료':'QA 준비 완료');hideBootLoading();
+  window._FDGDruidQaStorage.note('native-qa-baseline-ready');
+}
 // ═══ 테스트 캐릭터 (localhost ?testchar=1 전용) ═══
 async function _startTestChar(){
+  if(window._FDGDruidQaStorage.active)return _startDruidQaChar();
   showBootLoading('TEST CHAR 로딩...');
   setBootLoading(20,'캐릭터 초기화...');
   P=mkP();
@@ -62158,6 +62469,7 @@ if($('deathReplayBtn'))$('deathReplayBtn').onclick=()=>{
   _drPlay(()=>{if($('death').classList.contains('on'))_deathDlgStart()});
 };
 $('retryBtn').onclick=async()=>{
+  if(window._FDGDruidQaStorage.active){window._FDGDruidQaStorage.note('native-qa-retry');await _startDruidQaChar();return;}
   $('death').classList.remove('on');$('victory').classList.remove('on');_drReset();if(typeof _deathDlgStop==='function')_deathDlgStop();
   // 경험치 30% 손실
   const expLoss=~~(P.exp*0.3);
@@ -62358,6 +62670,7 @@ function openWishlist(){
 }
 // ═══ 로비 복귀 버튼 ═══
 async function goToLobby(){
+  if(window._FDGDruidQaStorage.active){window._FDGDruidQaStorage.note('normal-lobby-navigation-skip');return;}
   if(typeof _deathDlgStop==='function')_deathDlgStop();
   try{
     // 사망 상태면 HP 복구 후 저장 (죽은 채로 저장 방지)
@@ -62583,6 +62896,7 @@ if((_isLocal&&!_charId)||new URLSearchParams(window.location.search).get('test')
   let _serverOk=null; // null=미확인, true/false
   const _origDbSave=dbSave;
   dbSave=async function(){
+    if(window._FDGDruidQaStorage.active){window._FDGDruidQaStorage.note('character-save-skip');return;}
     if(!P||_saving)return;
     _saving=true;
     try{_saveSharedMats(G.mats||0);_flushSharedStorage()}catch(e){}
@@ -62739,6 +63053,7 @@ if((_isLocal&&!_charId)||new URLSearchParams(window.location.search).get('test')
   // ═══ Web standalone mode (itch.io 등) — localStorage 세이브 ═══
   const _LS_KEY='hellsave_web';
   dbSave=async function(){
+    if(window._FDGDruidQaStorage.active){window._FDGDruidQaStorage.note('character-save-skip');return;}
     if(!P||_saving)return;
     _saving=true;
     try{_saveSharedMats(G.mats||0);_flushSharedStorage()}catch(e){}
@@ -62865,9 +63180,9 @@ if(location.search.includes('slotdebug')){
 // ═══════════════════════════════════════════════════════════════
 (function(){
 const _btParam=new URLSearchParams(location.search).get('bosstest');
-if(_btParam===null)return;
+if(_btParam===null||_FDG_RUINED_FOREST_FIRST)return;
 const _btSi=Math.max(0,Math.min(TOTAL_STAGES-1,~~(+_btParam||0)));
-window._btGod=true;window._btBoss=null;window._btPaused=false;
+window._btGod=!window._FDGDruidQaStorage.active;window._btBoss=null;window._btPaused=false;
 _FLOAT_TEXT_ENABLED=true; // 테스트베드: 모든 플로팅 텍스트 표시
 TXTS_MAX=120; // 테스트베드: 텍스트 풀 확장
 window._btActive=true; // 테스트베드 활성 플래그 (렌더 핫패스용 캐시)
@@ -62877,6 +63192,7 @@ function _btWait(fn,ms){setTimeout(()=>{if(!G||!P||!G._bossArena)return _btWait(
 _btWait(()=>{
   // ── 1) 플레이어 강화 (아레나는 부트 initStage가 ?bosstest면 직행) ──
   G.stage=_btSi;G._cutsceneDone=true;G.on=true;
+  if(!window._FDGDruidQaStorage.active){
   P.hp=P.mhp=9999;P.st=P.mst=9999;P.mp=P.mmp=9999;
   P.shield=P.mshield=500;P.str=300;P.dex=100;P.int=5000;P.luk=50;
   P.atk=500;P.def=200;P.spd=3;P.r=14;P.sp=9999;P.ap=9999;
@@ -62886,13 +63202,14 @@ _btWait(()=>{
   // 숙련도 전부 만땅 (합체 해금 제한 해제)
   P._catProf={};for(const sk of SKILL_LIST)if(sk.cat)P._catProf[sk.cat]=9999;
   P._skProf={};for(const sk of SKILL_LIST)P._skProf[sk.id]=9999;
+  }
   if(!G._bossArena){
     if(!G.map){G.map=[[4]];G.mw=1;G.mh=1;G.rooms=[];G.exits=[]}
     _enterBossArena();
   }
   // 아레나 내부 기둥 타일 전부 제거 (외벽 3줄 유지) + 충돌 오브젝트 제거
   // 독립 기둥만 제거 (외벽 연결 안 된 벽 블록 = flood fill)
-  {const _vis=new Set();
+  if(!window._FDGDruidQaStorage.active){const _vis=new Set();
   for(let y=4;y<G.mh-4;y++)for(let x=4;x<G.mw-4;x++){
     if(!G.map[y]||G.map[y][x]!==1||_vis.has(y*1000+x))continue;
     const _blk=[],_q=[[x,y]];let _edge=false;_vis.add(y*1000+x);
@@ -62975,6 +63292,7 @@ function _btResetBoss(){
 
 // ── UI 구축 ──
 function _btBuildUI(){
+  if(window._FDGDruidQaStorage.active)return;
   const panel=document.createElement('div');
   panel.id='_btPanel';
   panel.style.cssText='position:fixed;top:8px;right:8px;width:320px;max-height:90vh;overflow-y:auto;'
@@ -63414,7 +63732,7 @@ document.addEventListener('keydown',function(ev){
   else if(k===']'){window._btSetSpeed((window._btSpeedMul||1)+0.1);ev.preventDefault()}
 });
 // ── GOD모드 유지 (매 프레임) ──
-(function _btGodLoop(){requestAnimationFrame(()=>{if(_btGod&&P){P.hp=P.mhp;P.st=P.mst;P.mp=P.mmp;P.shield=P.mshield}if(P&&P.hp<=0){P.hp=P.mhp;P.s='idle'}_btGodLoop()})})();
+(function _btGodLoop(){requestAnimationFrame(()=>{if(_btGod&&P){P.hp=P.mhp;P.st=P.mst;P.mp=P.mmp;P.shield=P.mshield}if(!window._FDGDruidQaStorage.active&&P&&P.hp<=0){P.hp=P.mhp;P.s='idle'}_btGodLoop()})})();
 
 })();
 
@@ -63423,6 +63741,7 @@ document.addEventListener('keydown',function(ev){
 // ═══════════════════════════════════════════════════════════════
 (function(){
 const _cgParam=new URLSearchParams(location.search).get('charget');
+if(_FDG_RUINED_FOREST_FIRST)return;
 if(_cgParam===null)return;
 window._btGod=true;window._btActive=true;
 _FLOAT_TEXT_ENABLED=false;
@@ -64285,6 +64604,88 @@ _v3tick();
 console.log('[VFX3D] Particle overlay initialized — '+_v3presetKeys.length+' presets, F8 to test');
 })();
 });
+</script>
+<script type="module">
+// Explicit rendering opt-in. Native FSM, input and save authority stay in this page.
+const _fdgSlamRevision=new URL(location.href).searchParams.get('fdgDruidSlam');
+if(_FDG_DRUID_THORN_FIRST&&new URL(location.href).searchParams.get('fdgDruidCombat')==='r9'){
+  import('./engine/fdg/druid-parry-contact.js?v=screen-quality-20261012-final2')
+    .then(module=>{window._FDGDruidParryContact=module.createDruidParryContactRenderer({canvasFactory:()=>document.createElement('canvas')});})
+    .catch(error=>console.warn('[FDG Druid contact] Native impact fallback:',error.message));
+}
+if(_druidLegacyRigExplicit&&(_fdgSlamRevision==='r3'||(_fdgSlamRevision==='r5'&&window._FDGDruidQaStorage.active))){
+  const _fdgContact=_fdgSlamRevision==='r5';
+  import('./engine/fdg/dark-druid-slam-bridge.js?v=source-contract-20261012')
+    .then(module=>module.loadDruidSlamNativeBridge({scope:window,getStage:()=>G.stage,isFinale:e=>_isDruidFinale(e),drawTell:(X,e)=>_drawDruidFinaleTell(X,e),thornVolley:_FDG_DRUID_THORN_FIRST,
+      expectedSource:{id:'assets/sprites/boss/boss_dark_druid_f0.png',src:'assets/sprites/boss/boss_dark_druid_f0.png',width:355,height:541,sha256:'74060fc68eb5f6dd76771272e973b2c5038e2939286c411cb2bc9a5bbcf0fa68'},
+      ...(_fdgContact?{rigUrl:'../../tools/fdg-studio/fixtures/dark-druid-slam-contact-r5.rig.json?v=slam-contact-r5-b',clipId:'dark-druid-native-slam-contact-r5'}:{}),
+      ...(_FDG_DRUID_THORN_FIRST&&_fdgContact?{idleClipId:'dark-druid-slam-contact-idle-r5',getAnimationTime:()=>G.stageTime/60,smoothMotion:true}:{})}))
+    .then(bridge=>{window._FDGDruidSlamBridge=bridge;})
+    .catch(error=>console.warn('[FDG Druid slam] Original sheet fallback:',error.message));
+}
+</script>
+<script type="module">
+if(window._FDGDruidQaStorage.active&&!_FDG_RUINED_FOREST_FIRST){
+  const _fdgCombatRevision=new URL(location.href).searchParams.get('fdgDruidCombat');
+  const _fdgCombatR9=_fdgCombatRevision==='r9',_fdgCombatR8=_fdgCombatRevision==='r8'||_fdgCombatR9,_fdgCombatR7=_fdgCombatRevision==='r7'||_fdgCombatR8;
+  import('./engine/fdg/druid-encounter-qa.js?v=source-readiness-20261012')
+    .then(module=>module.installDruidEncounterQa({
+      scope:window,storage:window._FDGDruidQaStorage,
+      combatFraming:_fdgCombatR7,
+      combatReadability:_fdgCombatR8,
+      contactVfxReadability:_fdgCombatR9,
+      thornVolley:_FDG_DRUID_THORN_FIRST,
+      getBossBounds:e=>{
+        const spec=_CODEX_BOSS[G.stage];if(!spec)return null;
+        const scale=window._btScaleMul||1,dh=e.r*spec.dh,halfW=Math.max(e.r*spec.dw*.5,dh*.56);
+        const base=e.y+(window._btOffsetY||0)+(e._teleDropY||0)*scale-6*scale;
+        const bounds={left:e.x-halfW,right:e.x+halfW,top:base-dh*.86,bottom:base+dh*.14,source:'native-sheet-envelope'};
+        const posed=window._FDGDruidSlamBridge?.getRenderSnapshot(e)?.bounds;
+        if(posed){bounds.left=Math.min(bounds.left,e.x+posed.left);bounds.right=Math.max(bounds.right,e.x+posed.left+posed.width);bounds.top=Math.min(bounds.top,base+posed.top);bounds.bottom=Math.max(bounds.bottom,base+posed.top+posed.height);bounds.source='native-sheet-envelope+posed-render';}
+        return bounds;
+      },
+      getProjectileBounds:p=>{
+        if(p._druidThornVolley&&!p.friendly){const r=p.parryClass==='physical'?33:31;return {left:p.x-r,right:p.x+r,top:p.y-r,bottom:p.y+r};}
+        if(p._druidPoison&&!p.friendly){
+          const w=(p._druidMine||p.elemBall?240:Math.max(96,Math.min(180,(p.sz||4)*24)))*_physicalProjectileMultiplier(p,2);
+          const h=_fdFlyImg.naturalWidth?w*_fdFlyImg.naturalHeight/_fdFlyImg.naturalWidth:w;
+          return {left:p.x-w/2,right:p.x+w/2,top:p.y-h/2,bottom:p.y+h/2};
+        }
+        if(p.blackBean||p.blueBean){
+          const rb=3.5*Math.max(1.2,Math.min(4,(p.sz||1)*1.5))*.7*_physicalProjectileMultiplier(p,2),r=rb*3.5;
+          return {left:Math.min(p.x-r,p.x-p.vx*7-rb*.9),right:Math.max(p.x+r,p.x-p.vx*7+rb*.9),top:Math.min(p.y-r,p.y-p.vy*7-rb*.9),bottom:Math.max(p.y+r,p.y-p.vy*7+rb*.9)};
+        }
+        return null;
+      },
+      getState:()=>({G,P,ens,projs,pProjs,BINDS,BINDS2,OPT,C,T}),
+      patterns:BOSS_MOVES.filter(m=>['slashCombo','slam','fan','elemBall','charge','poisonTrail','burrowStrike'].includes(m.id)),
+      forcePattern:id=>window._btForcePattern(id),setPhase:n=>window._btSetPhase(n),
+      saveNativeSettings:()=>saveSettings(),
+      canPlace:(x,y)=>!isW(x,y),getMetrics:()=>({fps:_fpsCur,updateMs:_prof.u,drawMs:_prof.d,renderer:_useGPU?'WebGPU':_useGL?'WebGL2':'Canvas2D'}),
+      clearProjectiles:()=>{for(const p of projs)_recycleProj(p);projs.length=0;},
+      ...(_FDG_DRUID_THORN_FIRST&&_fdgCombatR9?{previewParryContact:()=>_dark02Impact(P.x,P.y-20)}:{}),
+      refreshHUD:()=>{updateQS();updateSkSlot();updateHUD(true);},restartNative:()=>_startDruidQaChar()
+    }))
+    .then(qa=>{window._FDGDruidEncounterQa=qa;})
+    .catch(error=>console.error('[FDG Druid QA]',error));
+}
+</script>
+<script type="module">
+// Additional camera consumer only. Existing exact r4 storage/isolation gate is mandatory.
+if(window._FDGDruidQaStorage?.active&&new URLSearchParams(location.search).get('fdgPerspective')==='first'){
+  Promise.all([import('./engine/fdg/native-perspective-qa.js?v=map-pack-east-visibility-cost-final-20261012'),
+    _FDG_RUINED_FOREST_FIRST?import('./engine/fdg/ruined-forest-scene.js?v=forest-route-close-20261012'):Promise.resolve(null)])
+    .then(async([module,sceneModule])=>{
+      const mapPack=sceneModule?await _prepareNativeMapPack(sceneModule):null;
+      _fdgNativePerspective=module.installNativePerspectiveQa({
+        ...(_FDG_NATIVE_MAP_PACK_FIRST?{actorOcclusionCutaway:true}:{}),
+        ...(sceneModule?{initialCamera:(mapPack?.scene||sceneModule.RUINED_FOREST_SCENE).camera,deferBillboards:true,sceneName:(mapPack?.scene||sceneModule.RUINED_FOREST_SCENE).name}:{}),
+        getView:()=>({center:{x:G.cam.x,y:G.cam.y},viewport:{width:VW,height:VH},pixelScale:_ssaa,nativeZoom:G._camZoom||1,mapBounds:{left:0,top:0,right:G.mw*T,bottom:G.mh*T}}),
+        getState:()=>({player:P,boss:ens.find(e=>e?.ib&&e.alive!==false)||window._btBoss})
+      });
+      window._FDGNativePerspectiveQa=_fdgNativePerspective;
+    }).catch(error=>console.error('[FDG native perspective]',error));
+}
 </script>
 </body>
 </html>

@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>FDG · 맵팩 배치 제작</title>
+  <style>
+    :root{color-scheme:dark;font-family:system-ui,sans-serif;background:#101512;color:#e4e9df}*{box-sizing:border-box}body{margin:0}button,input,select,textarea{font:inherit}button,a.action{border:1px solid #6b806b;background:#263c2f;color:#eff2df;border-radius:5px;padding:10px 14px;cursor:pointer;text-decoration:none}a{color:#b9d4bc}header{padding:18px 26px;border-bottom:1px solid #354237;display:flex;align-items:center;justify-content:space-between;gap:18px}h1{font-size:23px;margin:4px 0}header p{margin:5px 0;color:#a8b9a8;font-size:13px}main{display:grid;grid-template-columns:minmax(320px,1fr) 350px;gap:22px;max-width:1350px;margin:0 auto;padding:22px}.map-shell{display:flex;justify-content:center;background:#0b100d;border:1px solid #354237;border-radius:6px;overflow:hidden}canvas{display:block;width:auto;max-width:100%;height:min(76vh,840px);object-fit:contain;cursor:crosshair}aside{background:#19221c;padding:20px;border:1px solid #354237;border-radius:6px}h2{margin:0 0 16px;font-size:18px}label{display:block;color:#bfccbb;font-size:13px;margin:12px 0}input,select,textarea{display:block;width:100%;margin-top:6px;background:#101713;border:1px solid #536450;color:#eff2e6;border-radius:4px;padding:9px}input[type=number]{font-variant-numeric:tabular-nums}.xy{display:grid;grid-template-columns:1fr 1fr;gap:14px}.muted{color:#a3b4a4;font-size:13px;line-height:1.6}.actions{display:flex;flex-wrap:wrap;gap:9px;margin:18px 0}.play{display:block;text-align:center;font-weight:650;background:#496646!important}#pack-status{min-height:50px;border-top:1px solid #354237;padding-top:14px;color:#d2e7c7;line-height:1.5;font-size:13px}#pack-status[data-error=true]{color:#ffc4ae}details{margin-top:20px}textarea{min-height:180px;resize:vertical;font:11px/1.5 ui-monospace,monospace;overflow-wrap:anywhere}.legend{padding:10px;margin:0;font-size:12px;color:#a2b09e}.badge{font-size:12px;color:#d3d9ba;background:#283b2c;padding:6px 10px;border-radius:20px}@media(max-width:850px){main{grid-template-columns:1fr;padding:14px}aside{order:-1}canvas{height:auto;width:100%}header{padding:15px;align-items:flex-start}h1{font-size:19px}.actions{margin:12px 0}}
+  </style>
+</head>
+<body>
+  <header><div><span class="badge">EXODUSER · 맵 제작</span><h1>맵팩 배치 제작</h1><p>소품과 몬스터의 시작 위치를 편집하고 인게임에서 확인합니다.</p></div><a href="index.html">Studio로 돌아가기</a></header>
+  <main>
+    <section aria-label="폐허 숲길 배치도"><div class="map-shell"><canvas id="pack-map" width="720" height="840" aria-label="소품과 몬스터를 선택하는 배치도"></canvas></div><p class="legend">밝은 바닥: 이동 공간 · 사각형/점: 소품 · 붉은 번호: 몬스터 · 금색: 선택 · S 입구 / E 출구</p></section>
+    <aside>
+      <h2 id="pack-selection-title">선택한 소품</h2>
+      <form id="pack-placement">
+        <label>맵 이름<input id="pack-name" maxlength="80"></label>
+        <label>편집 대상<select id="pack-kind"><option value="prop">소품</option><option value="enemy">몬스터 시작 위치</option></select></label>
+        <label>배치 인스턴스<select id="pack-object"></select></label>
+        <p id="pack-source" class="muted"></p>
+        <div class="xy"><label>가로 X · 타일<input id="pack-x" type="number" step=".25" min="0" max="71.75" required></label><label>세로 Y · 타일<input id="pack-y" type="number" step=".25" min="0" max="83.75" required></label></div>
+        <p id="pack-coordinate-help" class="muted">한 타일은 40px입니다. 기존 소품의 위치를 편집합니다.</p>
+        <div class="actions"><button type="submit">배치 적용</button><button id="pack-reset" type="button">기본 배치 복원</button></div>
+      </form>
+      <p id="pack-status" role="status"></p>
+      <a id="pack-play" class="action play" href="#">인게임에서 플레이</a>
+      <details><summary>JSON 내보내기 / 불러오기</summary><p class="muted">편집한 배치를 JSON으로 보관하고 다시 불러올 수 있습니다.</p><textarea id="pack-json" aria-label="맵팩 JSON" spellcheck="false"></textarea><div class="actions"><button id="pack-export" type="button">JSON 내보내기</button><button id="pack-import" type="button">JSON 불러오기</button><button id="pack-download" type="button">파일 저장</button></div></details>
+    </aside>
+  </main>
+  <script type="module" src="map-pack-studio.js?v=encounter-placement-first-20261012"></script>
+</body>
+</html>

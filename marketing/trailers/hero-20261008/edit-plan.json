@@ -1,0 +1,56 @@
+{
+  "title": "EXODUSER: HELL LORD — Descent & Counter",
+  "version": "HERO_REVIEW_01",
+  "status": "REVIEW_DRAFT_NOT_PUBLISHED",
+  "fps": 30,
+  "duration": 30,
+  "resolution": "1920x1080",
+  "creative": "Immediate real combat, a brief revenge/descent story bridge, combat pressure, counterattack, skill escalation, Steam demo CTA.",
+  "shots": [
+    {"id":"opening-hit","file":"natural1-hook.mp4","type":"natural","from":0.3,"at":0,"dur":2,"zoom":1.4},
+    {"id":"revenge","file":"warrior-grief.mp4","type":"cinematic","from":0,"at":2,"dur":2},
+    {"id":"descent","file":"warrior-hell.mp4","type":"cinematic","from":0,"at":4,"dur":2},
+    {"id":"combat-pressure","file":"natural0-combat.mp4","type":"natural","from":0,"at":6,"dur":6,"zoom":1.3},
+    {"id":"counter","file":"parry-counter.mp4","type":"staged","from":0,"at":12,"dur":3},
+    {"id":"advance","file":"natural0-combat.mp4","type":"natural","from":6,"at":15,"dur":1.6,"zoom":1.3},
+    {"id":"finish","file":"natural1-hook.mp4","type":"natural","from":2.3,"at":16.6,"dur":1.4,"zoom":1.4},
+    {"id":"skill-assault","file":"fire-surge.mp4","type":"staged","from":0,"at":18,"dur":3},
+    {"id":"climax","file":"blackhole-climax.mp4","type":"staged","from":0,"at":21,"dur":4},
+    {"id":"depart","file":"natural1-move.mp4","type":"natural","from":0,"at":25,"dur":2,"zoom":1.15},
+    {"id":"brand","file":"natural1-close.mp4","type":"natural","from":0,"at":27,"dur":3,"zoom":1.15}
+  ],
+  "sourceRules": {
+    "natural": "Existing UI-operated real-time development-build captures, staged=false, original gameplay audio retained once. Canvas capture does not include HTML HUD.",
+    "staged": "Existing high-level skill demonstrations with modified setup. On-screen staged/development-build label required.",
+    "cinematic": "Existing pre-produced warrior cinematic, picture only. Source 6.1–8.1 and 70.4–72.4 seconds. Not gameplay.",
+    "sourceSpeed": 1,
+    "newGeneratedAssets": false,
+    "steamBinaryEquivalenceVerified": false
+  },
+  "presentation": {"naturalRgbGammaExponent":0.9,"sourceSpeed":1,"reframe":"Centre crop at per-shot zoom; source gameplay events and timing retained."},
+  "rawSourceMapping": {
+    "opening-hit":{"source":"demo_manual_1791458139761","from":5.3,"to":7.3},
+    "revenge":{"source":"Warrior V25","from":6.1,"to":8.1},
+    "descent":{"source":"Warrior V25","from":70.4,"to":72.4},
+    "combat-pressure":{"source":"demo_manual_1791458421435","from":5,"to":11},
+    "counter":{"source":"parry.webm","fromFramesAt30fps":148,"toFramesAt30fps":238},
+    "advance":{"source":"demo_manual_1791458421435","from":11,"to":12.6},
+    "finish":{"source":"demo_manual_1791458139761","from":7.3,"to":8.7},
+    "skill-assault":{"source":"fire.webm","from":3,"to":6},
+    "climax":{"source":"blackhole.webm","from":4,"to":8},
+    "depart":{"source":"demo_manual_1791458139761","from":12.4,"to":14.4},
+    "brand":{"source":"demo_manual_1791458139761","from":14.4,"to":17.4}
+  },
+  "assets": {
+    "seedArchive": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/4ef143ff-c3e5-4220-af6a-3f593858d5b1.zip",
+    "warrior": "https://raw.githubusercontent.com/beearth/the-exoduser/80dd1f73490926d40104ed4e3c0ab5e7ac503600/marketing/trailers/cinematics-20261008/EXODUSER_WARRIOR_STORY_V25_20261001.mp4",
+    "warriorSha256": "fb1b47274ab3f793ab3254182b44f83349958e4db435e4331f03c879389007bd",
+    "logo": "img/brand/logo_transparent.png",
+    "music": "bgm/cutscene/prologue_theme.mp3",
+    "fire": "https://raw.githubusercontent.com/beearth/the-exoduser/261eb1a4bd3607a5eb3989ba1d4402738ff40d02/marketing/captures/20261008/fire.webm",
+    "fireInterval": [3, 6]
+  },
+  "cta": "PLAY THE FREE DEMO ON STEAM",
+  "mix": {"sourceAudio": "Native gameplay source once, silent cinematic inputs; existing adopted music added after native picture render.", "musicSourceInterval": [60,90], "musicGain": "0.12–0.24, ducked to0.055 for counter onset", "fullSubjectiveListening": "NOT_PERFORMED"},
+  "limitations": ["No verified boss/loot/build-selection footage is available in this batch.", "This is a 30-second teaser review; the proposed 75-second full feature trailer needs additional footage."]
+}

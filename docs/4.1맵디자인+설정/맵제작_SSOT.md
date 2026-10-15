@@ -1,3 +1,14 @@
+## 2026-10-14 원본 OBJ metadata 현재owner 반영
+
+| 현재 범위 | 코드·최초 검증 |
+|---|---|
+| originalsameWorld metadata | 원초기77→CHDECO250in-place merges/기존31sameDict/현재296key. RHS28원JSfalsy·optionalfield조건보존/knownundefined4226은present키+null+declaredUndefinedmask/untouchedabsent와분리. |
+| 원current후처리쓰기 | 실제edge4현재Canvas교체뒤samecurrentMeta _edgeErasednumeric1작성/원Metaamount유지/metadatawritegap4해소. CSS5실처리미완 _filterBakedwrite0/strictfullOBJ·WaitStageNR/sourceG.onfalse. |
+| API·수명 | get_source_object_meta_publication()0arg / get_native_source_object_meta(key,field="")2arg(currentref/present/mask) / signal native_source_object_meta_changed(key,meta,phase). INITIALIZED77+MERGED250+CALLBACK_WRITE4=331events/epoch·ref·lifetime/신호재진입취소guard/namespacewithdraw. |
+| 새검수 | actualMain1 FIRST13/13 PASS7.985673초/ERROR0/CameraWarning1/product수리0. 기존OBJ14/extra23+2/원성공군·PNG자료재검수재연0/신규helper·testleaf·assetcopyhashimport0. |
+
+정확API·28필드·296/4226값·원JSmerge/필터미완·nullmask외부쓰기한계는 [중앙 엔진 정본](../engine/FDG_ENGINE.md)의 「원본 OBJ metadata 실제 현재 소유·후처리 쓰기」를 따른다. 이전meta원writer4미연결은당시이력이다. MAP PRODUCTION REPORT: currentmetadata+flagwriteronly,geometry/nav/collision/placement/outermass/renderer변경0/CAMERA QA미실행/TECH새13scope만. **VISUAL VERDICT: RETOUCH.**
+
 # EXODUSER 맵 제작·최적화 SSOT
 
 > **2026-09-09 피날레 v0.3:** 데모/bic 마지막 si3 보스의 전용 카메라(.30~.80)·마우스 조준 보정·최종 부활 판정 후210f 승리 배너/음악·잔류 독탄/독늪 제거·비긴급 펫 잡담 억제는 [현행 계약과 검수 기록](../8.1보스디자인바이블/DARK_DRUID_FINALE_QA_20260909.md)을 따른다. 일반 보스/일반 bosstest 및 기존 부활/HP/피해/패링 수치는 유지한다.

@@ -1,0 +1,106 @@
+## 실제 Main lesson file-init/current guard 연결 — 2026-10-14
+
+실제 Main은 World/Player를 생성하기 전에 원 lesson holder를 만들고 Root publish_file_init을1회 소비한다. 원 SOURCE_BOOT/current=false 7개 partial 필드는 입력 이력으로 유지하고 실제 published current guard를 별도로 읽는다. Main wrapper LIVE Callable은 cold에서 null/NOT_READY이며 현재 holder의 게시·교체·철회를 따라간다. 실제Main을 해제하면 wrapper Callable이 무효가 된다. 외부가 강하게 보유한 Root holder의 수명과 Main 권위는 구분한다.
+
+새 실제Main FIRST3그룹30(13/10/7) /4.374504333초/exit0/FAIL0/SCRIPT0/Parse0/ERROR0, Camera2D warning1 보존. production/test수리0, 이전117/145/88/71/원lesson7/137 재연0. 교체2→3/revoke는 명시 actualholder public-test publisher이며 원전체controller 자동진행을 뜻하지 않는다. 현재source G.on=false/pre_stage, controller.tick/start/UI/skipKey/reset/storage/G activation/updategate/HPSTMP automatic은 아직 미연결이다. 최신 API/검증은 FDG_GODOT_MAIN_SOURCE_LESSON_20261014.md 및 FDG_GODOT_MAIN_SOURCE_LESSON_FIRST_20261014.md를 따른다. 아래독립helper/과거인수 상태는 역사로 보존한다.
+
+# 실제 Source Player 초기화 서비스 조립 — 2026-10-14
+
+신규 `native_source_player_initialization_services.gd`를 저장했다. 기존 actual Providers bundle과 같은 Player/World/State/Resources를 ordered dispatcher에 연결하는 weak-reader bridge다. 본 worker의 runtime/import/기존 성공 검사 재연은 0이며, 첫 actual Main 신규 검증·실제 적용 결과는 primary 인수 전이다. 저장된 코드 자체를 전체 bootstrap·공개 플레이·시각 품질 완료로 표시하지 않는다.
+
+## API 및 소유
+
+| API / 산출물 | 실제 계약 |
+|---|---|
+| `configure(player:Node2D,world:Node,state:Node,resources:Node,providers:Object,dispatcher:Object,bridges:Dictionary={})->bool` | 6인자 production 기본 구성. actor Tree 진입 전만 허용하며 동일 actual Main/World/Player/source owners·current5 domain·원 provider10과 dispatcher 공개 cache API를 확인한다. 성공 후 같은 Services 재configure0. optional7 bridges는 실제 attack plan Callable만 가능 |
+| `get_services()->Dictionary` | lifecycle 유효할 때만 아래 schema/helper5/provider_maps5/Callable6를 가진 실제 서비스 dictionary. Object와 Callable은 이 authority 경로에만 공급하며 snapshot에 내보내지 않음 |
+| `is_source_context_ready()->bool` | same actual source owners/현재 domain/owned OPT identity/lifecycle 준비. preTree 구성과 이후 sameTree read-only 소비가 가능하며 dispatcher configure 전 getter가 아직 null인 상황을 actor 오류로 취급하지 않음 |
+| `read_current_options()->Variant` | 실제 SourceOptions의 같은 current Dictionary reference. 누락/교체/owner 손실은 null이며 OPT 필드 보충0 |
+| `get_source_options_state()->Object` | 유효 context에서만 실제 보유 SourceOptions 객체. Main publication·설정 restore 실행을 의미하지 않음 |
+| `get_snapshot()->Dictionary` | source current/lifecycle, helper명/맵키, OPT35·phase·signed status, G.on, cohort_id, delegate/invalidate 계수 및 범위 진단. JSON-safe primitive/Dictionary/Array만; Object/Callable/Node/WeakRef 유출0. nonfinite/비직렬화 값은 진단 문자열로만 표시하며 provider 값 보정에 사용하지 않음 |
+| 소유 2파일 | `godot/scripts/native_source_player_initialization_services.gd`, 이 문서. Main/Player/State/Authority/Providers/원 helper/다른 문서·WIP는 편집0 |
+| 사전 부재 | parent `7432c0912ccafae79305e16d66449e4565a1fd71` 기준 두 신규 경로 WORK/HEAD 없음. 외부 `dependency-source-player-initialization-first/services/before-save/new-path-absence.json`; Git mutation0 |
+
+## Dispatcher 서비스 계약
+
+schema는 `exoduser.godot.source-player-initialization-services.v1`이다. Main은 Services와 Dispatcher를 실제 강참조하고, Services는 context·dispatcher를 WeakRef로만 보유한다. `Readers`가 원 helper에 유지되더라도 reader→Services는 WeakRef여서 소유자 유실을 오래된 값으로 감추지 않는다.
+
+| key | 실제 값 / 위임 |
+|---|---|
+| `health` | 새 원 `player_health_parameters_source` instance |
+| `defense_speed` | 새 원 `player_defense_speed_parameters_source` instance |
+| `shield_poise` | 새 원 `player_shield_poise_parameters_source` instance |
+| `effective_stats` | 새 원 `player_effective_stats_source` instance |
+| `resource_parameters` | 기존 Providers bundle의 같은 `parameters` instance; 두번째 ResourceParameters 생성0 |
+| `provider_maps` | 위 helper5의 원 PROVIDER 상수에 맞춘 Callable dictionary5. helper configure·source run은 dispatcher 책임 |
+| `source_ready()` | 실제 source context bool. fullBootstrap/Main-full 준비와 별개 |
+| `cohort_context()` | `{cohort_id,authority:'actual_Main/source_player_initialization',current_main:true}`. 실제 Main script path/World.parent/Main fields identity가 유효할 때만. id는 Services 실제 ObjectID와 정적 `applyStats_prefix` 문자열이며 새 clock0 |
+| `write_sink(packet,index)` | actual `State.commit_native_source_initialization_write(packet,index)` 1회 위임. State의 실제 Actor/Resources/ownedP 선택을 복제하지 않음. writer는 preTree·unparented actor·pause 아님이 필수 |
+| `invalidate_sink(packet)` | 원 `invalidate_eq_caches`/`game.html:16934`/targets `['_eqAffixCache','_eqStatCache']`/writes[]의 정확4키와 dispatcher-active·constructor gate를 확인한 뒤 같은 actual Affix.invalidate_affix_cache→Reference.invalidate_eq_stat_cache 각각1회. 다른 cache·source 상태 쓰기0 |
+| `attack_early_plan()` | 실제 새 Root BaseAtk instance의 `plan_early_packet()`를 1회 위임. 원 내부 current before/plan 및 공식 `early_packet`을 사용; scalar.run/sink 이중 호출0 |
+| `attack_crystal_plan()` | 같은 Root BaseAtk의 `plan_crystal()`를 1회 위임. configure_crystal_reader에 실제 dispatcher captured crystal과 actual currentP reader 제공 |
+
+attack 결과에 `ready` key가 없는 경우 원 `status=='READY'`일 때만 integration `ready=true` 메타를 추가한다. 원 packet/수치/expr/source 값을 변환하지 않는다. source callback 결과가 Dictionary가 아니거나 owner가 사라지면 NOT_READY/packet:null이다. optional bridges의 실제 callback이 유실되면 default로 바꿔 성공시키지 않는다.
+
+| BaseAtk 공식 packet | 원 위치 / 수치 책임 |
+|---|---|
+| EARLY kind | `apply_stats_base_attack_early`, packet.source=`game.html:28587-28588`, write.source=`game.html:28588`. 원 G.on/stage 식은 Root producer만 소유; 서비스의 15/2/8 재계산·NORMAL fake0 공급0 |
+| CRYSTAL kind | `apply_stats_base_attack_crystal`, packet/write.source=`game.html:28602`. 원 `P.baseAtk+=~~_cr.atk`와 ToInt32는 Root producer만 소유 |
+| planning-only | 실제 G/P reader를 configure하고 legacy sink와 packet sink는 비워 둠. 원 readiness의 missing sink/packet_sink는 snapshot에 그대로 남는다. plan readiness와 적용 완료를 혼동하지 않음 |
+| optional7 | `{attack_early_plan:Callable,attack_crystal_plan:Callable}`의 supplied 실제 함수만 위임 가능. 값/공식/성공용 fixture 제조0 |
+
+## 현재 readers와 공유 plan
+
+| 소비자 | provider keys / 실제 공급 |
+|---|---|
+| ResourceParameters | `player/stats/passives/inventory`→실 bundle reader; `eq_affix/eq_stat/lv_b`→같은 original Affix/Reference; `grit/crystal_effects`→기존 parameter_providers의 실제 Callable. conditional key는 원 map에 있을 때만 추가 |
+| Health | `player/stats/passives/inventory/g/diff_signed/eq_affix/eq_implicit/lv_b/crystal_stats/grit_hp_flat`. G/P/STATS/PAS/INV는 같은 owned current Dict, implicit은 같은 Formula.eq_implicit, grit_hp_flat은 같은 Parameters.read_source_grit_total |
+| DSP | `player/passives/eq_affix/eq_implicit/grit_total/resource_plan/hp_mhp_28582` |
+| Shield/Poise | `player/inventory/eq_affix/resource_plan` |
+| Effective | `player/stats/cohort/current_cohort` |
+| current helper 호출 | 호출 때마다 actual bundle/context를 검증하고 같은 original instance의 공개 함수를 호출. owner 유실 뒤 cached Affix/Reference 값을 직접 반환하는 우회0 |
+| 공유 cache | 아래 public dispatcher readers로만 위임. 동일 pass plan/crystal/cohort를 Services에서 다시 만들거나 계산하지 않음 |
+
+| 공유 reader | 실제 공개 API / 초기 상태 |
+|---|---|
+| resource_plan | `read_captured_resource_plan()->Variant` |
+| crystal_stats / BaseAtk crystal | `read_captured_crystal_stats()->Variant`; 실제 source28600 뒤만 유효한 `{status,value:sameCr,stage}` |
+| cohort | `read_captured_cohort()->Variant` |
+| current_cohort | `read_current_initialization_cohort_id()->Variant` |
+| hp_mhp_28582 | `read_hp_initial_gap()->Dictionary` |
+| configured-before-run | 위 cache가 아직 null인 것은 초기 상태다. fake plan/빈 crystal/zero cohort로 채우지 않음. dispatcher는 자신의 공개 weak bridge로 해당 provider key를 바인딩하며 실제 source 순서에 따라 cache를 만든다 |
+
+## 실제 OPT·context·수명
+
+| 항목 | 정확 계약 / 한계 |
+|---|---|
+| OPT 구성 | 원 SourceOptions.initialize_source_boot(false) 1회: 실제 Godot nonElectron false. 이어 `set_current_phase('current_pre_restore')`; 같은 실제 object/map을 signedDifficulty.configure_current_opt_reader에 연결 |
+| source OPT35 | 원 defaults35를 원 initializer만 생성. source parts80/diff5/fpsCap0 등은 원 값이며 renderer cap240과 다른 domain이다. 이 서비스의 NORMAL label·signed0 literal·restore fallback0 |
+| signed difficulty | 원 `diff_signed()`가 호출 때마다 실제 OPT reader를 읽는다. 공급자는 값을 미리 계산/cache하지 않음; metadata phase는 Main publication 증거가 아님 |
+| OPT identity/loss | source initializer의 actual current Dict identity를 보관. map 교체·원35 필드 손실·옵션 owner 손실은 NR. 같은 actual map의 source 값은 그대로 읽으며 설정값 clamp·coercion 재구현0 |
+| actual Main | `World.get_parent()`의 script resource_path=`res://scripts/main.gd`; 같은 Main의 world/player/source_state/source_resources/source_providers/source_initialization fields가 보유한 actual 객체와 일치. main.gd preload cycle0 |
+| beforeTree→live read | 처음 configure는 actor Tree 진입/ready 전. 이후 actual sameTree/World.player 동일 actor여야 현재 readers를 유지. Tree에서 빠진 ready actor를 새 생성자로 위장하지 않음 |
+| same State/Resources | 실제 스크립트와 각 public Player/World getter·같은 원 Providers ownership을 대조. State/Resources의 foreign reparent, queued/free owner, Main/World 재배치/교체, lost Providers/Dispatcher는 NR |
+| source G | actual G는 현재 source boot `on=false/pre_stage`. 실제 field를 읽는 것이며 전체 initStage/source global bootstrap 완료로 표시하지 않음 |
+| writer/read 분리 | pause/current read는 source context와 writer guard를 분리. live Tree actor에 source initialization write0; Node/clock/HP/position/state setter0 |
+| 보존 | Main/Player/State/Authority/Providers/원 source helpers·frozen source16/맵/원 asset/blackBean/QE/protected2_3 본문 변경0. 새 PNG 복사/해시/import0 |
+
+## 실행 상태와 기록
+
+| 항목 | 현재 상태 |
+|---|---|
+| 실제 산출물 | 신규 production bridge 저장. helper configure/run·actual source writes·실제 Main 부트 검증은 primary가 첫 새 단위로 실행 |
+| worker 실행 | runtime0/import0/Main0/GUI0/server0/Git mutation0/old success 재실행0 |
+| 준비와 완료 구분 | source_context_ready는 실제 현재 object/lifecycle의 준비만. full_bootstrap_ready/main_full_ready/public_play_proven=false |
+| 아직 주장하지 않는 결과 | 첫 parse/PASS/전체 applyStats·full stage bootstrap/공개 입력 교전/시각 품질/240FPS 달성. 최초 검수 결과는 별도 primary ledger |
+| 관련 검색 | 코드 후 docs 전체 rg와 literal recursive grep 수행; 외부 services/docs-search-receipt.json 및 두 원시 로그에 범위 기록. 다른 담당 소유 현재 문서는 primary 동기화 |
+
+## 23. MAP PRODUCTION REPORT
+
+| 항목 | 결과 |
+|---|---|
+| MASTER / LARGE / MEDIUM / GROUND / LANDMARK / SMALL DETAIL | 원 geometry/collision/nav/environment/START·EXIT/배치 변경0. retained 맵 제작 가이드1047줄 적용 |
+| PLAYABLE / COMBAT | actual same source context→ordered dispatcher 서비스 조립만. source G.pre_stage 및 전체 bootstrap 한계 유지 |
+| CAMERA QA | 기존 인간 앱/Web 화면 조작0·새 픽셀 검수0 |
+| TECH QA | 새 runtime/parse/import 대기, 기존 성공 반복0 |
+| VISUAL VERDICT | RETOUCH — actor 모델/원화24장24FPS/글리프 품질/최저사양240 성능은 이 서비스 조립 증거로 승격하지 않음 |

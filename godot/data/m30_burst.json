@@ -1,0 +1,521 @@
+{
+  "schema": "exoduser.godot.native-M30-burst.v1",
+  "id": "M30",
+  "name": "진원 충격파",
+  "component": "res://scripts/native_m30_modifier.gd",
+  "native": {
+    "eligibility_distance": 800,
+    "accumulate_ticks": 480,
+    "busy_ticks": 54,
+    "warning_ticks": 54,
+    "radius": 125,
+    "color": "#ff2438",
+    "damage_multiplier": 0.65,
+    "damage_dtype": "magic",
+    "reference_attack": 40,
+    "reference_damage_request": 26,
+    "same_update_zone_tick": true,
+    "birth_end_remaining_sp1": 53,
+    "owner_mod_state_keys": [
+      "eliteBusy",
+      "eliteRing"
+    ],
+    "hit_radius_inclusive": true,
+    "player_radius_added": false,
+    "extra_HP_positive_gate": false,
+    "player_charge_guard": "literal charge",
+    "added_knockback_override": false,
+    "element_multiplier": false,
+    "global_attack_ticket": false
+  },
+  "warning": {
+    "texture": "res://assets/vfx/vfx_pentagram_red.png",
+    "full_bitmap": true,
+    "source_over_then_additive": true,
+    "source_interface": {
+      "function": "_drawEliteZoneTelegraph(X,z,now)",
+      "input_fields": [
+        "z.x",
+        "z.y",
+        "z.r",
+        "z.dur",
+        "z.t",
+        "z.col",
+        "z.kind",
+        "caller now",
+        "original _pentaRed image"
+      ],
+      "early_return": "!z || !z.r || !z.dur",
+      "q": "max(0,min(1,1-z.t/z.dur))",
+      "head": "max(1.5,r*q)",
+      "col": "z.col || #ff2438",
+      "pulse": ".5+.5*sin(now*.018)",
+      "spin": "now*.0008",
+      "now_unit": "literal caller-provided source now; not derived from native warning duration",
+      "warning_is_M30_burst_not_mortar": true,
+      "draw_operations_in_order": [
+        {
+          "id": "save-and-source-over",
+          "composite": "source-over",
+          "save": true
+        },
+        {
+          "id": "full_original_pentagram",
+          "guard": "(mortar || col==#ff2438) && _pentaRed.complete && _pentaRed.naturalWidth",
+          "nested_save": true,
+          "translate": [
+            "z.x",
+            "z.y"
+          ],
+          "rotation": "now*.00028",
+          "alpha": ".15+.13*q",
+          "image_rect": [
+            "-r*.88",
+            "-r*.88",
+            "r*1.76",
+            "r*1.76"
+          ],
+          "full_original_bitmap": true,
+          "nested_restore": true,
+          "exact_M30_r125_rect": [
+            -110,
+            -110,
+            220,
+            220
+          ]
+        },
+        {
+          "id": "full_disc",
+          "alpha": ".15+pulse*.05",
+          "fill": "col",
+          "circle": [
+            "z.x",
+            "z.y",
+            "r",
+            0,
+            "2*pi"
+          ]
+        },
+        {
+          "id": "outer_ring",
+          "alpha": ".82+pulse*.12",
+          "stroke": "col",
+          "line_width": "2.2+pulse*1.2",
+          "radius": "r-1"
+        },
+        {
+          "id": "outer_ticks",
+          "count": 20,
+          "alpha": 0.7,
+          "line_width": 1.4,
+          "angle": "spin+2*pi*i/20",
+          "length": "i%5==0 ?8:4",
+          "start_radius": "r-length",
+          "end_radius": "r+1"
+        },
+        {
+          "id": "switch-additive",
+          "composite": "lighter"
+        },
+        {
+          "id": "progress_disc",
+          "alpha": ".13+pulse*.06",
+          "fill": "col",
+          "radius": "head"
+        },
+        {
+          "id": "progress_glow_ring",
+          "alpha": ".22+pulse*.12",
+          "line_width": 11,
+          "radius": "head"
+        },
+        {
+          "id": "progress_core_ring",
+          "alpha": ".86+pulse*.12",
+          "line_width": "3.2+pulse*1.6",
+          "radius": "head"
+        },
+        {
+          "id": "progress_inner_ring",
+          "alpha": 0.54,
+          "line_width": 1.2,
+          "radius": "max(1,head-7)"
+        },
+        {
+          "id": "progress_ticks",
+          "count": 12,
+          "alpha": 0.84,
+          "line_width": 1.5,
+          "angle": "spin+2*pi*i/12",
+          "start_radius": "max(0,head-3)",
+          "end_radius": "head+6"
+        },
+        {
+          "id": "M30_center_diamond",
+          "mortar": false,
+          "s": "5+pulse*2",
+          "alpha": 0.95,
+          "line_width": "unchanged1.5 from progress ticks",
+          "points": [
+            "[x,y-s]",
+            "[x+s,y]",
+            "[x,y+s]",
+            "[x-s,y]"
+          ],
+          "close_path_and_stroke": true
+        },
+        {
+          "id": "M30_center_dot",
+          "alpha": 0.85,
+          "fill": "col inherited from progress_disc",
+          "radius": 2.2
+        },
+        {
+          "id": "restore",
+          "restore": true
+        }
+      ],
+      "nonM30_mortar_branch": "retained in exact original full function as source context; not admitted or implemented by this M30 unit",
+      "texture_only_or_alternate_circle_substitution_allowed": false,
+      "exact_M30_born_end_t53_progress": "q=1/54; head=125/54=2.314814814814815; source sameupdate native tick already consumed first warning tick"
+    },
+    "clock": "native zone t + independent caller-provided now for pulses and rotations"
+  },
+  "lava": {
+    "texture": "res://assets/vfx/vfx_lava_erupt.png",
+    "id": "lava_erupt",
+    "columns": 3,
+    "rows": 3,
+    "cell": [
+      768,
+      768
+    ],
+    "frames": 9,
+    "frame_time": 5,
+    "base_alpha": 0.85,
+    "size_rule": "min(zone.r*2.5,360)",
+    "reference_size": 312.5,
+    "origin_rule": "zone.x,zone.y-size*.25",
+    "reference_y_offset": -78.125,
+    "scale_reference": 0.4069010416666667,
+    "angle": 0,
+    "is_skill": false,
+    "fresh_frame": 0,
+    "fresh_t": 0,
+    "fresh_bornGameTime": null,
+    "ordinary_render_single_increment_reset0": true,
+    "remainder_carried": false,
+    "nominal_render_ticks": 45,
+    "zone_warning_lifetime_alias": false,
+    "missing_image_clock_freezes": true,
+    "view_budget_cull_after_clock": true,
+    "independent_world_sibling": true,
+    "physics_clock": false,
+    "source_interface": {
+      "function_context": "global VFX animation render loop, exact bounded snippets retained",
+      "missing_image": "if !sheet || !sheet.img, retain list entry and continue before clock advancement",
+      "timed_if": "v.bornGameTime !== undefined",
+      "timed_value": "vf=max(0,(_gameTime-bornGameTime)/PHYS_STEP/frameTime); frame=floor(vf); mix=vf-frame",
+      "ordinary_else": [
+        "v.t += _dtSp",
+        "if(v.t>=v.frameTime){v.t=0;v.frame++}"
+      ],
+      "ordinary_single_increment": true,
+      "ordinary_while_loop": false,
+      "ordinary_remainder_carried": false,
+      "expiry": "if frame>=maxFrames continue, omitted from compacted list",
+      "clock_update_before_screen_or_budget_cull": true,
+      "dimensions": "dw=sheet.fw*scale; dh=sheet.fh*scale",
+      "alpha": "(baseAlpha>0?baseAlpha:1)*(1-(frame/maxFrames)*.3)",
+      "alpha_cull": "alpha<.05 && !isSkill =>remove",
+      "screen_cull": "outside view expanded by dw/dh =>retain but do not draw; clock already advanced",
+      "budget_cull": "++drawCount>_vfxBudgetCap && !isSkill =>retain but do not draw; clock already advanced; cap value is outside newly requested local scope",
+      "M30_normal_key": "lava_erupt !=boss_lava_erupt; source24 authored boss clip branch not consumed",
+      "timed_draw": "two neighboring timed frames weighted by1-mix/mix, _drawTimedVfxFrame; not ordinary fresh M30 path",
+      "ordinary_crop": {
+        "col": "frame % sheet.cols",
+        "row": "trunc(frame/sheet.cols)",
+        "source_x": "col*sheet.fw",
+        "source_y": "row*sheet.fh",
+        "source_width": "sheet.fw",
+        "source_height": "sheet.fh"
+      },
+      "M30_lava_grid": {
+        "cols": 3,
+        "rows": 3,
+        "fw": 768,
+        "fh": 768,
+        "maxFrames": 9,
+        "crop": "[(frame%3)*768,trunc(frame/3)*768,768,768]",
+        "draw_width_height": 312.5,
+        "angle": 0,
+        "baseAlpha": 0.85,
+        "frameTime": 5,
+        "nominal_ordinary_render_step_ticks": 45
+      },
+      "GL_sink": "_queueVfxGL(image,sx,sy,fw,fh,VW*.5+(x-cam.x),VH*.5+(y-cam.y),dw,dh,ang||0,alpha)",
+      "Canvas_fallback": [
+        "save",
+        "globalCompositeOperation=sheet.blend ||lighter",
+        "globalAlpha=alpha",
+        "translate(x,y)",
+        "if(ang)rotate(ang)",
+        "drawImage(image,sx,sy,fw,fh,-dw/2,-dh/2,dw,dh)",
+        "restore"
+      ],
+      "after_draw": "retain via list compaction; after full loop _flushVfxGL and _vfxAnims.length=_vw",
+      "owner_clock_difference": "M30 native owner busy/accumulator/zone t consumes owner update sp; fresh lava ordinary frame t consumes render _dtSp. No direct lifetime54 alias and no forced fixed9*5 physics expiry."
+    }
+  },
+  "source_contract": {
+    "frozen_M30": {
+      "name": "진원 충격파",
+      "raw_mod_preserved": "M30",
+      "source_lines": [
+        31700,
+        31701,
+        39400,
+        39411,
+        5731,
+        5759,
+        53949
+      ],
+      "processing_order": "inside mods block, after source stun/hit-stun/ice guards, before not-alerted far gate; _tickEliteAttackLock before M30 test; newly inserted zone is processed by same update zone loop",
+      "eligibility": "mods contains M30 && distance<800",
+      "accumulate_ticks": 480,
+      "local_lock": {
+        "field": "modT.eliteBusy",
+        "claim_ticks": 54,
+        "claim_if": "own busy<=0",
+        "decrement": "max(0,busy-sp)",
+        "not_global_attack_ticket": true
+      },
+      "zone": {
+        "fixed_origin": "current P.x/P.y at claim",
+        "kind": "burst",
+        "radius": 125,
+        "t": 54,
+        "dur": 54,
+        "color": "#ff2438",
+        "born_end_t_at_sp1": 53,
+        "same_update_decrement": true,
+        "hit_threshold": "distance(P,z)<=125 (P.r not added)",
+        "expiry": "z.t<=0: once damage gate+VFX, remove zone"
+      },
+      "damage": {
+        "request": 26,
+        "formula": "max(1,trunc(40*.65))",
+        "dtype": "magic",
+        "element_multiplier_not_applied": true,
+        "outer_guard": "hit && P.iframes<=0 && P.s!=literal charge",
+        "manual_knockback_after_hurtP": null
+      },
+      "VFX": {
+        "pentagram_full_texture": true,
+        "procedural_warning": "source _drawEliteZoneTelegraph q/head/pulse/spin/fill+outer+progress rings/ticks/diamond; no texture-only substitute",
+        "lava_key": "lava_erupt",
+        "lava_warning_is_54_lava_animation_is_not_54": true,
+        "actual_lava_size": 312.5,
+        "actual_lava_position": "z.x,z.y-78.125",
+        "scale": 0.4069010416666667,
+        "frame_count": 9,
+        "frame_time": 5,
+        "base_alpha": 0.85,
+        "boss_lava24_not_this_caller": true,
+        "resources": [
+          4,
+          5
+        ]
+      },
+      "owner_bound_zone_AI": "zone timers/damage are in owner updateE, may pause with AI guards/tiering and end with owner updating; spawned VFX uses independent global VFX list"
+    },
+    "source_native_exact_locals": {
+      "M30_trigger": {
+        "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+        "start_line": 39406,
+        "end_line": 39406,
+        "text": "    if(e.mods.includes('M30')&&d<800){e.modT.eliteRing+=sp;if(e.modT.eliteRing>=480&&_claimEliteAttack(e,54)){e.modT.eliteRing=0;e._eliteZones=e._eliteZones||[];e._eliteZones.push({x:P.x,y:P.y,t:54,dur:54,r:125,kind:'burst',col:'#ff2438'});}}"
+      },
+      "owner_zone_loop": {
+        "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+        "start_line": 39411,
+        "end_line": 39411,
+        "text": "    if(e._eliteZones&&e._eliteZones.length){for(let zi=e._eliteZones.length-1;zi>=0;zi--){const z=e._eliteZones[zi];z.t-=sp;if(z.t<=0){const hit=dst(P.x,P.y,z.x,z.y)<=z.r;if(hit&&P.iframes<=0&&P.s!=='charge'){hurtP(Math.max(1,~~(e.atk*(z.kind==='mortar'?.8:.65))),{dtype:'magic'});addTxt(P.x,P.y-18,z.kind==='mortar'?'💥포격!':'충격파! ',z.col,22);}addParts(z.x,z.y,z.col,z.kind==='mortar'?18:12);if(z.kind==='mortar'||z.col==='#ff2438'){const _flameSize=Math.min(z.r*2.5,360);playVFXAng('lava_erupt',z.x,z.y-_flameSize*.25,_flameSize/768,5,0,false,.85)}e._eliteZones.splice(zi,1);}}}"
+      },
+      "owner_busy_tick_and_claim": {
+        "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+        "start_line": 31700,
+        "end_line": 31701,
+        "text": "function _tickEliteAttackLock(e,sp){if(!e||!e.modT)return true;e.modT.eliteBusy=Math.max(0,(e.modT.eliteBusy||0)-sp);return e.modT.eliteBusy<=0}\nfunction _claimEliteAttack(e,frames){if(!e||!e.modT||e.modT.eliteBusy>0)return false;e.modT.eliteBusy=frames;return true}"
+      }
+    },
+    "missing_local_supplement": {
+      "warning_full_function": {
+        "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+        "line_start": 5731,
+        "line_end": 5760,
+        "text": "function _drawEliteZoneTelegraph(X,z,now){\n  if(!z||!z.r||!z.dur)return;\n  const q=Math.max(0,Math.min(1,1-z.t/z.dur)),r=z.r,head=Math.max(1.5,r*q),col=z.col||'#ff2438';\n  const pulse=.5+.5*Math.sin(now*.018),spin=now*.0008,mortar=z.kind==='mortar';\n  X.save();X.globalCompositeOperation='source-over';\n  if((mortar||col==='#ff2438')&&_pentaRed.complete&&_pentaRed.naturalWidth){\n    X.save();X.translate(z.x,z.y);X.rotate(now*.00028);\n    X.globalAlpha=.15+q*.13;X.drawImage(_pentaRed,-r*.88,-r*.88,r*1.76,r*1.76);X.restore();\n  }\n  X.globalAlpha=.15+pulse*.05;X.fillStyle=col;X.beginPath();X.arc(z.x,z.y,r,0,Math.PI*2);X.fill();\n  X.globalAlpha=.82+pulse*.12;X.strokeStyle=col;X.lineWidth=2.2+pulse*1.2;X.beginPath();X.arc(z.x,z.y,r-1,0,Math.PI*2);X.stroke();\n  X.globalAlpha=.70;X.lineWidth=1.4;\n  for(let i=0;i<20;i++){const a=spin+Math.PI*2*i/20,len=i%5===0?8:4;X.beginPath();X.moveTo(z.x+Math.cos(a)*(r-len),z.y+Math.sin(a)*(r-len));X.lineTo(z.x+Math.cos(a)*(r+1),z.y+Math.sin(a)*(r+1));X.stroke()}\n  X.globalCompositeOperation='lighter';\n  X.globalAlpha=.13+pulse*.06;X.fillStyle=col;X.beginPath();X.arc(z.x,z.y,head,0,Math.PI*2);X.fill();\n  X.globalAlpha=.22+pulse*.12;X.lineWidth=11;X.beginPath();X.arc(z.x,z.y,head,0,Math.PI*2);X.stroke();\n  X.globalAlpha=.86+pulse*.12;X.lineWidth=3.2+pulse*1.6;X.beginPath();X.arc(z.x,z.y,head,0,Math.PI*2);X.stroke();\n  X.globalAlpha=.54;X.lineWidth=1.2;X.beginPath();X.arc(z.x,z.y,Math.max(1,head-7),0,Math.PI*2);X.stroke();\n  X.globalAlpha=.84;X.lineWidth=1.5;\n  for(let i=0;i<12;i++){const a=spin+Math.PI*2*i/12;X.beginPath();X.moveTo(z.x+Math.cos(a)*Math.max(0,head-3),z.y+Math.sin(a)*Math.max(0,head-3));X.lineTo(z.x+Math.cos(a)*(head+6),z.y+Math.sin(a)*(head+6));X.stroke()}\n  if(mortar){\n    X.globalAlpha=.78;X.lineWidth=1.8;\n    for(let i=0;i<4;i++){const a=spin+Math.PI*.5*i,ri=r*.38,ro=r*.55;X.beginPath();X.moveTo(z.x+Math.cos(a)*ri,z.y+Math.sin(a)*ri);X.lineTo(z.x+Math.cos(a)*ro,z.y+Math.sin(a)*ro);X.stroke()}\n    X.globalAlpha=.9;X.beginPath();X.arc(z.x,z.y,5+pulse*2,0,Math.PI*2);X.stroke();\n  }else{\n    const s=5+pulse*2;X.globalAlpha=.95;X.beginPath();X.moveTo(z.x,z.y-s);X.lineTo(z.x+s,z.y);X.lineTo(z.x,z.y+s);X.lineTo(z.x-s,z.y);X.closePath();X.stroke();\n    X.globalAlpha=.85;X.beginPath();X.arc(z.x,z.y,2.2,0,Math.PI*2);X.fill();\n  }\n  X.restore();\n}"
+      },
+      "spawnVFX_full_function": {
+        "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+        "line_start": 19730,
+        "line_end": 19739,
+        "text": "function playVFXAng(id,x,y,scale,speed,ang,isSkill,alpha){\n  if(!_VFX_SHEETS[id])return;\n  if(_vfxAnims.length>=20){\n    let vi=-1;for(let i=0;i<_vfxAnims.length;i++){if(!_vfxAnims[i].isSkill){vi=i;break}}\n    if(vi<0)vi=0;\n    const v=_vfxAnims[vi];v.id=id;v.x=x;v.y=y;v.frame=0;v.maxFrames=_VFX_SHEETS[id].frames;v.t=0;v.frameTime=speed||3;v.scale=scale||2.0;v.ang=ang||0;v.isSkill=!!isSkill;v.baseAlpha=alpha||0;\n    _vfxAnims.push(_vfxAnims.splice(vi,1)[0]);\n  }\n  else _vfxAnims.push({id,x,y,frame:0,maxFrames:_VFX_SHEETS[id].frames,t:0,frameTime:speed||3,scale:scale||2.0,ang:ang||0,isSkill:!!isSkill,baseAlpha:alpha||0});\n}"
+      },
+      "render_clock_and_cull": {
+        "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+        "line_start": 55035,
+        "line_end": 55046,
+        "text": "      const v=_vfxAnims[vi];const sh=_VFX_SHEETS[v.id];\n      if(!sh||!sh.img){if(_vw!==vi)_vfxAnims[_vw]=v;_vw++;continue}\n      let _vfMix=0;\n      if(v.bornGameTime!==undefined){const vf=Math.max(0,(_gameTime-v.bornGameTime)/PHYS_STEP/v.frameTime);v.frame=Math.floor(vf);_vfMix=vf-v.frame}\n      else{v.t+=_dtSp;if(v.t>=v.frameTime){v.t=0;v.frame++}}\n      if(v.frame>=v.maxFrames)continue;\n      const dw=sh.fw*v.scale,dh=sh.fh*v.scale;\n      const _vAlpha=(v.baseAlpha>0?v.baseAlpha:1)*(1-(v.frame/v.maxFrames)*0.3);\n      if(_vAlpha<0.05&&!v.isSkill)continue;\n      if(v.x<_vl-dw||v.x>_vr+dw||v.y<_vt-dh||v.y>_vb+dh){if(_vw!==vi)_vfxAnims[_vw]=v;_vw++;continue}\n      if(++_vDrw>_vfxBudgetCap&&!v.isSkill){if(_vw!==vi)_vfxAnims[_vw]=v;_vw++;continue}\n      if(v.id==='boss_lava_erupt'&&_drawBossLavaEruptClip(v,sh,_vfMix,dw,dh,_vAlpha)){"
+      },
+      "ordinary_crop_draw_and_list_close": {
+        "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+        "line_start": 55067,
+        "line_end": 55089,
+        "text": "      if(v.bornGameTime!==undefined){\n        const _vf1=Math.min(v.maxFrames-1,v.frame+1);\n        _drawTimedVfxFrame(v,sh,v.frame,_vAlpha*(1-_vfMix),dw,dh);\n        _drawTimedVfxFrame(v,sh,_vf1,_vAlpha*_vfMix,dw,dh);\n        if(_vw!==vi)_vfxAnims[_vw]=v;_vw++;continue;\n      }\n      const col=v.frame%sh.cols,row=~~(v.frame/sh.cols);\n      const _sx=col*sh.fw,_sy=row*sh.fh;\n      // GL instancing (additive blend 자체 처리)\n      if(_vfxGLMode&&_queueVfxGL(sh.img,_sx,_sy,sh.fw,sh.fh,VW*.5+(v.x-G.cam.x),VH*.5+(v.y-G.cam.y),dw,dh,v.ang||0,_vAlpha)){\n        // queued\n      }else{\n        // Canvas2D 폴백 (lighter 컨텍스트 필요)\n        X.save();X.globalCompositeOperation=sh.blend||'lighter';X.globalAlpha=_vAlpha;\n        X.translate(v.x,v.y);if(v.ang)X.rotate(v.ang);\n        X.drawImage(sh.img,_sx,_sy,sh.fw,sh.fh,-dw/2,-dh/2,dw,dh);\n        X.restore();\n      }\n      if(_vw!==vi)_vfxAnims[_vw]=v;_vw++;\n    }\n    _flushVfxGL();\n    _vfxAnims.length=_vw;\n  }"
+      },
+      "owner_mod_block_condition": {
+        "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+        "line_start": 39376,
+        "line_end": 39376,
+        "text": "  if(e.mods&&e.mods.length>0){"
+      },
+      "owner_busy_call": {
+        "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+        "line_start": 39400,
+        "line_end": 39400,
+        "text": "    _tickEliteAttackLock(e,sp);"
+      },
+      "owner_zone_expiry_loop": {
+        "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+        "line_start": 39411,
+        "line_end": 39411,
+        "text": "    if(e._eliteZones&&e._eliteZones.length){for(let zi=e._eliteZones.length-1;zi>=0;zi--){const z=e._eliteZones[zi];z.t-=sp;if(z.t<=0){const hit=dst(P.x,P.y,z.x,z.y)<=z.r;if(hit&&P.iframes<=0&&P.s!=='charge'){hurtP(Math.max(1,~~(e.atk*(z.kind==='mortar'?.8:.65))),{dtype:'magic'});addTxt(P.x,P.y-18,z.kind==='mortar'?'💥포격!':'충격파! ',z.col,22);}addParts(z.x,z.y,z.col,z.kind==='mortar'?18:12);if(z.kind==='mortar'||z.col==='#ff2438'){const _flameSize=Math.min(z.r*2.5,360);playVFXAng('lava_erupt',z.x,z.y-_flameSize*.25,_flameSize/768,5,0,false,.85)}e._eliteZones.splice(zi,1);}}}"
+      },
+      "owner_mod_block_close": {
+        "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+        "line_start": 39475,
+        "line_end": 39475,
+        "text": "  }"
+      }
+    },
+    "spawnVFX_interface": {
+      "API": "playVFXAng(id,x,y,scale,speed,ang,isSkill,alpha)",
+      "missing_sheet": "returns without allocation",
+      "capacity": "if _vfxAnims.length>=20, reuse first nonSkill else index0; move reused record to list end; otherwise append fresh record",
+      "initializer": {
+        "frame": 0,
+        "maxFrames": "_VFX_SHEETS[id].frames",
+        "t": 0,
+        "frameTime": "speed ||3",
+        "scale": "scale ||2.0",
+        "ang": "ang ||0",
+        "isSkill": "!!isSkill",
+        "baseAlpha": "alpha ||0"
+      },
+      "M30_call_values": {
+        "id": "lava_erupt",
+        "x": "zone.x",
+        "y": "zone.y-flameSize*.25",
+        "flameSize": "min(zone.r*2.5,360)",
+        "scale": "flameSize/768",
+        "speed": 5,
+        "ang": 0,
+        "isSkill": false,
+        "alpha": 0.85
+      },
+      "fresh_allocation_bornGameTime": "not set; ordinary render-step branch",
+      "reuse_caveat": "Reuse overwrites only listed fields and does not delete other properties, including possible bornGameTime. Literal source condition still chooses timed branch if such a property exists. This supplement does not inspect unrelated timed producers or claim their reuse behavior.",
+      "source_scope_not_expanded": "No new pool/timed producer design and no alternate source asset."
+    },
+    "owner_zone_interface": {
+      "outer_block": "if(e.mods && e.mods.length>0)",
+      "busy_tick_call": "_tickEliteAttackLock(e,sp) at R39400 before M30 trigger",
+      "zone_guard": "if(e._eliteZones && e._eliteZones.length)",
+      "iteration": "reverse zi=length-1 down to0",
+      "clock": "zone.t-=sp",
+      "expiry_comparison": "zone.t<=0",
+      "hit_comparison": "dst(P.x,P.y,zone.x,zone.y)<=zone.r",
+      "outer_player_gate": "hit && P.iframes<=0 && P.s !=charge",
+      "M30_damage": "max(1,trunc(e.atk*.65)), opts dtype magic",
+      "damage_attempt_display": "source addTxt after hurtP inside outer player gate, even if hurtP internally returns",
+      "particles": "12 for nonmortar, independent of player damage gate",
+      "lava_guard": "zone.kind==mortar OR zone.col==#ff2438; M30 color always qualifies",
+      "lava_spawn": "after particles; source exact original playVFXAng call",
+      "remove": "splice(zi,1) after expired effect work",
+      "M30_kernel_other_context": "mortar formulas present in shared original loop only as frozen context; no M32 implementation implied",
+      "eligibility_busyclear_and_order_other_values": "unchanged frozen source-interface-relay authority, not re-extracted in this supplement"
+    }
+  },
+  "assets": [
+    {
+      "source": "/Users/fordeargamers/Projects/exoduser-migration-20261001/img/vfx_pentagram_red.png",
+      "destination": "/Users/fordeargamers/the-exoduser/godot/assets/vfx/vfx_pentagram_red.png",
+      "resource": "res://assets/vfx/vfx_pentagram_red.png",
+      "bytes": 1455927,
+      "source_sha256_first": "c87458ebd1fc226a0d1d8b2f789660177775f17445c33aef41b8233fc9f0972d",
+      "destination_sha256_first": "c87458ebd1fc226a0d1d8b2f789660177775f17445c33aef41b8233fc9f0972d",
+      "byte_equal": true,
+      "new_path_HEAD_WORK_absent_before": true,
+      "original_modified": false,
+      "new_image_created": false
+    },
+    {
+      "source": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/vfx/boss/vfx_lava_erupt.png",
+      "destination": "/Users/fordeargamers/the-exoduser/godot/assets/vfx/vfx_lava_erupt.png",
+      "resource": "res://assets/vfx/vfx_lava_erupt.png",
+      "bytes": 1707135,
+      "source_sha256_first": "e1adf5874ea4e3a7894639eed5665112e8a78ed288a5cd6f00171c605e1096ac",
+      "destination_sha256_first": "e1adf5874ea4e3a7894639eed5665112e8a78ed288a5cd6f00171c605e1096ac",
+      "byte_equal": true,
+      "new_path_HEAD_WORK_absent_before": true,
+      "original_modified": false,
+      "new_image_created": false
+    }
+  ],
+  "API": {
+    "configure": "configure(actor:Node2D,target:Node2D,world:Node2D,modifier_state:Dictionary,profile:Dictionary)->bool",
+    "native_update": "advance_native(ticks:float,distance_to_player:float)->void",
+    "warning_render": "render_native(now:float)->void",
+    "warning_recipe": "get_warning_recipe(index:int,now:float)->Dictionary",
+    "snapshot": "get_snapshot()->Dictionary",
+    "owner_phase": "Actual owner AI calls once after existing guard/tiering and before far-unalerted return; no module physics/process clock",
+    "state_reference": "Actual public owner modT dictionary by reference; only eliteBusy/eliteRing consumed",
+    "player": "receive_damage(amount,magic) without added HP gate/element multiplier/KB override",
+    "lava_render": "LavaEffect.advance_render(render_ticks:float,draw_allowed:bool=true)->void; actual _process(delta) wrapper converts render seconds*60",
+    "lava_snapshot": "LavaEffect.get_snapshot()->Dictionary"
+  },
+  "scope": {
+    "M30_actual_kernel_and_original_resource_consumers": true,
+    "no_runtime_owner_or_factory_connection_added": true,
+    "etype7_still_pending_unadmitted": true,
+    "current_source_supported_unported": [
+      6,
+      10
+    ],
+    "frozen_shipped_Web_Windows_supported_unported": [
+      5,
+      11
+    ],
+    "source16_or_actor_player_world_factory_changed": false,
+    "producer_original_PNG_read_copy_hash_import": 0,
+    "source_ancillary_particles12_damage_text_sound_ported": false,
+    "global_VFX_pool20_reuse_bornGameTime_timed_branch_ported": false,
+    "global_VFX_budget_allocator_GL_sink_ported": false,
+    "optional_draw_allowed_cull_does_not_stop_clock": true,
+    "M31_M32_or_mortar_branch_ported": false,
+    "new_unique_character_frames_or_24FPS_claim": false,
+    "public_play_visual_or_performance_PASS": false,
+    "production_validation": "pending newly authored unit tests; producer runtime/import/tests0"
+  },
+  "provenance": {
+    "parent": "927fa91ec77bb8c54698e270ce57b50aea11fb45",
+    "new_path_absence": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/dependency-m30-first/new-owned-path-absence.json",
+    "source_relay": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/dependency-m30-first/source-interface-relay.json",
+    "source_supplement": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/dependency-m30-first/source-m30-missing-locals-supplement.json",
+    "supplement_SHA_parent": "66e4aefc4eeac212663184b30ea17b86bc963ccb377cc201dfe7aba4f5a507a1",
+    "original2_first_copy_parent_manifest": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/dependency-m30-first/required-original-resource-copy-manifest.json",
+    "source_R_or_old_completed_proofs_reaudited": false,
+    "docs_and_commit_owner": "parent/root with test SSOT owner"
+  }
+}

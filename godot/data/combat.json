@@ -1,0 +1,168 @@
+{
+  "schema": "exoduser-godot-native-combat-v1",
+  "source": {
+    "checkout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+    "commit": "9a4534b42f74093095ebc3364a25dd104e93b379",
+    "file": "game.html",
+    "profile": "raw mkP Lv1, no equipment, STATS/PASSIVES zero; not applyStats or a saved build"
+  },
+  "native_ticks_per_second": 60,
+  "player": {
+    "hp": 350,
+    "max_hp": 350,
+    "stamina": 200.0,
+    "max_stamina": 200.0,
+    "radius": 15.0,
+    "movement_per_tick": 2.6,
+    "base_attack": 8.0,
+    "melee_ref": 8.0,
+    "stat_str": 1.0,
+    "attack_multiplier": 0.7,
+    "stamina_regen_base": 0.28,
+    "idle_regen_divisor": 8.0,
+    "attack_regen_divisor": 16.0,
+    "attack_movement_multiplier": 0.8,
+    "visual_scale": 2.5,
+    "idle_frames": 2,
+    "walk_frames": 8,
+    "source_attack_frames": 8,
+    "current_attack_frames": 9,
+    "idle_frame_ticks": 48.0,
+    "walk_cycle_distance": 256.0,
+    "body_anchor": [
+      24,
+      47
+    ],
+    "attack_anchor": [
+      40,
+      58
+    ],
+    "native_actor_origin": "P world combat center preserved; source foot y47 displayed at actor.y+23*visual_scale",
+    "godot_idle_offset": [
+      -24,
+      -24
+    ],
+    "godot_attack_offset": [
+      -40,
+      -35
+    ],
+    "base_def": 2.0,
+    "energy_def": 0.0,
+    "initial_iframes": 0.0,
+    "max_poise": 4,
+    "poise_per_hit": 1,
+    "poise_auto_regen": false,
+    "stagger_ticks": 6.0,
+    "stun_ticks": 240.0,
+    "stun_end_iframes": 60.0,
+    "stun_end_poise": 4,
+    "defence_denominator": 2500.0,
+    "damage_reduction_cap": 0.75,
+    "hit_cap_fraction": 0.33,
+    "minimum_damage_fraction": 0.005,
+    "ordinary_hit_iframes": 0.0,
+    "knockback_min": 1.0,
+    "knockback_max": 12.0,
+    "knockback_hp_multiplier": 30.0,
+    "knockback_movement_per_tick": 0.5,
+    "knockback_decay_per_tick": 0.65,
+    "damage_scope": "raw mkP non-DOT physical/magic defense, cap/min, iframe gate, 4-slot poise/stagger/stun, charging stagger immunity and stun interruption; shield/parry/gear/evasion/save not ported",
+    "canonical_doc_conflict": "hurtP sets 60 iframe at hit-cap but subsequently overwrites iframe=0 for non-DOT, despite old balance doc claim; literal code order is ported"
+  },
+  "kiSlash": {
+    "name": "기검참",
+    "level": 1,
+    "cost_base": 10.0,
+    "cost_per_level": 2.0,
+    "damage_coefficient": 7.0,
+    "skill_base": 12.0,
+    "skill_growth": 10.08,
+    "skill_growth_factor": 0.5,
+    "charge_step_ticks": 40.0,
+    "charge_max_ticks": 120.0,
+    "charge_max_tier": 3,
+    "charge_damage_base": 2.0,
+    "charge_scale_per_tier": 0.4,
+    "combo_ticks": 120.0,
+    "cooldown_ticks": [
+      12.0,
+      12.0,
+      20.0
+    ],
+    "swing_ticks": 5.0,
+    "melee_contact_tick": 2.0,
+    "recovery_numerator": 16.0,
+    "weapon_speed_fallback": 0.3,
+    "dex_multiplier": 1.0,
+    "attack_speed_affix_sum": 0.0,
+    "melee_radius": 50.0,
+    "melee_arc_half_width": 0.95,
+    "melee_flat_bonus": 15.0,
+    "melee_coefficient": 6.0,
+    "stamina_attack_bonus": 1.5,
+    "projectile_speed_per_tick": 14.0,
+    "base_distances": [
+      250.0,
+      300.0,
+      350.0
+    ],
+    "distance_per_level": 15.0,
+    "collision_radii": [
+      55.0,
+      55.0,
+      120.0
+    ],
+    "visual_widths": [
+      192.0,
+      192.0,
+      252.0
+    ],
+    "visual_frames": 9,
+    "hit_frames": 4,
+    "hit_frame_ticks": 3.0,
+    "hit_widths": [
+      140.0,
+      140.0,
+      184.0
+    ],
+    "hit_stop_ticks": [
+      3.0,
+      3.0,
+      6.0
+    ],
+    "third_hit_shake": 8.0,
+    "maximum_projectiles": 16,
+    "piercing": "unlimited, once per enemy instance per projectile",
+    "wall_collision": "new center point in solid world; per-target line of sight",
+    "lifetime_order": "decrement life, expire if <=0, then move and hit",
+    "full_charge_auto_release": false,
+    "q_scope": "cancel attack/charge only; shield/parry not implemented",
+    "accessibility_input": "Space toggles third-hit hold/release after step2; LMB behavior remains native held input",
+    "plain_lv1_crescent_damage": 470,
+    "plain_lv1_full_charge_damage": 3763,
+    "plain_lv1_melee_packet": 111,
+    "plain_lv1_lifetime_ticks": [
+      17,
+      21,
+      25
+    ],
+    "plain_lv1_effective_travel_pixels": [
+      224,
+      280,
+      336
+    ],
+    "prototype_damage_boundary": "native raw attack packets and NORMAL raw-profile kiSlash poise1x; ordinary weapon poise0; raw mkP player defense/poise consumer; gear/shield/parry, enemy elemental/critical/defense layers and boss poise resistance remain outside this NORMAL-only slice",
+    "sprite_attack_speed": 0.85,
+    "enemy_poise_hit": true,
+    "enemy_poise_multiplier": 1.0,
+    "enemy_poise_amount_raw_profile": [
+      470,
+      940,
+      1881,
+      3763
+    ],
+    "melee_poise_hit": false,
+    "melee_poise_amount": 0,
+    "poise_source": "game.html:20296 crescent poiseHit=true;38246 weapon hitArc poiseHit=false even psM1.5;42853 psM default1;43049..43052 guard then floor(dmg*psM);20431 _poiseHit NORMAL180ticks"
+  }
+}

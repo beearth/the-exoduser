@@ -14,7 +14,7 @@ window._tutorialBadges={
   init(){
     if(this.ready)return;this.ready=true;
     const slot=new URLSearchParams(location.search).get('slot')||'main';this.storageKey='exoduser:tutorial-badges:v1:'+slot;
-    this.earned={};try{const data=JSON.parse(localStorage.getItem(this.storageKey)||'{}');for(const def of this.definitions)if(typeof data?.[def.id]==='string')this.earned[def.id]=data[def.id];}catch{}
+    this.earned={};try{const data=JSON.parse((window._FDGDruidQaStorage?.active?window._FDGDruidQaStorage.getItem(this.storageKey):localStorage.getItem(this.storageKey))||'{}');for(const def of this.definitions)if(typeof data?.[def.id]==='string')this.earned[def.id]=data[def.id];}catch{}
     this.button=this.node('button','배지 0/3');this.button.id='tutorialBadgeButton';this.button.type='button';this.button.hidden=true;this.button.setAttribute('aria-expanded','false');this.button.setAttribute('aria-controls','tutorialBadgeCollection');
     this.panel=this.node('section');this.panel.id='tutorialBadgeCollection';this.panel.hidden=true;this.panel.setAttribute('aria-label','튜토리얼 배지 모음');
     const head=this.node('header');this.heading=this.node('span');head.append(this.heading);
@@ -54,7 +54,7 @@ window._tutorialBadges={
     const def=this.definitions.find(d=>d.id===id);
     if(!def||!Array.isArray(checks)||checks.length!==def.count||!checks.every(v=>v===true))return false;
     this.init();if(this.earned[id])return false;
-    this.earned[id]=new Date().toISOString();try{localStorage.setItem(this.storageKey,JSON.stringify(this.earned));}catch{}
+    this.earned[id]=new Date().toISOString();try{(window._FDGDruidQaStorage?.active?window._FDGDruidQaStorage.setItem(this.storageKey,JSON.stringify(this.earned)):localStorage.setItem(this.storageKey,JSON.stringify(this.earned)));}catch{}
     this.toastId=id;this.render();this.toast.hidden=false;
     clearTimeout(this.toastTimer);this.toastTimer=setTimeout(()=>{this.toast.hidden=true;},3500);return true;
   }

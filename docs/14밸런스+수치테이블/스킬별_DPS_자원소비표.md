@@ -1,3 +1,11 @@
+## Native 공격속도·회복 — 2026-10-15 현행
+
+| 항목 | 현재 계약 |
+|---|---|
+| 실제 소비 | 일반/Ki wSwing5 유지, 후딜=ToInt32(16/((wp.spd 또는 .3)×현재 statDex×(1+meleeAtkSpd+glovesAtkSpd))). E는 별도 ToInt32(28/(1+pParry×.1)). 원 counter0과 render OR1 구분. Warrior .85/Silver1.5는 표시 전용. |
+| 검수·한계 | Main/Player2 scripts, 새runtime22/actualMain GPU3/error0. 원식12 configuration·실제frame485 sample 일치. 이전 통과군/원 asset·PNG 재검0. 장비 UI/save·전체 이식/시각 완료 주장0. |
+| SSOT / 후보 | FDG_GODOT_NATIVE_FIRST_20261013.md native-attack-tempo-20261015 절 참조. 새 native-review-attack-tempo-20261015 후보는camera0b8/wave693도 포함, 초기정지/명시선택/수동재개. latest_full_game=false/기존RETOUCH. 아래 속도미채택 문장은 이전 이력. |
+
 # 스킬별 DPS + 자원 소비 총정리
 
 > **2026-09-10 현행 교정:** 악의구는 `_skMul=13.2+(Lv−1)×10.56×0.5`; Lv1=13.2, Lv10=60.72, Lv20=113.52; magicRef×statInt×pMagicMul×_fuseMul, 직격100%+폭발60%. Space 지옥강타는 `floor(floor(meleeRef×statStr×(20+(Lv−1)×19×0.5)×_rageMul)×pAtkMul)+_atkBon`; pAtkMul은 _gSlamHit에서1회. 분노100 기본20배. 쿨다운 `floor(max(60,1800−(slv−1)×12)×(1+_cdRed()))`f (Lv1=30초), 합체 giantSlam2 특정 경로는420f 기반. 과거 비교/순위는 당시 이력이며 [최신 기준](EARLY_COMBAT_5_7_1_20260910.md)을 우선한다.

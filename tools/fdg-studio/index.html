@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>FDG Engine Studio · EXODUSER</title>
+  <link rel="stylesheet" href="studio.css?v=0.19.0">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="brandmark">F</span><div><strong>FDG ENGINE</strong><span class="subbrand">EXODUSER · DEVELOPMENT STUDIO</span></div><span class="version">v0.20</span><span class="maturity">개발 중</span></div>
+    <div class="project-label"><span class="live-dot"></span><span id="project-name">프로젝트 준비 중</span></div>
+    <div class="actions">
+      <button id="undo" title="Ctrl/Cmd+Z" disabled>↶ 취소</button><button id="redo" title="Ctrl/Cmd+Shift+Z" disabled>↷ 다시</button>
+      <button id="import">불러오기</button><button id="project-copy">작업 사본</button><button id="save">저장</button><button id="export">JSON 내보내기</button>
+      <button id="play" class="primary" disabled>▶ 테스트 실행</button>
+    </div>
+  </header>
+  <div class="layout">
+    <button id="dock-backdrop" class="dock-backdrop" type="button" aria-label="열린 패널 닫기" hidden></button>
+    <aside id="library-panel" class="library panel" aria-label="프로젝트 리소스">
+      <div class="panel-heading"><div class="heading-copy"><span>프로젝트</span><span class="muted">리소스</span></div><button class="dock-close" type="button" data-close-dock="library" aria-label="리소스 패널 닫기">×</button></div>
+      <input id="search" type="search" placeholder="리소스 찾기" aria-label="리소스 검색">
+      <nav id="resource-tree" aria-label="씬과 리소스"></nav>
+      <button id="duplicate" class="wide">+ 선택 리소스 복제</button><button id="sync-character-drafts" class="wide">+ 신규 캐릭터 3종 연결</button>
+      <div class="library-footer"><p>제작 도구</p><a href="map-pack.html?v=map-pack-first-20261012">맵팩 배치 · 인게임 제작 ↗</a><a href="index.html?authoring=perspective-r1&amp;v=0.20" target="_blank" rel="noopener">원근 카메라 제작 ↗</a><a href="rig.html">3D 뼈대 · 스킨 제작 ↗</a><p>기존 게임 도구</p><a href="/editor.html" target="_blank" rel="noopener">레이아웃 에디터 ↗</a><a href="/tile-texture-editor.html" target="_blank" rel="noopener">텍스처 에디터 ↗</a><a href="/map-test.html" target="_blank" rel="noopener">본편 맵 QA ↗</a><a href="/game.html" target="_blank" rel="noopener">EXODUSER 실행 ↗</a></div>
+    </aside>
+    <main class="workspace">
+      <div class="workspace-top">
+        <div class="workspace-actions"><button id="toggle-library" type="button" aria-controls="library-panel" aria-expanded="false">☰ 리소스</button><span id="mode-label" class="mode-label">AUTHORING</span><button id="toggle-inspector" type="button" aria-controls="inspector-panel" aria-expanded="false">▤ 속성</button></div>
+        <div class="tabs" role="tablist" aria-label="편집 모드"><button data-tab="map" role="tab" aria-selected="true">◈ 맵</button><button data-tab="characters" role="tab" aria-selected="false">♟ 캐릭터</button><button data-tab="skills" role="tab" aria-selected="false">ϟ 스킬</button><button data-tab="vfx" role="tab" aria-selected="false">✦ VFX</button><button data-tab="rigScene" role="tab" aria-selected="false">◇ 3D 장면</button><button data-tab="terrainScene" role="tab" aria-selected="false">▱ 입체 지형</button><button data-tab="world" role="tab" aria-selected="false">⇄ 지역 전환</button><button data-tab="sourceScene" role="tab" aria-selected="false">▧ 원본 장면</button></div>
+      </div>
+      <div id="production-strip" class="production-strip">
+        <div><span class="muted">실행 조합</span><span id="production-combination">리소스 준비 중</span></div>
+        <button id="preview-combination-save" type="button">현재 조합 저장</button>
+        <button id="production-open" type="button">제작 검수</button><span id="production-summary" class="badge">검수 준비 중</span>
+      </div>
+      <div class="toolbar" id="map-view-toolbar" hidden>
+        <button id="map-view-scene" type="button" aria-pressed="true">장면 보기</button><button id="map-view-edit" type="button" aria-pressed="false">충돌 편집</button>
+        <span id="map-input-state" role="status" class="muted">정지 · 10px 한 걸음</span>
+        <div id="map-move-controls" role="group" aria-label="맵 장면 이동">
+          <button id="map-move-west" type="button" aria-label="맵 서쪽 이동" aria-pressed="false">←</button><button id="map-move-north" type="button" aria-label="맵 북쪽 이동" aria-pressed="false">↑</button><button id="map-move-south" type="button" aria-label="맵 남쪽 이동" aria-pressed="false">↓</button><button id="map-move-east" type="button" aria-label="맵 동쪽 이동" aria-pressed="false">→</button><button id="map-input-stop" type="button">이동 해제</button>
+        </div>
+        <span id="map-player-position" class="muted">발 위치 —</span>
+      </div>
+      <div class="toolbar" id="map-toolbar">
+        <label>도구 <select id="brush"><option value="1">바닥</option><option value="0">벽</option><option value="start">시작점</option><option value="exit">출구</option><option value="object">장식 배치</option><option value="erase-object">장식 삭제</option></select></label>
+        <label>브러시 <select id="brush-size"><option value="1">1타일</option><option value="3" selected>3타일</option><option value="5">5타일</option><option value="11">11타일</option></select></label>
+        <label class="toggle"><input id="grid" type="checkbox"> 격자</label><label class="toggle"><input id="route" type="checkbox" checked> 이동 경로</label>
+        <button id="validate">경로 검증</button><button id="legacy-export">FIXED_MAP 초안</button>
+      </div>
+      <div class="toolbar" id="world-camera-toolbar" aria-label="월드 카메라">
+        <label>시점 <select id="world-camera-projection"><option value="legacy">기존 평면</option><option value="perspective">원근</option><option value="orthographic">직교 입체</option></select></label>
+        <label>거리 <input id="world-camera-distance" type="number" min="600" max="6000" step="100" value="1400"></label>
+        <label>내려보기 ° <input id="world-camera-pitch" type="number" min="20.05352282957881" max="63.02535746439056" step="any" value="48.70141258611997"></label>
+        <label>회전 ° <input id="world-camera-yaw" type="number" min="-180" max="180" step="5" value="0"></label>
+        <label>배율 <input id="world-camera-zoom" type="number" min=".25" max="2" step=".05" value="1"></label>
+        <span id="world-camera-state" class="muted" role="status">시점 선택으로 원근 카메라 연결</span>
+      </div>
+      <div class="toolbar" id="animation-toolbar" hidden>
+        <label>방향 <select id="direction"><option value="south">남 S</option><option value="south-east">남동 SE</option><option value="east">동 E</option><option value="north-east">북동 NE</option><option value="north">북 N</option><option value="north-west">북서 NW</option><option value="west">서 W</option><option value="south-west">남서 SW</option></select></label>
+        <label>애니메이션 <select id="animation"><option value="idle">대기</option><option value="walk">이동</option><option value="attack">공격</option></select></label>
+        <label>프레임 <input id="frame" type="range" min="0" max="1" value="0"><span id="frame-value">0</span></label>
+        <button id="animate">⏸ 애니메이션</button>
+        <button id="apply-24fps">24FPS 적용</button>
+        <label>보기 <select id="character-view"><option value="motion">모션</option><option value="reference">원화</option><option value="compare">원화 비교</option></select></label>
+        <label>확대 <select id="character-zoom"><option value="1">창에 맞춤</option><option value="2">맞춤 2×</option><option value="4">맞춤 4×</option></select></label>
+      </div>
+      <div class="toolbar" id="rig-scene-toolbar" hidden>
+        <button id="rig-scene-add">+ 시험 리그</button><button id="rig-scene-saved">+ 저장 리그</button><button id="rig-scene-delete">노드 삭제</button><button id="rig-scene-focus">노드 보기</button>
+        <label>동작 <select id="rig-scene-clip"></select></label><label>재질 <select id="rig-scene-material"></select></label><label>시간 <input id="rig-scene-time" type="range" min="0" max="2" step="0.001" value="0"></label>
+        <span id="rig-scene-summary" class="muted">같은 장면 clock/camera · CPU LBS</span>
+      </div>
+      <div class="toolbar" id="rig-sequence-toolbar" hidden>
+        <label>시퀀스 <select id="rig-sequence-preset"><option value="hell-aberrant-tail-swipe-impact-r4">지옥기형 · 대기 → 꼬리치기 → 대기</option><option value="dark-druid-body-r1">다크드루이드 NORMAL · 본체 제작 · FX 없음</option><option value="dark-druid-boss-slam-r3">다크드루이드 · 전신 내려찍기 제작</option><option value="dark-druid-slam-contact-r5">다크드루이드 · 내려찍기 접촉 동작</option></select></label>
+        <button id="rig-sequence-load" type="button">새 데모 장면</button><button id="rig-sequence-pause" type="button">일시정지</button><button id="rig-sequence-stop" type="button">동작 정지</button><button id="rig-sequence-replay" type="button">처음부터 재생</button>
+        <span id="rig-sequence-status" class="muted" role="status">시퀀스 데모를 선택해 연결하세요.</span>
+        <span id="rig-sequence-contract" class="muted">본체 ENGINE_AUTHORING · FX ENGINE_FIXTURE · 데모 이벤트0.900초 · native 시간 환산 없음</span>
+      </div>
+      <div id="terrain-scene-toolbar" class="toolbar" hidden>
+        <label>템플릿 <select id="terrain-template"><option value="stairs-ramp">계단·경사 시험</option></select></label>
+        <button id="terrain-create">새 높이 시험</button>
+        <label>오브젝트 <select id="terrain-node"></select></label>
+        <button id="terrain-reset">시작 위치</button>
+        <button id="terrain-walk-west" aria-label="서쪽 한걸음">←</button><button id="terrain-walk-north" aria-label="북쪽 한걸음">↑</button><button id="terrain-walk-south" aria-label="남쪽 한걸음">↓</button><button id="terrain-walk-east" aria-label="동쪽 한걸음">→</button>
+        <span id="terrain-grounding" class="muted">템플릿을 연결하세요</span>
+      </div>
+      <div id="source-execution-toolbar" class="toolbar" hidden>
+        <button id="source-execution-open">장면 입력</button>
+        <button id="source-walk-west" aria-label="원본 장면 서쪽 한걸음">←</button><button id="source-walk-north" aria-label="원본 장면 북쪽 한걸음">↑</button><button id="source-walk-south" aria-label="원본 장면 남쪽 한걸음">↓</button><button id="source-walk-east" aria-label="원본 장면 동쪽 한걸음">→</button>
+        <label>엔진 높이 배율 <input id="source-height-scale" type="number" min="0.001" max="1024" step="0.1"></label><label>오프셋 px <input id="source-height-offset" type="number" min="0" max="1024" step="0.1"></label><button id="source-height-apply">환산 적용</button>
+        <span id="source-execution-state" class="muted">원본 실행 자료를 연결하세요</span>
+      </div>
+      <div id="source-play-controls" class="toolbar" role="group" aria-label="원본 장면 플레이 이동" hidden>
+        <span class="muted">연속 이동 · 다시 누르면 해제</span>
+        <button id="source-play-west" aria-label="연속 서쪽 이동" aria-pressed="false">←</button><button id="source-play-north" aria-label="연속 북쪽 이동" aria-pressed="false">↑</button><button id="source-play-south" aria-label="연속 남쪽 이동" aria-pressed="false">↓</button><button id="source-play-east" aria-label="연속 동쪽 이동" aria-pressed="false">→</button>
+        <button id="source-input-stop">이동 해제</button><span id="source-input-state" class="muted" role="status">플레이 중 방향을 선택하세요</span>
+        <button id="source-delta-import">충돌 추가 자료</button><input id="source-delta-file" type="file" accept=".json,application/json" hidden>
+      </div>
+      <div id="world-toolbar" class="toolbar" hidden>
+        <!-- World controls retain their existing owner. -->
+        <button id="world-create">두 지역 시험</button><button id="source-scene-open">1-1 소스 검토</button>
+        <label>속성 대상 <select id="world-area"></select></label>
+        <label class="toggle"><input id="world-gate" type="checkbox"><span id="world-gate-label">진행 관문</span></label>
+        <button id="world-walk-west" aria-label="지역 서쪽 한걸음">←</button><button id="world-walk-north" aria-label="지역 북쪽 한걸음">↑</button><button id="world-walk-south" aria-label="지역 남쪽 한걸음">↓</button><button id="world-walk-east" aria-label="지역 동쪽 한걸음">→</button>
+        <button id="world-map-toggle" aria-pressed="false">지역 지도</button><button id="world-graph-toggle" aria-pressed="false">월드 연결</button><button id="world-json-review">JSON 확인</button>
+        <span id="world-state" class="muted">두 지역 시험을 생성하세요</span>
+      </div>
+      <div id="world-waypoint-toolbar" class="toolbar" hidden>
+        <button id="world-waypoint-add">시험 웨이포인트 연결</button><label>웨이포인트 <select id="world-waypoint"></select></label>
+        <button id="world-waypoint-activate">범위 안에서 활성화</button><button id="world-waypoint-travel">활성 목적지로 이동</button>
+        <span id="world-waypoint-state" class="muted">실제 이동으로 발견하세요</span>
+      </div>
+      <div class="viewport-shell">
+        <div class="viewport-caption"><span id="viewport-title">CH1 · COLLISION OVERVIEW</span><span id="cursor-position">200 × 200 · 40px</span></div>
+        <div id="source-execution-empty" hidden><strong>CH1-1 원본 이미지 제작 미리보기</strong><p>「장면 입력」에서 승인 이미지와 명시 배치 설정을 연결합니다.</p><p>제작 미리보기는 원 polygon 이동과 설계 시작점을 사용합니다. 실제 높이·오브젝트 충돌·절벽 예외는 SOURCE_PENDING입니다.</p></div>
+        <canvas id="map-canvas" width="800" height="800" aria-label="맵 편집 캔버스"></canvas>
+        <canvas id="character-canvas" width="960" height="600" aria-label="캐릭터 애니메이션 미리보기" hidden></canvas>
+        <canvas id="runtime-canvas" width="960" height="600" tabindex="0" aria-label="게임 엔진 테스트 캔버스" hidden></canvas>
+        <div id="world-map-host" hidden>
+          <div id="world-mini"><span>현재 지역 · 미니맵</span><canvas id="world-minimap" aria-label="현재 지역 미니맵"></canvas></div>
+          <section id="world-map-overlay" hidden aria-label="지역 지도와 월드 연결">
+            <div class="world-map-heading"><strong id="world-map-title">현재 지역 지도</strong><button id="world-map-close" aria-label="지도 닫기">×</button></div>
+            <div class="world-map-stage"><canvas id="world-map-canvas" aria-label="지역 지도 또는 연결 그래프"></canvas><div id="world-graph-nodes" hidden></div></div>
+            <span id="world-map-position"></span><span class="world-map-legend">● 플레이어 · + 카메라 · □ 입구/웨이포인트 · 청록 통과 / 금색 관문 · 북쪽은 위</span>
+          </section>
+        </div>
+        <div id="loading" class="loading">기존 에셋과 프로젝트를 불러오는 중…</div>
+        <div id="world-empty" class="loading" hidden>두 지역 시험을 생성하세요</div>
+      </div>
+      <div id="quality-hud" class="quality-hud" hidden><span id="quality-badge" class="badge">24장 · 24FPS</span><span id="quality-summary">원본 프레임 검수 준비 중</span></div>
+      <div id="world-hud" class="quality-hud" hidden><span id="world-scope" class="badge">독립 지역 프로젝트</span><span id="world-events">연결 대기</span></div>
+      <div class="preview-controls"><span id="context-help">드래그: 타일 편집 · 시작 6시 / 출구 12시 · 초안은 본편과 분리 저장</span><div><span id="preview-time" class="preview-time">0.000초</span><button id="focus-player">플레이어 보기</button><button id="cast">스킬 테스트</button><button id="emit">VFX 재생</button><button id="step">1프레임</button></div></div>
+      <div id="vfx-playback-hud" class="vfx-playback-hud" hidden><span class="badge">실제 시트 재생</span><span id="vfx-playback-state">활성 시트 없음</span></div>
+      <details id="optimization-panel" class="optimization-panel panel">
+        <summary>최적화 · 우리 게임 제작 예산</summary>
+        <div class="optimization-body">
+          <div class="optimization-settings">
+            <label>목표 <select id="optimization-fps"><option value="30">30FPS</option><option value="60" selected>60FPS</option><option value="120">120FPS</option></select></label>
+            <label>측정 <select id="optimization-scenario"><option value="live">일반 실행</option><option value="burst">동시 VFX</option></select></label>
+            <label>동시 방출 <select id="optimization-bursts"><option value="1">1회</option><option value="4" selected>4회</option><option value="8">8회</option><option value="16">16회</option></select></label>
+            <label>장식 입자 예산 <select id="optimization-particles"><option value="80">PC 참고 80개</option><option value="35">모바일 참고 35개</option></select></label>
+            <label>이미지 제작 예산 <select id="optimization-memory"><option value="64">64 MiB</option><option value="128" selected>128 MiB</option><option value="256">256 MiB</option></select></label>
+            <label>시트 한 변 목표 <select id="optimization-texture"><option value="2048">2048px</option><option value="4096" selected>4096px</option><option value="8192">8192px</option></select></label>
+          </div>
+          <div class="optimization-actions"><button id="optimization-start" class="primary" disabled>6초 측정</button><button id="optimization-stop" disabled>측정 정지</button><button id="optimization-export">보고서 JSON</button><span id="optimization-profile-state">측정 대기</span></div>
+          <div class="optimization-results">
+            <div><strong>게임용 제작 리소스 · RGBA 추정</strong><span id="optimization-memory-result">준비 중</span></div>
+            <div><strong>신규 캐릭터 참고 자료 · RGBA 추정</strong><span id="optimization-reference-result">준비 중</span></div>
+            <div><strong>실제 프레임 간격</strong><span id="optimization-gap-result">P50 / P95 / P99 —</span></div>
+            <div><strong>CPU 측정</strong><span id="optimization-cpu-result">CPU P95 — · 평균 FPS —</span></div>
+          </div>
+          <p id="optimization-load-result">입자 / Canvas 호출 / 누락 틱 —</p><p id="optimization-budget-result">목표 60FPS = 16.67ms</p><p id="optimization-comparison">다시 측정하면 이전 결과와 비교합니다.</p>
+          <div id="optimization-recommendations" class="optimization-recommendations"></div>
+          <p class="optimization-note">추천 적용은 장식 입자 밀도를 줄입니다. 캐릭터24장·24FPS와 효과 시트·스킬 수치는 유지합니다. 동시 방출은 테스트 조건이며, 본편 공격 제한으로 적용되지 않습니다.</p>
+          <div class="optimization-asset-scroll"><table><thead><tr><th>사용 범위</th><th>파일</th><th>치수</th><th>근거</th><th>RGBA 추정</th></tr></thead><tbody id="optimization-assets"></tbody></table></div>
+          <div id="optimization-issues" class="optimization-issues"></div>
+          <p class="optimization-note">이미지 합계는 중복 경로를 제외한 폭×높이×4 추정입니다. 실제 VRAM과 GPU 시간은 별도 측정이 필요합니다. 본편 일반 입자 렌더 예산80/35개는 참고선이며 스킬 예외가 있습니다. 이 미리보기의 풀은1024개입니다.</p>
+        </div>
+      </details>
+      <details id="diagnostics-panel" class="diagnostics panel" aria-label="검증 및 성능"><summary class="diagnostic-tabs"><strong>검증 · 프로파일러</strong><span id="validation-badge" class="badge">준비 중</span><span id="stats" class="muted">60Hz simulation · Canvas preview</span></summary><div class="diagnostic-body"><div id="diagnostic-list" class="diagnostic-list" aria-live="polite"></div></div></details>
+    </main>
+    <aside id="inspector-panel" class="inspector panel" aria-label="선택 리소스 속성"><div class="panel-heading"><div class="heading-copy"><span>인스펙터</span><span id="resource-type" class="muted">SCENE</span></div><button class="dock-close" type="button" data-close-dock="inspector" aria-label="속성 패널 닫기">×</button></div><div class="inspector-title"><h1 id="selection-name">맵</h1><span id="selection-id" class="muted">map</span></div><form id="inspector-fields"></form><div class="inspector-note"><span>제작 프로젝트</span><p>저장한 초안은 스튜디오에서 계속 편집할 수 있습니다.</p></div></aside>
+  </div>
+  <footer class="statusbar"><span id="status" role="status">FDG Studio 시작 중</span><span id="save-state">로컬 저장 · FDG 전용</span></footer>
+  <dialog id="world-json-dialog" aria-label="WorldProject JSON 내보내기와 재입력">
+    <div class="world-map-heading"><strong>WorldProject · JSON 내보내기 / 재입력</strong><button id="world-json-close" aria-label="JSON 닫기">×</button></div>
+    <p id="world-json-info"></p><textarea id="world-json-text" spellcheck="false" aria-label="WorldProject JSON 바이트 검토"></textarea>
+    <div class="world-json-actions"><button id="world-json-download">이 JSON 파일 저장</button><button id="world-json-apply">이 JSON 불러오기</button></div>
+    <p id="world-json-result">내보낸 UTF-8 내용을 검토하고 같은 내용 또는 수정한 JSON을 불러올 수 있습니다.</p>
+  </dialog>
+  <input id="file-input" type="file" accept=".json,application/json" hidden>
+  <dialog id="production-dialog" aria-labelledby="production-title">
+    <div class="production-heading"><div><span class="muted">EXODUSER · 제작 검수</span><h2 id="production-title">현재 프로젝트에서 확인할 것</h2><p id="production-project"></p></div><button id="production-close" type="button" aria-label="제작 검수 닫기">×</button></div>
+    <div id="production-checks"></div>
+    <div class="production-dialog-footer"><p>구조 통과와 최종 품질 승인을 구분합니다. 실제 확인하지 않은 항목은 미확인으로 남깁니다.</p><button id="production-export" type="button">검수 JSON 내보내기</button></div>
+  </dialog>
+  <dialog id="source-scene-dialog" aria-label="CH1-1 원본 장면과 리소스 검토">
+    <div class="world-map-heading"><strong>CH1-1 · 원본 장면 / 리소스 입력</strong><button id="source-scene-close" aria-label="원본 검토 닫기">×</button></div>
+    <div class="source-scene-inputs">
+      <label>source-scene JSON <input id="source-scene-file" type="file" accept=".json,application/json"><textarea id="source-scene-json" aria-label="CH1-1 source-scene JSON" spellcheck="false"></textarea></label>
+      <label>resource manifest JSON <input id="source-resources-file" type="file" accept=".json,application/json"><textarea id="source-resources-json" aria-label="CH1-1 resource manifest JSON" spellcheck="false"></textarea></label>
+    </div>
+    <details class="source-authoring"><summary>원본 추가 리비전 · 선택 입력</summary><div class="source-scene-inputs">
+      <label>scene native revision JSON<textarea id="source-scene-revision-json" aria-label="CH1-1 scene native revision JSON" spellcheck="false"></textarea></label>
+      <label>resources native revision JSON<textarea id="source-resources-revision-json" aria-label="CH1-1 resources native revision JSON" spellcheck="false"></textarea></label>
+    </div><p>기본 원본을 그대로 두고 추가 자료를 함께 검토합니다.</p></details>
+    <details class="source-authoring"><summary>엔진 환산 · 리소스 연결 설정</summary><label>ENGINE_AUTHORING JSON · 원본 값과 별도 입력<textarea id="source-authoring-json" aria-label="CH1-1 엔진 제작 설정 JSON" spellcheck="false" placeholder="previewLayout · startAuthority · imageLayers · resourceBindings · camera · heightMapping · settings · executionContract"></textarea></label></details>
+    <div class="source-scene-actions"><button id="source-scene-review">원본 입력 검토</button><button id="source-scene-install" disabled>실제 장면 연결</button><span id="source-scene-status" role="status">원본 두 JSON을 입력하세요. 각 UTF-8 8MiB 이하.</span></div>
+    <div class="source-scene-results"><figure><canvas id="source-scene-nav" width="320" height="320" aria-label="CH1-1 원본 polygon nav 검토"></canvas><figcaption id="source-scene-nav-label">원본 nav 검토 · 실행 캔버스와 별도</figcaption></figure><div id="source-scene-output"></div></div>
+  </dialog>
+  <script type="module" src="workspace-layout.js"></script>
+  <script type="module">
+  import('./studio.js?v=0.20.2');
+  </script>
+</body>
+</html>

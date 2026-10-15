@@ -1,0 +1,1116 @@
+{
+  "schema": "exoduser.godot.etype7-physical-flesh-crawler.pending.v1",
+  "status": "PENDING_REQUIRED_CONSUMERS_NOT_ADMITTED",
+  "admitted": false,
+  "runtime": null,
+  "target": {
+    "id": "ch1_initial_004",
+    "order": 3,
+    "etype": 7,
+    "element": "physical",
+    "element_id": 0,
+    "stage": 0,
+    "level": 1,
+    "difficulty": "NORMAL",
+    "spawn_position": [
+      4075,
+      340
+    ],
+    "elite": 1,
+    "mods": [
+      "M30"
+    ],
+    "aura": null,
+    "skin": "flesh_crawler"
+  },
+  "native_source_contract": {
+    "authority": {
+      "canonical_R": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "game_file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+      "source_revision_parent_authority": "9a4534b42f74093095ebc3364a25dd104e93b379",
+      "revision_not_requeried": true,
+      "frozen_records_path": "/Users/fordeargamers/the-exoduser/godot/data/encounters.json",
+      "frozen_records_line": 1,
+      "immutable_native_final_field_count": 337,
+      "frozen_support": {
+        "native_type_known": true,
+        "runtime_supported": false,
+        "ai_profile": "not-ported",
+        "ai_family": "not-ported",
+        "reason": "Preserved source record; type-specific AI, skin, element, elite/modifier support must be admitted explicitly",
+        "full_native_enemy_system": false
+      },
+      "frozen_runtime_is_null": true
+    },
+    "record": {
+      "id": "ch1_initial_004",
+      "order": 3,
+      "spawn_group": "gate-escort",
+      "name": "native etype 7",
+      "stage": 0,
+      "level": 1,
+      "difficulty": "NORMAL",
+      "etype": 7,
+      "element": "physical",
+      "element_id": 0,
+      "spawn_position": [
+        4075,
+        340
+      ],
+      "requested_spawn_position": [
+        4075,
+        340
+      ],
+      "hp": 4377,
+      "attack": 40,
+      "radius": 22.73476334709674,
+      "speed_pixels_per_tick": 0.39137590795755384,
+      "native_tick_rate": 60,
+      "poise": 1751,
+      "max_poise": 1751,
+      "poise_regen_ticks": 200,
+      "poise_regen_fraction": 0.15,
+      "initial_idle_ticks": 38.56643340084702,
+      "initial_projectile_ticks": 292.3163157328963,
+      "projectile_cooldown_ticks": 192,
+      "initial_facing": 0.547886661861489,
+      "elite": 1,
+      "mods": [
+        "M30"
+      ],
+      "aura": null,
+      "initial_spawn_fade_ticks": 20,
+      "windup_ticks": null,
+      "factory_random_seed": 1627645019,
+      "native_arguments": [
+        4075,
+        340,
+        0,
+        7,
+        false,
+        0,
+        -1
+      ],
+      "native_call_site": "at /Users/fordeargamers/Projects/exoduser-migration-20261001/game.html:32298:22",
+      "rng_begin": 32,
+      "rng_end": 46
+    },
+    "native_final_relevant_fields": {
+      "x": 4075,
+      "y": 340,
+      "r": 22.73476334709674,
+      "hp": 4377,
+      "mhp": 4377,
+      "atk": 40,
+      "baseAtk": 40,
+      "speed": 0.39137590795755384,
+      "baseSpd": 0.39137590795755384,
+      "el": 0,
+      "col": "#aa44ee",
+      "alive": true,
+      "stunned": 0,
+      "kb": {
+        "x": 0,
+        "y": 0
+      },
+      "poise": 1751,
+      "maxPoise": 1751,
+      "poiseR": 0,
+      "ib": false,
+      "etype": 7,
+      "room": -1,
+      "lv": 1,
+      "s": "idle",
+      "st2": 38.56643340084702,
+      "facing": 0.547886661861489,
+      "elite": 1,
+      "mods": [
+        "M30"
+      ],
+      "aura": null,
+      "modT": {
+        "regen": 0,
+        "summon": 0,
+        "tp": 0,
+        "chaos": 0,
+        "vortex": 0,
+        "lightning": 0,
+        "twarp": 0,
+        "cloned": false,
+        "revived": false,
+        "split": false,
+        "sentry": 0,
+        "sentryAng": 0,
+        "sentryOn": false,
+        "illusioned": false,
+        "stealthT": 0,
+        "eliteBusy": 0,
+        "eliteCharge": 0,
+        "eliteRing": 0,
+        "eliteBolt": 0,
+        "eliteMortar": 0
+      },
+      "projCd": 192,
+      "projT": 292.3163157328963,
+      "chargeT": 0,
+      "chargeCd": 9999,
+      "eShield": 1751,
+      "eShieldMax": 1751,
+      "eShieldRegenT": 0,
+      "eRes": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "summonCd": 250.14942525886,
+      "summonT": 157.41148072760552,
+      "teleportCd": 175.49626126885414,
+      "teleportT": 111.58698863349855,
+      "_tpWarnT": 0,
+      "_tpWarnMax": 30,
+      "_tpWarnX": 0,
+      "_tpWarnY": 0,
+      "_tpWarnCol": "#aa00ff",
+      "_firstShot": false,
+      "_iceOnHit": false,
+      "_iceFreeze": 0,
+      "_spawnT": 20,
+      "_mobCh": 1,
+      "_mob8Col": 6,
+      "_mob8Row": 0,
+      "_mob8dir": true,
+      "_mobSkinPending": false
+    },
+    "elite_and_gate_postprocessing": {
+      "constructor_elite": 1,
+      "constructor_mods": [
+        "M30"
+      ],
+      "constructor_aura": null,
+      "source_lines": [
+        31695,
+        31705,
+        31733,
+        31742,
+        31794,
+        31821
+      ],
+      "tier1": {
+        "HP_multiplier": 2,
+        "ATK_multiplier": 1.3,
+        "radius_multiplier": 1.08,
+        "projectile_cooldown_multiplier": 0.8,
+        "drop_bonus": 0.5,
+        "modifier_count": 1
+      },
+      "constructor_HP_and_shield_and_poise": 1751,
+      "ATK": 40,
+      "projCd": 192,
+      "post_stage_gate_source_line": 32299,
+      "postprocessing": "elite=1; hp=trunc(mhp*2.5); mhp=hp; no shield/poise/ATK/speed/mods rewrite",
+      "final_HP": 4377,
+      "final_shield_and_poise": 1751,
+      "RNG_unchanged_snapshot_only": true,
+      "actual_mod_is_M30_not_removed": true
+    },
+    "movement_aggro": {
+      "source_lines": [
+        31534,
+        39284,
+        39305,
+        39480,
+        39486,
+        41064,
+        41066,
+        41087,
+        41099
+      ],
+      "LOS_alert": "d<800 && (idle||recover) && hasLOS; persistent alerted flag",
+      "facing": "if d<800 && alerted, face current P before range stage",
+      "first_stage": "alerted idle/recover, range800: d>680 flow pursuit*1; d<520 && d>30 retreat*0.5 with point isW check; then recalc d",
+      "second_stage": "type7 idle: d<80 retreat facing*.6; d>200 advance facing*1.2, canMv(radius); not idle1.6",
+      "distance_not_recomputed_after_second_idle_move": true,
+      "flow_kernel_reference": [
+        32568,
+        32581
+      ],
+      "flow_collision_fallback": [
+        "both",
+        "X",
+        "Y"
+      ],
+      "separation": "idle neighbors in r*4.4; separation min actor.r+neighbor.r+4/force1.5/cooldown3",
+      "AI_guards": "hit-stun returns before AI; stun cancels charge; freeze guards pause; M30 is before far not-alerted return",
+      "AI_cadence": "native sp ticks; source distant tiering/culling also exists (R35084..35112). Full tiered scheduler parity not claimed.",
+      "natural_contact_damage": null,
+      "contact_exclusion_source_line": 41101,
+      "teleport_is_not_natural_contact_alias": true,
+      "conditional_melee_FSM_only": {
+        "native_windup_metadata": null,
+        "attack_ticks": 8,
+        "crossing_event": 5,
+        "recover_ticks": 35,
+        "source_lines": [
+          41831,
+          41839
+        ],
+        "automatic_type7_normal_shot_attack_recover": false,
+        "new_attack_ticket_implementation": false
+      }
+    },
+    "teleport": {
+      "source_lines": [
+        39522,
+        39535,
+        20458,
+        20500
+      ],
+      "idle_only": true,
+      "entry_tick_order": [
+        "teleportT-=sp; summonT-=sp",
+        "existing _tpWarnT>0 decreases; completion attempts teleport",
+        "else d<100 && teleportT<=0 proposes random target",
+        "finally summon may transition to eSummon"
+      ],
+      "initial_teleport_ticks": 111.58698863349855,
+      "cooldown_ticks": 175.49626126885414,
+      "target": "P + polar(angle U[0,2pi), distance150+U[0,50)); target remains fixed after warning starts",
+      "target_radius_px": [
+        150,
+        200
+      ],
+      "initial_canMv_radius": 22.73476334709674,
+      "successful_target_warning_ticks": 120,
+      "warning_col": "#8833cc",
+      "entry_fail_timer": 30,
+      "warning_timing": "created120 is not decremented in the same type7 if/else update; only subsequent idle updates decrement; eSummon/recover suspend it",
+      "no_warning_circle_overlay": true,
+      "completion": "teleportE rechecks canMv(radius); regardless true/false, type7 resets teleportT/counter and calls eProjAt afterward (caller does not inspect boolean)",
+      "land_damage": {
+        "radius_rule": "distance(P,target)<(r+10)*2+P.r",
+        "land_radius_without_P": 65.46952669419348,
+        "with_baseline_Pr15": 80.46952669419348,
+        "outer_guard": "!ib && P.iframes<=0 && P.s!=literal charge",
+        "raw_multiplier": 10.5,
+        "request": "trunc(40*10.5*elMul(EL.P,armor.element))",
+        "baseline_request": 420,
+        "dtype": "hurtP default phys, no opts",
+        "source_lines": [
+          20468,
+          20475
+        ],
+        "calls_eModHitP_after_hurtP": true,
+        "M30_onhit_modifier_effect": null,
+        "separate_knockback": "P.kb += radial(target→P)*120 after hurtP/eModHitP; independent of internal hurtP rejection if outer guard/radius entered; additive to ordinary hurtP KB"
+      },
+      "VFX": "source TP departure/arrival smoke +arrival impact/burst +particle/blast lights +procedural travel bolt; no warning circle reintroduced",
+      "resource_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "travel_bolt": {
+        "source_lines": [
+          8980,
+          8990,
+          57390,
+          57407
+        ],
+        "duration": 12,
+        "segments": "6+trunc(U*4); interior perpendicular offsets20+U*15, random signs",
+        "update_clock": "drawP render step sp=(slowMo>0?.35:1)*_dtSp (R55907), not separate physics tick",
+        "alpha": "1-(t/12)^2",
+        "glow_width": "8+sin(now*.5)*2",
+        "glow_alpha_multiplier": 0.35,
+        "white_core_width": "2+alpha*2",
+        "white_core_alpha_multiplier": 0.8
+      },
+      "post_teleport_shot": "see teleport_warning_projectile; no immediate born projectile on teleport completion"
+    },
+    "projectile_callers": {
+      "shared_required_kernel_reference": {
+        "source_lines": [
+          17270,
+          17380,
+          17665,
+          17679,
+          35288,
+          35431,
+          35665,
+          35714
+        ],
+        "dtype": "parry for redBean",
+        "physical_parry_class": true,
+        "E_only_physical_contract": "existing protected contract unchanged",
+        "speed_pixels_per_second": 300,
+        "speed_per_tick": 5,
+        "homing_turn_per_tick": 0.00109083,
+        "homing_requires_life_gt": 30,
+        "decay_per_tick": 0.667,
+        "camera_distance_recycle_gt": 2500,
+        "redBean_life_expiry": "terminates, excluded from nonred near2500 life1 extension",
+        "player_hit_KB": "2*heading via hurtP opts; accepted nonDOT processing path only, not positive-HP-damage gated",
+        "status": "after outer ordinary contact branch/hurtP call, redBean burn append even internal hurtP rejection; cap10/no refresh; total=request*2, duration600, interval30/denominator20, expiry-before-pulse idle19; existing burn consumer reference only, no old unit re-audit"
+      },
+      "common_charge": {
+        "source_lines": [
+          41109,
+          41118,
+          20574,
+          20607
+        ],
+        "initial_projT": 292.3163157328963,
+        "cooldown": 192,
+        "eligible_idle_tick_at_sp1": 293,
+        "start_condition": "projT<=0 && d<800 and not already charging",
+        "charge": 60,
+        "aim": "current P at fire",
+        "birth_origin": "actor center e.x/e.y",
+        "input": {
+          "ATK": 40,
+          "raw_mult": 0.8,
+          "raw_damage": 32,
+          "element": 0,
+          "size": 1.5,
+          "raw_velocity": 3,
+          "life": 240,
+          "commit": true
+        },
+        "after_spawn": {
+          "damage": 32,
+          "size": 3,
+          "radius": 5.2,
+          "redBean": true,
+          "homing": true,
+          "parry_class": "physical",
+          "dtype": "parry",
+          "life": 240
+        },
+        "damage_pipeline": "trunc(40*.8)=32; global*2 then redBean*.5 =>32",
+        "baseline_onhit_burn_total": 64,
+        "birth_does_not_change_melee_state": true
+      },
+      "teleport_warning_projectile": {
+        "source_lines": [
+          39529,
+          20503,
+          20509,
+          20517,
+          20545,
+          20571,
+          35273
+        ],
+        "call_args": "eProjAt(e,atan2(P-current landed e),3,.8,EL.P,200,#8833cc,2)",
+        "beanRoll_overrides_requested_damage_multiplier": "EL.P fixed dmgM1.2, speed*1.3/redBean/homing",
+        "birth_input_damage": 48,
+        "life_after_eProjAt_x1_5": 300,
+        "size_input": 2,
+        "after_spawn": {
+          "damage": 48,
+          "size": 4,
+          "radius": 5.2,
+          "redBean": true,
+          "homing": true,
+          "parry_class": "physical",
+          "dtype": "parry",
+          "life": 300
+        },
+        "warning": {
+          "duration": 60,
+          "origin": "pure mouth e center + facing*(r*.7); note ang||facing fallback",
+          "stored_aim": "fixed at landing call, not re-aimed at release",
+          "release_origin": "stored shot origin +current owner displacement since warning birth",
+          "creation_same_update_tick": "global _tickEnemyShotWarnings called afterward, so sp1 birth ends warning59",
+          "cancel": "world identity changed; alive warning owner died/stunned/frozen; no hit-stun cancel",
+          "independent_once_spawned": true
+        },
+        "baseline_onhit_burn_total": 96,
+        "not_damage32_alias": true
+      },
+      "physical_flight_visual": {
+        "existing_resource": "res://assets/enemy/proj_phys_mouth.png (previously packaged mouth; no bytes read/hash)",
+        "source_lines": [
+          24432,
+          24448,
+          24455,
+          54666,
+          54671,
+          54697,
+          54701
+        ],
+        "cell": [
+          768,
+          384
+        ],
+        "row": 0,
+        "frames": 8,
+        "size_both_callers": "clamp(size*1.5,1.2,4)*.7*2; both sizes3/4 saturate =>5.6",
+        "draw_height": 67.914,
+        "draw_width": 135.828,
+        "rotation": "velocity heading",
+        "frame": "positive_mod((gameFrame>>2)+trunc(x*.03),8)",
+        "alpha": 1,
+        "impact_bite": "same mouth row1 6frames/48gameFrame lifecycle; source R17413..17432, total max3",
+        "new_PNG_needed": false
+      }
+    },
+    "M30": {
+      "name": "진원 충격파",
+      "raw_mod_preserved": "M30",
+      "source_lines": [
+        31700,
+        31701,
+        39400,
+        39411,
+        5731,
+        5759,
+        53949
+      ],
+      "processing_order": "inside mods block, after source stun/hit-stun/ice guards, before not-alerted far gate; _tickEliteAttackLock before M30 test; newly inserted zone is processed by same update zone loop",
+      "eligibility": "mods contains M30 && distance<800",
+      "accumulate_ticks": 480,
+      "local_lock": {
+        "field": "modT.eliteBusy",
+        "claim_ticks": 54,
+        "claim_if": "own busy<=0",
+        "decrement": "max(0,busy-sp)",
+        "not_global_attack_ticket": true
+      },
+      "zone": {
+        "fixed_origin": "current P.x/P.y at claim",
+        "kind": "burst",
+        "radius": 125,
+        "t": 54,
+        "dur": 54,
+        "color": "#ff2438",
+        "born_end_t_at_sp1": 53,
+        "same_update_decrement": true,
+        "hit_threshold": "distance(P,z)<=125 (P.r not added)",
+        "expiry": "z.t<=0: once damage gate+VFX, remove zone"
+      },
+      "damage": {
+        "request": 26,
+        "formula": "max(1,trunc(40*.65))",
+        "dtype": "magic",
+        "element_multiplier_not_applied": true,
+        "outer_guard": "hit && P.iframes<=0 && P.s!=literal charge",
+        "manual_knockback_after_hurtP": null
+      },
+      "VFX": {
+        "pentagram_full_texture": true,
+        "procedural_warning": "source _drawEliteZoneTelegraph q/head/pulse/spin/fill+outer+progress rings/ticks/diamond; no texture-only substitute",
+        "lava_key": "lava_erupt",
+        "lava_warning_is_54_lava_animation_is_not_54": true,
+        "actual_lava_size": 312.5,
+        "actual_lava_position": "z.x,z.y-78.125",
+        "scale": 0.4069010416666667,
+        "frame_count": 9,
+        "frame_time": 5,
+        "base_alpha": 0.85,
+        "boss_lava24_not_this_caller": true,
+        "resources": [
+          4,
+          5
+        ]
+      },
+      "owner_bound_zone_AI": "zone timers/damage are in owner updateE, may pause with AI guards/tiering and end with owner updating; spawned VFX uses independent global VFX list"
+    },
+    "summon_mandatory_dependency": {
+      "source_lines": [
+        39522,
+        39543,
+        41372,
+        41391,
+        31782,
+        31830,
+        32023
+      ],
+      "initial_timer": 157.41148072760552,
+      "cooldown": 250.14942525886,
+      "idle_only_timer": true,
+      "trigger": "summonT<=0; query neighbors in200 and count every entry except owner with actual distance<200; source does not explicitly filter alive in inner count",
+      "nearby_count_lt": 4,
+      "entry_state": "eSummon",
+      "channel_ticks": 40,
+      "when_nearby_gte4": "summonT=60",
+      "channel_motion": "none in eSummon state branch; normal global AI range movement only applies idle/recover",
+      "finish": "1+trunc(U*2) children (1 or2); angle2pi*i/count+U[0,1), radius30+U[0,20); child element uniform P/F/I/D/L/H, source chooses each independently",
+      "exact_factory_call": "mkEn(sx,sy,G.stage,3,false,childElement,e.room)",
+      "ib": false,
+      "child_etype": 3,
+      "not_replaced_by_opening_exclusion": "excluded[2,22,30,43] does not include3",
+      "coordinate_correction": "constructor canMv10→safePt10 else null; source caller dereferences ne without a null guard, no invented shaping/NaN repair",
+      "factory_generation": "full native mkEn applies current P level/NORMAL stage0, rollElite+rollMods+random speed/radius/st2/facing/firstshot timers, energyshield and poise before summon postprocessing, deterministic skin from resulting spawn position",
+      "stage0_elite_roll": {
+        "magic_probability": 0.03,
+        "rare": 0,
+        "champion": 0,
+        "possible_tiers": [
+          0,
+          1
+        ],
+        "source_lines": [
+          31703,
+          31705,
+          31725,
+          31742
+        ]
+      },
+      "stage0_elite1_mods": "one attack modifier from M29 or M30, not forced empty; aura null because tier<2",
+      "postprocessing": "hp=trunc(native child hp*.5); mhp=hp; eShield=eShieldMax=0; child poise/maxPoise remain pre-halving nativeHP; preserve generated elite/mods/element/skin/ATK/speed/timers",
+      "parent_after_finish": "summonT=summonCd; s=recover; st2=50; regular recover subsequently idle15+U[0,15)",
+      "child_type3_required_scope": [
+        "range200/common flow/aggro",
+        "idle default1.6 and source conditional strafe/eCircle branches (do not implement a new attack-ticket limit)",
+        "common projectile240+60 charge for each generated element",
+        "P/F/I/D/L/H projectile/parry/status variants, including currently unsupported fire/holy obligations",
+        "generated elite0 or1 and M29/M30 modifier consumers",
+        "energyshield0 but pre-halving poise/hit-stun/stun/regen",
+        "normal revival and antiRevive suppression",
+        "actual deterministic skin can vary by child coordinate; use full existing atlas metadata, not flesh_crawler or type0 alias"
+      ],
+      "conditional_child_attack_state": "generic windup→attack5 for etype3; generic attack fire condition st2<=5 && st2+sp>5 and recover35 remain literal. Do not invent a natural windup entry or rewrite event timing.",
+      "full_child_dynamic_factory_and_consumers_currently_unported": true,
+      "child_factory_parameters_must_not_force_elite0_or_physical": true,
+      "source_dynamic_child_flags_not_generated_in_this_audit": true
+    },
+    "shield_poise_and_traits": {
+      "source_lines": [
+        31826,
+        31846,
+        42915,
+        42918,
+        42924,
+        42984,
+        43042,
+        43049,
+        20431,
+        20442,
+        39263,
+        39265,
+        25106,
+        42800,
+        43185,
+        43197
+      ],
+      "initial_HP_vs_defensive_values": "HP4377; eShield/max1751; poise/max1751, not4377",
+      "eShield_before_HP": true,
+      "fully_absorbed": "remaining0 causes no HP/hitstun/KB/poise branch",
+      "overflow_poise_uses_remaining_HP_damage": true,
+      "nonDOT_hitstun_idle": 8,
+      "poise_break_stun": 180,
+      "poise_regen": "floor1751*.15=262 every200 after poiseR accumulation, then reset0",
+      "energyshield_regen": "only initial timer, no invented consumer",
+      "undead_type_trait": false,
+      "antiRevive_undead_damage_bonus": "type7 is absent from undead registry; do not borrow type4 bonus",
+      "normal_revive": "!ib&&!_revived&&!_isGhoul; elite1 Lv1 revPow.5; final=max(0,.5-affixAntiRevive-holyPrisonSuppression); roll if>0; timer120, half chance ghoul/half native original form; existing full revival pipeline not re-audited/claimed",
+      "M30_not_an_onhit_modifier": "eModHitP only M01/M03/M05/M18/_iceOnHit/_lavaBurn; exact M30 none; raw flags false retained"
+    },
+    "body_frozen_metadata_only": {
+      "skin": "flesh_crawler",
+      "column": 6,
+      "row": 0,
+      "cell": [
+        256,
+        256
+      ],
+      "base_rect": [
+        1536,
+        0,
+        256,
+        256
+      ],
+      "walk_rects": [
+        [
+          6144,
+          0,
+          256,
+          256
+        ],
+        [
+          6400,
+          0,
+          256,
+          256
+        ],
+        [
+          6656,
+          0,
+          256,
+          256
+        ],
+        [
+          6912,
+          0,
+          256,
+          256
+        ]
+      ],
+      "walk_frames": 4,
+      "distance_per_walk_frame": 128,
+      "directions": 8,
+      "draw_height": 159.1433434296772,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "resources": "existing body16 res://assets/enemy/atlas_ch1_8dir[_walk]_<direction>.png; no PNG read/copy/hash",
+      "source_assignment_reference": [
+        23788,
+        23798
+      ],
+      "24_unique_frames_or_24FPS_not_claimed": true
+    },
+    "source_document_conflicts": [
+      {
+        "docs": "docs8 attack/9AI teleport e.atk*21 and immediate1shot wording",
+        "source": "R20472 actual*10.5; R39529→eProjAt→_emitEnemyShot60 warning before birth",
+        "resolution_owner": "parent/docs worker; this audit edits no repo docs"
+      },
+      {
+        "docs": "raw range/idle export fields may list default idle1.6/contact.8",
+        "source": "type7 actual idle keep-distance.6/1.2 and no natural contact; no default alias"
+      }
+    ],
+    "exact_source_locals": {
+      "gate_HP_postprocess": {
+        "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+        "start_line": 32298,
+        "end_line": 32300,
+        "text": "          const _esc=mkEn(_ex,_ey,si,rollEtype(si),false,_ggEl,-1);\n          _esc.elite=1;_esc.hp=~~(_esc.mhp*2.5);_esc.mhp=_esc.hp;\n          ens.push(_esc);"
+      },
+      "type7_teleport_and_summon": {
+        "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+        "start_line": 39522,
+        "end_line": 39542,
+        "text": "  if(e.etype===7&&e.s==='idle'){\n    e.teleportT-=sp;e.summonT-=sp;\n    // 전조 진행 중 → 완료되면 텔포 실행\n    if(e._tpWarnT>0){\n      e._tpWarnT-=sp;\n      if(e._tpWarnT<=0){teleportE(e,e._tpWarnX,e._tpWarnY,'#8833cc',12);e.teleportT=e.teleportCd;e._tpWarnT=0;\n        // 순간이동 직후 탄막 발사 (비비기 대신)\n        eProjAt(e,Math.atan2(P.y-e.y,P.x-e.x),3,0.8,e.el,200,'#8833cc',2)}\n    }\n    else if(d<100&&e.teleportT<=0){\n      const tpA=Math.random()*Math.PI*2,tpD=150+Math.random()*50;\n      const tpX=P.x+Math.cos(tpA)*tpD,tpY=P.y+Math.sin(tpA)*tpD;\n      if(canMv(tpX,tpY,e.r)){e._tpWarnT=120;e._tpWarnMax=120;e._tpWarnX=tpX;e._tpWarnY=tpY;e._tpWarnCol='#8833cc'}\n      else e.teleportT=30;\n    }\n    if(e.summonT<=0){\n      // 주변 아군 카운트\n      const _denN=shQuery(e.x,e.y,200);let nearby=0;for(let _di2=0;_di2<_denN.length;_di2++){const oe=_denN[_di2];if(oe!==e&&dst(oe.x,oe.y,e.x,e.y)<200)nearby++}\n      if(nearby<4){e.s='eSummon';e.st2=40;addTxt(e.x,e.y-15,_T('💀소환!'),'#8833cc',35)}\n      else e.summonT=60; // 아군이 많으면 잠깐 대기\n    }"
+      },
+      "landing_damage_KB_order": {
+        "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+        "start_line": 20468,
+        "end_line": 20475,
+        "text": "  // ── 착지 강타: 도착 조준범위 내 플레이어 타격 (돌진 e.atk*30 대비 35% = e.atk*10.5, 비보스 한정) ──\n  if(!e.ib&&P.iframes<=0&&P.s!=='charge'){\n    const _landR=(r+10)*2;\n    if(dst(P.x,P.y,nx,ny)<_landR+P.r){\n      hurtP(~~(e.atk*10.5*elMul(e.el,ar().el)));eModHitP(e);\n      const _la=Math.atan2(P.y-ny,P.x-nx);P.kb.x+=Math.cos(_la)*120;P.kb.y+=Math.sin(_la)*120;\n      addTxt(P.x,P.y-25,_T('충격파!'),col,30);\n    }"
+      },
+      "physical_secondary_packet": {
+        "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+        "start_line": 20501,
+        "end_line": 20509,
+        "text": "function _beanRoll(el,col,sz,spd,dmgMult,e){\n  // 적의 속성으로 탄종을 고정한다. 근거리·연사 여부로 외형/패링 분류를 바꾸지 않는다.\n  if(el===EL.P)return{el:EL.P,col:col||'#f4f4f4',sz:sz||1.5,spd:spd*1.3,dmgM:1.2,redBean:true,homing:true};\n  if(el===EL.D)return{el:EL.D,col:'#a44cff',sz:sz||1.6,spd:spd*1.1,dmgM:1.0,gbBean:true};\n  if(el===EL.I)return{el:EL.I,col:'#317cec',sz:sz||1.6,spd:spd*1.05,dmgM:1.2,waterBean:true,homing:true};\n  if(el===EL.F)return{el:EL.F,col:col||'#ff2e22',sz:sz||1.6,spd:spd*1.05,dmgM:1.2,fireMagic:true,homing:true};\n  return{el,col:col||ELC[el]||'#ffaa00',sz:sz||1.2,spd,dmgM:dmgMult,homing:false}}\n// 몬스터 입 오프셋: facing 방향으로 반지름×0.7 앞에서 발사\nfunction _eMouthXY(e,ang){const off=(e.r||12)*.7;return{x:e.x+Math.cos(ang||e.facing||0)*off,y:e.y+Math.sin(ang||e.facing||0)*off}}"
+      },
+      "secondary_warning_release": {
+        "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+        "start_line": 20531,
+        "end_line": 20545,
+        "text": "function _tickEnemyShotWarnings(sp){\n  const list=G._shotWarnings;if(!list)return;\n  let n=0;\n  for(const w of list){\n    const e=w.owner;\n    const cancelled=(e._ch1StartMedium&&!_fieldEnemyCanShoot(e))||w.world!==ens||(!w.dead&&(!e.alive||e.stunned>0||e._frozen>0));\n    if(!cancelled){\n      w.t-=sp;\n      if(w.t>0){list[n++]=w;continue;}\n      const dx=w.dead?0:e.x-w.x,dy=w.dead?0:e.y-w.y;\n      for(const shot of w.shots){shot.x=(shot.x??w.x)+dx;shot.y=(shot.y??w.y)+dy;shot._commit=true;spawnProj(shot);}\n    }\n    if(e._shotWarning===w)e._shotWarning=null;\n  }\n  list.length=n;"
+      },
+      "M30_insert_and_consume": {
+        "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+        "start_line": 39405,
+        "end_line": 39411,
+        "text": "    // M30 진원 충격파: 반경이 성장하며 8초마다 폭발\n    if(e.mods.includes('M30')&&d<800){e.modT.eliteRing+=sp;if(e.modT.eliteRing>=480&&_claimEliteAttack(e,54)){e.modT.eliteRing=0;e._eliteZones=e._eliteZones||[];e._eliteZones.push({x:P.x,y:P.y,t:54,dur:54,r:125,kind:'burst',col:'#ff2438'});}}\n    // M31 번개 연사: 조준선 예고 후 Q 패링 가능한 번개 투사체 3발\n    if(e.mods.includes('M31')){if(e._eliteBoltWarn>0){e._eliteBoltWarn-=sp;if(e._eliteBoltWarn<=0){const a=e._eliteBoltAim;eProjAt(e,a-.24,3,.72,EL.L,260,'#ffee44',3.5);eProjAt(e,a,3,.72,EL.L,260,'#ffee44',3.5);eProjAt(e,a+.24,3,.72,EL.L,260,'#ffee44',3.5);}}else if(d<850){e.modT.eliteBolt+=sp;if(e.modT.eliteBolt>=360&&_claimEliteAttack(e,45)){e.modT.eliteBolt=0;e._eliteBoltAim=Math.atan2(P.y-e.y,P.x-e.x);e._eliteBoltWarn=45;}}}\n    // M32 지옥 포격: 플레이어 주변 세 지점을 순차 표적화\n    if(e.mods.includes('M32')&&d<1100){e.modT.eliteMortar+=sp;if(e.modT.eliteMortar>=600&&_claimEliteAttack(e,126)){e.modT.eliteMortar=0;e._eliteZones=e._eliteZones||[];const a=Math.atan2(P.y-e.y,P.x-e.x),px=P.x,py=P.y;for(let i=-1;i<=1;i++){const off=i*92;e._eliteZones.push({x:px-Math.sin(a)*off,y:py+Math.cos(a)*off,t:78+(i+1)*24,dur:78+(i+1)*24,r:68,kind:'mortar',col:'#ff3322'});}}}\n    if(e._eliteZones&&e._eliteZones.length){for(let zi=e._eliteZones.length-1;zi>=0;zi--){const z=e._eliteZones[zi];z.t-=sp;if(z.t<=0){const hit=dst(P.x,P.y,z.x,z.y)<=z.r;if(hit&&P.iframes<=0&&P.s!=='charge'){hurtP(Math.max(1,~~(e.atk*(z.kind==='mortar'?.8:.65))),{dtype:'magic'});addTxt(P.x,P.y-18,z.kind==='mortar'?'💥포격!':'충격파! ',z.col,22);}addParts(z.x,z.y,z.col,z.kind==='mortar'?18:12);if(z.kind==='mortar'||z.col==='#ff2438'){const _flameSize=Math.min(z.r*2.5,360);playVFXAng('lava_erupt',z.x,z.y-_flameSize*.25,_flameSize/768,5,0,false,.85)}e._eliteZones.splice(zi,1);}}}"
+      },
+      "local_busy_only": {
+        "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+        "start_line": 31700,
+        "end_line": 31701,
+        "text": "function _tickEliteAttackLock(e,sp){if(!e||!e.modT)return true;e.modT.eliteBusy=Math.max(0,(e.modT.eliteBusy||0)-sp);return e.modT.eliteBusy<=0}\nfunction _claimEliteAttack(e,frames){if(!e||!e.modT||e.modT.eliteBusy>0)return false;e.modT.eliteBusy=frames;return true}"
+      },
+      "child_spawn_postprocessing": {
+        "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+        "start_line": 41376,
+        "end_line": 41391,
+        "text": "    if(e.st2<=0){\n      // 자궁사도(11): 요마(3) 2~3마리, 리치(7): 떼거리(3) 1~2마리\n      const cnt=e.etype===11?(2+~~(Math.random()*2)):(1+~~(Math.random()*2));\n      const _sType=e.etype===11?3:3;\n      for(let si=0;si<cnt;si++){\n        const a=Math.PI*2*si/cnt+Math.random(),sd=30+Math.random()*20;\n        const sx=e.x+Math.cos(a)*sd,sy=e.y+Math.sin(a)*sd;\n        const el=[EL.P,EL.F,EL.I,EL.D,EL.L,EL.H][~~(Math.random()*6)];\n        const ne=mkEn(sx,sy,G.stage,_sType,false,el,e.room);\n        ne.hp=~~(ne.hp*.5);ne.mhp=ne.hp;ne.eShield=0;ne.eShieldMax=0;\n        ens.push(ne);addParts(sx,sy,_sumCol,8);\n      }\n      addTxt(e.x,e.y-20,cnt+_L('체 소환!',' Summoned!'),_sumCol,35);SFX.charge();\n      if(e.etype===11){e.wombT=e.wombCd}else{e.summonT=e.summonCd}\n      e.s='recover';e.st2=50;\n    }break}"
+      },
+      "child_elite_modifier_generation": {
+        "file": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+        "start_line": 31733,
+        "end_line": 31742,
+        "text": "function rollMods(tier,si){\n  const hell=SI_TO_HELL[si],cnt=ELITE_TIERS[tier].mods;\n  const pool=MOD_DEFS.filter(m=>m.hell<=hell);if(!pool.length||!cnt)return[];\n  const attacks=pool.filter(m=>m.id>='M29'&&m.id<='M32');\n  const picked=[];\n  const attackCount=Math.min(attacks.length,tier>=3?2:1);\n  while(picked.length<attackCount){const i=~~(Math.random()*attacks.length);picked.push(attacks[i].id);attacks.splice(i,1)}\n  const avail=pool.filter(m=>m.id<'M29'&&!picked.includes(m.id));\n  while(picked.length<cnt&&avail.length){const i=~~(Math.random()*avail.length);picked.push(avail[i].id);avail.splice(i,1)}\n  return picked;"
+      }
+    }
+  },
+  "source_call": {
+    "arguments": [
+      4075,
+      340,
+      0,
+      7,
+      false,
+      0,
+      -1
+    ],
+    "call_site": "at /Users/fordeargamers/Projects/exoduser-migration-20261001/game.html:32298:22",
+    "factory_random_seed": 1627645019,
+    "rng_begin": 32,
+    "rng_end": 46,
+    "raw_native_final_and_native_factory_fields_preserved_in_frozen_source": 337,
+    "no_source_reexecution_or_child_snapshot_generation": true
+  },
+  "required_dependencies": [
+    {
+      "dependency": "exact frozen order3 elite1/M30 identity and HP postprocessing",
+      "source_ready": true,
+      "consumer_ready": false,
+      "registration_gate": "preserve337/supportfalse/runtimeNULL; matchHP4377 vs shield/poise1751"
+    },
+    {
+      "dependency": "type7 ranged AI/teleport120/landing420+posthurt KB120",
+      "source_ready": true,
+      "consumer_ready": false,
+      "registration_gate": "caller must retain source guards/order and fixed valid target; landing10.5 not21"
+    },
+    {
+      "dependency": "common physical32/life240 and landing-warning physical48/life300",
+      "source_ready": true,
+      "consumer_ready": false,
+      "registration_gate": "two exact argument paths and queued warning, not commondamage32 alias"
+    },
+    {
+      "dependency": "M30 perowner lock54/zone125/damage26/realwarning+lava",
+      "source_ready": true,
+      "consumer_ready": false,
+      "registration_gate": "M30 may not be removed or replaced with global ticket limit"
+    },
+    {
+      "dependency": "six canonical TP+M30 PNG resources",
+      "source_ready": true,
+      "consumer_ready": false,
+      "registration_gate": "all6 present canonical R and absentGodot; no copy/import in audit"
+    },
+    {
+      "dependency": "native generated type3 children/6elements/elite0or1/M29orM30",
+      "source_ready": true,
+      "consumer_ready": false,
+      "registration_gate": "REJECT atomic admission until full child caller/factory/AI/status generation is supported. No spawn omission or forced type0/physical/elite0"
+    },
+    {
+      "dependency": "full visual/public-play/performance/source scheduler/revive parity",
+      "source_ready": false,
+      "consumer_ready": false,
+      "registration_gate": "outside new source-contract read; no quality/240FPS/publicplay PASS"
+    }
+  ],
+  "pending_fields": {
+    "source_values": [],
+    "runtime_consumer_dependencies": [
+      "native dynamic type3 full child factory and AI/6element/elite-mod support",
+      "parent product GO",
+      "M30 source warning and explosion resources/consumer",
+      "type7 teleport/landing/queued secondary projectile consumer"
+    ],
+    "dynamic_child_outcomes": "Child actual numeric/elite/mod/skin values depend on future runtime RNG and valid spawn coordinates; no source record re-execution or synthetic child snapshots were produced.",
+    "dynamic_child_outcomes_are_missing_source_values": false,
+    "dynamic_child_factory_AI_element_modifier_consumers_unported": true,
+    "asset_implementation": [
+      "img/vfx/teleport_out.png",
+      "img/vfx/teleport_in.png",
+      "img/tp_impact.png",
+      "assets/vfx/teleport_burst.png",
+      "img/vfx_pentagram_red.png",
+      "assets/vfx/boss/vfx_lava_erupt.png"
+    ]
+  },
+  "asset_metadata": [
+    {
+      "relative_path": "img/vfx/teleport_out.png",
+      "byte_size_metadata": 4018,
+      "image": [
+        64,
+        64
+      ],
+      "cell": [
+        64,
+        64
+      ],
+      "frames": 1,
+      "source_lines": [
+        8936,
+        8939,
+        8942,
+        20466,
+        57354,
+        57365
+      ],
+      "consumer": "departure smoke; initial size r*4=90.93905338838696; mt18; random initial rotation; p=t/18, size=(1+1.8p)*initial, alpha=(1-p*p)*.85, rotation+=1.5p; lighter",
+      "source_path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/img/vfx/teleport_out.png",
+      "exists_in_canonical_R": true,
+      "current_Godot_resource_absent": true,
+      "inspection": "first new-unit path/stat+24B PNG IHDR only, no hash/copy/decoder",
+      "package_ready": false
+    },
+    {
+      "relative_path": "img/vfx/teleport_in.png",
+      "byte_size_metadata": 3362,
+      "image": [
+        64,
+        64
+      ],
+      "cell": [
+        64,
+        64
+      ],
+      "frames": 1,
+      "source_lines": [
+        8937,
+        20497,
+        57366,
+        57374
+      ],
+      "consumer": "arrival smoke; isBig true because r>=18; initial size r*5=113.6738167354837; mt22; size=max(.6,2.2-1.6p)*initial, alpha=(p<.4?p/.4:max(0,1-(p-.4)/.6))*.9; rotation-=1.2p; lighter",
+      "source_path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/img/vfx/teleport_in.png",
+      "exists_in_canonical_R": true,
+      "current_Godot_resource_absent": true,
+      "inspection": "first new-unit path/stat+24B PNG IHDR only, no hash/copy/decoder",
+      "package_ready": false
+    },
+    {
+      "relative_path": "img/tp_impact.png",
+      "byte_size_metadata": 70004,
+      "image": [
+        401,
+        401
+      ],
+      "grid": [
+        2,
+        2
+      ],
+      "cell": [
+        200,
+        200
+      ],
+      "frames": 4,
+      "unused_bottom_and_right_pixels": 1,
+      "source_lines": [
+        8944,
+        8952,
+        20494,
+        57377,
+        57387
+      ],
+      "consumer": "arrival impact initial size r*4=90.93905338838696/mt24; frame=min(3,trunc(p*4)); draw size=initial*(.6+.6p); alpha=1-p*p; lighter; col glow only p<.5",
+      "source_path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/img/tp_impact.png",
+      "exists_in_canonical_R": true,
+      "current_Godot_resource_absent": true,
+      "inspection": "first new-unit path/stat+24B PNG IHDR only, no hash/copy/decoder",
+      "package_ready": false
+    },
+    {
+      "relative_path": "assets/vfx/teleport_burst.png",
+      "byte_size_metadata": 31488,
+      "image": [
+        576,
+        64
+      ],
+      "grid": [
+        9,
+        1
+      ],
+      "cell": [
+        64,
+        64
+      ],
+      "frames": 9,
+      "source_lines": [
+        20089,
+        20495,
+        19730,
+        19738,
+        55038,
+        55042
+      ],
+      "consumer": "arrival at final x/y; scale=r/8=2.8418454183870926; frameTime4, angle0, isSkill false; default baseAlpha1; source render-step t += _dtSp / single frame increment+reset at >=4; alpha1-.3*frame/9; lighter",
+      "source_path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/vfx/teleport_burst.png",
+      "exists_in_canonical_R": true,
+      "current_Godot_resource_absent": true,
+      "inspection": "first new-unit path/stat+24B PNG IHDR only, no hash/copy/decoder",
+      "package_ready": false
+    },
+    {
+      "relative_path": "img/vfx_pentagram_red.png",
+      "byte_size_metadata": 1455927,
+      "image": [
+        1024,
+        1024
+      ],
+      "cell": [
+        1024,
+        1024
+      ],
+      "frames": 1,
+      "source_lines": [
+        8932,
+        5731,
+        5759,
+        53949
+      ],
+      "consumer": "M30 burst warning; full bitmap, draw width/height=r*1.76=220; center z.x/z.y; rotate now*.00028; alpha=.15+.13*q, q=clamp(1-t/54,0,1); native full procedural circular warning remains also required",
+      "source_path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/img/vfx_pentagram_red.png",
+      "exists_in_canonical_R": true,
+      "current_Godot_resource_absent": true,
+      "inspection": "first new-unit path/stat+24B PNG IHDR only, no hash/copy/decoder",
+      "package_ready": false
+    },
+    {
+      "relative_path": "assets/vfx/boss/vfx_lava_erupt.png",
+      "byte_size_metadata": 1707135,
+      "image": [
+        2304,
+        2304
+      ],
+      "grid": [
+        3,
+        3
+      ],
+      "cell": [
+        768,
+        768
+      ],
+      "frames": 9,
+      "source_lines": [
+        19755,
+        39411,
+        19730,
+        19738,
+        55038,
+        55046
+      ],
+      "consumer": "M30 explosion actual lava_erupt key, not boss_lava_erupt24; flameSize=min(r*2.5,360)=312.5; pos[z.x,z.y-78.125]; scale312.5/768; frameTime5, angle0, isSkill false, baseAlpha.85; alpha=.85*(1-.3*frame/9); source render-step clock, 9*5 nominal45 ticks separate from warning54",
+      "source_path": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/vfx/boss/vfx_lava_erupt.png",
+      "exists_in_canonical_R": true,
+      "current_Godot_resource_absent": true,
+      "inspection": "first new-unit path/stat+24B PNG IHDR only, no hash/copy/decoder",
+      "package_ready": false
+    }
+  ],
+  "asset_total_bytes_stat_metadata": 3271934,
+  "admission_policy": {
+    "atomic_registration": "REJECT",
+    "reason": "Mandatory naturally summoned type3 child factory and complete element/elite/modifier/skin consumers are not supported; parent teleport/M30/shot/resource consumers are also unimplemented",
+    "reject_until_required_consumers_ready": true,
+    "child_etype": 3,
+    "child_elements": [
+      "physical",
+      "fire",
+      "ice",
+      "dark",
+      "lightning",
+      "holy"
+    ],
+    "child_elite_tiers": [
+      0,
+      1
+    ],
+    "child_elite1_mods": [
+      "M29",
+      "M30"
+    ],
+    "child_generated_flags_and_coordinates_must_be_preserved": true,
+    "forbidden_omissions_or_aliases": [
+      "remove eSummon",
+      "force child type0",
+      "force physical element",
+      "force elite0/mods[]",
+      "force flesh_crawler skin",
+      "remove M30",
+      "reuse common physical32 packet as teleport-warning48",
+      "replace owner-local busy with global attack ticket"
+    ],
+    "support_original_record_rewrite": false,
+    "registration_or_factory_runtime_connection": false
+  },
+  "capability_boundary": {
+    "current_source_consumer_supported_count": 6,
+    "current_source_consumer_unported_count": 10,
+    "current_counts_unchanged_by_pending_config": true,
+    "frozen_shipped_Web_and_Windows_preview_supported_count": 5,
+    "frozen_shipped_Web_and_Windows_preview_unported_count": 11,
+    "frozen_delivery_reexported_or_retested": false,
+    "this_exact_record_supported": false
+  },
+  "scope": {
+    "documentary_dependency_specification_only": true,
+    "pending_config_is_actual_actor_consumer": false,
+    "pending_config_is_test_PASS": false,
+    "producer_actor_or_projectile_scripts_created": 0,
+    "runtime_consumer_implementation": 0,
+    "factory_admission": 0,
+    "other_runtime_connection": 0,
+    "new_original_asset_copy_or_hash_or_import": 0,
+    "source_or_frozen_snapshot_modified_reextracted_or_hashed": false,
+    "original_full337_fields_untouched": true,
+    "actor_Product_GO": false,
+    "pending_JSON_write_GO_only": true,
+    "producer_tests_GUI_Git_servers_exports": 0,
+    "completed_proof_replays": 0,
+    "new_source_art_or_alias": false,
+    "full_revive_scheduler_visual_public_play_or_performance_parity": false,
+    "24_unique_frames_24FPS_or_240FPS_claim": false,
+    "visual_verdict": "NOT_REVIEWED",
+    "mandatory_child_source_contract_resolved_but_consumers_pending": true,
+    "M30_warning54_birth_end53_separate_from_lava9_frames_time5_nominal45": true
+  },
+  "provenance": {
+    "source_packet": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/encounter-etype7-first/source-contract-audit.json",
+    "source_packet_bytes_from_parent": 39838,
+    "source_packet_sha256_from_parent": "8916293092d23d418c58e79cbbb6742370d3cb5ccae805b2313548da490ac8b4",
+    "source_packet_rehashed_by_producer": false,
+    "new_path_absence_authority": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/encounter-etype7-first/new-owned-path-absence.json",
+    "parent_backup_manifest": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/encounter-etype7-first/backup-before-production/manifest.json",
+    "parent": "a4926ed527f14a7f66d0cdcb1db3772a5617c870",
+    "source_audit_original_assets_inspection": "Source auditor path/stat+24-byte IHDR metadata only; producer performed no PNG read/hash/copy/import",
+    "docs_read_first": [
+      {
+        "path": "/Users/fordeargamers/the-exoduser/docs/8.0몬스터디자인/몬스터_공격시스템.md",
+        "sections": [
+          "elite HP/ATK tables",
+          "etype7 range800",
+          "common cadence/elite192",
+          "teleport landing and shot"
+        ]
+      },
+      {
+        "path": "/Users/fordeargamers/the-exoduser/docs/8.0몬스터디자인/몬스터_총관리.md",
+        "sections": [
+          "etype7 logical name/caster",
+          "ranged/elite cadence"
+        ]
+      },
+      {
+        "path": "/Users/fordeargamers/the-exoduser/docs/9적ai패턴디자인/9_적AI패턴디자인.md",
+        "sections": [
+          "189..211 teleport120/no warning overlay",
+          "256..276 elite1 generation"
+        ]
+      },
+      {
+        "path": "/Users/fordeargamers/the-exoduser/docs/5.0애니메이션파이프라인/몬스터_스킨_시스템.md",
+        "sections": [
+          "atlas/grid/deterministic assignment",
+          "actual8direction consumer"
+        ]
+      },
+      {
+        "path": "/Users/fordeargamers/the-exoduser/docs/5.1임펙트디자인/VFX_구현가이드.md",
+        "sections": [
+          "318..327 teleport_burst",
+          "417..445 teleport warning",
+          "478..498 smoke"
+        ]
+      }
+    ],
+    "producer_map_guideline_read": {
+      "path": "/Users/fordeargamers/the-exoduser/docs/4.1맵디자인+설정/EXODUSER_MAP_PRODUCTION_GUIDELINE_v0.9.md",
+      "entire_retained_read_lines": [
+        1,
+        1047
+      ],
+      "map_changes_or_MAP_visual_PASS": false
+    },
+    "docs_sync_commit_owner": "parent/root with test SSOT owner"
+  }
+}

@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#10151a">
+  <title>EXODUSER · 웹 플레이</title>
+  $GODOT_HEAD_INCLUDE
+  <style>
+    :root { color-scheme:dark; font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif; background:#10151a; color:#e8e6df; }
+    * { box-sizing:border-box; }
+    html,body { width:100%; height:100%; margin:0; overflow:hidden; }
+    #canvas { display:block; width:100vw; height:100vh; outline:none; background:#10151a; touch-action:none; }
+    button { font:inherit; color:inherit; border:1px solid #5a626a; border-radius:5px; background:#202830; padding:8px 13px; cursor:pointer; }
+    button:hover { background:#2e3943; }
+    button:focus-visible,summary:focus-visible { outline:2px solid #d3b77a; outline-offset:3px; }
+    button:disabled { opacity:.5; cursor:default; }
+    #start-layer { position:fixed; inset:0; z-index:20; display:grid; place-items:center; padding:24px; background:radial-gradient(ellipse at 50% 35%,#202c32,#10151a 72%); }
+    #start-layer[hidden] { display:none; }
+    .intro { width:min(580px,100%); padding:38px; border:1px solid #465259; background:#141c22; border-radius:10px; box-shadow:0 20px 80px #0007; }
+    .eyebrow { color:#c4ad7c; letter-spacing:.18em; font-size:12px; }
+    h1 { margin:12px 0 8px; font-size:clamp(29px,5vw,44px); letter-spacing:.025em; }
+    .intro p { color:#b9c4c9; line-height:1.7; }
+    #start { background:#c0a472; border-color:#c0a472; color:#12171b; font-weight:700; min-width:145px; margin-top:8px; }
+    #status { margin:16px 0 8px; min-height:24px; color:#d2d8db; }
+    #load-progress { width:100%; accent-color:#c0a472; height:6px; }
+    #error { color:#ffb0a0; white-space:pre-wrap; font-size:13px; line-height:1.55; }
+    #toolbar { position:fixed; bottom:18px; right:18px; z-index:12; display:flex; align-items:end; gap:8px; }
+    #toolbar[hidden] { display:none; }
+    #toolbar button,#qa summary { font-size:12px; background:#111b23e8; }
+    #qa { width:min(440px,calc(100vw - 36px)); }
+    #qa summary { cursor:pointer; padding:9px 13px; border:1px solid #5a626a; border-radius:5px; list-style:none; width:max-content; margin-left:auto; }
+    #qa[open] { position:absolute; right:0; bottom:45px; }
+    .qa-body { margin-top:7px; padding:14px; background:#111b23f5; border:1px solid #50616c; border-radius:5px; max-height:70vh; overflow:auto; }
+    .qa-body p { font-size:12px; color:#aebcc4; line-height:1.55; margin:8px 0; }
+    .qa-body dl { display:grid; grid-template-columns:1fr 1fr; gap:6px 12px; margin:8px 0; font-size:12px; }
+    .qa-body dd { text-align:right; margin:0; font-variant-numeric:tabular-nums; }
+    .qa-body pre { margin:7px 0; font:11px/1.5 ui-monospace,monospace; white-space:pre-wrap; word-break:break-word; color:#c5d2d9; }
+    #play-status { position:fixed; bottom:20px; left:20px; z-index:11; pointer-events:none; font-size:12px; color:#c5d2d9; padding:7px 10px; background:#111b23cf; border-radius:4px; }
+    #play-status[hidden] { display:none; }
+    @media(max-width:620px) { .intro { padding:24px; } #toolbar { right:10px; bottom:10px; } #play-status { left:10px; bottom:56px; } }
+  </style>
+</head>
+<body>
+  <canvas id="canvas" width="1920" height="1080" tabindex="0" aria-label="EXODUSER 게임 화면">WebGL2를 지원하는 데스크톱 브라우저가 필요합니다.</canvas>
+  <section id="start-layer" aria-label="게임 시작">
+    <div class="intro">
+      <div class="eyebrow">EXODUSER</div>
+      <h1>지옥의 길</h1>
+      <p>웹 개발 미리보기</p>
+      <p>WASD 이동 · 마우스 조준 · 좌클릭 공격<br>1·2타 뒤 3타를 길게 누르면 충전합니다.<br>3타 준비 후 Space로 충전·해제 · Q 공격 취소 · Esc 일시정지</p>
+      <button id="start" type="button">게임 시작</button>
+      <p id="status" role="status" aria-live="polite">버튼을 눌러 시작하세요.</p>
+      <progress id="load-progress" max="1" value="0" hidden></progress>
+      <p id="error" role="alert" hidden></p>
+    </div>
+  </section>
+  <div id="play-status" role="status" aria-live="polite" hidden>게임에 입력 중</div>
+  <nav id="toolbar" aria-label="웹 플레이 도구" hidden>
+    <button id="focus" type="button">게임으로</button>
+    <button id="fullscreen" type="button">전체화면</button>
+    <details id="qa">
+      <summary>QA 상태</summary>
+      <div class="qa-body">
+        <p>WASD 이동 · 좌클릭 공격 · 3타 준비 후 Space 충전/해제 · Q 취소 · Esc 일시정지</p>
+        <dl>
+          <dt>플레이어 HP / ST</dt><dd id="qa-resources">관측 대기</dd>
+          <dt>좌표</dt><dd id="qa-position">관측 대기</dd>
+          <dt>공격 상태 / 충전</dt><dd id="qa-weapon">관측 대기</dd>
+          <dt>일시정지</dt><dd id="qa-paused">관측 대기</dd>
+          <dt>지원 개체 / 원본 목록</dt><dd id="qa-encounters">관측 대기</dd>
+          <dt>활성 검기 / 적탄</dt><dd id="qa-projectiles">관측 대기</dd>
+          <dt>그려진 프레임</dt><dd id="qa-frames">관측 대기</dd>
+          <dt>프레임 관측 / 표본</dt><dd id="qa-frame-ms">관측 대기</dd>
+        </dl>
+        <p>아래 수치는 실행 중인 게임에서 읽습니다. 프레임 카운터는 Godot 전역 관측이며 게임 시간이나 240FPS 달성을 뜻하지 않습니다.</p>
+        <pre id="qa-enemies">개체 관측 대기</pre>
+        <p>QA 보고서는 이 웹 빌드의 가상 user://에 기록되며, IndexedDB를 사용할 수 있는 브라우저에서는 해당 영역에 보관됩니다. 네이티브 저장·현재 Mac 플레이 기록·기존 게임 슬롯 및 API와 분리되어 있습니다.</p>
+        <pre id="qa-storage">저장 영역 관측 대기</pre>
+        <pre id="qa-telemetry">이벤트 관측 대기</pre>
+        <pre id="qa-error">런타임 오류 기록 없음</pre>
+      </div>
+    </details>
+  </nav>
+  <script src="$GODOT_URL"></script>
+  <script>
+    'use strict';
+    const GODOT_CONFIG = $GODOT_CONFIG;
+    const canvas = document.getElementById('canvas');
+    const startButton = document.getElementById('start');
+    const startLayer = document.getElementById('start-layer');
+    const statusText = document.getElementById('status');
+    const errorText = document.getElementById('error');
+    const progress = document.getElementById('load-progress');
+    const toolbar = document.getElementById('toolbar');
+    const playStatus = document.getElementById('play-status');
+    const runtimeErrors = [];
+    let startRequested = false;
+    let engineStarted = false;
+    let engine = null;
+    function leaf(id, text) { document.getElementById(id).textContent = String(text); }
+    function rememberError(value) {
+      runtimeErrors.push(String(value));
+      if (runtimeErrors.length > 10) runtimeErrors.shift();
+      leaf('qa-error', runtimeErrors.join('\n'));
+    }
+    function fail(error) {
+      rememberError(error && error.message ? error.message : error);
+      statusText.textContent = '게임을 시작할 수 없습니다.';
+      errorText.textContent = error && error.message ? error.message : String(error);
+      errorText.hidden = false;
+      progress.hidden = true;
+      startLayer.hidden = false;
+      startButton.disabled = true;
+    }
+    function focusGame() {
+      if (engineStarted) canvas.focus({ preventScroll: true });
+    }
+    function number(value, digits = 0) {
+      return typeof value === 'number' && Number.isFinite(value) ? value.toFixed(digits) : '—';
+    }
+    window.fdgNativeObserve = function(json) {
+      let state;
+      try { state = JSON.parse(json); } catch (error) { rememberError('관측 데이터: ' + error.message); return; }
+      if (!state || state.schema !== 'fdg-godot-web-observation-v1') return;
+      window.__FDG_NATIVE_QA__ = state;
+      const p = state.player || {}, f = state.encounter_factory || {}, m = state.performance || {};
+      const c = state.projectiles || {}, frames = state.frames || {};
+      leaf('qa-resources', number(p.hp) + '/' + number(p.max_hp) + ' · ' + number(p.stamina, 1) + '/' + number(p.max_stamina));
+      leaf('qa-position', Array.isArray(p.position) ? p.position.map(v => number(v, 2)).join(', ') : '—');
+      leaf('qa-weapon', String(p.state || '—') + ' · ' + number(p.charge_frames, 1) + '틱 / ' + number(p.charge_tier) + '단계');
+      leaf('qa-paused', state.paused ? '일시정지' : '진행 중');
+      leaf('qa-encounters', number(f.supported_count) + ' / ' + number(f.source_count) + ' (미이식 ' + number(f.unsupported_count) + ')');
+      const crescents = c.crescents !== undefined ? c.crescents : (typeof c.total === 'number' && typeof c.enemy === 'number' ? c.total - c.enemy : undefined);
+      leaf('qa-projectiles', number(crescents) + ' / ' + number(c.enemy));
+      leaf('qa-frames', number(frames.drawn));
+      const storage = state.storage_scope || {};
+      leaf('qa-storage', '실제 Web: ' + String(storage.observed_web_platform) + ' · user dir: ' + String(storage.observed_user_data_dir || '—'));
+      leaf('qa-frame-ms', number(m.frame_ms, 2) + 'ms / ' + number(m.sample_count));
+      leaf('qa-enemies', (state.enemies || []).map(e => String(e.id) + ' · HP ' + number(e.hp) + ' / 쉴드 ' + number(e.eShield) + ' · ' + String(e.state)).join('\n') || '등록 개체 없음');
+      leaf('qa-telemetry', (state.recent_events || []).slice(-8).map(e => e.kind + ' ' + JSON.stringify(e.data)).join('\n') || '새 이벤트 대기');
+      if (engineStarted) playStatus.textContent = state.paused ? '일시정지 · Esc로 계속' : (document.activeElement === canvas ? '게임에 입력 중' : '게임 화면을 클릭해 입력');
+    };
+    startButton.addEventListener('click', async function() {
+      if (startRequested) return;
+      startRequested = true;
+      startButton.disabled = true;
+      statusText.textContent = '게임을 불러오는 중…';
+      progress.hidden = false;
+      progress.removeAttribute('value');
+      try {
+        if (typeof Engine !== 'function') throw new Error('게임 실행 파일을 불러오지 못했습니다.');
+        engine = new Engine(GODOT_CONFIG);
+        await engine.startGame({
+          canvas: canvas,
+          canvasResizePolicy: 2,
+          onProgress: function(current, total) {
+            if (total > 0) { progress.value = current / total; statusText.textContent = '불러오는 중 ' + Math.floor(current / total * 100) + '%'; }
+          },
+          onPrintError: function(...args) { rememberError(args.join(' ')); console.error(...args); },
+          onExit: function(code) { engineStarted = false; playStatus.textContent = '게임 종료 (' + code + ')'; }
+        });
+        engineStarted = true;
+        startLayer.hidden = true;
+        toolbar.hidden = false;
+        playStatus.hidden = false;
+        focusGame();
+      } catch (error) { fail(error); }
+    });
+    document.getElementById('focus').addEventListener('click', focusGame);
+    document.getElementById('fullscreen').addEventListener('click', async function() {
+      try { await document.documentElement.requestFullscreen(); focusGame(); }
+      catch (error) { rememberError('전체화면: ' + error.message); focusGame(); }
+    });
+    canvas.addEventListener('pointerdown', focusGame);
+    canvas.addEventListener('contextmenu', event => event.preventDefault());
+    window.addEventListener('keydown', function(event) {
+      if (document.activeElement === canvas && ['KeyW','KeyA','KeyS','KeyD','Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(event.code)) event.preventDefault();
+    }, { capture: true });
+    window.addEventListener('unhandledrejection', event => { if (startRequested) rememberError(event.reason && event.reason.message ? event.reason.message : event.reason); });
+    window.addEventListener('error', event => { if (startRequested) rememberError(event.message || '실행 오류'); });
+  </script>
+</body>
+</html>

@@ -1,5 +1,15 @@
 # AGENTS.md — 지옥의 길 (Hell Road)
 
+## PC·Mac·Git 동기화 — 2026-10-16 사용자 확정
+
+- 최신 Git 원격 main을 공통 기준으로 PC와 Mac의 작업을 보존·정상 통합한다. Mac 경로·런타임 차이만 별도 처리한다.
+- 시작 시 fetch 후 main/로컬 HEAD/미커밋 변경/실행 경로를 확인한다. 자기 코드+관련 docs만 정상 commit·비강제 반영하고 원격 SHA 및 양쪽 실제 실행 경로까지 대조한다.
+- 로컬 commit·검토 후보·과거 export·원격 branch만으로 세 곳 동기화 완료를 주장하지 않는다. 네이티브 부분 이식과 최신 웹 본편의 완성 범위도 구분한다.
+- 타인 WIP 전체 add·강제 push·보존 없는 reset/checkout·자동 서버 재시작·Steam 배포는 하지 않는다. 이미 인수된 필수 readonly 모듈만 동일 byte로 이송한다. 미인수 WIP/HOLD를 끼워 넣지 않는다.
+- 인증 실패 시 기존 공식 credential helper 또는 승인된 GitHub connector로 정상 부모/expected SHA를 보존한다. 토큰·비밀키 노출·호스트 검증 해제·새 자동화 우회는 하지 않는다.
+- 상세 현황·실행법: docs/engine/FDG_PC_MAC_GIT_SYNC_20261016.md. 기존 실행창이 자동으로 최신화됐다고 간주하지 않는다.
+
+
 > 이 파일은 Codex 등 AI 코딩 에이전트가 이 프로젝트에서 작업할 때 반드시 따라야 하는 규칙이다.
 
 ## 최우선 운영 상태: Mac 작업 재개 · PC 작업 보존 (2026-10-01 06:50 KST)

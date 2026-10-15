@@ -1,3 +1,21 @@
+> 2026-10-16 통합 범위: 웹 본편 수치·현행은 최신 main 기준, 별도 Native/FDG 항목은 source pin9a4534b4의 부분 이식·명시 opt-in 계약이다. 전체 최신 본편 이식 완료가 아니다. 상세: docs/engine/FDG_PC_MAC_GIT_SYNC_20261016.md.
+
+## 2026-10-14 원본 키·boot-label 소비 반영
+
+| 범위 | 현재 결과 |
+|---|---|
+| 실current language boot-label consumer | 원EN8300/8303/7358의3label subset, _T1arg/_L2arg 구분·setBootLoading64029 내부T. 실제ko branch검사/EN설정runtime미검증/전체catalog0. unknown EN label은NR. |
+
+새 actualMain1/24 firstPASS(1.975504125초), ERROR0/CameraWarning1/수리·oldsuccess재연0. sourceG.onfalse/전체source·GPU·24장24FPS 미완. 정확API·완전성·lifetime은 [중앙 엔진 정본](../engine/FDG_ENGINE.md)의 「원본 이미지 키 매핑·실제 시작 모듈 소비」를 따른다. 아래 최초 source/standalone 이력과 이번 native subset을 구분한다.
+
+## 2026-10-14 중앙 native 공급 반영
+
+| 범위 | 현재 구현 | 남은 계약 |
+|---|---|---|
+| Godot 기존 HUD 로딩 UI | PublicHUD 아래 Panel500×64/offset(-250,200), Label(14,9)/16px, Bar(14,42)/472×8. finite pct0..100 clamp, <100show/>=100hide/빈문구보존. Node ID/parent/Tree/path/leaf/range 수명·write/readback 검증 후 APPLIED. Main98/100/40 hide·NaN·queued leaf 검증. | native UI subset. 원 showBootLoading/_bootPerfMark/_bootPerfReport/_warmHeadCapture2d/_T/active/killed 플래그 미연결, full_source_completion=false/GPU표시 미검증. 기존 HUD pause/status/자원 동작 보존. |
+
+새 실제 검사 이력·정확 API·수명/원본 source 경계는 [중앙 엔진 정본](../engine/FDG_ENGINE.md)의 「실제 네이티브 로딩 공급 연결」을 따른다. 이 문서의 아래 최초 standalone/원 HTML 이력과 이번 Main native subset은 구분한다. protected 인간 game/서버3333/save/UI 조작0.
+
 # THE EXODUSER — 인터페이스 2차 정비 (UI 폴리시 + 반응형)
 
 ## 결정 관리 분리 (2026-09-18)

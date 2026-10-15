@@ -1,6 +1,33 @@
+> 2026-10-16 통합 범위: 웹 본편 수치·현행은 최신 main 기준, 별도 Native/FDG 항목은 source pin9a4534b4의 부분 이식·명시 opt-in 계약이다. 전체 최신 본편 이식 완료가 아니다. 상세: docs/engine/FDG_PC_MAC_GIT_SYNC_20261016.md.
+
 # 보스 임팩트 교체 목록 — 2026-09-06
 
 > **2026-09-27 후속:** 이 문서는 9월 6일 당시의 후보·완료 상태 이력이다. 일반 1-1 다크드루이드의 `groundFissure`, `tideWave`, `chaseAoe`와 순간이동 `emerge` 로더는 이후 [1-1 임팩트 23종 조사](CH1_1_BOSS_IMPACT_AUDIT_20260927.md)대로 개선되었다. 아래 `구현 완료 0개`는 작성 당시 수치다.
+
+<!-- DARK_DRUID_THORN_FIRST_EXCEPTION_BEGIN -->
+### 2026-10-11 · 자기 QA first 가시 fan 예외
+
+아래 first opt-in만 별도 적용한다. 이 문서의 기존 녹색 orb/r4 수치·기본 본편·피날레·phase2+ 계약과 과거 결과는 원문 그대로 보존한다. 새 부분 성공을 이전 단위의 전체 완료로 합산하지 않는다.
+
+| 항목 | first 예외 / 최종 한정 관측 |
+|---|---|
+| gate / native 생성 | own QA storage.active+fdgDruidThorn=first, ib·si0/3·!finale·phase0/1만. 기존 bossFanWind st2<=0 한 tick에12발 physical8(i%3!==2)/magic4(lanes2/5/8/11), phase0/1 black0. _druidThornVolley만 modulo3 drop/initial decoy aim 제외, pooled false/lane−1 reset·기존 후처리 적용 |
+| 수치 / 원 권위 | 입력속도4.4·최종physical5/magic500/60..600/60px/native f. n=floor(atk×1.3), physical=floor(floor(2n)×.5)/magic=floor(2n). life/ml400 nominal·life−=sp*.667·기존거리내magic life1연장, 후처리 sz2.4·pool.r5.2; 일반탄 player collision base=P.r+7.2/기본 gate=P.r+11.2(base+4), 기존 Q/E 확장·현재/이전 P/shot 선분 sweep 유지, 저작 silhouette로 판정변경0. wind=floor(25×teleM)+extraDelay(phase0/1base18/16), recover45→20clamp/cd100. native Q/E·black Q-only·poison+3·AI/시간/피해/poise/맵/사용자 save 기본값 유지 |
+| 조준 / 폭 | first start와 준비 wind의 e.facing=atan2(P.y−e.y,P.x−e.x)로 현재 Player 추적, 발사 tick에서 aim을 확정한다. fanW=π×(.7+.06×phase)rad, a=aim−fanW/2+fanW×i/11. 발사 이후 hostile _druidStraight로 forced homing/steer 제외·고정 방향 유지 |
+| 아트 / pose 예외 | 해당 hostile flag탄만 ENGINE_AUTHORING 목질가시 quad/tri barbs localX[−27,32] 길이59/폭20, magic diamond X[−15,18]/Y±12·trailX−30. 기존 X WebGPU face<=4, bitmap/new backend0. fan pose dark-druid-native-thorn-fan-first 12tracks×6keys/1.6s/24FPS, native timer read-only·기존19본/UV/mesh/texture 유지 |
+| tell / 실제 wind | first start에서 _druidFanWindMax=e.st2·e.facing=atan2Player, bossFanWind에서도 e.facing=atan2Player로 준비 중 추적. tell progress=clamp(1−st2/실제 _druidFanWindMax), 폭π×(.7+.06×phase)와 같은 atan2Player 소비. 기존 default p/facing 원값 유지 |
+| loader / 공개 QA | native bridge query thorn-volley-first, QA query thorn-volley-first2 / 옵션 thornVolley:true. aria 드루이드 나무가시 공격 QA, leaf title DARK DRUID · 나무가시. 기본 main/old revision 분기를 새기본으로 전환하지 않는다 |
+| camera bounds / player 접촉 | 적대 thorn camera envelope radius physical33/magic31worldpx. pool.r5.2와 player 접촉 base=P.r+7.2·기본 gate=P.r+11.2는 별도 값이다. 기존 Q/E 확장·현재/이전 P/shot 선분 sweep·actor/projectile 좌표 유지, camera 여백으로 collision 확대0 |
+| 새 기술 검사 | pose 신규3/3 최초 PASS. ROOT7고유그룹 최종 PASS: 최초5/6에서 scope harness1실패 수리, GPU face 관련2그룹 재확인, 신규 wind-aim1 추가. 전체7/7 최초 PASS라고 기록하지 않는다. old suite 재실행0 |
+| 실제 단계 관측 | final-poses step8/17/18/26/38에서 각각 wind10/wind1/recover45/recover13/recover1. step18에서12발 physical8/magic4, 실제 atk46→physical59/magic118. 선행 본체 native fade는8step 뒤 visible. source key/FPS와 native step 관측을 구분한다 |
+| 공개 E / Q 범위 | E physicalProjectile/druidStraight native-parry1과 friendly guided blue를 실제 확인. 다른 E magic callback은 기존 조건부 소비이며 Q 성공으로 세지 않는다. Q pressKey 약1ms tap 성공0; hold는 지원 CDP Input 불가로 미시험, actor/input 상태주입0 |
+| 정상속도·강제 fan | normal-speed-forced:114 fullframes/record5095ms, 공개 force pattern. playerHP521→125.59375/pStun, bossHP21017 alive/shield17744, E/Q 성공0. 정상속도여도 강제 pattern을 자연 AI fan 성공으로 확대하지 않는다 |
+| 자연 native AI | native-ai:172 fullframes/record7037ms, AI 시작/강제 pattern0. HP595→0/fallen, bossHP21017 alive/shield18881. 자연 beanStorm/groundFissure/charge/slam/slashCombo 관측, fan0/new thorn0/EQ0. 이 run의 무관측이며 전체 AI의 fan 미지원으로 확대0 |
+| 실제 저장 / 오류 | 두 run runtimeexception0. 공개 자기 설정 save write1, reopen own read1/write0·config {distance340,pattern:fan,phase0,scale:.5} 복원. 전투 actor snapshot 저장0·HP3000 fixture0·actor console writes0. 전체 network/404 무오류 주장0 |
+| 최종 관측 / 정본 | VISUAL RETOUCH / 정확 잔여1 THORN_VOLLEY_COMBAT_ACCEPTANCE: 실전 가독성·Q hold 성공·자연 AI fan 관측 미인수. 실제 E 부분 성공/신규 기술 PASS를 전체 전투·엔진 완료 PASS로 확대0. 정확 GIF 파생 duration/경로·전체 실제 verdict/§23는 새 정본 참조 |
+
+정본: [다크드루이드 가시 일제발사 first](../engine/FDG_DARK_DRUID_THORN_VOLLEY_FIRST.md). 정확 새 파생 자료·시간과 §23는 이 새 정본의 최종 기록을 따른다.
+<!-- DARK_DRUID_THORN_FIRST_EXCEPTION_END -->
 
 > **2026-09-06 드루이드 독탄 최신 계약:** si0/si3 보스 소유 탄은 녹색 독탄으로 통일한다. 기존 화염 혜성 외형 설명보다 `docs/5.1임펙트디자인/DRUID_POISON_PROJECTILES.md`가 우선한다. 화마귀16f 구체의 녹색 질감 버전을 사용하고 피해 EL.P 및 실제 HP 피해시 중독+3을 적용한다. 기존 Q/E 분류는 보존한다. 추적지뢰도 드루이드만 녹색 구체240px로 교체; 다른 보스/소환 잡몹은 제외. 독립 녹색 ORB는 유지. 교체목록 전체 완료는 아님.
 

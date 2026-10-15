@@ -1,0 +1,148 @@
+{
+  "title": "EXODUSER: HELL LORD \u2014 Character & World Art Teaser",
+  "version": "ART_REFRESH_01",
+  "status": "REVIEW_CANDIDATE_NOT_PUBLISHED",
+  "duration": 30,
+  "fps": 30,
+  "width": 1920,
+  "height": 1080,
+  "shots": [
+    {
+      "id": "hell-opening",
+      "file": "steam-page-bg.jpg",
+      "at": 0,
+      "dur": 3,
+      "scale": [
+        1.02,
+        1.055
+      ],
+      "pan": [
+        0,
+        -12
+      ],
+      "edge": 0.25
+    },
+    {
+      "id": "blue-core",
+      "file": "gallery_exo_new_transmuter-orbit_20260928.webp",
+      "at": 3,
+      "dur": 4,
+      "scale": [
+        1,
+        1.025
+      ],
+      "pan": [
+        0,
+        8
+      ],
+      "edge": 0.1
+    },
+    {
+      "id": "hell-hunter",
+      "file": "gallery_exo_new_cruciform-costume_20260928.webp",
+      "at": 7,
+      "dur": 4,
+      "scale": [
+        1.025,
+        1
+      ],
+      "pan": [
+        -8,
+        0
+      ],
+      "edge": 0.1
+    },
+    {
+      "id": "arcane-lancer",
+      "file": "gallery_exo_new_arcane-lancer_20260928.webp",
+      "at": 11,
+      "dur": 4,
+      "scale": [
+        0.98,
+        1
+      ],
+      "pan": [
+        0,
+        0
+      ],
+      "edge": 0.1
+    },
+    {
+      "id": "duo",
+      "file": "gallery_exo_new_cruciform-duo_20260928.webp",
+      "at": 15,
+      "dur": 2.5,
+      "scale": [
+        1.01,
+        1.03
+      ],
+      "pan": [
+        0,
+        5
+      ],
+      "edge": 0.1
+    },
+    {
+      "id": "ruins",
+      "file": "gallery_exo_new_cruciform-ruins_20260928.webp",
+      "at": 17.5,
+      "dur": 2,
+      "scale": [
+        1.02,
+        1
+      ],
+      "pan": [
+        5,
+        0
+      ],
+      "edge": 0.1
+    },
+    {
+      "id": "red-moon",
+      "file": "gallery_exo_new_cruciform-red-moon_20260928.webp",
+      "at": 19.5,
+      "dur": 4.5,
+      "scale": [
+        1,
+        1.03
+      ],
+      "pan": [
+        0,
+        -8
+      ],
+      "edge": 0.1
+    },
+    {
+      "id": "hell-brand",
+      "file": "steam-page-bg.jpg",
+      "at": 24,
+      "dur": 6,
+      "scale": [
+        1.025,
+        1.055
+      ],
+      "pan": [
+        0,
+        10
+      ],
+      "edge": 0.25
+    }
+  ],
+  "sourceRules": {
+    "existingArtOnly": true,
+    "newGeneration": false,
+    "gameplayFootage": false,
+    "newClassesPlayableClaim": false,
+    "newBossCapture": false
+  },
+  "cta": "PLAY THE FREE DEMO ON STEAM",
+  "music": {
+    "file": "prologue_theme.mp3",
+    "sourceInterval": [
+      60,
+      90
+    ],
+    "subjectiveListening": "NOT_PERFORMED"
+  },
+  "steamPage": "https://store.steampowered.com/app/4749590/EXODUSER_HELL_LORD/"
+}

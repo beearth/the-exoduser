@@ -1,3 +1,5 @@
+> 2026-10-16 통합 범위: 웹 본편 수치·현행은 최신 main 기준, 별도 Native/FDG 항목은 source pin9a4534b4의 부분 이식·명시 opt-in 계약이다. 전체 최신 본편 이식 완료가 아니다. 상세: docs/engine/FDG_PC_MAC_GIT_SYNC_20261016.md.
+
 > **2026-10-02 본편 패키지 계약 갱신:** 아래의 데모 고정/기존 포트/업로드 기록은 당시 판본의 이력이다. 현행 Steam 본편은 명시 full target·3350 포트·별도 저장/프로필로 빌드하며, 웹/데모 기본값과 데모 제한은 보존한다. 정확한 수치·구현·검수 단계는 `docs/13출시·마케팅/STEAM_FULL_RESUBMISSION_20261002.md`를 따른다.
 
 # PC 패키징 기준 (2026-09-10)
@@ -13,6 +15,8 @@
 현재 프로젝트의 PC 패키징은 아래 실제 설정을 기준으로 한다.
 
 > **2026-09-14 Steam Deck 시험본:** 별도 `tools/steamdeck-package.mjs`가 기존 Windows 실행 엔진과 현재 게임 데이터를 `out/EXODUSER-steamdeck-test-20260914-r2`에 독립 복사한다. 1280×800·중간 효과·60FPS 상한 및 작은 키캡 보정을 적용하며, 실제 Deck/Proton은 기기 부재로 미검증이다. 기존 일반 빌드 진입점·설정은 유지한다. [패키지·설정·검증 계약](STEAM_DECK_PREPARATION_20260914.md).
+
+2026-10-04 개발 명령 보완: `npm start`는 API 포함 `server.cjs:3333`, `npm run check`는 설치 없는 소스 준비 검사, `npm run build:web -- <새 하위 폴더>`는 기존 웹 스테이징 도구를 실행한다. npm 문서 검사와 Git 훅은 `tools/docs-sync-check.mjs`를 사용한다. NW.js 런타임·대상·패키지 규칙은 아래 기준을 유지한다. 상세 계약과 이번 검증 결과는 [개발 프로젝트 보고서](../12퍼포먼스·최적화/PROJECT_TOOLING_20261004.md)를 따른다.
 
 | 항목 | 현재 값 | 근거 파일 |
 |---|---|---|

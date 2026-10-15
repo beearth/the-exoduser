@@ -1,3 +1,16 @@
+## 현재 mkItem source / Native 시작 아이템 — 2026-10-14
+
+| 계약 | canonical / Native 적용 |
+|---|---|
+| 적용 범위 | 원 mkItem16405..16673/defaultItems16675..77/newrun64425..30 중tier0/common0·advanced1 시작아이템25. 전설/유니크/상위tier 전체생성의 완료를뜻하지않음 |
+| implicit | affixes 생성뒤 IMPLICIT_TABLE 사용, bracelet은 bracelet_<brType>, _implicitVal=+iv.toFixed(2) 모든unit동일. 현재source를STEP3 구형계획의val절삭/소수3자리로교체하지않음 |
+| aSlot mapping | weapon→wpn, bow→xbow, helmet→helm, shield→shield, armor→armor, boots→boots, gloves→gloves, pants→pants, necklace→neck, ring1/ring2→ring, cape→cloak, bracelet→bracelet, headband→headband. headband2는원headband재귀생성뒤slot만변경 |
+| affix count source | [0,2,3,5,6,7]; 이Nativefactory지원caller는rarity0/1만. STEP3 계획의 [0,1,2,3,4]와구분 |
+| 실제 Main 설치 | originalRNG/time→25requests/25items/26functionentries→sameitem15equip+10bag. realRNG913관측/원UID·time25/level70, 재호출시추가RNG0 |
+| 현재 파생 | actualINV/currentstatprovider설치완료; HP/MP/ST/fullapplyStats 파생은아직미설치 |
+
+아래 STEP3 교체예시는 과거설계이며 현재원source/Nativefactory에적용하는패치가아니다. 최신원함수표는 FDG_GODOT_PORT_STARTER_ITEM_FACTORY_SOURCE_FIRST_20261013.md, actual Main consumer는 FDG_GODOT_SOURCE_NEW_RUN_STATE_20261014.md다.
+
 # EXODUSER — 아이템 시스템 완전 구현 프롬프트
 
 > **2026-10-10 명칭 변경: 보석/결정 → 유물 (코드 식별자 crystal*·세이브 키 crystalBag/crystals 유지).**
@@ -452,7 +465,7 @@ const UNIQUE_SPECIAL = {
 
 ---
 
-## STEP 3. mkItem() 함수 업그레이드
+## STEP 3. mkItem() 함수 업그레이드 — 과거 교체계획, 현재 source 적용 금지
 
 **위치**: 기존 `function mkItem(slot,tier,el,rarity,wtype){` 함수 내부 끝부분  
 (약 3080~3105번 줄 — `// ── 접두사/접미사: 고급+` 주석부터 `return item;` 전까지)  

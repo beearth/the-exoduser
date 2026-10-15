@@ -50,6 +50,18 @@ const MIME = {
   '.mp4':'video/mp4','.webm':'video/webm','.glb':'model/gltf-binary','.gltf':'model/gltf+json',
 };
 
+// Development preview: exact approved original props and soil, with no directory proxy.
+const FDG_SOURCE_ROOT = path.join(ROOT, 'assets', 'map', 'ch1');
+const FDG_SOURCE_IMAGES = Object.freeze(Object.fromEntries([
+  'floor_objects/prop_g_battle.png', 'floor_objects/prop_g_edge.png',
+  'floor_objects/prop_g_root.png', 'floor_objects/prop_g_corpse.png',
+  'floor_objects/prop_g_toxic.png', 'production_finish/depth/broken_thicket.png',
+  'production_finish/depth/forest_stand.png', 'production_finish/depth/root_bank.png',
+  'production_finish/depth/root_fan.png',
+].map(relative => [`/fdg-source/ch1-1/${path.basename(relative)}`, path.join(FDG_SOURCE_ROOT, relative)]).concat([
+  ['/fdg-source/ch1-1/ground/ground_dark_soil.png', path.join(FDG_SOURCE_ROOT, 'ground_dark_soil.png')],
+])));
+
 function sanitizeSlot(name) {
   return String(name).replace(/[^a-zA-Z0-9가-힣_\-]/g, '_').slice(0, 50);
 }
@@ -74,6 +86,38 @@ function readBody(req) {
 const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, `http://localhost:${PORT}`);
   const pathname = url.pathname;
+
+  if (req.url.startsWith('/fdg-source/') || pathname.startsWith('/fdg-source/')) {
+    if (req.url !== pathname || !Object.hasOwn(FDG_SOURCE_IMAGES, pathname)) {
+      res.writeHead(404); return res.end('Unknown source image');
+    }
+    if (req.method !== 'GET' && req.method !== 'HEAD') {
+      res.writeHead(405, { Allow: 'GET, HEAD' }); return res.end();
+    }
+    let file;
+    try {
+      const canonical = FDG_SOURCE_IMAGES[pathname];
+      if (await fs.promises.realpath(canonical) !== canonical) {
+        res.writeHead(403); return res.end('Source image unavailable');
+      }
+      file = await fs.promises.open(canonical, fs.constants.O_RDONLY | (fs.constants.O_NOFOLLOW || 0));
+      const stat = await file.stat();
+      if (!stat.isFile()) { await file.close(); res.writeHead(403); return res.end('Source image unavailable'); }
+      res.writeHead(200, {
+        'Content-Type': 'image/png', 'Content-Length': stat.size, 'Cache-Control': 'no-store',
+        'X-Content-Type-Options': 'nosniff', 'Cross-Origin-Resource-Policy': 'same-origin',
+      });
+      if (req.method === 'HEAD') { await file.close(); return res.end(); }
+      const stream = file.createReadStream();
+      res.once('close', () => stream.destroy());
+      stream.on('error', () => res.destroy()).pipe(res);
+      return;
+    } catch (error) {
+      await file?.close().catch(() => {});
+      res.writeHead(error.code === 'EACCES' || error.code === 'EPERM' ? 403 : error.code === 'ENOENT' ? 404 : 500);
+      return res.end('Source image unavailable');
+    }
+  }
 
   if (req.method === 'OPTIONS') {
     res.writeHead(204, {
