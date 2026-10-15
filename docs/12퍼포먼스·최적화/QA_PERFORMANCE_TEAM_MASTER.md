@@ -372,3 +372,18 @@ ENEMY 하니스에 대한 의견(ENEMY 소유, QA는 수정하지 않음): ① �
 | 방식 | 임시 인덱스에 QA 변경만 담아 커밋(`game.html`은 `[PM-001]` 구역 6개, 세이브 문서는 1줄만). 같은 파일에 있던 타 팀 미커밋 변경(`game.html` 55줄, 세이브 문서 밸런스팀 2줄)은 작업 트리에 그대로 남겼다 |
 | 미커밋 | 총괄 문서의 QA 행·PM-001 행 갱신(총괄의 다른 미커밋 변경과 같은 파일이라 총괄 커밋에 맡김) |
 | 배포 | DEMO/EA 동기화·Vercel·Steam 없음 |
+
+## 2026-10-16 기존 R 텍스처 작업·컨텍스트 소유권 통합
+
+| id / 적용 위치 | 현재 계약 |
+|---|---|
+| 채택 범위 | h29의 _texPreJobs, h30~35, h42의 _texPreReset, h43~45, h46의 core reset만. 실제 _warmupEnsAtlas→_texPrewarmHot 및 loop→_texPreDrain 소비에 연결 |
+| 작업 | _texPreJobs Map의 URL별 {src,context:_texBySrc,status:'pending',bmp:null}. 같은 컨텍스트의 기존 작업은 URL이 GPU Map에 아직 없을 때 재사용. 상태 pending/decoded/ready/failed/stale |
+| 입력·예산 | HTTP(S), finite 양수 px, 기존 _TEXHOT_BUDGET_PX=64e6 유지. 기존 URL 등록·seen 검사 유지. _TEXHOT_INFLIGHT=2, _TEXHOT_QMAX=4; pump는 대기 비트맵 수+진행 중 수<4일 때만 추가 시작 |
+| 비동기 완료 | fetch→blob→createImageBitmap(premultiplyAlpha:'none') 유지. 작업이 stale이거나 컨텍스트 Map 참조가 바뀌면 bitmap을 닫고 업로드하지 않음. 실패는 failed, finally에서 busy 감소·pump |
+| _texPreClose | bitmap 참조를 먼저 null로 옮기고 close를 try/catch. _texPreReset은 작업을 stale로 표시·대기 비트맵 닫기·Q/Wait/Jobs 비우기. 진행 중 작업의 busy 슬롯은 Promise가 끝날 때까지 유지 |
+| init/loss 연결 | 기존 _initWebGL의 새 Map 생성 전에 reset. 기존 contextlost의 _texBySrc/_texAdoptBitmap=null 직후 reset. 원 GL·배치·복원 이벤트·성공 판정·동기 폴백은 변경하지 않음 |
+| 프레임말 drain | 기존 프레임당 1장 유지. 컨텍스트/GL/adopter 유효 시 동일 URL 중복 업로드 생략 후 Map 등록 여부로 ready/failed. 조건 불일치 stale, 예외 failed, finally에서 bitmap 닫기 |
+| 업로드 | 기존 LINEAR/CLAMP 필터·픽셀·크기 유지. _texAdoptBitmap의 JavaScript 예외는 만든 texture delete 후 throw, finally에서 기존 _curTex 바인딩 복원. GL.getError 검사 추가 없음; ready는 Map 등록 상태이며 실제 GPU 성공 검증이 아님 |
+| 분리된 R 부분 | _texPreContextLost flag와 _warmAsyncTarget/_warmAsyncJob 기반 general-Image handoff·_wqGpuImages 재예약은 이번 단위 미채택. 현재 main에 두 helper가 없으므로 해당 의존성을 임의로 연결하지 않음. 별도 잔여 판정 대상 |
+| 보존·검수 | 원 시드22/학습96/최소250000px·64MP·기존 호출/동기 Image 경로/에셋 불변. 합성 fetch/Bitmap/GL/컨텍스트 Map과 실제 함수·초기화/loss core statement만 검수. 실제 GPU·context 이벤트 전체·프레임 성능·픽셀/readPixels·사용자 창·localStorage/API 검수 아님 |
