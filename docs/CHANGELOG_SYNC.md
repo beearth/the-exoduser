@@ -1,3 +1,18 @@
+## 2026-10-16 기존 R 펫 입력·언어 표시 연결
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 채택 | h52~57 및 혼합 h364의 _refreshPetBubbleInput 호출 1개만. draw의 기존 if(!X)return 뒤에서 실행. bossCine ownerMap/_ch1DruidBeginFrame 등 나머지 h364는 미채택 |
+| 패드 Shift/R | _petPadMappedHint(kc,preferred,glyph,fallback). 기본 preferred ShiftLeft=4/LB, KeyR=10/L3 우선. 재지정은 버튼0/1/2/3/4/5/10/11의 Ⓐ/Ⓑ/Ⓧ/Ⓨ/LB/RB/L3/R3를 검색하고 없으면 원 키 토큰 표시. 실제 _GP_KEY를 읽기만 하며 매핑을 변경하지 않음 |
+| 기존 치환 | 패드 모드에만 Shift/쉬프트·R을 동적으로 치환. 그 외 KO/EN 마우스/키 토큰·word-boundary·DEX/STR/INT 보호는 기존 _padifyHint 유지. 모든 종류의 사용자 키 변경을 새로 지원한다는 뜻은 아님 |
+| 가시덫 문구 | cat의 기존 원문 '1번! 가시덫으로 적 묶어!'만 실제 SKILL_SLOTS의 spikeTrap 위치0~3을 표시. 키보드1~4, 패드 LT+Ⓐ/Ⓑ/Ⓨ/Ⓧ. 기존 _LT_COMBO A=1/B=2/Y=3/X=4와 일치. 신규 원문/번역키 없음 |
+| 화면 갱신 | _refreshPetBubbleInput은 t>0인 현재 말풍선의 실제 petBubbleTxt leaf만 갱신. mode/_GP_KEYIDX 객체 identity/txt/node/who/spikeTrap slot을 _petHintView에 캐시. 동일 상태는 다시 쓰지 않고 변경된 표시 문자열만 textContent에 씀 |
+| 입력 설정 연결 | 기존 _rebuildGpKeyIdx가 현재 _GP_KEY로 새 역맵 객체를 생성하는 흐름을 읽음. 설정 저장/키 주입/슬롯 배정/게임 입력 권위는 변경하지 않음 |
+| 언어 | _refreshPetBubbleLanguage는 기존 현재/대기 pair 원문 번역 후 _petBubbleShow(who,txt,true). textOnly는 portrait src·위치/크기/opacity를 건드리지 않고 현재 leaf만 갱신. t/mt/pair 시간·쿨다운·음성 재시작 없음 |
+| DOM 안전 | _petBubbleShow는 textOnly에서 missing/non-leaf면 반환, 일반 표시도 leaf일 때만 텍스트 설정. _refreshPetBubbleInput도 children.length===0을 확인. 부모/자식 노드 구조를 교체하지 않음 |
+| 일반 표시 보존 | portrait v4·480px·기존 crow/cat 박스·연습 패널 옆 cat 위치·ui-scale×1.5·opacity .6·폰트/기존 페이드 유지. 정상 발화/우선순위/h58 firstItem/음성/저장/전투 변경 없음 |
+| 검수·한계 | 자기 DOM/매핑/슬롯/번역 대역에서 실제 함수와 draw entry의 guard/call만 검수. 전체 draw/speech/실물 패드/브라우저/설정·localStorage/API·사용자 창 검수 아님. 캐시 밖 외부 DOM 변경 전반의 자동 복구나 모든 번역 언어 키 토큰 지원을 주장하지 않음 |
+
 ## 2026-10-16 기존 R 첫 아이템 안내의 발화 수락
 
 | id / 적용 위치 | 현재 계약 |
