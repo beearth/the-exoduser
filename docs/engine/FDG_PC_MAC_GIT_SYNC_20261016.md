@@ -369,3 +369,17 @@ R의 기존 gameConfirm pending resolver 가드 한 줄을 main에 결합했다.
 | 별도 보류 | general-image warm db56 봉인 함수 범위와 native/맵/캐릭터/타 팀 HOLD는 이번 단위에 포함하지 않음 |
 
 소스 일부의 정상 부모 이식이며 최신 게임 전체 완료나 이식 진행률을 뜻하지 않는다. 외부 단위 기록: R-skill-activation-result-integration-20261016.
+## 2026-10-16 R 허수아비 회수 원장 독립 이식
+
+| 항목 | 이번 범위 |
+|---|---|
+| 출발 main | 75cb7c4a47b65ff800c11c98abbb4e0595724537 |
+| R 원본 선택 | h98 한 줄: _vs2.resHP=_vs2.resMP=_vs2.resST=0 |
+| 코드 적용 | game.html의 실제 _dispatchSkillSlot 수동 voidScarecrow 회수에서 기존 회복·문구 직후 원장 소비 |
+| 문제 | dualScarecrow absorbed>0이면 회수 후 폭발 대기 객체가 남아, 원장을 소비하지 않을 경우 반복 입력으로 같은 축적량을 재차 반환 |
+| 사전 보존 | 소유 code1/docs4의 5경로 WORK/HEAD를 이번 첫 코드 수정 전에 바이트 백업 |
+| 검증 | 실제 dispatcher + 합성 자원/허수아비 상태의 신규 6군, 인라인 구문 1개 PASS. 정상 수동 회수·상한·합체 지연·빈 원장·pause 확인 |
+| 그대로인 동작 | 기존 비용/설치 쿨다운/흡수/피해/QE, 반복 입력의 폭발 타이머 재설정·효과·숙련도, 자동회수·공성유령 |
+| 한계 | 실제 HP/시간/AI/흡수/피해/폭발/세이브/창 실행 없음. PC/native 및 최신 전체 실행 검증 아님 |
+
+별도 general-image warm db56 및 모든 타 HOLD는 이번 단위에 포함하지 않는다. 외부 단위 기록: R-scarecrow-recall-ledger-integration-20261016.
