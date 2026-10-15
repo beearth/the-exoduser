@@ -549,3 +549,16 @@ R의 기존 gameConfirm pending resolver 가드 한 줄을 main에 결합했다.
 | 검증 | 실제 함수와 기존 등록 callback을 own 입력/P/event target에서 새5그룹/main inline1 확인. _resetInteractInput 내부는 대역이며 기인수 검사 재연 없음. 실제 창·포커스·전투·자원·시계·저장/API·Native·PC 실행 없음 |
 
 code1/docs4 exact5의 WORK/HEAD 개별10 기록은 첫 제품쓰기 전이다. 기존 R9a ref·WIP·HOLD·2_3·보호 창/save/API/process를 유지한다. 초기 넓은 docs 검색535행 출력에는 기존 인수 검사 설명도 포함됐으나 해당 proof/검사를 열거나 재연하지 않았다. h111 _ch1MouseScene 프로젝션 연계는 이번 이식에 포함하지 않으며 그 의미 판정 완료를 주장하지 않는다. 전체 최신 게임 이식 완료가 아니다.
+
+## 2026-10-16 R h193 fireAura MP 소모 이식
+
+| 항목 | 현재 main 계약 |
+|---|---|
+| id·이름·소유 위치 | fireAura · 지옥진 · _MAGIC_E_HANDLERS.fireAura, 실제 _execMagicE 선택 handler 경로 |
+| 비용·시점 | 기존 고정 MP100. 원 level/쿨/MP<100 gate를 통과한 뒤 원 R 위치 P.mp-=100 → 기존 magicCast/st2/atkArc 설정 → true 반환 |
+| 거절·fallback | level 미충족은 기존 false/fallback 경계 유지. 쿨 또는 MP 부족은 기존 안내/true로 종료하며 무차감. handler true이면 _execMagicE의 공용 useMp fallback을 실행하지 않아 추가 공용 차감 없음 |
+| 보존 | 공통 input gate·선택·속도/캐스트·완료 zone maxT600·쿨720·합체·피해/RNG·다른 실제 handler·QE 그대로. 새 할인/clamp/default/성공gate·예약/환불·예외 복구 없음 |
+| 예외 순서 | 원 R처럼 MP 차감 후 기존 캐스트 설정/속도 provider 호출. 해당 원 표현식의 예외를 새로 잡거나 환불하지 않음 |
+| 검증 | 실제 fireAura handler/_execMagicE와 own P·속도/안내/공용비용/다른handler 대역 새5그룹/main inline1. 완료 분기 직접 MP 참조 없음/600·720은 정적 확인만. 실제 update·완료 zone·발사/전투·실MPHP/clock/saveAPI·GUI·Native·PC 실행 없음 |
+
+code1/docs4 exact5의 WORK/HEAD 개별10 기록은 첫 제품쓰기 전이다. 현재 다른 HTML byte/기존 원 R ref·WIP·HOLD·2_3·보호창/saveAPI/process를 유지한다. 초기 선택 source 조회에 인접 blueShot/기본마법 완료본문도 표시됐으나 읽기만 했고 해당 실제 handler/완료본문은 실행·별도 검사·수리하지 않았다. 기존 성공 proof/검사 재연 없음. 전체 최신 게임 이식 완료가 아니다.

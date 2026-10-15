@@ -53714,3 +53714,10 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 |---|---|
 | game.html _clearHeldInput | 기존 P guard/beamHold 해제에 원 R _mmAiming/_mmCharging/_msAiming/_msCharging/_bwAiming/_tsAiming=false만 추가. 원 reset 순서·blur/hidden caller·다른 상태/자원/QE 유지 |
 | 새 검증 | 실제 함수+기존 등록 callback/own 입력·P·event target 새5그룹/main inline1. 실제 사용자 창/포커스·전투·자원·시계·저장/API·Native·PC 검증 아님; _resetInteractInput 내부 대역·기존 성공검사 재연 없음 |
+
+## 2026-10-16 — R h193 fireAura MP100 차감 연결
+
+| 대상 | 변경·검증 범위 |
+|---|---|
+| game.html _MAGIC_E_HANDLERS.fireAura | 원 level/쿨/MP100 gate 뒤 원 R P.mp-=100만 추가. 캐스트 설정/true 반환·dispatcher의 fallback 소유·600/720·다른 handler/QE 유지 |
+| 새 검증 | 실제 handler/_execMagicE+own P·provider 대역 새5그룹/main inline1, 비용경계/이중차감 방지/원 예외순서 확인. 실제 update·캐스트완료/발사·전투/MPHP·clock/saveAPI/GUI·Native·PC 검증 아님 |

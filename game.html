@@ -28871,7 +28871,7 @@ const _MAGIC_E_HANDLERS={
     if(P.skills.fireAura<1)return false;
     if((P._faCd||0)>0){showPH(_T('쿨 ')+~~((P._faCd||0)/60)+_L('초','s'),'#ff6600');return true}
     if(P.mp<100){showPH(_T('MP 부족! (100)'),'#ff4400');return true}
-    P.s='magicCast';P.st2=~~(10/pMagicSpd());P.atkArc=P.facing;return true;
+    P.mp-=100;P.s='magicCast';P.st2=~~(10/pMagicSpd());P.atkArc=P.facing;return true;
   },
   elemMissile(){
     if(P.skills.elemMissile<1)return false;
