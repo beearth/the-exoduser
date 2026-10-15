@@ -53685,3 +53685,10 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 | docs/14밸런스+수치테이블/BASIC_ATTACK_DAMAGE_20260910.md | 피해 emitter와 ST 라우터 소유 구분. 기존 피해/RNG·옛 검사 결과 유지 |
 | docs/engine/FDG_PC_MAC_GIT_SYNC_20261016.md | 독립 이식·선행보존·실함수/합성 검사 범위 기록 |
 | 검증 | actual router/_stDisc+합성 발사/ST/할인 신규6군·구문1 PASS. 실제 update/투사체/피해/RNG/HPclock/saveAPI/native/GUI 실행0 |
+
+## 2026-10-16 — R h238+239 hellRay 설치 확정 자원 검사
+
+| 대상 | 변경 | 검증 범위 |
+|---|---|---|
+| game.html update hellRay | 확정 클릭에서 원 R 스택<=0 우선 거절/조준 종료, MP<100 거절/조준 유지, else 기존 성공본문. MP100+스택1·차감순서·충전600·범위·합체·효과·입력 소유 유지 | 실제 확정 블록+own 자원/효과 대역 새6그룹, main inline 구문1; 실발사/전투/Native/저장/PC 검증 아님 |
+| iceStorm R h240 | 현재 main의 동일 재검사·MP40 차감 확인으로 중복 적용 없음 | 정적 disposition만, 기존 검사 재연 없음 |

@@ -504,3 +504,14 @@ R의 기존 gameConfirm pending resolver 가드 한 줄을 main에 결합했다.
 | 보호 | h189 dormant helper 등 기분류·기인수 proof 재연0, db56 및 모든 타HOLD/원R·WIPrefs 보존. 전체최신/PC/native/visual/성능 완료 주장0 |
 
 외부 단위 기록: R-auto-bow-normal-st-cost-integration-20261016. 선행 검색에서 과거 밸런스/피해 검사 요약 행을 읽었으나 실제 산출물 재열기·재계산·재실행·새 증거 전용은 하지 않았다.
+
+## 2026-10-16 R h238+239 참회 확정 자원 연결
+
+| 항목 | 이식 범위와 한계 |
+|---|---|
+| 제품 | game.html의 실제 update hellRay 조준 확정에서 원 R 스택→MP100 거절 순서와 else 래핑만 연결 |
+| 원 의미 | MP100/스택1 차감순서, 600f 재충전·지속, 범위·거리·합체·효과·좌표/RNG·입력 소유 유지. 스택 부족은 조준 종료, MP 부족은 조준 유지 |
+| h240 | 현재 iceStorm 재검사와 MP40 차감이 이미 있어 정적 동등 판정, 중복 이식·기인수 검사 재연 없음 |
+| 검증 | 실제 확정 블록 추출 + own 자원/zone/효과 대역 새6그룹, main inline 구문1. 전체 update·선택·실발사·전투·Native·PC·저장 검증 아님 |
+| 보존 | 코드1/docs5 exact6 WORK/HEAD을 첫 제품쓰기 전에 각 별도 시점 기록과 함께 백업. W/기존 HOLD·창·save/API/process 유지 |
+| 범위 제한 | prewrite checker의 importmap JS 파싱 오류와 문서 작성 helper의 Python 구문 오류를 해당 helper에서 수정; 제품을 검사에 맞춰 변경하지 않았으며 firstWholeClean=false. 전체 최신 게임 이식 완료 아님 |
