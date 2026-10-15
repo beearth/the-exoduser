@@ -127,10 +127,15 @@ http.createServer(async (req, res) => {
   }
 
   if (pathname === '/api/save' && req.method === 'POST') {
-    const body = await readBody(req);
-    const slot = sanitizeSlot(body.slot || 'default');
+    let body, slot;
+    try {
+      body = await readBody(req);
+      slot = sanitizeSlot(body.slot || 'default');
+      if (body.data) fs.writeFileSync(path.join(SAVE_DIR, slot + '.json'), JSON.stringify(body.data, null, 2), 'utf8');
+    } catch (error) {
+      return sendJSON(res, 500, { ok: false, error: 'Internal Server Error' });
+    }
     if (!body.data) return sendJSON(res, 400, { ok: false, error: 'No data' });
-    fs.writeFileSync(path.join(SAVE_DIR, slot + '.json'), JSON.stringify(body.data, null, 2), 'utf8');
     return sendJSON(res, 200, { ok: true, slot });
   }
 
@@ -161,9 +166,14 @@ http.createServer(async (req, res) => {
     return sendJSON(res, 200, { ok: true, mats: 0 });
   }
   if (pathname === '/api/mats' && req.method === 'POST') {
-    const body = await readBody(req);
-    const n = Math.max(0, Math.min(Math.floor(+body.mats || 0), Number.MAX_SAFE_INTEGER));
-    fs.writeFileSync(MATS_FILE, JSON.stringify({ mats: n, ts: Date.now() }), 'utf8');
+    let n;
+    try {
+      const body = await readBody(req);
+      n = Math.max(0, Math.min(Math.floor(+body.mats || 0), Number.MAX_SAFE_INTEGER));
+      fs.writeFileSync(MATS_FILE, JSON.stringify({ mats: n, ts: Date.now() }), 'utf8');
+    } catch (error) {
+      return sendJSON(res, 500, { ok: false, error: 'Internal Server Error' });
+    }
     return sendJSON(res, 200, { ok: true, mats: n });
   }
 

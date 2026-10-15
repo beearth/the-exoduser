@@ -1,4 +1,14 @@
 
+## 2026-10-16 서버·저장 오류 처리의 main 결합
+
+| 항목 | 이번 범위 |
+|---|---|
+| 코드 | R committed server.cjs/node-main.js만 공통base3way 결합. 개발 PORT1~65535/HOST·저장 override·원자적JSON 저장·ETag/Range, NW save/mats 오류500 |
+| 보존 | main HTML gzip 캐시·release/saveNamespace·mjs MIME·FDG whitelist. 원R WIP refs 유지·새 main 재적용0 |
+| 확인 | JS2 구문, 포트 없는 격리 VM/자기 임시 파일의 새 영향13묶음 PASS. 실제 서버·save/API/환경·사용자창 조작0 |
+| 경계 | 소스 반영과 실행 중 서버 재로드 구분. PC/나머지R/native전체 미완료. 상세 docs/engine/FDG_PC_MAC_GIT_SYNC_20261016.md |
+
+
 ## 2026-10-16 R 기존 VFX의 main 소비 연결
 
 | 항목 | 이번 현재 범위 |

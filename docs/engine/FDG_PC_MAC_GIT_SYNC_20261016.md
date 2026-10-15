@@ -2,7 +2,7 @@
 
 | 항목 | 이번 통합의 계약·현재 한계 |
 |---|---|
-| 최신 웹 기준 | origin/main c844a3ecd38973e2bc53b8db8af8efe5ca880794. build-target·player-attack-remaster·WarriorDashFlight·Skill Forge·최신 튜토리얼 배지/난이도 마커를 보존한다. |
+| 첫 웹 통합 기준 | base main c844a3ecd38973e2bc53b8db8af8efe5ca880794. 현재 반영 상태는 아래 후속 단위를 따른다. build-target·player-attack-remaster·WarriorDashFlight·Skill Forge·최신 튜토리얼 배지/난이도 마커를 보존한다. |
 | 엔진 원작업 | codex/fdg-engine-studio-20261010 a3fa607f0d27549b6fc269593cb6a3a1af0fb0e1. 공통 base a5537745ca6a9785f704887bc1b4f9d7c80f703f 이후 main407/엔진126 커밋을 분리 보존한다. |
 | 원본 보존 | 원 W/R 작업 폴더의 미커밋 파일을 덮어쓰지 않는다. 엔진 원126 DAG는 원 branch와 외부 engine-126-before-sync.bundle로 보존한다. |
 | 원격 반영 방식 | 로컬 HTTPS credential 부재/SSH trusted host 부재. 공식 GitHub connector로 검증된 tree를 현재 main의 자식 commit으로 생성하고 expected_sha·force=false로 갱신한다. 원126 SHA가 그대로 원격 merge됐다는 뜻은 아니다. 반영 전까지 원격 완료 아님. |
@@ -113,3 +113,16 @@ d9e1cbce는 기존 main+W 통합이다. R/main 공통 base aacc7b02 대비 실�
 | kraken_water_orb | 24 | 10.8 | true | 3840×2560 | 6×4 |
 
 | 새 웹 staging 선택 확인 | build-web의 기존 selectWebRuntimeFiles를 현재 후보 source 목록에 적용해 새 필수27파일 누락0. staging 출력 생성이나 export 실행 없이 선택 결과만 확인했다. |
+
+
+## 실 Mac 웹 소스 정렬·서버 오류 처리 후속 (2026-10-16)
+
+| 범위 | 반영 상태·한계 |
+|---|---|
+| 실 Mac 웹 첫 정렬 | R codex/mac-live-main-20261016을 main2ad26d93에 정상 tracking 전환. localhost3333 GET game.html 4178768B와 atlas mjs가 WORK/HEAD와 byte일치. 기존 탭 메모리/실행 중 server.cjs 코드 재로드 증거가 아님 |
+| 원 작업 보존 | 원9a branch와 exact30physical/51logical의 INDEX·WORK 분리 stash, 이름 있는 refs/fdg-preserved/r-source30-20261016 및 r-source30-resume1-20261016 보존. 새 main apply/pop/push 없음 |
+| 추적 설정 | 기존 backup 전용 fetch refspec 보존 후 비강제 refs/heads/main:refs/remotes/origin/main만 repo-local 추가. 전후 exact fetch값은 외부 기록, 변경 전 전체 config byte backup은 없음 |
+| 이번 서버 소스 | R 공통base aacc7b02의 committed server.cjs/node-main.js delta만3way 결합. 개발 PORT/HOST·EXODUSER_SAVE_DIR·atomicSaveJSON/ETag/Range, NW save/mats 오류500. main gzip·release/saveNamespace·mjs MIME·FDG source whitelist 보존 |
+| 저장·HTTP 정본 | docs/15 세이브+데이터구조/15 세이브+데이터구조.md 및 docs/12퍼포먼스·최적화/12퍼포먼스·최적화.md의 2026-10-16 현행 계약. 새 저장 포맷·사용자 데이터 이관 없음 |
+| 새 검증 | JS2 구문 및 포트 없는 자기 임시 파일/VM handler의 13검사 묶음 PASS. 기존 VFX/served/old suite·PNG proof 재실행 없음. 실제 API/save/환경 접근·서버 재시작0 |
+| 남은 범위 | 실행 중 서버 자동 재로드0. PC 실행·나머지 R delta·Godot 전체 이식/품질·native cold LAVA 준비 미완료. 이번 commit의 parent에 R9a를 연결해 전체 통합으로 표시하지 않는다 |
