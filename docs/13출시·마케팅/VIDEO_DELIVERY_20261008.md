@@ -1,5 +1,17 @@
 # 2026-10-08 인게임 홍보 영상 납품·동기화
 
+## 2026-10-16 — 전사 인트로 접촉 컷 교정 V1 · 공개 전 검토본
+
+**별도 교정 영상1·새 업로드0·공개 승인0.** 사용자 피드백의 접촉 장면81~84초를 제외하고 기존 대검 전투84~87.5초를81~87.5초에 배치했다. 약0.53846배속 편집이며 새 프레임 생성·인게임 촬영·게임 모션 품질 개선이 아니다. 길이96.4초·원본 AAC4520패킷·KO/EN21큐와 타이밍을 보존했다. 5604프레임 전체 기술 decode 및 연결 지점8프레임의 소스 대응만 확인했고, 수정 구간 연속 모션·전편 시청·실제 청취·사용자 편집 승인은 남아 있다. 원본과 이전 RETOUCH 이력을 보존한다.
+
+- 전체 검토본: `/Users/fordeargamers/the-exoduser/output/warrior-intro-contact-cut-20261016/REVIEW/EXODUSER_WARRIOR_INTRO_CONTACT_CUT_V1_20261016_REVIEW.mp4`
+- 수정 구간12초: `/Users/fordeargamers/the-exoduser/output/warrior-intro-contact-cut-20261016/REVIEW/EXODUSER_WARRIOR_INTRO_CONTACT_CUT_78-90s_20261016_REVIEW.mp4`
+- 미리보기: `/Users/fordeargamers/the-exoduser/output/warrior-intro-contact-cut-20261016/REVIEW/preview.html`
+- 근거: `marketing/operations/warrior-intro-contact-cut-20261016/receipt.json` 및 `WARRIOR_INTRO_CONTACT_CUT_REVIEW_20261016.md`.
+- 다음 소재 한 건: 전사 인트로 접촉 컷 교정 V1의 수정 구간 연속 재생·전편 시청·실제 청취와 사용자 편집 검토 후 교체 판단. 악의구 시연은 후속 준비이며 새 사용자 플레이 녹화는 별도 대기.
+
+migration 새 HEAD `c440e02c`에서 기존 VFX13계열의 웹 본편 소비 연결 `2ad26d93`을 커밋 문서로 확인했다. 자연 전투·실제 PC 빌드·전체 보스전 완료·공개 Steam 데모 배포는 미확인이다. 게시/로그인/허가 요청 반복0.
+
 ## 2026-10-15 — 전사 인트로 약82초 접촉 컷 사용자 피드백
 
 **편집 품질 RETOUCH·교정 영상0·새 업로드0·공개 승인0**. 사용자가 끝부분의 몬스터와 머리를 맞댄 자세가 어색하다고 지적했다. 원본96.4초 MP4의 약82초 실제 프레임에서 목을 미는 손과 이마가 맞닿은 구도가 겹쳐 공격 의도가 불명확함을 확인했다. [프레임·출처·미완료 범위](../../marketing/operations/warrior-intro-review-20261015/editorial-issue.json).

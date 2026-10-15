@@ -1,0 +1,78 @@
+{
+  "height" : 1080,
+  "frames" : [
+    {
+      "expectedFrame" : "\/Users\/fordeargamers\/the-exoduser\/output\/warrior-intro-contact-cut-20261016\/QA\/expected-80.9833.png",
+      "actualSourceTime" : 80.966666666666669,
+      "outputTime" : 80.983333333299996,
+      "actualOutputTime" : 80.966666666666669,
+      "expectedSourceTime" : 80.983333333299996,
+      "outputFrame" : "\/Users\/fordeargamers\/the-exoduser\/output\/warrior-intro-contact-cut-20261016\/QA\/edited-80.9833.png"
+    },
+    {
+      "expectedFrame" : "\/Users\/fordeargamers\/the-exoduser\/output\/warrior-intro-contact-cut-20261016\/QA\/expected-81.0000.png",
+      "actualSourceTime" : 84,
+      "outputTime" : 81,
+      "actualOutputTime" : 81,
+      "expectedSourceTime" : 84,
+      "outputFrame" : "\/Users\/fordeargamers\/the-exoduser\/output\/warrior-intro-contact-cut-20261016\/QA\/edited-81.0000.png"
+    },
+    {
+      "expectedFrame" : "\/Users\/fordeargamers\/the-exoduser\/output\/warrior-intro-contact-cut-20261016\/QA\/expected-82.0000.png",
+      "actualSourceTime" : 84.533333333333331,
+      "outputTime" : 82,
+      "actualOutputTime" : 81.990494791666663,
+      "expectedSourceTime" : 84.538461538461533,
+      "outputFrame" : "\/Users\/fordeargamers\/the-exoduser\/output\/warrior-intro-contact-cut-20261016\/QA\/edited-82.0000.png"
+    },
+    {
+      "expectedFrame" : "\/Users\/fordeargamers\/the-exoduser\/output\/warrior-intro-contact-cut-20261016\/QA\/expected-83.5000.png",
+      "actualSourceTime" : 85.333333333333329,
+      "outputTime" : 83.5,
+      "actualOutputTime" : 83.476171875000006,
+      "expectedSourceTime" : 85.34615384615384,
+      "outputFrame" : "\/Users\/fordeargamers\/the-exoduser\/output\/warrior-intro-contact-cut-20261016\/QA\/edited-83.5000.png"
+    },
+    {
+      "expectedFrame" : "\/Users\/fordeargamers\/the-exoduser\/output\/warrior-intro-contact-cut-20261016\/QA\/expected-86.0000.png",
+      "actualSourceTime" : 86.683333333333337,
+      "outputTime" : 86,
+      "actualOutputTime" : 85.983333333333334,
+      "expectedSourceTime" : 86.692307692307693,
+      "outputFrame" : "\/Users\/fordeargamers\/the-exoduser\/output\/warrior-intro-contact-cut-20261016\/QA\/edited-86.0000.png"
+    },
+    {
+      "expectedFrame" : "\/Users\/fordeargamers\/the-exoduser\/output\/warrior-intro-contact-cut-20261016\/QA\/expected-87.4833.png",
+      "actualSourceTime" : 87.483333333333334,
+      "outputTime" : 87.483333333299996,
+      "actualOutputTime" : 87.469075520833329,
+      "expectedSourceTime" : 87.491025641007695,
+      "outputFrame" : "\/Users\/fordeargamers\/the-exoduser\/output\/warrior-intro-contact-cut-20261016\/QA\/edited-87.4833.png"
+    },
+    {
+      "expectedFrame" : "\/Users\/fordeargamers\/the-exoduser\/output\/warrior-intro-contact-cut-20261016\/QA\/expected-87.5000.png",
+      "actualSourceTime" : 87.5,
+      "outputTime" : 87.5,
+      "actualOutputTime" : 87.5,
+      "expectedSourceTime" : 87.5,
+      "outputFrame" : "\/Users\/fordeargamers\/the-exoduser\/output\/warrior-intro-contact-cut-20261016\/QA\/edited-87.5000.png"
+    },
+    {
+      "expectedFrame" : "\/Users\/fordeargamers\/the-exoduser\/output\/warrior-intro-contact-cut-20261016\/QA\/expected-88.0000.png",
+      "actualSourceTime" : 88,
+      "outputTime" : 88,
+      "actualOutputTime" : 88,
+      "expectedSourceTime" : 88,
+      "outputFrame" : "\/Users\/fordeargamers\/the-exoduser\/output\/warrior-intro-contact-cut-20261016\/QA\/edited-88.0000.png"
+    }
+  ],
+  "monotonicPresentationTimestamps" : true,
+  "lastFrameTime" : 96.38333333333334,
+  "fullSubjectiveWatch" : "NOT_PERFORMED",
+  "width" : 1920,
+  "duration" : 96.400000000000006,
+  "actualListening" : "UNHEARD",
+  "nominalFPS" : 58.127925872802734,
+  "fullVideoDecodedFrames" : 5604,
+  "readerStatus" : "COMPLETED"
+}

@@ -1,17 +1,18 @@
 {
   "schemaVersion": 2,
-  "updatedAtKST": "2026-10-15 21:47 KST",
-  "updatedAtUTC": "2026-10-15T12:47:04.300045+00:00",
+  "updatedAtKST": "2026-10-16 02:56 KST",
+  "updatedAtUTC": "2026-10-15T17:56:05.200755+00:00",
   "policy": "실제 화면·영상 또는 단계가 명확한 기존 원화와 간결한 설명을 함께 준비하고, 공개 전 완성 미리보기를 먼저 인도한다. 동일 영상의 확대 화면과 전체 화면을 동시에 복제하지 않으며 원화를 가리는 불투명 자막판을 사용하지 않는다. 매시간 점검을 긴 글 연속 게시 빈도로 해석하지 않는다. UI·스킬·캐릭터의 독립 준비를 계속하고 대표 보스전 완료 영상만 총괄 완료를 기다린다.",
   "developmentObservation": {
     "checkout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
-    "commit": "9a4534b42f74093095ebc3364a25dd104e93b379",
-    "scope": "12c29afe 이후 docs·커밋·관련 소비 연결의 읽기 전용 조사. 미커밋 상태나 Steam 배포 상태를 HEAD로 증명하지 않음",
-    "lastCheckedAtUTC": "2026-10-15T10:37:53Z",
-    "latestResult": "migration HEAD9a4534b4 동일. main Godot e7f09d71 공격속도/회복 부분 수리의 commit·receipt·커밋 문서 새 절만 확인; 원음·정상 사용자 플레이·새 시각 승인·홍보 공개 준비0.",
-    "gameHtmlSha256": "5212e3a33c201eec08d09b132092c1a063fea88f36fccef494ea351f3565d2cd"
+    "commit": "c440e02c773d1578cd2ad53352af39793de560da",
+    "scope": "기존 관측9a4534b4 이후 새 commit 메타데이터와 VFX 연결 commit2ad26d93의 관련 문서 추가 절 확인. 미커밋 변경·실제 PC 빌드·Steam 데모 적용은 증명하지 않음.",
+    "lastCheckedAtUTC": "2026-10-15T17:56:05.200755+00:00",
+    "latestResult": "migration에 기존 VFX13계열 소비·MIME·패키징 소스 연결2ad26d93과 서버 저장/HTTP 오류 처리c440e02c가 통합됐다. 소스 로더/연결 검사는 실제 자연 전투·PC 실행·Steam 배포를 증명하지 않는다. 총괄은 환불 계산 검사 보고 후 브라우저 캐시 버전 표시 갱신 중이며 전체 완료 보고는 없다.",
+    "gameHtmlSha256": null,
+    "gameHtmlSha256State": "NOT_REHASHED; prior5212e3a3 hash belongs to9a4534b4 and is retained in previousDevelopmentObservations"
   },
-  "nextMaterial": "전사 인트로 약82초 접촉 컷의 별도 교정 편집안과 완성 미리보기. 내레이션·음악·자막 연결을 보존하며 전편 시청·실제 청취와 공개 교체 판단은 별도 미완료.",
+  "nextMaterial": "전사 인트로 접촉 컷 교정 V1의 수정 구간 연속 재생·전편 시청·실제 청취와 사용자 편집 검토 후 교체 판단. 악의구 시연은 후속 준비이며 새 사용자 플레이 녹화는 별도 대기.",
   "newPublicationReadyCount": 0,
   "publicationEvidenceDate": "2026-10-08 과거 영상 게시 검증 + 2026-10-10 개발 글5건 공개 검증 및 Shorts A/B 비공개·공식 목록 제외 확인",
   "items": [
@@ -797,94 +798,127 @@
       "actualListening": "UNHEARD",
       "publicationApproved": false,
       "newUpload": false,
-      "editorialVerdict": "RETOUCH: USER_REPORTED_FOREHEAD_CONTACT_SHOT",
+      "editorialVerdict": "CONTACT_CUT_V1_PREPARED; SUBJECTIVE_REVIEW_PENDING",
       "editorialIssue": "marketing/operations/warrior-intro-review-20261015/editorial-issue.json"
+    },
+    "contactCutRevision": {
+      "preparedAtUTC": "2026-10-15T17:56:05.200755+00:00",
+      "state": "CONTACT_CUT_V1_REVIEW_ONLY; EDITORIAL_ACCEPTANCE_PENDING",
+      "receipt": "marketing/operations/warrior-intro-contact-cut-20261016/receipt.json",
+      "fullVideo": "/Users/fordeargamers/the-exoduser/output/warrior-intro-contact-cut-20261016/REVIEW/EXODUSER_WARRIOR_INTRO_CONTACT_CUT_V1_20261016_REVIEW.mp4",
+      "excerpt": "/Users/fordeargamers/the-exoduser/output/warrior-intro-contact-cut-20261016/REVIEW/EXODUSER_WARRIOR_INTRO_CONTACT_CUT_78-90s_20261016_REVIEW.mp4",
+      "preview": "/Users/fordeargamers/the-exoduser/output/warrior-intro-contact-cut-20261016/REVIEW/preview.html",
+      "removedSourceRangeSeconds": [
+        81,
+        84
+      ],
+      "replacementSourceRangeSeconds": [
+        84,
+        87.5
+      ],
+      "replacementOutputRangeSeconds": [
+        81,
+        87.5
+      ],
+      "replacementSpeed": 0.5384615384615384,
+      "durationSeconds": 96.4,
+      "originalSourcePreserved": true,
+      "audioCompressedPayloadExactMatch": true,
+      "captionEachLanguageCues": 21,
+      "captionBytesUnchangedFromV2": true,
+      "fullVideoDecodeFrames": 5604,
+      "frameRate": "variable; replacement frames retimed, no interpolation; not constant60FPS",
+      "sampledBoundaryVisualCheck": "PASS_SCOPED; 8 frames",
+      "wholeContinuousWatch": "NOT_PERFORMED",
+      "actualListening": "UNHEARD",
+      "publicationApproved": false,
+      "newUploads": 0,
+      "newGameplayCapture": false,
+      "files": [
+        {
+          "path": "/Users/fordeargamers/the-exoduser/output/warrior-intro-contact-cut-20261016/REVIEW/EXODUSER_WARRIOR_INTRO_CONTACT_CUT_V1_20261016_REVIEW.mp4",
+          "bytes": 195445543,
+          "sha256": "5c1af6f1daedba40ee891e1c5cf653d55cfa5fa84c6b5ead81377a60d466647a"
+        },
+        {
+          "path": "/Users/fordeargamers/the-exoduser/output/warrior-intro-contact-cut-20261016/REVIEW/EXODUSER_WARRIOR_INTRO_CONTACT_CUT_78-90s_20261016_REVIEW.mp4",
+          "bytes": 24607153,
+          "sha256": "de0404db18684e2172db65f76a8f86e8837c2d296789e1c5ae50e19e6bb71c2e"
+        },
+        {
+          "path": "/Users/fordeargamers/the-exoduser/output/warrior-intro-contact-cut-20261016/REVIEW/preview.html",
+          "bytes": 7227,
+          "sha256": "0a40431362f66c8e7172d25cc9194ad373a04a3976a9e9d9cca40b7e3ed5ee04"
+        },
+        {
+          "path": "/Users/fordeargamers/the-exoduser/output/warrior-intro-contact-cut-20261016/REVIEW/EXODUSER_WARRIOR_INTRO_20261008_CAPTIONS_V2_en.vtt",
+          "bytes": 1714,
+          "sha256": "0638ea1d8542444d03bf7500bb8809a85079438a33fc90cc2a232682262380d1"
+        },
+        {
+          "path": "/Users/fordeargamers/the-exoduser/output/warrior-intro-contact-cut-20261016/REVIEW/EXODUSER_WARRIOR_INTRO_20261008_CAPTIONS_V2_ko.vtt",
+          "bytes": 1797,
+          "sha256": "3d73adeecf8c3e2b72f9728d94946e7b15b43cb54dcd22b782eaf830b8199cd4"
+        }
+      ]
     }
   },
   "latestProducerObservation": {
-    "checkedAtUTC": "2026-10-15T10:37:53Z",
-    "cursor": "bd9703ff-6089-48ea-90e5-8df178a39cf6:105",
-    "status": "idle; completed",
+    "checkedAtUTC": "2026-10-15T17:56:05.200755+00:00",
+    "cursor": "bd9703ff-6089-48ea-90e5-8df178a39cf6:114",
+    "status": "active; inProgress",
     "completionConfirmed": false,
-    "scope": "총괄 최신 부분 인수 보고·명시된 새 receipt2개·로컬 commit 메타데이터와 관련 커밋 문서1개의 추가 절만 읽기 전용 대조. 코드/자산/옛 검사/후보 실행·화면·원음 재검증0.",
-    "report": "main checkout e7f09d71의 일반 공격·기검참 후딜을 실제 무기·DEX·공속 계산에 연결한 부분 수정과 E 회복·표시 프레임 선택을 커밋 문서/첫 receipt로 대조했다. 새 runtime22는 12+6+4로 구분하며 독립 원식 configuration12·프레임 sample485를 추가 독립 검사로 합산하지 않는다. 검토 후보에 camera0b8/Ewave693이 포함되지만 새 PNG·시각 품질 승인0, RETOUCH·latest_full_game=false·독립 불변 배송본 아님. 원본 공격·타격 효과음 연결과 전체 저장/UI/자연 플레이 검수는 미완이다.",
-    "godotPartialCheckpoint": {
-      "checkout": "/Users/fordeargamers/the-exoduser",
-      "commit": "e7f09d715fee2fc07b782ee7b5367445ab4b1f28",
-      "parent": "693f8e2a8b6b7eb62b8b0e6012a0d73414135710",
-      "subject": "Use current source attack tempo for native recovery and clip frames",
-      "commitTimeKST": "2026-10-15 19:31:28 KST",
-      "commitMetadataVerifiedReadOnly": true,
-      "sourceFileCount": 2,
-      "docsFileCount": 10,
-      "oneDocumentRead": "/Users/fordeargamers/the-exoduser/docs/engine/FDG_GODOT_PORT_COMBAT_QE_FIRST_20261013.md",
-      "documentAtCommitAlsoChecked": true,
-      "checkpointReceipt": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/dependency-native-attack-tempo-first-20261015/checkpoint-receipt.json",
-      "candidateReceipt": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/native-review-attack-tempo-20261015/candidate-receipt.json",
-      "currentSourceProviderRecoveryLinked": true,
-      "lmbSwingTicks": 5,
-      "eSwingTicks": 20,
-      "rawRecoveryZeroAndRenderFallbackSeparated": true,
-      "reportedNewRuntimeChecks": {
-        "total": 22,
-        "tempo": 12,
-        "eTempo": 6,
-        "candidate": 4,
-        "actualMainGPU": 3,
-        "errors": 0
-      },
-      "independentOriginalFormulaConfigurations": 12,
-      "formulaFrameSamples": 485,
-      "frameSamplesAreIndependentTestCount": false,
-      "candidateIncludesCameraCommit": "0b8cb96d624a961120e5f48cf4f0a8f765f3984c",
-      "candidateIncludesEWaveCommit": "693f8e2a8b6b7eb62b8b0e6012a0d73414135710",
-      "candidateLauncher": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/native-review-attack-tempo-20261015/수정본_검토_실행.command",
-      "candidateIndependentImmutableShipping": false,
-      "latestFullGame": false,
-      "equipmentUIOrSaveProven": false,
-      "newVisualQualityAcceptance": false,
-      "visualVerdict": "RETOUCH",
-      "newMarketingPixels": 0,
-      "newOriginalAudio": 0,
-      "runtimeStartsByMarketing": 0,
-      "testSuitesRepeatedByMarketing": 0,
-      "remaining": [
-        "원본 공격·타격 효과음 실제 연결·청감",
-        "기타 실제 스킬 caller",
-        "실버테일 E 본체 자세·고유24프레임",
-        "전체 피해·보스·doParry",
-        "전체 시작·저장·UI 복원",
-        "동적 환경·전체 경로·성능"
-      ]
+    "scope": "총괄 compact snapshot 및 migration 새 commit 메타데이터·관련 커밋 문서 추가 절1개만 읽기 전용 확인. 실제 실행·옛 suite 재검사0.",
+    "report": "migration에 기존 VFX13계열 소비·MIME·패키징 소스 연결2ad26d93과 서버 저장/HTTP 오류 처리c440e02c가 통합됐다. 소스 로더/연결 검사는 실제 자연 전투·PC 실행·Steam 배포를 증명하지 않는다. 총괄은 환불 계산 검사 보고 후 브라우저 캐시 버전 표시 갱신 중이며 전체 완료 보고는 없다.",
+    "webMainVFXCheckpoint": {
+      "checkout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "currentHead": "c440e02c773d1578cd2ad53352af39793de560da",
+      "contentCommit": "2ad26d93f63170360a33f9b01ca8d0442ab58fc7",
+      "sourceDocumentAtCommit": "docs/engine/FDG_PC_MAC_GIT_SYNC_20261016.md",
+      "existingVisualFamiliesConnected": 13,
+      "newArtCreated": 0,
+      "sourceResourcePNGs": 13,
+      "sourceResourceJSONs": 13,
+      "rootsFrames": 48,
+      "otherFamilyFrames": 24,
+      "allResourceFPSAre24": false,
+      "newPackagingExplicitFiles": 6,
+      "webStagingFileSelectionRequired": 27,
+      "actualBuildOrSteamDeploy": false,
+      "naturalCombatVisualPlaybackVerified": false,
+      "PCExecutionVerified": false,
+      "wholeNativeMigrationComplete": false,
+      "readOnlyCommittedDocumentCheckOnly": true
     },
-    "producerReportedLocalCommit": "e7f09d715fee2fc07b782ee7b5367445ab4b1f28",
+    "producerReportedLocalCommit": null,
     "producerPushReported": null,
-    "mainGameApplied": "LOCAL_GODOT_ATTACK_TEMPO_PARTIAL; FULL_GAME_UNFINISHED",
+    "mainGameApplied": "MIGRATION_WEB_MAIN_EXISTING_VFX_CALLERS_SOURCE_INTEGRATED; NATURAL_PLAY_UNVERIFIED",
     "steamDemoApplied": "NOT_CONFIRMED",
     "normalGameplayVideoWithOriginalAudio": false,
     "humanNaturalGameplayCaptured": false,
     "requiresUserAction": false,
     "publicationAllowed": false,
-    "visualCandidateState": "SOURCE_EXECUTABLE_REVIEW_PARTIAL; NO_NEW_MARKETING_MEDIA",
+    "visualCandidateState": "SOURCE_INTEGRATION_ONLY; NO_NEW_GAMEPLAY_MEDIA",
     "bossProductMotionAccepted": false,
     "wholeEngineComplete": false,
     "overallVisualVerdict": "RETOUCH; NO_NEW_VISUAL_QUALITY_ACCEPTANCE",
     "evidence": {
-      "type": "producer compact + bounded latest-turn receipt references + new receipts + commit metadata and one committed document addition",
+      "type": "compact snapshot114 + bounded commit metadata + one new committed documentation section",
       "producerTitle": "맥북에서 총괄 시작하기",
       "producerThreadId": "01a0faa9-b453-7673-be39-98adedb4c2b3",
-      "producerTurnId": "01a13f1e-e059-7a41-877f-856fb40b9198",
-      "migrationHead": "9a4534b42f74093095ebc3364a25dd104e93b379",
-      "migrationHeadChanged": false,
+      "producerTurnId": "01a140ad-6691-7a00-a2c7-919f396b1907",
+      "migrationHead": "c440e02c773d1578cd2ad53352af39793de560da",
+      "migrationHeadChanged": true,
+      "previousObservedMigrationHead": "9a4534b42f74093095ebc3364a25dd104e93b379",
       "checkpointDocsRead": 1,
       "gameSourceFilesRead": 0,
       "testSuitesRepeated": 0,
-      "newMarketingPixels": 0,
-      "newOriginalAudio": 0,
+      "newGameplayPixels": 0,
+      "newGameOriginalAudio": 0,
       "newGameManipulations": 0,
       "newOrdersSent": 0
     },
-    "nextProducerUnit": "기존 담당의 원본 기본 공격·타격 효과음 실제 연결 및 청감/정상 플레이 검수. 마케팅 다음 소재는 기존 전사 수정 스틸 미리보기 검수·게시 판단을 유지하며 품질 개선→사용자 플레이→전체 화면·실제 원음 녹화→완성 미리보기 순서를 따른다."
+    "nextProducerUnit": "기존 담당의 환불·캐시 버전 및 소스 통합 검수 진행을 관측. 실제 전체 완료·사용자 정상 플레이·원음 녹화 조건은 별도 유지."
   },
   "previousProducerObservations": [
     {
@@ -2505,6 +2539,91 @@
         "newOrdersSent": 0
       },
       "nextProducerUnit": "기존 담당의 실제 Main provider/입력·6탄 facade·BLACK Q carrier·E 종료·전체 phase/M29 연결과 정상 교전 검수. 기존 전사 수정 스틸 미리보기 검수·게시 판단, 품질 개선→사용자 플레이→전체 화면·원음 녹화→완성 미리보기 순서 유지."
+    },
+    {
+      "checkedAtUTC": "2026-10-15T10:37:53Z",
+      "cursor": "bd9703ff-6089-48ea-90e5-8df178a39cf6:105",
+      "status": "idle; completed",
+      "completionConfirmed": false,
+      "scope": "총괄 최신 부분 인수 보고·명시된 새 receipt2개·로컬 commit 메타데이터와 관련 커밋 문서1개의 추가 절만 읽기 전용 대조. 코드/자산/옛 검사/후보 실행·화면·원음 재검증0.",
+      "report": "main checkout e7f09d71의 일반 공격·기검참 후딜을 실제 무기·DEX·공속 계산에 연결한 부분 수정과 E 회복·표시 프레임 선택을 커밋 문서/첫 receipt로 대조했다. 새 runtime22는 12+6+4로 구분하며 독립 원식 configuration12·프레임 sample485를 추가 독립 검사로 합산하지 않는다. 검토 후보에 camera0b8/Ewave693이 포함되지만 새 PNG·시각 품질 승인0, RETOUCH·latest_full_game=false·독립 불변 배송본 아님. 원본 공격·타격 효과음 연결과 전체 저장/UI/자연 플레이 검수는 미완이다.",
+      "godotPartialCheckpoint": {
+        "checkout": "/Users/fordeargamers/the-exoduser",
+        "commit": "e7f09d715fee2fc07b782ee7b5367445ab4b1f28",
+        "parent": "693f8e2a8b6b7eb62b8b0e6012a0d73414135710",
+        "subject": "Use current source attack tempo for native recovery and clip frames",
+        "commitTimeKST": "2026-10-15 19:31:28 KST",
+        "commitMetadataVerifiedReadOnly": true,
+        "sourceFileCount": 2,
+        "docsFileCount": 10,
+        "oneDocumentRead": "/Users/fordeargamers/the-exoduser/docs/engine/FDG_GODOT_PORT_COMBAT_QE_FIRST_20261013.md",
+        "documentAtCommitAlsoChecked": true,
+        "checkpointReceipt": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/dependency-native-attack-tempo-first-20261015/checkpoint-receipt.json",
+        "candidateReceipt": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/native-review-attack-tempo-20261015/candidate-receipt.json",
+        "currentSourceProviderRecoveryLinked": true,
+        "lmbSwingTicks": 5,
+        "eSwingTicks": 20,
+        "rawRecoveryZeroAndRenderFallbackSeparated": true,
+        "reportedNewRuntimeChecks": {
+          "total": 22,
+          "tempo": 12,
+          "eTempo": 6,
+          "candidate": 4,
+          "actualMainGPU": 3,
+          "errors": 0
+        },
+        "independentOriginalFormulaConfigurations": 12,
+        "formulaFrameSamples": 485,
+        "frameSamplesAreIndependentTestCount": false,
+        "candidateIncludesCameraCommit": "0b8cb96d624a961120e5f48cf4f0a8f765f3984c",
+        "candidateIncludesEWaveCommit": "693f8e2a8b6b7eb62b8b0e6012a0d73414135710",
+        "candidateLauncher": "/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/native-review-attack-tempo-20261015/수정본_검토_실행.command",
+        "candidateIndependentImmutableShipping": false,
+        "latestFullGame": false,
+        "equipmentUIOrSaveProven": false,
+        "newVisualQualityAcceptance": false,
+        "visualVerdict": "RETOUCH",
+        "newMarketingPixels": 0,
+        "newOriginalAudio": 0,
+        "runtimeStartsByMarketing": 0,
+        "testSuitesRepeatedByMarketing": 0,
+        "remaining": [
+          "원본 공격·타격 효과음 실제 연결·청감",
+          "기타 실제 스킬 caller",
+          "실버테일 E 본체 자세·고유24프레임",
+          "전체 피해·보스·doParry",
+          "전체 시작·저장·UI 복원",
+          "동적 환경·전체 경로·성능"
+        ]
+      },
+      "producerReportedLocalCommit": "e7f09d715fee2fc07b782ee7b5367445ab4b1f28",
+      "producerPushReported": null,
+      "mainGameApplied": "LOCAL_GODOT_ATTACK_TEMPO_PARTIAL; FULL_GAME_UNFINISHED",
+      "steamDemoApplied": "NOT_CONFIRMED",
+      "normalGameplayVideoWithOriginalAudio": false,
+      "humanNaturalGameplayCaptured": false,
+      "requiresUserAction": false,
+      "publicationAllowed": false,
+      "visualCandidateState": "SOURCE_EXECUTABLE_REVIEW_PARTIAL; NO_NEW_MARKETING_MEDIA",
+      "bossProductMotionAccepted": false,
+      "wholeEngineComplete": false,
+      "overallVisualVerdict": "RETOUCH; NO_NEW_VISUAL_QUALITY_ACCEPTANCE",
+      "evidence": {
+        "type": "producer compact + bounded latest-turn receipt references + new receipts + commit metadata and one committed document addition",
+        "producerTitle": "맥북에서 총괄 시작하기",
+        "producerThreadId": "01a0faa9-b453-7673-be39-98adedb4c2b3",
+        "producerTurnId": "01a13f1e-e059-7a41-877f-856fb40b9198",
+        "migrationHead": "9a4534b42f74093095ebc3364a25dd104e93b379",
+        "migrationHeadChanged": false,
+        "checkpointDocsRead": 1,
+        "gameSourceFilesRead": 0,
+        "testSuitesRepeated": 0,
+        "newMarketingPixels": 0,
+        "newOriginalAudio": 0,
+        "newGameManipulations": 0,
+        "newOrdersSent": 0
+      },
+      "nextProducerUnit": "기존 담당의 원본 기본 공격·타격 효과음 실제 연결 및 청감/정상 플레이 검수. 마케팅 다음 소재는 기존 전사 수정 스틸 미리보기 검수·게시 판단을 유지하며 품질 개선→사용자 플레이→전체 화면·실제 원음 녹화→완성 미리보기 순서를 따른다."
     }
   ],
   "indieMarketingCampaign": {
@@ -2607,5 +2726,15 @@
     "gameSourceChangedByRoot": false,
     "otherOwnerThreadMessagedByRoot": false,
     "nextAction": "기존 담당 소유를 유지하며 같은 소규모 PC 전투의 실제 플레이·패드·성능 검수. 홍보 촬영은 게임 품질 개선 후 사용자 직접 플레이와 원음 경로 확인을 따른다."
-  }
+  },
+  "previousDevelopmentObservations": [
+    {
+      "checkout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+      "commit": "9a4534b42f74093095ebc3364a25dd104e93b379",
+      "scope": "12c29afe 이후 docs·커밋·관련 소비 연결의 읽기 전용 조사. 미커밋 상태나 Steam 배포 상태를 HEAD로 증명하지 않음",
+      "lastCheckedAtUTC": "2026-10-15T10:37:53Z",
+      "latestResult": "migration HEAD9a4534b4 동일. main Godot e7f09d71 공격속도/회복 부분 수리의 commit·receipt·커밋 문서 새 절만 확인; 원음·정상 사용자 플레이·새 시각 승인·홍보 공개 준비0.",
+      "gameHtmlSha256": "5212e3a33c201eec08d09b132092c1a063fea88f36fccef494ea351f3565d2cd"
+    }
+  ]
 }

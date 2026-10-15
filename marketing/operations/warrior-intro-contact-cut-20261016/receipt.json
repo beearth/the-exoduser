@@ -1,0 +1,105 @@
+{
+  "sourceDuration": 96.4,
+  "replacementVisualSourceRange": [
+    84,
+    87.5
+  ],
+  "replacementOutputRange": [
+    81,
+    87.5
+  ],
+  "excerpt": "/Users/fordeargamers/the-exoduser/output/warrior-intro-contact-cut-20261016/REVIEW/EXODUSER_WARRIOR_INTRO_CONTACT_CUT_78-90s_20261016_REVIEW.mp4",
+  "output": "/Users/fordeargamers/the-exoduser/output/warrior-intro-contact-cut-20261016/REVIEW/EXODUSER_WARRIOR_INTRO_CONTACT_CUT_V1_20261016_REVIEW.mp4",
+  "replacementSpeed": 0.5384615384615384,
+  "audioPayloadSHA256Source": "e8bec0638d2e7ebf213d0d4b13fdaa860ded28c68acd0cf23c68e1f2dad122dc",
+  "removedVisualSourceRange": [
+    81,
+    84
+  ],
+  "source": "/Users/fordeargamers/the-exoduser/output/warrior-intro-latest-20261011/REVIEW/EXODUSER_WARRIOR_INTRO_20261008_REVIEW.mp4",
+  "outputAudioPackets": 4520,
+  "audioCompressedPayloadExactMatch": true,
+  "uploaded": false,
+  "fullSubjectiveWatch": "NOT_PERFORMED",
+  "actualListening": "UNHEARD",
+  "outputDuration": 96.4,
+  "publicApproval": false,
+  "sourceAudioPackets": 4520,
+  "audioPayloadSHA256Output": "e8bec0638d2e7ebf213d0d4b13fdaa860ded28c68acd0cf23c68e1f2dad122dc",
+  "preparedAtUTC": "2026-10-15T17:54:40.658333+00:00",
+  "state": "CONTACT_SHOT_REMOVED_RETIMED_REVIEW_ONLY",
+  "sourceVideoSHA256": "277fbe09c4f5c0b70a98aae6376a8d820a7377cbd6f96a3bc62365cf0a166b34",
+  "originalSourceUnmodified": true,
+  "newGeneratedImagesOrVideo": 0,
+  "newGameplayCaptured": false,
+  "fullVideoTechnicalDecode": {
+    "frames": 5604,
+    "status": "COMPLETED",
+    "monotonicTimestamps": true,
+    "width": 1920,
+    "height": 1080,
+    "averageNominalFPS": 58.127925872802734,
+    "constant60FPS": false,
+    "replacementSourceFramesRetimedWithoutInterpolation": true
+  },
+  "audio": {
+    "kind": "original complete compressed AAC payload passthrough",
+    "packetCount": 4520,
+    "sha256": "e8bec0638d2e7ebf213d0d4b13fdaa860ded28c68acd0cf23c68e1f2dad122dc",
+    "payloadMatchesOriginal": true,
+    "actualListening": "UNHEARD"
+  },
+  "captionEachLanguageCues": 21,
+  "captionBytesUnchangedFromV2": true,
+  "captionTimingParity": true,
+  "captionOverlaps": false,
+  "captionBurnedIn": false,
+  "sampledVisualCheck": {
+    "state": "PASS_SCOPED_SHOT_REMOVAL_AND_BOUNDARY_FRAMES",
+    "sampleCount": 8,
+    "minPSNRAgainstIntendedSource": 42.98214785863567,
+    "doesNotProveMotionOrSubjectiveQuality": true
+  },
+  "browserPreviewQA": "NOT_PERFORMED; no browser file access attempted after earlier file protocol denial",
+  "preview": "/Users/fordeargamers/the-exoduser/output/warrior-intro-contact-cut-20261016/REVIEW/preview.html",
+  "files": [
+    {
+      "path": "/Users/fordeargamers/the-exoduser/output/warrior-intro-contact-cut-20261016/REVIEW/EXODUSER_WARRIOR_INTRO_CONTACT_CUT_V1_20261016_REVIEW.mp4",
+      "bytes": 195445543,
+      "sha256": "5c1af6f1daedba40ee891e1c5cf653d55cfa5fa84c6b5ead81377a60d466647a"
+    },
+    {
+      "path": "/Users/fordeargamers/the-exoduser/output/warrior-intro-contact-cut-20261016/REVIEW/EXODUSER_WARRIOR_INTRO_CONTACT_CUT_78-90s_20261016_REVIEW.mp4",
+      "bytes": 24607153,
+      "sha256": "de0404db18684e2172db65f76a8f86e8837c2d296789e1c5ae50e19e6bb71c2e"
+    },
+    {
+      "path": "/Users/fordeargamers/the-exoduser/output/warrior-intro-contact-cut-20261016/REVIEW/preview.html",
+      "bytes": 7227,
+      "sha256": "0a40431362f66c8e7172d25cc9194ad373a04a3976a9e9d9cca40b7e3ed5ee04"
+    },
+    {
+      "path": "/Users/fordeargamers/the-exoduser/output/warrior-intro-contact-cut-20261016/REVIEW/EXODUSER_WARRIOR_INTRO_20261008_CAPTIONS_V2_en.vtt",
+      "bytes": 1714,
+      "sha256": "0638ea1d8542444d03bf7500bb8809a85079438a33fc90cc2a232682262380d1"
+    },
+    {
+      "path": "/Users/fordeargamers/the-exoduser/output/warrior-intro-contact-cut-20261016/REVIEW/EXODUSER_WARRIOR_INTRO_20261008_CAPTIONS_V2_ko.vtt",
+      "bytes": 1797,
+      "sha256": "3d73adeecf8c3e2b72f9728d94946e7b15b43cb54dcd22b782eaf830b8199cd4"
+    }
+  ],
+  "newUploads": 0,
+  "publicReady": false,
+  "remaining": [
+    "수정 구간 연속 재생·주관적 속도 확인",
+    "전편 시청·실제 청취",
+    "사용자 편집 검토와 공개 판단"
+  ],
+  "higgseditLocalCLI": "UNAVAILABLE; deterministic local AVFoundation fallback used",
+  "initialToolBuildFailures": [
+    "scene utility missed CoreVideo linkage; fixed locally before execution",
+    "validation utility bracket syntax fixed before execution"
+  ],
+  "newGameServerSaveManipulations": 0
+}

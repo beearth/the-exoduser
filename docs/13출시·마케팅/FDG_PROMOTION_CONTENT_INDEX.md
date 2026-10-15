@@ -1,6 +1,18 @@
 # FDG 홍보 준비 콘텐츠 현황
 
-최근 정리: **2026-10-15 21:47 KST**. 사용자 지시 「홍보준비 최신컨텐츠 업데이트됀거 정리해서 항상 정리해놔」를 반영한 지속 갱신 문서다. 기술 구현, 실제 게임 화면 검수, 공개 데모 배포, 영상 게시를 별도로 확인한다.
+## 2026-10-16 — 전사 인트로 접촉 컷 교정 V1 · 공개 전 검토본
+
+**별도 교정 영상1·새 업로드0·공개 승인0.** 사용자 피드백의 접촉 장면81~84초를 제외하고 기존 대검 전투84~87.5초를81~87.5초에 배치했다. 약0.53846배속 편집이며 새 프레임 생성·인게임 촬영·게임 모션 품질 개선이 아니다. 길이96.4초·원본 AAC4520패킷·KO/EN21큐와 타이밍을 보존했다. 5604프레임 전체 기술 decode 및 연결 지점8프레임의 소스 대응만 확인했고, 수정 구간 연속 모션·전편 시청·실제 청취·사용자 편집 승인은 남아 있다. 원본과 이전 RETOUCH 이력을 보존한다.
+
+- 전체 검토본: `/Users/fordeargamers/the-exoduser/output/warrior-intro-contact-cut-20261016/REVIEW/EXODUSER_WARRIOR_INTRO_CONTACT_CUT_V1_20261016_REVIEW.mp4`
+- 수정 구간12초: `/Users/fordeargamers/the-exoduser/output/warrior-intro-contact-cut-20261016/REVIEW/EXODUSER_WARRIOR_INTRO_CONTACT_CUT_78-90s_20261016_REVIEW.mp4`
+- 미리보기: `/Users/fordeargamers/the-exoduser/output/warrior-intro-contact-cut-20261016/REVIEW/preview.html`
+- 근거: `marketing/operations/warrior-intro-contact-cut-20261016/receipt.json` 및 `WARRIOR_INTRO_CONTACT_CUT_REVIEW_20261016.md`.
+- 다음 소재 한 건: 전사 인트로 접촉 컷 교정 V1의 수정 구간 연속 재생·전편 시청·실제 청취와 사용자 편집 검토 후 교체 판단. 악의구 시연은 후속 준비이며 새 사용자 플레이 녹화는 별도 대기.
+
+migration 새 HEAD `c440e02c`에서 기존 VFX13계열의 웹 본편 소비 연결 `2ad26d93`을 커밋 문서로 확인했다. 자연 전투·실제 PC 빌드·전체 보스전 완료·공개 Steam 데모 배포는 미확인이다. 게시/로그인/허가 요청 반복0.
+
+최근 정리: **2026-10-16 02:56 KST**. 사용자 지시 「홍보준비 최신컨텐츠 업데이트됀거 정리해서 항상 정리해놔」를 반영한 지속 갱신 문서다. 기술 구현, 실제 게임 화면 검수, 공개 데모 배포, 영상 게시를 별도로 확인한다.
 
 **UI 개발 소식1건과 스킬 노트4건(기검참·가시덫·회복의 영역·지옥강타 1)을 공식 YouTube에 게시하고 공개 페이지를 확인했다.** [UI](https://www.youtube.com/post/UgkxfJtDWBoJglf9RWKueZFsGwOBIRBYWULb) · [기검참](https://www.youtube.com/post/Ugkxpb6uTCUIAd3Ypj4_1vsi9cv2BKT-F93l) · [가시덫](https://www.youtube.com/post/UgkxhEsTSyRHSuYPkuEXJmUg-xnYL90AU9nj) · [회복의 영역](https://www.youtube.com/post/Ugkx2UIc57jBgsgkolbqytX0Nn3bgmkAz6if) · [지옥강타 1](https://www.youtube.com/post/UgkxrTYuXuoASizWPYhlrpJyCF-7pcSqJT8-). 지옥강타 1은 주변 원형 범위 타격과 분노의 피해 강화·소모를 소개했다. 분노 최소량은 발동 조건이 아니다. 기존 기능 소개이며 새 패치·신규 촬영 영상으로 표기하지 않았다. **전체 보스전 완료를 기다리는 대상은 리디자인 완료 대표 메인트레일러다.** UI·기존 스킬·캐릭터 원화/제작 과정은 각 소재의 실제 근거와 검수 범위에 맞게 계속 제작한다. 기존 원화30초·전투18초V3·R1 검토본과 새 대표 영상의 미승인 자동 공개 금지는 유지한다.
 

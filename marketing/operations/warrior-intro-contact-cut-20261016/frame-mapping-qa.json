@@ -1,0 +1,61 @@
+{
+  "comparison": "decoded output vs intended original source frame; reencode and source sampling may differ",
+  "samples": [
+    {
+      "outputTime": 80.9833333333,
+      "expectedSourceTime": 80.9833333333,
+      "actualSourceTime": 80.96666666666667,
+      "meanAbsRGB": 0.6879597479423868,
+      "PSNR": 47.32355497064583
+    },
+    {
+      "outputTime": 81,
+      "expectedSourceTime": 84,
+      "actualSourceTime": 84,
+      "meanAbsRGB": 0.8270704732510289,
+      "PSNR": 45.90861814176705
+    },
+    {
+      "outputTime": 82,
+      "expectedSourceTime": 84.53846153846153,
+      "actualSourceTime": 84.53333333333333,
+      "meanAbsRGB": 0.9978002829218107,
+      "PSNR": 44.7860631262516
+    },
+    {
+      "outputTime": 83.5,
+      "expectedSourceTime": 85.34615384615384,
+      "actualSourceTime": 85.33333333333333,
+      "meanAbsRGB": 0.7653517232510287,
+      "PSNR": 46.5492638904902
+    },
+    {
+      "outputTime": 86,
+      "expectedSourceTime": 86.6923076923077,
+      "actualSourceTime": 86.68333333333334,
+      "meanAbsRGB": 0.8864017489711934,
+      "PSNR": 45.66729473736254
+    },
+    {
+      "outputTime": 87.4833333333,
+      "expectedSourceTime": 87.4910256410077,
+      "actualSourceTime": 87.48333333333333,
+      "meanAbsRGB": 0.8713779578189301,
+      "PSNR": 45.63446901259783
+    },
+    {
+      "outputTime": 87.5,
+      "expectedSourceTime": 87.5,
+      "actualSourceTime": 87.5,
+      "meanAbsRGB": 1.2723656121399178,
+      "PSNR": 42.98214785863567
+    },
+    {
+      "outputTime": 88,
+      "expectedSourceTime": 88,
+      "actualSourceTime": 88,
+      "meanAbsRGB": 0.7527694187242798,
+      "PSNR": 46.843840301989374
+    }
+  ]
+}

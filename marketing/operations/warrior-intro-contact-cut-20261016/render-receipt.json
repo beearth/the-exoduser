@@ -1,0 +1,29 @@
+{
+  "sourceDuration" : 96.400000000000006,
+  "replacementVisualSourceRange" : [
+    84,
+    87.5
+  ],
+  "replacementOutputRange" : [
+    81,
+    87.5
+  ],
+  "excerpt" : "\/Users\/fordeargamers\/the-exoduser\/output\/warrior-intro-contact-cut-20261016\/REVIEW\/EXODUSER_WARRIOR_INTRO_CONTACT_CUT_78-90s_20261016_REVIEW.mp4",
+  "output" : "\/Users\/fordeargamers\/the-exoduser\/output\/warrior-intro-contact-cut-20261016\/REVIEW\/EXODUSER_WARRIOR_INTRO_CONTACT_CUT_V1_20261016_REVIEW.mp4",
+  "replacementSpeed" : 0.53846153846153844,
+  "audioPayloadSHA256Source" : "e8bec0638d2e7ebf213d0d4b13fdaa860ded28c68acd0cf23c68e1f2dad122dc",
+  "removedVisualSourceRange" : [
+    81,
+    84
+  ],
+  "source" : "\/Users\/fordeargamers\/the-exoduser\/output\/warrior-intro-latest-20261011\/REVIEW\/EXODUSER_WARRIOR_INTRO_20261008_REVIEW.mp4",
+  "outputAudioPackets" : 4520,
+  "audioCompressedPayloadExactMatch" : true,
+  "uploaded" : false,
+  "fullSubjectiveWatch" : "NOT_PERFORMED",
+  "actualListening" : "UNHEARD",
+  "outputDuration" : 96.400000000000006,
+  "publicApproval" : false,
+  "sourceAudioPackets" : 4520,
+  "audioPayloadSHA256Output" : "e8bec0638d2e7ebf213d0d4b13fdaa860ded28c68acd0cf23c68e1f2dad122dc"
+}
