@@ -1,0 +1,27 @@
+{
+  "recordedAtUTC": "2026-10-15T12:47:04.300045+00:00",
+  "userFeedback": "끝날쯤에 몬스터랑 머리 맞데는거 좀 어색한거같은데",
+  "state": "EDITORIAL_RETOUCH_REQUIRED; VIDEO_EDIT_NOT_STARTED",
+  "sourceVideoSHA256": "277fbe09c4f5c0b70a98aae6376a8d820a7377cbd6f96a3bc62365cf0a166b34",
+  "sourceVideoSeconds": 96.4,
+  "identifiedFrameSeconds": 82,
+  "evidence": {
+    "path": "/Users/fordeargamers/the-exoduser/output/warrior-intro-tail-review-20261015/frames/tail-082.0.png",
+    "sha256": "8abace16e5c323aa32001fcb6b86981ff84c94977ab94b3d4654409a15c620ac",
+    "method": "AVFoundation original MP4 frame extraction; no generative imagery",
+    "width": 1280,
+    "height": 720
+  },
+  "diagnosis": "약82초에서 목을 미는 손과 이마가 맞닿은 자세가 섞여 공격 동작의 의도가 분명하지 않다. 이는 실제 원본 정지 프레임의 구도 판단이며 연속 모션·청취 검수는 아니다.",
+  "suggestedEdit": "해당 접촉 컷을 제외하거나 다음 대검 베기 화면으로 바꾸는 별도 편집안. 원래 내레이션·음악을 보존하고 연결·길이·자막 동기를 확인한 뒤 완성 미리보기부터 인도.",
+  "suggestionIsExecutedEdit": false,
+  "exactShotInOut": "NOT_MEASURED",
+  "renderedReplacementCount": 0,
+  "fullContinuousWatching": "NOT_PERFORMED",
+  "actualListening": "UNHEARD",
+  "captionReadabilityScope": "V2 KO/EN21큐·59.50–62.43초 가독성 수정은 그대로 유지; 전체 영상 시각 승인과 구별",
+  "publicationApproved": false,
+  "newUploads": 0,
+  "newGameOrServerOrSaveManipulations": 0,
+  "newUserRequests": 0
+}
