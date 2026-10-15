@@ -31641,7 +31641,7 @@ function initStage(si){
   ].filter(Boolean);
   _bgInitDone=false;_bgInitIdx=0;
   if(si===0)_tickBgInit(9999);
-  BGM.play(BGM.stageKey(si)); // 스테이지 BGM
+  try{BGM.play(BGM.stageKey(si));}catch(e){console.error("[BGM] stage start",e);} // 스테이지 BGM
 }
 
 function hasLOS(x1,y1,x2,y2){

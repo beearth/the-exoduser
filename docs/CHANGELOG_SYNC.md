@@ -53700,3 +53700,10 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 | game.html update 수동 확정 | 원 R MP<50 안내·조준 종료 및 else 래핑만. MP50/기존 스택식·720충전·900+(Lv-1)*30f·피해·효과·입력 소유 유지 |
 | 문서 동기화 | 기존600f/10초 문서값과 현재 수동확정900+(Lv-1)*30f 불일치 분리. 충전720f는12초로 별개; 목표 변경/다른 producer 일반화 없음 |
 | 검증 | 실제 확정 블록+own 자원·효과 대역 새6그룹/main inline1; 실제 선택·발사·전투·Native·저장·PC 검증 아님 |
+
+## 2026-10-16 — R h203 스테이지 BGM 동기 예외 경계
+
+| 대상 | 변경·검증 범위 |
+|---|---|
+| game.html initStage 말미 | 원 R 동기 try/catch 및 기존 console.error("[BGM] stage start",e)만 연결. 원 stageKey→play/큐·선곡·내부·타 caller·boot/스토리/맵 생성·복구/정리/재시도 정책 유지 |
+| 새 검증 | 실제 마지막 statement+own BGM/console/continuation 새5그룹/main inline1. full initStage/실 Audio·재생 성공·Promise/타 caller 안전·stage/map·창/save/API·Native·PC 검증 아님 |

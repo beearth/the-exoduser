@@ -526,3 +526,14 @@ R의 기존 gameConfirm pending resolver 가드 한 줄을 main에 결합했다.
 | 검증 | 실제 확정 if + own 자원/창/효과 대역 새6그룹/main inline1. 실제 선택·전투·Native·저장·PC 검증 아님 |
 | 백업 순서 | 초기 code1/docs5 exact6 WORK/HEAD은 첫제품쓰기 전. 사후 docs 검색으로 발견한 DPS/공식표2문서는 첫코드쓰기 후 각각 자기 첫쓰기 전 WORK/HEAD 추가 백업·별도 기록. 총code1/docs7 exact8이며 전8을 첫코드전이라고 주장하지 않음 |
 | 제외 | h241~243 _hurtFieldMobs 추가·다른 producer/pDot·HOLD·원 WIP·실제 창/save/API/process 변경 없음. 전체 최신 게임 완료 아님 |
+
+## 2026-10-16 R h203 initStage 말미 BGM 동기 예외 연결
+
+| 항목 | 범위·한계 |
+|---|---|
+| 제품 | game.html initStage 마지막 BGM.play(BGM.stageKey(si))를 원 R try/catch 및 원 console.error("[BGM] stage start",e)로 래핑한 한 statement만 |
+| 원 의미 | 정상 호출 순서/인자/this/횟수 유지. 기존 장 큐·BGM 내부·타 caller·boot/스토리·맵 생성/geometry·재시도·복구·정리 정책 변경 없음 |
+| 검증 | actual 마지막 statement + own BGM/console/continuation marker 새5그룹/main inline1. 실제 initStage 이후 게임 진행·실 Audio·Promise 거절/재생 성공·다른 caller 안전을 검증한 것이 아님 |
+| 보존 | code1/docs3 exact4 WORK/HEAD 개별8 기록은 첫 제품쓰기 전. 원 R9a ref·WIP·HOLD·2_3·실창/save/API/process 유지 |
+| 읽기 범위 | 초기 source 검색에 다른 boot/스토리 BGM 호출행과 R246~252 snippet이 표시됨. 읽기만 했으며 별도 채택·검사·완료판정 없음. 성공 proof/검사 재연 없음 |
+| 완료 한계 | 소스 이식 범위만. 전체 최신 게임/PC/native 완료 아님 |
