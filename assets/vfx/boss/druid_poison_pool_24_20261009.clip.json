@@ -1,0 +1,11 @@
+{
+  "format": "exoduser-atlas-clip",
+  "version": 1,
+  "name": "druid_poison_pool",
+  "sourcePath": "assets/vfx/boss/druid_poison_pool_24_20261009.png",
+  "columns": 6,
+  "rows": 4,
+  "frameCount": 24,
+  "fps": 24,
+  "loop": true
+}

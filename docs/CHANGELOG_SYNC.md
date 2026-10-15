@@ -1,3 +1,13 @@
+
+## 2026-10-16 R 기존 VFX의 main 소비 연결
+
+| 항목 | 이번 현재 범위 |
+|---|---|
+| 제품 | game.html 승인13계열·원PNG13/JSON13·atlas runtime1. roots48/다른24장·기존 진행/피해/QE/RNG·본체와main 최신 변경 보존. |
+| 실행 | 개발/NW 서버의 mjs MIME 및 packaging의 정확6필수파일(runtime/data4/QA storage) 연결. 빌드·배포0. |
+| 새 확인 | 구문·caller 정적 연결/crop13/handler HTTP200, 격리 actual Main Image decode/clip ready13·page error0. 자연 전투/전체GPU 품질·전체port 증거 아님. |
+| 남음 | R 전체 통합·실 R source/PC 실행 및 native LAVA 준비. 상세 docs/engine/FDG_PC_MAC_GIT_SYNC_20261016.md. |
+
 ## 2026-10-16 PC·Mac·Git source 통합과 현재 checkout 실행
 
 | 범위 | 현재 변경·검증·한계 |

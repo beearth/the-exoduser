@@ -23,6 +23,7 @@ const MIME = {
   '.vtt': 'text/vtt; charset=utf-8',
   '.html': 'text/html; charset=utf-8',
   '.js':   'application/javascript',
+  '.mjs':  'application/javascript',
   '.css':  'text/css',
   '.png':  'image/png',
   '.jpg':  'image/jpeg',

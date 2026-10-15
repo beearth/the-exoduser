@@ -1,0 +1,17 @@
+{
+  "format": "exoduser-atlas-clip",
+  "version": 1,
+  "name": "druid_hit",
+  "sourcePath": "assets/vfx/boss/druid_hit_24_20261010.png",
+  "columns": 6,
+  "rows": 4,
+  "frameCount": 24,
+  "fps": 25.714285714285715,
+  "loop": false,
+  "frameWidth": 512,
+  "frameHeight": 768,
+  "pivot": {
+    "x": 0.5,
+    "y": 0.5
+  }
+}

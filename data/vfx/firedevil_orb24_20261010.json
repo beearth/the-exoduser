@@ -1,0 +1,11 @@
+{
+  "format": "exoduser-atlas-clip",
+  "version": 1,
+  "name": "firedevil_orb",
+  "sourcePath": "assets/vfx/fieldboss/firedevil_orb_24_20261010.png",
+  "columns": 6,
+  "rows": 4,
+  "frameCount": 24,
+  "fps": 19.8,
+  "loop": true
+}

@@ -74,3 +74,42 @@ Mac에서 NFC/NFD 이름이 같은 물리 경로로 겹치고 서로 다른 내�
 | Windows play.cmd | 런처 자신의 root로 cd 후 FDG_NODE_BIN→C:\\nvm4w\\nodejs\\node.exe→G:\\NODE.JS\\node.exe. 깨진 system32 node shim을 사용하지 않는다. Windows 실기동은 미검증. |
 | 포트 | 기존3333을 유지. 이미 사용 중이면 기존 서버를 사용자가 직접 종료한 뒤 실행한다. 기존 서버 강제 종료·자동 재시작·브라우저 입력 없음. |
 | 주소 | http://127.0.0.1:3333/index.html. 새 런처의 존재·dry run만으로 기존 실행 프로세스가 최신으로 바뀐 것은 아니다. |
+
+## R 기존 VFX의 main 소비 연결 · 첫 단위
+
+d9e1cbce는 기존 main+W 통합이다. R/main 공통 base aacc7b02 대비 실제 R 변경 중 아래 승인된 VFX 소비만 이번에 3way 결합한다. 다른 R 정상 변경은 판단·통합이 남으며 이번 main-parent child에서 R 전체를 기병합으로 표시하지 않는다.
+
+| 범위 | 실제 현재 계약 |
+|---|---|
+| 리소스 | 기존 PNG13+JSON13(assets9/data4), atlas runtime1. 원 byte 이송/새 그림0. roots48·다른12계열24장 유지. |
+| 보존 | main remaster/Skill Forge/배지·Q/E·원근 opt-in·QA 저장·본체 v3·기존 함수·피해/반경·수명·RNG 유지. Godot 소비 변경0. |
+| caller | 기존 draw/BOOM/VFX·비행/착지/사망/Q 표시 경로. deathFX 선택8번째 impactId는 시각 선택이고 기존 caller는 생략. |
+| 미채택 | R 신규 boss_lava_erupt24 loader/caller/PNG/JSON·f0/isolated3387·새 모델/리깅·새 패링 cue·비행 크기 변경. main 기존 허용 기능 삭제0. |
+| MIME | server.cjs/node-main.js의 .mjs=application/javascript. 기존 서버/포트/저장 경로 변경0. |
+| 패키징 소스 | build-nwjs.mjs FILES에 atlas runtime1/data JSON4/필수 QA storage JS1의 정확6파일 추가. assets 재귀 복사에PNG13/metadata9 포함. 실제 빌드/Steam 배포0. |
+| 새 정적 영향 | game9 inline+server/node-main/build/runtime4 구문 PASS. main 함수 삭제0, 소비 caller13 정적 연결/crop13/packaging6 확인. 실제 server handler에 포트 bind/저장 없이 mjs 요청→HTTP200/type 확인. |
+| 새 Main 로더 | 격리 headless Chrome의 합친 game.html에서13계열 Image decode/clip ready·QA storage active=true/legacy rig explicit=false/page error0. lazy loader5개만 준비용 호출. actor/clock/HP 조작·기존 창 입력0. |
+| 검사 이력 | 첫 브라우저 검사는 meteor의 실제 등록 sh.img를 놓쳐 null 읽기로 실패. 검사만 실제 소비 표면으로 교정한 뒤 같은 실패 범위 재실행. 실패 기록 유지. clip 정규화 객체의 name은 공개 필드가 아니므로 계약표 id는 원 JSON을 사용. |
+| 한계 | 자연 전투13계열 재생·GPU 픽셀/성능·전체 품질 증거 아님. 옛 suite/PNG hash/receipt 재검사0. native latest_full_game=false/RETOUCH 및 LAVA 준비 미완료. R 다른 정상 변경/실 R source·PC 실제 실행 미완료. |
+
+### 장수와 시간 계약
+
+장수·리소스 fps·기존 게임 진행·화면 fps를 구분한다. 전부24FPS로 변경한 것이 아니다.
+
+| id | 장수 | 리소스 fps | loop | 원화 크기 | grid |
+|---|---:|---:|---|---|---|
+| boss_death_blood | 24 | 15 | false | 3840×2560 | 6×4 |
+| boss_meteor_hit | 24 | 30 | false | 4608×3072 | 6×4 |
+| druid_dust | 24 | 25.714285714285715 | false | 3264×2176 | 6×4 |
+| druid_hit | 24 | 25.714285714285715 | false | 3072×3072 | 6×4 |
+| druid_orb | 24 | 42.857142857142854 | true | 3840×2560 | 6×4 |
+| druid_poison_hit | 24 | 60 | false | 3840×2560 | 6×4 |
+| druid_poison_pool | 24 | 24 | true | 4608×3072 | 6×4 |
+| druid_roots | 48 | 41.142857142857146 | false | 3584×2688 | 8×6 |
+| druid_shockring | 24 | 25.714285714285715 | false | 4608×3072 | 6×4 |
+| boss_fire_impact | 24 | 16 | false | 3840×2560 | 6×4 |
+| boss_water_impact | 24 | 16 | false | 3840×2560 | 6×4 |
+| firedevil_orb | 24 | 19.8 | true | 3840×2560 | 6×4 |
+| kraken_water_orb | 24 | 10.8 | true | 3840×2560 | 6×4 |
+
+| 새 웹 staging 선택 확인 | build-web의 기존 selectWebRuntimeFiles를 현재 후보 source 목록에 적용해 새 필수27파일 누락0. staging 출력 생성이나 export 실행 없이 선택 결과만 확인했다. |
