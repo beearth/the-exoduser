@@ -330,3 +330,16 @@ R의 기존 gameConfirm pending resolver 가드 한 줄을 main에 결합했다.
 | 현행 한도 | 데스크톱/모바일: _MAX_ACTIVE_NODES=48/16, _SFX_MAX=2/1, _SFX_PER_FRAME=6/3, _MAX_PROJ_NODES=5/2, _MAX_HIT_NODES=3/2. _MAX_STEP_NODES=2. 기존 priority/eviction·동일 키 감쇠식·RNG 불변 |
 | 파라미터 | 기존 rate\|\|1, gain=min(1,(vol\|\|1)×sfxVol()), pan clamp[-1,1] 및 abs(pan)>.05, startTime\|\|0, duration\|\|2 유지. 새 음원/로더·음량·타이머/샘플/전투 상태 없음 |
 | 새 검수 | 자기 AudioContext/node/timeout 대역으로 실제 _playSampleNow/_sfxFrameReset을 호출. 연결·start 오류 전파/등록 노드 counter·queue 정리와 정상 panned/unpanned·한도 경로만. 실제 WebAudio·가청/성능·사용자 창·저장/API 검수 아님 |
+
+## 2026-10-16 기존 R 실드·빔 반복음 callback 소유자
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 채택 | R h87~91의 _stopShieldLoop 및 SFX.beamStart/beamStop 샘플 callback만. 실드/Q·빔 진입/종료·사망/전환 기존 caller·전투 판정은 변경하지 않음. h86 playTone 예외 처리와 다른 SFX는 이번 단위 미채택 |
+| 실드 stop | src/gain을 캡처하고 _shieldLoopSrc/_shieldLoopGain=null로 즉시 비움. src 없으면 반환. 기존 gain ramp(.0001,actx.currentTime+.1)와 150ms 뒤 captured src.stop을 독립 try로 실행 |
+| 실드 재시작 | _startShieldLoop의 기존 선행 stop이 예약한 callback은 옛 src만 중지. 새 반복음 source를 전역 참조로 다시 읽지 않음. 기존 shield_loop·loop=true·gain=.25×sfxVol() 불변 |
+| 빔 next | _beamLoopNext=function next. 현재 gain===시작 때 lg 및 현재 next===이 next인 경우만 다음 sample 생성. 새 source는 captured lg에 연결. 기존 beam_r1/r2/r3 랜덤 선택·loop=false·gain=.8×sfxVol() 유지 |
+| 빔 ended | src.onended는 _beamLoopSrc===src일 때만 captured next() 호출. 중지/재시작 뒤 남은 callback이나 이미 교체된 source callback은 새 반복음을 생성하지 않음 |
+| 빔 stop | src/gain 캡처 후 _beamLoopNext/_beamLoopSrc/_beamLoopGain=null. captured src.onended=null, 기존 .0001/+.1 ramp와 150ms captured stop을 각 try로 실행. legacy oscillator stop fallback의 원 200ms 경로는 변경하지 않음 |
+| 경계 | stop은 원 소스 중지/기존 fade만 수행하며 새 disconnect/소유권 정책·전역 gate·타이머 간격·음원·리샘플링·음량/mute/RNG·채널 한도·게임 상태를 추가하지 않음. 반복 beamStart의 이전 finite chunk 즉시 제거를 보장하지 않음 |
+| 새 검수 | 자기 AudioContext/node·캡처 timeout/onended에서 실제 _startShieldLoop/_stopShieldLoop 및 SFX.beamStart/beamStop을 실행. 종료/재시작·stale callback·ramp 예외·기존 수치 보존만. 실제 WebAudio·청감/지연·실제 timer/gameplay·사용자 창/API/legacy oscillator 분기 실행 아님 |
