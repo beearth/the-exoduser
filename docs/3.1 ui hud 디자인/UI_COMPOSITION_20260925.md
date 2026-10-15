@@ -2804,3 +2804,14 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 보석 품질 표기 | 보석함 칸 우상단 `.inv-cr-q` `T{n}`(Cinzel 9px), 상세 메타에 `품질 {q} · {t}티어`, 홈 보너스 줄 `홈 보너스 +{p}%`·`공명 ×2`. 피커·대장간 행에 보조 `q{n}` 수치 |
 | 캐시 | `inventory-gems-finish.css?v=20261008-socket-stones1` (game.html만 — 쉬운판은 이 CSS 미로드, 간이 툴팁 적용줄 사용) |
 | 폰트·색 규율 | 게임 토큰만(Cinzel/var(--font-hell-title), Noto Serif KR 제목) — 이모지 아이콘 없음, 뼈색 문자·금빛 헤어라인·흑철 배경 유지 |
+
+
+## 환불 합계 계산 source 통합 (2026-10-16)
+
+| 항목 | 현재 계약 |
+|---|---|
+| 제품 | R의 refundTotals 한 함수만 채택. SP는 Number(grit)+ΣNumber(stats 값), AP는 기존 COSTS=[1,1,1,2,2,2,3,3,3,5]/10단계23/초과5 유지 |
+| 반복·경계 | level 숫자 변환·ceil·음수/NaN→0. passive당 최대10단계 순회 후 초과비용 곱셈. 레벨 cap·새 경제·저장 포맷 변경 없음. 세부 Infinity/NaN 의미는 정본 유지 |
+| 실제 소비·캐시 | 공개 evaluatePlan/실game 초기화 환불을 사용. game.html의 stat-panel-ui.js query만20261016-refund-totals로 갱신 |
+| 검증·제한 | 격리 새영향6묶음/module구문/cache 한줄 변경 PASS. 첫 fixture export lookup 실패 후 fixture만 수리, 이력 보존. 실제 사용자 상태·save/API·서버 재시작·PC 확인0 |
+| 정본 | docs/3.1 ui hud 디자인/능력치_패시브_개편_20260909.md의 환불 합계 절. 기존 단계비용·계획 원자 적용·확인/저장 권위 유지 |
