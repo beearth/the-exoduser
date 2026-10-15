@@ -45794,7 +45794,7 @@ function mkBonePart(ancIdx,part,tier,rarity){
 }
 // 부위 포인트 = rarity(0~5)+tier(0~4) → 부위당 0~9, 세트 합산 0~36
 // 4부위 실제 수집으로만 해금한다. 임시 전원 해금은 폐지했다.
-function _ancPartPts(ancId,part){const c=INV.ossCollect&&INV.ossCollect[ancId+'_'+part];if(c)return (c.r||0)+(c.t||0);return -1}
+function _ancPartPts(ancId,part){const c=INV.ossCollect&&INV.ossCollect[ancId+'_'+part];if(c)return (+c.r||0)+(+c.t||0);return -1}
 function _ossSetComplete(ai){const R=ANC_ROSTER[ai];if(!R)return false;if(!INV.ossCollect)return false;for(let i=0;i<4;i++){if(!INV.ossCollect[R.id+'_'+_BONE_PARTS[i]])return false}return true}
 function _ossUnlockedList(){const out=[];for(let ai=0;ai<ANC_ROSTER.length;ai++)if(_ossSetComplete(ai))out.push(ai);return out}
 // ═══ 소환 스탯 산출 (소환·미리보기 공용 SSOT) — 미완성 전대는 null ═══
@@ -45813,7 +45813,7 @@ function _calcAncestorStats(ai){
   const slv=P.skills.ancestorSummon||1;
   const partPts=sk+to+ar2+le;
   const base=magicRef()*statInt()*pMagicMul()*_skMul('ancestorSummon')*_fuseMul('ancestorSummon');
-  const pow=1+((oss&&oss.ancPow)||0)+(_eqAffix('ancDmg')||0)+(_eqImplicit('_iAncPow')||0)*.01;
+  const pow=1+((oss&&+oss.ancPow)||0)+(_eqAffix('ancDmg')||0)+(_eqImplicit('_iAncPow')||0)*.01;
   const dmg=Math.max(1,~~(base*(1+ar2*0.08+sk*0.04)*pow*(1+~~((slv-1)/5)*0.25)));
   const crit=Math.min(60,5+sk*3)/100;
   // `ancDur`는 시간제였던 구세이브 호환용 ID다. 현재는 값 1초당 최대HP +30%로 읽어 기존 유골함(+3)을 +90% HP로 보존한다.

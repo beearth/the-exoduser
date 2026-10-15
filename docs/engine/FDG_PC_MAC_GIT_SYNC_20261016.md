@@ -638,3 +638,22 @@ code1/docs4 exact5의 WORK/HEAD 개별10 기록은 첫 제품쓰기 전이다. �
 | 검증 한계 | 현재 tail의 own baseline은 hide만 관찰했으며 성능 결함 재현이 아님. 신규 own clock/spy6그룹을 실머리캡처·성능/GL·READY 인수로 쓰지 않음 |
 | 보호 | 이전 정적 leaf/기인수 h49/h173·옛 proof 재열람/재연 없음. nativeHUD/bodyfallback/atlas warm 봉인·HOLD/WIP/2_3·실창/saveAPI/process 유지. 동일 거절operation 해제나 대체pipeline 아님 |
 | 완료 한계 | source HTML helper/tail 단위만. 전체 R/native/PC/최신 게임 완료 아님 |
+
+## 2026-10-16 R h305+h306 전대/도감 숫자 소비 이식
+
+| 대상 | 현재 main 계약 |
+|---|---|
+| _ancPartPts | 기존 기록 c가 있으면 (+c.r\|\|0)+(+c.t\|\|0), 미수집은 원 -1. 원 R h305의 두 unary+만 연결하며 수집된0점은 유효 |
+| _calcAncestorStats ancPow | pow의 기존 ((oss&&oss.ancPow)\|\|0) 한 operand만 ((oss&&+oss.ancPow)\|\|0)로 소비. 원 R h306의 unary+만 추가 |
+| 정상 산식 | 정상 number 결과·4실부위 gate·기존 피해/치명/HP/크기/속도 산식과 상한·ancHP 및 ancDur×.30 최대HP 호환 유지 |
+| 기록·권한 | INV.ossCollect의 기존 {ancId_part:{r,t}}/장비 객체 identity·직렬화·등급/티어 producer·등록/교체·해금·실소환 경로 변경 없음. reader가 원 값을 다시 쓰지 않음 |
+| 제외 | 새 finite/cap/정수화/default/migration·해금/소환 권위 없음. h307+h308 refresh 및 유사 숫자 함수 수리 없음 |
+| 검증 | 실제 두 reader와 own frozen P/INV·roster/provider 새5그룹/main inline1. own 파생 HP/피해 scalar는 실제 actor HP/스폰/전투/UI/saveAPI·창/Native·PC 검증이 아님 |
+
+| 보존·한계 | 범위 |
+|---|---|
+| 코드 | 지정 reader의 unary+3개만. 현재 main ancHP/ancDur 호환·상한·provider 순서와 그 밖 HTML byte 보존 |
+| 백업 | code1/docs4 exact5 WORK/HEAD 개별10 기록은 첫 제품쓰기 전 |
+| 검수 | 정상 number의 이전 source/현재 source 결과 동일과 문자열 표현의 own numeric-reference 동일값, 미수집/0점/불변을 확인. 실제 save payload/actor/전투/미리보기 UI를 실행하지 않음 |
+| 제외 | 초기 docs 검색에 옛 유골 검사 설명이 표시됐으나 연결 proof/검사 재열람·재연 없음. 인접 h105/h304/h226 및 h307+h308을 수리/재검수하지 않음 |
+| 보호 | 원 W/R/WIP·server process/env/save/API/사용자창·HOLD/2_3/PC 전송 유지. 전체 R/최신게임/Native 완료 아님 |

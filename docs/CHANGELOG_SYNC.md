@@ -53749,3 +53749,10 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 |---|---|
 | game.html | 원 helper/관련 선언과 pct>=100 optional helper→기존 hide tail만 연결. 원 GL/G.off/deathFx·atlasready/크기·inactive split guard/one-shot·finally두clear 유지, 기존DOM/bootgate/epoch/head consumer·render/NativeHUD 보존 |
 | 새 검증 | 실제 helper+tail/own atlas·scratch/split/performance/hide 대역6그룹/main inline1 첫기능PASS. 실canvas/GL/픽셀·head캡처/UI/clock/saveAPI/native/PC·성능·READY 검증 아님 |
+
+## 2026-10-16 — R h305+h306 도감·전대 숫자 reader
+
+| 대상 | 변경·검증 범위 |
+|---|---|
+| game.html _ancPartPts/_calcAncestorStats | r/t와 oss.ancPow 지정 operand에 원 unary+3개만. 정상수치/산식·ancHP/ancDur 호환·4부위/미수집-1/0점·기록/생산/직렬화/소환권위 유지 |
+| 새 검증 | 실제 두 reader+own frozen payload/roster/providers 5그룹/main inline1. 실제 HP/소환·전투/UI/saveAPI·창/native/PC 검증 아님 |
