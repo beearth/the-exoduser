@@ -218,3 +218,15 @@ R의 기존 gameConfirm pending resolver 가드 한 줄을 main에 결합했다.
 | 현재 소비 | _invRows의 Math.max(10,Math.ceil(BAG_MAX*4/INV_COLS)), INV_COLS=10 및 withdrawStorage/withdrawBonePart의 INV.bag.length>=BAG_MAX 검사. 가방 공통 기본 용량 300 유지 |
 | 저장·범위 | 직렬화 키 bagMax·복원 순서·아이템·좌표·이동 성공 시 기존 저장 호출 유지. uniqueArt, legacy QSLOTS, 지연 저장 owner 및 HP/QE 변경 없음 |
 | 검수 범위 | 자기 합성 입력과 실제 복원 statement/_invRows/withdrawStorage를 격리 실행. 목적 함수는 stub. 실제 사용자 세이브/API·전체 dbRestore·열린 게임·PC 검수의 증거로 사용하지 않음 |
+
+## 2026-10-16 구세이브 qslots 파서의 기존 R 입력 방어
+
+| id / 적용 위치 | 현재 계약 |
+|---|---|
+| 기존 분기 | dbRestore의 if(d.qslots)는 그대로. absent/null/false/0/빈문자열이면 기존 QSLOTS 객체·값 유지 |
+| 복원 길이 | truthy 배열은 Math.max(4,d.qslots.length), truthy 비배열은 4. Array.from으로 빈 원소를 포함해 채움. 추가 슬롯은 자르지 않음 |
+| 원소 | null·primitive·배열 원소는 {type:null,count:0}. 배열이 아닌 truthy 객체는 기존 POT 타입 검사만 거쳐 보존 |
+| 호환 | 객체의 truthy type이 POT에 없으면 기존과 같이 빈 슬롯. 그 외 객체의 참조·count·추가 필드는 그대로 보존하며 원본 세이브 배열을 수정하지 않음 |
+| 실제 잔여 소비 | updateHUD의 앞 4개 QSLOTS[i].type 읽기와 qsCooldown[i]>0이면 POT 초 표시하는 기존 루프가 남아 있음. 짧은 배열·null 원소 때문에 파서나 이 루프가 예외를 내던 누락 방어 |
+| 폐지 UI | 1~4 스킬 전용, 빈 슬롯 클릭 스킬 배정, 구 useQuickslot 수동 마시기·qsAuto 토글 폐지 유지. 이번 변경은 구세이브 호환 파서이며 UI 복원이 아님 |
+| 검수·경계 | 자기 합성 입력과 실제 복원 if/updateHUD 내부 루프만 격리 실행. 전체 dbRestore/HUD·실제 세이브/API/화면 검수 아님. bagMax·uniqueArt·저장 producer·HP/QE 변경 없음 |
