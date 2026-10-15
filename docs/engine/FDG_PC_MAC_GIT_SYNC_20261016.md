@@ -425,3 +425,16 @@ R의 기존 gameConfirm pending resolver 가드 한 줄을 main에 결합했다.
 | 기타 범위 | CP preview/refund/chestcap/새 inventory UI는 별도 판정. native HUD·db56 및 모든 타 HOLD 미포함. 기인수 ST 검사·oldproof 재연0 |
 
 외부 단위 기록: R-equipment-resource-refresh-integration-20261016. 소스 정렬을 최신 전체 실행·PC/native·visualPASS로 승격하지 않는다.
+## 2026-10-16 R 월드 아이템 상자 우선순위 독립 이식
+
+| 항목 | 이번 범위 |
+|---|---|
+| 출발 main | 23b155bd0a5433b85768d1ee2a564b80ffe51f69 |
+| R 원본 선택 | h130 _wiPush의 미개봉/미수거 chest 우선순위 Infinity 식 |
+| 실제 caller | 본편 보스 보상 생성의 chest/picked=false/opened=false 및 동일 worldItems 개봉 판정 정적 확인. 20cap에서 상자가 먼저 제거되는 실패를 실제 _wiPush+합성 레코드로 재현 |
+| 보존·한계 | 기존 cap20/min-scan/swap-last·item rarity·기타 -1·음향 호출·RNG/경제·상자 생성/개봉·HP/QE 유지. all21 Infinity는 기존 첫항목 제거로 남음 |
+| 사전 보존 | code1/docs4의 5경로 WORK/HEAD를 첫 코드 수정 전에 바이트 백업 |
+| 검증 | 신규6군 및 구문1 PASS. actual _wiPush만 합성 레코드/음향 대역에서 실행. 실제 보스/드롭/수거/RNG/HPclock/맵/save/API/창0 |
+| 미포함 | P01 전체 보존/필터·정산 큐, 맵 제작/배치, CP/refund/inventory UI·native·db56 및 모든 타 HOLD. 기인수 proof 재연0 |
+
+외부 단위 기록: R-world-item-chest-retention-integration-20261016. 최신전체/PC/native/visualPASS 주장0.

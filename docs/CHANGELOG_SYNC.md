@@ -53632,3 +53632,12 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 | docs/7아이템디자인/exoduser-item-system-full.md | 장비 변경의 전설 캐시 무효화 적용 위치 추가 |
 | docs/engine/FDG_PC_MAC_GIT_SYNC_20261016.md | 독립 범위·현재 main 보정·인접 bool/UI 미채택·실행 한계 기록 |
 | 검증 | actual caller/helper + 합성 통계/자원/저장 목적지 신규6군·구문1 PASS. 실제 전체 applyStats·equip UI/복원/native/HP/clock/save/API/창 실행0 |
+## 2026-10-16 R 미개봉 상자 제거 후순위 이식
+
+| 경로 | 변경 |
+|---|---|
+| game.html | R h130. _wiPush의 !picked/!opened chest 우선순위 Infinity. 기존 전체20cap·min 스캔·swap-last 제거 유지 |
+| docs/2_7 인벤토리+장비시스템 | 실제 보스 상자 연결·우선순위·all-Infinity 초과 한계·기존 경제/소리/필터 보존 명시 |
+| docs/0마스터플랜/POE2_REFERENCE_ANALYSIS_DOT_20261012.md | P01 조사 당시 기록과 이번 부분 이식을 구분. 전체 전리품 보존/표시 분리/정산/실전 검증 미완 유지 |
+| docs/engine/FDG_PC_MAC_GIT_SYNC_20261016.md | 독립 범위·사전 보존·합성 검사·실행 한계 기록 |
+| 검증 | actual _wiPush + 합성 레코드/음향 대역 신규6군·구문1 PASS. 실제 보스/드롭/수거/HPclock/맵/save/API/창 실행0 |
