@@ -53721,3 +53721,10 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 |---|---|
 | game.html _MAGIC_E_HANDLERS.fireAura | 원 level/쿨/MP100 gate 뒤 원 R P.mp-=100만 추가. 캐스트 설정/true 반환·dispatcher의 fallback 소유·600/720·다른 handler/QE 유지 |
 | 새 검증 | 실제 handler/_execMagicE+own P·provider 대역 새5그룹/main inline1, 비용경계/이중차감 방지/원 예외순서 확인. 실제 update·캐스트완료/발사·전투/MPHP·clock/saveAPI/GUI·Native·PC 검증 아님 |
+
+## 2026-10-16 — R h224+225 보스 폴백 SFX 동기 wrapper
+
+| 대상 | 변경·한계 |
+|---|---|
+| update boss_revive/boss_final_death | 두 원 expression에 원 try/catch 및 원 console.error만 연결. 기존 볼륨/rate/호출순서·보스 상태/phase/gate·다른 caller 유지, 새 rollback/retry/refund 정책 없음 |
+| 검증 | 실제 wrapper+own _r/playSample/console/후속marker 새5그룹/main inline1. 실제 보스/HP/state/timer/update·음향 큐/Audio·창/saveAPI·Native·PC 검증 아님; 후속 WebAudio·모든 예외 복구 주장 없음 |

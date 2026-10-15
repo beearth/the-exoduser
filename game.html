@@ -34497,7 +34497,7 @@ function update(){
             playVFXAng('boss_revive_boom',e.x,e.y,_portalSc2,5,0,true);
             e._tpWarnT=0;e._tpWarnX=0;e._tpWarnY=0; // 부활 중 텔레포트 AI 발동 차단
             e._spawnT=55;e._bossReviveVFXPending=40;
-            playSample('boss_revive',1.0,_r(1.0,.08)); // 보스 부활 전용 SFX
+            try{playSample('boss_revive',1.0,_r(1.0,.08))}catch(e){console.error('[SFX] boss fallback revive error:',e)} // 보스 부활 전용 SFX
             }
           }else{
             // 부활 실패 → 완전 사망 (G.bossAlive는 true 유지 — 30프레임 체크에서 게이트 열기)
@@ -34506,7 +34506,7 @@ function update(){
             addTxt(e._reviveX,e._reviveY-30,((e._revPts||0)<=0?_T('부활력 고갈!'):_T('부활 실패...')),((e._revPts||0)<=0?'#ff4444':'#888888'),60);
             // G.bossAlive는 삭제 — 30프레임 체크(125611)에서 _bossLive=false 감지 후 처리
             shake(8);G._flashT=4;G._flashCol='#ffffff';
-            playSample('boss_final_death',1.0,_r(1.0,.05)); // 보스 완전 사망 전용 SFX
+            try{playSample('boss_final_death',1.0,_r(1.0,.05))}catch(e){console.error('[SFX] boss final death error:',e)} // 보스 완전 사망 전용 SFX
           }
         }else if(e._reviveAsGhoul){
           // ── 일반몹: 구울로 변환 (50%) ──

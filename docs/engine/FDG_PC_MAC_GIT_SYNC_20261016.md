@@ -562,3 +562,22 @@ code1/docs4 exact5의 WORK/HEAD 개별10 기록은 첫 제품쓰기 전이다. �
 | 검증 | 실제 fireAura handler/_execMagicE와 own P·속도/안내/공용비용/다른handler 대역 새5그룹/main inline1. 완료 분기 직접 MP 참조 없음/600·720은 정적 확인만. 실제 update·완료 zone·발사/전투·실MPHP/clock/saveAPI·GUI·Native·PC 실행 없음 |
 
 code1/docs4 exact5의 WORK/HEAD 개별10 기록은 첫 제품쓰기 전이다. 현재 다른 HTML byte/기존 원 R ref·WIP·HOLD·2_3·보호창/saveAPI/process를 유지한다. 초기 선택 source 조회에 인접 blueShot/기본마법 완료본문도 표시됐으나 읽기만 했고 해당 실제 handler/완료본문은 실행·별도 검사·수리하지 않았다. 기존 성공 proof/검사 재연 없음. 전체 최신 게임 이식 완료가 아니다.
+
+## 2026-10-16 R h224+225 보스 폴백 음향 wrapper 이식
+
+| id·대상 | 현재 update 호출 경계 |
+|---|---|
+| boss_revive · 폴백 부활 음향 | 원 playSample('boss_revive',1.0,_r(1.0,.08))를 원 try/catch로 감싸고 console.error('[SFX] boss fallback revive error:',e) 기록 |
+| boss_final_death · 완전 사망 음향 | 원 playSample('boss_final_death',1.0,_r(1.0,.05))를 원 try/catch로 감싸고 console.error('[SFX] boss final death error:',e) 기록 |
+| 정상 호출 | 기존 _r→playSample 인자 평가/호출 순서·볼륨·rate·priority 및 성공 시 후속 진행 유지 |
+| 동기 예외 | 위 expression의 인자/provider/호출 동기 예외만 기록 후 원 후속 update 진행. 이미 일어난 side effect는 원 R처럼 되돌리지 않으며 retry/rollback/refund 없음 |
+| 제외 | 후속 큐 소비/WebAudio 오류·실재생 복구는 이 catch 밖. console.error 자체가 던지면 원 R대로 전파. 모든 예외가 동일하거나 모든 boss caller가 안전하다는 계약 아님 |
+
+| 항목 | 범위·한계 |
+|---|---|
+| 변경·소유 | update의 exact 음향 expression2개와 원 try/catch·원 진단만. 기존 인간의 R 소스 통합/ENGINE 단독 consumer 소유 안의 연결이며 이전 BOSSalpha.7 거절patch 재개/해제 또는 operation집합 판정이 아님 |
+| 보존 | 다른 HTML byte·보스 상태/HP·alpha/asset·geometry·phase/gate·hurtE caller·원 WIP/HOLD/2_3·실창/saveAPI/process 유지 |
+| 검증 | 실제 두 wrapper + own rate/sample/console/후속 marker 새5그룹/main inline1. 실제 RNG/큐/Audio·보스/update·HP/state/timer·창/saveAPI·Native·PC 실행 없음 |
+| 백업 | code1/docs4 exact5 WORK/HEAD 개별10 기록은 첫 제품쓰기 전 |
+| 이력 한계 | prewrite helper의 rest parameter 함수 내부 strict directive 구문 오류를 helper module strict로 수정. baseline/제품 실행 전 오류였고 제품맞춤 변경 없음; firstWholeClean=false |
+| 완료 한계 | 동결한 앞선 정적 leaf·옛 SFX/보스 검사/proof는 재열람·재연하지 않음. 전체 최신 게임/PC/native 완료 아님 |
