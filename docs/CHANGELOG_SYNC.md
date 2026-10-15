@@ -53676,3 +53676,12 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 | docs/7아이템디자인 | potCd 소비와 원 데이터·기존 장비효과 보존 기록 |
 | docs/engine/FDG_PC_MAC_GIT_SYNC_20261016.md | 독립 범위·사전 보존·선행 설명 정정·검사 한계 기록 |
 | 검증 | actual CD const4+대입1·합성 제공자 신규6군·구문1 PASS. 전체 update/실HP/악의/clock/saveAPI/UI/native 실행0 |
+## 2026-10-16 R 기본 자동 석궁 ST 소비 누락 연결
+
+| 경로 | 변경 |
+|---|---|
+| game.html | h190 normal/ghost turret 장착명 폴백이 기존 _fireXbow 뒤 문서상 ST식을 보관값에서 한 번 소비 |
+| docs/2_1 스킬관리+합체시스템+자원 | 기존 비용표에 normal 폴백 적용 위치·원20% gate·터렛할인·반환/예외 경계 동기화 |
+| docs/14밸런스+수치테이블/BASIC_ATTACK_DAMAGE_20260910.md | 피해 emitter와 ST 라우터 소유 구분. 기존 피해/RNG·옛 검사 결과 유지 |
+| docs/engine/FDG_PC_MAC_GIT_SYNC_20261016.md | 독립 이식·선행보존·실함수/합성 검사 범위 기록 |
+| 검증 | actual router/_stDisc+합성 발사/ST/할인 신규6군·구문1 PASS. 실제 update/투사체/피해/RNG/HPclock/saveAPI/native/GUI 실행0 |

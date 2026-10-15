@@ -491,3 +491,16 @@ R의 기존 gameConfirm pending resolver 가드 한 줄을 main에 결합했다.
 | 보존 | 기존420 CD기준/6최소·glove/belt각0.2·regen0.03/0.3·~~/Math·실발동/소비/HPQE/효과/튜토리얼/autoPotThr·수동UI/데이터형식 그대로 |
 
 외부 단위 기록: R-auto-potion-cooldown-input-integration-20261016. 기인수 proof 재연0·db56/타HOLD보존·최신 전체/Rparent/PC/native/visual/성능 완료 주장0.
+## 2026-10-16 R normal 자동 석궁 ST 분기 독립 이식
+
+| 항목 | 이번 범위 |
+|---|---|
+| 출발 main | 5fbb38d2b598fdd4a1673335fbebac38013a4c00 |
+| R 선택 / 필요성 | h190 normal 조기return이 문서상 공통ST 차감을 우회. 실제 update→router와 _fireXbow 직접ST소비 없음 정적 확인 후 actual router 합성 실패 재현 |
+| 코드 | preST capture → 기존 _fireXbow → 원 fanShot/discount 식으로 Math.max0 단일 차감 → return. ghostXbowTurret normal 폴백·터렛 기존 할인 유지 |
+| 사전 보존 | code1/docs5의 6경로 WORK/HEAD를 첫 코드 수정 전에 바이트 백업 |
+| 새 검수 | actual _autoFireBowSkill/_stDisc + 합성 ST/발사·할인·비normal 기술 대역 신규6군·구문1 PASS. 실제 update/발사/투사체/피해/RNG/HPclock/native/saveAPI/창0 |
+| 경계 | 기존20% gate/다른 기술CD·상태·방향/원 반환/예외·할인·피해·발수·설치·소유권 그대로. 새 충분ST/성공 판정·환불·오디오guard0 |
+| 보호 | h189 dormant helper 등 기분류·기인수 proof 재연0, db56 및 모든 타HOLD/원R·WIPrefs 보존. 전체최신/PC/native/visual/성능 완료 주장0 |
+
+외부 단위 기록: R-auto-bow-normal-st-cost-integration-20261016. 선행 검색에서 과거 밸런스/피해 검사 요약 행을 읽었으나 실제 산출물 재열기·재계산·재실행·새 증거 전용은 하지 않았다.
