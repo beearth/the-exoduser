@@ -53735,3 +53735,10 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 |---|---|
 | game.html _enemyWindupRemaining/draw 일반❗ | 원 alive/nonboss/windup·stun/frozen/hitStun·finite st2 reader 추가, 해당 조건만 reader>0으로 교체. 원 glyph/X/좌표/billboard try/finally·actor/AI/time·나머지 renderer 유지 |
 | 새 검증 | 실제 reader+if/own frozen enemy·Canvas-native 대역 새5그룹/main inline1. 호출 spy를 실제 glyph/GPU·실전조·visual/native 품질 PASS로 확대하지 않음 |
+
+## 2026-10-16 — R h174+h175 월드 공통 컷아웃 fallback guard
+
+| 대상 | 변경·검증 범위 |
+|---|---|
+| game.html _worldItemSkin | 새 Image 실제 src 기록+공통컷아웃 source 일치 guard. 기존 phys fallback은 원 마스크/재사용 경로로, main uniqueArt 우회는 성공/기존fallback 모두 유지. 원 paths/loader/mask/boot/PNG 정책 유지 |
+| 새 검증 | 실제 helper/own Image·Canvas/mask/resolver/자기 load-error callback 새5그룹/main inline1. 실제 Image·네트워크·알파/픽셀·PNG·사용자cache/GUI/saveAPI/native/PC 검증 아님 |

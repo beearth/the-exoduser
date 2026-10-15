@@ -1066,3 +1066,16 @@ R h179/180/181/183/191/192의 숫자 소비 변경이다. 새 Math.max·상한·
 | 효과/전설 | 자동 물약의 기존 _lBeltBuff 등 효과·판정·회복/소비/RNG는 그대로. 실제 효과 검수는 이번 범위에서 실행하지 않음 |
 
 신규6군·구문1은 actual CD 문장과 합성 입력 검사다. 전체 update·전투/회복·장비 효과·실HP/clock·native·세이브·창을 검증한 결과가 아니다.
+
+## 2026-10-16 월드 공통 컷아웃 실패 후 phys fallback 처리 — R h174+h175
+
+공통 _itemSkinSrc의 기존 경로 선택 계약은 유지한다. 이미 존재하는 onerror fallback으로 바뀐 이미지의 반환/마스크 경계만 수정하며, 없는 파일 경로를 새로 추측해 먼저 요청하는 정책은 추가하지 않는다.
+
+| 항목 | 현재 main 계약 |
+|---|---|
+| 소유 위치 | _worldItemSkin(it)의 새 Image 생성과 공통 컷아웃 반환 guard만. 원 R h174+h175를 현재 main에 3way 연결 |
+| 출처 기록 | img.src=renderSrc 직후 _worldDropCutoutSrc=cutoutSrc?img.src:''로 실제 getter 문자열 보관. 새 URL 정규화·경로 선택/추측 정책 없음 |
+| 공통 컷아웃 | cutoutSrc가 있고 현재 img.src가 기록된 컷아웃 src와 같을 때만 raw image 반환. 기존 onerror로 phys fallback src가 바뀌면 기존 canvas/_maskWorldDropBlack·_worldDropMasked 캐시 경로 사용 |
+| uniqueArt | 현재 main의 ||it.uniqueArt 우회를 유지. 성공 및 기존 phys fallback도 기존 방식 그대로이며 이번 단위에서 유니크 처리 정책을 수리하지 않음 |
+| 보존 | 원 resolver/key/alias/bone·onload/onerror·mask 알고리즘/마스크 재사용·부트/h173·원 PNG 유지. 새 retry·migration·준비/READY 정책·asset 생성/가공 없음 |
+| 검증 | 실제 helper와 own Image/Canvas/mask/resolver·자기 load/error callback 새5그룹/main inline1. own URL getter/호출 spy를 실제 browser/알파/픽셀·visualPASS로 확대하지 않음. 실제 Image/네트워크/PNG·사용자 cache/GUI/saveAPI·Native·PC 실행 없음 |

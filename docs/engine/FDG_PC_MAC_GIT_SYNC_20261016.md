@@ -599,3 +599,22 @@ code1/docs4 exact5의 WORK/HEAD 개별10 기록은 첫 제품쓰기 전이다. �
 | 읽기 범위 | 기존 AI 생산자 조회에 atkTicketRequest가 있는 원 행과 인접 hitflash 설명이 표시됐으나 읽기만/새 ticket 구현·연결·유사수리 없음. 옛 성공 proof/검사 재연 없음 |
 | 보호 | ENEMY_GL_2D_BODY_FALLBACK_GATE·기존 HOLD/WIP/2_3·실창/saveAPI/process 유지. bodyfallback 해제나 대체 renderer/우회 아님 |
 | 완료 한계 | 합성5/main inline1만. 실제 glyph/GPU·AI/전투·visual/native/PC·전체 최신 게임 완료 아님 |
+
+## 2026-10-16 R h174+h175 월드 컷아웃 phys fallback guard
+
+| 항목 | 현재 main 계약 |
+|---|---|
+| 소유 위치 | _worldItemSkin(it)의 새 Image 생성과 공통 컷아웃 반환 guard만. 원 R h174+h175를 현재 main에 3way 연결 |
+| 출처 기록 | img.src=renderSrc 직후 _worldDropCutoutSrc=cutoutSrc?img.src:''로 실제 getter 문자열 보관. 새 URL 정규화·경로 선택/추측 정책 없음 |
+| 공통 컷아웃 | cutoutSrc가 있고 현재 img.src가 기록된 컷아웃 src와 같을 때만 raw image 반환. 기존 onerror로 phys fallback src가 바뀌면 기존 canvas/_maskWorldDropBlack·_worldDropMasked 캐시 경로 사용 |
+| uniqueArt | 현재 main의 ||it.uniqueArt 우회를 유지. 성공 및 기존 phys fallback도 기존 방식 그대로이며 이번 단위에서 유니크 처리 정책을 수리하지 않음 |
+| 보존 | 원 resolver/key/alias/bone·onload/onerror·mask 알고리즘/마스크 재사용·부트/h173·원 PNG 유지. 새 retry·migration·준비/READY 정책·asset 생성/가공 없음 |
+| 검증 | 실제 helper와 own Image/Canvas/mask/resolver·자기 load/error callback 새5그룹/main inline1. own URL getter/호출 spy를 실제 browser/알파/픽셀·visualPASS로 확대하지 않음. 실제 Image/네트워크/PNG·사용자 cache/GUI/saveAPI·Native·PC 실행 없음 |
+
+| 항목 | 보존·한계 |
+|---|---|
+| 코드 범위 | 새 Image의 실제 src 기록과 공통컷아웃 guard만. R에는 없는 main uniqueArt 우회를 포함한 3way이며 그 밖 HTML byte 유지 |
+| 백업 | code1/docs4 exact5 WORK/HEAD 개별10 기록은 첫 제품쓰기 전 |
+| 테스트 한계 | own onerror는 함수 호출이 반환된 뒤 자기 객체에서 호출. 실제 image event timing·네트워크·픽셀/알파·새로고침/사용자 cache를 검증한 것이 아님. 기존 사용자 cache metadata를 이식/수리하는 정책 없음 |
+| 보호 | image/PNG/asset/hash/import/transform·대체 pipeline/new art·부트/h173·HOLD/WIP/2_3·실창/saveAPI/process 조작 없음. 초기 조회에 인접 기존 스탯 helper 행이 표시됐으나 읽기만/수리·검사 없음 |
+| 완료 한계 | 새 합성5/main inline1만. 옛 성공검사/proof 재연 없고 전체 최신 게임·visual/native/PC 완료 아님 |
