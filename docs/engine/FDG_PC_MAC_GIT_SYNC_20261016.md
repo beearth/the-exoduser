@@ -383,3 +383,17 @@ R의 기존 gameConfirm pending resolver 가드 한 줄을 main에 결합했다.
 | 한계 | 실제 HP/시간/AI/흡수/피해/폭발/세이브/창 실행 없음. PC/native 및 최신 전체 실행 검증 아님 |
 
 별도 general-image warm db56 및 모든 타 HOLD는 이번 단위에 포함하지 않는다. 외부 단위 기록: R-scarecrow-recall-ledger-integration-20261016.
+## 2026-10-16 R 사망 화면 키보드 독립 이식
+
+| 항목 | 이번 범위 |
+|---|---|
+| 출발 main | 69a1cb5facb8e6bdeb358d5d944f15f5c5a4372e |
+| R 원본 선택 | h99 _handleDeathMenuKeyboard + h101 keydown 소비 + h106 Space keyup 소비 |
+| 필요성 | 현재 실제 retryBtn/deathReplayBtn/toLobbyBtn이 있으나 전역 Tab/Space preventDefault 전에 사망 버튼 입력을 분리하는 소비자가 없음 |
+| 보존 | 기존 main 버튼/문구/onclick·키 바인딩·패널 가드·게임패드·리스폰/리플레이/로비·HP/QE, native HUD 및 모든 HOLD 유지 |
+| 사전 보존 | code1/docs4의 5경로 WORK/HEAD를 이번 첫 코드 수정 전에 바이트 백업 |
+| 검증 | 실제 helper + 영향받는 실제 keydown/keyup 문장, 합성 DOM/이벤트 신규 8군 및 구문 1개 PASS. 전체 전역 리스너/실제 브라우저 기본 클릭/렌더 포커스/실제 버튼·세이브·창·패드 실행 없음 |
+| 별도 범위 | 인접 h100 F1 보스 가이드, h102 inventory-detail-trigger, Hellgunner·rig·RIFT 변경은 이 단위에 포함하지 않음. 기존 interact freshness 소비는 재이식/재검사하지 않음 |
+| 한계 | 소스 수준의 필수 입력 소비자 이식. 최신 전체 게임·PC/native 실행·visual PASS 증거가 아님 |
+
+외부 단위 기록: R-death-menu-keyboard-integration-20261016. general-image warm db56 및 타 HOLD의 해제로 해석하지 않는다.
