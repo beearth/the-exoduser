@@ -537,3 +537,15 @@ R의 기존 gameConfirm pending resolver 가드 한 줄을 main에 결합했다.
 | 보존 | code1/docs3 exact4 WORK/HEAD 개별8 기록은 첫 제품쓰기 전. 원 R9a ref·WIP·HOLD·2_3·실창/save/API/process 유지 |
 | 읽기 범위 | 초기 source 검색에 다른 boot/스토리 BGM 호출행과 R246~252 snippet이 표시됨. 읽기만 했으며 별도 채택·검사·완료판정 없음. 성공 proof/검사 재연 없음 |
 | 완료 한계 | 소스 이식 범위만. 전체 최신 게임/PC/native 완료 아님 |
+
+## 2026-10-16 R h108 held-input 조준/충전 reset 연결
+
+| 항목 | 현재 main 계약 |
+|---|---|
+| caller | 기존 blur → _clearHeldInput; visibilitychange는 document.hidden일 때만 같은 함수 호출. visible 상태는 기존 비실행 |
+| P guard | 기존 typeof P!=='undefined' && P 안에서 _beamHold 및 원 R의 _mmAiming/_mmCharging/_msAiming/_msCharging/_bwAiming/_tsAiming을 false로 해제 |
+| 입력 리셋 | 기존 _resetInteractInput 먼저, K/KH/MB/MBjust 전체 false, _dashHold=false/_dashHoldF=0/_dashTier=0, 컷스킵 _cutSkipHolding=false/_cutSkipHold=0 순서·소유 유지 |
+| 범위 한계 | 원 R에 없는 _isAiming/_hrAiming 등 추가 해제 없음. 패드 주입/조준거리·키/자원·충전타이머·캐릭터 state·QE 설계 변경 없음. 예약/환불/자동pause·resume 정책 추가 없음 |
+| 검증 | 실제 함수와 기존 등록 callback을 own 입력/P/event target에서 새5그룹/main inline1 확인. _resetInteractInput 내부는 대역이며 기인수 검사 재연 없음. 실제 창·포커스·전투·자원·시계·저장/API·Native·PC 실행 없음 |
+
+code1/docs4 exact5의 WORK/HEAD 개별10 기록은 첫 제품쓰기 전이다. 기존 R9a ref·WIP·HOLD·2_3·보호 창/save/API/process를 유지한다. 초기 넓은 docs 검색535행 출력에는 기존 인수 검사 설명도 포함됐으나 해당 proof/검사를 열거나 재연하지 않았다. h111 _ch1MouseScene 프로젝션 연계는 이번 이식에 포함하지 않으며 그 의미 판정 완료를 주장하지 않는다. 전체 최신 게임 이식 완료가 아니다.

@@ -53707,3 +53707,10 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 |---|---|
 | game.html initStage 말미 | 원 R 동기 try/catch 및 기존 console.error("[BGM] stage start",e)만 연결. 원 stageKey→play/큐·선곡·내부·타 caller·boot/스토리/맵 생성·복구/정리/재시도 정책 유지 |
 | 새 검증 | 실제 마지막 statement+own BGM/console/continuation 새5그룹/main inline1. full initStage/실 Audio·재생 성공·Promise/타 caller 안전·stage/map·창/save/API·Native·PC 검증 아님 |
+
+## 2026-10-16 — R h108 포커스 입력 해제의 조준/충전 상태 연결
+
+| 대상 | 변경·한계 |
+|---|---|
+| game.html _clearHeldInput | 기존 P guard/beamHold 해제에 원 R _mmAiming/_mmCharging/_msAiming/_msCharging/_bwAiming/_tsAiming=false만 추가. 원 reset 순서·blur/hidden caller·다른 상태/자원/QE 유지 |
+| 새 검증 | 실제 함수+기존 등록 callback/own 입력·P·event target 새5그룹/main inline1. 실제 사용자 창/포커스·전투·자원·시계·저장/API·Native·PC 검증 아님; _resetInteractInput 내부 대역·기존 성공검사 재연 없음 |
