@@ -687,3 +687,22 @@ code1/docs4 exact5의 WORK/HEAD 개별10 기록은 첫 제품쓰기 전이다. �
 | 이전 기록과 구분 | 앞선 공통 장비 갱신 이식에서 외부 UI 후속 applyStats를 유지한 기록은 당시 범위 이력이다. 이번에는 _invBagRightClick의 한 호출만 제거했고, 나머지 외부 UI 호출을 일반화해 제거하지 않음 |
 | 검사 | 실제 router와 own equip/stats/render/deposit/register/$ 대역의 신규6군 및 main inline 구문1 통과. 원 외부 계산 추가호출을 own stub에서 재현하고 제거 후 단일 위임 계산 관측. 모든 실패 경로·실제 장착/스탯/HP/자원/저장/API/DOM/사용자 창/native/PC 검증을 뜻하지 않음 |
 | 별도 미판정 | h319 창고 가방 목록의 null guard는 이번 변경에서 제외. 정상 null producer 미확인만으로 불가능·불필요·동등성을 확정하지 않음 |
+
+## 2026-10-16 설정 캐릭터 첫 셀 프리뷰 — R h321+h322
+
+| 항목 | game.html 현행 계약 |
+|---|---|
+| 적용 범위 | renderSettings의 캐릭터 카드 프리뷰 자식 canvas와 _drawSettingsCharacterPreview만. 카드 선택·이름·설명·aria·초점·저장·게임 스프라이트와 원 PNG/atlas는 변경하지 않음. game-easy-test.html은 이번 이식 범위 아님 |
+| 입력 셀 | fw=ch.fw 또는48, fh=ch.fh 또는48. ch.folder+'/south.png'에서 (0,0,fw,fh) 첫 셀만 같은 크기의 임시 canvas로 복사. idleN에 따른 img/canvas 분기를 없애고 동일 프리뷰 consumer 사용 |
+| 알파 경계 | 오른쪽·아래는 마지막 유효 픽셀+1인 경계. all은 alpha>0, body는 alpha>100. body가 없으면 all을 사용하고 둘 다 없으면 false 반환 |
+| CSS·bitmap | 출력 bitmap176×176, CSS88×88px, margin0 auto12px, image-rendering:pixelated, display:block, aria-hidden=true. 임시 canvas의 getContext는 willReadFrequently=true; 출력은 clearRect 후 imageSmoothingEnabled=false |
+| 배치 식 | below=all.bottom-body.bottom, center=(body.left+body.right)*0.5. scale=min(72/(body.bottom-body.top),40/max(center-all.left,all.right-center),78/(body.bottom-all.top),below>0?8/below:Infinity). dx=44-center*scale, dy=80-body.bottom*scale, ratio=cv.width/88. draw 좌표·크기는 ratio로 곱함 |
+| 목표·제약 | CSS 본체 높이 목표상한72px, 발선80px. 전체 알파의 가로 범위4~84px(폭80px), 상단2px 이상/하단88px 이하(발선 아래 최대8px)를 함께 제한. 전체 알파가 넓으면 본체가72px보다 작을 수 있음 |
+| 읽기 오류: 전사 | exoduser_warrior의 원 R fallback: body=[11,14,33,43], all=[9,12,35,46] |
+| 읽기 오류: 실버테일 | exoduser_silvertail의 원 R fallback: body=[12,2,36,47], all=[11,2,37,47] |
+| 읽기 오류: 그 외 | 원 R대로 body와 all 모두 [0,0,fw,fh]. 기존 known/unknown fallback을 수정·재측정하지 않음. 원 주석의 검증 표현은 이번 작업에서 실제 에셋을 새로 검수했다는 뜻이 아님 |
+| callback·placeholder | img onload에서 helper를 호출하고 false면 기존 원 R placeholder. onerror도 같은 placeholder: clear176×176 → 배경#443322 → 글자#b4a389/32px sans-serif/가운데 정렬 → '?'를(88,100)에 그림 |
+| 예외 경계 | getImageData/경계 판독 try의 오류만 원 fallback으로 처리. 임시 drawImage 등 try 바깥 오류에 새 catch·재시도·다른 경로를 추가하지 않음 |
+| DOM 경계 | 프리뷰 canvas를 card.appendChild로 추가. 새 helper·consumer는 부모 textContent/innerHTML을 교체하지 않으며 기존 자식 sentinel 보존을 own DOM 대역으로 확인 |
+| 새 검사 | 실제 원 helper·consumer + own 알파 배열/Canvas/Image/DOM 대역 신규6군 및 main inline 구문1 첫 통과. 첫 셀·전체 알파 제약·빈 이미지·read 실패·known/unknown fallback·load/error·자식 보존·원 R와 현 main의3way byte 비교 |
+| 검수 한계 | 실제 PNG/atlas/asset byte·실 canvas 픽셀을 읽거나 가공하지 않음. 실 모델/rig/게임 내 sprite·설정 UI창/native/HUD/PC 미검수. 합성 draw 관측은 실제 미리보기·잘림 품질 PASS, 모델 수정, 신규 캐릭터·24장/24FPS 완료 증거가 아님 |
