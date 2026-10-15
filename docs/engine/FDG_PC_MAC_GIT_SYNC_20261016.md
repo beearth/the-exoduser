@@ -674,3 +674,16 @@ code1/docs4 exact5의 WORK/HEAD 개별10 기록은 첫 제품쓰기 전이다. �
 | 이식 경계 | 원 R h309+h310+h311만. 새 epoch·공간/캐릭터 정책·좌표 보정·dispatcher 성공/반환·부족자원 순서 수리 없음 |
 
 검사 도구의 첫 실행은 기능6군과 인라인9개 구문 파싱 후 전체 스크립트 수를1로 예상한 보고기 assert에서 실패했다. 실제 main inline만 선택하는 구문 검사만 보완·통과했으며 기능6군 재실행·제품 코드 보정은 없었다. firstWholeClean=false를 유지한다. 원R 보존은 codex/mac-environment-20261001@9a4534b42f74093095ebc3364a25dd104e93b379이다.
+
+## 2026-10-16 가방 우클릭 장착의 중복 계산 제거 — R h320
+
+| 항목 | 현행 코드·범위 |
+|---|---|
+| 소비자 | 가방 아이템의 contextmenu가 _invBagRightClick(idx)를 호출. 기본 장비 경로는 equipItem(item) 다음 renderInv() |
+| 이식 변경 | equipItem(item) 뒤의 외부 applyStats() 한 호출만 제거. 성공 장착의 기존 공통 능력치 갱신·저장 호출은 equipItem의 소유로 유지 |
+| 기존 반환·렌더 | equipItem 반환값을 새로 검사하지 않음. 대역이 false/true/undefined로 반환해도 기존 renderInv() 경로로 진행하고 router의 기존 undefined 반환 유지 |
+| 선행 분기 | 가방 항목이 없으면 반환. inventoryPage=storage면 depositStorage(idx) 후 반환. bonePart면 registerBonePart(item) 후 반환. 순서·인자 불변 |
+| 예외·권위 | 기존 equipItem 또는 renderInv 예외를 새로 삼키거나 재시도하지 않음. 새 성공 게이트·자원 회복/차감·직접 save·외부 장착 캐시 처리 없음 |
+| 이전 기록과 구분 | 앞선 공통 장비 갱신 이식에서 외부 UI 후속 applyStats를 유지한 기록은 당시 범위 이력이다. 이번에는 _invBagRightClick의 한 호출만 제거했고, 나머지 외부 UI 호출을 일반화해 제거하지 않음 |
+| 검사 | 실제 router와 own equip/stats/render/deposit/register/$ 대역의 신규6군 및 main inline 구문1 통과. 원 외부 계산 추가호출을 own stub에서 재현하고 제거 후 단일 위임 계산 관측. 모든 실패 경로·실제 장착/스탯/HP/자원/저장/API/DOM/사용자 창/native/PC 검증을 뜻하지 않음 |
+| 별도 미판정 | h319 창고 가방 목록의 null guard는 이번 변경에서 제외. 정상 null producer 미확인만으로 불가능·불필요·동등성을 확정하지 않음 |

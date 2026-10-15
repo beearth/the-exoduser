@@ -48600,7 +48600,7 @@ function _invBagRightClick(idx){
   const item=INV.bag[idx];if(!item)return;
   if($('invPanel')?.dataset.inventoryPage==='storage'){depositStorage(idx);return}
   if(item.slot==='bonePart'){registerBonePart(item);return}
-  equipItem(item);applyStats();renderInv();
+  equipItem(item);renderInv();
 }
 function withdrawStorage(idx){
   if(INV.bag.length>=BAG_MAX){notify(_T('가방이 가득 찼습니다!'));return}
