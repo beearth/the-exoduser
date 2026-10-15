@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
-  "updatedAtKST": "2026-10-15 19:37 KST",
-  "updatedAtUTC": "2026-10-15T10:37:53Z",
+  "updatedAtKST": "2026-10-15 20:16 KST",
+  "updatedAtUTC": "2026-10-15T11:16:01.548661+00:00",
   "policy": "실제 화면·영상 또는 단계가 명확한 기존 원화와 간결한 설명을 함께 준비하고, 공개 전 완성 미리보기를 먼저 인도한다. 동일 영상의 확대 화면과 전체 화면을 동시에 복제하지 않으며 원화를 가리는 불투명 자막판을 사용하지 않는다. 매시간 점검을 긴 글 연속 게시 빈도로 해석하지 않는다. UI·스킬·캐릭터의 독립 준비를 계속하고 대표 보스전 완료 영상만 총괄 완료를 기다린다.",
   "developmentObservation": {
     "checkout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
@@ -11,7 +11,7 @@
     "latestResult": "migration HEAD9a4534b4 동일. main Godot e7f09d71 공격속도/회복 부분 수리의 commit·receipt·커밋 문서 새 절만 확인; 원음·정상 사용자 플레이·새 시각 승인·홍보 공개 준비0.",
     "gameHtmlSha256": "5212e3a33c201eec08d09b132092c1a063fea88f36fccef494ea351f3565d2cd"
   },
-  "nextMaterial": "이 스틸·짧은 글 캠페인 미리보기 검수·게시 판단; 최신 인트로 전편 검수와 교체 판단 유지. 다음 인게임 소재는 품질 개선 후 사용자 플레이 녹화.",
+  "nextMaterial": "최신 전사 인트로 자막 V2 검토본의 전편 시청·실제 청취와 공개 교체 판단. 다음 인게임 소재는 품질 개선 후 사용자 직접 플레이 녹화.",
   "newPublicationReadyCount": 0,
   "publicationEvidenceDate": "2026-10-08 과거 영상 게시 검증 + 2026-10-10 개발 글5건 공개 검증 및 Shorts A/B 비공개·공식 목록 제외 확인",
   "items": [
@@ -779,7 +779,25 @@
     "publicVersion": "2026-10-01 v25",
     "latestVersion": "2026-10-08 killu montage",
     "previewPath": "/Users/fordeargamers/the-exoduser/output/warrior-intro-latest-20261011/REVIEW/EXODUSER_WARRIOR_INTRO_20261008_REVIEW.mp4",
-    "state": "PREVIEW_DELIVERED; REPLACEMENT_NOT_STARTED"
+    "state": "PREVIEW_DELIVERED; REPLACEMENT_NOT_STARTED",
+    "captionReadabilityRevision": {
+      "preparedAtUTC": "2026-10-15T11:16:01.548661+00:00",
+      "state": "CAPTIONS_V2_REVIEW_ONLY",
+      "preview": "/Users/fordeargamers/the-exoduser/output/warrior-intro-caption-review-20261015/REVIEW/preview.html",
+      "receipt": "marketing/operations/warrior-intro-review-20261015/receipt.json",
+      "sourceVideoSHA256": "277fbe09c4f5c0b70a98aae6376a8d820a7377cbd6f96a3bc62365cf0a166b34",
+      "sourceVideoBytes": 97796468,
+      "oldCueCountEachLanguage": 22,
+      "newCueCountEachLanguage": 21,
+      "shortCueSeconds": 0.48,
+      "combinedCueSeconds": 2.93,
+      "videoAndAudioChanged": false,
+      "sampledCaptionLayout": "PASS",
+      "wholeContinuousWatch": "NOT_PERFORMED",
+      "actualListening": "UNHEARD",
+      "publicationApproved": false,
+      "newUpload": false
+    }
   },
   "latestProducerObservation": {
     "checkedAtUTC": "2026-10-15T10:37:53Z",

@@ -1,0 +1,41 @@
+{
+  "affectedLayoutChecks": [
+    {
+      "name": "quote-ko",
+      "time": 60,
+      "cueId": "wa22_23",
+      "text": "\"기억하라.\"\n\"그리고 지옥에서도 후회하라.\"",
+      "line": 75,
+      "snapToLines": false,
+      "videoWidth": 1152,
+      "overflow": false
+    },
+    {
+      "name": "quote-en",
+      "time": 60,
+      "cueId": "wa22_23",
+      "text": "\"Remember.\"\n\"And regret it even in hell.\"",
+      "line": 75,
+      "snapToLines": false,
+      "videoWidth": 1152,
+      "overflow": false
+    },
+    {
+      "name": "mobile-quote",
+      "time": 60,
+      "cueId": "wa22_23",
+      "text": "\"기억하라.\"\n\"그리고 지옥에서도 후회하라.\"",
+      "line": 56,
+      "snapToLines": false,
+      "videoWidth": 362,
+      "overflow": false
+    }
+  ],
+  "errors": [],
+  "initialVisualFailure": "Merged second line clipped / controls overlap; earlier images preserved in qa-before-position-fix",
+  "fix": "Native cue percent line desktop75/mobile56; mobile font14px; transparent background",
+  "technicalAffectedResult": "PASS",
+  "subjectiveVisualReview": "PENDING",
+  "fullContinuousWatching": "NOT_PERFORMED",
+  "actualListening": "UNHEARD"
+}

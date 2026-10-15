@@ -1,0 +1,115 @@
+{
+  "preparedAtUTC": "2026-10-15T11:11:52.675669+00:00",
+  "state": "CAPTION_READABILITY_REVISION_REVIEW_ONLY",
+  "sourceVideo": {
+    "path": "/Users/fordeargamers/the-exoduser/output/warrior-intro-latest-20261011/REVIEW/EXODUSER_WARRIOR_INTRO_20261008_REVIEW.mp4",
+    "sha256": "277fbe09c4f5c0b70a98aae6376a8d820a7377cbd6f96a3bc62365cf0a166b34",
+    "bytes": 97796468
+  },
+  "sourceHashEvidence": "EXISTING_DELIVERY_MANIFEST; byte size checked; hash not rerun",
+  "videoReencoded": false,
+  "audioChanged": false,
+  "original22CueFilesOverwritten": false,
+  "captionChanges": {
+    "ko": {
+      "sourceCueCount": 22,
+      "revisedCueCount": 21,
+      "changedSourceCueIds": [
+        "wa22",
+        "wa23"
+      ],
+      "revisedCueId": "wa22_23",
+      "previousRememberDurationSeconds": 0.48,
+      "newCombinedDurationSeconds": 2.93,
+      "wordsUnchanged": true,
+      "speechStartAndLastEndUnchanged": true,
+      "nonOverlapping": true,
+      "withinVideoDuration": true,
+      "path": "/Users/fordeargamers/the-exoduser/output/warrior-intro-caption-review-20261015/REVIEW/EXODUSER_WARRIOR_INTRO_20261008_CAPTIONS_V2_ko.vtt",
+      "sha256": "3d73adeecf8c3e2b72f9728d94946e7b15b43cb54dcd22b782eaf830b8199cd4"
+    },
+    "en": {
+      "sourceCueCount": 22,
+      "revisedCueCount": 21,
+      "changedSourceCueIds": [
+        "wa22",
+        "wa23"
+      ],
+      "revisedCueId": "wa22_23",
+      "previousRememberDurationSeconds": 0.48,
+      "newCombinedDurationSeconds": 2.93,
+      "wordsUnchanged": true,
+      "speechStartAndLastEndUnchanged": true,
+      "nonOverlapping": true,
+      "withinVideoDuration": true,
+      "path": "/Users/fordeargamers/the-exoduser/output/warrior-intro-caption-review-20261015/REVIEW/EXODUSER_WARRIOR_INTRO_20261008_CAPTIONS_V2_en.vtt",
+      "sha256": "0638ea1d8542444d03bf7500bb8809a85079438a33fc90cc2a232682262380d1"
+    }
+  },
+  "KO_ENTimingParity": true,
+  "newGameplayCapture": false,
+  "newVideoUpload": false,
+  "publicationApproved": false,
+  "fullContinuousWatching": "NOT_PERFORMED",
+  "actualListening": "UNHEARD",
+  "preview": "/Users/fordeargamers/the-exoduser/output/warrior-intro-caption-review-20261015/REVIEW/preview.html",
+  "browserQA": {
+    "result": "PASS_SCOPED_VIDEO_LOAD_AND_CAPTION_CONTROLS",
+    "videoMetadata": {
+      "duration": 96.4,
+      "width": 1920,
+      "height": 1080,
+      "source": "original MP4; no encode"
+    },
+    "desktopViewport": [
+      1365,
+      1000
+    ],
+    "mobileViewport": [
+      390,
+      844
+    ],
+    "VTTWordsAndTimingsParity": "PASS",
+    "captionSelectionAndOff": "PASS",
+    "jumpButtonsNoAutoplay": "PASS",
+    "horizontalOverflow": false,
+    "initialLayout": "FAIL: merged second line clipped/controls overlap",
+    "affectedFix1": "RETOUCH: mobile caption small/control proximity",
+    "finalCaptionLayout": "PASS_SAMPLED_KO_EN_DESKTOP_AND_KO_MOBILE",
+    "cueLinePercent": {
+      "desktop": 75,
+      "mobile": 56
+    },
+    "mobileCueFontPixels": 14,
+    "background": "transparent CSS; native player controls/style may vary",
+    "fullContinuousWatching": "NOT_PERFORMED",
+    "actualListening": "UNHEARD",
+    "transientLoadingIndicatorObservedInDesktopScreenshots": true,
+    "initialFailureEvidence": "/Users/fordeargamers/the-exoduser/output/warrior-intro-caption-review-20261015/REVIEW/qa-before-position-fix",
+    "firstCorrectionEvidence": "/Users/fordeargamers/the-exoduser/output/warrior-intro-caption-review-20261015/REVIEW/qa-position-fix-1"
+  },
+  "next": "확인된 자막 가독성 개선만 인도. 전체 연속 시청·실제 청취·사용자 공개 판단은 별도 미완료.",
+  "finalizedAtUTC": "2026-10-15T11:16:01.548661+00:00",
+  "evidence": {
+    "quote-ko.png": {
+      "path": "/Users/fordeargamers/the-exoduser/output/warrior-intro-caption-review-20261015/REVIEW/quote-ko.png",
+      "sha256": "fa66abf896c7ced1db02bdfecd17fd618708456309df818b8b561a6f13c97296"
+    },
+    "quote-en.png": {
+      "path": "/Users/fordeargamers/the-exoduser/output/warrior-intro-caption-review-20261015/REVIEW/quote-en.png",
+      "sha256": "78f0aaa184e4b59517f264cb0c1d1f4e2a608bfb9f8159a1192b33eca7a716ef"
+    },
+    "mobile-quote.png": {
+      "path": "/Users/fordeargamers/the-exoduser/output/warrior-intro-caption-review-20261015/REVIEW/mobile-quote.png",
+      "sha256": "85120a095e74dd424b8f94ccab505b489a422112f0c6d78fe81b052d09eebe3b"
+    },
+    "browser-qa.json": {
+      "path": "/Users/fordeargamers/the-exoduser/output/warrior-intro-caption-review-20261015/REVIEW/browser-qa.json",
+      "sha256": "60aeae4ec30e120ceebc0445d4502e8d7d6ec5cbca23173e182cc8877e6848e9"
+    },
+    "layout-qa.json": {
+      "path": "/Users/fordeargamers/the-exoduser/output/warrior-intro-caption-review-20261015/REVIEW/layout-qa.json",
+      "sha256": "1ac5d60089116fbef48165b2e393b37e8f0c62febd1f85b6fa6c6a4ca3e2ca72"
+    }
+  }
+}

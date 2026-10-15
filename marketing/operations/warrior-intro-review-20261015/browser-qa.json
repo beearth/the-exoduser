@@ -1,0 +1,100 @@
+{
+  "metadata": {
+    "duration": 96.4,
+    "width": 1920,
+    "height": 1080,
+    "paused": true,
+    "muted": false,
+    "source": "file:///Users/fordeargamers/the-exoduser/output/warrior-intro-latest-20261011/REVIEW/EXODUSER_WARRIOR_INTRO_20261008_REVIEW.mp4",
+    "tracks": 1
+  },
+  "checks": [
+    {
+      "label": "grip",
+      "time": 2,
+      "paused": true,
+      "cues": [
+        {
+          "id": "wa02",
+          "text": "전쟁에서 살아 돌아온 한 남자.",
+          "start": 1,
+          "end": 3.21
+        }
+      ],
+      "cueCount": 21,
+      "overflow": false
+    },
+    {
+      "label": "killu",
+      "time": 54,
+      "paused": true,
+      "cues": [
+        {
+          "id": "wa20",
+          "text": "불로 지혈까지 해주며",
+          "start": 53.48,
+          "end": 55.69
+        }
+      ],
+      "cueCount": 21,
+      "overflow": false
+    },
+    {
+      "label": "quote-ko",
+      "time": 60,
+      "paused": true,
+      "cues": [
+        {
+          "id": "wa22_23",
+          "text": "\"기억하라.\"\n\"그리고 지옥에서도 후회하라.\"",
+          "start": 59.5,
+          "end": 62.43
+        }
+      ],
+      "cueCount": 21,
+      "overflow": false
+    },
+    {
+      "label": "quote-en",
+      "time": 60,
+      "paused": true,
+      "cues": [
+        {
+          "id": "wa22_23",
+          "text": "\"Remember.\"\n\"And regret it even in hell.\"",
+          "start": 59.5,
+          "end": 62.43
+        }
+      ],
+      "cueCount": 21,
+      "overflow": false
+    },
+    {
+      "label": "ending",
+      "time": 91,
+      "paused": true,
+      "cues": [
+        {
+          "id": "wa33a",
+          "text": "\"지옥을 탈출하라.\"",
+          "start": 90.333,
+          "end": 91.395
+        }
+      ],
+      "cueCount": 21,
+      "overflow": false
+    }
+  ],
+  "mobile": {
+    "overflow": false,
+    "videoWidth": 362,
+    "paused": true,
+    "time": 59.5
+  },
+  "subtitleOff": "disabled",
+  "errors": [],
+  "technicalBrowserQA": "PASS",
+  "fullContinuousWatching": "NOT_PERFORMED",
+  "actualListening": "UNHEARD",
+  "screenshotsAreSampledFrames": true
+}
