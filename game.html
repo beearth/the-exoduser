@@ -49932,7 +49932,7 @@ function _invBuildCompare(item,curEq){
   const _fromE=curEq.enh||0;
   const _xc=_fromE>0?xferCost(_fromE):0;
   const _xferNote=_fromE>0
-    ?'<div style="font-size:.8rem;color:#886644;margin-bottom:6px">\u2692 장착 시 +'+_fromE+' 자동 이전 | 비용 <span style="color:#ffaa44">'+_xc.toLocaleString()+'악의</span>'+((G.mats||0)<_xc?' <span style="color:#cc4444">악의 부족 \u2192 강화 소멸</span>':'')+'</div>'
+    ?'<div style="font-size:.8rem;color:#886644;margin-bottom:6px">\u2692 장착 시 +'+_fromE+' 자동 이전 | 비용 <span style="color:#ffaa44">'+_xc.toLocaleString()+'악의</span>'+((G.mats||0)<_xc?' <span style="color:#cc4444">악의 부족 \u2192 장착 불가</span>':'')+'</div>'
     :'';
   const diffsHtml=(diffs||_xferNote)
     ?'<div style="border-bottom:1px solid #332211;padding-bottom:8px;margin-bottom:8px">'

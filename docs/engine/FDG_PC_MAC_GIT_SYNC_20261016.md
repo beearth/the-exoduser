@@ -724,3 +724,15 @@ code1/docs4 exact5의 WORK/HEAD 개별10 기록은 첫 제품쓰기 전이다. �
 | 저장·자원 | 직접 장착·강화 실행·저장 호출을 추가하지 않음. own fixture에서 원 레코드/직렬화 및 현재 자원 값 복원을 관측했으며 실 P/장비·applyStats/calcCP·save/API를 실행한 검수는 아님 |
 | 신규 검사 | 실제 helper와 실제 CP try fragment + own providers/state 6군 및 main inline 구문1 통과. 오류 시 old own 장착 참조 잔류와 새 finally 복원, 조기반환·기존비용·강화/보석·오류/원 catch·나머지 HTML byte 보존 확인 |
 | 검사 이력·한계 | 준비 Python quoting과 own 자금부족 fixture 초기 snapshot 오류를 수정해 firstWholeClean=false 유지. 통과2군·조기반환5사례 재실행 없이 실패1사례와 미실행 나머지만 진행했고 제품 코드를 검사에 맞춰 변경하지 않음. 실제 UI·전투력 수치·장착/저장·native·PC·전체 최신 이식 검수 아님 |
+
+## 2026-10-16 강화 이전 비용 부족 안내 — R h344
+
+| 항목 | 현행 계약 |
+|---|---|
+| 위치 / id | _invBuildCompare의 _xferNote, 후보 장착 시 강화 자동 이전 설명 |
+| 표시 문구 | 기존 '악의 부족 → 강화 소멸'을 원 R대로 '악의 부족 → 장착 불가'로 수정 |
+| 표시 조건 | _fromE=curEq.enh 또는0. _fromE>0일 때 이전 안내를 만들고 _xc=xferCost(_fromE). (G.mats 또는0)<_xc일 때 위 경고 표시 |
+| 실제 권위 | 기존 equipItem은 이전 비용이 부족하면 알림 후 return하여 교체를 차단. 문구를 이 기존 동작에 맞췄으며 새 장착/강화/차감/소멸 규칙은 없음 |
+| 보존 | 금액·비용식·조건·원 강화 값·아이템/자원/저장·반환/예외·CP 공식/공급자·스타일·화살표/기존 표시 포맷·locale/사전 코드는 그대로 |
+| 검수 | 원 문구 한 곳만 바뀌고 나머지 HTML byte가 같은지 정적으로 확인, main inline 구문1 통과. 저위험 문구 수정이므로 신규 기능 테스트·실 함수 실행 없음 |
+| 한계 | 실제 비교창 렌더/장착·계산·자원·저장/API·사용자 창/native/PC 검수 아님. 기존 장착/CP/focus 검사·증거를 다시 실행하거나 재회수하지 않음 |
