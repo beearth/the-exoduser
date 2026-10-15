@@ -355,3 +355,17 @@ R의 기존 gameConfirm pending resolver 가드 한 줄을 main에 결합했다.
 | 보존 | 기존 _activeNodeCnt/_MAX_ACTIVE_NODES admission·파형/음량/버스·_r 호출 순서/횟수·모든 SFX/게임 caller·에셋 불변. 대체음·cap/priority·새 타이머/전역 복구 정책 없음 |
 | 범위 밖 | actx/노드 생성·frequency/gain envelope·connect는 원 위치와 이 try 밖. 등록 전 일반 allocation/연결 예외 복구나 실제 오디오 종료 성공 전체를 보장하지 않음 |
 | 새 검수 | 자기 oscillator/gain/timeout 대역에서 실제 playTone의 start/예약stop/정리오류·정상 파라미터/등록 정리만. 실제 WebAudio·가청/성능·게임 시계·사용자 창/설정·저장/API 실행 아님 |
+## 2026-10-16 R 스킬 발동 결과 계약 독립 이식
+
+| 항목 | 이번 범위 |
+|---|---|
+| 출발 main | 7dd8ef1fbc0bb902d66126f1dfcbe8ccd1d4a325 |
+| R 원본 선택 | h95–97 호출부 + h294–303 발동 함수 반환 계약, 논리 hunk 13개 |
+| 코드 | game.html: activateMaliceHunt/activateVenomBlade/activateLtnChaser의 기존 거절 7개를 false, 함수 정상 종료 3개를 true로 연결. dispatcher 세 case는 ===true에만 기존 쿨다운·_skOk 적용 |
+| 최신 main 보존 | 추적전격 _bladeEchoTryStart 우선순위, 기존 자원·피해·합체·숙련도 내부 호출·HP·Q/E 유지 |
+| 사전 보존 | 소유 6경로 WORK/HEAD 바이트 백업을 이번 첫 코드 수정 전에 완료 |
+| 검증 | 실제 함수 + dispatcher의 합성 VM 6개 검사군 PASS, 인라인 구문 1개 PASS. 실제 게임 상태·창·오디오·세이브 사용 없음 |
+| 적용 한계 | 합체 성공 payload·실전 전투·현재 브라우저 메모리·서버 프로세스 재시작·PC·native 전체 최신판은 검증하지 않음 |
+| 별도 보류 | general-image warm db56 봉인 함수 범위와 native/맵/캐릭터/타 팀 HOLD는 이번 단위에 포함하지 않음 |
+
+소스 일부의 정상 부모 이식이며 최신 게임 전체 완료나 이식 진행률을 뜻하지 않는다. 외부 단위 기록: R-skill-activation-result-integration-20261016.

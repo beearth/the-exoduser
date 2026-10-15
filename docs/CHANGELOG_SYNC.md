@@ -53589,3 +53589,11 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 
 [스키마·API·공개 링크·실제 증거·MAP §23](engine/FDG_NATIVE_MAP_PACK_20261012.md). 증거: `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/engine-map-pack-native-first/`. 새 완료 범위는 저작 데이터의 실제 native 연결이며 전체 엔진·게임용24장·신규모델 완료가 아니다.
 <!-- FDG_NATIVE_MAP_PACK_20261012_END -->
+## 2026-10-16 R 스킬 발동 성공·거절 반환 계약
+
+| 경로 | 변경 |
+|---|---|
+| game.html | R h95–97 + h294–303. 악의 사냥·독사·뇌전추격자의 기존 거절은 false, 정상 종료는 true. dispatcher는 ===true에서만 기존 쿨다운·_skOk 적용 |
+| docs/2_1 스킬관리+합체시스템+자원 | 스킬/자원/추적전격 문서에 반환 의미, 비용·쿨다운, 연계 우선순위와 검사 한계 동기화 |
+| docs/engine/FDG_PC_MAC_GIT_SYNC_20261016.md | 독립 이식 범위와 전체 최신판 미검증 상태 기록 |
+| 검증 | 실제 provider/dispatcher + 합성 목적지의 신규 6개 검사군 및 인라인 구문 1개 PASS. 실제 전투·세이브·PC/native·브라우저 메모리 검증 없음 |
