@@ -206,3 +206,15 @@ R의 기존 gameConfirm pending resolver 가드 한 줄을 main에 결합했다.
 | 별도 미채택 | h17 unique명, h19 legacy qslots, h20 bagMax 및 h14/21 저장producer owner는 이 단위에서 변경0. 폐지된 퀵슬롯 UI·자동사용을 복원하지 않음 |
 | 새 검수 | 생산 PASSIVE_DEF/known-key 초기화·dbRestore의 실제 해당 statement와 current queuePassive guard를 합성 데이터에서 격리 실행한6묶음 PASS. 목적 동작은 stub이며 투자·전체dbRestore/Bootstrap·실사용자save/settings/API/HPcoordsclockAI/GUI를 실행하지 않음 |
 | 변경 범위 | game.html 해당 한 줄의 +만 변경·전체파일 inverse 확인. 기존 복원 순서·기인수기능·Q/E·initStage·3387/HOLD·docs/2_3 미변경. 전체R/PC/품질 이식 완료 아님 |
+
+## 2026-10-16 가방 용량 복원의 기존 R NaN 방어
+
+| id / 적용 위치 | 현재 계약 |
+|---|---|
+| bagMax → BAG_MAX | dbRestore의 기존 위치에서 BAG_MAX=Number.isNaN(+d.bagMax)?300:d.bagMax\|\|300. 원 R h20의 독립 누락만 채택 |
+| 잘못된 숫자 텍스트 | 숫자 변환 결과가 NaN이면 기존 기본 용량 300을 사용. 예: invalid 문자열로 행 수가 NaN이 되고 용량 비교가 무효화되는 경로 방지 |
+| 결측·falsy | absent/undefined/null/false/0/빈문자열은 기존 논리 OR와 동일하게 300 |
+| 기존 값 보존 | 숫자로 변환 가능한 truthy 입력은 원래 값·형식 유지. 숫자 문자열을 숫자로 저장하지 않으며 새 상한·하한·정수화·유한값 검사 추가 없음 |
+| 현재 소비 | _invRows의 Math.max(10,Math.ceil(BAG_MAX*4/INV_COLS)), INV_COLS=10 및 withdrawStorage/withdrawBonePart의 INV.bag.length>=BAG_MAX 검사. 가방 공통 기본 용량 300 유지 |
+| 저장·범위 | 직렬화 키 bagMax·복원 순서·아이템·좌표·이동 성공 시 기존 저장 호출 유지. uniqueArt, legacy QSLOTS, 지연 저장 owner 및 HP/QE 변경 없음 |
+| 검수 범위 | 자기 합성 입력과 실제 복원 statement/_invRows/withdrawStorage를 격리 실행. 목적 함수는 stub. 실제 사용자 세이브/API·전체 dbRestore·열린 게임·PC 검수의 증거로 사용하지 않음 |
