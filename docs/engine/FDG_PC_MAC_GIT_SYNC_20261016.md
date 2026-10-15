@@ -515,3 +515,14 @@ R의 기존 gameConfirm pending resolver 가드 한 줄을 main에 결합했다.
 | 검증 | 실제 확정 블록 추출 + own 자원/zone/효과 대역 새6그룹, main inline 구문1. 전체 update·선택·실발사·전투·Native·PC·저장 검증 아님 |
 | 보존 | 코드1/docs5 exact6 WORK/HEAD을 첫 제품쓰기 전에 각 별도 시점 기록과 함께 백업. W/기존 HOLD·창·save/API/process 유지 |
 | 범위 제한 | prewrite checker의 importmap JS 파싱 오류와 문서 작성 helper의 Python 구문 오류를 해당 helper에서 수정; 제품을 검사에 맞춰 변경하지 않았으며 firstWholeClean=false. 전체 최신 게임 이식 완료 아님 |
+
+## 2026-10-16 R h244+245 뇌전창 확정 MP 연결
+
+| 항목 | 범위·한계 |
+|---|---|
+| 제품 | 실제 update 수동 조준 확정에서 원 R MP<50→원 안내·조준 종료, else 기존 성공본문 래핑만 |
+| 원 의미 | MP50/스택식·clamp/720충전·기존900+(Lv-1)*30 지속·피해·좌표·거리·효과·RNG·입력 소유 유지; 새로운 stack/finite/default/예약/환불 정책 없음 |
+| 문서 | 기존600/10초 문서값은 보존·분리하고 현재 수동확정900+(Lv-1)*30f/60f단위와 차이를 명시. 확정목표900 또는 모든Lv15초로 변경한 것이 아님 |
+| 검증 | 실제 확정 if + own 자원/창/효과 대역 새6그룹/main inline1. 실제 선택·전투·Native·저장·PC 검증 아님 |
+| 백업 순서 | 초기 code1/docs5 exact6 WORK/HEAD은 첫제품쓰기 전. 사후 docs 검색으로 발견한 DPS/공식표2문서는 첫코드쓰기 후 각각 자기 첫쓰기 전 WORK/HEAD 추가 백업·별도 기록. 총code1/docs7 exact8이며 전8을 첫코드전이라고 주장하지 않음 |
+| 제외 | h241~243 _hurtFieldMobs 추가·다른 producer/pDot·HOLD·원 WIP·실제 창/save/API/process 변경 없음. 전체 최신 게임 완료 아님 |
