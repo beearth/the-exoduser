@@ -190,3 +190,19 @@ R의 기존 gameConfirm pending resolver 가드 한 줄을 main에 결합했다.
 | DOM 범위 | 기존 gameConfirm 본문은 그대로. 신규 DOM parent 내용 교체·UI 디자인·초점 권위 변경 없음. 실제 HTML 렌더링/전체 Startup 검수 아님 |
 | 새 검수 | 격리 public gameConfirm 및 실제 스킬 확인 gate+목적stub의5묶음 PASS. 동시요청 거부·첫 resolver/메시지/버튼 보존·확인/취소·재개·기존 HTML 모드·전체파일 inverse 확인. 변경 function 구문/실행 확인 |
 | 한계 | 실user GUI/state/save/API 접근·자동입력0. 실제 스킬 비용집행/화면품질/PC 검수 없음. game-easy-test·Godot/HOLD·기인수기능·docs/2_3 변경0. 잔여R statement 의도·승인 분류와 전체 이식 미완료 |
+
+## 세이브 패시브의 기존 R 숫자 변환 (2026-10-16)
+
+현재 main의 dbRestore known-key 복원에 빠진 R h18의 unary + 한 글자만 통합한다. 새로운 패시브·기본값·상한·비용·마이그레이션이나 저장 권위를 추가하지 않는다.
+
+| id / 적용 위치 | 현행 계약 |
+|---|---|
+| 생산 복원 seam | if(d.passives) 순회에서 PASSIVES.hasOwnProperty(k)인 대상 키에만 PASSIVES[k]=+d.passives[k]\|\|0. 기존 순서/키 허용목록 유지 |
+| 바깥 필드 | passives 자체가 absent/null/false/0/빈문자열 등 falsy이면 기존 PASSIVES 객체·값 유지. raw에 없는 개별 키도 기존 값 유지 |
+| 개별 값 | 존재하는 허용 키의 숫자 문자열은 숫자로 변환. NaN/undefined/null/빈문자열/false 등 변환 뒤 falsy는0, true는1. R의 unary + 후 논리OR0 의미 그대로 |
+| 범위 정책 | 음수·소수·Infinity 등 truthy 숫자는 R과 동일하게 유지. 정수화·유한값 검사·clamp/cap을 추가하지 않는다 |
+| identity | 기존 PASSIVES 객체를 유지하고 허용 키의 값만 대입. 알 수 없는 키·다른 save field·unique/item/slot identity에 변경 없음 |
+| 현행 숫자 소비 | renderStatPanel.queuePassive의 기존 (PASSIVES[key]\|\|0)+대기개수+amount 조건에 숫자를 공급. 정상숫자·기존상한/투자비용/피해공식 유지 |
+| 별도 미채택 | h17 unique명, h19 legacy qslots, h20 bagMax 및 h14/21 저장producer owner는 이 단위에서 변경0. 폐지된 퀵슬롯 UI·자동사용을 복원하지 않음 |
+| 새 검수 | 생산 PASSIVE_DEF/known-key 초기화·dbRestore의 실제 해당 statement와 current queuePassive guard를 합성 데이터에서 격리 실행한6묶음 PASS. 목적 동작은 stub이며 투자·전체dbRestore/Bootstrap·실사용자save/settings/API/HPcoordsclockAI/GUI를 실행하지 않음 |
+| 변경 범위 | game.html 해당 한 줄의 +만 변경·전체파일 inverse 확인. 기존 복원 순서·기인수기능·Q/E·initStage·3387/HOLD·docs/2_3 미변경. 전체R/PC/품질 이식 완료 아님 |

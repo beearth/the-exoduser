@@ -3684,7 +3684,7 @@ function dbRestore(d){
   // Stats
   if(d.stats)for(const k in d.stats)STATS[k]=d.stats[k]||0;
   // Passives (known keys only)
-  if(d.passives)for(const k in d.passives)if(PASSIVES.hasOwnProperty(k))PASSIVES[k]=d.passives[k]||0;
+  if(d.passives)for(const k in d.passives)if(PASSIVES.hasOwnProperty(k))PASSIVES[k]=+d.passives[k]||0;
   // removed passive migration: pShield(수호) -> AP refund
   {
     const _legacyLv=Math.max(0,~~(PASSIVES.pShield||0));
