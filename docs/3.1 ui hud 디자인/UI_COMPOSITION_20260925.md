@@ -2815,3 +2815,19 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 실제 소비·캐시 | 공개 evaluatePlan/실game 초기화 환불을 사용. game.html의 stat-panel-ui.js query만20261016-refund-totals로 갱신 |
 | 검증·제한 | 격리 새영향6묶음/module구문/cache 한줄 변경 PASS. 첫 fixture export lookup 실패 후 fixture만 수리, 이력 보존. 실제 사용자 상태·save/API·서버 재시작·PC 확인0 |
 | 정본 | docs/3.1 ui hud 디자인/능력치_패시브_개편_20260909.md의 환불 합계 절. 기존 단계비용·계획 원자 적용·확인/저장 권위 유지 |
+
+
+## 입장 예약의 요청 수명 가드 (2026-10-16)
+
+기존 R의 showCharGate request 가드만 main에 결합했다. isolated3387 query carry·새 저장 복원·새 진입 권위를 추가하지 않는다.
+
+| id / 적용 위치 | 현재 계약 |
+|---|---|
+| 예약 시작 | index.html showCharGate(charId,storySeen=false) 진입 시 const request=_characterLoadSeq 캡처. 이 함수는 요청 번호를 증가시키지 않는다 |
+| 예약 실행 | 기존 setTimeout 1200ms 유지. callback 첫머리에서 request!==_characterLoadSeq이면 return. 같을 때만 기존 window.location.href 대입 |
+| 기존 취소·재요청 | _goLogin/_goCinematic 및 loadCharacters/loadLocalCharacters의 기존 ++_characterLoadSeq가 이전 예약을 무효화. 새 취소 writer나 timer clear·debouncer 없음 |
+| 반복 요청 의미 | 요청 번호가 달라진 두 예약은 실행 순서에 관계없이 새 번호만 이동. 같은 번호에서 두 번 호출한 경우 두 callback 모두 허용하는 기존 R 의미 유지 |
+| 정상 경로 | offline test slot 인코딩, online char/선택 slot 이름, demo의 slot=demo&demo=1, storySeen의 story=warrior-v21 suffix 유지. 1200ms/로고 preload/선택·remaster 변경 없음 |
+| 부수효과 경계 | demo 활성화·loading·로고 preload는 기존처럼 예약 전에 수행. stale callback은 이동만 중단하며 기존 activation·loading을 되돌리지 않는다. demo 활성화 실패는 기존 hideLoading/오류/예약0 유지 |
+| 새 검수 | 격리 실제 showCharGate/직접 callback의 정상URL·demo실패·늦은취소·서로 다른 요청의 양쪽 실행순서·같은번호반복·가드외본문불변6묶음 PASS. 해당 inline script1개 구문 PASS. 전체 Startup/실브라우저·사용자 save/API 실행은 아님 |
+| 보호 범위 | 3387/classic/ch1Three/ch1Rig/webgpu carry 미채택. MAP·package·패링별도dependency·game-easy-test/Godot/HUD 변경0. PC/잔여R전체이식 미완료 |

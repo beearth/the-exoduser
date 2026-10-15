@@ -163,3 +163,19 @@ v21과 동일한 영상에 무가사 「심연의 탈주」를 합성한 v22를 
 | 회귀 | test/lobbyCreationResponse.test.js 신규22건. 최초21건은 원본에서20실패/1통과, 안내·재생기 정리 추가 검사는 수정 전22건 중10실패/12통과. 관련 통합209건·inline script4개 구문 통과 |
 | 실제 브라우저 | Node 서버 실제 페이지960×540, 시작 타이틀 실제 클릭 후 직접/버튼×성공/오류/네트워크 실패6조건: 로그인 유지·생성창 숨김·안내 빈값·현재 초점 유지·스토리/입장0회·추가 폴백 저장0회·버튼 해제. 실제 재생 중 스토리도 전환 즉시 종료, 이전 입장0회 |
 | 전체 계약·증거 | [세이브 설계](../15%20세이브+데이터구조/15%20세이브+데이터구조.md)의 동명 절. 같은 화면의 기존 생성 성공/실패 유지. 관련 문서7개 동기화, 커밋은 기존 .git 쓰기 제한으로 미완료 |
+
+
+## 입장 예약의 요청 수명 가드 (2026-10-16)
+
+기존 R의 showCharGate request 가드만 main에 결합했다. isolated3387 query carry·새 저장 복원·새 진입 권위를 추가하지 않는다.
+
+| id / 적용 위치 | 현재 계약 |
+|---|---|
+| 예약 시작 | index.html showCharGate(charId,storySeen=false) 진입 시 const request=_characterLoadSeq 캡처. 이 함수는 요청 번호를 증가시키지 않는다 |
+| 예약 실행 | 기존 setTimeout 1200ms 유지. callback 첫머리에서 request!==_characterLoadSeq이면 return. 같을 때만 기존 window.location.href 대입 |
+| 기존 취소·재요청 | _goLogin/_goCinematic 및 loadCharacters/loadLocalCharacters의 기존 ++_characterLoadSeq가 이전 예약을 무효화. 새 취소 writer나 timer clear·debouncer 없음 |
+| 반복 요청 의미 | 요청 번호가 달라진 두 예약은 실행 순서에 관계없이 새 번호만 이동. 같은 번호에서 두 번 호출한 경우 두 callback 모두 허용하는 기존 R 의미 유지 |
+| 정상 경로 | offline test slot 인코딩, online char/선택 slot 이름, demo의 slot=demo&demo=1, storySeen의 story=warrior-v21 suffix 유지. 1200ms/로고 preload/선택·remaster 변경 없음 |
+| 부수효과 경계 | demo 활성화·loading·로고 preload는 기존처럼 예약 전에 수행. stale callback은 이동만 중단하며 기존 activation·loading을 되돌리지 않는다. demo 활성화 실패는 기존 hideLoading/오류/예약0 유지 |
+| 새 검수 | 격리 실제 showCharGate/직접 callback의 정상URL·demo실패·늦은취소·서로 다른 요청의 양쪽 실행순서·같은번호반복·가드외본문불변6묶음 PASS. 해당 inline script1개 구문 PASS. 전체 Startup/실브라우저·사용자 save/API 실행은 아님 |
+| 보호 범위 | 3387/classic/ch1Three/ch1Rig/webgpu carry 미채택. MAP·package·패링별도dependency·game-easy-test/Godot/HUD 변경0. PC/잔여R전체이식 미완료 |
