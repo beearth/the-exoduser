@@ -1,3 +1,18 @@
+## 인게임 공유 확인창의 단일 대기 요청 (2026-10-16)
+
+R의 기존 gameConfirm pending resolver 가드 한 줄을 main에 결합했다. 로비의 별도 삭제/종료 확인창과 _delConfirmBusy 계약은 변경하지 않는다.
+
+| id / 실제 적용 위치 | 현재 계약 |
+|---|---|
+| pending 검사 | game.html gameConfirm의 첫 줄에서 if(_gcResolve)return Promise.resolve(false). 기존 대기 요청이 있을 때 후속 요청만 취소값 false로 비동기 반환 |
+| 첫 요청 보존 | pending 요청의 메시지·HTML 모드·확인/취소 문구·onclick·resolver를 덮어쓰지 않음. 중복 요청에서는 DOM 쓰기/창 재열기0 |
+| 정상 응답 | 기존 첫 확인은 true, 취소는 false. 기존 버튼 handler가 on 제거와 _gcResolve=null을 처리. 반환값·기본 확인/취소 문구 유지 |
+| 다음 요청 | 창이 닫혀 resolver가 null이면 새 요청을 기존처럼 표시. 큐·자동 확인·새 timer·새 authority 없음 |
+| 실제 소비 | _skResetSkill 등의 기존 if(!await gameConfirm(...))return 경로. 첫 요청 처리와 취소 반환/이후 비용·스킬·세이브 검증 본문 유지 |
+| DOM 범위 | 기존 gameConfirm 본문은 그대로. 신규 DOM parent 내용 교체·UI 디자인·초점 권위 변경 없음. 실제 HTML 렌더링/전체 Startup 검수 아님 |
+| 새 검수 | 격리 public gameConfirm 및 실제 스킬 확인 gate+목적stub의5묶음 PASS. 동시요청 거부·첫 resolver/메시지/버튼 보존·확인/취소·재개·기존 HTML 모드·전체파일 inverse 확인. 변경 function 구문/실행 확인 |
+| 한계 | 실user GUI/state/save/API 접근·자동입력0. 실제 스킬 비용집행/화면품질/PC 검수 없음. game-easy-test·Godot/HOLD·기인수기능·docs/2_3 변경0. 잔여R statement 의도·승인 분류와 전체 이식 미완료 |
+
 
 
 ## R 상호작용 입력 freshness·reset의 main 통합 (2026-10-16)

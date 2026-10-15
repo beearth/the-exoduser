@@ -175,3 +175,18 @@ d9e1cbce는 기존 main+W 통합이다. R/main 공통 base aacc7b02 대비 실�
 | 새 검수 | 격리된 현재 public keyboard handlers + 실제 update dispatch 표현식의8묶음 PASS. 목적 동작은 stub이며 포털·줍기/홀드 본문 byte 불변을 별도 확인. 공통 edge/held 함수 불변·현재패드 주입·실습reset API 부재fallback·전체 inverse 복원 확인 |
 | 구문·실패 이력 | 변경 inline1과 공유 레슨1 구문 PASS. 초기 작성 스크립트의 preset 중복2곳 guard에서 쓰기전 중단 후 _loadPreset로 scope 한정. 검사 fixture는 keydown3개 중 실제소비자 선택 및 최소 DOM stub 부재를 교정; 각 실패 JSON 보존. 제품을 검사 편의로 변경하지 않음 |
 | 실제 미검증 | 사용자 GUI/save/API·실player HP/coords/clock/AI 강제설정·Startup전체·GPU/화면 품질/전체게임·물리패드·PC 실행 없음. 실행 중 서버 재시작0. 잔여 R 문맥 분류·전체 이식 완료 아님 |
+
+## 인게임 공유 확인창의 단일 대기 요청 (2026-10-16)
+
+R의 기존 gameConfirm pending resolver 가드 한 줄을 main에 결합했다. 로비의 별도 삭제/종료 확인창과 _delConfirmBusy 계약은 변경하지 않는다.
+
+| id / 실제 적용 위치 | 현재 계약 |
+|---|---|
+| pending 검사 | game.html gameConfirm의 첫 줄에서 if(_gcResolve)return Promise.resolve(false). 기존 대기 요청이 있을 때 후속 요청만 취소값 false로 비동기 반환 |
+| 첫 요청 보존 | pending 요청의 메시지·HTML 모드·확인/취소 문구·onclick·resolver를 덮어쓰지 않음. 중복 요청에서는 DOM 쓰기/창 재열기0 |
+| 정상 응답 | 기존 첫 확인은 true, 취소는 false. 기존 버튼 handler가 on 제거와 _gcResolve=null을 처리. 반환값·기본 확인/취소 문구 유지 |
+| 다음 요청 | 창이 닫혀 resolver가 null이면 새 요청을 기존처럼 표시. 큐·자동 확인·새 timer·새 authority 없음 |
+| 실제 소비 | _skResetSkill 등의 기존 if(!await gameConfirm(...))return 경로. 첫 요청 처리와 취소 반환/이후 비용·스킬·세이브 검증 본문 유지 |
+| DOM 범위 | 기존 gameConfirm 본문은 그대로. 신규 DOM parent 내용 교체·UI 디자인·초점 권위 변경 없음. 실제 HTML 렌더링/전체 Startup 검수 아님 |
+| 새 검수 | 격리 public gameConfirm 및 실제 스킬 확인 gate+목적stub의5묶음 PASS. 동시요청 거부·첫 resolver/메시지/버튼 보존·확인/취소·재개·기존 HTML 모드·전체파일 inverse 확인. 변경 function 구문/실행 확인 |
+| 한계 | 실user GUI/state/save/API 접근·자동입력0. 실제 스킬 비용집행/화면품질/PC 검수 없음. game-easy-test·Godot/HOLD·기인수기능·docs/2_3 변경0. 잔여R statement 의도·승인 분류와 전체 이식 미완료 |
