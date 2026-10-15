@@ -153,3 +153,25 @@ d9e1cbce는 기존 main+W 통합이다. R/main 공통 base aacc7b02 대비 실�
 | 부수효과 경계 | demo 활성화·loading·로고 preload는 기존처럼 예약 전에 수행. stale callback은 이동만 중단하며 기존 activation·loading을 되돌리지 않는다. demo 활성화 실패는 기존 hideLoading/오류/예약0 유지 |
 | 새 검수 | 격리 실제 showCharGate/직접 callback의 정상URL·demo실패·늦은취소·서로 다른 요청의 양쪽 실행순서·같은번호반복·가드외본문불변6묶음 PASS. 해당 inline script1개 구문 PASS. 전체 Startup/실브라우저·사용자 save/API 실행은 아님 |
 | 보호 범위 | 3387/classic/ch1Three/ch1Rig/webgpu carry 미채택. MAP·package·패링별도dependency·game-easy-test/Godot/HUD 변경0. PC/잔여R전체이식 미완료 |
+
+
+## R 상호작용 입력 freshness·reset의 main 통합 (2026-10-16)
+
+기존 R committed 입력 전용 변경을 현재 main에 분리 결합했다. 일반 isJust/isHeld/_chkJust/_chkHeld, 포털·줍기 본문, Q/E 판정·피해·자원·HOLD 기능은 변경하지 않는다.
+
+| id / 실제 적용 위치 | 현재 계약 |
+|---|---|
+| _interactKeyFresh | 키 코드별 Map. 기존 public keydown의 통과 지점에서 현재 주요/보조 interact 코드이며 !e.repeat일 때만 true. 기존 K/KH 등록 유지 |
+| _consumeInteractCode | 기존 _chkJust를 소비한 뒤 키보드는 fresh=true와 함께 성립해야 새 누름. 존재하는 Map 항목은 false로 변경, keyup은 항목 삭제 |
+| 주요/보조 | _consumeInteractPressed는 두 코드 소비를 모두 실행 후 OR. 주요키가 true여도 보조키를 남기지 않는다. 기존 실습 allows('interact')가 거부하면 소비하지 않음 |
+| current update | 기존 R 소비 위치에서 pending이면 P._pickHoldT=0 후 pending=false. _interactPressed를 한 번 계산·재사용. 새 누름에서 기존 _usePlayerPortal 우선, 포털이 사용되지 않았을 때만 기존 상호작용 본문 |
+| 홀드 | 같은 tick의 fresh가 false이고 _interactHeld가 true인 경우만 기존 홀드 본문. 키보드는 Map 등록과 기존 KH 모두 필요. 기존 P._pickHoldT+=sp/임계>=9 게임 tick·획득 배열/순서/수치 그대로 |
+| 마우스·패드 | mouse 바인딩은 Map을 우회하고 기존 MBjust/MB 소비·홀드 유지. 패드 키보드는 기존 _gpInjectKey의 public KeyboardEvent 경유. 물리 패드 실기 검증 아님 |
+| _resetInteractInput | Map.clear와 pending=true만 수행. P/HP/좌표/clock 접근 없음. 초기 P 부재에도 안전. reset 뒤 다음 유효 새 누름은 정상 처리 |
+| reset caller | _clearHeldInput의 기존 blur/hidden 경로, initStage, 실제 dead 전이, 기존 retry handler, interact 주/보조 재지정·보조삭제, 키초기화·프리셋, 패드 키보드/마우스 재지정·패드초기화 |
+| retry 경계 | 현재 main의 기존 retry handler 시작에 입력 reset 한 줄만 추가. R의 별도 유효 retry guard/메뉴 동기소비·focus·재시작 권위는 미채택이고 그 기존 main 본문은 유지 |
+| 공유 레슨 | parry-lesson.js resetPose의 기존 K cleanup 직전에 typeof 확인 후 reset1줄. API가 없는 Easy/다른 consumer는 기존 cleanup. main script query만20261016-interact-reset으로 갱신. Q/E·반사·피해·실습자원/동작 본문 변경 없음 |
+| 미채택 | h102 추가 inventory selector, h107/199 HG·rift, h431 retry권위·3387 carry·기타HOLD. game-easy-test 본문 변경0. docs/2_3 수정0 |
+| 새 검수 | 격리된 현재 public keyboard handlers + 실제 update dispatch 표현식의8묶음 PASS. 목적 동작은 stub이며 포털·줍기/홀드 본문 byte 불변을 별도 확인. 공통 edge/held 함수 불변·현재패드 주입·실습reset API 부재fallback·전체 inverse 복원 확인 |
+| 구문·실패 이력 | 변경 inline1과 공유 레슨1 구문 PASS. 초기 작성 스크립트의 preset 중복2곳 guard에서 쓰기전 중단 후 _loadPreset로 scope 한정. 검사 fixture는 keydown3개 중 실제소비자 선택 및 최소 DOM stub 부재를 교정; 각 실패 JSON 보존. 제품을 검사 편의로 변경하지 않음 |
+| 실제 미검증 | 사용자 GUI/save/API·실player HP/coords/clock/AI 강제설정·Startup전체·GPU/화면 품질/전체게임·물리패드·PC 실행 없음. 실행 중 서버 재시작0. 잔여 R 문맥 분류·전체 이식 완료 아님 |
