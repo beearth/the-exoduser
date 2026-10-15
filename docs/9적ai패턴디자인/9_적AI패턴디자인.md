@@ -498,3 +498,15 @@ atkTicketRelease(e) → 티켓 반환
 | 원 flow 축 선택 | `_ffMoveE`는 양축 canMv → 막히면 X만 → 또 막히면 Y만; 성공한 방향 `_lastFdx/_lastFdy`를 저장하고 `_stuckT=0`. 현재 Godot의 실제 소비/신규 경계 검사는 [척추 괴수 정본](../engine/FDG_GODOT_ETYPE4_PHYSICAL_SPINE_BEAST_20261013.md)의 최종 결과를 따른다 |
 | 원 추가 path 처리 | 양축/X/Y 모두 막힌 뒤 원본의8방향 escape·오래 막힘에 따른 우회 확장·전체flow 생성/culling/RNG는 별도 원source 시스템이다. 축 fallback 기술 검사를 전체 pathfinding/AI 동일성으로 확대하지 않는다 |
 | snapshot / 공개 | 원16record와원숫자/배치/모델은 그대로 소비하고 새 exacttype4한개체만 등록한다. 현재 인간 앱에 새source를 소급하지 않으며 공개 움직임·시각·Windows240은 미검수 |
+
+## 2026-10-16 R h158+h379 일반 근접 전조 읽기 연결
+
+현행 AI의 windup/st2 계약은 유지한다. 기존 일반❗ 표시가 별도 _atkWindup 필드를 보던 한 소비처를 원 R reader에 연결하며 실제 공격 스케줄·잔여시간은 변경하지 않는다.
+
+| 항목 | 현재 main 계약 |
+|---|---|
+| 소유 | 원 R h158 _enemyWindupRemaining(e) 순수 reader와 h379 draw의 일반 근접❗ 조건 한 곳만 연결 |
+| reader | e가 존재하고 alive·!ib·s==='windup'이며 stunned/_frozen/_hitStun이 양수가 아닐 때 finite st2의 max(0,st2), 그 외0. actor/AI/timer를 쓰지 않음 |
+| 표시 조건 | 기존 e._atkWindup>0 대신 _enemyWindupRemaining(e)>0. 실제 AI의 windup/st2를 읽으며 기존 ❗/X 설정·e.x,e.y-e.r-8 좌표·nativebillboard push→try/finally→pop 본문 유지 |
+| 제외 | 별도 _fdgGhoulBillboard 조건·snapshot·다른 전조·actorbody/GL·AI 상태·피해/RNG/QE 변경 없음. 새 변환/default·시간/행동 권위·ticket 구현/연결 없음 |
+| 검증 범위 | 실제 reader+해당 if를 frozen own enemy·Canvas/native 대역으로 새5그룹/main inline1 확인. 실제 AI/timer/HP/자원·Canvas/GPU·글리프·실전조/visual·창/saveAPI·Native·PC 실행/검수 아님 |

@@ -581,3 +581,21 @@ code1/docs4 exact5의 WORK/HEAD 개별10 기록은 첫 제품쓰기 전이다. �
 | 백업 | code1/docs4 exact5 WORK/HEAD 개별10 기록은 첫 제품쓰기 전 |
 | 이력 한계 | prewrite helper의 rest parameter 함수 내부 strict directive 구문 오류를 helper module strict로 수정. baseline/제품 실행 전 오류였고 제품맞춤 변경 없음; firstWholeClean=false |
 | 완료 한계 | 동결한 앞선 정적 leaf·옛 SFX/보스 검사/proof는 재열람·재연하지 않음. 전체 최신 게임/PC/native 완료 아님 |
+
+## 2026-10-16 R h158+h379 일반 windup 전조 조건 연결
+
+| 항목 | 현재 main 계약 |
+|---|---|
+| 소유 | 원 R h158 _enemyWindupRemaining(e) 순수 reader와 h379 draw의 일반 근접❗ 조건 한 곳만 연결 |
+| reader | e가 존재하고 alive·!ib·s==='windup'이며 stunned/_frozen/_hitStun이 양수가 아닐 때 finite st2의 max(0,st2), 그 외0. actor/AI/timer를 쓰지 않음 |
+| 표시 조건 | 기존 e._atkWindup>0 대신 _enemyWindupRemaining(e)>0. 실제 AI의 windup/st2를 읽으며 기존 ❗/X 설정·e.x,e.y-e.r-8 좌표·nativebillboard push→try/finally→pop 본문 유지 |
+| 제외 | 별도 _fdgGhoulBillboard 조건·snapshot·다른 전조·actorbody/GL·AI 상태·피해/RNG/QE 변경 없음. 새 변환/default·시간/행동 권위·ticket 구현/연결 없음 |
+| 검증 범위 | 실제 reader+해당 if를 frozen own enemy·Canvas/native 대역으로 새5그룹/main inline1 확인. 실제 AI/timer/HP/자원·Canvas/GPU·글리프·실전조/visual·창/saveAPI·Native·PC 실행/검수 아님 |
+
+| 항목 | 보존·한계 |
+|---|---|
+| 코드 범위 | eProjAt 뒤 원 helper 정의 추가와 일반❗ 조건 교체만. eProjAt 본문·원 글리프/좌표/Canvas/nativebillboard·try/finally/pop 및 예외 복원 순서·다른 HTML byte 유지 |
+| 백업 | code1/docs4 exact5 WORK/HEAD 개별10 기록은 첫 제품쓰기 전 |
+| 읽기 범위 | 기존 AI 생산자 조회에 atkTicketRequest가 있는 원 행과 인접 hitflash 설명이 표시됐으나 읽기만/새 ticket 구현·연결·유사수리 없음. 옛 성공 proof/검사 재연 없음 |
+| 보호 | ENEMY_GL_2D_BODY_FALLBACK_GATE·기존 HOLD/WIP/2_3·실창/saveAPI/process 유지. bodyfallback 해제나 대체 renderer/우회 아님 |
+| 완료 한계 | 합성5/main inline1만. 실제 glyph/GPU·AI/전투·visual/native/PC·전체 최신 게임 완료 아님 |

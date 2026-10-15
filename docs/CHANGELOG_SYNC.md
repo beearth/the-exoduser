@@ -53728,3 +53728,10 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 |---|---|
 | update boss_revive/boss_final_death | 두 원 expression에 원 try/catch 및 원 console.error만 연결. 기존 볼륨/rate/호출순서·보스 상태/phase/gate·다른 caller 유지, 새 rollback/retry/refund 정책 없음 |
 | 검증 | 실제 wrapper+own _r/playSample/console/후속marker 새5그룹/main inline1. 실제 보스/HP/state/timer/update·음향 큐/Audio·창/saveAPI·Native·PC 검증 아님; 후속 WebAudio·모든 예외 복구 주장 없음 |
+
+## 2026-10-16 — R h158+h379 일반 근접❗ reader 연결
+
+| 대상 | 변경·검증 범위 |
+|---|---|
+| game.html _enemyWindupRemaining/draw 일반❗ | 원 alive/nonboss/windup·stun/frozen/hitStun·finite st2 reader 추가, 해당 조건만 reader>0으로 교체. 원 glyph/X/좌표/billboard try/finally·actor/AI/time·나머지 renderer 유지 |
+| 새 검증 | 실제 reader+if/own frozen enemy·Canvas-native 대역 새5그룹/main inline1. 호출 spy를 실제 glyph/GPU·실전조·visual/native 품질 PASS로 확대하지 않음 |

@@ -20117,6 +20117,7 @@ function _drawEnemyShotWarnings(){
 }
 function radialProjs(e,count,spd,dmgMult,el,life,col,sz){count*=2;life=~~(life*1.5);const _fa=e.facing||Math.atan2(P.y-e.y,P.x-e.x);const _m=_eMouthXY(e,_fa);for(let i=0;i<count;i++){const a=Math.PI*2*i/count;const b=_beanRoll(el,col,sz,spd,dmgMult,e);_emitEnemyShot(e,{x:_m.x,y:_m.y,vx:Math.cos(a)*b.spd,vy:Math.sin(a)*b.spd,dmg:~~(e.atk*b.dmgM),el:b.el,friendly:false,life:b.blackBean?400:life,ml:b.blackBean?400:life,col:b.col,sz:b.sz,redBean:b.redBean,blackBean:b.blackBean,bwBean:b.bwBean,gbBean:b.gbBean,homing:b.homing,fireMagic:b.fireMagic,waterBean:b.waterBean})}}
 function eProjAt(e,ang,spd,dmgMult,el,life,col,sz){life=~~(life*1.5);const b=e.s==='eShootWind'?{el,col:ELC[el]||col,sz,spd,dmgM:dmgMult}:_beanRoll(el,col,sz,spd,dmgMult,e);const _m=_eMouthXY(e,ang);_emitEnemyShot(e,{x:_m.x,y:_m.y,vx:Math.cos(ang)*b.spd,vy:Math.sin(ang)*b.spd,dmg:~~(e.atk*b.dmgM),el:b.el,friendly:false,life:b.blackBean?400:life,ml:b.blackBean?400:life,col:b.col,sz:b.sz,redBean:b.redBean,blackBean:b.blackBean,bwBean:b.bwBean,gbBean:b.gbBean,homing:b.homing,fireMagic:b.fireMagic,waterBean:b.waterBean,_closeBean:b._closeBean,_commit:true})}
+function _enemyWindupRemaining(e){return (e&&!e.ib&&e.alive&&e.s==='windup'&&!(e.stunned>0)&&!(e._frozen>0)&&!(e._hitStun>0))?(Number.isFinite(e.st2)?Math.max(0,e.st2):0):0;}
 function _cancelProjCharge(e){e._projChargeT=0;e._projChargeCol=null;e._projChargeBean=null;e._projChargeParryClass=null}
 function _fireChargedProj(e){
   const _aimAng=Math.atan2(P.y-e.y,P.x-e.x);
@@ -53566,7 +53567,7 @@ function draw(){
     }
       if(!e.ib)_nativePerspective?.popBillboard();
     // ═══ 근접 공격 예비동작 전조 (❗ 텍스트만, 원형 제거) ═══
-    if(e._atkWindup>0){
+    if(_enemyWindupRemaining(e)>0){
       if(_FDG_NATIVE_MAP_PACK_FIRST)_nativePerspective?.pushBillboard(e.x,e.y,{kind:'actor'});
       try{
       X.globalAlpha=.9;X.fillStyle='#ff4444';X.font='bold 16px "Noto Sans KR"';X.textAlign='center';
