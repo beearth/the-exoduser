@@ -657,3 +657,20 @@ code1/docs4 exact5의 WORK/HEAD 개별10 기록은 첫 제품쓰기 전이다. �
 | 검수 | 정상 number의 이전 source/현재 source 결과 동일과 문자열 표현의 own numeric-reference 동일값, 미수집/0점/불변을 확인. 실제 save payload/actor/전투/미리보기 UI를 실행하지 않음 |
 | 제외 | 초기 docs 검색에 옛 유골 검사 설명이 표시됐으나 연결 proof/검사 재열람·재연 없음. 인접 h105/h304/h226 및 h307+h308을 수리/재검수하지 않음 |
 | 보호 | 원 W/R/WIP·server process/env/save/API/사용자창·HOLD/2_3/PC 전송 유지. 전체 R/최신게임/Native 완료 아님 |
+
+## 2026-10-16 시간왜곡 기록 소유 범위 — R h309+h310+h311
+
+| 항목 | 현행 구현 계약 |
+|---|---|
+| 본편 소비 | update의 _twRecord 및 CT 시간왜곡 입력의 activateTimeWarp. 두 함수 진입 첫 문장에서 _twSyncSpaceOwner를 호출 |
+| 기록 소유 | G/P/map의 참조 동일성, G.stage/G.mw/G.mh의 엄격 비교, !!G._bossArena 값. 하나라도 달라지면 _twFilled=0, _twIdx=0으로 초기화하고 현재 소유 값을 보관 |
+| 유효 기록 | G/P/map 중 하나라도 없으면 false로 반환해 기록·발동 본문에 진입하지 않음. record의 기존 G.on/fallen/dead 검사보다 소유 확인이 먼저 실행됨 |
+| 같은 공간 | 기록 슬롯·버퍼 배열을 새로 만들거나 지우지 않음. 같은 map 참조의 내부 변경은 이 비교만으로 감지하지 않음. G.on/state만 달라진 경우는 소유 변경으로 추가 분류하지 않음 |
+| 기존 기록·발동 | 300슬롯, 원 _twRecord 호출 주기, 최소 기록10, 성공 시 기존 count/index reset 유지. 현재 위치·HP·MP·ST·shield 스냅숏 필드·복원 순서 및 충돌/이동 처리는 변경하지 않음 |
+| 현행 비용 식 | 50+(lv-1)*~~(100/19) MP. ~~(100/19)=5이므로 Lv1=50, Lv20=145. 부족 시 기존 안내/반환; 성공의 기존 차감 및 Math.min(차감 후 MP,snap.mp) 유지 |
+| 기존 150 표기와 관계 | 기존 설명의 Lv20=150은 현행 정수 산식 결과145와 불일치하는 표기로 보존해 구분한다. 150이 별도 설계목표인지 의도는 이번 범위에서 미확정이다. 150 목표 삭제·145 목표 확정 또는 비용 재밸런스를 하지 않음. 소스의 기존 150 주석도 이식 범위 밖으로 유지 |
+| 기존 되감기·쿨 | rewindSec=3+(lv-1)*0.105, rewindFrames=min(기록수,~~(rewindSec*60)). 독립 기본2700f/시간걸음 합체1200f, 무적60f, 환급토큰180f 및 기존 합체 연계 조건을 변경하지 않음 |
+| 검사 한계 | 실제 helper/record/activate를 own G/P/map 대역으로 실행한 신규6군 통과. main inline 구문1 통과. 합성 좌표는 실제 이동·충돌·안전복귀·공간명중 증거가 아니며 실제 actor/좌표/stage/map/저장/API/사용자 창/native/PC 실행 없음 |
+| 이식 경계 | 원 R h309+h310+h311만. 새 epoch·공간/캐릭터 정책·좌표 보정·dispatcher 성공/반환·부족자원 순서 수리 없음 |
+
+검사 도구의 첫 실행은 기능6군과 인라인9개 구문 파싱 후 전체 스크립트 수를1로 예상한 보고기 assert에서 실패했다. 실제 main inline만 선택하는 구문 검사만 보완·통과했으며 기능6군 재실행·제품 코드 보정은 없었다. firstWholeClean=false를 유지한다. 원R 보존은 codex/mac-environment-20261001@9a4534b42f74093095ebc3364a25dd104e93b379이다.

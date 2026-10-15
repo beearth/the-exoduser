@@ -53756,3 +53756,18 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 |---|---|
 | game.html _ancPartPts/_calcAncestorStats | r/t와 oss.ancPow 지정 operand에 원 unary+3개만. 정상수치/산식·ancHP/ancDur 호환·4부위/미수집-1/0점·기록/생산/직렬화/소환권위 유지 |
 | 새 검증 | 실제 두 reader+own frozen payload/roster/providers 5그룹/main inline1. 실제 HP/소환·전투/UI/saveAPI·창/native/PC 검증 아님 |
+
+## 2026-10-16 시간왜곡 기록 소유 범위 — R h309+h310+h311
+
+| 항목 | 현행 구현 계약 |
+|---|---|
+| 본편 소비 | update의 _twRecord 및 CT 시간왜곡 입력의 activateTimeWarp. 두 함수 진입 첫 문장에서 _twSyncSpaceOwner를 호출 |
+| 기록 소유 | G/P/map의 참조 동일성, G.stage/G.mw/G.mh의 엄격 비교, !!G._bossArena 값. 하나라도 달라지면 _twFilled=0, _twIdx=0으로 초기화하고 현재 소유 값을 보관 |
+| 유효 기록 | G/P/map 중 하나라도 없으면 false로 반환해 기록·발동 본문에 진입하지 않음. record의 기존 G.on/fallen/dead 검사보다 소유 확인이 먼저 실행됨 |
+| 같은 공간 | 기록 슬롯·버퍼 배열을 새로 만들거나 지우지 않음. 같은 map 참조의 내부 변경은 이 비교만으로 감지하지 않음. G.on/state만 달라진 경우는 소유 변경으로 추가 분류하지 않음 |
+| 기존 기록·발동 | 300슬롯, 원 _twRecord 호출 주기, 최소 기록10, 성공 시 기존 count/index reset 유지. 현재 위치·HP·MP·ST·shield 스냅숏 필드·복원 순서 및 충돌/이동 처리는 변경하지 않음 |
+| 현행 비용 식 | 50+(lv-1)*~~(100/19) MP. ~~(100/19)=5이므로 Lv1=50, Lv20=145. 부족 시 기존 안내/반환; 성공의 기존 차감 및 Math.min(차감 후 MP,snap.mp) 유지 |
+| 기존 150 표기와 관계 | 기존 설명의 Lv20=150은 현행 정수 산식 결과145와 불일치하는 표기로 보존해 구분한다. 150이 별도 설계목표인지 의도는 이번 범위에서 미확정이다. 150 목표 삭제·145 목표 확정 또는 비용 재밸런스를 하지 않음. 소스의 기존 150 주석도 이식 범위 밖으로 유지 |
+| 기존 되감기·쿨 | rewindSec=3+(lv-1)*0.105, rewindFrames=min(기록수,~~(rewindSec*60)). 독립 기본2700f/시간걸음 합체1200f, 무적60f, 환급토큰180f 및 기존 합체 연계 조건을 변경하지 않음 |
+| 검사 한계 | 실제 helper/record/activate를 own G/P/map 대역으로 실행한 신규6군 통과. main inline 구문1 통과. 합성 좌표는 실제 이동·충돌·안전복귀·공간명중 증거가 아니며 실제 actor/좌표/stage/map/저장/API/사용자 창/native/PC 실행 없음 |
+| 이식 경계 | 원 R h309+h310+h311만. 새 epoch·공간/캐릭터 정책·좌표 보정·dispatcher 성공/반환·부족자원 순서 수리 없음 |
