@@ -1,3 +1,16 @@
+## 2026-10-16 기존 R 지연 저장 요청 소유자·완료 연결
+
+| id / 적용 위치 | 현재 계약 |
+|---|---|
+| 채택 범위 | 원 R h14/h21/h453/h455. dbSaveNow·새 _drainPendingSaveNow와 기존 cloud/local/web 3개 완료 tail의 호출만. RIFT boot h454/h456·saveStateReady·초기화 권위 미채택 |
+| 예약 | 기존 _dbReady 검사·이전 _saveDebounce 취소·500ms 유지. 요청 시 charId=_charId, charIdx=_charIdx, player=P 참조, save=dbSave 함수 참조만 캡처. 게임 데이터 snapshot·새 serializer 없음 |
+| 타이머 만료 | 먼저 _saveDebounce=null. _dbReady가 false이거나 네 소유자 값 중 하나라도 다르면 dbSave를 호출하지 않음. 같은 소유자는 실행 시점 현재 데이터로 기존 dbSave 호출 |
+| 저장 중 요청 | _saving이면 dbSaveNow.pending에 요청을 보관하고 반환. 저장 중이 아니면 pending=null 후 기존 dbSave 호출 |
+| 완료 tail | 기존 _saving=false 직후 _drainPendingSaveNow 호출. pending을 읽고 즉시 null로 비운 후 현재 준비·동일 소유자 검사 통과 시 기존 dbSave 호출. cloud catch 뒤/local·web finally의 원 위치 유지 |
+| 기존 강제 저장 | 뒤따르는 _pendingForce 처리와 Date.now()-_lastSaveTime>=5000 식 유지. 자동 저장 간격 30000ms·최근 성공 10000ms 게이트 및 dbSaveForce 최소 5000ms 정책 불변 |
+| 저장 권위 | 실제 dbSave의 QA/연습/준비·busy admission, backend·직렬화·성공 시각은 원 함수 소유. helper는 성공을 기록하지 않고 기존 저장을 요청할 뿐. 최신 상태의 영구 저장 완료 보장은 아님 |
+| 범위·검수 | 자기 합성 소유자·가짜 timeout callback·목적 primitive stub로 실제 helper/공통 완료 tail을 검수. 실제 시계·게임 타이머·세이브/API·부팅 실행 없음. native helper/current collector·HOLD·3387 수정 없음 |
+
 ## 2026-10-16 구세이브 qslots 파서의 기존 R 입력 방어
 
 | id / 적용 위치 | 현재 계약 |
