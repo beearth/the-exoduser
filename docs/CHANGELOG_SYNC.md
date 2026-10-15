@@ -53658,3 +53658,12 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 | docs/7아이템디자인, docs/2_1 스킬관리+합체시스템+자원 | 캐시/implicit/슬롯ATK·장비 입력 숫자 소비와 원 데이터 보존 기록 |
 | docs/engine/FDG_PC_MAC_GIT_SYNC_20261016.md | 명시 범위·main 3way·사전 보존·합성검사 한계 기록 |
 | 검증 | 실제 소형함수12/실영향루프2+합성 제공자 신규8군·구문1 PASS. 전체 applyStats·실HPclock/피해/native/save/API/창 실행0 |
+## 2026-10-16 R AI 강화 소비 후 저장 요청
+
+| 경로 | 변경 |
+|---|---|
+| game.html | h185 정상 wrapper 끝 res.used>0에서 기존 dbSaveNow() 요청. h184의 원가 주석528만·h186의 레거시 환수/설계 대기 설명만 정정 |
+| docs/2_7 인벤토리+장비시스템, docs/15 세이브+데이터구조 | 현재 장착·목표/예산·부분소비/무소비·기존 owner 저장 요청과 영속 완료 구분 |
+| docs/14밸런스+수치테이블 | 실행식/확률·~~환수 보존, PM-013-D 미결정 및 h122/187 미채택 명시 |
+| docs/engine/FDG_PC_MAC_GIT_SYNC_20261016.md | 독립 범위·선행 보존·합성 검수 한계 기록 |
+| 검증 | actual wrapper+합성 제공자/요청 목적지 신규6군·구문1 PASS. 실제 강화/RNG/스탯/HPclock/saveAPI/native/창 실행0 |

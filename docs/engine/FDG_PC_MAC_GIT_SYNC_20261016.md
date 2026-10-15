@@ -465,3 +465,16 @@ R의 기존 gameConfirm pending resolver 가드 한 줄을 main에 결합했다.
 | 제외 | 인접 h184–190 경제/사운드·다른 유사 stat/함수 확장 수정·새 finite/cap·DB마이그레이션0. db56 및 모든 타 HOLD 보존 |
 
 외부 단위 기록: R-equipment-numeric-consumers-integration-20261016. 전체 R 의미판정·최신 전체 실행·PC/native/visual/성능 완료 주장0, 기인수 proof 재연0.
+## 2026-10-16 R AI 강화 저장 요청 독립 이식
+
+| 항목 | 이번 범위 |
+|---|---|
+| 출발 main | 09fc2fbfcde00164c6fb4b4c5aee0457cdf27f2d |
+| 실제 누락 | Forge onclick→_doAiEnhance→aiEnhance가 장비/악의를 바꾸고 기존 스탯/렌더 뒤 끝나지만 저장 요청이 없던 경로 |
+| R 선택 | h185 res.used>0이면 기존 dbSaveNow 한 번. h184 원가528만·h186 레거시 환수/PM-013-D 주석만 정확히 정정 |
+| 사전 보존 | code1/docs5의 6경로 WORK/HEAD를 첫 코드 수정 전에 바이트 백업 |
+| 신규 검수 | actual _doAiEnhance + 합성 item/mats 및 강화·비용·스탯·렌더·save 요청 대역 신규6군·구문1 PASS. 성공/부분/무소비/기존거절·예외 및 주석함수 AST 동일 확인 |
+| 보존·제외 | 실제 강화 알고리즘/RNG·환수~~/경제/반환·예외·비동기 owner/identity·저장 형식·HPQE·DOM/GUI 그대로. h122/187는 현재 계약·PM-013-D 설계 대기 미채택, 원R9a 보존 |
+| 한계 | save 요청만 검사, 영속 완료 아님. 실제 Forge UI/랜덤 시도/전체 applyStats/HPclock/DB/save/API/native/창0. 기인수 저장/숫자/투사체 등 proof 재연0 |
+
+외부 단위 기록: R-ai-enhance-save-integration-20261016. 인접 PM-013 과거 보고 행을 선행 문서에서 읽었으나 그 검사 산출물을 재실행/재계산하지 않았다. db56/모든 타 HOLD 보존, full/PC/native/최신 전체/visual/성능PASS 주장0.
