@@ -540,21 +540,15 @@ func apply_native_fireball_finish(owner: Node, holder: Node, p: Dictionary, requ
 	var sample: Variant=request.get("sample")
 	if not sample is Dictionary or sample.get("key")!="fireball" or sample.get("vol")!=0.8 or sample.get("rate_center")!=1.0 or sample.get("rate_spread")!=0.08:
 		return {"accepted":false,"reason":"source_fireball_sample_packet_mismatch"}
-	# Source _addSkProf('fireball'): magic category, no skill cd => five seconds.
-	var categories: Variant=p.get("_catProf")
-	var skills: Variant=p.get("_skProf")
-	if categories!=null and not categories is Dictionary:return {"accepted":false,"reason":"fireball_category_proficiency_shape_not_ported"}
-	if skills!=null and not skills is Dictionary:return {"accepted":false,"reason":"fireball_skill_proficiency_shape_not_ported"}
-	var old_prof: Variant=categories.get("magic",0) if categories is Dictionary else 0
-	if not _number(old_prof) or not is_finite(float(old_prof)):return {"accepted":false,"reason":"fireball_category_proficiency_not_numeric"}
-	# Prepare and validate the real node/sample BEFORE _mpBon=0 or any emission.
+	var proficiency: Dictionary=_native_fireball_proficiency_plan(owner,p)
+	if proficiency.get("ready")!=true:return {"accepted":false,"reason":proficiency.get("reason")}
+	# A real dispatcher/current context is required, not a loaded sample stream.
 	var delivery: Dictionary=owner.prepare_native_fireball_delivery(request.payload)
 	if delivery.get("ready")!=true:return {"accepted":false,"reason":delivery.get("reason","actual_fireball_delivery_prepare_rejected")}
 	var projectile: Variant=delivery.get("projectile")
-	var audio: Variant=delivery.get("sample_player")
-	if not projectile is Node2D or not is_instance_valid(projectile) or projectile.get_parent()!=null or projectile.is_queued_for_deletion() or not audio is AudioStreamPlayer or not is_instance_valid(audio) or not audio.is_inside_tree() or audio.stream==null or not _world.has_method("sample_native_random_unit"):
+	if not projectile is Node2D or not is_instance_valid(projectile) or projectile.get_parent()!=null or projectile.is_queued_for_deletion() or not owner.has_method("dispatch_native_fireball_sample") or not _world.has_method("sample_native_random_unit"):
 		if projectile is Node2D and is_instance_valid(projectile) and projectile.get_parent()==null:projectile.free()
-		return {"accepted":false,"reason":"actual_fireball_prepared_node_or_sample_not_ready"}
+		return {"accepted":false,"reason":"actual_fireball_prepared_node_or_dispatcher_not_ready"}
 	# Preparation is still outside the commit. A changed owner/bonus/state must
 	# reject before emission; only the newly prepared, unparented node is freed.
 	error=_native_fireball_context_error(owner,holder,p)
@@ -566,23 +560,31 @@ func apply_native_fireball_finish(owner: Node, holder: Node, p: Dictionary, requ
 	# recover state. There is no rejectable P-field callback after the push.
 	p["_mpBon"]=0
 	_world.add_child(projectile)
-	if categories==null:
-		categories={}
-		p["_catProf"]=categories
-	categories["magic"]=float(old_prof)+5.0
-	if skills==null:
-		skills={}
-		p["_skProf"]=skills
-	skills["fireball"]=categories.magic
-	audio.volume_db=linear_to_db(0.8)
-	audio.pitch_scale=1.0+(_world.sample_native_random_unit()-0.5)*2.0*0.08
-	audio.play()
+	# Re-read only the public lesson/current proficiency data at the original
+	# void-call position. A lost post-emit capability is diagnostic PARTIAL;
+	# it is never silently treated as inactive or counted as a normal +5.
+	proficiency=_native_fireball_proficiency_plan(owner,p)
+	var proficiency_applied: bool=false
+	if proficiency.get("ready")==true and proficiency.get("skip")!=true:
+		var categories: Variant=proficiency.categories
+		var skills: Variant=proficiency.skills
+		if categories==null:
+			categories={}
+			p["_catProf"]=categories
+		categories["magic"]=float(proficiency.old_prof)+5.0
+		if skills==null:
+			skills={}
+			p["_skProf"]=skills
+		skills["fireball"]=categories.magic
+		proficiency_applied=true
+	var sample_rate: float=1.0+(_world.sample_native_random_unit()-0.5)*2.0*0.08
+	owner.dispatch_native_fireball_sample(self,sample_rate)
 	_player.state="magicRecover"
 	p["s"]="magicRecover"
 	p["st2"]=12
-	_last_source_write={"field":"_mpBon/projectile/proficiency/sample/s/st2","phase":"native_actual_fireball_finish"}
+	_last_source_write={"field":"_mpBon/projectile/proficiency/sample/s/st2","phase":"native_actual_fireball_finish","proficiency":proficiency.duplicate(),"proficiency_applied":proficiency_applied,"sample_dispatch":"source_void_queue_call"}
 	_committing=false
-	return {"accepted":true,"proficiency_applied":true,"sample_applied":true}
+	return {"accepted":true,"proficiency_applied":proficiency_applied,"proficiency_skipped":proficiency.get("skip")==true,"partial":proficiency.get("ready")!=true,"sample_dispatched":true,"sample_audible_verified":false}
 
 func apply_native_fireball_recover_idle(owner: Node, holder: Node, p: Dictionary, request: Dictionary) -> Dictionary:
 	# Returning to idle does not require a still-live renderer or refill MP.
@@ -593,3 +595,19 @@ func apply_native_fireball_recover_idle(owner: Node, holder: Node, p: Dictionary
 	_player.state="idle"
 	p["s"]="idle"
 	return {"accepted":true}
+
+func _native_fireball_proficiency_plan(owner: Node, p: Dictionary) -> Dictionary:
+	if not owner.has_method("read_native_fireball_proficiency_guard"):
+		return {"ready":false,"reason":"actual_fireball_proficiency_guard_unbound"}
+	var guard: Variant = owner.read_native_fireball_proficiency_guard()
+	if not guard is Dictionary or guard.get("ready")!=true or not guard.get("active") is bool:
+		return {"ready":false,"reason":"actual_fireball_proficiency_lesson_unknown"}
+	if guard.active:
+		return {"ready":true,"skip":true,"reason":"source_lesson_active"}
+	var categories: Variant=p.get("_catProf")
+	var skills: Variant=p.get("_skProf")
+	if categories!=null and not categories is Dictionary:return {"ready":false,"reason":"fireball_category_proficiency_shape_not_ported"}
+	if skills!=null and not skills is Dictionary:return {"ready":false,"reason":"fireball_skill_proficiency_shape_not_ported"}
+	var old_prof: Variant=categories.get("magic",0) if categories is Dictionary else 0
+	if not _number(old_prof) or not is_finite(float(old_prof)):return {"ready":false,"reason":"fireball_category_proficiency_not_numeric"}
+	return {"ready":true,"skip":false,"categories":categories,"skills":skills,"old_prof":old_prof}

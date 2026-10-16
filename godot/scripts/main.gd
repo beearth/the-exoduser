@@ -290,6 +290,7 @@ func get_native_content_version_manifest() -> Dictionary:
 	manifest["attack_audio"]=get_native_attack_audio_snapshot()
 	manifest["fireball_owner"]=native_fireball_phase.get_snapshot() if is_instance_valid(native_fireball_phase) else {"producer_bound":false}
 	manifest["fireball_delivery"]=read_native_fireball_delivery_readiness()
+	manifest["fireball_sample_dispatch"]=get_native_fireball_sample_snapshot()
 	manifest["player_projectile_store"]=world.get_native_player_projectile_store_snapshot()
 	var slash: Variant = player.get_script().get_script_constant_map().get("SLASH_SHEET")
 	var combat_source: Variant = combat.get("source")
@@ -1595,7 +1596,7 @@ func read_native_attack_audio_settings() -> Dictionary:
 	if not options is Dictionary or not options.has("sfxVol"):return {"ready":false,"reason":"actual_current_OPT_sfxVol_missing"}
 	var value: float=source_providers.get_provider_bundle().affix.js_to_number(options.sfxVol,true)
 	if not is_finite(value) or value<0.0 or value>100.0:return {"ready":false,"reason":"current_audio_volume_outside_native_supported_domain"}
-	if AudioServer.get_bus_index(_attack_audio_bus)<0 or AudioServer.get_bus_index(_attack_audio_output)<0 or _attack_audio_streams.size()!=ATTACK_SAMPLE_PATHS.size():return {"ready":false,"reason":_attack_audio_reason if not _attack_audio_reason.is_empty() else "actual_audio_bus_or_sample_lost"}
+	if AudioServer.get_bus_index(_attack_audio_bus)<0 or AudioServer.get_bus_index(_attack_audio_output)<0 or not _native_attack_audio_original_samples_ready():return {"ready":false,"reason":_attack_audio_reason if not _attack_audio_reason.is_empty() else "actual_audio_bus_or_sample_lost"}
 	return {"ready":true,"sfx_percent":value,"sfx_gain":value/100.0,"authority":"actual_current_source_OPT","saved_settings_restored":false,"global_ultimate_turret_context_ported":false}
 
 func request_native_attack_sound(caller: Node, phase: String, step: int, attack_serial: int) -> Dictionary:
@@ -1671,7 +1672,7 @@ func _advance_native_attack_audio() -> void:
 	var mobile: bool=OS.has_feature("android") or OS.has_feature("ios")
 	for request in pending:
 		if player.get_native_character_profile_snapshot().get("index")!=request.character:continue
-		var category: String="g_swing" if request.key.begins_with("sword_swing") else "g_monHit"
+		var category: String="g_swing" if request.key.begins_with("sword_swing") else ("fireball" if request.key=="fireball" else "g_monHit")
 		if not request.priority and (count>=(3 if mobile else 6) or int(categories.get(category,0))>=(1 if mobile else 2)):continue
 		categories[category]=int(categories.get(category,0))+1
 		var n: int=int(seen.get(request.key,0))
@@ -1682,6 +1683,12 @@ func _advance_native_attack_audio() -> void:
 		count+=1
 
 func _start_native_attack_sample(request: Dictionary, volume_mul: float, pitch_mul: float, source_gain: float) -> void:
+	# Source checks the buffer before voice caps/eviction. New fireball only;
+	# the original eight loaded-key paths retain their existing backend body.
+	if request.key=="fireball" and not _attack_audio_streams.get("fireball") is AudioStream:
+		_native_fireball_sample_last={"status":"SOURCE_UNLOADED_DROP","queued":false,"sample_loaded":false,"loader_bound":false,"audible":false}
+		_record_event("native_fireball_sample_unloaded_drop",_native_fireball_sample_last.duplicate(true))
+		return
 	var priority: int=10 if request.priority else 2
 	var mobile: bool=OS.has_feature("android") or OS.has_feature("ios")
 	if priority<=2:
@@ -1839,14 +1846,24 @@ func read_native_fireball_helmet() -> Variant:
 
 func read_native_fireball_delivery_readiness() -> Dictionary:
 	if not is_instance_valid(native_fireball_delivery) or native_fireball_delivery.is_queued_for_deletion():
-		return {"ready":false,"reason":"actual_fireball_projectile_proficiency_sample_delivery_unbound"}
+		return {"ready":false,"reason":"actual_fireball_projectile_delivery_unbound"}
 	if native_fireball_delivery.get_parent()!=world or native_fireball_delivery.get("player")!=player or native_fireball_delivery.get("source_state")!=source_state or native_fireball_delivery.get("source_resources")!=source_resources or not native_fireball_delivery.has_method("read_native_fireball_readiness") or not native_fireball_delivery.has_method("prepare_native_fireball_finish"):
 		return {"ready":false,"reason":"actual_fireball_delivery_owner_mismatch"}
 	var current: Variant=native_fireball_delivery.read_native_fireball_readiness()
 	if not current is Dictionary:return {"ready":false,"reason":"actual_fireball_delivery_readiness_not_dictionary"}
-	for key in ["ready","projectile_ready","proficiency_ready","sample_ready"]:
+	for key in ["ready","projectile_ready"]:
 		if current.get(key)!=true:return {"ready":false,"reason":"actual_fireball_delivery_missing:"+key}
-	return current
+	var proficiency: Dictionary=read_native_fireball_proficiency_guard()
+	if proficiency.get("ready")!=true:return {"ready":false,"reason":proficiency.get("reason")}
+	var dispatcher: Dictionary=read_native_fireball_sample_dispatcher_readiness()
+	if dispatcher.get("ready")!=true:return {"ready":false,"reason":dispatcher.get("reason")}
+	var result: Dictionary=current.duplicate()
+	result["proficiency_ready"]=true
+	result["proficiency_lesson_active"]=proficiency.active
+	result["sample_dispatcher_ready"]=true
+	result["sample_loaded"]=dispatcher.sample_loaded
+	result["sample_loader_bound"]=false
+	return result
 
 func prepare_native_fireball_delivery(payload: Dictionary) -> Dictionary:
 	var ready: Dictionary=read_native_fireball_delivery_readiness()
@@ -1894,3 +1911,85 @@ func read_native_player_projectile_pierce_passive() -> Dictionary:
 	if not (level is int or level is float) or not is_finite(float(level)):
 		return {"status": "NOT_READY", "reason": "current_pierce_passive_shape_unsupported"}
 	return {"status": "READY", "value": level}
+
+var _native_fireball_sample_last: Dictionary = {"status":"UNBOUND","audible":false}
+
+func read_native_fireball_proficiency_guard() -> Dictionary:
+	if not _native_main_service_live() or not _native_source_lesson_holder_live():
+		return {"ready":false,"reason":"actual_fireball_lesson_owner_unbound"}
+	var detail: Dictionary = source_lesson.read_guard_detail()
+	var authority: String = str(detail.get("authority",""))
+	if authority in [SourceLessonScript.AUTH_PROPERTY_UNCREATED, SourceLessonScript.AUTH_PROPERTY_UNSET, SourceLessonScript.AUTH_PROPERTY_FALSY]:
+		if detail.get("ready") != true:
+			return {"ready":false,"reason":"actual_fireball_lesson_witness_not_ready"}
+		return {"ready":true,"active":false,"known_absent":authority != SourceLessonScript.AUTH_PROPERTY_FALSY,"authority":authority}
+	if authority != SourceLessonScript.AUTH_CURRENT_LESSON:
+		return {"ready":false,"reason":"actual_fireball_lesson_authority_missing"}
+	# The regen guard additionally needs chapter. Source _addSkProf reads only
+	# active, so use the current public reference, not detail.ready as active.
+	var current: Variant = source_lesson.get_current_lesson_reference()
+	var active: Variant
+	if current is Dictionary:
+		active = current.get("active")
+	elif current is Object and is_instance_valid(current):
+		active = current.get("active")
+	else:
+		return {"ready":false,"reason":"actual_fireball_lesson_reference_unknown"}
+	if typeof(active) not in SourceLessonScript.JS_RECOGNIZED_TYPES:
+		return {"ready":false,"reason":"actual_fireball_lesson_active_type_unsupported"}
+	return {"ready":true,"active":SourceLessonScript.AFFIX.js_truthy(active),"known_absent":false,"authority":authority}
+
+func _native_attack_audio_original_samples_ready() -> bool:
+	# All original eight remain mandatory; a new loaded fireball key is allowed.
+	for key in ATTACK_SAMPLE_PATHS:
+		if not _attack_audio_streams.get(key) is AudioStream:
+			return false
+	return true
+
+func read_native_fireball_sample_dispatcher_readiness() -> Dictionary:
+	if not _native_main_service_live() or not is_instance_valid(native_fireball_delivery) or native_fireball_delivery.get_parent()!=world or native_fireball_delivery.get("player")!=player or native_fireball_delivery.get("source_state")!=source_state or native_fireball_delivery.get("source_resources")!=source_resources:
+		return {"ready":false,"reason":"actual_fireball_sample_context_owner_unbound"}
+	if not native_fireball_delivery.has_method("read_native_fireball_source_sample_context"):
+		return {"ready":false,"reason":"actual_fireball_current_gx_volume_provider_unbound"}
+	var context: Variant = native_fireball_delivery.read_native_fireball_source_sample_context()
+	if not context is Dictionary or context.get("ready")!=true:
+		return {"ready":false,"reason":"actual_fireball_current_sample_context_not_ready"}
+	var volume: Variant = context.get("gx_vol_mul")
+	if not (volume is int or volume is float) or not is_finite(float(volume)):
+		return {"ready":false,"reason":"actual_fireball_current_gx_volume_not_numeric"}
+	var settings: Dictionary = read_native_attack_audio_settings()
+	if settings.get("ready")!=true:
+		return {"ready":false,"reason":settings.get("reason","actual_sample_queue_backend_not_ready")}
+	var profile: Dictionary = player.get_native_character_profile_snapshot()
+	if profile.get("ready")!=true:
+		return {"ready":false,"reason":"actual_fireball_sample_character_not_ready"}
+	return {"ready":true,"gx_vol_mul":volume,"sample_loaded":_attack_audio_streams.get("fireball") is AudioStream,
+		"loader_bound":false,"authority":"actual_delivery_current_source_sample_context","audible_verified":false}
+
+func dispatch_native_fireball_sample(caller: Node, rate: float) -> void:
+	# Exact void playSample('fireball',.8,_r(1,.08)) front. Only the current
+	# resource owner during its actual cast-finish commit can call this path.
+	if not _native_main_service_live() or caller!=source_resources or not is_instance_valid(caller) or caller.get("_committing")!=true or not is_instance_valid(player) or player.state!="magicCast" or not is_finite(rate):
+		_native_fireball_sample_last={"status":"NOT_READY","reason":"actual_fireball_sample_caller_mismatch","audible":false}
+		return
+	var context: Dictionary = read_native_fireball_sample_dispatcher_readiness()
+	if context.get("ready")!=true:
+		_native_fireball_sample_last={"status":"NOT_READY","reason":context.get("reason"),"audible":false}
+		return
+	var volume: float = 0.8
+	var multiplier: float = float(context.gx_vol_mul)
+	if multiplier < 1.0:
+		volume *= multiplier
+		if volume < 0.01:
+			_native_fireball_sample_last={"status":"SOURCE_GX_VOLUME_SKIP","queued":false,"audible":false}
+			return
+	# fireball is neither a Silvertail voice-map key nor a 30ms dedup key.
+	_attack_audio_random_trace.clear()
+	var queued: Dictionary = _queue_native_attack_sample("fireball",volume,rate,true,{"phase":"fireball_finish"})
+	_native_fireball_sample_last={"status":"QUEUED" if queued.get("accepted")==true else "NOT_READY",
+		"queued":queued.get("accepted")==true,"sample_loaded":context.sample_loaded,
+		"loader_bound":false,"rate":queued.get("rate"),"audible":false}
+
+func get_native_fireball_sample_snapshot() -> Dictionary:
+	return {"last":_native_fireball_sample_last.duplicate(true),
+		"readiness":read_native_fireball_sample_dispatcher_readiness(),"loader_bound":false,"audible_verified":false}

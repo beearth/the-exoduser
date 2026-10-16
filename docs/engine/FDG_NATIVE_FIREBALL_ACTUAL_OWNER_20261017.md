@@ -14,10 +14,10 @@
 | 소유 위임 | SourceState는 정확 fireball start/finish/recover에 한해 자기 현재 P를 실제 ResourceAuthority에 위임. owns_native_fireball_fields로 리소스/동일참조 확인. 임의 필드 쓰기·Q 비용 API 재사용 없음 |
 | start 사전검증 | 실제 tree/parent/owner/holder/P identity, 현재 비용·속도, source entry와 실제 actor state, MP≥cost, 실제 finish delivery 준비. 거부 시 시전 관련 MP/state/emit 변화 없음 |
 | start 원 순서 | Player.state 및 P.s=magicCast → P.st2=ToInt32(14/pMagicSpd) → P.atkArc=실제 facing.angle → before=실제 MP → MP=max(0,before-cost) → P._mpBon=(before-after)×2 |
-| finish 사전검증 | 실제 magicCast/st2≤0/동일 raw _mpBon, 원 payload/샘플/회수값, 실제 준비된 unparented projectile 및 source sample player. 준비 전 _mpBon 변경/emit 없음 |
+| finish 사전검증 | 실제 magicCast/st2≤0/동일 raw _mpBon, 원 payload/샘플/회수값, 실제 준비된 unparented projectile 및 실제 source void sample dispatcher/current context. 준비 전 _mpBon 변경/emit 없음 |
 | finish 원 순서 | payload 보너스 계산 완료 → _mpBon=0 → 실제 World에 projectile 추가 → magic 숙련도+5 및 fireball 호환 동기화 → source sample → Player.state/P.s=magicRecover → st2=12 |
 | 숙련 | 원 fireball cat=magic, cd 없음→기본5초. 원 _catProf/ _skProf가 없을 때만 해당 Dictionary 설치. 지원하지 않는 기존 shape는 commit 전에 거부 |
-| 샘플 | key fireball, volume0.8, _r(1,.08)=1+(U−.5)×2×.08. 기존 World.sample_native_random_unit을 원 sample 위치에서 한 번 소비. 실제 source stream/master/lesson guard 준비는 delivery 소유자의 필수 조건 |
+| 샘플 | key fireball, volume0.8, _r(1,.08)=1+(U−.5)×2×.08. 기존 World.sample_native_random_unit을 원 caller 위치에서 소비한 뒤 실제 기존 queue에서 두 번째 jitter를 소비(원 gx volume skip이면 두 번째는 없음). sample stream 미로드는 drop이며 실제 dispatcher/current context/lesson 권위 준비와 구별 |
 | 실패 정책 | MP만 쓰고 P-field callback이 실패하는 구조 없음. emit 뒤 rejectable P-field callback 없음. 환불·rollback·일반 transaction 계층 없음 |
 | 현재 비용 reader | pMagicCost=max(.40,1−pMagic×.04−mpCostRed−uHelmMagic), mpCost('magic')=ToInt32(10×pMagicCost). _COST_SK에는 magic이 없어 fireballLv로 비용 스케일을 새로 곱하지 않음 |
 | 현재 속도 reader | pMagicSpd=(2+pMagic×.08)×(1+castSpeed+headbandCastSpd). 기존 실제 affix/formula provider 사용, 누락/비유한 값은 null |
@@ -25,7 +25,7 @@
 | helmet | 실제 current INV 필요. 그 안 helmet 없음은 원 hm()의 {} 경로만 사용. 실제 inventory 부재를 빈 장비로 숨기지 않음 |
 | clock | Player phase 끝에서 기존 World dt_sp/frame을 전달. SourceState st2만 그 phase에서 감소, 같은 frame 중복 감소 거부. 새 global clock/G.on/bootstrap 쓰기 없음 |
 | hold 반복 | source magicRecover st2≤0에서 held/MP gate에 따라 다음 cast 또는 idle. 기존 native Q가 아직 새 recovery 상태를 받지 못하므로 해당 Q 분기는 DEFERRED_OTHER_OWNER로 남김 |
-| delivery | Main.native_fireball_delivery가 실제 World 아래에서 현재 player/state/resources와 연결되고 projectile/proficiency/sample이 모두 준비돼야 true. 현재 미연결이면 start부터 거부하여 빈 MP 소비 방지 |
+| delivery | Main.native_fireball_delivery가 실제 World 아래에서 현재 player/state/resources와 연결되고 projectile/current lesson/sample dispatcher가 준비돼야 true. sample_loaded와 loader_bound는 별도이며 미로드는 finish 실패 조건 아님. 현재 미연결이면 start부터 거부하여 빈 MP 소비 방지 |
 | 시각 경계 | 원 char1 실버테일 sheet 또는 일반 magic orb sheet의 실제 준비 guard/원형 계약 필요. native 이미지 부재를 원 false flag로 위장하거나 적 sphere/proc로 대체하지 않음. 기존 arrow atlas 질문은 이 마법 이미지 승인 아님 |
 | 미연결 | 실제 projectile 비행/성장/폭발/중독, 원 시각/트레일/샘플 준비, recovery Q, 타8 magic handler, GP/자동에임. 입력·owner 코드 연결은 전체 기능 완료 아님 |
 | 변경 금지 | 기존 HP/ATK/poise/QE 수식·2_3 문서·HUD/rig/보호 renderer/LAVA·저장/API/사용자 창/PC 변경 없음 |
@@ -49,7 +49,7 @@
 | 종료 로그 | 첫39 run은 WARNING 한 줄에서 ObjectDB3 instances leaked 보고, ERROR0. 원인 미확정이며 원제품 누수로 단정하지 않음. 새 phase6 run은 WARNING/ERROR0 |
 | 준비 실패 | fixture method 추출 regex 과이스케이프 re.error로 Godot 실행 전에 실패. line-prefix 추출로 자기 fixture만 수정. firstWholeClean=false |
 | test userdata | 사전 선언한 FDG_ENGINE_FIREBALL_OWNER_FIXTURE_20261017_7F06 경로와 runtime OS 출력이 일치. 해당 새 테스트 이름공간 metadata만 기록, 기존 실게임 save/다른 app_userdata 내용 조회·cleanup·HOME 변경 없음. 완전 userdata 격리 독립증명 아님 |
-| 현재 delivery | actual projectile/source sample·lesson/proficiency readiness 연결 전이므로 R에 적용된 실제 플레이 스킬이 아님 |
+| 현재 delivery | actual projectile/current gx source context·sample dispatcher 연결 전이므로 R에 적용된 실제 플레이 스킬이 아님 |
 
 ## 실제 API/진단 이름
 
@@ -80,3 +80,25 @@
 |---|---|
 | source hitSet | recycle은 원 if(p._hitSet)처럼 없음/null이면 clear skip. 다음 reset은 원 clear 위치에서 prefix를 보존한 reset_refused이며 affix/passive를 읽지 않음. 다른 native shape는 지원 미확인으로 거절 |
 | 인수 | field 비교3 및 새 조건부/reset 경계8PASS. 첫34중31PASS와 별도 관측, wholeClean=false. 첫 fixture parse/저장 경로 불일치 보존. 상세 engine/FDG_NATIVE_PLAYER_PROJECTILE_STORE_20261017.md |
+
+## 2026-10-17 악의구 finish void 소비자 후속
+
+| 항목 | 현재 I 범위 |
+|---|---|
+| 숙련 | 실제 Main.source_lesson 공개 detail/reference의 active만 source JS truthy로 판별. 명시 active면 skip, inactive/known-absent면 실제 P magic+5 및 fireball 호환 동기화; unknown은 pre-emit NOT_READY |
+| guard 구분 | detail.ready/value의 regen chapter guard를 숙련 active로 추정하지 않음. 보호 lesson/regen 수리 없음 |
+| sample | 실제 기존 queue void front로 연결. caller _r(1,.08) 후 queue .92+U×.16, 원 gx volume skip이면 후자 없음. 신규 fireball stream 미로드 drop은 voice/cap eviction 전, finish/recover 계속 |
+| 현재 미완 | actual projectile 및 current _gxVolMul provider unbound, sample loader_bound=false. file-init1/dummyAudio/noop-ready 없음, 실제 발사/가청/최신 전체 게임 완료 아님 |
+| 원8키 | 기존8 stream 필수는 유지하되 추가 fireball key 허용. 정상8 queue/flush/voice 본체·RNG 순서 불변 |
+| 상세 / 검수 | docs/engine/FDG_NATIVE_FIREBALL_FINISH_DISPATCH_20261017.md. 새 영향32/32 및 별도 lesson 경계6/6 PASS, 첫 fixture 들여쓰기 parse 실패 보존/wholeClean=false, 과거 통과 suite 재연0 |
+
+| 새 검수(2026-10-17) | 관측과 한계 |
+|---|---|
+| first parse | fixture header space/source tab 혼합으로 preload 실패; --check-only로 확인 후 fixture 들여쓰기만 수리. 제품 변경0/첫 ERROR 로그 보존/wholeClean=false |
+| 새 finish/queue | 변경된 실제 Main/Resource method fragments + 원 lesson 공개 module에서32/32 PASS. actor/state/backend/gx/current World RNG는 fixture. 기존8키 backend body는 새 fireball guard 아래 byte 동일, 기존 queue method도 byte 동일 |
+| 새 lesson 경계 | Object inactive/active, freed current/freed publisher owner, 명시 null witness, Godot-only Vector2 active 거절6/6 PASS. 32 재연0 |
+| 독립 source | 원 JS _addSkProf/playSample/_r/_playSampleNow 및 정확 finish 호출문6흐름 PASS. descriptor/P/lesson/U/이미 로드 대기중인 sample은 fixture이며 원 게임 실행/async fetch 검수 아님 |
+| 순서/숫자 | 정상 given U=.25/.75의 rate=.9984, normal magic7→12/legacy fireball12, recover12. gx0은 caller draw1 후 queue jitter 없음; gx.5는gain.4. 별도 source 기대값 수정 없음 |
+| 미로드 | 실제 queue 요청을 기존 flush가 소비하고 새 fireball guard가 cap/eviction 전에 drop. audible/원 decoder/async loader/음질 성공 증명 아님 |
+| 종료/namespace | 마지막32와6 각각 ERROR0/WARNING0, Dummy. OS.get_user_data_dir가 FDG_ENGINE_FIREBALL_FINISH_FIXTURE_20261017_3A92로 선언과 일치. 기존 사용자 데이터 내용조회/cleanup0, 완전 save 격리 독립증명 아님 |
+| 전체 미완 | 실제 fireball projectile/gx publisher/flight/원시각/sample loader·actual scene 미검증. 이전39/6/pool31·3·8/외부26/identity/pose/entry suite 재연0. 이 검사들을 게임 기능 수·이식률로 합산하지 않음 |
