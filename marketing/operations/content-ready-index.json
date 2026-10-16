@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
-  "updatedAtKST": "2026-10-16 04:53 KST",
-  "updatedAtUTC": "2026-10-15T19:53:36.438621+00:00",
+  "updatedAtKST": "2026-10-16 23:16 KST",
+  "updatedAtUTC": "2026-10-16T14:16:06.940835+00:00",
   "policy": "실제 화면·영상 또는 단계가 명확한 기존 원화와 간결한 설명을 함께 준비하고, 공개 전 완성 미리보기를 먼저 인도한다. 동일 영상의 확대 화면과 전체 화면을 동시에 복제하지 않으며 원화를 가리는 불투명 자막판을 사용하지 않는다. 매시간 점검을 긴 글 연속 게시 빈도로 해석하지 않는다. UI·스킬·캐릭터의 독립 준비를 계속하고 대표 보스전 완료 영상만 총괄 완료를 기다린다.",
   "developmentObservation": {
     "checkout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
@@ -864,48 +864,66 @@
     }
   },
   "latestProducerObservation": {
-    "checkedAtUTC": "2026-10-15T19:53:36.438621+00:00",
-    "cursor": "bd9703ff-6089-48ea-90e5-8df178a39cf6:116",
+    "checkedAtUTC": "2026-10-16T14:16:06.940835+00:00",
+    "cursor": "00b2ee87-0614-4d45-bc78-87c6e9a6a4c9:23",
     "status": "idle; completed",
     "completionConfirmed": false,
-    "scope": "compact snapshot116·migration 새 commit 메타데이터·동일 커밋의 docs/engine/FDG_PC_MAC_GIT_SYNC_20261016.md 추가 절1개만 읽기 전용 확인. 코드/게임/패드/옛 검사 재실행0.",
-    "report": "migration 1c0781d9에서 펫 말풍선의 현재 패드 키·가시덫 슬롯·언어 변경을 leaf 텍스트로만 갱신하는 기존 소스 연결을 확인했다. 관련 커밋 문서1개만 대조했으며 합성 DOM 검사는 담당 보고이다. 실제 브라우저 화면·실물 패드·PC 동기화·자연 플레이·원음·Steam 적용은 미확인이다. 새 시각 자료·공개 승인0, 전사 접촉 컷 교정 V1의 기존 검토 대기는 유지한다.",
-    "petBubblePartialCheckpoint": {
-      "checkout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
-      "commit": "1c0781d97fa5b3f7c579915a3f8c13d1fbc8a00e",
-      "subject": "fix(pet): restore input-aware leaf-only subtitle refresh",
-      "commitTimeKST": "2026-10-16 04:47:29 KST",
-      "knownExistingFeatureSourceIntegration": true,
-      "newArt": false,
-      "leafOnlyRefresh": true,
-      "currentPadMappingReadOnly": true,
-      "spikeTrapActualSlotDisplay": true,
-      "timerVoicePortraitRestartedByTextRefresh": false,
-      "allArbitraryRebindingsSupported": false,
-      "syntheticDOMChecks": "REPORTED_BY_OWNER; NOT_REPEATED_BY_MARKETING",
-      "actualBrowserVisuals": "NOT_VERIFIED",
-      "physicalController": "NOT_VERIFIED",
-      "PCSync": "NOT_VERIFIED",
-      "SteamDemoApplied": "NOT_CONFIRMED"
+    "scope": "producer compact snapshot의 새 소스 대조 보고만 수신. migration HEAD 읽기1회 외 게임/Godot 소스·옛 자료·테스트·미디어 재검사0.",
+    "report": "총괄의 원본↔현재 Git Godot 소스 대조 보고: 기능군15개 중 완료0·부분12·확인한 연결 누락1·미확인2. 전체 진행률은 미산정이며 단순 비율 환산 금지. 처치 보상·드롭·경험치 연결 누락과 출구/층 진행·성능/PC 미확인을 분리했다. 실제 플레이·화면·원음 검수 및 전체 이식 완료가 아니며 웹 로비 수정 실적과 구별한다.",
+    "godotReadinessAudit": {
+      "recordedAtUTC": "2026-10-16T14:16:06.940835+00:00",
+      "producerThreadId": "01a0faa9-b453-7673-be39-98adedb4c2b3",
+      "producerTitle": "맥북에서 총괄 시작하기",
+      "producerTurnId": "01a144fb-3136-7cc2-8167-22363b23f933",
+      "cursor": "00b2ee87-0614-4d45-bc78-87c6e9a6a4c9:23",
+      "basis": "PRODUCER_REPORTED_SOURCE_COMPARISON; not independently re-audited by marketing",
+      "reportedFunctionalGroups": 15,
+      "reportedCompleted": 0,
+      "reportedPartial": 12,
+      "reportedMissingConnection": 1,
+      "reportedUnverified": 2,
+      "reportedMissingConnectionDescription": "일반 적 사망 기록 이후 처치 보상·드롭·경험치 연결",
+      "reportedUnverifiedGroups": [
+        "출구·층 진행",
+        "성능·배포·PC"
+      ],
+      "wholeMigrationPercent": null,
+      "percentReason": "기능군 작업량과 상세 완료조건이 같지 않아 단순 비율로 전체 이식률을 계산하지 않음",
+      "reportedNextSequence": [
+        "세부 기능·완료조건 확정",
+        "시작/로드 연결",
+        "처치·보상·층 진행·저장 연속 흐름",
+        "나머지 콘텐츠",
+        "화면·성능·PC 검증"
+      ],
+      "actualGameplayVerified": false,
+      "sourceComparisonIsVisualOrAudioQA": false,
+      "webLobbySeparateFromGodotProgress": true,
+      "wholeMigrationComplete": false,
+      "steamDemoApplied": "NOT_CONFIRMED",
+      "newMarketingMedia": 0,
+      "newPublicationApproval": false,
+      "newUserAction": false
     },
-    "mainGameApplied": "MIGRATION_MAC_WEB_SOURCE_ONLY; ACTUAL_RUNTIME_UNVERIFIED",
+    "mainGameApplied": "PARTIAL_GODOT_SOURCE_ONLY; NO_NEW_GAMEPLAY_ACCEPTANCE",
     "steamDemoApplied": "NOT_CONFIRMED",
     "normalGameplayVideoWithOriginalAudio": false,
     "humanNaturalGameplayCaptured": false,
     "requiresUserAction": false,
     "publicationAllowed": false,
-    "visualCandidateState": "UI_SOURCE_CHANGE_ONLY; NO_ACTUAL_SCREENSHOT_OR_NEW_GAMEPLAY",
+    "visualCandidateState": "NO_NEW_MARKETING_MEDIA",
     "bossProductMotionAccepted": false,
     "wholeEngineComplete": false,
-    "overallVisualVerdict": "NO_NEW_VISUAL_REVIEW",
+    "overallVisualVerdict": "NOT_REVIEWED; SOURCE_AUDIT_ONLY",
     "evidence": {
-      "type": "compact snapshot + commit metadata + one committed document addition",
+      "type": "producer compact source-audit report; not marketing independent source verification",
       "producerTitle": "맥북에서 총괄 시작하기",
       "producerThreadId": "01a0faa9-b453-7673-be39-98adedb4c2b3",
-      "producerTurnId": "01a1411b-e8c2-7aa0-b12e-3a857513961f",
-      "migrationHead": "1c0781d97fa5b3f7c579915a3f8c13d1fbc8a00e",
-      "migrationHeadChanged": true,
-      "checkpointDocsRead": 1,
+      "producerTurnId": "01a144fb-3136-7cc2-8167-22363b23f933",
+      "migrationHead": "5d108ed9797cb854caa45672f33deecdfd39a748",
+      "migrationHeadChanged": false,
+      "migrationComparedToPreviousMarketingRecord": "previous1c0781d9; intermediate source changes observed once in earlier heartbeat turns",
+      "checkpointDocsRead": 0,
       "gameSourceFilesRead": 0,
       "testSuitesRepeated": 0,
       "newMarketingPixels": 0,
@@ -913,7 +931,7 @@
       "newGameManipulations": 0,
       "newOrdersSent": 0
     },
-    "nextProducerUnit": "기존 담당의 실물 패드·PC 동기화 확인과 남은 소스 통합. 마케팅 다음 소재는 기존 전사 교정 V1의 시청·청취·사용자 편집 검토이며 같은 요청을 반복하지 않는다."
+    "nextProducerUnit": "담당 보고의 상세 완료조건 확정과 시작/로드→처치·보상→층 진행→저장 흐름. 마케팅은 기존 전사 교정 V1 검토 순서를 유지하며 전체 Godot나 보스전 완료를 주장하지 않는다."
   },
   "previousProducerObservations": [
     {
@@ -2676,6 +2694,58 @@
         "newOrdersSent": 0
       },
       "nextProducerUnit": "기존 담당의 환불·캐시 버전 및 소스 통합 검수 진행을 관측. 실제 전체 완료·사용자 정상 플레이·원음 녹화 조건은 별도 유지."
+    },
+    {
+      "checkedAtUTC": "2026-10-15T19:53:36.438621+00:00",
+      "cursor": "bd9703ff-6089-48ea-90e5-8df178a39cf6:116",
+      "status": "idle; completed",
+      "completionConfirmed": false,
+      "scope": "compact snapshot116·migration 새 commit 메타데이터·동일 커밋의 docs/engine/FDG_PC_MAC_GIT_SYNC_20261016.md 추가 절1개만 읽기 전용 확인. 코드/게임/패드/옛 검사 재실행0.",
+      "report": "migration 1c0781d9에서 펫 말풍선의 현재 패드 키·가시덫 슬롯·언어 변경을 leaf 텍스트로만 갱신하는 기존 소스 연결을 확인했다. 관련 커밋 문서1개만 대조했으며 합성 DOM 검사는 담당 보고이다. 실제 브라우저 화면·실물 패드·PC 동기화·자연 플레이·원음·Steam 적용은 미확인이다. 새 시각 자료·공개 승인0, 전사 접촉 컷 교정 V1의 기존 검토 대기는 유지한다.",
+      "petBubblePartialCheckpoint": {
+        "checkout": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+        "commit": "1c0781d97fa5b3f7c579915a3f8c13d1fbc8a00e",
+        "subject": "fix(pet): restore input-aware leaf-only subtitle refresh",
+        "commitTimeKST": "2026-10-16 04:47:29 KST",
+        "knownExistingFeatureSourceIntegration": true,
+        "newArt": false,
+        "leafOnlyRefresh": true,
+        "currentPadMappingReadOnly": true,
+        "spikeTrapActualSlotDisplay": true,
+        "timerVoicePortraitRestartedByTextRefresh": false,
+        "allArbitraryRebindingsSupported": false,
+        "syntheticDOMChecks": "REPORTED_BY_OWNER; NOT_REPEATED_BY_MARKETING",
+        "actualBrowserVisuals": "NOT_VERIFIED",
+        "physicalController": "NOT_VERIFIED",
+        "PCSync": "NOT_VERIFIED",
+        "SteamDemoApplied": "NOT_CONFIRMED"
+      },
+      "mainGameApplied": "MIGRATION_MAC_WEB_SOURCE_ONLY; ACTUAL_RUNTIME_UNVERIFIED",
+      "steamDemoApplied": "NOT_CONFIRMED",
+      "normalGameplayVideoWithOriginalAudio": false,
+      "humanNaturalGameplayCaptured": false,
+      "requiresUserAction": false,
+      "publicationAllowed": false,
+      "visualCandidateState": "UI_SOURCE_CHANGE_ONLY; NO_ACTUAL_SCREENSHOT_OR_NEW_GAMEPLAY",
+      "bossProductMotionAccepted": false,
+      "wholeEngineComplete": false,
+      "overallVisualVerdict": "NO_NEW_VISUAL_REVIEW",
+      "evidence": {
+        "type": "compact snapshot + commit metadata + one committed document addition",
+        "producerTitle": "맥북에서 총괄 시작하기",
+        "producerThreadId": "01a0faa9-b453-7673-be39-98adedb4c2b3",
+        "producerTurnId": "01a1411b-e8c2-7aa0-b12e-3a857513961f",
+        "migrationHead": "1c0781d97fa5b3f7c579915a3f8c13d1fbc8a00e",
+        "migrationHeadChanged": true,
+        "checkpointDocsRead": 1,
+        "gameSourceFilesRead": 0,
+        "testSuitesRepeated": 0,
+        "newMarketingPixels": 0,
+        "newOriginalAudio": 0,
+        "newGameManipulations": 0,
+        "newOrdersSent": 0
+      },
+      "nextProducerUnit": "기존 담당의 실물 패드·PC 동기화 확인과 남은 소스 통합. 마케팅 다음 소재는 기존 전사 교정 V1의 시청·청취·사용자 편집 검토이며 같은 요청을 반복하지 않는다."
     }
   ],
   "indieMarketingCampaign": {
@@ -2797,5 +2867,40 @@
       "gameHtmlSha256": null,
       "gameHtmlSha256State": "NOT_REHASHED; prior5212e3a3 hash belongs to9a4534b4 and is retained in previousDevelopmentObservations"
     }
-  ]
+  ],
+  "godotReadinessAudit": {
+    "recordedAtUTC": "2026-10-16T14:16:06.940835+00:00",
+    "producerThreadId": "01a0faa9-b453-7673-be39-98adedb4c2b3",
+    "producerTitle": "맥북에서 총괄 시작하기",
+    "producerTurnId": "01a144fb-3136-7cc2-8167-22363b23f933",
+    "cursor": "00b2ee87-0614-4d45-bc78-87c6e9a6a4c9:23",
+    "basis": "PRODUCER_REPORTED_SOURCE_COMPARISON; not independently re-audited by marketing",
+    "reportedFunctionalGroups": 15,
+    "reportedCompleted": 0,
+    "reportedPartial": 12,
+    "reportedMissingConnection": 1,
+    "reportedUnverified": 2,
+    "reportedMissingConnectionDescription": "일반 적 사망 기록 이후 처치 보상·드롭·경험치 연결",
+    "reportedUnverifiedGroups": [
+      "출구·층 진행",
+      "성능·배포·PC"
+    ],
+    "wholeMigrationPercent": null,
+    "percentReason": "기능군 작업량과 상세 완료조건이 같지 않아 단순 비율로 전체 이식률을 계산하지 않음",
+    "reportedNextSequence": [
+      "세부 기능·완료조건 확정",
+      "시작/로드 연결",
+      "처치·보상·층 진행·저장 연속 흐름",
+      "나머지 콘텐츠",
+      "화면·성능·PC 검증"
+    ],
+    "actualGameplayVerified": false,
+    "sourceComparisonIsVisualOrAudioQA": false,
+    "webLobbySeparateFromGodotProgress": true,
+    "wholeMigrationComplete": false,
+    "steamDemoApplied": "NOT_CONFIRMED",
+    "newMarketingMedia": 0,
+    "newPublicationApproval": false,
+    "newUserAction": false
+  }
 }
