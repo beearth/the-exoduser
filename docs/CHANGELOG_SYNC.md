@@ -54129,3 +54129,7 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 | 종료 | 새1/4 각각 exit0·stdio+Godot log ERROR/WARNING0. namespace FDG_ENGINE_FIREBALL_WORLD_FIXTURE_20261017_6C28 일치, 사용자 데이터 내용조회/cleanup0·완전 save 격리 독립증명 아님 |
 | 한계 보존 | 첫 기대 오류·원31로그 때문에 wholeClean=false. candidate6d4 원형/외부26·identity7/기존pool·finish suite 재연0. 실제 GDScript owner throw 주입/소스 예외전파 동등성은 검수하지 않음 |
 | 현재 실제 제품 | source clock/hurtE·fieldmob·poison owner 공개 API 아직 미연결, native fxdt를 대체값으로 쓰지 않아 NR. renderer/delivery/gx도未이며 최신 전체게임/실제 발사 완료가 아님 |
+
+## 2026-10-17 — 실제 current INV/affix 공개 getter
+
+Main 신규 read_native_source_equipment_affix(id:Variant)->Dictionary를 실제 source_providers 동일 affix.eq_affix(id)에 연결하고 기존 packet pierceFlat getter가 이를 소비하도록 변경. 원 응답/캐시/명시 무효화 보존, 값 합산 재구현0. 새 fixture 최초11/12 PASS(원 partial status 문자열 기대1 오류), 제품 수정 없이 실패1만 원 literal로 수리하여1 PASS; 최초 전체 clean 아님. normal hurtE/전체 fireball/최신 실행판은 미인수. FDG_NATIVE_CURRENT_EQUIPMENT_AFFIX_20261017.md 참조.

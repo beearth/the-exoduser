@@ -74,3 +74,7 @@
 SourceParameters의현재 P/Crystal requirement 진단문자열2개는첫성공뒤 metadata-only로현재실제supplier에맞췄다. 식/숫자/함수/분기/keys변경0이고원testedbytes와finalbytes/diff를따로보존한다. 나머지production11+test는actualtestedstage와exactbytes동일이다. UID9은실제GodotResourceUID 생성(metadata0groups/0imports/.598615542초), userdata는EXODUSER-MainSourceStarter-Isolated-20261014다. 기존source성공test/GUI/save/userQA/server/기존asset해시·복사·import0이다.
 
 실제파일init+starter+provider-binding완료와post-applyStats파생/fullbootstrap/actualOPT/diffSigned/automaticregen/이미지품질/24장24FPS/최저240은별도다. 현재다음source부분은미완으로표시한다.
+
+## 현재 장비 어픽스 공개 읽기 연결 — 2026-10-17
+
+Main 신규 공개 read_native_source_equipment_affix(id:Variant)->Dictionary는 현재 실제 bundle.affix.eq_affix(id)의 원 응답을 그대로 전달한다. 기존 투사체 pierceFlat getter가 이 공개 API를 소비한다. 원 cache/명시 무효화·READY_PARTIAL_AFTER_SOURCE_THROW/SOURCE_THROW/NOT_READY를 보존한다. 실제 normal hurtE 등록은 미연결이다. 정확 API·새 영향 검수와 최초 실패 이력은 FDG_NATIVE_CURRENT_EQUIPMENT_AFFIX_20261017.md를 따른다.

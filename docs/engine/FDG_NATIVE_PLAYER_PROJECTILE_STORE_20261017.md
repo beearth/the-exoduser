@@ -64,3 +64,7 @@
 | 종료 | 새1/4 각각 exit0·stdio+Godot log ERROR/WARNING0. namespace FDG_ENGINE_FIREBALL_WORLD_FIXTURE_20261017_6C28 일치, 사용자 데이터 내용조회/cleanup0·완전 save 격리 독립증명 아님 |
 | 한계 보존 | 첫 기대 오류·원31로그 때문에 wholeClean=false. candidate6d4 원형/외부26·identity7/기존pool·finish suite 재연0. 실제 GDScript owner throw 주입/소스 예외전파 동등성은 검수하지 않음 |
 | 현재 실제 제품 | source clock/hurtE·fieldmob·poison owner 공개 API 아직 미연결, native fxdt를 대체값으로 쓰지 않아 NR. renderer/delivery/gx도未이며 최신 전체게임/실제 발사 완료가 아님 |
+
+## 현재 affix 공개 getter 공유 — 2026-10-17
+
+Main.read_native_player_projectile_pierce_flat()는 신규 Main.read_native_source_equipment_affix("pierceFlat")를 호출한다. 동일 실제 bundle.affix 원 cache·응답을 사용하며 reset의 지연 조회 순서·신규 생성 조회0·기존 미준비 reason actual_packet_affix_provider_not_ready는 유지한다. 상세 계약·첫 의미 검사 실패와 실패 범위만의 수리는 FDG_NATIVE_CURRENT_EQUIPMENT_AFFIX_20261017.md에 기록했다.

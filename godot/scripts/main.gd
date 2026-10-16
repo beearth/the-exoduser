@@ -1895,11 +1895,17 @@ func apply_native_fireball_recover_idle(request: Dictionary) -> Dictionary:
 func _advance_native_fireball_phase(ticks: float,frame: float,entered_state: String) -> void:
 	if is_instance_valid(native_fireball_phase):native_fireball_phase.advance_native(ticks,frame,entered_state)
 
-func read_native_player_projectile_pierce_flat() -> Dictionary:
+func read_native_source_equipment_affix(id: Variant) -> Dictionary:
+	# Read through the current actual source owner. Keep its cache, status,
+	# partial prefix and query-key semantics; do not rebuild or normalize here.
 	var bundle: Dictionary = _native_fireball_provider_bundle()
 	if not _native_main_service_live() or bundle.is_empty():
+		# Existing packet callers retain their original unavailable reason.
 		return {"status": "NOT_READY", "reason": "actual_packet_affix_provider_not_ready"}
-	return bundle.affix.eq_affix("pierceFlat")
+	return bundle.affix.eq_affix(id)
+
+func read_native_player_projectile_pierce_flat() -> Dictionary:
+	return read_native_source_equipment_affix("pierceFlat")
 
 func read_native_player_projectile_pierce_passive() -> Dictionary:
 	if not _native_main_service_live() or not is_instance_valid(source_state) or not source_state.is_native_new_run_state_ready():
