@@ -54133,3 +54133,7 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 ## 2026-10-17 — 실제 current INV/affix 공개 getter
 
 Main 신규 read_native_source_equipment_affix(id:Variant)->Dictionary를 실제 source_providers 동일 affix.eq_affix(id)에 연결하고 기존 packet pierceFlat getter가 이를 소비하도록 변경. 원 응답/캐시/명시 무효화 보존, 값 합산 재구현0. 새 fixture 최초11/12 PASS(원 partial status 문자열 기대1 오류), 제품 수정 없이 실패1만 원 literal로 수리하여1 PASS; 최초 전체 clean 아님. normal hurtE/전체 fireball/최신 실행판은 미인수. FDG_NATIVE_CURRENT_EQUIPMENT_AFFIX_20261017.md 참조.
+
+## 2026-10-17 — Fireball source sound-global owner/current consumer
+
+신규 native_source_sample_globals.gd의 명시 원선언 boot1회를 실제 초기화 Services가 소유하고 Main sound dispatcher가 read_current_sample_context(self)로 현재 값을 읽도록 연결. 기존 delivery Node 기반 gx권위를 교체하며 실제 projectile delivery 미연결 NR/loaderfalse/void queue·RNG·voicecap 전drop 계약 유지. 직접AST Identifier5/선언외직접쓰기0 범위만 확인; 모든 간접쓰기 부재 주장은 없음. 첫 fixture 누락변수 parse실패/own session exit130 후 fixture1선언만 수리, 새16 PASS/exit0; 제품수리0/전체최초clean아님. 정확 계약·검수·시각은 FDG_NATIVE_FIREBALL_SAMPLE_GLOBALS_20261017.md 참조.

@@ -1957,13 +1957,11 @@ func _native_attack_audio_original_samples_ready() -> bool:
 	return true
 
 func read_native_fireball_sample_dispatcher_readiness() -> Dictionary:
-	if not _native_main_service_live() or not is_instance_valid(native_fireball_delivery) or native_fireball_delivery.get_parent()!=world or native_fireball_delivery.get("player")!=player or native_fireball_delivery.get("source_state")!=source_state or native_fireball_delivery.get("source_resources")!=source_resources:
-		return {"ready":false,"reason":"actual_fireball_sample_context_owner_unbound"}
-	if not native_fireball_delivery.has_method("read_native_fireball_source_sample_context"):
-		return {"ready":false,"reason":"actual_fireball_current_gx_volume_provider_unbound"}
-	var context: Variant = native_fireball_delivery.read_native_fireball_source_sample_context()
+	if not _native_main_service_live() or not is_instance_valid(source_initialization_services) or source_initialization_services.get_script()!=SourceInitializationServicesScript:
+		return {"ready":false,"reason":"actual_fireball_sample_global_owner_unbound"}
+	var context: Variant = source_initialization_services.read_current_sample_context(self)
 	if not context is Dictionary or context.get("ready")!=true:
-		return {"ready":false,"reason":"actual_fireball_current_sample_context_not_ready"}
+		return {"ready":false,"reason":context.get("reason","actual_fireball_current_sample_context_not_ready") if context is Dictionary else "actual_fireball_current_sample_context_not_ready"}
 	var volume: Variant = context.get("gx_vol_mul")
 	if not (volume is int or volume is float) or not is_finite(float(volume)):
 		return {"ready":false,"reason":"actual_fireball_current_gx_volume_not_numeric"}
@@ -1974,7 +1972,7 @@ func read_native_fireball_sample_dispatcher_readiness() -> Dictionary:
 	if profile.get("ready")!=true:
 		return {"ready":false,"reason":"actual_fireball_sample_character_not_ready"}
 	return {"ready":true,"gx_vol_mul":volume,"sample_loaded":_attack_audio_streams.get("fireball") is AudioStream,
-		"loader_bound":false,"authority":"actual_delivery_current_source_sample_context","audible_verified":false}
+		"loader_bound":false,"authority":"actual_source_initialization_services.current_sample_globals","audible_verified":false}
 
 func dispatch_native_fireball_sample(caller: Node, rate: float) -> void:
 	# Exact void playSample('fireball',.8,_r(1,.08)) front. Only the current

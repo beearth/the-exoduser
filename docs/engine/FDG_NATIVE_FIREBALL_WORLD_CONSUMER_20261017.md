@@ -1,6 +1,6 @@
 # Native 악의구 World 소비자 — 2026-10-17
 
-상태: I WIP. 실제 World 소유 registry/phase와 새 source 소비자를 연결했다. actual clock/hurtE·fieldmob·poison owner/실 renderer·delivery·gx는 아직 미연결이며 현재 게임 발사 완료가 아니다.
+상태: I WIP. 실제 World 소유 registry/phase와 새 source 소비자를 연결했다. actual clock/hurtE·fieldmob·poison owner/실 renderer·delivery는 아직 미연결이며 현재 게임 발사 완료가 아니다.
 
 | 항목 | 실제 code / source 계약 |
 |---|---|
@@ -25,7 +25,7 @@
 | NR | source step 전 NR는 효과0·packet 유지. 같은 valid native epoch에서 중복 step 없음. 미지원 다른 projectile kind는 해당 owner를 위해 동일 ref로 보존하며 이번 소비자는 갱신하지 않음 |
 | 수명 | release Callable은 실제 World Node를 통해 consumer의 동기 기록으로 전달. RefCounted consumer→flight→Callable(consumer) 순환은 첫 runtime 전에 제거. 원 candidate 수리0 |
 | 진단 | Main manifest fireball_world_consumer: 실제 mount/configured와 current readiness/missing/last 결과 분리. empty registry가 source clock/피해/VFX ready를 의미하지 않음 |
-| 현재 미완 | source clock/피해 owner 공개 API 미연결→정확 NR. visual_bound=false/full_skill_complete=false, 기존 Main.native_fireball_delivery/gx unbound 유지. actual hp/geometry/render/원 asset/전체 게임 검증 아님 |
+| 현재 미완 | source clock/피해 owner 공개 API 미연결→정확 NR. visual_bound=false/full_skill_complete=false, 기존 Main.native_fireball_delivery unbound 유지. gx는 Services 실제 source-global current getter 연결. actual hp/geometry/render/원 asset/전체 게임 검증 아님 |
 | 새 검수 | 실제 store·consumer·원 source producer + 신규 World/Main fragments의 새 slot/즉시 reuse/append/Node배선 경계 첫31중30PASS, 실패1만교정1PASS 및 새혼합4PASS. 과거31/3/8·32/6·원flight26/identity7 suite 재연0 |
 
 prewrite-manifest의 exact code5/docs7 총12path, I/R WORK/HEAD48행(실copy28/부재20), 부모별 realpath/nonlink 및 신규 namespace를 첫 쓰기 전 기록했다. 원58b ref를 보존하고 codex/mac-fireball-world-flight-20261017에서 작업한다. 신규 module parent 부재는 가장 가까운 기존 real parent와 부재 component를 구분해 기록했다.
@@ -40,4 +40,8 @@ prewrite-manifest의 exact code5/docs7 총12path, I/R WORK/HEAD48행(실copy28/�
 | source / 입력 domain | 실제 Node handle만 query→producer에 유지, read_enemy view Dict는 별개. 원 Dict carrier 실패를 수정/완료로 덮지 않음. clock/damage/fieldmob/map/player/state는 fixture이며 실제 owner body/공간/HP/스프라이트/scene·원 asset 검증 아님 |
 | 종료 | 새1/4 각각 exit0·stdio+Godot log ERROR/WARNING0. namespace FDG_ENGINE_FIREBALL_WORLD_FIXTURE_20261017_6C28 일치, 사용자 데이터 내용조회/cleanup0·완전 save 격리 독립증명 아님 |
 | 한계 보존 | 첫 기대 오류·원31로그 때문에 wholeClean=false. candidate6d4 원형/외부26·identity7/기존pool·finish suite 재연0. 실제 GDScript owner throw 주입/소스 예외전파 동등성은 검수하지 않음 |
-| 현재 실제 제품 | source clock/hurtE·fieldmob·poison owner 공개 API 아직 미연결, native fxdt를 대체값으로 쓰지 않아 NR. renderer/delivery/gx도未이며 최신 전체게임/실제 발사 완료가 아님 |
+| 현재 실제 제품 | source clock/hurtE·fieldmob·poison owner 공개 API 아직 미연결, native fxdt를 대체값으로 쓰지 않아 NR. renderer/delivery는未, gx는 Services current getter 연결이며 최신 전체게임/실제 발사 완료가 아님 |
+
+## Source sample globals 후속 연결 — 2026-10-17
+
+현재 gx 권위는 native_source_sample_globals.gd를 실제 초기화 Services가 명시 boot 1회 소유한 current getter다. Main sample 소비자가 이 경로를 사용한다. 투사체 delivery/실제 발사·원음 loader·source clock/hurtE 미완은 유지한다. 첫 fixture parse 실패와 수리 후 새16 PASS의 정확 범위·수명/현재값 한계는 FDG_NATIVE_FIREBALL_SAMPLE_GLOBALS_20261017.md를 따른다. 이전 검사 당시 gx 대역/미연결 이력은 현재 완료 증거로 재사용하지 않는다.

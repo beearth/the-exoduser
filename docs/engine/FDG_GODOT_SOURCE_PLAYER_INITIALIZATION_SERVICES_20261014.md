@@ -104,3 +104,7 @@ attack 결과에 `ready` key가 없는 경우 원 `status=='READY'`일 때만 in
 | CAMERA QA | 기존 인간 앱/Web 화면 조작0·새 픽셀 검수0 |
 | TECH QA | 새 runtime/parse/import 대기, 기존 성공 반복0 |
 | VISUAL VERDICT | RETOUCH — actor 모델/원화24장24FPS/글리프 품질/최저사양240 성능은 이 서비스 조립 증거로 승격하지 않음 |
+
+## Source sample globals 실제 소유 — 2026-10-17
+
+configure는 Readers 생성 뒤 신규 _initialize_source_sample_globals()로 native_source_sample_globals.gd의 원 선언 boot1을 한 번 소유한다. 신규 공개 read_current_sample_context(caller:Node)->Dictionary는 기존 context identity/lifecycle과 같은 weak Main caller를 검증한 뒤 현재 owner의 값을 읽는다. owner 부재/철회는 NR이며 getter 재초기화·fallback1 없음. discard는 owner를 해제한다. 실제 Main fireball sample dispatcher가 이 current getter를 소비하고 projectile delivery 준비는 별개 NR로 유지한다. 첫 fixture parse 실패/수리 후16 PASS와 실제 전체 Main 미실행 한계는 FDG_NATIVE_FIREBALL_SAMPLE_GLOBALS_20261017.md를 따른다.

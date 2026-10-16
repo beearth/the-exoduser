@@ -88,7 +88,7 @@
 | 숙련 | 실제 Main.source_lesson 공개 detail/reference의 active만 source JS truthy로 판별. 명시 active면 skip, inactive/known-absent면 실제 P magic+5 및 fireball 호환 동기화; unknown은 pre-emit NOT_READY |
 | guard 구분 | detail.ready/value의 regen chapter guard를 숙련 active로 추정하지 않음. 보호 lesson/regen 수리 없음 |
 | sample | 실제 기존 queue void front로 연결. caller _r(1,.08) 후 queue .92+U×.16, 원 gx volume skip이면 후자 없음. 신규 fireball stream 미로드 drop은 voice/cap eviction 전, finish/recover 계속 |
-| 현재 미완 | actual projectile 및 current _gxVolMul provider unbound, sample loader_bound=false. file-init1/dummyAudio/noop-ready 없음, 실제 발사/가청/최신 전체 게임 완료 아님 |
+| 현재 미완 | actual projectile unbound, sample loader_bound=false. current _gxVolMul은 실제 Services 소유 source-global current getter로 연결. missing-provider fallback1/dummyAudio/noop-ready 없음, 실제 발사/가청/최신 전체 게임 완료 아님 |
 | 원8키 | 기존8 stream 필수는 유지하되 추가 fireball key 허용. 정상8 queue/flush/voice 본체·RNG 순서 불변 |
 | 상세 / 검수 | docs/engine/FDG_NATIVE_FIREBALL_FINISH_DISPATCH_20261017.md. 새 영향32/32 및 별도 lesson 경계6/6 PASS, 첫 fixture 들여쓰기 parse 실패 보존/wholeClean=false, 과거 통과 suite 재연0 |
 
@@ -112,7 +112,7 @@
 | 회수 | release 동기 기록→step 반환 직후 HIT만 recycle=true, 거리/벽DEAD=false. 다음packet/borrow 전 완료/이중반납0. partial/unknown 효과 보존·성공회수/재실행0 |
 | 실제 unique reader | 현재INV/SLOT_NAMES 첫JS-truthy item[stat] 원값. 합산·음수clamp/unknown→0 없음 |
 | carrier / owner | 실제 World 동일 Node handle과별도 read_enemy view 구분. 실제 hurtE/fieldmob/poison owner 및Set key계약 미연결은NR, rawdamage 대체/noopready0 |
-| clock / 미완 | source sp/dt_sp/gc_t의 실제현재권위필수, World epoch/fxdt/상수1 대입0. source clock/피해/VFX/delivery/gx 未·현재게임완료아님 |
+| clock / 미완 | source sp/dt_sp/gc_t의 실제현재권위필수, World epoch/fxdt/상수1 대입0. source clock/피해/VFX/delivery 未, gx는 Services current getter 연결·현재게임완료아님 |
 | 상세 | docs/engine/FDG_NATIVE_FIREBALL_WORLD_CONSUMER_20261017.md. 새첫31중30PASS/spy기대1FAIL→실패1만교정1PASS, 새혼합4PASS·sourceunique17slot독립대조. 이전통과suite재연0 |
 
 | 새 검수(2026-10-17) | 실제 관측 / 한계 |
@@ -125,4 +125,8 @@
 | source / 입력 domain | 실제 Node handle만 query→producer에 유지, read_enemy view Dict는 별개. 원 Dict carrier 실패를 수정/완료로 덮지 않음. clock/damage/fieldmob/map/player/state는 fixture이며 실제 owner body/공간/HP/스프라이트/scene·원 asset 검증 아님 |
 | 종료 | 새1/4 각각 exit0·stdio+Godot log ERROR/WARNING0. namespace FDG_ENGINE_FIREBALL_WORLD_FIXTURE_20261017_6C28 일치, 사용자 데이터 내용조회/cleanup0·완전 save 격리 독립증명 아님 |
 | 한계 보존 | 첫 기대 오류·원31로그 때문에 wholeClean=false. candidate6d4 원형/외부26·identity7/기존pool·finish suite 재연0. 실제 GDScript owner throw 주입/소스 예외전파 동등성은 검수하지 않음 |
-| 현재 실제 제품 | source clock/hurtE·fieldmob·poison owner 공개 API 아직 미연결, native fxdt를 대체값으로 쓰지 않아 NR. renderer/delivery/gx도未이며 최신 전체게임/실제 발사 완료가 아님 |
+| 현재 실제 제품 | source clock/hurtE·fieldmob·poison owner 공개 API 아직 미연결, native fxdt를 대체값으로 쓰지 않아 NR. renderer/delivery는未, gx는 Services current getter 연결이며 최신 전체게임/실제 발사 완료가 아님 |
+
+## Source sample globals 후속 연결 — 2026-10-17
+
+현재 gx 권위는 native_source_sample_globals.gd를 실제 초기화 Services가 명시 boot 1회 소유한 current getter다. Main sample 소비자가 이 경로를 사용한다. 투사체 delivery/실제 발사·원음 loader·source clock/hurtE 미완은 유지한다. 첫 fixture parse 실패와 수리 후 새16 PASS의 정확 범위·수명/현재값 한계는 FDG_NATIVE_FIREBALL_SAMPLE_GLOBALS_20261017.md를 따른다. 이전 검사 당시 gx 대역/미연결 이력은 현재 완료 증거로 재사용하지 않는다.

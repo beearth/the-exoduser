@@ -13,6 +13,7 @@ const EFFECTIVE_STATS = preload("res://port_modules/player_effective_stats_sourc
 const PARAMETERS = preload("res://port_modules/player_resource_parameters_source/producer.gd")
 const BASE_ATTACK = preload("res://port_modules/player_base_attack_source/producer.gd")
 const OPTIONS = preload("res://port_modules/npc_interaction/source_options_state.gd")
+const SAMPLE_GLOBALS = preload("res://scripts/native_source_sample_globals.gd")
 const SIGNED_DIFFICULTY = preload("res://port_modules/kill_reward/source_difficulty_signed.gd")
 const SCHEMA = "exoduser.godot.source-player-initialization-services.v1"
 const CACHE_APIS = ["read_captured_resource_plan", "read_captured_crystal_stats", "read_captured_cohort", "read_current_initialization_cohort_id", "read_hp_initial_gap"]
@@ -87,6 +88,7 @@ var _providers: WeakRef
 var _dispatcher: WeakRef
 var _main: WeakRef
 var _readers: Readers
+var _sample_globals: RefCounted
 var _options: Object
 var _options_identity: Variant = null
 var _signed_difficulty: Object
@@ -128,6 +130,8 @@ func configure(player: Node2D, world: Node, state: Node, resources: Node,
 	_dispatcher = weakref(dispatcher)
 	_main = weakref(main)
 	_readers = Readers.new(self)
+	if not _initialize_source_sample_globals():
+		return _discard("actual_source_sample_global_initialization_rejected")
 	_options = OPTIONS.new()
 	_signed_difficulty = SIGNED_DIFFICULTY.new()
 	if not _options.initialize_source_boot(false) or not _options.set_current_phase(OPTIONS.CURRENT_PRE_RESTORE):
@@ -182,6 +186,22 @@ func get_services() -> Dictionary:
 
 func is_source_context_ready() -> bool:
 	return _configured and _context_error().is_empty()
+
+func _initialize_source_sample_globals() -> bool:
+	if is_instance_valid(_sample_globals):
+		return false
+	_sample_globals = SAMPLE_GLOBALS.new()
+	return _sample_globals.initialize_source_boot()
+
+func read_current_sample_context(caller: Node) -> Dictionary:
+	var error: String = _context_error()
+	if not error.is_empty():
+		return {"ready":false,"reason":error}
+	if not is_instance_valid(caller) or _ref(_main) != caller:
+		return {"ready":false,"reason":"actual_sample_global_caller_mismatch"}
+	if not is_instance_valid(_sample_globals):
+		return {"ready":false,"reason":"actual_source_sample_global_owner_lost"}
+	return _sample_globals.read_current_sample_context()
 
 func read_current_options() -> Variant:
 	if not _context_error().is_empty():
@@ -412,6 +432,7 @@ func _discard(error: String) -> bool:
 	_helpers.clear()
 	_provider_maps.clear()
 	_attack_bridges.clear()
+	_sample_globals = null
 	_options = null
 	_options_identity = null
 	_signed_difficulty = null
