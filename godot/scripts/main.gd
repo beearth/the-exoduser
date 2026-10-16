@@ -151,6 +151,9 @@ func _ready() -> void:
 	if not world.bind_native_player_source_resources(source_resources):
 		push_error("Actual source resource holder binding rejected; player startup stopped.")
 		return
+	if not world.bind_native_player_projectile_store(self):
+		_stop_source_player_startup("native_player_projectile_store_binding_rejected")
+		return
 	# Read the existing ready Player child. Main is still inside its own _ready;
 	# native resource inspection does not acknowledge source startup or quality.
 	_native_player_sprite_startup_readonly_calls += 1
@@ -287,6 +290,7 @@ func get_native_content_version_manifest() -> Dictionary:
 	manifest["attack_audio"]=get_native_attack_audio_snapshot()
 	manifest["fireball_owner"]=native_fireball_phase.get_snapshot() if is_instance_valid(native_fireball_phase) else {"producer_bound":false}
 	manifest["fireball_delivery"]=read_native_fireball_delivery_readiness()
+	manifest["player_projectile_store"]=world.get_native_player_projectile_store_snapshot()
 	var slash: Variant = player.get_script().get_script_constant_map().get("SLASH_SHEET")
 	var combat_source: Variant = combat.get("source")
 	var qe: Dictionary = player.get_native_combat_qe_snapshot()
@@ -1869,3 +1873,24 @@ func apply_native_fireball_recover_idle(request: Dictionary) -> Dictionary:
 
 func _advance_native_fireball_phase(ticks: float,frame: float,entered_state: String) -> void:
 	if is_instance_valid(native_fireball_phase):native_fireball_phase.advance_native(ticks,frame,entered_state)
+
+func read_native_player_projectile_pierce_flat() -> Dictionary:
+	var bundle: Dictionary = _native_fireball_provider_bundle()
+	if not _native_main_service_live() or bundle.is_empty():
+		return {"status": "NOT_READY", "reason": "actual_packet_affix_provider_not_ready"}
+	return bundle.affix.eq_affix("pierceFlat")
+
+func read_native_player_projectile_pierce_passive() -> Dictionary:
+	if not _native_main_service_live() or not is_instance_valid(source_state) or not source_state.is_native_new_run_state_ready():
+		return {"status": "NOT_READY", "reason": "actual_packet_passive_owner_not_ready"}
+	var passives: Variant = source_state.read_current_passives()
+	if not passives is Dictionary:
+		return {"status": "NOT_READY", "reason": "actual_packet_passives_missing"}
+	# Actual PASSIVES holder is mandatory. Missing/null/falsy numeric key alone
+	# follows source PASSIVES.pPierce || 0; unsupported shapes stay explicit.
+	var level: Variant = passives.get("pPierce", 0)
+	if level == null or (level is bool and not level) or (level is String and level.is_empty()):
+		level = 0
+	if not (level is int or level is float) or not is_finite(float(level)):
+		return {"status": "NOT_READY", "reason": "current_pierce_passive_shape_unsupported"}
+	return {"status": "READY", "value": level}

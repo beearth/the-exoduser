@@ -67,3 +67,16 @@
 | 상태 | CAST_STARTED/FIRED/RECOVER_IDLE/WAITING/REJECTED/DEFERRED_OTHER_OWNER/OWNER_REJECTED/NOT_READY. 새 phase는 비해당 entered-case에 DEFERRED_NATIVE_PHASE |
 | payload 추가 | dist0, stagger0, kb0.005, kbMult0.1, magic=true, fireball=true. 원 flight/폭발/중독은 미연결 |
 | 숫자 shape | 현재 native reader는 지원한 finite number/Dictionary만 소비. bool/string/비유한 스칼라 등 미지원 shape는 null/거부이며 중립수치 대체 없음 |
+
+## World pool 후속 연결 — 2026-10-17
+
+| 항목 | 현재 I 작업 범위 |
+|---|---|
+| 소유 | native_player_projectile_store.gd를 기존 Main startup에서 실제 World에 바인딩. 신규/reuse 차이와 현재 pierceFlat/PASSIVES reader 보존 |
+| delivery | 기존 unbound guard 유지. pool/registry API 구현만으로 악의구 projectile/proficiency/sample 준비를 true로 변경하지 않음 |
+| 상세 | FDG_NATIVE_PLAYER_PROJECTILE_STORE_20261017.md. 실제 비행·피해·시각·게임 실행 미검증 |
+
+| World store 새 검수 보충 | 계약 |
+|---|---|
+| source hitSet | recycle은 원 if(p._hitSet)처럼 없음/null이면 clear skip. 다음 reset은 원 clear 위치에서 prefix를 보존한 reset_refused이며 affix/passive를 읽지 않음. 다른 native shape는 지원 미확인으로 거절 |
+| 인수 | field 비교3 및 새 조건부/reset 경계8PASS. 첫34중31PASS와 별도 관측, wholeClean=false. 첫 fixture parse/저장 경로 불일치 보존. 상세 engine/FDG_NATIVE_PLAYER_PROJECTILE_STORE_20261017.md |

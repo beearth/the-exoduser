@@ -1,6 +1,9 @@
 class_name ExoduserWorld
 extends Node2D
 
+const NativePlayerProjectileStoreScript = preload("res://scripts/native_player_projectile_store.gd")
+var _native_player_projectiles: RefCounted
+
 signal telemetry_event(kind: String, data: Dictionary)
 signal native_resource_load_changed(entry: RefCounted, phase: String)
 signal native_source_extra_image_changed(image: RefCounted, phase: String)
@@ -3251,3 +3254,27 @@ func query_native_enemies(x: float, y: float, radius: float) -> Array:
 
 func get_native_e_wave_draw_rows() -> Array:
 	return _native_hit_fx.get_native_e_wave_draw_rows() if is_instance_valid(_native_hit_fx) else []
+
+func bind_native_player_projectile_store(main: Node) -> bool:
+	if is_instance_valid(_native_player_projectiles) or main != get_parent():
+		return false
+	var store: RefCounted = NativePlayerProjectileStoreScript.new()
+	if not store.configure(main, self):
+		return false
+	_native_player_projectiles = store
+	return true
+
+func borrow_native_player_projectile(main: Node) -> Dictionary:
+	return _native_player_projectiles.borrow(main) if is_instance_valid(_native_player_projectiles) else {"ready": false, "reason": "actual_world_packet_store_unbound"}
+
+func publish_native_player_projectile(main: Node, packet: RefCounted) -> Dictionary:
+	return _native_player_projectiles.publish(main, packet) if is_instance_valid(_native_player_projectiles) else {"ready": false, "reason": "actual_world_packet_store_unbound"}
+
+func retire_native_player_projectile(main: Node, packet: RefCounted, recycle: bool) -> Dictionary:
+	return _native_player_projectiles.retire(main, packet, recycle) if is_instance_valid(_native_player_projectiles) else {"ready": false, "reason": "actual_world_packet_store_unbound"}
+
+func read_native_player_projectiles(main: Node) -> Variant:
+	return _native_player_projectiles.read_live(main) if is_instance_valid(_native_player_projectiles) else null
+
+func get_native_player_projectile_store_snapshot() -> Dictionary:
+	return _native_player_projectiles.get_snapshot() if is_instance_valid(_native_player_projectiles) else {"ready": false, "reason": "actual_world_packet_store_unbound", "latest_full_game": false}

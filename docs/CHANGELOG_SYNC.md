@@ -54069,3 +54069,15 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 | 상세 | docs/engine/FDG_NATIVE_FIREBALL_ACTUAL_OWNER_20261017.md |
 
 새 actual-owner 검수:39 PASS 후 entered-case/중복 phase 경계의 수정 영향6 PASS(39 재연 없음). 첫39 종료 WARNING 한 줄에 ObjectDB3 instances leak, ERROR0/원인 미확정; phase6 종료 WARNING/ERROR0. 준비 regex 실패를 포함 firstWholeClean=false. 현재 main/R/실게임 반영·실시각 완료는 아니며 세부 계약과 실패 이력은 FDG_NATIVE_FIREBALL_ACTUAL_OWNER_20261017.md에 기록한다.
+
+## 2026-10-17 native World player projectile store — I 작업본
+
+| 변경 | 정확 범위 |
+|---|---|
+| code3 | 신규 native_player_projectile_store.gd, World 실제 pool/registry API 소유, Main startup/current pierceFlat·pPierce reader/manifest |
+| source 분기 | 신규96필드 vs reuse prefix81+suffix25. reuse에만 affix/passive 조회. kbMult undefined sentinel/같은 hitSet/미기재 key 참조/free120 cache 보존 |
+| docs | 신규 native store 계약, fireball owner/최적화/스킬 동기화. 데미지표의 모든 투사체50 요약을 실제 reset 분기50+pierceFlat로 정정 |
+| 미완 | R/main/served 미반영, game.html 불변. 실제 flight/damage/visual/audio/발사 미연결. 최신 전체 게임 아님 |
+| 검수 | 첫34중31PASS. 실패 field 비교3은 동일 product/oracle 숫자 normalize 후3/3PASS. source 조건부 hitSet return/reset missing Set 교정 새8/8PASS; 이전 성공 suite/수송/ref/GET 재연0 |
+
+| 오류 보존 | fixture ready/Node.ready 충돌, 숫자 encoding 비교3FAIL, custom_user_dir 오설정 경로 관측을 원본 이력에 유지. 올바른 custom_user_dir_name로 실패/새 영향만 검수, 마지막 ERROR/WARNING0이나 wholeClean=false. 사용자 데이터 내용조회/삭제 없음 |
