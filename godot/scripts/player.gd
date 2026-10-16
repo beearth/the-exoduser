@@ -1,5 +1,8 @@
 extends CharacterBody2D
 
+const NativeArmorElementScript = preload("res://port_modules/item_armor_element/producer.gd")
+var _native_armor_element: RefCounted
+
 var _native_ground_pointer_bound := false
 var _native_ground_pointer: Callable
 var _native_pointer_screen: Variant = null
@@ -903,11 +906,19 @@ func apply_native_posthurt_knockback(impulse: Vector2) -> void:
 func get_native_knockback() -> Vector2:
 	return _knockback
 
-func get_native_element_multiplier(_attacker_element_id: int) -> float:
-	# This native slice has no equipped-armor consumer. Source ar().el is
-	# undefined for no armor, so elMul returns neutral1 for every element.
-	# Do not invent physical0 armor or claim inventory/element gear parity.
-	return 1.0
+func bind_native_armor_inventory(reader: Callable) -> bool:
+	if _native_armor_element != null or not reader.is_valid() or reader.get_argument_count() != 0:
+		return false
+	var provider = NativeArmorElementScript.new()
+	if not provider.configure_inventory_reader(reader):
+		return false
+	_native_armor_element = provider
+	return true
+
+func get_native_element_multiplier(attacker_element_id: int) -> float:
+	# The provider reads current INV.equipped.armor on every hit, without copies.
+	# Unbound, missing, null or lost inventory keeps the existing neutral1.
+	return _native_armor_element.get_native_element_multiplier(attacker_element_id) if is_instance_valid(_native_armor_element) else 1.0
 
 func get_snapshot() -> Dictionary:
 	return {"attack_tempo":get_native_attack_tempo_snapshot(),"hp": hp, "max_hp": max_hp, "stamina": stamina, "max_stamina": max_stamina, "state": state, "combo_step": combo_step, "charge_frames": charge_frames, "charge_tier": charge_tier(), "damage_multiplier": pow(2.0, charge_tier()), "position": global_position, "melee_ref": melee_ref, "q_scope": ("Q_CONTROL_PARTIAL" if get_native_q_control_snapshot().get("ready") == true else "Q_CONTROL_NOT_READY") if is_instance_valid(_native_q_control) else "cancel_only", "accessibility_hold": _accessibility_hold, "poise": poise, "max_poise": max_poise, "iframes": iframes, "base_def": base_def, "energy_def": energy_def, "burn_stacks": get_native_burn_snapshot(), "freeze_slow_ticks": get_native_freeze_slow_ticks()}

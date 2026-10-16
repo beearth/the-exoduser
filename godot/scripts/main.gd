@@ -139,6 +139,9 @@ func _ready() -> void:
 	world.add_child(source_state)
 	add_child(player)
 	world.set_player(player)
+	if not player.bind_native_armor_inventory(Callable(source_state, "read_current_inventory")):
+		_stop_source_player_startup("native_armor_inventory_binding_rejected")
+		return
 	if not player.bind_native_attack_selection(Callable(source_state,"read_current_p")):
 		_stop_source_player_startup("native_current_attack_selection_binding_rejected")
 		return

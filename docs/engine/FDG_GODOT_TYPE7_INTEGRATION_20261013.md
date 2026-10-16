@@ -24,7 +24,7 @@
 | 동적 registry | `register_summoned_enemy`는 `is_native_registry_ready()`/`advance_native_phase`와 actual Player binding을 선검증하고 owner phase등록→telemetry 연결→`_enemies.append`→`add_child`를 수행한다. 준비되지 않은 actor는 registry와 world child를 만들기 전에 거부한다. player melee/crescent 질의가 같은 registry를 소비한다. 기존 initial16 encounter report는 dynamic child로 다시 작성하지 않는다. actual prepared type3 binding의준비조건과동적registry/phase소비계약을 신규자동runtime으로검증했다. 자연 type7 소환→랜덤 child의전체조립 검수는아직pending이다. |
 | Source safe placement | `native_safe_point(x,y,r)`는 원 R32378 safePt: 먼저 현재점, 그 뒤 T40..200/step20와8방향 PI/4×index의 원 순서로 can_move를 확인하고 실패null. 자체 RNG0/원 geometry·collision 변경0. |
 | Channel literal adapter | `emit_native_channel_particle(raw)`는 finite x/y/vx/vy/sz/life 및 CSS색을 검증하고 actual typed literal particle으로 전달한다. 원 owner가 샘플링한 값 그대로/추가 RNG0/좌표나 수명 재생성0. |
-| Player 원소배율 | `get_native_element_multiplier(attacker_element_id)`는 현재 native 미착용 armor slice에서1을 반환한다. 원 `ar().el` undefined/no-armor의 neutral값이며, 원 장비가 physical0이라는 선언이나 실제 inventory/gear 이식은 아니다. 미래 실제 armor provider는 별도 필수 이식이다. |
+| Player 원소배율 | get_native_element_multiplier(attacker_element_id)는 2026-10-17 Main이 바인딩한 실제 SourceState INV의 현재 armor.el을 기존 producer로 조회한다. 무장비/누락/null/비숫자 el은1, 원2/0.5/1 matrix는보존. 전체 장착 UI/저장·affix 이식 완료 아님. |
 | 공유 U source | `sample_native_random_unit()`은 actual global Godot `randi()/4294967296.0`로 `[0,1)` 값을 공급하고 공개 draw count를 축적한다. child별 reseed0. 전체 원 JavaScript boot/global RNG stream 동일성은 미확인이다. |
 | world identity | `get_native_world_identity()`는 실제 `_enemies` Array 참조이다. 같은 Array에 child를 append해도 identity가 유지되고 새로운 world/Array는 다른 reference이다. getter가 복제를 반환하지 않는다. |
 | 새 실제 hitFX context | world의 `native_projectile_hit_fx.gd` provider로 F/H/charged dark 실제 onhit를 연결한다. required context schema `exoduser.godot.native-projectile-fx-context.v1`; actual FPS 80↑/55↓ hysteresis, native delta×60 clock/epoch, scoped particle hard limit1000, registered external live count, shake100%, vibrationfalse, text ring40, float_text_enabled=true/battle_test_active=false. World typed Color 변환과 direct literal particle(position/velocity Vector2, color Color, size/life_ticks)를 소비한다. 이는 신규 native hitFX 범위의 명시정책이며 원 OPT/Tier/slowMo/oldglobalGL budget 동일성을 주장하지 않는다. 실제 native bitmap4 firstcopy779557B·각512²/4×4 cell128², isolated 첫 actual texture import4/3.545726167초/exit0/ERROR0, old texture reimport0. 첫 import는 새6GD와 기존code class scan을 포함하며 Main/export/GUI0. 새6원소/실Player FHD contact/FX수명/원자성4group은처음PASS(exit0/8.449706917초/assert0/ERROR0/자동fixturephysics72). 공개pixels/GPU/성능증거는아니다. type3 binding고유4는첫2PASS+M29fixture실패1만수리PASS(.264461167초/604ownerphase)+신규cleanup1첫PASS(.371643625초/0step). 최초.359575833초의assert1/SCRIPT1이력을보존했고성공그룹재실행0. |
@@ -80,3 +80,19 @@
 - 신규 actual engine UID `godot/scripts/native_type7_runtime.gd.uid`: `uid://bifd0ko2lj76d` (메타생성만, source textureimport/검사재실행0).
 
 - 신규 actual engine UID `godot/port_modules/common_charge_warning/producer.gd.uid`: `uid://kbeyb4avxxkb` (메타생성만, source textureimport/검사재실행0).
+
+
+## 2026-10-17 현재 방어구 속성 배율의 실제 entry 소비 연결
+
+| id / 항목 | 현행 계약 |
+|---|---|
+| 1 / 기능 / 제품 | NATIVE-ARMOR-ELEMENT-CONSUMER-20261017. 제품 변경은 main.gd와 player.gd 두 파일만. 상성 producer·탄·HP/패링/poise 구현은 변경하지 않는다. |
+| 2 / 정상 연결 | Main._ready의 world.set_player 뒤에 Player.bind_native_armor_inventory(Callable(source_state, read_current_inventory))를 연결한다. 실패하면 기존 _stop_source_player_startup 경로로 중단한다. source State/INV를 새로 만들거나 복원하지 않는다. |
+| 3 / Player 소유 | NativeArmorElementScript는 기존 item_armor_element/producer.gd. _native_armor_element는 Player가 소유하는 RefCounted이며 bind_native_armor_inventory(reader: Callable)->bool은 유효한 무인수 reader를 한 번 바인딩한다. 무효·중복 바인딩은 false이며 기존 바인딩을 변경하지 않는다. |
+| 4 / 기존 피격 소비 | get_native_element_multiplier(attacker_element_id:int)->float가 현재 provider를 위임한다. 기존 enemy_projectile_fire.gd의 실제 contact는 이 getter→int(damage×multiplier)→기존 receive_damage 요청을 그대로 사용한다. 새 피해·resource sink나 패링/탄 수명 정책은 추가하지 않는다. |
+| 5 / 현재 장비 / identity | 매 조회마다 실제 SourceState.read_current_inventory의 현재 equipped.armor와 el을 읽는다. armor/INV/equipped를 복제·캐시하거나 id로 재검색하지 않는다. 같은 id의 객체 교체·동일 객체 el 변경·inventory/equipped 교체가 다음 조회에 반영된다. |
+| 6 / 없음 / null / falsy | unbound·무효/소멸 reader·비Dictionary INV/equipped·누락/null/빈 armor·누락/null/문자열/bool el은 기존 producer의 neutral1 의미를 유지한다. 누락 el을 물리0으로 만들지 않는다. |
+| 7 / 원 상수 | EL P=0/F=1/I=2/D=3/L=4/H=5/E=6. F→I, I→F, D→L, L→D, D→H, H→D, E→L, L→E는2. 동일 속성은 P0 제외0.5, 나머지는1. 기존 원 elMul/producer 분기·수치 변경0. |
+| 8 / 새 검수 | Godot4.7.2 headless의 자기격리5군/13접촉 첫 실행 통과. 실제 새 Main 바인딩3줄과 Player 변경 메서드, 변경 없는 기존 fire projectile의 contact를 소비했다. owned base37의 요청은 현재 fire armor18/ice armor74/neutral37로 관측했다. 이는 실 Player HP 손실값·실물 장착·자연 탄 생성 증거가 아니다. |
+| 9 / 검수 분리 | Main 전체 startup/GPU와 Player 원화 preload를 실행하지 않았다. 격리 장면은 새 Main fragment/Player 메서드를 그대로 추출하고 기존 projectile 전체 script를 복사하되 visual lifecycle만 fixture에서 비활성화·owned contact 상태를 시드한다. 실제 Main/Player 전체 실행·configure/import/spawn·PNG/샘플·실 save/API/사용자창/PC 검증0. 옛75검사 재실행0. |
+| 10 / 현재 완료 범위 | 실제 제품 entry의 SourceState→Player→기존 projectile 배율 consumer 연결까지. full inventory/equip UI·affix·저장/장비복원·보상·전체 bootstrap·모든 탄/보스·시각/청감·240FPS·최신 전체게임 완료는 아니다. 기존 HOLD/2_3·MAP/ART/STORY/rig/native3387/NativeHUD 등 보호 불변. |
