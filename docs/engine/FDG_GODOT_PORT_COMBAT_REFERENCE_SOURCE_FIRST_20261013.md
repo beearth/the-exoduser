@@ -152,7 +152,7 @@ for-in 순서: 정수형 키가 먼저지만 정수형 키는 `b` 로 시작할 
 | formula ref 채널 | number 전용 계약이라 SOURCE_THROW 도 formula 에서는 `NOT_READY meleeRef_unsupported_shape:Nil` 로 보임. 정확한 사유는 `melee_ref()` 로 확인 |
 | `_eqStat` 캐시 이벤트 | 원 lazy 캐시를 구현함 (§4a). 원 무효화 지점 3곳(@16798/@16934/@49832~49836)에서 `invalidate`/`capture`/`restore` 를 호출하는 연결은 ENGINE 몫 — 연결 전에는 원처럼 stale 상태가 유지됨 |
 | ROOT affix reader 캐시 | 같은 원 지점에서 `invalidate_affix_cache()` / affix token 도 함께 호출해야 함 (ROOT 소유, 이 모듈은 쓰지 않음) |
-| `bowRef()` (@29408) | 범위 밖 |
+| `bowRef()` (@29408) | 현재 bow/dex/Dex 참조 계산 추가. native normal 석궁 소비자는 통합 작업 중이며 시각/실게임 인수 전 |
 | 공유 NativePlayer `get_parry_scale/get_ki_floor` | 연결 안 됨 (SKILL/ENGINE 소유). 테스트에서는 고정 RefCounted `ParryPlayer` 로만 소비 |
 | `q_shield_mp_cost` | formula subset 의 `required_missing=["q_shield_mp_cost"]` 그대로 남음 — 8개 전부 READY 아님 |
 
@@ -212,3 +212,16 @@ TECH_OPERANDS (제품 값 아님): 입사 탄 dmg 100/4000, isQ 선택, `ParryPl
 원본/제작물·실행 로그: `E/godot-native-first/team-port/combat_reference_source/` 아래 `claude-stream.jsonl`, `claude-pretest-stream.jsonl`, 각 launch/prompt/stderr 및 `test-attempt{1,2,3}.{stdout,stderr}`, 각 engine/launch log. 수정 전 신규3파일 working/HEAD 부재·실 parent/symlink 확인 receipt와 실행 전 생성 byte backup, parser/API rename 전 자기3파일 byte backup도 이 외부 폴더에 보관했다. 기존 성공 suite/hash/PNG/copy/import 재생 0, shared 파일/Git/서버/배송 artifact/인간 paused 화면/save 접근 0.
 
 관련 docs 파일명 검색은 전용 `keyword-doc-matches.json`의 **33경로(새 문서1 + 기존32)**를 중앙에 인계한다. exact marketing 제외 / 2_3 immutable, 기존 공통 docs 편집 0. ENGINE이 실제 authority/cache event 연결과 해당 공통 docs 현재값 동기화 후 정상 code+docs checkpoint를 담당한다. 이 결과로 full8/QE Main/전체 Godot/최소사양 1080p240 완료를 주장하지 않는다.
+
+## 2026-10-17 native normal 자동 석궁 통합 작업 중
+
+| 항목 | 상태/계약 |
+|---|---|
+| 현재 작업본 | I 개발 작업본, R/공식 main 반영 전. 실제 플레이 가능 완료 아님 |
+| 원 수치 | crossbow 800/22/atkMul1, repeater700/22/0.65, arcane840/22/1.4; interval120/장비·패시브 공속; damage ToInt32(bowRef×pBowMul×pXbowMul×type.atkMul+28)×3 |
+| 현재 코드 | bow_ref와 pass_dmg_sum(bow/xbow), Main T 입력·normal controller, 기존 resource authority 별도 ST 비용 경로, 독립 볼트 코드 작성 중 |
+| 자원 | ST>mst×0.2 gate, 발사 후 (1.5+fanShotLv×1.5)×max(.60,1-pBow×.04)×(1+min(0,stCostRed)) 차감. 전체 비용 gate/새 기본 장비/Q MPsink 재사용 없음 |
+| 인수 경계 | 원 arrow public visual 미확정, 미바인딩이면 발사 거부. 기존 raw enemy damage는 full hurtE 아님. fixture/실게임 검증 및 전체 완료 아님 |
+| 상세 | docs/engine/FDG_NATIVE_AUTO_CROSSBOW_20261017.md의 계약/미완료 표를 기준으로 후속 연결 |
+
+이 native 작업본의 신규 owned 검사 결과: 최초81 PASS, ST pre-fire capture 교정 후 영향 runtime18 PASS. 두 검사에는 중복 항목이 있으며 99개 독립 검증으로 합산하지 않는다. source/visual/receiver 경계 때문에 R·공식main·실게임 반영과 완료는 아직 아니다.

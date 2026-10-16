@@ -22,6 +22,7 @@ const SourceImageWaitScript = preload("res://port_modules/source_object_sprite_w
 const SourcePrepareViewScript = preload("res://port_modules/source_prepare_start_map_view_owner/producer.gd")
 const SourcePostStageScript = preload("res://port_modules/source_post_stage_owner/producer.gd")
 const QAdapterScript = preload("res://scripts/native_combat_qe_adapter.gd")
+const NativeAutoCrossbowScript = preload("res://scripts/native_auto_crossbow.gd")
 const QBurstDrawScript = preload("res://port_modules/character_clip/shield_burst_draw_caller.gd")
 const SOURCE_BOOT_EN_LABELS := {"맵 에셋 로딩...": "Loading map assets...",
 	"맵 캐시 생성 중...": "Building map cache...", "완료": "Complete"}
@@ -41,6 +42,7 @@ const NATIVE_VERSION_CONFIG := {"schema": "fdg.native-content-version.v1", "cont
 signal source_document_visibility_changed
 
 var native_perspective_view: Node
+var native_auto_crossbow: Node
 var native_q_control: RefCounted
 var _q_burst_draw: Node2D
 var _q_view: SubViewport
@@ -163,6 +165,13 @@ func _ready() -> void:
 		return
 	player.crescent_requested.connect(_spawn_crescent)
 	player.telemetry_event.connect(_record_event)
+	native_auto_crossbow=NativeAutoCrossbowScript.new()
+	if not native_auto_crossbow.configure(self):
+		native_auto_crossbow.free()
+		native_auto_crossbow=null
+		_stop_source_player_startup("native_auto_crossbow_source_binding_rejected")
+		return
+	world.add_child(native_auto_crossbow)
 	if world.has_signal("telemetry_event"):
 		world.telemetry_event.connect(_record_event)
 	camera = Camera2D.new()
@@ -277,6 +286,7 @@ func get_native_content_version_manifest() -> Dictionary:
 	manifest["e_control"]=player.get_native_e_control_snapshot()
 	manifest["attack_tempo"]=player.get_native_attack_tempo_snapshot()
 	manifest["attack_audio"]=get_native_attack_audio_snapshot()
+	manifest["auto_crossbow"]=native_auto_crossbow.get_snapshot() if is_instance_valid(native_auto_crossbow) else {"configured":false,"reason":"actual_auto_crossbow_owner_missing"}
 	var slash: Variant = player.get_script().get_script_constant_map().get("SLASH_SHEET")
 	var combat_source: Variant = combat.get("source")
 	var qe: Dictionary = player.get_native_combat_qe_snapshot()
@@ -787,6 +797,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("pause"):
 		_toggle_pause()
 		get_viewport().set_input_as_handled()
+	elif event.is_action_pressed("auto_crossbow") and not event.is_echo() and is_instance_valid(native_auto_crossbow):
+		if native_auto_crossbow.toggle():get_viewport().set_input_as_handled()
 
 
 const QParryTargetScript = preload("res://port_modules/parry_homing_target/producer.gd")
@@ -1262,7 +1274,7 @@ func _notification(what: int) -> void:
 func _register_inputs() -> void:
 	# Explicit native defaults from R BINDS, not restored browser BINDS/BINDS2.
 	if InputMap.has_action("cancel_charge"): InputMap.erase_action("cancel_charge")
-	var keys = {"move_left": KEY_A, "move_right": KEY_D, "move_up": KEY_W, "move_down": KEY_S, "parry": KEY_Q, "shield_bash": KEY_E, "rage_slot": KEY_SPACE, "pause": KEY_ESCAPE}
+	var keys = {"move_left": KEY_A, "move_right": KEY_D, "move_up": KEY_W, "move_down": KEY_S, "parry": KEY_Q, "shield_bash": KEY_E, "rage_slot": KEY_SPACE, "pause": KEY_ESCAPE, "auto_crossbow": KEY_T}
 	for action in keys:
 		if not InputMap.has_action(action): InputMap.add_action(action)
 		InputMap.action_erase_events(action)

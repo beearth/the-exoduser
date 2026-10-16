@@ -75,7 +75,7 @@ TASK `GODOT-PORT-COMBAT-STAT-FORMULA-FIRST-20261013`. 소유 경로 3개만:
 
 | 계산 API | 원 |
 |---|---|
-| `pass_dmg_sum("melee"\|"magic")` | `_passDmgSum` (bow/xbow/dot/proj는 NOT_READY `type_not_ported`) |
+| `pass_dmg_sum("melee"\|"magic"\|"bow"\|"xbow")` | `_passDmgSum` (dot/proj는 NOT_READY `type_not_ported`) |
 | `p_atk_mul()` | `pAtkMul` |
 | `p_parry_dmg()` | `pParryDmg` |
 | `p_magic_mul(for_attack)` | `pMagicMul` |
@@ -201,3 +201,16 @@ PASS 조건: 선택한 그룹이 모두 끝까지 실행되고(completed), 그�
 | `test_first.gd` qe_runtime_consumption | 1차 실행 뒤에 `floor_won`/`calc_won` 변수와 assert 2개를 추가했다. 이 assert는 한 번도 실행되지 않았음 | **제거**. 1차에서 검증된 원래 assert `parry.calc_branch_reached` (`js_to_int32(5000.0*(1.0+1.0)*0.5*p_parry*1.3*2.0) > kf`)로 되돌렸다. 다른 그룹 본문은 바꾸지 않음. 대문자 `PASSIVES` label과 `selected.assign` 러너는 유지 |
 
 **검증 범위의 한계**: 현재 제품은 7 그룹 전체를 다시 돌려 검증한 것이 아니다. 또한 현재 제품이 1차 스냅샷과 같다고 주장하지 않는다. 원래 Node oracle 6개는 다시 돌리지 않았다. native/headless 테스트의 원 입력은 여전히 fixture뿐이다. 원 ref, mana, 호출부 wiring이 ENGINE에 남아 있다는 점(§5)도 그대로다.
+
+## 2026-10-17 native normal 자동 석궁 통합 작업 중
+
+| 항목 | 상태/계약 |
+|---|---|
+| 현재 작업본 | I 개발 작업본, R/공식 main 반영 전. 실제 플레이 가능 완료 아님 |
+| 원 수치 | crossbow 800/22/atkMul1, repeater700/22/0.65, arcane840/22/1.4; interval120/장비·패시브 공속; damage ToInt32(bowRef×pBowMul×pXbowMul×type.atkMul+28)×3 |
+| 현재 코드 | bow_ref와 pass_dmg_sum(bow/xbow), Main T 입력·normal controller, 기존 resource authority 별도 ST 비용 경로, 독립 볼트 코드 작성 중 |
+| 자원 | ST>mst×0.2 gate, 발사 후 (1.5+fanShotLv×1.5)×max(.60,1-pBow×.04)×(1+min(0,stCostRed)) 차감. 전체 비용 gate/새 기본 장비/Q MPsink 재사용 없음 |
+| 인수 경계 | 원 arrow public visual 미확정, 미바인딩이면 발사 거부. 기존 raw enemy damage는 full hurtE 아님. fixture/실게임 검증 및 전체 완료 아님 |
+| 상세 | docs/engine/FDG_NATIVE_AUTO_CROSSBOW_20261017.md의 계약/미완료 표를 기준으로 후속 연결 |
+
+이 native 작업본의 신규 owned 검사 결과: 최초81 PASS, ST pre-fire capture 교정 후 영향 runtime18 PASS. 두 검사에는 중복 항목이 있으며 99개 독립 검증으로 합산하지 않는다. source/visual/receiver 경계 때문에 R·공식main·실게임 반영과 완료는 아직 아니다.

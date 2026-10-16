@@ -302,10 +302,10 @@ func eq_implicit(stat: String) -> Dictionary:
 
 # ───────────────────────── 원 공식 ─────────────────────────
 
-## 원 _passDmgSum(type). 이 포트는 'melee'/'magic' 분기만 소비(공통 pAtk/pHuman 항 포함).
+## 원 _passDmgSum(type): melee/magic/bow/xbow, 공통 pAtk/pHuman 항 포함.
 func pass_dmg_sum(type: String) -> Dictionary:
 	var src := "_passDmgSum('%s')" % type
-	if type != "melee" and type != "magic":
+	if type not in ["melee", "magic", "bow", "xbow"]:
 		return _fail(NOT_READY, "type_not_ported:" + type, src)
 	var undef: Array = []
 	var pc: Dictionary = _container("PASSIVES", _passives_reader, _passives_bound, "pAtk")
@@ -332,7 +332,11 @@ func pass_dmg_sum(type: String) -> Dictionary:
 		return _fail(NOT_READY, s.reason, src)
 	if type == "melee":
 		s = _js_add(s.value, _passive_or0_mul(passives, "pMelee", 0.15))
-	else:
+	elif type == "bow":
+		s = _js_add(s.value, _passive_mul(passives, "pBow", 0.15, undef))
+	elif type == "xbow":
+		s = _js_add(s.value, _passive_or0_mul(passives, "pXbow", 0.05))
+	elif type == "magic":
 		# s+=PASSIVES.pMagic*.10+_eqAffix('magicDmg')+_eqImplicit('_iMagDmg')*.01  (좌결합, 호출 순서 보존)
 		var m: float = _passive_mul(passives, "pMagic", 0.10, undef)
 		var af: Dictionary = _eq_affix("magicDmg")

@@ -54055,3 +54055,16 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 | 7 / 비수송 / 보호 | user-global MEMORY·설정·credentials·permission·host 설정을 Git에 넣지 않는다. 기존 HOLD/2_3/MAP/ART/STORY/rig/SW/native3387/NativeHUD/LAVA/ENEMY_GL_BODY_FALLBACK와 서버/save/사용자창/PC·Steam 보호 유지. |
 | 8 / 산출물 구분 | ARMOR source consumer의 별도 완료 commit은 a17560969df27b567d90e3c94c71290816b7d651. 이번은 지침/프로젝트 model 기준 통합이며 팀 수·설정 완료를 제품 기능 완료나 이식률로 더하지 않는다. 전체 게임 최신 이식은 미완료. |
 | 9 / GitHub 기준 완료 조건 | 지침과 안전한 project model-only 변경이 실제 canonical main ref에 반영되고 R의 자기 target이 정상 정렬된 뒤에만 GitHub 기준 반영 완료로 보고한다. 아직 미확인 PC/실행본은 그대로 미확인으로 둔다. |
+
+## 2026-10-17 native normal 자동 석궁 통합 작업 중
+
+| 항목 | 상태/계약 |
+|---|---|
+| 현재 작업본 | I 개발 작업본, R/공식 main 반영 전. 실제 플레이 가능 완료 아님 |
+| 원 수치 | crossbow 800/22/atkMul1, repeater700/22/0.65, arcane840/22/1.4; interval120/장비·패시브 공속; damage ToInt32(bowRef×pBowMul×pXbowMul×type.atkMul+28)×3 |
+| 현재 코드 | bow_ref와 pass_dmg_sum(bow/xbow), Main T 입력·normal controller, 기존 resource authority 별도 ST 비용 경로, 독립 볼트 코드 작성 중 |
+| 자원 | ST>mst×0.2 gate, 발사 후 (1.5+fanShotLv×1.5)×max(.60,1-pBow×.04)×(1+min(0,stCostRed)) 차감. 전체 비용 gate/새 기본 장비/Q MPsink 재사용 없음 |
+| 인수 경계 | 원 arrow public visual 미확정, 미바인딩이면 발사 거부. 기존 raw enemy damage는 full hurtE 아님. fixture/실게임 검증 및 전체 완료 아님 |
+| 상세 | docs/engine/FDG_NATIVE_AUTO_CROSSBOW_20261017.md의 계약/미완료 표를 기준으로 후속 연결 |
+
+이 native 작업본의 신규 owned 검사 결과: 최초81 PASS, ST pre-fire capture 교정 후 영향 runtime18 PASS. 두 검사에는 중복 항목이 있으며 99개 독립 검증으로 합산하지 않는다. source/visual/receiver 경계 때문에 R·공식main·실게임 반영과 완료는 아직 아니다.

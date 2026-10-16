@@ -137,6 +137,17 @@ func commit_native_e_wave_protection(owner: Node) -> bool:
 func get_native_e_stamina_commit_snapshot() -> Dictionary:
 	return {"commits":_e_stamina_commits,"spent":_e_stamina_spent}
 
+## R28729: normal auto bow captures ST, fires, then writes max(0,before-cost).
+## Separate from Q/E. No full-cost/sufficiency gate, cap, refund or save write.
+func commit_native_auto_crossbow_cost(owner: Node, before: float, amount: float) -> Dictionary:
+	if not is_native_source_resources_ready() or _committing or get_tree().paused or not is_instance_valid(owner) or owner!=_player.get_parent() or owner.get("source_resources")!=self or owner.get("world")!=_world or not is_finite(before) or not is_finite(amount) or _player.stamina!=before:
+		return {"accepted":false,"reason":"actual_auto_crossbow_cost_owner_or_capture_not_ready"}
+	_committing=true
+	_player.stamina=maxf(0.0,before-amount)
+	_last_source_write={"field":"st","phase":"native_normal_auto_crossbow_cost","before":before,"value":_player.stamina}
+	_committing=false
+	return {"accepted":true,"before":before,"after":_player.stamina,"spent":before-_player.stamina}
+
 func commit_native_q_parry_reward(owner: Node, amount: float) -> Dictionary:
 	if not is_native_source_resources_ready() or _committing or get_tree().paused or not is_instance_valid(owner) or owner!=_player.get_parent() or owner.get("source_resources")!=self or owner.get("world")!=_world or not is_finite(amount) or amount<0.0:
 		return {"accepted":false,"reason":"actual_parry_reward_owner_not_ready"}

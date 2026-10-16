@@ -56,6 +56,7 @@ const FLAT_ATK_IDS: Array[String] = ["sharpAtk", "brutalAtk", "ruinAtk"]   # _sl
 const KINDS := {
 	"melee": ["weapon", "str", "Str", "meleeRef"],
 	"magic": ["helmet", "int", "Int", "magicRef"],
+	"bow": ["bow", "dex", "Dex", "bowRef"],
 }
 
 var _inventory_reader: Callable
@@ -392,7 +393,7 @@ func _add(acc: Variant, operand: Variant, present: bool) -> Dictionary:
 
 # ───────────────────────── 원 meleeRef / magicRef ─────────────────────────
 
-## kind: "melee" | "magic". 원 평가 순서: INV(wp/hm) → P.baseAtk → STATS.<k> → _eqStat → _lvB → P._weaponSeal.
+## kind: "melee" | "magic" | "bow". INV(wp/hm/bw) → baseAtk → STATS → _eqStat → _lvB → seal.
 func reference_for_kind(kind: String) -> Dictionary:
 	if not KINDS.has(kind):
 		return _fail(NOT_READY, "kind_not_ported:" + kind, kind + "Ref()")
@@ -503,6 +504,10 @@ func melee_ref() -> Dictionary:
 
 func magic_ref() -> Dictionary:
 	return reference_for_kind("magic")
+
+## R game.html bowRef: current equipped bow, original DEX/flat/enh/seal order.
+func bow_ref() -> Dictionary:
+	return reference_for_kind("bow")
 
 ## ROOT formula configure_ref_readers 용: READY → float(NaN 포함, 원 산술 그대로), 그 외(READY_PARTIAL 포함) → null.
 ## null 은 formula 에서 `<label>_unsupported_shape:Nil` NOT_READY 로 보인다 — 정확한 사유는 melee_ref()/magic_ref().
