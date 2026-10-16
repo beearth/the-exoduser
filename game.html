@@ -24799,7 +24799,7 @@ let _hitSfxCd=0; // 히트사운드 쿨다운
 let _mSfxPlaying=0; // 몬스터 이동음 동시 재생 카운터 (프레임당 3개 제한)
 function _deathBloodScale(r){return Math.max(.8,Math.min(4.8,.35+Math.max(1,Number(r)||8)*.075))}
 function deathFX(x,y,r,col,isBoss,noSound,et,impactId){
-  if(!noSound){
+  if(!noSound){try{
     // 프레임 경계에서 동시-사망 버스트 카운터 리셋 + 이번 프레임 throttle 판정(1회)
     if(_deathSfxFrameMark!==_sfxFrameT){
       _deathSfxFrameMark=_sfxFrameT;_deathSfxFrameN=0;
@@ -24825,7 +24825,7 @@ function deathFX(x,y,r,col,isBoss,noSound,et,impactId){
         if(_n===0&&Math.random()<.15)_playSampleNow('death_grunt',.45*_dVol,_r(1,.15));
       }
     }
-  }
+  }catch(e){console.error('[SFX] death dispatch error:',e)}}
   // 동시 사망 과다 시 파티클 절감
   const _tooMany=_partCnt>300;
   const ec=ELC[col]||col;

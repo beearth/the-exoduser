@@ -895,3 +895,17 @@ code1/docs4 exact5의 WORK/HEAD 개별10 기록은 첫 제품쓰기 전이다. �
  #lobby .lobby-content>.lobby-divider{height:24px!important;}
 }
 ```
+
+
+## 2026-10-16 deathFX 동기 음향 dispatch 예외 경계 — R h167 audio 부분+h168
+
+| 항목 | 현재 코드·제한 |
+|---|---|
+| 채택 범위 | deathFX의 기존 if(!noSound) 안에 원R try를 열고, 기존 음향 block 끝에 catch(e){console.error('[SFX] death dispatch error:',e)}만 추가. h167 기인수 impactId/signature와 시각부·h169는 변경하지 않음 |
+| 정상·noSound | noSound guard 밖의 정책은 그대로. 원 _playSampleNow/provider/음량/키·인자·호출 횟수/순서·RNG 소비·사망 후속 변경 없음. noSound이면 음향과 counter 변경을 건너뛰고 기존 후속 진행 |
+| 기존 burst | 일반 최대6보이스/보스1, 프레임 경계 reset와 _deathSfxCd=5 유지. 동기 예외 전 이미 일어난 frame mark/count/cooldown/RNG 부분효과는 되돌리지 않음. 새 cap/volume/회복/재시도 정책 없음 |
+| 동기 예외 | 음향 block 내부 throw만 원 prefix로1회 기록하고 기존 비음향 deathFX 후속으로 진행. 실제 정상 callee의 throw producer나 live 사망 오류를 확인했다는 뜻이 아님 |
+| 예외 한계 | console.error 자체 throw는 그대로 전파. 기존 비음향 후속의 throw는 새 guard 밖에서 전파. Promise rejection/queue/등록 전 복구/외부 인자 평가를 감싸거나 변경·재검수하지 않음 |
+| 구현 권위 | 기존 명시 R 소스통합의 독립 audio consumer 경계 채택. 과거 기능 전체 승인·실제 사망 안전·청감·성능·field 피해/HP/VFX 동일성으로 승격하지 않음 |
+| 신규 검수 | 실제 audio fragment+own SFX/key/volume/RNG/framecounter/logger/후속 spy 신규7군 및 main inline구문1 첫 통과. 정상/armored/ghoul/boss·noSound·기존throttle/cap상태·동기throw/부분효과·loggerthrow·후속throw·음향2구문 외 전체소스 byte불변 확인 |
+| 미실행 | actual _playSampleNow/queue/providers/Promise·AudioContext/미디어·사망VFX/corpse/gibs/HP·사용자 창·saveAPI·native·PC 실행0. 기존 helper/원화/기인수 guard·검사·proof 재개봉0. b836 로비/index 변경·재검수0 |
