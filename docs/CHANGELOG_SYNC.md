@@ -54137,3 +54137,7 @@ Main 신규 read_native_source_equipment_affix(id:Variant)->Dictionary를 실제
 ## 2026-10-17 — Fireball source sound-global owner/current consumer
 
 신규 native_source_sample_globals.gd의 명시 원선언 boot1회를 실제 초기화 Services가 소유하고 Main sound dispatcher가 read_current_sample_context(self)로 현재 값을 읽도록 연결. 기존 delivery Node 기반 gx권위를 교체하며 실제 projectile delivery 미연결 NR/loaderfalse/void queue·RNG·voicecap 전drop 계약 유지. 직접AST Identifier5/선언외직접쓰기0 범위만 확인; 모든 간접쓰기 부재 주장은 없음. 첫 fixture 누락변수 parse실패/own session exit130 후 fixture1선언만 수리, 새16 PASS/exit0; 제품수리0/전체최초clean아님. 정확 계약·검수·시각은 FDG_NATIVE_FIREBALL_SAMPLE_GLOBALS_20261017.md 참조.
+
+## 2026-10-17 — Actual Main monotonic platform frame input
+
+Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 렌더 serial 기록을 연결. 신규 같은 Main/World 공개 reader와 content manifest.platform_frame_input이 동일 현재 마지막 render sample을 읽는다. ready 범위는 플랫폼입력만이며 source_clock_ready=false/source_update_returned=false·source sp/acc/dt/physics 별칭0. 새 격리 SceneTree 실제 callback12 PASS/exit0/ERROR·WARN·leak0,제품·fixture 수리0/옛검사 재연0. sourcePrefix 후보채택0/전체게임 未. 상세 FDG_NATIVE_PLATFORM_FRAME_INPUT_20261017.md.

@@ -41,6 +41,10 @@ const NATIVE_VERSION_CONFIG := {"schema": "fdg.native-content-version.v1", "cont
 
 signal source_document_visibility_changed
 
+# Platform samples only: never source dt/sp/acc or a gameplay update witness.
+var _native_source_frame_timestamp_ms: Variant = null
+var _native_source_render_serial := 0
+
 var native_perspective_view: Node
 var native_fireball_phase: RefCounted
 var native_fireball_delivery: Node
@@ -272,6 +276,7 @@ func get_native_content_version_manifest() -> Dictionary:
 		"config": NATIVE_VERSION_CONFIG.duplicate(true), "scope": "actual_selected_native_consumers",
 		"status": "CURRENT_NATIVE_CONTENT_MANIFEST" if reason.is_empty() else "NOT_READY",
 		"reason": reason, "content_parity": "INCOMPLETE", "latest_full_game": false}
+	manifest["platform_frame_input"] = world.read_native_source_frame_input() if is_instance_valid(world) and world.has_method("read_native_source_frame_input") else {"ready":false,"reason":"actual_world_unbound","source_clock_ready":false}
 	if not reason.is_empty():
 		return manifest
 	var sprite: AnimatedSprite2D = player.get_node_or_null("Warrior")
@@ -785,7 +790,24 @@ func _stop_source_player_startup(reason: String) -> void:
 		player.free()
 		player = null
 
+func _capture_native_source_frame_input() -> void:
+	if not _native_main_service_live():
+		return
+	_native_source_frame_timestamp_ms = float(Time.get_ticks_usec()) / 1000.0
+	_native_source_render_serial += 1
+
+func read_native_source_frame_input(caller: Node) -> Dictionary:
+	if not _native_main_service_live() or not is_instance_valid(caller) or not is_instance_valid(world) or world.is_queued_for_deletion() or world.get_parent()!=self or (caller!=self and caller!=world):
+		return {"ready":false,"reason":"actual_platform_frame_input_owner_mismatch","source_clock_ready":false}
+	if _native_source_render_serial<=0 or _native_source_frame_timestamp_ms==null:
+		return {"ready":false,"reason":"actual_main_render_input_not_captured","source_clock_ready":false}
+	return {"ready":true,"scope":"LAST_NATIVE_PLATFORM_RENDER_INPUT_ONLY",
+		"timestamp_ms":_native_source_frame_timestamp_ms,"render_serial":_native_source_render_serial,
+		"clock_domain":"godot_engine_monotonic_milliseconds","source_clock_ready":false,
+		"source_update_returned":false}
+
 func _process(_delta: float) -> void:
+	_capture_native_source_frame_input()
 	_advance_native_attack_audio()
 	if is_instance_valid(_q_burst_draw) and not _q_burst_draw.is_queued_for_deletion() and is_instance_valid(_q_sprite):
 		var status: Dictionary = _q_burst_draw.update()

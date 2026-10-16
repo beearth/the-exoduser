@@ -976,6 +976,12 @@ func get_enemies() -> Array:
 func get_native_frame() -> float:
 	return _native_frame
 
+func read_native_source_frame_input() -> Dictionary:
+	var main: Node = get_parent()
+	if not is_inside_tree() or is_queued_for_deletion() or not is_instance_valid(main) or main.is_queued_for_deletion() or main.get_script()==null or main.get_script().resource_path!="res://scripts/main.gd" or main.get("world")!=self:
+		return {"ready":false,"reason":"actual_platform_frame_input_main_unbound","source_clock_ready":false}
+	return main.read_native_source_frame_input(self)
+
 func get_native_world_identity() -> Array:
 	# Preserve source ens reference identity. Dynamic appends do not replace it.
 	return _enemies

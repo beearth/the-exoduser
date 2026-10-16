@@ -1448,3 +1448,13 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 | 8 / 새 검수 | Godot4.7.2 headless의 자기격리5군/13접촉 첫 실행 통과. 실제 새 Main 바인딩3줄과 Player 변경 메서드, 변경 없는 기존 fire projectile의 contact를 소비했다. owned base37의 요청은 현재 fire armor18/ice armor74/neutral37로 관측했다. 이는 실 Player HP 손실값·실물 장착·자연 탄 생성 증거가 아니다. |
 | 9 / 검수 분리 | Main 전체 startup/GPU와 Player 원화 preload를 실행하지 않았다. 격리 장면은 새 Main fragment/Player 메서드를 그대로 추출하고 기존 projectile 전체 script를 복사하되 visual lifecycle만 fixture에서 비활성화·owned contact 상태를 시드한다. 실제 Main/Player 전체 실행·configure/import/spawn·PNG/샘플·실 save/API/사용자창/PC 검증0. 옛75검사 재실행0. |
 | 10 / 현재 완료 범위 | 실제 제품 entry의 SourceState→Player→기존 projectile 배율 consumer 연결까지. full inventory/equip UI·affix·저장/장비복원·보상·전체 bootstrap·모든 탄/보스·시각/청감·240FPS·최신 전체게임 완료는 아니다. 기존 HOLD/2_3·MAP/ART/STORY/rig/native3387/NativeHUD 등 보호 불변. |
+
+## Native 플랫폼 프레임 입력 — 2026-10-17
+
+| API / 위치 | 계약 |
+|---|---|
+| Main._process 진입 | 실제 단조 ms Time.get_ticks_usec()/1000.0을 Main 소유 primitive timestamp와 렌더 serial에 capture. 기존 audio/Q 본문 앞 1회이며 source dt/sp/acc/physics 별칭 아님. |
+| Main.read_native_source_frame_input(caller:Node) / World.read_native_source_frame_input() | 같은 실제 Main/World 수명·identity/caller 및 최초 capture 필수. LAST_NATIVE_PLATFORM_RENDER_INPUT_ONLY 범위이며 source_clock_ready=false/source_update_returned=false. 마지막 render sample 읽기는 현재 source update 보증 아님. |
+| content manifest.platform_frame_input | World reader를 경유하는 실제 sample 진단. source clock/전체update/최신 전체게임 완료로 승격0. |
+
+최초 실제 격리 SceneTree callback12 PASS/수리0와 원 Main/World 전체 scene 미실행 한계는 FDG_NATIVE_PLATFORM_FRAME_INPUT_20261017.md를 따른다.
