@@ -108,3 +108,7 @@ attack 결과에 `ready` key가 없는 경우 원 `status=='READY'`일 때만 in
 ## Source sample globals 실제 소유 — 2026-10-17
 
 configure는 Readers 생성 뒤 신규 _initialize_source_sample_globals()로 native_source_sample_globals.gd의 원 선언 boot1을 한 번 소유한다. 신규 공개 read_current_sample_context(caller:Node)->Dictionary는 기존 context identity/lifecycle과 같은 weak Main caller를 검증한 뒤 현재 owner의 값을 읽는다. owner 부재/철회는 NR이며 getter 재초기화·fallback1 없음. discard는 owner를 해제한다. 실제 Main fireball sample dispatcher가 이 current getter를 소비하고 projectile delivery 준비는 별개 NR로 유지한다. 첫 fixture parse 실패/수리 후16 PASS와 실제 전체 Main 미실행 한계는 FDG_NATIVE_FIREBALL_SAMPLE_GLOBALS_20261017.md를 따른다.
+
+## Source clock 선언·렌더 입력 authority — 2026-10-17
+
+동일 Services가 prefix v2 원 instance를 소유하고 configure의 sample globals 뒤/OPT 전에 declare_dt_sp를1회 소비한다. _source_clock_declared_once는 discard에도 유지하여 owner 손실 뒤 재선언을 거절한다. 신규 capture_native_source_render_input(Main,input)->bool은 같은 actual Main/current Services·동기 input window·새 raw serial/timestamp를 검증하며, true는 플랫폼입력 수락뿐이다. 신규 read_source_clock_input_snapshot(Main)와 read_current_source_projectile_context(World)는 현재 frame-entry/body 미연결을 NR로 유지한다. 같은 caller/scope 생성·실callback16 PASS 및 실제 SourceState/context 미실행 한계는 FDG_NATIVE_SOURCE_CLOCK_INPUT_AUTHORITY_20261017.md를 따른다.

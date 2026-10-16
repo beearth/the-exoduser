@@ -1458,3 +1458,14 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 | content manifest.platform_frame_input | World reader를 경유하는 실제 sample 진단. source clock/전체update/최신 전체게임 완료로 승격0. |
 
 최초 실제 격리 SceneTree callback12 PASS/수리0와 원 Main/World 전체 scene 미실행 한계는 FDG_NATIVE_PLATFORM_FRAME_INPUT_20261017.md를 따른다.
+
+## Source clock input authority — 2026-10-17
+
+| API / owner | 정확 현재 범위 |
+|---|---|
+| Services prefix v2 | 동일 소유 instance에 원 dt_sp 선언1회. 선언/global holder 준비는 source clock 준비가 아니다. |
+| Main._process→Services.capture_native_source_render_input | 같은 callback window/현재 Services·새 native serial 및 actual raw timestamp 확인. true=raw 입력 수락만, source update/gap 완료가 아니다. |
+| World.read_native_source_player_projectile_context→Main→Services | 신규 실제 공개 경로. 현재 source_frame_entry_owner_unbound NR이며 sp/dt_sp/native_epoch fallback 없음. |
+| manifest.source_clock_input_authority | 실제 선언/입력 진단만. ready/source_clock_ready/source_update_returned=false 유지. |
+
+원 render_front/begin/sp/after 호출0·기존검사재연0·새16 PASS 및 실제 source context 대역 경계는 FDG_NATIVE_SOURCE_CLOCK_INPUT_AUTHORITY_20261017.md 참조.

@@ -54141,3 +54141,7 @@ Main 신규 read_native_source_equipment_affix(id:Variant)->Dictionary를 실제
 ## 2026-10-17 — Actual Main monotonic platform frame input
 
 Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 렌더 serial 기록을 연결. 신규 같은 Main/World 공개 reader와 content manifest.platform_frame_input이 동일 현재 마지막 render sample을 읽는다. ready 범위는 플랫폼입력만이며 source_clock_ready=false/source_update_returned=false·source sp/acc/dt/physics 별칭0. 새 격리 SceneTree 실제 callback12 PASS/exit0/ERROR·WARN·leak0,제품·fixture 수리0/옛검사 재연0. sourcePrefix 후보채택0/전체게임 未. 상세 FDG_NATIVE_PLATFORM_FRAME_INPUT_20261017.md.
+
+## 2026-10-17 — Source clock declaration and current input admission
+
+원prefix v2 SHA52e1ec05 동일byte를소유module로복사,실Services동일수명1회 dt_sp선언과Main실_process의동기window/현재서비스·새rawserial/timestamp입력수락연결. 신규World→Main→Services gameplay context는frame-entry/body未로NR/sp未·선언1fallback0. manifest는진단만/clockReadyfalse. 새격리callback16첫PASS/exit0/ERROR·WARN·leak0,원12/38/9/22재연0·fullSourceContext/scene未. 최초10사전보존후docs검색발견5를각쓰기前추가보존(최종15/첫code前으로소급0). 상세 FDG_NATIVE_SOURCE_CLOCK_INPUT_AUTHORITY_20261017.md.

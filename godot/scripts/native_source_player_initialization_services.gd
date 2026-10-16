@@ -14,6 +14,7 @@ const PARAMETERS = preload("res://port_modules/player_resource_parameters_source
 const BASE_ATTACK = preload("res://port_modules/player_base_attack_source/producer.gd")
 const OPTIONS = preload("res://port_modules/npc_interaction/source_options_state.gd")
 const SAMPLE_GLOBALS = preload("res://scripts/native_source_sample_globals.gd")
+const SOURCE_CLOCK_PREFIX = preload("res://port_modules/source_update_clock_prefix/producer.gd")
 const SIGNED_DIFFICULTY = preload("res://port_modules/kill_reward/source_difficulty_signed.gd")
 const SCHEMA = "exoduser.godot.source-player-initialization-services.v1"
 const CACHE_APIS = ["read_captured_resource_plan", "read_captured_crystal_stats", "read_captured_cohort", "read_current_initialization_cohort_id", "read_hp_initial_gap"]
@@ -88,6 +89,10 @@ var _providers: WeakRef
 var _dispatcher: WeakRef
 var _main: WeakRef
 var _readers: Readers
+var _source_update_clock: RefCounted
+var _source_clock_declared_once := false
+var _source_clock_input_serial := 0
+var _source_clock_input_timestamp_ms: Variant = null
 var _sample_globals: RefCounted
 var _options: Object
 var _options_identity: Variant = null
@@ -132,6 +137,8 @@ func configure(player: Node2D, world: Node, state: Node, resources: Node,
 	_readers = Readers.new(self)
 	if not _initialize_source_sample_globals():
 		return _discard("actual_source_sample_global_initialization_rejected")
+	if not _initialize_source_update_clock():
+		return _discard("actual_source_clock_declaration_rejected")
 	_options = OPTIONS.new()
 	_signed_difficulty = SIGNED_DIFFICULTY.new()
 	if not _options.initialize_source_boot(false) or not _options.set_current_phase(OPTIONS.CURRENT_PRE_RESTORE):
@@ -186,6 +193,72 @@ func get_services() -> Dictionary:
 
 func is_source_context_ready() -> bool:
 	return _configured and _context_error().is_empty()
+
+func _initialize_source_update_clock() -> bool:
+	if _source_clock_declared_once or is_instance_valid(_source_update_clock):
+		return false
+	_source_update_clock = SOURCE_CLOCK_PREFIX.new()
+	var declared: Dictionary = _source_update_clock.declare_dt_sp()
+	if declared.get("status") != "OK":
+		return false
+	_source_clock_declared_once = true
+	return true
+
+func _source_clock_context_error() -> String:
+	var error: String = _context_error()
+	if not error.is_empty():
+		return error
+	var main: Variant = _ref(_main)
+	if not _live(main) or main.get("source_initialization_services") != self:
+		return "actual_source_clock_services_replaced"
+	if not is_instance_valid(_source_update_clock) or _source_update_clock.get_script() != SOURCE_CLOCK_PREFIX:
+		return "actual_source_clock_owner_lost"
+	return ""
+
+func capture_native_source_render_input(caller: Node, input: Dictionary) -> bool:
+	var main: Variant = _ref(_main)
+	var serial: Variant = input.get("render_serial")
+	var timestamp: Variant = input.get("timestamp_ms")
+	var scope: Variant = input.get("scope")
+	if not _same_object(caller, main) or not serial is int or serial <= _source_clock_input_serial or not (timestamp is int or timestamp is float) or not scope is String:
+		return false
+	if not main.is_native_source_clock_input_phase(self, serial):
+		return false
+	if not _source_clock_context_error().is_empty():
+		return false
+	var actual: Dictionary = main.read_native_source_frame_input(main)
+	var actual_timestamp: Variant = actual.get("timestamp_ms")
+	if actual.get("ready") != true or not (actual_timestamp is int or actual_timestamp is float) or input.get("scope") != "LAST_NATIVE_PLATFORM_RENDER_INPUT_ONLY" or float(timestamp) != float(actual_timestamp) or serial != actual.get("render_serial"):
+		return false
+	_source_clock_input_serial = serial
+	_source_clock_input_timestamp_ms = actual.timestamp_ms
+	# Input admission is not render_front, a source update or a gap receipt.
+	return true
+
+func read_source_clock_input_snapshot(caller: Node) -> Dictionary:
+	var error: String = _source_clock_context_error()
+	if not _same_object(caller, _ref(_main)):
+		error = "actual_source_clock_snapshot_caller_mismatch"
+	if not error.is_empty():
+		return {"ready":false,"reason":error,"source_clock_ready":false}
+	return {"ready":false,"reason":"source_frame_entry_owner_unbound",
+		"scope":"SOURCE_DECLARATION_AND_RENDER_INPUT_ADMISSION_ONLY",
+		"source_clock_ready":false,"dt_sp_declaration":_source_update_clock.read_dt_sp(),
+		"prefix_state":_source_update_clock.read_update_state(),
+		"last_admitted_render_serial":_source_clock_input_serial,
+		"last_admitted_timestamp_ms":_source_clock_input_timestamp_ms,
+		"source_update_returned":false}
+
+func read_current_source_projectile_context(caller: Node) -> Dictionary:
+	if not _same_object(caller, _ref(_world)):
+		return {"ready":false,"reason":"actual_source_clock_world_caller_mismatch"}
+	var error: String = _source_clock_context_error()
+	if not error.is_empty():
+		return {"ready":false,"reason":error}
+	# The frame-entry producer and intermediate source bodies are not bound.
+	# A declared dt or an admitted raw sample never publishes gameplay sp.
+	return {"ready":false,"reason":"source_frame_entry_owner_unbound",
+		"sp_published":false,"source_update_returned":false}
 
 func _initialize_source_sample_globals() -> bool:
 	if is_instance_valid(_sample_globals):
@@ -432,6 +505,7 @@ func _discard(error: String) -> bool:
 	_helpers.clear()
 	_provider_maps.clear()
 	_attack_bridges.clear()
+	_source_update_clock = null
 	_sample_globals = null
 	_options = null
 	_options_identity = null

@@ -44,6 +44,7 @@ signal source_document_visibility_changed
 # Platform samples only: never source dt/sp/acc or a gameplay update witness.
 var _native_source_frame_timestamp_ms: Variant = null
 var _native_source_render_serial := 0
+var _native_source_clock_input_open := false
 
 var native_perspective_view: Node
 var native_fireball_phase: RefCounted
@@ -277,6 +278,7 @@ func get_native_content_version_manifest() -> Dictionary:
 		"status": "CURRENT_NATIVE_CONTENT_MANIFEST" if reason.is_empty() else "NOT_READY",
 		"reason": reason, "content_parity": "INCOMPLETE", "latest_full_game": false}
 	manifest["platform_frame_input"] = world.read_native_source_frame_input() if is_instance_valid(world) and world.has_method("read_native_source_frame_input") else {"ready":false,"reason":"actual_world_unbound","source_clock_ready":false}
+	manifest["source_clock_input_authority"] = get_native_source_clock_input_snapshot()
 	if not reason.is_empty():
 		return manifest
 	var sprite: AnimatedSprite2D = player.get_node_or_null("Warrior")
@@ -806,8 +808,30 @@ func read_native_source_frame_input(caller: Node) -> Dictionary:
 		"clock_domain":"godot_engine_monotonic_milliseconds","source_clock_ready":false,
 		"source_update_returned":false}
 
+func is_native_source_clock_input_phase(caller: RefCounted, serial: int) -> bool:
+	return _native_main_service_live() and _native_source_clock_input_open and caller == source_initialization_services and serial == _native_source_render_serial
+
+func _advance_native_source_clock_input() -> void:
+	if not _native_main_service_live() or not is_instance_valid(source_initialization_services) or source_initialization_services.get_script()!=SourceInitializationServicesScript or not is_instance_valid(world) or not world.has_method("read_native_source_frame_input"):
+		return
+	var input: Dictionary = world.read_native_source_frame_input()
+	_native_source_clock_input_open = true
+	source_initialization_services.capture_native_source_render_input(self, input)
+	_native_source_clock_input_open = false
+
+func read_native_source_player_projectile_context(caller: Node) -> Dictionary:
+	if not _native_main_service_live() or caller!=world or not is_instance_valid(source_initialization_services) or source_initialization_services.get_script()!=SourceInitializationServicesScript:
+		return {"ready":false,"reason":"actual_source_clock_context_owner_unbound"}
+	return source_initialization_services.read_current_source_projectile_context(caller)
+
+func get_native_source_clock_input_snapshot() -> Dictionary:
+	if not _native_main_service_live() or not is_instance_valid(source_initialization_services) or source_initialization_services.get_script()!=SourceInitializationServicesScript:
+		return {"ready":false,"reason":"actual_source_clock_context_owner_unbound","source_clock_ready":false}
+	return source_initialization_services.read_source_clock_input_snapshot(self)
+
 func _process(_delta: float) -> void:
 	_capture_native_source_frame_input()
+	_advance_native_source_clock_input()
 	_advance_native_attack_audio()
 	if is_instance_valid(_q_burst_draw) and not _q_burst_draw.is_queued_for_deletion() and is_instance_valid(_q_sprite):
 		var status: Dictionary = _q_burst_draw.update()

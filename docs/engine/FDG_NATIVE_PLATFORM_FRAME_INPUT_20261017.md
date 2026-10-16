@@ -24,3 +24,7 @@
 | Source clock 상태 | sp/_dtSp/_acc 계산 및 controller/body/gap/전체 update 반환 미연결. 알려진 결함이 검수 중인 외부 source prefix는 이 단위에 복사·채택하지 않았다. |
 | 보존 | 정확 I/R 5경로의 분리 INDEX/WORK/UNTRACKED·realparent/nonlink·개별 WORK/HEAD copy 시작/종료→manifest→code/doc 쓰기시각을 기록. main/R/served 자동 적용0. |
 | 사용량 | 시작 계정 공유 주간 누적39%. 일간 소비 미상. 종료 관측은 별도 receipt에 기록하며 전용 소비로 귀속하지 않는다. |
+
+## 후속 실제 입력 수락 연결 — 2026-10-17
+
+동일 Main._process에서 플랫폼 capture 뒤 Services의 source clock input authority로 전달한다. Raw LAST_NATIVE_PLATFORM_RENDER_INPUT_ONLY 자체는 여전히 마지막 플랫폼 sample이며, 새 동일 callback window·현재 Services·새 serial/timestamp 검증은 별도 admission 책임이다. 이 수락은 SOURCE_RAF_CALLBACK/source frame/body/전체 update 증거로 승격하지 않는다. World의 gameplay context는 source_frame_entry_owner_unbound NR이다. 새16 검수·수명·보존 범위는 FDG_NATIVE_SOURCE_CLOCK_INPUT_AUTHORITY_20261017.md를 따른다.
