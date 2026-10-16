@@ -10,12 +10,19 @@ var world: Node2D
 var player: Node2D
 var spawn_position = Vector2.ZERO
 var hp = 0
-var max_hp = 0
+# One current maximum-HP owner; the legacy name is an alias, not a snapshot.
 var mhp = 0
+var max_hp:
+	get: return mhp
+	set(value): mhp = value
 var attack = 0
 var radius = 0.0
 var etype = 0
-var element = "physical"
+const SOURCE_ELEMENT_NAMES := ["physical", "fire", "ice", "dark", "lightning", "holy", "earth"]
+var el: int = -1
+var element: String:
+	get: return SOURCE_ELEMENT_NAMES[el] if el >= 0 and el < SOURCE_ELEMENT_NAMES.size() else ""
+	set(value): el = SOURCE_ELEMENT_NAMES.find(value)
 var elite = 0
 var mods: Array = []
 var aura: Variant = null
@@ -34,7 +41,13 @@ var max_poise = 0.0
 var charge_ticks = 0.0
 var native_frame = 0.0
 var _projectile_ticks = 0.0
-var _contact_ticks = 0.0
+# Source mkEn.st2: native ticks. Every admitted idle/recover consumer uses this
+# same field. The inherited type7 spelling keeps its existing behaviour.
+var st2 := 0.0
+var _contact_ticks: float:
+	get: return st2
+	set(value): st2 = value
+var _source_normal_fields_configured := false
 var _hit_stun = 0.0
 var _stun_ticks = 0.0
 var _poise_regen = 0.0
@@ -58,12 +71,16 @@ func configure(value: Dictionary, owner_world: Node2D) -> void:
 	spawn_position = Vector2(float(data["spawn_position"][0]), float(data["spawn_position"][1]))
 	position = spawn_position
 	hp = int(data["hp"])
-	max_hp = hp
-	mhp = hp
+	mhp = data["native_final"]["mhp"]
 	attack = int(data["attack"])
 	radius = float(data["radius"])
 	etype = int(data["etype"])
 	element = str(data["element"])
+	var source_el: Variant = data.get("element_id")
+	if (source_el is int or source_el is float) and is_finite(float(source_el)) and float(source_el) == float(el):
+		el = int(source_el)
+	else:
+		el = -1
 	elite = int(data["elite"])
 	mods = data["mods"].duplicate(true)
 	aura = data["aura"]
@@ -76,7 +93,7 @@ func configure(value: Dictionary, owner_world: Node2D) -> void:
 	eRes = data["eRes"].duplicate(true)
 	poise = float(data["poise"])
 	max_poise = float(data["max_poise"])
-	_contact_ticks = float(data["initial_idle_ticks"])
+	st2 = float(data["native_final"]["st2"])
 	_projectile_ticks = float(data["initial_projectile_ticks"])
 	_poise_regen = float(initial_timers["poiseR"])
 	_spawn_ticks = float(data["initial_spawn_fade_ticks"])
@@ -87,6 +104,7 @@ func configure(value: Dictionary, owner_world: Node2D) -> void:
 	_stun_ticks = float(native["stunned"])
 	_knockback = Vector2(float(native["kb"]["x"]), float(native["kb"]["y"]))
 	_rng.seed = int(data["factory_random_seed"])
+	_source_normal_fields_configured = data.get("id") == "ch1_initial_015" and source_order == 14 and etype == 0 and el == 0 and data.get("element") == "physical" and get_script().resource_path == "res://scripts/enemy_melee_flesh_crawler.gd"
 
 func _ready() -> void:
 	name = str(data["id"])
@@ -174,25 +192,25 @@ func _physics_process(delta: float) -> void:
 	if (not alerted and distance > 400.0) or float(player.get("hp")) <= 0.0:
 		_finish_motion(before, ticks)
 		return
-	_contact_ticks -= ticks
+	st2 -= ticks
 	if state == "idle":
 		_move_native(Vector2.from_angle(facing) * float(data["speed_pixels_per_tick"]) * float(data["idle_movement_multiplier"]), ticks)
 		_apply_separation(ticks)
 		# Source uses the distance sampled before direct idle movement.
-		if distance < radius + float(player.get("radius")) + float(data["contact_extra_radius"]) and float(player.get("iframes")) <= 0.0 and _contact_ticks <= 0.0:
+		if distance < radius + float(player.get("radius")) + float(data["contact_extra_radius"]) and float(player.get("iframes")) <= 0.0 and st2 <= 0.0:
 			var amount = int(attack * float(data["contact_damage_multiplier"]))
 			player.receive_damage(amount)
-			_contact_ticks = float(data["contact_cooldown_min_ticks"]) + floorf(_rng.randf() * float(data["contact_cooldown_random_ticks"]))
-			telemetry_event.emit("enemy_contact", {"id": data["id"], "damage_request": amount, "cooldown_ticks": _contact_ticks})
+			st2 = float(data["contact_cooldown_min_ticks"]) + floorf(_rng.randf() * float(data["contact_cooldown_random_ticks"]))
+			telemetry_event.emit("enemy_contact", {"id": data["id"], "damage_request": amount, "cooldown_ticks": st2})
 		if charge_ticks <= 0.0:
 			_projectile_ticks -= ticks
 			if _projectile_ticks <= 0.0 and distance < float(data["projectile_range"]):
 				_projectile_ticks = float(data["projectile_cooldown_ticks"])
 				charge_ticks = float(data["projectile_charge_ticks"])
 				telemetry_event.emit("enemy_charge", {"id": data["id"], "ticks": charge_ticks, "position": [global_position.x, global_position.y], "bean": "normal", "parry_class": "physical"})
-	elif state == "recover" and _contact_ticks <= 0.0:
+	elif state == "recover" and st2 <= 0.0:
 		state = "idle"
-		_contact_ticks = 15.0 + _rng.randf() * 15.0
+		st2 = 15.0 + _rng.randf() * 15.0
 	# eCircle/ticket windup has no admitted entry in this consumer.
 	_finish_motion(before, ticks)
 
@@ -276,9 +294,9 @@ func receive_damage(amount: int, direction: Vector2, source: String, opts: Dicti
 		if not is_dot:
 			if state == "recover":
 				state = "idle"
-				_contact_ticks = 0.0
+				st2 = 0.0
 			elif state == "idle":
-				_contact_ticks = minf(_contact_ticks, 5.0)
+				st2 = minf(st2, 5.0)
 		hp -= damage
 		_hit_flash = 6.0
 		if state == "idle":
@@ -344,3 +362,68 @@ func _draw() -> void:
 	var bar = Rect2(-48, -float(data["animation"]["draw_height"]) * 0.5 - 14, 96, 5)
 	draw_rect(bar, Color(0.12, 0.1, 0.1, 0.9))
 	draw_rect(Rect2(bar.position, Vector2(bar.size.x * maxf(0.0, float(hp) / max_hp), bar.size.y)), Color(0.53, 0.13, 0.18))
+
+# Current fields of the exact factory-admitted normal actor. This is deliberately
+# a partial field authority: absent/unported status lifetimes are not JS zero.
+func read_native_source_damage_fields(caller: Node) -> Dictionary:
+	var error := _source_normal_fields_error(caller)
+	if not error.is_empty(): return {"ready": false, "reason": error}
+	return {"ready": true, "scope": "CURRENT_TYPE0_FIELDS_PARTIAL", "full_hurtE_ready": false,
+		"source_clock_ready": false, "view": {"alive": alive, "hp": hp, "mhp": mhp,
+			"etype": etype, "elite": elite, "el": el, "s": state, "st2": st2,
+			"x": global_position.x, "y": global_position.y, "r": radius,
+			"mods": mods.duplicate(true), "eShield": eShield, "eShieldMax": eShieldMax,
+			"eRes": eRes.duplicate(true), "stunned": _stun_ticks, "_alerted": alerted,
+			"_hitFlash": _hit_flash, "_hitStun": _hit_stun, "poise": poise,
+			"maxPoise": max_poise, "poiseR": _poise_regen,
+			"kb": {"x": _knockback.x, "y": _knockback.y}},
+		"legacy_pending_poise": _pending_poise_amount,
+		"unowned": ["source_update_clock", "remaining_optional_status_lifetimes",
+			"shared_rng_and_vfx", "synchronous_source_poise", "normal_kill_pipeline"]}
+
+func _source_normal_fields_error(caller: Node) -> String:
+	if not _source_normal_fields_configured: return "exact_normal_factory_actor_not_owned"
+	if not is_instance_valid(world) or caller != world or is_queued_for_deletion() or not is_inside_tree(): return "actual_actor_world_lost"
+	if world.is_queued_for_deletion() or not world.is_inside_tree() or get_parent() != world or get_tree() != world.get_tree(): return "actual_actor_world_lost"
+	if not world.has_method("get_native_world_identity") or not world.get_native_world_identity().has(self): return "actual_actor_registry_lost"
+	if etype != 0 or elite != 0 or el != 0 or element != "physical" or not mods.is_empty(): return "current_normal_actor_domain_changed"
+	return ""
+
+# Not an HP setter: only the active, same-World source-prefix owner can apply a
+# source-located field item. There is no receive_damage call, multiplier, poise
+# deferral, extra alive gate or kill/render fallback in this route.
+func commit_native_source_damage_field(owner: RefCounted, item: Dictionary) -> Dictionary:
+	if not _source_normal_fields_error(world).is_empty() or not world.has_method("is_native_normal_enemy_field_call_current") or not world.is_native_normal_enemy_field_call_current(owner, self): return {"applied": false, "reason": "actual_source_field_call_not_current"}
+	if not owner.is_applying_item(self, item): return {"applied": false, "reason": "source_field_item_not_current"}
+	var field: Variant = item.get("field")
+	var line: Variant = item.get("line")
+	var value: Variant = item.get("value")
+	if not field is String or not line is int: return {"applied": false, "reason": "source_field_item_shape"}
+	var number: bool = (value is int or value is float) and is_finite(float(value))
+	match field:
+		"eShield":
+			if line != 42347 or not number or value < 0 or value > eShield: return {"applied": false, "reason": "source_shield_write_outside_contract"}
+			eShield = value
+		"_alerted":
+			if line != 42380 or not value is bool or not value: return {"applied": false, "reason": "source_alert_write_outside_contract"}
+			alerted = true
+		"s":
+			if line != 42382 or not value is String or value != "idle" or state != "recover": return {"applied": false, "reason": "source_recover_transition_not_current"}
+			state = "idle"
+		"st2":
+			if line != 42382 or not number or state != "idle": return {"applied": false, "reason": "source_st2_write_outside_contract"}
+			if value == 0 and owner.follows_recover_transition(): st2 = 0.0
+			elif value == 5 and st2 > 5: st2 = 5.0
+			else: return {"applied": false, "reason": "source_st2_write_outside_contract"}
+		"hp":
+			if line != 42383 or not number or value > hp: return {"applied": false, "reason": "source_hp_write_outside_contract"}
+			hp = value
+		"_hitFlash":
+			if not number or not ((line == 42394 and value == 4) or (line == 42412 and value == 6)): return {"applied": false, "reason": "source_flash_write_outside_contract"}
+			_hit_flash = value
+		"_hitStun":
+			if line != 42414 or not number or value != 8 or state != "idle": return {"applied": false, "reason": "source_hit_stun_write_outside_contract"}
+			_hit_stun = value
+		_:
+			return {"applied": false, "reason": "source_field_owner_unbound:" + field}
+	return {"applied": true}

@@ -3317,3 +3317,31 @@ func get_native_player_projectile_consumer_snapshot() -> Dictionary:
 func _record_native_fireball_projectile_release(fields: Dictionary) -> void:
 	if is_instance_valid(_native_player_projectile_consumer):
 		_native_player_projectile_consumer.record_native_release(fields)
+
+# Local source damage field invocations: same actor/registry, nested stack order.
+# Other hurtE owners and source clocks are not manufactured by this field owner.
+const NativeNormalEnemyFieldsScript = preload("res://scripts/native_source_normal_enemy_fields.gd")
+var _native_normal_enemy_field_calls: Array = []
+
+func read_native_normal_enemy_damage_fields(enemy: Node) -> Dictionary:
+	if not ready_for_player or not is_inside_tree() or not is_instance_valid(enemy) or enemy.is_queued_for_deletion() or enemy.get_parent() != self or not _enemies.has(enemy) or not enemy.has_method("read_native_source_damage_fields"): return {"ready": false, "reason": "actual_normal_actor_not_registered"}
+	return enemy.read_native_source_damage_fields(self)
+
+func begin_native_normal_enemy_field_call(enemy: Node) -> RefCounted:
+	var fields: Dictionary = read_native_normal_enemy_damage_fields(enemy)
+	if fields.get("ready") != true or fields.get("legacy_pending_poise") != 0.0: return null
+	var invocation: RefCounted = NativeNormalEnemyFieldsScript.new()
+	invocation.configure(self, enemy)
+	_native_normal_enemy_field_calls.append({"call": invocation, "actor": weakref(enemy)})
+	return invocation
+
+func is_native_normal_enemy_field_call_current(invocation: RefCounted, enemy: Node) -> bool:
+	if _native_normal_enemy_field_calls.is_empty() or not is_instance_valid(invocation): return false
+	var current: Dictionary = _native_normal_enemy_field_calls[-1]
+	return current["call"] == invocation and current["actor"].get_ref() == enemy and read_native_normal_enemy_damage_fields(enemy).get("ready") == true
+
+func end_native_normal_enemy_field_call(invocation: RefCounted) -> bool:
+	if _native_normal_enemy_field_calls.is_empty() or _native_normal_enemy_field_calls[-1]["call"] != invocation: return false
+	invocation.close()
+	_native_normal_enemy_field_calls.pop_back()
+	return true

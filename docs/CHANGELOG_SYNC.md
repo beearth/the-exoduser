@@ -54149,3 +54149,12 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 ## 2026-10-17 — Native source-frame callback actual consumer
 
 원Frame v3 af7252a1을같은Services/private prefix52e1에주입/선언. actualMain 동기입력window·현재Services/수명·새serial/실timestamp 검증후별도native context와opaque ID발급→begin/timestamp/실OPT fpsCap소비→첫미소유gap_frame_callbacks PARTIAL_NR/prefix보존→active권한폐기/과거ID재사용거절. rawLAST변경0/sourceclockReadyfalse/acc·fullreturn완료0. 새격리actual callback16첫PASS/두로그clean,실모듈/실Options·fixture sourcecontext/audioQ,old검사재연0. 최초10사전+발견5doc별도사전(총15/첫code前소급0),시작usage41은직전관측재사용·이번시작직접관측아님. 상세 FDG_NATIVE_SOURCE_FRAME_CALLBACK_20261017.md.
+
+
+## 2026-10-17 일반 type0 actual state/field owner
+
+| 변경 | 범위 / 증거 |
+|---|---|
+| code3 / docs12 | canonical st2·mhp·el과legacy aliases, 실제 World/actor source field-prefix owner. exact ch1_initial_015만 field partial; fullhurtE/sourceclock/RNG/poise/KB/kill未 |
+| 신규검수 | 첫21/21 PASS·exit0·양로그ERROR/WARN/leak0. full product scene이 아닌 실제actor code/Worldmethod+명시fixture. 옛37/24/29/Frame/prefix/parse 재연0 |
+| source·보존·한계 | FDG_NATIVE_NORMAL_ENEMY_FIELD_OWNER_20261017.md. final15 paths 중 뒤7docs는 코드후검색→쓰기전extension; 전15가첫code전백업이라는주장0. R/main/served/창/원asset/save/UI변경0 |

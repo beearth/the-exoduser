@@ -427,3 +427,13 @@ headless 기술 fixture는 원 record로 독립 actor/world/target을 최초 건
 | FILES / GIT | 부모가 정상 owned checkpoint 담당; 이 worker Git/stage/rollback0. 다른 WIP 보존; 성공 전 commit 완료 표시0 |
 | VISUAL VERDICT | **RETOUCH** — 새 consumer 실제 공개 소비·픽셀·전체 AI·최소 Windows240 미검증 |
 | NEXT PASS | 별도 승인된 새 앱에서 정확 크롤러의 실제 방향·접촉·탄·wall/LOS 검수. 생존 stun/charge cancel·burnDOT·camera 경계·full Q/최저 Windows240은 별도 미완 범위 |
+
+
+## 2026-10-17 exact type0 현재 필드 소유자 후속
+
+| 항목 | 현재 코드 / 검수 범위 |
+|---|---|
+| `ch1_initial_015 / order14 / etype0 / physical` | 실제 `enemy_melee_flesh_crawler.gd`의 `st2` canonical / `_contact_ticks` alias, `mhp` canonical / `max_hp` alias, source numeric `el` / `element` 이름 alias를 같은 actor 수명으로 통합. 별도 타이머·spawn record current 대체0 |
+| 공개 source field prefix | World의 current same-Node invocation→source `events` 순서의 known shield/alert/recover-st2/HP/hit field write. 기존 `receive_damage` 재호출·doublemath0. 미소유 status/poise/KB/owner request/presentation/kill에서 exact partial. `full_hurtE_ready=false/source_clock_ready=false` |
+| 첫 새 검사 | 21/21 PASS·exit0·양 로그 ERROR/WARN/leak0. actual actor methods의 렌더 setup/_draw 억제·projectile 및 기타 World 대역 fixture; full Main·source acc/RNG·실전/전체 최신/시각 PASS 아님. 이전 frozen 검수 재연0 |
+| 정본 | [일반 몬스터 필드 소유자](FDG_NATIVE_NORMAL_ENEMY_FIELD_OWNER_20261017.md). 원 snapshot/support/runtime 및 옛 배송·미이식 이력은 보존하며 이 표는 새 field API만 갱신 |
