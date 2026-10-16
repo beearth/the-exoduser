@@ -909,3 +909,21 @@ code1/docs4 exact5의 WORK/HEAD 개별10 기록은 첫 제품쓰기 전이다. �
 | 구현 권위 | 기존 명시 R 소스통합의 독립 audio consumer 경계 채택. 과거 기능 전체 승인·실제 사망 안전·청감·성능·field 피해/HP/VFX 동일성으로 승격하지 않음 |
 | 신규 검수 | 실제 audio fragment+own SFX/key/volume/RNG/framecounter/logger/후속 spy 신규7군 및 main inline구문1 첫 통과. 정상/armored/ghoul/boss·noSound·기존throttle/cap상태·동기throw/부분효과·loggerthrow·후속throw·음향2구문 외 전체소스 byte불변 확인 |
 | 미실행 | actual _playSampleNow/queue/providers/Promise·AudioContext/미디어·사망VFX/corpse/gibs/HP·사용자 창·saveAPI·native·PC 실행0. 기존 helper/원화/기인수 guard·검사·proof 재개봉0. b836 로비/index 변경·재검수0 |
+
+
+## 2026-10-16 인트로 진동 반환 Promise 거부 처리 — 원R h430 소스 채택
+
+| id / 항목 | 현행 계약 |
+|---|---|
+| 1 / 범위 / 호출 소유 | game.html `_renderIntroCutscene()`의 기존 진동 요청 1곳. 메인 loop의 `_cutsceneState==='INTRO_CUTSCENE'` 분기에서 호출한다. 원R h430의 `.catch(()=>{})` suffix만 채택했다. |
+| 2 / guard / one-shot | `ln.vfx&&ln.vfx.shake&&!_cutVibDone` 조건과 진입 직후 `_cutVibDone=true` 선행 기록을 유지한다. 같은 줄 재렌더에서 재요청하지 않는다. |
+| 3 / 장치 선택 / 순서 | 기존 `navigator.getGamepads()` 결과를 인덱스 순서로 순회한다. `gp&&gp.vibrationActuator` 조건을 유지하고 해당 actuator의 `playEffect`를 호출한다. |
+| 4 / effect / startDelay | `dual-rumble` / `0` ms. 기존 값 유지. |
+| 5 / duration | `Math.min(ln.dur,1200)` ms. 기존 상한 1200 ms와 식 유지. |
+| 6 / weakMagnitude / strongMagnitude | 둘 다 `_mag=Math.min(1,ln.vfx.shake/3)`. 기존 상한 1과 나눗수 3 유지. |
+| 7 / 비동기 거부 | 기존 `playEffect(...)` 반환값에 `.catch(()=>{})`를 직접 연결한다. 해당 반환 Promise의 거부를 빈 콜백으로 소비한다. |
+| 8 / 동기 예외 / 호출 중단 | 기존 전체 순회의 `try{...}catch(e){}`를 유지한다. 동기 예외 뒤 남은 장치 요청을 재시도하지 않는다. 선행 `_cutVibDone=true`도 되돌리지 않는다. |
+| 9 / 새 동작 제한 | 다른 진동 호출, Promise 정규화, await, retry, 로그, 시간·강도, 스토리 텍스트·분기·렌더·진행·입력 소유 변경은 없다. 이 consumer 채택은 기존 STORY/rig/InputRoot/native/기타 HOLD의 해제가 아니다. |
+| 10 / 검증 / 수치 표본 | 실제 if-fragment와 자기 격리 VM·navigator·actuator·controlled own native Promise 6개 검증군 통과. 정상, 거부, navigator 동기 throw, actuator 동기 throw와 순회 중단, 미지원/복수 장치 선택, guard/one-shot을 확인했다. 표본 shake 1.5 / dur 480 → 강도 0.5 / 480 ms, shake 6 / dur 1500 → 강도 1 / 1200 ms. |
+| 11 / 문법 / 검사 실행 한계 | 메인 inline script 1개 문법 통과. 최초 검사기의 비JavaScript importmap 분류 오류는 기능군 실행 전에 발생했다. 검사기만 범위를 고쳐 기능 6군을 처음 실행했고 통과군은 재실행하지 않았다. 최초 오류 전 전체 소스의 suffix 1곳 이외 byte 일치 검사는 통과했다. 전체 최초 실행 무결점은 아니다. |
+| 12 / 인수 / 실물 한계 | 기존 로비·문 열림 진동 문서는 이 인트로 consumer의 과거 완료 승인이나 실거부 발생 근거가 아니다. 이번은 원R 비중단 진동 실패정책의 해당 consumer 소스 통합이다. 실제 패드·인트로 전체 실행·그림·실입력·저장·자원·사용자 GUI 검증은 수행하지 않았다. 전체 최신판 완료를 뜻하지 않는다. |
