@@ -1,5 +1,12 @@
 # CLAUDE.md — 지옥의 길 (Hell Road)
 
+## Claude 모델 기준 — 2026-10-17 사용자 확정
+
+- 현재 사용자 기준은 Opus 5.5이며 프로젝트의 재시작/다음 실행 기본 model은 `claude-opus-5-5`로 맞춘다.
+- 이후 새 개발 단위 배정·기존 Claude 세션 재개 때는 실제 사용 가능한 최신 최상위 모델을 확인해 적용한다. 임의로 하위 모델로 낮추지 않는다.
+- 현재 세션의 선택 모델과 재시작/다음 실행 기본값은 별도로 확인한다. 설정값만으로 실제 응답 모델 변경을 주장하지 않고 선택 표시와 가능한 새 응답의 model ID를 구분한다.
+- 사용자 전역 메모리·인증·권한·호스트 설정은 Git에 넣지 않는다. 사용자 승인된 프로젝트 model-only 인계는 원작성자·원백업과 ENGINE의 새 백업/3way 통합을 구분하고 비model JSON값을 보존한다.
+
 ## 모델 라우팅 규칙
 
 - **메인 세션에서 직접 처리**: 단순 버그픽스, 수치 조정, 단일 파일 수정
@@ -7,13 +14,11 @@
 
 ## 배포 전 필수 (절대 규칙)
 
-**Vercel 배포 전 반드시 커밋+푸시 확인:**
-```
-git add -A && git status && git push origin main
-```
-- 배포 요청 시 **자동으로 위 명령 실행** — 수동 확인 필수
-- working tree clean + push 완료 확인 후에만 배포 진행
-- 안 하면 구버전이 배포됨
+**사용자가 요청한 배포 전 자기 소유 변경의 정상 통합을 확인한다:**
+- tracked INDEX/WORK와 자기 소유 경로를 분리 확인하고 타인 WIP/untracked를 포함하지 않는다.
+- `git add -A` 대신 정확한 소유 경로만 스테이징하고 코드+관련 docs를 정상 commit한다. 현재 원격 부모/expected SHA를 보존하여 force=false 또는 비강제 fast-forward로 반영한다.
+- 원격 ref와 해당 배포의 실제 source 경로를 확인한다. 자기 소유 target이 정렬됐다는 사실을 전체 checkout clean·PC/Native/전체 최신게임 완료로 확대하지 않는다.
+- 기존 사용자창·서버를 자동 재시작하지 않으며 Git 반영만으로 이미 열린 실행본이 갱신됐다고 보고하지 않는다. 기존 배포/HOLD/PC·Steam 승인 범위를 유지한다.
 
 **DEMO/EA 동기화 (배포 시 반드시 함께):**
 ```bash
@@ -241,8 +246,8 @@ docs/는 게임과 완전 동기화된 진실 공급원(source of truth)이다. 
 > **배경**: `auto-sync cron`이 주기적으로 `git add -A` + `commit "auto: session sync"` + push를 실행한다. 여러 세션이 동시에 working-tree를 편집하면 **한 세션의 변경이 다른 세션의 파일과 같은 commit에 흡수**된다. 실제 사고: `ae7eaf82`에 Track D1(perf) 변경과 boss3d 타세션 파일이 번들됨 (docs/PERF_MAC_CHROME_AUDIT.md §git provenance).
 
 1. **작업별 commit ownership 분리** — 가능하면 세션마다 **별도 branch 또는 worktree**에서 작업. 한 세션 = 한 논리적 변경 집합.
-2. **커밋은 경로 지정 스테이징** — `git add -A` 금지, 반드시 `git add <내 파일들>`로 **내 변경만** 스테이징 후 즉시 `git commit`. auto-sync가 흡수하기 전에 선점.
-3. **타세션 파일 불간섭** — 다른 세션이 수정 중인 파일(working-tree의 M/??)은 **읽지도 쓰지도 스테이징도 하지 말 것**. 내 작업과 무관한 변경은 그대로 둔다.
+2. **커밋은 경로 지정 스테이징** — `git add -A` 금지. 정확한 자기 소유 경로만 `git add --`로 스테이징하고 코드+관련 docs를 한 논리 단위로 정상 commit한다.
+3. **타세션 파일 불간섭** — 무관한 타인 WIP는 읽기/쓰기/stage하지 않는다. 사용자가 정확히 승인하고 담당자가 인계한 변경만 원작성자·원백업·자기 fresh backup/3way를 구분해 통합한다. 전체 설정 복사나 다른 키 덮어쓰기는 하지 않는다.
 4. **history rewrite 금지** — 이미 push된 commit이 잘못 번들돼도 `reset`/`rebase`/force-push로 재작성하지 말 것. **provenance note**(해당 docs)로 사실만 기록.
 5. **auto-sync 흡수 시** — 내 변경이 `auto: session sync`에 흡수됐으면, 재분리 시도(soft reset 등)보다 **provenance note 기록**을 우선. `git reset`은 권한 게이트라 거부될 수 있음.
 6. **동시성 회피 최선책** — 장시간·다파일 작업은 `git worktree add`로 격리(예: `affix-phase1` 워크트리 관례). 메인 working-tree 공유를 줄인다.

@@ -54040,3 +54040,18 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 | 8 / 새 검수 | Godot4.7.2 headless의 자기격리5군/13접촉 첫 실행 통과. 실제 새 Main 바인딩3줄과 Player 변경 메서드, 변경 없는 기존 fire projectile의 contact를 소비했다. owned base37의 요청은 현재 fire armor18/ice armor74/neutral37로 관측했다. 이는 실 Player HP 손실값·실물 장착·자연 탄 생성 증거가 아니다. |
 | 9 / 검수 분리 | Main 전체 startup/GPU와 Player 원화 preload를 실행하지 않았다. 격리 장면은 새 Main fragment/Player 메서드를 그대로 추출하고 기존 projectile 전체 script를 복사하되 visual lifecycle만 fixture에서 비활성화·owned contact 상태를 시드한다. 실제 Main/Player 전체 실행·configure/import/spawn·PNG/샘플·실 save/API/사용자창/PC 검증0. 옛75검사 재실행0. |
 | 10 / 현재 완료 범위 | 실제 제품 entry의 SourceState→Player→기존 projectile 배율 consumer 연결까지. full inventory/equip UI·affix·저장/장비복원·보상·전체 bootstrap·모든 탄/보스·시각/청감·240FPS·최신 전체게임 완료는 아니다. 기존 HOLD/2_3·MAP/ART/STORY/rig/native3387/NativeHUD 등 보호 불변. |
+
+
+## 2026-10-17 사용자 확정 운영 기준 / project model-only 정상 통합
+
+| id / 항목 | 현재 기준·구현 범위 |
+|---|---|
+| 1 / 기준 / PC·Mac·Git | 최신 canonical main을 공통 source 기준으로 삼고 기존 각 로컬 source/WIP를 보존해 정상 통합한다. PC/Mac 경로·런타임 차이는 허용한다. Git ref·파일 전달·실제 실행 source 경로의 확인 단계를 구분한다. |
+| 2 / 범위 / 완료 주장 | PC 실행 source가 미확인이면 PC 동기화 미확인. 웹 본편·Godot 부분 이식·외부 검토 사본·배포본을 구분한다. 로컬 commit/remote ref/정적 GET만으로 전체 최신게임·GUI·PC/Native 완료를 주장하지 않는다. |
+| 3 / 정상 Git / 소유권 | 자기 소유 경로만 stage/정상 commit하며 현재 remote parent·expected_sha·force=false를 보존한다. tracked INDEX/WORK를 분리 확인하고 전체 untracked 반복스캔·수량감소용 타인WIP stage/삭제/ignore는 하지 않는다. 인증/권한 변경·우회0. |
+| 4 / 현재 Claude 사용자 기준 | Opus 5.5, 프로젝트 재시작/다음 실행 기본 model=claude-opus-5-5. 이후 배정·재개 시 실제 사용 가능한 최신 최상위 모델을 확인·적용하며 임의 하향하지 않는다. |
+| 5 / 현재 선택 / 다음 기본값 / 실제 실행 | 선택 표시·프로젝트 기본값·새 응답 model ID를 구분한다. Claude 담당 인계상 live7 선택은5.5, SKILL 새 응답의 claude-opus-5-5 확인, MAP live session 없음/다음 기본값5.5. ENGINE이 전팀 응답을 새로 검증한 것으로 소급하지 않는다. |
+| 6 / project model-only 인계 | Claude 담당이 R/W 두 project settings의 유일 model키를 claude-opus-4-8→claude-opus-5-5로 변경한 원작성자다. ENGINE은 자신의 fresh WORK/HEAD backup과 canonical base/원담당 backup/current WORK 3way 뒤 정확한 model-only 변경을 통합한다. hooks 등 비model JSON값·키·인증/권한은 변경하지 않는다. R/W 최초변경을 ENGINE 작성/사전backup으로 소급하지 않는다. |
+| 7 / 비수송 / 보호 | user-global MEMORY·설정·credentials·permission·host 설정을 Git에 넣지 않는다. 기존 HOLD/2_3/MAP/ART/STORY/rig/SW/native3387/NativeHUD/LAVA/ENEMY_GL_BODY_FALLBACK와 서버/save/사용자창/PC·Steam 보호 유지. |
+| 8 / 산출물 구분 | ARMOR source consumer의 별도 완료 commit은 a17560969df27b567d90e3c94c71290816b7d651. 이번은 지침/프로젝트 model 기준 통합이며 팀 수·설정 완료를 제품 기능 완료나 이식률로 더하지 않는다. 전체 게임 최신 이식은 미완료. |
+| 9 / GitHub 기준 완료 조건 | 지침과 안전한 project model-only 변경이 실제 canonical main ref에 반영되고 R의 자기 target이 정상 정렬된 뒤에만 GitHub 기준 반영 완료로 보고한다. 아직 미확인 PC/실행본은 그대로 미확인으로 둔다. |
