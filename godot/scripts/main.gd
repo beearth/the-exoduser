@@ -22,6 +22,7 @@ const SourceImageWaitScript = preload("res://port_modules/source_object_sprite_w
 const SourcePrepareViewScript = preload("res://port_modules/source_prepare_start_map_view_owner/producer.gd")
 const SourcePostStageScript = preload("res://port_modules/source_post_stage_owner/producer.gd")
 const QAdapterScript = preload("res://scripts/native_combat_qe_adapter.gd")
+const NativeFireballPhaseScript = preload("res://scripts/native_fireball_phase.gd")
 const QBurstDrawScript = preload("res://port_modules/character_clip/shield_burst_draw_caller.gd")
 const SOURCE_BOOT_EN_LABELS := {"맵 에셋 로딩...": "Loading map assets...",
 	"맵 캐시 생성 중...": "Building map cache...", "완료": "Complete"}
@@ -41,6 +42,8 @@ const NATIVE_VERSION_CONFIG := {"schema": "fdg.native-content-version.v1", "cont
 signal source_document_visibility_changed
 
 var native_perspective_view: Node
+var native_fireball_phase: RefCounted
+var native_fireball_delivery: Node
 var native_q_control: RefCounted
 var _q_burst_draw: Node2D
 var _q_view: SubViewport
@@ -163,6 +166,11 @@ func _ready() -> void:
 		return
 	player.crescent_requested.connect(_spawn_crescent)
 	player.telemetry_event.connect(_record_event)
+	native_fireball_phase=NativeFireballPhaseScript.new()
+	if not native_fireball_phase.configure(self):
+		_stop_source_player_startup("native_fireball_phase_bindings_rejected")
+		return
+	player.native_fireball_phase_tick.connect(_advance_native_fireball_phase)
 	if world.has_signal("telemetry_event"):
 		world.telemetry_event.connect(_record_event)
 	camera = Camera2D.new()
@@ -277,6 +285,8 @@ func get_native_content_version_manifest() -> Dictionary:
 	manifest["e_control"]=player.get_native_e_control_snapshot()
 	manifest["attack_tempo"]=player.get_native_attack_tempo_snapshot()
 	manifest["attack_audio"]=get_native_attack_audio_snapshot()
+	manifest["fireball_owner"]=native_fireball_phase.get_snapshot() if is_instance_valid(native_fireball_phase) else {"producer_bound":false}
+	manifest["fireball_delivery"]=read_native_fireball_delivery_readiness()
 	var slash: Variant = player.get_script().get_script_constant_map().get("SLASH_SHEET")
 	var combat_source: Variant = combat.get("source")
 	var qe: Dictionary = player.get_native_combat_qe_snapshot()
@@ -1274,14 +1284,20 @@ func _register_inputs() -> void:
 	var mouse := InputEventMouseButton.new()
 	mouse.button_index = MOUSE_BUTTON_LEFT
 	InputMap.action_add_event("weapon", mouse)
+	if not InputMap.has_action("native_magic"):InputMap.add_action("native_magic")
+	InputMap.action_erase_events("native_magic")
+	var magic_mouse:=InputEventMouseButton.new()
+	magic_mouse.button_index=MOUSE_BUTTON_RIGHT
+	InputMap.action_add_event("native_magic",magic_mouse)
 
 func read_native_input_bindings() -> Dictionary:
-	var primary := {"up":"KeyW","down":"KeyS","left":"KeyA","right":"KeyD","weapon":"mouse0","parry":"KeyQ","shield":"KeyE","bow":"Space","settings":"Escape"}
+	var primary := {"up":"KeyW","down":"KeyS","left":"KeyA","right":"KeyD","weapon":"mouse0","parry":"KeyQ","shield":"KeyE","bow":"Space","settings":"Escape","beam":"mouse2"}
 	var secondary: Dictionary = {}
 	for action in primary: secondary[action]=null
 	var qe_ready: bool = is_instance_valid(player) and player.get_native_combat_qe_snapshot().get("ready")==true
 	var q_ready: bool = is_instance_valid(player) and player.get_native_q_control_snapshot().get("ready")==true
 	var supported: Array = ["movement","weapon_pressed_held_released","pause"]
+	if is_instance_valid(native_fireball_phase):supported.append("magic_held_deferred_owner_partial")
 	var e_ready: bool = is_instance_valid(player) and player.get_native_e_control_snapshot().get("ready")==true
 	if e_ready:supported.append_array(["e_draw_charge_sbash_recover_partial","e_default_fused_wave_dark_reflection_partial"])
 	if q_ready:supported.append_array(["q_control_hold_release_partial","q_dark_projectile_reflection"])
@@ -1732,3 +1748,124 @@ func _native_attack_audio_random_unit() -> float:
 	var value: float=world.sample_native_random_unit()
 	_attack_audio_random_trace.append(value)
 	return value
+
+# Native RMB reader/owner wiring. The source producer being configured is not
+# proof that actual projectile, proficiency guards or source sample are ready.
+func get_native_fireball_bindings() -> Dictionary:
+	return {"read_p":Callable(self,"read_native_fireball_p"),
+		"read_beam_held":Callable(self,"read_native_fireball_held"),
+		"read_gamepad_active":Callable(self,"read_native_fireball_gamepad_active"),
+		"read_p_magic_cost":Callable(self,"read_native_fireball_magic_cost"),
+		"read_p_magic_spd":Callable(self,"read_native_fireball_magic_speed"),
+		"read_magic_ref":Callable(self,"read_native_fireball_reference"),
+		"read_p_magic_mul":Callable(self,"read_native_fireball_magic_multiplier"),
+		"read_fuse_mul":Callable(self,"read_native_fireball_fuse_multiplier"),
+		"read_helmet":Callable(self,"read_native_fireball_helmet"),
+		"apply_cast_start":Callable(self,"apply_native_fireball_cast_start"),
+		"apply_cast_finish":Callable(self,"apply_native_fireball_cast_finish"),
+		"apply_recover_idle":Callable(self,"apply_native_fireball_recover_idle")}
+
+func read_native_fireball_p() -> Variant:
+	return source_state.read_current_p() if is_instance_valid(source_state) and source_state.is_native_new_run_state_ready() else null
+
+func read_native_fireball_held() -> bool:
+	return is_instance_valid(player) and player.get_native_input_snapshot().held.get("native_magic",false)==true
+
+func read_native_fireball_gamepad_active() -> Variant:
+	if not is_instance_valid(player):return null
+	# Only an actually admitted mouse event establishes this native KBM path.
+	# Unknown/unsupported input does not become a fabricated browser GP flag.
+	return false if player.get_native_input_snapshot().get("magic_input_kind")=="keyboard_mouse" else null
+
+func _native_fireball_provider_bundle() -> Dictionary:
+	return source_providers.get_provider_bundle() if is_instance_valid(source_providers) and source_providers.is_native_source_providers_ready() else {}
+
+func _native_fireball_ready_scalar(result: Variant) -> Variant:
+	if not result is Dictionary or result.get("status")!="READY":return null
+	var value: Variant=result.get("value")
+	return value if (value is int or value is float) and is_finite(float(value)) else null
+
+func read_native_fireball_magic_cost() -> Variant:
+	var b: Dictionary=_native_fireball_provider_bundle()
+	if b.is_empty():return null
+	var passives: Variant=source_state.read_current_passives()
+	if not passives is Dictionary or not (passives.get("pMagic") is int or passives.get("pMagic") is float):return null
+	var reduction: Variant=_native_fireball_ready_scalar(b.affix.eq_affix("mpCostRed"))
+	var unique: Variant=_native_fireball_ready_scalar(b.formula.u_eq("_uHelmMagic"))
+	if reduction==null or unique==null or not is_finite(float(passives.pMagic)):return null
+	var value: float=maxf(0.40,1.0-float(passives.pMagic)*0.04-float(reduction)-float(unique))
+	return value if is_finite(value) else null
+
+func read_native_fireball_magic_speed() -> Variant:
+	var b: Dictionary=_native_fireball_provider_bundle()
+	if b.is_empty():return null
+	var passives: Variant=source_state.read_current_passives()
+	if not passives is Dictionary or not (passives.get("pMagic") is int or passives.get("pMagic") is float):return null
+	var cast_speed: Variant=_native_fireball_ready_scalar(b.affix.eq_affix("castSpeed"))
+	var headband: Variant=_native_fireball_ready_scalar(b.affix.eq_affix("headbandCastSpd"))
+	if cast_speed==null or headband==null or not is_finite(float(passives.pMagic)):return null
+	var value: float=(2.0+float(passives.pMagic)*0.08)*(1.0+float(cast_speed)+float(headband))
+	return value if is_finite(value) and value>0.0 else null
+
+func read_native_fireball_reference() -> Variant:
+	var b: Dictionary=_native_fireball_provider_bundle()
+	return _native_fireball_ready_scalar(b.reference.magic_ref()) if not b.is_empty() else null
+
+func read_native_fireball_magic_multiplier() -> Variant:
+	var b: Dictionary=_native_fireball_provider_bundle()
+	return _native_fireball_ready_scalar(b.formula.p_magic_mul(true)) if not b.is_empty() else null
+
+func read_native_fireball_fuse_multiplier(skill: Variant) -> Variant:
+	if skill!="fireball":return null
+	var b: Dictionary=_native_fireball_provider_bundle()
+	if b.is_empty():return null
+	var star: Variant=_native_fireball_ready_scalar(b.fusion.fuse_star(skill))
+	var boost: Variant=_native_fireball_ready_scalar(b.affix.eq_affix("skillBoost"))
+	if star==null or boost==null:return null
+	return (1.0+(float(star)-1.0)*0.2 if float(star)>=2.0 else 1.0)*(1.0+float(boost))
+
+func read_native_fireball_helmet() -> Variant:
+	if not is_instance_valid(source_state) or not source_state.is_native_new_run_state_ready():return null
+	var inventory: Variant=source_state.read_current_inventory()
+	if not inventory is Dictionary or not inventory.get("equipped") is Dictionary:return null
+	var helmet: Variant=inventory.equipped.get("helmet")
+	# Original hm() is INV.equipped.helmet || {}; never create or equip an item.
+	if helmet==null:return {}
+	return helmet if helmet is Dictionary else null
+
+func read_native_fireball_delivery_readiness() -> Dictionary:
+	if not is_instance_valid(native_fireball_delivery) or native_fireball_delivery.is_queued_for_deletion():
+		return {"ready":false,"reason":"actual_fireball_projectile_proficiency_sample_delivery_unbound"}
+	if native_fireball_delivery.get_parent()!=world or native_fireball_delivery.get("player")!=player or native_fireball_delivery.get("source_state")!=source_state or native_fireball_delivery.get("source_resources")!=source_resources or not native_fireball_delivery.has_method("read_native_fireball_readiness") or not native_fireball_delivery.has_method("prepare_native_fireball_finish"):
+		return {"ready":false,"reason":"actual_fireball_delivery_owner_mismatch"}
+	var current: Variant=native_fireball_delivery.read_native_fireball_readiness()
+	if not current is Dictionary:return {"ready":false,"reason":"actual_fireball_delivery_readiness_not_dictionary"}
+	for key in ["ready","projectile_ready","proficiency_ready","sample_ready"]:
+		if current.get(key)!=true:return {"ready":false,"reason":"actual_fireball_delivery_missing:"+key}
+	return current
+
+func prepare_native_fireball_delivery(payload: Dictionary) -> Dictionary:
+	var ready: Dictionary=read_native_fireball_delivery_readiness()
+	if ready.get("ready")!=true:return ready
+	var prepared: Variant=native_fireball_delivery.prepare_native_fireball_finish(payload)
+	return prepared if prepared is Dictionary else {"ready":false,"reason":"actual_fireball_delivery_prepare_not_dictionary"}
+
+func apply_native_fireball_cast_start(request: Dictionary) -> Dictionary:
+	var speed: Variant=read_native_fireball_magic_speed()
+	var cost: Variant=read_native_fireball_magic_cost()
+	if speed==null or cost==null:return {"accepted":false,"reason":"actual_fireball_cost_or_speed_not_ready"}
+	var b: Dictionary=_native_fireball_provider_bundle()
+	if request.get("cost")!=b.formula.js_to_int32(10.0*float(cost)) or request.get("cast_frames")!=b.formula.js_to_int32(14.0/float(speed)):
+		return {"accepted":false,"reason":"current_fireball_cost_or_speed_changed"}
+	return source_state.apply_native_fireball_start(self,request)
+
+func apply_native_fireball_cast_finish(request: Dictionary) -> Dictionary:
+	if not is_instance_valid(source_state):return {"accepted":false,"reason":"actual_fireball_state_owner_missing"}
+	return source_state.apply_native_fireball_finish(self,request)
+
+func apply_native_fireball_recover_idle(request: Dictionary) -> Dictionary:
+	if not is_instance_valid(source_state):return {"accepted":false,"reason":"actual_fireball_state_owner_missing"}
+	return source_state.apply_native_fireball_recover_idle(self,request)
+
+func _advance_native_fireball_phase(ticks: float,frame: float,entered_state: String) -> void:
+	if is_instance_valid(native_fireball_phase):native_fireball_phase.advance_native(ticks,frame,entered_state)

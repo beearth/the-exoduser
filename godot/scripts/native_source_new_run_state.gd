@@ -620,3 +620,37 @@ static func _copy_current(value: Variant) -> Variant:
 func _fail(error: String) -> bool:
 	_last_error = error
 	return false
+
+# Only these fixed fireball actions delegate this owner's current P reference.
+# No copied P, arbitrary field writer, Q/E method reuse or source G boot write.
+func owns_native_fireball_fields(resources: Node, current: Dictionary) -> bool:
+	return is_native_new_run_state_ready() and resources==_resources and is_same(current,_p)
+
+func apply_native_fireball_start(owner: Node, request: Dictionary) -> Dictionary:
+	var current: Variant=read_current_p()
+	if not current is Dictionary:return {"accepted":false,"reason":"actual_fireball_current_p_not_ready"}
+	var result: Dictionary=_resources.apply_native_fireball_start(owner,self,current,request)
+	if result.get("accepted")==true:_native_fireball_last_phase_frame=_world.get_native_frame()
+	return result
+
+func apply_native_fireball_finish(owner: Node, request: Dictionary) -> Dictionary:
+	var current: Variant=read_current_p()
+	if not current is Dictionary:return {"accepted":false,"reason":"actual_fireball_current_p_not_ready"}
+	return _resources.apply_native_fireball_finish(owner,self,current,request)
+
+func apply_native_fireball_recover_idle(owner: Node, request: Dictionary) -> Dictionary:
+	var current: Variant=read_current_p()
+	if not current is Dictionary:return {"accepted":false,"reason":"actual_fireball_current_p_not_ready"}
+	return _resources.apply_native_fireball_recover_idle(owner,self,current,request)
+
+var _native_fireball_last_phase_frame: float=-1.0
+
+func advance_native_fireball_clock(owner: Node, ticks: float, frame: float) -> bool:
+	if not is_native_new_run_state_ready() or not is_instance_valid(owner) or owner!=_player.get_parent() or owner.get("source_state")!=self or owner.get("world")!=_world or get_tree().paused:
+		return false
+	if not is_finite(ticks) or ticks<=0.0 or not is_finite(frame) or frame!=_world.get_native_frame() or ticks!=_world.get_native_projectile_fx_context().dt_sp or frame==_native_fireball_last_phase_frame:
+		return false
+	if _player.state not in ["magicCast","magicRecover"] or not _number(_p.get("st2")) or not is_finite(float(_p.st2)):return false
+	_native_fireball_last_phase_frame=frame
+	_p["st2"]=float(_p.st2)-ticks
+	return true

@@ -104,3 +104,17 @@ getter5의 반환은 유효할 때 source producer/sink가 사용할 실제 소�
 SourceParameters의현재 P/Crystal requirement 진단문자열2개는첫성공뒤 metadata-only로현재실제supplier에맞췄다. 식/숫자/함수/분기/keys변경0이고원testedbytes와finalbytes/diff를따로보존한다. 나머지production11+test는actualtestedstage와exactbytes동일이다. UID9은실제GodotResourceUID 생성(metadata0groups/0imports/.598615542초), userdata는EXODUSER-MainSourceStarter-Isolated-20261014다. 기존source성공test/GUI/save/userQA/server/기존asset해시·복사·import0이다.
 
 실제파일init+starter+provider-binding완료와post-applyStats파생/fullbootstrap/actualOPT/diffSigned/automaticregen/이미지품질/24장24FPS/최저240은별도다. 현재다음source부분은미완으로표시한다.
+
+## 2026-10-17 악의구 actual-owner 통합 작업본
+
+| 항목 | 현 상태 |
+|---|---|
+| 범위 | I 작업본, 아직 R/공식 main 미반영. 실제 게임 스킬 완료 아님 |
+| 실제 소유 | Main→SourceState의 현재 P 동일참조→ResourceAuthority. 실제 MP/Player.state/st2/atkArc/_mpBon을 원 start 순서대로 적용 |
+| finish | 보너스 산출 뒤 _mpBon0→World projectile→magic 숙련5→source sample→magicRecover/12. split P-field callback 실패·환불/일반rollback 없음 |
+| caller | 실제 native RMB held/기존 Player 물리 phase 끝→World dt_sp/frame→v3 source. 같은 frame st2 중복 감소 거부 |
+| 거부 | 실제 projectile/proficiency/sample 수신부 미연결이면 start부터 NOT_READY, 빈 시전 MP 소비 없음 |
+| 미완 | 실제 projectile/원 시각·샘플, recovery Q/타 magic handler/GP. 실Actor 전체/GPU/저장/API/PC 및 최신 전체 완료 아님 |
+| 상세 | docs/engine/FDG_NATIVE_FIREBALL_ACTUAL_OWNER_20261017.md |
+
+새 actual-owner 검수:39 PASS 후 entered-case/중복 phase 경계의 수정 영향6 PASS(39 재연 없음). 첫39 종료 WARNING 한 줄에 ObjectDB3 instances leak, ERROR0/원인 미확정; phase6 종료 WARNING/ERROR0. 준비 regex 실패를 포함 firstWholeClean=false. 현재 main/R/실게임 반영·실시각 완료는 아니며 세부 계약과 실패 이력은 FDG_NATIVE_FIREBALL_ACTUAL_OWNER_20261017.md에 기록한다.

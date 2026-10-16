@@ -492,3 +492,104 @@ func get_snapshot() -> Dictionary:
 		"flat_resource_commits": _flat_resource_commits, "last_source_write": _last_source_write.duplicate(true),
 		"automatic_input": false, "derived_parameters_ready": false,
 		"restore_fallback": false, "missing_upstream_manufactured": false}
+
+# Exact fireball actions, delegated by the actual SourceState owner. This is
+# not the Q cost API or a general field/transaction writer.
+func _native_fireball_context_error(owner: Node, holder: Node, p: Dictionary) -> String:
+	if not is_native_source_resources_ready() or _committing or get_tree().paused or not is_instance_valid(owner) or owner!=_player.get_parent() or owner.get("source_resources")!=self or owner.get("world")!=_world or owner.get("source_state")!=holder or _player.hp<=0.0:
+		return "actual_fireball_owner_not_ready"
+	if not is_instance_valid(holder) or not holder.has_method("owns_native_fireball_fields") or not holder.owns_native_fireball_fields(self,p):
+		return "actual_fireball_p_owner_mismatch"
+	if not owner.has_method("read_native_fireball_delivery_readiness") or owner.read_native_fireball_delivery_readiness().get("ready")!=true:
+		return "actual_fireball_delivery_not_ready"
+	return ""
+
+func apply_native_fireball_start(owner: Node, holder: Node, p: Dictionary, request: Dictionary) -> Dictionary:
+	var error: String=_native_fireball_context_error(owner,holder,p)
+	if not error.is_empty():return {"accepted":false,"reason":error}
+	var expected: Variant=request.get("expected_state")
+	var cost: Variant=request.get("cost")
+	var duration: Variant=request.get("cast_frames")
+	if request.get("op")!="cast_start" or expected not in ["idle","bowRecover","magicRecover"] or _player.state!=expected or p.get("s")!=expected or not cost is int or cost<0 or not duration is int or duration<0 or request.get("mp_bonus_factor")!=2:
+		return {"accepted":false,"reason":"source_fireball_start_packet_mismatch"}
+	if not _player.facing.is_finite() or not _number(_owned.get("mp")) or not is_finite(float(_owned.mp)) or float(_owned.mp)<float(cost):
+		return {"accepted":false,"reason":"source_fireball_start_mana_or_facing_gate"}
+	if expected=="magicRecover" and (not _number(p.get("st2")) or float(p.st2)>0.0):
+		return {"accepted":false,"reason":"source_fireball_recovery_not_finished"}
+	# No callback, signal or await occurs between these primitive writes.
+	_committing=true
+	_player.state="magicCast"
+	p["s"]="magicCast"
+	p["st2"]=duration
+	p["atkArc"]=_player.facing.angle()
+	var before: float=float(_owned.mp)
+	_owned.mp=maxf(0.0,before-float(cost))
+	p["mp"]=_owned.mp
+	p["_mpBon"]=(before-float(_owned.mp))*2.0
+	_last_source_write={"field":"mp/s/st2/atkArc/_mpBon","phase":"native_actual_fireball_start","before":before,"value":_owned.mp}
+	_committing=false
+	return {"accepted":true,"mp_before":before,"mp_after":_owned.mp}
+
+func apply_native_fireball_finish(owner: Node, holder: Node, p: Dictionary, request: Dictionary) -> Dictionary:
+	var error: String=_native_fireball_context_error(owner,holder,p)
+	if not error.is_empty():return {"accepted":false,"reason":error}
+	if request.get("op")!="cast_finish" or request.get("expected_state")!="magicCast" or _player.state!="magicCast" or p.get("s")!="magicCast" or not _number(p.get("st2")) or float(p.st2)>0.0 or not is_same(p.get("_mpBon"),request.get("expected_mp_bon")):
+		return {"accepted":false,"reason":"source_fireball_finish_state_or_bonus_mismatch"}
+	if request.get("proficiency_skill")!="fireball" or request.get("recover_state")!="magicRecover" or request.get("recover_frames")!=12 or not request.get("payload") is Dictionary:
+		return {"accepted":false,"reason":"source_fireball_finish_packet_mismatch"}
+	var sample: Variant=request.get("sample")
+	if not sample is Dictionary or sample.get("key")!="fireball" or sample.get("vol")!=0.8 or sample.get("rate_center")!=1.0 or sample.get("rate_spread")!=0.08:
+		return {"accepted":false,"reason":"source_fireball_sample_packet_mismatch"}
+	# Source _addSkProf('fireball'): magic category, no skill cd => five seconds.
+	var categories: Variant=p.get("_catProf")
+	var skills: Variant=p.get("_skProf")
+	if categories!=null and not categories is Dictionary:return {"accepted":false,"reason":"fireball_category_proficiency_shape_not_ported"}
+	if skills!=null and not skills is Dictionary:return {"accepted":false,"reason":"fireball_skill_proficiency_shape_not_ported"}
+	var old_prof: Variant=categories.get("magic",0) if categories is Dictionary else 0
+	if not _number(old_prof) or not is_finite(float(old_prof)):return {"accepted":false,"reason":"fireball_category_proficiency_not_numeric"}
+	# Prepare and validate the real node/sample BEFORE _mpBon=0 or any emission.
+	var delivery: Dictionary=owner.prepare_native_fireball_delivery(request.payload)
+	if delivery.get("ready")!=true:return {"accepted":false,"reason":delivery.get("reason","actual_fireball_delivery_prepare_rejected")}
+	var projectile: Variant=delivery.get("projectile")
+	var audio: Variant=delivery.get("sample_player")
+	if not projectile is Node2D or not is_instance_valid(projectile) or projectile.get_parent()!=null or projectile.is_queued_for_deletion() or not audio is AudioStreamPlayer or not is_instance_valid(audio) or not audio.is_inside_tree() or audio.stream==null or not _world.has_method("sample_native_random_unit"):
+		if projectile is Node2D and is_instance_valid(projectile) and projectile.get_parent()==null:projectile.free()
+		return {"accepted":false,"reason":"actual_fireball_prepared_node_or_sample_not_ready"}
+	# Preparation is still outside the commit. A changed owner/bonus/state must
+	# reject before emission; only the newly prepared, unparented node is freed.
+	error=_native_fireball_context_error(owner,holder,p)
+	if not error.is_empty() or _player.state!="magicCast" or p.get("s")!="magicCast" or not is_same(p.get("_mpBon"),request.get("expected_mp_bon")):
+		projectile.free()
+		return {"accepted":false,"reason":"actual_fireball_owner_changed_during_prepare"}
+	_committing=true
+	# R33641..33646: clear spent bonus BEFORE push, then proficiency, sample,
+	# recover state. There is no rejectable P-field callback after the push.
+	p["_mpBon"]=0
+	_world.add_child(projectile)
+	if categories==null:
+		categories={}
+		p["_catProf"]=categories
+	categories["magic"]=float(old_prof)+5.0
+	if skills==null:
+		skills={}
+		p["_skProf"]=skills
+	skills["fireball"]=categories.magic
+	audio.volume_db=linear_to_db(0.8)
+	audio.pitch_scale=1.0+(_world.sample_native_random_unit()-0.5)*2.0*0.08
+	audio.play()
+	_player.state="magicRecover"
+	p["s"]="magicRecover"
+	p["st2"]=12
+	_last_source_write={"field":"_mpBon/projectile/proficiency/sample/s/st2","phase":"native_actual_fireball_finish"}
+	_committing=false
+	return {"accepted":true,"proficiency_applied":true,"sample_applied":true}
+
+func apply_native_fireball_recover_idle(owner: Node, holder: Node, p: Dictionary, request: Dictionary) -> Dictionary:
+	# Returning to idle does not require a still-live renderer or refill MP.
+	if not is_native_source_resources_ready() or _committing or get_tree().paused or not is_instance_valid(owner) or owner!=_player.get_parent() or owner.get("source_resources")!=self or owner.get("source_state")!=holder or not holder.owns_native_fireball_fields(self,p):
+		return {"accepted":false,"reason":"actual_fireball_recover_owner_not_ready"}
+	if request.get("op")!="recover_idle" or request.get("expected_state")!="magicRecover" or _player.state!="magicRecover" or p.get("s")!="magicRecover" or not _number(p.get("st2")) or float(p.st2)>0.0:
+		return {"accepted":false,"reason":"source_fireball_recover_state_mismatch"}
+	_player.state="idle"
+	p["s"]="idle"
+	return {"accepted":true}

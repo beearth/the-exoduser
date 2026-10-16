@@ -25,6 +25,8 @@ signal crescent_requested(step: int, charge_frames: float, direction: Vector2)
 signal stats_changed
 signal telemetry_event(kind: String, data: Dictionary)
 signal native_idle_status_tick(ticks: float)
+signal native_fireball_phase_tick(ticks: float, frame: float, entered_state: String)
+var _native_magic_input_kind: String=""
 
 const SOURCE_PLAYER_CLIP = preload("res://port_modules/character_clip/player_clip.gd")
 var _current_attack_tempo: Dictionary = {}
@@ -395,7 +397,7 @@ func handle_native_input_event(event: InputEvent) -> Dictionary:
 	if event is InputEventMouseMotion and event.position.is_finite():
 		_native_pointer_screen=event.position
 		return {"handled":true,"accepted":true,"action":"aim"}
-	for action in ["move_left","move_right","move_up","move_down","weapon","parry","shield_bash","rage_slot"]:
+	for action in ["move_left","move_right","move_up","move_down","weapon","parry","shield_bash","rage_slot","native_magic"]:
 		if not event.is_action(action): continue
 		result.handled=true
 		result.action=action
@@ -412,6 +414,13 @@ func handle_native_input_event(event: InputEvent) -> Dictionary:
 			else:
 				release_attack()
 				result.accepted=true
+		elif action=="native_magic":
+			result.accepted=event is InputEventMouseButton
+			if result.accepted:_native_magic_input_kind="keyboard_mouse"
+			else:
+				_native_input_held[action]=false
+				_native_magic_input_kind=""
+			result.command={"accepted":result.accepted,"deferred_to_native_physics":true}
 		elif action=="parry":
 			var command: Dictionary
 			if is_instance_valid(_native_q_control) and _native_q_control.is_native_q_control_ready():command={"accepted":true,"deferred_to_native_physics":true}
@@ -437,11 +446,12 @@ func handle_native_input_event(event: InputEvent) -> Dictionary:
 
 func clear_native_input_states() -> void:
 	_native_input_held.clear()
+	_native_magic_input_kind=""
 	_weapon_held=false
 	_accessibility_hold=false
 
 func get_native_input_snapshot() -> Dictionary:
-	return {"authority":"native_explicit_defaults_from_R","source_saved_bindings_restored":false,"held":_native_input_held.duplicate(),"weapon_held":_weapon_held}
+	return {"authority":"native_explicit_defaults_from_R","source_saved_bindings_restored":false,"held":_native_input_held.duplicate(),"weapon_held":_weapon_held,"magic_input_kind":_native_magic_input_kind}
 
 func _request_native_q_input() -> Dictionary:
 	var owner: Object = _native_combat_qe if is_instance_valid(_native_combat_qe) else _native_q_control
@@ -673,6 +683,7 @@ func _begin_swing(step: int, held_frames: float) -> bool:
 	return true
 
 func _physics_process(delta: float) -> void:
+	var fireball_entered_state: String=state
 	var ticks: float = delta * 60.0
 	_clock_frames += ticks
 	iframes = maxf(0.0, iframes - ticks)
@@ -807,6 +818,9 @@ func _physics_process(delta: float) -> void:
 			combo_step = 0
 	if stamina != before_stamina or state == "windup":
 		stats_changed.emit()
+	if is_instance_valid(_world) and (_native_input_held.get("native_magic",false) or fireball_entered_state in ["magicCast","magicRecover"] or state in ["magicCast","magicRecover"]):
+		var fireball_context: Dictionary=_world.get_native_projectile_fx_context()
+		native_fireball_phase_tick.emit(fireball_context.dt_sp,_world.get_native_frame(),fireball_entered_state)
 
 func receive_damage(amount: int, damage_type: String = "phys", source_direction: Vector2 = Vector2.ZERO, native_knockback_strength: float = -1.0) -> void:
 	_apply_native_damage(amount, amount, damage_type, source_direction, native_knockback_strength)
