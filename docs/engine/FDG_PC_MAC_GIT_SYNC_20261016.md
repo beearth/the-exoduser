@@ -803,3 +803,95 @@ code1/docs4 exact5의 WORK/HEAD 개별10 기록은 첫 제품쓰기 전이다. �
 | 기존 예외·부분효과 | 함수·confirm Promise·SFX/save/render 예외를 새 catch로 삼키지 않음. 제거/보상 후 후속 예외가 나도 자동 롤백을 추가하지 않음. 이는 원R 순서 보존이며 실제 데이터 안전 인수 선언이 아님 |
 | 신규 검수 | 실제 두 handler와 own Promise-confirm/bag/item/lock/equipped/salvageVal 결과/SFX·저장·렌더 대역 신규10군 + main inline 구문1 첫 통과. 취소·인덱스 이동·삭제/교체·잠금/장착/고물 변화·현재 보상 재합산·원 guard/중복 차이·기존 예외/부분효과·두 block 외 소스 불변 확인 |
 | 엄격한 한계 | 확인창 중 실제 정상 bag mutation producer와 입력차단 불변성은 미확인. Promise 대역 중 변경 사례는 합성 조건의 consumer 검수이며 live race·실분해 버그 재현 증거가 아님. actual salvageVal/실자원/DOM/GUI/saveAPI/사용자 창/native/PC 실행0. 기존 confirm helper·과거 검사 재개봉0 |
+
+
+## 2026-10-16 로비 비율·생성/입장 배치 수리 — 현행 우선
+
+사용자 지시인 로비 UI 비율/버튼 수리이며 전투 밸런스 변경이 아니다. 아래 index.html scoped CSS가 이 문서의 앞선 로비 크기·스크롤·입장 배율 표보다 우선한다. 기존 기본 CSS/과거 실측은 이력으로 유지한다.
+
+| 항목 | 현행 구조·계약 |
+|---|---|
+| 변경 파일·범위 | index.html head 마지막 lobby-layout-20261016 CSS만 추가. 기존 로비 JS/DOM 자식/asset URL byte 불변, 새 제품 asset0. 원본 아트·로고·배경·생성/삭제/선택/입장·데모/요청guard/API·저장 권위 그대로 |
+| 패널·카드 | 우측 clamp(340px,35vw,560px), 폭700px 이하100%. 카드 기본84px→높이760 이하76px→560 이하64px→440 이하56px. 카드 gap10px/낮은높이8px, 같은 단계의 저장 카드는 균일 |
+| 목록·생성 | 기존 VIEW2·wheel/nav 인덱스 정책 유지. vp 선호=카드2개+gap/최소1개/내부 세로 스크롤. 별도 생성행64px→560 이하56px→440 이하48px. 440 이하 최소 목록122px/nav164px/coarse nav176px로 행 겹침 방지 |
+| 입장 | 하단 구분선·margin/padding으로 분리. 기존 이미지 비율·색/점등 유지, max-height clamp(64px,14dvh,132px), vh fallback 동일. min-height64px. 앞선 min(500px,28dvh) 실측은 이전 배율 이력 |
+| Steam CTA | 기존 버튼·URL·동작 유지. 버튼44px, 이미지100%×100% object-fit:contain. 높이760 이하/560 이하 보조행48px와 padding2px0. 최소44px 대상과 충돌하던 초기36/32px 검수안을 대체. 원본 PNG 치수는 읽지 않았고 어떤 비율도 contain 상자에 맞춤 |
+| 입력 새영향 | 실제 online/local wheel/nav 산술 callback만 own slot/index/event/render/높이178/162/136/120/56 대역으로 신규4군, CSS 외 소스 불변1군·inline4개 구문. 전체 index 초기화·실목록/API·기인수 guard suite 실행0 |
+| 레이아웃 검수 | 실제 lobby markup+scroll-vp/track과 ui-refinement 포함4개 linked CSS. own 카드/neutral intrinsic SVG/fallback 폰트 headless13조건. 1366×650 before 생성 bottom444 > content413.97로 잘림 재현. 최종 after 생성 bottom398 <= content458/footer466. 1280×720/800×480/320폭/844×390/coarse·긴이름/빈목록 확인 |
+| 보완 이력 | 브라우저 경로2건 미존재, fixture CSS sanitizer2건으로 초기 시도 실패/무효. 이후 짧은높이·CTA placeholder/기존44px 최소·목록 최소공간 새영향 subset 보완. firstWholeClean=false. 새 CTA 자연높이가 닿은 after조건은 그 영향으로 재검수, 440 이하 변경도 해당 subset 검수 |
+| 한계 | neutral 비율상자 화면은 실제 원화·폰트/브라우저 완성화면·물리기기/화질 PASS 증거가 아님. 실제 슬롯/생성/삭제/입장/saveAPI·사용자 창/reload·서버·PC 실행0. 아주 낮은 화면의 뒤 CTA는 기존 outer content 스크롤·초점으로 접근 가능, 행 자체와 이미지 fit/버튼 접근 검수 |
+
+아래 CSS 전량이 현행 수치·간격·색·미디어 조건의 정확한 기준이다.
+
+```css
+/* Character selection: bounded cards, a separate create row and a compact entry. */
+#lobby>.lobby-right{--lobby-card:84px;--lobby-card-gap:10px;flex:0 0 clamp(340px,35vw,560px);min-width:0;min-height:0;padding:24px 28px;justify-content:center;}
+#lobby .lobby-content{flex:0 1 auto;min-height:0;gap:12px;padding-inline-end:6px;scroll-padding-block:6px;}
+#lobby .lobby-content>.lobby-header{min-height:36px;margin:0;align-items:center;}
+#lobby .lobby-content>.lobby-divider{height:104px!important;margin:0;}
+#lobby .lobby-content>.char-list{display:flex;flex-direction:column;gap:10px;flex:0 1 auto;min-height:0;overflow:visible;padding:4px;}
+#lobby .char-scroll-vp{flex:0 1 calc(var(--lobby-card)*2 + var(--lobby-card-gap));height:calc(var(--lobby-card)*2 + var(--lobby-card-gap));min-height:var(--lobby-card);overflow-x:hidden;overflow-y:auto;scrollbar-gutter:stable;scrollbar-width:thin;scrollbar-color:#96714e #121012;scroll-padding-block:4px;}
+#lobby .char-scroll-track{gap:var(--lobby-card-gap);}
+#lobby .char-scroll-track>.char-item{flex:0 0 var(--lobby-card);height:var(--lobby-card);min-height:var(--lobby-card);}
+#lobby .char-scroll-nav{flex:0 0 auto;margin:0;gap:12px;opacity:1;}
+#lobby .char-nav-btn{min-width:36px;min-height:32px;border:1px solid #75604766;background:#171214;}
+#lobby .char-list>.char-item-new{flex:0 0 64px;height:64px;min-height:64px;margin-top:0!important;padding:8px 16px;gap:12px;border-color:#96714e!important;}
+#lobby .char-item-new .char-thumb{flex-basis:40px;width:40px;height:40px;}
+#lobby .char-item-new .char-name{font-size:.95rem;letter-spacing:.04em;}
+#lobby .lobby-card-gap{display:none;}
+#lobby .lobby-mid-area{flex:0 1 auto;min-height:0;max-height:152px;padding:0;overflow-y:auto;}
+#lobby .lma-banner-inner{padding:8px 0;gap:6px;}
+#lobby .lma-main-txt{font-size:14px;line-height:1.35;}
+#lobby .lma-sub-txt{font-size:11px;line-height:1.4;letter-spacing:.03em;}
+#lobby .lma-steam-btn{width:min(200px,70%);height:44px;display:flex;align-items:center;justify-content:center;}
+#lobby .lma-steam-btn img{width:100%;height:100%;object-fit:contain;}
+#lobby .lobby-footer{margin-top:14px;padding:10px 4px 4px;gap:0;border-top:1px solid #96714e55;}
+#lobby .enter-game-btn{min-height:64px;}
+#lobby .enter-game-btn img{width:100%;height:auto;max-height:clamp(64px,14vh,132px)!important;max-height:clamp(64px,14dvh,132px)!important;object-fit:contain;}
+#lobby .lobby-bottom-actions{min-height:36px;margin-top:4px;}
+@media(max-height:760px){
+ #lobby>.lobby-right{--lobby-card:76px;padding-block:16px;}
+ #lobby .lobby-content{gap:8px;}
+ #lobby .lobby-content>.lobby-divider{height:72px!important;}
+ #lobby .lma-txt-group{display:none;}
+ #lobby .lobby-mid-area{flex:0 0 48px;max-height:48px;}
+ #lobby .lma-banner-inner{padding:2px 0;}
+ #lobby .lma-steam-btn{width:min(170px,60%);}
+ #lobby .lobby-footer{margin-top:8px;padding-top:8px;}
+}
+@media(max-height:560px){
+ #lobby>.lobby-right{--lobby-card:64px;--lobby-card-gap:8px;padding-block:10px;}
+ #lobby .lobby-content{gap:6px;}
+ #lobby .lobby-content>.lobby-header{min-height:30px;}
+ #lobby .lobby-content>.lobby-divider{height:44px!important;}
+ #lobby .char-list>.char-item-new{flex-basis:56px;height:56px;min-height:56px;}
+ #lobby .char-scroll-track>.char-item{padding-top:6px;padding-bottom:6px;}
+ #lobby .lobby-mid-area{flex-basis:48px;max-height:48px;}
+ #lobby .lma-steam-btn{width:140px;height:44px;}
+ #lobby .lobby-footer{margin-top:6px;padding-top:6px;}
+}
+@media(max-width:700px){
+ #lobby>.lobby-left{display:none;}
+ #lobby>.lobby-right{flex-basis:100%;width:100%;padding-inline:24px;}
+ #lobby .lobby-content>.lobby-divider{height:76px!important;}
+ #lobby .char-name:has(.char-name-label){flex-direction:column;align-items:flex-start;gap:2px;}
+ #lobby .char-name:has(.char-name-label) .char-cls{max-width:100%;margin:0;}
+}
+@media(max-width:700px) and (max-height:560px){#lobby .lobby-content>.lobby-divider{height:44px!important;}}
+@media(max-height:440px){
+ #lobby>.lobby-right{--lobby-card:56px;}
+ #lobby .lobby-content>.lobby-divider{height:32px!important;}
+ #lobby .char-list>.char-item-new{flex-basis:48px;height:48px;min-height:48px;}
+ #lobby .char-item-new .char-thumb{flex-basis:32px;width:32px;height:32px;}
+ #lobby .char-scroll-track .char-thumb{flex-basis:36px;width:36px;height:36px;}
+}
+@media(pointer:coarse){#lobby .char-nav-btn{min-width:44px;min-height:44px;}}
+@media(max-height:440px){
+ #lobby .lobby-content>.char-list{min-height:122px;}
+ #lobby .lobby-content>.char-list:has(>.char-scroll-nav){min-height:164px;}
+}
+@media(pointer:coarse) and (max-height:440px){
+ #lobby .lobby-content>.char-list:has(>.char-scroll-nav){min-height:176px;}
+ #lobby .lobby-content>.lobby-divider{height:24px!important;}
+}
+```
