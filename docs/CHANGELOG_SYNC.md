@@ -53866,3 +53866,18 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 | 기존 이력과 관계 | 앞선 공통 갱신·h320 기록의 외부 호출 유지 설명은 당시 범위 이력. 이번은 위 네 명시 소비자만 변경하며 유사 UI·focus/DOM·마크업·장비 함수 본체를 확장 수정하지 않음 |
 | 신규 검사 | 실제 네 handler fragment + own INV/item/callee/stats/render/event 대역의 신규 7군 및 main inline 구문 1 통과. 성공 위임·no-op 거절·undefined/false/true·ossuary 후조건·예외 순서·네 토큰 외 전체 소스/마크업 불변 확인. 이미 통과한 검사 재실행 없음 |
 | 검증 한계 | 실제 equip/stats/자원·HP·저장/API·DOM/GUI·사용자 창·native·PC 실행 0. 합성 대역 검사가 실제 게임 전체/최신 완성본·시각 품질 인수를 뜻하지 않음 |
+
+
+## 2026-10-16 필터된 가방 Y키의 원본 아이템 식별 — R h104+h353
+
+| 항목 | 현재 코드·범위 |
+|---|---|
+| 결함과 정상 경로 | 인벤토리 keydown의 Y(KeyY)는 기존 _jfIdx를 원가방 인덱스로 받지만, 이전에는 필터된 .inv-item NodeList의 같은 표시 순서를 선택했다. 가방 i와 화면 순서가 다르면 다른 카드 또는 없음으로 연결될 수 있었음 |
+| h353 producer | renderInv의 filtered 원가방 i 반복에서 .inv-item 생성 직후 div.dataset.inventoryBagIndex=String(i). data-inventory-bag-index는 원가방 인덱스의 문자열이며 표시 순서로 재번호를 부여하지 않음 |
+| h104 consumer | 기존 invGrid의 .inv-item 목록에서 [..._xi].find(card=>card.dataset.inventoryBagIndex===String(_jfIdx))로 첫 일치 카드를 찾고, 있을 때만 기존 contextmenu MouseEvent를 bubbles:true/cancelable:true로 1회 전달 |
+| 기존 입력 소유 | invPanel.on 확인 → _invHover 우선/숫자 INV.selected 폴백으로 기존 _jfIdx 선택 → 실제 가방 항목 확인 → 기존 Space/X·F·Y 순서. 이 진입 조건·키 우선순서·선택 정책·키바인딩을 변경하지 않음 |
+| 빈 결과·예외 | grid 없음/일치 카드 없음이면 기존 return 경로로 끝남. 임의 카드·표시 순서·다른 인덱스로 새 폴백하지 않음. 기존 querySelectorAll/MouseEvent/dispatchEvent 예외를 새로 삼키거나 재시도하지 않음 |
+| 불변 경계 | 카드의 우클릭은 기존 원 i를 닫아둔 _invBagRightClick(i)를 그대로 호출. 필터·정렬·가방 좌표·현재 선택·마크업·부모 DOM·장착/저장·자원 정책 변경 없음 |
+| 별도 미채택 | inventory focus factory·Tab·새 focus 진입·h102 selector·다른 키보드/입력 변경을 채택하지 않음. 이 속성은 위 Y키가 실제 소비하므로 진단 전용/소비자 없음으로 분류하지 않음 |
+| 검증 | 실제 setter와 Y 분기 fragment + own plain 카드/dataset/NodeList/원가방 index/event 대역 신규6군 및 main inline 구문1 첫 통과. index0·필터/숨김 [0,2,5]·표시 재배열·미발견·예외 전파·문자열 타입·두 문장 외 소스/입력순서/마크업 불변 확인 |
+| 한계 | 실제 DOM/GUI·물리 키보드/패드·장착/스탯/자원·save/API·사용자 창·native·PC 실행 0. 대역 검사로 최신 게임 전체·화질·캐릭터·맵·원근감 인수를 주장하지 않음 |
