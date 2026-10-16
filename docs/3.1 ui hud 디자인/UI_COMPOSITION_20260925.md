@@ -2846,3 +2846,22 @@ R의 기존 gameConfirm pending resolver 가드 한 줄을 main에 결합했다.
 | DOM 범위 | 기존 gameConfirm 본문은 그대로. 신규 DOM parent 내용 교체·UI 디자인·초점 권위 변경 없음. 실제 HTML 렌더링/전체 Startup 검수 아님 |
 | 새 검수 | 격리 public gameConfirm 및 실제 스킬 확인 gate+목적stub의5묶음 PASS. 동시요청 거부·첫 resolver/메시지/버튼 보존·확인/취소·재개·기존 HTML 모드·전체파일 inverse 확인. 변경 function 구문/실행 확인 |
 | 한계 | 실user GUI/state/save/API 접근·자동입력0. 실제 스킬 비용집행/화면품질/PC 검수 없음. game-easy-test·Godot/HOLD·기인수기능·docs/2_3 변경0. 잔여R statement 의도·승인 분류와 전체 이식 미완료 |
+
+
+## 2026-10-16 선택/고물 분해 확인 전후 객체 재검사 — R h355+h356
+
+| 적용 위치·항목 | 현행 코드 계약 |
+|---|---|
+| 정상 소비자 | renderInv의 _isBtn.onclick(선택분해), _jkBtn.onclick(고물 일괄 분해). 기존 확인창·성공 후 SFX.pickup → dbSaveNow → renderInv 순서 유지 |
+| 원래 대상 범위 | 고물은 기존 filtered에서 만든 _jkItems 객체만 시작 후보로 사용. 선택분해는 클릭 시 _invSalSel의 원가방 인덱스로 가방 객체를 얻음. 다른 필터/가방/신규 객체를 대신 분해하지 않음 |
+| _canSelected | it가 있고 fav가 아니며 현재 INV.bag에 동일 객체로 존재하고 INV.equipped의 값에 동일 객체가 없어야 함. salvageVal(it) 결과가 Number.isFinite이고 0 이상이어야 함 |
+| _canJunk | _canSelected와 같은 소유·잠금·장착·결과 조건에 it.junk 조건 추가. 선택분해에는 새 junk 조건을 추가하지 않음 |
+| h355 확인 전 | 선택 인덱스를 객체로 바꾼 뒤 Set으로 동일 객체를 중복 제거하고 _canSelected로 필터. 후보가 없으면 반환. _pendingTotal을 합산하고 유한·0 이상인지 확인한 후 후보 개수/합계로 기존 확인창 표시 |
+| h355 확인 후 | 취소면 반환. 확인 전의 같은 후보 객체를 _canSelected로 다시 필터하고 없으면 반환. 현 salvageVal 합계 _currentTotal을 다시 유한·0 이상 검사 → INV.bag를 해당 객체 제외 배열로 교체 → G.mats+=_currentTotal → _invSalSel.clear()/INV.selected=null → 기존 성공 후속 |
+| h356 확인 전 | 기존 _jkItems를 _canJunk로 필터하고 없으면 반환. 그 후보의 _pendingTotal과 개수로 기존 확인창 표시. 이 경로에는 원R에 없는 합계 유한성 검사를 추가하지 않음 |
+| h356 확인 후 | 취소면 반환. 같은 후보 객체를 _canJunk로 다시 필터하고 없으면 반환. 현 salvageVal 합계 _currentTotal → INV.bag에서 같은 객체만 제외 → G.mats+=_currentTotal → 선택 초기화 → 기존 성공 후속 |
+| 원본 차이 보존 | 선택분해는 객체 Set 중복 제거와 개별/합계 유한·비음수 검사. 고물분해는 기존 후보 목록의 중복 개수 및 개별 검사만 보존. 두 경로를 임의 통일하거나 cap/default/clamp/합계 guard/새 중복·롤백·트랜잭션 정책을 만들지 않음 |
+| 수치·저장 범위 | 기존 salvageVal/PM-013-D 대기 환수식·h122/h187·분해액·비용·장착/잠금 producer·직접 저장 API/직렬화 형식 변경 없음. 갱신된 소비자는 기존 함수 결과만 다시 합산하며 실제 저장 호출 소유는 기존 성공 후속에 유지 |
+| 기존 예외·부분효과 | 함수·confirm Promise·SFX/save/render 예외를 새 catch로 삼키지 않음. 제거/보상 후 후속 예외가 나도 자동 롤백을 추가하지 않음. 이는 원R 순서 보존이며 실제 데이터 안전 인수 선언이 아님 |
+| 신규 검수 | 실제 두 handler와 own Promise-confirm/bag/item/lock/equipped/salvageVal 결과/SFX·저장·렌더 대역 신규10군 + main inline 구문1 첫 통과. 취소·인덱스 이동·삭제/교체·잠금/장착/고물 변화·현재 보상 재합산·원 guard/중복 차이·기존 예외/부분효과·두 block 외 소스 불변 확인 |
+| 엄격한 한계 | 확인창 중 실제 정상 bag mutation producer와 입력차단 불변성은 미확인. Promise 대역 중 변경 사례는 합성 조건의 consumer 검수이며 live race·실분해 버그 재현 증거가 아님. actual salvageVal/실자원/DOM/GUI/saveAPI/사용자 창/native/PC 실행0. 기존 confirm helper·과거 검사 재개봉0 |
