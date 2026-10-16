@@ -111,4 +111,8 @@ configure는 Readers 생성 뒤 신규 _initialize_source_sample_globals()로 na
 
 ## Source clock 선언·렌더 입력 authority — 2026-10-17
 
-동일 Services가 prefix v2 원 instance를 소유하고 configure의 sample globals 뒤/OPT 전에 declare_dt_sp를1회 소비한다. _source_clock_declared_once는 discard에도 유지하여 owner 손실 뒤 재선언을 거절한다. 신규 capture_native_source_render_input(Main,input)->bool은 같은 actual Main/current Services·동기 input window·새 raw serial/timestamp를 검증하며, true는 플랫폼입력 수락뿐이다. 신규 read_source_clock_input_snapshot(Main)와 read_current_source_projectile_context(World)는 현재 frame-entry/body 미연결을 NR로 유지한다. 같은 caller/scope 생성·실callback16 PASS 및 실제 SourceState/context 미실행 한계는 FDG_NATIVE_SOURCE_CLOCK_INPUT_AUTHORITY_20261017.md를 따른다.
+동일 Services가 prefix v2 원 instance를 소유하고 configure의 sample globals 뒤/OPT 전에 declare_dt_sp를1회 소비한다. _source_clock_declared_once는 discard에도 유지하여 owner 손실 뒤 재선언을 거절한다. 신규 capture_native_source_render_input(Main,input)->bool은 같은 actual Main/current Services·동기 input window·새 raw serial/timestamp를 검증하며, true는 플랫폼입력 수락뿐이다. 신규 read_source_clock_input_snapshot(Main)와 read_current_source_projectile_context(World)는 현재 timestamp·실OPT fpsCap까지연결/첫gap_frame_callbacks body미연결을 NR로 유지한다. 같은 caller/scope 생성·실callback16 PASS 및 실제 SourceState/context 미실행 한계는 FDG_NATIVE_SOURCE_CLOCK_INPUT_AUTHORITY_20261017.md를 따른다.
+
+## 실제 native source-frame callback — 2026-10-17
+
+같은 Services가 Frame v3 configure에기존 private prefix를주입하고선언한다. actualinput admission 동기window에서opaque String 호출ID를발급하고별도 SOURCE_NATIVE_RENDER_CALLBACK context로timestamp→실current OPT fpsCap까지만소비한다. rawLAST scope변경0/첫gap_frame_callbacks는owner_gap_no_receipt PARTIAL_NR. active ID는호출끝폐기,history ID는현재권한아님. Frame/prefix identity·철회/재선언거절 및새16첫PASS/원검사재연0의정확범위는 FDG_NATIVE_SOURCE_FRAME_CALLBACK_20261017.md를따른다. 전체source context/Main scene/throw 종료는未.

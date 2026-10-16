@@ -27,4 +27,8 @@
 
 ## 후속 실제 입력 수락 연결 — 2026-10-17
 
-동일 Main._process에서 플랫폼 capture 뒤 Services의 source clock input authority로 전달한다. Raw LAST_NATIVE_PLATFORM_RENDER_INPUT_ONLY 자체는 여전히 마지막 플랫폼 sample이며, 새 동일 callback window·현재 Services·새 serial/timestamp 검증은 별도 admission 책임이다. 이 수락은 SOURCE_RAF_CALLBACK/source frame/body/전체 update 증거로 승격하지 않는다. World의 gameplay context는 source_frame_entry_owner_unbound NR이다. 새16 검수·수명·보존 범위는 FDG_NATIVE_SOURCE_CLOCK_INPUT_AUTHORITY_20261017.md를 따른다.
+동일 Main._process에서 플랫폼 capture 뒤 Services의 source clock input authority로 전달한다. Raw LAST_NATIVE_PLATFORM_RENDER_INPUT_ONLY 자체는 여전히 마지막 플랫폼 sample이며, 새 동일 callback window·현재 Services·새 serial/timestamp 검증은 별도 admission 책임이다. 이 수락은 SOURCE_RAF_CALLBACK/source frame/body/전체 update 증거로 승격하지 않는다. World의 gameplay context는 owner_gap_no_receipt (first_unowned_phase=gap_frame_callbacks) NR이다. 새16 검수·수명·보존 범위는 FDG_NATIVE_SOURCE_CLOCK_INPUT_AUTHORITY_20261017.md를 따른다.
+
+## 실제 native callback adapter 후속 — 2026-10-17
+
+raw LASTsample은변경하지않았다. Services가같은Main 동기window/새serial/실timestamp를검증하고별도SOURCE_NATIVE_RENDER_CALLBACK context·opaque ID를발급/소비·종료폐기한다. 현재timestamp/실OPT fpsCap뒤첫미소유gap_frame_callbacks NR이며World는sp·dt·epoch값을공급하지않는다. 새실16검수와권위/fixture한계는 FDG_NATIVE_SOURCE_FRAME_CALLBACK_20261017.md 참조.

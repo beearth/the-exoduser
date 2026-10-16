@@ -15,6 +15,7 @@ const BASE_ATTACK = preload("res://port_modules/player_base_attack_source/produc
 const OPTIONS = preload("res://port_modules/npc_interaction/source_options_state.gd")
 const SAMPLE_GLOBALS = preload("res://scripts/native_source_sample_globals.gd")
 const SOURCE_CLOCK_PREFIX = preload("res://port_modules/source_update_clock_prefix/producer.gd")
+const SOURCE_FRAME_ENTRY = preload("res://port_modules/source_frame_entry/producer.gd")
 const SIGNED_DIFFICULTY = preload("res://port_modules/kill_reward/source_difficulty_signed.gd")
 const SCHEMA = "exoduser.godot.source-player-initialization-services.v1"
 const CACHE_APIS = ["read_captured_resource_plan", "read_captured_crystal_stats", "read_captured_cohort", "read_current_initialization_cohort_id", "read_hp_initial_gap"]
@@ -89,6 +90,13 @@ var _providers: WeakRef
 var _dispatcher: WeakRef
 var _main: WeakRef
 var _readers: Readers
+var _source_frame_entry: RefCounted
+var _source_frame_declared_once := false
+var _source_frame_declaration: Dictionary = {}
+var _source_frame_callback_active := false
+var _source_frame_callback_id := ""
+var _source_frame_last_callback_id := ""
+var _source_frame_last_result: Dictionary = {"status":"NOT_READY","reason":"source_native_callback_not_entered"}
 var _source_update_clock: RefCounted
 var _source_clock_declared_once := false
 var _source_clock_input_serial := 0
@@ -139,6 +147,8 @@ func configure(player: Node2D, world: Node, state: Node, resources: Node,
 		return _discard("actual_source_sample_global_initialization_rejected")
 	if not _initialize_source_update_clock():
 		return _discard("actual_source_clock_declaration_rejected")
+	if not _initialize_source_frame_entry():
+		return _discard("actual_source_frame_declaration_rejected")
 	_options = OPTIONS.new()
 	_signed_difficulty = SIGNED_DIFFICULTY.new()
 	if not _options.initialize_source_boot(false) or not _options.set_current_phase(OPTIONS.CURRENT_PRE_RESTORE):
@@ -204,6 +214,78 @@ func _initialize_source_update_clock() -> bool:
 	_source_clock_declared_once = true
 	return true
 
+func _initialize_source_frame_entry() -> bool:
+	if _source_frame_declared_once or is_instance_valid(_source_frame_entry) or not is_instance_valid(_source_update_clock):
+		return false
+	_source_frame_entry = SOURCE_FRAME_ENTRY.new()
+	var configured: Dictionary = _source_frame_entry.configure(_source_update_clock)
+	if configured.get("status") != "OK":
+		return false
+	var declared: Dictionary = _source_frame_entry.declare()
+	if declared.get("status") != "OK":
+		return false
+	_source_frame_declaration = declared.duplicate(true)
+	_source_frame_declared_once = true
+	return true
+
+func _source_frame_context_error() -> String:
+	var error: String = _source_clock_context_error()
+	if not error.is_empty():
+		return error
+	if not is_instance_valid(_source_frame_entry) or _source_frame_entry.get_script() != SOURCE_FRAME_ENTRY or not _source_frame_entry.is_ready():
+		return "actual_source_frame_owner_lost"
+	if _source_frame_entry.get("_prefix") != _source_update_clock:
+		return "actual_source_frame_prefix_identity_lost"
+	return ""
+
+func is_native_source_frame_callback_current(caller: Node, callback_id: Variant) -> bool:
+	if not callback_id is String or not _source_frame_callback_active or callback_id != _source_frame_callback_id or not _same_object(caller, _ref(_main)):
+		return false
+	if not _source_frame_context_error().is_empty() or not caller.is_native_source_clock_input_phase(self, _source_clock_input_serial):
+		return false
+	var actual: Dictionary = caller.read_native_source_frame_input(caller)
+	return actual.get("ready") == true and actual.get("render_serial") == _source_clock_input_serial and actual.get("timestamp_ms") == _source_clock_input_timestamp_ms
+
+func _run_native_source_frame_callback(main: Node, actual: Dictionary) -> void:
+	var error: String = _source_frame_context_error()
+	if not error.is_empty() or not main.is_native_source_clock_input_phase(self, _source_clock_input_serial):
+		_source_frame_last_result = {"status":"NOT_READY","reason":error if not error.is_empty() else "native_frame_callback_window_closed"}
+		return
+	_source_frame_callback_id = "native-main-process/%s/%s/%s" % [main.get_instance_id(), get_instance_id(), _source_clock_input_serial]
+	_source_frame_last_callback_id = _source_frame_callback_id
+	_source_frame_callback_active = true
+	_source_frame_last_result = _advance_native_source_frame_callback(main, _source_frame_callback_id, actual)
+	if is_instance_valid(_source_frame_entry) and _source_frame_entry.read_frame_state().get("in_frame") == true:
+		_source_frame_entry.end_frame()
+	# Discard active authority; the historical ID remains diagnostic only.
+	_source_frame_callback_active = false
+	_source_frame_callback_id = ""
+
+func _advance_native_source_frame_callback(main: Node, callback_id: String, actual: Dictionary) -> Dictionary:
+	if not is_native_source_frame_callback_current(main, callback_id):
+		return {"status":"NOT_READY","reason":"native_frame_callback_not_current"}
+	var result: Dictionary = _source_frame_entry.begin_frame(callback_id)
+	if result.get("status") != "OK":
+		return result
+	# Separate verified native-port context. Never mutate the raw LAST packet.
+	var context: Dictionary = {"scope":"SOURCE_NATIVE_RENDER_CALLBACK",
+		"timestamp":actual.timestamp_ms,"callback_token":callback_id,
+		"clock_domain":actual.clock_domain}
+	if float(actual.timestamp_ms) == 0.0:
+		var now: Variant = main.read_native_source_frame_monotonic_now(self, _source_clock_input_serial)
+		if now != null:
+			context["performance_now"] = now
+	result = _source_frame_entry.phase_timestamp(context)
+	if result.get("status") != "CONTINUE":
+		return result
+	if not is_native_source_frame_callback_current(main, callback_id):
+		return {"status":"PARTIAL_NOT_READY","reason":"native_frame_callback_lifetime_lost"}
+	result = _source_frame_entry.phase_fps_cap(read_current_options())
+	if result.get("status") != "CONTINUE":
+		return result
+	# Source frame resets/gamepad/profiling have no actual owner yet.
+	return _source_frame_entry.phase_gap_frame_callbacks(null)
+
 func _source_clock_context_error() -> String:
 	var error: String = _context_error()
 	if not error.is_empty():
@@ -232,17 +314,25 @@ func capture_native_source_render_input(caller: Node, input: Dictionary) -> bool
 		return false
 	_source_clock_input_serial = serial
 	_source_clock_input_timestamp_ms = actual.timestamp_ms
+	_run_native_source_frame_callback(main, actual)
 	# Input admission is not render_front, a source update or a gap receipt.
 	return true
 
 func read_source_clock_input_snapshot(caller: Node) -> Dictionary:
-	var error: String = _source_clock_context_error()
+	var error: String = _source_frame_context_error()
 	if not _same_object(caller, _ref(_main)):
 		error = "actual_source_clock_snapshot_caller_mismatch"
 	if not error.is_empty():
 		return {"ready":false,"reason":error,"source_clock_ready":false}
-	return {"ready":false,"reason":"source_frame_entry_owner_unbound",
-		"scope":"SOURCE_DECLARATION_AND_RENDER_INPUT_ADMISSION_ONLY",
+	return {"ready":false,"reason":_source_frame_last_result.get("reason","source_frame_flow_not_complete"),
+		"scope":"SOURCE_NATIVE_FRAME_PREFIX_ONLY",
+		"frame_entry_configured":_source_frame_entry.is_ready(),
+		"frame_declaration":_source_frame_declaration.duplicate(true),
+		"frame_state":_source_frame_entry.read_frame_state(),
+		"last_native_callback_id":_source_frame_last_callback_id,
+		"native_callback_active":_source_frame_callback_active,
+		"active_native_callback_id":_source_frame_callback_id,
+		"frame_result":_source_frame_last_result.duplicate(true),
 		"source_clock_ready":false,"dt_sp_declaration":_source_update_clock.read_dt_sp(),
 		"prefix_state":_source_update_clock.read_update_state(),
 		"last_admitted_render_serial":_source_clock_input_serial,
@@ -252,12 +342,12 @@ func read_source_clock_input_snapshot(caller: Node) -> Dictionary:
 func read_current_source_projectile_context(caller: Node) -> Dictionary:
 	if not _same_object(caller, _ref(_world)):
 		return {"ready":false,"reason":"actual_source_clock_world_caller_mismatch"}
-	var error: String = _source_clock_context_error()
+	var error: String = _source_frame_context_error()
 	if not error.is_empty():
 		return {"ready":false,"reason":error}
-	# The frame-entry producer and intermediate source bodies are not bound.
-	# A declared dt or an admitted raw sample never publishes gameplay sp.
-	return {"ready":false,"reason":"source_frame_entry_owner_unbound",
+	return {"ready":false,"reason":_source_frame_last_result.get("reason","source_frame_flow_not_complete"),
+		"first_unowned_phase":_source_frame_entry.read_frame_state().get("not_ready_at"),
+		"source_frame_entry_configured":true,
 		"sp_published":false,"source_update_returned":false}
 
 func _initialize_source_sample_globals() -> bool:
@@ -505,6 +595,9 @@ func _discard(error: String) -> bool:
 	_helpers.clear()
 	_provider_maps.clear()
 	_attack_bridges.clear()
+	_source_frame_callback_active = false
+	_source_frame_callback_id = ""
+	_source_frame_entry = null
 	_source_update_clock = null
 	_sample_globals = null
 	_options = null

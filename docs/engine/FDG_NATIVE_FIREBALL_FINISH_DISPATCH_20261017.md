@@ -61,7 +61,7 @@ prewrite-manifest에 exact code2/docs9 총11path의 I/R WORK/HEAD44행(실제38c
 | source / 입력 domain | 실제 Node handle만 query→producer에 유지, read_enemy view Dict는 별개. 원 Dict carrier 실패를 수정/완료로 덮지 않음. clock/damage/fieldmob/map/player/state는 fixture이며 실제 owner body/공간/HP/스프라이트/scene·원 asset 검증 아님 |
 | 종료 | 새1/4 각각 exit0·stdio+Godot log ERROR/WARNING0. namespace FDG_ENGINE_FIREBALL_WORLD_FIXTURE_20261017_6C28 일치, 사용자 데이터 내용조회/cleanup0·완전 save 격리 독립증명 아님 |
 | 한계 보존 | 첫 기대 오류·원31로그 때문에 wholeClean=false. candidate6d4 원형/외부26·identity7/기존pool·finish suite 재연0. 실제 GDScript owner throw 주입/소스 예외전파 동등성은 검수하지 않음 |
-| 현재 실제 제품 | World clock context 공개 경로는 Services까지 연결됐으나 frame-entry/body 미연결로 NR; hurtE·fieldmob·poison owner는 미연결, native fxdt를 대체값으로 쓰지 않아 NR. renderer/delivery는未, gx는 Services current getter 연결이며 최신 전체게임/실제 발사 완료가 아님 |
+| 현재 실제 제품 | World clock context 공개 경로는 Services까지 연결됐으나 timestamp·실OPT fpsCap까지연결/첫gap_frame_callbacks body미연결로 NR; hurtE·fieldmob·poison owner는 미연결, native fxdt를 대체값으로 쓰지 않아 NR. renderer/delivery는未, gx는 Services current getter 연결이며 최신 전체게임/실제 발사 완료가 아님 |
 
 ## Source sample globals 후속 연결 — 2026-10-17
 

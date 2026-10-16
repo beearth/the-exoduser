@@ -811,6 +811,11 @@ func read_native_source_frame_input(caller: Node) -> Dictionary:
 func is_native_source_clock_input_phase(caller: RefCounted, serial: int) -> bool:
 	return _native_main_service_live() and _native_source_clock_input_open and caller == source_initialization_services and serial == _native_source_render_serial
 
+func read_native_source_frame_monotonic_now(caller: RefCounted, serial: int) -> Variant:
+	if not is_native_source_clock_input_phase(caller, serial):
+		return null
+	return float(Time.get_ticks_usec()) / 1000.0
+
 func _advance_native_source_clock_input() -> void:
 	if not _native_main_service_live() or not is_instance_valid(source_initialization_services) or source_initialization_services.get_script()!=SourceInitializationServicesScript or not is_instance_valid(world) or not world.has_method("read_native_source_frame_input"):
 		return

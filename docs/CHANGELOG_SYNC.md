@@ -54145,3 +54145,7 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 ## 2026-10-17 — Source clock declaration and current input admission
 
 원prefix v2 SHA52e1ec05 동일byte를소유module로복사,실Services동일수명1회 dt_sp선언과Main실_process의동기window/현재서비스·새rawserial/timestamp입력수락연결. 신규World→Main→Services gameplay context는frame-entry/body未로NR/sp未·선언1fallback0. manifest는진단만/clockReadyfalse. 새격리callback16첫PASS/exit0/ERROR·WARN·leak0,원12/38/9/22재연0·fullSourceContext/scene未. 최초10사전보존후docs검색발견5를각쓰기前추가보존(최종15/첫code前으로소급0). 상세 FDG_NATIVE_SOURCE_CLOCK_INPUT_AUTHORITY_20261017.md.
+
+## 2026-10-17 — Native source-frame callback actual consumer
+
+원Frame v3 af7252a1을같은Services/private prefix52e1에주입/선언. actualMain 동기입력window·현재Services/수명·새serial/실timestamp 검증후별도native context와opaque ID발급→begin/timestamp/실OPT fpsCap소비→첫미소유gap_frame_callbacks PARTIAL_NR/prefix보존→active권한폐기/과거ID재사용거절. rawLAST변경0/sourceclockReadyfalse/acc·fullreturn완료0. 새격리actual callback16첫PASS/두로그clean,실모듈/실Options·fixture sourcecontext/audioQ,old검사재연0. 최초10사전+발견5doc별도사전(총15/첫code前소급0),시작usage41은직전관측재사용·이번시작직접관측아님. 상세 FDG_NATIVE_SOURCE_FRAME_CALLBACK_20261017.md.

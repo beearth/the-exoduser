@@ -16,7 +16,7 @@
 | context 수명 | 기존 Services._context_error에 더해 Main.source_initialization_services==self 및 같은 prefix script를 확인한다. 기존 source context/lifecycle 검증을 바꾸거나 default G/always-ready를 설치하지 않는다. |
 | 진단 API | Main.get_native_source_clock_input_snapshot()→Services.read_source_clock_input_snapshot(Main). ready=false/source_clock_ready=false이며 source 선언 read_dt_sp, prefix history와 마지막 수락 raw serial/timestamp만 진단한다. history는 현재 sp 권위가 아니다. |
 | 실제 World 소비 API | World.read_native_source_player_projectile_context()→같은 Main.read_native_source_player_projectile_context(World)→현재 Services.read_current_source_projectile_context(World). 실제 Main/World/caller/source context 수명 필수. |
-| 현 clock 응답 | source_frame_entry_owner_unbound로 ready=false, sp_published=false/source_update_returned=false. sp/dt_sp/native_epoch를 임의로 만들지 않는다. 선언1/input accepted를 gameplay sp1로 전달하지 않는다. |
+| 현 clock 응답 | owner_gap_no_receipt (first_unowned_phase=gap_frame_callbacks)로 ready=false, sp_published=false/source_update_returned=false. sp/dt_sp/native_epoch를 임의로 만들지 않는다. 선언1/input accepted를 gameplay sp1로 전달하지 않는다. |
 | 기존 flight caller | Main.read_native_fireball_flight_dependencies는 이 World 공개 API를 발견하지만 ready=false이므로 clock dependency NR을 유지한다. 새 source update/MP 비용/실발사 경로를 열지 않는다. |
 | manifest | source_clock_input_authority는 실제 Services 현재 진단이며 platform_frame_input과 별도다. content_parity/latest_full_game 완료로 승격하지 않는다. |
 
@@ -40,3 +40,7 @@
 | 구 검사 | 플랫폼12/외부 prefix38·9/ENEMY22/다른 suite 재연0. 이번16을 source/game 전체 동등 개수로 합산하지 않는다. |
 | 사전 보존 | 최초 I/R exact10의 분리 INDEX/WORK/UNTRACKED·realparent/nonlink·WORK/HEAD 개별 copy 시각→manifest→first code/각write. 코드 후 docs 검색에서5 관련문서 추가발견→그5 사전보존·extension manifest→각 doc write. 최종15이며 추가5를 첫 code 전이라고 소급하지 않는다. |
 | 배포/사용량 | main/R/served/원 이미지·음원·import/save/UI 변경0. 시작 공유 주간 누적40%/일간 미상, 종료는 별도 receipt. source clock·최신 게임·실제 발사 완료 아님. |
+
+## 후속 native Frame 실제 소비 — 2026-10-17
+
+현재 Frame v3 소유/configure·declare와별도native callback ID/context를같은Services에연결했다. 입력수락만에서timestamp→실OPT fpsCap까지진행하며, 현재첫NR은gap_frame_callbacks/owner_gap_no_receipt다. 이전 frame-entry-owner-unbound는이전단위이력이고현재 source_clock_ready=false는유지한다. 후속실제계약과새16검수·원16재연0은 FDG_NATIVE_SOURCE_FRAME_CALLBACK_20261017.md를따른다.

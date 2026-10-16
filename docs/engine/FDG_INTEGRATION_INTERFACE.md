@@ -1465,7 +1465,19 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 |---|---|
 | Services prefix v2 | 동일 소유 instance에 원 dt_sp 선언1회. 선언/global holder 준비는 source clock 준비가 아니다. |
 | Main._process→Services.capture_native_source_render_input | 같은 callback window/현재 Services·새 native serial 및 actual raw timestamp 확인. true=raw 입력 수락만, source update/gap 완료가 아니다. |
-| World.read_native_source_player_projectile_context→Main→Services | 신규 실제 공개 경로. 현재 source_frame_entry_owner_unbound NR이며 sp/dt_sp/native_epoch fallback 없음. |
+| World.read_native_source_player_projectile_context→Main→Services | 신규 실제 공개 경로. 현재 owner_gap_no_receipt (first_unowned_phase=gap_frame_callbacks) NR이며 sp/dt_sp/native_epoch fallback 없음. |
 | manifest.source_clock_input_authority | 실제 선언/입력 진단만. ready/source_clock_ready/source_update_returned=false 유지. |
 
 원 render_front/begin/sp/after 호출0·기존검사재연0·새16 PASS 및 실제 source context 대역 경계는 FDG_NATIVE_SOURCE_CLOCK_INPUT_AUTHORITY_20261017.md 참조.
+
+## Native frame callback 실제 계약 — 2026-10-17
+
+| owner/API | 현재 계약 |
+|---|---|
+| Services Frame v3 | 같은 private prefix configure/declare. source literals만소유, is_ready는입력/body준비가아님. |
+| is_native_source_frame_callback_current(Main,id) | 실제현재Main/Services 동기inputwindow·새serial/실time·String activeID와수명/identity 필수. 호출끝activeID폐기/과거ID재사용거절. |
+| SOURCE_NATIVE_RENDER_CALLBACK | 새검증context이며 raw LAST는그대로. begin ID→timestamp→실OPT fpsCap→첫미소유gap_frame_callbacks NR/prefix보존. browserRAF실행주장0. |
+| Main.read_native_source_frame_monotonic_now(Services,serial) | 동일동기window에서만실단조ms,그밖null. actual timestamp0에만fallback입력. |
+| World current projectile context | 현재first_unowned_phase와NR만공급/sp·dt·epoch payload0/acc·fullreturn완료0. |
+
+새coupling16 PASS/실모듈·실Options/fixture_context_error·audioQ대역 및미검수범위는 FDG_NATIVE_SOURCE_FRAME_CALLBACK_20261017.md를따른다.
