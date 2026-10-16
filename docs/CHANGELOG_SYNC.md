@@ -53833,3 +53833,20 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 | 보존 | 금액·비용식·조건·원 강화 값·아이템/자원/저장·반환/예외·CP 공식/공급자·스타일·화살표/기존 표시 포맷·locale/사전 코드는 그대로 |
 | 검수 | 원 문구 한 곳만 바뀌고 나머지 HTML byte가 같은지 정적으로 확인, main inline 구문1 통과. 저위험 문구 수정이므로 신규 기능 테스트·실 함수 실행 없음 |
 | 한계 | 실제 비교창 렌더/장착·계산·자원·저장/API·사용자 창/native/PC 검수 아님. 기존 장착/CP/focus 검사·증거를 다시 실행하거나 재회수하지 않음 |
+
+## 2026-10-16 표준 어픽스 상세·차이 단위 표시 — R h338+h339+h343+h358
+
+| 항목 / id | 현행 표시 계약 |
+|---|---|
+| 적용 소비자 | _invCardFields의 어픽스 상세 한 줄 → _affixDetailValStr(af). _invBuildCompare의 어픽스 차이 한 줄 → _affixDeltaStr(id,diff). 기존 이름·설명·색·스타일·합산·차이 표시 threshold·CP·DOM 코드는 유지 |
+| 상세 대상 | AFFIX_POOL unit이 pct 또는 prob이고 typeof af.value='number', Number.isFinite(af.value)일 때만 새 상세 분기. unit lookup을 먼저 하는 원 R 순서를 유지 |
+| 상세 산식 | v=Math.round(af.value*10000)/100. 양수면 '+' 접두, 표시값 -0은0으로 출력, 뒤에 '%' 추가. 예: 0.005→+0.5%, 0.123456→+12.35% |
+| 상세 fallback | 그 외는 현재 _affixValStr(af) 그대로 호출. 숫자 문자열/null/undefined/비유한 값·일반 단위·알 수 없는 id에 새 데이터 변환/보정 규칙을 추가하지 않음 |
+| 현재 compact 보존 | 기존 간략 pct/prob의 ~~(value*100), dps '/s', tick (value/60).toFixed(2)+_L('초','s'), atk 'ATK×'+정수퍼센트, hp 정수'%HP', 일반 값과 unknown 처리 유지. forge 등 기존 다른 compact 호출부 불변 |
+| pct/prob 차이 | n=Number((diff*100).toFixed(2)). 양수 '+' 접두, 표시 -0은0으로 출력 후 '%p'(퍼센트포인트). 예: diff=0.03→+3%p, -0.012345→-1.23%p |
+| 일반 차이 | unit이 pct/prob가 아니면 기존 양수 '+' 및 -1<diff<1의 toFixed(3), 그 외 원 diff 표시 유지. 직접 helper의0은0.000이며 실제 호출의 기존 Math.abs(diff)>0.0001 조건을 바꾸지 않음 |
+| 반올림 경계 | 상세의 Math.round와 차이의 toFixed→Number는 서로 다른 원 R 방식 그대로. 둘을 새 공통 반올림/정밀도 정책으로 통합하지 않음 |
+| 데이터·권위 | finite/type 검사는 원 R의 표시 fallback 선택일 뿐 item 저장값/type/확률/수치/태그/롤/강화/슬롯/캐시/산식/자원/직렬화 검증·마이그레이션을 하지 않음. 표시값은 표준 AF 저장값이며 최종 합산·상한 적용 전투 확률/효과의 실측을 의미하지 않음 |
+| 별도 범위 | uniqueSpecial/유니크 롤·이펙트·패링/전투 훅·기존 gameplay helper·locale 사전·focus/lifecycle 미변경. 임의 getter/Proxy/provider와 비정상 af의 모든 예외 동등성을 주장하지 않음. 원 R에 없는 catch/guard 추가 없음 |
+| 신규 검사 | 실제 원 두 formatter·현재 compact fallback·실제 두 emitter statement + own frozen AFFIX_POOL/AF/label 대역6군 및 main inline 구문1 첫 통과. finite/작은소수/음수·-0/legacy fallback(tick 포함)/단위·문자열·원값/type/serialization·3way byte 보존 확인 |
+| 검수 한계 | 전체 renderer/실제 GUI/DOM·아이템/P/확률/스탯/자원/계산/저장/API/창/native/PC 실행 없음. 실제 화면/줄바꿈/로케일·전투 효과 품질 PASS나 전체 최신 이식 완료를 뜻하지 않음 |
