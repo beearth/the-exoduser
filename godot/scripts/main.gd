@@ -154,6 +154,9 @@ func _ready() -> void:
 	if not world.bind_native_player_projectile_store(self):
 		_stop_source_player_startup("native_player_projectile_store_binding_rejected")
 		return
+	if not world.bind_native_player_projectile_consumer(self):
+		_stop_source_player_startup("native_player_projectile_consumer_binding_rejected")
+		return
 	# Read the existing ready Player child. Main is still inside its own _ready;
 	# native resource inspection does not acknowledge source startup or quality.
 	_native_player_sprite_startup_readonly_calls += 1
@@ -292,6 +295,7 @@ func get_native_content_version_manifest() -> Dictionary:
 	manifest["fireball_delivery"]=read_native_fireball_delivery_readiness()
 	manifest["fireball_sample_dispatch"]=get_native_fireball_sample_snapshot()
 	manifest["player_projectile_store"]=world.get_native_player_projectile_store_snapshot()
+	manifest["fireball_world_consumer"]=world.get_native_player_projectile_consumer_snapshot()
 	var slash: Variant = player.get_script().get_script_constant_map().get("SLASH_SHEET")
 	var combat_source: Variant = combat.get("source")
 	var qe: Dictionary = player.get_native_combat_qe_snapshot()
@@ -1993,3 +1997,93 @@ func dispatch_native_fireball_sample(caller: Node, rate: float) -> void:
 func get_native_fireball_sample_snapshot() -> Dictionary:
 	return {"last":_native_fireball_sample_last.duplicate(true),
 		"readiness":read_native_fireball_sample_dispatcher_readiness(),"loader_bound":false,"audible_verified":false}
+
+const NATIVE_FIREBALL_UNIQUE_KEYS = ["_uOrbPoisonBurst","_uVortexOrbPulse","_uPoiseOrbFracture","_uParryOrbEcho"]
+const NATIVE_FIREBALL_DAMAGE_CALLBACKS = ["read_enemy","elem_mul","bump_malice_weak","hurt_enemy","hit_side_effects","hurt_field_mobs","apply_fireball_poison"]
+
+func read_native_fireball_unique_values() -> Variant:
+	if not _native_main_service_live() or not is_instance_valid(source_state) or not source_state.is_native_new_run_state_ready():
+		return null
+	var inventory: Variant=source_state.read_current_inventory()
+	if not inventory is Dictionary or not inventory.get("equipped") is Dictionary:
+		return null
+	var result: Dictionary={}
+	for stat in NATIVE_FIREBALL_UNIQUE_KEYS:
+		var value: Variant=0
+		for slot in SourceLessonScript.AFFIX.SLOT_NAMES:
+			var item: Variant=inventory.equipped.get(slot)
+			if not SourceLessonScript.AFFIX.js_truthy(item):
+				continue
+			# Current source items are dictionaries. Do not turn an unknown
+			# native carrier into a fabricated item with zero unique values.
+			if not item is Dictionary:
+				return null
+			var raw: Variant=item.get(stat)
+			if SourceLessonScript.AFFIX.js_truthy(raw):
+				value=raw
+				break
+		result[stat]=value
+	return result
+
+func _query_native_fireball_enemies(x: float,y: float,radius: float) -> Array:
+	# Actual World query returns the same Node handles. read_enemy returns a
+	# separate view; it never replaces these handles with hashed dictionaries.
+	return world.query_native_enemies(x,y,radius)
+
+func _is_native_fireball_wall(x: float,y: float) -> bool:
+	return world.is_world_blocked(Vector2(x,y))
+
+func read_native_fireball_flight_dependencies() -> Dictionary:
+	if not _native_main_service_live() or not is_instance_valid(world) or not is_instance_valid(player) or world.get("player")!=player or not is_instance_valid(source_state) or not source_state.is_native_new_run_state_ready():
+		return {"ready":false,"missing":["actual_fireball_source_owners"]}
+	var missing: Array=[]
+	var clock: Variant=null
+	if world.has_method("read_native_source_player_projectile_context"):
+		clock=world.read_native_source_player_projectile_context()
+	if not clock is Dictionary or clock.get("ready")!=true:
+		missing.append("actual_source_projectile_clock_sp_dt_sp")
+	var envelope: Variant=null
+	if world.has_method("get_native_source_fireball_bindings"):
+		envelope=world.get_native_source_fireball_bindings()
+	var owner: Variant=envelope.get("owner") if envelope is Dictionary else null
+	var bindings: Variant=envelope.get("bindings") if envelope is Dictionary else null
+	var owner_ok: bool=owner is Node and is_instance_valid(owner) and owner.get_parent()==world and owner.get("player")==player and owner.get("source_state")==source_state and owner.get("source_resources")==source_resources
+	if not envelope is Dictionary or envelope.get("ready")!=true or not owner_ok or not bindings is Dictionary:
+		missing.append("actual_hurtE_field_mob_poison_side_effect_owner")
+	else:
+		if envelope.get("hit_set_key_kind")!="godot_instance_id":
+			missing.append("actual_field_mob_hit_set_key_contract")
+		for key in NATIVE_FIREBALL_DAMAGE_CALLBACKS:
+			var callback: Variant=bindings.get(key)
+			if not callback is Callable or not callback.is_valid() or callback.get_object()!=owner:
+				missing.append("actual_fireball_callback:"+key)
+	var g: Variant=source_state.read_current_g()
+	var counter: Variant=g.get("_gcT") if g is Dictionary else null
+	if not counter is int or counter<0 or counter>20:
+		missing.append("actual_current_G_gcT")
+	var profile: Dictionary=player.get_native_character_profile_snapshot()
+	if profile.get("ready")!=true or not profile.get("index") is int:
+		missing.append("actual_current_character_index")
+	var epoch: Variant=world.get_native_runtime_snapshot().get("clock_updates")
+	if not epoch is int:
+		missing.append("actual_native_phase_epoch")
+	if clock is Dictionary and clock.get("ready")==true:
+		for key in ["sp","dt_sp"]:
+			var value: Variant=clock.get(key)
+			if not (value is int or value is float) or not is_finite(float(value)):
+				missing.append("actual_source_clock_value:"+key)
+		if clock.get("native_epoch")!=epoch:
+			missing.append("actual_source_clock_phase_mismatch")
+	if not missing.is_empty():
+		return {"ready":false,"missing":missing,"source_clock_equivalence_claim":false}
+	var context: Dictionary={"sp":clock.sp,"dt_sp":clock.dt_sp,"gc_t":counter,"char_idx":profile.index}
+	if is_instance_valid(source_initialization_services):
+		var options: Variant=source_initialization_services.read_current_options()
+		if options is Dictionary:
+			if options.has("parts"):context["parts_opt"]=options.parts
+			if options.has("deathFx"):context["death_fx_opt"]=options.deathFx
+	var actual: Dictionary=bindings.duplicate()
+	actual["query_enemies"]=Callable(self,"_query_native_fireball_enemies")
+	actual["is_wall"]=Callable(self,"_is_native_fireball_wall")
+	actual["read_unique_values"]=Callable(self,"read_native_fireball_unique_values")
+	return {"ready":true,"context":context,"bindings":actual,"owner":owner,"native_epoch":epoch}

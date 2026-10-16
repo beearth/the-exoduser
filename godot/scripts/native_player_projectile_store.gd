@@ -17,6 +17,7 @@ var _configured: bool = false
 var _free: Array = []
 var _issued: Dictionary = {}
 var _live: Array = []
+var _iteration_open: bool = false
 var _last_error: String = ""
 var _created: int = 0
 var _reused: int = 0
@@ -119,7 +120,7 @@ func retire(caller: Node, packet: RefCounted, recycle: bool) -> Dictionary:
 	var hit_set: Variant = packet.fields.get("_hitSet")
 	if recycle and hit_set != null and not hit_set is Dictionary:
 		return _refuse("recycle_hit_set_shape_unsupported")
-	if packet.phase == "live":
+	if packet.phase == "live" and not _iteration_open:
 		_live.erase(packet)
 	_issued.erase(packet.get_instance_id())
 	if recycle:
@@ -171,8 +172,24 @@ func get_snapshot() -> Dictionary:
 	return {"schema": "exoduser.native.player-projectile-store.v1",
 		"ready": error.is_empty(), "reason": error, "last_error": _last_error,
 		"scope": "actual_world_packet_pool_registry_only", "free_limit": FREE_LIMIT,
-		"free": _free.size(), "issued": _issued.size(), "live": _live.size(),
+		"free": _free.size(), "issued": _issued.size(), "live": _live.size(), "source_iteration_open":_iteration_open,
 		"reset_refused": refused, "created": _created, "reused": _reused,
 		"returned": _returned, "dropped": _dropped,
 		"flight_bound": false, "damage_bound": false, "visual_bound": false,
 		"actual_fireball_delivery_bound": false, "latest_full_game": false}
+
+func begin_native_iteration(caller: Node) -> Dictionary:
+	var error: String=_owner_error(caller)
+	if not error.is_empty():
+		return _refuse(error)
+	if _iteration_open:
+		return _refuse("source_projectile_iteration_already_open")
+	_iteration_open=true
+	return {"ready":true,"packets":_live}
+
+func finish_native_iteration(caller: Node,survivors: int) -> bool:
+	if not _owner_error(caller).is_empty() or not _iteration_open or survivors<0 or survivors>_live.size():
+		return false
+	_live.resize(survivors)
+	_iteration_open=false
+	return true

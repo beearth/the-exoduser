@@ -3,6 +3,8 @@ extends Node2D
 
 const NativePlayerProjectileStoreScript = preload("res://scripts/native_player_projectile_store.gd")
 var _native_player_projectiles: RefCounted
+const NativeFireballWorldConsumerScript = preload("res://scripts/native_fireball_world_consumer.gd")
+var _native_player_projectile_consumer: RefCounted
 
 signal telemetry_event(kind: String, data: Dictionary)
 signal native_resource_load_changed(entry: RefCounted, phase: String)
@@ -2922,6 +2924,9 @@ func advance_native_birth_phase() -> void:
 	# owner AI and warnings share their source append order in the emitter.
 	if is_instance_valid(_native_projectile_emitter):
 		_native_projectile_emitter.advance_birth_phase(_native_birth_ticks, _native_frame)
+	# Source player pProjs follow all enemy projectile births, before HitFX3.
+	if is_instance_valid(_native_player_projectile_consumer):
+		_native_player_projectile_consumer.advance_native(self)
 	_native_birth_phase_updates += 1
 	_native_birth_ticks = 0.0
 
@@ -3278,3 +3283,25 @@ func read_native_player_projectiles(main: Node) -> Variant:
 
 func get_native_player_projectile_store_snapshot() -> Dictionary:
 	return _native_player_projectiles.get_snapshot() if is_instance_valid(_native_player_projectiles) else {"ready": false, "reason": "actual_world_packet_store_unbound", "latest_full_game": false}
+
+func bind_native_player_projectile_consumer(main: Node) -> bool:
+	if is_instance_valid(_native_player_projectile_consumer) or main!=get_parent() or not is_instance_valid(_native_player_projectiles):
+		return false
+	var consumer: RefCounted=NativeFireballWorldConsumerScript.new()
+	if not consumer.configure(main,self):
+		return false
+	_native_player_projectile_consumer=consumer
+	return true
+
+func begin_native_player_projectile_iteration(main: Node) -> Dictionary:
+	return _native_player_projectiles.begin_native_iteration(main) if is_instance_valid(_native_player_projectiles) else {"ready":false,"reason":"actual_world_packet_store_unbound"}
+
+func finish_native_player_projectile_iteration(main: Node,survivors: int) -> bool:
+	return _native_player_projectiles.finish_native_iteration(main,survivors) if is_instance_valid(_native_player_projectiles) else false
+
+func get_native_player_projectile_consumer_snapshot() -> Dictionary:
+	return _native_player_projectile_consumer.get_snapshot() if is_instance_valid(_native_player_projectile_consumer) else {"mounted":false,"full_skill_complete":false}
+
+func _record_native_fireball_projectile_release(fields: Dictionary) -> void:
+	if is_instance_valid(_native_player_projectile_consumer):
+		_native_player_projectile_consumer.record_native_release(fields)

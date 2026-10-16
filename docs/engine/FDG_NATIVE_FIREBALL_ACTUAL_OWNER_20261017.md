@@ -102,3 +102,27 @@
 | 미로드 | 실제 queue 요청을 기존 flush가 소비하고 새 fireball guard가 cap/eviction 전에 drop. audible/원 decoder/async loader/음질 성공 증명 아님 |
 | 종료/namespace | 마지막32와6 각각 ERROR0/WARNING0, Dummy. OS.get_user_data_dir가 FDG_ENGINE_FIREBALL_FINISH_FIXTURE_20261017_3A92로 선언과 일치. 기존 사용자 데이터 내용조회/cleanup0, 완전 save 격리 독립증명 아님 |
 | 전체 미완 | 실제 fireball projectile/gx publisher/flight/원시각/sample loader·actual scene 미검증. 이전39/6/pool31·3·8/외부26/identity/pose/entry suite 재연0. 이 검사들을 게임 기능 수·이식률로 합산하지 않음 |
+
+## 2026-10-17 악의구 actual World source consumer 후속
+
+| 항목 | 현재 I 계약 |
+|---|---|
+| 실제 phase | Main store 다음 consumer bind, World 기존 birth2에서 enemy births 후/HitFX3 전 호출. 원 World clock·기존 동순위 Node 순서 불변 |
+| array / slot | 원 동적 length/i/w loop. iteration 중 retire는 slot을 유지하고 마지막 resize(w)만. 같은 Dictionary HIT return→즉시 borrow/reset/publish→동일 pass append 처리 보존; iteration 밖 기존 즉시 erase 불변 |
+| 회수 | release 동기 기록→step 반환 직후 HIT만 recycle=true, 거리/벽DEAD=false. 다음packet/borrow 전 완료/이중반납0. partial/unknown 효과 보존·성공회수/재실행0 |
+| 실제 unique reader | 현재INV/SLOT_NAMES 첫JS-truthy item[stat] 원값. 합산·음수clamp/unknown→0 없음 |
+| carrier / owner | 실제 World 동일 Node handle과별도 read_enemy view 구분. 실제 hurtE/fieldmob/poison owner 및Set key계약 미연결은NR, rawdamage 대체/noopready0 |
+| clock / 미완 | source sp/dt_sp/gc_t의 실제현재권위필수, World epoch/fxdt/상수1 대입0. source clock/피해/VFX/delivery/gx 未·현재게임완료아님 |
+| 상세 | docs/engine/FDG_NATIVE_FIREBALL_WORLD_CONSUMER_20261017.md. 새첫31중30PASS/spy기대1FAIL→실패1만교정1PASS, 새혼합4PASS·sourceunique17slot독립대조. 이전통과suite재연0 |
+
+| 새 검수(2026-10-17) | 실제 관측 / 한계 |
+|---|---|
+| 첫 실행 |31중30PASS·순서 spy assertion1FAIL, exit1. parse/runtime ERROR/WARNING0. getter snapshot이 사전 clock spy를 기록했는데 trace[0]을 실제 phase 시작으로 오판한 fixture 기대 오류 |
+| 실패1 전용 교정 | 제품/원31runner/result 불변. preflight trace와 actual birth boundary를 분리해1/1PASS. 동일 혼합 pass의 필수 설정은 수행했으나 기존30 assertion 재검증/재계수0 |
+| 새 혼합4 | 같은 pass DEAD_DISTANCE/FLYING/HIT 순서·동일Array w-compaction/단일survivor·DEAD nonrecycle/HIT recycle·release 요청2~실retire2 사이 game callback0 모두PASS |
+| source 독립 대조 | 원 _uEq 및 실제 SLOT_NAMES17과 native 순서 동일, negative 첫truthy·0/false 이후값·emptyObject identity·부재0 확인. 기존 affix suite 재연 아님 |
+| 첫30 범위 | actual store/consumer/원flight 및 신규 Main/World 조각에서 sameObject return→borrow→publish/동적 append slot0·1·2/slot1 homing, same Node direct HP변경→폭발 cache1, partial 이후 재step0, source .25/.04와 fx99 분리, missing clock/owner/Set 계약·pause/outside retire 관측 |
+| source / 입력 domain | 실제 Node handle만 query→producer에 유지, read_enemy view Dict는 별개. 원 Dict carrier 실패를 수정/완료로 덮지 않음. clock/damage/fieldmob/map/player/state는 fixture이며 실제 owner body/공간/HP/스프라이트/scene·원 asset 검증 아님 |
+| 종료 | 새1/4 각각 exit0·stdio+Godot log ERROR/WARNING0. namespace FDG_ENGINE_FIREBALL_WORLD_FIXTURE_20261017_6C28 일치, 사용자 데이터 내용조회/cleanup0·완전 save 격리 독립증명 아님 |
+| 한계 보존 | 첫 기대 오류·원31로그 때문에 wholeClean=false. candidate6d4 원형/외부26·identity7/기존pool·finish suite 재연0. 실제 GDScript owner throw 주입/소스 예외전파 동등성은 검수하지 않음 |
+| 현재 실제 제품 | source clock/hurtE·fieldmob·poison owner 공개 API 아직 미연결, native fxdt를 대체값으로 쓰지 않아 NR. renderer/delivery/gx도未이며 최신 전체게임/실제 발사 완료가 아님 |
