@@ -51,6 +51,10 @@ var _source_normal_fields_configured := false
 var _hit_stun = 0.0
 var _stun_ticks = 0.0
 var _poise_regen = 0.0
+# mkEn/record15 omit this key. Presence is owned separately from its value;
+# the source writes it only when a poise break actually happens.
+var _maxStunned: Variant = null
+var _source_max_stunned_present := false
 var _hit_flash = 0.0
 var _spawn_ticks = 0.0
 var _separation_ticks = 0.0
@@ -102,6 +106,8 @@ func configure(value: Dictionary, owner_world: Node2D) -> void:
 	state = str(native["s"])
 	alive = bool(native["alive"])
 	_stun_ticks = float(native["stunned"])
+	_source_max_stunned_present = native.has("_maxStunned")
+	_maxStunned = native["_maxStunned"] if _source_max_stunned_present else null
 	_knockback = Vector2(float(native["kb"]["x"]), float(native["kb"]["y"]))
 	_rng.seed = int(data["factory_random_seed"])
 	_source_normal_fields_configured = data.get("id") == "ch1_initial_015" and source_order == 14 and etype == 0 and el == 0 and data.get("element") == "physical" and get_script().resource_path == "res://scripts/enemy_melee_flesh_crawler.gd"
@@ -329,6 +335,8 @@ func _apply_poise(amount: int) -> void:
 	_poise_regen = 0.0
 	if poise <= 0.0:
 		_stun_ticks = maxf(_stun_ticks, 180.0)
+		if _source_normal_fields_configured:
+			_record_native_normal_stun_max(180.0)
 		telemetry_event.emit("enemy_stagger", {"id": data["id"], "ticks": _stun_ticks})
 
 func _update_animation() -> void:
@@ -368,7 +376,7 @@ func _draw() -> void:
 func read_native_source_damage_fields(caller: Node) -> Dictionary:
 	var error := _source_normal_fields_error(caller)
 	if not error.is_empty(): return {"ready": false, "reason": error}
-	return {"ready": true, "scope": "CURRENT_TYPE0_FIELDS_PARTIAL", "full_hurtE_ready": false,
+	var report: Dictionary = {"ready": true, "scope": "CURRENT_TYPE0_FIELDS_PARTIAL", "full_hurtE_ready": false,
 		"source_clock_ready": false, "view": {"alive": alive, "hp": hp, "mhp": mhp,
 			"etype": etype, "elite": elite, "el": el, "s": state, "st2": st2,
 			"x": global_position.x, "y": global_position.y, "r": radius,
@@ -379,7 +387,10 @@ func read_native_source_damage_fields(caller: Node) -> Dictionary:
 			"kb": {"x": _knockback.x, "y": _knockback.y}},
 		"legacy_pending_poise": _pending_poise_amount,
 		"unowned": ["source_update_clock", "remaining_optional_status_lifetimes",
-			"shared_rng_and_vfx", "synchronous_source_poise", "normal_kill_pipeline"]}
+			"shared_rng_and_vfx", "source_poise_break_tail", "normal_kill_pipeline"]}
+	if _source_max_stunned_present:
+		report["view"]["_maxStunned"] = _maxStunned
+	return report
 
 func _source_normal_fields_error(caller: Node) -> String:
 	if not _source_normal_fields_configured: return "exact_normal_factory_actor_not_owned"
@@ -427,3 +438,39 @@ func commit_native_source_damage_field(owner: RefCounted, item: Dictionary) -> D
 		_:
 			return {"applied": false, "reason": "source_field_owner_unbound:" + field}
 	return {"applied": true}
+
+func _record_native_normal_stun_max(stun_time: float) -> bool:
+	# This 0 is the original (known-absent key || 0), never an unknown owner.
+	var previous: Variant = _maxStunned if _source_max_stunned_present else 0.0
+	if not (previous is int or previous is float) or not is_finite(float(previous)): return false
+	_maxStunned = maxf(float(previous), stun_time)
+	_source_max_stunned_present = true
+	return true
+
+# Only the actual same-World poise callback enters this atomic normal branch.
+# The deferred legacy request queue is neither consumed nor cleared here.
+func apply_native_source_poise_hit(owner: RefCounted, amount: Variant) -> Dictionary:
+	if not _source_normal_fields_error(world).is_empty() or not world.is_native_normal_enemy_field_call_current(owner, self) or not owner.is_applying_poise(self): return {"ready": false, "reason": "actual_source_poise_call_not_current", "poise_core_applied": false, "source_body_returned": false}
+	if typeof(amount) != TYPE_INT: return {"ready": false, "reason": "source_poise_42490_amount_not_int", "poise_core_applied": false, "source_body_returned": false}
+	# Source 19973 returns false without changing poiseR or any stun field.
+	if not alive or amount <= 0:
+		return {"ready": true, "source_return": false, "source_body_returned": true, "source_branch_entered": true, "poise_core_applied": false}
+	if _pending_poise_amount != 0.0: return {"ready": false, "reason": "legacy_deferred_poise_pending", "poise_core_applied": false, "source_body_returned": false}
+	if not is_finite(poise): return {"ready": false, "reason": "current_source_poise_fields_unsupported", "poise_core_applied": false, "source_body_returned": false}
+	# Stun/max-stun are read only on the breaking branch in the original.
+	if poise - amount <= 0.0:
+		if not is_finite(_stun_ticks): return {"ready": false, "reason": "current_source_poise_fields_unsupported", "poise_core_applied": false, "source_body_returned": false}
+		if _source_max_stunned_present and (not (_maxStunned is int or _maxStunned is float) or not is_finite(float(_maxStunned))): return {"ready": false, "reason": "current_source_max_stunned_unsupported", "poise_core_applied": false, "source_body_returned": false}
+	# R19976-19982: same actual poise, regen, stun and max-stun lifetime.
+	poise -= amount
+	_poise_regen = 0.0
+	if poise > 0.0:
+		return {"ready": true, "source_return": false, "source_body_returned": true, "source_branch_entered": true, "poise_core_applied": true}
+	poise = 0.0
+	_stun_ticks = maxf(_stun_ticks, 180.0)
+	_record_native_normal_stun_max(180.0)
+	# The source has NOT returned true yet. Do not fabricate current _uqScCtx,
+	# unique refunds, sound/text, slowMo or the 14 presentation RNG draws.
+	return {"ready": false, "reason": "source_poise_sky_context_unbound_19985",
+		"source_body_returned": false, "source_branch_entered": true,
+		"poise_core_applied": true, "core_staggered": true, "next_source_line": 19985}

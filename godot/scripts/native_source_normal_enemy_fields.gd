@@ -10,6 +10,8 @@ var _closed := false
 var _cursor := {"enemy_writes": 0, "owner_requests": 0, "presentation": 0, "events": 0}
 var _applying: Dictionary = {}
 var _last_field := ""
+var _poise_call_entered := false
+var _applying_poise := false
 
 func configure(world: Node, actor: Node) -> void:
 	_world = weakref(world)
@@ -27,6 +29,7 @@ func get_cursors() -> Dictionary:
 func close() -> void:
 	_closed = true
 	_applying = {}
+	_applying_poise = false
 
 func consume_prefix(packet: Variant) -> Dictionary:
 	var world: Variant = _world.get_ref() if _world != null else null
@@ -61,3 +64,55 @@ func consume_prefix(packet: Variant) -> Dictionary:
 func _stop(reason: String) -> Dictionary:
 	return {"ok": false, "prefix_applied": false, "reason": reason,
 		"applied_prefix": get_cursors(), "full_hurtE_ready": false}
+
+func get_poise_hit_callable() -> Callable:
+	var world: Variant = _world.get_ref() if _world != null else null
+	var actor: Variant = _actor.get_ref() if _actor != null else null
+	if _closed or not is_instance_valid(world) or not is_instance_valid(actor) or not world.is_native_normal_enemy_field_call_current(self, actor): return Callable()
+	return Callable(self, "poise_hit")
+
+func is_applying_poise(actor: Node) -> bool:
+	return not _closed and _applying_poise and _actor.get_ref() == actor
+
+# v3 owners.poise_hit(call) at 42490. Parent stream cursors and the separate
+# synchronous owner core are reported independently; a core write is not a
+# parent enemy_writes event and never advances those four cursors.
+func poise_hit(call: Variant) -> Dictionary:
+	var world: Variant = _world.get_ref() if _world != null else null
+	var actor: Variant = _actor.get_ref() if _actor != null else null
+	if _closed or not is_instance_valid(world) or not is_instance_valid(actor) or not world.is_native_normal_enemy_field_call_current(self, actor): return _poise_stop("actual_source_poise_call_not_current")
+	if _poise_call_entered: return _poise_stop("source_poise_sync_call_already_entered")
+	if not call is Dictionary or not call.get("kind") is String or call["kind"] != "poise_hit" or typeof(call.get("line")) != TYPE_INT or call["line"] != 42490 or typeof(call.get("amt")) != TYPE_INT: return _poise_stop("source_poise_42490_call_shape")
+	_poise_call_entered = true
+	var prefix: Dictionary = consume_prefix(call.get("commit"))
+	if prefix.get("ok") != true:
+		prefix["source_body_returned"] = false
+		prefix["poise_core_applied"] = false
+		prefix["executed"] = 0
+		return prefix
+	_applying_poise = true
+	var core: Dictionary = actor.apply_native_source_poise_hit(self, call["amt"])
+	_applying_poise = false
+	var result: Dictionary = {"ok": false, "prefix_applied": true,
+		"applied_prefix": get_cursors(), "executed": 1 if core.get("source_branch_entered") == true else 0,
+		"poise_core_applied": core.get("poise_core_applied") == true,
+		"source_body_returned": core.get("source_body_returned") == true,
+		"full_hurtE_ready": false, "source_clock_ready": false}
+	var fields: Dictionary = actor.read_native_source_damage_fields(world)
+	result["parent_fields"] = fields
+	if core.get("ready") == true and core.get("source_body_returned") == true and core.get("source_return") is bool and fields.get("ready") == true:
+		result["ok"] = true
+		result["staggered"] = core["source_return"]
+		result["parent_view"] = fields["view"]
+	else:
+		result["reason"] = str(core.get("reason", "source_poise_fresh_view_unavailable"))
+		if core.has("core_staggered"): result["core_staggered"] = core["core_staggered"]
+		if core.has("next_source_line"): result["next_source_line"] = core["next_source_line"]
+	return result
+
+func _poise_stop(reason: String) -> Dictionary:
+	var result: Dictionary = _stop(reason)
+	result["poise_core_applied"] = false
+	result["source_body_returned"] = false
+	result["executed"] = 0
+	return result

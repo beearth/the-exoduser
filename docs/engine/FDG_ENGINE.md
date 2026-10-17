@@ -1925,3 +1925,14 @@ attack `dark-druid-native-slam-contact-r5`는 2.6초·24FPS이고 idle은 `dark-
 | 공개 source field prefix | World의 current same-Node invocation→source `events` 순서의 known shield/alert/recover-st2/HP/hit field write. 기존 `receive_damage` 재호출·doublemath0. 미소유 status/poise/KB/owner request/presentation/kill에서 exact partial. `full_hurtE_ready=false/source_clock_ready=false` |
 | 첫 새 검사 | 21/21 PASS·exit0·양 로그 ERROR/WARN/leak0. actual actor methods의 렌더 setup/_draw 억제·projectile 및 기타 World 대역 fixture; full Main·source acc/RNG·실전/전체 최신/시각 PASS 아님. 이전 frozen 검수 재연0 |
 | 정본 | [일반 몬스터 필드 소유자](FDG_NATIVE_NORMAL_ENEMY_FIELD_OWNER_20261017.md). 원 snapshot/support/runtime 및 옛 배송·미이식 이력은 보존하며 이 표는 새 field API만 갱신 |
+
+
+## 2026-10-17 일반 type0 동기 poise 실제 owner 후속
+
+| 항목 | 현재 구현 / 검수 범위 |
+|---|---|
+| exact actor / callback | `ch1_initial_015/order14/type0/physical`의 World current invocation→v3 `poise_hit(call)`42490→parent prefix→같은 실제 poise/regen/stun/max-stun→fresh view |
+| nonbreak / break | source false 반환은 owner `ok=true/staggered=false`로 보존. break는 실제 core(poise0·stunned/maxStunned180) 적용 후 현재 `_uqScCtx`19985 미소유에서 partial/함수return未. parent4cursor와별도core적용을구분 |
+| 수명 / 경계 | 기존 deferred pending 보존·재사용0. native 같은 stun/regen counter를 소비하나 source acc/regen 전체동등未; fullhurtE/source_clock_ready=false. unique/SFX/slowMo/14RNG/kill·다른 actor·Q/E/BOSS 연결완료 아님 |
+| 새 영향 검수 | 첫새poise21 PASS/양로그clean→분기guard교정뒤새영향2 PASS/양로그clean. 앞field21·37/24/29·parse·수송 재연0; final전체suite단일재실행 증거아님 |
+| 상세 정본 | [동기 포이즈 소유자](FDG_NATIVE_NORMAL_ENEMY_SYNC_POISE_20261017.md). 이전 미소유/배송/검수 이력은 보존 |

@@ -68,3 +68,14 @@
 | 사용량 | 시작 주간43% 관측, 일간UNKNOWN·공유 계정 소비. 종료 관측은 외부 receipt에 기록 |
 
 외부 새 증거: `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/NORMAL-ENEMY-FIELD-OWNER-20261017/`의 prewrite/extension manifest, code/doc write log, post-code docs search, fixture/first.result.json, first.stdio.log/first.godot.log 및 local/remote preservation receipt. Git WIP 보존이 현재 게임 실행본 적용을 뜻하지 않는다.
+
+
+## 2026-10-17 일반 type0 동기 poise 실제 owner 후속
+
+| 항목 | 현재 구현 / 검수 범위 |
+|---|---|
+| exact actor / callback | `ch1_initial_015/order14/type0/physical`의 World current invocation→v3 `poise_hit(call)`42490→parent prefix→같은 실제 poise/regen/stun/max-stun→fresh view |
+| nonbreak / break | source false 반환은 owner `ok=true/staggered=false`로 보존. break는 실제 core(poise0·stunned/maxStunned180) 적용 후 현재 `_uqScCtx`19985 미소유에서 partial/함수return未. parent4cursor와별도core적용을구분 |
+| 수명 / 경계 | 기존 deferred pending 보존·재사용0. native 같은 stun/regen counter를 소비하나 source acc/regen 전체동등未; fullhurtE/source_clock_ready=false. unique/SFX/slowMo/14RNG/kill·다른 actor·Q/E/BOSS 연결완료 아님 |
+| 새 영향 검수 | 첫새poise21 PASS/양로그clean→분기guard교정뒤새영향2 PASS/양로그clean. 앞field21·37/24/29·parse·수송 재연0; final전체suite단일재실행 증거아님 |
+| 상세 정본 | [동기 포이즈 소유자](FDG_NATIVE_NORMAL_ENEMY_SYNC_POISE_20261017.md). 이전 미소유/배송/검수 이력은 보존 |

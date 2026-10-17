@@ -54158,3 +54158,12 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 | code3 / docs12 | canonical st2·mhp·el과legacy aliases, 실제 World/actor source field-prefix owner. exact ch1_initial_015만 field partial; fullhurtE/sourceclock/RNG/poise/KB/kill未 |
 | 신규검수 | 첫21/21 PASS·exit0·양로그ERROR/WARN/leak0. full product scene이 아닌 실제actor code/Worldmethod+명시fixture. 옛37/24/29/Frame/prefix/parse 재연0 |
 | source·보존·한계 | FDG_NATIVE_NORMAL_ENEMY_FIELD_OWNER_20261017.md. final15 paths 중 뒤7docs는 코드후검색→쓰기전extension; 전15가첫code전백업이라는주장0. R/main/served/창/원asset/save/UI변경0 |
+
+
+## 2026-10-17 exact normal type0 synchronous poise owner
+
+| 변경 | 현재 범위 / 증거 |
+|---|---|
+| code3/docs14 | same World v3 poise_hit42490→parent prefix→actual normal poise/regen/stun/max-stun. nonbreak sourcefalse 정상반환; break core 적용 후 _uqScCtx19985 tail NR. parent4cursor/core별도 |
+| 새 검사 | 첫새poise21PASS·양로그clean; nonbreak의불필요stun/max-owner guard교정 뒤새영향2PASS·양로그clean. oldfield21/37/24/29/parse/수송재연0·final전체단일suite재실행0 |
+| docs / 보존 | 일반type0 HP100% 생성 계약과낡은HP*.5행정정만; BOSS/QE/밸런스0. FDG_NATIVE_NORMAL_ENEMY_SYNC_POISE_20261017.md. 최초10path+코드후발견7docs의쓰기전extension을구분. R/main/served/창/원asset/save0 |

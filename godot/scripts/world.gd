@@ -3345,3 +3345,11 @@ func end_native_normal_enemy_field_call(invocation: RefCounted) -> bool:
 	invocation.close()
 	_native_normal_enemy_field_calls.pop_back()
 	return true
+
+func get_native_normal_enemy_poise_hit(invocation: RefCounted) -> Callable:
+	if _native_normal_enemy_field_calls.is_empty() or not is_instance_valid(invocation): return Callable()
+	var actor: Variant = _native_normal_enemy_field_calls[-1]["actor"].get_ref()
+	if not is_instance_valid(actor) or not is_native_normal_enemy_field_call_current(invocation, actor): return Callable()
+	# The World does not store this self-bound Callable. The invocation keeps
+	# only weak World/actor handles, avoiding a self-owned callback graph.
+	return invocation.get_poise_hit_callable()
