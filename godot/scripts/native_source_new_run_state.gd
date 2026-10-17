@@ -716,3 +716,87 @@ func restore_native_legendary_item_stat(main: Node, expected_inventory: Dictiona
 		return {"status":"UNSUPPORTED_OPERAND","reason":"JS_undefined_legacy_value_unrepresented","raw":special,"writes":0}
 	expected_item[key] = special["val"]
 	return {"status":"READY","writes":1,"item":expected_item,"field":key,"value":expected_item[key]}
+
+func is_native_play_time_owner_current(main: Node, expected_player: Node,
+		expected_world: Node, expected_resources: Node, raw_g: Variant = null,
+		require_g_identity: bool = false) -> bool:
+	if typeof(_initialized) != TYPE_BOOL or not _initialized:
+		return false
+	if not is_same(_player, expected_player) or not is_same(_world, expected_world) \
+			or not is_same(_resources, expected_resources):
+		return false
+	for candidate in [self, main, _player, _world, _resources]:
+		if not candidate is Node or not is_instance_valid(candidate) \
+				or candidate.is_queued_for_deletion() or not candidate.is_inside_tree():
+			return false
+	var live_tree: SceneTree = main.get_tree()
+	for candidate in [self, _player, _world, _resources]:
+		if not is_same(candidate.get_tree(), live_tree):
+			return false
+	if not is_same(_world.get_parent(), main) or not is_same(get_parent(), _world) \
+			or not is_same(_resources.get_parent(), _world):
+		return false
+	var initialized_claim: Variant = _player.get_meta(INITIALIZED_META, null)
+	if typeof(initialized_claim) != TYPE_BOOL or not initialized_claim:
+		return false
+	var claim: Variant = _player.get_meta(CLAIM_META, null)
+	if not claim is WeakRef or not is_instance_valid(claim) \
+			or not is_same(claim.get_ref(), self):
+		return false
+	if require_g_identity and (not raw_g is Dictionary or not is_same(_g, raw_g)):
+		return false
+	return true
+
+
+func read_native_normal_enemy_play_time(main: Node, services: RefCounted) -> Dictionary:
+	var prefix: Array = []
+	var observation: Dictionary = {
+		"status": "NOT_READY",
+		"source": "native.State._g.playTime",
+		"reason": "native_play_time_owner_not_current",
+		"raw_owner": self,
+		"raw_main": main,
+		"raw_services": services,
+		"query_prefix": prefix,
+	}
+	if not is_instance_valid(main) or not is_instance_valid(services) \
+			or not main.is_native_source_play_time_context_current(services, self):
+		return observation
+	var observed_g: Dictionary = _g
+	observation["raw_g"] = observed_g
+	var present: bool = observed_g.has("playTime")
+	observation["present"] = present
+	prefix.append({"kind": "presence", "key": "playTime", "present": present})
+	var raw_value: Variant
+	var raw_reason: String = "native_play_time_field_unresolved"
+	if present:
+		raw_value = observed_g["playTime"]
+		observation["raw_value"] = raw_value
+		observation["raw_type"] = typeof(raw_value)
+		prefix.append({"kind": "value", "key": "playTime", "raw_value": raw_value})
+		raw_reason = ""
+		if typeof(raw_value) == TYPE_INT:
+			if raw_value < -9007199254740991 or raw_value > 9007199254740991:
+				raw_reason = "unsupported_native_play_time_integer"
+		elif typeof(raw_value) == TYPE_FLOAT:
+			if not is_finite(raw_value):
+				raw_reason = "unsupported_native_play_time_non_finite"
+		else:
+			raw_reason = "unsupported_native_play_time_type"
+	observation["reason"] = "native_play_time_observation_pending_validation"
+	if not main.is_native_source_play_time_context_current(services, self, observed_g, true):
+		return {
+			"status": "NOT_READY",
+			"source": "native.State._g.playTime",
+			"reason": "native_play_time_owner_changed_after_observation",
+			"read_result": observation,
+			"raw_g": observed_g,
+			"query_prefix": prefix,
+		}
+	if not raw_reason.is_empty():
+		observation["reason"] = raw_reason
+		return observation
+	observation["status"] = "READY"
+	observation["reason"] = ""
+	observation["value"] = raw_value
+	return observation

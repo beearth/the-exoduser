@@ -901,3 +901,51 @@ func read_normal_enemy_element_multiplier(a: Variant, d: Variant) -> Dictionary:
 	if result.get("status") == "READY" and (not result.has("value") or typeof(result["value"]) != TYPE_FLOAT):
 		return _native_source_element_service_not_ready("element_formula_value_malformed", a, d, result)
 	return result
+
+func read_normal_enemy_play_time() -> Dictionary:
+	var main: Variant = _ref(_main)
+	var state: Variant = _ref(_state)
+	if not main is Node or not state is Node or not is_instance_valid(main) \
+			or not is_instance_valid(state):
+		return {
+			"status": "NOT_READY",
+			"source": "native.Services.play_time",
+			"reason": "native_play_time_services_owner_not_current",
+		}
+	if not main.is_native_source_play_time_context_current(self, state):
+		return {
+			"status": "NOT_READY",
+			"source": "native.Services.play_time",
+			"reason": "native_play_time_services_context_not_current",
+		}
+	var result: Variant = state.read_native_normal_enemy_play_time(main, self)
+	var current: bool = is_instance_valid(main) and is_instance_valid(state) \
+		and is_same(_ref(_main), main) and is_same(_ref(_state), state)
+	if current:
+		if result is Dictionary and result.has("raw_g"):
+			current = main.is_native_source_play_time_context_current(
+				self, state, result["raw_g"], true)
+		else:
+			current = main.is_native_source_play_time_context_current(self, state)
+	if not current:
+		var failure: Dictionary = {
+			"status": "NOT_READY",
+			"source": "native.Services.play_time",
+			"reason": "native_play_time_services_owner_changed_after_observation",
+			"read_result": result,
+		}
+		if result is Dictionary:
+			for raw_key in ["raw_g", "raw_value", "query_prefix"]:
+				if result.has(raw_key):
+					failure[raw_key] = result[raw_key]
+		return failure
+	if not result is Dictionary or result.get("status") not in ["READY", "NOT_READY"] \
+			or (result.get("status") == "READY" and not result.has("value")) \
+			or (result.get("status") == "NOT_READY" and result.has("value")):
+		return {
+			"status": "NOT_READY",
+			"source": "native.Services.play_time",
+			"reason": "native_play_time_owner_result_malformed",
+			"read_result": result,
+		}
+	return result

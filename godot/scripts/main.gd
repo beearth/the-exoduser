@@ -56,6 +56,7 @@ var _q_canvas: Node2D
 var _q_sprite: Sprite2D
 var _native_source_elements: Variant = {"P": 0, "F": 1, "I": 2, "D": 3, "L": 4, "H": 5, "E": 6}
 var _native_source_elements_owner_script: WeakRef = weakref(get_script())
+var _native_source_play_time_owner_script: WeakRef = weakref(get_script())
 
 var world: Node2D
 var player: CharacterBody2D
@@ -2477,3 +2478,34 @@ func read_native_source_element_multiplier(a: Variant, d: Variant, formula: RefC
 			return _native_source_element_finish(same_element, a, d, reads, elements, formula, services, state, providers)
 	var neutral: Dictionary = {"status": "READY", "value": 1.0, "raw_arguments": {"a": a, "d": d}, "EL_reads": reads, "source": "Main._native_source_elements/elMul"}
 	return _native_source_element_finish(neutral, a, d, reads, elements, formula, services, state, providers)
+
+func is_native_source_play_time_context_current(services: RefCounted, state: Node,
+		raw_g: Variant = null, require_g_identity: bool = false) -> bool:
+	if not is_instance_valid(self) or is_queued_for_deletion() \
+			or not is_instance_valid(_native_source_play_time_owner_script):
+		return false
+	var expected_script: Variant = _native_source_play_time_owner_script.get_ref()
+	if not expected_script is Script or not is_instance_valid(expected_script) \
+			or not is_same(get_script(), expected_script):
+		return false
+	if not is_instance_valid(services) or not is_instance_valid(state) \
+			or state.is_queued_for_deletion():
+		return false
+	if not is_same(source_initialization_services, services) or not is_same(source_state, state):
+		return false
+	if not is_same(services.get_script(), SourceInitializationServicesScript) \
+			or not is_same(state.get_script(), SourceStateScript):
+		return false
+	if not is_inside_tree():
+		return false
+	var live_tree: SceneTree = get_tree()
+	for candidate in [player, world, state, source_resources]:
+		if not candidate is Node or not is_instance_valid(candidate) \
+				or candidate.is_queued_for_deletion() or not candidate.is_inside_tree() \
+				or not is_same(candidate.get_tree(), live_tree):
+			return false
+	if not is_same(world.get_parent(), self) or not is_same(state.get_parent(), world) \
+			or not is_same(source_resources.get_parent(), world):
+		return false
+	return state.is_native_play_time_owner_current(
+		self, player, world, source_resources, raw_g, require_g_identity)
