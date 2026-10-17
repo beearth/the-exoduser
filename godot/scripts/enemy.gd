@@ -6,6 +6,12 @@ signal telemetry_event(kind: String, data: Dictionary)
 const ENEMY_PROJECTILE = preload("res://scripts/enemy_projectile.gd")
 
 var data: Dictionary = {}
+var _native_hp_actor_script: WeakRef = weakref(get_script())
+var _native_hp_bound_world: WeakRef
+var _native_hp_bound_world_script: WeakRef
+var _native_hp_bound_main: WeakRef
+var _native_hp_bound_main_script: WeakRef
+
 var world: Node2D
 var player: Node2D
 var spawn_position = Vector2.ZERO
@@ -44,6 +50,13 @@ var _knockback = Vector2.ZERO
 func configure(value: Dictionary, owner_world: Node2D) -> void:
 	data = value
 	world = owner_world
+	_native_hp_bound_world = weakref(owner_world)
+	var bound_world_script: Script = owner_world.get_script()
+	_native_hp_bound_world_script = weakref(bound_world_script) if bound_world_script != null else null
+	var bound_main: Node = owner_world.get_parent()
+	_native_hp_bound_main = weakref(bound_main) if bound_main != null else null
+	var bound_main_script: Script = bound_main.get_script() if bound_main != null else null
+	_native_hp_bound_main_script = weakref(bound_main_script) if bound_main_script != null else null
 	spawn_position = Vector2(float(data["spawn_position"][0]), float(data["spawn_position"][1]))
 	position = spawn_position
 	hp = int(data["hp"])
@@ -198,6 +211,60 @@ func _fire_projectile() -> void:
 func _forward_event(kind: String, value: Dictionary) -> void:
 	telemetry_event.emit(kind, value)
 
+func _native_enemy_hp_owner_is_current() -> bool:
+	var bound_world: Variant = _native_hp_bound_world.get_ref() if _native_hp_bound_world != null else null
+	var bound_main: Variant = _native_hp_bound_main.get_ref() if _native_hp_bound_main != null else null
+	var actor_script: Variant = _native_hp_actor_script.get_ref() if _native_hp_actor_script != null else null
+	var world_script: Variant = _native_hp_bound_world_script.get_ref() if _native_hp_bound_world_script != null else null
+	var main_script: Variant = _native_hp_bound_main_script.get_ref() if _native_hp_bound_main_script != null else null
+	if not is_inside_tree() or is_queued_for_deletion() or not actor_script is Script \
+			or not is_same(actor_script, get_script()):
+		return false
+	if not bound_world is Node2D or not is_instance_valid(bound_world) \
+			or bound_world.is_queued_for_deletion() or not bound_world.is_inside_tree() \
+			or not world_script is Script \
+			or not is_same(world_script, bound_world.get_script()) \
+			or not is_same(world, bound_world) or not is_same(get_parent(), bound_world) \
+			or not is_same(get_tree(), bound_world.get_tree()):
+		return false
+	if not bound_main is Node or not is_instance_valid(bound_main) \
+			or bound_main.is_queued_for_deletion() or not bound_main.is_inside_tree() \
+			or not main_script is Script \
+			or not is_same(main_script, bound_main.get_script()) \
+			or not is_same(bound_world.get_parent(), bound_main) \
+			or not is_same(get_tree(), bound_main.get_tree()) \
+			or not is_same(bound_main.get("world"), bound_world):
+		return false
+	return true
+
+func apply_native_normal_enemy_hp_write(write: Dictionary) -> Dictionary:
+	# This is the real native HP field owner, not a result cursor or a shadow view.
+	var report := {"status":"NOT_READY", "applied":false, "owner":self,
+		"owner_script":get_script(), "world":world, "write":write}
+	if not _native_enemy_hp_owner_is_current():
+		report["reason"] = "native_enemy_hp_owner_not_current"
+		return report
+	var field: Variant = write.get("field")
+	if typeof(field) != TYPE_STRING or field != "hp":
+		report["reason"] = "native_enemy_write_field_unsupported"
+		return report
+	if not write.has("value"):
+		report["reason"] = "native_enemy_hp_value_missing"
+		return report
+	var value: Variant = write["value"]
+	if typeof(value) != TYPE_INT and typeof(value) != TYPE_FLOAT:
+		report["reason"] = "native_enemy_hp_value_unsupported"
+		return report
+	if typeof(value) == TYPE_FLOAT and not is_finite(value):
+		report["reason"] = "native_enemy_hp_non_finite"
+		return report
+	hp = value
+	report["status"] = "APPLIED"
+	report["applied"] = true
+	report["field"] = "hp"
+	report["applied_value"] = value
+	return report
+
 func receive_damage(amount: int, direction: Vector2, source: String, source_options: Dictionary = {}) -> void:
 	if not alive or amount <= 0:
 		return
@@ -206,7 +273,9 @@ func receive_damage(amount: int, direction: Vector2, source: String, source_opti
 		amount=maxi(amount,int(mhp*0.10))
 	alerted = true
 	_contact_ticks = minf(_contact_ticks, 5.0)
-	hp -= amount
+	var hp_write: Dictionary = apply_native_normal_enemy_hp_write({"field":"hp", "value":hp - amount})
+	if hp_write.get("applied") != true:
+		return
 	_hit_flash = 6.0
 	_hit_stun = float(data["hit_stun_ticks"])
 	if source == "weapon" and not direction.is_zero_approx():

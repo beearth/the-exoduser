@@ -54426,3 +54426,11 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 | 검수 분리 | 기존 owner34case477(설정163·행동314) 인수, 원17 중15통과2실패와 별도2true는 보존. V12 후보 원11case43행동true/setup signedzero1false·exit1 전체FAIL과 별도4case19행동+setup4 true의 한정 보완은 각각 유지. 원성공 검수·parse 재실행 없음 |
 | 실제 실행·보류 | 이번은 소스 정렬이다. 사용자 열린 앱·compiled export·PC 실행·실제 Main/State clock·자연 전투·JS·최신 게임 인수는 미확인. V12 제품 copy·World hook·build/reload/import/PC 전달 없음 |
 | 정본 / 증거 | [FDG_NATIVE_NORMAL_ENEMY_PLAY_TIME_MAIN_SYNC_20261017.md](engine/FDG_NATIVE_NORMAL_ENEMY_PLAY_TIME_MAIN_SYNC_20261017.md) · [소스 통합 final receipt](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/NORMAL-HURTE-PLAY-TIME-MAIN-SOURCE-SYNC-20261017/receipt.json>) |
+
+## 2026-10-18 — P1-002.C 일반 적 HP 효과 owner 부분 인수 / WIP
+
+- 변경 범위: code1 `godot/scripts/enemy.gd` + docs4(개발 계획·Godot 현황·field owner·이 변경로그). 이번 수리는 변경로그 append만 추가하며, 제품 V2 15750B / SHA256 `b507455cf66b830502cbf1aeaf433cded413002c1988ba2fd50690e512bf58b4`는 유지한다.
+- HP 실제 쓰기 경로와 일부 거절 경계는 격리 검수 인수, 첫 전투 전체 연결은 진행 중이다. clock/currentview/real13/typed effects/자연 첫피격 연결은 남아 있다.
+- 실행별 증거는 분리한다: V1 17case77check true; V2 weak-expiry 준비조건 실패; 별도 current Script 제거 2case34check true + draw SCRIPT ERROR2회; draw 격리 후속 2case34check true·양로그 오류/경고/누수진단0. 이를 합산 PASS나 전체 V2·실게임 draw·자연GC 증명으로 표시하지 않는다.
+- V1→V2 직전 fresh currentWORK savedPRE 누락을 보존하며 새 사본을 소급 PRE로 삼지 않는다. 최초 커밋은 2026-10-17 15:50:14.573049~796774 UTC에 문서 동기화 훅으로 exit1이었다. 이 필수 변경로그 추가는 그 실패의 수리이며 과거 성공으로 소급하지 않는다.
+- [HP owner 계약·실행별 근거](engine/FDG_NATIVE_NORMAL_ENEMY_FIELD_OWNER_20261017.md) · [단계별 현황](engine/FDG_GODOT_PORT_STATUS.md). 별도 WIP 보존이며 main/R/실행판 갱신·P1-002 완료가 아니다.

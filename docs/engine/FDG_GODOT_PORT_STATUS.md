@@ -21,6 +21,24 @@ P3 콘텐츠, P4 게임 흐름·저장·설정 등 독립 작업은 자기 선�
 [이번 계획 문서 영수증](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/HUMAN-GODOT-MASTER-GOAL-AND-STAGED-EXECUTION-20261017/receipt.json>) · [소스 통합 정본](FDG_NATIVE_NORMAL_ENEMY_PLAY_TIME_MAIN_SYNC_20261017.md)
 
 
+
+## P1-002 실제 진행 — 접점·코드·검수·자연 인수 분리
+
+| 범위 | 실제 상태 | 근거 / 다음 행동 |
+|---|---|---|
+| 첫3 접점 | 기본 native 근접 caller는 player._melee_contact→generic enemy.receive_damage. 현재 Main/State/World frame 경로는 source-frame prefix이며 gap callbacks에 actual owner 미연결. 일반 적 HP/status/display 실제 owner는 enemy.gd | source만 확인. 원weapon 인수는 기존 Claude 오더 입력을 사용하며 같은 조사를 반복하지 않음 |
+| 실제 코드 / P1-002.C | generic enemy.apply_native_normal_enemy_hp_write(write:Dictionary) arity1와 현재 receive_damage의 단일 HP write 위임 부분 구현. V1 첫 격리17case77check true, V2 추가 Script 수명 검수는 setup 실패로 중단; ROOT 부분 인수 완료. 같은 actor/world/main 역할·Script 객체·Tree/parent 수명 확인 후 hp 실제 쓰기 뒤 APPLIED. 원write same-ref, finite int/float raw값 유지 | HP 부분만 연결. 원 alert→HP→stun/kb/death/presentation 순서와 값/type 유지. 거절 시 legacy는 HP 이후 진행을 중단하며 이미 일어난 alert/contact는 보존 |
+| 새 영향 확인 | V1 첫 격리17case77check true·exit0. V2 추가 Script 수명 검수는1case6check 중5true·setup/weak_world_script_expired 1false·exit1. World.set_script(null)은 성공했으나 WeakRef 즉시 만료 준비조건 실패로 이후 HP 거절 호출과 Main Script-loss는 미실행. GC 원인은 미상; 제품 HP 거절 실패로 해석하지 않음. 자동 수리·재실행 및 기존 검수 재연 없음 | [P1-002.C 실제 HP owner 작업 영수증](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/P1-002-FIRST-COMBAT-ACTUAL-CONSUMER-20261017/IMPLEMENTATION-HP-EFFECT-OWNER-20261018/receipt.json>) |
+| ROOT 부분 인수 | HP 실제 쓰기 경로와 일부 거절 경계는 격리 검수 인수, 첫 전투 전체 연결은 진행 중. V1 17case77check와 각 후속 실행을 ROOT가 범위별 인수. 제품 V2 15750B SHA256 b507455cf66b830502cbf1aeaf433cded413002c1988ba2fd50690e512bf58b4 유지 | 전체 hurtE·clock·자연 첫피격·실행판 완료 아님 |
+| current Script 제거 첫 실행 | World/Main 독립2case34check true·exit0, 각각 실제 HP 요청1회와 원HP875 TYPE_INT 유지. stderr624B의 Probe._draw animation 누락 SCRIPT ERROR2회로 clean 실행 아님. WeakRef는 둘 다 TYPE_OBJECT24·isScript true·isNull false 관측 | [current Script 제거 원실행](/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/P1-002-FIRST-COMBAT-ACTUAL-CONSUMER-20261017/IMPLEMENTATION-HP-EFFECT-OWNER-20261018/qa/hp_effect_current_script_removal_manifest.json) |
+| draw 격리 후속 | Probe._draw pass3행·결과path·scope만 바꾼 허용 후속1회. 독립2case34 unique(case,name) true·exit0·stdout140B/stderr0B·양로그 SCRIPT ERROR/기타ERROR/경고/누수진단0 | [draw 격리 후속 실행](/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/P1-002-FIRST-COMBAT-ACTUAL-CONSUMER-20261017/IMPLEMENTATION-HP-EFFECT-OWNER-20261018/qa/hp_effect_script_removal_draw_isolation_manifest.json). 실제 게임 draw·expiredweak·자연GC 증거 아님; 원실패와 합산PASS하지 않음 |
+| 자연 첫피격 인수 | 미완. source clock/currentG 실제 생산·lifecycle, enemy s/st2/el 권위, real13 owner와 typed events 실제1회 적용 연결이 남음 | callback 12/25·미13은 그대로. 후보 copy·false→true·임의clock·cursor-only resume·후반fallback 없음. 실제 게임/PC 인수 미완 |
+
+HP 실제 쓰기 경로와 일부 거절 경계는 격리 검수 인수, 첫 전투 전체 연결은 진행 중입니다. clock/currentview/real13/typed effects/자연 첫피격 연결은 남아 있습니다.
+
+이 HP writer는 실제 native 필드 적용 owner의 한 부분이며 전체 source hurtE·prefix apply dispatcher·clock·P1-002 완료가 아니다. 새 idempotency token/epoch/counter/cache나 재호출 dedup을 만들지 않는다. APPLIED는 이번 실제 HP 쓰기1회의 영수증이며 다른 효과나 전체 prefix 완료를 뜻하지 않는다.
+
+
 ## P0-001 공통 문서 체크포인트
 
 인수된 계획 기준과 현재 작업행 **두 문서만** 공통 Git 문서로 보존한다. P1-001의 게임 코드/소스 기준 fb118과 이번 문서-only commit을 구분한다. 이번 local/API/main/R의 실제 SHA·tree·부모·문서 공유 결과는 [문서 체크포인트 영수증](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/P0-001-STAGED-PORT-PLAN-SHARED-CHECKPOINT-20261017/receipt.json>)에서 확인한다. 이 문서에 자기 commit SHA를 선행 기입하지 않는다. 코드·실행판·새 QA·V12 제품 copy·World hook 승인은 추가되지 않는다. ROOT 첫인수 전 문서 공유 완료로 승격하지 않는다.
