@@ -1103,3 +1103,17 @@ code1/docs4 exact5의 WORK/HEAD 개별10 기록은 첫 제품쓰기 전이다. �
 | 범위/한계 | full Main/Services.configure/State 자연 lifecycle·실 INV/save·원 JS boot/restore·게임/export/PC 최신판 완료 증거 없음. 초기 plan metadata에 불필요한 Q/E 선언·필드 및 Main876 Q currentOptions 할당 한 줄/Frame metadata도 포함됐으며 원본 보존·캐시 권위에서 제외. 실제 Q/E 실행·변경 없음. |
 
 정확한 API·17 slot·최초 실패 로그·미소유 범위는 [Main 전설 장비 캐시 계약](FDG_NATIVE_MAIN_LEGENDARY_EQUIPMENT_CACHE_20261017.md)에 기록한다.
+
+
+## 2026-10-17 LEQ 인수본 main·I·R 디스크 소스 정렬
+
+| 항목 | 이번 통합 계약 |
+|---|---|
+| 인수 원본 | remotee1564e9355c10a6501cf735ea609fed6ee1c0a73 / local1c45217cd43ed05cc88902a79bf07e286080da50, 같은tree9b8eb2ebc75db166af659bda2d6c4f1f3437bfdd·부모SHA 다름. 원52/f83/1c/e156 ref 보존. |
+| 경계 | 인수33(code5/docs28)+통합docs2 중 본 문서1개 중복=union34(code5/docs29). 코드 수식/수명/기존9 callback 본문 변경0, 통합 새blob2만. |
+| 현행/검증 | callback9/25·미16; 신규행동 최초41/41·새map static9/9(runtime0) 인수. 원parse실패와selector초과이력 유지·first_whole_clean=false. 이번 통합에서 기존 성공 검수 재실행0. |
+| 소스 적용 | 원main71a246b8dfa3ebee21e1aedd6154442d20088d19를 새로1회 확인하고 정상 expectedSHA/forcefalse로 갱신한다. actual 최종HEAD/tree·I/R branch/upstream·union SHA/OID·각fresh PRE시각은 외부 final-sync-receipt.json이 기록한다. |
+| 구별 | 디스크 소스 정렬은 사용자 열린 창/process/export/PC/최신 전체 게임 완료 증거가 아니다. GUI/입력/새로고침/재시작/server/GET/assets/save/import/export는 실행하지 않는다. |
+| 백업/경고 | per-copy exactfile/realparent/ancestor nonlink·WORKHEAD·분리INDEXWORK·시각을 fresh manifest에 남긴다. 초기 absence4 가정 실패는 제품쓰기 전에 보존, fresh v2의136slot/130copy/6absence만 쓰기 권위로 사용. 기존promisor/config 경고 정리0, 미측정전송량 NOT_RECORDED. |
+
+자세한 인수·한계·최종 증거 경로: [LEQ Main 소스 통합](FDG_NATIVE_NORMAL_ENEMY_LEQ_MAIN_SYNC_20261017.md).
