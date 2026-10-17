@@ -494,7 +494,7 @@ func _attack_plan(key: String) -> Dictionary:
 	out["ready"] = out.get("status") == "READY"
 	return out
 
-# Five typed normal-hit callbacks. These callbacks retain this Services owner,
+# Six typed normal-hit callbacks. These callbacks retain this Services owner,
 # while its actual Main/actor/provider links remain weak and checked per query.
 func get_normal_enemy_damage_provider_callbacks(caller: Node) -> Dictionary:
 	if caller != _ref(_main) or not _normal_enemy_provider_error().is_empty(): return {}
@@ -504,6 +504,7 @@ func get_normal_enemy_damage_provider_callbacks(caller: Node) -> Dictionary:
 		"p_atk_mul": Callable(self, "read_normal_enemy_attack_multiplier"),
 		"melee_ref": Callable(self, "read_normal_enemy_melee_reference"),
 		"parry_lesson_active": Callable(self, "read_normal_enemy_parry_lesson_active"),
+		"player_view": Callable(self, "read_normal_enemy_player_view"),
 	}
 
 func read_normal_enemy_equipment_affix(id: Variant) -> Dictionary:
@@ -531,6 +532,14 @@ func read_normal_enemy_parry_lesson_active() -> Dictionary:
 			"reason":"actual_normal_enemy_lesson_context_lost", "context_reason":post_error,
 			"provider":"parry_lesson_active", "read_result":result}
 	return result
+
+func read_normal_enemy_player_view() -> Variant:
+	if not _normal_enemy_provider_error().is_empty(): return null
+	var current_p: Variant = _ref(_state).read_current_p()
+	# The owned P may already have been synchronized by its real reader.
+	# Context loss rejects the view without undoing that existing sync.
+	if not _normal_enemy_provider_error().is_empty(): return null
+	return current_p
 
 func _normal_enemy_provider_error() -> String:
 	if not _configured: return "unconfigured"
