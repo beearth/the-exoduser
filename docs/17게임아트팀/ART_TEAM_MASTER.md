@@ -63,6 +63,19 @@
 
 원본 프레임 추출 → 블러 구도 + 캐릭터 기준으로 새 정지 그림(GPT Image) → MagicLight **Hailuo 2.3** image-to-video 5초(고정 카메라, 미세 움직임만) → ffmpeg로 원본 컷 길이(프레임 수)에 정확히 맞춰 끼워 넣기(음성 copy). 파일명은 유지하고 재생기에 캐시 쿼리. 상세: `docs/cinematic/WARINTRO_NEMESIA_V24_20261001.md`.
 
+### 3.2c 리마스터 컷 "점 제거·톤 고정" 레시피 (검증됨, 2026-10-17 인트로 블랙홀 4컷)
+
+- **점 제거**: 점 있는 스틸 자체를 레퍼런스로 넣고 **GPT Image 2.5 sunburst(MagicLight, 200pt)** 편집. 문구: `Keep the exact same composition, camera… Only change the surface quality: smooth, glossy, viscous, continuous surface… Remove ALL tiny bright specks, dots, sparkles, grain and dithering everywhere, including on the rock.` → 4/4 성공, 구도·내용 유지. 로컬 중앙값 치환(무료)은 표면이 얼룩져 불채택.
+- **안전 필터**: `fleshy mouth / sucking bodies / blood` 조합은 거절("safety guidelines"). `stone jaw / dark crimson liquid / tiny dark human silhouettes`로 바꾸면 통과. 거절·"service unavailable" 제출은 전액 환불됨(잔액으로 확인).
+- **영상화**(MagicLight img2video 250pt, 1248×704 5s): 어두운 스틸이라도 모델이 중심부를 주황 불빛으로 밝힐 수 있음(S4 v1). `Keep the exact dark red and black palette: NO orange, NO fire, NO glowing light` 명시 → 주황 0%. 카메라는 **결과를 묘사**해야 움직임(`drone flies forward, terrain scrolls toward camera, spires grow larger`; "slowly descending"만 쓰면 1px 이동).
+- **수치 검수**: 첫↔끝 프레임 위상상관 이동량(px@1/4) ≥ 20 → 카메라 OK. HSV 주황(h10–45, s>120, v>140) 비율 < 0.2% → 톤 OK. 두 수치 모두 ffmpeg+numpy로 무료.
+- **바위 발광 링 차단**(S1 v2 결함): `no glowing outlines, no rings or arches of light on the rocks, the rocks stay matte black` 추가 → v3 링 0. 대신 지평선에 원본에 없던 **주황 태양**이 1.5~4초 생김(하늘 띠 y<88에 주황 픽셀 99.9%).
+- **하늘 주황 로컬 보정(무료)**: HSV 색조를 프레임 전체에 하드 마스크로 옮기면 강 하이라이트에 **흰 점**·태양 주변 **블록**이 생겨 불채택. 채택안 = 하늘 띠(y<180, 260까지 페더)로 한정 + "따뜻한 밝기" 마스크를 가우시안 14px 블러 → 해당 영역만 R×0.82·G×0.22·B×0.20로 혼합 → 태양이 진홍 글로우, 주황 0.17%, 강·바위 무변화.
+- **인트로 끼워넣기**: 3컷(각 5s, xfade 0.5s=14s)을 `setpts=1.29*PTS`+`minterpolate mci`로 각 6.49s → 18.42s, v15_clean 28~46.42s에 알파 페이드 1s 오버레이(v16f 방식). 1x 크롭에서 보간 왜곡·점 없음.
+- **인코딩 검수**: 출력은 반드시 `ffmpeg -v error -i X -f null -` 전수 디코드 0줄 확인. 슬로우 시퀀스 1차 인코딩에서 손상 MB 1건 발생(소스 정상·재인코딩으로 해결, 개발PC 불안정 의심) → 그대로 v17에 들어갈 뻔함.
+- **비용 표기 주의**: 비디오 버튼이 `200 (250)` 할인 표기여도 실제 차감은 250pt(46,040→45,790).
+- 산출물: `output/cinematic/a04_demonic_remaster_20261016/storyboard_blood/`(스틸 v2/v3) · `blood_videos/`(S1_aerial_v3g 채택·S2_tracking·S4_jaw_v2·seq_blood_3cut_v3·seq_blood_3cut_v3_slow) · `world_intro_v17_blood_en.mp4`(미리보기, 게임 미반영). 검토본 바탕화면 `엑소듀서_검토/블랙홀_영상/`.
+
 ### 3.3 맵 오브젝트 레시피
 
 `docs/4.1맵디자인+설정/MAP_OBJECT_SEEDREAM_PIPELINE_20260930.md` (스타일 레퍼런스 + 회색 배경 + 키잉).
