@@ -958,3 +958,14 @@ code1/docs4 exact5의 WORK/HEAD 개별10 기록은 첫 제품쓰기 전이다. �
 | 7 / 비수송 / 보호 | user-global MEMORY·설정·credentials·permission·host 설정을 Git에 넣지 않는다. 기존 HOLD/2_3/MAP/ART/STORY/rig/SW/native3387/NativeHUD/LAVA/ENEMY_GL_BODY_FALLBACK와 서버/save/사용자창/PC·Steam 보호 유지. |
 | 8 / 산출물 구분 | ARMOR source consumer의 별도 완료 commit은 a17560969df27b567d90e3c94c71290816b7d651. 이번은 지침/프로젝트 model 기준 통합이며 팀 수·설정 완료를 제품 기능 완료나 이식률로 더하지 않는다. 전체 게임 최신 이식은 미완료. |
 | 9 / GitHub 기준 완료 조건 | 지침과 안전한 project model-only 변경이 실제 canonical main ref에 반영되고 R의 자기 target이 정상 정렬된 뒤에만 GitHub 기준 반영 완료로 보고한다. 아직 미확인 PC/실행본은 그대로 미확인으로 둔다. |
+
+
+## 2026-10-17 인수 native source의 main·R 디스크 정렬
+
+| 항목 | 적용 범위 / 완료 판정 |
+|---|---|
+| 승인 source | f8 이후 인수12 local/remote paired-tree chain, localc7dc6bbe/remote c43d164c, treefce4b2b6. source union50=code16/docs34, 통합상태docs2를더해exact52 |
+| Git/R source 판정 | fresh main expectedSHA/forcefalse 정상FF→I/R actual mainHEAD/tree/upstream 및 scope WORK/INDEX 정렬→새경계static. 실제 최종값/시각은 아래 정본의외부finalreceipt에서확인하며사전f8관측을최신HEAD로사용하지않음 |
+| 새 기능/실행 | sourcecode새개발0·기수송blob/통과suite재연0. R디스크source와사용자창/process/export/PC·Steam 실행은구분하고reload/input/restart/GET/save/asset/import0 |
+| 미완/보호 | DCP/sourceclock/fullhurtE/poise19985tail/KB42483·원RNG/전체startup·24고유장24FPS·표시·실전/전체최신未. 별도crossbow/옛R9/R30·held/ART/LAVA/HUD/GL/rig/asset/save0. 원실패/partial/NOT_RECORDED·latest_full_gamefalse유지 |
+| 정본 | [인수 소스 main 정렬 계약](FDG_ACCEPTED_NATIVE_SOURCE_MAIN_SYNC_20261017.md); 실제 main·I/R 적용은 새 final receipt의 관측으로 판단 |
