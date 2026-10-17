@@ -1,3 +1,5 @@
+> 2026-10-17 현행 normal hurtE provider: I 별도 브랜치 codex/native-play-time-owner-20261017에서 callback **12/25·미13**, play_time은 el_mul 직후 동일 Services self의 arity0 Callable로 등록됐다. main/R 마지막 공통 소스는 D9이며 최신 실행 게임·자연 clock 인수는 미확인이다. 아래 이전 단계 등록 숫자와 검수 기록은 해당 시점의 이력이다.
+
 # Typed rand main 디스크 소스 통합 — 2026-10-17
 
 인수된 owner+등록10 누적 소스를 main·I·R에 정렬하는 계약이다. 실제 최종 HEAD/tree/parent/branch/upstream·파일 OID/SHA·적용 순서는 이 단위의 final-sync-receipt.json에 기록한다. 디스크 소스 정렬은 열린 게임·프로세스·export·PC 또는 최신 전체 게임 완료 증거가 아니다.
@@ -24,11 +26,11 @@
 최종 증거: /Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/NORMAL-HURTE-RAND-MAIN-SOURCE-SYNC-20261017/final-sync-receipt.json
 
 
-## 2026-10-17 현재 normal hurtE el_mul 11번째 provider 등록
+## 2026-10-17 normal hurtE el_mul 11번째 provider 등록 이력 (당시 단계; 현행은 아래 12번째 등록 표)
 
 | id / 현재 계약 | 구현 상태와 범위 |
 |---|---|
-| registry / 현재 | Services.get_normal_enemy_damage_provider_callbacks의 기존 rand 다음에 "el_mul": Callable(self, "read_normal_enemy_element_multiplier") 한 entry를 추가했다. 실제 literal 등록11 / required25 중 미등록14. 과거10/미15·EL미등록 표는 해당 당시 단계 이력이며 현재값은 이 표다. |
+| registry / 당시 등록11 단계 | Services.get_normal_enemy_damage_provider_callbacks의 기존 rand 다음에 "el_mul": Callable(self, "read_normal_enemy_element_multiplier") 한 entry를 추가했다. 실제 literal 등록11 / required25 중 미등록14. 과거10/미15·EL미등록 표와 이 등록11 표는 해당 당시 단계 이력이다. 현재12/미13은 아래 최신 등록 표를 따른다. |
 | 원10 순서 | eq_affix, u_eq, p_atk_mul, melee_ref, parry_lesson_active, player_view, stat_str, p_dot_pool, l_eq, rand를 그대로 두고 마지막 el_mul만 추가. 기존 entry·getter guard·reader/Formula/Main 몸체와 반환·기존9+rand 부분지원 한계는 변경0. |
 | self / 인자2 | 새 Callable은 동일 Services self와 read_normal_enemy_element_multiplier(a:Variant,d:Variant)->Dictionary를 연결한다. Formula.el_mul(a:Variant,d:Variant)->Dictionary, Main 실제소유자 연결의 a,d 인자2와 raw type/reference는 그대로다. |
 | 생성 / query 경계 | 새 literal Callable 생성은 reader/Formula/Main/domain/RNG를 호출하지 않는다. 기존 getmap membership/readiness guard 자체가 부수조회0이라는 주장은 하지 않는다. 새등록 확인은 정적경계1회/runtime0이며 Scriptload/QA/parse 재연0. |
@@ -45,3 +47,18 @@
 | 역사·보호 | 원firstfailure·CRLF정규화 위반/승인prefix복원·source_* initializer 범위초과·pre-generation separator guard/UTC未 이력은 보존. 과거 무접근/wholeclean 소급0. 보호2_3/marketing/capture·MAP/ART/rig·원game.html 변경0. |
 | 검색 metadata | 이번 새영향 scan은 후보929/UTF8성공751/해독제외178, matching-line649/경로114. matching snippets는 줄내dedup/cap없음이며 전체 regex발생수나 모든 binary/text 내용을 완결했다고 주장하지 않는다. 이전928/100/41 및 decode未 한계는 당시 기록으로 보존하며 소급보충하지 않는다. |
 
+
+
+## 2026-10-17 play_time 등록12 — 현재 소스와 검수 범위
+
+| id / 항목 | 현재 계약 및 확인 범위 |
+|---|---|
+| 필수 provider 등록 | 실제 callback 12/25·미13. 전체 게임 이식률이 아닌 일반 적 피해 필수 provider 연결 수 |
+| play_time / target / arity / 순서 | Services.get_normal_enemy_damage_provider_callbacks에 play_time: Callable(self, "read_normal_enemy_play_time") / 인자0 / 기존11 key 순서 그대로 el_mul 바로 뒤 한 entry. entry 생성 자체의 값 query0만 확인하며 기존 getter·준비 guard 전체의 순수성은 주장하지 않음 |
+| owner 부분지원·실패·참조 | 기존 finite native int/float 및 safe int ±9007199254740991 부분지원 유지. raw-0·원 type/ref/prefix·postloss read_result 보존, missing/unsupported/loss는 top value 없는 NOT_READY. clock writer/setter/default0 추가 없음 |
+| owner 기존 검수 | 첫 격리34case477확인(설정163·행동314) ROOT 인수 유지. 원정적17 중15통과2실패 wholefalse 및 별도2true는 서로 다른 증거이며 소급 전체PASS 합산 없음. 이번 문서 보완에서 재실행하지 않음 |
+| V12 후보 / 원실패 | source3+첫parse2 ROOT 인수. 원11case43행동true지만 setup5중signed-zero1false·exit1 전체FAIL 보존. +0 의도 B2 실제 -0 및 runner 제어 한계는 해당 첫 실행의 기록 |
+| V12 별도 보완 | 별도4case19행동+setup4 true·exit0는 첫actual+0와 둘째 NRnestedREADY/SOURCE_THROW/UNSUPPORTED→UNKNOWN_STATUS에만 한정. 첫FAIL과 소급 합산 금지. 네 준비식 평가 뒤 public 호출 전 검사이므로 fail-fast 실제 고장주입 증명은 아님 |
+| source / runtime 구분 | main/R 마지막 공통 소스 D9, I 소유 브랜치는 별도. 실제 Main/State clock presence·증가·자연수명·원JS·실게임·PC 인수 미확인. V12 제품 copy·World hook·dummy13·required25 gate 우회 없음 |
+| 이번 보완 | 이전32 한정 검색 누락을 새 허용 docs 검색으로 보완. 코드0·원 등록static10/owner477/V12 43·19/parse 재실행0. 명시 제외·바이너리·검색 불가 문서는 완료로 세지 않음 |
+| 보존 | [문서 coverage 보완 receipt](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/NORMAL-HURTE-PLAY-TIME-REGISTRATION12-DOCS-COVERAGE-REPAIR-20261017/receipt.json>) |
