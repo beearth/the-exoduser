@@ -791,3 +791,72 @@ func read_normal_enemy_legendary_equipment(stat: Variant) -> Dictionary:
 	if not main.can_bind_native_source_legendary_formula(formula, self, state, providers):
 		return {"status":"NOT_READY","reason":"legendary_owner_changed_after_read","provider":"l_eq","read_result":result}
 	return result
+
+# The bridge checks existing weak/current ownership without reading a domain.
+func is_native_main_random_bridge_current(main: Variant, expected_world: Variant) -> bool:
+	if not _configured or not main is Node or not expected_world is Node \
+			or not is_instance_valid(main) or not is_instance_valid(expected_world):
+		return false
+	var player: Variant = _ref(_player)
+	var state: Variant = _ref(_state)
+	var resources: Variant = _ref(_resources)
+	var providers: Variant = _ref(_providers)
+	var dispatcher: Variant = _ref(_dispatcher)
+	for object in [main, expected_world, player, state, resources, providers, dispatcher]:
+		if not is_instance_valid(object): return false
+		if object is Node and object.is_queued_for_deletion(): return false
+	if not is_native_main_legendary_bridge_current(main, state, providers) \
+			or _ref(_world) != expected_world or main.get("source_initialization") != dispatcher:
+		return false
+	if expected_world.get_parent() != main or player.get_parent() != main \
+			or state.get_parent() != expected_world or resources.get_parent() != expected_world \
+			or expected_world.get("player") != player:
+		return false
+	for node in [main, expected_world, player, state, resources]:
+		if not node.is_inside_tree() or node.get_tree() != main.get_tree(): return false
+	for role in [[main,"res://scripts/main.gd"],[expected_world,"res://scripts/world.gd"],
+			[state,"res://scripts/native_source_new_run_state.gd"],
+			[resources,"res://scripts/native_source_resource_authority.gd"],
+			[providers,"res://scripts/native_source_player_providers.gd"],
+			[dispatcher,"res://scripts/native_source_player_initialization.gd"]]:
+		var script: Variant = role[0].get_script()
+		if script == null or script.resource_path != role[1]: return false
+	return state.is_native_main_legendary_owner_current(main)
+
+func read_normal_enemy_random_unit() -> Dictionary:
+	var receipt: Dictionary = {}
+	var main: Variant = _ref(_main)
+	var actual_world: Variant = _ref(_world)
+	if not is_instance_valid(main) or not is_instance_valid(actual_world) \
+			or not main.is_native_source_rand_context_current(self, actual_world):
+		return _native_rand_failed_read("rand_owner_unavailable", receipt, null, true)
+	# One call only. This receipt belongs to Services even if World aborts.
+	var result: Variant = actual_world.read_native_source_random_unit(main, self, receipt)
+	if not is_instance_valid(main) or not is_instance_valid(actual_world) \
+			or not main.is_native_source_rand_context_current(self, actual_world):
+		return _native_rand_failed_read("rand_owner_changed_after_sample", receipt, result)
+	if not result is Dictionary or not is_same(result.get("completion_receipt"), receipt):
+		return _native_rand_failed_read("rand_typed_boundary_aborted_or_malformed", receipt, result)
+	var status: Variant = result.get("status")
+	if status not in ["READY", "NOT_READY", "UNSUPPORTED_OPERAND"]:
+		return _native_rand_failed_read("rand_typed_boundary_unknown_status", receipt, result)
+	if status == "READY":
+		var sample: Variant = receipt.get("sample_result")
+		if not sample is Dictionary or typeof(sample.get("completed")) != TYPE_BOOL \
+				or sample.get("completed") != true or not sample.has("value") \
+				or not is_same(result.get("raw_result"), sample) or not result.has("value") \
+				or typeof(result["value"]) != TYPE_FLOAT or result["value"] != sample["value"]:
+			return _native_rand_failed_read("rand_ready_without_observed_completion", receipt, result)
+	return result
+
+func _native_rand_failed_read(reason: String, receipt: Dictionary, read_result: Variant,
+		explicit_pre_loss: bool = false) -> Dictionary:
+	var sample: Variant = receipt.get("sample_result")
+	var completed: bool = sample is Dictionary and typeof(sample.get("completed")) == TYPE_BOOL \
+		and sample.get("completed") == true and sample.has("value")
+	return {"status":"NOT_READY","provider":"rand","reason":reason,
+		"source":"World.sample_native_random_unit/shared_operation",
+		"sample_invoked":false if explicit_pre_loss else receipt.get("sample_invoked", "UNKNOWN"),
+		"sample_completed":false if explicit_pre_loss else (true if completed else "UNKNOWN"),
+		"consumption":"NONE" if explicit_pre_loss else ("COMPLETED" if completed else "UNKNOWN"),
+		"completion_receipt":receipt,"raw_result":sample,"read_result":read_result}

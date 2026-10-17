@@ -2305,3 +2305,20 @@ static func source_legendary_property_key(value: Variant) -> Dictionary:
 			"isPrototypeOf","propertyIsEnumerable","__defineGetter__","__defineSetter__","__lookupGetter__","__lookupSetter__"]:
 		return {"status":"UNSUPPORTED_OPERAND","reason":"JS_Object_prototype_property_unrepresented"}
 	return {"status":"READY","key":key}
+
+# Rand ownership is metadata-only; the existing scalar sampler stays separate.
+func is_native_source_rand_context_current(services: Variant, expected_world: Variant) -> bool:
+	if not is_instance_valid(self) or is_queued_for_deletion() or get_script() == null \
+			or get_script().resource_path != "res://scripts/main.gd":
+		return false
+	if not services is RefCounted or not is_instance_valid(services) \
+			or not expected_world is Node or not is_instance_valid(expected_world):
+		return false
+	if source_initialization_services != services or world != expected_world \
+			or expected_world.is_queued_for_deletion() or expected_world.get_parent() != self:
+		return false
+	if services.get_script() != SourceInitializationServicesScript \
+			or expected_world.get_script() == null \
+			or expected_world.get_script().resource_path != "res://scripts/world.gd":
+		return false
+	return services.is_native_main_random_bridge_current(self, expected_world)

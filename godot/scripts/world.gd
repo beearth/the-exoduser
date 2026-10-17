@@ -2737,10 +2737,7 @@ func bind_native_player_source_resources(authority: Node) -> bool:
 	return player.bind_native_source_resources(authority)
 
 func sample_native_random_unit() -> float:
-	_native_random_draw_count += 1
-	# Source U draws exclude1. This is the actual shared native RNG producer,
-	# not a replay or a claim about the complete JavaScript boot RNG stream.
-	return float(randi()) / 4294967296.0
+	return _sample_native_random_unit_with_receipt(null)
 
 func get_native_projectile_fx_context() -> Dictionary:
 	var external_live = 0
@@ -3353,3 +3350,53 @@ func get_native_normal_enemy_poise_hit(invocation: RefCounted) -> Callable:
 	# The World does not store this self-bound Callable. The invocation keeps
 	# only weak World/actor handles, avoiding a self-owned callback graph.
 	return invocation.get_poise_hit_callable()
+
+# One shared implementation for legacy scalar and the typed owner boundary.
+func _sample_native_random_unit_with_receipt(completion_receipt: Variant) -> float:
+	_native_random_draw_count += 1
+	var sample: float = float(randi()) / 4294967296.0
+	if completion_receipt is Dictionary:
+		completion_receipt["sample_result"] = {"completed":true,"value":sample}
+	return sample
+
+func read_native_source_random_unit(main: Variant, services: Variant,
+		completion_receipt: Variant) -> Dictionary:
+	var source := "World.sample_native_random_unit/shared_operation"
+	if not completion_receipt is Dictionary:
+		return {"status":"NOT_READY","provider":"rand","source":source,
+			"reason":"rand_receipt_type","sample_invoked":false,"sample_completed":false,
+			"consumption":"NONE","raw_receipt":completion_receipt}
+	if not completion_receipt.is_empty():
+		return {"status":"NOT_READY","provider":"rand","source":source,
+			"reason":"rand_receipt_not_fresh","sample_invoked":false,"sample_completed":false,
+			"consumption":"NONE","completion_receipt":completion_receipt}
+	if not main is Node or not is_instance_valid(main) or not services is RefCounted \
+			or not is_instance_valid(services) or not main.is_native_source_rand_context_current(services, self):
+		return {"status":"NOT_READY","provider":"rand","source":source,
+			"reason":"rand_owner_unavailable","sample_invoked":false,"sample_completed":false,
+			"consumption":"NONE","completion_receipt":completion_receipt}
+	completion_receipt["sample_invoked"] = true
+	var scalar_return: Variant = _sample_native_random_unit_with_receipt(completion_receipt)
+	var sample: Variant = completion_receipt.get("sample_result")
+	var completed: bool = sample is Dictionary and typeof(sample.get("completed")) == TYPE_BOOL \
+		and sample.get("completed") == true and sample.has("value")
+	if not is_instance_valid(main) or not main.is_native_source_rand_context_current(services, self):
+		return {"status":"NOT_READY","provider":"rand","source":source,
+			"reason":"rand_owner_changed_after_sample","sample_invoked":completion_receipt.get("sample_invoked", "UNKNOWN"),
+			"sample_completed":true if completed else "UNKNOWN",
+			"consumption":"COMPLETED" if completed else "UNKNOWN",
+			"completion_receipt":completion_receipt,"raw_result":sample,"raw_call_return":scalar_return}
+	if not completed:
+		return {"status":"NOT_READY","provider":"rand","source":source,
+			"reason":"sampler_completion_unobserved","sample_invoked":completion_receipt.get("sample_invoked", "UNKNOWN"),
+			"sample_completed":"UNKNOWN","consumption":"UNKNOWN","completion_receipt":completion_receipt,
+			"raw_result":sample,"raw_call_return":scalar_return}
+	var value: Variant = sample["value"]
+	if typeof(value) != TYPE_FLOAT or is_nan(value) or is_inf(value) or value < 0.0 or value >= 1.0:
+		return {"status":"UNSUPPORTED_OPERAND","provider":"rand","source":source,
+			"reason":"rand_sample_outside_supported_native_domain","sample_invoked":true,
+			"sample_completed":true,"consumption":"COMPLETED","completion_receipt":completion_receipt,
+			"raw_result":sample,"raw_call_return":scalar_return}
+	return {"status":"READY","provider":"rand","source":source,"reason":"","value":value,
+		"non_finite":false,"sample_invoked":true,"sample_completed":true,"consumption":"COMPLETED",
+		"completion_receipt":completion_receipt,"raw_result":sample,"raw_call_return":scalar_return}

@@ -74,3 +74,18 @@
 | 새 map 경계 검수 | 신규 delta static9/9, 실제 9key/기존8순서·self/정확메서드·stat1인자/기존 Main forwarding·나머지 Services byte 동일성 확인. runtime0, 기존41/진단/구조 static9 재연0. 동일 숫자9인 최초 구조검수와 이번 새 map 검수는 별개다. |
 | 검증 한계 보완 | wrong slot/item/special 음성 검수는 runner가 명시 private writewindow를 합성했다. ready 이후 detach·자연 재진입·실 State current_error/resources 내부는 미검증이다. first_whole_clean=false, 새 행동41 통과로 원 parse 실패를 지우지 않는다. |
 | 제품 범위 | 이번 source delta는 Services map의 한 줄뿐이다. 기존8/helper/dispatch/수식/수명/legacywriter 본문과 Main getter는 그대로다. 원52cbf870은 별도 codex/native-leq-main-cache-source-20261017 ref로도 보존한다. |
+
+
+## 2026-10-17 ENGINE WIP: typed rand 실제 소유 경계
+
+| 항목 | 현행 코드/한계 |
+|---|---|
+| actual registry | 기존9/25·미16 유지, rand등록10은아직0. V9 scalar _rand에Dict직결0/전체hurtE·최신게임완료아님. |
+| 새 API | Main.is_native_source_rand_context_current(Services,World), Services.is_native_main_random_bridge_current 및read_normal_enemy_random_unit()->Dictionary, World.read_native_source_random_unit(Main,Services,receipt)->Dictionary. |
+| 기존 API 보존 | World.sample_native_random_unit()->float 선언0arg 유지. private공유구현1개가counter+=1→동일float(randi())/2^32를단1회수행, legacy는null/typed는freshreceipt로같은구현을호출한다. optionalarg 변경안미채택·publicbody자체는위임으로변경. |
+| 실제 완료 | Services의percall localreceipt에계산완료뒤에만rawsample을기록. 정상0는READY0, marker부재/default0은NR/UNKNOWN, preloss만명시NONE·query0, postloss/typedmalformedreturn도원rawreceipt/read_result·소비prefix보존. 새persistent RNGstate/cache/epoch·retry/rollback/추가draw0. |
+| 부분 지원 | 실제float finite[0,1)완료·전후sameowner/Script/liveTree가새경계READY조건. unexpectedraw는UNSUPPORTED/raw보존/값cast·clamp·전역finite0. primitive내부무관측failure와원JS/stream동등은미증명. |
+| 첫 검수 | 신규정적9/9·신규격리행동30/30/exit0/result존재·양로그diagnostics0. primitiveleaf대역·명시holder/Statepredicate·default0/typedmalformedreturn모사범위, 실RNG/엔진abort/자연fullMainWorld동등아님. old41/95/진단/통과parse재연0. |
+| 보존 | sourceWIP는I만·최종ROOT인수전main/R/served0. 원첫실패/selector·thread과대범위이력과그한계를새성공으로소급수정하지않는다. |
+
+정확signature·schema·freshreceipt구조한계·검수범위는[typed rand 소유경계](FDG_NATIVE_NORMAL_ENEMY_RAND_OWNER_20261017.md)에기록한다.
