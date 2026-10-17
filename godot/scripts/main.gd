@@ -1983,6 +1983,20 @@ func read_native_player_projectile_pierce_passive() -> Dictionary:
 
 var _native_fireball_sample_last: Dictionary = {"status":"UNBOUND","audible":false}
 
+# Normal-hit lesson input: one active-only read on the same current holder.
+# The regen/chapter guard and existing fireball finish bridge stay separate.
+func read_native_normal_enemy_lesson_status() -> Dictionary:
+	if not _native_main_service_live() or not _native_source_lesson_holder_live():
+		return {"status":"NOT_READY", "ready":false, "reason":"actual_normal_lesson_owner_unbound"}
+	var holder: RefCounted = source_lesson
+	var result: Dictionary = holder.read_active_status()
+	if not is_instance_valid(holder) or not _native_main_service_live() \
+			or not _native_source_lesson_holder_live() or source_lesson != holder:
+		return {"status":"NOT_READY", "ready":false, "reason":"actual_normal_lesson_owner_changed", "read_result":result}
+	if typeof(result.get("epoch")) != TYPE_INT or holder.get_epoch() != result.epoch:
+		return {"status":"NOT_READY", "ready":false, "reason":"actual_normal_lesson_epoch_changed", "read_result":result}
+	return result
+
 func read_native_fireball_proficiency_guard() -> Dictionary:
 	if not _native_main_service_live() or not _native_source_lesson_holder_live():
 		return {"ready":false,"reason":"actual_fireball_lesson_owner_unbound"}

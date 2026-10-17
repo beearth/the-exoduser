@@ -575,3 +575,64 @@ static func _write(lesson: Variant, key: String, value: Variant) -> void:
 		lesson[key] = value
 	else:
 		(lesson as Object).set(key, value)
+
+
+# Current active-only status for consumers which do not read lesson chapter.
+# Uses the existing published fields/epoch; no state, cache or clock is added.
+func read_active_status() -> Dictionary:
+	var epoch: int = _epoch
+	var authority: String = _authority
+	var current: Variant = _current
+	var owner_declared: bool = _owner_declared
+	var owner_ref: WeakRef = _owner_ref
+	var out: Dictionary = {"status":"NOT_READY", "ready":false, "reason":"",
+		"authority":authority, "epoch":epoch, "origin":_origin,
+		"source_phase":_source_phase, "source":"parry_lesson_source.read_active_status"}
+	if authority == AUTH_MISSING:
+		out.reason = "authority_missing:" + _missing_reason
+		return out
+	if owner_declared and (not is_instance_valid(owner_ref) or not is_instance_valid(owner_ref.get_ref())):
+		out.reason = "publisher_owner_freed"
+		return out
+	if authority in [AUTH_PROPERTY_UNCREATED, AUTH_PROPERTY_UNSET, AUTH_PROPERTY_FALSY]:
+		if authority == AUTH_PROPERTY_FALSY:
+			var raw: Variant = _witness_raw
+			if typeof(raw) not in JS_RECOGNIZED_TYPES \
+					or (typeof(raw) == TYPE_OBJECT and not is_instance_valid(raw)):
+				out.reason = "falsy_witness_unsupported"
+				return out
+			if AFFIX.js_truthy(raw):
+				out.reason = "falsy_witness_not_falsy"
+				return out
+		out.merge({"status":"READY", "ready":true, "reason":"explicit_inactive_witness",
+			"active":false, "known_absent":authority != AUTH_PROPERTY_FALSY}, true)
+		return out
+	if authority != AUTH_CURRENT_LESSON:
+		out.reason = "authority_unknown"
+		return out
+	if typeof(current) == TYPE_OBJECT and not is_instance_valid(current):
+		out.reason = "current_lesson_freed"
+		return out
+	if typeof(current) not in [TYPE_DICTIONARY, TYPE_OBJECT]:
+		out.reason = "current_lesson_unknown"
+		return out
+	# Exactly one active-property query, including a possible Object getter.
+	var active: Variant = current.get("active")
+	if typeof(current) == TYPE_OBJECT and not is_instance_valid(current):
+		out.reason = "current_lesson_freed_during_active_read"
+		return out
+	if _epoch != epoch or _authority != authority or not is_same(_current, current) \
+			or _owner_declared != owner_declared or not is_same(_owner_ref, owner_ref):
+		out.reason = "active_read_context_changed"
+		out["current_epoch"] = _epoch
+		return out
+	if owner_declared and (not is_instance_valid(owner_ref) or not is_instance_valid(owner_ref.get_ref())):
+		out.reason = "publisher_owner_freed_during_active_read"
+		return out
+	if typeof(active) not in JS_RECOGNIZED_TYPES \
+			or (typeof(active) == TYPE_OBJECT and not is_instance_valid(active)):
+		out.reason = "active_value_unsupported_or_freed"
+		return out
+	out.merge({"status":"READY", "ready":true, "reason":"current_active",
+		"active":AFFIX.js_truthy(active), "known_absent":false}, true)
+	return out

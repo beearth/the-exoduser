@@ -73,3 +73,14 @@
 | 실제 접점 | 앞선 메서드 추출/명시 대역 첫31 PASS와 별개다. synthetic25 owner/후속9를 actual Main/Services/configure/provider 수명·원수식·전체 전투 parity로 세지 않는다. 다른21 owner·source clock·hurtE caller·효과 미연결, 실제 게임/PC/export 미검증 유지. |
 | 과거 backup 한계 | 당시26행/52WORKHEAD슬롯=48copy+4absent→PRE→code기록 선행 확인. code recorded_at은 개별 실제 쓰기시각이 아니며 당시 realparent/nonlink·split INDEX/WORK 상세 flag는 NOT_RECORDED. 새 증거로 소급하지 않는다. |
 | 통합 증거 | 이번 정확15경로의 새 backup·ancestor/realpath guard·분리 INDEX/WORK·main expectedSHA/forcefalse·R FF·최종pin은 NORMAL-HURTE-PROVIDER-MAIN-SYNC-20261017/final-receipt.json에 기록한다. 소스 정렬은 열린 게임/served 빌드의 최신성 증거가 아니다. |
+
+
+## Normal hurtE용 chapter-free active reader (2026-10-17)
+
+| 위치 | 현재 계약 |
+|---|---|
+| SourceLesson/Main | 실제 기존 SourceLesson.read_active_status()와 Main.read_native_normal_enemy_lesson_status()를 추가한다. 기존 publication/authority/current/optional weak publisher/epoch만 읽어 active1회/chapter0, 전후 identity·epoch·생존을 검증한다. 새 상태/그림자/epochcounter 없음. 선언 publisher 유실은 CURRENT와 witness 모두 NR이며 owner 미선언은 정상이다. |
+| 반환/등록 | READY는 명시 active bool/known_absent와 원 authority/epoch metadata, NR은 active생략·원 reason. Main context변화는 read_result를 보존한다. 기존 regen/chapter/fireball reader는 불변. normal callback/ENEMY v5 미등록·typed4 map은4/다른21/full25/full_hurtE 미준비. |
+| 검수/한계 | 첫 fixture seed 이름 충돌 parse실패/exit0·기능0 원본 보존→fixture이름만 수리한 새49 PASS/양로그0. actual SourceLesson의 fresh 필드seed와 Main 메서드추출 검수이며 자연publish/전체Main/실게임·export·PC가 아니다. old_protected_functions_called=0은 선언 scope이며 protected 계측값이 아니다. 기존31/9/108/통과검수 재연0. |
+
+정확 field/identity/epoch·reason·첫실패/새49 범위는 FDG_NATIVE_NORMAL_ENEMY_LESSON_ACTIVE_20261017.md를 따른다. 기존 개별 단위의 당시 상태와 실패 기록은 유지한다.
