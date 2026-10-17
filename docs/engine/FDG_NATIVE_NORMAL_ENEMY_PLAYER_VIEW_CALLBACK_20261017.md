@@ -1,3 +1,5 @@
+> 2026-10-17 stat_str 현행 추가: 원본 STAT_STR=1.0의 typed reader와 Services callback을 등록했다. 현재 map 7/25·미연결18이며, 아래 이전 6/19·5/20·4/21은 당시 기록이다. [실제 계약과 새 검수](FDG_NATIVE_NORMAL_ENEMY_STAT_STR_OWNER_20261017.md). 실행판 최신화·full hurtE 완료 아님.
+
 # Normal hurtE player_view 실제 콜백 (2026-10-17)
 
 | 항목 | 구현 |
@@ -24,3 +26,16 @@
 | 보호/보존 | 기존5 callback·dispatch/ownership함수정확불변, 주석만Six로갱신. Statebody/보호controller·원RNG/clock/fullkill 조사·확대0. GUI/server/API/save/원PNG·audio read/copy/import0. W제품쓰기0. |
 
 현재P/raw-null 계약과실caller/미구현hook의근거는 NORMAL-HURTE-PLAYER-VIEW-CONSUMER-CONTACT-20261017의ROOT인수팩을재사용한다. 새소스/문서개별pins·사전copy/시각/첫26/단1회정적·정상WIP는 NORMAL-HURTE-PLAYER-VIEW-CALLBACK-BINDING-20261017에보존한다.
+
+
+## 원본 stat_str 공개 연결 — 2026-10-17
+
+| 항목 | 현행 코드와 범위 |
+|---|---|
+| formula / Services | 기존 STAT_STR=1.0 → 새 stat_str()->Dictionary → read_normal_enemy_strength_multiplier()->Dictionary. 인자 각각0. 원본 _ok의 READY/value(float)/non_finite/source/undefined_reads/reason을 그대로 전달한다. |
+| 소유권 / 실패 | 실제 current Main/Services/Providers 검사 전후 및 formula 객체·Script·수명 동일성 검사. 소유권 실패는 NOT_READY/provider=stat_str, query 후에는 read_result 보존. 부재 numeric value/default 0·1 추가 없음. |
+| callback 등록 | 기존 6개 뒤 stat_str. 현행 7/25·미18. getter는 formula/current P/domain을 eager query하지 않는다. 기존 여섯 callback·25 presence·원 query 순서 변경 없음. |
+| 새 검사 / 제한 | 실제 formula script/새 reader와 정확 추출 Services graph + 명시적 holder stand-in의 첫 신규25/25 PASS, exit0·오류/leak0. full Main 자연 configure·실제 gameplay 미검증, 기존 성공 검사 재실행0. |
+| 다음 연결 | 현 V5 stat_str 세 scalar 위치는 typed 미지원이라 실제 바인딩0. 기존 ENEMY V6의 세 위치 typed 처리·인수 후 실제 caller를 연결해야 한다. latest_full_game=false 유지. |
+
+상세 API·raw 예·실패 이유·검수 한계는 [stat_str 실제 소유자 계약](FDG_NATIVE_NORMAL_ENEMY_STAT_STR_OWNER_20261017.md)을 따른다. 기존 State player_view/read_current_p 및 다른 수치·계산식·저장 계약은 변경하지 않았다.

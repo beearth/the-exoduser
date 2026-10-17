@@ -1,3 +1,5 @@
+> 2026-10-17 stat_str 현행 추가: 원본 STAT_STR=1.0의 typed reader와 Services callback을 등록했다. 현재 map 7/25·미연결18이며, 아래 이전 6/19·5/20·4/21은 당시 기록이다. [실제 계약과 새 검수](FDG_NATIVE_NORMAL_ENEMY_STAT_STR_OWNER_20261017.md). 실행판 최신화·full hurtE 완료 아님.
+
 > **2026-10-15 현재 LMB 공격값 연결:** actual source provider의 현재 무기/강화/affix/baseAtk/STR·레벨/봉인/패시브 계산을 Main→Player→Crescent·기존 melee 피해 소비에 연결했다. 원0.7을7.0으로 바꾸지 않았다. [현재 계약·검수 한계](FDG_GODOT_NATIVE_FIRST_20261013.md#실제-현재-공격-parameter-소비--2026-10-15).
 
 | API / 범위 | 현재 계약 |
@@ -201,3 +203,16 @@ PASS 조건: 선택한 그룹이 모두 끝까지 실행되고(completed), 그�
 | `test_first.gd` qe_runtime_consumption | 1차 실행 뒤에 `floor_won`/`calc_won` 변수와 assert 2개를 추가했다. 이 assert는 한 번도 실행되지 않았음 | **제거**. 1차에서 검증된 원래 assert `parry.calc_branch_reached` (`js_to_int32(5000.0*(1.0+1.0)*0.5*p_parry*1.3*2.0) > kf`)로 되돌렸다. 다른 그룹 본문은 바꾸지 않음. 대문자 `PASSIVES` label과 `selected.assign` 러너는 유지 |
 
 **검증 범위의 한계**: 현재 제품은 7 그룹 전체를 다시 돌려 검증한 것이 아니다. 또한 현재 제품이 1차 스냅샷과 같다고 주장하지 않는다. 원래 Node oracle 6개는 다시 돌리지 않았다. native/headless 테스트의 원 입력은 여전히 fixture뿐이다. 원 ref, mana, 호출부 wiring이 ENGINE에 남아 있다는 점(§5)도 그대로다.
+
+
+## 원본 stat_str 공개 연결 — 2026-10-17
+
+| 항목 | 현행 코드와 범위 |
+|---|---|
+| formula / Services | 기존 STAT_STR=1.0 → 새 stat_str()->Dictionary → read_normal_enemy_strength_multiplier()->Dictionary. 인자 각각0. 원본 _ok의 READY/value(float)/non_finite/source/undefined_reads/reason을 그대로 전달한다. |
+| 소유권 / 실패 | 실제 current Main/Services/Providers 검사 전후 및 formula 객체·Script·수명 동일성 검사. 소유권 실패는 NOT_READY/provider=stat_str, query 후에는 read_result 보존. 부재 numeric value/default 0·1 추가 없음. |
+| callback 등록 | 기존 6개 뒤 stat_str. 현행 7/25·미18. getter는 formula/current P/domain을 eager query하지 않는다. 기존 여섯 callback·25 presence·원 query 순서 변경 없음. |
+| 새 검사 / 제한 | 실제 formula script/새 reader와 정확 추출 Services graph + 명시적 holder stand-in의 첫 신규25/25 PASS, exit0·오류/leak0. full Main 자연 configure·실제 gameplay 미검증, 기존 성공 검사 재실행0. |
+| 다음 연결 | 현 V5 stat_str 세 scalar 위치는 typed 미지원이라 실제 바인딩0. 기존 ENEMY V6의 세 위치 typed 처리·인수 후 실제 caller를 연결해야 한다. latest_full_game=false 유지. |
+
+상세 API·raw 예·실패 이유·검수 한계는 [stat_str 실제 소유자 계약](FDG_NATIVE_NORMAL_ENEMY_STAT_STR_OWNER_20261017.md)을 따른다. 기존 State player_view/read_current_p 및 다른 수치·계산식·저장 계약은 변경하지 않았다.

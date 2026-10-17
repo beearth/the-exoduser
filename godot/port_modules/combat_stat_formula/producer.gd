@@ -494,3 +494,8 @@ func read_combat_qe_subset(is_q: bool) -> Dictionary:
 		"detail": detail,
 		"root_subset": root_sub,
 	}
+
+
+# Original statStr declaration, independent of P/INV/PASSIVES reader state.
+func stat_str() -> Dictionary:
+	return _ok(STAT_STR, "statStr()=STAT_STR@game.html:28654")

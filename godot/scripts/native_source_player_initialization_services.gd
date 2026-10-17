@@ -494,7 +494,7 @@ func _attack_plan(key: String) -> Dictionary:
 	out["ready"] = out.get("status") == "READY"
 	return out
 
-# Six typed normal-hit callbacks. These callbacks retain this Services owner,
+# Seven typed normal-hit callbacks. These callbacks retain this Services owner,
 # while its actual Main/actor/provider links remain weak and checked per query.
 func get_normal_enemy_damage_provider_callbacks(caller: Node) -> Dictionary:
 	if caller != _ref(_main) or not _normal_enemy_provider_error().is_empty(): return {}
@@ -505,6 +505,7 @@ func get_normal_enemy_damage_provider_callbacks(caller: Node) -> Dictionary:
 		"melee_ref": Callable(self, "read_normal_enemy_melee_reference"),
 		"parry_lesson_active": Callable(self, "read_normal_enemy_parry_lesson_active"),
 		"player_view": Callable(self, "read_normal_enemy_player_view"),
+		"stat_str": Callable(self, "read_normal_enemy_strength_multiplier"),
 	}
 
 func read_normal_enemy_equipment_affix(id: Variant) -> Dictionary:
@@ -540,6 +541,27 @@ func read_normal_enemy_player_view() -> Variant:
 	# Context loss rejects the view without undoing that existing sync.
 	if not _normal_enemy_provider_error().is_empty(): return null
 	return current_p
+
+func read_normal_enemy_strength_multiplier() -> Dictionary:
+	var error: String = _normal_enemy_provider_error()
+	if not error.is_empty():
+		return {"status":"NOT_READY", "reason":error, "provider":"stat_str"}
+	var bundle: Dictionary = _ref(_providers).get_provider_bundle()
+	var formula: Variant = bundle.get("formula")
+	if not _live(formula) or not formula.has_method("stat_str") or formula.get_script() == null:
+		return {"status":"NOT_READY", "reason":"actual_normal_enemy_stat_str_formula_unbound", "provider":"stat_str"}
+	var formula_script: Script = formula.get_script()
+	var result: Dictionary = formula.stat_str()
+	var post_error: String = _normal_enemy_provider_error()
+	if not post_error.is_empty():
+		return {"status":"NOT_READY", "reason":"actual_normal_enemy_stat_str_context_lost",
+			"context_reason":post_error, "provider":"stat_str", "read_result":result}
+	var current_bundle: Dictionary = _ref(_providers).get_provider_bundle()
+	if not _live(formula) or not is_same(current_bundle.get("formula"), formula) \
+			or formula.get_script() != formula_script:
+		return {"status":"NOT_READY", "reason":"actual_normal_enemy_stat_str_formula_changed",
+			"provider":"stat_str", "read_result":result}
+	return result
 
 func _normal_enemy_provider_error() -> String:
 	if not _configured: return "unconfigured"
