@@ -509,6 +509,7 @@ func get_normal_enemy_damage_provider_callbacks(caller: Node) -> Dictionary:
 		"p_dot_pool": Callable(self, "read_normal_enemy_dot_pool_multiplier"),
 		"l_eq": Callable(self, "read_normal_enemy_legendary_equipment"),
 		"rand": Callable(self, "read_normal_enemy_random_unit"),
+		"el_mul": Callable(self, "read_normal_enemy_element_multiplier"),
 	}
 
 func read_normal_enemy_equipment_affix(id: Variant) -> Dictionary:
