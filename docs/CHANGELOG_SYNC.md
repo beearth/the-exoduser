@@ -54167,3 +54167,12 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 | code3/docs14 | same World v3 poise_hit42490→parent prefix→actual normal poise/regen/stun/max-stun. nonbreak sourcefalse 정상반환; break core 적용 후 _uqScCtx19985 tail NR. parent4cursor/core별도 |
 | 새 검사 | 첫새poise21PASS·양로그clean; nonbreak의불필요stun/max-owner guard교정 뒤새영향2PASS·양로그clean. oldfield21/37/24/29/parse/수송재연0·final전체단일suite재실행0 |
 | docs / 보존 | 일반type0 HP100% 생성 계약과낡은HP*.5행정정만; BOSS/QE/밸런스0. FDG_NATIVE_NORMAL_ENEMY_SYNC_POISE_20261017.md. 최초10path+코드후발견7docs의쓰기전extension을구분. R/main/served/창/원asset/save0 |
+
+
+## 2026-10-17 exact normal source KB momentum owner
+
+| 변경 | 현재범위 / 증거 |
+|---|---|
+| code2/docs15 | current same-actor events의 enemy.kb_add42482→actualmomentum증분·or/events cursor각1. 새alivegate/피해·KB식재계산/15cap/감쇠clock·42483geometry이동0 |
+| 신규검수 | 첫combined type추론compile실패/기능0/exit0→Vector2선언1줄수리→새KB15PASS/양로그clean. first_whole_clean=false·앞성공suite재연0 |
+| 보존 | FDG_NATIVE_NORMAL_ENEMY_KB_OWNER_20261017.md. 이번exact17전부code전I/R68rows58copies/PRE. fullhurtE/sourceclock/currentgame未; R/main/served/창/asset/save0 |

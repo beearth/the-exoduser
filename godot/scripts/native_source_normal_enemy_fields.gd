@@ -48,12 +48,18 @@ func consume_prefix(packet: Variant) -> Dictionary:
 		if local_index < 0 or local_index >= packet[stream].size(): return _stop("source_event_item_missing")
 		var item: Variant = packet[stream][local_index]
 		if not item is Dictionary or typeof(item.get("line")) != TYPE_INT or item["line"] != event["line"]: return _stop("source_event_item_line_mismatch")
-		if stream != "enemy_writes": return _stop("source_effect_owner_unbound:" + stream + ":" + str(item.get("kind")))
-		_applying = item
-		var result: Dictionary = actor.commit_native_source_damage_field(self, item)
+		var result: Dictionary
+		if stream == "enemy_writes":
+			_applying = item
+			result = actor.commit_native_source_damage_field(self, item)
+		elif stream == "owner_requests" and item.get("kind") is String and item["kind"] == "enemy.kb_add":
+			_applying = item
+			result = actor.commit_native_source_kb_add(self, item)
+		else:
+			return _stop("source_effect_owner_unbound:" + stream + ":" + str(item.get("kind")))
 		_applying = {}
 		if not result.get("applied") is bool or not result["applied"]: return _stop(str(result.get("reason", "source_field_owner_refused")))
-		_last_field = item["field"]
+		_last_field = item["field"] if stream == "enemy_writes" else ""
 		_cursor[stream] += 1
 		_cursor["events"] += 1
 	# Reject dangling items; applied prefix stays applied and is reported exactly.

@@ -63,3 +63,13 @@
 | `_record_native_normal_stun_max(stun_time:float)->bool` | 동일 actual max-stun 필드 갱신. source atomic break와 기존 normal legacy break가 공유 |
 | `get_poise_hit_callable()->Callable` | current invocation만 self-bound callback을 반환, self 필드에 보유하지 않음 |
 | `source_branch_entered/executed` / `poise_core_applied` / `source_body_returned` | owner 진입·실제 core 변경·함수 반환을 각각 분리. parent `applied_prefix` 4cursor는 이 값으로 대체하지 않음 |
+
+
+## 2026-10-17 exact type0 source momentum owner 후속
+
+| 항목 | 현재 구현 / 제한 |
+|---|---|
+| `enemy.kb_add / 42482` | 같은 World/current same-Node invocation/events순서로 producer의 계산된 `{x,y}` 증분을 actual `_knockback`에더하고 `owner_requests/events`각1증가. 피해/KB공식·배율·15cap·감쇠/clock 재계산0 |
+| 수명 / 미완 | Node/World수명은검증하고새alivegate없음. `42483 offscreen_move_if_can_move`는정확NR, geometry/좌표실행0. fullhurtE/source_clock_ready=false, poise19985 tail·실전·현재실행본반영未 |
+| 새 검수 | 첫type추론compile실패/기능검사0/exit0을PASS로세지않음→Vector2선언1줄수리→새KB15/15 PASS·양로그clean. 앞field21/poise21+2/37/24/29/parse/성공수송재연0 |
+| 정본 | [일반 몬스터 KB 소유자](FDG_NATIVE_NORMAL_ENEMY_KB_OWNER_20261017.md). 앞 field/poise 및 배송/검수 이력을 보존하며 exact momentum 요청 범위만 갱신 |

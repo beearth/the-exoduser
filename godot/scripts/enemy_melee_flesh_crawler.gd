@@ -474,3 +474,20 @@ func apply_native_source_poise_hit(owner: RefCounted, amount: Variant) -> Dictio
 	return {"ready": false, "reason": "source_poise_sky_context_unbound_19985",
 		"source_body_returned": false, "source_branch_entered": true,
 		"poise_core_applied": true, "core_staggered": true, "next_source_line": 19985}
+
+# Consume only the source-located momentum increment. Actor existence/ownership
+# is separate from alive: hurtE can enqueue this after self-nested death.
+# No damage API, heading normalization, KB formula, cap, damping or clock here.
+func commit_native_source_kb_add(owner: RefCounted, item: Dictionary) -> Dictionary:
+	if not _source_normal_fields_error(world).is_empty() or not world.is_native_normal_enemy_field_call_current(owner, self) or not owner.is_applying_item(self, item): return {"applied": false, "reason": "actual_source_kb_item_not_current"}
+	if not item.get("kind") is String or item["kind"] != "enemy.kb_add" or typeof(item.get("line")) != TYPE_INT or item["line"] != 42482 or not item.get("data") is Dictionary: return {"applied": false, "reason": "source_kb_request_outside_contract"}
+	var payload: Dictionary = item["data"]
+	var x: Variant = payload.get("x")
+	var y: Variant = payload.get("y")
+	if not (x is int or x is float) or not (y is int or y is float) or not is_finite(float(x)) or not is_finite(float(y)): return {"applied": false, "reason": "source_kb_increment_not_numeric_finite"}
+	var increment := Vector2(float(x), float(y))
+	if not increment.is_finite() or not _knockback.is_finite(): return {"applied": false, "reason": "source_kb_vector_not_representable"}
+	var combined: Vector2 = _knockback + increment
+	if not combined.is_finite(): return {"applied": false, "reason": "source_kb_sum_not_representable"}
+	_knockback = combined
+	return {"applied": true}
