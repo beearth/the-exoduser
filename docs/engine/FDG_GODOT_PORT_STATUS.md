@@ -12,8 +12,8 @@
 
 | 대상 | 마지막 확인 | 현재 한계 |
 |---|---|---|
-| 마지막 공통 소스 기준 | main/R/I HEAD의 D9 소스(d9b886c) 정렬을 확인했음 | 현재 owner 소유 체크포인트는 별도 브랜치로 관리하며, 열린 게임·빌드·PC 실행 인수와 구분 |
-| I 소유 체크포인트 | play_time owner 코드3·관련 문서32를 검증 WIP 소유 브랜치 codex/native-play-time-owner-20261017로 관리 | main/R·실행판과 별도. 실제 local/remote SHA는 단위 receipt를 확인하며 play_time 등록을 포함해 callback 12/25·미13 |
+| 직전 공통 소스 기준 | 직전 인수 D9(d9b886c). 이번 main/I/R 현재 소스 정렬은 통합 정본·receipt의 실제 HEAD·tree 기준 | 열린 게임·빌드·PC 실행 인수와 구분 |
+| 이번 소스 통합 체크포인트 | play_time owner 코드3·관련 문서32를 검증 WIP 소유 브랜치 codex/native-play-time-owner-20261017로 관리 | main/I/R 현재 소스 정렬은 통합 정본·receipt 기준이며 실행판은 별도. 실제 local/remote SHA는 단위 receipt를 확인하며 play_time 등록을 포함해 callback 12/25·미13 |
 | 열린 게임 / 별도 compiled export | 최신 소스와 동일한 실행판인지 미확인 | 실제 실행 대상 URL·앱 경로와 검수 대상을 먼저 확정해야 함 |
 | PC 소스·실행판 | 전달 대상·실행 경로·실플레이 인수 미확인 | Git 소스 정렬만으로 PC 전달·실행 완료를 선언하지 않음 |
 
@@ -30,7 +30,7 @@
 | 그래픽·애니메이션 | 개별 그래픽·방향·모션 작업 이력 보유. 캐릭터 24장·24fps 요구 유지 | 모델 잘림·원근감·부드러운 동작의 최신 품질 검수 미확인 | 출시 품질 인수 미확인 | 실제 카메라와 전투 속도에서 비교 | 기존 그래픽 담당 / 자산 import 범위 미확정 |
 | 저장·진행 UI | 원본 설계와 개별 구현 자료 보유. Godot 합본 반영 범위 미확정 | 실제 세이브·복원·진행 화면 검수 근거 미확인 | 최신 실행판 인수 미확인 | 허용된 대상에서 저장·진행 동선 검증 | 기존 담당 / 사용자 데이터 보호·개별 보류 유지 |
 | 성능 | 최적화 설계·개별 작업 이력 보유 | 실제 전장 동일 조건 성능 자료 취합 필요 | Mac/PC 목표 환경 성능 인수 미확인 | 전투 합본에서 프레임·메모리·부하 측정 | ENGINE·기존 담당 / 합본·대상 환경 미확정 |
-| Mac·PC 실행·배포 | D9 소스 정렬 확인. I의 새 WIP는 미전달 | 최신 실행판과 대상 PC의 검수 미확인 | 배포·PC 실플레이 인수 미확인 | 대상·버전·전달 경로 확정 후 검증 | ROOT / PC source 전달 근거 미확정 |
+| Mac·PC 실행·배포 | 직전 인수 D9. 이번 main/I/R 소스 통합의 실제 정렬은 통합 정본·receipt 기준 | 최신 실행판과 대상 PC의 검수 미확인 | 배포·PC 실플레이 인수 미확인 | 대상·버전·전달 경로 확정 후 검증 | ROOT / PC source 전달 근거 미확정 |
 
 ## 현재 진행 중인 단위
 
@@ -73,7 +73,7 @@
 
 ## 현재 owner 소유 체크포인트
 
-시간 owner의 소스 경계와 첫 격리 검수는 인수된 검증 WIP로 관리한다. 소유 브랜치는 codex/native-play-time-owner-20261017이며, play_time callback 등록은 I에서 12/25·미13으로 반영했으며 main/R과 실행판 동기화·실게임 인수는 별도다. 실제 local/remote SHA·tree·보존 결과는 [단위 receipt](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/NORMAL-HURTE-PLAY-TIME-OWNER-VALIDATED-WIP-20261017/receipt.json>)에서 확인한다.
+시간 owner의 소스 경계와 첫 격리 검수는 인수된 검증 WIP로 관리한다. 소유 브랜치는 codex/native-play-time-owner-20261017이며, play_time callback 등록은 I에서 12/25·미13으로 반영했으며 이번 main/I/R 소스 정렬은 통합 정본·receipt를 따르며 실행판 동기화·실게임 인수는 별도다. 실제 local/remote SHA·tree·보존 결과는 [단위 receipt](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/NORMAL-HURTE-PLAY-TIME-OWNER-VALIDATED-WIP-20261017/receipt.json>)에서 확인한다.
 
 
 ## 이번 provider 등록 범위
@@ -83,3 +83,15 @@
 | 반영 | I 소유 브랜치에서 play_time을 el_mul 직후 동일 Services self의 arity0 Callable로 등록. callback 12/25·미13이며 전체 게임 이식률이 아님 |
 | 남은 검증 | 실제 clock·자연 전투·최신 실행판·Mac/PC 인수 미확인. V12는 후보 검수 단계이며 제품 copy·World hook 없음 |
 | 기록 | [등록 단위 receipt](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/NORMAL-HURTE-PLAY-TIME-TWELFTH-PROVIDER-REGISTRATION-20261017/receipt.json>) |
+
+
+## 2026-10-17 play_time main/I/R 소스 통합 체크포인트 — 현행
+
+| 항목 | 현재 범위와 인수 한계 |
+|---|---|
+| 직전 인수 / 이번 소스 | 직전 공통 인수 D9(d9b886c). owner 실제 NUL diff42(code3/docs39)에 통합 정본1을 추가한 최종 범위는 실제 union NUL·tree 목록과 아래 receipt를 기준으로 확인. main/I/R의 실제 현재 HEAD·tree·branch·upstream 및 정렬 결과도 receipt 기준 |
+| 코드·provider | 인수된 Main/Services/State 코드3 그대로, callback 12/25·미13. play_time은 el_mul 직후 동일 Services self·arity0, 새entry 생성의 값 query0만 확인. 기존 getter/준비 guard 전체 순수성은 인증하지 않음 |
+| 값·실패·참조 | finite native int/float 부분지원·safe int ±9007199254740991·raw-0·원 type/ref/prefix·postloss read_result·NOT_READY 계약 그대로. dummy13/25 gate 우회·clock writer/default0 추가 없음 |
+| 검수 분리 | 기존 owner34case477(설정163·행동314) 인수, 원17 중15통과2실패와 별도2true는 보존. V12 후보 원11case43행동true/setup signedzero1false·exit1 전체FAIL과 별도4case19행동+setup4 true의 한정 보완은 각각 유지. 원성공 검수·parse 재실행 없음 |
+| 실제 실행·보류 | 이번은 소스 정렬이다. 사용자 열린 앱·compiled export·PC 실행·실제 Main/State clock·자연 전투·JS·최신 게임 인수는 미확인. V12 제품 copy·World hook·build/reload/import/PC 전달 없음 |
+| 정본 / 증거 | [FDG_NATIVE_NORMAL_ENEMY_PLAY_TIME_MAIN_SYNC_20261017.md](FDG_NATIVE_NORMAL_ENEMY_PLAY_TIME_MAIN_SYNC_20261017.md) · [소스 통합 final receipt](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/NORMAL-HURTE-PLAY-TIME-MAIN-SOURCE-SYNC-20261017/receipt.json>) |

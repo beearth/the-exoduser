@@ -1,4 +1,4 @@
-> 2026-10-17 현행 normal hurtE provider: I 별도 브랜치 codex/native-play-time-owner-20261017에서 callback **12/25·미13**, play_time은 el_mul 직후 동일 Services self의 arity0 Callable로 등록됐다. main/R 마지막 공통 소스는 D9이며 최신 실행 게임·자연 clock 인수는 미확인이다. 아래 이전 단계 등록 숫자와 검수 기록은 해당 시점의 이력이다.
+> 2026-10-17 현행 normal hurtE provider: I 별도 브랜치 codex/native-play-time-owner-20261017에서 callback **12/25·미13**, play_time은 el_mul 직후 동일 Services self의 arity0 Callable로 등록됐다. D9는 직전 공통 소스 인수이며, 이번 main/I/R 소스 정렬은 통합 정본·receipt의 실제 HEAD·tree를 따른다. 최신 실행 게임·자연 clock 인수는 미확인이다. 아래 이전 단계 등록 숫자와 검수 기록은 해당 시점의 이력이다.
 
 # Typed rand main 디스크 소스 통합 — 2026-10-17
 
@@ -59,6 +59,18 @@
 | owner 기존 검수 | 첫 격리34case477확인(설정163·행동314) ROOT 인수 유지. 원정적17 중15통과2실패 wholefalse 및 별도2true는 서로 다른 증거이며 소급 전체PASS 합산 없음. 이번 문서 보완에서 재실행하지 않음 |
 | V12 후보 / 원실패 | source3+첫parse2 ROOT 인수. 원11case43행동true지만 setup5중signed-zero1false·exit1 전체FAIL 보존. +0 의도 B2 실제 -0 및 runner 제어 한계는 해당 첫 실행의 기록 |
 | V12 별도 보완 | 별도4case19행동+setup4 true·exit0는 첫actual+0와 둘째 NRnestedREADY/SOURCE_THROW/UNSUPPORTED→UNKNOWN_STATUS에만 한정. 첫FAIL과 소급 합산 금지. 네 준비식 평가 뒤 public 호출 전 검사이므로 fail-fast 실제 고장주입 증명은 아님 |
-| source / runtime 구분 | main/R 마지막 공통 소스 D9, I 소유 브랜치는 별도. 실제 Main/State clock presence·증가·자연수명·원JS·실게임·PC 인수 미확인. V12 제품 copy·World hook·dummy13·required25 gate 우회 없음 |
+| source / runtime 구분 | D9는 직전 공통 소스 인수이고 기존 I owner 브랜치 이력은 보존한다. 이번 main/I/R 현재 소스 정렬은 통합 정본·receipt의 실제 HEAD·tree를 따른다. 실제 Main/State clock presence·증가·자연수명·원JS·실게임·PC 인수 미확인. V12 제품 copy·World hook·dummy13·required25 gate 우회 없음 |
 | 이번 보완 | 이전32 한정 검색 누락을 새 허용 docs 검색으로 보완. 코드0·원 등록static10/owner477/V12 43·19/parse 재실행0. 명시 제외·바이너리·검색 불가 문서는 완료로 세지 않음 |
 | 보존 | [문서 coverage 보완 receipt](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/NORMAL-HURTE-PLAY-TIME-REGISTRATION12-DOCS-COVERAGE-REPAIR-20261017/receipt.json>) |
+
+
+## 2026-10-17 play_time main/I/R 소스 통합 체크포인트 — 현행
+
+| 항목 | 현재 범위와 인수 한계 |
+|---|---|
+| 직전 인수 / 이번 소스 | 직전 공통 인수 D9(d9b886c). owner 실제 NUL diff42(code3/docs39)에 통합 정본1을 추가한 최종 범위는 실제 union NUL·tree 목록과 아래 receipt를 기준으로 확인. main/I/R의 실제 현재 HEAD·tree·branch·upstream 및 정렬 결과도 receipt 기준 |
+| 코드·provider | 인수된 Main/Services/State 코드3 그대로, callback 12/25·미13. play_time은 el_mul 직후 동일 Services self·arity0, 새entry 생성의 값 query0만 확인. 기존 getter/준비 guard 전체 순수성은 인증하지 않음 |
+| 값·실패·참조 | finite native int/float 부분지원·safe int ±9007199254740991·raw-0·원 type/ref/prefix·postloss read_result·NOT_READY 계약 그대로. dummy13/25 gate 우회·clock writer/default0 추가 없음 |
+| 검수 분리 | 기존 owner34case477(설정163·행동314) 인수, 원17 중15통과2실패와 별도2true는 보존. V12 후보 원11case43행동true/setup signedzero1false·exit1 전체FAIL과 별도4case19행동+setup4 true의 한정 보완은 각각 유지. 원성공 검수·parse 재실행 없음 |
+| 실제 실행·보류 | 이번은 소스 정렬이다. 사용자 열린 앱·compiled export·PC 실행·실제 Main/State clock·자연 전투·JS·최신 게임 인수는 미확인. V12 제품 copy·World hook·build/reload/import/PC 전달 없음 |
+| 정본 / 증거 | [FDG_NATIVE_NORMAL_ENEMY_PLAY_TIME_MAIN_SYNC_20261017.md](FDG_NATIVE_NORMAL_ENEMY_PLAY_TIME_MAIN_SYNC_20261017.md) · [소스 통합 final receipt](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/NORMAL-HURTE-PLAY-TIME-MAIN-SOURCE-SYNC-20261017/receipt.json>) |
