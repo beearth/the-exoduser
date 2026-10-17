@@ -494,7 +494,7 @@ func _attack_plan(key: String) -> Dictionary:
 	out["ready"] = out.get("status") == "READY"
 	return out
 
-# Four typed normal-hit inputs only. These callbacks retain this Services owner,
+# Five typed normal-hit callbacks. These callbacks retain this Services owner,
 # while its actual Main/actor/provider links remain weak and checked per query.
 func get_normal_enemy_damage_provider_callbacks(caller: Node) -> Dictionary:
 	if caller != _ref(_main) or not _normal_enemy_provider_error().is_empty(): return {}
@@ -503,6 +503,7 @@ func get_normal_enemy_damage_provider_callbacks(caller: Node) -> Dictionary:
 		"u_eq": Callable(self, "read_normal_enemy_unique_equipment"),
 		"p_atk_mul": Callable(self, "read_normal_enemy_attack_multiplier"),
 		"melee_ref": Callable(self, "read_normal_enemy_melee_reference"),
+		"parry_lesson_active": Callable(self, "read_normal_enemy_parry_lesson_active"),
 	}
 
 func read_normal_enemy_equipment_affix(id: Variant) -> Dictionary:
@@ -516,6 +517,20 @@ func read_normal_enemy_attack_multiplier() -> Dictionary:
 
 func read_normal_enemy_melee_reference() -> Dictionary:
 	return _read_normal_enemy_provider("melee_ref", [])
+
+func read_normal_enemy_parry_lesson_active() -> Dictionary:
+	var error: String = _normal_enemy_provider_error()
+	if not error.is_empty():
+		return {"status":"NOT_READY", "reason":error, "provider":"parry_lesson_active"}
+	var result: Dictionary = _ref(_main).read_native_normal_enemy_lesson_status()
+	# A reentrant active getter may replace the current Services/context.
+	# Recheck only ownership; never eagerly read source domains or OPT.
+	var post_error: String = _normal_enemy_provider_error()
+	if not post_error.is_empty():
+		return {"status":"NOT_READY", "ready":false,
+			"reason":"actual_normal_enemy_lesson_context_lost", "context_reason":post_error,
+			"provider":"parry_lesson_active", "read_result":result}
+	return result
 
 func _normal_enemy_provider_error() -> String:
 	if not _configured: return "unconfigured"
