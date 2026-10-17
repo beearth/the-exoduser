@@ -1,6 +1,8 @@
+> 2026-10-17 ENGINE WIP 현행: callback **10/25·미15**, 기존9 뒤 `rand` 인자0을 같은 Services reader로 등록했다. 아래 이전9·미등록 표시는 해당 이전 인수 단계의 이력이며, 현행 등록 상태는 이 배너와 마지막 등록 절을 따른다. main/R/served 반영·V9 scalar Dict직결·fullhurtE 완료는 아니다.
+
 # Native typed rand 소유 경계 — 2026-10-17
 
-현행은 ENGINE WIP다. Main·Services·World의 실제 소유 경계 코드를 작성하고 신규 격리 검수30/30·정적 보존9/9를 최초1회 통과했다. **rand는 아직 map에 등록하지 않았으며 실제9/25·미16이다.** V9의 scalar _rand=float(_c(rand))에 Dictionary를 직접 전달하지 않는다. main/R/served·최신 전체 게임·실RNG 동등성 완료가 아니다.
+현행은 ENGINE WIP다. Main·Services·World의 실제 소유 경계 코드를 작성하고 신규 격리 검수30/30·정적 보존9/9를 최초1회 통과했다. **현재 ENGINE WIP는 rand를 10번째로 등록해 실제10/25·미15이며, 같은 Services reader를 인자0으로 연결한다.** V9의 scalar _rand=float(_c(rand))에 Dictionary를 직접 전달하지 않는다. main/R/served·최신 전체 게임·실RNG 동등성 완료가 아니다.
 
 | 파일/API | 정확한 서명·역할 |
 |---|---|
@@ -46,3 +48,14 @@
 | 배포 | local/GitHub WIP로만보존, 최종ROOT인수전main/R/served반영0. ENEMY새TASK/V9copy/hook/16dummy/25presence우회0. |
 
 공식메타데이터는 [Godot4.7 GlobalScope randi](https://docs.godotengine.org/en/4.7/classes/class_%40globalscope.html#class-globalscope-method-randi)를가리키며이번unit에서원engineRNG본문·현재draw를읽은것은아니다.
+
+
+## 2026-10-17 ENGINE WIP: rand 10번째 실제 등록
+
+| 항목 | 현재 상태 |
+|---|---|
+| registry | eq_affix,u_eq,p_atk_mul,melee_ref,parry_lesson_active,player_view,stat_str,p_dot_pool,l_eq,rand 순서. 실제10/25·미15. |
+| callback | 같은 Services self의 read_normal_enemy_random_unit()->Dictionary 인자0. purpose/line은인자가아니며기존Main공개getter의forwarding을재사용한다. |
+| 변경 경계 | Services map literal1개만추가. 기존9/helper/owner/sharedsampler/수식/primitive/Main/World본문은그대로다. |
+| 새 검수 | 등록delta static7/7, runtime0. 키10/기존9순서·sameSelf/method·0arg·typedWorld route·다른Services bytes보존·생성시추가reader/RNG/domainquery0 확인. 기존readinessguard 전체query0은미입증이다. |
+| 보존/한계 | 기존30/41/95·진단/통과parse재연0. main/R·실게임·producer/V9제품copy·scalarDict직결·ENEMY TASK·Worldhook·dummy25우회0. 이전실패/범위초과이력도그대로다. |
