@@ -507,6 +507,7 @@ func get_normal_enemy_damage_provider_callbacks(caller: Node) -> Dictionary:
 		"player_view": Callable(self, "read_normal_enemy_player_view"),
 		"stat_str": Callable(self, "read_normal_enemy_strength_multiplier"),
 		"p_dot_pool": Callable(self, "read_normal_enemy_dot_pool_multiplier"),
+		"l_eq": Callable(self, "read_normal_enemy_legendary_equipment"),
 	}
 
 func read_normal_enemy_equipment_affix(id: Variant) -> Dictionary:
@@ -755,3 +756,38 @@ func _discard(error: String) -> bool:
 	_base_attack = null
 	_readers = null
 	return _fail(error)
+
+# This route uses only current-owner metadata until the actual lazy cache miss.
+func is_native_main_legendary_bridge_current(main: Node, state: Node, providers: RefCounted) -> bool:
+	if not _configured or _ref(_main) != main or _ref(_state) != state or _ref(_providers) != providers:
+		return false
+	for object in [main, state, providers, _ref(_player), _ref(_world), _ref(_resources)]:
+		if not is_instance_valid(object): return false
+	if main.get("source_initialization_services") != self or main.get("player") != _ref(_player) \
+			or main.get("world") != _ref(_world) or main.get("source_resources") != _ref(_resources):
+		return false
+	return true
+
+func bind_main_source_legendary_cache(main: Node) -> bool:
+	var state: Variant = _ref(_state)
+	var providers: Variant = _ref(_providers)
+	if not is_instance_valid(state) or not is_instance_valid(providers) \
+			or not is_native_main_legendary_bridge_current(main, state, providers): return false
+	var formula: Variant = providers.get_native_main_legendary_formula(main)
+	if not is_instance_valid(formula): return false
+	return formula.configure_main_legendary_source(main, self, state, providers)
+
+func read_normal_enemy_legendary_equipment(stat: Variant) -> Dictionary:
+	var main: Variant = _ref(_main)
+	var state: Variant = _ref(_state)
+	var providers: Variant = _ref(_providers)
+	if not is_instance_valid(main) or not is_instance_valid(state) or not is_instance_valid(providers) \
+			or not is_native_main_legendary_bridge_current(main, state, providers):
+		return {"status":"NOT_READY","reason":"legendary_current_bridge_lost","provider":"l_eq"}
+	var formula: Variant = providers.get_native_main_legendary_formula(main)
+	if not is_instance_valid(formula):
+		return {"status":"NOT_READY","reason":"legendary_current_formula_lost","provider":"l_eq"}
+	var result: Dictionary = formula.l_eq(stat)
+	if not main.can_bind_native_source_legendary_formula(formula, self, state, providers):
+		return {"status":"NOT_READY","reason":"legendary_owner_changed_after_read","provider":"l_eq","read_result":result}
+	return result

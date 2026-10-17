@@ -72,6 +72,11 @@ var _magic_ref_reader: Callable
 var _passives_bound := false
 var _player_bound := false
 var _inventory_bound := false
+var _legendary_main: WeakRef
+var _legendary_services: WeakRef
+var _legendary_state: WeakRef
+var _legendary_providers: WeakRef
+var _legendary_source_bound := false
 var _melee_ref_bound := false
 var _magic_ref_bound := false
 var _affix_reader: Object = null
@@ -515,3 +520,34 @@ func p_dot_pool() -> Dictionary:
 	if not passives.ok:
 		return _fail(passives.status, passives.reason, source)
 	return _ok(1.0 + _passive_or0_mul(passives.value, "pDot", 0.05), source)
+
+# Weak bindings only. Main owns the script-context cache and its partial prefix.
+func configure_main_legendary_source(main: Node, services: RefCounted,
+		state: Node, providers: RefCounted) -> bool:
+	if not is_instance_valid(main) or not main.can_bind_native_source_legendary_formula(self, services, state, providers):
+		return false
+	if _legendary_source_bound and (_legendary_main == null or _legendary_main.get_ref() != main):
+		return false
+	_legendary_main = weakref(main)
+	_legendary_services = weakref(services)
+	_legendary_state = weakref(state)
+	_legendary_providers = weakref(providers)
+	_legendary_source_bound = true
+	return true
+
+func is_main_legendary_source_bound_to(main: Node, services: RefCounted,
+		state: Node, providers: RefCounted) -> bool:
+	return _legendary_source_bound and _legendary_main != null and _legendary_main.get_ref() == main \
+		and _legendary_services != null and _legendary_services.get_ref() == services \
+		and _legendary_state != null and _legendary_state.get_ref() == state \
+		and _legendary_providers != null and _legendary_providers.get_ref() == providers
+
+func l_eq(stat: Variant) -> Dictionary:
+	var main: Variant = _legendary_main.get_ref() if _legendary_main != null else null
+	var services: Variant = _legendary_services.get_ref() if _legendary_services != null else null
+	var state: Variant = _legendary_state.get_ref() if _legendary_state != null else null
+	var providers: Variant = _legendary_providers.get_ref() if _legendary_providers != null else null
+	if not _legendary_source_bound or not is_instance_valid(main) or not is_instance_valid(services) \
+			or not is_instance_valid(state) or not is_instance_valid(providers):
+		return {"status":"NOT_READY","reason":"legendary_bound_owner_lost","source":"_lEq@game.html:16620"}
+	return main.read_native_source_legendary_equipment(stat, self, services, state, providers)

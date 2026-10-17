@@ -654,3 +654,65 @@ func advance_native_fireball_clock(owner: Node, ticks: float, frame: float) -> b
 	_native_fireball_last_phase_frame=frame
 	_p["st2"]=float(_p.st2)-ticks
 	return true
+
+# No domain reads: identity/lifecycle gate used even on Main cache hits.
+func is_native_main_legendary_owner_current(main: Node) -> bool:
+	if not _initialized or not _live(main) or main.is_queued_for_deletion() \
+			or main.get_script() == null or main.get_script().resource_path != "res://scripts/main.gd":
+		return false
+	for node in [self, _player, _world, _resources]:
+		if not _live(node) or node.is_queued_for_deletion(): return false
+	if main.get("source_state") != self or main.get("player") != _player \
+			or main.get("world") != _world or main.get("source_resources") != _resources \
+			or _world.get_parent() != main: return false
+	if _player.get_meta(INITIALIZED_META, false) != true: return false
+	var claim: Variant = _player.get_meta(CLAIM_META, null)
+	if not claim is WeakRef or claim.get_ref() != self: return false
+	if get_parent() != null and get_parent() != _world: return false
+	if _resources.get_parent() != null and _resources.get_parent() != _world: return false
+	if _world.get("player") != null and _world.get("player") != _player: return false
+	if _player.is_inside_tree():
+		for node in [self, _world, _resources, main]:
+			if not node.is_inside_tree() or node.get_tree() != _player.get_tree(): return false
+		if get_parent() != _world or _resources.get_parent() != _world or _world.get("player") != _player: return false
+	elif _player.is_node_ready(): return false
+	return true
+
+func read_native_legendary_inventory(main: Node, formula: RefCounted,
+		services: RefCounted, providers: RefCounted) -> Dictionary:
+	if not is_native_main_legendary_owner_current(main) \
+			or not main.can_bind_native_source_legendary_formula(formula, services, self, providers):
+		return {"status":"NOT_READY","reason":"legendary_inventory_owner_mismatch"}
+	var error := _current_error()
+	if not error.is_empty(): return {"status":"NOT_READY","reason":error}
+	return {"status":"READY","value":_inventory}
+
+func restore_native_legendary_item_stat(main: Node, expected_inventory: Dictionary,
+		slot: String, expected_item: Dictionary, expected_special: Dictionary) -> Dictionary:
+	if not is_native_main_legendary_owner_current(main):
+		return {"status":"NOT_READY","reason":"legendary_restore_owner_mismatch","writes":0}
+	var error := _current_error()
+	if not error.is_empty(): return {"status":"NOT_READY","reason":error,"writes":0}
+	if not is_same(expected_inventory, _inventory):
+		return {"status":"NOT_READY","reason":"legendary_restore_inventory_replaced","writes":0}
+	if not main.is_native_source_legendary_write_current(self, expected_inventory, slot, expected_item, expected_special):
+		return {"status":"NOT_READY","reason":"legendary_restore_outside_owned_query","writes":0}
+	var equipped: Variant = _inventory.get("equipped")
+	if not equipped is Dictionary or not is_same(equipped.get(slot), expected_item):
+		return {"status":"NOT_READY","reason":"legendary_restore_item_replaced","writes":0}
+	var special: Variant = expected_item.get("legendarySpecial")
+	if not special is Dictionary or not is_same(special, expected_special):
+		return {"status":"NOT_READY","reason":"legendary_restore_special_replaced","writes":0}
+	var stat: Variant = special.get("stat")
+	if not main._source_legendary_truthy(stat):
+		return {"status":"NOT_READY","reason":"legendary_restore_stat_condition_changed","writes":0}
+	var key_result: Dictionary = main.source_legendary_property_key(stat)
+	if key_result.get("status") != "READY":
+		return {"status":"UNSUPPORTED_OPERAND","reason":key_result["reason"],"raw":stat,"writes":0}
+	var key: String = key_result["key"]
+	if expected_item.has(key):
+		return {"status":"NOT_READY","reason":"legendary_restore_field_already_defined","writes":0}
+	if not special.has("val"):
+		return {"status":"UNSUPPORTED_OPERAND","reason":"JS_undefined_legacy_value_unrepresented","raw":special,"writes":0}
+	expected_item[key] = special["val"]
+	return {"status":"READY","writes":1,"item":expected_item,"field":key,"value":expected_item[key]}

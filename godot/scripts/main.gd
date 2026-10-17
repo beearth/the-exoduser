@@ -70,6 +70,8 @@ var source_providers: RefCounted
 var source_starter_items: Dictionary = {}
 var source_initialization: RefCounted
 var source_initialization_services: RefCounted
+var _source_l_eq_cache: Variant = null
+var _source_l_eq_write_context: Dictionary = {}
 var source_initialization_result: Dictionary = {}
 var source_lesson: RefCounted
 var _source_lesson_file_init_attempted: bool = false
@@ -751,6 +753,9 @@ func _initialize_source_player_parameters() -> bool:
 			source_resources, source_providers, source_initialization):
 		source_initialization_result = {"status": "NOT_READY", "reason": "actual_initialization_services_not_ready",
 			"services": source_initialization_services.get_snapshot()}
+		return false
+	if not source_initialization_services.bind_main_source_legendary_cache(self):
+		source_initialization_result = {"status":"NOT_READY","reason":"actual_Main_legendary_binding_rejected"}
 		return false
 	if not source_initialization.configure(player, world, source_state, source_resources,
 			source_initialization_services.get_services()):
@@ -2164,3 +2169,139 @@ func read_native_fireball_flight_dependencies() -> Dictionary:
 	actual["is_wall"]=Callable(self,"_is_native_fireball_wall")
 	actual["read_unique_values"]=Callable(self,"read_native_fireball_unique_values")
 	return {"ready":true,"context":context,"bindings":actual,"owner":owner,"native_epoch":epoch}
+
+# Source-script context cache: owned by this Main, never by actor/Formula.
+func can_bind_native_source_legendary_formula(formula: RefCounted, services: RefCounted,
+		state: Node, providers: RefCounted) -> bool:
+	return _source_legendary_context_error(formula, services, state, providers, false).is_empty()
+
+func _source_legendary_context_error(formula: RefCounted, services: RefCounted,
+		state: Node, providers: RefCounted, require_binding: bool = true) -> String:
+	if not is_instance_valid(self) or is_queued_for_deletion() or get_script() == null \
+			or get_script().resource_path != "res://scripts/main.gd":
+		return "legendary_Main_not_live"
+	for object in [formula, services, state, providers, player, world, source_resources]:
+		if not is_instance_valid(object): return "legendary_owner_lost"
+		if object is Node and object.is_queued_for_deletion(): return "legendary_owner_queued"
+	if source_initialization_services != services or source_state != state \
+			or source_providers != providers or world.get_parent() != self:
+		return "legendary_Main_identity_changed"
+	if services.get_script() != SourceInitializationServicesScript \
+			or providers.get_script() != SourceProvidersScript or state.get_script() != SourceStateScript:
+		return "legendary_source_script_changed"
+	if is_node_ready() and not is_inside_tree(): return "legendary_Main_removed"
+	if not services.is_native_main_legendary_bridge_current(self, state, providers):
+		return "legendary_services_identity_changed"
+	if not state.is_native_main_legendary_owner_current(self):
+		return "legendary_state_identity_changed"
+	if providers.get_native_main_legendary_formula(self) != formula:
+		return "legendary_formula_identity_changed"
+	if require_binding and not formula.is_main_legendary_source_bound_to(self, services, state, providers):
+		return "legendary_formula_binding_changed"
+	return ""
+
+func read_native_source_legendary_equipment(stat: Variant, formula: RefCounted,
+		services: RefCounted, state: Node, providers: RefCounted) -> Dictionary:
+	var error := _source_legendary_context_error(formula, services, state, providers)
+	if not error.is_empty(): return _source_legendary_failure("NOT_READY", error, "owner", stat)
+	if _source_l_eq_cache == null:
+		# Original rebuild installs {} before reading SLOT_NAMES/INV.
+		_source_l_eq_cache = {}
+		var inventory_result: Dictionary = state.read_native_legendary_inventory(self, formula, services, providers)
+		if inventory_result.get("status") != "READY":
+			return _source_legendary_failure(str(inventory_result.get("status", "NOT_READY")),
+				str(inventory_result.get("reason", "legendary_inventory_unavailable")), "INV", inventory_result)
+		error = _source_legendary_context_error(formula, services, state, providers)
+		if not error.is_empty(): return _source_legendary_failure("NOT_READY", error, "owner_after_INV", inventory_result)
+		var inventory: Dictionary = inventory_result["value"]
+		if not inventory.has("equipped") or inventory["equipped"] == null:
+			return _source_legendary_failure("SOURCE_THROW", "TypeError: equipped is null or undefined", "INV.equipped", inventory)
+		if not inventory["equipped"] is Dictionary:
+			return _source_legendary_failure("UNSUPPORTED_OPERAND", "equipped_property_container_unrepresented", "INV.equipped", inventory["equipped"])
+		var equipped: Dictionary = inventory["equipped"]
+		var slots := ["weapon","shield","boots","armor","helmet","bow","gloves","pants","belt","necklace","ring1","ring2","cape","bracelet","headband","ossuary","headband2"]
+		for slot in slots:
+			error = _source_legendary_context_error(formula, services, state, providers)
+			if not error.is_empty(): return _source_legendary_failure("NOT_READY", error, "slot_owner", slot)
+			var item: Variant = equipped.get(slot)
+			if not _source_legendary_truthy(item): continue
+			if not item is Dictionary:
+				return _source_legendary_failure("UNSUPPORTED_OPERAND", "item_property_container_unrepresented", "item.legendarySpecial", item)
+			var special: Variant = item.get("legendarySpecial")
+			if not _source_legendary_truthy(special): continue
+			if not special is Dictionary:
+				return _source_legendary_failure("UNSUPPORTED_OPERAND", "special_property_container_unrepresented", "legendarySpecial.stat", special)
+			var raw_stat: Variant = special.get("stat")
+			if not _source_legendary_truthy(raw_stat): continue
+			var key_result := source_legendary_property_key(raw_stat)
+			if key_result.get("status") != "READY":
+				return _source_legendary_failure("UNSUPPORTED_OPERAND", key_result["reason"], "legendarySpecial.stat", raw_stat)
+			var key: String = key_result["key"]
+			if not item.has(key):
+				_source_l_eq_write_context = {"formula":formula,"services":services,"state":state,"providers":providers,
+					"inventory":inventory,"slot":slot,"item":item,"special":special}
+				var write_result: Dictionary = state.restore_native_legendary_item_stat(self, inventory, slot, item, special)
+				_source_l_eq_write_context = {}
+				if write_result.get("status") != "READY":
+					return _source_legendary_failure(str(write_result.get("status", "NOT_READY")),
+						str(write_result.get("reason", "legendary_restore_rejected")), "item[stat]", write_result)
+				error = _source_legendary_context_error(formula, services, state, providers)
+				if not error.is_empty(): return _source_legendary_failure("NOT_READY", error, "owner_after_restore", write_result)
+			if not _source_l_eq_cache.has(key):
+				_source_l_eq_cache[key] = item[key]
+	# Cache hits never query inventory, resource/domain readers, or the writer.
+	error = _source_legendary_context_error(formula, services, state, providers)
+	if not error.is_empty(): return _source_legendary_failure("NOT_READY", error, "owner_after_query", stat)
+	var query_key := source_legendary_property_key(stat)
+	if query_key.get("status") != "READY":
+		return _source_legendary_failure("UNSUPPORTED_OPERAND", query_key["reason"], "cache[stat]", stat)
+	var raw: Variant = _source_l_eq_cache.get(query_key["key"])
+	var value: Variant = raw if _source_legendary_truthy(raw) else 0
+	return {"status":"READY","value":value,"source":"_lEq/_lEqRebuild@game.html:16609-16620",
+		"non_finite":value is float and (is_nan(value) or is_inf(value)),"reason":"","undefined_reads":[]}
+
+func is_native_source_legendary_write_current(state: Node, inventory: Dictionary,
+		slot: String, item: Dictionary, special: Dictionary) -> bool:
+	var context := _source_l_eq_write_context
+	if context.is_empty() or context.get("state") != state or not is_same(context.get("inventory"), inventory) \
+			or context.get("slot") != slot or not is_same(context.get("item"), item) \
+			or not is_same(context.get("special"), special): return false
+	return _source_legendary_context_error(context["formula"], context["services"], state, context["providers"]).is_empty()
+
+func _source_legendary_failure(status: String, reason: String, operand: String, raw: Variant) -> Dictionary:
+	return {"status":status,"reason":reason,"operand":operand,"raw":raw,
+		"cache_initialized":_source_l_eq_cache is Dictionary,"cache_prefix":_source_l_eq_cache,
+		"partial":_source_l_eq_cache is Dictionary,"source":"_lEq/_lEqRebuild@game.html:16609-16620"}
+
+static func _source_legendary_truthy(value: Variant) -> bool:
+	if value == null: return false
+	if value is bool: return value
+	if value is int: return value != 0
+	if value is float: return value != 0.0 and not is_nan(value)
+	if value is String: return not value.is_empty()
+	return true
+
+static func source_legendary_property_key(value: Variant) -> Dictionary:
+	var key: String
+	if value is String:
+		key = value
+	elif value == null:
+		key = "null"
+	elif value is bool:
+		key = "true" if value else "false"
+	elif value is int:
+		if value < -9007199254740991 or value > 9007199254740991:
+			return {"status":"UNSUPPORTED_OPERAND","reason":"integer_property_key_outside_JS_exact_domain"}
+		key = str(value)
+	elif value is float:
+		if is_nan(value): key = "NaN"
+		elif is_inf(value): key = "-Infinity" if value < 0.0 else "Infinity"
+		elif value == 0.0: key = "0"
+		elif abs(value) <= 9007199254740991.0 and floor(value) == value: key = str(int(value))
+		else: return {"status":"UNSUPPORTED_OPERAND","reason":"JS_number_property_key_format_unrepresented"}
+	else:
+		return {"status":"UNSUPPORTED_OPERAND","reason":"JS_ToPropertyKey_unrepresented"}
+	if key in ["__proto__","constructor","toString","toLocaleString","valueOf","hasOwnProperty",
+			"isPrototypeOf","propertyIsEnumerable","__defineGetter__","__defineSetter__","__lookupGetter__","__lookupSetter__"]:
+		return {"status":"UNSUPPORTED_OPERAND","reason":"JS_Object_prototype_property_unrepresented"}
+	return {"status":"READY","key":key}

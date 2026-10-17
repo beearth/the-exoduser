@@ -302,3 +302,22 @@ func get_snapshot() -> Dictionary:
 		"source_formulas_reimplemented": false, "raw_grit_reset_restore_plan_called": false,
 		"main_full_ready": false, "derived_parameter_application_proven": false,
 		"hp_def_speed_shield_poise_configured": false, "public_play_proven": false}
+
+# Pure ownership metadata, deliberately excludes get_provider_bundle/_context_error.
+func get_native_main_legendary_formula(main: Node) -> Variant:
+	if not _configured or not is_instance_valid(main) or main.is_queued_for_deletion() \
+			or main.get_script() == null or main.get_script().resource_path != "res://scripts/main.gd":
+		return null
+	for node in [_player, _world, _state, _resources]:
+		if not is_instance_valid(node) or node.is_queued_for_deletion(): return null
+	if main.get("source_providers") != self or main.get("player") != _player \
+			or main.get("world") != _world or main.get("source_state") != _state \
+			or main.get("source_resources") != _resources or _world.get_parent() != main:
+		return null
+	if _state.get_script() != STATE or _resources.get_script() != RESOURCES: return null
+	var claim: Variant = _player.get_meta(CLAIM_META, null)
+	if _player.get_meta(INITIALIZED_META, false) != true or not claim is WeakRef or claim.get_ref() != self:
+		return null
+	if not _state.is_native_main_legendary_owner_current(main): return null
+	var formula: Variant = _providers.get("formula")
+	return formula if is_instance_valid(formula) and formula.get_script() == FORMULA else null
