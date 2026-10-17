@@ -13,7 +13,7 @@
 | 대상 | 마지막 확인 | 현재 한계 |
 |---|---|---|
 | 마지막 공통 소스 기준 | main/R/I HEAD의 D9 소스(d9b886c) 정렬을 확인했음 | 현재 owner 소유 체크포인트는 별도 브랜치로 관리하며, 열린 게임·빌드·PC 실행 인수와 구분 |
-| I 소유 체크포인트 | play_time owner 코드3·관련 문서32를 검증 WIP 소유 브랜치 codex/native-play-time-owner-20261017로 관리 | main/R·실행판과 별도. 실제 local/remote SHA는 단위 receipt를 확인하며 callback은 미등록 |
+| I 소유 체크포인트 | play_time owner 코드3·관련 문서32를 검증 WIP 소유 브랜치 codex/native-play-time-owner-20261017로 관리 | main/R·실행판과 별도. 실제 local/remote SHA는 단위 receipt를 확인하며 play_time 등록을 포함해 callback 12/25·미13 |
 | 열린 게임 / 별도 compiled export | 최신 소스와 동일한 실행판인지 미확인 | 실제 실행 대상 URL·앱 경로와 검수 대상을 먼저 확정해야 함 |
 | PC 소스·실행판 | 전달 대상·실행 경로·실플레이 인수 미확인 | Git 소스 정렬만으로 PC 전달·실행 완료를 선언하지 않음 |
 
@@ -23,7 +23,7 @@
 
 | 범위 | 소스 구현 | 격리 검수 | 실제 게임 인수 | 다음 할 일 | 담당·보류 근거 |
 |---|---|---|---|---|---|
-| 전투 피해·필수 데이터 연결 | 일반 적 피해 consumer의 callback 11/25 등록, 미14. 시간 읽기 owner는 구현 WIP·미등록 | 시간 owner의 첫 공개 API 격리검수 ROOT 인수 완료. consumer 전체 검수와 구분 | 현재 최신 실행판의 자연 실행 인수 미확인 | 같은 consumer 연결·자연 실행 확인 | ENGINE 연결 / ROOT 합본 인수 |
+| 전투 피해·필수 데이터 연결 | 일반 적 피해 consumer의 callback 12/25 등록, 미13. 시간 읽기 owner는 검증 WIP이며 동일 Services self·arity0로 등록 | 시간 owner의 첫 공개 API 격리검수 ROOT 인수 완료. consumer 전체 검수와 구분 | 현재 최신 실행판의 자연 실행 인수 미확인 | 같은 consumer 연결·자연 실행 확인 | ENGINE 연결 / ROOT 합본 인수 |
 | 게임 실행·첫 전투 | 기존 실행 경로와 개별 연결 작업 이력 보유 | 첫 전투 합본의 최신 검수 근거는 미확인 | 원본과 동일 조건 비교 미인수 | 실행 대상 확정 후 첫 화면·입력·타격 비교 | ROOT / 실행 대상 미확정 |
 | 화면·조작·HUD | 걷기 방향·접지·기본 공격/SFX 등 개별 구현 이력 보유. 최신 합본 반영 범위 미확인 | 개별 단위 이력과 통합 검수를 구분 | HUD·입력·가독성 인수 미확인 | 원본과 같은 전투에서 화면·조작 비교 | 기존 담당 유지 / HUD·DCP 범위·권한 근거 미확정 |
 | 맵·적·보스 | 개별 제작·배치·연결 자료 보유. 전체 합본 범위 미확정 | 단위 결과를 전장 전체 인수로 확대하지 않음 | 최신 전장 합본 인수 미확인 | 첫 전투 연결 뒤 전장·적·보스 검증 | 기존 맵·적·보스 담당 / ROOT 취합 |
@@ -34,12 +34,12 @@
 
 ## 현재 진행 중인 단위
 
-- 11/25·미14는 **일반 적 피해 consumer의 필수 데이터 callback 연결 수**다. 전체 게임 이식률이나 전체 기능 분모가 아니다.
-- play_time 읽기 owner의 새 메서드 4개와 Main Script 증명용 메타데이터 필드 1개는 미등록인 검증 WIP 소유 체크포인트다. 첫 격리 공개 API 검수의 계획된 사례는 모두 통과했고 ROOT가 단위 결과를 인수했다. 확인 범위는 격리 객체의 부분지원·실패·참조 보존이며 실제 Main/State clock 값의 존재·증가·자연수명은 미확인이다.
+- 12/25·미13은 **일반 적 피해 consumer의 필수 데이터 callback 연결 수**다. 전체 게임 이식률이나 전체 기능 분모가 아니다.
+- play_time 읽기 owner의 새 메서드 4개와 Main Script 증명용 메타데이터 필드 1개는 검증 WIP 소유 체크포인트이며 play_time Callable을 el_mul 직후에 등록했다. 첫 격리 공개 API 검수의 계획된 사례는 모두 통과했고 ROOT가 단위 결과를 인수했다. 확인 범위는 격리 객체의 부분지원·실패·참조 보존이며 실제 Main/State clock 값의 존재·증가·자연수명은 미확인이다.
 - 원정적 검사는 17개 중15통과2실패이며, 별도2확인의 통과 기록은 독립된 증거로 보존한다. V11 consumer의 원57개 확인 중5개 실패와 별도 보완25개 확인도 전체 PASS로 합산하지 않는다.
 - V12 consumer 후보 소스3와 첫 parse2는 ROOT가 2026-10-17 14:13:20.295296Z에 인수했다. 단일 Ring 0/1/2의 typed 독립 읽기와 둘째 값 write를 다루며, 공통 typed/classifier 및 기존 계약 값은 유지한다. 제품 반영은 하지 않았다.
-- V12 첫 행동 QA는 ROOT가 14:19:02.553603Z에 인수했다. 행동 11 case/43 확인은 true지만 setup 5개 중 signed zero 1개가 false여서 exit 1, 전체 FAIL이다. +0를 의도한 B2 실제 값은 -0였다. 둘째 NR/SOURCE_THROW/UNSUPPORTED 3개 경계는 미검수이고, setup false 뒤에도 case가 계속 실행된 runner 제어 한계도 남아 있다. 후보 오류로 단정하지 않는다.
-- 같은 Claude 담당에 비트로 생성한 ±0 setup, fail-fast 제어 수리와 첫 +0 및 미검수 둘째 3개 경계만 후속 배정했다. 후속 결과는 아직 도착하지 않았다. 이 실패는 play_time owner의 별도 34 case/477 확인과 구분한다.
+- V12 첫 행동 QA는 ROOT가 14:19:02.553603Z에 인수했다. 행동 11 case/43 확인은 true지만 setup 5개 중 signed zero 1개가 false여서 exit 1, 전체 FAIL이다. +0를 의도한 B2 실제 값은 -0였다. 이 첫 실행에서는 둘째 NR/SOURCE_THROW/UNSUPPORTED 3개 경계가 미검수였고 setup false 뒤에도 case가 계속 실행된 runner 제어 한계가 있었다. 후보 오류로 단정하지 않는다.
+- V12 별도 보완은 ROOT가 14:27:58.276095Z에 인수했다. 4 case/19 행동과 setup4가 모두 true, exit0이며 첫 actual +0와 둘째 NRnestedREADY/SOURCE_THROW/UNSUPPORTED→UNKNOWN_STATUS 경계에만 한정한다. 원11case43행동true·setup1false·exit1 전체FAIL은 별도로 보존하며 합산 PASS로 바꾸지 않는다. 네 준비식을 평가한 뒤 public 호출 전에 검사하므로 fail-fast 실제 고장주입 검증은 아니다. 실제 clock·자연 Main/State·JS·전체 게임은 미확인이고 V12 제품 반영도 하지 않았다. owner의 별도34case/477확인과도 구분한다.
 - 자세한 수치·raw 기록은 [시간 owner 기술 계약](FDG_NATIVE_NORMAL_ENEMY_PLAY_TIME_OWNER_20261017.md)과 [첫 격리 검수 결과](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/NORMAL-HURTE-PLAY-TIME-TYPED-OWNER-IMPLEMENTATION-20261017/results/play-time-owner-first.result.json>)에서 확인한다. 작업 로그·실패 이력은 당시 단계의 증거이며 현재 전체 게임 인수 상태와 구분한다.
 
 ## 남은 일의 순서
@@ -73,4 +73,13 @@
 
 ## 현재 owner 소유 체크포인트
 
-시간 owner의 소스 경계와 첫 격리 검수는 인수된 검증 WIP로 관리한다. 소유 브랜치는 codex/native-play-time-owner-20261017이며, main/R과 실행판 동기화·callback 등록·실게임 인수는 별도다. 실제 local/remote SHA·tree·보존 결과는 [단위 receipt](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/NORMAL-HURTE-PLAY-TIME-OWNER-VALIDATED-WIP-20261017/receipt.json>)에서 확인한다.
+시간 owner의 소스 경계와 첫 격리 검수는 인수된 검증 WIP로 관리한다. 소유 브랜치는 codex/native-play-time-owner-20261017이며, play_time callback 등록은 I에서 12/25·미13으로 반영했으며 main/R과 실행판 동기화·실게임 인수는 별도다. 실제 local/remote SHA·tree·보존 결과는 [단위 receipt](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/NORMAL-HURTE-PLAY-TIME-OWNER-VALIDATED-WIP-20261017/receipt.json>)에서 확인한다.
+
+
+## 이번 provider 등록 범위
+
+| 항목 | 현재 상태 |
+|---|---|
+| 반영 | I 소유 브랜치에서 play_time을 el_mul 직후 동일 Services self의 arity0 Callable로 등록. callback 12/25·미13이며 전체 게임 이식률이 아님 |
+| 남은 검증 | 실제 clock·자연 전투·최신 실행판·Mac/PC 인수 미확인. V12는 후보 검수 단계이며 제품 copy·World hook 없음 |
+| 기록 | [등록 단위 receipt](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/NORMAL-HURTE-PLAY-TIME-TWELFTH-PROVIDER-REGISTRATION-20261017/receipt.json>) |
