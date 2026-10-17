@@ -499,3 +499,19 @@ func read_combat_qe_subset(is_q: bool) -> Dictionary:
 # Original statStr declaration, independent of P/INV/PASSIVES reader state.
 func stat_str() -> Dictionary:
 	return _ok(STAT_STR, "statStr()=STAT_STR@game.html:28654")
+
+
+# Metadata only: no current PASSIVES query or configuration.
+func is_passives_reader_bound_to(expected: Callable) -> bool:
+	return _passives_bound and expected.is_valid() and _passives_reader.is_valid() \
+		and _passives_reader == expected \
+		and _passives_reader.get_object() == expected.get_object() \
+		and _passives_reader.get_method() == expected.get_method()
+
+# Original pDotPool() @game.html:28068; field ||0 is not an owner fallback.
+func p_dot_pool() -> Dictionary:
+	var source: String = "pDotPool()=1+(PASSIVES.pDot||0)*.05@game.html:28068"
+	var passives: Dictionary = _container("PASSIVES", _passives_reader, _passives_bound, "pDot")
+	if not passives.ok:
+		return _fail(passives.status, passives.reason, source)
+	return _ok(1.0 + _passive_or0_mul(passives.value, "pDot", 0.05), source)

@@ -1,3 +1,5 @@
+> 2026-10-17 p_dot_pool 현행: 원본 PASSIVES 식의 typed reader와 current binding 검사/실제 callback을 추가했다. 현재 map 8/25·미연결17이며, 이전7/18·6/19 등은 당시 기록이다. [계약·원 raw·첫 검수](FDG_NATIVE_NORMAL_ENEMY_PDOTPOOL_OWNER_20261017.md). 실행판·전체 hurtE 완료 아님.
+
 ## 중앙 회복 phase 최초 연결 — 2026-10-14
 
 원 dispatcher와 실제 Player/World/SourceResourceAuthority가 presence→영역HP→MP→ST→rates 사전계산→자연HP→자연ST→MP를 실제 Tree에서 소비했다. 첫6그룹88 clean PASS이며 원 helper 성공 검사 재연0이다. 이 실행의 G/INV/PASSIVES/hpR/lesson/init witness는 명시 constructor fixture다. 실제 Main 시작 장비25·파생HP/MP/ST·전체초기화는 아직 미완이다. 최신 API·clock·null/lifecycle·검증 한계는 docs/engine/FDG_GODOT_SOURCE_PLAYER_REGEN_PHASE_20261014.md 및 FDG_GODOT_FRACTIONAL_HP_SINK_20261014.md가 현재 중앙 상태다. 아래 독립 source 테스트 이력과 수치는 보존한다.
@@ -170,3 +172,17 @@ Codex executor는 첫 작성 전에 exact 3경로 working/HEAD 부재·realparen
 ENGINE은 actualcurrent PASSIVES authority/getter를 공급하고 기존 World/Player/stat assembly에서 `bind_combat_stat_formula(formula, 'current')`를 단 한 번 소비해야 한다. source restore 단계의 PASSIVES local derive는 BUILD 소유 STATS/환불/grit/save delete 완료와 별개다. 이 module이 공통 STAT 본체/투자·지출/레벨 효과를 대신하지 않는다. shared docs 현재값 sync와 normal code+docs checkpoint는 중앙에 인계한다. sharedPlayer/progress/cache/World/HTML/main/API/save/Git/server/shipping/human paused 입력 변이는 0이다. 전체8stat/Main/publicplay/최저사양1080p240 미완이다.
 
 외부 proof/실CLI로그/backup/ledger/handoff 루트: `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/team-port/player_passives_source/`. 신규 성공자료는 최초 인수 뒤 동결한다.
+
+
+## p_dot_pool 실제 소유자 추가 — 2026-10-17
+
+| 항목 | 현행 소스 계약 |
+|---|---|
+| 원식 / API | Formula.p_dot_pool()->Dictionary(0): 기존 _container PASSIVES → 1+_passive_or0_mul(actualDict,"pDot",0.05) → 기존 _ok/_fail. 원 pDotPool @game.html:28068. 숫자·식·전역 상태 변경 없음. |
+| binding 공개 검사 | Formula.is_passives_reader_bound_to(expected:Callable)->bool, Passives.is_current_passives_reader_bound_to(expected:Callable)->bool. 기존 bound/valid/Callable target·method/equality만 검사하여 추가 domain 조회·저장0. |
+| 실제 bridge | Services.read_normal_enemy_dot_pool_multiplier()->Dictionary(0), 기존7 뒤 p_dot_pool. current Main/Services/Providers→같은 Formula/Passives/current_passives Callable/Script·binding을 전후 검사. Formula 1query, 정상 raw 같은 참조·원 status/metadata 유지. |
+| 값 / 실패 | 유효Dict 필드 absent/null/falsy/NaN은 원 truthiness로1.0; owner 유실은1/{} 제조0. 기존 bound null→SOURCE_THROW 및 status 손실 경로 불변. invalid String/Infinity의 non_finite 보존; custom Object·전체 문자 grammar는 기존 부분 도메인 한계. context/객체·Script·binding post loss는 top NOT_READY/read_result 원 raw/최상위 numeric value0. |
+| 현행 / 검수 | map8/25·미17, 25 presence 불변. 첫 신규 행동76/76+setup37/37 PASS/exit0/양로그 오류·leak0. 실제 Formula/Passives binding·정확 Services +명시 holder/current-reader stand-in 범위, 전체 State/Main·자연 수명·실전 미검증. setup bind query1/runtime query1과 실제 rawgrit/resource 부수조회未검증을 구분한다. |
+| 다음 | V6 p_dot_pool scalar2 지점 typed 미지원·직결0. 별도 consumer 인수 전 실제 kernel 등록/full25/full hurtE/latest 게임 완료0. |
+
+상세는 [p_dot_pool 실제 소유자 계약](FDG_NATIVE_NORMAL_ENEMY_PDOTPOOL_OWNER_20261017.md)을 따른다. 원 State/Providers getter 및 Q/E·저장·이전 승인 byte와 source sync 이력을 보존한다.

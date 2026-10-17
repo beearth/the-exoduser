@@ -494,7 +494,7 @@ func _attack_plan(key: String) -> Dictionary:
 	out["ready"] = out.get("status") == "READY"
 	return out
 
-# Seven typed normal-hit callbacks. These callbacks retain this Services owner,
+# Eight typed normal-hit callbacks. These callbacks retain this Services owner,
 # while its actual Main/actor/provider links remain weak and checked per query.
 func get_normal_enemy_damage_provider_callbacks(caller: Node) -> Dictionary:
 	if caller != _ref(_main) or not _normal_enemy_provider_error().is_empty(): return {}
@@ -506,6 +506,7 @@ func get_normal_enemy_damage_provider_callbacks(caller: Node) -> Dictionary:
 		"parry_lesson_active": Callable(self, "read_normal_enemy_parry_lesson_active"),
 		"player_view": Callable(self, "read_normal_enemy_player_view"),
 		"stat_str": Callable(self, "read_normal_enemy_strength_multiplier"),
+		"p_dot_pool": Callable(self, "read_normal_enemy_dot_pool_multiplier"),
 	}
 
 func read_normal_enemy_equipment_affix(id: Variant) -> Dictionary:
@@ -561,6 +562,53 @@ func read_normal_enemy_strength_multiplier() -> Dictionary:
 			or formula.get_script() != formula_script:
 		return {"status":"NOT_READY", "reason":"actual_normal_enemy_stat_str_formula_changed",
 			"provider":"stat_str", "read_result":result}
+	return result
+
+func read_normal_enemy_dot_pool_multiplier() -> Dictionary:
+	var error: String = _normal_enemy_provider_error()
+	if not error.is_empty():
+		return {"status":"NOT_READY", "reason":error, "provider":"p_dot_pool"}
+	var bundle: Dictionary = _ref(_providers).get_provider_bundle()
+	var formula: Variant = bundle.get("formula")
+	var passives: Variant = bundle.get("passives")
+	var current_reader: Variant = bundle.get("current_passives")
+	if not _live(formula) or not _live(passives) or not current_reader is Callable \
+			or not current_reader.is_valid() or not formula.has_method("p_dot_pool") \
+			or not formula.has_method("is_passives_reader_bound_to") \
+			or not passives.has_method("is_current_passives_reader_bound_to") \
+			or not passives.has_method("read_current_passives") \
+			or formula.get_script() == null or passives.get_script() == null:
+		return {"status":"NOT_READY", "reason":"actual_normal_enemy_p_dot_pool_owner_unbound", "provider":"p_dot_pool"}
+	var reader_target: Variant = current_reader.get_object()
+	if not _live(reader_target) or reader_target.get_script() == null:
+		return {"status":"NOT_READY", "reason":"actual_normal_enemy_p_dot_pool_owner_unbound", "provider":"p_dot_pool"}
+	var passives_reader: Callable = Callable(passives, "read_current_passives")
+	if not formula.is_passives_reader_bound_to(passives_reader) \
+			or not passives.is_current_passives_reader_bound_to(current_reader):
+		return {"status":"NOT_READY", "reason":"actual_normal_enemy_p_dot_pool_binding_mismatch", "provider":"p_dot_pool"}
+	var formula_script: Script = formula.get_script()
+	var passives_script: Script = passives.get_script()
+	var reader_script: Script = reader_target.get_script()
+	var result: Dictionary = formula.p_dot_pool()
+	var post_error: String = _normal_enemy_provider_error()
+	if not post_error.is_empty():
+		return {"status":"NOT_READY", "reason":"actual_normal_enemy_p_dot_pool_context_lost",
+			"context_reason":post_error, "provider":"p_dot_pool", "read_result":result}
+	var current_bundle: Dictionary = _ref(_providers).get_provider_bundle()
+	var latest_reader: Variant = current_bundle.get("current_passives")
+	if not _live(formula) or not _live(passives) or not _live(reader_target) \
+			or not is_same(current_bundle.get("formula"), formula) \
+			or not is_same(current_bundle.get("passives"), passives) \
+			or not latest_reader is Callable or not latest_reader.is_valid() \
+			or latest_reader != current_reader \
+			or formula.get_script() != formula_script or passives.get_script() != passives_script \
+			or reader_target.get_script() != reader_script:
+		return {"status":"NOT_READY", "reason":"actual_normal_enemy_p_dot_pool_owner_changed",
+			"provider":"p_dot_pool", "read_result":result}
+	if not formula.is_passives_reader_bound_to(passives_reader) \
+			or not passives.is_current_passives_reader_bound_to(current_reader):
+		return {"status":"NOT_READY", "reason":"actual_normal_enemy_p_dot_pool_binding_changed",
+			"provider":"p_dot_pool", "read_result":result}
 	return result
 
 func _normal_enemy_provider_error() -> String:

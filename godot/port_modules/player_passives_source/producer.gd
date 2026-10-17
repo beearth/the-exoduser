@@ -316,3 +316,11 @@ func bind_combat_stat_formula(formula: Object, source: String = SOURCE_DERIVED) 
 			_derived_formulas.append(weakref(formula))
 	return {"ok": ok, "status": READY if ok else NOT_READY, "source": source,
 		"reason": "" if ok else "configure_passives_reader_rejected"}
+
+
+# Metadata only: no current_status(), source getter or configuration.
+func is_current_passives_reader_bound_to(expected: Callable) -> bool:
+	return _current_bound and expected.is_valid() and _current_reader.is_valid() \
+		and _current_reader == expected \
+		and _current_reader.get_object() == expected.get_object() \
+		and _current_reader.get_method() == expected.get_method()
