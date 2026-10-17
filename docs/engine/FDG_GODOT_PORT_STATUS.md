@@ -1,3 +1,36 @@
+# Godot 이식 현황 — 현재 단계와 다음 작업
+
+기준일: 2026-10-17 KST · [총 목표와 단계별 실행 기준](FDG_GAME_DEVELOPMENT_PLAN.md)이 유일한 단계·작업 배정 기준이다. **현재 제품 연결은 P1 진행 중, P0-001 계획 기준은 인수 완료(전체 P0 완료 아님)**다.
+
+목표는 원본 EXODUSER의 확정 기능·조작·전투 체감을 Godot로 이식해 지정 PC·Mac 실행판에서 직접 인수하는 것이다. 전체 기능 분모가 아직 없어 전체 진행률·ETA를 표시하지 않는다.
+
+| 지금 판단할 항목 | 현재 상태 | 작업 ID / 다음 행동 |
+|---|---|---|
+| P1-001 게임 코드/소스 기준 | P1-001에서 인수한 기준은 fb118c77da2dbc43042c4a8539971338cc3b3c76 / tree e4b6f28f8b775d115fedad77049cb5245eade889. 당시43경로(code3/docs40) 정렬·통합 정적8/8 인수. 현재 문서-only 체크포인트와 실행판 갱신은 별개 | P1-001 완료 — 소스 정렬 범위만 ROOT 최종 인수. [P1-001 소스 통합 영수증](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/NORMAL-HURTE-PLAY-TIME-MAIN-SOURCE-SYNC-20261017/receipt.json>) |
+| 단계별 계획 | P0~P6 목적·보이는 산출물·완료 조건·증거·선행 조건·담당·상태를 개발 계획에 기록 | P0-001 계획 기준 인수 완료 |
+| 기존 오더의 카드 작업 | ROOT가 2026-10-17 14:53:46.955993Z에 실제 Claude 착수·카드2·nonempty end 회수. 원카드 fallback/rand0·순수 decide·OFF copy/unused hook 제안은 구현 불인수 | P0-002 실제 카드 회수·설계 보완 중. 원안 보존·같은 Claude v2 배정, P1-002 코드 착수 없음 |
+| 다음 실제 구현 | 첫 전투 실제 World→normal hurtE 소비 경로를 현재 clock owner에 연결할 차례. 가장 가까운 차단은 정확 caller/clock owner·원본 계약 근거 미확정 | P1-002는 인수된 P0-001 계획 기준 아래 P0-002 카드·구현 범위 인수 후 착수할 계획 상태. 한 접점 질문의 답으로 정확 경로·최소 변경·인수 조건을 고정한 뒤 연결 구현→새 영향 확인→허용 대상의 자연 호출 인수로 진행 |
+| 시간 owner / 등록 | owner 첫 격리34case477 인수, actual callback12/25·미13. 특정 provider 집합 수이며 전체 이식률 아님 | P1-REF01 / P1-REF02. [owner 첫 격리 결과](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/NORMAL-HURTE-PLAY-TIME-TYPED-OWNER-IMPLEMENTATION-20261017/results/play-time-owner-first.result.json>) · [등록12 영수증](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/NORMAL-HURTE-PLAY-TIME-TWELFTH-PROVIDER-REGISTRATION-20261017/receipt.json>) |
+| V12 후보 | 소스·첫parse 인수. 첫11case43행동true지만 setup signed-zero1false·exit1 전체FAIL. 별도4case19행동+setup4 true는 첫actual+0와 둘째3경계에 한정. 제품 copy 없음 | P1-REF03. 서로 다른 실행을 합산PASS로 바꾸지 않음. 정확 원후보 증거·반영 경로는 기존 ENEMY 오더 경유 |
+| 첫 전투 실게임·플랫폼 | 실제 clock·자연 Main/State/World 호출, 사용자 열린 앱·compiled export·PC 실행·첫 전투 화면/입력/타격 인수 미확인 | P2-001 / P5-001. 기존 대상·권한·HOLD 유지 |
+
+소스·정적·fixture·실게임·플랫폼 인수는 서로 다르다. **P1-001 소스 정렬을 최신 플레이 게임 완료로 표시하지 않는다.** 자산별 기존 확정 규격·SSOT를 따른다. 이 대화의 사용자 확정 ‘장수와 재생 속도 모두 24’는 해당 캐릭터 clip 장수24·clip 재생24fps 규격이며 실게임 화면 FPS와 별개다. 잘림 없는 모델·연결 동작·원근감·타격 접점은 기존 품질 요구 범위에서 실제 카메라·전투로 인수한다.
+
+P3 콘텐츠, P4 게임 흐름·저장·설정 등 독립 작업은 자기 선행 조건과 소유 범위가 확정된 경우에 기존 담당 경유로 병행할 수 있다. 새 작업은 [실행 작업표](FDG_GAME_DEVELOPMENT_PLAN.md)의 ID·완료 조건을 먼저 고정한다. 이번 문서 정리는 코드·새 QA·GUI/build/reload/import/PC 전달·release 승인이 아니다.
+
+[이번 계획 문서 영수증](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/HUMAN-GODOT-MASTER-GOAL-AND-STAGED-EXECUTION-20261017/receipt.json>) · [소스 통합 정본](FDG_NATIVE_NORMAL_ENEMY_PLAY_TIME_MAIN_SYNC_20261017.md)
+
+
+## P0-001 공통 문서 체크포인트
+
+인수된 계획 기준과 현재 작업행 **두 문서만** 공통 Git 문서로 보존한다. P1-001의 게임 코드/소스 기준 fb118과 이번 문서-only commit을 구분한다. 이번 local/API/main/R의 실제 SHA·tree·부모·문서 공유 결과는 [문서 체크포인트 영수증](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/P0-001-STAGED-PORT-PLAN-SHARED-CHECKPOINT-20261017/receipt.json>)에서 확인한다. 이 문서에 자기 commit SHA를 선행 기입하지 않는다. 코드·실행판·새 QA·V12 제품 copy·World hook 승인은 추가되지 않는다. ROOT 첫인수 전 문서 공유 완료로 승격하지 않는다.
+
+---
+
+## 이전 현황 기록 — 아래는 작성 당시의 이력
+
+아래 원문은 과거 수치·검수 실패·보호 조건까지 보존한다. 당시의 ‘현재’·소유 브랜치·문서 수는 그 시점 이력이며 위 단계·작업 ID의 상태를 덮어쓰지 않는다.
+
 # Godot 이식 현황과 남은 일
 
 기준: 2026-10-17 · ENGINE 현황 취합. 현재 단계는 **핵심 전투 연결·검수 중**이며 전체 게임 완료 상태가 아니다.
