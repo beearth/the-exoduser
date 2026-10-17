@@ -38,7 +38,21 @@
 | 실제 코드 범위 | 실제 Formula/Passives/Affix 코드와 실제 SOURCE_CURRENT binding을 사용. observer subclass가 실제 super.p_dot_pool을 호출해 원 raw를 기록. 정확 추출 Services와 명시적 Main/actor/holder/current-reader/Providers stand-in으로 검수. |
 | 포함 경계 | 18개 값 case·raw 동일성/metadata/runtime1query, binding setup1query, map8·metadata 검사 query0, bound null의 원 SOURCE_THROW, pre owner/lost/stale binding의 query0, post context/객체/reader/Script/binding 교체의 NR와 read_result 보존. reader Script 교체 case는 교체 후 기존 counter field를 읽지 않아 그 case의 reader 카운터를 별도로 확정하지 않는다. |
 | 미검증 | 실제 State getter/전체 Main configure·자연 publication/lifetime·실 HP/clock/gameplay·rawgrit/resource inner query·전체 JS coercion 도메인. metadata hooks는 명시적 fixture이며 실제 natural reentrancy 증명이 아니다. |
-| 다음 consumer | 기존 V6의 p_dot_pool 두 조건부 scalar 지점(출혈170/독173, source42163/42164)은 typed 소비가 아직 없다. 실제 API 인수 후 해당 원 lazy/query 위치·순서·raw/prefix/events/cursor를 보존하는 별도 후속이 필요하다. |
+| 다음 consumer | 기존 V6의 p_dot_pool scalar 사용처는 전체4곳(170/173/566/570, 원42163/42164/42426/42429)이며 네 곳 모두 typed 소비가 아직 없다. 첫 접점은170/173이었다. 실제 API 인수 후 해당 원 lazy/query 위치·순서·raw/prefix/events/cursor를 보존하는 별도 후속이 필요하다. |
 | 제품 한계 | unused V6 copy/가짜25 provider/실 kernel 등록/V6 Dict cast 없음. main/R 통합은 이 WIP 인수 후 별도이며 runtime/Web export/PC/실행판 교체0. latest_full_game=false/content_parity=INCOMPLETE, 기존 시각 RETOUCH 유지. |
 
 아래 현행 문서의 과거7/18·6/19·5/20·4/21은 각 제출 시점 기록이다. 현재 source map은 이 문서의8/25·미17을 따른다. 이전 MAIN_SYNC의 pin·검사 결과는 바꾸지 않는다.
+
+
+## p_dot_pool 전체 사용처 정정 — 2026-10-17
+
+원래 확인한 첫 접점은170/173 두 곳이며, V6 전체 scalar 사용처는 아래 네 곳이다. 이전 전체2곳 표기는 범위 오류다. 코드/API/원식과 당시 검사 결과는 변경하지 않았다.
+
+| V6 line / 원 위치 | 원래 lazy 조건과 조회 |
+|---|---|
+| 170 / 42163 · opts bleed | not DOT + opts.bleed truthy. bleed/시간/스택 write 후 min(10,이전스택+1)의 결과가10 미만일 때 p_dot_pool 독립 조회. |
+| 173 / 42164 · opts poison | not DOT + opts.poison truthy. poison/시간/스택 write 후 결과 poisonStk가10 미만일 때 독립 조회. |
+| 566 / 42426 · poisonDot 어픽스 | not DOT + 기존 typed eq_affix(poisonDot) 값>0. poison/poisonT=max(current,300)/스택 write 후 결과 poisonStk<10일 때 독립 조회. |
+| 570 / 42429 · fireDot 어픽스 | not DOT + 기존 typed eq_affix(fireDot) 값>0. burnT=180/스택 write 후 결과 burnStk<10일 때 독립 조회. |
+
+네 곳 모두 해당 pool에 p_dot_pool()×각 지점 당시의 dmg×0.10을 더한다. 어픽스 값은 양수 조건에 쓰이며 이 누적식에 추가로 곱하지 않는다. 앞뒤 단계의 dmg를 하나의 스냅샷으로 합치거나 조회를 캐시하지 않는다. 현 V6의 네 scalar 위치는 모두 typed 미전파이며, 같은 callback의 타입 전파를 네 곳 전체에 적용한 후 별도 인수해야 한다. 실제 kernel/V7 등록·Dict 직결·전체 hurtE 완료는 아직0이다.

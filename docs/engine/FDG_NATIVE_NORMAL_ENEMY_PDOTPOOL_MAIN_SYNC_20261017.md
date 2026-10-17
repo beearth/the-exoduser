@@ -8,7 +8,7 @@
 | Formula | p_dot_pool()->Dictionary(0), 원식 1+(PASSIVES.pDot\|\|0)*.05. 기존 _container/_passive_or0_mul/own _ok/_fail 재사용. 원 Q/E·State/Providers body 변경0. |
 | binding / Services | Formula.is_passives_reader_bound_to 및 Passives.is_current_passives_reader_bound_to는 기존 Callable metadata만 검사. Services.read_normal_enemy_dot_pool_multiplier가 실제 현재 Formula/Passives/current reader·Script/life/binding을 전후 대조하여 원 raw를 전달한다. |
 | 값 / 상태 | 유효 PASSIVES Dict 안의 knownabsence/null/falsy/NaN은 원 truthiness로1.0. owner/context 유실을1/{}로 채우지 않는다. 기존 bound null SOURCE_THROW·status 손실, invalid String/Infinity non_finite를 보존한다. post loss는 topNR/read_result 원 raw·최상위 numeric value 없음. |
-| 현재 / 다음 | map8/25·미17. 기존 V6의 p_dot_pool scalar2 지점은 typed 미지원이며 직접 Dict 연결0. V7 인수 전 실제 kernel 등록·full25/full hurtE 완료0. 전체 clock/실전/latest_full_game=false/content_parity=INCOMPLETE. |
+| 현재 / 다음 | map8/25·미17. 기존 V6의 p_dot_pool scalar 전체4곳(170/173/566/570)은 typed 미지원이며 직접 Dict 연결0. 첫 접점은170/173이다. V7 인수 전 실제 kernel 등록·full25/full hurtE 완료0. 전체 clock/실전/latest_full_game=false/content_parity=INCOMPLETE. |
 | 첫 신규 검사 이력 | 행동76/76+setup37/37 PASS, exit0·양로그 오류/leak0 및 정적10/10. 실제 Formula/Passives/Affix/SOURCE_CURRENT bind+observer super 호출·정확 Services 추출/명시 holder/current-reader fixture 범위. 전체 State/Main configure/자연 수명·HP/clock·실전 아님. |
 | 부분 도메인 | 실제 rawgrit/resource inner query 미측정·0 주장 없음. custom JS Object·전체 string grammar는 기존 부분 지원이며 reader Script 변경 case의 제거된 counter는 재독하지 않았다. 과거 AST 실패/helper 범위 위반과 다른 원 실패 기록은 원대로 보존한다. |
 | 선행 보존 | I/R exact union48행96 WORK/HEAD slots: 실제 복사90/absent6. 각 source/destination ancestor nonlink/realparent·개별 copy UTC와 분리 INDEX/WORK를 저장한 manifest 이후에 변경한다. R은 FF 직전에 동일24경로 fresh WORK/HEAD/INDEX/WORK 보존을 별도 저장한다. |
@@ -16,3 +16,6 @@
 | 실행판 한계 | R disk 동기화는 열린 창/process/Web package 교체 증명이 아니다. GUI input/reload/restart·server/GET/save·asset/import/export/PC 실기동0. 실제 사용 host/URL 질문은 아직 미응답이며 재질문하지 않는다. 시각 기존 RETOUCH 유지, 새 VISUAL PASS 주장0. |
 
 [실제 API·원 raw·첫 검수](FDG_NATIVE_NORMAL_ENEMY_PDOTPOOL_OWNER_20261017.md)를 따른다. 이전 인수 pin과 source 동기화 결과를 최신 실행판으로 승격하지 않는다.
+
+
+2026-10-17 사용처 정정: V6 p_dot_pool 전체는4곳(170/173/566/570, 원42163/42164/42426/42429)이며 첫 접점만170/173이다. 모두 not DOT이고, 뒤 두 곳은 각각 poisonDot/fireDot 어픽스값>0 및 해당 스택 write 후 결과<10에서 독립 조회한다. 각 지점 당시의 dmg×0.10 누적식·원 순서·lazy를 보존하며 네 곳 모두 typed 미전파다. [네 곳의 정확 조건](FDG_NATIVE_NORMAL_ENEMY_PDOTPOOL_OWNER_20261017.md)을 따른다. 원 API/코드·이전 PASS는 변경하지 않는다.
