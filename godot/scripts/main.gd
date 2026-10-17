@@ -1946,6 +1946,14 @@ func apply_native_fireball_recover_idle(request: Dictionary) -> Dictionary:
 func _advance_native_fireball_phase(ticks: float,frame: float,entered_state: String) -> void:
 	if is_instance_valid(native_fireball_phase):native_fireball_phase.advance_native(ticks,frame,entered_state)
 
+# Only the four actual typed provider inputs are owned here. No synthetic
+# callbacks are added for the remaining normal hurtE owners.
+func get_native_normal_enemy_damage_provider_callbacks() -> Dictionary:
+	if not _native_main_service_live() or not is_instance_valid(source_initialization_services) \
+			or source_initialization_services.get_script() != SourceInitializationServicesScript:
+		return {}
+	return source_initialization_services.get_normal_enemy_damage_provider_callbacks(self)
+
 func read_native_source_equipment_affix(id: Variant) -> Dictionary:
 	# Read through the current actual source owner. Keep its cache, status,
 	# partial prefix and query-key semantics; do not rebuild or normalize here.

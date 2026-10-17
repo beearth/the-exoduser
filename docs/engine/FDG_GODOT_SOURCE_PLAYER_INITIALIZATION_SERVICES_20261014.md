@@ -116,3 +116,14 @@ configure는 Readers 생성 뒤 신규 _initialize_source_sample_globals()로 na
 ## 실제 native source-frame callback — 2026-10-17
 
 같은 Services가 Frame v3 configure에기존 private prefix를주입하고선언한다. actualinput admission 동기window에서opaque String 호출ID를발급하고별도 SOURCE_NATIVE_RENDER_CALLBACK context로timestamp→실current OPT fpsCap까지만소비한다. rawLAST scope변경0/첫gap_frame_callbacks는owner_gap_no_receipt PARTIAL_NR. active ID는호출끝폐기,history ID는현재권한아님. Frame/prefix identity·철회/재선언거절 및새16첫PASS/원검사재연0의정확범위는 FDG_NATIVE_SOURCE_FRAME_CALLBACK_20261017.md를따른다. 전체source context/Main scene/throw 종료는未.
+
+
+## 일반 hurtE 실제 provider 4 Callable 접점 — 2026-10-17
+
+| 변경 위치 | 현재 계약 |
+|---|---|
+| Main/Services | Main.get_native_normal_enemy_damage_provider_callbacks()는 현재 Services 소유 eq_affix/u_eq/p_atk_mul/melee_ref 네 Callable만 반환한다. 매조회 same Main/Services/actor/World/State/Resources/Providers 수명을 확인하고 기존 Main affix API 또는 current bundle의 원 Dictionary를 그대로 소비한다. 다섯 current domain/OPT eager 조회·scalar fallback·숫자 snapshot 없음. |
+| 기존 context | _source_owner_error로 기존 ownership prefix만 추출하고 _context_error의 current_g→current_p→current_stats→current_passives→current_inventory→OPT 검사 순서를 유지한다. |
+| 검증/미완 | 새 method-extraction/명시 holder·provider 대역 fixture 첫31/31 PASS/양로그0. 실제 전체 Main/configure/원 provider 수식·V4 caller·다른21 owner·전체 normal hurtE·게임/export/PC는 미검증/미연결이다. 후보 V4 첫108중3FAIL 이력은 별도 보존하며 제품 채택0. |
+
+정확 API·raw status/metadata·수명 reason·검수 범위는 [FDG_NATIVE_NORMAL_ENEMY_PROVIDER_BINDING_20261017.md](FDG_NATIVE_NORMAL_ENEMY_PROVIDER_BINDING_20261017.md)를 따른다. 앞선 개별 단위의 당시 미연결/실패/검수 기록은 이력으로 유지한다.

@@ -494,7 +494,56 @@ func _attack_plan(key: String) -> Dictionary:
 	out["ready"] = out.get("status") == "READY"
 	return out
 
-func _context_error() -> String:
+# Four typed normal-hit inputs only. These callbacks retain this Services owner,
+# while its actual Main/actor/provider links remain weak and checked per query.
+func get_normal_enemy_damage_provider_callbacks(caller: Node) -> Dictionary:
+	if caller != _ref(_main) or not _normal_enemy_provider_error().is_empty(): return {}
+	return {
+		"eq_affix": Callable(self, "read_normal_enemy_equipment_affix"),
+		"u_eq": Callable(self, "read_normal_enemy_unique_equipment"),
+		"p_atk_mul": Callable(self, "read_normal_enemy_attack_multiplier"),
+		"melee_ref": Callable(self, "read_normal_enemy_melee_reference"),
+	}
+
+func read_normal_enemy_equipment_affix(id: Variant) -> Dictionary:
+	return _read_normal_enemy_provider("eq_affix", [id])
+
+func read_normal_enemy_unique_equipment(stat: String) -> Dictionary:
+	return _read_normal_enemy_provider("u_eq", [stat])
+
+func read_normal_enemy_attack_multiplier() -> Dictionary:
+	return _read_normal_enemy_provider("p_atk_mul", [])
+
+func read_normal_enemy_melee_reference() -> Dictionary:
+	return _read_normal_enemy_provider("melee_ref", [])
+
+func _normal_enemy_provider_error() -> String:
+	if not _configured: return "unconfigured"
+	var error: String = _source_owner_error()
+	if not error.is_empty(): return error
+	var main: Variant = _ref(_main)
+	if main.get("source_initialization_services") != self:
+		return "actual_normal_enemy_services_replaced"
+	if not main._native_main_service_live(): return "actual_normal_enemy_Main_not_live"
+	return ""
+
+func _read_normal_enemy_provider(callback: String, args: Array) -> Dictionary:
+	var error: String = _normal_enemy_provider_error()
+	if not error.is_empty():
+		return {"status": "NOT_READY", "reason": error, "provider": callback}
+	# Reuse the existing Main affix API, including its original cache/throw policy.
+	if callback == "eq_affix":
+		return _ref(_main).read_native_source_equipment_affix(args[0])
+	var bundle: Dictionary = _ref(_providers).get_provider_bundle()
+	if bundle.is_empty():
+		return {"status": "NOT_READY", "reason": "actual_normal_enemy_provider_bundle_lost", "provider": callback}
+	match callback:
+		"u_eq": return bundle.formula.u_eq(args[0])
+		"p_atk_mul": return bundle.formula.p_atk_mul()
+		"melee_ref": return bundle.reference.melee_ref()
+	return {"status": "NOT_READY", "reason": "normal_enemy_provider_not_bound", "provider": callback}
+
+func _source_owner_error() -> String:
 	if not _configured and not _configuring: return "unconfigured"
 	var player: Variant = _ref(_player)
 	var world: Variant = _ref(_world)
@@ -527,6 +576,12 @@ func _context_error() -> String:
 				or main.get_tree() != world.get_tree() or world.get("player") != player:
 			return "actual_source_live_tree_mismatch"
 	elif player.is_node_ready(): return "actual_source_actor_removed_from_tree"
+	return ""
+
+func _context_error() -> String:
+	var owner_error: String = _source_owner_error()
+	if not owner_error.is_empty(): return owner_error
+	var providers: Variant = _ref(_providers)
 	var bundle: Dictionary = providers.get_provider_bundle()
 	for key in ["current_g", "current_p", "current_stats", "current_passives", "current_inventory"]:
 		var reader: Variant = bundle.get(key)
