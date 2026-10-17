@@ -861,3 +861,42 @@ func _native_rand_failed_read(reason: String, receipt: Dictionary, read_result: 
 		"sample_completed":false if explicit_pre_loss else (true if completed else "UNKNOWN"),
 		"consumption":"NONE" if explicit_pre_loss else ("COMPLETED" if completed else "UNKNOWN"),
 		"completion_receipt":receipt,"raw_result":sample,"read_result":read_result}
+
+func _native_source_element_service_not_ready(reason: String, a: Variant, d: Variant,
+		read_result: Variant = null) -> Dictionary:
+	var packet: Dictionary = {"status": "NOT_READY", "reason": reason, "raw_arguments": {"a": a, "d": d}}
+	if read_result != null: packet["read_result"] = read_result
+	return packet
+
+func is_native_main_element_bridge_current(main: Node, state: Node, providers: RefCounted) -> bool:
+	if not is_native_main_legendary_bridge_current(main, state, providers): return false
+	if not main.is_inside_tree(): return false
+	var live_tree: SceneTree = main.get_tree()
+	for candidate in [state, _ref(_player), _ref(_world), _ref(_resources)]:
+		if not candidate is Node or not candidate.is_inside_tree() \
+				or candidate.get_tree() != live_tree: return false
+	return true
+
+func read_normal_enemy_element_multiplier(a: Variant, d: Variant) -> Dictionary:
+	var main: Variant = _ref(_main)
+	var state: Variant = _ref(_state)
+	var providers: Variant = _ref(_providers)
+	if not main is Node or not state is Node or not providers is RefCounted:
+		return _native_source_element_service_not_ready("element_services_owner_not_current", a, d)
+	if not is_native_main_element_bridge_current(main, state, providers):
+		return _native_source_element_service_not_ready("element_services_bridge_not_current", a, d)
+	var formula: Variant = providers.get_native_main_legendary_formula(main)
+	if not formula is RefCounted or not main.is_native_source_element_context_current(formula, self, state, providers):
+		return _native_source_element_service_not_ready("element_services_formula_not_current", a, d)
+	var result: Variant = formula.el_mul(a, d)
+	if not is_native_main_element_bridge_current(main, state, providers) \
+			or not is_same(_ref(_main), main) or not is_same(_ref(_state), state) \
+			or not is_same(_ref(_providers), providers) \
+			or not is_same(providers.get_native_main_legendary_formula(main), formula) \
+			or not main.is_native_source_element_context_current(formula, self, state, providers):
+		return _native_source_element_service_not_ready("element_services_owner_changed_after_read", a, d, result)
+	if not result is Dictionary or result.get("status") not in ["READY", "NOT_READY"]:
+		return _native_source_element_service_not_ready("element_formula_result_malformed", a, d, result)
+	if result.get("status") == "READY" and (not result.has("value") or typeof(result["value"]) != TYPE_FLOAT):
+		return _native_source_element_service_not_ready("element_formula_value_malformed", a, d, result)
+	return result
