@@ -1145,3 +1145,17 @@ code1/docs4 exact5의 WORK/HEAD 개별10 기록은 첫 제품쓰기 전이다. �
 | 변경 경계 | Services map literal1개만추가. 기존9/helper/owner/sharedsampler/수식/primitive/Main/World본문은그대로다. |
 | 새 검수 | 등록delta static7/7, runtime0. 키10/기존9순서·sameSelf/method·0arg·typedWorld route·다른Services bytes보존·생성시추가reader/RNG/domainquery0 확인. 기존readinessguard 전체query0은미입증이다. |
 | 보존/한계 | 기존30/41/95·진단/통과parse재연0. main/R·실게임·producer/V9제품copy·scalarDict직결·ENEMY TASK·Worldhook·dummy25우회0. 이전실패/범위초과이력도그대로다. |
+
+
+## 2026-10-17 typed rand owner+등록10 main·Mac 디스크 소스 통합
+
+| 항목 | 현재 소스 통합 계약 |
+|---|---|
+| 원본 | remote89992841a14bc87ec2e82410263eb970b9dff1f2 / localc2fb8960e5258e23fdeb3cb4e0f5277a6aa9b614, 같은tree383085826f4cf11be2534a756c91a2fa39a600cd·부모4ba/bf는다름. 원899/4ba/c2/bf/3ccb refs보존. |
+| 범위 | 인수33(code3/docs30)+통합docs2중본PC문서중복1=union34(code3/docs31). 새구현0/새blob2만·old33재업로드0. 32개원OID/size는최종그대로, PC문서는원전체bytes保append·새통합문서1추가. |
+| actual callback | 현재인수소스10/25·미15, rand sameServices0arg Dictionary reader. legacydeclared0와single sharedoperation은기인수상태그대로다. |
+| 이전 기록 | 앞선WIP9·미등록·당시main/R미반영/FAIL/API팩은그당시이력으로보존한다. 이번disk소스체크포인트의actualHEAD/tree/branch/upstream·freshPRE/각쓰기/FF·unionSHA는외부final-sync-receipt.json이정한다. |
+| 검사 | owner9/30·등록7은기인수·재연0. 이번단위는새통합경계static1회만수행, 실제구현/primitive/QAparse/자연runtime/PC/fullgame추가검증0. |
+| 한계 | source정렬은열린창/process/export/PC완료아님. GUI/input/reload/restart/GET/server/save/assets/import/export·V9scalarDict직결·Worldhook·15dummy우회0. 경고보존·미측정전송량NOT_RECORDED. |
+
+상세 checkpoint와증거경로: [rand Main 소스 통합](FDG_NATIVE_NORMAL_ENEMY_RAND_MAIN_SYNC_20261017.md).
