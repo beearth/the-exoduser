@@ -100,7 +100,7 @@ test('rot trees: bake tree_fade — 0 deep in the walkable floor, 1 deep outside
 });
 
 test('rot trees: wiring — game.html tag + ground call + map object hook + start warmup; packaging',()=>{
-  assert.match(gameSrc,/<script src="ch1-rot-trees\.js\?v=20261008-98"><\/script>/);
+  assert.match(gameSrc,/<script src="ch1-rot-trees\.js\?v=20261019-retire13"><\/script>/);
   assert.match(gameSrc,/Ch1FaceLife\.draw\([^\n]*\n\s*if\(globalThis\.Ch1RotTrees\)Ch1RotTrees\.draw\(X,G,_now,_CH1_START_ROOT,VW,VH\);/,'ground pass right after face life');
   for(const s of [gameSrc,easySrc]){
     assert.match(s,/_meta\.rotTree&&globalThis\.Ch1RotTrees&&Ch1RotTrees\.drawObj\(X,mo,_meta\.rotTree,sz,_now\)\)\)X\.drawImage\(_spr,mo\.x-sz\/2,mo\.y-sz\/2,sz,sz\)/,'map object hook keeps the plain drawImage fallback');
@@ -135,4 +135,15 @@ test('rot trees: runtime — culling, idle build, erased inner trees, desynchron
   }
   assert.ok(first.size>=Math.min(1,eyes.length),'every eye blinks within 30s');
   if(first.size>=2)assert.ok(new Set(first.values()).size>1,'blink starts are desynchronized');
+});
+
+test('rot trees: T13 retired at runtime (2026-10-19) — no ground draw, no border band; tables unchanged',()=>{
+  const {api}=loadModule();
+  assert.deepEqual([...api._retired],[13]);
+  assert.equal(api._trees.length,36,'placement table stays equal to placements.json');
+  assert.equal(api.drawTreeBand(makeCtx(),13,0,1),0,'border foreground gets no band for T13');
+  assert.match(moduleSrc,/if\(!it\.baked\|\|RETIRED\.has\(it\.idx\)\)continue;/,'ground pass skips retired trees');
+  const bfg=fs.readFileSync(path.join(ROOT,'ch1-border-foreground.js'),'utf8');
+  assert.match(bfg,/rot\._retired&&rot\._retired\.has\(it\.idx\)\)continue;/,'border foreground skips band and canopy ghost');
+  assert.match(gameSrc,/if\(_ATMDBG\.sidefog&&_sideFog&&_ahell!==0\)\{/,'CH1 has no screen-locked side fog over the painted outer');
 });

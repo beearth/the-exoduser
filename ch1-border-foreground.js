@@ -224,6 +224,7 @@
       if(it.x>right||it.x+it.w<left||it.y>bottom||it.y+it.h<top)continue;
       const rot=it.kind==='tree'&&root.Ch1RotTrees?root.Ch1RotTrees:null;
       if(rot&&!bandHooked){rot.setBandFn(bandAlpha);bandHooked=true;}
+      if(rot&&rot._retired&&rot._retired.has(it.idx))continue; // 런타임 은퇴 나무: 띠·가림 고스트 둘 다 없음
       const t=rot?null:instTex(it);
       if(!rot&&!t)continue;
       if(front){

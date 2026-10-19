@@ -17,6 +17,10 @@
   const TREES=/*TREES-BEGIN*/[[0,18,97,9,3.5,0],[1,52,158,12,3.2,0],[2,75,26,6,3.1,0],[3,179,101,1,3.4,1],[4,158,159,11,3.0,0],[5,122,187,6,3.2,1],[6,58,8,8,1.4,0],[7,73,22,2,1.0,0],[8,40,21,9,1.25,0],[9,19,41,10,1.3,0],[10,37,51,8,1.2,1],[11,20,68,12,1.45,0],[12,10,91,1,1.3,1],[13,29,121,8,1.15,1],[14,15,141,9,1.3,1],[15,48,131,5,1.4,1],[16,46,172,11,1.1,1],[17,63,186,3,1.25,1],[18,79,192,5,1.3,0],[19,122,196,8,1.15,0],[20,138,177,4,1.3,1],[21,161,173,10,1.45,1],[22,183,156,12,1.3,1],[23,188,123,7,1.35,1],[24,176,115,10,1.3,0],[25,190,91,2,1.2,1],[26,178,74,6,1.45,1],[27,191,54,7,1.3,0],[28,166,24,4,1.3,1],[29,140,19,11,1.2,1],[30,124,9,1,1.35,0],[31,73,69,5,1.05,1],[32,143,82,8,1.1,0],[33,152,119,3,1.05,0],[34,73,142,12,1.1,0],[35,70,36,7,1.15,1]]/*TREES-END*/; // [idx, tx, ty, variant, scale, flip]
   const FEATS=/*FEATS-BEGIN*/{"1":[["e",440,315,50,44],["m",525,420,58,118],["t",378,556,76,70],["t",746,566,46,42]],"2":[["e",396,456,44,40],["e",830,556,40,36],["m",640,470,175,105],["t",268,414,56,52],["t",256,600,66,62],["t",566,714,70,64]],"3":[["e",510,360,36,34],["e",370,540,34,30],["e",565,770,44,36],["t",498,520,48,46],["t",330,716,70,64]],"4":[["e",320,406,32,28],["m",776,490,58,112],["t",744,300,56,52],["t",214,640,70,66],["t",856,744,60,56]],"5":[["e",418,305,32,36],["e",642,757,22,22],["m",465,440,50,135],["t",352,490,32,45],["t",685,665,50,55],["t",655,590,28,28],["t",537,725,25,25]],"6":[["e",470,483,38,32],["e",605,487,32,30],["m",548,610,32,85],["t",300,235,38,40],["t",725,258,25,25],["t",685,295,22,22],["t",300,785,32,30],["t",365,742,22,22],["t",460,745,22,22],["t",738,705,20,20]],"7":[["e",655,530,42,38],["e",622,408,15,15],["m",450,500,130,105],["t",765,560,45,55],["t",825,480,42,45],["t",325,625,38,42],["t",455,815,32,32],["t",775,765,38,40],["t",215,520,35,32]],"8":[["e",390,397,22,26],["e",553,465,38,34],["m",440,590,110,95],["t",315,445,35,38],["t",800,580,45,50],["t",643,668,42,40],["t",740,665,35,40],["t",553,762,38,40]],"9":[["e",480,340,22,24],["e",497,495,24,22],["e",540,722,22,28],["m",602,598,34,22],["t",540,428,28,28],["t",578,855,25,28],["t",540,895,25,25],["t",420,780,30,30]],"10":[["e",455,485,30,26],["e",532,467,20,18],["m",538,580,45,40],["t",625,800,48,50],["t",445,615,28,32],["t",360,650,32,25],["t",592,285,20,20],["t",535,365,18,18],["t",412,555,18,20]],"11":[["e",565,262,30,25],["e",340,360,25,22],["e",745,390,25,22],["m",338,575,42,72],["t",280,420,22,25],["t",235,775,55,60],["t",840,590,40,50],["t",738,555,22,22]],"12":[["e",310,410,18,18],["e",727,440,20,18],["m",510,545,40,85],["t",445,205,32,30],["t",585,212,28,28],["t",650,125,28,28],["t",250,595,32,35],["t",765,630,32,38],["t",705,665,25,25],["t",352,785,32,32],["t",640,285,22,22],["t",360,300,18,18]]}/*FEATS-END*/; // variant -> [[kind 'e'|'m'|'t', cx, cy, rx, ry]] in 1024 art px
   const BOUNDARY=/*BOUNDARY-BEGIN*/[[88,2],[88,18],[74,29],[58,34],[37,33],[29,44],[31,59],[40,66],[52,70],[53,77],[40,80],[26,91],[28,107],[40,114],[53,118],[62,126],[58,137],[40,140],[28,147],[30,157],[43,163],[58,167],[72,174],[81,183],[85,192],[96,197],[109,197],[120,190],[125,181],[137,168],[151,161],[169,156],[179,143],[178,134],[161,128],[143,127],[134,121],[139,113],[160,110],[175,105],[180,93],[172,84],[151,79],[145,72],[154,63],[174,59],[181,48],[177,35],[162,30],[142,33],[126,28],[113,18],[112,2]]/*BOUNDARY-END*/; // layout.js boundary (tiles)
+  // Runtime-retired trees (2026-10-19 user report): T13 (29,121) sat alone as a bright red-rooted
+  // face on the dark SW root mass and read as a sticker. Tables above stay equal to placements.json;
+  // the bake already holds only its halo, so skipping the draw leaves the mass clean.
+  const RETIRED=new Set([13]);
   const BPTS=BOUNDARY.map(function(p){return[p[0]*40,p[1]*40]});
   function pip(x,y){
     let inside=false;
@@ -370,7 +374,7 @@
     const prev=ctx.globalAlpha;
     for(let i=0;i<INSTANCES.length;i++){
       const it=INSTANCES[i];
-      if(!it.baked)continue; // map-object trees are drawn by the y-sorted object loop (drawObj)
+      if(!it.baked||RETIRED.has(it.idx))continue; // map-object trees are drawn by the y-sorted object loop (drawObj)
       if(it.x-16>right||it.x+it.w+16<left||it.y>bottom||it.y+it.h<top)continue;
       lastVisible++;
       const tex=texFor(it,now);if(!tex)continue;
@@ -386,7 +390,7 @@
   // Border foreground hook: the banded copy of one tree with the same sway, then the
   // animated overlays scaled by the band strength at each feature (so blinks stay visible).
   function drawTreeBand(ctx,idx,now,alpha){
-    const it=byIdx.get(idx);if(!it)return 0;
+    const it=byIdx.get(idx);if(!it||RETIRED.has(idx))return 0;
     const band=bandFor(it,now);if(!band)return 0;
     const prev=ctx.globalAlpha;ctx.globalAlpha=alpha;
     const n=blitSwayed(ctx,band,it,now)+drawFeatures(ctx,band,it,now,alpha,it.featBand);
@@ -419,5 +423,5 @@
   }
   function debugBlink(idx,fi,hold){const it=byIdx.get(idx);const f=it&&it.feats[fi];if(!f||f.k!=='e')return false;f.nextBlink=1;f.blinkStart=-1;f.dbgHold=hold||0;return true;}
   root.Ch1RotTrees=Object.freeze({draw:draw,drawObj:drawObj,drawTreeBand:drawTreeBand,setBandFn:setBandFn,ready:ready,qa:qa,
-    debugBlink:debugBlink,_instances:function(){return INSTANCES},_trees:TREES,_feats:FEATS,_sway:sway,_shear:shear,_treeFade:treeFade});
+    debugBlink:debugBlink,_instances:function(){return INSTANCES},_trees:TREES,_retired:RETIRED,_feats:FEATS,_sway:sway,_shear:shear,_treeFade:treeFade});
 })(globalThis);

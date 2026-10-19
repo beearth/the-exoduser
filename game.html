@@ -65,9 +65,9 @@ window._supabaseReady=new Promise(resolve=>{
 <script src="ch1-living-detail.js?v=20261006-start-ready"></script>
 <script src="ch1-forest-sway.js?v=20261006-start-ready"></script>
 <script src="ch1-face-life.js?v=20261008-98"></script>
-<script src="ch1-rot-trees.js?v=20261008-98"></script>
+<script src="ch1-rot-trees.js?v=20261019-retire13"></script>
 <script src="ch1-altar-moat.js?v=20261001-3"></script>
-<script src="ch1-border-foreground.js?v=20261001-3"></script>
+<script src="ch1-border-foreground.js?v=20261019-retire13"></script>
 <script src="ch1-boundary-edge.js?v=20261001-3"></script>
 <script src="lang_zh.js"></script>
 <script src="lang_ja.js"></script>
@@ -55212,7 +55212,8 @@ function draw(){
     var _ahell=SI_TO_HELL[G.stage||0]||0;
     // [ATMOS-CLEAN] 구 _atmMote 렌더 제거. 신규 ATMO_P 가 PP 패스에서 담당 (_ahell 은 SIDE-FOG 용으로 유지)
     // ═══ [SIDE-FOG] 사이드 입자 안개 (흐림필터 대체, lighter 가산, 중앙 22~78% 배제) ═══
-    if(_ATMDBG.sidefog&&_sideFog){
+    // CH1(hell 0)은 페인팅 청크에 안개 헤일로가 구워져 있어 화면 고정 덩어리가 어두운 외곽 위 '렌즈 얼룩'으로 보임 → 제외 (2026-10-19 유저 리포트: 7시 외곽 너저분)
+    if(_ATMDBG.sidefog&&_sideFog&&_ahell!==0){
       if(_sideFogHell!==_ahell){_sideFogHell=_ahell;var _sfb0=(HELL_PALETTES[_ahell]||HELL_PALETTES[0]).bright;_bakeSideFogStamps(~~(_sfb0[0]*.75+64),~~(_sfb0[1]*.75+64),~~(_sfb0[2]*.75+64));} // bright×0.75 + 흰×0.25(≈+64), 챕터전환시만
       var _sfSway=_atmT*0.005; // 미세 sway 위상 (기존 _atmT 재사용)
       for(var _sfi=0;_sfi<44;_sfi++){var _sfb=_sfi*8;

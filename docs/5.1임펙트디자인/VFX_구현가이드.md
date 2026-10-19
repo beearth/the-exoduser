@@ -772,7 +772,7 @@ PixelLab에서 8프레임 애니메이션도 생성 완료했으나, MCP API로 
 |---|---:|---|---|---|---|
 | `_ATMO_FG` | `false` | 오프스크린 4장 `256×1024`, 기둥 폭 `28~74px`, y `-40~1064` | 좌 `0~22%` / 우 `78~100%`, NEAR alpha `0.90`, FAR alpha `0.52` | `_atmoFgDraw()` | 전 화면 높이의 절차형 기둥이 울트라와이드에서 검은 세로 줄로 판독되므로 기본 렌더를 끈다. 콘솔에서 `window._ATMO_FG=true`로 명시한 경우에만 표시한다. |
 
-사이드 입자 안개(`_ATMDBG.sidefog=1`)는 유지한다. 이번 비활성화 대상은 `FG_L_NEAR/FG_L_FAR/FG_R_NEAR/FG_R_FAR` 네 장을 그리는 전경 실루엣 패스뿐이다.
+사이드 입자 안개(`_ATMDBG.sidefog=1`)는 유지한다(단, 2026-10-19부터 **CH1(hell 0)은 제외** — 페인팅 청크에 안개 헤일로가 구워져 있어 화면 고정 덩어리가 어두운 외곽 위 렌즈 얼룩으로 보임. 조건 `_ahell!==0`, 상세 `docs/4.1맵디자인+설정/CH1_ROTTEN_FOREST_RUNTIME_TREES_PASS98_20261008.md` §후속). 이번 비활성화 대상은 `FG_L_NEAR/FG_L_FAR/FG_R_NEAR/FG_R_FAR` 네 장을 그리는 전경 실루엣 패스뿐이다.
 
 #### ATMOS PHASE 2 — 부유입자 3뎁스 패럴랙스 (2026-08-23)
 Ori 수준 대기 깊이감. 광원 근처에서 존재감 나는 미세 입자. `_atmMote=Float32Array(82×8)` 재배치(신규 풀 아님, 기존 96×5 재사용). 렌더=3-2 블록 `lighter`, 갓레이 뒤·토치 앞. blend 전환 없음, save/restore 블록당 1회.
