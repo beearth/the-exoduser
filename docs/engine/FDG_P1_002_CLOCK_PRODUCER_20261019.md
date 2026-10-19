@@ -33,3 +33,26 @@
 
 - Mac 브랜치 `codex/p1-002-hp-effect-owner-20261018`(enemy.gd HP owner, docs) main 통합 여부 — 총괄 결정 대기. 통합 시 PLAN/STATUS의 P1-002 구간 텍스트 충돌 예상(수동 해소).
 - 이후 E(caller 최소 연결)는 D 완료 뒤 같은 표에 exactscope 고정 후 착수.
+
+## 5. 소스 구현 결과 (2026-10-19, PC heavy 담당 → 총괄 인수)
+
+| 등급 | 결과 |
+|---|---|
+| 소스 구현 | ○ producer.gd(+35: `gap_sp_to_stage_time`, `phase_stage_play_time`), services.gd(+104: 프레임 콜백에서 begin_update→12 phase→end_update 실호출, 결과는 `read_source_clock_input_snapshot().update_clock_result`로 관측), state.gd(+44: `apply_native_source_update_clock_writes` — "G.<key>"→같은 `_g` ref, 배치 원자 거부). main.gd 무변경(기존 `_process` 경로가 이미 매 프레임 도달). enemy/player/world 무접촉 |
+| 정적 검사 | 4파일 gdtoolkit PARSE_OK, 참조 심볼 grep 확인. Godot 자체 파서·타입 검사 아님 |
+| 격리 검수 | **미실행** — PC에 Godot 바이너리 없음. 테스트 `godot/tests/test_native_source_update_clock_play_time.gd`(producer 계약 3프레임 누적·일시정지·비숫자 / State sink 거부·READY 플립 / 실Main 6프레임 정직 halt) 작성만. Mac 실행 필요 |
+| 실플레이 | 미 |
+
+**정직한 현재 상태: 배선은 됐지만 플레이 중 playTime은 아직 증가하지 않는다.** 매 프레임 드라이버가 첫 단계에서 멈추며, 그 위치는 snapshot으로 관측된다. 도달을 막는 원본 생산자 결손(임의 우회 없음):
+
+| 순서 | 막힌 phase | 결손된 원본 생산자 | 필요 작업 |
+|---|---|---|---|
+| 1 | system_lesson (현재 매 프레임 halt 지점) | `window._systemLesson`(system-lesson.js) 보유자/witness | parry_lesson_source류 presence holder 포팅 |
+| 2 | g_on | `G.on=true` 쓰기(initStage, game.html:32209) | source_init_stage_entry_owner에 G.on 소유 추가 |
+| 3 | parry_lesson | file-init 현재값이 truthy → 원본상 `tick()` 호출 | parry lesson tick 본문 포팅 또는 실제 falsy 전이 |
+| 4 | editor | `_EDITOR_MODE`(game.html:3463) 보유자 | file-init 상수 holder |
+| 5 | gap 4종 | panel_inputs / body_gap_to_hitstop / gap_hitstop_to_sp / gap_sp_to_stage_time 원본 본문 receipt | 각 구간 본문 포팅 또는 "효과 없음" 증명 receipt 소유자 |
+
+추가 관측: Godot 일시정지는 `SceneTree.paused`만 쓰고 `_g["paused"]` 동기화 소유자가 없다(범위 밖 기록). 61875 accumulator 스케줄러는 `_acc` 소유자 부재로 미배선 — update 주기는 렌더 콜백당 1회.
+
+**총괄 판단**: 위 5단계 중 5(gap receipt)는 원본 update() 본문 대부분을 요구하므로, playTime 하나를 위해 전부 포팅하는 것은 첫 전투(P1-002.E) 효과 도달을 지연시킨다. 다음 배정은 (a) 1·2·4 holder 3종(작음) 포팅 + (b) gap 구간을 "첫 전투 범위에서 효과 없음" receipt로 닫을 수 있는지 원본 대조 판정, 두 갈래를 Mac 실행 검증과 함께 진행한다. 코드는 Mac 검증 전까지 main이 아닌 브랜치에 둔다.

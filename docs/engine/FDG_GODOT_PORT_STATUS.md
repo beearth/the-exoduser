@@ -18,8 +18,8 @@
 
 | 하위 작업 | 무엇 | 담당 / 위치 | 단계(기획 확정 / 소스 구현 / 격리 검수 / 실플레이 인수) |
 |---|---|---|---|
-| P1-002.C HP owner | 일반 적 HP 실제 쓰기 owner | Mac Codex 브랜치 `codex/p1-002-hp-effect-owner-20261018`(main 미통합) | 소스 구현 ○ / 격리 검수 부분(V1 true, V2 setup 실패) / 실플레이 미확인 / **main 통합 대기** |
-| P1-002.D clock 생산자 | update clock prefix 실구동 + `G.playTime/stageTime += sp`(원본 32742) | PC Claude 총괄 세션(heavy 담당 배정) | 기획 확정 ○ / 소스 구현 **진행 중** / 격리 검수 미 / 실플레이 미 |
+| P1-002.C HP owner | 일반 적 HP 실제 쓰기 owner | Mac Codex 브랜치 `codex/p1-002-hp-effect-owner-20261018`(main 미통합) | 소스 구현 ○ / 격리 검수 부분(V1 true, V2 setup 실패) / 실플레이 미확인 / **main 통합 보류**: dry-merge는 PLAN 문서 1곳 충돌·enemy.gd 자동병합. 단 새 소유자 검사가 Main 아래 World에 없는 일반 적(enemy.gd)의 피해를 조용히 버리므로 Mac 전체 테스트 통과가 병합 조건 |
+| P1-002.D clock 생산자 | update clock prefix 실구동 + `G.playTime/stageTime += sp`(원본 32742) | PC Claude 총괄 세션(heavy 담당 배정) | 기획 확정 ○ / 소스 구현 ○(브랜치 `claude/p1-002d-update-clock-20261019`, main 미통합) / 격리 검수 미실행(Mac 필요) / 실플레이 미. **배선은 됐지만 매 프레임 system_lesson 단계에서 멈춰 playTime은 아직 증가하지 않음**(선행 원본 생산자 5종 결손) |
 | P1-002.E caller 연결 | 기본 근접 1타 → normal hurtE 최소 경로 | 미배정(D 뒤) | 기획 확정 ○ / 나머지 미 |
 
 핵심3(실제 caller·clock 권위·효과 owner)은 PC 소스에서 확인 완료이며 [계획 문서의 답 표](FDG_GAME_DEVELOPMENT_PLAN.md#p1-002의-가장-가까운-차단과-실행-순서)를 따른다. 같은 질문을 다시 조사하지 않는다.
