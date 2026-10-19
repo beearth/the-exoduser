@@ -198,6 +198,40 @@ func commit_native_e_wave_state(owner: Node, waves: Array, counter: int) -> bool
 	_g["_gcT"]=counter
 	return true
 
+# ═══ P1-002.E: 기본 근접 hurtE의 G 효과 owner 쓰기 ═══
+# hurtE가 갱신하는 G 필드만 화이트리스트로 허용 (42357/42388/42702/42714/42756/43103).
+const NORMAL_HURTE_G_NUMERIC: Array[String] = ["kills", "_stageKills", "combo",
+	"comboTimer", "comboMax", "_chainCnt", "_chainT", "mats"]
+const NORMAL_HURTE_G_DICT: Array[String] = ["_dmgPeak", "_dmgPeakShow"]
+
+func apply_native_normal_enemy_hurte_g_writes(owner: Node, writes: Array) -> Dictionary:
+	if not _current_error().is_empty() or not is_instance_valid(owner) \
+			or owner != _player.get_parent() or owner.get("source_state") != self \
+			or owner.get("world") != _world or get_tree().paused:
+		return {"applied": false, "reason": "actual_normal_hurte_g_owner_not_current"}
+	for write in writes:
+		if not write is Dictionary or not write.get("field") is String or not write.has("value"):
+			return {"applied": false, "reason": "normal_hurte_g_write_shape"}
+		var field: String = write["field"]
+		var value: Variant = write["value"]
+		if field == "rifts_append":
+			if not value is Dictionary or not _g.get("rifts") is Array:
+				return {"applied": false, "reason": "normal_hurte_g_rifts_unsupported"}
+		elif field in NORMAL_HURTE_G_NUMERIC:
+			if not (value is int or value is float) or not is_finite(float(value)):
+				return {"applied": false, "reason": "normal_hurte_g_value_unsupported:" + field}
+		elif field in NORMAL_HURTE_G_DICT:
+			if not value is Dictionary:
+				return {"applied": false, "reason": "normal_hurte_g_value_unsupported:" + field}
+		else:
+			return {"applied": false, "reason": "normal_hurte_g_field_unsupported:" + field}
+	for write in writes:
+		if write["field"] == "rifts_append":
+			_g["rifts"].append(write["value"])
+		else:
+			_g[write["field"]] = write["value"]
+	return {"applied": true, "count": writes.size()}
+
 func read_current_p() -> Variant:
 	if not _current_error().is_empty():
 		return null

@@ -46,6 +46,10 @@ var _rng = RandomNumberGenerator.new()
 var _body: Sprite2D
 var _moving = false
 var _knockback = Vector2.ZERO
+# P1-002.E: mkEn은 모든 적에게 eShield=mhp를 부여(game.html:31178) — native_final이 owner 값.
+var eShield = 0.0
+var eShieldMax = 0.0
+var e_res: Array = [0, 0, 0, 0, 0, 0, 0]
 
 func configure(value: Dictionary, owner_world: Node2D) -> void:
 	data = value
@@ -80,6 +84,11 @@ func configure(value: Dictionary, owner_world: Node2D) -> void:
 	_poise_regen = float(initial_timers.get("poiseR", 0.0))
 	charge_ticks = float(initial_timers.get("chargeT", 0.0))
 	var native: Dictionary = data.get("native_final", {})
+	eShield = float(native.get("eShield", 0.0))
+	eShieldMax = float(native.get("eShieldMax", 0.0))
+	var native_res: Variant = native.get("eRes")
+	if native_res is Array:
+		e_res = native_res.duplicate(true)
 	state = str(native.get("s", "idle"))
 	alive = bool(native.get("alive", true))
 	_hit_stun = float(native.get("stunned", 0.0))
@@ -265,6 +274,92 @@ func apply_native_normal_enemy_hp_write(write: Dictionary) -> Dictionary:
 	report["applied_value"] = value
 	return report
 
+# ═══ P1-002.E: 기본 근접 hurtE 경로의 적 측 owner API ═══
+# 읽기: hurtE가 참조하는 적 필드의 현재 값. 쓰기 전 스냅샷 용도.
+func read_native_normal_enemy_hurte_fields(caller_world: Node) -> Dictionary:
+	if caller_world != world or not _native_enemy_hp_owner_is_current():
+		return {"ready": false, "reason": "native_enemy_hurte_owner_not_current"}
+	var native: Dictionary = data.get("native_final", {})
+	return {"ready": true, "alive": alive, "hp": hp, "mhp": mhp,
+		"eShield": eShield, "eShieldMax": eShieldMax, "eRes": e_res.duplicate(),
+		"etype": etype, "el": int(native.get("el", 0)), "elite": elite,
+		"mods": mods.duplicate(), "ib": native.get("ib") == true,
+		"stunned": _stun_ticks, "state": state, "lv": int(data.get("level", 1)),
+		"radius": radius, "reviveIframes": float(native.get("reviveIframes", 0.0)),
+		"_revived": native.get("_revived") == true, "_isGhoul": native.get("_isGhoul") == true,
+		"_isDecoy": native.get("_isDecoy") == true, "_aDefM": native.get("_aDefM"),
+		"_shockStk": float(native.get("_shockStk", 0.0)), "_cursed": float(native.get("_cursed", 0.0)),
+		"_frozen": float(native.get("_frozen", 0.0)), "bleed": float(native.get("bleed", 0.0)),
+		"bleedT": float(native.get("bleedT", 0.0)), "_weakPhys": float(native.get("_weakPhys", 0.0)),
+		"_shockDR": float(native.get("_shockDR", 0.0)), "_blinkWeak": float(native.get("_blinkWeak", 0.0))}
+
+# hurtE 본문의 개별 적 필드 쓰기 (화이트리스트·순서는 호출자 journal이 보존).
+func apply_native_normal_enemy_field_write(field: String, value: Variant) -> Dictionary:
+	if not _native_enemy_hp_owner_is_current():
+		return {"applied": false, "reason": "native_enemy_hurte_owner_not_current"}
+	match field:
+		"eShield": # 42346~42348
+			if not (value is int or value is float) or not is_finite(float(value)):
+				return {"applied": false, "reason": "native_enemy_shield_value_unsupported"}
+			eShield = maxf(0.0, float(value))
+			queue_redraw()
+		"alerted": # 42380
+			if not value is bool:
+				return {"applied": false, "reason": "native_enemy_alerted_value_unsupported"}
+			alerted = value
+		"contact_clamp": # 42382 — generic enemy.gd의 st2 대응 필드는 _contact_ticks
+			if not (value is int or value is float) or not is_finite(float(value)):
+				return {"applied": false, "reason": "native_enemy_contact_value_unsupported"}
+			_contact_ticks = minf(_contact_ticks, float(value))
+		"hit_flash": # 42412
+			if not (value is int or value is float) or not is_finite(float(value)):
+				return {"applied": false, "reason": "native_enemy_flash_value_unsupported"}
+			_hit_flash = float(value)
+		"hit_stun": # 42414
+			if not (value is int or value is float) or not is_finite(float(value)):
+				return {"applied": false, "reason": "native_enemy_stun_value_unsupported"}
+			_hit_stun = float(value)
+		_:
+			return {"applied": false, "reason": "native_enemy_hurte_field_unsupported:" + field}
+	return {"applied": true, "field": field, "applied_value": value}
+
+# native_final 북키핑 (부활 플래그·부활 무적 등 — 동작 미이식, 기록만 소유).
+func apply_native_normal_enemy_bookkeeping(fields: Dictionary) -> Dictionary:
+	if not _native_enemy_hp_owner_is_current():
+		return {"applied": false, "reason": "native_enemy_hurte_owner_not_current"}
+	var native: Variant = data.get("native_final")
+	if not native is Dictionary:
+		return {"applied": false, "reason": "native_enemy_final_record_missing"}
+	var allowed: Array = ["reviveIframes", "_revived", "_reviveTimer", "_reviveX", "_reviveY", "_reviveAsGhoul"]
+	for field in fields:
+		if field not in allowed:
+			return {"applied": false, "reason": "native_enemy_bookkeeping_field_unsupported:" + str(field)}
+	for field in fields:
+		native[field] = fields[field]
+	return {"applied": true, "count": fields.size()}
+
+# 42702: e.alive=false — receive_damage 사망 블록과 동일한 적 측 확정.
+func apply_native_normal_enemy_death_write() -> Dictionary:
+	if not _native_enemy_hp_owner_is_current():
+		return {"applied": false, "reason": "native_enemy_hurte_owner_not_current"}
+	if not alive:
+		return {"applied": false, "reason": "native_enemy_already_dead"}
+	alive = false
+	state = "dead"
+	charge_ticks = 0.0
+	velocity = Vector2.ZERO
+	collision_layer = 0
+	collision_mask = 0
+	if is_instance_valid(_body):
+		_body.modulate = Color(0.45, 0.32, 0.34, 0.5)
+	telemetry_event.emit("enemy_death", {"id": data["id"], "position": [global_position.x, global_position.y]})
+	queue_redraw()
+	return {"applied": true}
+
+# hurtE 실행자가 적 명의의 telemetry를 내보낼 때 사용 (오디오 소비자 등 기존 배선 호환).
+func report_native_normal_enemy_hurte_event(kind: String, payload: Dictionary) -> void:
+	telemetry_event.emit(kind, payload)
+
 func receive_damage(amount: int, direction: Vector2, source: String, source_options: Dictionary = {}) -> void:
 	if not alive or amount <= 0:
 		return
@@ -361,3 +456,6 @@ func _draw() -> void:
 	var bar = Rect2(-48, -float(data["animation"]["draw_height"]) * 0.5 - 14, 96, 5)
 	draw_rect(bar, Color(0.12, 0.1, 0.1, 0.9))
 	draw_rect(Rect2(bar.position, Vector2(bar.size.x * maxf(0, float(hp) / max_hp), bar.size.y)), Color(0.53, 0.13, 0.18))
+	# P1-002.E: 에너지쉴드 = HP 위 추가 바 (청색 — 원본 쉴드 표기 색 계열 #66ddff)
+	if eShieldMax > 0.0 and eShield > 0.0:
+		draw_rect(Rect2(bar.position + Vector2(0, -3), Vector2(bar.size.x * minf(1.0, eShield / eShieldMax), 2)), Color(0.4, 0.866, 1.0, 0.9))
