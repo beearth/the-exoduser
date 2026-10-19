@@ -199,6 +199,11 @@ func _test_actual_main_write_sink_and_ready() -> void:
 func _test_actual_main_frame_callback_halt() -> void:
 	var main: Node = _actual_main()
 	if main == null: return
+	# New-run bootstrap already owns G.stageTime=0 (source new-run G init); playTime is absent.
+	var g_before: Variant = main.source_state.read_current_g()
+	var had_play_before: bool = g_before is Dictionary and g_before.has("playTime")
+	var had_stage_before: bool = g_before is Dictionary and g_before.has("stageTime")
+	var stage_before: Variant = g_before.get("stageTime") if g_before is Dictionary else null
 	for _frame in range(6):
 		await process_frame
 	var snapshot: Dictionary = main.get_native_source_clock_input_snapshot()
@@ -214,6 +219,8 @@ func _test_actual_main_frame_callback_halt() -> void:
 	var play: Dictionary = main.source_initialization_services.read_normal_enemy_play_time()
 	_check(play.get("status") == "NOT_READY", "play_time stays NOT_READY (no fabricated writes)")
 	var g: Variant = main.source_state.read_current_g()
-	_check(g is Dictionary and not g.has("playTime") and not g.has("stageTime"),
-		"driver never invented stage/play time writes")
+	_check(g is Dictionary and not had_play_before and not g.has("playTime")
+		and g.has("stageTime") == had_stage_before
+		and typeof(g.get("stageTime")) == typeof(stage_before) and g.get("stageTime") == stage_before,
+		"driver never invented stage/play time writes (bootstrap stageTime unchanged, playTime absent)")
 	observations["frame_callback_update_clock_result"] = result
