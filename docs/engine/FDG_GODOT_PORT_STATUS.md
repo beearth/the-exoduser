@@ -18,19 +18,37 @@
 
 | 하위 작업 | 무엇 | 담당 / 위치 | 단계(기획 확정 / 소스 구현 / 격리 검수 / 실플레이 인수) |
 |---|---|---|---|
-| P1-002.C HP owner | 일반 적 HP 실제 쓰기 owner | Mac Codex 브랜치 `codex/p1-002-hp-effect-owner-20261018`(main 미통합) | 소스 구현 ○ / 격리 검수 부분(V1 true, V2 setup 실패) / 실플레이 미확인 / **main 통합 보류**: dry-merge는 PLAN 문서 1곳 충돌·enemy.gd 자동병합. 단 새 소유자 검사가 Main 아래 World에 없는 일반 적(enemy.gd)의 피해를 조용히 버리므로 Mac 전체 테스트 통과가 병합 조건 |
-| P1-002.D clock 생산자 | update clock prefix 실구동 + `G.playTime/stageTime += sp`(원본 32742) | PC Claude 총괄 세션(heavy 담당 배정) | 기획 확정 ○ / 소스 구현 ○(브랜치 `claude/p1-002d-update-clock-20261019`, main 미통합) / 격리 검수 미실행(Mac 필요) / 실플레이 미. **배선은 됐지만 매 프레임 system_lesson 단계에서 멈춰 playTime은 아직 증가하지 않음**(선행 원본 생산자 5종 결손) |
+| P1-002.C HP owner | 일반 적 HP 실제 쓰기 owner | Mac Codex 작성 → 2026-10-19 PC 총괄 검증 후 main 통합 | 소스 구현 ○ / 격리 검수 ○(Mac V1 + PC 회귀 9종 동일·실Main HP 적용 확인) / 실플레이 미 |
+| P1-002.D clock 생산자 | update clock prefix 실구동 + `G.playTime/stageTime += sp`(원본 32742) | PC Claude 총괄(heavy 담당 구현) → main 통합 | 기획 확정 ○ / 소스 구현 ○ / 격리 검수 ○(PC Godot 4.7.2: 17/0·8/0·5/0, 회귀 없음) / 실플레이 미. **배선은 됐지만 매 프레임 system_lesson 단계에서 멈춰 playTime은 아직 증가하지 않음** |
 | P1-002.E caller 연결 | 기본 근접 1타 → normal hurtE 최소 경로 | 미배정(D 뒤) | 기획 확정 ○ / 나머지 미 |
 
 핵심3(실제 caller·clock 권위·효과 owner)은 PC 소스에서 확인 완료이며 [계획 문서의 답 표](FDG_GAME_DEVELOPMENT_PLAN.md#p1-002의-가장-가까운-차단과-실행-순서)를 따른다. 같은 질문을 다시 조사하지 않는다.
 
-**환경별 상태(2026-10-19)**: Git origin/main = dd49171c5. PC `G:\exoduser` main = dd49171c5(추적 파일 일치 확인). Mac R 체크아웃 = dd49171c5(2026-10-19 Mac 기록, 이 세션에서 직접 재확인 아님). 열린 Godot 실행판이 이 소스를 소비하는지는 **미확인**. PC에 Godot 바이너리 미확인 → 격리·실행 검증은 Mac에서 수행해야 한다. 이번 총괄 세션은 Codex 담당(ROOT/ENGINE)에게 직접 지시할 수 없으며 인계는 이 두 문서와 Git 브랜치로만 한다.
+**환경별 상태(2026-10-19)**: Git origin/main = dd49171c5. PC `G:\exoduser` main = dd49171c5(추적 파일 일치 확인). Mac R 체크아웃 = dd49171c5(2026-10-19 Mac 기록, 이 세션에서 직접 재확인 아님). 열린 Godot 실행판이 이 소스를 소비하는지는 **미확인**. PC에 Godot 4.7.2 설치(2026-10-19, G:\godot-engine\4.7.2, 공식 SHA512 대조, 에디터 데이터 `_sc_` 격리) → PC에서 headless 격리 검증 가능. 이번 총괄 세션은 Codex 담당(ROOT/ENGINE)에게 직접 지시할 수 없으며 인계는 이 두 문서와 Git 브랜치로만 한다.
 
 소스·정적·fixture·실게임·플랫폼 인수는 서로 다르다. **P1-001 소스 정렬을 최신 플레이 게임 완료로 표시하지 않는다.** 자산별 기존 확정 규격·SSOT를 따른다. 이 대화의 사용자 확정 ‘장수와 재생 속도 모두 24’는 해당 캐릭터 clip 장수24·clip 재생24fps 규격이며 실게임 화면 FPS와 별개다. 잘림 없는 모델·연결 동작·원근감·타격 접점은 기존 품질 요구 범위에서 실제 카메라·전투로 인수한다.
 
 P3 콘텐츠, P4 게임 흐름·저장·설정 등 독립 작업은 자기 선행 조건과 소유 범위가 확정된 경우에 기존 담당 경유로 병행할 수 있다. 새 작업은 [실행 작업표](FDG_GAME_DEVELOPMENT_PLAN.md)의 ID·완료 조건을 먼저 고정한다. 이번 문서 정리는 코드·새 QA·GUI/build/reload/import/PC 전달·release 승인이 아니다.
 
 [이번 계획 문서 영수증](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/HUMAN-GODOT-MASTER-GOAL-AND-STAGED-EXECUTION-20261017/receipt.json>) · [소스 통합 정본](FDG_NATIVE_NORMAL_ENEMY_PLAY_TIME_MAIN_SYNC_20261017.md)
+
+
+
+## P1-002 실제 진행 — 접점·코드·검수·자연 인수 분리
+
+| 범위 | 실제 상태 | 근거 / 다음 행동 |
+|---|---|---|
+| 첫3 접점 | 기본 native 근접 caller는 player._melee_contact→generic enemy.receive_damage. 현재 Main/State/World frame 경로는 source-frame prefix이며 gap callbacks에 actual owner 미연결. 일반 적 HP/status/display 실제 owner는 enemy.gd | source만 확인. 원weapon 인수는 기존 Claude 오더 입력을 사용하며 같은 조사를 반복하지 않음 |
+| 실제 코드 / P1-002.C | generic enemy.apply_native_normal_enemy_hp_write(write:Dictionary) arity1와 현재 receive_damage의 단일 HP write 위임 부분 구현. V1 첫 격리17case77check true, V2 추가 Script 수명 검수는 setup 실패로 중단; ROOT 부분 인수 완료. 같은 actor/world/main 역할·Script 객체·Tree/parent 수명 확인 후 hp 실제 쓰기 뒤 APPLIED. 원write same-ref, finite int/float raw값 유지 | HP 부분만 연결. 원 alert→HP→stun/kb/death/presentation 순서와 값/type 유지. 거절 시 legacy는 HP 이후 진행을 중단하며 이미 일어난 alert/contact는 보존 |
+| 새 영향 확인 | V1 첫 격리17case77check true·exit0. V2 추가 Script 수명 검수는1case6check 중5true·setup/weak_world_script_expired 1false·exit1. World.set_script(null)은 성공했으나 WeakRef 즉시 만료 준비조건 실패로 이후 HP 거절 호출과 Main Script-loss는 미실행. GC 원인은 미상; 제품 HP 거절 실패로 해석하지 않음. 자동 수리·재실행 및 기존 검수 재연 없음 | [P1-002.C 실제 HP owner 작업 영수증](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/P1-002-FIRST-COMBAT-ACTUAL-CONSUMER-20261017/IMPLEMENTATION-HP-EFFECT-OWNER-20261018/receipt.json>) |
+| ROOT 부분 인수 | HP 실제 쓰기 경로와 일부 거절 경계는 격리 검수 인수, 첫 전투 전체 연결은 진행 중. V1 17case77check와 각 후속 실행을 ROOT가 범위별 인수. 제품 V2 15750B SHA256 b507455cf66b830502cbf1aeaf433cded413002c1988ba2fd50690e512bf58b4 유지 | 전체 hurtE·clock·자연 첫피격·실행판 완료 아님 |
+| current Script 제거 첫 실행 | World/Main 독립2case34check true·exit0, 각각 실제 HP 요청1회와 원HP875 TYPE_INT 유지. stderr624B의 Probe._draw animation 누락 SCRIPT ERROR2회로 clean 실행 아님. WeakRef는 둘 다 TYPE_OBJECT24·isScript true·isNull false 관측 | [current Script 제거 원실행](/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/P1-002-FIRST-COMBAT-ACTUAL-CONSUMER-20261017/IMPLEMENTATION-HP-EFFECT-OWNER-20261018/qa/hp_effect_current_script_removal_manifest.json) |
+| draw 격리 후속 | Probe._draw pass3행·결과path·scope만 바꾼 허용 후속1회. 독립2case34 unique(case,name) true·exit0·stdout140B/stderr0B·양로그 SCRIPT ERROR/기타ERROR/경고/누수진단0 | [draw 격리 후속 실행](/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/P1-002-FIRST-COMBAT-ACTUAL-CONSUMER-20261017/IMPLEMENTATION-HP-EFFECT-OWNER-20261018/qa/hp_effect_script_removal_draw_isolation_manifest.json). 실제 게임 draw·expiredweak·자연GC 증거 아님; 원실패와 합산PASS하지 않음 |
+| 자연 첫피격 인수 | 미완. source clock/currentG 실제 생산·lifecycle, enemy s/st2/el 권위, real13 owner와 typed events 실제1회 적용 연결이 남음 | callback 12/25·미13은 그대로. 후보 copy·false→true·임의clock·cursor-only resume·후반fallback 없음. 실제 게임/PC 인수 미완 |
+
+HP 실제 쓰기 경로와 일부 거절 경계는 격리 검수 인수, 첫 전투 전체 연결은 진행 중입니다. clock/currentview/real13/typed effects/자연 첫피격 연결은 남아 있습니다.
+
+이 HP writer는 실제 native 필드 적용 owner의 한 부분이며 전체 source hurtE·prefix apply dispatcher·clock·P1-002 완료가 아니다. 새 idempotency token/epoch/counter/cache나 재호출 dedup을 만들지 않는다. APPLIED는 이번 실제 HP 쓰기1회의 영수증이며 다른 효과나 전체 prefix 완료를 뜻하지 않는다.
 
 
 ## P0-001 공통 문서 체크포인트

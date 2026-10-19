@@ -1,3 +1,26 @@
+# P1-002.C generic 적 실제 HP write owner — ROOT 부분 인수 완료
+
+| id / 항목 | 코드와 같은 계약·한계 |
+|---|---|
+| API / 위치 | generic godot/scripts/enemy.gd의 apply_native_normal_enemy_hp_write(write:Dictionary)->Dictionary, arity1. 기존 receive_damage의 HP 한 statement가 이 실제 owner를 1회 호출 |
+| current owner | 생성 시 actor Script WeakRef 1, configure에서 실제 world/Main 및 각 Script WeakRef 4. live 같은 Tree·actor.parent=boundWorld·World.parent=boundMain·Main.world=boundWorld·현재 Script 객체가 실제 Script임과 동일성 확인. Script path/opaqueID/같은값으로 대체하지 않음 |
+| 지원 field / 값 | field는 TYPE_STRING literal hp만. value는 native TYPE_INT 또는 finite TYPE_FLOAT raw값. 숫자 cast/clamp·음수HP 잘라내기·default0 없음. bool/String/StringName/null/NaN/Infinity는 쓰기 전 거절 |
+| 실제 적용 / 영수증 | hp=value 실제 실행 후에만 status APPLIED·applied true·실actor/Script/world·원write same-ref·applied_value. 거절은 NOT_READY/applied false와 reason/원write 유지. 이 값은 실제 HP쓰기 한 번만 증명하며 wholeprefix/clock/currentJS 인증 아님 |
+| 거절 reason | native_enemy_hp_owner_not_current, native_enemy_write_field_unsupported, native_enemy_hp_value_missing, native_enemy_hp_value_unsupported, native_enemy_hp_non_finite |
+| 기존 피격 / prefix | 원 계산 hp-amount 그대로 사용. alert/contact 갱신 다음 HP owner, 성공 뒤 기존 flash/stun/knockback/death/presentation 순서 유지. 거절은 legacy void 경로에서 return; 이미 일어난 alert/contact를 rollback하거나 없었다고 하지 않음. 재호출/fallback 없음 |
+| once 범위 | receive_damage 한 호출→HP owner 한 호출의 실제 적용만 새 영향 확인. idempotency token/epoch/counter/cache/재호출dedup·cursor 이후resume 없음. 실제 source events의 전체 적용 owner/순서/receipt 연결은 미완 |
+| 선행·미완 | P1-002 진행 중. 필수 callback12/25·미13 유지. native source-frame prefix gap의 실제 reset/gamepad/profiling owner·currentG/playTime·source view s/st2/el·typed consumer·자연첫피격·실게임/PC 인수 미완. 기존 type0 필드 prefix와 이 generic HP 부분을 구분 |
+| 새 검수 상태 | V1 첫 격리17case77check true·exit0. V2 추가 Script 수명 검수1case6check:5true, setup/weak_world_script_expired 1false·exit1. World.set_script(null) 성공 뒤 WeakRef 즉시 만료 전제 실패. 이후 HP 거절 호출·Main Script-loss 미실행; GC 원인 미상. 제품 거절 실패·V2 전체 통과를 주장하지 않음. 기존 검수 재연·자동 수리/재실행 없음 |
+| ROOT 부분 인수 | HP 실제 쓰기 경로와 일부 거절 경계는 격리 검수 인수, 첫 전투 전체 연결은 진행 중. V1 17case77check와 각 후속 실행을 ROOT가 범위별 인수. 제품 V2 15750B SHA256 b507455cf66b830502cbf1aeaf433cded413002c1988ba2fd50690e512bf58b4 유지  /  전체 hurtE·clock·자연 첫피격·실행판 완료 아님 |
+| current Script 제거 첫 실행 | World/Main 독립2case34check true·exit0, 각각 실제 HP 요청1회와 원HP875 TYPE_INT 유지. stderr624B의 Probe._draw animation 누락 SCRIPT ERROR2회로 clean 실행 아님. WeakRef는 둘 다 TYPE_OBJECT24·isScript true·isNull false 관측  /  [current Script 제거 원실행](/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/P1-002-FIRST-COMBAT-ACTUAL-CONSUMER-20261017/IMPLEMENTATION-HP-EFFECT-OWNER-20261018/qa/hp_effect_current_script_removal_manifest.json) |
+| draw 격리 후속 | Probe._draw pass3행·결과path·scope만 바꾼 허용 후속1회. 독립2case34 unique(case,name) true·exit0·stdout140B/stderr0B·양로그 SCRIPT ERROR/기타ERROR/경고/누수진단0  /  [draw 격리 후속 실행](/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/P1-002-FIRST-COMBAT-ACTUAL-CONSUMER-20261017/IMPLEMENTATION-HP-EFFECT-OWNER-20261018/qa/hp_effect_script_removal_draw_isolation_manifest.json). 실제 게임 draw·expiredweak·자연GC 증거 아님; 원실패와 합산PASS하지 않음 |
+| 보존 / PRE | 최초 code1/docs3의 HEAD/INDEX/WORK12 사전 사본 보존. V1→V2 guard 수정 직전 별도 fresh currentWORK savedPRE는 누락; 최초 PRE·실제 V1 검수 사본을 소급 PRE로 주장하지 않음. 실패 뒤 문서 마감은 새12 사본·savedPRE 후 진행. V1/V2와 각 실행 결과 분리 보존 |
+| 증거 | [P1-002.C 실제 HP owner 작업 영수증](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/P1-002-FIRST-COMBAT-ACTUAL-CONSUMER-20261017/IMPLEMENTATION-HP-EFFECT-OWNER-20261018/receipt.json>) |
+
+---
+
+## 이전 field-owner 기록 — 당시 범위와 실패·수치는 원문 보존
+
 > 2026-10-17 ENGINE 현행: callback **12/25·미13**. play_time은 el_mul 바로 다음에 동일 Services self의 arity0 Callable로 등록했다. owner 첫 격리 공개 API 검수는 인수됐으며 자연 clock·실게임 인수는 미확인이다. D9는 직전 공통 소스 인수이며, 이번 main/I/R 소스 정렬은 아래 통합 정본과 단위 receipt의 실제 HEAD·tree를 기준으로 확인한다. V12 후보는 소스 인수·첫 FAIL·별도 보완 한정성공으로 구분하며 제품 copy·World hook은 수행하지 않았다. 아래 이전 단계 숫자·원검수 결과는 당시 이력으로 보존한다. 실제 local/remote commit 상태는 단위 receipt를 따른다.
 
 > 2026-10-17 ENGINE WIP 현행: 실제 callback **9/25·미16**. 신규 격리 행동41/41과 신규 map 경계 static9/9만 인수 범위다. 원 첫 parse 실패는 보존한다. 이 WIP를 main/R/served·전체 게임 최신화 완료로 해석하지 않는다.
