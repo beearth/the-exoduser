@@ -456,6 +456,7 @@ func _draw() -> void:
 	var bar = Rect2(-48, -float(data["animation"]["draw_height"]) * 0.5 - 14, 96, 5)
 	draw_rect(bar, Color(0.12, 0.1, 0.1, 0.9))
 	draw_rect(Rect2(bar.position, Vector2(bar.size.x * maxf(0, float(hp) / max_hp), bar.size.y)), Color(0.53, 0.13, 0.18))
-	# P1-002.E: 에너지쉴드 = HP 위 추가 바 (청색 — 원본 쉴드 표기 색 계열 #66ddff)
+	# P1-002.E: 에너지쉴드 — 원본 drawEn(game.html:53963)과 같이 HP 바와 같은 칸 위에
+	# 쉴드 비율만큼 #44aaff로 덮어 그린다(별도 줄 아님). 쉴드가 남아 있는 동안 HP 색은 가려진다.
 	if eShieldMax > 0.0 and eShield > 0.0:
-		draw_rect(Rect2(bar.position + Vector2(0, -3), Vector2(bar.size.x * minf(1.0, eShield / eShieldMax), 2)), Color(0.4, 0.866, 1.0, 0.9))
+		draw_rect(Rect2(bar.position, Vector2(bar.size.x * minf(1.0, eShield / eShieldMax), bar.size.y)), Color8(0x44, 0xaa, 0xff))
