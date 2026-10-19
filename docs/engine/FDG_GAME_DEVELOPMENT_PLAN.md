@@ -1,6 +1,6 @@
 # EXODUSER Godot 이식 — 총 목표와 단계별 실행 기준
 
-기준일: 2026-10-17 KST · 현재 계획 작업 **P0-001 / 계획 기준 인수 완료**. 이 상단 계획이 단계·작업 배정의 단일 기준이다. 아래 이전 기록은 작성 당시의 이력으로 보존한다.
+기준일: 2026-10-19 KST · 현재 계획 작업 **P1-002 진행 중(하위 C/D/E)**. 2026-10-19 사용자 지시로 총괄은 PC Claude 세션이 맡는다(Codex 담당 인계는 Git docs 경유). 이 상단 계획이 단계·작업 배정의 단일 기준이다. 아래 이전 기록은 작성 당시의 이력으로 보존한다.
 
 ## 총 목표와 사용자 인수 기준
 
@@ -48,7 +48,10 @@
 | P1-REF01 | P1 | play_time owner의 부분지원·실패·원 ref 보존 | main.gd, native_source_new_run_state.gd, native_source_player_initialization_services.gd | 인수한 API·소유·부분지원 범위만 유지 | [owner 첫 격리 결과](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/NORMAL-HURTE-PLAY-TIME-TYPED-OWNER-IMPLEMENTATION-20261017/results/play-time-owner-first.result.json>) · [P1-001 소스 통합 영수증](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/NORMAL-HURTE-PLAY-TIME-MAIN-SOURCE-SYNC-20261017/receipt.json>) | 소스·첫 격리34case477 인수 | 원정적17 중15통과2실패와 별도2true는 각각 유지. 자연 clock·원JS 동등성 미확인 |
 | P1-REF02 | P1 | play_time을 동일 Services self·arity0로 등록 | godot/scripts/native_source_player_initialization_services.gd | 기존11 순서 뒤 el_mul→play_time 한 entry, actual12·미13. entry 생성 query0만 확인 | [등록12 영수증](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/NORMAL-HURTE-PLAY-TIME-TWELFTH-PROVIDER-REGISTRATION-20261017/receipt.json>) | 등록·해당 정적10 인수 | 기존 getter/guard 전체 순수성이나 실제 자연 호출 완료 아님 |
 | P1-REF03 | P1 | 기존 ENEMY V12 후보와 서로 다른 QA 범위를 추적 | 기존 ENEMY 담당 후보 namespace. 제품 경로 미채택; 정확 반영 경로는 기존 오더에서 확정 | 첫FAIL 보존·별도 보완 한정성 명시 후 실제 소비자 채택 여부를 ROOT 결정 | [P1-001 소스 통합 영수증](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/NORMAL-HURTE-PLAY-TIME-MAIN-SOURCE-SYNC-20261017/receipt.json>)의 후보 인수 요약 | source3·첫parse2 인수 / 첫11case43행동true지만 setup signed-zero1false·exit1 전체FAIL / 별도4case19행동+setup4 true | 별도 성공은 첫actual+0·둘째3경계에 한정. 합산PASS·fail-fast 실제 고장주입·전체게임 증거 아님. 제품 copy 없음 |
-| P1-002 | P1 | 첫 전투 실제 World→normal hurtE 소비 경로를 현재 clock owner에 연결하고 자연 호출까지 인수 | Main/Services/State 및 실제 World→normal hurtE caller. 미확정 추가 경로는 아래 한 질문의 답으로 고정한 뒤 구현 | 정확 caller/clock 소유·presence·자연수명을 근거로 연결 구현→새 영향의 raw ref/NR·실패 경계 확인→허용 대상의 자연 호출 인수. API 개수나 조사 보고만으로 완료하지 않음 | 아직 새 산출물 없음 | 계획·코드 착수 전 | 가장 가까운 차단은 실제 World 피해 caller가 소비할 현재 clock owner/원본 계약 연결 근거 미확정. 계획·카드는 ROOT 교정 기준으로 인수. 핵심3 실제 접점과 정확 scope 확인 후 같은 P1-002 안에서 최소 연결 구현. 실행 대상·HOLD는 별도 유지 |
+| P1-002 | P1 | 첫 전투 실제 World→normal hurtE 소비 경로를 현재 clock owner에 연결하고 자연 호출까지 인수 | Main/Services/State 및 실제 World→normal hurtE caller. 미확정 추가 경로는 아래 한 질문의 답으로 고정한 뒤 구현 | 정확 caller/clock 소유·presence·자연수명을 근거로 연결 구현→새 영향의 raw ref/NR·실패 경계 확인→허용 대상의 자연 호출 인수. API 개수나 조사 보고만으로 완료하지 않음 | 하위 작업 C/D/E 행 참조 | 진행 중 — C(Mac, HP owner) 부분 인수·D(PC, clock 생산자) 구현 중·E 미착수 | 가장 가까운 차단은 실제 World 피해 caller가 소비할 현재 clock owner/원본 계약 연결 근거 미확정. 계획·카드는 ROOT 교정 기준으로 인수. 핵심3 실제 접점과 정확 scope 확인 후 같은 P1-002 안에서 최소 연결 구현. 실행 대상·HOLD는 별도 유지 |
+| P1-002.C | P1 | 일반 적 HP 실제 쓰기 owner(enemy.apply_native_normal_enemy_hp_write) | godot/scripts/enemy.gd — Mac 브랜치 `codex/p1-002-hp-effect-owner-20261018`(d6d6e438, main 미통합) | HP 쓰기 1회 APPLIED·거절 경계 격리 검수 | Mac 격리 V1 17case77check true / V2 setup 1false (Mac 로컬 영수증) | ROOT 부분 인수 — **main 통합 대기(총괄 검토 후 merge 결정)** | enemy.gd는 이 브랜치가 소유. 다른 담당은 enemy.gd 수정 금지 |
+| P1-002.D | P1 | 소스 update clock 실구동 + G.stageTime/G.playTime 생산자(원본 32742) 연결 | godot/port_modules/source_update_clock_prefix/producer.gd, scripts/native_source_player_initialization_services.gd, scripts/native_source_new_run_state.gd (+main.gd 호출 1~2줄) | 정상 플레이 프레임마다 phase_sp→phase_stage_play_time 도달, State `_g.playTime/stageTime`이 sp 누적으로 증가, Services `read_normal_enemy_play_time()` READY·증가. 임의 counter/default 없음 | 격리 테스트(godot/tests) 원로그 + Mac 실행 확인 | **구현 중 — PC Claude 총괄 세션 배정(2026-10-19)** | 차단 근거: update clock prefix(system_lesson~sp)는 선언만 되고 제품에서 호출 0회, `_g`에 playTime 키 부재 → NOT_READY. PC에 Godot 바이너리 미확인 시 실행 검증은 Mac |
+| P1-002.E | P1 | 첫 전투 실제 caller(player._melee_contact→enemy.receive_damage)를 normal hurtE 최소 경로로 연결 | player.gd 호출부, World field owner(begin/consume_prefix/poise_hit), enemy 효과 owner | 기본 무기 1타가 원본 hurtE 순서(alert→HP→stun/kb/death/표시)로 적용되고 12 provider 중 READY인 값만 소비, 미13은 NOT_READY로 관측 | 격리 + Mac 실행 첫 피격 인수 | 미착수 — D 완료 후 | V12 후보 copy 금지. 자연 첫피격 인수까지가 완료 |
 | P2-001 | P2 | 원본과 비교할 첫 전투 실행 대상을 확정하고 직접 인수 | 확정할 실행판/별도 검수 대상. 현재 URL·앱 경로 미확정 | 시작→전투→종료와 화면·입력·타격을 같은 조건에서 비교·인수 | 아직 새 인수 근거 없음 | 대상·허용 범위 대기 | 기존 미응답6·보호된 플레이 창·개별 HOLD 유지. 같은 질문 중복 전송 없음 |
 | P3-001 | P3 | 첫 콘텐츠 묶음의 원본 범위·소비자·자산·품질 조건 확정 | 기존 해당 전문팀 오더 경로. 정확 파일/자산은 묶음 확정 시 기입 | 실제 게임에 쓰는 범위와 원본 수치·해당 자산의 확정 장수·clip 재생FPS 등 품질 규격(화면FPS와 구분)을 명시하고 인수 | 기존 개별 이력만 보유, 이번 새 산출물 없음 | 미배정 | 기존 담당 경유. 전체 콘텐츠 조사·새 producer 자동 추가 없음 |
 | P4-001 | P4 | 다음 게임 흐름 한 경로의 UI·데이터·저장 허용 범위 확정 | 기존 HUD/설정/저장/메타진행 담당 경로; 작업 전 exactscope | 데이터·UI 결정과 보호 범위를 확인하고 해당 흐름의 완료 조건 고정 | 이번 새 인수 근거 없음 | 미배정·개별 HOLD 유지 | Q/E·2_3·세이브·외부 WIP 보호 유지 |
@@ -58,6 +61,16 @@
 REF 행은 이미 인수한 입력의 추적 기록이며 새 제작 지시가 아니다. 후보 원본 증거의 정확 링크가 아직 작업표에 없으면 요약 링크를 원 QA 증거로 승격하지 않는다. 기존 ENEMY 오더 담당→ROOT를 통해 원 산출물과 제품 반영 범위를 확정한다.
 
 ## P1-002의 가장 가까운 차단과 실행 순서
+
+**2026-10-19 총괄(PC Claude) 핵심3 답 — 소스 dd49171c5 기준, 재조사 금지:**
+
+| 핵심 질문 | 확인된 답 | 근거 파일 |
+|---|---|---|
+| 실제 caller | 첫 전투 기본 근접 = `player._melee_contact()` → `enemy.receive_damage(amount, dir, "weapon")`. kiSlash=crescent.gd:143, Q/E=main.gd receive_native_e_slam/wave. Services 12-provider map(`get_normal_enemy_damage_provider_callbacks`)과 World field owner(`begin_native_normal_enemy_field_call`/`consume_prefix`/`poise_hit`)는 제품 소비자 0 | godot/scripts/player.gd:1033, world.gd:3327~, services.gd:499 |
+| 자연 clock 권위 | 원본 `G.playTime/stageTime += sp`(game.html:32742, update() 본문). Godot는 `source_update_clock_prefix`가 32580~32683(phase_sp)까지만 포팅했고 **제품에서 호출되지 않음**(선언만). `_g`에 playTime 키 없음 → `read_normal_enemy_play_time` NOT_READY. 결손 = 원본 생산자 미포팅(임의 값 주입 금지) | port_modules/source_update_clock_prefix/producer.gd, services.gd:263~287, state.gd:751 |
+| 실제 효과 owner | 일반 적 = enemy.gd(`receive_damage`: hp/flash/stun/kb/death). Mac C 브랜치가 HP 쓰기만 `apply_native_normal_enemy_hp_write`로 위임. flesh_crawler만 `commit_native_source_damage_field`/`apply_native_source_poise_hit` 보유(호출자 없음) | enemy.gd:201~, enemy_melee_flesh_crawler.gd:376~ |
+
+실행 순서: **D(clock 생산자 실구동) → C main 통합 결정 → E(caller 최소 연결) → Mac 실행 자연 첫피격 인수**. 상세 기술 근거: [P1-002 clock 생산자 작업 문서](FDG_P1_002_CLOCK_PRODUCER_20261019.md).
 
 접점 확인은 **실제 caller, 자연 clock/currentState의 권위, 실제 효과 적용 owner**라는 핵심3질문에 한정한다. 구체 함수·파일이 아직 확인되지 않은 연결을 완료로 표시하지 않으며, 답을 얻으면 같은 질문을 다시 조사하지 않고 최소 연결 구현으로 이어간다. 전체 producer/catalog 조사로 넓히지 않는다.
 

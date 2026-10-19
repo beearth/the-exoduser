@@ -1,6 +1,6 @@
 # Godot 이식 현황 — 현재 단계와 다음 작업
 
-기준일: 2026-10-17 KST · [총 목표와 단계별 실행 기준](FDG_GAME_DEVELOPMENT_PLAN.md)이 유일한 단계·작업 배정 기준이다. **현재 제품 연결은 P1 진행 중, P0-001 계획 기준은 인수 완료(전체 P0 완료 아님)**다.
+기준일: 2026-10-19 KST · [총 목표와 단계별 실행 기준](FDG_GAME_DEVELOPMENT_PLAN.md)이 유일한 단계·작업 배정 기준이다. **현재 P1-002 진행 중(하위 C/D/E), P0-001 계획 기준 인수 완료(전체 P0 완료 아님)**. 2026-10-19부터 총괄은 PC Claude 세션(사용자 지시 "너가 총괄작업 할수있겠네").
 
 목표는 원본 EXODUSER의 확정 기능·조작·전투 체감을 Godot로 이식해 지정 PC·Mac 실행판에서 직접 인수하는 것이다. 전체 기능 분모가 아직 없어 전체 진행률·ETA를 표시하지 않는다.
 
@@ -13,6 +13,18 @@
 | 시간 owner / 등록 | owner 첫 격리34case477 인수, actual callback12/25·미13. 특정 provider 집합 수이며 전체 이식률 아님 | P1-REF01 / P1-REF02. [owner 첫 격리 결과](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/NORMAL-HURTE-PLAY-TIME-TYPED-OWNER-IMPLEMENTATION-20261017/results/play-time-owner-first.result.json>) · [등록12 영수증](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/NORMAL-HURTE-PLAY-TIME-TWELFTH-PROVIDER-REGISTRATION-20261017/receipt.json>) |
 | V12 후보 | 소스·첫parse 인수. 첫11case43행동true지만 setup signed-zero1false·exit1 전체FAIL. 별도4case19행동+setup4 true는 첫actual+0와 둘째3경계에 한정. 제품 copy 없음 | P1-REF03. 서로 다른 실행을 합산PASS로 바꾸지 않음. 정확 원후보 증거·반영 경로는 기존 ENEMY 오더 경유 |
 | 첫 전투 실게임·플랫폼 | 실제 clock·자연 Main/State/World 호출, 사용자 열린 앱·compiled export·PC 실행·첫 전투 화면/입력/타격 인수 미확인 | P2-001 / P5-001. 기존 대상·권한·HOLD 유지 |
+
+## 2026-10-19 총괄 인계와 P1-002 하위 작업 현황
+
+| 하위 작업 | 무엇 | 담당 / 위치 | 단계(기획 확정 / 소스 구현 / 격리 검수 / 실플레이 인수) |
+|---|---|---|---|
+| P1-002.C HP owner | 일반 적 HP 실제 쓰기 owner | Mac Codex 브랜치 `codex/p1-002-hp-effect-owner-20261018`(main 미통합) | 소스 구현 ○ / 격리 검수 부분(V1 true, V2 setup 실패) / 실플레이 미확인 / **main 통합 대기** |
+| P1-002.D clock 생산자 | update clock prefix 실구동 + `G.playTime/stageTime += sp`(원본 32742) | PC Claude 총괄 세션(heavy 담당 배정) | 기획 확정 ○ / 소스 구현 **진행 중** / 격리 검수 미 / 실플레이 미 |
+| P1-002.E caller 연결 | 기본 근접 1타 → normal hurtE 최소 경로 | 미배정(D 뒤) | 기획 확정 ○ / 나머지 미 |
+
+핵심3(실제 caller·clock 권위·효과 owner)은 PC 소스에서 확인 완료이며 [계획 문서의 답 표](FDG_GAME_DEVELOPMENT_PLAN.md#p1-002의-가장-가까운-차단과-실행-순서)를 따른다. 같은 질문을 다시 조사하지 않는다.
+
+**환경별 상태(2026-10-19)**: Git origin/main = dd49171c5. PC `G:\exoduser` main = dd49171c5(추적 파일 일치 확인). Mac R 체크아웃 = dd49171c5(2026-10-19 Mac 기록, 이 세션에서 직접 재확인 아님). 열린 Godot 실행판이 이 소스를 소비하는지는 **미확인**. PC에 Godot 바이너리 미확인 → 격리·실행 검증은 Mac에서 수행해야 한다. 이번 총괄 세션은 Codex 담당(ROOT/ENGINE)에게 직접 지시할 수 없으며 인계는 이 두 문서와 Git 브랜치로만 한다.
 
 소스·정적·fixture·실게임·플랫폼 인수는 서로 다르다. **P1-001 소스 정렬을 최신 플레이 게임 완료로 표시하지 않는다.** 자산별 기존 확정 규격·SSOT를 따른다. 이 대화의 사용자 확정 ‘장수와 재생 속도 모두 24’는 해당 캐릭터 clip 장수24·clip 재생24fps 규격이며 실게임 화면 FPS와 별개다. 잘림 없는 모델·연결 동작·원근감·타격 접점은 기존 품질 요구 범위에서 실제 카메라·전투로 인수한다.
 
