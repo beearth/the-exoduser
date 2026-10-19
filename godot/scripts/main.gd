@@ -54,6 +54,10 @@ var _q_burst_draw: Node2D
 var _q_view: SubViewport
 var _q_canvas: Node2D
 var _q_sprite: Sprite2D
+var _native_source_elements: Variant = {"P": 0, "F": 1, "I": 2, "D": 3, "L": 4, "H": 5, "E": 6}
+var _native_source_elements_owner_script: WeakRef = weakref(get_script())
+var _native_source_play_time_owner_script: WeakRef = weakref(get_script())
+
 var world: Node2D
 var player: CharacterBody2D
 var hud: CanvasLayer
@@ -2322,3 +2326,186 @@ func is_native_source_rand_context_current(services: Variant, expected_world: Va
 			or expected_world.get_script().resource_path != "res://scripts/world.gd":
 		return false
 	return services.is_native_main_random_bridge_current(self, expected_world)
+
+func is_native_source_element_context_current(formula: RefCounted, services: RefCounted,
+		state: Node, providers: RefCounted) -> bool:
+	if not is_instance_valid(_native_source_elements_owner_script): return false
+	var expected_script: Variant = _native_source_elements_owner_script.get_ref()
+	if not expected_script is Script or not is_instance_valid(expected_script) \
+			or not is_same(get_script(), expected_script): return false
+	if not _source_legendary_context_error(formula, services, state, providers, false).is_empty():
+		return false
+	if not is_inside_tree(): return false
+	var live_tree: SceneTree = get_tree()
+	for candidate in [player, world, state, source_resources]:
+		if not candidate is Node or not candidate.is_inside_tree() \
+				or candidate.get_tree() != live_tree: return false
+	if state.get_parent() != world or source_resources.get_parent() != world \
+			or world.get("player") != player: return false
+	return true
+
+func _native_source_element_operand_supported(value: Variant) -> bool:
+	var kind: int = typeof(value)
+	if kind == TYPE_INT:
+		return value >= -9007199254740991 and value <= 9007199254740991
+	return kind == TYPE_NIL or kind == TYPE_BOOL or kind == TYPE_STRING or kind == TYPE_FLOAT
+
+func _native_source_element_strict_equal(left: Variant, right: Variant) -> bool:
+	var left_kind: int = typeof(left)
+	var right_kind: int = typeof(right)
+	var left_number: bool = left_kind == TYPE_INT or left_kind == TYPE_FLOAT
+	var right_number: bool = right_kind == TYPE_INT or right_kind == TYPE_FLOAT
+	if left_number and right_number:
+		if left_kind == TYPE_FLOAT and left != left: return false
+		if right_kind == TYPE_FLOAT and right != right: return false
+		return left == right
+	if left_kind != right_kind: return false
+	return left == right
+
+func _native_source_element_not_ready(reason: String, a: Variant, d: Variant,
+		reads: Array, read_result: Variant = null) -> Dictionary:
+	var packet: Dictionary = {"status": "NOT_READY", "reason": reason,
+		"raw_arguments": {"a": a, "d": d}, "EL_reads": reads,
+		"source": "Main._native_source_elements/elMul"}
+	if read_result != null: packet["read_result"] = read_result
+	return packet
+
+func _native_source_element_read_member(elements: Dictionary, key: String, reads: Array) -> Dictionary:
+	var present: bool = elements.has(key)
+	var record: Dictionary = {"key": key, "present": present}
+	reads.append(record)
+	if not present:
+		return {"status": "NOT_READY", "reason": "EL_own_member_missing", "read_result": record}
+	var value: Variant = elements[key]
+	record["value"] = value
+	record["raw_type"] = typeof(value)
+	if not _native_source_element_operand_supported(value):
+		return {"status": "NOT_READY", "reason": "EL_member_domain_unsupported", "read_result": record}
+	return {"status": "READY", "value": value, "read_result": record}
+
+func _native_source_element_match_pair(elements: Dictionary, a: Variant, d: Variant,
+		first: String, second: String, reads: Array) -> Dictionary:
+	var first_read: Dictionary = _native_source_element_read_member(elements, first, reads)
+	if first_read.get("status") != "READY": return first_read
+	if not _native_source_element_strict_equal(a, first_read["value"]):
+		return {"status": "READY", "matched": false}
+	var second_read: Dictionary = _native_source_element_read_member(elements, second, reads)
+	if second_read.get("status") != "READY": return second_read
+	return {"status": "READY", "matched": _native_source_element_strict_equal(d, second_read["value"])}
+
+func _native_source_element_finish(packet: Dictionary, a: Variant, d: Variant,
+		reads: Array, elements: Dictionary, formula: RefCounted, services: RefCounted,
+		state: Node, providers: RefCounted) -> Dictionary:
+	if not is_native_source_element_context_current(formula, services, state, providers) \
+			or not is_same(_native_source_elements, elements):
+		return _native_source_element_not_ready("element_owner_changed_after_read", a, d, reads, packet)
+	return packet
+
+func read_native_source_element_multiplier(a: Variant, d: Variant, formula: RefCounted,
+		services: RefCounted, state: Node, providers: RefCounted) -> Dictionary:
+	var reads: Array = []
+	if not is_native_source_element_context_current(formula, services, state, providers):
+		return _native_source_element_not_ready("element_owner_not_current", a, d, reads)
+	var elements: Variant = _native_source_elements
+	if not elements is Dictionary:
+		return _native_source_element_not_ready("EL_owner_not_Dictionary", a, d, reads)
+	if not _native_source_element_operand_supported(a) or not _native_source_element_operand_supported(d):
+		var unsupported: Dictionary = _native_source_element_not_ready("argument_domain_unsupported", a, d, reads)
+		return _native_source_element_finish(unsupported, a, d, reads, elements, formula, services, state, providers)
+	var pair: Dictionary = _native_source_element_match_pair(elements, a, d, "F", "I", reads)
+	if pair.get("status") != "READY":
+		var failed_0: Dictionary = _native_source_element_not_ready(pair.get("reason", "EL_read_failed"), a, d, reads, pair)
+		return _native_source_element_finish(failed_0, a, d, reads, elements, formula, services, state, providers)
+	if pair["matched"]:
+		var matched_0: Dictionary = {"status": "READY", "value": 2.0, "raw_arguments": {"a": a, "d": d}, "EL_reads": reads, "source": "Main._native_source_elements/elMul"}
+		return _native_source_element_finish(matched_0, a, d, reads, elements, formula, services, state, providers)
+	pair = _native_source_element_match_pair(elements, a, d, "I", "F", reads)
+	if pair.get("status") != "READY":
+		var failed_1: Dictionary = _native_source_element_not_ready(pair.get("reason", "EL_read_failed"), a, d, reads, pair)
+		return _native_source_element_finish(failed_1, a, d, reads, elements, formula, services, state, providers)
+	if pair["matched"]:
+		var matched_1: Dictionary = {"status": "READY", "value": 2.0, "raw_arguments": {"a": a, "d": d}, "EL_reads": reads, "source": "Main._native_source_elements/elMul"}
+		return _native_source_element_finish(matched_1, a, d, reads, elements, formula, services, state, providers)
+	pair = _native_source_element_match_pair(elements, a, d, "D", "L", reads)
+	if pair.get("status") != "READY":
+		var failed_2: Dictionary = _native_source_element_not_ready(pair.get("reason", "EL_read_failed"), a, d, reads, pair)
+		return _native_source_element_finish(failed_2, a, d, reads, elements, formula, services, state, providers)
+	if pair["matched"]:
+		var matched_2: Dictionary = {"status": "READY", "value": 2.0, "raw_arguments": {"a": a, "d": d}, "EL_reads": reads, "source": "Main._native_source_elements/elMul"}
+		return _native_source_element_finish(matched_2, a, d, reads, elements, formula, services, state, providers)
+	pair = _native_source_element_match_pair(elements, a, d, "L", "D", reads)
+	if pair.get("status") != "READY":
+		var failed_3: Dictionary = _native_source_element_not_ready(pair.get("reason", "EL_read_failed"), a, d, reads, pair)
+		return _native_source_element_finish(failed_3, a, d, reads, elements, formula, services, state, providers)
+	if pair["matched"]:
+		var matched_3: Dictionary = {"status": "READY", "value": 2.0, "raw_arguments": {"a": a, "d": d}, "EL_reads": reads, "source": "Main._native_source_elements/elMul"}
+		return _native_source_element_finish(matched_3, a, d, reads, elements, formula, services, state, providers)
+	pair = _native_source_element_match_pair(elements, a, d, "D", "H", reads)
+	if pair.get("status") != "READY":
+		var failed_4: Dictionary = _native_source_element_not_ready(pair.get("reason", "EL_read_failed"), a, d, reads, pair)
+		return _native_source_element_finish(failed_4, a, d, reads, elements, formula, services, state, providers)
+	if pair["matched"]:
+		var matched_4: Dictionary = {"status": "READY", "value": 2.0, "raw_arguments": {"a": a, "d": d}, "EL_reads": reads, "source": "Main._native_source_elements/elMul"}
+		return _native_source_element_finish(matched_4, a, d, reads, elements, formula, services, state, providers)
+	pair = _native_source_element_match_pair(elements, a, d, "H", "D", reads)
+	if pair.get("status") != "READY":
+		var failed_5: Dictionary = _native_source_element_not_ready(pair.get("reason", "EL_read_failed"), a, d, reads, pair)
+		return _native_source_element_finish(failed_5, a, d, reads, elements, formula, services, state, providers)
+	if pair["matched"]:
+		var matched_5: Dictionary = {"status": "READY", "value": 2.0, "raw_arguments": {"a": a, "d": d}, "EL_reads": reads, "source": "Main._native_source_elements/elMul"}
+		return _native_source_element_finish(matched_5, a, d, reads, elements, formula, services, state, providers)
+	pair = _native_source_element_match_pair(elements, a, d, "E", "L", reads)
+	if pair.get("status") != "READY":
+		var failed_6: Dictionary = _native_source_element_not_ready(pair.get("reason", "EL_read_failed"), a, d, reads, pair)
+		return _native_source_element_finish(failed_6, a, d, reads, elements, formula, services, state, providers)
+	if pair["matched"]:
+		var matched_6: Dictionary = {"status": "READY", "value": 2.0, "raw_arguments": {"a": a, "d": d}, "EL_reads": reads, "source": "Main._native_source_elements/elMul"}
+		return _native_source_element_finish(matched_6, a, d, reads, elements, formula, services, state, providers)
+	pair = _native_source_element_match_pair(elements, a, d, "L", "E", reads)
+	if pair.get("status") != "READY":
+		var failed_7: Dictionary = _native_source_element_not_ready(pair.get("reason", "EL_read_failed"), a, d, reads, pair)
+		return _native_source_element_finish(failed_7, a, d, reads, elements, formula, services, state, providers)
+	if pair["matched"]:
+		var matched_7: Dictionary = {"status": "READY", "value": 2.0, "raw_arguments": {"a": a, "d": d}, "EL_reads": reads, "source": "Main._native_source_elements/elMul"}
+		return _native_source_element_finish(matched_7, a, d, reads, elements, formula, services, state, providers)
+	if _native_source_element_strict_equal(a, d):
+		var physical_read: Dictionary = _native_source_element_read_member(elements, "P", reads)
+		if physical_read.get("status") != "READY":
+			var physical_failure: Dictionary = _native_source_element_not_ready(physical_read.get("reason", "EL_read_failed"), a, d, reads, physical_read)
+			return _native_source_element_finish(physical_failure, a, d, reads, elements, formula, services, state, providers)
+		if not _native_source_element_strict_equal(a, physical_read["value"]):
+			var same_element: Dictionary = {"status": "READY", "value": 0.5, "raw_arguments": {"a": a, "d": d}, "EL_reads": reads, "source": "Main._native_source_elements/elMul"}
+			return _native_source_element_finish(same_element, a, d, reads, elements, formula, services, state, providers)
+	var neutral: Dictionary = {"status": "READY", "value": 1.0, "raw_arguments": {"a": a, "d": d}, "EL_reads": reads, "source": "Main._native_source_elements/elMul"}
+	return _native_source_element_finish(neutral, a, d, reads, elements, formula, services, state, providers)
+
+func is_native_source_play_time_context_current(services: RefCounted, state: Node,
+		raw_g: Variant = null, require_g_identity: bool = false) -> bool:
+	if not is_instance_valid(self) or is_queued_for_deletion() \
+			or not is_instance_valid(_native_source_play_time_owner_script):
+		return false
+	var expected_script: Variant = _native_source_play_time_owner_script.get_ref()
+	if not expected_script is Script or not is_instance_valid(expected_script) \
+			or not is_same(get_script(), expected_script):
+		return false
+	if not is_instance_valid(services) or not is_instance_valid(state) \
+			or state.is_queued_for_deletion():
+		return false
+	if not is_same(source_initialization_services, services) or not is_same(source_state, state):
+		return false
+	if not is_same(services.get_script(), SourceInitializationServicesScript) \
+			or not is_same(state.get_script(), SourceStateScript):
+		return false
+	if not is_inside_tree():
+		return false
+	var live_tree: SceneTree = get_tree()
+	for candidate in [player, world, state, source_resources]:
+		if not candidate is Node or not is_instance_valid(candidate) \
+				or candidate.is_queued_for_deletion() or not candidate.is_inside_tree() \
+				or not is_same(candidate.get_tree(), live_tree):
+			return false
+	if not is_same(world.get_parent(), self) or not is_same(state.get_parent(), world) \
+			or not is_same(source_resources.get_parent(), world):
+		return false
+	return state.is_native_play_time_owner_current(
+		self, player, world, source_resources, raw_g, require_g_identity)

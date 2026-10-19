@@ -551,3 +551,36 @@ func l_eq(stat: Variant) -> Dictionary:
 			or not is_instance_valid(state) or not is_instance_valid(providers):
 		return {"status":"NOT_READY","reason":"legendary_bound_owner_lost","source":"_lEq@game.html:16620"}
 	return main.read_native_source_legendary_equipment(stat, self, services, state, providers)
+
+func _native_source_element_formula_not_ready(reason: String, a: Variant, d: Variant,
+		read_result: Variant = null) -> Dictionary:
+	var packet: Dictionary = {"status": "NOT_READY", "reason": reason, "raw_arguments": {"a": a, "d": d}}
+	if read_result != null: packet["read_result"] = read_result
+	return packet
+
+func _native_source_element_refs_current(main: Variant, services: Variant,
+		state: Variant, providers: Variant) -> bool:
+	if not _legendary_source_bound or not main is Node or not services is RefCounted \
+			or not state is Node or not providers is RefCounted: return false
+	for reference in [_legendary_main, _legendary_services, _legendary_state, _legendary_providers]:
+		if not is_instance_valid(reference): return false
+	if not is_same(_legendary_main.get_ref(), main) or not is_same(_legendary_services.get_ref(), services) \
+			or not is_same(_legendary_state.get_ref(), state) or not is_same(_legendary_providers.get_ref(), providers):
+		return false
+	return main.is_native_source_element_context_current(self, services, state, providers)
+
+func el_mul(a: Variant, d: Variant) -> Dictionary:
+	var main: Variant = _legendary_main.get_ref() if is_instance_valid(_legendary_main) else null
+	var services: Variant = _legendary_services.get_ref() if is_instance_valid(_legendary_services) else null
+	var state: Variant = _legendary_state.get_ref() if is_instance_valid(_legendary_state) else null
+	var providers: Variant = _legendary_providers.get_ref() if is_instance_valid(_legendary_providers) else null
+	if not _native_source_element_refs_current(main, services, state, providers):
+		return _native_source_element_formula_not_ready("element_formula_owner_not_current", a, d)
+	var result: Variant = main.read_native_source_element_multiplier(a, d, self, services, state, providers)
+	if not _native_source_element_refs_current(main, services, state, providers):
+		return _native_source_element_formula_not_ready("element_formula_owner_changed_after_read", a, d, result)
+	if not result is Dictionary or result.get("status") not in ["READY", "NOT_READY"]:
+		return _native_source_element_formula_not_ready("element_owner_result_malformed", a, d, result)
+	if result.get("status") == "READY" and (not result.has("value") or typeof(result["value"]) != TYPE_FLOAT):
+		return _native_source_element_formula_not_ready("element_owner_value_malformed", a, d, result)
+	return result

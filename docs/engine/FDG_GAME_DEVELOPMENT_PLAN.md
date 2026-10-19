@@ -1,4 +1,95 @@
-> 2026-10-17 ENGINE WIP 현행: callback **10/25·미15**, 기존9 뒤 `rand` 인자0을 같은 Services reader로 등록했다. 아래 이전9·미등록 표시는 해당 이전 인수 단계의 이력이며, 현행 등록 상태는 이 배너와 마지막 등록 절을 따른다. main/R/served 반영·V9 scalar Dict직결·fullhurtE 완료는 아니다.
+# EXODUSER Godot 이식 — 총 목표와 단계별 실행 기준
+
+기준일: 2026-10-17 KST · 현재 계획 작업 **P0-001 / 계획 기준 인수 완료**. 이 상단 계획이 단계·작업 배정의 단일 기준이다. 아래 이전 기록은 작성 당시의 이력으로 보존한다.
+
+## 총 목표와 사용자 인수 기준
+
+**EXODUSER의 확정된 원본 기능·조작·전투 체감을 Godot로 이식하고, PC와 Mac의 지정 실행판에서 사용자가 직접 플레이해 인수할 수 있게 만든다.**
+
+원본 기준은 R/game.html·R/index.html의 실제 동작과 기존 docs SSOT, 최신 사용자 확정 지시다. 맵의 원근감·입체감, 캐릭터 잘림 없는 형태와 접지, 자연스러운 방향 전환·공격 연결, 스킬/VFX의 타격 접점을 실제 게임 카메라에서 확인한다. 자산별 기존 확정 규격·SSOT를 따른다. 이 대화의 사용자 확정 응답 **‘장수와 재생 속도 모두 24’**는 해당 캐릭터 clip의 장수24·clip 재생24fps에 적용하며, 실게임 화면 FPS와는 별개다. PoE2는 이 대화의 기존 레퍼런스 스터디 지시 범위에서 참고하고, 이번 목표 정리의 새로운 전역 완료 조건으로 확대하지 않는다.
+
+첫 전투의 화면·입력·타격·시작→전투→종료 흐름을 원본과 같은 조건에서 비교한다. 코드나 테스트만 통과한 상태를 플레이 품질 인수로 승격하지 않는다. 전체 기능 분모는 아직 확정되지 않았으므로 **전체 진행률과 ETA를 기입하지 않는다.**
+
+## 현재 위치와 증거를 읽는 법
+
+현재 제품 연결은 **P1 진행 중**이며, **P0-001 계획 기준은 ROOT 인수 완료**다. P0 전체와 카드·실제 구현 완료를 뜻하지 않는다. 다음 실제 구현은 **P0-002 연결 카드와 P1-002의 범위·완료 조건을 ROOT가 인수한 뒤** 착수한다.
+
+| 증거 단계 | 인정하는 것 | 현재 확인된 상태 |
+|---|---|---|
+| 소스 | 특정 commit·tree와 실제 파일 연결 | P1-001에서 인수한 게임 코드/소스 기준은 fb118c77da2dbc43042c4a8539971338cc3b3c76, tree e4b6f28f8b775d115fedad77049cb5245eade889다. 당시 main/I/R 정렬은 ROOT 인수 완료이며 이번 문서-only 체크포인트의 실제 SHA·tree·사본 상태는 아래 새 영수증을 따른다. 실제43경로=code3/docs40. [P1-001 소스 통합 영수증](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/NORMAL-HURTE-PLAY-TIME-MAIN-SOURCE-SYNC-20261017/receipt.json>) |
+| 정적 | 구조·참조·파일 동일성·문서 계약 | P1-001 새8/8은 소스 정렬 범위만 확인. 등록 정적10과 문서 보완 정적7은 서로 다른 기존 증거. [등록12 영수증](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/NORMAL-HURTE-PLAY-TIME-TWELFTH-PROVIDER-REGISTRATION-20261017/receipt.json>) · [문서 보완 영수증](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/NORMAL-HURTE-PLAY-TIME-REGISTRATION12-DOCS-COVERAGE-REPAIR-20261017/receipt.json>) |
+| fixture | 명시 입력·객체에서 관측한 계약 | owner34case477(설정163·행동314) 인수. V12의 첫 전체FAIL과 별도 보완은 아래 작업표에서 분리. [owner 첫 격리 결과](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/NORMAL-HURTE-PLAY-TIME-TYPED-OWNER-IMPLEMENTATION-20261017/results/play-time-owner-first.result.json>) |
+| 실게임 | 지정 실행판의 자연 호출·입력·전투·화면 | 실제 clock·자연 Main/State/World 호출 경로와 첫 전투 인수 미확인 |
+| 플랫폼 | 지정 PC·Mac 실행판의 재현·성능·패키지 | 사용자 열린 앱·compiled export·PC 전달 및 실행 인수 미확인 |
+
+**callback 12/25·미13은 일반 적 피해 필수 provider 집합의 연결 수다. 전체 이식률이 아니다.** 시간 reader 등록 자체는 자연 clock 증가나 실제 World의 피해 호출 증거가 아니다.
+
+## 단계별 실행·인수 표
+
+| 단계 | 목적 | 사용자에게 보이는 산출물 | 완료 조건 | 증거 종류 | 선행 조건 | 담당 | 현재 상태 / 다음 작업 ID |
+|---|---|---|---|---|---|---|---|
+| P0 목표·범위 | 원본 기준·첫 전투 범위·작업표 확정 | 무엇을 만들고 어디까지 됐는지 한 문서에서 확인 | 목표·첫 전투 인수 조건·소유 경로·작업 ID를 ROOT가 인수. 미확정 범위·HOLD를 표시 | 문서 인수·원본 기준 링크 | 최신 사용자 지시·기존 SSOT | ROOT 결정 / ENGINE 문서 | P0-001 기준·P0-002 조건부 카드 인수 완료. 전체 범위 확정은 미완 / P1-002 |
+| P1 첫 전투 실제 연결 | 필수 원본 계약을 실제 caller와 연결 | 자연 상태에서 적에게 공격·피해가 이어지는 첫 전투 경로 | Main→Services/State→실제 World/일반 적 피해 caller의 경로·소유·clock 근거를 확정하고 필요한 계약과 자연 호출을 확인. 필수25 gate의 결손을 dummy나 우회로 채우지 않음 | 소스·정적·실패 경계 fixture·허용 대상의 자연 호출 관측을 구분 | P0의 해당 범위 인수·정확 caller/clock 근거·실행 허용 대상 | ENGINE 단일 제품 writer / 기존 ENEMY 오더 담당 경유 | 진행 중. 등록12는 일부 입력 / P1-002 |
+| P2 첫 전투 사용자 인수 | 원본과 화면·입력·타격·흐름 비교 | 시작→이동·공격→전투→종료까지 직접 플레이 가능한 한 경로 | 같은 조건에서 원본과 비교해 입력 반응·발 접점·잘림·타격 접점·가독성·종료 흐름 인수 | 실게임 화면·입력·자연 전투·사용자 인수 | 비교할 원본/이식판·카메라·입력·전투 범위 확정, 해당 P1 경로 준비 | ROOT 인수 / ENGINE 연결 / 기존 전문팀 | 최신 실행판·대상 미확정 / P2-001 |
+| P3 게임 내용 이식 | 적·보스·맵·스킬·장비의 합의 범위를 순차 반영 | 실제 전투에 쓰이는 콘텐츠 묶음 | 묶음별 원본 기능·수치·자산·상호작용과 실제 소비자 연결을 인수. 맵 작업은 기존 제작 가이드·단계 SSOT 적용 | 원본 대비 계약·자산/소스·단위 검수·해당 전투 인수 | 해당 콘텐츠 계약과 소비 경로·자산·카메라 기준 확정 | 기존 전문팀→기존 오더 담당→ROOT / ENGINE 제품 반영 | 개별 이력은 존재, 합본 전체 인수 미확인 / P3-001 |
+| P4 게임 흐름·진행 | HUD·설정·저장·메타진행을 연결 | 설정·장비·저장·복원·다음 전투로 이어지는 흐름 | 합의한 경로에서 원본 UI/진행 결과 일치. 보호된 세이브·Q/E·수치는 확정 범위를 지킴 | UI/데이터 계약·허용 fixture·실게임 저장/복원·진행 인수 | 해당 데이터·UI 결정과 허용 범위 확정 | 기존 담당 경유 / ENGINE 반영 / ROOT 인수 | 개별 구현 이력과 최신 합본을 구분 / P4-001 |
+| P5 PC·Mac 실행 | 플랫폼별 실행·성능·패키징 검증 | 지정 PC·Mac에서 같은 버전으로 실행하는 패키지 | 대상 OS·앱 경로·버전·입력/표시·성능 기준을 확정하고 원본 docs의 Tier/설정 조건으로 재현. 전달·패키징 권한 별도 확인 | 실제 플랫폼 실행·부하 자료·패키지/버전 인수 | 해당 빌드 범위와 검수 대상·허용 전달 경로 확정 | ENGINE·플랫폼 기존 담당 / ROOT | 소스 정렬과 실행판 인수는 별도 / P5-001 |
+| P6 누락·회귀·최종 인수 | 합의한 전체 범위의 빠진 동작과 회귀 확인 | 합의한 범위를 끝까지 플레이하고 받아들이는 최종판 | 확정 범위 표의 미완·결함을 처리하고 플랫폼별 회귀·사용자 최종 인수. release는 별도 승인 | 범위별 추적·필요 회귀·실게임·플랫폼·사용자 인수 | 해당 범위 P1~P5 인수 및 전체 기능 범위 확정 | ROOT 최종 인수 / ENGINE·기존 담당 | 전체 분모 미확정·최종 인수 미완 / P6-001 |
+
+단계는 무조건 한 줄로 대기시키는 일정이 아니다. 자산·콘텐츠·UI 등 독립 작업은 **자기 선행 조건과 소유 범위가 확정된 경우만** 기존 담당을 통해 병행한다. 실제 제품 연결·공통 계약이 필요한 일은 해당 인수를 기다린다. 이 표 자체로 새 팀·세션·작업 권한을 만들지 않는다.
+
+## 실행 작업표
+
+| ID | 상위 단계 | 구체 목표 | 소유 경로 | 완료 조건 | 실제 증거 링크 | 상태 | 장애 / 다음 행동 |
+|---|---|---|---|---|---|---|---|
+| P0-001 | P0 | 총 목표·단계·작업 ID·인수 기준을 기존 두 문서에 고정 | docs/engine/FDG_GAME_DEVELOPMENT_PLAN.md, FDG_GODOT_PORT_STATUS.md | 두 문서의 계획·현재 단계·다음 ID가 일치하고 ROOT 인수 | [이번 문서 영수증](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/HUMAN-GODOT-MASTER-GOAL-AND-STAGED-EXECUTION-20261017/receipt.json>) | 계획 기준 인수 완료 | P0-002 카드·P1-002 범위 인수 후 다음 실제 구현 배정 |
+| P0-002 | P0 / P1 준비 | 첫 전투 실제 소비경로 연결 카드의 최소 수정 경로·최대3 필수 gap·구현/확인/인수 순서 확정 | 기존 오더→같은 Claude의 원v1/v2 카드 보존. shared docs는 ENGINE만 작성 | ROOT 교정 기준과 함께 계획 인수. 제품 구현·실게임 인수와 구분 | ROOT 2026-10-17 14:57:28.989800Z 카드v2 실제 작성/end 회수·인수 | 카드 실회수·ROOT 교정 조건부 계획 인수 완료 | 원v1 fallback/rand0·순수 decide·OFF unused hook은 구현 불인수. v2의 cursor 이후 apply/resume·provider1로 목표 축소도 불채택. v3/원안 덮기 없음. 실제 caller·자연clock/currentState·실효과 owner 확인 후 P1-002 구현 |
+| P1-001 | P1 | 인수된 시간 owner·등록12·관련 문서의 main/I/R 소스 정렬 | 인수된 code3/docs40의 정확43경로. [통합 정본](FDG_NATIVE_NORMAL_ENEMY_PLAY_TIME_MAIN_SYNC_20261017.md) | main/I/R HEAD·tree·branch·upstream과 정확 파일 OID/size 일치. 실게임 완료로 확대하지 않음 | [P1-001 소스 통합 영수증](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/NORMAL-HURTE-PLAY-TIME-MAIN-SOURCE-SYNC-20261017/receipt.json>) | 완료 — 소스 정렬 범위만 ROOT 인수 | 구현·실행판 갱신과 구분. 실제 clock·caller는 P1-002 |
+| P1-REF01 | P1 | play_time owner의 부분지원·실패·원 ref 보존 | main.gd, native_source_new_run_state.gd, native_source_player_initialization_services.gd | 인수한 API·소유·부분지원 범위만 유지 | [owner 첫 격리 결과](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/NORMAL-HURTE-PLAY-TIME-TYPED-OWNER-IMPLEMENTATION-20261017/results/play-time-owner-first.result.json>) · [P1-001 소스 통합 영수증](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/NORMAL-HURTE-PLAY-TIME-MAIN-SOURCE-SYNC-20261017/receipt.json>) | 소스·첫 격리34case477 인수 | 원정적17 중15통과2실패와 별도2true는 각각 유지. 자연 clock·원JS 동등성 미확인 |
+| P1-REF02 | P1 | play_time을 동일 Services self·arity0로 등록 | godot/scripts/native_source_player_initialization_services.gd | 기존11 순서 뒤 el_mul→play_time 한 entry, actual12·미13. entry 생성 query0만 확인 | [등록12 영수증](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/NORMAL-HURTE-PLAY-TIME-TWELFTH-PROVIDER-REGISTRATION-20261017/receipt.json>) | 등록·해당 정적10 인수 | 기존 getter/guard 전체 순수성이나 실제 자연 호출 완료 아님 |
+| P1-REF03 | P1 | 기존 ENEMY V12 후보와 서로 다른 QA 범위를 추적 | 기존 ENEMY 담당 후보 namespace. 제품 경로 미채택; 정확 반영 경로는 기존 오더에서 확정 | 첫FAIL 보존·별도 보완 한정성 명시 후 실제 소비자 채택 여부를 ROOT 결정 | [P1-001 소스 통합 영수증](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/NORMAL-HURTE-PLAY-TIME-MAIN-SOURCE-SYNC-20261017/receipt.json>)의 후보 인수 요약 | source3·첫parse2 인수 / 첫11case43행동true지만 setup signed-zero1false·exit1 전체FAIL / 별도4case19행동+setup4 true | 별도 성공은 첫actual+0·둘째3경계에 한정. 합산PASS·fail-fast 실제 고장주입·전체게임 증거 아님. 제품 copy 없음 |
+| P1-002 | P1 | 첫 전투 실제 World→normal hurtE 소비 경로를 현재 clock owner에 연결하고 자연 호출까지 인수 | Main/Services/State 및 실제 World→normal hurtE caller. 미확정 추가 경로는 아래 한 질문의 답으로 고정한 뒤 구현 | 정확 caller/clock 소유·presence·자연수명을 근거로 연결 구현→새 영향의 raw ref/NR·실패 경계 확인→허용 대상의 자연 호출 인수. API 개수나 조사 보고만으로 완료하지 않음 | 아직 새 산출물 없음 | 계획·코드 착수 전 | 가장 가까운 차단은 실제 World 피해 caller가 소비할 현재 clock owner/원본 계약 연결 근거 미확정. 계획·카드는 ROOT 교정 기준으로 인수. 핵심3 실제 접점과 정확 scope 확인 후 같은 P1-002 안에서 최소 연결 구현. 실행 대상·HOLD는 별도 유지 |
+| P2-001 | P2 | 원본과 비교할 첫 전투 실행 대상을 확정하고 직접 인수 | 확정할 실행판/별도 검수 대상. 현재 URL·앱 경로 미확정 | 시작→전투→종료와 화면·입력·타격을 같은 조건에서 비교·인수 | 아직 새 인수 근거 없음 | 대상·허용 범위 대기 | 기존 미응답6·보호된 플레이 창·개별 HOLD 유지. 같은 질문 중복 전송 없음 |
+| P3-001 | P3 | 첫 콘텐츠 묶음의 원본 범위·소비자·자산·품질 조건 확정 | 기존 해당 전문팀 오더 경로. 정확 파일/자산은 묶음 확정 시 기입 | 실제 게임에 쓰는 범위와 원본 수치·해당 자산의 확정 장수·clip 재생FPS 등 품질 규격(화면FPS와 구분)을 명시하고 인수 | 기존 개별 이력만 보유, 이번 새 산출물 없음 | 미배정 | 기존 담당 경유. 전체 콘텐츠 조사·새 producer 자동 추가 없음 |
+| P4-001 | P4 | 다음 게임 흐름 한 경로의 UI·데이터·저장 허용 범위 확정 | 기존 HUD/설정/저장/메타진행 담당 경로; 작업 전 exactscope | 데이터·UI 결정과 보호 범위를 확인하고 해당 흐름의 완료 조건 고정 | 이번 새 인수 근거 없음 | 미배정·개별 HOLD 유지 | Q/E·2_3·세이브·외부 WIP 보호 유지 |
+| P5-001 | P5 | PC·Mac 검수 버전과 실행/성능/패키지 인수 조건 확정 | 지정할 플랫폼 실행판·패키지 경로 | 실제 대상·버전·권한·측정 기준과 전달 결과를 각각 인수 | [P1-001 소스 통합 영수증](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/NORMAL-HURTE-PLAY-TIME-MAIN-SOURCE-SYNC-20261017/receipt.json>)는 소스 정렬만 증명 | 미배정·대상 미확정 | build/reload/import/PC 전달을 문서 지시로 실행하지 않음 |
+| P6-001 | P6 | 합의한 범위의 누락·회귀·최종 인수표 확정 | P0에서 확정할 범위와 각 작업 증거 | 확정 범위의 미완/실패·회귀·플랫폼·사용자 인수 결과 추적 | 전체 범위 인수 근거 없음 | 미배정 | 전체 분모·최종 인수 기준 확정 전 완료율/출시 선언 없음 |
+
+REF 행은 이미 인수한 입력의 추적 기록이며 새 제작 지시가 아니다. 후보 원본 증거의 정확 링크가 아직 작업표에 없으면 요약 링크를 원 QA 증거로 승격하지 않는다. 기존 ENEMY 오더 담당→ROOT를 통해 원 산출물과 제품 반영 범위를 확정한다.
+
+## P1-002의 가장 가까운 차단과 실행 순서
+
+접점 확인은 **실제 caller, 자연 clock/currentState의 권위, 실제 효과 적용 owner**라는 핵심3질문에 한정한다. 구체 함수·파일이 아직 확인되지 않은 연결을 완료로 표시하지 않으며, 답을 얻으면 같은 질문을 다시 조사하지 않고 최소 연결 구현으로 이어간다. 전체 producer/catalog 조사로 넓히지 않는다.
+
+답을 얻으면 작업표의 exactscope·선행 조건·완료 조건을 고정하고 **연결 구현 → 바뀐 범위의 실패/NR·raw ref 확인 → 허용 실행 대상의 자연 호출 인수**로 이어간다. 같은 접점을 반복 조사하는 일을 다음 산출물로 삼지 않는다. clock이 미연결이면 실제 원본 생산자 계약의 결손을 작업 범위에 명시하며 임의 counter·값 주입·default0로 대체하지 않는다. V12 제품 채택·World 연결은 ROOT가 인수할 이 작업의 구체 범위에서만 결정한다.
+
+계획 기준과 P0-002 카드는 ROOT 교정 조건으로 인수됐다. P1-002는 실제 첫 전투 소비경로 연결 목표를 유지한다. 미13 중 실제 필수 선행은 P1-002의 하위 작업으로 드러내고, provider1 등록이나 끝없는 P1-n 분할로 사용자 효과 도달을 미루지 않는다. committed cursor는 계산·영수증이며 실적용 증거가 아니다. cursor 이후만 apply하는 resume 규칙을 채택하지 않는다. 실제 적용 owner·호출 순서·이미 발생한 효과의 권위를 확인한 뒤 각 효과를 정확1회 적용하며, 근거가 없으면 연결 완료로 표시하지 않는다. 소비 prefix 뒤 재실행·refund·rollback 금지를 유지한다. ROOT의 다음 실제 접점·구현 배정 전 새 코드를 착수하지 않는다. 코드 연결의 선행 근거와 실제 GUI·빌드·실행판 권한은 구분하며, 기존 HOLD가 풀리지 않은 실게임 인수를 완료로 쓰지 않는다.
+
+## 배정·종료 운영 규칙
+
+1. 새 작업 전 같은 표에 **상위 단계·사용자 효과·최소 산출물·정확 소유 경로·완료 조건·필요 증거**를 적고 ROOT의 기존 오더 범위와 맞춘다. 계획 밖 일이 필요하면 이유와 영향을 먼저 이 문서에 기록한다.
+2. 끝나면 해당 행에 실제 결과·실패·증거 링크·남은 일·다음 작업 ID를 갱신한다. source/정적/fixture/실게임/플랫폼 인수를 별도 표시한다.
+3. 실패한 범위만 수리하고 기존 통과 검사·성공 산출물은 재실행·재회수하지 않는다. 테스트 성공만으로 단계 전체나 게임 완료를 선언하지 않는다.
+4. 전문팀 산출물은 기존 오더 담당 경유로 ROOT가 인수한다. ENGINE이 제품·docs·Git의 단일 writer를 유지하며 새 팀·세션·모델·credits·권한은 자동 확대하지 않는다.
+5. 새 단계 표·문서 작성은 제품 코드·새 QA·배포·release 승인이 아니다. 2_3 수정 금지, capture/마케팅 제외, Q/E·원본 수치·세이브·외부 WIP 및 기존 HOLD/미응답6·GUI/build/reload/import/PC 전달 제한을 유지한다.
+6. 사용량은 작업 시작·종료 단위로만 기록하며 최신 누적값을 재사용한다. 공유 일간 소비는 미상일 수 있고 새 20%를 매번 배정하지 않는다.
+
+[현재 이식 현황과 작업 ID](FDG_GODOT_PORT_STATUS.md) · [기존 연결 계약](FDG_INTEGRATION_INTERFACE.md) · [PC·Mac 소스 정렬 이력](FDG_PC_MAC_GIT_SYNC_20261016.md)
+
+
+## P0-001 공통 문서 체크포인트
+
+인수된 계획 기준과 현재 작업행 **두 문서만** 공통 Git 문서로 보존한다. P1-001의 게임 코드/소스 기준 fb118과 이번 문서-only commit을 구분한다. 이번 local/API/main/R의 실제 SHA·tree·부모·문서 공유 결과는 [문서 체크포인트 영수증](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/P0-001-STAGED-PORT-PLAN-SHARED-CHECKPOINT-20261017/receipt.json>)에서 확인한다. 이 문서에 자기 commit SHA를 선행 기입하지 않는다. 코드·실행판·새 QA·V12 제품 copy·World hook 승인은 추가되지 않는다. ROOT 첫인수 전 문서 공유 완료로 승격하지 않는다.
+
+---
+
+## 이전 기획·구현 기록 — 아래는 작성 당시의 이력
+
+아래 기록은 원문 그대로 보존한다. 과거의 ‘현재’·단계 숫자·WIP·실패·검수 범위는 당시 이력이며 위 계획·작업표의 최신 상태를 덮어쓰지 않는다.
+
+> 2026-10-17 ENGINE 현행: callback **12/25·미13**. play_time은 el_mul 바로 다음에 동일 Services self의 arity0 Callable로 등록했다. owner 첫 격리 공개 API 검수는 인수됐으며 자연 clock·실게임 인수는 미확인이다. D9는 직전 공통 소스 인수이며, 이번 main/I/R 소스 정렬은 아래 통합 정본과 단위 receipt의 실제 HEAD·tree를 기준으로 확인한다. V12 후보는 소스 인수·첫 FAIL·별도 보완 한정성공으로 구분하며 제품 copy·World hook은 수행하지 않았다. 아래 이전 단계 숫자·원검수 결과는 당시 이력으로 보존한다. 실제 local/remote commit 상태는 단위 receipt를 따른다.
+
+> 통합 현황·완료 기준·남은 순서: [Godot 이식 현황](FDG_GODOT_PORT_STATUS.md). 이 문서는 기획·제작 순서의 근거이며, 소스 구현·격리 검수·실플레이 인수의 현재 구분은 현황 문서를 따른다.
 
 > 2026-10-17 ENGINE WIP 현행: 실제 callback **9/25·미16**. 신규 격리 행동41/41과 신규 map 경계 static9/9만 인수 범위다. 원 첫 parse 실패는 보존한다. 이 WIP를 main/R/served·전체 게임 최신화 완료로 해석하지 않는다.
 
@@ -1396,3 +1487,109 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 | 변경 경계 | Services map literal1개만추가. 기존9/helper/owner/sharedsampler/수식/primitive/Main/World본문은그대로다. |
 | 새 검수 | 등록delta static7/7, runtime0. 키10/기존9순서·sameSelf/method·0arg·typedWorld route·다른Services bytes보존·생성시추가reader/RNG/domainquery0 확인. 기존readinessguard 전체query0은미입증이다. |
 | 보존/한계 | 기존30/41/95·진단/통과parse재연0. main/R·실게임·producer/V9제품copy·scalarDict직결·ENEMY TASK·Worldhook·dummy25우회0. 이전실패/범위초과이력도그대로다. |
+
+
+## 2026-10-17 normal hurtE el_mul typed owner (owner WIP 당시 기록; 현재 registry11은 후속 등록 표 참조)
+
+| id / 항목 | 코드와 일치하는 현재 계약 |
+|---|---|
+| 소유 / 필드2 | Main._native_source_elements:Variant의 실제 mutable Dictionary1개, 초기값 P0/F1/I2/D3/L4/H5/E6. _native_source_elements_owner_script:WeakRef는 생성시 actual get_script() 증거1개. 초기화 marker·late bind·query-time 생성·loss 재capture/재생성0. |
+| 수명 | 같은 Main에서 actor/State/Services/Formula 교체는 같은 EL identity. 새 Main은 별도 object라는 exact field holder 검증 대상. 원JS 선언/TDZ와 Main 생성·weak 구성 시점은 다르며 원current EL property 불변/자연Main 수명 동등 증거가 아니다. |
+| API / 인자2 | Formula.el_mul(a:Variant,d:Variant)->Dictionary, Services.read_normal_enemy_element_multiplier(a:Variant,d:Variant)->Dictionary. Main.read_native_source_element_multiplier(a,d,formula,services,state,providers)->Dictionary가 실제 소유자다. |
+| 원 순서 / 2.0 | F→I, I→F, D→L, L→D, D→H, H→D, E→L, L→E 순서. 각 if의 첫 actual own-member를 읽고 a와 strict 비교가 참일 때만 둘째를 읽는다. 반복 key도 재조회하며 eager7 snapshot/고정쌍 lookup0. |
+| 원 꼬리 / 0.5 / 1.0 | 모든 pair 실패 뒤 a===d일 때만 actual EL.P를 읽는다. P와 strict 다르면0.5, 그 밖 정상 완료1.0. owner loss·오류·지원밖에1/0 fallback하지 않는다. |
+| 부분 strict 지원 | bool/String/null(JS null만), safe integer int [-9007199254740991,9007199254740991], 모든 float(NaN/±Infinity/±0 포함). int/float는 Number 관계, bool≠number, NaN!==NaN. safe-int는 JS 표현 지원경계이며 게임 수치 cap이 아니다. cast/clamp/전역 finite guard0. |
+| 지원밖 | huge int/StringName/undefined 미확정 carrier/Array/Dictionary/Object reference 등은 raw type·a/d reference를 보존한 NOT_READY, top-level value 없음. structural equality/자동 int0·String 변환0. missing/inherited/getter/prototype EL 지원은 미완. |
+| guard / 실제 객체 | pre/post weak current identities·actual Script resources·같은 live Tree/World 및 State/Resources parent/current role·claim metadata. Main actual Script는 witness WeakRef와 is_same. 동기 no-await/no-event-pump이며 기존 bind3/legacy preTree 경로는 변경하지 않는다. |
+| 진단 / 실패 prefix | 실제 방문 key/presence/raw value·type만 EL_reads에 쌓는다. 전체 EL map getter0. postloss는 원 owner packet을 수정/삭제/clone하지 않고 새 NOT_READY.read_result에 동일 reference로 보존한다. retry/rollback/refund0. has/key 접근 전체 횟수는 별도 계측되지 않으면 static 범위다. |
+| owner WIP 당시 등록 / 소비 | 당시 실제 callback map10 / 미등록15. 현재11/미14는 후속 등록 표를 따른다. el_mul 등록11·V11·World hook·다른 consumer·scalar default0 소비0. 기존 방어구 scalar adapter와 별개의 typed API이며 그 adapter/원 game.html 수식은 변경0. |
+| 검수 | 원 첫 영향 fixture와 source boundary static은 아래의 별도 기록으로 보존한다. 실행별 증거를 아래 표로 구분한다. 원 첫 실행 wholefalse는 보존하며, 승인된 입력 구성 수정 후 실패 행과 당시 미실행 경계만 새25case/74check+setup4에서 통과했다. 단일 전체 재실행 PASS가 아니며 제품 코드 수정/원기대 완화/기통과45 재연은 없다. 현재 완료는 명시 holder의 typed owner 부분 검증까지다. full Main/원JS realm/full25/fullhurtE/최신 실행 게임/PC 완료는 미확인. |
+
+
+### 실행별 검증 기록과 현재 WIP 범위
+
+| 실행 / 실제 범위 | 결과 / 해석 한계 |
+|---|---|
+| 원 source boundary static | 14/14. 코드 추가·기존 bind3/guard/getter/원9+rand/등록 순서 보존을 확인한 정적 경계다. 이번 마감에서 재실행하지 않는다. 전제품 compile 증거가 아니다. |
+| 원 첫 owner 실행 | 23case/46check 중45true/1false, exit1, wholefalse 보존. 앞22case45true는 당시 증거이며 재연0. safe_int_mixed_float 원literal9007199254740991.0/기대0.5는 원파일 그대로다. 당시 진단 문자열 a=9007199254740991,d=9007199254740990.0만으로 원당시 binary값을 소급하지 않는다. |
+| 별도 숫자 primitive 진단 | 8측정, Variant8/typed7 비교, exit0. 이 Godot4.7.2 새runner의 Array/typed float literal은433ffffffffffffe, int→float/정확bit control은433fffffffffffff. 같은 represented control값은 혼합비교true. 이 범위 literal형성 discrepancy이며 내부parser 원인·전Godot 정확성·원첫실행 bits의 소급 증거가 아니다. 제품 cast/coercion 변경0. |
+| 새 입력 구성 수정 + 첫 미실행 경계 | 새25case/74uniquecheck 전true, 별도 setup4true, exit0. d=float(9007199254740991)만 QA에서 구성하고 a/기대0.5/conditionalP/assertion loop는 그대로다. 입력 타입·정수문자열·정확IEEE64ff를 ownerquery 전에 확인했다. 원45통과 재연0, split실행들을 단일 whole-run PASS로 합산하지 않는다. |
+| 새 실행의 실제 한계 | same frozen 추출 newfield/method와 명시 metadata holder 대역. 두독립 holder의 EL별도객체/actualScript WeakRef field witness, 같은Main role교체 ELidentity, lazy/repeatedmember/rawargs/rawresult/postloss prefix를 해당대역 범위로 검증했다. 실제 Main/StateResources 자연configure·Script교체 자연수명·JSboot/current원EL·실게임 actor재개 증거는 아니다. 방문 진단외 Dictionary.has/key 전체횟수는 계측하지 않았다. |
+| 현재 source contract | Main actual mutable EL1 + ScriptWeakRef1의 fields2. Formula.el_mul(a,d)와 Services.read_normal_enemy_element_multiplier(a,d)는 typed Dictionary/인자2. pre/post metadata guard·actual Script identity·동기 동일EL object, 원8pair/lazyP/normal2·0.5·1·NR rawref 계약은 위 표 그대로다. 신규 EL writer/marker/latebind/재capture/재생성/전역eq변경0. |
+| owner WIP 당시 연결·미완 | 당시 actual callback10/미등록15·EL미등록 기록이다. 현재11/미14는 후속 등록 표를 따른다. 등록11/V11/Worldhook/15dummy/25presence 우회0. 기존9callback 각 부분지원 한계를 승격하지 않는다. full25/fullhurtE/자연runtime/최신 실행 게임/PC 완료는 미완이다. |
+| 기록 보존 | 원firstfailure·pre-generation separator guard실패/실UTC未·새helper 위치교정·CRLF정규화 위반/승인prefix복원·source_* initializer metadata 범위초과 이력을 보존한다. 과거에 무접근·append-only·wholeclean이었다고 소급하지 않는다. |
+| 문서 검색 범위 | 이전 uncapped928후보/100matchinglines41paths는 matching-line 단위(한줄내keyword dedup)이며 after-scan은append/newownerdoc 작성 전이다. regex전체횟수/성공decode파일수/UnicodeDecodeError 경로는未기록. 이번에는 허용18문서의 현재상태만 새경계1회로 확인하며 전수완결을 발명하지 않는다. |
+
+
+상세: docs/engine/FDG_NATIVE_NORMAL_ENEMY_EL_MUL_OWNER_20261017.md. 과거 단계의 완료/실패 기록은 해당 당시 범위로 보존한다.
+
+
+## 2026-10-17 현재 normal hurtE el_mul 11번째 provider 등록
+
+| id / 현재 계약 | 구현 상태와 범위 |
+|---|---|
+| registry / 현재 | Services.get_normal_enemy_damage_provider_callbacks의 기존 rand 다음에 "el_mul": Callable(self, "read_normal_enemy_element_multiplier") 한 entry를 추가했다. 실제 literal 등록11 / required25 중 미등록14. 과거10/미15·EL미등록 표는 해당 당시 단계 이력이며 현재값은 이 표다. |
+| 원10 순서 | eq_affix, u_eq, p_atk_mul, melee_ref, parry_lesson_active, player_view, stat_str, p_dot_pool, l_eq, rand를 그대로 두고 마지막 el_mul만 추가. 기존 entry·getter guard·reader/Formula/Main 몸체와 반환·기존9+rand 부분지원 한계는 변경0. |
+| self / 인자2 | 새 Callable은 동일 Services self와 read_normal_enemy_element_multiplier(a:Variant,d:Variant)->Dictionary를 연결한다. Formula.el_mul(a:Variant,d:Variant)->Dictionary, Main 실제소유자 연결의 a,d 인자2와 raw type/reference는 그대로다. |
+| 생성 / query 경계 | 새 literal Callable 생성은 reader/Formula/Main/domain/RNG를 호출하지 않는다. 기존 getmap membership/readiness guard 자체가 부수조회0이라는 주장은 하지 않는다. 새등록 확인은 정적경계1회/runtime0이며 Scriptload/QA/parse 재연0. |
+| 실제 owner / fields2 | Main actual mutable EL Dictionary1 + actual Script witness WeakRef1. 초기 EL P0/F1/I2/D3/L4/H5/E6. query의 current Script는 witness actual object와 is_same; query-time 생성/재capture/ownerloss재생성·marker/latebind/Formula ELcache·map copy/publisher0. |
+| 원 if / lazy 순서 | F→I,I→F,D→L,L→D,D→H,H→D,E→L,L→E 순서의 실제 EL member 조회. 첫 비교가 참일 때만 둘째를 읽고 반복 key는 재조회. 마지막 a===d일 때만 P; 정상완료2/0.5/1, eager7 snapshot/fixedpair lookup·실패1/0 fallback0. |
+| 부분 strict 지원 | bool/String/null(JSnull만), safe integer native int [-9007199254740991,9007199254740991] 및 float NaN/Infinity/±0, mixed Number 관계. bool≠number/NaN!==NaN, StringName 자동String0. safe-int는 JS표현 지원경계이고 게임수치 cap이 아니다. product cast/clamp/전역finite/globaleq수정0. |
+| 미지원 / raw failure | hugeint/StringName/미확정 undefined carrier/ArrayDictObject reference와 missing/inherited/getter/prototype EL 범위는 typed NOT_READY/raw type·args·실방문prefix·reference 보존/topvalue 없음. postloss fresh NR.read_result는 원ownerpacket을 수정·삭제·clone하지 않고 같은ref로 보존. retry/rollback/refund0. |
+| 수명·수행 한계 | 같은Main role교체의 동일EL/newholder 별도EL·Scriptwitness/후손Tree경계/rawref는 명시holder 범위 검증이다. 원JS 선언/TDZ·Main 생성/weak구성 시점·current원EL property권위·불변/실StateResources 자연수명과 동등이라고 주장하지 않는다. legacy preTree/기존guard/getter코드 불변. |
+| 소비·통합 미완 | registered11은 실제 typed consumer V11 연결이나 World fullhook 완료가 아니다. ENEMY V11 source/QA·Worldhook·미14 dummy·required25 gate 우회0. 원scalar float/default0로 Dictionary를 소비하도록 바꾸지 않았다. full25/fullhurtE·최신 실행게임/PC·전체 진행률/밸런스 완성은 미완이다. |
+| 원 source 정적경계 | 원14/14는 당시 source 보존 정적검사이며 재실행0. 이후 owner WIP docs8/8도 별도 당시 문서경계로 보존. 이번에는 새 literal11/원10순서/타몸체/MainFormula불변/arity2/self·생성query0만 새정적1회/runtime0. |
+| 원 first failure | 원23case/46check=45true1false/exit1/wholefalse·원decimal literal/기대0.5는 보존. 앞22case45true는 당시 증거, 재연0. 당시 formatted diagnostic을 실제floatbits로 소급하지 않는다. |
+| 별도 numeric 진단 | 새숫자8측정·Variant8/typed7비교/exit0에서 이 실행의 float literal433ffffffffffffe와 converted/bitcontrol433fffffffffffff를 구별했다. 같은 represented값 비교true이며 내부parser 원인/전Godot 정확성·원실패당시bits 소급증명0. |
+| 새 입력 수정·첫 미실행 경계 | 승인된 QA 입력 d=float(9007199254740991)만 별도구성, a/기대0.5/Ptrue/assertionloop 불변. 새25case74true/setup4true/exit0는 그 명시holder 범위이며 원45 재연0·서로다른 실행을 단일 wholePASS로 합산0. 제품코드수리나 지원정책변경이 아니다. |
+| 역사·보호 | 원firstfailure·CRLF정규화 위반/승인prefix복원·source_* initializer 범위초과·pre-generation separator guard/UTC未 이력은 보존. 과거 무접근/wholeclean 소급0. 보호2_3/marketing/capture·MAP/ART/rig·원game.html 변경0. |
+| 검색 metadata | 이번 새영향 scan은 후보929/UTF8성공751/해독제외178, matching-line649/경로114. matching snippets는 줄내dedup/cap없음이며 전체 regex발생수나 모든 binary/text 내용을 완결했다고 주장하지 않는다. 이전928/100/41 및 decode未 한계는 당시 기록으로 보존하며 소급보충하지 않는다. |
+
+
+## 2026-10-17 play_time owner 소스 경계 현행
+
+| 항목 | 상태 |
+|---|---|
+| 등록 | 실제 callback 12/25·미13, `play_time`은 el_mul 직후 동일 Services self의 arity0 Callable로 등록 |
+| owner | Main/Services/State 신규4메서드와 Main Script weak witness 메타데이터1필드의 검증 WIP. `read_normal_enemy_play_time()` arity0, 첫 격리검수 인수됨 |
+| 관측 | current native State `_g` literal `playTime` present 값 1회, pre/post 메타데이터 및 같은 G ref 확인. missing/unsupported/loss는 raw NOT_READY·top value 없음 |
+| 한계 | 원JS clock·실게임 증가·V11/V12/Worldhook·main/R/실행판 반영 미확인/미인수. 당시 이전 단계 배너·숫자·QA는 이력으로 보존 |
+| 상세 계약 | `docs/engine/FDG_NATIVE_NORMAL_ENEMY_PLAY_TIME_OWNER_20261017.md`의 지원범위·이름·reason·raw ref/prefix 및 12/25 등록 상태를 기준으로 함 |
+
+## 2026-10-17 검증 WIP 소유 체크포인트
+
+| 구분 | 인수 범위와 한계 |
+|---|---|
+| 소스·등록 | Main/Services/State 신규4 API와 Main Script 메타데이터1필드. 현재 callback12/25·미13, play_time은 el_mul 바로 다음 동일 Services self·arity0로 등록 |
+| 분리된 증거 | 원정적17중15통과2실패 wholefalse / 이후 독립2확인 true / 첫격리34case477확인(설정163·행동314) 인수. 서로 다른 실행을 단일 전체 PASS로 소급하지 않음 |
+| 값·ref 경계 | finite native int/float 부분지원, safe int ±9007199254740991은 local 표현 한계. raw-0·원type/ref/prefix와 postloss 원read_result를 보존하며 missing unknown/unsupported/loss는 top value 없는 NR. 0fallback·clone·retry·clock writer 없음 |
+| 검수 한계 | 명시 fixture와 predicate probe에서의 검수. 실제 Main/State clock 존재·진행·자연수명·원JS identity·실게임·PC 인수 증거는 아님. raw-0 owner와 미래 consumer numeric0→literal+0 투영은 별개 |
+| 후속 consumer | V12 후보 소스3+첫parse2 ROOT 인수. 첫11case43행동true지만 setup5중signed-zero1false·exit1 전체FAIL은 보존. 별도 보완4case19행동+setup4 true·exit0는 첫actual+0 및 둘째 NRnestedREADY/SOURCE_THROW/UNSUPPORTED→UNKNOWN_STATUS에만 한정. 과거 실패와 합산 PASS 금지. 네 준비식 평가 뒤 public 호출 전 검사이므로 fail-fast 실제 고장주입 증명은 아님. 실제 clock/자연MainState/JS/fullgame 미확인. 제품 V12 copy·World hook 없음; callback12 등록은 이번 별도 경계 |
+| 보존 단위 | 소유 브랜치 codex/native-play-time-owner-20261017. 문서의 자체 commit SHA를 선행 선언하지 않으며 실제 local/remote SHA·tree·parent·비강제 보존 결과는 아래 단위 receipt를 기준으로 확인 |
+
+[체크포인트 단위 receipt](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/NORMAL-HURTE-PLAY-TIME-OWNER-VALIDATED-WIP-20261017/receipt.json>) · [사용자용 이식 현황](FDG_GODOT_PORT_STATUS.md)
+
+
+## 2026-10-17 play_time 열두 번째 provider 등록 — 현재 경계
+
+| id / 항목 | 구현·인수 범위와 한계 |
+|---|---|
+| 등록 / 분모 | 실제 callback 12/25·미13. 전체 게임 이식률이 아닌 일반 적 피해 필수 provider 수 |
+| key / target / arity / 순서 | play_time / Callable(self, "read_normal_enemy_play_time") / 0 / 기존11 key 순서를 유지하고 el_mul 바로 뒤에 한 entry만 추가 |
+| query 경계 | 새 entry의 Callable 생성 자체는 값 query0. 기존 map getter 및 준비 guard 전체의 순수성은 인증하지 않음 |
+| owner / 부분지원 | 기존 finite native int/float 지원 범위·safe int ±9007199254740991·raw-0·raw refs/prefix·NOT_READY 및 postloss 계약 유지. clock counter/writer/setter/default0 추가 없음 |
+| 검수 / 분리 | 기존 owner34case477(설정163·행동314) 인수는 유지하며 재실행하지 않음. 원17 중15통과2실패·별도2true, V12 원FAIL 및 별도4case19행동+setup4 한정성공도 각각 보존. 이번 새 검수는 등록 영향 정적 경계만 |
+| 소스 / 실행 | D9는 직전 공통 소스 인수이고 owner 브랜치 codex/native-play-time-owner-20261017의 이력은 보존한다. 이번 main/I/R 현재 소스 정렬은 통합 정본·receipt의 실제 HEAD·tree를 따른다. 실제 Main/State clock·자연 실행·JS 동등성·PC·최신 실행 게임은 미인수. V12 제품 copy·World hook·dummy13·25 gate 우회 없음 |
+| 보존 증거 | [등록 단위 receipt](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/NORMAL-HURTE-PLAY-TIME-TWELFTH-PROVIDER-REGISTRATION-20261017/receipt.json>) |
+
+
+## 2026-10-17 play_time main/I/R 소스 통합 체크포인트 — 현행
+
+| 항목 | 현재 범위와 인수 한계 |
+|---|---|
+| 직전 인수 / 이번 소스 | 직전 공통 인수 D9(d9b886c). owner 실제 NUL diff42(code3/docs39)에 통합 정본1을 추가한 최종 범위는 실제 union NUL·tree 목록과 아래 receipt를 기준으로 확인. main/I/R의 실제 현재 HEAD·tree·branch·upstream 및 정렬 결과도 receipt 기준 |
+| 코드·provider | 인수된 Main/Services/State 코드3 그대로, callback 12/25·미13. play_time은 el_mul 직후 동일 Services self·arity0, 새entry 생성의 값 query0만 확인. 기존 getter/준비 guard 전체 순수성은 인증하지 않음 |
+| 값·실패·참조 | finite native int/float 부분지원·safe int ±9007199254740991·raw-0·원 type/ref/prefix·postloss read_result·NOT_READY 계약 그대로. dummy13/25 gate 우회·clock writer/default0 추가 없음 |
+| 검수 분리 | 기존 owner34case477(설정163·행동314) 인수, 원17 중15통과2실패와 별도2true는 보존. V12 후보 원11case43행동true/setup signedzero1false·exit1 전체FAIL과 별도4case19행동+setup4 true의 한정 보완은 각각 유지. 원성공 검수·parse 재실행 없음 |
+| 실제 실행·보류 | 이번은 소스 정렬이다. 사용자 열린 앱·compiled export·PC 실행·실제 Main/State clock·자연 전투·JS·최신 게임 인수는 미확인. V12 제품 copy·World hook·build/reload/import/PC 전달 없음 |
+| 정본 / 증거 | [FDG_NATIVE_NORMAL_ENEMY_PLAY_TIME_MAIN_SYNC_20261017.md](FDG_NATIVE_NORMAL_ENEMY_PLAY_TIME_MAIN_SYNC_20261017.md) · [소스 통합 final receipt](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/NORMAL-HURTE-PLAY-TIME-MAIN-SOURCE-SYNC-20261017/receipt.json>) |
