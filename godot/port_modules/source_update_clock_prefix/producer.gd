@@ -24,9 +24,12 @@ const P_BODY_GAP_TO_HITSTOP := "body_gap_to_hitstop"
 const P_HITSTOP := "hitstop"
 const P_GAP_HITSTOP_TO_SP := "gap_hitstop_to_sp"
 const P_SP := "sp"
+const P_GAP_SP_TO_STAGE_TIME := "gap_sp_to_stage_time"
+const P_STAGE_PLAY_TIME := "stage_play_time"
 
 const ORDER := [P_SYSTEM_LESSON, P_G_ON, P_PARRY_LESSON, P_EDITOR, P_PANEL_INPUTS,
-	P_PAUSED, P_BODY_GAP_TO_HITSTOP, P_HITSTOP, P_GAP_HITSTOP_TO_SP, P_SP]
+	P_PAUSED, P_BODY_GAP_TO_HITSTOP, P_HITSTOP, P_GAP_HITSTOP_TO_SP, P_SP,
+	P_GAP_SP_TO_STAGE_TIME, P_STAGE_PLAY_TIME]
 
 # _dtSp holder. Not declared -> NOT_READY (no fallback 1).
 var _dt_sp_declared := false
@@ -266,6 +269,36 @@ func phase_sp(g: Variant) -> Dictionary:
 	r["owner_writes"] = writes
 	r["sp"] = sp
 	r["dt_sp"] = _dt_sp
+	return r
+
+
+# source between 32684 and 32741 (_uqFrame(sp)/killBuff/legendary/combo/DPS timers) — not in packet
+func phase_gap_sp_to_stage_time(receipt: Variant) -> Dictionary:
+	return _gap(P_GAP_SP_TO_STAGE_TIME, receipt, "body_between_sp_and_stage_time_not_in_packet")
+
+
+# 32742 G.stageTime=(G.stageTime||0)+sp; G.playTime=(G.playTime||0)+sp;
+# (G.x||0): a JS-falsy current (absent/0/NaN/null/false/"") -> 0 is this source statement's
+# own rule, not a provider default. A truthy non-number current has no ToNumber/concat
+# owner here -> NOT_READY (the earlier statement's write stays as applied prefix).
+func phase_stage_play_time(g: Variant) -> Dictionary:
+	var c := _enter(P_STAGE_PLAY_TIME, g, true)
+	if c.status != "OK":
+		return c
+	if not _sp_published:
+		return _halt_nr(P_STAGE_PLAY_TIME, "sp_not_published")
+	var writes: Array = []
+	for key in ["stageTime", "playTime"]:
+		var current: Variant = _g_ref.get(key)
+		var base := 0.0
+		if _js_truthy(current):
+			if not _is_num(current):
+				return _halt_nr(P_STAGE_PLAY_TIME, "stage_play_time_current_not_number_" + key, writes)
+			base = float(current)
+		writes.append({"target": "G." + key, "value": base + _sp})
+	var r := _cont(P_STAGE_PLAY_TIME)
+	r["owner_writes"] = writes
+	r["sp"] = _sp
 	return r
 
 
