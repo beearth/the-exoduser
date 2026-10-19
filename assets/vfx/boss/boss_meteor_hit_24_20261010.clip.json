@@ -1,0 +1,17 @@
+{
+  "format": "exoduser-atlas-clip",
+  "version": 1,
+  "name": "boss_meteor_hit",
+  "sourcePath": "assets/vfx/boss/boss_meteor_hit_24_20261010.png",
+  "columns": 6,
+  "rows": 4,
+  "frameCount": 24,
+  "fps": 30,
+  "loop": false,
+  "frameWidth": 768,
+  "frameHeight": 768,
+  "pivot": {
+    "x": 0.5,
+    "y": 0.5
+  }
+}

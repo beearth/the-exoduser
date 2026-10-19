@@ -1,5 +1,7 @@
 # HELL: EXODUSER 주제가 — Suno 생성 프롬프트
 
+> **2026-10-09 아트 티저 재사용:** 기존 채택곡 prologue_theme.mp3의60–90초,30초를 음악 단독1회 사용. 시작0.3초·28.5초부터1.5초fade, loudnorm 목표I−14/TP−1.5/LRA11. 최종AAC 실측−13.84LUFS/TP−2.91dBFS/LRA2.6LU. 게임SFX·VO 없음, 주관적청취 미완료. [별도30초 원화 티저 제작·믹스·납품](../13출시·마케팅/TRAILER_ART_REFRESH_20261009.md).
+
 작성: 2026-07-27 / 용도: 메인 주제가 (프롤로그 컷신 서사 기반, 웅장한 느낌)
 근거 서사: `docs/cinematic/PROLOGUE_STORYBOARD_v1.md` — A블록(지옥이란 무엇인가) + B블록(세계관 에필로그, 시대 혼재 로드맵 훅)
 
@@ -94,3 +96,7 @@ HELL: EXODUSER
 신규 대검전사 생성 직후 v22는 MP4에 합성한 영어 음성+심연의 탈주 BGM을 재생하고 로비 BGM을 멈춘다. 완료·스킵·미디어 오류 후 신규 캐릭터는 네메시스 INTRO로 이어진다. BGM.fadeOut(300),400ms 후 cutscene_nemesis를 재생하며 구 전쟁 _proVoice는 정지한다. INTRO 종료 후 기상 연출과 스테이지 음악을 복구한다. 완료 저장은 바로 플레이하며 구 전쟁 PRO는 명시적 cutscene=1에서만 재생한다. [현재 계약](../cinematic/WARINTRO_CREATION_RUNTIME_20260910.md).
 
 전사 영상의 음악은 prologue_theme.mp3 처음96.4초를 사용한다. 대사 중 음악을 절반으로 낮추고 부분 스킵에서도 함께 이동한다. [v22 믹스](../cinematic/WARINTRO_BGM_V22_20260910.md).
+
+### 2026-10-08 트레일러 30초 1차 편집본
+
+기존 채택곡 `prologue_theme.mp3`의 **60–90초**를 재사용했다. 이 선택은 새 트레일러에만 적용하며 인게임·기존 전사 영상의 재생 계약을 바꾸지 않는다. 패링 진입11.8–13.3초에서 음악 gain0.055, 다른 구간0.12–0.24; 음악 시작0.25초/끝2.5초fade다. 원래 혼합 게임 오디오1회와 합성 후 loudnorm 목표I−14/TP−1.2/LRA11을 적용했다. 최종 AAC 실측은 **−14.2LUFS / true peak−1.1dBFS / LRA10.4LU**. 주관적 전편 청취 완료를 주장하지 않는다. [실제 편집·믹스·검수 기록](../13출시·마케팅/HERO_TRAILER_PRODUCTION_20261008.md).

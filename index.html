@@ -498,6 +498,79 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 <link rel="stylesheet" href="ui-refinement.css?v=20261002-title-sizes">
 <link rel="stylesheet" href="lobby-ancestor-art.css?v=20260929-slotart3">
 <script src="lobby-ancestor-sprite.js?v=20260929-slotart2" defer></script>
+
+<style id="lobby-layout-20261016">
+/* Character selection: bounded cards, a separate create row and a compact entry. */
+#lobby>.lobby-right{--lobby-card:84px;--lobby-card-gap:10px;flex:0 0 clamp(340px,35vw,560px);min-width:0;min-height:0;padding:24px 28px;justify-content:center;}
+#lobby .lobby-content{flex:0 1 auto;min-height:0;gap:12px;padding-inline-end:6px;scroll-padding-block:6px;}
+#lobby .lobby-content>.lobby-header{min-height:36px;margin:0;align-items:center;}
+#lobby .lobby-content>.lobby-divider{height:104px!important;margin:0;}
+#lobby .lobby-content>.char-list{display:flex;flex-direction:column;gap:10px;flex:0 1 auto;min-height:0;overflow:visible;padding:4px;}
+#lobby .char-scroll-vp{flex:0 1 calc(var(--lobby-card)*2 + var(--lobby-card-gap));height:calc(var(--lobby-card)*2 + var(--lobby-card-gap));min-height:var(--lobby-card);overflow-x:hidden;overflow-y:auto;scrollbar-gutter:stable;scrollbar-width:thin;scrollbar-color:#96714e #121012;scroll-padding-block:4px;}
+#lobby .char-scroll-track{gap:var(--lobby-card-gap);}
+#lobby .char-scroll-track>.char-item{flex:0 0 var(--lobby-card);height:var(--lobby-card);min-height:var(--lobby-card);}
+#lobby .char-scroll-nav{flex:0 0 auto;margin:0;gap:12px;opacity:1;}
+#lobby .char-nav-btn{min-width:36px;min-height:32px;border:1px solid #75604766;background:#171214;}
+#lobby .char-list>.char-item-new{flex:0 0 64px;height:64px;min-height:64px;margin-top:0!important;padding:8px 16px;gap:12px;border-color:#96714e!important;}
+#lobby .char-item-new .char-thumb{flex-basis:40px;width:40px;height:40px;}
+#lobby .char-item-new .char-name{font-size:.95rem;letter-spacing:.04em;}
+#lobby .lobby-card-gap{display:none;}
+#lobby .lobby-mid-area{flex:0 1 auto;min-height:0;max-height:152px;padding:0;overflow-y:auto;}
+#lobby .lma-banner-inner{padding:8px 0;gap:6px;}
+#lobby .lma-main-txt{font-size:14px;line-height:1.35;}
+#lobby .lma-sub-txt{font-size:11px;line-height:1.4;letter-spacing:.03em;}
+#lobby .lma-steam-btn{width:min(200px,70%);height:44px;display:flex;align-items:center;justify-content:center;}
+#lobby .lma-steam-btn img{width:100%;height:100%;object-fit:contain;}
+#lobby .lobby-footer{margin-top:14px;padding:10px 4px 4px;gap:0;border-top:1px solid #96714e55;}
+#lobby .enter-game-btn{min-height:64px;}
+#lobby .enter-game-btn img{width:100%;height:auto;max-height:clamp(64px,14vh,132px)!important;max-height:clamp(64px,14dvh,132px)!important;object-fit:contain;}
+#lobby .lobby-bottom-actions{min-height:36px;margin-top:4px;}
+@media(max-height:760px){
+ #lobby>.lobby-right{--lobby-card:76px;padding-block:16px;}
+ #lobby .lobby-content{gap:8px;}
+ #lobby .lobby-content>.lobby-divider{height:72px!important;}
+ #lobby .lma-txt-group{display:none;}
+ #lobby .lobby-mid-area{flex:0 0 48px;max-height:48px;}
+ #lobby .lma-banner-inner{padding:2px 0;}
+ #lobby .lma-steam-btn{width:min(170px,60%);}
+ #lobby .lobby-footer{margin-top:8px;padding-top:8px;}
+}
+@media(max-height:560px){
+ #lobby>.lobby-right{--lobby-card:64px;--lobby-card-gap:8px;padding-block:10px;}
+ #lobby .lobby-content{gap:6px;}
+ #lobby .lobby-content>.lobby-header{min-height:30px;}
+ #lobby .lobby-content>.lobby-divider{height:44px!important;}
+ #lobby .char-list>.char-item-new{flex-basis:56px;height:56px;min-height:56px;}
+ #lobby .char-scroll-track>.char-item{padding-top:6px;padding-bottom:6px;}
+ #lobby .lobby-mid-area{flex-basis:48px;max-height:48px;}
+ #lobby .lma-steam-btn{width:140px;height:44px;}
+ #lobby .lobby-footer{margin-top:6px;padding-top:6px;}
+}
+@media(max-width:700px){
+ #lobby>.lobby-left{display:none;}
+ #lobby>.lobby-right{flex-basis:100%;width:100%;padding-inline:24px;}
+ #lobby .lobby-content>.lobby-divider{height:76px!important;}
+ #lobby .char-name:has(.char-name-label){flex-direction:column;align-items:flex-start;gap:2px;}
+ #lobby .char-name:has(.char-name-label) .char-cls{max-width:100%;margin:0;}
+}
+@media(max-width:700px) and (max-height:560px){#lobby .lobby-content>.lobby-divider{height:44px!important;}}
+@media(max-height:440px){
+ #lobby>.lobby-right{--lobby-card:56px;}
+ #lobby .lobby-content>.lobby-divider{height:32px!important;}
+ #lobby .char-list>.char-item-new{flex-basis:48px;height:48px;min-height:48px;}
+ #lobby .char-item-new .char-thumb{flex-basis:32px;width:32px;height:32px;}
+ #lobby .char-scroll-track .char-thumb{flex-basis:36px;width:36px;height:36px;}
+}
+@media(pointer:coarse){#lobby .char-nav-btn{min-width:44px;min-height:44px;}}
+@media(max-height:440px){
+ #lobby .lobby-content>.char-list{min-height:122px;}
+ #lobby .lobby-content>.char-list:has(>.char-scroll-nav){min-height:164px;}
+}
+@media(pointer:coarse) and (max-height:440px){
+ #lobby .lobby-content>.char-list:has(>.char-scroll-nav){min-height:176px;}
+ #lobby .lobby-content>.lobby-divider{height:24px!important;}
+}
+</style>
 </head>
 <body>
 
@@ -4265,6 +4338,7 @@ _GP.on('lobbyNav', (gp, just) => {
 
 // ═══ 캐릭터 선택 → 입장 ═══
 function showCharGate(charId,storySeen=false){
+  const request=_characterLoadSeq;
   showLoading(_TL('지옥으로 입장하는 중...'));
   // 로고 프리로드
   const _preImg=new Image();_preImg.src='img/logo_exoduser.png';
@@ -4272,7 +4346,7 @@ function showCharGate(charId,storySeen=false){
   const _demoParam=_LOBBY_BUILD==='demo'?'&demo=1':'';
   if(_LOBBY_BUILD==='demo'&&!_demoActivateSlot(charId)){hideLoading();setStatus(_TL('알 수 없는 오류'),true);return}
   const _tp=(_LOBBY_BUILD==='demo'?'game.html?test=1&slot=demo':_testMode?'game.html?test=1&slot='+encodeURIComponent(charId):'game.html?char='+charId+'&slot='+encodeURIComponent(_slotName))+_demoParam;
-  setTimeout(()=>{window.location.href=_tp+(storySeen?'&story=warrior-v21':'')},1200);
+  setTimeout(()=>{if(request!==_characterLoadSeq)return;window.location.href=_tp+(storySeen?'&story=warrior-v21':'')},1200);
 }
 
 // ═══ 펫 말풍선 시스템 ═══

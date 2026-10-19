@@ -5,6 +5,28 @@ const path = require('path');
 const zlib = require('zlib');
 
 // gzip 대상 (텍스트/코드만 — 이미지·오디오는 이미 압축됨)
+function matchesIfNoneMatch(value,currentTag){
+  if(typeof value!=='string'||typeof currentTag!=='string')return false;
+  if(value.replace(/^[ \t]+|[ \t]+$/g,'')==='*')return true;
+  const current=/^(?:W\/)?("[\x21\x23-\x7e\x80-\xff]*")$/.exec(currentTag);
+  if(!current)return false;
+  const tag=/(?:W\/)?("[\x21\x23-\x7e\x80-\xff]*")/y;
+  let position=0,matched=false,seen=false,emptyMembers=0;
+  while(position<value.length){
+    while(value[position]===' '||value[position]==='\t')position++;
+    if(position===value.length)break;
+    if(value[position]===','){if(++emptyMembers>32)return false;position++;continue;}
+    tag.lastIndex=position;
+    const member=tag.exec(value);if(!member)return false;
+    seen=true;matched=matched||member[1]===current[1];position=tag.lastIndex;
+    while(value[position]===' '||value[position]==='\t')position++;
+    if(position===value.length)break;
+    if(value[position]!==',')return false;
+    position++;
+  }
+  return seen&&matched;
+}
+
 const COMPRESSIBLE = new Set(['.html', '.js', '.css', '.json', '.svg', '.gltf']);
 // 반복 진입 시 대형 HTML을 매번 gzip 하지 않도록 파일 버전별 압축 결과를 보관한다.
 // size/mtime이 바뀌면 새 Promise로 교체되므로 코드 수정은 다음 요청에 바로 반영된다.
@@ -34,21 +56,64 @@ if (fs.existsSync(_envPath)) {
   });
 }
 
-const PORT = Number(process.env.PORT) || 3333; // forge-lab.cmd 등 별도 포트 실행 지원
+const PORT = Number(process.env.PORT || 3333);
+if (!Number.isInteger(PORT) || PORT < 1 || PORT > 65535) {
+  throw new Error('PORT must be an integer between 1 and 65535');
+}
+const HOST = process.env.HOST || undefined;
 const ROOT = __dirname;
-const SAVE_DIR = path.join(ROOT, 'saves');
+const SAVE_DIR = process.env.EXODUSER_SAVE_DIR
+  ? path.resolve(process.env.EXODUSER_SAVE_DIR)
+  : path.join(ROOT, 'saves');
 const FAVICON_ICO_PATH = path.join(ROOT, 'favicon.ico');
 const FAVICON_PNG_PATH = path.join(ROOT, 'img', 'icon-256.png');
 if (!fs.existsSync(SAVE_DIR)) fs.mkdirSync(SAVE_DIR, { recursive: true });
 
 const MIME = {
   '.vtt': 'text/vtt; charset=utf-8',
-  '.html':'text/html; charset=utf-8','.js':'application/javascript','.css':'text/css',
+  '.html':'text/html; charset=utf-8','.js':'application/javascript','.mjs':'application/javascript','.css':'text/css',
   '.json':'application/json','.png':'image/png','.jpg':'image/jpeg','.jpeg':'image/jpeg',
   '.gif':'image/gif','.webp':'image/webp','.svg':'image/svg+xml','.ico':'image/x-icon',
   '.wav':'audio/wav','.mp3':'audio/mpeg','.ogg':'audio/ogg',
   '.mp4':'video/mp4','.webm':'video/webm','.glb':'model/gltf-binary','.gltf':'model/gltf+json',
 };
+
+// Development preview: exact approved original props and soil, with no directory proxy.
+const FDG_SOURCE_ROOT = path.join(ROOT, 'assets', 'map', 'ch1');
+const FDG_SOURCE_IMAGES = Object.freeze(Object.fromEntries([
+  'floor_objects/prop_g_battle.png', 'floor_objects/prop_g_edge.png',
+  'floor_objects/prop_g_root.png', 'floor_objects/prop_g_corpse.png',
+  'floor_objects/prop_g_toxic.png', 'production_finish/depth/broken_thicket.png',
+  'production_finish/depth/forest_stand.png', 'production_finish/depth/root_bank.png',
+  'production_finish/depth/root_fan.png',
+].map(relative => [`/fdg-source/ch1-1/${path.basename(relative)}`, path.join(FDG_SOURCE_ROOT, relative)]).concat([
+  ['/fdg-source/ch1-1/ground/ground_dark_soil.png', path.join(FDG_SOURCE_ROOT, 'ground_dark_soil.png')],
+])));
+
+let atomicSaveSequence = 0;
+
+function atomicSaveJSON(fs, file, data, processId) {
+  const serialized = JSON.stringify(data, null, 2);
+  const temporary = file + '.tmp-' + processId + '-' + (++atomicSaveSequence);
+  let descriptor;
+  let owned = false;
+  try {
+    descriptor = fs.openSync(temporary, 'wx');
+    owned = true;
+    fs.writeFileSync(descriptor, serialized, 'utf8');
+    fs.closeSync(descriptor);
+    descriptor = undefined;
+    fs.renameSync(temporary, file);
+    owned = false;
+  } finally {
+    if (descriptor !== undefined) {
+      try { fs.closeSync(descriptor); } catch {}
+    }
+    if (owned) {
+      try { fs.unlinkSync(temporary); } catch {}
+    }
+  }
+}
 
 function sanitizeSlot(name) {
   return String(name).replace(/[^a-zA-Z0-9가-힣_\-]/g, '_').slice(0, 50);
@@ -74,6 +139,38 @@ function readBody(req) {
 const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, `http://localhost:${PORT}`);
   const pathname = url.pathname;
+
+  if (req.url.startsWith('/fdg-source/') || pathname.startsWith('/fdg-source/')) {
+    if (req.url !== pathname || !Object.hasOwn(FDG_SOURCE_IMAGES, pathname)) {
+      res.writeHead(404); return res.end('Unknown source image');
+    }
+    if (req.method !== 'GET' && req.method !== 'HEAD') {
+      res.writeHead(405, { Allow: 'GET, HEAD' }); return res.end();
+    }
+    let file;
+    try {
+      const canonical = FDG_SOURCE_IMAGES[pathname];
+      if (await fs.promises.realpath(canonical) !== canonical) {
+        res.writeHead(403); return res.end('Source image unavailable');
+      }
+      file = await fs.promises.open(canonical, fs.constants.O_RDONLY | (fs.constants.O_NOFOLLOW || 0));
+      const stat = await file.stat();
+      if (!stat.isFile()) { await file.close(); res.writeHead(403); return res.end('Source image unavailable'); }
+      res.writeHead(200, {
+        'Content-Type': 'image/png', 'Content-Length': stat.size, 'Cache-Control': 'no-store',
+        'X-Content-Type-Options': 'nosniff', 'Cross-Origin-Resource-Policy': 'same-origin',
+      });
+      if (req.method === 'HEAD') { await file.close(); return res.end(); }
+      const stream = file.createReadStream();
+      res.once('close', () => stream.destroy());
+      stream.on('error', () => res.destroy()).pipe(res);
+      return;
+    } catch (error) {
+      await file?.close().catch(() => {});
+      res.writeHead(error.code === 'EACCES' || error.code === 'EPERM' ? 403 : error.code === 'ENOENT' ? 404 : 500);
+      return res.end('Source image unavailable');
+    }
+  }
 
   if (req.method === 'OPTIONS') {
     res.writeHead(204, {
@@ -121,7 +218,7 @@ const server = http.createServer(async (req, res) => {
       const slot = sanitizeSlot(body.slot || 'default');
       const saveData = body.data;
       if (!saveData) return sendJSON(res, 400, { ok: false, error: 'No data' });
-      fs.writeFileSync(path.join(SAVE_DIR, slot + '.json'), JSON.stringify(saveData, null, 2), 'utf8');
+      atomicSaveJSON(fs, path.join(SAVE_DIR, slot + '.json'), saveData, process.pid);
       return sendJSON(res, 200, { ok: true, slot });
     }
 
@@ -235,12 +332,27 @@ const server = http.createServer(async (req, res) => {
       const stat = fs.statSync(filePath);
       const ext = path.extname(filePath);
       const mime = MIME[ext] || 'application/octet-stream';
-      const range = req.headers.range;
+      const _isHtml = ext === '.html';
+      const _cache = _isHtml
+        ? 'no-cache, no-store, must-revalidate'
+        : 'public, max-age=3600';
+      const _etag='"'+stat.size.toString(16)+'-'+Math.floor(stat.mtimeMs).toString(16)+'"';
+      if (!_isHtml && (req.method === 'GET' || req.method === 'HEAD') && matchesIfNoneMatch(req.headers['if-none-match'], _etag)) {
+        res.writeHead(304, { 'Cache-Control': _cache, 'ETag': _etag });
+        return res.end();
+      }
+      const _rangeMatch = req.headers['if-range'] === undefined && req.method === 'GET' && stat.size > 0 && typeof req.headers.range === 'string'
+        ? /^bytes=(\d*)-(\d*)$/i.exec(req.headers.range.trim()) : null;
+      const range = _rangeMatch && (_rangeMatch[1] || _rangeMatch[2]) ? _rangeMatch : null;
 
       if (range) {
-        const parts = range.replace(/bytes=/, "").split("-");
-        const start = parseInt(parts[0], 10) || 0;
-        const end = Math.min(parts[1] ? parseInt(parts[1], 10) : stat.size - 1, stat.size - 1);
+        const _size = BigInt(stat.size);
+        const _first = range[1] ? BigInt(range[1]) : null;
+        const _last = range[2] ? BigInt(range[2]) : null;
+        const _start = _first === null ? (_last < _size ? _size - _last : 0n) : _first;
+        const _end = _first === null || _last === null || _last >= _size ? _size - 1n : _last;
+        const start = _start >= _size ? stat.size : Number(_start);
+        const end = Number(_end);
         if (start >= stat.size || start > end) {
           res.writeHead(416, { 'Content-Range': `bytes */${stat.size}`, 'Access-Control-Allow-Origin': '*' });
           return res.end();
@@ -265,15 +377,7 @@ const server = http.createServer(async (req, res) => {
         // HTML(코드)만 no-cache로 즉시 반영. 에셋(이미지/오디오/JSON 등)은 캐시 허용
         // — no-store를 모든 파일에 걸면 게임 중 에셋 재요청마다 디스크 재읽기 → 렉.
         // Vercel 배포(vercel.json)와 동일 정책: html=no-cache, 그 외=캐시.
-        const _isHtml = ext === '.html';
-        const _cache = _isHtml
-          ? 'no-cache, no-store, must-revalidate'
-          : 'public, max-age=3600';
-        const _etag='"'+stat.size.toString(16)+'-'+Math.floor(stat.mtimeMs).toString(16)+'"';
-        if(!_isHtml&&req.headers['if-none-match']===_etag){
-          res.writeHead(304, { 'Cache-Control': _cache, 'ETag': _etag });
-          return res.end();
-        }
+
         const _acceptsGzip = /\bgzip\b/.test(req.headers['accept-encoding'] || '');
         const _gzip = _acceptsGzip && COMPRESSIBLE.has(ext);
         const _h = { 'Content-Type': mime, 'Cache-Control': _cache };
@@ -327,6 +431,6 @@ const server = http.createServer(async (req, res) => {
   }
 });
 
-server.listen(PORT, () => {
+server.listen(PORT, HOST, () => {
   console.log(`Server on ${PORT} (no-cache)`);
 });

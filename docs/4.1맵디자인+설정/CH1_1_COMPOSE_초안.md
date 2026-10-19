@@ -1,3 +1,5 @@
+> 2026-10-16 통합 범위: 웹 본편 수치·현행은 최신 main 기준, 별도 Native/FDG 항목은 source pin9a4534b4의 부분 이식·명시 opt-in 계약이다. 전체 최신 본편 이식 완료가 아니다. 상세: docs/engine/FDG_PC_MAC_GIT_SYNC_20261016.md.
+
 ## 2026-09-30 — CH1-1 현행 나무 배치 안내
 
 아래 `m_ctree1~12` 배치 표는 초기 composition 이력이다. 실제 1-1 손 배치는 `m_ctree13~20` 8개이며 좌표·원화·충돌은 [88차 SSOT](CH1_SUNBURST_TREE_PASS88_20260930.md)를 따른다. 87차 공통 피부 바닥은 그대로 유지한다.
@@ -52,6 +54,8 @@
 > **38차 현행(2026-09-27):** 구형 weapon_pile.png 및 동일사본4개 폐기·격리. m_wpile/m_c5wpile/weapon_pile 사용금지. 과거무기더미배치·접지기록은이력이다. 접지현행2장/0.5MiB,전체native87.81269454956055MiB,모듈20260927-38. [검수·폐기 SSOT](CH1_LOW_QUALITY_AUDIT_20260927_PASS38.md).
 
 > **2026-09-27 37차 현행 폐기 결정:** 구형 tombstone.png와 exposed_root.png는 사용자 지정 저품질 원화로 사용 금지. 36차 접지 보강은 폐기되었다. 아래의 해당 에셋 수치·좌표·접지 기록은 과거 이력이며 현행 등록·배치가 아니다. 동일 원화 6파일 격리, CH1 authored 8배치 제거, 접지 계열은 3장/0.75MiB로 복귀. [폐기 SSOT](LOW_QUALITY_ASSET_RETIREMENT_20260927.md).
+
+> **2026-10-15 실제 runtime root 확인:** 정본 R/game.html12025~27은 phase `smoothing`에서 `assets/map/ch1/production_finish`(`20260930-rotforest-97`)를 선택한다. 아래 `baked_start_smoothing` master 경로는 제작 이력이다. Godot 기존64개도 production_finish이며, ENGINE가 이번에 그 actual current Texture/rect/alpha 소비를 복원했다. 기존 geometry/LOCK/원 PNG 불변. 상세는 `docs/engine/FDG_ENGINE.md` 같은 날짜 표를 따른다.
 
 > **2026-09-12 최신 변경:** 사용자 요청으로 CH1-1 시작 철창문 `m_cage_gate(103,188,scale1.2)` 배치를 제거했다. 해당 문 렌더·충돌 모두 제거, authored62/runtime63, hand collision21/total22. 아래의 START 성문·63/64·22/23 수치는 제거 이전 기록이다. 북쪽 보스 게이트와 다른 스테이지 문은 유지한다.
 
@@ -294,7 +298,7 @@ EXIT GATE (100, 18)
 현행 위치: CENTRAL 동쪽 림, 타일 **(140,102)**. 정규화 `(0.70,0.51)`.
 
 - CENTRAL 중심 `(118,105)`에서 동쪽 22타일에 두어 화면 오른쪽 실루엣으로 읽힌다.
-- `colW=380px`의 실제 충돌 반폭은 4.75타일이라 10타일 주동선 중심을 침범하지 않는다.
+- `colW=380px`는 native `isW`의 타원 X반경이다. scale 1 기준 반폭은 `380/40=9.5`타일, 전체 폭은 19타일이다(기존 초안의 4.75타일은 `/2` 오독으로 정정). 주동선 침범 여부는 배치와 실제 전체 충돌 QA에서 별도 판정한다. FDG 수동 배치 subset 연결은 전체 맵 충돌 인수를 뜻하지 않는다.
 - 다른 mega와 정규화 거리 0.18 이상을 유지한다.
 
 **size LOCK:** 시작 **900**. QA에서만 **최대 1000**. **1100 기본값 제외** (1400도 제외). 메타 기본 900과 같게 시작.

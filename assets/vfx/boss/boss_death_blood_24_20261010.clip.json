@@ -1,0 +1,11 @@
+{
+  "format": "exoduser-atlas-clip",
+  "version": 1,
+  "name": "boss_death_blood",
+  "sourcePath": "assets/vfx/boss/boss_death_blood_24_20261010.png",
+  "columns": 6,
+  "rows": 4,
+  "frameCount": 24,
+  "fps": 15,
+  "loop": false
+}

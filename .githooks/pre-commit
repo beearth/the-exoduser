@@ -1,2 +1,9 @@
 #!/bin/sh
-powershell -ExecutionPolicy Bypass -File tools/docs-sync-check.ps1 -Staged
+# Windows installations use explicit paths because the system Node shim can be broken.
+if [ -x 'C:/nvm4w/nodejs/node.exe' ]; then
+  exec 'C:/nvm4w/nodejs/node.exe' tools/docs-sync-check.mjs --staged
+fi
+if [ -x 'G:/NODE.JS/node.exe' ]; then
+  exec 'G:/NODE.JS/node.exe' tools/docs-sync-check.mjs --staged
+fi
+exec node tools/docs-sync-check.mjs --staged

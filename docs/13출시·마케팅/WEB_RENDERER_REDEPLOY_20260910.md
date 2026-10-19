@@ -13,6 +13,7 @@
 | 첫 자동 배포 | 동일 저장소가 hell/the-exoduser/hell-build에 연결됨. hell은 대기열, the-exoduser 빌드는 ENOSPC 실패. 로그: 출력9310MB, .git pack7280MB, node_modules651MB |
 | 원인 | 루트 전체를 정적 결과로 처리하면서 제작 중간 영상·소스·백업을 다시 복사. 단순 렌더러 변경과 별개의 배포 공간 문제 |
 | 웹 빌드 | `tools/build-web.mjs`, Node 내장 모듈만 사용. `vercel.json`: framework=null, buildCommand=`node tools/build-web.mjs`, installCommand=`echo Static web build uses Node built-ins only`, outputDirectory=`web-dist` |
+| 2026-10-04 로컬 명령 | `npm run build:web -- <새 하위 폴더>`로 같은 스테이징 도구 실행. 기존 Vercel 설정과 웹 포함 규칙 유지. [개발 명령·검증 기록](../12퍼포먼스·최적화/PROJECT_TOOLING_20261004.md) |
 | 포함 규칙 | `build-nwjs.mjs`의 FILES·DIRS 런타임 목록 재사용, root lang_*.js/atlas_* 추가. Git 추적 파일만 포함. Node/NW 부트스트랩·전체 output/cinematic·백업·tools·의존성·Git 이력 미포함 |
 | 에셋 유지 | assets/img/sprites/bgm/sfx/video/localization 및 필요한 output/imagegen 경로. BGM WAV도 실제 선택지에 있으므로 보존. 동적 경로 누락 방지를 위해 런타임 에셋 디렉터리 전체 포함 |
 | 제작 파일 제외 | /_unity_preview/, /_p11_candidates/ 및 zip/blend/psd/kra 확장자. output 전체를 제외하는 방식은 아이템/로고 에셋을 누락시키므로 사용하지 않음 |

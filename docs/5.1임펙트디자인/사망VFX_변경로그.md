@@ -277,3 +277,31 @@
 | `_goreImgs` / `_diImgs` / `void_black` | 완료 고어·피격·부활 대기 시트를 먼저 제출. 중복 Set·유휴1장·180f 재검사 유지 |
 
 시체 수·크기·수명·피해·고어 원본·부활 수치는 변경하지 않는다. [실측·검증 SSOT](../12퍼포먼스·최적화/COMBAT_TEXTURE_WARMUP_20260929.md).
+
+## 2026-10-16 R h172+h448 기존 머리 파편 2D 경로의 선택적 준비
+
+| 항목 | 현재 source HTML 계약 |
+|---|---|
+| 연결 | 원 R h172의 _headCaptureWarmDone=false/_headCaptureWarmMs=0 및 _warmHeadCapture2d와 h448 setBootLoading의 pct>=100 tail만 |
+| 진입 | 성공 one-shot 미완료·_useGL·!G.on·OPT.deathFx. 기존 chapter1/south atlas meta/ready/image.complete·크기≥(meta.cell 또는 원256), 첫 split 존재/비활성 |
+| 기존 리소스 | _gibX/_gibC scratch와 _splits[0].ctx만 사용. scratch clear48×48→atlas cell을48×48로 draw→split cell clear→scratch48×14를 _SPLIT_CELL(현재64)²로 draw. 새 canvas/active debris 생성·상태 변경 없음 |
+| 종료 | finally에서 scratch48×48과 split cell을 각각 독립 clear 시도, 실패 시 prepared=false. 원 performance 차이 ms 기록과 done=prepared 반환. flag는 호출 경로 완료 표시이며 픽셀/GL/READY 판정 아님 |
+| caller | 기존 pct>=100에서 try helper/catch{} 뒤 기존 hideBootLoading. guard skip/실패에도 원 hide 유지, hide 자체 예외는 전파. 기존 DOM/pct/hide 본문·bootgate/epoch 유지 |
+| 보존 | 실제 _addHeadGib/frame 선택·bodyfallback/GL·봉인 atlas warm본문·Native HUD·h49/h173 및 다른 HTML byte 유지. 새 epoch/default/준비READY·retry/비동기wait 정책 없음 |
+| 검증 | 실제 helper+tail을 own G/OPT/atlas/scratch/split/performance/hide로 새6그룹/main inline1 확인. 실제 canvas/GL/이미지/픽셀·보호캡처/UI·clock/saveAPI·Native·PC 실행 없음. own ms/spy는 성능·첫사망·head픽셀 성공 증거 아님 |
+
+이번 단위는 기존 scratch/head 리소스를 비활성 조건에서 준비하는 source 연결이다. 실제 head consumer나 프레임 캡처 선택을 교체하지 않는다. 현재 main의 같은 이름 _addHeadGib 선언 둘 중 마지막 binding을 구분하며 두 원문 모두 보존한다.
+
+
+## 2026-10-16 deathFX 동기 음향 dispatch 예외 경계 — R h167 audio 부분+h168
+
+| 항목 | 현재 코드·제한 |
+|---|---|
+| 채택 범위 | deathFX의 기존 if(!noSound) 안에 원R try를 열고, 기존 음향 block 끝에 catch(e){console.error('[SFX] death dispatch error:',e)}만 추가. h167 기인수 impactId/signature와 시각부·h169는 변경하지 않음 |
+| 정상·noSound | noSound guard 밖의 정책은 그대로. 원 _playSampleNow/provider/음량/키·인자·호출 횟수/순서·RNG 소비·사망 후속 변경 없음. noSound이면 음향과 counter 변경을 건너뛰고 기존 후속 진행 |
+| 기존 burst | 일반 최대6보이스/보스1, 프레임 경계 reset와 _deathSfxCd=5 유지. 동기 예외 전 이미 일어난 frame mark/count/cooldown/RNG 부분효과는 되돌리지 않음. 새 cap/volume/회복/재시도 정책 없음 |
+| 동기 예외 | 음향 block 내부 throw만 원 prefix로1회 기록하고 기존 비음향 deathFX 후속으로 진행. 실제 정상 callee의 throw producer나 live 사망 오류를 확인했다는 뜻이 아님 |
+| 예외 한계 | console.error 자체 throw는 그대로 전파. 기존 비음향 후속의 throw는 새 guard 밖에서 전파. Promise rejection/queue/등록 전 복구/외부 인자 평가를 감싸거나 변경·재검수하지 않음 |
+| 구현 권위 | 기존 명시 R 소스통합의 독립 audio consumer 경계 채택. 과거 기능 전체 승인·실제 사망 안전·청감·성능·field 피해/HP/VFX 동일성으로 승격하지 않음 |
+| 신규 검수 | 실제 audio fragment+own SFX/key/volume/RNG/framecounter/logger/후속 spy 신규7군 및 main inline구문1 첫 통과. 정상/armored/ghoul/boss·noSound·기존throttle/cap상태·동기throw/부분효과·loggerthrow·후속throw·음향2구문 외 전체소스 byte불변 확인 |
+| 미실행 | actual _playSampleNow/queue/providers/Promise·AudioContext/미디어·사망VFX/corpse/gibs/HP·사용자 창·saveAPI·native·PC 실행0. 기존 helper/원화/기인수 guard·검사·proof 재개봉0. b836 로비/index 변경·재검수0 |

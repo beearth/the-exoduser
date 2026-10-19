@@ -34,7 +34,7 @@ QA·성능팀 첫 수정. 운영 현황·전체 측정표는 [QA_PERFORMANCE_TEA
 | `_TEXHOT_MIN_PX` | 〃 | `250000` — 이보다 작은 이미지는 기록·공유 등록하지 않음 |
 | `_TEXHOT_BUDGET_PX` | 〃 | `64e6` — 프리워밍 총 픽셀 상한(RGBA 약 256MB) |
 | `_TEXHOT_INFLIGHT` | 〃 | `2` — 동시 fetch+디코드 수 |
-| `_TEXHOT_QMAX` | 〃 | `4` — 업로드 대기 비트맵 상한(디코드 역압) |
+| `_TEXHOT_QMAX` | 〃 | `4` — 대기 비트맵 + 진행 중 fetch/디코드 합계 상한(2026-10-16 기존 R 역압 통합) |
 | `_TEXHOT_SEED` | 〃 | 기본 시드 22개: `/img/ui/item-cutouts/{armor,axe,belt,boots,bracelet,cape,crossbow,earring,gloves,helmet,necklace,pants,shield,sword}_phys_cutout.png`(1254²) 14개, `/sprites/spike_trap/spike_thorn.png`, `/sprites/spike_trap/vortex.png`, `/assets/vfx/inferno_slam_impact_sheet.png`, `/assets/vfx/giant_slam_impact_sheet.png`, `/img/proj_firedevil_orb.png`, `/img/fieldboss_firedevil_walk_1.png`, `/assets/vfx/lightning_burst_sheet.png`, `/assets/vfx/ground_crack_sheet.png` |
 | `_texBySrc` | `_initWebGL` | `Map<절대 URL,{tex,w,h}>`. 컨텍스트마다 새로 생성, context lost에서 `null` |
 | `_texAdoptBitmap(abs,bmp)` | `_initWebGL` | ImageBitmap을 LINEAR/CLAMP 텍스처로 업로드 후 `_texBySrc` 등록, `_curTex` 바인딩 복원 |
@@ -69,3 +69,18 @@ QA·성능팀 첫 수정. 운영 현황·전체 측정표는 [QA_PERFORMANCE_TEA
 | 기존 테스트 보완 | `lightingTextureFreshness`·`lightingCameraCoverage`의 vm 샌드박스에 새 전역 4개 공급(검증 내용 불변). `webglDynamicTexReuse`가 고정한 원문 `_texCache.set(...);return t}`는 그대로 유지 |
 | 실화면 | 수정 전후 1920×1080 전투 스크린샷에서 스킬 VFX·드롭·데미지 숫자 정상 표시. pageerror 0, console error 0 |
 | 프레임 지표 | p95/p99와 50ms·100ms 초과 빈도는 **실행 간 변동이 커서 개선율을 확정하지 않는다** — 팀 MD §5 표 참조 |
+
+## 2026-10-16 기존 R 텍스처 작업·컨텍스트 소유권 통합
+
+| id / 적용 위치 | 현재 계약 |
+|---|---|
+| 채택 범위 | h29의 _texPreJobs, h30~35, h42의 _texPreReset, h43~45, h46의 core reset만. 실제 _warmupEnsAtlas→_texPrewarmHot 및 loop→_texPreDrain 소비에 연결 |
+| 작업 | _texPreJobs Map의 URL별 {src,context:_texBySrc,status:'pending',bmp:null}. 같은 컨텍스트의 기존 작업은 URL이 GPU Map에 아직 없을 때 재사용. 상태 pending/decoded/ready/failed/stale |
+| 입력·예산 | HTTP(S), finite 양수 px, 기존 _TEXHOT_BUDGET_PX=64e6 유지. 기존 URL 등록·seen 검사 유지. _TEXHOT_INFLIGHT=2, _TEXHOT_QMAX=4; pump는 대기 비트맵 수+진행 중 수<4일 때만 추가 시작 |
+| 비동기 완료 | fetch→blob→createImageBitmap(premultiplyAlpha:'none') 유지. 작업이 stale이거나 컨텍스트 Map 참조가 바뀌면 bitmap을 닫고 업로드하지 않음. 실패는 failed, finally에서 busy 감소·pump |
+| _texPreClose | bitmap 참조를 먼저 null로 옮기고 close를 try/catch. _texPreReset은 작업을 stale로 표시·대기 비트맵 닫기·Q/Wait/Jobs 비우기. 진행 중 작업의 busy 슬롯은 Promise가 끝날 때까지 유지 |
+| init/loss 연결 | 기존 _initWebGL의 새 Map 생성 전에 reset. 기존 contextlost의 _texBySrc/_texAdoptBitmap=null 직후 reset. 원 GL·배치·복원 이벤트·성공 판정·동기 폴백은 변경하지 않음 |
+| 프레임말 drain | 기존 프레임당 1장 유지. 컨텍스트/GL/adopter 유효 시 동일 URL 중복 업로드 생략 후 Map 등록 여부로 ready/failed. 조건 불일치 stale, 예외 failed, finally에서 bitmap 닫기 |
+| 업로드 | 기존 LINEAR/CLAMP 필터·픽셀·크기 유지. _texAdoptBitmap의 JavaScript 예외는 만든 texture delete 후 throw, finally에서 기존 _curTex 바인딩 복원. GL.getError 검사 추가 없음; ready는 Map 등록 상태이며 실제 GPU 성공 검증이 아님 |
+| 분리된 R 부분 | _texPreContextLost flag와 _warmAsyncTarget/_warmAsyncJob 기반 general-Image handoff·_wqGpuImages 재예약은 이번 단위 미채택. 현재 main에 두 helper가 없으므로 해당 의존성을 임의로 연결하지 않음. 별도 잔여 판정 대상 |
+| 보존·검수 | 원 시드22/학습96/최소250000px·64MP·기존 호출/동기 Image 경로/에셋 불변. 합성 fetch/Bitmap/GL/컨텍스트 Map과 실제 함수·초기화/loss core statement만 검수. 실제 GPU·context 이벤트 전체·프레임 성능·픽셀/readPixels·사용자 창·localStorage/API 검수 아님 |

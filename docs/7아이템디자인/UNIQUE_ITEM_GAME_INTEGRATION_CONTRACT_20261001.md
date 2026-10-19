@@ -57,3 +57,16 @@
 5. **UI·번역·실게임:** 툴팁은 효과 발동 조건과 실제 굴린 하·중·상옵 값을 표시한다. 한국어/영어 이름과 설명, 아이콘 폴백, 보라색 아트 대비, 기존 rarity=5 빨강과의 역할을 UIUX 팀과 실제 화면에서 확인한다. D절 TOP 8은 무어픽스 대조군·보스·군중·자원 회수·핫패스 프레임타임을 따로 측정한다.
 
 이 문서는 구현 경계와 검사 항목을 정한 것이다. 실제 효과 코드·드롭 가중치·세이브 포맷·표시색은 아직 바꾸지 않았다.
+
+## 2026-10-16 현재 월드 공통 컷아웃 출처 guard
+
+위 투명 공통 컷아웃/불투명 원화 구분에 맞춰 실제 로드 source의 동일성만 확인한다. 유니크 가공본의 현재 우회는 별도 main 의미로 보존한다.
+
+| 항목 | 현재 main 계약 |
+|---|---|
+| 소유 위치 | _worldItemSkin(it)의 새 Image 생성과 공통 컷아웃 반환 guard만. 원 R h174+h175를 현재 main에 3way 연결 |
+| 출처 기록 | img.src=renderSrc 직후 _worldDropCutoutSrc=cutoutSrc?img.src:''로 실제 getter 문자열 보관. 새 URL 정규화·경로 선택/추측 정책 없음 |
+| 공통 컷아웃 | cutoutSrc가 있고 현재 img.src가 기록된 컷아웃 src와 같을 때만 raw image 반환. 기존 onerror로 phys fallback src가 바뀌면 기존 canvas/_maskWorldDropBlack·_worldDropMasked 캐시 경로 사용 |
+| uniqueArt | 현재 main의 ||it.uniqueArt 우회를 유지. 성공 및 기존 phys fallback도 기존 방식 그대로이며 이번 단위에서 유니크 처리 정책을 수리하지 않음 |
+| 보존 | 원 resolver/key/alias/bone·onload/onerror·mask 알고리즘/마스크 재사용·부트/h173·원 PNG 유지. 새 retry·migration·준비/READY 정책·asset 생성/가공 없음 |
+| 검증 | 실제 helper와 own Image/Canvas/mask/resolver·자기 load/error callback 새5그룹/main inline1. own URL getter/호출 spy를 실제 browser/알파/픽셀·visualPASS로 확대하지 않음. 실제 Image/네트워크/PNG·사용자 cache/GUI/saveAPI·Native·PC 실행 없음 |

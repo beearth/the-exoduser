@@ -2804,3 +2804,156 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 보석 품질 표기 | 보석함 칸 우상단 `.inv-cr-q` `T{n}`(Cinzel 9px), 상세 메타에 `품질 {q} · {t}티어`, 홈 보너스 줄 `홈 보너스 +{p}%`·`공명 ×2`. 피커·대장간 행에 보조 `q{n}` 수치 |
 | 캐시 | `inventory-gems-finish.css?v=20261008-socket-stones1` (game.html만 — 쉬운판은 이 CSS 미로드, 간이 툴팁 적용줄 사용) |
 | 폰트·색 규율 | 게임 토큰만(Cinzel/var(--font-hell-title), Noto Serif KR 제목) — 이모지 아이콘 없음, 뼈색 문자·금빛 헤어라인·흑철 배경 유지 |
+
+
+## 환불 합계 계산 source 통합 (2026-10-16)
+
+| 항목 | 현재 계약 |
+|---|---|
+| 제품 | R의 refundTotals 한 함수만 채택. SP는 Number(grit)+ΣNumber(stats 값), AP는 기존 COSTS=[1,1,1,2,2,2,3,3,3,5]/10단계23/초과5 유지 |
+| 반복·경계 | level 숫자 변환·ceil·음수/NaN→0. passive당 최대10단계 순회 후 초과비용 곱셈. 레벨 cap·새 경제·저장 포맷 변경 없음. 세부 Infinity/NaN 의미는 정본 유지 |
+| 실제 소비·캐시 | 공개 evaluatePlan/실game 초기화 환불을 사용. game.html의 stat-panel-ui.js query만20261016-refund-totals로 갱신 |
+| 검증·제한 | 격리 새영향6묶음/module구문/cache 한줄 변경 PASS. 첫 fixture export lookup 실패 후 fixture만 수리, 이력 보존. 실제 사용자 상태·save/API·서버 재시작·PC 확인0 |
+| 정본 | docs/3.1 ui hud 디자인/능력치_패시브_개편_20260909.md의 환불 합계 절. 기존 단계비용·계획 원자 적용·확인/저장 권위 유지 |
+
+
+## 입장 예약의 요청 수명 가드 (2026-10-16)
+
+기존 R의 showCharGate request 가드만 main에 결합했다. isolated3387 query carry·새 저장 복원·새 진입 권위를 추가하지 않는다.
+
+| id / 적용 위치 | 현재 계약 |
+|---|---|
+| 예약 시작 | index.html showCharGate(charId,storySeen=false) 진입 시 const request=_characterLoadSeq 캡처. 이 함수는 요청 번호를 증가시키지 않는다 |
+| 예약 실행 | 기존 setTimeout 1200ms 유지. callback 첫머리에서 request!==_characterLoadSeq이면 return. 같을 때만 기존 window.location.href 대입 |
+| 기존 취소·재요청 | _goLogin/_goCinematic 및 loadCharacters/loadLocalCharacters의 기존 ++_characterLoadSeq가 이전 예약을 무효화. 새 취소 writer나 timer clear·debouncer 없음 |
+| 반복 요청 의미 | 요청 번호가 달라진 두 예약은 실행 순서에 관계없이 새 번호만 이동. 같은 번호에서 두 번 호출한 경우 두 callback 모두 허용하는 기존 R 의미 유지 |
+| 정상 경로 | offline test slot 인코딩, online char/선택 slot 이름, demo의 slot=demo&demo=1, storySeen의 story=warrior-v21 suffix 유지. 1200ms/로고 preload/선택·remaster 변경 없음 |
+| 부수효과 경계 | demo 활성화·loading·로고 preload는 기존처럼 예약 전에 수행. stale callback은 이동만 중단하며 기존 activation·loading을 되돌리지 않는다. demo 활성화 실패는 기존 hideLoading/오류/예약0 유지 |
+| 새 검수 | 격리 실제 showCharGate/직접 callback의 정상URL·demo실패·늦은취소·서로 다른 요청의 양쪽 실행순서·같은번호반복·가드외본문불변6묶음 PASS. 해당 inline script1개 구문 PASS. 전체 Startup/실브라우저·사용자 save/API 실행은 아님 |
+| 보호 범위 | 3387/classic/ch1Three/ch1Rig/webgpu carry 미채택. MAP·package·패링별도dependency·game-easy-test/Godot/HUD 변경0. PC/잔여R전체이식 미완료 |
+
+## 인게임 공유 확인창의 단일 대기 요청 (2026-10-16)
+
+R의 기존 gameConfirm pending resolver 가드 한 줄을 main에 결합했다. 로비의 별도 삭제/종료 확인창과 _delConfirmBusy 계약은 변경하지 않는다.
+
+| id / 실제 적용 위치 | 현재 계약 |
+|---|---|
+| pending 검사 | game.html gameConfirm의 첫 줄에서 if(_gcResolve)return Promise.resolve(false). 기존 대기 요청이 있을 때 후속 요청만 취소값 false로 비동기 반환 |
+| 첫 요청 보존 | pending 요청의 메시지·HTML 모드·확인/취소 문구·onclick·resolver를 덮어쓰지 않음. 중복 요청에서는 DOM 쓰기/창 재열기0 |
+| 정상 응답 | 기존 첫 확인은 true, 취소는 false. 기존 버튼 handler가 on 제거와 _gcResolve=null을 처리. 반환값·기본 확인/취소 문구 유지 |
+| 다음 요청 | 창이 닫혀 resolver가 null이면 새 요청을 기존처럼 표시. 큐·자동 확인·새 timer·새 authority 없음 |
+| 실제 소비 | _skResetSkill 등의 기존 if(!await gameConfirm(...))return 경로. 첫 요청 처리와 취소 반환/이후 비용·스킬·세이브 검증 본문 유지 |
+| DOM 범위 | 기존 gameConfirm 본문은 그대로. 신규 DOM parent 내용 교체·UI 디자인·초점 권위 변경 없음. 실제 HTML 렌더링/전체 Startup 검수 아님 |
+| 새 검수 | 격리 public gameConfirm 및 실제 스킬 확인 gate+목적stub의5묶음 PASS. 동시요청 거부·첫 resolver/메시지/버튼 보존·확인/취소·재개·기존 HTML 모드·전체파일 inverse 확인. 변경 function 구문/실행 확인 |
+| 한계 | 실user GUI/state/save/API 접근·자동입력0. 실제 스킬 비용집행/화면품질/PC 검수 없음. game-easy-test·Godot/HOLD·기인수기능·docs/2_3 변경0. 잔여R statement 의도·승인 분류와 전체 이식 미완료 |
+
+
+## 2026-10-16 선택/고물 분해 확인 전후 객체 재검사 — R h355+h356
+
+| 적용 위치·항목 | 현행 코드 계약 |
+|---|---|
+| 정상 소비자 | renderInv의 _isBtn.onclick(선택분해), _jkBtn.onclick(고물 일괄 분해). 기존 확인창·성공 후 SFX.pickup → dbSaveNow → renderInv 순서 유지 |
+| 원래 대상 범위 | 고물은 기존 filtered에서 만든 _jkItems 객체만 시작 후보로 사용. 선택분해는 클릭 시 _invSalSel의 원가방 인덱스로 가방 객체를 얻음. 다른 필터/가방/신규 객체를 대신 분해하지 않음 |
+| _canSelected | it가 있고 fav가 아니며 현재 INV.bag에 동일 객체로 존재하고 INV.equipped의 값에 동일 객체가 없어야 함. salvageVal(it) 결과가 Number.isFinite이고 0 이상이어야 함 |
+| _canJunk | _canSelected와 같은 소유·잠금·장착·결과 조건에 it.junk 조건 추가. 선택분해에는 새 junk 조건을 추가하지 않음 |
+| h355 확인 전 | 선택 인덱스를 객체로 바꾼 뒤 Set으로 동일 객체를 중복 제거하고 _canSelected로 필터. 후보가 없으면 반환. _pendingTotal을 합산하고 유한·0 이상인지 확인한 후 후보 개수/합계로 기존 확인창 표시 |
+| h355 확인 후 | 취소면 반환. 확인 전의 같은 후보 객체를 _canSelected로 다시 필터하고 없으면 반환. 현 salvageVal 합계 _currentTotal을 다시 유한·0 이상 검사 → INV.bag를 해당 객체 제외 배열로 교체 → G.mats+=_currentTotal → _invSalSel.clear()/INV.selected=null → 기존 성공 후속 |
+| h356 확인 전 | 기존 _jkItems를 _canJunk로 필터하고 없으면 반환. 그 후보의 _pendingTotal과 개수로 기존 확인창 표시. 이 경로에는 원R에 없는 합계 유한성 검사를 추가하지 않음 |
+| h356 확인 후 | 취소면 반환. 같은 후보 객체를 _canJunk로 다시 필터하고 없으면 반환. 현 salvageVal 합계 _currentTotal → INV.bag에서 같은 객체만 제외 → G.mats+=_currentTotal → 선택 초기화 → 기존 성공 후속 |
+| 원본 차이 보존 | 선택분해는 객체 Set 중복 제거와 개별/합계 유한·비음수 검사. 고물분해는 기존 후보 목록의 중복 개수 및 개별 검사만 보존. 두 경로를 임의 통일하거나 cap/default/clamp/합계 guard/새 중복·롤백·트랜잭션 정책을 만들지 않음 |
+| 수치·저장 범위 | 기존 salvageVal/PM-013-D 대기 환수식·h122/h187·분해액·비용·장착/잠금 producer·직접 저장 API/직렬화 형식 변경 없음. 갱신된 소비자는 기존 함수 결과만 다시 합산하며 실제 저장 호출 소유는 기존 성공 후속에 유지 |
+| 기존 예외·부분효과 | 함수·confirm Promise·SFX/save/render 예외를 새 catch로 삼키지 않음. 제거/보상 후 후속 예외가 나도 자동 롤백을 추가하지 않음. 이는 원R 순서 보존이며 실제 데이터 안전 인수 선언이 아님 |
+| 신규 검수 | 실제 두 handler와 own Promise-confirm/bag/item/lock/equipped/salvageVal 결과/SFX·저장·렌더 대역 신규10군 + main inline 구문1 첫 통과. 취소·인덱스 이동·삭제/교체·잠금/장착/고물 변화·현재 보상 재합산·원 guard/중복 차이·기존 예외/부분효과·두 block 외 소스 불변 확인 |
+| 엄격한 한계 | 확인창 중 실제 정상 bag mutation producer와 입력차단 불변성은 미확인. Promise 대역 중 변경 사례는 합성 조건의 consumer 검수이며 live race·실분해 버그 재현 증거가 아님. actual salvageVal/실자원/DOM/GUI/saveAPI/사용자 창/native/PC 실행0. 기존 confirm helper·과거 검사 재개봉0 |
+
+
+## 2026-10-16 로비 비율·생성/입장 배치 수리 — 현행 우선
+
+사용자 지시인 로비 UI 비율/버튼 수리이며 전투 밸런스 변경이 아니다. 아래 index.html scoped CSS가 이 문서의 앞선 로비 크기·스크롤·입장 배율 표보다 우선한다. 기존 기본 CSS/과거 실측은 이력으로 유지한다.
+
+| 항목 | 현행 구조·계약 |
+|---|---|
+| 변경 파일·범위 | index.html head 마지막 lobby-layout-20261016 CSS만 추가. 기존 로비 JS/DOM 자식/asset URL byte 불변, 새 제품 asset0. 원본 아트·로고·배경·생성/삭제/선택/입장·데모/요청guard/API·저장 권위 그대로 |
+| 패널·카드 | 우측 clamp(340px,35vw,560px), 폭700px 이하100%. 카드 기본84px→높이760 이하76px→560 이하64px→440 이하56px. 카드 gap10px/낮은높이8px, 같은 단계의 저장 카드는 균일 |
+| 목록·생성 | 기존 VIEW2·wheel/nav 인덱스 정책 유지. vp 선호=카드2개+gap/최소1개/내부 세로 스크롤. 별도 생성행64px→560 이하56px→440 이하48px. 440 이하 최소 목록122px/nav164px/coarse nav176px로 행 겹침 방지 |
+| 입장 | 하단 구분선·margin/padding으로 분리. 기존 이미지 비율·색/점등 유지, max-height clamp(64px,14dvh,132px), vh fallback 동일. min-height64px. 앞선 min(500px,28dvh) 실측은 이전 배율 이력 |
+| Steam CTA | 기존 버튼·URL·동작 유지. 버튼44px, 이미지100%×100% object-fit:contain. 높이760 이하/560 이하 보조행48px와 padding2px0. 최소44px 대상과 충돌하던 초기36/32px 검수안을 대체. 원본 PNG 치수는 읽지 않았고 어떤 비율도 contain 상자에 맞춤 |
+| 입력 새영향 | 실제 online/local wheel/nav 산술 callback만 own slot/index/event/render/높이178/162/136/120/56 대역으로 신규4군, CSS 외 소스 불변1군·inline4개 구문. 전체 index 초기화·실목록/API·기인수 guard suite 실행0 |
+| 레이아웃 검수 | 실제 lobby markup+scroll-vp/track과 ui-refinement 포함4개 linked CSS. own 카드/neutral intrinsic SVG/fallback 폰트 headless13조건. 1366×650 before 생성 bottom444 > content413.97로 잘림 재현. 최종 after 생성 bottom398 <= content458/footer466. 1280×720/800×480/320폭/844×390/coarse·긴이름/빈목록 확인 |
+| 보완 이력 | 브라우저 경로2건 미존재, fixture CSS sanitizer2건으로 초기 시도 실패/무효. 이후 짧은높이·CTA placeholder/기존44px 최소·목록 최소공간 새영향 subset 보완. firstWholeClean=false. 새 CTA 자연높이가 닿은 after조건은 그 영향으로 재검수, 440 이하 변경도 해당 subset 검수 |
+| 한계 | neutral 비율상자 화면은 실제 원화·폰트/브라우저 완성화면·물리기기/화질 PASS 증거가 아님. 실제 슬롯/생성/삭제/입장/saveAPI·사용자 창/reload·서버·PC 실행0. 아주 낮은 화면의 뒤 CTA는 기존 outer content 스크롤·초점으로 접근 가능, 행 자체와 이미지 fit/버튼 접근 검수 |
+
+아래 CSS 전량이 현행 수치·간격·색·미디어 조건의 정확한 기준이다.
+
+```css
+/* Character selection: bounded cards, a separate create row and a compact entry. */
+#lobby>.lobby-right{--lobby-card:84px;--lobby-card-gap:10px;flex:0 0 clamp(340px,35vw,560px);min-width:0;min-height:0;padding:24px 28px;justify-content:center;}
+#lobby .lobby-content{flex:0 1 auto;min-height:0;gap:12px;padding-inline-end:6px;scroll-padding-block:6px;}
+#lobby .lobby-content>.lobby-header{min-height:36px;margin:0;align-items:center;}
+#lobby .lobby-content>.lobby-divider{height:104px!important;margin:0;}
+#lobby .lobby-content>.char-list{display:flex;flex-direction:column;gap:10px;flex:0 1 auto;min-height:0;overflow:visible;padding:4px;}
+#lobby .char-scroll-vp{flex:0 1 calc(var(--lobby-card)*2 + var(--lobby-card-gap));height:calc(var(--lobby-card)*2 + var(--lobby-card-gap));min-height:var(--lobby-card);overflow-x:hidden;overflow-y:auto;scrollbar-gutter:stable;scrollbar-width:thin;scrollbar-color:#96714e #121012;scroll-padding-block:4px;}
+#lobby .char-scroll-track{gap:var(--lobby-card-gap);}
+#lobby .char-scroll-track>.char-item{flex:0 0 var(--lobby-card);height:var(--lobby-card);min-height:var(--lobby-card);}
+#lobby .char-scroll-nav{flex:0 0 auto;margin:0;gap:12px;opacity:1;}
+#lobby .char-nav-btn{min-width:36px;min-height:32px;border:1px solid #75604766;background:#171214;}
+#lobby .char-list>.char-item-new{flex:0 0 64px;height:64px;min-height:64px;margin-top:0!important;padding:8px 16px;gap:12px;border-color:#96714e!important;}
+#lobby .char-item-new .char-thumb{flex-basis:40px;width:40px;height:40px;}
+#lobby .char-item-new .char-name{font-size:.95rem;letter-spacing:.04em;}
+#lobby .lobby-card-gap{display:none;}
+#lobby .lobby-mid-area{flex:0 1 auto;min-height:0;max-height:152px;padding:0;overflow-y:auto;}
+#lobby .lma-banner-inner{padding:8px 0;gap:6px;}
+#lobby .lma-main-txt{font-size:14px;line-height:1.35;}
+#lobby .lma-sub-txt{font-size:11px;line-height:1.4;letter-spacing:.03em;}
+#lobby .lma-steam-btn{width:min(200px,70%);height:44px;display:flex;align-items:center;justify-content:center;}
+#lobby .lma-steam-btn img{width:100%;height:100%;object-fit:contain;}
+#lobby .lobby-footer{margin-top:14px;padding:10px 4px 4px;gap:0;border-top:1px solid #96714e55;}
+#lobby .enter-game-btn{min-height:64px;}
+#lobby .enter-game-btn img{width:100%;height:auto;max-height:clamp(64px,14vh,132px)!important;max-height:clamp(64px,14dvh,132px)!important;object-fit:contain;}
+#lobby .lobby-bottom-actions{min-height:36px;margin-top:4px;}
+@media(max-height:760px){
+ #lobby>.lobby-right{--lobby-card:76px;padding-block:16px;}
+ #lobby .lobby-content{gap:8px;}
+ #lobby .lobby-content>.lobby-divider{height:72px!important;}
+ #lobby .lma-txt-group{display:none;}
+ #lobby .lobby-mid-area{flex:0 0 48px;max-height:48px;}
+ #lobby .lma-banner-inner{padding:2px 0;}
+ #lobby .lma-steam-btn{width:min(170px,60%);}
+ #lobby .lobby-footer{margin-top:8px;padding-top:8px;}
+}
+@media(max-height:560px){
+ #lobby>.lobby-right{--lobby-card:64px;--lobby-card-gap:8px;padding-block:10px;}
+ #lobby .lobby-content{gap:6px;}
+ #lobby .lobby-content>.lobby-header{min-height:30px;}
+ #lobby .lobby-content>.lobby-divider{height:44px!important;}
+ #lobby .char-list>.char-item-new{flex-basis:56px;height:56px;min-height:56px;}
+ #lobby .char-scroll-track>.char-item{padding-top:6px;padding-bottom:6px;}
+ #lobby .lobby-mid-area{flex-basis:48px;max-height:48px;}
+ #lobby .lma-steam-btn{width:140px;height:44px;}
+ #lobby .lobby-footer{margin-top:6px;padding-top:6px;}
+}
+@media(max-width:700px){
+ #lobby>.lobby-left{display:none;}
+ #lobby>.lobby-right{flex-basis:100%;width:100%;padding-inline:24px;}
+ #lobby .lobby-content>.lobby-divider{height:76px!important;}
+ #lobby .char-name:has(.char-name-label){flex-direction:column;align-items:flex-start;gap:2px;}
+ #lobby .char-name:has(.char-name-label) .char-cls{max-width:100%;margin:0;}
+}
+@media(max-width:700px) and (max-height:560px){#lobby .lobby-content>.lobby-divider{height:44px!important;}}
+@media(max-height:440px){
+ #lobby>.lobby-right{--lobby-card:56px;}
+ #lobby .lobby-content>.lobby-divider{height:32px!important;}
+ #lobby .char-list>.char-item-new{flex-basis:48px;height:48px;min-height:48px;}
+ #lobby .char-item-new .char-thumb{flex-basis:32px;width:32px;height:32px;}
+ #lobby .char-scroll-track .char-thumb{flex-basis:36px;width:36px;height:36px;}
+}
+@media(pointer:coarse){#lobby .char-nav-btn{min-width:44px;min-height:44px;}}
+@media(max-height:440px){
+ #lobby .lobby-content>.char-list{min-height:122px;}
+ #lobby .lobby-content>.char-list:has(>.char-scroll-nav){min-height:164px;}
+}
+@media(pointer:coarse) and (max-height:440px){
+ #lobby .lobby-content>.char-list:has(>.char-scroll-nav){min-height:176px;}
+ #lobby .lobby-content>.lobby-divider{height:24px!important;}
+}
+```

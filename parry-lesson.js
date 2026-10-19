@@ -11,18 +11,18 @@ window._parryLesson = {
   },
   resetForNewCharacter() {
     this.skippedKey=null;this.newCharacterKey=this.skipKey();this.seen=false;
-    try{localStorage.removeItem(this.newCharacterKey);}catch{}
+    try{(window._FDGDruidQaStorage?.active?window._FDGDruidQaStorage.removeItem(this.newCharacterKey):localStorage.removeItem(this.newCharacterKey));}catch{}
   },
   dismissed() {
     const key=this.skipKey();
     if(this.skippedKey===key)return true;
     // A new character and explicit replay bypass older opt-outs for this visit.
     if(this.newCharacterKey===key||new URLSearchParams(location.search).get('tutorial')==='1')return false;
-    try{return localStorage.getItem(key)==='1';}catch{return false;}
+    try{return (window._FDGDruidQaStorage?.active?window._FDGDruidQaStorage.getItem(key):localStorage.getItem(key))==='1';}catch{return false;}
   },
   skipAll() {
     this.skippedKey=this.skipKey();this.seen=true;
-    try{localStorage.setItem(this.skippedKey,'1');}catch{}
+    try{(window._FDGDruidQaStorage?.active?window._FDGDruidQaStorage.setItem(this.skippedKey,'1'):localStorage.setItem(this.skippedKey,'1'));}catch{}
     this.finish();
     const system=window._systemLesson;
     if(system){system.closed=true;system.active=false;system.panel?.remove();}
@@ -317,6 +317,7 @@ window._parryLesson = {
     _harpActive=false;_dashActive=false;_dashHold=false;_dashHoldF=0;_dashTier=0;_dashLeft=0;_dashPhase=0;
     P._bdMoveT=0; P._preBdState=null;this.directionSpace=false;this.dashPractice=null;
     P._sdHold = 0; P._bdTrigger = null; P.kb.x = 0; P.kb.y = 0;
+    if(typeof _resetInteractInput==='function')_resetInteractInput();
     for (const key of Object.keys(K)) K[key] = false;
     for (const key of Object.keys(KH)) KH[key] = false;
     for (const key of Object.keys(MB)) MB[key] = false;

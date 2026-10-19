@@ -1,0 +1,76 @@
+[
+  {
+    "file": "gallery_exo_new_transmuter-orbit_20260928.webp",
+    "url": "https://www.fordeargamers.com/gallery_exo_new_transmuter-orbit_20260928.webp",
+    "bytes": 835222,
+    "sha256": "df4a12f934ff782da8afa31b3a12f5daa2c3df37d3da64019f04652cdb4ba77d",
+    "used": true
+  },
+  {
+    "file": "gallery_exo_new_cruciform-costume_20260928.webp",
+    "url": "https://www.fordeargamers.com/gallery_exo_new_cruciform-costume_20260928.webp",
+    "bytes": 677922,
+    "sha256": "d6dd4aeba7164c45bfaebf2b5df38cf2572b61263791669bf2ba67df3780ed1c",
+    "used": true
+  },
+  {
+    "file": "gallery_exo_new_arcane-lancer_20260928.webp",
+    "url": "https://www.fordeargamers.com/gallery_exo_new_arcane-lancer_20260928.webp",
+    "bytes": 656506,
+    "sha256": "2b0da56c44ab0a9ad894c1365bb7b90175d345b93fe5dce018709fa3c0eecd35",
+    "used": true
+  },
+  {
+    "file": "gallery_exo_new_transmuter-sword_20260928.webp",
+    "url": "https://www.fordeargamers.com/gallery_exo_new_transmuter-sword_20260928.webp",
+    "bytes": 746342,
+    "sha256": "91502c060f3e303d17dd506ee4f9d237b697335767220e5ebd85b17e9a95465b",
+    "used": false
+  },
+  {
+    "file": "gallery_exo_new_cruciform-red-moon_20260928.webp",
+    "url": "https://www.fordeargamers.com/gallery_exo_new_cruciform-red-moon_20260928.webp",
+    "bytes": 545376,
+    "sha256": "1b90e92cba41493862157927ea45c6154ab7f207ee29b3d930cfdc3e2d370531",
+    "used": true
+  },
+  {
+    "file": "gallery_exo_new_cruciform-duo_20260928.webp",
+    "url": "https://www.fordeargamers.com/gallery_exo_new_cruciform-duo_20260928.webp",
+    "bytes": 457224,
+    "sha256": "3b1c72bbe3cf924402e43f8adbfebb7a5c97c099162d383358ab23af00baf8f5",
+    "used": true
+  },
+  {
+    "file": "gallery_exo_new_cruciform-ruins_20260928.webp",
+    "url": "https://www.fordeargamers.com/gallery_exo_new_cruciform-ruins_20260928.webp",
+    "bytes": 541726,
+    "sha256": "d703944bee3ac177bbf2cbb8196df39dc290d258ecfb72f9a43e746a652c2497",
+    "used": true
+  },
+  {
+    "file": "gallery_exo_keyart_female.jpg",
+    "url": "https://www.fordeargamers.com/gallery_exo_keyart_female.jpg",
+    "bytes": 184054,
+    "sha256": "2b60b909c0812e82a1e203a14b5f79d00cb618071b0a478a26c258e24996c3e6",
+    "used": false
+  },
+  {
+    "file": "gallery_exo_keyart_male.jpg",
+    "url": "https://www.fordeargamers.com/gallery_exo_keyart_male.jpg",
+    "bytes": 216946,
+    "sha256": "251f9fbacb30814476ee44f69141061c568a823cac4277192137d5f79c9b37f3",
+    "used": false
+  },
+  {
+    "file": "steam-page-bg.jpg",
+    "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4749590/86610007c9bf157b4a4213d3056ab5df1d39155a/page_bg_raw.jpg?t=1790419030",
+    "bytes": 208529,
+    "sha256": "4931252a21614f3f6888fb96e3c26443dae1df8423bbe7b937539d6b40543017",
+    "resolution": [
+      1438,
+      810
+    ],
+    "used": true
+  }
+]

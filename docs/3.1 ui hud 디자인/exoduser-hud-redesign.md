@@ -1,3 +1,5 @@
+> 2026-10-16 통합 범위: 웹 본편 수치·현행은 최신 main 기준, 별도 Native/FDG 항목은 source pin9a4534b4의 부분 이식·명시 opt-in 계약이다. 전체 최신 본편 이식 완료가 아니다. 상세: docs/engine/FDG_PC_MAC_GIT_SYNC_20261016.md.
+
 # THE EXODUSER — HUD 리디자인 마스터 플랜
 
 > 2026-09-27 인벤토리 최신 창 규격은 [장비 시스템 최신 절](../2_7%20인벤토리+장비시스템/2_7%20인벤토리+장비시스템.md)의 `100dvh−24px`(620px 이하 `−8px`) 및 장비/가방/정보 가변폭 1.28fr/clamp(400px,30vw,600px)/1fr이다. 아래 기존 270px 장비 행과 680px 창 높이는 당시 제작 기록이다.
@@ -1094,3 +1096,16 @@ CSS 캐시 ui-refinement.css?v=20260927-3. 신규 이미지/아이템 데이터 
 | 설정창 | 고정680px 폭 제거, 화면 여백12px(폭600px 이하6px), 본문 그룹2열/작은 화면1열 |
 | 가독성 | 기본 설정명16px·키캡14px, 행60px·키캡42px 이상, 제목80px로 압축. 전체 값/선택자는 SETTINGS_UI_WORKSPACE_20260929.md 참조 |
 | 검수 | 메인/쉬운 테스트 실제 설정 화면, 6개 화면 크기×5탭에서 가로 잘림 없음·닫기 고정 확인 |
+
+
+## 2026-10-11 · r8 자기 QA 레이블과 지역 타이틀
+
+기존 UI와 r3/r4/r5/r6/r7 이력은 보존한다. 새 자기 QA의 실제 play/증거/verdict는 [전투 표시 가독성 r8](../engine/FDG_DARK_DRUID_COMBAT_READABILITY_20261011.md)에서 관리한다.
+
+| 항목 | r8 scoped 계약 |
+|---|---|
+| gate | existing r4 storage.active + fdgDruidCombat=r8, QA combatReadability:true && native-ai |
+| 지역 타이틀 | body.fdg-druid-readability-r8 #areaTitle: top12px/left285px/width330px/text-align:left, ::before/::after width8%. 문자/폰트/색/animation/3.1초 native 지속 유지 |
+| hover / floating | 기존 hover 판정/내용 및 G.txts record/life/font/alpha/scale/흔들림 유지. world draw-local anchor만 viewport/body/player/occupied에 대해 가까운 표시 위치로 이동. native 모든 nameplate/HPbar 이동 아님 |
+| 불가 배치 | {x,y,rect,moved,overflow,reason}; overflow 원 위치 계속 표시·hide/drop0, malformed anchor는 null 가능 |
+| compact HUD | leaf DARK DRUID · r8 / aria 드루이드 전투 QA r8, width172px!important/max-height170px. native boss state/HP/eShield와 player state/HP 표시; HUD와 별도 snapshot의 측정시각을 같은 순간으로 주장0 |

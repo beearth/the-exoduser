@@ -37,6 +37,12 @@ mkdirSync(DIST, { recursive: true });
 const FILES = [
   'index.html', 'game.html', 'credits.html',
   'build-target.js',
+  'engine/fdg/druid-qa-storage.js',
+  'tools/2_5d/atlas-clip-runtime.mjs',
+  'data/vfx/boss_fire_impact24_20261010.json',
+  'data/vfx/boss_water_impact24_20261010.json',
+  'data/vfx/firedevil_orb24_20261010.json',
+  'data/vfx/kraken_water_orb24_20261010.json',
   'release-version.js', 'patch-notes.js',
   'game-easy-test.html', 'game-guide.html',
   'player-attack-remaster.js',

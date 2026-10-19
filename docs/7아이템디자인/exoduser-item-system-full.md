@@ -1,3 +1,20 @@
+> 2026-10-17 ENGINE WIP 현행: callback **10/25·미15**, 기존9 뒤 `rand` 인자0을 같은 Services reader로 등록했다. 아래 이전9·미등록 표시는 해당 이전 인수 단계의 이력이며, 현행 등록 상태는 이 배너와 마지막 등록 절을 따른다. main/R/served 반영·V9 scalar Dict직결·fullhurtE 완료는 아니다.
+
+> 2026-10-17 ENGINE WIP 현행: 실제 callback **9/25·미16**. 신규 격리 행동41/41과 신규 map 경계 static9/9만 인수 범위다. 원 첫 parse 실패는 보존한다. 이 WIP를 main/R/served·전체 게임 최신화 완료로 해석하지 않는다.
+
+## 현재 mkItem source / Native 시작 아이템 — 2026-10-14
+
+| 계약 | canonical / Native 적용 |
+|---|---|
+| 적용 범위 | 원 mkItem16405..16673/defaultItems16675..77/newrun64425..30 중tier0/common0·advanced1 시작아이템25. 전설/유니크/상위tier 전체생성의 완료를뜻하지않음 |
+| implicit | affixes 생성뒤 IMPLICIT_TABLE 사용, bracelet은 bracelet_<brType>, _implicitVal=+iv.toFixed(2) 모든unit동일. 현재source를STEP3 구형계획의val절삭/소수3자리로교체하지않음 |
+| aSlot mapping | weapon→wpn, bow→xbow, helmet→helm, shield→shield, armor→armor, boots→boots, gloves→gloves, pants→pants, necklace→neck, ring1/ring2→ring, cape→cloak, bracelet→bracelet, headband→headband. headband2는원headband재귀생성뒤slot만변경 |
+| affix count source | [0,2,3,5,6,7]; 이Nativefactory지원caller는rarity0/1만. STEP3 계획의 [0,1,2,3,4]와구분 |
+| 실제 Main 설치 | originalRNG/time→25requests/25items/26functionentries→sameitem15equip+10bag. realRNG913관측/원UID·time25/level70, 재호출시추가RNG0 |
+| 현재 파생 | actualINV/currentstatprovider설치완료; HP/MP/ST/fullapplyStats 파생은아직미설치 |
+
+아래 STEP3 교체예시는 과거설계이며 현재원source/Nativefactory에적용하는패치가아니다. 최신원함수표는 FDG_GODOT_PORT_STARTER_ITEM_FACTORY_SOURCE_FIRST_20261013.md, actual Main consumer는 FDG_GODOT_SOURCE_NEW_RUN_STATE_20261014.md다.
+
 # EXODUSER — 아이템 시스템 완전 구현 프롬프트
 
 > **2026-10-10 명칭 변경: 보석/결정 → 유물 (코드 식별자 crystal*·세이브 키 crystalBag/crystals 유지).**
@@ -385,7 +402,7 @@ const LEGENDARY_SPECIAL={
 | 19 | belt | `_lBeltBuff` | 물약 사용 시 5초간 피해 +15% | ×1.15, 300f | `useQuickslot()`·자동물약 → `P._lBeltT=300`, `hurtE()` 배율 | 원문 그대로 (구 문서 "스태미나 완전 회복 시"는 폐기된 설계) |
 
 **헬퍼 함수 (2026-10-08 추가, `_uEq` 바로 아래 game.html ~15745):**
-- `_lEq(stat)` — `_uEq`와 동일 규칙(장착 슬롯 순회·첫 값 1개·비가산)이되, 핫패스 비용 때문에 **장비 변경 시 재계산되는 캐시**(`_lEqCache`) 사용. 무효화 지점은 `_eqAffixCache`와 동일(recalcSt·_testAffix·_testAffixClear).
+- `_lEq(stat)` — `_uEq`와 동일 규칙(장착 슬롯 순회·첫 값 1개·비가산)이되, 핫패스 비용 때문에 **장비 변경 시 재계산되는 캐시**(`_lEqCache`) 사용. 무효화 지점은 `_eqAffixCache`와 동일(_refreshEquipmentStats·recalcSt·_testAffix·_testAffixClear).
 - **구세이브 폴백**: `_lEqRebuild()`가 `item[stat]`이 없고 `legendarySpecial.stat/val`만 있는 구버전 아이템에서 `item[stat]=legendarySpecial.val`을 복원한다 → 옛 세이브의 전설 아이템도 그대로 동작.
 - `_legSpKo(ls)` — 툴팁 표기는 저장된 `ko` 문자열이 아니라 **stat 기준 현행 테이블 문구**를 사용(`_LS_BY_STAT`), 구세이브의 옛 문구가 자동 정규화된다.
 - `_lParryWinTicks()`/`_lSbParryT()` — 망토(_lCapeParry) 패링 윈도우 확대 전용.
@@ -452,7 +469,7 @@ const UNIQUE_SPECIAL = {
 
 ---
 
-## STEP 3. mkItem() 함수 업그레이드
+## STEP 3. mkItem() 함수 업그레이드 — 과거 교체계획, 현재 source 적용 금지
 
 **위치**: 기존 `function mkItem(slot,tier,el,rarity,wtype){` 함수 내부 끝부분  
 (약 3080~3105번 줄 — `// ── 접두사/접미사: 고급+` 주석부터 `return item;` 전까지)  
@@ -1022,3 +1039,89 @@ renderAffixTooltip(item) → 인벤토리 툴팁 표시
 - **소켓석(신규 드랍 아이템, `STONE_BAG` {q:1~100})**: 장비 홈 개방(최대 5홈)·홈 품질 승급 재료. 드랍률 일반 1.5% / 정예 6% / 미니보스 12% / 장보스 25% / 챕터보스 40% (×dropBonus). 티어는 챕터 깊이 가중 `w(t)=B^(10−t)`, `B=min(0.78,0.42+0.06×SI_TO_HELL[stage])` — 1장 T10~T7 96.9%, T1 0.024%.
 - **아이템 홈**: 드랍 홈 수 1~4 롤 유지, 자연 홈 품질 전부 q=1(T10,+0%) — 홈 품질은 소켓석으로만 올린다. 홈 보너스 b=(q−1)/99, 홈·유물 티어 일치(공명) 시 ×2, 최상 q100홈+1티어 유물 = 유물 효과 ×3.00.
 - 상세 수치·워크드 예시: `docs/14밸런스+수치테이블/보석품질_소켓석_수치표.md`, 시스템 규칙: `docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md`.
+## 2026-10-16 수동 장비 갱신 캐시 보존
+
+| 적용 위치 | 계약 |
+|---|---|
+| _refreshEquipmentStats | 현재 자원 보관 후 _eqAffixCache/_eqStatCache/_lEqCache를 모두 null로 만들고 기존 applyStats를 호출 |
+| _lEqCache | 기존 recalcSt의 전설 캐시 무효화를 새 공통 갱신에서도 스탯 계산 전에 유지. R helper의 캐시2만 복사해 현재 main의 세 번째 캐시 계약을 잃지 않도록 통합 |
+| 유지 범위 | 전설 스탯·배율·슬롯 순서·구세이브 복원·패링/공격 판정 및 _lEq 구현 변경 없음. applyStats 끝 recalcSt도 그대로 |
+
+실제 새 helper/장착 호출부에 합성 통계 제공자를 연결해 선행 캐시3 무효화를 확인했다. 실제 전설 효과·전체 스탯식·실HP·전투·native·세이브 검증은 아니다.
+## 2026-10-16 어픽스·implicit·로컬 ATK 숫자 소비
+
+| 소비자 | 현행 동작 |
+|---|---|
+| _eqAffixRebuild | 각 기존 a.id별 a.value를 unary + 후 falsy0으로 합산. _eqAffix의 lazy rebuild/캐시/조회 반환 정책은 유지 |
+| _eqImplicit(stat) | 기존 stat 일치 필터 아래 _implicitVal을 숫자로 소비 |
+| _slotFlatAtk(it) | 기존 sharpAtk/brutalAtk/ruinAtk 세 id만 숫자 합산. 다른 id와 장비 슬롯 선택은 변경하지 않음 |
+| atk/공속/빔 소비 | meleeRef/bowRef/magicRef의 슬롯 atk, statDex의 장갑 atkSpd, pBeamMul의 투구 beamDmg가 같은 숫자 소비를 적용 |
+| main 전설 장갑 | statDex의 _lGloveElem 공속+0.20은 현재 main 계약 그대로. 원R 함수를 통째로 덮어 이 항목을 제거하지 않음 |
+| 원 데이터 | affix/item 필드를 변환 저장하지 않음. 캐시 무효화·구세이브 복원·전설/유니크 스탯 값·판정·RNG 정책 변경 없음 |
+
+R h179/180/181/183/191/192의 숫자 소비 변경이다. 새 Math.max·상한·finite 검사·어픽스 id/수치/확률을 추가하지 않았다. 신규8군·구문1의 합성 소형 소비자 검사이며 실제 전설/유니크 효과·피해·공격속도·스폰·전체 applyStats·실HP/native/save/창 검증은 아니다.
+## 2026-10-16 자동 물약 장갑·벨트 potCd 소비
+
+| 소비자 | 계약 |
+|---|---|
+| update 자동 물약 CD | 장갑 gl().potCd와 벨트 blt().potCd를 unary+ 후 falsy0으로 소비하고 기존 각 Math.min(...,0.2) 적용 |
+| 원본 장비 | potCd 필드·등급·생성/저장 값은 수정하지 않음. 기존 pRegen*0.03/cap0.3 및 420f 기준 CD·최소6f·~~ 연산 유지 |
+| 수동 경로 | 폐지된 useQuickslot/qsAuto UI를 되살리지 않음. h188 미채택, h237 자동 경로의 두 operand만 |
+| 효과/전설 | 자동 물약의 기존 _lBeltBuff 등 효과·판정·회복/소비/RNG는 그대로. 실제 효과 검수는 이번 범위에서 실행하지 않음 |
+
+신규6군·구문1은 actual CD 문장과 합성 입력 검사다. 전체 update·전투/회복·장비 효과·실HP/clock·native·세이브·창을 검증한 결과가 아니다.
+
+## 2026-10-16 월드 공통 컷아웃 실패 후 phys fallback 처리 — R h174+h175
+
+공통 _itemSkinSrc의 기존 경로 선택 계약은 유지한다. 이미 존재하는 onerror fallback으로 바뀐 이미지의 반환/마스크 경계만 수정하며, 없는 파일 경로를 새로 추측해 먼저 요청하는 정책은 추가하지 않는다.
+
+| 항목 | 현재 main 계약 |
+|---|---|
+| 소유 위치 | _worldItemSkin(it)의 새 Image 생성과 공통 컷아웃 반환 guard만. 원 R h174+h175를 현재 main에 3way 연결 |
+| 출처 기록 | img.src=renderSrc 직후 _worldDropCutoutSrc=cutoutSrc?img.src:''로 실제 getter 문자열 보관. 새 URL 정규화·경로 선택/추측 정책 없음 |
+| 공통 컷아웃 | cutoutSrc가 있고 현재 img.src가 기록된 컷아웃 src와 같을 때만 raw image 반환. 기존 onerror로 phys fallback src가 바뀌면 기존 canvas/_maskWorldDropBlack·_worldDropMasked 캐시 경로 사용 |
+| uniqueArt | 현재 main의 ||it.uniqueArt 우회를 유지. 성공 및 기존 phys fallback도 기존 방식 그대로이며 이번 단위에서 유니크 처리 정책을 수리하지 않음 |
+| 보존 | 원 resolver/key/alias/bone·onload/onerror·mask 알고리즘/마스크 재사용·부트/h173·원 PNG 유지. 새 retry·migration·준비/READY 정책·asset 생성/가공 없음 |
+| 검증 | 실제 helper와 own Image/Canvas/mask/resolver·자기 load/error callback 새5그룹/main inline1. own URL getter/호출 spy를 실제 browser/알파/픽셀·visualPASS로 확대하지 않음. 실제 Image/네트워크/PNG·사용자 cache/GUI/saveAPI·Native·PC 실행 없음 |
+
+
+## 2026-10-17 ENGINE WIP: Main 소유 l_eq 이식
+
+이 절은 현재 ENGINE WIP의 추가 구현 상태다. 기존 본문·동기화 checkpoint·과거 검수 결과는 해당 당시 기록으로 보존한다.
+
+| 항목 | 현재 코드와 검증 상태 |
+|---|---|
+| 소유/최초값 | actual Main 인스턴스 하나를 native source-script context 하나로 대응하는 신규 설계. Main private Variant _source_l_eq_cache=null 선언 1회; Formula/Services/actor 교체는 초기화 사유가 아니다. |
+| 실제 경로 | Main source-init 경계→Services weak current bridge→Formula.l_eq(stat)→Main-owned lazy query→State의 같은 actual INV/slot/item/special에 한정된 누락 필드 복원. 값은 actual legendarySpecial.val에서만 파생, 범용 setter 없음. |
+| 순서/값 | cache={} 설치 후 INV/17 slot 순회. 첫 non-undefined, defined null/false/0/빈 문자열/NaN 보존·raw truthy 또는 숫자0. native 미표현 undefined/ToPropertyKey/prototype operand는 raw/prefix를 포함한 typed partial, retry/clear/rollback 없음. |
+| cache hit/수명 | domain/INV/writer eager 조회 없이 새 metadata ownership guard. 같은 Main의 helper/actor 교체에도 cache 유지, 옛 caller와 Main 유실 거부. 기존 ordered affix/reference invalidation sink와 원 5개 reset 위치는 l_eq reset 권위로 확장하지 않음. |
+| 등록/검수 | 현재 ENGINE WIP callback map **9/25·미16**. 기존8 뒤 실제 l_eq=Callable(self,read_normal_enemy_legendary_equipment) 하나를 추가했다. 원 첫 fixture parse 실패·행동0은 보존하고 header5줄만 수정한 새 namespace의 최초 신규 행동41/41 PASS도 별도 유지한다. 이번 등록 경계만 새 static9/9, 기존 행동·parser·static 검수 재실행0. 전체 hurtE 연결·실게임·main/R/served 반영은 미완이다. |
+| 범위/한계 | full Main/Services.configure/State 자연 lifecycle·실 INV/save·원 JS boot/restore·게임/export/PC 최신판 완료 증거 없음. 초기 plan metadata에 불필요한 Q/E 선언·필드 및 Main876 Q currentOptions 할당 한 줄/Frame metadata도 포함됐으며 원본 보존·캐시 권위에서 제외. 실제 Q/E 실행·변경 없음. |
+
+정확한 API·17 slot·최초 실패 로그·미소유 범위는 [Main 전설 장비 캐시 계약](../engine/FDG_NATIVE_MAIN_LEGENDARY_EQUIPMENT_CACHE_20261017.md)에 기록한다.
+
+
+## 2026-10-17 ENGINE WIP: typed rand 실제 소유 경계
+
+| 항목 | 현행 코드/한계 |
+|---|---|
+| actual registry | 현행 ENGINE WIP10/25·미15. 기존9 뒤 rand=Callable(self,read_normal_enemy_random_unit) 인자0을 등록했다. V9 scalar _rand에Dict직결0/전체hurtE·최신게임완료아님. |
+| 새 API | Main.is_native_source_rand_context_current(Services,World), Services.is_native_main_random_bridge_current 및read_normal_enemy_random_unit()->Dictionary, World.read_native_source_random_unit(Main,Services,receipt)->Dictionary. |
+| 기존 API 보존 | World.sample_native_random_unit()->float 선언0arg 유지. private공유구현1개가counter+=1→동일float(randi())/2^32를단1회수행, legacy는null/typed는freshreceipt로같은구현을호출한다. optionalarg 변경안미채택·publicbody자체는위임으로변경. |
+| 실제 완료 | Services의percall localreceipt에계산완료뒤에만rawsample을기록. 정상0는READY0, marker부재/default0은NR/UNKNOWN, preloss만명시NONE·query0, postloss/typedmalformedreturn도원rawreceipt/read_result·소비prefix보존. 새persistent RNGstate/cache/epoch·retry/rollback/추가draw0. |
+| 부분 지원 | 실제float finite[0,1)완료·전후sameowner/Script/liveTree가새경계READY조건. unexpectedraw는UNSUPPORTED/raw보존/값cast·clamp·전역finite0. primitive내부무관측failure와원JS/stream동등은미증명. |
+| 첫 검수 | 신규정적9/9·신규격리행동30/30/exit0/result존재·양로그diagnostics0. primitiveleaf대역·명시holder/Statepredicate·default0/typedmalformedreturn모사범위, 실RNG/엔진abort/자연fullMainWorld동등아님. old41/95/진단/통과parse재연0. |
+| 보존 | sourceWIP는I만·최종ROOT인수전main/R/served0. 원첫실패/selector·thread과대범위이력과그한계를새성공으로소급수정하지않는다. |
+
+정확signature·schema·freshreceipt구조한계·검수범위는[typed rand 소유경계](../engine/FDG_NATIVE_NORMAL_ENEMY_RAND_OWNER_20261017.md)에기록한다.
+
+
+## 2026-10-17 ENGINE WIP: rand 10번째 실제 등록
+
+| 항목 | 현재 상태 |
+|---|---|
+| registry | eq_affix,u_eq,p_atk_mul,melee_ref,parry_lesson_active,player_view,stat_str,p_dot_pool,l_eq,rand 순서. 실제10/25·미15. |
+| callback | 같은 Services self의 read_normal_enemy_random_unit()->Dictionary 인자0. purpose/line은인자가아니며기존Main공개getter의forwarding을재사용한다. |
+| 변경 경계 | Services map literal1개만추가. 기존9/helper/owner/sharedsampler/수식/primitive/Main/World본문은그대로다. |
+| 새 검수 | 등록delta static7/7, runtime0. 키10/기존9순서·sameSelf/method·0arg·typedWorld route·다른Services bytes보존·생성시추가reader/RNG/domainquery0 확인. 기존readinessguard 전체query0은미입증이다. |
+| 보존/한계 | 기존30/41/95·진단/통과parse재연0. main/R·실게임·producer/V9제품copy·scalarDict직결·ENEMY TASK·Worldhook·dummy25우회0. 이전실패/범위초과이력도그대로다. |
