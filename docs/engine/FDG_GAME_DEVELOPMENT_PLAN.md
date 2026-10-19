@@ -70,7 +70,9 @@ REF 행은 이미 인수한 입력의 추적 기록이며 새 제작 지시가 �
 | 자연 clock 권위 | 원본 `G.playTime/stageTime += sp`(game.html:32742, update() 본문). Godot는 `source_update_clock_prefix`가 32580~32683(phase_sp)까지만 포팅했고 **제품에서 호출되지 않음**(선언만). `_g`에 playTime 키 없음 → `read_normal_enemy_play_time` NOT_READY. 결손 = 원본 생산자 미포팅(임의 값 주입 금지) | port_modules/source_update_clock_prefix/producer.gd, services.gd:263~287, state.gd:751 |
 | 실제 효과 owner | 일반 적 = enemy.gd(`receive_damage`: hp/flash/stun/kb/death). Mac C 브랜치가 HP 쓰기만 `apply_native_normal_enemy_hp_write`로 위임. flesh_crawler만 `commit_native_source_damage_field`/`apply_native_source_poise_hit` 보유(호출자 없음) | enemy.gd:201~, enemy_melee_flesh_crawler.gd:376~ |
 
-실행 순서: **D(clock 생산자 실구동) → C main 통합 결정 → E(caller 최소 연결) → Mac 실행 자연 첫피격 인수**. 상세 기술 근거: [P1-002 clock 생산자 작업 문서](FDG_P1_002_CLOCK_PRODUCER_20261019.md).
+실행 순서: **D(clock 생산자 실구동) → C main 통합 결정 → E(caller 최소 연결) → Mac 실행 자연 첫피격 인수**.
+
+**2026-10-19 총괄 판정 — clock은 첫 전투 E의 선행 조건이 아니다.** 원본 hurtE(42110~43119)에서 `G.playTime`을 읽는 곳은 2곳뿐이다: 42328 `!isDot&&atkEl>0&&_lEq('_lRingElem')>0&&…&&(G.playTime||0)-…`(속성 공격+전설 반지), 42664 `e._uqGwExp&&(G.playTime||0)<…`(유니크 효과 부여된 적). 기본 근접 `hitArc`(37603)는 무기 속성 `el`을 atkEl로 넘기며, 시작 장비·일반 적에서는 JS `&&` 단락 평가로 playTime에 도달하지 않는다. 따라서 D의 선행 생산자 5종(문서 §5)은 별도 트랙으로 두고, **E를 D 완료와 무관하게 착수**한다. E 구현은 play_time provider가 NOT_READY여도 해당 분기 조건이 거짓이면 읽지 않아야 한다(원본 단락 순서 보존). E의 실행 검증에는 Godot 4.7.2가 필요하다(project.godot features "4.7", run.cmd 기준). PC에는 미설치. 상세 기술 근거: [P1-002 clock 생산자 작업 문서](FDG_P1_002_CLOCK_PRODUCER_20261019.md).
 
 접점 확인은 **실제 caller, 자연 clock/currentState의 권위, 실제 효과 적용 owner**라는 핵심3질문에 한정한다. 구체 함수·파일이 아직 확인되지 않은 연결을 완료로 표시하지 않으며, 답을 얻으면 같은 질문을 다시 조사하지 않고 최소 연결 구현으로 이어간다. 전체 producer/catalog 조사로 넓히지 않는다.
 
