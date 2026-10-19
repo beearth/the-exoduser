@@ -800,3 +800,47 @@ func read_native_normal_enemy_play_time(main: Node, services: RefCounted) -> Dic
 	observation["reason"] = ""
 	observation["value"] = raw_value
 	return observation
+
+
+## source update() clock owner_writes sink — applies "G.<key>" 1:1 into the same
+## owned _g reference (never a new Dictionary). Caller-identity gate mirrors
+## read_native_normal_enemy_play_time via Main.is_native_source_play_time_context_current,
+## including _g identity against the raw_g the producer phases observed.
+## A malformed entry, nested target or non-finite / non-number value rejects the
+## whole batch before any write (no partial application, no coercion).
+func apply_native_source_update_clock_writes(main: Node, services: RefCounted,
+		writes: Array, raw_g: Variant = null) -> Dictionary:
+	var receipt: Dictionary = {
+		"status": "NOT_READY",
+		"source": "native.State._g.source_update_clock_writes",
+		"reason": "native_play_time_owner_not_current",
+		"applied": [],
+	}
+	if not is_instance_valid(main) or not is_instance_valid(services) \
+			or not main.is_native_source_play_time_context_current(services, self,
+					raw_g if raw_g != null else _g, true):
+		return receipt
+	var planned: Array = []
+	for write in writes:
+		if not write is Dictionary or not write.has("value"):
+			receipt["reason"] = "update_clock_write_malformed"
+			return receipt
+		var target: Variant = write.get("target")
+		if not target is String or not (target as String).begins_with("G.") \
+				or (target as String).length() <= 2 \
+				or (target as String).substr(2).contains("."):
+			receipt["reason"] = "update_clock_write_target_not_single_g_key"
+			return receipt
+		var value: Variant = write["value"]
+		if (typeof(value) != TYPE_INT and typeof(value) != TYPE_FLOAT) \
+				or not is_finite(float(value)):
+			receipt["reason"] = "update_clock_write_value_not_finite_number"
+			return receipt
+		planned.append({"key": (target as String).substr(2), "value": value})
+	for item in planned:
+		_g[item["key"]] = item["value"]
+		(receipt["applied"] as Array).append(item)
+	receipt["status"] = "READY"
+	receipt["reason"] = ""
+	receipt["writes"] = planned.size()
+	return receipt

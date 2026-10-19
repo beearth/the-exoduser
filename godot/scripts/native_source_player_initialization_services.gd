@@ -16,6 +16,7 @@ const OPTIONS = preload("res://port_modules/npc_interaction/source_options_state
 const SAMPLE_GLOBALS = preload("res://scripts/native_source_sample_globals.gd")
 const SOURCE_CLOCK_PREFIX = preload("res://port_modules/source_update_clock_prefix/producer.gd")
 const SOURCE_FRAME_ENTRY = preload("res://port_modules/source_frame_entry/producer.gd")
+const SOURCE_LESSON_HOLDER = preload("res://port_modules/parry_lesson_source/producer.gd")
 const SIGNED_DIFFICULTY = preload("res://port_modules/kill_reward/source_difficulty_signed.gd")
 const SCHEMA = "exoduser.godot.source-player-initialization-services.v1"
 const CACHE_APIS = ["read_captured_resource_plan", "read_captured_crystal_stats", "read_captured_cohort", "read_current_initialization_cohort_id", "read_hp_initial_gap"]
@@ -98,6 +99,7 @@ var _source_frame_callback_id := ""
 var _source_frame_last_callback_id := ""
 var _source_frame_last_result: Dictionary = {"status":"NOT_READY","reason":"source_native_callback_not_entered"}
 var _source_update_clock: RefCounted
+var _source_update_last_result: Dictionary = {"status":"NOT_READY","reason":"source_native_update_not_entered"}
 var _source_clock_declared_once := false
 var _source_clock_input_serial := 0
 var _source_clock_input_timestamp_ms: Variant = null
@@ -257,6 +259,8 @@ func _run_native_source_frame_callback(main: Node, actual: Dictionary) -> void:
 	_source_frame_last_result = _advance_native_source_frame_callback(main, _source_frame_callback_id, actual)
 	if is_instance_valid(_source_frame_entry) and _source_frame_entry.read_frame_state().get("in_frame") == true:
 		_source_frame_entry.end_frame()
+	# source update() prefix follows the frame-entry prefix within the same admitted callback.
+	_source_update_last_result = _advance_native_source_update_clock(main, _source_frame_callback_id)
 	# Discard active authority; the historical ID remains diagnostic only.
 	_source_frame_callback_active = false
 	_source_frame_callback_id = ""
@@ -285,6 +289,104 @@ func _advance_native_source_frame_callback(main: Node, callback_id: String, actu
 		return result
 	# Source frame resets/gamepad/profiling have no actual owner yet.
 	return _source_frame_entry.phase_gap_frame_callbacks(null)
+
+## source update() prefix driver — runs once per admitted native frame callback,
+## after the frame-entry prefix advance. The 61875 accumulator scheduler has no
+## actual _acc owner yet, so update() cadence here is 1 per native render callback,
+## not PHYS_STEP accumulation. Every phase input is the actual current value
+## Services/Main/State hold; an input without an actual owner is passed absent
+## so the producer halts NOT_READY at that slot (observable via the snapshot's
+## update_clock_result / prefix_state, never silently skipped).
+func _advance_native_source_update_clock(main: Node, callback_id: String) -> Dictionary:
+	if not is_native_source_frame_callback_current(main, callback_id):
+		return {"status": "NOT_READY", "reason": "native_update_clock_callback_window_closed"}
+	var state: Variant = _ref(_state)
+	if not state is Node or not is_instance_valid(state) \
+			or not state.has_method("read_current_g") \
+			or not state.has_method("apply_native_source_update_clock_writes"):
+		return {"status": "NOT_READY", "reason": "native_update_clock_state_owner_lost"}
+	var g: Variant = state.read_current_g()
+	if typeof(g) != TYPE_DICTIONARY:
+		return {"status": "NOT_READY", "reason": "native_update_clock_g_not_ready"}
+	var clock: RefCounted = _source_update_clock
+	if clock.read_update_state().get("in_update") == true:
+		clock.end_update()
+	var begun: Dictionary = clock.begin_update(g)
+	if begun.get("status") != "OK":
+		return begun
+	var result: Dictionary = _source_update_clock_write_step(main, state, g,
+		clock.phase_system_lesson(_native_update_clock_system_lesson_observation()))
+	if result.get("status") == "CONTINUE":
+		result = _source_update_clock_write_step(main, state, g, clock.phase_g_on(g))
+	if result.get("status") == "CONTINUE":
+		result = _source_update_clock_write_step(main, state, g,
+			clock.phase_parry_lesson(_native_update_clock_parry_lesson_observation()))
+	if result.get("status") == "CONTINUE":
+		# _EDITOR_MODE (game.html:3463 file-init const) has no owned port holder yet.
+		result = _source_update_clock_write_step(main, state, g, clock.phase_editor({}))
+	if result.get("status") == "CONTINUE":
+		# panel/input callbacks between the early gates — no actual owner (gap).
+		result = _source_update_clock_write_step(main, state, g, clock.phase_panel_inputs(null))
+	if result.get("status") == "CONTINUE":
+		result = _source_update_clock_write_step(main, state, g, clock.phase_paused(g))
+	if result.get("status") == "CONTINUE":
+		# source body between the early gate and 32580 — no actual owner (gap).
+		result = _source_update_clock_write_step(main, state, g, clock.phase_body_gap_to_hitstop(null))
+	if result.get("status") == "CONTINUE":
+		result = _source_update_clock_write_step(main, state, g, clock.phase_hitstop(g))
+	if result.get("status") == "CONTINUE":
+		# source between 32594 and 32680 — no actual owner (gap).
+		result = _source_update_clock_write_step(main, state, g, clock.phase_gap_hitstop_to_sp(null))
+	if result.get("status") == "CONTINUE":
+		result = _source_update_clock_write_step(main, state, g, clock.phase_sp(g))
+	if result.get("status") == "CONTINUE":
+		# source between 32684 and 32741 — no actual owner (gap).
+		result = _source_update_clock_write_step(main, state, g, clock.phase_gap_sp_to_stage_time(null))
+	if result.get("status") == "CONTINUE":
+		result = _source_update_clock_write_step(main, state, g, clock.phase_stage_play_time(g))
+	var summary: Dictionary = {"status": result.get("status"), "last": result,
+		"update_state": clock.read_update_state()}
+	clock.end_update()
+	return summary
+
+## Applies a phase's owner_writes into the owned G through the State sink.
+## A rejected sink receipt downgrades the step: the source effect did not land,
+## so the update must not be reported as continued past this slot.
+func _source_update_clock_write_step(main: Node, state: Node, g: Dictionary, result: Dictionary) -> Dictionary:
+	var writes: Variant = result.get("owner_writes")
+	if not writes is Array or (writes as Array).is_empty():
+		return result
+	var receipt: Dictionary = state.apply_native_source_update_clock_writes(main, self, writes, g)
+	result = result.duplicate()
+	result["write_receipt"] = receipt
+	if receipt.get("status") != "READY":
+		result["status"] = "NOT_READY"
+		result["reason"] = "update_clock_owner_write_rejected"
+	return result
+
+## window._systemLesson (source update() first statement; created by system-lesson.js):
+## this port has no current holder/witness for it. Presence is not invented —
+## the absent observation makes the producer halt NOT_READY at system_lesson.
+func _native_update_clock_system_lesson_observation() -> Dictionary:
+	return {}
+
+## window._parryLesson: Main.source_lesson holder is the actual current value.
+## Only an explicit falsy witness authority maps to presence "falsy" (no call);
+## a truthy current lesson would require the unported tick() body ("called"),
+## so it is passed absent and the producer halts NOT_READY at parry_lesson.
+func _native_update_clock_parry_lesson_observation() -> Dictionary:
+	var main: Variant = _ref(_main)
+	if not _live(main):
+		return {}
+	var holder: Variant = main.get("source_lesson")
+	if not holder is RefCounted or not is_instance_valid(holder) \
+			or holder.get_script() != SOURCE_LESSON_HOLDER:
+		return {}
+	var authority: Variant = holder.get_authority()
+	if authority in [SOURCE_LESSON_HOLDER.AUTH_PROPERTY_UNCREATED,
+			SOURCE_LESSON_HOLDER.AUTH_PROPERTY_UNSET, SOURCE_LESSON_HOLDER.AUTH_PROPERTY_FALSY]:
+		return {"presence": "falsy"}
+	return {}
 
 func _source_clock_context_error() -> String:
 	var error: String = _context_error()
@@ -335,6 +437,7 @@ func read_source_clock_input_snapshot(caller: Node) -> Dictionary:
 		"frame_result":_source_frame_last_result.duplicate(true),
 		"source_clock_ready":false,"dt_sp_declaration":_source_update_clock.read_dt_sp(),
 		"prefix_state":_source_update_clock.read_update_state(),
+		"update_clock_result":_source_update_last_result.duplicate(true),
 		"last_admitted_render_serial":_source_clock_input_serial,
 		"last_admitted_timestamp_ms":_source_clock_input_timestamp_ms,
 		"source_update_returned":false}
@@ -752,6 +855,7 @@ func _discard(error: String) -> bool:
 	_source_frame_callback_id = ""
 	_source_frame_entry = null
 	_source_update_clock = null
+	_source_update_last_result = {"status":"NOT_READY","reason":"source_native_update_owner_discarded"}
 	_sample_globals = null
 	_options = null
 	_options_identity = null
