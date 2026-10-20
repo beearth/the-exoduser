@@ -1,6 +1,20 @@
-# 1장 초기 미이식 적 10개체 — 원본 추적·작은 이식 단위 지시서
+# 1장 초기 미이식 적 10개체 — 고정 원본 추적·담당별 이식 참고
 
-작업ID `trace-ch1-enemies` · 2026-10-20 KST · **문서 작성·검수 대기**. 아래 U01~U14는 다음 구현 순서안이며 이번에 구현하지 않았다. 코드·테스트·기존 설계 docs·작업판 변경은 0이다.
+작업ID `trace-ch1-enemies` · 2026-10-20 KST · **문서 작성·검수 대기**. 아래 U01~U14는 최초 조사 당시의 구현 순서 참고안이며 위 최신 배정 정정이 우선한다. 이번과 이번 후속 모두 구현하지 않았다. 코드·테스트·기존 설계 docs·작업판 변경은 0이다.
+
+## 최신 배정 정정 — P2-008a 범위는 담당자 참고용
+
+**2026-10-20 맥북총괄 추가 지시 반영: 이 작업은 추적 문서만 관리하며 구현·테스트 파일을 만들지 않는다.** 아래 U단위는 배정표가 아닌 원본 계약 참고다. U03과 U14의 etype20 3개체 구현·검수·포이즈 수정은 **P2-008a 담당**이며 Mac 중복 구현을 제안하지 않는다. U01을 포함한 나머지 단위도 이 문서만으로 자동 착수하지 않는다.
+
+| 재확인 근거 | 실제 확인·경계 |
+|---|---|
+| fetch | `git fetch origin` 후 원격 브랜치를 `ls-remote`로 식별, main과 P2-008a를 명시 refspec으로 추가 fetch. 기준main `f84e26ee0bbc929fb595b4c0af292b423588f325`, P2-008a 원격 `codex/p2-008a-ch1-enemies-pc-20261020` = `46409ee4eabcd4760f0c420d6d6a15beaf9e3b28` |
+| 구현/보고서 | P2-008a 구현 `495e4941485dfd75aec22d9cdd7148ba66f8e928`, 후속보고 `46409ee4…`. 해당 브랜치 `docs/engine/orders/reports/P2-008a_REPORT.md`와 신규actor·factory 등록·테스트 목록을 읽음. 타브랜치 코드를 이WT로 가져오거나 병합하지 않음 |
+| 최신 작업판 | 위main의 `docs/engine/orders/WORK_BOARD.md:59~62`. P2-008a는 etype20 exact order4/10/12 main병합, 지원9/미지원7. P2-008a-FIX 포이즈 경로 결함은 같은PC작성자 큐. P2-008b는order11 etype47 우선/그FIX뒤 진행 |
+| 실제 main 정적 대조 | `godot/scripts/enemy_factory.gd:11~12,168~176,585~587`에 ice warrior script/config/exact3개체 등록 존재. `godot/tests/test_encounter_factory.gd:16`의 SUPPORTED_ORDERS=[0,1,4,8,10,12,13,14,15]. Godot 재실행·독립회귀 확인은 이번 **미실행** |
+| 현재 소유 파일 | `godot/scripts/enemy_melee_ch1_ice_warrior.gd`, `godot/data/etype20_ch1_ice_warrior.json`, `godot/tests/test_etype20_ch1_ice_warrior.gd`, `test_etype20_ch1_hurte_bridge.gd`, `test_etype20_ch1_admission_boundaries.gd`, factory 및 기존 테스트의 해당구역은 **P2-008a 담당**. 이문서의 옛제안파일명으로 별도 작성하지 않음 |
+| P2-008b 증거 한계 | 작업판 배정은 확인. 작업판의 정확 브랜치 `codex/p2-008b-ch1-enemies-pc-20261020` fetch는 remote ref없음으로 실패. 구현SHA/게시내용은 **미확인**이며 다른 경로로 우회하지 않음. 배정은 존중해 U10/U11/order11등록을 중복 제안하지 않음 |
+| 원본·snapshot 유지 | 아래 ad6ac68a2 기준6/10·원미이식10개체·338필드 표는 최초 조사 snapshot으로 보존, 최신main의 현황으로 사용하지 않음. 새main game.html SHA는 최초고정원본과 같아 원본행 번호는 유지. 최신main Godot파일 행은 이추가표와 당시기준본문을 구분 |
 
 ## 0. 기준·소유권·판정 경계
 
@@ -21,9 +35,9 @@
 
 JSON SHA-256 `91fd1a88b394152cd8b0de653f1bde5139b7829f331787581616f7ef3c0724fa`는 `test_encounter_factory.gd:23`의 `SOURCE_SHA`와 일치한다. 파일이 한 행이므로 JSON 근거는 모두 `:1` + record.order/id 경로로 식별한다.
 
-## 1. 초기16·지원6·미이식10의 전수 대조
+## 1. 최초 고정 snapshot: 초기16·지원6·미이식10 전수 대조
 
-판정은 `enemy_factory.gd:140~172`의 실제 admission과 `:547~589` consume 경로, `test_encounter_factory.gd:15`의 `SUPPORTED_ORDERS=[0,1,8,13,14,15]`를 기준으로 한다. frozen JSON의 `support=false/runtime=null`만 세면 후속 전용 consumer 4개를 놓친다. 반대로 etype7 조립 API 존재만 세면 7/9로 잘못 승격한다. 지원된 6개도 모든 원소·스킨·정예·사망/부활까지 완성했다는 뜻이 아니다.
+이 절의 판정은 최초 ad6ac68a2 snapshot의 `enemy_factory.gd:140~172`의 실제 admission과 `:547~589` consume 경로, `test_encounter_factory.gd:15`의 `SUPPORTED_ORDERS=[0,1,8,13,14,15]`를 기준으로 한다. frozen JSON의 `support=false/runtime=null`만 세면 후속 전용 consumer 4개를 놓친다. 반대로 etype7 조립 API 존재만 세면 7/9로 잘못 승격한다. 지원된 6개도 모든 원소·스킨·정예·사망/부활까지 완성했다는 뜻이 아니다.
 
 | order / id | etype / 원소 | 스킨 | 현재 factory | 다음 추적 |
 |---|---|---|---|---|
@@ -178,13 +192,13 @@ JSON SHA-256 `91fd1a88b394152cd8b0de653f1bde5139b7829f331787581616f7ef3c0724fa`�
 
 ## 5. 작은 이식 단위 순서안
 
-다음 차례의 **1번=U01**이다. 순서안은 현재 브랜치의 조사기준이며 새 작업 배정/공용 파일 소유권은 아니다. U01 후에도 source지원6/미10 유지. 실제actor+필수의존+정상admission+전투검수까지 닫혀야 개체 지원 수를 올린다. 표의 신규 파일명/API는 제안이며 현존 파일처럼 인용하지 않는다.
+최초 순서안의 **1번은 U01**이나, 최신 지시에 따라 이 작업에서는 구현하지 않는다. 이식 순서안은 원본 계약 참고이며 새 배정/공용 파일 소유권이 아니다. **U03 및 etype20 등록/수정은 P2-008a 담당**, etype47 배정은 P2-008b 담당으로 분리한다. U01 후에도 source지원6/미10 유지. 실제actor+필수의존+정상admission+전투검수까지 닫혀야 개체 지원 수를 올린다. 표의 신규 파일명/API는 제안이며 현존 파일처럼 인용하지 않는다.
 
-### 5.1 U01 — type25 생존·사망 장판 생성 명령, 공용 파일 0줄
+### 5.1 U01 — type25 장판 생성 계약 참고, 공용 파일 0줄 구조안
 
 **목적:** `ch1_initial_006`의 idle 생존장판과 실제 death branch에서 요청하는 3개 장판을 원본과 같은 값·순서로 생산한다. 원본에 없는 공격/감속을 발명하지 않는 검증 가능한 부품이다. 전투 actor/factory에 연결하지 않는 caller-driven producer이며 다음 U02/U05가 소비한다.
 
-| 구현 항목 | 다음 차례 정확 지시 |
+| 계약 항목 | 미배정 원본 이식 참고 — 이번 실행 지시 아님 |
 |---|---|
 | 새 제품 파일 | `godot/port_modules/etype25_ice_zone_source/producer.gd` (`RefCounted`, 자체process/physics/clock/Node생성0). class_name은필수아님,테스트는path preload |
 | 새 테스트 | `godot/tests/test_ch1_enemies_u01_type25_ice_zone.gd` (`SceneTree`). 새가짜World나전체Main preload없이원stateDictionary+기록callback으로구간계약만검증 |
@@ -212,20 +226,20 @@ U01은 생성 명령 이식까지이며 화면에 장판을 표시하는 단위�
 | 순서 | 만들·수정할 파일 | 원본 행·옮길 상수/공식 | 새 테스트·핵심 단정·userdir | 선행·충돌·공용 경계 |
 |---|---|---|---|---|
 | U02 | 신규`port_modules/etype25_ice_zone_contact/producer.gd` | 16914~16985 정지물 제외, 35074~77 D무효/I max60, 33006~22 idle감소 | `test_ch1_enemies_u02_ice_zone_contact.gd`; D에서freeze/RNG0, I max60·문구U<.3, charge/iframe외부gate. `u02-user` | U01. 최초는 접촉leaf만/공용0. 전체hazard outer반경·소멸·near-camera연명은 **미확인**, 해당 원본346xx~350xx를 고정하기 전 전체런타임 GO 금지 |
-| U03 | 신규`scripts/enemy_type20_source.gd`, `data/ch1_type20_source.json` | 38584~38884/40456~40519; 005/011/013 raw·skin/noProj9999/접촉제외/range400/idle1.6/분리3 | `test_ch1_enemies_u03_type20_source.gd`; exact3개체/두단계이동/탄0·접촉0/빈mods freeze0/defense보존. `u03-user` | 기존flesh AI를super호출하지않음. 새actor/descriptor만·공용0. 전용hurtE의etype허용은U14연결 전 미지원, SKILL상태필드 충돌 재확인 |
+| U03 — **P2-008a 담당** | 신규제안 철회. 실제담당파일: `scripts/enemy_melee_ch1_ice_warrior.gd`, `data/etype20_ch1_ice_warrior.json`, factory등록. 포이즈수정도P2-008a-FIX소유 | 38584~38884/40456~40519; order4/10/12의raw/스킨/무공격계약은담당자참고만 | 새테스트제안없음. 실제담당테스트 `test_etype20_ch1_ice_warrior.gd`, `test_etype20_ch1_hurte_bridge.gd`, `test_etype20_ch1_admission_boundaries.gd` 참조. 기존담당격리폴더는P2-008a보고서기준 | 최신main등록9/7확인. Mac중복구현·별도profile·기존테스트수정없음. 포이즈회귀는담당자수정·총괄검수대상 |
 | U04 | 신규`scripts/enemy_type21_dark_spine.gd`, `data/ch1_type21_dark_spine.json` | 010 raw, 20123~57/38684~38884/40462~40519; range800/charge60/life240/raw31→62→접촉80/속도sample1회 | `test_ch1_enemies_u04_type21_dark_spine.gd`; normalized21올바른profile/D1.3이중0/두단계이동/snapshot불변. `u04-user` | 기존emitter129~재사용. raw emit은21거부하므로alias금지. 현D packet정규화순서oracle 추가검증. 단독actor/공용0 |
 | U05 | 신규`scripts/enemy_type25_physical_carapace.gd`, `data/ch1_type25_physical_carapace.json` | 006 raw+39078~84/40462~40519/42804~08; range600/life180/rawtrunc(31×.8)=24/P공통탄과장판별도 | `test_ch1_enemies_u05_type25_actor.gd`; 생존D/사망I1회/idle후방유지/빙결중timer정지/P차징60. `u05-user` | U01/U02. raw emitter25미허용. 새전용adapter로표현가능한지확인, shared확대필요시별도경계로보고. 미연결을제품GO로승격금지 |
 | U06 | 신규`port_modules/etype6_escort_source/producer.gd` | 38891~38917; query150/최단strict</type1·7·8/ally→P .6/이동1.2/각도.08/shield조건 | `test_ch1_enemies_u06_escort_source.gd`; 동거리/자기제외/150·10경계/±πwrap/shield0·비idle꺼짐. `u06-user` | World query존재. 원본에없는alive필터를추가하지않음. purehelper/공용0/공격티켓금지 |
 | U07 | 신규`scripts/enemy_type6_physical_knight.gd`, `data/ch1_type6_physical_knight.json` | 007 raw/42167~71 정면diff<π/3·.3/40762~75 bash4.5/×1.3/KB10/stagger40 | `test_ch1_enemies_u07_type6_knight.gd`; shield존재시호위/붕괴뒤bash/각도π/3경계/벽20·종료25·명중30/P상태보호. `u07-user` | U06. 전용hurt정면분기누락을먼저확인. Q/E·강제기폭은보호/타담당접점, 단순화금지. 공용hurt연결은U14 |
 | U08 | 기존004actor/TP/M30/recipe/binding재사용. 신규`scripts/ch1_type7_004_admission.gd`, 필요시`native_type7_runtime.gd`최소수정 | 38920~40/40777~98/38803~04; exact337/TP120/자식1~2/공유RNG/HP.5·shield0·poise미추종/M29 4cap | `test_ch1_enemies_u08_type7_004_admission.gd`; 실제service결손거부/실cap준비시만설치·자연소환·TP·phase1회/source불변. `u08-user` | 기존test fixture cap은공개Q/E·FX·audio증거아님. 실공급미확정은BLOCKED·true더미금지. P3-002동적등록/World조율, factory변경U14 |
 | U09 | 신규`scripts/enemy_type7_physical_soul_flame.gd`, `data/ch1_type7_physical_soul_flame.json`; type7descriptor일반화필요시별도diff | 008 raw/38920~40/20006~48/40777~98; landing325(배율1)/KB120/skin col3/개별CD/M30없음 | `test_ch1_enemies_u09_type7_008.gd`; 004오허용0/008 M30생성0/실recipe RNG순서/TP반경·CD분리. `u09-user` | U08실공급과TP helper고정값계약조사. 004 exactvalidator삭제금지. 새profile명시분기/공용0우선 |
-| U10 | 신규`port_modules/etype47_clone_source/producer.gd` | 39408~16/31285~87; ens<200/cloneTreset/좌표±30/type40/el OR D/hp.3/atk.5/shield0/**push없음** | `test_ch1_enemies_u10_clone_source.gd`; registry증가0/factory1/constructor→FX RNG순서/ens200에서CD reset0/null실패한계명시. `u10-user` | type40constructor의원본oracle선행, 없으면BLOCKED. 원본결함수리는별도범위. P3-002등록을빌려자동push금지 |
-| U11 | 신규`scripts/enemy_type47_physical_flesh.gd`, `data/ch1_type47_physical_flesh.json` | 012 raw/39408~30/20006~48/40456~40519; TP120/60~100/CD120+40U/landing325+KB120/P공통life120 | `test_ch1_enemies_u11_type47_flesh.gd`; clone미등록/TP·charge순서/canMv실패여도callerCD/두단계추적. `u11-user` | U10/새TP profile. type7의150~200/ATK40고정값차용금지. 공용접점은등록때만 |
+| U10 — **P2-008b 담당** | etype47분신producer 신규파일제안보류, PC담당원본추적참고만 | 39408~16/31285~87; ens<200/cloneTreset/좌표±30/type40/el OR D/hp.3/atk.5/shield0/push없음 | 새테스트파일제안없음. registry증가0/생성→FX RNG순서/ens200 경계는담당검수참고 | 작업판order11선점확인. 원격구현SHA미확인, Mac별도구현금지 |
+| U11 — **P2-008b 담당** | etype47actor/profile 신규파일제안보류, P2-008a-FIX뒤 PC담당작업참고만 | 012 raw/39408~30/20006~48/40456~40519; TP120/60~100/CD120+40U/landing325+KB120/P공통life120 | 새테스트파일제안없음. clone미등록/TP·charge순서/착지실패callerCD는담당검수참고 | P2-008b담당. 이추적문서로별도Mac이식·중복배정하지않음 |
 | U12 | 신규`port_modules/etype29_gate_attack_source/producer.gd`, `scripts/enemy_type29_gate_guard.gd`, `data/ch1_type29_gate_guard.json` | 003 raw/39125~40/40526~58; slam45/r70+r/×2, charge25/speed5/×30/KB100, I8방향eProjAt life300→450/warning60 | `test_ch1_enemies_u12_gate_attack.gd`; d120/100/150/1200 strict경계/.008sp RNG순서/다른AI의90f예고추가0/shield875·poise80보존. `u12-user` | type29 I탄adapter와Player공격/패링API실공급확인. 기존raw3/7 gate삭제금지. Q/E보호설계변경0 |
 | U13 | 신규`port_modules/etype29_gate_death_source/producer.gd` | 42817~24/16940~85/20065~92; 8방향/black50%·red50%/death고정점60/blackelP·redelI/freeze150반경100 | `test_ch1_enemies_u13_gate_death.gd`; 8request/RNG8와후FX순서/blackmagic·blue반사보호/정규화1회/죽은owner warning계약. `u13-user` | U12. 실제death도달은hurtE/부활담당과조정. Q/E consumer재구현0. 공용death hook은U14 |
-| U14 — 각개체별분할 | **공용수정후보**`enemy_factory.gd` exact gate/생성, `world.gd`registry/phase, `native_dedicated_enemy_hurte_owner.gd`/`native_normal_enemy_hurte.gd`필요분. `native_regions.gd`/HUD는기존API소비우선 | 31120~31363/31608~51/42737~45/60725; 개체별필수의존실공급/보상·death, gate10%/cache/진행연동 | 개체마다`test_ch1_enemies_u14_<id>_admission.gd`; 기준6/10→그개체만+1/−1/타record불변·거부/실hit·death·보상·region분모. `u14-<id>-user` | 대상U03/04/05/07/08/09/11/12+13완료마다별도ID/복구점. 10체일괄등록금지. P3-002/003·SKILL·REVIVE·드랍담당과공용행조율. 보호상호작용미달이면BLOCKED |
+| U14 — 각개체별분할 | **담당자 참고용 공용접점**`enemy_factory.gd` exact gate/생성, `world.gd`registry/phase, `native_dedicated_enemy_hurte_owner.gd`/`native_normal_enemy_hurte.gd`필요분. `native_regions.gd`/HUD는기존API소비우선 | 31120~31363/31608~51/42737~45/60725; 개체별필수의존실공급/보상·death, gate10%/cache/진행연동 | 미배정개체의향후검수참고 `test_ch1_enemies_u14_<id>_admission.gd`; 기준6/10→그개체만+1/−1/타record불변·거부/실hit·death·보상·region분모. `u14-<id>-user` | **etype20(order4/10/12)은 P2-008a 담당**, 해당포이즈수정P2-008a-FIX도같은소유. **order11은P2-008b담당**. 나머지는별도배정시만검토. 10체일괄등록금지. P3-002/003·SKILL·REVIVE·드랍담당과공용행조율. 보호상호작용미달이면BLOCKED |
 
-U03의3개체는 단독 actor 구성까지이며 U14 입장은005→011→013을 각각 별도 복구점으로 한다. 지원집계 변경은 실제 자연상태 검수 후이며, 동결 배송본5/11을 현재 소스와 섞어 고치지 않는다.
+U03과 U14의005/011/013(type20)은 **P2-008a 담당**이며 이미main등록된3개체다. 옛단독actor/입장순서제안은대체됐고 Mac복구점·신규파일·검수재구현을만들지않는다. 최신지원9/7과포이즈미수정경계/실플레이미검수를분리한다. 동결배송5/11과최초source6/10기록은당시이력이다.
 
 ## 6. 공용 파일 접점·미확인 사항
 
