@@ -76,6 +76,15 @@
 - 독립 demo_lobby 씬·SV-LOBBY-VIEW/S10 후보 구현, Main/State/전투/맵/저장 adapter·project0줄. 원본 에셋3개 byte동일·Hell Gothic·NativeUIFont·이모지0, 번역23쌍/3.1UI 현황 갱신.
 - 신규 최종48/0, 관련 기존 저장79/0·reader5952/0 각1회, 최신 ERROR/ObjectDB/resource0. 초기 import/parse·46/11·시각 RETOUCH/중단 로그 보존. 목록/삭제확인1920×1080·각1x크롭은 _out/demo11-04/captures/, 눈검수 대기. [보고서](engine/orders/reports/demo11-04_REPORT.md).
 
+## 2026-10-21 PC-M29-PARRY — M29 비투사체 접촉 패링 제공자(DEMO11-30 재개 접점1)
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준·범위 | origin/main969c194e6, PC 전투 핵심. 신규 native_m29_contact_services.gd: player_context(live isPWin G38469)·handle_m29_parry(parryBank→doParry 기존 writer→_poiseHit20)·emit_m29_event(warning/impact/detonate 단일소유 라우팅)·m29_readiness. 투사체 facade·반사 경로 호출0, projectile:true 거부 |
+| 공용 | main.gd +22/−5: preload·필드·준비구역 설치1줄·보상식/bank읽기/서비스 getter. 기존 Q반사 bank읽기·Q/E 보상식 3곳을 같은 식 helper로 단일화(동작 동일). type3_summoned_actor.gd +25/−0 `_poiseHit` 코어. 2_3 수정금지 docs·Q/E 판정·피해식·저장 변경0 |
+| 검증 | 원문 VM oracle(isPWin 480행·패링/피해 순서·보상·poise 코어) 일치, 실제 Main 신규100/0(실접촉 패링·피해·거부·재진입). 회귀 qe155/0·type3binding4그룹·m29 143/0·type3actor118/0·m30 4그룹·p1002g220/0·starter148/0·regen88/0·demo34 166/0·contracts5/0, type7 runtime 2실패는 base부터 동일(무관). 물리틱 16.66ms(M29 actor 有) |
+| 인계·HOLD | [계약](engine/PC_M29_PARRY_CONTRACT_20261021.md)·[보고서](engine/orders/reports/pc-m29-parry_REPORT.md). 자연스폰·EL-01·단일lock·실제 FX 소비자·doParry 나머지·is_tile_wall 확정은 미연결 |
+
 ## 2026-10-21 DEMO11-05 — main 성능 수정 병합·tick 경로 점검
 
 | 항목 | 구현·검수 근거 |
