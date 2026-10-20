@@ -84,3 +84,5 @@
 최초 화면 기록 시도는 `CGPreflightScreenCaptureAccess()=false`, `/usr/sbin/screencapture -v -V 1 -x .../permission-probe.mov` exit 1, stdout/stderr 0 byte, 영상 미생성이었다. 원로그 `permission-preflight.json`, `recording-probe-result.json`, `recording-probe.out`, `recording-probe.err`는 보존했다. 이전 결과 본문 SHA `5b101dcfb60179a55c4fda47e3291ef27b8056ef`, 이전 제출 SHA `37f1cd4678eaa12303ad74e1e2dc2eaa42d54866`이다.
 
 이번 후속 결과도 자기 `codex/` 브랜치에만 제출하며 main push·병합·force·reset은 하지 않는다. 최종 SHA와 원격 대조 결과는 후속 제출 기록 및 로컬 `~/exoduser-wt/_out/mac-live/DONE.txt`, `movie-remote-verification.json`에 남긴다.
+
+후속 Movie Maker 결과 본문 커밋: `a8bb9b730cc81c9b92bc0a13fa158db879574950`. 이후 커밋은 제출 SHA를 기록하는 메타데이터 변경이며, 최종 branch tip·원격 SHA는 `DONE.txt`와 `movie-remote-verification.json`에 기록한다.
