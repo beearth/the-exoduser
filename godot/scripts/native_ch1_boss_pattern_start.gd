@@ -4,6 +4,7 @@ extends RefCounted
 ## No actor, queue, projectile, sound, UI, protected Q/E or Main is connected here.
 
 const Catalog = preload("res://scripts/native_ch1_boss_catalog.gd")
+const CatalogContext = preload("res://scripts/native_boss_catalog_context.gd")
 # Read-only copies of game.html:37701 / 14338 / 16631. No classification change.
 const _PARRYABLE = ["charge", "slashCombo", "slam", "sweep", "tailSwipe", "spin", "multiDash", "teleStrike", "swordWave", "jump", "judgeCut", "delaySlash", "perilThrust", "phantomSwords", "crescendoCombo", "tideWave", "rewindStrike", "mirrorClone", "shieldBash2", "mirrorGuard", "chainLightning", "cageTrap", "doppelganger"]
 const _COLORS = ["#bbbbbb", "#ff5522", "#3388ff", "#9933cc", "#ffee00", "#ff88cc", "#88aa44"]
@@ -37,11 +38,15 @@ static func source_receipt() -> Dictionary:
 ## Accepts the same id/phase/distance/extra_delay as BC04's start_pattern request.
 ## The original start function does not recheck the selector's Set/phase gates.
 static func begin_start(si: int, id: String, enemy: Dictionary, distance: float,
-		phase: int, extra_delay: float = 0.0, context: Dictionary = {}) -> Dictionary:
-	if not Catalog.boss_for_stage(si).get("supported",false): return _fail("unsupported_chapter_stage")
-	var move: Dictionary = Catalog.move_by_id(id)
+		phase: int, extra_delay: float = 0.0, context: Dictionary = {}, chapter_catalog: Variant = null) -> Dictionary:
+	var resolved: Dictionary = CatalogContext.resolve(chapter_catalog)
+	if not resolved["ready"]: return _fail(resolved["reason"])
+	var data_catalog: Variant = resolved["catalog"]
+	if not data_catalog.boss_for_stage(si).get("supported",false): return _fail("unsupported_chapter_stage")
+	var move: Dictionary = data_catalog.move_by_id(id)
 	if move.is_empty(): return _fail("unsupported_ch1_union_move")
-	var ph: Dictionary = Catalog.phase_by_index(phase)
+	if chapter_catalog!=null and Catalog.move_by_id(id).is_empty(): return _fail("pattern_start_owner_required")
+	var ph: Dictionary = data_catalog.phase_by_index(phase)
 	if ph.is_empty() or not _num(distance) or not _num(extra_delay): return _fail("phase_or_distance_unsupported")
 	if not _numbers(enemy,["x","y"]): return _fail("actor_position_missing")
 	if enemy.has("ib") and not enemy["ib"] is bool: return _fail("boss_flag_unsupported")
@@ -204,13 +209,22 @@ static func begin_start(si: int, id: String, enemy: Dictionary, distance: float,
 					_call(program,"SFX.detonate",[],38115)
 					_call(program,"shake",[15],38115)
 					_write(program,{"s":"recover","st2":35},38116)
-	return {"status":"READY","continuation":{"version":1,"si":si,"id":id,"enemy":e,"context":context.duplicate(true),"program":program,"pc":0,"pending":"","safes":[]},"full_tick_complete":false}
+	var result: Dictionary = {"status":"READY","continuation":{"version":1,"si":si,"id":id,"enemy":e,"context":context.duplicate(true),"program":program,"pc":0,"pending":"","safes":[]},"full_tick_complete":false}
+	CatalogContext.bind(result["continuation"],chapter_catalog)
+	return result
 
 
 ## rng(tag)->[0,1); response={ack:true,value:...} for the previous request.
 static func next_start(token: Dictionary, response: Variant = null, rng: Callable = Callable()) -> Dictionary:
 	if token.get("version")!=1 or not token.get("enemy") is Dictionary or not token.get("context") is Dictionary or not token.get("program") is Array \
 		or not token.get("pc") is int or not token.get("pending") is String or token["pc"]<0 or token["pc"]>token["program"].size(): return _fail("continuation_shape_unsupported")
+	var resolved: Dictionary = CatalogContext.from_token(token)
+	if not resolved["ready"]: return _fail(resolved["reason"])
+	if not token.has("_chapter_catalog") and token.get("si") is int and token["si"]>=4: return _fail("chapter_context_missing")
+	if token.has("_chapter_catalog"):
+		var data_catalog: Variant = resolved["catalog"]
+		if not data_catalog.boss_for_stage(token.get("si",-1)).get("supported",false): return _fail("unsupported_chapter_stage")
+		if Catalog.move_by_id(token.get("id","")).is_empty(): return _fail("pattern_start_owner_required")
 	var state: Dictionary = token.duplicate(true)
 	var e: Dictionary = state["enemy"]
 	var context: Dictionary = state["context"]

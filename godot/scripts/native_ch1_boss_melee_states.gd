@@ -1,6 +1,8 @@
 extends RefCounted
 ## BC07: six switch states for slash/slam/sweep+tail, after BC05 st2 decrement.
 ## Contact is an UNEXECUTED protected-owner request, never local Q/E/damage logic.
+const Catalog = preload("res://scripts/native_ch1_boss_catalog.gd")
+const CatalogContext = preload("res://scripts/native_boss_catalog_context.gd")
 const STATES = ["bossSlashWind","bossSlash","bossSlamWind","bossSlam","bossSweepWind","bossSweep"]
 
 static func source_receipt() -> Dictionary:
@@ -10,12 +12,17 @@ static func source_receipt() -> Dictionary:
 		"source_ranges":[[41074,41109],[41111,41142],[41144,41183]],"states":STATES.duplicate(),
 		"live_combat_connected":false,"damage_or_parry_execution_verified":false,"new_hit_latch":false}
 
-static func begin_tick(si: int, enemy: Dictionary, sp: float, player: Dictionary, options: Dictionary = {}) -> Dictionary:
-	if si<0 or si>3: return _fail("unsupported_chapter_stage")
+static func begin_tick(si: int, enemy: Dictionary, sp: float, player: Dictionary, options: Dictionary = {}, chapter_catalog: Variant = null) -> Dictionary:
+	var resolved: Dictionary = CatalogContext.resolve(chapter_catalog)
+	if not resolved["ready"]: return _fail(resolved["reason"])
+	var data_catalog: Variant = resolved["catalog"]
+	if not data_catalog.boss_for_stage(si).get("supported",false): return _fail("unsupported_chapter_stage")
 	if not STATES.has(enemy.get("s")): return _fail("unsupported_melee_state")
 	if not _actor(enemy) or not _player(player) or not _num(sp): return _fail("state_snapshot_unsupported")
-	return {"status":"READY","continuation":{"version":1,"si":si,"kind":enemy["s"],"enemy":enemy.duplicate(true),
+	var result: Dictionary = {"status":"READY","continuation":{"version":1,"si":si,"kind":enemy["s"],"enemy":enemy.duplicate(true),
 		"player":player.duplicate(true),"options":options.duplicate(true),"sp":sp,"step":"entry","pending":"","index":0},"full_tick_complete":false}
+	CatalogContext.bind(result["continuation"],chapter_catalog)
+	return result
 
 ## The previous owner must acknowledge each call. Contact additionally requires
 ## its actual COMPLETE actor/player readback; neither ack nor fixture snapshots
@@ -23,7 +30,11 @@ static func begin_tick(si: int, enemy: Dictionary, sp: float, player: Dictionary
 static func next_tick(token: Dictionary, response: Variant = null, rng: Callable = Callable()) -> Dictionary:
 	if token.get("version")!=1 or not token.get("enemy") is Dictionary or not token.get("player") is Dictionary \
 		or not token.get("step") is String or not token.get("pending") is String or not STATES.has(token.get("kind")) \
-		or not token.get("si") is int or token["si"]<0 or token["si"]>3: return _fail("continuation_shape_unsupported")
+		or not token.get("si") is int: return _fail("continuation_shape_unsupported")
+	var resolved: Dictionary = CatalogContext.from_token(token)
+	if not resolved["ready"]: return _fail(resolved["reason"])
+	var data_catalog: Variant = resolved["catalog"]
+	if not data_catalog.boss_for_stage(token["si"]).get("supported",false): return _fail("continuation_shape_unsupported")
 	var state: Dictionary = token.duplicate(true)
 	var e: Dictionary = state["enemy"]
 	var p: Dictionary = state["player"]

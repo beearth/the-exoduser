@@ -132,6 +132,21 @@ func configure(owner_world: Node2D, owner_player: Node2D, state_node: Node, owne
 	_configured = true
 	return true
 
+# QA-004: detached lesson enemies are owned here until restore or teardown.
+func _release_saved_enemies() -> void:
+	var saved: Array = _saved_enemies
+	_saved_enemies = [] # Clear first: EXIT_TREE/PREDELETE and duplicate entries are idempotent.
+	for enemy in saved:
+		if is_instance_valid(enemy) and enemy is Node and enemy.get_parent() == null:
+			enemy.free() # Node owns and frees its CollisionShape2D/Sprite2D children.
+
+func _exit_tree() -> void:
+	_release_saved_enemies()
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_PREDELETE:
+		_release_saved_enemies() # Also covers free() before the owner ever enters Tree.
+
 ## 차징 링(원본: 적 투사체 차징 경고 링 — 가이드 문구 "몬스터 주위의 링", 색=탄 종류).
 class _RingDrawer extends Node2D:
 	var flow: Node

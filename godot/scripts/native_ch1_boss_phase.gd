@@ -4,6 +4,7 @@ extends RefCounted
 ## owners. Apply write_keys only; execute commands at their indicated boundary.
 
 const Catalog = preload("res://scripts/native_ch1_boss_catalog.gd")
+const CatalogContext = preload("res://scripts/native_boss_catalog_context.gd")
 const CHECKPOINTS = ["lesson_gate", "telegraph", "after_wall_push", "after_knockback",
 	"attack_reset", "after_aura", "after_projectile_charge", "dispatch_phase",
 	"after_ai_feint", "recovery_switch"]
@@ -23,9 +24,12 @@ static func source_receipt() -> Dictionary:
 ## Exact phase scalar writes, stopping BEFORE the first presentation/teleport read.
 ## A transition requires the remaining source effects to run before the caller
 ## resumes dispatch. Merely building this request does not execute any effect.
-static func phase_transition(si: int, enemy: Dictionary) -> Dictionary:
-	if not Catalog.boss_for_stage(si).get("supported", false): return _failure("unsupported_chapter_stage")
-	if not enemy.get("_bossPhase") is int or Catalog.phase_by_index(enemy["_bossPhase"]).is_empty():
+static func phase_transition(si: int, enemy: Dictionary, chapter_catalog: Variant = null) -> Dictionary:
+	var resolved: Dictionary = CatalogContext.resolve(chapter_catalog)
+	if not resolved["ready"]: return _failure(resolved["reason"])
+	var data_catalog: Variant = resolved["catalog"]
+	if not data_catalog.boss_for_stage(si).get("supported", false): return _failure("unsupported_chapter_stage")
+	if not enemy.get("_bossPhase") is int or data_catalog.phase_by_index(enemy["_bossPhase"]).is_empty():
 		return _failure("unsupported_phase")
 	if not _numbers(enemy, ["hp", "mhp"]) or enemy["mhp"] <= 0: return _failure("hp_snapshot_unsupported")
 	var ratio: float = float(enemy["hp"]) / float(enemy["mhp"])
@@ -35,7 +39,7 @@ static func phase_transition(si: int, enemy: Dictionary) -> Dictionary:
 	var cds: Variant = enemy.get("_moveCDs")
 	if cds != null and not cds is Array: return _failure("cooldown_shape_unsupported")
 	var e: Dictionary = enemy.duplicate(true)
-	var ph: Dictionary = Catalog.phase_by_index(phase)
+	var ph: Dictionary = data_catalog.phase_by_index(phase)
 	e["_bossPhase"] = phase
 	e["hp"] = maxf(e["hp"], _i32(e["mhp"] * ph["hp"][1]))
 	e["reviveIframes"] = 90
@@ -68,8 +72,11 @@ static func phase_transition(si: int, enemy: Dictionary) -> Dictionary:
 ## finish each next_boundary owner and pass its real next snapshot onward.
 ## No stunned/_hitStun/_pImmune loop timer is decreased a second time here.
 static func clock_step(si: int, checkpoint: String, enemy: Dictionary, sp: float,
-		context: Dictionary = {}, rng: Callable = Callable()) -> Dictionary:
-	if not Catalog.boss_for_stage(si).get("supported", false): return _failure("unsupported_chapter_stage")
+		context: Dictionary = {}, rng: Callable = Callable(), chapter_catalog: Variant = null) -> Dictionary:
+	var resolved: Dictionary = CatalogContext.resolve(chapter_catalog)
+	if not resolved["ready"]: return _failure(resolved["reason"])
+	var data_catalog: Variant = resolved["catalog"]
+	if not data_catalog.boss_for_stage(si).get("supported", false): return _failure("unsupported_chapter_stage")
 	if not CHECKPOINTS.has(checkpoint): return _failure("unknown_checkpoint")
 	if not _number(sp): return _failure("non_finite_clock")
 	var optional_timers: Dictionary = {"telegraph": ["_telegraphT"],
@@ -145,7 +152,7 @@ static func clock_step(si: int, checkpoint: String, enemy: Dictionary, sp: float
 				e["vy"] = 0
 				e["kb"] = {"x": 0, "y": 0}
 				return _packet(enemy, e, "frozen_idle_return", "return_update")
-			if _truthy(e.get("alive")): return phase_transition(si, enemy)
+			if _truthy(e.get("alive")): return phase_transition(si, enemy, chapter_catalog)
 			return _packet(enemy, e, "phase_not_called", "finale_then_idle_ai")
 		"after_ai_feint":
 			if e.get("ib") != true or not e.get("s") is String: return _failure("boss_dispatch_shape_missing")
@@ -190,17 +197,22 @@ static func clock_step(si: int, checkpoint: String, enemy: Dictionary, sp: float
 ## acknowledges its actual call before we draw/compute the next source operation.
 ## This preserves RNG interleaving inside VFX/projectile/damage owners. A recorded
 ## request or a fixture acknowledgment is never evidence that a real effect ran.
-static func begin_phase_effects(si: int, enemy: Dictionary, player: Dictionary) -> Dictionary:
-	if not Catalog.boss_for_stage(si).get("supported", false): return _failure("unsupported_chapter_stage")
+static func begin_phase_effects(si: int, enemy: Dictionary, player: Dictionary, chapter_catalog: Variant = null) -> Dictionary:
+	var resolved: Dictionary = CatalogContext.resolve(chapter_catalog)
+	if not resolved["ready"]: return _failure(resolved["reason"])
+	var data_catalog: Variant = resolved["catalog"]
+	if not data_catalog.boss_for_stage(si).get("supported", false): return _failure("unsupported_chapter_stage")
 	if not enemy.get("_bossPhase") is int or enemy["_bossPhase"] < 1 or enemy["_bossPhase"] > 4:
 		return _failure("transition_phase_required")
 	if not _numbers(enemy, ["x", "y", "r", "atk"]) or not enemy.has("el"): return _failure("phase_effect_actor_missing")
 	if not _numbers(player, ["x", "y", "facing", "iframes"]) or not player.get("s") is String:
 		return _failure("phase_effect_player_missing")
-	return {"status": "READY", "continuation": {"version": 1, "si": si,
+	var result: Dictionary = {"status": "READY", "continuation": {"version": 1, "si": si,
 		"enemy": enemy.duplicate(true), "player": player.duplicate(true), "step": 0, "i": 0,
 		"origin_x": enemy["x"], "origin_y": enemy["y"], "radius": enemy["r"] if enemy["r"] != 0 else 20,
 		"pending": "", "position_commit": null}, "full_tick_complete": false}
+	CatalogContext.bind(result["continuation"],chapter_catalog)
+	return result
 
 
 ## response={ack:true,...} confirms the PREVIOUS command. Read results require
@@ -210,7 +222,10 @@ static func phase_effect_step(token: Dictionary, response: Variant = null, rng: 
 	if token.get("version") != 1 or not token.get("enemy") is Dictionary or not token.get("player") is Dictionary \
 		or not token.get("step") is int or not token.get("i") is int or not token.get("pending") is String:
 		return _failure("effect_continuation_shape_unsupported")
-	if not token.get("si") is int or not Catalog.boss_for_stage(token["si"]).get("supported", false) \
+	var resolved: Dictionary = CatalogContext.from_token(token)
+	if not resolved["ready"]: return _failure(resolved["reason"])
+	var data_catalog: Variant = resolved["catalog"]
+	if not token.get("si") is int or not data_catalog.boss_for_stage(token["si"]).get("supported", false) \
 		or not _numbers(token, ["origin_x", "origin_y", "radius"]) or not token.has("position_commit") \
 		or token["i"] < 0 or token["i"] > 24 or token["pending"] not in ["", "ack", "canMv", "safePt", "hurtP", "translate", "revive_vfx", "boss_sfx"]:
 		return _failure("effect_continuation_shape_unsupported")
@@ -337,7 +352,7 @@ static func phase_effect_step(token: Dictionary, response: Variant = null, rng: 
 					projectile["redBean"] = true
 					projectile["homing"] = true
 				return _effect_packet(state, "_spawnBossProjectile", 38297, [projectile], ctx)
-			17: return _effect_packet(state, "_T", 38301, [Catalog.phase_by_index(phase)["label"]], ctx, "translate")
+			17: return _effect_packet(state, "_T", 38301, [data_catalog.phase_by_index(phase)["label"]], ctx, "translate")
 			18: return _effect_packet(state, "addTxt", 38301, [e["x"], e["y"] - 50, state["label"], "#ff0000" if phase >= 3 else ("#cc2200" if phase >= 2 else "#ff8800"), 70], ctx)
 			19: return _effect_packet(state, "_reviveVFX", 38302, [e["x"], e["y"], "#ffdd44", "⚡부활! HP +30%", {"partN": 16, "partSpd": 5, "shake": 10, "vfxSize": 140, "flash": 3}], ctx, "revive_vfx")
 			20: return _effect_packet(state, "write_globals", 38303, [{"hitStop": _i32((6 + phase * 3) * state["hit_stop_scale"] / 100.0), "slowMo": maxf(state["slow_mo_after"], 60 + phase * 15)}], ctx)

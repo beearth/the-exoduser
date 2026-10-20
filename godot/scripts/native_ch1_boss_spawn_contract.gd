@@ -5,6 +5,7 @@ extends RefCounted
 ## Caller supplies current numeric inputs, collision readers and six RNG units.
 
 const Catalog = preload("res://scripts/native_ch1_boss_catalog.gd")
+const CatalogContext = preload("res://scripts/native_boss_catalog_context.gd")
 const _DIFF_LV_OFF = [-500, -400, -300, -200, -100, 0, 100, 200, 300, 400, 500]
 const _DIFF_MUL = [0.45, 0.55, 0.65, 0.76, 0.88, 1.0, 1.12, 1.25, 1.40, 1.58, 1.78]
 const _RNG_SITES = [
@@ -25,20 +26,24 @@ static func source_receipt() -> Dictionary:
 	}
 
 
-## request: si:int(0..3), x/y/player_level/stage_diff_offset:numeric,
+## request: si:int (default CH1 0..3; explicit catalog supplies stage range),
+## x/y/player_level/stage_diff_offset:numeric,
 ## difficulty_index:int (out-of-table indices retain source || fallback), room:int.
 ## rng(field:String)->unit in [0,1); can_move(x,y,r)->bool;
 ## safe_point(x,y,r)->{x,y} or null, needed only after blocked can_move.
 ## Missing providers/unsupported shapes are NOT_READY, never invented spawn data.
 static func build_spawn_packet(request: Dictionary, rng: Callable,
-		can_move: Callable, safe_point: Callable = Callable()) -> Dictionary:
+		can_move: Callable, safe_point: Callable = Callable(), chapter_catalog: Variant = null) -> Dictionary:
 	var ledger: Array = []
 	var reads: Array = []
 	for key in ["si", "difficulty_index", "room"]:
 		if not request.has(key) or not request[key] is int:
 			return _failure("NOT_READY", "integer_input_required:" + key, ledger, reads)
 	var si: int = request["si"]
-	var boss: Dictionary = Catalog.boss_for_stage(si)
+	var resolved: Dictionary = CatalogContext.resolve(chapter_catalog)
+	if not resolved["ready"]: return _failure("NOT_READY", resolved["reason"], ledger, reads)
+	var data_catalog: Variant = resolved["catalog"]
+	var boss: Dictionary = data_catalog.boss_for_stage(si)
 	if not boss.get("supported", false):
 		return _failure("NOT_READY", "unsupported_chapter_stage", ledger, reads)
 	for key in ["x", "y", "player_level", "stage_diff_offset"]:
@@ -113,11 +118,11 @@ static func build_spawn_packet(request: Dictionary, rng: Callable,
 			"sentryAng": 0, "sentryOn": false, "illusioned": false, "stealthT": 0,
 			"eliteBusy": 0, "eliteCharge": 0, "eliteRing": 0, "eliteBolt": 0, "eliteMortar": 0},
 		"projCd": 50, "projT": 70.0 + units[2] * 50.0, "chargeT": 0, "chargeCd": 9999,
-		"dropTier": 1, "bossPatCd": 35, "bossPatT": 30.0 + units[3] * 20.0,
+		"dropTier": mini(int(boss["hell"])+1,4), "bossPatCd": 35, "bossPatT": 30.0 + units[3] * 20.0,
 		"jumpX": 0, "jumpY": 0, "jumpOx": 0, "jumpOy": 0, "_bossPhase": 0, "_combatSt": "engage",
 		"_comboSeq": null, "_comboIdx": 0,
 		# Source allocates BOSS_MOVES.length (59), NOT max sparse idx + 1 (61).
-		"_moveCDs": _zero_cooldowns(), "_lastMoves": [], "_feinting": false, "_delaying": 0,
+		"_moveCDs": _zero_cooldowns(data_catalog), "_lastMoves": [], "_feinting": false, "_delaying": 0,
 		"_dbgScores": null, "shockR": 0, "shockMax": 0, "laserAng": 0, "laserLen": 0,
 		"deaths": 0, "reviveIframes": 0, "meteors": [], "_revPts": rev_points, "_maxRevPts": rev_points,
 		"shieldAng": 0, "eShield": hp, "eShieldMax": hp, "eShieldRegenT": 0,
@@ -136,9 +141,9 @@ static func _numeric(value: Variant) -> bool:
 	return value is int or value is float
 
 
-static func _zero_cooldowns() -> Array:
+static func _zero_cooldowns(data_catalog: Variant) -> Array:
 	var result: Array = []
-	result.resize(Catalog.source_receipt()["global_move_count"])
+	result.resize(data_catalog.source_receipt()["global_move_count"])
 	result.fill(0)
 	return result
 

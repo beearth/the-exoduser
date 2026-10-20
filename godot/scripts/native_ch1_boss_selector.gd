@@ -4,6 +4,7 @@ extends RefCounted
 ## No actor, global RNG, clock, player-stat counter, save or World connection.
 
 const Catalog = preload("res://scripts/native_ch1_boss_catalog.gd")
+const CatalogContext = preload("res://scripts/native_boss_catalog_context.gd")
 const Utility = preload("res://scripts/native_ch1_boss_utility.gd")
 
 
@@ -18,13 +19,16 @@ static func source_receipt() -> Dictionary:
 ## a provider already consumed a draw; rng_ledger preserves those attempts.
 ## Array null cooldown entries denote JS absent slots (not numeric zero).
 static func select_tick(si: int, enemy: Dictionary, sp: float, distance: float,
-		ps: Variant, rng: Callable = Callable(), boss_debug: bool = false) -> Dictionary:
+		ps: Variant, rng: Callable = Callable(), boss_debug: bool = false, chapter_catalog: Variant = null) -> Dictionary:
 	var ctx: Dictionary = {"rng": rng, "ledger": [], "error": ""}
-	if not Catalog.boss_for_stage(si).get("supported", false): return _failed(ctx, "unsupported_chapter_stage")
+	var resolved: Dictionary = CatalogContext.resolve(chapter_catalog)
+	if not resolved["ready"]: return _failed(ctx, resolved["reason"])
+	var data_catalog: Variant = resolved["catalog"]
+	if not data_catalog.boss_for_stage(si).get("supported", false): return _failed(ctx, "unsupported_chapter_stage")
 	if not is_finite(sp) or not is_finite(distance): return _failed(ctx, "non_finite_tick")
 	if not enemy.get("_bossPhase") is int: return _failed(ctx, "phase_missing")
 	var phase: int = enemy["_bossPhase"]
-	var ph: Dictionary = Catalog.phase_by_index(phase)
+	var ph: Dictionary = data_catalog.phase_by_index(phase)
 	if ph.is_empty(): return _failed(ctx, "unsupported_phase")
 	if not _number(enemy.get("stunned")) or not enemy.get("s") is String:
 		return _failed(ctx, "actor_gate_shape_missing")
@@ -64,7 +68,7 @@ static func select_tick(si: int, enemy: Dictionary, sp: float, distance: float,
 	if seq is Array and combo_idx < seq.size():
 		var next_id: Variant = null
 		if combo_idx >= 0 and floor(float(combo_idx)) == combo_idx: next_id = seq[int(combo_idx)]
-		var move: Dictionary = Catalog.move_by_id(next_id) if next_id is String else {}
+		var move: Dictionary = data_catalog.move_by_id(next_id) if next_id is String else {}
 		var cd_ok: bool = cds == null
 		if not move.is_empty() and cds is Array and move["idx"] < cds.size():
 			var cd: Variant = cds[move["idx"]]
@@ -72,7 +76,7 @@ static func select_tick(si: int, enemy: Dictionary, sp: float, distance: float,
 				if not _number(cd): return _failed(ctx, "combo_cooldown_unsupported")
 				cd_ok = cd <= 0
 		if not move.is_empty() and move["phase"].has(phase) \
-				and Catalog.boss_for_stage(si)["move_ids"].has(next_id) and cd_ok:
+				and data_catalog.boss_for_stage(si)["move_ids"].has(next_id) and cd_ok:
 			e["_comboIdx"] = combo_idx + 1
 			_write_cd(e, move, ph)
 			var unit: Variant = _draw(ctx, "combo_timer", 38396)
@@ -83,14 +87,14 @@ static func select_tick(si: int, enemy: Dictionary, sp: float, distance: float,
 		e["_comboSeq"] = null
 		e["_comboIdx"] = 0
 	var scores: Array = []
-	# Non-CH1 registrations fail the source Set gate; retain all 59 score slots.
-	for entry: Dictionary in Catalog.source_receipt()["move_manifest"]:
-		var move: Dictionary = Catalog.move_by_id(entry["id"])
+	# Registrations outside the supplied chapter Set fail; retain all 59 score slots.
+	for entry: Dictionary in data_catalog.source_receipt()["move_manifest"]:
+		var move: Dictionary = data_catalog.move_by_id(entry["id"])
 		if move.is_empty():
 			scores.append(-1.0)
 			continue
 		var score_rng: Callable = func(_tag: String) -> Variant: return _draw(ctx, "boss_score", 37693)
-		var scored: Dictionary = Utility.evaluate_move(si, move, distance, stats, phase, e, score_rng)
+		var scored: Dictionary = Utility.evaluate_move(si, move, distance, stats, phase, e, score_rng, chapter_catalog)
 		if scored["status"] != "READY": return _failed(ctx, scored["reason"])
 		scores.append(scored["score"])
 	var roulette_rng: Callable = func(_tag: String) -> Variant: return _draw(ctx, "roulette", 38419)
@@ -101,7 +105,7 @@ static func select_tick(si: int, enemy: Dictionary, sp: float, distance: float,
 		if ctx["error"] != "": return _failed(ctx)
 		e["bossPatT"] = 10 + unit * 10
 		return _ready(ctx, e, stats, "no_positive_score")
-	var best: Dictionary = Catalog.move_by_id(Catalog.source_receipt()["move_manifest"][picked["ordinal"]]["id"])
+	var best: Dictionary = data_catalog.move_by_id(data_catalog.source_receipt()["move_manifest"][picked["ordinal"]]["id"])
 	if boss_debug: e["_dbgScores"] = scores
 	_record(e, best)
 	_write_cd(e, best, ph)
@@ -113,7 +117,7 @@ static func select_tick(si: int, enemy: Dictionary, sp: float, distance: float,
 	if ctx["error"] != "": return _failed(ctx)
 	if unit < ph["comboC"]:
 		var combos: Array = []
-		for combo: Dictionary in Catalog.combos_for_stage(si, phase):
+		for combo: Dictionary in data_catalog.combos_for_stage(si, phase):
 			if combo["seq"][0] == best["id"]: combos.append(combo)
 		if not combos.is_empty():
 			unit = _draw(ctx, "combo_choice", 38435)
