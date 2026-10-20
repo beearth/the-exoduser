@@ -1,3 +1,11 @@
+## 2026-10-20 BC04 — 1장 보스 선택기·콤보·RNG 순서
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 구현·의존 | 신규 native_ch1_boss_selector.gd·test_boss_ch1_bc04_selector.gd·bc04_REPORT.md. BC03 349ec241 끝에서 분기. 공용/타 담당 코드·기존 테스트·원본·설계 docs·R 수정0 |
+| 원본 | 최신 main e556b617 game.html:38373–38442. CD감소→idle/거리/타이머 gate→combo 또는59-slot score→상위6가중 선택·history/streak·idxCD·조건부 난수 순서를 보존. startPattern은 BC06용 command 경계 |
+| 검증·한계 | 원본 독립 oracle2,723건·가중 경계25건·난수20,746회 대조. 신규 최초21,899단정/0실패/skip0/ERROR0; BC01 681/0·BC02 5,257/0·BC03 31,976/0·contracts5/5·import 정상, 모두ERROR0. actor/전투·Main 연결은 후속 의존. 원로그 `_out/bc04/`, push·SHA대조·DONE 후 자기 sparse worktree 제거 |
+
 ## 2026-10-20 BC03 — 1장 보스 utility score 순수 함수
 
 | id / 적용 위치 | 현재 정확 계약 |
