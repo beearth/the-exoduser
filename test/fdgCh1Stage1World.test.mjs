@@ -14,7 +14,15 @@ const before=Object.fromEntries(paths.map(p=>[p,sha(read(p))]));
 const actual=buildResources(root);
 test('latest main original full initMapObjects executes with no unseeded RNG; 12 hands plus separate lore',()=>{
  assert.equal(sha(execFileSync('git',['show','origin/main:game.html'],{cwd:root,maxBuffer:16*1024*1024})),actual.bundle.source.game_sha256);
- assert.deepEqual(actual.bundle,stored);
+ // A moving main ref is extraction provenance; prove both commits have the same
+ // original bytes before comparing every native content field unchanged.
+ assert.equal(actual.bundle.source.game_sha256,stored.source.game_sha256);
+ for(const ref of new Set([actual.bundle.source.main_sha,stored.source.main_sha])){
+  assert.match(ref,/^[a-f0-9]{40}$/);
+  assert.equal(sha(execFileSync('git',['show',ref+':game.html'],{cwd:root,maxBuffer:16*1024*1024})),stored.source.game_sha256);
+ }
+ const content=structuredClone(actual.bundle);content.source.main_sha=stored.source.main_sha;
+ assert.deepEqual(content,stored);
  assert.equal(actual.bundle.props.length,13);assert.equal(actual.bundle.props.filter(p=>p._hand).length,12);
  assert.equal(actual.bundle.props.filter(p=>p.type==='lore').length,1);assert.equal(actual.bundle.props.filter(p=>p.type==='breakable').length,0);
  assert.equal(Object.keys(actual.raw.initial_obj_meta).length,77);
