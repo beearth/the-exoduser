@@ -210,7 +210,7 @@
 | 설계 / 불일치 | 불일치·누락8건 표로만 기록. FB-S01 순수 catalog를 구현 지시서 수준으로 명세, 공용0줄 목표. FB-S10 State/main/World/피해·탄 연결은 통합 결정 HOLD |
 | 검증 / 한계 | game.html·index.html 기준 blob/byte/SHA 일치, 순수 JS 생성자7레벨×3계열·피격 gate5표본만 평가. Godot/import/게임/기존·신규 테스트 실행0. 전투·화면·PC 인수 미확인 |
 | 상세 | [필드보스 추적](engine/FDG_SOURCE_TRACE_FIELDBOSS_20261020.md). 원로그 `~/exoduser-wt/_out/trace-fieldboss/`. R 불변, 자기 branch push/원격 확인/DONE 후 자기 worktree 제거 |
-=======
+
 ## 2026-10-20 QA-006 추천 순서 선재 기대값 수정·얼음보주 비교
 
 | 항목 | 변경·검수 근거 |
@@ -220,7 +220,6 @@
 | 얼음보주 | 동일 하니스 main3회·SK-S05 ee419a6c3회 각각22단정/실패0·exit0·ERROR0. 최초 ObjectDB/resource 종료 실패는 보존, 원인·선재/회귀 판정 미확인. 하니스/제품 수정0, 해결 완료로 보지 않음 |
 | 보존 / 중지 | 335보호경로 SHA 동일. 기존 격리 상수·Godot 실행 gate 준수. SK-S06 State/main writer 연결은 통합 결정 목록에 기록하고 중지 |
 | 상세 | [QA-006 보고서](engine/orders/reports/qa-006_REPORT.md), 원로그 `~/exoduser-wt/_out/qa-006/`. 전체 QA 해결 완료 아님 |
->>>>>>> a9cea07a
 =======
 ## 2026-10-20 QA-005 로비 8실패 판정·하니스/기대값 정정
 
@@ -443,6 +442,30 @@
 | 입력·보존 | 복잡 JS coercion·문자열/bool q·NaN/Inf는 NOT_READY/사유, 정상 효과값 미공급. 입력·중첩 참조·배열 길이 불변. 결과는 일시적 view이며 세이브 형식/복원·Q/E·docs/2_3 변경0 |
 | 검수 | 새 순수 테스트177/0, 원본 JS 함수와 품질205·홈120·합성8의1478비교/0. 첫 파일 미배치 실행 무효 및 JSON 숫자 Dictionary 비교1실패는 원로그 보존. 기존 회귀 contracts 5그룹/0실패, P2-001c 40/0·exit0(단, Camera2D·ObjectDB 2인스턴스 종료누수 경고 보존). [it-01 보고서](engine/orders/reports/it-01_REPORT.md) 참조 |
 | 격리·한계 | 신규 테스트 `EXODUSER-it-01-Isolated-20261020`. Main 없는 순수 테스트는 Git 밖 전용 project.godot에서 실제 신규 소스를 symlink로 읽으며 repository override 미사용. 실제 플레이·화면·장착 효과·전체 JS coercion 인수 아님 |
+=======
+## 2026-10-20 SK-S05 학습·강화·합체·환불·일괄/추천 fixture core
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 범위·의존 | 신규 learn/upgrade/fuse_commit/refund/batch_recommend·전용core_support·통합신규test·각uid·보고서. main e556b617 원본, SK-S04 fc24b886 끝에서 분기(S01~03 간접의존) |
+| 원본 | 3913~3930/28080~28085/44644~44661/47192~47326/47678~47965. 기존cost/catalog/fusion/slot 공급 재사용, SP공식·32레시피·15추천단계 수정0 |
+| 계약 | 원P/G 무변이 deep-copy ledger. UI/direct gate차이·star표시와member실차감·선차감후환불·minus/reset/겹침환불·claimed/부분추천 보존. active8필드는원값복원후제안데이터만, 실제writer미구현·shieldFuse전용reset NR/HOLD |
+| 신규 검증 | 9533/0·원본9358행 불일치0·SP/악의14620double bit일치·격리sk-s05/Main0. 최초fixture1실패/큰정수경계3실패 원문과수정이력 보존 |
+| 회귀·BLOCKED | 기존Godot12파일 중11정상, ice22/0이어도종료resource ERROR1로최초실행PASS제외. verbose추가진단22/0·ERROR0도최초실패대체아님. p2005합91/0만보고. 웹비용4통과·추천15대기대14 선재1실패, 전체PASS아님 |
+| 보호·중지 | native_skill_slots.gd·공용/타담당/기존313파일·R0줄. 다음SK-S06은State/main 공용writer 필요하므로사용자지시대로중지, 순서안끝아님. 실제Q/E·입력·UI·저장연결0 |
+| 인계 | sk-s05_REPORT.md·_out/sk-s05/ 원로그/DONE·stop-boundary. 정상훅/자기branch push·원격일치·DONE 후자기 sparse WT만제거·branch보존. 회귀인수BLOCKED는owner/QA 인계 |
+
+## 2026-10-20 SK-S04 슬롯 읽기 모델·복사 미리보기
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 범위·의존 | 신규 skill_management_source/slot_rules.gd·test_trace_skills_s04_slots.gd·각uid·보고서. main e556b617 원본, SK-S03 db880a18 기반(S01/S02 간접의존) |
+| 원본·순서 | game44230~44274/44965~45007/46969~47083·44322, Forge17~24/57~84. 숫자0~3·rage4·tech5·ULT별도, Forge13개 키순서와 기존8고정정의 재사용 |
+| 계약 | auto는 null만빈칸/중복−1, repair copy는F→Space→일반→displaced·유효일반중복 유지. num equip copy는중복전칸해제. eligible/isAbsorbed와L/getAllAbsorbed·fixed canEquip 차이/원본호스트 누락 보존 |
+| 검증 | 신규12151/0·원본10716행/13descriptor 불일치0·웹기존16/16. S01/S02/S03/contracts·p2005a~d91/0·starter/regen 회귀11파일, 모두exit0·stderr ERROR0. 기존main QA테스트 byte사본은원격리상수 사용 |
+| 보호·환경 | 공용코드/native_skill_slots.gd·기존모듈/테스트·P/G/입력/저장·R0줄. 고정slot writer는NR. no-checkout/non-cone sparse WT·949원자원 검증/cache재사용·import ERROR0 |
+| 인계 | sk-s04_REPORT.md·_out/sk-s04/ 원로그/DONE. 초기parse/원본대조5불일치 수정이력 보존. 알려진로비8실패는지시원문만기록·PASS제외. push/ref/DONE 뒤자기WT만제거·branch보존 |
+>>>>>>> ee419a6c
 
 ## 2026-10-20 SK-S03 합체·흡수 읽기 전용 판정
 
