@@ -23,6 +23,25 @@
 | 재사용·검증 | 기존 META-06 cap100/entry/loop 그대로 위임. 신규22/0·META06 1034/0·인트로18/0·원문JS995/0, 각1회. 잘못된 stage 거부 의도 ERROR1 외 예상 밖 오류0. 실제 XP writer는 DEMO11-20 후속. |
 | 인계 | [공개 API·공용 변경 줄·보고서](engine/orders/reports/demo11-01_REPORT.md), 원로그 ~/exoduser-wt/_out/demo11-01/. 자기 branch push/remote SHA/DONE 뒤 자기 WT 제거; R 불변. |
 
+## 2026-10-21 DEMO11-20 후속 — 성능 수정 main merge·틱 목록 API 점검
+
+| 항목 | 근거·검수 |
+|---|---|
+| 기준 / 병합 | 기존726cf925의 같은 branch에 최신main aa1eaea5a 정상merge(rebase0·충돌0). PC 정적arity캐시3모듈·성능규칙문서 인수 |
+| 자기 코드 점검 | State/META01/06/신규테스트·oracle 목록생성API0, 자기 제품/테스트 바이트726cf925와동일·추가수정0. PC Q/E/회복 코드 별도수정0 |
+| 검증 / 측정 | 후속 직접관련4suite 각1회: 214/0+1034/0+20/0+45/0=1313/0, skip0·ERROR0. P2001c ObjectDB2 WARNING 원문보존. 별도성능수치 주장0·Performance미사용·벤치미실행, 필요시고정물리N틱벽시계만 |
+| 제출 | [후속 보고서](engine/orders/reports/demo11-20_REPORT.md), 원로그 followup-*·기존로그보존. 정상훅·자기branch 일반push·원격SHA·기존DONE에새SHA추가후자기worktree제거 |
+
+## 2026-10-21 DEMO11-20 실제 State addExp cap100·레벨업 인계
+
+| 항목 | 근거·검수 |
+|---|---|
+| 기준 / 권한 | main010515993 + GAP61ab71be 읽기참조. 사용자 “나눠서” 승인으로 State addExp 구역만 +62/−8; Main/HUD/PC 전투·피해/맵/저장 형식0줄 |
+| 연결 | META-06 entry/loop cap100·META-01 curve 재사용(수식신규0). 99→100·대량XP/이미100·full mode, 회복은 기존authority1회·HUDpull/SPAPtext 유지 |
+| 인계 | 임시 State demo=true·DEMO11-01 setter 접점, native_level_up_handoff는 회복/해금 뒤1회·detached/재진입거부. save requested=true/committed=false, actualcollector save_globals미소유HOLD 유지·새IO0 |
+| 회귀 | 각1회 신규214/0(원본10사례)·META06 1034/0·META01 20/0·P2001c45/0=1313/0, exit0/skip0/ERROR0. Camera2D WARNING·P2001c ObjectDB2 WARNING 원문 기록, 누수0 주장0 |
+| 제출 | [DEMO11-20 보고서](engine/orders/reports/demo11-20_REPORT.md)·META추적 소비 갱신. 원로그 ~/exoduser-wt/_out/demo11-20/, 매Godot gate/override0·정상훅·자기branch push·remoteSHA/DONE뒤자기worktree제거 |
+
 ## 2026-10-20 BC2-07 shieldBash2 독립 wind/dash/contact 계산
 
 ## 2026-10-20 EC4-02 4장 catalog·23필드 초기 literal projection
@@ -63,7 +82,6 @@
 | 검증 | 신규22,364/0. EC2선택7,483/0·constructor159,902/0·EC3선택10,234/0·factory3그룹/0·contracts5그룹/0. 최종ERROR/WARNING0. 변이5종에서347/2499/112/6/154실패검출후byte복원 |
 | 보호 / 제출 | 기존1,607파일byte동일. Godot13launch 매회count1·2이상30초대기, 지정/기존상수격리·override복원. [EC4-01 보고서](engine/orders/reports/ec4-01_REPORT.md), 원로그 ~/exoduser-wt/_out/ec4-01/. 자기branch push·원격SHA/DONE뒤자기worktree제거 |
 
-<<<<<<< HEAD
 
 ## 2026-10-20 TRACE-ENEMIES-CH4 4장 적 원본 추적·작은 이식 단위
 
@@ -279,8 +297,7 @@
 | 원본 | 40..49각matching draw2/4/3/2/2/2/4/3/4/6,offtimer9999/phase−1/bleed0/상수flag·coords0draw,orbit31260뒤/erratic31300앞. raw46speed0분기·44R10(기획8과불일치),catalogshield%와실HP방어구분 |
 | 검수 | 최종신규12,602/0·원문1,000·38키값/순서/소비binary64/잘못된샘플위치검사. 회귀6종최종실패0/ERROR0/SKIP0. 최초importSIGSEGV−11/이후캐시누락ERROR50·실패단정10 원문보존,동일명령재import0/0및해당회귀4종재실행통과. 원인미확인·숨김0 |
 | 경계·기반 | main6d987cb8a에EC2-02 a10924eb포함하여main분기,EC3-01은미병합/미소비. 전체HP/coreprovider통합은HOLD·공용Main/State/저장/다른담당0줄. Node필수인자/출력join·UTF8임시JSON,새EXODUSER-ec3-02-Isolated-20261020·기존각상수/Godot전pgrep2이상30초대기/override0byte. [보고서](engine/orders/reports/ec3-02_REPORT.md)·원로그 ~/exoduser-wt/_out/ec3-02/ |
-=======
->>>>>>> 01d036d4
+
 
 ## 2026-10-20 QA-007 테스트 Windows 이식성
 
