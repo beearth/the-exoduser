@@ -56090,3 +56090,7 @@ MAP11 fieldboss Marker 4개/실제 family bind, 실제 transport spawn_options�
 ## 2026-10-21 INTEG-2 — 1-1 PC 전달 통합
 
 47m/Map11-15/17 순차 정상 merge;CHANGELOG 독립 추가 양쪽 보존. auto_potion E2E의 HP/iframe·대기·실제 hurtP 요청 전후 관측만 추가(공식/HP쓰기/core 변경0). import1회/관련 단위3989 PASS0 FAIL/E2E12 PASS6 NOT_READY0 FAIL. benchmark1회 exit4,시간 미수집;physics max22.414ms 예산초과. 과거0요청 증상 미재현·원인 확정 불가,PC blocked_by 유지. [원인·18단계·검수·남은 일](engine/INTEG2_DEMO11_20261021.md).
+
+## 2026-10-21 INTEG-2b MAP11 perf
+
+벤치 G.on 주입 제거·제품 guide/lesson 경로 사용, 공간별 즉시 JSON/600틱 p95 및 실제 gate receipt 기록. field p95 15.391ms(미달), arena gate_or_provider로 미측정; 제품 gate/PC 미인수 우회0. 상세: engine/INTEG2b_MAP11_PERF_20261021.md.
