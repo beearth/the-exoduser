@@ -169,7 +169,7 @@ const ENTRIES := {
     "mode": "urgent",
     "source_line": 9542,
     "category": 3,
-    "connected": false,
+    "connected": true,
     "tier": 4
   },
   "boss_grab_warn": {
@@ -183,7 +183,7 @@ const ENTRIES := {
     "mode": "urgent",
     "source_line": 9547,
     "category": 3,
-    "connected": false,
+    "connected": true,
     "tier": 4
   },
   "boss_aoe_warn": {
@@ -197,7 +197,7 @@ const ENTRIES := {
     "mode": "urgent",
     "source_line": 9548,
     "category": 3,
-    "connected": false,
+    "connected": true,
     "tier": 4
   },
   "tut_start": {
@@ -869,7 +869,7 @@ const ENTRIES := {
     "mode": "bid",
     "source_line": 9675,
     "category": 16,
-    "connected": false,
+    "connected": true,
     "tier": 4
   },
   "boss_p3": {
@@ -883,7 +883,7 @@ const ENTRIES := {
     "mode": "bid",
     "source_line": 9676,
     "category": 16,
-    "connected": false,
+    "connected": true,
     "tier": 4
   },
   "boss_p4": {
@@ -897,7 +897,7 @@ const ENTRIES := {
     "mode": "bid",
     "source_line": 9677,
     "category": 16,
-    "connected": false,
+    "connected": true,
     "tier": 4
   },
   "boss_kill": {
@@ -911,7 +911,7 @@ const ENTRIES := {
     "mode": "say",
     "source_line": 9680,
     "category": 16,
-    "connected": false,
+    "connected": true,
     "tier": 4
   },
   "stage_clear": {
@@ -1589,7 +1589,7 @@ const ENTRIES := {
     "mode": "urgent",
     "source_line": 41878,
     "category": 16,
-    "connected": false,
+    "connected": true,
     "tier": 4
   },
   "tut_gate_locked": {
@@ -2290,7 +2290,7 @@ const ENTRIES := {
     "mode": "bid",
     "source_line": 9696,
     "category": 23,
-    "connected": false,
+    "connected": true,
     "tier": 4,
     "pool_source_line": 9695
   },

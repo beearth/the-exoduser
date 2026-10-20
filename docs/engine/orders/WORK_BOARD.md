@@ -28,6 +28,9 @@
 5. 같은 일을 두 곳에서 하지 않는다. 비어 보이면 표를 먼저 확인.
 
 ## 진행 중 (2026-10-20 갱신: Claude 총괄)
+
+DEMO11-44: Mac Codex / `codex/demo11-44-20261021` / NativePets·catalog/generator·Main357 추가1줄·자기 tests/docs. 기존9 ID 추가69/102, 신규75/0·Node10/0. 제품 피해·회복/State writer 변경0, 자연 전투·시각 미확인. [보고서](reports/demo11-44_REPORT.md).
+
 | 작업ID | 내용 | 담당·환경 | 브랜치 | 소유 파일(다른 담당 수정 금지) | 상태 |
 |---|---|---|---|---|---|
 | DEMO11-21fix | pending draw의 Main/State 해제 수명 보호 | Mac Codex | codex/demo11-21-20261021 | native_world_drops·신규 수명 테스트·자기 docs | **검수 대기** — mainac3764bfe 정상merge, 수명9/0·starter148/0·관련드랍60/0. ERROR/ObjectDB/resource0, Main/State/전투0줄. [보고서](reports/demo11-21fix_REPORT.md) |

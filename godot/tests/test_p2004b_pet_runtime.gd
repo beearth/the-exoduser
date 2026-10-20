@@ -51,7 +51,7 @@ func _run() -> void:
 	_check(snapshot["dialogue_halt"] == "", "configured readers ready")
 	_check(float(pets.get("_pet_enemy_avg_atk")) > 0.0, "500px attack mean read")
 	_check(snapshot["dialogue_catalog"]["total"] == 171, "actual installed catalogue")
-	_check(snapshot["dialogue_catalog"]["data_only_ids"].size() == 111, "actual data-only boundary")
+	_check(snapshot["dialogue_catalog"]["data_only_ids"].size() == 102, "actual data-only boundary")
 	var before: Dictionary = snapshot["counters"]
 	player.telemetry_event.emit("player_damage", {})
 	player.telemetry_event.emit("native_hurte", {"killed": true})

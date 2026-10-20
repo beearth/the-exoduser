@@ -1,3 +1,6 @@
+## 2026-10-21 DEMO11-44 기존 펫 owner 연결
+
+- main0138c5bb +37/05f41cc7 +31/76bcae8d 정상 merge, 양쪽 기능 보존. Main 설치1줄·NativePets 읽기/신호 소비, 기존9 ID 추가69/102. 펫 피해/회복0, State writer 재사용 검증. 신규75/0·Node10/0, 관련 회귀·공용 범위는 [보고서](engine/orders/reports/demo11-44_REPORT.md). 번역4문장 추가·main bytes/CRLF 보존.
 
 ## 2026-10-21 DEMO11-31 — 앵글러 family·실제 탄·PC final→지역 gate
 
