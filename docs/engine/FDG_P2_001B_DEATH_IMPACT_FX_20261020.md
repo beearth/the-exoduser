@@ -16,11 +16,11 @@
 ### 2) 사망 연출 (처치 파이프라인 42704~42732)
 | 행 | 문장 | 구현 |
 |---|---|---|
-| 42711 | `deathFX(e.x,e.y,e.r,e.col,ib,…)` — 24805~: **사운드 디스패치(24790~24830, sfx/death ~43파일)**, 흰 링 tp3(r,life8), 중심 플래시 tp1×1, `death_blood` 시트(19679: Blood_FBF_4x4.png 128px 16f 4cols, scale=max(.8,min(4.8,.35+r×.075)), frameTime4, 랜덤각, baseAlpha1.5, alpha×(1-f/16×.3), lighter) | 링/플래시=hit-fx poolPart, 시트=death-fx 어댑터. **사운드 미이식 — 에셋 미복사 목록 보고·카운터 기록** |
+| 42711 | `deathFX(e.x,e.y,e.r,e.col,ib,…)` — 24805~: **사운드 디스패치(24790~24830, sfx/death ~43파일)**, 흰 링 tp3(r,life8), 중심 플래시 tp1×1, `death_blood` 시트(19679: Blood_FBF_4x4.png 128px 16f 4cols, scale=max(.8,min(4.8,.35+r×.075)), frameTime4(**렌더 프레임 클록** — P2-001f 정정), 랜덤각, baseAlpha1.5(GL 경로 [0,1] 클램프→실효 1.0), alpha×(1-f/16×.3), 등록 blend는 'source-over'지만 실전=VFX GL 인스턴싱 additive — P2-001f 정정) | 링/플래시=hit-fx poolPart, 시트=death-fx 어댑터. **사운드 미이식 — 에셋 미복사 목록 보고·카운터 기록** |
 | 42720 | `_spawnLargeMonsterDeathFx`(25396): `_isLarge=r>=18||mhp>=220`(첫 스테이지 전원 r 20~35 해당), 비보스 16발 방사(#ffaa66/#ffd9aa, v 3.2+r×2, grav .08) + addParts(…,10) | death-fx front |
 | 42722 | `_addCorpse`(24964, OPT.deathFx 게이트): 스프라이트 캡처 시체, spd=min(5,1.5+power×.8) (power=min(8,dmg/mhp×20)), 회전 a+π/2·rv±.1, **mt=420틱**, 물리 34638~(벽 바운스 -0.4·마찰 .85^sp), 렌더 54529~(캡 25, **t<mt×.4 페이드**, scale(1,.5) 납작, 그림자 웅덩이 #330000 α.3) + `_addFloorTrace`(24903): 핏자국 전원(_stainRadius=max(14,min(36,r×1.4)), **420틱 유지+120틱 페이드**, 2중 타원 #4a0508 α.42/#7a1018 α.30), 살점 잔류는 r>=40만 | death-fx 어댑터 (시체=적 _body 현재 프레임 캡처) |
 | 42726~42731 | 고어: **provider 롤 3건(P1-002.E 고정: common/rare→조각 인덱스→대형 intestine/organ) 값 그대로 재사용 — 추가 소비 없음**. _addGorePiece(25236): 변형 _goreRand·크기±4·30% 카메라 플링(scale .5→3, life40)/일반(v 5+r×7, vy-2, grav .10, life90), 렌더 54562~(알파 life/ml×3, 축소 life<10) | death-fx 어댑터 (gore 33종 PNG — 원본 assets/gore 복사) |
-| 42732 | `_addDeathImpact`(25187): blood_impact_2/3/4 랜덤, maxSz=max(24,min(240,r×3))(25186), life 1.0→0 (0.8/초, 34616), 렌더 54568(확대 .3까지 급팽창 후 ×1.2 완만, 페이드, lighter) | death-fx 어댑터 |
+| 42732 | `_addDeathImpact`(25187): blood_impact_2/3/4 랜덤, maxSz=max(24,min(240,r×3))(25186), life 1.0→0 (0.8/초, 34616), 렌더 54568(확대 .3까지 급팽창 후 ×1.2 완만, 알파 0→1 페이드인, 코드 표기 'lighter'는 GPU/GL 프록시 no-op → **실블렌드 normal** — P2-001f 정정) | death-fx 어댑터 |
 | — | 사망 시 본체: 원본 drawEn은 `alive` 게이트로 즉시 렌더 제외 → 시체가 대체. 기존 Godot '어두운 반투명 모듈레이트'는 원본과 달라 **hurtE 사망에서 본체 숨김으로 교체** (receive_damage 레거시 경로는 킬 파이프라인·시체가 없어 기존 연출 유지 — 잔여) | enemy.gd + 공용 owner death write |
 
 ### RNG 규약 (충돌 보고)
@@ -67,3 +67,9 @@ enemy.gd·native_dedicated_enemy_hurte_owner.gd(사망 본체 숨김) / 테스�
    보스 변형(boss_death_blood clip·보스 시체 캡처).
 3. receive_damage 레거시 경로(Q/E·투사체 킬)의 사망 연출 — hurtE 파이프라인 바깥(기존 유지).
 4. 고어 '바닥 잔류' 생성원은 r≥40 전용이라 첫 스테이지 미발생(시스템은 이식됨).
+
+## P2-001f 정정 (2026-10-20)
+위 표의 death_blood 'lighter'·frameTime4(60Hz 틱) 표기와 DI additive 구현은 웹 실측으로
+반증되어 수정됨 — death_blood 프레임은 **렌더 프레임당 +1**(54582 _dtSp=1, 실측 ~186fps
+에서 16프레임≈0.34s), DI는 **normal 블렌드**(프록시 X의 composite setter no-op).
+상세·실측 근거: `FDG_P2_001F_DEATH_BLOOD_TIMING_20261020.md`.
