@@ -1,3 +1,12 @@
+## 2026-10-21 DEMO11-45 1-1 상호작용 첫 종 사전 확인 — BLOCKED
+
+| 항목 | 근거·상태 |
+|---|---|
+| 기준 | 최신 fetch main0138c5bb9에 MAP11 263498f6 정상 merge(FF), 의존 맵/에셋은 인수분 |
+| 첫 종 | 원본 보스 후 상자 선정, 봉화 생성 비활성·제단stage>=5·상인stage0 도달 미확인. 상자 stage0 악의+7(HP추출2는 악의 전환), 개봉 플래그 별도 영속 저장 없음 |
+| BLOCKED | MAP11 실제 Main 설치·provider참조 및 PC 보스 완료/부활 최종 통지가 미준비. 임의 좌표/가짜 사망/보호 경로 우회0. [보고서](engine/orders/reports/demo11-45_REPORT.md)에 필요한 위치·근거·재개 지시서 |
+| 검증·범위 | 제품/공용/보호/맵/저장/번역0줄, Godot·저장 접근0, 테스트 미실행(N/A). NPC_WORLD docs 동기화·자기 branch 정상push/원격SHA/DONE 후 자기WT 제거 |
+
 ## 2026-10-21 MAP11-11 — 필드·아레나 collider/LOS/flow provider
 
 - main0138c5bb + 인수된6bcc483d·3f9c87a4 정상merge. 승인 geometry 동일. 독립 runtime의 static collider/4지역/22anchor/field↔arena gate callback과 DEMO11-37·43 이름 계약은 [보고서 첫 표](4.1맵디자인+설정/MAP11_FIELD_PROVIDER_20261021.md).

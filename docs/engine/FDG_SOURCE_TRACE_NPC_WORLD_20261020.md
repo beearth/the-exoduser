@@ -302,3 +302,7 @@ oracle은 각 구현 작업의 고정 원본에서 **재생성**한다. Mac의 `
 | `getNpcInteraction` | 0 | 0 |
 
 분모·문서 숫자는 Node/Godot 테스트 횟수와 합산하지 않는다. 검증 세부 결과와 최종 branch/SHA/정리 증거는 원로그의 DONE.txt·submission.json에서 확인한다.
+
+## 2026-10-21 DEMO11-45 첫 종 연결 확인
+
+상호작용 첫 종은 보스 후 보물상자로 선정했지만 **BLOCKED(제품 MAP11 설치 참조·PC 보스 완료/부활 대기 최종 접점 미준비)**다. 봉화는 생성 주석, 버프 제단은 stage>=5, 상인의 실제 demo stage0 도달은 미확인이라 대체 배치/거래 UI를 만들지 않는다. 보물상자의 HP물약+2 표시는 addPotion에 의해 악의+2로 전환되어 stage0 총 악의+7이며 지속 물약2개가 아니다. 원본 demo 저장 literal에는 개봉 플래그/worldItems/MAP_OBJS가 없으므로 별도 영속 키를 추가하지 않는다. 자세한 행 근거·재개 접점·첫 종 지시서는 [DEMO11-45 보고서](orders/reports/demo11-45_REPORT.md). 제품·공용·보호 경로 신규 변경0, Godot/저장/테스트 실행0이며 구현 완료나 테스트 PASS가 아니다.
