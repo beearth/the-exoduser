@@ -1,3 +1,15 @@
+## 2026-10-20 CH-MAP-PIN — CH1 출처 비교·CH2 재추출 pin 정합성
+
+| id / 적용 위치 | 현재 정확 계약·증거 |
+|---|---|
+| 기준 / 담당 | 최신 origin/main249c26fad. Mac CH1-04/CH2-02 소유 도구·테스트만, Main/State/저장·Godot reader/World·공유맵·PNG·data0줄. 작업판 자기행·[보고서](engine/orders/reports/ch-map-pin_REPORT.md) 갱신 |
+| CH1 si1 Node | 실패4/1의 실제 차이는 source.main_sha e556b617→249c26fad 하나. 두 commit:game.html SHA4d911cdd… 동일을 증명한 경우만 그 필드를 정규화해 **전체** deepEqual. props13/hand12/lore1/meta77·좌표/자산/313벽/5충돌/원본질의 기존 단정 모두 유지 →5/0 |
+| CH2 si4 추출기 | 깨끗한4bf1a8ca… pin은 유효하지만 기존CLI가 provenance8524bbbb→249c26fad만 다시 써40a3d3ff…가 돼 scene_ready/pin 실패 재현. 전체 native payload·두 원문 commit SHA가 같을 때 버전관리된 승인본까지 전체비교해 기존 JSON byte와진짜과거기록 보존/복구. 실제깨진40a3… 파일도수정CLI로4bf1… 복구·수동정상본복원0. 새 oracle만 현재원문 실행에서 생성, 다른native필드변경은 기존재추출·exact pin 거부 유지 |
+| pin / 거부 | RESOURCE_SHA·reader literal·데이터 변경0. 잘못된 recorded commit/원문 SHA는 쓰기 전 거부. 새 격리 Node4종은 최초RED1/2·복구강화RED2/2→GREEN4/0, 신규Node는 격리복사본만 변조·symlink 전제0. 별도CLI 경로에서 실제 실패산출물 재현/복구 검증 |
+| 맵9실패 대조 | CH1-06 원문과 같은9제목·맵28/9·새실패0. culling문자열추출1/pendingAPI경로2/Node VM Image부재6을 각각 비교해 요청2건과 모두원인 다름. 이9건은 수정0·OLD/NEW 검토안만 보고 |
+| 회귀 | CH1·CH2 nativeNode47+신규4+QA007/007b11=**62/0**, skip0. 수정CLI후CH2 Godot**894/0**, native6종**1671/0**·P3002298/0·P300343/0·contracts5그룹/0·encounter3그룹/0. 기존 P3002 ObjectDB8/Camera2D WARNING 보존, 엔진ERROR0 |
+| 제출 / 범위 | ~/exoduser-wt/_out/ch-map-pin/ Mac rawlog·원본행·9건표·전후diff. PC G:/ 원로그/실행은 미확인. 매Godot전2이상30초대기·격리override0byte·--node-bin/UTF-8. 자기branch 정상훅·push/원격SHA·DONE 후 자기WT 제거. R 보존·main push/reset/rebase/force/git add -A0 |
+
 ## 2026-10-20 TRACE-BOSS-CH3 3장 보스 원본 추적·작은 이식 단위
 
 | 항목 | 추적·검토 근거 |
