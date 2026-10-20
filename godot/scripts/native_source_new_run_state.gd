@@ -1534,6 +1534,92 @@ func commit_native_demo_clear(owner: Node, stage_index: int, end: bool) -> bool:
 	_g["on"]=false
 	return true
 
+
+# DEMO11-06b: load-only State authority. No combat cost/heal/hurt path changed.
+var _demo11_globals: Dictionary = {}
+var _demo11_storage: Dictionary = {}
+var _demo11_load_used := false
+var _demo11_start_sealed := false
+
+func initialize_native_demo11_globals() -> bool:
+	if not _initialized or not _demo11_globals.is_empty(): return false
+	# G63949-63955 original fresh global declarations, owned here from now on.
+	_p["skillSlots"]=[null,null,null,null,null,null]
+	_p["ultSlot"]=null
+	_demo11_globals = {"QSLOTS": [{"type":"hp","count":1},{"type":null,"count":0},{"type":null,"count":0},{"type":null,"count":0}], "BAG_MAX":300, "UPGRADES":{"hp":0,"atk":0,"def":0,"mp":0,"st":0,"spd":0}, "POT_LV":{"hp":0}, "CRYSTAL_DUST":0, "_charIdx":0}
+	return true
+
+func read_native_demo11_save_globals() -> Variant:
+	if not is_native_new_run_state_ready() or _demo11_globals.is_empty() or not _p.get("skillSlots") is Array: return null
+	var profile: Dictionary=_player.get_native_character_profile_snapshot()
+	if profile.get("selection_applied")==true and (profile.get("ready")!=true or profile.get("index")!=0): return null # Never save a different/lost atlas as char0.
+	var result := _demo11_globals.duplicate(true)
+	result.SKILL_SLOTS = _p.skillSlots.duplicate(true)
+	result.ULT_SLOT = _p.get("ultSlot")
+	return result
+
+func read_native_demo11_storage() -> Dictionary:
+	return _demo11_storage.duplicate(true)
+
+func validate_native_demo11_loaded(owner: Node, plan: Dictionary) -> Dictionary:
+	# A newly constructed, stopped scene only; never an in-play resource setter.
+	if _demo11_load_used or _demo11_start_sealed or not is_native_new_run_state_ready() or owner != _player.get_parent() or owner.get("source_state") != self or owner.get("source_resources") != _resources or owner.get_meta("demo11_load_gate", false) != true or _player.process_mode != Node.PROCESS_MODE_DISABLED:
+		return {"accepted":false,"reason":"not_stopped_load_owner"}
+	for key in ["player","game","stats","passives","inventory","globals","storage"]:
+		if not plan.get(key) is Dictionary: return {"accepted":false,"reason":"plan_absent:"+key}
+	var p: Dictionary = plan.player
+	for key in ["hp","mhp","st","mst","mp","mmp","stR","mpR","baseDef","speed"]:
+		if not (p.get(key) is int or p.get(key) is float) or not is_finite(float(p[key])): return {"accepted":false,"reason":"invalid_resource:"+key}
+	if p.mhp <= 0 or p.mst <= 0 or p.mmp <= 0 or not is_finite(float(p.speed)*60.0): return {"accepted":false,"reason":"invalid_cap"}
+	if not p.get("skills") is Dictionary or not p.get("skillSlots") is Array or p.skillSlots.size()!=6 or not plan.inventory.get("bag") is Array or not plan.inventory.get("equipped") is Dictionary or not plan.get("crystal_bag") is Array or not plan.get("stone_bag") is Array: return {"accepted":false,"reason":"invalid_carriers"}
+	var bundle: Dictionary = owner.get("source_providers").get_provider_bundle()
+	var raw_holder: Variant = bundle.get("raw_grit")
+	if not is_instance_valid(raw_holder): return {"accepted":false,"reason":"raw_holder_absent"}
+	var raw: Variant = raw_holder.current_container()
+	var owned: Variant = _resources.get("_owned")
+	if not raw is Dictionary or not raw.has("_grit") or not owned is Dictionary or not plan.has("raw_grit"): return {"accepted":false,"reason":"resource_owner_absent"}
+	return {"accepted":true}
+
+func commit_native_demo11_loaded_once(owner: Node, plan: Dictionary) -> Dictionary:
+	var validation := validate_native_demo11_loaded(owner,plan)
+	if not validation.accepted: return validation
+	var p: Dictionary=plan.player
+	var raw: Dictionary=owner.get("source_providers").get_provider_bundle().raw_grit.current_container()
+	var owned: Dictionary=_resources.get("_owned")
+	# No callbacks, awaits or fallible IO after validation. Preserve dictionary
+	# identities used by existing providers. Only this load-only function reaches
+	# the existing MP authority's owned dictionary; ordinary writers are untouched.
+	_player.hp=float(p.hp); _player.max_hp=float(p.mhp)
+	_player.stamina=float(p.st); _player.max_stamina=float(p.mst)
+	_player.base_def=float(p.baseDef)
+	_player.set("_native_source_speed_per_tick",float(p.speed))
+	_player.set("_native_source_speed_initialized",true)
+	_player.set("_movement_speed",float(p.speed)*60.0)
+	for key in ["mp","mmp","stR","mpR"]: owned[key]=p[key]
+	_p.clear(); _p.merge(p.duplicate(true))
+	_g.merge(plan.game.duplicate(true),true)
+	_stats.clear(); _stats.merge(plan.stats.duplicate(true))
+	_passives.clear(); _passives.merge(plan.passives.duplicate(true))
+	_inventory.clear(); _inventory.merge(plan.inventory.duplicate(true))
+	_demo11_globals=plan.globals.duplicate(true)
+	_demo11_storage=plan.storage.duplicate(true)
+	_native_crystal_bag=plan.crystal_bag.duplicate(true)
+	_native_stone_bag=plan.stone_bag.duplicate(true)
+	raw._grit=plan.raw_grit
+	_demo11_load_used=true
+	return {"accepted":true,"load_only":true,"readback":read_current_p().duplicate(true)}
+
+func seal_native_demo11_load(owner: Node) -> bool:
+	if owner != _player.get_parent() or owner.get("source_state") != self: return false
+	_demo11_start_sealed=true
+	return true
+
+func install_native_demo11_fresh_shared(owner: Node, plan: Dictionary) -> Dictionary:
+	if _demo11_load_used or _demo11_start_sealed or not is_native_new_run_state_ready() or owner!=_player.get_parent() or owner.get("source_state")!=self or owner.get_meta("demo11_load_gate",false)==true or not plan.get("storage") is Dictionary or not plan.storage.get("0") is Array or not plan.has("mats"):
+		return {"status":"HOLD","reason":"fresh_owner_not_current"}
+	_demo11_storage=plan.storage.duplicate(true)
+	_g.mats=plan.mats if plan.mats!=0 else 1000 # G63956 _loadSharedMats()||1000
+	return {"status":"READY","mats":_g.mats}
 # DEMO11-25 — potion-only State entry. G27684/28071, fresh G63950/63952.
 # Separate runtime values, not P/INV/save schema extensions.
 var _auto_potion_cd: float = 0.0

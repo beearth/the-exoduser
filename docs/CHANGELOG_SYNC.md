@@ -57,6 +57,28 @@
 | 검수·문서 | [보고서](engine/orders/reports/demo11-07_REPORT.md)·[계약](engine/DEMO11_LOBBY_ENTRY_20261021.md)·LOBBY/INTRO·번역16문구 동기화. 내부 viewport1920×1080 2장+1x crop2장. 기존 관련 회귀 각1회, 수치는 보고서 참조 |
 
 
+## 2026-10-21 DEMO11-06b — 최신 main 충돌 재통합
+
+- `e8fd0a59`에 최신 origin/main `0138c5bb9188d27cee10cb1a901d075092ddb88f` 정상 merge(969c194e6 이상). State 끝의 load-only 절과 main potion/forge 절을 모두 보존했다. Main 자동 병합 및 PC runtime/stat/restore API도 보존했다.
+- 관련 actual session34/0·집중 lifecycle32/0·별도 프로세스 재시작6/0, 합계72/0·ERROR0·기존 Camera WARN2(각1회). 보호3종 연결과 임시 자원 writer 대체는 후속 DEMO11-06c로 분리한다. 재검증 수치는 [06b 재통합 보고서](engine/orders/reports/demo11-06b_merge_REPORT.md)에 기록한다. 원로그 `_out/demo11-06c/merge-*`.
+
+## 2026-10-21 DEMO11-06b — load-only State writer·실제 저장/비보호 복원
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준·재사용 | main8dbbf2b0 + 05f2889355/06계약0924b94a 정상merge ffb92ed2. 기존 SV collector/Player/INV/Shared/flow 비보호 stage 및 원문 catalog 재사용 |
+| 연결 | opt-in Main→실제 native IO/새 Main actual Player·State·INV·resource. State 1회 load writer만 추가, 전투 경로0. 공유 별도 allowlist/폴더, max/legacy200·실패 보존. 05 lifecycle 실제 collector/IO 연결 |
+| 검증 | 신규34/0·집중32/0·별도 프로세스6/0, 기존79/0·36,204/0·78,620/0·126,863/0·819,262/0·149,486/0 각1회. 최신 합계1,210,586/0·ERROR0·기존 Camera WARN2, 초기 실패 로그 보존 |
+| 보호·현황 | PC handoff3종은 인터페이스 대기, loaded 시작/저장 차단. fresh 지급과 혼합0. [보고서](engine/orders/reports/demo11-06b_REPORT.md)·docs/15·SAVE 추적 보충. _out/demo11-06b/ 원로그·격리/gate·자기 branch push/remote/DONE 후 자기 WT 제거 |
+
+## 2026-10-21 DEMO11-06 — 복원 보호 접점 BLOCKED
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준·의존 | main8dbbf2b0에 05최종f2889355 정상merge=6949a2b1. source_restore_flow 보호3단계와 실제 resource restore writer 부재를 확인 |
+| 범위 | Main/State/전투/런타임/테스트0줄. fixture 관측을 제품으로 대체하지 않음. XP20·INV21·skills16/17은 미인수 저장 필드 계약만 표시 |
+| 문서·검증 | [차단·인터페이스 요청](engine/orders/reports/demo11-06_REPORT.md), docs/15 현행 보충. 원본 제한 행·정적 소유/호출점 점검, Godot/테스트0·PASS 주장0. _out/demo11-06/ 증거·DONE 후 자기WT 제거 |
+
 ## 2026-10-21 DEMO11-18 일반 데모 합체·흡수·성급·되돌리기 원장
 
 | 항목 | 구현·검수 근거 |
