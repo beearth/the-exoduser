@@ -1,3 +1,11 @@
+## 2026-10-21 DEMO11-25 자동 HP 물약 연결 의존 확인 — BLOCKED
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준·판정 | 최신 원격 main01051599. 지정 기존 QS-02/03 phase·owner·테스트가 main/지정 gap tree와 해당 경로 전체 로컬 history에 없음. 재사용 계약 미충족; 자연 late-update checkpoint도 추적 §4.5 HOLD |
+| 범위·검증 | 제품·테스트·Main/State/resource authority·피해·저장 0행. Godot/실행 테스트/JS oracle 미실행, 가짜 PASS 없음. 정적 원본 G35893–35910 및 초기값·early gate 대조만 수행 |
+| 인계 | [DEMO11-25 보고서](engine/orders/reports/demo11-25_REPORT.md): 원본 read/write 순서·State writer 접점·누락 의존·재개 조건. 원로그 _out/demo11-25/. 자기 branch만 정상 push·원격 SHA 확인·DONE 후 worktree 제거 |
+
 ## 2026-10-20 BC2-07 shieldBash2 독립 wind/dash/contact 계산
 
 ## 2026-10-20 EC4-02 4장 catalog·23필드 초기 literal projection
