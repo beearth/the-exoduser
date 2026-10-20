@@ -1,3 +1,12 @@
+## 2026-10-21 DEMO11-26 수동 퀵슬롯 — BINDS 입력 결정 BLOCKED
+
+| 항목 | 근거 |
+|---|---|
+| 기준·의존 | main8dbbf2b0에 DEMO11-25b 최종a03a0cbc 정상merge(선행이 main 포함하여 fast-forward). rebase/force0 |
+| 차단·원본 | BINDS6188–6207 물약action0, Digit1–4는13262–13268 skill전용, useQuickslot caller0. 기존 BINDS 조건과 새 수동 입력을 함께 만족할 action/사용자 fallback 정책 필요 |
+| 조사·보호 | 구 HP 수동은 count 유지/악의1·99% gate·독립 slotCD·potionCdRed. 자동과 공유 CD 발명0. 제품/공용/테스트/저장/PC전투/R0행. Godot/실행 테스트 미실행, PASS 주장0 |
+| 인계 | [DEMO11-26 보고서](engine/orders/reports/demo11-26_REPORT.md) 2표·관련2_8 현황 기록. codex/demo11-26-20261021 자기branch push/원격SHA/DONE 뒤 자기WT제거 |
+
 ## 2026-10-21 DEMO11-25 성능 규칙 후속 — 최신 main 정상 merge
 
 | 항목 | 근거 |
