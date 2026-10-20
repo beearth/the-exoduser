@@ -1,3 +1,10 @@
+## 2026-10-21 DEMO11-etype-a 승인 재개 — factory5종 append-only
+
+- 사용자 판정으로 factory EOF680–688에 etype0/1/4/5/6 등록9행만 추가. 기존prefix/생성로직 byte 동일·PC9/11/47 겹침0. 기존kernel 및 World phase 재사용,5/6 누락 상태만 추가.
+- 원본mkEn90사례·실제5종 등록/탄/PC접촉/사망1952/0, 경계48/0. 120Hz240틱 벤치1회 벽시계5.312초·actor p95 311µs/max38.677ms: 지속120fps 통과 아님. source scheduler·type6 보호owner는 미완 유지.
+- 직접 회귀43 40/0·P3 298/0·factory3그룹/0실패, P3 종료ObjectDB8 경고 원문 보존.
+- 공용 범위/검증/회귀·인계 한계는 [보고서](engine/orders/reports/demo11-etype-a_REPORT.md), 몬스터 관리·WORK_BOARD 동기화. 이전cf740 부분 제출 기록은 아래와 외부 원로그에 보존.
+
 ## 2026-10-21 DEMO11-etype-a selected0 P3→MAP11→43 origin 인계
 
 - main0138c5bb9에 DEMO11-43 9b763da9 정상 fast-forward merge. Main+8/State0·신규 얇은 consumer만. 기존 P3 type0 constructor/World 등록/43 immutable origin 재사용, source pool/RNG/HP/AI/16좌표 복제0.
