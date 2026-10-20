@@ -33,9 +33,14 @@ var _current_attack_tempo: Dictionary = {}
 var _native_attack_audio_serial := 0
 
 const HIT_EFFECT = preload("res://scripts/hit_effect.gd")
-# P1-002.E: 기본 근접 hurtE 실행자와 generic 일반 적 식별자
+# P1-002.E/F: 기본 근접 hurtE 실행자 + hurtE owner API 계약 (스크립트 동일성 비교 대신
+# 메서드 존재로 식별하고, 실제 owner 검사는 실행자의 read_native_normal_enemy_hurte_fields
+# owner-current 게이트가 수행한다 — 통과 못 하면 정지, 단순화 경로 폴백 없음).
 const NORMAL_HURTE = preload("res://scripts/native_normal_enemy_hurte.gd")
-const NORMAL_ENEMY_SCRIPT = preload("res://scripts/enemy.gd")
+const NORMAL_HURTE_OWNER_METHODS: Array[String] = ["read_native_normal_enemy_hurte_fields",
+	"apply_native_normal_enemy_field_write", "apply_native_normal_enemy_bookkeeping",
+	"apply_native_normal_enemy_hp_write", "apply_native_normal_enemy_death_write",
+	"report_native_normal_enemy_hurte_event", "add_native_knockback"]
 const SLASH_SHEET = preload("res://assets/vfx/ki_slash_radiant_sheet.png")
 const ADDITIVE = preload("res://assets/vfx/radiant.gdshader")
 const DIRECTIONS: Array[String] = ["south", "south-east", "east", "north-east", "north", "north-west", "west", "south-west"]
@@ -1024,9 +1029,10 @@ func _melee_contact() -> void:
 	var amount: int = preload("res://port_modules/combat_stat_formula/producer.gd").js_to_int32(float(parameters.basic_base_damage)*float(parameters.p_atk_mul)*float(parameters.p_melee_mul)) + _atk_bonus
 	_atk_bonus = 0
 	telemetry_event.emit("melee_contact_resolved",{"damage":amount,"range":parameters.basic_range,"arc":parameters.basic_arc,"authority":parameters.get("authority")})
-	# P1-002.E: generic 일반 적(enemy.gd)은 원본 hurtE(42110~) 경로. 전용 스크립트
-	# 적은 기존 receive_damage 경로 유지. hurtE 경로가 정지(NOT_READY/미이식 분기
-	# 활성)하면 단순화 경로로 폴백하지 않는다 — 그 타격은 정지 지점까지만 적용.
+	# P1-002.E/F: hurtE owner API를 가진 일반 적(generic enemy.gd + 전용 4종)은
+	# 원본 hurtE(42110~) 경로. 그 외(hurtE owner 미보유)는 기존 receive_damage 경로
+	# 유지. hurtE 경로가 정지(NOT_READY/owner 불일치/미이식 분기 활성)하면 단순화
+	# 경로로 폴백하지 않는다 — 그 타격은 정지 지점까지만 적용.
 	var main: Node = get_parent()
 	var attack_element: Dictionary = {}
 	for candidate in _world.get_enemies():
@@ -1038,7 +1044,7 @@ func _melee_contact() -> void:
 		var target_radius: float = float(enemy.get("radius")) if "radius" in enemy else 15.0
 		var offset: Vector2 = enemy.global_position - global_position
 		if offset.length() <= float(parameters.basic_range) + target_radius and absf(_attack_direction.angle_to(offset)) < float(parameters.basic_arc):
-			if enemy.get_script() == NORMAL_ENEMY_SCRIPT and enemy.has_method("read_native_normal_enemy_hurte_fields"):
+			if _has_native_hurte_owner_api(enemy):
 				if attack_element.is_empty():
 					attack_element = NORMAL_HURTE.resolve_basic_attack_element(main)
 				if attack_element.get("ready") != true:
@@ -1051,6 +1057,12 @@ func _melee_contact() -> void:
 			elif enemy.has_method("receive_damage"):
 				enemy.receive_damage(amount, offset.normalized(), "weapon")
 				telemetry_event.emit("melee_hit", {"damage": amount, "enemy_id": enemy.get_instance_id()})
+
+func _has_native_hurte_owner_api(enemy: Node) -> bool:
+	for method in NORMAL_HURTE_OWNER_METHODS:
+		if not enemy.has_method(method):
+			return false
+	return true
 
 func _full_charge_flash() -> void:
 	var flash = HIT_EFFECT.new()

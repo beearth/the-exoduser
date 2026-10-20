@@ -7,6 +7,9 @@ signal telemetry_event(kind: String, data: Dictionary)
 # shares ordinary pursuit/contact/charge; no invented tank armor or attacks.
 # _UNDEAD_ET classifies type4 for antiRevive, but equipment affixes are absent.
 const PHYSICAL_PROJECTILE = preload("res://scripts/enemy_projectile_physical.gd")
+# P1-002.F: hurtE owner API 공용 구현 + 이 적의 원본 st2 대응 필드명.
+const HURTE_OWNER = preload("res://scripts/native_dedicated_enemy_hurte_owner.gd")
+const HURTE_CONTACT_FIELD := "_contact_ticks"
 
 var data: Dictionary = {}
 var world: Node2D
@@ -381,3 +384,29 @@ func _draw() -> void:
 	var bar = Rect2(-48, -float(data["animation"]["draw_height"]) * 0.5 - 14, 96, 5)
 	draw_rect(bar, Color(0.12, 0.1, 0.1, 0.9))
 	draw_rect(Rect2(bar.position, Vector2(bar.size.x * maxf(0.0, float(hp) / max_hp), bar.size.y)), Color(0.53, 0.13, 0.18))
+	# P1-002.F: 에너지쉴드 — 원본 drawEn(game.html:53963)과 같이 HP 바와 같은 칸 위에
+	# 쉴드 비율만큼 #44aaff로 덮어 그린다(별도 줄 아님). enemy.gd(P1-002.E)와 동일.
+	if eShieldMax > 0.0 and eShield > 0.0:
+		draw_rect(Rect2(bar.position, Vector2(bar.size.x * minf(1.0, eShield / eShieldMax), bar.size.y)), Color8(0x44, 0xaa, 0xff))
+# ═══ P1-002.F: 기본 근접 hurtE 경로의 적 측 owner API (generic enemy.gd와 동일 계약) ═══
+# 공용 구현: native_dedicated_enemy_hurte_owner.gd. 기존 receive_damage·고유 경로는 유지.
+func read_native_normal_enemy_hurte_fields(caller_world: Node) -> Dictionary:
+	return HURTE_OWNER.read_fields(self, caller_world)
+
+func apply_native_normal_enemy_field_write(field: String, value: Variant) -> Dictionary:
+	return HURTE_OWNER.apply_field_write(self, HURTE_CONTACT_FIELD, field, value)
+
+func apply_native_normal_enemy_bookkeeping(fields: Dictionary) -> Dictionary:
+	return HURTE_OWNER.apply_bookkeeping(self, fields)
+
+func apply_native_normal_enemy_hp_write(write: Dictionary) -> Dictionary:
+	return HURTE_OWNER.apply_hp_write(self, write)
+
+func apply_native_normal_enemy_death_write() -> Dictionary:
+	return HURTE_OWNER.apply_death_write(self)
+
+func report_native_normal_enemy_hurte_event(kind: String, payload: Dictionary) -> void:
+	telemetry_event.emit(kind, payload)
+
+func add_native_knockback(value: Vector2) -> void:
+	if alive and value.is_finite(): _knockback += value

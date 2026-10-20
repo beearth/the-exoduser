@@ -231,13 +231,72 @@ rollDrop·deathFX·파티클·시체·고어 "시각 본체"의 내부 RNG는 �
 13. hitArc 측: 히트스톱·히트 파티클·`_hurtFieldMobs`
 14. 42111 패링 수련(lesson) active 케이스의 lesson.hurtEnemy 위임 — active면 정지(telemetry) 후 무효과
 
-## 전용 스크립트 적 (flesh_crawler/spine_beast/ice_soul_flame/hive_bloater) — 기존 경로 유지, 차이 기록
+## §전용 적 — 전용 스크립트 적 4종 hurtE 연결 (P1-002.F, 2026-10-20)
 
-- 기존 `receive_damage` 유지 (이번 단계 비대상). generic 경로와의 차이:
-  - flesh_crawler: field-owner 경로(`read_native_source_damage_fields`/`commit_native_source_damage_field`/`apply_native_source_poise_hit`) 보유 — hurtE 중 poise(42490)만 v3 계약으로 이식됨.
-  - hive_bloater: eShield 흡수·스턴×1.5·즉시반격·KB 일부가 자체 receive_damage에 이식돼 있으나 어픽스/크리/부활/킬 파이프라인 없음.
-  - spine_beast/ice_soul_flame: 각자 부분 이식.
-  - **차기 단계**: generic hurtE 모듈을 전용 적 owner 메서드 위에서 재사용하도록 확장.
+P1-002.F에서 첫 스테이지 전용 스크립트 적 4종도 기본 근접 1타가 **같은 hurtE 실행자**
+(`native_normal_enemy_hurte.gd`)를 탄다. 기존 `receive_damage`는 다른 피해 경로
+(kiSlash 검기·Q/E·투사체 등)용으로 그대로 유지 — 기본 근접만 hurtE로 이동.
+receive_damage에 부분 이식돼 있던 스턴×1.5·eShield 흡수·즉시반격·KB는 기본 근접에서
+이제 hurtE 본문 42336/42345~42352/42382/42462~42476이 수행한다 (동일 산술).
+
+### 적별 원본 hurtE 경로 차이 (이 입력: atkEl=0 기본 무기, 스타터 장비)
+
+| 적 | id/order | etype | el | 42191~42195 피격음 | 42209 신성력(antiRevive) | 42946 사망 장판 롤 | 처치 RNG 합계 |
+|---|---|---|---|---|---|---|---|
+| flesh_crawler | ch1_initial_015 / 14 | 0 | 0 (P) | HUMANOID 폴백: `Math.random()<.5?'monster_hit':'monster_hit1'` (24793) — **오디오 RNG 1회** | etype0 ∉ `_UNDEAD_ET`(24729) → **어픽스 미읽기** (✂) | el=EL.P → **롤 없음** (✂) | **7**(부활실패) / **8**(성공+구울) |
+| spine_beast | ch1_initial_014 / 13 | 4 | 0 (P) | `_BONE_ET`(24728): monster_hit1 pitch1.15 — **RNG 없음** | etype4 ∈ UNDEAD → eq_affix('antiRevive') 읽기(0) (○) | el=EL.P → 롤 없음 (✂) | **7 / 8** |
+| ice_soul_flame | ch1_initial_009 / 8 | 4 | 2 (I) | 〃 (BONE 고정) | 〃 (○) | el≠P → **롤 1회**, <0.2면 EL.I 장판 스폰(🚫 기록만) | **8 / 9** |
+| hive_bloater | ch1_initial_016 / 15 | 1 | 4 (L) | etype1 ∈ `_HUMANOID_ET`(24725): 랜덤 키 — **오디오 RNG 1회** | etype1 ∉ UNDEAD → 미읽기 (✂) | el≠P → 롤 1회, EL.L 전류장판(🚫 기록만) | **8 / 9** |
+
+- 4종 전원 r≥18 (22.1/34.4/34.9/20.6) → 고어 대형 추가 롤(42731) **항상 3회**.
+- 피격음 랜덤은 원본과 같이 provider 스트림이 아닌 오디오 소비자
+  (`main._on_native_attack_enemy_audio`, `ATTACK_HIT_CATEGORIES`=원본 집합과 동일) 소관 —
+  **provider rand 스트림: 비처치 타 = 4종 모두 크리 1회뿐**.
+- 42136~42182·42769~42944 특수 etype 분기: etype 0/1/4 전부 해당 없음 (✂) —
+  실행자 `SPECIAL_HIT_ETYPES` 가드에 0/1/4 없음.
+- etype1(hive)은 원본 근접 접촉 레지스트리에 없음(원거리형) — hurtE 피격 측에는 영향 없음.
+
+### generic enemy.gd와 다른 owner 구현 지점
+
+| 항목 | generic enemy.gd (E) | 전용 4종 (F) | 근거 |
+|---|---|---|---|
+| 42382 즉시반격 | 상태기계에 recover 없음 → `contact_clamp`=min(ct,5) 매핑 | **원문 전체**: `s==='recover'→s='idle',ct=0` / `s==='idle'&&ct>5→ct=5` | 42382 |
+| st2 대응 필드 | `_contact_ticks` | flesh=`st2`, spine/ice=`_contact_ticks`, hive=`_state_ticks` (각 스크립트 `HURTE_CONTACT_FIELD`) | mkEn.st2 |
+| 42414 `e.s` 읽기 | 스냅샷과 동일값 | 42382 recover→idle 전환 반영 위해 **실행자가 owner의 현재 state 재읽기**로 수정 (generic은 값 동일 — E 기준선 무변경 102/0 확인) | 42414 |
+| el owner | native_final.el | 전용 runtime config의 native_final에 el 키 없음 → factory가 encounters native_final.el과 동일함을 검증하는 **top-level `element_id`** | enemy_factory 검증 행 |
+| eShield 설치 | E에서 native_final 값으로 신설 | **기존부터** configure()가 `data.eShield`(=native_final.eShield, factory 동일성 검증) 설치 — 변경 없음 | mkEn 31178 |
+| 사망 연출 | _body 변색 | 각 전용 receive_damage 사망 블록과 동일(_body.modulate.a=0.5, _walk 숨김) | — |
+| 쉴드 바 | E에서 추가 | **F에서 4종 동일 추가**: drawEn(53963)과 같이 HP 바 같은 칸 위 #44aaff 덮어그리기 | 53963 |
+
+구현 파일 (P1-002.F):
+- `godot/scripts/native_dedicated_enemy_hurte_owner.gd` (신규) — 4종 공용 owner 구현
+  (read/field_write/bookkeeping/hp_write/death_write + owner-current 검사). 각 적 스크립트는
+  preload 위임 메서드 7종만 추가 — 기존 고유 동작(flesh v3 field-owner 경로
+  `commit_native_source_damage_field`/`apply_native_source_poise_hit`, hive 2단 원거리 이동 등) 무변경.
+- `godot/scripts/player.gd` — `_melee_contact` 분기 일반화: 스크립트 동일성 비교 대신
+  **owner API 메서드 7종 존재**(`NORMAL_HURTE_OWNER_METHODS`)로 식별. 실제 owner 검사는
+  실행자 진입부 `read_native_normal_enemy_hurte_fields`의 owner-current 게이트가 수행 —
+  불통과 시 정지(halt), 단순화 경로 폴백 없음.
+- `godot/scripts/native_normal_enemy_hurte.gd` — 42414의 e.s를 스냅샷 대신 owner 현재값으로 재읽기 (위 표).
+- flesh_crawler의 `_pending_poise_amount`(크레센트 포이즈 유예)는 hurtE 경로가 소비하지 않음 —
+  기본 근접은 포이즈 0(42486 ✂)이므로 원본과 동일. kiSlash 경로 무변경.
+
+### P1-002.F 검증 결과 (2026-10-20, PC Godot 4.7.2 headless)
+
+- `godot/tests/test_p1002f_dedicated_hurte.gd` (격리 userdir `EXODUSER-P1002F-Isolated-20261020`,
+  실제 Main 부팅 + 공개 `request_attack()`): 4종이 인접 스폰·플레이어로 수렴해 근접 호가
+  여러 마리를 함께 때리므로, 매 스윙 추적 4종 전원의 사전 상태를 스냅샷하고 교차타 포함
+  모든 outcome을 검증. **351 assertions / 0 failures** — 적별 전량흡수≥2·오버플로≥1·
+  처치 파이프라인(G.kills/_stageKills/combo/comboTimer/_chainCnt/mats, 다중 처치 스윙은
+  순차 규칙으로 기대값 계산)·RNG 순서/횟수(위 표: 7/8/8/9 — death_zone은 el≠P인
+  ice/hive만, 구울 롤은 부활 성공 시만) 전부 원본 산술과 일치. 포이즈 불변·
+  _pending_poise=0·v3 field-owner 경로 ready·halt 0건.
+- 회귀 (기준선 = main 91565d492 동일 테스트): test_p1002e_melee_hurte **102/0 동일**,
+  test_contracts·test_etype0_physical_burn·test_etype1_lightning_hive_bloater·
+  test_native_main_source_lesson PASS 동일, test_etype0_physical_flesh_crawler(1)·
+  test_etype4_physical_spine_beast(1)·test_etype4_ice_soul_flame(3)은 기준선과 **동일 수**의
+  선재 실패 (본 변경 무관).
+- 원로그: `scratchpad/p1-002f/` (baseline / run1~3 / regress).
 
 ## 구현·검증 결과 (2026-10-19, PC Godot 4.7.2 headless)
 

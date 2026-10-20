@@ -1,6 +1,8 @@
 extends RefCounted
 ## P1-002.E — 기본 무기 근접 1타의 hurtE(game.html 42110~43119) 실행자.
-## 대상: generic 일반 적(enemy.gd)만. 전용 스크립트 적은 기존 경로 유지.
+## 대상: hurtE owner API를 가진 일반 적 — generic enemy.gd(P1-002.E) +
+## 첫 스테이지 전용 스크립트 적 4종(P1-002.F: flesh_crawler/spine_beast/
+## ice_soul_flame/hive_bloater, 공용 owner는 native_dedicated_enemy_hurte_owner.gd).
 ## 원칙:
 ##  - 값은 Main의 12개 normal-enemy provider와 실제 owner(State G/STATS/PASSIVES/INV,
 ##    enemy 필드)에서만 읽는다. NOT_READY면 그 지점에서 정지(halt)하고 폴백하지 않는다.
@@ -370,8 +372,11 @@ func execute(main: Node, world: Node2D, enemy: Node, base_damage: int, ang: floa
 		# 42398~42411 파티클·피 스플래시·화면 플래시·히트스톱·임팩트: 미이식 (시각 전용 RNG 비소비).
 		_log(42398, "unported_skip:hit_particles_flash_hitstop_impact", {})
 		# 42412 히트 플래시 / 42414 피격 경직 (idle에서만, elite0 → 8f).
+		# 42414의 e.s는 42382 즉시반격(recover→idle)이 적용된 뒤의 현재 값이다 —
+		# 전용 적(P1-002.F)은 recover 상태를 실제로 가지므로 스냅샷이 아닌 owner의
+		# 현재 state를 다시 읽는다 (generic enemy.gd는 recover가 없어 값 동일).
 		if not _apply_enemy_field(42412, "hit_flash", 6.0): return _result_now()
-		if fields["ib"] != true and str(fields["state"]) == "idle":
+		if fields["ib"] != true and str(_enemy.get("state")) == "idle":
 			if not _apply_enemy_field(42414, "hit_stun", 4.0 if int(fields["elite"]) > 0 else 8.0): return _result_now()
 		# 42421~42435 OnHit DoT 어픽스 (0 확인).
 		for dot_affix in ["poisonDot", "fireDot", "iceDot", "lightChain", "darkCurse", "chainTarget"]:
