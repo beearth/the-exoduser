@@ -1,3 +1,14 @@
+## 2026-10-20 CH3-01 — si10 원본 snapshot·읽기 전용 계약
+
+| id / 항목 | 현재 계약 |
+|---|---|
+| 기준 / 의존 | fetch main0119f304(ce141573e이상)·gameSHA4d911cdd…e5d4. main미포함 CH2-01 4013102a 끝 분기→최신main 정상merge007f4667. 같은 CH1/CH2 파이프라인 |
+| 구현 | export_ch1_area_source.mjs stage10분기36추가/15삭제·신규si10 JSON/순수계약/Node·Godot검사/UID2. 기존0/1/4 재추출 깊은 일치. Main/World/State/공용6/P3·기존map·PNG0줄 |
+| 원본 계약 | 200²/T40·tile25364/14329/3/3/301·SHA1a585fa2…4cee·START4020,7420·gate3@y5/exit3@y7. raw346·deco61/cross5/base77·굴7/650·지역100,300,0,250/SW초기clear. 원화66참조/40파일+ground1 byte참조만 |
+| API / 경계 | 동일raw참조 READY=source_snapshot_only/runtime_bound/full_stage_ready/visual_verified=false. 오염은 NOT_READY/reason/raw·value없음. IO/Node/RNG/저장0, 실효placement/콜리더/actual게임·MAP-LOOK 미확인 |
+| 실측 | 신규Node11/0·Godot641/0, 기존sourceNode29/0·자산6/0·pit6/0. GodotCH1-01/03/CH2-01=63/0·75/0·362/0, CH1-02 189/0·contracts5그룹실패0·굴298/0·지역43/0. mapNode9선재실패명동일·CH3layout1실패는최신main control동일. 경고/누수보존 |
+| 보호 / 제출 | baseline2332중공유추출기외2331byte동일. 정상훅·pgrep2이상30초대기·각격리/override비움. 자기branch push/원격일치→DONE→자기sparseWT제거·R불변. [보고서·실패·한계](engine/orders/reports/ch3-01_REPORT.md) |
+
 ## 2026-10-20 CH2-01 si4 원본 snapshot·읽기 전용 계약
 
 | id / 적용 위치 | 현재 정확 계약 |
