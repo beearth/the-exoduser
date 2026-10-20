@@ -393,8 +393,8 @@ func execute(main: Node, world: Node2D, enemy: Node, base_damage: int, ang: floa
 		if not show is Dictionary or float(dmg) > _js_num(show.get("dmg")):
 			if not _g_writes(42388, [{"field": "_dmgPeakShow", "value": {"x": enemy.global_position.x, "y": enemy.global_position.y, "dmg": dmg, "crit": is_crit}}]):
 				return _result_now()
-		# 42398~42411 파티클·피 스플래시·화면 플래시·히트스톱·임팩트: 미이식 (시각 전용 RNG 비소비).
-		_log(42398, "unported_skip:hit_particles_flash_hitstop_impact", {})
+		# 42399~42411 피 파티클·42415 화면 플래시·42417~19 임팩트: 미이식 (시각 전용 RNG 비소비).
+		_log(42399, "unported_skip:hit_particles_screen_flash_impact", {})
 		# 42412 히트 플래시 / 42414 피격 경직 (idle에서만, elite0 → 8f).
 		# 42414의 e.s는 42382 즉시반격(recover→idle)이 적용된 뒤의 현재 값이다 —
 		# 전용 적(P1-002.F)은 recover 상태를 실제로 가지므로 스냅샷이 아닌 owner의
@@ -402,6 +402,14 @@ func execute(main: Node, world: Node2D, enemy: Node, base_damage: int, ang: floa
 		if not _apply_enemy_field(42412, "hit_flash", 6.0): return _result_now()
 		if fields["ib"] != true and str(_enemy.get("state")) == "idle":
 			if not _apply_enemy_field(42414, "hit_stun", 4.0 if int(fields["elite"]) > 0 else 8.0): return _result_now()
+		# P2-001a — 42397(_txtPerFrame++)·42398(_overBudget)·42416(히트스톱/셰이크):
+		# G·OPT owner(main) 경유. 히트스톱은 소비자(32585)가 원본대로 완전 비활성.
+		if not _main.has_method("apply_native_hurte_hit_feel"):
+			return _halt(42416, "actual_main_hit_feel_entry_missing")
+		var feel: Dictionary = _main.apply_native_hurte_hit_feel()
+		if feel.get("applied") != true:
+			return _halt(42416, "hit_feel_owner_refused:" + str(feel.get("reason")))
+		_log(42416, "hit_feel", {"over_budget": feel.get("over_budget"), "shake": feel.get("shake")})
 		# 42421~42435 OnHit DoT 어픽스 (0 확인).
 		for dot_affix in ["poisonDot", "fireDot", "iceDot", "lightChain", "darkCurse", "chainTarget"]:
 			var dv: Variant = _affix(dot_affix, 42421)

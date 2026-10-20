@@ -4,6 +4,7 @@ extends CharacterBody2D
 signal telemetry_event(kind: String, data: Dictionary)
 
 const ENEMY_PROJECTILE = preload("res://scripts/enemy_projectile.gd")
+const BAR_LAYOUT = preload("res://scripts/native_enemy_bar_layout.gd")
 
 var data: Dictionary = {}
 var _native_hp_actor_script: WeakRef = weakref(get_script())
@@ -474,10 +475,8 @@ func _draw() -> void:
 		if is_instance_valid(player):
 			var aim = (player.global_position - global_position).normalized()
 			draw_line(aim * radius, aim * (radius + 42.0), Color(0.65, 0.38, 0.9, 0.5), 2.0, true)
-	var bar = Rect2(-48, -float(data["animation"]["draw_height"]) * 0.5 - 14, 96, 5)
-	draw_rect(bar, Color(0.12, 0.1, 0.1, 0.9))
-	draw_rect(Rect2(bar.position, Vector2(bar.size.x * maxf(0, float(hp) / max_hp), bar.size.y)), Color(0.53, 0.13, 0.18))
-	# P1-002.E: 에너지쉴드 — 원본 drawEn(game.html:53963)과 같이 HP 바와 같은 칸 위에
-	# 쉴드 비율만큼 #44aaff로 덮어 그린다(별도 줄 아님). 쉴드가 남아 있는 동안 HP 색은 가려진다.
-	if eShieldMax > 0.0 and eShield > 0.0:
-		draw_rect(Rect2(bar.position, Vector2(bar.size.x * minf(1.0, eShield / eShieldMax), bar.size.y)), Color8(0x44, 0xaa, 0xff))
+	# P2-001a: 에너지 바 — 원본 drawEn(53961~53969) 규칙 그대로 (폭 2r+6, y=-r-16,
+	# 피해 전 숨김, HP #cc0000 + 쉴드 #44aaff 덮어그리기, 그로기 #ff8800 3px).
+	for bar in BAR_LAYOUT.build(radius, float(hp), float(mhp), eShield, eShieldMax,
+			_stun_ticks, data.get("native_final", {}).get("_maxStunned")):
+		draw_rect(bar["rect"], bar["color"])

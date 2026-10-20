@@ -856,11 +856,71 @@ func _process(_delta: float) -> void:
 		_q_sprite.global_position=player.global_position
 		_q_canvas.position=Vector2(576,576)-player.global_position
 		_q_canvas.queue_redraw()
+	# P2-001a: 렌더 셰이크 소비자 (51752): sx/sy=(rand-.5)*G.shake*2 — 카메라 픽셀
+	# 오프셋, 렌더 프레임마다 (시각 전용 RNG — 원본 Math.random과 동일하게 비provider).
+	if is_instance_valid(camera) and is_instance_valid(source_state):
+		var feel_g: Variant = source_state.read_current_g()
+		var shake_value: float = 0.0
+		if feel_g is Dictionary and (feel_g.get("shake") is int or feel_g.get("shake") is float) and is_finite(float(feel_g["shake"])):
+			shake_value = float(feel_g["shake"])
+		camera.offset = Vector2((randf() - 0.5) * shake_value * 2.0, (randf() - 0.5) * shake_value * 2.0) if shake_value > 0.0 else Vector2.ZERO
 
 func _physics_process(_delta: float) -> void:
 	if not get_tree().paused and is_instance_valid(player) and is_instance_valid(camera):
 		player.z_index = clampi(int(player.position.y / 4.0), -4096, 4095)
 		camera.position = player.position
+		# P2-001a: frame() 61848~61868 피해 숫자 펌프 (이 tick 전투 전·이전 tick 기록 소비 —
+		# 원본도 frame 선두 펌프 → update 순서). 감쇠(32584~/35751)는 전투 후로 미룬다.
+		_pump_native_damage_peak_text()
+		call_deferred("_decay_native_hit_feel")
+
+# P2-001a: 단발뎀 텍스트 펌프 — G owner가 원본 규칙(최대 1개·최대값 교체)을 수행하고
+# 반환된 addTxt 요청 1건을 기존 NativeFloatingText로 방출한다.
+func _pump_native_damage_peak_text() -> void:
+	if not is_instance_valid(source_state) or not is_instance_valid(world):
+		return
+	var pump: Dictionary = source_state.apply_native_damage_peak_text_pump(self)
+	if pump.get("applied") != true or not pump.get("emit") is Dictionary:
+		return
+	var emit: Dictionary = pump["emit"]
+	var adapter: Variant = world.get_node_or_null("NativeFloatingText")
+	if is_instance_valid(adapter) and adapter.has_method("emit_native_text"):
+		adapter.emit_native_text(float(emit["x"]), float(emit["y"]), emit["text"],
+			emit["color"], emit["life"], emit["size"], emit["num_str"])
+
+# P2-001a: update 32584~32586(히트스톱 소비 — 원문 32585가 완전 비활성) + 35751 셰이크
+# 감쇠. deferred로 돌려 같은 tick의 전투 쓰기(원본: P 업데이트) 뒤에 1회 적용한다.
+func _decay_native_hit_feel() -> void:
+	if not is_instance_valid(source_state) or not is_instance_valid(world) or get_tree().paused:
+		return
+	var context: Dictionary = world.get_native_projectile_fx_context()
+	source_state.apply_native_update_feel_decay(self, float(context.get("dt_sp", 0.0)))
+
+# P2-001a: shake(19924)의 OPT.shake — 실제 현재 OPT owner에서만 읽는다.
+func read_native_feel_opt_shake() -> Dictionary:
+	var options: Variant = source_initialization_services.read_current_options() if is_instance_valid(source_initialization_services) else null
+	if not options is Dictionary or not (options.get("shake") is int or options.get("shake") is float) \
+			or not is_finite(float(options["shake"])):
+		return {"ready": false, "reason": "actual_current_OPT_shake_missing"}
+	return {"ready": true, "value": float(options["shake"])}
+
+# P2-001a: hurtE 42397/42398/42416 — 실행자 호출용 (G·OPT owner 배선).
+func apply_native_hurte_hit_feel() -> Dictionary:
+	var opt_shake: Dictionary = read_native_feel_opt_shake()
+	if opt_shake.get("ready") != true:
+		return {"applied": false, "reason": opt_shake.get("reason")}
+	if not is_instance_valid(source_state):
+		return {"applied": false, "reason": "actual_state_owner_missing"}
+	return source_state.apply_native_hurte_hit_feel(self, float(opt_shake["value"]))
+
+# P2-001a: updateCrescents 19838~19840 — 검기 적중 피드 (crescent 호출용).
+func apply_native_crescent_hit_feel(step: int) -> Dictionary:
+	var opt_shake: Dictionary = read_native_feel_opt_shake()
+	if opt_shake.get("ready") != true:
+		return {"applied": false, "reason": opt_shake.get("reason")}
+	if not is_instance_valid(source_state):
+		return {"applied": false, "reason": "actual_state_owner_missing"}
+	return source_state.apply_native_crescent_hit_feel(self, step, float(opt_shake["value"]))
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("pause"):

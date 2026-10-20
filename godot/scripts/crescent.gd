@@ -161,6 +161,13 @@ func _physics_process(delta: float) -> void:
 			if enemy.has_method("receive_poise_damage"):
 				enemy.receive_poise_damage(damage)
 			enemy.receive_damage(damage, hit_direction, "kiSlash")
+		# P2-001a — 19838~19840: 적중마다 step3=G.hitStop max 6+shake(8) / 그 외 hitStop max 3.
+		# (히트스톱은 소비자 32585가 원본대로 완전 비활성 — G 기록만 유효.)
+		var feel_main: Node = _world.get_parent() if is_instance_valid(_world) else null
+		if is_instance_valid(feel_main) and feel_main.has_method("apply_native_crescent_hit_feel"):
+			var feel: Dictionary = feel_main.apply_native_crescent_hit_feel(step)
+			if feel.get("applied") != true:
+				_notify("native_crescent_feel_refused", {"reason": feel.get("reason"), "step": step})
 		_play_hit(enemy.global_position)
 		_notify("crescent_hit", {"step": step, "damage": damage, "enemy_id": enemy.get_instance_id(), "tier": int(round((charge_scale - 1.0) / 0.4)), "hit_stop_ticks": 6 if step == 3 else 3, "shake": 8 if step == 3 else 0})
 	_update_visual()

@@ -233,6 +233,100 @@ func apply_native_normal_enemy_hurte_g_writes(owner: Node, writes: Array) -> Dic
 			_g[write["field"]] = write["value"]
 	return {"applied": true, "count": writes.size()}
 
+# ═══ P2-001a: 타격 피드백 G owner — 피해 숫자 펌프·히트스톱(원본 비활성)·셰이크 ═══
+# 프레임 예산 카운터(원본 전역 _txtPerFrame/_impPerFrame, 61848 리셋·42397 증가·25415 증가).
+# 임팩트 시스템 미이식 → _imp_per_frame는 리셋만 되고 0 유지(원문 min(4,12-0)=4).
+const SRC_TXT_BUDGET := 12 # 25413 _TXT_BUDGET
+var _txt_per_frame: int = 0
+var _imp_per_frame: int = 0
+
+func _feel_owner_current(owner: Node) -> bool:
+	return _current_error().is_empty() and is_instance_valid(owner) \
+		and owner == _player.get_parent() and owner.get("source_state") == self \
+		and owner.get("world") == _world and not get_tree().paused
+
+static func _feel_num(value: Variant) -> float:
+	return float(value) if (value is int or value is float) and is_finite(float(value)) else 0.0
+
+# frame() 61848 카운터 리셋 + 61851~61868 단발뎀 텍스트 펌프 + _dmgTxts 수명 틱.
+# 반환 emit = addTxt(x, y-40, pfx+dmg, col, crit?70:50, crit?72:56, String(dmg)) 요청 1건 | null.
+func apply_native_damage_peak_text_pump(owner: Node) -> Dictionary:
+	if not _feel_owner_current(owner):
+		return {"applied": false, "reason": "actual_feel_g_owner_not_current"}
+	_txt_per_frame = 0 # 61848 _txtPerFrame=0
+	_imp_per_frame = 0 # 61848 _impPerFrame=0
+	var emit: Variant = null
+	var peak: Variant = _g.get("_dmgPeakShow")
+	if peak is Dictionary:
+		if not _g.get("_dmgTxts") is Array:
+			_g["_dmgTxts"] = []
+		var gate: Array = _g["_dmgTxts"]
+		if gate.size() >= 1: # 기존 것보다 크면 교체, 아니면 무시 (61855~61858)
+			if _feel_num(peak.get("dmg")) > _feel_num(gate[0].get("dmg")):
+				gate.clear()
+			else:
+				peak = null
+	if peak is Dictionary:
+		var crit: bool = peak.get("crit") == true
+		var dmg: int = int(_feel_num(peak.get("dmg")))
+		_g["_dmgTxts"].append({"dmg": peak.get("dmg"), "t": 50, "crit": crit}) # _life=50 (0.83초)
+		emit = {"x": _feel_num(peak.get("x")), "y": _feel_num(peak.get("y")) - 40.0,
+			"text": ("💀" if crit else "⚔") + str(dmg), # sz>=28 + numStr → 아틀라스 숫자만 렌더(44520 분기)
+			"color": "#dd2200" if crit else "#ffcc33",
+			"life": 70 if crit else 50, "size": 72 if crit else 56, "num_str": str(dmg)}
+	_g["_dmgPeakShow"] = null
+	if _g.get("_dmgTxts") is Array: # 61869 수명 틱·압축
+		var kept: Array = []
+		for entry in _g["_dmgTxts"]:
+			entry["t"] = _feel_num(entry.get("t")) - 1
+			if _feel_num(entry["t"]) > 0.0:
+				kept.append(entry)
+		_g["_dmgTxts"] = kept
+	return {"applied": true, "emit": emit}
+
+# hurtE dmg>0 블록의 42397(_txtPerFrame++)·42398(_overBudget)·42416(히트스톱/셰이크).
+# 42399~42411 피 파티클·42417 임팩트는 미이식(해당 표 기록) — 카운터·G 쓰기만 소유.
+func apply_native_hurte_hit_feel(owner: Node, opt_shake: float) -> Dictionary:
+	if not _feel_owner_current(owner) or not is_finite(opt_shake):
+		return {"applied": false, "reason": "actual_feel_g_owner_not_current"}
+	_txt_per_frame += 1 # 42397
+	var over_budget: bool = _txt_per_frame > SRC_TXT_BUDGET # 42398
+	if not over_budget: # 42416
+		if not (_feel_num(_g.get("_noHitStopT")) > 0.0):
+			_g["hitStop"] = maxf(_feel_num(_g.get("hitStop")), 5.0)
+		var shake_n: float = minf(4.0, 12.0 - float(_imp_per_frame))
+		_g["shake"] = maxf(_feel_num(_g.get("shake")), shake_n * opt_shake / 100.0) # shake() 19924
+	return {"applied": true, "over_budget": over_budget, "shake": _g.get("shake", 0)}
+
+# updateCrescents 19838~19840: step3 → G.hitStop=max(,6)+shake(8), 그 외 G.hitStop=max(,3).
+func apply_native_crescent_hit_feel(owner: Node, step: int, opt_shake: float) -> Dictionary:
+	if not _feel_owner_current(owner) or not is_finite(opt_shake):
+		return {"applied": false, "reason": "actual_feel_g_owner_not_current"}
+	if step == 3:
+		_g["hitStop"] = maxf(_feel_num(_g.get("hitStop")), 6.0)
+		_g["shake"] = maxf(_feel_num(_g.get("shake")), 8.0 * opt_shake / 100.0)
+	else:
+		_g["hitStop"] = maxf(_feel_num(_g.get("hitStop")), 3.0)
+	return {"applied": true, "shake": _g.get("shake", 0), "hit_stop": _g.get("hitStop")}
+
+# update 32584~32586(히트스톱 소비 — 원문 32585 `G.hitStop=0` 완전 비활성 그대로)
+# + 35751 셰이크 감쇠(_hsActive 상시 false → sp 사용).
+func apply_native_update_feel_decay(owner: Node, sp: float) -> Dictionary:
+	if not _feel_owner_current(owner) or not is_finite(sp) or sp <= 0.0:
+		return {"applied": false, "reason": "actual_feel_g_owner_not_current"}
+	if _feel_num(_g.get("_noHitStopT")) > 0.0: # 32584
+		_g["hitStop"] = 0
+		_g["slowMo"] = 0
+		_g["_noHitStopT"] = _feel_num(_g["_noHitStopT"]) - sp
+	_g["hitStop"] = 0 # 32585 히트스톱 완전 비활성 (디아블로/POE 스타일 — 원문 주석)
+	if _feel_num(_g.get("hitStop")) > 12.0: # 32586 (위 줄로 도달 불가 — 원문 유지)
+		_g["hitStop"] = 12
+	if _feel_num(_g.get("shake")) > 0.0: # 35751
+		_g["shake"] = _feel_num(_g["shake"]) * pow(0.86, sp)
+		if _feel_num(_g["shake"]) < 0.3:
+			_g["shake"] = 0
+	return {"applied": true, "shake": _g.get("shake", 0), "hit_stop": _g.get("hitStop", 0)}
+
 func read_current_p() -> Variant:
 	if not _current_error().is_empty():
 		return null

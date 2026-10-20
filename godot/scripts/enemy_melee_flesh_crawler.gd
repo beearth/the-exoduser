@@ -6,6 +6,7 @@ signal telemetry_event(kind: String, data: Dictionary)
 const PHYSICAL_PROJECTILE = preload("res://scripts/enemy_projectile_physical.gd")
 # P1-002.F: hurtE owner API 공용 구현 + 이 적의 원본 st2 대응 필드명.
 const HURTE_OWNER = preload("res://scripts/native_dedicated_enemy_hurte_owner.gd")
+const BAR_LAYOUT = preload("res://scripts/native_enemy_bar_layout.gd")
 const HURTE_CONTACT_FIELD := "st2"
 
 var data: Dictionary = {}
@@ -370,13 +371,10 @@ func _draw() -> void:
 	if charge_ticks > 0.0:
 		var progress = 1.0 - charge_ticks / float(data["projectile_charge_ticks"])
 		draw_arc(Vector2.ZERO, radius + 13.0, -PI * 0.5, -PI * 0.5 + TAU * progress, 48, Color(0.9, 0.25, 0.2, 0.85), 3.0, true)
-	var bar = Rect2(-48, -float(data["animation"]["draw_height"]) * 0.5 - 14, 96, 5)
-	draw_rect(bar, Color(0.12, 0.1, 0.1, 0.9))
-	draw_rect(Rect2(bar.position, Vector2(bar.size.x * maxf(0.0, float(hp) / max_hp), bar.size.y)), Color(0.53, 0.13, 0.18))
-	# P1-002.F: 에너지쉴드 — 원본 drawEn(game.html:53963)과 같이 HP 바와 같은 칸 위에
-	# 쉴드 비율만큼 #44aaff로 덮어 그린다(별도 줄 아님). enemy.gd(P1-002.E)와 동일.
-	if eShieldMax > 0.0 and eShield > 0.0:
-		draw_rect(Rect2(bar.position, Vector2(bar.size.x * minf(1.0, eShield / eShieldMax), bar.size.y)), Color8(0x44, 0xaa, 0xff))
+	# P2-001a: 에너지 바 — 원본 drawEn(53961~53969) 규칙 그대로 (enemy.gd와 동일 공용 레이아웃).
+	for bar in BAR_LAYOUT.build(radius, float(hp), float(mhp), eShield, eShieldMax,
+			_stun_ticks, (_maxStunned if _source_max_stunned_present else null)):
+		draw_rect(bar["rect"], bar["color"])
 
 # Current fields of the exact factory-admitted normal actor. This is deliberately
 # a partial field authority: absent/unported status lifetimes are not JS zero.
