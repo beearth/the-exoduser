@@ -51,6 +51,18 @@ var _slot_icon_files: Dictionary = {}
 var _debug_overlay_nodes: Array = []
 var _debug_overlay_visible := false
 var _pulse_values: Dictionary = {}
+# P2-002b — 미니맵(#mmWrap 2585·drawMM 60177~60234)·hudCorner 화폐(2666~2669·60325)
+var _minimap_canvas: Control
+var _minimap_cache: ImageTexture
+var _minimap_cache_ready := false
+var _minimap_sc := 0.0
+var _minimap_origin := Vector2.ZERO
+var _minimap_last_frame := -1000.0
+var _minimap_enemy_frame := -1000.0
+var _minimap_enemy_points: Array = []
+var _minimap_portrait: Texture2D
+var _sp_label: Label
+var _cp_label: Label
 
 
 func _ready() -> void:
@@ -259,6 +271,7 @@ func _refresh() -> void:
 				alive += 1
 	_objective_text.text = "남쪽 입구 → 북쪽 출구  ·  남은 적 %d" % alive
 	_refresh_native_first_fight_hud()
+	_refresh_native_minimap_and_corner()
 
 
 func _build_ui() -> void:
@@ -334,6 +347,8 @@ func _build_ui() -> void:
 	_debug_overlay_nodes.append(_charge_text)
 	_debug_overlay_nodes.append(_charge_bar)
 	_build_native_first_fight_hud()
+	_build_native_minimap()
+	_build_native_hud_corner()
 	set_native_debug_overlay_visible(false)
 	_build_native_boot_loading_ui()
 
@@ -835,4 +850,271 @@ func get_native_first_fight_hud_snapshot() -> Dictionary:
 			"G._totalSpawned 기록(스포너=world 소유 — wt-p2g 경합)", "쿨다운 sweep(쿨다운 소유자 미이식)",
 			"Cinzel·Nanum Myeongjo 폰트(Noto Serif KR 폴백)", "숫자/F/Z 슬롯 스킬(시작 스킬 지급 EXTERNAL 미이식)",
 			"타이머 전진(G.on 점등 미이식 — 초기화·커튼 계약이 pre-stage on=false 유지 명시: 타이머 UI는 G.stageTime 소비만)"]}
+
+# ═══════════════════ P2-002b 미니맵 + hudCorner 화폐 (표시 전용 소비자) ═══════════════════
+# 원본 근거: #mmWrap 2585(캔버스 130×130 + img/mm_frame.png 166×166) + CSS 382~385
+# (top8/left8·scale .85)·952(#mmWrap.on opacity .94 — 재정의 최신값)·953(frame 필터) /
+# drawMM 60177~60234: 캐시(타일 1=벽 스킵, 2=#887766, 4=#443355, 그 외 #665544;
+# mmW130·pad4·sc=min) + 20프레임 주기, 바닥 rgba(0,0,0,.45), 플레이어 초상 마커
+# (_mmDrawPlayerMarker 60142: 14px 원형 초상+방향 삼각형+흑백 이중 링,
+# img/ui/minimap_warrior.png), 소환굴(SPAWN_HOLE.col #aa4444), 적 2×2 ELC색(30프레임
+# 갱신·60캡), 출구 ▲는 !G.bossAlive일 때만(60109 — 신규 bossAlive=true라 비노출) /
+# hudCorner 2666~2669 + CSS 327~329(top178/left16·'Cinzel' 폴백·.62rem·opacity .48·
+# 색 rgba(196,187,168,.72)), 값 60325: spCnt `✦ P.sp( +P.ap)`·cpHud `◇ calcCP().total`
+# (≥1e5 compact 60237 / 그 외 en-US 콤마) — ✦(U+2726)·◇(U+25C7)는 텍스트 글리프(이모지 아님).
+# calcCP 49487~49509 전문 포트(statStr=1 27993, pDefAdd=_altDef*30 28019).
+const MINIMAP_ELC := ["#bbbbbb", "#ff5522", "#3388ff", "#9933cc", "#ffee00", "#ff88cc", "#88aa44"] # ELC 14338
+const MINIMAP_SPAWN_HOLE_COLOR := "#aa4444" # SPAWN_HOLE.col 31029
+const MINIMAP_W := 130.0
+const MINIMAP_PAD := 4.0
+const MINIMAP_TILE_SIZE := 40.0 # T
+
+
+func _build_native_minimap() -> void:
+	var wrap := Control.new()
+	wrap.name = "NativeMinimap"
+	_root.add_child(wrap)
+	wrap.position = Vector2(8, 8)        # CSS 382 top8/left8
+	wrap.size = Vector2(166, 166)
+	wrap.scale = Vector2(0.85, 0.85)     # scale(var(--ui-scale)*.85)
+	wrap.modulate = Color(1, 1, 1, 0.94) # 952 #mmWrap.on
+	wrap.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_minimap_canvas = Control.new()
+	_minimap_canvas.name = "MinimapCanvas"
+	wrap.add_child(_minimap_canvas)
+	_minimap_canvas.position = Vector2(18, 18) # #mm CSS 386 top18/left18
+	_minimap_canvas.size = Vector2(MINIMAP_W, MINIMAP_W)
+	_minimap_canvas.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_minimap_canvas.draw.connect(_draw_native_minimap)
+	var frame := TextureRect.new()
+	frame.name = "MinimapFrame"
+	wrap.add_child(frame)
+	frame.size = Vector2(166, 166)
+	if ResourceLoader.exists("res://assets/ui/mm_frame.png"):
+		frame.texture = load("res://assets/ui/mm_frame.png")
+	frame.stretch_mode = TextureRect.STRETCH_SCALE
+	frame.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	if ResourceLoader.exists("res://assets/ui/minimap_warrior.png"):
+		_minimap_portrait = load("res://assets/ui/minimap_warrior.png")
+
+
+func _native_minimap_build_cache() -> bool:
+	# drawMM 캐시(60103~60131·_mmTickBuild 60082): 원본은 분산 빌드(카메라 주변 우선·
+	# 프레임당 10행) — 포트는 고정 맵 1회 빌드로 같은 오프스크린 캐시를 생성(방식 근사 기록).
+	if _minimap_cache_ready:
+		return true
+	if not is_instance_valid(_world):
+		return false
+	var map_data: Variant = _world.get("map_data")
+	if not map_data is Dictionary or not (map_data as Dictionary).has("tiles"):
+		return false
+	var mw: int = int(map_data.get("width", 0))
+	var mh: int = int(map_data.get("height", 0))
+	if mw <= 0 or mh <= 0:
+		return false
+	var sc: float = minf((MINIMAP_W - MINIMAP_PAD * 2) / mw, (MINIMAP_W - MINIMAP_PAD * 2) / mh)
+	var map_px_w := int(mw * sc)
+	var map_px_h := int(mh * sc)
+	var image := Image.create(map_px_w, map_px_h, false, Image.FORMAT_RGBA8)
+	var tiles: Array = map_data["tiles"]
+	var color_2 := Color("887766")
+	var color_4 := Color("443355")
+	var color_floor := Color("665544")
+	for ty in range(mh):
+		for tx in range(mw):
+			var tv: int = int(tiles[ty * mw + tx])
+			if tv == 1:
+				continue # 벽=투명(바닥 rgba(0,0,0,.45) 노출) — 60090
+			var color: Color = color_2 if tv == 2 else (color_4 if tv == 4 else color_floor)
+			var px := int(tx * sc)
+			var py := int(ty * sc)
+			if px < map_px_w and py < map_px_h:
+				image.set_pixel(px, py, color)
+	_minimap_cache = ImageTexture.create_from_image(image)
+	_minimap_sc = sc
+	_minimap_origin = Vector2(int((MINIMAP_W - map_px_w) / 2.0), int((MINIMAP_W - map_px_h) / 2.0))
+	_minimap_cache_ready = true
+	return true
+
+
+func _draw_native_minimap() -> void:
+	if not _minimap_cache_ready:
+		return
+	var canvas := _minimap_canvas
+	# MX.fillStyle rgba(0,0,0,.45) 바닥 (60195)
+	canvas.draw_rect(Rect2(Vector2.ZERO, Vector2(MINIMAP_W, MINIMAP_W)), Color(0, 0, 0, 0.45))
+	canvas.draw_texture(_minimap_cache, _minimap_origin)
+	var g: Variant = _source_state.read_current_g() if is_instance_valid(_source_state) else null
+	# 소환굴 (60216~60222) — 신규 G.spawnHoles=[] (64395 계열)
+	if g is Dictionary and (g as Dictionary).get("spawnHoles") is Array:
+		for hole in (g as Dictionary)["spawnHoles"]:
+			if not hole is Dictionary:
+				continue
+			var hx: float = _minimap_origin.x + float(hole.get("x", 0)) / MINIMAP_TILE_SIZE * _minimap_sc
+			var hy: float = _minimap_origin.y + float(hole.get("y", 0)) / MINIMAP_TILE_SIZE * _minimap_sc
+			var hole_r: float = 1.5 + float(hole.get("size", 0)) * 1.5
+			canvas.draw_circle(Vector2(hx, hy), hole_r, Color(MINIMAP_SPAWN_HOLE_COLOR, 0.85))
+			canvas.draw_arc(Vector2(hx, hy), hole_r, 0, TAU, 16, Color.BLACK, 0.5)
+	# 적 2×2 (60224~60233 — 버퍼는 _refresh에서 30프레임 주기 갱신·60캡)
+	for point in _minimap_enemy_points:
+		canvas.draw_rect(Rect2(point["pos"] - Vector2(1, 1), Vector2(2, 2)), point["color"])
+	# 플레이어 초상 마커 (_mmDrawPlayerMarker 60142~60166)
+	if is_instance_valid(_player):
+		var pp: Vector2 = _minimap_origin + Vector2(_player.global_position) / MINIMAP_TILE_SIZE * _minimap_sc
+		var radius := 7.0 # D=14
+		var facing: Variant = _player.get("facing")
+		if facing is Vector2 and (facing as Vector2).length_squared() > 0.0:
+			var angle: float = (facing as Vector2).angle()
+			var tip := pp + Vector2(radius + 5.5, 0).rotated(angle)
+			var base_a := pp + Vector2(radius + 0.5, -3.4).rotated(angle)
+			var base_b := pp + Vector2(radius + 0.5, 3.4).rotated(angle)
+			canvas.draw_colored_polygon(PackedVector2Array([tip, base_a, base_b]), Color.WHITE)
+			canvas.draw_polyline(PackedVector2Array([tip, base_a, base_b, tip]), Color.BLACK, 1.0)
+		if _minimap_portrait != null:
+			canvas.draw_texture_rect(_minimap_portrait, Rect2(pp - Vector2(radius, radius), Vector2(14, 14)), false)
+		else:
+			canvas.draw_circle(pp, radius, Color("e8e2d0")) # 최종 폴백(60160)
+		canvas.draw_arc(pp, radius + 0.5, 0, TAU, 24, Color.BLACK, 2.0)
+		canvas.draw_arc(pp, radius - 0.5, 0, TAU, 24, Color.WHITE, 1.0)
+
+
+func _build_native_hud_corner() -> void:
+	# 실제 화면은 ui-refinement.css 1319~1322 재정의가 결정 — 웹 런타임 getComputedStyle
+	# 실측(web_hud_measure.json): rect(16,188) 108×58.3, bg 115deg rgba(21,19,18,.9)→
+	# rgba(13,15,17,.84), border-top 1px rgba(178,140,86,.4)·border-left 2px
+	# rgba(184,141,81,.64), padding 7 10 8, opacity .94, 글자 rgba(238,222,194,.93)
+	# 11.2px·min-width 86, 행 구분선 border-top 1px rgba(164,127,82,.2)+pad-top 4.
+	# box-shadow(0 5px 20px)·inset 하이라이트는 근사 생략 기록.
+	var corner := Control.new()
+	corner.name = "NativeHudCorner"
+	_root.add_child(corner)
+	corner.position = Vector2(16, 188)   # 실측 rect.top 188 (CSS 327 top178 + inset)
+	corner.size = Vector2(108, 58)
+	corner.modulate = Color(1, 1, 1, 0.94) # ui-refinement 1320 #hudCorner.on
+	corner.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_native_gradient_rect(corner, Vector2.ZERO, corner.size,
+		Color(21.0 / 255, 19.0 / 255, 18.0 / 255, 0.9), Color(13.0 / 255, 15.0 / 255, 17.0 / 255, 0.84))
+	var corner_bg: TextureRect = corner.get_child(0)
+	(corner_bg.texture as GradientTexture2D).fill_from = Vector2(0.0, 0.0)
+	(corner_bg.texture as GradientTexture2D).fill_to = Vector2(0.91, 0.42) # 115deg
+	var top_line := ColorRect.new()
+	corner.add_child(top_line)
+	top_line.size = Vector2(corner.size.x, 1)
+	top_line.color = Color(178.0 / 255, 140.0 / 255, 86.0 / 255, 0.4)
+	var left_line := ColorRect.new()
+	corner.add_child(left_line)
+	left_line.size = Vector2(2, corner.size.y)
+	left_line.color = Color(184.0 / 255, 141.0 / 255, 81.0 / 255, 0.64)
+	var ink := Color(238.0 / 255, 222.0 / 255, 194.0 / 255, 0.93) # 1321
+	_sp_label = _native_hud_label(corner, "✦ 0", Vector2(12, 8), 11, ink)   # 실측 x28-16=12, y196-188=8
+	var row_divider := ColorRect.new()
+	corner.add_child(row_divider)
+	row_divider.position = Vector2(12, 28)
+	row_divider.size = Vector2(86, 1) # .hud-resource+.hud-resource border-top (1322)
+	row_divider.color = Color(164.0 / 255, 127.0 / 255, 82.0 / 255, 0.2)
+	_cp_label = _native_hud_label(corner, "◇ 0", Vector2(12, 33), 11, ink)  # pad-top 4 + 행
+
+
+## calcCP(49487~49509) 전문 — 표시 전용 계산(소유자 getter 입력만).
+func _native_calc_cp(p: Dictionary, stats: Dictionary, passives: Dictionary, equipped: Dictionary) -> int:
+	var atk: float = _hud_num(p.get("baseAtk")) * 2.0 * 1.0 # statStr()=1 (27993)
+	var def_value: float = (_hud_num(p.get("baseDef")) + _hud_num(p.get("_altDef")) * 30.0) * 3.0 # pDefAdd 28019
+	var extra: float = _hud_num(p.get("lv")) * 10.0 + _hud_num(p.get("mhp")) * 0.5 \
+		+ _hud_num(p.get("mst")) * 0.3 + _hud_num(p.get("mmp")) * 0.3
+	extra += (_hud_num(stats.get("str")) + _hud_num(stats.get("dex")) + _hud_num(stats.get("int")) \
+		+ _hud_num(stats.get("lck"))) * 2.0
+	var passive_sum := 0.0
+	for key in passives:
+		passive_sum += _hud_num(passives[key])
+	extra += passive_sum * 15.0
+	for slot in equipped:
+		var it: Variant = equipped[slot]
+		if not it is Dictionary:
+			continue
+		atk += _hud_num(it.get("atk")) * 2.0
+		def_value += _hud_num(it.get("def")) * 3.0
+		extra += _hud_num(it.get("spd")) * 40.0
+		extra += _hud_num(it.get("wStagger")) * 1.5 + _hud_num(it.get("wRange")) * 0.4
+		extra += _hud_num(it.get("bowRange")) * 0.3 + _hud_num(it.get("bowSpd")) * 30.0
+		extra += _hud_num(it.get("charge")) * 1.0 + _hud_num(it.get("chargeDist")) * 0.5 \
+			+ _hud_num(it.get("bonusChargeDist")) * 5.0 + _hud_num(it.get("chargeW")) * 1.0 \
+			+ _hud_num(it.get("chargeAoE")) * 1.5
+		extra += _hud_num(it.get("stagger")) * 1.5
+		extra += _hud_num(it.get("bonusSt")) * 1.5
+		extra += _hud_num(it.get("stRegen")) * 200.0 + _hud_num(it.get("mpRegen")) * 500.0
+		extra += _hud_num(it.get("splashR")) * 1.0 + _hud_num(it.get("splashMul")) * 80.0 \
+			+ _hud_num(it.get("magicPen")) * 30.0 + _hud_num(it.get("bonusRange")) * 8.0
+		if it.get("elements") is Array:
+			for em in it["elements"]:
+				if em is Dictionary:
+					extra += _hud_num(em.get("dmg")) * 0.8
+	return int(atk + def_value + extra)
+
+
+static func _native_compact(n: float) -> String:
+	# _hudCompactNumber 60237
+	if n >= 1e9:
+		return "%.2fB" % (n / 1e9)
+	if n >= 1e6:
+		return "%.2fM" % (n / 1e6)
+	if n >= 1e3:
+		return "%.1fK" % (n / 1e3)
+	return str(int(n))
+
+
+func _refresh_native_minimap_and_corner() -> void:
+	if not is_instance_valid(_source_state):
+		return
+	# hudCorner 값 (60325)
+	var p: Variant = _source_state.read_current_p()
+	if p is Dictionary and is_instance_valid(_sp_label):
+		var sp := int(_hud_num((p as Dictionary).get("sp")))
+		var ap := int(_hud_num((p as Dictionary).get("ap")))
+		_sp_label.text = ("✦ %d +%d" % [sp, ap]) if ap > 0 else ("✦ %d" % sp)
+		var stats: Variant = _source_state.read_current_stats()
+		var passives: Variant = _source_state.read_current_passives()
+		var inventory: Variant = _source_state.read_current_inventory()
+		if stats is Dictionary and passives is Dictionary and inventory is Dictionary:
+			var cp: int = _native_calc_cp(p, stats, passives, (inventory as Dictionary).get("equipped", {}))
+			_cp_label.text = "◇ " + (_native_compact(cp) if cp >= 100000 else _native_comma(cp))
+	# 미니맵 — 20프레임 주기 리드로(60180), 적 버퍼 30프레임 주기(60226)
+	if not is_instance_valid(_minimap_canvas):
+		return
+	if not _native_minimap_build_cache():
+		return
+	var frame: float = float(_world.get_native_frame()) if _world.has_method("get_native_frame") else 0.0
+	if frame - _minimap_enemy_frame >= 30.0 or _minimap_enemy_frame < 0.0:
+		_minimap_enemy_frame = frame
+		_minimap_enemy_points = []
+		if _world.has_method("get_enemies"):
+			for enemy in _world.get_enemies():
+				if _minimap_enemy_points.size() >= 60:
+					break
+				if not is_instance_valid(enemy) or enemy.get("alive") != true:
+					continue
+				var data: Variant = enemy.get("data")
+				var el: int = int((data as Dictionary).get("element_id", 0)) if data is Dictionary else 0
+				_minimap_enemy_points.append({
+					"pos": _minimap_origin + Vector2(enemy.global_position) / MINIMAP_TILE_SIZE * _minimap_sc,
+					"color": Color(MINIMAP_ELC[clampi(el, 0, MINIMAP_ELC.size() - 1)])})
+	if frame - _minimap_last_frame >= 20.0 or _minimap_last_frame < 0.0:
+		_minimap_last_frame = frame
+		_minimap_canvas.queue_redraw()
+
+
+func get_native_minimap_corner_snapshot() -> Dictionary:
+	return {"minimap_cache_ready": _minimap_cache_ready,
+		"minimap_sc": _minimap_sc, "minimap_origin": [_minimap_origin.x, _minimap_origin.y],
+		"minimap_enemy_points": _minimap_enemy_points.size(),
+		"minimap_portrait_loaded": _minimap_portrait != null,
+		"sp_text": _sp_label.text if is_instance_valid(_sp_label) else "",
+		"cp_text": _cp_label.text if is_instance_valid(_cp_label) else "",
+		"unported": ["지역 오버레이·앵글러·자물쇠·필드보스 색점 4(G._regions/_FB_SITES 미이식 — 웹 실측 분류)",
+			"소환굴 점 데이터(G.spawnHoles — 웹 14건 실측·포트 스포너가 G에 미기록: world 소유)",
+			"출구 ▲(!bossAlive 조건 — 신규 true)", "분산 빌드(_mmTickBuild — 고정 맵 1회 빌드 근사)",
+			"맵 오브젝트 마커(bonfire/trap/altar — 1장 데이터에 없음)", "frame drop-shadow·brightness 필터(953)",
+			"hudCorner box-shadow·inset 하이라이트 근사 생략", "Cinzel 폰트(Noto Serif KR 폴백)",
+			"spCnt 클릭(J 능력치 패널 미이식)", "나눔명조 1순위(웹폰트 — 사용자 승인 대기 목록)",
+			"적 점 색 데이터 차(규칙 ELC[e.el] 동일 — 웹 el0 회백 vs 포트 encounter element_id 3 보라: 데이터 소유 wt-p2g)"]}
 
