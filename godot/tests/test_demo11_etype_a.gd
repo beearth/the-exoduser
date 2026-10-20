@@ -55,12 +55,12 @@ func run() -> void:
 	check(actor.data.native_final._homeX==actor.global_position.x and actor.data.native_final._homeY==actor.global_position.y,"source_home_follows_new_marker",0)
 	check(actor.etype==0 and actor.el==-1 and actor.data.element_id==-1,"source_undefined_element_not_forced_physical",0)
 	check(actor.data.native_final.reviveIframes==15,"source_revive_iframes15",0)
-	check(actor.get_script().resource_path=="res://scripts/enemy_melee_flesh_crawler.gd","existing_actor_not_rewritten",0)
+	check(actor.get_script().resource_path=="res://scripts/enemy_demo11_a_0.gd","existing_kernel_bridge",0)
 	check(recipe==unchanged,"input_detached",0)
 	check(not main.request_native_etype_a_spawn(holes,"group-0",recipe).ready and main.world.get_enemies().size()==before+1,"same_source_index_no_duplicate",0)
 	check(main.native_stage_spawn_adapter.snapshot().origins==1,"actual43_origin_bound",0)
 	check(not actor.read_native_source_damage_fields(main.world).get("ready",false),"v3_exact_initial_domain_not_weakened",0)
-	check(not receipt.full_combat_ready and receipt.scheduler=="HOLD_source_tick_integration","not_live_scheduler_fake_PASS",0)
+	check(not receipt.full_combat_ready and receipt.scheduler=="existing_World_native_owner_phase","not_live_scheduler_fake_PASS",0)
 	# Existing partial hurtE delegate remains available; not the v3 full owner.
 	check(not actor.read_native_normal_enemy_hurte_fields(main.world).is_empty(),"legacy_dedicated_delegate_preserved",0)
 	var adapter: RefCounted=main.native_stage_spawn_adapter
@@ -82,16 +82,18 @@ func run() -> void:
 		var no: Dictionary=main.world.register_native_spawn_hole_enemy(existing,runtime.order)
 		check(not no.valid and no.errors==["spawn_hole_enemy_actual_etype0_script_required"],"existing_World_gate:"+spec[1],et)
 		check(existing.get_parent()==null,"rejected_actor_not_registered:"+spec[1],et);existing.free()
-		check(not main.request_native_etype_a_spawn(holes,"group-1",selected(et)).ready,"no_unported_natural_profile_substitution:"+spec[1],et)
+		var invalid:=selected(et);invalid.elite=1
+		check(not main.request_native_etype_a_spawn(holes,"group-1",invalid).ready,"unported_elite_refusal_preserved:"+spec[1],et)
 	for et in [5,6]:
 		var f:=FACTORY.new()
 		check(f.unsupported_reason({"etype":et})=="native_type_ai_not_ported","existing_factory_unported",et)
-		check(not main.request_native_etype_a_spawn(holes,"group-1",selected(et)).ready,"no_other_actor_substitution",et)
+		var invalid:=selected(et);invalid.el=0
+		check(not main.request_native_etype_a_spawn(holes,"group-1",invalid).ready,"forced_element_refusal_preserved",et)
 		check(main.world.get_enemies().size()==before+1,"unported_created_zero",et)
 	check(not main.request_native_etype_a_spawn(holes,"group-1",selected(20)).ready,"P2008_not_in_group")
 	provider.revision="stale"
 	check(not main.request_native_etype_a_spawn(holes,"group-0",selected(0,2)).ready,"stale_provider_no_spawn",0)
 	check(main.world.get_enemies().size()==before+1,"rejections_no_hidden_actor_growth")
 	main.queue_free();await process_frame;await process_frame
-	print("ETYPEA_RESULT ",JSON.stringify({"assertions":assertions,"failures":failures,"by_etype_boundary_checks":by_type,"skip":0,"five_type_spawn_benchmark":"BLOCKED_not_run","actual_types_registered":[0],"full_combat_ready":false}))
+	print("ETYPEA_RESULT ",JSON.stringify({"assertions":assertions,"failures":failures,"by_etype_boundary_checks":by_type,"skip":0,"five_type_spawn_benchmark":"separate_registered_budget_suites","actual_types_registered":[0],"full_combat_ready":false}))
 	quit(0 if failures==0 else 1)
