@@ -314,7 +314,7 @@ VISUAL VERDICT: RETOUCH — 기존 맵 보존 범위의 피부막·움직임·�
 
 | id / 적용 | 현재 수치·공식 |
 |---|---|
-| 증기 / m_c1pool,pit_poison | surfaceOnly 기존 수면 atlas에3갈래 추가. j=0..2,p=fract(phase/(2π)+j/3),phase=now*.00095+x*.017+y*.011. 주기약6.614초, 기존16프레임 보간 사용 |
+| 증기 / m_c1pool,pit_poison | (MAP-021 2026-10-20: 동측 pit_poison(6500,5580)은 surfaceOnly 패스 제외 — 아래 §MAP-021) surfaceOnly 기존 수면 atlas에3갈래 추가. j=0..2,p=fract(phase/(2π)+j/3),phase=now*.00095+x*.017+y*.011. 주기약6.614초, 기존16프레임 보간 사용 |
 | 이동·크기 | local x=(j-1)*35+sin(p*2π+j)*14,y=6-p*105,radius=13+p*17. 타원배율(.72,1.4). 위로105local px 상승,기존 오브젝트별 배율 적용 |
 | 증기 합성 | opacity=sin(p*π)^1.4*.24. radial 0 RGB157,150,105 alpha opacity / .45 RGB105,111,74 alpha opacity*.65 / 1 RGB74,83,55 alpha0. source-over,양끝 투명,글로우 없음 |
 | 점액 줄기 / m_c1cocoon,m_c1spod | 기존3개 낙하 체액에서 p<.65,q=p/.65,그중 q<.82일 때만 목 연결. x=(j-1)*23,endY=-42+q²*56,drift=sin(phase+j)*2 |
@@ -827,8 +827,8 @@ NEXT PASS: 작은 절차식pit와 큰 오염 원화의 접점을 실제 독액/�
 | 로딩·캐시 | pitAtlasSource와 material이 달라지거나 atlas가 없을 때 재생성. 미로드는 기존 절차식 렌더, 로드 후 재질 버전으로 교체. 동일 이미지면 재사용. API 미로드는 원래 pit sprite 렌더 |
 | atlas·메모리 | 기존1024×1024 RGBA,4×4셀/각256×256/16프레임/4MiB 교체. 지속 atlas 수 증가0,21차 native 합계69.69648361206055MiB 유지(기타shadow·GPU복제 제외). 교체중 이전4MiB가 GC 전 잠시 공존 가능 |
 | 외측 턱 | contour(106,80,9,1.6) 클립. source=(.67iw,.16ih,.24iw,.36ih), destination=(-114,-78,228,172). rgba(20,19,16,.38) 음영 |
-| 안쪽 벽 | contour(97,71,9,1.6) 클립. 같은 source를 destination=(-110,-75,220,160)에 배치. gradient(0,-65→0,78):0 rgba(8,9,8,.76),.55 rgba(14,14,11,.48),1 rgba(24,23,18,.22) |
-| 독액 | contour(86,48,23,2) 클립. source=(.16iw,.15ih,.34iw,.4ih),destination=(-92,-31,184,108). rgba(9,15,8,.3) 음영. iw/ih는 원본881×900의 실제치 |
+| 안쪽 벽 | contour(97,71,9,1.6) 클립. 같은 source를 destination=(-110,-75,220,160)에 배치. gradient(0,-65→0,78):0 rgba(8,9,8,.76),.55 rgba(14,14,11,.48),1 rgba(24,23,18,.22) → **MAP-021(2026-10-20) 현행 0 rgba(6,7,6,.92),.55 rgba(10,10,8,.74),1 rgba(20,19,15,.46)** |
+| 독액 | contour(86,48,23,2) 클립. source=(.16iw,.15ih,.34iw,.4ih),destination=(-92,-31,184,108). rgba(9,15,8,.3) 음영(**MAP-021 현행 rgba(6,10,6,.5)**). iw/ih는 원본881×900의 실제치 |
 | 절차식 폴백 | 기존 wall 점280/균열19/독액 반점32는 material 없을 때만. 기존 기본색·그라디언트는 재질 아래 유지 |
 | 명암 | 잔물결3개의 alpha=(1-p)×.14(재질)/.24(폴백),p=(f/16+j/3)%1. 22차 당시 앞턱 강조 rgba(143,125,91,.14) / 폴백 .3,선폭1.6. 현행 재질로드 앞턱은26차에서 .12/1px 및 불규칙 접촉선으로 대체 |
 | 동작·구조 | phase=((now×.00095+x×.017+y×.011)/(2π)%1+1)%1×16,인접프레임 보간. sz=(meta.sz 또는200)×(scale 또는1). 기존 contour·수축·접촉shadow·습윤9곳·유입2개·충돌·좌표·배치개수 유지 |
@@ -985,7 +985,7 @@ NEXT PASS: 작은구덩이 앞턱의 중복윤곽·큰원화와 바닥의 재질
 |---|---|
 | 대상 | stage0 production pit_poison(6500,5580),material 로드 상태의 pitAtlas 앞턱만 |
 | 경로 | j=0..48,t=j/48×π,squeeze=sin(phase-2t)×1.6,rough=1+.06sin(5t)+.035cos(9t). px=cos(t)×(99rough+squeeze),py=9+sin(t)×(73rough+.6squeeze). 외벽과 같은 비정형 반경 |
-| 접촉선 | material에서 native setLineDash([13,7,5,11]),offset 기본0. rgba(36,28,26,.42),폭2. 기존 .9/4px의 매끈한 반원 대체 |
+| 접촉선 | material에서 native setLineDash([13,7,5,11]),offset 기본0. rgba(36,28,26,.42),폭2. 기존 .9/4px의 매끈한 반원 대체 → **MAP-021 현행 dash[22,4,9,5], rgba(18,14,12,.82) 폭3.5, 강조 y-2.5 rgba(160,142,104,.3) 폭1.4** |
 | 젖은 강조 | 동일dash 유지,Y-2px,rgba(143,125,91,.12),폭1. 기존 .14/1.6px 대체 |
 | 폴백 | material 없으면rough1,py=9+sin(t)×73,dash없음,접촉 .9/4px,강조 .3/1.6px.25차native동일시점RGBA byte완전동일 확인 |
 | 비용·보존 | 기존16프레임·1024²atlas/4MiB 내부 생성만 변경,추가캐시0. GPU프록시에는기존drawImage만 전달. 프레임별path연산0. 원본PNG·수면·유입2개·수축·좌표·collision 유지 |
@@ -1561,3 +1561,16 @@ NEXT PASS: LEAF_SITE상단직선형재질경계의소스레이어확인. 작은�
 완성 production_finish 화면이 전체 뷰포트를 불투명 ready청크로 덮으면 _ch1StartOuterCoversView가 가려진 _fillVoidWithFloor·20개 _oriFireflies·기존 맵캐시 분기3그룹을 렌더에서 제외한다. 매 프레임 줌/흔들림/가장자리·1026² ready를 검사하며, 로딩·오류·맵 밖 노출·다른stage/보스아레나/outer·Rootworld·초기폴백은 원래 바닥을 유지한다. ?ch1LegacyUnderlay=1은 비교용. visible 생체/언덕/소품/ATMO·19빌드레이어/이미지·충돌 삭제0. 캐시 메모리 전체해제나FPS개선율을 주장하지 않는다.
 
 현행 공식·수치·검수는 [가려진 레이어 정리 SSOT](CH1_HIDDEN_UNDERLAY_20260929.md)를 따른다. 앞선 날짜별 회귀·FPS·아트 수치는 당시 검수 이력이다.
+
+### MAP-021 — 동측 독 웅덩이 가독성·충돌 정합 (2026-10-20)
+
+| 항목 | 이전 | 현행 | 근거 |
+|---|---|---|---|
+| surfaceOnly 젖은 막 | `pit_poison`(6500,5580) 위에도 오브젝트 뒤 패스로 수면 atlas를 덧그림 | 이 위치만 surfaceOnly 패스에서 제외(`paint` 두 번째 루프). 다른 m_c1pool·pit_poison은 그대로 | 전용 `pit()` 구덩이 위에 반투명 수면이 덮여 늪 균열선이 구덩이를 가로지름 → 구멍이 안 읽히는데 충돌은 있어 보이지 않는 벽 |
+| 안쪽 벽 어둠 | .76/.48/.22 | .92/.74/.46 | 늪과 같은 재질이라도 꺼진 벽은 어둡게 |
+| 독액 음영 | rgba(9,15,8,.3) | rgba(6,10,6,.5) | 수면이 주변 늪보다 한 단계 낮게 |
+| 앞턱 접촉선 | dash[13,7,5,11] .42/2px · 강조 .12/1px | dash[22,4,9,5] .82/3.5px · 강조 .30/1.4px | 구멍 경계 윤곽 |
+| 충돌 | 원 반지름 80(`colSz=sz×.4`) | 타원 `colW:80,colH:58,colOy:7` (`_OBJ_META.pit_poison`, 모든 pit_poison 공통) | 그림 흙 테두리 = 타원 반경 약 83×62·중심 +7(256셀 contour(106,80,9) × 200/256). 원은 북쪽으로 25px 맨땅까지 막았음 |
+
+실측(headless 1600×900): isW 경계 N52·S66·E/W80·NE60·SW74px. 북쪽에서 걸어오면 중심 −67px(구덩이 북쪽 턱)에서, 남쪽에서 오면 +80px(남쪽 턱)에서 정지. 1x·2x 확대로 구덩이 윤곽 확인, 점·노이즈 없음.
+Godot 이식 연동: `engine/fdg/map-source-adapter.js` v7 delta는 `pit_poison` circle radius80만 허용 → 다음 소스 재추출 시 ellipse(80,58,+7)로 계약 갱신 필요(이식 총괄 세션에 통보, 엔진 코드는 이 작업에서 미수정).
