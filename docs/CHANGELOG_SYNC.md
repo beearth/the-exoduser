@@ -1,3 +1,13 @@
+## 2026-10-20 BC2-07 shieldBash2 독립 wind/dash/contact 계산
+
+| 항목 | 현재 정확 계약 |
+|---|---|
+| 기준·의존 | 최신main3886513f5+인수BC2-06 ef665f40 정상mergebaa75b16. chapter/context·BC07 packet/contact recipe 재사용, 기존제품/테스트0줄 |
+| 원본 | G41337–41351,wind facing추적→active18·locked9sp/단일XY·post-move strict접촉. isPWin먼저·charge도contact30·timeout25·poise25/KB10·stun45/min.5/max기존 보존 |
+| 검증 | 원문1,494상황/5,695event. 신규30,191/0·기존BC01~08 131,655/0·BC2-01~06포함332,010/0. 기존수·조건·기대값무수정, exit0/ERROR0/skip0 |
+| 검출·보호 | 격리8결함검출·인자누락2종거절은통과합계제외. 공용6·타담당·원본·저장·형식·바이너리0. 실제투사체/hurtP/패링/Main/State/KB/스턴연결HOLD,화면/전투/PC미확인 |
+| 제출 | [BC2-07 보고서](engine/orders/reports/bc2-07_REPORT.md), 원로그~/exoduser-wt/_out/bc2-07/. node-bin/source-game·UTF8자기fixture·매Godot pgrep/30초gate·각격리명/override종료0byte. 자기branch push/원격일치/DONE후자기WT제거 |
+
 ## 2026-10-20 BC2-06 fanWave 독립 상태 계산
 
 | 항목 | 현재 정확 계약 |
