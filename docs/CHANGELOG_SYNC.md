@@ -1,3 +1,14 @@
+## 2026-10-20 SV-RESTORE-FLOW 복원 순서·부분 실패 계산 6번 단위
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 기준·의존 | origin/main e556b617에 앞 단위 없어 승인 SV-SHARED-READ9bde0cfe에서 분기. --no-checkout+no-cone sparse 약20MiB. COLLECT/TRANSPORT/PLAYER/ITEMS/SHARED 의존, 공용6·타 담당·기존 모듈 직접수정0 |
+| 신규 파일 | source_restore_flow.gd·test_native_restore_flow.gd·sv_restore_flow_oracle.cjs. 3771행 직전 현재 snapshot/원본 표/보호 관측을 받아 skills→fused→숙련도→합체 보정→active→slots→sanitize를 detached 계산. 중간 trace·실패 단계·마지막 완료 snapshot 제공, 부분 적용 권한0 |
+| 원본 근거 | game3771–3908/3499–3530·SKILL_LIST55/pairs32/groups32·cap9999·Lv300/700. holy 한 번 순회·슬롯0–3/4/5·문자열/0·rename/흡수·2회 복원 원래 순서 보존, 기존 저장 형식/마이그레이션 정책 변경0 |
+| 보호·HOLD | Q/E inline·active sync·WingStrike는 owner before/after 관측 없거나 stale/허용밖이면HOLD. 제품 보호 helper/writer 호출0. 모든 READY는계산만, 실제 State/Main/표인수/applyStats/initStage·표시 미연결HOLD. 실제 저장/서버/IO0 |
+| 검수 | 최종 신규819262/실패0(321fixture×2=642 원본 평가·각12단계), 기존SV-CONTRACT3023/0·선행SHARED149486/0. 최종종별 exit0·ERROR/SCRIPT ERROR/경고0. 초기137실패·음의0 1실패·확장2실패/SCRIPT ERROR2 수정·원로그 보존 |
+| 제출 | Godot전역2이상30초대기·자기순차1개. 신규EXODUSER-sv-restore-flow-Isolated-20261020·회귀각상수·종료override0byte. 정상훅·자기branch push/원격일치/DONE 뒤 자기worktree제거. [보고서](engine/orders/reports/sv-restore-flow_REPORT.md), ~/exoduser-wt/_out/sv-restore-flow/ |
+
 ## 2026-10-20 SV-SHARED-READ 공유 읽기·이관 계산 5번 단위
 
 | id / 적용 위치 | 현재 정확 계약 |
