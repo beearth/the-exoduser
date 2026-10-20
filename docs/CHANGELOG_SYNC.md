@@ -1,3 +1,13 @@
+## 2026-10-20 TRACE-MAPS-CH3 — 3장 4에리어 게임플레이 원본 추적·이식 설계
+
+| id / 항목 | 현재 계약 |
+|---|---|
+| 기준 / 선행 | fetch main a00893ad9b93750d7ce70b90f5bd501b578daccb, game.html SHA256 4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4. main CH1 trace·원격 CH2 trace18070adf/CH1-01~04/CH2-01 실제 코드·보고서 참조. CH2 trace는 main 미포함 |
+| 원본 계약 | si10~13/전부200²/T40, rawhand346/18/21/20·장3등록61/35원화. si10 basin·북쪽gate3/남서분모0초기clear, 나머지기본floor/code3=0. 굴7/13/14/12·분모650/1050/1100/950. boss arena는hell2십자128×108 |
+| 산출물 | [원본 행 전수·docs 차이·Godot 의존/누락·에리어 순서안·공용 접점](engine/FDG_SOURCE_TRACE_MAPS_CH3_20261020.md). raw배치405·등록61/cross5·굴46·자원byte참조부록. 첫CH3-01은 기존단일exporter stage10 확장인수+source snapshot/순수계약 지시서 |
+| 표현 경계 | 웹1:1시각복제 대신 MAP_LOOK_GODOT_PASS1의 입체감·생동감·부분광원 목표. gameplay 충돌/스폰/지역/전환 보존, CH1전용profile의CH3인수·실효충돌·시각/전투/성능은 미확인 |
+| 확인 / 보호 | 원문발췌VM/전체repeat 각exit0·stderr0·48검산차이0(게임테스트PASS아님). 코드/기존test/공용/타담당0줄·Godot0·브라우저0·에셋생성/변환/복사0. 문서1+본절만, 정상훅·자기branch push/원격일치→DONE→자기sparseWT제거·R불변 |
+
 <<<<<<< HEAD
 <<<<<<< HEAD
 ## 2026-10-20 LOOK-001 룩 4안 비교 자료 준비
