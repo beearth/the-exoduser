@@ -24,6 +24,17 @@
 | 이중 방지 | 그리기 상호배타(GL `_ensGLMode` / 2D `_ensGLQueued`), 감쇠는 update 단일 지점 → 프레임당 정확히 1회. 이중 감소/이중 그리기 없음 |
 | 합성 | additive. GPU 프록시는 `_setBlend(true/false)`, Canvas2D 폴백은 `globalCompositeOperation='lighter'` 병행 지정 |
 | 불변 | 피해·쿨다운·판정·넉백·히트스톱(`_hitStun` 별도)·자원·보상·death/alive·시체 수·에셋 불변. `hurtE`의 `_hitFlash` 세팅값(6/4) 그대로 |
+
+### 2026-10-20 DOC-SYNC — 첫 전투 이식 대조 보충
+
+| id | 원본 game.html 계약 | 적용·증거 경계 |
+|---|---|---|
+| hitStop | 32584에서 매 update `G.hitStop=0`; 공격별 설정값이 있어도 활성 히트스톱을 보장하지 않음 | P2-001a의 비활성 유지가 원본. 피해·패링 규칙 변경 없음 |
+| death_blood | 19679: 128px 셀·4×4·16프레임. 24859: 일반 frameTime4/보스6, baseAlpha1.5. 54580~54581: bornGameTime 존재 여부로 게임시간/렌더 누산 클록 분리 | 일반 deathFX 호출은 렌더 누산. 61849의 `_dtSp=1`이므로 16×4=64 **렌더 프레임**, 고정 1.067초 보장 아님. P2-001f의 PC 실측 수치는 당시 기록이며 이번 감사에서 재측정하지 않음 |
+| corpse | 24915: 풀120. 54531: 화면 draw 최대25. 54532: 마지막 mt×.4 구간 페이드 | 풀 용량과 draw 상한을 같은 수치로 해석하지 않음. P2-001b/g 연출 기록 참조 |
+| giantSlam | 46492~46501: 지면 kind=giant, 기본 강타 영웅 시트 vfxKind=inferno, maxT45 | 구 기본 강타 earth 시트 표기는 현재 영웅 시트 기준 아님. 2_1의 현행 시각 계약으로 정정 |
+
+정적 원본·문서 대조이며 새 화면/실플레이 PASS가 아니다. 통합 범위·잔여는 `docs/engine/orders/reports/DOC-SYNC_REPORT.md` 참조.
 | 검수 | 인라인 JS 구문 PASS. 2D 경로 실화면 A/B(밝기 팝). **GL 경로 코드 동작=QA 정규 런타임 확인**(`_ensGLMode=1` 22,877샘플). 수명 주사율 독립은 루프 누산기 Node 재현으로 60/144/240/30Hz≈100ms 검증. 가독성(기검참 VFX·데미지 숫자 가림)·수정본 GL 실화면·부활 실캡처는 QA 재캡처/후속 |
 
 ## 2026-09-13 불꽃칼날 이름·불꽃 스윙
