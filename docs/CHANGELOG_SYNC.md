@@ -5,6 +5,13 @@
 | 기준·경로 | 하니스 공백만 최종 교정(실행문 불변). main0138c5bb9 +439b763da9 +Acf7408d4 정상FF. P3 constructor body 동일 추출→factory EOF append19/0→실제 World registry→43 origin, 기존 World clock·scheduler·동일35 registry 재사용 |
 | 검증·경계 | 신규31/0+관련415/0=446/0 각suite1회(신규 초기실패 제외), 실제 자연0 spawn/tick/legacy PC interface 처치/origin1, 실제30 actor600틱 벤치 유효1회 mean2.904/p994.221/max8.669ms(최대는8.333예산 초과). 보호경로/저장/에셋0, 전체타입/fullv3/전체120fps 완료 아님. 관련회귀·범위·대체위치 [보고서](engine/orders/reports/demo11-enemy-base_REPORT.md), [8.0](8.0몬스터디자인/DEMO11_NATURAL_ENEMY_BASE_20261021.md), [9AI](9적ai패턴디자인/DEMO11_NATURAL_ENEMY_CLOCK_20261021.md) |
 
+## 2026-10-21 DEMO11-etype-a 승인 재개 — factory5종 append-only
+
+- 사용자 판정으로 factory EOF680–688에 etype0/1/4/5/6 등록9행만 추가. 기존prefix/생성로직 byte 동일·PC9/11/47 겹침0. 기존kernel 및 World phase 재사용,5/6 누락 상태만 추가.
+- 원본mkEn90사례·실제5종 등록/탄/PC접촉/사망1952/0, 경계48/0. 120Hz240틱 벤치1회 벽시계5.312초·actor p95 311µs/max38.677ms: 지속120fps 통과 아님. source scheduler·type6 보호owner는 미완 유지.
+- 직접 회귀43 40/0·P3 298/0·factory3그룹/0실패, P3 종료ObjectDB8 경고 원문 보존.
+- 공용 범위/검증/회귀·인계 한계는 [보고서](engine/orders/reports/demo11-etype-a_REPORT.md), 몬스터 관리·WORK_BOARD 동기화. 이전cf740 부분 제출 기록은 아래와 외부 원로그에 보존.
+
 ## 2026-10-21 DEMO11-etype-a selected0 P3→MAP11→43 origin 인계
 
 - main0138c5bb9에 DEMO11-43 9b763da9 정상 fast-forward merge. Main+8/State0·신규 얇은 consumer만. 기존 P3 type0 constructor/World 등록/43 immutable origin 재사용, source pool/RNG/HP/AI/16좌표 복제0.

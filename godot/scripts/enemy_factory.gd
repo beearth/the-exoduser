@@ -696,3 +696,12 @@ func prepare_natural(holes: Node,hole: Dictionary,site: Dictionary,source: Dicti
 	actor.configure(runtime,holes.world)
 	actor.bind_natural_owner(owner)
 	return {"ready":true,"actor":actor,"runtime":runtime}
+
+# DEMO11-etype-a: append-only natural registrations; frozen consumers untouched.
+const DEMO11_ETYPE_A_REGISTRATIONS = {
+	0: {"actor":preload("res://scripts/enemy_demo11_a_0.gd"),"template":"res://data/etype0_physical_flesh_crawler.json"},
+	1: {"actor":preload("res://scripts/enemy_demo11_a_1.gd"),"template":"res://data/etype1_lightning_hive_bloater.json"},
+	4: {"actor":preload("res://scripts/enemy_demo11_a_4.gd"),"template":"res://data/etype4_physical_spine_beast.json"},
+	5: {"actor":preload("res://scripts/enemy_demo11_a_5.gd"),"template":"res://data/etype0_physical_flesh_crawler.json"},
+	6: {"actor":preload("res://scripts/enemy_demo11_a_6.gd"),"template":"res://data/etype0_physical_flesh_crawler.json"}
+}
