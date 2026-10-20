@@ -396,6 +396,22 @@
 - 부분 구현·통합 BLOCKED: 실제 source clock/Marker·PC contact/hit ingress·35 specialized elemBall terminal 미인수. 큰탄을 일반탄으로 우회하지 않음. "31과 통합 후보" 기록. Godot gate/격리·정상훅·자기branch push/remote/DONE 후 자기WT 제거.
 
 
+## 2026-10-21 MAP11-PROD 제품 Main 맵 연결 / DEMO11-45 상자 재개
+
+## 2026-10-21 MAP11-PROD 제품 인트로 검증 보강
+
+- 실제 Main 인트로 종료·시작 적5개체 유효 위치 검사15/0을 추가했다. 관련 합248/0과 map contract1case.
+- 제품 인트로 이후 벽시계 벤치는 종료 actor0임을 명시하여 전투 부하 성능과 구분했다. 제품 코드 추가 변경 없음.
+- 관련 문서: `docs/engine/orders/reports/map11-prod_REPORT.md`.
+
+| 항목 | 구현·근거 |
+|---|---|
+| 기준·선택 | main0138c5bb9 + MAP11 263498f6(6bcc483d 포함) 정상 merge. demo stage0 기본 새 MAP11, --map11=off 기존 경로 보존 |
+| 실제 경로 | 실제 World script identity 보존·map-only 위임→Start Marker/field→gate→arena. PC 완료 전 exit/상자 NOT_READY. 실제 provider/Marker 참조 공개, canonical 좌표/미니맵·스폰 혼합0. art 새 제작0 |
+| 상자 | 원본 stage0 장비3~5·악의+7, 기존 mkItem/journal/INV writer 재사용·새 save key0. 실제 PC 완료 부재를 가짜 신호로 대체0 |
+| 검증 | 최종 Main37/0·상자26/0·관련170/0 + contract map1case/0. 고정 physics600틱씩 평균5.433415/5.401905ms(headless/무전투, GPU120fps 주장0). 캡처/공용 줄 범위·proto 교정 원문은 [보고서](engine/orders/reports/map11-prod_REPORT.md) |
+| docs·제출 | docs/4.1 바인딩 계약·provider 후속·NPC_WORLD·45보고서·작업판 동기화. 신규 게임 텍스트/번역 수정0(CRLF 유지). 정상 훅·정확 경로 staging·자기 branch 일반push/remote/DONE 후 자기 WT 제거 |
+
 ## 2026-10-21 MAP11-11 — 필드·아레나 collider/LOS/flow provider
 
 - main0138c5bb + 인수된6bcc483d·3f9c87a4 정상merge. 승인 geometry 동일. 독립 runtime의 static collider/4지역/22anchor/field↔arena gate callback과 DEMO11-37·43 이름 계약은 [보고서 첫 표](4.1맵디자인+설정/MAP11_FIELD_PROVIDER_20261021.md).
