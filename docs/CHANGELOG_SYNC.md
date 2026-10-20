@@ -1,3 +1,7 @@
+## 2026-10-21 DEMO11-21fix 수명 회귀 하니스 제출
+
+- 같은 브랜치에 실제 실행한 신규 owner 수명 테스트9/0 원문을 포함한다. root test_* ignore에는 자기 파일만 경로 지정 추가, 훅 우회0. 기존 검사·제품 코드 추가 변경0. [근거](engine/orders/reports/demo11-21fix_REPORT.md).
+
 ## 2026-10-21 DEMO11-21fix pending draw owner 수명 보호
 
 - 기존 demo11-21 branch에 mainac3764bfe 정상 merge. 드랍 owner(Main/State) tree exit 즉시 configured=false, draw/beam/input/physics/snapshot live guard. 이전 에셋/드랍 식/피해·Main/State0줄.
