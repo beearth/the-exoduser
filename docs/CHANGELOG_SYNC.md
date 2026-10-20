@@ -2,6 +2,56 @@
 
 ## 2026-10-20 SV-SAVE-PRIMITIVE 격리 메모리 primitive 판단·7번 단위
 
+## 2026-10-20 CH2-02 si4 독립 World·실효 자원·충돌 소비
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 기준 / 의존 | 최초 main e556b617/game SHA4d911cdd… 동일. CH2-01 4013102a 끝 분기 + CH1-04 5487245c 인수 merge0c63400f. --no-checkout+sparse, 자기 branch 원격 일치/DONE 뒤 자기 WT/cache 제거 |
+| 공유 도구 | export_ch1_area_source optional post-snapshot observeNative7추가/2삭제. 동일 private 원 generator 상태 재사용, 기존0/1/4 전체 내용 차이0. Main/World/Player/P3/P2-006a/제품map/원본 PNG0줄 |
+| 실효 자원 | 신규 CH2 exporter/manifest/reader/World/preview/tests/UID3. initMapObjects 원문 실행107=hand105+lore1+gate1, nearFloor42보정. analytic 원52·tile1 28395cell exact276rectangle·기존27texture byte 참조. CH1hill/chunks복제0 |
+| 표현 / 수치 | 원 pivot/flip/rot/alpha·메모리 keying, 파일 이미지 변경0. Godot 연속 path바닥은 별도 표현. IEEE754 원입력 보존, query10998×2/LOS400·실제Physics40000센터/union 차이0. BFS165점/fixture왕복330 |
+| 신규 검사 | Node7/0·headless894/0·GPU1232/0, 실제8PNG1920×1080/Apple M5 Pro. ERROR0. 84렌더프레임1366.826ms@60cap는 fixture sweep이며 전투FPS아님 |
+| 회귀 | sourceNode29/0·asset6/0·pit6/0, Godot CH2-01 362/0·CH1 63/0·75/0·189/0·88/0·contracts5그룹/0·굴298/0·지역43/0. 맵28/9선재동일. 기존CH1-04 Node4/1은 공유origin/main 출처SHA차이1건 그대로 기록, 두game byte/나머지전체깊은대조0차이 |
+| 보호 / 한계 | selected기존2397파일SHA동일. prop Physics shape0/원analytic fixture만, Main/실P/전투/굴·지역·전환미연결/full_stage_ready=false. Camera2D/ObjectDB8경고·로비8선재원문 보존. VISUAL RETOUCH(겹침·자산끝선·바닥반복/접지/조명) |
+| 상세 | [CH2-02 보고서](engine/orders/reports/ch2-02_REPORT.md), ~/exoduser-wt/_out/ch2-02/. 매Godot전2이상30초대기·suite상수격리·override finally0byte. 자기branch만push, main/force/전체add0 |
+
+## 2026-10-20 CH2-01 si4 원본 snapshot·읽기 전용 계약
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 기준 / 의존 | main e556b617190c325ca39f5add04357f5dea5ca87e, codex/ch2-01-20261020. 필수 CH1-03 aada9b28이 main에 없어 그 끝에서 분기(CH1-01/02 포함). 작업 중 게시된 CH1-04 5487245c 결과도 읽고 기존 source pipeline 불변 확인 |
+| 파이프라인 | 기존 export_ch1_area_source.mjs에 stage4 분기37행 추가/17행 삭제. 원 AST·selector·generator·START·regionInit 재사용. stage0/1 재추출 전체 깊은 비교0차이. 제품 map.json/공용6/P3/원본/PNG 변경0 |
+| 새 artifact | ch2_map_source/si4.json 121465byte, schema exoduser.ch2-area-source.v1. 200²/T40·최종40000타일 SHA4e965948…·START4020/7420·게이트metadata y31/출구y33·code3타일0. raw105/카탈로그47·77/path22·RLE798/굴11·900/지역250·200·300·150 |
+| 순수 계약 | stage4_contract.gd의 read_area/validate_area. READY는 동일 참조·source_snapshot_only·runtime_bound/full_stage_ready/visual_verified=false. 오염/미지원은 NOT_READY/reason/raw, 최상위 value 없음. 최종 MAP_OBJS·실효 충돌 NOT_OBSERVED |
+| 자산 / 보호 | CH2 원화29개·47참조의 byte/hash만 기록, 이미지 가공·제품 복사0. 기존 selected tracked2359파일 SHA 동일. Godot 자동 생성 sidecar111개는 OUT 보존, 신규 UID2만 제출 |
+| 신규 검수 | Node11/0·Godot362/0, 신규 격리 EXODUSER-ch2-01-Isolated-20261020. Node는 원 AST/IIFE·path 함수·파일 bytes·CLI 음성검사, Godot는 JSON/순수 계약·오염 거절. Main/World/runtime 연결0 |
+| 회귀 | CH1 Node18/0·asset6/0·pit6/0. Godot CH1-01/02/03=63/0·189/0·75/0, contracts5그룹/실패0, P3002 298/0·P3003 43/0. 맵 Node37건28통과/9실패는 baseline 실패명 동일·새 실패0. 기존 ObjectDB8누수/Camera2D 경고·미이식 전투 보존 |
+| 제출 / 경계 | [CH2-01 보고서](engine/orders/reports/ch2-01_REPORT.md), 원로그 ~/exoduser-wt/_out/ch2-01/. 시각·플레이 가능 인수 아님. 자기 branch push·원격 일치·DONE 후 자기 sparse WT/임시 cache 정리, R 불변 |
+
+## 2026-10-20 CH1-04 si1 standalone World·실리소스 소비
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 기준 / 디스크 | main e556b617/game SHA4d911cdd… 동일. CH1-03 aada9b28가 main에 없어 그 끝 분기. --no-checkout+sparse109패턴·원본 추가2파일만, import WT약1.4GiB. 자기branch push·remote SHA·DONE 뒤 자기WT 제거·branch/log 유지 |
+| 산출물 / 원문 | 신규 native_ch1_area_world/resources·preview scene·si1_resources·export_ch1_area_resources·Node/Godot tests/UID3. 최신 원문 전체 initMapObjects/metadata in-place merge·occ-foot/isW/canMv/LOS/soilEdgeA 격리 실행, hand12+별도lore1=13objects·breakable0. 원문/에셋 편집0 |
+| 리소스 / 충돌 | 원본10asset 8683434byte 동일 복사+import10. si1 source tile c7994170…/200²/T40·START4020/7420·gate metadata31/exits33·nearFloor12보정0·LANDMARK5/GAMEPLAY7. 실제 Sprite12중심pivot/keepAR/layer0 소비. wall25590cell exact union313 RectangleShape2D, props5원문 analytic. stage0 hill/chunks64복제0·Physics2D prop shape0 |
+| 신규 검증 | Node5/0, headless88/0, GPU410/0·8PNG1920×1080/Apple M5 Pro. physics40000센터/union0오차, 원문 isW6966/canMv6966/LOS400 차이0·BFS157/fixture왕복314성공·80렌더프레임1302.098ms(60cap). 원본 double 입력 IEEE754 carrier로 JSON849입력 반올림/경계12차이 해소·실패원로그보존 |
+| 회귀 | CH1-01 9/0·63/0, CH1-02 6/0·189/0, CH1-03 9/0·75/0, P3001 Node6/0, contracts5그룹/0·P3002 298/0·P3003 43/0·encounter3그룹/0. 맵Node28/9기준 동일·새실패0. Godot ERROR0, 기존Camera2D/ObjectDB8경고잔존 |
+| 경계 / 상세 | 독립World1·Main/제품World/실P/저장0, 제품지역·굴·적/보스·전환/clear미연결·full_stage_ready=false. 공유맵/공용6/타인파일0줄, 기존1371파일SHA동일·R보존. VISUAL RETOUCH(확대vista/반복바닥/접지/광원). [보고서](engine/orders/reports/ch1-04_REPORT.md), ~/exoduser-wt/_out/ch1-04/. 매Godot전2이상30초대기·suite상수격리·override finally0byte |
+
+## 2026-10-20 CH1-03 si1 원본 데이터·순수 계약
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 기준 / 디스크 | main e556b617의 game SHA4d911cdd… 동일 확인. CH1-02 d0f7eaf4가 main에 없어 그 끝에서 codex/ch1-03-20261020 분기. --no-checkout+sparse107패턴, 웹 대형assets 전체 대신 회귀원본PNG92개만 선택. push·SHA·DONE 확인 뒤 자기WT 삭제·branch/log 유지 |
+| 원본 추출 | export_ch1_area_source에 stage1 추가, buildAreaSnapshot0/1·기존stage0 wrapper0전용 유지. geometry JS와 _CH1S1(game17972–17987)/compose18172–18177·selector/generator 원문 실행. si1.json+순수 stage1_contract·신규 Node/Godot 테스트/UID2 |
+| 정확 값 | si1/T40/200²/최종tile40000 SHA c7994170…;0/1/2/3/4=13588/25590/3/0/819, START4020/7420·gate metadata31/exits33. rawhand12=LANDMARK5/GAMEPLAY7·region이름7. holes13/1000·분면250/300/250/200. rawmask40000/RLE930과최종tile별도·timer14회소비후최종13 |
+| 검사 | 신규 Node9/0·Godot75/0. CH1-01 9/0·63/0, CH1-02 6/0·189/0, P3-001 Node6/0, contracts5그룹/0·P3002 298/0·P3003 43/0·encounter3그룹/0. 맵Node28/9기준동일·새실패0. 첫Node8/1 ENOBUFS·Godot66/1 타입비교오류 보존후수정 |
+| 경계 / 보호 | source_snapshot_only·runtime_bound/full_stage_ready/visual=false. Main/World 소비·save·에셋생성·새기하0. 보호1243파일 SHA동일·map/si0/공용6/P3owner/adapter/export_world0줄. 로비8실패는 사용자제공 선재원문만 기록·미수정. P3002 ObjectDB8누수/Camera2D 경고 잔존 |
+| 상세 | [CH1-03 보고서](engine/orders/reports/ch1-03_REPORT.md), ~/exoduser-wt/_out/ch1-03/. 매Godot전프로세스2이상이면30초대기·suite고정격리명·override finally0byte. 시각미실행/인수FAIL을데이터단위와구분. R·Q/E·세이브·원본byte보존, main/force/전체add/배포0 |
+
+## 2026-10-20 CH1-02 map8필드 승인 후 정적 환경 동기화
+
 | id / 적용 위치 | 현재 정확 계약 |
 |---|---|
 | 기준·판단 | origin/main e556b617에 앞 단위 없어 승인 RESTORE-FLOW000e26d1에서 분기. --no-checkout+no-cone sparse 약20MiB. 자기 소유 MemoryFixture만으로 분리 가능해 그 범위만 구현, 제품쓰기 readiness는항상HOLD |
