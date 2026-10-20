@@ -1,3 +1,13 @@
+## 2026-10-20 BC3-02 CH3 catalog 공통 packet 진입점
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준 / 의존 | fetch main823c24ba + BC-INTEG-01 dcd32b49를 정상 merge한62fdc552 기준. BC3-01r main catalog를 직접 읽고, 공용 BC02 색/BC08 일반화는 의존 merge로만 인수. rebase0 |
+| 원문 / 범위 | G31119–31363/37650–37699/38373–38442/38235–38313/37702–38233/41074–41183. 새 native_ch3_boss_reuse만 실제si10..13·Catalog를 공통BC02~07 마지막 인자로 전달. ELC 원문#3388ff·실제원소2, 사후 packet 보정·stage alias·수식 복제0 |
+| token / 중단선 | 정확 CH3 Script identity·typed stage·기존 Context path/hash 검증. 미래 packet의 소유 검사와 실제 version/body/ack 검사를 구분. 공통 시작21, 다른 owner16(CH2 9+CH3 7)은 NOT_READY 유지 |
+| 검증 | 신규 11478/0·BC01~10 354093/0·CH2 5종 154346/0·CH3 catalog 43491/0·BC-INTEG 73394/0·contracts5/0·cold import ERROR0; 독립 원문776사례·미래 token provider/typed si·정확 전달·기존 회귀17파일 byte 무수정 |
+| 보호 / 제출 | 자체 공통 Main/State/저장·보스 공통/기존catalog/테스트·원본·설계/LOCK·Q/E·2_3 수정0. [보고서](engine/orders/reports/bc3-02_REPORT.md), 원로그 ~/exoduser-wt/_out/bc3-02/. 정상 훅·자기push/remote일치/DONE 후 자기 sparse worktree 제거 |
+
 ## 2026-10-20 BC-INTEG-01 생성 원소색·BC08 장 catalog 통합
 
 | 항목 | 변경·검수 근거 |
