@@ -28,9 +28,10 @@ export function captureJSON(value, undefinedPaths = [], at = '', active = new Se
   return result;
 }
 
-export function buildAreaSnapshot(sourceRoot, {stage = 0, seed = 20261020} = {}) {
+export function buildAreaSnapshot(sourceRoot, {stage = 0, seed = 20261020, observeNative} = {}) {
   if (![0,1,4].includes(stage)) throw new Error('UNSUPPORTED_STAGE: only stages 0, 1 and 4 are supported');
   if (!Number.isInteger(seed) || seed < 0 || seed > 0xffffffff) throw new Error('Invalid uint32 seed');
+  if (observeNative !== undefined && typeof observeNative !== 'function') throw new Error('Invalid native observer');
   const root = fs.realpathSync(sourceRoot);
   const {parseExpressionAt} = createRequire(path.join(root, 'package.json'))('acorn');
   const source = fs.readFileSync(path.join(root, 'game.html'), 'utf8');
@@ -146,7 +147,7 @@ export function buildAreaSnapshot(sourceRoot, {stage = 0, seed = 20261020} = {})
     geometry.mask_sha256=sha(Buffer.from(geometry.mask));
     geometry.editor_tile_rle_sha256=sha(JSON.stringify(geometry.editor_tile_rle));
   }
-  return {schema:stage === 4 ? CH2_SCHEMA : SCHEMA,stage,source:{main_sha:execFileSync('git',['rev-parse',stage === 0 ? 'HEAD' : 'origin/main'],{cwd:root,encoding:'utf8'}).trim(),
+  const snapshot = {schema:stage === 4 ? CH2_SCHEMA : SCHEMA,stage,source:{main_sha:execFileSync('git',['rev-parse',stage === 0 ? 'HEAD' : 'origin/main'],{cwd:root,encoding:'utf8'}).trim(),
     ...(stage !== 0 ? {extraction_head:execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim()} : {}),
     game_sha256:files['game.html'],files,symbols,selection:`default empty URL → _getFixedMapForStage(${stage}) → _cloneField11(${stage}) → genFromTemplate`},
     grid:{width:200,height:200,tile_size:40},...data,...ch2,...(geometry ? {source_geometry:geometry} : {}),runtime_tile_sha256:sha(Buffer.from(data.tiles)),
@@ -156,6 +157,10 @@ export function buildAreaSnapshot(sourceRoot, {stage = 0, seed = 20261020} = {})
     scope:{runtime_bound:false,visual_verified:false,save_access:0,init_map_objects_executed:false,
       final_map_objects:'NOT_OBSERVED',effective_prop_positions:'NOT_OBSERVED',prop_colliders:'NOT_OBSERVED',
       region_projection:'original _regionInit in isolated VM; no runtime owner bound'}};
+  // Tool-only continuation of the SAME native generator context, after the source
+  // snapshot was captured. No reconstructed flags or invented initial objects.
+  if (observeNative) observeNative(evaluate);
+  return snapshot;
 }
 
 export function buildStage0Snapshot(sourceRoot, options = {}) {

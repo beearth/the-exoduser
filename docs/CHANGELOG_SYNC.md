@@ -1,3 +1,16 @@
+## 2026-10-20 CH2-02 si4 독립 World·실효 자원·충돌 소비
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 기준 / 의존 | 최초 main e556b617/game SHA4d911cdd… 동일. CH2-01 4013102a 끝 분기 + CH1-04 5487245c 인수 merge0c63400f. --no-checkout+sparse, 자기 branch 원격 일치/DONE 뒤 자기 WT/cache 제거 |
+| 공유 도구 | export_ch1_area_source optional post-snapshot observeNative7추가/2삭제. 동일 private 원 generator 상태 재사용, 기존0/1/4 전체 내용 차이0. Main/World/Player/P3/P2-006a/제품map/원본 PNG0줄 |
+| 실효 자원 | 신규 CH2 exporter/manifest/reader/World/preview/tests/UID3. initMapObjects 원문 실행107=hand105+lore1+gate1, nearFloor42보정. analytic 원52·tile1 28395cell exact276rectangle·기존27texture byte 참조. CH1hill/chunks복제0 |
+| 표현 / 수치 | 원 pivot/flip/rot/alpha·메모리 keying, 파일 이미지 변경0. Godot 연속 path바닥은 별도 표현. IEEE754 원입력 보존, query10998×2/LOS400·실제Physics40000센터/union 차이0. BFS165점/fixture왕복330 |
+| 신규 검사 | Node7/0·headless894/0·GPU1232/0, 실제8PNG1920×1080/Apple M5 Pro. ERROR0. 84렌더프레임1366.826ms@60cap는 fixture sweep이며 전투FPS아님 |
+| 회귀 | sourceNode29/0·asset6/0·pit6/0, Godot CH2-01 362/0·CH1 63/0·75/0·189/0·88/0·contracts5그룹/0·굴298/0·지역43/0. 맵28/9선재동일. 기존CH1-04 Node4/1은 공유origin/main 출처SHA차이1건 그대로 기록, 두game byte/나머지전체깊은대조0차이 |
+| 보호 / 한계 | selected기존2397파일SHA동일. prop Physics shape0/원analytic fixture만, Main/실P/전투/굴·지역·전환미연결/full_stage_ready=false. Camera2D/ObjectDB8경고·로비8선재원문 보존. VISUAL RETOUCH(겹침·자산끝선·바닥반복/접지/조명) |
+| 상세 | [CH2-02 보고서](engine/orders/reports/ch2-02_REPORT.md), ~/exoduser-wt/_out/ch2-02/. 매Godot전2이상30초대기·suite상수격리·override finally0byte. 자기branch만push, main/force/전체add0 |
+
 ## 2026-10-20 CH2-01 si4 원본 snapshot·읽기 전용 계약
 
 | id / 적용 위치 | 현재 정확 계약 |
