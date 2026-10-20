@@ -1,3 +1,14 @@
+## 2026-10-20 QS-01 물약 정의·회복량·자동 CD 순수 계산 이식
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 신규 파일 | potion_recovery_source/producer.gd·test_p4001a_potion_recovery_source.gd 및 자기 UID2개. hp_definition/pot_heal/enhanced_heal/auto_cooldown만 구현. [QS-01 보고서](engine/orders/reports/qs-01_REPORT.md) |
+| 원본 근거 | 최신 통합 main 9528ea35b429498fcf42fe3723008219ed0ed7e1의 game.html:27677~27679(POT.hp 7필드),28072(0강100/1강150/그 외 lv×100),35894·35903(회복량 ToInt32),35898~35902(자동 CD) |
+| 정확 수치 | CD=max(6,ToInt32(420×(((1−장갑)−벨트)−회복력))). 장갑/벨트는 unary+ 뒤 falsy0·각 상한0.2, 회복력 min(pRegen×0.03,0.3)에는 기본0 추가 없음. 문자열0.10/0.20·pRegen5→230f, 각 상한 조합→126f. 기존 helper read-only 재사용 |
+| 최종 검수 | 원본 Godot4.7.2: 신규318/0, contracts5그룹/0, 관련 자원회복173/0(exit0). 원본 발췌 Node CD18입력/0불일치. 자원회복에 Camera2D WARNING1·ERROR0. 이전 실행 수치/독립 Main probe 실패·진단은 보고서에 분리 보존 |
+| 범위 밖·보호 | 공용6파일·기존 제품·기존 테스트 변경0. 자동발동/HP·악의 쓰기/런타임 owner/clock/효과/대장간 미연결. Q/E·2_3·세이브 보호. G·지역·HUD 기존3suite는 격리명 충돌로 미실행이며 별도 probe를 suite PASS로 세지 않음 |
+| 정상 동기화 | 사용자 명시 지시로 이 절만 prepend, 기존 바이트 보존. docs-sync-check 직접 확인 후 함께 stage·정상 훅 검사. 훅 우회/main push/force/rebase/reset 없음. 원로그 ~/exoduser-wt/_out/qs-01/ |
+
 > 2026-10-17 ENGINE 현행: callback **12/25·미13**. play_time은 el_mul 바로 다음에 동일 Services self의 arity0 Callable로 등록했다. owner 첫 격리 공개 API 검수는 인수됐으며 자연 clock·실게임 인수는 미확인이다. D9는 직전 공통 소스 인수이며, 이번 main/I/R 소스 정렬은 아래 통합 정본과 단위 receipt의 실제 HEAD·tree를 기준으로 확인한다. V12 후보는 소스 인수·첫 FAIL·별도 보완 한정성공으로 구분하며 제품 copy·World hook은 수행하지 않았다. 아래 이전 단계 숫자·원검수 결과는 당시 이력으로 보존한다. 실제 local/remote commit 상태는 단위 receipt를 따른다.
 
 > 2026-10-17 ENGINE WIP 현행: 실제 callback **9/25·미16**. 신규 격리 행동41/41과 신규 map 경계 static9/9만 인수 범위다. 원 첫 parse 실패는 보존한다. 이 WIP를 main/R/served·전체 게임 최신화 완료로 해석하지 않는다.
