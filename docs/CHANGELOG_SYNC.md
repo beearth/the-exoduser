@@ -1,3 +1,13 @@
+## 2026-10-20 EC2-05 산란 사도 batch 전용 정책
+
+| id / 적용 위치 | 정확 계약·실제 검수 |
+|---|---|
+| 신규 범위 | native_ch2_brood_spawn_policy.gd·test_ch2_brood_spawn_policy.gd·자기UID2개. 공용/다른담당/기존테스트/저장0줄. product_connected=false·실제33 actor/등록HOLD |
+| 원본 | game.html39237–39247. spawnT−sp→T≤0/ens.length<200 한 번판정→Cdreset→2+trunc(2U)→각xy40범위draw→mkEn33/nonboss/el\|\|P/_ri→null제외push→현재좌표text/parts. 199+3=202가능·alive필터/거리조건/추가4..7그룹0 |
+| 순서·의존 | constructor와push 사이 continuation으로RNG interleave보존. _ri부재/null/정수구분·e.room대체0. EC2-02 numeric33/EC2-03 gasclock·산란뒤gas 재사용, 공통constructor/World/공간등록/가스재구현0 |
+| 검수 | 신규33,875/0·원본1,849·fixtureconstructor3,182(실birth증거아님), 회귀11종실패0/SKIP0. 초기33871/1은undefinedfixture누락정정후전체재실행. M30의도된missingresource ERROR1원문/기대거부1기록·그외11suite ERROR0 |
+| 기반·하니스 | fetch main26c050a99, EC2-04미병합으로5a389578의존. 최신maingame동일byte. Node필수인자/임시UTF8JSON·출력join, 새EXODUSER-ec2-05-Isolated-20261020·기존각상수, Godot전pgrep2이상30초대기/override0byte. [보고서](engine/orders/reports/ec2-05_REPORT.md)·원로그 ~/exoduser-wt/_out/ec2-05/ |
+
 ## 2026-10-20 EC2-04 2장 돌진·강타 전용 trigger 정책
 
 | id / 적용 위치 | 정확 계약·실제 검수 |
