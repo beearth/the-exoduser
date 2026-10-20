@@ -114,3 +114,25 @@ S01 신규 Main/unit 테스트에는 `godot/override.cfg`로 `config/use_custom_
 `node tools/docs-sync-check.mjs --staged`를 변경 전과 문서2경로 staging 후 직접 실행했다. 두 실행 모두 exit0·stdout/stderr 무출력이며 다른 문서 요구는 없었다. 스크립트는 non-doc staged 파일이 없으면 즉시 반환한다. 이번 후속은 문서 전용이므로 이를 새 제품 검증으로 해석하지 않는다. 정상 pre-commit 훅을 유지하고 `--no-verify`·`ALLOW_MISSING_DOCS` 우회 없이 후속 커밋한다. 실행 원로그는 `_out/settings-s01/changelog-format/`에 보존하고 최종 제출 SHA는 DONE.txt를 갱신한다.
 
 큐의 최신 main 공지(19a713578 이상·P3-002)는 이미 앞선 기준 `9528ea35b429498fcf42fe3723008219ed0ed7e1`에 인수했고 그 상태로 최종 회귀를 실행했다.
+
+## BLOCKED 해소 확정 지시 이후 전체 재검증
+
+총괄이 격리 이름 적용 범위를 명시한 후 `git fetch origin` 및 `git fetch origin refs/heads/main:refs/remotes/origin/main`을 실행했다. 최신 main은 **`9528ea35b429498fcf42fe3723008219ed0ed7e1`**로 앞선 기준과 같았고 `git merge --no-edit origin/main`은 **Already up to date**였다. 19a713578 이상 조건과 P3-002 인수 조건을 만족한다. force/rebase/reset 없음.
+
+초기 exit2는 기존 회귀 guard와 실행 하니스의 이름 불일치이며 제품 결함이 아니다. 해당 원로그를 보존하고, 이번에는 기존 테스트의 USERDIR/ISOLATED_DIRECTORY 값을 override에 설정했다. 지정 S01 이름은 새 테스트에만 적용했다. 모든 검증을 지정 Godot4.7.2로 순차 재실행했다. 원로그 새 폴더는 **`~/exoduser-wt/_out/settings-s01/main-9528ea35-userdir-confirmed/`**, 정확한 전체 명령·이름·exit·시간은 `runs.json`이다. 아래 이름은 모두 `EXODUSER-` 접두사를 포함한다.
+
+| 실행 (`res://tests/` 기준) | override 격리 이름 (`EXODUSER-` 뒤) | 실제 결과 | 원로그 |
+| --- | --- | --- | --- |
+| `test_native_settings_read_view.gd -- --only=unit` | `settings-s01-Isolated-20261020` | exit0, 112단정/0실패 | `unit.log` |
+| `test_native_settings_read_view.gd -- --only=actual_main` | `settings-s01-Isolated-20261020` | exit0, 12단정/0실패 | `actual-main.log` |
+| `test_contracts.gd` | `settings-s01-Contracts-Isolated-20261020` | exit0, 5군/실패단정0 | `contracts.log` |
+| `test_web_delivery.gd` | `settings-s01-Observer-Isolated-20261020` | exit0, 2군/실패단정0·incomplete0 | `web-delivery.log` |
+| `test_native_main_source_player_initialization.gd -- --only=options_context_lifecycle` | `MainSourceInitialization-Isolated-20261014` | exit0, 11단정/0실패 | `existing-options.log` |
+| `test_native_main_source_starter_state.gd` | `MainSourceStarter-Isolated-20261014` | exit0, 148check/0실패 | `starter.log` |
+| `test_p3003_regions.gd` | `P3003-Isolated-20261020` | exit0, 43단정/0실패 | `regions.log` |
+| `test_p2002a_hud.gd` | `P2002A-Isolated-20261020` | exit0, 36단정/0실패 | `hud.log` |
+| `test_p3002_spawn_holes.gd` | `P3002-Isolated-20261020` | exit0, 298단정/0실패·skipped없음 | `spawn-holes.log` |
+
+최종 새 실행 합계 **660단정·check/0실패 + contracts5군/실패0 + readonly 관찰자2군/실패0**. 모든 로그 SCRIPT ERROR/ERROR0이며 실제 Main을 여는 6개 suite에 기존 Camera2D physics interpolation WARNING가 각각1개 남아 있다. starter G48키·지역23/60/53/32(합168)·시작 HUD0/32도 새 실행에서 재확인했다. 원본·제품·테스트·공용6파일·기존 OPT owner는 실행 전후 SHA-256 동일이며 override는0byte다(`verification.json`). 제품·기존 테스트 수정0이다.
+
+이 후속 제출은 이번 실제 재검증 기록과 필수 변경로그만 갱신한다. 변경로그 맨 위의 지정 절·표 형식을 사용하고 기존 전체 내용은 그대로 보존했다. 정상 `node tools/docs-sync-check.mjs --staged` 직접 검사와 pre-commit 훅을 통과한 뒤 자기 branch만 push한다. 이전 원로그·복구 지점은 삭제하지 않는다. 미이식 설정 기능과 실제 OPT35의 누락3/NOT_READY는 앞선 남은 범위 그대로다.

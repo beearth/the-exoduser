@@ -1,3 +1,13 @@
+## 2026-10-20 SETTINGS-S01 BLOCKED 해소·격리 규칙 확정 재검증
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| main 기준 / 실행 하니스 | 재fetch main `9528ea35b429498fcf42fe3723008219ed0ed7e1`, 자기 branch merge는 Already up to date. 신규 테스트만 S01 격리, 기존 회귀는 각 USERDIR/ISOLATED_DIRECTORY. 최초 exit2는 하니스 이름 불일치이며 원로그 보존 |
+| 새 파일·원본 근거 | `native_settings_read_view.gd`·`test_native_settings_read_view.gd` 기존 제출 그대로. 원본 game.html:6311의38필드 비교용 reference·raw 읽기 view, 48752–48753 reset18/초기20 생략 근거만 기록(S03 적용) |
+| 전체 실제 재실행 | unit112/0·actualMain12/0·기존OPT11/0·starter148/0·지역43/0·HUD36/0·소환굴298/0 = 660/0, 계약5군/실패0·관찰자2군/실패0. 전9회 exit0/ERROR0, Camera2D 기존 WARNING는 상세 보고서에 분리 |
+| G·지역·HUD / 보존 | G48키·지역23/60/53/32 합168·시작HUD0/32 확인. 기존 OPT owner·공용6파일·제품·테스트 변경0, override0byte. 보호 docs/2_3·Q/E·세이브 형식 변경0 |
+| 범위 밖·원로그 | OPT35/누락3 NOT_READY 유지. UI·저장복원·리바인딩·FPS cap 적용·Tier·S03 reset·실플레이 미구현/미검수. 원로그 `~/exoduser-wt/_out/settings-s01/main-9528ea35-userdir-confirmed/`, [보고서](engine/orders/reports/settings-s01_REPORT.md). 정상 훅·자기 branch push만 수행 |
+
 ## 2026-10-20 SETTINGS-S01 원본 설정 default·읽기 전용 view
 
 | id / 적용 위치 | 현재 정확 계약 |
