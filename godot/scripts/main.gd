@@ -3268,3 +3268,15 @@ func restore_native_equipment_caches(caller: RefCounted, token: Dictionary) -> b
 	bundle.reference.restore_eq_stat_cache_token(token.reference)
 	_source_l_eq_cache = token.legendary
 	return true
+
+# DEMO11-19r: future growth UI calls this event API; existing status is minimum
+# confirmation display. No key binding or combat tick path is added.
+func request_native_growth(command: Dictionary) -> Dictionary:
+	var result: Dictionary=source_state.apply_native_growth(self,command)
+	if result.get("applied")==true and is_instance_valid(hud):
+		var current: Dictionary=source_state.read_native_growth(self)
+		hud.set_status("SP %d · AP %d · QUEUE %d" % [int(current.sp),int(current.ap),current.queue.size()])
+	return result
+
+func read_native_growth() -> Dictionary:
+	return source_state.read_native_growth(self)

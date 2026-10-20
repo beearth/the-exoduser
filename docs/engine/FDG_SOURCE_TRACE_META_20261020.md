@@ -1,3 +1,5 @@
+> 2026-10-21 DEMO11-19r: PC a28117c1 런타임 재계산 API가 main에 들어와 이전 DEMO11-19 pre-Tree BLOCKED를 해소했다. META-04/05 재사용·실제 State/raw grit writer·PC apply_stats receipt/readback·XP 예약→재계산→회복→표시 인계. [보고서](orders/reports/demo11-19r_REPORT.md). 아래 00340d57 BLOCKED는 당시 이력이며 현 결론이 아니다.
+
 # 메타·진행 원본 추적 및 Godot 이식 단위 — 2026-10-20
 
 > 2026-10-21 소비 갱신: DEMO11-20이 실제 State addExp의 demo entry/loop cap100에 META-06을 연결하고 필요 XP는 META-01을 호출한다. 기본 demo=true는 임시 State 입력이며 DEMO11-01의 configure_native_demo_exp_mode 연결을 기다린다. 기존 회복 authority·HUD 읽기를 유지하고 native_level_up_handoff로 표시/강제저장 요청을 인계한다(실제 저장 IO·popup/VFX·예약큐 소비는 미연결). non-demo 초월의 기존 HOLD와 저장 형식은 변경하지 않는다. [정확 범위·회귀·접점](orders/reports/demo11-20_REPORT.md). 아래 초기 정책/소비 이력은 작성 당시 기준이다.
