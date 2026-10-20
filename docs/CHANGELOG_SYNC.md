@@ -1,3 +1,15 @@
+## 2026-10-20 CH3-02 — si10 실효 배치·충돌·독립 preview
+
+| id / 적용 위치 | 실제 계약·검수 |
+|---|---|
+| 기준 / 의존 | 시작 main26c050a99 + main미포함 CH3-01 fcd7fcaa 정상 merge15285a4e. CH1-04/CH2-02 pipeline 인수. source exporter/map/공용6/P3/기존 소비자 신규수정0 |
+| 원문 / 제품 | 동일 native 생성 VM의 initMapObjects 관측: raw346→hand343(이동15/생략3), 전체345=hand343+altar1+gate1. 추가RNG2. 신규resource/read-only reader/standalone World/scene·검사만 |
+| 정확 계약 | tile1 14329/228 Physics rectangles, analytic105=rect48/ellipse5/circle52, crop87·기존 texture22 byte동일. isW16806/canMv16806/LOS400 차이0/0/0·tile Physics center/union 차이0·반경fixture179점 |
+| 표시 / 경계 | 독립 shader·부분광7/contact shadow, 실GPU8지점+ARENA OFF 총9PNG. VISUAL RETOUCH(시작중첩/반복지면/어두운가독성). source CSS/edge pixel parityfalse·Main/Player/State/굴/지역/전투/전환 미연결 |
+| 검수 | 새 Node7/0·GPU Godot3080/0. Godot CH1-01/02/03/04=63/0·189/0·75/0·88/0, CH2-01/02=362/0·894/0, CH3-01 641/0, contracts5그룹/0·GUI굴298/0·지역43/0·assetNode6/0 |
+| 실패 보존 | 관련Node108=99통과/9실패: main26 control 동일8 + CH3-01 provenance1. CH1-04/CH3-01는 기록main SHA외 내용차이0 별도증명·원suite실패유지. Camera2D/ObjectDB8 경고·초기실패 원로그 보존 |
+| 보호 / 제출 | baseline2572파일 byte동일(보고서 전), 자기12경로만 정상훅/비강제push·원격일치→DONE→sparseWT제거. R불변·원화생성/가공0. [보고서](engine/orders/reports/ch3-02_REPORT.md), ~/exoduser-wt/_out/ch3-02/ |
+
 ## 2026-10-20 CH3-01 — si10 원본 snapshot·읽기 전용 계약
 
 | id / 항목 | 현재 계약 |
