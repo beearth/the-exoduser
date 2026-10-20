@@ -220,6 +220,15 @@
 
 - main0138c5bb +37/05f41cc7 +31/76bcae8d 정상 merge, 양쪽 기능 보존. Main 설치1줄·NativePets 읽기/신호 소비, 기존9 ID 추가69/102. 펫 피해/회복0, State writer 재사용 검증. 신규75/0·Node10/0, 관련 회귀·공용 범위는 [보고서](engine/orders/reports/demo11-44_REPORT.md). 번역4문장 추가·main bytes/CRLF 보존.
 
+## 2026-10-21 DEMO11-33 — 곰치 family·실제 tick/혈안탄·PC 물기/사망·aggro 인계
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준·연결 | main0138c5bb9+31/76bcae8d 정상merge50f31d37. Main 설치/Marker4·같은G/World RNG·기존35/31 registry 실제 auxiliary owner/탄/homing·PC contact readback·WM HP/CD8/null death. |
+| 보호·범위 | Main+6/0·registry+45/12−, State/World/Player/PC 피해·패링·저장·맵·32파일0. i32/registry 재사용,31·32·33 helper 통합안은 후행 제안만. source 좌표0·원본시트 byte재사용. |
+| 검증 | 신규7,874/0+관련기존1,465/0=9,339/0. 벤치1회265/0 cleanPASS·WM4/256→264탄/240틱 max2.460ms<8.333ms. 초기 하니스 실패 원로그 보존·실패만 재실행·검사/기존테스트 약화0. |
+| 문서·제출 | [계약/공용줄/실패/통합안](engine/orders/reports/demo11-33_REPORT.md), FIELD visibility/fieldboss 추적 갱신. 실제MAP Marker/PC producer·자연전투·연출/전체FPS 인수 후행. 자기push/remoteSHA/DONE 후 WT정리·R불변, _out/demo11-33 원로그. |
+
 ## 2026-10-21 DEMO11-31 — 앵글러 family·실제 탄·PC final→지역 gate
 
 | 항목 | 구현·검수 근거 |

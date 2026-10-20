@@ -7,6 +7,7 @@ const SOURCE_PATH := "res://data/demo11_projectile_source.json"
 const SPECIAL := ["mine","trap","web","poisonZone","iceZone","blizzard","dimRift","elemBall","_coralSpike","swordWave","beam"]
 signal protected_contact_request(request: Dictionary)
 signal projectile_retired(id: int, reason: String)
+var _field_aux: Dictionary={}
 var _field_owner: Node
 var _field_reader: Callable
 var _clock_owner: Node
@@ -56,11 +57,34 @@ func bind_field_source(owner: Node, reader: Callable) -> bool:
 	if is_instance_valid(_field_owner) or not is_instance_valid(owner) or owner.get_parent()!=_world or not reader.is_valid() or reader.get_object()!=owner:return false
 	_field_owner=owner;_field_reader=reader
 	return true
+# DEMO11-33 auxiliary source: same global registry/drop/RNG, real owner identity.
+func bind_field_auxiliary(owner: Node, reader: Callable, aggro: Callable=Callable()) -> bool:
+	if not is_instance_valid(owner) or owner.get_parent()!=_world or not reader.is_valid() or reader.get_object()!=owner or owner==_field_owner or _field_aux.has(owner):return false
+	if aggro.is_valid() and aggro.get_object()!=owner:return false
+	_field_aux[owner]={"reader":reader,"aggro":aggro}
+	return true
+func _field_registered(owner: Node) -> bool:
+	return is_instance_valid(owner) and owner.get_parent()==_world and (owner==_field_owner or _field_aux.has(owner))
+func _field_context(owner: Node, at: Vector2, base: Dictionary) -> Variant:
+	if not _field_aux.has(owner) or not _field_aux[owner].aggro.is_valid():return base
+	var context: Dictionary=base.duplicate(true)
+	if _field_aux.has(owner) and _field_aux[owner].aggro.is_valid():
+		var response: Variant=_field_aux[owner].aggro.call(at)
+		if not response is Dictionary or response.get("ready")!=true or not response.get("active") is bool:return null
+		context.aggro_active=response.active
+		if response.active:
+			var target: Variant=response.get("target")
+			if not target is Node2D or not is_instance_valid(target) or not target.is_inside_tree():return null
+			context.aggro_target_node=target;context.aggro_target={"x":target.global_position.x,"y":target.global_position.y}
+	return context
 func birth_field_projectile(owner: Node, props: Dictionary, frame: Dictionary) -> Variant:
-	if owner!=_field_owner or not is_instance_valid(owner) or owner.get_parent()!=_world:return null
-	return _birth_request({"command":"spawnProj_owner","args":[props],"frame":frame,"field_source":true})
+	if not _field_registered(owner):return null
+	var context: Variant=_field_context(owner,Vector2(props.get("x",0),props.get("y",0)),frame.get("context",{}))
+	if not context is Dictionary:return null
+	var input: Dictionary=frame.duplicate(true);input.context=context
+	return _birth_request({"command":"spawnProj_owner","args":[props],"frame":input,"field_source":true,"field_owner":owner})
 func retire_field_projectiles(owner: Node) -> int:
-	if owner!=_field_owner or not is_instance_valid(owner):return 0
+	if not _field_registered(owner):return 0
 	var count:=0
 	for id in _entries.keys():
 		var entry: Dictionary=_entries[id]
@@ -130,7 +154,7 @@ func _birth_request(request: Dictionary) -> Variant:
 		_error="actual_carrier_creation_rejected"
 		_in_birth=false
 		return null
-	_entries[_next_id] = {"node":shot,"raw":pool,"born_serial":frame.serial,"birth_ticks":0,"calls":0,"field_owner":_field_owner if request.get("field_source",false) else null}
+	_entries[_next_id] = {"node":shot,"raw":pool,"born_serial":frame.serial,"birth_ticks":0,"calls":0,"field_owner":request.get("field_owner",_field_owner) if request.get("field_source",false) else null}
 	if _advancing: _tick_queue.append(_next_id)
 	_born += 1
 	_error=""
@@ -156,12 +180,17 @@ func _retain_expired(shot: Node) -> bool:
 	return shot.life_ticks > -900 and not shot.raw.get("redBean",false) and shot.global_position.distance_squared_to(_camera())<=6250000.0
 func _physics_process(_delta: float) -> void:
 	if not _live() or _entries.is_empty():return
-	if is_instance_valid(_field_owner) and _field_reader.is_valid():
-		var field_frame: Dictionary=_field_reader.call()
-		if field_frame.get("ready")==true:
-			if _clock_owner!=_field_owner:_serial=-1;_clock_owner=_field_owner
-			advance_source_frame(field_frame)
-			return
+	var field_frame: Dictionary=_field_reader.call() if is_instance_valid(_field_owner) and _field_reader.is_valid() else {"ready":false}
+	for owner in _field_aux.keys():
+		if not _field_registered(owner):_field_aux.erase(owner);continue
+		var candidate: Dictionary=_field_aux[owner].reader.call()
+		if candidate.get("ready")!=true:continue
+		if field_frame.get("ready")==true and (candidate.get("serial")!=field_frame.get("serial") or candidate.get("sp")!=field_frame.get("sp")):_error="field_native_clock_mismatch";return
+		field_frame=candidate
+	if field_frame.get("ready")==true:
+		if _clock_owner!=_field_owner:_serial=-1;_clock_owner=_field_owner
+		advance_source_frame(field_frame)
+		return
 	if not _actor.is_source_frame_completed():return
 	if _clock_owner!=_actor:_serial=-1;_clock_owner=_actor
 	advance_source_frame(_actor.read_source_frame())
@@ -185,14 +214,18 @@ func advance_source_frame(frame: Dictionary) -> bool:
 		var shot: Node = entry.node
 		if not is_instance_valid(shot) or shot.is_queued_for_deletion(): _retire(id,"owner_lost"); continue
 		if shot.global_position.distance_squared_to(_camera())>6250000.0: shot._end("camera_distance"); continue
-		shot.player = _player if shot.raw.get("blackBean",false) or not context.get("aggro_active",false) else context.aggro_target_node
+		var entry_context: Variant=_field_context(entry.get("field_owner"),shot.global_position,context) if entry.get("field_owner")!=null else context
+		if not entry_context is Dictionary:_error="actual_field_aggro_reader_required";continue
+		shot.player = _player if shot.raw.get("blackBean",false) or not entry_context.get("aggro_active",false) else entry_context.aggro_target_node
 		var before: Vector2=shot.global_position
 		entry.calls+=1
 		if entry.calls==1: entry.birth_ticks+=1
 		_motion_ticks+=1
 		if not shot.advance_source_motion(frame.sp): continue
 		if _pc_contact.is_valid():
-			var request := {"id":id,"node":shot,"projectile":shot.raw.duplicate(true),"before":before,"after":shot.global_position,"frame":frame}
+			var request_frame: Dictionary=frame.duplicate()
+			request_frame.context=entry_context
+			var request := {"id":id,"node":shot,"projectile":shot.raw.duplicate(true),"before":before,"after":shot.global_position,"frame":request_frame}
 			protected_contact_request.emit(request)
 			var response: Variant=_pc_contact.call(request)
 			if response is Dictionary and response.get("ack")==true and response.get("action")=="retire": shot._end("protected_owner")

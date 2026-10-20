@@ -126,6 +126,7 @@ var native_demo_boss_actor: Node2D
 var native_demo_boss_projectiles: Node
 var native_demo_encounter: Node
 var native_demo_anglers: Node2D
+var native_demo_worms: Node2D
 
 # DEMO11-06b: opt-in native save route; protected PC handoffs remain pending.
 var _demo11_session: RefCounted
@@ -435,6 +436,8 @@ func _ready() -> void:
 	if not native_pets.bind_demo_owners(self): push_warning("DEMO11-44 pet owner binding not ready.")
 
 	native_demo_fire_devils = preload("res://scripts/native_demo11_fire_devils.gd").install_native_boot(self) # DEMO11-32
+
+	native_demo_worms=preload("res://scripts/native_demo11_worms.gd").install_native_boot(self)
 	var metrics_timer := Timer.new()
 	metrics_timer.wait_time = 0.1
 	metrics_timer.process_mode = Node.PROCESS_MODE_ALWAYS
@@ -3358,3 +3361,7 @@ func bind_native_fire_devil_map(provider: Node2D) -> bool:
 	return is_instance_valid(native_demo_fire_devils) and native_demo_fire_devils.bind_map_provider(provider)
 func read_native_fire_devils() -> Dictionary:
 	return native_demo_fire_devils.snapshot() if is_instance_valid(native_demo_fire_devils) else {"status":"NOT_READY"}
+
+# DEMO11-33: MAP11 supplies four WM Marker2Ds, never source coordinates.
+func bind_native_demo_worms(provider: Node2D,markers: Array) -> bool:
+	return is_instance_valid(native_demo_worms) and native_demo_worms.bind_provider(provider,markers)
