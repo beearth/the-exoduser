@@ -287,6 +287,22 @@
 | 검증·벤치 | 신규148/0+관련기존262/0=기능410/0. 기존bench 정확히1회260/0·ERROR/WARNING0 cleanPASS, mean.763442/p95.920/max1.512ms<8.333ms. 초기import2실패·신규148/120 JSON숫자경계 실패 원문 보존/실패만정정. 전체게임fps未. |
 | 문서·제출 | [계약·공용 줄·최종 판정](engine/orders/reports/demo11-37_REPORT.md), BOSS_BATTLE_SETTINGS·P3 지역 후속 상태 갱신. _out/demo11-37 원로그, 자기branch push/remoteSHA/DONE 뒤 자기WT제거·R불변. |
 
+## 2026-10-21 DEMO11-42 눈 검수 RETOUCH — MP/ST·선택 툴팁
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 수정 | 같은749d0c6e branch. 개발 MP미이식 문구 제거, 실제 MP 파랑/ST 초록 독립 반구·ST 명칭, 상시 중복 자원 띠 삭제→원본705–708 skBarTip 축소. 보스 PASS 생성/갱신 byte 동일 |
+| 범위 | HUD+20/-6, owner view+29/-16. Main/State/전투/저장0. 게임폰트·기존 자산 byte 재사용, 번역2문구 등록 |
+| 검증 | 실제Main GPU46/0·기존HUD36/0 각 관련scope, 하니스 준비 오류5실패 수정 후 해당suite만 재실행. 3뷰1920×1080+1x9개, 총12PNG. [현재 보고서](engine/orders/reports/demo11-42_REPORT.md)·[현재 UI 계약](3.1%20ui%20hud%20디자인/DEMO11_42_NATIVE_OWNER_HUD_20261021.md), Mac 재눈검수 대기 |
+
+## 2026-10-21 DEMO11-42 — HUD 새 owner 연결
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 범위 | main ac3764bfe의 DEMO11-34 보스 actor HP readback·선택 슬롯/쿨/State 자원·dispatcher 실패 표시. 기존 HUD/4cast 유지, UI 창·전투·저장 writer0 |
+| 공용 | Main +1, HUD selector +6, NativeSkillSlots 결과 관찰 wrapper +7, State0. 기존 dispatcher 본문·전투 실행부 바이트 동일 |
+| 문서·검증 | [UI 계약](3.1%20ui%20hud%20디자인/DEMO11_42_NATIVE_OWNER_HUD_20261021.md), [보고서](engine/orders/reports/demo11-42_REPORT.md). 신규 문구 번역대상_전체목록 등록. 격리 Main 통합·직접 관련 회귀·GPU 캡처/1x 크롭 결과는 보고서 참조 |
+
 ## 2026-10-21 DEMO11-05 — main 성능 수정 병합·tick 경로 점검
 
 | 항목 | 구현·검수 근거 |

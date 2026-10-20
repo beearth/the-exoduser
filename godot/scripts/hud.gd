@@ -18,6 +18,7 @@ var _root: Control
 var _hp_text: Label
 var _hp_fill: ShaderMaterial
 var _stamina_text: Label
+var _mp_text: Label
 var _q_control_text: Label
 var _e_control_text: Label
 var _stamina_fill: ShaderMaterial
@@ -254,8 +255,14 @@ func _refresh() -> void:
 	var max_stamina := float(snapshot.get("max_stamina", 200.0))
 	_hp_text.text = "생명력\n%d\n/ %d" % [roundi(hp), roundi(max_hp)]
 	_hp_fill.set_shader_parameter("fill_ratio", hp / max_hp if max_hp > 0.0 else 0.0)
-	_stamina_text.text = "SP\n%d\n/ %d" % [roundi(stamina), roundi(max_stamina)]
+	_stamina_text.text = "ST\n%d\n/ %d" % [int(stamina), int(max_stamina)]
 	_stamina_fill.set_shader_parameter("fill_ratio", stamina / max_stamina if max_stamina > 0.0 else 0.0)
+	# Actual MP owner, source60244/60300-60305. No invented value/development label.
+	var current: Variant=_source_state.read_current_p() if is_instance_valid(_source_state) else null
+	var mp_ready: bool=current is Dictionary and (current.get("mp") is int or current.get("mp") is float) and (current.get("mmp") is int or current.get("mmp") is float) and is_finite(float(current.mp)) and is_finite(float(current.mmp)) and current.mmp>0
+	_mp_text.visible=mp_ready
+	_mp_text.text="MP\n%d\n/ %d" % [int(current.mp),int(current.mmp)] if mp_ready else ""
+	_stamina_fill.set_shader_parameter("mp_ratio",clampf(float(current.mp)/float(current.mmp),0,1) if mp_ready else 0.0)
 	var state := str(snapshot.get("state", "idle"))
 	var frames := float(snapshot.get("charge_frames", 0.0))
 	var combo := int(snapshot.get("combo_step", 0))
@@ -323,12 +330,15 @@ func _build_ui() -> void:
 	_hp_text.size.x = ORB_SIZE
 	_hp_text.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	var stamina_orb := _resource_orb(true)
-	_stamina_text = _label(stamina_orb, "SP\n200\n/ 200", Vector2(ORB_SIZE / 2, 44), 17, Color("88dd88"))
+	_stamina_text = _label(stamina_orb, "ST\n0\n/ 0", Vector2(ORB_SIZE / 2, 44), 17, Color("88dd88"))
 	_stamina_text.size.x = ORB_SIZE / 2
 	_stamina_text.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	var mp_scope := _label(stamina_orb, "MP\n미이식", Vector2(0, 54), 14, Color("88bbff"))
-	mp_scope.size.x = ORB_SIZE / 2
-	mp_scope.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_stamina_text.add_theme_font_override("font",NATIVE_UI_FONTS.stack("cinzel_hell",400))
+	_mp_text = _label(stamina_orb, "", Vector2(0,44),17,Color("88bbff"))
+	_mp_text.add_theme_font_override("font",NATIVE_UI_FONTS.stack("cinzel_hell",400))
+	_mp_text.size.x=ORB_SIZE/2
+	_mp_text.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
+	_mp_text.visible=false
 	var meters := Control.new()
 	meters.name = "NativeSkillBar"
 	_root.add_child(meters)
@@ -401,6 +411,7 @@ func _resource_orb(stamina: bool) -> Control:
 	shader.code = """shader_type canvas_item;
 uniform float fill_ratio : hint_range(0.0, 1.0) = 1.0;
 uniform bool stamina = false;
+uniform float mp_ratio : hint_range(0.0, 1.0) = 0.0;
 void fragment() {
     float circle = 1.0 - smoothstep(0.49, 0.5, length(UV - vec2(0.5)));
     vec3 liquid_color;
@@ -411,7 +422,10 @@ void fragment() {
         liquid_color = d < 0.5 ? mix(vec3(0.420, 0.063, 0.125), vec3(0.239, 0.039, 0.071), d * 2.0) : mix(vec3(0.239, 0.039, 0.071), vec3(0.118, 0.020, 0.039), (d - 0.5) * 2.0);
     }
     float filled = step(1.0 - fill_ratio, UV.y);
-    if (stamina) { filled *= step(0.5, UV.x); }
+    if (stamina && UV.x < 0.5) {
+        liquid_color = mix(vec3(0.047, 0.133, 0.267), vec3(0.2, 0.533, 0.8), clamp((1.0 - UV.y) / 0.7, 0.0, 1.0));
+        filled = step(1.0 - mp_ratio, UV.y);
+    }
     COLOR = vec4(mix(vec3(0.024), liquid_color, filled), circle);
 }"""
 	var material := ShaderMaterial.new()
@@ -729,6 +743,12 @@ func _build_native_first_fight_hud() -> void:
 
 
 func _native_slot_skill_id(slot_id: String, p: Dictionary) -> String:
+	# DEMO11-42: same selected owner as dispatcher; protected fixed keys below stay unchanged.
+	var dispatch = preload("res://scripts/native_skill_dispatch.gd")
+	for key in dispatch.HUD_SLOTS:
+		if dispatch.HUD_SLOTS[key] == slot_id:
+			var selected: Dictionary = dispatch.RULES.slot_value(key,p,p.get("skillSlots"),p.get("ultSlot"))
+			return str(selected.value) if selected.get("status") == "READY" and selected.get("value") != null and int(p.get("skills",{}).get(selected.value,0)) > 0 else ""
 	var skills: Dictionary = p.get("skills") if p.get("skills") is Dictionary else {}
 	var fused: Dictionary = p.get("_fused") if p.get("_fused") is Dictionary else {}
 	var slots: Array = p.get("skillSlots") if p.get("skillSlots") is Array else []

@@ -1,3 +1,7 @@
+## 2026-10-21 native DEMO11-42 RETOUCH 교정
+
+오른쪽 구슬의 실제 MP 왼쪽 파랑/ST 오른쪽 초록 및 성장 SP와의 명칭 분리, 상시 정보 띠→원본 #skBarTip 형태 축소는 [현재 native 계약](DEMO11_42_NATIVE_OWNER_HUD_20261021.md)을 따른다. 웹/아래 이전 전체 리디자인을 모두 이식한 것으로 확대하지 않는다. 원본 레거시 SP 스태미나 표기는 이번 사용자 지시에 따라 native ST로 교정했다.
+
 > 2026-10-16 통합 범위: 웹 본편 수치·현행은 최신 main 기준, 별도 Native/FDG 항목은 source pin9a4534b4의 부분 이식·명시 opt-in 계약이다. 전체 최신 본편 이식 완료가 아니다. 상세: docs/engine/FDG_PC_MAC_GIT_SYNC_20261016.md.
 
 # THE EXODUSER — HUD 리디자인 마스터 플랜

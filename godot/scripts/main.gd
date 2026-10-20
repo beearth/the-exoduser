@@ -427,6 +427,8 @@ func _ready() -> void:
 		_install_native_waking_intro_once()
 	native_demo_boss_actor = preload("res://scripts/native_demo11_boss_actor.gd").install_native_boot(self) # DEMO11-34
 	native_demo_boss_projectiles = preload("res://scripts/native_demo11_boss_projectiles.gd").install_native_boot(self) # DEMO11-35
+
+	preload("res://scripts/native_demo11_hud_owner.gd").install_native_boot(self) # DEMO11-42 display only
 	var metrics_timer := Timer.new()
 	metrics_timer.wait_time = 0.1
 	metrics_timer.process_mode = Node.PROCESS_MODE_ALWAYS
