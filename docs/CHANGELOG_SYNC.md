@@ -1,3 +1,11 @@
+## 2026-10-21 PC-IFACE-PACK — 1-1 데모 PC 전투 접점 요청 통합
+
+| 항목 | 근거·범위 |
+|---|---|
+| 기준 | main0138c5bb, 지정 보고서11개 SHA 스냅샷. etype-c 원격9fde1d4a 확인·DEMO11-24 진행 worktree는 제외 |
+| 산출 | [요청 통합](engine/PC_INTERFACE_REQUESTS_DEMO11_20261021.md): 공통13+레슨7 요청, 시그니처/입출력·거부 무변이·G/JS 행·tick/event·필수 여부·중복·우선순위, PC 전달 묶음4개. 기존 M29 bool callback과 Receipt 구분·강타에 패링 추가0·Mac 소환 기반/29 actor 후행 분리 |
+| 검증·제출 | 정적 행/보고서 대조만. 제품/테스트/저장/공용 코드0·Godot/전투검사0, PC 구현 PASS 주장0. 정상 docs hook·경로 지정 stage·자기 branch push/원격 일치·_out/pc-iface-pack/DONE 뒤 자기 WT 제거·R 불변 |
+
 
 ## 2026-10-21 DEMO11-18 일반 데모 합체·흡수·성급·되돌리기 원장
 
