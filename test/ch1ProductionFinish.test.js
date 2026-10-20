@@ -59,12 +59,23 @@ test('the 8192px baked image occupies exactly the 8000px gameplay world', () => 
 test('CH1-1 overview keeps distant props visible while other stages keep their culling contract', () => {
   const source=fs.readFileSync(new URL('../game.html',import.meta.url),'utf8');
   const helper=source.match(/function _mapObjectCullBounds\(camX,camY,vw,vh,zoom\)\{[\s\S]*?\n\}/)[0];
-  const start=source.indexOf('  const _moCull=_mapObjectCullBounds(');
-  const call=source.slice(start,source.indexOf('  const _wvl=',start));
+  // game.html:51766 supplies perspective bounds; the renderer falls back to
+  // _mapObjectCullBounds only when those bounds are absent (52292–52294).
+  const start=source.indexOf('  const _moCull=');
+  const end=source.indexOf('  const _wvl=',start);
+  assert.ok(start>=0&&end>start,'actual MAP_OBJS culling statements exist');
+  const call=source.slice(start,end);
   for(const enabled of [true,false]){
-    const env={G:{cam:{x:4000,y:4000},_camZoom:.3},VW:2400,VH:2400,_EDITOR_MODE:false,_ch1StartOuterEnabled:()=>enabled};
+    const env={G:{cam:{x:4000,y:4000},_camZoom:.3},VW:2400,VH:2400,_worldViewBounds:undefined,_EDITOR_MODE:false,_ch1StartOuterEnabled:()=>enabled};
     vm.runInNewContext(helper+'\n'+call+'\nresult=_moCull;',env);
     assert.equal(env.result.left<=0,enabled);
     assert.equal(env.result.right>=8000,enabled);
+    assert.equal(env.result.top<=0,enabled);
+    assert.equal(env.result.bottom>=8000,enabled);
+    const projected={left:123,right:7654,top:234,bottom:6543};
+    const perspectiveEnv={...env,_worldViewBounds:projected};
+    vm.runInNewContext(helper+'\n'+call+'\nresult=_moCull;',perspectiveEnv);
+    assert.equal(perspectiveEnv.result,projected,'perspective bounds retain authority over CH1 overview zoom');
+    assert.deepEqual(projected,{left:123,right:7654,top:234,bottom:6543},'culling must not mutate perspective bounds');
   }
 });

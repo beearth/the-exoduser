@@ -58,8 +58,19 @@ test('partial source inspection preserves unknown JSON and explicit 0/1 nav with
   assert.throws(() => { result.inspection.tiles[0] = 1; }, TypeError);
   source.unknownAuthoredMetadata.revision = 'changed-by-caller';
   assert.equal(result.inspection.sourceSnapshot.unknownAuthoredMetadata.revision, 'keep-me');
-  for (const field of ['collision.mergedRuntimeCollision', 'start.authority', 'logicalHeight.physicalZ', 'placements.instances', 'resources.cropWorldRect', 'resources.loadDrawAuthority', 'executionContract'])
-    assert.ok(result.pending.some(item => item.field === field));
+  // Current adapter separates missing source inputs from engine authoring;
+  // neither namespace may silently grant scene/candidate execution authority.
+  const sourceFields = ['logicalHeight', 'objectColliders', 'boundaryColliders', 'placements'].map(key => `executionData.${key}`);
+  const authoredFields = ['previewProject', ...['heightMapping', 'camera', 'settings', 'resourceBindings', 'executionContract', 'startAuthority', 'imageLayers'].map(key => `engineAuthored.${key}`)];
+  assert.deepEqual(result.pending.map(item => item.field).sort(), [...sourceFields, ...authoredFields].sort());
+  assert.deepEqual(result.sourceRequired.map(item => item.field).sort(), sourceFields.sort());
+  assert.deepEqual(result.engineAuthoredFields.map(item => item.field).sort(), authoredFields.sort());
+  for (const item of result.pending) {
+    assert.equal(item.classification, sourceFields.includes(item.field) ? 'SOURCE_INPUT' : 'ENGINE_AUTHORING');
+    assert.ok(item.reason.length>0, `${item.field} keeps an explicit pending reason`);
+  }
+  assert.deepEqual(result.pendingCounts, { SOURCE_INPUT: 4, ENGINE_AUTHORING: 8, ENGINE_IMPLEMENTATION: 0 });
+  assert.equal(result.candidateProject, null);
   assert.ok(result.mapping.length >= 8);
   assert.ok(result.mapping.every(item => typeof item.value !== 'object' && item.status === 'inspection-only'));
 });
@@ -182,10 +193,17 @@ test('missing/unknown source stays pending and output budgets retain 4MiB scene 
   const missing = adaptMapSourceScene(undefined, undefined);
   assertDisabled(missing); assert.deepEqual(missing.errors, []);
   assert.ok(missing.pending.some(item => item.field === 'source-format-pending'));
-  assert.ok(missing.pending.some(item => item.field === 'resources.loadDrawAuthority'));
+  assert.deepEqual(missing.pending.map(({field, classification}) => [field, classification]), [
+    ['source-format-pending', 'SOURCE_INPUT'], ['engineAuthored.resourceBindings', 'ENGINE_AUTHORING'],
+  ]);
+  assert.equal(missing.candidateProject, null);
   const source = makeSource(); source.nativeContract.version = 'unknown'; source.executionContract = { approved: true };
   const unknown = adaptMapSourceScene(source, makeManifest());
   assertDisabled(unknown); assert.ok(unknown.pending.some(item => item.field === 'source-format-pending'));
+  assert.deepEqual(unknown.pending.map(({field, classification}) => [field, classification]), [
+    ['source-format-pending', 'SOURCE_INPUT'], ['engineAuthored.executionContract', 'ENGINE_AUTHORING'],
+  ]);
+  assert.equal(unknown.candidateProject, null);
   assert.equal(unknown.inspection.sourceSnapshot.executionContract.approved, true);
   const oversizedScene = { payload: 'x'.repeat(MAP_SOURCE_LIMITS.projectBytes) };
   assert.ok(validateMapSourceOutput(oversizedScene, null).errors.some(error => error.includes('4194304')));

@@ -1,3 +1,13 @@
+## 2026-10-20 MAP-NODE-9 기존 맵 Node 9실패 정정
+
+| 항목 | 근거·검수 |
+|---|---|
+| 기준 / 범위 | origin/main823c24ba, sparse 독립 worktree. 테스트3파일만 정정; 제품·원본·공용 exporter2·Main/State/저장 변경0 |
+| 분류 / 전후 | 지정 맵37개 28통과/9실패→37통과/0실패, skip0. 낡은 PENDING 기대2건(a), 컬링 추출·Image 초기화 하니스7건(b), 대상(c)/(d)0 |
+| 검사 보존 | 실제 source/authoring12필드·분류·권한 거부, perspective bounds·상하 컬링·배너 callback 추가. 정적 assert120→141, 옛 pending 호출2만 정확 계약으로 대체; 기존 거부 fixture 유지. 외부 변형6종 전부 실패 검출 |
+| 확대 회귀 / 한계 | FDG source16파일91개는 main 사본/작업본 모두88/3 동일. 별개 선재3건 원문·OLD/NEW 제안 보고; Godot/실창/PC 실행0, 기존 시각FAIL 유지 |
+| 제출 | [map-node-9 보고서](engine/orders/reports/map-node-9_REPORT.md), 원로그 ~/exoduser-wt/_out/map-node-9/. 정상 훅·자기 branch push·원격SHA/DONE 후 자기 worktree 제거 |
+
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
