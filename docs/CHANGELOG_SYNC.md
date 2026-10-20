@@ -1,3 +1,12 @@
+## 2026-10-21 EC4-04 etype51 trigger·death 50 생성/후대입 계획
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준·의존 | fetch main010515993 + EC4-03 a2b7654c 정상merge=b1ecde2e. EC2-05는read-only형식참조만, 미병합제품반입0 |
+| 원본·범위 | G39521–39523 windup20/d<35+r, G42827–42835 2child원순서·childHP35%/부모r·shield0/speed1.3·null ne.hp 실패경계. 실제mkEn/등록/FX없음으로 death PLAN/HOLD, 공용writer/RNGowner복제0 |
+| 검증 | 원본92사례·신규1339/0, 직접catalog회귀61739/0 각1회. 핵심변이4종검출/byte복원, ERROR/WARNING/SKIP0. 원본12행stream/UTF8파일·node인자·출력join |
+| 보호·제출 | 기존1647파일동일·공용Main/State/저장/다른담당/R0줄. [EC4-04 보고서](engine/orders/reports/ec4-04_REPORT.md), 원로그 ~/exoduser-wt/_out/ec4-04/. 정상훅·자기branch push/remoteSHA/DONE뒤자기worktree제거 |
+
 ## 2026-10-21 EC4-03 etype50 불규칙 이동·무작위 windup 순수 정책
 
 | 항목 | 구현·검수 근거 |
