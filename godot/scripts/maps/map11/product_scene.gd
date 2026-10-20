@@ -19,8 +19,30 @@ func current() -> bool:
  return is_instance_valid(provider) and provider.runtime_ready() and is_instance_valid(start_marker)
 func activate_space(space: String) -> bool:
  if not current() or space not in ["field","arena"]:return false
+ if space!=active_space:_transition_fade()
  active_space=space;field_view.visible=space=="field";arena_view.visible=space=="arena";return true
 func can_move(point: Vector2,radius: float) -> bool:
  return current() and provider.can_move(point,radius,active_space)
 func line_of_sight(a: Vector2,b: Vector2) -> bool:
  return current() and provider.line_of_sight(a,b,active_space)
+
+var _fade: ColorRect
+var _fade_tween: Tween
+var _actor: Node2D
+func _physics_process(delta: float) -> void:
+ # Resolve the product actor once after Main setup, then use cached references.
+ if not is_instance_valid(_actor):
+  _actor=get_parent().get_parent().get("player")
+  if is_instance_valid(_actor):
+   get_parent().get_parent().camera.zoom=Vector2.ONE*.70
+   get_parent().get_parent().camera.offset=Vector2(0,-180)
+ if not is_instance_valid(_actor):return
+ if active_space=="field":field_view.update_product(field_view.to_local(_actor.global_position),delta)
+ else:arena_view.update_product_occlusion(arena_view.to_local(_actor.global_position),delta)
+func _transition_fade() -> void:
+ if not is_instance_valid(_fade):
+  var layer:=CanvasLayer.new();layer.layer=90;add_child(layer)
+  _fade=ColorRect.new();_fade.color=Color(0,0,0,0);_fade.mouse_filter=Control.MOUSE_FILTER_IGNORE;_fade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);layer.add_child(_fade)
+ if _fade_tween!=null:_fade_tween.kill()
+ _fade.color.a=.75
+ _fade_tween=create_tween();_fade_tween.tween_property(_fade,"color:a",0.0,.22)

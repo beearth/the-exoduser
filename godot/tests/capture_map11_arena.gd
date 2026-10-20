@@ -1,7 +1,7 @@
 extends SceneTree
 ## GUI-only GPU capture + ONE fixed-physics-N wall-clock benchmark.
 ## O(1) current-tick position; no API builds/returns tick-path lists.
-const USERDIR = "EXODUSER-map11-01b-Isolated-20261021"
+const USERDIR = "EXODUSER-map11-01c-Isolated-20261021"
 const WARMUP_TICKS = 120
 const BENCH_TICKS = 600
 var arena: Node2D
@@ -61,6 +61,9 @@ func _run() -> void:
 		elif board == "wall": crop = Rect2i(1080,180,640,640)
 		elif board == "clear": crop = Rect2i(640,90,640,720)
 		image.get_region(crop).save_png(output_dir.path_join(name_+"_1x.png"))
+		# Supplemental literal1x evidence for this pass's floor/contact requests.
+		if board == "entry": image.get_region(Rect2i(170,240,640,520)).save_png(output_dir.path_join("01_entry_floor_1x.png"))
+		if board == "close": image.get_region(Rect2i(770,430,400,300)).save_png(output_dir.path_join("02_close_contact_1x.png"))
 		var f := FileAccess.open(output_dir.path_join(name_+".json"),FileAccess.WRITE)
 		f.store_string(JSON.stringify({"board":board,"size":[1920,1080],"crop_xywh":[crop.position.x,crop.position.y,crop.size.x,crop.size.y],"crop_scale":1,"camera":[arena.camera.position.x,arena.camera.position.y],"zoom":arena.camera.zoom.x,"preview_tick":arena.tick,"live_combat":false}))
 		print("MAP11_CAPTURE ",name_)

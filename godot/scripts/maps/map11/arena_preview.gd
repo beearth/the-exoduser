@@ -11,6 +11,9 @@ const TIDE_R = 1750.0 # G37949–37963
 const FISSURE_LENGTH = 2304.0 # G37931–37948, max(128,108)*40*.45
 const FISSURE_BLAST = 691.2 # min(750,2304*.3), NOT derived from new room size
 const BOSS_HEIGHT = 620.4 # r44 * source dh14.1, idle atlas aspect retained G10963
+const BODY_RADII = [164.0,259.0,359.0,459.0]
+const ORB_ANGLES = [-.14,0.0,.14]
+const BOARD_IDS = ["entry","close","wall","clear","body","bullets"]
 const PROP_DIR = "res://assets/map/props/"
 var map_data: Dictionary = {"props":[],"prop_colliders":[]}
 var _chunks: Dictionary = {} # NativeMapLook read-only view, no web chunks
@@ -31,6 +34,10 @@ var _overlay: Node2D
 var _rim: StaticBody2D
 var _tex: Dictionary = {}
 var board_serial: int = 0
+var _contact_boss: Sprite2D
+var _contact_player: Sprite2D
+var _rim_sprites: Array[Dictionary] = []
+var _decal_count: int = 0
 
 class Lines extends Node2D:
 	var host: Node2D
@@ -46,6 +53,9 @@ func _ready() -> void:
 	_overlay = Lines.new()
 	_overlay.host = self
 	_overlay.z_index = 3500
+	var guide_material := CanvasItemMaterial.new()
+	guide_material.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
+	_overlay.material = guide_material
 	add_child(_overlay)
 	_build_ui()
 	select_board("entry")
@@ -74,27 +84,35 @@ func _build_floor() -> void:
 	var surface := ShaderMaterial.new()
 	surface.shader = preload("res://scripts/maps/map11/skin_floor.gdshader")
 	floor_mesh.material = surface
-	# Plain authored shapes only: no generated image, no speckled floor/noise.
-	# Large exposed arteries remain low relief, distinct from bright tell colors.
-	for i in range(9):
-		var a: float = TAU*float(i)/9.0+.18
-		var line := Line2D.new()
-		line.name = "ExposedArtery%02d"%i
-		line.points = PackedVector2Array([Vector2.from_angle(a)*1660,Vector2.from_angle(a+.01)*1570,Vector2.from_angle(a+.025)*1480,Vector2.from_angle(a+.03)*1400,Vector2.from_angle(a+.02)*1310,Vector2.from_angle(a-.01)*1230,Vector2.from_angle(a-.025)*1160])
-		line.width = 14.0
-		line.antialiased = true
-		line.joint_mode = Line2D.LINE_JOINT_ROUND
-		line.default_color = Color("39252c")
-		line.begin_cap_mode = Line2D.LINE_CAP_ROUND
-		line.end_cap_mode = Line2D.LINE_CAP_ROUND
-		line.z_index = -420
-		add_child(line)
-		var heart := Line2D.new()
-		heart.points = line.points
-		heart.width = 3.0
-		heart.antialiased = true
-		heart.default_color = Color("98505b")
-		line.add_child(heart)
+	# MAP11-14: disconnected RGBA fissures share the field material grammar.
+	var fissures:=Node2D.new();fissures.name="IrregularFissureDecals";fissures.z_index=-420;add_child(fissures)
+	var fissure_material:=ShaderMaterial.new();fissure_material.shader=preload("res://scripts/maps/map11/field_decal.gdshader");fissure_material.set_shader_parameter("fissure",true)
+	var sites=[Vector2(-1200,520),Vector2(1050,-430),Vector2(-470,1100),Vector2(550,450),Vector2(-690,-790)]
+	for i in range(sites.size()):
+		for part in range(3):
+			var sprite:=Sprite2D.new();sprite.texture=load("res://assets/map/ch3/floor_objects/prop_ice_gcrack.png");sprite.material=fissure_material
+			sprite.position=sites[i]+Vector2(part*135-100,((i+part)%3-1)*90);sprite.scale=Vector2(260+(i%3)*75,190+part*40)/sprite.texture.get_size();sprite.rotation=i*.79+part*1.1;sprite.flip_h=part==1;fissures.add_child(sprite)
+	var ground := Node2D.new()
+	ground.name = "RGBAFloorDecals"
+	ground.z_index = -435
+	add_child(ground)
+	_decal(ground,"res://assets/map/props/prop_g_root.png",Vector2(-780,260),Vector2(1150,850),-.35,false)
+	_decal(ground,"res://assets/map/props/prop_g_root.png",Vector2(880,-220),Vector2(1100,820),.7,false)
+	_decal(ground,"res://assets/map/ch1/floor_objects/flesh_g_0.png",Vector2(-1130,730),Vector2(850,600),.4,true)
+	_decal(ground,"res://assets/map/ch1/floor_objects/flesh_g_0.png",Vector2(920,-830),Vector2(780,560),-.5,true)
+
+func _decal(parent: Node2D, path: String, foot: Vector2, size_: Vector2, angle: float, tissue: bool) -> void:
+	var sprite := Sprite2D.new()
+	sprite.texture = load(path)
+	sprite.position = foot
+	sprite.scale = size_/sprite.texture.get_size()
+	sprite.rotation = angle
+	var material_ := ShaderMaterial.new()
+	material_.shader = preload("res://scripts/maps/map11/organic_decal.gdshader")
+	material_.set_shader_parameter("tissue",tissue)
+	sprite.material = material_
+	parent.add_child(sprite)
+	_decal_count += 1
 
 func _build_rim() -> void:
 	_rim = StaticBody2D.new()
@@ -121,6 +139,7 @@ func _prop(id: String,file: String,foot: Vector2,height: float,mirror: bool = fa
 	sprite.flip_h = mirror
 	sprite.z_index = 80 + int(foot.y/10.0)
 	add_child(sprite)
+	if foot.length() > RADIUS: _rim_sprites.append({"sprite":sprite,"rect":Rect2(foot+sprite.offset*sprite.scale,ts*sprite.scale).grow(65)})
 	map_data.props.append({"id":id,"position":[foot.x,foot.y],"texture":PROP_DIR+file,"draw_size":[ts.x*height/ts.y,height]})
 	map_data.prop_colliders.append({"id":id,"kind":"circle","position":[foot.x,foot.y],"radii":[90,45]}) # visual occluder only
 
@@ -129,10 +148,10 @@ func _build_props() -> void:
 	for i in range(24):
 		var a: float = TAU*float(i)/24.0
 		var file: String = "rotforest_tree_%02d.png"%([1,2,3,4,5,6,7,11][i%8])
-		_prop("OuterTree%02d"%i,file,Vector2.from_angle(a)*(1940+float(i%3)*80),720+float(i%4)*85,i%2==0)
+		_prop("OuterTree%02d"%i,file,Vector2.from_angle(a)*(1760+float(i%3)*65),900+float(i%4)*85,i%2==0)
 	for i in range(12):
 		var a: float = TAU*(float(i)+.35)/12.0
-		_prop("LivingCorpse%02d"%i,"prop_corpsetree.png",Vector2.from_angle(a)*1790,600+float(i%3)*65,i%2==1)
+		_prop("LivingCorpse%02d"%i,"prop_corpsetree.png",Vector2.from_angle(a)*1760,850+float(i%3)*65,i%2==1)
 		_prop("Cocoon%02d"%i,"prop_cocoon.png",Vector2.from_angle(a+.09)*1760,190+float(i%3)*25)
 	_prop("NorthHeartAltar","prop_altar.png",Vector2(0,-1850),330)
 	_prop("EntryArch_VisualOnly","bone_arch.png",Vector2(0,1120),360)
@@ -164,12 +183,28 @@ func _build_actors() -> void:
 	boss.scale = Vector2.ONE*(BOSS_HEIGHT/620.0)
 	boss.z_index = 350
 	add_child(boss)
+	_contact_player = _contact_shadow(player,Vector2(0,4),Vector2(54,19),499)
+	_contact_boss = _contact_shadow(self,Vector2(0,-22),Vector2(240,66),349)
 	camera = Camera2D.new()
 	camera.name = "BoardCamera"
 	camera.process_callback = Camera2D.CAMERA2D_PROCESS_PHYSICS
 	camera.position_smoothing_enabled = false
 	add_child(camera)
 	camera.make_current()
+
+func _contact_shadow(parent: Node2D, at: Vector2, size_: Vector2, z: int) -> Sprite2D:
+	var shadow := Sprite2D.new()
+	shadow.name = "ActorContactShadow"
+	shadow.texture = MapLook._make_radial_texture(128,[0.0,.28,.65,1.0],[1.0,.85,.30,0.0])
+	shadow.modulate = Color(0,0,0,.85)
+	shadow.position = at
+	shadow.scale = size_/128.0
+	shadow.z_index = z
+	var mat := CanvasItemMaterial.new()
+	mat.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
+	shadow.material = mat
+	parent.add_child(shadow)
+	return shadow
 
 func _build_look() -> void:
 	look = MapLook.new()
@@ -182,32 +217,42 @@ func _build_look() -> void:
 	look.set("_data",{"sway":source_profile.sway,"prop_shadow":source_profile.prop_shadow,"occluder_radius_scale":.7})
 	look.set("_light_texture",MapLook._make_radial_texture(256,[0.0,.35,.7,1.0],[1.0,.62,.2,0.0]))
 	var ambient := CanvasModulate.new()
-	ambient.color = Color(.63,.60,.66)
+	ambient.color = Color(.31,.32,.39)
 	look.add_child(ambient)
 	look.set("_ambient",ambient)
 	look.call("_style_props")
 	look.call("_mount_prop_shadows")
 	look.call("_mount_occluders")
 	var lights: Array = []
-	var pl: Dictionary = {"color":[1.0,.76,.58],"radius":620,"energy":.85,"shadow":true,"flicker":[.025,7.0]}
+	var pl: Dictionary = {"color":[1.0,.76,.58],"radius":350,"energy":1.18,"shadow":true,"flicker":[.025,7.0]}
 	var player_light: PointLight2D = look.call("_make_light","PreviewPlayerLight",pl)
 	look.set("_player_light",player_light)
 	lights.append(look.call("_light_row",player_light,pl))
-	for i in range(6):
-		var a: float = TAU*float(i)/6.0
-		var spec: Dictionary = {"color":[.72,.14,.19] if i%2==0 else [.37,.48,.70],"radius":1100,"energy":.65 if i%2==0 else .38,"pulse":[.1,.22]}
-		var light: PointLight2D = look.call("_make_light","RimKey%02d"%i,spec)
-		light.position = Vector2.from_angle(a)*1640
+	for i in range(2):
+		var spec: Dictionary = {"color":[.85,.13,.10],"radius":660 if i==0 else 590,"energy":1.0,"pulse":[.08,.18]}
+		var light: PointLight2D = look.call("_make_light","FissurePool%02d"%i,spec)
+		light.position = Vector2(-790,210) if i==0 else Vector2(810,-160)
 		lights.append(look.call("_light_row",light,spec))
-	var cold_spec: Dictionary = {"color":[.50,.61,.82],"radius":1650,"energy":.42,"shadow":true}
+	var cold_spec: Dictionary = {"color":[.50,.61,.82],"radius":1000,"energy":.38,"shadow":true}
 	var cold: PointLight2D = look.call("_make_light","NorthWestKey",cold_spec)
-	cold.position = Vector2(-1050,-1100)
+	cold.position = Vector2(-250,-550)
 	lights.append(look.call("_light_row",cold,cold_spec))
 	look.set("_lights",lights)
 	look.set("active",true) # Existing process handles flicker/pulse; no G/State bound.
 
 func _build_ui() -> void:
+	var vignette_layer := CanvasLayer.new()
+	vignette_layer.layer = 1
+	add_child(vignette_layer)
+	var vignette := ColorRect.new()
+	vignette.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	vignette.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var vignette_material := ShaderMaterial.new()
+	vignette_material.shader = preload("res://scripts/maps/map11/arena_vignette.gdshader")
+	vignette.material = vignette_material
+	vignette_layer.add_child(vignette)
 	var layer := CanvasLayer.new()
+	layer.layer = 2
 	add_child(layer)
 	var panel := ColorRect.new()
 	panel.position = Vector2(24,22)
@@ -275,10 +320,11 @@ func select_board(id: String) -> void:
 			camera.zoom = Vector2.ONE*.27
 			overlay_mode = 1 if id == "body" else 2
 	_title.text = "MAP11 / "+id.to_upper()+" / DESIGN BLOCKOUT"
-	_sub.text = "R1700 / MATERIAL PROOF / NO BOSS AI\nBC01–10 OVERLAY / NO COMBAT OR CLEAR WRITER"
+	_sub.text = "R1700 / LIVING FLOOR / LOCAL LIGHT / NO BOSS AI\nBC01–10 OVERLAY / NO COMBAT OR CLEAR WRITER"
 	_foot.text = "1 ENTRY   2 CLOSE   3 WALL   4 CLEAR   5 BODY   6 BULLETS   WASD MOVE   |   D05 CIRCULAR / SMALLER"
 	if overlay_mode == 1: _foot.text = "SLAM1320 · TIDE1750 · CHARGE1750 · FISSURE2304 + BLAST691.2 > RIM (FLAGGED, NOT SHORTENED)"
 	if overlay_mode == 2: _foot.text = "FAN16 REQUEST LANES · RHYTHM9 /66f · ORB3 ±0.14 · SOURCE SPEED/LIFE UNCHANGED / DISPLAY ONLY"
+	_contact_boss.visible = boss.visible
 	_legend.visible = overlay_mode > 0
 	_legend.text = "BC01–10 / SOURCE SPACE\n\nBOSS r44 / PLAYER r15\nSLASH 359 / SWEEP 459\nGRAB 259 / BURROW 164\nJUMP IMPACT 300 / SPIN 500\nSLAM P4 1320 / TIDE 1750\nCHARGE 50 x 35 = 1750\nMULTIDASH P4: 10 segments\nFISSURE 2304 + BLAST 691.2\nOUTSIDE RIM: 1295.2 (FLAG)\n\nNO DAMAGE / NO AI / NO CLEAR" if overlay_mode == 1 else "BC09 / REQUEST GEOMETRY\n\nFAN: 16 requested lanes\nP4 spread = 0.94 PI\nBLACK: i%4 == 1 (P2+)\nRHYTHM: 9 every66 native ticks\nORB: 3 / ±0.14 / r26\n\nLINES ARE DISPLAY AIDS\nNOT LIVE PROJECTILES\nQ/E OWNER UNMODIFIED"
 	_overlay.queue_redraw()
@@ -286,9 +332,17 @@ func select_board(id: String) -> void:
 func _unhandled_key_input(event: InputEvent) -> void:
 	if not event is InputEventKey or not event.pressed or event.echo: return
 	var index: int = int(event.keycode)-KEY_1
-	if index >= 0 and index < 6: select_board(["entry","close","wall","clear","body","bullets"][index])
+	if index >= 0 and index < 6: select_board(BOARD_IDS[index])
+
+func update_product_occlusion(point: Vector2,delta: float) -> void:
+	# Cached sprite refs, scalar proximity fade; no enumeration/reflection API.
+	for row in _rim_sprites:
+		var sprite: Sprite2D = row.sprite
+		var alpha: float = .22 if (row.rect.has_point(point) or row.rect.has_point(point-Vector2(0,55))) and sprite.position.y > point.y-100 else 1.0
+		sprite.modulate.a = move_toward(sprite.modulate.a,alpha,delta*8.0)
 
 func _physics_process(_delta: float) -> void:
+	update_product_occlusion(player.position,_delta)
 	tick += 1
 	var direction := Vector2(float(Input.is_physical_key_pressed(KEY_D))-float(Input.is_physical_key_pressed(KEY_A)),float(Input.is_physical_key_pressed(KEY_S))-float(Input.is_physical_key_pressed(KEY_W)))
 	player.velocity = direction.normalized()*280.0
@@ -309,7 +363,7 @@ func draw_overlays(canvas: Node2D) -> void:
 	canvas.draw_arc(Vector2.ZERO,RADIUS,0,TAU,160,bone,10.0,true)
 	canvas.draw_arc(Vector2.ZERO,1300,0,TAU,128,Color(.5,.65,.65,.45),6.0,true)
 	if overlay_mode == 1:
-		for radius in [164.0,259.0,359.0,459.0]:
+		for radius in BODY_RADII:
 			canvas.draw_arc(boss.position,radius,0,TAU,80,Color(.7,.8,.65,.7),5.0,true)
 		canvas.draw_arc(boss.position,SLAM_R,0,TAU,128,Color(1.0,.61,.19,.9),9.0,true)
 		canvas.draw_arc(boss.position,TIDE_R,0,TAU,128,Color(.45,.77,.97,.8),8.0,true)
@@ -328,10 +382,10 @@ func draw_overlays(canvas: Node2D) -> void:
 		for i in range(9):
 			var a: float = -PI*.5+(float(i)/8.0-.5)*PI*(.42+4*.03)
 			canvas.draw_line(Vector2.ZERO,Vector2.from_angle(a)*1900,Color(.64,.8,.94,.7),5.0,true)
-		for a in [-.14,0.0,.14]:
+		for a in ORB_ANGLES:
 			var end := Vector2.from_angle(float(a))*1660
 			canvas.draw_line(Vector2.ZERO,end,Color(.75,.85,.42,.9),8.0,true)
 			canvas.draw_circle(end,26,Color(.75,.85,.42,.9),false,7.0,true)
 
 func get_design_receipt() -> Dictionary:
-	return {"radius":RADIUS,"interior_pillars":0,"source_boss_radius":BOSS_R,"slam_phase4":SLAM_R,"tide":TIDE_R,"center_slam_margin":RADIUS-SLAM_R,"center_tide_margin":RADIUS-TIDE_R,"fissure_length":FISSURE_LENGTH,"fissure_blast":FISSURE_BLAST,"fissure_length_outside":FISSURE_LENGTH-RADIUS,"fissure_full_envelope_outside":FISSURE_LENGTH+FISSURE_BLAST-RADIUS,"allowed_moves":Catalog.moves_for_stage(0),"look_script":look.get_script().resource_path,"shadow_count":int(look.get("_prop_shadows")),"occluders":(look.get("_occluders") as Array).size(),"lights":(look.get("_lights") as Array).size(),"live_combat":false,"clear_writer":false,"tick_path_list_api":false}
+	return {"radius":RADIUS,"interior_pillars":0,"source_boss_radius":BOSS_R,"slam_phase4":SLAM_R,"tide":TIDE_R,"center_slam_margin":RADIUS-SLAM_R,"center_tide_margin":RADIUS-TIDE_R,"fissure_length":FISSURE_LENGTH,"fissure_blast":FISSURE_BLAST,"fissure_length_outside":FISSURE_LENGTH-RADIUS,"fissure_full_envelope_outside":FISSURE_LENGTH+FISSURE_BLAST-RADIUS,"allowed_moves":Catalog.moves_for_stage(0),"look_script":look.get_script().resource_path,"shadow_count":int(look.get("_prop_shadows")),"occluders":(look.get("_occluders") as Array).size(),"lights":(look.get("_lights") as Array).size(),"contact_shadows":int(is_instance_valid(_contact_player))+int(is_instance_valid(_contact_boss)),"floor_decals":_decal_count,"local_light_pools":3,"live_combat":false,"clear_writer":false,"tick_path_list_api":false}

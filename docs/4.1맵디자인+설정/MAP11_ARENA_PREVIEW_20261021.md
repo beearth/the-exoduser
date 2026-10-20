@@ -1,3 +1,5 @@
+> 2026-10-21 MAP11-14 현행 보충: [랜드마크·관문·제품 접합 보고](MAP11_LANDMARK_GATE_20261021.md). Main 필드는 G3/G4 RGBA로 교체, 제품zoom.70/offset(0,-180), 실제player 가림/짧은fade 연결. arena의 곡선 이중선 균열은 불규칙RGBA15fragment로 대체했다. 아래 원 검수 수치/프리뷰 상태는 해당 차수 이력이며 전체 자연전투·시각 승인 주장이 아니다.
+
 # MAP11-01 — 1-1 보스룸 독립 blockout / 검수 보고
 
 > 2026-10-21 2차 현행: 사용자 D05 원형 유지·조금 작게. R1700/material proof/입장 zoom .65의 [MAP11-01b 보고서](MAP11_ARENA_PREVIEW_PASS2_20261021.md)를 따른다. 아래 R2200·D05 미결정은 1차 이력이다.
