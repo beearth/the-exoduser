@@ -1,3 +1,15 @@
+## 2026-10-20 W01 자동 석궁 spec 독립 계산 이식
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 범위 | 신규 auto_bow_spec/producer.gd와 test_native_auto_bow_spec.gd(+각 UID), w01_REPORT 및 이 절, 총6경로. 공용 main/hud/world/player/hurtE/state·Q/E·2_3·저장·기존 테스트 변경0 |
+| 원본 | main c3cf8ce6b0cc1a5c381240260e03dff71c68af8d game.html 17451–17457 `_autoBowSpec`, 28044 pBowRange, 15886–15890 BOWTYPES. 기존 catalog.bow_definition·JS coercion helper 재사용 |
+| 정확 식 | `max(220,(max(bowRange\|\|0,brd.range\|\|1000)+(bonusRange\|\|0)*12)*(1+pBow*.08))`; speed는 `bowProjSpd\|\|brd.projSpd\|\|13` raw 값. 빈 장비800/22, 누락pBow NaN·null0, 중간 clamp/truncation0 |
+| 진단 | READY / SOURCE_NON_FINITE / SOURCE_RAW_SPEED / SOURCE_UNSUPPORTED / NOT_READY. prototype 키·미지원 carrier·singleton cycle은 명시 거부. 원 숫자 NaN/Infinity·raw speed 보존, 가짜 기본값 미생성 |
+| 격리 | 신규 USERDIR=EXODUSER-w01-Isolated-20261020. AppSupport68파일 사전 백업 해시 일치. 실제 Main 회귀만 각 상수로 override 후 비움, override 커밋0 |
+| 검수 | 신규361/0·63사례·exit0·ERROR0, 원본24중 지원21개 값 대조 일치/지원밖3. contracts5그룹 실패0·regen88/0·p2001c39/0. p1002g168/1은 사용자 지정 P2-008a etype20 선재 실패 원문 보존·미수정, PASS 아님 |
+| 한계·로그 | 실제 자동사격/투사체/현재 INV 연결 없음. 보고서 `docs/engine/orders/reports/w01_REPORT.md`, 원로그 `~/exoduser-wt/_out/w01/`. 단계 독립 검수이며 실플레이/전체 활 인수 아님 |
+
 > 2026-10-17 ENGINE 현행: callback **12/25·미13**. play_time은 el_mul 바로 다음에 동일 Services self의 arity0 Callable로 등록했다. owner 첫 격리 공개 API 검수는 인수됐으며 자연 clock·실게임 인수는 미확인이다. D9는 직전 공통 소스 인수이며, 이번 main/I/R 소스 정렬은 아래 통합 정본과 단위 receipt의 실제 HEAD·tree를 기준으로 확인한다. V12 후보는 소스 인수·첫 FAIL·별도 보완 한정성공으로 구분하며 제품 copy·World hook은 수행하지 않았다. 아래 이전 단계 숫자·원검수 결과는 당시 이력으로 보존한다. 실제 local/remote commit 상태는 단위 receipt를 따른다.
 
 > 2026-10-17 ENGINE WIP 현행: 실제 callback **9/25·미16**. 신규 격리 행동41/41과 신규 map 경계 static9/9만 인수 범위다. 원 첫 parse 실패는 보존한다. 이 WIP를 main/R/served·전체 게임 최신화 완료로 해석하지 않는다.
