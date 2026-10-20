@@ -54444,3 +54444,13 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 | 환경·미완 | 원앱4.7.2 import1회 asset[DONE] 후 전역 editor_settings 저장 차단ERROR/TERM−15 보존. 추가import·전역권한변경0. 실제 사용자 save/app_userdata 읽기·복사0. C처치 hook/소환굴확정 후 분모init·FB전투/후속SFX·펫/실창1x·전체게임 인수 미완. |
 | 정상 보존 | 첫commit은 필수변경로그 누락으로docs-sync-check가거부, 우회없이본append와함께정상체크포인트. 타인stage/R제품/main병합0. |
 | 상세 | [현행 원본행·수치·원로그](engine/FDG_P3_003_REGIONS_20261020.md) · [검수대기 보고서](engine/orders/reports/P3-003_REPORT.md). 기존 P2 미이식 기록은당시이력으로보존. |
+
+## 2026-10-20 — STARTER-REGIONS boot G40·현재 지역 키 계약 정정
+
+| 항목 | 변경·검수 |
+|---|---|
+| 원본 | game.html:16714–16718 boot40, 64019→64025 initStage→31655 _regionInit→60698–60699 지역7키 추가. native_new_run_bootstrap_source/producer.gd:124–132 보존. |
+| 테스트 한정 | test_native_main_source_starter_state.gd의 boot40 정확 집합·보존 전체 packet 동등성과 current40+지역7 정확 집합 검사. 지역 키는 _regions/_regMidX/_regMidY/_regCurIdx/_regBannerCd/_regGateIdx/_bossClearT. STATS5/PAS26·기존 same-ref 및 모든 후속 단정 유지. 제품 수정0. |
+| 새 검수 | 최신 origin/main c7c910fd 동일 worktree에서 전체5그룹 148/1→148/0, 수정 후 exit0·ERROR0; 외부 exact-key 양성2·음성8=10/0. import1회17.890초·ERROR0, Godot 설정68파일 사전 백업·테스트 격리·override 종료0바이트. |
+| 보존·제출 | 첫 커밋 시 docs-sync-check가 진행로그 누락을 거부해 이 최소 append를 추가했다. 우회0·main push0·R 수정0. 과거145/148·G40 검수 이력 보존. PC의 oracle/Windows-export 전제 판정만 기존 sweep 보고서에 별도 추가, visual9 실행0. |
+| 상세 | [STARTER-REGIONS 보고서](engine/orders/reports/STARTER-REGIONS_REPORT.md), 원로그 ~/exoduser-wt/_out/starter-regions-fix/. 자기 codex 브랜치 검수 대기. |
