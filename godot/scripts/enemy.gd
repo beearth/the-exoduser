@@ -40,6 +40,10 @@ var _projectile_ticks = 240.0
 var _contact_ticks = 0.0
 var _hit_stun = 0.0
 var _stun_ticks = 0.0
+# P2-005c — 가시덫 감속(37471 e._spikeSlow=90·lv / 34398 소비: _aSpdM×=(1−slowPct),
+# slowPct=_spikeTrapSlowPct 45506=min(.95,.91+.02(lv−1)) / 38613 kb도 동일 감쇠).
+var _spike_slow := 0.0
+var _spike_slow_lv := 1
 var _poise_regen = 0.0
 var _hit_flash = 0.0
 var _motion_ms = 0.0
@@ -181,6 +185,9 @@ func _physics_process(delta: float) -> void:
 	_contact_ticks -= ticks
 	var to_player = Vector2.from_angle(facing)
 	var native_speed = float(data["speed_pixels_per_tick"])
+	if _spike_slow > 0.0: # 34398 — 가시덫 감속 소비(틱 감소 + 속도 (1−slowPct))
+		_spike_slow = maxf(0.0, _spike_slow - 1.0)
+		native_speed *= 1.0 - minf(0.95, 0.91 + 0.02 * float(_spike_slow_lv - 1))
 	var movement = to_player * native_speed * float(data["idle_movement_multiplier"])
 	if alerted and distance > float(data["pursuit_stop_distance"]):
 		movement += world.get_path_direction(global_position) * native_speed
@@ -324,6 +331,11 @@ func apply_native_normal_enemy_field_write(field: String, value: Variant) -> Dic
 			if not (value is int or value is float) or not is_finite(float(value)):
 				return {"applied": false, "reason": "native_enemy_stunned_value_unsupported"}
 			_stun_ticks = maxf(_stun_ticks, float(value))
+		"spike_slow": # P2-005c — 가시덫(37471): e._spikeSlow=max(,90), value=[틱, lv]
+			if not value is Array or (value as Array).size() != 2:
+				return {"applied": false, "reason": "native_enemy_spike_slow_value_unsupported"}
+			_spike_slow = maxf(_spike_slow, float(value[0]))
+			_spike_slow_lv = int(value[1])
 		_:
 			return {"applied": false, "reason": "native_enemy_hurte_field_unsupported:" + field}
 	return {"applied": true, "field": field, "applied_value": value}

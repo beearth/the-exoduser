@@ -208,6 +208,19 @@ const NORMAL_HURTE_G_NUMERIC: Array[String] = ["kills", "_stageKills", "combo",
 	"slowMo"] # P1-002.G: 그로기 슬로모(19996) — 소비자 미이식, G 기록만
 const NORMAL_HURTE_G_DICT: Array[String] = ["_dmgPeak", "_dmgPeakShow"]
 
+# P2-005c — G._fireZones 커밋(45517 push·46713 push·37389s 틱/만료 재배열).
+# 존은 lazy 생성(45516 if(!G._fireZones)G._fireZones=[]) — 부트 '_fireZones 부재' 단정 보존.
+# 리젠 단계(holy_dome_*_source)·main Q쿨(1683)·향후 소비자는 이 키를 읽기만 한다.
+func commit_native_fire_zones(owner: Node, zones: Array) -> bool:
+	if not _feel_owner_current(owner):
+		return false
+	for zone in zones:
+		if not zone is Dictionary:
+			return false
+	_g["_fireZones"] = zones
+	return true
+
+
 func apply_native_normal_enemy_hurte_g_writes(owner: Node, writes: Array) -> Dictionary:
 	if not _current_error().is_empty() or not is_instance_valid(owner) \
 			or owner != _player.get_parent() or owner.get("source_state") != self \
@@ -345,6 +358,15 @@ func apply_native_screen_flash_decay(owner: Node, dt: float) -> Dictionary:
 	return {"applied": true, "flash_t": _g.get("_flashT", 0)}
 
 # updateCrescents 19838~19840: step3 → G.hitStop=max(,6)+shake(8), 그 외 G.hitStop=max(,3).
+# P2-005c — 19924 shake(n): G.shake=max(G.shake, n×OPT.shake/100). OPT.shake 기본 100.
+# 플래시·히트스톱 없는 순수 셰이크(스킬 시전 연출: spikeTrap shake(4)·holyDome shake(3)).
+func apply_native_skill_shake(owner: Node, n: float) -> Dictionary:
+	if not _feel_owner_current(owner) or not is_finite(n):
+		return {"applied": false, "reason": "actual_feel_g_owner_not_current"}
+	_g["shake"] = maxf(_feel_num(_g.get("shake")), n * 100.0 / 100.0)
+	return {"applied": true, "shake": _g.get("shake", 0)}
+
+
 func apply_native_crescent_hit_feel(owner: Node, step: int, opt_shake: float) -> Dictionary:
 	if not _feel_owner_current(owner) or not is_finite(opt_shake):
 		return {"applied": false, "reason": "actual_feel_g_owner_not_current"}
