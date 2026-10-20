@@ -2,6 +2,12 @@ extends Control
 ## Standalone request screen: res://scenes/demo_lobby.tscn. No combat/Main boot.
 signal new_game_requested(slot: int, data: Dictionary)
 signal continue_requested(slot: int, data: Dictionary)
+const Entry = preload("res://scripts/native_demo_lobby_entry.gd")
+var entry = Entry.new()
+var character_index := 0
+var character_buttons: Array[Button] = []
+var creation_error: Label
+var _entry_enabled := false
 const Menu = preload("res://scripts/native_save_slot_menu.gd")
 const Bridge = preload("res://scripts/native_settings_lobby_bridge.gd")
 const Fonts = preload("res://scripts/native_ui_fonts.gd")
@@ -36,6 +42,8 @@ func _ready() -> void:
 	menu.continue_requested.connect(func(slot: int, data: Dictionary):
 		status.text = tr_text("선택한 기록을 확인했습니다. 이어하기는 준비 중입니다.","Selected record checked. Continue is not available yet.")
 		continue_requested.emit(slot,data))
+	_entry_enabled=bool(get_meta("native_lobby_entry_enabled",get_tree().get_script()==null))
+	if _entry_enabled:new_game_requested.connect(_queue_entry)
 	menu.open()
 	cards[0].grab_focus()
 
@@ -114,13 +122,30 @@ func _build() -> void:
 	status.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 	status.size.y=75
 	_label(tr_text("로컬 기록은 이 기기에 보관됩니다.","Local records are stored on this device."),Vector2(1010,998),800,17)
-	_form=_box(Rect2(1000,660,780,220),Color("131014"),GOLD)
+	_form=_box(Rect2(1000,440,780,440),Color("131014"),GOLD)
 	_form.hide()
 	_label(tr_text("새 전사의 이름","New warrior name"),Vector2(22,10),650,25,_form,true)
-	name_input=LineEdit.new(); name_input.max_length=8; name_input.position=Vector2(24,72); name_input.size=Vector2(470,56)
+	_label(tr_text("엑소듀서 전사 · 흑철의 전사","WARRIOR · BLACK IRON"),Vector2(24,59),700,21,_form)
+	var english=["WARRIOR","BLADE DANCER","HELLGUNNER","TRANSMUTER","SPEARMAGE"]
+	for index in 5:
+		var b:=_button(tr_text(Entry.CHARACTERS[index],english[index]),Rect2(24+index*146,112,138,60),_select_character.bind(index),_form)
+		b.add_theme_font_size_override("font_size",16)
+		b.disabled=index!=0
+		b.tooltip_text=tr_text("출시 준비 중","Coming soon") if index!=0 else tr_text("생성 가능한 전사","Available warrior")
+		character_buttons.append(b)
+	_label(tr_text("다른 전사들은 출시 준비 중입니다.","Other warriors are coming soon."),Vector2(24,180),710,18,_form)
+	creation_error=_label("",Vector2(24,360),710,18,_form)
+	creation_error.add_theme_color_override("font_color",Color("ce8972"))
+	name_input=LineEdit.new(); name_input.max_length=8; name_input.position=Vector2(24,246); name_input.size=Vector2(470,56)
+	var input_box:=StyleBoxFlat.new();input_box.bg_color=Color("0b090b");input_box.border_color=GOLD;input_box.set_border_width_all(1);input_box.content_margin_left=16
+	name_input.add_theme_stylebox_override("normal",input_box)
+	var focused: StyleBoxFlat=input_box.duplicate();focused.border_color=Color("c59c65");focused.set_border_width_all(2);name_input.add_theme_stylebox_override("focus",focused)
+	name_input.add_theme_color_override("font_color",BONE)
+	name_input.add_theme_color_override("selection_color",Color("602820"))
+	name_input.add_theme_color_override("caret_color",Color("c59c65"))
 	name_input.add_theme_font_override("font",Fonts.stack("hell",400)); name_input.add_theme_font_size_override("font_size",22); _form.add_child(name_input)
-	_button(tr_text("새로하기","New game"),Rect2(516,72,236,56),_create,_form,true)
-	_button(tr_text("취소","Cancel"),Rect2(516,146,236,48),func(): _form.hide(); cards[maxi(0,_form_slot)].grab_focus(),_form)
+	_button(tr_text("새로하기","New game"),Rect2(516,246,236,56),_create,_form,true)
+	_button(tr_text("취소","Cancel"),Rect2(516,310,236,48),func(): _form.hide(); cards[maxi(0,_form_slot)].grab_focus(),_form)
 	modal=Control.new(); modal.size=Vector2(1920,1080); add_child(modal)
 	var veil := ColorRect.new(); veil.color=Color(0,0,0,0.85); veil.size=modal.size; modal.add_child(veil)
 	var dialog := _box(Rect2(540,330,840,410),Color("100d10"),GOLD,modal)
@@ -141,10 +166,39 @@ func _build() -> void:
 func _choose(slot: int) -> void:
 	if not menu.select_slot(slot): return
 	if menu.rows[slot].kind=="empty":
-		_form_slot=slot; _form.show(); name_input.clear(); name_input.grab_focus()
+		_form_slot=slot; character_index=0; creation_error.text=""; _form.show(); name_input.clear(); name_input.grab_focus()
 	else: _form.hide()
+func _select_character(index: int) -> void:
+	if index!=0:
+		creation_error.text=tr_text("출시 준비 중","Coming soon")
+		return
+	character_index=0
+	creation_error.text=""
 func _create() -> void:
-	if menu.request_new(_form_slot,name_input.text): _form.hide()
+	var admission: Dictionary=Entry.validate_name(name_input.text,character_index)
+	if not admission.ready:
+		creation_error.text=_entry_error(admission.reason)
+		return
+	if menu.request_new(_form_slot,admission.name):
+		_form.hide()
+	else:
+		creation_error.text=_entry_error(menu.last_error)
+		status.text=creation_error.text
+func _entry_error(reason: String) -> String:
+	match reason:
+		"name_length":return tr_text("이름은 2~8자여야 합니다.","Name must be 2–8 characters.")
+		"name_special":return tr_text("특수문자는 사용할 수 없습니다.","Special characters are not allowed.")
+		"character_locked":return tr_text("출시 준비 중","Coming soon")
+		"duplicate_name":return tr_text("이미 같은 이름의 캐릭터가 있습니다.","A warrior with this name already exists.")
+		"active_save_sync_required":return tr_text("이전 전사의 저장 동기화가 필요합니다.","The previous warrior's save must be synchronized.")
+		"saved_player_restore_required":return tr_text("이어하기 복원 연결이 필요합니다.","Continue requires the save restore connection.")
+		_:return tr_text("입장하지 못했습니다. 기록은 보존됩니다.","Unable to enter. Your record is preserved.")
+func _queue_entry(slot: int,_data: Dictionary) -> void:
+	call_deferred("_launch_entry",slot)
+func _launch_entry(slot: int) -> void:
+	if not is_inside_tree() or is_queued_for_deletion():return
+	var result: Dictionary=entry.launch(self,slot)
+	if not result.ready:status.text=_entry_error(result.reason)
 func _render() -> void:
 	for i in cards.size():
 		var row: Dictionary = menu.rows[i] if menu.rows.size()==5 else {"kind":"unavailable"}

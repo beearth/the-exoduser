@@ -46,6 +46,7 @@ const NATIVE_VERSION_CONFIG := {"schema": "fdg.native-content-version.v1", "cont
 
 signal native_sound_event(kind: String, data: Dictionary) # DEMO11-40 audio-only observation
 var _combat_sound_consumer: Node
+var _music_lifecycle: Node
 signal source_document_visibility_changed
 
 # Platform samples only: never source dt/sp/acc or a gameplay update witness.
@@ -97,6 +98,8 @@ var _native_player_sprite_startup_report: Dictionary = {}
 var _native_player_sprite_startup_readonly_calls: int = 0
 var source_intro_curtain: Control
 var source_intro_curtain_finish: Node2D
+var native_lobby_entry: RefCounted # DEMO11-07 admission authority
+var native_story_intro: CanvasLayer # DEMO11-08 presentation only
 var source_intro_sequence: Node2D # P2-001i 부팅 자동 연결(원본 64484 stage0 인트로 경로)
 var _source_intro_curtain_binding_error: String = "not_bound"
 var source_image_wait: Node
@@ -391,10 +394,16 @@ func _ready() -> void:
 	_build_native_character_selection_ui()
 	_install_native_q_control()
 	_install_native_attack_audio()
+	_install_native_music_lifecycle()
 	_bind_native_intro_curtain_view()
 	_bind_native_startup_services()
 	if demo11_loaded: set_meta("native_intro_boot","dormant") # No new-character intro/reset on resume.
-	source_intro_sequence = IntroCurtainSequenceScript.install_native_boot(self) # P2-001i
+	if get_meta("native_lobby_entry_pending",false):
+		pass # DEMO11-07: wait for committed active-slot admission, no early intro.
+	elif preload("res://scripts/native_story_intro.gd").should_run(self):
+		_install_native_story_intro_once()
+	else:
+		_install_native_waking_intro_once()
 	native_demo_boss_actor = preload("res://scripts/native_demo11_boss_actor.gd").install_native_boot(self) # DEMO11-34
 	native_demo_boss_projectiles = preload("res://scripts/native_demo11_boss_projectiles.gd").install_native_boot(self) # DEMO11-35
 	var metrics_timer := Timer.new()
@@ -420,6 +429,53 @@ func _ready() -> void:
 			world.process_mode=Node.PROCESS_MODE_PAUSABLE
 		_demo11_session.start_lifecycle(self)
 	print("GODOT_FIRST_PLAYABLE_READY ", JSON.stringify({"runtime": Engine.get_version_info()["string"], "scene": "res://scenes/main.tscn", "viewport": get_viewport_rect().size, "player_spawn": player.position}))
+
+func _install_native_story_intro_once() -> void:
+	if is_instance_valid(native_story_intro):return
+	native_story_intro=preload("res://scripts/native_story_intro.gd").new()
+	add_child(native_story_intro)
+	native_story_intro.handed_off.connect(_native_story_handoff)
+	native_story_intro.begin(self)
+
+func request_native_lobby_entry(entry: RefCounted) -> Dictionary:
+	if native_lobby_entry!=null or not get_meta("native_lobby_entry_pending",false):return {"ready":false,"reason":"entry_not_pending"}
+	if entry==null or entry.get_script()!=preload("res://scripts/native_demo_lobby_entry.gd"):return {"ready":false,"reason":"entry_owner_required"}
+	var admission: Dictionary=entry.read_packet(self)
+	if not admission.get("ready",false) or admission.packet.charIdx!=0:return {"ready":false,"reason":"entry_packet_required"}
+	var was_paused: bool=get_tree().paused
+	get_tree().paused=true
+	_character_picker.select(1) # existing reader/UI authority; item1 is original char0.
+	_on_native_character_selected(1) # PC-owned atlas interface, no combat implementation changes.
+	get_tree().paused=was_paused
+	var profile: Dictionary=player.get_native_character_profile_snapshot()
+	if profile.get("ready")!=true or profile.get("index")!=0:return {"ready":false,"reason":"char0_interface_failed"}
+	native_lobby_entry=entry
+	if not source_state.commit_native_intro_cutscene_boundary(self):native_lobby_entry=null;return {"ready":false,"reason":"intro_boundary_rejected"}
+	set_meta("native_lobby_entry_pending",false)
+	if admission.packet.cutscene_done:
+		_native_story_handoff("already_seen")
+	else:
+		_install_native_story_intro_once()
+	return {"ready":true,"cutscene_skipped":admission.packet.cutscene_done,"full_restore":false}
+
+func read_native_intro_boundary_commit() -> Dictionary:
+	if is_instance_valid(native_story_intro) and native_story_intro.phase=="done" and native_story_intro.handoff_count==1:
+		return {"ready":true,"done":true}
+	if native_lobby_entry!=null:
+		var admission: Dictionary=native_lobby_entry.read_packet(self)
+		if admission.get("ready",false):return {"ready":true,"done":admission.packet.cutscene_done}
+	return {"ready":false}
+
+func _native_story_handoff(_reason: String) -> void:
+	if is_instance_valid(native_story_intro) and native_story_intro.phase!="done":return
+	if not source_state.commit_native_intro_cutscene_boundary(self):return
+	set_meta("native_intro_boot","intro")
+	_install_native_waking_intro_once()
+
+func _install_native_waking_intro_once() -> void:
+	if is_instance_valid(source_intro_sequence):return
+	source_intro_sequence=IntroCurtainSequenceScript.install_native_boot(self)
+	if is_instance_valid(_music_lifecycle):_music_lifecycle.bind_intro(source_intro_sequence)
 
 func mount_native_perspective_view(settings: Dictionary = {}) -> Dictionary:
 	if not _native_main_service_live() or not _native_content_version_not_ready_reason().is_empty():
@@ -619,6 +675,7 @@ func _on_native_window_visibility_changed() -> void:
 	source_document_visibility_changed.emit()
 
 func _exit_tree() -> void:
+	if is_instance_valid(_music_lifecycle): _music_lifecycle.close()
 	_dispose_native_attack_audio()
 	var window: Window = _native_startup_window.get_ref() if _native_startup_window != null else null
 	if is_instance_valid(window) and window.visibility_changed.is_connected(_on_native_window_visibility_changed):
@@ -3183,3 +3240,22 @@ func request_native_growth(command: Dictionary) -> Dictionary:
 
 func read_native_growth() -> Dictionary:
 	return source_state.read_native_growth(self)
+
+# DEMO11-41 sound-only services; no combat or State authority is delegated.
+func _install_native_music_lifecycle() -> void:
+	_music_lifecycle=preload("res://scripts/native_music_lifecycle.gd").new()
+	add_child(_music_lifecycle)
+	_music_lifecycle.configure(self,str(get_meta("native_audio_source_root",ProjectSettings.globalize_path("res://../"))))
+
+func request_native_lifecycle_voice(owner: Node,path: String,rate: float) -> Dictionary:
+	var settings: Dictionary=read_native_attack_audio_settings()
+	if settings.get("ready")!=true or not is_instance_valid(_music_lifecycle):return {"accepted":false,"reason":"audio_owner_not_ready"}
+	return _music_lifecycle.request_voice(owner,path,rate,float(settings.sfx_gain))
+
+func request_native_music_scene(scene: String,segment: String="") -> Dictionary:
+	if not is_instance_valid(_music_lifecycle):return {"ready":false,"reason":"music_owner_not_ready"}
+	return _music_lifecycle.transition(scene,segment)
+
+func bind_native_boss_music(actor: Node) -> Dictionary:
+	if not is_instance_valid(_music_lifecycle):return {"ready":false,"reason":"music_owner_not_ready"}
+	return _music_lifecycle.bind_boss_actor(actor)

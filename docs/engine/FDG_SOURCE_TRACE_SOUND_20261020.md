@@ -1033,3 +1033,11 @@ SND-04 보이스 선택·SND-05/06 BGM을 임의 연결하지 않는다.
 SND-08의 native graph adapter는 topology/음량만 출력하며 filter/comp는 명시적 bypass다.
 Q/knee/automation/PCM·청감 동등성은 여전히 HOLD다. 전투 판정·State·저장·맵 변경 없음.
 공용 변경 위치와 새 경로 검증은 [보고서](orders/reports/demo11-40_REPORT.md)를 따른다.
+
+
+### 2026-10-21 DEMO11-41 native media adapter 연결
+
+SND05/06 원모듈 무수정, 실제 BGM/voice adapter와 현재 guide/opening/player_died 구독을 추가했다.
+로비/전체 영화는 scene 요청 API만, DEMO11-34 보스는 native_boss_music_changed(phase,stage) 계약만
+준비했다. State/전투/저장/맵은 수정하지 않았다. 원본 root 음원 읽기·export packaging 및 청감 한계와
+공용 변경 행은 [보고서](orders/reports/demo11-41_REPORT.md)에 기록한다.

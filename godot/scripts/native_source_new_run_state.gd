@@ -260,6 +260,14 @@ func apply_native_normal_enemy_hurte_g_writes(owner: Node, writes: Array) -> Dic
 # update clock(P1-002.D)의 phase_g_on(32580 if(!G.on)return)과 G.stageTime 진행이
 # 이 쓰기부터 열린다. 파일 초기값 on=false(bootstrap source_boot_g)와 초기화 계약
 # "pre-stage on=false"는 시퀀스 미기동 상태 그대로 유효하다.
+# DEMO11-07: only the admitted Main/story lifetime may publish the existing flag.
+func commit_native_intro_cutscene_boundary(owner: Node) -> bool:
+	if not _current_error().is_empty() or not is_instance_valid(owner) or owner!=_player.get_parent() or owner.get("source_state")!=self:return false
+	var receipt: Dictionary=owner.read_native_intro_boundary_commit()
+	if receipt.get("ready")!=true or not receipt.get("done") is bool:return false
+	_g["_cutsceneDone"]=receipt.done # G62914/62977; existing collector serializes game.cutsceneDone.
+	return true
+
 func apply_native_intro_curtain_g_writes(owner: Node, step: String) -> Dictionary:
 	if not _current_error().is_empty() or not is_instance_valid(owner) 			or not owner.is_inside_tree() or get_tree().paused 			or owner.get("world") != _world or owner.get("player") != _player:
 		return {"applied": false, "reason": "intro_curtain_g_owner_not_current"}
