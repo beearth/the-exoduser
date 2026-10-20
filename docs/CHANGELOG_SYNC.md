@@ -2,7 +2,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
-=======
+
 ## 2026-10-20 TRACE-ENEMIES-CH4 4장 적 원본 추적·작은 이식 단위
 
 | 항목 | 추적·검토 근거 |
@@ -14,7 +14,6 @@
 | 순서안 / 관측 | EC4-01~14, 첫단위는API·가드·원문golden·RNG/UTF-8 oracle·회귀·공용0줄지시서. 원문선택63/CDF구간31/HP산술24/AI·death명시fixture17, 제품테스트PASS합산0 |
 | 제출 | [CH4 적 추적](engine/FDG_SOURCE_TRACE_ENEMIES_CH4_20261020.md), 원로그 ~/exoduser-wt/_out/trace-enemies-ch4/. 독립독자검토·정적행/표/링크대조, 정상훅·자기branch push·원격SHA/DONE후자기worktree제거 |
 
->>>>>>> bc2bafff
 ## 2026-10-20 TRACE-BOSS-CH3 3장 보스 원본 추적·작은 이식 단위
 
 | 항목 | 추적·검토 근거 |
@@ -148,6 +147,16 @@
 | 이미 반영 / 소유 | QA-004 680a2758이 기준조상, I 원문 SHA88840f7a…는 QA-004 최종본과byte동일. 기존 보관 적 해제/하니스 대기 유지, 다른 담당 P2-007a 제품 패치0. 별도 총괄 원로그와의 동일건 여부 미확정 |
 | 실패·제출 | 첫 외부 probe 들여쓰기 Parse Error는 로그/초안 보존·통과 제외. [보고서](engine/orders/reports/p2001i-diag_REPORT.md)에 원문·전후/OLD·NEW·소유·제한. ~/exoduser-wt/_out/p2001i-diag/. 자기branch 정상훅/push·원격일치·DONE 뒤 자기WT 제거, R 보존 |
 >>>>>>> 5bd08967
+=======
+## 2026-10-20 EC3-02 3장 catalog·초기38필드 projection
+
+| id / 적용 위치 | 정확 계약·실제 검수 |
+|---|---|
+| 신규 범위 | native_ch3_enemy_catalog_policy.gd·test_ch3_enemy_catalog_policy.gd·자기UID2개. catalog10행/31263–31298의38필드만. 기존EC2-02 Draws/API형식재사용·CH2필드/HP식복제0,complete_actor=false |
+| 원본 | 40..49각matching draw2/4/3/2/2/2/4/3/4/6,offtimer9999/phase−1/bleed0/상수flag·coords0draw,orbit31260뒤/erratic31300앞. raw46speed0분기·44R10(기획8과불일치),catalogshield%와실HP방어구분 |
+| 검수 | 최종신규12,602/0·원문1,000·38키값/순서/소비binary64/잘못된샘플위치검사. 회귀6종최종실패0/ERROR0/SKIP0. 최초importSIGSEGV−11/이후캐시누락ERROR50·실패단정10 원문보존,동일명령재import0/0및해당회귀4종재실행통과. 원인미확인·숨김0 |
+| 경계·기반 | main6d987cb8a에EC2-02 a10924eb포함하여main분기,EC3-01은미병합/미소비. 전체HP/coreprovider통합은HOLD·공용Main/State/저장/다른담당0줄. Node필수인자/출력join·UTF8임시JSON,새EXODUSER-ec3-02-Isolated-20261020·기존각상수/Godot전pgrep2이상30초대기/override0byte. [보고서](engine/orders/reports/ec3-02_REPORT.md)·원로그 ~/exoduser-wt/_out/ec3-02/ |
+>>>>>>> fb8e80d0
 
 ## 2026-10-20 QA-007 테스트 Windows 이식성
 
