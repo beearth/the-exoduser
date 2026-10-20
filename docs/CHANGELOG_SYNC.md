@@ -1,3 +1,11 @@
+## 2026-10-21 DEMO11-30 — hell0 정예 자연 연결 선행 접점 BLOCKED
+
+| 항목 | 근거 |
+|---|---|
+| 기준·판정 | main ac3764bfe. EL-01 제품 경로 부재·M29 비투사체 패링 실제 PC 인터페이스 부재. constructor all-ready 위조/투사체 반사 대체/PC 전투 복제 없이 BLOCKED |
+| 범위·검증 | 제품·테스트·Main/State·저장·전투·맵 0줄. 최신 game 원본/기존 kernel 정적 대조만; Godot·런타임 테스트·캡처 미실행, PASS 주장0 |
+| 근거·제출 | [보고서](engine/orders/reports/demo11-30_REPORT.md)·ELITES 추적 보충. 단일 busy tick·forced 후대입 원순서·재개 인터페이스 기록. 원로그 _out/demo11-30/, 자기 branch 정상 push/원격 일치/DONE 후 자기 WT 제거 |
+
 
 ## 2026-10-21 DEMO11-18 일반 데모 합체·흡수·성급·되돌리기 원장
 
