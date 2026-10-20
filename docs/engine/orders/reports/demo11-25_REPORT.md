@@ -25,3 +25,7 @@
 관련 설계 문서 `docs/2_8 퀵슬롯+물약시스템/2_8 퀵슬롯+물약시스템.md`에 native 범위·원순서·시간 경계·잔여를 추가했다. UI/PC 실제 플레이·패키지 동기화·저장·물약 강화 UI는 이번 검수 범위 밖이다. 변경 줄 범위는 이 브랜치 최종 파일 기준이며 State 병합 때 기존 말미 다른 담당 추가 함수와 병합 보존해야 한다.
 
 2026-10-21 성능 후속: 같은 브랜치에 최신 origin/main `8dbbf2b0e699c36a93ca5cf41a2f3408be6da2c4`(PC 성능 수정 `aa1eaea5a` 포함)을 정상 merge했다. CHANGELOG는 DEMO11-25 절과 upstream 절 전체를 보존했다. 자체 물약 phase/runtime·QS-01·affix/formula·State/authority·provider/clock bridge 11파일에서 목록 생성 API 0건을 확인했다. 추가로 lesson holder의 물약용 read_active_status는 목록 API 없이 active만 읽는다. 같은 파일의 _obj_has(547행)에는 get_property_list가 있으나 물약 active-only API에서 호출하지 않는 별도 projection/guard 경로다. 해당 PC 레슨 코드는 수정하지 않았다(tick-api-audit.json). 후속에서 자체 제품 수정은 없으며 upstream PC 전투 파일은 수정하지 않는다. 기존 공용 추가 줄 범위는 최초 제출 SHA 기준이고, 최신 main의 Main 추가26줄로 현재 물약 위치는 18/85/1033행이다. 후속 각1회 재실행 결과: 신규 **2560/0**(원본 JS420사례), QS-01 **318/0**, regen **10/0**, lessonclock **21/0**, contracts **5그룹/0**. 전부 exit0·ERROR0·skip0, Camera2D WARNING은 신규/regen/lessonclock 각1건으로 보존했다. 원로그 `perf-followup/*.meta.json` 및 `suites-summary.log`. 자체 코드에서 새 목록 생성/API 비용을 발견하지 않아 별도 성능 벤치는 실행하지 않으며 Performance 수치로 성능 향상을 주장하지 않는다.
+
+### 2026-10-21 main-registry-design 브랜치 제안(PC 미승인)
+
+별도 `codex/main-registry-design-20261021` 시제품에서 Main의 직접 Potion preload/생성/advance_native 예약을 부팅 registry와 `native_features/auto_hp_potion.gd`로 옮긴다. 기존 source_potion identity·60Hz delta×60·physics 선두 deferred 예약·State writer·계산은 유지한다. 본문의 기존 main 병합 이력/수치·검수 결과는 당시 사실로 보존한다. 현행 main에 registry가 적용됐다는 뜻이 아니다. [등록 계약·검수·남은 범위](../../MAIN_REGISTRY_DESIGN_20261021.md).

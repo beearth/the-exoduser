@@ -55424,3 +55424,7 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 - 최신 main `9528ea35b429498fcf42fe3723008219ed0ed7e1`을 자기 branch에 ff merge 후 신규 unit112/0·actualMain12/0·contracts5군/실패0 재확인. 기존 OPT11/0·starter148/0·지역43/0·HUD36/0·소환굴298/0, 수치 출력 합660/0. G48/지역23·60·53·32/합168·시작HUD0/32 확인. 실행별 근거는 아래 보고서를 따른다.
 - 최초 unit1단정 실패·보완, 최초 커밋의 필수 변경로그 누락 거부·기존 초기화 회귀의 격리guard 거부는 과거 실행으로 보존한다. 이 append는 필수 문서 동기화 정상 경로이며 훅 우회0.
 - [원본 행·API·실행별 결과·기준 SHA·남은 범위](engine/orders/reports/settings-s01_REPORT.md). 설정 UI/저장복원·실플레이·전체 이식 완료 증거가 아니다.
+
+## 2026-10-21 — main-registry-design (PC 승인 전 브랜치)
+
+Main/State 최근 DEMO11 충돌 패턴과 부팅·틱·저장/복원·HUD·입력 등록 계약을 설계했다. 최소 구현은 boot-once discovery/frozen physics-entry deferred 슬롯 하나와 자동 HP 물약 descriptor만: Main source_potion identity·기존 예약 위치/인자 유지, State/전투 핵심/저장 포맷 수정0. 상세 및 검수는 [MAIN_REGISTRY_DESIGN_20261021](engine/MAIN_REGISTRY_DESIGN_20261021.md). main 적용·PC 동기화·120fps 달성 주장이 아니다.
