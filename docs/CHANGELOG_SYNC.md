@@ -1,3 +1,13 @@
+## 2026-10-20 BC2-08 spiralBullet 큐·draw 독립 계산
+
+| 항목 | 현재 정확 계약 |
+|---|---|
+| 기준·의존 | 최신main823c24bae+인수BC2-07 9a8bcb4f 정상merge31da860a. BC2-03 초기화·chapter/context·BC07 packet 재사용, 기존제품/테스트0줄 |
+| 원본 | G37057·20107. 물리windup60/nextShot60 분리·1회gate·interval대입·arms/rot·raw _commit/3.5/r4/안정압축. 반복draw t<windup·src.r fallback·locale는읽기만, 실제G/spawn/피해/그리기0 |
+| 검증 | 원문2,904tick·13,743event·2,267raw요청·초기화20·8연속timeline·draw전후/반복/96경계. 최종신규102,151/0·기존BC01~08 131,655/0·BC2-01~07포함362,201/0. 기존수/조건/기대값무수정 |
+| 검출·보호 | consumer-only43,589/0 후draw추가최종재검·중복합산0. 격리11결함검출·인자누락2종거절. 공용6·타담당·원본·저장·형식·바이너리0. 실제owner연결HOLD·화면/실전/PC미확인 |
+| 제출 | [BC2-08 보고서](engine/orders/reports/bc2-08_REPORT.md), 원로그~/exoduser-wt/_out/bc2-08/. node-bin/source-game·UTF8자기fixture·매Godot gate/30초대기·각격리명/override0byte. 자기branch push/원격일치/DONE후자기WT제거 |
+
 ## 2026-10-20 BC2-07 shieldBash2 독립 wind/dash/contact 계산
 
 | 항목 | 현재 정확 계약 |
