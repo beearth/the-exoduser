@@ -1,5 +1,8 @@
 # MAP11-07 — 1-1 필드 G1 mass·4지역 회색 blockout
 
+> 2026-10-21 맥북총괄 G1 눈 검수: **구조 PASS(임시 승인)**. 남쪽 기상→중앙 전투면→서 큰 가시 바위/동 독액 웅덩이→북중부 시체나무+제단→보스문 흐름 인수. 큰 랜드마크 실루엣/가림은 아트 단계에서 재검수한다. 단일 외곽 띠의 깊이는 MAP11-09 BACK/MID/FRONT로 조립해 별도 G2 검수를 받는다. 아래 최초 제출 당시 RETOUCH/대기 표기는 이 승인 이전 기록이다. [G2 보고서](MAP11_OUTER_ASSEMBLY_G2_20261021.md).
+
+
 STATUS=REVIEW_PENDING. **G1 공간·동선/스케일 눈 검수 대기, VISUAL VERDICT=RETOUCH**. `scenes/maps/map11/field_preview.tscn` 독립 씬이며 제품 Main/World/State/factory·PC MAP11-03 카메라에는 연결하지 않았다. 기준 최신main `0138c5bb9188d27cee10cb1a901d075092ddb88f` + MAP11-02 `6bcc483d282c44f46d328f5f683fe27df0a8dd14` merge=`8bb1ed5f87c2fa0bb087c85ef23a1567b5f1ba79`. 설계서 b085407d의 MAP11-07과 카메라8장면 표(실문서 §4.1, 사용자 지시 §3.1 지칭)를 따랐다. 원본 웹 map 좌표/타일망/베이크를 복제0, 새 hand-authored polygon이다.
 
 **보스룸 인수 메모(기록만)**: MAP11-01c 1ec7b7f3는 사용자 판정 **방향 PASS / 공간·형태·조명 구조 임시 승인 / 아트 proof 대기**다. 남은 케이블 같은 균열, 벽가 배우 가림, 매끈한 기본면은 현재 수정하지 않았다. D03 원화 생성은 사용자 브라우저 연결 후 맥북총괄이 기존2프롬프트로 진행할 예정이며 이번 생성0이다. 본 제출은 필드 G1이며 보스룸 아트를 인수 완료로 바꾸지 않는다.

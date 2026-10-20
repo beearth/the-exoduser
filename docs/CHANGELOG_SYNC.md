@@ -13,6 +13,22 @@
 | 상자 | 원본 stage0 장비3~5·악의+7, 기존 mkItem/journal/INV writer 재사용·새 save key0. 실제 PC 완료 부재를 가짜 신호로 대체0 |
 | 검증 | 최종 Main37/0·상자26/0·관련170/0 + contract map1case/0. 고정 physics600틱씩 평균5.433415/5.401905ms(headless/무전투, GPU120fps 주장0). 캡처/공용 줄 범위·proto 교정 원문은 [보고서](engine/orders/reports/map11-prod_REPORT.md) |
 | docs·제출 | docs/4.1 바인딩 계약·provider 후속·NPC_WORLD·45보고서·작업판 동기화. 신규 게임 텍스트/번역 수정0(CRLF 유지). 정상 훅·정확 경로 staging·자기 branch 일반push/remote/DONE 후 자기 WT 제거 |
+## 2026-10-21 MAP11-10 G2 보충 — 숲 반복·원경 깊이·서동 하단 반사
+
+- 총괄 G2 숲 링 PASS를 기록하고 같은 branch의 독립 G3/G4 씬에만 높이7·폭5·명도6·회전6·좌우반전 변주, BACK/MID fog .48/.13, 서쪽 마른 심재와 동쪽 약한 황록 하단 반사를 추가했다. 회전/폭을 반영하는 가림 AABB는 setup 1회 캐시. 밑동/형상·공용·원본PNG 변경0, 새아트/새표시문구0.
+- 중앙 재질·불규칙 균열·오염의 1x 증거를 포함해 8시점+보충/크롭을 다시 제출. 관련18/0·GUI ERROR0/WARNING0·seam 두 표본오차0. 최종 상태 벤치1회600tick/10.000172s/평균1404.28fps/p95≤0.85ms·p99≤0.99ms(독립 preview, 제품 전투/GPU timer 아님). [G3/G4 보고서](4.1맵디자인+설정/MAP11_SURFACE_SEAM_G3G4_20261021.md), 원로그·최종 캡처 `_out/map11-10/g2-followup/`. 후속 눈 검수 REVIEW_PENDING.
+
+## 2026-10-21 MAP11-10 — G3/G4 root shoulder·수피/피부 접합
+
+- main0138c5bb + MAP11-09 283c2077 정상merge(FF). 독립 field_seam_preview에서 기존 RGBA 바닥3회전/3스케일·필터·월드 origin 연속 UV, root shoulder60개/오염·부드러운 접지 그림자, 어두운 분기 alpha 균열30조각. 새이미지/AI생성0·원본PNG0줄.
+- 승인 geometry/provider·Main/State/World/제품카메라·전투/저장·기존G1/G2소스0줄. 8시점/1x와 실제 source shader split·master crop/bleed tile 재조립 표본, 600tick 벤치1회는 [G3/G4 보고서](4.1맵디자인+설정/MAP11_SURFACE_SEAM_G3G4_20261021.md). 제품 World streamer 설치/전체 맵 bake 완료 아님.
+- 초기 신규14/0 이후 접지/마스크 시각 수정, 최종14/0·actual walk49/0, source split/baked bleed tile 표본 오차0·최종final-04 재검증ERROR0/WARNING0. 벤치1회600tick/9.999748s/평균1399.44fps/p95≤0.92ms·p99≤1.51ms이며 마지막 균열 소스/마스크/크기 교체 전 표본(재측정0); 상세 범위는 보고서. 밝은 입자/점무늬 균열 추출 proof는 폐기·로그보존. 기존 고해상도 균열 alpha/음영만 재사용, G3/G4 RETOUCH·총괄 눈 검수 대기. 격리 실경로/pgrep·30초/override0byte·자기branch push/원격SHA/DONE뒤자기WT제거.
+
+## 2026-10-21 MAP11-09 — G2 외곽 BACK/MID/FRONT 생체 숲 조립
+
+- G1 구조 PASS(임시 승인)를 인수. main0138c5bb + MAP11-11 263498f6 merge(FF), field_outer_preview 독립 씬에서 LEFT/RIGHT/TOP/START 외곽을 세 겹으로 조립. 기존 보스룸 rotforest RGBA8종 공유, 152instance(BACK48/MID59/FRONT45), 시작/보스문 시야 개방·밑동 y정렬·캐시 rect 가림/복구·map-look 방사 그림자 재사용. 아트 생성0.
+- 승인 field geometry/지역/anchor·provider·Main/State/World/제품 카메라·전투·저장0줄(인수 의존 기준). G1 내부 회색 blockout은 그대로이며 새 검수 텍스트만 번역 목록에 등록.
+- 신규 headless26/0·직접 actual walk49/0 각1회, ERROR0/WARNING0. 8시점+전체/가림 보충과 literal1x, 600tick 벤치1회10.000054s/평균1438.29fps/p95≤1.17ms·p99≤1.66ms(독립 preview·제품 전투 성능 주장0); 직접 회귀 결과는 [G2 보고서](4.1맵디자인+설정/MAP11_OUTER_ASSEMBLY_G2_20261021.md). G2 눈 검수 대기 RETOUCH, G1 구조 임시 승인과 구별. 격리 user dir/pgrep·30초/override0byte·자기branch push/remoteSHA/DONE후자기WT제거.
 
 ## 2026-10-21 MAP11-11 — 필드·아레나 collider/LOS/flow provider
 
