@@ -1,3 +1,9 @@
+> **2026-10-21 DEMO11-37 — gate·arena·최종 사망 뒤 진행 인계**
+>
+> 실제 Main에 encounter coordinator를 설치했다. P3-003의 같은 G/실제 처치 귀속과 gate 신호를 재사용하고, MAP11-01 Entry/Boss/Exit/Return Marker provider 등록·PC36/49 최종 사망 신호 수신을 제공한다. 사망 판정/HP·poise·부활·Q/E/지형은 수정하지 않는다. 최종 신호 후 기존 State 드롭 레코드에 실제 chest를 추가하고, Exit 접촉 인계 뒤 SP10·TA·원문 랭크/베스트 기록을 확정해 DEMO11-38 clear→demoEnd에 전달한다. 사망 신호만으로 Exit를 건너뛰지 않는다.
+>
+> **Map provider 설치/실제 접촉과 PC 최종 사망 producer·자연 전투 종주·상자 표시/개봉은 후행**이다. 인터페이스·공용 변경 줄·검증/성능 판정은 [DEMO11-37 보고서](../engine/orders/reports/demo11-37_REPORT.md)를 따른다. 아래35의 과거 벤치 실패 기록은 보존하며 이번 재측정 판정은 보고서에 별도로 남긴다.
+
 > **2026-10-21 DEMO11-35 — stage0 일반 보스 탄 native 코드 연결 상태**
 >
 > DEMO11-34 actor의 BC09 요청을 기존 ordinary motion kernel과 실제 carrier registry에 연결했다. 독립 씬 thorn-on fan12발의 실제 생성·1회 birth tick·벽/수명/camera 회수·pool 재사용을 검증했다(신규53/0). 실제 피해·패링·HP/poise·부활·전역Q/E admission은 PC36/49 인계이며, 자연 arena/source clock/prefix와 특수 장판·구체 owner는 미연결 상태다. mock birth ack을 성공으로 세지 않는다.

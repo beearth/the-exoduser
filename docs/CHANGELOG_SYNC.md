@@ -246,6 +246,15 @@
 | 검증 | 원본161/0·최종 신규36/0·기존 P2001i18/0/P2007a115/0/DEMO11-41 55/0 각1회, 최종385/0. 내부 viewport1920×1080 6장+1x crop12장. 사용자 눈 검수 대기 |
 | 문서 | [수명 경계](engine/DEMO11_INTRO_LIFECYCLE_20261021.md)·[보고서](engine/orders/reports/demo11-08_REPORT.md)·sound·번역21문구 동기화. 영화 음성/연출 동등성 미확인·export 패키징 HOLD |
 
+## 2026-10-21 DEMO11-37 — 지역 gate·arena·최종 사망 이후 진행 인계
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준·연결 | mainac3764bf +35/727f6a02 +38/ae49b21c 정상 merge=e7d855b6. P3-003 실제 귀속/gate 재사용, MAP11-01 Marker 계약만 읽기. PC36/49 최종 사망 신호 수신·기존 State chest 저장·SP/TA/랭크 기록→38 clear/demoEnd. |
+| 공용·보호 | Main 설치/API 추가14/삭제0, State progression 신규32줄+기존상자축출1줄수정(diff+33/−1). 전투 핵심/HP·poise·부활·Q/E·저장IO/형식·맵지형·원본0. 자연 map/PC producer 후행, 가짜 사망/보상ACK0. |
+| 검증·벤치 | 신규148/0+관련기존262/0=기능410/0. 기존bench 정확히1회260/0·ERROR/WARNING0 cleanPASS, mean.763442/p95.920/max1.512ms<8.333ms. 초기import2실패·신규148/120 JSON숫자경계 실패 원문 보존/실패만정정. 전체게임fps未. |
+| 문서·제출 | [계약·공용 줄·최종 판정](engine/orders/reports/demo11-37_REPORT.md), BOSS_BATTLE_SETTINGS·P3 지역 후속 상태 갱신. _out/demo11-37 원로그, 자기branch push/remoteSHA/DONE 뒤 자기WT제거·R불변. |
+
 ## 2026-10-21 DEMO11-05 — main 성능 수정 병합·tick 경로 점검
 
 | 항목 | 구현·검수 근거 |
@@ -287,7 +296,6 @@
 | 공용·보호 | Main17/84/1007 추가3줄, State1227–1260 추가34줄, authority672–685 추가14줄. 기존 줄 수정/삭제0, 피해·PC 전투 핵심·저장·맵·웹 원본·R0. 관련 2_8 docs 갱신 |
 | 검증 | 원본 JS UTF8 oracle420사례·신규2560/0. 직접 회귀 각1회 QS318/0·regen10/0·lessonclock21/0·contracts5그룹/0. 최종 ERROR/종료누수0, 기존 Camera2D WARNING 기록. 최초 하니스5실패/MP3 누수 진단·수정 이력 보존 |
 | 잔여·제출 | SFX 미연결·native 시스템 튜토리얼·전설벨트 피해 consumer HOLD를 명시, 활성벨트 timer 생성/피해 수정0. [DEMO11-25 보고서](engine/orders/reports/demo11-25_REPORT.md). codex/demo11-25b-20261021 자기branch push/원격일치/DONE 후 자기WT제거 |
-
 ## 2026-10-21 DEMO11-35 실제 보스 일반 탄 registry·출생·수명
 
 | 항목 | 구현·검수 근거 |
@@ -320,6 +328,15 @@
 | 연결 | 실제 AudioStreamPlayer/Timer·원음 lazy read·별도 BGM OPT bus/기존 SND08 voice bus. guide/opening/player_died 구독, fade·cache6·pause/복귀·오류·종료 정리. 소리 전용 RNG, tick 목록 API0 |
 | 검수 | 최종 CoreAudio55/0, 기존 무수정 SND05 1308/0·SND06 2400/0·DEMO11-40 44/0·P2007A115/0. 첫 하니스 API/숨김·작은 창 좌표 실패는 보고서에 구분, 기존40 ObjectDB4 경고는 과거에도 동일/verbose 재검0·새55검사 누수경고0, 성공 합산0 |
 | HOLD·제출 | 로비/전체 영화 owner 요청 API만, DEMO11-34는 native_boss_music_changed(phase,stage) 계약만. 외부 bgm export 포함·청감/PCM 미확인. [공용 행·보고서](engine/orders/reports/demo11-41_REPORT.md), 원로그~/exoduser-wt/_out/demo11-41/. 원격일치/DONE 후 WT 제거 |
+
+## 2026-10-21 DEMO11-38 마지막 데모 clear→종료·위시리스트/로비
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 범위·계약 | main8dbbf2b0e. DEMO11-37 호출 계약 Main.native_demo_boss_defeated(stage_index:int), 최종 사망 뒤 emit 필요. 이번에는 신호 직접 주입, 보스 사망 구현0 |
+| 전환·권한 | Main 추가20/State 추가15·기존줄수정0. clear/end/복귀 중복 거부·stage 증가0·난이도 창0. Main 비활성화+Tree pause로 실제 World/Player 정지, 새 최소 데모 로비에서 해제/새 stage0 재시작. 보호 전투/맵/저장0 |
+| UI·검증 | Hell Gothic·기존 crest/폰트 토큰·이모지0. 번역목록/3.1 UI 갱신. 신규46/0·기존22/0+115/0=183/0, 예상 거부ERROR1 외0, 기존각1회·실패신규만재실행. 결과와 캡처는 [보고서](engine/orders/reports/demo11-38_REPORT.md), 맥북총괄 시각 판정 대기 |
+| 제출 | 자기branch 일반push·remote SHA/DONE 뒤 자기worktree제거, R 불변. 원로그 ~/exoduser-wt/_out/demo11-38/, Godot2이상30초gate·격리·override0 |
 
 ## 2026-10-21 DEMO11-01 Main 부팅의 1-1 데모 권위
 

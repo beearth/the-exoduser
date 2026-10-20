@@ -124,6 +124,7 @@ var _native_source_object_registration: Dictionary = {}
 var _native_demo11_policy: Dictionary = {}
 var native_demo_boss_actor: Node2D
 var native_demo_boss_projectiles: Node
+var native_demo_encounter: Node
 
 # DEMO11-06b: opt-in native save route; protected PC handoffs remain pending.
 var _demo11_session: RefCounted
@@ -412,6 +413,9 @@ func _ready() -> void:
 	native_demo_end_flow.configure(self)
 	native_demo_end_flow.wishlist_requested.connect(_open_native_demo_wishlist)
 	native_demo_end_flow.lobby_requested.connect(_return_native_demo_lobby)
+	native_demo_encounter=preload("res://scripts/native_demo11_encounter.gd").new()
+	add_child(native_demo_encounter)
+	native_demo_encounter.configure(self,regions)
 	if demo11_loaded:
 		set_meta("native_intro_boot","dormant") # 06c: restored run never starts new-character intro.
 		_install_native_waking_intro_once()
@@ -3285,3 +3289,16 @@ func request_native_growth(command: Dictionary) -> Dictionary:
 
 func read_native_growth() -> Dictionary:
 	return source_state.read_native_growth(self)
+
+# DEMO11-38: end-of-demo navigation only. No stage initialization/advance here.
+
+
+# DEMO11-37: map provider/contact and PC final-death integration boundaries.
+func bind_native_demo_arena_provider(provider: Node2D) -> bool:
+	return is_instance_valid(native_demo_encounter) and native_demo_encounter.bind_provider(provider)
+func bind_native_demo_final_death_source(owner: Node, event: StringName) -> bool:
+	return is_instance_valid(native_demo_encounter) and native_demo_encounter.bind_final_death_source(owner,event)
+func enter_native_demo_arena(provider: Node, spawn_options: Dictionary) -> Dictionary:
+	return native_demo_encounter.enter(provider,spawn_options) if is_instance_valid(native_demo_encounter) else {"status":"NOT_READY"}
+func leave_native_demo_arena(provider: Node) -> bool:
+	return is_instance_valid(native_demo_encounter) and native_demo_encounter.leave(provider)
