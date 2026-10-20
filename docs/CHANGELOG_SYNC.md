@@ -1,3 +1,14 @@
+## 2026-10-20 TRACE-FIELDBOSS 필드보스 원본 추적·이식 설계
+
+| 항목 | 변경·검수 근거 |
+| --- | --- |
+| 기준 / 범위 | origin/main `e556b617190c325ca39f5add04357f5dea5ca87e`, `codex/trace-fieldboss-20261020`. 새 추적 문서 1개와 이 절만. 코드·테스트·설계 docs·공용 파일 0줄 |
+| 전수 추적 | 지역 앵글러 4사이트/속성/안정 idx와 FIELD 4항목(앵글러·곰치·화마귀·문지기)을 구분. 65함수·G16필드의 전체 직접 참조 행, 생성·기상·패턴·탄 최종 변환·사망·보상·지역·자물쇠 추적 |
+| 기존 의존 | P3-003 지역/표시·P3-002 분모/등록·BOSS_CH1/CH1 일반 적 소유를 참조. 최신 main의 소환굴→지역 초기화 및 실제 처치 훅은 이미 연결된 것으로 구분 |
+| 설계 / 불일치 | 불일치·누락8건 표로만 기록. FB-S01 순수 catalog를 구현 지시서 수준으로 명세, 공용0줄 목표. FB-S10 State/main/World/피해·탄 연결은 통합 결정 HOLD |
+| 검증 / 한계 | game.html·index.html 기준 blob/byte/SHA 일치, 순수 JS 생성자7레벨×3계열·피격 gate5표본만 평가. Godot/import/게임/기존·신규 테스트 실행0. 전투·화면·PC 인수 미확인 |
+| 상세 | [필드보스 추적](engine/FDG_SOURCE_TRACE_FIELDBOSS_20261020.md). 원로그 `~/exoduser-wt/_out/trace-fieldboss/`. R 불변, 자기 branch push/원격 확인/DONE 후 자기 worktree 제거 |
+
 ## 2026-10-20 QA-002 테스트 결정성·종료·조명 하니스
 
 | 항목 | 변경·검수 근거 |
