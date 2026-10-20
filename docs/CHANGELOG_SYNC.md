@@ -55522,3 +55522,9 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 - 기반 db9219b4 / codex/map11-15-20261021. R1700 collision·provider·Marker·전투/저장 불변. 제품 arena만 시각 바닥 불규칙 감쇠+root32/BACK forest32로 큰 검은 원호 제거, 랜드마크 보존.
 - 제품 field 화면 밖 row/decal cull. 기존 바닥 5tap1024² cache로15→3lookup, 기존 fog5octave2048² cache로60hash/sin→3lookup. 원 NativeScreenLighting 소스/단일패스/UV·TIME·색·alpha 유지, cache근사 오차는 별도 fixed-TIME 비교.
 - 1920×1080 실창 실제 Player 입력600틱/공간, 최종24/0. field 평균189.38fps/p95 6.987ms, arena188.81fps/p95 6.741ms. 이번 표본120fps p95 목표PASS; 전체밀집/Windows 미검수. [현행 수치·원본·§23 보고](4.1맵디자인+설정/MAP11_FINISH_PERFORMANCE_20261021.md). 전후2쌍+1x는 ~/exoduser-wt/_out/map11-15/captures/.
+
+
+## 2026-10-21 — MAP11-17 조명 룩 패스
+
+- 기준1f797a8b, 보류MAP11-16/16b 미사용. 텍스처/배치 불변, MAP11전용ambient·최대5등·지역냉/온광·접지AO·외곽안개. NativeMapLook 기존광원/실루엣helper 재사용, 중복generic설치guard.
+- p95 field7.857ms/arena7.580ms(1080p/600틱/각1회), 최종17/0·이전렌더19/0. 3뷰1600×900 before/after+1x. VISUAL VERDICT RETOUCH, 밀집전투/Windows미검수. [현행수치·§23보고](4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#14-map11-17--조명-룩-패스-2026-10-21).

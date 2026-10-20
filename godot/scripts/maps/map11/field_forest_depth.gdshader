@@ -12,6 +12,6 @@ void fragment() {
  color=mix(color,color*vec3(1.18,.94,.76)+vec3(.025,.012,.003),west*lower*.65);
  color=mix(color,color*vec3(.88,1.12,.74)+vec3(.023,.030,.006),east*lower*.70);
  float luminance=dot(color,vec3(.299,.587,.114));
- color=mix(color,mix(vec3(luminance),vec3(.145,.153,.15),.58),fog);
+ color=mix(color,mix(vec3(luminance),vec3(.065,.083,.105),.38),fog);
  COLOR=vec4(color,source.a*instance_tint.a);
 }

@@ -61,6 +61,9 @@ var _fx_light_count := 0
 
 
 static func install_native_boot(owner_main: Node, screen_lighting: Node) -> Node2D:
+	# MAP11 owns its coordinate-specific profile; avoid a second ambient/player light.
+	if is_instance_valid(owner_main.get("world")) and is_instance_valid(owner_main.world.get("map11_provider")):
+		return null
 	var mode := str(owner_main.get_meta("native_map_look", "auto"))
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--map-look="):
