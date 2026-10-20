@@ -138,7 +138,7 @@
 | 후속안 | EL-01~09·EL-04a~c 총12단위, 1번은 선택 규칙 producer의 구현 지시서·공용0줄 목표. 이번 구현0 |
 | 검증 | 재개 Godot 실행/import/테스트0. 최신 blob·카탈로그·전체 식별자 행색인·24설계문서·12선행추적 정적 대조. 과거 c3cf8ce6 회귀6통과/1실패와 JS 기록은 과거 증거로만 보존·최신 PASS 주장0 |
 | 보호·인계 | docs/2_3·Q/E·blackBean·세이브형식 불변. 자기 branch만 정상 commit/push, 지정 `_out/trace-elites/DONE.txt`에 SHA·요약 인계 |
-=======
+
 ## 2026-10-20 TRACE-LOBBY 재개 — 로비·내러티브 원본 추적 마감
 
 | id / 적용 위치 | 현재 정확 계약 |
@@ -148,7 +148,6 @@
 | 불일치·이식안 | 설계 차이는 표로만 기록. 기존 Godot 의존/공백·공용 접점·10단위 순서안, 1번 LB-01은 신규 카탈로그/테스트만·공용 0줄 목표 |
 | 소유·보호 | SETTINGS S10·SAVE SV-LOBBY-VIEW는 참조, P2-001i·P2-007a는 의존. 코드·테스트·설계 docs·DESIGN LOCK·WORK_BOARD·R 불변. 이 절 외 기존 문서 수정 없음 |
 | 검증·한계 | 57개 기존 receipt 파일 및 최신 main 동일성·행/표/링크 정적 확인. Godot 미실행. 보존된 Node 원로그 77통과/3파일 acorn 부재로 본문 미실행은 전체 PASS가 아니며 재실행하지 않음. 자기 브랜치만 정상 push·원격 SHA 확인, main push·force·훅 우회 없음 |
->>>>>>> 1adb3a21
 =======
 ## 2026-10-20 META-03 레거시 분해 가치 순수 규칙
 
@@ -180,6 +179,53 @@
 | 제품 한계·보호 | 사용자 공용0줄 지시 우선: State preload/caller 수정0, 제품999→1000 일반식 불일치 잔존. XP 지급·SP/AP·회복·초월gate·HUD·Q/E·세이브0줄, 일반/데모 game.mats 차이 보호 |
 | 회귀·근거 | 지정15종 중14통과·p1002g 알려진1실패, 추가p2001c45/0·전부skip0. 최종 실측은 [meta-01 보고서](engine/orders/reports/meta-01_REPORT.md)에 기록. exit code·실행그룹·skip·stderr와 알려진p1002g 선재실패를 분리. 원로그 `~/exoduser-wt/_out/meta-01/` |
 >>>>>>> 5b672e7c
+=======
+## 2026-10-20 IT-04 — 장착 결정의 홈 배율 합산
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 범위·의존 | 지정 resource parameters producer·신규 equipped_socket_multiplier 테스트·같은 아이템 담당의 IT-03 통합 기대값8개·전용 docs 동기화. IT-03 50d1a5a0에서 분기(앞 단위 포함, 기준 main 미포함). 공용6파일·다른 담당·IT-01/02/03 producer·JSON 변경0 |
+| 원본 | origin/main 284d7faf49295b2f5061937a47ce96038032ed3c game.html:27934~27939, socketMul15322~15326.17슬롯/ci 순서로 falsy skip→IT-01 socket(item,ci)→기존 crystal_effects(c)→각 value×socket.multiplier 합산. provider arity1/원 c 참조·packet/sink 그대로 |
+| 값·보존 | socket100/gold결정×3, socket100/silver·bronze×2, socket1×1. 품질·star/enh는 IT-03에서만1회, 홈 배율은 합산부에서만1회. 누락/짧은/null/0 홈은1. 새 writer/RNG/저장 schema·복원 변경0 |
+| 오류 | 미지원 socket/provider·잘못된 packet·비유한 합계/unknown stat/overflow는 NOT_READY·packet=null·첫 sink0회, 첫 실패 후 다음 결정 호출 중단. NaN이 뒤 ~~에서0으로 숨겨져 dispatch되던 경로를 finite guard로 차단. 정상 source 값 보정0 |
+| 검수 | 신규1,713/0, 원본 직접대조15,523/0(817입력·14,706 binary64 합계 완전일치). IT-01 177/0·IT-02 2,205/0·IT-03 7,731/0·contracts5그룹/0·P2-001c39/0·관련 실제 Main 초기 자원48/0. P2-001c Camera2D·ObjectDB4개 잔류 경고 보존. 첫 실패/기대값 전환은 [IT-04 보고서](engine/orders/reports/it-04_REPORT.md) |
+| 실행·한계 | full worktree ENOSPC 후 Git 자체 cleanup, 같은 branch의 sparse worktree 약1.6GiB로 준비. R/타 worktree 삭제0. 신규 EXODUSER-it-04-Isolated-20261020, 기존 회귀 각 상수. Godot2이상이면30초 대기·실행마다 override 후0byte. 실화면·자연 장착·PC·저장 왕복 미검수 |
+
+## 2026-10-20 IT-03 — 결정 효과의 품질 배율 적용
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 범위·의존 | 지정된 기존 player_crystal_resource_source/producer.gd와 신규 test_native_crystal_quality_effects.gd, 해당 모듈 전용 설명서 동기화. IT-02 f7230588에서 분기(IT-01 포함, 기준 main 미포함). 공용6파일·다른 모듈/기존 테스트·JSON·P2-006 표시/줍기 수정0 |
+| 원본 | origin/main 284d7faf49295b2f5061937a47ce96038032ed3c game.html:15289~15296/15316. 기존 star×(1+enh×0.1) 뒤 IT-01 gem_multiplier를 곱한 후 각 opts base×mul.18종·5성급·옵션 순서·adapter 계약 보존 |
+| 품질 | q1/50/100 배율0.755/1/1.25. q누락/null/0/−0→50, clamp1~100·소수반올림0. 문자열/bool/객체·NaN/Inf q는 NOT_READY/effects=null→adapter null, resource packet dispatch0. 원래 미등록d/s의[] 선행·기존 throw/nonfinite 분류 유지 |
+| 자원·보호 | fixture에서 q100 mp6.25→mmp106, q1/enh20 st11.325→mst111, regen value/60 및 cap/순서 확인. q없는 구아이템은 중립 유지. 홈 배율·socketQ 읽기0(IT-04 별도), RNG·장비/저장 writer·schema 변경0 |
+| 검수 | 신규7,731/0, 원본 직접대조15,260/0(2,183입력·5,428 binary64 효과값 완전일치). contracts5그룹/0·P2-001c40/0·IT-01 177/0·IT-02 2,205/0·관련 실제 Main 초기 자원48/0. 기존 P2-001c ObjectDB2개 종료누수·Camera2D 경고 보존. [IT-03 보고서](engine/orders/reports/it-03_REPORT.md) |
+| 격리·한계 | 신규 EXODUSER-it-03-Isolated-20261020, 기존 회귀 각 파일 상수 사용. 매 Godot 전 pgrep 수2이상이면30초 대기, 자기 엔진 순차실행. 매 실행 override 설정 후0byte. 실제 화면·자연 플레이·PC·저장 왕복 미검수 |
+
+## 2026-10-20 IT-02 — 어픽스·등급 읽기 전용 표시 모델
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 범위·의존 | 신규 item_presentation_source/producer.gd·test_native_item_presentation_source.gd. IT-01 c01766e1에서 분기(main 미포함). 공용6파일·기존 JSON/생성기·P2-006 표시/줍기 수정0, Main/패널 연결0 |
+| 원본 | 최신 origin/main 284d7faf49295b2f5061937a47ce96038032ed3c의 game.html:14346~14351,14858~15013,49815~49817,50422~50456. SHA256 4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4 |
+| 등급·사전 | rarity 이름/영문/색/배율6칸, RARITY 문자열5개 그대로. 이름417키·설명265키. 기존 AFFIX_POOL409레코드를 caller가 readonly 공급, 중복ID 첫 정의 사용. 가상 rarity5 code 생성0 |
+| 숫자 | 상세 finite pct/prob만 Math.round(value×10000)/100·−0→0. compact pct/prob signed32 trunc·dps /s·tick /60 toFixed(2)+초/s·atk ATK×정수%·hp 정수%HP, null은빈문자열/미등록은String(value). JS 숫자 문자열·반올림 경계 보존 |
+| 이름·번역 | base→첫 PRE→첫 SUF 순서, 빈 affixes 배열은JS truthy라 legacy prefix/suffix 제외. T/L callback 주입, 부재/잘못된 반환 및 미지원 shape는 NOT_READY. 입력·중첩참조·배열 길이 보존, RNG/장비·저장쓰기0 |
+| 검수 | 신규2,205/0, 원본 함수/7집합 직접대조8,386/0. 회귀 contracts5그룹/0·P2-001c41/0·IT-01 177/0. P2-001c Camera2D·ObjectDB2개 종료누수 경고 보존. [IT-02 보고서](engine/orders/reports/it-02_REPORT.md)에 이전 실패·중단 이력 포함 |
+| 격리·과부하 | 신규 EXODUSER-it-02-Isolated-20261020, 기존 회귀는 각 USERDIR 상수(contracts 상수없음). 실행전 pgrep 수2이상이면30초 대기. 실행마다 override 설정 후0byte로 비움. 실제 화면·전투·PC·저장 왕복 인수 아님 |
+
+## 2026-10-20 IT-01 — 아이템 품질·소켓 공명 순수 계산
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 범위 | 신규 `godot/port_modules/item_quality_source/producer.gd`와 `godot/tests/test_native_item_quality_source.gd`만. 공용6파일·P2-001c 생성기/JSON·P2-006a 표시/줍기 수정0, Main 연결0 |
+| 원본 | 최신 main `9528ea35b429498fcf42fe3723008219ed0ed7e1`의 game.html:15305,15308~15316,15319,15322~15331. 기존 추적의15330은 반환식 행이며 함수 닫힘15331까지 확인 |
+| 품질 | finite int/float 및 null/누락 지원. q=0/−0/null/누락→50, 이후1~100 clamp, tier=10−floor((q−1)/10). 등급 동1/#d19a5c·은41/#e7edf3·금81/#f2d388. 품질 승수=.75+.5×q/100, 소수 q 반올림 없음 |
+| 합성·홈 | null/빈 합성목록50; 요소별 q fallback50/clamp→평균의 Math.round→clamp. 홈 fallback1; multiplier=1+(q−1)/99×(등급 일치?2:1). 공명 표시는 raw q>1도 요구. 빈 홈은1/false. 원본 ID/star 검사·재료 소비·RNG 추가0 |
+| 입력·보존 | 복잡 JS coercion·문자열/bool q·NaN/Inf는 NOT_READY/사유, 정상 효과값 미공급. 입력·중첩 참조·배열 길이 불변. 결과는 일시적 view이며 세이브 형식/복원·Q/E·docs/2_3 변경0 |
+| 검수 | 새 순수 테스트177/0, 원본 JS 함수와 품질205·홈120·합성8의1478비교/0. 첫 파일 미배치 실행 무효 및 JSON 숫자 Dictionary 비교1실패는 원로그 보존. 기존 회귀 contracts 5그룹/0실패, P2-001c 40/0·exit0(단, Camera2D·ObjectDB 2인스턴스 종료누수 경고 보존). [it-01 보고서](engine/orders/reports/it-01_REPORT.md) 참조 |
+| 격리·한계 | 신규 테스트 `EXODUSER-it-01-Isolated-20261020`. Main 없는 순수 테스트는 Git 밖 전용 project.godot에서 실제 신규 소스를 symlink로 읽으며 repository override 미사용. 실제 플레이·화면·장착 효과·전체 JS coercion 인수 아님 |
+>>>>>>> b950095b
 
 > 2026-10-17 ENGINE 현행: callback **12/25·미13**. play_time은 el_mul 바로 다음에 동일 Services self의 arity0 Callable로 등록했다. owner 첫 격리 공개 API 검수는 인수됐으며 자연 clock·실게임 인수는 미확인이다. D9는 직전 공통 소스 인수이며, 이번 main/I/R 소스 정렬은 아래 통합 정본과 단위 receipt의 실제 HEAD·tree를 기준으로 확인한다. V12 후보는 소스 인수·첫 FAIL·별도 보완 한정성공으로 구분하며 제품 copy·World hook은 수행하지 않았다. 아래 이전 단계 숫자·원검수 결과는 당시 이력으로 보존한다. 실제 local/remote commit 상태는 단위 receipt를 따른다.
 
