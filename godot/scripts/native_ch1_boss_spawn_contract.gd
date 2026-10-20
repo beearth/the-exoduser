@@ -6,6 +6,8 @@ extends RefCounted
 
 const Catalog = preload("res://scripts/native_ch1_boss_catalog.gd")
 const CatalogContext = preload("res://scripts/native_boss_catalog_context.gd")
+# game.html 14338 (ELC), selected by the boss branch at 31163.
+const _ELEMENT_COLORS = ["#bbbbbb", "#ff5522", "#3388ff", "#9933cc", "#ffee00", "#ff88cc", "#88aa44"]
 const _DIFF_LV_OFF = [-500, -400, -300, -200, -100, 0, 100, 200, 300, 400, 500]
 const _DIFF_MUL = [0.45, 0.55, 0.65, 0.76, 0.88, 1.0, 1.12, 1.25, 1.40, 1.58, 1.78]
 const _RNG_SITES = [
@@ -46,6 +48,9 @@ static func build_spawn_packet(request: Dictionary, rng: Callable,
 	var boss: Dictionary = data_catalog.boss_for_stage(si)
 	if not boss.get("supported", false):
 		return _failure("NOT_READY", "unsupported_chapter_stage", ledger, reads)
+	var element: Variant = boss.get("element_id")
+	if not element is int or element < 0 or element >= _ELEMENT_COLORS.size():
+		return _failure("NOT_READY", "boss_element_unsupported", ledger, reads)
 	for key in ["x", "y", "player_level", "stage_diff_offset"]:
 		if not request.has(key) or not _numeric(request[key]):
 			return _failure("NOT_READY", "numeric_input_required:" + key, ledger, reads)
@@ -107,7 +112,7 @@ static func build_spawn_packet(request: Dictionary, rng: Callable,
 	var rev_points: float = 200.0 + floor(si * 5.882 + 0.5) # source Math.round, si is nonnegative.
 	var fields: Dictionary = {
 		"x": x, "y": y, "r": 44, "hp": hp, "mhp": hp, "atk": attack, "baseAtk": attack,
-		"speed": 0.5, "baseSpd": 0.5, "el": boss["element_id"], "col": "#bbbbbb",
+		"speed": 0.5, "baseSpd": 0.5, "el": element, "col": _ELEMENT_COLORS[element],
 		"alive": true, "stunned": 0, "kb": {"x": 0, "y": 0},
 		"poise": hp, "maxPoise": hp, "poiseR": 0,
 		"ib": true, "etype": boss["etype"], "room": request["room"], "lv": level, "s": "idle",

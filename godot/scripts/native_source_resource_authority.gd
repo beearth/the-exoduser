@@ -182,6 +182,22 @@ func commit_native_level_up_heal(owner: Node) -> Dictionary:
 # P2-001e — initStage 진입 자원 풀충전(game.html:31567): P.hp=P.mhp; P.st=P.mst;
 # P.mp=P.mmp. hp/st=플레이어 노드, mp=이 authority 소유(_owned) — level_up_heal(155)과
 # 동일 소유 경로. 쉴드(P.shield=P.mshield)는 state의 P dict 소유라 state 쪽에서 처리.
+# DEMO11-16: validate both resources before either write; no events/callbacks inside.
+func commit_native_skill_dispatch_spend(owner: Node, st_cost: float, mp_cost: float) -> Dictionary:
+	if not is_native_source_resources_ready() or _committing or get_tree().paused \
+		or not is_instance_valid(owner) or owner != _player.get_parent() \
+		or owner.get("source_resources") != self or owner.get("world") != _world \
+		or not is_finite(st_cost) or not is_finite(mp_cost) or st_cost < 0 or mp_cost < 0 \
+		or _player.stamina < st_cost or float(_owned["mp"]) < mp_cost:
+		return {"accepted":false,"reason":"skill_dispatch_resource_gate"}
+	_committing = true
+	_player.stamina -= st_cost
+	_owned["mp"] = float(_owned["mp"]) - mp_cost
+	_last_source_write = {"phase":"native_skill_dispatch_cost","st_spent":st_cost,"mp_spent":mp_cost}
+	_committing = false
+	return {"accepted":true,"st_spent":st_cost,"mp_spent":mp_cost}
+
+
 # P2-005b — 스킬 시전 ST 소비 (useStPct 31991: P.st -= stCost). 호출측이 게이트
 # (P.st ≥ cost) 선검사 — 부족 시 이 API에 오지 않음(원본 _skOk 흐름 동일).
 func commit_native_skill_stamina_spend(owner: Node, amount: float) -> Dictionary:
@@ -345,6 +361,112 @@ func _source_initialization_write_error(packet: Dictionary, write_index: int) ->
 	if not _live(owner):
 		return "source_initializer_owner_lost_during_validation"
 	return _source_initialization_lifecycle_error()
+
+# PC-RUNTIME-STATS — runtime applyStats/recalcSt batch sink for the six source
+# fields. Not the constructor seam (pre-Tree guard unchanged), not regen/cost/
+# refill. Values come from the original producer packets staged by the actual
+# Main-owned refresh module; no Math.min, cap repair or refill here.
+const RUNTIME_STAT_REFRESH_PATH = "res://scripts/native_source_player_runtime_stat_refresh.gd"
+var _runtime_stat_commits := 0
+
+func validate_native_runtime_stat_refresh(owner: Node, refresh: Object, fields: Dictionary) -> String:
+	if _initializing or _committing or _source_initializer_committing or not is_native_source_resources_ready():
+		return "resource_runtime_refresh_not_ready_or_reentrant"
+	if not is_instance_valid(owner) or owner != _player.get_parent() \
+			or owner.get("source_resources") != self or owner.get("world") != _world:
+		return "resource_runtime_refresh_owner_mismatch"
+	if not is_instance_valid(refresh) or refresh.get_script() == null \
+			or refresh.get_script().resource_path != RUNTIME_STAT_REFRESH_PATH \
+			or owner.get("source_runtime_stat_refresh") != refresh:
+		return "resource_runtime_refresh_module_mismatch"
+	var window: Variant = refresh.is_native_runtime_stat_refresh_committing(owner)
+	if not window is bool or not window:
+		return "resource_runtime_refresh_not_in_commit_window"
+	for field in fields:
+		if field not in SOURCE_FIELDS or not _number(fields[field]):
+			return "resource_runtime_refresh_field_or_value_denied:" + str(field)
+	if fields.has("st") and float(fields["st"]) > float(fields.get("mst", _player.max_stamina)):
+		return "resource_runtime_refresh_st_above_mst"
+	if fields.has("mp") and float(fields["mp"]) > float(fields.get("mmp", _owned["mmp"])):
+		return "resource_runtime_refresh_mp_above_mmp"
+	return ""
+
+func commit_native_runtime_stat_refresh(owner: Node, refresh: Object, fields: Dictionary) -> Dictionary:
+	var error := validate_native_runtime_stat_refresh(owner, refresh, fields)
+	if not error.is_empty():
+		return {"accepted": false, "reason": error}
+	_committing = true
+	for field in fields:
+		if field == "st":
+			_player.stamina = float(fields[field])
+		elif field == "mst":
+			_player.max_stamina = float(fields[field])
+		else:
+			_owned[field] = fields[field]
+	_runtime_stat_commits += 1
+	_last_source_write = {"phase": "native_runtime_stat_refresh", "fields": fields.keys()}
+	_committing = false
+	_last_error = ""
+	return {"accepted": true, "fields": fields.keys(), "commits": _runtime_stat_commits}
+
+# PC-RUNTIME-STATS B — DEMO11-06 restore commit for the eight saved resource
+# fields (original dbRestore G3618-3621 values already computed detached by
+# save_adapter/source_player_restore.gd). Validate all → one synchronous batch
+# → readback; any failure keeps every previous value. Not fresh init/refill/
+# regen/cost; no Math.min (the original restore assigns raw values and the
+# following applyStats clamps). Only the actual Main owner.
+const RESTORE_FIELDS = ["hp", "mhp", "st", "mst", "mp", "mmp", "stR", "mpR"]
+var _restore_busy := false
+var _restore_commits := 0
+
+func commit_native_restore_resources(owner: Node, values: Dictionary) -> Dictionary:
+	var before: Dictionary = _read_restore_fields()
+	if _restore_busy or _committing or _initializing or _source_initializer_committing:
+		return {"accepted": false, "reason": "restore_resources_reentrant", "before": before, "after": before}
+	if not is_native_source_resources_ready() or not is_instance_valid(owner) or owner != _player.get_parent() \
+			or owner.get("source_resources") != self or owner.get("world") != _world or owner.get("player") != _player:
+		return {"accepted": false, "reason": "restore_resources_owner_mismatch", "before": before, "after": before}
+	if values.size() != RESTORE_FIELDS.size():
+		return {"accepted": false, "reason": "restore_resources_field_set_mismatch", "before": before, "after": before}
+	for field in RESTORE_FIELDS:
+		if not values.has(field) or not _number(values[field]):
+			return {"accepted": false, "reason": "restore_resources_value_invalid:" + field, "before": before, "after": before}
+	_restore_busy = true
+	_committing = true
+	# No signal, callback or provider between these writes.
+	_player.hp = float(values["hp"])
+	_player.max_hp = float(values["mhp"])
+	_player.stamina = float(values["st"])
+	_player.max_stamina = float(values["mst"])
+	_owned["mp"] = values["mp"]
+	_owned["mmp"] = values["mmp"]
+	_owned["stR"] = values["stR"]
+	_owned["mpR"] = values["mpR"]
+	_committing = false
+	var after: Dictionary = _read_restore_fields()
+	var ok := true
+	for field in RESTORE_FIELDS:
+		if float(after[field]) != float(values[field]):
+			ok = false
+	if not ok:
+		_committing = true
+		_player.hp = before["hp"]; _player.max_hp = before["mhp"]
+		_player.stamina = before["st"]; _player.max_stamina = before["mst"]
+		for field in ["mp", "mmp", "stR", "mpR"]: _owned[field] = before[field]
+		_committing = false
+		_restore_busy = false
+		return {"accepted": false, "reason": "restore_resources_readback_mismatch", "before": before, "after": _read_restore_fields()}
+	_restore_commits += 1
+	_last_source_write = {"phase": "native_restore_resources_dbRestore_3618_3621", "fields": RESTORE_FIELDS.duplicate()}
+	_restore_busy = false
+	_last_error = ""
+	return {"accepted": true, "reason": "", "before": before, "after": after, "commits": _restore_commits}
+
+func _read_restore_fields() -> Dictionary:
+	if not _live(_player):
+		return {}
+	return {"hp": _player.hp, "mhp": _player.max_hp, "st": _player.stamina, "mst": _player.max_stamina,
+		"mp": _owned.get("mp"), "mmp": _owned.get("mmp"), "stR": _owned.get("stR"), "mpR": _owned.get("mpR")}
 
 static func _source_initialization_tag(packet: Dictionary, write: Dictionary) -> Dictionary:
 	return {"field": write["field"], "source": write["source"], "kind": packet["kind"], "pass_id": 1}
@@ -669,3 +791,17 @@ func _native_fireball_proficiency_plan(owner: Node, p: Dictionary) -> Dictionary
 	var old_prof: Variant=categories.get("magic",0) if categories is Dictionary else 0
 	if not _number(old_prof) or not is_finite(float(old_prof)):return {"ready":false,"reason":"fireball_category_proficiency_not_numeric"}
 	return {"ready":true,"skip":false,"categories":categories,"skills":skills,"old_prof":old_prof}
+
+# DEMO11-25 — G35904 HP-only sink, reachable through actual State writer.
+func commit_native_auto_potion_hp(owner: Node, state_owner: Node, amount: float) -> Dictionary:
+	if not is_native_source_resources_ready() or _committing or get_tree().paused \
+			or not is_instance_valid(owner) or owner != _player.get_parent() \
+			or owner.get("source_resources") != self or owner.get("world") != _world \
+			or not is_instance_valid(state_owner) or owner.get("source_state") != state_owner \
+			or not state_owner.is_native_potion_owner_current(owner) or not is_finite(amount):
+		return {"accepted":false,"reason":"actual_potion_hp_owner_not_ready"}
+	_committing = true
+	_player.hp = minf(_player.max_hp, _player.hp + amount)
+	_last_source_write = {"field":"hp","phase":"native_auto_potion_35904","amount":amount}
+	_committing = false
+	return {"accepted":true,"hp":_player.hp}

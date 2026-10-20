@@ -1,7 +1,6 @@
 extends Node2D
-## P2-005b — 시작 스킬 발동 1차: 지옥강타 1(giantSlam, Space). 표시+실행 어댑터.
-## 이번 범위 = giantSlam 전체. spikeTrap(1)·holyDome(F)·iceOrb(Ctrl)은 다음 차수 —
-## 해당 키는 기존대로 무반응 유지(지급·아이콘만, P2-005a).
+## DEMO11-16 — 실제 슬롯 선택→기존 4cast. 비용 quote/commit 및 HUD 쿨은 단일 owner.
+## 미보유 실행자(ULT/보호 active 포함)는 명시 인터페이스 요청으로 거절한다.
 ##
 ## 원본 근거(game.html):
 ## - 입력: Space → _dispatchSkillSlot(4,'Space') 13286, 공통 가드 12905~12917
@@ -29,6 +28,7 @@ extends Node2D
 ##   (playSub/playDist/playNoise — 합성음은 에셋이 아니라 복사 불가, 미이식 기록).
 ## - 셰이크 G.shake=14×OPT.shake/100 (46495) — state 피드 API 경유.
 
+const DISPATCH = preload("res://scripts/native_skill_dispatch.gd")
 const NORMAL_HURTE = preload("res://scripts/native_normal_enemy_hurte.gd")
 const GSL_ST_COST := 50.0
 const GSL_MAL_COST := 10
@@ -116,7 +116,7 @@ func configure(main: Node, world: Node, player: Node2D, state: Node) -> bool:
 	if ResourceLoader.exists("res://assets/sfx/skill/heavy_hit.mp3"):
 		_audio.stream = load("res://assets/sfx/skill/heavy_hit.mp3")
 	_audio.max_distance = 2200.0
-	for action_key in [["skill_slot_1", KEY_1], ["area_slot_f", KEY_F], ["ct_slot", KEY_CTRL]]:
+	for action_key in [["skill_slot_1", KEY_1], ["skill_slot_2", KEY_2], ["skill_slot_3", KEY_3], ["skill_slot_4", KEY_4], ["area_slot_f", KEY_F], ["ct_slot", KEY_CTRL], ["ult_slot", KEY_Z]]:
 		if not InputMap.has_action(action_key[0]):
 			InputMap.add_action(action_key[0])
 			var key_event := InputEventKey.new()
@@ -144,19 +144,32 @@ class AdditiveLayer extends Node2D:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if not _configured:
-		return
-	if event.is_action_pressed("rage_slot"):
-		cast_giant_slam()
-	elif event.is_action_pressed("skill_slot_1"):
-		cast_spike_trap()
-	elif event.is_action_pressed("area_slot_f"):
-		cast_holy_dome()
-	elif event.is_action_pressed("ct_slot"): # 12920~12922: 보주 중 재입력=파쇄
-		if _io_active:
-			activate_ice_shatter()
-		else:
-			cast_ice_orb()
+	if not _configured or (event is InputEventKey and event.echo): return
+	for action in {"rage_slot":"Space","skill_slot_1":"1","skill_slot_2":"2","skill_slot_3":"3","skill_slot_4":"4","area_slot_f":"F","ct_slot":"Ctrl","ult_slot":"Z"}:
+		if event.is_action_pressed(action):
+			dispatch_native_slot({"rage_slot":"Space","skill_slot_1":"1","skill_slot_2":"2","skill_slot_3":"3","skill_slot_4":"4","area_slot_f":"F","ct_slot":"Ctrl","ult_slot":"Z"}[action])
+			return
+
+func dispatch_native_slot(slot_key: String) -> Dictionary:
+	if not _configured or get_tree().paused: return {"accepted":false,"reason":"dispatcher_not_configured_or_paused"}
+	var p: Variant = _state.read_current_p()
+	var g: Variant = _state.read_current_g()
+	if not p is Dictionary or not g is Dictionary: return {"accepted":false,"reason":"current_state_unready"}
+	var route: Dictionary = DISPATCH.select(slot_key,p,g,str(_player.get("state")),_io_active)
+	if not route.accepted:
+		_cast_log.append({"dispatch":route.duplicate(true)})
+		return route
+	var before: int = _cast_log.size()
+	call(route.method)
+	var committed: bool = _cast_log.size() > before and not _cast_log.back().has("rejected") and not _cast_log.back().has("halt")
+	return {"accepted":committed,"skill":route.skill,"slot":slot_key,"reason":"" if committed else "cast_gate_refused"}
+
+func _skill_quote(sid: String, lv: int, p: Dictionary) -> Dictionary:
+	return DISPATCH.quote(sid,lv,p,_main.read_native_skill_dispatch_cost_context(),_is_parry_lesson_active())
+
+func _commit_skill_quote(q: Dictionary) -> Dictionary:
+	if q.get("ready") != true: return {"accepted":false}
+	return _state.commit_native_skill_dispatch_cost(_main,q.st,q.mp,q.mats)
 
 
 func _physics_process(_delta: float) -> void:
@@ -230,25 +243,18 @@ func cast_giant_slam() -> void:
 	# 13010·46453~46454: 레슨 중(window._parryLesson?.active)엔 악의 게이트·소비 면제.
 	# 레슨 flow owner는 읽기 전용(파일 미수정 — p2-001h 소유).
 	var lesson_active: bool = _is_parry_lesson_active()
-	# 게이트: ST / 악의 / 쿨 (13010) — 부족 showPH 공지는 미이식 기록(무발동만 동일)
-	if float(_player.get("stamina")) < GSL_ST_COST 			or (not lesson_active and int(g.get("mats", 0)) < GSL_MAL_COST) or gsl_cd > 0.0:
-		_cast_log.append({"rejected": true, "st": _player.get("stamina"), "mats": g.get("mats"), "cd": gsl_cd})
+	var quote: Dictionary = _skill_quote("giantSlam",lv,p)
+	if not quote.get("ready",false) or float(_player.get("stamina")) < float(quote.get("st",0)) or (not lesson_active and int(g.get("mats",0)) < int(quote.get("mats",0))) or gsl_cd > 0.0:
+		_cast_log.append({"rejected":true,"reason":"cost_or_cooldown"})
 		return
 	var parameters: Dictionary = _main.read_native_attack_parameters()
 	if parameters.get("ready") != true: # 공급자 NOT_READY → 정지(폴백 금지)
 		_cast_log.append({"halt": "attack_parameters_not_ready"})
 		return
-	# 비용 (46454): useStPct('giantSlam') + G.mats −= _malCost(20)
-	var stamina_spend: Dictionary = _main.get("source_resources").commit_native_skill_stamina_spend(_main, GSL_ST_COST)
-	if stamina_spend.get("accepted") != true:
-		_cast_log.append({"halt": "stamina_spend_rejected"})
+	if _commit_skill_quote(quote).get("accepted") != true:
+		_cast_log.append({"halt":"cost_commit_rejected"})
 		return
-	if not lesson_active: # 46454 if(!_parryLesson?.active)G.mats-=_malCost(20)
-		var mats_spend: Dictionary = _state.apply_native_skill_cast_cost(_main, GSL_MAL_COST)
-		if mats_spend.get("applied") != true:
-			_cast_log.append({"halt": "mats_spend_rejected"})
-			return
-	gsl_cd = floor(maxf(60.0, GSL_CD_BASE - float(lv - 1) * 12.0)) # ×(1+_cdRed 0)
+	gsl_cd = quote.cd
 	# 피해식 (46464~46470): rage 0 → rageMul 1 (rage>0 분기 미이식 기록)
 	var sk_mul: float = GSL_SK_B + float(lv - 1) * GSL_SK_G * 0.5 # 44556·44509
 	var base_dmg: int = NORMAL_HURTE.FORMULA.js_to_int32(float(parameters["melee_ref"]) * 1.0 * sk_mul * 1.0)
@@ -313,7 +319,8 @@ func cast_spike_trap() -> void:
 	if lv < 1:
 		return
 	var g: Variant = _state.read_current_g()
-	if not g is Dictionary or int(g.get("mats", 0)) < SPIKE_MAL_COST or gc_cd > 0.0: # 45510
+	var quote: Dictionary = _skill_quote("spikeTrap",lv,p)
+	if not quote.get("ready",false) or not g is Dictionary or int(g.get("mats", 0)) < int(quote.get("mats",0)) or gc_cd > 0.0: # 45510
 		_cast_log.append({"skill": "spikeTrap", "rejected": true})
 		return
 	var parameters: Dictionary = _main.get("source_providers").get_provider_bundle()
@@ -322,9 +329,9 @@ func cast_spike_trap() -> void:
 	if magic_ref.get("status") != "READY" or magic_mul.get("status") != "READY":
 		_cast_log.append({"skill": "spikeTrap", "halt": "magic_providers_not_ready"})
 		return
-	if _state.apply_native_skill_cast_cost(_main, SPIKE_MAL_COST).get("applied") != true: # 45512
+	if _commit_skill_quote(quote).get("accepted") != true: # 45512
 		return
-	gc_cd = SPIKE_CD_BASE # ×(1+_cdRed 0)
+	gc_cd = quote.cd # 45514: source cd reduction
 	var sk_mul: float = SPIKE_SK_B + float(lv - 1) * SPIKE_SK_G * 0.5 # 44556·44522
 	var dmg: int = NORMAL_HURTE.FORMULA.js_to_int32(float(magic_ref.value) * 1.0 * float(magic_mul.value) * sk_mul * 0.75) # 45507
 	if not _push_fire_zone({"type": "spikeTrap", "x": _player.global_position.x, "y": _player.global_position.y,
@@ -356,7 +363,9 @@ func cast_holy_dome() -> void:
 		if hd_cd > 0.0:
 			_cast_log.append({"skill": "holyDome", "rejected": true})
 		return
-	hd_cd = DOME_CD_BASE # 46711 P._hdCd=1800 (고정 — _cdRed 없음)
+	var quote: Dictionary = _skill_quote("holyDome",lv,p)
+	if _commit_skill_quote(quote).get("accepted") != true: return
+	hd_cd = quote.cd # 46711 P._hdCd=1800 (고정 — _cdRed 없음)
 	if not _push_fire_zone({"type": "holyDome", "x": _player.global_position.x, "y": _player.global_position.y,
 			"r": 500.0 + float(lv) * 20.0, "t": 0.0, "maxT": 720.0 + float(lv) * 30.0, "lv": lv}): # 46709~46713
 		_cast_log.append({"skill": "holyDome", "halt": "fire_zone_commit_rejected"})
@@ -510,23 +519,23 @@ func cast_ice_orb() -> void:
 	var lv: int = int((p as Dictionary).get("skills", {}).get("iceOrb", 0))
 	if lv < 1:
 		return
-	var magic_cost_mul: Variant = _main.read_native_fireball_magic_cost() # 28041 pMagicCost (단일 공급자 재사용)
-	if magic_cost_mul == null:
-		_cast_log.append({"skill": "iceOrb", "halt": "magic_cost_provider_not_ready"})
+	var quote: Dictionary = _skill_quote("iceOrb",lv,p)
+	if not quote.get("ready",false) or float(p.get("mp",0)) < float(quote.get("mp",0)) or io_cd > 0.0:
+		_cast_log.append({"skill":"iceOrb","rejected":true})
 		return
-	var mp_cost: int = NORMAL_HURTE.FORMULA.js_to_int32(ICE_COST_BASE \
-		* (1.0 + float(lv - 1) * ICE_COST_DPS) * float(magic_cost_mul)) # 31992~31995 mpCost
-	if float((p as Dictionary).get("mp", 0)) < float(mp_cost) or io_cd > 0.0: # 12922
-		_cast_log.append({"skill": "iceOrb", "rejected": true, "mp_cost": mp_cost})
+	# State mutation must be admissible before any resource is spent.
+	if str(_player.get("state")) != "idle":
+		_cast_log.append({"skill":"iceOrb","rejected":true,"reason":"player_state_not_idle"})
 		return
-	var spend: Dictionary = _main.get("source_resources").commit_native_skill_mana_spend(_main, float(mp_cost))
+	var mp_cost: int = int(quote.mp)
+	var spend: Dictionary = _commit_skill_quote(quote)
 	if spend.get("accepted") != true:
-		_cast_log.append({"skill": "iceOrb", "halt": "mana_spend_rejected"})
+		_cast_log.append({"skill":"iceOrb","halt":"cost_commit_rejected"})
 		return
 	if not _player.set_native_ice_orb_state(true): # 46758~46759 P.s='iceOrb'
 		_cast_log.append({"skill": "iceOrb", "halt": "player_state_not_idle"})
 		return
-	_io_bon = int(float(spend.get("spent", 0)) * 2.0) # 46757 _ioBon=useMp×2
+	_io_bon = int(float(spend.get("mp_spent", 0)) * 2.0) # 46757 _ioBon=useMp×2
 	_io_active = true
 	_io_t = 0.0
 	_io_pos = _player.global_position
@@ -800,14 +809,15 @@ func _draw_ice_orb_layer(canvas: Node2D, alpha: float) -> void:
 ## HUD 쿨다운 sweep 공급자 (44136 _skCdSweep: pct=cd/base, 텍스트 (cd/60).toFixed(1)+'s')
 func read_native_slot_cooldowns() -> Dictionary:
 	var out: Dictionary = {}
-	if gsl_cd > 0.0:
-		out["skSlot1"] = {"pct": clampf(gsl_cd / GSL_CD_BASE, 0.0, 1.0), "text": "%.1fs" % (gsl_cd / 60.0)}
-	if gc_cd > 0.0:
-		out["qs0"] = {"pct": clampf(gc_cd / SPIKE_CD_BASE, 0.0, 1.0), "text": "%.1fs" % (gc_cd / 60.0)}
-	if hd_cd > 0.0:
-		out["qs5"] = {"pct": clampf(hd_cd / DOME_CD_BASE, 0.0, 1.0), "text": "%.1fs" % (hd_cd / 60.0)}
-	if io_cd > 0.0: # 28316 cdMap iceOrb=P._ioCd (활성(ac) 하이라이트 28499는 미이식 기록)
-		out["skSlotCT"] = {"pct": clampf(io_cd / maxf(1.0, _io_cd_max), 0.0, 1.0), "text": "%.1fs" % (io_cd / 60.0)}
+	var p: Variant = _state.read_current_p() if is_instance_valid(_state) else null
+	if not p is Dictionary: return out
+	var current := {"giantSlam":[gsl_cd,GSL_CD_BASE],"spikeTrap":[gc_cd,SPIKE_CD_BASE],"holyDome":[hd_cd,DOME_CD_BASE],"iceOrb":[io_cd,_io_cd_max]}
+	for key in DISPATCH.HUD_SLOTS:
+		var selected: Dictionary = DISPATCH.RULES.slot_value(key,p,p.get("skillSlots"),p.get("ultSlot"))
+		if selected.status != "READY" or not current.has(selected.value): continue
+		var cd: Array = current[selected.value]
+		if float(cd[0]) > 0:
+			out[DISPATCH.HUD_SLOTS[key]] = {"pct":clampf(float(cd[0])/maxf(1,float(cd[1])),0,1),"text":"%.1fs" % (float(cd[0])/60.0)}
 	return out
 
 

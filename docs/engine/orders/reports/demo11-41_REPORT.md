@@ -33,3 +33,6 @@ DEMO11-01의 demo/stage0 권위는 유지한다. CHANGELOG 최상단 충돌은 �
 신규 격리명은 EXODUSER-demo11-41-Isolated-20261021. 목록 생성 API 0건이며 Performance 수치 주장0.
 실제 창/CoreAudio의 playing/bus/lifetime 검수이며 청감/PCM 동등성은 미확인. 기존 Camera2D interpolation
 경고는 원로그에 남긴다. 보스는 fixture 신호 계약 테스트이며 실제 actor 연결 완료를 뜻하지 않는다.
+
+
+2026-10-21 PC 반송 후 같은 브랜치에서 최신 main을 정상 merge하여 Main 충돌을 해소했다. 기존 main 모든 줄과 음악 API를 함께 보존했으며, 검증·새 SHA 제출 근거는 [DEMO11-41M 보고서](demo11-41m_REPORT.md)와 `_out/demo11-41m/DONE.txt`를 참조한다.
