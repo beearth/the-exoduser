@@ -4,7 +4,7 @@
 |---|---|
 | 기준 / 의존 | 최신main e556b617, 추적 지시서 미병합으로 선행5e8cbd23 끝에서 분기. 새 producer/test/oracle·자기UID2와 보고서만. 공용6·기존 제품/테스트·다른 담당·저장·원본·R 파일 변경0 |
 | 계약 | G32829–32853의 첫 배열순: bonfire/lore/altar strict60, breakable strict50. caller bool gate·검증/NR 순서·6키/정수index·fresh provenance/connected=false. 입력/상태/RNG/씬/IO 쓰기0 |
-| 원본 검수 | G 전체/발췌hash·고유마커·distance/gate 검증, 실제 원문VM104상황+native 계약94상황. 최종2304/0(exit0), strict포함 경계/역순 오류는 각각16/72실패 검출 |
+| 원본 검수 | 재현용 `tools/nw01_world_interaction_oracle.cjs` 포함. G 전체/발췌hash·고유마커·distance/gate 검증, 실제 원문VM104상황+native 계약94상황. 최종2304/0(exit0), strict포함 경계/역순 오류는 각각16/72실패 검출 |
 | 회귀 / 초기 실패 | contracts5그룹/실패0·regions43/0, ERROR/ObjectDB/resource0. region Camera2D WARNING1 보존. 첫2200/138은 JSON float index 비교 하니스이며 정수·범위104단정 추가 후 수정, 원문 로그 보존 |
 | 격리 / 범위 | Godot 매run 전 pgrep 2이상이면30초 대기, 신규 지정 userdir/기존 파일상수·override finally0byte. 실제 NPC/포탈/상점/State 연결 없음, 다음 단위 미착수 |
 | 상세 / 제출 | [NW-01 보고서](engine/orders/reports/nw-01_REPORT.md), 원로그 `~/exoduser-wt/_out/nw-01/`. 정상 훅·자기branch push/원격SHA/DONE 뒤 자기worktree 제거 |

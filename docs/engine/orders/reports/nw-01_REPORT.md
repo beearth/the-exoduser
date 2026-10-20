@@ -29,6 +29,8 @@
 
 NR은 native API의 미지원 입력 계약이며 원본 JS의 예외/모든 carrier와 같은 결과라는 뜻이 아니다. gate형→inactive short-circuit→Array/player finite좌표→원소/type→관련 flag→후보좌표→첫 match 순서를 지킨다. 미사용 flag/unknown 장식의 좌표/이미 사용한 후보의 좌표/첫 match 뒤 원소는 읽지 않는다. StringName·숫자 flag·NaN/Infinity·문자좌표 등은 지원 경계에 따라 명시 NR이다. missing/null flag는 JS falsy 범위만 지원한다.
 
+재현용 oracle은 `tools/nw01_world_interaction_oracle.cjs`로 브랜치에 포함한다. 테스트가 이 경로를 직접 실행하며, 이전 작업의 로컬 _out 파일이나 설치 패키지에 의존하지 않는다.
+
 입력의 값·원소 참조·순서, 현재 P/G/INV, RNG, 입력, 신호, Node/씬, 파일·저장·오디오를 변경하지 않는다. 같은 입력 반복 결과 및 출력 사본의 독립성도 검사했다. 일반 NPC·대화·상점·제단 효과·세계 오브젝트 설치는 미연결이다.
 
 ## 실제 검증
