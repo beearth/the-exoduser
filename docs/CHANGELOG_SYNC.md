@@ -1,3 +1,14 @@
+## 2026-10-20 SK-S03 합체·흡수 읽기 전용 판정
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 범위·의존 | 신규 skill_management_source/fusion_rules.gd·신규 test_trace_skills_s03_fusion_rules.gd·각uid·보고서. main 284d7faf 원본 대조, SK-S02 d56773ae 위에서 분기(S01 간접의존) |
+| 원본 | 16649/44487~44501/44560~44642/48148~48149. 32레시피·demo22·흡수31·이름32쌍. 기존 S02 cat·fusion_star_source 멤버/override·_fuseStar 재사용 |
+| 계약 | canFuse4gate·미숙련/minLv/SP·선행/동급성 검사 없음. bladeEcho흡수[]·omniBeam호스트예외·선언순/중복제거·최소/최대성급·금색별6cap·숙련readonly. P/saves/QE/배정·writer0 |
+| 검증 | 신규15020/0·원본14515행 불일치0·double 4786 bit일치. p2005a~d 합91/0·S01/S02/contracts·기존fusion소비 회귀, 전부exit0·stderr ERROR0. b/c/d-ice는 최신main QA테스트 byte사본/기존격리상수로 대조 |
+| 보호·환경 | native_skill_slots.gd 및 공용6·기존모듈/테스트/project.godot·R0줄. 최초full WT 디스크실패 후 자기 pristine sparse WT만 재준비. 원949자원 검증·cache재사용·import0오류, override원부재·전역설정hash보존 |
+| 인계 | sk-s03_REPORT.md·`_out/sk-s03/` 원로그·DONE. 최초fixture키타입 오류/JSON표현차이 보존, 실제학습/합체/슬롯/UI·저장·실플레이 PASS 주장0 |
+
 ## 2026-10-20 SK-S02 스킬 관리 읽기 전용 카탈로그
 
 | id / 적용 위치 | 현재 정확 계약 |
