@@ -1,3 +1,14 @@
+## 2026-10-20 TRACE-MAPS-CH5 — 5장 원본 추적·구현 지시서
+
+| 항목 / 적용 위치 | 실제 추적·경계 |
+|---|---|
+| 기준 / 범위 | origin/main 823c24ba 분기·마감01051599의 G/M 동일 확인. CH4 문서 형식/깊이 재사용. CH3 체인 merge·CH3-06 착수0, 문서1+이절만 |
+| 원문 / 수치 | si21~25 기본200²/T40·compose/hand미정의·raw등록9/고유7PNG+ground1. 최종굴13/12/13/13/13=64·분모1000/900/1000/1000/1000=4900, 전지역분모·timer탈락순서·출구/지역/전환21→26·legacy별도 전수 |
+| 불일치 / 규칙 | 문서300/350²·십자arena와 달리 기본field200²+별도타원128×108. 현 st drain/HP정수절삭·일반이동.7/잡기·마비·O2 drop/pickup을 군단로어와 분리해 추적, 새원본/Player수정0 |
+| Godot / 설계 | 현 main0/1/4 source+observer·CH5원화등록과 실제맵/31etype/진행미연결 구분. 깊이/생동감/부분광 표현확장안·CH5-01~14 목록/첫지시서·공용접점. 마감CH2 resource writer29추가/1삭제 보강은 읽기기록만 |
+| 검산 / 미실행 | 고정Git 원문발췌VM·독립replay exit0/stderr0·90산술대조 차이0. 게임테스트PASS로세지않음. Godot/브라우저/실게임/캡처/성능0·VISUAL NOT_OBSERVED |
+| 보호 / 제출 | source/코드/테스트/공용/LOCK/원화/저장0줄. 정상훅·경로지정stage·자기branch push/원격SHA→DONE→sparseWT제거·R불변. [문서](engine/FDG_SOURCE_TRACE_MAPS_CH5_20261020.md), ~/exoduser-wt/_out/trace-maps-ch5/ |
+
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
