@@ -40,13 +40,31 @@
 
 ## 2026-10-20 QA-007 테스트 Windows 이식성
 
-| 항목 | 구현·검수 근거 |
+## 2026-10-20 BC2-04 vortex wind/active 순수 상태 계산
+
+| 항목 | 현재 정확 계약 |
 |---|---|
 | 기준 / 범위 | origin/main26c050a99 기반. 저장 복원/읽기4·NW3 테스트와 Node 링크 검사3·테스트 보조/안내만. 제품·공용·원본·기존 pin/기대값·R 최종 변경0행 |
 | 수송 / 실행 | OS.execute 모든 출력 조각 결합, NW01/02/03 UTF-8 새 임시 파일 경유. --node-bin > EXODUSER_NODE_BIN > node. 원문/발췌 hash·정확 비교 불변 |
 | 링크 / 의존 | Windows junction 아래 출력으로 동일 isSymbolicLink 조상 거부. skip0. 새 worktree의 acorn 설치/연결·격리 절차를 테스트 README에 명시 |
 | Mac 전후 | 대상 Godot8종 각369030/0·stdout/stderr byte 동일. Node5종 각40통과/1선재 실패 유지. 신규 분할63/0·Node4/0·contracts5그룹/0. Windows 실제 실행 미확인 |
 | 원인 / 한계 | slot JSON.x 코드페이지 오독 모사1건, PC 직접 원인 미확인. CH2 manifest 재추출 main_sha 차이로 동일 pin 거부 실제 재현·원본 복원, 제품 수정0. [QA-007 보고서](engine/orders/reports/qa-007_REPORT.md), 원로그 ~/exoduser-wt/_out/qa-007/ |
+
+| 기준·선행 | main6d987cb8a 이상. BC2-03 main미포함으로인수bbaed502 끝분기, 그끝에최신main포함. 장catalog/context·BC07 packet/helper·BC05 clock계약 재사용, 기존파일0줄 |
+| 원본계산 | G40905~40940 wind/active. XY→X→Y, 15<pd<R, magic30f tick/옵션생략폭발·owner전체readback, 입력시각/난수/KB순서·recover65 유지. 실제집행0·full_tick=false |
+| 최종검증 | 원본1,304상황/15,877event/4,488RNG/1,724충돌/654피해요청. 신규41,373/0, 기존BC01~08 무수정131,655/0·BC2-01~03포함209,464/0, 최종exit0/skip0/ERROR0/stderr0byte |
+| 검출·보호 | 격리5결함 모두실패검출(원문보존). Node인자·UTF-8파일·source-game. 공용6·타담당·기존제품/테스트·원본·저장·바이너리0. 실제hurtP/P.kb/Main/State연결HOLD, 후속미착수 |
+| 제출 | [BC2-04 보고서](engine/orders/reports/bc2-04_REPORT.md). 원로그~/exoduser-wt/_out/bc2-04/. 매Godot gate/30초대기·각격리명·override종료0byte. 자기branch push/remote일치/DONE후자기WT제거 |
+
+## 2026-10-20 BC2-03 2장 신규 10기술 시작 계산
+
+| 항목 | 현재 정확 계약 |
+|---|---|
+| 기준·의존 | main6d987cb8a 이상, BC2-02 main미포함으로인수a3b5391c 끝분기+최신main 정상merge. 기존 장catalog/BC06 command·ack·RNG·수치helper 재사용, 기존모듈0줄 |
+| 소유 | 신규10의4state시작/6queue요청만 자체 계산. tele/actorphase 구분, fanWave90, 물리spiral60/240/nextShot60, fire x→y→r→append·delay6, raw피해/참조/순서 유지 |
+| 검증 | Node인자·source-game·자기UTF-8 fixture 파일. 신규845상황/14,225event/5,640RNG, 25,749검사/0실패. 기존BC01~08 무수정131,655/0, BC2-01 7,169/0·BC2-02 44,891/0 |
+| 검출·경계 | 격리5결함주입 모두실패검출(상세보고서). 실제집행0/explicitack/full_tick=false. 공용6·타담당·기존테스트·원본·저장·바이너리0, 실제Main/State/전투dispatch HOLD |
+| 산출·정리 | [BC2-03 보고서](engine/orders/reports/bc2-03_REPORT.md), 원로그~/exoduser-wt/_out/bc2-03/. 매Godot gate/30초대기·각격리명·override종료0byte. 자기branch push/원격일치/DONE후자기WT제거 |
 
 ## 2026-10-20 BC2-02 승인 반영: 장 catalog 일반화·2장 재사용
 
@@ -78,6 +96,17 @@
 | 실제 검증 | 신규7,169/0·BC01~07 회귀합106,867/0·contracts5그룹/0. 합114,036단정/0,skip0/exit0/ERROR0/stderr빈값. bc02/bc03 source-game 절대경로 인수. 각상수격리명·전호출pgrep/2이상30초대기·Godot동시1·override종료0byte |
 | 경계·HOLD | 실제전투/Main·State·World·부활·저장연결0. 다음B2C02의BC02~07 chapter데이터/guard/ack 통합결정은HOLD,공용모듈수정·stage위장·후속구현0. 시각·실전·성능·PC 미검수 |
 | 인계 | [BC2-01 보고서](engine/orders/reports/bc2-01_REPORT.md). 원로그 `~/exoduser-wt/_out/bc2-01/`,정상hook·자기branch push·원격SHA대조·DONE후자기worktree제거 |
+
+
+## 2026-10-20 QA-007 테스트 Windows 이식성
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준 / 범위 | origin/main26c050a99 기반. 저장 복원/읽기4·NW3 테스트와 Node 링크 검사3·테스트 보조/안내만. 제품·공용·원본·기존 pin/기대값·R 최종 변경0행 |
+| 수송 / 실행 | OS.execute 모든 출력 조각 결합, NW01/02/03 UTF-8 새 임시 파일 경유. --node-bin > EXODUSER_NODE_BIN > node. 원문/발췌 hash·정확 비교 불변 |
+| 링크 / 의존 | Windows junction 아래 출력으로 동일 isSymbolicLink 조상 거부. skip0. 새 worktree의 acorn 설치/연결·격리 절차를 테스트 README에 명시 |
+| Mac 전후 | 대상 Godot8종 각369030/0·stdout/stderr byte 동일. Node5종 각40통과/1선재 실패 유지. 신규 분할63/0·Node4/0·contracts5그룹/0. Windows 실제 실행 미확인 |
+| 원인 / 한계 | slot JSON.x 코드페이지 오독 모사1건, PC 직접 원인 미확인. CH2 manifest 재추출 main_sha 차이로 동일 pin 거부 실제 재현·원본 복원, 제품 수정0. [QA-007 보고서](engine/orders/reports/qa-007_REPORT.md), 원로그 ~/exoduser-wt/_out/qa-007/ |
 
 ## 2026-10-20 SND-08 독립 원문 믹스·합성·레시피 모델
 
