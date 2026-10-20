@@ -70,4 +70,11 @@ import 전 `~/Library/Application Support/Godot/`를 `/Users/fordeargamers/exodu
 
 ## 제출 기록
 
-실제 실행 결과와 정리 확인 후 보고서만 경로 지정으로 stage·commit하고, 자기 브랜치만 비강제 push한다. 결과 커밋과 원격 확인 SHA는 최종 제출 기록 및 `OUT/DONE.txt`에 남긴다.
+| 항목 | 기록 |
+|---|---|
+| 실행 검수 결과 본문 커밋 | **`71d2ac6ce0061d5a2b040aed7722ef35bb3a7a06`** (`docs(engine): report P5-001a Mac launch and export prerequisites`) |
+| 이 제출 기록 | 위 결과 커밋 뒤 이 보고서의 제출 기록만 추가한다. 자기 SHA를 본문에 포함하는 순환을 피하기 위해 최종 제출 HEAD는 `OUT/DONE.txt`에 기록한다. |
+| 원격 대상 | `refs/heads/codex/p5-001a-mac-20261020`만 비강제 push. 사전 원격 ref는 부재(`OUT/branch-before-push.out`, `.err`). 최종 원격 ref와 로컬 HEAD의 실제 대조 결과는 `OUT/remote-verify.json` 및 `OUT/DONE.txt`에 보존한다. |
+| 변경 경계 | 결과 커밋 변경 **1경로**: 이 보고서만. `git diff --check` 및 staged 검사 통과. 제품 코드·프리셋·계획·WORK_BOARD·동기화 문서는 stage하지 않았다. |
+| R 보존 확인 | 결과 커밋 직전 R의 브랜치·HEAD는 시작값과 같고 tracked INDEX/WORK 모두 변경 없음. `OUT/R-preserved-before-commit.json`. |
+| 인수 요청 | PC 총괄은 이 보고서로 P5-001a/P5-001·WORK_BOARD를 갱신한다. Mac 런처 기동 확인, 직접 화면 관측 BLOCKED, export 준비 필요를 각각 구분한다. |
