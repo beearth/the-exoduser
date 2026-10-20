@@ -125,6 +125,15 @@
 | 근거·제출 | [보고서](engine/orders/reports/demo11-30_REPORT.md)·ELITES 추적 보충. 단일 busy tick·forced 후대입 원순서·재개 인터페이스 기록. 원로그 _out/demo11-30/, 자기 branch 정상 push/원격 일치/DONE 후 자기 WT 제거 |
 
 
+## 2026-10-21 DEMO11-04b — 로비 삭제 확인 슬롯 숫자 명조
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 범위 | main0138c5bb 기준. 삭제 부제의 번호만 별도 Label에 hell700, 기록명·제목 Cinzel 유지. 목록01~05는 기존 hell400 유지. 제품+6/-2, IO/선택/공용 Main·State/전투/새 문자열0 |
+| 검증 | 기존 관련 테스트1회60/0(기존52 유지+8추가), import·실창 캡처 포함 ERROR/누수/잔류0. 1920×1080 전체1장+삭제/목록1x크롭2개, 숫자01/02 구분·폰트/클리핑 육안 확인 |
+| 제출 | `_out/demo11-04b/captures/` 및 DONE.txt. 각 실행 pgrep gate·격리 userdir·override0byte. 경로지정stage·정상hook·자기branch push/원격SHA 확인 후 자기WT제거. PC/맥북총괄 눈 재검수 대기 |
+
+
 ## 2026-10-21 DEMO11-18 일반 데모 합체·흡수·성급·되돌리기 원장
 
 | 항목 | 구현·검수 근거 |

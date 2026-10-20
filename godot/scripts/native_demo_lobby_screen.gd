@@ -23,6 +23,7 @@ var modal: Control
 var modal_title: Label
 var modal_error: Label
 var modal_record: Label
+var modal_slot_number: Label
 var cancel: Button
 var confirm: Button
 var _previous_focus: Control
@@ -150,7 +151,9 @@ func _build() -> void:
 	var veil := ColorRect.new(); veil.color=Color(0,0,0,0.85); veil.size=modal.size; modal.add_child(veil)
 	var dialog := _box(Rect2(540,330,840,410),Color("100d10"),GOLD,modal)
 	modal_title=_label(tr_text("기록을 삭제하시겠습니까?","Delete this record?"),Vector2(44,32),750,36,dialog,true)
-	modal_record=_label("",Vector2(44,94),750,25,dialog,true)
+	modal_slot_number=_label("",Vector2(44,94),40,25,dialog)
+	modal_slot_number.add_theme_font_override("font",Fonts.stack("hell",700))
+	modal_record=_label("",Vector2(84,94),710,25,dialog,true)
 	_label(tr_text("선택한 슬롯의 로컬 기록이 삭제됩니다.","The selected local slot record will be deleted."),Vector2(44,146),750,22,dialog)
 	_label(tr_text("삭제한 기록은 되돌릴 수 없습니다.","This cannot be undone."),Vector2(44,192),750,21,dialog)
 	modal_error=_label("",Vector2(44,230),750,16,dialog)
@@ -221,7 +224,8 @@ func _render() -> void:
 func _show_modal() -> void:
 	_form.hide()
 	var row: Dictionary=menu.rows[menu.pending_delete.slot]
-	modal_record.text="%02d  /  %s" % [int(row.slot)+1,str(row.data.get("name",row.summary.get("name","")))]
+	modal_slot_number.text="%02d" % [int(row.slot)+1]
+	modal_record.text="/  %s" % [str(row.data.get("name",row.summary.get("name","")))]
 	_previous_focus=get_viewport().gui_get_focus_owner(); modal.show(); _render(); cancel.grab_focus()
 func _close_modal() -> void:
 	menu.cancel_delete(); modal.hide(); _render()

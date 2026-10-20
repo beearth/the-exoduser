@@ -321,3 +321,8 @@ CSS 캐시 ui-refinement.css?v=20260927-3. 신규 이미지/아이템 데이터 
 기존 Main._toggle_pause/HUD pause 연결과 clear_native_input_states·review 캐릭터 선택 guard를 유지하며 메뉴 표시만 추가한다. Settings 하위 화면에서 Esc/뒤로는 pause로 복귀, pause의 Esc/재개는 기존 경로를 사용한다. 일반 메뉴에서만 개발 캐릭터 선택판을 가리고 review 모드 우선권은 그대로다. 흑철 패널·기존 날개 문장·금빛 헤어라인·뼈색 글자, native_ui_fonts의 hell/hell_title/cinzel_hell, 이모지·새 이미지0.
 
 S01 current NOT_READY(missing textScale/panelFit/diffV2)를 보존하며 observed_options/default reference를 가짜 live 설정으로 사용하지 않는다. S10 native_settings_lobby_bridge는 main에 없어 언어/inputMode 복원·설정 적용은 BLOCKED. 숫자/키 변경 UI나 별도 OPT/BINDS writer를 만들지 않는다. [보고서](../engine/orders/reports/demo11-09_REPORT.md), 캡처 `_out/demo11-09/captures/`; 시각 판정 대기.
+
+
+### 2026-10-21 DEMO11-04b 로비 슬롯 숫자 가독성
+
+삭제 확인 부제의 슬롯 번호만 별도 Label의 `hell` 700(Nanum Myeongjo→Noto Serif KR)로 표시한다. `/ 기록명`과 제목은 기존 Cinzel title 스택을 유지한다. 슬롯 목록 01~05는 기존 `hell` 400이므로 변경 없이 다섯 항목의 폰트와 두 자리 표기를 검사한다. 새 문자열/번역키·삭제 IO/선택 로직 변경은 없다. 실제 1920×1080 삭제 확인 캡처와 목록/부제의 1x 크롭은 `_out/demo11-04b/captures/`에 두며 눈 검수 후 제출한다.
