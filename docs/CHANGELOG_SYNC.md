@@ -1,3 +1,14 @@
+## 2026-10-21 MAP11-01 독립 보스룸 blockout·GPU 카메라 보드
+
+| 항목 | 구현·실측·검수 경계 |
+|---|---|
+| 기준·씬 | main8dbbf2b0 최신fetch, 독립scenes/maps/map11/arena_preview.tscn·R2200/무기둥·회피고리/4Marker·남북표시용아치. 제품main경로/Main/World/Player/State/save 변경0 |
+| 재사용·범위 | 기존MAP-LOOK 광원/그림자/sway shader·원process 그대로 조립, prop51/light8/shadow2. 기존RGBA/단색만·생성0. BC01 실제si0 23무브·BC01~10 몸체/탄막공간 표시, 공격약화/실제AI·탄·피해·보상writer0 |
+| 증거 | GPU1920×1080 4시점+body/탄막2·각1x크롭=12PNG·BOARD.html을 _out/map11-01/captures/에 보존. R2200은D05대기, fissure2304+691.2가rim밖795.2임을그대로표시. 벽가대비/최종피부재질RETOUCH |
+| 검수·성능 | 신규34/0·ERROR/WARNING0, MAP-LOOK회귀16/0·ERROR0·미수정main Camera2D WARNING1. sparse누락PNG2보충후실패회귀만재실행. 고정600물리tick@60Hz 벽시계벤치1회 9.999128s/7691render/평균769.17fps·p95≤1.46ms/p99≤1.54ms(M5Pro24GB/uncapped). preview측정이며전체데모/PC120fps·GPU3ms검증아님 |
+| 보고·인계 | [MAP11-01 보고서](4.1맵디자인+설정/MAP11_ARENA_PREVIEW_20261021.md) 표2개. 틱경로목록API0·매Godot pgrep/2이상30초대기/override0byte. 자기branch push/remoteSHA/DONE후자기WT제거, R불변·D05_PENDING |
+
+
 ## 2026-10-21 DEMO11-05 — main 성능 수정 병합·tick 경로 점검
 
 | 항목 | 구현·검수 근거 |
