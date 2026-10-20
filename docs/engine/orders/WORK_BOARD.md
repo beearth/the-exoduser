@@ -22,13 +22,13 @@
 | 작업ID | 내용 | 담당·환경 | 브랜치 | 소유 파일(다른 담당 수정 금지) | 상태 |
 |---|---|---|---|---|---|
 | P2-001l | 패링 연습 단계 0~7·입력 제한(allows) | PC heavy 담당 | claude/p2-001l-lesson-steps-20261020 | native_parry_lesson_flow.gd 등 레슨 파일, player.gd·main.gd 입력 처리 함수 | 진행 중 |
-| P2-006a | 드랍 바닥 표시·줍기·인벤 반입 | PC heavy 담당 | claude/p2-006a-drop-pickup-20261020 | 드랍 렌더·줍기 신규 스크립트, P2-001c 드랍 레코드 소비부 | 진행 중 |
+| P2-006a | 드랍 바닥 표시·줍기·인벤 반입 | PC heavy 담당 — **Claude 사용 한도로 중단**(작업 폴더 G:\exoduser-wt\p2-002a-hud에 진행분 보존) | claude/p2-006a-drop-pickup-20261020 | 드랍 렌더·줍기 신규 스크립트 | 중단·인계 대기 |
 | P3-002 | 소환굴 시스템·후속 스폰·지역 처치 분모 | 클라우드 세션 cloud-spawnholes | claude/p3-002-spawn-holes | 소환굴 신규 스크립트, world 동적 등록 호출부 | 시작 요청됨 |
 | P2-007a | UI 마감: 원본 글꼴(나눔명조·Cinzel)·검기 색·인트로 가이드 패널 | 클라우드 세션 cloud-ui-polish | claude/p2-007a-ui-polish | assets/fonts, crescent.gd 색, 인트로 가이드 패널 | 시작 요청됨 |
 | MAC-VERIFY | 최근 통합분 Mac 테스트·Mac 실창 첫 전투 녹화 | Mac Codex ttys001(맥북총괄 관측) | codex/mac-verify-20261020 | 없음(관측 전용) | 진행 중 |
-| QA-001 | 기존 실패 테스트 7종 원인 진단 | Mac Codex ttys002 | codex/qa-001-20261020 | 해당 테스트 파일 | 대기→착수 |
-| P3-001 | 맵 pit_poison 타원 충돌 계약 | Mac Codex ttys003 | codex/p3-001-20261020 | engine/fdg/map-source-adapter.js, 맵 계약 테스트 | 대기→착수 |
-| P2-004b | 펫 대사 카테고리 160여 종 | Mac Codex ttys004 | codex/p2-004b-20261020 | native_pets.gd 대사 테이블 | 대기→착수 |
+| QA-001 | 기존 실패 테스트 7종 원인 진단 | **PC Codex**(codex exec) | codex/qa-001-pc-20261020 | 해당 테스트 파일 | 진행 중 |
+| P3-001 | 맵 pit_poison 타원 충돌 계약 | **PC Codex**(codex exec) | codex/p3-001-pc-20261020 | engine/fdg/map-source-adapter.js, 맵 계약 테스트 | 진행 중 |
+| P2-004b | 펫 대사 카테고리 160여 종 | **PC Codex**(codex exec) | codex/p2-004b-pc-20261020 | native_pets.gd 대사 테이블 | 진행 중 |
 | P3-003 | 지역 시스템(G._regions·필드보스 사이트·지역 처치·미니맵 마커) | Mac Codex ENGINE (`01a1235a-f2b8-73d1-bf58-c51c7dfb7638`, ROOT 관측) | codex/p3-003-20261020 | `godot/scripts/native_regions.gd`, `godot/tests/test_p3003_regions.gd`, `docs/engine/FDG_P3_003_REGIONS_20261020.md`, `docs/engine/orders/reports/P3-003_REPORT.md` | 배정됨 · 새 worktree 준비 전(코드 착수 전) |
 
 ## 공용(누구도 단독 소유 아님 — 수정 시 최소 줄·보고 필수)
