@@ -1511,6 +1511,21 @@ func apply_native_source_update_clock_writes(main: Node, services: RefCounted,
 	receipt["writes"] = planned.size()
 	return receipt
 
+# DEMO11-38 narrow progression writer; never touches stage, map or combat values.
+var _native_demo_clear_phase := 0
+func commit_native_demo_clear(owner: Node, stage_index: int, end: bool) -> bool:
+	# End UI owns the paused run; permit only this writer after its clear receipt.
+	if not _current_error().is_empty() or not is_instance_valid(owner) \
+			or owner!=_player.get_parent() or owner.get("source_state")!=self or owner.get("world")!=_world: return false
+	if not end and get_tree().paused: return false
+	var policy: Dictionary=owner.read_native_demo_policy()
+	if policy.get("status")!="READY" or policy.get("demo")!=true or stage_index!=policy.get("last_stage") or _g.get("stage")!=stage_index: return false
+	if _native_demo_clear_phase!=(1 if end else 0): return false
+	_native_demo_clear_phase=2 if end else 1
+	_g["stageCleared"]=not end
+	_g["on"]=false
+	return true
+
 # DEMO11-25 — potion-only State entry. G27684/28071, fresh G63950/63952.
 # Separate runtime values, not P/INV/save schema extensions.
 var _auto_potion_cd: float = 0.0

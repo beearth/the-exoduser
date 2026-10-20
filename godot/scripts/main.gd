@@ -1,6 +1,10 @@
 extends Node2D
 ## Native Godot scene. No WebView, HTTP API or browser save access.
 
+signal native_demo_boss_defeated(stage_index: int) # DEMO11-37 -> DEMO11-38, final death only
+const NativeDemoEndFlow = preload("res://scripts/native_demo_end_flow.gd")
+var native_demo_end_flow: CanvasLayer
+
 const Demo11Authority = preload("res://scripts/native_demo11_authority.gd")
 const NativePerspectiveViewScript = preload("res://scripts/native_perspective_view.gd")
 const WorldScript = preload("res://scripts/world.gd")
@@ -336,6 +340,11 @@ func _ready() -> void:
 	_install_native_attack_audio()
 	_bind_native_intro_curtain_view()
 	_bind_native_startup_services()
+	native_demo_end_flow=NativeDemoEndFlow.new()
+	add_child(native_demo_end_flow)
+	native_demo_end_flow.configure(self)
+	native_demo_end_flow.wishlist_requested.connect(_open_native_demo_wishlist)
+	native_demo_end_flow.lobby_requested.connect(_return_native_demo_lobby)
 	source_intro_sequence = IntroCurtainSequenceScript.install_native_boot(self) # P2-001i
 	native_demo_boss_actor = preload("res://scripts/native_demo11_boss_actor.gd").install_native_boot(self) # DEMO11-34
 	native_demo_boss_projectiles = preload("res://scripts/native_demo11_boss_projectiles.gd").install_native_boot(self) # DEMO11-35
@@ -3003,6 +3012,17 @@ func is_native_source_play_time_context_current(services: RefCounted, state: Nod
 		return false
 	return state.is_native_play_time_owner_current(
 		self, player, world, source_resources, raw_g, require_g_identity)
+
+# DEMO11-38: end-of-demo navigation only. No stage initialization/advance here.
+func _open_native_demo_wishlist(url: String) -> void:
+	if url==NativeDemoEndFlow.WISHLIST_URL:
+		native_demo_end_flow.report_link_result(OS.shell_open(url))
+
+func _return_native_demo_lobby() -> void:
+	var snapshot: Dictionary=native_demo_end_flow.get_snapshot()
+	if snapshot.phase!="leaving": return
+	get_tree().set_meta("native_demo_return_language",snapshot.language)
+	get_tree().call_deferred("change_scene_to_file","res://scenes/demo11_lobby.tscn")
 
 # DEMO11-40: existing skill sound callsites supply already resolved pitch/gain.
 func request_native_skill_sample(path: String, gain: float, rate: float) -> void:
