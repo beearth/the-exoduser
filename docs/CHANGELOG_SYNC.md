@@ -1,3 +1,14 @@
+## 2026-10-20 SV-RESTORE-ITEMS 아이템 복원 계산 4번 단위
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 기준·의존 | 최신 origin/main e556b617에 앞 단위 없어 승인 c88014b6에서 분기. --no-checkout+no-cone sparse 약20MiB. SV-COLLECT/TRANSPORT-READ/RESTORE-PLAYER 의존, IT-01~04는 참조만·파일 이송/병합/수정0 |
+| 신규 파일 | source_inventory_restore.gd·test_native_inventory_restore.gd·sv_restore_items_oracle.cjs. 현재 INV·STORAGE 전후 권위·upgrades/potLv snapshot과 기존 source tables로 detached plan만 계산. 제품 writer/저장/서버/형식·기존 마이그레이션 정책 변경0 |
+| 원본 근거 | 최신main game3628–3683/3735/3754–3769. 17칸 fallback과 기존5키 보충·br/???/shield/bow·affixes·weapon 공속/표시 marker·uniqueArt·ID18·crystal q50/socketQ1/stone q number1–100·upgrades/potLv 순서 유지. 동적 필드·중복/alias 보존 |
+| 보호·한계 | 공용6·타 담당·기존 테스트·원본4파일·데이터·project.godot·R 직접수정0. 누락 owner/비지원 carrier는HOLD, READY는계산만. shared load/legacy storage transfer/clamp/persist 및 실제 인벤/효과/재시작 연결HOLD. IT 품질/효과를 복원 보정에 대입하지 않음 |
+| 검수 | 신규126863/실패0(272fixture·원본544평가), 기존SV-CONTRACT3023/0·선행player78620/0. 최종3실행 exit0·ERROR/SCRIPT ERROR/경고0. 첫110161/36+SCRIPT ERROR1은 fixture alias 전달/strict 문자열 비교 수정·원로그 보존 |
+| 제출 | 전역Godot2이상30초대기·자기순차1개. 신규 EXODUSER-sv-restore-items-Isolated-20261020, 회귀각상수·종료override0byte. 정상훅·자기branch push/원격일치/DONE 뒤 자기worktree제거. [보고서](engine/orders/reports/sv-restore-items_REPORT.md), ~/exoduser-wt/_out/sv-restore-items/ |
+
 ## 2026-10-20 SV-RESTORE-PLAYER 읽기·복원 계산 3번 단위
 
 | id / 적용 위치 | 현재 정확 계약 |
