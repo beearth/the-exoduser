@@ -1,3 +1,8 @@
+## 2026-10-21 MAP11-10 G2 보충 — 숲 반복·원경 깊이·서동 하단 반사
+
+- 총괄 G2 숲 링 PASS를 기록하고 같은 branch의 독립 G3/G4 씬에만 높이7·폭5·명도6·회전6·좌우반전 변주, BACK/MID fog .48/.13, 서쪽 마른 심재와 동쪽 약한 황록 하단 반사를 추가했다. 회전/폭을 반영하는 가림 AABB는 setup 1회 캐시. 밑동/형상·공용·원본PNG 변경0, 새아트/새표시문구0.
+- 중앙 재질·불규칙 균열·오염의 1x 증거를 포함해 8시점+보충/크롭을 다시 제출. 관련18/0·GUI ERROR0/WARNING0·seam 두 표본오차0. 최종 상태 벤치1회600tick/10.000172s/평균1404.28fps/p95≤0.85ms·p99≤0.99ms(독립 preview, 제품 전투/GPU timer 아님). [G3/G4 보고서](4.1맵디자인+설정/MAP11_SURFACE_SEAM_G3G4_20261021.md), 원로그·최종 캡처 `_out/map11-10/g2-followup/`. 후속 눈 검수 REVIEW_PENDING.
+
 ## 2026-10-21 MAP11-10 — G3/G4 root shoulder·수피/피부 접합
 
 - main0138c5bb + MAP11-09 283c2077 정상merge(FF). 독립 field_seam_preview에서 기존 RGBA 바닥3회전/3스케일·필터·월드 origin 연속 UV, root shoulder60개/오염·부드러운 접지 그림자, 어두운 분기 alpha 균열30조각. 새이미지/AI생성0·원본PNG0줄.

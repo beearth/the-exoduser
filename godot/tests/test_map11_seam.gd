@@ -28,6 +28,21 @@ func run() -> void:
  check(scene.provider.can_move(Vector2(0,1300),1600),"combat clearing unchanged")
  check(scene.provider.can_move(Vector2(0,-3750),96),"gate unchanged")
  check(not scene.provider.line_of_sight(Vector2(-2800,-550),Vector2(-800,-550)),"LOS mass retained")
+ var heights: Dictionary={}; var widths: Dictionary={}; var tones: Dictionary={}; var rotations: Dictionary={}
+ var bounds_ok: bool=true; var depth_ok: bool=true; var regional_ok: bool=true
+ for row in scene._forest_rows:
+  var sprite: Sprite2D=row.node.get_child(0)
+  heights[row.height_factor]=true; widths[row.width_factor]=true; tones[row.brightness]=true; rotations[sprite.rotation]=true
+  var size_: Vector2=sprite.texture.get_size()
+  for corner in [Vector2.ZERO,Vector2(size_.x,0),size_,Vector2(0,size_.y)]:
+   if not row.rect.has_point(row.foot+sprite.transform*(sprite.offset+corner)): bounds_ok=false
+  var material_: ShaderMaterial=sprite.material
+  if not is_equal_approx(material_.get_shader_parameter("fog"),.48 if row.layer=="BACK" else (.13 if row.layer=="MID" else .0)): depth_ok=false
+  if material_.get_shader_parameter("west")!=(1.0 if row.side=="LEFT" else .0) or material_.get_shader_parameter("east")!=(1.0 if row.side=="RIGHT" else .0): regional_ok=false
+ check(heights.size()==7 and widths.size()==5 and tones.size()==6 and rotations.size()==6,"setup diversity")
+ check(bounds_ok,"rotated sprite cached occlusion AABB")
+ check(depth_ok,"BACK fog attenuation distinct from MID FRONT")
+ check(regional_ok,"west dry east muted reflection lower forest")
  check(scene.receipt().new_images==0,"no generated assets")
  print("SEAM_RESULT ",JSON.stringify({"checks":checks,"failures":failures,"receipt":scene.receipt()}))
  scene.free(); quit(0 if failures==0 else 1)

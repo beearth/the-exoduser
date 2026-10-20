@@ -54,6 +54,8 @@ func select_board(id: String) -> void:
 func receipt() -> Dictionary:
 	var result: Dictionary=super.receipt()
 	result.shoulders=shoulder_count; result.fissure_fragments=fissure_count; result.surface_uv="continuous_world_3_rotations_3_scales"; result.new_images=0
+	result.g2_ring="PASS"; result.forest_depth="BACK fog .48 / MID .13 / FRONT 0"
+	result.forest_variation="height7 width5 brightness6 rotation6 mirror"; result.regional_reflection="LEFT dry heartwood / RIGHT muted yellow-green lower UV"
 	result.g3_g4_visual="REVIEW_PENDING"; return result
 
 func _build_mass() -> void:
@@ -69,3 +71,29 @@ func _build_player() -> void:
 	super._build_player()
 	player.get_child(1).hide()
 	var shadow:=Sprite2D.new(); shadow.texture=_contact; shadow.position=Vector2(0,4); shadow.scale=Vector2(.6,.16); shadow.modulate=Color(0,0,0,.8); shadow.z_index=-1; player.add_child(shadow)
+
+# G2 follow-up: setup-only transforms/materials; feet, z order and geometry stay fixed.
+func _add_tree(layer: String,side: String,foot: Vector2,height_: float,tone: Color,idx: int,mirror: bool) -> void:
+	var serial: int=forest_instances
+	var height_factor: float=[.72,1.24,.90,1.13,.81,1.30,1.02][serial%7]
+	var width_factor: float=[.80,1.18,.94,1.10,.87][serial%5]
+	var brightness: float=[.78,1.16,.93,1.07,.86,1.22][serial%6]
+	super._add_tree(layer,side,foot,height_*height_factor,tone*Color(brightness,brightness,brightness,1),idx,mirror != (serial%4==0))
+	var row: Dictionary=_forest_rows.back()
+	var sprite: Sprite2D=row.node.get_child(0)
+	sprite.scale.x*=width_factor
+	sprite.rotation=[-.085,.045,-.025,.10,-.055,.02][serial%6]
+	var material_:=ShaderMaterial.new()
+	material_.shader=load("res://scripts/maps/map11/field_forest_depth.gdshader")
+	material_.set_shader_parameter("fog",.48 if layer=="BACK" else (.13 if layer=="MID" else .0))
+	material_.set_shader_parameter("west",1.0 if side=="LEFT" else .0)
+	material_.set_shader_parameter("east",1.0 if side=="RIGHT" else .0)
+	sprite.material=material_
+	# Cache rotated/anisotropic sprite AABB once; preserve inherited fade at runtime.
+	var size_: Vector2=sprite.texture.get_size()
+	var bounds:=Rect2(sprite.transform*sprite.offset,Vector2.ZERO)
+	for corner in [Vector2(size_.x,0),size_,Vector2(0,size_.y)]:
+		bounds=bounds.expand(sprite.transform*(sprite.offset+corner))
+	row.rect=Rect2(bounds.position+foot,bounds.size).grow(55)
+	row.height_factor=height_factor; row.width_factor=width_factor
+	row.brightness=brightness; row.fog=.48 if layer=="BACK" else (.13 if layer=="MID" else .0)
