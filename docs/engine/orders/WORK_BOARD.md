@@ -29,7 +29,8 @@
 | QA-002 | 테스트 결정성(시작 장비 시드, 테스트 한정)·p2005b/c 종료 누수·p2003a dummy 텍스처 ERROR | Mac VS Code Codex 01a1586e-c1b7(맥북총괄 배정) | codex/qa-002-20261020 | 해당 테스트·(제품 결함 시 수정안만) | 배정 |
 | P5-001a | Mac 실행판·macOS export 점검(템플릿 설치·프리셋 추가는 하지 않고 필요 여부만 보고) | Mac VS Code Codex 01a1586f-09bf(Full Access, 18:14 재개) | codex/p5-001a-mac-20261020 | 없음(점검·보고) | 진행 중 |
 | MAC-LIVE | Mac 실창 run.command 부팅→인트로→커튼→첫 전투 30초 녹화 | Mac VS Code Codex 01a1586f-15cb | codex/mac-live-20261020 | 없음(실행·녹화, 격리 EXODUSER-MacLive-Isolated-20261020) | 진행 중 |
-| MAC-TESTSWEEP | MAC-VERIFY 외 godot/tests 전체 Mac 헤드리스 결과표(PC 기준선 비교, 코드 수정 금지) | Mac VS Code Codex 01a1586f-2389 | codex/mac-testsweep-20261020 | 없음 | 진행 중 |
+| MAC-TESTSWEEP | MAC-VERIFY 외 godot/tests 32종 Mac 헤드리스 | Mac VS Code Codex 01a1586f-2389 | codex/mac-testsweep-20261020 (cd6055eed) | 없음 | **검수 완료·보고서 main 반영** — 29 통과·3 미통과: starter_state 148/1(P3-003 병합 회귀, PC 재현 — STARTER-REGIONS 수정 배정), type3_spawn_recipe(외부 oracle 누락), windows_native_package(Windows export 전제) |
+| STARTER-REGIONS | starter_state G 필드 수 기대값을 원본 지역 초기화 기준으로 정정(또는 제품 결함 보고) | Mac VS Code Codex 01a1586f-2389 | codex/starter-regions-fix-20261020 | test_native_main_source_starter_state.gd | 배정 |
 | QA-001 | 기존 실패 테스트 7종 원인 진단 | PC Codex(codex exec) | codex/qa-001-pc-20261020 | 지정 테스트 7종 | **검수 완료·main 병합(Claude 총괄 2026-10-20)** — 실패 18건+스크립트 오류 1건 해소, 제품 코드 0줄, 총괄 독립 재실행 7종 0실패 |
 | P3-001 | 맵 pit_poison 타원 충돌 계약 | PC Codex(codex exec) | codex/p3-001-pc-20261020 | engine/fdg/map-source-adapter.js, godot/data/map.json, 맵 계약 테스트 | **검수 완료·main 병합(Claude 총괄 대리 커밋 3081760c5)** — Godot 195/195·Node 10, 실창 미검증 |
 | P2-004b | 펫 대사 카테고리 160여 종 | **PC Codex**(codex exec) | codex/p2-004b-pc-20261020 | native_pets.gd 대사 테이블 | 진행 중 |
