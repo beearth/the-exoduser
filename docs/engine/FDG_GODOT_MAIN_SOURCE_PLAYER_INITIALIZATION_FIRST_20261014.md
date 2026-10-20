@@ -1,3 +1,5 @@
+> 2026-10-20 QA-001 PC 정정: 이 문서의 과거 FIRST·배송 검수 수치는 당시 이력으로 보존한다. 현재 7종 테스트의 하니스·낡은 기대값 진단, 원본 행 근거, 기준선과 영향 그룹 재검 결과는 [QA-001 PC 보고서](orders/reports/QA-001_REPORT.md)를 따른다. 게임 수치·제품 코드는 변경하지 않았다.
+
 # Actual Main source Player initialization — 2026-10-14
 
 실제 `res://scenes/main.tscn`의 새 Player에 원 초기화 대입을 Tree 진입 전에 연결하는 첫 통합 검수에서 **신규 고유5그룹117개 검사**를 통과했다. 생산자 공식의 재검사와 기존 성공군 재연은 하지 않았다. attempt01의 4그룹69개 clean PASS는 동결했고, FAIL1·fixture SCRIPT_ERROR1의 결정값 비교 그룹만 수리하여 attempt02에서48개를 통과했다. 첫 실패 이력은 영구 보존하며 첫 실행 전체를 clean PASS로 다시 쓰지 않는다.

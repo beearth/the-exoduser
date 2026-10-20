@@ -4,6 +4,9 @@ extends SceneTree
 const FactoryScript = preload("res://scripts/enemy_factory.gd")
 const WorldScript = preload("res://scripts/world.gd")
 const CrawlerScript = preload("res://scripts/enemy_melee_flesh_crawler.gd")
+const IceScript = preload("res://scripts/enemy_tank_ice_soul_flame.gd")
+const SpineScript = preload("res://scripts/enemy_tank_physical_spine_beast.gd")
+const HiveScript = preload("res://scripts/enemy_archer_lightning_hive_bloater.gd")
 const PhysicalScript = preload("res://scripts/enemy_projectile_physical.gd")
 const PlayerScript = preload("res://scripts/player.gd")
 const MainScript = preload("res://scripts/main.gd")
@@ -18,10 +21,16 @@ class RecordingTarget extends Node2D:
 	var iframes = 0.0
 	var state = "idle"
 	var packets: Array = []
+	var burn_requests: Array = []
 
 	func receive_damage(amount: int, kind: String = "phys", direction: Vector2 = Vector2.ZERO, impulse: float = -1.0) -> void:
 		# A request sink, not an HP oracle or a simulated public player.
 		packets.append({"amount": amount, "kind": kind, "direction": direction, "impulse": impulse})
+
+	func apply_native_burn(total_damage: float) -> bool:
+		# game.html:35091 appends redBean burn separately after the damage request.
+		burn_requests.append(total_damage)
+		return true
 
 class TechnicalWorld extends Node2D:
 	var target: Node2D
@@ -131,15 +140,23 @@ func _test_admission() -> void:
 	root.add_child(world)
 	var report: Dictionary = world.get_encounter_report()
 	var actors: Array = world.get_enemies()
-	_check(world.ready_for_player and report.get("source_count") == 16 and report.get("supported_count") == 3 and report.get("unsupported_count") == 13 and actors.size() == 3, "actual world startup admits new one, preserves source16 and unsupported13")
-	if actors.size() != 3 or report.get("records", []).size() != 16:
+	# game.html:31120-31162 and 31608-31648 define the unchanged source records/order.
+	_check(world.ready_for_player and report.get("source_count") == 16 and report.get("supported_count") == 6 and report.get("unsupported_count") == 10 and actors.size() == 6, "actual world preserves source16 with six exact supported actors and unsupported10")
+	if actors.size() != 6 or report.get("records", []).size() != 16:
 		world.free()
 		return
-	_check(actors[2].get_script() == CrawlerScript and actors[2].source_order == 14 and str(actors[2].name) == "ch1_initial_015", "actual third registered actor is the exact new class/order/id")
+	var orders: Array = []
+	for registered in actors:
+		orders.append(registered.source_order)
+	_check(orders == [0, 1, 8, 13, 14, 15], "actual registry preserves exact supported source order")
+	_check(actors[4].get_script() == CrawlerScript and actors[4].source_order == 14 and str(actors[4].name) == "ch1_initial_015", "actual fifth registered actor is the exact crawler class/order/id")
+	_check(actors[2].get_script() == IceScript and str(actors[2].name) == "ch1_initial_009" and report["records"][8]["consumer_profile"] == "native_ch1_etype4_ice_soul_flame_v1", "ice neighbor uses its dedicated identity and profile")
+	_check(actors[3].get_script() == SpineScript and str(actors[3].name) == "ch1_initial_014" and report["records"][13]["consumer_profile"] == "native_ch1_etype4_physical_spine_beast_v1", "spine neighbor uses its dedicated identity and profile")
 	var entry: Dictionary = report["records"][14]
 	_check(entry["record"] == record and entry["source_support"] == record["support"] and entry["consumer_profile"] == PROFILE and entry["status"] == "supported", "current capability and untouched source declaration coexist in actual report")
-	_check(report["records"][2]["status"] == "unsupported" and report["records"][15]["status"] == "unsupported", "guardian and neighboring archer remain unported")
-	var actor = actors[2]
+	_check(report["records"][2]["status"] == "unsupported", "guardian remains explicitly unported")
+	_check(report["records"][15]["status"] == "supported" and report["records"][15]["consumer_profile"] == "native_ch1_etype1_lightning_hive_bloater_v1" and actors[5].get_script() == HiveScript and str(actors[5].name) == "ch1_initial_016", "neighboring lightning archer uses its exact dedicated class and profile")
+	var actor = actors[4]
 	_check(_json_equal(actor.data, _config["runtime"]) and _json_equal(actor.initial_timers, record["initial_timers"]), "actual configure preserves the admitted profile and original timers without normalization")
 	for native_key in _config["runtime"]["native_final"]:
 		_check(record["native_final"].has(native_key) and _json_equal(actor.data["native_final"][native_key], record["native_final"][native_key]), "every admitted native field preserves its full source origin: " + native_key)
@@ -159,7 +176,7 @@ func _test_admission() -> void:
 	var main: Node = MainScript.new()
 	main.set("world", world)
 	var summary: Dictionary = main.call("_encounter_summary")
-	_check(summary["supported_count"] == 3 and summary["unsupported_count"] == 13 and summary["records"][14]["status"] == "supported", "main metadata reads actual new capability, not the frozen declaration")
+	_check(summary["supported_count"] == 6 and summary["unsupported_count"] == 10 and summary["records"][14]["status"] == "supported", "main metadata reads actual current capability, not the frozen declaration")
 	main.free()
 	world.free()
 
@@ -232,6 +249,7 @@ func _test_native_clock() -> void:
 		var packet_count = charged["target"].packets.size()
 		_step(shot)
 		_check(charged["target"].packets.size() == packet_count + 1 and charged["target"].packets[-1]["kind"] == "parry" and charged["target"].packets[-1]["impulse"] == 2, "actual swept contact forwards parry type and exact additive2 impulse")
+		_check(charged["target"].burn_requests == [48.0] and shot.is_queued_for_deletion(), "source redBean damage24 also requests burn48 and completes the hit")
 	charged["world"].free()
 
 func _test_shield_packet() -> void:

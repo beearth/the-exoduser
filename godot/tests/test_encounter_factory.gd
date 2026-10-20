@@ -5,7 +5,20 @@ const FactoryScript = preload("res://scripts/enemy_factory.gd")
 const WorldScript = preload("res://scripts/world.gd")
 # Also parses the new main summary consumer, without instantiating the main scene.
 const MainScript = preload("res://scripts/main.gd")
+const IceScript = preload("res://scripts/enemy_tank_ice_soul_flame.gd")
+const SpineScript = preload("res://scripts/enemy_tank_physical_spine_beast.gd")
+const CrawlerScript = preload("res://scripts/enemy_melee_flesh_crawler.gd")
+const HiveScript = preload("res://scripts/enemy_archer_lightning_hive_bloater.gd")
 const SOURCE_FILE = "res://data/encounters.json"
+# game.html:31120-31162 mkEn; 31517-31530 medium pair; 31608-31648 initial order.
+# Current exact consumers retain that frozen sixteen-record source without broad type support.
+const SUPPORTED_ORDERS = [0, 1, 8, 13, 14, 15]
+const DEDICATED_CONSUMERS = [
+	{"order": 8, "script": IceScript, "profile": "native_ch1_etype4_ice_soul_flame_v1", "config": "res://data/etype4_ice_soul_flame.json"},
+	{"order": 13, "script": SpineScript, "profile": "native_ch1_etype4_physical_spine_beast_v1", "config": "res://data/etype4_physical_spine_beast.json"},
+	{"order": 14, "script": CrawlerScript, "profile": "native_ch1_etype0_physical_flesh_crawler_v1", "config": "res://data/etype0_physical_flesh_crawler.json"},
+	{"order": 15, "script": HiveScript, "profile": "native_ch1_etype1_lightning_hive_bloater_v1", "config": "res://data/etype1_lightning_hive_bloater.json"},
+]
 # Independent production-extraction receipt; this pins the accepted source, not factory output.
 const SOURCE_SHA = "91fd1a88b394152cd8b0de653f1bde5139b7829f331787581616f7ef3c0724fa"
 const SOURCE_ORACLE = [{"id":"ch1_start_eye_mass_01","order":0,"group":"start-medium","etype":4,"element":"dark","hp":875,"attack":31,"position":[3500,6700],"skin":"native-medium-sheet"},{"id":"ch1_start_eye_mass_02","order":1,"group":"start-medium","etype":4,"element":"dark","hp":875,"attack":31,"position":[4540,6580],"skin":"native-medium-sheet"},{"id":"ch1_initial_003","order":2,"group":"gate-guardian","etype":29,"element":"physical","hp":3500,"attack":62,"position":[4020,340],"skin":"carapace_predator"},{"id":"ch1_initial_004","order":3,"group":"gate-escort","etype":7,"element":"physical","hp":4377,"attack":40,"position":[4075,340],"skin":"flesh_crawler"},{"id":"ch1_initial_005","order":4,"group":"gate-escort","etype":20,"element":"physical","hp":2187,"attack":31,"position":[4036.995934690622,392.3081083962334],"skin":"flesh_crawler"},{"id":"ch1_initial_006","order":5,"group":"gate-escort","etype":25,"element":"physical","hp":2187,"attack":31,"position":[3975.504065309378,372.328188876086],"skin":"carapace_predator"},{"id":"ch1_initial_007","order":6,"group":"gate-escort","etype":6,"element":"physical","hp":2187,"attack":31,"position":[3975.504065309378,307.671811123914],"skin":"apostle_knight"},{"id":"ch1_initial_008","order":7,"group":"gate-escort","etype":7,"element":"physical","hp":2187,"attack":31,"position":[4036.995934690622,287.6918916037665],"skin":"soul_flame"},{"id":"ch1_initial_009","order":8,"group":"gate-wave","etype":4,"element":"ice","hp":875,"attack":31,"position":[4191.995760537684,340],"skin":"soul_flame"},{"id":"ch1_initial_010","order":9,"group":"gate-wave","etype":21,"element":"dark","hp":875,"attack":31,"position":[4159.552543804879,441.39085796557566],"skin":"spine_beast"},{"id":"ch1_initial_011","order":10,"group":"gate-wave","etype":20,"element":"physical","hp":875,"attack":31,"position":[4071.338948165395,498.0050355845301],"skin":"carapace_predator"},{"id":"ch1_initial_012","order":11,"group":"gate-wave","etype":47,"element":"physical","hp":875,"attack":31,"position":[3969.716234383507,494.7575176250593],"skin":"flesh_crawler"},{"id":"ch1_initial_013","order":12,"group":"gate-wave","etype":20,"element":"lightning","hp":875,"attack":31,"position":[3919.000584636192,413.38037056548455],"skin":"spine_beast"},{"id":"ch1_initial_014","order":13,"group":"gate-wave","etype":4,"element":"physical","hp":875,"attack":31,"position":[3878.7467967160046,340],"skin":"spine_beast"},{"id":"ch1_initial_015","order":14,"group":"gate-wave","etype":0,"element":"physical","hp":875,"attack":31,"position":[3888.7242834487565,244.62260903114446],"skin":"flesh_crawler"},{"id":"ch1_initial_016","order":15,"group":"gate-wave","etype":1,"element":"lightning","hp":875,"attack":31,"position":[4125.581107525944,263.29083522849453],"skin":"hive_bloater"}]
@@ -88,11 +101,11 @@ func _test_source_factory() -> void:
 	var validation: Dictionary = _factory.call("validate_source", _source)
 	_check(validation["valid"] and validation["errors"].is_empty(), "canonical source accepted, including legitimate unported types; errors=" + JSON.stringify(validation["errors"]))
 	var report: Dictionary = _world.call("get_encounter_report")
-	_check(report.get("installed", false) and report.get("source_count") == 16 and report.get("supported_count") == 2 and report.get("unsupported_count") == 14, "source count and actual admitted actor count stay separate")
+	_check(report.get("installed", false) and report.get("source_count") == 16 and report.get("supported_count") == 6 and report.get("unsupported_count") == 10, "source count and actual admitted actor count stay separate")
 	var records: Array = report.get("records", [])
 	var actors: Array = _world.call("get_enemies")
-	_check(records.size() == 16 and actors.size() == 2, "all source records reported; only two real actors")
-	if records.size() != 16 or actors.size() != 2:
+	_check(records.size() == 16 and actors.size() == 6, "all source records reported; six exact real actors")
+	if records.size() != 16 or actors.size() != 6:
 		return
 	for index in range(SOURCE_ORACLE.size()):
 		var original: Dictionary = _source["records"][index]
@@ -102,7 +115,7 @@ func _test_source_factory() -> void:
 		var skin: String = original["animation"].get("kind", "") if index < 2 else original["animation"].get("skin", "")
 		_check(skin == oracle["skin"], "receipt-derived original skin %d" % index)
 		_check(records[index]["record"] == original, "full native_factory/native_final and unused timers retained %d" % index)
-		_check(records[index]["status"] == ("supported" if index < 2 else "unsupported"), "unported records never get medium AI %d" % index)
+		_check(records[index]["status"] == ("supported" if SUPPORTED_ORDERS.has(index) else "unsupported"), "only exact supported records get their dedicated AI %d" % index)
 		_check(records[index]["order"] == index and records[index]["id"] == original["id"] and records[index]["etype"] == original["etype"], "report preserves exact source order/type %d" % index)
 	for index in range(2):
 		var actor: Node2D = actors[index]
@@ -127,30 +140,47 @@ func _test_source_factory() -> void:
 		var body: Sprite2D = actor.get("_body")
 		_check(body.texture.resource_path == original["runtime"]["animation"]["texture"] and body.hframes == 4 and body.vframes == 8, "actual supported sheet, without loading unported atlas %d" % index)
 		_equal_number(body.scale.y, float(original["animation"]["draw_height"]) / 256.0, "actual initial draw height %d" % index)
+	for index in range(DEDICATED_CONSUMERS.size()):
+		var expected: Dictionary = DEDICATED_CONSUMERS[index]
+		var actor: Node2D = actors[index + 2]
+		var original: Dictionary = _source["records"][expected["order"]]
+		var config: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(expected["config"]))
+		var entry: Dictionary = records[expected["order"]]
+		_check(actor.get_script() == expected["script"] and str(actor.name) == original["id"] and actor.get("source_order") == expected["order"] and actor.get("etype") == original["etype"] and actor.get("element") == original["element"], "added exact class/identity/type/element %d" % expected["order"])
+		_check(entry.get("consumer_profile") == expected["profile"] and entry.get("consumer_config") == expected["config"] and entry.get("source_support") == original["support"], "dedicated capability keeps frozen source support %d" % expected["order"])
+		_check(_json_equal(actor.get("data"), config["runtime"]) and _json_equal(actor.get("initial_timers"), original["initial_timers"]), "dedicated runtime and raw clocks retained %d" % expected["order"])
+		_check(actor.position == Vector2(float(original["spawn_position"][0]), float(original["spawn_position"][1])) and actor.get("hp") == original["hp"] and actor.get("attack") == original["attack"], "dedicated spawn/HP/ATK remain source exact %d" % expected["order"])
+		_check(actor.call("get_snapshot")["native_frame"] == 0 and actor.get("charge_ticks") == 0.0 and not actor.get("alerted"), "dedicated registration consumes no simulation time %d" % expected["order"])
 
 func _test_world_registration() -> void:
 	var actors: Array = _world.call("get_enemies")
-	_check(_world.get("ready_for_player") and actors.size() == 2 and get_nodes_in_group("enemies").size() == 2, "actual world_ready and enemy registry contain only admitted actors")
-	if actors.size() != 2:
+	_check(_world.get("ready_for_player") and actors.size() == 6 and get_nodes_in_group("enemies").size() == 6, "actual world_ready and enemy registry contain only admitted actors")
+	if actors.size() != 6:
 		return
 	var relevant: Array = _events.filter(func(event: Dictionary) -> bool: return event["kind"] in ["enemy_spawn", "native_encounters_installed", "world_ready"])
-	_check(relevant.size() == 4, "two spawn, one install, one world-ready telemetry only")
-	if relevant.size() == 4:
-		_check(relevant[0]["kind"] == "enemy_spawn" and relevant[1]["kind"] == "enemy_spawn" and relevant[2]["kind"] == "native_encounters_installed" and relevant[3]["kind"] == "world_ready", "actual telemetry follows actor registration then install/world_ready")
-		for index in range(2):
+	_check(relevant.size() == 8, "six spawn, one install, one world-ready telemetry only")
+	if relevant.size() == 8:
+		_check(relevant[6]["kind"] == "native_encounters_installed" and relevant[7]["kind"] == "world_ready", "actual telemetry follows actor registration then install/world_ready")
+		for index in range(SUPPORTED_ORDERS.size()):
 			var packet: Dictionary = relevant[index]["data"]
-			var original: Dictionary = _source["records"][index]
-			_check(packet["id"] == original["id"] and packet["order"] == index and packet["etype"] == 4 and packet["element"] == "dark", "spawn telemetry original identity/order %d" % index)
-			_check(packet["hp"] == original["hp"] and packet["position"] == original["spawn_position"], "spawn telemetry actual initial HP/position %d" % index)
+			var original: Dictionary = _source["records"][SUPPORTED_ORDERS[index]]
+			_check(relevant[index]["kind"] == "enemy_spawn" and packet["id"] == original["id"] and packet["order"] == original["order"] and packet["etype"] == original["etype"] and packet["element"] == original["element"], "spawn telemetry original identity/order %d" % original["order"])
+			var expected_position = Vector2(float(original["spawn_position"][0]), float(original["spawn_position"][1]))
+			_check(packet["hp"] == original["hp"] and packet["position"] == [expected_position.x, expected_position.y], "spawn telemetry actual initial HP/Vector2 position %d" % index)
 			_equal_number(packet["native_speed"], original["speed_pixels_per_tick"], "spawn native speed %d" % index)
-		_check(relevant[2]["data"] == {"source_count": 16, "supported_count": 2, "unsupported_count": 14}, "install telemetry counts distinguish unported source")
+		_check(relevant[6]["data"] == {"source_count": 16, "supported_count": 6, "unsupported_count": 10}, "install telemetry counts distinguish unported source")
 	var player := Node2D.new()
 	player.position = _world.call("get_start_position")
 	root.add_child(player)
 	_world.call("set_player", player)
-	for actor in actors:
+	for index in range(actors.size()):
+		var actor: Node2D = actors[index]
 		_check(actor.get_parent() == _world and actor.get("world") == _world and actor.get("player") == player, "actual factory actor world/player ownership")
-		_check(actor.get("_motion_ms") == 0.0 and actor.get("charge_ticks") == 0.0, "bind does not consume simulation time")
+		_check(actor.get("source_order") == SUPPORTED_ORDERS[index], "registry preserves admitted source order %d" % index)
+		if index < 2:
+			_check(actor.get("_motion_ms") == 0.0 and actor.get("charge_ticks") == 0.0, "medium bind does not consume simulation time")
+		else:
+			_check(actor.call("get_snapshot")["native_frame"] == 0 and actor.get("charge_ticks") == 0.0, "dedicated bind does not consume simulation time")
 	var before: Dictionary = _world.call("get_encounter_report")
 	var external: Dictionary = _world.call("get_encounter_report")
 	external["records"][2]["record"]["native_final"]["hp"] = -999
@@ -159,7 +189,7 @@ func _test_world_registration() -> void:
 	var main: Node = MainScript.new()
 	main.set("world", _world)
 	var summary: Dictionary = main.call("_encounter_summary")
-	_check(summary["installed"] and summary["source_count"] == 16 and summary["supported_count"] == 2 and summary["unsupported_count"] == 14 and summary["records"].size() == 16, "main readonly metadata/pause-state summary consumes actual world report")
+	_check(summary["installed"] and summary["source_count"] == 16 and summary["supported_count"] == 6 and summary["unsupported_count"] == 10 and summary["records"].size() == 16, "main readonly metadata/pause-state summary consumes actual world report")
 	_check(_json_equal(summary["records"][2], {"order": 2, "id": "ch1_initial_003", "etype": 29, "status": "unsupported", "reason": "native_type_ai_not_ported"}), "main records unported guardian honestly")
 	main.free()
 	player.free()

@@ -1,3 +1,5 @@
+> 2026-10-20 QA-001 PC 정정: 이 문서의 과거 FIRST·배송 검수 수치는 당시 이력으로 보존한다. 현재 7종 테스트의 하니스·낡은 기대값 진단, 원본 행 근거, 기준선과 영향 그룹 재검 결과는 [QA-001 PC 보고서](orders/reports/QA-001_REPORT.md)를 따른다. 게임 수치·제품 코드는 변경하지 않았다.
+
 ## 실제 Main lesson file-init/current guard 연결 — 2026-10-14
 
 실제 Main은 World/Player를 생성하기 전에 원 lesson holder를 만들고 Root publish_file_init을1회 소비한다. 원 SOURCE_BOOT/current=false 7개 partial 필드는 입력 이력으로 유지하고 실제 published current guard를 별도로 읽는다. Main wrapper LIVE Callable은 cold에서 null/NOT_READY이며 현재 holder의 게시·교체·철회를 따라간다. 실제Main을 해제하면 wrapper Callable이 무효가 된다. 외부가 강하게 보유한 Root holder의 수명과 Main 권위는 구분한다.
