@@ -1,3 +1,13 @@
+## 2026-10-20 META-03 레거시 분해 가치 순수 규칙
+
+| 항목 | 변경·검수 |
+|---|---|
+| 신규 API | native_meta_salvage_policy.gd·test_meta_salvage_policy.gd와 자기 UID2개. legacy_enh_refund/salvage_value만 추가. META-02 경제등급/배율·기존 JS ToInt32 helper 읽기 전용 재사용 |
+| 원본 | 최신 main284d7faf game.html28187–28201·16302–16318. base1000/2000/10000/20000/50000+legacy환급+tier×2; 단계별ceil 누적50%에 signed32~~, 기록 _enhRefund>0이면 max. 희귀+1/+10/+100 환급1/15/656, 유니크+100 최종51202. 현행강화지출50% 아님 |
+| 검수 | 신규68/0·실제 JS본문2489 exact대조/0불일치, META-02 70/0·META-01 20/0·contracts5case/0·p2001c45/0, 모두exit0·ERROR0·SKIP0. 최초68/1은 신규 golden51200→원본51202만 정정·제품미수정 후 전체 재검, 원로그 보존 |
+| 의존·보호 | META-02 미통합이므로8171e715 parent 유지. 공용6·META-02·기존테스트·저장·Q/E·장비삭제/악의입금/State/UI/RNG0줄. numeric domain·signed32음수·소수/기록max 보존, 전체거래/플레이 인수 아님 |
+| 증거 | Godot4.7.2 pgrep2이상30초대기·각 격리상수/작업명·override매회0byte. [META-03 보고서](engine/orders/reports/meta-03_REPORT.md)·~/exoduser-wt/_out/meta-03/·STATUS=REVIEW_PENDING |
+
 ## 2026-10-20 META-02 강화 견적 순수 규칙
 
 | 항목 | 변경·검수 |
