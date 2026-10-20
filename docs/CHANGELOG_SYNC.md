@@ -1,3 +1,14 @@
+## 2026-10-20 EC2-01 2장 유형·원소 선택 독립 정책
+
+| id / 적용 위치 | 정확 계약·실제 검수 |
+|---|---|
+| 신규 경계 | native_ch2_enemy_spawn_policy.gd·test_ch2_enemy_spawn_policy.gd + 자기UID2개. RefCounted 계산만, 기존 공용·다른 담당·factory·World·State·기존 테스트·저장0줄. WORK_BOARD P2-008a/b 등과 신규 소유 경로 교집합0 |
+| 원본 | main e556b617 game.html16633–16641/16658–16666,30969–31022. si4..9/hell1 pool31·가중치178·원거리9/38(31제외), CDF 순차float 누적·12기각후2, type2..13draw, 원소P .4→6원소/1..2draw |
+| 진단·범위 | 주입Callable만 사용. 미지원 stage/무효Callable은NOT_READY·0소비, 잘못된 샘플은 실제 소비 수 보존·수치 보정0. actor/정예/실제spawn/지역/저장 미연결, CH2 플레이 완료 아님 |
+| 실제 검증 | 원본 함수 oracle2,406사례·신규7,483/0. contracts5군/0·encounter_factory3군/0·p1002f357/0·소환굴298/0·원소탄4군/0. 최종 전6suite exit0·ERROR0·SKIP0. Camera2D와 종료 ObjectDB2/8 경고 원문 보존 |
+| 이전 실패 보존 | unit첫7,452/20(JSON숫자 타입·경계전달)→binary64 전달/정확 비교 후7,483/0. 최초 p1002f/소환굴의 리소스ERROR각282는 sparse경로 보완/import 후 재실행, 깨끗한 통과로 소급하지 않음 |
+| 격리·증거 | 새 테스트 EXODUSER-ec2-01-Isolated-20261020, 기존은 파일 상수 이름. Godot 전 pgrep2이상30초 대기, override매회 설정/최종0byte. [보고서](engine/orders/reports/ec2-01_REPORT.md)·원로그 ~/exoduser-wt/_out/ec2-01/ |
+
 ## 2026-10-20 QA-002 테스트 결정성·종료·조명 하니스
 
 | 항목 | 변경·검수 근거 |
