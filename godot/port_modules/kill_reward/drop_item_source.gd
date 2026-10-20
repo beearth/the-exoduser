@@ -26,6 +26,9 @@ static func load_tables() -> Dictionary:
 
 var rng: Callable
 var aborted := false
+# DEMO11-29 opt-in only; existing full-build callers unchanged. G15137/16650.
+var demo_mode := false
+const DEMO_BANNED=["sharpAtk","brutalAtk","ruinAtk","overkilDmg","staggerExplosion","parryExplosion","elemConvert"]
 
 func _init(random_source: Callable) -> void:
 	rng = random_source
@@ -59,7 +62,8 @@ func roll_affixes(grade: int, slot: String, br_type: Variant, plv: int) -> Array
 			continue
 		if a.has("brType") and a["brType"] != br_type:
 			continue
-		# _DEMO_MODE 금지 목록: 정식 빌드 — 비활성.
+		if demo_mode and DEMO_BANNED.has(a.get("id")):continue
+		# Existing full-build callers retain the default false.
 		if int(a.get("type", 1)) == 0:
 			pre.append(a)
 		else:

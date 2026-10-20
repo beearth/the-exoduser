@@ -78,6 +78,7 @@ func _ready() -> void:
 	_build()
 	_screen.hide()
 func _input(event: InputEvent) -> void:
+	if is_instance_valid(_main.get_ref()) and is_instance_valid(_main.get_ref().get("source_workshop_panel")) and _main.get_ref().source_workshop_panel._opened:return
 	if not event is InputEventKey or not event.pressed or event.echo:return
 	# Main's source-default BINDS authority; no saved remapping owner is claimed.
 	var forge_key: int=KEY_G if SourceBinds.BINDS.forge=="KeyG" else 0
@@ -174,6 +175,7 @@ func _build() -> void:
 	_wallet=_label("",23,Color("cfad72"),"cinzel_hell");_wallet.size_flags_horizontal=Control.SIZE_EXPAND_FILL;top.add_child(_wallet)
 	top.add_child(_button(text("close"),close_panel))
 	var tabs=HBoxContainer.new();tabs.add_theme_constant_override("separation",10);body.add_child(tabs)
+	tabs.add_child(_button("소켓 · 유물 · 제작" if TranslationServer.get_locale().begins_with("ko") else "Sockets · Relics · Craft",func():_main.get_ref().open_native_workshop()))
 	for id in ["enhance","potion","transfer"]:
 		var key: String=id
 		var b=_button(text(id),func():_tab=key;_last={};_refresh());b.size_flags_horizontal=Control.SIZE_EXPAND_FILL;tabs.add_child(b)
@@ -225,7 +227,7 @@ func _equipment_details(g: Dictionary) -> void:
 	if _tab=="transfer":
 		_detail.add_child(_label(text("transfer_note"),22))
 		_detail.add_child(_label(text("transfer_cost")%str(Policy.xfer_cost(float(q.enh))),25,Color("c8a164")))
-		_detail.add_child(_label(text("transfer_zero") if float(q.enh)<=0.0 else text("transfer_pending"),20))
+		_detail.add_child(_label(text("transfer_zero") if float(q.enh)<=0.0 else text("transfer_note"),20))
 		return
 	_detail.add_child(_label(text("next")%str(q.enh+1),26,Color("d6bd88")))
 	_detail.add_child(_label(text("chance")%("%.2f"%(float(q.rate)*100)),24))

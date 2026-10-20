@@ -3406,3 +3406,20 @@ func request_native_etype_f_spawn(owner: Node, group_id: String, source: Diction
 		_native_etype_f_spawn=preload("res://scripts/native_demo11_etype_f_spawn.gd").new()
 		_native_etype_f_spawn.configure(self)
 	return _native_etype_f_spawn.spawn_selected(owner,group_id,source)
+
+# DEMO11-29: event-only workshop, no frame polling or new damage/resource writer.
+var source_workshop: RefCounted
+var source_workshop_panel: CanvasLayer
+func request_native_workshop(operation: String,args: Dictionary) -> Dictionary:
+	if not _native_main_service_live():return {"applied":false,"reason":"Main_not_live"}
+	if not is_instance_valid(source_equipment):
+		source_equipment=InventoryEquipmentScript.new()
+		if not source_equipment.configure(self,source_state):return {"applied":false,"reason":"equipment_not_ready"}
+	if not is_instance_valid(source_workshop):
+		source_workshop=preload("res://scripts/native_workshop_transaction.gd").new();source_workshop.configure(self,source_state)
+	return source_state.apply_native_workshop(self,operation,args)
+func open_native_workshop() -> void:
+	source_forge.close_panel()
+	if not is_instance_valid(source_workshop_panel):
+		source_workshop_panel=preload("res://scripts/native_workshop_panel.gd").new();source_workshop_panel.configure(self);add_child(source_workshop_panel)
+	source_workshop_panel.open_panel()

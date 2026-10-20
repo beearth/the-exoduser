@@ -185,6 +185,13 @@
 | 연결 | 기존 PC equipment_refresh1회만 재사용. 장착 receipt에 id별 실제 합산·before/after·READY/NOT_READY/PARTIAL 추가. 스탯18 검증, hurtE 직접72id·기타306id는 미완료. 원본 수식/tiers 복제0·Main/State/전투/저장0줄·기존 장착 파일+1줄(:135) |
 | 검증·인계 | 신규639/0·원문18사례360필드 exact Number 불일치0. 직접 회귀2종 각1회735/0(22r442+PC293). ERROR/누수/잔류0. 데모필터 native 차이7id·hurtE72id는 보호 owner에 계약 요청. [보고서](engine/orders/reports/demo11-24_REPORT.md)·[빈도/전수표](7아이템디자인/DEMO11_24_EFFECT_CONSUMPTION_20261021.md)·원로그 _out/demo11-24/. tick/목록 API/공유 RNG0·각 격리 상수·override0byte |
 
+## 2026-10-21 DEMO11-29 — 데모 소켓·유물·장비 제작 실제 거래
+
+- main0138c5bb + 장착22r d276e02e 정상merge 기준. 원본 _DEMO_MODE/forge 확인 후 유골함 제작 제외·데모 금지 affix7종 opt-in, actual State 재료/악의/가루/INV 단일 lock 및 실패 참조·캐시 rollback 연결.
+- 소켓·유물 거래/이미 장착한 종류 제작 READY. 재련·빈 슬롯 자동장착은 원본 recalcSt→applyStats의 PC 단독 recalcSt writer 부재로 HOLD(차감/RNG0). 직접 apply_stats와 장착용 clamp를 혼동하지 않음. PC 자원/피해/저장IO0행.
+- Hell Gothic 작업대·본문/숫자 hell 폰트·이모지/개발 상태 문구0, 번역 CRLF 보존. 관련 실행 수치·2장/1x 캡처·공용 변경 줄·HOLD 인터페이스는 [보고서](engine/orders/reports/demo11-29_REPORT.md), 원로그 _out/demo11-29/.
+
+
 ## 2026-10-21 DEMO11-22r — 일반17슬롯 장착·PC runtime refresh 연결
 
 | 항목 | 구현·검수 근거 |
