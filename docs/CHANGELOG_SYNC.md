@@ -1,5 +1,11 @@
 ## 2026-10-21 MAP11-PROD 제품 Main 맵 연결 / DEMO11-45 상자 재개
 
+## 2026-10-21 MAP11-PROD 제품 인트로 검증 보강
+
+- 실제 Main 인트로 종료·시작 적5개체 유효 위치 검사15/0을 추가했다. 관련 합248/0과 map contract1case.
+- 제품 인트로 이후 벽시계 벤치는 종료 actor0임을 명시하여 전투 부하 성능과 구분했다. 제품 코드 추가 변경 없음.
+- 관련 문서: `docs/engine/orders/reports/map11-prod_REPORT.md`.
+
 | 항목 | 구현·근거 |
 |---|---|
 | 기준·선택 | main0138c5bb9 + MAP11 263498f6(6bcc483d 포함) 정상 merge. demo stage0 기본 새 MAP11, --map11=off 기존 경로 보존 |
