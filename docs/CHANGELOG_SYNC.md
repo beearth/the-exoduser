@@ -1,3 +1,14 @@
+## 2026-10-20 NW-04 상자·잔해 보상 제안과 공통 월드 반입 계산
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준 / 의존 | fetch 최신main26c050a99. NW01 d9865e4c·NW02 2cc27d09·NW03 07883981 모두 main ancestor, 미병합 의존 없음. 신규 module2/test/oracle/UID3·보고서만, 공용·기존·타 담당·원본·저장·R 변경0 |
+| 원본 / 계약 | G32855–32911·16721, chest<60/debris<50·배열순/상자우선·flag/보상/대사 순서. cap20/chest Infinity/strict tie/tail swap. 기존17슬롯 재사용, 생성기 재작성·실제 bag/owner 연결0 |
+| 의존 / 수치 | mkItem·드롭사운드·HP 반환의 순서 있는 receipt, 내부 RNG 경계 분리. ~~ signed wrap·JS Number 재화 산술 보존. OS.execute 전체 join·절대 node-bin 인자·oracle binary64 숫자 전달, epsilon/skip0 |
+| 신규 / 결함주입 | 원문VM reward317+admission51·native 계약139+정수carrier1, 최종5333/0. 반경/cap/chest rank/flag/등급/RNG 순서6종 결함에서8/87/4/330/32/16실패 검출, 동일byte 복원 |
+| 회귀 / 선재 종료 문제 | NW01 2304/0·NW02 1851/0·NW03 3060/0·contracts5그룹/0·물약318/0·regions43/0. p2001c45/0이나 MP3 두 객체 누수, 신규 제외 main기준에서도 동일; 종료까지 깨끗한 PASS 아님 |
+| 중단선 / 제출 | 다음 NW05 실제 입력/배열/State 연결은 BLOCKED, 필요 위치·원문 쓰기 근거만 보고. [NW-04 보고서](engine/orders/reports/nw-04_REPORT.md), 원로그 ~/exoduser-wt/_out/nw-04/. Godot pgrep guard·격리·override0·AppSupport68보존, 자기branch push/원격SHA/DONE 뒤 자기worktree 제거 |
+
 ## 2026-10-20 SND-08 독립 원문 믹스·합성·레시피 모델
 
 ## 2026-10-20 NW-03 MAP_OBJS action의 독립 명령 계획
