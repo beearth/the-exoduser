@@ -1,3 +1,11 @@
+## 2026-10-21 DEMO11-34 최신 main 성능 캐시 수정 정상 merge
+
+| 항목 | 검수·근거 |
+|---|---|
+| 기준·범위 | abb80c75 + origin/main8dbbf2b0(aa1eaea5a 포함) 정상merge. PC cache3파일 main과동일; Main/actor/BC 직접13파일 목록생성API0, 자체제품변경0. 문서충돌 양쪽기록 보존. |
+| 검증 | 관련8종 각1회 **654/0**, 기존 테스트byte무수정·skip0·예상밖ERROR0. 권위 stage거부 의도ERROR1 별도. actor163/0은 실제RNG ack단정수 변동. Mac 성능측정은하지않음; 필요시고정N물리틱벽시계벤치. |
+| 제출 | [보고서](engine/orders/reports/demo11-34_REPORT.md), 원로그 _out/demo11-34/main-perf-merge/. 자기branch 일반push·remoteSHA/DONE추가후자기WT제거, R불변. |
+
 ## 2026-10-21 DEMO11-34 stage0 보스 actor·요청 assembler
 
 | 항목 | 구현·검수 근거 |
@@ -359,6 +367,7 @@
 | 검산 / 의존 | 고정 Git 원문 AST/발췌 VM과 전체 재현94항목 차이0. CH4 등록7·pool31·원화byte·굴94 전수 부록. CH2-02는 main 존재, CH3-01 stage10은 원격 fcd7fcaa. 단일 exporter 0/1/4+observer 및 인수된10 보존 지시 |
 | 표현 / 후속 | 웹 맵1:1 복제가 아닌 PoE2·No Rest 목표의 깊이/생동감/부분 조명 확장 별도 절. 게임플레이/충돌·출구·스폰·지역은 불변. CH4-01 상세 지시서와18단위·공용 접점·docs 차이 표. 실제 배치/종주/시각/성능은 미확인 |
 | 자료 / 제출 | [4장 추적·지시서](engine/FDG_SOURCE_TRACE_MAPS_CH4_20261020.md). 원로그 ~/exoduser-wt/_out/trace-maps-ch4/. 정상 훅·경로 지정 stage·자기 branch push/원격SHA→DONE→자기 WT 제거, main push/강제 push/reset0 |
+
 ## 2026-10-20 p2001i-diag — 종료 오디오 수명 진단·기준 main 비재현
 
 | id / 적용 위치 | 실제 관측·계약 |
