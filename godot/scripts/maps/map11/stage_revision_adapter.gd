@@ -61,6 +61,7 @@ func legacy_boss_metrics(out: Dictionary) -> bool:
 	out.clear()
 	if not runtime_ready(): return false
 	var metric: Vector3i = _provider.boss_extent()
+	if metric == Vector3i.ZERO: return false
 	out.merge({"mw":metric.x,"mh":metric.y,"T":metric.z,"map_instance_id":_instance,"revision":_revision})
 	return true
 func sweep_circle(a: Vector2, b: Vector2, r: float, out: Dictionary) -> bool:
