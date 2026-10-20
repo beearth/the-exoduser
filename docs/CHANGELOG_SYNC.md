@@ -1,3 +1,14 @@
+## 2026-10-20 IT-03 — 결정 효과의 품질 배율 적용
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 범위·의존 | 지정된 기존 player_crystal_resource_source/producer.gd와 신규 test_native_crystal_quality_effects.gd, 해당 모듈 전용 설명서 동기화. IT-02 f7230588에서 분기(IT-01 포함, 기준 main 미포함). 공용6파일·다른 모듈/기존 테스트·JSON·P2-006 표시/줍기 수정0 |
+| 원본 | origin/main 284d7faf49295b2f5061937a47ce96038032ed3c game.html:15289~15296/15316. 기존 star×(1+enh×0.1) 뒤 IT-01 gem_multiplier를 곱한 후 각 opts base×mul.18종·5성급·옵션 순서·adapter 계약 보존 |
+| 품질 | q1/50/100 배율0.755/1/1.25. q누락/null/0/−0→50, clamp1~100·소수반올림0. 문자열/bool/객체·NaN/Inf q는 NOT_READY/effects=null→adapter null, resource packet dispatch0. 원래 미등록d/s의[] 선행·기존 throw/nonfinite 분류 유지 |
+| 자원·보호 | fixture에서 q100 mp6.25→mmp106, q1/enh20 st11.325→mst111, regen value/60 및 cap/순서 확인. q없는 구아이템은 중립 유지. 홈 배율·socketQ 읽기0(IT-04 별도), RNG·장비/저장 writer·schema 변경0 |
+| 검수 | 신규7,731/0, 원본 직접대조15,260/0(2,183입력·5,428 binary64 효과값 완전일치). contracts5그룹/0·P2-001c40/0·IT-01 177/0·IT-02 2,205/0·관련 실제 Main 초기 자원48/0. 기존 P2-001c ObjectDB2개 종료누수·Camera2D 경고 보존. [IT-03 보고서](engine/orders/reports/it-03_REPORT.md) |
+| 격리·한계 | 신규 EXODUSER-it-03-Isolated-20261020, 기존 회귀 각 파일 상수 사용. 매 Godot 전 pgrep 수2이상이면30초 대기, 자기 엔진 순차실행. 매 실행 override 설정 후0byte. 실제 화면·자연 플레이·PC·저장 왕복 미검수 |
+
 ## 2026-10-20 IT-02 — 어픽스·등급 읽기 전용 표시 모델
 
 | id / 적용 위치 | 현재 정확 계약 |
