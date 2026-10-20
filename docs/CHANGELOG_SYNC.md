@@ -1,3 +1,17 @@
+## 2026-10-20 CH2-04 si5 독립 소비자·원 실효 배치/충돌
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 기준 / 의존 | fetch main6d987cb8a, CH2-03 미포함으로 f918b9a9 끝 분기. 최신 배정 CH2-04=si5 소비자(추적§4.3 후반), 옛§4.4 si6 미착수. codex/ch2-04-20261020 |
+| 공유 / 보호 | CH2 resource exporter stage5 확장, 기본4의 bundle/query/LOS/raw 전체 전후차이0. 기존snapshot/CH1·CH2runtime/공용6/P2-006a/P3/제품map/원문PNG0줄, 보호3155파일SHA동일 |
+| 원 실효값 | game4d911cdd…/65692행. 최종272=자동sprite271+gate1·analytic원42·tile1 36cell=4rect·기존texture12 byte동일. lore/breakable/altar/벽눈0, hand/path부재보존·보정0. init난수1회 추가 |
+| 렌더 / 소비 | 원234square/37keepAR·flip15·중심pivot·alpha/scale/y-sort. 원light156의radius80/색255·180·80/실효alpha .3*(.15+sin(now/800+x)*.05) 자기노드. si5 reader/world/scene·별도바닥표현, Main/실P/굴/지역/전환/full_stage_ready=false |
+| 신규 검증 | manifest181872byte/SHA6f969f19…·Node7/0·GUI Godot2464/0. isW/canMv각10038·LOS400·40000union/Physics센터 mismatch0, IEEE754입력보존. BFS185·왕복370/94frame, 전투FPS 증거아님 |
+| 회귀 | sourceNode39/0·기존si4WorldNode7/0·asset6/0·pit6/0·map28/9선재이름순서동일. Godot CH2-03 344/0·01 362/0·CH1 63/75/189 모두0실패·si4World894/0·contracts5그룹/0·굴298/0·지역43/0 |
+| 화면 / 판정 | 1920x1080 8뷰·1x crop3. 반복바닥/성긴배치/임시출구 등 RETOUCH. L/captures/·이전sprite-only별도. 전체환경/전투/제품진행/PC 미확인. 기능통과를시각완성으로확대0 |
+| 이력 / 운영 | helper누락·비격자 가정·검사치환126/별도map묶음 실패로그 보존, 원문수치수정0. 매Godot전pgrep>=2면30초(실제1회대기)·상수격리/override finally0byte·node경로인자/UTF-8로그 |
+| 상세 / 제출 | [CH2-04 보고서](engine/orders/reports/ch2-04_REPORT.md), ~/exoduser-wt/_out/ch2-04/. 자기branch push·원격일치·DONE 뒤 자기sparseWT/cache제거, R불변·main/force/hook우회0 |
+
 ## 2026-10-20 CH2-03 si5 원본 snapshot·순수 계약
 
 | id / 적용 위치 | 현재 정확 계약 |
