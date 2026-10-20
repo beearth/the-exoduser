@@ -1,3 +1,15 @@
+## 2026-10-20 IT-01 — 아이템 품질·소켓 공명 순수 계산
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 범위 | 신규 `godot/port_modules/item_quality_source/producer.gd`와 `godot/tests/test_native_item_quality_source.gd`만. 공용6파일·P2-001c 생성기/JSON·P2-006a 표시/줍기 수정0, Main 연결0 |
+| 원본 | 최신 main `9528ea35b429498fcf42fe3723008219ed0ed7e1`의 game.html:15305,15308~15316,15319,15322~15331. 기존 추적의15330은 반환식 행이며 함수 닫힘15331까지 확인 |
+| 품질 | finite int/float 및 null/누락 지원. q=0/−0/null/누락→50, 이후1~100 clamp, tier=10−floor((q−1)/10). 등급 동1/#d19a5c·은41/#e7edf3·금81/#f2d388. 품질 승수=.75+.5×q/100, 소수 q 반올림 없음 |
+| 합성·홈 | null/빈 합성목록50; 요소별 q fallback50/clamp→평균의 Math.round→clamp. 홈 fallback1; multiplier=1+(q−1)/99×(등급 일치?2:1). 공명 표시는 raw q>1도 요구. 빈 홈은1/false. 원본 ID/star 검사·재료 소비·RNG 추가0 |
+| 입력·보존 | 복잡 JS coercion·문자열/bool q·NaN/Inf는 NOT_READY/사유, 정상 효과값 미공급. 입력·중첩 참조·배열 길이 불변. 결과는 일시적 view이며 세이브 형식/복원·Q/E·docs/2_3 변경0 |
+| 검수 | 새 순수 테스트177/0, 원본 JS 함수와 품질205·홈120·합성8의1478비교/0. 첫 파일 미배치 실행 무효 및 JSON 숫자 Dictionary 비교1실패는 원로그 보존. 기존 회귀 contracts 5그룹/0실패, P2-001c 40/0·exit0(단, Camera2D·ObjectDB 2인스턴스 종료누수 경고 보존). [it-01 보고서](engine/orders/reports/it-01_REPORT.md) 참조 |
+| 격리·한계 | 신규 테스트 `EXODUSER-it-01-Isolated-20261020`. Main 없는 순수 테스트는 Git 밖 전용 project.godot에서 실제 신규 소스를 symlink로 읽으며 repository override 미사용. 실제 플레이·화면·장착 효과·전체 JS coercion 인수 아님 |
+
 > 2026-10-17 ENGINE 현행: callback **12/25·미13**. play_time은 el_mul 바로 다음에 동일 Services self의 arity0 Callable로 등록했다. owner 첫 격리 공개 API 검수는 인수됐으며 자연 clock·실게임 인수는 미확인이다. D9는 직전 공통 소스 인수이며, 이번 main/I/R 소스 정렬은 아래 통합 정본과 단위 receipt의 실제 HEAD·tree를 기준으로 확인한다. V12 후보는 소스 인수·첫 FAIL·별도 보완 한정성공으로 구분하며 제품 copy·World hook은 수행하지 않았다. 아래 이전 단계 숫자·원검수 결과는 당시 이력으로 보존한다. 실제 local/remote commit 상태는 단위 receipt를 따른다.
 
 > 2026-10-17 ENGINE WIP 현행: 실제 callback **9/25·미16**. 신규 격리 행동41/41과 신규 map 경계 static9/9만 인수 범위다. 원 첫 parse 실패는 보존한다. 이 WIP를 main/R/served·전체 게임 최신화 완료로 해석하지 않는다.
