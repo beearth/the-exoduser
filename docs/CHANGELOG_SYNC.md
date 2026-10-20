@@ -1,3 +1,12 @@
+## 2026-10-20 META-07 강화 1회 메모리 거래 BLOCKED
+
+| 항목 | 정적 판정·보호 |
+|---|---|
+| 중단 | 순서안7/12. 실제 INV/G는 존재하지만 강화 mats/enh 거래 쓰기 소비 범위는 별도 State exactscope가 필요해 사용자 중단 조건 적용. 제품/새 테스트/가짜 equipped provider 생성0 |
+| 근거·위치 | main e556b617 game.html50623–50627: live견적→잔액→차감→RNG→성공enh+1. State184–185 getter·478–486 스킬비용·828–839 starter·1070–1098 전설복구의 범위를 구분. mats/enh 새 좁은 소비·실제 RNG 전달 필요 위치를 보고서에 기록 |
+| 수치 | Godot launch0·신규검사 NOT_CREATED/NOT_RUN·회귀 NOT_RUN·PASS 주장0. 실제 저장/UI 후처리는 별도 보호이며 저장 형식 변경 필수라는 판정 아님 |
+| 의존·제출 | META-06 미통합으로f422eb13 parent, sparse --no-checkout. 공용/State/저장/QE0줄·문서2개만. [META-07 보고서](engine/orders/reports/meta-07_REPORT.md)·~/exoduser-wt/_out/meta-07/·STATUS=BLOCKED. 자기브랜치 push/원격일치/DONE 후 자기worktree 제거·다음작업 착수0 |
+
 ## 2026-10-20 META-06 demo·초월 제한 순수 정책
 
 | 항목 | 변경·검수 |
