@@ -1,3 +1,11 @@
+## 2026-10-20 BC08 — 1장 보스 이동3기술·idle 후속 packet
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 구현·의존 | 신규 native_ch1_boss_movement_states.gd·test_boss_ch1_bc08_movement.gd·bc08_REPORT.md. BC07 edcbc480 끝에서 분기. 공용/타 담당 코드·기존 테스트·원본·설계 docs·R 수정0 |
+| 원본 | 원본 시작 main a00893ad·마감 26c050a9(HTML byte/행 동일) game.html:38315–38355·40483–40517·40664–40708·40942–40977. charge35/50·18f 방향고정·jump40·dash9/phase4cnt10·XY/X/Y·idle중첩·cached d·차징60 예약/source RNG 순서. collision/flow/실제 contact owner readback 필수, actual 피해·패링/Main 집행0 |
+| 검증·경계 | 최초24,750/6 및 진단 동일6은 비정수 JSON 로드의 테스트 정수 오분류로 원문 보존, 제품 byte 동일. fixture 수정24,750/0, 조기 반환/완전 readback 보강 후 최종24,788/0·1,477건/이벤트7,791/RNG750/contact요청152 대조(실제 피해·패링 성공 수 아님). BC01 681/0·BC02 5,257/0·BC03 31,976/0·BC04 21,899/0·BC05 18,424/0·BC06 14,099/0·BC07 14,531/0·contracts5/5·import 정상, 최종/회귀 ERROR0. 원로그 _out/bc08, push·SHA대조·DONE 뒤 자기 sparse worktree 제거 |
+
 ## 2026-10-20 BC07 — 1장 보스 근접4기술 상태·hit packet
 
 | id / 적용 위치 | 현재 정확 계약 |
