@@ -24,6 +24,25 @@
 | 결함 / 격리 | 값·해금·seq중복제거 결함3종 6/515/2실패 검출, 정확 복원 후43491/0. Godot10회 매실행 gate/override0, count2에서30초×2대기. 새 USERDIR는 EXODUSER-bc3-01r-Isolated-20261020, 기존 회귀는 파일 상수 |
 | HOLD / 제출 | spawn 색·BC08은 다른 창 소유, 공용 Main/State/hurtE·저장·기존 제품/테스트0줄. 실전/실창/저장/PC검수 아님. [BC3-01r 보고서](engine/orders/reports/bc3-01r_REPORT.md), 원로그 ~/exoduser-wt/_out/bc3-01r/. push·원격SHA·DONE 후 자기 worktree 제거 |
 
+
+## 2026-10-20 EC3-03 etype40 위상 순수 상태·명령
+
+| id / 적용 위치 | 정확 계약·실제 검수 |
+|---|---|
+| 기준·의존 | main249c26fad + 승인EC3-02 fb8e80d0 정상merge 기준0aa7690e. rebase/reset/force0. WORK_BOARD P2-008b etype47/factory와 경로 중복0 |
+| 원본 | G39289–39316·42154. idle 외곽/2회T감소/진입60+30U후같은tick감소/Cd대입·d30/50/1200 엄격경계/해제후추가일반이동. cached d와 현재좌표재조준·canMv순서·FX/shot raw요청 보존 |
+| 순수 범위 | 신규phase leaf/test·UID2·보고서만. EC2-02 Draws 직접재사용·EC3-02 init 연속stream 검사. HP/CH2식복제0·실actor/피격/이동/projectile writer0·Main/State/공용/다른담당/저장0줄, 실제소비HOLD |
+| 검수·실패 | 최종33177/0·원문2688tick+hurt16조합, 회귀8종190519단정/0·12그룹/0, 전부exit0/ERROR0. 초기수치비교61→2실패 원문보존, 입력scale·재조준조건수로forward error 정정·기존33029단정유지+148추가. trig최대차3.41e−13, timer/분기/순서/소비exact. 종료Camera2/ObjectDB8누수1 WARNING보존 |
+| 격리·인계 | 신규EXODUSER-ec3-03-Isolated-20261020/기존각상수·매Godot pgrep2이상30초대기·override0byte. 명시node인자/출력join/UTF8임시JSON/binary64·원본pin. [보고서](engine/orders/reports/ec3-03_REPORT.md), 원로그 ~/exoduser-wt/_out/ec3-03/. 자기branch push/remote일치/DONE후자기WT제거 |
+
+## 2026-10-20 EC3-02 3장 catalog·초기38필드 projection
+
+| id / 적용 위치 | 정확 계약·실제 검수 |
+|---|---|
+| 신규 범위 | native_ch3_enemy_catalog_policy.gd·test_ch3_enemy_catalog_policy.gd·자기UID2개. catalog10행/31263–31298의38필드만. 기존EC2-02 Draws/API형식재사용·CH2필드/HP식복제0,complete_actor=false |
+| 원본 | 40..49각matching draw2/4/3/2/2/2/4/3/4/6,offtimer9999/phase−1/bleed0/상수flag·coords0draw,orbit31260뒤/erratic31300앞. raw46speed0분기·44R10(기획8과불일치),catalogshield%와실HP방어구분 |
+| 검수 | 최종신규12,602/0·원문1,000·38키값/순서/소비binary64/잘못된샘플위치검사. 회귀6종최종실패0/ERROR0/SKIP0. 최초importSIGSEGV−11/이후캐시누락ERROR50·실패단정10 원문보존,동일명령재import0/0및해당회귀4종재실행통과. 원인미확인·숨김0 |
+| 경계·기반 | main6d987cb8a에EC2-02 a10924eb포함하여main분기,EC3-01은미병합/미소비. 전체HP/coreprovider통합은HOLD·공용Main/State/저장/다른담당0줄. Node필수인자/출력join·UTF8임시JSON,새EXODUSER-ec3-02-Isolated-20261020·기존각상수/Godot전pgrep2이상30초대기/override0byte. [보고서](engine/orders/reports/ec3-02_REPORT.md)·원로그 ~/exoduser-wt/_out/ec3-02/ |
 ## 2026-10-20 TRACE-BOSS-CH3 3장 보스 원본 추적·작은 이식 단위
 
 | 항목 | 추적·검토 근거 |
@@ -133,7 +152,7 @@
 | 경계·HOLD | 실제전투/Main·State·World·부활·저장연결0. 다음B2C02의BC02~07 chapter데이터/guard/ack 통합결정은HOLD,공용모듈수정·stage위장·후속구현0. 시각·실전·성능·PC 미검수 |
 | 인계 | [BC2-01 보고서](engine/orders/reports/bc2-01_REPORT.md). 원로그 `~/exoduser-wt/_out/bc2-01/`,정상hook·자기branch push·원격SHA대조·DONE후자기worktree제거 |
 
-=======
+
 ## 2026-10-20 TRACE-BOSS-CH4 원본 추적·BC4 구현 지시서
 
 | 항목 | 구현·검수 근거 |
@@ -143,7 +162,6 @@
 | 정적 확인 | 원문 선언59move/68combo/5phase·HP42표본·35phase후보수·35meteor개수·45start/state·55식별자/7이름·docs대조12행. burstCounter idx60의59CD배열 밖 동작은 원문대로 기록 |
 | 의존 / HOLD | main에 CH2 catalog·bridge 없음, BC3-01은56353bdb BLOCKED·미구현. BC4-01은 CH2/CH3 provider 정식 인수 전 BLOCKED. BC02 색상·BC08 guard·실counter/HP0/Main 배선은 통합 요청만 |
 | 실행 / 제출 | Godot·import·게임·실창·테스트 실행0,정적 조사를 전투 PASS로 합산0. [CH4 추적·지시서](engine/FDG_SOURCE_TRACE_BOSS_CH4_20261020.md). 원로그 ~/exoduser-wt/_out/trace-boss-ch4/. 자기 branch push·원격SHA·DONE 후 자기 worktree 제거 |
->>>>>>> c50fb353
 =======
 ## 2026-10-20 TRACE-MAPS-CH4 4장 7에리어 원본 추적·구현 지시서
 
@@ -177,6 +195,8 @@
 | 검수 | 최종신규12,602/0·원문1,000·38키값/순서/소비binary64/잘못된샘플위치검사. 회귀6종최종실패0/ERROR0/SKIP0. 최초importSIGSEGV−11/이후캐시누락ERROR50·실패단정10 원문보존,동일명령재import0/0및해당회귀4종재실행통과. 원인미확인·숨김0 |
 | 경계·기반 | main6d987cb8a에EC2-02 a10924eb포함하여main분기,EC3-01은미병합/미소비. 전체HP/coreprovider통합은HOLD·공용Main/State/저장/다른담당0줄. Node필수인자/출력join·UTF8임시JSON,새EXODUSER-ec3-02-Isolated-20261020·기존각상수/Godot전pgrep2이상30초대기/override0byte. [보고서](engine/orders/reports/ec3-02_REPORT.md)·원로그 ~/exoduser-wt/_out/ec3-02/ |
 >>>>>>> fb8e80d0
+=======
+>>>>>>> 01d036d4
 
 ## 2026-10-20 QA-007 테스트 Windows 이식성
 
