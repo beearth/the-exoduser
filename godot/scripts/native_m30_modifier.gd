@@ -125,7 +125,20 @@ static func _load_original(path: String) -> Texture2D:
 		push_error("Required packaged original M30 texture is unreadable: " + path)
 	return original
 
+func owns_modifier_state(value: Dictionary) -> bool:
+	return is_same(_mod_state,value)
+
+func is_owner_ready() -> bool:
+	return _configured and is_instance_valid(_actor) and is_instance_valid(_target)
+
 func advance_native(ticks: float, distance_to_player: float) -> void:
+	_advance_modifier(ticks, distance_to_player, true)
+
+func advance_owner_managed(ticks: float, distance_to_player: float) -> void:
+	# EL-01 / G38798: caller already decremented the shared lock exactly once.
+	_advance_modifier(ticks, distance_to_player, false)
+
+func _advance_modifier(ticks: float, distance_to_player: float, tick_lock: bool) -> void:
 	# Called once inside the owner's admitted mod block, after its existing
 	# guards/tiering and before the far-unalerted return. No autonomous clock.
 	if not _configured or not is_instance_valid(_actor) or not is_instance_valid(_target):
@@ -135,7 +148,8 @@ func advance_native(ticks: float, distance_to_player: float) -> void:
 	var mods: Variant = _actor.get("mods")
 	if not mods is Array or mods.is_empty():
 		return
-	_mod_state["eliteBusy"] = maxf(0.0, float(_mod_state["eliteBusy"]) - ticks)
+	if tick_lock:
+		_mod_state["eliteBusy"] = maxf(0.0, float(_mod_state["eliteBusy"]) - ticks)
 	var native: Dictionary = _profile["native"]
 	if mods.has("M30") and distance_to_player < float(native["eligibility_distance"]):
 		_mod_state["eliteRing"] = float(_mod_state["eliteRing"]) + ticks

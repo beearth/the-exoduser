@@ -63,6 +63,9 @@
 
 - main0138c5bb9 + DEMO11-43 9b763da9 정상 merge. B 전용 직접호출 preflight·기존 하니스 상속, 공통 helper 재작성/A 파일 변경0. **5종 모두 NOT_READY**, 실제 자연 스폰·특수 상태·전투 구현 완료 아님.
 - 신규27/0·기존43 40/0 각1회. 기존 회귀 내 adapter 벽시계만 측정, 5종 실제 스폰 벤치 미실행. Main/State/PC 전투·피해/저장/맵/tick/목록 생성API0. [보고서](engine/orders/reports/demo11-etype-b_REPORT.md)·docs/8.0 종별 근거·묶음 A 통합 후보·_out/demo11-etype-b/ 원로그.
+## 2026-10-21 DEMO11-etype-e 자연 kernel 등록 전제 BLOCKED
+
+- main0138c5bb에43/9b763da9·EL/654845e4·37/05f41cc7 정상 merge, 양쪽 기능 보존. type3 PC hurtE owner·type7 실제 M29·29 attack/death/gate 경계 미준비를 etype별 보고. PC factory 중첩 건너뜀, own 제품0줄·자연 등록0. 거절 계약 검증과 3종 벤치 미실행 근거는 [보고서](engine/orders/reports/demo11-etype-e_REPORT.md). 8.0/8.2 갱신, 가짜 READY/성능 PASS0.
 
 ## 2026-10-21 DEMO11-43 최신 main 충돌 해소 후속
 
@@ -76,6 +79,23 @@
 | 경계·보호 | Main 공개 opt-in. 실제 etype 생성/등록·새 MAP11 provider·스케줄러 재개 후행, legacy 좌표 검색 차단. origin 불변/중복 kill 거절, 예정 분모 단1회. State·World·PC 전투/피해·저장·맵 제작0줄, 공용 줄 범위 보고 |
 | 검증·성능 | 신규40/0·P3-002 298/0·P3-003 43/0 각1회(381/0). 최종 ERROR0, Camera 경고각1 및 P3-002 ObjectDB8 종료 경고 보존. 최초 Main 들여쓰기 import parse 실패 교정 이력 보존. 후보요청10,000틱×3 벽시계1회: 평균0.1204ms/p99 0.202ms(실제 적 생성/전체게임 제외) |
 | 근거·제출 | [소비자 ABI](engine/DEMO11_STAGE_SPAWN_ADAPTER_20261021.md)·P3 docs·[보고서](engine/orders/reports/demo11-43_REPORT.md). 신규 틱 목록API0. 원로그 _out/demo11-43/, pgrep 2이상30초 대기·격리명·override finally제거. 자기branch push/원격일치/DONE 후 WT제거 |
+
+## 2026-10-21 EL-01 — hell0 선택기·단일 lock·forced constructor 후처리
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준·의존 | main45be76e4(969c194e6 이후)에 DEMO11-30 94d26012 정상 merge(b46dd5f2), CHANGELOG 양쪽 절 보존. PC parry 원격 ref 없음/merge0, 실제 M29 binding NOT_READY 유지 |
+| 구현 | stage0..3 선택기·원본 constructor RNG prefix를 type3/인트로/굴에서 재사용. M29→M30 owner lock1회·M30 standalone 호환·forced raw 후처리 API. 후속장 mod/실제 guard 등록/PC Q/E·피해·Main/State·저장·맵 변경0 |
+| 검증 | 신규3327/0(원본466사례), M29 143/0·recipe1982/0·binder4그룹/0·curtain124/0·굴298/0 각1회. M30 4그룹/0·의도된 누락자원 ERROR1 보존. type7 낡은 count 기대2실패는 기준 main 실패그룹에서도 동일 재현; 테스트 약화/수정0. Camera/굴 ObjectDB8 경고 보존. 틱 목록 API 추가0 |
+| 근거·제출 | [EL-01 보고서](engine/orders/reports/el-01_REPORT.md), 8.0/8.2·ELITES/CH1 trace·type3 실행 의존 보충. Node --node-bin·UTF8 oracle·Acorn readonly 의존, pgrep/30초 gate·격리명·원로그 _out/el-01/. 자기branch push/원격일치/DONE 후 WT제거, R 불변 |
+
+## 2026-10-21 DEMO11-30 — hell0 정예 자연 연결 선행 접점 BLOCKED
+
+| 항목 | 근거 |
+|---|---|
+| 기준·판정 | main ac3764bfe. EL-01 제품 경로 부재·M29 비투사체 패링 실제 PC 인터페이스 부재. constructor all-ready 위조/투사체 반사 대체/PC 전투 복제 없이 BLOCKED |
+| 범위·검증 | 제품·테스트·Main/State·저장·전투·맵 0줄. 최신 game 원본/기존 kernel 정적 대조만; Godot·런타임 테스트·캡처 미실행, PASS 주장0 |
+| 근거·제출 | [보고서](engine/orders/reports/demo11-30_REPORT.md)·ELITES 추적 보충. 단일 busy tick·forced 후대입 원순서·재개 인터페이스 기록. 원로그 _out/demo11-30/, 자기 branch 정상 push/원격 일치/DONE 후 자기 WT 제거 |
 
 
 ## 2026-10-21 DEMO11-18 일반 데모 합체·흡수·성급·되돌리기 원장
@@ -155,6 +175,15 @@
 - 독립 demo_lobby 씬·SV-LOBBY-VIEW/S10 후보 구현, Main/State/전투/맵/저장 adapter·project0줄. 원본 에셋3개 byte동일·Hell Gothic·NativeUIFont·이모지0, 번역23쌍/3.1UI 현황 갱신.
 - 신규 최종48/0, 관련 기존 저장79/0·reader5952/0 각1회, 최신 ERROR/ObjectDB/resource0. 초기 import/parse·46/11·시각 RETOUCH/중단 로그 보존. 목록/삭제확인1920×1080·각1x크롭은 _out/demo11-04/captures/, 눈검수 대기. [보고서](engine/orders/reports/demo11-04_REPORT.md).
 
+## 2026-10-21 DEMO11-37 — 지역 gate·arena·최종 사망 이후 진행 인계
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준·연결 | mainac3764bf +35/727f6a02 +38/ae49b21c 정상 merge=e7d855b6. P3-003 실제 귀속/gate 재사용, MAP11-01 Marker 계약만 읽기. PC36/49 최종 사망 신호 수신·기존 State chest 저장·SP/TA/랭크 기록→38 clear/demoEnd. |
+| 공용·보호 | Main 설치/API 추가14/삭제0, State progression 신규32줄+기존상자축출1줄수정(diff+33/−1). 전투 핵심/HP·poise·부활·Q/E·저장IO/형식·맵지형·원본0. 자연 map/PC producer 후행, 가짜 사망/보상ACK0. |
+| 검증·벤치 | 신규148/0+관련기존262/0=기능410/0. 기존bench 정확히1회260/0·ERROR/WARNING0 cleanPASS, mean.763442/p95.920/max1.512ms<8.333ms. 초기import2실패·신규148/120 JSON숫자경계 실패 원문 보존/실패만정정. 전체게임fps未. |
+| 문서·제출 | [계약·공용 줄·최종 판정](engine/orders/reports/demo11-37_REPORT.md), BOSS_BATTLE_SETTINGS·P3 지역 후속 상태 갱신. _out/demo11-37 원로그, 자기branch push/remoteSHA/DONE 뒤 자기WT제거·R불변. |
+
 ## 2026-10-21 DEMO11-05 — main 성능 수정 병합·tick 경로 점검
 
 | 항목 | 구현·검수 근거 |
@@ -197,6 +226,7 @@
 | 검증 | 원본 JS UTF8 oracle420사례·신규2560/0. 직접 회귀 각1회 QS318/0·regen10/0·lessonclock21/0·contracts5그룹/0. 최종 ERROR/종료누수0, 기존 Camera2D WARNING 기록. 최초 하니스5실패/MP3 누수 진단·수정 이력 보존 |
 | 잔여·제출 | SFX 미연결·native 시스템 튜토리얼·전설벨트 피해 consumer HOLD를 명시, 활성벨트 timer 생성/피해 수정0. [DEMO11-25 보고서](engine/orders/reports/demo11-25_REPORT.md). codex/demo11-25b-20261021 자기branch push/원격일치/DONE 후 자기WT제거 |
 
+
 ## 2026-10-21 DEMO11-35 실제 보스 일반 탄 registry·출생·수명
 
 | 항목 | 구현·검수 근거 |
@@ -221,6 +251,14 @@
 | 기준·범위 | main01051599 + DEMO11-01 65f55e76 + BC08 체인adc90ec7 정상merge=4fd1323c. Main +17/-0로 actor 설치·spawn·조회·owner API. BC01~10/State/피해·패링·HP/poise·저장·맵0줄. |
 | 검증 | 신규167/0 + phase PC readback28/0, 기존BC01~10 354093/0·데모권위22/0·인트로18/0. 실패165/4 및28/1 원문 보존·해당 실패 검사만 수정 재실행. 통과 기존 각1회·검사 약화0. |
 | 인계·한계 | [공개 계약·공용 줄·보고서](engine/orders/reports/demo11-34_REPORT.md). 자연 arena·source clock/prefix·탄/VFX/SFX 및 PC36/49 보호 owner는 미연결 대기, 가짜 ack 없음. 원로그 ~/exoduser-wt/_out/demo11-34/, 자기push/remoteSHA/DONE뒤WT제거·R불변. |
+## 2026-10-21 DEMO11-38 마지막 데모 clear→종료·위시리스트/로비
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 범위·계약 | main8dbbf2b0e. DEMO11-37 호출 계약 Main.native_demo_boss_defeated(stage_index:int), 최종 사망 뒤 emit 필요. 이번에는 신호 직접 주입, 보스 사망 구현0 |
+| 전환·권한 | Main 추가20/State 추가15·기존줄수정0. clear/end/복귀 중복 거부·stage 증가0·난이도 창0. Main 비활성화+Tree pause로 실제 World/Player 정지, 새 최소 데모 로비에서 해제/새 stage0 재시작. 보호 전투/맵/저장0 |
+| UI·검증 | Hell Gothic·기존 crest/폰트 토큰·이모지0. 번역목록/3.1 UI 갱신. 신규46/0·기존22/0+115/0=183/0, 예상 거부ERROR1 외0, 기존각1회·실패신규만재실행. 결과와 캡처는 [보고서](engine/orders/reports/demo11-38_REPORT.md), 맥북총괄 시각 판정 대기 |
+| 제출 | 자기branch 일반push·remote SHA/DONE 뒤 자기worktree제거, R 불변. 원로그 ~/exoduser-wt/_out/demo11-38/, Godot2이상30초gate·격리·override0 |
 
 ## 2026-10-21 DEMO11-01 Main 부팅의 1-1 데모 권위
 
