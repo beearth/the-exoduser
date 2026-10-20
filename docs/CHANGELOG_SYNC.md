@@ -10,6 +10,17 @@
 | 보존 / 한계 | Godot 4.7.2 원본·격리 override 사용 후 삭제, import 전 App Support 68파일 백업. R 불변. 전체 RNG 결정성·PC 같은 seed 재검증·제품 오디오 전면 해결은 주장하지 않음 |
 | 상세 | [QA-002 보고서](engine/orders/reports/QA-002_REPORT.md), 원로그 `/Users/fordeargamers/exoduser-wt/_out/qa-002/` |
 
+## 2026-10-20 SV-CONTRACT 원본 저장 5생산자 key set·타입 계약 테스트
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 새 파일·기준 | `godot/tests/test_native_save_contract.gd` 및 `docs/engine/orders/reports/sv-contract_REPORT.md`. 기준 main `f84e26ee0bbc929fb595b4c0af292b423588f325`, 병합된 SAVE 추적 문서 부록 C. 제품·기존 테스트·공용6파일 직접 수정0행 |
+| 원본 행 | 최신 WT `game.html`: Cloud3543–3575, Local63905–63931, Web64062–64088, Demo62131–62159, Demo50061996–62017. 예약 helper51219–51221. 저장 object 리터럴과 순수 helper만 읽기·평가하며 저장/API/복원 본문은 실행하지 않음 |
+| 필드·타입 | player/inv/game만 한 단계 펼쳐 67/67/67/67/49필드·union68·부록 C317표현식 대조. 5생산자×5입력=25평가에서 key/type·기본값·예약큐260상한·불투명 아이템 필드·JSON Number/bool/null 구분·음성 검출 확인 |
+| 실제 검수 | 최종 main에서 저장 계약3023검사/실패0, test_contracts 전체5그룹/실패단정0, 시간 생산자 계약17/0, EXP4건/실패0, 지역 fixture core27/0·display7/0. 각각 exit0. 최초 setup exit2 및 비교 오류3020/10은 원로그에 실패로 보존·최종 성공과 합산하지 않음 |
+| 격리·제한 | 지정 Godot4.7.2 및 `EXODUSER-sv-contract-Isolated-20261020` 사용, override.cfg는0byte로 비움·커밋 제외. 기존 Main starter/소환굴/HUD 테스트는 고정 격리 이름 충돌로 exit2/전부SKIP이며 PASS로 세지 않음. G48·지역23/60/53/32·HUD0/32의 실제 Main 재실측은 미확인 |
+| 보호·범위 밖 | 세이브 형식·마이그레이션·Q/E·docs/2_3는 보호, 변경·변경 제안0. 저장/복원 제품 이식·사용자 슬롯·자동저장·API·클라우드·실플레이·PC 인수는 미실행/미확인. 로그 `~/exoduser-wt/_out/sv-contract/` |
+
 > 2026-10-17 ENGINE 현행: callback **12/25·미13**. play_time은 el_mul 바로 다음에 동일 Services self의 arity0 Callable로 등록했다. owner 첫 격리 공개 API 검수는 인수됐으며 자연 clock·실게임 인수는 미확인이다. D9는 직전 공통 소스 인수이며, 이번 main/I/R 소스 정렬은 아래 통합 정본과 단위 receipt의 실제 HEAD·tree를 기준으로 확인한다. V12 후보는 소스 인수·첫 FAIL·별도 보완 한정성공으로 구분하며 제품 copy·World hook은 수행하지 않았다. 아래 이전 단계 숫자·원검수 결과는 당시 이력으로 보존한다. 실제 local/remote commit 상태는 단위 receipt를 따른다.
 
 > 2026-10-17 ENGINE WIP 현행: 실제 callback **9/25·미16**. 신규 격리 행동41/41과 신규 map 경계 static9/9만 인수 범위다. 원 첫 parse 실패는 보존한다. 이 WIP를 main/R/served·전체 게임 최신화 완료로 해석하지 않는다.
