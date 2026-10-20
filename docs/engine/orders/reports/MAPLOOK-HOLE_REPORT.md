@@ -103,7 +103,13 @@ AMD Radeon RX 9070 XT / OpenGL Compatibility /1920×1080, source/G·적·카메�
 
 ## ④ 커밋·원격
 
-구현·검수 후 기입. 이 브랜치만 경로 지정 staging 후 비강제 `git push origin HEAD`. 보고서 자기 SHA 순환을 피하려고 구현 SHA를 후속 문서 커밋에 기록한다.
+| 단계 | 실제 SHA·확인 |
+|---|---|
+| 구현·검수 커밋 | **`2d4a6ed792350e453f320a5a5969665bbc335fe8`**, 16파일·608추가줄. 제품 신규 module96줄/shader52줄, 공용 제품 파일0줄 |
+| 원격 보존 | `git push origin HEAD` 성공 후 `git ls-remote --heads origin codex/maplook-hole-pc-20261020`가 위 구현 SHA와 일치. push 전 해당 원격 branch 미존재 확인(새 branch 정상 생성) |
+| 보고서 후속 커밋 | 이 보고서④에 실제 구현 SHA를 기록하는 docs-only 커밋을 같은 branch에 추가·push한다. 자기 SHA 순환을 피하며 최종 docs HEAD/원격 read-back은 최종 응답에 별도 보고 |
+| index/work | 경로 지정 `git add --`, tests/uid만 `git add -f --`. commit hook이 바꾼 `tools/guard.baseline.json`은 **비커밋·미복구로 남김**, 자기 제품 변경과 분리. override.cfg0byte 확인·비커밋 |
+| 금지 경계 | main push/merge/branch 전환·본 폴더 변경 없음. 테스트 통과 반복 없음. stdout/stderr 실패 원로그 전부 산출물에 보존 |
 
 ## ⑤ 남은 것
 
