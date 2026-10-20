@@ -275,6 +275,12 @@ func _ready() -> void:
 	if not native_skill_slots.configure(self, world, player, source_state):
 		push_error("Native skill slots configuration rejected (startup continues).")
 	hud.bind_native_skill_cooldowns(Callable(native_skill_slots, "read_native_slot_cooldowns"))
+	# P2-006a — 바닥 드랍 표시·줍기(worldItems 52485s·R 줍기 32935s·pickupItem 16398) — 표시·입력 어댑터
+	var native_world_drops: Node2D = preload("res://scripts/native_world_drops.gd").new()
+	native_world_drops.name = "NativeWorldDrops"
+	world.add_child(native_world_drops)
+	if not native_world_drops.configure(self, world, player, source_state):
+		push_error("Native world drops configuration rejected (display/input-only; startup continues).")
 	# P2-005d — 원본 자연 회복 단계 부팅 배선 (32705~32721: 돔 판정→플랫(10+2lv)/60→
 	# 자연률(_mpr/_str 32711~32712 ×_hdMul)→HP(32715)→ST/MP 대입(32717~32720, 레슨 ch2 게이트)).
 	# 소유권 이전: Player는 바인딩되면 같은 틱에 레거시 ST 0.28 경로를 비활성(player.gd 731

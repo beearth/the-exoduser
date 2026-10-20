@@ -1,3 +1,31 @@
+## 2026-10-21 DEMO11-21 성능 수정 main 후속 통합
+
+- 같은 브랜치에 main8dbbf2b0(aa1eaea5a 포함)을 정상 merge11a617f5. rebase·force0.
+- 드랍·State·production source·신규 테스트 목록 생성 API0, PC 캐시3곳 확인. 자체 제품 변경0행, 로컬 성능 실측 주장0.
+- 신규24/0·관련 기존36/0 각각1회, import 포함5회 ERROR/ObjectDB/resource0. [후속 보고](engine/orders/reports/demo11-21_REPORT.md), followup-* 로그·기존 DONE에 새 SHA 추가.
+
+## 2026-10-21 DEMO11-21 기존 드랍 제품 자연 INV 연결
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준 / 제품 | main01051599에서 원격 P2-006a48f0d8e7/P2-006be69fe444 정상 merge. main tree 미반영을 확인하고 기존 제품 회수, 표시 byte 재사용·재구현0 |
+| 공용 / 원본 | Main252–257 +6행, State432/565–566/584–659 +79행, 삭제0. G32002–32034/16721/32935–32941/16411–16424 journal→R→동일 실제 INV. 보호 전투·맵·저장0 |
+| 검증 | 신규24/0·직접 관련 P2 회귀3종 36/0, 각1회. 실제 Main·Input 이벤트·production rollDrop RNG fixture, 동일 객체/좌표/비자동장착/중복차단. 자연 처치·시각 PASS 주장0 |
+| 제출 | [보고서](engine/orders/reports/demo11-21_REPORT.md), 원로그 ~/exoduser-wt/_out/demo11-21/. Godot7회(최초 종료실패2 보존·MP3 소유자 수는 보고서 구분), 최종/관련 종료 ERROR/ObjectDB/resource0, gate30초 대기9회·override0byte. 자기 push/remote SHA/DONE 후 worktree 제거 |
+
+## 2026-10-20 P2-006b — 효과 종료 후 드랍·LMB 관측
+
+- 지정 b933b2da5에 A 구현이 빠져 있어 승인된 A 제출 3커밋을 작업 브랜치에만 cherry-pick했다. 충돌한 설계/변경로그는 기존 DOC-SYNC·P3 기록과 A 기록을 모두 보존했다. main 변경·병합 없음.
+- game.html51736의 nearest 계약을 드랍 어댑터 1줄로 명시(수치·원본 에셋 불변). 189/189 원본·대상 SHA-256 재대조. 기능 회귀18/0·17/0·HUD36/0·스킬27/0, 필터 RED1/1→GREEN1/0.
+- LMB 빈 칸은 기존 A 검수 하니스의 activeLMBSk='weapon' 주입 결과. 원본44118/44134에도 weapon 아이콘이 없고 idle/공격/복귀 모두 빈 칸, kiSlash 복원 시 아이콘 복원(6/0). 제품 입력·HUD 수정 없음.
+- death_blood 렌더 클록 종료까지 기다려 transient0 뒤 자연 드랍·6등급 1x 캡처. 빔 밝기/그림자·전체 장면 동등성은 RETOUCH, Native Computer Use 거부로 OS 캡처/수동 키 미확인. 상세 `docs/engine/orders/reports/P2-006b_REPORT.md`.
+
+
+# 2026-10-20 P2-006a PC 드랍·줍기 부분 이식
+
+- `native_world_drops.gd` 신규 어댑터와 main 시작 hook 6줄, state 런타임 드랍 식별·가방 반입 연결. 스킨·고유 누끼·ADD 빔·R 프레스/9틱 홀드·가득 참·원본 SFX를 이식했다. 게임 설계 수치·Q/E·레슨·세이브 형식은 변경하지 않았다.
+- 원본 에셋 189개 SHA-256 동일. 17+18+39=74 assertions/0 failures, 실제 창의 자연 처치 후 일반 드랍 viewport 1920×1080 보존. 수동 R 입력/OS 창 캡처 권한은 거부돼 미확인이다.
+- 유골 도감/첫 유골함·full applyStats·인벤 창/정렬/영구저장은 미이식. 유물·소켓석은 원본 즉시 지급 그대로이며 이전 인수 보고서의 ‘바닥 연결 필요’ 추정은 정정한다. 상세: `docs/engine/orders/reports/P2-006a_REPORT.md`.
 ## 2026-10-21 DEMO11-01 Main 부팅의 1-1 데모 권위
 
 | 항목 | 구현·검수 근거 |

@@ -429,6 +429,7 @@ func apply_native_update_feel_decay(owner: Node, sp: float) -> Dictionary:
 
 # ═══ P2-001c: 처치 보상 owner — addPotion(28250)·addExp(43134)·드랍 레코드 ═══
 var _native_drop_records: Array = []
+var _native_drop_serial := 0 # 포트 전용 식별자(세이브 비대상) — 어댑터 신규 감지·픽 커밋 키
 # 결정/소켓석 최소 owner (원본 CRYSTAL_BAG/STONE_BAG — 캡 9999, HUD/합성 소비자는 미이식).
 var _native_crystal_bag: Array = []
 var _native_stone_bag: Array = []
@@ -561,6 +562,8 @@ func append_native_drop_records(owner: Node, records: Array) -> Dictionary:
 	if not _feel_owner_current(owner):
 		return {"applied": false, "reason": "actual_reward_owner_not_current"}
 	for record in records:
+		record["_wiSerial"] = _native_drop_serial # 포트 전용(세이브 비대상)
+		_native_drop_serial += 1
 		_native_drop_records.append(record)
 		while _native_drop_records.size() > 20: # _wiPush 축출 규칙
 			var min_index := 0
@@ -577,6 +580,82 @@ func append_native_drop_records(owner: Node, records: Array) -> Dictionary:
 
 func read_native_drop_records() -> Array:
 	return _native_drop_records if _current_error().is_empty() else []
+
+# P2-006a — 줍기 확정(worldItems picked): 원본은 픽 시 it.picked=true(32940/32966) 후
+# 프레임말 정리(34385)가 제거 — 동치로 표시+제거를 한 번에 커밋한다.
+func commit_native_world_item_picked(owner: Node, serial: int) -> Dictionary:
+	if not _feel_owner_current(owner):
+		return {"applied": false, "reason": "actual_reward_owner_not_current"}
+	for i in range(_native_drop_records.size()):
+		var record: Dictionary = _native_drop_records[i]
+		if int(record.get("_wiSerial", -1)) == serial and record.get("picked") != true:
+			record["picked"] = true
+			_native_drop_records.remove_at(i) # 34385 프레임말 정리 동치
+			return {"applied": true, "item": record.get("item")}
+	return {"applied": false, "reason": "native_world_item_not_found_or_picked"}
+
+
+# P2-006a — pickupItem(16398~16424) 일반 장비 경로: 빈 장착 슬롯 여부와 무관하게 INV.bag.
+# bonePart(16400~16411)는 도감(_boneRegister)·유골함 지급 미이식 → 정지·기록(폴백 금지).
+# 그리드: ITEM_SIZE 전 슬롯 [2,2](bonePart [1,1])·INV_COLS=10·rows=max(10,ceil(300×4/10))=120
+# (15830~15834·16181). _invGrid(16190)는 같은 분류(_invCategoryKey 16188)·배치된(_gx≠null)
+# 아이템만 점유. 성공 시 _gx/_gy/_pickT 기록. _invAutoSortIfClosed(재정렬·재배치)는 인벤 UI
+# 소유 — 미이식 기록(제거 없는 픽업만으로는 행우선 채움이라 용량 동일).
+func apply_native_pickup_item(owner: Node, item: Dictionary) -> Dictionary:
+	if not _feel_owner_current(owner):
+		return {"applied": false, "reason": "actual_reward_owner_not_current"}
+	if str(item.get("slot", "")) == "bonePart":
+		return {"applied": false, "reason": "unported_branch_active:bone_register_codex"}
+	var bag: Array = _inventory.get("bag", [])
+	var size: Vector2i = _native_pickup_size(item)
+	var rows: int = 120 # _invRows()=max(10,ceil(BAG_MAX 300×4/INV_COLS 10))
+	var grid: Dictionary = {}
+	for other in bag: # _invGrid: equipment 분류만(현 아이템은 비 bonePart → equipment)
+		if not other is Dictionary or other.get("_gx") == null or other.get("_gy") == null:
+			continue
+		if _native_pickup_category(other) != _native_pickup_category(item):
+			continue
+		var other_size: Vector2i = _native_pickup_size(other)
+		for dy in range(other_size.y):
+			for dx in range(other_size.x):
+				grid[Vector2i(int(other["_gx"]) + dx, int(other["_gy"]) + dy)] = true
+	var found := Vector2i(-1, -1)
+	for y in range(rows - int(size[1]) + 1): # _invFindSpace(16200)
+		for x in range(10 - int(size[0]) + 1):
+			var ok := true
+			for dy in range(int(size[1])):
+				for dx in range(int(size[0])):
+					if grid.has(Vector2i(x + dx, y + dy)):
+						ok = false
+						break
+				if not ok:
+					break
+			if ok:
+				found = Vector2i(x, y)
+				break
+		if found.x >= 0:
+			break
+	if found.x < 0: # 16403/16419: push 후 공간 없음 → pop·알림·false
+		return {"applied": false, "reason": "bag_full", "notify": "가방에 공간이 없습니다!"}
+	item["_gx"] = found.x
+	item["_gy"] = found.y
+	item["_pickT"] = int(Time.get_unix_time_from_system() * 1000.0) # Date.now()
+	bag.append(item)
+	_inventory["bag"] = bag
+	return {"applied": true, "gx": found.x, "gy": found.y, "bag_count": bag.size(),
+		"unported": ["_invAutoSortIfClosed(인벤 UI 소유)", "dbSaveForce(세이브 금지)",
+			"_systemLesson.pickedUp", "펫 대사(item_unique/item_pickup/_petOnFirstLegend)"]}
+
+
+func _native_pickup_size(item: Dictionary) -> Vector2i:
+	return Vector2i(2, 2) if str(item.get("slot", "")) in ["weapon", "shield", "boots", "armor",
+		"helmet", "bow", "gloves", "pants", "belt", "necklace", "ring1", "ring2", "cape",
+		"bracelet", "headband", "headband2", "ossuary"] else Vector2i(1, 1)
+
+
+func _native_pickup_category(item: Dictionary) -> String:
+	return "ossuary" if str(item.get("slot", "")) in ["ossuary", "bonePart"] else "equipment"
+
 
 func read_current_p() -> Variant:
 	if not _current_error().is_empty():
