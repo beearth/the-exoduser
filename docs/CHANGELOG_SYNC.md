@@ -1,3 +1,13 @@
+## 2026-10-21 MAP11-PLAN 1-1 새 맵 제작 로직 설계
+
+| 항목 | 설계·검수 경계 |
+|---|---|
+| 최신 방침 | 웹 맵 이식 종료. 1-1의 로직·분위기·테마·전체 디자인 완성 후 같은 로직으로 1-2→1-3 순차 제작. 원본 좌표/200×200/웹 청크 재현 요구0, 기존 웹 파일·저장 삭제0 |
+| 기준·근거 | main0105159934d0. CLAUDE/Hell Gothic·UI Foundation·1장 BIBLE/맵오브젝트/Seedream·그래픽·현재 MAP-LOOK 확인. demo11-gap2299caa5 인터페이스 읽기만/merge0. 기존 PC MAP-LOOK/미착수3모듈 소유 보존 |
+| 설계 | 손설계 그래프+환경 모듈+바닥 페인팅·Godot 2D/2.5D·8시각장면/4게임지역. anchor/반경충돌·LOS/flow/스폰분모/arena/출구 provider·단일 writer. 목표1080p60·예산/시각8camera gate 제안이며 실측0 |
+| 다음 단위·결정 | MAP11-01~14 S/M 단계·기존 Mac/PC 담당·공용 통합 승인 경계·사용자 D01~04 별도 표. 1-1 인수 전 1-2/1-3 착수0. Main/State/저장/코드/에셋 변경0·Godot/이미지 생성/화면캡처0 |
+| 산출 | [MAP11 설계서](4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md). 문서 구조·상대링크·코드0줄/원격SHA 점검만. 시각/성능/제품 완성 판정0, 원로그 ~/exoduser-wt/_out/map11-plan/·DONE 후 자기WT제거 |
+
 ## 2026-10-20 BC2-07 shieldBash2 독립 wind/dash/contact 계산
 
 ## 2026-10-20 EC4-02 4장 catalog·23필드 초기 literal projection
