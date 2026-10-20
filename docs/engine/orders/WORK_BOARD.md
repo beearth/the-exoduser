@@ -62,7 +62,10 @@
 | TRACE-ITEMS | 7 아이템·어픽스 원본 추적(문서만) | Mac Codex 01a1589e-f8d5 | codex/trace-items-20261020 | 추적 문서 1개 | 검수 대기 — 33486451a (맥북총괄 검수) |
 | P2-008a | 1-1 초기 미지원 적: etype20 빙결전사 exact 3개체(order4/10/12) | PC VS Code Codex | codex/p2-008a-ch1-enemies-pc-20261020 → main | enemy_melee_ch1_ice_warrior.gd·etype20 json·factory 등록 | **검수 완료·main 병합(Claude 총괄 2026-10-20)** — 원본 39057~39060 빈 근접 분기·40499 _meleeET 제외·31154 _noProjEtypes[20] 확인(무공격 = 원본 동작), 병합본 14종 0실패, 지원 9/미지원 7, 화면·실플레이 미 |
 | TRACE-CH1-ENEMIES | 1장 미이식 적 원본 추적(문서만) — PC P2-008a 구현과 겹치지 않게 P2-008a 범위는 참고만 | Mac Codex 01a1589f-0218 | codex/trace-ch1-enemies-20261020 | 추적 문서 1개 | 진행 중 |
-| LOOK-001 | Godot 룩 테스트 4안(현행·2D 강화·3D Forward+·3D Compatibility) 비교 자료 — [전략 문서](../FDG_GODOT_CUSTOM_STRATEGY_20261020.md) §5 | Mac Codex(맥북총괄 배정) | codex/look-001-20261020 | 신규 토글·셰이더·godot/assets/derived/ — 원본 모드·회귀 변화 0 | 배정 요청(2026-10-20 PC 총괄) |
+| LOOK-001 | Godot 룩 테스트 4안(현행·2D 강화·3D Forward+·3D Compatibility) 비교 자료 — [전략 문서](../FDG_GODOT_CUSTOM_STRATEGY_20261020.md) §5 | Mac Codex(맥북총괄 배정) | codex/look-001-20261020 | 신규 토글·셰이더·godot/assets/derived/ — 원본 모드·회귀 변화 0 | **비교 자료 준비** — 4안·1x크롭12·30초FPS 확보. 기존main p1002g220/1(halt6) 후보동일, 회귀0조건BLOCKED. [보고서](reports/look-001_REPORT.md) |
+| MAP-LOOK | 맵 표현 강화 1·2차(부분 광원·요철·접지 그림자·근경 원근·흔들림·빛줄기·지역 환경광·번개) — PoE2·No Rest 레퍼런스 | PC Claude 직접 | claude/map-look-20261020 → main | native_map_look.gd·map_look_*.gdshader·data/map_look_ch1.json | **main 병합(PC Claude 2026-10-20)** — test_map_look 16/0·회귀 13종 0실패(p1002g는 P2-008a-FIX 대기). 실게임 기본 ON·하니스 OFF. [문서](../../4.1맵디자인+설정/MAP_LOOK_GODOT_PASS1_20261020.md) |
+| MAPLOOK-HOLE | 소환굴 공허 연출 모듈 | PC VS Code Codex | codex/maplook-hole-pc-20261020 | scripts/maplook/spawn_hole_fx.gd | **main 병합(MAP-LOOK과 함께)** 67/0 |
+| MAPLOOK-TOXIC / SHADOW / MIST | 독액 수면 / 캐릭터 접지 그림자 / 월드 바닥 안개 모듈 | PC VS Code Codex | codex/maplook-{toxic,shadow,mist}-pc-20261020 | scripts/maplook/ 각 1파일 | 큐 대기(아직 착수 전) |
 | BC01 | 1장 보스 1번 단위 구현(공용 0줄) | Mac Codex ttys009 | codex/bc01-20261020 | 신규 파일·테스트 | 진행 중 |
 | SV-COLLECT | 세이브 수집 어댑터(port_modules/save_adapter) | Mac Codex ttys007 | codex/sv-collect-20261020 | 신규 모듈·테스트 | 진행 중 |
 | TRACE-ELITES | 정예 modifier·오라 원본 추적(문서만) | Mac Codex ttys004 | codex/trace-elites-20261020 | 추적 문서 | 진행 중 |
