@@ -13,6 +13,7 @@ var arena: RefCounted
 var _markers: Dictionary={}
 var _marker_positions: Dictionary={}
 var _holes: Array=[]
+var _fieldboss_markers: Array=[]
 var _anchor_rows: Array=[]
 var _flows: Dictionary={}
 var _gate_owner: WeakRef
@@ -62,6 +63,13 @@ func _ready() -> void:
 		var marker: Marker2D=_make_marker(holes,suffix,source.position,id)
 		_holes.append({"id":id,"marker":marker,"region_id":field.region_at(source.position),"size":0.3,"room":0})
 		_anchor_rows.append({"id":id,"marker":marker,"role":"hole","region_id":field.region_at(source.position),"space":"field"})
+	# Explicit family index == region fb_index; authored clear sites, not legacy tiles.
+	var family_group:=Node2D.new(); family_group.name="FieldbossMarkers"; add_child(family_group)
+	var family_sites := ["west_upper","east_upper","early","east_lower"]
+	for i in range(4):
+		var source: Marker2D=_markers["map11.field."+family_sites[i]]
+		if field.region_at(source.position)!=i or not field.can_move(source.position,44): return
+		_fieldboss_markers.append(_make_marker(family_group,"Angler"+str(i),source.position,"map11.field.angler."+str(i)))
 	_valid=true
 func _make_marker(parent: Node2D, label: String, point: Vector2, id: String) -> Marker2D:
 	var marker:=Marker2D.new(); marker.name=label; marker.position=point; parent.add_child(marker); _markers[id]=marker; _marker_positions[id]=point; return marker
@@ -165,3 +173,6 @@ func request_gate_enter(point: Vector2, spawn_options: Dictionary) -> Dictionary
 	return _gate_enter.call(self,spawn_options)
 func request_gate_leave(point: Vector2) -> bool:
 	return gate_contact(point,"leave") and _gate_owner!=null and is_instance_valid(_gate_owner.get_ref()) and _gate_leave.is_valid() and _gate_leave.call(self)==true
+
+func fieldboss_markers() -> Array:
+	return _fieldboss_markers.duplicate() if runtime_ready() else []

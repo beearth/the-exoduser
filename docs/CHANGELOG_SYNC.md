@@ -1,3 +1,11 @@
+## 2026-10-21 DEMO11-47l — E2E 기능 회귀·정직한 PC 의존 구분
+
+- 기존 전역 `test_*` ignore 때문에 새 검수 파일3개의 정확한 경로만 allowlist로 등록. 강제add·hook우회 없이 결과 재현용 검수 스크립트를 함께 보존.
+
+- 47k 위 별도 branch. actual natural target ID/복수hole 방문, 실제 CD/iframe 이후 hurtP로 enemy_kill·auto_potion 복구. gate 뒤 blocked_by; 47j의 직접 defeat contract 입력은 복구하지 않음.
+- physical carrier 동일 텍스처 선로딩, MAP11 A 생성자자료 부팅 준비, family scratch/원clock 및 opt-in 계측, drop음향 IO/bus deferred. PC 전투/readonly모듈/맵 룩·조명/번역 무수정.
+- E2E1회12 PASS/6 NOT_READY/0 FAIL·ERROR0. physics14.035→21.343ms로8.333ms 목표 미달; 최종 재실행0. 추가 기존 검사 실패/오류도 [상세 보고](engine/DEMO11_47L_REGRESSION_20261021.md)에 보존. 전체 완료 주장0.
+
 ## 2026-10-21 DEMO11-INTEG 보충: 최신 적 기반·24b·MAP11-10
 
 - bb3ced49→049cc1aa→e8888106 정상merge, 기존기능 보존·F공통화/문지기29 경계/장비cache/맵seam 인수. 번역CRLF 보존.
@@ -56037,3 +56045,30 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 ## 2026-10-21 integ-fix 보충 — Dummy 관측 분리·perf/etype9 경계
 
 41은 실제AudioServer driver가Dummy일 때 재생/비동기콜백13관측을 이유와 함께skip하며, 모든driver 공통 요청·상태/handle 정리9검사를 추가했다. Dummy51/0/skip13·CoreAudio64/0/skip0, 기존etype-B42/0으로deadPool owner 거부 확인. 각조건1회·ERROR0·exit0, runner는PASS_WITH_SKIPS와JSON.skipped를명시한다. 제품SND06/media/visibility코드 변경0. perf aaf52dc0cb4439e828c9fe1a6560b0dd3e8ab1e7은이미ancestor(추가merge0);PC약22ms/tick 해결·120fps인수주장0. etype9는PC P2-008b 확인전NOT_READY유지. 실제청음은사용자실창검수. [근거·한계·로그](engine/orders/reports/integ-fix_AUDIO_SUPPLEMENT.md).
+
+
+## DEMO11-47i (2026-10-21)
+
+- b07f5c56 + 47h merge, isolated E2E 1회 13 PASS / 5 NOT_READY / 0 FAIL. field_MAP11 actual product 관측, headless logical visibility 보정, Mac callback opt-in 계측. 자동물약/적 처치/전투 gate/보스 최종사망 미해소, revival PCI 묶음 A 대기. 전체 E2E 완료 아님. 상세 docs/engine/orders/reports/demo11-47i_REPORT.md 및 DEMO11_STATUS_20261021.md.
+
+
+## 2026-10-21 DEMO11-47j — Mac 연결·펫 틱
+
+- `main.gd`: MAP11 Marker 기반 기존 spawn/region/encounter/natural scheduler 설치. 맵 비주얼·PC 전투 핵심 변경 없음.
+- `native_natural_enemy_base.gd`: 난수로 이미 선택된 A군 1/4/5/6을 기존 생성기로 전달.
+- `native_pets.gd`: 초상 2장 preload 보유, 발화 틱 ResourceLoader 호출 제거.
+- 47h 하네스의 레슨 시작 대기 및 실제 origin 집계 관측, 계약 신호 주입 제거. 47j 집중 검증 추가. 18단계 재실행은 1회로 제한했으며 최종 후속 검증과 구분한다.
+- 현재 범위·수치·잔여: `docs/engine/orders/reports/demo11-47j_REPORT.md`, 상태 표 `DEMO11_STATUS_20261021.md`.
+
+## 2026-10-21 DEMO11-47k
+
+MAP11 fieldboss Marker 4개/실제 family bind, 실제 transport spawn_options와 arena geometry 선전환·실패복귀, E2E 제품 게이트 호출 관측 추가. PC HP/final/prefix owner 대기와 미검증 자연 입장 범위를 engine 상태표·47k 보고서에 기록. 보호 전투/비주얼/번역 변경 없음.
+
+47k 집중 검증 스크립트는 tests ignore 규칙의 정확한 파일 예외로 명시 add하여 결과 재현 경로를 함께 보존한다.
+
+
+## 2026-10-21 DEMO11-47m
+
+- 별도 sparse worktree에서 단독 계측/콜백별 상위10·18단계 기록. physics 22.007→30.845ms로 목표 미달 유지.
+- Mac asleep>1000 tick 빈 할당/redraw 생략, map11 options Nil→NOT_READY guard. PC 코어·맵 룩·번역 무수정.
+- engine STATUS 및47L 회귀 문서의 원인·검수·미해결 증거 동기화.

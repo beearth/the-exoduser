@@ -138,7 +138,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		_pick_hold_t = 0.0 # 32987
 
 
-func _physics_process(_delta: float) -> void:
+func _demo47i_physics_body(_delta: float) -> void:
 	if not _owners_live() or get_tree().paused:
 		return
 	_detect_new_drops()
@@ -267,6 +267,11 @@ func _sound_profile(pos: Vector2, spatial: bool) -> Dictionary:
 
 
 func _play_at(path: String, pos: Vector2, pitch: float, volume_db: float, spatial := true) -> void:
+	# Resource IO and AudioServer bus mutation must not block a physics callback.
+	_play_deferred.call_deferred(path,pos,pitch,volume_db,spatial)
+
+func _play_deferred(path: String, pos: Vector2, pitch: float, volume_db: float, spatial: bool) -> void:
+	if not _owners_live():return
 	if not ResourceLoader.exists(path):
 		return
 	var settings: Dictionary = _main.read_native_attack_audio_settings()
@@ -449,3 +454,16 @@ func get_native_world_drops_snapshot() -> Dictionary:
 			"bonePart 줍기(도감 _boneRegister·유골함 지급 미이식 — 정지·기록)",
 			"_invAutoSortIfClosed 재정렬(인벤 UI 소유)", "그림자 blur(오프셋 실루엣 근사)",
 			"펫 대사·_systemLesson·dbSaveForce", "minPickRar/minPickLvTier 설정 필터(OPT UI 미이식 — 드랍 생성측 thr만 적용됨)"]}
+
+func _physics_process(_delta: float) -> void:
+	var tree_root: Window=get_tree().root
+	if not tree_root.has_meta("demo47i_stage"):
+		_demo47i_physics_body(_delta);return
+	var started: int=Time.get_ticks_usec()
+	_demo47i_physics_body(_delta)
+	var elapsed: int=Time.get_ticks_usec()-started
+	var perf: Dictionary=tree_root.get_meta("demo47i_perf",{})
+	var key: String=str(tree_root.get_meta("demo47i_stage"))+"|native_world_drops.gd::_physics_process"
+	var row: Dictionary=perf.get(key,{"max_us":0,"calls":0,"total_us":0})
+	row.max_us=maxi(row.max_us,elapsed);row.calls+=1;row.total_us+=elapsed
+	perf[key]=row;tree_root.set_meta("demo47i_perf",perf)

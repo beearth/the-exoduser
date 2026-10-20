@@ -1,6 +1,8 @@
 class_name ExoduserPhysicalProjectile
 extends CharacterBody2D
 
+const FLIGHT_TEXTURE=preload("res://assets/enemy/proj_phys_mouth.png")
+
 signal telemetry_event(kind: String, data: Dictionary)
 
 var data: Dictionary = {}
@@ -54,7 +56,7 @@ func _ready() -> void:
 	add_child(shape)
 	_sprite = Sprite2D.new()
 	_sprite.name = "PhysicalMouth"
-	_sprite.texture = load(data["animation"]["texture"])
+	_sprite.texture = FLIGHT_TEXTURE # packaged physical carrier; resource resident before simulation
 	_sprite.region_enabled = true
 	_sprite.centered = true
 	_sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST

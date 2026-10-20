@@ -177,3 +177,11 @@ assets/vfx/boss/gen/
 /out/EXODUSER-full-*/
 /out/EXODUSER-demo-*/
 /output/steam_full_resubmit_20261002*/
+
+# DEMO11-47l: retain the isolated regression drivers.
+!godot/tests/test_demo11_47l_mac.gd
+!godot/tests/test_demo11_47l_mac.gd.uid
+!godot/tests/test_demo11_47l_contract.py
+
+# DEMO11-47m: retain callback boundary/retirement regression.
+!godot/tests/test_demo11_47m_profile.gd

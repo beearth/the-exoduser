@@ -15,6 +15,8 @@ var _used: Dictionary={}
 var _legacy_death: Dictionary={}
 var _components: Dictionary={}
 var scheduler_enabled:=true
+var profile_enabled:=false
+var scheduler_max_us:=0
 var _busy:=false
 var _cached_frame:=-1.0
 var _packet: Dictionary={}
@@ -64,7 +66,10 @@ func frame_ready(frame: float) -> bool:
 	_packet={"ready":true,"serial":_serial,"sp":main.world._native_last_ticks,"context":c.duplicate()}
 	return true
 func _physics_process(_delta: float) -> void:
+	if not profile_enabled:advance_scheduler(main.world.get_native_frame());return
+	var started:=Time.get_ticks_usec()
 	advance_scheduler(main.world.get_native_frame())
+	scheduler_max_us=maxi(scheduler_max_us,Time.get_ticks_usec()-started)
 func advance_scheduler(frame: float) -> bool:
 	if not scheduler_enabled or not frame_ready(frame) or frame<=_late_frame:return false
 	_late_frame=frame;counts.late_ticks+=1
@@ -160,7 +165,11 @@ func spawn_hole(h: Dictionary) -> bool:
 		"speed_u":holes._unit("spd",draws),"radius_u":holes._unit("r",draws),"literal":{},"position_uniforms":position_uniforms}
 	for row in Holes.MKEN_LITERAL_DRAWS:
 		if row[1].is_empty() or row[1].has(etype):source.literal[row[0]]=float(row[2])+holes._unit(row[0],draws)*float(row[3])
-	last_receipt=spawn_selected(holes,h.spawn_group_id,source)
+	# DEMO11-47j: dispatch the already-selected A profile; preserve all source draws.
+	if etype in [1,4,5,6]:
+		last_receipt=main.request_native_etype_a_spawn(holes,h.spawn_group_id,source)
+	else:
+		last_receipt=spawn_selected(holes,h.spawn_group_id,source)
 	if last_receipt.get("registered",false):
 		holes._metrics.actors_registered+=1
 		holes._metrics.spawned+=1

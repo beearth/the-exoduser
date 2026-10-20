@@ -134,17 +134,18 @@ func _run() -> void:
  if not main.is_node_ready():await main.ready
  var g: Dictionary=main.source_state.read_current_g()
  var owner: Node=main.native_demo_anglers
- check(is_instance_valid(owner) and not owner.snapshot().provider_bound,"actual Main dormant until Marker provider")
+ check(is_instance_valid(owner) and owner.snapshot().provider_bound,"actual Main uses production MAP11 Marker provider")
+ var production_markers: Array=main.read_native_map11_provider().fieldboss_markers()
  var provider:=Node2D.new();main.world.add_child(provider)
  var actual: Array=[]
  for i in 4:
   var marker:=Marker2D.new();provider.add_child(marker);marker.global_position=main.player.global_position+Vector2(600+i*20,0);actual.append(marker)
  check(not main.bind_native_demo_anglers(provider,[actual[0],actual[0],actual[2],actual[3]]),"duplicate/missing Marker rejected")
- check(main.bind_native_demo_anglers(provider,actual) and not main.bind_native_demo_anglers(provider,actual),"Main Marker admission once")
+ check(not main.bind_native_demo_anglers(provider,actual),"Main rejects replacing admitted production Marker provider")
  g.on=true
  for i in 3:await physics_frame
  check(g.get("_fieldBosses") is Array and g._fieldBosses.size()==4 and owner.snapshot().serial>=0,"existing World naturally invokes field family phase")
- check(g._fieldBosses[0].homeX==actual[0].global_position.x and g._fieldBosses[0].homeY==actual[0].global_position.y,"provider coordinate identity, no source site copy")
+ check(g._fieldBosses[0].homeX==production_markers[0].global_position.x and g._fieldBosses[0].homeY==production_markers[0].global_position.y,"provider coordinate identity, no source site copy")
  var pc:=PC.new();main.world.add_child(pc)
  check(owner.bind_pc_source(pc,&"health") and not owner.bind_pc_source(pc,&"health"),"PC health/final source admission once")
  var old_hp: float=g._fieldBosses[0].hp

@@ -54,12 +54,19 @@ func enter(provider: Node, spawn_options: Dictionary) -> Dictionary:
  _busy=true
  var req: Dictionary=spawn_options.duplicate(true)
  req.si=0;req.x=_markers.Boss.global_position.x;req.y=_markers.Boss.global_position.y
+ # The real spawn contract queries World's active geometry. Switch before its
+ # canMv call; restore field on rejected packet without committing player/state.
+ if not _main.world.activate_map11_space("arena"):
+  _busy=false
+  return {"status":"NOT_READY","reason":"arena_geometry"}
  var receipt: Dictionary=_main.spawn_native_demo_boss(req)
  if receipt.get("status")=="READY":
   _actor=_main.native_demo_boss_actor
   _main.player.global_position=_markers.Entry.global_position
   g["_bossArena"]=true;g["bossAlive"]=true
   _phase="arena"
+ else:
+  _main.world.activate_map11_space("field")
  _busy=false
  if _phase=="arena":arena_entered.emit(_actor)
  return receipt

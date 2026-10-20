@@ -231,7 +231,7 @@ static func _load_frames(pattern: String, count: int) -> Array:
 	return frames
 
 
-func _physics_process(_delta: float) -> void:
+func _demo47i_physics_body(_delta: float) -> void:
 	if not _configured or not is_instance_valid(_player):
 		return
 	_tick += 1.0
@@ -786,14 +786,15 @@ func _build_subtitle_panel() -> void:
 	_bubble_label.add_theme_font_override("font", preload("res://scripts/native_ui_fonts.gd").stack("pet", 700))
 
 
+const CROW_PORTRAIT: Texture2D = preload("res://assets/pets/crow_portrait.png")
+const CAT_PORTRAIT: Texture2D = preload("res://assets/pets/cat_portrait.png")
+
 func _show_bubble(who: String, txt: String) -> void:
 	if not is_instance_valid(_subtitle_root):
 		return
 	var is_crow := who == "crow"
 	var viewport_size: Vector2 = get_viewport().get_visible_rect().size
-	var portrait_path := "res://assets/pets/crow_portrait.png" if is_crow else "res://assets/pets/cat_portrait.png"
-	if ResourceLoader.exists(portrait_path):
-		_portrait.texture = load(portrait_path)
+	_portrait.texture = CROW_PORTRAIT if is_crow else CAT_PORTRAIT
 	# bottom 230px(1920×1080·ui-scale1), crow=left 20 / cat=right 20, origin bottom
 	var panel_height := 320.0 * 1.5
 	_subtitle_root.position = Vector2(20.0 if is_crow else viewport_size.x - 20.0 - 480.0 * 1.5,
@@ -936,3 +937,16 @@ func get_native_pets_snapshot() -> Dictionary:
 			"crow _fly 애니(원본 미등록 dead)·cat t 및 대사 셔플은 월드와 분리한 로컬 RNG",
 			"tut_charge 후속(firstCharge — 사슬기동 미이식)·parry 카운터(패링 콜백 미배선)",
 			"이리스 LIT 색층(ci0 색 글로우 — P2-003a 색층 전체 미이식과 동일 경계)"]}
+
+func _physics_process(_delta: float) -> void:
+	var tree_root: Window=get_tree().root
+	if not tree_root.has_meta("demo47i_stage"):
+		_demo47i_physics_body(_delta);return
+	var started: int=Time.get_ticks_usec()
+	_demo47i_physics_body(_delta)
+	var elapsed: int=Time.get_ticks_usec()-started
+	var perf: Dictionary=tree_root.get_meta("demo47i_perf",{})
+	var key: String=str(tree_root.get_meta("demo47i_stage"))+"|native_pets.gd::_physics_process"
+	var row: Dictionary=perf.get(key,{"max_us":0,"calls":0,"total_us":0})
+	row.max_us=maxi(row.max_us,elapsed);row.calls+=1;row.total_us+=elapsed
+	perf[key]=row;tree_root.set_meta("demo47i_perf",perf)

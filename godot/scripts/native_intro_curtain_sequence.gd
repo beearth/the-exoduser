@@ -363,7 +363,7 @@ func _spawn_ring_enemy(index: int, x: float, y: float) -> bool:
 		"requested": [x, y], "position": [pos.x, pos.y], "draws": draws})
 	return true
 
-func _physics_process(delta: float) -> void:
+func _demo47i_physics_body(delta: float) -> void:
 	if not _configured:
 		return
 	var sp := delta * 60.0
@@ -460,3 +460,16 @@ func get_snapshot() -> Dictionary:
 			"키 가이드 게임패드 A/Start 폴링·패드 표기(63394~63399) — 패널·클릭·Tab·Space 홀드·voice_wakeup은 P2-007a 이식",
 			"31740~31741 bonfire kb 내향 소거(적 내부 kb 비공개·현 시나리오 kb=0)",
 			"31725 etype36/65/75 clearance 변형(해당 적 미존재)"]}
+
+func _physics_process(delta: float) -> void:
+	var tree_root: Window=get_tree().root
+	if not tree_root.has_meta("demo47i_stage"):
+		_demo47i_physics_body(delta);return
+	var started: int=Time.get_ticks_usec()
+	_demo47i_physics_body(delta)
+	var elapsed: int=Time.get_ticks_usec()-started
+	var perf: Dictionary=tree_root.get_meta("demo47i_perf",{})
+	var key: String=str(tree_root.get_meta("demo47i_stage"))+"|native_intro_curtain_sequence.gd::_physics_process"
+	var row: Dictionary=perf.get(key,{"max_us":0,"calls":0,"total_us":0})
+	row.max_us=maxi(row.max_us,elapsed);row.calls+=1;row.total_us+=elapsed
+	perf[key]=row;tree_root.set_meta("demo47i_perf",perf)

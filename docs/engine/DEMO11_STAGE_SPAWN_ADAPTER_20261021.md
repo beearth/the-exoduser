@@ -22,3 +22,29 @@ G60709–60710의 분모는 **예정 소환 수**이며 actor 등록/요청/처�
 실제 MAP11 provider/geometry 승인, etype 선택→constructor→registry→origin 등록, 기존 source tick 순서로 scheduler 재개, 동적 그룹 추가/취소 receipt(이번에는 거절/미지원), 새 polygon 미니맵은 후행이다. 현재 `request_spawn` 성공은 **합법 후보를 provider에서 받았다는 접점 receipt**이며 적 생성 성공·자연 전투·전체 맵 완료를 뜻하지 않는다. provider 자체 geometry 검증은 MAP11 소유이며 이번 fixture 테스트로 실맵 적법성을 증명하지 않는다.
 
 검증·성능 결과와 공용 변경 범위: [DEMO11-43 보고서](orders/reports/demo11-43_REPORT.md). 제품 화면/폰트/번역/에셋/저장 형식/전투 핵심 변경0.
+
+## 2026-10-21 DEMO11-47j 제품 부팅 연결
+
+기존 위 ABI 설명의 당시 미연결 이력과 구분한다. 현재 Main의 MAP11 제품 설치 직후 `NativeSpawnHoleSystem.configure`만 실행하고 legacy `install_placement`는 호출하지 않는다. `NativeRegions` 구성 → 실제 `world.map11_provider`로 adapter 예산 설치 → encounter.configure → transport.bind_gate_owner → 기존 natural base scheduler 활성 순서다. 실패한 선행 단계 뒤의 설치를 진행하지 않는다. 난수 재추첨·좌표 생성·HP writer 추가는 없다.
+
+| 선택된 etype | 현재 source scheduler의 인계 |
+|---|---|
+| 0 | 기존 natural base `spawn_selected` 경로 |
+| 1, 4, 5, 6 | 기존 `Main.request_native_etype_a_spawn`에 같은 source RNG/literal/spawn_n/group 전달. `register_actor_origin`은 기존 실제 admission이 담당 |
+| 나머지 | 기존 NOT_READY/HOLD 계약 유지. 전체 29종 자연 스케줄러 완성으로 주장하지 않음 |
+
+실제 처치 및 gate 개방 여부는 [47j 보고서](orders/reports/demo11-47j_REPORT.md)의 E2E와 집중 검증을 구분해 확인한다. provider/region binding만으로 `_fbDone`·region clears·보스 사망을 참으로 만들지 않는다.
+
+## 2026-10-21 DEMO11-47k Mac 후속 (완료 범위 제한)
+
+| 접점 | 현행 값·책임 |
+|---|---|
+| MAP11 fieldboss Marker | `FieldbossMarkers/Angler0..3`; 기존 authored `west_upper`, `east_upper`, `early`, `east_lower` 좌표를 동일 byte 원본 recipe에서 읽음. index=region `fb_index`=0..3. 반경44 적법성·region 일치 확인 후 provider current 계약에 포함 |
+| Main 설치 | stage spawn adapter 성공 뒤 `bind_native_demo_anglers(provider, provider.fieldboss_markers())`; 기존 family owner가 실제 4개 actor/record 생성·World phase tick 수행. 새로운 HP writer/처치 판정 없음 |
+| 실제 입장 호출자 | transport → provider.request_gate_enter → encounter.enter → Main.spawn_native_demo_boss. transport가 현재 OPT.diff를 `difficulty_index`, G._stageDiffOff(원 source default0)를 `stage_diff_offset`, 이 단일 MAP11 room을 `room:0`으로 전달. player_level은 기존 Main이 현재 P.lv에서 읽음 |
+| 보스 공간 | encounter의 gate 검증 이후 기존 World의 active geometry를 arena로 전환한 다음 실제 spawn contract canMv 실행. spawn 거절 시 field 복귀; 성공 시 기존 Entry Marker/arena flags 커밋. R1700·offset(0,-8000) 보존 |
+| 게이트 정책 | 기존 지역 4곳의 80%−epsilon + 해당 FB 생존 없음 + `_fbDone` 전제 보존. HP0·지역 정화·gate flag 직접 주입 없음 |
+| E2E 관측 | 실제 field_gate Marker에 플레이어를 배치하고 제품 request_transition 호출. 실제 receipt/family/regions/boss snapshot 기록; 미충족 시 NOT_READY. 게이트 순간이동으로 조건을 우회하지 않음 |
+| PC 대기 | fieldboss bind_pc_source의 실제 HP/final readback owner, 보스 source_updateE_prefix 및 피해/PCI-11 final owner 미바인딩. 따라서 실제 개방/입장/보스 자연 스폰·AI/HP 감소는 아직 미관측. Mac 배선 완료를 bossroom_gate PASS로 주장하지 않음 |
+
+상세 검증과 남은 경계: `orders/reports/demo11-47k_REPORT.md`. 이전 47j의 family/options 미배선 상태는 이 절에서 위 범위만 대체한다.
