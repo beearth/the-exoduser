@@ -1,3 +1,15 @@
+## 2026-10-20 IT-02 — 어픽스·등급 읽기 전용 표시 모델
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 범위·의존 | 신규 item_presentation_source/producer.gd·test_native_item_presentation_source.gd. IT-01 c01766e1에서 분기(main 미포함). 공용6파일·기존 JSON/생성기·P2-006 표시/줍기 수정0, Main/패널 연결0 |
+| 원본 | 최신 origin/main 284d7faf49295b2f5061937a47ce96038032ed3c의 game.html:14346~14351,14858~15013,49815~49817,50422~50456. SHA256 4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4 |
+| 등급·사전 | rarity 이름/영문/색/배율6칸, RARITY 문자열5개 그대로. 이름417키·설명265키. 기존 AFFIX_POOL409레코드를 caller가 readonly 공급, 중복ID 첫 정의 사용. 가상 rarity5 code 생성0 |
+| 숫자 | 상세 finite pct/prob만 Math.round(value×10000)/100·−0→0. compact pct/prob signed32 trunc·dps /s·tick /60 toFixed(2)+초/s·atk ATK×정수%·hp 정수%HP, null은빈문자열/미등록은String(value). JS 숫자 문자열·반올림 경계 보존 |
+| 이름·번역 | base→첫 PRE→첫 SUF 순서, 빈 affixes 배열은JS truthy라 legacy prefix/suffix 제외. T/L callback 주입, 부재/잘못된 반환 및 미지원 shape는 NOT_READY. 입력·중첩참조·배열 길이 보존, RNG/장비·저장쓰기0 |
+| 검수 | 신규2,205/0, 원본 함수/7집합 직접대조8,386/0. 회귀 contracts5그룹/0·P2-001c41/0·IT-01 177/0. P2-001c Camera2D·ObjectDB2개 종료누수 경고 보존. [IT-02 보고서](engine/orders/reports/it-02_REPORT.md)에 이전 실패·중단 이력 포함 |
+| 격리·과부하 | 신규 EXODUSER-it-02-Isolated-20261020, 기존 회귀는 각 USERDIR 상수(contracts 상수없음). 실행전 pgrep 수2이상이면30초 대기. 실행마다 override 설정 후0byte로 비움. 실제 화면·전투·PC·저장 왕복 인수 아님 |
+
 ## 2026-10-20 IT-01 — 아이템 품질·소켓 공명 순수 계산
 
 | id / 적용 위치 | 현재 정확 계약 |
