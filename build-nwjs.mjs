@@ -1,4 +1,4 @@
-// HELL: EXODUSER 정식 — NW.js 빌드 스크립트
+// EXODUSER: HELL LORD 정식 — NW.js 빌드 스크립트
 // 기반: G:\hell-ea\build-nwjs.mjs
 
 import nwbuild from 'nw-builder';
