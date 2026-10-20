@@ -1,3 +1,9 @@
+## 2026-10-21 DEMO11-etype-f — 26~28 append-only 등록·동작별 NOT_READY
+
+- main0138c5bb9 + adapter9b763da9/Bc6d19973 체인 정상merge. Main 끝8줄·factory 끝15줄만 추가(기존 byte 보존), 기존 profile/atlas/hurtE kernel 재사용. State/World/Player/보호 전투·저장·맵 배치0. 새 공통 helper0; ttys006 enemy-base 이관 후보를 종별 기록.
+- 신규 실제 actor3 runtime33/0, hurtE3 HP875→874·기존 freeze API120틱. 물리120Hz 고정120틱 벽시계26/0: 생성2.176ms·평균0.108467/p99 0.183/최대0.193ms. 실제 탄/강타/돌진 접촉은 NOT_READY, 제품 MAP11 provider·자연 자동scheduler/전체FPS 인수 아님.
+- [보고서](engine/orders/reports/demo11-etype-f_REPORT.md)·[몬스터 인수 경계](8.0몬스터디자인/DEMO11_ETYPE_F_자연소환_20261021.md)·_out/demo11-etype-f/ 원로그/캡처. 기존 관련 테스트 무수정1회·정상훅·경로 지정 stage·자기 push/원격일치/DONE 후 자기WT제거.
+
 ## 2026-10-21 DEMO11-etype-b 재개 — append-only 등록·실제 actor5
 
 - 맥북총괄 후속 승인으로49a250ef 위 재개. factory 기존679줄 byte 보존·B등록17줄, Main 기존3068줄 보존·source-selected entry8줄. PC P2-008b/피해/패링·State/World/Player0. 실제 Marker adapter→factory→ens/phase→origin5개 확인, 원소undefined 보존. A 공통 helper 재작성0.
