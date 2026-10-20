@@ -259,3 +259,16 @@
 ### 8.5 포인트
 
 MagicLight 마지막 조회 59,540 (2026-10-01, emg1 2차 후). 이번 마감 구간 ART 사용: cin_remember 200 + emg1 200×2 = 600. 다른 세션 사용분이 섞일 수 있음.
+
+
+## MAP11-19 현황표 — 2026-10-21
+
+| 에셋 | 출처 / 생성일 | 원화 검수 | 런타임 인수 |
+|---|---|---|---|
+| patch_bloodpool_roots.png | MagicLight Seedream 5.0 Pro / 2026-10-21 | 맥북총괄 PASS, 1920² 녹색배경 | 키잉·spill 제거·feather·bbox, RGBA996×1024, field4개 |
+| patch_bone_pile.png | MagicLight Seedream 5.0 Pro / 2026-10-21 | 맥북총괄 PASS, 명도 보정 지시 | 턱뼈 분리조각 제외·RGB×.72, RGBA1024×956, field4개 |
+| patch_cracked_flesh_slab.png | MagicLight Seedream 5.0 Pro / 2026-10-21 | 맥북총괄 PASS, 1920² 녹색배경 | 키잉·spill 제거·feather·bbox, RGBA1011×1024, field4개 |
+
+사용 경로 `godot/assets/map/map11/patches/`; 배치/수치/런타임 판정은 MAP11_NEW_MAP_LOGIC_PLAN_20261021.md §16. `patch_flesh_mound_REJECT.png` 미사용. 원본 R은 변경하지 않았고 원화 PASS와 전체 게임화면 PASS는 구분한다.
+
+MAP11-19 런타임 최종 판정 **RETOUCH**: 원화의 큰 형태는 읽히나 암부 재질·일부 반복 인접/혈흔 실루엣 추가 보정 필요. 단독 p95 field7.004/arena6.780ms, 전체 시각 PASS 아님.

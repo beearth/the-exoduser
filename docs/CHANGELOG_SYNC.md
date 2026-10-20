@@ -55535,3 +55535,10 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 - 채택 ff59c3c7 직계, 기존 RGBA5종/군락9+나무 발치 총130sprite. 신규생성·텍스처교체0.
 - 공유 actor rim material1개/약1.35screenpx inner edge, player뼈색/적암적색 setup-only. player.gd/전투코어 불변. 숲 prelight RGB하한(.075,.069,.072).
 - 현행 수치·금지구역·에셋·검수·MAP PRODUCTION REPORT: [MAP11 설계서 §15](4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#15-map11-18--바닥-장식캐릭터-림-2026-10-21).
+
+
+## 2026-10-21 MAP11-19 큰 바닥 패치
+
+- 기준2e735e1d / MAP11-17 채택 조명 유지. 사용자 제공 MagicLight Seedream 5.0 Pro 3장을 keyed RGBA+mipmap으로 가공. REJECT/16/16b/17b 미사용.
+- field12개 폭310~375, 기존 소형 군락 축소·재배치, arena/충돌/전투 변경0. 설계 §16·아트 현황표 동기화.
+- 동일3뷰/1x·단독1회 성능 결과와 visual 판정은 설계 §16 및 _out/MAP11-19/DONE.txt. main push/배포0.

@@ -14,7 +14,30 @@ func configure(scene: Node2D,main: Node) -> void:
  for enemy in _world.get_enemies():_attach(enemy,true)
  _world.child_entered_tree.connect(_actor_entered)
  # Authored islands beside travel/combat voids, never uniform field scatter.
- var clusters=[Vector2(-1450,-2150),Vector2(850,-2750),Vector2(-2650,-850),Vector2(-3450,-1450),Vector2(1250,2100),Vector2(-1500,1850),Vector2(2250,100),Vector2(-850,-3520),Vector2(820,-3820)]
+ var patches=[
+  [0,Vector2(-1320,-2350),350.0,-.28,.88],
+  [1,Vector2(700,-2750),320.0,.42,.82],
+  [2,Vector2(-2730,-900),375.0,-.45,.90],
+  [0,Vector2(-3410,-1400),335.0,.68,.84],
+  [1,Vector2(1300,2100),310.0,-.62,.80],
+  [2,Vector2(-1450,1780),360.0,.25,.90],
+  [0,Vector2(2160,150),345.0,-.80,.88],
+  [1,Vector2(-920,-3600),325.0,.18,.78],
+  [2,Vector2(780,-3840),370.0,-.38,.88],
+  [0,Vector2(-370,-2640),330.0,.55,.86],
+  [2,Vector2(330,-4010),315.0,.15,.85],
+  [1,Vector2(1880,-1720),340.0,-.20,.80]]
+ var large_textures=[preload("res://assets/map/map11/patches/patch_bloodpool_roots.png"),preload("res://assets/map/map11/patches/patch_bone_pile.png"),preload("res://assets/map/map11/patches/patch_cracked_flesh_slab.png")]
+ var clusters: Array[Vector2]=[]
+ for i in range(patches.size()):
+  var row: Array=patches[i]
+  var sprite:=Sprite2D.new();sprite.name="FloorPatch%02d"%i
+  sprite.texture=large_textures[row[0]];sprite.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
+  sprite.position=row[1];sprite.rotation=row[3];sprite.flip_h=i%2==1
+  sprite.scale=Vector2.ONE*row[2]/sprite.texture.get_width()
+  sprite.modulate=Color(row[4],row[4]*.94,row[4]*.92,.72)
+  sprite.z_index=-2986;scene.field_view.add_child(sprite)
+  clusters.append(row[1])
  var rng:=RandomNumberGenerator.new();rng.seed=11182026
  var textures: Array[Texture2D]=[]
  for path in PATHS:
@@ -23,20 +46,14 @@ func configure(scene: Node2D,main: Node) -> void:
   textures.append(atlas)
  for index in range(clusters.size()):
   var center: Vector2=clusters[index]
-  for part in range(12):
+  for part in range(6):
    var kind: int=0 if part==0 else (1 if part<4 else 2+(part%3))
-   var at: Vector2=center+Vector2(rng.randf_range(-260,260),rng.randf_range(-170,170))
+   var at: Vector2=center+Vector2(rng.randf_range(-210,210),rng.randf_range(-150,150))
    # North approach center corridor / gate trigger remains visually clear.
    if at.y< -3250 and absf(at.x)<540:continue
    var width: float=rng.randf_range(380,650) if kind==0 else (rng.randf_range(150,340) if kind==1 else rng.randf_range(24,85))
    _stamp(scene.field_view, textures[kind],at,width,rng,kind)
- # Root feet are grounded with a low stain + small bones, behind the tree bodies.
- for i in range(0,scene.field_view._forest_rows.size(),4):
-  var row: Dictionary=scene.field_view._forest_rows[i]
-  if row.layer!="FRONT":continue
-  _stamp(scene.field_view,textures[1],row.foot+Vector2(0,22),rng.randf_range(230,390),rng,1)
-  _stamp(scene.field_view,textures[0],row.foot+Vector2(30,0),rng.randf_range(280,460),rng,0)
- # No new arena decals: complete R1700 combat void stays empty.
+ # Arena R1700 remains untouched; all new stamps belong to field.
  set_process(false);set_physics_process(false)
 func _actor_entered(actor: Node) -> void:
  # Deferred once so a newly spawned actor has finished building its sprite.

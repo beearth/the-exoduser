@@ -365,3 +365,58 @@ Tissue 2등은 setup에서 FRONT row의 가장 가까운 foot를 선택(목표 W
 | GIT | 자기branch codex/map11-18-20261021 경로지정 stage/정상hook commit/push. main·기존반려branch merge0. remote readback/SHA는 DONE. R게임/INDEX/WORK수정0. deploy0 |
 | VISUAL VERDICT | **RETOUCH** — 단일 바닥의 국소변화/낮은 뿌리·혈흔·뼈 군락/얇은 actor윤곽을 확인. 외곽암부·저밀도 바닥의 큰 균일면·일부 소품 접합·관문뒤 직선경계 잔여. PoE2/No Rest for the Wicked 동급 완성 PASS 아님 |
 | NEXT PASS | 사용자 눈 인수 후 남은 암부/낮은 소품의 접합·밀집전투 가독성. 후광·새생성·반려 텍스처로 대체0 |
+
+
+## 16. MAP11-19 — 큰 바닥 패치 (2026-10-21)
+
+이번 명시 지시가 과거 같은 번호 배정보다 우선한다. 기준 `2e735e1d34e9dfe9f70dedc6671cb38eb911b22b` (MAP11-18, 채택 MAP11-17 ff59c3c7 조명). MAP11-16/16b/17b·REJECT 반입 없음. §15의 130개/9군락/발치 표는 이전 이력이며 아래 계약으로 대체한다. actor rim/숲/조명/geometry/전투 코어는 유지한다.
+
+### 16.1 출처·가공
+
+3장 모두 MagicLight Seedream 5.0 Pro, 2026-10-21, 1920² 사용자 제공·맥북총괄 원화 PASS. 입력 `R/outputs/map11-art-proof-20261021/`, 런타임 `godot/assets/map/map11/patches/`. 신규 생성 없음. 순녹색 배경에 텍스처 편차가 있어 색거리와 green chroma를 결합한다. 정규화 RGB에서 c=G−max(R,B), d=distance(RGB,(0,1,0)), alpha=clamp((.095−c)/.065)×clamp((d−.35)/.25). alpha>.5 최대 연결 island만 3px 팽창하여 보존하므로 섬 밖 왼쪽 아래 턱뼈는 bbox 이전에 제외된다. 주 island 내부 distance/70의 smoothstep으로 반투명 feather; G=min(G,max(R,B)×.98)로 spill 제거, 전체 RGB=clamp(RGB^.76×1.3), 이후 뼈 RGB×.72. alpha<.002 RGB/alpha=0, bbox+4px crop 후 최대변1024 Lanczos. RGBA·mipmap import=true, linear mipmap 필터. 새 shader/틱 로드 없음.
+
+| 파일 | 원본 crop x0,y0,x1,y1 | RGBA 해상도 | 사용 |
+|---|---|---|---|
+| patch_bloodpool_roots.png | [159, 151, 1766, 1803] | [996, 1024] | 정적 바닥 패치 |
+| patch_bone_pile.png | [188, 250, 1733, 1693] | [1024, 956] | 정적 바닥 패치 |
+| patch_cracked_flesh_slab.png | [245, 233, 1699, 1706] | [1011, 1024] | 정적 바닥 패치 |
+
+### 16.2 배치·소형 군락 현행값
+
+setup-only Sprite2D 12개, z−2986(기존 소형−2985·캐릭터/적 아래), 충돌 없음. 원 종횡비 보존, 폭310~375worldpx(현재 주인공 body48×scale1.3=62.4px 키의 약5~6배), 회전·홀수 index 수평반전·명도 변주. RGB=(tone,tone×.94,tone×.92), alpha.72. 모두 field 자식; arena R1700 내부 0개. 주동선 한가운데의 연속 패턴을 피하고 side/approach shoulder를 사용한다. Heart(−250,−2440)와 GateLeft/Right 빛 웅덩이에 각각 index9/10을 걸쳐 배치한다. 고정 seed11182026 소형6개씩을 같은 12개 중심 ±210x/±150y로 모음, root1/blood3/bone·flesh2; y<−3250 & abs(x)<540 제외. 기존 별도 발치22개 제거. 소형 tone/폭/높이비/alpha/공유 root shader는 §15 그대로다. 같은 종류가 인접한 중심을 피하고 서로 다른 실루엣/각도로 덩어리를 나눈다.
+
+| index / 종류 | center world x,y | 폭 | 회전 rad | tone |
+|---|---|---:|---:|---:|
+| 0 혈흔뿌리 | −1320,−2350 | 350 | −.28 | .88 |
+| 1 뼈 | 700,−2750 | 320 | .42 | .82 |
+| 2 갈라진살 | −2730,−900 | 375 | −.45 | .90 |
+| 3 혈흔뿌리 | −3410,−1400 | 335 | .68 | .84 |
+| 4 뼈 | 1300,2100 | 310 | −.62 | .80 |
+| 5 갈라진살 | −1450,1780 | 360 | .25 | .90 |
+| 6 혈흔뿌리 | 2160,150 | 345 | −.80 | .88 |
+| 7 뼈 | −920,−3600 | 325 | .18 | .78 |
+| 8 갈라진살 | 780,−3840 | 370 | −.38 | .88 |
+| 9 혈흔뿌리 | −370,−2640 | 330 | .55 | .86 |
+| 10 갈라진살 | 330,−4010 | 315 | .15 | .85 |
+| 11 뼈 | 1880,−1720 | 340 | −.20 | .80 |
+
+
+### 16.3 MAP PRODUCTION REPORT
+
+| 필드 | 실제 결과 |
+|---|---|
+| STAGE / MASTER | CH1-1 MAP11-19. silhouette/regions/main route/side spaces 기준2e735e1d 보존. GATE4 ground→7 detail→8 camera/tech |
+| OUTER MASS | LEFT/RIGHT/TOP/SOUTH·major holes 불변. 기존 외곽4층·AO·조명 보존 |
+| LARGE / MEDIUM | source3장·12 low floor patches. 세로 composite/overlap/외곽 연결 구조 불변. 기존 hole 수정0 |
+| GROUND | feather70px·mipmap3장·패치12개, 소형130→실제66개. 바닥 오염의 큰 형태 추가. 투명 경계 녹색/회색 선은 보이지 않음. 일부 암부 혈흔의 원형 실루엣은 잔여 |
+| PLAYABLE | main arena/travel/breathing/threat 공간 geometry/충돌 불변. actor rim 유지, 전체 arena R1700 새 패치0. field/arena 각600틱 실제입력 이동·관문전환 PASS. 밀집전투/Q/E/loot 중첩 미검수 |
+| LANDMARK | primary심장제단/secondary관문·숲 유지, tertiary바닥 덩어리. field Heart/gate 광원 받는2개 배치 |
+| CAMERA QA | 동일3뷰 START대신 field landmark / SIDE L / EXIT. before는2e735e1d의 MAP11-18 after PNG byte복사(DONE의SHA 확인); after 같은 카메라좌표1600×900. 나란히3200×900, 1x x480/y150/640×600 각2장을1280×600로 연결. 색보정/리사이즈0. START/EARLY/SIDE R/LATE/arena 최종시각은 미검수 |
+| TECH QA | 초기 캡처17checks/0fail 뒤 검은 섬/과대 스케일 보정. 최종 캡처+직접 관련 검사+벤치1회33checks/0fail. 로딩·shader ERROR0. pageerror/404 N/A. seam/관문뒤 직선cutoff 기존 잔여. route/collision 소스 불변 |
+| PERFORMANCE | field p95 7.004ms / arena p95 6.780ms, 양쪽≤8.33ms PASS. 기준7.698/7.711ms. 최종단독1회/1920×1080/240cap/60Hz/Apple M5 Pro/Godot4.7.2 GL. 직전pgrep0·벤치중자기Godot1개만 관측. 5적 fixture; Windows/밀집전투/GPU timestamp 미검수 |
+| FILES | product_detail, 새RGBA3장/import3개, 전용하니스/uid, 설계·아트현황·CHANGELOG. concurrent/unrelated 수정0. PC전투코어/Main/State/save0 |
+| GIT | codex/map11-19-20261021 지정path stage·정상hook commit/push, remote SHA readback 후 자기worktree 제거. main push/merge/force/reset/rebase/배포0. R HEAD/INDEX/WORK 읽기만. 실제 저장폴더 실행0; EXODUSER-map11-19-Isolated-20261021만 사용·project원byte복원 |
+| VISUAL VERDICT | **RETOUCH** — 큰 형태는 이전 소형 데칼보다 읽히지만 전체 퀄리티가 확실히 올라갔다고 PASS하기에는 암부 재질·둥근 혈흔 실루엣·관문 측 갈라진 판의 반복감·기존 직선cutoff가 남음. 원화3장 PASS를 런타임 전체PASS로 대체하지 않음 |
+| NEXT PASS | 사용자 검토 대상으로 제출. 암부 중간톤/관문측 유사형 인접을 더 풀 필요. 이번단위 뒤 새 작업 자동착수0 |
+
+증거: `~/exoduser-wt/_out/MAP11-19/captures/`, 최종 verification.json·final-verification.log. 성능 개선율/전플랫폼120fps를 주장하지 않는다.
