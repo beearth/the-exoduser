@@ -88,6 +88,7 @@ func settle(n: int=30) -> void:
 func done(status: String,reason: String="",evidence: Dictionary={}) -> void:
  if not active.has("action_us"):action_end()
  active.evidence.merge(evidence,true)
+ if is_instance_valid(main) and is_instance_valid(main.player):active.evidence["player_boundary"]={"hp":main.player.hp,"max_hp":main.player.max_hp,"iframes":main.player.iframes,"state":main.player.state,"can_process":main.player.can_process(),"tree_paused":paused}
  await settle()
  var blocked: Array=[]
  if status=="NOT_READY":
@@ -283,21 +284,28 @@ func run() -> void:
  # applying further hurtP, rather than killing Player during a cooldown fixture.
  main.player.global_position=home
  var potion: RefCounted=main.get("source_potion")
- var cooldown_deadline:=Time.get_ticks_msec()+20000
+ var potion_entry: Dictionary={"hp":main.player.hp,"iframes":main.player.iframes,"runtime":main.source_state.read_native_potion_runtime().duplicate(true),"uses":potion.get_snapshot().uses if is_instance_valid(potion) else -1}
+ var wait_start:=Time.get_ticks_msec()
+ var cooldown_deadline:=wait_start+20000
  while (main.player.iframes>0 or main.source_state.read_native_potion_runtime().cd>0) and Time.get_ticks_msec()<cooldown_deadline:
   await physics_frame
  if g.get("mats",0)<=0:main.source_state.apply_native_add_potion(main,"hp",1)
+ var potion_after_wait: Dictionary={"hp":main.player.hp,"iframes":main.player.iframes,"runtime":main.source_state.read_native_potion_runtime().duplicate(true),"wait_ms":Time.get_ticks_msec()-wait_start,"timed_out":Time.get_ticks_msec()>=cooldown_deadline}
+ var damage_path: Array=[]
  var used_before: int=potion.get_snapshot().uses if is_instance_valid(potion) else 0
  var mats_before: float=float(g.get("mats",0));var requests:=0
  if is_instance_valid(potion):
   var until:=Time.get_ticks_msec()+15000
   while Time.get_ticks_msec()<until and potion.get_snapshot().uses==used_before and main.player.hp>1:
    if main.player.iframes<=0 and main.source_state.read_native_potion_runtime().cd<=0:
-    main.player.receive_damage(maxi(1,int(main.player.hp*.25)),"phys");requests+=1
+    var request: Dictionary={"hp_before":main.player.hp,"iframes_before":main.player.iframes,"amount":maxi(1,int(main.player.hp*.25)),"runtime_before":main.source_state.read_native_potion_runtime().duplicate(true)}
+    main.player.receive_damage(request.amount,"phys");requests+=1
+    request["hp_after"]=main.player.hp;request["iframes_after"]=main.player.iframes
+    if damage_path.size()<64:damage_path.append(request)
    await settle(8)
  var used: bool=is_instance_valid(potion) and potion.get_snapshot().uses>used_before
  var pot_ok: bool=used and float(g.get("mats",0))<mats_before and main.source_state.read_native_potion_runtime().cd>0
- await done(verdict(used,pot_ok),"" if pot_ok else "real hurtP/iframe/threshold/clock did not produce auto-potion",{"uses_before":used_before,"uses_after":potion.get_snapshot().uses if is_instance_valid(potion) else 0,"damage_requests_through_PC":requests,"HP_written_directly":false,"mats_before":mats_before,"mats_after":g.get("mats"),"runtime":main.source_state.read_native_potion_runtime()})
+ await done(verdict(used,pot_ok),"" if pot_ok else "real hurtP/iframe/threshold/clock did not produce auto-potion",{"entry":potion_entry,"after_wait":potion_after_wait,"damage_path":damage_path,"request_loop_exit":"used" if used else ("hp_le_1" if main.player.hp<=1 else "deadline_or_owner_unavailable"),"uses_before":used_before,"uses_after":potion.get_snapshot().uses if is_instance_valid(potion) else 0,"damage_requests_through_PC":requests,"HP_written_directly":false,"mats_before":mats_before,"mats_after":g.get("mats"),"runtime":main.source_state.read_native_potion_runtime()})
  begin("level_up")
  var p: Dictionary=main.source_state.read_current_p();var lv_before: int=int(p.lv)
  mark_checkpoint("XP reward input through actual State.addExp; no level/point setters or new formula")

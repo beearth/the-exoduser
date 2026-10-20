@@ -56085,3 +56085,8 @@ MAP11 fieldboss Marker 4개/실제 family bind, 실제 transport spawn_options�
 
 - 기준1f797a8b, 보류MAP11-16/16b 미사용. 텍스처/배치 불변, MAP11전용ambient·최대5등·지역냉/온광·접지AO·외곽안개. NativeMapLook 기존광원/실루엣helper 재사용, 중복generic설치guard.
 - p95 field7.857ms/arena7.580ms(1080p/600틱/각1회), 최종17/0·이전렌더19/0. 3뷰1600×900 before/after+1x. VISUAL VERDICT RETOUCH, 밀집전투/Windows미검수. [현행수치·§23보고](4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#14-map11-17--조명-룩-패스-2026-10-21).
+
+
+## 2026-10-21 INTEG-2 — 1-1 PC 전달 통합
+
+47m/Map11-15/17 순차 정상 merge;CHANGELOG 독립 추가 양쪽 보존. auto_potion E2E의 HP/iframe·대기·실제 hurtP 요청 전후 관측만 추가(공식/HP쓰기/core 변경0). import1회/관련 단위3989 PASS0 FAIL/E2E12 PASS6 NOT_READY0 FAIL. benchmark1회 exit4,시간 미수집;physics max22.414ms 예산초과. 과거0요청 증상 미재현·원인 확정 불가,PC blocked_by 유지. [원인·18단계·검수·남은 일](engine/INTEG2_DEMO11_20261021.md).

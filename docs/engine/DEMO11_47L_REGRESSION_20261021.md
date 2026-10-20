@@ -135,3 +135,8 @@ PC 전투 이동/패링/방패/분노/hurtE/hurtP 및 readonly port 모듈, docs
 보호: PC 이동·패링·방패·분노·hurtE/hurtP·port_modules·docs/2_3·맵 비주얼/조명·번역 변경0. 직접 defeat/clear 신호 주입0; 기존 PC blocked_by6개 유지; 최종 auto_potion은 별도 NOT_READY(피해요청0, uses2→2, mats1002→1002)로 추가, PC 의존으로 덮어쓰지 않음. 실제 사용자 저장 폴더 접근0, runner·관련 검사·합성 검사 모두 전용 격리 user dir. Godot 종료 후 pgrep0에서 순차 실행, R 코드/INDEX/WORK 읽기 전용. headless 결과는 실창 시각·사운드·GPU 검수나 PC 동기화 완료가 아니다. 전체 원인 분리와8.333ms 목표는 미완료다.
 
 47m 최종 추가 미해결: `auto_potion`은 NOT_READY, 피해요청0·uses2→2·mats1002→1002·종료cd0이다. 검사 전 HP/iframe 값이 결과에 없어 무피해 원인을 단정하지 않는다. PC blocked_by6행과 별도이며 전체 최종11 PASS/7 NOT_READY/0 FAIL을 적용한다. `.gitignore`에는 소유한47m 계측 회귀 테스트만 추적 예외로 추가했다.
+
+
+## INTEG-2 통합 후 관측 (2026-10-21)
+
+47m→MAP11-15→17 순차 merge. 단위3989/0,E2E12 PASS/6 NOT_READY/0 FAIL·ERROR0. auto_potion 이번 표본 실제 피해1회/uses0→1로 PASS,과거0요청 원인은 HP/iframe 미기록이라 미확정. 하네스 경계 관측만 추가. benchmark1회 exit4(arena 전환 확인 실패·시간JSON 없음),E2E physics max22.414ms로 예산미달. PC blocked_by 유지. 상세·18단계·한계: [INTEG-2 보고서](INTEG2_DEMO11_20261021.md). 이전 실행 수치는 당시 이력으로 보존한다.
