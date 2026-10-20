@@ -3,9 +3,9 @@
 
 | 항목 | 구현·검수 근거 |
 |---|---|
-| 기준·의존 | 최신 main45be76e4에 PC a28117c1 포함 확인. 미병합 branch 반입0·ec694742 blocker 해소. TI00/01·기존 forge prefix·PC 계약 재사용 |
+| 기준·의존 | 초기 main45be76e4→최신 main0138c5bb 정상merge da098350. PC a28117c1·DEMO11-21/종료수정72e602d1 포함 확인. 미병합 branch 반입0·ec694742 blocker 해소. TI00/01·기존 forge prefix·PC 계약 재사용 |
 | 연결 | 실제 State bag↔17slot·reqLv/귀걸이/좌표·강화/결정 이전 후 PC equipment_refresh1회. 실패 INV/악의/결정/3캐시 참조 rollback·재진입 거부. 실제 공격/방어 readback, 전투식/피해/actor 직접쓰기0 |
-| 검증 | 신규442/0·원문42사례168필드 exact 비교 불일치0·ERROR/누수/잔류0. 관련 회귀 수치는 보고서 확정 표 참조. JSON 소수 ID 하니스 실패는 허용오차 없이 Node exact Number 비교로 수정·실패 suite만 재실행 |
+| 검증 | 신규442/0·원문42사례168필드 exact 비교 불일치0·ERROR/누수/잔류0. 최종 직접 회귀6종 각1회2614/0(PC286/TI238/forge1918/starter148/drop24), 모두 ERROR/누수/잔류0. JSON 소수 ID 하니스 실패는 허용오차 없이 Node exact Number 비교로 수정·실패 suite만 재실행 |
 | 범위·인계 | Main+29/State+20-1·다른 공용0. 실장착 강화이전 continuation 검증, forge panel 정적 HOLD 안내·inventory UI/SFX/lesson/save는 owner 인계. tick/목록생성API0·격리 gate·override0byte. [보고서](engine/orders/reports/demo11-22r_REPORT.md) |
 
 
