@@ -12,7 +12,7 @@
 | 통제 재현 | 작업 폴더 manifest 읽기만 b25a018ace5a3fa65c9c2476a8c3ac92509077b3 출처 JSON으로 치환. 실제 Git/파일/제품 변경0. SHA **9e2090601ea580432ed008e7aec0ecac363864d4134ad24961b125b5c725b63c** — PC 첫 실패와 일치 |
 | 같은 조건 기존 / 정정 | 기존 **1/3**(unchanged / corrupted collider / prior CLI rewrite 실패), 정정 **7/0**. expected b25a018ac와 실제 8524bbbb4 불일치도 동일 |
 | 정상 조건 정정 | 기존 4개 유지+새 3개 = **7/0**, skip0 |
-| map-node-9 병합 | 6c0d93704abc12f0eade5c35f176a39044ca8869 merge·37/0 조합 검증은 다음 마감 단계에서 실행 예정 |
+| map-node-9 병합 | 6c0d93704abc12f0eade5c35f176a39044ca8869 실제 merge. provenance7/0 + 맵37/0 = **44/0**, skip0·exit0 |
 
 ## 원인과 정정
 
@@ -56,8 +56,16 @@
 
 `fresh-provenance-rewrite`는 원래 same-native 추출이 main_sha를 새로 써서 pin을 깨뜨리는 결함, `no-admitted-recovery`는 이미 출처만 덮인 파일을 되돌리지 못하는 결함이다. 둘 다 기존 검사가 계속 검출한다. source 검증 우회는 미존재 commit 및 존재하지만 다른 game 바이트를 모두 검출한다. corrupted output 보존도 검출한다. 원문·OLD/NEW·수치는 `mutation-results.json` 및 각 `.stdout.log`에 보존했다.
 
-## 마감 검증 상태
+## 병합·마감 검증
 
-이 절은 map-node-9 실제 병합·조합 실행 후 마감 결과로 갱신한다. 현재 제품/데이터/공용 exporter2/Main/State/저장 변경0이며, 임의 source pin 갱신0이다. Godot/import/실창 실행0(테스트 하니스만 변경); OS.execute 사용0. Node 실행은 절대 binary 경로와 전체 stdout/stderr UTF-8 파일로 기록했다. PC 실제 재실행은 미확인이고 Mac 통제 재현만 확인했다.
+| 항목 | 실제 결과 |
+|---|---|
+| 정상 코드 커밋 | 86f4eb4d: provenance 테스트·자기 docs만 정상 pre-commit 통과 |
+| map-node-9 병합 | `git merge --no-ff --no-commit 6c0d93704abc12f0eade5c35f176a39044ca8869`; 테스트3파일·보고서는 원 브랜치 byte 그대로. CHANGELOG 맨 위만 충돌, 양쪽 추가 절+main010515993 전체 본문 보존으로 해결. WORK_BOARD 자동 병합 |
+| 조합 실행 | `run-node-suite.py --node-bin <절대 Node> --worktree ... --out ...` → **44통과/0실패/skip0/exit0** (맵37+provenance7). merged-node-44 stdout/stderr/result.json |
+| 공용·제품 보호 | protected-before/after.json 모든 SHA 동일. exporter2·native reader/pin·manifest·game·Main/State/저장0줄. 최종 diff는 테스트4개+보고서2개+CHANGELOG/WORK_BOARD뿐(맵 수정분은 승인된 merge 이력) |
+| 문서·훅 | docs 전체 관련키워드 rg 검색 L/docs-keyword-search.log, 변경은 자기 문서/행 및 인수 map-node-9 병합만. 정상 docs-sync pre-commit 사용, 우회0 |
+| 실행 범위 | Node v24.15.0. 하니스 --node-bin 명시·전체 stdout/stderr UTF-8 파일. OS.execute0. Godot/import/실창0이므로 실행 gate 대상0/override.cfg 및 실제 사용자 디렉터리 변경0. PC 실제 재실행 미확인 |
+| 제출·정리 | 자기 브랜치 일반 push·원격 SHA 일치 확인 → L/DONE.txt 작성 → 자기 worktree 제거. 실제 최종 SHA·merge 부모·R 불변·제거 결과는 L/final-receipt.json 및 DONE.txt에 기록 |
 
-R은 시작 branch/head 및 tracked INDEX/WORK를 `R-start.json`으로 보존했다. 정상 docs-sync 훅·자기 브랜치 일반 push·원격 SHA 일치 확인·DONE.txt 후 자기 worktree 제거를 마감 단계에서 수행한다. main push/force/reset/rebase/add -A 0.
+R은 시작 branch/head 및 tracked INDEX/WORK를 `R-start.json`으로 보존하고 최종 대조한다. main push/force/reset/rebase/add -A 0. 이 작업은 테스트 판정과 Git fixture 이식성 정정이며 제품·시각 품질 PASS를 주장하지 않는다.

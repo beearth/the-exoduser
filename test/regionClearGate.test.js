@@ -10,7 +10,14 @@ const START='// [REGION] 4분면 지역 클리어 시스템 (2026-09-30)';
 const END='// ═══ 필드보스: 심연의 앵글러';
 const s=html.indexOf(START),e=html.indexOf(END,s);
 assert.ok(s>=0&&e>s,'[REGION] block exists in game.html');
-const block=html.slice(s,e);
+// The clear/gate suite executes the complete region logic and banner callbacks.
+// REGION-ARROW starts a separate browser renderer (including new Image()); it
+// has no initialization dependency from the clear logic above this boundary.
+const arrow=html.indexOf('// ── [REGION-ARROW]',s);
+assert.ok(arrow>s&&arrow<e,'region logic ends before the browser arrow renderer');
+const block=html.slice(s,arrow);
+assert.match(block,/function _regionTick\(/,'include the final region logic function');
+assert.doesNotMatch(block,/new Image\(/,'do not emulate browser asset loading in Node');
 
 const T=64;
 function harness(g,p){
@@ -92,6 +99,10 @@ test('region clears at 80% kills and shows the Hell Gothic purge banner (no show
   assert.ok(els.regionBannerKr.textContent.includes('북서')&&els.regionBannerKr.textContent.includes('정화'),'purge banner shows region name + 정화');
   assert.match(els.regionBannerEn.textContent,/REGION PURGED · 1 \/ 4/,'EN subtitle line');
   assert.equal(calls.ph.length,0,'generic showPH toast is not used any more');
+  assert.equal(calls.sfx,1,'the real clear callback plays one sound');
+  assert.deepEqual(calls.pet,['region_clear'],'the real clear callback sends one pet cue');
+  assert.ok(els.regionBanner.classList.contains('purge'));
+  assert.ok(els.regionBanner.classList.contains('show'));
 });
 
 test('stage 0 region additionally requires its Abyssal Angler dead',()=>{
