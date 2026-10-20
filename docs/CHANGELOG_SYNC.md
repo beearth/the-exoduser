@@ -126,7 +126,7 @@
 | G·지역·HUD | starter G48(원본40+지역7+`_totalSpawned`1, 원본30625), 지역 total23/60/53/32 합168, 시작 HUD0/32를 실제 회귀 로그로 확인 |
 | 범위 밖·보호 | 설정 UI·저장복원·리바인딩·FPS cap 적용·Tier 자동검출·실물 패드·실플레이/시각 검수 미구현·미검수. docs/2_3·Q/E·세이브 형식 보호, 변경0 |
 | 제출·원로그 | 구현 `517825ebf017f105484fb81b01fe98f31fb8f21f`, 자기 branch `codex/settings-s01-20261020`. 원로그 `~/exoduser-wt/_out/settings-s01/main-9528ea35/`, [상세 보고서](engine/orders/reports/settings-s01_REPORT.md). 최초 실패·보완 이력 보존, 훅 우회0 |
-=======
+
 ## 2026-10-20 trace-elites 재개 — 정예·오라 원본 추적 문서
 
 | id / 적용 위치 | 현재 정확 계약 |
@@ -138,7 +138,6 @@
 | 후속안 | EL-01~09·EL-04a~c 총12단위, 1번은 선택 규칙 producer의 구현 지시서·공용0줄 목표. 이번 구현0 |
 | 검증 | 재개 Godot 실행/import/테스트0. 최신 blob·카탈로그·전체 식별자 행색인·24설계문서·12선행추적 정적 대조. 과거 c3cf8ce6 회귀6통과/1실패와 JS 기록은 과거 증거로만 보존·최신 PASS 주장0 |
 | 보호·인계 | docs/2_3·Q/E·blackBean·세이브형식 불변. 자기 branch만 정상 commit/push, 지정 `_out/trace-elites/DONE.txt`에 SHA·요약 인계 |
->>>>>>> 48681a12
 =======
 ## 2026-10-20 TRACE-LOBBY 재개 — 로비·내러티브 원본 추적 마감
 
@@ -150,6 +149,37 @@
 | 소유·보호 | SETTINGS S10·SAVE SV-LOBBY-VIEW는 참조, P2-001i·P2-007a는 의존. 코드·테스트·설계 docs·DESIGN LOCK·WORK_BOARD·R 불변. 이 절 외 기존 문서 수정 없음 |
 | 검증·한계 | 57개 기존 receipt 파일 및 최신 main 동일성·행/표/링크 정적 확인. Godot 미실행. 보존된 Node 원로그 77통과/3파일 acorn 부재로 본문 미실행은 전체 PASS가 아니며 재실행하지 않음. 자기 브랜치만 정상 push·원격 SHA 확인, main push·force·훅 우회 없음 |
 >>>>>>> 1adb3a21
+=======
+## 2026-10-20 META-03 레거시 분해 가치 순수 규칙
+
+| 항목 | 변경·검수 |
+|---|---|
+| 신규 API | native_meta_salvage_policy.gd·test_meta_salvage_policy.gd와 자기 UID2개. legacy_enh_refund/salvage_value만 추가. META-02 경제등급/배율·기존 JS ToInt32 helper 읽기 전용 재사용 |
+| 원본 | 최신 main284d7faf game.html28187–28201·16302–16318. base1000/2000/10000/20000/50000+legacy환급+tier×2; 단계별ceil 누적50%에 signed32~~, 기록 _enhRefund>0이면 max. 희귀+1/+10/+100 환급1/15/656, 유니크+100 최종51202. 현행강화지출50% 아님 |
+| 검수 | 신규68/0·실제 JS본문2489 exact대조/0불일치, META-02 70/0·META-01 20/0·contracts5case/0·p2001c45/0, 모두exit0·ERROR0·SKIP0. 최초68/1은 신규 golden51200→원본51202만 정정·제품미수정 후 전체 재검, 원로그 보존 |
+| 의존·보호 | META-02 미통합이므로8171e715 parent 유지. 공용6·META-02·기존테스트·저장·Q/E·장비삭제/악의입금/State/UI/RNG0줄. numeric domain·signed32음수·소수/기록max 보존, 전체거래/플레이 인수 아님 |
+| 증거 | Godot4.7.2 pgrep2이상30초대기·각 격리상수/작업명·override매회0byte. [META-03 보고서](engine/orders/reports/meta-03_REPORT.md)·~/exoduser-wt/_out/meta-03/·STATUS=REVIEW_PENDING |
+
+## 2026-10-20 META-02 강화 견적 순수 규칙
+
+| 항목 | 변경·검수 |
+|---|---|
+| 신규 API | native_meta_enhancement_policy.gd 및 자기 UID·test_meta_enhancement_policy.gd. 확률/할인/강화 raw·등급 견적/flat/이전비용8개 static 순수 API만 |
+| 원본 | 최신 main284d7faf game.html28077–28104·28185–28186, SHA4d911cdd. ceil순서·할인0.5·확률하한0.5%·등급배율0.5/0.7/1/1.3/1.8·unique경제4·flat0.25 보존. +100raw555000/+1000raw5280000 |
+| 검수 | 새70단정/0실패·JS실제원본17214대조/0불일치. contracts5case/0·p2001c45/0·META-01 20/0, SKIP0·exit0. stderr와 경고는 [meta-02 보고서](engine/orders/reports/meta-02_REPORT.md) 및 원로그로 분리 |
+| 의존·보호 | META-01 미통합이므로 사용자 지정c428ef20 parent 유지. 공용6·State/INV/RNG/악의차감/UI/저장/QE·기존테스트0줄. numeric coercion 지원범위·미연결한계 명시, 전체경제/실플레이 인수 아님 |
+| 실행·제출 | Godot4.7.2 매회pgrep2이상30초대기·새 작업/기존상수 격리명·override매회0byte. 원로그 ~/exoduser-wt/_out/meta-02/resume-20261020/·STATUS=REVIEW_PENDING·자기브랜치만push |
+
+## 2026-10-20 META-01 순수 XP 곡선·제품 State 미연결
+
+| 항목 | 변경·검수 |
+|---|---|
+| 새 파일 | `godot/scripts/native_source_meta_exp_curve.gd` 및 Godot 생성 UID, `godot/tests/test_source_meta_exp_curve.gd`. RefCounted의 `required_exp(level: int) -> int`만 제공 |
+| 원본 상수·공식 | 최신 main `f84e26ee0`, `game.html:43128–43133`: Lv<1000 `(15+2.5lv+.05lv²)×1.001^lv` 절삭, Lv≥1000 `5,000,000+(lv−999)²×10,000`. 양수 하위 구간 floori·초월64비트, 신규 maxExp15는 별도 초기값 유지 |
+| 순수 검수 | 새 Godot20/0·skip0, 실제 JS 원본1..1500 대조1500일치/불일치0, 기존 웹 oracle4/0. 자연플레이·영구저장 검수 아님 |
+| 제품 한계·보호 | 사용자 공용0줄 지시 우선: State preload/caller 수정0, 제품999→1000 일반식 불일치 잔존. XP 지급·SP/AP·회복·초월gate·HUD·Q/E·세이브0줄, 일반/데모 game.mats 차이 보호 |
+| 회귀·근거 | 지정15종 중14통과·p1002g 알려진1실패, 추가p2001c45/0·전부skip0. 최종 실측은 [meta-01 보고서](engine/orders/reports/meta-01_REPORT.md)에 기록. exit code·실행그룹·skip·stderr와 알려진p1002g 선재실패를 분리. 원로그 `~/exoduser-wt/_out/meta-01/` |
+>>>>>>> 5b672e7c
 
 > 2026-10-17 ENGINE 현행: callback **12/25·미13**. play_time은 el_mul 바로 다음에 동일 Services self의 arity0 Callable로 등록했다. owner 첫 격리 공개 API 검수는 인수됐으며 자연 clock·실게임 인수는 미확인이다. D9는 직전 공통 소스 인수이며, 이번 main/I/R 소스 정렬은 아래 통합 정본과 단위 receipt의 실제 HEAD·tree를 기준으로 확인한다. V12 후보는 소스 인수·첫 FAIL·별도 보완 한정성공으로 구분하며 제품 copy·World hook은 수행하지 않았다. 아래 이전 단계 숫자·원검수 결과는 당시 이력으로 보존한다. 실제 local/remote commit 상태는 단위 receipt를 따른다.
 
