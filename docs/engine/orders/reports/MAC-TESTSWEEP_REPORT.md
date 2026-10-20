@@ -110,7 +110,7 @@ PC 접근·PC 새 실행은 하지 않았다. 문서에 검사 수가 없는 PAS
 
 | 항목 | 관측·원인 추정·근거 | 조치 |
 |---|---|---|
-| `test_native_main_source_starter_state` | 148 checks 중 `startup_state_and_items: actual G40/STATS5/PAS26 source constructors` 1실패다. `test_native_main_source_starter_state.gd:67–73`은 Main 준비 뒤 current G의 크기를 40으로 고정한다. 반면 `main.gd:263–268`이 새 지역 owner를 configure하고 `native_regions.gd:81–85`는 동일 G에 지역 필드 7개를 쓴다. boot G40 자체는 `port_modules/native_new_run_bootstrap_source/producer.gd:124–132`에 보존된다. 따라서 통합 후 current G와 boot G40을 혼동한 낡은 하니스 기대가 유력하다. 실제 g.size는 원로그에 없으므로 정확한 관측값이나 제품 결함 확정으로 쓰지 않는다. | PC QA ledger 148/0 대비 Mac 148/1 차이를 보존. P3-003 이후 동일 SHA PC 비교는 미확인. 코드·단정 변경 없음. |
+| `test_native_main_source_starter_state` | 148 checks 중 `startup_state_and_items: actual G40/STATS5/PAS26 source constructors` 1실패다. `test_native_main_source_starter_state.gd:67–73`은 Main 준비 뒤 current G의 크기를 40으로 고정한다. 반면 `main.gd:263–268`이 새 지역 owner를 configure하고 `native_regions.gd:81–85`는 동일 G에 지역 필드 7개를 쓴다. boot G40 자체는 `port_modules/native_new_run_bootstrap_source/producer.gd:124–132`에 보존된다. 따라서 통합 후 current G와 boot G40을 혼동한 낡은 하니스 기대가 유력하다. 최초 sweep 원로그에는 g.size가 없다. 아래 후속 진단에서 별도 외부 스크립트로 G47/STATS5/PAS26 및 추가 7키를 실측해 테스트 회귀를 확정했다. | PC QA ledger 148/0 대비 Mac 148/1 차이를 보존. P3-003 이후 동일 SHA PC 비교는 미확인. 코드·단정 변경 없음. |
 | `test_native_main_sprite_startup_loss` | `test_native_main_sprite_startup_loss.gd:21–32`가 Warrior lifecycle fault를 주고 거부를 검사한다. 최종 JSON에 `expected_push_error_count=1`, `expected_script_error_count=0`, checks12/failed[]가 있다. stderr의 `Native source player startup rejected: native_player_sprite_not_ready:target_queued_for_deletion` 1줄과 대응한다. | 의도된 startup 거부 ERROR1·exit0를 보존. |
 | `test_m30_epicenter` | `test_m30_epicenter.gd:329–335`가 의도적으로 `__missing_required_M30_original__.png`를 전달하고 configure 거부를 검사한다. 최종 요약의 `expected_missing_resource_rejections=1`, failures=0, exit0과 stderr ERROR 1줄이 대응한다. | 예상된 거부 로그를 그대로 보존. 무시·삭제하거나 제품 결함으로 집계하지 않음. |
 | `test_p2005d_ice_orb` | PC 문서 22/0에 비해 Mac 20/0이다. 원로그는 그룹별 6+9+5=20, `skipped=[]`, `shatter.log.base_dmg=327`, `blade_dmg=98`을 기록했다. 테스트 :152의 `floor(base_dmg×0.3)`가 98이므로 :176의 `target alive && expected_piece>=100` 조건이 false가 되어 :178–184의 프리즌/게이지·얼음파편저항 단정 2개가 실행되지 않았다. 직접 프리즌 그룹 5검사는 수행됐다. PC 원로그 없이 PC의 실제 난수값·분기를 확정하지 않는다. | 0실패는 같지만 검사 수 동등 PASS가 아님. 그룹 skip이 아닌 내부 조건부 단정 미실행을 표시. 재실행·수정 없음. |
@@ -214,3 +214,127 @@ PC 접근·PC 새 실행은 하지 않았다. 문서에 검사 수가 없는 PAS
 실행 결과 최초 커밋 SHA: **`bd5bc5d185f8148696d9504044d143d430dc38a7`** (parent=`7c4a2442bfc46f5d25c1bd9bf287a9324d8d5e5a`, 코드·테스트 변경 0). 후속 메타데이터 커밋은 이 SHA와 작업판 제출 행만 기록한다. 이 본문 자체를 포함하는 최종 제출 HEAD와 원격 ref 대조 결과는 `~/exoduser-wt/_out/mac-testsweep/DONE.txt` 및 `submission.json`에 기록한다. 로컬 커밋만으로 원격 제출 완료를 선언하지 않는다.
 
 남은 검수: 누락 oracle을 정식 전제로 제공한 type3 생성자 검사, Windows export ICU 패키지 검사, 렌더러를 사용하는 실창·시각 검수. 이번 보고서는 Mac 헤드리스 결과이며 PC/Mac 전체 동기화·전체 Godot 이식 완료·시각 품질 PASS를 주장하지 않는다.
+
+## 후속 진단
+
+진단 완료 시각: 2026-10-20T18:35:37.323607+09:00. **P3-003 통합으로 `starter_state`의 기존 G40 단정이 새로 실패하는 테스트 회귀를 확정했다.** Main 준비 직후 current G는 통합 전 **40키**, 통합 후 **47키**다. 원본 40키의 누락은 0개이고, STATS5·PAS26은 양쪽 모두 유지된다. 추가 7키는 전부 P3-003 지역 초기화가 원본과 같이 쓰는 필드다. 권고 조치는 **테스트의 단계별 기대 갱신**이며, 이 진단에서 제품·테스트를 수정하지 않았다. 최초 32종의 실제 148/1 결과는 보존한다.
+
+### 비교 기준과 merge 부모 순서
+
+실제 통합 merge는 `5948196667fae8649c9285e98c7cf6388c3dae13`이며 메시지는 `merge: origin/main into P3-003 (ENGINE 판 통합)`이다. 구현 브랜치에 main을 합친 역방향 merge이므로 요청의 “첫 부모=직전 main” 전제와 부모 순서가 다르다.
+
+| ref | SHA | 비교 의미 |
+|---|---|---|
+| merge 첫 부모 `^1` | `919f6a28ab4e64e8a07cd403551777d8dbc77e6a` | 이미 P3-003 Main 지역 배선이 존재하고 QA-001 패치가 없어 직전 main 대조군으로 부적합 |
+| merge 두 번째 부모 `^2` | `2602ae5ce8967627f8572fff57b8a4b217052710` | 당시 origin/main. QA-001 수정 포함, `native_regions.gd`·Main 지역 배선 없음. **실제 사용한 직전 main** |
+| 최초 sweep 제품 기준 | `7c4a2442bfc46f5d25c1bd9bf287a9324d8d5e5a` | P3-003 통합 후 starter 148/1의 원로그 기준 |
+| 현재 외부 진단 실행 HEAD | `cd6055eed32f6d3db5df485c3d38f706b9781325` | 최초 sweep 제품·테스트와 동일, 보고서 2커밋만 추가된 같은 worktree |
+
+detached worktree는 요청한 `~/exoduser-wt/mac-testsweep-pre-p3003`에 merge^2로 만들었다. 부모·변경 경로 근거는 `diag/history-and-source.json`에 보존했다. 통합 전후 `test_native_main_source_starter_state.gd`는 **동일 바이트**, SHA-256=`46ca08cad995abe3f02d00f7522701f36d5b1c6cbffc5651462dcbb5d919a3c1`다. 테스트 수리·cherry-pick·역적용을 하지 않은 원래 제품 스냅샷 비교다.
+
+### 실행 방법·격리·원로그
+
+외부 스크립트 `~/exoduser-wt/_out/mac-testsweep/diag/current_g.gd`는 저장소 밖에서 직접 실행했다. `extends SceneTree` → deferred `_run` → `MAIN.instantiate()` → `root.add_child(main)` 직후에 current G를 읽어 원 테스트 :52–59, :67–73의 관측 시점을 재현했다. 관측 전 metadata·paused 변경·physics/process 대기 0회이며, 정상 Main 초기화만 사용했다. 각 실행의 userdir는 테스트 상수 `EXODUSER-MainSourceStarter-Isolated-20261014`다. 두 worktree의 `override.cfg`는 각각 종료 후 0바이트로 비웠다.
+
+새 import 이전 `~/Library/Application Support/Godot/`를 기존 백업 하위 **`followup-pre-p3003/`**에 복사하고 68파일의 SHA-256 일치를 검증했다(`diag/pre-import-backup.json`). 원본 Godot 4.7.2만 사용했다. 새 detached worktree import 1회는 exit0·ERROR0·16.302초다.
+
+아래 명령은 각 worktree의 `godot/`를 cwd로 하고 격리 override를 적용해 순차 실행했다. `$GODOT_BIN`은 지정 원앱 `/Users/fordeargamers/.codex/tools/godot-4.7.2/Godot.app/Contents/MacOS/Godot`의 표기다.
+
+```sh
+"$GODOT_BIN" --headless --path . --script /Users/fordeargamers/exoduser-wt/_out/mac-testsweep/diag/current_g.gd
+# 직전 main detached worktree에서 전체 5그룹 1회
+"$GODOT_BIN" --headless --path . --script res://tests/test_native_main_source_starter_state.gd
+```
+
+| 관측 | 기준 | G / boot G / STATS / PAS | 테스트·진단 결과 | exit | stderr ERROR | 소요 초 | 원로그 (`~/exoduser-wt/_out/mac-testsweep/` 기준) |
+|---|---|---|---|---:|---:|---:|---|
+| 통합 후 기존 전체 테스트 | `7c4a2442` | 초기 로그는 size 미노출 | **148 checks / 1 failure**, startup의 G40 단정 | 1 | 1 | 41.614 | `test_native_main_source_starter_state.out/.err/.meta.json` |
+| 통합 후 외부 즉시 진단 | `cd6055ee` (제품=`7c4a2442`) | **47 / 40 / 5 / 26** | G40 단정=false, 원본 키 누락0, 추가7 | 0 | 0 | 8.397 | `diag/current-g.out/.err/.meta.json` |
+| 통합 전 전체 테스트 | `2602ae5c` | 별도 외부 진단에서 아래 확인 | **148 checks / 0 failures**, 5그룹 전체 | 0 | 0 | 52.195 | `diag/pre-p3003-starter.out/.err/.meta.json` |
+| 통합 전 외부 즉시 진단 | `2602ae5c` | **40 / 40 / 5 / 26** | G40 단정=true, 원본 키 누락0, 추가0 | 0 | 0 | 9.611 | `diag/pre-p3003-g.out/.err/.meta.json` |
+
+두 즉시 진단에서 실제 Player/World·source State·Providers readiness와 같은 current-G provider 참조를 확인했다. `NativeRegions` 자식은 통합 전에는 없고 통합 후에는 있다. 추가 시간은 성능 벤치마크가 아니다. Camera2D interpolation WARNING은 보존했으며 후속 실행의 ERROR는 모두 0이다.
+
+### 실제 키 차이
+
+| 원본 G40 대비 추가 키 | 추가 근거 |
+|---|---|
+| `_regions` | 원본 `game.html:60698`, Godot `native_regions.gd:83` |
+| `_regMidX` | 동일 초기화 행 |
+| `_regMidY` | 동일 초기화 행 |
+| `_regCurIdx` | 동일 초기화 행 |
+| `_regBannerCd` | 동일 초기화 행 |
+| `_regGateIdx` | 동일 초기화 행 |
+| `_bossClearT` | 원본 `game.html:60699`, Godot `native_regions.gd:83` |
+
+현재 G의 전체 47키(표시를 위해 문자열 정렬):
+
+```json
+[
+  "_bossClearT",
+  "_chainCnt",
+  "_chainT",
+  "_curZone",
+  "_irisSz",
+  "_playerPortalPair",
+  "_portals",
+  "_regBannerCd",
+  "_regCurIdx",
+  "_regGateIdx",
+  "_regMidX",
+  "_regMidY",
+  "_regions",
+  "_stageDiffOff",
+  "_zoneState",
+  "_zones",
+  "atkTickets",
+  "bossAlive",
+  "cam",
+  "combo",
+  "comboMax",
+  "comboTimer",
+  "curRoom",
+  "exits",
+  "forgeExpanded",
+  "forgeOpen",
+  "forgeSort",
+  "forgeTab",
+  "hitStop",
+  "kills",
+  "map",
+  "mats",
+  "maxAtkTickets",
+  "mh",
+  "mw",
+  "on",
+  "parts",
+  "paused",
+  "rifts",
+  "rooms",
+  "shake",
+  "slowMo",
+  "spawnHoles",
+  "stage",
+  "stageCleared",
+  "stageTime",
+  "txts"
+]
+```
+
+원본 키 40개 전체와 양쪽 차집합은 `diag/original-g-comparison.json` 및 `diag/FOLLOWUP_RESULT.json`에 기록했다. `original_g_keys.mjs`는 기준 `game.html:16714–16718`의 **G 객체 literal만** 빈 VM에서 읽어 키를 추출했고 게임 런타임은 실행하지 않았다. 그 40키가 Godot `source_boot_g().values`의 키와 정확히 같고, 실제 current G는 이 집합을 모두 보존함을 확인했다.
+
+### 원본 근거와 수정 권고
+
+| 단계 | 기준 `7c4a2442`의 원본 `game.html` 행 | 판단 |
+|---|---|---|
+| 파일 초기 상태 | **16714–16718** `let G={...}` | 40키는 이 단계의 constructor 계약이다. Godot `native_new_run_bootstrap_source/producer.gd:124–132`가 동일 키를 보존한다. |
+| 게임 시작·스테이지 진입 | **64019** `applyStats()` → **64025** `initStage(G.stage)` | 파일 초기 literal과 스테이지 초기화 이후 current G는 다른 단계다. |
+| 지역 초기화 호출 | **31655** `_regionInit(si)` | 소환굴 확정 후 같은 G에 지역 상태를 추가한다. |
+| 지역 공통 필드 초기화 | **60697–60700**, 특히 **60698–60699** | 7키를 먼저 쓰고 맵 크기 조건을 검사한다. 원본도 지역 초기화 이후 G의 전체 size를 40으로 고정하지 않는다. |
+| 실제 지역 값 생성 | **60701–60717** | 중앙 좌표·4지역·분모·문지기 지역·현재 지역 등을 채운다. |
+
+직접 실패 원인은 `test_native_main_source_starter_state.gd:73`의 **Main ready 후 current `g.size()==40`** 기대다. 통합 후 `main.gd:263–268` → `native_regions.gd:81–85`가 원본과 같은 7필드를 추가하며, 실측은 G47/STATS5/PAS26이므로 해당 세 조건 중 G40만 false다. 통합 전 동일 테스트 148/0·외부 G40, 통합 후 기존 148/1·외부 G47과 정확한 7키 차이가 함께 인과관계를 뒷받침한다.
+
+권고는 **boot packet의 정확한 40키 검사와 Main 준비 후 current G의 검사 계약을 분리**하는 것이다. boot G40은 그대로 엄격하게 확인하고, current G는 원본 boot 키 보존·지역 owner의 7키·같은 provider 참조 및 해당 단계의 실제 지역 값을 검사해야 한다. STATS5/PAS26 검사는 유지한다. 현재 cardinality만 무조건 `40→47`로 바꾸거나 원본에 맞는 지역 키를 제품에서 삭제해 통과시키는 조치는 권장하지 않는다. 제품 수정 없이 테스트의 단계 기대를 갱신하는 것이 이 실패의 올바른 후속 방향이다.
+
+회귀 판정 범위는 **P3-003 통합이 유발한 기존 테스트 계약의 실패**다. 전체 웹 스테이지의 모든 필드·플레이 품질·지역 시스템 전체의 동등성을 이번 키 진단만으로 인수하지 않는다. 원본·테스트 수정, 다른 담당 파일 수정, 새 main 병합·push는 하지 않았다. detached worktree·원로그를 보존하고, 이 후속 보고와 작업판 자기 행만 같은 codex 브랜치에 제출한다. 최종 제출 SHA는 `~/exoduser-wt/_out/mac-testsweep/DONE.txt`와 `diag/submission.json`에 기록한다.
