@@ -1,3 +1,11 @@
+## 2026-10-20 BC07 — 1장 보스 근접4기술 상태·hit packet
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 구현·의존 | 신규 native_ch1_boss_melee_states.gd·test_boss_ch1_bc07_melee.gd·bc07_REPORT.md. BC06 1110eec6 끝에서 분기. 공용/타 담당 코드·기존 테스트·원본·설계 docs·R 수정0 |
+| 원본 | game.html:41074–41109·41111–41142·41144–41183의 slash/slam/sweep/tail 공유6상태. 최신 main ad497089에서도 시작 e556b617과 원본 byte/행 동일. BC05 이후 clock·각/거리/iframe gate·source 순서/전진·반복/종료·RNG 보존. protected contact는 실제 owner readback을 요구하는 미집행 요청 |
+| 검증·경계 | 신규 최초14,438/0, 최종14,531/0·652건/이벤트7,769/RNG3,321/contact요청80 대조(실제 피해·패링 성공 수 아님). BC01 681/0·BC02 5,257/0·BC03 31,976/0·BC04 21,899/0·BC05 18,424/0·BC06 14,099/0·contracts5/5·import 정상, 모든 ERROR0. 실제 전투/Main·QE/hurtP/boss_hurtE 집행 인수 없음. 원로그 _out/bc07, push·SHA대조·DONE 뒤 자기 sparse worktree 제거 |
+
 ## 2026-10-20 BC06 — 1장 보스 패턴 시작 command packet
 
 | id / 적용 위치 | 현재 정확 계약 |
