@@ -592,3 +592,7 @@ SV primitive의 `web_ack` 성공 시각 계산과 기존 `source_save_lifecycle_
 사용자 승인 범위에서 실제 Main/State의 load-only writer와 collector/native 공유 IO/비보호 복원을 연결했다. 기존 Player/INV/Shared/collector와 restore-flow 비보호 stage는 재사용한다. State의 actual Player HP/ST·MP authority 현재 Dictionary 설치는 시작 전 한 번만 허용하며 기존 전투 writer는 변경하지 않았다. loaded는 신규 starter/시작 스킬을 지급하지 않고, 보호3단계 관측 없으면 실제 설치된 actor/world/Main을 정지하고 저장을 차단한다. 기존 SV 계산 모듈의 fixture-only/full_restore=false 표시는 그대로이며 새 연결이 보호 완료를 의미하지 않는다.
 
 05 adapter는 기본 키/형식을 유지하는 extension point만 추가했고 공유 subclass가 별도 hellcave_sharedStorage/hellcave_sharedMats 키·폴더로 잠금/temp/readback/rename을 재사용한다. game.storage{} 유지, max/empty-only legacy200 정책 재사용, 손상·실패를 fresh로 전환하지 않는다. State globals를 실제 생성해 수집하고 기존 lifecycle boot3초/auto30초/성공 간격10초를 Main에 연결했다. 아직 main 미인수인 XP20/INV21/skills16·17 후속 writer는 필드 계약으로 구분했다. 활성 조건/PC callsite/수치/실패 로그/공용 줄 범위는 [DEMO11-06b 보고서](orders/reports/demo11-06b_REPORT.md)를 따른다.
+
+## DEMO11-06c 연결 보충 (2026-10-21)
+
+06b의 PC 대기 경계는 PC a28117c1(main0138c5bb에 포함)의 보호 handoff3종과 restore resources8필드로 연결했다. 각 source flow 보호 경계 `_handoff` 검증을 그대로 사용한다. State의 직접 8자원 writer는 삭제하고 PC raw writer만 호출, 실제 completed pre-Tree dispatcher→로드 commit→runtime apply_stats→기존 initStage31567 refill→최종 부팅/시작·저장 gate 순서다. loaded 신규 지급·슬롯 덮어쓰기·fresh intro0. G3618–3621/G3867–3879/G3513·3483–3490/G62509–62517/G31567 근거. 실제 자료와 미확인은 [06c 보고서](orders/reports/demo11-06c_REPORT.md). 06b 당시 PC 대기는 과거 상태다.

@@ -1570,14 +1570,13 @@ func validate_native_demo11_loaded(owner: Node, plan: Dictionary) -> Dictionary:
 	var p: Dictionary = plan.player
 	for key in ["hp","mhp","st","mst","mp","mmp","stR","mpR","baseDef","speed"]:
 		if not (p.get(key) is int or p.get(key) is float) or not is_finite(float(p[key])): return {"accepted":false,"reason":"invalid_resource:"+key}
-	if p.mhp <= 0 or p.mst <= 0 or p.mmp <= 0 or not is_finite(float(p.speed)*60.0): return {"accepted":false,"reason":"invalid_cap"}
+	if not is_finite(float(p.speed)*60.0): return {"accepted":false,"reason":"invalid_cap"}
 	if not p.get("skills") is Dictionary or not p.get("skillSlots") is Array or p.skillSlots.size()!=6 or not plan.inventory.get("bag") is Array or not plan.inventory.get("equipped") is Dictionary or not plan.get("crystal_bag") is Array or not plan.get("stone_bag") is Array: return {"accepted":false,"reason":"invalid_carriers"}
 	var bundle: Dictionary = owner.get("source_providers").get_provider_bundle()
 	var raw_holder: Variant = bundle.get("raw_grit")
 	if not is_instance_valid(raw_holder): return {"accepted":false,"reason":"raw_holder_absent"}
 	var raw: Variant = raw_holder.current_container()
-	var owned: Variant = _resources.get("_owned")
-	if not raw is Dictionary or not raw.has("_grit") or not owned is Dictionary or not plan.has("raw_grit"): return {"accepted":false,"reason":"resource_owner_absent"}
+	if not raw is Dictionary or not raw.has("_grit") or not plan.has("raw_grit"): return {"accepted":false,"reason":"resource_owner_absent"}
 	return {"accepted":true}
 
 func commit_native_demo11_loaded_once(owner: Node, plan: Dictionary) -> Dictionary:
@@ -1585,17 +1584,16 @@ func commit_native_demo11_loaded_once(owner: Node, plan: Dictionary) -> Dictiona
 	if not validation.accepted: return validation
 	var p: Dictionary=plan.player
 	var raw: Dictionary=owner.get("source_providers").get_provider_bundle().raw_grit.current_container()
-	var owned: Dictionary=_resources.get("_owned")
-	# No callbacks, awaits or fallible IO after validation. Preserve dictionary
-	# identities used by existing providers. Only this load-only function reaches
-	# the existing MP authority's owned dictionary; ordinary writers are untouched.
-	_player.hp=float(p.hp); _player.max_hp=float(p.mhp)
-	_player.stamina=float(p.st); _player.max_stamina=float(p.mst)
+	# PC owns all eight resource fields. Its raw dbRestore writer does not clamp.
+	var values := {}
+	for key in ["hp","mhp","st","mst","mp","mmp","stR","mpR"]: values[key]=p[key]
+	var resources: Dictionary=_resources.commit_native_restore_resources(owner,values)
+	if resources.get("accepted")!=true: return {"accepted":false,"reason":"pc_resources:"+str(resources.get("reason"))}
+	# No callbacks/awaits/IO in the remaining validated State installation.
 	_player.base_def=float(p.baseDef)
 	_player.set("_native_source_speed_per_tick",float(p.speed))
 	_player.set("_native_source_speed_initialized",true)
 	_player.set("_movement_speed",float(p.speed)*60.0)
-	for key in ["mp","mmp","stR","mpR"]: owned[key]=p[key]
 	_p.clear(); _p.merge(p.duplicate(true))
 	_g.merge(plan.game.duplicate(true),true)
 	_stats.clear(); _stats.merge(plan.stats.duplicate(true))
@@ -1607,7 +1605,7 @@ func commit_native_demo11_loaded_once(owner: Node, plan: Dictionary) -> Dictiona
 	_native_stone_bag=plan.stone_bag.duplicate(true)
 	raw._grit=plan.raw_grit
 	_demo11_load_used=true
-	return {"accepted":true,"load_only":true,"readback":read_current_p().duplicate(true)}
+	return {"accepted":true,"load_only":true,"resources":resources,"readback":read_current_p().duplicate(true)}
 
 func seal_native_demo11_load(owner: Node) -> bool:
 	if owner != _player.get_parent() or owner.get("source_state") != self: return false
@@ -1695,3 +1693,10 @@ func apply_native_forge_potion_upgrade(owner: Node) -> Dictionary:
 	_forge_committing = false
 	return {"status":"READY","paid":true,"level":_auto_potion_level,"cost":cost,"remaining":_g.mats,
 		"unported":["dbSaveNow, source flash/particle feedback"]}
+
+# DEMO11-06c: loaded start only, after PC restore/applyStats and normal boot.
+func authorize_native_demo11_loaded_start(owner: Node) -> bool:
+	if not _demo11_load_used or _demo11_start_sealed or not _feel_owner_current(owner) or owner.get_meta("demo11_load_gate",false)!=true or _player.process_mode!=Node.PROCESS_MODE_DISABLED or _world.process_mode!=Node.PROCESS_MODE_DISABLED: return false
+	_demo11_start_sealed=true
+	_g.on=true
+	return true

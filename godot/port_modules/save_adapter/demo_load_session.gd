@@ -164,8 +164,8 @@ func _restore(owner: Node, handoffs: Dictionary) -> Dictionary:
 	var commit: Dictionary=state.commit_native_demo11_loaded_once(owner,plan)
 	if not commit.accepted: return _fail("commit:"+str(commit.reason))
 	_committed=true
-	_start_authorized=flow.start_authorized
-	return {"status":flow.status,"pending":flow.pending,"start_authorized":flow.start_authorized,"committed":true,"readback":commit.readback,"protected_saved_fields":{"activeRMBSk":saved.get("activeRMBSk"),"activeQSk":saved.get("activeQSk")}}
+	_start_authorized=false # Main must finish applyStats/initStage/start first.
+	return {"status":flow.status,"pending":flow.pending,"protected_trace":flow.protected_trace,"protected_ready":flow.start_authorized,"start_authorized":false,"committed":true,"resources":commit.resources,"readback":commit.readback,"protected_saved_fields":{"activeRMBSk":saved.get("activeRMBSk"),"activeQSk":saved.get("activeQSk")}}
 
 func prepare_current_save(owner: Node) -> Dictionary:
 	if _busy or not _start_authorized or mode not in ["FRESH","LOADED"]: return _fail("save_not_admitted")
@@ -225,3 +225,9 @@ func start_lifecycle(owner: Node, clock: Callable = Callable()) -> Dictionary:
 	return store.schedule_boot_save()
 func poll() -> Dictionary:
 	return store.poll() if _start_authorized and _owner!=null else {"ready":false,"status":"STOPPED"}
+
+func authorize_loaded_start(owner: Node) -> Dictionary:
+	if _busy or not _committed or _start_authorized or mode!="LOADED": return _fail("loaded_start_not_admitted")
+	if not owner.source_state.authorize_native_demo11_loaded_start(owner): return _fail("loaded_start_owner_rejected")
+	_start_authorized=true
+	return {"status":"LOADED","start_authorized":true,"committed":true}

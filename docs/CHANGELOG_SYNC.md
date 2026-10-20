@@ -57,6 +57,11 @@
 | 검수·문서 | [보고서](engine/orders/reports/demo11-07_REPORT.md)·[계약](engine/DEMO11_LOBBY_ENTRY_20261021.md)·LOBBY/INTRO·번역16문구 동기화. 내부 viewport1920×1080 2장+1x crop2장. 기존 관련 회귀 각1회, 수치는 보고서 참조 |
 
 
+## 2026-10-21 DEMO11-06c — PC 복원 handoff·단일 자원 writer·loaded 시작
+
+- main0138c5bb(PC a28117c1 포함) + 06b 재통합cadd5311 기반. PC 보호3종 관측을 기존 `_handoff`에 연결, State 임시 직접 HP/ST/MP·cap/rate writer를 PC raw restore writer로 대체했다. 지급 없는 실제 초기화 dispatcher 완료 후 restore→PC applyStats→기존 stage-entry refill→전체 Main boot→loaded 시작·저장 gate 해제. 신규 지급/슬롯/fresh intro 혼합0.
+- 신규47/0·별도 재시작6/0·기존 집중32/0·PC 보호4,830/0·PC runtime290/0, 합계5,205/0·ERROR0·기존 Camera WARN5(각1회). 격리 EXODUSER-demo11-06c-Isolated-20261021 및 기존 파일 상수, First 접근0. 전투/PC owner/Player/World·맵/형식 수정0, 틱 목록 API0. 최종 수치·공용 줄 범위는 [보고서](engine/orders/reports/demo11-06c_REPORT.md), docs15/SAVE 추적 동기화. 원로그 `_out/demo11-06c/`.
+
 ## 2026-10-21 DEMO11-06b — 최신 main 충돌 재통합
 
 - `e8fd0a59`에 최신 origin/main `0138c5bb9188d27cee10cb1a901d075092ddb88f` 정상 merge(969c194e6 이상). State 끝의 load-only 절과 main potion/forge 절을 모두 보존했다. Main 자동 병합 및 PC runtime/stat/restore API도 보존했다.
