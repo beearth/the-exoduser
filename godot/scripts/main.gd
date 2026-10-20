@@ -1,4 +1,5 @@
 extends Node2D
+const UI = preload("res://scripts/native_demo_ui_i18n.gd")
 ## Native Godot scene. No WebView, HTTP API or browser save access.
 
 signal native_demo_boss_defeated(stage_index: int) # DEMO11-37 -> DEMO11-38, final death only
@@ -1704,7 +1705,7 @@ func _install_native_q_control() -> void:
 	if not native_q_control.configure_q_control(player,world,self,_q_burst_draw) or not world.bind_native_player_q_control(native_q_control):
 		native_q_control.withdraw_q_control()
 		return
-	hud.show_native_input_status("Q 다크볼 · E 탭/차징 핵심 연결 · 파동/투사체패링/Space 미완")
+	hud.show_native_input_status(UI.text("Q 다크볼 · E 탭/차징 핵심 연결 · 파동/투사체패링/Space 미완"))
 
 func _draw_native_q_range() -> void:
 	if not is_instance_valid(native_q_control) or player.state!="sBlock":return
@@ -1820,20 +1821,20 @@ func _build_native_character_selection_ui() -> void:
 	var box := VBoxContainer.new()
 	_character_panel.add_child(box)
 	var title := Label.new()
-	title.text="이 시험에서 사용할 캐릭터"
+	UI.bind(title,"이 시험에서 사용할 캐릭터")
 	box.add_child(title)
 	_character_picker=OptionButton.new()
 	_character_picker.name="CharacterPicker"
-	_character_picker.add_item("캐릭터를 선택하세요",1000)
+	_character_picker.add_item(UI.text("캐릭터를 선택하세요"),1000)
 	_character_picker.set_item_disabled(0,true)
 	for choice in player.get_native_character_choices():
-		_character_picker.add_item(choice.name,choice.index)
+		_character_picker.add_item(UI.text(str(choice.name)),choice.index)
 		_character_picker.set_item_disabled(_character_picker.item_count-1,not choice.available)
-		if not choice.available: _character_picker.set_item_tooltip(_character_picker.item_count-1,"원본 시트가 준비되지 않았습니다")
+		if not choice.available: _character_picker.set_item_tooltip(_character_picker.item_count-1,UI.text("원본 시트가 준비되지 않았습니다"))
 	_character_picker.select(0)
 	box.add_child(_character_picker)
 	_character_status=Label.new()
-	_character_status.text="일시정지 중 선택할 수 있습니다"
+	UI.bind(_character_status,"일시정지 중 선택할 수 있습니다")
 	box.add_child(_character_status)
 	_character_picker.item_selected.connect(_on_native_character_selected)
 	_character_panel.visible=get_tree().paused
@@ -1861,13 +1862,13 @@ func read_native_character_selection() -> Dictionary:
 
 func _on_native_character_selected(item_index: int) -> void:
 	if not get_tree().paused or item_index!=_character_picker.selected:
-		_character_status.text="일시정지 중에 선택하세요"
+		UI.bind(_character_status,"일시정지 중에 선택하세요")
 		return
 	var applied: Dictionary = player.apply_native_character_selection(Callable(self,"read_native_character_selection"))
 	if applied.get("ready")!=true:
-		_character_status.text="선택한 원본 시트를 읽지 못했습니다"
+		UI.bind(_character_status,"선택한 원본 시트를 읽지 못했습니다")
 		return
-	_character_status.text=str(applied.name)+" · 대기 / 걷기 / 공격 준비"
+	UI.bind(_character_status,"%s"+" · 대기 / 걷기 / 공격 준비",[str(applied.name)])
 	if _native_perspective_view_owned(): native_perspective_view._sync_sprites()
 	_record_event("native_character_selected",{"selection":read_native_character_selection(),"profile":applied})
 
@@ -1902,7 +1903,7 @@ func _record_event(kind: String, data: Dictionary) -> void:
 	if kind in ["native_attack_audio_queued","native_skill_sample_requested"]:
 		native_sound_event.emit(kind,data.duplicate(true))
 	if kind=="native_input_unavailable" and is_instance_valid(hud):
-		hud.show_native_input_status("Q 보호막: 실제 실행 소유자 연결 대기" if data.get("action")=="parry" else ("E 처내기: 동작 연결 대기" if data.get("action")=="shield_bash" else "Space: 원본 분노 스킬 슬롯 연결 대기"))
+		hud.show_native_input_status(UI.text("Q 보호막: 실제 실행 소유자 연결 대기") if data.get("action")=="parry" else (UI.text("E 처내기: 동작 연결 대기") if data.get("action")=="shield_bash" else UI.text("Space: 원본 분노 스킬 슬롯 연결 대기")))
 	if is_instance_valid(capture):
 		capture.record_event(kind, data)
 
@@ -1924,6 +1925,7 @@ func _encounter_summary() -> Dictionary:
 	return {"installed": report.get("installed", false), "source_count": report.get("source_count", 0), "supported_count": report.get("supported_count", 0), "unsupported_count": report.get("unsupported_count", 0), "records": records}
 
 func _notification(what: int) -> void:
+	_retranslate_native_ui(what)
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
 		if is_instance_valid(capture) and capture.has_method("save_report"):
 			capture.save_report()
@@ -3492,3 +3494,12 @@ func _refresh_native_system_affix_cache(receipt: Dictionary) -> void:
 func read_native_system_equipment_affix(id: Variant) -> Dictionary:
 	if not _native_main_service_live():return {"status":"NOT_READY","reason":"main_not_live"}
 	return source_system_affixes.eq_affix(id)
+# Locale event only; source character IDs/availability/selection writer unchanged.
+func _retranslate_native_ui(what: int) -> void:
+	if what==NOTIFICATION_TRANSLATION_CHANGED and is_instance_valid(_character_picker):
+		_character_picker.set_item_text(0,UI.text("캐릭터를 선택하세요"))
+		for choice in player.get_native_character_choices():
+			for i in range(1,_character_picker.item_count):
+				if _character_picker.get_item_id(i)==choice.index:
+					_character_picker.set_item_text(i,UI.text(str(choice.name)))
+					if not choice.available:_character_picker.set_item_tooltip(i,UI.text("원본 시트가 준비되지 않았습니다"))

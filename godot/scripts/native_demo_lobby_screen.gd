@@ -1,4 +1,5 @@
 extends Control
+const UI = preload("res://scripts/native_demo_ui_i18n.gd")
 ## Standalone request screen: res://scenes/demo_lobby.tscn. No combat/Main boot.
 signal new_game_requested(slot: int, data: Dictionary)
 signal continue_requested(slot: int, data: Dictionary)
@@ -11,7 +12,7 @@ var _entry_enabled := false
 const Menu = preload("res://scripts/native_save_slot_menu.gd")
 const Bridge = preload("res://scripts/native_settings_lobby_bridge.gd")
 const Fonts = preload("res://scripts/native_ui_fonts.gd")
-@export var language := "ko"
+@export var language := "" # Empty uses the current settings locale.
 var menu = Menu.new()
 var bridge = Bridge.new()
 var cards: Array[Button] = []
@@ -34,7 +35,8 @@ const GOLD = Color("96714e")
 
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	bridge.configure(language)
+	if not language.is_empty():TranslationServer.set_locale(language)
+	bridge.configure(TranslationServer.get_locale())
 	_build()
 	menu.changed.connect(_render)
 	menu.new_game_requested.connect(func(slot: int, data: Dictionary):
@@ -48,7 +50,7 @@ func _ready() -> void:
 	menu.open()
 	cards[0].grab_focus()
 
-func tr_text(ko: String, en: String) -> String: return bridge.text(ko,en)
+func tr_text(ko: String, en: String) -> String: return UI.text(ko)
 func _input(event: InputEvent) -> void:
 	bridge.observe(event)
 	# Let the native LineEdit own IME composition/cancel keys.
@@ -69,7 +71,7 @@ func _box(rect: Rect2, fill: Color, edge: Color, parent: Node = self) -> Panel:
 	return p
 func _label(text: String, at: Vector2, width: float, px: int, parent: Node = self, title := false) -> Label:
 	var l := Label.new()
-	l.text=text; l.position=at; l.size=Vector2(width,60)
+	UI.bind(l,text); l.position=at; l.size=Vector2(width,60)
 	l.add_theme_font_override("font",Fonts.stack("hell_title" if title else "hell",700 if title else 400))
 	l.add_theme_font_size_override("font_size",px); l.add_theme_color_override("font_color",BONE)
 	l.mouse_filter=Control.MOUSE_FILTER_IGNORE
@@ -77,7 +79,7 @@ func _label(text: String, at: Vector2, width: float, px: int, parent: Node = sel
 	return l
 func _button(text: String, rect: Rect2, callback: Callable, parent: Node = self, danger := false) -> Button:
 	var b := Button.new()
-	b.text=text; b.clip_text=true; b.position=rect.position; b.size=rect.size
+	UI.bind(b,text); b.clip_text=true; b.position=rect.position; b.size=rect.size
 	b.add_theme_font_override("font",Fonts.stack("hell",400)); b.add_theme_font_size_override("font_size",22)
 	for state in ["normal","hover","pressed","focus","disabled"]:
 		var s := StyleBoxFlat.new()
@@ -239,3 +241,7 @@ func _number_label(value: Variant) -> String:
 	if (value is int or value is float) and is_finite(float(value)) and float(value)==floor(float(value)):
 		return "%.0f" % float(value)
 	return str(value)
+
+func _notification(what: int) -> void:
+	if what==NOTIFICATION_TRANSLATION_CHANGED and is_instance_valid(status):
+		bridge.configure(TranslationServer.get_locale());call_deferred("_render")

@@ -1,4 +1,5 @@
 extends CanvasLayer
+const UI = preload("res://scripts/native_demo_ui_i18n.gd")
 ## DEMO11-27. Existing Main/State actors; no private inventory/wallet, save IO, or tick polling.
 const Fonts = preload("res://scripts/native_ui_fonts.gd")
 const Policy = preload("res://scripts/native_meta_enhancement_policy.gd")
@@ -70,8 +71,7 @@ func get_snapshot() -> Dictionary:
 	return {"opened":_opened,"tab":_tab,"last":_last.duplicate(true),"selected":_item_name(_selected),
 		"transfer_equip_owner_bound":false,"save_connected":false,"source_binds_forge":SourceBinds.BINDS.forge}
 func text(id: String) -> String:
-	var locale=TranslationServer.get_locale().to_lower()
-	return WORDS[id][0 if locale.begins_with("ko") else 1]
+	return UI.text(str(WORDS[id][0]))
 
 func _ready() -> void:
 	_strip.compile("[\\x{1F000}-\\x{1FAFF}\\x{2600}-\\x{27FF}\\x{FE0F}\\x{200D}]")
@@ -139,14 +139,14 @@ func _box(bg: Color, edge: Color, pad: int=12) -> StyleBoxFlat:
 	s.content_margin_left=pad;s.content_margin_right=pad;s.content_margin_top=pad;s.content_margin_bottom=pad
 	return s
 func _label(value: String, size: int=22, color: Color=Color("c9bda6"), stack: String="hell") -> Label:
-	var l=Label.new();l.text=value
+	var l=Label.new();UI.bind(l,value)
 	l.add_theme_font_override("font",Fonts.stack(stack,700 if size>=28 else 400))
 	l.add_theme_font_size_override("font_size",size)
 	l.add_theme_color_override("font_color",color)
 	l.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 	return l
 func _button(value: String, callback: Callable) -> Button:
-	var b=Button.new();b.text=value;b.custom_minimum_size=Vector2(0,46)
+	var b=Button.new();UI.bind(b,value);b.custom_minimum_size=Vector2(0,46)
 	b.add_theme_font_override("font",Fonts.stack("hell",700));b.add_theme_font_size_override("font_size",22)
 	b.add_theme_color_override("font_color",Color("d9c7a5"))
 	b.add_theme_stylebox_override("normal",_box(Color("211b19"),Color("715b3b")))
@@ -191,7 +191,7 @@ func _build() -> void:
 	_result=_label("",23,Color("c9aa71"));_result.custom_minimum_size.y=48;body.add_child(_result)
 	var footer=_label(text("footer"),18,Color("786452"));footer.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;body.add_child(footer)
 func _item_name(item: Dictionary) -> String:
-	return _strip.sub(str(item.get("name","")),"",true).strip_edges()
+	return UI.text(_strip.sub(str(item.get("name","")),"",true).strip_edges())
 func _refresh() -> void:
 	if _list==null:return
 	var state: Variant=_state.get_ref()
@@ -252,3 +252,6 @@ func _potion_details(state: Node) -> void:
 	b.disabled=level>=10 or float(player.lv)<float((level+1)*100) or float(g.mats)<float(cost)
 	_detail.add_child(b)
 	if float(player.lv)<float((level+1)*100):_detail.add_child(_label(text("locked"),18,Color("9b8c79")))
+
+func _notification(what: int) -> void:
+	if what==NOTIFICATION_TRANSLATION_CHANGED and _list!=null:call_deferred("_refresh")

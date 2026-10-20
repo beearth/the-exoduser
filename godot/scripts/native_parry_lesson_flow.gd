@@ -1,5 +1,6 @@
 class_name ExoduserNativeParryLessonFlow
 extends Node
+const UI = preload("res://scripts/native_demo_ui_i18n.gd")
 ## P2-001j/k — 커튼 직후 패링 레슨 owner (원본 parry-lesson.js + game.html).
 ## 트리거: update() 32111 `if(_parryLesson && _parryLesson.tick())return;` — services의
 ## parry_lesson 관측이 같은 위치에서 프레임당 1회 tick 호출. intro는 true(게임 틱 차단),
@@ -144,6 +145,7 @@ func _exit_tree() -> void:
 	_release_saved_enemies()
 
 func _notification(what: int) -> void:
+	_retranslate_lesson_ui(what)
 	if what == NOTIFICATION_PREDELETE:
 		_release_saved_enemies() # Also covers free() before the owner ever enters Tree.
 
@@ -823,7 +825,7 @@ func _weighted_font(weight: int) -> Font:
 
 func _label(size: int, color: Color, text: String = "", weight: int = 400) -> Label:
 	var node := Label.new()
-	node.text = text
+	UI.bind(node,text)
 	var face: Font = _weighted_font(weight)
 	if face != null:
 		node.add_theme_font_override("font", face)
@@ -925,10 +927,10 @@ func _build_panel() -> void:
 	column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	scroll.add_child(column)
 	var header := HBoxContainer.new()
-	_ui["eyebrow"] = _label(10, COL_EYEBROW, "01 · 직접 실습")
+	_ui["eyebrow"] = _label(10, COL_EYEBROW, UI.text("01 · 직접 실습"))
 	_ui["eyebrow"].autowrap_mode = TextServer.AUTOWRAP_OFF
 	_ui["eyebrow"].size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_ui["status"] = _label(10, COL_STATUS, "일시정지")
+	_ui["status"] = _label(10, COL_STATUS, UI.text("일시정지"))
 	_ui["status"].autowrap_mode = TextServer.AUTOWRAP_OFF
 	_ui["status"].size_flags_horizontal = Control.SIZE_SHRINK_END
 	header.add_child(_ui["eyebrow"])
@@ -1007,11 +1009,11 @@ func _build_panel() -> void:
 		(_ui["rows"] as Array).append({"panel": row, "label": row_label, "box": box, "box_style": box_style})
 	checklist.add_child(details)
 	column.add_child(checklist)
-	_ui["safety"] = _label(11, COL_SUBTITLE, "패링 실패 시 폭발 피해를 받습니다. 재시도하면 체력이 회복됩니다.")
+	_ui["safety"] = _label(11, COL_SUBTITLE, UI.text("패링 실패 시 폭발 피해를 받습니다. 재시도하면 체력이 회복됩니다."))
 	column.add_child(_ui["safety"])
 	# 하단 고정: 시작/건너뛰기/진행바 (행동 버튼 계약)
 	var practice_button := Button.new()
-	practice_button.text = "W / A / S / D 또는 클릭하여 시작"
+	UI.bind(practice_button,"W / A / S / D 또는 클릭하여 시작")
 	practice_button.custom_minimum_size = Vector2(0, 44)
 	if _weighted_font(700) != null:
 		practice_button.add_theme_font_override("font", _weighted_font(700)) # 실측 700
@@ -1033,7 +1035,7 @@ func _build_panel() -> void:
 	_ui["button"] = practice_button
 	outer.add_child(practice_button)
 	var skip_button := Button.new()
-	skip_button.text = "연습 건너뛰기"
+	UI.bind(skip_button,"연습 건너뛰기")
 	skip_button.custom_minimum_size = Vector2(0, 36)
 	if _font != null:
 		skip_button.add_theme_font_override("font", _weighted_font(400)) # P2-007a --font-hell 스택
@@ -1068,9 +1070,9 @@ func _render() -> void:
 	# 125~175 render()의 구현 범위(step<0·8) 포트.
 	if _ui.is_empty() or not is_instance_valid(_panel):
 		return
-	var status_text := "일시정지"
-	if phase == "practice": status_text = "연습 중"
-	elif phase == "success": status_text = "성공"
+	var status_text := UI.text("일시정지")
+	if phase == "practice": status_text = UI.text("연습 중")
+	elif phase == "success": status_text = UI.text("성공")
 	elif phase == "done": status_text = "COMPLETE"
 	_ui["status"].text = status_text
 	# 127 data-kind = (step%2===0 ? magic : physical) — 상태/홀드/미터가 kind 색을 따른다(실측)
@@ -1120,41 +1122,41 @@ func _render() -> void:
 	_ui["hold"].visible = false
 	(_ui["hold_meter_bg"] as ColorRect).visible = false
 	var ordinal: int = 4 if step == 8 else (step + 4 if step < 0 else step + 5)
-	var subtitle_name: String = "1 · 가시덫" if step == 8 else (BASIC_LABELS[step + 3] if step < 0 else LESSON_LABELS[step])
-	_ui["subtitle"].text = "%d / 12 · %s" % [ordinal, subtitle_name]
+	var subtitle_name: String = UI.text("1 · 가시덫") if step == 8 else (BASIC_LABELS[step + 3] if step < 0 else LESSON_LABELS[step])
+	_ui["subtitle"].text = "%d / 12 · %s" % [ordinal, UI.text(subtitle_name)]
 	if step == -3: # 157~161 step<0 i=0
 		_ui["keycap"].text = "W A S D"
-		_ui["title"].text = "먼저 움직여보세요"
-		_ui["hint"].text = "W 위 · A 왼쪽 · S 아래 · D 오른쪽. WASD 또는 방향키로 조금 걸어보세요. 이후 모든 실습에서도 이동할 수 있습니다."
+		_ui["title"].text = UI.text("먼저 움직여보세요")
+		_ui["hint"].text = UI.text("W 위 · A 왼쪽 · S 아래 · D 오른쪽. WASD 또는 방향키로 조금 걸어보세요. 이후 모든 실습에서도 이동할 수 있습니다.")
 	elif step == -2: # 248~254 updateAttackPractice(left)
-		_ui["keycap"].text = "좌클릭"
-		_ui["title"].text = "기검참으로 적 10마리를 처치하세요"
-		_ui["hint"].text = "1·2타 뒤 3타에서 좌클릭을 2초 누르고 떼어 검기로 적을 처치하세요.\n처치 %d/10 · 3단 차징 검기 처치 %d/1" % [mini(10, left_kills), 1 if left_full_charge_kill else 0]
+		_ui["keycap"].text = UI.text("좌클릭")
+		_ui["title"].text = UI.text("기검참으로 적 10마리를 처치하세요")
+		_ui["hint"].text = UI.text("1·2타 뒤 3타에서 좌클릭을 2초 누르고 떼어 검기로 적을 처치하세요.\n처치 %d/10 · 3단 차징 검기 처치 %d/1") % [mini(10, left_kills), 1 if left_full_charge_kill else 0]
 		_ui["hold"].visible = true
 		(_ui["hold_meter_bg"] as ColorRect).visible = true
 		var charge: float = float(player.get("charge_frames")) if player.get("charge_frames") != null else 0.0
 		(_ui["hold_meter_fill"] as ColorRect).anchor_right = clampf(charge / 120.0, 0.0, 1.0) # 253 holdMeter.value
-		_ui["hold"].text = "3단 차징 검기 처치 완료" if left_full_charge_kill else ("3타 차징 %d/3단 · 2초까지 유지" % mini(3, int(charge / 40.0)) if charge > 0.0 else "1·2타 뒤 3타를 2초 누르세요")
+		_ui["hold"].text = UI.text("3단 차징 검기 처치 완료") if left_full_charge_kill else (UI.text("3타 차징 %d/3단 · 2초까지 유지") % mini(3, int(charge / 40.0)) if charge > 0.0 else UI.text("1·2타 뒤 3타를 2초 누르세요"))
 	elif step == -1: # 255~258
-		_ui["keycap"].text = "우클릭"
-		_ui["title"].text = "마법으로 적 5마리를 처치하세요"
-		_ui["hint"].text = "적을 마우스로 조준하고 우클릭으로 마법탄을 발사하세요.\n처치 %d/5 · 실제로 처치해야 완료됩니다." % right_kills
+		_ui["keycap"].text = UI.text("우클릭")
+		_ui["title"].text = UI.text("마법으로 적 5마리를 처치하세요")
+		_ui["hint"].text = UI.text("적을 마우스로 조준하고 우클릭으로 마법탄을 발사하세요.\n처치 %d/5 · 실제로 처치해야 완료됩니다.") % right_kills
 	elif step == 8: # 298~304 updateTrapPractice
 		_ui["keycap"].text = "1 + W A S D"
-		_ui["title"].text = "붙으면 가시덫을 깔고 도망치세요"
-		_ui["hint"].text = "몬스터 10마리가 쫓아옵니다. 가까이 붙으면 1번으로 발밑에 가시덫을 깔고, WASD / 방향키로 도망치세요. 덫 안의 적은 느려지고 지속 피해로 쓰러집니다.\n" \
-			+ "%s 가시덫 설치 · %s 설치 후 이동 · 처치 %d/10" % [
+		_ui["title"].text = UI.text("붙으면 가시덫을 깔고 도망치세요")
+		_ui["hint"].text = UI.text("몬스터 10마리가 쫓아옵니다. 가까이 붙으면 1번으로 발밑에 가시덫을 깔고, WASD / 방향키로 도망치세요. 덫 안의 적은 느려지고 지속 피해로 쓰러집니다.\n") \
+			+ UI.text("%s 가시덫 설치 · %s 설치 후 이동 · 처치 %d/10") % [
 				"✓" if trap_zone != null else "□", "✓" if trap_escaped else "□", trap_kills]
 		if practice_halted != "":
-			_ui["hint"].text += "\n(정지: %s)" % practice_halted
+			_ui["hint"].text += UI.text("\n(정지: %s)") % practice_halted
 	elif step >= 0 and step <= 7: # 139~143 title/tips/key()
-		_ui["keycap"].text = STEP_KEYS[step]
-		_ui["title"].text = STEP_TITLES[step]
-		_ui["hint"].text = STEP_TIPS[step]
+		_ui["keycap"].text = UI.text(STEP_KEYS[step])
+		_ui["title"].text = UI.text(STEP_TITLES[step])
+		_ui["hint"].text = UI.text(STEP_TIPS[step])
 		if step == 0: # 181~186 updateParryPractice(step0=마법) — title·hint 덮어쓰기
-			_ui["title"].text = "마법탄을 패링해 몬스터를 처치하세요"
-			_ui["hint"].text = "몬스터 주위의 링이 완성되면 탄이 발사됩니다. 링 색으로 탄 종류를 미리 예측하세요. 흰색 링은 물리탄(E), 속성색 링은 마법탄(Q)입니다. " 				+ "이번 보라색 링은 암흑 마법탄입니다. 탄이 가까워지면 [Q]로 패링하세요." 				+ "
-" + ("패링 성공! 반사탄으로 발사한 몬스터를 처치하면 완료됩니다." if shot_reflected else "패링으로 탄을 되돌려 발사한 몬스터까지 처치하세요.")
+			_ui["title"].text = UI.text("마법탄을 패링해 몬스터를 처치하세요")
+			_ui["hint"].text = UI.text("몬스터 주위의 링이 완성되면 탄이 발사됩니다. 링 색으로 탄 종류를 미리 예측하세요. 흰색 링은 물리탄(E), 속성색 링은 마법탄(Q)입니다. ") 				+ UI.text("이번 보라색 링은 암흑 마법탄입니다. 탄이 가까워지면 [Q]로 패링하세요.") 				+ "
+" + (UI.text("패링 성공! 반사탄으로 발사한 몬스터를 처치하면 완료됩니다.") if shot_reflected else UI.text("패링으로 탄을 되돌려 발사한 몬스터까지 처치하세요."))
 
 func _input(event: InputEvent) -> void:
 	# 40 allowKey: 스킬 캐스트 키는 player 퍼널 밖(native_skill_slots._unhandled_input,
@@ -1195,3 +1197,6 @@ func get_snapshot() -> Dictionary:
 			"start/finish의 projs/pProjs/worldItems/spawnHoles/rifts/_fireZones/스킬·슬롯·BINDS2 저장·복원(포트 미보유 상태)",
 			"clearShot/resetPose·focusTicks·레슨 성공/사망 연출 보조(rage 분기 등)",
 			"폰트(P2-007a): Nanum Myeongjo·Cinzel 원본 스택 적용 — Gowun Batang(3순위) 미보유"]}
+
+func _retranslate_lesson_ui(what: int) -> void:
+	if what==NOTIFICATION_TRANSLATION_CHANGED and not _ui.is_empty():call_deferred("_render")

@@ -1,4 +1,4 @@
-# HELL: EXODUSER + DIROI 종합 확장 전략 기획서 v2.0
+# EXODUSER: HELL LORD + DIROI 종합 확장 전략 기획서 v2.0
 
 > **원본**: HELL_DIROI_종합확장전략기획서_v2_0.docx | v2.0 · 2026.05 | FDG (FOR DEAR GAMERS) | 대표 SIM DOJIN
 > **분류**: 출시·마케팅 전략 / 글로벌 확장 / 펀딩
@@ -7,7 +7,7 @@
 ---
 
 FDG · FOR DEAR GAMERS
-HELL: EXODUSER
+EXODUSER: HELL LORD
 지옥: 탈주자
 + DIROI (동반작)
 종합 확장 전략 기획서
@@ -34,7 +34,7 @@ v2.0 · 2026.05
 14. 부록 (가격표, 기술 스택, 펀딩 캘린더, 빌드 레퍼런스)
 
 # 1. Executive Summary
-FDG (FOR DEAR GAMERS)는 광주 소재 1인 인디 스튜디오로, 다크 판타지 핵앤슬래쉬 ARPG "HELL: EXODUSER"를 메인 IP, 7원소 퍼즐 로그라이트 "DIROI"를 동반작으로 동시 개발 중이다.
+FDG (FOR DEAR GAMERS)는 광주 소재 1인 인디 스튜디오로, 다크 판타지 핵앤슬래쉬 ARPG "EXODUSER: HELL LORD"를 메인 IP, 7원소 퍼즐 로그라이트 "DIROI"를 동반작으로 동시 개발 중이다.
 EXODUSER는 장르 경험과 유료 게임 구매 의향이 있는 글로벌 성인 핵앤슬래시 고객을 우선 확보한다. 디아블로·PoE·라스트 에폭의 시즌 사이 공백을 진입 기회로 삼고, 던전 시즈·라스트 에폭의 포지션을 참고한다. 루팅·빌드의 깊이와 패링·기동 액션, 세계관·스토리로 독자적 브랜드를 구축하며 인접 ARPG 고객층까지 확장한다.
 DIROI는 30개국 번역 자산 + PC/모바일 듀얼 BM(Vampire Survivors 모델)을 활용한 글로벌 동시 출시작으로, HELL의 마케팅 견인차 + IP 확장 베이스 역할을 동시에 수행한다.
 
@@ -91,7 +91,7 @@ DIROI 모바일
 IP 우선: HELL EXODUSER가 메인 IP, DIROI가 동반작. 두 작품 모두 "엑소듀서 세계관" 확장의 일부.
 40년 게이머의 진정성: 마케팅 핵심 메시지. 한국 인디 씬의 "진심으로 만든" 게임 포지셔닝.
 ## 2.3 게임별 한 줄 정의
-HELL: EXODUSER
+EXODUSER: HELL LORD
 "오리 · 할로우 나이트급 비주얼 + 베르세르크 · 프롬소프트 작화로 빚어낸, 매스 러시와 패링이 살아있는 다크 판타지 핵앤슬래쉬 ARPG"
 장르: 다크 판타지 핵앤슬래쉬 ARPG (스토리 중심, 로그라이트 아님)
 포지셔닝: 글로벌 핵앤슬래시 핵심 고객 확보 → 독자 브랜드 정착 → 인접 ARPG 확장. 던전 시즈·라스트 에폭의 장르 내 포지션 참고

@@ -1,0 +1,12 @@
+import fs from 'node:fs';
+import vm from 'node:vm';
+import assert from 'node:assert/strict';
+import { parseExpressionAt } from 'acorn';
+const arg=k=>process.argv.find(a=>a.startsWith(k+'='))?.slice(k.length+1);
+const source=fs.readFileSync(arg('--game'),'utf8');
+const read=name=>{const marker='const '+name+'=';const start=source.indexOf(marker);assert(start>=0,name);const a=start+marker.length;const ast=parseExpressionAt(source,a,{ecmaVersion:'latest'});return vm.runInNewContext('('+source.slice(a,ast.end)+')');};
+const actual=JSON.parse(fs.readFileSync(arg('--catalog'),'utf8'));
+const expected={source_en:read('_EN'),prefixes:read('_EN_PFX'),bases:read('_EN_BASE')};
+for(const [key,value] of Object.entries(expected))assert.deepEqual(actual[key],JSON.parse(JSON.stringify(value)),key+' exact original');
+fs.writeFileSync(arg('--output'),JSON.stringify({checks:3,failures:0,source_en_keys:Object.keys(expected.source_en).length,prefixes:Object.keys(expected.prefixes).length,bases:Object.keys(expected.bases).length}),'utf8');
+console.log('I18N_SOURCE_EN: 3/0');

@@ -523,6 +523,12 @@
 | 검수·성능 | 신규34/0·ERROR/WARNING0, MAP-LOOK회귀16/0·ERROR0·미수정main Camera2D WARNING1. sparse누락PNG2보충후실패회귀만재실행. 고정600물리tick@60Hz 벽시계벤치1회 9.999128s/7691render/평균769.17fps·p95≤1.46ms/p99≤1.54ms(M5Pro24GB/uncapped). preview측정이며전체데모/PC120fps·GPU3ms검증아님 |
 | 보고·인계 | [MAP11-01 보고서](4.1맵디자인+설정/MAP11_ARENA_PREVIEW_20261021.md) 표2개. 틱경로목록API0·매Godot pgrep/2이상30초대기/override0byte. 자기branch push/remoteSHA/DONE후자기WT제거, R불변·D05_PENDING |
 
+## 2026-10-21 DEMO11-i18n — Native UI KO/EN 전수 점검
+
+- 기준 main0138c5bb. 현재 표시189키/204회+동적 경계5개=194키를 cached KO-key→EN으로 연결. 직접 무번역105키·기존 EN누락57키/장비명3개 보완. State/전투/저장/원본 번역 데이터0행.
+- 등록 누락99·무번호50을 No.3338–3486 신규149개로 연결, 기존45번호 재사용·No.3334 EN 보완. 번역 목록 CRLF/기존 본문(No.3334 외) bytes 보존.
+- 신규735/0·관련5회귀 최종2187/0·원문 EN exact Node3/0·추출기 Python4/0. 최초 HUD 종료 ERROR는 원본 main에서도 drop_common.mp3 잔류 재현, 제품 오디오 수정0. 실패 기록 보존.
+- 영어 로비+1x 및 보조 인트로/대장간 캡처8/0·자체 눈 검수. 인벤토리23b·종료38·설정50 등 미병합 UI는 목록만(12파일/312후보), 요청 캡처2종 NOT_READY. [보고서](engine/orders/reports/demo11-i18n_REPORT.md)·[전수표521행](engine/orders/reports/demo11-i18n_STRINGS.csv), _out/demo11-i18n/.
 
 
 ## 2026-10-21 DEMO11-18 일반 데모 합체·흡수·성급·되돌리기 원장
@@ -56011,3 +56017,11 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 - 최신 main `9528ea35b429498fcf42fe3723008219ed0ed7e1`을 자기 branch에 ff merge 후 신규 unit112/0·actualMain12/0·contracts5군/실패0 재확인. 기존 OPT11/0·starter148/0·지역43/0·HUD36/0·소환굴298/0, 수치 출력 합660/0. G48/지역23·60·53·32/합168·시작HUD0/32 확인. 실행별 근거는 아래 보고서를 따른다.
 - 최초 unit1단정 실패·보완, 최초 커밋의 필수 변경로그 누락 거부·기존 초기화 회귀의 격리guard 거부는 과거 실행으로 보존한다. 이 append는 필수 문서 동기화 정상 경로이며 훅 우회0.
 - [원본 행·API·실행별 결과·기준 SHA·남은 범위](engine/orders/reports/settings-s01_REPORT.md). 설정 UI/저장복원·실플레이·전체 이식 완료 증거가 아니다.
+## 2026-10-21 i18n-title-fix — 영문 로비 타이틀
+
+| 항목 | 동기화 내용 |
+|---|---|
+| 공식 영문명 | Steam 상점명과 동일한 `EXODUSER: HELL LORD` |
+| 런타임 | `index.html` 문서 제목과 영어 로비 `지옥의 길` 번역, `godot/data/demo11_ui_i18n.json` 로비 번역, `build-nwjs.mjs` 빌드 표기를 `HELL: EXODUSER`에서 정정. 다른 언어의 고유 UI 번역·게임플레이 문자열은 변경하지 않음 |
+| 번역·출시 문서 | `docs/16번역·로컬라이제이션/번역대상_전체목록.md` No.1621/1931과 번역 가이드·출시 확장 전략의 현재 영문명 표기를 같은 제목으로 동기화하며 대상 목록의 CRLF 유지 |
+
