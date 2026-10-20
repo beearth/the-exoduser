@@ -1,3 +1,15 @@
+## 2026-10-20 MAPLOOK-SHADOW Mac — 화면 비교 자료 준비
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 기준 / 범위 | origin/main a00893ad(ad497089c 후손), codex/maplook-shadow-mac-20261020. 새 actor_contact_shadows.gd·maplook_actor_shadow.gdshader·신규 test/UID3만 제품/검사 추가. 기존 MODULES가 자동 설치, 공용 코드0줄 |
+| 접지 / 투사 | source Player world_foot·적 현재 불투명 발 경계 읽기, radius24×9/α.42 접지 + NW광→SE[13,9]/32×9/α.22 투사 max union. 크기radius/22 clamp .75..2.1, z절대−2004(데칼−2005 위/액터−2000 아래) |
+| 수명 / 중복 | 동일world 적group .2초 scan·매frame 위치/페이드·dead/hidden 정리. 기존 visible shadow 또는 활성3D원근이면 새 표시 생략. 기존 texture/material/visible/z·물리·전체G/map·sharedRNG 변경0 |
+| 신규 검수 | headless35/0·최종실창GPU41/0·ERROR0. 1920×1080 전체전후/1x크롭3곳/좌전우후 시트, 실제actor10개 표시배치. 고정회색GPU 중심.298/NW.498/SE.467로 남동방향 검산. 최초GPU방향1실패→QuadMesh UV.y보정, 원로그 보존 |
+| OFF 회귀 | maplook16/0·contracts5그룹/0·lighting12/0·HUD36/0·pets20/0·spawn298/0·starter148/0·UIpolish115/0. 모듈없는 UI baseline115/0·stderr byte동일/종료ERROR20동일. 최초 잘못된fps cap1실패·sparse game누락8실패도 보존 후 실행조건 교정 |
+| 자료 / 판정 | ~/exoduser-wt/_out/maplook-shadow/camera-diagnostic/ 전체·크롭·비교13PNG. 시각 RETOUCH, 전체맵/자연전투/성능 승인 아님. [보고서](engine/orders/reports/maplook-shadow_REPORT.md) |
+| 보존 / 제출 | 기존 tracked3202파일 SHA변경0·원본이미지편집/새런타임bitmap/AI생성0. 매Godot전2이상30초대기·상수격리·override finally0byte. 자기branch 정상push/원격일치/DONE뒤 자기WT/cache제거, R불변 |
+
 <<<<<<< HEAD
 <<<<<<< HEAD
 ## 2026-10-20 LOOK-001 룩 4안 비교 자료 준비
