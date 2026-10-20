@@ -1,3 +1,12 @@
+## 2026-10-21 EC3-06 etype43 charge trigger adapter
+
+| 항목 | 정확 계약·검수 |
+|---|---|
+| 기준·재사용 | 최신main0105159934d0 + 승인EC3-05 c96a1eb5 정상merge431a7f88. WORK_BOARD 신규43 leaf 중복0. EC2-04 clock/trigger receipt 형식·기존M29 step_charge 재사용, 60/18/32 trigger 대체0 |
+| 원본·범위 | G39358–39365 idle clock1회·strict30<d<1200·path630+r 승인 후Cd reset/현재P조준/90·15·42·630+r/text25·SFX. G40521 st2>67.95 잠금, 같은tick common감소1회. 캐시/공유elite lock 불변 |
+| 검증 | 최초신규26287/0·원문trigger2880/common84·허용오차/skip0. 직접회귀각1회 M29 143/0·CH3catalog12602/0. ERROR/WARNING0. 변이4종169/127/1440/252실패검출·신규module byte복원, 통과재실행0 |
+| 보호·인계 | 기존415파일/game/R 불변·공용Main/State/저장/다른담당/기존검사0줄. live actor/World/path/피격writer 연결HOLD. UTF8 receipt/OS.execute join/명시--node-bin·각격리명·매Godot guard/override0byte. [보고서](engine/orders/reports/ec3-06_REPORT.md), 원로그 ~/exoduser-wt/_out/ec3-06/; 자기branch push/remote일치/DONE후자기WT제거 |
+
 ## 2026-10-21 EC3-05 etype42 시체 흡수·분비 순수 leaf
 
 | id / 적용 위치 | 정확 계약·실제 검수 |
