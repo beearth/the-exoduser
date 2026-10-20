@@ -148,7 +148,7 @@
 | 불일치·이식안 | 설계 차이는 표로만 기록. 기존 Godot 의존/공백·공용 접점·10단위 순서안, 1번 LB-01은 신규 카탈로그/테스트만·공용 0줄 목표 |
 | 소유·보호 | SETTINGS S10·SAVE SV-LOBBY-VIEW는 참조, P2-001i·P2-007a는 의존. 코드·테스트·설계 docs·DESIGN LOCK·WORK_BOARD·R 불변. 이 절 외 기존 문서 수정 없음 |
 | 검증·한계 | 57개 기존 receipt 파일 및 최신 main 동일성·행/표/링크 정적 확인. Godot 미실행. 보존된 Node 원로그 77통과/3파일 acorn 부재로 본문 미실행은 전체 PASS가 아니며 재실행하지 않음. 자기 브랜치만 정상 push·원격 SHA 확인, main push·force·훅 우회 없음 |
-=======
+
 ## 2026-10-20 META-03 레거시 분해 가치 순수 규칙
 
 | 항목 | 변경·검수 |
@@ -178,7 +178,6 @@
 | 순수 검수 | 새 Godot20/0·skip0, 실제 JS 원본1..1500 대조1500일치/불일치0, 기존 웹 oracle4/0. 자연플레이·영구저장 검수 아님 |
 | 제품 한계·보호 | 사용자 공용0줄 지시 우선: State preload/caller 수정0, 제품999→1000 일반식 불일치 잔존. XP 지급·SP/AP·회복·초월gate·HUD·Q/E·세이브0줄, 일반/데모 game.mats 차이 보호 |
 | 회귀·근거 | 지정15종 중14통과·p1002g 알려진1실패, 추가p2001c45/0·전부skip0. 최종 실측은 [meta-01 보고서](engine/orders/reports/meta-01_REPORT.md)에 기록. exit code·실행그룹·skip·stderr와 알려진p1002g 선재실패를 분리. 원로그 `~/exoduser-wt/_out/meta-01/` |
->>>>>>> 5b672e7c
 =======
 ## 2026-10-20 IT-04 — 장착 결정의 홈 배율 합산
 
@@ -226,6 +225,40 @@
 | 검수 | 새 순수 테스트177/0, 원본 JS 함수와 품질205·홈120·합성8의1478비교/0. 첫 파일 미배치 실행 무효 및 JSON 숫자 Dictionary 비교1실패는 원로그 보존. 기존 회귀 contracts 5그룹/0실패, P2-001c 40/0·exit0(단, Camera2D·ObjectDB 2인스턴스 종료누수 경고 보존). [it-01 보고서](engine/orders/reports/it-01_REPORT.md) 참조 |
 | 격리·한계 | 신규 테스트 `EXODUSER-it-01-Isolated-20261020`. Main 없는 순수 테스트는 Git 밖 전용 project.godot에서 실제 신규 소스를 symlink로 읽으며 repository override 미사용. 실제 플레이·화면·장착 효과·전체 JS coercion 인수 아님 |
 >>>>>>> b950095b
+=======
+## 2026-10-20 SK-S03 합체·흡수 읽기 전용 판정
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 범위·의존 | 신규 skill_management_source/fusion_rules.gd·신규 test_trace_skills_s03_fusion_rules.gd·각uid·보고서. main 284d7faf 원본 대조, SK-S02 d56773ae 위에서 분기(S01 간접의존) |
+| 원본 | 16649/44487~44501/44560~44642/48148~48149. 32레시피·demo22·흡수31·이름32쌍. 기존 S02 cat·fusion_star_source 멤버/override·_fuseStar 재사용 |
+| 계약 | canFuse4gate·미숙련/minLv/SP·선행/동급성 검사 없음. bladeEcho흡수[]·omniBeam호스트예외·선언순/중복제거·최소/최대성급·금색별6cap·숙련readonly. P/saves/QE/배정·writer0 |
+| 검증 | 신규15020/0·원본14515행 불일치0·double 4786 bit일치. p2005a~d 합91/0·S01/S02/contracts·기존fusion소비 회귀, 전부exit0·stderr ERROR0. b/c/d-ice는 최신main QA테스트 byte사본/기존격리상수로 대조 |
+| 보호·환경 | native_skill_slots.gd 및 공용6·기존모듈/테스트/project.godot·R0줄. 최초full WT 디스크실패 후 자기 pristine sparse WT만 재준비. 원949자원 검증·cache재사용·import0오류, override원부재·전역설정hash보존 |
+| 인계 | sk-s03_REPORT.md·`_out/sk-s03/` 원로그·DONE. 최초fixture키타입 오류/JSON표현차이 보존, 실제학습/합체/슬롯/UI·저장·실플레이 PASS 주장0 |
+
+## 2026-10-20 SK-S02 스킬 관리 읽기 전용 카탈로그
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 범위·의존 | 신규 skill_management_source/catalog.gd 및 신규 test_trace_skills_s02_catalog.gd·보고서. SK-S01 4b9341fb 기반 기존 WT 재개, 최신 main 284d7faf 원본 HTML과 byte 동일 |
+| 원본 데이터 | game44082~44118/44161~44317/44324~44357/44453~44486/44507~44554. category9·추천15·hier4·icon84·skill55·slot8·gem32·pairs32·계수37 |
+| 소유 | readonly 깊은 복사 조회·unknown 명시null·미지원carrier NOT_READY. 기존 fusion_star_source 멤버32/명시star13 재사용. 실제 P/G·배정/학습/합체/시전/저장 연결0 |
+| 검증 | 신규803/0·전체 원본leaf 1552 및 key순서 불일치0. SK-S01·contracts·p2005a~d·기존fusion consumer 회귀 실행. 기존b/c 종료잔류 ERROR는 별도 기록·main QA하니스 추가대조. P2-005 5파일 91/0, 각 파일 상수격리·실행 전2이상이면30초대기 |
+| 보호 | PC 소유 native_skill_slots.gd·공용6파일·기존 fusion/기존테스트/project.godot·R 변경0. override는 원래부재 복원. Q/E·docs/2_3·blackBean·세이브형식 불변 |
+| 인계 | sk-s02_REPORT.md 및 `_out/sk-s02/resume/` 원로그·DONE. 과거 parse 실패·보조oracle 기대개수 수정 이력 보존, UI/실플레이 PASS 주장0 |
+
+## 2026-10-20 SK-S01 스킬 SP 비용·누적 투자액 순수 모듈
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 범위 | `godot/port_modules/skill_management_cost_source/producer.gd` 및 신규 `test_trace_skills_s01_costs.gd`. 실제 Main/슬롯/관리 UI 연결 없음; 공용6파일·PC 담당 native_skill_slots.gd 변경0 |
+| 원본 | 최신 origin/main `9528ea35b429498fcf42fe3723008219ed0ed7e1`, game.html:3913~3930의 `_skillUpSpCost`, `_fuseUpSpCost`, `_skillSpentSp` 그대로 |
+| 수식 | 일반 table11원소·index1..10·falsy fallback1; 합체 gem0→2, base+(star−1), cur>=9이면 star>=4→8 / >=2→6; 누적=spCost 또는0 + lv1..slv−1 비용합. caller의 star/멤버수 선택·레벨락·무료기본기 환급 규칙은 비소유 |
+| 지원 | finite 정수 Number(int/float) level0..20, gem0..7, spCost 누락/0..15. null skill→0, Dictionary level0이면 spCost 미조회. 지원밖은 raw input을 보존한 NOT_READY, value 없음. 값 clamp/강제형변환·새 게임수치 없음 |
+| 검수 | 신규 첫 실행 2,033단정/0실패·원본 JS 직접대조567/0. 격리 `EXODUSER-sk-s01-Isolated-20261020`, Main/override 없이 in-process 설정·실제 OS 경로 확인. 회귀 contracts 5검사군 통과, P2-005a/b/c/d-regen/d-ice 27/12/20/10/22단정·실패0. 상세는 `engine/orders/reports/sk-s01_REPORT.md` |
+| 보호 | Q/E·docs/2_3·저장형식·실사용자 세이브·악의할인·학습/합체 writer 불변. 기존 회귀 파일과 기존 CHANGELOG 본문 bytes 유지. 훅 우회 없음 |
+>>>>>>> db880a18
 
 > 2026-10-17 ENGINE 현행: callback **12/25·미13**. play_time은 el_mul 바로 다음에 동일 Services self의 arity0 Callable로 등록했다. owner 첫 격리 공개 API 검수는 인수됐으며 자연 clock·실게임 인수는 미확인이다. D9는 직전 공통 소스 인수이며, 이번 main/I/R 소스 정렬은 아래 통합 정본과 단위 receipt의 실제 HEAD·tree를 기준으로 확인한다. V12 후보는 소스 인수·첫 FAIL·별도 보완 한정성공으로 구분하며 제품 copy·World hook은 수행하지 않았다. 아래 이전 단계 숫자·원검수 결과는 당시 이력으로 보존한다. 실제 local/remote commit 상태는 단위 receipt를 따른다.
 
