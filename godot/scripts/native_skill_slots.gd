@@ -214,7 +214,8 @@ func cast_giant_slam() -> void:
 		return
 	if str(_player.get("state")) == "dead": # 12908 fallen/dead
 		return
-	if _io_active: # 12917 얼음보주 안: iceOrb 외 모든 스킬 차단 (showPH 토스트 미이식 기록)
+	if _io_active: # 12917 얼음보주 안: iceOrb 외 모든 스킬 차단
+		_show_source_notice("얼음보주 안에선 사용 불가!", "#88ddff")
 		_cast_log.append({"skill": "giantSlam", "rejected": true, "reason": "ice_orb_active"})
 		return
 	var p: Variant = _state.read_current_p()
@@ -230,9 +231,13 @@ func cast_giant_slam() -> void:
 	# 13010·46453~46454: 레슨 중(window._parryLesson?.active)엔 악의 게이트·소비 면제.
 	# 레슨 flow owner는 읽기 전용(파일 미수정 — p2-001h 소유).
 	var lesson_active: bool = _is_parry_lesson_active()
-	# 게이트: ST / 악의 / 쿨 (13010) — 부족 showPH 공지는 미이식 기록(무발동만 동일)
+	# 게이트: ST / 악의 / 쿨 (13000~13001) — 판정 유지·showPH 소비자만 연결
 	if float(_player.get("stamina")) < GSL_ST_COST 			or (not lesson_active and int(g.get("mats", 0)) < GSL_MAL_COST) or gsl_cd > 0.0:
 		_cast_log.append({"rejected": true, "st": _player.get("stamina"), "mats": g.get("mats"), "cd": gsl_cd})
+		if float(_player.get("stamina")) < GSL_ST_COST:
+			_show_source_notice("ST 부족!", "#ff4444")
+		elif int(g.get("mats", 0)) < GSL_MAL_COST:
+			_show_source_notice("악의 부족! (10)", "#ff4444")
 		return
 	var parameters: Dictionary = _main.read_native_attack_parameters()
 	if parameters.get("ready") != true: # 공급자 NOT_READY → 정지(폴백 금지)
@@ -303,7 +308,8 @@ func cast_giant_slam() -> void:
 func cast_spike_trap() -> void:
 	if get_tree().paused or str(_player.get("state")) == "dead":
 		return
-	if _io_active: # 12917 얼음보주 안: iceOrb 외 모든 스킬 차단 (showPH 토스트 미이식 기록)
+	if _io_active: # 12917 얼음보주 안: iceOrb 외 모든 스킬 차단
+		_show_source_notice("얼음보주 안에선 사용 불가!", "#88ddff")
 		_cast_log.append({"skill": "spikeTrap", "rejected": true, "reason": "ice_orb_active"})
 		return
 	var p: Variant = _state.read_current_p()
@@ -315,6 +321,8 @@ func cast_spike_trap() -> void:
 	var g: Variant = _state.read_current_g()
 	if not g is Dictionary or int(g.get("mats", 0)) < SPIKE_MAL_COST or gc_cd > 0.0: # 45510
 		_cast_log.append({"skill": "spikeTrap", "rejected": true})
+		if g is Dictionary and int(g.get("mats", 0)) < SPIKE_MAL_COST:
+			_show_source_notice("악의 부족! (5)", "#ff4444")
 		return
 	var parameters: Dictionary = _main.get("source_providers").get_provider_bundle()
 	var magic_ref: Dictionary = parameters.reference.magic_ref()
@@ -345,7 +353,8 @@ func cast_spike_trap() -> void:
 func cast_holy_dome() -> void:
 	if get_tree().paused or str(_player.get("state")) == "dead":
 		return
-	if _io_active: # 12917 얼음보주 안: iceOrb 외 모든 스킬 차단 (showPH 토스트 미이식 기록)
+	if _io_active: # 12917 얼음보주 안: iceOrb 외 모든 스킬 차단
+		_show_source_notice("얼음보주 안에선 사용 불가!", "#88ddff")
 		_cast_log.append({"skill": "holyDome", "rejected": true, "reason": "ice_orb_active"})
 		return
 	var p: Variant = _state.read_current_p()
@@ -525,6 +534,8 @@ func cast_ice_orb() -> void:
 		* (1.0 + float(lv - 1) * ICE_COST_DPS) * float(magic_cost_mul)) # 31992~31995 mpCost
 	if float((p as Dictionary).get("mp", 0)) < float(mp_cost) or io_cd > 0.0: # 12922
 		_cast_log.append({"skill": "iceOrb", "rejected": true, "mp_cost": mp_cost})
+		if float((p as Dictionary).get("mp", 0)) < float(mp_cost):
+			_show_source_notice("MP 부족!", "#4488ff")
 		return
 	var spend: Dictionary = _main.get("source_resources").commit_native_skill_mana_spend(_main, float(mp_cost))
 	if spend.get("accepted") != true:
@@ -818,6 +829,11 @@ func read_native_slot_cooldowns() -> Dictionary:
 	return out
 
 
+func _show_source_notice(text: String, color: String) -> void:
+	var feedback: Node = _main.get_node_or_null("NativeFeedback")
+	if is_instance_valid(feedback):
+		feedback.show_ph(text, color)
+
 func get_native_skill_slots_snapshot() -> Dictionary:
 	return {"configured": _configured, "gsl_cd": gsl_cd, "gc_cd": gc_cd, "hd_cd": hd_cd,
 		"io_cd": io_cd, "io_active": _io_active, "io_t": _io_t, "blades": _blades.size(),
@@ -829,7 +845,7 @@ func get_native_skill_slots_snapshot() -> Dictionary:
 			"iceOrb 중 적 접촉 외 환경 피해 경로(32800s mo 장판 — 맵오브젝트 미이식)",
 			"spikeTrap 출혈 스택(소비자 미이식)·겹침 캡(동시 1존만 가능)·pillarSpike 분기",
 			"holyDome SFX.pickup(프로시저럴)·addParts 시전입자·합체(holyFuse/holyIce 등) 분기",
-			"showPH 부족 공지(ST/악의 — 무발동 동일)", "rage>0 분기(피해 배율·분노 VFX·잔불 — 신규 rage 0)",
+			"rage>0 분기(피해 배율·분노 VFX·잔불 — 신규 rage 0)",
 			"P._atkBon 이월(+~~(cost×1.5) — 직전 weapon 스윙 보너스)", "보스 _poiseHit 25% 경로(비도달)",
 			"파편 파티클 32(파티클 풀)·crater 폴백", "SFX.slam 합성 3층(playSub/Dist/Noise — 샘플만 복사)",
 			"'screen' 블렌드 정확 재현(가산 근사)", "_detonateAssaultFlames·slamStorm/pillarSlam 합체 분기(미보유)"]}

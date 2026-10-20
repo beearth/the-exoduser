@@ -1,4 +1,5 @@
 extends Node
+signal presentation_requested(kind: String, data: Dictionary)
 ## Explicit source file-init/current-state holder for one newly constructed Player.
 ## SOURCE_BOOT inputs stay unchanged. No bootstrap run, external ack, formula,
 ## actor writes, grit reset, stage publication, save IO or automatic clock.
@@ -478,15 +479,15 @@ func apply_native_add_potion(owner: Node, type: String, count: int) -> Dictionar
 		return {"applied": false, "reason": "actual_reward_owner_not_current"}
 	if type == "hp":
 		_g["mats"] = int(_feel_num(_g.get("mats"))) + count
-		# SFX.pickup: 오디오 에셋 미복사 — 미이식 기록 (보고 목록).
+		presentation_requested.emit("pickup", {"count": count})
 		return {"applied": true, "accepted": true, "mats": _g["mats"],
 			"texts": [{"dx": 0.0, "dy": -20.0, "text": "+%d" % count, "color": "#cc66ff", "life": 25}],
-			"unported": ["SFX.pickup"]}
+			"unported": [] if presentation_requested.has_connections() else ["SFX.pickup"]}
 	return {"applied": true, "accepted": false} # POT에 'hp'만 존재(27677) → 버림
 
 # addExp(v) — 43134~43176. v는 호출측(실행자)이 43140~43144(1/3·expBonus)까지 적용한
 # 최종값. 레벨업: sp+3/2렙당 ap+1(43153~43155), 20% 회복(43160 — 자원 authority 경유),
-# 300/700 스킬 해금(43169~43171). 미이식: SFX.levelup·showPH·_levelUpVfx(연출),
+# 300/700 스킬 해금(43169~43171). 연출은 presentation_requested 소비자로 분리.
 # dbSaveForce(세이브 금지 지시), 패시브 예약 큐(포트에 큐 시스템 부재 → 0 투자).
 func apply_native_add_exp(owner: Node, final_value: int) -> Dictionary:
 	if not _feel_owner_current(owner) or final_value < 0:
@@ -520,9 +521,11 @@ func apply_native_add_exp(owner: Node, final_value: int) -> Dictionary:
 		for unlock in [[300, "blueShot"], [700, "burstLoop"], [700, "voidScarecrow"]]: # 43169~43171
 			if int(_feel_num(_p.get("lv"))) >= int(unlock[0]) and not (_p.get("skills") as Dictionary).has(unlock[1]):
 				(_p["skills"] as Dictionary)[unlock[1]] = 1
+	if levels > 0:
+		presentation_requested.emit("levelup", {"levels": levels, "lv": _p.get("lv"), "texts": texts})
 	return {"applied": true, "exp": _p.get("exp"), "lv": _p.get("lv"), "max_exp": _p.get("maxExp"),
 		"levels": levels, "ap_gain": ap_gain, "sp": _p.get("sp"), "ap": _p.get("ap"), "texts": texts,
-		"unported": ["SFX.levelup", "showPH_LEVEL_UP", "_levelUpVfx", "dbSaveForce(세이브_금지)", "passive_queue(큐_시스템_부재)"]}
+		"unported": (["SFX.levelup", "showPH_LEVEL_UP", "_levelUpVfx"] if not presentation_requested.has_connections() else []) + ["dbSaveForce(세이브_금지)", "passive_queue(큐_시스템_부재)"]}
 
 # rollDrop 레코드 owner — 원본 worldItems(_wiPush 16721: 20개 초과 시 최저 rarity 축출).
 func append_native_drop_records(owner: Node, records: Array) -> Dictionary:

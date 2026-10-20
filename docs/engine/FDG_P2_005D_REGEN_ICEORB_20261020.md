@@ -29,7 +29,7 @@
 ### 발동·상태 (native_skill_slots.gd)
 | 항목 | 원본 | 포트 |
 |---|---|---|
-| 게이트 | 12916~12923: `_ioActive` 중 타 스킬 차단·재입력=파쇄·`mp>=mpCost&&_ioCd<=0` | 동일(차단 로그 reason=ice_orb_active; showPH 토스트 미이식 기록) |
+| 게이트 | 12916~12923: `_ioActive` 중 타 스킬 차단·재입력=파쇄·`mp>=mpCost&&_ioCd<=0` | 판정 불변. P2-009a: `얼음보주 안에선 사용 불가!` #88ddff / `MP 부족!` #4488ff, 기본 500ms. 쿨 단독 거절은 공지 없음 |
 | MP 비용 | 31992 `~~(50×(1+(lv−1)×.35)×pMagicCost)`·useMp 실소비 반환 | `read_native_fireball_magic_cost`(28041 단일 공급자) + authority 신규 `commit_native_skill_mana_spend` |
 | 시전 | 46756~46764: `_ioBon=useMp×2`·`P.s='iceOrb'`·ice_storm(.6,2.0)·입자 12·shake4 | 동일. 상태는 player 신규 API `set_native_ice_orb_state`(idle↔iceOrb) |
 | 무적·행동불가 | 34889s 전 피격 경로 `!P._ioActive`·33040 상태 강제 | player.gd 최소 수정 3건: `_apply_native_damage` 게이트 2줄·speed_scale "iceOrb" 1줄·상태 API 13줄 (**입력 처리 함수 무변경**; 공격은 기존 `state!="idle"` 579로 차단) |
@@ -65,7 +65,7 @@
 - 화면: `_out/p2-005d/compare_iceorb_{orb,shatter}.png`(같은 위상 t=28/파쇄 직후 웹·Godot 합성)·godot_p2005d_iceorb.mp4.
 
 ### 미이식/경계 기록
-Shift 블링크 탈출(36696~36706)·magic_burst 히트 VFX·CT 활성 하이라이트(28499)·유니크 u_d04 파쇄 회수(_uqS)·_iceResDown(아이스스톰)·빙결 파란 틴트·❄프리즌 파티클·프리즌 텍스트 예산 게이트·showPH 토스트·_addSkProf·iceMortar 합체 분기(미보유)·맵오브젝트 접촉 무적 경로(32800s — 맵오브젝트 미이식)·칼날 store 이관(상호작용 시스템 이식 시).
+Shift 블링크 탈출(36696~36706)·magic_burst 히트 VFX·CT 활성 하이라이트(28499)·유니크 u_d04 파쇄 회수(_uqS)·_iceResDown(아이스스톰)·빙결 파란 틴트·❄프리즌 파티클·프리즌 텍스트 예산 게이트·_addSkProf·iceMortar 합체 분기(미보유)·맵오브젝트 접촉 무적 경로(32800s — 맵오브젝트 미이식)·칼날 store 이관(상호작용 시스템 이식 시). showPH는 [P2-009a](FDG_P2_009A_FEEDBACK_20261020.md)로 연결됨.
 
 ### 문서 정정 (코드 기준·근거)
 - 2_1 §283/§446: 칼날 48발→4+Lv×4·baseDmg `(5+(Lv−1))`→`_skMul(8+(Lv−1)×3.2)`(44511)·+_ioBon·MP 50×…·파쇄 r 식·쉴드-게이지 규칙 추가.

@@ -30,7 +30,7 @@
 
 | 항목 | 원본 | 포트 |
 |---|---|---|
-| 게이트 | 13021 `G.mats>=_malCost(10)&&P._gcCd<=0` (레슨 면제 없음) | 동일. 거절 시 cast_log rejected 기록(showPH '악의 부족!' 토스트는 미이식 기록) |
+| 게이트 | 현재 game.html 13011 `G.mats>=_malCost(10)&&P._gcCd<=0` (레슨 면제 없음) | 판정 불변. P2-009a: 악의 부족일 때만 원문 `악의 부족! (5)`·#ff4444·500ms. 쿨 단독 거절은 공지 없음 |
 | 비용·쿨 | 45512 `mats-=_malCost(10)=5`·`_gcCd=~~(600×(1+_cdRed 0))=600` | state `apply_native_skill_cast_cost` 5·`gc_cd=600` |
 | 피해 | 45507 `~~(magicRef×statInt(1)×pMagicMul×_skMul(14+(lv−1)×11.2×0.5)×0.75)` | provider bundle `reference.magic_ref()`+`formula.p_magic_mul()` READY 필수(NOT_READY=정지 기록), `js_to_int32` |
 | 존 | 45515~45517 `{r:300+15(lv−1), maxT:600, dmg, el:EL.P, lv}` | `G._fireZones`에 push (아래 §5) |
@@ -65,8 +65,8 @@
 
 - 출혈 스택(37469 `bleedT/bleedStk/_bleedPool`): 포트에 bleed DOT 소비자 부재 — 스택 기록도 생략(가짜 상태 방지). bleed 시스템 이식 때 함께.
 - `_stHitCap` 겹침 캡: 동시 1존만 가능해 효과 없음 — pillarSpike(9존) 이식 때 함께.
-- SFX.pickup = WebAudio 프로시저럴 합성음 — 에셋 복사 불가.
-- showPH 부족 토스트·_addSkProf 숙련도 프로파일 — 해당 시스템 미이식.
+- holyDome 성공 SFX.pickup 호출은 아직 미연결. P2-009a에 같은 프로시저럴 실행자가 생겼지만 이 작업의 게이트 변경은 공지 호출만이므로 성공 분기는 보존.
+- showPH 부족 토스트·얼음보주 차단 공지는 [P2-009a](FDG_P2_009A_FEEDBACK_20261020.md)에서 연결. `_addSkProf` 숙련도 프로파일은 미이식.
 - **iceOrb(Ctrl) 미구현** — 범위 큼(무적 보주·재입력 파쇄·칼날 4+lv×4발·파쇄 30%·냉저 −10%/히트·_ioActive 중 타 스킬 차단). 키 무반응 유지. 다음 차수 경계 보고됨.
 
 ## 7. 경계 — holyDome 리젠 실효화 조건

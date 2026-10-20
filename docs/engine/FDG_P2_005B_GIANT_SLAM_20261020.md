@@ -40,4 +40,4 @@
 spikeTrap(1— hurtE 집행자 dot/shieldHit 확장 필요: 42121 revive 통과·42332 스턴/빙결 ×1.5
 스킵·42345 쉴드 흡수 조건 (!dot‖shieldHit)·블루 텍스트 !dot·피크 펌프 _quiet2 스킵) /
 holyDome(F — 존 리젠·쿨감 틱) / iceOrb(Ctrl — 무적 보주·파쇄 48발·냉저 디버프) /
-rage>0 분기·보스 포이즈 경로·파편 파티클·showPH 공지·합체 분기들.
+rage>0 분기·보스 포이즈 경로·파편 파티클·합체 분기들. showPH는 [P2-009a](FDG_P2_009A_FEEDBACK_20261020.md)에서 기존 게이트 판정 불변으로 연결: 현재 game.html 13000~13001, ST 부족 우선 '#ff4444'·다음 '악의 부족! (10)', 쿨만 남으면 공지 없음.

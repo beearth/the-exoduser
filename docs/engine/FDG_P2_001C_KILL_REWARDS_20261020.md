@@ -8,14 +8,14 @@
 | 43140~43144 | `v=~~(v/3)` → `nc().expBonus`(스타터 0) → `_eqAffix('expBonus')`(0) — lv1 처치 exp = **1** | 실행자(인벤·어픽스 provider) → state owner |
 | 43146~43156 | `P.exp+=v; while(exp>=maxExp){lv++,exp-=maxExp,maxExp=_calcMaxExp(lv),sp+=3,짝수렙 ap+=1}` — _calcMaxExp(43128): `~~((15+lv·2.5+lv²·.05)×1.001^lv)` (lv<1000) | state `apply_native_add_exp` (P owner). lv≥1000 초월 게이트 활성 시 정지(미이식) |
 | 43160 | 20% 회복: hp/st/mp `min(max, +~~(max×.2))` | 자원 authority `commit_native_level_up_heal` (q_parry_reward와 동일 소유 경로) |
-| 43163~43166 | SFX.levelup·showPH('LEVEL UP!')·addTxt('SP +N [AP +M]',#ffdd00,60)·_levelUpVfx | **addTxt만 이식**(NativeFloatingText). SFX/showPH/VFX·악마화 색 분기(#d38aff — PASSIVES.pDemon 0) 미이식 목록 |
+| 43159~43167 | SFX.levelup·showPH('LEVEL UP!',2500)·addTxt('SP +N [AP +M]',60)·_levelUpVfx | **P2-009a:** 연출 소비자 연결. PASSIVES.pDemon>pHuman이면 #d38aff, 아니면 #ffdd00. 기존 NativeFloatingText 방출은 중복하지 않음. 오디오 후단 EQ/컴프레서는 미이식. [범위·화면 경계](FDG_P2_009A_FEEDBACK_20261020.md) |
 | 43169~43171 | lv300/700 스킬 해금 (blueShot/burstLoop/voidScarecrow) | state에서 P.skills 기록 (도달 시) |
 | 43173 | dbSaveForce | **미이식 — 세이브 금지 지시** |
 | 43157 | 패시브 예약 큐 자동 투자(51222) | 포트에 큐 시스템 부재 → 0 투자 (목록) |
 
 ## 2) 물약 — 원본 추적
 - 43092~43096: 게이트 `rand<1`(항상)·종류 롤(기존 provider 소비 그대로) → `addPotion(pt,1)` 성공 시 `addTxt(e.x,e.y-8, POT[pt].name+' +1', POT[pt].col, 30)` — POT(27677)는 **hp('악의 추출', #33cc66)만 존재**.
-- addPotion(28250~28263): `hp` → **G.mats+=count** + `addTxt(P.x,P.y-20,'+N','#cc66ff',25)` + SFX.pickup(사운드 미이식 목록) / st·mp → POT에 없어 **버림**(2026-10-10 퀵슬롯 폐지 원문). → QSLOTS owner 불필요(첫 전투 경로에서 도달 불가; HUD 연결 대상 없음 — 목록).
+- addPotion(28250~28263): `hp` → **G.mats+=count** + `addTxt(P.x,P.y-20,'+N','#cc66ff',25)` + SFX.pickup(P2-009a 프로시저럴 3층 연결) / st·mp → POT에 없어 **버림**(2026-10-10 퀵슬롯 폐지 원문). → QSLOTS owner 불필요. 일반 모드에서는 원본 54833~54839 화이트리스트가 '+N'도 숨김(강제 노출 없음).
 - state `apply_native_add_potion`이 G owner 쓰기·텍스트 사양 반환, 실행자가 방출.
 
 ## 3) 드랍 — 원본 추적·구현 경계
@@ -87,6 +87,6 @@ assets/sfx/death 21파일/테스트 1신규+4갱신(E/F/G·P2-001b — drop 꼬�
   P.exp/lv·G.mats·드랍 레코드/가방 — 프로브 출력 PROBE_P lv=1 exp=2 mats=8 drops=1.
 
 ## 잔여
-바닥 드랍 표시·줍기·인벤 반입 / 레벨업·픽업 연출(사운드·showPH·VFX) / 초월(1000+) /
+바닥 드랍 표시·줍기·인벤 반입(P2-006a 별도 브랜치, 이 작업 기준선에 미통합) / 레벨업·픽업 오디오 후단 EQ/컴프레서·글꼴 완전 일치 / 초월(1000+) /
 보스 드랍 경로 실사용 / HUD(경험치 바·악의 카운터 — 기존 HUD에 exp 표시 없음: 목록) /
 팬 지원 / 유골 도감(ossCollect) 반입.

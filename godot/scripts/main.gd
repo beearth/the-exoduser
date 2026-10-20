@@ -271,6 +271,7 @@ func _ready() -> void:
 	_build_native_character_selection_ui()
 	_install_native_q_control()
 	_install_native_attack_audio()
+	preload("res://scripts/native_feedback.gd").install(self)
 	_bind_native_intro_curtain_view()
 	_bind_native_startup_services()
 	source_intro_sequence = IntroCurtainSequenceScript.install_native_boot(self) # P2-001i
