@@ -1,3 +1,11 @@
+## 2026-10-20 BC05 — 1장 보스 phase·시계 전이 packet
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 구현·의존 | 신규 native_ch1_boss_phase.gd·test_boss_ch1_bc05_phase.gd·bc05_REPORT.md. BC04 818e9b20 끝에서 분기. 공용/타 담당 코드·기존 테스트·원본·설계 docs·R 수정0 |
+| 원본 | 최신 main e556b617 game.html:38236–38313·38584–38635·38771–38772·38875–38884·40445–40455·41375–41383. 엄격 HP경계/한번 점프·signed32·현재poise 유지·iframe90·recover45→20·다음tick ATKreset, 후반 명령 continuation의 source RNG interleaving 보존 |
+| 검증·한계 | 최종 신규18,424/0·checkpoint1,015건·effects32건/명령2,147개/RNG2,528회 대조. BC01 681/0·BC02 5,257/0·BC03 31,976/0·BC04 21,899/0·contracts5/5·import 정상, 모든 ERROR0. 실제 피해/무적·full tick·actor/Main은 후속 owner 의존. 원로그 _out/bc05, push·SHA대조·DONE 후 자기 sparse worktree 제거 |
+
 ## 2026-10-20 BC04 — 1장 보스 선택기·콤보·RNG 순서
 
 | id / 적용 위치 | 현재 정확 계약 |
