@@ -1,0 +1,101 @@
+{
+  "provider": "existing art only",
+  "new_generations": 0,
+  "generation_cost": 0,
+  "method": "local rembg u2net CPU alpha matting + source-white matte cleanup; no repaint",
+  "assets": [
+    {
+      "id": "hellgunner",
+      "source": "output/steam_store_remaster_20261020/hellgunner_sniper_revolver_remaster.png",
+      "source_sha256": "7e29249f9418178922528f3ac50d1ffe4cdd4ec1c3860e52021276df19ff94c9",
+      "source_size": [
+        1152,
+        2048
+      ],
+      "native_bounds": [
+        15,
+        215,
+        1137,
+        1793
+      ],
+      "portrait_crop": [
+        530,
+        170,
+        1152,
+        792
+      ],
+      "cut_size": [
+        1536,
+        2048
+      ],
+      "portrait_size": [
+        1024,
+        1024
+      ],
+      "cut_sha256": "f4470f385e686438c90f91453ea8d4508e5ad72400aecd1825081e64970d3bd8",
+      "portrait_sha256": "8377a27cca075809bb1d3ba76914c3a74d6752585c244c30e8be67b45fe550b1"
+    },
+    {
+      "id": "transmuter",
+      "source": "output/steam_store_remaster_20261020/transmuter_bow_candidate.png",
+      "source_sha256": "3702e24eaf5fa322d7c73a6a68fbcaf016702a891cbb8a576d1a0a7000fed22f",
+      "source_size": [
+        1152,
+        2048
+      ],
+      "native_bounds": [
+        14,
+        16,
+        1139,
+        2032
+      ],
+      "portrait_crop": [
+        530,
+        265,
+        1152,
+        887
+      ],
+      "cut_size": [
+        1536,
+        2048
+      ],
+      "portrait_size": [
+        1024,
+        1024
+      ],
+      "cut_sha256": "d2b2e1eb01f4c95932ae2261470b9c66eb85dcab8898da35fe0a1eabeeefdc85",
+      "portrait_sha256": "9a62acc25d1ca0b933d93d85866dafb97fb87319464b3015e31b009bb8d934d2"
+    },
+    {
+      "id": "spearmage",
+      "source": "output/charselect_remaster_20261019/spearmage_c3_dress.png",
+      "source_sha256": "f001470c8e60465a9da5155f92fe322876f5394af7088e1a4a06dda5ba680cc1",
+      "source_size": [
+        1744,
+        2336
+      ],
+      "native_bounds": [
+        7,
+        16,
+        1619,
+        2324
+      ],
+      "portrait_crop": [
+        980,
+        80,
+        1744,
+        844
+      ],
+      "cut_size": [
+        1536,
+        2048
+      ],
+      "portrait_size": [
+        1024,
+        1024
+      ],
+      "cut_sha256": "a6c8c80e9785fb0854c06eb46103268418db95a252335f612c500650e66cc1e9",
+      "portrait_sha256": "2412bd961330d84a84e09bcf500a797e9f158a727f5c326662f7b692d985c624"
+    }
+  ]
+}

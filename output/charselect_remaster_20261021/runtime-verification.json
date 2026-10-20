@@ -1,0 +1,65 @@
+{
+  "checks": [
+    {
+      "hero": "변성술사",
+      "inside": true,
+      "loaded": true,
+      "locked": true,
+      "src": "http://127.0.0.1:3333/assets/charselect/transmuter_cut_20261021.png?v=20261021-art",
+      "videoVisible": false
+    },
+    {
+      "hero": "창법사",
+      "inside": true,
+      "loaded": true,
+      "locked": true,
+      "src": "http://127.0.0.1:3333/assets/charselect/spearmage_cut_20261021.png?v=20261021-art",
+      "videoVisible": false
+    },
+    {
+      "hero": "헬거너",
+      "inside": true,
+      "loaded": true,
+      "locked": true,
+      "src": "http://127.0.0.1:3333/assets/charselect/hellgunner_cut_20261021.png?v=20261021-art",
+      "videoVisible": false
+    },
+    {
+      "createEnabled": true,
+      "hero": "warrior-return",
+      "staticClassRemoved": true
+    },
+    {
+      "inside": true,
+      "loaded": true,
+      "locked": true,
+      "viewport": [
+        1097,
+        617
+      ]
+    },
+    {
+      "inside": true,
+      "loaded": true,
+      "locked": true,
+      "popupScrollWidth": 223,
+      "viewport": [
+        223,
+        482
+      ]
+    },
+    {
+      "description": "A blood-moon marksman who fires her own blood.",
+      "job": "Blood-Moon Marksman",
+      "locale": "en",
+      "locked": true
+    },
+    {
+      "description": "A soul hunter who shapes the core’s blue flame into bows, scythes, spears, and blades.",
+      "hero": "Transmuter",
+      "locale": "en",
+      "locked": true
+    }
+  ],
+  "logs": []
+}

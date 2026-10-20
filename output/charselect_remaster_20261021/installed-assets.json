@@ -1,0 +1,38 @@
+[
+  {
+    "path": "assets/charselect/hellgunner_cut_20261021.png",
+    "sha256": "f4470f385e686438c90f91453ea8d4508e5ad72400aecd1825081e64970d3bd8",
+    "sameAsOutput": true,
+    "bytes": 2332188
+  },
+  {
+    "path": "assets/charselect/portrait_hellgunner_20261021.png",
+    "sha256": "8377a27cca075809bb1d3ba76914c3a74d6752585c244c30e8be67b45fe550b1",
+    "sameAsOutput": true,
+    "bytes": 1083605
+  },
+  {
+    "path": "assets/charselect/transmuter_cut_20261021.png",
+    "sha256": "d2b2e1eb01f4c95932ae2261470b9c66eb85dcab8898da35fe0a1eabeeefdc85",
+    "sameAsOutput": true,
+    "bytes": 2367550
+  },
+  {
+    "path": "assets/charselect/portrait_transmuter_20261021.png",
+    "sha256": "9a62acc25d1ca0b933d93d85866dafb97fb87319464b3015e31b009bb8d934d2",
+    "sameAsOutput": true,
+    "bytes": 1275800
+  },
+  {
+    "path": "assets/charselect/spearmage_cut_20261021.png",
+    "sha256": "a6c8c80e9785fb0854c06eb46103268418db95a252335f612c500650e66cc1e9",
+    "sameAsOutput": true,
+    "bytes": 2747207
+  },
+  {
+    "path": "assets/charselect/portrait_spearmage_20261021.png",
+    "sha256": "2412bd961330d84a84e09bcf500a797e9f158a727f5c326662f7b692d985c624",
+    "sameAsOutput": true,
+    "bytes": 1557678
+  }
+]

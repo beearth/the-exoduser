@@ -450,3 +450,12 @@ SOUND·ITEM·BALANCE 등 나머지 팀은 해당 목표를 지원하는 기존 �
 | HOLD 분리 | ENEMY_GL_2D_BODY_FALLBACK_GATE의 body 실패·fallback/stride/queue/draw 권위는 미해결·미인수 유지. 보류된 general-Image warm branch도 포함하지 않음 |
 | 비용·한계 | Map/Set와 hit 중 per-layer 배열 추가, 비용 UNKNOWN. zoom/shake/native billboard pixel 정렬·base+walk 밝기·실화면 미인수. borrowed close/dispose·새 Image/fetch/RAF/timer/셰이더·맵/에셋 변경 없음 |
 | 새 검수 범위 | 자기 actor/Image/Proxy/GL로 실제 본체/walk call·flash if·queue wrapper·제출 뒤 marker·reset·중형 call seam만. 전체 draw/prepare/중형 함수·실GPU/카메라/사용자 창 실행 아님. 기존 통과 검사·에셋·픽셀 proof 재실행 없음 |
+
+
+## 2026-10-21 신규 캐릭터 이미지 작업 재개
+
+| 담당/범위 | 실제 결과 | 남은 단계 |
+|---|---|---|
+| Codex / ART 신규3종 | 기존 방향을 보존한 투명 전신3·초상3, 선택 화면 연결·프레임 잘림 수정·작은 출시 잠금 배지. 유료 생성0. KO/EN 실제 로비 검수 및 전사 복귀 확인, 관련99검사98PASS/기존동일1FAIL | 최종 미감 평가는 사용자 별도. 새 전투 구현·웹/NW.js/Steam 반영·Mac 동기화는 이 완료 범위 밖 |
+
+[원화·적용·검수 정본](../17게임아트팀/NEW_HEROES_CHARSELECT_REMASTER_20261021.md). 기존 타 팀 WIP·공용 INDEX·세계관 v17 src 편집을 보존하고 본인 변경만 별도 복구 branch로 보존한다.
