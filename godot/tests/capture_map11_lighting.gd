@@ -61,7 +61,7 @@ func _run() -> void:
   light_rows.append({"id":str(row.node.name),"position":str(row.node.global_position),"radius":row.radius,"energy":row.energy})
  diagnostics.lights=light_rows
  diagnostics.light_cap=5
- check(scene.lighting_look.pools.size()==8,"bounded authored lights")
+ check(scene.lighting_look.pools.size()==10,"bounded authored lights")
  check(main.world.get_node_or_null("NativeMapLook")==null,"no duplicate generic ambient")
  var evidence: Dictionary={"checks":checks,"failures":failures,"samples":results,"diagnostics":diagnostics,"capture_viewport":[1600,900],"benchmark_viewport":[1920,1080],"user_dir":OS.get_user_data_dir(),"renderer":RenderingServer.get_current_rendering_method(),"max_fps":Engine.max_fps,"physics_hz":Engine.physics_ticks_per_second,"actors":main.world.get_enemies().size(),"scope":"GUI real Player input left/down/right/up 150 ticks each; 600 physics ticks per space; no dense combat or Windows claim"}
  var f:=FileAccess.open(output.path_join("../verification.json").simplify_path(),FileAccess.WRITE);f.store_string(JSON.stringify(evidence,"  "));f.close()

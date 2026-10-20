@@ -252,16 +252,21 @@ Map11Root (Node2D, scene_id/revision)
 
 ## 14. MAP11-17 — 조명 룩 패스 (2026-10-21)
 
+**현행 MAP11-17b**: 기준 `codex/map11-17-20261021` / `ff59c3c7`, 후보 `codex/map11-17b-20261021`. 아래 수치는17b로 갱신. 기준17의 제단/횃불/AO 유지. 텍스처·새 에셋·MAP11-16/16b 반입0. 성능 목표 미달이므로 승인 완료 아님.
+
 이번 사용자 지시가 기존 §11의 같은 작업번호 배정보다 우선한다. **조명만 변경**, 기준 `codex/map11-15-20261021` / `1f797a8b71e5a1bd814e79be1a289b5e897a7aee`; 보류된 MAP11-16/16b의 바닥/나무/생성 에셋 반입0. 기준 tree에 이 설계서가 없어 `codex/map11-plan-20261021`의 원문을 복원하고 이 절을 추가했다(다른 branch 코드 병합0). 콘셉트는 죽은 숲의 거대한 몸속 / D02 강한 생체 + 가독성 / D04 120fps 유지. 원문 REVIEW_PENDING·미구현 표기는 당시 설계 이력이다.
 
 ### 14.1 실제 표시 계약
 
 | id / 적용 위치 | 현행값 / 공식 | 경계 |
 |---|---|---|
-| MAP11Ambient / product_lighting | field RGB(.38,.43,.52); boss RGB(.49,.34,.36); `approach=1`(arena) 또는 `smoothstep(-2600,-4100,player.y)`; 실제 ambient=`field.lerp(boss,approach*.75)` | 전용 CanvasModulate 1개. 일반 NativeMapLook boot은 `world.map11_provider` 존재 시 설치 생략, ambient/player 중복0. 별도 Main/World/전투 writer0 |
+| MAP11Ambient / product_lighting | field RGB(.46,.49,.55); boss RGB(.52,.42,.43); `approach=1`(arena) 또는 `smoothstep(-2600,-4100,player.y)`; 실제 ambient=`field.lerp(boss,approach*.75)` | 전용 CanvasModulate 1개. 일반 NativeMapLook boot은 `world.map11_provider` 존재 시 설치 생략, ambient/player 중복0. 별도 Main/World/전투 writer0 |
 | NativeMapLook 재사용 | `_make_light`, `_make_radial_texture`, `_silhouette_material` 상속. PointLight2D ADD, height=radius×.8, full z range, shadow_enabled=false | 새 아트/노멀맵/텍스처 교체0. 법선·흔들림 시스템 재작성0; 기존 field forest material 유지 |
-| player key | color(.78,.85,1), r420, energy.48, position=player+(0,-36) | 항상1등; 약한 냉광으로 실루엣 분리, 시뮬레이션 불변 |
-| 광원 예산/cull | authored8 + player1; 활성 local 최대4 + player1=5. camera center±viewport/zoom/2, margin100과 radius AABB 교차, active_space 일치 | 고정8행 scalar 루프; 틱 목록 API/get_method_list/ResourceLoader0. pulse=`energy×(1+amplitude×sin(time×2.1+phase))`, phase=x×.0137+y×.0091 |
+| player key | color(1,.92,.80), r165, energy.68, position=player+(0,-36) | 항상1등; 작은 중립 온광으로 실루엣 분리, 시뮬레이션 불변 |
+| actor exposure/rim | 기존 material이 없는 player `_sprite`: unshaded exposure1.6/rim.22; enemy `_body`: exposure1.2/rim.08. `source=texture×COLOR`, edge=`1−min(alpha(UV+(1texel,0)),alpha(UV+(0,1texel)))`; RGB=`source.rgb×exposure+(.92,.87,.80)×edge×rim`, 원alpha 보존 | 주변 발광0; setup1회 + world child_entered_tree의 ExoduserEnemy만 deferred bind. tick actor 목록0. 기존 특수 material 보존; 해당 material 및 밀집전투 가독성 미검수 |
+| 관문 뒤 ground shadow | Polygon x±2500/y−5500~−3850, z−2989, RGB(.018,.012,.016). alpha=`(1−smoothstep(−4180,−3890,y+28sin(.009x)+16sin(.023x)))×(1−smoothstep(1500,2450,abs(x)))×.98` | ground 위/나무·gate·actor 아래. 경계 어둠만 추가, geometry/collision 불변. 화면 위 검정 mask 미사용 |
+| 나무 rim | texture alpha 좌우2texel의 min으로 내부 edge; RGB+=(.16,.075,.055)×edge×(.35+fog) | 원alpha/배치/기존 tint 유지, 외부 halo0; 2lookup 추가 |
+| 광원 예산/cull | authored10 + player1; 활성 local 최대4 + player1=5. camera center±viewport/zoom/2, margin100과 radius AABB 교차, active_space 일치 | 고정10행 scalar 루프; 틱 목록 API/get_method_list/ResourceLoader0. pulse=`energy×(1+amplitude×sin(time×2.1+phase))`, phase=x×.0137+y×.0091 |
 | 방사 감쇠 | 공유256² GradientTexture2D / offset[0,.35,.7,1], alpha[1,.62,.2,0]; texture_scale=radius×2/256 | NativeMapLook 기존 helper. 빛 사이 ambient 어둠 유지 |
 | 전면 wash 제거 | MAP11에서 NativeLightmap·NativeFog2D·NativeEnvLight·NativeVignette 숨김; 기존 color filter contrast1.05/brightness.97 유지 | NativeScreenLighting 소스 변경0; 제품수명 동안만. fog_pass가 종료 시 원 material 복원 |
 | 외곽 안개 | 기존2048² FBM cache1lookup. p=view_origin+UV×view_size; field side=smoothstep(1800,3000,abs(x)), north=smoothstep(3900,4700,-y)×(1−smoothstep(500,1000,abs(x))); depth=max(side,north). arena depth=smoothstep(1650,2450,length(p−arena_origin)) | alpha=depth×(.045+.065×FBM), RGB(.12,.17,.23), FBM uv=p/11000+(TIME×.0015,0). 중앙/내부depth0, 외곽으로만 최대.11; 화면UV 고정 안개 아님 |
@@ -279,38 +284,40 @@ Map11Root (Node2D, scene_id/revision)
 | GateRight / field | (180,−4090) | (1,.27,.09) | 390 | .72 | .035 |
 | WestTissue / field | (−4161.385,−1831.912) | (.85,.18,.10) | 440 | .58 | .05 |
 | EastTissue / field | (2445.740,−3399.036) | (.85,.20,.09) | 380 | .50 | .05 |
+| WestDeepA / field | (−3610,−1510) | (.85,.12,.065) | 260 | .32 | .035 |
+| WestDeepB / field | (−3900,−660) | (.80,.10,.055) | 230 | .28 | .035 |
 | ArenaEntry / arena | (0,−6880) | (1,.32,.10) | 620 | .72 | .035 |
 | ArenaHeart / arena | (0,−9740) | (1,.17,.085) | 730 | .88 | .045 |
 | ArenaTissue / arena | (1550,−8450) | (.90,.19,.08) | 500 | .56 | .045 |
 
 Tissue 2등은 setup에서 FRONT row의 가장 가까운 foot를 선택(목표 West−3450/−1250, East1850/−2000), foot.y−sprite_height×.28에 고정한다. arena offset(0,−8000), 필드 D01 실제 제단/관문 텍스처의 기존 횃불 그림 위치 사용. PointLight가 바닥·오브젝트에 함께 닿아 번짐을 만든다. 별도 불꽃 애니메이션/에셋은 추가하지 않았다.
 
-### 14.3 검수·성능·한계
+### 14.3 MAP11-17b 검수·성능·한계
 
 | 항목 | 결과 |
 |---|---|
-| 기준 before | 실제 `1f797a8b`의5개 영향 소스를 복원한 동일 Main/3camera 캡처. before 생성 후 후보 소스 복구. MAP11-16 문제 캡처는 참고만, 비교 before에 보류 텍스처 사용0 |
-| 렌더/전환 QA | 최초 after-preview 19checks/0fail(3뷰 저장·actual gate entry·wall fade 등). 눈 검수 후 광원 위치만 보정. 최종 캡처/추가 광원 경계/실제 입력 검증17checks/0fail. 벤치는 아래 공간별1회, 반복 측정0 |
-| field / 1080p | p95 **7.857ms**, p99 9.931ms, 평균172.27fps, draw125/objects240, 실제 Player 입력 4방향150틱씩600틱 |
-| arena / 1080p | p95 **7.580ms**, p99 8.391ms, 평균173.90fps, draw129/objects247, 실제 Player 입력 4방향150틱씩600틱 |
-| 측정 조건 | Apple M5 Pro/macOS/Godot4.7.2/GL Compatibility, 1920×1080/240cap/기존60Hz 보존. 필드·아레나 p95≤8.33ms PASS. 측정 직전 pgrep Godot0, 해당 벤치1개만 실행. 5actor 관측; 밀집전투/Windows/GPU timestamp/전체프레임120fps 보장 아님 |
-| 저장 격리 | `EXODUSER-map11-17-Isolated-20261021`만 실행, project 설정은 검수 종료 후 원본 byte 복원. 실제 EXODUSER-Godot-Native-First 실행0 |
-| captures | `~/exoduser-wt/_out/MAP11-17/captures/`의 01_field / 02_outer_forest / 03_boss_entrance. before·after 각1600×900, `*_before_after.png`3200×900(좌before/우after), `*_before_after_1x.png`1280×600(각640×600, 무배율 crop x480/y150). 비교 보드는 색보정·리사이즈 없이 합침 |
-| VISUAL VERDICT | **RETOUCH**. 회색 막 제거/냉암부·제단·입구 온광 분리 확인. 외곽 어두운 나무 디테일·넓은 바닥의 균일재질·gate뒤 직선 cutoff 잔여. PoE2/No Rest for the Wicked와 같은 계열의 명암 방향은 확보했으나 나란히 놓아도 동급 공간/재질이라는 PASS는 아님. 전투탄/Q/E 밀집 중첩은 미검수 |
+| before / after | 같은 Main/3camera, before 실제 ff59c3c7 실행. after 최종17b. 각1600×900, 나란히3200×900; 1x 각640×600(x480/y150), 나란히1280×600. 색보정·리사이즈0 |
+| captures | `~/exoduser-wt/_out/MAP11-17b/captures/`: 01_field / 02_outer_forest / 03_boss_entrance의 `*_before_after.png`, `*_before_after_1x.png` |
+| 관련 검증 | before14checks/0fail; 보정본 render+실제 입력/arena entry17checks/0fail. 이후 시각검수로 actor exposure와 ground-only 관문암부 보정, 최종 capture-only 결과 `final-captures.log`/`captures/verification.json`. 초기 파싱 오류 수정; 최초 실패는 벤치 미착수 |
+| 성능1회 / field | p95 **10.047ms**, p99 10.487ms, 평균124.54fps, draw125/objects240. **FAIL >8.33ms** |
+| 성능1회 / arena | p95 **10.258ms**, p99 10.815ms, 평균152.02fps, draw131/objects247. **FAIL >8.33ms** |
+| 측정 조건·제약 | Apple M5 Pro/macOS/Godot4.7.2/GL Compatibility,1920×1080/240cap/60Hz. 실제4방향150틱씩600틱/space,5actor. DEMO11-47l headless와 동시2개, pgrep 확인. 경쟁 부하의 영향은 분리 측정하지 않아 원인 단정0. 요청대로 벤치 반복0. 측정 후 actor exposure/관문 ground shadow 수정으로 **최종 byte의 p95는 미측정**. 측정 JSON=`benchmark-measured.json`. 기존17의7.857/7.580ms는 당시 이력이며17b 성능으로 인용 금지 |
+| 저장 격리 | `EXODUSER-map11-17-Isolated-20261021`만 실행, project.godot 원본byte 복원. 실제 저장 폴더 사용0 |
+| 판정 | 성능 gate FAIL, 최종 성능 미검증. visual 상세/최종 판정은 아래 보고. 밀집 전투·새 적 특수재질·Windows 미검수 |
 
-### 14.4 MAP PRODUCTION REPORT
+### 14.4 MAP PRODUCTION REPORT — MAP11-17b
 
-- STAGE: Godot CH1-1 MAP11-17 lighting-only.
-- MASTER: silhouette/regions/main route/side spaces 전부1f797a8b 보존. GATE1~3 재제작0; GATE4 접지→GATE6 랜드마크광→GATE8 CAMERA/TECH 순서.
-- OUTER MASS: LEFT/RIGHT/TOP/SOUTH 배치 불변. 어두운 깊이만 분리; major holes 형상 수정0.
-- LARGE: source assets/composites/overlap/repeated silhouette 불변, 신규 생성/이미지 교체0.
-- MEDIUM: connections/remaining holes 형상 불변; 접지광/그림자만 변경.
-- GROUND: 원본 텍스처/contamination 불변; ground plane AO·제단/게이트 silhouette로 structure integration 보강.
-- PLAYABLE: main arenas/travel/breathing/threat spaces/충돌·진행 불변. 3뷰 player silhouette 확인, 밀집전투 가독성 미검수.
-- LANDMARK: primary 심장제단, secondary gate/tissue, tertiary arena rim 발광. 권위 anchor/스폰 불변.
-- CAMERA QA: LANDMARK/ARENA(field landmark)·SIDE L·EXIT 3뷰 실제1600×900/1x. START/EARLY/SIDE R/LATE·실제 arena 최종 이미지 눈 검수는 이번 요청밖, 별도 PASS0.
-- TECH QA: actual gate entry·wall occlusion PASS(초기 렌더QA); provider/route/collision 소스 불변. Godot ERROR0; pageerror/404 N/A. seam/void 기존직선cutoff 잔여. 로딩fallback 원본보존, 성능 위 표.
-- FILES: MAP11 전용 lighting adapter/scene boot/field light/forest tint/vignette, generic native_map_look의MAP11중복설치guard3줄, 요청 하니스와 관련docs. concurrent/unrelated 수정0.
-- GIT: 자기 branch `codex/map11-17-20261021`만 정상 hook commit/push. 복구 기준1f797a8b·원격expected 보존. 최종 SHA/push readback은 `_out/MAP11-17/DONE.txt`. main push/deploy/Steam0; R의게임/인덱스/WORK 수정0.
-- VISUAL VERDICT: **RETOUCH**.
-- NEXT PASS: 사용자 눈 검수 후 외곽명도·관문뒤 직선경계·밀집전투 가독성의 별도 승인 범위. 보류 텍스처 자동 인수0.
+- STAGE: Godot CH1-1 lighting-only revision, ff59c3c7 기반.
+- MASTER: silhouette/regions/main route/side spaces 보존; GATE4 ground shadow→GATE6 local key→GATE8 camera/tech.
+- OUTER MASS: LEFT/RIGHT 약한 내부 rim, LEFT 붉은 recess2등; TOP 관문 뒤 ground암부; SOUTH 불변. 형상/major holes 변경0.
+- LARGE: 기존 assets/composites/overlap/repeated silhouette 보존, 신규 에셋0.
+- MEDIUM: connections/remaining holes 형상 불변, 조명 깊이 보강.
+- GROUND: ambient 하한 상향, contamination/텍스처 불변, 기존AO/투영그림자 보존; 관문 뒤 irregular ground-only shadow.
+- PLAYABLE: arenas/travel/breathing/threat geometry/충돌/진행 불변. 배우 국소키+rim; 밀집전투 미검수.
+- LANDMARK: primary 제단·secondary 횃불 풀 수치 보존, tertiary 외곽 recess2개.
+- CAMERA QA: field landmark/outer forest/boss entrance 3뷰+1x; START/EARLY/SIDE R/LATE/실제 arena 이미지 별도 PASS0.
+- TECH QA: 실제4방향입력·arena entry·광원상한 PASS. route/collision소스 불변; pageerror/404 N/A. 최종 렌더 오류는 로그 확인. performance FAIL/최종 미측정. 새광원 고정10행, 활성local4+player1 상한 유지.
+- FILES: product_lighting.gd / field_forest_depth.gdshader / capture_map11_lighting.gd + 관련docs. R파일/INDEX/WORK·타인WIP 수정0.
+- GIT: codex/map11-17b-20261021만 정상hook commit/push, main push/merge/deploy0. SHA/원격readback/정리는 외부 DONE.txt.
+- VISUAL VERDICT: **RETOUCH**. 최종3뷰 판정 상세는 외부 REPORT.md. 성능 gate를 포함한 전체 인수는 **FAIL**.
+- NEXT PASS: 최종 성능 확인 필요(이번1회 제한으로 재측정0), 외곽 깊이/actor 특수재질·밀집전투 눈검수.

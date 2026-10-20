@@ -55528,3 +55528,9 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 
 - 기준1f797a8b, 보류MAP11-16/16b 미사용. 텍스처/배치 불변, MAP11전용ambient·최대5등·지역냉/온광·접지AO·외곽안개. NativeMapLook 기존광원/실루엣helper 재사용, 중복generic설치guard.
 - p95 field7.857ms/arena7.580ms(1080p/600틱/각1회), 최종17/0·이전렌더19/0. 3뷰1600×900 before/after+1x. VISUAL VERDICT RETOUCH, 밀집전투/Windows미검수. [현행수치·§23보고](4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#14-map11-17--조명-룩-패스-2026-10-21).
+
+
+## 2026-10-21 MAP11-17b lighting-only candidate
+
+- ff59c3c7 기반 player warm r165/.68, actor exposure/rim, ambient .46/.49/.55→boss .52/.42/.43, outer recess2등·내부림, gate ground-only 암부. 광원 authored10/동시local4+player1. 텍스처/새asset/16/16b 반입0.
+- 설계서 §14 및 MAP SSOT index 동기화. 3뷰 before/after+1x, 관련입력17checks/0fail. 벤치1회 p95 field10.047/arena10.258ms FAIL; 이후 시각보정 최종성능 미측정. visual RETOUCH/전체인수 FAIL. 외부 증거 `_out/MAP11-17b/`.

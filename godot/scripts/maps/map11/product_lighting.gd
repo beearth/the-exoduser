@@ -15,8 +15,8 @@ func configure_product(product: Node2D,main: Node) -> void:
  _contact_texture=_make_radial_texture(128,[0.0,.28,.65,1.0],[1.0,.85,.30,0.0])
  _unlit=CanvasItemMaterial.new();_unlit.light_mode=CanvasItemMaterial.LIGHT_MODE_UNSHADED
  _ambient=CanvasModulate.new();_ambient.name="MAP11Ambient";add_child(_ambient)
- _ambient.color=Color(.38,.43,.52)
- _player_light=_make_light("PlayerKey",{"color":[.78,.85,1.0],"radius":420,"energy":.48,"height_ratio":.8})
+ _ambient.color=Color(.46,.49,.55)
+ _player_light=_make_light("PlayerKey",{"color":[1.0,.92,.80],"radius":165,"energy":.68,"height_ratio":.8})
  _pool("Heart",Vector2(-250,-2440),"field",680,Color(1.0,.24,.085),.95,.035)
  _pool("GateLeft",Vector2(-150,-4050),"field",410,Color(1.0,.37,.12),.80,.035)
  _pool("GateRight",Vector2(180,-4090),"field",390,Color(1.0,.27,.09),.72,.035)
@@ -26,7 +26,11 @@ func configure_product(product: Node2D,main: Node) -> void:
  _pool("ArenaEntry",offset+Vector2(0,1120),"arena",620,Color(1.0,.32,.10),.72,.035)
  _pool("ArenaHeart",offset+Vector2(0,-1740),"arena",730,Color(1.0,.17,.085),.88,.045)
  _pool("ArenaTissue",offset+Vector2(1550,-450),"arena",500,Color(.90,.19,.08),.56,.045)
+ _pool("WestDeepA",Vector2(-3610,-1510),"field",260,Color(.85,.12,.065),.32,.035)
+ _pool("WestDeepB",Vector2(-3900,-660),"field",230,Color(.80,.10,.055),.28,.035)
+ _mount_actor_readability(main)
  _mount_contacts()
+ _mount_gate_recess()
  # The screen-space GL fog/env wash destroys local contrast; MAP11 uses a
  # world-space edge mask on the same cached FBM pass, plus back-tree depth tint.
  var screen: Node=main.get_node("NativeScreenLighting")
@@ -61,6 +65,40 @@ func _pool(id: String,point: Vector2,space: String,radius: float,tint: Color,ene
  light.global_position=point
  pools.append({"node":light,"space":space,"radius":radius,"energy":energy_,"pulse":pulse,"phase":point.x*.0137+point.y*.0091})
 
+func _mount_actor_readability(main: Node) -> void:
+ var shader_:=Shader.new();shader_.code=ACTOR_SHADER
+ var material_:=ShaderMaterial.new();material_.shader=shader_
+ material_.set_shader_parameter("exposure",1.6)
+ material_.set_shader_parameter("rim",.22)
+ if main.player._sprite.material==null:main.player._sprite.material=material_
+ for actor in main.world.get_enemies():_bind_enemy(actor)
+ main.world.child_entered_tree.connect(_on_actor_entered)
+
+func _on_actor_entered(actor: Node) -> void:
+ if actor is ExoduserEnemy:_bind_enemy.call_deferred(actor)
+
+func _bind_enemy(actor: Node) -> void:
+ if not is_instance_valid(actor):return
+ var sprite: CanvasItem=actor.get("_body")
+ if not is_instance_valid(sprite) or sprite.material!=null:return
+ var shader_:=Shader.new();shader_.code=ACTOR_SHADER
+ var material_:=ShaderMaterial.new();material_.shader=shader_
+ material_.set_shader_parameter("exposure",1.2);material_.set_shader_parameter("rim",.08)
+ sprite.material=material_
+
+const ACTOR_SHADER="""
+shader_type canvas_item;
+render_mode unshaded;
+uniform float exposure=.7;
+uniform float rim=.1;
+void fragment(){
+ vec4 source=texture(TEXTURE,UV)*COLOR;
+ vec2 d=TEXTURE_PIXEL_SIZE;
+ float edge=1.0-min(texture(TEXTURE,UV+vec2(d.x,0)).a,texture(TEXTURE,UV+vec2(0,d.y)).a);
+ COLOR=vec4(source.rgb*exposure+vec3(.92,.87,.80)*edge*rim,source.a);
+}
+"""
+
 func _mount_contacts() -> void:
  # Setup enumeration only. Shadows stay on the ground plane, independent of
  # per-tree occlusion fade; dark recesses do not turn into huge black ellipses.
@@ -83,6 +121,25 @@ func _mount_contacts() -> void:
   _projection(scene.arena_view,sprite,sprite.position,-439)
  _contact(_player,Vector2(0,4),Vector2(62,20),-1,.75)
 
+func _mount_gate_recess() -> void:
+ # Ground-only shadow: below gate/trees/actors, never a screen-space black mask.
+ var shadow:=Polygon2D.new();shadow.name="GateRecessShadow"
+ shadow.polygon=PackedVector2Array([Vector2(-2500,-5500),Vector2(2500,-5500),Vector2(2500,-3850),Vector2(-2500,-3850)])
+ shadow.z_index=-2989
+ var shader_:=Shader.new();shader_.code="""
+shader_type canvas_item;
+render_mode unshaded;
+varying vec2 p;
+void vertex(){p=VERTEX;}
+void fragment(){
+ float north=1.0-smoothstep(-4180.0,-3890.0,p.y+28.0*sin(p.x*.009)+16.0*sin(p.x*.023));
+ float side=1.0-smoothstep(1500.0,2450.0,abs(p.x));
+ COLOR=vec4(.018,.012,.016,north*side*.98);
+}
+"""
+ var material_:=ShaderMaterial.new();material_.shader=shader_;shadow.material=material_
+ scene.field_view.add_child(shadow)
+
 func _contact(parent: Node2D,foot: Vector2,size_: Vector2,z: int,alpha: float) -> void:
  var shadow:=Sprite2D.new();shadow.name="LightContactAO";shadow.texture=_contact_texture
  shadow.position=foot+Vector2(0,8);shadow.scale=size_/128.0;shadow.modulate=Color(0,0,0,alpha)
@@ -100,7 +157,7 @@ func _process(delta: float) -> void:
  _time+=delta
  var arena: bool=scene.active_space=="arena"
  var approach: float=1.0 if arena else smoothstep(-2600.0,-4100.0,_player.global_position.y)
- _ambient.color=Color(.38,.43,.52).lerp(Color(.49,.34,.36),approach*.75)
+ _ambient.color=Color(.46,.49,.55).lerp(Color(.52,.42,.43),approach*.75)
  _player_light.global_position=_player.global_position+Vector2(0,-36)
  var size_: Vector2=get_viewport_rect().size/_camera.zoom
  var center: Vector2=_camera.get_screen_center_position()
