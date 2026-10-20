@@ -663,7 +663,7 @@ group overlay_darkens_screen=3과 실제 brightness Dictionary로 `test_p2003a_l
 
 `before.json`의 테스트4개·PC 소유 스킬 스크립트 SHA-256과 종료 시 파일을 대조한다. Git diff의 제품/테스트 변경은 0이어야 하며 R의 HEAD/branch·tracked INDEX/WORK 및 override 삭제는 `after.json`에 기록한다. 새 결과만 이 절에 append했고 기존 보고서 prefix byte는 그대로다. 원격은 같은 자기 브랜치에만 비강제 push하고 ref SHA를 읽어 대조한 뒤 DONE을 갱신한다.
 
-후속 보고서 체크포인트 SHA: 제출 시 기록. 최종 제출 SHA는 `~/exoduser-wt/_out/mac-verify/DONE.txt` 및 `submission-followup.json`의 실제 원격 대조 결과를 따른다.
+후속 보고서 체크포인트 SHA: `51ebc0ee0227494d52246afbf2729e5cf6ab3040` (이번 후속 결과와 원문을 처음 보존한 커밋). 최종 제출 SHA는 `~/exoduser-wt/_out/mac-verify/DONE.txt` 및 `submission-followup.json`의 실제 원격 대조 결과를 따른다.
 
 ### 후속 RESULT·debugger 읽기 원문
 

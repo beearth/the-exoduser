@@ -25,7 +25,7 @@
 | P2-006a | 드랍 바닥 표시·줍기·인벤 반입 | PC heavy 담당 — **Claude 사용 한도로 중단**(작업 폴더 G:\exoduser-wt\p2-002a-hud에 진행분 보존) | claude/p2-006a-drop-pickup-20261020 | 드랍 렌더·줍기 신규 스크립트 | 중단·인계 대기 |
 | P3-002 | 소환굴 시스템·후속 스폰·지역 처치 분모 | 클라우드 세션 cloud-spawnholes | claude/p3-002-spawn-holes | 소환굴 신규 스크립트, world 동적 등록 호출부 | 시작 요청됨 |
 | P2-007a | UI 마감: 원본 글꼴(나눔명조·Cinzel)·검기 색·인트로 가이드 패널 | 클라우드 세션 cloud-ui-polish | claude/p2-007a-ui-polish | assets/fonts, crescent.gd 색, 인트로 가이드 패널 | 시작 요청됨 |
-| MAC-VERIFY | Mac 검증·후속 실행 진단(코드/테스트 수정 0) | Mac VS Code Codex 01a1586e-c1b7(Full Access, 18:14 재개) | codex/mac-verify-20261020 | 보고서 `docs/engine/orders/reports/mac-verify_REPORT.md`만(제품 코드 수정 0) | **후속 진단 검수 대기** — MP3 stream/playback 잔존 경로 확인; 근접 분모 비결정성·atk 관측5회; 조명 실창12/0·ERROR0. 실제13회 exit0·실패0·오디오 ERROR2. 기존22종 결과 보존. 후속 체크포인트 SHA는 제출 시 기록 |
+| MAC-VERIFY | Mac 검증·후속 실행 진단(코드/테스트 수정 0) | Mac VS Code Codex 01a1586e-c1b7(Full Access, 18:14 재개) | codex/mac-verify-20261020 | 보고서 `docs/engine/orders/reports/mac-verify_REPORT.md`만(제품 코드 수정 0) | **후속 진단 검수 대기** — MP3 stream/playback 잔존 경로 확인; 근접 분모 비결정성·atk 관측5회; 조명 실창12/0·ERROR0. 실제13회 exit0·실패0·오디오 ERROR2. 기존22종 결과 보존. 후속 체크포인트 `51ebc0ee0227494d52246afbf2729e5cf6ab3040`; 최종 제출 tip은 DONE 참조 |
 | P5-001a | Mac 실행판·macOS export 점검(템플릿 설치·프리셋 추가는 하지 않고 필요 여부만 보고) | Mac VS Code Codex 01a1586f-09bf(Full Access, 18:14 재개) | codex/p5-001a-mac-20261020 | 없음(점검·보고) | 진행 중 |
 | MAC-LIVE | Mac 실창 run.command 부팅→인트로→커튼→첫 전투 30초 녹화 | Mac VS Code Codex 01a1586f-15cb | codex/mac-live-20261020 | 없음(실행·녹화, 격리 EXODUSER-MacLive-Isolated-20261020) | 진행 중 |
 | MAC-TESTSWEEP | MAC-VERIFY 외 godot/tests 전체 Mac 헤드리스 결과표(PC 기준선 비교, 코드 수정 금지) | Mac VS Code Codex 01a1586f-2389 | codex/mac-testsweep-20261020 | 없음 | 진행 중 |
