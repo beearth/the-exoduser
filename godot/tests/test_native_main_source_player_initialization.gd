@@ -122,8 +122,21 @@ func shared_crystal_current_values() -> void:
 	_check(not is_same(p["_effStats"], main.source_state.read_current_stats()), "effective stats are a fresh owned value object")
 	var last: Dictionary = {}
 	for write in main.source_state.get_snapshot()["source_initializer_writes"]: last[write["field"]] = write["value"]
+	# P2-001e: 원본 새 게임 순서 = applyStats(초기화 마지막 쓰기, game.html:64019) →
+	# initStage(0)(64025) → 31567 풀충전(P.hp=P.mhp; P.st=P.mst; P.mp=P.mmp;
+	# P.shield=P.mshield). 부팅 완료 시점 hp/mp/shield는 '마지막 소스 쓰기'가 아니라
+	# 31567 충전값이 원본이다. 검증 의도(소유자 readback이 같은 ref·같은 값 경로 유지)는
+	# 보존: 비충전 필드=마지막 쓰기 그대로, 충전 필드=같은 소유 경로의 cap과 일치
+	# + 마지막 쓰기 ≤ cap(충전이 쓰기를 깎지 않음).
+	var stage_refilled: Dictionary = {"hp": "mhp", "mp": "mmp", "shield": "mshield"}
 	for field in last:
-		if field != "st":
+		if field == "st":
+			continue
+		if stage_refilled.has(field):
+			var cap_field: String = stage_refilled[field]
+			_check(p.has(field) and p[field] == p[cap_field] and float(last[field]) <= float(p[cap_field]),
+				"current actual owner readback preserves 31567 stage-entry refill " + field)
+		else:
 			_check(p.has(field) and p[field] == last[field], "current actual owner readback preserves final source write " + field)
 	var authority_st_writes: Array = main.source_resources.get_snapshot()["source_initializer_writes"].filter(func(write): return write["field"] == "st")
 	_check(not authority_st_writes.is_empty() and authority_st_writes.back()["value"] == last["st"], "constructor State and actual Authority accepted the same source final ST")
