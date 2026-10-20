@@ -4,7 +4,8 @@
 |---|---|
 | 계보 | 61eba4b8에 main249c26fad 정상merge, 이어 CH2-04m2654588c 정상merge로 의존보존. rebase/reset/force0 |
 | 해결 | source/resource stage4/5/7와 QA 경로/별칭 helper결합. 자기Node링크2곳 junction helper사용, QA UTF-8/join/--node-bin/외부사본보호 byte그대로. 원문값/pin·Main/State/저장제품 변경0 |
-| 실제검증 | 신규si7 Node10/0·CH2-04 7/0·QA4/0·7/0=28/0. 최종Godot은 의존merge 뒤 실행해 보고서/원로그에 기록 |
+| 실제검증 | 신규si7 Node10/0·CH2-04 7/0·QA4/0·7/0=28/0. 최종Godot source365/0·GUI2465/0·기존si5World2086/0·QA63/0·50/0·맵/계약/굴/지역·SV4/NW3 모두0실패, 맵Node9선재동일 |
+| 보호 / 이력 | main merge54dbdd86 뒤 CH2-04m2654588c merge, 실행코드차이0·보호3241 SHA동일. 재사용큐경로 오류를 로그보존후 미실행분만재개, Godot22회ERROR0·pgrep2이상30초/상수격리/override0byte |
 | 상세 | [CH2-05m 보고서](engine/orders/reports/ch2-05m_REPORT.md), ~/exoduser-wt/_out/ch2-04m/ch2-05/. RETOUCH유지·R불변·정상push/원격일치/DONE후자기WT제거 |
 
 ## 2026-10-20 CH2-05 si7 / 2-4 원본·독립 소비자
@@ -20,6 +21,16 @@
 | 회귀 | sourceNode39/0·consumerNode14/0·asset/pit각6/0·map28/9선재실패이름순서동일. 기존 Godot 수치는 상세 보고서/원로그에 기록 |
 | 화면 / 경계 | 실창1920x1080 8뷰·1x crop3·BFS185/왕복370/94frame. 반복바닥/성긴배치/단순원형overlay로 RETOUCH. 깊이/부분광원은 MAPLOOK 소관, 알파괴/구더기spawn writer 미인수·구현0 |
 | 운영 / 제출 | 매Godot전pgrep>=2면30초 대기·상수격리/override finally0byte. [CH2-05 보고서](engine/orders/reports/ch2-05_REPORT.md), ~/exoduser-wt/_out/ch2-05/. 자기branch push·원격일치·DONE 후 자기sparseWT/cache제거. R불변·main/force/reset/add-A/hook우회0 |
+
+## 2026-10-20 CH2-04m QA-007b·main 병합 복구
+
+| 항목 | 정확 계약·검증 |
+|---|---|
+| 계보 | codex/ch2-04-20261020 d4298e89에 origin/main249c26fad 정상merge. rebase/reset/force0. CH2-05도 같은main과갱신CH2-04를merge |
+| 해결 | 두추출기의stage5 기능과 QA isInsideRoot/isMatchingSnapshot/isDirectExecution 결합. 양쪽CHANGELOG보존. 자기Node링크검사는인수된junction helper사용, QA UTF-8/join/--node-bin/외부사본보호 byte그대로 |
+| 재현 | CH2-04 Node7/0·GUI Godot2464/0, QA Node4/0·7/0·Godot63/0·50/0. 기존Node58/0·맵28/9선재이름순서동일, 맵/계약/굴/지역·SV4/NW3 회귀0실패 |
+| 보호 / 운영 | Main/State/저장제품·원본·이미지·manifest/pin 자기변경0, 보호3226 SHA동일. 최초server.cjs누락17/1·6/1 로그보존후sparse추가18/0. Godot전pgrep>=2면30초·상수격리/override0byte·원격일치/DONE후자기WT제거 |
+| 상세 | [CH2-04m 보고서](engine/orders/reports/ch2-04m_REPORT.md), ~/exoduser-wt/_out/ch2-04m/. 화면RETOUCH유지, 실제Windows실행미확인. 두브랜치최종SHA는DONE에기록, R불변·main push/add-A/hook우회0 |
 
 ## 2026-10-20 CH2-04 si5 독립 소비자·원 실효 배치/충돌
 
