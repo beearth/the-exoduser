@@ -1,5 +1,9 @@
 # 스킬 관리·합체·성급·비용 원본 추적과 이식 단위 지시서
 
+> 2026-10-21 DEMO11-18: 일반 데모의 허용 합체 원장/흡수/성급·reset을 기존 fusion_rules/fuse_commit와 DEMO11-17 State owner에 연결했다. 새 키0·화면/피해/방패 실행0, shieldFuse 생성/reset HOLD. [보고서](orders/reports/demo11-18_REPORT.md) 및 docs/2_1 Native 절 참조. 아래 순수 모듈 당시의 owner 미연결은 해당 인수 이력이다.
+
+> 2026-10-21 DEMO11-17: SK-S01~05 preview 식은 그대로 두고 학습/강화/감소/환불 ledger·active 제안·슬롯의 실제 State writer와 최소 Main 호출을 연결했다. 아래 S05 당시 runtime_writer 미연결은 당시 범위다. shieldFuse 전용 reset HOLD, PC UI/전투 핵심/저장은 유지한다. [현재 보고서](orders/reports/demo11-17_REPORT.md).
+
 > 2026-10-21 DEMO11-16: SK-S04 policy 본문은 그대로 재사용하고 실제 슬롯 선택→기존 4cast/비용/HUD 연결을 추가했다. 아래 SK-S04 당시의 “P2-005 hardwired input 재배정0”은 그 단위의 이력이다. 보호 active·미구현 ULT 효과와 slot UI는 별도이며 [현재 계약](DEMO11_SKILL_DISPATCH_20261021.md)을 따른다.
 
 작업ID `trace-skills` · 2026-10-20 KST · 문서 검수 대기. **이번 산출물은 이 새 문서 1개뿐**이다. 코드·테스트·기존 설계 docs·WORK_BOARD는 수정하지 않는다. 후속 SK-S01~09는 제안이며 이번에 구현하지 않았다.
