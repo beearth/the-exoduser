@@ -1,3 +1,13 @@
+## IT-04 장착 결정의 홈 배율 합산 — 2026-10-20
+
+| 항목 | 현재 계약 |
+|---|---|
+| 최신 원본 | origin/main `284d7faf` game.html:27934~27939, socketMul:15322~15326. 아래 최초 이식 행/검수는 당시 이력 |
+| 순서·공식 | 기존17슬롯과 원래 ci 순서로 falsy 결정 skip → IT-01 socket(item,ci) → 기존 crystal_effects(c) → 각 value×socket.multiplier 합산. 결정 품질·star/enh는 IT-03 provider에서만1회, 홈 배율은 이 합산부에서만1회 |
+| API/보존 | 공개 provider arity1·packet/sink·필수/조건부 provider 키 불변. 입력/중첩참조·RNG·인벤·세이브 writer 변경0. 홈 q 누락/짧음/0은 원래 fallback1 |
+| 오류 | socket 지원 상실/기존 provider 부재·잘못된 packet·비유한 합계(unknown stat/overflow 포함)는 NOT_READY/packet=null/첫 sink0회. ~~ 변환이 NaN을0으로 숨기는 경로를 차단. 첫 실패 뒤 다음 결정 provider 호출도 중단 |
+| 검수 | 신규·원본 직접 대조·관련 회귀의 실제 결과와 첫 실패는 [IT-04 보고서](orders/reports/it-04_REPORT.md). 기존 IT-03 같은 아이템 담당의 통합 기대값8개는 홈 적용 단계로 갱신, 순수 품질 검사는 보존 |
+
 ## 중앙 실제 Main 파생 수치 최초 연결 — 2026-10-14
 
 실제 Main은 시작 장비25 및 actual current G/P/STATS/PASSIVES/INV 공급자 이후, 새 Player Tree 진입 전에 원본 ordered dispatcher와 전용 Player/State/ResourceAuthority sink를 결합한다. 원 Health initial plan1·Resource plan1을 캡처해 `_effStats` → HP → DEF/poise/baseAtk/speed → 자원 → 공통 결정 보정 → 방어구 → 견갑 → 캐시 무효화1·fresh recalcSt 순서로 28개 실제 write를 소비했다. 실제 source OPT35/current_pre_restore에서 diff5→signed0을 읽고, raw 이동속도는 실제 물리×60 변환 뒤 Tree 진입에도 유지된다.

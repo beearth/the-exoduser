@@ -227,6 +227,17 @@ func set_native_iris_light(screen_pos: Vector2, radius: float, alpha: float) -> 
 	mat.set_shader_parameter("light2_a", clampf(alpha, 0.0, 1.0))
 
 
+## MAP-LOOK(2026-10-20): 맵 표현 강화 레이어가 실제 2D 광원 기반 어둠(CanvasModulate)을
+## 쓰는 동안 원본 라이트맵 어둠 단계만 끈다. 안개·환경광·비네트·색보정은 유지.
+func set_native_lightmap_enabled(enabled: bool) -> void:
+	if is_instance_valid(_lightmap):
+		_lightmap.visible = enabled
+
+
+func is_native_lightmap_enabled() -> bool:
+	return is_instance_valid(_lightmap) and _lightmap.visible
+
+
 func get_native_screen_lighting_snapshot() -> Dictionary:
 	return {"configured": _configured, "layer": layer, "stage_draws": _stage_draws,
 		"ambient": [6, 16, 9, 0.38], "player_light": {"r": PLAYER_LIGHT_R, "a": PLAYER_LIGHT_A},

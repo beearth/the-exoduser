@@ -55,6 +55,12 @@ func _run() -> void:
 		rows.append(row)
 		print("P2007A_GROUP ", JSON.stringify(row))
 	_free_main()
+	# QA-004: Main 해제 후 AudioServer mix/main-thread 종료 정리 기회(QA-003 방식).
+	for _frame in range(12):
+		await process_frame
+	var _qa004_exit_after_ms: int = Time.get_ticks_msec() + 200
+	while Time.get_ticks_msec() < _qa004_exit_after_ms:
+		await process_frame
 	print("P2007A_RESULT ", JSON.stringify({"groups": rows, "assertions": assertions,
 		"failures": failures, "skipped": skipped, "observations": observations, "fallback_paths_used": false}))
 	quit(1 if (failures > 0 or (skipped.size() < GROUPS.size() and assertions == 0)) else 0)

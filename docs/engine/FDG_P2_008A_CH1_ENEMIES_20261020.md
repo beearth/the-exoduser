@@ -52,7 +52,7 @@
 | 구현 | enemy_melee_ch1_ice_warrior.gd extends 기존 flesh 스크립트. _physics_process는 전용 구현이며 super AI 호출0 |
 | admission | etype20_ch1_ice_warrior.json의 source SHA 및 order[4,10,12]; 전체 원레코드를 canonical record와 비교. 임의 다른 etype/skin/el/elite로 일반화하지 않음 |
 | payload | 원record deep copy에서 facing/eShield/eShieldMax/eRes/native_flags/animation만 소비용 추가. 원추출 support/runtime/타이머/RNG receipt는 변경0 |
-| 피격 | native_dedicated_enemy_hurte_owner.gd의 read/field/HP/death API 상속, 포이즈 core 명시 위임. Main의 실제 hurtE.execute로 세 프로필의 쉴드 흡수 확인 |
+| 피격 | read/field/HP/death는 native_dedicated_enemy_hurte_owner.gd 상속. P2-008a-FIX: hurtE42490은 상속된 v3 field-call 포이즈 경로를 사용하므로 정확한 order4/10/12의 id·etype20·elite/el·mods[]·전용 script를 매 호출 확인. mkEn31164의 poise=maxPoise=_hp=875(ETYPE_POISE[20]=15는 사용되지 않음), _poiseHit19973–20001의 비보스 코어·기존 후속 owner 유지. [FIX 보고서](orders/reports/p2-008a-fix_REPORT.md) |
 | AI 시계 | delta×60·추적/idle/분리/피격·스턴 guard/포이즈 리젠. projCd9999/projT 보존, charge·자연 공격 생성0. full JS global scheduler/모든 선택 상태 parity 주장0 |
 | 원본 아트 | 기존 base8방향+walk8방향 atlas **16개/22,734,844B SHA-256 동일** 재사용. 새 이미지 생성/재편집/새 copy 불필요. base2048×1280·walk8192×1280, 256셀/4 walk프레임·128px 이동당1프레임. 개별 파일 [manifest](orders/reports/P2-008a_ASSETS.json) |
 | 제외 | 공격 티켓·Q/E·레슨·main/player 입력·세이브·map 지형·서버·배포 수정0. 원본의 무공격 상태를 새 밸런스로 보완하지 않음 |
