@@ -3085,3 +3085,9 @@ func bind_native_natural_enemy_base(projectile_context: Callable) -> Dictionary:
 	if not receipt.get("ready",false):base.free();return receipt
 	native_natural_enemies=base
 	return receipt
+# DEMO11-etype-d: explicit natural selected-type entry; no scheduler reroll.
+func spawn_native_demo11_d(group_id: String,etype: int,element: int=-1) -> Dictionary:
+	var owner: Node=world.get_node_or_null("Demo11EtypeD")
+	if owner==null:
+		owner=preload("res://scripts/native_demo11_etype_d_spawn.gd").install(self)
+	return owner.spawn_selected(group_id,etype,element)

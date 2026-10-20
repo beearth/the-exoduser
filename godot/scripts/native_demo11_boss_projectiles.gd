@@ -23,6 +23,9 @@ var _motion_ticks := 0
 var _unbound_contact_scans := 0
 var _pc_contact: Callable
 var _error := ""
+var _d_owner: Node
+var _d_reader: Callable
+var _d_active:=false
 var _last_retired: Dictionary = {}
 var _in_birth := false
 var _advancing := false
@@ -137,6 +140,15 @@ func _retain_expired(shot: Node) -> bool:
 	return shot.life_ticks > -900 and not shot.raw.get("redBean",false) and shot.global_position.distance_squared_to(_camera())<=6250000.0
 func _physics_process(_delta: float) -> void:
 	if _natural_source!=null and is_instance_valid(_natural_source.get_ref()):return
+	if _live() and is_instance_valid(_d_owner) and _d_reader.is_valid():
+		var frame: Dictionary=_d_reader.call()
+		if frame.get("ready")==true:
+			if not _d_active:_serial=-1;_d_active=true
+			advance_source_frame(frame)
+			return
+		if _d_active:
+			if frame.get("retain_owner",false):return
+			retire_demo11_d(_d_owner);_serial=-1;_d_active=false
 	if not _live() or _entries.is_empty() or not _actor.is_source_frame_completed(): return
 	advance_source_frame(_actor.read_source_frame())
 func advance_source_frame(frame: Dictionary) -> bool:
@@ -218,3 +230,20 @@ func admit_natural_projectile(owner: Node,actor: Node,props: Dictionary,frame: D
 func advance_natural_frame(owner: Node,frame: Dictionary) -> bool:
 	if _natural_source==null or _natural_source.get_ref()!=owner:return false
 	return advance_source_frame(frame)
+# D-only registered source; existing birth/kernel/contact algorithms unchanged.
+func bind_demo11_d(owner: Node,reader: Callable) -> bool:
+	if is_instance_valid(_d_owner) or not _live() or not is_instance_valid(owner) or owner.get_parent()!=_world or not reader.is_valid() or reader.get_object()!=owner:return false
+	_d_owner=owner;_d_reader=reader;return true
+func birth_demo11_d(owner: Node,props: Dictionary,frame: Dictionary) -> Variant:
+	if owner!=_d_owner or not is_instance_valid(owner) or not _d_reader.is_valid():return null
+	var current: Dictionary=_d_reader.call()
+	if current.get("ready")!=true or frame.get("serial")!=current.get("serial") or frame.get("sp")!=current.get("sp"):return null
+	var result: Variant=_birth_request({"command":"spawnProj_owner","args":[props],"frame":frame})
+	if result is Dictionary and result.get("ack")==true and result.get("projectile_result") is Dictionary and _entries.has(_next_id):_entries[_next_id]["D_owner"]=owner
+	return result
+func retire_demo11_d(owner: Node) -> int:
+	if owner!=_d_owner:return 0
+	var count:=0
+	for id in _entries.keys():
+		if _entries[id].get("D_owner")==owner:_retire(id,"D_source_released");count+=1
+	return count

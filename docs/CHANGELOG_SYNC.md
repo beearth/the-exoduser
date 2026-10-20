@@ -10,6 +10,23 @@
 - main0138c5bb9에 DEMO11-43 9b763da9 정상 fast-forward merge. Main+8/State0·신규 얇은 consumer만. 기존 P3 type0 constructor/World 등록/43 immutable origin 재사용, source pool/RNG/HP/AI/16좌표 복제0.
 - 부분 구현·통합 BLOCKED:1/4 자연 constructor/등록·5/6 미구현·PC 보호 도메인·자연 source scheduler 미완. 5종 동시 스폰 벤치0회(미충족 명시), 요청 거절 시간을 대체 성능으로 제출하지 않음.
 - 신규48/0·직접회귀338/0(총386/0), P3 종료ObjectDB8 경고원문 보존. etype별 전후/경계 테스트 수·공용 줄 범위·검증은 [보고서](engine/orders/reports/demo11-etype-a_REPORT.md), docs/8.0 최신 Native 상태 동기화. 정상훅·자기branch push/remote/DONE 후 자기WT 제거.
+## 2026-10-21 DEMO11-etype-d 재개 — factory append-only·실제 D5종 등록
+
+| 항목 | 결과·경계 |
+|---|---|
+| 사용자 판정 반영 | 이전9627cf75에서 같은branch 재개. factory EOF D등록+18/−0·Main+7/−0, 기존등록/생성/P2-008b/registry+30/−0(D clock 인계)·State/World/PC 보호/저장/맵0줄 |
+| 실제 경로 | 기존 enemy.gd HP/poise owner·World phase/RNG·BC09/35 carrier·43 origin 재사용. 5종실스폰·tick/비치명hurtE,4종최종사망→지역kill,18 Player HP감소·24둔화·25생존zone.25사망prefix/이동탄PCcontact·29종autoscheduler 후행 |
+| 검증 | 신규158/0(런타임29·ctor8+원문90·사망18·clock13), 기존factory3그룹/0·관련83/0 각1회. clock 인계 수정 후 최종 벤치14/0·5actor각270tick max4.252ms<8.333ms, 기존Camera WARNING1/ERROR0·렌더FPS미검증. 실패 하니스 로그보존·실패만수정 |
+| 문서·제출 | [타입별 결과/공용줄/A·B·C 통합안](engine/orders/reports/demo11-etype-d_REPORT.md),8.0·자기WORK_BOARD 갱신. 새공통helper0·보호경로0, 자기push/remoteSHA/DONE 후 WT정리·R불변, _out/demo11-etype-d/resume-* 원로그 |
+
+## 2026-10-21 DEMO11-etype-d — 자연 D 5종 NOT_READY·원문/admission 검증
+
+| 항목 | 결과·한계 |
+|---|---|
+| 기준 | main0138c5bb9 +43/9b763da9 정상FF, gap61ab71be §4.1 읽기참조. A/B/C 파일 읽기만·새 공통helper0 |
+| 판정 | 18/19/23/24/25 **NOT_READY·실제 actor0·구현 완료 아님**. 기존 Marker adapter query와 factory/PC 옵션 거부 확인. 24 freeze 공개API는 존재,18 drainHeal 소비0,25 생존D/사망I 원문 보존 |
+| 검증 | 새 Godot34/0+원문JS349/0은 admission/source 계약 검사뿐. 기존43 각1회40/0, **5종 실제 벤치 NOT_RUN_NO_ACTORS**·가짜 성능/전투 PASS0 |
+| 범위 | 제품/Main/State/World/Player/PC 보호·맵·저장0줄, 새 tests·8.0·자기 docs만. [타입별 근거/필요 접점](engine/orders/reports/demo11-etype-d_REPORT.md). 자기branch push/remoteSHA/DONE 후 WT정리·R불변, _out/demo11-etype-d 원로그 |
 
 ## 2026-10-21 DEMO11-43 최신 main 충돌 해소 후속
 
