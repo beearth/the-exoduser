@@ -1,3 +1,12 @@
+## 2026-10-21 MAP11-07 — 1-1 필드 G1 회색 mass·4지역·두고리
+
+| 항목 | 구현·검수 경계 |
+|---|---|
+| 기준·공간 | main0138c5bb + MAP11-02 6bcc483d merge8bb1ed5f. 새hand-authored9050×8250 polygon/4지역·14anchor/15route/2cycle. 남쪽기상→서dry·동wet고리→북중부D01시체나무+낮은심장제단→보스문. 웹좌표복제0·아트생성0 |
+| 재사용·보호 | 기존StageRecipe/compiler/adapter재사용, Mac소유basegeometry hook+fieldsubclass·동일recipe 실제physics/LOS/sweep·foot y정렬/캐시rect fade. 제품Main/State/World/factory/Player/카메라·전투·저장·원본자산0줄. 보스룸01c방향임시승인/아트3문제는기록만 |
+| 검증 | 초기compiler41/0, 최종윤곽compile·실제body step12003회/4지역·가림복구49/0. 기존Arena54/0·schema3/0 각1회, 최종ERROR/WARNING0. 초기preload ERROR3는실패로그보존후수정. 8장면+전체/가림2보충1920×1080·literal1x10장 |
+| 성능·인계 | 600tick@60Hz 벽시계벤치1회9.999356s/평균1311.88fps/p95≤1.84ms·p99≤2.34ms(M5Pro/gray기준선·제품성능주장0). [보고서2표·G1검수계약](4.1맵디자인+설정/MAP11_FIELD_BLOCKOUT_20261021.md). G1/아트RETOUCH·맥북총괄검수대기, pgrep/30초·격리/override0byte·자기branch push/remoteSHA/DONE후자기WT제거·R불변 |
+
 ## 2026-10-21 MAP11-02 — arena StageRecipe·geometry/revision provider
 
 | 항목 | 구현·검수 경계 |
