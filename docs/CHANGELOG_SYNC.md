@@ -14,6 +14,16 @@
 | 순서안 / 관측 | EC4-01~14, 첫단위는API·가드·원문golden·RNG/UTF-8 oracle·회귀·공용0줄지시서. 원문선택63/CDF구간31/HP산술24/AI·death명시fixture17, 제품테스트PASS합산0 |
 | 제출 | [CH4 적 추적](engine/FDG_SOURCE_TRACE_ENEMIES_CH4_20261020.md), 원로그 ~/exoduser-wt/_out/trace-enemies-ch4/. 독립독자검토·정적행/표/링크대조, 정상훅·자기branch push·원격SHA/DONE후자기worktree제거 |
 
+## 2026-10-20 BC3-01r 3장 보스 읽기 전용 catalog
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준 / 의존 | origin/main249c26fa(b25a018ac 이후). CH2 catalog·bridge/context a3b5391c 정식 인수·동일 byte 확인, 이전56353bdb branch 보존. sparse worktree 신규 분기 |
+| 원본 / 소유 | G9976–9981/10009–10010/16691. 4Set32/34/36/37·union37=공유30+신규7·combo44=공유36+신규8. CH2 공개 API/공통phase 재사용·global manifest 전달, 신규 literal만 소유 |
+| 검증 | 원문 전용 Node oracle·전체/구간hash·UTF-8 파일·OS.execute 전체 join/명시 --node-bin·정수/binary64 정확 대조. 신규43491/0, BC01 681/0·CH2catalog7169/0·CH2reuse44891/0·contracts5그룹/0. 정상 실행 --verbose 종료 ERROR/ObjectDB/resource0 |
+| 결함 / 격리 | 값·해금·seq중복제거 결함3종 6/515/2실패 검출, 정확 복원 후43491/0. Godot10회 매실행 gate/override0, count2에서30초×2대기. 새 USERDIR는 EXODUSER-bc3-01r-Isolated-20261020, 기존 회귀는 파일 상수 |
+| HOLD / 제출 | spawn 색·BC08은 다른 창 소유, 공용 Main/State/hurtE·저장·기존 제품/테스트0줄. 실전/실창/저장/PC검수 아님. [BC3-01r 보고서](engine/orders/reports/bc3-01r_REPORT.md), 원로그 ~/exoduser-wt/_out/bc3-01r/. push·원격SHA·DONE 후 자기 worktree 제거 |
+
 ## 2026-10-20 TRACE-BOSS-CH3 3장 보스 원본 추적·작은 이식 단위
 
 | 항목 | 추적·검토 근거 |
