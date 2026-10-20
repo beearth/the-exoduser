@@ -3188,6 +3188,19 @@ func request_native_music_scene(scene: String,segment: String="") -> Dictionary:
 func bind_native_boss_music(actor: Node) -> Dictionary:
 	if not is_instance_valid(_music_lifecycle):return {"ready":false,"reason":"music_owner_not_ready"}
 	return _music_lifecycle.bind_boss_actor(actor)
+
+var native_stage_spawn_adapter: RefCounted
+
+# DEMO11-43 opt-in seam. Legacy boot is unchanged until MAP11 supplies a live provider.
+func bind_native_spawn_stage_provider(provider: Node2D) -> Dictionary:
+	var spawn: Node2D=world.get_node_or_null("NativeSpawnHoleSystem")
+	var regions: Node=get_node_or_null("NativeRegions")
+	if not is_instance_valid(spawn) or not is_instance_valid(regions):return {"ready":false,"reason":"P3_owners_absent"}
+	var adapter: RefCounted=preload("res://scripts/native_stage_spawn_adapter.gd").new()
+	var result: Dictionary=adapter.configure(provider,spawn,regions)
+	if result.get("ready")==true:native_stage_spawn_adapter=adapter
+	return result
+
 # PC-RUNTIME-STATS (2026-10-21) — runtime applyStats recalculation entry.
 # The pre-Tree initialization dispatcher stays single-use; this separate owner
 # is created on first request for this actual Main and reuses the original

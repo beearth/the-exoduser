@@ -12,6 +12,7 @@ const CH1_KO=["북서 · 어둠","북동 · 번개","남서 · 물","남동 · �
 const CH1_EN=["Northwest · Dark","Northeast · Lightning","Southwest · Water","Southeast · Fire"]
 signal region_banner(index: int,purge: bool)
 signal gate_opened
+var _stage_spawn_adapter: RefCounted
 var _main: Node
 var _world: Node
 var _player: Node2D
@@ -104,6 +105,7 @@ static func init_regions(g: Dictionary,point: Vector2,mw: int,mh: int,has_map: b
  g._regCurIdx=index_at(g,point.x,point.y)
  return {"ready":true,"regions_enabled":true}
 func initialize_stage() -> Dictionary:
+ if _stage_spawn_adapter!=null:return {"ready":false,"reason":"provider_budget_already_bound"}
  if not _live():return {"ready":false,"reason":"region_owner_not_current"}
  var map: Dictionary=_world.map_data
  var result: Dictionary=init_regions(_g,_player.global_position,int(map.get("width",0)),int(map.get("height",0)),map.get("tiles") is Array)
@@ -116,6 +118,7 @@ static func record_kill(g: Dictionary,e: Dictionary) -> void:
  var i:=index_at(g,x,y)
  if i>=0:g._regions[i].kills+=1
 func record_actor_kill(actor: Node2D) -> Dictionary:
+ if _stage_spawn_adapter!=null:return _stage_spawn_adapter.record_actor_kill(actor)
  if not _live() or not is_instance_valid(actor) or actor.get_parent()!=_world or not _world.get_enemies().has(actor) or actor.get("alive")!=false or float(actor.get("hp"))>0:return {"applied":false,"reason":"region_actual_actor_not_current"}
  var native: Dictionary=actor.data.get("native_final",{})
  var e: Dictionary={"x":actor.global_position.x,"y":actor.global_position.y,"ib":native.get("ib",false)}
@@ -123,7 +126,7 @@ func record_actor_kill(actor: Node2D) -> Dictionary:
   if native.has(field):e[field]=native[field]
  record_kill(_g,e);_kill_count+=1
  return {"applied":true}
-static func tick_regions(g: Dictionary,point: Vector2,frame: int) -> Array:
+static func tick_regions(g: Dictionary,point: Vector2,frame: int,provider_index: int=-2) -> Array:
  var banners: Array=[]
  if not g.get("_regions") is Array or not g.get("on",false) or g.get("_bossArena",false) or float(g.get("_bossLoadPhase",0))>0 or frame%15!=0:return banners
  if g._regBannerCd>0:g._regBannerCd-=15
@@ -133,8 +136,9 @@ static func tick_regions(g: Dictionary,point: Vector2,frame: int) -> Array:
   r.cleared=true
   if cleared_count(g)<4:banners.append({"index":i,"purge":true})
  var tx:=point.x/TILE;var ty:=point.y/TILE
- if absf(tx-g._regMidX)<1.5 or absf(ty-g._regMidY)<1.5:return banners
- var idx: int=(0 if ty<g._regMidY else 2)+(0 if tx<g._regMidX else 1)
+ if provider_index==-2 and (absf(tx-g._regMidX)<1.5 or absf(ty-g._regMidY)<1.5):return banners
+ var idx: int=provider_index if provider_index!=-2 else (0 if ty<g._regMidY else 2)+(0 if tx<g._regMidX else 1)
+ if idx<0:return banners
  if idx==g._regCurIdx:return banners
  g._regCurIdx=idx
  if g._regBannerCd>0:return banners
@@ -142,10 +146,12 @@ static func tick_regions(g: Dictionary,point: Vector2,frame: int) -> Array:
  return banners
 func _physics_process(_delta: float) -> void:
  if not _live() or get_tree().paused:return
+ if _stage_spawn_adapter!=null and not _stage_spawn_adapter.is_current():return
  var frame: float=_world.get_native_projectile_fx_context()["frame_reset_epoch"]
  if frame==_last_frame:return
  _last_frame=frame
- for event in tick_regions(_g,_player.global_position,int(frame)):
+ var provider_index: int=_stage_spawn_adapter.region_at(_player.global_position) if _stage_spawn_adapter!=null else -2
+ for event in tick_regions(_g,_player.global_position,int(frame),provider_index):
   region_banner.emit(event.index,event.purge)
   if event.purge:_pending_effects.append({"effect":"SFX.magic(1)/pet region_clear","bound":false})
  if is_instance_valid(_canvas):
@@ -182,6 +188,7 @@ static func minimap_layers(image: Image,g: Dictionary,sc: float) -> Dictionary:
    if mask&(1<<idx):tint.set_pixel(x,y,Color(30.0/255,60.0/255,30.0/255,0.45*alpha))
  return {"boundary":boundary,"tint":tint}
 func draw_minimap(canvas: Control,base: Texture2D,origin: Vector2,sc: float) -> void:
+ if _stage_spawn_adapter!=null:return # New MAP11 geometry overlay belongs to its provider, never legacy quadrants/sites.
  if not _live() or not _g.get("_regions") is Array:return
  _canvas=canvas
  var mask:=0
@@ -283,3 +290,25 @@ func _process(delta: float) -> void:
  if _banner_left<=0:_banner.visible=false
 func snapshot() -> Dictionary:
  return {"ready":_live(),"init_count":_init_count,"kill_calls":_kill_count,"regions":_g.get("_regions"),"current":_g.get("_regCurIdx"),"cleared":cleared_count(_g),"sites":minimap_sites(_g,Vector2.ZERO,0.61),"pending_effects":_pending_effects.duplicate(true),"full_fieldboss_combat":false}
+
+# DEMO11-43: P3 owner remains the sole writer of region totals/kills.
+func can_bind_stage_spawn(spawn: Node2D) -> bool:
+ return _live() and not get_tree().paused and _stage_spawn_adapter==null and spawn.world==_world and spawn.state==_state and spawn.player==_player
+func can_use_stage_spawn(adapter: RefCounted,spawn: Node2D) -> bool:
+ return _live() and _stage_spawn_adapter==adapter and spawn.world==_world and spawn.state==_state and spawn.player==_player
+func install_stage_spawn_budget(adapter: RefCounted,sites: Dictionary,totals: Array) -> Dictionary:
+ if not _live() or _stage_spawn_adapter!=null or adapter==null or adapter.get_script().resource_path!="res://scripts/native_stage_spawn_adapter.gd":return {"applied":false,"reason":"provider_region_owner_rejected"}
+ _stage_spawn_adapter=adapter
+ var regions: Array=[null,null,null,null]
+ for site in sites.regions:
+  regions[site.id]={"id":site.id,"nameKo":site.name_ko,"nameEn":site.name_en,"total":totals[site.id],"kills":0,"cleared":false,"fbIdx":site.fb_index}
+ _g._regions=regions;_g._regGateIdx=sites.gate_region_id;_g._regCurIdx=-1;_g._regBannerCd=0;_g._bossClearT=null
+ _last_frame=-1.0
+ for r in regions:
+  if r.total<=0 and not fb_alive(_g,r):r.cleared=true
+ _init_count+=1;_mask=-1
+ return {"applied":true}
+func record_stage_origin_kill(adapter: RefCounted,region_id: int) -> Dictionary:
+ if not _live() or _stage_spawn_adapter!=adapter or region_id not in range(4):return {"applied":false,"reason":"region_origin_owner_not_current"}
+ _g._regions[region_id].kills+=1;_kill_count+=1
+ return {"applied":true,"region_id":region_id}

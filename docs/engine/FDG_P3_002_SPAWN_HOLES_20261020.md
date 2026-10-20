@@ -148,3 +148,8 @@ HUD 처치 표기 부팅 직후 `0 / 168`.
    바닥도 같은 비율로 어두워 P2-001g/P2-003a에 기록된 전역 톤 차(맵 렌더·조명 소관)와 같은 원인으로 판단, 소환굴 고유 차이는 아님. 웹 HUD는 지역 시스템이 있어 `0 / 53`(지역 분모), Godot는 폴백 `0 / 168`(지역 시스템 미이식, 8번).
    PC 실기(Forward+) 1x 최종 화면 검수는 총괄 몫.
 10. P2-001g 문서의 "소환굴 12개"는 현 원본 실측 14개(HUD P2-002b 웹 실측 14건과 일치)로 이번에 정정했다.
+
+
+## 2026-10-21 DEMO11-43 — 새 MAP11 provider용 opt-in 접점
+
+Marker/region ID·예정 총량·origin kill의 [소비자 ABI v1](DEMO11_STAGE_SPAWN_ADAPTER_20261021.md)을 추가했다. P3 기존 정책/State writer를 재사용하고 Main에서 명시적으로 bind해야 한다. 실제 etype 등록·MAP11 provider·자연 소환은 후행이며 legacy 좌표를 새 맵에 복제하지 않는다. provider bind 시 legacy 좌표 스케줄러/재초기화를 차단하고, 지역 kill은 고정 origin ID+중복 거절로 연결한다. 이전 검수 표는 당시 이력이며 이번 접점 검증·공용 줄 범위는 [DEMO11-43 보고서](orders/reports/demo11-43_REPORT.md)에 별도로 기록한다.
