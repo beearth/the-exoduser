@@ -1,3 +1,15 @@
+## 2026-10-20 SND-06 원본 BGM 전이·수명 모델
+
+| id / 항목 | 현재 계약 |
+|---|---|
+| 기준 / 의존 | 최신main e556b617의 game.html4042–4053/4091–4207. main 미포함 SND-05 e7a87f7e 끝 분기(main은이미ancestor). 자기sparseWT·원본HTML SHA256 4d911cdd…e5d4 유지 |
+| 신규 범위 | bgm_lifecycle.gd·새test·원본JS generator/fixture 신규4파일. SND-05 catalog/selection 읽기만. 공용6파일·기존제품/test·HTML·원본에셋0줄. 실제음원생성/변환/복사/재생0 |
+| 수명 | cache6/LRU현재Audio보존, error bad/cache삭제·현재identity이면300ms후ended, stop의pending/listener미삭제. 50ms fade와handle+Audio identity로같은cachedAudio재시작뒤옛callback무효. volume.3/0·legacy gain위임 |
+| 전이 / 비동기 | t잠금·force옵션우회/INTRO우회불가, death/victory ended없음, act/allRandom예외·null선곡보존. listener5종·pendingExtra FIFO. 늦은reject의pending재설정/old interact success/ended의loop미재대입까지원본동일 |
+| 실측 | 신규2400/0·JS93시나리오483단계·20339leaf불일치0. contracts5그룹/0·기존SND01~05 1194/0·687/0·606/0·2435/0·1308/0·웹2파일4pass/0fail. 최종실행exit0/stderr비어있음. 최초예약어parse실패RESULT없음은PASS제외·원로그보존 |
+| 환경 / 보존 | 기존tracked game.html/godot1328파일byte불변. 엔진cache1006파일동일byte복사·import0. 매Godot직전count1, 2이상30초대기runner·새지정격리/기존상수·override매회후0byte. 정상훅·자기branch만push |
+| 한계 / 정리 | fake media/명시Promise·timer모델이며browser autoplay/실곡/장치/청감/실게임/PC미확인. 로비8실패선재원문만보존. push·원격일치→DONE→자기WT제거, branch/원로그/보고서사본보존. [보고서](engine/orders/reports/snd-06_REPORT.md) |
+
 ## 2026-10-20 SND-05 BGM 카탈로그·순수 선곡
 
 | id / 항목 | 현재 계약 |
