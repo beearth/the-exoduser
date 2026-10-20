@@ -68,5 +68,5 @@ const lobby=[];
  }
  for(const response of [{status:404,body:'{}'},{status:500,body:'bad'},{status:200,body:'{'},{status:200,body:'null'},{status:200,body:'{"ok":false,"data":{"player":{}}}'},{transport_error:true}])load.push({response,expected_status:response.transport_error?'TRANSPORT_ERROR':response.status===404?'NOT_FOUND':response.status===500?'HTTP_ERROR':response.body==='{'||response.body==='null'?'PARSE_ERROR':'REJECTED'});
  for(const [file,bytes]of Object.entries(sources))if(sha(fs.readFileSync(path.join(root,file),'utf8'))!==sha(bytes))throw Error('source changed');
- console.log(JSON.stringify({server,jsonCases,lobby,load,provenance,source_hashes:Object.fromEntries(Object.entries(sources).map(([p,s])=>[p,sha(s)])),source_unchanged:true,actual_server_calls:0,actual_save_writes:0,actual_restore_calls:0}));
+ require('./oracle_json_output.cjs')({server,jsonCases,lobby,load,provenance,source_hashes:Object.fromEntries(Object.entries(sources).map(([p,s])=>[p,sha(s)])),source_unchanged:true,actual_server_calls:0,actual_save_writes:0,actual_restore_calls:0});
 })().catch(e=>{console.error(e.stack);process.exitCode=1});

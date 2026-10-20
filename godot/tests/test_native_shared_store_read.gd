@@ -78,11 +78,11 @@ func _run() -> void:
 	if ProjectSettings.get_setting("application/config/use_custom_user_dir", false) != true or ProjectSettings.get_setting("application/config/custom_user_dir_name", "") != USERDIR or not OS.get_user_data_dir().contains(USERDIR):
 		printerr("SV_SHARED_READ_INVALID_ISOLATION"); quit(2); return
 	if artifacts.is_empty(): printerr("SV_SHARED_READ_NEEDS_ARTIFACT_DIRECTORY"); quit(2); return
-	var output: Array = []
-	var status := OS.execute(node_bin, [ProjectSettings.globalize_path("res://../tools/sv_shared_read_oracle.cjs"), ProjectSettings.globalize_path("res://..")], output, true)
-	check(status == 0 and not output.is_empty(), "exact original source oracle executed")
-	var probe: Variant = TRANSPORT.decode_output(output)
-	if not probe is Dictionary or status != 0: printerr(output); quit(2); return
+	var oracle_receipt := TRANSPORT.execute_file(node_bin, ProjectSettings.globalize_path("res://../tools/sv_shared_read_oracle.cjs"), ProjectSettings.globalize_path("res://.."))
+	var status: int = oracle_receipt.code
+	check(status == 0, "exact original source oracle executed")
+	var probe: Variant = oracle_receipt.data
+	if not probe is Dictionary or status != 0: printerr(oracle_receipt.diagnostics); quit(2); return
 	check(probe.source_unchanged and probe.actual_storage_reads == 0 and probe.actual_storage_writes == 0 and probe.actual_server_calls == 0 and probe.source_writer_helpers_executed == 0, "only fixture getters and writer stubs, source bytes unchanged")
 	DirAccess.make_dir_recursive_absolute(artifacts)
 	var file := FileAccess.open(artifacts.path_join("source-oracle.json"), FileAccess.WRITE)

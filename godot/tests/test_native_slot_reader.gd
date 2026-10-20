@@ -51,10 +51,10 @@ func _run() -> void:
 		printerr("SV_TRANSPORT_READ_NEEDS_OWN_ARTIFACT_DIRECTORY")
 		quit(2)
 		return
-	var output: Array = []
-	var status := OS.execute(node_bin, [ProjectSettings.globalize_path("res://../tools/sv_transport_read_oracle.cjs"), ProjectSettings.globalize_path("res://..")], output, true)
-	check(status == 0 and not output.is_empty(), "source-only Node oracle executed")
-	var decoded: Variant = TRANSPORT.decode_output(output)
+	var oracle_receipt := TRANSPORT.execute_file(node_bin, ProjectSettings.globalize_path("res://../tools/sv_transport_read_oracle.cjs"), ProjectSettings.globalize_path("res://.."))
+	var status: int = oracle_receipt.code
+	check(status == 0, "source-only Node oracle executed")
+	var decoded: Variant = oracle_receipt.data
 	check(decoded is Dictionary, "source oracle JSON")
 	if not decoded is Dictionary or status != 0: quit(2); return
 	probe = decoded
