@@ -2242,6 +2242,35 @@ func _native_fireball_ready_scalar(result: Variant) -> Variant:
 	var value: Variant=result.get("value")
 	return value if (value is int or value is float) and is_finite(float(value)) else null
 
+# DEMO11-16: cost inputs only; no combat/damage/active-owner changes.
+func read_native_skill_dispatch_cost_context() -> Dictionary:
+	var b: Dictionary = _native_fireball_provider_bundle()
+	if b.is_empty(): return {"ready":false,"reason":"providers_unready"}
+	var passives: Variant = source_state.read_current_passives()
+	var p: Variant = source_state.read_current_p()
+	if not passives is Dictionary or not p is Dictionary: return {"ready":false}
+	for key in ["pAtk", "pMelee"]:
+		if not (passives.get(key) is int or passives.get(key) is float) or not is_finite(float(passives[key])): return {"ready":false}
+	var values: Dictionary = {}
+	for key in ["stCostRed","cooldownRed","helmCooldown","endCooldownAll","skillCdRed"]:
+		var v: Variant = _native_fireball_ready_scalar(b.affix.eq_affix(key))
+		if v == null: return {"ready":false,"reason":"affix_unready:"+key}
+		values[key] = v
+	for key in ["_lHelmFree","_lNeckLow"]:
+		var v: Variant = _native_fireball_ready_scalar(b.formula.l_eq(key))
+		if v == null: return {"ready":false,"reason":"legend_unready:"+key}
+		values[key] = v
+	var magic: Variant = read_native_fireball_magic_cost()
+	if magic == null: return {"ready":false,"reason":"magic_cost_unready"}
+	return {"ready":true,"st_discount":maxf(.60,1.0-float(passives.pAtk)*.04)*maxf(.5,1.0-float(passives.pMelee)*.05)*(1.0+minf(0.0,values.stCostRed)),
+		"magic_cost":magic,"cd_red":values.cooldownRed+values.helmCooldown+values.endCooldownAll+values.skillCdRed-values._lHelmFree-(values._lNeckLow if float(p.hp)<=float(p.mhp)*.5 else 0.0)}
+
+func dispatch_native_skill_slot(slot_key: String) -> Dictionary:
+	var adapter: Node = world.get_node_or_null("NativeSkillSlots") if is_instance_valid(world) else null
+	if not is_instance_valid(adapter): return {"accepted":false,"reason":"skill_dispatcher_unavailable"}
+	return adapter.dispatch_native_slot(slot_key)
+
+
 func read_native_fireball_magic_cost() -> Variant:
 	var b: Dictionary=_native_fireball_provider_bundle()
 	if b.is_empty():return null

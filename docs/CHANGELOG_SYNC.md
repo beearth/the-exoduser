@@ -42,6 +42,23 @@
 | 회귀 | 각1회 신규214/0(원본10사례)·META06 1034/0·META01 20/0·P2001c45/0=1313/0, exit0/skip0/ERROR0. Camera2D WARNING·P2001c ObjectDB2 WARNING 원문 기록, 누수0 주장0 |
 | 제출 | [DEMO11-20 보고서](engine/orders/reports/demo11-20_REPORT.md)·META추적 소비 갱신. 원로그 ~/exoduser-wt/_out/demo11-20/, 매Godot gate/override0·정상훅·자기branch push·remoteSHA/DONE뒤자기worktree제거 |
 
+## 2026-10-21 DEMO11-16 성능 규칙 후속·동일 브랜치 재검증
+
+| 항목 | 근거 |
+|---|---|
+| main·감사 | 명시 fetch 최신aa1eaea5, a894bf49에 이미 포함되어 merge up-to-date. 이번 단위5파일 목록 생성API0·main의3검증기 static cache 확인, 후속 런타임 변경0 |
+| 검증 | 최신main 관련6스위트 각1회12,625/0·SKIP/ERROR0·override0byte. 실제Main 물리300틱 벽시계 5004.509ms/틱당16.6817ms·render719회. headless/60Hz페이싱포함·Performance API0·실창/CPU비용 주장0 |
+| 제출 | [보고서](engine/orders/reports/demo11-16_REPORT.md) 후속 절·[현재 계약](engine/DEMO11_SKILL_DISPATCH_20261021.md). 원로그 _out/demo11-16/perf-followup/. 동일branch 정상push/remoteSHA·기존DONE 새SHA 추가 후 자기WT 제거. 보호 active/ULT HOLD 유지 |
+
+## 2026-10-21 DEMO11-16 실제 슬롯·4cast 비용/쿨 단일화 (보호 active HOLD)
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준 | 최신 main aa1eaea5 정상merge(FF), gap61ab71be는 지시서 readonly. 제한 fetch 발견 후 명시 main 갱신·검증 의존2파일 차이/최종Main 검증 기록 |
+| 연결 | 실제 skillSlots/activeCtSk/ultSlot→SK-S04→기존4cast. 비용 quote/State·ResourceAuthority 단일 commit·배정별 HUD 같은 쿨. 피해/보호전투/맵/UI 배치/저장/에셋 변경0 |
+| 검증 | 최신main 신규393/0·원문72조합. 01051599 기준 직접 기존5스위트 각1회 합계12,232/0. 최초 하니스 실패·교정·캐시병합 후 신규만 확인. 최종ERROR/SKIP0·고정4키·atomic 실패prefix 검사 |
+| 경계·제출 | 보호 active 인계·pStun·Space 분노 우선순위 인터페이스 HOLD, 조건부 ULT96/97 실제효과 미완료. [현재 계약](engine/DEMO11_SKILL_DISPATCH_20261021.md)·[보고서](engine/orders/reports/demo11-16_REPORT.md)에 공용 diff 구역. 자기branch push/remoteSHA/DONE 후 자기WT 제거 |
+
 ## 2026-10-20 BC2-07 shieldBash2 독립 wind/dash/contact 계산
 
 ## 2026-10-20 EC4-02 4장 catalog·23필드 초기 literal projection
