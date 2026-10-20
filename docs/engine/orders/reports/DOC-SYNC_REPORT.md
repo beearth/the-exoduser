@@ -119,9 +119,10 @@
 
 설계 문서10개(2_1 본문/자원리젠, 14밸런스3개, 2_4, 2_7, 3.1 HUD, 5.1 VFX, 6사운드)＋공동작업판＋본 보고서. 경로 지정 스테이징만 사용한다. 테스트파일/제품코드 신규추가 없음.
 
-- 문서 본체 커밋 SHA: 생성 후 후속 영수증 커밋에서 기록한다(자기 SHA 사전 발명 금지).
-- main push/merge 없음. 자기 브랜치만 `git push origin HEAD` 후 원격 ref를 읽어 대조한다.
+- 문서 본체 커밋 SHA: **`1f02065db883eb4781b2cdfed9188f66608da028`**, parent=`2845f96e97d4803e4fb8ab4f3d5c0ff8e80d4353`。12파일, +204/−32줄, docs만.
+- 본체는 `git push origin HEAD` 성공 후 `git ls-remote origin refs/heads/codex/doc-sync-pc-20261020`가 위 SHA와 일치함을 확인했다. `content-push-restored.out/.err`에 보존. main push/merge 없음.
 - 보고서 내용 커밋과 이를 인용하는 최종 보고 커밋은 분리한다. 최종 자기 SHA는 Git 밖 push 영수증 및 사용자 최종응답으로 확인한다.
+- 기존 commit hook의 guard.js는 원본 인라인 스크립트9개 검사 등을 자동 실행해 PASS를 출력했으나 `tools/guard.baseline.json`의 lines만64266→65693으로 자동 썼다. 첫 push는 이 tracked 변경을 감지해 **실행 전 차단**했다(`content-push.err`). 훅 변경파일·diff를 `hook-guard.baseline.json`/`hook-baseline.diff`로 보존한 뒤 그 한 줄만 apply_patch로 원복했다. 코드/도구 변경을 문서 커밋에 포함하지 않았으며 훅을 끄거나 우회하지 않았다. 훅 PASS는 Godot/게임 실행 검수 아님.
 
 ## 7. 남은 것·총괄 인수 요청
 
