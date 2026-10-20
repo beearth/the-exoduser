@@ -1,3 +1,4 @@
+import {isInsideRoot, isDirectExecution, isMatchingSnapshot} from './cli_paths.mjs';
 // CH1-01/03 and CH2-01/03: native stage0/1/4/5 source snapshots, never map.json/PNG.
 // Stage0 base 284d7faf / stage1 main e556b617; unchanged game SHA 4d911cdd...; exact ranges below.
 import fs from 'node:fs';
@@ -185,9 +186,8 @@ export function main(args) {
     throw new Error('Usage: export_ch1_area_source.mjs <source-root> <output-json> --stage <0|1|4|5> --seed <uint32>; UNSUPPORTED_STAGE otherwise');
   }
   const root=fs.realpathSync(args[0]), output=path.resolve(args[1]);
-  const relative=path.relative(root,output);
   const chapter = Number(args[3]) >= 4 ? 2 : 1;
-  if (!relative.startsWith('..'+path.sep) && relative !== 'godot/data/ch'+chapter+'_map_source/si'+args[3]+'.json') {
+  if (isInsideRoot(root,output) && !isMatchingSnapshot(root,output,chapter,args[3])) {
     throw new Error('Output inside source root must be the matching new si snapshot JSON');
   }
   // Never overwrite a symlink (including one pointing at a shared map/asset).
@@ -211,6 +211,6 @@ export function main(args) {
     holes:result.spawn_holes_final.length,total:result.total_spawned,region_totals:result.region_totals,
     tile_sha256:result.runtime_tile_sha256,output}));
 }
-if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+if (isDirectExecution(import.meta.url)) {
   try { main(process.argv.slice(2)); } catch(error) { console.error(error.message); process.exitCode=1; }
 }

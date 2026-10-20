@@ -1,10 +1,11 @@
 extends SceneTree
+const TRANSPORT = preload("res://tests/qa007/oracle_transport.gd")
 const RESTORE = preload("res://port_modules/save_adapter/source_player_restore.gd")
 const USERDIR := "EXODUSER-sv-restore-player-Isolated-20261020"
 var checks := 0
 var failures := 0
 var artifacts := ""
-var node_bin := "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node"
+var node_bin := TRANSPORT.node_binary()
 var completed := false
 
 func _initialize() -> void:
@@ -62,11 +63,11 @@ func _run() -> void:
 	if ProjectSettings.get_setting("application/config/use_custom_user_dir", false) != true or ProjectSettings.get_setting("application/config/custom_user_dir_name", "") != USERDIR or not OS.get_user_data_dir().contains(USERDIR):
 		printerr("SV_RESTORE_PLAYER_INVALID_ISOLATION"); quit(2); return
 	if artifacts.is_empty(): printerr("SV_RESTORE_PLAYER_NEEDS_ARTIFACT_DIRECTORY"); quit(2); return
-	var output: Array = []
-	var status := OS.execute(node_bin, [ProjectSettings.globalize_path("res://../tools/sv_restore_player_oracle.cjs"), ProjectSettings.globalize_path("res://..")], output, true)
-	check(status == 0 and output.size() == 1, "exact source VM executed")
-	var probe: Variant = JSON.parse_string(str(output[0])) if not output.is_empty() else null
-	if not probe is Dictionary or status != 0: printerr(output); quit(2); return
+	var oracle_receipt := TRANSPORT.execute_file(node_bin, ProjectSettings.globalize_path("res://../tools/sv_restore_player_oracle.cjs"), ProjectSettings.globalize_path("res://.."))
+	var status: int = oracle_receipt.code
+	check(status == 0, "exact source VM executed")
+	var probe: Variant = oracle_receipt.data
+	if not probe is Dictionary or status != 0: printerr(oracle_receipt.diagnostics); quit(2); return
 	check(probe.source_unchanged and probe.actual_save_writes == 0 and probe.actual_server_calls == 0 and probe.live_restore_calls == 0, "source preserved; no actual storage/server/live actor")
 	DirAccess.make_dir_recursive_absolute(artifacts)
 	var file := FileAccess.open(artifacts.path_join("source-oracle.json"), FileAccess.WRITE)

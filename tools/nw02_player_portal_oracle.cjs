@@ -5,7 +5,7 @@ const SHA='4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4';
 const HASHES={portal:'4eae4f08342dd95a93c73982f266bec0cf7eb4a54237d4574190aa9d9a1ddfef',zone:'f40e474853944e22a8b061012e87de7f5e6f8203648049c5bfcb2bef50f5e709',stage:'93b474eb82a9f95adf990e43797693ad53291847f6e3e598b460e5d5ad165353',distance:'424ecda76b94d6843cbf78ff261ed8431fb7e3c5c08d15d1b7d30cf457adf062',tile:'51b0c122d4b59b86d79dd16f19b5dfd139a78b8739bfd0e4bb84015c286a6eeb'};
 const sha=x=>crypto.createHash('sha256').update(x).digest('hex');
 function main(){
- if(process.argv.length!==3)throw Error('usage: node nw02_player_portal_oracle.cjs <game.html>');
+ if((process.argv.length!==3 && process.argv.length!==4))throw Error('usage: node nw02_player_portal_oracle.cjs <game.html> [utf8-output.json]');
  const bytes=fs.readFileSync(process.argv[2]),text=bytes.toString('utf8'),lines=text.split('\n');
  if(sha(bytes)!==SHA)throw Error('current game.html hash differs; review source');
  for(const marker of ['function _placePlayerPortal(){','function _usePlayerPortal(){','function _loadZone(zid,sx,sy){','function initStage(si){']){
@@ -64,6 +64,6 @@ function main(){
   return {...c,expected:{ready:true,reason:null,source,source_return:result===undefined?'undefined':result,commands},
    after:{pair:structuredClone(rawG._playerPortalPair===pair?snapshot.pair:rawG._playerPortalPair),player:snapshot.player,cam:snapshot.cam}};
  });
- process.stdout.write(JSON.stringify({source_sha256:SHA,hashes:HASHES,fragments,cases:results,real_game_booted:false,real_storage_io:false})+'\n');
+ require('./oracle_json_output.cjs')({source_sha256:SHA,hashes:HASHES,fragments,cases:results,real_game_booted:false,real_storage_io:false});
 }
 try{main();}catch(e){console.error(e.stack);process.exitCode=1;}

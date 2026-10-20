@@ -1,3 +1,4 @@
+import {outputSymlink} from './helpers/outputSymlink.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';import path from 'node:path';import os from 'node:os';
@@ -90,7 +91,7 @@ test('writer rejects wrong stage, in-worktree, symlink, cross-stage and foreign 
   assert.throws(()=>writeResources(root,path.join(root,'new-oracle.json'),{stage:5}),/outside/);
   const oracle=path.join(tmp,'oracle.json');writeResources(root,oracle,{stage:5});assert.deepEqual(sameProvenance(JSON.parse(fs.readFileSync(resourceFile)),stored),stored);
   assert.equal(JSON.parse(fs.readFileSync(oracle)).stage,5);
-  const link=path.join(tmp,'link.json');fs.symlinkSync(oracle,link);assert.throws(()=>writeResources(root,link,{stage:5}),/Symlink/);
+  const link=outputSymlink(tmp,oracle);assert.throws(()=>writeResources(root,link,{stage:5}),/Symlink/);
   const cross=path.join(tmp,'cross.json');fs.writeFileSync(cross,'{"schema":"exoduser.ch2-area-oracle.v1","stage":4}');assert.throws(()=>writeResources(root,cross,{stage:5}),/foreign/);
   const foreign=path.join(tmp,'foreign.json');fs.writeFileSync(foreign,'{"schema":"other"}');assert.throws(()=>writeResources(root,foreign,{stage:5}),/foreign/);assert.equal(fs.readFileSync(foreign,'utf8'),'{"schema":"other"}');
   for(const [p,hash] of Object.entries(before))assert.equal(sha(read(p)),hash,p);
