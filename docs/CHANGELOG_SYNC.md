@@ -1,3 +1,13 @@
+## 2026-10-20 META-05 예약 패시브 큐 순수 정책
+
+| 항목 | 변경·검수 |
+|---|---|
+| 신규 API | native_meta_passive_queue.gd·test_meta_passive_queue.gd와 자기UID2개. items/process/enqueue/cancel 순수 snapshot API, META-04 AP비용/safe count 읽기 전용 재사용 |
+| 원본 | 최신 main e556b617 game.html27699–27728·51219–51233·51251–51260·43157, stat-panel-ui.js4–5. 유효own키26/읽기260·max10·FIFO·max/정의없음 선두제거·부족선두중단·AP차감→rank+1→shift·투자시만 재계산요청. append 후 임의 추가cap0 |
+| 검수 | 신규1102/0·실제 JS본문1015결과 exact대조/0불일치. META-04 1076/0·META-03 68/0·META-02 70/0·META-01 20/0·contracts5case/0·p2001c45/0. 모두exit0/ERROR0/SKIP0; p2001c Camera2D/ObjectDB WARNING2 원문 보고서 보존 |
+| 의존·보호 | META-04 미통합으로51c6e51f parent. 공용6·기존정책/테스트·원본151개 해시동일, 저장/QE/State/UI/기존applyStats직접호출0. 제품 자동투자 인수 아님 |
+| 실행·제출 | sparse --no-checkout·pgrep2이상30초대기·새작업/기존상수 격리명·override매회0byte. [META-05 보고서](engine/orders/reports/meta-05_REPORT.md)·~/exoduser-wt/_out/meta-05/·REVIEW_PENDING. push/원격SHA/DONE 후 자기worktree 제거 |
+
 ## 2026-10-20 META-04 SP/AP 투자·환불 순수 계산
 
 | 항목 | 변경·검수 |
