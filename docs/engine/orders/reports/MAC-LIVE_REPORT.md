@@ -1,79 +1,86 @@
-# MAC-LIVE 실창 실행·녹화 보고 — 2026-10-20
+# MAC-LIVE 실창·Movie Maker 보고 — 2026-10-20
 
-**판정: BLOCKED — 현재 실행 도구의 macOS 화면 기록 권한 없음.**
+**후속 결과: Movie Maker 30초 파일 생성 완료. 커튼 열림·첫 전투는 앱 제어 권한 거부로 BLOCKED.**
 
-`CGPreflightScreenCaptureAccess()`가 `false`를 반환했고, `screencapture` 1초 동영상 시도는 exit 1로 종료되어 파일이 생성되지 않았다. stderr/stdout은 모두 0 byte였다. 권한 검사와 녹화 실패를 함께 근거로 판단했으며, 빈 stderr를 특정 오류 메시지로 해석하지 않았다. 사용자 지시대로 권한 변경·우회 없이 중단했다. 게임 Main은 실행하지 않았으므로 부팅 실패로 판정하지 않는다.
+**렌더링 정상 여부 증거, 실시간 FPS는 화면 기록 권한 필요로 미검증.** 이번 영상에서 확인한 렌더 범위는 닫힌 커튼 배경이다. 전체 게임 화면·인트로 가이드 글씨·커튼 열림·첫 전투의 정상 렌더링을 입증하지 않는다.
 
-## 작업 기준·변경 범위
+## 기준·보존 범위
 
 | 항목 | 기록 |
 |---|---|
-| 작업ID·브랜치 | `mac-live` · `codex/mac-live-20261020` |
+| 작업·브랜치 | `mac-live` · `codex/mac-live-20261020` |
 | worktree | `/Users/fordeargamers/exoduser-wt/mac-live` |
-| 시작 기준 | `git fetch origin` 성공 후 `origin/main` = `7c4a2442bfc46f5d25c1bd9bf287a9324d8d5e5a`에서 신규 worktree 생성 |
-| 선행 지시 | 위 SHA의 `MAC_ORDERS_20261020.md`, `WORK_BOARD.md` 확인. 사용자의 MAC-LIVE 별도 배정을 적용했으며 작업 1~7은 수행하지 않음 |
-| 기준 체크아웃 R | `/Users/fordeargamers/Projects/exoduser-migration-20261001` · branch `codex/mac-live-play-time-main-20261017` · HEAD `dd49171c5b88e211575a41f185395d6c0a14b184`. 시작 시 tracked INDEX/WORK 각각 변경 없음 |
-| 변경 파일 | 이 보고서, `docs/engine/orders/WORK_BOARD.md`의 신규 MAC-LIVE 행만. 게임 코드·에셋 수정 없음 |
-| 원본 Godot | `/Users/fordeargamers/.codex/tools/godot-4.7.2/Godot.app/Contents/MacOS/Godot` |
-| 버전 실행 결과 | `--version` exit 0 · `4.7.2.stable.official.ed1daf0bf` |
-| 예정 격리 이름 | `EXODUSER-MacLive-Isolated-20261020` — Main 미실행으로 생성·사용하지 않음 |
-| import·App Support 백업 | 화면 기록 권한 단계에서 중단하여 둘 다 미실행. import 전 필수 백업 대상은 `~/Library/Application Support/Godot/`, 예정 백업은 `~/exoduser-wt/_backup/godot-appsupport-20261020-mac-live/` |
-| override | `godot/override.cfg`는 원래 없었으며 작성하지 않음. 커밋 대상 아님 |
-| 보존 | 실제 저장 폴더 `EXODUSER-Godot-Native-First`, 기존 게임 창, 다른 담당의 worktree·로그·app_userdata에 쓰기·입력·종료하지 않음 |
+| 실행 소스 | 최초 `origin/main` 기준 `7c4a2442bfc46f5d25c1bd9bf287a9324d8d5e5a` + 이전 보고서 커밋 `37f1cd4678eaa12303ad74e1e2dc2eaa42d54866`. 같은 worktree·브랜치를 유지했으며 이후 main 코드 병합 없음 |
+| 재개 시 확인한 origin/main ref | `d3b672fea878ff99a9f110f4a6d8adf86b1e6898` — 이번 실행 소스와 다름 |
+| 원본 Godot | `/Users/fordeargamers/.codex/tools/godot-4.7.2/Godot.app/Contents/MacOS/Godot` · `4.7.2.stable.official.ed1daf0bf` |
+| 실행 renderer | stdout: OpenGL API 4.1 Metal / Compatibility / Apple M5 Pro |
+| 시작 시 INDEX/WORK | 자기 worktree tracked 변경 없음. 타 작업 코드를 편집하지 않음 |
+| 변경·커밋 범위 | 이 보고서와 `docs/engine/orders/WORK_BOARD.md`의 MAC-LIVE 행만. 게임 코드·테스트 수정 없음. 영상·로그·백업·override는 커밋하지 않음 |
+| 기준 체크아웃 R | branch `codex/mac-live-play-time-main-20261017`, HEAD `dd49171c5b88e211575a41f185395d6c0a14b184` 보존. 브랜치 전환·커밋·소스 수정 없음 |
+| 기존 상태 보존 | 실제 저장 폴더 `EXODUSER-Godot-Native-First`, 기존 게임 창, 다른 담당의 worktree·로그·app_userdata에 입력·쓰기·종료하지 않음 |
 
-## 실행 명령·원로그
+## 백업·import·격리
 
-실제로 수행한 권한 검사:
-
-```python
-import ctypes
-core = ctypes.CDLL('/System/Library/Frameworks/CoreGraphics.framework/CoreGraphics')
-core.CGPreflightScreenCaptureAccess.restype = ctypes.c_bool
-print(bool(core.CGPreflightScreenCaptureAccess()))  # 관측 결과: False
-```
-
-실제로 수행한 녹화 probe(게임 실행 전 권한 확인):
-
-```sh
-/usr/sbin/screencapture -v -V 1 -x /Users/fordeargamers/exoduser-wt/_out/mac-live/permission-probe.mov > /Users/fordeargamers/exoduser-wt/_out/mac-live/recording-probe.out 2> /Users/fordeargamers/exoduser-wt/_out/mac-live/recording-probe.err
-```
-
-| 검사·산출물 | 결과·경로 |
+| 단계 | 명령·결과 |
 |---|---|
-| 권한 사전 검사 | `false` · `~/exoduser-wt/_out/mac-live/permission-preflight.json` |
-| 녹화 실행 | exit 1 · `~/exoduser-wt/_out/mac-live/recording-probe-result.json` |
-| 녹화 stdout / stderr | 각각 0 byte · `recording-probe.out` / `recording-probe.err` (같은 출력 폴더) |
-| 녹화 파일 | 예정 경로 `~/exoduser-wt/_out/mac-live/permission-probe.mov` · **미생성**. 제출 가능한 영상 없음 |
-| 환경·소스 기록 | 같은 출력 폴더의 `source-control-baseline.json`, `result.json` |
-| 게임 오류 로그 | Main 미실행으로 없음. 게임 코드 결함의 근거가 아님 |
+| 옵션 확인 | 지정 원앱 `--help`에서 `--write-movie`, `--fixed-fps`, `--quit-after` 확인. 원문 `~/exoduser-wt/_out/mac-live/movie-help.out` |
+| import 전 백업 | `/usr/bin/ditto "/Users/fordeargamers/Library/Application Support/Godot" /Users/fordeargamers/exoduser-wt/_backup/godot-appsupport-20261020-mac-live` · exit 0 |
+| 백업 검증 | 68개 일반 파일 원본/백업 SHA-256 동일. 실행 종료 후에도 기존 68개 파일 변경·누락 없음. 전역 설정 수동 편집·복원 없음 |
+| 격리 | `godot/override.cfg`에 `config/use_custom_user_dir=true`, `config/custom_user_dir_name="EXODUSER-MacLive-Isolated-20261020"` 설정 후 import·Main 실행 |
+| import | 지정 원앱 `--headless --path /Users/fordeargamers/exoduser-wt/mac-live/godot --import` · 1회 · exit 0 · stderr 0 byte · 18:22:40~18:22:57 KST |
+| 종료 정리 | 실행 runner의 `finally`에서 override를 비움. 종료 시 0 byte. 격리 userdir `~/Library/Application Support/EXODUSER-MacLive-Isolated-20261020/` 생성 확인, 보존 |
 
-계획한 실창 실행 명령(**미실행**):
+## Movie Maker 실행·파일 검증
+
+60fps × 30초 = 1800프레임으로 계산했다. 실제 명령은 다음과 같다. 마지막 사용자 인자는 기존 `godot/run.command:21`과 같은 원근뷰 우선 실행 경로를 유지한다.
 
 ```sh
-FDG_GODOT_BIN=/Users/fordeargamers/.codex/tools/godot-4.7.2/Godot.app/Contents/MacOS/Godot /Users/fordeargamers/exoduser-wt/mac-live/godot/run.command
+/Users/fordeargamers/.codex/tools/godot-4.7.2/Godot.app/Contents/MacOS/Godot --path /Users/fordeargamers/exoduser-wt/mac-live/godot --write-movie /Users/fordeargamers/exoduser-wt/_out/mac-live/mac_live_movie.avi --fixed-fps 60 --quit-after 1800 --log-file /Users/fordeargamers/exoduser-wt/_out/mac-live/movie-engine.log -- --fdg-native-perspective-first
 ```
 
-재개 시 위 명령 이전에 App Support 백업 → 지정 원앱으로 해당 worktree `--headless --path . --import` 1회 → `godot/override.cfg`에 지정 격리 이름을 설정해야 한다. 실행 종료 후 override는 비우고 커밋하지 않는다. 현재는 이 준비 및 Main 실행을 수행하지 않았다.
+| 항목 | 관측 결과 |
+|---|---|
+| 실행 결과 | exit 0 · PID 15086 · 18:23:23~18:23:58 KST. 벽시계 경과는 실시간 FPS 측정값이 아님 |
+| 부팅 | `GODOT_FIRST_PLAYABLE_READY`, Main `res://scenes/main.tscn`, viewport 1920×1080, spawn `(4020.0, 7420.0)` |
+| 영상 경로 | `~/exoduser-wt/_out/mac-live/mac_live_movie.avi` |
+| 파일 크기·해시 | 82,328,040 byte · SHA-256 `eb60f31e3708b6ebcdafa2ce66a8288ddc1224b0a1116ebf71da938d5a2c7984` |
+| 영상 스트림 실측 | AVI `avih.dwTotalFrames=1800`, video `strh.length=1800`, `rate=60`, `scale=1`, 실제 `00db` JPEG 청크 1800개 → **30.0초** |
+| 시각 확인 | 원본 JPEG 표본 frame 0·60·900·1799를 디코드해 확인. 모두 닫힌 어두운 커튼 배경·가로 중앙선. 가이드 글씨·월드·HUD·전투는 보이지 않음 |
+| 오류 | import stderr 0 byte, Main ERROR/SCRIPT ERROR 없음. Camera2D가 physics interpolation 때문에 physics process mode로 전환된다는 WARNING 1건 |
+| 실시간 FPS | **미검증.** 60fps는 Movie Maker 고정 출력률이며 실제 플레이 처리속도가 아님 |
 
-## 단계별 도달·FPS
+엔진 종료 요약은 `316 frames at 60 FPS`, `00:00:05:16`으로 출력했지만, AVI 헤더·실제 영상 청크는 모두 1800프레임이었다. [공식 4.7.2 MovieWriter](https://raw.githubusercontent.com/godotengine/godot/4.7.2-stable/servers/movie_writer/movie_writer.cpp)의 요약은 draw 카운터를 사용하고, [main loop](https://raw.githubusercontent.com/godotengine/godot/4.7.2-stable/main/main.cpp)는 반복마다 MovieWriter에 프레임을 추가한다. 따라서 이 보고서의 파일 길이는 컨테이너 실측값을 사용한다. 특정 렌더 생략 원인은 관측하지 못해 단정하지 않는다.
 
-| 단계 | 실창 도달 여부 | 소스 근거(기준 SHA, 실행 증거 아님) |
+컨테이너 점검에서 RIFF 선언 길이는 실제 파일 끝보다 70 byte 짧았다. 실제 EOF까지 청크를 읽으면 영상 1800개·오디오 청크 1800개·index가 끝까지 존재했고, 확인 표본 JPEG는 디코드됐다. AVI 파일은 수정하지 않았다. 외부 동영상 플레이어에서 전체 재생·음성 정상 여부는 미검증이다.
+
+## 단계별 도달·입력 제한
+
+| 단계 | 도달 판정 | 근거·제약 |
 |---|---|---|
-| 부팅 | 미검증·미시도 | `godot/project.godot:6` → Main, `godot/scripts/main.gd:288`의 `GODOT_FIRST_PLAYABLE_READY` |
-| 인트로 | 미검증·미시도 | `main.gd:276`, `native_intro_curtain_sequence.gd:159`의 가이드 진입 |
-| 커튼 | 미검증·미시도 | `native_intro_curtain_sequence.gd:192`의 열림 진입, `:362`의 정리 |
-| 첫 전투 30초 | 미검증·미시도 | 위 `:192`의 적 생성·전투 활성화. 30초 플레이 관측 없음 |
-| 키 입력 | 미시도 | 위 `:375`의 Enter/Space 진행·Esc 스킵은 코드상 경로이며 입력 성공을 검증한 것이 아님 |
-| 체감·실측 FPS | 측정 불가 | 실행·녹화 없음. `project.godot:10`의 상한 240은 실측값이 아님 |
+| 부팅 | 확인 | READY 로그 및 커튼 배경 영상 생성 |
+| 인트로 | 제한적 확인 | 닫힌 커튼 배경까지만 시각 확인. 가이드 글씨 미관측. `native_intro_curtain_sequence.gd:159`의 guide 진입은 정적 코드 근거이며 UI 표시 성공의 대체 증거가 아님 |
+| 커튼 열림 | 미도달·BLOCKED | 키 입력 0회. 모든 확인 표본은 닫힌 커튼 |
+| 첫 전투 30초 | 미도달·BLOCKED | 전투 영상 없음. 생성된 30초 파일을 전투 30초로 보고하지 않음 |
+| 키 입력 | 도구 권한 거부 | `cua.getApp(지정 원앱 Godot.app)` 응답: `Computer Use was not approved to use Godot`. 다른 입력 수단·권한 우회 시도 없음 |
 
-현재 소스의 `native_intro_curtain_sequence.gd:20`은 영상 컷신·로비를 첫 이식본 범위 밖으로 명시한다. 가이드/커튼 단계의 실창 인수와 영상 인트로 재생 여부를 구분해야 하며, 이번 작업에서는 어느 쪽도 검증하지 못했다. `godot/run.command:17`은 import 캐시가 없으면 실행을 중단하고 `:21`은 지정 원앱으로 해당 worktree를 실행한다.
+가이드는 자동 진행하지 않으며 Enter/Space 4회가 필요하다. `native_intro_curtain_sequence.gd:178~188`의 게이트는 `Time.get_ticks_msec()`에 따른 실제 시간 250ms 간격이고 `:375~383`에 진행·스킵 입력이 있다. 앱 제어가 거부돼 이 경로를 실행하지 않았다. `:20`에 명시된 영상 컷신·로비는 첫 이식본 범위 밖이므로 이번 커튼 배경을 영상 인트로 재생 완료로 보고하지 않는다.
 
-## 남은 작업·인계
+## 원로그·남은 작업
 
-화면 기록 권한이 허용된 실행 환경에서 다시 권한 확인 후, 백업·import·격리 Main 실행 및 부팅→인트로→커튼→첫 전투 30초 녹화가 필요하다. 현재 작업의 BLOCKED 원인은 화면 기록 권한이며 게임 코드 수정은 하지 않았다. 키 입력 가능 여부도 미검증이다.
+모든 산출물은 `~/exoduser-wt/_out/mac-live/`에 보존했다.
 
-보고서는 자기 `codex/` 브랜치에만 제출한다. main 병합·push·force·reset은 수행하지 않는다. 영상·로그·설정 파일은 커밋하지 않는다. 제출 SHA와 최종 원격 대조 결과는 후속 제출 기록 및 `~/exoduser-wt/_out/mac-live/DONE.txt`에 남긴다.
+| 분류 | 파일 |
+|---|---|
+| 백업·설정 | `movie-backup.json`, `movie-backup-verification.json`, `movie-appsupport-after.json` |
+| import | `movie-import-command.json`, `movie-import-result.json`, `movie-import.out`, `movie-import.err` |
+| 실행 | `movie-runtime-command.json`, `movie-runtime-result.json`, `movie-runtime.out`, `movie-runtime.err`, `movie-engine.log` |
+| 영상 검사·표본 | `movie-container-inspection.json`, `movie-frame-0000.jpg`, `movie-frame-0060.jpg`, `movie-frame-0300.jpg`, `movie-frame-0900.jpg`, `movie-frame-1799.jpg` |
+| 입력 거부 | `movie-input-blocker.json` |
 
-## 제출 기록
+남은 범위는 앱 제어가 허용된 환경에서 가이드 진행→커튼 열림→첫 전투를 기록하는 일이다. 실시간 FPS·조작감 인수에는 화면 기록 권한을 갖춘 별도 검증이 필요하다. 게임 코드·테스트는 고치지 않았다.
 
-결과 본문·작업판 최초 커밋: `5b101dcfb60179a55c4fda47e3291ef27b8056ef`. 이후 커밋은 이 SHA를 기록하는 제출 메타데이터 변경이다. 최종 branch tip 및 원격 SHA 대조는 로컬 `~/exoduser-wt/_out/mac-live/DONE.txt`와 `remote-verification.json`을 참조한다.
+## 이전 화면 기록 시도·제출 기록
+
+최초 화면 기록 시도는 `CGPreflightScreenCaptureAccess()=false`, `/usr/sbin/screencapture -v -V 1 -x .../permission-probe.mov` exit 1, stdout/stderr 0 byte, 영상 미생성이었다. 원로그 `permission-preflight.json`, `recording-probe-result.json`, `recording-probe.out`, `recording-probe.err`는 보존했다. 이전 결과 본문 SHA `5b101dcfb60179a55c4fda47e3291ef27b8056ef`, 이전 제출 SHA `37f1cd4678eaa12303ad74e1e2dc2eaa42d54866`이다.
+
+이번 후속 결과도 자기 `codex/` 브랜치에만 제출하며 main push·병합·force·reset은 하지 않는다. 최종 SHA와 원격 대조 결과는 후속 제출 기록 및 로컬 `~/exoduser-wt/_out/mac-live/DONE.txt`, `movie-remote-verification.json`에 남긴다.
