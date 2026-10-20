@@ -1,3 +1,11 @@
+## 2026-10-20 BC09 — 1장 보스 탄 생산·탄생 수치 packet
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 구현·의존 | 신규 native_ch1_boss_projectile_patterns.gd·test_boss_ch1_bc09_projectiles.gd·bc09_REPORT.md. BC08 1b901f12 끝에서 분기, 마감 main 6d987cb8과 HTML byte/행 동일. 공용/타 담당·기존 테스트·설계 docs·원본·R 수정0 |
+| 원본·보호 | game.html:16938–16995·38357–38371·37080–37127·40562–40569·40646–40662·41185–41205·20121–20156 및 actual pool16858–16884. raw 생산/source 순서·global drop/birth 숫자·독 class 보존/direct charge·독립 rhythm/ORB·BC06 elem/rapid relay. 실제 class/pool/spawn/ORB owner reader·readback 없으면 NOT_READY, Q/E 분류·피해·actual spawn/Main 연결0 |
+| 검증·경계 | 최초53,836/0, 추가 wave 표본56,662/8은 기대값 alias 오류로 원로그 보존. 수정·accepted snapshot 보강 후 최종56,664/0·producer762/이벤트6,888/RNG2,099·birth2,082/RNG982·BC06연계16·보호요청8 대조(live/QE 성공 수 아님). BC01~08·contracts5/5·import 정상, 최종/회귀 ERROR0. OS.execute/output[0] 없음, 재생성 Node 경로는 --node-bin·UTF-8 전체 수집. 원로그 _out/bc09, push·SHA대조·DONE 후 자기 worktree 제거 |
+
 ## 2026-10-20 BC08 — 1장 보스 이동3기술·idle 후속 packet
 
 | id / 적용 위치 | 현재 정확 계약 |
