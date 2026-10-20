@@ -58,6 +58,65 @@
 | 부하 / 격리 / 보존 | 매 실행 전 pgrep 개수 확인, 2이상이면30초씩 대기. 기존 회귀는 각 상수 격리명, 신규 진단은 EXODUSER-qa-003-Isolated-20261020. 실행마다 override.cfg 작성 후0byte. R·검사 조건 불변 |
 | 상세 | [QA-003 보고서](engine/orders/reports/qa-003_REPORT.md), 원로그·ObjectID 대조·DONE.txt `~/exoduser-wt/_out/qa-003/`. 첫 진단 get_path 추가 ERROR3도 실패로 보존 |
 
+## 2026-10-20 SND-04 원본 보이스 선택·10초 stamp 상태
+
+| id / 항목 | 현재 계약 |
+|---|---|
+| 기준 / 범위 | main284d7faf의 game.html12327–12341/10065–10073. SND-03 4203b78b 의존에서 새sparseWT. voice_selector.gd·새test·원본JS generator/fixture 신규4파일. 기존 공용6파일·제품·기존 테스트·원본 에셋0줄 |
+| 선택 | char≠1/미매핑 원key 그대로·clock/RNG0. SND-02 map42개 읽기. mapped1회clock, 반복10000ms(9999차단/10000허용, stamp0보존). grunt/parry3종, demon_revive/second_wind/execution/clear/fuse2종, eligible만오름차순→floor(r×수), 소진시무음·RNG0 |
+| 상태·순서 | selector마다독립last_at, 반환snapshot/status복사. sample/direct동일instance가stamp공유, 선택시now기록이후GX/30ms/buffer gate로drop되어도stamp유지. 이미silvertail_*·voice_wakeup 미매핑에새제한없음. 직접재생/master우회는정책표만이며backend0 |
+| API | constructor(catalog), select_key(key,char,clock_ms,rng), status, snapshot_last_at. READY/key·SILENT/reason·NOT_READY 구분. 자체Node/오디오/IO/실clock/RNG/캐릭터owner0 |
+| 실측 | 신규2435/0·exit0·stderr비어있음. 원본JS71시나리오387단계/1459leaf 불일치0(수치≤1e−12). 첫2435/1은정수Dict↔JSON실수Dict 비교문제·테스트만정정·원로그보존. contracts5그룹/0·정책1194/0·catalog687/0·queue606/0·웹10pass/0fail |
+| 보존·환경 | 기존tracked game.html/godot1318파일byte불변. 전체WT디스크부족실패후자기브랜치sparse재구성·staged삭제0·타WIP삭제0. 기존엔진cache1006파일동일byte복사·Godot import0·원본에셋생성변환0 |
+| 제출·한계 | Godot전count2이상30초대기, 새지정격리·기존USERDIR·override매회후0byte. 정상훅·자기branch만push. [보고서·실패 이력·정확 정책·원로그](engine/orders/reports/snd-04_REPORT.md). 실청취·실게임·PC 인수미확인 |
+
+## 2026-10-20 SND-03 원본 frame queue 순수 phase
+
+| id / 항목 | 현재 계약 |
+|---|---|
+| 기준 / 범위 | main284d7faf의 game.html12296–12326/12358–12370. SND-02 8b4ca2f2 의존에서 새WT분기. queue_phase.gd·새test·원본JS generator/fixture 신규4파일. 기존 제품·공용6파일·기존 테스트·원본 에셋0줄 |
+| enqueue | 보이스 치환 후 key 입력. gx<1만vol곱·.01미만drop→일반30ms stamp→numeric rate0/NaN은1→rate×(.92+.16r), 허용당RNG1. priority/skill/footstep unshift LIFO·일반FIFO. 카탈로그 없는key 임의거부0 |
+| frame | desktop/mobile active48/16·frame6/3·category2/1. priority는queue admission상한우회하되 frame/category count포함. live active읽기·audio_time1회, n0/1 gain/pitch1/1, n≥2 max(.08,.5^(n−1))/max(.7,1−.05(n−1)) |
+| 실패·정리 | dispatch 성공후seen/cnt증가. 성공·skip·실패 모두queue폐기/frame count기존key값0/sb_cd양수감소, last stamp유지. JS throw는backend실패packet으로명시, 임의 GDScript예외catch·실제재생기보장아님 |
+| 실측 | 신규606단정/0실패, 원본JS32시나리오76단계·2107leaf 불일치0(수치오차≤1e−12). contracts5그룹/0·정책1194/0·catalog687/0, 위4종stderr비어있음. 웹10pass/0fail |
+| 기존 Main 회귀 | p2001c 45/0·skipped0·exit0·ERROR0·death sound dispatch1. Camera2D WARNING1/ObjectDB WARNING1(객체2개)잔류를보존하며 종료clean PASS로합산하지않음 |
+| 보존·제출 | 기존tracked game.html/godot1314파일byte불변. 에셋생성/복사/변환0, 검증엔진cache1006파일만동일byte준비·import0. Godot전count2이상30초대기·매회override후0byte. 정상훅·자기branch만push. [보고서·원로그·한계](engine/orders/reports/snd-03_REPORT.md) |
+
+## 2026-10-20 SND-02 원본 샘플·보이스 치환·선언 라우팅 카탈로그
+
+| id / 항목 | 현재 계약 |
+|---|---|
+| 범위 | 신규 sound_source/catalog.gd, data/sound_source_samples.json, test_sound_source_catalog.gd. 기존 제품 owner·공용6파일·기존 테스트·원본 에셋 자체 변경0. 원본 음원 생성·복사·변환0 |
+| 기준 / 선행 | fetch main284d7faf(QA-002 포함), game.html SHA256 4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4. SND-01 재확인1533f602까지 기존 WT를 fast-forward해 WIP 이어감 |
+| 원본 / 데이터 | game10076–10331 samples233,12327–12336 voice_map42,10359–10378 routes18(procedural11/file7). 별도 이름공간·등록 순서·query·alias·대소문자 그대로. ATTACK_SAMPLE_PATHS 읽기만 |
+| API | status/snapshot/lookup_sample/lookup_voice_mapping/lookup_route. READY와 count, MISSING과 namespace/key, NOT_READY와 reason/path 구분. 반환 Dictionary·중첩 route는 깊은 복사. IO는 JSON 읽기뿐이며 RNG/clock/재생·변환·보이스 선택·게임 연결 없음 |
+| 실측 | 새 테스트687단정/0실패, 기존 정책1194/0, 모두exit0·stderr비어있음·격리true·Main미부팅. 원본JS↔JSON↔Godot293 key/value 불일치0. 웹5파일10pass/0fail. 기존tracked 에셋974개 동일byte |
+| 격리 / 과부하 | 새 EXODUSER-snd-02-Isolated-20261020, 정책은 원 USERDIR. override 매번 사용 후0byte. pgrep count2 이상30초 대기 준수, 실행직전 각각count1. catalog 대기5회 |
+| 제출 / 한계 | 정상 훅·경로 지정stage·자기브랜치만 비강제push. 실청취·전체샘플 이식·실게임·PC 인수는 미확인. [보고서·실패 이력·원로그](engine/orders/reports/snd-02_REPORT.md), ~/exoduser-wt/_out/snd-02/DONE.txt에 최종SHA·수치 |
+
+## 2026-10-20 SND-01 최신 main merge·선재 결함 재확인
+
+| id / 항목 | 현재 계약 |
+|---|---|
+| 기준 | SND-01 ea1dcd8a에 최신 main284d7faf(QA-002 073c7a6a 포함)을 정상 merge477a387a. 실행HEAD2c0bc0cb. 제품·기존 테스트 자체 변경0, force·rebase 없음 |
+| 재확인 | p2005b 12단정/0실패/skipped0/exit0/stderr ERROR0/ObjectDB0. 기존 Camera2D WARNING1. 최초 캐시 부재 부팅 실패는 INVALID로 보존 후 WT 캐시 준비 |
+| 선재 결함 | test_p1002g_kislash_hurte 검기 halt(P2-008a, merge9528ea35/제출46409ee4e), test_p2005b 종료 ERROR(QA-002 이전 base9528ea35/원 SND-01 ea1dcd8a). QA-002 반영 뒤 종료 ERROR 소멸로 사용자 기준의 SND-01 완료. [상세 SHA·원로그](engine/orders/reports/snd-01_REPORT.md) |
+| 격리·과부하 | p2005b USERDIR 그대로 override 매번 사용 후0byte. 실행 전 pgrep count2 이상이면30초 대기. count2 대기9회→count1에서 실행. 원본 음원·공용6파일 자체 변경0 |
+
+## 2026-10-20 SND-01 순수 사운드 분류·플랫폼 한도 정책
+
+| id / 항목 | 현재 계약 |
+|---|---|
+| 범위 | 신규 `godot/port_modules/sound_source/policy.gd`와 `godot/tests/test_sound_source_policy.gd`만. 기존 오디오 owner·공용 6파일·에셋·원본 HTML·Q/E·세이브 변경 없음 |
+| 원본 | 시작 fetch 기준 `9528ea35b429498fcf42fe3723008219ed0ed7e1`의 game.html:12220–12245 / 12342–12356. HTML SHA-256 `4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4` |
+| API | String 입력의 is_footstep / is_skill / priority / category, bool 입력의 limits, 독립 Array를 반환하는 skill_keys. PRI 8개·스킬 literal 29개. clock/RNG/Node/IO/재생기·큐·autoload 생성 없음 |
+| 플랫폼 한도 | desktop/mobile: active_nodes 48/16, category_per_frame 2/1, samples_per_frame 6/3, proj_nodes 5/2, hit_nodes 3/2, step_nodes 2/2. 매 호출 독립 Dictionary |
+| 분기 경계 | m_*·monster_crawl/1은 PROJ1. death_ghoul*은 앞 death_* 분기에 따라 g_death. monster_die2는 priority2/category g_death. raw player_dead1은 VOICE9/category 자기 key. 분기 순서·대소문자·미등록 key fallback 보존 |
+| 구현 검수 | 새 테스트 1,194단정/0실패, 원본 샘플233개×4필드=932개 Node oracle/Godot 출력 일치. 추가 경계60개·복사 격리·typed 시그니처·Main 미부팅 확인. 첫 테스트 parse 오류(정적 클래스 대상 Script 메서드 호출)는 테스트만 정정했고 원로그 보존 |
+| 격리 | 새 테스트 `EXODUSER-snd-01-Isolated-20261020`, 프로세스 내 ProjectSettings로 effective OS userdir 확인. Main 부팅0이므로 override.cfg 사용0. 회귀 격리·수치·원로그는 [snd-01 보고서](engine/orders/reports/snd-01_REPORT.md) 참조 |
+| 기존 회귀 | Godot 8종 실행: contracts5그룹/0실패, 7개 테스트 합계619단정/1실패. 검기220/1(halt6), 지옥강타12/0이나 종료 리소스 ERROR1. **회귀 인수 BLOCKED**, 기존 파일 수정·skip·단정 완화 없음 |
+| 인수 한계 | 순수 정책 모듈까지이며 기존 전투음에 연결하지 않음. 경로·볼륨 공식·원본 음원은 변경하지 않음. 실청취·실게임 사운드·PC 실행은 미확인 |
+
 ## 2026-10-20 QA-002 테스트 결정성·종료·조명 하니스
 
 | 항목 | 변경·검수 근거 |
