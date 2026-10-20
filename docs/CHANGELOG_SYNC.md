@@ -1,3 +1,14 @@
+## 2026-10-20 TRACE-BOSS-CH3 3장 보스 원본 추적·작은 이식 단위
+
+| 항목 | 추적·검토 근거 |
+|---|---|
+| 기준 / 범위 | fetch 최신main6d987cb8. 새 CH3 문서1개+이 절만, 코드·테스트·타 담당·공용·원본·저장·R 변경0. sparse worktree, Godot/import/게임/실저장 실행0 |
+| 선행 구분 | main의CH1, 원격CH2 ddf05495, 요청한일반화BC2-02 a3b5391c를먼저읽음. CH2문서·일반화모듈은main미병합,참조만하고복사/merge0 |
+| 전수 / 정적 수치 | si10~13·EL.I, 최종Set32/34/36/37·union37=공통30+신규7, 콤보44=공통36+신규8. 37 start/state/queue·새7의11필드·9state범위28필드·61식별자+4이름전체행색인·원문HP24산술표본 |
+| 차이 / 공용 요청 | docs차이11행. CH3나선탄0/180/0,laser잠금·HP1%·안전/파도/중력큐·부활points259/265/271/276. a3b spawn색상110행#bbbbbb고정과BC08 CH1guard를통합요청으로기록,수정0 |
+| 순서안 / 증거 | 첫BC3-01은공유30move/36combo/phase를읽기재사용하는독립catalog. 총14단위·actual Main/State/피해연결BLOCKED. 원문수치·행/표구조/링크정적대조만이며Godot/실전PASS아님 |
+| 제출 | [CH3 추적](engine/FDG_SOURCE_TRACE_BOSS_CH3_20261020.md), 원로그 ~/exoduser-wt/_out/trace-boss-ch3/. 정상훅·자기branch push·remoteSHA/DONE후자기worktree제거 |
+
 ## 2026-10-20 QA-007 테스트 Windows 이식성
 
 | 항목 | 구현·검수 근거 |
