@@ -307,3 +307,11 @@ CSS 캐시 ui-refinement.css?v=20260927-3. 신규 이미지/아이템 데이터 
 - 사용자 최신 로비 검수 지시를 이 씬에 우선 적용한다. 슬롯·동작 버튼·안내·이름 입력의 기본 폰트는 `NativeUIFont.stack("hell",400)`(Nanum Myeongjo→Noto Serif KR), 제목은 `hell_title,700`(Cinzel Decorative→Nanum Myeongjo)이다. 이 씬에서는 이전 기본 sans-serif 토큰을 사용하지 않는다. 다른 게임 UI 폰트 토큰/공급자는 변경하지 않는다. 기본 문자색은 #dfd6c2다.
 - 왼쪽 아트는 (175,290) 600×560으로 배치하고 EXODUSER/지옥의 길 제목은 y132/y215에 유지한다. 두 제목의 실제 rect가 아트 시작 y290 위에 끝나는지 검사한다. 명칭을 덮던 마스크 위 배치를 제거하고 금빛 구분선/하단 명조 문구는 유지한다. 원화·문장 byte와 크기 계약은 그대로다.
 - 재캡처 자료는 `~/exoduser-wt/_out/demo11-21fix/captures/`의 목록·삭제확인1920×1080과 목록/확인/제목-아트 경계1x크롭이다. **화면 비교 자료 준비·맥북총괄 재검수 대기**, 시각 승인/완료로 세지 않는다. 새 문구0으로 번역 등록 변경0.
+
+## 2026-10-21 DEMO11-38 Godot 데모 종료·복귀
+
+`native_demo_end_view.gd`는 기존 Hell Gothic crest.png와 `native_ui_fonts.gd` 토큰 hell/hell_title/cinzel_hell을 재사용한다. 1920×1080 기준 흑철 바탕·뼈색 본문·금빛 얇은 선·절제한 적갈 버튼, 중앙 880px 판/58px 버튼/기본 21–25px 가독성. 이모지·신규 이미지·기본 산세리프 UI 추가0. 이벤트 시에만 UI를 만들며 프레임별 목록 API/애니메이션/blur0. 마우스/키보드 기본 Button focus·Enter/Space 활성화 및 focus 테두리를 유지한다.
+
+마지막 데모 stageClear의 다음 버튼은 난이도 창·stage 증가 없이 demoEnd로 간다. 복귀는 전투 Main을 해제하는 별도 demo11_lobby.tscn(최소 네이티브 데모 로비)이며 웹 캐릭터 슬롯/계정/저장 로비 완성 주장0. DEMO11-37은 최종 보스 사망/부활 해결 뒤 Main.native_demo_boss_defeated(stage_index:int)를 emit해야 한다. 현재 테스트는 직접 emit하며 실제 보스 사망 검증은 아님. [검수 보고서](../engine/orders/reports/demo11-38_REPORT.md), 캡처 원본 `_out/demo11-38/captures/`; 시각 최종 판정은 맥북총괄 대기.
+
+종료 시 Main DISABLED만으로 명시 PAUSABLE World/Player는 멈추지 않으므로 Tree pause를 함께 사용한다. 종료 UI는 ALWAYS, 전투 scene 제거 후 새 로비 ready에서 unpause한다. 최종 검사에서 World frame 7→7→7·can_process=false·구 Main 해제를 확인했다.
