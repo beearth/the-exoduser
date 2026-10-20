@@ -101,6 +101,13 @@
 | 병합·공통화 | 정상merge9157697c(9fd31a64). D5종 factory prepared entry→common World/origin admission·동일35 탄/World epoch. 기존 Main D facade·D actor/ctor RNG/탄 수치 body·PC 보호 경로 byte 보존 |
 | 후행·검증 | D selected-only/자동schedulerHOLD·25 death/이동탄 PC contact 후행 유지. 이관집중21/0+기존D158/0+공통0 31/0+35 43/0=253/0·ERROR0, 관련suite 각1회. 30actor600틱 mean2.824/p993.980/max8.380ms(최대예산초과). 결과는 [보고서](engine/orders/reports/demo11-enemy-base_REPORT.md). [8.0 계약](8.0몬스터디자인/DEMO11_NATURAL_ENEMY_BASE_20261021.md), [9AI clock](9적ai패턴디자인/DEMO11_NATURAL_ENEMY_CLOCK_20261021.md) |
 
+## 2026-10-21 DEMO11-perf-enemy — 다수 적 진단·동치 최적화
+
+- 요청4커밋99e6fe7b/d931ebe2/c6d19973/9fd31a64를 순차 merge, EOF 등록/API 모두 보존. Mac World 기하 질의·Flesh 분리 계산만 최적화, PC 보호/State/자원 권위 byte 동일.
+- 원본 함수 동치6473/0+관련2352/0. 30/60 native CPU 평균9.58%/10.31% 감소. 전체30개체 최대 headless18.975ms·실창20.652ms로8.333ms 목표 FAIL, 기존 사용자 Godot 동시 조건·단독 미인증 명시.
+- 느린 profiler frame에서 PC 펫 show_bubble 약14.9ms 추적, portrait cold load15.735/15.305ms→보유 재로드4µs 재현(별도probe3/0). PC 파일 무수정·초기화 강한참조 cache 제안.
+- 전후8행/상위10 profiler·공용 줄 범위·PC OLD/NEW·P3 ObjectDB8 경고는 [보고서](engine/orders/reports/demo11-perf-enemy_REPORT.md), [성능 문서](12퍼포먼스·최적화/DEMO11_ENEMY_FIXED_TICK_PROFILE_20261021.md). normal hook·경로 stage·자기branch push/remote/DONE 후 자기WT 제거.
+
 ## 2026-10-21 DEMO11-enemy-base — 자연 소환 단일 기반
 
 | 항목 | 구현·검수 근거 |
@@ -120,6 +127,18 @@
 - main0138c5bb9에 DEMO11-43 9b763da9 정상 fast-forward merge. Main+8/State0·신규 얇은 consumer만. 기존 P3 type0 constructor/World 등록/43 immutable origin 재사용, source pool/RNG/HP/AI/16좌표 복제0.
 - 부분 구현·통합 BLOCKED:1/4 자연 constructor/등록·5/6 미구현·PC 보호 도메인·자연 source scheduler 미완. 5종 동시 스폰 벤치0회(미충족 명시), 요청 거절 시간을 대체 성능으로 제출하지 않음.
 - 신규48/0·직접회귀338/0(총386/0), P3 종료ObjectDB8 경고원문 보존. etype별 전후/경계 테스트 수·공용 줄 범위·검증은 [보고서](engine/orders/reports/demo11-etype-a_REPORT.md), docs/8.0 최신 Native 상태 동기화. 정상훅·자기branch push/remote/DONE 후 자기WT 제거.
+
+## 2026-10-21 DEMO11-etype-b 재개 — append-only 등록·실제 actor5
+
+- 맥북총괄 후속 승인으로49a250ef 위 재개. factory 기존679줄 byte 보존·B등록17줄, Main 기존3068줄 보존·source-selected entry8줄. PC P2-008b/피해/패링·State/World/Player0. 실제 Marker adapter→factory→ens/phase→origin5개 확인, 원소undefined 보존. A 공통 helper 재작성0.
+- runtime42/0·캐시/contact35/0(9~12 hurtE HP875→874, B12 PC Player553→530)·factory3그룹/0·강화 preflight27/0·viewport34/0. 생성11.408ms 실패 보존→설치 factory/profile 재사용 확인: 생성3.862ms,5종tick max0.718ms. 전체 렌더120fps/자연 자동scheduler·MAP11 제품 provider 인수 아님.
+- 8 death-blast 피해NOT_READY,9 actual deadPool,11 type3/MAP11 자식,공통 탄/보호 반사 접점 유지. full_combat_ready=false. [최종 보고서](engine/orders/reports/demo11-etype-b_REPORT.md)·docs/8.0·_out/demo11-etype-b/resume-*·내부viewport/1x·원실패 로그 보존. 경로 지정 stage·정상훅·자기 push/원격일치/DONE 후 자기WT제거.
+
+## 2026-10-21 DEMO11-etype-b — 8~12 Marker·factory 인수 경계
+
+- main0138c5bb9 + DEMO11-43 9b763da9 정상 merge. B 전용 직접호출 preflight·기존 하니스 상속, 공통 helper 재작성/A 파일 변경0. **5종 모두 NOT_READY**, 실제 자연 스폰·특수 상태·전투 구현 완료 아님.
+- 신규27/0·기존43 40/0 각1회. 기존 회귀 내 adapter 벽시계만 측정, 5종 실제 스폰 벤치 미실행. Main/State/PC 전투·피해/저장/맵/tick/목록 생성API0. [보고서](engine/orders/reports/demo11-etype-b_REPORT.md)·docs/8.0 종별 근거·묶음 A 통합 후보·_out/demo11-etype-b/ 원로그.
+
 ## 2026-10-21 DEMO11-etype-d 재개 — factory append-only·실제 D5종 등록
 
 | 항목 | 결과·경계 |

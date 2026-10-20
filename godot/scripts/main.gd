@@ -3423,3 +3423,5 @@ func open_native_workshop() -> void:
 	if not is_instance_valid(source_workshop_panel):
 		source_workshop_panel=preload("res://scripts/native_workshop_panel.gd").new();source_workshop_panel.configure(self);add_child(source_workshop_panel)
 	source_workshop_panel.open_panel()
+
+# DEMO11-etype-d: explicit natural selected-type entry; no scheduler reroll.

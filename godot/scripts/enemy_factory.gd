@@ -765,3 +765,5 @@ func create_demo11_etype_f(runtime: Dictionary, world: Node2D) -> Dictionary:
 	var result: Dictionary=world.register_summoned_enemy(actor)
 	if not result.get("valid",false): actor.free();return {"ready":false,"reason":"F_world_registration_rejected","errors":result.get("errors")}
 	return {"ready":true,"registered":true,"actor":actor,"full_combat_ready":false}
+
+# DEMO11-etype-d: append-only natural admission, no existing profile path changed.
