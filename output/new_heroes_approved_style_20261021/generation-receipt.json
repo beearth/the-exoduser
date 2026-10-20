@@ -1,0 +1,121 @@
+{
+  "created_at": "2026-10-20T22:09:38.953Z",
+  "collected_at": "2026-10-20T22:17:50.419Z",
+  "mode": "Higgsfield web Seedream4.5 Unlimited Relax",
+  "credits_before": 0.38,
+  "jobs": [
+    {
+      "id": "a0df7890-f3ce-4c3f-a738-d030a2771b9f",
+      "type": "image",
+      "status": "completed",
+      "model": "seedream_v4_5",
+      "params": {
+        "prompt": "Create one entirely new female hero for the same EXODUSER character lineup as the first two attached reference images. Use those two images ONLY for the exact quality of realistic digital painting, refined mature facial rendering, deep black-iron materials, restrained sharp metallic reflections, detailed leather and dramatic shadow depth. Do not copy their identities, silver ponytail, faces, poses, armor pattern, swords or daggers. The new hero must have her own costume architecture and silhouette. Clearly feminine adult face, fierce and beautiful with realistic facial structure and human proportions, the same rendering sophistication as the approved silver-haired woman. Sculptural realistic volumes and fine controlled material detail; no anime pen outlines, manga hatching, watercolor paper, captions, labels, logos, plastic toy surfaces, dot noise, sparkles or floating particles. Color and light are rich but deep: midnight-blue and black-plum shadows, layered jewel-toned color in darkness, small localized light like the color depth of No Rest for the Wicked and Ori; no candy-magenta flood, pale lavender glow, vivid neon or all-over colored body. Full body, both feet and entire weapon within frame with generous breathing room, one character, three-quarter view, a simple deep blue-grey studio backdrop and faint ground contact, no scenery or extra objects. The new spearmage is a lithe athletic adult woman with long straight jet-black hair half-tied back, pale skin and dark violet irises. A high fitted collar, asymmetric overlapping black-iron half-cuirass, dark leather waist, articulated armored boots and a long split black battle coat with deep black-plum lining make a sleek angular silhouette. Compact armor, not bulky masculine pauldrons or a princess gown. A powerful low sideways thrust with exactly two hands holding a substantial thorn-wrapped iron lance. The LAST attached image is a WEAPON GEOMETRY reference only: reproduce its large circular arcane wheel with concentric rings and small round rune plaques, central aperture and long narrow energy spear point, thorned dark-steel structure and shaft thickness. Do not replace this circular rune wheel with separate collars stacked along the shaft. Ignore the visible person in that weapon crop. The weapon must keep the reference geometry while the color becomes much darker: blackened iron rims, black-grape and deep aubergine magic body, dim dark-amethyst rune strokes, a narrow violet energy blade whose inner edge alone has a restrained jewel glint. Most purple stays deep and dark, no large luminous lavender disk or white-pink laser. Preserve a clean aggressive readable silhouette and the rendering sophistication of the first two references.",
+        "aspect_ratio": "4:3",
+        "input_images": [
+          {
+            "id": "baf53d26-618d-4ddc-b3c3-8896eb7a103d",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/baf53d26-618d-4ddc-b3c3-8896eb7a103d.png"
+          },
+          {
+            "id": "d3c17111-9d1c-4b4e-8b06-a777753dd5e2",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/d3c17111-9d1c-4b4e-8b06-a777753dd5e2.png"
+          },
+          {
+            "id": "4123396d-6af3-454f-ac8f-b8722831dd00",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/4123396d-6af3-454f-ac8f-b8722831dd00.png"
+          }
+        ],
+        "batch_size": 1,
+        "quality": "basic",
+        "seed": 130784,
+        "width": 2304,
+        "height": 1728,
+        "use_unlim": true,
+        "reference_elements": []
+      },
+      "results": {
+        "rawUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20261020_220548_a0df7890-f3ce-4c3f-a738-d030a2771b9f.png",
+        "minUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20261020_220548_a0df7890-f3ce-4c3f-a738-d030a2771b9f_min.webp"
+      },
+      "createdAt": 1792533948.502513,
+      "liked": false,
+      "concept_id": "A01"
+    },
+    {
+      "id": "0849e95f-db36-4976-8b1d-6c0ef5cf4e59",
+      "type": "image",
+      "status": "completed",
+      "model": "seedream_v4_5",
+      "params": {
+        "prompt": "Create one entirely new female hero for the same EXODUSER character lineup as the first two attached reference images. Use those two images ONLY for the exact quality of realistic digital painting, refined mature facial rendering, deep black-iron materials, restrained sharp metallic reflections, detailed leather and dramatic shadow depth. Do not copy their identities, silver ponytail, faces, poses, armor pattern, swords or daggers. The new hero must have her own costume architecture and silhouette. Clearly feminine adult face, fierce and beautiful with realistic facial structure and human proportions, the same rendering sophistication as the approved silver-haired woman. Sculptural realistic volumes and fine controlled material detail; no anime pen outlines, manga hatching, watercolor paper, captions, labels, logos, plastic toy surfaces, dot noise, sparkles or floating particles. Color and light are rich but deep: midnight-blue and black-plum shadows, layered jewel-toned color in darkness, small localized light like the color depth of No Rest for the Wicked and Ori; no candy-magenta flood, pale lavender glow, vivid neon or all-over colored body. Full body, both feet and entire weapon within frame with generous breathing room, one character, three-quarter view, a simple deep blue-grey studio backdrop and faint ground contact, no scenery or extra objects. The new transmuter is a tall graceful athletic adult woman with short uneven ash-white hair, pale grey-blue irises, a small angular charcoal hood and severe mature feminine face. Blackened iron claw-like left shoulder and forearm protection, fitted dark leather torso over deep midnight-blue fabric, asymmetric short mantle and long split rear coat panels over armored boots. Exactly two arms: the extended LEFT arm has ONE massive claw gauntlet around ONE dark-blue spherical core. A pure ENERGY longbow grows directly from that left-arm core. The RIGHT hand at her cheek draws ONE spectral arrow and its string. The bow, string, arrow and core share a deep midnight navy-to-cobalt palette: inky blue volume with only narrow muted blue glints inside the core and along bow edges, no neon cyan or bright white-blue flood. The energy has layered jewel-like depth and casts only a small cool reflection onto the gauntlet. Strong grounded archery stance, flowing but restrained cloth silhouette, no silver ponytail, long gown, third arm, extra cores, physical bow shaft or detached bow.",
+        "aspect_ratio": "4:3",
+        "input_images": [
+          {
+            "id": "baf53d26-618d-4ddc-b3c3-8896eb7a103d",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/baf53d26-618d-4ddc-b3c3-8896eb7a103d.png"
+          },
+          {
+            "id": "d3c17111-9d1c-4b4e-8b06-a777753dd5e2",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/d3c17111-9d1c-4b4e-8b06-a777753dd5e2.png"
+          }
+        ],
+        "batch_size": 1,
+        "quality": "basic",
+        "seed": 258614,
+        "width": 2304,
+        "height": 1728,
+        "use_unlim": true,
+        "reference_elements": []
+      },
+      "results": {
+        "rawUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20261020_220832_0849e95f-db36-4976-8b1d-6c0ef5cf4e59.png",
+        "minUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20261020_220832_0849e95f-db36-4976-8b1d-6c0ef5cf4e59_min.webp"
+      },
+      "createdAt": 1792534112.42872,
+      "liked": false,
+      "concept_id": "A02"
+    },
+    {
+      "id": "cea88b82-fead-412e-88fa-bd819f9f6774",
+      "type": "image",
+      "status": "completed",
+      "model": "seedream_v4_5",
+      "params": {
+        "prompt": "Create one entirely new female hero for the same EXODUSER character lineup as the first two attached reference images. Use those two images ONLY for the exact quality of realistic digital painting, refined mature facial rendering, deep black-iron materials, restrained sharp metallic reflections, detailed leather and dramatic shadow depth. Do not copy their identities, silver ponytail, faces, poses, armor pattern, swords or daggers. The new hero must have her own costume architecture and silhouette. Clearly feminine adult face, fierce and beautiful with realistic facial structure and human proportions, the same rendering sophistication as the approved silver-haired woman. Sculptural realistic volumes and fine controlled material detail; no anime pen outlines, manga hatching, watercolor paper, captions, labels, logos, plastic toy surfaces, dot noise, sparkles or floating particles. Color and light are rich but deep: midnight-blue and black-plum shadows, layered jewel-toned color in darkness, small localized light like the color depth of No Rest for the Wicked and Ori; no candy-magenta flood, pale lavender glow, vivid neon or all-over colored body. Full body, both feet and entire weapon within frame with generous breathing room, one character, three-quarter view, a simple deep blue-grey studio backdrop and faint ground contact, no scenery or extra objects. The new hellgunner is an athletic adult woman with dark auburn shoulder-length windswept hair, no ponytail, dark red irises without eye glow, pale skin and a sharp mature feminine face. Black-iron asymmetric fitted scale cuirass, one broad curved shoulder plate, layered dark leather belts and a long split black cavalry coat lined in very dark oxblood, practical articulated armored boots. A wide braced three-quarter firing stance holding a very large revolver-rifle with both hands: clearly visible enormous fluted six-chamber cylinder and exposed hammer, thick long rifle barrel, forward handguard, wooden shoulder stock firmly at the right shoulder, right hand at trigger, left hand supporting fore-end, short under-barrel bayonet. The cylinder must visibly remain a real revolver cylinder rather than a flat disk or ordinary rifle receiver. Weapon and body feel heavy and controlled. Deep black iron, dark dried-crimson cloth, aged restrained brass lines, tiny very dark red-glass ammunition accents. No blue or purple magic, no modern scope, magazine, double barrel or extra gun. Strong singular coat-and-rifle silhouette, not a generic aristocratic uniform.",
+        "aspect_ratio": "4:3",
+        "input_images": [
+          {
+            "id": "baf53d26-618d-4ddc-b3c3-8896eb7a103d",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/baf53d26-618d-4ddc-b3c3-8896eb7a103d.png"
+          },
+          {
+            "id": "d3c17111-9d1c-4b4e-8b06-a777753dd5e2",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/d3c17111-9d1c-4b4e-8b06-a777753dd5e2.png"
+          }
+        ],
+        "batch_size": 1,
+        "quality": "basic",
+        "seed": 371226,
+        "width": 2304,
+        "height": 1728,
+        "use_unlim": true,
+        "reference_elements": []
+      },
+      "results": {
+        "rawUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20261020_220842_cea88b82-fead-412e-88fa-bd819f9f6774.png",
+        "minUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20261020_220842_cea88b82-fead-412e-88fa-bd819f9f6774_min.webp"
+      },
+      "createdAt": 1792534122.324387,
+      "liked": false,
+      "concept_id": "A03"
+    }
+  ]
+}

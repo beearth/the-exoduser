@@ -1,0 +1,90 @@
+[
+  {
+    "id": "A01",
+    "name": "창법사 · 원형 룬 창",
+    "file": "A01.png",
+    "size": [
+      2304,
+      1728
+    ],
+    "job_id": "a0df7890-f3ce-4c3f-a738-d030a2771b9f",
+    "sha256": "d083de13faa568c6a7a7043d851f1537c183c3ebd3f02f4670b94a6be0774291"
+  },
+  {
+    "id": "A02",
+    "name": "변성술사 · 흑청 코어",
+    "file": "A02.png",
+    "size": [
+      2304,
+      1728
+    ],
+    "job_id": "0849e95f-db36-4976-8b1d-6c0ef5cf4e59",
+    "sha256": "0bd57ec7daf7af9536dacbe9e8e6a84ecb4fe52ba864866f032f583109064299"
+  },
+  {
+    "id": "A03",
+    "name": "헬거너 · 흑철 혈월",
+    "file": "A03.png",
+    "size": [
+      2304,
+      1728
+    ],
+    "job_id": "cea88b82-fead-412e-88fa-bd819f9f6774",
+    "sha256": "f3596beaf3dbc2a5df35a122a56eb727481704572cc51faece901b8c20140223"
+  },
+  {
+    "id": "B01",
+    "name": "창법사 · 먹보라 수정",
+    "file": "B01.png",
+    "size": [
+      2304,
+      1728
+    ],
+    "job_id": "fee89184-a8e6-4379-84ce-479b1b3c857f",
+    "sha256": "ea5b7a5dd995bedd3b036c12a65524a98f3ba076101aa6b8e18b886bd854972c"
+  },
+  {
+    "id": "B02",
+    "name": "변성술사 · 흑청 수정",
+    "file": "B02.png",
+    "size": [
+      2304,
+      1728
+    ],
+    "job_id": "c4a7015a-be32-4b6a-84d0-63104c694bad",
+    "sha256": "966ac1db57e7ebd3f46b48b187ad433acbc6d2ed9bbbba15762413cf10a0fcbc"
+  },
+  {
+    "id": "B03",
+    "name": "헬거너 · 단일 총열 수정",
+    "file": "B03.png",
+    "size": [
+      2304,
+      1728
+    ],
+    "job_id": "fb6a4a90-9ef0-42b8-a16e-fd9afe89992c",
+    "sha256": "b092d4dde4f4759b4626d256379e4811cb897db17c75e8dd7fa68485b009d5cf"
+  },
+  {
+    "id": "C02",
+    "name": "변성술사 · 남청 순례자",
+    "file": "C02.png",
+    "size": [
+      2304,
+      1728
+    ],
+    "job_id": "74c33824-123e-4710-8063-0210a7eb1461",
+    "sha256": "151683cc755f62ac065dfe3e759ee41be13cf1290cbdc56cc3b7f123ee7909e2"
+  },
+  {
+    "id": "C03",
+    "name": "헬거너 · 흑철 방랑사수",
+    "file": "C03.png",
+    "size": [
+      2304,
+      1728
+    ],
+    "job_id": "2b713c77-d6c3-4549-8c71-75f80e04174f",
+    "sha256": "e1ac65d2b15411ffa267f39643f98f5557bc56fa5acc2a01776be677ed6295bc"
+  }
+]

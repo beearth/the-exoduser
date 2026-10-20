@@ -1,0 +1,74 @@
+{
+  "created_at": "2026-10-20T22:31:43.355Z",
+  "collected_at": "2026-10-20T22:40:29.518Z",
+  "mode": "Higgsfield web Seedream4.5 Unlimited Relax",
+  "jobs": [
+    {
+      "id": "74c33824-123e-4710-8063-0210a7eb1461",
+      "type": "image",
+      "status": "completed",
+      "model": "seedream_v4_5",
+      "params": {
+        "prompt": "A full-body dark-fantasy character concept of an adult FEMALE alchemical hunter. The attached image is ONLY a benchmark for realistic feminine facial painting and material detail. Give this new woman a distinct rounder face, narrow feminine chin, natural grey-blue eyes, short ivory bob hair and a small charcoal hood. Her outfit is a torn midnight-navy pilgrim shawl over fitted dark leather, an asymmetric short leather skirt, practical closed black armored boots and ONE enormous black-iron claw gauntlet on her LEFT arm. She is aiming a spectral bow diagonally across the frame. In the extended LEFT palm there is exactly ONE dark-blue sphere. Two long translucent dark-cobalt ENERGY curves grow directly from this sphere to form one bow; no solid wood or metal bow. Her RIGHT hand draws one dark-blue spectral arrow beside her cheek. Both wrists are plain except the LEFT-hand core. Keep the entire bow, both bow tips, whole body and feet completely inside the frame; character and weapon occupy only the middle sixty percent of a wide canvas. Layered inky navy magical volume, dim blue edge reflections and no luminous white centers. Rich deep colored shadows and softly weathered black iron, realistic human female proportions and painterly surface detail. Her costume and silhouette are her own, not the silver-haired swordswoman. Simple charcoal-blue backdrop with restrained warm grey side light. No titles or scenery.",
+        "aspect_ratio": "4:3",
+        "input_images": [
+          {
+            "id": "baf53d26-618d-4ddc-b3c3-8896eb7a103d",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/baf53d26-618d-4ddc-b3c3-8896eb7a103d.png"
+          }
+        ],
+        "batch_size": 1,
+        "quality": "basic",
+        "seed": 278068,
+        "width": 2304,
+        "height": 1728,
+        "use_unlim": true,
+        "reference_elements": []
+      },
+      "results": {
+        "rawUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20261020_223040_74c33824-123e-4710-8063-0210a7eb1461.png",
+        "minUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20261020_223040_74c33824-123e-4710-8063-0210a7eb1461_min.webp"
+      },
+      "createdAt": 1792535440.432965,
+      "liked": false,
+      "concept_id": "C02"
+    },
+    {
+      "id": "2b713c77-d6c3-4549-8c71-75f80e04174f",
+      "type": "image",
+      "status": "completed",
+      "model": "seedream_v4_5",
+      "params": {
+        "prompt": "Create a NEW adult FEMALE dark-fantasy gunslinger, with an elegant clearly feminine face, short dark-auburn bob, natural dark red eyes, a long weathered charcoal leather riding coat with dark oxblood lining, one battered iron shoulder guard, fitted dark leather trousers and sturdy fully enclosed black armored boots. Use the FIRST attached woman ONLY as a feminine realistic painting and material-quality reference; do not copy her identity, hair, clothes or swords. The SECOND attached image is ONLY a weapon construction reference. Preserve its large fluted revolver cylinder, exposed hammer, single thick barrel, under-barrel bayonet and worn black iron/brass. Extend the barrel to rifle length and add a wooden fore-end and wooden shoulder stock. Exactly ONE barrel ending in ONE muzzle, the large revolver cylinder remains at the receiver beside the trigger hand. Show the weapon side-on, pointing LEFT, nearly parallel to the image plane; do not aim its muzzle toward the camera. Her right hand grips the trigger, left hand supports the fore-end, the stock touches her right shoulder. The full woman, BOTH BOOTS, complete barrel and bayonet fit inside generous frame margins. Mature feminine realistic digital painting, rough leather, scratched metal, dramatic deep shadows, subtle dark crimson and warm bronze accents. A new individual silhouette with long straight coat tails, no copied silver ponytail, no bare feet, no barrel cluster, no cannon, no captions. Simple charcoal backdrop.",
+        "aspect_ratio": "4:3",
+        "input_images": [
+          {
+            "id": "baf53d26-618d-4ddc-b3c3-8896eb7a103d",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/baf53d26-618d-4ddc-b3c3-8896eb7a103d.png"
+          },
+          {
+            "id": "e815e215-4a96-444f-9488-47c3efe936b1",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/e815e215-4a96-444f-9488-47c3efe936b1.png"
+          }
+        ],
+        "batch_size": 1,
+        "quality": "basic",
+        "seed": 413500,
+        "width": 2304,
+        "height": 1728,
+        "use_unlim": true,
+        "reference_elements": []
+      },
+      "results": {
+        "rawUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20261020_223117_2b713c77-d6c3-4549-8c71-75f80e04174f.png",
+        "minUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20261020_223117_2b713c77-d6c3-4549-8c71-75f80e04174f_min.webp"
+      },
+      "createdAt": 1792535477.543338,
+      "liked": false,
+      "concept_id": "C03"
+    }
+  ]
+}

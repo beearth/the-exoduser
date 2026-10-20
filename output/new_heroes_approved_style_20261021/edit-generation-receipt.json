@@ -1,0 +1,110 @@
+{
+  "created_at": "2026-10-20T22:20:54.646Z",
+  "collected_at": "2026-10-20T22:29:46.399Z",
+  "mode": "Higgsfield web Seedream4.5 Unlimited Relax",
+  "jobs": [
+    {
+      "id": "fee89184-a8e6-4379-84ce-479b1b3c857f",
+      "type": "image",
+      "status": "completed",
+      "model": "seedream_v4_5",
+      "params": {
+        "prompt": "Edit the attached black-haired female spearmage concept. Preserve her identity, anatomy, pose, clothing architecture, black iron materials and the exact large circular rune-wheel spear geometry. Change ONLY the magical color and its light hierarchy. The entire spear blade is translucent BLACK-PLUM crystal, dark grape-purple and deep aubergine with readable dark internal volume. Most of the blade is as dark as the purple shaft, with a thin muted violet reflected edge. Rune marks are dim dark amethyst, fine and restrained. The central circular aperture stays mostly dark. This is dark jewel color seen by reflected light, not a white luminous energy laser. Remove all lavender-white and pink-white cores, bloom halos and bright lines. Keep layered blue-grey background shadows and realistic painted texture, slightly rougher black iron, refined mature feminine face. Show the whole woman, both feet and full weapon inside a generous frame. No text or added objects.",
+        "aspect_ratio": "4:3",
+        "input_images": [
+          {
+            "id": "a0df7890-f3ce-4c3f-a738-d030a2771b9f",
+            "type": "image_job",
+            "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20261020_220548_a0df7890-f3ce-4c3f-a738-d030a2771b9f.png"
+          }
+        ],
+        "batch_size": 1,
+        "quality": "basic",
+        "seed": 375108,
+        "width": 2304,
+        "height": 1728,
+        "use_unlim": true,
+        "reference_elements": []
+      },
+      "results": {
+        "rawUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20261020_221919_fee89184-a8e6-4379-84ce-479b1b3c857f.png",
+        "minUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20261020_221919_fee89184-a8e6-4379-84ce-479b1b3c857f_min.webp"
+      },
+      "createdAt": 1792534759.348157,
+      "liked": false,
+      "concept_id": "B01"
+    },
+    {
+      "id": "c4a7015a-be32-4b6a-84d0-63104c694bad",
+      "type": "image",
+      "status": "completed",
+      "model": "seedream_v4_5",
+      "params": {
+        "prompt": "Edit the FIRST attached blue-core archer concept. The SECOND image is a reference ONLY for mature feminine facial rendering, not for hairstyle, costume, pose or weapons. The archer is unambiguously an adult WOMAN: elegant feminine facial structure, softer narrow chin and brow, refined feminine nose and lips, compact athletic female anatomy. Keep her short ash-white hair under the angular hood, navy cloth, dark iron gauntlet and archery stance. Exactly two arms. Her extended left-arm gauntlet holds ONE deep-navy spherical core. A longbow made of semi-transparent dark-blue ENERGY grows directly from that core; its limbs have dark translucent volume, not a solid metal physical bow. The right hand draws ONE spectral arrow. Core, bow and arrow are deep midnight navy and inky cobalt with restrained MUTED blue edges. Remove bright cyan, blue-white lines, lens flare, large halos and glowing eyes. The eye irises are natural dark grey-blue. Pull the camera back substantially: the whole figure AND BOTH COMPLETE BOW TIPS fit within the frame with broad empty margins. Maintain realistic digital painting, layered rich dark color, material texture and localized light. No text, additional cores, extra arms, copied silver ponytail, daggers or swords.",
+        "aspect_ratio": "4:3",
+        "input_images": [
+          {
+            "id": "0849e95f-db36-4976-8b1d-6c0ef5cf4e59",
+            "type": "image_job",
+            "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20261020_220832_0849e95f-db36-4976-8b1d-6c0ef5cf4e59.png"
+          },
+          {
+            "id": "baf53d26-618d-4ddc-b3c3-8896eb7a103d",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/baf53d26-618d-4ddc-b3c3-8896eb7a103d.png"
+          }
+        ],
+        "batch_size": 1,
+        "quality": "basic",
+        "seed": 454048,
+        "width": 2304,
+        "height": 1728,
+        "use_unlim": true,
+        "reference_elements": []
+      },
+      "results": {
+        "rawUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20261020_222009_c4a7015a-be32-4b6a-84d0-63104c694bad.png",
+        "minUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20261020_222009_c4a7015a-be32-4b6a-84d0-63104c694bad_min.webp"
+      },
+      "createdAt": 1792534809.915765,
+      "liked": false,
+      "concept_id": "B02"
+    },
+    {
+      "id": "fb6a4a90-9ef0-42b8-a16e-fd9afe89992c",
+      "type": "image",
+      "status": "completed",
+      "model": "seedream_v4_5",
+      "params": {
+        "prompt": "Correct the SECOND attached hellgunner concept. FIRST image is ONLY a mature feminine facial rendering reference, not its hair, outfit, pose or weapons. The hellgunner is unambiguously an adult WOMAN with a refined feminine face, softer compact chin, lighter brow, feminine nose and lips, athletic female proportions and shoulder-length dark auburn hair. Keep the black iron cavalry coat and dark oxblood lining. Replace the erroneous four-barrel weapon with ONE huge SINGLE-BARREL revolver-rifle. At the front there is EXACTLY ONE large circular muzzle opening, one continuous thick long barrel. Behind that single barrel near her trigger hand is ONE enormous fluted rotating revolver cylinder, seen from the SIDE as a drum with grooves and a large exposed hammer above it. The drum stays at the receiver, not at the muzzle. A wooden fore-end is under the single barrel and a wooden stock is firmly at the right shoulder. Right hand on trigger, left hand supporting fore-end. Mount ONE short bayonet under the muzzle. Remove the separate sword and sword sheath from her waist. No duplicate barrel, twin muzzle, four muzzle holes, barrel cluster, shotgun, gatling, magazine or scope. Realistic dark-fantasy painting with heavy black-iron textures, dark crimson accents, restrained reflections. Whole woman, feet and complete single-barrel rifle inside broad margins. No text, logos or particles.",
+        "aspect_ratio": "4:3",
+        "input_images": [
+          {
+            "id": "baf53d26-618d-4ddc-b3c3-8896eb7a103d",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/baf53d26-618d-4ddc-b3c3-8896eb7a103d.png"
+          },
+          {
+            "id": "cea88b82-fead-412e-88fa-bd819f9f6774",
+            "type": "image_job",
+            "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20261020_220842_cea88b82-fead-412e-88fa-bd819f9f6774.png"
+          }
+        ],
+        "batch_size": 1,
+        "quality": "basic",
+        "seed": 182082,
+        "width": 2304,
+        "height": 1728,
+        "use_unlim": true,
+        "reference_elements": []
+      },
+      "results": {
+        "rawUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20261020_222029_fb6a4a90-9ef0-42b8-a16e-fd9afe89992c.png",
+        "minUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20261020_222029_fb6a4a90-9ef0-42b8-a16e-fd9afe89992c_min.webp"
+      },
+      "createdAt": 1792534829.419393,
+      "liked": false,
+      "concept_id": "B03"
+    }
+  ]
+}
