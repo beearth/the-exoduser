@@ -1,3 +1,8 @@
+## 2026-10-21 DEMO11-21fix pending draw owner 수명 보호
+
+- 기존 demo11-21 branch에 mainac3764bfe 정상 merge. 드랍 owner(Main/State) tree exit 즉시 configured=false, draw/beam/input/physics/snapshot live guard. 이전 에셋/드랍 식/피해·Main/State0줄.
+- 새 수명9검사·기존 starter148 및 드랍 직접 관련 스위트 결과는 [보고서](engine/orders/reports/demo11-21fix_REPORT.md), 원로그 _out/demo11-21fix/. 스위트별1회·기존 검사 유지, 목록 생성 API0. 로비 RETOUCH는 자기 기존04 branch에서 별도 진행.
+
 ## 2026-10-21 DEMO11-21 성능 수정 main 후속 통합
 
 - 같은 브랜치에 main8dbbf2b0(aa1eaea5a 포함)을 정상 merge11a617f5. rebase·force0.

@@ -106,6 +106,9 @@ func configure(main: Node, world: Node2D, player: Node2D, state: Node) -> bool:
 	_toast_layer.add_child(_toast)
 	z_index = 60 # 바닥 오브젝트 위·플레이어/HUD 아래 상당(월드 아이템 레이어)
 	_configured = true
+	# Shutdown order may free State before this CanvasItem's pending redraw.
+	_main.tree_exiting.connect(_on_owner_exiting, CONNECT_ONE_SHOT)
+	_state.tree_exiting.connect(_on_owner_exiting, CONNECT_ONE_SHOT)
 	return true
 
 
@@ -125,7 +128,7 @@ func _mask_black(img: Image) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if not _configured or get_tree().paused:
+	if not _owners_live() or get_tree().paused:
 		return
 	if event.is_action_pressed("interact_pickup"):
 		_interact_held = true
@@ -136,7 +139,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _physics_process(_delta: float) -> void:
-	if not _configured or get_tree().paused:
+	if not _owners_live() or get_tree().paused:
 		return
 	_detect_new_drops()
 	if _interact_held: # 32952~32966 홀드: 9틱(150ms)마다 반복
@@ -189,6 +192,7 @@ func _detect_new_drops() -> void:
 
 ## 32935~32941: 화면 내(±VW/2+40) 최고 등급 1개 — 동급이면 가까운 것.
 func _try_pickup_best() -> void:
+	if not _owners_live(): return
 	if str(_player.get("state")) == "dead":
 		return
 	var cam_center: Vector2 = _camera_center()
@@ -301,7 +305,19 @@ func _finish_sound(voice: AudioStreamPlayer, bus_name: String) -> void:
 	_audio_buses.erase(bus_name)
 
 
+func _owners_live() -> bool:
+	return _configured and is_instance_valid(_state) and is_instance_valid(_main) \
+		and is_instance_valid(_world) and is_instance_valid(_player) \
+		and not _state.is_queued_for_deletion() and not _main.is_queued_for_deletion()
+
+func _on_owner_exiting() -> void:
+	_configured = false
+	_interact_held = false
+	set_physics_process(false)
+	set_process_unhandled_input(false)
+
 func _exit_tree() -> void:
+	_on_owner_exiting()
 	for bus_name in _audio_buses:
 		var voice: AudioStreamPlayer = _audio_buses[bus_name]
 		if is_instance_valid(voice):
@@ -361,7 +377,7 @@ func _beam_tier(item: Dictionary) -> int:
 
 
 func _draw_beams() -> void:
-	if not _configured:
+	if not _owners_live():
 		return
 	var now_ms: float = float(Time.get_ticks_msec())
 	var cam_center: Vector2 = _camera_center()
@@ -392,7 +408,7 @@ func _draw_beams() -> void:
 
 
 func _draw() -> void:
-	if not _configured:
+	if not _owners_live():
 		return
 	var now_ms: float = float(Time.get_ticks_msec())
 	var cam_center: Vector2 = _camera_center()
@@ -423,7 +439,7 @@ func _draw() -> void:
 
 
 func get_native_world_drops_snapshot() -> Dictionary:
-	return {"configured": _configured, "records": _state.read_native_drop_records().size() if _configured else -1,
+	return {"configured": _owners_live(), "records": _state.read_native_drop_records().size() if _owners_live() else -1,
 		"pick_log": _pick_log.duplicate(true), "beam_frames_loaded": int(_beam_frames[0] != null) + int(_beam_frames[1] != null),
 		"toast_visible": _toast.visible if is_instance_valid(_toast) else false,
 		"toast_text": _toast.text if is_instance_valid(_toast) else "",

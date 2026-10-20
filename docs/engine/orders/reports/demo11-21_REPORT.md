@@ -49,3 +49,8 @@ Godot 4.7.2 headless --verbose 총 7회(종료 실패2+정상5). 새 테스트�
 GODOT_METHOD_LIST_TICK_COST_20261021.md를 읽고 드랍 _physics_process→감지/줍기, State journal/INV·현재 소유권 검증, production drop source와 신규 테스트를 점검했다. 네 파일에 get_method_list/get_property_list/get_signal_list 호출은 **0개**다. 이 단위의 Main 설치는 _ready에만 있다. PC의 QE/회복 3곳은 has_method 검증을 유지하며 script/class+method별 정적 _METHOD_ARITY_CACHE miss 때만 목록을 생성한다. 추가 캐시 수정은 필요하지 않았다. 정적 검토와 기능 회귀만 수행했으며 로컬 FPS/성능 개선 실측은 미확인이다. 성능 검증이 필요할 때는 물리 N틱 고정 벽시계 벤치를 사용한다.
 
 관련 스위트 각각 **1회**: followup-new **24/0**, world **18/0**, pickup **17/0**, render **1/0**(기존 합계36/0). 검사·기대값·격리 이름 무변경. import 포함5회 모두 --verbose exit0·ERROR0·ObjectDB 누수0·resource 잔류0, override 종료0byte다. import 전 Godot2개로 30초씩2회 대기했으며 매 실행 gate를 통과했다. Performance 지표 사용0. 외부 followup-* 로그와 followup-results.json에 보존하고 기존 실패 로그는 유지했다. 최종 새 SHA는 기존 DONE.txt에 추가한다.
+
+
+## 2026-10-21 owner 해제 수명 수정
+
+PC starter_state148/0 뒤 pending draw의 previously-freed ERROR2건 제보를 반영했다. 기존 branch에서 mainac3764bfe를 merge하고 드랍 adapter owner tree_exiting 비활성화·draw/input/physics/snapshot 유효성 guard를 추가했다. Main/State/전투0줄, 기존 검사·기대값 유지. [수명 수정·최종 검증](demo11-21fix_REPORT.md), 원로그 _out/demo11-21fix/. 앞의 제한된 회귀 결과를 starter 종료 수명 전체 검수로 간주하지 않는다.
