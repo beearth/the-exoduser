@@ -54459,3 +54459,12 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 - 원본 초기 미지원10개체의 수치·AI·투사체·스킨을 정리하고, 시작점 거리상 최초인 type20 및 동일 원분기 order4/10/12를 전용 consumer로 등록했다. 이 브랜치 source16은 지원9/미지원7이며 main/배포 갱신 주장이 아니다.
 - 원본 _meleeET에서20 제외·_noProjEtypes[20]=1을 보존하여 가짜 근접 피해/탄막/빙결을 만들지 않았다. 쉴드·포이즈·hurtE owner·원본 atlas16개의 byte 동일 복사본을 재사용했다. 공용 main/player/world/피해 집행자·Q/E·레슨·세이브·맵 수정0.
 - 필수 회귀4종 379 assertions+8케이스/0fail, 신규72check는 최초45성공+이동3개 한정 재검+별도 bridge8/경계16 ledger다. 실제 화면/public 플레이 미검수. 정본 `docs/engine/FDG_P2_008A_CH1_ENEMIES_20261020.md`, 제출 `docs/engine/orders/reports/P2-008a_REPORT.md`.
+
+
+## 2026-10-20 — SETTINGS-S01 원본 설정 기본값·읽기 전용 view
+
+- 제품 신규 `godot/scripts/native_settings_read_view.gd`와 신규 테스트만. 실제 OPT owner·공용6파일·입력/QE·세이브 형식 변경0. 원본 game.html:6311의38개 기본값은 비교용 사본이며 actual OPT35를 보충하지 않는다. missing3(textScale/panelFit/diffV2)는 NOT_READY·진단 raw ref로 표시한다.
+- game.html:48752–48753 reset18/초기20 및 irisToggle/bladeToggle 생략을 원본 그대로 source evidence로 기록. 실제 reset은S03이며 이번 구현0.
+- 최신 main `9528ea35b429498fcf42fe3723008219ed0ed7e1`을 자기 branch에 ff merge 후 신규 unit112/0·actualMain12/0·contracts5군/실패0 재확인. 기존 OPT11/0·starter148/0·지역43/0·HUD36/0·소환굴298/0, 수치 출력 합660/0. G48/지역23·60·53·32/합168·시작HUD0/32 확인. 실행별 근거는 아래 보고서를 따른다.
+- 최초 unit1단정 실패·보완, 최초 커밋의 필수 변경로그 누락 거부·기존 초기화 회귀의 격리guard 거부는 과거 실행으로 보존한다. 이 append는 필수 문서 동기화 정상 경로이며 훅 우회0.
+- [원본 행·API·실행별 결과·기준 SHA·남은 범위](engine/orders/reports/settings-s01_REPORT.md). 설정 UI/저장복원·실플레이·전체 이식 완료 증거가 아니다.
