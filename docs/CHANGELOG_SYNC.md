@@ -1,3 +1,16 @@
+## 2026-10-20 CH2-01 si4 원본 snapshot·읽기 전용 계약
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 기준 / 의존 | main e556b617190c325ca39f5add04357f5dea5ca87e, codex/ch2-01-20261020. 필수 CH1-03 aada9b28이 main에 없어 그 끝에서 분기(CH1-01/02 포함). 작업 중 게시된 CH1-04 5487245c 결과도 읽고 기존 source pipeline 불변 확인 |
+| 파이프라인 | 기존 export_ch1_area_source.mjs에 stage4 분기37행 추가/17행 삭제. 원 AST·selector·generator·START·regionInit 재사용. stage0/1 재추출 전체 깊은 비교0차이. 제품 map.json/공용6/P3/원본/PNG 변경0 |
+| 새 artifact | ch2_map_source/si4.json 121465byte, schema exoduser.ch2-area-source.v1. 200²/T40·최종40000타일 SHA4e965948…·START4020/7420·게이트metadata y31/출구y33·code3타일0. raw105/카탈로그47·77/path22·RLE798/굴11·900/지역250·200·300·150 |
+| 순수 계약 | stage4_contract.gd의 read_area/validate_area. READY는 동일 참조·source_snapshot_only·runtime_bound/full_stage_ready/visual_verified=false. 오염/미지원은 NOT_READY/reason/raw, 최상위 value 없음. 최종 MAP_OBJS·실효 충돌 NOT_OBSERVED |
+| 자산 / 보호 | CH2 원화29개·47참조의 byte/hash만 기록, 이미지 가공·제품 복사0. 기존 selected tracked2359파일 SHA 동일. Godot 자동 생성 sidecar111개는 OUT 보존, 신규 UID2만 제출 |
+| 신규 검수 | Node11/0·Godot362/0, 신규 격리 EXODUSER-ch2-01-Isolated-20261020. Node는 원 AST/IIFE·path 함수·파일 bytes·CLI 음성검사, Godot는 JSON/순수 계약·오염 거절. Main/World/runtime 연결0 |
+| 회귀 | CH1 Node18/0·asset6/0·pit6/0. Godot CH1-01/02/03=63/0·189/0·75/0, contracts5그룹/실패0, P3002 298/0·P3003 43/0. 맵 Node37건28통과/9실패는 baseline 실패명 동일·새 실패0. 기존 ObjectDB8누수/Camera2D 경고·미이식 전투 보존 |
+| 제출 / 경계 | [CH2-01 보고서](engine/orders/reports/ch2-01_REPORT.md), 원로그 ~/exoduser-wt/_out/ch2-01/. 시각·플레이 가능 인수 아님. 자기 branch push·원격 일치·DONE 후 자기 sparse WT/임시 cache 정리, R 불변 |
+
 ## 2026-10-20 CH1-03 si1 원본 데이터·순수 계약
 
 | id / 적용 위치 | 현재 정확 계약 |
