@@ -84,17 +84,14 @@ func _build_floor() -> void:
 	var surface := ShaderMaterial.new()
 	surface.shader = preload("res://scripts/maps/map11/skin_floor.gdshader")
 	floor_mesh.material = surface
-	# Authored branching cracks: fixed geometry, no noise/sparkle generation.
-	var paths: Array[PackedVector2Array] = [
-		PackedVector2Array([Vector2(-1580,720),Vector2(-1230,590),Vector2(-1060,330),Vector2(-790,210),Vector2(-650,-40),Vector2(-360,-130)]),
-		PackedVector2Array([Vector2(1520,-720),Vector2(1160,-590),Vector2(1050,-320),Vector2(810,-160),Vector2(670,130),Vector2(410,290)]),
-		PackedVector2Array([Vector2(-1060,330),Vector2(-1180,100),Vector2(-1110,-80),Vector2(-1280,-260)]),
-		PackedVector2Array([Vector2(-790,210),Vector2(-550,420),Vector2(-330,430)]),
-		PackedVector2Array([Vector2(1050,-320),Vector2(1240,-90),Vector2(1190,140)]),
-		PackedVector2Array([Vector2(670,130),Vector2(810,380),Vector2(760,600)]),
-		PackedVector2Array([Vector2(-480,1410),Vector2(-410,1190),Vector2(-520,960),Vector2(-360,770),Vector2(-420,590)])]
-	for i in range(paths.size()):
-		_crack(paths[i],i < 2)
+	# MAP11-14: disconnected RGBA fissures share the field material grammar.
+	var fissures:=Node2D.new();fissures.name="IrregularFissureDecals";fissures.z_index=-420;add_child(fissures)
+	var fissure_material:=ShaderMaterial.new();fissure_material.shader=preload("res://scripts/maps/map11/field_decal.gdshader");fissure_material.set_shader_parameter("fissure",true)
+	var sites=[Vector2(-1200,520),Vector2(1050,-430),Vector2(-470,1100),Vector2(550,450),Vector2(-690,-790)]
+	for i in range(sites.size()):
+		for part in range(3):
+			var sprite:=Sprite2D.new();sprite.texture=load("res://assets/map/ch3/floor_objects/prop_ice_gcrack.png");sprite.material=fissure_material
+			sprite.position=sites[i]+Vector2(part*135-100,((i+part)%3-1)*90);sprite.scale=Vector2(260+(i%3)*75,190+part*40)/sprite.texture.get_size();sprite.rotation=i*.79+part*1.1;sprite.flip_h=part==1;fissures.add_child(sprite)
 	var ground := Node2D.new()
 	ground.name = "RGBAFloorDecals"
 	ground.z_index = -435
@@ -103,36 +100,6 @@ func _build_floor() -> void:
 	_decal(ground,"res://assets/map/props/prop_g_root.png",Vector2(880,-220),Vector2(1100,820),.7,false)
 	_decal(ground,"res://assets/map/ch1/floor_objects/flesh_g_0.png",Vector2(-1130,730),Vector2(850,600),.4,true)
 	_decal(ground,"res://assets/map/ch1/floor_objects/flesh_g_0.png",Vector2(920,-830),Vector2(780,560),-.5,true)
-
-func _crack(points: PackedVector2Array, primary: bool) -> void:
-	var spline := Curve2D.new()
-	for i in range(points.size()):
-		var previous: Vector2 = points[maxi(0,i-1)]
-		var next: Vector2 = points[mini(points.size()-1,i+1)]
-		var tangent: Vector2 = (next-previous)*.14
-		spline.add_point(points[i],-tangent,tangent)
-	var smooth: PackedVector2Array = spline.tessellate(5,3.0)
-	var profile := Curve.new()
-	profile.add_point(Vector2(0,.65))
-	profile.add_point(Vector2(.22,1))
-	profile.add_point(Vector2(.6,.55))
-	profile.add_point(Vector2(1,.04))
-	for layer in range(3):
-		var line := Line2D.new()
-		line.points = smooth
-		line.width_curve = profile
-		line.width = [74.0,19.0,7.0][layer] if primary else [34.0,10.0,4.0][layer]
-		line.default_color = [Color(.32,.045,.06,.14),Color("291b20"),Color(.43,.10,.11,.80)][layer]
-		line.antialiased = true
-		line.joint_mode = Line2D.LINE_JOINT_ROUND
-		line.begin_cap_mode = Line2D.LINE_CAP_ROUND
-		line.end_cap_mode = Line2D.LINE_CAP_ROUND
-		line.z_index = -415+layer
-		if layer == 2:
-			var emissive := CanvasItemMaterial.new()
-			emissive.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
-			line.material = emissive
-		add_child(line)
 
 func _decal(parent: Node2D, path: String, foot: Vector2, size_: Vector2, angle: float, tissue: bool) -> void:
 	var sprite := Sprite2D.new()
@@ -367,12 +334,15 @@ func _unhandled_key_input(event: InputEvent) -> void:
 	var index: int = int(event.keycode)-KEY_1
 	if index >= 0 and index < 6: select_board(BOARD_IDS[index])
 
-func _physics_process(_delta: float) -> void:
+func update_product_occlusion(point: Vector2,delta: float) -> void:
 	# Cached sprite refs, scalar proximity fade; no enumeration/reflection API.
 	for row in _rim_sprites:
 		var sprite: Sprite2D = row.sprite
-		var alpha: float = .22 if row.rect.has_point(player.position) and sprite.position.y > player.position.y-100 else 1.0
-		sprite.modulate.a = move_toward(sprite.modulate.a,alpha,_delta*8.0)
+		var alpha: float = .22 if (row.rect.has_point(point) or row.rect.has_point(point-Vector2(0,55))) and sprite.position.y > point.y-100 else 1.0
+		sprite.modulate.a = move_toward(sprite.modulate.a,alpha,delta*8.0)
+
+func _physics_process(_delta: float) -> void:
+	update_product_occlusion(player.position,_delta)
 	tick += 1
 	var direction := Vector2(float(Input.is_physical_key_pressed(KEY_D))-float(Input.is_physical_key_pressed(KEY_A)),float(Input.is_physical_key_pressed(KEY_S))-float(Input.is_physical_key_pressed(KEY_W)))
 	player.velocity = direction.normalized()*280.0

@@ -1,3 +1,5 @@
+> 2026-10-21 MAP11-14 현행 보충: [랜드마크·관문·제품 접합 보고](MAP11_LANDMARK_GATE_20261021.md). Main 필드는 G3/G4 RGBA로 교체, 제품zoom.70/offset(0,-180), 실제player 가림/짧은fade 연결. arena의 곡선 이중선 균열은 불규칙RGBA15fragment로 대체했다. 아래 원 검수 수치/프리뷰 상태는 해당 차수 이력이며 전체 자연전투·시각 승인 주장이 아니다.
+
 # MAP11-10 — root shoulder·수피/피부 접합·바닥 가독성 G3/G4
 
 G1 구조는 임시 승인이다. G2 최신 총괄 눈 검수는 전체를 감싸는 숲 링 PASS이며, 반복·깊이·지역색은 MAP11-10 후속 수정 대상으로 인수했다. latest fetch main `0138c5bb9188d27cee10cb1a901d075092ddb88f`에서 MAP11-09 `283c20779e7a852980cd308b1d6440511a848b7b`를 정상 merge(FF)했다. 이번 결과는 별도 `field_seam_preview.tscn`이며 제품 Main 연결은 없다.

@@ -1,3 +1,5 @@
+> 2026-10-21 MAP11-14 현행 보충: [랜드마크·관문·제품 접합 보고](MAP11_LANDMARK_GATE_20261021.md). Main 필드는 G3/G4 RGBA로 교체, 제품zoom.70/offset(0,-180), 실제player 가림/짧은fade 연결. arena의 곡선 이중선 균열은 불규칙RGBA15fragment로 대체했다. 아래 원 검수 수치/프리뷰 상태는 해당 차수 이력이며 전체 자연전투·시각 승인 주장이 아니다.
+
 # MAP11-01c — 바닥 생체 디테일·배우 접지·국소광 RETOUCH
 
 STATUS=REVIEW_PENDING. 사용자/맥북총괄의 MAP11-01b `b12bf9a1` **RETOUCH**를 반영한 3차 proof다. **VISUAL VERDICT=RETOUCH / 맥북총괄 눈 검수 대기**. 원형R1700·입장zoom.65·배우 표시 크기와 원본 공격 범위는 유지했다. 사용자 지정 **같은 브랜치 codex/map11-01-20261021**에서 작업하며, 시작 최신main `45be76e49d0090316b91a6b7b383d81835e29192`와 인수된1b를 정상merge한 기준 `e71b6567cb2e545729f5ac99bf5a107409e3afbf` 위다. rebase/force/main push0, MAP11-02와 PC MAP11-03 소비자 파일 반입·변경0.

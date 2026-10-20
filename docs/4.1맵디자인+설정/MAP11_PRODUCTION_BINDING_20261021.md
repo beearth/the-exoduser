@@ -1,3 +1,5 @@
+> 2026-10-21 MAP11-14 현행 보충: [랜드마크·관문·제품 접합 보고](MAP11_LANDMARK_GATE_20261021.md). Main 필드는 G3/G4 RGBA로 교체, 제품zoom.70/offset(0,-180), 실제player 가림/짧은fade 연결. arena의 곡선 이중선 균열은 불규칙RGBA15fragment로 대체했다. 아래 원 검수 수치/프리뷰 상태는 해당 차수 이력이며 전체 자연전투·시각 승인 주장이 아니다.
+
 # MAP11 제품 Main 바인딩 — 2026-10-21
 
 MAP11-02·11의 provider/Marker/region/recipe는 변경하지 않는다. Main은 DEMO11-01이 demo stage0일 때 기존 World에 `native_map11_product` 선택을 전달한다. 기본 on, `--map11=off`는 기존 웹 이식 경로다. World 자체 스크립트 identity는 그대로여서 PC 서비스의 owner 검증을 우회하지 않는다.

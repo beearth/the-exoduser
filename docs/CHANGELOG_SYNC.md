@@ -1,3 +1,9 @@
+## 2026-10-21 — MAP11-14 랜드마크·관문·필드/보스룸 시각 접합
+
+- a5ad5e4e + 1ec7b7f3 + e8888106 정상merge. 기존RGBA만으로 D01 시체나무/낮은제단·철창/뼈관문, G3/G4 필드를 실제Main에 연결. 새이미지0.
+- arena 균열은 field형 RGBA15fragment; 실제Main actor에 양공간 가림fade 연결. Marker/geometry/State/전투 writer 유지. .22초 전환fade/제품카메라.70·offset(0,-180).
+- [수치·소유권·MAP PRODUCTION REPORT](4.1맵디자인+설정/MAP11_LANDMARK_GATE_20261021.md). 1080p4장+1x·실Main gate입장 증거 제출, VISUAL RETOUCH/맥북총괄 눈검수 대기. 자연 지역클리어/보스완료/Windows·밀집전투120fps 미검수.
+
 ## 2026-10-21 MAP11-PROD 제품 Main 맵 연결 / DEMO11-45 상자 재개
 
 ## 2026-10-21 MAP11-PROD 제품 인트로 검증 보강
