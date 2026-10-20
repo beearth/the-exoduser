@@ -1,3 +1,12 @@
+## 2026-10-21 DEMO11-19r 실제 성장 투자·예약→PC runtime refresh
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준·권위 | main45be76e49에 PC a28117c1 포함, 별도merge0. 기존 META04/05·rawgrit실제holder·PC Main API만 사용, 보호전투/원본0 |
+| 연결 | Main+12/State+31/-2. stat/passive/grit/plan/reset/queue→실제commit·PCstatus/readback, 실패시할당/XP복구. XP 큐→재계산→새cap heal→handoff. 틱호출/새목록API0 |
+| 검증·인계 | 신규383/0·원문24사례·실제PC거부복구2, 초기숫자비교하니스25실패보존·실패suite만재실행. 기존6suite2827/0 각1회·합3210/0(skip0/ERROR0). 관련회귀결과·줄범위·plan 2→1pass 근거는 [보고서](engine/orders/reports/demo11-19r_REPORT.md). 기존HUD최소표시/새full UI·세이브IO0 |
+| 제출 | META·번역목록·자기WORK_BOARD 갱신, 정상훅·정확경로staging·자기branch push/remote/DONE 뒤WT제거, R불변 |
+
 
 ## 2026-10-21 DEMO11-18 일반 데모 합체·흡수·성급·되돌리기 원장
 
