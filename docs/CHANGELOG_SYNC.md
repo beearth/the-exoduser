@@ -1,3 +1,11 @@
+## 2026-10-21 DEMO11-16 성능 규칙 후속·동일 브랜치 재검증
+
+| 항목 | 근거 |
+|---|---|
+| main·감사 | 명시 fetch 최신aa1eaea5, a894bf49에 이미 포함되어 merge up-to-date. 이번 단위5파일 목록 생성API0·main의3검증기 static cache 확인, 후속 런타임 변경0 |
+| 검증 | 최신main 관련6스위트 각1회12,625/0·SKIP/ERROR0·override0byte. 실제Main 물리300틱 벽시계 5004.509ms/틱당16.6817ms·render719회. headless/60Hz페이싱포함·Performance API0·실창/CPU비용 주장0 |
+| 제출 | [보고서](engine/orders/reports/demo11-16_REPORT.md) 후속 절·[현재 계약](engine/DEMO11_SKILL_DISPATCH_20261021.md). 원로그 _out/demo11-16/perf-followup/. 동일branch 정상push/remoteSHA·기존DONE 새SHA 추가 후 자기WT 제거. 보호 active/ULT HOLD 유지 |
+
 ## 2026-10-21 DEMO11-16 실제 슬롯·4cast 비용/쿨 단일화 (보호 active HOLD)
 
 | 항목 | 구현·검수 근거 |

@@ -40,3 +40,15 @@ Main 공개 API 및 1~4/Space/F/Ctrl/Z 실제 입력이 State의 현재 skillSlo
 실행자가 없는 선택은 `accepted:false, reason:executor_interface_required`와 skill/slot/protected_owner/ultimate를 반환하고 비용·쿨을 만들지 않는다. ULT 실제 효과는 DEMO11-96/97 실행자 인수 후 같은 계약에 연결해야 한다. 자동 slot repair/흡수 시 슬롯 writer·_addSkProf·게임패드 autoAim/재지정 키·터렛 할인 context·실창/소리/PC UI 검수는 미인수다. UI 개편과 맵 제작은 하지 않았다.
 
 관련 P2-005A/B/C/D 및 스킬 추적 문서는 당시 인수 이력을 보존하고 현재 계약 링크를 추가했다. 원로그는 `~/exoduser-wt/_out/demo11-16/`. 정상 훅과 경로 지정 stage→자기 branch push→원격 SHA 일치→DONE(구현/HOLD 구분)→자기 worktree 제거 순서이며 R의 HEAD/브랜치/INDEX/WORK를 시작과 대조한다.
+
+## 성능 후속 — 같은 브랜치, 2026-10-21
+
+명시 fetch로 최신 main `aa1eaea5a1fa70b31eae6fd907662ee13471c08d`를 확인하고 이 브랜치에 `git merge origin/main`을 실행했다. a894bf49가 이미 해당 main을 부모로 갖고 있어 결과는 Already up to date였다. rebase/force/reset0이다.
+
+PC의 [틱 검증 비용 규칙](../../../12퍼포먼스·최적화/GODOT_METHOD_LIST_TICK_COST_20261021.md) §5를 점검했다. 이번 단위 5파일(Main/State/ResourceAuthority/스킬 어댑터/순수 dispatcher)은 목록 생성 API 호출0건이다. main의 QE adapter/resource regen adapter/source regen phase는 static arity cache miss 안에서만 최초1회 get_method_list를 계산한다. 이번 후속 런타임 코드 변경0이며 보호 owner를 수정하지 않았다. 전역 property/signal API 제거 검수로 확대하지 않았고 원 검색 목록은 별도 보존했다.
+
+동일 최신 main에서 관련6스위트를 각1회 재실행했다: 신규393/0·slot_rules12,151/0·시작/HUD27/0·강타12/0·가시덫/돔20/0·얼음보주22/0, 합계12,625/0·SKIP0·최종ERROR0. 이 후속 수치는 위 최초 검사 시점의 기존 회귀5개를 최신 main에서 다시 확인한 결과다. 재실행 실패/기대값 수정0, 실행별 override 종료0byte다. 기존 Camera2D 경고는 원문 보존했다.
+
+고정 물리 벽시계 벤치: 실제 Main, 정상 intro owner로 G.on=true, headless, 60Hz/time_scale1, 워밍업60틱 뒤 요청300틱/실제300틱. 총 **5004.509ms**, 물리1틱 벽시계 평균 **16.6817ms**, 같은 구간 render frame **719회**, frame당 벽시계 평균 **6.9604ms**였다. Performance API 사용0이다. 엔진의 60Hz 페이싱이 포함된 값이며 순수 CPU 비용/실창 FPS/PC 동기화 성능으로 해석하지 않는다. 변경 전 대조 벤치를 이번에 실행하지 않아 인과적 전후 개선 수치를 새로 주장하지 않는다.
+
+후속 원로그·실행 인자·정적 감사·155파일 SHA·벽시계 측정은 `~/exoduser-wt/_out/demo11-16/perf-followup/`에 보존한다. 동일 브랜치 정상 push/remote SHA 확인 뒤 기존 DONE.txt에 새 SHA와 수치를 추가한다. 보호 active 인계·조건부 ULT HOLD 상태는 그대로다.

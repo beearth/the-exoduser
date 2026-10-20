@@ -15,3 +15,11 @@
 원문 근거: G12905–12923/12974–13020/13093–13120(선택·가드·CT), G13262–13301(입력), G28018/28041/28049/28065/28080–28085(공급자), G31960–31996(비용), G45512/46455–46456/46711(쿨). 피해는 기존 4cast가 기존 hurtE 경로를 호출하며 본문 수정0이다. 맵·UI 배치·원본 에셋 변경0이다.
 
 검증과 공용 파일별 정확한 diff 구역은 [보고서](orders/reports/demo11-16_REPORT.md), 원로그는 `~/exoduser-wt/_out/demo11-16/`에 둔다. 헤드리스 입력 검증은 실창·사운드·PC 개편 UI 인수와 구분한다.
+
+## 성능 후속 점검 — 2026-10-21
+
+최신 main `aa1eaea5a1fa70b31eae6fd907662ee13471c08d`는 이미 a894bf49의 부모이며 동일 브랜치에서 명시 fetch 후 정상 merge 결과는 Already up to date였다. [PC 원인·규칙](../12퍼포먼스·최적화/GODOT_METHOD_LIST_TICK_COST_20261021.md) §5를 적용했다.
+
+이번 단위의 Main/State/ResourceAuthority/스킬 어댑터/순수 dispatcher 5파일에는 `get_method_list/get_property_list/get_signal_list` 호출이 0건이다. `_physics_process`와 HUD 쿨 reader/비용 quote·commit에도 새 목록 생성 검증을 추가하지 않았다. main의 QE adapter/resource regen adapter/source regen phase 세 파일은 기존 static `_METHOD_ARITY_CACHE` miss에서 최초1회만 메서드 arity를 계산한다. 이번 후속에서 런타임 코드 변경은 없다. 타 담당 파일에 검색된 기존 property/signal 목록 독해까지 전역 제거했다고 주장하지 않는다.
+
+동일 main에서 신규+직접 관련 5스위트를 각1회 재실행했다. 고정60Hz·time_scale1에서 실제 Main을 정상 intro owner로 열고 60틱 워밍업 뒤 물리300틱 동안 Time의 벽시계·Engine 물리/렌더 frame 차이만 측정했다. Performance API를 쓰지 않았으며 페이싱이 포함된 벽시계 평균을 순수 CPU 실행 비용으로 해석하지 않는다. 결과는 [보고서](orders/reports/demo11-16_REPORT.md) 후속 절과 `_out/demo11-16/perf-followup/`에 남긴다. 보호 active/조건부 ULT HOLD는 이전과 같다.
