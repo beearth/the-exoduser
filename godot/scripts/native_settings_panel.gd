@@ -8,7 +8,6 @@ const TEXT={
 "restore_failed":["저장된 설정을 복원하지 못했습니다.","Saved settings could not be restored."],
 "saved":["설정을 저장했습니다.","Settings saved."],"failed":["설정은 반영됐지만 저장하지 못했습니다.","Settings applied, but could not be saved."],"rejected":["설정을 반영하지 못했습니다.","Settings could not be applied."],
 "note":["키 변경은 제공하지 않습니다. Q 패링 · E 방패(불꽃칼날)","No key remapping. Q Parry · E Shield (Flame Blade)"],
-"music_note":["음악 볼륨은 저장됩니다. 현재 BGM 재생 연결은 대기 중입니다.","Music volume is saved. BGM playback connection is pending."],
 "fps_note":["렌더 상한 설정 · 물리 틱 60Hz 유지 · 성능 벤치 미실시","Render limit · Physics stays at 60 Hz · No benchmark performed"],
 "back":["뒤로","Back"],"title":["설정","SETTINGS"]}
 var controls: Dictionary={}
@@ -79,7 +78,6 @@ func _build() -> void:
 		"sound":
 			_slider(content,"sfxVol",0,100,1,float(opt.get("sfxVol",60)),scale,"sfx")
 			_slider(content,"bgmVol",0,100,1,float(opt.get("bgmVol",60)),scale,"bgm")
-			_label(content,text("music_note"),int(17*scale))
 		"controls":
 			_label(content,text("note"),int(20*scale))
 			var input: Dictionary=_menu.read_input_profile()

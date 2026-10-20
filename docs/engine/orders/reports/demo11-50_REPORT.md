@@ -1,5 +1,13 @@
 # DEMO11-50 — 설정 차단 해소·현재 OPT 설정 UI
 
+## 2026-10-21 사운드 탭 개발 문구 제거
+
+사용자 슬라이더·토글 테마 PASS 이후 지시에 따라 `music_note`의 KO/EN 상수와 사운드 탭 Label 호출만 제거했다(native_settings_panel.gd 최초11·82행, +0/-2). 기존 볼륨 컨트롤/OPT commit/테마 배치는 그대로다. DEMO11-41 BGM 연결은 사용자 인수사항이며 이번 단위에서 재생 owner를 수정하거나 별도 오디오 검증을 주장하지 않는다. 아래 최초 제출 당시 BGM HOLD/화면 명시 기록은 과거 이력이며 현재 화면 계약은 이 절이 우선한다.
+
+최신 fetch origin/main0138c5bb9188d27cee10cb1a901d075092ddb88f를 `git merge --no-edit origin/main`으로 확인했으며 이미61483864의 조상이어서 Already up to date, 추가 merge commit 없음. 번역 목록은 해당 KO/EN 행1개만 byte 삭제: CRLF4225→4225, 기존 bareLF45→44(삭제행이LF), 나머지 byte 동일. 파일 전체 개행 변환0. 공용 Main/State/전투/저장/에셋 자체변경0, 새틱/목록생성API0.
+
+관련 GPU 통합 테스트 `test_demo11_50_settings.gd` **1회53/0·skip0**, 종료0/ERROR0/override0bytes. Main264 Camera2D interpolation WARNING1은 원문 보존. 임포트0/ERROR0. 기존 하니스가 함께 남기는 시스템 캡처는 원로그에만 두고 제출 화면은 사운드 탭1920×1080 **1장**(captures/02-sound.png)이다. 대응 무배율1100×1060 크롭도 보존했다. 실제 캡처를 열어 개발 문구가 사라지고 금빛 슬라이더가 유지되는 것을 확인했다. 사용자 눈 재검수 대기. 원로그 `_out/demo11-50/music-note-20261021/`, 최종 SHA·원격일치·R상태·WT제거는 DONE.txt. 번역/코드 삭제 diff 및 개행 증거는 translation-byte-check.json.
+
 ## 2026-10-21 눈 검수 RETOUCH — 슬라이더·토글
 
 사용자 PASS인 패널·탭·드롭다운·폰트 배치를 보존하고, HSlider의 흑철 트랙(8px)·금빛 채움·뼈색 테두리 마름모 손잡이(22×30)를 적용했다. 헤어라인은 rgba(164,147,115,.5), 채움 #9c8457/#b9a075다. panelFit 및 전체화면 CheckButton은 같은 테마의 88×40 아이콘과 26×26 손잡이, 켬 체크/끔 가로획으로 상태를 구분한다. 기존 native 키보드·드래그·toggled 신호와 commit 경로는 유지한다. 아이콘은 로컬 SVG 코드로 구성하며 원본 이미지 변경0, 새 표시 문구0/추가 번역키0이다. 최종 시각 승인은 맥북총괄 재검수 대기다.

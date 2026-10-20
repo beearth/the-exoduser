@@ -8,7 +8,7 @@
 
 | 제어 | 원본 계약 / 현재 소비자 |
 |---|---|
-| sfxVol / bgmVol | 0..100. 기존 OPT owner commit, sfxVol은 Main 기존 공격 샘플 gain reader가 다음 샘플부터 읽음. 이중 gain을 추가하지 않음. bgmVol은 저장/복원되나 BGM 실제 재생 owner는 아직 HOLD이며 화면에도 명시 |
+| sfxVol / bgmVol | 0..100. 기존 OPT owner commit, sfxVol은 Main 기존 공격 샘플 gain reader가 다음 샘플부터 읽음. 이중 gain을 추가하지 않음. bgmVol은 기존 OPT에 저장/복원한다. 사용자 인수한 DEMO11-41 BGM 연결을 전제로 개발 상태 안내는 게임 화면에서 제거(음원 재생 owner 수정0) |
 | 언어 | 현재 native startup catalog가 지원하는 ko/en만. 현재 OPT.lang과 TranslationServer, 설정/일시정지 UI를 이벤트 시 갱신. 전체 게임 다국어 완료 아님 |
 | FPS 상한 | 원본 S04의30/60/120/144/244/0. OPT.fpsCap과 Engine.max_fps(render) 연결, 물리60Hz 및 원본 frame entry prefix 수정0. 벤치 결과/실제FPS와 상한을 혼동하지 않음 |
 | 전체화면 | source hellcave_screen의 mode/res 사용. OPT에 임의fullscreen 필드 추가0. native Window fullscreen/windowed, headless는 실제 OS 전환 증거가 아님. borderless/해상도 선택 UI는 범위 밖 |
