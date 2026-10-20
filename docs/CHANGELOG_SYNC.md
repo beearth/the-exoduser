@@ -1,3 +1,14 @@
+## 2026-10-21 EC3-05 etype42 시체 흡수·분비 순수 leaf
+
+| id / 적용 위치 | 정확 계약·실제 검수 |
+|---|---|
+| 기준·의존 | fetch 최신main823c24bae + 승인EC3-04 113eb78d 정상merge9258eac1. rebase/reset/force0, 기존main CHANGELOG byte 전부 보존. WORK_BOARD etype47/factory와 신규42 leaf 경로 중복0 |
+| 원본 | G39337–39356. idle밖동결/clock각1회·180+60U reset, ens현재length/index/dead/좌표4읽기순서/Math.hypot strict80·첫일치. HP min(mhp,hp+ToInt32(.15mhp))→corpse.x/y−9999→parts8→독립cached60<d<1200/SpitCd/eShootWind60/D3 |
+| callback·경계 | 순차 ACK/readback 없으면 진행0. 등록시P조회0·나중fire당현재P조회1, eProjAt2.5/.8/D/200/#dd4466/5 후late actor text25. deadpool소유/registry삭제/Playerheal대체/실writer0. source hypot 실제adapter·actor/World/State/바인딩은HOLD, oracle receipt를실제제품증거로집계0 |
+| 재사용·보호 | EC2-02 Draws·기존ToInt32/JS truthy·EC3-02 초기3draw 재사용. 신규leaf/test·UID2·보고서만, 공용/다른담당/기존테스트/저장0줄·기존405파일/R 불변 |
+| 검수 | 신규 첫실행44738/0·원문1890tick/callback2496·허용오차0/skip0/exit0/ERROR0/WARNING0. 회귀10종260284단정/0·12그룹/0·ERROR0. Mac종료WARNING3 원문보존/이전Mac stderr byte동일, 총괄의PC823 WARNING0과구분·원인미확인 |
+| 격리·인계 | EXODUSER-ec3-05-Isolated-20261020·기존각상수, 매Godot pgrep2이상30초대기/override0byte. 명시node인자/출력join·UTF8임시JSON/binary64/source pin. [보고서](engine/orders/reports/ec3-05_REPORT.md), 원로그 ~/exoduser-wt/_out/ec3-05/. 자기branch push/remote일치/DONE후자기WT제거 |
+
 ## 2026-10-20 EC3-04 etype41 guard·강타 순수 상태·명령
 
 | id / 적용 위치 | 정확 계약·실제 검수 |
