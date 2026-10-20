@@ -924,6 +924,53 @@ func _source_initialization_write_error(packet: Dictionary, write_index: int) ->
 		return "source_initializer_owner_lost_during_validation"
 	return _source_initialization_lifecycle_error()
 
+# PC-RUNTIME-STATS — runtime applyStats batch sink for the P-dict fields that
+# have no actor/resource owner. Constructor seam above is unchanged. Only the
+# actual Main-owned refresh module, inside its synchronous commit window.
+const RUNTIME_STAT_REFRESH_PATH = "res://scripts/native_source_player_runtime_stat_refresh.gd"
+const RUNTIME_STAT_REFRESH_P_FIELDS = ["_effStats", "baseAtk", "hpR", "_oocSpeed", "_crystalStats", "mshield", "shield"]
+var _runtime_stat_commits := 0
+
+func validate_native_runtime_stat_refresh(owner: Node, refresh: Object, fields: Dictionary) -> String:
+	var error := _current_error()
+	if not error.is_empty():
+		return error
+	if _initializing or _source_initializer_committing or not is_instance_valid(owner) \
+			or owner != _player.get_parent() or owner.get("source_state") != self or owner.get("world") != _world:
+		return "state_runtime_refresh_owner_mismatch"
+	if not _live(refresh) or refresh.get_script() == null \
+			or refresh.get_script().resource_path != RUNTIME_STAT_REFRESH_PATH \
+			or owner.get("source_runtime_stat_refresh") != refresh:
+		return "state_runtime_refresh_module_mismatch"
+	var window: Variant = refresh.is_native_runtime_stat_refresh_committing(owner)
+	if not window is bool or not window:
+		return "state_runtime_refresh_not_in_commit_window"
+	for field in fields:
+		if field not in RUNTIME_STAT_REFRESH_P_FIELDS:
+			return "state_runtime_refresh_field_denied:" + str(field)
+		var value: Variant = fields[field]
+		if field == "_effStats":
+			if not _initialization_numeric_object(value, ["str", "dex", "int", "vit", "lck"]):
+				return "state_runtime_refresh_effective_stats_invalid"
+		elif field == "_crystalStats":
+			if not _initialization_numeric_object(value, SOURCE_RESOURCES.PARAMETERS.CR_INIT_KEYS):
+				return "state_runtime_refresh_crystal_stats_invalid"
+		elif not _number(value):
+			return "state_runtime_refresh_value_invalid:" + str(field)
+	if fields.has("shield") and float(fields["shield"]) > float(fields.get("mshield", _p.get("mshield", 0))):
+		return "state_runtime_refresh_shield_above_mshield"
+	return ""
+
+func commit_native_runtime_stat_refresh(owner: Node, refresh: Object, fields: Dictionary) -> Dictionary:
+	var error := validate_native_runtime_stat_refresh(owner, refresh, fields)
+	if not error.is_empty():
+		return {"accepted": false, "reason": error}
+	for field in fields:
+		var value: Variant = fields[field]
+		_p[field] = value.duplicate(true) if value is Dictionary else value
+	_runtime_stat_commits += 1
+	return {"accepted": true, "fields": fields.keys(), "commits": _runtime_stat_commits}
+
 static func _initialization_tag(packet: Dictionary, write: Dictionary) -> Dictionary:
 	return {"field": write["field"], "source": write["source"], "kind": packet["kind"],
 		"pass_id": packet["pass_id"] if packet.has("pass_id") else 1}

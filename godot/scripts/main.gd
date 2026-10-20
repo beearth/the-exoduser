@@ -3009,3 +3009,42 @@ func request_native_skill_sample(path: String, gain: float, rate: float) -> void
 		_attack_audio_streams[key]=stream
 		_combat_sound_consumer.install_sample(key,stream)
 	_record_event("native_skill_sample_requested",{"key":key,"gain":gain,"rate":rate,"character":player.get_native_character_profile_snapshot().get("index",-1)})
+
+# PC-RUNTIME-STATS (2026-10-21) — runtime applyStats recalculation entry.
+# The pre-Tree initialization dispatcher stays single-use; this separate owner
+# is created on first request for this actual Main and reuses the original
+# producers. Contract: docs/engine/PC_RUNTIME_STAT_REFRESH_CONTRACT_20261021.md
+const RuntimeStatRefreshScript = preload("res://scripts/native_source_player_runtime_stat_refresh.gd")
+const NATIVE_RUNTIME_STAT_REFRESH_APPLY_STATS = "apply_stats"
+const NATIVE_RUNTIME_STAT_REFRESH_EQUIPMENT = "equipment_refresh"
+var source_runtime_stat_refresh: RefCounted
+
+## mode: "apply_stats" (G applyStats() — stat/passive invest·reset) or
+## "equipment_refresh" (G16287-16292 _refreshEquipmentStats — equip/unequip).
+## Returns the refresh receipt: status/ready/committed/reason/before/after.
+func request_native_runtime_stat_refresh(mode: String, reason: String = "") -> Dictionary:
+	if not _native_main_service_live():
+		return {"status": "REJECTED", "ready": false, "committed": false,
+			"reason": "runtime_stat_refresh_Main_not_live", "mode": mode, "caller_reason": reason}
+	if not is_instance_valid(source_runtime_stat_refresh):
+		var refresh: RefCounted = RuntimeStatRefreshScript.new()
+		var configured: Dictionary = refresh.configure(self)
+		if configured.get("ready") != true:
+			return {"status": "REJECTED", "ready": false, "committed": false,
+				"reason": str(configured.get("reason")), "mode": mode, "caller_reason": reason}
+		source_runtime_stat_refresh = refresh
+	return source_runtime_stat_refresh.refresh(self, mode, reason)
+
+func read_native_runtime_stat_refresh_snapshot() -> Dictionary:
+	if not is_instance_valid(source_runtime_stat_refresh):
+		return {"configured": false, "reason": "runtime_stat_refresh_not_requested"}
+	return source_runtime_stat_refresh.get_snapshot()
+
+## Main owns _lEqCache (_source_l_eq_cache). Only its own refresh module, during
+## an open pass, may clear it (G16289 / recalcSt G16426 _lEqCache=null).
+func invalidate_native_runtime_refresh_legendary_cache(refresh: Object) -> bool:
+	if not is_instance_valid(refresh) or refresh != source_runtime_stat_refresh \
+			or not refresh.is_native_runtime_stat_refresh_active(self):
+		return false
+	_source_l_eq_cache = null
+	return true
