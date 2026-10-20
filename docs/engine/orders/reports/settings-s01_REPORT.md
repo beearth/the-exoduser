@@ -13,7 +13,7 @@
 | 사전 확인 | 최신 `WORK_BOARD.md` 및 병합된 `FDG_SOURCE_TRACE_SETTINGS_20261020.md` S01. 총괄 지시로 기존 OPT owner 협의 조건 충족, 해당 파일은 읽기만 수행 |
 | 코드 신규 | `godot/scripts/native_settings_read_view.gd` |
 | 테스트 신규 | `godot/tests/test_native_settings_read_view.gd` |
-| 문서 | 신규 이 보고서 + 정상 커밋 훅 필수 `docs/CHANGELOG_SYNC.md`에 이번 변경9줄 추가. 기존 추적/설계 docs·WORK_BOARD 수정0 |
+| 문서 | 신규 이 보고서 + 정상 커밋 훅 필수 `docs/CHANGELOG_SYNC.md`에 최초 변경9줄을 보존하고, 총괄 후속 지시 형식의 상단 절·표 추가. 기존 추적/설계 docs·WORK_BOARD 수정0 |
 | 기존 제품·테스트 변경 | 0줄. Main/HUD/World/Player/hurtE/G/P owner 6파일과 `source_options_state.gd` 최종 main merge 직후/검증 종료 SHA-256 동일 |
 | 보호 | `docs/2_3`·Q/E 의미/판정·저장 형식 변경0. 저장/복원/리바인딩/reset 실행 구현0 |
 | R | HEAD `dd49171c5b88e211575a41f185395d6c0a14b184`, branch `codex/mac-live-play-time-main-20261017` 보존. R/game.html을 원본으로 사용하지 않음 |
@@ -106,3 +106,11 @@ S01 신규 Main/unit 테스트에는 `godot/override.cfg`로 `config/use_custom_
 ## 구현 체크포인트 SHA
 
 구현·테스트·위 검증 결과·필수 변경로그를 포함한 정상 커밋은 **`517825ebf017f105484fb81b01fe98f31fb8f21f`**다. 부모는 최종 기준 main `9528ea35b429498fcf42fe3723008219ed0ed7e1`이며 정상 커밋 훅을 통과했다. 이 절은 해당 구현 SHA를 기록하는 문서 후속 커밋이다. 최종 제출 ref/SHA와 원격 일치 확인은 `_out/settings-s01/DONE.txt`에 기록한다.
+
+## 총괄 후속 지시 — 변경로그 형식 보강
+
+앞선 구현·정상 push 후 총괄이 명시한 `## 2026-10-20 SETTINGS-S01 …` 절과 `| id / 적용 위치 | 현재 정확 계약 |` 표를 `docs/CHANGELOG_SYNC.md` 맨 위에 추가했다. 기존 전체 byte·기존 S01 말미 기록은 수정·삭제 없이 보존했다. 이 후속 변경은 문서2개뿐이며 제품·테스트 재수정0, 위 660/0·계약5군은 앞서 실행한 동일 구현의 결과다. 문서 보강을 새 테스트 실행으로 보고하지 않는다.
+
+`node tools/docs-sync-check.mjs --staged`를 변경 전과 문서2경로 staging 후 직접 실행했다. 두 실행 모두 exit0·stdout/stderr 무출력이며 다른 문서 요구는 없었다. 스크립트는 non-doc staged 파일이 없으면 즉시 반환한다. 이번 후속은 문서 전용이므로 이를 새 제품 검증으로 해석하지 않는다. 정상 pre-commit 훅을 유지하고 `--no-verify`·`ALLOW_MISSING_DOCS` 우회 없이 후속 커밋한다. 실행 원로그는 `_out/settings-s01/changelog-format/`에 보존하고 최종 제출 SHA는 DONE.txt를 갱신한다.
+
+큐의 최신 main 공지(19a713578 이상·P3-002)는 이미 앞선 기준 `9528ea35b429498fcf42fe3723008219ed0ed7e1`에 인수했고 그 상태로 최종 회귀를 실행했다.

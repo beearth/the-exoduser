@@ -1,3 +1,16 @@
+## 2026-10-20 SETTINGS-S01 원본 설정 default·읽기 전용 view
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 신규 제품 / `godot/scripts/native_settings_read_view.gd` | 원본 `game.html:6311` OPT38개 비교용 사본, browser parts80/Electron100. 실제 OPT ref·raw 값·추가 key 보존. 누락/owner 상실은 NOT_READY, 보충·clamp·저장0 |
+| 실제 owner / 변경 경계 | 기존 `source_options_state.gd`35개는 무수정. 누락 textScale/panelFit/diffV2 3개를 진단 ref로 노출하며 usable options를 만들지 않음. 공용6파일·기존 테스트 수정0 |
+| 신규 테스트 / `godot/tests/test_native_settings_read_view.gd` | S01 격리 `EXODUSER-settings-s01-Isolated-20261020`에서 unit112/0·actual Main12/0. 실제 지정 Godot4.7.2 실행, override 종료 후0byte |
+| 원본 reset 근거 / `game.html:6188–6197,48752–48753` | 초기20/reset18, irisToggle·bladeToggle 생략 그대로 4단정 기록. reset 적용은 S03이며 이번 구현0 |
+| 최종 main / 기존 회귀 | 기준 `9528ea35b429498fcf42fe3723008219ed0ed7e1` ff merge 후 기존 OPT11/0·starter148/0·지역43/0·HUD36/0·소환굴298/0. 신규 포함 합660단정·check/0실패 + contracts5군/실패0. 기존 회귀는 각 guard의 전용 격리 이름 사용 |
+| G·지역·HUD | starter G48(원본40+지역7+`_totalSpawned`1, 원본30625), 지역 total23/60/53/32 합168, 시작 HUD0/32를 실제 회귀 로그로 확인 |
+| 범위 밖·보호 | 설정 UI·저장복원·리바인딩·FPS cap 적용·Tier 자동검출·실물 패드·실플레이/시각 검수 미구현·미검수. docs/2_3·Q/E·세이브 형식 보호, 변경0 |
+| 제출·원로그 | 구현 `517825ebf017f105484fb81b01fe98f31fb8f21f`, 자기 branch `codex/settings-s01-20261020`. 원로그 `~/exoduser-wt/_out/settings-s01/main-9528ea35/`, [상세 보고서](engine/orders/reports/settings-s01_REPORT.md). 최초 실패·보완 이력 보존, 훅 우회0 |
+
 > 2026-10-17 ENGINE 현행: callback **12/25·미13**. play_time은 el_mul 바로 다음에 동일 Services self의 arity0 Callable로 등록했다. owner 첫 격리 공개 API 검수는 인수됐으며 자연 clock·실게임 인수는 미확인이다. D9는 직전 공통 소스 인수이며, 이번 main/I/R 소스 정렬은 아래 통합 정본과 단위 receipt의 실제 HEAD·tree를 기준으로 확인한다. V12 후보는 소스 인수·첫 FAIL·별도 보완 한정성공으로 구분하며 제품 copy·World hook은 수행하지 않았다. 아래 이전 단계 숫자·원검수 결과는 당시 이력으로 보존한다. 실제 local/remote commit 상태는 단위 receipt를 따른다.
 
 > 2026-10-17 ENGINE WIP 현행: 실제 callback **9/25·미16**. 신규 격리 행동41/41과 신규 map 경계 static9/9만 인수 범위다. 원 첫 parse 실패는 보존한다. 이 WIP를 main/R/served·전체 게임 최신화 완료로 해석하지 않는다.
