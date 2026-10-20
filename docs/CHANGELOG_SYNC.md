@@ -1,3 +1,15 @@
+## 2026-10-20 trace-elites 재개 — 정예·오라 원본 추적 문서
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 범위 | 신규 `docs/engine/FDG_SOURCE_TRACE_ELITES_20261020.md` 1개 + 본 최상단 절만 제출. 제품 코드·테스트·기존 설계 docs·작업판·R 변경0. 중단 전 별도 REPORT/기타 WIP는 보존·제출 제외 |
+| 최신 기준 | fetch 후 origin/main `284d7faf49295b2f5061937a47ce96038032ed3c`. game.html 65692행·index.html 4742행이 구 c3cf8ce6과 byte 동일하여 모든 원본 행 번호 재검증. 기존 브랜치 base 유지·main 병합/force/push0 |
+| 정예·오라 | 접사31 + 팩 오라4 =35종. M21 등록삭제·M09/M11 정의만·M17 비활성. 스폰/RNG·오라 합성·틱·피해·사망·전파·표시·저장 경계 추적 |
+| 불일치·의존 | docs 불일치10건과 기존 Godot 차이4건을 표로 보고. M29/M30 기존 kernel·M22 피해 일부·M14/수호/M26 halt 구분. P2-008a/b actor·TP·clone 담당 참조만 |
+| 후속안 | EL-01~09·EL-04a~c 총12단위, 1번은 선택 규칙 producer의 구현 지시서·공용0줄 목표. 이번 구현0 |
+| 검증 | 재개 Godot 실행/import/테스트0. 최신 blob·카탈로그·전체 식별자 행색인·24설계문서·12선행추적 정적 대조. 과거 c3cf8ce6 회귀6통과/1실패와 JS 기록은 과거 증거로만 보존·최신 PASS 주장0 |
+| 보호·인계 | docs/2_3·Q/E·blackBean·세이브형식 불변. 자기 branch만 정상 commit/push, 지정 `_out/trace-elites/DONE.txt`에 SHA·요약 인계 |
+
 > 2026-10-17 ENGINE 현행: callback **12/25·미13**. play_time은 el_mul 바로 다음에 동일 Services self의 arity0 Callable로 등록했다. owner 첫 격리 공개 API 검수는 인수됐으며 자연 clock·실게임 인수는 미확인이다. D9는 직전 공통 소스 인수이며, 이번 main/I/R 소스 정렬은 아래 통합 정본과 단위 receipt의 실제 HEAD·tree를 기준으로 확인한다. V12 후보는 소스 인수·첫 FAIL·별도 보완 한정성공으로 구분하며 제품 copy·World hook은 수행하지 않았다. 아래 이전 단계 숫자·원검수 결과는 당시 이력으로 보존한다. 실제 local/remote commit 상태는 단위 receipt를 따른다.
 
 > 2026-10-17 ENGINE WIP 현행: 실제 callback **9/25·미16**. 신규 격리 행동41/41과 신규 map 경계 static9/9만 인수 범위다. 원 첫 parse 실패는 보존한다. 이 WIP를 main/R/served·전체 게임 최신화 완료로 해석하지 않는다.
