@@ -485,3 +485,315 @@ P2005B_RESULT {"assertions":12,"failures":0,"fallback_paths_used":false,"forced_
 ```text
 P2005C_RESULT {"assertions":20,"failures":0,"fallback_paths_used":false,"forced_actor_fields":2,"groups":[{"assertions":12,"failures":0,"group":"spike_trap_cast_zone_and_dot"},{"assertions":8,"failures":0,"group":"holy_dome_cast_regen_and_cd_boost"}],"observations":{"dome":{"presence":true,"zone":{"lv":1,"maxT":750.0,"r":520.0,"t":10.0,"type":"holyDome","x":3420.28466796875,"y":6698.6240234375}},"spike":{"cast_log":[{"cd":600.0,"dmg":563,"lv":1,"skill":"spikeTrap"},{"rejected":true,"skill":"spikeTrap"}],"hits":1,"zone":[{"_tickTimer":24.0,"dmg":563,"el":0,"lv":1,"maxT":600.0,"r":300.0,"t":49.0,"type":"spikeTrap","x":3420.0,"y":6700.0},{"lv":1,"maxT":750.0,"r":520.0,"t":10.0,"type":"holyDome","x":3420.28466796875,"y":6698.6240234375}]}},"skipped":[]}
 ```
+
+## 후속 진단 — 2026-10-20
+
+**후속 실행 진단 완료·검수 대기.** verbose 누수 2종에서 실제 MP3 자원 경로와 stream/playback 클래스·ObjectID를 확보했다. 근접 검사 수는 동일 실행 조건 안에서 달라졌고, 별도 완료한 공격력 관측 5회에서도 무기 atk·첫 피해·그룹별 검사 수가 달라졌다. 조명 실창 1회에서는 헤드리스의 토글 대체 경로 대신 픽셀 검사 3개가 수행되어 12/0·exit0·ERROR0이었다. 종료 오디오 잔존을 수정한 결과는 아니다.
+
+대상은 같은 브랜치 `codex/mac-verify-20261020`, worktree `/Users/fordeargamers/exoduser-wt/mac-verify`, 후속 착수 HEAD `394c013886259c1a387b498b0087afd91c6060d0`다. 이는 제품 코드가 기존 `d3b672fea878ff99a9f110f4a6d8adf86b1e6898`에서 바뀌지 않은 문서 제출 HEAD다. main 병합·rebase·브랜치 전환 없이 그대로 실행했다. Godot 원본 경로와 버전은 위와 같고 4.7.2를 다시 확인했다. 기존 import 캐시를 사용했으며 이번 추가 import는 0회다.
+
+로그는 `/Users/fordeargamers/exoduser-wt/_out/mac-verify/followup-20261020/`에만 추가했다. 기존 원로그·첫 보고서·이전 DONE을 덮어쓰지 않았다(`previous-report.md`, `previous-DONE.txt`). 각 실행의 정확한 argv·격리 이름·exit·시간·SHA-256은 같은 basename의 `.json`과 아래 manifest에 보존했다. override는 각 실행 전 해당 테스트 USERDIR 상수로 작성하고 매번 삭제했다. 실제 저장 폴더는 사용하지 않았고, R은 읽기로 보존 상태만 확인했다. 기존 게임 창과 다른 Codex의 자료는 수정·조작하지 않았다. 코드·테스트 및 PC 소유 `native_skill_slots.gd`는 읽기만 수행했다.
+
+### 1. verbose: 종료 누수 실물 식별
+
+기존 headless 명령에 `--verbose`만 추가했다. 격리 이름은 각각 `EXODUSER-P2005B-Isolated-20261020`, `EXODUSER-P2005C-Isolated-20261020`이다. 아래 ObjectID는 이 실행의 값이며 다음 실행에서 유지되는 고정 ID가 아니다.
+
+| 테스트 | 검사/실패 | exit | stderr ERROR 줄 | 누수 객체 클래스 | 남은 자원 |
+|---|---:|---:|---:|---|---|
+| `test_p2005b_giant_slam` | 12/0 | 0 | 1 | AudioStreamMP3 1 + AudioStreamPlaybackMP3 1, 각각 ref1 | `res://assets/sfx/skill/heavy_hit.mp3` |
+| `test_p2005c_spike_holy` | 20/0 | 0 | 1 | AudioStreamMP3 4 + AudioStreamPlaybackMP3 4, 각각 ref1 | `heavy_hit.mp3`, `spike_trap.mp3`, `melee_hit1.mp3`, `voice_holyDome2.mp3` (전부 `res://assets/sfx/skill/`) |
+
+#### giant-slam-verbose 원문
+
+stdout 종료 진단 발췌:
+
+```text
+Leaked instance: AudioStreamMP3:9223372193033883276 - Reference count: 1
+Leaked instance: AudioStreamPlaybackMP3:9223372267675718656 - Reference count: 1
+Hint: Leaked instances typically happen when nodes are removed from the scene tree (with `remove_child()`) but not freed (with `free()` or `queue_free()`).
+Resource still in use: res://assets/sfx/skill/heavy_hit.mp3 (AudioStreamMP3)
+Orphan StringName: Master (static: 0, total: 2)
+StringName: 1 unclaimed string names at exit.
+```
+
+stderr 종료 진단 발췌:
+
+```text
+WARNING: 2 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+ERROR: 1 resources still in use at exit.
+   at: clear (core/io/resource.cpp:817)
+```
+
+#### spike-holy-verbose 원문
+
+stdout 종료 진단 발췌:
+
+```text
+Leaked instance: AudioStreamMP3:9223372193268764300 - Reference count: 1
+Leaked instance: AudioStreamMP3:9223372268095149049 - Reference count: 1
+Leaked instance: AudioStreamPlaybackMP3:9223372268145480705 - Reference count: 1
+Leaked instance: AudioStreamPlaybackMP3:9223372268934009858 - Reference count: 1
+Leaked instance: AudioStreamMP3:9223372268883678213 - Reference count: 1
+Leaked instance: AudioStreamPlaybackMP3:9223372269571544077 - Reference count: 1
+Leaked instance: AudioStreamPlaybackMP3:9223372269605098510 - Reference count: 1
+Leaked instance: AudioStreamMP3:9223372269521212431 - Reference count: 1
+Hint: Leaked instances typically happen when nodes are removed from the scene tree (with `remove_child()`) but not freed (with `free()` or `queue_free()`).
+Resource still in use: res://assets/sfx/skill/heavy_hit.mp3 (AudioStreamMP3)
+Resource still in use: res://assets/sfx/skill/spike_trap.mp3 (AudioStreamMP3)
+Resource still in use: res://assets/sfx/skill/melee_hit1.mp3 (AudioStreamMP3)
+Resource still in use: res://assets/sfx/skill/voice_holyDome2.mp3 (AudioStreamMP3)
+Orphan StringName: Master (static: 0, total: 8)
+StringName: 1 unclaimed string names at exit.
+```
+
+stderr 종료 진단 발췌:
+
+```text
+WARNING: 8 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+ERROR: 4 resources still in use at exit.
+   at: clear (core/io/resource.cpp:817)
+```
+
+#### 소유자 행 근거와 판정
+
+아래 행은 이번 실행의 제품 코드 기준이며 파일은 수정하지 않았다.
+
+| 실제 남은 경로 | 읽기로 확인한 소유·재생 경로 (`godot/scripts/native_skill_slots.gd`) |
+|---|---|
+| heavy_hit.mp3 | `:96,113–117`의 재사용 `_audio` 생성·load, `:294–297`에서 play |
+| spike_trap.mp3 | `:335–338`에서 `_play_sample()` 호출 |
+| melee_hit1.mp3 | `:477–478`의 확률적 DOT 피격음 `_play_sample()` 호출 |
+| voice_holyDome2.mp3 | `:365–367`에서 두 음성 중 선택 후 `_play_sample()` 호출 |
+| one_shot 공통 | `:498–507`: 자식 AudioStreamPlayer2D 생성·stream load·play, finished→queue_free |
+
+**관측으로 확인된 것:** 종료 시 잔존한 자원은 위 스킬 MP3와 MP3 playback이다. 이전 보고서의 “스킬 오디오 수명 경계 추정” 중 자원 종류·파일 경로가 실제 로그로 확인되었다.
+
+**원인 추정:** 테스트 B `:39–43,51–56`, C `:41–45,53–58`의 Main remove_child/free 직후 quit과 오디오 정리 수명 경계가 유력하다. 테스트는 실제 free를 호출하므로 verbose의 일반적인 Hint만으로 free 누락이라고 판단하지 않는다. 개별 Playback ObjectID와 파일의 1:1 대응, 엔진 오디오 종료 문제인지 사용자 teardown 문제인지는 로그만으로 확정할 수 없다. 누수 노드의 별도 사용자 이름·생성 stack도 이 출력에는 없다. 제품/하니스 수정·오디오 설정 변경·누수 해결 선언은 하지 않았다.
+
+### 2. 근접 hurtE 반복: 분모와 장비 공격력 분포
+
+격리는 모두 `EXODUSER-P1002E-Isolated-20261019`, 동일 소스·Godot·USERDIR·기본 그룹·headless·seed 비고정 조건이다. 격리 폴더를 reset/삭제하거나 특정 결과가 나올 때까지 반복하지 않았다. 총 실행 수를 숨기지 않고 아래 두 5회 집합으로 나눈다.
+
+#### 최초 동일 조건 5회 — 검사 수 확인, 공격력은 미관측
+
+처음 사용한 breakpoint 인수는 `res://tests/test_p1002e_melee_hurte.gd::45`였다. 5회 모두 debugger break가 0회여서 stdin의 읽기 명령은 실행되지 않았다. 테스트 RESULT는 정상 종료했지만 장비 공격력 칸은 **미관측**이며 추정값으로 채우지 않았다. 검사 수 비결정성은 이 5회만으로도 관측됐다.
+
+| 회차·로그 basename | providers_ready | shield_absorb_hits | overflow_and_kill_pipeline | 총 검사/실패 | 무기 atk | exit / ERROR |
+|---|---:|---:|---:|---:|---|---|
+| `melee-repeat-01` | 15 | 27 | 18 | 60/0 | 미관측 | 0 / 0 |
+| `melee-repeat-02` | 15 | 63 | 24 | 102/0 | 미관측 | 0 / 0 |
+| `melee-repeat-03` | 15 | 36 | 18 | 69/0 | 미관측 | 0 / 0 |
+| `melee-repeat-04` | 15 | 36 | 18 | 69/0 | 미관측 | 0 / 0 |
+| `melee-repeat-05` | 15 | 36 | 20 | 71/0 | 미관측 | 0 / 0 |
+
+총 검사 수 분포(검사 수:빈도): **60: 1회, 69: 2회, 71: 1회, 102: 1회**. 범위는 60–102다.
+
+#### 공격력 관측을 보완한 동일 조건 5회
+
+breakpoint 인수 구분자를 `res://tests/test_p1002e_melee_hurte.gd:45`로 정정한 뒤 별도 5회를 같은 명령·stdin으로 실행했다. 전투 중 중단점을 두지 않고 모든 그룹의 검사가 끝난 **cleanup 직전 45행**에서 정확히 1회 멈췄다. 코드/테스트를 수정하지 않고 아래 두 값만 읽은 뒤 debugger 중단점을 지우고 continue했다. 읽기 시점은 cleanup 직전이며 테스트 전반의 시간에 영향이 전혀 없었다고 주장하지 않는다.
+
+```text
+p active_main.source_state._inventory.equipped.weapon.atk
+p melee_resolved[0]["damage"]
+delete
+continue
+```
+
+이 두 p 출력의 순서는 **실제 장착 무기의 atk**, **해당 실행 첫 melee_contact_resolved.damage**다. 전체 raw stdout과 `.stdin`, `.json`의 debugger_numeric_outputs에 그대로 남겼다. 읽기 표현식에 상태 대입이나 공격/장비 변경 호출은 없다. local debugger의 print/continue와 breakpoint 처리 방식은 [공식 local debugger 구현](https://github.com/godotengine/godot/blob/master/core/debugger/local_debugger.cpp#L140), [공식 breakpoint parser](https://github.com/godotengine/godot/blob/master/core/debugger/engine_debugger.cpp#L147)를 참고했고, 실제 4.7.2에서의 중단·값·재개는 아래 원로그로 확인했다.
+
+| 회차·로그 basename | providers_ready | shield_absorb_hits | overflow_and_kill_pipeline | 총 검사/실패 | weapon.atk 관측 | 첫 melee damage 관측 | shield / kill 타수 | exit / ERROR |
+|---|---:|---:|---:|---:|---:|---:|---|---|
+| `melee-observed-01` | 15 | 54 | 24 | 93/0 | 5 | 154 | 6 / 6 | 0 / 0 |
+| `melee-observed-02` | 15 | 54 | 22 | 91/0 | 9 | 170 | 6 / 5 | 0 / 0 |
+| `melee-observed-03` | 15 | 45 | 22 | 82/0 | 12 | 183 | 5 / 5 | 0 / 0 |
+| `melee-observed-04` | 15 | 63 | 24 | 102/0 | 2 | 141 | 7 / 6 | 0 / 0 |
+| `melee-observed-05` | 15 | 54 | 22 | 91/0 | 9 | 170 | 6 / 5 | 0 / 0 |
+
+| 관측 항목 | 5회 분포(값:빈도) |
+|---|---|
+| 총 검사 수 | 82: 1회, 91: 2회, 93: 1회, 102: 1회 |
+| weapon.atk | 2: 1회, 5: 1회, 9: 2회, 12: 1회 |
+| 첫 melee damage | 141: 1회, 154: 1회, 170: 2회, 183: 1회 |
+
+**판정:** 검사 수는 동일 조건 집합 안에서 변하므로 고정 분모가 아니다. providers_ready는 15로 고정이고 shield/kill 반복 검사가 달라졌다. 장착 atk와 실제 첫 피해도 함께 변하는 것을 직접 관측했다. 시작 장비의 난수 경로와 실제 타수별 `_check()` 반복이라는 기존 코드 근거에 부합한다. 다만 5회 표본으로 모든 변동의 단일 원인·분포 확률이나 PC102의 정확한 장비값을 확정하지 않는다. 검사 수 차이만으로 플랫폼 결함이라고 판단하지 않는다.
+
+최초5회와 관측 보완5회 모두 stderr ERROR는 0이나 일부 실행에 ObjectDB 누수 WARNING이 있었다. 아래에 10회 전부의 경고 유무를 보존한다. breakpoint가 실제로 발생하지 않은 최초 실행에서도 WARNING이 있으므로 debugger 중단/읽기 때문에 발생했다고 단정하지 않는다. 정확한 객체 이름은 이 비verbose E 원로그에 없으며 추가 verbose 반복·수정은 하지 않았다.
+
+| 집합·회차 | ObjectDB WARNING 원문 |
+|---|---|
+| `melee-repeat-01` | 없음 |
+| `melee-repeat-02` | `WARNING: 2 ObjectDB instances were leaked at exit (run with `--verbose` for details).` |
+| `melee-repeat-03` | `WARNING: 2 ObjectDB instances were leaked at exit (run with `--verbose` for details).` |
+| `melee-repeat-04` | 없음 |
+| `melee-repeat-05` | `WARNING: 2 ObjectDB instances were leaked at exit (run with `--verbose` for details).` |
+| `melee-observed-01` | `WARNING: 2 ObjectDB instances were leaked at exit (run with `--verbose` for details).` |
+| `melee-observed-02` | 없음 |
+| `melee-observed-03` | `WARNING: 4 ObjectDB instances were leaked at exit (run with `--verbose` for details).` |
+| `melee-observed-04` | `WARNING: 2 ObjectDB instances were leaked at exit (run with `--verbose` for details).` |
+| `melee-observed-05` | `WARNING: 2 ObjectDB instances were leaked at exit (run with `--verbose` for details).` |
+
+### 3. 조명 실제 창 1회: 픽셀 검사 확인
+
+기존 명령에서 `--headless`를 제거하고 다른 renderer/audio 강제 인수를 추가하지 않은 1회다. 격리는 테스트 USERDIR 상수 `EXODUSER-P2003A-Isolated-20261020`이다. 별도 테스트 프로세스가 창을 생성한 뒤 테스트의 quit으로 종료했으며 이미 열린 게임 창을 재시작/조작하지 않았다. 권한/창 생성 BLOCKED는 없었다.
+
+stdout의 renderer 원문:
+
+```text
+OpenGL API 4.1 Metal - 90.5 - Compatibility - Using Device: Apple - Apple M5 Pro
+```
+
+| 항목 | 결과 |
+|---|---|
+| 전체 / 구조 / 픽셀 그룹 | 12/0 / 9/0 / 3/0 |
+| exit / stderr ERROR | 0 / 0 |
+| 원래 headless 경로와 차이 | observations.brightness가 `headless_dummy_renderer_probe_covers` 문자열이 아니라 실제 on/off 픽셀 수치 Dictionary |
+| on_edge / off_edge | 30.2348581780355 / 39.1508571249579 |
+| on_center / off_center | 40.2548873912572 / 44.983801925541 |
+| 122행: on_edge < off_edge×0.8 | 30.2348581780355 < 31.320685699966322 → 통과 |
+| 123행: on_center < off_center | 40.2548873912572 < 44.983801925541 → 통과 |
+| 124–126행: on_edge/on_center < off_edge/off_center | 0.7510853994986479 < 0.8703323296186031 → 통과 |
+
+group overlay_darkens_screen=3과 실제 brightness Dictionary로 `test_p2003a_lighting.gd:122–126`의 세 픽셀 검사가 수행된 것을 확인했다. 기존 headless ERROR를 없앤 코드 변경이 아니며, 이번 한 프레임 비교를 전체 조명/시각 품질 PASS나 실플레이 인수로 확대하지 않는다.
+
+### 실행 수·보존·인수 경계
+
+후속 실행은 실제 총 **13회**(verbose2 + 최초 근접5 + 공격력 관측 보완5 + 실창 조명1)다. 전부 exit0·assertion 실패0이며 stderr ERROR는 verbose 두 실행에 각1줄, 합계2줄이다. 원래 22종의 ERROR3 및 수치는 이전 기록 그대로 보존했다. B/C 종료 오디오 정리는 미해결이며 수정은 PC 소유 담당의 후속 판단 범위다.
+
+`before.json`의 테스트4개·PC 소유 스킬 스크립트 SHA-256과 종료 시 파일을 대조한다. Git diff의 제품/테스트 변경은 0이어야 하며 R의 HEAD/branch·tracked INDEX/WORK 및 override 삭제는 `after.json`에 기록한다. 새 결과만 이 절에 append했고 기존 보고서 prefix byte는 그대로다. 원격은 같은 자기 브랜치에만 비강제 push하고 ref SHA를 읽어 대조한 뒤 DONE을 갱신한다.
+
+후속 보고서 체크포인트 SHA: 제출 시 기록. 최종 제출 SHA는 `~/exoduser-wt/_out/mac-verify/DONE.txt` 및 `submission-followup.json`의 실제 원격 대조 결과를 따른다.
+
+### 후속 RESULT·debugger 읽기 원문
+
+13회 모두의 마지막 RESULT 줄은 원문 그대로 아래에 추가한다. 보완 5회의 숫자 앞 `debug>`는 실제 debugger stdout이며 삭제하지 않았다. 각 실행의 나머지 원문은 같은 slug의 `.out/.err/.stdin`에 보존했다.
+
+#### giant-slam-verbose
+
+격리 `EXODUSER-P2005B-Isolated-20261020`; exit 0; ERROR 1; 8.547초. 원로그 `/Users/fordeargamers/exoduser-wt/_out/mac-verify/followup-20261020/giant-slam-verbose.out`, `.err`, `.json`.
+
+```text
+P2005B_RESULT {"assertions":12,"failures":0,"fallback_paths_used":false,"forced_actor_fields":1,"groups":[{"assertions":9,"failures":0,"group":"cast_costs_and_damage"},{"assertions":3,"failures":0,"group":"cooldown_gate_and_hud_sweep"}],"observations":{"cast":[{"cd":1800.0,"dmg":294,"hits":1,"lv":1,"radius":500.0}],"cooldown":{"skSlot1":{"pct":0.996666666666667,"text":"29.9s"}}},"skipped":[]}
+```
+
+#### spike-holy-verbose
+
+격리 `EXODUSER-P2005C-Isolated-20261020`; exit 0; ERROR 1; 9.047초. 원로그 `/Users/fordeargamers/exoduser-wt/_out/mac-verify/followup-20261020/spike-holy-verbose.out`, `.err`, `.json`.
+
+```text
+P2005C_RESULT {"assertions":20,"failures":0,"fallback_paths_used":false,"forced_actor_fields":2,"groups":[{"assertions":12,"failures":0,"group":"spike_trap_cast_zone_and_dot"},{"assertions":8,"failures":0,"group":"holy_dome_cast_regen_and_cd_boost"}],"observations":{"dome":{"presence":true,"zone":{"lv":1,"maxT":750.0,"r":520.0,"t":10.0,"type":"holyDome","x":3420.98461914062,"y":6699.58056640625}},"spike":{"cast_log":[{"cd":600.0,"dmg":280,"lv":1,"skill":"spikeTrap"},{"rejected":true,"skill":"spikeTrap"}],"hits":1,"zone":[{"_tickTimer":24.0,"dmg":280,"el":0,"lv":1,"maxT":600.0,"r":300.0,"t":49.0,"type":"spikeTrap","x":3420.0,"y":6700.0},{"lv":1,"maxT":750.0,"r":520.0,"t":10.0,"type":"holyDome","x":3420.98461914062,"y":6699.58056640625}]}},"skipped":[]}
+```
+
+#### melee-repeat-01
+
+격리 `EXODUSER-P1002E-Isolated-20261019`; exit 0; ERROR 0; 11.599초. 원로그 `/Users/fordeargamers/exoduser-wt/_out/mac-verify/followup-20261020/melee-repeat-01.out`, `.err`, `.json`.
+
+```text
+P1002E_RESULT {"assertions":60,"failures":0,"fallback_paths_used":false,"forced_actor_fields":13,"groups":[{"assertions":15,"failures":0,"group":"providers_ready"},{"assertions":27,"failures":0,"group":"shield_absorb_hits"},{"assertions":18,"failures":0,"group":"overflow_and_kill_pipeline"}],"observations":{"expected_stat_crit":0.0,"expected_stat_crit_dmg":1.5,"final_g":{"_chainCnt":1,"combo":1,"kills":1,"mats":1005,"rifts":0},"kill_hits_total":3,"kill_rng_draws":["crit","normal_revive","revive_as_ghoul","gore_common_or_rare","gore_piece_index","gore_large_extra","death_zone","potion_gate","potion_type","drop:drop_gate","drop:drop_rarity","drop:drop_slot","drop:drop_element","drop:atk_skew","drop:base_weapon_antirevive","drop:base_shield_hp","drop:base_shield_st","drop:base_shield_antirevive","drop:base_boots_st","drop:base_boots_hp","drop:base_armor_st","drop:base_armor_hp","drop:base_bow_antirevive","drop:base_gloves_hp","drop:base_gloves_st","drop:base_pants_st","drop:base_pants_hp","drop:base_cape_hp","drop:base_cape_st","drop:base_belt_shield","drop:base_belt_mp","drop:base_necklace_shield","drop:base_necklace_mp","drop:base_ring1_shield","drop:base_ring1_mp","drop:base_ring2_shield","drop:base_ring2_mp","drop:base_bracelet_shield","drop:base_bracelet_mp","drop:base_headband_shield","drop:base_headband_mp","drop:base_ossuary_mp","drop:item_id","drop:weapon_type","drop:weapon_range","drop:weapon_bonus_range","drop:implicit_value","drop:drop_jitter_x","drop:drop_jitter_y","drop:bone_gate","drop:crystal_gate","drop:stone_gate"],"play_time_not_read_on_path":"NOT_READY","provider_statuses":{"el_mul":"READY","eq_affix":"READY","l_eq":"READY","melee_ref":"READY","p_atk_mul":"READY","p_dot_pool":"READY","parry_lesson_active":"READY","play_time":"NOT_READY","player_view":"READY","rand":"READY","stat_str":"READY","u_eq":"READY"},"shield_phase_hits":3},"public_attack_api_used":true,"public_play_evidence":false,"skipped":[]}
+```
+
+#### melee-repeat-02
+
+격리 `EXODUSER-P1002E-Isolated-20261019`; exit 0; ERROR 0; 19.751초. 원로그 `/Users/fordeargamers/exoduser-wt/_out/mac-verify/followup-20261020/melee-repeat-02.out`, `.err`, `.json`.
+
+```text
+P1002E_RESULT {"assertions":102,"failures":0,"fallback_paths_used":false,"forced_actor_fields":27,"groups":[{"assertions":15,"failures":0,"group":"providers_ready"},{"assertions":63,"failures":0,"group":"shield_absorb_hits"},{"assertions":24,"failures":0,"group":"overflow_and_kill_pipeline"}],"observations":{"expected_stat_crit":0.0,"expected_stat_crit_dmg":1.5,"final_g":{"_chainCnt":1,"combo":1,"kills":1,"mats":1005,"rifts":0},"kill_hits_total":6,"kill_rng_draws":["crit","normal_revive","gore_common_or_rare","gore_piece_index","gore_large_extra","death_zone","potion_gate","potion_type","drop:drop_gate","drop:bone_gate","drop:crystal_gate","drop:stone_gate"],"play_time_not_read_on_path":"NOT_READY","provider_statuses":{"el_mul":"READY","eq_affix":"READY","l_eq":"READY","melee_ref":"READY","p_atk_mul":"READY","p_dot_pool":"READY","parry_lesson_active":"READY","play_time":"NOT_READY","player_view":"READY","rand":"READY","stat_str":"READY","u_eq":"READY"},"shield_phase_hits":7},"public_attack_api_used":true,"public_play_evidence":false,"skipped":[]}
+```
+
+#### melee-repeat-03
+
+격리 `EXODUSER-P1002E-Isolated-20261019`; exit 0; ERROR 0; 11.833초. 원로그 `/Users/fordeargamers/exoduser-wt/_out/mac-verify/followup-20261020/melee-repeat-03.out`, `.err`, `.json`.
+
+```text
+P1002E_RESULT {"assertions":69,"failures":0,"fallback_paths_used":false,"forced_actor_fields":15,"groups":[{"assertions":15,"failures":0,"group":"providers_ready"},{"assertions":36,"failures":0,"group":"shield_absorb_hits"},{"assertions":18,"failures":0,"group":"overflow_and_kill_pipeline"}],"observations":{"expected_stat_crit":0.0,"expected_stat_crit_dmg":1.5,"final_g":{"_chainCnt":1,"combo":1,"kills":1,"mats":1005,"rifts":0},"kill_hits_total":3,"kill_rng_draws":["crit","normal_revive","revive_as_ghoul","gore_common_or_rare","gore_piece_index","gore_large_extra","death_zone","potion_gate","potion_type","drop:drop_gate","drop:bone_gate","drop:crystal_gate","drop:stone_gate"],"play_time_not_read_on_path":"NOT_READY","provider_statuses":{"el_mul":"READY","eq_affix":"READY","l_eq":"READY","melee_ref":"READY","p_atk_mul":"READY","p_dot_pool":"READY","parry_lesson_active":"READY","play_time":"NOT_READY","player_view":"READY","rand":"READY","stat_str":"READY","u_eq":"READY"},"shield_phase_hits":4},"public_attack_api_used":true,"public_play_evidence":false,"skipped":[]}
+```
+
+#### melee-repeat-04
+
+격리 `EXODUSER-P1002E-Isolated-20261019`; exit 0; ERROR 0; 11.698초. 원로그 `/Users/fordeargamers/exoduser-wt/_out/mac-verify/followup-20261020/melee-repeat-04.out`, `.err`, `.json`.
+
+```text
+P1002E_RESULT {"assertions":69,"failures":0,"fallback_paths_used":false,"forced_actor_fields":15,"groups":[{"assertions":15,"failures":0,"group":"providers_ready"},{"assertions":36,"failures":0,"group":"shield_absorb_hits"},{"assertions":18,"failures":0,"group":"overflow_and_kill_pipeline"}],"observations":{"expected_stat_crit":0.0,"expected_stat_crit_dmg":1.5,"final_g":{"_chainCnt":1,"combo":1,"kills":1,"mats":1004,"rifts":0},"kill_hits_total":3,"kill_rng_draws":["crit","normal_revive","revive_as_ghoul","gore_common_or_rare","gore_piece_index","gore_large_extra","death_zone","potion_gate","potion_type","drop:drop_gate","drop:drop_rarity","drop:drop_slot","drop:drop_element","drop:atk_skew","drop:base_weapon_antirevive","drop:base_shield_hp","drop:base_shield_st","drop:base_shield_antirevive","drop:base_boots_st","drop:base_boots_hp","drop:base_armor_st","drop:base_armor_hp","drop:base_bow_antirevive","drop:base_gloves_hp","drop:base_gloves_st","drop:base_pants_st","drop:base_pants_hp","drop:base_cape_hp","drop:base_cape_st","drop:base_belt_shield","drop:base_belt_mp","drop:base_necklace_shield","drop:base_necklace_mp","drop:base_ring1_shield","drop:base_ring1_mp","drop:base_ring2_shield","drop:base_ring2_mp","drop:base_bracelet_shield","drop:base_bracelet_mp","drop:base_headband_shield","drop:base_headband_mp","drop:base_ossuary_mp","drop:item_id","drop:stat_def","drop:stat_bonus_st","drop:pants_bonus_hp","drop:armor_stat_count_r1","drop:affix_weight","drop:affix_value","drop:affix_weight","drop:affix_value","drop:implicit_value","drop:drop_jitter_x","drop:drop_jitter_y","drop:bone_gate","drop:crystal_gate","drop:stone_gate"],"play_time_not_read_on_path":"NOT_READY","provider_statuses":{"el_mul":"READY","eq_affix":"READY","l_eq":"READY","melee_ref":"READY","p_atk_mul":"READY","p_dot_pool":"READY","parry_lesson_active":"READY","play_time":"NOT_READY","player_view":"READY","rand":"READY","stat_str":"READY","u_eq":"READY"},"shield_phase_hits":4},"public_attack_api_used":true,"public_play_evidence":false,"skipped":[]}
+```
+
+#### melee-repeat-05
+
+격리 `EXODUSER-P1002E-Isolated-20261019`; exit 0; ERROR 0; 12.807초. 원로그 `/Users/fordeargamers/exoduser-wt/_out/mac-verify/followup-20261020/melee-repeat-05.out`, `.err`, `.json`.
+
+```text
+P1002E_RESULT {"assertions":71,"failures":0,"fallback_paths_used":false,"forced_actor_fields":17,"groups":[{"assertions":15,"failures":0,"group":"providers_ready"},{"assertions":36,"failures":0,"group":"shield_absorb_hits"},{"assertions":20,"failures":0,"group":"overflow_and_kill_pipeline"}],"observations":{"expected_stat_crit":0.0,"expected_stat_crit_dmg":1.5,"final_g":{"_chainCnt":1,"combo":1,"kills":1,"mats":1004,"rifts":0},"kill_hits_total":4,"kill_rng_draws":["crit","normal_revive","gore_common_or_rare","gore_piece_index","gore_large_extra","death_zone","potion_gate","potion_type","drop:drop_gate","drop:bone_gate","drop:crystal_gate","drop:stone_gate"],"play_time_not_read_on_path":"NOT_READY","provider_statuses":{"el_mul":"READY","eq_affix":"READY","l_eq":"READY","melee_ref":"READY","p_atk_mul":"READY","p_dot_pool":"READY","parry_lesson_active":"READY","play_time":"NOT_READY","player_view":"READY","rand":"READY","stat_str":"READY","u_eq":"READY"},"shield_phase_hits":4},"public_attack_api_used":true,"public_play_evidence":false,"skipped":[]}
+```
+
+#### melee-observed-01
+
+격리 `EXODUSER-P1002E-Isolated-20261019`; exit 0; ERROR 0; 21.069초. 원로그 `/Users/fordeargamers/exoduser-wt/_out/mac-verify/followup-20261020/melee-observed-01.out`, `.err`, `.json`.
+
+```text
+Debugger Break, Reason: 'Breakpoint'
+*Frame 0 - res://tests/test_p1002e_melee_hurte.gd:45 in function '_run'
+Enter "help" for assistance.
+debug> 5
+debug> 154
+debug> debug> P1002E_RESULT {"assertions":93,"failures":0,"fallback_paths_used":false,"forced_actor_fields":27,"groups":[{"assertions":15,"failures":0,"group":"providers_ready"},{"assertions":54,"failures":0,"group":"shield_absorb_hits"},{"assertions":24,"failures":0,"group":"overflow_and_kill_pipeline"}],"observations":{"expected_stat_crit":0.0,"expected_stat_crit_dmg":1.5,"final_g":{"_chainCnt":1,"combo":1,"kills":1,"mats":1004,"rifts":0},"kill_hits_total":6,"kill_rng_draws":["crit","normal_revive","gore_common_or_rare","gore_piece_index","gore_large_extra","death_zone","potion_gate","potion_type","drop:drop_gate","drop:bone_gate","drop:crystal_gate","drop:stone_gate"],"play_time_not_read_on_path":"NOT_READY","provider_statuses":{"el_mul":"READY","eq_affix":"READY","l_eq":"READY","melee_ref":"READY","p_atk_mul":"READY","p_dot_pool":"READY","parry_lesson_active":"READY","play_time":"NOT_READY","player_view":"READY","rand":"READY","stat_str":"READY","u_eq":"READY"},"shield_phase_hits":6},"public_attack_api_used":true,"public_play_evidence":false,"skipped":[]}
+```
+
+#### melee-observed-02
+
+격리 `EXODUSER-P1002E-Isolated-20261019`; exit 0; ERROR 0; 22.459초. 원로그 `/Users/fordeargamers/exoduser-wt/_out/mac-verify/followup-20261020/melee-observed-02.out`, `.err`, `.json`.
+
+```text
+Debugger Break, Reason: 'Breakpoint'
+*Frame 0 - res://tests/test_p1002e_melee_hurte.gd:45 in function '_run'
+Enter "help" for assistance.
+debug> 9
+debug> 170
+debug> debug> P1002E_RESULT {"assertions":91,"failures":0,"fallback_paths_used":false,"forced_actor_fields":23,"groups":[{"assertions":15,"failures":0,"group":"providers_ready"},{"assertions":54,"failures":0,"group":"shield_absorb_hits"},{"assertions":22,"failures":0,"group":"overflow_and_kill_pipeline"}],"observations":{"expected_stat_crit":0.0,"expected_stat_crit_dmg":1.5,"final_g":{"_chainCnt":1,"combo":1,"kills":1,"mats":1005,"rifts":0},"kill_hits_total":5,"kill_rng_draws":["crit","normal_revive","gore_common_or_rare","gore_piece_index","gore_large_extra","death_zone","potion_gate","potion_type","drop:drop_gate","drop:drop_rarity","drop:drop_slot","drop:drop_element","drop:atk_skew","drop:base_weapon_antirevive","drop:base_shield_hp","drop:base_shield_st","drop:base_shield_antirevive","drop:base_boots_st","drop:base_boots_hp","drop:base_armor_st","drop:base_armor_hp","drop:base_bow_antirevive","drop:base_gloves_hp","drop:base_gloves_st","drop:base_pants_st","drop:base_pants_hp","drop:base_cape_hp","drop:base_cape_st","drop:base_belt_shield","drop:base_belt_mp","drop:base_necklace_shield","drop:base_necklace_mp","drop:base_ring1_shield","drop:base_ring1_mp","drop:base_ring2_shield","drop:base_ring2_mp","drop:base_bracelet_shield","drop:base_bracelet_mp","drop:base_headband_shield","drop:base_headband_mp","drop:base_ossuary_mp","drop:item_id","drop:stat_edef","drop:ring_affix1","drop:ring_affix2","drop:acc_lck","drop:acc_grit","drop:acc_stat_pick","drop:acc_stat_value","drop:affix_weight","drop:affix_value","drop:affix_weight","drop:affix_value","drop:implicit_value","drop:drop_jitter_x","drop:drop_jitter_y","drop:bone_gate","drop:crystal_gate","drop:crystal_id","drop:crystal_star","drop:crystal_quality","drop:stone_gate"],"play_time_not_read_on_path":"NOT_READY","provider_statuses":{"el_mul":"READY","eq_affix":"READY","l_eq":"READY","melee_ref":"READY","p_atk_mul":"READY","p_dot_pool":"READY","parry_lesson_active":"READY","play_time":"NOT_READY","player_view":"READY","rand":"READY","stat_str":"READY","u_eq":"READY"},"shield_phase_hits":6},"public_attack_api_used":true,"public_play_evidence":false,"skipped":[]}
+```
+
+#### melee-observed-03
+
+격리 `EXODUSER-P1002E-Isolated-20261019`; exit 0; ERROR 0; 15.214초. 원로그 `/Users/fordeargamers/exoduser-wt/_out/mac-verify/followup-20261020/melee-observed-03.out`, `.err`, `.json`.
+
+```text
+Debugger Break, Reason: 'Breakpoint'
+*Frame 0 - res://tests/test_p1002e_melee_hurte.gd:45 in function '_run'
+Enter "help" for assistance.
+debug> 12
+debug> 183
+debug> debug> P1002E_RESULT {"assertions":82,"failures":0,"fallback_paths_used":false,"forced_actor_fields":21,"groups":[{"assertions":15,"failures":0,"group":"providers_ready"},{"assertions":45,"failures":0,"group":"shield_absorb_hits"},{"assertions":22,"failures":0,"group":"overflow_and_kill_pipeline"}],"observations":{"expected_stat_crit":0.0,"expected_stat_crit_dmg":1.5,"final_g":{"_chainCnt":1,"combo":1,"kills":1,"mats":1004,"rifts":0},"kill_hits_total":5,"kill_rng_draws":["crit","normal_revive","gore_common_or_rare","gore_piece_index","gore_large_extra","death_zone","potion_gate","potion_type","drop:drop_gate","drop:bone_gate","drop:crystal_gate","drop:stone_gate"],"play_time_not_read_on_path":"NOT_READY","provider_statuses":{"el_mul":"READY","eq_affix":"READY","l_eq":"READY","melee_ref":"READY","p_atk_mul":"READY","p_dot_pool":"READY","parry_lesson_active":"READY","play_time":"NOT_READY","player_view":"READY","rand":"READY","stat_str":"READY","u_eq":"READY"},"shield_phase_hits":5},"public_attack_api_used":true,"public_play_evidence":false,"skipped":[]}
+```
+
+#### melee-observed-04
+
+격리 `EXODUSER-P1002E-Isolated-20261019`; exit 0; ERROR 0; 17.169초. 원로그 `/Users/fordeargamers/exoduser-wt/_out/mac-verify/followup-20261020/melee-observed-04.out`, `.err`, `.json`.
+
+```text
+Debugger Break, Reason: 'Breakpoint'
+*Frame 0 - res://tests/test_p1002e_melee_hurte.gd:45 in function '_run'
+Enter "help" for assistance.
+debug> 2
+debug> 141
+debug> debug> P1002E_RESULT {"assertions":102,"failures":0,"fallback_paths_used":false,"forced_actor_fields":27,"groups":[{"assertions":15,"failures":0,"group":"providers_ready"},{"assertions":63,"failures":0,"group":"shield_absorb_hits"},{"assertions":24,"failures":0,"group":"overflow_and_kill_pipeline"}],"observations":{"expected_stat_crit":0.0,"expected_stat_crit_dmg":1.5,"final_g":{"_chainCnt":1,"combo":1,"kills":1,"mats":1005,"rifts":0},"kill_hits_total":6,"kill_rng_draws":["crit","normal_revive","revive_as_ghoul","gore_common_or_rare","gore_piece_index","gore_large_extra","death_zone","potion_gate","potion_type","drop:drop_gate","drop:bone_gate","drop:crystal_gate","drop:stone_gate"],"play_time_not_read_on_path":"NOT_READY","provider_statuses":{"el_mul":"READY","eq_affix":"READY","l_eq":"READY","melee_ref":"READY","p_atk_mul":"READY","p_dot_pool":"READY","parry_lesson_active":"READY","play_time":"NOT_READY","player_view":"READY","rand":"READY","stat_str":"READY","u_eq":"READY"},"shield_phase_hits":7},"public_attack_api_used":true,"public_play_evidence":false,"skipped":[]}
+```
+
+#### melee-observed-05
+
+격리 `EXODUSER-P1002E-Isolated-20261019`; exit 0; ERROR 0; 19.408초. 원로그 `/Users/fordeargamers/exoduser-wt/_out/mac-verify/followup-20261020/melee-observed-05.out`, `.err`, `.json`.
+
+```text
+Debugger Break, Reason: 'Breakpoint'
+*Frame 0 - res://tests/test_p1002e_melee_hurte.gd:45 in function '_run'
+Enter "help" for assistance.
+debug> 9
+debug> 170
+debug> debug> P1002E_RESULT {"assertions":91,"failures":0,"fallback_paths_used":false,"forced_actor_fields":23,"groups":[{"assertions":15,"failures":0,"group":"providers_ready"},{"assertions":54,"failures":0,"group":"shield_absorb_hits"},{"assertions":22,"failures":0,"group":"overflow_and_kill_pipeline"}],"observations":{"expected_stat_crit":0.0,"expected_stat_crit_dmg":1.5,"final_g":{"_chainCnt":1,"combo":1,"kills":1,"mats":1004,"rifts":0},"kill_hits_total":5,"kill_rng_draws":["crit","normal_revive","revive_as_ghoul","gore_common_or_rare","gore_piece_index","gore_large_extra","death_zone","potion_gate","potion_type","drop:drop_gate","drop:drop_rarity","drop:drop_slot","drop:drop_element","drop:atk_skew","drop:base_weapon_antirevive","drop:base_shield_hp","drop:base_shield_st","drop:base_shield_antirevive","drop:base_boots_st","drop:base_boots_hp","drop:base_armor_st","drop:base_armor_hp","drop:base_bow_antirevive","drop:base_gloves_hp","drop:base_gloves_st","drop:base_pants_st","drop:base_pants_hp","drop:base_cape_hp","drop:base_cape_st","drop:base_belt_shield","drop:base_belt_mp","drop:base_necklace_shield","drop:base_necklace_mp","drop:base_ring1_shield","drop:base_ring1_mp","drop:base_ring2_shield","drop:base_ring2_mp","drop:base_bracelet_shield","drop:base_bracelet_mp","drop:base_headband_shield","drop:base_headband_mp","drop:base_ossuary_mp","drop:item_id","drop:stat_edef","drop:bracelet_type","drop:implicit_value","drop:drop_jitter_x","drop:drop_jitter_y","drop:bone_gate","drop:crystal_gate","drop:stone_gate"],"play_time_not_read_on_path":"NOT_READY","provider_statuses":{"el_mul":"READY","eq_affix":"READY","l_eq":"READY","melee_ref":"READY","p_atk_mul":"READY","p_dot_pool":"READY","parry_lesson_active":"READY","play_time":"NOT_READY","player_view":"READY","rand":"READY","stat_str":"READY","u_eq":"READY"},"shield_phase_hits":6},"public_attack_api_used":true,"public_play_evidence":false,"skipped":[]}
+```
+
+#### lighting-window
+
+격리 `EXODUSER-P2003A-Isolated-20261020`; exit 0; ERROR 0; 10.22초. 원로그 `/Users/fordeargamers/exoduser-wt/_out/mac-verify/followup-20261020/lighting-window.out`, `.err`, `.json`.
+
+```text
+P2003A_RESULT {"assertions":12,"failures":0,"fallback_paths_used":false,"forced_actor_fields":0,"groups":[{"assertions":9,"failures":0,"group":"overlay_structure_and_params"},{"assertions":3,"failures":0,"group":"overlay_darkens_screen"}],"observations":{"brightness":{"off_center":44.983801925541,"off_edge":39.1508571249579,"on_center":40.2548873912572,"on_edge":30.2348581780355},"params":{"light_a":0.83000751868256}},"skipped":[]}
+```
