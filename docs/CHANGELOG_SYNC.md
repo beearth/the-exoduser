@@ -1,3 +1,15 @@
+## 2026-10-20 SND-03 원본 frame queue 순수 phase
+
+| id / 항목 | 현재 계약 |
+|---|---|
+| 기준 / 범위 | main284d7faf의 game.html12296–12326/12358–12370. SND-02 8b4ca2f2 의존에서 새WT분기. queue_phase.gd·새test·원본JS generator/fixture 신규4파일. 기존 제품·공용6파일·기존 테스트·원본 에셋0줄 |
+| enqueue | 보이스 치환 후 key 입력. gx<1만vol곱·.01미만drop→일반30ms stamp→numeric rate0/NaN은1→rate×(.92+.16r), 허용당RNG1. priority/skill/footstep unshift LIFO·일반FIFO. 카탈로그 없는key 임의거부0 |
+| frame | desktop/mobile active48/16·frame6/3·category2/1. priority는queue admission상한우회하되 frame/category count포함. live active읽기·audio_time1회, n0/1 gain/pitch1/1, n≥2 max(.08,.5^(n−1))/max(.7,1−.05(n−1)) |
+| 실패·정리 | dispatch 성공후seen/cnt증가. 성공·skip·실패 모두queue폐기/frame count기존key값0/sb_cd양수감소, last stamp유지. JS throw는backend실패packet으로명시, 임의 GDScript예외catch·실제재생기보장아님 |
+| 실측 | 신규606단정/0실패, 원본JS32시나리오76단계·2107leaf 불일치0(수치오차≤1e−12). contracts5그룹/0·정책1194/0·catalog687/0, 위4종stderr비어있음. 웹10pass/0fail |
+| 기존 Main 회귀 | p2001c 45/0·skipped0·exit0·ERROR0·death sound dispatch1. Camera2D WARNING1/ObjectDB WARNING1(객체2개)잔류를보존하며 종료clean PASS로합산하지않음 |
+| 보존·제출 | 기존tracked game.html/godot1314파일byte불변. 에셋생성/복사/변환0, 검증엔진cache1006파일만동일byte준비·import0. Godot전count2이상30초대기·매회override후0byte. 정상훅·자기branch만push. [보고서·원로그·한계](engine/orders/reports/snd-03_REPORT.md) |
+
 ## 2026-10-20 SND-02 원본 샘플·보이스 치환·선언 라우팅 카탈로그
 
 | id / 항목 | 현재 계약 |
