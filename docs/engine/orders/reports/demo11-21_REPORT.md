@@ -36,7 +36,7 @@
 | p2006a-pickup | 17단정 / 0실패 | 0 / 0 / 0 / 0 | 8.255 |
 | p2006b-render | 1단정 / 0실패 | 0 / 0 / 0 / 0 | 8.088 |
 
-최초 new-01은 기능 24/0이었으나 드랍·획득 MP3 playback 4개/리소스2개가 종료에 남아 실패 처리했다. 제품은 이미 stop/stream=null을 수행하므로 새 하니스만 Main free 뒤 0.25초 오디오 믹싱 스레드 정리 대기를 추가했다. 음향·단정24개를 유지한 new-02 재실행은 ERROR/ObjectDB/resource0이다. 기존 world도 18/0 뒤 같은 Audio MP3 3개·ObjectDB7이 남아 실패했다. world/pickup의 종료 하니스에 같은 0.25초 대기만 추가했고 검사18/17을 유지했다. world는 실패 후1회 재실행, pickup/render는 각1회다. 최초 로그·소유자 진단을 모두 보존하며 최초 PASS를 합산하지 않았다.
+최초 new-01은 기능 24/0이었으나 드랍·획득 MP3의 playback 2개+stream 2개(ObjectDB4)/리소스2개가 종료에 남아 실패 처리했다. 제품은 이미 stop/stream=null을 수행하므로 새 하니스만 Main free 뒤 0.25초 오디오 믹싱 스레드 정리 대기를 추가했다. 음향·단정24개를 유지한 new-02 재실행은 ERROR/ObjectDB/resource0이다. 기존 world도 18/0 뒤 같은 Audio MP3 3개·ObjectDB7이 남아 실패했다. world/pickup의 종료 하니스에 같은 0.25초 대기만 추가했고 검사18/17을 유지했다. world는 실패 후1회 재실행, pickup/render는 각1회다. 최초 로그·소유자 진단을 모두 보존하며 최초 PASS를 합산하지 않았다.
 
 Godot 4.7.2 headless --verbose 총 7회(종료 실패2+정상5). 새 테스트는 EXODUSER-demo11-21-Isolated-20261021, 기존 world/pickup은 EXODUSER-P2006A-Isolated-20261020, render는 EXODUSER-P2006B-Render-Isolated-20261020을 그대로 사용했다. 지정 pgrep으로 실행 직전 count<2를 확인했고 2 이상일 때 30초씩 9회 대기했다. override는 매 run 설정 후 finally에서 0byte로 비웠다. 출력은 외부 파일에 리다이렉트하고 RESULT/FAIL/ERROR만 좁혀 확인했다. 관련 테스트 외의 전투·전체 회귀를 추가하지 않았다.
 
