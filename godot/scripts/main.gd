@@ -106,6 +106,7 @@ var _native_source_object_registration: Dictionary = {}
 
 # Policy is selected only by the production boot, never URL/test metadata.
 var _native_demo11_policy: Dictionary = {}
+var native_demo_boss_actor: Node2D
 
 func read_native_demo_policy() -> Dictionary:
 	return _native_demo11_policy.duplicate(true) if not _native_demo11_policy.is_empty() else {"status": "NOT_READY", "reason": "boot_not_started"}
@@ -114,6 +115,21 @@ func evaluate_native_demo_exp_gate(state: Dictionary, today: String, in_loop: bo
 	if _native_demo11_policy.get("status") != "READY":
 		return {"allowed": false, "reason": "boot_not_started", "state": state.duplicate(true)}
 	return Demo11Authority.exp_gate(state, today, in_loop)
+
+func read_native_demo_boss() -> Dictionary:
+	return native_demo_boss_actor.snapshot() if is_instance_valid(native_demo_boss_actor) else {"status":"NOT_READY","reason":"actor_not_installed"}
+
+func spawn_native_demo_boss(request: Dictionary) -> Dictionary:
+	if not is_instance_valid(native_demo_boss_actor) or request.get("si") != read_native_demo_policy().get("stage"):
+		return {"status":"REJECTED","reason":"demo_actor_or_stage_unavailable"}
+	var current: Variant = source_state.read_current_p() if is_instance_valid(source_state) else null
+	if not current is Dictionary: return {"status":"NOT_READY","reason":"current_player_unavailable"}
+	var inputs := request.duplicate(true)
+	inputs["player_level"] = current.lv
+	return native_demo_boss_actor.spawn(inputs)
+
+func bind_native_demo_boss_owner(command: String, handler: Callable) -> bool:
+	return is_instance_valid(native_demo_boss_actor) and native_demo_boss_actor.bind_owner(command,handler)
 
 func _ready() -> void:
 	_native_demo11_policy = Demo11Authority.boot_manifest("demo")
@@ -305,6 +321,7 @@ func _ready() -> void:
 	_bind_native_intro_curtain_view()
 	_bind_native_startup_services()
 	source_intro_sequence = IntroCurtainSequenceScript.install_native_boot(self) # P2-001i
+	native_demo_boss_actor = preload("res://scripts/native_demo11_boss_actor.gd").install_native_boot(self) # DEMO11-34
 	var metrics_timer := Timer.new()
 	metrics_timer.wait_time = 0.1
 	metrics_timer.process_mode = Node.PROCESS_MODE_ALWAYS

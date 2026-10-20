@@ -1,3 +1,11 @@
+## 2026-10-21 DEMO11-34 stage0 보스 actor·요청 assembler
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준·범위 | main01051599 + DEMO11-01 65f55e76 + BC08 체인adc90ec7 정상merge=4fd1323c. Main +17/-0로 actor 설치·spawn·조회·owner API. BC01~10/State/피해·패링·HP/poise·저장·맵0줄. |
+| 검증 | 신규167/0 + phase PC readback28/0, 기존BC01~10 354093/0·데모권위22/0·인트로18/0. 실패165/4 및28/1 원문 보존·해당 실패 검사만 수정 재실행. 통과 기존 각1회·검사 약화0. |
+| 인계·한계 | [공개 계약·공용 줄·보고서](engine/orders/reports/demo11-34_REPORT.md). 자연 arena·source clock/prefix·탄/VFX/SFX 및 PC36/49 보호 owner는 미연결 대기, 가짜 ack 없음. 원로그 ~/exoduser-wt/_out/demo11-34/, 자기push/remoteSHA/DONE뒤WT제거·R불변. |
+
 ## 2026-10-21 DEMO11-01 Main 부팅의 1-1 데모 권위
 
 | 항목 | 구현·검수 근거 |
