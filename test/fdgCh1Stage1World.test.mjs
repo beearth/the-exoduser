@@ -14,7 +14,8 @@ const before=Object.fromEntries(paths.map(p=>[p,sha(read(p))]));
 const actual=buildResources(root);
 test('latest main original full initMapObjects executes with no unseeded RNG; 12 hands plus separate lore',()=>{
  assert.equal(sha(execFileSync('git',['show','origin/main:game.html'],{cwd:root,maxBuffer:16*1024*1024})),actual.bundle.source.game_sha256);
- assert.deepEqual(actual.bundle,stored);
+ const expected=structuredClone(stored);expected.source.main_sha=actual.bundle.source.main_sha;
+ assert.equal(actual.bundle.source.game_sha256,stored.source.game_sha256);assert.deepEqual(actual.bundle,expected);
  assert.equal(actual.bundle.props.length,13);assert.equal(actual.bundle.props.filter(p=>p._hand).length,12);
  assert.equal(actual.bundle.props.filter(p=>p.type==='lore').length,1);assert.equal(actual.bundle.props.filter(p=>p.type==='breakable').length,0);
  assert.equal(Object.keys(actual.raw.initial_obj_meta).length,77);

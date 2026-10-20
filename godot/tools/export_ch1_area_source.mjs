@@ -1,4 +1,4 @@
-// CH1-01/03: read native source into NEW stage0/1 snapshots, never map.json/PNG.
+// CH1-01/03/05: read native source into NEW stage0/1/2 snapshots, never map.json/PNG.
 // Stage0 base 284d7faf / stage1 main e556b617; unchanged game SHA 4d911cdd...; exact ranges below.
 import fs from 'node:fs';
 import path from 'node:path';
@@ -28,7 +28,7 @@ export function captureJSON(value, undefinedPaths = [], at = '', active = new Se
 }
 
 export function buildAreaSnapshot(sourceRoot, {stage = 0, seed = 20261020} = {}) {
-  if (![0,1].includes(stage)) throw new Error('UNSUPPORTED_STAGE: only stages 0 and 1 are supported');
+  if (![0,1,2].includes(stage)) throw new Error('UNSUPPORTED_STAGE: only stages 0, 1 and 2 are supported');
   if (!Number.isInteger(seed) || seed < 0 || seed > 0xffffffff) throw new Error('Invalid uint32 seed');
   const root = fs.realpathSync(sourceRoot);
   const {parseExpressionAt} = createRequire(path.join(root, 'package.json'))('acorn');
@@ -105,6 +105,9 @@ export function buildAreaSnapshot(sourceRoot, {stage = 0, seed = 20261020} = {})
     initial_obj_meta:_OBJ_META,ch1_deco_raw:_CH_DECO[0],chapter_stages:CHAPTER_STAGES,
     spawn_holes_final:G.spawnHoles.map(h=>({...h,count:_spawnHoleCount(h.size,${stage})})),
     total_spawned:G._totalSpawned,exit_center_tile:[_exitCX,_exitCY]})`);
+  if (stage === 2) Object.assign(generated,evaluate(`({composition_raw:_MAP_COMPOSE[2],
+    source_state:{is_tile_rle:G._isTileRLE,si_to_hell:SI_TO_HELL,si_to_floor:SI_TO_FLOOR,initial_map_objects:Array.from(MAP_OBJS)},
+    template_tile_rle:template.tileRLE})`));
   const undefinedPaths = [], data = captureJSON(generated,undefinedPaths);
   if (data.tiles.length !== 40000) throw new Error('Incomplete native tile grid');
   const totals = captureJSON(evaluate('G._regions.map(r=>r.total)'));
@@ -128,7 +131,7 @@ export function buildAreaSnapshot(sourceRoot, {stage = 0, seed = 20261020} = {})
     geometry.editor_tile_rle_sha256=sha(JSON.stringify(geometry.editor_tile_rle));
   }
   return {schema:SCHEMA,stage,source:{main_sha:execFileSync('git',['rev-parse',stage === 0 ? 'HEAD' : 'origin/main'],{cwd:root,encoding:'utf8'}).trim(),
-    ...(stage === 1 ? {extraction_head:execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim()} : {}),
+    ...(stage > 0 ? {extraction_head:execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim()} : {}),
     game_sha256:files['game.html'],files,symbols,selection:`default empty URL → _getFixedMapForStage(${stage}) → _cloneField11(${stage}) → genFromTemplate`},
     grid:{width:200,height:200,tile_size:40},...data,...(geometry ? {source_geometry:geometry} : {}),runtime_tile_sha256:sha(Buffer.from(data.tiles)),
     region_totals:totals,environment_refs:environmentRefs,undefined_paths:undefinedPaths,
@@ -145,8 +148,8 @@ export function buildStage0Snapshot(sourceRoot, options = {}) {
 }
 
 export function main(args) {
-  if (args.length !== 6 || args[2] !== '--stage' || args[4] !== '--seed' || !['0','1'].includes(args[3])) {
-    throw new Error('Usage: export_ch1_area_source.mjs <source-root> <output-json> --stage <0|1> --seed <uint32>; UNSUPPORTED_STAGE otherwise');
+  if (args.length !== 6 || args[2] !== '--stage' || args[4] !== '--seed' || !['0','1','2'].includes(args[3])) {
+    throw new Error('Usage: export_ch1_area_source.mjs <source-root> <output-json> --stage <0|1|2> --seed <uint32>; UNSUPPORTED_STAGE otherwise');
   }
   const root=fs.realpathSync(args[0]), output=path.resolve(args[1]);
   const relative=path.relative(root,output);
@@ -169,7 +172,7 @@ export function main(args) {
   const result=buildAreaSnapshot(root,{stage:Number(args[3]),seed:Number(args[5])});
   fs.mkdirSync(path.dirname(output),{recursive:true});
   fs.writeFileSync(output,JSON.stringify(result)+'\n');
-  console.log(JSON.stringify({schema:result.schema,stage:result.stage,tiles:result.tiles.length,hand_props:result.hand_props_raw.length,
+  console.log(JSON.stringify({schema:result.schema,stage:result.stage,tiles:result.tiles.length,hand_props:result.hand_props_raw?.length??null,
     base_meta:Object.keys(result.initial_obj_meta).length,ch1_deco:result.ch1_deco_raw.length,
     holes:result.spawn_holes_final.length,total:result.total_spawned,region_totals:result.region_totals,
     tile_sha256:result.runtime_tile_sha256,output}));

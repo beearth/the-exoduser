@@ -108,7 +108,7 @@ test('repeated extraction is deterministic, admitted artifact agrees, and stage0
  const normalized=structuredClone(actual);normalized.source.main_sha=artifact.source.main_sha;normalized.source.extraction_head=artifact.source.extraction_head;
  assert.deepEqual(normalized,artifact);
  assert.throws(()=>buildStage0Snapshot(root,{stage:1}),/UNSUPPORTED_STAGE/);
- for(const stage of [-1,2,3])assert.throws(()=>buildAreaSnapshot(root,{stage}),/UNSUPPORTED_STAGE/);
+ for(const stage of [-1,3])assert.throws(()=>buildAreaSnapshot(root,{stage}),/UNSUPPORTED_STAGE/);
  assert.deepEqual(hashes(),before);
 });
 test('CLI permits only matching new snapshot outputs; unsupported stages/seeds fail before writes',()=>{
@@ -118,7 +118,7 @@ test('CLI permits only matching new snapshot outputs; unsupported stages/seeds f
  try {
   const output=path.join(directory,'si1.json');const success=cli(output);assert.equal(success.status,0,success.stderr);
   assert.deepEqual(JSON.parse(fs.readFileSync(output,'utf8')),actual);
-  for(const stage of ['2','3','-1']){const result=cli(output,stage);assert.equal(result.status,1);assert.match(result.stderr,/UNSUPPORTED_STAGE/);}
+  for(const stage of ['3','-1']){const result=cli(output,stage);assert.equal(result.status,1);assert.match(result.stderr,/UNSUPPORTED_STAGE/);}
   for(const seed of ['-1','NaN','4294967296'])assert.equal(cli(output,'1',seed).status,1);
   for(const target of ['godot/data/map.json','godot/data/ch1_map_source/si0.json','game.html'])assert.equal(cli(path.join(root,target)).status,1);
   assert.deepEqual(JSON.parse(fs.readFileSync(output,'utf8')),actual);assert.deepEqual(hashes(),before);
