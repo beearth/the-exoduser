@@ -19,6 +19,15 @@
 | 실패 / 보호 | 최초 내장 Control 별칭 파싱 실패 보존·정정. 중복 자기 비교 제거 전207956/0과 최종 수치를 구분. 잠행 e.iframes를 실제 무적 성공으로 세지 않음. player 강제위치·KB대입/상태 owner·boss_hurtE 연결은 미확인 |
 | 격리 / 제출 | 신규 지정 userdir·기존 파일 상수·Godot pgrep gate/30초 대기 준수, UTF-8 임시 oracle 파일·node 인자·bc02/03 source-game. [BC10 보고서](engine/orders/reports/bc10_REPORT.md), 원로그 ~/exoduser-wt/_out/bc10/. 정상 훅·자기 branch push/원격 일치/DONE 후 자기 worktree 제거 |
 
+## 2026-10-20 EC3-01 3장 유형·원소 선택 순수 정책
+
+| id / 적용 위치 | 정확 계약·실제 검수 |
+|---|---|
+| 신규 범위 | native_ch3_enemy_spawn_policy.gd·test_ch3_enemy_spawn_policy.gd·자기UID2개. EC2-01 API/진단/원문검사형식재사용,기존EC2/공용/다른담당/저장0줄. 실actor/World/factory연결0 |
+| 원본 | game.html30974–31022/16633–16666. stage10..13·pool30/136·R11/28·비R108,순서있는weight/total CDF·최대12기각→2/13draw,themeI .45·나머지6원소(보조I포함)/E0 |
+| 검수 | 신규10,234/0·원문1,632·36golden·모든유효경계nextDown/동일/nextUp·소비double비트열/늦은실패진단. 회귀5종실패0/ERROR0/SKIP0, 종료경고원문보존. 실등록/4필드지원PASS아님 |
+| 기반·하니스 | main6d987cb8a에서분기(필요EC2-01은main포함), 지시서원격20b2139a §4.1. Node필수인자/UTF8임시JSON·원본/함수hash핀·binary64·허용오차0. 새EXODUSER-ec3-01-Isolated-20261020·기존각상수/Godot전pgrep2이상30초대기/override0byte.  [보고서](engine/orders/reports/ec3-01_REPORT.md)·원로그 ~/exoduser-wt/_out/ec3-01/ |
+
 ## 2026-10-20 QA-007 테스트 Windows 이식성
 
 | 항목 | 구현·검수 근거 |
