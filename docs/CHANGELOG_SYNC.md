@@ -1,3 +1,12 @@
+## 2026-10-20 BC02 — 1장 일반 보스 생성 수치 packet
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 범위 | 신규 `native_ch1_boss_spawn_contract.gd`·`test_boss_ch1_bc02_spawn.gd`·`bc02_REPORT.md`. BC01 e4396da5 의존 브랜치에서 구현. 공용·기존 테스트·보호 설계·R 수정0 |
+| 원본 | 최신 main 284d7faf game.html:9272/9276·31033–31037·31119–31185·31210·31260·31300. HP 두 floor·보스24배·speed.5·몸r44/배치r22·부활력200/206/212/218·초기 cooldown59개를 보존 |
+| 공개 계약 | source_receipt와 build_spawn_packet. 81개 공통/보스 필드·배치 read ledger·source순서 RNG6회. provider/입력 부재는 NOT_READY, 원본 null 생성은 REJECTED, dummy actor·전역 RNG·IO 없음 |
+| 검증·한계 | 독립 원본 mkEn oracle56case×81필드 및 격리 경계 검사. 신규 최종5,257/0·BC01 681/0·contracts5/5·factory3/3·소환굴298/0·지역43/0, 최종/회귀 ERROR0. 첫 실패와 수정 후 실행·회귀 로그는 `docs/engine/orders/reports/bc02_REPORT.md`에 기록. actor/factory·실제 보스전·시각/성능 완료 아님 |
+
 ## 2026-10-20 BC01 — 1장 보스 정적 등록 catalog
 
 | id / 적용 위치 | 현재 정확 계약 |
