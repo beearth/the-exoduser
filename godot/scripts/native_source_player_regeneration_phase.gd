@@ -41,6 +41,7 @@ class SourceBridge extends RefCounted:
 		return d._call_service("fuse_star", [skill]) if is_instance_valid(d) else null
 	func boost(id: Variant) -> Variant:
 		var d = owner.get_ref()
+		if is_instance_valid(d) and d._phase_live() and d._services.has("system_affix"):return d._services.system_affix.call(id)
 		return d._services["affix"].eq_affix(id) if is_instance_valid(d) and d._phase_live() else null
 	func flat_hp(value: float) -> bool:
 		var d = owner.get_ref()
@@ -74,6 +75,7 @@ var _source_ready = false
 var _error = "unconfigured"
 var _last_frame = -1.0
 var _last_epoch = -1
+var _intro_identity_adoptions := 0
 var _tick_frame = -1.0
 var _tick_epoch = -1
 var _tick_ticks = 0.0
@@ -128,14 +130,22 @@ func configure(player: Node2D, world: Node, authority: Object, services: Diction
 	_flat = FLAT.new()
 	_hp = HP.new()
 	_natural = NATURAL.new()
+	if services.has("system_affix"):
+		var callback: Variant=services.system_affix
+		if not callback is Callable or not callback.is_valid() or callback.get_object()!=player.get_parent():
+			_clear_binding();return _finish("cached_flat_provider_foreign")
+	var hp_providers: Dictionary=HP.source_providers(_services["rates"],_services["affix"],_services["passives"],Callable(_bridge,"holy"))
+	if services.has("life_heal_pow"):
+		var cached: Variant=services.life_heal_pow
+		if not cached is Callable or not cached.is_valid() or cached.get_object()!=player.get_parent():
+			_clear_binding();return _finish("cached_regen_provider_foreign")
+		hp_providers[HP.PROVIDER_LIFE_HEAL_POW_RESULT]=cached
 	var ready: Array = [
 		_dome.configure(Callable(_bridge, "read_g"), Callable(_bridge, "read_p")),
 		_flat.configure(Callable(_bridge, "presence"), Callable(_bridge, "read_g"),
 			Callable(_bridge, "read_p"), Callable(_bridge, "fuse"),
 			Callable(_bridge, "boost"), Callable(_bridge, "flat_hp")),
-		_hp.configure(Callable(_bridge, "read_p"), HP.source_providers(
-			_services["rates"], _services["affix"], _services["passives"],
-			Callable(_bridge, "holy")), Callable(_bridge, "natural_hp")),
+		_hp.configure(Callable(_bridge, "read_p"), hp_providers, Callable(_bridge, "natural_hp")),
 		_natural.configure_source_rates(Callable(_bridge, "read_resources"),
 			Callable(_bridge, "rates"), Callable(_bridge, "holy"),
 			Callable(_bridge, "commit_resources"))]
@@ -600,7 +610,7 @@ func _clear_binding() -> void:
 	_natural = null
 
 func get_snapshot() -> Dictionary:
-	return {"configured": _configured, "ready": is_native_regen_ready(), "error": _error,
+	return {"intro_identity_adoptions":_intro_identity_adoptions,"configured": _configured, "ready": is_native_regen_ready(), "error": _error,
 		"source_ready": _source_ready, "authority_contract_broken": _contract_broken,
 		"last_native_frame": _last_frame, "last_native_epoch": _last_epoch,
 		"trace": _trace.duplicate(), "counts": _counts.duplicate(true),
@@ -613,3 +623,27 @@ func get_snapshot() -> Dictionary:
 		"atomic_scope": "natural authority ordered atomic ST/MP contract plus readback; earlier phases not rolled back",
 		"pre_hp_validation_scope": "cached source-rate structural/status only; base/arithmetic validated by Natural after HP",
 		"full_main_source_authority_proven": false, "public_play_proven": false}
+
+# Source intro clear/start/finish replaces ens (G63279; parry-lesson.js398-400/689).
+# Only this completed real-Main transition may replace the configured clock identity.
+# advance_native retains ALL strict ens/frame/epoch/duplicate/owner/sink guards.
+func adopt_completed_intro_identity(main: Node) -> Dictionary:
+	if _busy or not _configured or _contract_broken or _intro_identity_adoptions!=0:
+		return {"accepted":false,"reason":"intro_identity_handoff_not_available"}
+	if not _live(main) or main.get_script()==null or main.get_script().resource_path!="res://scripts/main.gd" \
+			or main.get("source_regeneration")!=self or main.get("world")!=_world or main.get("player")!=_player:
+		return {"accepted":false,"reason":"intro_identity_foreign_main"}
+	var sequence: Variant=main.get("source_intro_sequence")
+	if not _live(sequence) or sequence.get_script()==null or sequence.get_script().resource_path!="res://scripts/native_intro_curtain_sequence.gd" or sequence.phase!="done":
+		return {"accepted":false,"reason":"source_intro_not_complete"}
+	var flow: Variant=sequence.lesson_flow
+	if not _live(flow) or flow.get_script()==null or flow.get_script().resource_path!="res://scripts/native_parry_lesson_flow.gd" \
+			or flow.active or flow.world!=_world or flow.player!=_player or flow.state!=main.source_state:
+		return {"accepted":false,"reason":"source_lesson_not_complete"}
+	var error: String=_binding_error(_player,_world,_authority,_services)
+	if not error.is_empty() or not _stored_live():return {"accepted":false,"reason":error}
+	if not is_same(_identity,_world.get_native_world_identity()):
+		_identity=_world.get_native_world_identity()
+		_last_frame=-1.0;_last_epoch=-1
+	_error="";_intro_identity_adoptions=1
+	return {"accepted":true,"source":"game.html:63279;parry-lesson.js:398-400,689","one_shot":true}

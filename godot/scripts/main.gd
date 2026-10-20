@@ -86,6 +86,8 @@ var _source_l_eq_write_context: Dictionary = {}
 var source_initialization_result: Dictionary = {}
 var source_lesson: RefCounted
 var source_forge: CanvasLayer # DEMO11-27
+var _native_system_intro_handoff_done := false
+var source_system_affixes: RefCounted = preload("res://scripts/native_system_equipment_affixes.gd").new()
 var source_potion: RefCounted = AutoPotionScript.new() # DEMO11-25, Main lifetime
 var source_regeneration: RefCounted # P2-005d — 원본 자연 회복 단계(배선 후 Player 레거시 0.28 비활성)
 var _source_lesson_file_init_attempted: bool = false
@@ -202,6 +204,7 @@ func _ready() -> void:
 	world.add_child(source_state)
 	add_child(player)
 	world.set_player(player)
+	source_system_affixes.rebuild(self) # equipment values only; no tick rebuild
 	var demo_g: Variant = source_state.read_current_g()
 	if not demo_g is Dictionary or demo_g.get("stage") != _native_demo11_policy["stage"]:
 		_stop_source_player_startup("demo_state_stage_outside_policy")
@@ -836,7 +839,9 @@ func _bind_native_source_regeneration_boot() -> bool:
 		"hp_sink": Callable(source_resources, "commit_native_source_hp"),
 		"flat_resource_sink": Callable(source_resources, "commit_native_holy_flat_resources"),
 		"lesson": source_lesson.get_dispatcher_lesson_callable(),
-		"main_init_ready": Callable(self, "read_native_source_regeneration_init_ready")}
+		"main_init_ready": Callable(self, "read_native_source_regeneration_init_ready"),
+		"life_heal_pow":Callable(self,"read_native_system_equipment_affix").bind("lifeHealPow"),
+		"system_affix":Callable(self,"read_native_system_equipment_affix")}
 	if not source_regeneration.configure(player, world, source_resources, regeneration_services):
 		_stop_source_player_startup("source_regeneration_phase_configuration_rejected:" + str(source_regeneration.get_snapshot().get("error")))
 		return false
@@ -1062,6 +1067,12 @@ func _update_native_screen_flash() -> void:
 		_native_flash_rect.color = Color(1, 1, 1, 0)
 
 func _physics_process(_delta: float) -> void:
+	# Known intro ens replacement: one owner-validated handoff, never a tick rebind.
+	if not _native_system_intro_handoff_done and is_instance_valid(source_regeneration) and is_instance_valid(source_intro_sequence) and source_intro_sequence.phase=="done":
+		var flow: Variant=source_intro_sequence.lesson_flow
+		if is_instance_valid(flow) and not flow.active:
+			var handoff: Dictionary=source_regeneration.adopt_completed_intro_identity(self)
+			_native_system_intro_handoff_done=handoff.get("accepted",false)
 	source_potion.advance_native.call_deferred(self, _delta * 60.0, Engine.get_physics_frames()) # DEMO11-25: late 60Hz phase, after child regen
 	if not get_tree().paused and is_instance_valid(player) and is_instance_valid(camera):
 		player.z_index = clampi(int(player.position.y / 4.0), -4096, 4095)
@@ -2301,7 +2312,7 @@ func read_native_skill_dispatch_cost_context() -> Dictionary:
 		if not (passives.get(key) is int or passives.get(key) is float) or not is_finite(float(passives[key])): return {"ready":false}
 	var values: Dictionary = {}
 	for key in ["stCostRed","cooldownRed","helmCooldown","endCooldownAll","skillCdRed"]:
-		var v: Variant = _native_fireball_ready_scalar(b.affix.eq_affix(key))
+		var v: Variant = _native_fireball_ready_scalar(read_native_system_equipment_affix(key))
 		if v == null: return {"ready":false,"reason":"affix_unready:"+key}
 		values[key] = v
 	for key in ["_lHelmFree","_lNeckLow"]:
@@ -2359,7 +2370,7 @@ func read_native_fireball_magic_cost() -> Variant:
 	if b.is_empty():return null
 	var passives: Variant=source_state.read_current_passives()
 	if not passives is Dictionary or not (passives.get("pMagic") is int or passives.get("pMagic") is float):return null
-	var reduction: Variant=_native_fireball_ready_scalar(b.affix.eq_affix("mpCostRed"))
+	var reduction: Variant=_native_fireball_ready_scalar(read_native_system_equipment_affix("mpCostRed"))
 	var unique: Variant=_native_fireball_ready_scalar(b.formula.u_eq("_uHelmMagic"))
 	if reduction==null or unique==null or not is_finite(float(passives.pMagic)):return null
 	var value: float=maxf(0.40,1.0-float(passives.pMagic)*0.04-float(reduction)-float(unique))
@@ -2464,6 +2475,7 @@ func read_native_source_equipment_affix(id: Variant) -> Dictionary:
 	if not _native_main_service_live() or bundle.is_empty():
 		# Existing packet callers retain their original unavailable reason.
 		return {"status": "NOT_READY", "reason": "actual_packet_affix_provider_not_ready"}
+	if id in source_system_affixes.IDS: return read_native_system_equipment_affix(id)
 	return bundle.affix.eq_affix(id)
 
 func read_native_player_projectile_pierce_flat() -> Dictionary:
@@ -3039,6 +3051,7 @@ func request_native_runtime_stat_refresh(mode: String, reason: String = "") -> D
 			return {"status": "REJECTED", "ready": false, "committed": false,
 				"reason": str(configured.get("reason")), "mode": mode, "caller_reason": reason}
 		source_runtime_stat_refresh = refresh
+		refresh.native_runtime_stats_refreshed.connect(_refresh_native_system_affix_cache)
 	return source_runtime_stat_refresh.refresh(self, mode, reason)
 
 func read_native_runtime_stat_refresh_snapshot() -> Dictionary:
@@ -3083,3 +3096,10 @@ func restore_native_equipment_caches(caller: RefCounted, token: Dictionary) -> b
 	bundle.reference.restore_eq_stat_cache_token(token.reference)
 	_source_l_eq_cache = token.legendary
 	return true
+
+# DEMO11-24b: source producer cache values, updated in the accepted commit signal.
+func _refresh_native_system_affix_cache(receipt: Dictionary) -> void:
+	if receipt.get("committed")==true:source_system_affixes.rebuild(self)
+func read_native_system_equipment_affix(id: Variant) -> Dictionary:
+	if not _native_main_service_live():return {"status":"NOT_READY","reason":"main_not_live"}
+	return source_system_affixes.eq_affix(id)

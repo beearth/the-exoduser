@@ -29,8 +29,9 @@ static func observe(main: Node, inventory: Dictionary, refresh: Dictionary) -> D
 			if out.ids.has(id): continue
 			var route: Dictionary=routes().get(id,{})
 			var sum: Dictionary=reader.eq_affix(id)
-			var ready: bool=route.get("route")=="equipment_refresh" and sum.get("status")=="READY"
-			out.ids[id]={"status":"READY" if ready else "NOT_READY","consumer":route.get("route","not_demo_roll_candidate"),
+			var system: bool=is_instance_valid(main.get("source_system_affixes")) and id in main.source_system_affixes.IDS
+			var ready: bool=(route.get("route")=="equipment_refresh" or system) and sum.get("status")=="READY"
+			out.ids[id]={"status":"READY" if ready else "NOT_READY","consumer":"game_system_cached" if system else route.get("route","not_demo_roll_candidate"),"scope":"system_component_only" if system else "applyStats_or_protected",
 				"value":sum.get("value"),"source_line":route.get("source_line"),
 				"reason":"" if ready else "PC_hurtE_protected" if route.get("route")=="hurtE" else "consumer_not_verified"}
 	reader.restore_affix_cache_token(cache)
