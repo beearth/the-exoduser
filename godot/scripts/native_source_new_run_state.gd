@@ -1733,6 +1733,7 @@ func apply_native_equipment_transaction(owner: Node, operation: String, item: Di
 	_equipment_committing = false
 	return result
 
+
 # DEMO11-38 narrow progression writer; never touches stage, map or combat values.
 var _native_demo_clear_phase := 0
 func commit_native_demo_clear(owner: Node, stage_index: int, end: bool) -> bool:

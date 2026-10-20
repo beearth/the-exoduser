@@ -1,3 +1,5 @@
+> **2026-10-21 DEMO11-31 현행 보충:** 앵글러1 family4개체를 Main/실제 World phase·같은 G에 설치했고,35 registry의 field birth/에너지 전용 sweep·PC HP/최종 사망 readback→P3→37를 연결했다. 배치는 provider Marker4개만, source 사이트 좌표 복제0. PC 피해/패링·world/player·저장·지형 변경0. 실제 맵/PC producer/렌더 마감·전역 원본 update 순서 동치는 미인수다. [API·원문 대조·최종 수치](orders/reports/demo11-31_REPORT.md). 아래 원본 추적 이력/수치는 보존한다.
+
 # 필드보스 원본 추적·작은 이식 단위 설계 — 2026-10-20
 
 ## 0. 기준·범위
