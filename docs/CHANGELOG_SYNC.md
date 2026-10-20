@@ -1,3 +1,11 @@
+## 2026-10-21 DEMO11-08 — 세계관·전사·INTRO 단일 수명 경계
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 구현 | 원본 정지 이미지·자막80 cue, 단발 종료/2초 skip/오류 retry/cancel → 기존 P2-001i/P2-007a 인계. DEMO11-41 INTRO BGM 재사용, 전투·State·저장·맵 변경0 |
+| 검증 | 원본161/0·최종 신규36/0·기존 P2001i18/0/P2007a115/0/DEMO11-41 55/0 각1회, 최종385/0. 내부 viewport1920×1080 6장+1x crop12장. 사용자 눈 검수 대기 |
+| 문서 | [수명 경계](engine/DEMO11_INTRO_LIFECYCLE_20261021.md)·[보고서](engine/orders/reports/demo11-08_REPORT.md)·sound·번역21문구 동기화. 영화 음성/연출 동등성 미확인·export 패키징 HOLD |
+
 ## 2026-10-21 DEMO11-05 — main 성능 수정 병합·tick 경로 점검
 
 | 항목 | 구현·검수 근거 |

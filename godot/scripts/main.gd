@@ -96,6 +96,7 @@ var _native_player_sprite_startup_report: Dictionary = {}
 var _native_player_sprite_startup_readonly_calls: int = 0
 var source_intro_curtain: Control
 var source_intro_curtain_finish: Node2D
+var native_story_intro: CanvasLayer # DEMO11-08 presentation only
 var source_intro_sequence: Node2D # P2-001i 부팅 자동 연결(원본 64484 stage0 인트로 경로)
 var _source_intro_curtain_binding_error: String = "not_bound"
 var source_image_wait: Node
@@ -326,9 +327,14 @@ func _ready() -> void:
 	_install_native_music_lifecycle()
 	_bind_native_intro_curtain_view()
 	_bind_native_startup_services()
-	source_intro_sequence = IntroCurtainSequenceScript.install_native_boot(self) # P2-001i
+	if preload("res://scripts/native_story_intro.gd").should_run(self):
+		native_story_intro=preload("res://scripts/native_story_intro.gd").new()
+		add_child(native_story_intro)
+		native_story_intro.handed_off.connect(_native_story_handoff)
+		native_story_intro.begin(self)
+	else:
+		_install_native_waking_intro_once()
 	native_demo_boss_actor = preload("res://scripts/native_demo11_boss_actor.gd").install_native_boot(self) # DEMO11-34
-	if is_instance_valid(_music_lifecycle): _music_lifecycle.bind_intro(source_intro_sequence)
 	var metrics_timer := Timer.new()
 	metrics_timer.wait_time = 0.1
 	metrics_timer.process_mode = Node.PROCESS_MODE_ALWAYS
@@ -341,6 +347,15 @@ func _ready() -> void:
 			push_error("Native perspective mount rejected: " + str(perspective_result.get("reason")))
 	_record_event("native_factory_created", {"source": "canonical migration mkP / CH1-1", "simulation_hz": 60, "render_target_fps": 240, "initial_state": _play_state(), "version_manifest": get_native_content_version_manifest()})
 	print("GODOT_FIRST_PLAYABLE_READY ", JSON.stringify({"runtime": Engine.get_version_info()["string"], "scene": "res://scenes/main.tscn", "viewport": get_viewport_rect().size, "player_spawn": player.position}))
+
+func _native_story_handoff(_reason: String) -> void:
+	set_meta("native_intro_boot","intro")
+	_install_native_waking_intro_once()
+
+func _install_native_waking_intro_once() -> void:
+	if is_instance_valid(source_intro_sequence):return
+	source_intro_sequence=IntroCurtainSequenceScript.install_native_boot(self)
+	if is_instance_valid(_music_lifecycle):_music_lifecycle.bind_intro(source_intro_sequence)
 
 func mount_native_perspective_view(settings: Dictionary = {}) -> Dictionary:
 	if not _native_main_service_live() or not _native_content_version_not_ready_reason().is_empty():
