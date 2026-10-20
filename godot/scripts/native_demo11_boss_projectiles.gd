@@ -136,6 +136,7 @@ func _camera() -> Vector2:
 func _retain_expired(shot: Node) -> bool:
 	return shot.life_ticks > -900 and not shot.raw.get("redBean",false) and shot.global_position.distance_squared_to(_camera())<=6250000.0
 func _physics_process(_delta: float) -> void:
+	if _natural_source!=null and is_instance_valid(_natural_source.get_ref()):return
 	if not _live() or _entries.is_empty() or not _actor.is_source_frame_completed(): return
 	advance_source_frame(_actor.read_source_frame())
 func advance_source_frame(frame: Dictionary) -> bool:
@@ -202,3 +203,18 @@ func _exit_tree() -> void:
 	_entries.clear()
 	if is_instance_valid(_class_authority): _class_authority.free()
 func _number(value: Variant) -> bool: return (value is int or value is float) and is_finite(float(value))
+
+# Natural ordinary shots enter the same BC09/pool/Carrier registry, never a copy.
+var _natural_source: WeakRef
+func bind_natural_source(owner: Node) -> bool:
+	if _natural_source!=null or not _live() or owner.get_parent()!=_world:return false
+	_natural_source=weakref(owner)
+	return true
+func admit_natural_projectile(owner: Node,actor: Node,props: Dictionary,frame: Dictionary) -> Dictionary:
+	if _natural_source==null or _natural_source.get_ref()!=owner or not owner.owns_actor(actor):return {"ready":false,"reason":"natural_projectile_identity_required"}
+	if props.get("el")!=actor.el:return {"ready":false,"reason":"natural_projectile_element_mismatch"}
+	var result: Variant=_birth_request({"command":"spawnProj_owner","args":[props],"frame":frame})
+	return {"ready":result is Dictionary and result.get("ack",false),"reason":_error,"receipt":result}
+func advance_natural_frame(owner: Node,frame: Dictionary) -> bool:
+	if _natural_source==null or _natural_source.get_ref()!=owner:return false
+	return advance_source_frame(frame)

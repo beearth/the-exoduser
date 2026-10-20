@@ -399,7 +399,7 @@ func _physics_process(delta: float) -> void:
 
 ## update() 한 프레임의 소환굴 몫. 하니스는 G.on 게이트 없이 직접 호출해 틱을 고정할 수 있다.
 func advance_native(sp: float) -> void:
-	if _stage_marker_bound:return # Actual etype/site consumer is deferred; do not run old coordinate search.
+	if _stage_marker_bound and not is_instance_valid(natural_owner):return
 	if not _configured or sp <= 0.0:
 		return
 	_metrics.advance_calls += 1
@@ -491,6 +491,7 @@ func _redraw() -> void:
 		_drawer.queue_redraw()
 
 func _spawn_one(h: Dictionary) -> bool:
+	if is_instance_valid(natural_owner):return natural_owner.spawn_hole(h)
 	var draws: Array = []
 	var size: float = float(h["size"])
 	# 35662~35664 do{각·반경}while(_hTry<30&&isW(x,y,true))
@@ -618,6 +619,55 @@ func _journal(entry: Dictionary) -> void:
 ## +stageDiffOff(0), dm=DIFF_MUL[5]=1 (인트로 OPT.diff=5 강제 63358 — 실측 DIFF_MUL[5]=1·OFF 0).
 func _make_etype0_actor(h: Dictionary, pos: Vector2, elite: int, mods: Array, spd_u: float, r_u: float,
 		literal: Dictionary, entry_log: Dictionary) -> Node:
+	var data := build_natural_etype0_runtime(h,pos,elite,mods,spd_u,r_u,literal,entry_log)
+	var enemy: CharacterBody2D = FLESH_SCRIPT.new()
+	enemy.configure(data, world)
+	var registered: Variant = world.register_native_spawn_hole_enemy(enemy, int(data["order"]))
+	if not registered is Dictionary or registered.get("valid") != true:
+		entry_log["register_errors"] = registered.get("errors") if registered is Dictionary else ["invalid_receipt"]
+		if is_instance_valid(enemy) and enemy.get_parent() == null:
+			enemy.free()
+		return null
+	entry_log.merge({"hp": data.hp, "atk": data.attack, "radius": data.radius, "speed": data.speed_pixels_per_tick, "projCd": data.projectile_cooldown_ticks,
+		"st2": data.initial_idle_ticks, "facing": data.facing, "projT": data.initial_projectile_ticks, "bossPatT": literal["bossPatT"]})
+	return enemy
+
+func _complete(hi: int, h: Dictionary) -> void:
+	# 35688 addParts(h.x,h.y,col,15) — 기존 addParts 포트(공유 RNG 소비 포함)
+	world.emit_native_parts(Vector2(float(h["x"]), float(h["y"])), SPAWN_HOLE_COL, 15)
+	# 35689 addTxt(h.x,h.y-20,'⚔ '+name+'!',col,50)
+	world.emit_native_text(float(h["x"]), float(h["y"]) - 20.0, "⚔ " + SPAWN_HOLE_NAME + "!", SPAWN_HOLE_COL, 50)
+	# 35690 shake(5+~~(size*9)) → G.shake=max(G.shake,n*OPT.shake/100)
+	var n: float = 5.0 + float(int(float(h["size"]) * 9.0))
+	var opt_shake := 100.0
+	if is_instance_valid(main) and main.has_method("read_native_feel_opt_shake"):
+		var opt: Dictionary = main.read_native_feel_opt_shake()
+		if opt.get("ready") == true:
+			opt_shake = float(opt["value"])
+	_write_g({"shake": n * opt_shake / 100.0})
+	holes.remove_at(hi) # 35691 G.spawnHoles.splice(hi,1)
+	_metrics.completed += 1
+
+func get_snapshot() -> Dictionary:
+	var holes_view: Array = []
+	for h in holes:
+		holes_view.append(h.duplicate(true))
+	return {"schema": SCHEMA, "configured": _configured, "active": active, "game_frame": _game_frame,
+		"holes": holes_view, "total_spawned": total_spawned, "placement_log": placement_log.duplicate(true),
+		"metrics": _metrics.duplicate(true), "spawn_journal": spawn_journal.duplicate(true),
+		"g_receipts": _g_receipts.duplicate(true), "void_black_texture": _void_black != null,
+		"unported": [
+			"etype≠0 소환 적 액터(전용 스크립트 없음 — RNG·_spawned만 원본대로, journal unported_etype)",
+			"etype0 소환 적 탄 parry class: 원본 el=undefined → 'magic'(40515)·탄 el undefined, 전용 스크립트는 physical 고정",
+			"etype0 스킨: _mob8Col/Row는 native 기록, 전용 스크립트는 템플릿 base_rect 고정(커튼과 동일)",
+			"38590 updateE reviveIframes 2차 감소(화면 내 AI 갱신 적) — 34456 1차 감소만",
+			"52616 렌더 순서: 원본 MAP_OBJS 위·적 아래 → Godot 지면층 z -2001(y정렬 소품 아래)",
+			"timer 필드(맵 생성 RNG 구간 — 소비자 없음)",
+			"9.5 최소 6개 보충·_pathImgTerrain 보충(1-1 미발동)",
+			"_gpVibrate(진동 비활성)", "갱신 순서: 원본은 적 루프·checkRooms 뒤, Godot는 노드 물리 순서"]}
+
+# DEMO11-enemy-base: same constructor, preparation separated from admission.
+func build_natural_etype0_runtime(h: Dictionary,pos: Vector2,elite: int,mods: Array,spd_u: float,r_u: float,literal: Dictionary,entry_log: Dictionary) -> Dictionary:
 	var mon_lv := 1
 	if is_instance_valid(state):
 		var p: Variant = state.read_current_p()
@@ -698,48 +748,6 @@ func _make_etype0_actor(h: Dictionary, pos: Vector2, elite: int, mods: Array, sp
 	native["_mob8Col"] = skin_idx % MOB8_COLS
 	native["_mob8Row"] = skin_idx / MOB8_COLS
 	native["reviveIframes"] = REVIVE_IFRAMES # 35677 ne.reviveIframes=15 (34456 감소는 advance_native)
-	var enemy: CharacterBody2D = FLESH_SCRIPT.new()
-	enemy.configure(data, world)
-	var registered: Variant = world.register_native_spawn_hole_enemy(enemy, int(data["order"]))
-	if not registered is Dictionary or registered.get("valid") != true:
-		entry_log["register_errors"] = registered.get("errors") if registered is Dictionary else ["invalid_receipt"]
-		if is_instance_valid(enemy) and enemy.get_parent() == null:
-			enemy.free()
-		return null
-	entry_log.merge({"hp": hp, "atk": atk, "radius": radius, "speed": spd, "projCd": proj_cd,
-		"st2": st2, "facing": facing, "projT": proj_t, "bossPatT": literal["bossPatT"]})
-	return enemy
+	return data
 
-func _complete(hi: int, h: Dictionary) -> void:
-	# 35688 addParts(h.x,h.y,col,15) — 기존 addParts 포트(공유 RNG 소비 포함)
-	world.emit_native_parts(Vector2(float(h["x"]), float(h["y"])), SPAWN_HOLE_COL, 15)
-	# 35689 addTxt(h.x,h.y-20,'⚔ '+name+'!',col,50)
-	world.emit_native_text(float(h["x"]), float(h["y"]) - 20.0, "⚔ " + SPAWN_HOLE_NAME + "!", SPAWN_HOLE_COL, 50)
-	# 35690 shake(5+~~(size*9)) → G.shake=max(G.shake,n*OPT.shake/100)
-	var n: float = 5.0 + float(int(float(h["size"]) * 9.0))
-	var opt_shake := 100.0
-	if is_instance_valid(main) and main.has_method("read_native_feel_opt_shake"):
-		var opt: Dictionary = main.read_native_feel_opt_shake()
-		if opt.get("ready") == true:
-			opt_shake = float(opt["value"])
-	_write_g({"shake": n * opt_shake / 100.0})
-	holes.remove_at(hi) # 35691 G.spawnHoles.splice(hi,1)
-	_metrics.completed += 1
-
-func get_snapshot() -> Dictionary:
-	var holes_view: Array = []
-	for h in holes:
-		holes_view.append(h.duplicate(true))
-	return {"schema": SCHEMA, "configured": _configured, "active": active, "game_frame": _game_frame,
-		"holes": holes_view, "total_spawned": total_spawned, "placement_log": placement_log.duplicate(true),
-		"metrics": _metrics.duplicate(true), "spawn_journal": spawn_journal.duplicate(true),
-		"g_receipts": _g_receipts.duplicate(true), "void_black_texture": _void_black != null,
-		"unported": [
-			"etype≠0 소환 적 액터(전용 스크립트 없음 — RNG·_spawned만 원본대로, journal unported_etype)",
-			"etype0 소환 적 탄 parry class: 원본 el=undefined → 'magic'(40515)·탄 el undefined, 전용 스크립트는 physical 고정",
-			"etype0 스킨: _mob8Col/Row는 native 기록, 전용 스크립트는 템플릿 base_rect 고정(커튼과 동일)",
-			"38590 updateE reviveIframes 2차 감소(화면 내 AI 갱신 적) — 34456 1차 감소만",
-			"52616 렌더 순서: 원본 MAP_OBJS 위·적 아래 → Godot 지면층 z -2001(y정렬 소품 아래)",
-			"timer 필드(맵 생성 RNG 구간 — 소비자 없음)",
-			"9.5 최소 6개 보충·_pathImgTerrain 보충(1-1 미발동)",
-			"_gpVibrate(진동 비활성)", "갱신 순서: 원본은 적 루프·checkRooms 뒤, Godot는 노드 물리 순서"]}
+var natural_owner: Node

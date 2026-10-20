@@ -677,3 +677,22 @@ func _finite_json(value: Variant) -> bool:
 	elif value != null and not value is String and not value is bool:
 		return false
 	return true
+
+# Append-only natural registry. Initial source16 validation/dispatch above is unchanged.
+# Each added type must supply its actual kernel, source constructor and geometry.
+const NATURAL_REGISTRATIONS = {
+	0: {"actor":preload("res://scripts/native_natural_enemy_actor.gd"),
+		"constructor":"build_natural_etype0_runtime","profile":FLESH_PROFILE,"radius_base":10.0,"source_color":"#dd4455"}
+}
+func natural_registration(etype: int) -> Dictionary:
+	return NATURAL_REGISTRATIONS.get(etype,{}).duplicate()
+func prepare_natural(holes: Node,hole: Dictionary,site: Dictionary,source: Dictionary,owner: Node) -> Dictionary:
+	var entry:=natural_registration(int(source.etype))
+	if entry.is_empty():return {"ready":false,"reason":"natural_etype_not_registered","etype":source.etype}
+	var journal: Dictionary={"spawn_n":source.spawn_n,"requested":[site.position.x,site.position.y]}
+	var runtime: Dictionary=holes.call(entry.constructor,hole,site.position,source.elite,source.mods,source.speed_u,source.radius_u,source.literal,journal)
+	runtime.native_final["col"]=entry.source_color # G30909; old P3 profile omitted col.
+	var actor: CharacterBody2D=entry.actor.new()
+	actor.configure(runtime,holes.world)
+	actor.bind_natural_owner(owner)
+	return {"ready":true,"actor":actor,"runtime":runtime}

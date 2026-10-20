@@ -3027,6 +3027,8 @@ func advance_native_birth_phase() -> void:
 	# owner AI and warnings share their source append order in the emitter.
 	if is_instance_valid(_native_projectile_emitter):
 		_native_projectile_emitter.advance_birth_phase(_native_birth_ticks, _native_frame)
+	if _native_natural_enemy_base!=null and is_instance_valid(_native_natural_enemy_base.get_ref()):
+		_native_natural_enemy_base.get_ref().advance_projectiles(_native_frame)
 	# Source player pProjs follow all enemy projectile births, before HitFX3.
 	if is_instance_valid(_native_player_projectile_consumer):
 		_native_player_projectile_consumer.advance_native(self)
@@ -3494,3 +3496,13 @@ func read_native_source_random_unit(main: Variant, services: Variant,
 	return {"status":"READY","provider":"rand","source":source,"reason":"","value":value,
 		"non_finite":false,"sample_invoked":true,"sample_completed":true,"consumption":"COMPLETED",
 		"completion_receipt":completion_receipt,"raw_result":sample,"raw_call_return":scalar_return}
+
+# Natural admission does not weaken the existing exact initial/summon gates.
+var _native_natural_enemy_base: WeakRef
+func bind_native_natural_enemy_base(owner: Node) -> bool:
+	if _native_natural_enemy_base!=null or owner.get_parent()!=self:return false
+	_native_natural_enemy_base=weakref(owner)
+	return true
+func register_native_natural_enemy(owner: Node,actor: CharacterBody2D) -> Dictionary:
+	if _native_natural_enemy_base==null or _native_natural_enemy_base.get_ref()!=owner or not owner.authorizes_prepared(actor):return {"valid":false,"errors":["natural_constructor_receipt_required"]}
+	return register_summoned_enemy(actor)
