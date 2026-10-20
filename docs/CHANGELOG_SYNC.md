@@ -1,3 +1,14 @@
+## 2026-10-20 TRACE-NPC-WORLD NPC·상점·월드 상호작용 원본 추적
+
+| 항목 | 추적·설계 근거 |
+|---|---|
+| 기준 / 범위 | fetch 후 origin/main `e556b617190c325ca39f5add04357f5dea5ca87e`. 기능 분모의 아이템·경제·NPC 없음12 + 월드 없음8을 전부 대응. 이 추적 문서와 신규 변경로그 절만, 코드·기존 테스트·공용·다른 담당·R 파일 변경0 |
+| 원본 연결 | G/I 정의·생성·입력·상태·표시·수명·저장 경계, 직접 심벌41개 전행 색인. etype93 F 즉시거래/실패 소진, G 대장간·닫기 경로 차이, 개인쌍/존/rifts 구분, MAP loop 뒤 상자·수거 병행, 비활성 bonfire/trap 생성 명시 |
+| 중복 / 불일치 | ITEMS·INVENTORY·META·SAVE·설정 등 참조, MAPS_CH1은 main에 없어 로컬668cfded 고정 참고본으로 구분. docs 불일치·상태 차이16항목, 현재 native_regions 배너/구역제목을 과거 분모 없음과 분리 |
+| 순서안 | 작은 후보10단위. 1번 NW-01은 신규 readonly MAP_OBJS 대상 질의/테스트, API·검증/NR 순서·출력6키·strict반경·불변·oracle 재생성·격리/회귀 기준까지 구현 지시. 공용0줄 목표, 실제 연결은 별도 승인/접점 없으면BLOCKED |
+| 검증 / 한계 | Node로 inline13개 문법·원본 MAP루프22입력 관측22/22, native 구현/회귀 PASS 아님. 독립 독자 검토 반영. Godot·GUI·사용자 저장·서버 실행0. 원로그 `~/exoduser-wt/_out/trace-npc-world/` |
+| 상세 / 정리 | [NPC·월드 추적·1번 지시서](FDG_SOURCE_TRACE_NPC_WORLD_20261020.md). 자기 브랜치 push·원격SHA 확인·DONE 후 자기 sparse worktree만 제거, 브랜치·원로그 보존 |
+
 ## 2026-10-20 QA-002 테스트 결정성·종료·조명 하니스
 
 | 항목 | 변경·검수 근거 |
