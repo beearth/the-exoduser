@@ -1,3 +1,13 @@
+## 2026-10-20 CH-MAP-PIN-2 병합 후 provenance 테스트 격리
+
+| 항목 | 근거·검수 |
+|---|---|
+| 기준 / 범위 | main010515993. 테스트 fdgMapResourceProvenance만 정정; 제품·공용 exporter2·Main/State/저장0줄 |
+| 재현 | Mac 원문4/0. 작업 출력 provenance만 b25a018ac로 주입하면 PC와 같은9e209060 SHA·기존1/3 재현, 정정7/0. 작업/제품 파일 수정0 |
+| 판정 | 같은 versioned JSON·원본 바이트·reader pin과 격리 Git refs/index 사용. 특정 최신/마지막 변경 commit을 provenance로 추측0. 기존4검사 유지·새3사례, 정적assert22→39 |
+| 검출 | 외부 writer 사본 변형4종 모두5/3/3/2실패 검출. pin·corrupted collider·출처만 덮기 복구·미존재/다른 바이트 source 거부 유지 |
+| 마감 | map-node-9 merge 및 조합 실행 후 보고서에 실제 결과 기록. [보고서](engine/orders/reports/ch-map-pin-2_REPORT.md), 원로그 ~/exoduser-wt/_out/ch-map-pin-2/ |
+
 ## 2026-10-20 BC2-07 shieldBash2 독립 wind/dash/contact 계산
 
 ## 2026-10-20 EC4-02 4장 catalog·23필드 초기 literal projection
