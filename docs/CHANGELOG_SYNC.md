@@ -177,7 +177,7 @@
 | 순서안 | 작은 후보10단위. 1번 NW-01은 신규 readonly MAP_OBJS 대상 질의/테스트, API·검증/NR 순서·출력6키·strict반경·불변·oracle 재생성·격리/회귀 기준까지 구현 지시. 공용0줄 목표, 실제 연결은 별도 승인/접점 없으면BLOCKED |
 | 검증 / 한계 | Node로 inline13개 문법·원본 MAP루프22입력 관측22/22, native 구현/회귀 PASS 아님. 독립 독자 검토 반영. Godot·GUI·사용자 저장·서버 실행0. 원로그 `~/exoduser-wt/_out/trace-npc-world/` |
 | 상세 / 정리 | [NPC·월드 추적·1번 지시서](FDG_SOURCE_TRACE_NPC_WORLD_20261020.md). 자기 브랜치 push·원격SHA 확인·DONE 후 자기 sparse worktree만 제거, 브랜치·원로그 보존 |
-=======
+
 ## 2026-10-20 TRACE-MAPS-CH2 2장 6에리어 원본 추적·이식 설계
 
 | 항목 | 변경·검수 근거 |
@@ -188,7 +188,6 @@
 | 전수 추적 | raw배치105·소환굴73·CH2등록47 전수표, docs 차이표, Godot 의존/결손, 에리어별 순서안·CH2-01 구현 지시서, 공용 접점. CH2 원화29개는 source/Godot 대응 Git blob 전부 동일. 실제 배치/collider·시각 완료와 구분 |
 | 검산 / 한계 | source VM6맵 재실행·길이/합계·배치 tuple·등록 blob 총176검산/0차이. Godot·브라우저·실플레이0. CH1 공통 알고리즘/전투·저장 권위 재구현0. 최신 전략§8에 따라 표현 제작과 게임플레이 원본 보존을 분리 |
 | 제출 | [2장 추적 문서](engine/FDG_SOURCE_TRACE_MAPS_CH2_20261020.md), 원로그 ~/exoduser-wt/_out/trace-maps-ch2/. 자기 branch push·원격 SHA 대조·DONE 후 자기 sparse worktree 제거, R 불변 |
->>>>>>> 18070adf
 =======
 ## 2026-10-20 TRACE-ENEMIES-CH2 2장 적 원본 추적·이식 설계
 
@@ -224,6 +223,18 @@
 | 보존 / 중지 | 335보호경로 SHA 동일. 기존 격리 상수·Godot 실행 gate 준수. SK-S06 State/main writer 연결은 통합 결정 목록에 기록하고 중지 |
 | 상세 | [QA-006 보고서](engine/orders/reports/qa-006_REPORT.md), 원로그 `~/exoduser-wt/_out/qa-006/`. 전체 QA 해결 완료 아님 |
 >>>>>>> a9cea07a
+=======
+## 2026-10-20 QA-005 로비 8실패 판정·하니스/기대값 정정
+
+| 항목 | 변경·검수 근거 |
+|---|---|
+| 기준 / 동일성 | origin/main `e556b617190c325ca39f5add04357f5dea5ca87e`. SV-TRANSPORT-READ baseline과 원본4·대상 테스트 SHA 동일, 30건 중22통과/8실패 이름·순서 동일 |
+| 판정 / 수정 | 대상8건: 낡은 기대값+helper 누락4, demo에서 지연 API를 기다린 하니스4. 실제 demo helper·Map 저장소·formatter·선택 함수 실행, 현행5슬롯·서버 호출0·Lv/stage 표시 계약 검수. 제품 수정0행 |
+| 검사 강도 | 기존30건 유지+생성 경계3건=33/33 통과(exit0), AST 단정59→77. 지연 응답 기존 마지막4단정 유지. 독립 원본 사본 음성8종 모두 관련 단정 실패 검출 |
+| 확장 회귀 한계 | 로비/데모 관련23파일: 수정 전311/301통과/10실패→최종314/312통과/2실패(exit1). demoSaveRoute/demoScope 별도 선재2건은 원문 기록·미수정, 전체PASS 주장0 |
+| 보존 / 제출 | 공용6·다른 테스트·제품·저장 형식·원본·R 파일 변경0. Node VM 메모리 fixture만 사용, Godot 실행0/실제 저장·서버 호출0. sparse 작업 폴더, push·원격SHA·DONE 후 자기 worktree 제거 |
+| 상세 | [QA-005 판정표·보고서](engine/orders/reports/qa-005_REPORT.md), 원로그 `~/exoduser-wt/_out/qa-005/` |
+>>>>>>> acd16841
 
 ## 2026-10-20 QA-002 테스트 결정성·종료·조명 하니스
 
