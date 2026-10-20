@@ -73,7 +73,9 @@ C:/Program Files/Git/bin/bash.exe C:/Users/심도진/AppData/Local/Temp/claude/G
 
 ## ④ 커밋·원격
 
-현재 작업 브랜치에 코드+관련 docs를 경로 지정으로 커밋한다. 구현 커밋 SHA는 커밋 뒤 후속 보고서 업데이트에 기록하고 원격 branch ref와 대조한다. main push/병합/브랜치 전환 없음. 시작 fetch 관측 origin/main은 작업 HEAD와 별도이며 가져온 변경을 이 worktree에 merge하지 않았다.
+구현·테스트·관련 docs 커밋: **`495e4941485dfd75aec22d9cdd7148ba66f8e928`** (18파일), 현재 브랜치 `codex/p2-008a-ch1-enemies-pc-20261020`에만 반영했다. 이 SHA를 기록하는 후속 문서 커밋은 최종 전달에서 보고하고 원격 branch ref와 대조한다. main push/병합/브랜치 전환 없음. 마지막 조회 origin/main `ad6ac68a2e009c4d299fe1dd2264182355ee992c`는 작업 HEAD와 별도이며 이 worktree에 merge하지 않았다.
+
+커밋 guard 훅은 통과했으나 기존 tools/guard.baseline.json의 과거64266행 기준을65693행으로 갱신하여 tracked WORK 변경1개를 남겼다. 이것은 game.html 수정이 아니며 해당 훅 생성 변경은 커밋하지 않고 보존한다. 원본 SHA·행수는 위 고정값 그대로다.
 
 ## ⑤ 남은 것
 

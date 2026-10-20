@@ -21,7 +21,7 @@
 ## 진행 중 (2026-10-20 갱신: Claude 총괄)
 | 작업ID | 내용 | 담당·환경 | 브랜치 | 소유 파일(다른 담당 수정 금지) | 상태 |
 |---|---|---|---|---|---|
-| P2-008a | 1-1 미지원 적, 시작점 거리순: etype20 세 레코드 우선 | PC Codex | codex/p2-008a-ch1-enemies-pc-20261020 | enemy_factory.gd, enemy_melee_ch1_ice_warrior.gd, etype20_ch1_ice_warrior.json, 관련 테스트·몬스터/AI docs | 부분 구현 검수 대기. 필수 회귀379assert+8case/0실패, 신규72check ledger/0실패. 지원9/미7. 화면 미검수. SHA는 P2-008a_REPORT.md 참조 |
+| P2-008a | 1-1 미지원 적, 시작점 거리순: etype20 세 레코드 우선 | PC Codex | codex/p2-008a-ch1-enemies-pc-20261020 | enemy_factory.gd, enemy_melee_ch1_ice_warrior.gd, etype20_ch1_ice_warrior.json, 관련 테스트·몬스터/AI docs | 부분 구현 검수 대기 · 구현 SHA495e4941485dfd75aec22d9cdd7148ba66f8e928. 필수 회귀379assert+8case/0실패, 신규72check ledger/0실패. 지원9/미7. 화면 미검수. P2-008a_REPORT.md 참조 |
 | P2-001l | 패링 연습 단계 0~7·입력 제한(allows) | PC heavy 담당 | claude/p2-001l-lesson-steps-20261020 | native_parry_lesson_flow.gd 등 레슨 파일, player.gd·main.gd 입력 처리 함수 | 진행 중 |
 | P2-006a | 드랍 바닥 표시·줍기·인벤 반입 | PC heavy 담당 — **Claude 사용 한도로 중단**(작업 폴더 G:\exoduser-wt\p2-002a-hud에 진행분 보존) | claude/p2-006a-drop-pickup-20261020 | 드랍 렌더·줍기 신규 스크립트 | 중단·인계 대기 |
 | P3-002 | 소환굴 시스템·후속 스폰·지역 처치 분모 | 클라우드 세션 cloud-spawnholes | claude/p3-002-spawn-holes | 소환굴 신규 스크립트, world 동적 등록 호출부 | 시작 요청됨 |
