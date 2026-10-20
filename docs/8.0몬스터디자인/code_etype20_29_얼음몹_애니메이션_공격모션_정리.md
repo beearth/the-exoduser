@@ -1,4 +1,6 @@
 # code etype20~29 얼음몹 애니메이션/공격모션 정리
+
+> P2-008b PC 부분 이식(2026-10-20): 원본 초기 order9/type21은 이름상 빙궁수지만 실제 el3 dark/spine_beast col5이다. 별도 `enemy_ch1_dark_archer.gd`는 원본 공통 원거리 AI(range800, ideal520~680, charge60, dark life240)만 소비하고 얼음/빙결 공격을 추가하지 않는다. 원본 `game.html:39061`은 전용 AI 주석뿐이며 실제 탄 종류는 `40513`의 el 분기다. 초기16 지원11/미지원5 후보이며 다음 type25 장판·사망 전용 경로는 미이식. 아래 전체 웹 설계와 native 부분 이식 범위는 별도이다. [원본 대조/검증](../engine/FDG_P2_008B_CH1_ENEMIES_20261020.md)
 > 정확한 월드 챕터 표기: `1장 = 썩은 숲`, `2장 = 벌레굴`, `3장 = 지옥의 겨울`
 > 기준: `game.html`의 `ATLAS_ENEMY_LAYOUT` etype 20~29, `몬스터_총관리.md` AI 노트, `img/pixellab_all` 대표 자산 현황
 > 작성일: 2026-04-04

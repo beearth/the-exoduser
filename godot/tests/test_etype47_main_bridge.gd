@@ -31,7 +31,7 @@ func _run() -> void:
 	actor.shadow_state._stCloneT = 0
 	actor._physics_process(1.0 / 60.0)
 	_check(actor.shadow_error.is_empty() and actor.clone_attempts == 1 and actor.last_discarded_clone.valid, "actual Main clone constructor executes")
-	_check(world.get_enemies().size() == 10, "actual clone not ens.push appended")
+	_check(world.get_enemies().size() == 11, "actual clone not ens.push appended")
 	var before: float = actor.eShield
 	var resolver := HURTE.new()
 	var outcome: Dictionary = resolver.execute(main, world, actor, 100, 0.0, 0, {"_lessonAttack": "weapon", "poiseHit": false})

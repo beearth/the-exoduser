@@ -61,7 +61,7 @@ func _run() -> void:
 	root.add_child(world)
 	var before := JSON.stringify(source)
 	var report: Dictionary = factory.consume_atomic(source, world)
-	_check(report.supported_count == 10 and report.unsupported_count == 6, "10 supported / 6 honest stops")
+	_check(report.supported_count == 11 and report.unsupported_count == 5, "11 supported / 5 honest stops")
 	_check(before == JSON.stringify(source), "frozen export unchanged")
 	world.actors = report.instances
 	for actor in world.actors: world.add_child(actor)

@@ -1,5 +1,9 @@
 > 2026-10-16 통합 범위: 웹 본편 수치·현행은 최신 main 기준, 별도 Native/FDG 항목은 source pin9a4534b4의 부분 이식·명시 opt-in 계약이다. 전체 최신 본편 이식 완료가 아니다. 상세: docs/engine/FDG_PC_MAC_GIT_SYNC_20261016.md.
 
+## P2-008b 2차 PC 후보 — order9 추가 / 2026-10-20
+
+현재 후보는 초기16 중 **지원11/미지원5**(추가 order11/type47, order9/type21). type21 설계명 빙궁수와 달리 실제 레코드는 dark3/spine_beast이며, range800·거리유지520~680·공통 charge60/탄 life240·정규화 dmg62→기존 dark hit80 magic을 그대로 소비한다. 새 얼음 공격/빙결 없음. 다음 order5/type25는 주기 dark 장판 무효과와 사망 ice 장판3개의 서로 다른 경로를 인수하지 않아 정직 정지한다. 상세 원본 행·수치·테스트·남은 개체: [P2-008b 정본](../engine/FDG_P2_008B_CH1_ENEMIES_20261020.md). 아래 1차10/6·이전9/7 수치는 체크포인트 이력이다.
+
 ## P2-008b PC 후보 — 초기 order11 / 2026-10-20
 
 이 브랜치는 P2-008a 병합본의 지원9/미지원7에서 exact order11(etype47 physical/flesh_crawler)만 추가하여 초기16 지원10/미지원6이다. 원본 39407~39429의 분신 객체는 mkEn return 후 ens.push가 없어 등록하지 않으며, 물리0의 falsy 처리로 clone 속성은 dark3이다. TP 경고120·목표60+U40·착지 trunc31×10.5=325와 KB120, 공통 물리 charge60/life120을 원본대로 소비한다. 원 조준 원은 폐기 유지. 소환굴·Q/E·입력·세이브는 불변이다. TP 전체 파티클/광원/흔들림·공유 RNG 픽셀 동등성·실제 창 검수는 미완료이며 기술 PASS와 구분한다. 상세 수치/원본 행/남은 순서: [P2-008b 정본](../engine/FDG_P2_008B_CH1_ENEMIES_20261020.md). 아래 이전 후보 수치는 각 당시 이력이다.

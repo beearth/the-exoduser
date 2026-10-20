@@ -1,5 +1,9 @@
 # P2-008b PC 보고서 — 누적 체크포인트
 
+## 현행 후보 요약 (2차)
+
+**부분 이식 2종/2개체: order11/type47 + order9/type21.** 초기16의 전용 소비자는 지원11/미지원5, 순서[0,1,4,8,9,10,11,12,13,14,15]. 아래 1차10/6·당시17종 수치는 체크포인트 이력이며 최신 결과는 말미 2차 절을 따른다. 소환굴 연결0·Q/E/입력/세이브 변경0.
+
 ## ① 원본 근거 / 1차 order11
 
 - 작업 위치 `G:\exoduser-wt\codex-p2-008b`, 브랜치 `codex/p2-008b-ch1-enemies-pc-20261020`, 착수 HEAD `9528ea35b429498fcf42fe3723008219ed0ed7e1`. 착수 tracked INDEX/WORK 깨끗함, `git fetch origin main` 실행. 본 폴더 `G:\exoduser` 수정·브랜치 전환·커밋 없음.
@@ -21,7 +25,7 @@
 | `godot/scripts/world.gd` | **공용 +13/−0줄**, actual Main의 G/P/OPT 읽기 전용 문맥. 소환굴 변경0 |
 | `godot/scripts/native_type7_teleport.gd` | +4/−1줄. TPVisual 색 인수화, 기존7 기본색#8833cc 불변 |
 | `godot/tests/test_etype47_*.gd` 3개 | 전용 기능22·clone oracle176·Main bridge5 |
-| `godot/tests/fixtures/type47_discarded_clone_oracle.json` / `tools/verify_type47_clone_oracle.cjs` | 원본 mkEn 직접 실행 독립 oracle7case·재현 도구 |
+| `godot/tests/fixtures/type47_discarded_clone_oracle.json` / `godot/tests/tools/verify_type47_clone_oracle.cjs` | 원본 mkEn 직접 실행 독립 oracle7case·재현 도구 |
 | factory·기존 etype 검사8개 | 정확한 지원10/미지원6·등록순서·옆 개체 index만 갱신, 원 검증 삭제/완화 없음 |
 | 설계 docs3개·P2-008b 정본·작업판·본 보고서 | 구현/미완료·원본 근거 동기화 |
 
@@ -79,3 +83,70 @@ C:\Progra~1\Git\bin\bash.exe C:/Users/심도진/AppData/Local/Temp/claude/G--exo
 2. TP 경고/착지/분신 비등록/공통탄은 기술 검증했으나, 기존 TP renderer의 literal particle·blast light·shake·전체 공유 RNG/픽셀 동등성은 미완료. `full_teleport_particle_light_shake_parity=false` 유지.
 3. 실제 1920×1080 창·1× 크롭·회피 조작·공개 플레이 관측 없음. **VISUAL VERDICT: RETOUCH(미검수)**. headless 결과로 대신하지 않음.
 4. 소환굴의 미지원 etype 정직 정지는 그대로 유지. 이번 추가 프로필을 연결하지 않는다.
+
+## 2차 — order9/type21 기능 후보 및 최종 누적
+
+### ① 원본 근거
+
+원본 `39061`은 빙궁수 주석뿐이며 실제 order9는 dark3/spine_beast다. `38681-38705` range800·ideal520/680과 `40462-40464` idle 이동을 각각 보존. `40513`이 실제 el로 dark 차징을 결정한다. `20122-20155` raw dmg31/life240/sz1.6 → `16947-16994` 이동탄 정규화62/3.2/500+U100 → `35016-35028` 기존 dark kernel contact80 magic. 자연 접촉·이름상 얼음 공격을 추가하지 않았다. 정본의 2차 수치 표 참조.
+
+초기16 **지원11/미지원5**. 정확히 추가한 개체는 order11/type47 및 order9/type21 두 개다. `game.html`·`encounters.json`·소환굴·공용 Main/Player/입력/QE/세이브 변경0을 `git diff --exit-code`로 확인.
+
+### ② 추가 변경 / 최종 공용 줄 수
+
+- 추가: `godot/scripts/enemy_ch1_dark_archer.gd`, `godot/data/etype21_ch1_dark_archer.json`, `godot/tests/test_etype21_ch1_dark_archer.gd`, `godot/tests/test_etype21_main_bridge.gd`.
+- 수정: factory exact gate, 기존 검사10개의 지원수/순서, 정본·보고서·작업판 및 몬스터/AI/공격/얼음몹 애니메이션 설계4문서.
+- 최초 HEAD `9528ea35b` 대비 누적: **world.gd +13/−0**, factory +47/−3, native_type7_teleport +4/−1. main.gd·hud.gd·player.gd·native_normal_enemy_hurte.gd·native_source_new_run_state.gd·native_spawn_hole_system.gd 변경0.
+- dark 원본 피격시트2개 500,793B 추가 바이트 대조2일치/0불일치, `assets-21.json`. 이전21개 포함 **고유23개/27,335,910B/0불일치**, 신규 그림·자원 복사/변형0. 이미 존재하는 byte-identical 원본 재사용.
+
+### ③ 2차 명령·최종 결과
+
+앞서 명시한 동일 헬퍼, 프로젝트 `G:/exoduser-wt/codex-p2-008b/godot`, 로그 `G:/exoduser-wt/_out/P2-008b-pc/regression-21`에 아래17종 인수를 순서대로 전달했다.
+
+```text
+test_etype21_main_bridge:EXODUSER-P2008B-DarkMain-Isolated-20261020
+test_encounter_factory
+test_etype0_physical_burn
+test_etype0_physical_flesh_crawler
+test_etype1_lightning_hive_bloater
+test_etype4_ice_soul_flame
+test_etype4_physical_spine_beast
+test_etype20_ch1_admission_boundaries
+test_etype20_ch1_ice_warrior
+test_etype20_ch1_hurte_bridge:EXODUSER-P2008A-HurtE-Isolated-20261020
+test_etype47_ch1_shadow_twin
+test_etype47_clone_oracle
+test_etype47_main_bridge:EXODUSER-P2008B-Main-Isolated-20261020
+test_p1002f_dedicated_hurte:EXODUSER-P1002F-Isolated-20261020
+test_p3002_spawn_holes:EXODUSER-P3002-Isolated-20261020
+test_native_main_source_starter_state:EXODUSER-MainSourceStarter-Isolated-20261014
+test_contracts
+```
+
+| 검사 | 최종 수치 / 실패 | 로그 |
+|---|---|---|
+| 신규21 기능 | 20check/0, 이동5거리·dark62/240/550·실제 kernel contact80·변조3 | green-21/test_etype21_ch1_dark_archer.*.log |
+| 신규21 Main | 5check/0, 실제 Main/World/Player·실드·원본 dark kernel | regression-21/test_etype21_main_bridge.*.log |
+| factory / burn / type0 / type1 / ice4 / physical4 | 각각3/4/3/4/4/4case, 모두 failed_assertions0 | regression-21/각 test.*.log |
+| admission / etype20 / etype20 Main | 20/48/8check, 모두0실패 | regression-21/각 test.*.log |
+| etype47 기능 / oracle / Main | 22/176/5check, 모두0실패 | regression-21/각 test.*.log |
+| p1002f | **381assert/0·48swing**, fallback0·SKIP0. 랜덤 드랍/교전 진행에 따라 1차337/41과 실제 관측 수가 다르므로 덮어쓰지 않음 | regression-21/test_p1002f_dedicated_hurte.*.log |
+| p3002 | 298assert/0, spawn168·정직정지158·etype0 액터10, 소환굴 연결 추가0 | regression-21/test_p3002_spawn_holes.*.log |
+| starter / contracts | 148check/0 및 5case/0 | regression-21/각 test.*.log |
+| type7 TP | 기존 코드 무변경이므로 성공4group/0을 재실행하지 않고 1차 결과 보존 | regression-47/test_type7_teleport.*.log |
+
+TDD: `red-21/test_etype21_ch1_dark_archer.*.log` 먼저 미등록1/1실패, 구현 후 green-21 20/0. 새 asset이 없고 global class를 추가하지 않아 import 반복0.
+
+**누적 고유 Godot19종, 각 최종 결과 실패0·SCRIPT ERROR/ERROR0.** 2차 regression stderr 경고9개(Camera2D8개+ p1002f 종료 ObjectDB2instance leak 경고1개). 누수 원인·시각·성능은 미해결/미검수이며 실패0을 무경고·전체 게임 완료로 표현하지 않는다. 격리명 없는 Main 테스트 실행0, override.cfg 커밋0.
+
+### ④ 2차 커밋
+
+2차 구현 SHA는 다음 기록 체크포인트에서 기입한다. 1차 구현 `934783ad53a5f4100ec16ddf5ef230cd4087b760`과 기록 `f48c94eb6c4067646e3ee7c977266d397c700e08`은 자기 원격 브랜치에서 읽기 대조 완료.
+
+### ⑤ 다음 경계 — 미지원5 정직 정지
+
+남은 순서: **order5/type25 → order2/type29 → order3/type7 → order6/type6 → order7/type7**(5개체/4종). 이번 2종 후보까지 검수 요청하며 이후 개체를 기이식 타입으로 대체하지 않는다.
+
+다음 order5는 `39078-39083`의 **무피해·무감속 dark 정지 장판**(sz2/life480)과 `42803-42808`의 **사망 ice 장판3개**(sz2.5/life360)를 별도 소비해야 한다. `35074-35077`의 실제 속성 분기, `34671/34745`의 0.667 수명 감소/near-camera life1 연장, `54170-54178`의 원본3층 렌더를 확인했다. 현재 `native_normal_enemy_hurte.gd:648` 부근은 특수 사망 분기가 모두 단락된 범위로 작성되어 있어 이를 정상 처리했다고 주장할 수 없다. stationary-zone·사망 생산자·elite1 후반부가 미인수인 상태로 등록하지 않았다. 원본 행/타이머/후속 의존성은 정본에 기록했다.
+
+전체 TP particle/light/shake·전체 공유 RNG/픽셀 동등성·1920×1080 실제 창 및1× 크롭·공개 입력 플레이는 여전히 미완료. **VISUAL VERDICT: RETOUCH(미검수)**. main 병합은 총괄 검수 후 별도 단계다.
