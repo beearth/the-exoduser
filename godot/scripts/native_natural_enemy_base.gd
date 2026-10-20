@@ -13,6 +13,8 @@ var _prepared: Dictionary={}
 var _live: Dictionary={}
 var _used: Dictionary={}
 var _legacy_death: Dictionary={}
+var _components: Dictionary={}
+var scheduler_enabled:=true
 var _busy:=false
 var _cached_frame:=-1.0
 var _packet: Dictionary={}
@@ -25,7 +27,7 @@ class SharedRandom extends RefCounted:
 	var world: Node
 	func randf() -> float:return world.sample_native_random_unit()
 	func randi_range(low: int,high: int) -> int:return low+int(floor(randf()*(high-low+1)))
-func configure(owner_main: Node,reader: Callable) -> Dictionary:
+func configure(owner_main: Node,reader: Callable,enable_scheduler: bool=true) -> Dictionary:
 	if main!=null or not reader.is_valid() or get_parent()!=owner_main.world:return _no("invalid_base_owner")
 	var candidate: Variant=owner_main.native_stage_spawn_adapter
 	if candidate==null or not candidate.is_current():return _no("MAP11_provider_required")
@@ -34,7 +36,7 @@ func configure(owner_main: Node,reader: Callable) -> Dictionary:
 	main=owner_main;holes=main.world.get_node("NativeSpawnHoleSystem");adapter=candidate
 	projectiles=main.native_demo_boss_projectiles
 	if not is_instance_valid(projectiles):return _no("DEMO11_35_registry_required")
-	context_reader=reader
+	context_reader=reader;scheduler_enabled=enable_scheduler
 	shared_random=SharedRandom.new();shared_random.world=main.world
 	if main.world._native_natural_enemy_base!=null or projectiles._natural_source!=null:return _no("single_owner_already_bound")
 	if not main.world.bind_native_natural_enemy_base(self) or not projectiles.bind_natural_source(self):return _no("single_owner_already_bound")
@@ -54,16 +56,17 @@ func frame_ready(frame: float) -> bool:
 	if frame==_cached_frame:return not _packet.is_empty()
 	_cached_frame=frame;_packet={}
 	var g: Dictionary=main.source_state.read_current_g()
-	if not g.get("on",false) or g.get("paused",false) or g.get("stage")!=0 or holes._lesson_active():return false
+	if not g.get("on",false) or g.get("stage")!=0:return false
+	if scheduler_enabled and (g.get("paused",false) or holes._lesson_active()):return false
 	var c: Variant=context_reader.call()
 	if not _context_valid(c) or c.lesson_active:return false
-	_serial+=1
+	_serial=int(main.world._native_clock_updates)
 	_packet={"ready":true,"serial":_serial,"sp":main.world._native_last_ticks,"context":c.duplicate()}
 	return true
 func _physics_process(_delta: float) -> void:
 	advance_scheduler(main.world.get_native_frame())
 func advance_scheduler(frame: float) -> bool:
-	if not frame_ready(frame) or frame<=_late_frame:return false
+	if not scheduler_enabled or not frame_ready(frame) or frame<=_late_frame:return false
 	_late_frame=frame;counts.late_ticks+=1
 	holes.advance_native(float(_packet.sp))
 	return true
@@ -72,6 +75,9 @@ func advance_projectiles(frame: float) -> bool:
 	_projectile_frame=frame
 	return projectiles.advance_natural_frame(self,_packet)
 func emit_projectile(actor: Node,props: Dictionary) -> Dictionary:
+	if not is_instance_valid(actor):return _no("natural_projectile_owner_not_current")
+	var component: Node=projectile_component(actor)
+	if component!=null and not component.allows_projectile(actor):return _no("profile_projectile_not_ready")
 	if not owns_actor(actor) or not frame_ready(main.world.get_native_frame()):return _no("natural_projectile_owner_not_current")
 	return projectiles.admit_natural_projectile(self,actor,props,_packet)
 func owns_actor(actor: Node) -> bool:
@@ -83,6 +89,7 @@ func spawn_selected(source_owner: Node,group: String,source: Dictionary) -> Dict
 	if not source.get("etype") is int:return _no("invalid_etype")
 	var entry:=factory.natural_registration(source.etype)
 	if entry.is_empty():return _no("natural_etype_not_registered:"+str(source.etype))
+	if entry.get("prepared_record_only",false):return _no("natural_profile_scheduler_HOLD:"+str(source.etype))
 	if (not source.get("elite") is int or source.elite!=0) or source.get("mods")!=[]:return _no("elite_modifier_owner_not_ready")
 	for key in ["el","element","element_id"]:
 		if source.has(key):return _no("undefined_source_element_required")
@@ -108,7 +115,8 @@ func spawn_selected(source_owner: Node,group: String,source: Dictionary) -> Dict
 	_used[token]=true
 	var built:=factory.prepare_natural(holes,h,site,source,self)
 	if not built.ready:_busy=false;return built
-	var actor: Node=built.actor
+	return _admit_prepared(built.actor,group,site)
+func _admit_prepared(actor: Node,group: String,site: Dictionary) -> Dictionary:
 	_prepared[actor.get_instance_id()]=actor
 	var admitted: Dictionary=main.world.register_native_natural_enemy(self,actor)
 	_prepared.erase(actor.get_instance_id())
@@ -118,7 +126,7 @@ func spawn_selected(source_owner: Node,group: String,source: Dictionary) -> Dict
 	actor.telemetry_event.connect(_actor_event.bind(weakref(actor)))
 	counts.registered+=1
 	_busy=false
-	return {"ready":origin.get("ready",false),"registered":true,"actor":actor,"site":site,"source_prefix_consumed":true,"reason":"" if origin.get("ready",false) else "origin_rejected_after_registration"}
+	return {"ready":origin.get("ready",false),"registered":true,"actor":actor,"site":site,"origin":origin,"source_prefix_consumed":true,"reason":"" if origin.get("ready",false) else "origin_rejected_after_registration"}
 func _actor_event(kind: String,payload: Dictionary,reference: WeakRef) -> void:
 	var actor: Node=reference.get_ref()
 	if not is_instance_valid(actor):return
@@ -161,6 +169,24 @@ func spawn_hole(h: Dictionary) -> bool:
 		if str(last_receipt.get("reason","")).begins_with("natural_etype_not_registered:"):holes._metrics.unported_spawns+=1
 	holes.spawn_journal.append({"frame":holes._game_frame,"etype":etype,"draws":draws,"registered":last_receipt.get("registered",false),"reason":last_receipt.get("reason","")})
 	# Unsupported type consumes its source attempt, never rerolls/substitutes.
-	return last_receipt.get("ready",false) or str(last_receipt.get("reason","")).begins_with("natural_etype_not_registered:") or last_receipt.get("reason")=="elite_modifier_owner_not_ready"
+	return last_receipt.get("ready",false) or str(last_receipt.get("reason","")).begins_with("natural_etype_not_registered:") or str(last_receipt.get("reason","")).begins_with("natural_profile_scheduler_HOLD:") or last_receipt.get("reason")=="elite_modifier_owner_not_ready"
 
 func _unit_valid(v: Variant) -> bool:return (v is int or v is float) and is_finite(float(v)) and v>=0 and v<1
+
+func spawn_profile_record(component: Node,group: String,record: Dictionary,site: Dictionary) -> Dictionary:
+	if _busy or not is_instance_valid(component) or component.get_parent()!=main.world or not component.current() or not frame_ready(main.world.get_native_frame()):return _no("natural_profile_component_not_current")
+	if not site.get("ready",false) or site.get("spawn_group_id")!=group:return _no("natural_profile_site_receipt_required")
+	var token:=group+"/profile/"+str(record.get("id",""))
+	if _used.has(token):return _no("source_prefix_already_consumed")
+	_busy=true;_used[token]=true
+	var built:=factory.prepare_natural_profile(record,main.world,component)
+	if not built.get("ready",false):_busy=false;return built
+	var actor: Node=built.actor
+	_components[actor.get_instance_id()]=weakref(component)
+	var key: int=actor.get_instance_id()
+	var result:=_admit_prepared(actor,group,site)
+	if not result.get("registered",false):_components.erase(key)
+	return result
+func projectile_component(actor: Node) -> Node:
+	var reference: Variant=_components.get(actor.get_instance_id())
+	return reference.get_ref() if reference is WeakRef else null
