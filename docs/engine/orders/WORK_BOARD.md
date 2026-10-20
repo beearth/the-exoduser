@@ -30,6 +30,7 @@
 ## 진행 중 (2026-10-20 갱신: Claude 총괄)
 | 작업ID | 내용 | 담당·환경 | 브랜치 | 소유 파일(다른 담당 수정 금지) | 상태 |
 |---|---|---|---|---|---|
+| BC-INTEG-01 | BC02 원본 ELC 색·BC08 장 catalog 일반화, CH1 기본 byte 보존 | Mac Codex(맥북총괄 직접 배정) | codex/bc-integ-01-20261020 | native_ch1_boss_spawn_contract.gd·native_ch1_boss_movement_states.gd, 신규 bc_integ_01 테스트/오라클·자기 보고서 | **검수 대기** — 신규 73394/0·BC01~10 354093/0·CH2 119182/0·contracts5/0, 기존 회귀 무수정·Main/State/저장0. SHA는 자기 보고서 원로그 DONE.txt |
 | p2001i-diag | p2001i 종료 ERROR·ObjectDB/리소스 수명 진단 | Mac Codex | codex/p2001i-diag-20261020 | 자기 보고서·CHANGELOG·작업판 자기 행만(제품/기존 테스트0) | **검수 대기** — main6d987cb8 원문6종377/0·종료 ERROR/누수0, I 원문3회18/0. 외부 대기제거 대조에서 음성 MP3/Playback2객체·리소스1 ID일치 재현, 하니스 조기quit 판정. 보고서·최종SHA는 원로그 DONE.txt |
 | DOC-SYNC | 오늘 통합분 원본 수치·설계 docs 동기화 감사 | PC Codex | codex/doc-sync-pc-20261020 | DOC-SYNC_REPORT.md 및 설계 문서10개 정정 구역(2_3 제외) | **검수 완료·main 병합(Claude 총괄)** — 설계 문서 10종 원본 기준 정정, 코드 무변경. 2_4는 P2-004b와 충돌 → 상세 문장 유지+정정 주석 |
 | P2-001l | 패링 연습 단계 0~7·입력 제한(allows) | PC heavy 담당 | claude/p2-001l-lesson-steps-20261020 | native_parry_lesson_flow.gd 등 레슨 파일, player.gd·main.gd 입력 처리 함수 | **검수 완료·main 병합(Claude 총괄 2026-10-20)** — 병합본 독립 재실행 9종 0실패(L·K·H·J·QE·5c·HUD·지역·시작스킬), 화면 RETOUCH·step1~7·챕터2 미이식 |
