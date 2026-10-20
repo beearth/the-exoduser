@@ -294,7 +294,7 @@ func cast_giant_slam() -> void:
 	_audio.global_position = _player.global_position
 	_audio.pitch_scale = 0.8 + (randf() - 0.5) * 2.0 * 0.06 # _r(.8,.06) — 비게임플레이 오디오 지터
 	_audio.volume_db = 0.0
-	_audio.play() # SFX.slam: heavy_hit 샘플(합성 3층은 미이식 기록)
+	_play_sample("res://assets/sfx/skill/heavy_hit.mp3",_audio.global_position,_audio.pitch_scale,0.0) # DEMO11-40 sole consumer
 	_cast_log.append({"lv": lv, "dmg": hit_dmg, "radius": radius, "hits": hits, "cd": gsl_cd})
 	queue_redraw()
 
@@ -496,15 +496,8 @@ func _spike_trap_tick(zone: Dictionary) -> void:
 
 
 func _play_sample(path: String, pos: Vector2, pitch: float, volume_db: float = 0.0) -> void:
-	var one_shot := AudioStreamPlayer2D.new()
-	add_child(one_shot)
-	one_shot.stream = load(path)
-	one_shot.global_position = pos
-	one_shot.pitch_scale = pitch
-	one_shot.volume_db = volume_db
-	one_shot.max_distance = 2200.0
-	one_shot.finished.connect(one_shot.queue_free)
-	one_shot.play()
+	if is_instance_valid(_main) and _main.has_method("request_native_skill_sample"):
+		_main.request_native_skill_sample(path,db_to_linear(volume_db),pitch)
 
 
 ## Ctrl — 얼음보주 (게이트 12922 → activateIceOrb 46756)
