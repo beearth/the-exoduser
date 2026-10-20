@@ -81,7 +81,9 @@ visual-glow에서 최초 게임 스레드 합성 **50,396µs** 관측. 그대로
 
 ## ④ 커밋·원격
 
-브랜치 `codex/p2-009a-feedback-ui-pc-20261020`에만 경로 지정 commit/push한다. 구현·검수·문서 본체 SHA는 이 보고서를 갱신하는 후속 receipt commit에서 기록한다. 최종 receipt SHA와 원격 ref 대조는 최종 메시지로 보고한다. main 병합/push·태그·배포 없음.
+구현·검수·문서 본체 커밋은 **`525e8db3cf266934de245f1cbed59130b4cd27ba`**, 브랜치 `codex/p2-009a-feedback-ui-pc-20261020`이다. 경로 지정33파일만 커밋했다. 이 SHA를 기록하는 후속 문서 receipt까지 `git push origin HEAD`하며 최종 receipt SHA와 원격 ref 대조는 최종 메시지로 보고한다. main 병합/push·태그·배포 없음.
+
+커밋 훅이 tools/guard.baseline.json의 원래 행 수64266을65693으로 갱신한 부수효과는 output의 사전 사본/원 diff와 대조해 해당 한 줄만 원상 복원했다. 이 파일은 스테이징/커밋하지 않았다. 최종 문서 전체 키워드 검색은 docs-final-keyword-audit.log, 초기 검색은 docs-keyword-audit.log에 보존했다. diff --check 최초 EOF 빈 줄 실패는 format-01.log 보존 후 해당 빈 줄만 제거해 통과했다.
 
 ## ⑤ 남은 것
 
