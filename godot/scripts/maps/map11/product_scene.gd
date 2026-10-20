@@ -29,11 +29,14 @@ func line_of_sight(a: Vector2,b: Vector2) -> bool:
 var _fade: ColorRect
 var _fade_tween: Tween
 var _actor: Node2D
+var _fog_pass: Node
 func _physics_process(delta: float) -> void:
  # Resolve the product actor once after Main setup, then use cached references.
  if not is_instance_valid(_actor):
   _actor=get_parent().get_parent().get("player")
   if is_instance_valid(_actor):
+   _fog_pass=preload("res://scripts/maps/map11/fog_pass.gd").new();add_child(_fog_pass)
+   _fog_pass.configure(get_parent().get_parent())
    get_parent().get_parent().camera.zoom=Vector2.ONE*.70
    get_parent().get_parent().camera.offset=Vector2(0,-180)
  if not is_instance_valid(_actor):return

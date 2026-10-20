@@ -55515,3 +55515,10 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 - 최신 main `9528ea35b429498fcf42fe3723008219ed0ed7e1`을 자기 branch에 ff merge 후 신규 unit112/0·actualMain12/0·contracts5군/실패0 재확인. 기존 OPT11/0·starter148/0·지역43/0·HUD36/0·소환굴298/0, 수치 출력 합660/0. G48/지역23·60·53·32/합168·시작HUD0/32 확인. 실행별 근거는 아래 보고서를 따른다.
 - 최초 unit1단정 실패·보완, 최초 커밋의 필수 변경로그 누락 거부·기존 초기화 회귀의 격리guard 거부는 과거 실행으로 보존한다. 이 append는 필수 문서 동기화 정상 경로이며 훅 우회0.
 - [원본 행·API·실행별 결과·기준 SHA·남은 범위](engine/orders/reports/settings-s01_REPORT.md). 설정 UI/저장복원·실플레이·전체 이식 완료 증거가 아니다.
+
+
+## 2026-10-21 — MAP11-15 보스룸 경계·맵 성능
+
+- 기반 db9219b4 / codex/map11-15-20261021. R1700 collision·provider·Marker·전투/저장 불변. 제품 arena만 시각 바닥 불규칙 감쇠+root32/BACK forest32로 큰 검은 원호 제거, 랜드마크 보존.
+- 제품 field 화면 밖 row/decal cull. 기존 바닥 5tap1024² cache로15→3lookup, 기존 fog5octave2048² cache로60hash/sin→3lookup. 원 NativeScreenLighting 소스/단일패스/UV·TIME·색·alpha 유지, cache근사 오차는 별도 fixed-TIME 비교.
+- 1920×1080 실창 실제 Player 입력600틱/공간, 최종24/0. field 평균189.38fps/p95 6.987ms, arena188.81fps/p95 6.741ms. 이번 표본120fps p95 목표PASS; 전체밀집/Windows 미검수. [현행 수치·원본·§23 보고](4.1맵디자인+설정/MAP11_FINISH_PERFORMANCE_20261021.md). 전후2쌍+1x는 ~/exoduser-wt/_out/map11-15/captures/.
