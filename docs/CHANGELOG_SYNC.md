@@ -1,3 +1,13 @@
+## 2026-10-20 EC4-02 4장 catalog·23필드 초기 literal projection
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준·의존 | fetch main3886513f + EC4-01 61f3ad9c 정상merge=b74a7d3e. EC3-02 fb8e80d0은이미main포함/명시merge up-to-date. rebase0, 실제EC2-02 Constructor.Draws·EC3-02 slice API 재사용 |
+| 원본·범위 | G30823–30920 catalog10·G31300–31309의23필드만. stage14..20/etype50..59·모든type angle1draw·매58buffer fresh/나머지null·speed0분기. HP/elite/mods/aura/전체actor복제0 |
+| 검증 | 원본JS1,750사례·신규61,739/0, EC4선택22,364/0·EC3catalog12,602/0·선택10,234/0·EC2constructor159,902/0·선택7,483/0·factory3그룹/0·contracts5그룹/0. ERROR/WARNING/SKIP0 |
+| 검출·보호 | 변이5종10040/1575/1584/1/176실패검출→byte복원→최종재실행. UTF-8파일oracle/명시node인자/진단join·단정별행근거. 기존1,620파일동일·공용export2/Main/State/저장/다른담당/R0줄 |
+| 제출 | [EC4-02 보고서](engine/orders/reports/ec4-02_REPORT.md), 원로그 ~/exoduser-wt/_out/ec4-02/. 매Godot pgrep/2이상30초대기·각격리명·정상훅·자기branch push/remoteSHA/DONE뒤자기worktree제거. 실actor/공용연결HOLD |
+
 ## 2026-10-20 EC4-01 4장 유형·원소 선택 순수 정책
 
 | 항목 | 구현·검수 근거 |
