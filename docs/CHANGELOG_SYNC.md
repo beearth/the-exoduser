@@ -1,3 +1,12 @@
+## 2026-10-21 DEMO11-43 — MAP11 동적 spawn·지역 예산·origin kill 공통 접점
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준·구현 | main969c194e6. MAP11 plan b085407d 현재§7 읽기 참조(지시의 map11-01은 프리뷰). 새 consumer ABI v1, 실제 Marker/region/group/revision만 수락. P3-002 count/State writer·P3-003 region writer 재사용 |
+| 경계·보호 | Main 공개 opt-in. 실제 etype 생성/등록·새 MAP11 provider·스케줄러 재개 후행, legacy 좌표 검색 차단. origin 불변/중복 kill 거절, 예정 분모 단1회. State·World·PC 전투/피해·저장·맵 제작0줄, 공용 줄 범위 보고 |
+| 검증·성능 | 신규40/0·P3-002 298/0·P3-003 43/0 각1회(381/0). 최종 ERROR0, Camera 경고각1 및 P3-002 ObjectDB8 종료 경고 보존. 최초 Main 들여쓰기 import parse 실패 교정 이력 보존. 후보요청10,000틱×3 벽시계1회: 평균0.1204ms/p99 0.202ms(실제 적 생성/전체게임 제외) |
+| 근거·제출 | [소비자 ABI](engine/DEMO11_STAGE_SPAWN_ADAPTER_20261021.md)·P3 docs·[보고서](engine/orders/reports/demo11-43_REPORT.md). 신규 틱 목록API0. 원로그 _out/demo11-43/, pgrep 2이상30초 대기·격리명·override finally제거. 자기branch push/원격일치/DONE 후 WT제거 |
+
 ## 2026-10-21 DEMO11-05 — main 성능 수정 병합·tick 경로 점검
 
 | 항목 | 구현·검수 근거 |

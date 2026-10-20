@@ -2990,3 +2990,15 @@ func request_native_skill_sample(path: String, gain: float, rate: float) -> void
 		_attack_audio_streams[key]=stream
 		_combat_sound_consumer.install_sample(key,stream)
 	_record_event("native_skill_sample_requested",{"key":key,"gain":gain,"rate":rate,"character":player.get_native_character_profile_snapshot().get("index",-1)})
+
+var native_stage_spawn_adapter: RefCounted
+
+# DEMO11-43 opt-in seam. Legacy boot is unchanged until MAP11 supplies a live provider.
+func bind_native_spawn_stage_provider(provider: Node2D) -> Dictionary:
+	var spawn: Node2D=world.get_node_or_null("NativeSpawnHoleSystem")
+	var regions: Node=get_node_or_null("NativeRegions")
+	if not is_instance_valid(spawn) or not is_instance_valid(regions):return {"ready":false,"reason":"P3_owners_absent"}
+	var adapter: RefCounted=preload("res://scripts/native_stage_spawn_adapter.gd").new()
+	var result: Dictionary=adapter.configure(provider,spawn,regions)
+	if result.get("ready")==true:native_stage_spawn_adapter=adapter
+	return result

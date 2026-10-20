@@ -118,6 +118,7 @@ var _game_frame := 0           # _gameFrame(32099/32137) — G.on·레슨·일�
 var _template: Dictionary = {}
 var _spawned_actors: Array = []
 var _next_order := 2000        # Godot 레지스트리 북키핑(원본 무해당; 커튼 16~·레슨 1000~)
+var _stage_marker_bound := false # DEMO11-43: blocks legacy coordinate/RNG scheduler
 var _configured := false
 var _g_receipts: Array = []
 var _void_black: Texture2D
@@ -331,6 +332,7 @@ static func _new_hole(x: float, y: float, size: float, room: int) -> Dictionary:
 	return {"x": x, "y": y, "size": size, "timer": null, "alive": 0, "room": room}
 
 func install_placement() -> Dictionary:
+	if _stage_marker_bound:return {"applied":false,"reason":"stage_marker_owner_bound"}
 	if not _configured:
 		return {"applied": false, "reason": "not_configured"}
 	var built: Dictionary = build_native_placement(world.get("map_data"))
@@ -344,6 +346,20 @@ func install_placement() -> Dictionary:
 	var receipt: Dictionary = _write_g({"spawnHoles": holes, "_totalSpawned": total_spawned})
 	return {"applied": receipt.get("applied") == true, "reason": receipt.get("reason", ""),
 		"count": holes.size(), "total": total_spawned}
+
+## DEMO11-43: marker-resolved input only; never calls legacy template placement.
+func install_stage_marker_holes(resolved_holes: Array) -> Dictionary:
+	if not _configured or _stage_marker_bound or _game_frame!=0 or not _spawned_actors.is_empty():
+		return {"applied":false,"reason":"spawn_stage_already_started"}
+	var total:=0
+	for h in resolved_holes:
+		total+=spawn_hole_count(float(h.size),STAGE)
+	var receipt: Dictionary=_write_g({"spawnHoles":resolved_holes,"_totalSpawned":total})
+	if receipt.get("applied")!=true:return receipt
+	holes=resolved_holes;total_spawned=total;active=false;_stage_marker_bound=true
+	# No new etype is admitted. Future caller must bind constructor/registry first.
+	set_physics_process(false)
+	return {"applied":true}
 
 func _write_g(writes: Dictionary) -> Dictionary:
 	var receipt: Dictionary
@@ -383,6 +399,7 @@ func _physics_process(delta: float) -> void:
 
 ## update() 한 프레임의 소환굴 몫. 하니스는 G.on 게이트 없이 직접 호출해 틱을 고정할 수 있다.
 func advance_native(sp: float) -> void:
+	if _stage_marker_bound:return # Actual etype/site consumer is deferred; do not run old coordinate search.
 	if not _configured or sp <= 0.0:
 		return
 	_metrics.advance_calls += 1
