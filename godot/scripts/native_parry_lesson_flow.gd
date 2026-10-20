@@ -59,7 +59,7 @@ const COL_ROW_DONE := Color(0xb2 / 255.0, 0xd6 / 255.0, 0xac / 255.0)
 const COL_SKIP_TEXT := Color(0xdc / 255.0, 0xcb / 255.0, 0xb6 / 255.0)
 const COL_KIND_MAGIC := Color(197.0 / 255.0, 164.0 / 255.0, 242.0 / 255.0) # 실측 step-2 status/hold (data-kind magic)
 const COL_KIND_PHYSICAL := Color(0xe0 / 255.0, 0xc1 / 255.0, 0x8b / 255.0) # 실측 intro status (data-kind physical)
-const FONT_PATH := "res://assets/fonts/NotoSerifKR-VF.ttf" # 원본 'Nanum Myeongjo' 계열 — 포트 보유 명조(잔여: 나눔명조/Cinzel 에셋)
+const FONT_PATH := "res://assets/fonts/ofl/nanummyeongjo/NanumMyeongjo-Regular.ttf" # P2-007a 원본 --font-hell 1순위 'Nanum Myeongjo'(parry-lesson.css 12)
 const FRAME_PATH := "res://assets/ui/hell_gothic/frame.png" # 원본 img/ui/hell_gothic/frame.png 그대로
 const CREST_PATH := "res://assets/ui/hell_gothic/crest.png"
 
@@ -801,18 +801,10 @@ func _finish() -> void:
 var _font_bold: FontVariation
 
 func _weighted_font(weight: int) -> Font:
-	# NotoSerifKR-VF는 가변 글꼴 — 실측 font-weight를 variation_opentype wght로 그대로.
+	# P2-007a — var(--font-hell) 스택(Nanum Myeongjo 400/700/800 → Noto Serif KR wght) 공용 공급자.
 	if _font == null:
 		return null
-	if weight == 400:
-		return _font
-	if _font_bold == null or int(_font_bold.get_meta("wght", 0)) != weight:
-		var variation := FontVariation.new()
-		variation.base_font = _font
-		variation.variation_opentype = {TextServerManager.get_primary_interface().name_to_tag("wght"): weight}
-		variation.set_meta("wght", weight)
-		_font_bold = variation
-	return _font_bold
+	return preload("res://scripts/native_ui_fonts.gd").stack("hell", weight)
 
 func _label(size: int, color: Color, text: String = "", weight: int = 400) -> Label:
 	var node := Label.new()
@@ -944,7 +936,8 @@ func _build_panel() -> void:
 	keycap.add_theme_stylebox_override("panel", keycap_style)
 	_ui["keycap_style"] = keycap_style
 	keycap.size_flags_horizontal = Control.SIZE_SHRINK_END # 실측: 키캡 우측 정렬(right=콘텐츠 우변 1826)
-	_ui["keycap"] = _label(28, COL_KEYCAP, "W A S D", 700) # 실측 400(Cinzel) — 대체 글꼴 시각 등가 보정(근사 기록)
+	_ui["keycap"] = _label(28, COL_KEYCAP, "W A S D", 400) # 실측 400
+	_ui["keycap"].add_theme_font_override("font", preload("res://scripts/native_ui_fonts.gd").stack("cinzel_serif", 400)) # P2-007a .lesson-key 'Cinzel',serif(로드분 700 face)
 	_ui["keycap"].autowrap_mode = TextServer.AUTOWRAP_OFF
 	keycap.add_child(_ui["keycap"])
 	column.add_child(keycap)
@@ -1028,7 +1021,7 @@ func _build_panel() -> void:
 	skip_button.text = "연습 건너뛰기"
 	skip_button.custom_minimum_size = Vector2(0, 36)
 	if _font != null:
-		skip_button.add_theme_font_override("font", _font)
+		skip_button.add_theme_font_override("font", _weighted_font(400)) # P2-007a --font-hell 스택
 	skip_button.add_theme_font_size_override("font_size", 12)
 	skip_button.add_theme_color_override("font_color", COL_SKIP_TEXT)
 	var skip_style := StyleBoxFlat.new()
@@ -1186,4 +1179,4 @@ func get_snapshot() -> Dictionary:
 			"allows()/allowKey() 입력 강제 배선(시작 스킬 트랙과 입력 경로 충돌 회피 — API만 제공)",
 			"start/finish의 projs/pProjs/worldItems/spawnHoles/rifts/_fireZones/스킬·슬롯·BINDS2 저장·복원(포트 미보유 상태)",
 			"clearShot/resetPose·focusTicks·레슨 성공/사망 연출 보조(rage 분기 등)",
-			"폰트: Nanum Myeongjo/Cinzel 에셋 미보유 — NotoSerifKR 대체(실측 수치는 반영)"]}
+			"폰트(P2-007a): Nanum Myeongjo·Cinzel 원본 스택 적용 — Gowun Batang(3순위) 미보유"]}

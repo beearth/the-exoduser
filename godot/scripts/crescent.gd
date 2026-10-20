@@ -1,8 +1,12 @@
 extends Area2D
 ## Native kiSlash: world-owned, unlimited piercing, independent of cast lifetime.
 
-const SHEET = preload("res://assets/vfx/ki_slash_radiant_sheet.png")
+# P2-007a — 원본 2026-10-11 "실버+블랙"(game.html 16739~16753): 1·2·3타 모두 같은 실버 시트
+# (assets/vfx/ki_slash_silver_sheet.png 바이트 복사), 색 변환 폐지(_kiSlashPalette 16743 → 0),
+# 칼날 뒤 검은 잉크 층(_kiSlashShadowSurface 16745, 일반 합성) + 칼날은 가산(lighter/GL ONE,ONE).
+const SHEET = preload("res://assets/vfx/ki_slash_silver_sheet.png")
 const ADDITIVE = preload("res://assets/vfx/radiant.gdshader")
+const INK = preload("res://assets/vfx/ki_slash_ink.gdshader")
 const HIT_EFFECT = preload("res://scripts/hit_effect.gd")
 # P1-002.G: 검기 피해도 원본 hurtE(game.html:19837) 경로 — 실행자·owner API 계약은 player.gd와 공유.
 const NORMAL_HURTE = preload("res://scripts/native_normal_enemy_hurte.gd")
@@ -23,6 +27,7 @@ var _combat: Dictionary = {}
 var _hits: Dictionary = {}
 var _configured: bool = false
 var _sprites: Array[AnimatedSprite2D] = []
+var _ink: AnimatedSprite2D
 var _trail: Array[Vector2] = []
 var _trail_head: int = 0
 
@@ -54,9 +59,8 @@ func configure(player: Node2D, requested_step: int, charge_frames: float, reques
 	_speed = speed_per_tick * 60.0
 	initial_life_frames = floor((float(distances[step - 1]) + (level - 1) * float(skill.get("distance_per_level", 15.0))) / speed_per_tick)
 	life_frames = initial_life_frames
-	var visual_profile: Dictionary = player.get_native_character_profile_snapshot() if player.has_method("get_native_character_profile_snapshot") else {}
-	var silver: bool = visual_profile.get("ready")==true and visual_profile.get("index")==1
-	_palette = 2 if step == 3 else (1 if silver else 0)
+	# 16743 _kiSlashPalette(c){return 0} — 단계·캐릭터 무관 단일 실버(구 3타 hue150·실버테일 분기 폐지).
+	_palette = 0
 	_trail.clear()
 	for index in range(5):
 		_trail.append(global_position)
@@ -89,6 +93,16 @@ func _ready() -> void:
 		atlas.atlas = SHEET
 		atlas.region = Rect2((index % 3) * 418, int(index / 3) * 418, 418, 418)
 		frames.add_frame("slash", atlas)
+	# 19210~19215: 잉크 층을 칼날보다 먼저(아래) — 일반 합성, 1.14배, alpha×.9.
+	_ink = AnimatedSprite2D.new()
+	_ink.name = "Ink"
+	_ink.sprite_frames = frames
+	_ink.animation = "slash"
+	_ink.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	var ink_material := ShaderMaterial.new()
+	ink_material.shader = INK
+	_ink.material = ink_material
+	add_child(_ink)
 	for index in range(4):
 		var sprite := AnimatedSprite2D.new()
 		sprite.sprite_frames = frames
@@ -205,7 +219,7 @@ func _play_hit(point: Vector2) -> void:
 	var widths: Array = skill.get("hit_widths", [140.0, 140.0, 184.0])
 	var effect = HIT_EFFECT.new()
 	get_parent().add_child(effect)
-	effect.configure(point, direction, float(widths[step - 1]) * charge_scale, _palette, float(skill.get("hit_frame_ticks", 3.0)))
+	effect.configure(point, direction, float(widths[step - 1]) * charge_scale, _palette, float(skill.get("hit_frame_ticks", 3.0)), true) # 19380 잉크 층 동반
 
 func _update_visual() -> void:
 	if _sprites.is_empty():
@@ -213,11 +227,16 @@ func _update_visual() -> void:
 	var progress: float = clampf(1.0 - life_frames / maxf(1.0, initial_life_frames), 0.0, 1.0)
 	var frame: int = mini(8, int(floor(progress * 9.0)))
 	var opacity: float = minf(1.0, (1.0 - progress) * 2.5)
+	if is_instance_valid(_ink):
+		_ink.frame = frame
+		_ink.position = Vector2.ZERO
+		_ink.scale = Vector2.ONE * (_width * 1.14 / 418.0)
+		_ink.modulate.a = opacity * 0.9
 	for index in range(4):
 		var sprite: AnimatedSprite2D = _sprites[index]
 		sprite.frame = frame
 		var material: ShaderMaterial = sprite.material
-		material.set_shader_parameter("hue_degrees", 150.0 if _palette == 2 else 0.0)
+		material.set_shader_parameter("hue_degrees", 0.0) # 16744 색 변환 폐지(동일 참조)
 		if index < 2:
 			var previous: Vector2 = _trail[posmod(_trail_head - (2 - index) * 2, 5)]
 			sprite.position = to_local(previous)
