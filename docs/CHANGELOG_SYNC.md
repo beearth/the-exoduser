@@ -1,3 +1,15 @@
+## 2026-10-20 SND-07 독립 sample backend·수명·공간음
+
+| id / 항목 | 현재 계약 |
+|---|---|
+| 기준 / 의존 | 최신main e556b617의 game.html12218–12294/12372–12386. main미포함 SND-06 72c7869b 끝 분기(main은이미ancestor). 자기no-checkout/sparse WT 약874MiB |
+| 신규 범위 | node_admission.gd/native_sound_backend.gd·새test·원본JS generator/fixture 신규5파일. 기존제품/test·공용6파일·State·원본HTML/에셋0줄. 기존MP3byte참조만, 음원생성/변환/복사0 |
+| 한도 / 수명 | active48/16·PROJ5/2·HIT3/2·STEP2. footstep자기oldest→channel cap→전체cap, 동일VOICE9거부/SKILL10교체. finished·duration+.5초Timer·노드손실·owner종료 idempotent정리/swap-pop, 격리gain/pan버스만. 기존게임공통48합산/master EQ·comp는미연결 |
+| 공간 / 로딩 | 30ms stamp→거리1200/800·falloff²·pan dx/600±.7·gx감소·.01 gate/RNG. buffer미준비drop/key별pending1·READY/PENDING/실패완료·retry·과거요청replay0. vol0은원본(vol\|\|1), sfx0은0 |
+| 실측 | 최종2004/0·JS29시나리오458단계/65827leaf불일치0. 실제원본MP3 SHA동일43821byte·Dummy재생/자연finished/실제timeout/예약시작/owner손실·bus1→1. 초기ObjectDB8/6경고는기록후mixer drain검사보완·최종stderr비어있음 |
+| 회귀 / 보존 | contracts5그룹/0·SND01~06 1194/0·687/0·606/0·2435/0·1308/0·2400/0·웹3파일7pass/0fail. 기존tracked game.html/godot1332파일byte불변·cache1006파일동일byte/import0. 지정격리/기존상수/override후0byte·Godot2이상30초대기 |
+| 제출 / 한계 | 정상훅·자기branch push/원격일치→DONE→자기WT제거. branch/원로그/보고서사본보존. 청감/PCM/실게임/PC미확인, 실제footstep원음검증·233개전체media이식아님. [보고서](engine/orders/reports/snd-07_REPORT.md) |
+
 ## 2026-10-20 SND-06 원본 BGM 전이·수명 모델
 
 | id / 항목 | 현재 계약 |
