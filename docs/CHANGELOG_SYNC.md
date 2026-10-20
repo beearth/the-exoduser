@@ -1,3 +1,9 @@
+## 2026-10-21 DEMO11-04 실제 로컬5슬롯 요청 UI·화면 비교 자료 준비
+
+- main8dbbf2b0 + DEMO11-05 f2889355 정상merge61d4d92e. 기존 actual storage/slot reader 재사용, 새로하기 metadata/이어하기 payload 요청·확인 삭제. IO 성공+readback만 목록 반영, stale/lock/읽기 실패 보호. 복원/입장 성공 주장0.
+- 독립 demo_lobby 씬·SV-LOBBY-VIEW/S10 후보 구현, Main/State/전투/맵/저장 adapter·project0줄. 원본 에셋3개 byte동일·Hell Gothic·NativeUIFont·이모지0, 번역23쌍/3.1UI 현황 갱신.
+- 신규 최종48/0, 관련 기존 저장79/0·reader5952/0 각1회, 최신 ERROR/ObjectDB/resource0. 초기 import/parse·46/11·시각 RETOUCH/중단 로그 보존. 목록/삭제확인1920×1080·각1x크롭은 _out/demo11-04/captures/, 눈검수 대기. [보고서](engine/orders/reports/demo11-04_REPORT.md).
+
 ## 2026-10-21 DEMO11-05 — main 성능 수정 병합·tick 경로 점검
 
 | 항목 | 구현·검수 근거 |

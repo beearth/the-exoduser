@@ -290,3 +290,13 @@ CSS 캐시 ui-refinement.css?v=20260927-3. 신규 이미지/아이템 데이터 
 - Godot 포트 UI는 웹과 같은 글꼴 토큰을 쓴다: `--font-hell`(Nanum Myeongjo→Noto Serif KR), `--font-hell-title`(Cinzel Decorative→Nanum Myeongjo→Noto Serif KR), `'Cinzel',var(--font-hell)`(타이머·화폐·키 표기), `'Cinzel',serif`(진행 표시·레슨 키캡), body `--font`(Noto Sans KR — 쿨다운 초·안내 노트·버튼), 펫 자막 `'Malgun Gothic',sans-serif`(시스템에 없으면 Noto Sans KR). 단일 공급자 `godot/scripts/native_ui_fonts.gd`, 글꼴 파일 `godot/assets/fonts/ofl/`(OFL 동봉).
 - 굵기는 game.html @import 로드 굵기 기준 브라우저 매칭 그대로(Cinzel은 700/900만 로드 → 일반 굵기 요청도 700으로 보임).
 - 인트로 시작 대사+키 안내 4컷(`#introKeys`)을 원본 CSS 607~640 값으로 이식 — 웹 Chromium 1920×1080 실측과 패널 높이·요소 위치 ±0.1px. 상세·근거 표: [docs/engine/FDG_P2_007A_UI_POLISH_20261020.md](../engine/FDG_P2_007A_UI_POLISH_20261020.md).
+
+
+## 2026-10-21 DEMO11-04 Godot 로컬 5슬롯 요청 UI
+
+- 독립 진입 씬 `res://scenes/demo_lobby.tscn`은 1920×1080 설계 좌표의 로컬 데모 목록·이름 입력·선택·삭제 확인을 제공한다. Main 게임 부팅/실제 Player 복원은 이 단위 범위 밖이다. 이어하기는 실제 파일에서 재읽은 선택 슬롯 payload를 `continue_requested(slot,data)`로 전달하며 복원 성공·입장 성공으로 표시하지 않는다. metadata-only는 `new_game_requested` 경계다.
+- 흑철 패널·뼈색 문자 `#e8d9c6`·금빛 헤어라인 `#96714e`·붉은 동작 버튼, 기존 NativeUIFont 공급자를 사용한다. 원본 로비 abyss/선대 portrait/hell_gothic crest 3개를 byte 동일 사본으로 재사용하고 새 원화/이모지를 만들지 않는다. 원본 abyss.webp는 PNG 바이트라 Godot 사본만 abyss.png 확장자로 식별한다. 선대 그림은 기록실 장식이며 선택 캐릭터 외형 완료로 간주하지 않는다.
+- 일반 5슬롯 제한·원본 metadata fallback은 기존 source_slot_reader를 사용한다. 웹의 VIEW=2 스크롤을 복제하는 대신 native에서 5행을 한 판에 표시한다. 이름 입력은 index.html848의 maxlength8을 따른다. 캐릭터 선택/서사/온라인/Steam·설정 저장·복원은 별도 단위다.
+- 삭제 확인은 취소에 최초 포커스, 좌우/Tab은 모달 안 두 버튼 순환, Escape 취소 후 호출 버튼으로 복귀한다. 이름은 일반 Label/Button으로 표시하고 rich text 해석을 하지 않는다. IO 실패는 목록을 성공처럼 미리 바꾸지 않으며 실패 reason을 표시한다. 확인 이후 저장 변경 시 삭제를 거절한다.
+- SV-LOBBY-VIEW·SETTINGS S10은 이 기준 main에서 추적/후보 파일 계약이며 실행 구현은 없었다. 이번 지정 후보 `native_save_slot_menu.gd`와 `native_settings_lobby_bridge.gd`에 로컬 요청·명시 KO/EN 언어/장치 관측 부분을 구현했다. hellLang/OPT 영속 쓰기·29언어 완료·패드 전체 navigation 인수는 주장하지 않는다. 새 UI 키는 번역대상_전체목록에 등록했다.
+- 화면 검수는 `_out/demo11-04/captures/`의 목록·삭제확인 1920×1080 PNG 및 각1x 크롭을 맥북총괄이 확인한다. 캡처는 격리 디렉터리의 명시 IO fixture이며 자연 플레이 저장/복원 검수와 구분한다. [검증·의존·경계 보고](../engine/orders/reports/demo11-04_REPORT.md).
