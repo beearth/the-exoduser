@@ -41,6 +41,8 @@ func _physics_process(delta: float) -> void:
    lighting_look=preload("res://scripts/maps/map11/product_lighting.gd").new()
    add_child(lighting_look)
    lighting_look.configure_product(self,get_parent().get_parent())
+   var detail:=preload("res://scripts/maps/map11/product_detail.gd").new();detail.name="MAP11Detail";add_child(detail)
+   detail.configure(self,get_parent().get_parent())
    get_parent().get_parent().camera.zoom=Vector2.ONE*.70
    get_parent().get_parent().camera.offset=Vector2(0,-180)
  if not is_instance_valid(_actor):return

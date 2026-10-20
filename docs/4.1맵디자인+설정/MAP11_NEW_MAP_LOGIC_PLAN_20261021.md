@@ -314,3 +314,54 @@ Tissue 2등은 setup에서 FRONT row의 가장 가까운 foot를 선택(목표 W
 - GIT: 자기 branch `codex/map11-17-20261021`만 정상 hook commit/push. 복구 기준1f797a8b·원격expected 보존. 최종 SHA/push readback은 `_out/MAP11-17/DONE.txt`. main push/deploy/Steam0; R의게임/인덱스/WORK 수정0.
 - VISUAL VERDICT: **RETOUCH**.
 - NEXT PASS: 사용자 눈 검수 후 외곽명도·관문뒤 직선경계·밀집전투 가독성의 별도 승인 범위. 보류 텍스처 자동 인수0.
+
+
+## 15. MAP11-18 — 바닥 장식·캐릭터 림 (2026-10-21)
+
+사용자 이번 지시의 MAP11-18 범위가 §11의 과거 배정보다 우선한다. 채택 `ff59c3c71d3aa20d5ce8cd67c648e159d77217cd` 직계 변경. MAP11-16/16b/17b 코드·텍스처 반입0, 신규 생성0. 기존 조명 8+player1/활성 최대5와 게임 geometry·전투·저장 계약 보존.
+
+### 15.1 장식 계약
+
+| id / 사용 위치 | 기존 에셋 / 현행 규칙 |
+|---|---|
+| root / field 군락·나무 발치 | `godot/assets/map/props/prop_g_root.png`; 폭380~650, 발치280~460worldpx. 공유 ground_story 머티리얼: UV radial feather=1−smoothstep(.28,.96,length(UV×2−1)); 원 RGB luminance×(.88,.76,.69)×instance tint, alpha×feather×.48. 원형 외곽을 노출하지 않고 바닥에 혼합 |
+| blood / 군락 아래·발치 | `godot/assets/gore/blood_splat_1.png`; 폭150~340, 발치230~390; alpha.27. 새로운 위험 장판/피해/빛 아님 |
+| bones / 소형 군락 | `godot/assets/map/ch1/floor_objects/bones.png`; alpha.65, 폭24~85 |
+| flesh / 소형 군락 | `godot/assets/gore/flesh_chunk_3.png`; alpha.65, 폭24~85 |
+| bone / 소형 군락 | `godot/assets/gore/bone_2.png`; alpha.65, 폭24~85 |
+| 공통 변형 | setup에서 기존 PNG의 get_used_rect→AtlasTexture(투명 여백만 제외, 픽셀 수정0). seed11182026, 각 sprite angle[−PI,PI], flip_h 확률.5, height/width .42~.72, tone .48~.78, RGB=(tone,tone×.88,tone×.82). z−2985. 물리·충돌·전투 writer0, 틱 파라미터/로드/목록 API0 |
+| 군락 중심 / field | (−1450,−2150),(850,−2750),(−2650,−850),(−3450,−1450),(1250,2100),(−1500,1850),(2250,100),(−850,−3520),(820,−3820). 9개 큰 군락×12개: root1/blood3/작은뼈·육편8. offset x±260/y±170; 규칙격자 배치0 |
+| 발치 / field | forest_rows의 매4번째 중 FRONT만 blood+root2개. 실제 총130sprite(군락108+발치22). 원본 외곽4층·배치·AO·광원 유지 |
+| 금지/보호 | y<−3250 & abs(x)<540인 관문 접근 중앙은 배치 제외. 아레나에는 새 장식0: R1700 내부와 전체 보스공간 그대로. 필드 주요 동선의 넓은 빈 면을 유지. 폐기 moss_patch/ash_pile/mud_stain/ground_crack/acid_pool/poison_puddle/flesh_pile/meat_stake 재사용0 |
+
+### 15.2 캐릭터·숲 표시 계약
+
+| id | 현행 수치 / 경계 |
+|---|---|
+| 공유 외곽선 | `actor_rim.gdshader` ShaderMaterial **1개**를 player._sprite / enemy._body에 부착. player.gd·enemy.gd 수정0. `px=fwidth(UV)×1.35`로 화면 약1.35px 안쪽 림; 좌우상하 alpha 최소 n, edge=smoothstep(.06,.65,src.a−n)×step(.35,src.a). 원 alpha·원 sprite tint/피격표시 보존. quad 확장·후광·새 광원0 |
+| player / enemy | instance rim_color player RGB(.78,.72,.59)/mix.38, enemy RGB(.62,.20,.16)/mix.30. setup/child_entered_tree deferred1회만 설정; 공유 material 중복부착 제외. 새 spawn은 동일 signal로 인수. 틱 material parameter 갱신0 |
+| 숲 하한 | field_forest_depth에서 기존 fog·west/east 보정 후 **조명 적용 전** RGB 하한(.075,.069,.072). 기존 BACK fog.48/MID.13/FRONT0, ambient·지역광·AO·vignette 유지. 최종 화면 모든 픽셀에 동일 하한을 강제하는 screen wash 아님 |
+| 격리 | 실행 project user dir `EXODUSER-map11-18-Isolated-20261021`; 검수 후 project.godot 원 byte 복원. 실제 EXODUSER-Godot-Native-First 실행0 |
+
+### 15.3 검수·판정
+
+최종 수치와 §23 MAP PRODUCTION REPORT는 아래 완료 표 및 `_out/MAP11-18/DONE.txt`에 기록한다. before는 채택 ff59c3c7의 MAP11-17 after 원본 3뷰를 byte 복사(1600×900), after는 동일 Main/camera 좌표/줌/하니스. UI HP/SP 등 실행상태·실시간 조명 위상 차이는 존재한다. 비교는 색보정/리사이즈 없이 3200×900 나란히, 원배율 crop x480/y150/640×600 각각을1280×600으로 연결한다. 초기 눈 검수에서 원형 root 스티커가 보여 feather/무채색 보정 후 최종 캡처. 초기·최종 렌더 확인은 각각17checks/0fail; perf는 최종본 단독1회만 시행한다. 밀집 전투/Windows/전체8뷰 검수로 확대 주장하지 않는다.
+
+### 15.4 MAP PRODUCTION REPORT
+
+| 필드 | 실제 결과 |
+|---|---|
+| STAGE / MASTER | Godot CH1-1 MAP11-18. ff59c3c7 silhouette/regions/main route/side spaces 보존. GATE4 ground 연결→GATE7 low detail→GATE8 camera/tech |
+| OUTER MASS | LEFT/RIGHT/TOP/SOUTH 위치·major holes 형상 불변. 기존 발치 AO와 광원 위에 낮은 root/blood 연계. 숲 prelight RGB하한 적용 |
+| LARGE | source assets/composites/overlap/repeated silhouette 불변, 생성0. root decal만 기존자산 재사용 |
+| MEDIUM | 기존 연결 구조/남은 hole 불변, 바닥에 낮은 군락을 더함 |
+| GROUND | shadow/AO 불변. contamination9군락+발치11쌍/130sprite. 구조물 접지 연결/원형 root 경계 feather. 실제 위험표시 아님 |
+| PLAYABLE | main arenas/travel/breathing/threat spaces·collision·provider 불변. 관문 중앙/아레나 보호. actor inner rim으로 silhouette 분리; 밀집 projectile/Q/E/loot 중첩 미검수 |
+| LANDMARK | primary심장제단/secondary관문·숲/tertiary지면 story 군락. 앵커 불변 |
+| CAMERA QA | LANDMARK/field, SIDE L/outer forest, EXIT/boss entrance 동일3뷰1600×900+각640×600 1x. START/EARLY/SIDE R/LATE/arena 최종이미지 이번 범위 미검수. 나란히 비교·crop 직접 눈검수 |
+| TECH QA | 최종 캡처17/0. 최종 perf 하니스 관련검사 11/0. 자동관문 진입/field·arena 실제Player4방향150틱×4각600틱. shader/스크립트 ERROR0. pageerror/404 N/A, 신규 asset missing0. seam/관문뒤 직선cutoff 기존잔여. route/collision 변경0/새 전경로 종주 미실시 |
+| PERFORMANCE | field p95 7.698ms (p99 9.423, draw141.0, objects256.0) / arena p95 7.711ms (p99 10.289, draw129.0, objects248.0). 두 공간 모두≤8.33ms 여부: True. 최종1회/1920×1080/60Hz/240cap/Apple M5 Pro/Godot4.7.2 GL. 직전pgrep0, 측정전체0.5초간격 다른Godot관측0. 5적 fixture; Windows/밀집전투/GPU timestamp 미검수 |
+| FILES | stage-owned product_detail/actor_rim/ground_story/product_scene/field_forest_depth/하니스/관련docs. concurrent touched0/unrelated touched0. player.gd·전투코어·Main·State·save0 |
+| GIT | 자기branch codex/map11-18-20261021 경로지정 stage/정상hook commit/push. main·기존반려branch merge0. remote readback/SHA는 DONE. R게임/INDEX/WORK수정0. deploy0 |
+| VISUAL VERDICT | **RETOUCH** — 단일 바닥의 국소변화/낮은 뿌리·혈흔·뼈 군락/얇은 actor윤곽을 확인. 외곽암부·저밀도 바닥의 큰 균일면·일부 소품 접합·관문뒤 직선경계 잔여. PoE2/No Rest for the Wicked 동급 완성 PASS 아님 |
+| NEXT PASS | 사용자 눈 인수 후 남은 암부/낮은 소품의 접합·밀집전투 가독성. 후광·새생성·반려 텍스처로 대체0 |

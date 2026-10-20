@@ -55528,3 +55528,10 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 
 - 기준1f797a8b, 보류MAP11-16/16b 미사용. 텍스처/배치 불변, MAP11전용ambient·최대5등·지역냉/온광·접지AO·외곽안개. NativeMapLook 기존광원/실루엣helper 재사용, 중복generic설치guard.
 - p95 field7.857ms/arena7.580ms(1080p/600틱/각1회), 최종17/0·이전렌더19/0. 3뷰1600×900 before/after+1x. VISUAL VERDICT RETOUCH, 밀집전투/Windows미검수. [현행수치·§23보고](4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#14-map11-17--조명-룩-패스-2026-10-21).
+
+
+## 2026-10-21 MAP11-18 — 바닥 군락·캐릭터 림
+
+- 채택 ff59c3c7 직계, 기존 RGBA5종/군락9+나무 발치 총130sprite. 신규생성·텍스처교체0.
+- 공유 actor rim material1개/약1.35screenpx inner edge, player뼈색/적암적색 setup-only. player.gd/전투코어 불변. 숲 prelight RGB하한(.075,.069,.072).
+- 현행 수치·금지구역·에셋·검수·MAP PRODUCTION REPORT: [MAP11 설계서 §15](4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#15-map11-18--바닥-장식캐릭터-림-2026-10-21).

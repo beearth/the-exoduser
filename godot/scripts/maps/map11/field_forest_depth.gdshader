@@ -13,5 +13,7 @@ void fragment() {
  color=mix(color,color*vec3(.88,1.12,.74)+vec3(.023,.030,.006),east*lower*.70);
  float luminance=dot(color,vec3(.299,.587,.114));
  color=mix(color,mix(vec3(luminance),vec3(.065,.083,.105),.38),fog);
+ // Preserve cold recesses without crushing the bark to black.
+ color=max(color,vec3(.075,.069,.072));
  COLOR=vec4(color,source.a*instance_tint.a);
 }
