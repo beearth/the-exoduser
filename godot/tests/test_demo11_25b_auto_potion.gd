@@ -172,7 +172,7 @@ func _test_actual_main() -> void:
 	var snap: Dictionary = main.source_potion.get_snapshot()
 	if snap.uses!=uses+1:
 		var clock: Dictionary = main.get_native_source_clock_input_snapshot()
-		print("DEMO11_25B_DIAG ", JSON.stringify({"potion":snap,"update":clock.get("update_clock_result"),"on":g.on,"paused":g.paused,"lesson":main.read_native_normal_enemy_lesson_status()}))
+		print("DEMO11_25B_DIAG ", JSON.stringify({"potion":snap,"update":clock.get("update_clock_result"),"clock":clock,"on":g.on,"paused":g.paused,"lesson":main.read_native_normal_enemy_lesson_status()}))
 	check(snap.uses==uses+1,"natural Main process invokes one potion")
 	check(g.mats==1,"actual G.mats decremented once")
 	check(g._pStats._hC==3 and g._sStats.potions==4,"State conditional statistics writer")

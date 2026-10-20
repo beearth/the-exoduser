@@ -786,14 +786,15 @@ func _build_subtitle_panel() -> void:
 	_bubble_label.add_theme_font_override("font", preload("res://scripts/native_ui_fonts.gd").stack("pet", 700))
 
 
+const CROW_PORTRAIT: Texture2D = preload("res://assets/pets/crow_portrait.png")
+const CAT_PORTRAIT: Texture2D = preload("res://assets/pets/cat_portrait.png")
+
 func _show_bubble(who: String, txt: String) -> void:
 	if not is_instance_valid(_subtitle_root):
 		return
 	var is_crow := who == "crow"
 	var viewport_size: Vector2 = get_viewport().get_visible_rect().size
-	var portrait_path := "res://assets/pets/crow_portrait.png" if is_crow else "res://assets/pets/cat_portrait.png"
-	if ResourceLoader.exists(portrait_path):
-		_portrait.texture = load(portrait_path)
+	_portrait.texture = CROW_PORTRAIT if is_crow else CAT_PORTRAIT
 	# bottom 230px(1920×1080·ui-scale1), crow=left 20 / cat=right 20, origin bottom
 	var panel_height := 320.0 * 1.5
 	_subtitle_root.position = Vector2(20.0 if is_crow else viewport_size.x - 20.0 - 480.0 * 1.5,

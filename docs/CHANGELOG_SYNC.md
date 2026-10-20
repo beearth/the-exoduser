@@ -56042,3 +56042,12 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 ## DEMO11-47i (2026-10-21)
 
 - b07f5c56 + 47h merge, isolated E2E 1회 13 PASS / 5 NOT_READY / 0 FAIL. field_MAP11 actual product 관측, headless logical visibility 보정, Mac callback opt-in 계측. 자동물약/적 처치/전투 gate/보스 최종사망 미해소, revival PCI 묶음 A 대기. 전체 E2E 완료 아님. 상세 docs/engine/orders/reports/demo11-47i_REPORT.md 및 DEMO11_STATUS_20261021.md.
+
+
+## 2026-10-21 DEMO11-47j — Mac 연결·펫 틱
+
+- `main.gd`: MAP11 Marker 기반 기존 spawn/region/encounter/natural scheduler 설치. 맵 비주얼·PC 전투 핵심 변경 없음.
+- `native_natural_enemy_base.gd`: 난수로 이미 선택된 A군 1/4/5/6을 기존 생성기로 전달.
+- `native_pets.gd`: 초상 2장 preload 보유, 발화 틱 ResourceLoader 호출 제거.
+- 47h 하네스의 레슨 시작 대기 및 실제 origin 집계 관측, 계약 신호 주입 제거. 47j 집중 검증 추가. 18단계 재실행은 1회로 제한했으며 최종 후속 검증과 구분한다.
+- 현재 범위·수치·잔여: `docs/engine/orders/reports/demo11-47j_REPORT.md`, 상태 표 `DEMO11_STATUS_20261021.md`.

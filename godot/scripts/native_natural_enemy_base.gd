@@ -160,7 +160,11 @@ func spawn_hole(h: Dictionary) -> bool:
 		"speed_u":holes._unit("spd",draws),"radius_u":holes._unit("r",draws),"literal":{},"position_uniforms":position_uniforms}
 	for row in Holes.MKEN_LITERAL_DRAWS:
 		if row[1].is_empty() or row[1].has(etype):source.literal[row[0]]=float(row[2])+holes._unit(row[0],draws)*float(row[3])
-	last_receipt=spawn_selected(holes,h.spawn_group_id,source)
+	# DEMO11-47j: dispatch the already-selected A profile; preserve all source draws.
+	if etype in [1,4,5,6]:
+		last_receipt=main.request_native_etype_a_spawn(holes,h.spawn_group_id,source)
+	else:
+		last_receipt=spawn_selected(holes,h.spawn_group_id,source)
 	if last_receipt.get("registered",false):
 		holes._metrics.actors_registered+=1
 		holes._metrics.spawned+=1

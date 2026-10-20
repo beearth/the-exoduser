@@ -431,7 +431,7 @@ func _ready() -> void:
 	add_child(native_demo_encounter)
 	var encounter_regions: Node=get_node_or_null("NativeRegions")
 	if is_instance_valid(encounter_regions):
-		native_demo_encounter.configure(self,encounter_regions) # MAP11 has no legacy region owner; integration HOLD.
+		native_demo_encounter.configure(self,encounter_regions)
 	if demo11_loaded:
 		set_meta("native_intro_boot","dormant") # 06c: restored run never starts new-character intro.
 		_install_native_waking_intro_once()
@@ -471,6 +471,7 @@ func _ready() -> void:
 			push_error("MAP11 product provider binding rejected")
 			return
 	if is_instance_valid(native_map11):
+		_install_native_map11_combat_owners()
 		native_map11_chest=preload("res://scripts/native_map11_chest.gd").new()
 		native_map11_chest.name="Map11Chest"
 		world.add_child(native_map11_chest)
@@ -3518,3 +3519,24 @@ func _physics_process(_delta: float) -> void:
 	var row: Dictionary=perf.get(key,{"max_us":0,"calls":0,"total_us":0})
 	row.max_us=maxi(row.max_us,elapsed);row.calls+=1;row.total_us+=elapsed
 	perf[key]=row;tree_root.set_meta("demo47i_perf",perf)
+
+# DEMO11-47j: geometry and all combat formulas remain with their existing owners.
+func _install_native_map11_combat_owners() -> void:
+	var holes=preload("res://scripts/native_spawn_hole_system.gd").new()
+	holes.name="NativeSpawnHoleSystem"
+	if not holes.configure(world,player,source_state,self):
+		holes.free();return
+	world.add_child(holes) # no legacy template placement in MAP11
+	var regions=preload("res://scripts/native_regions.gd").new()
+	regions.name="NativeRegions";add_child(regions)
+	if not regions.configure(self):return
+	var bound: Dictionary=bind_native_spawn_stage_provider(world.map11_provider)
+	if not bound.get("ready",false):return
+	native_demo_encounter.configure(self,regions)
+	if not native_map11.bind_gate_owner(native_demo_encounter):return
+	bind_native_natural_enemy_base(_read_native_map11_natural_context,true)
+
+func _read_native_map11_natural_context() -> Dictionary:
+	var lesson: Dictionary=read_native_normal_enemy_lesson_status()
+	return {"lesson_active":lesson.get("ready")!=true or lesson.get("active")!=false,
+		"qa_storage_active":false,"aggro_active":false}

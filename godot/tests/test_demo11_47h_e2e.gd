@@ -21,6 +21,7 @@ var sample_nodes: Array=[]
 var initial_level:=1
 var kills_before:=0
 var action_start:=0
+var boss_signal_count:=0
 class Stamp extends Node:
  var physics: Callable
  var process: Callable
@@ -120,6 +121,8 @@ func run() -> void:
   await done("FAIL","character metadata did not hand off to Main");await fail_remaining("Main_missing");finish();return
  root.mode=Window.MODE_WINDOWED;root.show() # Main video setup can minimize the logical headless root.
  main.player.telemetry_event.connect(on_event)
+ main.native_demo_boss_defeated.connect(func(stage_index: int):
+  if stage_index==0:boss_signal_count+=1)
  var created: Dictionary=store.read_json("hellsave_demo_0")
  var char_ok: bool=created.get("ready",false) and created.get("found",false) and created.value.get("charIdx")==0 and main.player.get_native_character_profile_snapshot().get("index")==0
  await done("PASS" if char_ok else "FAIL","",{"actual_Metadata_IO":created.get("found",false),"active_slot":store.get_item("hellsave_demo_active").get("raw"),"character_index":main.player.get_native_character_profile_snapshot().get("index"),"input":"char0 Button + name + actual create callback"})
@@ -141,7 +144,8 @@ func run() -> void:
   var deadline:=Time.get_ticks_msec()+7000
   while Time.get_ticks_msec()<deadline:
    if is_instance_valid(guide.lesson_flow) and guide.lesson_flow.active:guide.lesson_flow.skip_all();break
-   if guide.phase=="done":break
+   # Guide completion precedes lesson startup; never stop waiting at guide.done.
+   if is_instance_valid(guide.lesson_flow) and guide.lesson_flow.seen and not guide.lesson_flow.active:break
    await process_frame
  else:intro_ok=false
  await settle(10)
@@ -163,16 +167,24 @@ func run() -> void:
  await done("PASS" if field_ready else "NOT_READY","" if field_ready else "MAP11_provider_absent",{"stage":g.get("stage"),"World_ready":main.world.ready_for_player,"actual_provider":field_ready,"spawn_adapter_bound":adapter!=null,"fixture_provider_created":false})
  begin("enemy_kill")
  var target: Node
- for e in main.world.get_enemies():
-  if is_instance_valid(e) and e.get("data") is Dictionary and e.data.get("id")=="ch1_start_eye_mass_01":target=e;break
- if not is_instance_valid(target):
+ var spawn_deadline:=Time.get_ticks_msec()+25000
+ # Placement at a provider hole only; scheduler owns RNG/timers/etype/admission.
+ if adapter!=null and adapter.is_current():
+  var hole_anchors: Array=product.provider().anchors("hole")
+  if not hole_anchors.is_empty():main.player.global_position=hole_anchors[0].marker.global_position
+ while Time.get_ticks_msec()<spawn_deadline:
   for e in main.world.get_enemies():
-   if is_instance_valid(e) and e.get("alive")==true and e.has_method("receive_damage") and e.get("data") is Dictionary and e.data.get("id")=="ch1_initial_015":target=e;break
+   if is_instance_valid(e) and e.get("alive")==true and e.get("etype") in [1,4] and e.has_method("receive_damage") and is_instance_valid(main.native_natural_enemies) and main.native_natural_enemies.owns_actor(e):target=e;break
+  if is_instance_valid(target):break
+  await physics_frame
+ var regions: Node=main.get_node_or_null("NativeRegions")
+ var region_before: int=regions.snapshot().kill_calls if is_instance_valid(regions) else 0
+ var origin_before: int=main.native_natural_enemies.counts.origin_kills if is_instance_valid(main.native_natural_enemies) else 0
  var home: Vector2=main.player.global_position;var attacks:=0;var accepted:=0;var event_start:=event_rows.size()
  if is_instance_valid(target):
   mark_checkpoint("test-owned Player placement/facing only; actual request_attack -> swing -> hurtE, no HP/alive/damage/RNG writes")
-  var deadline:=Time.get_ticks_msec()+14000
-  while target.alive and attacks<24 and Time.get_ticks_msec()<deadline and main.player.hp>main.player.max_hp*.2:
+  var deadline:=Time.get_ticks_msec()+45000
+  while target.alive and attacks<200 and Time.get_ticks_msec()<deadline and main.player.hp>main.player.max_hp*.2:
    if main.player.state!="idle":await physics_frame;continue
    main.player.global_position=target.global_position+Vector2(-(47+float(target.radius)-8),0);main.player.facing=Vector2.RIGHT
    attacks+=1
@@ -181,8 +193,9 @@ func run() -> void:
    await settle(36)
    if event_rows.slice(event_start).any(func(e):return e.kind=="native_hurte_halt" or (e.kind=="native_hurte" and e.ok==false)):break
   main.player.release_attack();main.player.global_position=home
- var killed: bool=is_instance_valid(target) and not target.alive and int(g.get("kills",0))>kills_before
- await done("PASS" if killed else "NOT_READY","" if killed else ("MAP11_or_initial_combat_target_absent" if not is_instance_valid(target) else "actual combat kill not completed; preserve PC halt/owner boundary"),{"attacks":attacks,"accepted":accepted,"killed":killed,"events":event_rows.slice(event_start),"target_id":target.data.get("id") if is_instance_valid(target) else "absent","HP_or_damage_fabricated":false})
+ var region_after: int=regions.snapshot().kill_calls if is_instance_valid(regions) else 0
+ var killed: bool=is_instance_valid(target) and not target.alive and region_after>region_before
+ await done("PASS" if killed else "NOT_READY","" if killed else ("MAP11_or_initial_combat_target_absent" if not is_instance_valid(target) else "actual combat kill not completed; preserve PC halt/owner boundary"),{"natural_origin_before":origin_before,"natural_origin_after":region_after,"region_before":region_before,"spawn_counts":main.native_natural_enemies.counts if is_instance_valid(main.native_natural_enemies) else {},"attacks":attacks,"accepted":accepted,"killed":killed,"events":event_rows.slice(event_start),"target_id":target.data.get("id") if is_instance_valid(target) else "absent","HP_or_damage_fabricated":false})
  begin("revival_interface")
  var life_api: bool=main.has_method("request_native_player_life_transition")
  await done("NOT_READY","PC_life_transition_not_exercised" if life_api else "PC_life_transition_API_absent",{"interface_present":life_api,"lethal_damage_forced":false})
@@ -215,7 +228,7 @@ func run() -> void:
    await settle(8)
  var used: bool=is_instance_valid(potion) and potion.get_snapshot().uses>used_before
  var pot_ok: bool=used and float(g.get("mats",0))<mats_before and main.source_state.read_native_potion_runtime().cd>0
- await done(verdict(used,pot_ok),"" if pot_ok else "real hurtP/iframe/threshold/clock did not produce auto-potion",{"uses_before":used_before,"uses_after":potion.get_snapshot().uses if is_instance_valid(potion) else 0,"damage_requests_through_PC":requests,"HP_written_directly":false,"mats_before":mats_before,"mats_after":g.get("mats"),"document_hidden":main.read_native_document_hidden(),"player_iframes":main.player.iframes,"potion_reason":potion.get_snapshot().get("last",{}).get("reason","") if is_instance_valid(potion) else "absent","last_use":potion.get_snapshot().last_use if is_instance_valid(potion) else {}})
+ await done(verdict(used,pot_ok),"" if pot_ok else "real hurtP/iframe/threshold/clock did not produce auto-potion",{"uses_before":used_before,"uses_after":potion.get_snapshot().uses if is_instance_valid(potion) else 0,"update_clock":main.get_native_source_clock_input_snapshot().get("update_clock_result",{}),"HP_before_or_after":main.player.hp,"damage_requests_through_PC":requests,"HP_written_directly":false,"mats_before":mats_before,"mats_after":g.get("mats"),"document_hidden":main.read_native_document_hidden(),"player_iframes":main.player.iframes,"potion_reason":potion.get_snapshot().get("last",{}).get("reason","") if is_instance_valid(potion) else "absent","last_use":potion.get_snapshot().last_use if is_instance_valid(potion) else {}})
  begin("level_up")
  var p: Dictionary=main.source_state.read_current_p();var lv_before: int=int(p.lv)
  mark_checkpoint("XP reward input through actual State.addExp; no level/point setters or new formula")
@@ -237,16 +250,16 @@ func run() -> void:
  var gate_ok: bool=encounter_snapshot.get("provider_bound",false) and encounter_snapshot.get("phase") in ["arena","exit","clear"]
  await done("PASS" if gate_ok else "NOT_READY","" if gate_ok else "actual MAP11 gate/arena prerequisites not satisfied",{"encounter":encounter_snapshot,"gate_flags_written":false})
  begin("boss_defeat_signal")
- var flow: Node=main.get("native_demo_end_flow");var injected:=false
- if is_instance_valid(flow) and flow.get_snapshot().phase=="playing" and main.player.hp>0 and not paused:
-  mark_checkpoint("contract-only native_demo_boss_defeated(0) input; no PC boss kill or gate completion fabricated")
-  main.native_demo_boss_defeated.emit(0);injected=true
- await done("NOT_READY","PC_final_boss_death_not_automatically_proven",{"contract_signal_injected":injected,"HP_or_boss_state_written":false})
+ var flow: Node=main.get("native_demo_end_flow")
+ var boss: Node=main.native_demo_boss_actor
+ var boss_snapshot: Dictionary=boss.snapshot()
+ var final_bound: bool=encounter.snapshot().pc_final_source_bound if is_instance_valid(encounter) else false
+ # No contract signal injection: only the PC final-death owner can close this route.
+ var defeated: bool=final_bound and boss_signal_count>0 and encounter.snapshot().phase=="clear"
+ await done("PASS" if defeated else "NOT_READY","" if defeated else "PCI-11_missing_actual_boss_damage_and_final_death_owner",{"encounter":encounter.snapshot() if is_instance_valid(encounter) else {},"boss":boss_snapshot,"actual_final_signal_count":boss_signal_count,"contract_signal_injected":false,"HP_or_boss_state_written":false})
  begin("clear")
  var clear_ok: bool=is_instance_valid(flow) and flow.get_snapshot().phase=="clear" and flow.get_snapshot().clear_count==1
- if clear_ok:
-  main.native_demo_boss_defeated.emit(0);clear_ok=flow.get_snapshot().clear_count==1
- await done(verdict(injected,clear_ok),"" if clear_ok else "clear consumer did not accept contract",{"snapshot":flow.get_snapshot() if is_instance_valid(flow) else {},"stage":g.stage,"duplicate_clear_checked":clear_ok})
+ await done(verdict(defeated,clear_ok),"" if clear_ok else "clear consumer did not accept contract",{"snapshot":flow.get_snapshot() if is_instance_valid(flow) else {},"stage":g.stage,"actual_final_signal_count":boss_signal_count})
  begin("demo_end")
  if clear_ok:flow._view.buttons.next.pressed.emit()
  var end_ok: bool=is_instance_valid(flow) and flow.get_snapshot().phase=="end" and g.stage==0
