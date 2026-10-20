@@ -1,3 +1,10 @@
+## 2026-10-20 P2-006b — 효과 종료 후 드랍·LMB 관측
+
+- 지정 b933b2da5에 A 구현이 빠져 있어 승인된 A 제출 3커밋을 작업 브랜치에만 cherry-pick했다. 충돌한 설계/변경로그는 기존 DOC-SYNC·P3 기록과 A 기록을 모두 보존했다. main 변경·병합 없음.
+- game.html51736의 nearest 계약을 드랍 어댑터 1줄로 명시(수치·원본 에셋 불변). 189/189 원본·대상 SHA-256 재대조. 기능 회귀18/0·17/0·HUD36/0·스킬27/0, 필터 RED1/1→GREEN1/0.
+- LMB 빈 칸은 기존 A 검수 하니스의 activeLMBSk='weapon' 주입 결과. 원본44118/44134에도 weapon 아이콘이 없고 idle/공격/복귀 모두 빈 칸, kiSlash 복원 시 아이콘 복원(6/0). 제품 입력·HUD 수정 없음.
+- death_blood 렌더 클록 종료까지 기다려 transient0 뒤 자연 드랍·6등급 1x 캡처. 빔 밝기/그림자·전체 장면 동등성은 RETOUCH, Native Computer Use 거부로 OS 캡처/수동 키 미확인. 상세 `docs/engine/orders/reports/P2-006b_REPORT.md`.
+
 
 # 2026-10-20 P2-006a PC 드랍·줍기 부분 이식
 

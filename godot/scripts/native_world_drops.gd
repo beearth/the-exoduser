@@ -65,6 +65,7 @@ func configure(main: Node, world: Node2D, player: Node2D, state: Node) -> bool:
 	_world = world
 	_player = player
 	_state = state
+	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	if not InputMap.has_action("interact_pickup"): # BINDS.interact 'KeyR' (6195)
 		InputMap.add_action("interact_pickup")
 		var key_event := InputEventKey.new()
