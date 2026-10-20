@@ -1023,3 +1023,13 @@ priority/category/skill/footstep은 **치환 전 해당 key**에 실제 원문 �
 | fadeOut | 4186, 43872, 43899, 52059, 55342, 55343, 57458, 57459, 58105, 58106, 58163, 58175, 58188, 58197, 62936, 62980, 65025 | 명시 참조 없음 |
 | _startLoop | 12549, 60469, 63865, 64166 | 명시 참조 없음 |
 | _stopLoop | 12556, 33611, 36083 | 명시 참조 없음 |
+
+
+### 2026-10-21 DEMO11-40 실제 전투 consumer 연결 기록
+
+사용자 “나눠서” 승인 범위에서 Main 음향 이벤트 bridge와 스킬 음향 함수만 연결했다.
+SND-01/02/03/07/08을 재사용하고 기존 공격/피격/사망 선택·RNG는 유지한다.
+SND-04 보이스 선택·SND-05/06 BGM을 임의 연결하지 않는다.
+SND-08의 native graph adapter는 topology/음량만 출력하며 filter/comp는 명시적 bypass다.
+Q/knee/automation/PCM·청감 동등성은 여전히 HOLD다. 전투 판정·State·저장·맵 변경 없음.
+공용 변경 위치와 새 경로 검증은 [보고서](orders/reports/demo11-40_REPORT.md)를 따른다.

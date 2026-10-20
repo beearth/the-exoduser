@@ -1,3 +1,12 @@
+## 2026-10-21 DEMO11-40 전투 sample consumer 연결
+
+| 항목 | 구현·검증 근거 |
+|---|---|
+| 기준·권한 | main01051599, gap61ab71be DEMO11-40/D35/D36 참조. 사용자 “나눠서” 승인 내 Main 음향 접점·기존 skill 음향 함수만 수정, State/PC 보호 전투/저장/맵0줄 |
+| 연결 | 기존 queued event 구독→SND03 flush→SND07 단일 backend→SND08 graph/OPT. legacy voice 사용0·기존 RNG 유지·현재 skill sample도 공유·종료 unsubscribe/voice/timer/bus 정리 |
+| 검수 | 신규44/0(실제 Main 공격1회·중복거절·스킬·OPT0·bus순서·종료원복). 기존 무수정03 606/0·07 2004/0·08mix5728/0. 실패 후 수정·격리명 오류는 보고서 보존, 관련 회귀만 실행 |
+| 제한·제출 | EQ/comp 역할 bus는 명시적 bypass, DSP/PCM/청감 동등성 HOLD. [보고서](engine/orders/reports/demo11-40_REPORT.md), 관련 사운드 SSOT·추적 갱신. 원로그~/exoduser-wt/_out/demo11-40/. 자기 branch push/remoteSHA/DONE 뒤 WT 제거 |
+
 ## 2026-10-20 BC2-07 shieldBash2 독립 wind/dash/contact 계산
 
 ## 2026-10-20 EC4-02 4장 catalog·23필드 초기 literal projection
