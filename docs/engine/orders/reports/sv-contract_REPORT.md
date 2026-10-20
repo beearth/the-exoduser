@@ -130,5 +130,16 @@ Main 기준은 공지대로 **G40+지역7+`_totalSpawned`1=48키**, 지역 total
 - 최초 정상 `git commit` 2회 및 직접 hook 검사는 `docs/CHANGELOG_SYNC.md` 변경 요구로 exit1이었다. 원로그 `commit-blocker.txt`, `hook-main-f84.*`를 보존한다. 당시에는 신규 테스트·보고서만 stage했고 우회하지 않았다.
 - 맥북총괄의 후속 지시로 이 작업의 CHANGELOG_SYNC 갱신이 범위에 포함됨을 확인했다. 먼저 fetch했고 `origin/main=f84e26ee0bbc929fb595b4c0af292b423588f325`; `git merge --ff-only origin/main` 결과 Already up to date였다. 새 제품/테스트 변경이 없어 같은 main에서 이미 완료한 검수를 반복하지 않았다.
 - 지시 순서대로 `node tools/docs-sync-check.mjs --staged`를 직접 실행해 exit1과 위 요구를 재확인했다(`hook-direct-before-log.*`). CHANGELOG_SYNC 맨 위에 `## 2026-10-20 SV-CONTRACT …` 절·지정 표로 새 파일·원본 행·수치·범위 밖을 추가했다. 기존 내용은 `changelog-before-sv-contract.bin`과 byte 동일하게 보존했다(`changelog-prefix-proof.json`).
-- 세 경로만 지정 stage하고 같은 직접 검사와 정상 pre-commit을 통과시킨다. `--no-verify`·`ALLOW_MISSING_DOCS`·hook 설정 변경은 사용하지 않는다. 다른 문서 요구가 추가로 나오면 그 원문을 보존하고 BLOCKED로 중단한다.
+- 세 경로만 지정 stage한 뒤 같은 직접 검사 exit0 및 정상 pre-commit을 통과해 구현 포함 커밋을 생성했다. `--no-verify`·`ALLOW_MISSING_DOCS`·hook 설정 변경은 사용하지 않는다. 다른 문서 요구가 추가로 나오면 그 원문을 보존하고 BLOCKED로 중단한다.
 - 정상 commit/push 결과·구현 포함 SHA는 아래 제출 기록과 외부 DONE에 남긴다. Main 회귀3종의 격리 제한은 미검증 항목으로 유지하며 hook 처리 완료와 구분한다.
+
+## 제출 체크포인트
+
+| 항목 | 실제 확인 |
+|---|---|
+| 구현·검수 기록 포함 커밋 | `c969c5318479bb9e1369f8f463f98dee6f5dd3f8` — 새 테스트·보고서·CHANGELOG_SYNC 신규 절3경로, 정상 `git commit` exit0 |
+| 부모 main | `f84e26ee0bbc929fb595b4c0af292b423588f325` |
+| 훅 해소 | `node tools/docs-sync-check.mjs --staged`: 로그 추가 전 exit1 → 3경로 stage 후 exit0(`hook-direct-before-log.*`/`hook-direct-after-log.*`). 정상 commit 로그 `commit-contract.*`. 추가 문서 요구 없음 |
+| 검수 입력 보존 | 테스트 blob `5c0b4a8f91070efd965a35a2554947d65e3142aa` 및 보호9경로 해시가 최종 실제 검사 입력과 동일함을 커밋 직전 확인. 문서 기록 추가로 제품·테스트를 변경하지 않음 |
+| 원격 제출 | 자기 `codex/sv-contract-20261020`만 비강제 push. 이 절을 담는 후속 문서 커밋의 최종 SHA·push exit·원격 ref 실제 대조는 외부 `~/exoduser-wt/_out/sv-contract/DONE.txt` 및 `delivery-final.json`에 기록한다. 위 구현 SHA와 최종 인계 SHA를 구분 |
+| 남은 제한 | Main G48·지역 total23/60/53/32·HUD0/32의 재실측은 기존 테스트의 격리 gate 충돌로 미검증. 저장/API/마이그레이션·PC 인수는 미실행/미확인 |
