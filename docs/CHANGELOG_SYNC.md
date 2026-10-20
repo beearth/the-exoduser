@@ -283,7 +283,7 @@
 | 입력·보존 | 복잡 JS coercion·문자열/bool q·NaN/Inf는 NOT_READY/사유, 정상 효과값 미공급. 입력·중첩 참조·배열 길이 불변. 결과는 일시적 view이며 세이브 형식/복원·Q/E·docs/2_3 변경0 |
 | 검수 | 새 순수 테스트177/0, 원본 JS 함수와 품질205·홈120·합성8의1478비교/0. 첫 파일 미배치 실행 무효 및 JSON 숫자 Dictionary 비교1실패는 원로그 보존. 기존 회귀 contracts 5그룹/0실패, P2-001c 40/0·exit0(단, Camera2D·ObjectDB 2인스턴스 종료누수 경고 보존). [it-01 보고서](engine/orders/reports/it-01_REPORT.md) 참조 |
 | 격리·한계 | 신규 테스트 `EXODUSER-it-01-Isolated-20261020`. Main 없는 순수 테스트는 Git 밖 전용 project.godot에서 실제 신규 소스를 symlink로 읽으며 repository override 미사용. 실제 플레이·화면·장착 효과·전체 JS coercion 인수 아님 |
-=======
+
 ## 2026-10-20 SK-S03 합체·흡수 읽기 전용 판정
 
 | id / 적용 위치 | 현재 정확 계약 |
@@ -316,7 +316,6 @@
 | 지원 | finite 정수 Number(int/float) level0..20, gem0..7, spCost 누락/0..15. null skill→0, Dictionary level0이면 spCost 미조회. 지원밖은 raw input을 보존한 NOT_READY, value 없음. 값 clamp/강제형변환·새 게임수치 없음 |
 | 검수 | 신규 첫 실행 2,033단정/0실패·원본 JS 직접대조567/0. 격리 `EXODUSER-sk-s01-Isolated-20261020`, Main/override 없이 in-process 설정·실제 OS 경로 확인. 회귀 contracts 5검사군 통과, P2-005a/b/c/d-regen/d-ice 27/12/20/10/22단정·실패0. 상세는 `engine/orders/reports/sk-s01_REPORT.md` |
 | 보호 | Q/E·docs/2_3·저장형식·실사용자 세이브·악의할인·학습/합체 writer 불변. 기존 회귀 파일과 기존 CHANGELOG 본문 bytes 유지. 훅 우회 없음 |
->>>>>>> db880a18
 =======
 ## 2026-10-20 BC03 — 1장 보스 utility score 순수 함수
 
@@ -346,10 +345,37 @@
 | 검수 | 신규 첫 parse 실패(exit0/ERROR2/RESULT없음) 보존 → 명시 bool 수정 후 681단정/0실패/ERROR0. 회귀 contracts5/5·regions43/0·spawn_holes298/0·factory3/3, p1002g220/1(지정 선재). 원로그·격리는 [bc01 보고서](engine/orders/reports/bc01_REPORT.md) 참조 |
 | 보호·한계 | 2_3/Q·E/세이브 형식 보호. 실제 보스전·공용 배선·Godot 화면·성능·PC 인수 아님 |
 >>>>>>> 349ec241
+=======
+## 2026-10-20 TI-01 인벤토리 크기·분류·격자·자리 검사
+
+| 항목 | 변경·검수 근거 |
+| --- | --- |
+| 기준 / 의존 | 기존 ti-01 worktree의 중단 checkout을 복구하고 TI-00 `7e9e3984d96d57b79274a08293a4fb539dd2ae39` 기반 유지. fetch한 main `284d7faf49295b2f5061937a47ce96038032ed3c`에 TI-00 미병합, game.html bytes 동일 확인 |
+| 신규 파일 | native_inventory_layout.gd·test_native_inventory_layout.gd. 읽기 전용 size/category/rows/grid/find_space/can_place, actual bag writer·Main/UI/pickup/save 연결0 |
+| 원본 수치 | game.html15829–15834·16180–16210·16247–16256. 17장비·근접7·석궁3=2×2, bonePart1×1. 열10·rows=max(10,ceil(bag_max×4/10)); caller 입력300/24/26/30/301→120/10/11/12/121 |
+| 처리 순서 | 원 bag index 점유·skip 항목도 기록·나중 index 덮어쓰기·검색 때 skip 허용·분류별 독립·y→x. 명시 null의 전체 분류와 원본 기본 item=bag[skip] 구분. 좌표 쓰기/보편 bag hard cap300 추가0 |
+| 최종 검수 | 신규5그룹96/0·JS 실제6함수 oracle92/92·TI-00 기존142/0·test_contracts 전체5그룹 실패0. import 포함 최종4실행 모두exit0·stderr ERROR0·WARNING0·leak0·리소스0 |
+| 실패 보존 | 최초 신규96/0·exit0이지만 typed has(null) ERROR2로 통과 제외. source slot 타입 확인 후 같은 단정96/0·ERROR0. 원로그/당시 코드·checkout 복구 exit1(기존 Unicode alias 덮어쓰기 거절7건) 보존 |
+| 보호·격리 | 공용6·TI-00·P2-006a·기존 테스트·웹 원본·세이브/QE 변경0. Godot 전pgrep 확인·2이상이면30초대기, 신규 EXODUSER-ti-01-Isolated-20261020·기존 TI-00 상수 격리. 실행마다override.cfg0byte 정리·R보존 |
+| 상세 | [TI-01 보고서](engine/orders/reports/ti-01_REPORT.md), 원로그/JS oracle/최종 DONE.txt `~/exoduser-wt/_out/ti-01/`. 격리 holder/actor fixture 검수이며 actual Main/실플레이/전체 인벤 완성 아님 |
+>>>>>>> 0586e62f
 
 > 2026-10-17 ENGINE 현행: callback **12/25·미13**. play_time은 el_mul 바로 다음에 동일 Services self의 arity0 Callable로 등록했다. owner 첫 격리 공개 API 검수는 인수됐으며 자연 clock·실게임 인수는 미확인이다. D9는 직전 공통 소스 인수이며, 이번 main/I/R 소스 정렬은 아래 통합 정본과 단위 receipt의 실제 HEAD·tree를 기준으로 확인한다. V12 후보는 소스 인수·첫 FAIL·별도 보완 한정성공으로 구분하며 제품 copy·World hook은 수행하지 않았다. 아래 이전 단계 숫자·원검수 결과는 당시 이력으로 보존한다. 실제 local/remote commit 상태는 단위 receipt를 따른다.
 
 > 2026-10-17 ENGINE WIP 현행: 실제 callback **9/25·미16**. 신규 격리 행동41/41과 신규 map 경계 static9/9만 인수 범위다. 원 첫 parse 실패는 보존한다. 이 WIP를 main/R/served·전체 게임 최신화 완료로 해석하지 않는다.
+
+## 2026-10-20 TI-00 actual INV 읽기 계약
+
+| 항목 | 계약/결과 |
+|---|---|
+| 범위 | 신규 godot/scripts/native_inventory_contract.gd(51행)·godot/tests/test_native_inventory_contract.gd(351행). 실제 State의 WeakRef 읽기 bridge만, 공용6파일·기존 테스트·P2-006a 제품 파일 수정0 |
+| 원본 | main f84e26ee0의 game.html:15176 canonical17slot,16174–16179/63948 fresh INV4key. 기존 SLOT_NAMES·State getter 재사용, 새 INV 권위/저장 필드/상수 중복 생성0 |
+| API | bind_source_state는 exact State/liveness 검사 후 WeakRef. 매 조회 current getter의 동일 Dictionary 반환, 소실/구조부족 null. canonical 슬롯 사본·추가/중첩 필드 보존, cache/normalization/freeze/writer0 |
+| 신규 검수 | Godot4.7.2·EXODUSER-ti-00-Isolated-20261020·실제 holder/자원 authority+명시적 actor fixture. 최종10그룹142단정/실패0·exit0·stderr0, actual Main=false |
+| 지정 회귀 | 15종 실행·SKIP0,14종 단정실패0. p1002g168/1은 사용자 지정 선재 결함으로 원문 보존. p2001i18/0·exit0이나 종료 리소스 ERROR1 별기록. 전체 clean PASS 주장 없음 |
+| 격리/보존 | 자기 WT source를 읽는 OUT projection. Main 부팅 회귀에만 개별 상수 이름 override 후 비움, WT override 생성0. 기존 창/실제 세이브 접근0·기존 source11개와 Godot 설정2파일 해시 동일 |
+| 보호/미검증 | Q/E·2_3·세이브 형식 불변. 새 bridge의 actual Main 연결·인벤 UI/장착/획득/분해·저장·실창/시각/성능/패키지 인수 아님 |
+| 근거 | docs/engine/orders/reports/ti-00_REPORT.md 및 ~/exoduser-wt/_out/ti-00 원로그·regression-verification.json·DONE.txt |
 
 ## 2026-10-16 기존 R playTone 시작·종료 예약 예외 정리
 
