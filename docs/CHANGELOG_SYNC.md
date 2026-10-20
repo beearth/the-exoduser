@@ -1,3 +1,12 @@
+## 2026-10-21 DEMO11-etype-d — 자연 D 5종 NOT_READY·원문/admission 검증
+
+| 항목 | 결과·한계 |
+|---|---|
+| 기준 | main0138c5bb9 +43/9b763da9 정상FF, gap61ab71be §4.1 읽기참조. A/B/C 파일 읽기만·새 공통helper0 |
+| 판정 | 18/19/23/24/25 **NOT_READY·실제 actor0·구현 완료 아님**. 기존 Marker adapter query와 factory/PC 옵션 거부 확인. 24 freeze 공개API는 존재,18 drainHeal 소비0,25 생존D/사망I 원문 보존 |
+| 검증 | 새 Godot34/0+원문JS349/0은 admission/source 계약 검사뿐. 기존43 각1회40/0, **5종 실제 벤치 NOT_RUN_NO_ACTORS**·가짜 성능/전투 PASS0 |
+| 범위 | 제품/Main/State/World/Player/PC 보호·맵·저장0줄, 새 tests·8.0·자기 docs만. [타입별 근거/필요 접점](engine/orders/reports/demo11-etype-d_REPORT.md). 자기branch push/remoteSHA/DONE 후 WT정리·R불변, _out/demo11-etype-d 원로그 |
+
 ## 2026-10-21 DEMO11-43 최신 main 충돌 해소 후속
 
 - 같은 브랜치 c5551464에 main0138c5bb 정상 merge. Main의 PC runtime-stat refresh와 기존 adapter 공개 진입점을 모두 보존, 추가 제품 변경0. 번역 목록은 main byte 동일·CRLF 유지. 관련 재검증 및 원격 일치는 [보고서](engine/orders/reports/demo11-43_REPORT.md) 후속 절과 _out/demo11-43/merge-*에 기록한다.
