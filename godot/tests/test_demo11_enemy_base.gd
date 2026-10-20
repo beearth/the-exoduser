@@ -59,7 +59,7 @@ func run() -> void:
 	# Seed selection uses the real source CDF/elite draw, never edits the pool.
 	var chosen:=-1
 	for value in 10000:
-		
+
 		# World uses randi()/2^32, so use that same operation exactly.
 		seed(value)
 		var us: Array=[]
