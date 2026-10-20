@@ -97,7 +97,7 @@ func configure(owner_world: Node2D) -> bool:
 	for i in range(HIT_VFX_MAX): _hit_vfx.append({"active": false})
 	_floor = _make_drawer("FloorDecals", -2005, false)  # 적 z(-2000~) 아래
 	_air = _make_drawer("AirDebris", 4001, false)
-	_air_add = _make_drawer("AdditiveFx", 4002, true)   # 원본 'lighter'
+	_air_add = _make_drawer("AdditiveFx", 4002, true)   # 웹 실전 경로: VFX GL 인스턴싱(5222 blendFunc SRC_ALPHA,ONE)·히트임팩트(54736 _queueVfxGL) = additive
 	_configured = true
 	return true
 
@@ -448,9 +448,19 @@ func _physics_process(delta: float) -> void:
 				vfx["frame"] = int(vfx["frame"]) + 1
 			if int(vfx["frame"]) >= 9:
 				vfx["active"] = false
-	var anim_write := 0 # 54580 (bornGameTime 미사용 경로: t+=sp)
+
+func _process(_delta: float) -> void:
+	if not _configured:
+		return
+	# 54581~54582 death_blood 프레임 클록 — 원본은 렌더 루프에서 v.t+=_dtSp(상시 1,
+	# 61849; 히트스톱 0.04는 32585 비활성)·frameTime 4, 즉 "렌더 프레임당 +1"이지
+	# 60Hz 물리 틱이 아니다. 웹 실측(P2-001f 2026-10-20, ~186fps 렌더): kill+86ms에
+	# frame 4, 16프레임 완주 ≈0.34s — 반면 구 구현(_physics_process 60Hz)은 1.07s로
+	# 3.1× 느려 처치 순간엔 초반 고밀도 프레임(크고 밝음), +1s엔 후반 잔가지 프레임이
+	# 잔존하는 결함(P2-001d ③)이 났다. 스테인/시체/고어/DI는 60Hz 실측 일치(유지).
+	var anim_write := 0 # 54580 (bornGameTime 미사용 경로: t+=_dtSp)
 	for anim in _blood_anims:
-		anim["t"] = float(anim["t"]) + sp
+		anim["t"] = float(anim["t"]) + 1.0
 		if float(anim["t"]) >= float(anim["frame_time"]):
 			anim["t"] = 0.0
 			anim["frame"] = int(anim["frame"]) + 1
@@ -458,12 +468,9 @@ func _physics_process(delta: float) -> void:
 			_blood_anims[anim_write] = anim
 			anim_write += 1
 	_blood_anims.resize(anim_write)
-
-func _process(_delta: float) -> void:
-	if _configured:
-		_floor.queue_redraw()
-		_air.queue_redraw()
-		_air_add.queue_redraw()
+	_floor.queue_redraw()
+	_air.queue_redraw()
+	_air_add.queue_redraw()
 
 # ── 렌더 (54515~54570 floor / 54562 비행 고어 / 54568 DI / 54720~ 임팩트 / 19178 홀리 / 54571 애님) ──
 func _draw_floor(canvas: Node2D) -> void:
@@ -526,17 +533,22 @@ func _draw_air(canvas: Node2D) -> void:
 			canvas.draw_set_transform(at, float(piece["rot"]), Vector2.ONE)
 			canvas.draw_texture_rect(piece["texture"], Rect2(-draw_size * 0.5, -draw_size * 0.5, draw_size, draw_size), false, Color(1, 1, 1, alpha2))
 	canvas.draw_set_transform_matrix(Transform2D())
-
-func _draw_air_add(canvas: Node2D) -> void:
-	for impact_item in _di: # 54568 데드 임팩트
+	# 54567~54568 데드 임팩트 — 원본 코드의 globalCompositeOperation='lighter'는 GPU/GL
+	# 프록시 X에서 **no-op**(6028: set 무시)이고 X의 실제 블렌드는 _setBlend로만 바뀌는데
+	# 이 구간(마지막 _setBlend(false) 53689 이후)은 normal이다. 즉 웹 실동작=일반 알파
+	# 블렌드로 blood_impact_2/3/4의 어두운 핏빛이 서서히(알파 0→1) 배어드는 얼룩 —
+	# additive 밝은 글로우가 아니다 (P2-001f 2026-10-20 실측·코드 추적).
+	for impact_item in _di:
 		if not impact_item["active"]:
 			continue
 		var lt: float = 1.0 - float(impact_item["life"])
 		var eo: float = lt / 0.3 if lt < 0.3 else 1.0 + (lt - 0.3) * 0.2
 		var size: float = float(impact_item["max_sz"]) * eo
 		var alpha: float = 1.0 if float(impact_item["life"]) < 0.3 else 1.0 - (float(impact_item["life"]) - 0.3) / 0.7
-		var at: Vector2 = canvas.to_local(Vector2(impact_item["x"], impact_item["y"]))
-		canvas.draw_texture_rect(impact_item["texture"], Rect2(at - Vector2.ONE * size * 0.5, Vector2.ONE * size), false, Color(1, 1, 1, maxf(0.0, alpha)))
+		var at2: Vector2 = canvas.to_local(Vector2(impact_item["x"], impact_item["y"]))
+		canvas.draw_texture_rect(impact_item["texture"], Rect2(at2 - Vector2.ONE * size * 0.5, Vector2.ONE * size), false, Color(1, 1, 1, maxf(0.0, alpha)))
+
+func _draw_air_add(canvas: Node2D) -> void:
 	if _impact_sheet != null: # 54720~ 히트 임팩트 (impact_basic 9프레임, 비보스 .8+p*.6 / inv*.45)
 		var drawn := 0
 		var frame_size: float = _impact_sheet.get_width() / 9.0
