@@ -1,3 +1,13 @@
+## 2026-10-20 BC2-04 vortex wind/active 순수 상태 계산
+
+| 항목 | 현재 정확 계약 |
+|---|---|
+| 기준·선행 | main6d987cb8a 이상. BC2-03 main미포함으로인수bbaed502 끝분기, 그끝에최신main포함. 장catalog/context·BC07 packet/helper·BC05 clock계약 재사용, 기존파일0줄 |
+| 원본계산 | G40905~40940 wind/active. XY→X→Y, 15<pd<R, magic30f tick/옵션생략폭발·owner전체readback, 입력시각/난수/KB순서·recover65 유지. 실제집행0·full_tick=false |
+| 최종검증 | 원본1,304상황/15,877event/4,488RNG/1,724충돌/654피해요청. 신규41,373/0, 기존BC01~08 무수정131,655/0·BC2-01~03포함209,464/0, 최종exit0/skip0/ERROR0/stderr0byte |
+| 검출·보호 | 격리5결함 모두실패검출(원문보존). Node인자·UTF-8파일·source-game. 공용6·타담당·기존제품/테스트·원본·저장·바이너리0. 실제hurtP/P.kb/Main/State연결HOLD, 후속미착수 |
+| 제출 | [BC2-04 보고서](engine/orders/reports/bc2-04_REPORT.md). 원로그~/exoduser-wt/_out/bc2-04/. 매Godot gate/30초대기·각격리명·override종료0byte. 자기branch push/remote일치/DONE후자기WT제거 |
+
 ## 2026-10-20 BC2-03 2장 신규 10기술 시작 계산
 
 | 항목 | 현재 정확 계약 |
