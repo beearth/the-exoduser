@@ -30,7 +30,7 @@ func readiness() -> Dictionary:
 	if not accepts_namespace(user):
 		return _error("demo_namespace_required")
 	if not _no_links(user): return _error("linked_user_directory")
-	var path := user.path_join("demo_local_storage")
+	var path := user.path_join(_store_name())
 	if not _no_links(path): return _error("linked_store_directory")
 	return {"ready": true, "status": "READY", "root": path, "host_io": true, "full_restore": false}
 
@@ -56,7 +56,7 @@ func _no_links(path: String) -> bool:
 	return true
 
 func _admit(key: String) -> Dictionary:
-	if key not in KEYS: return _error("unsupported_key")
+	if key not in _allowed_keys(): return _error("unsupported_key")
 	var admission := readiness()
 	if not admission.ready: return admission
 	if _root.is_empty(): return _error("store_not_open")
@@ -123,11 +123,8 @@ func _begin(id: String, key: String, raw: String, remove: bool) -> Dictionary:
 	if _requests.size() >= MAX_REQUESTS: return _error("request_receipts_full")
 	if not remove:
 		if raw.to_utf8_buffer().size() > MAX_BYTES: return _error("value_too_large")
-		if key == "hellsave_demo_active":
-			if raw not in ["0", "1", "2", "3", "4"]: return _error("invalid_active_slot")
-		else:
-			var parsed := Reader.parse_fixture_json(raw)
-			if parsed.status != "READY" or not parsed.value is Dictionary: return _error("invalid_save_object")
+		var validation := _validate_raw(key, raw)
+		if not validation.ready: return validation
 	# mkdir is an exclusive cross-instance/process writer lock. Never remove a
 	# foreign/stale lock automatically; old committed files remain readable.
 	var lock := _root.path_join(".writer")
@@ -264,3 +261,12 @@ func snapshot() -> Dictionary:
 		"lifecycle": _lifecycle.snapshot(), "main_connected": false, "full_restore": false}
 func _error(reason: String, code: int = FAILED) -> Dictionary:
 	return {"ready": false, "status": "NOT_READY", "reason": reason, "error": code, "settled": false}
+
+# Narrow extension points; the demo game's original allowlist/format stay intact.
+func _store_name() -> String: return "demo_local_storage"
+func _allowed_keys() -> Array: return KEYS
+func _validate_raw(key: String, raw: String) -> Dictionary:
+	if key == "hellsave_demo_active":
+		return {"ready": true} if raw in ["0", "1", "2", "3", "4"] else _error("invalid_active_slot")
+	var parsed := Reader.parse_fixture_json(raw)
+	return {"ready": true} if parsed.status == "READY" and parsed.value is Dictionary else _error("invalid_save_object")
