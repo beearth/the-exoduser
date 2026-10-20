@@ -56032,3 +56032,8 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 기반121a15b7에82ad1813(potion-cd), db9219b4(MAP11-14),973f96ef(i18n)를 정상 merge했다. bb3ced49/e8888106은 기존 ancestor다. Main 독립 locale callback과 기존 API를 병존하고 HUD 실제 MP owner를 유지했다. 번역 목록은 normalized3-way 비교 후CRLF9495/loneLF0으로 보존했다.
 
 41의8실패는 hidden headless→정상 media/Timer suspend 하니스 오류이며 제품 음악 모듈 변경0. 전체 editor import로 EL global class와19ui/37 SVG 누락을 해결했다. 재사용 runner는 실제41 창·명시Node/현재source·테스트상수격리·pgrep/30초 gate를 제공한다. 추가 potion 테스트의 paused owner read/비사용 affix 기대만 수정하며 oracle/제품 guard/식은 유지했다. 최종41 55/0·EL3327/0·19ui36/0·37148/0·24b138/0·25b2569/0·map product37/0=6310/0, 각exit0/ERROR0. 최초 추가 potion 실패는 별도 보존, 요청4suite 각1회. docs 전수 관련 검색/현재14id 설명 동기화. 상세 원인 파일:행·전후 표·범위/한계는 [integ-fix 보고서](engine/orders/reports/integ-fix_REPORT.md). 시각RETOUCH·PC/전체E2E 미확인 유지.
+
+
+## 2026-10-21 integ-fix 보충 — Dummy 관측 분리·perf/etype9 경계
+
+41은 실제AudioServer driver가Dummy일 때 재생/비동기콜백13관측을 이유와 함께skip하며, 모든driver 공통 요청·상태/handle 정리9검사를 추가했다. Dummy51/0/skip13·CoreAudio64/0/skip0, 기존etype-B42/0으로deadPool owner 거부 확인. 각조건1회·ERROR0·exit0, runner는PASS_WITH_SKIPS와JSON.skipped를명시한다. 제품SND06/media/visibility코드 변경0. perf aaf52dc0cb4439e828c9fe1a6560b0dd3e8ab1e7은이미ancestor(추가merge0);PC약22ms/tick 해결·120fps인수주장0. etype9는PC P2-008b 확인전NOT_READY유지. 실제청음은사용자실창검수. [근거·한계·로그](engine/orders/reports/integ-fix_AUDIO_SUPPLEMENT.md).

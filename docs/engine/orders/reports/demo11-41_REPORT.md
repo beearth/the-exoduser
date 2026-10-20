@@ -39,3 +39,6 @@ DEMO11-01의 demo/stage0 권위는 유지한다. CHANGELOG 최상단 충돌은 �
 
 
 2026-10-21 integ-fix 보충: 통합 하니스의 headless 실행으로 위와 같은8실패가 재발했다. 실제 창/CoreAudio에서 원문55검사0실패·ERROR0를 확인했다. merge 해소 오류나 단위 간 제품 결함이 아닌 visibility 하니스 오류다. 재현 가능한 전체 import/격리 runner와 파일·행 근거는 [통합 수정 보고서](integ-fix_REPORT.md)를 따른다.
+
+
+2026-10-21 PC 총괄 회신 보충: Dummy 관측은51통과/0실패/13skip, CoreAudio는64/0/skip0으로 분리한다. 실제 청음은 사용자 실창 검수다. perf aaf52dc0은 이미 ancestor이며22ms 해소 증명은 아니다. etype9는PC P2-008b 확인 전NOT_READY 유지. 상세 근거는 [오디오·perf 보충 보고서](integ-fix_AUDIO_SUPPLEMENT.md).

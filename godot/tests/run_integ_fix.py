@@ -66,12 +66,15 @@ def run(project, out, engine, name, userdir, flags, extra=()):
         meta["results"] = [line for line in output.splitlines() if "_RESULT " in line]
         meta["passed"] = (meta.get("exit_code") == 0 and not meta["errors"]
                           and (name == "import" or bool(meta["results"])))
+        meta["skipped"] = []
         for line in meta["results"]:
             result = json.loads(line.split("_RESULT ", 1)[1])
+            meta["skipped"].extend(result.get("skipped", []))
             if result.get("failures", 0) != 0:
                 meta["passed"] = False
         (out / (name + ".json")).write_text(json.dumps(meta, ensure_ascii=False, indent=2))
-        print(name, "PASS" if meta["passed"] else "FAIL", *meta["results"], flush=True)
+        verdict = ("PASS_WITH_SKIPS" if meta["skipped"] else "PASS") if meta["passed"] else "FAIL"
+        print(name, verdict, *meta["results"], flush=True)
     return meta["passed"]
 
 
@@ -81,6 +84,8 @@ def main():
     parser.add_argument("--source-root", type=Path, required=True, help="read-only original bgm/ and acorn root")
     parser.add_argument("--node-bin", type=Path, required=True)
     parser.add_argument("--out", type=Path, required=True)
+    parser.add_argument("--audio-mode", choices=["window", "headless"], default="window",
+                        help="41: window uses native audio; headless reports explicit Dummy observation skips")
     parser.add_argument("--suite", nargs="+", choices=SUITES, default=list(SUITES))
     args = parser.parse_args()
     project, out = args.project.resolve(), args.out.resolve()
@@ -100,7 +105,7 @@ def main():
     for name in args.suite:
         script, userdir = SUITES[name]
         # 41 observes Window visibility; headless correctly suspends its media.
-        flags = (["--windowed", "--resolution", "960x540"] if name == "41" else ["--headless"])
+        flags = (["--windowed", "--resolution", "960x540"] if name == "41" and args.audio_mode == "window" else ["--headless"])
         flags += ["--script", "res://tests/" + script + ".gd"]
         extra = ["--map11=off", "--node-bin=" + str(args.node_bin.resolve()),
                  "--source-game=" + str(project.parent / "game.html"),

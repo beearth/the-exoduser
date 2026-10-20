@@ -47,3 +47,6 @@ FILES: stage-owned는 db9219b4의3개 map script/캡처 script·관련 docs를 �
 GIT: 지정 경로만 stage, 정상 merge/commit 후 동일 통합 ref에 일반 push, 원격일치 후 DONE/자기WT제거. deploy0.
 VISUAL VERDICT: RETOUCH (기존 판정 유지, 이번 기술 PASS로 승격하지 않음).
 NEXT PASS: 원작성 시각 인수·MAP11↔37 자연 progression·모든 enemy/필드보스 동시 E2E. PC 접근/실행·청감/PCM·최종 자연 사망/clear·저장 E2E·전체 성능은 미확인이다.
+
+
+2026-10-21 PC 총괄 회신 보충: Dummy 관측은51통과/0실패/13skip, CoreAudio는64/0/skip0으로 분리한다. 실제 청음은 사용자 실창 검수다. perf aaf52dc0은 이미 ancestor이며22ms 해소 증명은 아니다. etype9는PC P2-008b 확인 전NOT_READY 유지. 상세 근거는 [오디오·perf 보충 보고서](integ-fix_AUDIO_SUPPLEMENT.md).

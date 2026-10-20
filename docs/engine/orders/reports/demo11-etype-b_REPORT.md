@@ -40,3 +40,6 @@ B 전용 actor는 기존 `enemy_melee_ch1_ice_warrior.gd`/flesh의 atlas·콜라
 공용 변경 범위(최종 파일 줄, 이번 49a250ef 대비): Main **3069–3076 +8/삭제0**, factory **680–696 +17/삭제0**. State/World/Player·PC hurtE/hurtP/패링·다른 담당 파일0줄. 새 B 파일에만 동작/검수 추가. 신규 tick 경로 목록 생성 API0. 저장/형식/마이그레이션·맵 제작·바이너리 commit0. 새 제품 UI 문구0, 번역 목록은 의존43 blob과 byte 동일하다.
 
 원로그 `~/exoduser-wt/_out/demo11-etype-b/`의 `resume-*`가 이번 재개분이며 기존 49a 자료도 유지했다. captures/registered-five.png와 actor-1x.png는 Godot 내부 viewport 원본/1x이다. 매 Godot 실행 전 pgrep 수2 이상이면30초 대기했고 finally override.cfg는0byte다. 새 테스트와 상수 없는 factory 계약은 `EXODUSER-demo11-etype-b-Isolated-20261021`을 사용했다. 사용자 저장 폴더 접근0. R branch/HEAD/index/work 상태 비교·자기 branch push/remote SHA/DONE 후 자기 worktree 제거 절차를 적용한다.
+
+
+2026-10-21 integ-fix/PC 총괄 보충: etype9는 PC P2-008b 확인 전까지 **NOT_READY** 유지. 기존 몸체 등록/비치명 hurtE 검수는 부활 owner나 full combat 인수가 아니다. 기존42검사를1회 확인해 deadPool owner 부재의 실제 정지 경계를 유지했다. 가짜풀/대체소환/준비 callback 추가0. [보충 보고서](integ-fix_AUDIO_SUPPLEMENT.md).
