@@ -1581,12 +1581,14 @@ Godot 이식 연동: `engine/fdg/map-source-adapter.js` v7 delta는 `pit_poison`
 
 | 항목 | 값 | 위치 |
 |---|---|---|
-| 대상 | `m_hang_cage`, `m_skull_totem`, `m_bone_arch`, `m_sword_pile`, `m_c1altar` (stage0 전체 배치, 좌표 고정 아님) | `ch1-living-detail.js` `standing` 표 |
-| 기준점 | `foot`=PNG 불투명(alpha>60) 바닥, `base`=기둥이 잔해에 박히는 지점(그림자 원점, 잔해 밑에 숨음). 둘 다 그려지는 상자 중심 기준 비율 | cage .486/.30, totem .443/.40, arch .437/.36, sword_pile .482/.28, altar .497/.34 |
+| 대상 | `m_hang_cage`, `m_skull_totem`, `m_bone_arch`, `m_sword_pile`, `m_c1altar`, `m_c1camp`(2차) (stage0 전체 배치, 좌표 고정 아님) | `ch1-living-detail.js` `standing` 표 |
+| 기준점 | `foot`=PNG 불투명(alpha>60) 바닥, `base`=기둥이 잔해에 박히는 지점(그림자 원점, 잔해 밑에 숨음). 둘 다 그려지는 상자 중심 기준 비율 | cage .486/.30, totem .443/.40, arch .437/.36, sword_pile .482/.28, altar .497/.34, camp .495/.22 |
 | 그리는 상자 | keepAR면 `sz×min(1,ar)` × `sz×min(1,1/ar)`, 아니면 `sz×sz`(게임 기본 그리기와 동일) | |
 | 실루엣 | 원점 기준 `transform(1,0,-.55,-.38)`(나무와 같은 동쪽 기울기 .55, 길이 .38×높이) + blur 4px, 세로 그라디언트 rgba(6,4,9) .9→.55(55%)→0, 원점 접촉 타원 .62(세로 .24배) | 이미지당 1장 캐시(`standCache`, 높이 256px 기준) |
-| 강도 `a` | cage 1, totem 1, arch .95, sword_pile .7, altar .8 | `c.globalAlpha=alpha×a` |
+| 강도 `a` | cage 1, totem 1, arch .95, sword_pile .7, altar .8, camp .7 | `c.globalAlpha=alpha×a` |
 | 나무 그림자 | 손배치·구운 나무 공통 `shadowCache` 그리기 알파 `.6→.85` (소품과 같은 농도) | `shadows()` 나무 분기 |
 | 그리기 순서 | 기존 `shadows()` 그대로 — 바닥·경계 다음, 소품·캐릭터 이전 | `game.html` 바닥 패스 |
 
 검수: headless 1600×900·2600×1300, 소품별 전후 비교 + 1x 원본 확인. 첫 시도(원점=PNG 바닥, 길이 .52)는 잔해 아래에 떨어진 얼룩처럼 보여 기각 → 원점을 기둥 밑동으로 올리고 길이 .38로 줄여 잔해 밑에서 남동쪽으로 새어 나오게 함. 뼈 아치는 아치 모양 그림자가 읽힘. 제단·칼 무더기는 낮은 소품이라 은은한 수준. 테스트 `ch1LivingDetail` 41/41(뼈 아치 테스트를 새 계약으로 갱신: 투사 그림자는 모든 배치, 잔해 접촉은 기존 좌표 한 곳만).
+
+2차(같은 날): 캠프 추가(원점 .22 — 천막·상자 더미의 바닥 쪽, 은은한 남동 그림자). **캐릭터 투사 그림자는 시험 후 기각** — 플레이어가 화면에서 약 40px라 발밑 접지 그림자(α.38)조차 1x에서 거의 안 보이고, 남동으로 늘인 옅은 타원(길이 3.4×반지름, α.2)도 차이가 없었다. 캐릭터 입체감은 그림자보다 다른 수단(림라이트·대비)이 필요.

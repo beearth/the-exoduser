@@ -363,7 +363,7 @@
   const raisedShadowCache=new WeakMap();
   // MAP-005 standing props: foot = PNG opaque bottom (alpha>60), base = where the upright part meets its ground debris
   // (shadow origin, hidden under the debris), both relative to the drawn box centre; a = shadow strength.
-  const standing={m_hang_cage:{foot:.486,base:.30,a:1},m_skull_totem:{foot:.443,base:.40,a:1},m_bone_arch:{foot:.437,base:.36,a:.95},m_sword_pile:{foot:.482,base:.28,a:.7},m_c1altar:{foot:.497,base:.34,a:.8}};
+  const standing={m_hang_cage:{foot:.486,base:.30,a:1},m_skull_totem:{foot:.443,base:.40,a:1},m_bone_arch:{foot:.437,base:.36,a:.95},m_sword_pile:{foot:.482,base:.28,a:.7},m_c1altar:{foot:.497,base:.34,a:.8},m_c1camp:{foot:.495,base:.22,a:.7}};
   const standCache=new WeakMap();
   const debrisContactCache=new WeakMap();
   function debrisContact(img){
