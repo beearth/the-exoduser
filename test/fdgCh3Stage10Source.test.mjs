@@ -105,9 +105,9 @@ test('CLI guards every unsupported stage/seed, foreign snapshot, protected outpu
  const tmp=fs.mkdtempSync(path.join(fs.realpathSync(os.tmpdir()),'EXODUSER-ch3-01-Isolated-20261020-cli-'));const tool=path.join(root,'godot/tools/export_ch1_area_source.mjs');
  const cli=(output,stage='10',seed='20261020')=>spawnSync(process.execPath,[tool,root,output,'--stage',stage,'--seed',seed],{encoding:'utf8'});
  try{const output=path.join(tmp,'si10.json');assert.equal(cli(output).status,0);assert.deepEqual(JSON.parse(fs.readFileSync(output)),actual);const saved=fs.readFileSync(output);
-  for(const stage of ['-1','2','3','5','9','11','12','13','010','10x']){assert.equal(cli(output,stage).status,1);assert.deepEqual(fs.readFileSync(output),saved);}
+  for(const stage of ['-1','2','3','5','9','12','13','14','010','10x']){assert.equal(cli(output,stage).status,1);assert.deepEqual(fs.readFileSync(output),saved);}
   for(const seed of ['-1','NaN','Infinity','1.5','4294967296'])assert.equal(cli(output,'10',seed).status,1);
-  for(const stage of [-1,2,3,5,9,11,12,13,'10',10.1])assert.throws(()=>buildAreaSnapshot(root,{stage}),/UNSUPPORTED_STAGE/);
+  for(const stage of [-1,2,3,5,9,12,13,14,'10',10.1])assert.throws(()=>buildAreaSnapshot(root,{stage}),/UNSUPPORTED_STAGE/);
   for(const target of ['godot/data/map.json','godot/data/ch1_map_source/si0.json','godot/data/ch2_map_source/si4.json','godot/data/ch3_map_source/si11.json','game.html'])assert.equal(cli(path.join(root,target)).status,1);
   const bad=path.join(tmp,'bad.json');for(const v of [{...actual,stage:11},{schema:'exoduser.ch2-area-source.v1',stage:4}]){fs.writeFileSync(bad,JSON.stringify(v));const bytes=fs.readFileSync(bad);assert.equal(cli(bad).status,1);assert.deepEqual(fs.readFileSync(bad),bytes);}
   const link=path.join(tmp,'link.json');fs.symlinkSync(output,link);assert.match(cli(link).stderr,/Symlink output rejected/);

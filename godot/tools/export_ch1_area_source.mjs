@@ -1,4 +1,4 @@
-// CH1-01/03 and CH2-01/CH3-01: native stage0/1/4/10 source snapshots, never map.json/PNG.
+// CH1-01/03 and CH2-01/CH3-01/03: native stage0/1/4/10/11 source snapshots, never map.json/PNG.
 // Stage0 base 284d7faf / stage1 main e556b617; unchanged game SHA 4d911cdd...; exact ranges below.
 import fs from 'node:fs';
 import path from 'node:path';
@@ -30,7 +30,7 @@ export function captureJSON(value, undefinedPaths = [], at = '', active = new Se
 }
 
 export function buildAreaSnapshot(sourceRoot, {stage = 0, seed = 20261020, observeNative} = {}) {
-  if (![0,1,4,10].includes(stage)) throw new Error('UNSUPPORTED_STAGE: only stages 0, 1, 4 and 10 are supported');
+  if (![0,1,4,10,11].includes(stage)) throw new Error('UNSUPPORTED_STAGE: only stages 0, 1, 4, 10 and 11 are supported');
   if (!Number.isInteger(seed) || seed < 0 || seed > 0xffffffff) throw new Error('Invalid uint32 seed');
   if (observeNative !== undefined && typeof observeNative !== 'function') throw new Error('Invalid native observer');
   const root = fs.realpathSync(sourceRoot);
@@ -86,8 +86,12 @@ export function buildAreaSnapshot(sourceRoot, {stage = 0, seed = 20261020, obser
   if (stage === 1) evaluate('const _CH1S1='+expression('_CH1S1')+';');
   if (stage === 4) evaluate('const _CH2S4='+expression('_CH2S4')+';');
   if (stage === 10) evaluate('const _HELLWINTER10='+expression('_HELLWINTER10')+';');
+  if (stage === 11) {
+    for (const name of ['mkRng','_iceC','_iceB']) evaluate(nativeFunction(name));
+    evaluate('const _ICE11='+expression('_ICE11')+';');
+  }
   evaluate('const _MAP_COMPOSE={'+stage+':'+expression('_MAP_COMPOSE',stage)+'};');
-  const chapter = stage === 10 ? 2 : stage === 4 ? 1 : 0;
+  const chapter = stage >= 10 ? 2 : stage === 4 ? 1 : 0;
   evaluate('const _OBJ_META='+expression('_OBJ_META')+';const _CH_DECO={'+chapter+':'+expression('_CH_DECO',chapter)+'};');
   for (const name of ['_wantPlateTest','_isFaceMap','_isDungeonMap','mkRng','_rleEncodeGrid',
     '_buildCh1StartForestRLE','_paintPathDisk','_paintPathSeg','_buildWalkPathRLE','_buildBasinRLE','_buildColRectRLE',
@@ -108,7 +112,7 @@ export function buildAreaSnapshot(sourceRoot, {stage = 0, seed = 20261020, obser
   evaluate('_regionInit('+stage+');');
   const generated = evaluate(`({tiles:G.map.flat(),rooms:G.rooms,exits:G.exits,boss_gate:G.bossGate,
     start_tile:[_spX,_spY],start_world:[P.x,P.y],hand_props_raw:_MAP_COMPOSE[${stage}].handProps,
-    initial_obj_meta:_OBJ_META,${stage === 10 ? 'ch3_deco_raw:_CH_DECO[2],region_details:G._regions' : stage === 4 ? 'ch2_deco_raw:_CH_DECO[1]' : 'ch1_deco_raw:_CH_DECO[0]'},chapter_stages:CHAPTER_STAGES,
+    initial_obj_meta:_OBJ_META,${stage >= 10 ? 'ch3_deco_raw:_CH_DECO[2],region_details:G._regions' : stage === 4 ? 'ch2_deco_raw:_CH_DECO[1]' : 'ch1_deco_raw:_CH_DECO[0]'},chapter_stages:CHAPTER_STAGES,
     spawn_holes_final:G.spawnHoles.map(h=>({...h,count:_spawnHoleCount(h.size,${stage})})),
     total_spawned:G._totalSpawned,exit_center_tile:[_exitCX,_exitCY]})`);
   const undefinedPaths = [], data = captureJSON(generated,undefinedPaths);
@@ -141,9 +145,24 @@ export function buildAreaSnapshot(sourceRoot, {stage = 0, seed = 20261020, obser
       '_paintCh2OrganicCollisionRim','_paintCh2OrganicFloorHalo','_fillPathBg']) nativeFunction(name);
   }
   const ch3 = {};
-  if (stage === 10) {
-    ch3.source_basin = captureJSON(evaluate('({spec:_MAP_COMPOSE[10].basin,empty:_MAP_COMPOSE[10].empty,editor_tile_rle:template.tileRLE})'));
-    ch3.source_basin.editor_tile_rle_sha256 = sha(JSON.stringify(ch3.source_basin.editor_tile_rle));
+  if (stage >= 10) {
+    if (stage === 10) {
+      ch3.source_basin = captureJSON(evaluate('({spec:_MAP_COMPOSE[10].basin,empty:_MAP_COMPOSE[10].empty,editor_tile_rle:template.tileRLE})'));
+      ch3.source_basin.editor_tile_rle_sha256 = sha(JSON.stringify(ch3.source_basin.editor_tile_rle));
+    } else {
+      ch3.source_floor = captureJSON(evaluate('({editor_tile_rle:template.tileRLE})'));
+      ch3.source_floor.editor_tile_rle_sha256 = sha(JSON.stringify(ch3.source_floor.editor_tile_rle));
+      ch3.compose_raw = captureJSON(evaluate('_MAP_COMPOSE[11]'));
+      ch3.selector_evidence = captureJSON(evaluate('({dungeon_spec:_DUNGEON_SPEC[11],is_dungeon:_isDungeonMap(11),is_face:_isFaceMap(11),base_present:!!FIXED_MAPS[0],selected_size:[template.mw,template.mh]})'));
+      for (const name of ['EL','HELL_THEMES','HELL_BOSSES']) evaluate('const '+name+'='+expression(name)+';');
+      evaluate(block('STG.construction','const STG=[];','\nlet G='));
+      ch3.stage_descriptor = captureJSON(evaluate('STG[11]'));
+      ch3.guard_evidence = captureJSON(evaluate('({candidate_tile:[G._bossCx,G._gateY+3],actual_tile:G.map[G._gateY+3][G._bossCx],required_tile:0,predicate_met:G.map[G._gateY+3][G._bossCx]===0})'));
+      const guardStart = source.indexOf('const _ggTx=');
+      const guardEnd = source.indexOf('const gg=mkEn',guardStart);
+      if (guardStart < 0 || guardEnd <= guardStart) throw new Error('Missing source guard predicate');
+      fragment('initStage.guard_predicate',guardStart,guardEnd);
+    }
     const ids = new Set(data.hand_props_raw.map(h => h.id));
     const chapterIds = new Set(data.ch3_deco_raw.map(d => d.id));
     ch3.cross_deco_raw = captureJSON(evaluate(expression('_CH_DECO',0))).filter(d => ids.has(d.id) && !chapterIds.has(d.id));
@@ -168,7 +187,7 @@ export function buildAreaSnapshot(sourceRoot, {stage = 0, seed = 20261020, obser
     geometry.mask_sha256=sha(Buffer.from(geometry.mask));
     geometry.editor_tile_rle_sha256=sha(JSON.stringify(geometry.editor_tile_rle));
   }
-  const snapshot = {schema:stage === 10 ? CH3_SCHEMA : stage === 4 ? CH2_SCHEMA : SCHEMA,stage,source:{main_sha:execFileSync('git',['rev-parse',stage === 0 ? 'HEAD' : 'origin/main'],{cwd:root,encoding:'utf8'}).trim(),
+  const snapshot = {schema:stage >= 10 ? CH3_SCHEMA : stage === 4 ? CH2_SCHEMA : SCHEMA,stage,source:{main_sha:execFileSync('git',['rev-parse',stage === 0 ? 'HEAD' : 'origin/main'],{cwd:root,encoding:'utf8'}).trim(),
     ...(stage !== 0 ? {extraction_head:execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim()} : {}),
     game_sha256:files['game.html'],files,symbols,selection:`default empty URL → _getFixedMapForStage(${stage}) → _cloneField11(${stage}) → genFromTemplate`},
     grid:{width:200,height:200,tile_size:40},...data,...ch2,...ch3,...(geometry ? {source_geometry:geometry} : {}),runtime_tile_sha256:sha(Buffer.from(data.tiles)),
@@ -190,12 +209,12 @@ export function buildStage0Snapshot(sourceRoot, options = {}) {
 }
 
 export function main(args) {
-  if (args.length !== 6 || args[2] !== '--stage' || args[4] !== '--seed' || !['0','1','4','10'].includes(args[3])) {
-    throw new Error('Usage: export_ch1_area_source.mjs <source-root> <output-json> --stage <0|1|4|10> --seed <uint32>; UNSUPPORTED_STAGE otherwise');
+  if (args.length !== 6 || args[2] !== '--stage' || args[4] !== '--seed' || !['0','1','4','10','11'].includes(args[3])) {
+    throw new Error('Usage: export_ch1_area_source.mjs <source-root> <output-json> --stage <0|1|4|10|11> --seed <uint32>; UNSUPPORTED_STAGE otherwise');
   }
   const root=fs.realpathSync(args[0]), output=path.resolve(args[1]);
   const relative=path.relative(root,output);
-  const chapter = args[3] === '10' ? 3 : args[3] === '4' ? 2 : 1;
+  const chapter = Number(args[3]) >= 10 ? 3 : args[3] === '4' ? 2 : 1;
   if (!relative.startsWith('..'+path.sep) && relative !== 'godot/data/ch'+chapter+'_map_source/si'+args[3]+'.json') {
     throw new Error('Output inside source root must be the matching new si snapshot JSON');
   }

@@ -1,3 +1,15 @@
+## 2026-10-20 CH3-03 — si11 원본 snapshot·순수 계약
+
+| id / 적용 위치 | 현재 계약·검수 |
+|---|---|
+| 기준 / 의존 | main6d987cb8, main미포함 CH3-02 dbaf1647 끝 분기·정상merge92aefe7a. CH2-03처럼 §4.3의 source 우선 단위. 새 World/Main/State/공용6/P3 연결0 |
+| source / 제품 | 공유추출기 stage11분기30추가/11삭제·기존stage10 음성검사11→14 두행만. 신규si11 JSON/순수계약/Node·Godot/UID2, 기존0/1/4/10 전데이터 재추출 깊은 일치 |
+| 원본 값 | 200²/T40·editor[1,40000]·tile38986/36/3/0/975·SHA5b40eb67…·START4020,7420·gate metadata y5(tile0)/exit y7·문지기후보100,8 tile4. dungeon.ready=false·서리의 기사/monLv300·raw18/catalog61/base77/cross0 |
+| 굴 / 자산 | 13굴/1050·지역350/300/250/150·전부미클리어/fbIdx-1. source timer13draw/final2962398007. 원화61참조/35파일+ground1 byte만·생성/변환/이송0 |
+| API / 경계 | 동일raw참조 READY=source_snapshot_only·stage11. 오염 NOT_READY/reason/raw·value없음. RNG/clock/IO/Node0, 실효객체/콜리더/독립소비·전투·시각미확인, runtime/fullstage/visual=false |
+| 검수 | 새Node9/0·순수Godot385/0, 기존source-node62중61/1(기존CH3-01 mainSHA provenance1유지). mapNode37중28/9는 시작main control 실패9이름/순서동일. Godot source/si10World·contracts·굴·지역 통과(보고서 실제수치), 경고/실패 원로그 보존 |
+| 보호 / 제출 | 기준tracked2593 중 추출기/기존음성검사/CHANGELOG외2590byte동일. 정상훅·pgrep2이상30초대기·각격리/override비움·자기branch push/원격일치→DONE→자기WT제거·R불변. [보고서](engine/orders/reports/ch3-03_REPORT.md), ~/exoduser-wt/_out/ch3-03/ |
+
 ## 2026-10-20 CH3-02 — si10 실효 배치·충돌·독립 preview
 
 | id / 적용 위치 | 실제 계약·검수 |
