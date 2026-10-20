@@ -1,3 +1,13 @@
+## 2026-10-21 MAP11-PLAN 보충 — 보스룸 먼저·데모 완성·Godot 이식 병행
+
+| 항목 | 최신 설계 계약 |
+|---|---|
+| 우선순위 | 사용자 보충에 따라 보스룸 디자인을 설계서 첫 절로 이동, MAP11-01=M 보스룸 master/독립blockout·등장/gate·전투공간·광원/카메라. 그다음 필드 MAP11-07. Godot DEMO11-02/03·34~38은 기존 owner 병행, 범용 schema/필드 완성 대기0 |
+| 원본·공간 | si0 일반 다크드루이드 최종23기술·BC01~10 재사용/남은장판기술누락0. G30697·9965~9967·35722~38·41784~41926·43896·63663~81. R2200/지름4400은 신규 blockout 시작안/미실측, slam1320·charge/탄막·잡기/잠행·tide/fissure extent 수용 검수. 공격약화0 |
+| 데모 종착점 | DEMO11-37 지역/앵글러→gate→arena→revive유예/최종death→보상/clear·랭크, DEMO11-38 stageClear→demoEnd→wishlist/로비. stage1생성/중복clear0. 개발preview를자연진행으로보고0 |
+| 소유·인수 | 기존제출6df1201e의문서보충, 최신main aa1eaea5 읽기대조·game blob동일. BC08/09 파일누락과작업판표기차이명시/승인체인인수의존. MAP11-01~18·사용자D05 보스룸시각키 추가. 코드/에셋/Godot/캡처0, 문서2개만 |
+| 산출 | [최신 MAP11 설계서](4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md). 원로그 _out/map11-plan/supplement-boss-first/, 자기branch push·원격일치·DONE후자기WT제거. 시각/성능/완벽한데모 PASS 주장0 |
+
 ## 2026-10-21 MAP11-PLAN 1-1 새 맵 제작 로직 설계
 
 | 항목 | 설계·검수 경계 |

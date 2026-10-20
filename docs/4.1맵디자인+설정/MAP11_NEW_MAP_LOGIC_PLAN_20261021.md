@@ -1,8 +1,60 @@
 # MAP11 — 1-1 새 맵 제작 로직 설계안
 
-> map11-plan · 2026-10-21 · **문서 전용 / REVIEW_PENDING**. 기준 main `0105159934d0c2a8b167bd51518dca1e0fafe50a`. 웹 맵 이식은 종료하고 **1-1의 제작 로직·분위기·테마·전체 디자인을 먼저 완성**한 다음, 승인된 같은 로직으로 1-2 → 1-3을 순서대로 만든다. 이번 작업은 코드·에셋 생성·Godot 실행·화면 캡처 0. 현재 main이나 새 맵의 시각 완성·성능 PASS를 선언하지 않는다.
+> map11-plan · 2026-10-21 보스룸 우선 보충 · **문서 전용 / REVIEW_PENDING**. 기준 main `0105159934d0c2a8b167bd51518dca1e0fafe50a`. **2026-10-21 보충 방침: 보스전/보스룸 디자인부터, 데모를 먼저 완벽하게 완성하며 Godot 이식은 병행한다.** 웹 맵 이식은 종료하고 **보스룸 → 1-1 필드 → 데모 전체 인수** 순서로 제작 로직·분위기·테마·전체 디자인을 완성한 다음, 승인된 같은 로직으로 1-2 → 1-3을 순서대로 만든다. 이번 작업은 코드·에셋 생성·Godot 실행·화면 캡처 0. 현재 main이나 새 맵의 시각 완성·성능 PASS를 선언하지 않는다.
 
-## 1. 근거와 방침 우선순위
+## 1. 최우선 — 1-1 보스룸과 데모 종착점 (MAP11-01)
+
+**먼저 만들 화면은 1-1 일반 다크드루이드(si0)의 보스룸이다.** 필드 전체 아트, 범용 provider 완성, 다음 맵을 기다리지 않고 보스룸의 master/독립 blockout·스타일키부터 확정한다. 현재 main에 인수된 BC01~10을 재작성하지 않고 Godot 자연 전투 연결과 함께 발전시킨다. 보스 디자인 완료와 데모 제품 완료는 별도 gate이며 최종 목표는 **입장→등장→자연 보스전→실제 죽음/보상→stageClear→demoEnd→로비**가 한 흐름으로 완성되는 것이다.
+
+### 1.1 아레나 디자인·공간·카메라
+
+| 항목 | 보스룸 우선 설계 / 완료 기준 |
+|---|---|
+| 분위기·주인공 | 썩은 숲의 심장부: 중앙은 넓고 낮은 젖은 피부/회자주 바닥, 바깥은 죽은 고목·굵은 뿌리·갈라진 조직이 벽처럼 연속. 보스 실루엣과 전조가 주인공. 필드의 심장제단/큰 시체나무는 아레나 **바깥 프레임**으로만 사용, 중앙 장식섬/기둥/미로0. Hell Gothic·잔점 금지·MagicLight 우선은 아래 공통 기준 그대로 |
+| 형태·크기 초안 | **유효 전투 반경 R=2200 world unit, 지름4400**의 원형에 가까운 무기둥 공간을 blockout 시작값으로 권장(신규 제안/미실측). 안쪽에 돌출되는 프롭 충돌0, 시각 외곽만 비대칭. 원본 G30697–30707은128×108/T40·원형/기둥없음; 이 타일 배치/좌표를 복제할 의무는 없고 아래 기술 공간을 수용하는지가 기준 |
+| 여백·소켓 | 남6시 `arena_entry`/재시도 안전지점, 중앙 `boss_center`, 북12시 `clear_exit`, 필드쪽 `arena_return`을 별도 안정ID로 제공. entry는 실제 boss/player bounds와 첫 조작 가시성으로 확정. 파티클/원화 alpha를 collider로 쓰지 않음. 넓은 외곽 회피 고리·중앙 횡단/대각선 돌진·잡기 후 throw의 합법 착지 여백을 모든 방향으로 검수 |
+| 크기의 검증식 | si0 phase4 slam R1320이 중앙에서 닿아도 둘레에880의 기하 여유가 남는 시작값(2200−1320). 이는 보스가 이동한 뒤에도 안전을 보장한다는 뜻이 아님. off-center slam/charge·tide max1750·탄막·점프 목표·잡기/넉백까지 **실제 actor 반경·패턴·벽 응답**으로 검수 후 조정. arena에 맞추려고 피해/사거리/속도/CD/기술을 축소0 |
+| 광원·분위기 | NW의 약한 냉광과 밑동/뿌리 접지, 보스 뒤 균열의 둔한 적색 림, 남쪽 gate의 따뜻한 잔광. player/보스/장판을 분리해 읽을 중간 명도 바닥을 유지. 독탄/위험 신호색과 같은 밝은 장식광 금지. 큰 그림자는 바깥으로, 플레이 공간의 텔레그래프를 덮지 않음. 기존 MAP-LOOK shadow/부분광을 PC 담당과 재사용 |
+| 카메라 | 전투 camera는 **combat_bounds와 render_bounds를 구분**. 원본 G35722–35738의 P/B 중점 .5/.5+lookahead .3, zoom target .80을 비교 출발점으로 사용. 실제 보스 sprite의 발밑/상반신 bbox와 player·위협 전조가 함께 읽히는 framing을 blockout에서 조정. 발 위치 중점만으로 거대한 상반신이 보인다고 가정0. zoom/offset 변경은 기존 camera·pointer 역변환 담당 승인 범위, Q/E aim 좌표 일치 필수 |
+| 외곽·HUD | render mass는 combat rim 밖으로 최소 해당 줌 반화면+최대 camera shake 범위까지 연장해 빈 void 노출0. 보스 이름/HP/poise·가이드·결과 UI가 몸체/전조를 가리지 않는1x 검수. 아레나 전체를 한 화면에 넣는 고정 zoom이나 보스 근접 시 과도한 자동확대 금지. 화면 밖 탄/파도 원점은 경고/진행방향이 읽혀야 함 |
+
+### 1.2 BC01~10과 탄막·지형 수용표
+
+근거는 [1장 보스 추적](../engine/FDG_SOURCE_TRACE_BOSS_CH1_20261020.md) §1/2/BC단위표와 최신 main의 동일 `game.html`이다. 보충 시 main `aa1eaea5a1fa70b31eae6fd907662ee13471c08d`을 읽기 대조했고 원본 game blob은 기존 설계 기준과 동일(`e755a2d98211ac2a6b4a53d8a1e3e7abe4714400`). WORK_BOARD의 BC08/09 병합 표기와 달리 해당 두 파일은 이 main tree에 없어, DEMO11-02의 승인 체인 인수 확인을 선행한다. 문서 표기를 실제 live 연결로 간주하지 않는다.
+
+| 재사용 단위·원본 | 기술/서비스 범위 | 아레나가 수용·검수할 공간 |
+|---|---|---|
+| BC01 catalog + BC02 spawn / G9965–9967·31119 이후 | si0 일반 드루이드 최종23무브, 본체r44 등 기존 생성값. si3 피날레/다른 보스/새무브 추가0 | 원형 무기둥 전투면·실제 body bbox/발밑·spawn 합법반경. 최종 si0에는 burrowStrike 포함, cageTrap/teleStrike/tailSwipe 제외. 옛 최초 Set이나BC06에 case가 있다는 이유로 활성화0 |
+| BC03 utility + BC04 selector + BC05 phase / G37650–37699·38373–38441·38236–38314 | 거리·선택/콤보/반복·공유RNG·phase0..4 전이 재사용, 자연선택거리20..500 및 원 tick 의미 보존 | 근접으로 접근할 길·멀어졌다 재진입할 여백과 phase4 최악범위 검증. 맵이 선택가중치/phase/회복시간을 바꾸어 손쉽게 만들지 않음 |
+| BC06 start + BC07 melee / G37702–37736·41074–41183 | slashCombo `r+Pr+300`/sweep `r+Pr+400`의 각도·구간, slam `1000+si30+phase80`(si0최대1320). 전조/후속 순서 보호 | 중앙 장애물0, 근접 측후면 회피/연타 재진입·넉백 여백. 원/부채 tell과 실제 범위가 바닥/그림자/보스 몸에 묻히지 않음 |
+| BC08 이동 / G40664–40708·40942–40977 | charge50tick·35sp·마지막18 방향잠금·canMv XY/X/Y/막힘shock, jump40tick/착지R300·shock, multiDash9sp·phase4최대10회 | 긴 직선/대각선·벽 접촉/미끄러짐·점프착지와 연속방향전환 검수. charge1750은50×35의 직선 요청거리 상한 참고이며 실제이동성공 보장 아님. 장식기둥으로 돌진을 반복 차단0; 일반 eCharge 커널로 대체0 |
+| BC09 탄 / G40562–40569·40646–40662·41185–41205·37769–37791·38212–38230 | burst/fan/beanStorm/elemBall/rapidMissile + 독립 rhythm/ORB. si0 fan phase별요청10/12/13/14/16, life400. rhythm interval90−6phase/count5+phase/life240; ORB110f에3발·speed6.8/t>460소멸 | 방사/부채/파도 사이 lateral 회피선·멀리서의 반사/탄 진행·긴 수명 탄의경계처리. 벽으로 탄을 임의흡수하거나 탄수/속도/후처리를 줄이지 않음. Q/E/black-red 분류와 실제 registry/expiry는 기존 보호 owner |
+| BC10 잡기/잠행 / G40837–40867·41047–41072 | grab 포획 `r+Pr+200`,60tick/주기10·throw; 잠행45→분출40/8f후폭발R=r+120 | 플레이어 강제이동/throw 착지의합법위치·카메라 추적·잠행 marker/분출warning 가시성. 일시적몸숨김을 boss death로 처리0, iframe필드만으로무적성공을주장0 |
+| **BC01~10만으로 데모 전투를 닫지 않음** / G37723–37732·37931–38019·38085–38117·37015–37126 | 최종23종에는 summon/mine/chaseAoe/groundFissure/tideWave/seekerMines/poisonTrail/lavaPools도 포함. 실행은BC11/12 등 기존단위와 DEMO11 범위 판정/owner에 의존 | tide maxR1750/gap .8, fissure maxLen=`~~(max(mw,mh)*T*.45)`/폭140/explosion≤750, chase R450, poison R175·3점poolR150, 소환/지뢰자리를 검수. 원본128×108·T40에서 attack extent=(5120,4320), fissure maxLen2304/explR691.2다. 새 provider는 이 **게임플레이 effect metric**을 geometry/render bounds와 분리해 기존식 consumer에 명시 매핑하는 안을 코드owner와 인수한다. 새 R2200이나카메라외곽을mw/mh에대입해공격길이를암묵변경0; 원본맵/좌표를복제하라는뜻은아님. 미연결기술을삭제/대체해완벽한데모로보고0 |
+
+### 1.3 입장·등장·클리어·데모 종료 연결
+
+| 단계 / 코드 owner | 공간·연출 제공 / 실제 진행 gate |
+|---|---|
+| 필드→입장 gate / DEMO11-03·31·37 | 필드의 지역/앵글러 `_fbDone`·문지기 등 원조건이 성립한 뒤 gate trigger 유효. 보스룸을 먼저 개발하는 독립 entry는 **개발용 preview**로 명시, 정상 데모의필드조건 우회로 배포0. 필드 전체아트 완성은 보스룸 디자인 착수의 선결조건이 아님 |
+| 전환/안전 / DEMO11-37 | entry/return/context descriptor·arena geometry·boss/render 자산 준비 확인 후에만 전환 commit. 준비실패는 기존 field context 유지. 잔여 필드몹·탄·굴·상호작용·사망/재시도 backup/reset·clear 분모 처리는 기존owner, 맵씬이 임의로 삭제/처치기록0 (G30749–30814) |
+| 등장 / DEMO11-34·37 + 기존 UI/SND | G41784–41814 원시계: fade out50→name130→fade in50→입장100, 첫 보스stun90/reviveIframes110·포효·빛/입자. 단순7초고정 영상으로 치환0. 맵은 남쪽입구/보스anchor·림/접지·카메라 key를 제공, 시간/입력gate/HP·poise HUD는 기존owner. storyboard는 gate앞실루엣→fade/name→얼굴·뿌리림/접지→전투camera/첫조작의4장면으로그리되시계는원값을사용한다. 이 구간서UI가player와보스를누르지않고첫조작전보스실루엣이읽혀야함 |
+| 실제 전투 / DEMO11-34·35·36 | BC01~10 및 남은자연23기술의 실행 consumer·projectile·피격/패링·이동 writer 병행 통합. 빈 ack/강제pattern fixture를 자연boss전 PASS로 세지 않음. 별도 강제패턴으로 공간 경계를 검증한 결과와 자연전투 결과를 구분 |
+| 죽음→보상/clear / **DEMO11-37** | G41816–41926: 죽음처럼 보여도 revive timer>0 유예, 최종살아있는boss 없음 판정 후 한 번만 clear/reward/clearTime·랭크 인계. 열린 exit·reward/chest 자리 제공. 보스sprite소멸이나fade끝이clear조건아님. 재시도·부활로중복보상0 |
+| stageClear→종료 / **DEMO11-38** | G43896·63663–63681: 다음버튼→demoEnd·wishlist/로비복귀, **stage1/1-2 생성0·중복clear0**. 결과 화면에 보스룸 빛/FX/입력 잔류0. 실제 wishlist URL은 원본TODO와구별해 UI/사용자소유결정, 임의등록0. 로비/저장인계는기존owner |
+
+### 1.4 보스룸 우선과 Godot 이식 병행
+
+| 작업 흐름 | 바로 진행할 것 / 합류점 |
+|---|---|
+| A — 맵·아트 | **MAP11-01 보스룸** master/무기둥 blockout/입구·보스·출구anchor/광원 key/카메라 board. 보스앞·근접·가장자리·장판/탄막·클리어 화면을 먼저 승인. 이후 필드 master/아트로 확장 |
+| B — Godot 코드 | 기존 DEMO11-02/03·34~38 owner가 BC 의존 인수·실제 actor/탄/피해/지역/결과/로비를 **동시에** 연결. A의임시authoring revision에명시bind, prefab/정책/State 복제0. 범용schema·전체필드완성을기다리며중단하지않음 |
+| 합류 gate | MAP11-02/03의 arena provider/camera/충돌 계약에서 A/B 합류, 정상입장/전투/종료는05/06에서검수. API변경은변경된interface와한consumer씩작게인수. 보호공용파일은기존담당명시오더만, 이문서작업에서코드수정0 |
+| 필드로 이동할 때 | MAP11-01의보스룸디자인/공간master 승인후 필드07부터가능; B의전투/종료이식은계속병행. **보스룸디자인우선**을보스코드완성까지필드설계를모두멈추는직렬대기로해석하지않음. 1-1필드·보스·종료의제품합류가최종데모인수 |
+
+이번 보충은 기존 제출 `6df1201eda63557910da32229b2053edaff07355`의 문서만 수정한다. 최신 main `aa1eaea5a1fa70b31eae6fd907662ee13471c08d`은 원본/BC 파일 존재를 읽기 대조했으며, 미인수 브랜치/코드 merge는 하지 않았다. 아래 필드 설계는 후순위이며 최신 보스룸 우선 방침이 앞선다.
+
+## 2. 근거와 방침 우선순위
 
 | 확인 자료 | 이번 설계에 적용할 부분 / 충돌 처리 |
 |---|---|
@@ -15,7 +67,7 @@
 | [그래픽 MASTER](<../1전체그래픽세팅/1전체그래픽세팅_MASTER.md>) 비전/현행 접지 절, [화면효과 조사](<../1전체그래픽세팅/맵_화면효과_전수조사.md>) §1–3/7–9 | 서정적 어둠·실루엣 대비·부분 조명·접지의 목적을 계승. 예전 Ori 방향/그로테스크 금지 문구는 이후 생체지옥 콘셉트와 최신 PoE2·No Rest 깊이 목표에 맞춰 해석: 건강한 숲이나 노골적 고어 전시로 바꾸지 않음. 웹 효과 수치·FPS를 native 실측으로 복사하지 않음 |
 | [DEMO11 GAP](https://github.com/beearth/the-exoduser/blob/2299caa53585d937d7d0b025bd5ccc3ec539b0de/docs/engine/DEMO11_COMPLETION_GAP_20261021.md) §1 인터페이스/DEMO11-03/§5 | 원격 `codex/demo11-gap-20261021` `2299caa53585d937d7d0b025bd5ccc3ec539b0de`를 읽기만 함/merge0. anchor·충돌/벽/시야/flow·지역/분모·arena·출구를 제공. 맵 이식은 요구하지 않음. 앵글러 `_fbDone`은 지역 없는 폴백에서도 생략 불가 |
 
-## 2. main에서 재사용할 것과 실제로 빠진 접점
+## 3. main에서 재사용할 것과 실제로 빠진 접점
 
 | main의 실재 위치 | 현재 사실 | 새 맵 접점 / 소유 |
 |---|---|---|
@@ -26,7 +78,7 @@
 | `world.gd:954–982,3194–3231,3269,3306` | map.json·start/exit, 8000 경계·200 stride·T40·hill/prop ellipse·16 간격 LOS·4점 can_move·player flow 고정 | 기존 호출부의 **의미**를 보존하는 provider facade가 필요. 새 geometry를 옛 map.json처럼 위장하거나 검사를 삭제하지 않음. 실제 반경/샘플·LOS·sweep 의미는 전투 코드 담당과 확정 |
 | `enemy_factory.gd:40–66,168–176`; `native_spawn_hole_system.gd:30 이후`; `native_regions.gd:82–105` | factory는 frozen record/특정 source guard, 굴은 기존 배치 상수, 지역은 T40·맵180 이상·중점 분할/고정 사이트 결합 | DEMO11-03의 spawn/지역/분모 계약으로 분리할 **공용 통합 요청**. source guard 단순 삭제·가짜 record/actor 대체 금지. 기존 전투/RNG/굴·처치 owner 재사용 |
 
-## 3. 1-1의 완성할 화면
+## 4. 1-1의 완성할 화면
 
 **한 문장:** 죽은 숲의 거대한 몸속을 걷는 느낌. 넓고 낮은 피부빛 전투면을 부패한 목질 덩어리가 둘러싸고, 갈라진 틈의 심장빛·독액·불씨만 부분적으로 살아 있다. PoE2·No Rest for the Wicked는 깊이·재질·국소광·생동감의 목표이며 타 작품의 레이아웃/자산 복제나 동급 품질 달성 선언이 아니다.
 
@@ -39,7 +91,7 @@
 | 생동감 | 밑동 고정 가지, 국소 동맥 맥동, 고치의 작은 호흡, 독액 수면/증기, 드문 불씨. 모든 식생이 한 주기로 흔들리거나 바닥 전체가 출렁이지 않음. 장식 RNG는 전투 RNG와 별도이며 판정·충돌·처치 수를 바꾸지 않음 |
 | 중심/고딕 | 주인공 랜드마크 권장안은 **북중부의 갈라진 시체나무와 낮은 심장 제단** 한 묶음. 골재/흑철/악마 문양은 관문·제단에 집중. 중앙에 거대 뿌리 섬을 세우지 않음. 시체나무와 싸움 공간의 폭을 실제 화면으로 먼저 승인 |
 
-### 3.1 레이아웃: 남쪽 기상 → 두 갈래 순환 → 북쪽 보스문
+### 4.1 레이아웃: 남쪽 기상 → 두 갈래 순환 → 북쪽 보스문
 
 전체 연결 그래프는 `기상터→초기 학습 공터→넓은 중심 전투면↔서측/동측 고리→북중부 랜드마크 앞마당→북쪽 접근/보스문`이다. 좌우 고리는 서로 다시 연결되어 지역 순회/복귀가 가능하다. 남북 방향은 빛·목질 결·랜드마크로 알려주고, 국소 진행은 NW/E/NE/W로 변화한다. 작은 방/좁은 목 반복·단일 S자·완전 좌우대칭을 만들지 않는다.
 
@@ -54,9 +106,9 @@
 | 07 LATE / 북쪽 그늘 | 길 폭·빛 대비를 낮춰 압박 후 다시 확장. 전경 실루엣이 플레이어를 계속 가리지 않음 | 북서↔북동 연결, 막힌 일방향 통로 없음 |
 | 08 EXIT / 보스문 | 12시, 재질/문틀·수관으로 프레이밍. 진입·복귀 위치와 보스 아레나 로딩 경계가 명확 | gate와 arena는 별도 역할, 1-1 demo 종료 뒤 1-2 자동 진입0 |
 
-**스케일 제안:** 1920×1080 내부 viewport와 저작 기준 줌에서 보이는 월드 폭/높이를 W/H로 정의한다(창1280×720은 내부 viewport와 구별). W/H는 저작 시 world 단위로 확정·컴파일하며, 창 크기/기기/실행 중 줌 변경으로 geometry·anchor·처치 지역을 다시 생성하지 않는다. 첫 blockout 경계는 약 `4W × 6H`를 상한 가이드로 그리되 고정 직사각 지형으로 채우지 않는다. 일반 전투면의 장애물 없는 단축은 ≥0.9W, 주 전투면 ≥1.2W, 이동 연결의 유효 폭은 ≥0.35W를 시작 목표로 한다. 반드시 실제 가장 큰 적 반경·이동/돌진·회피 궤적의 swept clearance로 재검수하며 기존 플레이어 수치를 공간에 맞춰 바꾸지 않는다. 치수/총 이동시간은 MAP11-02의 플레이 blockout에서 확정(현재 미실측), 8000px나200타일을 맞추기 위해 늘리지 않는다.
+**스케일 제안:** 1920×1080 내부 viewport와 저작 기준 줌에서 보이는 월드 폭/높이를 W/H로 정의한다(창1280×720은 내부 viewport와 구별). W/H는 저작 시 world 단위로 확정·컴파일하며, 창 크기/기기/실행 중 줌 변경으로 geometry·anchor·처치 지역을 다시 생성하지 않는다. 첫 blockout 경계는 약 `4W × 6H`를 상한 가이드로 그리되 고정 직사각 지형으로 채우지 않는다. 일반 전투면의 장애물 없는 단축은 ≥0.9W, 주 전투면 ≥1.2W, 이동 연결의 유효 폭은 ≥0.35W를 시작 목표로 한다. 반드시 실제 가장 큰 적 반경·이동/돌진·회피 궤적의 swept clearance로 재검수하며 기존 플레이어 수치를 공간에 맞춰 바꾸지 않는다. 필드 치수/총 이동시간은 MAP11-07의 플레이 blockout에서 확정(현재 미실측), 8000px나200타일을 맞추기 위해 늘리지 않는다.
 
-## 4. 제작 로직·도구·Godot 구조
+## 5. 제작 로직·도구·Godot 구조
 
 **권장 방식은 손설계 그래프 + 모듈 조립 + 바닥 페인팅의 혼합**이다. Godot 2D 에디터에서 전체 silhouette/공간·anchor를 손으로 저작하고, StageRecipe Resource로 검증/컴파일한다. 반복 바닥만 내부 TileMapLayer/mesh를 선택적으로 사용하며, 타일이 디자인을 지배하지 않는다. 매 run 랜덤 방 생성·웹 map exporter 수리는 제외한다. 국소 장식 seed는 기록하고 gameplay anchor/geometry에 무작위 이동을 적용하지 않는다.
 
@@ -68,7 +120,7 @@
 | 청크/실시간 분리 | 신규 제안 core1024 + 각 변8px bleed(1040²), 동일 master에서 crop/월드 UV 정렬/경계 seam 확인. 움직이는 가지·독액·수관·trigger·상호작용·문·아레나는 runtime 씬. 불변 그림에 들어간 요소를 runtime에서 중복으로 덧그리지 않음 |
 | 검증/배포 | duplicate ID·참조 누락·밖 anchor·끊긴 route·지역 중복/누락·콜리전 침범·예산 초과를 build 오류로 보고. content 검증과 실제 consumer 바인딩 검증을 분리. 실패한 provider를 READY/원점 fallback/가짜 actor로 대체0. 완료한 recipe/asset manifest/파생물 hash를 묶어 stage revision 발행 |
 
-제안 씬 경로는 새 소유 `godot/scenes/maps/map11/`, Resource/컴파일러는 `godot/scripts/maps/`, 데이터는 `godot/data/maps/map11/`, 새 자산은 `godot/assets/maps/map11/`이다. 기존 프로젝트 디렉터리 규칙과 충돌하면 MAP11-01에서 경로만 확정한다. 아래는 설계 구조이며 이미 존재하는 씬이 아니다.
+제안 씬 경로는 새 소유 `godot/scenes/maps/map11/`, Resource/컴파일러는 `godot/scripts/maps/`, 데이터는 `godot/data/maps/map11/`, 새 자산은 `godot/assets/maps/map11/`이다. 기존 프로젝트 디렉터리 규칙과 충돌하면 MAP11-02에서 경로만 확정한다. 아래는 설계 구조이며 이미 존재하는 씬이 아니다.
 
 ```text
 Map11Root (Node2D, scene_id/revision)
@@ -81,9 +133,9 @@ Map11Root (Node2D, scene_id/revision)
   DebugOverlay  (editor/dev 전용, 제품 기본 OFF)
 ```
 
-실제 적·플레이어·탄·굴 registry와 처치 writer는 기존 게임 owner가 관리한다. 이 씬은 그 actor를 새로 소유하거나 별도 G/State/세이브를 만들지 않는다. 현재 `_style_props`는 world 직속/texture prefix 검사이므로 이 씬을 추가하는 것만으로 룩이 적용되지 않는다. MAP11-08에서 명시 handles 바인딩을 인수해야 한다.
+실제 적·플레이어·탄·굴 registry와 처치 writer는 기존 게임 owner가 관리한다. 이 씬은 그 actor를 새로 소유하거나 별도 G/State/세이브를 만들지 않는다. 현재 `_style_props`는 world 직속/texture prefix 검사이므로 이 씬을 추가하는 것만으로 룩이 적용되지 않는다. MAP11-03/12에서 명시 handles 바인딩을 인수해야 한다.
 
-## 5. 에셋 목록·제작 경로
+## 6. 에셋 목록·제작 경로
 
 | 세트 / 첫 필요량(견적용 제안) | 재사용 후보·신규 제작 | 산출/눈 검수 |
 |---|---|---|
@@ -96,7 +148,7 @@ Map11Root (Node2D, scene_id/revision)
 
 **제작 경로:** 확정 스타일 원화 1장→동일 세트 레퍼런스→MagicLight Toolbox Image의 Seedream 우선 proof→무배경/무그림자 단일 오브젝트→배경색 제거/알파·pivot·mask 정리→어두운 실제 바닥+HUD 1x 합성→같은 카메라에서 검수→등록. `MAP_OBJECT_SEEDREAM_PIPELINE`의 모델/해상도/포인트는 2026-09-30 이력이며 실행 시 실제 서비스 표시·비용을 재확인한다. 잔액 부족이 실제 확인된 때만 승인된 Higgsfield 경로로 전환한다. 이번 생성/지출0. 순회색 키잉이 목질을 뚫으면 피사체에 없는 배경색으로 재생성/마스크 보정하고 원본을 보존한다. 점·스펙클·디더·광택 점·회색 halo는 1x와 검정/피부색 배경 모두에서 탈락 기준이다. 원화/정리RGBA/마스크/manifest/프롬프트·도구·시각 판정·hash를 함께 남긴다. 폐기 id tombstone/m_tomb/m_root 계열과 후속 폐기 문서 항목은 새 catalog에서 거부한다.
 
-## 6. 코드에 제공할 StageProvider 계약안
+## 7. 코드에 제공할 StageProvider 계약안
 
 이 표의 API 이름/형식은 **신규 제안**, 현 main에 이미 바인딩된 API가 아니다. DEMO11-03 및 현재 World/factory/P3-002/003·MAP-LOOK 소유자가 소비자와 함께 서명해야 한다. 맵은 장소·질의 서비스를, 게임 코드는 전투·스폰 정책/순서·진행/처치를 소유한다.
 
@@ -114,16 +166,16 @@ Map11Root (Node2D, scene_id/revision)
 
 **필수 인수 사례:** spawn/hole/fieldboss/interaction/출구가 모두 실제 위치에 있고 적 반경으로 합법; 한 stage instance의 region 총량과 spawn 예정/실제/처치 ledger 정합; 동일 kill 이벤트 중복 반영0; 네 지역 순회→기존 앵글러/문지기 조건 충족→gate→arena→결과/복귀가 자연 경로로 성립; arena 실패/재시도 시 원맵 anchor 보존. 원본의 곰치·화마귀 등 정상 데모 도달 전투도 이름이 맵 소품처럼 보인다는 이유로 삭제하지 않는다. room/레어 별도 분기 채택은 DEMO11 정책 결정 뒤 별도 범위로 두며 이 설계에서 활성화0. 전투 수치/원본 정책 검사는 유지하고 옛 **맵 provenance** 기대값만 새 stage 계약 검사로 명시 교체한다(검사 단순 삭제0).
 
-## 7. 재사용과 stage별 차이
+## 8. 재사용과 stage별 차이
 
 | 1-1에서 확정 후 공통으로 동결 | 1-2 / 1-3에서 교체할 StageRecipe 내용 |
 |---|---|
 | 좌표/scene revision/provider ABI·asset pivot/socket·compiler/검증기·청크 스트리밍·geometry/LOS/flow 캐시·스폰/region ledger adapter·camera/가림·기존 MAP-LOOK 바인딩·성능/눈검수 gate | geometry/공간 그래프·전투 여백·landmark silhouette·모듈transform·light/색/안개 profile·anchor 위치와 합법영역·정책이 승인한 굴/site 구성 |
 | 4지역/게임 정책과 시각장면 분리, 한 owner writer, 실패 시 NOT_READY, 같은 gameplay 값과 RNG 순서 | 1-2 권장: 뒤틀린 빈 고목·기울기/깊이 강화, 전투 고리 보존. 1-3 권장: 눈달린 큰 버섯 군락·갓 아래 광원·3개의 구별되는 시각 mass, 사이 전투면 보존. 테마는 BIBLE 참고, 옛 좌표/비스타/분지/배치는 복제0 |
 
-1-1은 테스트용 임시 맵에서 멈추지 않는다. 아래 MAP11-14의 디자인+자연 플레이+양 플랫폼 성능 인수까지 끝나야 MAP12-01(1-2 recipe/장면 master)을 착수하고, 1-2를 같은 gate로 인수한 뒤 MAP13-01(1-3)을 착수한다. 공통 로직 버그는 공통 단일 소유 파일에서 고치고 stage별 복제 패치로 갈라지지 않는다. 게임 콘텐츠/보스 확장은 맵 재사용의 자동 승인 범위가 아니다.
+1-1은 테스트용 임시 맵에서 멈추지 않는다. 아래 MAP11-18의 디자인+자연 플레이+양 플랫폼 성능 인수까지 끝나야 MAP12-01(1-2 recipe/장면 master)을 착수하고, 1-2를 같은 gate로 인수한 뒤 MAP13-01(1-3)을 착수한다. 공통 로직 버그는 공통 단일 소유 파일에서 고치고 stage별 복제 패치로 갈라지지 않는다. 게임 콘텐츠/보스 확장은 맵 재사용의 자동 승인 범위가 아니다.
 
-## 8. 성능 예산과 측정 — 모두 목표, 실측 아님
+## 9. 성능 예산과 측정 — 모두 목표, 실측 아님
 
 | 항목 | 제안 예산 / 측정 조건 |
 |---|---|
@@ -135,7 +187,7 @@ Map11Root (Node2D, scene_id/revision)
 | 전투 부하 | 기존 정상 소환/밀집 경로를 쓰고 actor/탄/드롭 개수·캐릭터/스킬·seed·위치 기록. 임의100적 fixture를 자연 플레이 성능으로 바꾸어 부르지 않음. 맵low/full A/B 비교는 같은 전투와 동일카메라로 1회씩, 실패/변경 때만 재측정 |
 | 초과 시 순서 | 비가시 FX→shadow 수→광원 범위→투명 안개/근경 overdraw→texture LOD/청크; 그 다음 저작 mass 조정. 적/탄/정예/피해/스폰/게임 속도·Q/E를 줄여 예산을 맞추지 않음 |
 
-## 9. 눈 검수와 gate
+## 10. 눈 검수와 gate
 
 | Gate | 반드시 제출할 증거 / 탈락 조건 |
 |---|---|
@@ -147,47 +199,52 @@ Map11Root (Node2D, scene_id/revision)
 
 **최종 인수 질문:** HUD 옆에서 같은 Hell Gothic 게임인가? 살아 있는 썩은 숲이 3초 안에 읽히는가? 피부/죽은 목질/동맥이 연결되는가? 전투 여백과 부분 빛·깊이가 느껴지는가? 캐릭터·적·탄·Q/E·드롭이 각각 읽히는가? 8카메라 중 한 곳이라도 반복/검정공동/접합 실패면 수정한다. 사용자 눈 승인을 받아야 1-1 전체 디자인 완료로 닫는다. 기술 PASS와 VISUAL PASS를 합치지 않는다.
 
-## 10. MAP11 구현 단위 — 배정안이며 자동 착수 지시 아님
+## 11. MAP11 구현 단위 — 배정안이며 자동 착수 지시 아님
 
 크기 S=계약/작은 독립 산출, M=하나의 실제 흐름/한 제작 gate, L=여러 gate/owner를 포함하여 착수 전 M으로 분할해야 하는 작업. 기본 설계는 L 한 덩어리 대신 아래 S/M으로 쪼갠다. Mac/PC는 **기존 담당을 재사용할 제안**, 새 팀 생성·메시지 발송0. 공용 변경은 명시 통합 오더에서만 실행한다.
 
 | ID / 크기 | 담당·소유 / 앞 의존 | 구현 지시·인수할 실제 산출 |
 |---|---|---|
-| MAP11-01 / S | Mac / 이 설계·DEMO11-03 담당 합의 | 새 `scripts/maps/`·`data/maps/map11/`에 StageRecipe/anchor/region/provider result schema와 validator 최소 leaf. describe/content_valid·NOT_READY 이유·duplicate ID/anchor outside/끊긴route 검증 fixture. ABI/단위/반경·tie-break·소비자목록 확정. 공용/State/save0. preview valid를 runtime_ready로 승격0 |
-| MAP11-02 / M | Mac 맵 담당 + 사용자 D01/D02 / 01 | 새 독립 Map11 blockout scene에 전체mass 윤곽·4지역·8시점·명명anchor·두고리 저작. 실제 기본 이동으로 치수/보행 폭 검수, 가짜 전투 완료0. G1 master/스케일/주랜드마크 승인. production 소품/미세 충돌 튜닝0 |
-| MAP11-03 / M | 기존 아트 담당(Mac) + 사용자 D03 / 02 | 스타일key/큰외곽3실루엣 중 대표1·바닥접합1 proof. 기존 RGBA 품질/폐기 audit→MagicLight 필요한것만. 어두운 실제 Godot viewport 1x 비교 후 한 세트 style lock. 전체맵 생성/양산0 |
-| MAP11-04 / M | Mac 맵 담당 / 02·03 | LEFT/RIGHT/TOP/START의BACK/MID/FRONT 대형 외곽 조립. 모듈/전체마스터로 연속된 숲mass·반복 숨김. G2 8시점 인수, 중앙 소품 먼저0 |
-| MAP11-05 / M | Mac 맵·아트 / 04 | 중형 root shoulder/수피→피부 접합·그림자/오염, 새 master crop/bleed streaming content. G3/G4 seam·바닥 가독성 인수, 기존 웹청크 반입0 |
-| MAP11-06 / M | Mac 맵 코드 / 01·02의확정geometry | 같은 geometry→static collider/LOS/spatial/flow cache compiler 및 실제 query provider. 반경/sweep/경계·tie-break·불가도달·revision/cancel 검증, 4지역/모든anchor 합법. 실제 노드/질의 결과 제출. 그림 알파로 충돌 생성0 |
-| MAP11-07 / M | **DEMO11-03 기존 Mac 통합 담당**, World/factory/P3 owner 공동scope / 06 | 기존 source-frozen 맵 의존을 새 provider facade로 분리. spawn/굴/region 총량·kill 귀속/readback·gate/arena descriptor 연결. 공용 정확경로/줄과 tests 교체사유 선승인, 정직 미지원 유지. 한 M에 범위가 크면 spawn/navigation과region/arena 두M으로 분할. 게임수식/저장0 |
-| MAP11-08 / M | **PC Claude MAP-LOOK 기존 담당** / 05·06 | 명시render handles/anchor role로 기존 light/sway/shadow/shaft 소비. camera provider bounds, 이중암전 방지, budget cull·근경가림. current main 숫자 A/B 출발→새스케일 조정, G5/G6 부분광/깊이 실제화면 |
-| MAP11-09 / M | **PC Codex MAPLOOK-TOXIC/SHADOW/MIST 기존 담당** / 08·해당큐인수 | 기존3모듈 완료분만 회수·새 anchor/context 연결. 미제출은 미구현으로 유지, 같은 모듈 새Mac 복제0. 국소독액/접지/안개 motion 및 pause/cull 실창 증거 |
-| MAP11-10 / M | Mac 맵 담당 + 기존 gate/boss 코드 담당 / 05·07·08 | 낮은 hero 제단/관문·arena 진입/복귀 geometry·상호작용 자리 완성. 기존 자연 앵글러/문지기 조건→gate→일반드루이드 arena/재시도/결과. boss AI·새State·맵발 판정 writer0 |
-| MAP11-11 / M | Mac / 07·09·10 | 실제 정상 flow의전투 가독성/경로·처치분모·arena·pause/restart 통합검수, 새asset/streaming 정리. 직접 관련 suite만1회, 출력파일/실패줄·수치보고. 미연결 전투는 BLOCKED 표시. 여기서 G5/6/7 잔여마감 |
-| MAP11-12 / M | Mac / 11 | G8 전체8카메라/1x크롭·motion 영상·전체맵, 실제GPU성능·메모리/로드. 하드웨어/조건/샘플/미검수 명시, §23 보고서. RETOUCH 화면만 고치고 통과항목 반복검사0 |
-| MAP11-13 / M | 기존 PC 검수 담당 / 12 | 같은commit/recipe/profile/장면/부하로 Windows 시각·60fps/메모리·입력/해상도 교차확인. Mac 수치를 PC PASS로 대체0 |
-| MAP11-14 / S | **사용자 최종 디자인 결정 + Mac 인수** / 12·13·D01~04 | 1-1 분위기·테마·전체 디자인·자연진행·양플랫폼 성능 인수. 공통ABI/logic/profile기준 revision 동결·잔여0또는명시보류. 승인 후에만 MAP12-01, 그완료후 MAP13-01. 미검수 상태에서 “로직완성”으로 승격0 |
+| MAP11-01 / M | **Mac 맵·아트 + 사용자 D05**, 보스 담당과 병행 / 최신 보충 방침 | **1-1 보스룸 디자인이 첫 단위.** 새 `scenes/maps/map11/arena_preview.tscn` 독립 blockout와 보스룸 master/조명·재질key/입장→등장→전투→clear storyboard. R2200 시작값·무기둥 중앙·회피고리·entry/boss/exit/return Marker·실제보스bbox/전조 overlay·카메라4시점 이상(등장/근접/벽가/클리어) 제출. 기존 자산 우선, 신규생성은D03범위. BC범위·탄막공간 체크리스트로 아레나 크기/디자인 인수. 공용/State/save0·보스전live완료주장0 |
+| MAP11-02 / M | Mac 맵 코드 + DEMO11-03 기존 담당 / 01의명명anchor | **arena 우선** StageRecipe/provider 최소 schema·실geometry/반경/LOS/query·content_valid/NOT_READY·revision adapter. duplicate/outside/sweep/불가도달 검증. boss extent→기존 기술식(mw/mh/T) 매핑 합의. 전체필드·범용툴완성대기0, 이후필드에서동일ABI재사용 |
+| MAP11-03 / M | **PC Claude MAP-LOOK/camera 기존 담당** + Mac / 01·02 | 보스룸 render handles·림/접지/부분광·시점/줌·HUD여백·역포인터·arena combat/render bounds 분리. 실제몸체·탄막/장판의1x카메라 board, 이중암전/void/전경가림0. Main/camera 공용은명시scope만. 등장시간/AI/피격수정0 |
+| MAP11-04 / M별 기존단위 | **DEMO11-02·34/35/36 기존 보스·탄·보호 owner** / 02와병행 | 새 보스커널 작업이 아님. 승인BC08/09체인인수·BC01~10 실제assembler/actor·탄registry/expiry·보호피해/패링연결을각기존ID로진행. 남은정상23기술도owner범위판정. 실제readback/자연전투와공간경계fixture구분. 이작업전체를한M으로묶거나중복WIP반입0 |
+| MAP11-05 / M | **DEMO11-37 기존 보스/지역 담당** + Mac 맵 / 02·04 | 실제지역/앵글러/gate→전환준비→등장→boss death/revive유예→reward/clearTime/랭크. field preview와정상경로구분, 기존pending provider면BLOCKED. 초반필드는현재가용서비스로연결해보스룸진행, 최종검수는새필드14/15와합류. 필드backup/return·실패rollback확인 |
+| MAP11-06 / S | **DEMO11-38 기존 UI 담당** + Mac / 05 | stageClear 다음버튼→demoEnd→wishlist/로비 실제caller 인수. stage1생성0·중복clear/보상0·입력/FX/BGM잔류0·저장기존owner인계. 보스룸디자인과별개로최종제품완료까지담당유지 |
+| MAP11-07 / M | Mac 맵 담당 + 사용자 D01/D02 / **01 보스룸 master 시각승인 후**, 코드04~06과병행가능 | 그다음 1-1 **필드** 전체mass 윤곽·4지역·8시점·두고리·명명anchor 저작. 실제기본이동으로치수/폭검수, G1 field master/스케일/주랜드마크승인. 보스room 먼저정한gate/approach/return을받아제작 |
+| MAP11-08 / M | 기존 아트 담당(Mac) + 사용자 D03 / 07 | 필드 스타일key/대표외곽1·바닥접합1 proof. 기존RGBA audit→필요MagicLight만. 먼저승인한보스룸재질/광원과연속성1x비교, 전체맵생성/양산0 |
+| MAP11-09 / M | Mac 맵 담당 / 07·08 | LEFT/RIGHT/TOP/START BACK/MID/FRONT 대형외곽조립. 연속숲mass/반복숨김, G2 8시점. 중앙소품먼저0 |
+| MAP11-10 / M | Mac 맵·아트 / 09 | 중형root shoulder/수피→피부접합·그림자/오염·새master crop/bleed streaming. G3/G4 seam/바닥가독성 인수, 웹청크반입0 |
+| MAP11-11 / M | Mac 맵 코드·DEMO11-03 / 02·07확정geometry | arena에서쓰던compiler/provider를필드로재사용. static collider/LOS/flow·4지역/모든anchor합법·굴/스폰예정분모/kill귀속. World/factory/P3 공용은기존owner명시scope, 원본수식/보호검사단순삭제0 |
+| MAP11-12 / M | PC Claude MAP-LOOK 기존 담당 / 03·10·11 | 보스룸에서인수한명시handles/anchor adapter로필드light/sway/shadow/shaft·camera bounds·예산cull/가림 연결. 기존루틴복제0, G5/G6 부분광/깊이실창 |
+| MAP11-13 / M | PC Codex MAPLOOK-TOXIC/SHADOW/MIST 기존 담당 / 12·해당큐인수 | 기존3모듈완료분만회수·arena/field context에연결. 미제출은미구현, Mac중복구현0. motion/pause/cull실창증거 |
+| MAP11-14 / M | Mac 맵·기존gate/boss 담당 / 05·07·10~13 | 필드랜드마크/관문/arena접합완성. 새필드자연앵글러·문지기→gate→기승인아레나→결과/재시도/복귀. 보스room확정디자인을필드편의를위해다시미루지않음. 새State/피해writer0 |
+| MAP11-15 / M | Mac / 04~06·14 | 새필드~보스~종료 전체정상flow의전투가독성/처치분모/arena·pause/restart통합. 직접관련suite각1회·출력파일/실패줄·수치. 미연결기술/전투는BLOCKED, 강제pattern으로자연완료대체0 |
+| MAP11-16 / M | Mac / 15 | 보스룸등장/근접/벽가/phase4탄막/클리어 + 필드8camera/1x크롭·영상·전체맵, 실제GPU성능/메모리/로드·§23. 실패화면만수정, 통과항목반복검사0 |
+| MAP11-17 / M | 기존 PC 검수 담당 / 16 | 같은commit/recipe/profile/장면/부하로Windows시각·60fps/메모리·입력/해상도·데모종료교차확인. Mac실측으로PC PASS대체0 |
+| MAP11-18 / S | **사용자 최종 디자인 결정 + Mac 인수** / 16·17·D01~05 | 보스룸을포함한1-1분위기/테마/전체디자인·자연전투·DEMO11-37/38종료·양플랫폼성능인수. 공통revision동결, 승인후MAP12-01→그완료후MAP13-01. 미검수“완벽한데모”/“로직완성”선언0 |
 
-## 11. 사용자 결정이 필요한 디자인 선택 — 현재 질문/승인 요청 아님
+## 12. 사용자 결정이 필요한 디자인 선택 — 현재 질문/승인 요청 아님
 
 | 결정 ID / 필요한 시점 | 권장안 | 대안·영향 / 결정 전 진행 가능 범위 |
 |---|---|---|
-| D01 주 랜드마크 / MAP11-02 G1 | 갈라진 시체나무 + 낮은 심장 제단 한묶음, 북중부 | 큰 누운 고목 아치 + 문앞 제단도 가능. 실루엣/새원화/시선축이 달라짐. 결정 전 graph/provider/회색blockout 가능, hero 원화 양산 보류 |
-| D02 생체 표현 강도 / MAP11-03 | 피부·동맥은 지면/갈라진틈의낮은대비, 목질이외곽주체·눈/고치는국소 | 더강한노출조직은 horror 인상이강하고재질·가독성검수증가. 현재사용자생체지옥목표는유지, 건강한숲대안은제외. proof 두크롭으로결정 |
-| D03 아트 생성 예산/1차세트 / MAP11-03 | 기존RGBA 먼저 재검수→대표외곽/바닥proof만→승인후부족분 제작 | 전부새원화는일관성/비용/정리공수증가. 실제MagicLight잔액·현재장당표시비용·필요장수를담당이확인후총괄에구체견적. 이번생성/비용0 |
-| D04 최소 사양/품질 하한 / MAP11-12 전 | Mac/Windows 모두1080p60을기본목표, 낮은설정에서도지역/전투가독성불변 | 최소지원기기/GPU·내부해상도와목표FPS를사용자가정하면성능gate확정. 결정전개발기측정/프로파일링은가능, 최소사양성능보증은미확인 |
+| D05 **보스룸 우선 시각키·공간** / MAP11-01 | 무기둥 원형근사 R2200 시작값·외곽생체숲/약한냉광+균열적색림·남입구/북clear exit | 형태는원본공격범위를수용한상태에서조정. 입장/근접/벽가/클리어4시점과body/탄막overlay로먼저선택. 최종크기는실제자연phase0~4검수후확정, 공격약화로조정0 |
+| D01 필드 주 랜드마크 / MAP11-07 G1 | 갈라진 시체나무 + 낮은 심장 제단 한묶음, 북중부 | 큰 누운 고목 아치 + 문앞 제단도 가능. 실루엣/새원화/시선축이 달라짐. 결정 전 graph/provider/회색blockout 가능, hero 원화 양산 보류 |
+| D02 생체 표현 강도 / MAP11-01·08 | 피부·동맥은 지면/갈라진틈의낮은대비, 목질이외곽주체·눈/고치는국소 | 더강한노출조직은 horror 인상이강하고재질·가독성검수증가. 현재사용자생체지옥목표는유지, 건강한숲대안은제외. proof 두크롭으로결정 |
+| D03 아트 생성 예산/1차세트 / MAP11-01·08 | 기존RGBA 먼저 재검수→대표외곽/바닥proof만→승인후부족분 제작 | 전부새원화는일관성/비용/정리공수증가. 실제MagicLight잔액·현재장당표시비용·필요장수를담당이확인후총괄에구체견적. 이번생성/비용0 |
+| D04 최소 사양/품질 하한 / MAP11-16 전 | Mac/Windows 모두1080p60을기본목표, 낮은설정에서도지역/전투가독성불변 | 최소지원기기/GPU·내부해상도와목표FPS를사용자가정하면성능gate확정. 결정전개발기측정/프로파일링은가능, 최소사양성능보증은미확인 |
 
-## 12. MAP PRODUCTION REPORT — 이번 문서 작업
+## 13. MAP PRODUCTION REPORT — 이번 문서 작업
 
 | 필드 | 상태 |
 |---|---|
-| STAGE / MASTER | CH1-1 새 제작 로직 설계만. 8시각장면/4게임지역/남북+두고리 제안, 새 geometry/씬 미구현 |
+| STAGE / MASTER | CH1-1 **보스룸 우선→필드** 설계. 보스R2200초안·BC01~10/남은23기술공간·입장/등장/클리어/데모종료, 필드8장면/4게임지역. 새geometry/씬미구현 |
 | OUTER MASS / LARGE / MEDIUM | 좌·우·북·남 4층 연속mass/3큰실루엣/접합 세트 계획. 제작·원화·비어있는hole 실측0 |
 | GROUND / PLAYABLE | 피부/목질/동맥 전이·접지·전투여백과 provider 규약 제안. 실제충돌/동선/전투 검증 미실시 |
-| LANDMARK | 시체나무+심장제단 권장안, 사용자 D01/D02 결정대기 |
-| CAMERA QA | START/EARLY/ARENA/SIDE L/SIDE R/LANDMARK/LATE/EXIT 모두 향후 인수조건. 현재 main 캡처0·새맵눈검수 미실시 |
+| LANDMARK | 보스실루엣/외곽생체숲 우선(D05); 필드시체나무+심장제단은그다음(D01/D02) |
+| CAMERA QA | 보스등장/근접/벽가/탄막/클리어 우선, 그다음필드START/EARLY/ARENA/SIDE L/SIDE R/LANDMARK/LATE/EXIT 모두향후인수조건. 현재 main 캡처0·새맵눈검수 미실시 |
 | TECH QA | 문서링크/경로/수치출처·main실재모듈/변경경계 점검만. Godot/성능/자연플레이/에셋생성 실행0; runtime PASS 주장이아님 |
 | FILES / GIT | 이 설계서 + CHANGELOG_SYNC 절만 지정staging/정상훅/자기branch push. main/코드/에셋/공용/저장0. 원격SHA/DONE확인뒤 자기worktree제거, deploy0 |
-| VISUAL VERDICT / NEXT PASS | **RETOUCH — 설계 단계/실맵 미구현·눈검수 미실시, 현재main을눈으로판정한결과가아님.** 다음은명시배정시MAP11-01, 1-2/1-3 선착수0 |
+| VISUAL VERDICT / NEXT PASS | **RETOUCH — 설계 단계/실맵 미구현·눈검수 미실시, 현재main을눈으로판정한결과가아님.** 다음은명시배정시MAP11-01 **보스룸디자인**. Godot이식/DEMO11-34~38은기존owner병행, 그다음필드. 1-2/1-3 선착수0 |
 
 원로그·근거 발췌·문서 감사·최종 SHA는 `~/exoduser-wt/_out/map11-plan/`와 `DONE.txt`에 보존한다. 구현 승인이나 사용자 디자인 결정은 이 문서의 작성·push만으로 성립하지 않는다.
