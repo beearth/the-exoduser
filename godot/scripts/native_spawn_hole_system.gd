@@ -27,6 +27,7 @@ extends Node2D
 ## etype0만 실제 적으로 등록(element ""·element_id -1 = 원본 undefined: elMul 항상 1).
 ## 다른 etype(1-1 풀 28종)은 전용 스크립트가 없어 '정직 정지' — RNG·_spawned는 원본대로
 ## 소비하고 액터 없이 journal에 unported_etype으로 기록한다(가짜 대체 금지).
+const EliteSelector = preload("res://port_modules/elite_spawn_rules_source/producer.gd")
 const SCHEMA := "exoduser.godot.native-spawn-holes.v1"
 const T := 40.0
 const MAP_W := 200
@@ -552,18 +553,10 @@ func _spawn_one(h: Dictionary) -> bool:
 		pos = Vector2(float(safe["x"]), float(safe["y"]))
 	entry_log["position"] = [pos.x, pos.y]
 	# mkEn 난수: rollElite(31063) → [rollMods 31072] → spd(31138) → r(31140) → 리터럴.
-	var elite_roll := _unit("rollElite", draws)
-	var elite := 0
-	if elite_roll < ELITE_PROB_HELL0[2]:
-		elite = 3
-	elif elite_roll < ELITE_PROB_HELL0[2] + ELITE_PROB_HELL0[1]:
-		elite = 2
-	elif elite_roll < ELITE_PROB_HELL0[2] + ELITE_PROB_HELL0[1] + ELITE_PROB_HELL0[0]:
-		elite = 1
-	var mods: Array = []
-	if elite > 0:
-		var pick := _unit("rollMods_attack", draws)
-		mods.append(HELL0_ATTACK_MODS[clampi(int(pick * HELL0_ATTACK_MODS.size()), 0, HELL0_ATTACK_MODS.size() - 1)])
+	var selection: Dictionary = EliteSelector.constructor_prefix(0,false,func(purpose):return _unit(purpose,draws))
+	if selection.status != "READY":return false
+	var elite: int = int(selection.elite)
+	var mods: Array = selection.mods
 	var spd_u := _unit("spd", draws)
 	var r_u := _unit("r", draws)
 	var literal := {}

@@ -71,6 +71,9 @@ func configure(providers: Dictionary) -> bool:
 	configuration_error = ""
 	return true
 
+func is_owner_ready() -> bool:
+	return _configured and _can_move.is_valid() and _is_wall.is_valid() and _element_multiplier.is_valid()
+
 # --- shared elite attack lock (source L31700-31701); ONE owner for all of M29-M32 ---
 static func tick_attack_lock(mod_t: Dictionary, ticks: float) -> bool:
 	mod_t["eliteBusy"] = maxf(0.0, float(mod_t.get("eliteBusy", 0.0)) - ticks)

@@ -763,3 +763,8 @@ U03의3개체는 단독 actor 구성까지이며 U14 입장은005→011→013을
 | `docs/engine/FDG_PC_MAC_GIT_SYNC_20261016.md` | 1043 |
 | `docs/engine/FDG_RUINED_FOREST_PLAYABLE_20261012.md` | 147 |
 | `docs/engine/FDG_RUNTIME.md` | 47 |
+
+
+## 2026-10-21 EL-01 constructor oracle 보충
+
+`type3생성/채널` 행의 기본 외부 oracle 파일은 여전히 Git에 없지만, EL-01의 새 `godot/tools/export_el01_hell0_oracle.mjs`로 최신 원본 mkEn projection/선택 규칙을 UTF-8 파일에 재생성할 수 있다. type3 원본72사례의 RNG 순서·constructor 공통 leaf를 검증하고 기존 recipe 검사는 이 파일을 `--oracle`로 받아 전체1회 실행했다. 이는 일반 factory 자연 입장·실제 PC 패링·전체337필드·맵 충돌까지 검증했다는 뜻이 아니다. 상세 결과/fixture 경계는 [EL-01 보고서](orders/reports/el-01_REPORT.md) 참조.
