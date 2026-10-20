@@ -1,3 +1,5 @@
+> 2026-10-21 후속: 이하70d1ca22 당시 BLOCKED 근거 이력이다. DEMO11-enemy-base3에서 Mac29 constructor/공격/사망 packet 소비자와3/7 실제 준비 경계를 구현한다. PCI-11 최종사망/gate·3/7 PC 조건은 여전히 미확정이며 현행 범위/검증은 demo11-enemy-base3_REPORT.md.
+
 # DEMO11-etype-e — 자연 등록 전제 BLOCKED
 
 **자연 등록 구현 완료가 아니다.** 최신 main `0138c5bb9188d27cee10cb1a901d075092ddb88f`에 DEMO11-43 `9b763da9900c3c225fa60caa556f5b8c9ea227a3`, EL-01 `654845e4aed8f0401aebedd9ae459318bee239fb`, DEMO11-37 `05f41cc7b8ad220a3e573ee180d0dffcae29427b`를 정상 merge했다. 구현 검토 기준은 `52e21fd87471c7a1161360032a8916407dacd305`. merge 충돌은 CHANGELOG/WORK_BOARD/UI 문서 양쪽 절 및 Main의 PC stats·43 adapter·37 API, State의 forge·37 progression을 모두 보존했다. rebase0. 기존 생성 분기를 바꾸거나 미준비 actor를 등록하지 않았다.

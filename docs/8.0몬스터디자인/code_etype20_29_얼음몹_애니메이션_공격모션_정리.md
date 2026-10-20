@@ -1,3 +1,5 @@
+> 2026-10-21 DEMO11-enemy-base3: 과거 E70d1ca22 BLOCKED 절 이후 Mac29 consumer를 DEMO11-enemy-base3에서 구현했다. 기존 profile/atlas·forced guard constructor·공격/warning60/35 실탄·8사망 packet 모델이며 최종 죽음/gate는PCI-11 HOLD. F 고유 owner 미지원은 보존,3/7은 실제 PC fields/M29 준비 전 자연 등록0. 상세는 demo11-enemy-base3 보고서.
+
 # code etype20~29 얼음몹 애니메이션/공격모션 정리
 
 ## 2026-10-21 DEMO11-etype-e 자연 등록 경계

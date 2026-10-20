@@ -1,3 +1,10 @@
+## 2026-10-21 DEMO11-enemy-base3 — F 공통 이관·Mac29·3/7 경계
+
+| 항목 | 범위·검증 |
+|---|---|
+| 의존·구현 | 1f0a71fb 위 F ef64bd17/E70d1ca22 정상merge. F registration→common/43, 별도 Mac29 forced constructor/World actor/warning60/실제35 carrier·8사망 packet 모델.3/7은 실제 PC readiness 거절 |
+| 보호·근거 | PC damage/parry/final death/gate writer·State/World0, F actor/constructor body·factory679 prefix byte 보존. 신규543/0+관련126/0=669/0·factory3그룹/실패0·최종ERROR0. 실제18종spawn/tick·16PC처치/origin, 별도29실제8탄/terminal PCI-11 HOLD. 30actor600tick mean2.869/p994.010/max8.526ms(최대예산초과, 최적화0). 공용 hunk는 [보고서](engine/orders/reports/demo11-enemy-base3_REPORT.md). [8.0 기반](8.0몬스터디자인/DEMO11_NATURAL_ENEMY_BASE_20261021.md)·[9AI clock](9적ai패턴디자인/DEMO11_NATURAL_ENEMY_CLOCK_20261021.md) 동기화 |
+
 ## 2026-10-21 DEMO11-enemy-base2 — A·B·D 공통 기반 이관
 
 | 항목 | 범위·검증 |

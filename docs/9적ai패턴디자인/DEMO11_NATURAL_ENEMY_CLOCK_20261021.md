@@ -1,3 +1,5 @@
+> 2026-10-21 DEMO11-enemy-base3: F actor/body와 build 수치 byte 보존, source-selected registration만 common으로 이관. 새29는 World AI frame dedup·45wind·경고60·35 birth clock을 쓰고 보호 contact/terminal death를 PC Callable에서 대기한다. 3/7 readiness 거절은 World RNG/등록 전이며 자동 nonzero CDF HOLD 유지.
+
 > 2026-10-21 DEMO11-enemy-base2: A/B/D clock 이관: A/B 기존 actor는 World native phase, A5 warning은 기존 priority1 World frame, A physical carrier는 자율 physics off 후35 common source frame.sp로 기존 _physics_process를1회 호출한다. D의 raw carrier는 기존35 source motion을 유지한다. 두 carrier 표현을 같은 pool로 섞지 않는다. source0 scheduler는 원문29/RNG 유지, 선택형 A/B/D 최초 bind는 scheduler=false를 유지하며 full auto 완료로 승격하지 않는다.
 
 # DEMO11-enemy-base — 단일 source clock과 원본 순서

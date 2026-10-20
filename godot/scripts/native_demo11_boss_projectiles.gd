@@ -233,7 +233,7 @@ func bind_natural_source(owner: Node) -> bool:
 	return true
 func admit_natural_projectile(owner: Node,actor: Node,props: Dictionary,frame: Dictionary) -> Dictionary:
 	if _natural_source==null or _natural_source.get_ref()!=owner or not owner.owns_actor(actor):return {"ready":false,"reason":"natural_projectile_identity_required"}
-	if props.get("el")!=actor.data.get("element_id"):return {"ready":false,"reason":"natural_projectile_element_mismatch"}
+	if props.get("el")!=actor.data.get("element_id") and not owner.permits_profile_element(actor,props):return {"ready":false,"reason":"natural_projectile_element_mismatch"}
 	var result: Variant=_birth_request({"command":"spawnProj_owner","args":[props],"frame":frame})
 	var component: Node=owner.projectile_component(actor)
 	if component!=null and component==_d_owner and result is Dictionary and result.get("projectile_result") is Dictionary and _entries.has(_next_id):_entries[_next_id]["D_owner"]=component

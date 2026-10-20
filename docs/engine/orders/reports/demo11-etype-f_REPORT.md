@@ -1,3 +1,5 @@
+> 2026-10-21 후속: 이하 ef64bd17 당시 인수 이력이다. 후속 DEMO11-enemy-base3에서 factory/common World/43 이관을 수행하며 F actor/생성 수치와 미지원 owner를 보존했다. 현행 결과는 demo11-enemy-base3_REPORT.md.
+
 # DEMO11-etype-f 인수 보고 (2026-10-21)
 
 **26·27·28 append-only 등록과 격리 MAP11 Marker의 실제 actor 생성·기존 hurtE 호출을 확인했다. 전체 전투 READY 판정은 아니다.** 실제 투사체·돌진 접촉·강타 피해/패링 owner는 NOT_READY이며 Player 둔화만 기존 API를 호출한다. 제품 MAP11 provider·자연 자동 scheduler는 이 자료의 검증 범위 밖이다.

@@ -192,7 +192,7 @@ func projectile_component(actor: Node) -> Node:
 	return reference.get_ref() if reference is WeakRef else null
 
 func admit_source_record(component: RefCounted,group: String,record: Dictionary,site: Dictionary,source: Dictionary) -> Dictionary:
-	if _busy or component not in [main._native_etype_a_spawn,main._native_etype_b_spawn] or not adapter.is_current() or get_tree().paused:return _no("actual_source_profile_required")
+	if _busy or component not in [main._native_etype_a_spawn,main._native_etype_b_spawn,main._native_etype_f_spawn] or not adapter.is_current() or get_tree().paused:return _no("actual_source_profile_required")
 	if not site.get("ready",false) or site.get("spawn_group_id")!=group:return _no("source_profile_site_receipt_required")
 	var token:=group+"/"+str(source.spawn_n)
 	if _used.has(token):return _no("source_prefix_already_consumed")
@@ -203,3 +203,7 @@ func admit_source_record(component: RefCounted,group: String,record: Dictionary,
 func emit_profile_projectile(actor: Node,origin: Vector2,profile: Dictionary) -> Node2D:
 	if not owns_actor(actor) or not actor.alive or not frame_ready(main.world.get_native_frame()):return null
 	return projectiles.admit_profile_projectile(self,actor,origin,profile,_packet)
+
+func permits_profile_element(actor: Node,props: Dictionary) -> bool:
+	var component: Node=projectile_component(actor)
+	return component!=null and actor.etype==29 and component.get_script().resource_path=="res://scripts/native_demo11_etype_e_spawn.gd" and component.authorizes_props(actor,props)

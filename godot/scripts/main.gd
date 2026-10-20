@@ -3138,3 +3138,9 @@ func enter_native_demo_arena(provider: Node, spawn_options: Dictionary) -> Dicti
 	return native_demo_encounter.enter(provider,spawn_options) if is_instance_valid(native_demo_encounter) else {"status":"NOT_READY"}
 func leave_native_demo_arena(provider: Node) -> bool:
 	return is_instance_valid(native_demo_encounter) and native_demo_encounter.leave(provider)
+
+# DEMO11-enemy-base3: Mac guard actor and honest type3/7 natural boundary.
+func request_native_etype_e_spawn(owner: Node,group_id: String,source: Dictionary) -> Dictionary:
+	var profile: Node=world.get_node_or_null("Demo11EtypeE")
+	if profile==null:profile=preload("res://scripts/native_demo11_etype_e_spawn.gd").install(self)
+	return profile.spawn_selected(owner,group_id,source)
