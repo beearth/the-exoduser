@@ -1,0 +1,29 @@
+{
+  "created_at": "2026-10-20T23:25:51.519Z",
+  "provider": "MagicLight Toolbox",
+  "model": "GPT Image 2.5 sunburst",
+  "task_id": "7518452248233431040",
+  "status": "completed",
+  "count": 1,
+  "aspect_ratio": "4:3",
+  "displayed_cost_points": 200,
+  "observed_balance_before": 40490,
+  "reference": "assets/charselect/warrior_cut.png",
+  "reference_role": "Painting quality only; not face, costume, sword or pose",
+  "reference_sha256": "58e68f5f996c31966e9109c2de421185d93d138cec4fd5600da0ca1b58debfd4",
+  "prompt": "EXODUSER 남성 헬거너를 새로 디자인. 참조는 반실사 게임 원화의 작화 밀도와 깊은 명암 품질만. 참조의 얼굴·갑옷·검·포즈는 복제하지 말 것. 키 큰 성인 남성, 절제된 근육과 날카로운 턱선, 뒤로 넘긴 짙은 적갈발과 한 가닥 잿빛 머리, 냉정하고 오만한 눈. 조형적이고 세련된 게임 키아트, 사진 아님. 긴 비대칭 흑색 테일코트와 암적색 안감, 잘록한 허리, 겹친 얇은 흑철 판금과 닫힌 장화. 양손에 강력한 게틀링형 리볼버 한 자루, 길이는 신장의 2/3. 촘촘한 6총열 군집과 거대 후방 회전 실린더를 하나의 정교한 흑철 외장으로 연결. 큰 탄환은 외장 속에 감추고 실린더 회전 틈과 날렵한 해머·손잡이를 분명히. 얇은 은빛 모서리와 짙은 진홍 홈, 절제된 정밀 가공, 작은 하부 총검. 가는 견갑 곡선을 총의 회전 문양과 반복. 관·해골·녹슨 고철·철판 덩어리·탄띠·거대 어깨상자 없음. 힘 있는 비틀린 전투 자세, 전신·발·무기 전체와 여백, 어두운 무채색 배경, 문자 없음.",
+  "completed_observed_at": "2026-10-20T23:30:13.727Z",
+  "result_url": "https://skillsrc.octask.ai/gpt-image-2/7518452248233431040/20cd1cba-3db8-5115-e677-5af38df32a38_0.png",
+  "completed_evidence": "Exact task card completed and Generated image preview opened",
+  "file": "hellgunner_male_refined.png",
+  "sha256": "2b2202a71a401be3aa6e7dc4d5df3b46816b414564af48d70a4d070a1e61c92b",
+  "size": [
+    2048,
+    1536
+  ],
+  "format": "PNG",
+  "observed_balance_after_refresh": 39890,
+  "observed_balance_delta": 600,
+  "balance_attribution": "One task submitted at displayed 200pt; aggregate tab balance changed 600pt while concurrent tasks exist. Do not attribute the full change to this task.",
+  "visual_verdict": "Male identity and sharper garment/weapon design improved for concept review; generated two Gatling revolvers rather than the requested single weapon. Not user-adopted or runtime-integrated."
+}
