@@ -628,3 +628,39 @@ Apple M5 Pro/Godot4.7.2 GL/1920×1080/240cap/60Hz/5적 fixture. 직전 `pgrep -x
 | VISUAL VERDICT / NEXT | **RETOUCH**. 모델하단·재질재제작이후보. 이번뒤새생성/별도backlog자동착수0 |
 
 증거: `~/exoduser-wt/_out/MAP11-25D/captures/`, `normal-y-verification.json`, `light-response.json`, `projection-measurement.json`, `perf.json`, `perf-processes.json`, `DONE.txt`.
+
+
+### 19.5 MAP11-25Db — 룩 보정 후보 / RETOUCH (2026-10-21)
+
+§19.1–19.4의 MAP11-25D 수치·unshaded 균일 출력·캡처는 **1ca4603f 당시 이력**이다. 현 브랜치는 아래 계약으로 대체한 검토 후보이며 main 통합/배포하지 않는다. 새 에셋 생성0, 기존 GLB 오프라인 렌더만, 런타임 PNG만 사용한다.
+
+| 항목 | 현 수치 / 적용 |
+|---|---|
+| 카메라 | orthographic (0,6,8), elevation36.86989765°, yaw−20/+20/+65°. 추가Y압축1.0 유지 |
+| 키 / 림 베이크 | view-space key normalize(−.55,.72,.8), 좌상단 NW. diffuse=source×(.48+.78×max(N·key,0)). rim=pow(1−max(N.z,0),3)×max(N·normalize(.6,.45,−.2),0), RGB(.10,.075,.045). unshaded shader가 수식을 직접 굽는다. 새 runtime 광원0, specular(.12,.10,.08)/shininess.16 유지 |
+| AO | 별도 view-depth PNG를 오프라인에서만 계산. depth=clamp((viewZ+10)/AABB.length+.5,0,1), PNG8bit. 출력픽셀 반경2/5/10×8방향. delta=neighborDepth−depth, bias.008, ramp.06, range.22; 24표본 평균×.55, Gaussian sigma.65. 자기 표면 recess 근사이며 raytraced AO/완전 self-shadow map 아님. 지면 plane/cast shadow0. depth PNG runtime 반입0 |
+| 그레이딩 | AO→노출1.85→RGB gain(1.10,1.025,.86)→luma(.2126,.7152,.0722) 기준 채도.92→pivot.25 대비1.12→RGB clamp0..94→Unsharp radius1.1/85%/threshold3. alpha 원본 보존 |
+| 하단 | 이전 worldY<−.40H & luma<.18 discard 제거. 모델의 어두운 받침을 살림. 별도 접촉AO 확장0: 기존 pad round(H×.025), max-filter round(H×.012) odd, Gaussian max(1,H×.007), lower fade .68H→.82H, crop .72H. 검은 평판처럼 드러나는 모델 하단은 잔여 결함 |
+| normal | 이전 tangent detail originalScale×.35 유지. 출력 view N의 XY×1.65 후 normalize. OpenGL green invert=false. PNG 축소후 정규화, 무광 specular 계약 유지 |
+| PNG / foot | variant0 374×370 foot(187,370), variant1 352×332 foot(176,332), variant2 382×350 foot(191,350). 표시 .5배, 높이185/166/175. hull/contact registry는 해당3건만 재산출 |
+| 수광 실측 | 같은 100×103px ROI: near normal-vs-flat RGB차10.87783/255(이전7.79874); near luma64.32631/far40.57792. 캡처·수치 _out/MAP11-25Db/light-response.json. 면 수광은 더 분명하나 일부 냉색 수광 잔여 |
+| perf 1회 | 1920×1080 field/arena 각600ticks, checks3/fail0. field p95 7.312ms/p99 7.623ms/176.794fps/draw148, arena p95 7.158ms/p99 7.593ms/175.778fps/draw136. 기존7.243/7.041 대비+.069/+.117ms. 약1~1.7% 차이, 단회·비동시 baseline이라 회귀 확정/개선 보증불가. 큰 악화는 미관측. 밀집전투 미측정 |
+| 격리 / 동시 | 실제 게임 캡처·perf는 EXODUSER-map11-25Db-Isolated-20261021, project.godot 원byte 복원. 기존Godot81277 보존, 자체실행1개씩 총최대2. 초기 cwd 누락으로 R headless editor import가 착수되어 즉시 중단(exit130); R tracked INDEX/WORK 변화0 확인. R .godot 캐시 변경가능성은 남으며 완전 읽기전용 준수로 주장하지 않음. 실제 저장폴더 실행0 |
+| 증거 | ~/exoduser-wt/_out/MAP11-25Db/captures/ABC_{field,west,east}.png 및 _1x.png. A=기존372a9c5a 실제Main 캡처, B=1ca4603f 실제Main 캡처(이전산출물 재사용), C=이번 실제Main. 각 원본1600×900/크롭320×270, 라벨24px만 외부 추가. resize/캡처색보정0. 실시간 위상/HUD 차이 잔여 |
+| 판정 | **VISUAL VERDICT: RETOUCH**. B의 회분홍/낮은 대비 개선, 면 음영·노멀 반응 증가. 그러나 A보다 치열·눈구멍 표현이 거칠고, 특히 +20/+65°는 빈 뒷면/검은 받침 면적이 커짐. C가 A보다 확실히 좋다는 기준 미달. 승인품/완성품으로 승격하지 않음 |
+
+MAP PRODUCTION REPORT (§23)
+
+| 필드 | 결과 |
+|---|---|
+| STAGE / MASTER | CH1-1 MAP11-25Db, 기존 silhouette/regions/main route/side spaces 불변. GATE6 소재→4접지→8카메라→TECH |
+| OUTER MASS | LEFT/RIGHT/TOP/SOUTH/major holes 변경0 |
+| LARGE / MEDIUM | 기존 skull3만. 다른 source/composites/overlap/repetition/connections 유지 |
+| GROUND | 모델 흙받침 보존 + 기존 접촉AO. 검은 평판/뒷면 결함 RETOUCH. contamination/floor 불변 |
+| PLAYABLE | arenas/travel/breathing/threat/collision/route 불변. 벤치 실보행PASS. 밀집전투 가독성 미검수 |
+| LANDMARK | primary/secondary 불변,tertiary skull3만 |
+| CAMERA QA | field/SIDE L/SIDE R A/B/C와1x검수. START/EARLY/LATE/EXIT 미검수 |
+| TECH QA | GPU render/import/capture/perf script오류0,normal반응 실측. web pageerror/404 N/A,새seam/route 변경0,loading PASS,performance 위 제한 |
+| FILES | skull_25d PNG9+metadata,해당 hull/mask3건,offline render/finish,격리 QA harness,설계/ART/CHANGELOG. concurrent/unrelated tracked 변경0 |
+| GIT | base1ca4603f 자식,경로지정add/hook유효. SHA/remote/worktree제거 DONE.txt. main/강제/reset/rebase/배포0 |
+| VISUAL VERDICT / NEXT PASS | RETOUCH. 모델 backside/하단 형상·치열은 룩만으로 복원 한계. 새 생성/후속백로그 착수0 |

@@ -55562,3 +55562,8 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 - 372a9c5a 기준 격리 브랜치: 외부 Meshy GLB의 orthographic 3뷰 diffuse/normal/foot → CanvasTexture 피라미드3개. 런타임 GLB0, 기존 접지/Y정렬/PointLight 유지.
 - 관련 SSOT: MAP11_NEW_MAP_LOGIC_PLAN_20261021 §19, ART_TEAM_MASTER MAP11-25D. 전체docs 키워드검색은 _out/MAP11-25D/docs-all-keywords.txt.
 - 실제 Main 전후3뷰/광원near-far/normal-off대조/+Y교정, 벤치1회 field7.243ms/arena7.041ms. 최종 재렌더전 성능측정 제약을 명시. VISUAL RETOUCH(모델 하단·재질 잔여). 실제 저장폴더/PC전투 변경0.
+
+
+## 2026-10-21 MAP11-25Db
+- 설계서 §19.5/ART_TEAM_MASTER 동기화. 기존 GLB의 NW 음영·offline AO·warm grade·normal 강화,흙받침 보존. PNG/hull/contact 해당3건만.
+- VISUAL VERDICT RETOUCH: A 원화보다 우수 기준 미달. perf1회checks3/fail0. _out/MAP11-25Db에A/B/C3뷰·1x/수치/DONE. 전체docs검색 docs-all-search.txt.

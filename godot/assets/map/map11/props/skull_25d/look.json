@@ -1,0 +1,39 @@
+{
+  "key_view": [
+    -0.55,
+    0.72,
+    0.8
+  ],
+  "ambient": 0.48,
+  "key": 0.78,
+  "rim_rgb": [
+    0.1,
+    0.075,
+    0.045
+  ],
+  "ao_radii_output_px": [
+    2,
+    5,
+    10
+  ],
+  "ao_bias": 0.008,
+  "ao_range": 0.22,
+  "ao_strength": 0.55,
+  "exposure": 1.85,
+  "rgb_gain": [
+    1.1,
+    1.025,
+    0.86
+  ],
+  "saturation": 0.92,
+  "contrast": 1.12,
+  "pivot": 0.25,
+  "ceiling": 0.94,
+  "unsharp": [
+    1.1,
+    85,
+    3
+  ],
+  "normal_xy_gain": 1.65,
+  "pedestal_discard": false
+}

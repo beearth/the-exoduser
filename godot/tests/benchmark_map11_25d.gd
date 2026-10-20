@@ -1,7 +1,7 @@
 extends "res://tests/capture_map11_hell_props.gd"
 ## Same MAP11-20 600-tick walking measurement; one run, no budget recovery claim.
 func _run() -> void:
- if OS.get_user_data_dir().get_file()!="EXODUSER-map11-25D-Isolated-20261021":quit(2);return
+ if OS.get_user_data_dir().get_file()!="EXODUSER-map11-25Db-Isolated-20261021":quit(2);return
  for arg in OS.get_cmdline_user_args():
   if arg.begins_with("--output="):output=arg.trim_prefix("--output=")
  if output.is_empty():quit(3);return

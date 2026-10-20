@@ -41,16 +41,22 @@ uniform sampler2D detail_normal : hint_normal;
 uniform bool has_detail = false;
 uniform float detail_strength = 1.0;
 uniform bool normal_pass = false;
+uniform bool depth_pass = false;
+uniform float depth_span = 1.0;
+varying float view_depth;
 uniform float base_cut_y = -100.0;
 varying float world_height;
-void vertex(){world_height=(MODEL_MATRIX*vec4(VERTEX,1.0)).y;}
+void vertex(){view_depth=(MODELVIEW_MATRIX*vec4(VERTEX,1.0)).z;world_height=(MODEL_MATRIX*vec4(VERTEX,1.0)).y;}
 void fragment(){
  vec3 n=normalize(NORMAL);
  if(has_detail){vec3 t=texture(detail_normal,UV).xyz*2.0-1.0;t.xy*=detail_strength;n=normalize(TANGENT*t.x+BINORMAL*t.y+n*t.z);}
  vec4 color=texture(base_color,UV)*tint;
- if(world_height < base_cut_y && dot(color.rgb,vec3(.299,.587,.114)) < .18){discard;}
+ // Preserve dark soil pedestal; no ground plane.
  // View axes right/up/towards camera; CanvasTexture itself flips green to screen-down.
- ALBEDO=normal_pass ? n*.5+.5 : min(color.rgb*1.6,vec3(.85));
+ float diffuse=max(dot(n,normalize(vec3(-.55,.72,.8))),0.0);
+ float rim=pow(1.0-max(n.z,0.0),3.0)*max(dot(n,normalize(vec3(.6,.45,-.2))),0.0);
+ vec3 baked=color.rgb*(.48+.78*diffuse)+vec3(.10,.075,.045)*rim;
+ ALBEDO=depth_pass ? vec3(clamp((view_depth+10.0)/depth_span+.5,.0,1.0)) : (normal_pass ? n*.5+.5 : baked);
  ALPHA=1.0;
 }
 """
@@ -59,7 +65,7 @@ void fragment(){
   for surface in range(mesh.mesh.get_surface_count()):
    var original: Material=mesh.get_active_material(surface)
    var mat:=ShaderMaterial.new();mat.shader=shader
-   mat.set_shader_parameter("base_cut_y",-bounds.size.y*.40)
+   mat.set_shader_parameter("depth_span",bounds.size.length())
    if original is BaseMaterial3D:
     mat.set_shader_parameter("base_color",original.albedo_texture)
     mat.set_shader_parameter("tint",original.albedo_color)
@@ -70,8 +76,10 @@ void fragment(){
  for i in range(3):
   pivot.rotation.y=deg_to_rad([-20.0,20.0,65.0][i])
   var images: Array[Image]=[]
-  for pass_ in range(2):
-   for mat in materials:mat.set_shader_parameter("normal_pass",pass_==1)
+  for pass_ in range(3):
+   for mat in materials:
+    mat.set_shader_parameter("normal_pass",pass_==1)
+    mat.set_shader_parameter("depth_pass",pass_==2)
    for frame in range(5):await process_frame
    await RenderingServer.frame_post_draw
    var image:=viewport.get_texture().get_image();image.convert(Image.FORMAT_RGBA8)
@@ -80,7 +88,7 @@ void fragment(){
   # Same crop, then exact 2x tallest authored display height (185 world px).
   var height_px: int=[370,332,350][i]
   var target:=Vector2i(roundi(float(rect.size.x)*height_px/rect.size.y),height_px)
-  for pass_ in range(2):
+  for pass_ in range(3):
    var cropped:=images[pass_].get_region(rect)
    cropped.resize(target.x,target.y,Image.INTERPOLATE_LANCZOS)
    if pass_==1:
@@ -89,7 +97,7 @@ void fragment(){
       var c: Color=cropped.get_pixel(x,y)
       var n:=Vector3(c.r*2.0-1.0,c.g*2.0-1.0,c.b*2.0-1.0).normalized()
       cropped.set_pixel(x,y,Color(n.x*.5+.5,n.y*.5+.5,n.z*.5+.5,c.a))
-   cropped.save_png(output.path_join("skull_%d_%s.png"%[i,"diffuse" if pass_==0 else "normal"]))
+   cropped.save_png(output.path_join("skull_%d_%s.png"%[i,["diffuse","normal","depth"][pass_]]))
   rows.append({"variant":i,"yaw_degrees":[-20,20,65][i],"size":[target.x,target.y],"foot":[target.x*.5,target.y],"source_crop":[rect.position.x,rect.position.y,rect.size.x,rect.size.y]})
  var file:=FileAccess.open(output.path_join("render.json"),FileAccess.WRITE)
  file.store_string(JSON.stringify({"elevation_degrees":rad_to_deg(atan2(6.0,8.0)),"ground_depth_compression":.6,"projection":"orthographic","normal":"view XYZ encoded .5*n+.5; +Y up/OpenGL; CanvasTexture decodes green to screen-down","variants":rows},"  "))

@@ -17,7 +17,7 @@ const MASKS={
  "res://assets/map/map11/props/hell_skull_pyramid.png": {"texture":preload("res://assets/map/map11/contact_masks/hell_skull_pyramid.png"),"offset":Vector2(-25,697),"size":Vector2(1074,331)},
  "res://assets/map/map11/props/hell_spike_pit.png": {"texture":preload("res://assets/map/map11/contact_masks/hell_spike_pit.png"),"offset":Vector2(-22,620),"size":Vector2(1068,293)},
  "res://assets/map/map11/props/hell_impaled_corpse.png": {"texture":preload("res://assets/map/map11/contact_masks/hell_impaled_corpse.png"),"offset":Vector2(-26,711),"size":Vector2(601,339)},
- "res://assets/map/map11/props/skull_25d/skull_0_diffuse.png": {"texture":preload("res://assets/map/map11/props/skull_25d/skull_0_contact.png"),"offset":Vector2(-9,257),"size":Vector2(393,122)},
+ "res://assets/map/map11/props/skull_25d/skull_0_diffuse.png": {"texture":preload("res://assets/map/map11/props/skull_25d/skull_0_contact.png"),"offset":Vector2(-9,257),"size":Vector2(392,122)},
  "res://assets/map/map11/props/skull_25d/skull_1_diffuse.png": {"texture":preload("res://assets/map/map11/props/skull_25d/skull_1_contact.png"),"offset":Vector2(-8,231),"size":Vector2(368,109)},
- "res://assets/map/map11/props/skull_25d/skull_2_diffuse.png": {"texture":preload("res://assets/map/map11/props/skull_25d/skull_2_contact.png"),"offset":Vector2(-9,243),"size":Vector2(399,116)},
+ "res://assets/map/map11/props/skull_25d/skull_2_diffuse.png": {"texture":preload("res://assets/map/map11/props/skull_25d/skull_2_contact.png"),"offset":Vector2(-9,243),"size":Vector2(400,116)},
 }

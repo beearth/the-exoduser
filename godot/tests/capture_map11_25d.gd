@@ -19,7 +19,7 @@ func capture(id: String,prop: Node2D) -> Image:
  metrics[id]={"crop":[rect.position.x,rect.position.y,rect.size.x,rect.size.y],"foot":str(point)}
  return image
 func run() -> void:
- if OS.get_user_data_dir().get_file()!="EXODUSER-map11-25D-Isolated-20261021":quit(2);return
+ if OS.get_user_data_dir().get_file()!="EXODUSER-map11-25Db-Isolated-20261021":quit(2);return
  for arg in OS.get_cmdline_user_args():
   if arg.begins_with("--output="):output=arg.trim_prefix("--output=")
   if arg.begins_with("--tag="):tag=arg.trim_prefix("--tag=")

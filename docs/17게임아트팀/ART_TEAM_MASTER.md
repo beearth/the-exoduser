@@ -313,3 +313,8 @@ MAP11-19 런타임 최종 판정 **RETOUCH**: 원화의 큰 형태는 읽히나 
 | 판정 | **VISUAL VERDICT: RETOUCH**. 노멀조명반응성립, Meshy 하단형상/암부·재질원화명암잔여. 사진붙임느낌완전해소·전체맵완성판정아님 |
 
 도구 `godot/tools/map11_25d_render.gd`, `map11_25d_contacts.py`; export의tools/tests제외유지. 증거 `~/exoduser-wt/_out/MAP11-25D/`와 `DONE.txt`. MAP11-20의기존2D피라미드설명은이력이며이브랜치현행은§19.
+
+
+## MAP11-25Db — 2026-10-21 룩 보정 후보
+
+기존 MAP11-25D 절은1ca4603f 당시 이력. 현 수치·조명·AO·색·해상도·검수는 설계서 §19.5가 SSOT. NW key(.48+.78N·L),rim(.10,.075,.045),offline depth AO .55,exposure1.85/RGB(1.10,1.025,.86)/contrast1.12/saturation.92/normalXY1.65. PNG374×370/352×332/382×350,원래3배치만. 원GLB/콘셉트 읽기,신규생성0,PNG만runtime. near-vs-flat10.87783/255. A/B/C3뷰1x 확인 결과 **RETOUCH**: B보다 대비는 좋아졌으나 A보다 치열과 backside/검은 받침이 나쁨. 성능1회 field7.312ms/arena7.158ms p95,checks3/fail0,엄밀회귀판정불가. 증거 ~/exoduser-wt/_out/MAP11-25Db/DONE.txt 및 captures/.
