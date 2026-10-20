@@ -178,7 +178,7 @@
 | 순수 검수 | 새 Godot20/0·skip0, 실제 JS 원본1..1500 대조1500일치/불일치0, 기존 웹 oracle4/0. 자연플레이·영구저장 검수 아님 |
 | 제품 한계·보호 | 사용자 공용0줄 지시 우선: State preload/caller 수정0, 제품999→1000 일반식 불일치 잔존. XP 지급·SP/AP·회복·초월gate·HUD·Q/E·세이브0줄, 일반/데모 game.mats 차이 보호 |
 | 회귀·근거 | 지정15종 중14통과·p1002g 알려진1실패, 추가p2001c45/0·전부skip0. 최종 실측은 [meta-01 보고서](engine/orders/reports/meta-01_REPORT.md)에 기록. exit code·실행그룹·skip·stderr와 알려진p1002g 선재실패를 분리. 원로그 `~/exoduser-wt/_out/meta-01/` |
-=======
+
 ## 2026-10-20 IT-04 — 장착 결정의 홈 배율 합산
 
 | id / 적용 위치 | 현재 정확 계약 |
@@ -224,7 +224,6 @@
 | 입력·보존 | 복잡 JS coercion·문자열/bool q·NaN/Inf는 NOT_READY/사유, 정상 효과값 미공급. 입력·중첩 참조·배열 길이 불변. 결과는 일시적 view이며 세이브 형식/복원·Q/E·docs/2_3 변경0 |
 | 검수 | 새 순수 테스트177/0, 원본 JS 함수와 품질205·홈120·합성8의1478비교/0. 첫 파일 미배치 실행 무효 및 JSON 숫자 Dictionary 비교1실패는 원로그 보존. 기존 회귀 contracts 5그룹/0실패, P2-001c 40/0·exit0(단, Camera2D·ObjectDB 2인스턴스 종료누수 경고 보존). [it-01 보고서](engine/orders/reports/it-01_REPORT.md) 참조 |
 | 격리·한계 | 신규 테스트 `EXODUSER-it-01-Isolated-20261020`. Main 없는 순수 테스트는 Git 밖 전용 project.godot에서 실제 신규 소스를 symlink로 읽으며 repository override 미사용. 실제 플레이·화면·장착 효과·전체 JS coercion 인수 아님 |
->>>>>>> b950095b
 =======
 ## 2026-10-20 SK-S03 합체·흡수 읽기 전용 판정
 
@@ -259,6 +258,35 @@
 | 검수 | 신규 첫 실행 2,033단정/0실패·원본 JS 직접대조567/0. 격리 `EXODUSER-sk-s01-Isolated-20261020`, Main/override 없이 in-process 설정·실제 OS 경로 확인. 회귀 contracts 5검사군 통과, P2-005a/b/c/d-regen/d-ice 27/12/20/10/22단정·실패0. 상세는 `engine/orders/reports/sk-s01_REPORT.md` |
 | 보호 | Q/E·docs/2_3·저장형식·실사용자 세이브·악의할인·학습/합체 writer 불변. 기존 회귀 파일과 기존 CHANGELOG 본문 bytes 유지. 훅 우회 없음 |
 >>>>>>> db880a18
+=======
+## 2026-10-20 BC03 — 1장 보스 utility score 순수 함수
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 구현 | 신규 native_ch1_boss_utility.gd·test_boss_ch1_bc03_utility.gd·bc03_REPORT.md. BC02 3d510c2b 의존. 공용/타 담당 코드·기존 테스트·원본·설계 docs·R 수정0 |
+| 원본 | 시작 main 284d7faf game.html:37650–37699, 마감 main e556b617과 byte/행 동일. gate 순서/RNG0, 모든 history 등장 감점, rate/거리/combo/phase/novelty, RNG1회 뒤 얼굴+2·마지막 streak×3을 보존 |
+| 검증·경계 | 원본 독립 oracle6,577case 대조 및 read-only/provider/BC02 packet 경계. 신규 최초31,976단정/0실패/skip0/ERROR0. BC01 681/0·BC02 5,257/0·contracts5/5, 모든 회귀 ERROR0. 원로그는 bc03_REPORT에 기록. 점수 계산만이며 selector/AI/공격·실플레이 인수 아님 |
+
+## 2026-10-20 BC02 — 1장 일반 보스 생성 수치 packet
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 범위 | 신규 `native_ch1_boss_spawn_contract.gd`·`test_boss_ch1_bc02_spawn.gd`·`bc02_REPORT.md`. BC01 e4396da5 의존 브랜치에서 구현. 공용·기존 테스트·보호 설계·R 수정0 |
+| 원본 | 최신 main 284d7faf game.html:9272/9276·31033–31037·31119–31185·31210·31260·31300. HP 두 floor·보스24배·speed.5·몸r44/배치r22·부활력200/206/212/218·초기 cooldown59개를 보존 |
+| 공개 계약 | source_receipt와 build_spawn_packet. 81개 공통/보스 필드·배치 read ledger·source순서 RNG6회. provider/입력 부재는 NOT_READY, 원본 null 생성은 REJECTED, dummy actor·전역 RNG·IO 없음 |
+| 검증·한계 | 독립 원본 mkEn oracle56case×81필드 및 격리 경계 검사. 신규 최종5,257/0·BC01 681/0·contracts5/5·factory3/3·소환굴298/0·지역43/0, 최종/회귀 ERROR0. 첫 실패와 수정 후 실행·회귀 로그는 `docs/engine/orders/reports/bc02_REPORT.md`에 기록. actor/factory·실제 보스전·시각/성능 완료 아님 |
+
+## 2026-10-20 BC01 — 1장 보스 정적 등록 catalog
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 채택 | 신규 native_ch1_boss_catalog.gd와 독립 테스트만. actor/AI/HP 계산/전투/Main/저장 연결 없음. 공용 6파일·기존 테스트 수정0 |
+| 원본 | main c3cf8ce6b0cc1a5c381240260e03dff71c68af8d의 game.html:9820–9967/10009–10010/16688–16695; SHA256 4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4 |
+| 등록 | 전체59 move manifest/68 combo 중 CH1 union24 move·27 combo·5 phase. 최종 Set [23,21,10,23], sparse idx30/59 없음·max60. 원순서·필드·문구·수치 보존 |
+| API | source_receipt/boss_for_stage/moves_for_stage/move_by_id/phase_by_index/combos_for_stage. 중첩 복사 반환, 범위 밖 명시 거절/빈값, 전역 전체기술 fallback 없음 |
+| 검수 | 신규 첫 parse 실패(exit0/ERROR2/RESULT없음) 보존 → 명시 bool 수정 후 681단정/0실패/ERROR0. 회귀 contracts5/5·regions43/0·spawn_holes298/0·factory3/3, p1002g220/1(지정 선재). 원로그·격리는 [bc01 보고서](engine/orders/reports/bc01_REPORT.md) 참조 |
+| 보호·한계 | 2_3/Q·E/세이브 형식 보호. 실제 보스전·공용 배선·Godot 화면·성능·PC 인수 아님 |
+>>>>>>> 349ec241
 
 > 2026-10-17 ENGINE 현행: callback **12/25·미13**. play_time은 el_mul 바로 다음에 동일 Services self의 arity0 Callable로 등록했다. owner 첫 격리 공개 API 검수는 인수됐으며 자연 clock·실게임 인수는 미확인이다. D9는 직전 공통 소스 인수이며, 이번 main/I/R 소스 정렬은 아래 통합 정본과 단위 receipt의 실제 HEAD·tree를 기준으로 확인한다. V12 후보는 소스 인수·첫 FAIL·별도 보완 한정성공으로 구분하며 제품 copy·World hook은 수행하지 않았다. 아래 이전 단계 숫자·원검수 결과는 당시 이력으로 보존한다. 실제 local/remote commit 상태는 단위 receipt를 따른다.
 
