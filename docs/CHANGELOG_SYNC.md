@@ -6,6 +6,117 @@
 | 재사용·검증 | 기존 META-06 cap100/entry/loop 그대로 위임. 신규22/0·META06 1034/0·인트로18/0·원문JS995/0, 각1회. 잘못된 stage 거부 의도 ERROR1 외 예상 밖 오류0. 실제 XP writer는 DEMO11-20 후속. |
 | 인계 | [공개 API·공용 변경 줄·보고서](engine/orders/reports/demo11-01_REPORT.md), 원로그 ~/exoduser-wt/_out/demo11-01/. 자기 branch push/remote SHA/DONE 뒤 자기 WT 제거; R 불변. |
 
+## 2026-10-21 BC-CHAIN-M 03-bc-integ-01 — 보스 브랜치 정상 merge
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 통합 | `codex/bc-integ-01-20261020`에 `2c29b697858fcc6c7ab55bea77d88ddb87627eb1` merge. main `0105159934d0c2a8b167bd51518dca1e0fafe50a` 공통 BC04~07·BC10 구현 보존, BC08/09 고유 producer 및 BC-INTEG 정정 순서 통합. 공용 Main/State/저장 추가 수정0 |
+| 검증 | BC01~10·최신 CH2 7종·contracts 전부 0실패. 기존 검사/원본 수치/공통식 수정0. 상세 단정 수·충돌 근거는 bc-chain-m_REPORT.md. 원로그 `_out/bc-chain-m/03-bc-integ-01` |
+
+## 2026-10-20 BC-INTEG-01 생성 원소색·BC08 장 catalog 통합
+
+| 항목 | 변경·검수 근거 |
+|---|---|
+| 기준 / 소유 | fetch main249c26fa(b25a018ac 조상). BC02와 사용자 인수1b901f12 BC08만 수정, 기존 CatalogContext/CH2 모듈 재사용. BC08이 실제 main tree에 없는 점·인수본 대비 diff를 자기 보고서에 구분 |
+| 원문 색 | G14333/14338/31163/16679–16712: 고정#bbbbbb→ELC[boss.element_id]. CH1/2 물리#bbbbbb 유지, CH3 얼음#3388ff 정정, CH4 화염#ff5522·CH5~7 암흑#9933cc 원문 규칙. 잘못된 원소는 reads/RNG 전에 NOT_READY |
+| BC08 / 보존 | 마지막 optional chapter_catalog 인자·begin/next 문맥 검증·phase reader 변경. null의 CH1 packet/continuation은 인수본과 var_to_bytes 동일 검사. 실제 si·드루이드0/3·원본 RNG/충돌/owner readback 조건 유지 |
+| 검증 | 신규 73394/0·BC01~10 354093/0·CH2 4종 119182/0·contracts5그룹/0·cold import exit0/ERROR0. 기존 회귀14파일 byte 무수정, 색35stage·이동3617사례·CH1 byte/장 경계 검사 |
+| 보호 / 제출 | Main/State/저장·Q/E·2_3·웹 원본·설계/LOCK0줄. 자기 WORK_BOARD 행·보고서·이 절만 docs 변경. 신규 지정 격리dir/기존 상수·Godot gate30초·UTF8 파일/node 인자. [보고서](engine/orders/reports/bc-integ-01_REPORT.md), 원로그 ~/exoduser-wt/_out/bc-integ-01/. 정상 훅·자기 push/remote SHA/DONE 후 자기 worktree 제거 |
+
+## 2026-10-21 BC-CHAIN-M 02-bc09 — 보스 브랜치 정상 merge
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 통합 | `codex/bc09-20261020`에 `66ff67a0552d8ecc98bdbb9b2a689a4a08cf0bc0` merge. main `0105159934d0c2a8b167bd51518dca1e0fafe50a` 공통 BC04~07·BC10 구현 보존, BC08/09 고유 producer 및 BC-INTEG 정정 순서 통합. 공용 Main/State/저장 추가 수정0 |
+| 검증 | BC01~10·최신 CH2 7종·contracts 전부 0실패. 기존 검사/원본 수치/공통식 수정0. 상세 단정 수·충돌 근거는 bc-chain-m_REPORT.md. 원로그 `_out/bc-chain-m/02-bc09` |
+
+## 2026-10-20 BC09 — 1장 보스 탄 생산·탄생 수치 packet
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 구현·의존 | 신규 native_ch1_boss_projectile_patterns.gd·test_boss_ch1_bc09_projectiles.gd·bc09_REPORT.md. BC08 1b901f12 끝에서 분기, 마감 main 6d987cb8과 HTML byte/행 동일. 공용/타 담당·기존 테스트·설계 docs·원본·R 수정0 |
+| 원본·보호 | game.html:16938–16995·38357–38371·37080–37127·40562–40569·40646–40662·41185–41205·20121–20156 및 actual pool16858–16884. raw 생산/source 순서·global drop/birth 숫자·독 class 보존/direct charge·독립 rhythm/ORB·BC06 elem/rapid relay. 실제 class/pool/spawn/ORB owner reader·readback 없으면 NOT_READY, Q/E 분류·피해·actual spawn/Main 연결0 |
+| 검증·경계 | 최초53,836/0, 추가 wave 표본56,662/8은 기대값 alias 오류로 원로그 보존. 수정·accepted snapshot 보강 후 최종56,664/0·producer762/이벤트6,888/RNG2,099·birth2,082/RNG982·BC06연계16·보호요청8 대조(live/QE 성공 수 아님). BC01~08·contracts5/5·import 정상, 최종/회귀 ERROR0. OS.execute/output[0] 없음, 재생성 Node 경로는 --node-bin·UTF-8 전체 수집. 원로그 _out/bc09, push·SHA대조·DONE 후 자기 worktree 제거 |
+
+## 2026-10-20 BC03 — 1장 보스 utility score 순수 함수
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 구현 | 신규 native_ch1_boss_utility.gd·test_boss_ch1_bc03_utility.gd·bc03_REPORT.md. BC02 3d510c2b 의존. 공용/타 담당 코드·기존 테스트·원본·설계 docs·R 수정0 |
+| 원본 | 시작 main 284d7faf game.html:37650–37699, 마감 main e556b617과 byte/행 동일. gate 순서/RNG0, 모든 history 등장 감점, rate/거리/combo/phase/novelty, RNG1회 뒤 얼굴+2·마지막 streak×3을 보존 |
+| 검증·경계 | 원본 독립 oracle6,577case 대조 및 read-only/provider/BC02 packet 경계. 신규 최초31,976단정/0실패/skip0/ERROR0. BC01 681/0·BC02 5,257/0·contracts5/5, 모든 회귀 ERROR0. 원로그는 bc03_REPORT에 기록. 점수 계산만이며 selector/AI/공격·실플레이 인수 아님 |
+
+## 2026-10-20 BC02 — 1장 일반 보스 생성 수치 packet
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 범위 | 신규 `native_ch1_boss_spawn_contract.gd`·`test_boss_ch1_bc02_spawn.gd`·`bc02_REPORT.md`. BC01 e4396da5 의존 브랜치에서 구현. 공용·기존 테스트·보호 설계·R 수정0 |
+| 원본 | 최신 main 284d7faf game.html:9272/9276·31033–31037·31119–31185·31210·31260·31300. HP 두 floor·보스24배·speed.5·몸r44/배치r22·부활력200/206/212/218·초기 cooldown59개를 보존 |
+| 공개 계약 | source_receipt와 build_spawn_packet. 81개 공통/보스 필드·배치 read ledger·source순서 RNG6회. provider/입력 부재는 NOT_READY, 원본 null 생성은 REJECTED, dummy actor·전역 RNG·IO 없음 |
+| 검증·한계 | 독립 원본 mkEn oracle56case×81필드 및 격리 경계 검사. 신규 최종5,257/0·BC01 681/0·contracts5/5·factory3/3·소환굴298/0·지역43/0, 최종/회귀 ERROR0. 첫 실패와 수정 후 실행·회귀 로그는 `docs/engine/orders/reports/bc02_REPORT.md`에 기록. actor/factory·실제 보스전·시각/성능 완료 아님 |
+
+## 2026-10-20 BC01 — 1장 보스 정적 등록 catalog
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 채택 | 신규 native_ch1_boss_catalog.gd와 독립 테스트만. actor/AI/HP 계산/전투/Main/저장 연결 없음. 공용 6파일·기존 테스트 수정0 |
+| 원본 | main c3cf8ce6b0cc1a5c381240260e03dff71c68af8d의 game.html:9820–9967/10009–10010/16688–16695; SHA256 4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4 |
+| 등록 | 전체59 move manifest/68 combo 중 CH1 union24 move·27 combo·5 phase. 최종 Set [23,21,10,23], sparse idx30/59 없음·max60. 원순서·필드·문구·수치 보존 |
+| API | source_receipt/boss_for_stage/moves_for_stage/move_by_id/phase_by_index/combos_for_stage. 중첩 복사 반환, 범위 밖 명시 거절/빈값, 전역 전체기술 fallback 없음 |
+| 검수 | 신규 첫 parse 실패(exit0/ERROR2/RESULT없음) 보존 → 명시 bool 수정 후 681단정/0실패/ERROR0. 회귀 contracts5/5·regions43/0·spawn_holes298/0·factory3/3, p1002g220/1(지정 선재). 원로그·격리는 [bc01 보고서](engine/orders/reports/bc01_REPORT.md) 참조 |
+| 보호·한계 | 2_3/Q·E/세이브 형식 보호. 실제 보스전·공용 배선·Godot 화면·성능·PC 인수 아님 |
+
+> 2026-10-17 ENGINE 현행: callback **12/25·미13**. play_time은 el_mul 바로 다음에 동일 Services self의 arity0 Callable로 등록했다. owner 첫 격리 공개 API 검수는 인수됐으며 자연 clock·실게임 인수는 미확인이다. D9는 직전 공통 소스 인수이며, 이번 main/I/R 소스 정렬은 아래 통합 정본과 단위 receipt의 실제 HEAD·tree를 기준으로 확인한다. V12 후보는 소스 인수·첫 FAIL·별도 보완 한정성공으로 구분하며 제품 copy·World hook은 수행하지 않았다. 아래 이전 단계 숫자·원검수 결과는 당시 이력으로 보존한다. 실제 local/remote commit 상태는 단위 receipt를 따른다.
+
+> 2026-10-17 ENGINE WIP 현행: 실제 callback **9/25·미16**. 신규 격리 행동41/41과 신규 map 경계 static9/9만 인수 범위다. 원 첫 parse 실패는 보존한다. 이 WIP를 main/R/served·전체 게임 최신화 완료로 해석하지 않는다.
+
+## 2026-10-21 BC-CHAIN-M 01-bc08 — 보스 브랜치 정상 merge
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 통합 | `codex/bc08-20261020`에 `0105159934d0c2a8b167bd51518dca1e0fafe50a` merge. main `0105159934d0c2a8b167bd51518dca1e0fafe50a` 공통 BC04~07·BC10 구현 보존, BC08/09 고유 producer 및 BC-INTEG 정정 순서 통합. 공용 Main/State/저장 추가 수정0 |
+| 검증 | BC01~10·최신 CH2 7종·contracts 전부 0실패. 기존 검사/원본 수치/공통식 수정0. 상세 단정 수·충돌 근거는 bc-chain-m_REPORT.md. 원로그 `_out/bc-chain-m/01-bc08` |
+
+## 2026-10-20 BC08 — 1장 보스 이동3기술·idle 후속 packet
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 구현·의존 | 신규 native_ch1_boss_movement_states.gd·test_boss_ch1_bc08_movement.gd·bc08_REPORT.md. BC07 edcbc480 끝에서 분기. 공용/타 담당 코드·기존 테스트·원본·설계 docs·R 수정0 |
+| 원본 | 원본 시작 main a00893ad·마감 26c050a9(HTML byte/행 동일) game.html:38315–38355·40483–40517·40664–40708·40942–40977. charge35/50·18f 방향고정·jump40·dash9/phase4cnt10·XY/X/Y·idle중첩·cached d·차징60 예약/source RNG 순서. collision/flow/실제 contact owner readback 필수, actual 피해·패링/Main 집행0 |
+| 검증·경계 | 최초24,750/6 및 진단 동일6은 비정수 JSON 로드의 테스트 정수 오분류로 원문 보존, 제품 byte 동일. fixture 수정24,750/0, 조기 반환/완전 readback 보강 후 최종24,788/0·1,477건/이벤트7,791/RNG750/contact요청152 대조(실제 피해·패링 성공 수 아님). BC01 681/0·BC02 5,257/0·BC03 31,976/0·BC04 21,899/0·BC05 18,424/0·BC06 14,099/0·BC07 14,531/0·contracts5/5·import 정상, 최종/회귀 ERROR0. 원로그 _out/bc08, push·SHA대조·DONE 뒤 자기 sparse worktree 제거 |
+
+## 2026-10-20 BC07 — 1장 보스 근접4기술 상태·hit packet
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 구현·의존 | 신규 native_ch1_boss_melee_states.gd·test_boss_ch1_bc07_melee.gd·bc07_REPORT.md. BC06 1110eec6 끝에서 분기. 공용/타 담당 코드·기존 테스트·원본·설계 docs·R 수정0 |
+| 원본 | game.html:41074–41109·41111–41142·41144–41183의 slash/slam/sweep/tail 공유6상태. 최신 main ad497089에서도 시작 e556b617과 원본 byte/행 동일. BC05 이후 clock·각/거리/iframe gate·source 순서/전진·반복/종료·RNG 보존. protected contact는 실제 owner readback을 요구하는 미집행 요청 |
+| 검증·경계 | 신규 최초14,438/0, 최종14,531/0·652건/이벤트7,769/RNG3,321/contact요청80 대조(실제 피해·패링 성공 수 아님). BC01 681/0·BC02 5,257/0·BC03 31,976/0·BC04 21,899/0·BC05 18,424/0·BC06 14,099/0·contracts5/5·import 정상, 모든 ERROR0. 실제 전투/Main·QE/hurtP/boss_hurtE 집행 인수 없음. 원로그 _out/bc07, push·SHA대조·DONE 뒤 자기 sparse worktree 제거 |
+
+## 2026-10-20 BC06 — 1장 보스 패턴 시작 command packet
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 구현·의존 | 신규 native_ch1_boss_pattern_start.gd·test_boss_ch1_bc06_start.gd·bc06_REPORT.md. BC05 e1850171 끝에서 분기, 공용/타 담당 코드·기존 테스트·원본·설계 docs·R 수정0 |
+| 원본 | 최신 main e556b617 game.html:37701–38233의 CH1 union24 start만. 전조 signed32/si2 1.4/개별 fallback·grab/chase 별도식·jump reader·상태 쓰기/큐/즉시 탄/UI·SFX 요청 순서와 보호 Set 읽기 보존. 실제 owner ack 없이 진행0 |
+| 검증·경계 | 최초14,077/2는 fixture 입력·float 비교 오류로 원로그 보존. 수정 후14,099/0·662건/이벤트6,607/RNG1,137 대조, BC01 681/0·BC02 5,257/0·BC03 31,976/0·BC04 21,899/0·BC05 18,424/0·contracts5/5·import 정상, 최종/회귀 ERROR0. 실전/Main 연결·피해/패링 성공 인수 아님. push·SHA대조·DONE 뒤 자기 sparse worktree 제거 |
+
+## 2026-10-20 BC05 — 1장 보스 phase·시계 전이 packet
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 구현·의존 | 신규 native_ch1_boss_phase.gd·test_boss_ch1_bc05_phase.gd·bc05_REPORT.md. BC04 818e9b20 끝에서 분기. 공용/타 담당 코드·기존 테스트·원본·설계 docs·R 수정0 |
+| 원본 | 최신 main e556b617 game.html:38236–38313·38584–38635·38771–38772·38875–38884·40445–40455·41375–41383. 엄격 HP경계/한번 점프·signed32·현재poise 유지·iframe90·recover45→20·다음tick ATKreset, 후반 명령 continuation의 source RNG interleaving 보존 |
+| 검증·한계 | 최종 신규18,424/0·checkpoint1,015건·effects32건/명령2,147개/RNG2,528회 대조. BC01 681/0·BC02 5,257/0·BC03 31,976/0·BC04 21,899/0·contracts5/5·import 정상, 모든 ERROR0. 실제 피해/무적·full tick·actor/Main은 후속 owner 의존. 원로그 _out/bc05, push·SHA대조·DONE 후 자기 sparse worktree 제거 |
+
+## 2026-10-20 BC04 — 1장 보스 선택기·콤보·RNG 순서
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 구현·의존 | 신규 native_ch1_boss_selector.gd·test_boss_ch1_bc04_selector.gd·bc04_REPORT.md. BC03 349ec241 끝에서 분기. 공용/타 담당 코드·기존 테스트·원본·설계 docs·R 수정0 |
+| 원본 | 최신 main e556b617 game.html:38373–38442. CD감소→idle/거리/타이머 gate→combo 또는59-slot score→상위6가중 선택·history/streak·idxCD·조건부 난수 순서를 보존. startPattern은 BC06용 command 경계 |
+| 검증·한계 | 원본 독립 oracle2,723건·가중 경계25건·난수20,746회 대조. 신규 최초21,899단정/0실패/skip0/ERROR0; BC01 681/0·BC02 5,257/0·BC03 31,976/0·contracts5/5·import 정상, 모두ERROR0. actor/전투·Main 연결은 후속 의존. 원로그 `_out/bc04/`, push·SHA대조·DONE 후 자기 sparse worktree 제거 |
+
 ## 2026-10-20 BC2-07 shieldBash2 독립 wind/dash/contact 계산
 
 ## 2026-10-20 EC4-02 4장 catalog·23필드 초기 literal projection
@@ -46,9 +157,6 @@
 | 검증 | 신규22,364/0. EC2선택7,483/0·constructor159,902/0·EC3선택10,234/0·factory3그룹/0·contracts5그룹/0. 최종ERROR/WARNING0. 변이5종에서347/2499/112/6/154실패검출후byte복원 |
 | 보호 / 제출 | 기존1,607파일byte동일. Godot13launch 매회count1·2이상30초대기, 지정/기존상수격리·override복원. [EC4-01 보고서](engine/orders/reports/ec4-01_REPORT.md), 원로그 ~/exoduser-wt/_out/ec4-01/. 자기branch push·원격SHA/DONE뒤자기worktree제거 |
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 
 ## 2026-10-20 TRACE-ENEMIES-CH4 4장 적 원본 추적·작은 이식 단위
 
@@ -60,7 +168,6 @@
 | 의존 | main EC2-01/02 포함. 원격미병합EC2-03→06·EC3-01/02와CH3문서20b2139a를읽기참조. 마감신규EC3-02 fb8e80d0의Draws실재사용/38slice 경계반영, 임의merge/actor지원승격0 |
 | 순서안 / 관측 | EC4-01~14, 첫단위는API·가드·원문golden·RNG/UTF-8 oracle·회귀·공용0줄지시서. 원문선택63/CDF구간31/HP산술24/AI·death명시fixture17, 제품테스트PASS합산0 |
 | 제출 | [CH4 적 추적](engine/FDG_SOURCE_TRACE_ENEMIES_CH4_20261020.md), 원로그 ~/exoduser-wt/_out/trace-enemies-ch4/. 독립독자검토·정적행/표/링크대조, 정상훅·자기branch push·원격SHA/DONE후자기worktree제거 |
-<<<<<<< HEAD
 
 ## 2026-10-20 BC3-01r 3장 보스 읽기 전용 catalog
 
@@ -244,7 +351,6 @@
 | 검산 / 의존 | 고정 Git 원문 AST/발췌 VM과 전체 재현94항목 차이0. CH4 등록7·pool31·원화byte·굴94 전수 부록. CH2-02는 main 존재, CH3-01 stage10은 원격 fcd7fcaa. 단일 exporter 0/1/4+observer 및 인수된10 보존 지시 |
 | 표현 / 후속 | 웹 맵1:1 복제가 아닌 PoE2·No Rest 목표의 깊이/생동감/부분 조명 확장 별도 절. 게임플레이/충돌·출구·스폰·지역은 불변. CH4-01 상세 지시서와18단위·공용 접점·docs 차이 표. 실제 배치/종주/시각/성능은 미확인 |
 | 자료 / 제출 | [4장 추적·지시서](engine/FDG_SOURCE_TRACE_MAPS_CH4_20261020.md). 원로그 ~/exoduser-wt/_out/trace-maps-ch4/. 정상 훅·경로 지정 stage·자기 branch push/원격SHA→DONE→자기 WT 제거, main push/강제 push/reset0 |
-=======
 ## 2026-10-20 p2001i-diag — 종료 오디오 수명 진단·기준 main 비재현
 
 | id / 적용 위치 | 실제 관측·계약 |
@@ -255,8 +361,6 @@
 | 음성 대조 / 판정 | 저장소 밖 동일18단정 진단본에서만 종료12프레임+200ms 제거 → ERROR1·ObjectDB2객체·MP3리소스1·Orphan StringName1. Stream/Playback ID 각각9223372280157967279/9223372280225076142 정확일치. 비동기 오디오 정리 전 quit 문제; 원문 main 오류 재현으로 포장0·레슨 제품 결함 주장0 |
 | 이미 반영 / 소유 | QA-004 680a2758이 기준조상, I 원문 SHA88840f7a…는 QA-004 최종본과byte동일. 기존 보관 적 해제/하니스 대기 유지, 다른 담당 P2-007a 제품 패치0. 별도 총괄 원로그와의 동일건 여부 미확정 |
 | 실패·제출 | 첫 외부 probe 들여쓰기 Parse Error는 로그/초안 보존·통과 제외. [보고서](engine/orders/reports/p2001i-diag_REPORT.md)에 원문·전후/OLD·NEW·소유·제한. ~/exoduser-wt/_out/p2001i-diag/. 자기branch 정상훅/push·원격일치·DONE 뒤 자기WT 제거, R 보존 |
->>>>>>> 5bd08967
-=======
 ## 2026-10-20 EC3-02 3장 catalog·초기38필드 projection
 
 | id / 적용 위치 | 정확 계약·실제 검수 |
@@ -265,9 +369,6 @@
 | 원본 | 40..49각matching draw2/4/3/2/2/2/4/3/4/6,offtimer9999/phase−1/bleed0/상수flag·coords0draw,orbit31260뒤/erratic31300앞. raw46speed0분기·44R10(기획8과불일치),catalogshield%와실HP방어구분 |
 | 검수 | 최종신규12,602/0·원문1,000·38키값/순서/소비binary64/잘못된샘플위치검사. 회귀6종최종실패0/ERROR0/SKIP0. 최초importSIGSEGV−11/이후캐시누락ERROR50·실패단정10 원문보존,동일명령재import0/0및해당회귀4종재실행통과. 원인미확인·숨김0 |
 | 경계·기반 | main6d987cb8a에EC2-02 a10924eb포함하여main분기,EC3-01은미병합/미소비. 전체HP/coreprovider통합은HOLD·공용Main/State/저장/다른담당0줄. Node필수인자/출력join·UTF8임시JSON,새EXODUSER-ec3-02-Isolated-20261020·기존각상수/Godot전pgrep2이상30초대기/override0byte. [보고서](engine/orders/reports/ec3-02_REPORT.md)·원로그 ~/exoduser-wt/_out/ec3-02/ |
->>>>>>> fb8e80d0
-=======
->>>>>>> 01d036d4
 
 ## 2026-10-20 QA-007 테스트 Windows 이식성
 

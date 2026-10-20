@@ -115,6 +115,8 @@
 | P2001I-DIAG | Mac Codex 단위 | Mac Codex | codex/p2001i-diag-20261020 | 보고서 참조 | **main 병합(PC Claude 2026-10-20 5차)** — 통합본 3장 적 2종·2장 보스 BC2-01~05·기본 회귀 4종 0실패 |
 | BC2-01 | Mac Codex 구현 단위 | Mac Codex | codex/bc2-01-20261020 | 보고서 참조 | **main 병합(PC Claude 2026-10-20 3차)** — 통합본 보스 ch1/ch2 테스트·적 정책 3종·기본 회귀 9종 모두 0실패. 공용 변경 0 |
 | BC2-02 | Mac Codex 구현 단위 | Mac Codex | codex/bc2-02-20261020 | 보고서 참조 | **main 병합(PC Claude 2026-10-20 3차)** — 통합본 보스 ch1/ch2 테스트·적 정책 3종·기본 회귀 9종 모두 0실패. 공용 변경 0 |
+| BC-CHAIN-M | BC08→BC09→BC-INTEG-01→BC3-02 정상 merge·원본/회귀 | Mac Codex | codex/bc-integ-01-20261020 | 기존 보스 모듈 통합·bc-chain-m_REPORT.md | 03-bc-integ-01 검증 완료, 단계별 정상 push·원격 SHA는 DONE 참조 |
+| BC-INTEG-01 | BC02 원본 ELC 색·BC08 장 catalog 일반화, CH1 기본 byte 보존 | Mac Codex(맥북총괄 직접 배정) | codex/bc-integ-01-20261020 | native_ch1_boss_spawn_contract.gd·native_ch1_boss_movement_states.gd, 신규 bc_integ_01 테스트/오라클·자기 보고서 | **검수 대기** — 신규 73394/0·BC01~10 354093/0·CH2 119182/0·contracts5/0, 기존 회귀 무수정·Main/State/저장0. SHA는 자기 보고서 원로그 DONE.txt |
 | BC08 | Mac Codex 구현 단위 | Mac Codex | codex/bc08-20261020 | 보고서 참조 | **main 병합(PC Claude 2026-10-20 3차)** — 통합본 보스 ch1/ch2 테스트·적 정책 3종·기본 회귀 9종 모두 0실패. 공용 변경 0 |
 | BC09 | Mac Codex 구현 단위 | Mac Codex | codex/bc09-20261020 | 보고서 참조 | **main 병합(PC Claude 2026-10-20 3차)** — 통합본 보스 ch1/ch2 테스트·적 정책 3종·기본 회귀 9종 모두 0실패. 공용 변경 0 |
 | BC10 | Mac Codex 구현 단위 | Mac Codex | codex/bc10-20261020 | 보고서 참조 | **main 병합(PC Claude 2026-10-20 3차)** — 통합본 보스 ch1/ch2 테스트·적 정책 3종·기본 회귀 9종 모두 0실패. 공용 변경 0 |
