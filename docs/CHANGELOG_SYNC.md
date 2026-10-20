@@ -1,3 +1,14 @@
+## 2026-10-20 MAPLOOK-MIST 월드 저층 안개 — 화면 비교 자료 준비
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준 / 범위 | 최신main ad497089c. 신규 ground_mist.gd·절차 shader·신규 테스트2개/자기UID·보고서만. main/native_map_look/world/native_screen_lighting/map_look_ch1.json 등 공용·타인 파일 변경0 |
+| 표시 계약 | 자동 MODULES install(world,map_data,player), get_snapshot. 고정 월드2층/시차 .025/.065, opacity .12/.07, 경계·숲 고밀도/중앙 .02 mask. 실제 PointLight2D 수신, 기존 texture/material/visible/z 변경0·공유 RNG0·새 이미지/AI 자산0 |
+| 검증 | 신규73/0·기존 map_look16/0·실창18/0, 해당 ERROR/ObjectDB/resource0. 안개만 있는 렌더 fixture에서 적/청 광원 착색·원거리 소멸 확인, unshaded 음성 대조는 색상2검사 실패 검출 |
+| 기본 OFF | 부모 파일 없는 기준과 같은7회귀 검사 수/실패/exit/ERROR/resource 변화0, 단정 실패 모두0. 선재 UI 종료ERROR21/resource18·소환굴 RefCounted8·HUD/pets MP3 변동 원문 보존, 전체 종료 깨끗함 PASS 아님 |
+| 화면 / 제한 | visual-final/의1920×1080 전체·3장면+공격1x 전후·광원 probe. 카메라 실패·sparse 원본누락 초기실행 보존 후 보완. VISUAL VERDICT RETOUCH, 총괄 디자인 검토·밀집 전투/GPU 예산은 미확인 |
+| 인계 | [MAPLOOK-MIST 보고서](engine/orders/reports/maplook-mist_REPORT.md), 원로그 `~/exoduser-wt/_out/maplook-mist/`. 정상 훅·자기branch push·원격SHA·DONE 후 자기 sparse worktree 제거 |
+
 ## 2026-10-20 LOOK-001 룩 4안 비교 자료 준비
 
 | id / 적용 위치 | 현재 정확 계약 |
