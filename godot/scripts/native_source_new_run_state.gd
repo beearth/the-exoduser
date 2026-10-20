@@ -486,6 +486,84 @@ func commit_native_skill_dispatch_cost(owner: Node, st_cost: float, mp_cost: flo
 	return {"accepted":true,"st_spent":st_cost,"mp_spent":mp_cost,"mats_spent":mats_cost}
 
 
+# DEMO11-17: event-driven skill ledger; no caller-supplied applicable patch.
+var _skill_management_busy := false
+var _skill_management_serial := 0
+var _skill_management_committed: Dictionary = {}
+
+func read_native_skill_management_snapshot() -> Dictionary:
+	var actual: Variant=read_current_p()
+	if not actual is Dictionary: return {}
+	const S=preload("res://port_modules/skill_management_source/core_support.gd")
+	var p: Dictionary={}
+	for key in ["lv","sp","skills","_fused","exp","maxExp"]+S.ACTIVE_FIELDS:
+		if actual.has(key): p[key]=actual[key]
+	return {"p":p.duplicate(true),"g":{"mats":_g.get("mats")},
+		"slots":actual.get("skillSlots",[]).duplicate(true),"ultimate":actual.get("ultSlot")}
+
+func commit_native_skill_management(owner: Node, command: Dictionary) -> Dictionary:
+	var rejected: Dictionary={"accepted":false,"committed":false,"prefix":[]}
+	# Source K/L handlers have no G.paused guard. UI data transactions may run
+	# while the SceneTree is paused; combat/resource spend APIs keep their guards.
+	if _skill_management_busy or not _current_error().is_empty() or not is_instance_valid(owner) \
+		or owner != _player.get_parent() or owner.get("source_state") != self or owner.get("world") != _world:
+		rejected["reason"]="actual_skill_management_owner_or_reentry_gate";return rejected
+	for key in command:
+		if key not in ["request_id","action","skill_id","confirmed"]:
+			rejected["reason"]="unsupported_command_field";return rejected
+	var id: Variant=command.get("request_id")
+	if not id is String or id.is_empty() or id.length()>96 or not command.get("action") is String \
+		or not command.get("skill_id") is String or not command.get("confirmed",false) is bool:
+		rejected["reason"]="invalid_skill_command";return rejected
+	if _skill_management_committed.has(id):
+		var old: Dictionary=_skill_management_committed[id]
+		if old.command!=command: rejected["reason"]="request_id_conflict";return rejected
+		var replay: Dictionary=old.result.duplicate(true);replay["replayed"]=true;return replay
+	const LEARN=preload("res://port_modules/skill_management_source/learn.gd")
+	const UP=preload("res://port_modules/skill_management_source/upgrade.gd")
+	const REFUND=preload("res://port_modules/skill_management_source/refund.gd")
+	const S=preload("res://port_modules/skill_management_source/core_support.gd")
+	_skill_management_busy=true
+	var before: Dictionary=read_native_skill_management_snapshot()
+	var prepared: Dictionary=S.prepare(before)
+	if prepared.status!="READY":
+		_skill_management_busy=false;rejected["reason"]=prepared.reason;return rejected
+	var plan: Dictionary
+	match command.action:
+		"learn_up":
+			plan=UP.preview(command.skill_id,before,"ui") if S.lv(before.get("p",{}),command.skill_id)>=1 else LEARN.preview(command.skill_id,before,"ui")
+		"minus": plan=REFUND.minus_preview(command.skill_id,before)
+		"reset": plan=REFUND.reset_preview(command.skill_id,before,command.get("confirmed",false))
+		_:
+			_skill_management_busy=false;rejected["reason"]="unsupported_skill_action";return rejected
+	if plan.get("status")!="READY" or not plan.value.applied:
+		_skill_management_busy=false
+		rejected["reason"]=plan.get("reason",plan.get("value",{}).get("branch","policy_not_ready"))
+		rejected["policy"]=plan.duplicate(true);return rejected
+	var value: Dictionary=plan.value
+	# Only approved policy projections can reach the live writer. XP/lv/AP/HP and
+	# combat bodies are never replaced by the copied fixture.
+	for field in value.protected_active_proposals:
+		if not S.ACTIVE_FIELDS.has(field) or not S.supported_id(value.protected_active_proposals[field]):
+			_skill_management_busy=false;rejected["reason"]="unsupported_active_projection";return rejected
+	(_p["skills"] as Dictionary).assign(value.fixture.p.skills)
+	_p["sp"]=value.fixture.p.sp
+	_g["mats"]=value.fixture.g.mats
+	(_p["_fused"] as Dictionary).assign(value.fixture.p._fused)
+	for field in value.protected_active_proposals: _p[field]=value.protected_active_proposals[field]
+	(_p["skillSlots"] as Array).assign(value.fixture.slots)
+	_p["ultSlot"]=value.fixture.ultimate
+	_skill_management_serial+=1
+	var result: Dictionary={"accepted":true,"committed":true,"status":"COMMITTED","request_id":id,
+		"serial":_skill_management_serial,"branch":value.branch,"before":before,
+		"after":read_native_skill_management_snapshot(),"active_proposals":value.protected_active_proposals.duplicate(true),
+		"prefix":["ledger","active_selection","slots"],"runtime_writer":"actual_current_State","saved":false}
+	_skill_management_committed[id]={"command":command.duplicate(true),"result":result.duplicate(true)}
+	if _skill_management_committed.size()>32: _skill_management_committed.erase(_skill_management_committed.keys()[0])
+	_skill_management_busy=false
+	return result
+
+
 func apply_native_skill_cast_cost(owner: Node, mats_cost: int) -> Dictionary:
 	if not _feel_owner_current(owner) or mats_cost < 0:
 		return {"applied": false, "reason": "actual_skill_cost_owner_not_current"}

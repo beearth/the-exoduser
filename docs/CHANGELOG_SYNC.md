@@ -1,3 +1,12 @@
+## 2026-10-21 DEMO11-17 K/L 학습·강화·환불 State 원장 연결
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준·의존 | main8dbbf2b0 + DEMO11-16 3be8055f 정상merge d4e71d79. CHANGELOG main bytes 보존. XP726cf925는 readonly/검증용3way모델만, 제품 반입0 |
+| 연결 | SK-S01~05 식 그대로 learn_up/minus/reset·실제SP/악의·skills/선택/slots commit. Main+23/State+78 추가만. 최종 handoff 실패prefix 보존·최근32요청 재생·paused UI 허용/시전 가드유지. PC UI 배치/전투핵심/피해/저장/맵 변경0 |
+| 검증 | 신규100/0·관련4회귀 각1회24,110/0·원문JS 기존9,358+실제8건 불일치0. XPsignal SP12→학습SP2 모델16/0. paused경계2실패 재현→해당 신규만100/0. 최종ERROR/SKIP0·목록생성API/tick추가0 |
+| 제출·경계 | [보고서](engine/orders/reports/demo11-17_REPORT.md), docs/2_1 Native절 갱신·원로그 _out/demo11-17/. shieldFuse 전용reset HOLD·UI/save pending 유지. 정상훅·경로지정stage·자기branch push/remoteSHA/DONE 후 자기WT제거 |
+
 ## 2026-10-21 DEMO11-16 성능 규칙 후속·동일 브랜치 재검증
 
 | 항목 | 근거 |
