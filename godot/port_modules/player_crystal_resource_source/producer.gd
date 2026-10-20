@@ -3,14 +3,18 @@ extends RefCounted
 ## player_crystal_resource_source/producer.gd — 원 crystalEffects(cr) (CRYSTAL_DEFS/CRYSTAL_STAR) 정확 포트 +
 ## player_resource_parameters_source.PROVIDER_CRYSTAL_EFFECTS 조건부 adapter.
 ## TASK GODOT-PORT-PLAYER-CRYSTAL-RESOURCE-SOURCE-FIRST-20261013
+## IT-03: latest origin/main 284d7faf game.html:15289-15296 adds the
+## IT-01 quality multiplier after star/enh, before each option's base*mul.
+## Socket multipliers and inventory/resource writers remain with their owners.
 ##
+## 아래 과거 행 번호는 2026-10-13 최초 이식 근거. IT-03의 최신 함수 행은 SOURCE_FN 참조.
 ## 원 R(canonical game.html, 읽기전용):
 ##   CRYSTAL_DEFS (@15857-15876): 18 relic. opts=[[stat,base],...] — 작성 순서 = effect 순서 (Object.keys 순 = CRYSTAL_IDS @15926)
 ##   CRYSTAL_STAR (@15938-15944): [조각 1.0, 파편 2.0, 결정 3.5, 순수결정 6.0, 완전결정 10.0] .mul
 ##   crystalEffects(cr) (@15951-15956):
 ##     const d=cr&&CRYSTAL_DEFS[cr.id],s=cr&&CRYSTAL_STAR[cr.star];
 ##     if(!d||!s)return [];
-##     const mul=s.mul*(1+(cr.enh||0)*0.1);
+##     const mul=s.mul*(1+(cr.enh||0)*0.1)*_qGemMul(cr.q); # current game.html:15293
 ##     return d.opts.map(([stat,base])=>({stat,value:base*mul}));
 ##   현재 장착 caller applyStats (@28596-28600): SLOT_NAMES 순 INV.equipped[sl].crystals[ci] (truthy) → crystalEffects(c)
 ##     → _cr[stat]+=value; P._crystalStats=_cr. 순회/합산/sink 는 player_resource_parameters_source 소유 — 재구현 0.
@@ -26,6 +30,7 @@ extends RefCounted
 
 const AffixReader := preload("res://port_modules/equipment_affix_reader/producer.gd")
 const SourceParameters := preload("res://port_modules/player_resource_parameters_source/producer.gd")
+const ItemQuality := preload("res://port_modules/item_quality_source/producer.gd")
 
 const READY := "READY"
 const READY_ORIGINAL_EMPTY := "READY_ORIGINAL_EMPTY"   # 원 `if(!d||!s)return []` — 유효한 빈 결과
@@ -34,7 +39,7 @@ const SOURCE_THROW := "SOURCE_THROW"                    # 원 TypeError (d.opts 
 const SOURCE_NON_FINITE := "SOURCE_NON_FINITE"          # 원식 NaN/±Inf — 엄격 subset 은 공급 0
 const SOURCE_TABLE := "SOURCE_TABLE"                    # 원 상수 provenance (현재 장착/인벤토리 아님)
 
-const SOURCE_FN := "game.html:15951-15956 crystalEffects(cr)"
+const SOURCE_FN := "game.html:15289-15296 crystalEffects(cr)"
 
 ## 원 Object.keys(CRYSTAL_DEFS) 순서 (@15926 CRYSTAL_IDS)
 const CRYSTAL_IDS: Array[String] = [
@@ -99,6 +104,7 @@ const MISSING_UPSTREAM := {
 const CALL_LOG_MAX := 64
 
 var _coerce: AffixReader = AffixReader.new()   # JS ToNumber 재사용 (inventory 미바인딩 — 계산 전용)
+var _quality: ItemQuality = ItemQuality.new() # IT-01 readonly q fallback/clamp; no new quality authority
 var _call_count: int = 0
 var _call_log: Array[Dictionary] = []
 var _last: Dictionary = {}
@@ -249,7 +255,8 @@ func crystal_effects(cr: Variant) -> Dictionary:
 		return _result(NOT_READY, "unsupported_star_key:" + str(s["key"]), null, keys)
 	if str(d["state"]) == "proto":
 		return _result(SOURCE_THROW, "TypeError: Cannot read properties of undefined (reading 'map') @CRYSTAL_DEFS['%s'].opts" % str(d["key"]), null, keys)
-	# const mul=s.mul*(1+(cr.enh||0)*0.1)
+	# game.html:15293: star/enh first, then _qGemMul(cr.q). Invalid d/s above
+	# must still return their original empty result before inspecting quality.
 	var enh_raw: Variant = _prop_val(cr, "enh")
 	var enh_n: float = 0.0
 	if AffixReader.js_truthy(enh_raw):
@@ -258,6 +265,10 @@ func crystal_effects(cr: Variant) -> Dictionary:
 		enh_n = _coerce.js_to_number(enh_raw, true)
 	var star_mul: float = CRYSTAL_STAR_MUL[int(s["index"])]
 	var mul: float = star_mul * (1.0 + enh_n * ENH_STEP)
+	var quality: Dictionary = _quality.quality(_prop_val(cr, "q"))
+	if not quality.ready:
+		return _result(NOT_READY, "quality:" + quality.reason, null, keys)
+	mul *= float(quality.gem_multiplier)
 	# d.opts.map(([stat,base])=>({stat,value:base*mul}))
 	var def: Dictionary = CRYSTAL_DEFS[str(d["key"])]
 	var opts: Array = def["opts"]

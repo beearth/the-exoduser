@@ -1,5 +1,7 @@
 ## 현재 actualMain 초기 상태 / 공급자 — 2026-10-14
 
+> 2026-10-20 IT-03 current: `crystalEffects` now multiplies the existing star/enhancement factor by IT-01 `_qGemMul(cr.q)` before `base*mul`, matching latest origin/main `284d7faf` game.html:15289–15296/15316. Missing/null/zero q remains neutral (q50); q1=0.755 and q100=1.25. Unsupported q returns NOT_READY and the adapter returns null before any resource packet dispatch. Socket multiplication remains IT-04. The 2026-10-13 source anchors/test counts below are historical; current validation and exact input limits are in [IT-03 report](orders/reports/it-03_REPORT.md).
+
 실제 Main은 원 fullmkP/G40/STATS5/PASSIVES26/INV17 source 상태를 명시설치하고 원 actualRNG/time→StarterFactory25를 실제sameidentity로 소비했다. 실제 current holder→Affix/CRef/Formula/Passives/Rates/Fusion/Crystal/currentGrit/rawholder/SourceParameters10이 연결된다. SOURCE_BOOT/currentfalse 이력은그대로이며 설치된현재값은별도진실이다. 첫고유5그룹145는 최초성공4/132+scriptERROR가난consumer만13재검한결과다. 원HP·MP·ST 파생/전체applyStats/recalcSt/actualOPT/diffSigned/fullbootstrap/자동회복은아직미완이다. 아래 독립helper 과거검사·당시부족이력은보존하며 최신중앙상태는 FDG_GODOT_SOURCE_NEW_RUN_STATE_20261014.md 및 FDG_GODOT_SOURCE_PLAYER_PROVIDERS_20261014.md를따른다.
 
 # FDG Godot Port — player_crystal_resource_source FIRST (2026-10-13)
@@ -53,7 +55,7 @@ Ported records (`opts` order = effect order; only the `opts`/`cat` fields that c
 | cr_pulse_reed | acc | stR 0.08, st 1, spd 0.02 | stR, st |
 | cr_oracle_pupil | acc | mpR 0.08, mp 1, crit 0.02 | mpR, mp |
 
-Formula: `value = base × (CRYSTAL_STAR[star].mul × (1 + enh×0.1))` (float order kept as in the original). Example: `cr_deep_well` 3성(star 2) +3 → mul 3.5×1.3 → mp 22.75, mpR 0.1365.
+Current IT-03 formula (game.html:15293–15294): `value = base × ((CRYSTAL_STAR[star].mul × (1 + enh×0.1)) × _qGemMul(q))`. Multiplication order is preserved. The following legacy example has missing q (neutral q50): `cr_deep_well` 3성(star 2) +3 → mul 3.5×1.3 → mp 22.75, mpR 0.1365.
 
 Doc drift (for ENGINE sync; not edited here): `docs/2_9 결정슬롯시스템/2_9 결정슬롯시스템.md` still has the old 17-type single-stat IDs (`cr_hp`, `cr_st`, `cr_mp`…) and statements like "자원결정 4종". The current source has 18 relics with 2–3 options each, and the old IDs only exist as migration keys in `_CR_LEGACY_IDS`.
 

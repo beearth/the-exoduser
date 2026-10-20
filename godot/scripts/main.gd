@@ -234,6 +234,8 @@ func _ready() -> void:
 	add_child(screen_lighting)
 	if not screen_lighting.configure(world, player):
 		push_error("Native screen lighting configuration rejected (display-only; startup continues).")
+	# MAP-LOOK — 맵 표현 강화(광원·요철·흔들림·입자). 표시 전용, 하니스 부팅은 꺼짐
+	preload("res://scripts/native_map_look.gd").install_native_boot(self, screen_lighting)
 	# P2-004a — 펫 4종 + 대사 자막 (표시 전용 어댑터, world 자식)
 	var native_pets: Node2D = preload("res://scripts/native_pets.gd").new()
 	native_pets.name = "NativePets"

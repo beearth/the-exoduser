@@ -1,0 +1,582 @@
+{
+  "schema": "exoduser.map-look.ch1.v1",
+  "note": "MAP-LOOK 2026-10-20: 맵 표현 강화 레이어(레퍼런스 PoE2·No Rest — 입체감·생동감·부분 광원). 게임플레이 데이터 아님. 색은 Hell Gothic(흑철·지옥불·독액·뼈색) 기준. 위치는 map.json props 앵커(id) 또는 월드 좌표.",
+  "ambient": [
+    0.26,
+    0.28,
+    0.36
+  ],
+  "player_light": {
+    "color": [
+      1.0,
+      0.7,
+      0.46
+    ],
+    "radius": 560,
+    "energy": 1.05,
+    "shadow": true,
+    "flicker": [
+      0.04,
+      7.0
+    ]
+  },
+  "lights": [
+    {
+      "id": "camp_fire",
+      "prop": "m_c1camp",
+      "offset": [
+        0,
+        -10
+      ],
+      "color": [
+        1.0,
+        0.46,
+        0.16
+      ],
+      "radius": 640,
+      "energy": 1.55,
+      "shadow": true,
+      "flicker": [
+        0.16,
+        11.0
+      ]
+    },
+    {
+      "id": "camp_glow",
+      "prop": "m_c1camp",
+      "offset": [
+        0,
+        -10
+      ],
+      "color": [
+        1.0,
+        0.62,
+        0.3
+      ],
+      "radius": 240,
+      "energy": 0.9,
+      "flicker": [
+        0.22,
+        17.0
+      ]
+    },
+    {
+      "id": "altar_ritual",
+      "prop": "m_c1altar",
+      "offset": [
+        0,
+        -40
+      ],
+      "color": [
+        0.95,
+        0.1,
+        0.12
+      ],
+      "radius": 660,
+      "energy": 0.72,
+      "pulse": [
+        0.22,
+        1.3
+      ]
+    },
+    {
+      "id": "penta_floor",
+      "prop": "m_penta_circle",
+      "offset": [
+        0,
+        0
+      ],
+      "color": [
+        0.85,
+        0.08,
+        0.1
+      ],
+      "radius": 320,
+      "energy": 0.45,
+      "pulse": [
+        0.3,
+        1.3
+      ]
+    },
+    {
+      "id": "skull_totem_eyes",
+      "prop": "m_skull_totem",
+      "offset": [
+        0,
+        -70
+      ],
+      "color": [
+        1.0,
+        0.18,
+        0.1
+      ],
+      "radius": 180,
+      "energy": 1.0,
+      "pulse": [
+        0.25,
+        2.1
+      ]
+    },
+    {
+      "id": "glow_flower",
+      "prop": "m_fyellow",
+      "offset": [
+        0,
+        0
+      ],
+      "color": [
+        1.0,
+        0.86,
+        0.36
+      ],
+      "radius": 260,
+      "energy": 1.1,
+      "pulse": [
+        0.15,
+        0.9
+      ]
+    },
+    {
+      "id": "toxic_pool_n",
+      "prop": "m_c1pool",
+      "offset": [
+        0,
+        0
+      ],
+      "color": [
+        0.38,
+        0.95,
+        0.3
+      ],
+      "radius": 600,
+      "energy": 0.55,
+      "pulse": [
+        0.18,
+        0.6
+      ]
+    },
+    {
+      "id": "toxic_growth_n",
+      "prop": "m_c1gtoxic",
+      "offset": [
+        0,
+        -20
+      ],
+      "color": [
+        0.45,
+        1.0,
+        0.32
+      ],
+      "radius": 380,
+      "energy": 0.42,
+      "pulse": [
+        0.2,
+        0.75
+      ]
+    },
+    {
+      "id": "toxic_pit_s",
+      "prop": "pit_poison",
+      "offset": [
+        0,
+        0
+      ],
+      "color": [
+        0.38,
+        0.95,
+        0.3
+      ],
+      "radius": 560,
+      "energy": 0.5,
+      "pulse": [
+        0.2,
+        0.65
+      ]
+    },
+    {
+      "id": "toxic_growth_s",
+      "prop": "m_c1gtoxicf",
+      "offset": [
+        0,
+        -20
+      ],
+      "color": [
+        0.45,
+        1.0,
+        0.32
+      ],
+      "radius": 360,
+      "energy": 0.42,
+      "pulse": [
+        0.2,
+        0.8
+      ]
+    },
+    {
+      "id": "cocoon_sick",
+      "prop": "m_c1cocoon",
+      "offset": [
+        0,
+        -30
+      ],
+      "color": [
+        0.8,
+        0.86,
+        0.42
+      ],
+      "radius": 320,
+      "energy": 0.6,
+      "pulse": [
+        0.2,
+        0.5
+      ]
+    },
+    {
+      "id": "corpse_tree_heart",
+      "prop": "m_c1tree",
+      "offset": [
+        0,
+        -120
+      ],
+      "color": [
+        0.95,
+        0.16,
+        0.14
+      ],
+      "radius": 620,
+      "energy": 0.85,
+      "pulse": [
+        0.3,
+        1.05
+      ]
+    },
+    {
+      "id": "pods_n1",
+      "prop": "m_c1spod",
+      "nth": 0,
+      "offset": [
+        0,
+        -10
+      ],
+      "color": [
+        0.95,
+        0.3,
+        0.2
+      ],
+      "radius": 200,
+      "energy": 0.7,
+      "pulse": [
+        0.3,
+        1.4
+      ]
+    },
+    {
+      "id": "pods_n2",
+      "prop": "m_c1spod",
+      "nth": 1,
+      "offset": [
+        0,
+        -10
+      ],
+      "color": [
+        0.95,
+        0.3,
+        0.2
+      ],
+      "radius": 200,
+      "energy": 0.7,
+      "pulse": [
+        0.3,
+        1.2
+      ]
+    }
+  ],
+  "tree_glow": {
+    "textures": [
+      "rotforest_tree_01.png",
+      "rotforest_tree_02.png",
+      "rotforest_tree_03.png",
+      "rotforest_tree_04.png"
+    ],
+    "color": [
+      0.92,
+      0.18,
+      0.14
+    ],
+    "radius_scale": 0.55,
+    "energy": 0.55,
+    "pulse": [
+      0.35,
+      1.1
+    ]
+  },
+  "spawn_hole_light": {
+    "color": [
+      0.62,
+      0.1,
+      0.34
+    ],
+    "radius_base": 220,
+    "radius_per_size": 160,
+    "energy": 0.9,
+    "pulse": [
+      0.3,
+      0.8
+    ]
+  },
+  "sway": {
+    "textures": [
+      "rotforest_tree_01.png",
+      "rotforest_tree_02.png",
+      "rotforest_tree_03.png",
+      "rotforest_tree_04.png",
+      "prop_corpsetree.png",
+      "hang_cage.png",
+      "prop_cocoon.png"
+    ],
+    "world_px": 5.0
+  },
+  "occluder_radius_scale": 0.7,
+  "spores": {
+    "amount": 38,
+    "lifetime": 10.0,
+    "color": [
+      0.74,
+      0.86,
+      0.58,
+      0.22
+    ],
+    "size": [
+      7.0,
+      14.0
+    ]
+  },
+  "embers": {
+    "prop": "m_c1camp",
+    "amount": 34,
+    "lifetime": 2.6,
+    "color": [
+      1.0,
+      0.55,
+      0.22,
+      0.9
+    ]
+  },
+  "prop_shadow": {
+    "tint": [
+      0.0,
+      0.0,
+      0.02,
+      0.52
+    ],
+    "offset": [
+      0.08,
+      0.06
+    ],
+    "scale": 1.0,
+    "blur_px": 12.0,
+    "skip_textures": [
+      "penta_circle.png",
+      "pit_poison.png",
+      "prop_pool.png",
+      "frozen_bones.png",
+      "corpse.png"
+    ],
+    "upright_textures": [
+      "skull_totem.png",
+      "hang_cage.png",
+      "bone_arch.png"
+    ]
+  },
+  "foreground": {
+    "enabled": true,
+    "textures": [
+      "rotforest_tree_01.png",
+      "rotforest_tree_02.png",
+      "rotforest_tree_03.png",
+      "rotforest_tree_04.png"
+    ],
+    "every": 2,
+    "push_out": 720,
+    "size": [
+      680,
+      900
+    ],
+    "tint": [
+      0.015,
+      0.012,
+      0.02,
+      0.82
+    ],
+    "blur_px": 16.0,
+    "parallax": 0.12
+  },
+  "region_ambient": [
+    [
+      0.22,
+      0.21,
+      0.31
+    ],
+    [
+      0.23,
+      0.26,
+      0.37
+    ],
+    [
+      0.21,
+      0.28,
+      0.33
+    ],
+    [
+      0.28,
+      0.25,
+      0.28
+    ]
+  ],
+  "lightning": {
+    "region": 1,
+    "every": [
+      7.0,
+      16.0
+    ],
+    "duration": 0.42,
+    "color": [
+      0.55,
+      0.62,
+      0.85
+    ],
+    "strength": 0.55
+  },
+  "light_shafts": {
+    "color": [
+      0.88,
+      0.84,
+      0.74,
+      0.17
+    ],
+    "angle_deg": -32.0,
+    "dust": 14,
+    "shafts": [
+      [
+        3700,
+        7150,
+        272,
+        1000
+      ],
+      [
+        4420,
+        7000,
+        208,
+        820
+      ],
+      [
+        3900,
+        6500,
+        176,
+        700
+      ],
+      [
+        2300,
+        5500,
+        240,
+        900
+      ],
+      [
+        5400,
+        3600,
+        224,
+        860
+      ],
+      [
+        3300,
+        3000,
+        240,
+        900
+      ],
+      [
+        5600,
+        2200,
+        192,
+        760
+      ],
+      [
+        2200,
+        3000,
+        224,
+        820
+      ]
+    ],
+    "pool_color": [
+      0.8,
+      0.82,
+      0.88
+    ],
+    "pool_energy": 0.5
+  },
+  "fx_light_limit": 18,
+  "fx_lights": {
+    "enemy_projectile_fire.gd": {
+      "color": [
+        1.0,
+        0.48,
+        0.18
+      ],
+      "radius": 230,
+      "energy": 0.95
+    },
+    "enemy_projectile_lightning.gd": {
+      "color": [
+        0.62,
+        0.76,
+        1.0
+      ],
+      "radius": 230,
+      "energy": 0.95
+    },
+    "enemy_projectile_ice.gd": {
+      "color": [
+        0.52,
+        0.86,
+        1.0
+      ],
+      "radius": 200,
+      "energy": 0.8
+    },
+    "enemy_projectile_holy.gd": {
+      "color": [
+        1.0,
+        0.92,
+        0.62
+      ],
+      "radius": 220,
+      "energy": 0.85
+    },
+    "enemy_projectile_dark.gd": {
+      "color": [
+        0.58,
+        0.26,
+        0.8
+      ],
+      "radius": 190,
+      "energy": 0.7
+    },
+    "crescent.gd": {
+      "color": [
+        0.86,
+        0.88,
+        1.0
+      ],
+      "radius": 260,
+      "energy": 0.7
+    },
+    "hit_effect.gd": {
+      "color": [
+        1.0,
+        0.9,
+        0.76
+      ],
+      "radius": 170,
+      "energy": 0.85
+    }
+  }
+}
