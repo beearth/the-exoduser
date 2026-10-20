@@ -26,7 +26,7 @@ func run() -> void:
   check(row.etype==8+i and row.unit=="DEMO11-"+str(58+i),"unit identity "+str(i))
   check(row.site_ready and row.site.site_id=="B-marker","adapter Marker candidate "+str(i))
   check(row.site.position==marker.global_position+Vector2(10,0),"provider receipt only "+str(i))
-  check(row.status=="NOT_READY" and row.factory_reason=="native_type_ai_not_ported" and not row.actor_registered,"current actual factory rejection "+str(i))
+  check(row.status=="NOT_READY" and row.factory_reason=="native_type_ai_not_ported" and not row.actor_registered and row.extension_registered,"legacy factory unchanged / B extension present "+str(i))
  check(main.world.get_enemies().size()==before and current_g._totalSpawned==total,"no actor/denominator fabrication")
  var bad: Dictionary = subject.inspect(main,"B",{8:-1,9:10.0,10:10.0,11:10.0,12:10.0})
  check(not bad.rows[0].site_ready and bad.rows[1].site_ready and bad.rows.size()==5,"one rejection continues next species")

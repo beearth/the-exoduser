@@ -677,3 +677,20 @@ func _finite_json(value: Variant) -> bool:
 	elif value != null and not value is String and not value is bool:
 		return false
 	return true
+
+# DEMO11-etype-b registration extension. Old registration and consumer unchanged.
+const DEMO11_ETYPE_B_REGISTRATIONS = {
+	8:preload("res://scripts/native_demo11_etype_b_actor.gd"),
+	9:preload("res://scripts/native_demo11_etype_b_actor.gd"),
+	10:preload("res://scripts/native_demo11_etype_b_actor.gd"),
+	11:preload("res://scripts/native_demo11_etype_b_actor.gd"),
+	12:preload("res://scripts/native_demo11_etype_b_actor.gd")}
+func create_demo11_etype_b(runtime: Dictionary, world: Node2D) -> Dictionary:
+	if not DEMO11_ETYPE_B_REGISTRATIONS.has(runtime.get("etype")) or runtime.get("ai_profile")!="demo11_group_b_v1":
+		return {"ready":false,"reason":"outside_B_registration"}
+	var actor: CharacterBody2D=DEMO11_ETYPE_B_REGISTRATIONS[runtime.etype].new()
+	actor.configure(runtime,world)
+	if not actor.is_native_registry_ready(): actor.free();return {"ready":false,"reason":"B_profile_rejected"}
+	var result: Dictionary=world.register_summoned_enemy(actor)
+	if not result.get("valid",false): actor.free();return {"ready":false,"reason":"B_world_registration_rejected","errors":result.get("errors")}
+	return {"ready":true,"registered":true,"actor":actor,"full_combat_ready":false}

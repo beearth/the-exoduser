@@ -29,8 +29,8 @@ func inspect(main: Node, group: String, radii: Dictionary) -> Dictionary:
   var reason: String = _factory.unsupported_reason({"etype":etype})
   var row: Dictionary = {"unit":UNITS[i],"etype":etype,"status":"NOT_READY",
    "site_ready":site.get("ready",false),"site":site,"factory_reason":reason,
-   "actor_registered":false,"damage_tested":false,"source":SOURCE[etype].duplicate(true)}
-  row["reason"] = "marker:"+str(site.get("reason")) if not row.site_ready else (reason if not reason.is_empty() else "B_special_state_owner_not_bound")
+   "actor_registered":false,"extension_registered":FACTORY.DEMO11_ETYPE_B_REGISTRATIONS.has(etype),"damage_tested":false,"source":SOURCE[etype].duplicate(true)}
+  row["reason"] = "marker:"+str(site.get("reason")) if not row.site_ready else ("B_source_selected_handoff_required" if row.extension_registered else reason)
   rows.append(row) # A refusal must not suppress inspection of the remaining four.
  return {"ready":false,"status":"NOT_READY","rows":rows,"actors_registered":0,
   "clock_owned":false,"shared_helper_created":false,"integration_candidate":"group_A",
