@@ -1,6 +1,6 @@
 extends Node
-## SND-07 isolated sample backend. Main/World/Player/State/기존 attack backend 연결0.
-## 자체 active 집합/버스만 소유. 단일 게임 공통48상한·master EQ/comp는 후속 조정 대상.
+## SND-07 sample backend; DEMO11-40 connects Main audio events via its consumer.
+## Own active set/bus. DEMO11-40 current combat samples share it; native DSP parity unverified.
 const ADMISSION = preload("res://port_modules/sound_source/node_admission.gd")
 const POLICY = preload("res://port_modules/sound_source/policy.gd")
 var _admission: RefCounted
@@ -41,6 +41,17 @@ func configure(catalog: RefCounted, load_stream: Callable, sfx_volume: Callable,
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	_configured = true
 	return {"status": "READY"}
+
+# DEMO11-40: external mix owns its destination; this backend keeps its own bus.
+func route_output(destination: String) -> bool:
+	if not _configured or AudioServer.get_bus_index(destination)<0 or destination==_bus: return false
+	var source: int=AudioServer.get_bus_index(_bus)
+	AudioServer.move_bus(source,-1)
+	AudioServer.set_bus_send(AudioServer.get_bus_index(_bus),destination)
+	return true
+
+func stop_all(reason: String="consumer_stop") -> void:
+	for id in _voices.keys(): _cleanup(id,reason)
 
 func install_stream(key: String, stream: AudioStream) -> Dictionary:
 	if not _configured or _lost or not _valid_stream(stream): return {"status": "NOT_READY", "reason": "invalid_stream_or_owner"}

@@ -14,6 +14,8 @@ var distance_travelled = 0.0
 var birth_position = Vector2.ZERO
 var native_frame = 0.0
 var _ended = false
+var native_expiry_policy: Callable
+var native_homing_enabled := true
 var _sprite: Sprite2D
 var _previous_player_position = Vector2.ZERO
 
@@ -61,27 +63,9 @@ func _ready() -> void:
 	_update_visual()
 
 func _physics_process(delta: float) -> void:
-	if _ended:
-		return
-	var ticks = delta * 60.0
-	native_frame += ticks
-	life_ticks -= ticks * float(data["life_decay_per_tick"])
-	if life_ticks <= 0.0:
-		_end("lifetime")
-		return
-	if is_instance_valid(player) and life_ticks > float(data["homing_until_life"]):
-		var desired = (player.global_position - global_position).angle()
-		var difference = wrapf(desired - heading.angle(), -PI, PI)
-		var maximum_turn = float(data["homing_radians_per_tick"]) * ticks
-		heading = Vector2.from_angle(heading.angle() + clampf(difference, -maximum_turn, maximum_turn))
-	var before = global_position
-	velocity = heading * speed
-	global_position += velocity * delta
-	distance_travelled += before.distance_to(global_position)
-	z_index = clampi(int(global_position.y / 4.0) + 1, -2000, 4000)
-	if is_instance_valid(world) and world.is_world_blocked(global_position):
-		_end("wall")
-		return
+	var before: Vector2 = global_position
+	if not advance_native_projectile_motion(delta): return
+
 	if is_instance_valid(player):
 		var current = player.global_position
 		var distance = minf(_segment_distance(before, global_position, current), global_position.distance_to(_previous_player_position))
@@ -100,6 +84,35 @@ func _physics_process(delta: float) -> void:
 			return
 		_previous_player_position = current
 	_update_visual()
+
+## DEMO11-35: same ordinary motion/expiry owner, callable before PC contact.
+## Legacy _physics_process still executes its original protected block unchanged.
+func advance_native_projectile_motion(delta: float) -> bool:
+	if _ended:
+		return false
+	var ticks = delta * 60.0
+	native_frame += ticks
+	life_ticks -= ticks * float(data["life_decay_per_tick"])
+	if life_ticks <= 0.0:
+		if native_expiry_policy.is_valid() and native_expiry_policy.call(self) == true:
+			life_ticks = 1.0
+		else:
+			_end("lifetime")
+			return false
+	if is_instance_valid(player) and native_homing_enabled and life_ticks > float(data["homing_until_life"]):
+		var desired = (player.global_position - global_position).angle()
+		var difference = wrapf(desired - heading.angle(), -PI, PI)
+		var maximum_turn = float(data["homing_radians_per_tick"]) * ticks
+		heading = Vector2.from_angle(heading.angle() + clampf(difference, -maximum_turn, maximum_turn))
+	var before = global_position
+	velocity = heading * speed
+	global_position += velocity * delta
+	distance_travelled += before.distance_to(global_position)
+	z_index = clampi(int(global_position.y / 4.0) + 1, -2000, 4000)
+	if is_instance_valid(world) and world.is_world_blocked(global_position):
+		_end("wall")
+		return false
+	return true
 
 func _segment_distance(start: Vector2, end: Vector2, point: Vector2) -> float:
 	var line = end - start
