@@ -451,6 +451,11 @@ func _ready() -> void:
 			player.process_mode=Node.PROCESS_MODE_PAUSABLE
 			world.process_mode=Node.PROCESS_MODE_PAUSABLE
 		_demo11_session.start_lifecycle(self)
+
+	_native_salvage_panel=preload("res://scripts/native_salvage_panel.gd").new()
+	_native_salvage_panel.configure(self)
+	add_child(_native_salvage_panel)
+
 	print("GODOT_FIRST_PLAYABLE_READY ", JSON.stringify({"runtime": Engine.get_version_info()["string"], "scene": "res://scenes/main.tscn", "viewport": get_viewport_rect().size, "player_spawn": player.position}))
 
 func _install_native_story_intro_once() -> void:
@@ -3212,6 +3217,25 @@ func bind_native_spawn_stage_provider(provider: Node2D) -> Dictionary:
 	if result.get("ready")==true:native_stage_spawn_adapter=adapter
 	return result
 
+
+# DEMO11-28: all consumers converge on State.commit_native_salvage.
+func request_native_salvage(refs: Array, junk_only: bool = false) -> Dictionary:
+	if not is_instance_valid(source_state): return {"applied":false,"reason":"state_absent"}
+	return _finish_native_salvage(source_state.commit_native_salvage(self,refs,junk_only))
+func try_native_auto_salvage_pickup(drop: Dictionary, pickup_failed: bool = false) -> Dictionary:
+	if not is_instance_valid(source_state): return {"applied":false,"reason":"state_absent"}
+	return _finish_native_salvage(source_state.commit_native_salvage(self,[],false,drop,pickup_failed))
+func _finish_native_salvage(receipt: Dictionary) -> Dictionary:
+	if receipt.get("applied")==true:
+		_source_l_eq_cache=null # invalidate existing cache; never rebuild equipped stats here
+		if is_instance_valid(_native_salvage_panel): _native_salvage_panel.refresh()
+		# Storage is a separate owner. Never manufacture a successful save ACK.
+		receipt.persistence={"status":"NOT_CONNECTED"}
+		if has_method("save_native_demo11_current"):
+			var persisted: Variant=call("save_native_demo11_current")
+			receipt.persistence=persisted if persisted is Dictionary else {"status":"UNKNOWN"}
+	return receipt
+var _native_salvage_panel: CanvasLayer
 # PC-RUNTIME-STATS (2026-10-21) — runtime applyStats recalculation entry.
 # The pre-Tree initialization dispatcher stays single-use; this separate owner
 # is created on first request for this actual Main and reuses the original

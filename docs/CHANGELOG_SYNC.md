@@ -184,6 +184,20 @@
 | 제출 | 원로그 _out/demo11-09/, Godot gate/격리/override0. 정상훅·자기branch push/remote/DONE 뒤 WT제거, R 불변 |
 
 
+## 2026-10-21 DEMO11-28 — 눈 검수 RETOUCH·최신 main merge
+
+- 같은 branch884ddc66에 origin/main0138c5bb 정상 merge. Main/State의 양쪽 독립 추가 절을 보존, 전투/PC owner 수정0. 번역 목록 main prefix 바이트 보존 + 자기 절 CRLF 추가, 기존 인트로/다른 작업 번역 보존.
+- 미연결 자동 분해 섹션/개발 대기 문구 제거. 이름은 뼈색, G14350 원본 palette는 G50299식3px 왼쪽 희귀도 표식+등급명에 재사용. ‘녹슨’ tier접두사는 rarity와 무관; 실제 시작 bag은 rarity1/고급, 기본 장착은 rarity0/일반. docs7 유니크 색 과거#ff4466 셀을 현재 source#8e55e9로 정합. 확인 대화상자 변경0, 수식/가격/writer 변경0.
+- 신규35/0·가격68/0·INV142/0 합계245/0·ERROR0·기존 Camera WARN1, 캡처 별도22/0·기존 Camera WARN1. 관련 각1회·실창3장+1x9크롭·원로그는 `_out/demo11-28/retouch/`. 화면 비교 자료 준비, 최종 눈 검수 대기. [RETOUCH 보고서](engine/orders/reports/demo11-28_RETOUCH_REPORT.md), docs2_7/3.1/번역/7 동기화.
+
+## 2026-10-21 DEMO11-28 — 분해 policy→단일 State writer·INV/cache/UI
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준·범위 | main ac3764bfe. 기존 native_meta_salvage_policy 0줄, Main +23/State +41만 접점 추가. 잠금/장착/identity 재검증·단일 입금/제거/picked, G키 Hell Gothic UI·번역3338–3366 |
+| 검증 | 실제 Main29/0·경계6/0·입력6/0·기존 policy68/0·INV142/0 각1회, 합계251/0/ERROR0·기존Camera WARN2. 최종 GUI/crop16/0·WARN1 별도. 초기 시각 RETOUCH 보존 |
+| 인계 | [보고서](engine/orders/reports/demo11-28_REPORT.md), _out/demo11-28/captures/ 전체3+1x9. 눈 검수·자연 줍기/저장 소비자 대기. R/First 불변·정상 훅·자기branch push/remote/DONE 후 자기WT 제거 |
+
 ## 2026-10-21 DEMO11-18 일반 데모 합체·흡수·성급·되돌리기 원장
 
 | 항목 | 구현·검수 근거 |
