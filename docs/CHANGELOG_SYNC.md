@@ -129,6 +129,40 @@
 | Main 한계 | 실제 P/G/INV/STATS/PASSIVES/rawgrit/reward7reader를 소비했으나 save_globals owner 부재로 정확히HOLD. 장착17·rawgrit ready=true/raw0 관측. 부분값을 full save로 쓰거나 부트상수로 채우지 않음. 저장/복원/형식/Q/E·2_3 보호 |
 | 실행·제출 | 전역Godot count2이상이면30초대기·이 작업은순차1개. 신규격리EXODUSER-sv-collect-Isolated-20261020, 회귀각상수, 매종료override0byte. 정상훅·자기경로 stage·자기branch만push. [보고서](engine/orders/reports/sv-collect_REPORT.md), 원로그~/exoduser-wt/_out/sv-collect/, 최종branch/SHA/수치DONE.txt |
 
+## 2026-10-20 CH1-02 map8필드 승인 후 정적 환경 동기화
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 승인 / 상태 | 맥북총괄이 map.json tree texture/file8필드와 범위출처 수정을 명시 허용. c8d5b8a4의 차단 중 승인된 정적 범위 구현 완료. World 원본 Image 등록표4건은 공용0줄 규칙으로 추가 BLOCKED |
+| 파이프라인 | 새 sync_ch1_stage0_assets.mjs가 byte동일 기존export_world를 L에서 실행, 최신 원본계약/전체깊은비교 뒤8필드+source.asset_updates만 생성 반영. 기존 adapter/export_world0줄, source.root/game_sha/P3-001 collider_updates 보존. 재추출 후보의 지형/배치/충돌 차이 거부 |
+| 실제 diff | map.json props4..7 texture/file8개: 원본 game17551–17554의05/11/06/07. 다른 제품 JSON 필드0변경. 원본92PNG와 byte/hash 일치, 차이42청크+새나무4만 반영·해당 import4/새테스트UID1 포함. tile40000/wall292/collider19/props36/chunks64·pit80/58/+7 보존 |
+| 검수 | 신규 Node6/0·Godot189/0, 실GPU8카메라 전후16PNG·445/0. CH1-01 Node9/0·Godot63/0(현재차이0+옛fixture차이4검출유지), P3-001 Node6/0, contracts5그룹/0·P3002실창298/0·P3003 43/0·encounter3그룹/0. 맵Node28/9 동일·새실패0 |
+| 실패 / 한계 | 첫신규Godot158/1은 Main전용API 검사 가정 수정 후189/0. P3002 headless298/0이어도 dummy ERROR1 보존, 실제GPU영향suite 재검증298/0·ERROR0. 기존 ObjectDB8누수/Camera2D경고 잔존. VISUAL RETOUCH; 동적living/전체게임·source mapping 완성 주장0 |
+| 추가 BLOCKED | world.gd471–474 canonical src 및703–706 native path가옛값이라 source-image4개 NOT_READY. 실제 Sprite는최신texture소비. 이공용8행접점은무수정,후속소유변경필요. full_source_mapping_ready=false 유지 |
+| 보호 / 상세 | 공용6+adapter/export_world0줄, baseline239해시동일(map만승인변경), R·원본에셋·Q/E·세이브 보존. [CH1-02 보고서](engine/orders/reports/ch1-02_REPORT.md), ~/exoduser-wt/_out/ch1-02/. 매Godot전2이상30초대기·suite상수격리·override finally0byte. 자기branch만push·main/force/전체add/배포0 |
+
+## 2026-10-20 CH1-02 정적 환경 동기화 공유 map 수정 BLOCKED
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 기준 / 의존 | codex/ch1-02-20261020, fetch main284d7faf. CH1-01이 main에 없어 지정677b86fa 끝에서 새 worktree 분기. 제품 구현 완료가 아닌 BLOCKED 조사 보고 |
+| 차단 | map.json:1의 props4..7 texture/metadata.file8필드 및 범위 출처 수정이 필수지만 최신 사용자 지시가 공유 파일 수정을 금지. 원본 game.html17551–17554의 나무05/11/06/07,18138의 배치 근거를 보고서에 기록. 공유·공용·타 담당 제품0줄 |
+| 읽기 검수 | 원exporter byte동일 L복사→격리 재추출92PNG. source/격리 byte동일92, 기존제품과46동일/42청크차이/새나무4누락. tile40000·wall292·collider19·props36·chunks64 및 배치/충돌 동일. 전체export의 source.root/game_sha 교체·P3 collider_updates 누락을 채택하지 않음 |
+| 최종 회귀 | CH1-01 Node9/0·Godot62/0, contracts5그룹/0·p3002 298/0·p3003 43/0·encounter3그룹/0. 맵Node28통과/9실패로 기준선 동일. 첫import -11 및 미완성캐시 회귀 실패 보존 후 import복구·영향4suite 재실행. ObjectDB8누수 경고 잔존 |
+| 격리 / 상태 | Godot 전 프로세스 확인·2이상이면30초 대기, suite별 기존상수/작업 격리명 존중·override finally0byte. 신규 CH1-02 테스트·PNG제품반영·8카메라 미실행. VISUAL FAIL=인수 증거 없음 |
+| 상세 | [CH1-02 BLOCKED 보고서](engine/orders/reports/ch1-02_REPORT.md), 원로그 ~/exoduser-wt/_out/ch1-02/. R·원본bytes·세이브·Q/E 보존, 자기branch docs만 push·main/force/배포0 |
+
+## 2026-10-20 CH1-01 si0 읽기 전용 원본 snapshot·검증 모듈
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 범위 / 기준 | `codex/ch1-01-20261020`, main `284d7faf49295b2f5061937a47ce96038032ed3c`. 기존 worktree 미커밋 신규 파일을 보존해 재개. 새 exporter/data/순수 producer/Node·Godot 테스트와 해당 UID만 구현 |
+| 원본 / 데이터 | game SHA `4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4`. 원 AST·selector·genFromTemplate·start·region을 독립 VM에서 발췌 실행. schema exoduser.ch1-area-source.v1, si0/T40/200²/40000타일, START4020/7420, hand36/meta77/deco110, holes14/168, 지역23/60/53/32 |
+| API / 경계 | read_area·validate_area·compare_stage0_map 순수 API. READY는 source_snapshot_only, NOT_READY는 reason/raw 동일 참조·value 없음. present undefined는 별도 mask. 기존 map과 tile/저작 배치 동일, 나무 file4차이 보존; collider/실효 좌표/최종 MAP_OBJS 미관측 |
+| 검수 | 신규 Node9/0·Godot62/0. contracts 전체5그룹/0, p3002 298/0·SKIP0, p3003 43/0, encounter 전체3그룹/0. 맵 Node37중28통과/9실패로 기존 실패9개 그대로. p3002 ObjectDB8누수 경고 및 Camera2D 경고는 미해결 기록 |
+| 격리 / 보호 | 매 Godot 실행 전 프로세스 수 확인, 최초2개→30초 대기 후1개에서 실행. 신규 격리명 EXODUSER-ch1-01-Isolated-20261020, 기존 suite 상수 존중. override 매회 finally0byte. 보호240파일 해시 동일, R·공용6·맵공유·원본PNG·Q/E·세이브·타 담당 제품0줄 |
+| 상세 / 한계 | [CH1-01 보고서](engine/orders/reports/ch1-01_REPORT.md), 원로그 `~/exoduser-wt/_out/ch1-01/`. runtime owner 설치·시각/전체 전투 인수 없음. VISUAL FAIL은 검수 증거 부재 판정. main push·force·배포0 |
+
 ## 2026-10-20 QA-002 테스트 결정성·종료·조명 하니스
 
 | 항목 | 변경·검수 근거 |
