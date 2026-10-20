@@ -1,5 +1,17 @@
 ## 2026-10-20 BC2-07 shieldBash2 독립 wind/dash/contact 계산
 
+## 2026-10-20 EC4-02 4장 catalog·23필드 초기 literal projection
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준·의존 | fetch main3886513f + EC4-01 61f3ad9c 정상merge=b74a7d3e. EC3-02 fb8e80d0은이미main포함/명시merge up-to-date. rebase0, 실제EC2-02 Constructor.Draws·EC3-02 slice API 재사용 |
+| 원본·범위 | G30823–30920 catalog10·G31300–31309의23필드만. stage14..20/etype50..59·모든type angle1draw·매58buffer fresh/나머지null·speed0분기. HP/elite/mods/aura/전체actor복제0 |
+| 검증 | 원본JS1,750사례·신규61,739/0, EC4선택22,364/0·EC3catalog12,602/0·선택10,234/0·EC2constructor159,902/0·선택7,483/0·factory3그룹/0·contracts5그룹/0. ERROR/WARNING/SKIP0 |
+| 검출·보호 | 변이5종10040/1575/1584/1/176실패검출→byte복원→최종재실행. UTF-8파일oracle/명시node인자/진단join·단정별행근거. 기존1,620파일동일·공용export2/Main/State/저장/다른담당/R0줄 |
+| 제출 | [EC4-02 보고서](engine/orders/reports/ec4-02_REPORT.md), 원로그 ~/exoduser-wt/_out/ec4-02/. 매Godot pgrep/2이상30초대기·각격리명·정상훅·자기branch push/remoteSHA/DONE뒤자기worktree제거. 실actor/공용연결HOLD |
+
+## 2026-10-20 EC4-01 4장 유형·원소 선택 순수 정책
+
 | 항목 | 현재 정확 계약 |
 |---|---|
 | 기준·의존 | 최신main3886513f5+인수BC2-06 ef665f40 정상mergebaa75b16. chapter/context·BC07 packet/contact recipe 재사용, 기존제품/테스트0줄 |
@@ -19,6 +31,13 @@
 | 제출 | [BC2-06 보고서](engine/orders/reports/bc2-06_REPORT.md), 원로그~/exoduser-wt/_out/bc2-06/. node-bin/source-game·UTF-8자기fixture·매Godot pgrep/30초gate·격리override종료0byte. 자기branch push/원격일치/DONE후자기WT제거 |
 
 
+
+| 기준 / 범위 | 최신main249c26fad 직접분기, mainEC3-01/EC2-01 API·하니스형식재사용. 새policy/test·UID2·보고서/이절6파일만. 미병합EC2-03..06/EC3-02 반입0, 기존제품·공용·다른담당·저장·원본·R 변경0 |
+| 계약 / 원본 | G16633–16666/30976–31022, si14..20·31풀/총165/R9·36/비R22·129. strict .5·원CDF기각12/fallback2·F .45+6원소·주입RNG/NOT_READY. actor/HP/정예/World연결0 |
+| 원문 대조 | 원본JS2,814사례·63golden·각ULP경계·소비binary64/잔여tail/sentinel 정확대조. UTF-8파일oracle·한글emoji·모든22,364단정의행근거JSONL. --node-bin/진단join, 공용export2파일무수정 |
+| 검증 | 신규22,364/0. EC2선택7,483/0·constructor159,902/0·EC3선택10,234/0·factory3그룹/0·contracts5그룹/0. 최종ERROR/WARNING0. 변이5종에서347/2499/112/6/154실패검출후byte복원 |
+| 보호 / 제출 | 기존1,607파일byte동일. Godot13launch 매회count1·2이상30초대기, 지정/기존상수격리·override복원. [EC4-01 보고서](engine/orders/reports/ec4-01_REPORT.md), 원로그 ~/exoduser-wt/_out/ec4-01/. 자기branch push·원격SHA/DONE뒤자기worktree제거 |
+
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -33,6 +52,7 @@
 | 의존 | main EC2-01/02 포함. 원격미병합EC2-03→06·EC3-01/02와CH3문서20b2139a를읽기참조. 마감신규EC3-02 fb8e80d0의Draws실재사용/38slice 경계반영, 임의merge/actor지원승격0 |
 | 순서안 / 관측 | EC4-01~14, 첫단위는API·가드·원문golden·RNG/UTF-8 oracle·회귀·공용0줄지시서. 원문선택63/CDF구간31/HP산술24/AI·death명시fixture17, 제품테스트PASS합산0 |
 | 제출 | [CH4 적 추적](engine/FDG_SOURCE_TRACE_ENEMIES_CH4_20261020.md), 원로그 ~/exoduser-wt/_out/trace-enemies-ch4/. 독립독자검토·정적행/표/링크대조, 정상훅·자기branch push·원격SHA/DONE후자기worktree제거 |
+<<<<<<< HEAD
 
 ## 2026-10-20 BC3-01r 3장 보스 읽기 전용 catalog
 
@@ -73,6 +93,7 @@
 | 원문 대조 | 원본JS2,814사례·63golden·각ULP경계·소비binary64/잔여tail/sentinel 정확대조. UTF-8파일oracle·한글emoji·모든22,364단정의행근거JSONL. --node-bin/진단join, 공용export2파일무수정 |
 | 검증 | 신규22,364/0. EC2선택7,483/0·constructor159,902/0·EC3선택10,234/0·factory3그룹/0·contracts5그룹/0. 최종ERROR/WARNING0. 변이5종에서347/2499/112/6/154실패검출후byte복원 |
 | 보호 / 제출 | 기존1,607파일byte동일. Godot13launch 매회count1·2이상30초대기, 지정/기존상수격리·override복원. [EC4-01 보고서](engine/orders/reports/ec4-01_REPORT.md), 원로그 ~/exoduser-wt/_out/ec4-01/. 자기branch push·원격SHA/DONE뒤자기worktree제거 |
+
 
 ## 2026-10-20 TRACE-BOSS-CH3 3장 보스 원본 추적·작은 이식 단위
 
