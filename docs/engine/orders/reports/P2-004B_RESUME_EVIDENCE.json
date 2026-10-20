@@ -1,0 +1,235 @@
+{
+  "task": "P2-004b",
+  "baseline": "f1df29a86dc3966bab87a7f4910ae6819e167294",
+  "branch": "codex/p2-004b-pc-20261020",
+  "runtime": "4.7.2.stable.official.ed1daf0bf",
+  "source": {
+    "passed": 171,
+    "failed": 0,
+    "tier_checks": 342,
+    "mutation_checks": 3,
+    "mode": "source-parity (not Godot/runtime)",
+    "catalog": "file:///G:/exoduser-wt/codex-p2-004b/godot/scripts/native_pet_dialogue_catalog.gd",
+    "sha256": "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4"
+  },
+  "checks": [
+    {
+      "folder": "run1",
+      "test": "test_p2004a_pets",
+      "assertions": 17,
+      "failures": 5,
+      "fallback_paths_used": false,
+      "forced_actor_fields": 2,
+      "groups": [
+        {
+          "assertions": 11,
+          "failures": 5,
+          "group": "pets_spawn_and_tut_start"
+        },
+        {
+          "assertions": 6,
+          "failures": 0,
+          "group": "combat_counters_and_iris"
+        }
+      ],
+      "skipped": [],
+      "script_errors": 0,
+      "camera_warning": true
+    },
+    {
+      "folder": "run1",
+      "test": "test_p2004b_pet_dialogue",
+      "assertions": 822,
+      "failures": 0,
+      "fallback_paths_used": false,
+      "groups": [
+        {
+          "assertions": 89,
+          "failures": 0,
+          "group": "source_tiers"
+        },
+        {
+          "assertions": 460,
+          "failures": 0,
+          "group": "catalog_dispatch_boundary"
+        },
+        {
+          "assertions": 16,
+          "failures": 0,
+          "group": "pair_and_cooldowns"
+        },
+        {
+          "assertions": 10,
+          "failures": 0,
+          "group": "frame_priority_and_no_fallback"
+        },
+        {
+          "assertions": 23,
+          "failures": 0,
+          "group": "urgent_interrupt_and_weights"
+        },
+        {
+          "assertions": 12,
+          "failures": 0,
+          "group": "urgent_thresholds"
+        },
+        {
+          "assertions": 15,
+          "failures": 0,
+          "group": "competitive_thresholds"
+        },
+        {
+          "assertions": 14,
+          "failures": 0,
+          "group": "kill_event_thresholds_and_reset"
+        },
+        {
+          "assertions": 183,
+          "failures": 0,
+          "group": "shuffle_bag"
+        }
+      ],
+      "main_boots": 0,
+      "save_reads": 0,
+      "save_writes": 0,
+      "userdir": "EXODUSER-P2004B-PC-Isolated-20261020",
+      "script_errors": 0,
+      "camera_warning": false
+    },
+    {
+      "folder": "failed-regression",
+      "test": "test_p2004a_pets",
+      "assertions": 14,
+      "failures": 0,
+      "fallback_paths_used": false,
+      "forced_actor_fields": 0,
+      "groups": [
+        {
+          "assertions": 14,
+          "failures": 0,
+          "group": "pets_spawn_and_tut_start"
+        }
+      ],
+      "skipped": [
+        "combat_counters_and_iris"
+      ],
+      "script_errors": 0,
+      "camera_warning": true
+    },
+    {
+      "folder": "runtime1",
+      "test": "test_p2004b_pet_runtime",
+      "assertions": 10,
+      "failures": 2,
+      "forced_position_fields": 1,
+      "main_boots": 1,
+      "telemetry_signal_fixture": true,
+      "userdir": "EXODUSER-P2004B-Runtime-PC-Isolated-20261020",
+      "script_errors": 1,
+      "camera_warning": true
+    },
+    {
+      "folder": "runtime-fixed",
+      "test": "test_p2004b_pet_runtime",
+      "assertions": 10,
+      "failures": 0,
+      "forced_position_fields": 1,
+      "main_boots": 1,
+      "telemetry_signal_fixture": true,
+      "userdir": "EXODUSER-P2004B-Runtime-PC-Isolated-20261020",
+      "script_errors": 0,
+      "camera_warning": true
+    }
+  ],
+  "log_root": "G:\\exoduser-wt\\_out\\P2-004b-pc",
+  "protectedFilesUnchanged": [
+    "game.html",
+    "index.html",
+    "godot/scripts/main.gd",
+    "godot/scripts/hud.gd",
+    "godot/scripts/world.gd",
+    "godot/scripts/player.gd",
+    "godot/scripts/native_normal_enemy_hurte.gd",
+    "godot/scripts/native_source_new_run_state.gd",
+    "godot/scripts/native_parry_lesson_flow.gd"
+  ],
+  "overrideCleared": true,
+  "hashes": {
+    "godot/scripts/native_pets.gd": {
+      "bytes": 35370,
+      "sha256": "47a7c080c5756c57a7851b5500ad56d2c96ef1cdb9422429987e98cc994362f1"
+    },
+    "godot/scripts/native_pet_dialogue_catalog.gd": {
+      "bytes": 57607,
+      "sha256": "0fc60f01b03ff6e692f35091ca552986c92139dbe71dc6066929ff7f07979a4b"
+    },
+    "godot/tests/test_p2004a_pets.gd": {
+      "bytes": 7955,
+      "sha256": "f5accf46876fb10df9fb217dffbfa18b7e321995b78c8a2552457678a5a144f7"
+    },
+    "godot/tests/test_p2004b_pet_dialogue.gd": {
+      "bytes": 16297,
+      "sha256": "ba26c876ba263ff04c00e75e1e8f7c6ded140ebcb8875cc929edc043e7c33008"
+    },
+    "godot/tests/test_p2004b_pet_runtime.gd": {
+      "bytes": 2877,
+      "sha256": "af2460c82340647ce75d7ced30f810f81474d4df33dbecf1c15b914f96b1c2ba"
+    },
+    "tools/pet-dialogue-source.mjs": {
+      "bytes": 10602,
+      "sha256": "a6a34c7f741a47cc15e82f5871094fcd904a35d1abf98fa06c2191d155954942"
+    },
+    "test/test_p2004b_pet_source.mjs": {
+      "bytes": 7469,
+      "sha256": "8338d4930d9caa2a6621b06b0b1026b636594c13f4d61e200df976c0baff5309"
+    },
+    "docs/2_4 펫시스템/2_4 펫시스템.md": {
+      "bytes": 27611,
+      "sha256": "6857b5a7037a7a07e7e3feb0d7e7594af8106302d513732daaf101ef1184a3c9"
+    },
+    "docs/2_4 펫시스템/대사_스크립트.md": {
+      "bytes": 51991,
+      "sha256": "4598c556d9c0a5f17f0e7628302d1a511b3c615796479adce604d1874fbb12de"
+    },
+    "docs/2_4 펫시스템/대사_개편_v7_설계.md": {
+      "bytes": 14766,
+      "sha256": "8a9b3550543ca9fdb78bf6f56ce33a8be9d43d3e81c935e2a3cfaeab207398e5"
+    },
+    "docs/engine/FDG_P2_004A_PETS_20261020.md": {
+      "bytes": 4961,
+      "sha256": "d29ca79fbff415702fdfef6ba49b7cafdd091bf3de5b7ab92c517c512e9a31c6"
+    },
+    "docs/engine/FDG_P2_004B_PET_DIALOGUE_20261020.md": {
+      "bytes": 35810,
+      "sha256": "d9fa955af3be288e0e5085ae0da09698d2149e597dd873ec612b622be16d81e7"
+    },
+    "docs/engine/orders/reports/P2-004B_CANDIDATE.patch": {
+      "bytes": 140569,
+      "sha256": "30d80622957ecf9c6fc2a4ea98007d3069ffcbed1a06b71b4ddd3bddaeca7834"
+    },
+    "docs/engine/orders/reports/P2-004B_EVIDENCE.json": {
+      "bytes": 9881,
+      "sha256": "eb048a8035847474e5b31524616aee43e7f710010bf484ad3f81d8001f66691c"
+    }
+  },
+  "ownedPaths": [
+    "godot/scripts/native_pets.gd",
+    "godot/scripts/native_pet_dialogue_catalog.gd",
+    "godot/tests/test_p2004a_pets.gd",
+    "godot/tests/test_p2004b_pet_dialogue.gd",
+    "godot/tests/test_p2004b_pet_runtime.gd",
+    "tools/pet-dialogue-source.mjs",
+    "test/test_p2004b_pet_source.mjs",
+    "docs/2_4 펫시스템/2_4 펫시스템.md",
+    "docs/2_4 펫시스템/대사_스크립트.md",
+    "docs/2_4 펫시스템/대사_개편_v7_설계.md",
+    "docs/engine/FDG_P2_004A_PETS_20261020.md",
+    "docs/engine/FDG_P2_004B_PET_DIALOGUE_20261020.md",
+    "docs/engine/orders/WORK_BOARD.md",
+    "docs/engine/orders/reports/P2-004B_REPORT.md",
+    "docs/engine/orders/reports/P2-004B_CANDIDATE.patch",
+    "docs/engine/orders/reports/P2-004B_EVIDENCE.json",
+    "docs/engine/orders/reports/P2-004B_RESUME_EVIDENCE.json"
+  ],
+  "scope": "isolated fixture and Main reader/signal harness; not natural dialogue60/60 or visual/gameplay acceptance"
+}

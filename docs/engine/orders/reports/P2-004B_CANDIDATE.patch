@@ -1,0 +1,4285 @@
+diff --git a/godot/scripts/native_pets.gd b/godot/scripts/native_pets.gd
+--- a/godot/scripts/native_pets.gd
++++ b/godot/scripts/native_pets.gd
+@@ -1,580 +1,806 @@
+-extends Node2D
+-## P2-004a — 첫 전투 펫 4종(까마귀 HECTOR·고양이 DIROI·유령쇠뇌·유령불꽃 이리스) +
+-## 펫 대사 자막(petSubtitle). 표시 전용 소비자 — 적/플레이어 상태는 읽기만.
+-##
+-## 원본 근거(game.html):
+-## - 소환: 새 게임 initStage 경로 30798 — crow(P-0,-20)·cat(+0,+10)·xbow(-30,-28)·
+-##   iris(+20,-34), cat.t=~~(rand()*100)(비게임플레이 Math.random → world 공유 샘플러),
+-##   xbow.t=25, iris.t=50·sz=G._irisSz‖20.
+-## - 상수 PETS 9243: crow{spd22,orbR38,orbY-22} cat{spd24,orbR28,orbY32}
+-##   xbow{spd18,orbR44,orbY-28} iris{spd14,orbR55}.
+-## - 이동: _updateOnePet 41420~41478(궤도식·d*.12 감속·언스턱 520),
+-##   _updateGhostXbow 41496~41512(이동만 — **공격 코드 없음**),
+-##   _updateGhostIris 41514~41541(적 탐색 800·머리 위 궤도·*.12/.15 lerp — **피해 없음**).
+-## - 렌더: 59905~59975(crow/cat 스프라이트 24px·bob·그림자·눈 글로우; crow _fly는
+-##   미등록 dead → 정적 8방향), xbow 59978~60009(벡터), 이리스 55288~55318(글로우
+-##   lighter + flame01~04 스프라이트, 20+sz*.8). 에셋 전부 원본 복사.
+-## - 이리스 광원: _collectLights 4686~4690 → screen_lighting.set_native_iris_light.
+-## - 대사: [S03e] 9289~9620 — _petSay 9389/_petSayCD 9471/_petBidCD/_petSayUrgent/
+-##   _updatePetBubble 9482(pair·pow(r,.6)×.6 페이드)/_petTierOf/_PET_TIER_COOL 9414.
+-##   트리거: [1] 튜토리얼 15종(9555~9568)·[3] 긴급 HP50/30(9547~9550) 구현,
+-##   카운터 _petOnAtk=hurtE 진입(42117 — hurtE 1회=1), _petOnHit=hurtP(43425),
+-##   _petOnKill=42702(처치). 자막 패널: #petSubtitle DOM(2587+CSS 2026-09-29 계약 —
+-##   bottom 230px·좌/우 20px·초상 480px·scale 1.5·텍스트 crow(92,237,306,51)/
+-##   cat(122,250,190,42)·0.92rem·opacity max .6).
+-## 정정: P2-001d의 '이리스 피해 108~156' 추정은 오귀속 — 현 원본 펫 4종 모두 공격
+-## 코드 없음(41496~41541). 해당 피해 출처는 별도 조사 항목.
+-
+-const PET_DEFS := {
+-	"crow": {"spd": 22.0, "orbR": 38.0, "orbY": -22.0},
+-	"cat": {"spd": 24.0, "orbR": 28.0, "orbY": 32.0},
+-	"xbow": {"spd": 18.0, "orbR": 44.0, "orbY": -28.0},
+-	"iris": {"spd": 14.0, "orbR": 55.0}}
+-const PET_DIRS := ["east", "south-east", "south", "south-west", "west", "north-west", "north", "north-east"]
+-const CAT_RUN_MIRROR := {"east": "west", "south-east": "south-west", "north-east": "south-west",
+-	"north-west": "south-west", "north": "south", "south": "south", "south-west": "south-west", "west": "west"}
+-const CAT_RUN_FLIP := {"east": true, "south-east": true, "north-east": true}
+-const CAT_IDLE_MIRROR := {"south": "south", "south-west": "south-west", "south-east": "south-west",
+-	"west": "south-west", "east": "south-west", "north-west": "south", "north-east": "south", "north": "south"}
+-const CAT_IDLE_FLIP := {"south-east": true, "east": true, "north-east": true}
+-const PET_TIER_COOL := [1200, 720, 480, 360, 240, 0] # 9414
+-const PET_OP_MAX := 0.6 # 9348
+-const IRIS_GLOW_R := 250.0 # OPT.irisGlow‖250
+-
+-var _world: Node
+-var _player: Node2D
+-var _state: Node
+-var _lighting: CanvasLayer
+-var _configured := false
+-var pets: Dictionary = {} # 어댑터 소유 런타임 상태 — 원본 G.pets(30798) 상당.
+-							# 포트 G 40키 부트 계약 보존을 위해 state G에 넣지 않음(기록).
+-var _tick := 0.0
+-
+-# 대사 상태 (9287~9292)
+-var _pet_bubble := {"who": null, "source": "", "txt": "", "t": 0.0, "mt": 0.0, "pair": null, "pair_fired": false}
+-var _pet_dlg_cd: Dictionary = {}
+-var _pet_tier_cd := [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+-var _pet_tut: Dictionary = {}
+-var _pet_atk_cnt := 0
+-var _pet_hit_cnt := 0
+-var _pet_kill_cnt := 0
+-var _pet_parry_cnt := 0
+-var _pet_charge_used := false
+-var _bid := {"tier": -1, "weight": 0, "id": "", "who": "", "txt": "", "dur": 0.0, "cd": 0.0, "pw": null, "pt": null, "pd": 0.0}
+-var _in_frame := false
+-var _say_log: Array = []
+-
+-# 자막 패널
+-var _subtitle_layer: CanvasLayer
+-var _subtitle_root: Control
+-var _portrait: TextureRect
+-var _bubble_label: Label
+-
+-var _crow_tex: Dictionary = {}
+-var _cat_static: Dictionary = {}
+-var _cat_idle: Dictionary = {}
+-var _cat_run: Dictionary = {}
+-var _flame_tex: Array = []
+-var _iris_glow_tex: GradientTexture2D
+-
+-
+-func configure(world: Node, player: Node2D, state: Node, lighting: CanvasLayer) -> bool:
+-	if _configured or not is_instance_valid(world) or not is_instance_valid(player) \
+-			or not is_instance_valid(state) or not state.has_method("read_current_inventory"):
+-		return false
+-	_world = world
+-	_player = player
+-	_state = state
+-	_lighting = lighting if is_instance_valid(lighting) and lighting.has_method("set_native_iris_light") else null
+-	z_index = 500 # S7 패스 — 엔티티 뒤(y정렬) 이후 렌더(59905)
+-	for dir in PET_DIRS:
+-		_crow_tex[dir] = load("res://assets/pets/crow/" + dir + ".png")
+-		_cat_static[dir] = load("res://assets/pets/cat/" + dir + ".png")
+-	_cat_idle["south"] = _load_frames("res://assets/pets/cat_idle_south/frame_00%d.png", 8)
+-	_cat_idle["south-west"] = _load_frames("res://assets/pets/cat_idle_sw/frame_00%d.png", 2)
+-	_cat_run["south"] = _load_frames("res://assets/pets/cat_run_south/frame_00%d.png", 4)
+-	_cat_run["south-west"] = _load_frames("res://assets/pets/cat_run_sw/frame_00%d.png", 4)
+-	_cat_run["west"] = _load_frames("res://assets/pets/cat_run_west/frame_00%d.png", 4)
+-	for i in range(1, 5):
+-		_flame_tex.append(load("res://assets/fx/flame0%d.png" % i))
+-	# _irisLight 25502: 400² radial rgba(60,160,255,.22)→(40,130,220,.12)→(30,100,180,.04)→0
+-	var gradient := Gradient.new()
+-	gradient.colors = PackedColorArray([Color(60.0 / 255, 160.0 / 255, 1.0, 0.22),
+-		Color(40.0 / 255, 130.0 / 255, 220.0 / 255, 0.12),
+-		Color(30.0 / 255, 100.0 / 255, 180.0 / 255, 0.04), Color(0, 0, 0, 0)])
+-	gradient.offsets = PackedFloat32Array([0.0, 0.3, 0.7, 1.0])
+-	_iris_glow_tex = GradientTexture2D.new()
+-	_iris_glow_tex.gradient = gradient
+-	_iris_glow_tex.fill = GradientTexture2D.FILL_RADIAL
+-	_iris_glow_tex.fill_from = Vector2(0.5, 0.5)
+-	_iris_glow_tex.fill_to = Vector2(1.0, 0.5)
+-	_iris_glow_tex.width = 400
+-	_iris_glow_tex.height = 400
+-	# 소환 (30798) — cat.t=~~(Math.random()*100): 원본이 비추적 Math.random이므로
+-	# 공유 월드 샘플러를 소비하지 않는 로컬 RNG 사용(공유 RNG 소비수 계약 914 보존).
+-	var p: Vector2 = player.global_position
+-	var local_rng := RandomNumberGenerator.new()
+-	local_rng.randomize()
+-	var cat_t: float = floor(local_rng.randf() * 100.0)
+-	pets = {
+-		"crow": {"x": p.x, "y": p.y - 20.0, "tx": p.x, "ty": p.y, "t": 0.0, "pdx": 0.0, "pdy": 0.0, "moving": false},
+-		"cat": {"x": p.x, "y": p.y + 10.0, "tx": p.x, "ty": p.y, "t": cat_t, "pdx": 0.0, "pdy": 0.0, "moving": false},
+-		"xbow": {"x": p.x - 30.0, "y": p.y - 28.0, "tx": p.x, "ty": p.y, "t": 25.0, "atk_cd": 0.0, "ang": 0.0, "pdx": 0.0, "pdy": 0.0, "moving": false},
+-		"iris": {"x": p.x + 20.0, "y": p.y - 34.0, "t": 50.0, "sz": 20.0, "tgt": null, "tgt_t": 0}}
+-	# 카운터 배선: _petOnAtk=hurtE 진입 1회(42117)·_petOnKill(42702)·_petOnHit(43425)
+-	player.telemetry_event.connect(func(kind, data):
+-		if kind == "native_hurte":
+-			_pet_atk_cnt += 1
+-			if data.get("killed") == true:
+-				_pet_kill_cnt += 1
+-		elif kind == "player_damage":
+-			_pet_hit_cnt += 1)
+-	_build_subtitle_panel()
+-	_configured = true
+-	return true
+-
+-
+-static func _load_frames(pattern: String, count: int) -> Array:
+-	var frames: Array = []
+-	for i in range(count):
+-		frames.append(load(pattern % i))
+-	return frames
+-
+-
+-func _physics_process(_delta: float) -> void:
+-	if not _configured or not is_instance_valid(_player):
+-		return
+-	_tick += 1.0
+-	_update_one_pet("crow")
+-	_update_one_pet("cat")
+-	_update_ghost_xbow()
+-	_update_ghost_iris()
+-	_check_pet_dialogue()
+-	_push_iris_light()
+-	queue_redraw()
+-
+-
+-# ── 이동 (41420~41478) ──
+-func _update_one_pet(key: String) -> void:
+-	var def: Dictionary = PET_DEFS[key]
+-	var pet: Dictionary = pets[key]
+-	pet["t"] += 1.0
+-	var is_cat := key == "cat"
+-	var p: Vector2 = _player.global_position
+-	var ox: float = cos(pet["t"] * (0.018 if is_cat else 0.025)) * def["orbR"]
+-	var oy: float = def["orbY"] + sin(pet["t"] * (0.022 if is_cat else 0.035)) * (4.0 if is_cat else 10.0)
+-	pet["tx"] = p.x + ox
+-	pet["ty"] = p.y + oy
+-	_move_pet(pet, def["spd"])
+-	if Vector2(pet["x"], pet["y"]).distance_to(p) > 520.0: # 언스턱
+-		pet["x"] = p.x + (18.0 if is_cat else -24.0)
+-		pet["y"] = p.y + (10.0 if is_cat else -18.0)
+-		pet["tx"] = pet["x"]
+-		pet["ty"] = pet["y"]
+-
+-
+-func _update_ghost_xbow() -> void:
+-	var def: Dictionary = PET_DEFS["xbow"]
+-	var pet: Dictionary = pets["xbow"]
+-	pet["t"] += 1.0
+-	var p: Vector2 = _player.global_position
+-	pet["tx"] = p.x + cos(pet["t"] * 0.02 + PI) * def["orbR"]
+-	pet["ty"] = p.y + def["orbY"] + sin(pet["t"] * 0.03 + 1.5) * 8.0
+-	_move_pet(pet, def["spd"])
+-	if Vector2(pet["x"], pet["y"]).distance_to(p) > 520.0:
+-		pet["x"] = p.x - 30.0
+-		pet["y"] = p.y - 28.0
+-		pet["tx"] = pet["x"]
+-		pet["ty"] = pet["y"]
+-	# 공격 없음 — 원본 41496~41512 이동만(과거 자동사격 제거됨)
+-
+-
+-func _move_pet(pet: Dictionary, spd: float) -> void:
+-	var dx: float = pet["tx"] - pet["x"]
+-	var dy: float = pet["ty"] - pet["y"]
+-	var d: float = sqrt(dx * dx + dy * dy)
+-	pet["pdx"] = dx
+-	pet["pdy"] = dy
+-	pet["moving"] = d > 5.0
+-	if d > 3.0:
+-		var s: float = minf(spd, d * 0.12)
+-		pet["x"] += dx / d * s
+-		pet["y"] += dy / d * s
+-	else:
+-		pet["x"] = pet["tx"]
+-		pet["y"] = pet["ty"]
+-
+-
+-func _update_ghost_iris() -> void:
+-	var pet: Dictionary = pets["iris"]
+-	pet["t"] += 1.0
+-	var p: Vector2 = _player.global_position
+-	pet["tgt_t"] = int(pet["tgt_t"]) + 1
+-	var target: Variant = pet["tgt"]
+-	var has_live_target: bool = target is Object and is_instance_valid(target) and target.get("alive") == true
+-	var need: bool = (not has_live_target) or int(pet["tgt_t"]) % 10 == 0
+-	if need:
+-		var best_d := 800.0 # 탐색 반경 800 (41525)
+-		var best: Node2D = null
+-		if _world.has_method("get_enemies"):
+-			for enemy in _world.get_enemies():
+-				if is_instance_valid(enemy) and enemy.get("alive") == true:
+-					var d: float = p.distance_to(enemy.global_position)
+-					if d < best_d:
+-						best_d = d
+-						best = enemy
+-		pet["tgt"] = best
+-		target = best
+-	if target is Object and is_instance_valid(target) and target.get("alive") == true:
+-		var ang: float = pet["t"] * 0.03
+-		var tx: float = (target as Node2D).global_position.x + cos(ang) * 20.0
+-		var ty: float = (target as Node2D).global_position.y - float(target.get("radius")) - 15.0 + sin(ang) * 8.0
+-		pet["x"] += (tx - pet["x"]) * 0.12
+-		pet["y"] += (ty - pet["y"]) * 0.12
+-	else:
+-		var ang2: float = pet["t"] * 0.02
+-		pet["x"] += (p.x + cos(ang2) * PET_DEFS["iris"]["orbR"] - pet["x"]) * 0.15
+-		pet["y"] += (p.y + sin(ang2) * PET_DEFS["iris"]["orbR"] - pet["y"]) * 0.15
+-
+-
+-func _push_iris_light() -> void:
+-	if _lighting == null:
+-		return
+-	var viewport_size: Vector2 = get_viewport().get_visible_rect().size
+-	var camera: Camera2D = get_viewport().get_camera_2d()
+-	var center: Vector2 = camera.get_screen_center_position() if is_instance_valid(camera) else _player.global_position
+-	var screen: Vector2 = viewport_size * 0.5 + (Vector2(pets["iris"]["x"], pets["iris"]["y"]) - center)
+-	# 4688: _irFlk=.45+sin(f·.1)·.08+sin(f·.17)·.05, a=_irFlk×.6
+-	var flk: float = 0.45 + sin(_tick * 0.1) * 0.08 + sin(_tick * 0.17) * 0.05
+-	_lighting.set_native_iris_light(screen, IRIS_GLOW_R, flk * 0.6)
+-
+-
+-# ── 대사 엔진 (9389~9500 축약 없는 핵심부) ──
+-func _pet_tier_of(id: String) -> int:
+-	if id.begins_with("tut_") or id.begins_with("parry_") or id == "shift_hint":
+-		return 1
+-	if id == "warn_hp50" or id == "crisis_hp30":
+-		return 5 # urgent — 전용 경로에서만 사용
+-	return 2
+-
+-
+-func _pet_say(id: String, who: String, txt: String, dur_sec: float, pair_who: Variant = null,
+-		pair_txt: Variant = null, pair_dur: float = 5.0) -> bool:
+-	if _pet_bubble["t"] > 0.0:
+-		return false
+-	if float(_pet_dlg_cd.get(id, 0.0)) > 0.0:
+-		return false
+-	_pet_bubble["who"] = who
+-	_pet_bubble["source"] = txt
+-	_pet_bubble["txt"] = txt # _T: ko 원문 그대로
+-	_pet_bubble["mt"] = floor(dur_sec * 60.0)
+-	_pet_bubble["t"] = _pet_bubble["mt"]
+-	_pet_bubble["pair_fired"] = false
+-	_pet_bubble["pair"] = ({"who": pair_who, "txt": pair_txt, "mt": floor(pair_dur * 60.0)}
+-		if pair_who != null and pair_txt != null else null)
+-	_show_bubble(who, txt)
+-	_say_log.append({"id": id, "who": who})
+-	return true
+-
+-
+-func _pet_say_cd(id: String, who: String, txt: String, dur: float, cd: float,
+-		pw: Variant = null, pt: Variant = null, pd: float = 5.0) -> bool:
+-	# 9471: id쿨 + 말풍선 점유 + 티어 글로벌쿨
+-	if float(_pet_dlg_cd.get(id, 0.0)) > 0.0 or _pet_bubble["t"] > 0.0:
+-		return false
+-	var tier := _pet_tier_of(id)
+-	if _pet_tier_cd[tier] > 0.0:
+-		return false
+-	var ok := _pet_say(id, who, txt, dur, pw, pt, pd)
+-	if ok:
+-		_pet_dlg_cd[id] = floor(cd * 60.0)
+-		_pet_tier_cd[tier] = float(PET_TIER_COOL[tier])
+-	return ok
+-
+-
+-func _pet_say_urgent(id: String, who: String, txt: String, dur: float, cd: float,
+-		pw: Variant = null, pt: Variant = null, pd: float = 5.0) -> bool:
+-	# 9460s: 프레임 내 — 티어5 입찰(내부 가중치)
+-	if float(_pet_dlg_cd.get(id, 0.0)) > 0.0:
+-		return false
+-	var weights := {"warn_hp50": 40, "crisis_hp30": 60} # _PET_SURV_W 9418 해당분
+-	var w: int = int(weights.get(id, 50))
+-	if _in_frame:
+-		if _bid["tier"] == 5 and w <= int(_bid["weight"]):
+-			return false
+-		_bid = {"tier": 5, "weight": w, "id": id, "who": who, "txt": txt, "dur": dur, "cd": cd, "pw": pw, "pt": pt, "pd": pd}
+-		return true
+-	return false
+-
+-
+-func _pet_fire_bid() -> void:
+-	if int(_bid["tier"]) < 0:
+-		return
+-	var ok := _pet_say(str(_bid["id"]), str(_bid["who"]), str(_bid["txt"]), float(_bid["dur"]),
+-		_bid["pw"], _bid["pt"], float(_bid["pd"]))
+-	if ok:
+-		_pet_dlg_cd[str(_bid["id"])] = floor(float(_bid["cd"]) * 60.0)
+-	_bid["tier"] = -1
+-
+-
+-func _update_pet_bubble() -> void:
+-	# 9482~9505
+-	for k in _pet_dlg_cd.keys():
+-		_pet_dlg_cd[k] = float(_pet_dlg_cd[k]) - 1.0
+-		if float(_pet_dlg_cd[k]) <= 0.0:
+-			_pet_dlg_cd.erase(k)
+-	for i in range(6):
+-		if _pet_tier_cd[i] > 0.0:
+-			_pet_tier_cd[i] = maxf(0.0, _pet_tier_cd[i] - 1.0)
+-	if _pet_bubble["t"] > 0.0:
+-		_pet_bubble["t"] = float(_pet_bubble["t"]) - 1.0
+-		if _pet_bubble["t"] <= 0.0 and _pet_bubble["pair"] != null and not _pet_bubble["pair_fired"]:
+-			_pet_bubble["pair_fired"] = true
+-			var pair: Dictionary = _pet_bubble["pair"]
+-			_pet_bubble["who"] = pair["who"]
+-			_pet_bubble["source"] = pair["txt"]
+-			_pet_bubble["txt"] = pair["txt"]
+-			_pet_bubble["mt"] = pair["mt"]
+-			_pet_bubble["t"] = pair["mt"]
+-			_pet_bubble["pair"] = null
+-			_show_bubble(str(pair["who"]), str(pair["txt"]))
+-		if _pet_bubble["t"] > 0.0 and is_instance_valid(_subtitle_root):
+-			var r: float = float(_pet_bubble["t"]) / float(_pet_bubble["mt"]) if float(_pet_bubble["mt"]) > 0.0 else 0.0
+-			_subtitle_root.modulate = Color(1, 1, 1, pow(clampf(r, 0.0, 1.0), 0.6) * PET_OP_MAX)
+-	if _pet_bubble["t"] <= 0.0 and _pet_bubble["pair"] == null and is_instance_valid(_subtitle_root):
+-		_subtitle_root.modulate = Color(1, 1, 1, 0)
+-
+-
+-func _check_pet_dialogue() -> void:
+-	_update_pet_bubble()
+-	_bid["tier"] = -1
+-	_in_frame = true
+-	# [3] 긴급 — HP50/30 (9547~9550; 그 외 긴급은 미이식 기록)
+-	var hp: float = float(_player.get("hp"))
+-	var mhp: float = float(_player.get("max_hp"))
+-	if hp > 0.0 and hp < mhp * 0.5 and hp >= mhp * 0.3:
+-		_pet_say_urgent("warn_hp50", "crow", "…절반이다. 정신차려.", 3, 60, "cat", "체력 반 남았어! 물약 마실 타이밍!", 3)
+-	if hp > 0.0 and hp < mhp * 0.3 and hp >= mhp * 0.1:
+-		_pet_say_urgent("crisis_hp30", "crow", "피가 새고 있다. Shift. 빠져.", 4, 20, "cat", "사슬 던져! 끌려가면 무적이야!", 4)
+-	_pet_fire_bid()
+-	_in_frame = false
+-	# [1] 튜토리얼 (si0·Lv≤200 — 9555~9568). lv는 state P owner.
+-	var p: Variant = _state.read_current_p()
+-	if not p is Dictionary or int(p.get("lv", 1)) > 200:
+-		return
+-	if not _pet_tut.get("start", false):
+-		_pet_tut["start"] = true
+-		_pet_say_cd("tut_start", "crow", "일어나. 여신이 널 여기 보낸 건 죽으라고가 아니야.", 5, 9999,
+-			"cat", "…아직 살아있네. 좌클릭으로 저것들 쳐봐.", 5)
+-		return
+-	if not _pet_tut.get("atk3", false) and _pet_atk_cnt >= 3 and _pet_atk_cnt < 7:
+-		_pet_tut["atk3"] = true
+-		_pet_say_cd("tut_atk3", "crow", "좋아, 감각이 있군. 계속 쳐!", 5, 9999, "cat", "…치는 건 할 줄 아네. 피하는 건?", 5)
+-		return
+-	if not _pet_tut.get("atk7", false) and _pet_atk_cnt >= 7 and not _pet_charge_used:
+-		_pet_tut["atk7"] = true
+-		_pet_say_cd("tut_charge", "crow", "Shift를 눌러. 사슬이다. 땅에 꽂아서 끌려가!", 5, 9999)
+-		return
+-	if not _pet_tut.get("firstHit", false) and _pet_hit_cnt >= 1:
+-		_pet_tut["firstHit"] = true
+-		_pet_say_cd("tut_1sthit", "cat", "…아파? 당연하지. 여긴 지옥이야.", 5, 9999)
+-		return
+-	if not _pet_tut.get("hit2", false) and _pet_hit_cnt >= 2:
+-		_pet_tut["hit2"] = true
+-		_pet_say_cd("tut_hit2", "crow", "Q를 눌러! 악의로 보호막을 만들 수 있다.", 5, 9999, "cat", "보호막 없이 버틸 생각은 버려.", 5)
+-		return
+-	if not _pet_tut.get("parryHint", false) and _pet_atk_cnt >= 8 and _pet_parry_cnt == 0:
+-		_pet_tut["parryHint"] = true
+-		_pet_say_cd("tut_parry", "crow", "E가 패링이다. 적 공격이 닿기 직전에 눌러!", 5, 9999, "cat", "못 하겠으면 때려. 안 죽으면 그만이야.", 5)
+-		return
+-	if not _pet_tut.get("firstKill", false) and _pet_kill_cnt >= 1:
+-		_pet_tut["firstKill"] = true
+-		_pet_say_cd("tut_1stkill", "crow", "하나 죽었군.", 4, 9999, "cat", "…고기 냄새. 싫진 않네.", 5)
+-		return
+-	if not _pet_tut.get("bowIntro", false) and _pet_kill_cnt >= 3:
+-		_pet_tut["bowIntro"] = true
+-		_pet_say_cd("tut_bow", "crow", "유령쇠뇌야. 인사해.", 3, 9999, "cat", "…말은 못해.", 4)
+-		return
+-	if not _pet_tut.get("firstItem", false):
+-		var bag: Variant = (_state.read_current_inventory() as Dictionary).get("bag")
+-		if bag is Array and (bag as Array).size() >= 1:
+-			if _pet_say_cd("tut_firstItem", "crow", "TAB을 눌러. 가방을 열고 장비를 입어야 한다.", 5, 9999,
+-					"cat", "주웠으면 껴야지! TAB!", 4):
+-				_pet_tut["firstItem"] = true
+-			return
+-
+-
+-# ── 자막 패널 (petSubtitle — 2587 DOM + 2026-09-29/09-16 계약) ──
+-func _build_subtitle_panel() -> void:
+-	_subtitle_layer = CanvasLayer.new()
+-	_subtitle_layer.name = "NativePetSubtitle"
+-	_subtitle_layer.layer = 9 # DOM z999 — 캔버스 HUD 요소들과 함께, 게임 월드 위
+-	add_child(_subtitle_layer)
+-	_subtitle_root = Control.new()
+-	_subtitle_root.name = "PetSubtitleRoot"
+-	_subtitle_layer.add_child(_subtitle_root)
+-	_subtitle_root.mouse_filter = Control.MOUSE_FILTER_IGNORE
+-	_subtitle_root.size = Vector2(480, 320)
+-	_subtitle_root.scale = Vector2(1.5, 1.5) # scale(ui-scale×1.5), ui-scale 1.0
+-	_subtitle_root.modulate = Color(1, 1, 1, 0)
+-	_portrait = TextureRect.new()
+-	_portrait.name = "PetPortrait"
+-	_subtitle_root.add_child(_portrait)
+-	_portrait.size = Vector2(480, 320)
+-	_portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT
+-	_portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+-	_portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE
+-	_bubble_label = Label.new()
+-	_bubble_label.name = "PetBubbleTxt"
+-	_subtitle_root.add_child(_bubble_label)
+-	_bubble_label.add_theme_font_size_override("font_size", 15) # 0.92rem
+-	_bubble_label.add_theme_color_override("font_color", Color.WHITE)
+-	_bubble_label.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.95))
+-	_bubble_label.add_theme_constant_override("shadow_offset_y", 1)
+-	_bubble_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+-	_bubble_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+-	if ResourceLoader.exists("res://assets/fonts/NotoSerifKR-VF.ttf"):
+-		_bubble_label.add_theme_font_override("font", load("res://assets/fonts/NotoSerifKR-VF.ttf"))
+-
+-
+-func _show_bubble(who: String, txt: String) -> void:
+-	var is_crow := who == "crow"
+-	var viewport_size: Vector2 = get_viewport().get_visible_rect().size
+-	var portrait_path := "res://assets/pets/crow_portrait.png" if is_crow else "res://assets/pets/cat_portrait.png"
+-	if ResourceLoader.exists(portrait_path):
+-		_portrait.texture = load(portrait_path)
+-	# bottom 230px(1920×1080·ui-scale1), crow=left 20 / cat=right 20, origin bottom
+-	var panel_height := 320.0 * 1.5
+-	_subtitle_root.position = Vector2(20.0 if is_crow else viewport_size.x - 20.0 - 480.0 * 1.5,
+-		viewport_size.y - 230.0 - panel_height)
+-	# 텍스트 박스 (9372~9375): crow(92,237,306,51) / cat(122,250,190,42)
+-	if is_crow:
+-		_bubble_label.position = Vector2(92, 237)
+-		_bubble_label.size = Vector2(306, 51)
+-	else:
+-		_bubble_label.position = Vector2(122, 250)
+-		_bubble_label.size = Vector2(190, 42)
+-	_bubble_label.text = txt
+-	_subtitle_root.modulate = Color(1, 1, 1, PET_OP_MAX)
+-
+-
+-# ── 렌더 (59905~60009 / 이리스 55288~55318) ──
+-func _draw() -> void:
+-	if not _configured:
+-		return
+-	for key in ["cat", "crow"]:
+-		_draw_sprite_pet(key)
+-	_draw_xbow()
+-	_draw_iris()
+-
+-
+-func _dir8(dx: float, dy: float) -> String:
+-	if dx == 0.0 and dy == 0.0:
+-		return "south"
+-	var idx: int = ((roundi(atan2(dy, dx) / (PI / 4.0)) % 8) + 8) % 8
+-	return PET_DIRS[idx]
+-
+-
+-func _draw_sprite_pet(key: String) -> void:
+-	var pet: Dictionary = pets[key]
+-	var is_crow := key == "crow"
+-	var bob: float = sin(pet["t"] * (0.1 if is_crow else 0.06)) * (2.0 if is_crow else 1.0)
+-	var px: float = pet["x"]
+-	var py: float = pet["y"] + bob
+-	var pos := Vector2(px, py) - global_position
+-	# 그림자
+-	draw_set_transform(pos + Vector2(0, 10.0 if is_crow else 3.0), 0.0, Vector2(1.0, 0.3))
+-	draw_circle(Vector2.ZERO, 4.0 if is_crow else 3.0, Color(0, 0, 0, 0.08 if is_crow else 0.15))
+-	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
+-	var dir := _dir8(pet["pdx"], pet["pdy"])
+-	var size := 24.0
+-	if is_crow:
+-		var tex: Texture2D = _crow_tex.get(dir)
+-		if tex:
+-			draw_texture_rect(tex, Rect2(pos - Vector2(size / 2, size / 2), Vector2(size, size)), false)
+-		var eg: float = 0.4 + 0.3 * sin(pet["t"] * 0.08)
+-		draw_circle(pos + Vector2(-3, -3), 5.0, Color(1.0, 0.133, 0.0, eg * 0.3))
+-		draw_circle(pos + Vector2(-3, -3), 2.0, Color(1.0, 0.267, 0.133, eg))
+-	else:
+-		var tex2: Texture2D = null
+-		var flip := false
+-		if pet["moving"]:
+-			var rkey: String = CAT_RUN_MIRROR.get(dir, "south")
+-			flip = CAT_RUN_FLIP.get(dir, false)
+-			var frames: Array = _cat_run.get(rkey, [])
+-			if frames.size() > 0:
+-				tex2 = frames[int(pet["t"] * 0.08) % frames.size()]
+-		else:
+-			var ikey: String = CAT_IDLE_MIRROR.get(dir, "south")
+-			flip = CAT_IDLE_FLIP.get(dir, false)
+-			var frames2: Array = _cat_idle.get(ikey, [])
+-			if frames2.size() > 0:
+-				tex2 = frames2[int(pet["t"] * 0.04) % frames2.size()]
+-		if tex2 == null:
+-			tex2 = _cat_static.get(dir)
+-			flip = false
+-		if tex2:
+-			var rect := Rect2(pos - Vector2(size / 2, size / 2), Vector2(size, size))
+-			if flip:
+-				rect = Rect2(pos + Vector2(size / 2, -size / 2), Vector2(-size, size))
+-			draw_texture_rect(tex2, rect, false)
+-		var eg2: float = 0.4 + 0.3 * sin(pet["t"] * 0.06)
+-		for ex in [-3.0, 3.0]:
+-			draw_circle(pos + Vector2(ex, -4), 4.0, Color(0.667, 0.267, 1.0, eg2 * 0.3))
+-			draw_circle(pos + Vector2(ex, -4), 1.5, Color(0.8, 0.533, 1.0, eg2))
+-
+-
+-func _draw_xbow() -> void:
+-	var pet: Dictionary = pets["xbow"]
+-	var bob: float = sin(pet["t"] * 0.08) * 3.0
+-	var pos := Vector2(pet["x"], pet["y"] + bob) - global_position
+-	draw_circle(pos, 10.0, Color(0.4, 0.533, 0.8, 0.12 + sin(pet["t"] * 0.06) * 0.06))
+-	var body_alpha: float = 0.7 + sin(pet["t"] * 0.1) * 0.15
+-	draw_set_transform(pos, float(pet["ang"]), Vector2.ONE)
+-	draw_rect(Rect2(-6, -2.5, 12, 5), Color(Color("5577aa"), body_alpha))
+-	draw_polyline(PackedVector2Array([Vector2(5, -6), Vector2(8, 0), Vector2(5, 6)]), Color(Color("7799cc"), body_alpha), 1.5)
+-	draw_polyline(PackedVector2Array([Vector2(5, -6), Vector2(3, 0), Vector2(5, 6)]), Color(Color("aaccff"), body_alpha), 0.7)
+-	draw_rect(Rect2(-4, -0.5, 10, 1), Color(Color("ddeeff"), body_alpha)) # 장전 화살 (_atkCd 0 유지)
+-	draw_colored_polygon(PackedVector2Array([Vector2(7, 0), Vector2(5, -1.5), Vector2(5, 1.5)]), Color(Color("ddeeff"), body_alpha))
+-	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
+-	draw_set_transform(pos + Vector2(0, 14), 0.0, Vector2(1.0, 0.3))
+-	draw_circle(Vector2.ZERO, 5.0, Color(0, 0, 0, 0.08))
+-	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
+-
+-
+-func _draw_iris() -> void:
+-	var pet: Dictionary = pets["iris"]
+-	var bob: float = sin(pet["t"] * 0.07) * 5.0
+-	var pos := Vector2(pet["x"], pet["y"] + bob) - global_position
+-	var flk: float = 0.85 + sin(pet["t"] * 0.09) * 0.1 + sin(pet["t"] * 0.17) * 0.05
+-	# 번짐 글로우 (lighter — Canvas2D 실측 경로 가산)
+-	var glow_size: float = IRIS_GLOW_R * 0.6
+-	draw_texture_rect(_iris_glow_tex, Rect2(pos - Vector2(glow_size, glow_size), Vector2(glow_size * 2, glow_size * 2)),
+-		false, Color(1, 1, 1, flk * 0.7))
+-	# flame01~04 (55303~55310): sz=20+(sz‖20)*.8, y offset -.7sz
+-	if _flame_tex.size() >= 4:
+-		var frame: Texture2D = _flame_tex[int(floor(pet["t"] * 0.08)) % 4]
+-		var fsz: float = 20.0 + float(pet["sz"]) * 0.8
+-		draw_texture_rect(frame, Rect2(pos + Vector2(-fsz / 2, -fsz * 0.7), Vector2(fsz, fsz)), false,
+-			Color(1, 1, 1, flk))
+-	else:
+-		draw_circle(pos, 14.0, Color(0.267, 0.8, 1.0, 0.9 * flk))
+-		draw_circle(pos, 7.0, Color(0.933, 1.0, 1.0))
+-
+-
+-func get_native_pets_snapshot() -> Dictionary:
+-	return {"configured": _configured,
+-		"pets": {"crow": [pets["crow"]["x"], pets["crow"]["y"]], "cat": [pets["cat"]["x"], pets["cat"]["y"]],
+-			"xbow": [pets["xbow"]["x"], pets["xbow"]["y"]], "iris": [pets["iris"]["x"], pets["iris"]["y"]]} if _configured else {},
+-		"iris_target_alive": pets.get("iris", {}).get("tgt") is Object and is_instance_valid(pets["iris"]["tgt"]) if _configured else false,
+-		"counters": {"atk": _pet_atk_cnt, "hit": _pet_hit_cnt, "kill": _pet_kill_cnt, "parry": _pet_parry_cnt},
+-		"bubble": {"who": _pet_bubble["who"], "txt": _pet_bubble["txt"], "t": _pet_bubble["t"],
+-			"pair": _pet_bubble["pair"] != null, "alpha": _subtitle_root.modulate.a if is_instance_valid(_subtitle_root) else -1.0},
+-		"say_log": _say_log.duplicate(true), "tut": _pet_tut.duplicate(),
+-		"unported": ["펫 공격 없음(원본 41496~41541 — P2-001d '이리스 피해' 추정 오귀속 정정)",
+-			"대사 [2]키안내·[4]보스·[5]~[29] 카테고리(튜토리얼 15종 중 11종+긴급 2종만)",
+-			"펫 음성(_petSfx)·패드 키 치환(_padifyHint)·언어 전환(_refreshPetBubbleLanguage — ko 원문 고정)",
+-			"R 수거 연계·G.pets G-소유 이관(어댑터 보유 — G 40키 부트 계약 보존)",
+-			"crow _fly 애니(원본 미등록 dead)·cat t 난수=world 공유 샘플러(원본 Math.random)",
+-			"tut_charge 후속(firstCharge — 사슬기동 미이식)·parry 카운터(패링 콜백 미배선)",
+-			"이리스 LIT 색층(ci0 색 글로우 — P2-003a 색층 전체 미이식과 동일 경계)"]}
++extends Node2D
++## P2-004B 후보(미적용/미검증) — 첫 전투 펫 4종(까마귀 HECTOR·고양이 DIROI·유령쇠뇌·유령불꽃 이리스) +
++## 펫 대사 자막(petSubtitle). 표시 전용 소비자 — 적/플레이어 상태는 읽기만.
++##
++## 원본 근거(game.html):
++## - 소환: 새 게임 initStage 경로 30798 — crow(P-0,-20)·cat(+0,+10)·xbow(-30,-28)·
++##   iris(+20,-34), cat.t=~~(rand()*100)(비게임플레이 Math.random → 별도 로컬 RNG),
++##   xbow.t=25, iris.t=50·sz=G._irisSz‖20.
++## - 상수 PETS 9243: crow{spd22,orbR38,orbY-22} cat{spd24,orbR28,orbY32}
++##   xbow{spd18,orbR44,orbY-28} iris{spd14,orbR55}.
++## - 이동: _updateOnePet 41420~41478(궤도식·d*.12 감속·언스턱 520),
++##   _updateGhostXbow 41496~41512(이동만 — **공격 코드 없음**),
++##   _updateGhostIris 41514~41541(적 탐색 800·머리 위 궤도·*.12/.15 lerp — **피해 없음**).
++## - 렌더: 59905~59975(crow/cat 스프라이트 24px·bob·그림자·눈 글로우; crow _fly는
++##   미등록 dead → 정적 8방향), xbow 59978~60009(벡터), 이리스 55288~55318(글로우
++##   lighter + flame01~04 스프라이트, 20+sz*.8). 에셋 전부 원본 복사.
++## - 이리스 광원: _collectLights 4686~4690 → screen_lighting.set_native_iris_light.
++## - 대사: [S03e] 9289~9620 — _petSay 9389/_petSayCD 9471/_petBidCD/_petSayUrgent/
++##   _updatePetBubble 9482(pair·pow(r,.6)×.6 페이드)/_petTierOf/_PET_TIER_COOL 9414.
++##   P2-004B: 카탈로그171 ID(기존11+잔여160), 연결후보60/데이터전용111.
++##   트리거·쿨다운·우선순위는 원본9514~9814; Godot 실제 적용/검수는 보고서 참조.
++##   카운터 _petOnAtk=hurtE 진입(42117 — hurtE 1회=1), _petOnHit=hurtP(43425),
++##   _petOnKill=42702(처치). 자막 패널: #petSubtitle DOM(2587+CSS 2026-09-29 계약 —
++##   bottom 230px·좌/우 20px·초상 480px·scale 1.5·텍스트 crow(92,237,306,51)/
++##   cat(122,250,190,42)·0.92rem·opacity max .6).
++## 정정: P2-001d의 '이리스 피해 108~156' 추정은 오귀속 — 현 원본 펫 4종 모두 공격
++## 코드 없음(41496~41541). 해당 피해 출처는 별도 조사 항목.
++
++const DIALOGUE_CATALOG = preload("res://scripts/native_pet_dialogue_catalog.gd")
++const PET_SURVIVAL_WEIGHTS := {"hp_critical": 100, "hp_oneshot": 95, "boss_grab_warn": 90,
++	"boss_aoe_warn": 90, "boss_exec": 88, "stun_warn": 80, "boss_groggy": 70,
++	"crisis_hp30": 60, "burn_warn": 55, "warn_hp50": 40} # game.html 9410
++
++const PET_DEFS := {
++	"crow": {"spd": 22.0, "orbR": 38.0, "orbY": -22.0},
++	"cat": {"spd": 24.0, "orbR": 28.0, "orbY": 32.0},
++	"xbow": {"spd": 18.0, "orbR": 44.0, "orbY": -28.0},
++	"iris": {"spd": 14.0, "orbR": 55.0}}
++const PET_DIRS := ["east", "south-east", "south", "south-west", "west", "north-west", "north", "north-east"]
++const CAT_RUN_MIRROR := {"east": "west", "south-east": "south-west", "north-east": "south-west",
++	"north-west": "south-west", "north": "south", "south": "south", "south-west": "south-west", "west": "west"}
++const CAT_RUN_FLIP := {"east": true, "south-east": true, "north-east": true}
++const CAT_IDLE_MIRROR := {"south": "south", "south-west": "south-west", "south-east": "south-west",
++	"west": "south-west", "east": "south-west", "north-west": "south", "north-east": "south", "north": "south"}
++const CAT_IDLE_FLIP := {"south-east": true, "east": true, "north-east": true}
++const PET_TIER_COOL := [1200, 720, 480, 360, 240, 0] # 9414
++const PET_OP_MAX := 0.6 # 9348
++const IRIS_GLOW_R := 250.0 # OPT.irisGlow‖250
++
++var _world: Node
++var _player: Node2D
++var _state: Node
++var _lighting: CanvasLayer
++var _configured := false
++var pets: Dictionary = {} # 어댑터 소유 런타임 상태 — 원본 G.pets(30798) 상당.
++							# 포트 G 40키 부트 계약 보존을 위해 state G에 넣지 않음(기록).
++var _tick := 0.0
++
++# 대사 상태 (9287~9292)
++var _pet_bubble := {"who": null, "source": "", "txt": "", "t": 0.0, "mt": 0.0, "pair": null, "pair_fired": false}
++var _pet_dlg_cd: Dictionary = {}
++var _pet_tier_cd := [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
++var _pet_tut: Dictionary = {}
++var _pet_atk_cnt := 0
++var _pet_hit_cnt := 0
++var _pet_kill_cnt := 0
++var _pet_parry_cnt := 0
++var _pet_charge_used := false
++var _bid := {"tier": -1, "weight": 0, "id": "", "who": "", "txt": "", "dur": 0.0, "cd": 0.0, "pw": null, "pt": null, "pd": 0.0}
++var _pet_enemy_avg_atk := 0.0
++var _pet_combo_kills := 0
++var _pet_last_enemy_count := 0
++var _pet_stage_cleared := false
++var _pet_idle_t := 0.0
++var _pet_idle_talk_t := 0.0
++var _pet_stage_env_t := 0.0
++var _pet_stage_env: Dictionary = {}
++var _dialogue_rng := RandomNumberGenerator.new()
++var _dialogue_halt := ""
++var _pet_nag_bag: Array = []
++var _pet_tip_bag: Array = []
++var _pet_talk_bag: Array = []
++var _in_frame := false
++var _say_log: Array = []
++
++# 자막 패널
++var _subtitle_layer: CanvasLayer
++var _subtitle_root: Control
++var _portrait: TextureRect
++var _bubble_label: Label
++
++var _crow_tex: Dictionary = {}
++var _cat_static: Dictionary = {}
++var _cat_idle: Dictionary = {}
++var _cat_run: Dictionary = {}
++var _flame_tex: Array = []
++var _iris_glow_tex: GradientTexture2D
++
++
++func configure(world: Node, player: Node2D, state: Node, lighting: CanvasLayer) -> bool:
++	if _configured or not is_instance_valid(world) or not is_instance_valid(player) \
++			or not is_instance_valid(state) or not state.has_method("read_current_inventory"):
++		return false
++	_world = world
++	_player = player
++	_state = state
++	_lighting = lighting if is_instance_valid(lighting) and lighting.has_method("set_native_iris_light") else null
++	z_index = 500 # S7 패스 — 엔티티 뒤(y정렬) 이후 렌더(59905)
++	for dir in PET_DIRS:
++		_crow_tex[dir] = load("res://assets/pets/crow/" + dir + ".png")
++		_cat_static[dir] = load("res://assets/pets/cat/" + dir + ".png")
++	_cat_idle["south"] = _load_frames("res://assets/pets/cat_idle_south/frame_00%d.png", 8)
++	_cat_idle["south-west"] = _load_frames("res://assets/pets/cat_idle_sw/frame_00%d.png", 2)
++	_cat_run["south"] = _load_frames("res://assets/pets/cat_run_south/frame_00%d.png", 4)
++	_cat_run["south-west"] = _load_frames("res://assets/pets/cat_run_sw/frame_00%d.png", 4)
++	_cat_run["west"] = _load_frames("res://assets/pets/cat_run_west/frame_00%d.png", 4)
++	for i in range(1, 5):
++		_flame_tex.append(load("res://assets/fx/flame0%d.png" % i))
++	# _irisLight 25502: 400² radial rgba(60,160,255,.22)→(40,130,220,.12)→(30,100,180,.04)→0
++	var gradient := Gradient.new()
++	gradient.colors = PackedColorArray([Color(60.0 / 255, 160.0 / 255, 1.0, 0.22),
++		Color(40.0 / 255, 130.0 / 255, 220.0 / 255, 0.12),
++		Color(30.0 / 255, 100.0 / 255, 180.0 / 255, 0.04), Color(0, 0, 0, 0)])
++	gradient.offsets = PackedFloat32Array([0.0, 0.3, 0.7, 1.0])
++	_iris_glow_tex = GradientTexture2D.new()
++	_iris_glow_tex.gradient = gradient
++	_iris_glow_tex.fill = GradientTexture2D.FILL_RADIAL
++	_iris_glow_tex.fill_from = Vector2(0.5, 0.5)
++	_iris_glow_tex.fill_to = Vector2(1.0, 0.5)
++	_iris_glow_tex.width = 400
++	_iris_glow_tex.height = 400
++	# 소환 (30798) — cat.t=~~(Math.random()*100): 원본이 비추적 Math.random이므로
++	# 공유 월드 샘플러를 소비하지 않는 로컬 RNG 사용(공유 RNG 소비수 계약 914 보존).
++	var p: Vector2 = player.global_position
++	var local_rng := RandomNumberGenerator.new()
++	local_rng.randomize()
++	_dialogue_rng.randomize()
++	var cat_t: float = floor(local_rng.randf() * 100.0)
++	pets = {
++		"crow": {"x": p.x, "y": p.y - 20.0, "tx": p.x, "ty": p.y, "t": 0.0, "pdx": 0.0, "pdy": 0.0, "moving": false},
++		"cat": {"x": p.x, "y": p.y + 10.0, "tx": p.x, "ty": p.y, "t": cat_t, "pdx": 0.0, "pdy": 0.0, "moving": false},
++		"xbow": {"x": p.x - 30.0, "y": p.y - 28.0, "tx": p.x, "ty": p.y, "t": 25.0, "atk_cd": 0.0, "ang": 0.0, "pdx": 0.0, "pdy": 0.0, "moving": false},
++		"iris": {"x": p.x + 20.0, "y": p.y - 34.0, "t": 50.0, "sz": 20.0, "tgt": null, "tgt_t": 0}}
++	# 카운터 배선: _petOnAtk=hurtE 진입 1회(42117)·_petOnKill(42702)·_petOnHit(43425)
++	player.telemetry_event.connect(func(kind, data):
++		if kind == "native_hurte":
++			_pet_atk_cnt += 1
++			if data.get("killed") == true:
++				var current_p: Variant = _state.read_current_p()
++				_on_pet_kill(current_p if current_p is Dictionary else {})
++		elif kind == "player_damage":
++			_pet_hit_cnt += 1)
++	_build_subtitle_panel()
++	_configured = true
++	return true
++
++
++static func _load_frames(pattern: String, count: int) -> Array:
++	var frames: Array = []
++	for i in range(count):
++		frames.append(load(pattern % i))
++	return frames
++
++
++func _physics_process(_delta: float) -> void:
++	if not _configured or not is_instance_valid(_player):
++		return
++	_tick += 1.0
++	_update_one_pet("crow")
++	_update_one_pet("cat")
++	_update_ghost_xbow()
++	_update_ghost_iris()
++	_check_pet_dialogue()
++	_push_iris_light()
++	queue_redraw()
++
++
++# ── 이동 (41420~41478) ──
++func _update_one_pet(key: String) -> void:
++	var def: Dictionary = PET_DEFS[key]
++	var pet: Dictionary = pets[key]
++	pet["t"] += 1.0
++	var is_cat := key == "cat"
++	var p: Vector2 = _player.global_position
++	var ox: float = cos(pet["t"] * (0.018 if is_cat else 0.025)) * def["orbR"]
++	var oy: float = def["orbY"] + sin(pet["t"] * (0.022 if is_cat else 0.035)) * (4.0 if is_cat else 10.0)
++	pet["tx"] = p.x + ox
++	pet["ty"] = p.y + oy
++	_move_pet(pet, def["spd"])
++	if Vector2(pet["x"], pet["y"]).distance_to(p) > 520.0: # 언스턱
++		pet["x"] = p.x + (18.0 if is_cat else -24.0)
++		pet["y"] = p.y + (10.0 if is_cat else -18.0)
++		pet["tx"] = pet["x"]
++		pet["ty"] = pet["y"]
++
++
++func _update_ghost_xbow() -> void:
++	var def: Dictionary = PET_DEFS["xbow"]
++	var pet: Dictionary = pets["xbow"]
++	pet["t"] += 1.0
++	var p: Vector2 = _player.global_position
++	pet["tx"] = p.x + cos(pet["t"] * 0.02 + PI) * def["orbR"]
++	pet["ty"] = p.y + def["orbY"] + sin(pet["t"] * 0.03 + 1.5) * 8.0
++	_move_pet(pet, def["spd"])
++	if Vector2(pet["x"], pet["y"]).distance_to(p) > 520.0:
++		pet["x"] = p.x - 30.0
++		pet["y"] = p.y - 28.0
++		pet["tx"] = pet["x"]
++		pet["ty"] = pet["y"]
++	# 공격 없음 — 원본 41496~41512 이동만(과거 자동사격 제거됨)
++
++
++func _move_pet(pet: Dictionary, spd: float) -> void:
++	var dx: float = pet["tx"] - pet["x"]
++	var dy: float = pet["ty"] - pet["y"]
++	var d: float = sqrt(dx * dx + dy * dy)
++	pet["pdx"] = dx
++	pet["pdy"] = dy
++	pet["moving"] = d > 5.0
++	if d > 3.0:
++		var s: float = minf(spd, d * 0.12)
++		pet["x"] += dx / d * s
++		pet["y"] += dy / d * s
++	else:
++		pet["x"] = pet["tx"]
++		pet["y"] = pet["ty"]
++
++
++func _update_ghost_iris() -> void:
++	var pet: Dictionary = pets["iris"]
++	pet["t"] += 1.0
++	var p: Vector2 = _player.global_position
++	pet["tgt_t"] = int(pet["tgt_t"]) + 1
++	var target: Variant = pet["tgt"]
++	var has_live_target: bool = target is Object and is_instance_valid(target) and target.get("alive") == true
++	var need: bool = (not has_live_target) or int(pet["tgt_t"]) % 10 == 0
++	if need:
++		var best_d := 800.0 # 탐색 반경 800 (41525)
++		var best: Node2D = null
++		if _world.has_method("get_enemies"):
++			for enemy in _world.get_enemies():
++				if is_instance_valid(enemy) and enemy.get("alive") == true:
++					var d: float = p.distance_to(enemy.global_position)
++					if d < best_d:
++						best_d = d
++						best = enemy
++		pet["tgt"] = best
++		target = best
++	if target is Object and is_instance_valid(target) and target.get("alive") == true:
++		var ang: float = pet["t"] * 0.03
++		var tx: float = (target as Node2D).global_position.x + cos(ang) * 20.0
++		var ty: float = (target as Node2D).global_position.y - float(target.get("radius")) - 15.0 + sin(ang) * 8.0
++		pet["x"] += (tx - pet["x"]) * 0.12
++		pet["y"] += (ty - pet["y"]) * 0.12
++	else:
++		var ang2: float = pet["t"] * 0.02
++		pet["x"] += (p.x + cos(ang2) * PET_DEFS["iris"]["orbR"] - pet["x"]) * 0.15
++		pet["y"] += (p.y + sin(ang2) * PET_DEFS["iris"]["orbR"] - pet["y"]) * 0.15
++
++
++func _push_iris_light() -> void:
++	if _lighting == null:
++		return
++	var viewport_size: Vector2 = get_viewport().get_visible_rect().size
++	var camera: Camera2D = get_viewport().get_camera_2d()
++	var center: Vector2 = camera.get_screen_center_position() if is_instance_valid(camera) else _player.global_position
++	var screen: Vector2 = viewport_size * 0.5 + (Vector2(pets["iris"]["x"], pets["iris"]["y"]) - center)
++	# 4688: _irFlk=.45+sin(f·.1)·.08+sin(f·.17)·.05, a=_irFlk×.6
++	var flk: float = 0.45 + sin(_tick * 0.1) * 0.08 + sin(_tick * 0.17) * 0.05
++	_lighting.set_native_iris_light(screen, IRIS_GLOW_R, flk * 0.6)
++
++
++# ── P2-004B: 원문 카탈로그 소비 + 원본 디스패처(9389~9503) ──
++func _pet_tier_of(id: String) -> int:
++	return DIALOGUE_CATALOG.tier_of(id)
++
++
++func _offer_dialogue(id: String) -> bool:
++	var entry: Dictionary = DIALOGUE_CATALOG.ENTRIES.get(id, {})
++	# 미이식 이벤트는 데이터만. 외부의 임의 id 요청으로 가짜 트리거를 만들지 않는다.
++	if entry.is_empty() or entry.get("connected") != true:
++		return false
++	var who: String = entry["who"]
++	var txt: String = entry["txt"]
++	var dur: float = float(entry["dur"])
++	var pw: Variant = entry["pw"]
++	var pt: Variant = entry["pt"]
++	var pd: float = float(entry["pd"])
++	match entry["mode"]:
++		"cd":
++			return _pet_say_cd(id, who, txt, dur, float(entry["cd"]), pw, pt, pd)
++		"bid":
++			return _pet_bid_cd(id, who, txt, dur, float(entry["cd"]), pw, pt, pd)
++		"urgent":
++			return _pet_say_urgent(id, who, txt, dur, float(entry["cd"]), pw, pt, pd)
++	return false
++
++
++func _pet_say(id: String, who: String, txt: String, dur_sec: float, pair_who: Variant = null,
++		pair_txt: Variant = null, pair_dur: float = 5.0) -> bool:
++	if _pet_bubble["t"] > 0.0 or float(_pet_dlg_cd.get(id, 0.0)) > 0.0:
++		return false
++	_pet_bubble["who"] = who
++	_pet_bubble["source"] = txt
++	_pet_bubble["txt"] = txt
++	_pet_bubble["mt"] = floor(dur_sec * 60.0)
++	_pet_bubble["t"] = _pet_bubble["mt"]
++	_pet_bubble["pair_fired"] = false
++	_pet_bubble["pair"] = ({"who": pair_who, "txt": pair_txt, "mt": floor((pair_dur if pair_dur != 0.0 else 5.0) * 60.0)}
++		if pair_who != null and pair_txt != null else null)
++	_show_bubble(who, txt)
++	_say_log.append({"id": id, "who": who})
++	return true
++
++
++func _pet_say_cd(id: String, who: String, txt: String, dur: float, cd: float,
++		pw: Variant = null, pt: Variant = null, pd: float = 5.0) -> bool:
++	if float(_pet_dlg_cd.get(id, 0.0)) > 0.0 or _pet_bubble["t"] > 0.0:
++		return false
++	var tier := _pet_tier_of(id)
++	if _pet_tier_cd[tier] > 0.0:
++		return false
++	var ok := _pet_say(id, who, txt, dur, pw, pt, pd)
++	if ok:
++		_pet_dlg_cd[id] = floor(cd * 60.0)
++		_pet_tier_cd[tier] = float(PET_TIER_COOL[tier])
++	return ok
++
++
++func _record_dialogue_bid(tier: int, weight: int, id: String, who: String, txt: String,
++		dur: float, cd: float, pw: Variant, pt: Variant, pd: float) -> void:
++	# 원본 _PB 단일 슬롯 재사용(9411/9430/9438), 동일 티어는 앞선 코드 우선.
++	_bid["tier"] = tier
++	_bid["weight"] = weight
++	_bid["id"] = id
++	_bid["who"] = who
++	_bid["txt"] = txt
++	_bid["dur"] = dur
++	_bid["cd"] = cd
++	_bid["pw"] = pw
++	_bid["pt"] = pt
++	_bid["pd"] = pd
++
++
++func _pet_bid_cd(id: String, who: String, txt: String, dur: float, cd: float,
++		pw: Variant = null, pt: Variant = null, pd: float = 5.0) -> bool:
++	if float(_pet_dlg_cd.get(id, 0.0)) > 0.0:
++		return false
++	var tier := _pet_tier_of(id)
++	if tier <= int(_bid["tier"]):
++		return false
++	_record_dialogue_bid(tier, tier * 10, id, who, txt, dur, cd, pw, pt, pd)
++	return true
++
++
++func _pet_say_urgent(id: String, who: String, txt: String, dur: float, cd: float,
++		pw: Variant = null, pt: Variant = null, pd: float = 5.0) -> bool:
++	if float(_pet_dlg_cd.get(id, 0.0)) > 0.0:
++		return false
++	if _in_frame:
++		var weight: int = int(PET_SURVIVAL_WEIGHTS.get(id, 50))
++		if int(_bid["tier"]) == 5 and weight <= int(_bid["weight"]):
++			return false
++		_record_dialogue_bid(5, weight, id, who, txt, dur, cd, pw, pt, pd)
++		return true
++	if _pet_bubble.get("uid") == id and _pet_bubble["t"] > 0.0:
++		return false
++	_interrupt_dialogue(id, who, txt, dur, cd, pw, pt, pd)
++	return true
++
++
++func _interrupt_dialogue(id: String, who: String, txt: String, dur: float, cd: float,
++		pw: Variant, pt: Variant, pd: float) -> void:
++	_pet_bubble["t"] = 0.0
++	_pet_bubble["pair"] = null
++	_pet_say(id, who, txt, dur, pw, pt, pd)
++	_pet_bubble["uid"] = id
++	_pet_dlg_cd[id] = floor(cd * 60.0)
++	for i in range(5):
++		_pet_tier_cd[i] = maxf(float(_pet_tier_cd[i]), 300.0)
++
++
++func _pet_fire_bid() -> void:
++	var tier: int = int(_bid["tier"])
++	if tier < 0:
++		return
++	if tier >= 5:
++		if not (_pet_bubble.get("uid") == _bid["id"] and _pet_bubble["t"] > 0.0):
++			_interrupt_dialogue(str(_bid["id"]), str(_bid["who"]), str(_bid["txt"]),
++				float(_bid["dur"]), float(_bid["cd"]), _bid["pw"], _bid["pt"], float(_bid["pd"]))
++	elif _pet_bubble["t"] <= 0.0 and _pet_tier_cd[tier] <= 0.0:
++		if _pet_say(str(_bid["id"]), str(_bid["who"]), str(_bid["txt"]), float(_bid["dur"]),
++				_bid["pw"], _bid["pt"], float(_bid["pd"])):
++			_pet_dlg_cd[str(_bid["id"])] = floor(float(_bid["cd"]) * 60.0)
++			_pet_tier_cd[tier] = float(PET_TIER_COOL[tier])
++	_bid["tier"] = -1
++	_bid["weight"] = 0
++
++
++func _update_pet_bubble() -> void:
++	# 9482~9505
++	for k in _pet_dlg_cd.keys():
++		_pet_dlg_cd[k] = float(_pet_dlg_cd[k]) - 1.0
++		if float(_pet_dlg_cd[k]) <= 0.0:
++			_pet_dlg_cd.erase(k)
++	for i in range(6):
++		if _pet_tier_cd[i] > 0.0:
++			_pet_tier_cd[i] = maxf(0.0, _pet_tier_cd[i] - 1.0)
++	if _pet_bubble["t"] > 0.0:
++		_pet_bubble["t"] = float(_pet_bubble["t"]) - 1.0
++		if _pet_bubble["t"] <= 0.0 and _pet_bubble["pair"] != null and not _pet_bubble["pair_fired"]:
++			_pet_bubble["pair_fired"] = true
++			var pair: Dictionary = _pet_bubble["pair"]
++			_pet_bubble["who"] = pair["who"]
++			_pet_bubble["source"] = pair["txt"]
++			_pet_bubble["txt"] = pair["txt"]
++			_pet_bubble["mt"] = pair["mt"]
++			_pet_bubble["t"] = pair["mt"]
++			_pet_bubble["pair"] = null
++			_show_bubble(str(pair["who"]), str(pair["txt"]))
++		if _pet_bubble["t"] > 0.0 and is_instance_valid(_subtitle_root):
++			var r: float = float(_pet_bubble["t"]) / float(_pet_bubble["mt"]) if float(_pet_bubble["mt"]) > 0.0 else 0.0
++			_subtitle_root.modulate = Color(1, 1, 1, pow(clampf(r, 0.0, 1.0), 0.6) * PET_OP_MAX)
++	if _pet_bubble["t"] <= 0.0 and _pet_bubble["pair"] == null and is_instance_valid(_subtitle_root):
++		_subtitle_root.modulate = Color(1, 1, 1, 0)
++
++
++# 원본 9507~9737. 상태는 owner에서 읽고 지역 복사만 수정한다.
++func _check_pet_dialogue() -> void:
++	var raw_p: Variant = _state.read_current_p()
++	var raw_g: Variant = _state.read_current_g()
++	if not raw_p is Dictionary or not raw_g is Dictionary:
++		_dialogue_halt = "source_p_or_g_not_ready"
++		return
++	if raw_g.get("on") != true:
++		return
++	var p: Dictionary = raw_p.duplicate()
++	var g: Dictionary = raw_g
++	# read_current_p의 _hdCd는 constructor 값이므로 실제 스킬 owner를 읽는다.
++	p.erase("_hdCd")
++	var slots: Node = _world.get_node_or_null("NativeSkillSlots")
++	if is_instance_valid(slots) and slots.has_method("get_native_skill_slots_snapshot"):
++		p["_hdCd"] = slots.get_native_skill_slots_snapshot()["hd_cd"]
++	if _player.has_method("get_native_burn_snapshot"):
++		p["_rbBurn"] = _player.get_native_burn_snapshot()
++	var alive_count := 0
++	var near_count := 0
++	var near_frozen := false
++	var attack_total := 0.0
++	var attack_count := 0
++	# _tick은 기존 펫 어댑터의 60Hz 진행 시계. 공유 G.frame/상태는 쓰지 않는다.
++	var sample_attack: bool = int(_tick) % 60 == 0
++	for enemy in _world.get_enemies():
++		if not is_instance_valid(enemy) or enemy.get("alive") != true:
++			continue
++		alive_count += 1
++		var distance_sq: float = _player.global_position.distance_squared_to(enemy.global_position)
++		if distance_sq < 90000.0: # 원본 9594/9597: 엄격 반경 300
++			near_count += 1
++			if float(enemy.get("_frozen")) > 0.0:
++				near_frozen = true
++		if sample_attack and distance_sq < 250000.0: # 원본9524: 엄격 반경 500
++			attack_total += float(enemy.get("attack")) # enemy.gd83 = 원본 e.atk
++			attack_count += 1
++	if sample_attack:
++		_pet_enemy_avg_atk = attack_total / attack_count if attack_count > 0 else 0.0
++	_dialogue_halt = ""
++	_update_pet_bubble()
++	_bid["tier"] = -1
++	_in_frame = true
++	_check_urgent_dialogue(p)
++	_pet_fire_bid()
++	_in_frame = false
++	_bid["tier"] = -1
++	if int(p.get("lv", 1)) > 500:
++		return
++	if _check_pet_tutorial(p, g):
++		return
++	_check_competitive_dialogue(p, g, near_count, alive_count, near_frozen)
++	_pet_fire_bid()
++
++
++func _check_urgent_dialogue(p: Dictionary) -> void:
++	var hp: float = float(p["hp"])
++	var mhp: float = float(p["mhp"])
++	if hp > 0.0 and hp < mhp * 0.5 and hp >= mhp * 0.3:
++		_offer_dialogue("warn_hp50")
++	if hp > 0.0 and hp < mhp * 0.3 and hp >= mhp * 0.1:
++		_offer_dialogue("crisis_hp30")
++	if hp > 0.0 and hp < mhp * 0.1:
++		_offer_dialogue("hp_critical")
++	var burns: Variant = p.get("_rbBurn", [])
++	if hp > 0.0 and (float(p.get("burnT", 0.0)) > 0.0 or (burns is Array and not burns.is_empty())):
++		_offer_dialogue("burn_warn")
++	if hp > 0.0 and _pet_enemy_avg_atk > 0.0 and hp < _pet_enemy_avg_atk * 1.2:
++		_offer_dialogue("hp_oneshot")
++	# stun/보스 urgent는 미연결. 원본 데이터 10 ID를 보존하며 가짜 상태를 만들지 않는다.
++	if float(p["st"]) < float(p["mst"]) * 0.5 and int(p["lv"]) <= 100:
++		_offer_dialogue("low_st") # 원본9537: T3를 urgent 중간 fire에서 처리한다.
++
++
++func _check_pet_tutorial(p: Dictionary, g: Dictionary) -> bool:
++	if int(g.get("stage", 0)) != 0 or int(p.get("lv", 1)) > 200:
++		return false
++	if not _pet_tut.get("start", false):
++		_pet_tut["start"] = true
++		_offer_dialogue("tut_start")
++		return true
++	if not _pet_tut.get("atk3", false) and _pet_atk_cnt >= 3 and _pet_atk_cnt < 7:
++		_pet_tut["atk3"] = true
++		_offer_dialogue("tut_atk3")
++		return true
++	if not _pet_tut.get("atk7", false) and _pet_atk_cnt >= 7 and not _pet_charge_used:
++		_pet_tut["atk7"] = true
++		_offer_dialogue("tut_charge")
++		return true
++	if not _pet_tut.get("firstHit", false) and _pet_hit_cnt >= 1:
++		_pet_tut["firstHit"] = true
++		_offer_dialogue("tut_1sthit")
++		return true
++	if not _pet_tut.get("hit2", false) and _pet_hit_cnt >= 2:
++		_pet_tut["hit2"] = true
++		_offer_dialogue("tut_hit2")
++		return true
++	if not _pet_tut.get("parryHint", false) and _pet_atk_cnt >= 8 and _pet_parry_cnt == 0:
++		_pet_tut["parryHint"] = true
++		_offer_dialogue("tut_parry")
++		return true
++	if not _pet_tut.get("firstKill", false) and _pet_kill_cnt >= 1:
++		_pet_tut["firstKill"] = true
++		_offer_dialogue("tut_1stkill")
++		return true
++	if not _pet_tut.get("bowIntro", false) and _pet_kill_cnt >= 3:
++		_pet_tut["bowIntro"] = true
++		_offer_dialogue("tut_bow")
++		return true
++	if not _pet_tut.get("firstItem", false):
++		var bag: Variant = (_state.read_current_inventory() as Dictionary).get("bag")
++		if bag is Array and not bag.is_empty() and _offer_dialogue("tut_firstItem"):
++			_pet_tut["firstItem"] = true
++			return true
++	return false
++
++
++func _check_competitive_dialogue(p: Dictionary, g: Dictionary, near_count: int,
++		alive_count: int, near_frozen: bool) -> void:
++	var skills: Dictionary = p.get("skills", {})
++	if near_frozen:
++		_offer_dialogue("enemy_ice")
++	if near_count >= 10:
++		_offer_dialogue("melee_trap_yes" if int(skills.get("spikeTrap", 0)) > 0 else "melee_trap_no")
++	if near_count >= 20:
++		_offer_dialogue("melee_slam_yes" if int(skills.get("giantSlam", 0)) > 0 else "melee_slam_no")
++	if float(p["hp"]) < float(p["mhp"]) * 0.5 or float(p["mp"]) < float(p["mmp"]) * 0.5 or float(p["st"]) < float(p["mst"]) * 0.5:
++		if int(skills.get("holyDome", 0)) > 0 and p.has("_hdCd") and float(p["_hdCd"]) <= 0.0:
++			_offer_dialogue("resource_half_dome")
++		elif int(skills.get("holyDome", 0)) == 0 or p.has("_hdCd"):
++			_offer_dialogue("resource_parry")
++		# 쿨다운 owner 부재는 폴백하지 않고 해당 half 분기를 정지한다.
++	if float(p["hp"]) < float(p["mhp"]) * 0.3 or float(p["mp"]) < float(p["mmp"]) * 0.3 or float(p["st"]) < float(p["mst"]) * 0.3:
++		_offer_dialogue("resource_low_yes" if int(skills.get("holyDome", 0)) > 0 else "resource_low_no")
++	if alive_count == 0 and p.get("s", "") == "idle":
++		_offer_dialogue("idle_noE")
++	var boss_alive: bool = g.get("bossAlive", false) == true
++	if boss_alive:
++		_pet_idle_t = 0.0
++		_pet_idle_talk_t = 0.0
++	elif p.get("s", "") == "idle":
++		_pet_idle_t += 1.0
++		if _pet_idle_t > 1200.0:
++			_pet_idle_t = 0.0
++			if _dialogue_rng.randf() < 0.5:
++				_offer_dialogue("idle_nag%d" % _pet_bag_next(_pet_nag_bag, 6))
++			elif _dialogue_rng.randf() < 0.5:
++				_offer_dialogue("idle_tip%d" % _pet_bag_next(_pet_tip_bag, 18))
++		_pet_idle_talk_t += 1.0
++		if alive_count == 0 and _pet_idle_talk_t > 7200.0:
++			_pet_idle_talk_t = 0.0
++			_offer_dialogue("petTalk_%d" % _pet_bag_next(_pet_talk_bag, 5))
++	else:
++		_pet_idle_t = 0.0
++		_pet_idle_talk_t = 0.0
++	# 현 포트 stage0만 인수됨. 다른 stage를 임의 챕터0로 오인하지 않는다.
++	if int(g.get("stage", -1)) == 0:
++		if not boss_alive:
++			_offer_dialogue("chapter_0")
++		if not _pet_stage_env.get(0, false):
++			_pet_stage_env_t += 1.0
++			if not boss_alive and _pet_stage_env_t > 1800.0:
++				_pet_stage_env[0] = true
++				_offer_dialogue("env_ch0")
++	if _pet_last_enemy_count >= 5 and alive_count == 0 and not boss_alive and not _pet_stage_cleared:
++		_pet_stage_cleared = true
++		_offer_dialogue("stage_clear")
++	if alive_count > 0:
++		_pet_stage_cleared = false
++	_pet_last_enemy_count = alive_count
++
++
++func _pet_bag_next(bag: Array, length: int) -> int:
++	if bag.is_empty():
++		for i in range(length):
++			bag.append(i)
++		for i in range(length - 1, 0, -1):
++			var j: int = mini(i, floori(_dialogue_rng.randf() * (i + 1)))
++			var value: int = int(bag[i])
++			bag[i] = bag[j]
++			bag[j] = value
++	return int(bag.pop_back())
++
++
++func _on_pet_kill(p: Dictionary) -> void:
++	_pet_kill_cnt += 1
++	_pet_combo_kills += 1
++	if _pet_combo_kills == 50:
++		_offer_dialogue("combo_50")
++	if _pet_combo_kills == 100:
++		_offer_dialogue("combo_100")
++	if float(p.get("hp", 0.0)) > 0.0 and float(p["hp"]) < float(p["mhp"]) * 0.1:
++		_offer_dialogue("low_hp_kill")
++	# multi_kill: 원본9781 정의만 있고 호출처 없음. 임의 호출을 추가하지 않는다.
++
++
++# ── 자막 패널 (petSubtitle — 2587 DOM + 2026-09-29/09-16 계약) ──
++func _build_subtitle_panel() -> void:
++	_subtitle_layer = CanvasLayer.new()
++	_subtitle_layer.name = "NativePetSubtitle"
++	_subtitle_layer.layer = 9 # DOM z999 — 캔버스 HUD 요소들과 함께, 게임 월드 위
++	add_child(_subtitle_layer)
++	_subtitle_root = Control.new()
++	_subtitle_root.name = "PetSubtitleRoot"
++	_subtitle_layer.add_child(_subtitle_root)
++	_subtitle_root.mouse_filter = Control.MOUSE_FILTER_IGNORE
++	_subtitle_root.size = Vector2(480, 320)
++	_subtitle_root.scale = Vector2(1.5, 1.5) # scale(ui-scale×1.5), ui-scale 1.0
++	_subtitle_root.modulate = Color(1, 1, 1, 0)
++	_portrait = TextureRect.new()
++	_portrait.name = "PetPortrait"
++	_subtitle_root.add_child(_portrait)
++	_portrait.size = Vector2(480, 320)
++	_portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT
++	_portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
++	_portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE
++	_bubble_label = Label.new()
++	_bubble_label.name = "PetBubbleTxt"
++	_subtitle_root.add_child(_bubble_label)
++	_bubble_label.add_theme_font_size_override("font_size", 15) # 0.92rem
++	_bubble_label.add_theme_color_override("font_color", Color.WHITE)
++	_bubble_label.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.95))
++	_bubble_label.add_theme_constant_override("shadow_offset_y", 1)
++	_bubble_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
++	_bubble_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
++	if ResourceLoader.exists("res://assets/fonts/NotoSerifKR-VF.ttf"):
++		_bubble_label.add_theme_font_override("font", load("res://assets/fonts/NotoSerifKR-VF.ttf"))
++
++
++func _show_bubble(who: String, txt: String) -> void:
++	if not is_instance_valid(_subtitle_root):
++		return
++	var is_crow := who == "crow"
++	var viewport_size: Vector2 = get_viewport().get_visible_rect().size
++	var portrait_path := "res://assets/pets/crow_portrait.png" if is_crow else "res://assets/pets/cat_portrait.png"
++	if ResourceLoader.exists(portrait_path):
++		_portrait.texture = load(portrait_path)
++	# bottom 230px(1920×1080·ui-scale1), crow=left 20 / cat=right 20, origin bottom
++	var panel_height := 320.0 * 1.5
++	_subtitle_root.position = Vector2(20.0 if is_crow else viewport_size.x - 20.0 - 480.0 * 1.5,
++		viewport_size.y - 230.0 - panel_height)
++	# 텍스트 박스 (9372~9375): crow(92,237,306,51) / cat(122,250,190,42)
++	if is_crow:
++		_bubble_label.position = Vector2(92, 237)
++		_bubble_label.size = Vector2(306, 51)
++	else:
++		_bubble_label.position = Vector2(122, 250)
++		_bubble_label.size = Vector2(190, 42)
++	_bubble_label.text = txt
++	_subtitle_root.modulate = Color(1, 1, 1, PET_OP_MAX)
++
++
++# ── 렌더 (59905~60009 / 이리스 55288~55318) ──
++func _draw() -> void:
++	if not _configured:
++		return
++	for key in ["cat", "crow"]:
++		_draw_sprite_pet(key)
++	_draw_xbow()
++	_draw_iris()
++
++
++func _dir8(dx: float, dy: float) -> String:
++	if dx == 0.0 and dy == 0.0:
++		return "south"
++	var idx: int = ((roundi(atan2(dy, dx) / (PI / 4.0)) % 8) + 8) % 8
++	return PET_DIRS[idx]
++
++
++func _draw_sprite_pet(key: String) -> void:
++	var pet: Dictionary = pets[key]
++	var is_crow := key == "crow"
++	var bob: float = sin(pet["t"] * (0.1 if is_crow else 0.06)) * (2.0 if is_crow else 1.0)
++	var px: float = pet["x"]
++	var py: float = pet["y"] + bob
++	var pos := Vector2(px, py) - global_position
++	# 그림자
++	draw_set_transform(pos + Vector2(0, 10.0 if is_crow else 3.0), 0.0, Vector2(1.0, 0.3))
++	draw_circle(Vector2.ZERO, 4.0 if is_crow else 3.0, Color(0, 0, 0, 0.08 if is_crow else 0.15))
++	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
++	var dir := _dir8(pet["pdx"], pet["pdy"])
++	var size := 24.0
++	if is_crow:
++		var tex: Texture2D = _crow_tex.get(dir)
++		if tex:
++			draw_texture_rect(tex, Rect2(pos - Vector2(size / 2, size / 2), Vector2(size, size)), false)
++		var eg: float = 0.4 + 0.3 * sin(pet["t"] * 0.08)
++		draw_circle(pos + Vector2(-3, -3), 5.0, Color(1.0, 0.133, 0.0, eg * 0.3))
++		draw_circle(pos + Vector2(-3, -3), 2.0, Color(1.0, 0.267, 0.133, eg))
++	else:
++		var tex2: Texture2D = null
++		var flip := false
++		if pet["moving"]:
++			var rkey: String = CAT_RUN_MIRROR.get(dir, "south")
++			flip = CAT_RUN_FLIP.get(dir, false)
++			var frames: Array = _cat_run.get(rkey, [])
++			if frames.size() > 0:
++				tex2 = frames[int(pet["t"] * 0.08) % frames.size()]
++		else:
++			var ikey: String = CAT_IDLE_MIRROR.get(dir, "south")
++			flip = CAT_IDLE_FLIP.get(dir, false)
++			var frames2: Array = _cat_idle.get(ikey, [])
++			if frames2.size() > 0:
++				tex2 = frames2[int(pet["t"] * 0.04) % frames2.size()]
++		if tex2 == null:
++			tex2 = _cat_static.get(dir)
++			flip = false
++		if tex2:
++			var rect := Rect2(pos - Vector2(size / 2, size / 2), Vector2(size, size))
++			if flip:
++				rect = Rect2(pos + Vector2(size / 2, -size / 2), Vector2(-size, size))
++			draw_texture_rect(tex2, rect, false)
++		var eg2: float = 0.4 + 0.3 * sin(pet["t"] * 0.06)
++		for ex in [-3.0, 3.0]:
++			draw_circle(pos + Vector2(ex, -4), 4.0, Color(0.667, 0.267, 1.0, eg2 * 0.3))
++			draw_circle(pos + Vector2(ex, -4), 1.5, Color(0.8, 0.533, 1.0, eg2))
++
++
++func _draw_xbow() -> void:
++	var pet: Dictionary = pets["xbow"]
++	var bob: float = sin(pet["t"] * 0.08) * 3.0
++	var pos := Vector2(pet["x"], pet["y"] + bob) - global_position
++	draw_circle(pos, 10.0, Color(0.4, 0.533, 0.8, 0.12 + sin(pet["t"] * 0.06) * 0.06))
++	var body_alpha: float = 0.7 + sin(pet["t"] * 0.1) * 0.15
++	draw_set_transform(pos, float(pet["ang"]), Vector2.ONE)
++	draw_rect(Rect2(-6, -2.5, 12, 5), Color(Color("5577aa"), body_alpha))
++	draw_polyline(PackedVector2Array([Vector2(5, -6), Vector2(8, 0), Vector2(5, 6)]), Color(Color("7799cc"), body_alpha), 1.5)
++	draw_polyline(PackedVector2Array([Vector2(5, -6), Vector2(3, 0), Vector2(5, 6)]), Color(Color("aaccff"), body_alpha), 0.7)
++	draw_rect(Rect2(-4, -0.5, 10, 1), Color(Color("ddeeff"), body_alpha)) # 장전 화살 (_atkCd 0 유지)
++	draw_colored_polygon(PackedVector2Array([Vector2(7, 0), Vector2(5, -1.5), Vector2(5, 1.5)]), Color(Color("ddeeff"), body_alpha))
++	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
++	draw_set_transform(pos + Vector2(0, 14), 0.0, Vector2(1.0, 0.3))
++	draw_circle(Vector2.ZERO, 5.0, Color(0, 0, 0, 0.08))
++	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
++
++
++func _draw_iris() -> void:
++	var pet: Dictionary = pets["iris"]
++	var bob: float = sin(pet["t"] * 0.07) * 5.0
++	var pos := Vector2(pet["x"], pet["y"] + bob) - global_position
++	var flk: float = 0.85 + sin(pet["t"] * 0.09) * 0.1 + sin(pet["t"] * 0.17) * 0.05
++	# 번짐 글로우 (lighter — Canvas2D 실측 경로 가산)
++	var glow_size: float = IRIS_GLOW_R * 0.6
++	draw_texture_rect(_iris_glow_tex, Rect2(pos - Vector2(glow_size, glow_size), Vector2(glow_size * 2, glow_size * 2)),
++		false, Color(1, 1, 1, flk * 0.7))
++	# flame01~04 (55303~55310): sz=20+(sz‖20)*.8, y offset -.7sz
++	if _flame_tex.size() >= 4:
++		var frame: Texture2D = _flame_tex[int(floor(pet["t"] * 0.08)) % 4]
++		var fsz: float = 20.0 + float(pet["sz"]) * 0.8
++		draw_texture_rect(frame, Rect2(pos + Vector2(-fsz / 2, -fsz * 0.7), Vector2(fsz, fsz)), false,
++			Color(1, 1, 1, flk))
++	else:
++		draw_circle(pos, 14.0, Color(0.267, 0.8, 1.0, 0.9 * flk))
++		draw_circle(pos, 7.0, Color(0.933, 1.0, 1.0))
++
++
++func get_native_pets_snapshot() -> Dictionary:
++	var data_only: Array = []
++	for id in DIALOGUE_CATALOG.ENTRIES:
++		if DIALOGUE_CATALOG.ENTRIES[id]["connected"] != true:
++			data_only.append(id)
++	return {"configured": _configured,
++		"pets": {"crow": [pets["crow"]["x"], pets["crow"]["y"]], "cat": [pets["cat"]["x"], pets["cat"]["y"]],
++			"xbow": [pets["xbow"]["x"], pets["xbow"]["y"]], "iris": [pets["iris"]["x"], pets["iris"]["y"]]} if _configured else {},
++		"iris_target_alive": pets.get("iris", {}).get("tgt") is Object and is_instance_valid(pets["iris"]["tgt"]) if _configured else false,
++		"counters": {"atk": _pet_atk_cnt, "hit": _pet_hit_cnt, "kill": _pet_kill_cnt, "parry": _pet_parry_cnt},
++		"bubble": {"who": _pet_bubble["who"], "txt": _pet_bubble["txt"], "t": _pet_bubble["t"],
++			"pair": _pet_bubble["pair"] != null, "alpha": _subtitle_root.modulate.a if is_instance_valid(_subtitle_root) else -1.0},
++		"say_log": _say_log.duplicate(true), "tut": _pet_tut.duplicate(),
++		"dialogue_catalog": {"total": DIALOGUE_CATALOG.ENTRIES.size(), "data_only_ids": data_only},
++		"dialogue_cooldowns": _pet_dlg_cd.duplicate(), "tier_cooldowns": _pet_tier_cd.duplicate(),
++		"dialogue_halt": _dialogue_halt,
++		"unported": ["펫 공격 없음(원본 41496~41541 — P2-001d '이리스 피해' 추정 오귀속 정정)",
++			"대사171 ID 중 미연결111 ID는 dialogue_catalog.data_only_ids 참조; 설계전용 카테고리14/24~26/28~29 및 death_dual 별도 화면은 범위 밖",
++			"펫 음성(_petSfx)·패드 키 치환(_padifyHint)·언어 전환(_refreshPetBubbleLanguage — ko 원문 고정)",
++			"R 수거 연계·G.pets G-소유 이관(어댑터 보유 — G 40키 부트 계약 보존)",
++			"crow _fly 애니(원본 미등록 dead)·cat t 및 대사 셔플은 월드와 분리한 로컬 RNG",
++			"tut_charge 후속(firstCharge — 사슬기동 미이식)·parry 카운터(패링 콜백 미배선)",
++			"이리스 LIT 색층(ci0 색 글로우 — P2-003a 색층 전체 미이식과 동일 경계)"]}
+diff --git a/godot/scripts/native_pet_dialogue_catalog.gd b/godot/scripts/native_pet_dialogue_catalog.gd
+new file mode 100644
+--- /dev/null
++++ b/godot/scripts/native_pet_dialogue_catalog.gd
+@@ -0,0 +1,2513 @@
++extends RefCounted
++## P2-004B: generated original gameplay dialogue catalogue (171 IDs).
++## Source: game.html 9516~9814 and external callbacks 16420~60775.
++## Each source_line is the original call site; pool_source_line identifies its literal data.
++## connected is a consumer wiring declaration; data presence never proves a runtime trigger.
++## Dynamic stun_warn/rage_half are preserved as source expressions, never sampled/fabricated.
++## Regenerate: node tools/pet-dialogue-source.mjs (from this worktree only).
++
++const ENTRIES := {
++  "warn_hp50": {
++    "who": "crow",
++    "txt": "…절반이다. 정신차려.",
++    "dur": 3,
++    "cd": 60,
++    "pw": "cat",
++    "pt": "체력 반 남았어! 물약 마실 타이밍!",
++    "pd": 3,
++    "mode": "urgent",
++    "source_line": 9516,
++    "category": 3,
++    "connected": true,
++    "tier": 2
++  },
++  "crisis_hp30": {
++    "who": "crow",
++    "txt": "피가 새고 있다. Shift. 빠져.",
++    "dur": 4,
++    "cd": 20,
++    "pw": "cat",
++    "pt": "사슬 던져! 끌려가면 무적이야!",
++    "pd": 4,
++    "mode": "urgent",
++    "source_line": 9518,
++    "category": 3,
++    "connected": true,
++    "tier": 2
++  },
++  "hp_critical": {
++    "who": "crow",
++    "txt": "…죽기 직전이다. 패링해. 피를 채워.",
++    "dur": 3,
++    "cd": 30,
++    "pw": "cat",
++    "pt": "한 방이면 죽어! 패링으로 HP 채워!!",
++    "pd": 3,
++    "mode": "urgent",
++    "source_line": 9520,
++    "category": 3,
++    "connected": true,
++    "tier": 2
++  },
++  "burn_warn": {
++    "who": "crow",
++    "txt": "타고 있군. 화상은 점점 심해진다. 피를 채워.",
++    "dur": 4,
++    "cd": 45,
++    "pw": "cat",
++    "pt": "화상이야! 점점 심해져! 물약으로 HP 관리해!",
++    "pd": 4,
++    "mode": "urgent",
++    "source_line": 9522,
++    "category": 3,
++    "connected": true,
++    "tier": 2
++  },
++  "hp_oneshot": {
++    "who": "crow",
++    "txt": "…다음 한 방이 마지막이야.",
++    "dur": 3,
++    "cd": 20,
++    "pw": "cat",
++    "pt": "한 대만 맞아도 죽어! 패링이든 회피든!!",
++    "pd": 3,
++    "mode": "urgent",
++    "source_line": 9525,
++    "category": 3,
++    "connected": true,
++    "tier": 2
++  },
++  "stun_warn": {
++    "who": "cat",
++    "txt": null,
++    "dur": 4,
++    "cd": 8,
++    "pw": "crow",
++    "pt": null,
++    "pd": 3,
++    "mode": "urgent",
++    "source_line": 9532,
++    "category": 3,
++    "connected": false,
++    "tier": 2,
++    "txt_expression": "_T('기절!')+' '+_esc.map(e=>_T(e)).join(' / ')+' '+_T('으로 탈출!')",
++    "pt_expression": "P.skills.bladeDash>0?'더블탭 or Shift+방향키! 전격이동으로 탈출해!':P.skills.ghostWalk>0?'Ctrl 유령걸음으로 탈출하라.':P.skills.iceOrb>0?'Ctrl 얼음보주로 탈출하라.':'스킬 없으면 방향키 연타뿐이야.'",
++    "txt_context": [
++      "const _esc=['Shift 사슬'];",
++      "if(P.skills.bladeDash>0)_esc.push('더블탭 전격이동');",
++      "if(P.skills.ghostWalk>0)_esc.push('Ctrl 유령걸음');",
++      "else if(P.skills.iceOrb>0)_esc.push('Ctrl 얼음보주');"
++    ],
++    "txt_components": [
++      "Shift 사슬",
++      "더블탭 전격이동",
++      "Ctrl 유령걸음",
++      "Ctrl 얼음보주",
++      "기절!",
++      " ",
++      " / ",
++      " ",
++      "으로 탈출!"
++    ],
++    "pt_components": [
++      "더블탭 or Shift+방향키! 전격이동으로 탈출해!",
++      "Ctrl 유령걸음으로 탈출하라.",
++      "Ctrl 얼음보주로 탈출하라.",
++      "스킬 없으면 방향키 연타뿐이야."
++    ]
++  },
++  "mp_warn": {
++    "who": "crow",
++    "txt": "마력이 빈다. 평타 섞어.",
++    "dur": 3,
++    "cd": 60,
++    "pw": "cat",
++    "pt": "MP 부족! 평타로 패면서 회복해!",
++    "pd": 3,
++    "mode": "bid",
++    "source_line": 9535,
++    "category": 5,
++    "connected": false,
++    "tier": 3
++  },
++  "low_st": {
++    "who": "crow",
++    "txt": "스태미나가 부족하다. 무리하지 마.",
++    "dur": 3,
++    "cd": 60,
++    "pw": "cat",
++    "pt": "ST 없으면 스킬 못 써!",
++    "pd": 3,
++    "mode": "bid",
++    "source_line": 9537,
++    "category": 5,
++    "connected": true,
++    "tier": 3
++  },
++  "boss_exec": {
++    "who": "crow",
++    "txt": "무릎 꿇었다. 지금 처형해. X.",
++    "dur": 3,
++    "cd": 20,
++    "pw": "cat",
++    "pt": "처형각이야!! X 눌러!!",
++    "pd": 3,
++    "mode": "urgent",
++    "source_line": 9541,
++    "category": 3,
++    "connected": false,
++    "tier": 4
++  },
++  "boss_groggy": {
++    "who": "crow",
++    "txt": "무릎 꿇었다.",
++    "dur": 3,
++    "cd": 30,
++    "pw": "cat",
++    "pt": "지금이야! 몰아쳐!!",
++    "pd": 3,
++    "mode": "urgent",
++    "source_line": 9542,
++    "category": 3,
++    "connected": false,
++    "tier": 4
++  },
++  "boss_grab_warn": {
++    "who": "crow",
++    "txt": "그랩이다. 거리를 둬.",
++    "dur": 3,
++    "cd": 10,
++    "pw": "cat",
++    "pt": "잡힌다! 옆으로 빠져!",
++    "pd": 3,
++    "mode": "urgent",
++    "source_line": 9547,
++    "category": 3,
++    "connected": false,
++    "tier": 4
++  },
++  "boss_aoe_warn": {
++    "who": "crow",
++    "txt": "광역기다. 멀어져.",
++    "dur": 3,
++    "cd": 10,
++    "pw": "cat",
++    "pt": "큰 거 온다! 도망쳐!",
++    "pd": 3,
++    "mode": "urgent",
++    "source_line": 9548,
++    "category": 3,
++    "connected": false,
++    "tier": 4
++  },
++  "tut_start": {
++    "who": "crow",
++    "txt": "일어나. 여신이 널 여기 보낸 건 죽으라고가 아니야.",
++    "dur": 5,
++    "cd": 9999,
++    "pw": "cat",
++    "pt": "…아직 살아있네. 좌클릭으로 저것들 쳐봐.",
++    "pd": 5,
++    "mode": "cd",
++    "source_line": 9556,
++    "category": 1,
++    "connected": true,
++    "tier": 1
++  },
++  "tut_atk3": {
++    "who": "crow",
++    "txt": "좋아, 감각이 있군. 계속 쳐!",
++    "dur": 5,
++    "cd": 9999,
++    "pw": "cat",
++    "pt": "…치는 건 할 줄 아네. 피하는 건?",
++    "pd": 5,
++    "mode": "cd",
++    "source_line": 9557,
++    "category": 1,
++    "connected": true,
++    "tier": 1
++  },
++  "tut_charge": {
++    "who": "crow",
++    "txt": "Shift를 눌러. 사슬이다. 땅에 꽂아서 끌려가!",
++    "dur": 5,
++    "cd": 9999,
++    "pw": null,
++    "pt": null,
++    "pd": 0,
++    "mode": "cd",
++    "source_line": 9558,
++    "category": 1,
++    "connected": true,
++    "tier": 1
++  },
++  "tut_1stcharge": {
++    "who": "crow",
++    "txt": "사슬로 끌려가는 중엔 무적이다. 위험할 때 쓰면 좋아.",
++    "dur": 5,
++    "cd": 9999,
++    "pw": "cat",
++    "pt": "흥, 사슬 못 맞추면 헛수고야.",
++    "pd": 5,
++    "mode": "cd",
++    "source_line": 9559,
++    "category": 1,
++    "connected": false,
++    "tier": 1
++  },
++  "tut_1sthit": {
++    "who": "cat",
++    "txt": "…아파? 당연하지. 여긴 지옥이야.",
++    "dur": 5,
++    "cd": 9999,
++    "pw": null,
++    "pt": null,
++    "pd": 0,
++    "mode": "cd",
++    "source_line": 9560,
++    "category": 1,
++    "connected": true,
++    "tier": 1
++  },
++  "tut_hit2": {
++    "who": "crow",
++    "txt": "Q를 눌러! 악의로 보호막을 만들 수 있다.",
++    "dur": 5,
++    "cd": 9999,
++    "pw": "cat",
++    "pt": "보호막 없이 버틸 생각은 버려.",
++    "pd": 5,
++    "mode": "cd",
++    "source_line": 9561,
++    "category": 1,
++    "connected": true,
++    "tier": 1
++  },
++  "tut_parry": {
++    "who": "crow",
++    "txt": "E가 패링이다. 적 공격이 닿기 직전에 눌러!",
++    "dur": 5,
++    "cd": 9999,
++    "pw": "cat",
++    "pt": "못 하겠으면 때려. 안 죽으면 그만이야.",
++    "pd": 5,
++    "mode": "cd",
++    "source_line": 9562,
++    "category": 1,
++    "connected": true,
++    "tier": 1
++  },
++  "tut_1stparry": {
++    "who": "crow",
++    "txt": "됐어! 감 잡았구나.",
++    "dur": 4,
++    "cd": 9999,
++    "pw": "cat",
++    "pt": "…운이 좋았을 뿐이야. 아마.",
++    "pd": 5,
++    "mode": "cd",
++    "source_line": 9563,
++    "category": 1,
++    "connected": false,
++    "tier": 1
++  },
++  "tut_1stkill": {
++    "who": "crow",
++    "txt": "하나 죽었군.",
++    "dur": 4,
++    "cd": 9999,
++    "pw": "cat",
++    "pt": "…고기 냄새. 싫진 않네.",
++    "pd": 5,
++    "mode": "cd",
++    "source_line": 9564,
++    "category": 1,
++    "connected": true,
++    "tier": 1
++  },
++  "tut_bow": {
++    "who": "crow",
++    "txt": "유령쇠뇌야. 인사해.",
++    "dur": 3,
++    "cd": 9999,
++    "pw": "cat",
++    "pt": "…말은 못해.",
++    "pd": 4,
++    "mode": "cd",
++    "source_line": 9565,
++    "category": 1,
++    "connected": true,
++    "tier": 1
++  },
++  "tut_firstItem": {
++    "who": "crow",
++    "txt": "TAB을 눌러. 가방을 열고 장비를 입어야 한다.",
++    "dur": 5,
++    "cd": 9999,
++    "pw": "cat",
++    "pt": "주웠으면 껴야지! TAB!",
++    "pd": 4,
++    "mode": "cd",
++    "source_line": 9566,
++    "category": 1,
++    "connected": true,
++    "tier": 1
++  },
++  "tut_potionCraft": {
++    "who": "crow",
++    "txt": "G. 대장간에서 물약도 제작할 수 있다.",
++    "dur": 5,
++    "cd": 9999,
++    "pw": "cat",
++    "pt": "악의로 물약 만들어! G키야!",
++    "pd": 4,
++    "mode": "cd",
++    "source_line": 9567,
++    "category": 1,
++    "connected": false,
++    "tier": 1
++  },
++  "tut_bullets": {
++    "who": "crow",
++    "txt": "빨간 탄은 악의 덩어리다. 쳐내서 이용해.",
++    "dur": 5,
++    "cd": 9999,
++    "pw": "cat",
++    "pt": "무지개탄은 Q 패링이다. E는 안 통해.",
++    "pd": 5,
++    "mode": "cd",
++    "source_line": 9570,
++    "category": 1,
++    "connected": false,
++    "tier": 1
++  },
++  "tut_red": {
++    "who": "crow",
++    "txt": "빨간 탄을 무서워하지 마. 악의가 강하다.",
++    "dur": 5,
++    "cd": 9999,
++    "pw": "cat",
++    "pt": "패링으로 돌려주고, Q 보호막도 써! 악의를 잘 굴려!",
++    "pd": 5,
++    "mode": "cd",
++    "source_line": 9571,
++    "category": 1,
++    "connected": false,
++    "tier": 1
++  },
++  "tut_rainbow": {
++    "who": "crow",
++    "txt": "무지개탄은 Q 패링이다. E는 안 통해.",
++    "dur": 4,
++    "cd": 9999,
++    "pw": "cat",
++    "pt": "예쁘다고 만지면 죽어.",
++    "pd": 4,
++    "mode": "cd",
++    "source_line": 9572,
++    "category": 1,
++    "connected": false,
++    "tier": 1
++  },
++  "tut_keyK": {
++    "who": "cat",
++    "txt": "K를 눌러봐! 스킬을 배울 수 있어!",
++    "dur": 5,
++    "cd": 9999,
++    "pw": "crow",
++    "pt": "…힘을 골라라. 전부 가질 순 없다.",
++    "pd": 4,
++    "mode": "cd",
++    "source_line": 9577,
++    "category": 2,
++    "connected": false,
++    "tier": 1
++  },
++  "tut_keyC": {
++    "who": "cat",
++    "txt": "C 눌러서 능력치 찍어! 패시브도 있어~",
++    "dur": 5,
++    "cd": 9999,
++    "pw": "crow",
++    "pt": "스탯을 올려. 살고 싶으면.",
++    "pd": 4,
++    "mode": "cd",
++    "source_line": 9578,
++    "category": 2,
++    "connected": false,
++    "tier": 1
++  },
++  "tut_keyG": {
++    "who": "crow",
++    "txt": "G를 눌러. 대장간에서 장비를 강화할 수 있다.",
++    "dur": 5,
++    "cd": 9999,
++    "pw": "cat",
++    "pt": "좋은 장비는 강화해야 진짜 힘을 발휘해!",
++    "pd": 4,
++    "mode": "cd",
++    "source_line": 9580,
++    "category": 2,
++    "connected": false,
++    "tier": 1
++  },
++  "tut_keyF": {
++    "who": "cat",
++    "txt": "F키는 영역 스킬 전용이야! L로 배정해봐~",
++    "dur": 5,
++    "cd": 9999,
++    "pw": "crow",
++    "pt": "…슬롯을 채워. 빈 손은 죽음이다.",
++    "pd": 4,
++    "mode": "cd",
++    "source_line": 9582,
++    "category": 2,
++    "connected": false,
++    "tier": 1
++  },
++  "tut_keyZ": {
++    "who": "crow",
++    "txt": "Z. 필살기다. 아껴 써라.",
++    "dur": 4,
++    "cd": 9999,
++    "pw": "cat",
++    "pt": "Z 누르면 대박! 쿨타임 길어!",
++    "pd": 4,
++    "mode": "cd",
++    "source_line": 9583,
++    "category": 2,
++    "connected": false,
++    "tier": 1
++  },
++  "tut_keyCT": {
++    "who": "cat",
++    "txt": "L-CTRL로 유령걸음/얼음보주!",
++    "dur": 5,
++    "cd": 9999,
++    "pw": "crow",
++    "pt": "Ctrl. 위기에 쓸 카드가 하나 늘었군.",
++    "pd": 4,
++    "mode": "cd",
++    "source_line": 9584,
++    "category": 2,
++    "connected": false,
++    "tier": 1
++  },
++  "tut_keyL": {
++    "who": "crow",
++    "txt": "L을 눌러. 스킬 슬롯을 정리해야 한다.",
++    "dur": 5,
++    "cd": 9999,
++    "pw": "cat",
++    "pt": "L로 어디에 뭘 넣을지 골라!",
++    "pd": 4,
++    "mode": "cd",
++    "source_line": 9586,
++    "category": 2,
++    "connected": false,
++    "tier": 1
++  },
++  "tut_keyV": {
++    "who": "cat",
++    "txt": "N 눌러서 창고에 넣어둬!",
++    "dur": 5,
++    "cd": 9999,
++    "pw": "crow",
++    "pt": "…버리기 아까운 건 창고에.",
++    "pd": 4,
++    "mode": "cd",
++    "source_line": 9587,
++    "category": 2,
++    "connected": false,
++    "tier": 1
++  },
++  "tut_keyESC": {
++    "who": "cat",
++    "txt": "ESC로 설정! 난이도/자동물약!",
++    "dur": 5,
++    "cd": 9999,
++    "pw": "crow",
++    "pt": "…설정을 확인해.",
++    "pd": 4,
++    "mode": "cd",
++    "source_line": 9588,
++    "category": 2,
++    "connected": false,
++    "tier": 1
++  },
++  "boss_elem": {
++    "who": "crow",
++    "txt": "속성을 읽어. 약점을 찌르면 두 배로 썩는다.",
++    "dur": 4,
++    "cd": 30,
++    "pw": "cat",
++    "pt": "화염엔 빙결! 암전엔 암흑!",
++    "pd": 4,
++    "mode": "bid",
++    "source_line": 9592,
++    "category": 4,
++    "connected": false,
++    "tier": 3
++  },
++  "boss_summon": {
++    "who": "crow",
++    "txt": "잡몹이다. 먼저 정리해.",
++    "dur": 4,
++    "cd": 60,
++    "pw": "cat",
++    "pt": "소환수 왔어! 먼저 처리해야 해!",
++    "pd": 4,
++    "mode": "bid",
++    "source_line": 9593,
++    "category": 4,
++    "connected": false,
++    "tier": 4
++  },
++  "enemy_ice": {
++    "who": "crow",
++    "txt": "…얼어붙은 놈은 오래 안 간다.",
++    "dur": 4,
++    "cd": 60,
++    "pw": "cat",
++    "pt": "얼었어! 빙결 중 1.5배야!",
++    "pd": 4,
++    "mode": "bid",
++    "source_line": 9594,
++    "category": 4,
++    "connected": true,
++    "tier": 3
++  },
++  "near_boss": {
++    "who": "crow",
++    "txt": "…냄새가 짙다. 큰 놈이 있어.",
++    "dur": 4,
++    "cd": 30,
++    "pw": "cat",
++    "pt": "준비됐어? 물약 확인하고!",
++    "pd": 4,
++    "mode": "bid",
++    "source_line": 9595,
++    "category": 4,
++    "connected": false,
++    "tier": 4
++  },
++  "melee_trap_yes": {
++    "who": "cat",
++    "txt": "1번! 가시덫으로 적 묶어!",
++    "dur": 4,
++    "cd": 300,
++    "pw": null,
++    "pt": null,
++    "pd": 0,
++    "mode": "bid",
++    "source_line": 9598,
++    "category": 4,
++    "connected": true,
++    "tier": 3
++  },
++  "melee_trap_no": {
++    "who": "cat",
++    "txt": "근접 너무 많아! 거리 벌려!",
++    "dur": 4,
++    "cd": 300,
++    "pw": "crow",
++    "pt": "…둘러싸이면 끝이야.",
++    "pd": 4,
++    "mode": "bid",
++    "source_line": 9598,
++    "category": 4,
++    "connected": true,
++    "tier": 3
++  },
++  "melee_slam_yes": {
++    "who": "crow",
++    "txt": "지옥강타 1로 쓸어버려!",
++    "dur": 4,
++    "cd": 300,
++    "pw": "cat",
++    "pt": "그로기 터지면 1.5배!",
++    "pd": 3,
++    "mode": "bid",
++    "source_line": 9599,
++    "category": 4,
++    "connected": true,
++    "tier": 3
++  },
++  "melee_slam_no": {
++    "who": "crow",
++    "txt": "회전참이나 광역기로 몰아!",
++    "dur": 4,
++    "cd": 300,
++    "pw": "cat",
++    "pt": "뭉쳐있을 때가 기회야!",
++    "pd": 3,
++    "mode": "bid",
++    "source_line": 9599,
++    "category": 4,
++    "connected": true,
++    "tier": 3
++  },
++  "rage_full2": {
++    "who": "cat",
++    "txt": "분노는 스페이스키 분노스킬로 폭발시킬 수 있어! 지금이야!!!",
++    "dur": 4,
++    "cd": 40,
++    "pw": "crow",
++    "pt": "…분노가 끓어넘친다. 스페이스로 적들에게 폭발시켜!",
++    "pd": 4,
++    "mode": "bid",
++    "source_line": 9603,
++    "category": 4,
++    "connected": false,
++    "tier": 3
++  },
++  "resource_half_dome": {
++    "who": "cat",
++    "txt": "F 눌러! 회복의 영역 깔아!",
++    "dur": 4,
++    "cd": 120,
++    "pw": "crow",
++    "pt": "자원이 반이다. F키로 회복해.",
++    "pd": 4,
++    "mode": "bid",
++    "source_line": 9607,
++    "category": 5,
++    "connected": true,
++    "tier": 3
++  },
++  "resource_parry": {
++    "who": "cat",
++    "txt": "패링을 써야 자원을 흡수한다고!",
++    "dur": 3,
++    "cd": 300,
++    "pw": null,
++    "pt": null,
++    "pd": 0,
++    "mode": "bid",
++    "source_line": 9608,
++    "category": 5,
++    "connected": true,
++    "tier": 3
++  },
++  "resource_low_yes": {
++    "who": "crow",
++    "txt": "F키 회복의 영역을 써봐.",
++    "dur": 4,
++    "cd": 300,
++    "pw": null,
++    "pt": null,
++    "pd": 0,
++    "mode": "bid",
++    "source_line": 9611,
++    "category": 5,
++    "connected": true,
++    "tier": 3
++  },
++  "resource_low_no": {
++    "who": "crow",
++    "txt": "빠져! 물약 마시고 회복해.",
++    "dur": 4,
++    "cd": 300,
++    "pw": "cat",
++    "pt": "HP가 없어 패링이라도 해서 회복해야해!!!",
++    "pd": 4,
++    "mode": "bid",
++    "source_line": 9612,
++    "category": 5,
++    "connected": true,
++    "tier": 3
++  },
++  "shift_hint": {
++    "who": "cat",
++    "txt": "쉬프트! 사슬기동은 이동기야!",
++    "dur": 4,
++    "cd": 300,
++    "pw": null,
++    "pt": null,
++    "pd": 0,
++    "mode": "bid",
++    "source_line": 9614,
++    "category": 5,
++    "connected": false,
++    "tier": 1
++  },
++  "sp_hint": {
++    "who": "cat",
++    "txt": "스킬포인트 쌓였어! K 눌러!",
++    "dur": 4,
++    "cd": 300,
++    "pw": null,
++    "pt": null,
++    "pd": 0,
++    "mode": "bid",
++    "source_line": 9615,
++    "category": 5,
++    "connected": false,
++    "tier": 1
++  },
++  "has_sp": {
++    "who": "cat",
++    "txt": "스킬 포인트 있어! K!",
++    "dur": 5,
++    "cd": 180,
++    "pw": "crow",
++    "pt": "L키로 스킬 슬롯에 넣어야 쓸 수 있어.",
++    "pd": 4,
++    "mode": "bid",
++    "source_line": 9616,
++    "category": 5,
++    "connected": false,
++    "tier": 1
++  },
++  "has_ap": {
++    "who": "crow",
++    "txt": "J키. 패시브 포인트가 쌓여있다.",
++    "dur": 4,
++    "cd": 240,
++    "pw": "cat",
++    "pt": "J키! 패시브 강해져!",
++    "pd": 4,
++    "mode": "bid",
++    "source_line": 9617,
++    "category": 5,
++    "connected": false,
++    "tier": 1
++  },
++  "bag_full": {
++    "who": "crow",
++    "txt": "…쓸 거 아니면 분해해.",
++    "dur": 4,
++    "cd": 120,
++    "pw": "cat",
++    "pt": "아이템 넘쳐! 우리가 주워줄게!",
++    "pd": 4,
++    "mode": "bid",
++    "source_line": 9618,
++    "category": 5,
++    "connected": false,
++    "tier": 1
++  },
++  "low_mats": {
++    "who": "crow",
++    "txt": "악의가 바닥이다.",
++    "dur": 3,
++    "cd": 240,
++    "pw": "cat",
++    "pt": "장비 분해해! 쓰레기도 악의!",
++    "pd": 5,
++    "mode": "bid",
++    "source_line": 9619,
++    "category": 5,
++    "connected": false,
++    "tier": 1
++  },
++  "enh_hint": {
++    "who": "crow",
++    "txt": "…강화 안 하면 그냥 고철이야.",
++    "dur": 4,
++    "cd": 300,
++    "pw": "cat",
++    "pt": "G 눌러서 대장간 가봐!",
++    "pd": 4,
++    "mode": "bid",
++    "source_line": 9621,
++    "category": 5,
++    "connected": false,
++    "tier": 1
++  },
++  "parry_low": {
++    "who": "crow",
++    "txt": "빨간 탄은 악의 덩어리다. 쳐내서 이용해.",
++    "dur": 4,
++    "cd": 90,
++    "pw": "cat",
++    "pt": "무지개탄은 Q 패링이다. E는 안 통해.",
++    "pd": 4,
++    "mode": "bid",
++    "source_line": 9624,
++    "category": 6,
++    "connected": false,
++    "tier": 1
++  },
++  "parry_mid": {
++    "who": "crow",
++    "txt": "빨간 탄은 악의 덩어리다. 쳐내서 이용해.",
++    "dur": 4,
++    "cd": 90,
++    "pw": "cat",
++    "pt": "무지개탄은 Q 패링이다. E는 안 통해.",
++    "pd": 4,
++    "mode": "bid",
++    "source_line": 9625,
++    "category": 6,
++    "connected": false,
++    "tier": 1
++  },
++  "idle_noE": {
++    "who": "crow",
++    "txt": "…멈추지 마. 여신은 기다리지 않는다.",
++    "dur": 4,
++    "cd": 60,
++    "pw": "cat",
++    "pt": "앞으로 가자~",
++    "pd": 4,
++    "mode": "bid",
++    "source_line": 9627,
++    "category": 6,
++    "connected": true,
++    "tier": 0
++  },
++  "boss_p2": {
++    "who": "crow",
++    "txt": "패턴이 바뀐다. 거리를 둬.",
++    "dur": 4,
++    "cd": 9999,
++    "pw": "cat",
++    "pt": "HP 70%! 조심해!",
++    "pd": 3,
++    "mode": "bid",
++    "source_line": 9675,
++    "category": 16,
++    "connected": false,
++    "tier": 4
++  },
++  "boss_p3": {
++    "who": "crow",
++    "txt": "미쳐가고 있어. 광폭화다.",
++    "dur": 4,
++    "cd": 9999,
++    "pw": "cat",
++    "pt": "패턴이 빨라졌어!",
++    "pd": 3,
++    "mode": "bid",
++    "source_line": 9676,
++    "category": 16,
++    "connected": false,
++    "tier": 4
++  },
++  "boss_p4": {
++    "who": "cat",
++    "txt": "마지막이야! 끝장내!",
++    "dur": 4,
++    "cd": 9999,
++    "pw": "crow",
++    "pt": "…빈틈을 노려.",
++    "pd": 3,
++    "mode": "bid",
++    "source_line": 9677,
++    "category": 16,
++    "connected": false,
++    "tier": 4
++  },
++  "boss_kill": {
++    "who": "crow",
++    "txt": "…끝났다. 다음으로.",
++    "dur": 4,
++    "cd": null,
++    "pw": "cat",
++    "pt": "핵터 니가 진짜 해냈구나, 여왕님이 기뻐하시겠어!",
++    "pd": 4,
++    "mode": "say",
++    "source_line": 9680,
++    "category": 16,
++    "connected": false,
++    "tier": 4
++  },
++  "stage_clear": {
++    "who": "cat",
++    "txt": "다 잡았다! 포탈 어딨어?",
++    "dur": 4,
++    "cd": 60,
++    "pw": "crow",
++    "pt": "길이 열렸다.",
++    "pd": 3,
++    "mode": "bid",
++    "source_line": 9684,
++    "category": 16,
++    "connected": true,
++    "tier": 2
++  },
++  "boss_retry5": {
++    "who": "crow",
++    "txt": "다섯 번째군. 이번엔 바뀐 게 있어야지.",
++    "dur": 4,
++    "cd": 9999,
++    "pw": "cat",
++    "pt": "또 와?! 이번엔 진짜 패턴 외웠어!",
++    "pd": 4,
++    "mode": "bid",
++    "source_line": 9691,
++    "category": 19,
++    "connected": false,
++    "tier": 4
++  },
++  "build_str": {
++    "who": "crow",
++    "txt": "근육으로 만든 빌드군. 베고 부숴.",
++    "dur": 4,
++    "cd": 9999,
++    "pw": "cat",
++    "pt": "STR 빌드! 회전참, 회오리, 광역기 추천!",
++    "pd": 4,
++    "mode": "bid",
++    "source_line": 9709,
++    "category": 15,
++    "connected": false,
++    "tier": 2
++  },
++  "build_dex": {
++    "who": "crow",
++    "txt": "활을 쥐었군. 거리를 둬.",
++    "dur": 4,
++    "cd": 9999,
++    "pw": "cat",
++    "pt": "DEX 빌드! 거리에서 패고, 추적탄 좋아!",
++    "pd": 4,
++    "mode": "bid",
++    "source_line": 9710,
++    "category": 15,
++    "connected": false,
++    "tier": 2
++  },
++  "build_int": {
++    "who": "crow",
++    "txt": "마법사군. MP 관리부터 배워라.",
++    "dur": 4,
++    "cd": 9999,
++    "pw": "cat",
++    "pt": "INT 빌드! 빔이랑 폭발 마법! MP 잘 봐!",
++    "pd": 4,
++    "mode": "bid",
++    "source_line": 9711,
++    "category": 15,
++    "connected": false,
++    "tier": 2
++  },
++  "build_lck_high": {
++    "who": "crow",
++    "txt": "운에 기댄 빌드군. …드롭은 좋겠어.",
++    "dur": 4,
++    "cd": 9999,
++    "pw": "cat",
++    "pt": "LCK 높아! 레어 드롭률 미친 거 알지?",
++    "pd": 4,
++    "mode": "bid",
++    "source_line": 9712,
++    "category": 15,
++    "connected": false,
++    "tier": 2
++  },
++  "build_balanced_warn": {
++    "who": "crow",
++    "txt": "다 찍으면 다 약해진다. 하나만 골라.",
++    "dur": 4,
++    "cd": 600,
++    "pw": "cat",
++    "pt": "골고루 안 돼! 하나로 밀어!",
++    "pd": 4,
++    "mode": "bid",
++    "source_line": 9716,
++    "category": 15,
++    "connected": false,
++    "tier": 2
++  },
++  "diff_3": {
++    "who": "crow",
++    "txt": "…적이 강해져. 정신 차려.",
++    "dur": 4,
++    "cd": 9999,
++    "pw": "cat",
++    "pt": "보상도 좋아지지만 죽기 쉬워!",
++    "pd": 4,
++    "mode": "bid",
++    "source_line": 9727,
++    "category": 27,
++    "connected": false,
++    "tier": 2
++  },
++  "diff_5": {
++    "who": "crow",
++    "txt": "…너도 강해졌단 뜻이야.",
++    "dur": 4,
++    "cd": 9999,
++    "pw": "cat",
++    "pt": "진짜 게이머 인증!",
++    "pd": 4,
++    "mode": "bid",
++    "source_line": 9728,
++    "category": 27,
++    "connected": false,
++    "tier": 2
++  },
++  "diff_7": {
++    "who": "crow",
++    "txt": "…아직 살아있단 게 신기하군.",
++    "dur": 4,
++    "cd": 9999,
++    "pw": "cat",
++    "pt": "다른 사람들 이 정도 못 와!",
++    "pd": 4,
++    "mode": "bid",
++    "source_line": 9729,
++    "category": 27,
++    "connected": false,
++    "tier": 2
++  },
++  "diff_10": {
++    "who": "crow",
++    "txt": "+5단. …너는 이제 인간이 아니야.",
++    "dur": 4,
++    "cd": 9999,
++    "pw": "cat",
++    "pt": "최고난이도! 너 진짜 광기야!",
++    "pd": 4,
++    "mode": "bid",
++    "source_line": 9730,
++    "category": 27,
++    "connected": false,
++    "tier": 2
++  },
++  "diff_back": {
++    "who": "crow",
++    "txt": "…일반으로 내려왔군. 가끔은 쉬어가야지.",
++    "dur": 4,
++    "cd": 600,
++    "pw": "cat",
++    "pt": "일반 모드! 편하게 즐기자!",
++    "pd": 4,
++    "mode": "bid",
++    "source_line": 9731,
++    "category": 27,
++    "connected": false,
++    "tier": 2
++  },
++  "bl_combo5": {
++    "who": "crow",
++    "txt": "…이게 진짜 패링이야.",
++    "dur": 4,
++    "cd": 300,
++    "pw": "cat",
++    "pt": "다섯 번 연속! 내가 본 인간 중 최고!",
++    "pd": 4,
++    "mode": "cd",
++    "source_line": 9745,
++    "category": 10,
++    "connected": false,
++    "tier": 2
++  },
++  "combo_50": {
++    "who": "crow",
++    "txt": "…피가 묻기 시작했군.",
++    "dur": 4,
++    "cd": 600,
++    "pw": "cat",
++    "pt": "50명! 학살자야!",
++    "pd": 4,
++    "mode": "cd",
++    "source_line": 9750,
++    "category": 17,
++    "connected": true,
++    "tier": 2
++  },
++  "combo_100": {
++    "who": "crow",
++    "txt": "100. 너는 인간이 아니야.",
++    "dur": 4,
++    "cd": 600,
++    "pw": "cat",
++    "pt": "100명?! 미쳤어!",
++    "pd": 4,
++    "mode": "cd",
++    "source_line": 9751,
++    "category": 17,
++    "connected": true,
++    "tier": 2
++  },
++  "low_hp_kill": {
++    "who": "crow",
++    "txt": "…피 흘리며 베는군.",
++    "dur": 4,
++    "cd": 300,
++    "pw": "cat",
++    "pt": "죽기 직전에 죽이다니! 멋져!",
++    "pd": 4,
++    "mode": "cd",
++    "source_line": 9753,
++    "category": 17,
++    "connected": true,
++    "tier": 2
++  },
++  "trophy_legendary_kill": {
++    "who": "crow",
++    "txt": "…전설을 잡았다. 보상도 전설이겠지.",
++    "dur": 5,
++    "cd": 9999,
++    "pw": "cat",
++    "pt": "전설급 잡았어!! 드롭 확인해!",
++    "pd": 4,
++    "mode": "cd",
++    "source_line": 9755,
++    "category": 20,
++    "connected": false,
++    "tier": 2
++  },
++  "bl_first_red": {
++    "who": "crow",
++    "txt": "빨간콩이 푸르게 변했다. 그게 너의 무기야.",
++    "dur": 4,
++    "cd": 9999,
++    "pw": "cat",
++    "pt": "봤지?! 빨강이 파랑 됐어! 호밍이야!",
++    "pd": 4,
++    "mode": "cd",
++    "source_line": 9759,
++    "category": 10,
++    "connected": false,
++    "tier": 2
++  },
++  "bl_first_rainbow": {
++    "who": "crow",
++    "txt": "무지개를 받아쳤군. 그건 진짜 어렵다.",
++    "dur": 4,
++    "cd": 9999,
++    "pw": "cat",
++    "pt": "미친! 무지개 받았어! 천재야 천재!",
++    "pd": 4,
++    "mode": "cd",
++    "source_line": 9761,
++    "category": 10,
++    "connected": false,
++    "tier": 2
++  },
++  "bl_overshoot": {
++    "who": "crow",
++    "txt": "…너무 빨라. 닿기 직전에 눌러.",
++    "dur": 4,
++    "cd": 60,
++    "pw": "cat",
++    "pt": "오패링! 폭발 강하지만 맞고 죽으면 끝!",
++    "pd": 4,
++    "mode": "cd",
++    "source_line": 9763,
++    "category": 10,
++    "connected": false,
++    "tier": 2
++  },
++  "bl_bank_full": {
++    "who": "crow",
++    "txt": "악의가 가득 찼다. 풀어내.",
++    "dur": 4,
++    "cd": 180,
++    "pw": "cat",
++    "pt": "패링뱅크 풀! 스킬 한 방 더 박아!",
++    "pd": 4,
++    "mode": "cd",
++    "source_line": 9765,
++    "category": 10,
++    "connected": false,
++    "tier": 2
++  },
++  "cd_first_hit": {
++    "who": "crow",
++    "txt": "사슬이 살을 뚫었어. 끌고 와.",
++    "dur": 4,
++    "cd": 9999,
++    "pw": "cat",
++    "pt": "적을 끌어왔다?! 그것도 되는 거야?!",
++    "pd": 4,
++    "mode": "cd",
++    "source_line": 9767,
++    "category": 11,
++    "connected": false,
++    "tier": 2
++  },
++  "cd_tier3": {
++    "who": "crow",
++    "txt": "…풀차지군. 멀리 던져버려.",
++    "dur": 4,
++    "cd": 300,
++    "pw": "cat",
++    "pt": "풀차지! 사슬 진짜 멀리 날아가!",
++    "pd": 4,
++    "mode": "cd",
++    "source_line": 9769,
++    "category": 11,
++    "connected": false,
++    "tier": 2
++  },
++  "cd_invul_dodge": {
++    "who": "crow",
++    "txt": "…빈틈을 그대로 빠져나갔다.",
++    "dur": 4,
++    "cd": 240,
++    "pw": "cat",
++    "pt": "위험했어! 사슬무적 없었으면 죽었어!",
++    "pd": 4,
++    "mode": "cd",
++    "source_line": 9771,
++    "category": 11,
++    "connected": false,
++    "tier": 2
++  },
++  "elite_first": {
++    "who": "crow",
++    "txt": "…일반 잡몹이 아니야. 모디파이어 붙었군.",
++    "dur": 4,
++    "cd": 9999,
++    "pw": "cat",
++    "pt": "엘리트야! 색깔 봐! 강해진 거야!",
++    "pd": 4,
++    "mode": "cd",
++    "source_line": 9773,
++    "category": 12,
++    "connected": false,
++    "tier": 4
++  },
++  "elite_kill": {
++    "who": "crow",
++    "txt": "엘리트 하나 처리.",
++    "dur": 4,
++    "cd": 120,
++    "pw": "cat",
++    "pt": "엘리트 잡았어! 좋은 거 떨어진다!",
++    "pd": 4,
++    "mode": "cd",
++    "source_line": 9775,
++    "category": 12,
++    "connected": false,
++    "tier": 2
++  },
++  "miniboss_appear": {
++    "who": "crow",
++    "txt": "…큰 놈이다. 일반 잡몹 정리부터.",
++    "dur": 4,
++    "cd": 600,
++    "pw": "cat",
++    "pt": "미니보스! 광역기 아껴두자!",
++    "pd": 4,
++    "mode": "cd",
++    "source_line": 9777,
++    "category": 12,
++    "connected": false,
++    "tier": 4
++  },
++  "miniboss_kill": {
++    "who": "crow",
++    "txt": "미니보스 처리. 다음 길로.",
++    "dur": 4,
++    "cd": 600,
++    "pw": "cat",
++    "pt": "우리가 잡았어! 보상 챙겨!",
++    "pd": 4,
++    "mode": "cd",
++    "source_line": 9779,
++    "category": 12,
++    "connected": false,
++    "tier": 2
++  },
++  "multi_kill": {
++    "who": "crow",
++    "txt": "한 번에 다섯. 깔끔해.",
++    "dur": 4,
++    "cd": 120,
++    "pw": "cat",
++    "pt": "한 방에 다 쓸었어! 짱이야!",
++    "pd": 4,
++    "mode": "cd",
++    "source_line": 9781,
++    "category": 17,
++    "connected": false,
++    "tier": 2,
++    "unconnected_reason": "game.html 9781: definition only; no _petCheckMultiKill() call site in original source"
++  },
++  "enh_plus100": {
++    "who": "crow",
++    "txt": "100강. 이제 뭔가 다르게 보이는군.",
++    "dur": 4,
++    "cd": 9999,
++    "pw": "cat",
++    "pt": "+100 찍었어! 진짜 강해진 거 보여!",
++    "pd": 4,
++    "mode": "cd",
++    "source_line": 9783,
++    "category": 18,
++    "connected": false,
++    "tier": 2
++  },
++  "enh_fail5": {
++    "who": "crow",
++    "txt": "…운이 없는 날이야.",
++    "dur": 4,
++    "cd": 600,
++    "pw": "cat",
++    "pt": "5번 연속 실패?! 악의 아끼고 다음에!",
++    "pd": 4,
++    "mode": "cd",
++    "source_line": 9785,
++    "category": 18,
++    "connected": false,
++    "tier": 2
++  },
++  "first_legend": {
++    "who": "crow",
++    "txt": "…전설이다. 이런 건 처음 본다.",
++    "dur": 4,
++    "cd": 9999,
++    "pw": "cat",
++    "pt": "전설 떴어! 대박이야!",
++    "pd": 4,
++    "mode": "cd",
++    "source_line": 9788,
++    "category": 18,
++    "connected": false,
++    "tier": 2
++  },
++  "first_death": {
++    "who": "crow",
++    "txt": "…죽었다 살아났네. 여신은 너를 포기 안 했어.",
++    "dur": 5,
++    "cd": 9999,
++    "pw": "cat",
++    "pt": "다음엔 죽지 마!",
++    "pd": 4,
++    "mode": "cd",
++    "source_line": 9791,
++    "category": 19,
++    "connected": false,
++    "tier": 2
++  },
++  "death_repeat": {
++    "who": "cat",
++    "txt": "…또야? 패턴 좀 외워!",
++    "dur": 4,
++    "cd": 600,
++    "pw": null,
++    "pt": null,
++    "pd": 0,
++    "mode": "cd",
++    "source_line": 9792,
++    "category": 19,
++    "connected": false,
++    "tier": 2
++  },
++  "trophy_no_death_run": {
++    "who": "crow",
++    "txt": "…한 번도 안 죽고. 그건 진짜 실력이야.",
++    "dur": 5,
++    "cd": 9999,
++    "pw": "cat",
++    "pt": "안 죽고 깼어! 진짜 천재 맞네!",
++    "pd": 4,
++    "mode": "cd",
++    "source_line": 9800,
++    "category": 20,
++    "connected": false,
++    "tier": 2
++  },
++  "trophy_act1_clear": {
++    "who": "crow",
++    "txt": "…ACT1을 끝냈다. 진짜 시작은 여기서부터야.",
++    "dur": 5,
++    "cd": 9999,
++    "pw": "cat",
++    "pt": "ACT1 완주! 우리가 진짜 해냈어!",
++    "pd": 4,
++    "mode": "cd",
++    "source_line": 9804,
++    "category": 20,
++    "connected": false,
++    "tier": 2
++  },
++  "trophy_full_explore": {
++    "who": "crow",
++    "txt": "모든 보스를 무너뜨렸다. 너는 지옥의 일부야.",
++    "dur": 5,
++    "cd": 9999,
++    "pw": "cat",
++    "pt": "전부 다 잡았어! 우리가 지옥의 왕이야!",
++    "pd": 4,
++    "mode": "cd",
++    "source_line": 9806,
++    "category": 20,
++    "connected": false,
++    "tier": 2
++  },
++  "speed_stage_30s": {
++    "who": "crow",
++    "txt": "…30초. 너 진짜 미쳤구나.",
++    "dur": 4,
++    "cd": 600,
++    "pw": "cat",
++    "pt": "30초!! 스피드런 가능해!",
++    "pd": 4,
++    "mode": "cd",
++    "source_line": 9812,
++    "category": 21,
++    "connected": false,
++    "tier": 2
++  },
++  "speed_stage_60s": {
++    "who": "crow",
++    "txt": "…빠르군. 효율적이야.",
++    "dur": 4,
++    "cd": 600,
++    "pw": "cat",
++    "pt": "1분 안에 클리어! 빠르네!",
++    "pd": 4,
++    "mode": "cd",
++    "source_line": 9813,
++    "category": 21,
++    "connected": false,
++    "tier": 2
++  },
++  "speed_record": {
++    "who": "crow",
++    "txt": "신기록이다.",
++    "dur": 3,
++    "cd": 60,
++    "pw": "cat",
++    "pt": "신기록!! 스트리머한테 보내!",
++    "pd": 3,
++    "mode": "cd",
++    "source_line": 9814,
++    "category": 21,
++    "connected": false,
++    "tier": 2
++  },
++  "item_unique": {
++    "who": "crow",
++    "txt": "…유니크?! 이건… 말도 안 돼.",
++    "dur": 6,
++    "cd": 60,
++    "pw": "cat",
++    "pt": "유니크!! 이건 대박이야!!",
++    "pd": 6,
++    "mode": "cd",
++    "source_line": 16420,
++    "category": 0,
++    "connected": false,
++    "tier": 2
++  },
++  "item_pickup": {
++    "who": "crow",
++    "txt": "탭 장비창을 열어봐.",
++    "dur": 4,
++    "cd": 60,
++    "pw": "cat",
++    "pt": "좋은 거 나왔다! TAB!",
++    "pd": 4,
++    "mode": "cd",
++    "source_line": 16421,
++    "category": 0,
++    "connected": false,
++    "tier": 2
++  },
++  "tut_chest": {
++    "who": "crow",
++    "txt": "보물상자를 열었군. 보스급 장비가 쏟아진다.",
++    "dur": 5,
++    "cd": 9999,
++    "pw": "cat",
++    "pt": "상자 대박! 좋은 거 잔뜩 나와! 보이면 꼭 열어!",
++    "pd": 5,
++    "mode": "cd",
++    "source_line": 32877,
++    "category": 1,
++    "connected": false,
++    "tier": 1
++  },
++  "tut_debris": {
++    "who": "crow",
++    "txt": "잔해도 부숴서 열어. 악의와 장비가 숨어있다.",
++    "dur": 5,
++    "cd": 9999,
++    "pw": "cat",
++    "pt": "잔해에서 악의가 나온다! 보이면 다 주워!",
++    "pd": 5,
++    "mode": "cd",
++    "source_line": 32895,
++    "category": 1,
++    "connected": false,
++    "tier": 1
++  },
++  "tut_revive": {
++    "who": "crow",
++    "txt": "악의에 중독되면 악마가 돼서 부활력이 생긴대. 저 녀석처럼.",
++    "dur": 6,
++    "cd": 9999,
++    "pw": "cat",
++    "pt": "혹시 너도...?",
++    "pd": 4,
++    "mode": "cd",
++    "source_line": 34545,
++    "category": 1,
++    "connected": false,
++    "tier": 1
++  },
++  "rage_full": {
++    "who": "crow",
++    "txt": "…분노가 끓어넘친다. 스페이스로 적들에게 폭발시켜!",
++    "dur": 4,
++    "cd": 300,
++    "pw": "cat",
++    "pt": "분노는 스페이스키 분노스킬로 폭발시킬 수 있어! 지금이야!!!",
++    "pd": 4,
++    "mode": "cd",
++    "source_line": 38540,
++    "category": 0,
++    "connected": false,
++    "tier": 2
++  },
++  "rage_half": {
++    "who": "crow",
++    "txt": "분노가 차오른다…",
++    "dur": 3,
++    "cd": 300,
++    "pw": "cat",
++    "pt": null,
++    "pd": 3,
++    "mode": "cd",
++    "source_line": 38541,
++    "category": 0,
++    "connected": false,
++    "tier": 2,
++    "pt_expression": "'분노 '+P.rage+'%! 패링으로 분노 더 쌓아!'",
++    "pt_components": [
++      "분노 ",
++      "%! 패링으로 분노 더 쌓아!"
++    ]
++  },
++  "boss_gate_open": {
++    "who": "crow",
++    "txt": "…지옥문이 열렸다. 안에서 그것이 기다리고 있어.",
++    "dur": 4,
++    "cd": 30,
++    "pw": "cat",
++    "pt": "문 열렸어! 이제 보스 잡으러 가자!",
++    "pd": 4,
++    "mode": "urgent",
++    "source_line": 41878,
++    "category": 16,
++    "connected": false,
++    "tier": 4
++  },
++  "tut_gate_locked": {
++    "who": "cat",
++    "txt": "지역 네 곳을 모두 클리어하면 지옥문이 열릴 거야.",
++    "dur": 5,
++    "cd": 9999,
++    "pw": null,
++    "pt": null,
++    "pd": 0,
++    "mode": "cd",
++    "source_line": 41910,
++    "category": 16,
++    "connected": false,
++    "tier": 1
++  },
++  "revive_tip": {
++    "who": "cat",
++    "txt": "데미지 부족하면 무기 강화!",
++    "dur": 5,
++    "cd": 30,
++    "pw": "crow",
++    "pt": "G키 대장간. 강화 안 하면 계속 죽어.",
++    "pd": 4,
++    "mode": "cd",
++    "source_line": 43862,
++    "category": 0,
++    "connected": false,
++    "tier": 2
++  },
++  "region_clear": {
++    "who": "cat",
++    "txt": "한 지역 클리어! 미니맵에서 다음 지역을 확인해.",
++    "dur": 4,
++    "cd": 60,
++    "pw": null,
++    "pt": null,
++    "pd": 0,
++    "mode": "cd",
++    "source_line": 60775,
++    "category": 16,
++    "connected": false,
++    "tier": 2
++  },
++  "idle_nag0": {
++    "who": "crow",
++    "txt": "시간이 없어. 움직여.",
++    "dur": 4,
++    "cd": 30,
++    "pw": "cat",
++    "pt": "멍하게 서있으면 안 돼!",
++    "pd": 4,
++    "mode": "bid",
++    "source_line": 9635,
++    "category": 7,
++    "connected": true,
++    "tier": 0,
++    "pool_source_line": 9634
++  },
++  "idle_nag1": {
++    "who": "crow",
++    "txt": "…뭘 기다리는 거야?",
++    "dur": 4,
++    "cd": 30,
++    "pw": "cat",
++    "pt": "가자가자! 몬스터가 기다려!",
++    "pd": 4,
++    "mode": "bid",
++    "source_line": 9635,
++    "category": 7,
++    "connected": true,
++    "tier": 0,
++    "pool_source_line": 9634
++  },
++  "idle_nag2": {
++    "who": "crow",
++    "txt": "여기 오래 있으면 위험해.",
++    "dur": 4,
++    "cd": 30,
++    "pw": "cat",
++    "pt": "가만있으면 둘러싸여!",
++    "pd": 4,
++    "mode": "bid",
++    "source_line": 9635,
++    "category": 7,
++    "connected": true,
++    "tier": 0,
++    "pool_source_line": 9634
++  },
++  "idle_nag3": {
++    "who": "crow",
++    "txt": "쉬는 건 죽고 나서 해.",
++    "dur": 4,
++    "cd": 30,
++    "pw": "cat",
++    "pt": "살아있을 때 쉬면 안 돼!",
++    "pd": 4,
++    "mode": "bid",
++    "source_line": 9635,
++    "category": 7,
++    "connected": true,
++    "tier": 0,
++    "pool_source_line": 9634
++  },
++  "idle_nag4": {
++    "who": "crow",
++    "txt": "적이 몰려오고 있어.",
++    "dur": 4,
++    "cd": 30,
++    "pw": "cat",
++    "pt": "냄새 맡고 올 거야. 빨리!",
++    "pd": 4,
++    "mode": "bid",
++    "source_line": 9635,
++    "category": 7,
++    "connected": true,
++    "tier": 0,
++    "pool_source_line": 9634
++  },
++  "idle_nag5": {
++    "who": "crow",
++    "txt": "…아직 살아있는 거 맞지?",
++    "dur": 4,
++    "cd": 30,
++    "pw": "cat",
++    "pt": "혹시 잠든 거야…?",
++    "pd": 4,
++    "mode": "bid",
++    "source_line": 9635,
++    "category": 7,
++    "connected": true,
++    "tier": 0,
++    "pool_source_line": 9634
++  },
++  "idle_tip0": {
++    "who": "crow",
++    "txt": "사슬을 땅에 꽂으면 끌려간다.",
++    "dur": 5,
++    "cd": 30,
++    "pw": "cat",
++    "pt": "Shift로 사슬 던져봐!",
++    "pd": 5,
++    "mode": "bid",
++    "source_line": 9638,
++    "category": 7,
++    "connected": true,
++    "tier": 0,
++    "pool_source_line": 9637
++  },
++  "idle_tip1": {
++    "who": "crow",
++    "txt": "패링 성공하면 ST가 회복된다.",
++    "dur": 5,
++    "cd": 30,
++    "pw": "cat",
++    "pt": "패링 많이 하면 ST 걱정 없어~",
++    "pd": 5,
++    "mode": "bid",
++    "source_line": 9638,
++    "category": 7,
++    "connected": true,
++    "tier": 0,
++    "pool_source_line": 9637
++  },
++  "idle_tip2": {
++    "who": "crow",
++    "txt": "장비 분해하면 악의를 얻는다.",
++    "dur": 5,
++    "cd": 30,
++    "pw": "cat",
++    "pt": "TAB 열어서 안 쓰는 장비 분해!",
++    "pd": 5,
++    "mode": "bid",
++    "source_line": 9638,
++    "category": 7,
++    "connected": true,
++    "tier": 0,
++    "pool_source_line": 9637
++  },
++  "idle_tip3": {
++    "who": "crow",
++    "txt": "그로기 적은 1.5배 데미지.",
++    "dur": 5,
++    "cd": 30,
++    "pw": "cat",
++    "pt": "무릎 꿇으면 전력으로 때려!",
++    "pd": 5,
++    "mode": "bid",
++    "source_line": 9638,
++    "category": 7,
++    "connected": true,
++    "tier": 0,
++    "pool_source_line": 9637
++  },
++  "idle_tip4": {
++    "who": "crow",
++    "txt": "화염은 빙결, 암전은 암흑에 약하다.",
++    "dur": 5,
++    "cd": 30,
++    "pw": "cat",
++    "pt": "무기 속성 바꿔가며 싸워!",
++    "pd": 5,
++    "mode": "bid",
++    "source_line": 9638,
++    "category": 7,
++    "connected": true,
++    "tier": 0,
++    "pool_source_line": 9637
++  },
++  "idle_tip5": {
++    "who": "crow",
++    "txt": "빙결 적은 1.5배 데미지.",
++    "dur": 5,
++    "cd": 30,
++    "pw": "cat",
++    "pt": "얼리고 때리는 게 기본!",
++    "pd": 5,
++    "mode": "bid",
++    "source_line": 9638,
++    "category": 7,
++    "connected": true,
++    "tier": 0,
++    "pool_source_line": 9637
++  },
++  "idle_tip6": {
++    "who": "crow",
++    "txt": "물리탄은 E, 보라·무지개 마법탄은 Q.",
++    "dur": 5,
++    "cd": 30,
++    "pw": "cat",
++    "pt": "무지개도 Q로 받아쳐!",
++    "pd": 5,
++    "mode": "bid",
++    "source_line": 9638,
++    "category": 7,
++    "connected": true,
++    "tier": 0,
++    "pool_source_line": 9637
++  },
++  "idle_tip7": {
++    "who": "crow",
++    "txt": "VIT 올리면 최대 HP.",
++    "dur": 5,
++    "cd": 30,
++    "pw": "cat",
++    "pt": "STR 근접, DEX 활, INT 마법!",
++    "pd": 5,
++    "mode": "bid",
++    "source_line": 9638,
++    "category": 7,
++    "connected": true,
++    "tier": 0,
++    "pool_source_line": 9637
++  },
++  "idle_tip8": {
++    "who": "crow",
++    "txt": "우클릭 길게 = 빔, 짧게 = 투사체.",
++    "dur": 5,
++    "cd": 30,
++    "pw": "cat",
++    "pt": "MP 잘 봐! 빔은 연속으로 깎여!",
++    "pd": 5,
++    "mode": "bid",
++    "source_line": 9638,
++    "category": 7,
++    "connected": true,
++    "tier": 0,
++    "pool_source_line": 9637
++  },
++  "idle_tip9": {
++    "who": "crow",
++    "txt": "R키로 아이템을 줍는다.",
++    "dur": 5,
++    "cd": 30,
++    "pw": "cat",
++    "pt": "R 눌러서 다 주워!",
++    "pd": 5,
++    "mode": "bid",
++    "source_line": 9638,
++    "category": 7,
++    "connected": true,
++    "tier": 0,
++    "pool_source_line": 9637
++  },
++  "idle_tip10": {
++    "who": "crow",
++    "txt": "LCK 올리면 레어 드롭률.",
++    "dur": 5,
++    "cd": 30,
++    "pw": "cat",
++    "pt": "운빨 게임! LCK 올려봐!",
++    "pd": 5,
++    "mode": "bid",
++    "source_line": 9638,
++    "category": 7,
++    "connected": true,
++    "tier": 0,
++    "pool_source_line": 9637
++  },
++  "idle_tip11": {
++    "who": "crow",
++    "txt": "G 누르면 대장간.",
++    "dur": 5,
++    "cd": 30,
++    "pw": "cat",
++    "pt": "강화하면 공격력 쭉쭉!",
++    "pd": 5,
++    "mode": "bid",
++    "source_line": 9638,
++    "category": 7,
++    "connected": true,
++    "tier": 0,
++    "pool_source_line": 9637
++  },
++  "idle_tip12": {
++    "who": "crow",
++    "txt": "강화 +1에서 99%. 높을수록 떨어져.",
++    "dur": 5,
++    "cd": 30,
++    "pw": "cat",
++    "pt": "실패해도 장비 안 부서져!",
++    "pd": 5,
++    "mode": "bid",
++    "source_line": 9638,
++    "category": 7,
++    "connected": true,
++    "tier": 0,
++    "pool_source_line": 9637
++  },
++  "idle_tip13": {
++    "who": "crow",
++    "txt": "대장간 제작도 가능. 악의 30000개+.",
++    "dur": 5,
++    "cd": 30,
++    "pw": "cat",
++    "pt": "영웅급 이상 나올 수 있어!",
++    "pd": 5,
++    "mode": "bid",
++    "source_line": 9638,
++    "category": 7,
++    "connected": true,
++    "tier": 0,
++    "pool_source_line": 9637
++  },
++  "idle_tip14": {
++    "who": "crow",
++    "txt": "쉴드는 추가 HP다. 쉴드부터 깎인다.",
++    "dur": 5,
++    "cd": 30,
++    "pw": "cat",
++    "pt": "쉴드 있으면 HP 안 닳아!",
++    "pd": 5,
++    "mode": "bid",
++    "source_line": 9638,
++    "category": 7,
++    "connected": true,
++    "tier": 0,
++    "pool_source_line": 9637
++  },
++  "idle_tip15": {
++    "who": "crow",
++    "txt": "영웅급+ 장비에 접두/접미사.",
++    "dur": 5,
++    "cd": 30,
++    "pw": "cat",
++    "pt": "좋은 거 나오면 강화!",
++    "pd": 5,
++    "mode": "bid",
++    "source_line": 9638,
++    "category": 7,
++    "connected": true,
++    "tier": 0,
++    "pool_source_line": 9637
++  },
++  "idle_tip16": {
++    "who": "crow",
++    "txt": "강화는 장비 바꿔도 자동 이전.",
++    "dur": 5,
++    "cd": 30,
++    "pw": "cat",
++    "pt": "더 좋은 거 나오면 바로 장착!",
++    "pd": 5,
++    "mode": "bid",
++    "source_line": 9638,
++    "category": 7,
++    "connected": true,
++    "tier": 0,
++    "pool_source_line": 9637
++  },
++  "idle_tip17": {
++    "who": "crow",
++    "txt": "패링은 타이밍이다. 헛치면 빈틈이 생겨.",
++    "dur": 5,
++    "cd": 30,
++    "pw": "cat",
++    "pt": "잘못 패링하면 그로기가 쌓인다!",
++    "pd": 5,
++    "mode": "bid",
++    "source_line": 9638,
++    "category": 7,
++    "connected": true,
++    "tier": 0,
++    "pool_source_line": 9637
++  },
++  "petTalk_0": {
++    "who": "cat",
++    "txt": "핵터, 너 좀 친절하게 말할 줄 모르냐?",
++    "dur": 4,
++    "cd": 600,
++    "pw": "crow",
++    "pt": "…친절은 살아남고 나서 따져.",
++    "pd": 4,
++    "mode": "bid",
++    "source_line": 9646,
++    "category": 22,
++    "connected": true,
++    "tier": 0,
++    "pool_source_line": 9645
++  },
++  "petTalk_1": {
++    "who": "crow",
++    "txt": "…디로이. 너무 떠들면 적이 몰린다.",
++    "dur": 4,
++    "cd": 600,
++    "pw": "cat",
++    "pt": "어머! 미안! 입 다물게!",
++    "pd": 4,
++    "mode": "bid",
++    "source_line": 9646,
++    "category": 22,
++    "connected": true,
++    "tier": 0,
++    "pool_source_line": 9645
++  },
++  "petTalk_2": {
++    "who": "cat",
++    "txt": "핵터, 우리 주인 이번엔 진짜 강해진 것 같아.",
++    "dur": 4,
++    "cd": 600,
++    "pw": "crow",
++    "pt": "…아직 멀었어. 지옥성까지 봐야 안다.",
++    "pd": 4,
++    "mode": "bid",
++    "source_line": 9646,
++    "category": 22,
++    "connected": true,
++    "tier": 0,
++    "pool_source_line": 9645
++  },
++  "petTalk_3": {
++    "who": "crow",
++    "txt": "디로이. 또 길 잘못 알려줬지.",
++    "dur": 4,
++    "cd": 600,
++    "pw": "cat",
++    "pt": "누가?! 나 아니야! 너지 너!",
++    "pd": 4,
++    "mode": "bid",
++    "source_line": 9646,
++    "category": 22,
++    "connected": true,
++    "tier": 0,
++    "pool_source_line": 9645
++  },
++  "petTalk_4": {
++    "who": "cat",
++    "txt": "…핵터, 우린 죽으면 어디 가?",
++    "dur": 4,
++    "cd": 600,
++    "pw": "crow",
++    "pt": "…질문이 너무 많아. 일단 살아.",
++    "pd": 4,
++    "mode": "bid",
++    "source_line": 9646,
++    "category": 22,
++    "connected": true,
++    "tier": 0,
++    "pool_source_line": 9645
++  },
++  "chapter_0": {
++    "who": "crow",
++    "txt": "…따라오는 거 아니야. 같은 방향일 뿐이지.",
++    "dur": 5,
++    "cd": 99999,
++    "pw": null,
++    "pt": null,
++    "pd": 0,
++    "mode": "bid",
++    "source_line": 9660,
++    "category": 8,
++    "connected": true,
++    "tier": 0,
++    "pool_source_line": 9651
++  },
++  "chapter_1": {
++    "who": "crow",
++    "txt": "공기가 달라졌어. 더 썩었군.",
++    "dur": 5,
++    "cd": 99999,
++    "pw": null,
++    "pt": null,
++    "pd": 0,
++    "mode": "bid",
++    "source_line": 9660,
++    "category": 8,
++    "connected": false,
++    "tier": 0,
++    "pool_source_line": 9651
++  },
++  "chapter_2": {
++    "who": "crow",
++    "txt": "여기부터는 악마 영역이야. …맘대로 해.",
++    "dur": 5,
++    "cd": 99999,
++    "pw": null,
++    "pt": null,
++    "pd": 0,
++    "mode": "bid",
++    "source_line": 9660,
++    "category": 8,
++    "connected": false,
++    "tier": 0,
++    "pool_source_line": 9651
++  },
++  "chapter_3": {
++    "who": "crow",
++    "txt": "…이 냄새. 살점이 썩는 냄새야.",
++    "dur": 5,
++    "cd": 99999,
++    "pw": null,
++    "pt": null,
++    "pd": 0,
++    "mode": "bid",
++    "source_line": 9660,
++    "category": 8,
++    "connected": false,
++    "tier": 0,
++    "pool_source_line": 9651
++  },
++  "chapter_4": {
++    "who": "crow",
++    "txt": "여기 오래 있으면 미쳐. 나도, 너도.",
++    "dur": 5,
++    "cd": 99999,
++    "pw": null,
++    "pt": null,
++    "pd": 0,
++    "mode": "bid",
++    "source_line": 9660,
++    "category": 8,
++    "connected": false,
++    "tier": 0,
++    "pool_source_line": 9651
++  },
++  "chapter_5": {
++    "who": "crow",
++    "txt": "이 길의 끝에 뭐가 있을까.",
++    "dur": 5,
++    "cd": 99999,
++    "pw": null,
++    "pt": null,
++    "pd": 0,
++    "mode": "bid",
++    "source_line": 9660,
++    "category": 8,
++    "connected": false,
++    "tier": 0,
++    "pool_source_line": 9651
++  },
++  "chapter_6": {
++    "who": "crow",
++    "txt": "…여기가 끝이야. 돌아갈 길은 없어.",
++    "dur": 5,
++    "cd": 99999,
++    "pw": null,
++    "pt": null,
++    "pd": 0,
++    "mode": "bid",
++    "source_line": 9660,
++    "category": 8,
++    "connected": false,
++    "tier": 0,
++    "pool_source_line": 9651
++  },
++  "env_ch0": {
++    "who": "crow",
++    "txt": "…새 한 마리 안 우네. 죽은 숲이야.",
++    "dur": 4,
++    "cd": 99999,
++    "pw": "cat",
++    "pt": "나무들이 우릴 보고 있는 것 같아…",
++    "pd": 4,
++    "mode": "bid",
++    "source_line": 9666,
++    "category": 9,
++    "connected": true,
++    "tier": 0,
++    "pool_source_line": 9665
++  },
++  "env_ch1": {
++    "who": "crow",
++    "txt": "…발밑이 움직이고 있다.",
++    "dur": 4,
++    "cd": 99999,
++    "pw": "cat",
++    "pt": "으으! 뭔가 기어다녀! 빨리 가자!",
++    "pd": 4,
++    "mode": "bid",
++    "source_line": 9666,
++    "category": 9,
++    "connected": false,
++    "tier": 0,
++    "pool_source_line": 9665
++  },
++  "env_ch2": {
++    "who": "crow",
++    "txt": "입김이 얼어. 오래 있으면 못 나간다.",
++    "dur": 4,
++    "cd": 99999,
++    "pw": "cat",
++    "pt": "손가락 안 움직여… 빨리 끝내!",
++    "pd": 4,
++    "mode": "bid",
++    "source_line": 9666,
++    "category": 9,
++    "connected": false,
++    "tier": 0,
++    "pool_source_line": 9665
++  },
++  "env_ch3": {
++    "who": "crow",
++    "txt": "공기가 타. 숨도 데인다.",
++    "dur": 4,
++    "cd": 99999,
++    "pw": "cat",
++    "pt": "살이 익는 거 같아! 뜨거워!",
++    "pd": 4,
++    "mode": "bid",
++    "source_line": 9666,
++    "category": 9,
++    "connected": false,
++    "tier": 0,
++    "pool_source_line": 9665
++  },
++  "env_ch4": {
++    "who": "crow",
++    "txt": "…수가 끝이 없어. 길을 뚫어.",
++    "dur": 4,
++    "cd": 99999,
++    "pw": "cat",
++    "pt": "끝이 안 보여! 한꺼번에 쓸어!",
++    "pd": 4,
++    "mode": "bid",
++    "source_line": 9666,
++    "category": 9,
++    "connected": false,
++    "tier": 0,
++    "pool_source_line": 9665
++  },
++  "env_ch5": {
++    "who": "crow",
++    "txt": "…벽 너머에서 보고 있어.",
++    "dur": 4,
++    "cd": 99999,
++    "pw": "cat",
++    "pt": "누가 우릴 지켜보고 있어… 무서워.",
++    "pd": 4,
++    "mode": "bid",
++    "source_line": 9666,
++    "category": 9,
++    "connected": false,
++    "tier": 0,
++    "pool_source_line": 9665
++  },
++  "env_ch6": {
++    "who": "crow",
++    "txt": "여기서 죽어도 돌아갈 곳은 없어.",
++    "dur": 4,
++    "cd": 99999,
++    "pw": "cat",
++    "pt": "마지막이야… 끝까지 가자.",
++    "pd": 4,
++    "mode": "bid",
++    "source_line": 9666,
++    "category": 9,
++    "connected": false,
++    "tier": 0,
++    "pool_source_line": 9665
++  },
++  "boss_intro_ch0": {
++    "who": "crow",
++    "txt": "…첫 번째다. 부담 갖지 마. 죽어도 다시 와.",
++    "dur": 5,
++    "cd": 99999,
++    "pw": "cat",
++    "pt": "첫 보스! 우리 같이 잡자!",
++    "pd": 4,
++    "mode": "bid",
++    "source_line": 9696,
++    "category": 23,
++    "connected": false,
++    "tier": 4,
++    "pool_source_line": 9695
++  },
++  "boss_intro_ch1": {
++    "who": "crow",
++    "txt": "벌레의 왕이다. 꺼림칙하게 생겼군.",
++    "dur": 5,
++    "cd": 99999,
++    "pw": "cat",
++    "pt": "으으! 큰 벌레야! 진짜 끔찍해!",
++    "pd": 4,
++    "mode": "bid",
++    "source_line": 9696,
++    "category": 23,
++    "connected": false,
++    "tier": 4,
++    "pool_source_line": 9695
++  },
++  "boss_intro_ch2": {
++    "who": "crow",
++    "txt": "…빙결 마법을 쓴다. 화염 무기로 가.",
++    "dur": 5,
++    "cd": 99999,
++    "pw": "cat",
++    "pt": "얼음 보스! 화염 칼 꺼내!",
++    "pd": 4,
++    "mode": "bid",
++    "source_line": 9696,
++    "category": 23,
++    "connected": false,
++    "tier": 4,
++    "pool_source_line": 9695
++  },
++  "boss_intro_ch3": {
++    "who": "crow",
++    "txt": "화염의 군주야. 빙결 무기로 맞불 놔.",
++    "dur": 5,
++    "cd": 99999,
++    "pw": "cat",
++    "pt": "불 보스! 얼음 무기 꺼내라구!",
++    "pd": 4,
++    "mode": "bid",
++    "source_line": 9696,
++    "category": 23,
++    "connected": false,
++    "tier": 4,
++    "pool_source_line": 9695
++  },
++  "boss_intro_ch4": {
++    "who": "crow",
++    "txt": "군단의 우두머리다. 잡몹부터 정리해.",
++    "dur": 5,
++    "cd": 99999,
++    "pw": "cat",
++    "pt": "부하 먼저! 안 그럼 끝없이 나와!",
++    "pd": 4,
++    "mode": "bid",
++    "source_line": 9696,
++    "category": 23,
++    "connected": false,
++    "tier": 4,
++    "pool_source_line": 9695
++  },
++  "boss_intro_ch5": {
++    "who": "crow",
++    "txt": "…사도다. 패턴이 복잡해. 집중해.",
++    "dur": 5,
++    "cd": 99999,
++    "pw": "cat",
++    "pt": "사도 보스 진짜 강해! 정신 똑바로 차려!",
++    "pd": 4,
++    "mode": "bid",
++    "source_line": 9696,
++    "category": 23,
++    "connected": false,
++    "tier": 4,
++    "pool_source_line": 9695
++  },
++  "boss_intro_ch6": {
++    "who": "crow",
++    "txt": "…최종 보스. 여신도 더는 도와줄 수 없어.",
++    "dur": 5,
++    "cd": 99999,
++    "pw": "cat",
++    "pt": "마지막!! 우리 다 같이 끝내자!!",
++    "pd": 4,
++    "mode": "bid",
++    "source_line": 9696,
++    "category": 23,
++    "connected": false,
++    "tier": 4,
++    "pool_source_line": 9695
++  },
++  "chapter_clear_0": {
++    "who": "crow",
++    "txt": "썩은 숲을 벗어났다. 다음은 더 깊은 곳이야.",
++    "dur": 5,
++    "cd": 9999,
++    "pw": "cat",
++    "pt": "첫 챕터 클리어! 우린 살아있어!",
++    "pd": 4,
++    "mode": "cd",
++    "source_line": 9798,
++    "category": 13,
++    "connected": false,
++    "tier": 2,
++    "pool_source_line": 9797
++  },
++  "chapter_clear_1": {
++    "who": "crow",
++    "txt": "…벌레굴을 빠져나왔어. 발에 뭐 묻은 거 같다.",
++    "dur": 5,
++    "cd": 9999,
++    "pw": "cat",
++    "pt": "으으, 진짜 끔찍했어!",
++    "pd": 4,
++    "mode": "cd",
++    "source_line": 9798,
++    "category": 13,
++    "connected": false,
++    "tier": 2,
++    "pool_source_line": 9797
++  },
++  "chapter_clear_2": {
++    "who": "crow",
++    "txt": "얼음을 깨고 나왔다. 다음은… 불이야.",
++    "dur": 5,
++    "cd": 9999,
++    "pw": "cat",
++    "pt": "손가락 다시 움직여!",
++    "pd": 4,
++    "mode": "cd",
++    "source_line": 9798,
++    "category": 13,
++    "connected": false,
++    "tier": 2,
++    "pool_source_line": 9797
++  },
++  "chapter_clear_3": {
++    "who": "crow",
++    "txt": "화염을 통과했다. 절반 왔어.",
++    "dur": 5,
++    "cd": 9999,
++    "pw": "cat",
++    "pt": "살았어! ACT1 절반 클리어!",
++    "pd": 4,
++    "mode": "cd",
++    "source_line": 9798,
++    "category": 13,
++    "connected": false,
++    "tier": 2,
++    "pool_source_line": 9797
++  },
++  "chapter_clear_4": {
++    "who": "crow",
++    "txt": "군단을 무너뜨렸어. …수가 줄긴 했군.",
++    "dur": 5,
++    "cd": 9999,
++    "pw": "cat",
++    "pt": "진짜 끝없었어! 한꺼번에 쓸었어!",
++    "pd": 4,
++    "mode": "cd",
++    "source_line": 9798,
++    "category": 13,
++    "connected": false,
++    "tier": 2,
++    "pool_source_line": 9797
++  },
++  "chapter_clear_5": {
++    "who": "crow",
++    "txt": "사도들의 영역을 지났다. 마지막이 가까워.",
++    "dur": 5,
++    "cd": 9999,
++    "pw": "cat",
++    "pt": "거의 다 왔어! 마지막 한 장!",
++    "pd": 4,
++    "mode": "cd",
++    "source_line": 9798,
++    "category": 13,
++    "connected": false,
++    "tier": 2,
++    "pool_source_line": 9797
++  },
++  "chapter_clear_6": {
++    "who": "crow",
++    "txt": "…지옥성을 무너뜨렸어. 끝이야.",
++    "dur": 5,
++    "cd": 9999,
++    "pw": "cat",
++    "pt": "우리가 해냈어! 진짜 끝났어!!",
++    "pd": 4,
++    "mode": "cd",
++    "source_line": 9798,
++    "category": 13,
++    "connected": false,
++    "tier": 2,
++    "pool_source_line": 9797
++  }
++}
++
++static func get_entry(id: String) -> Dictionary:
++	return ENTRIES.get(id, {}).duplicate(true)
++
++static func tier_of(id: String) -> int:
++	# game.html 9414~9423: urgent tier5 is assigned by dispatcher, not this classifier.
++	if id == "enh_hint":
++		return 1
++	if id.begins_with("bl_") or id.begins_with("cd_") or id.begins_with("combo_") or id == "multi_kill" or id == "low_hp_kill" or id == "stage_clear" or id.begins_with("chapter_clear_") or id.begins_with("trophy_") or id.begins_with("enh_") or id == "first_legend" or id.begins_with("speed_") or id == "elite_kill" or id == "miniboss_kill" or id.begins_with("build_") or id.begins_with("diff_") or id.begins_with("syn_"):
++		return 2
++	if id == "boss_elem":
++		return 3
++	if id.begins_with("boss_") or id == "near_boss" or id == "elite_first" or id == "miniboss_appear":
++		return 4
++	if id.begins_with("melee_") or id.begins_with("resource_") or id == "enemy_ice" or id == "rage_full2" or id == "mp_warn" or id == "low_st":
++		return 3
++	if id.begins_with("tut_") or id.begins_with("parry_") or id.begins_with("sp_") or id.begins_with("has_") or id == "bag_full" or id == "low_mats" or id == "shift_hint":
++		return 1
++	if id.begins_with("idle_") or id.begins_with("env_") or id.begins_with("chapter_") or id.begins_with("petTalk"):
++		return 0
++	return 2
+diff --git a/godot/tests/test_p2004b_pet_dialogue.gd b/godot/tests/test_p2004b_pet_dialogue.gd
+new file mode 100644
+--- /dev/null
++++ b/godot/tests/test_p2004b_pet_dialogue.gd
+@@ -0,0 +1,372 @@
++extends SceneTree
++## P2-004B — 대사 선택/쿨다운/프레임 경쟁의 원본 계약 단위 검수.
++## Main/월드/세이브를 부팅하지 않고 NativePets.new()의 실제 메서드만 호출한다.
++## 원본: game.html 9389~9503(엔진), 9514~9525(긴급), 9594~9613(전투/자원).
++## 런타임 실행 여부는 로그의 P2004B_RESULT와 보고서에서만 판단한다.
++const USERDIR = "EXODUSER-P2004B-PC-Isolated-20261020"
++const PETS = preload("res://scripts/native_pets.gd")
++const CATALOG = preload("res://scripts/native_pet_dialogue_catalog.gd")
++const GROUPS = ["source_tiers", "catalog_dispatch_boundary", "pair_and_cooldowns",
++	"frame_priority_and_no_fallback", "urgent_interrupt_and_weights", "urgent_thresholds",
++	"competitive_thresholds", "kill_event_thresholds_and_reset", "shuffle_bag"]
++var assertions := 0
++var failures := 0
++var current_group := ""
++var rows: Array = []
++var pets: Node
++
++func _initialize() -> void:
++	call_deferred("_run")
++
++func _run() -> void:
++	for group in GROUPS:
++		current_group = group
++		var checks_before := assertions
++		var failures_before := failures
++		call("_test_" + group)
++		var row := {"group": group, "assertions": assertions - checks_before,
++			"failures": failures - failures_before}
++		rows.append(row)
++		print("P2004B_GROUP ", JSON.stringify(row))
++	_cleanup()
++	print("P2004B_RESULT ", JSON.stringify({"assertions": assertions, "failures": failures,
++		"groups": rows, "main_boots": 0, "save_reads": 0, "save_writes": 0,
++		"fallback_paths_used": false, "userdir": USERDIR}))
++	quit(1 if failures > 0 or assertions == 0 else 0)
++
++func _check(ok: bool, label: String) -> void:
++	assertions += 1
++	if not ok:
++		failures += 1
++		print("P2004B_FAIL ", current_group, " ", label)
++
++func _cleanup() -> void:
++	if is_instance_valid(pets):
++		pets.free()
++	pets = null
++
++func _fresh() -> void:
++	_cleanup()
++	pets = PETS.new()
++
++func _begin_frame() -> void:
++	pets.set("_in_frame", true)
++	var bid: Dictionary = pets.get("_bid")
++	bid["tier"] = -1
++	bid["weight"] = 0
++
++func _finish_frame() -> void:
++	pets.call("_pet_fire_bid")
++	pets.set("_in_frame", false)
++
++func _bid_id() -> String:
++	return str((pets.get("_bid") as Dictionary).get("id", ""))
++
++func _said_id() -> String:
++	var log: Array = pets.get("_say_log")
++	return str(log[-1].get("id", "")) if not log.is_empty() else ""
++
++func _offer(id: String) -> bool:
++	return bool(pets.call("_offer_dialogue", id))
++
++func _test_source_tiers() -> void:
++	_fresh()
++	# 원본 9414~9422: 특례를 접두보다 먼저 검사한다. 생존 ID도 추론은 T2,
++	# urgent 경로가 별도로 T5 슬롯을 사용한다.
++	var cases := {
++		"enh_hint": 1, "bl_first_red": 2, "cd_first_hit": 2, "combo_50": 2,
++		"multi_kill": 2, "low_hp_kill": 2, "stage_clear": 2, "chapter_clear_0": 2,
++		"trophy_act1_clear": 2, "enh_plus100": 2, "first_legend": 2,
++		"speed_record": 2, "elite_kill": 2, "miniboss_kill": 2, "build_str": 2,
++		"diff_3": 2, "syn_any": 2, "boss_elem": 3, "boss_summon": 4,
++		"near_boss": 4, "elite_first": 4, "miniboss_appear": 4,
++		"melee_trap_no": 3, "resource_low_no": 3, "enemy_ice": 3,
++		"rage_full2": 3, "mp_warn": 3, "low_st": 3, "tut_start": 1,
++		"parry_any": 1, "sp_hint": 1, "has_ap": 1, "bag_full": 1,
++		"low_mats": 1, "shift_hint": 1, "idle_tip0": 0, "env_ch0": 0,
++		"chapter_0": 0, "petTalk_0": 0, "hp_critical": 2, "warn_hp50": 2,
++		"crisis_hp30": 2, "burn_warn": 2, "unknown_test_id": 2}
++	for id in cases:
++		_check(CATALOG.tier_of(id) == cases[id], "카탈로그 원본 티어 " + id)
++		_check(int(pets.call("_pet_tier_of", id)) == cases[id], "엔진 원본 티어 " + id)
++	_check(PETS.PET_TIER_COOL == [1200, 720, 480, 360, 240, 0], "티어 글로벌쿨 9408")
++
++func _test_catalog_dispatch_boundary() -> void:
++	_check(CATALOG.ENTRIES.size() == 171, "원본 171 ID 카탈로그")
++	var disconnected := 0
++	for id in CATALOG.ENTRIES:
++		var entry: Dictionary = CATALOG.get_entry(id)
++		if entry.get("connected", false):
++			continue
++		disconnected += 1
++		_fresh()
++		_begin_frame()
++		_check(not _offer(id), "미연결 대사 임의 실행 차단 " + id)
++		_check(int((pets.get("_bid") as Dictionary).get("tier")) == -1,
++			"미연결 대사 입찰 없음 " + id)
++		_check((pets.get("_say_log") as Array).is_empty(), "미연결 대사 표시 없음 " + id)
++		_check((pets.get("_pet_dlg_cd") as Dictionary).is_empty(), "미연결 대사 CD 없음 " + id)
++	_check(disconnected == 111, "미연결 111 ID 경계")
++	for id in ["multi_kill", "bl_first_red", "bl_first_rainbow", "cd_first_hit",
++		"first_death", "stun_warn", "boss_exec", "boss_intro_ch0", "elite_first",
++		"chapter_clear_0", "first_legend", "build_str", "diff_3"]:
++		_check(not bool(CATALOG.get_entry(id).get("connected", true)), "미이식 이벤트를 연결로 속이지 않음 " + id)
++	_fresh()
++	_check(not _offer("not_in_source_catalog"), "카탈로그 없는 ID 차단")
++
++func _test_pair_and_cooldowns() -> void:
++	_fresh()
++	_check(_offer("tut_start"), "튜토리얼 즉시 시작 9556")
++	var bubble: Dictionary = pets.get("_pet_bubble")
++	_check(bubble["who"] == "crow" and bubble["t"] == 300.0,
++		"HECTOR 5초=300프레임")
++	_check(bubble["pair"] != null and bubble["pair"]["who"] == "cat", "DIROI pair 대기")
++	_check((pets.get("_pet_tier_cd") as Array)[1] == 720.0, "T1 쿨 720프레임")
++	_check((pets.get("_pet_dlg_cd") as Dictionary)["tut_start"] == 9999.0 * 60.0,
++		"ID 쿨 9999초×60")
++	_check(not _offer("tut_atk3"), "점유 중 즉시 대사 차단")
++	for i in range(299):
++		pets.call("_update_pet_bubble")
++	_check(bubble["who"] == "crow" and bubble["t"] == 1.0, "299프레임까지 주대사")
++	pets.call("_update_pet_bubble")
++	_check(bubble["who"] == "cat" and bubble["t"] == 300.0, "300프레임 경계에서 응답 시작")
++	_check(bubble["pair"] == null and bubble["pair_fired"] == true, "pair 정확히 1회 소비")
++	_check(bubble["txt"] == CATALOG.get_entry("tut_start")["pt"], "pair 원문 유지")
++	for i in range(300):
++		pets.call("_update_pet_bubble")
++	_check(bubble["t"] == 0.0 and bubble["pair"] == null, "응답 종료 후 자동 재생 없음")
++	_check(not _offer("tut_atk3"), "말풍선 끝나도 T1 글로벌쿨 준수")
++	for i in range(120):
++		pets.call("_update_pet_bubble")
++	_check(_offer("tut_atk3"), "T1 720프레임 경계 재개")
++	_fresh()
++	_check(bool(pets.call("_pet_say_cd", "combo_50", "crow", CATALOG.get_entry("combo_50")["txt"], 1.0 / 60.0, 1.0 / 60.0)),
++		"쿨 1프레임 경계 준비")
++	pets.call("_update_pet_bubble")
++	_check(not (pets.get("_pet_dlg_cd") as Dictionary).has("combo_50"), "ID 쿨 0이면 제거")
++	(pets.get("_pet_tier_cd") as Array)[2] = 0.25
++	pets.call("_update_pet_bubble")
++	_check((pets.get("_pet_tier_cd") as Array)[2] == 0.0, "티어쿨 음수 방지 9485")
++
++func _test_frame_priority_and_no_fallback() -> void:
++	_fresh()
++	_begin_frame()
++	_offer("chapter_0")
++	_offer("melee_trap_no")
++	_offer("melee_slam_no")
++	_check(_bid_id() == "melee_trap_no", "동일 T3는 먼저 입찰한 코드순 유지 9429")
++	_finish_frame()
++	_check(_said_id() == "melee_trap_no", "프레임 최고 T3 하나만 표시")
++	var cds: Dictionary = pets.get("_pet_dlg_cd")
++	_check(cds.has("melee_trap_no") and not cds.has("melee_slam_no") and not cds.has("chapter_0"),
++		"승자만 ID쿨 소비")
++	_check((pets.get("_pet_tier_cd") as Array)[3] == 360.0, "승자 T3 글로벌쿨 360")
++	_check(int((pets.get("_bid") as Dictionary)["tier"]) == -1
++		and int((pets.get("_bid") as Dictionary)["weight"]) == 0, "프레임 입찰 초기화")
++	_fresh()
++	(pets.get("_pet_tier_cd") as Array)[3] = 1.0
++	_begin_frame()
++	_offer("chapter_0")
++	_offer("melee_trap_no")
++	_finish_frame()
++	_check(_said_id().is_empty(), "승자 티어쿨 중이면 하위 후보로 대체하지 않음 9459")
++	_check((pets.get("_pet_dlg_cd") as Dictionary).is_empty(), "미발화 후보 CD 불소비")
++	_fresh()
++	(pets.get("_pet_dlg_cd") as Dictionary)["melee_trap_no"] = 1.0
++	_begin_frame()
++	_offer("chapter_0")
++	_offer("melee_trap_no")
++	_finish_frame()
++	_check(_said_id() == "chapter_0", "ID쿨 후보는 입찰 전 제외 9427")
++	_fresh()
++	_offer("tut_start")
++	_begin_frame()
++	_offer("melee_trap_no")
++	_finish_frame()
++	_check(_said_id() == "tut_start", "일반 입찰은 재생 중 대사 인터럽트 불가")
++	_check(not (pets.get("_pet_dlg_cd") as Dictionary).has("melee_trap_no"),
++		"점유로 미발화하면 후보 쿨 불소비")
++
++func _test_urgent_interrupt_and_weights() -> void:
++	# 9410: 100 > 95 > 55 > 40. 입력 순서가 역전돼도 최대 weight만 승리.
++	for order in [["warn_hp50", "burn_warn", "hp_oneshot", "hp_critical"],
++		["hp_critical", "hp_oneshot", "burn_warn", "warn_hp50"],
++		["hp_oneshot", "hp_critical", "warn_hp50", "burn_warn"]]:
++		_fresh()
++		_begin_frame()
++		for id in order:
++			_offer(id)
++		_check(_bid_id() == "hp_critical", "긴급 최대 weight100 순서 무관")
++		_finish_frame()
++		_check(_said_id() == "hp_critical", "긴급 최고 후보 하나 표시")
++		_check((pets.get("_pet_dlg_cd") as Dictionary).size() == 1, "긴급 패자 ID쿨 불소비")
++	for row in [["warn_hp50", "burn_warn", 55], ["burn_warn", "hp_oneshot", 95]]:
++		_fresh()
++		_begin_frame()
++		_offer(row[0])
++		_offer(row[1])
++		_check(_bid_id() == row[1] and int((pets.get("_bid") as Dictionary)["weight"]) == row[2],
++			"긴급 상대 우선순위 " + row[1])
++	_fresh()
++	_offer("tut_start")
++	(pets.get("_pet_tier_cd") as Array)[0] = 1200.0
++	_check(_offer("burn_warn"), "프레임 외 urgent 즉시 인터럽트 9441~9446")
++	var bubble: Dictionary = pets.get("_pet_bubble")
++	_check(_said_id() == "burn_warn" and bubble["txt"] == CATALOG.get_entry("burn_warn")["txt"],
++		"이전 대사 대신 화상 원문")
++	_check(bubble["pair"] != null and bubble["pair"]["txt"] == CATALOG.get_entry("burn_warn")["pt"],
++		"기존 pair 폐기 후 urgent pair 설치")
++	for i in range(5):
++		_check((pets.get("_pet_tier_cd") as Array)[i] >= 300.0, "urgent 뒤 낮은 티어 300프레임 " + str(i))
++	_check((pets.get("_pet_tier_cd") as Array)[0] == 1200.0, "기존 긴 티어쿨 보존")
++	_check(not _offer("burn_warn"), "urgent도 자체 ID쿨 준수")
++	(pets.get("_pet_dlg_cd") as Dictionary).erase("burn_warn")
++	var before: int = (pets.get("_say_log") as Array).size()
++	_check(not _offer("burn_warn"), "같은 활성 urgent uid 재시작 방지")
++	_check((pets.get("_say_log") as Array).size() == before, "같은 urgent 중복 발화 없음")
++
++func _p(hp_value: float = 100.0) -> Dictionary:
++	return {"hp": hp_value, "mhp": 100.0, "mp": 100.0, "mmp": 100.0,
++		"st": 100.0, "mst": 100.0, "lv": 201, "sp": 0, "ap": 0,
++		"burnT": 0, "_rbBurn": [], "rage": 0, "skills": {}}
++
++func _g() -> Dictionary:
++	return {"stage": 0, "frame": 1, "mats": 100, "bossAlive": false}
++
++func _test_urgent_thresholds() -> void:
++	# 경계는 원본 < / >= 그대로: HP50 정확히는 없음, 30 정확히 warn,
++	# 10 정확히 crisis, 0/음수에는 생존 경고 없음(9516~9525).
++	for row in [[50.0, ""], [49.999, "warn_hp50"], [30.0, "warn_hp50"],
++		[29.999, "crisis_hp30"], [10.0, "crisis_hp30"], [9.999, "hp_critical"],
++		[0.0, ""], [-1.0, ""]]:
++		_fresh()
++		_begin_frame()
++		pets.call("_check_urgent_dialogue", _p(float(row[0])))
++		_finish_frame()
++		_check(_said_id() == row[1], "HP 경계 " + str(row[0]))
++	for burn_key in ["burnT", "_rbBurn"]:
++		_fresh()
++		var p := _p()
++		p[burn_key] = 1 if burn_key == "burnT" else [1]
++		_begin_frame()
++		pets.call("_check_urgent_dialogue", p)
++		_finish_frame()
++		_check(_said_id() == "burn_warn", "일반/빨콩 화상 감지 " + burn_key)
++	_fresh()
++	pets.set("_pet_enemy_avg_atk", 25.0)
++	_begin_frame()
++	pets.call("_check_urgent_dialogue", _p(30.0))
++	_finish_frame()
++	_check(_said_id() == "warn_hp50", "한방컷 ATK×1.2 같으면 제외")
++	_fresh()
++	pets.set("_pet_enemy_avg_atk", 25.0)
++	_begin_frame()
++	pets.call("_check_urgent_dialogue", _p(29.999))
++	_finish_frame()
++	_check(_said_id() == "hp_oneshot", "한방컷 ATK×1.2 미만 weight95")
++
++func _test_competitive_thresholds() -> void:
++	# chapter_0(T0)가 기본 후보이므로 T3 조건이 없으면 그것이 남는다.
++	for count_value in [9, 10, 19, 20]:
++		_fresh()
++		_begin_frame()
++		pets.call("_check_competitive_dialogue", _p(), _g(), count_value, count_value, false)
++		_finish_frame()
++		_check(_said_id() == ("melee_trap_no" if count_value >= 10 else "chapter_0"),
++			"근접 10/20 경계와 동일티어 코드순 " + str(count_value))
++	_fresh()
++	var trap_p := _p()
++	trap_p["skills"] = {"spikeTrap": 1, "giantSlam": 1}
++	_begin_frame()
++	pets.call("_check_competitive_dialogue", trap_p, _g(), 20, 20, false)
++	_finish_frame()
++	_check(_said_id() == "melee_trap_yes", "가시덫 보유 분기, 20마리도 먼저 입찰한 trap")
++	for row in [[50.0, "chapter_0"], [49.999, "resource_parry"],
++		[30.0, "resource_parry"], [29.999, "resource_parry"]]:
++		_fresh()
++		var p := _p()
++		p["mp"] = row[0]
++		_begin_frame()
++		pets.call("_check_competitive_dialogue", p, _g(), 0, 1, false)
++		_finish_frame()
++		_check(_said_id() == row[1], "자원 50/30 경계와 선행 half입찰 " + str(row[0]))
++	_fresh()
++	var dome_p := _p()
++	dome_p["mp"] = 29.0
++	dome_p["skills"] = {"holyDome": 1}
++	dome_p["_hdCd"] = 0
++	_begin_frame()
++	pets.call("_check_competitive_dialogue", dome_p, _g(), 0, 1, false)
++	_finish_frame()
++	_check(_said_id() == "resource_half_dome", "영역 준비 시 half_dome 먼저 T3 입찰")
++	_fresh()
++	_begin_frame()
++	pets.call("_check_competitive_dialogue", _p(), _g(), 0, 1, true)
++	_finish_frame()
++	_check(_said_id() == "enemy_ice", "실제 근접 빙결 관측 입력 T3")
++	for previous_count in [4, 5]:
++		_fresh()
++		pets.set("_pet_last_enemy_count", previous_count)
++		_begin_frame()
++		pets.call("_check_competitive_dialogue", _p(), _g(), 0, 0, false)
++		_finish_frame()
++		_check(_said_id() == ("stage_clear" if previous_count >= 5 else "chapter_0"),
++			"스테이지 클리어 직전 5명 경계 " + str(previous_count))
++	_fresh()
++	pets.set("_pet_last_enemy_count", 5)
++	pets.set("_pet_stage_cleared", true)
++	_begin_frame()
++	pets.call("_check_competitive_dialogue", _p(), _g(), 0, 0, false)
++	_finish_frame()
++	_check(_said_id() != "stage_clear", "클리어 상태 중복 입찰 차단")
++	_fresh()
++	pets.set("_pet_stage_cleared", true)
++	_begin_frame()
++	pets.call("_check_competitive_dialogue", _p(), _g(), 0, 1, false)
++	_finish_frame()
++	_check(pets.get("_pet_stage_cleared") == false, "살아 있는 적 재등장 시 clear 플래그 해제")
++
++
++func _test_kill_event_thresholds_and_reset() -> void:
++	for row in [[49, "combo_50"], [99, "combo_100"]]:
++		_fresh()
++		pets.set("_pet_combo_kills", row[0])
++		pets.call("_on_pet_kill", _p())
++		_check(_said_id() == row[1], "처치 콤보 정확한 도달 경계 " + row[1])
++		_check(int(pets.get("_pet_kill_cnt")) == 1, "실제 처치 콜백 카운터 1회")
++		_check(int(pets.get("_pet_combo_kills")) == int(row[0]) + 1,
++			"연속 처치 카운터 1 증가")
++	_fresh()
++	pets.set("_pet_combo_kills", 50)
++	pets.call("_on_pet_kill", _p())
++	_check(_said_id().is_empty(), "콤보 51은 50회 대사 재발화 없음")
++	for row in [[10.0, false], [9.999, true], [0.0, false]]:
++		_fresh()
++		pets.call("_on_pet_kill", _p(float(row[0])))
++		_check((_said_id() == "low_hp_kill") == row[1], "처치 HP10% 엄격 미만 " + str(row[0]))
++	_fresh()
++	_offer("burn_warn")
++	pets.call("_on_pet_kill", _p())
++	_fresh()
++	_check((pets.get("_pet_dlg_cd") as Dictionary).is_empty(), "새 런 인스턴스 ID쿨 초기화")
++	_check((pets.get("_pet_tier_cd") as Array) == [0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
++		"새 런 인스턴스 티어쿨 초기화")
++	_check((pets.get("_pet_bubble") as Dictionary)["pair"] == null
++		and float((pets.get("_pet_bubble") as Dictionary)["t"]) == 0.0, "새 런 pair/대사 초기화")
++	_check(int(pets.get("_pet_combo_kills")) == 0 and int(pets.get("_pet_kill_cnt")) == 0,
++		"새 런 처치/콤보 초기화")
++
++func _test_shuffle_bag() -> void:
++	# 원본 9465~9468, idle_nag 6 / idle_tip 18 / petTalk 5.
++	_fresh()
++	for length in [6, 18, 5]:
++		var bag: Array = []
++		for cycle in range(3):
++			var seen: Dictionary = {}
++			for i in range(length):
++				var index: int = int(pets.call("_pet_bag_next", bag, length))
++				_check(index >= 0 and index < length, "셔플백 인덱스 범위 " + str(length))
++				_check(not seen.has(index), "한 순환 내 중복 없음 " + str(length))
++				seen[index] = true
++			_check(seen.size() == length and bag.is_empty(),
++				"전체 소비 후에만 셔플백 refill " + str(length) + "/" + str(cycle))

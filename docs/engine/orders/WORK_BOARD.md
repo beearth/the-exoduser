@@ -28,7 +28,7 @@
 | MAC-VERIFY | 최근 통합분 Mac 테스트·Mac 실창 첫 전투 녹화 | Mac Codex ttys001(맥북총괄 관측) | codex/mac-verify-20261020 | 없음(관측 전용) | 진행 중 |
 | QA-001 | 기존 실패 테스트 7종 원인 진단 | Mac Codex ttys002 | codex/qa-001-20261020 | 해당 테스트 파일 | 대기→착수 |
 | P3-001 | 맵 pit_poison 타원 충돌 계약 | Mac Codex ttys003 | codex/p3-001-20261020 | engine/fdg/map-source-adapter.js, 맵 계약 테스트 | 대기→착수 |
-| P2-004b | 펫 대사 카테고리 160여 종 | Mac Codex ttys004 | codex/p2-004b-20261020 | native_pets.gd 대사 테이블 | 대기→착수 |
+| P2-004b | 펫 원문171 ID·선언연결60/데이터전용111 실제 적용 | PC Codex (사용자 재배정) | codex/p2-004b-pc-20261020 / 기준 f1df29a86 | native_pets.gd·catalogue·P2004A/B 테스트·관련 docs | 검수 대기: 원문171/0·신규822/0·실제Main연결10/0. 회귀최초17/5→실패그룹14/0(기통과6 유지). [보고서](reports/P2-004B_REPORT.md); 자연발화60/60·화면 미인수 |
 | P3-003 | 지역 시스템(G._regions·필드보스 사이트·지역 처치·미니맵 마커) | **Codex 총괄 배정 대기**(Mac, 다음 빈 Codex) | codex/p3-003-20261020 | 지역 신규 스크립트 | 대기 |
 
 ## 공용(누구도 단독 소유 아님 — 수정 시 최소 줄·보고 필수)

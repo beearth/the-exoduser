@@ -1,10 +1,10 @@
 extends Node2D
-## P2-004a — 첫 전투 펫 4종(까마귀 HECTOR·고양이 DIROI·유령쇠뇌·유령불꽃 이리스) +
+## P2-004B 적용·격리검수 — 첫 전투 펫 4종(까마귀 HECTOR·고양이 DIROI·유령쇠뇌·유령불꽃 이리스) +
 ## 펫 대사 자막(petSubtitle). 표시 전용 소비자 — 적/플레이어 상태는 읽기만.
 ##
 ## 원본 근거(game.html):
 ## - 소환: 새 게임 initStage 경로 30798 — crow(P-0,-20)·cat(+0,+10)·xbow(-30,-28)·
-##   iris(+20,-34), cat.t=~~(rand()*100)(비게임플레이 Math.random → world 공유 샘플러),
+##   iris(+20,-34), cat.t=~~(rand()*100)(비게임플레이 Math.random → 별도 로컬 RNG),
 ##   xbow.t=25, iris.t=50·sz=G._irisSz‖20.
 ## - 상수 PETS 9243: crow{spd22,orbR38,orbY-22} cat{spd24,orbR28,orbY32}
 ##   xbow{spd18,orbR44,orbY-28} iris{spd14,orbR55}.
@@ -17,13 +17,19 @@ extends Node2D
 ## - 이리스 광원: _collectLights 4686~4690 → screen_lighting.set_native_iris_light.
 ## - 대사: [S03e] 9289~9620 — _petSay 9389/_petSayCD 9471/_petBidCD/_petSayUrgent/
 ##   _updatePetBubble 9482(pair·pow(r,.6)×.6 페이드)/_petTierOf/_PET_TIER_COOL 9414.
-##   트리거: [1] 튜토리얼 15종(9555~9568)·[3] 긴급 HP50/30(9547~9550) 구현,
+##   P2-004B: 카탈로그171 ID(기존11+잔여160), 선언연결60/데이터전용111.
+##   트리거·쿨다운·우선순위는 원본9514~9814; Godot 실제 적용/검수는 보고서 참조.
 ##   카운터 _petOnAtk=hurtE 진입(42117 — hurtE 1회=1), _petOnHit=hurtP(43425),
 ##   _petOnKill=42702(처치). 자막 패널: #petSubtitle DOM(2587+CSS 2026-09-29 계약 —
 ##   bottom 230px·좌/우 20px·초상 480px·scale 1.5·텍스트 crow(92,237,306,51)/
 ##   cat(122,250,190,42)·0.92rem·opacity max .6).
 ## 정정: P2-001d의 '이리스 피해 108~156' 추정은 오귀속 — 현 원본 펫 4종 모두 공격
 ## 코드 없음(41496~41541). 해당 피해 출처는 별도 조사 항목.
+
+const DIALOGUE_CATALOG = preload("res://scripts/native_pet_dialogue_catalog.gd")
+const PET_SURVIVAL_WEIGHTS := {"hp_critical": 100, "hp_oneshot": 95, "boss_grab_warn": 90,
+	"boss_aoe_warn": 90, "boss_exec": 88, "stun_warn": 80, "boss_groggy": 70,
+	"crisis_hp30": 60, "burn_warn": 55, "warn_hp50": 40} # game.html 9410
 
 const PET_DEFS := {
 	"crow": {"spd": 22.0, "orbR": 38.0, "orbY": -22.0},
@@ -61,6 +67,19 @@ var _pet_kill_cnt := 0
 var _pet_parry_cnt := 0
 var _pet_charge_used := false
 var _bid := {"tier": -1, "weight": 0, "id": "", "who": "", "txt": "", "dur": 0.0, "cd": 0.0, "pw": null, "pt": null, "pd": 0.0}
+var _pet_enemy_avg_atk := 0.0
+var _pet_combo_kills := 0
+var _pet_last_enemy_count := 0
+var _pet_stage_cleared := false
+var _pet_idle_t := 0.0
+var _pet_idle_talk_t := 0.0
+var _pet_stage_env_t := 0.0
+var _pet_stage_env: Dictionary = {}
+var _dialogue_rng := RandomNumberGenerator.new()
+var _dialogue_halt := ""
+var _pet_nag_bag: Array = []
+var _pet_tip_bag: Array = []
+var _pet_talk_bag: Array = []
 var _in_frame := false
 var _say_log: Array = []
 
@@ -115,6 +134,7 @@ func configure(world: Node, player: Node2D, state: Node, lighting: CanvasLayer) 
 	var p: Vector2 = player.global_position
 	var local_rng := RandomNumberGenerator.new()
 	local_rng.randomize()
+	_dialogue_rng.randomize()
 	var cat_t: float = floor(local_rng.randf() * 100.0)
 	pets = {
 		"crow": {"x": p.x, "y": p.y - 20.0, "tx": p.x, "ty": p.y, "t": 0.0, "pdx": 0.0, "pdy": 0.0, "moving": false},
@@ -126,7 +146,8 @@ func configure(world: Node, player: Node2D, state: Node, lighting: CanvasLayer) 
 		if kind == "native_hurte":
 			_pet_atk_cnt += 1
 			if data.get("killed") == true:
-				_pet_kill_cnt += 1
+				var current_p: Variant = _state.read_current_p()
+				_on_pet_kill(current_p if current_p is Dictionary else {})
 		elif kind == "player_damage":
 			_pet_hit_cnt += 1)
 	_build_subtitle_panel()
@@ -249,28 +270,43 @@ func _push_iris_light() -> void:
 	_lighting.set_native_iris_light(screen, IRIS_GLOW_R, flk * 0.6)
 
 
-# ── 대사 엔진 (9389~9500 축약 없는 핵심부) ──
+# ── P2-004B: 원문 카탈로그 소비 + 원본 디스패처(9389~9503) ──
 func _pet_tier_of(id: String) -> int:
-	if id.begins_with("tut_") or id.begins_with("parry_") or id == "shift_hint":
-		return 1
-	if id == "warn_hp50" or id == "crisis_hp30":
-		return 5 # urgent — 전용 경로에서만 사용
-	return 2
+	return DIALOGUE_CATALOG.tier_of(id)
+
+
+func _offer_dialogue(id: String) -> bool:
+	var entry: Dictionary = DIALOGUE_CATALOG.ENTRIES.get(id, {})
+	# 미이식 이벤트는 데이터만. 외부의 임의 id 요청으로 가짜 트리거를 만들지 않는다.
+	if entry.is_empty() or entry.get("connected") != true:
+		return false
+	var who: String = entry["who"]
+	var txt: String = entry["txt"]
+	var dur: float = float(entry["dur"])
+	var pw: Variant = entry["pw"]
+	var pt: Variant = entry["pt"]
+	var pd: float = float(entry["pd"])
+	match entry["mode"]:
+		"cd":
+			return _pet_say_cd(id, who, txt, dur, float(entry["cd"]), pw, pt, pd)
+		"bid":
+			return _pet_bid_cd(id, who, txt, dur, float(entry["cd"]), pw, pt, pd)
+		"urgent":
+			return _pet_say_urgent(id, who, txt, dur, float(entry["cd"]), pw, pt, pd)
+	return false
 
 
 func _pet_say(id: String, who: String, txt: String, dur_sec: float, pair_who: Variant = null,
 		pair_txt: Variant = null, pair_dur: float = 5.0) -> bool:
-	if _pet_bubble["t"] > 0.0:
-		return false
-	if float(_pet_dlg_cd.get(id, 0.0)) > 0.0:
+	if _pet_bubble["t"] > 0.0 or float(_pet_dlg_cd.get(id, 0.0)) > 0.0:
 		return false
 	_pet_bubble["who"] = who
 	_pet_bubble["source"] = txt
-	_pet_bubble["txt"] = txt # _T: ko 원문 그대로
+	_pet_bubble["txt"] = txt
 	_pet_bubble["mt"] = floor(dur_sec * 60.0)
 	_pet_bubble["t"] = _pet_bubble["mt"]
 	_pet_bubble["pair_fired"] = false
-	_pet_bubble["pair"] = ({"who": pair_who, "txt": pair_txt, "mt": floor(pair_dur * 60.0)}
+	_pet_bubble["pair"] = ({"who": pair_who, "txt": pair_txt, "mt": floor((pair_dur if pair_dur != 0.0 else 5.0) * 60.0)}
 		if pair_who != null and pair_txt != null else null)
 	_show_bubble(who, txt)
 	_say_log.append({"id": id, "who": who})
@@ -279,7 +315,6 @@ func _pet_say(id: String, who: String, txt: String, dur_sec: float, pair_who: Va
 
 func _pet_say_cd(id: String, who: String, txt: String, dur: float, cd: float,
 		pw: Variant = null, pt: Variant = null, pd: float = 5.0) -> bool:
-	# 9471: id쿨 + 말풍선 점유 + 티어 글로벌쿨
 	if float(_pet_dlg_cd.get(id, 0.0)) > 0.0 or _pet_bubble["t"] > 0.0:
 		return false
 	var tier := _pet_tier_of(id)
@@ -292,29 +327,74 @@ func _pet_say_cd(id: String, who: String, txt: String, dur: float, cd: float,
 	return ok
 
 
-func _pet_say_urgent(id: String, who: String, txt: String, dur: float, cd: float,
+func _record_dialogue_bid(tier: int, weight: int, id: String, who: String, txt: String,
+		dur: float, cd: float, pw: Variant, pt: Variant, pd: float) -> void:
+	# 원본 _PB 단일 슬롯 재사용(9411/9430/9438), 동일 티어는 앞선 코드 우선.
+	_bid["tier"] = tier
+	_bid["weight"] = weight
+	_bid["id"] = id
+	_bid["who"] = who
+	_bid["txt"] = txt
+	_bid["dur"] = dur
+	_bid["cd"] = cd
+	_bid["pw"] = pw
+	_bid["pt"] = pt
+	_bid["pd"] = pd
+
+
+func _pet_bid_cd(id: String, who: String, txt: String, dur: float, cd: float,
 		pw: Variant = null, pt: Variant = null, pd: float = 5.0) -> bool:
-	# 9460s: 프레임 내 — 티어5 입찰(내부 가중치)
 	if float(_pet_dlg_cd.get(id, 0.0)) > 0.0:
 		return false
-	var weights := {"warn_hp50": 40, "crisis_hp30": 60} # _PET_SURV_W 9418 해당분
-	var w: int = int(weights.get(id, 50))
+	var tier := _pet_tier_of(id)
+	if tier <= int(_bid["tier"]):
+		return false
+	_record_dialogue_bid(tier, tier * 10, id, who, txt, dur, cd, pw, pt, pd)
+	return true
+
+
+func _pet_say_urgent(id: String, who: String, txt: String, dur: float, cd: float,
+		pw: Variant = null, pt: Variant = null, pd: float = 5.0) -> bool:
+	if float(_pet_dlg_cd.get(id, 0.0)) > 0.0:
+		return false
 	if _in_frame:
-		if _bid["tier"] == 5 and w <= int(_bid["weight"]):
+		var weight: int = int(PET_SURVIVAL_WEIGHTS.get(id, 50))
+		if int(_bid["tier"]) == 5 and weight <= int(_bid["weight"]):
 			return false
-		_bid = {"tier": 5, "weight": w, "id": id, "who": who, "txt": txt, "dur": dur, "cd": cd, "pw": pw, "pt": pt, "pd": pd}
+		_record_dialogue_bid(5, weight, id, who, txt, dur, cd, pw, pt, pd)
 		return true
-	return false
+	if _pet_bubble.get("uid") == id and _pet_bubble["t"] > 0.0:
+		return false
+	_interrupt_dialogue(id, who, txt, dur, cd, pw, pt, pd)
+	return true
+
+
+func _interrupt_dialogue(id: String, who: String, txt: String, dur: float, cd: float,
+		pw: Variant, pt: Variant, pd: float) -> void:
+	_pet_bubble["t"] = 0.0
+	_pet_bubble["pair"] = null
+	_pet_say(id, who, txt, dur, pw, pt, pd)
+	_pet_bubble["uid"] = id
+	_pet_dlg_cd[id] = floor(cd * 60.0)
+	for i in range(5):
+		_pet_tier_cd[i] = maxf(float(_pet_tier_cd[i]), 300.0)
 
 
 func _pet_fire_bid() -> void:
-	if int(_bid["tier"]) < 0:
+	var tier: int = int(_bid["tier"])
+	if tier < 0:
 		return
-	var ok := _pet_say(str(_bid["id"]), str(_bid["who"]), str(_bid["txt"]), float(_bid["dur"]),
-		_bid["pw"], _bid["pt"], float(_bid["pd"]))
-	if ok:
-		_pet_dlg_cd[str(_bid["id"])] = floor(float(_bid["cd"]) * 60.0)
+	if tier >= 5:
+		if not (_pet_bubble.get("uid") == _bid["id"] and _pet_bubble["t"] > 0.0):
+			_interrupt_dialogue(str(_bid["id"]), str(_bid["who"]), str(_bid["txt"]),
+				float(_bid["dur"]), float(_bid["cd"]), _bid["pw"], _bid["pt"], float(_bid["pd"]))
+	elif _pet_bubble["t"] <= 0.0 and _pet_tier_cd[tier] <= 0.0:
+		if _pet_say(str(_bid["id"]), str(_bid["who"]), str(_bid["txt"]), float(_bid["dur"]),
+				_bid["pw"], _bid["pt"], float(_bid["pd"])):
+			_pet_dlg_cd[str(_bid["id"])] = floor(float(_bid["cd"]) * 60.0)
+			_pet_tier_cd[tier] = float(PET_TIER_COOL[tier])
 	_bid["tier"] = -1
+	_bid["weight"] = 0
 
 
 func _update_pet_bubble() -> void:
@@ -345,63 +425,208 @@ func _update_pet_bubble() -> void:
 		_subtitle_root.modulate = Color(1, 1, 1, 0)
 
 
+# 원본 9507~9737. 상태는 owner에서 읽고 지역 복사만 수정한다.
 func _check_pet_dialogue() -> void:
+	var raw_p: Variant = _state.read_current_p()
+	var raw_g: Variant = _state.read_current_g()
+	if not raw_p is Dictionary or not raw_g is Dictionary:
+		_dialogue_halt = "source_p_or_g_not_ready"
+		return
+	if raw_g.get("on") != true:
+		return
+	var p: Dictionary = raw_p.duplicate()
+	var g: Dictionary = raw_g
+	# read_current_p의 _hdCd는 constructor 값이므로 실제 스킬 owner를 읽는다.
+	p.erase("_hdCd")
+	var slots: Node = _world.get_node_or_null("NativeSkillSlots")
+	if is_instance_valid(slots) and slots.has_method("get_native_skill_slots_snapshot"):
+		p["_hdCd"] = slots.get_native_skill_slots_snapshot()["hd_cd"]
+	if _player.has_method("get_native_burn_snapshot"):
+		p["_rbBurn"] = _player.get_native_burn_snapshot()
+	var alive_count := 0
+	var near_count := 0
+	var near_frozen := false
+	var attack_total := 0.0
+	var attack_count := 0
+	# _tick은 기존 펫 어댑터의 60Hz 진행 시계. 공유 G.frame/상태는 쓰지 않는다.
+	var sample_attack: bool = int(_tick) % 60 == 0
+	for enemy in _world.get_enemies():
+		if not is_instance_valid(enemy) or enemy.get("alive") != true:
+			continue
+		alive_count += 1
+		var distance_sq: float = _player.global_position.distance_squared_to(enemy.global_position)
+		if distance_sq < 90000.0: # 원본 9594/9597: 엄격 반경 300
+			near_count += 1
+			if not enemy.has_method("read_native_normal_enemy_hurte_fields"):
+				_dialogue_halt = "enemy_freeze_owner_absent"
+				return
+			var enemy_fields: Dictionary = enemy.read_native_normal_enemy_hurte_fields(_world)
+			var frozen: Variant = enemy_fields.get("_frozen")
+			if enemy_fields.get("ready") != true or not (frozen is int or frozen is float):
+				_dialogue_halt = "enemy_freeze_owner_not_ready"
+				return
+			if float(frozen) > 0.0:
+				near_frozen = true
+		if sample_attack and distance_sq < 250000.0: # 원본9524: 엄격 반경 500
+			attack_total += float(enemy.get("attack")) # enemy.gd83 = 원본 e.atk
+			attack_count += 1
+	if sample_attack:
+		_pet_enemy_avg_atk = attack_total / attack_count if attack_count > 0 else 0.0
+	_dialogue_halt = ""
 	_update_pet_bubble()
 	_bid["tier"] = -1
 	_in_frame = true
-	# [3] 긴급 — HP50/30 (9547~9550; 그 외 긴급은 미이식 기록)
-	var hp: float = float(_player.get("hp"))
-	var mhp: float = float(_player.get("max_hp"))
-	if hp > 0.0 and hp < mhp * 0.5 and hp >= mhp * 0.3:
-		_pet_say_urgent("warn_hp50", "crow", "…절반이다. 정신차려.", 3, 60, "cat", "체력 반 남았어! 물약 마실 타이밍!", 3)
-	if hp > 0.0 and hp < mhp * 0.3 and hp >= mhp * 0.1:
-		_pet_say_urgent("crisis_hp30", "crow", "피가 새고 있다. Shift. 빠져.", 4, 20, "cat", "사슬 던져! 끌려가면 무적이야!", 4)
+	_check_urgent_dialogue(p)
 	_pet_fire_bid()
 	_in_frame = false
-	# [1] 튜토리얼 (si0·Lv≤200 — 9555~9568). lv는 state P owner.
-	var p: Variant = _state.read_current_p()
-	if not p is Dictionary or int(p.get("lv", 1)) > 200:
+	_bid["tier"] = -1
+	if int(p.get("lv", 1)) > 500:
 		return
+	if _check_pet_tutorial(p, g):
+		return
+	_check_competitive_dialogue(p, g, near_count, alive_count, near_frozen)
+	_pet_fire_bid()
+
+
+func _check_urgent_dialogue(p: Dictionary) -> void:
+	var hp: float = float(p["hp"])
+	var mhp: float = float(p["mhp"])
+	if hp > 0.0 and hp < mhp * 0.5 and hp >= mhp * 0.3:
+		_offer_dialogue("warn_hp50")
+	if hp > 0.0 and hp < mhp * 0.3 and hp >= mhp * 0.1:
+		_offer_dialogue("crisis_hp30")
+	if hp > 0.0 and hp < mhp * 0.1:
+		_offer_dialogue("hp_critical")
+	var burns: Variant = p.get("_rbBurn", [])
+	if hp > 0.0 and (float(p.get("burnT", 0.0)) > 0.0 or (burns is Array and not burns.is_empty())):
+		_offer_dialogue("burn_warn")
+	if hp > 0.0 and _pet_enemy_avg_atk > 0.0 and hp < _pet_enemy_avg_atk * 1.2:
+		_offer_dialogue("hp_oneshot")
+	# stun/보스 urgent는 미연결. 원본 데이터 10 ID를 보존하며 가짜 상태를 만들지 않는다.
+	if float(p["st"]) < float(p["mst"]) * 0.5 and int(p["lv"]) <= 100:
+		_offer_dialogue("low_st") # 원본9537: T3를 urgent 중간 fire에서 처리한다.
+
+
+func _check_pet_tutorial(p: Dictionary, g: Dictionary) -> bool:
+	if int(g.get("stage", 0)) != 0 or int(p.get("lv", 1)) > 200:
+		return false
 	if not _pet_tut.get("start", false):
 		_pet_tut["start"] = true
-		_pet_say_cd("tut_start", "crow", "일어나. 여신이 널 여기 보낸 건 죽으라고가 아니야.", 5, 9999,
-			"cat", "…아직 살아있네. 좌클릭으로 저것들 쳐봐.", 5)
-		return
+		_offer_dialogue("tut_start")
+		return true
 	if not _pet_tut.get("atk3", false) and _pet_atk_cnt >= 3 and _pet_atk_cnt < 7:
 		_pet_tut["atk3"] = true
-		_pet_say_cd("tut_atk3", "crow", "좋아, 감각이 있군. 계속 쳐!", 5, 9999, "cat", "…치는 건 할 줄 아네. 피하는 건?", 5)
-		return
+		_offer_dialogue("tut_atk3")
+		return true
 	if not _pet_tut.get("atk7", false) and _pet_atk_cnt >= 7 and not _pet_charge_used:
 		_pet_tut["atk7"] = true
-		_pet_say_cd("tut_charge", "crow", "Shift를 눌러. 사슬이다. 땅에 꽂아서 끌려가!", 5, 9999)
-		return
+		_offer_dialogue("tut_charge")
+		return true
 	if not _pet_tut.get("firstHit", false) and _pet_hit_cnt >= 1:
 		_pet_tut["firstHit"] = true
-		_pet_say_cd("tut_1sthit", "cat", "…아파? 당연하지. 여긴 지옥이야.", 5, 9999)
-		return
+		_offer_dialogue("tut_1sthit")
+		return true
 	if not _pet_tut.get("hit2", false) and _pet_hit_cnt >= 2:
 		_pet_tut["hit2"] = true
-		_pet_say_cd("tut_hit2", "crow", "Q를 눌러! 악의로 보호막을 만들 수 있다.", 5, 9999, "cat", "보호막 없이 버틸 생각은 버려.", 5)
-		return
+		_offer_dialogue("tut_hit2")
+		return true
 	if not _pet_tut.get("parryHint", false) and _pet_atk_cnt >= 8 and _pet_parry_cnt == 0:
 		_pet_tut["parryHint"] = true
-		_pet_say_cd("tut_parry", "crow", "E가 패링이다. 적 공격이 닿기 직전에 눌러!", 5, 9999, "cat", "못 하겠으면 때려. 안 죽으면 그만이야.", 5)
-		return
+		_offer_dialogue("tut_parry")
+		return true
 	if not _pet_tut.get("firstKill", false) and _pet_kill_cnt >= 1:
 		_pet_tut["firstKill"] = true
-		_pet_say_cd("tut_1stkill", "crow", "하나 죽었군.", 4, 9999, "cat", "…고기 냄새. 싫진 않네.", 5)
-		return
+		_offer_dialogue("tut_1stkill")
+		return true
 	if not _pet_tut.get("bowIntro", false) and _pet_kill_cnt >= 3:
 		_pet_tut["bowIntro"] = true
-		_pet_say_cd("tut_bow", "crow", "유령쇠뇌야. 인사해.", 3, 9999, "cat", "…말은 못해.", 4)
-		return
+		_offer_dialogue("tut_bow")
+		return true
 	if not _pet_tut.get("firstItem", false):
 		var bag: Variant = (_state.read_current_inventory() as Dictionary).get("bag")
-		if bag is Array and (bag as Array).size() >= 1:
-			if _pet_say_cd("tut_firstItem", "crow", "TAB을 눌러. 가방을 열고 장비를 입어야 한다.", 5, 9999,
-					"cat", "주웠으면 껴야지! TAB!", 4):
-				_pet_tut["firstItem"] = true
-			return
+		if bag is Array and not bag.is_empty() and _offer_dialogue("tut_firstItem"):
+			_pet_tut["firstItem"] = true
+			return true
+	return false
+
+
+func _check_competitive_dialogue(p: Dictionary, g: Dictionary, near_count: int,
+		alive_count: int, near_frozen: bool) -> void:
+	var skills: Dictionary = p.get("skills", {})
+	if near_frozen:
+		_offer_dialogue("enemy_ice")
+	if near_count >= 10:
+		_offer_dialogue("melee_trap_yes" if int(skills.get("spikeTrap", 0)) > 0 else "melee_trap_no")
+	if near_count >= 20:
+		_offer_dialogue("melee_slam_yes" if int(skills.get("giantSlam", 0)) > 0 else "melee_slam_no")
+	if float(p["hp"]) < float(p["mhp"]) * 0.5 or float(p["mp"]) < float(p["mmp"]) * 0.5 or float(p["st"]) < float(p["mst"]) * 0.5:
+		if int(skills.get("holyDome", 0)) > 0 and p.has("_hdCd") and float(p["_hdCd"]) <= 0.0:
+			_offer_dialogue("resource_half_dome")
+		elif int(skills.get("holyDome", 0)) == 0 or p.has("_hdCd"):
+			_offer_dialogue("resource_parry")
+		# 쿨다운 owner 부재는 폴백하지 않고 해당 half 분기를 정지한다.
+	if float(p["hp"]) < float(p["mhp"]) * 0.3 or float(p["mp"]) < float(p["mmp"]) * 0.3 or float(p["st"]) < float(p["mst"]) * 0.3:
+		_offer_dialogue("resource_low_yes" if int(skills.get("holyDome", 0)) > 0 else "resource_low_no")
+	if alive_count == 0 and p.get("s", "") == "idle":
+		_offer_dialogue("idle_noE")
+	var boss_alive: bool = g.get("bossAlive", false) == true
+	if boss_alive:
+		_pet_idle_t = 0.0
+		_pet_idle_talk_t = 0.0
+	elif p.get("s", "") == "idle":
+		_pet_idle_t += 1.0
+		if _pet_idle_t > 1200.0:
+			_pet_idle_t = 0.0
+			if _dialogue_rng.randf() < 0.5:
+				_offer_dialogue("idle_nag%d" % _pet_bag_next(_pet_nag_bag, 6))
+			elif _dialogue_rng.randf() < 0.5:
+				_offer_dialogue("idle_tip%d" % _pet_bag_next(_pet_tip_bag, 18))
+		_pet_idle_talk_t += 1.0
+		if alive_count == 0 and _pet_idle_talk_t > 7200.0:
+			_pet_idle_talk_t = 0.0
+			_offer_dialogue("petTalk_%d" % _pet_bag_next(_pet_talk_bag, 5))
+	else:
+		_pet_idle_t = 0.0
+		_pet_idle_talk_t = 0.0
+	# 현 포트 stage0만 인수됨. 다른 stage를 임의 챕터0로 오인하지 않는다.
+	if int(g.get("stage", -1)) == 0:
+		if not boss_alive:
+			_offer_dialogue("chapter_0")
+		if not _pet_stage_env.get(0, false):
+			_pet_stage_env_t += 1.0
+			if not boss_alive and _pet_stage_env_t > 1800.0:
+				_pet_stage_env[0] = true
+				_offer_dialogue("env_ch0")
+	if _pet_last_enemy_count >= 5 and alive_count == 0 and not boss_alive and not _pet_stage_cleared:
+		_pet_stage_cleared = true
+		_offer_dialogue("stage_clear")
+	if alive_count > 0:
+		_pet_stage_cleared = false
+	_pet_last_enemy_count = alive_count
+
+
+func _pet_bag_next(bag: Array, length: int) -> int:
+	if bag.is_empty():
+		for i in range(length):
+			bag.append(i)
+		for i in range(length - 1, 0, -1):
+			var j: int = mini(i, floori(_dialogue_rng.randf() * (i + 1)))
+			var value: int = int(bag[i])
+			bag[i] = bag[j]
+			bag[j] = value
+	return int(bag.pop_back())
+
+
+func _on_pet_kill(p: Dictionary) -> void:
+	_pet_kill_cnt += 1
+	_pet_combo_kills += 1
+	if _pet_combo_kills == 50:
+		_offer_dialogue("combo_50")
+	if _pet_combo_kills == 100:
+		_offer_dialogue("combo_100")
+	if float(p.get("hp", 0.0)) > 0.0 and float(p["hp"]) < float(p["mhp"]) * 0.1:
+		_offer_dialogue("low_hp_kill")
+	# multi_kill: 원본9781 정의만 있고 호출처 없음. 임의 호출을 추가하지 않는다.
 
 
 # ── 자막 패널 (petSubtitle — 2587 DOM + 2026-09-29/09-16 계약) ──
@@ -438,6 +663,8 @@ func _build_subtitle_panel() -> void:
 
 
 func _show_bubble(who: String, txt: String) -> void:
+	if not is_instance_valid(_subtitle_root):
+		return
 	var is_crow := who == "crow"
 	var viewport_size: Vector2 = get_viewport().get_visible_rect().size
 	var portrait_path := "res://assets/pets/crow_portrait.png" if is_crow else "res://assets/pets/cat_portrait.png"
@@ -563,6 +790,10 @@ func _draw_iris() -> void:
 
 
 func get_native_pets_snapshot() -> Dictionary:
+	var data_only: Array = []
+	for id in DIALOGUE_CATALOG.ENTRIES:
+		if DIALOGUE_CATALOG.ENTRIES[id]["connected"] != true:
+			data_only.append(id)
 	return {"configured": _configured,
 		"pets": {"crow": [pets["crow"]["x"], pets["crow"]["y"]], "cat": [pets["cat"]["x"], pets["cat"]["y"]],
 			"xbow": [pets["xbow"]["x"], pets["xbow"]["y"]], "iris": [pets["iris"]["x"], pets["iris"]["y"]]} if _configured else {},
@@ -571,10 +802,13 @@ func get_native_pets_snapshot() -> Dictionary:
 		"bubble": {"who": _pet_bubble["who"], "txt": _pet_bubble["txt"], "t": _pet_bubble["t"],
 			"pair": _pet_bubble["pair"] != null, "alpha": _subtitle_root.modulate.a if is_instance_valid(_subtitle_root) else -1.0},
 		"say_log": _say_log.duplicate(true), "tut": _pet_tut.duplicate(),
+		"dialogue_catalog": {"total": DIALOGUE_CATALOG.ENTRIES.size(), "data_only_ids": data_only},
+		"dialogue_cooldowns": _pet_dlg_cd.duplicate(), "tier_cooldowns": _pet_tier_cd.duplicate(),
+		"dialogue_halt": _dialogue_halt,
 		"unported": ["펫 공격 없음(원본 41496~41541 — P2-001d '이리스 피해' 추정 오귀속 정정)",
-			"대사 [2]키안내·[4]보스·[5]~[29] 카테고리(튜토리얼 15종 중 11종+긴급 2종만)",
+			"대사171 ID 중 미연결111 ID는 dialogue_catalog.data_only_ids 참조; 설계전용 카테고리14/24~26/28~29 및 death_dual 별도 화면은 범위 밖",
 			"펫 음성(_petSfx)·패드 키 치환(_padifyHint)·언어 전환(_refreshPetBubbleLanguage — ko 원문 고정)",
 			"R 수거 연계·G.pets G-소유 이관(어댑터 보유 — G 40키 부트 계약 보존)",
-			"crow _fly 애니(원본 미등록 dead)·cat t 난수=world 공유 샘플러(원본 Math.random)",
+			"crow _fly 애니(원본 미등록 dead)·cat t 및 대사 셔플은 월드와 분리한 로컬 RNG",
 			"tut_charge 후속(firstCharge — 사슬기동 미이식)·parry 카운터(패링 콜백 미배선)",
 			"이리스 LIT 색층(ci0 색 글로우 — P2-003a 색층 전체 미이식과 동일 경계)"]}
