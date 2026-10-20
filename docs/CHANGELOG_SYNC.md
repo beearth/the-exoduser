@@ -356,6 +356,26 @@
 - 부분 구현·통합 BLOCKED: 실제 source clock/Marker·PC contact/hit ingress·35 specialized elemBall terminal 미인수. 큰탄을 일반탄으로 우회하지 않음. "31과 통합 후보" 기록. Godot gate/격리·정상훅·자기branch push/remote/DONE 후 자기WT 제거.
 
 
+## 2026-10-21 MAP11-02 — arena StageRecipe·geometry/revision provider
+
+| 항목 | 구현·검수 경계 |
+|---|---|
+| 기준·ABI | main45be76e49 + 인수된1b b12bf9a1 merge048c5201. R1700/4Marker Entry·Boss·Exit·Return 유지, arena 전용 region0/namespace·identity/revision·legacy mw128/mh108/T40 계약. [소비자 인계/보고서](4.1맵디자인+설정/MAP11_STAGE_PROVIDER_20261021.md) 첫 표는 DEMO11-37/43용 |
+| 구현 | 새 StageRecipe Resource·analytic circle/solid·LOS/연속sweep·저작route 도달성 검증·runtime revision adapter. content_valid와 NOT_READY 분리, missing/중복/외부/막힌route/잘못된extent 거부. Main/State/World/factory/카메라/아트·기존preview·전투·저장 변경0 |
+| 검증 | 신규54/0·집중 malformed schema3/0 각1회, 최종ERROR/WARNING0. 첫 하니스 typed Array SCRIPT ERROR1 원문 보존·수정후해당실패만재실행. 직접 CPU질의30000회 벽시계37.282ms/3질의평균3.7282µs 벤치1회, 실제데모FPS주장0 |
+| 인계 | field4지역·일반flow·소비자제품연결은 미제공/미연결 명시. pgrep≥2/30초 gate·격리userdir·override0byte. 자기branch 정상push/remoteSHA/DONE뒤자기WT제거, R불변 |
+
+## 2026-10-21 MAP11-01b — D05 원형 축소·바닥 조명 proof
+
+| 항목 | 구현·검수 경계 |
+|---|---|
+| 기준·공간 | main ac3764bfe + 인수된 MAP11-01 3c2b1ea4 정상merge f612dbee. 독립 preview R2200→1700/회피고리1300·입장zoom.42→.65. 원본 공격 범위 고정, tide50·fissure전체1295.2 벽 밖 표시 |
+| 표현·보호 | 기존 RGBA 피부 재착색 shader·균열 심장선·main MAP-LOOK/hell·Cinzel 글꼴 토큰 재사용, 4시점+body/탄막 1920×1080 및1x6장. 생성0·Main/State/전투·저장0줄, 새 표시문구 번역목록 등록 |
+| 검수 | 신규34/0·직접회귀16/0 각1회, ERROR0·회귀 기존Camera WARNING1. 600tick@60Hz 벽시계벤치1회10.000336s/평균501.48fps/p95≤2.36ms·p99≤2.81ms(M5Pro/preview한정). 캡처ERROR/WARNING0 |
+| 인계 | [2차 보고서](4.1맵디자인+설정/MAP11_ARENA_PREVIEW_PASS2_20261021.md) 비교2표. 외곽 가지 겹침·재질 최종 아트 RETOUCH/시각검수대기. 자기branch push/remoteSHA/DONE후 자기WT제거, R불변 |
+
+
+
 ## 2026-10-21 DEMO11-18 일반 데모 합체·흡수·성급·되돌리기 원장
 
 | 항목 | 구현·검수 근거 |
