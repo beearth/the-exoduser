@@ -451,9 +451,10 @@ test('western bone arch receives cached lower-foot contact only at its CH1 place
  const img=createCanvas(128,128),x=img.getContext('2d');x.fillStyle='#fff';x.fillRect(30,10,68,108);
  const o={type:'m_bone_arch',x:1420,y:6020},g={stage:0,cam:{x:o.x,y:o.y}},meta={sz:300,col:1,large:1},before=JSON.stringify({o,g,meta});
  function frame(state=g,obj=o){const a=createCanvas(600,600),c=a.getContext('2d');c.translate(300-o.x,300-o.y);c.globalAlpha=.6;local.Ch1LivingDetail.shadows(c,state,[obj],{m_bone_arch:img},{m_bone_arch:meta},1200,600,600);assert.ok(Math.abs(c.globalAlpha-.6)<.01);return a.toBuffer('raw');}
- assert.ok(frame().some(v=>v!==0));assert.equal(allocations.length,1);frame();assert.equal(allocations.length,1);assert.equal(allocations[0].width,256);assert.equal(JSON.stringify({o,g,meta}),before);
- const p=allocations[0].getContext('2d').getImageData(0,0,256,256).data;assert.equal(p[(80*256+128)*4+3],0);assert.ok(p[(200*256+128)*4+3]>0);
- assert.ok(frame({...g,stage:2}).every(v=>v===0));assert.ok(frame(g,{...o,x:1500}).every(v=>v===0));assert.ok(frame({...g,cam:{x:0,y:0}}).every(v=>v===0));
+ // MAP-005 (2026-10-20): every stage-0 bone arch also casts the cached SE silhouette (one texture per image); the debris contact stays placement-only.
+ assert.ok(frame().some(v=>v!==0));assert.equal(allocations.length,2);frame();assert.equal(allocations.length,2);const contact=allocations.find(a=>a.width===256&&a.height===256);assert.ok(contact);assert.equal(JSON.stringify({o,g,meta}),before);
+ const p=contact.getContext('2d').getImageData(0,0,256,256).data;assert.equal(p[(80*256+128)*4+3],0);assert.ok(p[(200*256+128)*4+3]>0);
+ assert.ok(frame({...g,stage:2}).every(v=>v===0));const other=frame(g,{...o,x:1500});assert.ok(other.some(v=>v!==0),'cast shadow is not placement-bound');assert.equal(allocations.length,2,'no extra contact cache off the placement');assert.ok(frame({...g,cam:{x:0,y:0}}).every(v=>v===0));
 });
 
 test('western regional ground reaches the arch foot without adding another region cache',()=>{

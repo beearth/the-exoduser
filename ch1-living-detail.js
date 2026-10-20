@@ -361,6 +361,10 @@
   const shadowCache=new WeakMap();
   const rootContactCache=new WeakMap();
   const raisedShadowCache=new WeakMap();
+  // MAP-005 standing props: foot = PNG opaque bottom (alpha>60), base = where the upright part meets its ground debris
+  // (shadow origin, hidden under the debris), both relative to the drawn box centre; a = shadow strength.
+  const standing={m_hang_cage:{foot:.486,base:.30,a:1},m_skull_totem:{foot:.443,base:.40,a:1},m_bone_arch:{foot:.437,base:.36,a:.95},m_sword_pile:{foot:.482,base:.28,a:.7},m_c1altar:{foot:.497,base:.34,a:.8}};
+  const standCache=new WeakMap();
   const debrisContactCache=new WeakMap();
   function debrisContact(img){
     const cache=debrisContactCache;
@@ -412,6 +416,40 @@
         if(Math.abs(o.x-g.cam.x)>hw+dw||Math.abs(o.y-g.cam.y)>hh+dh)continue;
         c.save();c.translate(o.x,o.y);if(meta.flip)c.scale(-1,1);c.globalAlpha=alpha;
         c.drawImage(poolContact(img),-dw/2-48*dw/416,-dh/2-48*dh/416,512*dw/416,512*dh/416);c.restore();continue;
+      }
+      // MAP-005: standing props cast the same SE silhouette as trees (key light NW, tree skew).
+      // foot = opaque bottom of the PNG measured from the drawn rect (square sz, or keepAR box).
+      const stand=standing[o.type];
+      if(stand){
+        const img=sprites[o.type],meta=metas[o.type];
+        if(img&&meta&&img.complete!==false&&(img.naturalWidth||img.width)&&!meta.srcRect&&!meta.sheet&&!meta.rot&&!o.rot){
+          const size=(meta.sz||200)*(o.scale||1),iw=img.naturalWidth||img.width,ih=img.naturalHeight||img.height,ar=iw/ih;
+          const dw=meta.keepAR?size*Math.min(1,ar):size,dh=meta.keepAR?size*Math.min(1,1/ar):size;
+          const foot=o.y+dh*stand.base,hf=dh*(.5+stand.base);
+          if(Math.abs(o.x-g.cam.x)<hw+dw*1.6&&Math.abs(foot-g.cam.y)<hh+dh){
+            let tex=standCache.get(img);
+            if(!tex){
+              // 256px-tall bake of the drawn box; shadow length = .38 × height, lean .55 × height to the east.
+              const k=256/hf,W=Math.ceil((dw+.55*hf)*k+48),H=Math.ceil((.38*hf+dh*(stand.foot-stand.base))*k+48);
+              tex=root.document.createElement('canvas');tex.width=W;tex.height=H;tex._k=k;tex._ox=dw*k/2+24;
+              const x=tex.getContext('2d');
+              x.save();x.translate(tex._ox,24);x.transform(1,0,-.55,-.38,0,0);x.filter='blur(4px)';
+              if(meta.flip){x.scale(-1,1);}
+              x.drawImage(img,-dw*k/2,-hf*k,dw*k,dh*k);x.restore();
+              x.globalCompositeOperation='source-in';
+              const fade=x.createLinearGradient(0,24,0,H);
+              fade.addColorStop(0,'rgba(6,4,9,.9)');fade.addColorStop(.55,'rgba(6,4,9,.55)');fade.addColorStop(1,'rgba(6,4,9,0)');
+              x.fillStyle=fade;x.fillRect(0,0,W,H);
+              x.globalCompositeOperation='source-over';x.save();x.translate(tex._ox,24);x.scale(1,.24);
+              const contact=x.createRadialGradient(0,0,4,0,0,dw*k*.46);
+              contact.addColorStop(0,'rgba(6,4,9,.62)');contact.addColorStop(1,'rgba(9,6,12,0)');
+              x.fillStyle=contact;x.fillRect(-dw*k*.5,-dw*k*.5,dw*k,dw*k);x.restore();
+              standCache.set(img,tex);
+            }
+            const s=1/tex._k;
+            c.save();c.globalAlpha=alpha*stand.a;c.drawImage(tex,o.x-tex._ox*s,foot-24*s,tex.width*s,tex.height*s);c.restore();
+          }
+        }
       }
       const debris=(o.type==='m_c1sbone'&&o.x===1940&&o.y===4340)||(o.type==='m_sword_pile'&&o.x===1580&&o.y===4180)||(o.type==='m_bone_arch'&&o.x===1420&&o.y===6020);
       if(debris){
@@ -484,7 +522,7 @@
         x.fillStyle=fade;x.fillRect(0,0,640,320);shadowCache.set(img,tex);
       }
       const drift=Math.sin(now*.00072+o.x*.017+o.y*.011)*4*scale;
-      c.globalAlpha=alpha*.6;c.drawImage(tex,o.x-170*scale+drift,foot-24*scale,640*scale,320*scale);
+      c.globalAlpha=alpha*.85;c.drawImage(tex,o.x-170*scale+drift,foot-24*scale,640*scale,320*scale); // MAP-005: .6→.85, 소품 투사 그림자와 같은 농도
     }
     c.restore();
   }
