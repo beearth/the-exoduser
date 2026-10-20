@@ -1,3 +1,12 @@
+## 2026-10-21 EC5-01 — 5장 적 유형·원소 선택 순수 정책
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준·의존 | 최신main01051599, trace-enemies-ch5 8cd5c6c3 §4.1. main EC4-01의 장별 API/원본 oracle 형식 재사용, 미병합 EC4-03 불필요/merge0 |
+| 원본·범위 | G16633–16666/30978–31022, si21..25·31종/151·R8종/23·D .45. 원래 float64 CDF/최대12회 기각/fallback2, 난수 소비·guard·NOT_READY 보존. 새 policy/test/UID만, 실제 actor·Main/State/저장 연결0 |
+| 검증 | 신규24,493/0·원문1,990사례와 후속 호출, 직접 관련 선택 회귀 EC4 22,364/0·EC3 10,234/0·EC2 7,483/0 각1회. 정상 ERROR/WARNING/SKIP0. 결함4종741/2045/110/150실패 검출 후 정상 byte 복원 |
+| 보호·제출 | 기존3,126파일 중 CHANGELOG만 prepend, 공용/다른 담당/원본/저장/R0 변경0. [EC5-01 보고서](engine/orders/reports/ec5-01_REPORT.md), 원로그 ~/exoduser-wt/_out/ec5-01/. 매 Godot pgrep/30초 gate·각 격리명·override 종료0byte, 정상 훅·자기 branch push/remoteSHA/DONE 뒤 자기 worktree 제거 |
+
 ## 2026-10-20 BC2-07 shieldBash2 독립 wind/dash/contact 계산
 
 ## 2026-10-20 EC4-02 4장 catalog·23필드 초기 literal projection
