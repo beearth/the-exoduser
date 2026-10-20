@@ -1,3 +1,13 @@
+## 2026-10-20 EC2-04 2장 돌진·강타 전용 trigger 정책
+
+| id / 적용 위치 | 정확 계약·실제 검수 |
+|---|---|
+| 신규 범위 | native_ch2_charge_slam_policy.gd·test_ch2_charge_slam_policy.gd·자기UID2개. type30/32/39 전용 clock/진입/명령 사본만. 공용·다른 담당·기존 테스트·저장0줄. M29/type7/common sweep/slam/eProjAt 재구현0 |
+| 원본 | game.html39143–39163/39272–39285. 30 strict40<d<1200·path714+r·90/17/42,32 slam50·4P+추가P(d<80),39 direct30/default5·독립slam55·8P+추가e.el(d<100),100<d<120에서두Cdreset/상태overwrite |
+| 요청·원소 | eProjAt 요청1.3/.8/1.5 보존, Pbean원본실효1.2/ATK31→37·life×1.5는JSreference일뿐 신규Godot패킷생성아님. 소환굴undefined/명시null 보존·P0기본값0. 실제소비자필수/product_connected=false |
+| 실제 검수 | 신규30,307/0·oracle2,639·기존M29 fixture lock67.95/17/42/default5 재사용. 회귀10종 실패0·SKIP0. M29 ledger143/0·M30 4군/0, 의도된 missing-resource ERROR1은 원문·기대거절1로기록(숨김0). 나머지10suite ERROR0 |
+| 기준·보호 | fetch main0119f304가ce141573e후손, EC2-03미병합으로557eaff4의존. 원본byte동일. 새EXODUSER-ec2-04-Isolated-20261020·기존각상수, Godot전pgrep2이상30초대기·override최종0byte. [보고서](engine/orders/reports/ec2-04_REPORT.md)·원로그 ~/exoduser-wt/_out/ec2-04/ |
+
 ## 2026-10-20 EC2-03 type34/38 독장판 순수 명령·상태 정책
 
 | id / 적용 위치 | 정확 계약·실제 검수 |
