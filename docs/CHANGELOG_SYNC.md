@@ -1,3 +1,12 @@
+## 2026-10-21 MAP11-02 — arena StageRecipe·geometry/revision provider
+
+| 항목 | 구현·검수 경계 |
+|---|---|
+| 기준·ABI | main45be76e49 + 인수된1b b12bf9a1 merge048c5201. R1700/4Marker Entry·Boss·Exit·Return 유지, arena 전용 region0/namespace·identity/revision·legacy mw128/mh108/T40 계약. [소비자 인계/보고서](4.1맵디자인+설정/MAP11_STAGE_PROVIDER_20261021.md) 첫 표는 DEMO11-37/43용 |
+| 구현 | 새 StageRecipe Resource·analytic circle/solid·LOS/연속sweep·저작route 도달성 검증·runtime revision adapter. content_valid와 NOT_READY 분리, missing/중복/외부/막힌route/잘못된extent 거부. Main/State/World/factory/카메라/아트·기존preview·전투·저장 변경0 |
+| 검증 | 신규54/0·집중 malformed schema3/0 각1회, 최종ERROR/WARNING0. 첫 하니스 typed Array SCRIPT ERROR1 원문 보존·수정후해당실패만재실행. 직접 CPU질의30000회 벽시계37.282ms/3질의평균3.7282µs 벤치1회, 실제데모FPS주장0 |
+| 인계 | field4지역·일반flow·소비자제품연결은 미제공/미연결 명시. pgrep≥2/30초 gate·격리userdir·override0byte. 자기branch 정상push/remoteSHA/DONE뒤자기WT제거, R불변 |
+
 ## 2026-10-21 MAP11-01b — D05 원형 축소·바닥 조명 proof
 
 | 항목 | 구현·검수 경계 |
