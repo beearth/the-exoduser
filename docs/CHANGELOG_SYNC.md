@@ -1,3 +1,13 @@
+## 2026-10-20 CH1-06 si3 독립 구현·검수 / CH2 계약 BLOCKED
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 기준·의존 | 최신 main26c050a99 위에 승인 CH1-05 c13802c0 정상 의존 병합908a79d5. CH2 stage4/observeNative/장별 출력 보호 유지, Main·공용6·맵공유·CH2 파일 변경0 |
+| 원본·산출 | si3 exact selector/initMapObjects: tiles40000(38986/36/3/0/975), START4020/7420·gate5/exit7, holes14/1100·250/400/250/200; objects288/SHA bd2e3230…·Sprite287·collider52·PNG53 byte동일. lm3/mega0·lgMul1.25/lgDist640/scMul.90/rim.22 |
+| 검수 | 신규 Node8/0·실창Godot1622/0·START→EXIT189지점·8화면1920×1080. isW8502/canMv8502/LOS400 차이0. 앞 Node31/0, 맵28/9 기존유지; contracts5/0·encounter3/0·P3002298/0·P300343/0·CH1-01~0563/189/75/410/1243 모두실패0 |
+| 진단·BLOCKED | CH2 추가17/1: 소유 테스트156/158의 stage2/3 미지원 단정 갱신 승인 대기, 제안 patch만 보존·파일수정0. headless 단정1235/0에 custom_samplers ERROR2 별도보존, 실창 ERROR0. 전체 PASS 주장0 |
+| 시각·제출 | VISUAL FAIL: 반복 패치·보라 rim·바깥 검정/접지·조명 미연결. 독립 fixture scope, 적/보스/P3진행/Main전환 미연결. [보고서](engine/orders/reports/ch1-06_REPORT.md), ~/exoduser-wt/_out/ch1-06/. 자기branch push·remote SHA·DONE 후 자기worktree 제거 |
+
 ## 2026-10-20 CH1-06 선행 CH1-05 의존 통합 체크포인트
 
 | 항목 | 경계 |

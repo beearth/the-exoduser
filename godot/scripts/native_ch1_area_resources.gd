@@ -1,5 +1,6 @@
 extends RefCounted
-## CH1-04 standalone resource reader. Product map, resource owners and Main are untouched.
+## CH1-04/05/06 explicit standalone resource reader. Product map, resource owners and Main are untouched.
+const Stage3 = preload("res://port_modules/ch1_map_source/stage3_composition.gd")
 const Stage2 = preload("res://port_modules/ch1_map_source/stage2_composition.gd")
 const Contract = preload("res://port_modules/ch1_map_source/stage1_contract.gd")
 const SOURCE := "res://data/ch1_map_source/si1.json"
@@ -9,7 +10,9 @@ func read_resources(raw: Dictionary = {}, bundle: Dictionary = {}) -> Dictionary
  if raw.is_empty():
   raw = JSON.parse_string(FileAccess.get_file_as_string(SOURCE))
  if bundle.is_empty():
-  bundle = JSON.parse_string(FileAccess.get_file_as_string("res://data/ch1_map_source/si2_resources.json" if Contract.literal(raw.get("stage"),2) else RESOURCES))
+  bundle = JSON.parse_string(FileAccess.get_file_as_string("res://data/ch1_map_source/si3_resources.json" if Contract.literal(raw.get("stage"),3) else "res://data/ch1_map_source/si2_resources.json" if Contract.literal(raw.get("stage"),2) else RESOURCES))
+ if Contract.literal(raw.get("stage"),3):
+  return _read_stage3(raw,bundle)
  if Contract.literal(raw.get("stage"),2):
   return _read_stage2(raw,bundle)
  var errors: Array = []
@@ -74,3 +77,25 @@ func _read_stage2(raw: Dictionary,bundle: Dictionary) -> Dictionary:
   else:textures[target]=texture
  return {"ready":errors.is_empty(),"errors":errors,"raw":raw,"bundle":bundle,"textures":textures,
   "composition":composition,"scope":"si2_standalone_only","main_bound":false,"full_stage_ready":false}
+
+func _read_stage3(raw: Dictionary,bundle: Dictionary) -> Dictionary:
+ var composition: Dictionary=Stage3.assemble(raw,bundle)
+ if composition.status!="READY":return {"ready":false,"errors":[composition.reason]}
+ var textures: Dictionary={}
+ var errors: Array=[]
+ for a in bundle.assets:
+  if not a is Dictionary or not a.get("texture") is String:
+   errors.append("stage3_asset_record")
+   continue
+  var target: String=a.texture
+  if not target.begins_with("res://assets/map/ch1_si3/") or target.contains(".."):
+   errors.append("stage3_asset_scope:"+target)
+   continue
+  if not FileAccess.file_exists(target) or FileAccess.get_sha256(target)!=a.get("sha256"):
+   errors.append("stage3_asset_bytes_missing_or_changed:"+target)
+   continue
+  var texture:=load(target) as Texture2D
+  if texture==null:errors.append("stage3_texture_missing:"+target)
+  else:textures[target]=texture
+ return {"ready":errors.is_empty(),"errors":errors,"raw":raw,"bundle":bundle,"textures":textures,
+  "composition":composition,"scope":"si3_standalone_only","main_bound":false,"full_stage_ready":false}

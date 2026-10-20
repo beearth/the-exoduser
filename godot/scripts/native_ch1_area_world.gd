@@ -1,5 +1,5 @@
 extends Node2D
-## CH1-04 independent si1 preview. No extends World, Main/player, enemies, holes or transitions.
+## CH1-04/05/06 independent si1/si2/si3 previews. No extends World, Main/player, enemies, holes or transitions.
 const Resources = preload("res://scripts/native_ch1_area_resources.gd")
 const USERDIR := "EXODUSER-ch1-04-Isolated-20261020"
 @export var preview_active := true
@@ -24,18 +24,18 @@ func configure(source: Dictionary, resources: Dictionary) -> void:
  raw = source
  bundle = resources
  _configured = true
- if source.get("stage")==2:area_stage=2
+ if source.get("stage") in [2,3]:area_stage=int(source.stage)
 
 func _ready() -> void:
- if area_stage not in [1,2]:
+ if area_stage not in [1,2,3]:
   resource_errors=["unsupported_area_stage"]
   return
- var isolated_name: String="EXODUSER-ch1-05-Isolated-20261020" if area_stage==2 else USERDIR
+ var isolated_name: String="EXODUSER-ch1-06-Isolated-20261020" if area_stage==3 else "EXODUSER-ch1-05-Isolated-20261020" if area_stage==2 else USERDIR
  if ProjectSettings.get_setting("application/config/custom_user_dir_name","") != isolated_name or not ProjectSettings.get_setting("application/config/use_custom_user_dir",false):
   resource_errors = ["isolated_userdir_required"]
   return
- if area_stage==2 and not _configured:
-  raw=JSON.parse_string(FileAccess.get_file_as_string("res://data/ch1_map_source/si2.json"))
+ if area_stage in [2,3] and not _configured:
+  raw=JSON.parse_string(FileAccess.get_file_as_string("res://data/ch1_map_source/si%d.json" % area_stage))
  var result: Dictionary = Resources.new().read_resources(raw,bundle)
  resource_errors = result.errors
  if not result.ready:
@@ -44,7 +44,7 @@ func _ready() -> void:
  bundle = result.bundle
  textures = result.textures
  _analytic_colliders=bundle.colliders
- if area_stage==2:
+ if area_stage in [2,3]:
   composition_passes=result.composition.passes
   _analytic_colliders=[]
   for collider in bundle.colliders:
@@ -69,7 +69,7 @@ func _ready() -> void:
  camera.enabled = preview_active
  camera.zoom = Vector2.ONE
  actor.add_child(camera)
- if area_stage==2:_update_stage2_eyes()
+ if area_stage in [2,3]:_update_stage2_eyes()
  ready_for_fixture = true
  set_process(preview_active)
 
@@ -131,7 +131,7 @@ func _install_walls() -> void:
  # Props use exact source analytic ellipses/circles below, not polygon approximations.
 
 func _install_props() -> void:
- if area_stage==2:
+ if area_stage in [2,3]:
   _install_stage2_props()
   return
  var layers: Dictionary = {}
@@ -214,7 +214,7 @@ func move_fixture_to(target: Vector2) -> bool:
   if not can_move_xy(p.x,p.y,fixture_radius):
    return false
  actor.position = target
- if area_stage==2:_update_stage2_eyes()
+ if area_stage in [2,3]:_update_stage2_eyes()
  return true
 
 func route_to_exit() -> Array[Vector2]:

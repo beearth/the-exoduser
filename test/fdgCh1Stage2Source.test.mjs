@@ -44,7 +44,7 @@ test('new unmodified full initMapObjects observation pins 292 final objects, has
 test('P3 source budget and thirteen final holes remain exact, stage0 owners remain unbound',()=>{
  assert.equal(raw.spawn_holes_final.length,13);assert.equal(raw.spawn_holes_final.reduce((a,h)=>a+h.count,0),1000);assert.equal(raw.total_spawned,1000);assert.deepEqual(raw.region_totals,[250,300,250,200]);assert.deepEqual(raw.spawn_holes_final.slice(-2).map(h=>[h.x,h.y,h.room,h.count]),[[4020,5540,-1,50],[4020,4140,-1,50]]);
  assert.equal(raw.generation.random_draws,14);for(const k of ['main_bound','real_player_bound','spawn_holes_bound','region_progress_bound','transition_bound','stage0_hill','physical_prop_shapes'])assert.equal(bundle.scope[k],false);assert.equal(bundle.scope.stage0_baked_chunks,0);
- assert.throws(()=>buildStage0Snapshot(root,{stage:2}),/UNSUPPORTED_STAGE/);assert.throws(()=>buildAreaSnapshot(root,{stage:3}),/UNSUPPORTED_STAGE/);
+ assert.throws(()=>buildStage0Snapshot(root,{stage:2}),/UNSUPPORTED_STAGE/);assert.throws(()=>buildAreaSnapshot(root,{stage:5}),/UNSUPPORTED_STAGE/);
 });
 test('retired ID Set is preserved exactly, not a prefix filter; all 291 live views and 47 colliders respect it',()=>{
  const m=/const\s+_RETIRED_MAP_OBJECT_TYPES\s*=/.exec(source),n=parseExpressionAt(source,m.index+m[0].length,{ecmaVersion:'latest'});const expected=Array.from(vm.runInNewContext(source.slice(n.start,n.end)));assert.deepEqual(bundle.retired_types,expected);
@@ -66,6 +66,6 @@ test('source tile1 union and IEEE754 query carriers are lossless',()=>{
 });
 test('stage2 CLI writes only matching snapshot; later stages/shared map/mismatched output still reject',()=>{
  const dir=fs.mkdtempSync(path.join(fs.realpathSync(os.tmpdir()),'EXODUSER-ch1-05-Isolated-20261020-'));try{const out=path.join(dir,'si2.json'),tool=path.join(root,'godot/tools/export_ch1_area_source.mjs'),cli=(output,stage)=>spawnSync(process.execPath,[tool,root,output,'--stage',stage,'--seed','20261020'],{encoding:'utf8'});
- assert.equal(cli(out,'2').status,0);assert.equal(JSON.parse(fs.readFileSync(out)).stage,2);const h=sha(fs.readFileSync(out));assert.equal(cli(out,'3').status,1);assert.equal(sha(fs.readFileSync(out)),h);assert.equal(cli(path.join(root,'godot/data/map.json'),'2').status,1);assert.equal(cli(path.join(root,'godot/data/ch1_map_source/si1.json'),'2').status,1);
+ assert.equal(cli(out,'2').status,0);assert.equal(JSON.parse(fs.readFileSync(out)).stage,2);const h=sha(fs.readFileSync(out));assert.equal(cli(out,'5').status,1);assert.equal(sha(fs.readFileSync(out)),h);assert.equal(cli(path.join(root,'godot/data/map.json'),'2').status,1);assert.equal(cli(path.join(root,'godot/data/ch1_map_source/si1.json'),'2').status,1);
  }finally{fs.rmSync(dir,{recursive:true,force:true});}
 });

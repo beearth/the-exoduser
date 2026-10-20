@@ -72,7 +72,7 @@ func run() -> void:
   var reject: Dictionary=Composition.assemble(r,b)
   check(reject.status=="NOT_READY" and not reject.has("value"),"reject_"+key)
  var unsupported: Node2D=load("res://scripts/native_ch1_area_world.gd").new()
- unsupported.area_stage=3
+ unsupported.area_stage=5
  unsupported.preview_active=false
  root.add_child(unsupported)
  check(not unsupported.ready_for_fixture and unsupported.resource_errors==["unsupported_area_stage"],"unsupported_area_stage_never_falls_back_to_si1")
