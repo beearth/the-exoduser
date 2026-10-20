@@ -1,3 +1,14 @@
+## 2026-10-20 SV-SAVE-PRIMITIVE 격리 메모리 primitive 판단·7번 단위
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 기준·판단 | origin/main e556b617에 앞 단위 없어 승인 RESTORE-FLOW000e26d1에서 분기. --no-checkout+no-cone sparse 약20MiB. 자기 소유 MemoryFixture만으로 분리 가능해 그 범위만 구현, 제품쓰기 readiness는항상HOLD |
+| 신규 파일 | source_save_primitive.gd·test_native_save_primitive.gd·sv_save_primitive_oracle.cjs. 직렬화된 bytes를 가상 token에 atomic/direct 메모리 연산. host backend/경로/serializer/서버/Callable 주입 없음. 상태별 ACK는공급 응답/clock만 계산 |
+| 원본 근거 | server95–116 wx→write/close→rename·자기temp finally, NW129–139 직접write·예외500 차이. game3580–3585 cloud 현재charId 비교·63932–63940 local j.ok/폴백·64089–64092 web 성공시각. X10 catch scope의 setter0/시각미갱신을 fixture 재현, 오류타입 자체는정적추론·원문수정0 |
+| 보호·HOLD | 실제First 저장폴더 접근0·공용6/형식/원본4/기존모듈 변경0. product_write_authorized=false·network/hostIO0. 실제namespace/path/codec/SDK/LS/서버/State/Main/lifecycle연결·내구성 미구현HOLD, fixture 통과를제품저장PASS로승격0 |
+| 검수 | 신규10388/실패0(쓰기29·가상경쟁4·cloud21/local48/web2 ACK), 기존SV-CONTRACT3023/0·선행FLOW819262/0. 최종종별exit0·ERROR/SCRIPT ERROR/경고0. 최초exit0이나RESULT없는파싱오류는PASS아님·예약어수정·원로그보존 |
+| 제출 | Godot전역2이상30초대기·자기순차1개. 신규EXODUSER-sv-save-primitive-Isolated-20261020·회귀각상수·종료override0byte. 정상훅·자기branch push/원격일치/DONE 뒤 자기worktree제거. [보고서](engine/orders/reports/sv-save-primitive_REPORT.md), ~/exoduser-wt/_out/sv-save-primitive/ |
+
 ## 2026-10-20 SV-RESTORE-FLOW 복원 순서·부분 실패 계산 6번 단위
 
 | id / 적용 위치 | 현재 정확 계약 |
