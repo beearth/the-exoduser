@@ -1,3 +1,16 @@
+## 2026-10-20 SND-08 독립 원문 믹스·합성·레시피 모델
+
+| id / 항목 | 현재 계약 |
+|---|---|
+| 기준 / 의존 | 최신main e556b617의 game.html12408–12545/12756–12776/12827–12840. main미포함 SND-07 a0c67301 끝 분기(main은이미ancestor). 자기no-checkout/sparseWT |
+| 신규 범위 | native_sound_mix.gd/synthesis.gd/cue_recipes.gd·새test2/graph대역/helper generator2/fixture2 신규10파일. **원문 모델/메모리 생성버퍼 범위이며 실제Godot DSP출력adapter 미구현/HOLD**, 공용/State/기존제품·test·HTML·에셋0줄. 미디어파일생성/변환/복사0 |
+| mix / 합성 | mbus cache current gain·EQ6000/−9·3000/Q.8/−5·250/+4·master−6/knee30/ratio2/.015/.35 및subbus원값. Tone/Noise/Dist/FM20Hz·Sub8Hz floor,원RNG/Float32/automation/start-stop/cleanup보존. sourceGraph READY와native_parity UNVERIFIED를구분 |
+| 순차 레시피 | click/pickup→potion0/55/110/170ms→forge/crystal65ms를각소단위검수. crystal equip_rare/.38/1.12/true 요청은실제sample미연결. 정상중첩보존·명시owner취소oldcallback무효·dispatch THREW prefix보존 |
+| 실측 | 최종mix5728/0·26사례55단계/19477leaf불일치0, cue133/0·11사례25단계/854leaf불일치0. noise/curve고유8배열3421Float32 byte동일(전체출력PCM검증아님). 초기Object.disconnect충돌/테스트비교식실패보존·최종stderr비어있음 |
+| 회귀 / 보존 | contracts5그룹/0·SND01~07 1194/0·687/0·606/0·2435/0·1308/0·2400/0·2004/0·웹3파일7pass/0fail. 기존tracked game.html/godot1337파일byte불변·cache1006동일byte/import0·지정격리/기존상수·override후0byte·Godot2이상30초대기 |
+| 미완 / 다음 경계 | 실제native EQ/Q/knee/ramp/oscillator/FM adapter·청감/출력PCM/PC미완. 다음SND09 Main owner/configure/exit/postStage BGM2callback필요하므로미착수·필요위치와후보줄만보고. [보고서](engine/orders/reports/snd-08_REPORT.md) |
+| 제출 / 정리 | 정상훅·자기branch push/원격일치→DONE→자기WT제거. branch/원로그/보고서사본보존, main push/force/add-A0 |
+
 ## 2026-10-20 SND-07 독립 sample backend·수명·공간음
 
 | id / 항목 | 현재 계약 |
