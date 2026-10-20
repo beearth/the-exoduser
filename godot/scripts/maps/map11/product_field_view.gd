@@ -14,7 +14,6 @@ func _ready() -> void:
  _build_forest("BACK",850,690,1320,Color(.28,.31,.33))
  _build_forest("MID",350,510,1030,Color(.52,.49,.49))
  _build_forest("FRONT",60,620,720,Color(.70,.64,.61))
- var heart_light:=PointLight2D.new();heart_light.name="HeartAltarLocalLight";heart_light.texture=_contact;heart_light.position=Vector2(-250,-2440);heart_light.texture_scale=6.0;heart_light.color=Color(.65,.12,.075);heart_light.energy=.65;heart_light.shadow_enabled=false;add_child(heart_light)
  set_process(false);set_physics_process(false)
  set_process_input(false);set_process_unhandled_input(false);set_process_unhandled_key_input(false)
 func _build_mass() -> void:

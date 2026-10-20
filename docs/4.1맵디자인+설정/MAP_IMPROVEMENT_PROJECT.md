@@ -1,3 +1,5 @@
+> 2026-10-21 **MAP11-17 조명 현행**: [설계서 §14](MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#14-map11-17--조명-룩-패스-2026-10-21). 기준 MAP11-15 `1f797a8b`, MAP11-16/16b 미사용. MAP11 전용 CanvasModulate/광원·접지·외곽 안개가 현행이며 아래 MAP11-15의 전면 안개·광원 수치는 당시 이력이다. 1080p p95 필드7.857ms/아레나7.580ms, **VISUAL VERDICT: RETOUCH**. 독립 프리뷰와 웹 본편은 제품과 구분한다.
+
 # 맵 개선 프로젝트 (MAP IMPROVEMENT PROJECT) — 맵 팀장 운영 문서
 
 > 총괄 연결: [프로젝트 관리](../0마스터플랜/PROJECT_MANAGEMENT_MASTER.md)의 MAP 행과 공용 렌더 변경 순서를 함께 관리한다. **신규 이미지 생성은 2026-09-30 최신 사용자 지시인 MagicLight Toolbox 우선**을 적용한다. 물체는 Seedream 우선 시험, 실제 포인트 부족 시 Higgsfield GPT 이미지 모델로 전환한다. 아래 결정 기록의 Higgsfield 우선 표기는 이전 이력이며 이 안내로 대체된다.

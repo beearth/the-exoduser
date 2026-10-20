@@ -30,6 +30,7 @@ var _fade: ColorRect
 var _fade_tween: Tween
 var _actor: Node2D
 var _fog_pass: Node
+var lighting_look: Node2D
 func _physics_process(delta: float) -> void:
  # Resolve the product actor once after Main setup, then use cached references.
  if not is_instance_valid(_actor):
@@ -37,6 +38,9 @@ func _physics_process(delta: float) -> void:
   if is_instance_valid(_actor):
    _fog_pass=preload("res://scripts/maps/map11/fog_pass.gd").new();add_child(_fog_pass)
    _fog_pass.configure(get_parent().get_parent())
+   lighting_look=preload("res://scripts/maps/map11/product_lighting.gd").new()
+   add_child(lighting_look)
+   lighting_look.configure_product(self,get_parent().get_parent())
    get_parent().get_parent().camera.zoom=Vector2.ONE*.70
    get_parent().get_parent().camera.offset=Vector2(0,-180)
  if not is_instance_valid(_actor):return

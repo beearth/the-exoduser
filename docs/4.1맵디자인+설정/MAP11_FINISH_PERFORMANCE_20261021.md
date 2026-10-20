@@ -1,3 +1,5 @@
+> 2026-10-21 **MAP11-17 조명 현행**: [설계서 §14](MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#14-map11-17--조명-룩-패스-2026-10-21). 기준 MAP11-15 `1f797a8b`, MAP11-16/16b 미사용. MAP11 전용 CanvasModulate/광원·접지·외곽 안개가 현행이며 아래 MAP11-15의 전면 안개·광원 수치는 당시 이력이다. 1080p p95 필드7.857ms/아레나7.580ms, **VISUAL VERDICT: RETOUCH**. 독립 프리뷰와 웹 본편은 제품과 구분한다.
+
 # MAP11-15 — 보스룸 벽가 마감·맵 렌더 비용
 
 기반 `db9219b46644219f6327fd57c0f2bc3762d82cc2`, 소유 branch `codex/map11-15-20261021`. 맥북총괄의 MAP11-14 판정은 랜드마크 PASS / 보스룸 경계 RETOUCH. 제품 Main의 표시만 수정한다. provider/recipe/Marker/충돌 R1700/region/적/피해/Q·E/저장 writer 변경0. 공통 NativeScreenLighting 소스와 독립 arena/field 프리뷰는 변경0.
