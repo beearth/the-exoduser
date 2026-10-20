@@ -291,12 +291,32 @@ func apply_native_hurte_hit_feel(owner: Node, opt_shake: float) -> Dictionary:
 		return {"applied": false, "reason": "actual_feel_g_owner_not_current"}
 	_txt_per_frame += 1 # 42397
 	var over_budget: bool = _txt_per_frame > SRC_TXT_BUDGET # 42398
+	# 42415: G._flashCol='#ffffff'; G._flashT=0.08 (화면 플래시 — 소비자 55113, P2-001b).
+	_g["_flashCol"] = "#ffffff"
+	_g["_flashT"] = 0.08
 	if not over_budget: # 42416
 		if not (_feel_num(_g.get("_noHitStopT")) > 0.0):
 			_g["hitStop"] = maxf(_feel_num(_g.get("hitStop")), 5.0)
 		var shake_n: float = minf(4.0, 12.0 - float(_imp_per_frame))
 		_g["shake"] = maxf(_feel_num(_g.get("shake")), shake_n * opt_shake / 100.0) # shake() 19924
 	return {"applied": true, "over_budget": over_budget, "shake": _g.get("shake", 0)}
+
+# P2-001b — 25415: _addImpact 진입의 _impPerFrame++ (실카운트). noFlash 인자는
+# 호출부(42418)가 증가 전 값으로 계산하므로 pre/post 둘 다 반환한다.
+func increment_native_impact_counter(owner: Node) -> Dictionary:
+	if not _feel_owner_current(owner):
+		return {"applied": false, "reason": "actual_feel_g_owner_not_current"}
+	var pre: int = _imp_per_frame
+	_imp_per_frame += 1
+	return {"applied": true, "pre": pre, "post": _imp_per_frame}
+
+# P2-001b — 55113: 화면 플래시 감쇠 `G._flashT-=_dtSp` (렌더 프레임마다, 소비자 측).
+func apply_native_screen_flash_decay(owner: Node, dt: float) -> Dictionary:
+	if not _feel_owner_current(owner) or not is_finite(dt) or dt <= 0.0:
+		return {"applied": false, "reason": "actual_feel_g_owner_not_current"}
+	if _feel_num(_g.get("_flashT")) > 0.0:
+		_g["_flashT"] = _feel_num(_g["_flashT"]) - dt
+	return {"applied": true, "flash_t": _g.get("_flashT", 0)}
 
 # updateCrescents 19838~19840: step3 → G.hitStop=max(,6)+shake(8), 그 외 G.hitStop=max(,3).
 func apply_native_crescent_hit_feel(owner: Node, step: int, opt_shake: float) -> Dictionary:

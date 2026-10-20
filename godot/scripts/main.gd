@@ -856,14 +856,56 @@ func _process(_delta: float) -> void:
 		_q_sprite.global_position=player.global_position
 		_q_canvas.position=Vector2(576,576)-player.global_position
 		_q_canvas.queue_redraw()
-	# P2-001a: 렌더 셰이크 소비자 (51752): sx/sy=(rand-.5)*G.shake*2 — 카메라 픽셀
-	# 오프셋, 렌더 프레임마다 (시각 전용 RNG — 원본 Math.random과 동일하게 비provider).
-	if is_instance_valid(camera) and is_instance_valid(source_state):
-		var feel_g: Variant = source_state.read_current_g()
-		var shake_value: float = 0.0
-		if feel_g is Dictionary and (feel_g.get("shake") is int or feel_g.get("shake") is float) and is_finite(float(feel_g["shake"])):
-			shake_value = float(feel_g["shake"])
-		camera.offset = Vector2((randf() - 0.5) * shake_value * 2.0, (randf() - 0.5) * shake_value * 2.0) if shake_value > 0.0 else Vector2.ZERO
+	# P2-001b: 셰이크 소비자(51752) 단일화 — 기존에는 여기(main)와 hit-fx 어댑터가
+	# camera.offset을 서로 덮어써 G.shake 적용이 무효였음(P2-001a 결함). G.shake
+	# 공급자를 어댑터에 1회 바인딩하고, 오프셋 작성자는 어댑터 하나로 통일한다.
+	if not _native_g_shake_bound and is_instance_valid(world):
+		var fx: Variant = world.get("_native_hit_fx")
+		if is_instance_valid(fx) and fx.has_method("set_native_world_shake_supplier"):
+			fx.set_native_world_shake_supplier(Callable(self, "_read_native_g_shake"))
+			_native_g_shake_bound = true
+	# P2-001b: 화면 플래시 소비자 (55113) — 전면 오버레이 alpha=min(.55, _flashT×.18),
+	# 색 _flashCol, 렌더 프레임마다 _flashT-=dt (state owner 감쇠 API).
+	_update_native_screen_flash()
+
+func _read_native_g_shake() -> float:
+	if not is_instance_valid(source_state):
+		return 0.0
+	var g: Variant = source_state.read_current_g()
+	if g is Dictionary and (g.get("shake") is int or g.get("shake") is float) and is_finite(float(g["shake"])):
+		return float(g["shake"])
+	return 0.0
+
+func _update_native_screen_flash() -> void:
+	if not is_instance_valid(source_state):
+		return
+	if _native_flash_rect == null:
+		var layer := CanvasLayer.new()
+		layer.name = "NativeScreenFlash"
+		layer.layer = 90
+		_native_flash_rect = ColorRect.new()
+		_native_flash_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_native_flash_rect.color = Color(1, 1, 1, 0)
+		layer.add_child(_native_flash_rect)
+		add_child(layer)
+	_native_flash_rect.size = get_viewport().get_visible_rect().size
+	var g: Variant = source_state.read_current_g()
+	var flash_t: float = 0.0
+	var flash_col := "#ffffff"
+	if g is Dictionary:
+		if (g.get("_flashT") is int or g.get("_flashT") is float) and is_finite(float(g.get("_flashT"))):
+			flash_t = float(g["_flashT"])
+		if g.get("_flashCol") is String:
+			flash_col = str(g["_flashCol"])
+	if flash_t > 0.0:
+		var color := Color(flash_col)
+		color.a = minf(0.55, flash_t * 0.18)
+		_native_flash_rect.color = color
+		if is_instance_valid(world):
+			var context: Dictionary = world.get_native_projectile_fx_context()
+			source_state.apply_native_screen_flash_decay(self, float(context.get("dt_sp", 1.0)))
+	else:
+		_native_flash_rect.color = Color(1, 1, 1, 0)
 
 func _physics_process(_delta: float) -> void:
 	if not get_tree().paused and is_instance_valid(player) and is_instance_valid(camera):
@@ -895,6 +937,73 @@ func _decay_native_hit_feel() -> void:
 		return
 	var context: Dictionary = world.get_native_projectile_fx_context()
 	source_state.apply_native_update_feel_decay(self, float(context.get("dt_sp", 0.0)))
+
+var _native_g_shake_bound := false
+var _native_flash_rect: ColorRect
+
+# P2-001b: OPT.parts/OPT.deathFx — 실제 현재 OPT owner (기본 parts 80, deathFx true — 6311).
+func read_native_feel_opt_parts() -> Dictionary:
+	var options: Variant = source_initialization_services.read_current_options() if is_instance_valid(source_initialization_services) else null
+	if not options is Dictionary or not (options.get("parts") is int or options.get("parts") is float) \
+			or not is_finite(float(options["parts"])):
+		return {"ready": false, "reason": "actual_current_OPT_parts_missing"}
+	return {"ready": true, "value": float(options["parts"])}
+
+func read_native_feel_opt_death_fx() -> Dictionary:
+	var options: Variant = source_initialization_services.read_current_options() if is_instance_valid(source_initialization_services) else null
+	if not options is Dictionary or not options.get("deathFx") is bool:
+		return {"ready": false, "reason": "actual_current_OPT_deathFx_missing"}
+	return {"ready": true, "value": options["deathFx"] == true}
+
+# P2-001b: hurtE 42399~42411 피/스플래시 — OPT.parts owner 경유로 hit-fx 어댑터에 전달.
+func emit_native_hurte_hit_blood(x: float, y: float, enemy_color: String, dmg: int,
+		has_ang: bool, ang: float) -> Dictionary:
+	var parts: Dictionary = read_native_feel_opt_parts()
+	if parts.get("ready") != true:
+		return {"applied": false, "reason": parts.get("reason")}
+	var fx: Variant = world.get("_native_hit_fx") if is_instance_valid(world) else null
+	if not is_instance_valid(fx) or not fx.has_method("emit_native_hurte_hit_blood"):
+		return {"applied": false, "reason": "actual_hit_fx_adapter_missing"}
+	fx.emit_native_hurte_hit_blood(Vector2(x, y), Color(enemy_color), dmg, has_ang, ang, float(parts["value"]))
+	return {"applied": true}
+
+# P2-001b: hurtE 42417~42419 — _addImpact(25414). _impPerFrame 실카운트는 state owner,
+# noFlash(42418)는 증가 전 값 >3, _lite(25417)는 증가 후 값 >2 (비보스).
+func emit_native_hurte_impact(x: float, y: float, ang: float) -> Dictionary:
+	if not is_instance_valid(source_state):
+		return {"applied": false, "reason": "actual_state_owner_missing"}
+	var counter: Dictionary = source_state.increment_native_impact_counter(self)
+	if counter.get("applied") != true:
+		return {"applied": false, "reason": counter.get("reason")}
+	var adapter: Variant = world.get("_native_death_fx") if is_instance_valid(world) else null
+	if not is_instance_valid(adapter) or not adapter.has_method("spawn_native_impact"):
+		return {"applied": false, "reason": "actual_death_fx_adapter_missing"}
+	adapter.spawn_native_impact(x, y, ang, int(counter["post"]) > 2, int(counter["pre"]) > 3)
+	return {"applied": true, "imp_per_frame": counter["post"]}
+
+# P2-001b: 처치 전반부 시각 — deathFX(42704~)+대형 버스트(42720)+시체(42722)+핏자국.
+func spawn_native_death_fx_front(enemy: Node2D, ang: float, dmg: int, radius: float,
+		mhp: float, enemy_color: String) -> Dictionary:
+	var death_fx: Dictionary = read_native_feel_opt_death_fx()
+	if death_fx.get("ready") != true:
+		return {"applied": false, "reason": death_fx.get("reason")}
+	var adapter: Variant = world.get("_native_death_fx") if is_instance_valid(world) else null
+	if not is_instance_valid(adapter) or not adapter.has_method("spawn_native_death_front"):
+		return {"applied": false, "reason": "actual_death_fx_adapter_missing"}
+	adapter.spawn_native_death_front(enemy, ang, dmg, radius, mhp, enemy_color, bool(death_fx["value"]))
+	return {"applied": true}
+
+# P2-001b: 처치 후반부 시각 — 고어(42726~31, provider 롤 값 재사용)+데드 임팩트(42732).
+func spawn_native_death_fx_tail(x: float, y: float, radius: float, roll_pick: float,
+		roll_index: float, roll_large: Variant) -> Dictionary:
+	var death_fx: Dictionary = read_native_feel_opt_death_fx()
+	if death_fx.get("ready") != true:
+		return {"applied": false, "reason": death_fx.get("reason")}
+	var adapter: Variant = world.get("_native_death_fx") if is_instance_valid(world) else null
+	if not is_instance_valid(adapter) or not adapter.has_method("spawn_native_gore_and_death_impact"):
+		return {"applied": false, "reason": "actual_death_fx_adapter_missing"}
+	adapter.spawn_native_gore_and_death_impact(x, y, radius, roll_pick, roll_index, roll_large, bool(death_fx["value"]))
+	return {"applied": true}
 
 # P2-001a: shake(19924)의 OPT.shake — 실제 현재 OPT owner에서만 읽는다.
 func read_native_feel_opt_shake() -> Dictionary:

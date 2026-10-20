@@ -393,8 +393,9 @@ func execute(main: Node, world: Node2D, enemy: Node, base_damage: int, ang: floa
 		if not show is Dictionary or float(dmg) > _js_num(show.get("dmg")):
 			if not _g_writes(42388, [{"field": "_dmgPeakShow", "value": {"x": enemy.global_position.x, "y": enemy.global_position.y, "dmg": dmg, "crit": is_crit}}]):
 				return _result_now()
-		# 42399~42411 피 파티클·42415 화면 플래시·42417~19 임팩트: 미이식 (시각 전용 RNG 비소비).
-		_log(42399, "unported_skip:hit_particles_screen_flash_impact", {})
+		# 42399~42411 피/스플래시, 42415 화면 플래시, 42417~19 임팩트: P2-001b 이식 —
+		# 아래 feel(42397/98/415/416) 호출 뒤 over_budget 게이트로 수행 (파티클 내부
+		# RNG는 시각 전용 world 공유 샘플러 — provider 추적 롤에 비노출).
 		# 42412 히트 플래시 / 42414 피격 경직 (idle에서만, elite0 → 8f).
 		# 42414의 e.s는 42382 즉시반격(recover→idle)이 적용된 뒤의 현재 값이다 —
 		# 전용 적(P1-002.F)은 recover 상태를 실제로 가지므로 스냅샷이 아닌 owner의
@@ -410,6 +411,21 @@ func execute(main: Node, world: Node2D, enemy: Node, base_damage: int, ang: floa
 		if feel.get("applied") != true:
 			return _halt(42416, "hit_feel_owner_refused:" + str(feel.get("reason")))
 		_log(42416, "hit_feel", {"over_budget": feel.get("over_budget"), "shake": feel.get("shake")})
+		if feel.get("over_budget") != true: # 42398 게이트 (42396 _quiet=false 고정)
+			var blood: Dictionary = _main.emit_native_hurte_hit_blood(_enemy.global_position.x,
+				_enemy.global_position.y,
+				str((_enemy.data.get("native_final", {}) as Dictionary).get("col", "#cc4444")),
+				dmg, true, ang)
+			if blood.get("applied") != true:
+				return _halt(42399, "hit_blood_owner_refused:" + str(blood.get("reason")))
+			_log(42399, "hit_blood", {"dmg": dmg})
+			# 42417~42419: _isMagicDmg=false 고정 — kiSlash는 opts.noImpact로 생략(원문).
+			if opts.get("noImpact") != true:
+				var impact: Dictionary = _main.emit_native_hurte_impact(_enemy.global_position.x,
+					_enemy.global_position.y, ang)
+				if impact.get("applied") != true:
+					return _halt(42417, "hit_impact_owner_refused:" + str(impact.get("reason")))
+				_log(42417, "hit_impact", {"imp_per_frame": impact.get("imp_per_frame")})
 		# 42421~42435 OnHit DoT 어픽스 (0 확인).
 		for dot_affix in ["poisonDot", "fireDot", "iceDot", "lightChain", "darkCurse", "chainTarget"]:
 			var dv: Variant = _affix(dot_affix, 42421)
@@ -533,7 +549,16 @@ func _kill_pipeline(fields: Dictionary, view: Dictionary, passives: Dictionary, 
 	if not _g_writes(42702, [{"field": "kills", "value": kills}, {"field": "_stageKills", "value": stage_kills}]):
 		return false
 	_log(42702, "kill_core", {"kills": kills, "stage_kills": stage_kills, "unported": ["atkTicketRelease", "_regKill", "_petOnKill"]})
-	# 42704~42712 deathFX/처치 히트스톱: 미이식 (enemy.gd 자체 사망 연출만).
+	# 42704~42711 deathFX + 42720 대형 버스트 + 42722 시체 + 핏자국: P2-001b 이식
+	# (사망 사운드는 sfx/death 에셋 미복사 — 어댑터가 목록/카운터 기록). 42712 처치
+	# 히트스톱: 소비자 32585 비활성(원본).
+	var front: Dictionary = _main.spawn_native_death_fx_front(_enemy, ang, dmg,
+		float(fields["radius"]), float(fields["mhp"]),
+		str((_enemy.data.get("native_final", {}) as Dictionary).get("col", "#cc4444")))
+	if front.get("applied") != true:
+		_halt(42704, "death_fx_owner_refused:" + str(front.get("reason")))
+		return false
+	_log(42704, "death_fx_front", {"radius": fields["radius"]})
 	# ── 42714~42718: 콤보 ──
 	var combo: int = int(_js_num(g.get("combo"))) + 1
 	var combo_timer: int = mini(1200, int(_js_num(g.get("comboTimer"))) + 60)
@@ -550,8 +575,15 @@ func _kill_pipeline(fields: Dictionary, view: Dictionary, passives: Dictionary, 
 	if fields["ib"] == true or float(fields["radius"]) >= 18.0:
 		gore_large = _rand(42731, "gore_large_extra")
 		if gore_large == null: return false
-	_log(42729, "gore_rolls", {"common_or_rare": gore_pick, "index": gore_index, "large": gore_large, "visual": "UNPORTED"})
-	# 42732 사망 임팩트: 미이식. 42733 _fromHole: 부재(undefined!=null=false) 단락.
+	_log(42729, "gore_rolls", {"common_or_rare": gore_pick, "index": gore_index, "large": gore_large})
+	# 42726~42732: 고어 시각(이미 소비한 위 provider 롤 값 그대로 사용 — 추가 소비 없음)
+	# + 사망 임팩트. 42733 _fromHole: 부재(undefined!=null=false) 단락.
+	var tail: Dictionary = _main.spawn_native_death_fx_tail(_enemy.global_position.x,
+		_enemy.global_position.y, float(fields["radius"]), float(gore_pick), float(gore_index), gore_large)
+	if tail.get("applied") != true:
+		_halt(42732, "death_fx_owner_refused:" + str(tail.get("reason")))
+		return false
+	_log(42732, "death_fx_tail", {})
 	# 42737~42745 문지기: 단락. 42747~42754 잔해: elite0 → _debC=0 단락(RNG 미소비).
 	# ── 42756~42762: 킬 체인 ──
 	var chain_count: int = int(_js_num(g.get("_chainCnt"))) + 1

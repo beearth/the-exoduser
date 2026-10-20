@@ -163,9 +163,10 @@ static func apply_death_write(enemy: Node) -> Dictionary:
 	enemy.set("velocity", Vector2.ZERO)
 	enemy.set("collision_layer", 0)
 	enemy.set("collision_mask", 0)
+	# P2-001b: 원본은 사망 즉시 본체 렌더 제외 — 시체가 대체 (위 enemy.gd 주석과 동일).
 	var body: Variant = enemy.get("_body")
 	if is_instance_valid(body):
-		body.modulate.a = 0.5
+		body.visible = false
 	var walk: Variant = enemy.get("_walk")
 	if is_instance_valid(walk):
 		walk.visible = false

@@ -16,6 +16,7 @@ const ENEMY_FACTORY = preload("res://scripts/enemy_factory.gd")
 const NATIVE_WORLD_PHASE = preload("res://scripts/native_world_phase.gd")
 const NATIVE_BIRTH_PHASE = preload("res://scripts/native_projectile_birth_phase.gd")
 const NATIVE_HIT_FX = preload("res://scripts/native_projectile_hit_fx.gd")
+const NATIVE_DEATH_FX = preload("res://scripts/native_death_fx_adapter.gd")
 const NATIVE_FLOATING_TEXT = preload("res://scripts/native_floating_text_adapter.gd")
 const NATIVE_GROUND_SURFACE = preload("res://scripts/native_ground_surface_adapter.gd")
 const MAP_FILE = "res://data/map.json"
@@ -807,6 +808,7 @@ var _native_last_ticks = 1.0
 var _native_fx_hi_fps = false
 var _native_hit_fx: Node2D
 var _native_floating_text: Node2D
+var _native_death_fx: Node2D
 var _native_ground_surface: Node2D
 var _native_fx_external_refs: Array[WeakRef] = []
 var _native_projectile_emitter: Node
@@ -940,6 +942,15 @@ func _ready() -> void:
 	birth_phase.name = "NativeProjectileBirthPhase"
 	birth_phase.configure(self)
 	add_child(birth_phase)
+	# P2-001b: 사망 연출·피격 임팩트 어댑터 (핏자국/시체/고어/데드임팩트/death_blood/임팩트).
+	_native_death_fx = NATIVE_DEATH_FX.new()
+	_native_death_fx.name = "NativeDeathFx"
+	add_child(_native_death_fx)
+	if not _native_death_fx.configure(self):
+		_native_startup_error = "native_death_fx_configuration_rejected"
+		_native_death_fx.free()
+		_native_death_fx = null
+		return
 	map_data = JSON.parse_string(FileAccess.get_file_as_string(MAP_FILE))
 	_tile_size = float(map_data["tile_size"])
 	_native_ground_surface = NATIVE_GROUND_SURFACE.new()

@@ -177,6 +177,39 @@ func emit_source_particle(request: Dictionary) -> bool:
 	_metrics.literal_particle_requests += 1
 	return _pool_part(origin, movement, color, size, life, context, kind, float(rotation), float(gravity), is_skill, str(request.get("render_owner","")))
 
+# P2-001b — hurtE 42399~42411: 피격 피 파티클 + 피 스플래시 (수치·색 원문 그대로).
+# 호출측(main)이 OPT.parts(기본 80)와 _overBudget 게이트를 공급한다 (42396 _quiet는
+# weapon/kiSlash opts에 해당 키 없음 → false 고정, 42398 게이트는 state 카운터 소유).
+const HURTE_BLOOD_COLORS: Array[String] = ["#aa0000", "#880000", "#cc1111", "#660000"] # 42403
+func emit_native_hurte_hit_blood(origin: Vector2, enemy_color: Color, dmg: int,
+		has_ang: bool, ang: float, parts_percent: float) -> void:
+	if not _configured or not origin.is_finite() or not is_finite(parts_percent):
+		return
+	var context = _context()
+	if context.is_empty():
+		return
+	# 42399 addParts(e.x,e.y,e.col, min(~~(dmg/3×OPT.parts/100), 8)) — addParts 내부 ×0.6/RNG는 emit_parts.
+	emit_parts(origin, enemy_color, mini(int(float(dmg) / 3.0 * parts_percent / 100.0), 8))
+	# 42401~42411 피 스플래시 — ang 있을 때만, _bN=min(12, ~~(2+dmg×0.04)×parts/100).
+	if not has_ang:
+		return
+	var splash_count: int = mini(12, int((2.0 + float(dmg) * 0.04) * parts_percent / 100.0))
+	for i in range(splash_count):
+		var ba: float = ang + (_unit() - 0.5) * 0.8
+		var bs: float = 1.5 + _unit() * 3.0 + float(dmg) * 0.02
+		_pool_part(origin + Vector2((_unit() - 0.5) * 6.0, (_unit() - 0.5) * 6.0),
+			Vector2(cos(ba) * bs, sin(ba) * bs - _unit() * 1.5),
+			Color(HURTE_BLOOD_COLORS[clampi(int(_unit() * 4.0), 0, 3)]),
+			1.5 + _unit() * 2.5, 12.0 + _unit() * 10.0, context, 0, 0.0, 0.12, false,
+			"hurte_blood_splash")
+
+# P2-001b — 51752 셰이크 소비자 단일화: G.shake(원본 owner, P2-001a) 공급자를 받아
+# 이 어댑터의 스코프 셰이크와 max 합성해 카메라 오프셋 1곳에서만 쓴다
+# (이전에는 main._process와 이 어댑터가 서로 offset을 덮어썼음 — P2-001a 결함 수정).
+var _world_shake_supplier: Callable = Callable()
+func set_native_world_shake_supplier(supplier: Callable) -> void:
+	_world_shake_supplier = supplier
+
 func emit_shake(amount: float) -> void:
 	var context = _context()
 	if context.is_empty() or not is_finite(amount) or amount < 0.0:
@@ -423,9 +456,16 @@ func _process(_delta: float) -> void:
 		if is_instance_valid(_camera):
 			_camera_base_offset = _camera.offset
 	if is_instance_valid(_camera):
+		# P2-001b: G.shake(51752 소비자)와 스코프 셰이크를 max 합성 — 카메라 오프셋 단일 작성자.
+		var world_shake: float = 0.0
+		if _world_shake_supplier.is_valid():
+			var supplied: Variant = _world_shake_supplier.call()
+			if (supplied is int or supplied is float) and is_finite(float(supplied)) and float(supplied) > 0.0:
+				world_shake = float(supplied)
+		var effective: float = maxf(_shake, world_shake)
 		var offset = Vector2.ZERO
-		if _shake > 0.0:
-			offset = Vector2((_unit() - 0.5) * _shake * 2.0, (_unit() - 0.5) * _shake * 2.0)
+		if effective > 0.0:
+			offset = Vector2((_unit() - 0.5) * effective * 2.0, (_unit() - 0.5) * effective * 2.0)
 		_camera.offset = _camera_base_offset + offset
 	if is_instance_valid(_flash):
 		_flash.size = get_viewport_rect().size

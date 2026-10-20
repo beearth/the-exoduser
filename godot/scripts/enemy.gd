@@ -351,8 +351,11 @@ func apply_native_normal_enemy_death_write() -> Dictionary:
 	velocity = Vector2.ZERO
 	collision_layer = 0
 	collision_mask = 0
+	# P2-001b: 원본은 사망 즉시 본체 렌더 제외(drawEn alive 게이트) — 시체(_addCorpse)가
+	# 대체한다. 기존 '어두운 반투명 모듈레이트'는 원본과 달라 제거 (hurtE 경로 전용;
+	# receive_damage 레거시 경로는 killer 파이프라인/시체가 없어 기존 연출 유지).
 	if is_instance_valid(_body):
-		_body.modulate = Color(0.45, 0.32, 0.34, 0.5)
+		_body.visible = false
 	telemetry_event.emit("enemy_death", {"id": data["id"], "position": [global_position.x, global_position.y]})
 	queue_redraw()
 	return {"applied": true}
