@@ -27,7 +27,7 @@
 | P2-007a | UI 마감: 원본 글꼴(나눔명조·Cinzel)·검기 색·인트로 가이드 패널 | 클라우드 세션 cloud-ui-polish | claude/p2-007a-ui-polish | assets/fonts, crescent.gd 색, 인트로 가이드 패널 | 시작 요청됨 |
 | MAC-VERIFY | 최근 통합분 Mac 테스트·Mac 실창 첫 전투 녹화 | Mac Codex ttys001(맥북총괄 관측) | codex/mac-verify-20261020 | 없음(관측 전용) | 진행 중 |
 | QA-001 | 기존 실패 테스트 7종 원인 진단 | Mac Codex ttys002 | codex/qa-001-20261020 | 해당 테스트 파일 | 대기→착수 |
-| P3-001 | 맵 pit_poison 타원 충돌 계약 | Mac Codex ttys003 | codex/p3-001-20261020 | engine/fdg/map-source-adapter.js, 맵 계약 테스트 | 대기→착수 |
+| P3-001 | 맵 pit_poison 타원 충돌 계약 | PC Codex (사용자 재배정, G:/exoduser-wt/codex-p3-001) | codex/p3-001-pc-20261020 | engine/fdg/map-source-adapter.js, godot/tools/export_world.mjs, pit 재추출 데이터·계약 테스트·관련 docs | 검수 대기·커밋 대기 (기준 HEAD f1df29a86dc3966bab87a7f4910ae6819e167294, 신규 SHA 없음. fetch/경로 지정 stage 모두 공용.git 권한 실패, 재시도0/INDEX 비어 있음/push 미실행). Node delta4/4·source AST1/1+기존 PNG1PASS·runtime4/4, Godot195/195·map1/1. 기존 adapter2실패/실창 미검증·범위 밖 에셋 보류는 [보고서](reports/P3-001_REPORT.md) 참조 |
 | P2-004b | 펫 대사 카테고리 160여 종 | Mac Codex ttys004 | codex/p2-004b-20261020 | native_pets.gd 대사 테이블 | 대기→착수 |
 | P3-003 | 지역 시스템(G._regions·필드보스 사이트·지역 처치·미니맵 마커) | **Codex 총괄 배정 대기**(Mac, 다음 빈 Codex) | codex/p3-003-20261020 | 지역 신규 스크립트 | 대기 |
 

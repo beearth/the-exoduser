@@ -1140,6 +1140,7 @@ Steam의 WebGL2 표기는 기존 브라우저 실행 요구다. Godot Compatibil
 | `source.geometry_edits` | `0` | 추출 출처/해시/geometry·PNG·save 무변경 영수증; 런타임 변형 입력 아님 |
 | `source.source_png_edits` | `0` | 추출 출처/해시/geometry·PNG·save 무변경 영수증; 런타임 변형 입력 아님 |
 | `source.save_access` | `0` | 추출 출처/해시/geometry·PNG·save 무변경 영수증; 런타임 변형 입력 아님 |
+| `source.collider_updates[0]` | `task:P3-001`, source_root `G:\exoduser-wt\codex-p3-001`; game SHA `4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4`; exporter SHA `2a552da416e01848239b5920754f4bf2cfdeebde690225fbe27e6231ea568404` | pit_poison 충돌·metadata만 최신 원본에서 인수. source_lines placement18166/metadata18407/axes31686/isW31711/canMv31712. 위 source.root/game_sha256은 전체 base의 기존 출처이며 갱신 범위와 구분. [P3-001 보고서](orders/reports/P3-001_REPORT.md) |
 | `scope.enemy_instances` | `1` | 이식 범위 기록; ellipse128 segment와 analytic query는 world 동등값 소비, 전체 physics parity=false |
 | `scope.full_encounter_system` | `false` | 이식 범위 기록; ellipse128 segment와 analytic query는 world 동등값 소비, 전체 physics parity=false |
 | `scope.boss_gate_progression` | `false` | 이식 범위 기록; ellipse128 segment와 analytic query는 world 동등값 소비, 전체 physics parity=false |
@@ -1153,8 +1154,8 @@ Steam의 WebGL2 표기는 기존 브라우저 실행 요구다. Godot Compatibil
 |---|---|---|---|
 | `tiles` | 40000 | `bd604a3493255c5e68c9a50cb8992851738e21cf49e4fc375ce4e4687a5f5b44` | world.is_world_blocked/_build_flow/get_path_direction; native code1이 wall. 전체40000 row-major code는 원 map.json 참조 |
 | `collision_rects` | 292 | `b3665c4768dba928e328fc95dec026136a10928e59be2235193dd86c59779b12` | world._build_collision RectangleShape2D; `[x,y,w,h]` exact merged wall rectangles |
-| `prop_colliders` | 19 | `7124b7e4e04a987232fa4769d007f85707e04482056d9ac35deb9a62a55bc00e` | world._build_collision 및 analytic is_world_blocked; id/position/kind/radii 원 JSON 유지 |
-| `props` | 36 | `fee08b13d2b9bf253d8a667cf80b487a461abadd4b266027faef62a59610eb2b` | world._build_props: id/texture/draw_size/pivot/position/rotation_degrees/flip_h/alpha/ground 읽기; authored_tile/metadata는 원 추출 기록 |
+| `prop_colliders` | 19 | `e7df9c7056742a1cd2de4e0379b16b7658024b1b8227f00e0c535c36cd651970` | world._build_collision 및 analytic is_world_blocked; P3-001 pit_poison만 ellipse/center[6500,5587]/radii[80,58] 반영, 다른18개 불변 |
+| `props` | 36 | `c2f9c4ecc72214e67c3ddaa9f36cbe3e4ab31731c7e224e90eb12bc330030971` | world._build_props: id/texture/draw_size/pivot/position/rotation_degrees/flip_h/alpha/ground 읽기; P3-001은 pit metadata colW80/colH58/colOy7만 추가. 배치·기존 텍스처 불변 |
 | `chunks` | 64 | `766d8155d99de082d786b86fdb1ea971bb29e30fd4ccb278a98fc42b2375921a` | world._update_visible_chunks: x/y/texture/world_rect 읽기; source_rect `[1,1,1024,1024]`과1000/1024scale은 현재 literal 소비 |
 | `rooms` | 6 | `107fe333c725603444b002718dbf59c49cb024f1fb07498e399786eddca4767e` | 원 layout metadata; runtime 방 진행/clear 미이식 |
 | `exits` | 3 | `1e958ed1e41fe518e09368634a187da560104bb4464881a031dc555d4760fd2b` | 원 layout metadata; actual EXIT getter와 별도, 정식 전환 없음 |
@@ -1162,7 +1163,7 @@ Steam의 WebGL2 표기는 기존 브라우저 실행 요구다. Godot Compatibil
 | `boundary` | 53 | `87c6829ec4593443214a4c22606d4186ac405d739c20657a6dc5d5dd53bfeacc` | 원 boundary 원본 좌표; 자동 새 geometry 생성에 사용하지 않음 |
 | `regions` | 8 | `3987b6b8afb93d55f68caafcf634c76fd026e027696e97b97884713d3ea45ed1` | 원 anchor/role/ground/transition metadata; 동적 zone gameplay 미이식 |
 
-배열 payload SHA는 Python `json.dumps(ensure_ascii=False,separators=(",",":"))`의 UTF-8 bytes 기준이며 원 파일 전체 SHA와 구분한다. tile code 개수는 `{"0":19958,"1":19755,"2":3,"3":3,"4":281}`, prop collider kind 개수는 `{"circle":16,"ellipse":3}`이다. 물리 밖 world guard4개를 별도로 추가하고 hill은128 segment polygon 근사로 구성하지만, 원 hill/prop ellipse의 수치와 analytic query는 유지한다. 전체 Godot 물리 경로가 원 analytic query와 정확히 같다는 승인은 하지 않는다. 원 tile40000개·좌표·PNG geometry는 위 hash와 원 JSON 참조로 보존한다.
+배열 payload SHA는 compact UTF-8 JSON 기준이며 원 파일 전체 SHA와 구분한다(기존 Python `json.dumps(ensure_ascii=False,separators=(",",":"))`, P3-001 갱신 배열은 Node `JSON.stringify`로 산출). tile code 개수는 `{"0":19958,"1":19755,"2":3,"3":3,"4":281}`, P3-001 현행 prop collider kind 개수는 `{"circle":15,"ellipse":4}`이다. 물리 밖 world guard4개를 별도로 추가하고 hill은128 segment polygon 근사로 구성하지만, 원 hill/prop ellipse의 수치와 analytic query는 유지한다. 전체 Godot 물리 경로가 원 analytic query와 정확히 같다는 승인은 하지 않는다. 원 tile40000개·좌표·PNG geometry는 위 hash와 원 JSON 참조로 보존한다. 재추출 시 드러난 범위 밖 나무·청크 차이는 인수하지 않았으며 상세는 [P3-001 보고서](orders/reports/P3-001_REPORT.md)를 따른다.
 
 ## MAP PRODUCTION REPORT (§23)
 

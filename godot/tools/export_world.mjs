@@ -14,7 +14,8 @@ const acorn=require('acorn');
 const source=fs.readFileSync(path.join(sourceRoot,'game.html'),'utf8');
 const digest=b=>crypto.createHash('sha256').update(b).digest('hex');
 const records=[];
-const context=vm.createContext({console:{log(){},warn(){}},Math:Object.create(Math),Uint8Array,Uint16Array,Int32Array,Set,Map});
+const context=vm.createContext({console:{log(){},warn(){}},Math:Object.create(Math),Uint8Array,Uint16Array,Int32Array,Set,Map,
+  window:{},location:{search:''},URLSearchParams});
 // This seed fixes the native factory's permitted random choices for this exported instance.
 let seed=20261013;context.Math.random=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};
 function expression(name){
@@ -34,6 +35,9 @@ function evaluate(text){return vm.runInContext(text,context,{timeout:5000});}
 const maps=fs.readFileSync(path.join(sourceRoot,'maps_data.js'),'utf8');
 evaluate(maps+';globalThis.nativeTemplate=JSON.parse(JSON.stringify(FIXED_MAPS[0]));');
 const layoutText=fs.readFileSync(path.join(sourceRoot,'assets/map/ch1/production_finish/layout.js'),'utf8');evaluate(layoutText);
+// game.html:4746-4747: evaluate unmodified scene gates for the ordinary production URL.
+for(const name of ['_fdgProjectiveTextureGate','_FDG_RUINED_FOREST_FIRST'])evaluate('const '+name+'='+expression(name).text+';');
+if(evaluate('_FDG_RUINED_FOREST_FIRST')!==false)throw new Error('CH1 production export requires the native default scene');
 evaluate('var G={stage:0,_zones:null},MAP_OBJS=[],T=40,SI_TO_HELL=[0],MAP_ALL_FLOOR=false,_DIABLO_FIELD_QA=false;var _MAP_COMPOSE={0:'+property('_MAP_COMPOSE',0)+'};');
 for(const name of ['_tCarveCircle','_tCarveEllipse','_tCarveRect','_tCarveCross','_tCarveCorridor','_tCaveSmooth','_tBossDistMap','_tseed','_applyCh1StartNorthGate','_applyHellWinterNorthGate','genFromTemplate'])evaluate(nativeFunction(name));
 // These consumers calculate encounter counts/exit caches only; they do not touch tile geometry.
