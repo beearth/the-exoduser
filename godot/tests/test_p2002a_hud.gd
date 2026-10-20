@@ -101,9 +101,12 @@ func _test_hud_initial_values_and_overlay() -> void:
 	_check(icons.get("skSlot0") == "chargeBoost", "Shift=charge→chargeBoost.png (44118 alias)")
 	_check(icons.get("qsE") == "fireball", "E=fireball (44897)")
 	_check(icons.get("qsQ") == "peaceShield", "Q=parry→peaceShield.png (44908+44118 alias)")
-	_check(icons.get("skSlotCT") == "ghostWalk", "Ctrl=ghostWalk (mkP — 시작 스킬 EXTERNAL 미이식)")
-	for empty_slot in ["qs0", "qs1", "qs2", "qs3", "qs5", "ultSlot", "skSlot1"]:
-		_check(str(icons.get(empty_slot, "x")).is_empty(), "빈 슬롯 " + empty_slot + " (SKILL_SLOTS/ULT 미배정)")
+	# P2-005a: 시작 스킬 지급(63993~64014) 이식 — Ctrl=iceOrb(64011),
+	# qs0=spikeTrap/qs5=holyDome/Space=giantSlam(64013). 종전 '미이식' 기대값 정정.
+	_check(icons.get("skSlotCT") == "iceOrb", "Ctrl=iceOrb (64011 — P2-005a 지급)")
+	_check(icons.get("qs0") == "spikeTrap" and icons.get("qs5") == "holyDome" 		and icons.get("skSlot1") == "giantSlam", "1/F/Space 시작 슬롯 배정 (64013)")
+	for empty_slot in ["qs1", "qs2", "qs3", "ultSlot"]:
+		_check(str(icons.get(empty_slot, "x")).is_empty(), "빈 슬롯 " + empty_slot + " (2~4·ULT 미배정)")
 	# 아이콘 원본 동일성: 복사본 텍스처 실로드
 	for file in ["kiSlash", "shieldThrow", "chargeBoost", "fireball", "peaceShield", "ghostWalk"]:
 		_check(load("res://assets/ui/skill_icons/" + file + ".png") is Texture2D, "아이콘 텍스처 로드 " + file)
