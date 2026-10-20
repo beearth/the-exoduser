@@ -34,6 +34,15 @@
 | 검증 | 신규79/0·별도 프로세스 재읽기5/0·경로 IO 실패 집중8/2→수리 후8/0. 기존 primitive10,388/0·reader5,952/0 각1회, 정상 ERROR/WARNING0. 최초 신규75/0과 집중 실패 로그 보존/중복 합산0 |
 | 보호·제출 | Main/State/전투/맵/기존 SV/사용자 First 저장소 변경0. demo 전용 namespace만 IO, 새 adapter/test/UID·SAVE 추적 보충·[DEMO11-05 보고서](engine/orders/reports/demo11-05_REPORT.md). 원로그 ~/exoduser-wt/_out/demo11-05/, pgrep/30초 gate·각 격리명·override 종료0byte. 정상 훅·자기 branch push/원격 일치/DONE 뒤 자기 worktree 제거 |
 
+## 2026-10-21 DEMO11-27 G 대장간 실제 결제·결과 UI / 이전 caller HOLD
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준·의존 | main8dbbf2b0에서 인수25b최종a03a0cbc 정상merge. META-02 견적·META-03 refund 재사용. META-07의 과거 State 권한 BLOCKED를 이번 허용 범위에서 해소. DEMO11-26은 원본 폐지로 불필요/취소 |
+| 구현 | 장비 live견적→악의차감→World RNG1→성공+1, 실패단계유지. HP물약Lv100/cost3/회복150 연결. Main18/86/294–296 추가5행·State1261–1302 추가42행, 전투핵심0. 이전은 실제equip caller 없으므로 거래prefix/API·견적만/실장착 HOLD |
+| 검증·화면 | 신규1918/0·원본336강화+48이전, 직접회귀 META02 70/0·META03 68/0·auto2560/0·contracts5그룹/0 각1회. Camera 기존WARNING 기록·ERROR0. Hell Gothic/게임폰트/이모지0, KO/EN35쌍등록. 1920×1080+1320×960 1x crop, 실제UI/State+촬영자금fixture/총괄눈검수대기 |
+| 잔여·인계 | SFX/입자/펫/실저장·교체후통계는 별도. [DEMO11-27 보고서](engine/orders/reports/demo11-27_REPORT.md) 2표, 3.2메타·2_8 갱신. 자기branch push/원격SHA/DONE 후 자기WT제거, R보호 |
+
 ## 2026-10-21 DEMO11-25 성능 규칙 후속 — 최신 main 정상 merge
 
 | 항목 | 근거 |
