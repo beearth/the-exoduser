@@ -1,3 +1,4 @@
+import {outputSymlink} from './helpers/outputSymlink.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -159,7 +160,7 @@ test('CLI stage4 output cannot replace source, another stage, a foreign schema, 
   for(const target of ['godot/data/map.json','godot/data/ch1_map_source/si0.json','godot/data/ch1_map_source/si1.json','godot/data/ch2_map_source/si5.json','game.html'])assert.equal(cli(path.join(root,target)).status,1);
   const bad=path.join(tmp,'bad.json');fs.writeFileSync(bad,JSON.stringify({...actual,stage:5}));const badBefore=fs.readFileSync(bad);assert.equal(cli(bad).status,1);assert.deepEqual(fs.readFileSync(bad),badBefore);
   fs.writeFileSync(bad,'{"schema":"exoduser.ch1-area-source.v1","stage":1}');assert.equal(cli(bad).status,1);
-  const link=path.join(tmp,'link.json');fs.symlinkSync(output,link);assert.match(cli(link).stderr,/Symlink output rejected/);
+  const link=outputSymlink(tmp,output);assert.match(cli(link).stderr,/Symlink output rejected/);
   assert.deepEqual(fs.readFileSync(output),saved);assert.deepEqual(hashes(),before);
  }finally{fs.rmSync(tmp,{recursive:true,force:true});}
 });

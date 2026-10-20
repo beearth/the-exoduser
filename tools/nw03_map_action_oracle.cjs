@@ -5,7 +5,7 @@ const SHA='4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4';
 const LOOP_SHA='9eea8397b33211a9a7b4ba18372d4fb60a5ab6cffa497687254d47b66d6c265f';
 const hash=b=>crypto.createHash('sha256').update(b).digest('hex');
 function main(){
- if(process.argv.length!==3)throw Error('usage: node nw03_map_action_oracle.cjs <game.html>');
+ if((process.argv.length!==3 && process.argv.length!==4))throw Error('usage: node nw03_map_action_oracle.cjs <game.html> [utf8-output.json]');
  const bytes=fs.readFileSync(process.argv[2]),html=bytes.toString('utf8'),lines=html.split('\n');
  if(hash(bytes)!==SHA)throw Error('source hash differs; review latest main');
  const unique=m=>{const at=html.indexOf(m);if(at<0||html.indexOf(m,at+m.length)>=0)throw Error('missing/duplicate marker '+m);return at;};
@@ -63,6 +63,6 @@ function main(){
  const hpCtx=vm.createContext({G:{mats:10},P:{x:0,y:0},SFX:{pickup(){}},addTxt(){}});
  const hpReturn=vm.runInContext('(function(type,count){\n'+hpBody+'\n})("hp",1)',hpCtx);
  if(hpReturn!==true||hpCtx.G.mats!==11)throw Error('HP actual source observation differs');
- process.stdout.write(JSON.stringify({source_sha256:SHA,fragment_sha256:LOOP_SHA,fragments:{loop,distance,gate,hpBody},cases:results,hp_actual_source:{return_value:hpReturn,mats_after:hpCtx.G.mats,mats_before:10},real_game_booted:false,real_storage_io:false,dependency_body_in_proposal:false})+'\n');
+ require('./oracle_json_output.cjs')({source_sha256:SHA,fragment_sha256:LOOP_SHA,fragments:{loop,distance,gate,hpBody},cases:results,hp_actual_source:{return_value:hpReturn,mats_after:hpCtx.G.mats,mats_before:10},real_game_booted:false,real_storage_io:false,dependency_body_in_proposal:false});
 }
 try{main();}catch(e){console.error(e.stack);process.exitCode=1;}
