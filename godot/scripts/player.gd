@@ -285,6 +285,62 @@ func get_native_source_initialization_snapshot() -> Dictionary:
 		"committed_source_writes": _native_source_initialization_written_tags.size(),
 		"live_actor_writes": false, "owns_clock": false}
 
+# PC-RUNTIME-STATS — runtime applyStats batch sink. Separate from the
+# constructor seam above (whose pre-Tree guard is unchanged). Only the actual
+# Main-owned refresh module may write, and only inside its synchronous commit
+# window. No signal/callback between validation and the writes.
+const RUNTIME_STAT_REFRESH_PATH = "res://scripts/native_source_player_runtime_stat_refresh.gd"
+const RUNTIME_STAT_REFRESH_FIELDS = ["hp", "mhp", "baseDef", "speed", "maxPoise", "poise", "poiseR"]
+var _native_runtime_stat_commits := 0
+
+func validate_native_runtime_stat_refresh(owner: Node, refresh: Object, fields: Dictionary) -> String:
+	if not is_inside_tree() or is_queued_for_deletion() or not is_instance_valid(owner) \
+			or owner != get_parent() or owner.get("player") != self or not is_instance_valid(_world) \
+			or owner.get("world") != _world or _world.get("player") != self:
+		return "player_runtime_refresh_owner_mismatch"
+	if not is_instance_valid(refresh) or refresh.get_script() == null \
+			or refresh.get_script().resource_path != RUNTIME_STAT_REFRESH_PATH \
+			or owner.get("source_runtime_stat_refresh") != refresh:
+		return "player_runtime_refresh_module_mismatch"
+	var window: Variant = refresh.is_native_runtime_stat_refresh_committing(owner)
+	if not window is bool or not window:
+		return "player_runtime_refresh_not_in_commit_window"
+	for field in fields:
+		if field not in RUNTIME_STAT_REFRESH_FIELDS:
+			return "player_runtime_refresh_field_denied:" + str(field)
+		var value: Variant = fields[field]
+		if not (value is int or value is float) or not is_finite(float(value)):
+			return "player_runtime_refresh_value_invalid:" + str(field)
+	if fields.has("maxPoise") and float(fields["maxPoise"]) != 4.0:
+		return "player_runtime_refresh_max_poise_constant"
+	if fields.has("speed") and not is_finite(float(fields["speed"]) * 60.0):
+		return "player_runtime_refresh_speed_non_finite"
+	if fields.has("hp") and float(fields["hp"]) > float(fields.get("mhp", max_hp)):
+		return "player_runtime_refresh_hp_above_mhp"
+	return ""
+
+func commit_native_runtime_stat_refresh(owner: Node, refresh: Object, fields: Dictionary) -> Dictionary:
+	var error := validate_native_runtime_stat_refresh(owner, refresh, fields)
+	if not error.is_empty():
+		return {"accepted": false, "reason": error}
+	for field in fields:
+		var value: Variant = fields[field]
+		match field:
+			"hp": hp = float(value)
+			"mhp": max_hp = float(value)
+			"baseDef": base_def = float(value)
+			"speed":
+				_native_source_speed_per_tick = value
+				_movement_speed = float(value) * 60.0
+				_native_source_speed_initialized = true
+			"maxPoise": max_poise = int(value)
+			"poise": poise = int(value)
+			"poiseR":
+				_native_source_poise_r = value
+				_native_source_poise_r_initialized = true
+	_native_runtime_stat_commits += 1
+	return {"accepted": true, "fields": fields.keys(), "commits": _native_runtime_stat_commits}
+
 func _native_source_initialization_constructor_ready() -> bool:
 	if is_inside_tree() or is_node_ready() or get_parent() != null or is_queued_for_deletion() \
 			or not is_instance_valid(_world) or _world.is_queued_for_deletion():

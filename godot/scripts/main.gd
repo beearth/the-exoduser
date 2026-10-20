@@ -15,6 +15,7 @@ const SourceProvidersScript = preload("res://scripts/native_source_player_provid
 const SourceInitializationScript = preload("res://scripts/native_source_player_initialization.gd")
 const SourceInitializationServicesScript = preload("res://scripts/native_source_player_initialization_services.gd")
 const SourceLessonScript = preload("res://port_modules/parry_lesson_source/producer.gd")
+const ForgeScript = preload("res://scripts/native_forge_panel.gd") # DEMO11-27
 const AutoPotionScript = preload("res://scripts/native_potion_recovery.gd") # DEMO11-25
 const RegenerationPhaseScript = preload("res://scripts/native_source_player_regeneration_phase.gd") # P2-005d
 const NativeSpriteInspector = preload("res://port_modules/native_sprite_resource_readiness/producer.gd")
@@ -84,6 +85,7 @@ var _source_l_eq_cache: Variant = null
 var _source_l_eq_write_context: Dictionary = {}
 var source_initialization_result: Dictionary = {}
 var source_lesson: RefCounted
+var source_forge: CanvasLayer # DEMO11-27
 var source_potion: RefCounted = AutoPotionScript.new() # DEMO11-25, Main lifetime
 var source_regeneration: RefCounted # P2-005d — 원본 자연 회복 단계(배선 후 Player 레거시 0.28 비활성)
 var _source_lesson_file_init_attempted: bool = false
@@ -111,6 +113,7 @@ var _native_source_object_registration: Dictionary = {}
 # Policy is selected only by the production boot, never URL/test metadata.
 var _native_demo11_policy: Dictionary = {}
 var native_demo_boss_actor: Node2D
+var native_demo_boss_projectiles: Node
 
 func read_native_demo_policy() -> Dictionary:
 	return _native_demo11_policy.duplicate(true) if not _native_demo11_policy.is_empty() else {"status": "NOT_READY", "reason": "boot_not_started"}
@@ -295,6 +298,12 @@ func _ready() -> void:
 	if not native_skill_slots.configure(self, world, player, source_state):
 		push_error("Native skill slots configuration rejected (startup continues).")
 	hud.bind_native_skill_cooldowns(Callable(native_skill_slots, "read_native_slot_cooldowns"))
+	# P2-006a — 바닥 드랍 표시·줍기(worldItems 52485s·R 줍기 32935s·pickupItem 16398) — 표시·입력 어댑터
+	var native_world_drops: Node2D = preload("res://scripts/native_world_drops.gd").new()
+	native_world_drops.name = "NativeWorldDrops"
+	world.add_child(native_world_drops)
+	if not native_world_drops.configure(self, world, player, source_state):
+		push_error("Native world drops configuration rejected (display/input-only; startup continues).")
 	# P2-005d — 원본 자연 회복 단계 부팅 배선 (32705~32721: 돔 판정→플랫(10+2lv)/60→
 	# 자연률(_mpr/_str 32711~32712 ×_hdMul)→HP(32715)→ST/MP 대입(32717~32720, 레슨 ch2 게이트)).
 	# 소유권 이전: Player는 바인딩되면 같은 틱에 레거시 ST 0.28 경로를 비활성(player.gd 731
@@ -307,6 +316,9 @@ func _ready() -> void:
 	else:
 		if not _bind_native_source_regeneration_boot():
 			return
+	source_forge = ForgeScript.new() # DEMO11-27, existing actors/State only
+	source_forge.configure(self)
+	add_child(source_forge)
 	hud.bind_native_source_state(source_state) # P2-002a 원본 HUD 값 = state owner getter
 	# P3-002 initStage 소환굴 배치 — 원본 31655 `_regionInit(si)`가 "소환굴 확정 후" 지역 total을
 	# 계산하므로 지역 owner(P3-003) 구성보다 먼저 둔다(인트로 이전 순서도 유지).
@@ -326,6 +338,7 @@ func _ready() -> void:
 	_bind_native_startup_services()
 	source_intro_sequence = IntroCurtainSequenceScript.install_native_boot(self) # P2-001i
 	native_demo_boss_actor = preload("res://scripts/native_demo11_boss_actor.gd").install_native_boot(self) # DEMO11-34
+	native_demo_boss_projectiles = preload("res://scripts/native_demo11_boss_projectiles.gd").install_native_boot(self) # DEMO11-35
 	var metrics_timer := Timer.new()
 	metrics_timer.wait_time = 0.1
 	metrics_timer.process_mode = Node.PROCESS_MODE_ALWAYS
@@ -2304,6 +2317,41 @@ func read_native_skill_dispatch_cost_context() -> Dictionary:
 	return {"ready":true,"st_discount":maxf(.60,1.0-float(passives.pAtk)*.04)*maxf(.5,1.0-float(passives.pMelee)*.05)*(1.0+minf(0.0,values.stCostRed)),
 		"magic_cost":magic,"cd_red":values.cooldownRed+values.helmCooldown+values.endCooldownAll+values.skillCdRed-values._lHelmFree-(values._lNeckLow if float(p.hp)<=float(p.mhp)*.5 else 0.0)}
 
+# DEMO11-17: minimal callable seam for PC's future K/L UI; no layout/input takeover.
+var _native_skill_management: RefCounted
+
+func _skill_management_service() -> RefCounted:
+	if _native_skill_management==null:
+		var service: RefCounted=preload("res://scripts/native_skill_management.gd").new()
+		if not service.configure(self,source_state): return null
+		_native_skill_management=service
+	return _native_skill_management
+
+func request_native_skill_management(command: Dictionary) -> Dictionary:
+	var service: RefCounted=_skill_management_service()
+	if service==null: return {"accepted":false,"committed":false,"reason":"skill_service_unready","prefix":[]}
+	return service.request(command)
+
+func bind_native_skill_management_handoff(receiver: Callable) -> bool:
+	var service: RefCounted=_skill_management_service()
+	return service!=null and service.bind_handoff(receiver)
+
+func read_native_skill_management() -> Dictionary:
+	return source_state.read_native_skill_management_snapshot() if is_instance_valid(source_state) else {}
+
+
+# DEMO11-18: callable seams only; K/L layout stays with PC.
+func read_native_skill_fusion(key: String) -> Dictionary:
+	return source_state.read_native_skill_fusion(self,key) if is_instance_valid(source_state) else {"status":"NOT_READY","reason":"state_unavailable"}
+
+func request_native_skill_fusion(request_id: String, key: String) -> Dictionary:
+	return request_native_skill_management({"request_id":request_id,"action":"fuse","skill_id":key})
+
+func request_native_skill_fusion_undo(request_id: String, host_skill: String, confirmed: bool=false) -> Dictionary:
+	# Original reset selects the largest active group containing this skill.
+	return request_native_skill_management({"request_id":request_id,"action":"reset","skill_id":host_skill,"confirmed":confirmed})
+
+
 func dispatch_native_skill_slot(slot_key: String) -> Dictionary:
 	var adapter: Node = world.get_node_or_null("NativeSkillSlots") if is_instance_valid(world) else null
 	if not is_instance_valid(adapter): return {"accepted":false,"reason":"skill_dispatcher_unavailable"}
@@ -2990,3 +3038,41 @@ func _finish_native_salvage(receipt: Dictionary) -> Dictionary:
 			receipt.persistence=persisted if persisted is Dictionary else {"status":"UNKNOWN"}
 	return receipt
 var _native_salvage_panel: CanvasLayer
+# PC-RUNTIME-STATS (2026-10-21) — runtime applyStats recalculation entry.
+# The pre-Tree initialization dispatcher stays single-use; this separate owner
+# is created on first request for this actual Main and reuses the original
+# producers. Contract: docs/engine/PC_RUNTIME_STAT_REFRESH_CONTRACT_20261021.md
+const RuntimeStatRefreshScript = preload("res://scripts/native_source_player_runtime_stat_refresh.gd")
+const NATIVE_RUNTIME_STAT_REFRESH_APPLY_STATS = "apply_stats"
+const NATIVE_RUNTIME_STAT_REFRESH_EQUIPMENT = "equipment_refresh"
+var source_runtime_stat_refresh: RefCounted
+
+## mode: "apply_stats" (G applyStats() — stat/passive invest·reset) or
+## "equipment_refresh" (G16287-16292 _refreshEquipmentStats — equip/unequip).
+## Returns the refresh receipt: status/ready/committed/reason/before/after.
+func request_native_runtime_stat_refresh(mode: String, reason: String = "") -> Dictionary:
+	if not _native_main_service_live():
+		return {"status": "REJECTED", "ready": false, "committed": false,
+			"reason": "runtime_stat_refresh_Main_not_live", "mode": mode, "caller_reason": reason}
+	if not is_instance_valid(source_runtime_stat_refresh):
+		var refresh: RefCounted = RuntimeStatRefreshScript.new()
+		var configured: Dictionary = refresh.configure(self)
+		if configured.get("ready") != true:
+			return {"status": "REJECTED", "ready": false, "committed": false,
+				"reason": str(configured.get("reason")), "mode": mode, "caller_reason": reason}
+		source_runtime_stat_refresh = refresh
+	return source_runtime_stat_refresh.refresh(self, mode, reason)
+
+func read_native_runtime_stat_refresh_snapshot() -> Dictionary:
+	if not is_instance_valid(source_runtime_stat_refresh):
+		return {"configured": false, "reason": "runtime_stat_refresh_not_requested"}
+	return source_runtime_stat_refresh.get_snapshot()
+
+## Main owns _lEqCache (_source_l_eq_cache). Only its own refresh module, during
+## an open pass, may clear it (G16289 / recalcSt G16426 _lEqCache=null).
+func invalidate_native_runtime_refresh_legendary_cache(refresh: Object) -> bool:
+	if not is_instance_valid(refresh) or refresh != source_runtime_stat_refresh \
+			or not refresh.is_native_runtime_stat_refresh_active(self):
+		return false
+	_source_l_eq_cache = null
+	return true

@@ -1,5 +1,6 @@
 extends CanvasLayer
 const TX = preload("res://scripts/native_salvage_transaction.gd")
+const PRESENTATION = preload("res://port_modules/item_presentation_source/producer.gd")
 const FONTS = preload("res://scripts/native_ui_fonts.gd")
 const TEXT := {
 	"title":["악의의 분해로","Salvage Furnace"], "currency":["악의","Malice"], "bag":["분해할 장비","Equipment"],
@@ -11,16 +12,13 @@ const TEXT := {
 	"selected":["선택한 장비","Selected equipment"], "gain":["획득할 악의","Malice to gain"],
 	"wallet":["보유 악의","Current Malice"], "salvage":["선택 장비 분해","Salvage selected"],
 	"warning":["분해한 장비는 복구할 수 없습니다.","Salvaged equipment cannot be recovered."],
-	"auto":["자동 분해 규칙","Auto-salvage rules"],
-	"rules":["필터 미만 장비 · 줍기 시 분해\n가방 부족 · 전설 이상 유지\n잠금 / 장착 장비 · 분해 제외","Below filter · salvage on pickup\nFull bag · retain legendary or higher\nLocked / equipped · never salvage"],
-	"pending_auto":["자동 줍기 연결 대기","Automatic pickup pending"],
 	"confirm":["정말 분해하시겠습니까?","Confirm salvage"],
 	"confirm_body":["선택한 장비 %d개\n악의 +%s\n\n분해는 되돌릴 수 없습니다.","%d selected items\n+%s Malice\n\nSalvage cannot be undone."],
 	"yes":["분해 확정","Confirm salvage"], "cancel":["취소","Cancel"],
 	"done":["장비 %d개 분해 · 악의 +%s","Salvaged %d items · +%s Malice"],
-	"save_wait":["저장 연동 대기 · 현재 실행에 반영","Save connection pending · applied this session"],
+	"save_failed":["저장하지 못했습니다.","Could not save."],
 	"changed":["선택한 장비의 상태가 변경됐습니다.","Selected equipment has changed."],
-	"unsupported":["분해 계산 대기","Salvage calculation unavailable"],
+	"unsupported":["분해할 수 없는 장비입니다.","This equipment cannot be salvaged."],
 }
 var _main: WeakRef
 var _screen: Control
@@ -79,10 +77,6 @@ func _ready() -> void:
 	_gain=label("0",Vector2(626,316),Vector2(290,48),34,true); _gain.add_theme_color_override("font_color",Color("dfb676"))
 	label(tr_ui("wallet"),Vector2(626,389),Vector2(290,28),17)
 	_wallet=label("0",Vector2(626,425),Vector2(290,40),23,true)
-	line(Vector2(626,488),Vector2(290,1))
-	label(tr_ui("auto"),Vector2(626,505),Vector2(290,30),19)
-	label(tr_ui("rules"),Vector2(626,547),Vector2(300,94),16)
-	label(tr_ui("pending_auto"),Vector2(626,651),Vector2(290,26),15).add_theme_color_override("font_color",Color("a6987c"))
 	line(Vector2(30,701),Vector2(920,1))
 	_status=label(tr_ui("warning"),Vector2(34,715),Vector2(560,54),16); _status.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 	_action=button(tr_ui("salvage"),Vector2(626,720),Vector2(318,44),request_confirmation,true)
@@ -136,6 +130,13 @@ func _safe_name(item: Dictionary) -> String:
 		var n: int=ch.unicode_at(0)
 		if n<0x1F000 and not (n>=0x2600 and n<=0x27BF) and n!=0xFE0F: out+=ch
 	return out
+# Names use Hell Gothic bone text; the original inventory rarity color belongs
+# to a small left marker (game.html G50299), never to the whole name.
+func rarity_style(item: Dictionary) -> Dictionary:
+	var rarity: Variant=item.get("rarity")
+	if not (rarity is int or rarity is float) or not is_finite(float(rarity)) or rarity!=floor(float(rarity)) or rarity<0 or rarity>=PRESENTATION.RARITY_C.size(): return {"color":Color("dfd6c2"),"label":""}
+	var index := int(rarity)
+	return {"color":Color(PRESENTATION.RARITY_C[index]),"label":PRESENTATION.RARITY_N[index] if _lang==0 else PRESENTATION.RARITY_N_EN[index]}
 func refresh() -> void:
 	if not is_instance_valid(_rows): return
 	var main := _owner()
@@ -153,14 +154,15 @@ func refresh() -> void:
 			if on: _selection.append(item)
 			else: _selection=_selection.filter(func(v):return not is_same(v,item))
 			refresh())
+		var rarity := rarity_style(item)
+		var marker := ColorRect.new(); marker.name="RarityMarker"; marker.color=rarity.color; marker.custom_minimum_size=Vector2(3,48); marker.size_flags_vertical=Control.SIZE_SHRINK_CENTER; marker.mouse_filter=Control.MOUSE_FILTER_IGNORE; row.add_child(marker)
 		var column := VBoxContainer.new(); column.size_flags_horizontal=Control.SIZE_EXPAND_FILL; row.add_child(column)
 		var name_label := Label.new(); name_label.text=_safe_name(item); name_label.text_overrun_behavior=TextServer.OVERRUN_TRIM_ELLIPSIS; name_label.custom_minimum_size.x=290; name_label.tooltip_text=name_label.text; column.add_child(name_label)
-		var rarity: Variant=item.get("rarity")
-		if (rarity is int or rarity is float) and is_finite(float(rarity)) and rarity==floor(float(rarity)) and rarity>=0 and rarity<6:
-			name_label.add_theme_color_override("font_color",Color(["#aaa","#44cc44","#4488ff","#bb44ff","#ffaa00","#8e55e9"][int(rarity)])) # G14350 visual rarity, not economy clamp.
+		name_label.name="ItemName"; name_label.add_theme_color_override("font_color",Color("dfd6c2"))
 		var info := Label.new(); var price := TX.value_of(item)
 		info.text=("+"+number(price.value)+"  "+tr_ui("currency")) if price.ready else tr_ui("unsupported")
 		if not TX.eligible(inv,item): info.text=tr_ui("protected") if price.ready and price.value>=0 else tr_ui("unsupported")
+		if not str(rarity.label).is_empty(): info.text=str(rarity.label)+"  ·  "+info.text
 		info.add_theme_font_size_override("font_size",15); info.add_theme_color_override("font_color",Color("a99b7b")); column.add_child(info)
 		var junk := Button.new(); junk.text=tr_ui("junk") if TX.JS._truthy(item.get("junk")) else tr_ui("mark"); junk.disabled=not TX.eligible(inv,item); junk.custom_minimum_size=Vector2(112,42); junk.size_flags_vertical=Control.SIZE_SHRINK_CENTER; junk.add_theme_font_size_override("font_size",15); row.add_child(junk)
 		junk.pressed.connect(func(): main.source_state.mark_native_salvage_junk(main,item,not TX.JS._truthy(item.get("junk"))); refresh())
@@ -192,7 +194,7 @@ func confirm_salvage() -> void:
 	_pending.clear(); _selection.clear(); _confirm.hide(); _confirm_shield.hide(); refresh()
 	if result.get("applied",false):
 		_status.text=tr_ui("done") % [result.count,number(result.gain)]
-		if result.persistence.get("committed")!=true: _status.text+="\n"+tr_ui("save_wait")
+		if result.persistence.get("committed")!=true: _status.text+="\n"+tr_ui("save_failed")
 	else: _status.text=tr_ui("changed")
 
 func cancel_confirmation() -> void:

@@ -45,6 +45,10 @@ func _run() -> void:
 	if OS.get_cmdline_user_args().has("--capture-only"):
 		await _capture(main,panel,inv)
 		main.free(); print("DEMO11_28_RESULT "+JSON.stringify({"checks":checks,"failures":failures,"capture_only":true})); quit(failures); return
+	# Review actual common equipped alias beside actual uncommon starter bag items.
+	inv.bag.push_front(inv.equipped.weapon)
+	panel.open_panel(); _retouch_review(panel,inv); panel.close_panel()
+	inv.bag.pop_front()
 	var eq: Dictionary=inv.equipped.weapon
 	var eq_before := JSON.stringify(eq)
 	var a := {"name":"source fixture A","rarity":2,"enh":10,"tier":0}
@@ -119,12 +123,13 @@ func _capture(main: Node, panel: CanvasLayer, inv: Dictionary) -> void:
 	if out.is_empty(): check(false,"capture directory required"); return
 	DirAccess.make_dir_recursive_absolute(out)
 	DisplayServer.window_set_size(Vector2i(1920,1080)); root.size=Vector2i(1920,1080)
-	inv.bag[0].fav=true; inv.bag[1].junk=true; inv.bag.append(inv.equipped.weapon)
+	inv.bag[0].fav=true; inv.bag[1].junk=true; inv.bag.push_front(inv.equipped.weapon)
 	panel.open_panel()
 	var chosen := []
 	for item in inv.bag:
 		if item is Dictionary and TX.eligible(inv,item) and chosen.size()<3: chosen.append(item)
 	panel.set("_selection",chosen); panel.refresh()
+	_retouch_review(panel,inv)
 	await _shot(panel,out,"01-selection")
 	panel.request_confirmation()
 	await _shot(panel,out,"02-confirmation")
@@ -139,3 +144,21 @@ func _shot(panel: CanvasLayer, out: String, name: String) -> void:
 	var origin: Vector2i=Vector2i(panel.get("_panel").global_position)
 	var regions := {"items":Rect2i(origin+Vector2i(34,265),Vector2i(540,270)),"summary":Rect2i(origin+Vector2i(620,165),Vector2i(320,335)),"footer":Rect2i(origin+Vector2i(30,700),Vector2i(920,80))}
 	for key in regions: check(image.get_region(regions[key]).save_png(out.path_join(name+"-1x-"+key+".png"))==OK,"unscaled crop "+key)
+
+func _retouch_review(panel: CanvasLayer, inv: Dictionary) -> void:
+	var texts := []
+	var todo: Array=[panel]
+	while not todo.is_empty():
+		var node: Node=todo.pop_back()
+		if node is Label or node is Button: texts.append(node.text)
+		todo.append_array(node.get_children())
+	var text := "\n".join(texts)
+	check(not text.contains("연결 대기") and not text.contains("연동 대기") and not text.contains("자동 분해 규칙"),"no developer or unavailable feature text in game UI")
+	check(inv.bag[0].rarity==0 and inv.bag[1].rarity==1,"actual common equipment and uncommon starter payload, names are not grade")
+	var rows: Array=panel.get("_rows").get_children()
+	for i in 2:
+		var row: HBoxContainer=rows[i]
+		var marker: ColorRect=row.get_node("RarityMarker")
+		var name_label: Label=row.find_child("ItemName",true,false)
+		check(name_label.get_theme_color("font_color")==Color("dfd6c2"),"item name uses bone text grade "+str(i))
+		check(marker.color==Color("#aaa" if i==0 else "#44cc44"),"source inventory rarity marker grade "+str(i))

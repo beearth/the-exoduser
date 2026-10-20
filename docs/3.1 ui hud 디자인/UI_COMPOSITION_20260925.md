@@ -2964,3 +2964,7 @@ R의 기존 gameConfirm pending resolver 가드 한 줄을 main에 결합했다.
 중앙980×780, 좌측 가방/우측 선택 수익·악의·자동 규칙, 하단 파괴 행동/취소 확인을 분리했다. 기존 hell_gothic frame/crest, 흑철·뼈색#dfd6c2·금빛 hairline·붉은 위험 버튼을 사용한다. 최신 사용자 지시대로 전 controls의 기본 font는 hell(명조), 제목/숫자는 cinzel_hell이며 sans를 쓰지 않는다. 한글 첫 행 glyph를 scroll 경계에서 잘리지 않도록 12px inset, check/행 버튼은 수직 중앙 정렬. 추가 UI emoji0(아이템 name emoji도 표시 제외), 번역3338–3366 등록.
 
 G/Esc·확인/취소·잠금/장착 보호 및 실제 wallet/INV readback은 검수했다. 실제 GUI1920×1080 선택/확인/결과 전체3장과 unscaled crops9개는 ~/exoduser-wt/_out/demo11-28/captures/. 첫 oversize art 실패와 후속 retouch도 보존했다. 맥북총괄 눈 검수 대기이며 최종 시각 승인으로 간주하지 않는다. [범위/캡처/검증](../engine/orders/reports/demo11-28_REPORT.md).
+
+### DEMO11-28 RETOUCH — 미연결 섹션 숨김·희귀도 표식 (2026-10-21)
+
+이 절이 위 native 분해 초기 캡처 설명보다 우선한다. 자동 분해/연결 대기 섹션을 제거하고 게임 문구에 개발 상태를 노출하지 않는다. 저장 실패는 일반 오류로, 분해 불가 장비는 플레이어 관점으로 표시한다. 아이템명은 뼈색#dfd6c2, 원본 rarity palette는 왼쪽3px 표식과 등급명으로 전달한다(기존 웹 INV borderLeft G50299 재사용). 흑철/금빛선/hell·Cinzel/확인 대화상자·레이아웃 크기는 유지한다. 새 1920×1080 3장·1x9크롭은 `_out/demo11-28/retouch/captures/`, 맥북총괄 눈 검수 대기. [RETOUCH 보고서](../engine/orders/reports/demo11-28_RETOUCH_REPORT.md).

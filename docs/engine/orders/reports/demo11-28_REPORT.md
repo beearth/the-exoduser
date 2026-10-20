@@ -1,3 +1,5 @@
+> 2026-10-21 눈 검수 RETOUCH 후속: 개발 대기 문구/미연결 자동 섹션을 숨기고 이름 뼈색+원본 희귀도 표식으로 수정했다. 최신 근거·캡처·검사는 [RETOUCH 보고서](demo11-28_RETOUCH_REPORT.md)를 따른다. 아래는 884ddc66 당시 이력이다.
+
 # DEMO11-28 — 분해 단일 writer·INV/UI 연결 / 자연 줍기·저장 소비자 대기
 
 **화면 비교 자료 준비, 맥북총괄 눈 검수 대기.** 최신 fetch main `ac3764bfe5476b56e2f2388b1f2d9baeff731885` 기준, 추가 미병합 체인 merge0. 브랜치 `codex/demo11-28-20261021`. 수동/쓰레기 분해와 자동 분해의 실제 Main API→단일 State writer→G.mats/INV·드랍 picked/cache/UI를 구현했다. 현재 main에 자연 바닥 줍기 소비자와 DEMO11-06b 저장 API가 없으므로 **자연 자동 줍기·영속 저장 완료는 주장하지 않는다.**
