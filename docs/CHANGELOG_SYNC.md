@@ -1,3 +1,12 @@
+## 2026-10-21 DEMO11-05 — demo native local 저장소 IO adapter
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준·원본 | 최신main01051599·gap61ab71be DEMO11-05. G62111/62128–62173·I3486–3520·G3935–3944/62212, 평문 JSON/게임 단일 키·active·5슬롯·auto/boot 경계 |
+| 구현 | 새 demo_local_storage.gd, 고정7키·UTF-8 bytes 보존·실제 native 파일 IO·독점 writer/temp/readback/rename·중복/충돌/재진입/실패 settlement. 기존 SV reader/primitive ACK/lifecycle 실제 재사용, 기존 모듈 HOLD는 불변 |
+| 검증 | 신규79/0·별도 프로세스 재읽기5/0·경로 IO 실패 집중8/2→수리 후8/0. 기존 primitive10,388/0·reader5,952/0 각1회, 정상 ERROR/WARNING0. 최초 신규75/0과 집중 실패 로그 보존/중복 합산0 |
+| 보호·제출 | Main/State/전투/맵/기존 SV/사용자 First 저장소 변경0. demo 전용 namespace만 IO, 새 adapter/test/UID·SAVE 추적 보충·[DEMO11-05 보고서](engine/orders/reports/demo11-05_REPORT.md). 원로그 ~/exoduser-wt/_out/demo11-05/, pgrep/30초 gate·각 격리명·override 종료0byte. 정상 훅·자기 branch push/원격 일치/DONE 뒤 자기 worktree 제거 |
+
 ## 2026-10-20 BC2-07 shieldBash2 독립 wind/dash/contact 계산
 
 ## 2026-10-20 EC4-02 4장 catalog·23필드 초기 literal projection
