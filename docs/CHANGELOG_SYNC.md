@@ -1,3 +1,14 @@
+## 2026-10-20 IT-05 — 특수효과 툴팁 읽기 전용 모델
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 범위·의존 | 신규 item_special_text_source/producer.gd·test_native_item_special_text_source.gd. 기존19/39 정의·IT-02 문자열/Math.round·locale callback 재사용. IT-04 b950095b에서 분기(기준 main 미포함). 공용6파일·타 담당·기존 producer/테스트/JSON 수정0 |
+| 원본 | origin/main e556b617190c325ca39f5add04357f5dea5ca87e game.html:16625~16626,49822~49847. stat 역색인은 마지막 정의 우선. 전설은 현행 ko 또는 저장 ko fallback, 유니크는 저장 ko 번역 후 치환 |
+| 롤·초 | disp 정의 시0/null/false/빈문자열도 우선. 누락 때 scale truthy면 Math.round(val/scale), 그 외 val. secs는 저장 String 그대로/누락은빈문자열. {s}→{p}→{n} 각 첫1회 및 JS 달러 replacement 의미 보존 |
+| 라벨 | roll hi>lo일 때 위치 >=2/3 상옵/#d8b878, >=1/3 중옵/#dfd6c2, 그 외 하옵/#9a8f80. 하/중/상 _T를 모두 원순서 호출 후 선택. 고정/동일·역전 범위 라벨없음. 미지원 shape/callback은 NOT_READY·정상 text 미공급 |
+| 검수 | 신규459/0·원본 직접대조1,284/0(154view·19/39 전체 정의·callback 순서), IT-02 2,205/0·contracts5그룹/0. import/최종 실행 stderr0·ERROR0. 첫 oracle wrapper escape SyntaxError는 별도 보존. [IT-05 보고서](engine/orders/reports/it-05_REPORT.md) |
+| 경계·회수 | 새 EXODUSER-it-05-Isolated-20261020, 기존 회귀 각 상수. Godot2이상30초 대기, 실행별 override 후0byte. 실제 UI/전투/장착/저장·PC 인수 아님. push·원격 SHA·DONE 확인 뒤 이번 sparse worktree만 제거, branch·OUT 원로그/review snapshot 보존. 로비 선재8실패는 총괄 전달 원문 기록만 유지 |
+
 ## 2026-10-20 IT-04 — 장착 결정의 홈 배율 합산
 
 | id / 적용 위치 | 현재 정확 계약 |
