@@ -99,7 +99,10 @@ func _test_oracle() -> void:
 		check(result.status=="READY",label+" phase")
 		for field in ["hp","mats","cd"]: check(float(f.data[field])==float(row.expected[field]),label+" "+field)
 		var expected_reads: Array = row.expected.reads.duplicate()
-		expected_reads.insert(maxi(0,expected_reads.size()-2),"potion_cd_affix")
+		# The CD affix is consumed only after the successful-use gates and regen.
+		# Non-use cases retain the original reads without an invented cache query.
+		var regen_index: int = expected_reads.find("regen")
+		if regen_index >= 0: expected_reads.insert(regen_index+1,"potion_cd_affix")
 		check(f.reads==expected_reads,label+" live read order plus cached potionCdRed")
 		check(f.data.get("hC",2)==row.expected.hC and f.data.get("potions",3)==row.expected.potions,label+" conditional stats")
 

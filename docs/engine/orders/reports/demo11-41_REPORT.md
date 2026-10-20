@@ -36,3 +36,6 @@ DEMO11-01의 demo/stage0 권위는 유지한다. CHANGELOG 최상단 충돌은 �
 
 
 2026-10-21 PC 반송 후 같은 브랜치에서 최신 main을 정상 merge하여 Main 충돌을 해소했다. 기존 main 모든 줄과 음악 API를 함께 보존했으며, 검증·새 SHA 제출 근거는 [DEMO11-41M 보고서](demo11-41m_REPORT.md)와 `_out/demo11-41m/DONE.txt`를 참조한다.
+
+
+2026-10-21 integ-fix 보충: 통합 하니스의 headless 실행으로 위와 같은8실패가 재발했다. 실제 창/CoreAudio에서 원문55검사0실패·ERROR0를 확인했다. merge 해소 오류나 단위 간 제품 결함이 아닌 visibility 하니스 오류다. 재현 가능한 전체 import/격리 runner와 파일·행 근거는 [통합 수정 보고서](integ-fix_REPORT.md)를 따른다.

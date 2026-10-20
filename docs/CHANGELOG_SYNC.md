@@ -56025,3 +56025,10 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 | 런타임 | `index.html` 문서 제목과 영어 로비 `지옥의 길` 번역, `godot/data/demo11_ui_i18n.json` 로비 번역, `build-nwjs.mjs` 빌드 표기를 `HELL: EXODUSER`에서 정정. 다른 언어의 고유 UI 번역·게임플레이 문자열은 변경하지 않음 |
 | 번역·출시 문서 | `docs/16번역·로컬라이제이션/번역대상_전체목록.md` No.1621/1931과 번역 가이드·출시 확장 전략의 현재 영문명 표기를 같은 제목으로 동기화하며 대상 목록의 CRLF 유지 |
 
+
+
+## 2026-10-21 integ-fix — 통합 하니스 복구·최신 단위 인수
+
+기반121a15b7에82ad1813(potion-cd), db9219b4(MAP11-14),973f96ef(i18n)를 정상 merge했다. bb3ced49/e8888106은 기존 ancestor다. Main 독립 locale callback과 기존 API를 병존하고 HUD 실제 MP owner를 유지했다. 번역 목록은 normalized3-way 비교 후CRLF9495/loneLF0으로 보존했다.
+
+41의8실패는 hidden headless→정상 media/Timer suspend 하니스 오류이며 제품 음악 모듈 변경0. 전체 editor import로 EL global class와19ui/37 SVG 누락을 해결했다. 재사용 runner는 실제41 창·명시Node/현재source·테스트상수격리·pgrep/30초 gate를 제공한다. 추가 potion 테스트의 paused owner read/비사용 affix 기대만 수정하며 oracle/제품 guard/식은 유지했다. 최종41 55/0·EL3327/0·19ui36/0·37148/0·24b138/0·25b2569/0·map product37/0=6310/0, 각exit0/ERROR0. 최초 추가 potion 실패는 별도 보존, 요청4suite 각1회. docs 전수 관련 검색/현재14id 설명 동기화. 상세 원인 파일:행·전후 표·범위/한계는 [integ-fix 보고서](engine/orders/reports/integ-fix_REPORT.md). 시각RETOUCH·PC/전체E2E 미확인 유지.

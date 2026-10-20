@@ -13,11 +13,11 @@
 
 ## 연결한13개와 실제 경로
 
-빈도순: `lckFlatR → mpCostRed → dropRate → stCostRed → skillCdRed → potionPower → lckFlatN → expBonus → lifeHealPow → skillBoost → cooldownRed → helmCooldown → endCooldownAll`.
+빈도순: `lckFlatR → mpCostRed → dropRate → stCostRed → skillCdRed → potionPower → potionCdRed → lckFlatN → expBonus → lifeHealPow → skillBoost → cooldownRed → helmCooldown → endCooldownAll`.
 
 Main 소유의 `native_system_equipment_affixes.gd`는 **값 캐시**다. 실제 INV·affix reader의 현재 캐시를 최초 부팅/성공한 PC runtime refresh 신호에서만 읽는다. 원래 cache token identity를 조회 전후 복원하며 실패 refresh는 이 캐시를 바꾸지 않는다. 틱에서는 완성된 id별 Dictionary 결과만 읽고 원본 reader 조회/재구축/목록 API를 호출하지 않는다. 초기 바인딩과 장착·해제·스탯 재계산 이벤트 외에 lazy warm을 넣지 않는다. 기존 런타임 갱신 API와 동일한 Main 수명을 따르며 새 INV·자원 authority는 없다.
 
-`Main.read_native_source_equipment_affix`는 선택13id에 한해 이 캐시를 제공하여 기존 보호 hurtE의 드랍/경험치 소비 식을 그대로 사용한다. 나머지 id의 원래 reader·부분 캐시/형태 의미는 바꾸지 않는다. 비용/쿨은 기존 Main 비용 context → NativeSkillSlots/dispatch quote/기존 자원 writer를 재사용한다. `potionPower`는 기존 자동 물약 producer의 enhanced_heal과 State/PC HP sink를 그대로 쓴다. HP 자연 회복은 기존 source phase의 `life_heal_pow` 공급자만, 영역 flat 회복은 `skillBoost` 공급자만 같은 캐시로 바꾼다. 원래 rates/affix/passive provider의 script/owner 검증은 유지하고, 새 선택 callback은 최초 구성에서 Main identity를 검사한다. 수식 추가·원본 감산/곱셈 순서 변경·피해 실행 구현은 없다.
+`Main.read_native_source_equipment_affix`는 선택14id에 한해 이 캐시를 제공하여 기존 보호 hurtE의 드랍/경험치 소비 식을 그대로 사용한다. 나머지 id의 원래 reader·부분 캐시/형태 의미는 바꾸지 않는다. 비용/쿨은 기존 Main 비용 context → NativeSkillSlots/dispatch quote/기존 자원 writer를 재사용한다. `potionPower`는 기존 자동 물약 producer의 enhanced_heal과 State/PC HP sink를 그대로 쓴다. HP 자연 회복은 기존 source phase의 `life_heal_pow` 공급자만, 영역 flat 회복은 `skillBoost` 공급자만 같은 캐시로 바꾼다. 원래 rates/affix/passive provider의 script/owner 검증은 유지하고, 새 선택 callback은 최초 구성에서 Main identity를 검사한다. 수식 추가·원본 감산/곱셈 순서 변경·피해 실행 구현은 없다.
 
 13개 READY는 **이 게임 시스템 소비 부분**에 한정한다. LCK의 치명타, stCostRed/mpCostRed의 다른 보호 실행자, skillBoost의 공격 배율, 쿨감4종의 미지원 보호 스킬은 pc-iface-pack 요청에 별도 남긴다. 기존 transaction effect receipt의 `game_system_cached / system_component_only`를 전체 피해 효과 구현 완료로 읽지 않는다.
 
@@ -343,3 +343,8 @@ Main은 native intro `phase=done` 및 등록된 lesson inactive를 본 뒤 **단
 | 304 | `hybCritLeech` | 10 | 소비처 미확인 | NOT_READY | 정의 G14768 / 소비 미확인 |
 | 305 | `endCritDmg` | 6 | 소비처 미확인 | NOT_READY | 정의 G14836 / 소비 미확인 |
 | 306 | `kiSlashParry` | 0 | ② PC 보호 | NOT_READY | 정의 G14608 / 소비 G16826 |
+
+
+## 2026-10-21 integ-fix 통합 검수 보충
+
+82ad1813 인수 후 현재 cache는14id다. `test_demo11_24b_system_effects.gd`의 potionCdRed 관측은 State의 live owner가 pause 중 거부하므로, 해당 동기 read 전후에만 tree를 재개/정지한다(프레임 진행0). 자동물약 oracle는 실제 사용해 regen까지 읽은 사례에만 potion_cd_affix 조회를 기대하며 비사용 사례에 조회를 추가하지 않는다. 제품 guard·식·캐시·원본 oracle는 변경하지 않았다. 최종 결과와 초기 하니스 실패는 [통합 수정 보고서](../engine/orders/reports/integ-fix_REPORT.md)에 구분한다.

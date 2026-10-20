@@ -119,7 +119,11 @@ func _run():
 			check(amount is float or amount is int,"potion actual heal readback ready")
 			check(amount!=null and main.player.hp>=1.0+float(amount),"actual HP sink includes potion affix")
 		elif id=="potionCdRed":
+			# State's live potion owner rejects reads while the tree is paused.
+			# Resume only for this synchronous read; no frame/tick is advanced.
+			paused=false
 			var cd_affix: Dictionary=main.source_potion._read("potion_cd_affix")
+			paused=true
 			check(cd_affix.get("status")=="READY" and cd_affix.get("value")==def.tiers[0],"automatic potion reads cached potion CD affix")
 		elif id=="lifeHealPow":
 			state.read_current_g().mats=0;state.read_current_g().on=true;state.read_current_g().paused=false

@@ -24,3 +24,6 @@
 하니스 실패 이력도 원로그에 보존한다. `new`는 World 적 목록을 속성으로 잘못 접근해 SCRIPT ERROR1, 자기 Godot 종료 후 `get_enemies()`로 고쳤다. `new-02`는 정지시킨 tree에서 실제 보상/자원 writer를 호출해 정상 거부됐고, 정지 중 물약 readback null을 숫자로 바꿔 SCRIPT ERROR1로 중단했다. 검사·writer guard를 약화하지 않고 기존25b와 같은 실제 intro/lesson skip 절차로 clock을 열고, 실제 이벤트 commit 때만 동기적으로 tree를 재개하도록 하니스를 고쳤다. 원본 제품 식/보호 파일 수정은 없다. `new-03/04`는128검사 중5실패로 실제 회복 미진입을 검출했다. new-03은 wakeup MP3 해제 대기 누락으로 종료 리소스1 잔류; 기존25b 방식의 AudioStreamPlayer 정지/AudioServer 해제 대기를 하니스에 넣어 new-04 종료ERROR/누수/잔류0을 확인했다. new-04의 snapshot은 clock_admitted0·rejected134/139·stale_duplicate_or_mismatched_native_tick이다. 원본 intro/lesson이 ens를 교체하는 실제 전환을 기존 phase가 인수하지 못한 제품 연결 문제였다. Main 등록·원본 intro/lesson 완료·같은 owner/binding·1회 사용을 검사하는 명시 인계를 추가하며 원래 clock/sink 검사는 유지했다. new-05는 인계 뒤 자연 HP가 실제 적용됐고, 영역1개만 하니스가 owner 외부에서 주입한 zone이 기존 NativeSkillSlots에 의해 갱신되어2실패였다. guard/판정을 낮추지 않고 실제 cast_holy_dome 경로를 사용한 new-06에서131/0·13사례 일치·종료0을 확인했다.
 
 원로그·전수 분류 JSON·pc-iface-pack.json·id별 결과·원본 대조·R/보호 파일 해시는 `~/exoduser-wt/_out/demo11-24b/`. UI 변경·새 화면 문구·실사용 저장 IO 없음. 242개에 원본 소비 계약이 발견되거나 수동 퀵슬롯을 되살리는 결정이 있어야 나머지를 연결할 수 있다. PC 보호 소비는 이 단위 완료 분자에 넣지 않는다.
+
+
+2026-10-21 integ-fix 보충: 위13id/미연결 potionCdRed는 당시 이력이다. 82ad1813 인수 후 현재14id이며, pause 중 live potion owner를 호출하던 신규 단언의 하니스 경계를 수정했다. 원본 oracle/제품 guard는 유지한다. 최종 검수와 최초 실패는 [통합 수정 보고서](integ-fix_REPORT.md)를 따른다.
