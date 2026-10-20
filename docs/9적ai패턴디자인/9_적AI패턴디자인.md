@@ -1,3 +1,5 @@
+> 2026-10-21 DEMO11-enemy-base2: A d931ebe2·B c6d19973를 D 공통 admission으로 이관했다. 등록15종 중 B8/D25 사망 PC prefix는 기존 HOLD이며 나머지13종은 통합 생명주기로 확인한다. 단일 factory 표·World/43·35 registry, A 고유 legacy carrier와 B 탄 owner 부재는 보존한다. 상세/검증/공용 diff는 `docs/engine/orders/reports/demo11-enemy-base2_REPORT.md`.
+
 ## 2026-10-21 DEMO11-enemy-base 공통 기반
 
 [DEMO11-enemy-base 단일 source clock·scheduler·origin 계약](DEMO11_NATURAL_ENEMY_CLOCK_20261021.md)을 추가했다. 현재 자동 source 등록은0normal/undefined-el이며, D9fd31a64의18/19/23/24/25는 기존 선택 생성 계약을 유지해 공통 admission으로 이관했다. D 자동 scheduler/25사망/PC 이동탄 contact는 후행이다. 기존 A/B/C/D 경계 기록은 당시 이력이다. 타 타입/특수 PC 경계·full v3 hurtE·전체120fps는 미완이며, 실제 범위·검증·최대틱 예산 초과는 [보고서](../engine/orders/reports/demo11-enemy-base_REPORT.md)를 따른다.

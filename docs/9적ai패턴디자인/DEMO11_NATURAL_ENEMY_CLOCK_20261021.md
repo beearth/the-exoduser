@@ -1,3 +1,5 @@
+> 2026-10-21 DEMO11-enemy-base2: A/B/D clock 이관: A/B 기존 actor는 World native phase, A5 warning은 기존 priority1 World frame, A physical carrier는 자율 physics off 후35 common source frame.sp로 기존 _physics_process를1회 호출한다. D의 raw carrier는 기존35 source motion을 유지한다. 두 carrier 표현을 같은 pool로 섞지 않는다. source0 scheduler는 원문29/RNG 유지, 선택형 A/B/D 최초 bind는 scheduler=false를 유지하며 full auto 완료로 승격하지 않는다.
+
 # DEMO11-enemy-base — 단일 source clock과 원본 순서
 
 2026-10-21 D 후속: D 원본 actor의 World epoch와 common serial을 `_native_clock_updates`로 통일했다. D selected-only 모드에서는 source scheduler를 자동 실행하지 않으며 기존 D current/arena 범위를 보존한다. D frame의 Player snapshot·pause retain·D tag 탄만 회수·arena 해제 후 boss serial 양보는 기존 D clock regression으로 확인한다. 같은 frame을 별도 D driver와 common driver에서 두 번 실행하지 않는다. D 고유 AI/zone clock body는 변경하지 않고 profile로 유지한다. common raw entry에서도 타입별 suspend를 적용한다. [후속 보고](../engine/orders/reports/demo11-enemy-base_REPORT.md).

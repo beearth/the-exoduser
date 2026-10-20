@@ -681,13 +681,21 @@ func _finite_json(value: Variant) -> bool:
 # Append-only natural registry. Initial source16 validation/dispatch above is unchanged.
 # Each added type must supply its actual kernel, source constructor and geometry.
 const NATURAL_REGISTRATIONS = {
+	0: {"actor":preload("res://scripts/native_natural_enemy_actor.gd"),"selected_actor":preload("res://scripts/enemy_demo11_a_0.gd"),"template":"res://data/etype0_physical_flesh_crawler.json","factory_method":"create_demo11_a","prepared_record_only":true,"constructor":"build_natural_etype0_runtime","profile":FLESH_PROFILE,"radius_base":10.0,"source_color":"#dd4455"},
+	1: {"actor":preload("res://scripts/enemy_demo11_a_1.gd"),"template":"res://data/etype1_lightning_hive_bloater.json","source_ingress":"a","factory_method":"create_demo11_a","prepared_record_only":true},
+	4: {"actor":preload("res://scripts/enemy_demo11_a_4.gd"),"template":"res://data/etype4_physical_spine_beast.json","source_ingress":"a","factory_method":"create_demo11_a","prepared_record_only":true},
+	5: {"actor":preload("res://scripts/enemy_demo11_a_5.gd"),"template":"res://data/etype0_physical_flesh_crawler.json","source_ingress":"a","factory_method":"create_demo11_a","prepared_record_only":true},
+	6: {"actor":preload("res://scripts/enemy_demo11_a_6.gd"),"template":"res://data/etype0_physical_flesh_crawler.json","source_ingress":"a","factory_method":"create_demo11_a","prepared_record_only":true},
+	8: {"actor":preload("res://scripts/native_demo11_etype_b_actor.gd"),"source_ingress":"b","factory_method":"create_demo11_etype_b","prepared_record_only":true},
+	9: {"actor":preload("res://scripts/native_demo11_etype_b_actor.gd"),"source_ingress":"b","factory_method":"create_demo11_etype_b","prepared_record_only":true},
+	10: {"actor":preload("res://scripts/native_demo11_etype_b_actor.gd"),"source_ingress":"b","factory_method":"create_demo11_etype_b","prepared_record_only":true},
+	11: {"actor":preload("res://scripts/native_demo11_etype_b_actor.gd"),"source_ingress":"b","factory_method":"create_demo11_etype_b","prepared_record_only":true},
+	12: {"actor":preload("res://scripts/native_demo11_etype_b_actor.gd"),"source_ingress":"b","factory_method":"create_demo11_etype_b","prepared_record_only":true},
 	18: {"actor":preload("res://scripts/native_demo11_etype_d_actor.gd"),"factory_method":"create_demo11_d","prepared_record_only":true},
 	19: {"actor":preload("res://scripts/native_demo11_etype_d_actor.gd"),"factory_method":"create_demo11_d","prepared_record_only":true},
 	23: {"actor":preload("res://scripts/native_demo11_etype_d_actor.gd"),"factory_method":"create_demo11_d","prepared_record_only":true},
 	24: {"actor":preload("res://scripts/native_demo11_etype_d_actor.gd"),"factory_method":"create_demo11_d","prepared_record_only":true},
 	25: {"actor":preload("res://scripts/native_demo11_etype_d_actor.gd"),"factory_method":"create_demo11_d","prepared_record_only":true},
-	0: {"actor":preload("res://scripts/native_natural_enemy_actor.gd"),
-		"constructor":"build_natural_etype0_runtime","profile":FLESH_PROFILE,"radius_base":10.0,"source_color":"#dd4455"}
 }
 func natural_registration(etype: int) -> Dictionary:
 	return NATURAL_REGISTRATIONS.get(etype,{}).duplicate()
@@ -720,36 +728,31 @@ func create_demo11_d(native_record: Dictionary, owner_world: Node2D, owner: Node
 	return {"ready":true,"actor":actor}
 
 # Profile constructors stay at their original source-owned implementation.
-func prepare_natural_profile(record: Dictionary,world: Node2D,component: Node) -> Dictionary:
+func prepare_natural_profile(record: Dictionary,world: Node2D,component: Object) -> Dictionary:
 	var entry:=natural_registration(int(record.get("etype",-1)))
 	if not entry.get("prepared_record_only",false):return {"ready":false,"reason":"natural_profile_constructor_not_registered"}
 	return call(entry.factory_method,record,world,component)
-
 # DEMO11-etype-a: append-only natural registrations; frozen consumers untouched.
-const DEMO11_ETYPE_A_REGISTRATIONS = {
-	0: {"actor":preload("res://scripts/enemy_demo11_a_0.gd"),"template":"res://data/etype0_physical_flesh_crawler.json"},
-	1: {"actor":preload("res://scripts/enemy_demo11_a_1.gd"),"template":"res://data/etype1_lightning_hive_bloater.json"},
-	4: {"actor":preload("res://scripts/enemy_demo11_a_4.gd"),"template":"res://data/etype4_physical_spine_beast.json"},
-	5: {"actor":preload("res://scripts/enemy_demo11_a_5.gd"),"template":"res://data/etype0_physical_flesh_crawler.json"},
-	6: {"actor":preload("res://scripts/enemy_demo11_a_6.gd"),"template":"res://data/etype0_physical_flesh_crawler.json"}
-}
-
+const DEMO11_ETYPE_A_REGISTRATIONS = {0:NATURAL_REGISTRATIONS[0], 1:NATURAL_REGISTRATIONS[1], 4:NATURAL_REGISTRATIONS[4], 5:NATURAL_REGISTRATIONS[5], 6:NATURAL_REGISTRATIONS[6]}
 # DEMO11-etype-b registration extension. Old registration and consumer unchanged.
-const DEMO11_ETYPE_B_REGISTRATIONS = {
-	8:preload("res://scripts/native_demo11_etype_b_actor.gd"),
-	9:preload("res://scripts/native_demo11_etype_b_actor.gd"),
-	10:preload("res://scripts/native_demo11_etype_b_actor.gd"),
-	11:preload("res://scripts/native_demo11_etype_b_actor.gd"),
-	12:preload("res://scripts/native_demo11_etype_b_actor.gd")}
-func create_demo11_etype_b(runtime: Dictionary, world: Node2D) -> Dictionary:
+const DEMO11_ETYPE_B_REGISTRATIONS = {8:NATURAL_REGISTRATIONS[8].actor, 9:NATURAL_REGISTRATIONS[9].actor, 10:NATURAL_REGISTRATIONS[10].actor, 11:NATURAL_REGISTRATIONS[11].actor, 12:NATURAL_REGISTRATIONS[12].actor}
+func create_demo11_etype_b(runtime: Dictionary, world: Node2D, component: Object=null) -> Dictionary:
 	if not DEMO11_ETYPE_B_REGISTRATIONS.has(runtime.get("etype")) or runtime.get("ai_profile")!="demo11_group_b_v1":
 		return {"ready":false,"reason":"outside_B_registration"}
+	if component==null or component.get_script().resource_path!="res://scripts/native_demo11_etype_b_spawn.gd":return {"ready":false,"reason":"B_common_preparation_required"}
 	var actor: CharacterBody2D=DEMO11_ETYPE_B_REGISTRATIONS[runtime.etype].new()
 	actor.configure(runtime,world)
 	if not actor.is_native_registry_ready(): actor.free();return {"ready":false,"reason":"B_profile_rejected"}
-	var result: Dictionary=world.register_summoned_enemy(actor)
-	if not result.get("valid",false): actor.free();return {"ready":false,"reason":"B_world_registration_rejected","errors":result.get("errors")}
-	return {"ready":true,"registered":true,"actor":actor,"full_combat_ready":false}
+	return {"ready":true,"actor":actor,"full_combat_ready":false}
+
+func create_demo11_a(runtime: Dictionary, world: Node2D, component: Object) -> Dictionary:
+	if component==null or component.get_script().resource_path!="res://scripts/native_demo11_etype_a_spawn.gd" or not DEMO11_ETYPE_A_REGISTRATIONS.has(runtime.get("etype")) or runtime.get("a_constructor")!="source_mkEn_stage0_normal_v1":return {"ready":false,"reason":"A_common_preparation_required"}
+	var entry: Dictionary=NATURAL_REGISTRATIONS[runtime.etype]
+	var script: GDScript=entry.get("selected_actor",entry.actor)
+	var actor: CharacterBody2D=script.new()
+	actor.configure(runtime,world)
+	if not actor.is_native_registry_ready():actor.free();return {"ready":false,"reason":"A_profile_rejected"}
+	return {"ready":true,"actor":actor}
 
 # DEMO11-etype-f registration only; existing entries/consumer byte-preserved.
 const DEMO11_ETYPE_F_REGISTRATIONS = {
@@ -766,4 +769,3 @@ func create_demo11_etype_f(runtime: Dictionary, world: Node2D) -> Dictionary:
 	if not result.get("valid",false): actor.free();return {"ready":false,"reason":"F_world_registration_rejected","errors":result.get("errors")}
 	return {"ready":true,"registered":true,"actor":actor,"full_combat_ready":false}
 
-# DEMO11-etype-d: append-only natural admission, no existing profile path changed.

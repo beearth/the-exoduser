@@ -56,12 +56,15 @@ func spawn_selected(owner: Node, group: String, source: Dictionary) -> Dictionar
  var pos: Vector2=site.position
  # No safePt or old-coordinate fallback after MAP11 arbitration.
  if not main.world.can_move(pos,radius): return _no("MAP11_site_geometry_rejected")
+ if not is_instance_valid(main.native_natural_enemies):
+  var bound: Dictionary=main.bind_native_natural_enemy_base(read_projectile_context,false)
+  if not bound.get("ready",false): return bound
  _busy=true
  var runtime: Dictionary=_build_runtime(etype,pos,source,player,int(hole.room))
  _used[token]=true
- var made: Dictionary=_factory.create_demo11_etype_b(runtime,main.world)
+ var made: Dictionary=main.native_natural_enemies.admit_source_record(self,group,runtime,site,source)
  if not made.get("ready",false): _busy=false;made["source_prefix_consumed"]=true;return made
- var origin: Dictionary=adapter.register_actor_origin(made.actor,group)
+ var origin: Dictionary=made.origin
  _busy=false
  if not origin.get("ready",false): return {"ready":false,"reason":"origin_rejected_after_registration","registered":true,"actor":made.actor,"source_prefix_consumed":true}
  return {"ready":true,"registered":true,"actor":made.actor,"site":site,"source_prefix_consumed":true,
@@ -98,3 +101,6 @@ func _build_runtime(etype: int,pos: Vector2, source: Dictionary, player: Diction
  return r
 func _no(reason: String) -> Dictionary: return {"ready":false,"registered":false,"reason":reason}
 func _number(v: Variant) -> bool: return (v is int or v is float) and is_finite(float(v))
+
+func read_projectile_context() -> Dictionary:
+ return {"lesson_active":false,"qa_storage_active":false,"aggro_active":false}

@@ -1,3 +1,5 @@
+> 2026-10-21 DEMO11-enemy-base2: A(d931ebe2)·B(c6d19973) 이관: 실제15종 등록은 NATURAL_REGISTRATIONS 단일 표, A/B 상수는 참조 view다. source-selected 입력 검증·원문 constructor는 각 profile에 유지하고 actor preparation→World/43은 common.admit_source_record 하나로 인수한다. 기존 source0 자동 P3 actor와 선택 A0 actor는 etype0 entry의 계약 variant이며 수치·탄을 서로 치환하지 않는다. A 기존 physical carrier는35에서 단일 clock으로 호출하고 PC body는 유지. B 탄 profile 부재·B8/D25 사망 경계는 후행이다.
+
 # DEMO11-enemy-base — 자연 적 생성·등록 공통 계약
 
 2026-10-21 D 후속:9fd31a64를 정상 merge9157697c하고 실제 D18/19/23/24/25의 factory/World/origin/탄을 공통 owner로 이관했다. 공개 Main.spawn_native_demo11_d 호출·D actor/ctor RNG/수치 body는 그대로다. NATURAL_REGISTRATIONS의 D5개는 prepared_record_only이며 자동 scheduler는 여전히 HOLD다. source-selected D가 먼저 부팅하면 bind의 두 번째 인자enable_scheduler=false로 selected-only 설치, 기존 명시 bind의 기본true/0 source scheduler는 보존한다. create_demo11_d는 profile builder로 유지하고 prepare_natural_profile→spawn_profile_record→공통 _admit_prepared가 실제 World capability를 소유한다. D 고유 zone와25 death/PC contact 경계는 후행이다. 상세 회귀·공용diff는 보고서 맨 위 후속 절을 따른다.

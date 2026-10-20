@@ -136,15 +136,44 @@
 
 ## 2026-10-21 DEMO11-etype-b 재개 — append-only 등록·실제 actor5
 
-- 맥북총괄 후속 승인으로49a250ef 위 재개. factory 기존679줄 byte 보존·B등록17줄, Main 기존3068줄 보존·source-selected entry8줄. PC P2-008b/피해/패링·State/World/Player0. 실제 Marker adapter→factory→ens/phase→origin5개 확인, 원소undefined 보존. A 공통 helper 재작성0.
-- runtime42/0·캐시/contact35/0(9~12 hurtE HP875→874, B12 PC Player553→530)·factory3그룹/0·강화 preflight27/0·viewport34/0. 생성11.408ms 실패 보존→설치 factory/profile 재사용 확인: 생성3.862ms,5종tick max0.718ms. 전체 렌더120fps/자연 자동scheduler·MAP11 제품 provider 인수 아님.
-- 8 death-blast 피해NOT_READY,9 actual deadPool,11 type3/MAP11 자식,공통 탄/보호 반사 접점 유지. full_combat_ready=false. [최종 보고서](engine/orders/reports/demo11-etype-b_REPORT.md)·docs/8.0·_out/demo11-etype-b/resume-*·내부viewport/1x·원실패 로그 보존. 경로 지정 stage·정상훅·자기 push/원격일치/DONE 후 자기WT제거.
+## 2026-10-21 DEMO11-enemy-base2 — A·B·D 공통 기반 이관
+
+| 항목 | 범위·검증 |
+|---|---|
+| 의존·공통화 | 26406969 위 A d931ebe2·B c6d19973 정상 merge. 단일 factory 표15종, common prepared World/43 admission·A physical/D raw carrier 동일35 registry clock. B 탄 owner 미구현/HOLD 유지 |
+| 검증·보호 | 신규89/0+관련2336/0=2425/0·factory3그룹/실패0, 15종spawn/tick·13처치/2사망HOLD. 30actor600tick mean2.820/p994.009/max8.188ms(관측만, 최적화0). 공용 줄 범위는 [보고서](engine/orders/reports/demo11-enemy-base2_REPORT.md). PC 보호/World/State0, 성능 최적화0. [8.0](8.0몬스터디자인/DEMO11_NATURAL_ENEMY_BASE_20261021.md)·[9AI clock](9적ai패턴디자인/DEMO11_NATURAL_ENEMY_CLOCK_20261021.md) 동기화 |
 
 ## 2026-10-21 DEMO11-etype-b — 8~12 Marker·factory 인수 경계
 
 - main0138c5bb9 + DEMO11-43 9b763da9 정상 merge. B 전용 직접호출 preflight·기존 하니스 상속, 공통 helper 재작성/A 파일 변경0. **5종 모두 NOT_READY**, 실제 자연 스폰·특수 상태·전투 구현 완료 아님.
 - 신규27/0·기존43 40/0 각1회. 기존 회귀 내 adapter 벽시계만 측정, 5종 실제 스폰 벤치 미실행. Main/State/PC 전투·피해/저장/맵/tick/목록 생성API0. [보고서](engine/orders/reports/demo11-etype-b_REPORT.md)·docs/8.0 종별 근거·묶음 A 통합 후보·_out/demo11-etype-b/ 원로그.
 
+
+## 2026-10-21 DEMO11-enemy-base 후속 — D9fd31a64 공통 이관
+
+| 항목 | 동작 보존·범위 |
+|---|---|
+| 병합·공통화 | 정상merge9157697c(9fd31a64). D5종 factory prepared entry→common World/origin admission·동일35 탄/World epoch. 기존 Main D facade·D actor/ctor RNG/탄 수치 body·PC 보호 경로 byte 보존 |
+| 후행·검증 | D selected-only/자동schedulerHOLD·25 death/이동탄 PC contact 후행 유지. 이관집중21/0+기존D158/0+공통0 31/0+35 43/0=253/0·ERROR0, 관련suite 각1회. 30actor600틱 mean2.824/p993.980/max8.380ms(최대예산초과). 결과는 [보고서](engine/orders/reports/demo11-enemy-base_REPORT.md). [8.0 계약](8.0몬스터디자인/DEMO11_NATURAL_ENEMY_BASE_20261021.md), [9AI clock](9적ai패턴디자인/DEMO11_NATURAL_ENEMY_CLOCK_20261021.md) |
+
+## 2026-10-21 DEMO11-enemy-base — 자연 소환 단일 기반
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준·경로 | 하니스 공백만 최종 교정(실행문 불변). main0138c5bb9 +439b763da9 +Acf7408d4 정상FF. P3 constructor body 동일 추출→factory EOF append19/0→실제 World registry→43 origin, 기존 World clock·scheduler·동일35 registry 재사용 |
+| 검증·경계 | 신규31/0+관련415/0=446/0 각suite1회(신규 초기실패 제외), 실제 자연0 spawn/tick/legacy PC interface 처치/origin1, 실제30 actor600틱 벤치 유효1회 mean2.904/p994.221/max8.669ms(최대는8.333예산 초과). 보호경로/저장/에셋0, 전체타입/fullv3/전체120fps 완료 아님. 관련회귀·범위·대체위치 [보고서](engine/orders/reports/demo11-enemy-base_REPORT.md), [8.0](8.0몬스터디자인/DEMO11_NATURAL_ENEMY_BASE_20261021.md), [9AI](9적ai패턴디자인/DEMO11_NATURAL_ENEMY_CLOCK_20261021.md) |
+## 2026-10-21 DEMO11-etype-a 승인 재개 — factory5종 append-only
+
+- 사용자 판정으로 factory EOF680–688에 etype0/1/4/5/6 등록9행만 추가. 기존prefix/생성로직 byte 동일·PC9/11/47 겹침0. 기존kernel 및 World phase 재사용,5/6 누락 상태만 추가.
+- 원본mkEn90사례·실제5종 등록/탄/PC접촉/사망1952/0, 경계48/0. 120Hz240틱 벤치1회 벽시계5.312초·actor p95 311µs/max38.677ms: 지속120fps 통과 아님. source scheduler·type6 보호owner는 미완 유지.
+- 직접 회귀43 40/0·P3 298/0·factory3그룹/0실패, P3 종료ObjectDB8 경고 원문 보존.
+- 공용 범위/검증/회귀·인계 한계는 [보고서](engine/orders/reports/demo11-etype-a_REPORT.md), 몬스터 관리·WORK_BOARD 동기화. 이전cf740 부분 제출 기록은 아래와 외부 원로그에 보존.
+
+## 2026-10-21 DEMO11-etype-a selected0 P3→MAP11→43 origin 인계
+
+- main0138c5bb9에 DEMO11-43 9b763da9 정상 fast-forward merge. Main+8/State0·신규 얇은 consumer만. 기존 P3 type0 constructor/World 등록/43 immutable origin 재사용, source pool/RNG/HP/AI/16좌표 복제0.
+- 부분 구현·통합 BLOCKED:1/4 자연 constructor/등록·5/6 미구현·PC 보호 도메인·자연 source scheduler 미완. 5종 동시 스폰 벤치0회(미충족 명시), 요청 거절 시간을 대체 성능으로 제출하지 않음.
+- 신규48/0·직접회귀338/0(총386/0), P3 종료ObjectDB8 경고원문 보존. etype별 전후/경계 테스트 수·공용 줄 범위·검증은 [보고서](engine/orders/reports/demo11-etype-a_REPORT.md), docs/8.0 최신 Native 상태 동기화. 정상훅·자기branch push/remote/DONE 후 자기WT 제거.
 ## 2026-10-21 DEMO11-etype-d 재개 — factory append-only·실제 D5종 등록
 
 | 항목 | 결과·경계 |

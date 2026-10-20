@@ -1,11 +1,7 @@
 extends RefCounted
-## Existing physical carrier/PC protection path. Undefined el has physical class
-## but is not strict EL.P: no forced elemental conversion or homing flag.
+## Actual common registry admission; carrier and PC contact kernel unchanged.
 static func fire(actor: Node,origin: Vector2,profile: Dictionary) -> Node2D:
-	if not actor.alive or not is_instance_valid(actor.player):return null
-	var shot:=preload("res://scripts/enemy_projectile_physical.gd").new()
-	shot.configure(origin,(actor.player.global_position-actor.global_position).normalized(),profile,actor.player,actor.world,actor.native_frame)
-	shot.native_homing_enabled=false
-	shot.telemetry_event.connect(actor._forward_event);actor.world.add_child(shot)
-	actor.telemetry_event.emit("enemy_projectile_birth",{"id":actor.data.id,"parry_class":"physical","source_el_undefined":true,"node_id":shot.get_instance_id()})
-	return shot
+	var reference: Variant=actor.world._native_natural_enemy_base
+	var owner: Node=reference.get_ref() if reference is WeakRef else null
+	if not is_instance_valid(owner):return null
+	return owner.emit_profile_projectile(actor,origin,profile)

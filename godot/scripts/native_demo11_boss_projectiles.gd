@@ -192,6 +192,12 @@ func advance_source_frame(frame: Dictionary) -> bool:
 		var entry: Dictionary = _entries[id]
 		var shot: Node = entry.node
 		if not is_instance_valid(shot) or shot.is_queued_for_deletion(): _retire(id,"owner_lost"); continue
+		if entry.get("profile_carrier",false):
+			entry.calls+=1
+			if entry.calls==1:entry.birth_ticks+=1
+			_motion_ticks+=1
+			shot._physics_process(float(frame.sp)/60.0) # Existing PC contact body, unchanged.
+			continue
 		if shot.global_position.distance_squared_to(_camera())>6250000.0: shot._end("camera_distance"); continue
 		var entry_context: Variant=_field_context(entry.get("field_owner"),shot.global_position,context) if entry.get("field_owner")!=null else context
 		if not entry_context is Dictionary:_error="actual_field_aggro_reader_required";continue
@@ -224,6 +230,9 @@ func _retire(id: int,reason: String) -> void:
 		entry.raw.life=entry.node.life_ticks
 		entry.raw.dist=entry.node.distance_travelled
 	_last_retired={"id":id,"reason":reason,"raw":entry.raw.duplicate(true)}
+	if entry.get("profile_carrier",false):
+		projectile_retired.emit(id,reason)
+		return # Profile data is never recycled into the BC09 raw pool.
 	if _advancing: _recycle_pending.append(entry.raw)
 	else: _free.append(entry.raw)
 	projectile_retired.emit(id,reason)
@@ -284,3 +293,23 @@ func retire_demo11_d(owner: Node) -> int:
 	for id in _entries.keys():
 		if _entries[id].get("D_owner")==owner:_retire(id,"D_source_released");count+=1
 	return count
+
+# Common registry owns the existing A physical carrier; no new contact/damage path.
+func admit_profile_projectile(owner: Node,actor: Node,origin: Vector2,profile: Dictionary,frame: Dictionary) -> Node2D:
+	if _natural_source==null or _natural_source.get_ref()!=owner or not owner.owns_actor(actor) or actor.etype not in [0,1,4,5] or not actor.alive or not is_instance_valid(actor.player):return null
+	var shot:=preload("res://scripts/enemy_projectile_physical.gd").new()
+	shot.configure(origin,(actor.player.global_position-actor.global_position).normalized(),profile,actor.player,actor.world,actor.native_frame)
+	shot.native_homing_enabled=false
+	_next_id+=1
+	var id:=_next_id
+	shot.telemetry_event.connect(actor._forward_event)
+	shot.telemetry_event.connect(_profile_event.bind(id))
+	_world.add_child(shot)
+	shot.set_physics_process(false)
+	_entries[id]={"node":shot,"raw":profile.duplicate(true),"profile_carrier":true,"born_serial":frame.serial,"birth_ticks":0,"calls":0}
+	if _advancing:_tick_queue.append(id)
+	_born+=1
+	actor.telemetry_event.emit("enemy_projectile_birth",{"id":actor.data.id,"parry_class":"physical","source_el_undefined":true,"node_id":shot.get_instance_id()})
+	return shot
+func _profile_event(kind: String,packet: Dictionary,id: int) -> void:
+	if kind=="enemy_projectile_end":_retire(id,str(packet.get("reason","profile_end")))
