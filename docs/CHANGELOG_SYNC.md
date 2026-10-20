@@ -1,3 +1,15 @@
+## 2026-10-20 SK-S05 학습·강화·합체·환불·일괄/추천 fixture core
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 범위·의존 | 신규 learn/upgrade/fuse_commit/refund/batch_recommend·전용core_support·통합신규test·각uid·보고서. main e556b617 원본, SK-S04 fc24b886 끝에서 분기(S01~03 간접의존) |
+| 원본 | 3913~3930/28080~28085/44644~44661/47192~47326/47678~47965. 기존cost/catalog/fusion/slot 공급 재사용, SP공식·32레시피·15추천단계 수정0 |
+| 계약 | 원P/G 무변이 deep-copy ledger. UI/direct gate차이·star표시와member실차감·선차감후환불·minus/reset/겹침환불·claimed/부분추천 보존. active8필드는원값복원후제안데이터만, 실제writer미구현·shieldFuse전용reset NR/HOLD |
+| 신규 검증 | 9533/0·원본9358행 불일치0·SP/악의14620double bit일치·격리sk-s05/Main0. 최초fixture1실패/큰정수경계3실패 원문과수정이력 보존 |
+| 회귀·BLOCKED | 기존Godot12파일 중11정상, ice22/0이어도종료resource ERROR1로최초실행PASS제외. verbose추가진단22/0·ERROR0도최초실패대체아님. p2005합91/0만보고. 웹비용4통과·추천15대기대14 선재1실패, 전체PASS아님 |
+| 보호·중지 | native_skill_slots.gd·공용/타담당/기존313파일·R0줄. 다음SK-S06은State/main 공용writer 필요하므로사용자지시대로중지, 순서안끝아님. 실제Q/E·입력·UI·저장연결0 |
+| 인계 | sk-s05_REPORT.md·_out/sk-s05/ 원로그/DONE·stop-boundary. 정상훅/자기branch push·원격일치·DONE 후자기 sparse WT만제거·branch보존. 회귀인수BLOCKED는owner/QA 인계 |
+
 ## 2026-10-20 SK-S04 슬롯 읽기 모델·복사 미리보기
 
 | id / 적용 위치 | 현재 정확 계약 |
