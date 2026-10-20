@@ -8,12 +8,12 @@ script = ExtResource("1_preview")
 [node name="Markers" type="Node2D" parent="."]
 
 [node name="Entry" type="Marker2D" parent="Markers"]
-position = Vector2(0, 1450)
+position = Vector2(0, 800)
 
 [node name="Boss" type="Marker2D" parent="Markers"]
 
 [node name="Exit" type="Marker2D" parent="Markers"]
-position = Vector2(0, -1920)
+position = Vector2(0, -1420)
 
 [node name="Return" type="Marker2D" parent="Markers"]
-position = Vector2(0, 1740)
+position = Vector2(0, 1320)

@@ -1,5 +1,7 @@
 # MAP11-01 — 1-1 보스룸 독립 blockout / 검수 보고
 
+> 2026-10-21 2차 현행: 사용자 D05 원형 유지·조금 작게. R1700/material proof/입장 zoom .65의 [MAP11-01b 보고서](MAP11_ARENA_PREVIEW_PASS2_20261021.md)를 따른다. 아래 R2200·D05 미결정은 1차 이력이다.
+
 STATUS=REVIEW_PENDING. **VISUAL VERDICT: RETOUCH — 블록아웃 제출, 맥북총괄 눈 검수 및 사용자 D05(형태·크기) 미결정.** main `8dbbf2b0e699c36a93ca5cf41a2f3408be6da2c4`에서 작업했다. [확정 설계서 b085407d](https://github.com/beearth/the-exoduser/blob/b085407d474605141d3c039330489ad414efdfde/docs/4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md)의 §1/MAP11-01/D01~04를 읽고 적용했으며, 해당 브랜치나 다른 담당 WIP를 merge하지 않았다. WORK_BOARD의 MAP-LOOK(PC Claude)·MAPLOOK 모듈(PC Codex) 파일 수정0, 독립 preview 경로 중복0.
 
 | 산출·계약 | 구현·원본 근거·경계 |

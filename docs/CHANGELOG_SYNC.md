@@ -1,3 +1,13 @@
+## 2026-10-21 MAP11-01b — D05 원형 축소·바닥 조명 proof
+
+| 항목 | 구현·검수 경계 |
+|---|---|
+| 기준·공간 | main ac3764bfe + 인수된 MAP11-01 3c2b1ea4 정상merge f612dbee. 독립 preview R2200→1700/회피고리1300·입장zoom.42→.65. 원본 공격 범위 고정, tide50·fissure전체1295.2 벽 밖 표시 |
+| 표현·보호 | 기존 RGBA 피부 재착색 shader·균열 심장선·main MAP-LOOK/hell·Cinzel 글꼴 토큰 재사용, 4시점+body/탄막 1920×1080 및1x6장. 생성0·Main/State/전투·저장0줄, 새 표시문구 번역목록 등록 |
+| 검수 | 신규34/0·직접회귀16/0 각1회, ERROR0·회귀 기존Camera WARNING1. 600tick@60Hz 벽시계벤치1회10.000336s/평균501.48fps/p95≤2.36ms·p99≤2.81ms(M5Pro/preview한정). 캡처ERROR/WARNING0 |
+| 인계 | [2차 보고서](4.1맵디자인+설정/MAP11_ARENA_PREVIEW_PASS2_20261021.md) 비교2표. 외곽 가지 겹침·재질 최종 아트 RETOUCH/시각검수대기. 자기branch push/remoteSHA/DONE후 자기WT제거, R불변 |
+
+
 ## 2026-10-21 MAP11-01 독립 보스룸 blockout·GPU 카메라 보드
 
 | 항목 | 구현·실측·검수 경계 |
