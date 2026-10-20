@@ -73,3 +73,7 @@ FDG_GODOT_BIN=/Users/fordeargamers/.codex/tools/godot-4.7.2/Godot.app/Contents/M
 화면 기록 권한이 허용된 실행 환경에서 다시 권한 확인 후, 백업·import·격리 Main 실행 및 부팅→인트로→커튼→첫 전투 30초 녹화가 필요하다. 현재 작업의 BLOCKED 원인은 화면 기록 권한이며 게임 코드 수정은 하지 않았다. 키 입력 가능 여부도 미검증이다.
 
 보고서는 자기 `codex/` 브랜치에만 제출한다. main 병합·push·force·reset은 수행하지 않는다. 영상·로그·설정 파일은 커밋하지 않는다. 제출 SHA와 최종 원격 대조 결과는 후속 제출 기록 및 `~/exoduser-wt/_out/mac-live/DONE.txt`에 남긴다.
+
+## 제출 기록
+
+결과 본문·작업판 최초 커밋: `5b101dcfb60179a55c4fda47e3291ef27b8056ef`. 이후 커밋은 이 SHA를 기록하는 제출 메타데이터 변경이다. 최종 branch tip 및 원격 SHA 대조는 로컬 `~/exoduser-wt/_out/mac-live/DONE.txt`와 `remote-verification.json`을 참조한다.
