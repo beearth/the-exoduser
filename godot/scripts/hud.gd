@@ -65,6 +65,16 @@ var _sp_label: Label
 var _cp_label: Label
 
 
+# P2-001i — 인트로 커튼 전 HUD 숨김/오픈 시 표시. 원본 63283(G.on=false 구간) 동안
+# HUD 미표시 → 63414 .on 토글(hud/hudTop/hudCorner/mmWrap/skBar/mmLvl/globeHP/globeMP).
+# 이 포트의 해당 요소들은 전부 PublicHUD 루트(_root) 아래라 루트 가시성이 같은 의미
+# (63287 부트 로딩 숨김 포함). 커튼 뷰는 _root의 형제라 영향 없음.
+func set_native_intro_hud_visible(value: bool) -> bool:
+	if not is_instance_valid(_root):
+		return false
+	_root.visible = value
+	return true
+
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	layer = 10

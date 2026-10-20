@@ -83,8 +83,8 @@ etype·x 결정적). P2-001d가 본 "5마리 중 1마리 2×체력(1751)"은 보
   푸시 162회). 웹 cmp1(w1_boot)과 같은 구도로 정합.
 
 ## 잔여 (목록)
-1. 부트 자동 기동 배선(startup_activation intro_curtain_completion ENGINE 통합 — 총괄).
-2. begin의 ens 전부 제거(63279)·OPT.diff=5 강제 저장(63358)·HUD .on 토글(63414).
+1. ~~부트 자동 기동 배선~~ — **P2-001i에서 배선 완료**(`FDG_P2_001I_BOOT_INTRO_WIRING_20261020.md`).
+2. ~~begin의 ens 전부 제거(63279)·HUD .on 토글(63414)~~ — **P2-001i에서 구현**. OPT.diff=5 강제 저장(63358)은 잔여(설정 owner 분리).
 3. 키 가이드 4컷 패널 UI·voice_wakeup·Space 2s홀드/Tab/게임패드/클릭(63357~63407).
 4. bonfire kb 내향 소거(31740~41)·etype36/65/75 clearance 변형(해당 적 미존재).
 5. initialization 테스트 2실패(병합 main 선재 — HUD/이동 트랙).

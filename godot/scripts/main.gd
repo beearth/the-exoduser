@@ -18,6 +18,7 @@ const NativeSpriteInspector = preload("res://port_modules/native_sprite_resource
 const NativePlayerSpriteExpectation = preload("res://scripts/native_player_sprite_expectation.gd")
 const IntroCurtainViewScript = preload("res://port_modules/character_clip/intro_curtain_view.gd")
 const IntroCurtainFinishScript = preload("res://port_modules/character_clip/intro_curtain_source_finish.gd")
+const IntroCurtainSequenceScript = preload("res://scripts/native_intro_curtain_sequence.gd") # P2-001i
 const SourceImageWaitScript = preload("res://port_modules/source_object_sprite_wait_owner/producer.gd")
 const SourcePrepareViewScript = preload("res://port_modules/source_prepare_start_map_view_owner/producer.gd")
 const SourcePostStageScript = preload("res://port_modules/source_post_stage_owner/producer.gd")
@@ -87,6 +88,7 @@ var _native_player_sprite_startup_report: Dictionary = {}
 var _native_player_sprite_startup_readonly_calls: int = 0
 var source_intro_curtain: Control
 var source_intro_curtain_finish: Node2D
+var source_intro_sequence: Node2D # P2-001i 부팅 자동 연결(원본 64484 stage0 인트로 경로)
 var _source_intro_curtain_binding_error: String = "not_bound"
 var source_image_wait: Node
 var _native_source_image_wait_startup: Dictionary = {}
@@ -227,6 +229,7 @@ func _ready() -> void:
 	_install_native_attack_audio()
 	_bind_native_intro_curtain_view()
 	_bind_native_startup_services()
+	source_intro_sequence = IntroCurtainSequenceScript.install_native_boot(self) # P2-001i
 	var metrics_timer := Timer.new()
 	metrics_timer.wait_time = 0.1
 	metrics_timer.process_mode = Node.PROCESS_MODE_ALWAYS
