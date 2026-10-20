@@ -15,6 +15,7 @@ const SourceProvidersScript = preload("res://scripts/native_source_player_provid
 const SourceInitializationScript = preload("res://scripts/native_source_player_initialization.gd")
 const SourceInitializationServicesScript = preload("res://scripts/native_source_player_initialization_services.gd")
 const SourceLessonScript = preload("res://port_modules/parry_lesson_source/producer.gd")
+const ForgeScript = preload("res://scripts/native_forge_panel.gd") # DEMO11-27
 const AutoPotionScript = preload("res://scripts/native_potion_recovery.gd") # DEMO11-25
 const RegenerationPhaseScript = preload("res://scripts/native_source_player_regeneration_phase.gd") # P2-005d
 const NativeSpriteInspector = preload("res://port_modules/native_sprite_resource_readiness/producer.gd")
@@ -82,6 +83,7 @@ var _source_l_eq_cache: Variant = null
 var _source_l_eq_write_context: Dictionary = {}
 var source_initialization_result: Dictionary = {}
 var source_lesson: RefCounted
+var source_forge: CanvasLayer # DEMO11-27
 var source_potion: RefCounted = AutoPotionScript.new() # DEMO11-25, Main lifetime
 var source_regeneration: RefCounted # P2-005d — 원본 자연 회복 단계(배선 후 Player 레거시 0.28 비활성)
 var _source_lesson_file_init_attempted: bool = false
@@ -289,6 +291,9 @@ func _ready() -> void:
 	else:
 		if not _bind_native_source_regeneration_boot():
 			return
+	source_forge = ForgeScript.new() # DEMO11-27, existing actors/State only
+	source_forge.configure(self)
+	add_child(source_forge)
 	hud.bind_native_source_state(source_state) # P2-002a 원본 HUD 값 = state owner getter
 	# P3-002 initStage 소환굴 배치 — 원본 31655 `_regionInit(si)`가 "소환굴 확정 후" 지역 total을
 	# 계산하므로 지역 owner(P3-003) 구성보다 먼저 둔다(인트로 이전 순서도 유지).

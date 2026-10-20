@@ -1258,3 +1258,45 @@ func commit_native_auto_potion(owner: Node, field: String, value: Variant) -> Di
 			_p.hp = receipt.hp # actual HP readback, not a second HP owner
 		_: return {"accepted":false}
 	return {"accepted":true}
+
+# DEMO11-27: forge-only authority. Shop transactions are permitted while its UI pauses gameplay.
+const FORGE_TRANSACTION = preload("res://scripts/native_meta_enhancement_transaction.gd")
+var _forge_committing = false
+
+func _forge_owner_current(owner: Node) -> bool:
+	return _current_error().is_empty() and is_instance_valid(owner) and not owner.is_queued_for_deletion() \
+		and owner == _player.get_parent() and owner.get("source_state") == self and owner.get("world") == _world \
+		and owner.get_script() != null and owner.get_script().resource_path == "res://scripts/main.gd" \
+		and is_instance_valid(owner.get("source_forge")) and owner.source_forge.is_bound_to(owner,self)
+
+func apply_native_forge_enhance(owner: Node, item: Dictionary) -> Dictionary:
+	if _forge_committing or not _forge_owner_current(owner) or not owner.source_forge.owns_selection(item):
+		return {"status":"NOT_READY","reason":"forge_owner_or_selection_not_current"}
+	_forge_committing = true
+	var result: Dictionary = FORGE_TRANSACTION.attempt(item,_g,Callable(_world,"sample_native_random_unit"))
+	_forge_committing = false
+	return result
+
+func apply_native_forge_transfer_prefix(owner: Node, old: Dictionary, item: Dictionary) -> Dictionary:
+	# This entry is for the actual equip owner, not an independent forge transfer button.
+	if _forge_committing or not _forge_owner_current(owner) or not owner.source_forge.owns_transfer_handoff(old,item):
+		return {"status":"NOT_READY","reason":"actual_equip_continuation_not_bound"}
+	_forge_committing = true
+	var result: Dictionary = FORGE_TRANSACTION.transfer_prefix(old,item,_g)
+	_forge_committing = false
+	return result
+
+func apply_native_forge_potion_upgrade(owner: Node) -> Dictionary:
+	if _forge_committing or not _forge_owner_current(owner): return {"status":"NOT_READY","reason":"forge_owner_not_current"}
+	# G50694-50705: single selection only; modifier-key stale batch callbacks are not introduced.
+	var lv: int = _auto_potion_level
+	var cost: int = FORGE_TRANSACTION.Policy.malice_cost(float((lv+1)*5))
+	if lv>=10 or float(_p.get("lv",1))<float((lv+1)*100):
+		return {"status":"READY","paid":false,"reason":"potion_level_gate"}
+	if float(_g.mats)<float(cost): return {"status":"READY","paid":false,"reason":"insufficient_malice","cost":cost}
+	_forge_committing = true
+	_auto_potion_level += 1 # G50705 level write precedes the malice debit
+	_g.mats -= cost
+	_forge_committing = false
+	return {"status":"READY","paid":true,"level":_auto_potion_level,"cost":cost,"remaining":_g.mats,
+		"unported":["dbSaveNow, source flash/particle feedback"]}
