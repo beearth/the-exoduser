@@ -1,3 +1,11 @@
+## 2026-10-20 MAPLOOK-HOLE 독립 소환굴 강화 표시
+
+| 항목 | 변경·검수 경계 |
+|---|---|
+| 구현 | `scripts/maplook/spawn_hole_fx.gd` + 전용 셰이더. G.spawnHoles 읽기 전용, 한 world 자식 아래 개별 mesh. 원본 52622 직경 유지, 표시만 맥동·흡입·소멸 강화 |
+| 보호 | 공용 제품 파일·소환굴 owner 변경 0줄. 새 이미지·광원·공유 RNG 소비·세이브 쓰기 0. 기본 실행 연결은 총괄 담당 |
+| 검수 | 신규 actual Main67/0·소환굴298/0·starter148/0·contracts5그룹/0. 실창1920×1080·1x 대기/소환·시퀀스 검수, 작업자 국소PASS/총괄통합 미검수. 10초ABBA 추가평균+.111792ms, 최대편차+.810ms(원인 미분리). 소환 full샷의 HUD 구슬 빈 표시 별도 미진단. [보고서](engine/orders/reports/MAPLOOK-HOLE_REPORT.md), `G:\exoduser-wt\_out\MAPLOOK-HOLE-pc\visual-03\` |
+
 ## 2026-10-20 QA-002 테스트 결정성·종료·조명 하니스
 
 | 항목 | 변경·검수 근거 |
