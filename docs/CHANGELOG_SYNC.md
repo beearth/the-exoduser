@@ -56055,3 +56055,5 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 ## 2026-10-21 DEMO11-47k
 
 MAP11 fieldboss Marker 4개/실제 family bind, 실제 transport spawn_options와 arena geometry 선전환·실패복귀, E2E 제품 게이트 호출 관측 추가. PC HP/final/prefix owner 대기와 미검증 자연 입장 범위를 engine 상태표·47k 보고서에 기록. 보호 전투/비주얼/번역 변경 없음.
+
+47k 집중 검증 스크립트는 tests ignore 규칙의 정확한 파일 예외로 명시 add하여 결과 재현 경로를 함께 보존한다.
