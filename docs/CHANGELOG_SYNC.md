@@ -43,6 +43,17 @@
 | 원본 | 40..49각matching draw2/4/3/2/2/2/4/3/4/6,offtimer9999/phase−1/bleed0/상수flag·coords0draw,orbit31260뒤/erratic31300앞. raw46speed0분기·44R10(기획8과불일치),catalogshield%와실HP방어구분 |
 | 검수 | 최종신규12,602/0·원문1,000·38키값/순서/소비binary64/잘못된샘플위치검사. 회귀6종최종실패0/ERROR0/SKIP0. 최초importSIGSEGV−11/이후캐시누락ERROR50·실패단정10 원문보존,동일명령재import0/0및해당회귀4종재실행통과. 원인미확인·숨김0 |
 | 경계·기반 | main6d987cb8a에EC2-02 a10924eb포함하여main분기,EC3-01은미병합/미소비. 전체HP/coreprovider통합은HOLD·공용Main/State/저장/다른담당0줄. Node필수인자/출력join·UTF8임시JSON,새EXODUSER-ec3-02-Isolated-20261020·기존각상수/Godot전pgrep2이상30초대기/override0byte. [보고서](engine/orders/reports/ec3-02_REPORT.md)·원로그 ~/exoduser-wt/_out/ec3-02/ |
+
+## 2026-10-20 EC4-01 4장 유형·원소 선택 순수 정책
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준 / 범위 | 최신main249c26fad 직접분기, mainEC3-01/EC2-01 API·하니스형식재사용. 새policy/test·UID2·보고서/이절6파일만. 미병합EC2-03..06/EC3-02 반입0, 기존제품·공용·다른담당·저장·원본·R 변경0 |
+| 계약 / 원본 | G16633–16666/30976–31022, si14..20·31풀/총165/R9·36/비R22·129. strict .5·원CDF기각12/fallback2·F .45+6원소·주입RNG/NOT_READY. actor/HP/정예/World연결0 |
+| 원문 대조 | 원본JS2,814사례·63golden·각ULP경계·소비binary64/잔여tail/sentinel 정확대조. UTF-8파일oracle·한글emoji·모든22,364단정의행근거JSONL. --node-bin/진단join, 공용export2파일무수정 |
+| 검증 | 신규22,364/0. EC2선택7,483/0·constructor159,902/0·EC3선택10,234/0·factory3그룹/0·contracts5그룹/0. 최종ERROR/WARNING0. 변이5종에서347/2499/112/6/154실패검출후byte복원 |
+| 보호 / 제출 | 기존1,607파일byte동일. Godot13launch 매회count1·2이상30초대기, 지정/기존상수격리·override복원. [EC4-01 보고서](engine/orders/reports/ec4-01_REPORT.md), 원로그 ~/exoduser-wt/_out/ec4-01/. 자기branch push·원격SHA/DONE뒤자기worktree제거 |
+
 ## 2026-10-20 TRACE-BOSS-CH3 3장 보스 원본 추적·작은 이식 단위
 
 | 항목 | 추적·검토 근거 |
