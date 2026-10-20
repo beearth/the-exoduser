@@ -1,3 +1,11 @@
+## 2026-10-20 BC03 — 1장 보스 utility score 순수 함수
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 구현 | 신규 native_ch1_boss_utility.gd·test_boss_ch1_bc03_utility.gd·bc03_REPORT.md. BC02 3d510c2b 의존. 공용/타 담당 코드·기존 테스트·원본·설계 docs·R 수정0 |
+| 원본 | 시작 main 284d7faf game.html:37650–37699, 마감 main e556b617과 byte/행 동일. gate 순서/RNG0, 모든 history 등장 감점, rate/거리/combo/phase/novelty, RNG1회 뒤 얼굴+2·마지막 streak×3을 보존 |
+| 검증·경계 | 원본 독립 oracle6,577case 대조 및 read-only/provider/BC02 packet 경계. 신규 최초31,976단정/0실패/skip0/ERROR0. BC01 681/0·BC02 5,257/0·contracts5/5, 모든 회귀 ERROR0. 원로그는 bc03_REPORT에 기록. 점수 계산만이며 selector/AI/공격·실플레이 인수 아님 |
+
 ## 2026-10-20 BC02 — 1장 일반 보스 생성 수치 packet
 
 | id / 적용 위치 | 현재 정확 계약 |
