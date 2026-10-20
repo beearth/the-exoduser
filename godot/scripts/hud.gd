@@ -820,8 +820,13 @@ func _refresh_native_first_fight_hud() -> void:
 	# 60322: _regCur(지역 시스템 미이식) 폴백 = G._stageKills / (G._totalSpawned||0)
 	var stage_kills := int(_hud_num(g.get("_stageKills")))
 	var kill_total := int(_hud_num(g.get("_totalSpawned")))
-	_native_pulse("kill", stage_kills, _objective_values["kill"])
-	var kill_shown := mini(stage_kills, kill_total) if kill_total > 0 else stage_kills
+	var regions: Variant=g.get("_regions")
+	var region_current: int=int(_hud_num(g.get("_regCurIdx"))) if regions is Array else -1
+	if regions is Array and region_current>=0 and region_current<regions.size():
+		stage_kills=int(regions[region_current].kills)
+		kill_total=int(regions[region_current].total)
+	var kill_shown := mini(stage_kills,kill_total) if regions is Array or kill_total>0 else stage_kills
+	_native_pulse("kill",kill_shown,_objective_values["kill"])
 	_objective_values["kill"].text = _native_comma(kill_shown) + " / " + _native_comma(kill_total)
 	var mats := int(_hud_num(g.get("mats")))
 	_native_pulse("malice", mats, _objective_values["malice"])
@@ -832,6 +837,11 @@ func _refresh_native_first_fight_hud() -> void:
 		_stage_timer_label.text = "%02d:%02d" % [seconds / 60, seconds % 60]
 		if is_instance_valid(_stage_progress_fill):
 			var ratio := clampf(float(stage_kills) / float(kill_total), 0.0, 1.0) if kill_total > 0 else 0.0
+			if regions is Array:
+				var count:=0
+				for region in regions:
+					if region.cleared:count+=1
+				ratio=float(count)/4.0
 			_stage_progress_fill.size.x = 170.0 * ratio
 	# 슬롯 아이콘 — 변경분만 텍스처 로드
 	for slot_id in _slot_icons:
@@ -1002,6 +1012,8 @@ func _draw_native_minimap() -> void:
 	# MX.fillStyle rgba(0,0,0,.45) 바닥 (60195)
 	canvas.draw_rect(Rect2(Vector2.ZERO, Vector2(MINIMAP_W, MINIMAP_W)), Color(0, 0, 0, 0.45))
 	canvas.draw_texture(_minimap_cache, _minimap_origin)
+	var regions: Node=get_parent().get_node_or_null("NativeRegions")
+	if is_instance_valid(regions):regions.draw_minimap(canvas,_minimap_cache,_minimap_origin,_minimap_sc)
 	var g: Variant = _source_state.read_current_g() if is_instance_valid(_source_state) else null
 	# 소환굴 (60216~60222) — 신규 G.spawnHoles=[] (64395 계열)
 	if g is Dictionary and (g as Dictionary).get("spawnHoles") is Array:
@@ -1167,7 +1179,7 @@ func get_native_minimap_corner_snapshot() -> Dictionary:
 		"minimap_portrait_loaded": _minimap_portrait != null,
 		"sp_text": _sp_label.text if is_instance_valid(_sp_label) else "",
 		"cp_text": _cp_label.text if is_instance_valid(_cp_label) else "",
-		"unported": ["지역 오버레이·앵글러·자물쇠·필드보스 색점 4(G._regions/_FB_SITES 미이식 — 웹 실측 분류)",
+		"unported": ["지역 처치 C후크·소환굴확정분모·필드보스전투 미연결(P3-003)",
 			"소환굴 점 데이터(G.spawnHoles — 웹 14건 실측·포트 스포너가 G에 미기록: world 소유)",
 			"출구 ▲(!bossAlive 조건 — 신규 true)", "분산 빌드(_mmTickBuild — 고정 맵 1회 빌드 근사)",
 			"맵 오브젝트 마커(bonfire/trap/altar — 1장 데이터에 없음)", "frame drop-shadow·brightness 필터(953)",

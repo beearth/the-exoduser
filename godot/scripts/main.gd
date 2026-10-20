@@ -260,6 +260,12 @@ func _ready() -> void:
 		if not _bind_native_source_regeneration_boot():
 			return
 	hud.bind_native_source_state(source_state) # P2-002a 원본 HUD 값 = state owner getter
+	# P3-003: region-only owner, separate from input/regeneration/spawn writers.
+	var regions: Node=preload("res://scripts/native_regions.gd").new()
+	regions.name="NativeRegions"
+	add_child(regions)
+	if not regions.configure(self):
+		push_warning("Native regions not initialized; see P3-003 dependency report.")
 	hud.pause_requested.connect(_toggle_pause)
 	hud.restart_requested.connect(_restart)
 	_build_native_character_selection_ui()
