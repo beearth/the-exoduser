@@ -61,6 +61,24 @@ func _run() -> void:
 		for child in look.get_children():
 			if child is CanvasModulate: modulates += 1
 		_check(modulates == 1, "single ambient CanvasModulate")
+	# IMPACT-LOOK: 모듈 설치·타격 이벤트 반응·자체 RNG(공유 난수 소비 0)
+	var impact: Node = main.world.get_node_or_null("ImpactLook")
+	_check(impact != null, "impact look module installed with map look")
+	if impact != null:
+		var draws_before: int = int(main.world.get_native_runtime_snapshot().get("random_draw_count", -1))
+		var enemy: Node2D = null
+		for e in main.world.get_enemies():
+			if e.get("alive") == true:
+				enemy = e
+				break
+		if enemy != null:
+			main.player.telemetry_event.emit("native_hurte", {"ok": true, "source": "kiSlash", "step": 3, "is_crit": true, "killed": false, "enemy_id": enemy.get_instance_id()})
+			var snap_i: Dictionary = impact.get_snapshot()
+			_check(int(snap_i.get("bursts", 0)) == 1 and int(snap_i.get("live_sparks", 0)) >= 7, "heavy kiSlash hit spawns restrained spark burst (%s)" % snap_i)
+			_check(snap_i.get("freezing") == true and int(snap_i.get("live_rings", 0)) == 1, "heavy hit: one ring + presentation freeze")
+			main.player.telemetry_event.emit("native_hurte", {"ok": true, "source": "spikeTrap", "enemy_id": enemy.get_instance_id()})
+			_check(int(impact.get_snapshot().get("live_sparks", 0)) == int(snap_i.get("live_sparks", 0)), "spike trap DOT adds no sparks (restraint)")
+			_check(int(main.world.get_native_runtime_snapshot().get("random_draw_count", -1)) == draws_before, "impact look consumes no shared RNG")
 	# ③ 표시 전용
 	var g_keys: Array = main.source_state.read_current_g().keys()
 	g_keys.sort()

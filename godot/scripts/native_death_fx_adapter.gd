@@ -160,11 +160,27 @@ func spawn_native_impact(x: float, y: float, ang: float, lite: bool, no_flash: b
 	for i in range(count):
 		var sa: float = back + (_unit() - 0.5) * 2.2
 		var sv: float = 2.0 + _unit() * 4.0
-		fx2.emit_source_particle({"x": x, "y": y, "vx": cos(sa) * sv, "vy": sin(sa) * sv,
+		_emit_part(fx2, {"x": x, "y": y, "vx": cos(sa) * sv, "vy": sin(sa) * sv,
 			"color": "#bbbbbb" if i % 2 else "#ff4444", "size": 1.5 + _unit() * 2.0,
 			"life": 6.0 + _unit() * 5.0, "kind": 2 if i % 3 == 0 else 0, "rotation": sa,
 			"gravity": 0.06, "render_owner": "death_fx_impact_debris"})
 	_metrics.impacts += 1
+
+# P2-001b 결함 수정(2026-10-20): 원본 poolPart 패킷(x/y/vx/vy/문자열 color/life/kind)을
+# 받는 쪽(native_projectile_hit_fx.emit_source_particle)의 형식(position/velocity Vector2,
+# Color, life_ticks, type)으로 바꿔 넘긴다. 이전에는 형식 불일치로 전부 거부돼 방향성 파편·
+# 사망 링·플래시·대형 사망 버스트가 화면에 나오지 않았다(난수는 이미 소비됨). 값·순서 불변.
+static func _emit_part(fx: Variant, raw: Dictionary) -> bool:
+	if not is_instance_valid(fx) or not fx.has_method("emit_source_particle"):
+		return false
+	var packet := {"position": Vector2(float(raw["x"]), float(raw["y"])),
+		"velocity": Vector2(float(raw["vx"]), float(raw["vy"])),
+		"color": Color(str(raw["color"])), "size": float(raw["size"]),
+		"life_ticks": float(raw["life"]), "type": int(raw.get("kind", 0)),
+		"render_owner": str(raw.get("render_owner", ""))}
+	if raw.has("rotation"): packet["rotation"] = float(raw["rotation"])
+	if raw.has("gravity"): packet["gravity"] = float(raw["gravity"])
+	return fx.emit_source_particle(packet)
 
 # ── 처치 전반부: deathFX 코어(24805~24870) + 대형 사망 버스트(25396~) + 시체(24964~) + 핏자국(24903~) ──
 func spawn_native_death_front(enemy: Node2D, ang: float, dmg: int, radius: float, mhp: float,
@@ -183,9 +199,9 @@ func spawn_native_death_front(enemy: Node2D, ang: float, dmg: int, radius: float
 		_metrics.death_sound_skipped_missing_assets += 1
 	# 중심 플래시 링 tp3 (24833) + 중심 원형 플래시 tp1 ×1 (24836~24839) — 비보스.
 	if is_instance_valid(fx) and fx.has_method("emit_source_particle"):
-		fx.emit_source_particle({"x": x, "y": y, "vx": 0.0, "vy": 0.0, "color": "#ffffff",
+		_emit_part(fx, {"x": x, "y": y, "vx": 0.0, "vy": 0.0, "color": "#ffffff",
 			"size": radius if radius > 0.0 else 8.0, "life": 8.0, "kind": 3, "render_owner": "death_fx_ring"})
-		fx.emit_source_particle({"x": x + (_unit() - 0.5) * 4.0, "y": y + (_unit() - 0.5) * 4.0,
+		_emit_part(fx, {"x": x + (_unit() - 0.5) * 4.0, "y": y + (_unit() - 0.5) * 4.0,
 			"vx": (_unit() - 0.5) * 0.3, "vy": (_unit() - 0.5) * 0.3, "color": "#ffffff",
 			"size": 4.0, "life": 4.0, "kind": 1, "render_owner": "death_fx_flash"})
 	# 사망 피 시트 (24851~24864): death_blood 등록(19679: 128px 16f 4cols), scale=_deathBloodScale(r)
@@ -202,7 +218,7 @@ func spawn_native_death_front(enemy: Node2D, ang: float, dmg: int, radius: float
 		for i in range(16):
 			var a: float = TAU * float(i) / 16.0 + (_unit() - 0.5) * 0.4
 			var v: float = 3.2 + _unit() * 2.0
-			fx.emit_source_particle({"x": x, "y": y, "vx": cos(a) * v, "vy": sin(a) * v - 0.6,
+			_emit_part(fx, {"x": x, "y": y, "vx": cos(a) * v, "vy": sin(a) * v - 0.6,
 				"color": "#ffd9aa" if i % 3 == 0 else "#ffaa66", "size": 2.4 + _unit() * 2.8,
 				"life": 14.0 + _unit() * 10.0, "kind": 0, "gravity": 0.08,
 				"render_owner": "death_fx_large_burst"})
@@ -227,9 +243,9 @@ func spawn_native_lesson_kill_fx(enemy: Node2D, ang: float, dmg: int, radius: fl
 	var x: float = enemy.global_position.x
 	var y: float = enemy.global_position.y
 	if is_instance_valid(fx) and fx.has_method("emit_source_particle"): # deathFX 코어(24833~24839)
-		fx.emit_source_particle({"x": x, "y": y, "vx": 0.0, "vy": 0.0, "color": "#ffffff",
+		_emit_part(fx, {"x": x, "y": y, "vx": 0.0, "vy": 0.0, "color": "#ffffff",
 			"size": radius if radius > 0.0 else 8.0, "life": 8.0, "kind": 3, "render_owner": "death_fx_ring"})
-		fx.emit_source_particle({"x": x + (_unit() - 0.5) * 4.0, "y": y + (_unit() - 0.5) * 4.0,
+		_emit_part(fx, {"x": x + (_unit() - 0.5) * 4.0, "y": y + (_unit() - 0.5) * 4.0,
 			"vx": (_unit() - 0.5) * 0.3, "vy": (_unit() - 0.5) * 0.3, "color": "#ffffff",
 			"size": 4.0, "life": 4.0, "kind": 1, "render_owner": "death_fx_flash"})
 	if _blood_sheet != null: # 24851~24864 death_blood

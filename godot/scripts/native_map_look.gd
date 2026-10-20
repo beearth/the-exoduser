@@ -18,7 +18,8 @@ const CHUNK_DIR := "res://assets/map/production_finish/"
 const SYNC_INTERVAL := 0.2
 # PC Codex 독립 모듈(있으면 설치): install(world, map_data, player) 계약.
 const MODULES := ["res://scripts/maplook/spawn_hole_fx.gd", "res://scripts/maplook/toxic_surface.gd",
-	"res://scripts/maplook/actor_contact_shadows.gd", "res://scripts/maplook/ground_mist.gd"]
+	"res://scripts/maplook/actor_contact_shadows.gd", "res://scripts/maplook/ground_mist.gd",
+	"res://scripts/maplook/impact_look.gd"]
 const HOLE_SYNC_INTERVAL := 0.5
 
 var active := false
