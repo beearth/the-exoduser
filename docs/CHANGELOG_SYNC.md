@@ -1,3 +1,12 @@
+## 2026-10-21 BC2-09 wallPush 큐 독립 계산
+
+| 항목 | 구현·검증 근거 |
+|---|---|
+| 기준·의존 | main01051599 + BC2-08 4b0c919d 정상 merge fbd53c8e. BC2-03 생성부·chapter/context·BC07 packet 재사용 |
+| 원본·범위 | G37077 이동→hit→KB/block/shake 요청→안정 압축. onehit/iframe·charge 포함·strict strip·owner 사후 읽기. 실제 G/충돌/피해/Main 연결 HOLD |
+| 검증 | 신규3,729/0, 직접 관련 BC2-03 무수정1회25,749/0. 원문226상황/1,484event. 핵심 변이4/4(64·30·12·104실패), 인자 누락2종 거절. 최초 타입 guard 오류·변이 후속 오류는 보고서에 구분 기록 |
+| 보호·제출 | 공용6/Main/State/저장·다른 담당·원본·기존 모듈/테스트·바이너리0줄. [보고서](engine/orders/reports/bc2-09_REPORT.md), 원로그~/exoduser-wt/_out/bc2-09/. pgrep/30초 대기·각 격리명·override0byte·자기 branch 원격일치/DONE 후 WT 제거 |
+
 ## 2026-10-20 BC2-08 spiralBullet 큐·draw 독립 계산
 
 | 항목 | 현재 정확 계약 |
