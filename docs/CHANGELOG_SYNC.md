@@ -1,3 +1,15 @@
+## 2026-10-20 QA-003 종료 리소스 소유자 진단·인트로 하니스 정리
+
+| 항목 | 변경·검수 근거 |
+| --- | --- |
+| 기준 / 범위 | fetch 후 main `284d7faf49295b2f5061937a47ce96038032ed3c`, `codex/qa-003-20261020`. 인트로 테스트 종료 대기3줄·보고서·본 절만 변경. 제품·UI 테스트·공용6파일 0줄 |
+| 인트로 소유자 / 수정 | VoiceWakeup 자식의 AudioStreamMP3·PlaybackMP3 ObjectID가 verbose leak와 각각 일치. Main.free 뒤 process_frame12회만 추가(QA-002 방식); 기존 검사·기대값·skip·제품 오디오 조작0 |
+| 인트로 검수 | 수정 후 verbose3회 모두18/0·SKIP0·exit0·stderr ERROR0·ObjectDB 경고0·leak0·리소스0. 그룹8/5/5 유지, Camera2D 보간 WARNING 각1 보존 |
+| UI 제품 결함 / BLOCKED | 레슨 owner _saved_enemies에 parent=null·queued=false 적5마리 보관 후 영구 파괴 때 미해제. 적5개·자식15개의 ObjectID가 leak에 모두 일치. 원본 UI115/0이지만 baseline은 리소스18(적 관련17+음성1)·ERROR21 |
+| UI 대기 비교 / 수정안 | 진단 복사본만12프레임 대기해도115/0·ERROR21·leak64·리소스17 잔류. 제품 담당이 lesson owner 영구 파괴 시 소유 detached 적을 해제하는 방안만 제안; 제품 수정·UI 해결 선언0 |
+| 부하 / 격리 / 보존 | 매 실행 전 pgrep 개수 확인, 2이상이면30초씩 대기. 기존 회귀는 각 상수 격리명, 신규 진단은 EXODUSER-qa-003-Isolated-20261020. 실행마다 override.cfg 작성 후0byte. R·검사 조건 불변 |
+| 상세 | [QA-003 보고서](engine/orders/reports/qa-003_REPORT.md), 원로그·ObjectID 대조·DONE.txt `~/exoduser-wt/_out/qa-003/`. 첫 진단 get_path 추가 ERROR3도 실패로 보존 |
+
 ## 2026-10-20 QA-002 테스트 결정성·종료·조명 하니스
 
 | 항목 | 변경·검수 근거 |
