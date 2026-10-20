@@ -1,3 +1,13 @@
+## 2026-10-20 BC10 1장 보스 잡기·잠행 상태 packet
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준 / 범위 | 최신 main6d987cb8a 직접 분기, 신규 control module/test·자기 UID2·보고서만. 공용6·다른 담당·기존 테스트·원본·설계/LOCK·Q/E·2_3·R 변경0 |
+| 원문 / 계약 | G40837–40867·41047–41072. grab60/%10/tick .4/throw1.8/KB대입18·iframe30, Under45→Erupt40·8f후1회/r+120/.06sp. 실제 player·hurtP/boss_hurtE·패링·Main 집행0, 완전 owner readback 미수신은 NOT_READY |
+| 검증 | 최종 원문1,083사례·신규165774/0, BC01~09 회귀188319/0·contracts5그룹/0·cold import exit0/ERROR0. BC04~07 일반화 a3b5391c는 외부 읽기 전용 회귀에만 사용, 작업 기준/제품 의존으로 병합0 |
+| 실패 / 보호 | 최초 내장 Control 별칭 파싱 실패 보존·정정. 중복 자기 비교 제거 전207956/0과 최종 수치를 구분. 잠행 e.iframes를 실제 무적 성공으로 세지 않음. player 강제위치·KB대입/상태 owner·boss_hurtE 연결은 미확인 |
+| 격리 / 제출 | 신규 지정 userdir·기존 파일 상수·Godot pgrep gate/30초 대기 준수, UTF-8 임시 oracle 파일·node 인자·bc02/03 source-game. [BC10 보고서](engine/orders/reports/bc10_REPORT.md), 원로그 ~/exoduser-wt/_out/bc10/. 정상 훅·자기 branch push/원격 일치/DONE 후 자기 worktree 제거 |
+
 ## 2026-10-20 QA-007 테스트 Windows 이식성
 
 | 항목 | 구현·검수 근거 |
