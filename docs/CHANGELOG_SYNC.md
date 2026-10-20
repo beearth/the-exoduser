@@ -54434,3 +54434,13 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 - 실행별 증거는 분리한다: V1 17case77check true; V2 weak-expiry 준비조건 실패; 별도 current Script 제거 2case34check true + draw SCRIPT ERROR2회; draw 격리 후속 2case34check true·양로그 오류/경고/누수진단0. 이를 합산 PASS나 전체 V2·실게임 draw·자연GC 증명으로 표시하지 않는다.
 - V1→V2 직전 fresh currentWORK savedPRE 누락을 보존하며 새 사본을 소급 PRE로 삼지 않는다. 최초 커밋은 2026-10-17 15:50:14.573049~796774 UTC에 문서 동기화 훅으로 exit1이었다. 이 필수 변경로그 추가는 그 실패의 수리이며 과거 성공으로 소급하지 않는다.
 - [HP owner 계약·실행별 근거](engine/FDG_NATIVE_NORMAL_ENEMY_FIELD_OWNER_20261017.md) · [단계별 현황](engine/FDG_GODOT_PORT_STATUS.md). 별도 WIP 보존이며 main/R/실행판 갱신·P1-002 완료가 아니다.
+
+## 2026-10-20 — P3-003 지역 상태·미니맵 부분 연결(검수 대기)
+
+| 항목 | 현행·한계 |
+|---|---|
+| 구현 | 새 native_regions.gd/test_p3003_regions.gd. 실제 같은 G의4분면·원 소환굴count식·home귀속·80%-1e-9/문지기.10·FB미스폰생존·15frame/1.5tile/300CD, 미니맵 경계·정화틴트·사이트4/ELC/lock 및 원 제목. Main HUD-state bind 뒤 설치, HUD 현재지역kill/cleared÷4 연결. |
+| 새 검사 | core27/0, 실제Main 최초9/0(PID742)·생성순서정정9/0(PID1015)는 별개 실행. 실제G same-ref/초기사이트/미스폰미정화·가짜킬0 범위만. 표시 최초7중6통과1실패는RGBA8 alpha 반올림 기대 오류, 제품.45 변경 없이truncate114 단일경계1/0. 원실패 보존·합산전체PASS0. |
+| 환경·미완 | 원앱4.7.2 import1회 asset[DONE] 후 전역 editor_settings 저장 차단ERROR/TERM−15 보존. 추가import·전역권한변경0. 실제 사용자 save/app_userdata 읽기·복사0. C처치 hook/소환굴확정 후 분모init·FB전투/후속SFX·펫/실창1x·전체게임 인수 미완. |
+| 정상 보존 | 첫commit은 필수변경로그 누락으로docs-sync-check가거부, 우회없이본append와함께정상체크포인트. 타인stage/R제품/main병합0. |
+| 상세 | [현행 원본행·수치·원로그](engine/FDG_P3_003_REGIONS_20261020.md) · [검수대기 보고서](engine/orders/reports/P3-003_REPORT.md). 기존 P2 미이식 기록은당시이력으로보존. |

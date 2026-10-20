@@ -655,38 +655,42 @@ export function applyMapSourceHandColliderDelta(previewProject, options = {}) {
     ||!corpse.placementTiles.every(tile=>pair(tile,v=>integer(v,0,199))))
     return fail('explicit corpse2 noncollision resolution required; no corpse collider is synthesized');
   if(!plain(pit)||pit.finalMeta?.sz!==200||pit.finalMeta?.collision!==true||pit.col!==0||pit.collision!==true
-    ||pit.noCol!==false||pit.colParts!==false||pit.colW!==null||pit.colH!==null||pit.colSz!==null
-    ||pit.placements!==1||pit.shape!=='circle'||pit.onFloor!==true||!text(pit.source)||!text(pit.physics)
-    ||pit.colliderDim?.colSz!==80||pit.colliderDim?.unit!=='px radius'||!text(pit.colliderDim?.formula)
+    ||pit.finalMeta?.colW!==80||pit.finalMeta?.colH!==58||pit.finalMeta?.colOy!==7
+    ||pit.noCol!==false||pit.colParts!==false||pit.colW!==80||pit.colH!==58||pit.colOy!==7||pit.colSz!==null
+    ||pit.placements!==1||pit.shape!=='ellipse'||pit.onFloor!==true||!text(pit.source)||!text(pit.physics)
+    ||pit.colliderDim?.colW!==80||pit.colliderDim?.colH!==58||pit.colliderDim?.colOy!==7
+    ||pit.colliderDim?.unit!=='px radii; colOy px offset'||!text(pit.colliderDim?.formula)
     ||!pair(pit.rawTile,v=>integer(v,0,199))||!pair(pit.effectiveWorld,v=>Number.isFinite(v)&&v>=0&&v<=8000))
-    return fail('explicit pit_poison circle/world-px radius80 resolution required; unsupported schemas have no fallback');
-  if(!plain(added)||added.type!=='pit_poison'||added.shape!=='circle'||added.colSz!==pit.colliderDim.colSz
+    return fail('explicit MAP-021 pit_poison ellipse/world-px radii80x58/offset7 resolution required; unsupported schemas have no fallback');
+  if(!plain(added)||added.type!=='pit_poison'||added.shape!=='ellipse'
+    ||added.colW!==pit.colliderDim.colW||added.colH!==pit.colliderDim.colH||added.colOy!==pit.colliderDim.colOy
     ||added.onFloor!==true||!pair(added.rawTile,v=>integer(v,0,199))||!pair(added.effectiveWorld,Number.isFinite)
     ||added.rawTile.some((value,axis)=>value!==pit.rawTile[axis])
     ||added.effectiveWorld.some((value,axis)=>value!==pit.effectiveWorld[axis]||(added.rawTile[axis]+.5)*40!==value)
     ||added.effectiveWorld[0]!==6500||added.effectiveWorld[1]!==5580)
-    return fail('addedCollider must match explicit on-floor tile-center[162,139]/world[6500,5580]/radius80');
+    return fail('addedCollider must match explicit on-floor tile-center[162,139]/world[6500,5580]/ellipse80x58/offset7');
   const final=d.finalHandSubset;
-  if(final.objectColliderCount!==14||final.breakdown?.circle!==12||final.breakdown?.ellipse!==2
+  if(final.objectColliderCount!==14||final.breakdown?.circle!==11||final.breakdown?.ellipse!==3
     ||final.breakdown?.rotatedParts!==0||!final.scope.includes('PARTIAL'))
-    return fail('explicit final hand14/12 circle/2 ellipse/0 rotatedParts/PARTIAL required; full count stays unknown');
-  const primitive={id:'native-hand-13-pit_poison',kind:'circle',center:[...added.effectiveWorld],radius:added.colSz,
+    return fail('explicit final hand14/11 circle/3 ellipse/0 rotatedParts/PARTIAL required; full count stays unknown');
+  const primitive={id:'native-hand-13-pit_poison',kind:'ellipse',center:[added.effectiveWorld[0],added.effectiveWorld[1]+added.colOy],
+    radii:[added.colW,added.colH],yaw:0,
     nativeType:added.type,nativeRawTile:[...added.rawTile],nativeDeltaControl:d.control,
-    source:pit.source,normalizationRole:'explicit-native-v7-added-circle'};
+    source:pit.source,normalizationRole:'explicit-native-v7-added-ellipse'};
   if(collision.colliders.some(collider=>collider.nativeType==='pit_poison'||collider.id===primitive.id))
     return fail('duplicate pit_poison or repeated delta is rejected');
   const envelope={...base,control:d.control,kind:'engine-normalized-native-hand-collider-delta-v7',
     baseSourceExecutionSnapshot:base,nativeDeltaSnapshot:d,
     nativeDeltaBinding:{version:1,kind:'native-hand-meta-two-types-v7',tileSizePx:40,
-      baseResolution:'existing embedded v6 snapshot; baseRef fetch0',addedDimensions:'explicit colSz=world-px radius; scale multiply0/divide2=0',
+      baseResolution:'existing embedded v6 snapshot; baseRef fetch0',addedDimensions:'explicit colW/colH=world-px radii; colOy=world-px y offset; scale multiply0/divide2=0',
       excludedTypes:[{type:'corpse',placements:2,reason:'explicit source noncollision'}],
       fullObjectColliderCount:null,coverage:'PARTIAL',sourcePhysicalZClaim:false},
     executionData:{...base.executionData,objectColliderCount:14,objectColliders:[...collision.colliders,primitive]}};
   const attached=attachMapSourcePreviewCollision(project.value,{sourceExecutionData:envelope,scope:scope.value});
   result.errors.push(...attached.errors);result.pending.push(...attached.pending);if(!attached.ok)return result;
   Object.assign(result,{ok:true,candidateProject:attached.candidateProject,sourcePreview:attached.sourcePreview,
-    inspection:{oldSubsetCount:13,supportedSourceObjectColliderCount:14,circleCount:12,ellipseCount:2,
-      addedCollider:{id:primitive.id,type:primitive.nativeType,center:[...primitive.center],radius:primitive.radius,units:'world-px'},
+    inspection:{oldSubsetCount:13,supportedSourceObjectColliderCount:14,circleCount:11,ellipseCount:3,
+      addedCollider:{id:primitive.id,type:primitive.nativeType,center:[...primitive.center],radii:[...primitive.radii],yaw:primitive.yaw,units:'world-px'},
       excludedTypes:[{type:'corpse',placements:2,collision:false}],coverage:'PARTIAL',fullObjectColliderCount:null,
       sourcePhysicalZClaim:false,actorPosition:[...scene.actor.position],scope:scope.value}});
   return result;

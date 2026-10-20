@@ -137,7 +137,19 @@ func _test_placement_and_g() -> void:
 	var hud: Node = active_main.get("hud")
 	var hud_snap: Dictionary = hud.get_native_first_fight_hud_snapshot()
 	var kill_text := str(hud_snap.get("kill_text", ""))
-	_check(kill_text.ends_with("/ 168"), "HUD 처치 분모 = 168 (" + kill_text + ")")
+	# P3-003 지역(60700~): 원본처럼 배치 후 _initRegions — 4지역 분모 NW23·NE60·SW53·SE32(합 168).
+	# HUD 60322는 현재 지역 분모를 보인다(시작점 = SE 32, 웹 실측 SW 지점 0/53과 같은 규칙).
+	var regions: Variant = g.get("_regions")
+	if regions is Array and (regions as Array).size() == 4:
+		var totals: Array = []
+		for r in regions:
+			totals.append(int(r["total"]))
+		_check(totals == [23, 60, 53, 32], "G._regions 분모 NW23/NE60/SW53/SE32 (합 168) — %s" % str(totals))
+		var cur: int = int(g.get("_regCurIdx", -1))
+		var expect_total: int = int(regions[cur]["total"]) if cur >= 0 and cur < 4 else EXPECTED_TOTAL
+		_check(kill_text.ends_with("/ " + str(expect_total)), "HUD 처치 분모 = 현재 지역 %d (%s)" % [expect_total, kill_text])
+	else:
+		_check(kill_text.ends_with("/ 168"), "HUD 처치 분모 = 168 폴백 (" + kill_text + ")")
 	observations["kill_text_boot"] = kill_text
 	_check(bool(snap["void_black_texture"]), "원본 vfx_void_black.png 로드(바이트 복사)")
 	# 원본 타일 격자 동일성(해시) — 배치 입력

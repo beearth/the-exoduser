@@ -99,7 +99,7 @@ etype0 확률 = .5 × 12/128 ≈ 4.7% → 1-1 전체 168 중 기대 ≈ 8마리�
 | `godot/scripts/native_spawn_hole_system.gd` (신규) | 배치(정적 `build_native_placement`)·G 기록·갱신 루프(`advance_native`)·위치/rollEtype/mkEn RNG·etype0 실제 등록·reviveIframes 15 + 34456 감소(hurtE 북키핑 API)·완료(addParts 포트·addTxt·shake)·월드 렌더(void_black)·스냅샷. 하니스 부팅은 배치·G 기록만, 갱신 휴면(커튼 선례, `main.set_meta("native_spawn_holes","active")`로 가동) |
 | `godot/scripts/world.gd` | `register_native_spawn_hole_enemy` 추가(커튼 등록과 같은 동적 경로 — encounters.json·factory 가드 무변경) |
 | `godot/scripts/native_source_new_run_state.gd` | `apply_native_spawn_hole_g_writes`(owner 스크립트 경로 게이트: spawnHoles·_totalSpawned·shake만) |
-| `godot/scripts/main.gd` | 부팅 1줄: 인트로 설치 직전 `install_native_boot` (원본 initStage 배치 → 인트로 순서) |
+| `godot/scripts/main.gd` | 부팅 1줄: `install_native_boot` — main 병합(P3-003 지역) 후 **NativeRegions.configure 직전**으로 이동. 원본 initStage 순서(genFromTemplate 배치 30681 → `_initRegions` 60700~ 지역 분모)와 같게 하려는 것(이전 위치면 지역 owner가 빈 G.spawnHoles로 분모 0을 만든다) |
 | `godot/scripts/hud.gd` | unported 문구 2개 제거(G._totalSpawned·G.spawnHoles 이제 기록됨) — 동작 무변경 |
 | `godot/scripts/native_intro_curtain_sequence.gd` | **P2-001h RNG 정정**: 비보스 mkEn 무조건 소비 `_bossOrbitAng`·`_erraticAng` 2회 누락 → 추가(5링 7→9회/마리, 원본 실측 9) |
 | `godot/tests/test_p2001h_curtain_spawn.gd` | 위 정정에 맞춰 기대 순서·횟수(5×9+매직) 갱신 |
@@ -126,10 +126,14 @@ etype0 확률 = .5 × 12/128 ≈ 4.7% → 1-1 전체 168 중 기대 ≈ 8마리�
 | test_contracts | 5 / 0 | |
 | test_encounter_factory | 실패 3 (기준선과 동일) | 내 변경을 stash한 기준선에서도 같은 3건·같은 라벨(source count/only two real actors/registry only admitted) — 증가 없음 |
 
+**main 병합 후 재검증(origin/main ad6ac68 병합, P3-003 지역 포함)**: p3002 **297/0**(지역 분모 검사 추가) · p3003_regions 43/0(실부팅 지역 분모 23/60/53/32) ·
+p2002a 36/0 · p2002b 16/0 · p2001h 124/0 · p2001i 18/0 · p1002f 313/0 · p2001j 21/0 · p2001k 32/0 · contracts 5/0 · encounter_factory 0실패(main 쪽에서 기준선 정리됨).
+부팅 HUD 처치 표기 `0 / 32`(시작점 SE 지역).
+
 신규 테스트 관측(seed 20261020): 전체 168 소환 = 실제 etype0 액터 10 + unported 158, mkEn null 0, 나선/중심 폴백 0, 완료 14, 총 2454 draws.
 S 소환굴 일정 211/316/458/603/727/830/911/968 = 원본 실측 일치, M 일정 211/258/316/385/464/545/620/690/753/811/863/908/946/978/1003(원문 공식 — 같은 공식이 S 실측을 재현).
 etype0 소환 적이 플레이어 근접 공격으로 hurtE owner 경로(applied·ok, 쉴드/HP 감소) 피격 확인.
-HUD 처치 표기 부팅 직후 `0 / 168`.
+HUD 처치 표기 부팅 직후 `0 / 168`(병합 전 — 지역 시스템 없을 때 폴백).
 
 ## 4. 남은 것 (정직 기록)
 
@@ -141,7 +145,8 @@ HUD 처치 표기 부팅 직후 `0 / 168`.
 5. 렌더 순서: 원본은 MAP_OBJS 위·적 아래(52616) — Godot는 소품·적이 같은 y정렬 z대역이라 지면층 z −2001에 둠(나무 소품 아래로 가려질 수 있음). 라벨 글꼴은 원본대로 monospace bold 10px(SystemFont).
 6. 갱신 순서: 원본은 적 루프·checkRooms 뒤 — Godot는 노드 물리 순서(소환 시스템이 World 자식으로 먼저 처리).
 7. `_gameFrame`: Godot 쪽은 소환 시스템이 G.on·레슨·일시정지 게이트 통과 횟수로 자체 계수(원본 전역 카운터의 다른 소비자는 미연결).
-8. 지역 시스템(`G._regions`, 60700~ 4지역 분모·필드보스) — Mac 작업 5 소관. HUD는 60322 폴백(_stageKills/_totalSpawned) 그대로.
+8. 지역 시스템(P3-003, main 병합분 `native_regions.gd`)과 연결: 배치를 지역 초기화보다 먼저 해서 `G._regions` 분모가 원본대로 **NW 23 · NE 60 · SW 53 · SE 32**(합 168).
+   HUD 60322는 현재 지역 분모를 표시 — 시작점(SE) `0 / 32`, 웹 실측 SW 지점 `0 / 53`과 같은 규칙. 지역 처치 C후크·필드보스 전투는 P3-003 잔여.
 9. **화면 검수(클라우드 1차)** — Xvfb 실창(gl_compatibility, 1920×1080)으로 Godot 캡처, 같은 장면(소환굴 (3780,6220), 플레이어 (3780,6560))을 원본 웹(Playwright 1920×1080)에서도 캡처해 나란히 대조:
    [cmp_hole_web_left_godot_right_2x.png](evidence/p3-002/cmp_hole_web_left_godot_right_2x.png) · 미니맵 [godot_minimap_holes_3x.png](evidence/p3-002/godot_minimap_holes_3x.png).
    시트·크기·라벨 위치(화면 y≈92)·글꼴 느낌 일치, 미니맵 #aa4444 점·검은 외곽선·L 크게 일치. **Godot가 전체적으로 어둡다**(구멍 평균 RGB 웹 82/49/117 vs Godot 46/33/68, 바닥 웹 52/49/56 vs 33/35/39) —

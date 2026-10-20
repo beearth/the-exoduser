@@ -4,6 +4,9 @@ extends SceneTree
 const FactoryScript = preload("res://scripts/enemy_factory.gd")
 const WorldScript = preload("res://scripts/world.gd")
 const SpineScript = preload("res://scripts/enemy_tank_physical_spine_beast.gd")
+const IceScript = preload("res://scripts/enemy_tank_ice_soul_flame.gd")
+const CrawlerScript = preload("res://scripts/enemy_melee_flesh_crawler.gd")
+const HiveScript = preload("res://scripts/enemy_archer_lightning_hive_bloater.gd")
 const PhysicalScript = preload("res://scripts/enemy_projectile_physical.gd")
 const STEP = 1.0 / 60.0
 const PROFILE = "native_ch1_etype4_physical_spine_beast_v1"
@@ -179,15 +182,22 @@ func _test_admission() -> void:
 	root.add_child(world)
 	var report: Dictionary = world.get_encounter_report()
 	var actors: Array = world.get_enemies()
-	_check(world.ready_for_player and report.get("source_count") == 16 and report.get("supported_count") == 4 and report.get("unsupported_count") == 12 and actors.size() == 4, "actual world constructor consumes source16 into four exact actors and twelve explicit unsupported records")
-	if actors.size() != 4 or report.get("records", []).size() != 16:
+	# game.html:31120-31162 and 31608-31648 define the unchanged source records/order.
+	_check(world.ready_for_player and report.get("source_count") == 16 and report.get("supported_count") == 6 and report.get("unsupported_count") == 10 and actors.size() == 6, "actual world consumes source16 into six exact actors and ten explicit unsupported records")
+	if actors.size() != 6 or report.get("records", []).size() != 16:
 		world.free()
 		return
-	_check(actors[2].get_script() == SpineScript and actors[2].source_order == 13 and str(actors[2].name) == "ch1_initial_014" and actors[3].source_order == 14, "new actor registers before the unchanged neighboring crawler")
+	var orders: Array = []
+	for registered in actors:
+		orders.append(registered.source_order)
+	_check(orders == [0, 1, 8, 13, 14, 15], "actual registry preserves exact supported source order")
+	_check(actors[3].get_script() == SpineScript and actors[3].source_order == 13 and str(actors[3].name) == "ch1_initial_014" and actors[4].source_order == 14 and actors[4].get_script() == CrawlerScript and str(actors[4].name) == "ch1_initial_015", "exact spine actor registers before the unchanged dedicated crawler")
 	var entry: Dictionary = report["records"][13]
 	_check(_equal(entry["record"], record) and _equal(entry["source_support"], record["support"]) and entry["consumer_profile"] == PROFILE and entry["status"] == "supported", "full original record and snapshot support coexist with current capability")
-	_check(report["records"][2]["status"] == "unsupported" and report["records"][8]["status"] == "unsupported" and report["records"][15]["status"] == "unsupported", "guardian, other element type4 and archer remain unsupported")
-	var actor = actors[2]
+	_check(report["records"][2]["status"] == "unsupported", "guardian remains explicitly unsupported")
+	_check(report["records"][8]["status"] == "supported" and report["records"][8]["consumer_profile"] == "native_ch1_etype4_ice_soul_flame_v1" and actors[2].get_script() == IceScript and str(actors[2].name) == "ch1_initial_009", "ice type4 uses its exact dedicated class and profile")
+	_check(report["records"][15]["status"] == "supported" and report["records"][15]["consumer_profile"] == "native_ch1_etype1_lightning_hive_bloater_v1" and actors[5].get_script() == HiveScript and str(actors[5].name) == "ch1_initial_016", "lightning archer uses its exact dedicated class and profile")
+	var actor = actors[3]
 	_check(_equal(actor.data, _config["runtime"]) and _equal(actor.initial_timers, record["initial_timers"]) and _equal(actor.native_flags, _config["runtime"]["native_flags"]), "actual configure copies source-derived profile, initial clocks and flags")
 	for key in _config["runtime"]["native_final"]:
 		_check(record["native_final"].has(key) and _equal(actor.data["native_final"][key], record["native_final"][key]), "every consumed native field retains source origin: " + key)

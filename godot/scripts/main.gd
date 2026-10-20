@@ -260,6 +260,13 @@ func _ready() -> void:
 		if not _bind_native_source_regeneration_boot():
 			return
 	hud.bind_native_source_state(source_state) # P2-002a 원본 HUD 값 = state owner getter
+	preload("res://scripts/native_spawn_hole_system.gd").install_native_boot(self) # P3-002 genFromTemplate 소환굴 배치 — 원본처럼 _initRegions(지역 분모) 이전
+	# P3-003: region-only owner, separate from input/regeneration/spawn writers.
+	var regions: Node=preload("res://scripts/native_regions.gd").new()
+	regions.name="NativeRegions"
+	add_child(regions)
+	if not regions.configure(self):
+		push_warning("Native regions not initialized; see P3-003 dependency report.")
 	hud.pause_requested.connect(_toggle_pause)
 	hud.restart_requested.connect(_restart)
 	_build_native_character_selection_ui()
@@ -267,7 +274,6 @@ func _ready() -> void:
 	_install_native_attack_audio()
 	_bind_native_intro_curtain_view()
 	_bind_native_startup_services()
-	preload("res://scripts/native_spawn_hole_system.gd").install_native_boot(self) # P3-002 initStage 소환굴 배치(인트로 이전)
 	source_intro_sequence = IntroCurtainSequenceScript.install_native_boot(self) # P2-001i
 	var metrics_timer := Timer.new()
 	metrics_timer.wait_time = 0.1

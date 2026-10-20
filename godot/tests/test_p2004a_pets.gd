@@ -24,6 +24,9 @@ func _run() -> void:
 		and ProjectSettings.get_setting("application/config/custom_user_dir_name", "") == USERDIR
 	for group in GROUPS:
 		current_group = group
+		if OS.get_environment("EXODUSER_P2004A_FAILED_ONLY") == "1" and group != "pets_spawn_and_tut_start":
+			skipped.append(group)
+			continue
 		if not isolated:
 			skipped.append(group)
 			print("P2004A_SKIP ", group)
@@ -72,6 +75,14 @@ func _pets() -> Node:
 func _test_pets_spawn_and_tut_start() -> void:
 	if not await _boot_main():
 		_check(false, "boot")
+		return
+	var source_state: Node = active_main.get("source_state")
+	_check(source_state.read_current_g().get("on") == false, "하니스 pre-stage G.on=false")
+	_check(_pets().get_native_pets_snapshot()["say_log"].is_empty(), "원본 9508 G.on 전 대사 정지")
+	var curtain_owner: Node = active_main.get("source_intro_sequence")
+	var receipt: Dictionary = source_state.apply_native_intro_curtain_g_writes(curtain_owner, "open")
+	_check(receipt.get("applied") == true and receipt.get("on") == true, "원본 63412 G.on 점등 owner")
+	if receipt.get("applied") != true:
 		return
 	for i in range(20):
 		await physics_frame

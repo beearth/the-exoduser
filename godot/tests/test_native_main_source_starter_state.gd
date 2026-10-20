@@ -38,8 +38,8 @@ func _run() -> void:
 		print("MAIN_STARTER_GROUP_RESULT " + JSON.stringify(row))
 	print("MAIN_STARTER_SUITE_RESULT " + JSON.stringify({"groups": selected.size(), "checks": checks,
 		"failures": failures, "results": rows, "actual_Main": true, "input_fixtures": false,
-		"derived_parameters_applied": false, "full_bootstrap_completed": false,
-		"automatic_source_phase_activated": false, "userdir": OS.get_user_data_dir(), "old_suites": 0}))
+		"full_derived_parameters_proven": false, "full_bootstrap_completed": false,
+		"full_automatic_source_pipeline_proven": false, "userdir": OS.get_user_data_dir(), "old_suites": 0}))
 	quit(0 if failures == 0 else 1)
 
 func check(ok: bool, label: String) -> bool:
@@ -72,7 +72,11 @@ func _test_startup_state_and_items() -> Dictionary:
 	var p: Dictionary = state.read_current_p()
 	check(g.size() == 40 and state.read_current_stats().size() == 5 and state.read_current_passives().size() == 26, "actual G40/STATS5/PAS26 source constructors")
 	check(is_same(g, providers["current_g"].call()) and is_same(p, providers["current_p"].call()), "same G/P references across actual providers")
-	check(not g.has("_fireZones") and not p.has("hpR"), "unpublished stage zone/HP derived field is not manufactured")
+	# QA-001: boot packet and actual post-applyStats P are different phases.
+	# game.html:27930,27944 write hpR before new-game initStage (64019,64025).
+	check(not g.has("_fireZones") and not STATE.source_boot_p()["values"].has("hpR"), "unpublished stage zone and constructor-only HP rate remain absent")
+	var hp_rate_writes: Array = state.get_snapshot()["source_initializer_writes"].filter(func(write): return write["field"] == "hpR")
+	check(not hp_rate_writes.is_empty() and p.has("hpR") and p["hpR"] == hp_rate_writes.back()["value"], "current HP rate equals the final original initialization write")
 	var snap: Dictionary = state.get_snapshot()
 	for packet in snap["source_boot_inputs"].values():
 		check(packet["current"] == false and packet["derived"] == false, "source input packet stays noncurrent/nonderived")
@@ -135,7 +139,10 @@ func _test_original_provider_consumers() -> Dictionary:
 	check(snap["raw_grit_current"]["ready"] == true and snap["raw_grit_current"]["raw"] == 0 and snap["source_grit_boot_input"]["current"] == false, "actual raw declaration0 distinct from boot-input readiness")
 	var grit_total: Dictionary = bundle["grit_total"].call()
 	check(grit_total["status"] == "READY" and grit_total["ready"] == true and (grit_total["value"] is int or grit_total["value"] is float), "new structured original gritTotal getter returns actual source result")
-	check(snap["source_parameters"]["ready"] == false and snap["source_parameters"]["missing"] == ["resource_sink"], "parameter binding does not invent a derived command sink")
+	check(snap["bindings"]["parameters"]["ready"] == false and snap["bindings"]["parameters"]["missing"] == ["resource_sink"], "initial provider receipt has no fabricated resource sink")
+	check(snap["source_parameters"]["ready"] == true and snap["source_parameters"]["missing"].is_empty() and snap["resource_sink_installed_by_bundle"] == false, "current original dispatcher owns the installed resource sink, not the provider bundle")
+	var initialization: Dictionary = main.get_native_source_player_initialization_snapshot()
+	check(initialization["result"]["completed"] == true and not main.source_initialization.is_native_source_initialization_active(), "source dispatcher completed and closed the constructor write window")
 	check(snap["main_full_ready"] == false and snap["derived_parameter_application_proven"] == false and snap["automatic_rate_advance"] == false, "actual providers are not full Main/derived/automatic phase")
 	var out = {"fusion_holyDome": star["value"], "grit_total": grit_total,
 		"binding_ready": snap["binding_ready"], "parameters": snap["source_parameters"]}

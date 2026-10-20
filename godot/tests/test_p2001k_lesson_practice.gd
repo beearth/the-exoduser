@@ -2,8 +2,8 @@ extends SceneTree
 ## P2-001k — 레슨 패널 디자인 계약 + 연습 본문(-3/-2/-1) 회귀 (실제 Main 부팅).
 ## 패널: UI_FOUNDATION parryLesson 계약 + 웹 실측(lesson_styles.json) 스팟 체크.
 ## 연습: beginPractice(177) → -3 이동 120(512~515) → -2 기검참 10+풀차지(651/671,
-## hurtE 42111 위임 포함) → -1 마법 5(652/672) → step 8(501 순서) 도달 시 정지
-## (가시덫·0~7 미이식 — 가짜 진행 금지) → 스킵 복원.
+## hurtE 42111 위임 포함) → -1 마법 5(652/672) → step 8(501 순서) 실제 가시덫 대기
+## (시전·처치·탈출 전 자동 성공 금지) → 스킵 복원.
 const USERDIR = "EXODUSER-P2001K-Isolated-20261020"
 const HURTE = preload("res://scripts/native_normal_enemy_hurte.gd")
 const GROUPS = ["panel_design_contract", "practice_basic_steps", "halt_and_skip_restore"]
@@ -204,16 +204,16 @@ func _test_halt_and_skip_restore() -> void:
 	if not is_instance_valid(flow):
 		return
 	_check(int(flow.get("step")) == 8, "order -1 -> 8 spike trap next (501)")
-	_check(str(flow.get("practice_halted")) == "spike_trap_unported",
-		"step 8 halts honestly (가시덫=시작 스킬 트랙·가짜 진행 금지)")
+	_check(str(flow.get("practice_halted")) == "" and (flow.get("trap_enemies") as Array).size() == 10,
+		"step 8 starts real trap practice with 10 enemies (261~280)")
 	var ui: Dictionary = flow.get("_ui")
-	_check((ui["keycap"] as Label).text == "1" and (ui["subtitle"] as Label).text.begins_with("4 / 12"),
-		"step 8 panel content (keycap '1', 4/12)")
+	_check((ui["keycap"] as Label).text == "1 + W A S D" and (ui["subtitle"] as Label).text.begins_with("4 / 12"),
+		"step 8 panel content (298 keycap, 4/12)")
 	var step_before: int = int(flow.get("step"))
 	for i in range(40):
 		await process_frame
 	_check(int(flow.get("step")) == step_before and flow.get("active") == true,
-		"no fake progression while halted")
+		"no automatic completion without trap kills and escape (296)")
 	flow.skip_all()
 	for i in range(4):
 		await process_frame
