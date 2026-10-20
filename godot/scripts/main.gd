@@ -3066,3 +3066,11 @@ func invalidate_native_runtime_refresh_legendary_cache(refresh: Object) -> bool:
 		return false
 	_source_l_eq_cache = null
 	return true
+
+# DEMO11-etype-a — no AI/factory/protected sink replacement.
+var _native_etype_a_spawn: RefCounted
+func request_native_etype_a_spawn(owner: Node, group_id: String, source: Dictionary) -> Dictionary:
+	if _native_etype_a_spawn==null:
+		_native_etype_a_spawn=preload("res://scripts/native_demo11_etype_a_spawn.gd").new()
+		_native_etype_a_spawn.configure(self)
+	return _native_etype_a_spawn.spawn_selected(owner,group_id,source)

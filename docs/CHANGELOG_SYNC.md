@@ -1,3 +1,9 @@
+## 2026-10-21 DEMO11-etype-a selected0 P3→MAP11→43 origin 인계
+
+- main0138c5bb9에 DEMO11-43 9b763da9 정상 fast-forward merge. Main+8/State0·신규 얇은 consumer만. 기존 P3 type0 constructor/World 등록/43 immutable origin 재사용, source pool/RNG/HP/AI/16좌표 복제0.
+- 부분 구현·통합 BLOCKED:1/4 자연 constructor/등록·5/6 미구현·PC 보호 도메인·자연 source scheduler 미완. 5종 동시 스폰 벤치0회(미충족 명시), 요청 거절 시간을 대체 성능으로 제출하지 않음.
+- 신규48/0·직접회귀338/0(총386/0), P3 종료ObjectDB8 경고원문 보존. etype별 전후/경계 테스트 수·공용 줄 범위·검증은 [보고서](engine/orders/reports/demo11-etype-a_REPORT.md), docs/8.0 최신 Native 상태 동기화. 정상훅·자기branch push/remote/DONE 후 자기WT 제거.
+
 ## 2026-10-21 DEMO11-43 최신 main 충돌 해소 후속
 
 - 같은 브랜치 c5551464에 main0138c5bb 정상 merge. Main의 PC runtime-stat refresh와 기존 adapter 공개 진입점을 모두 보존, 추가 제품 변경0. 번역 목록은 main byte 동일·CRLF 유지. 관련 재검증 및 원격 일치는 [보고서](engine/orders/reports/demo11-43_REPORT.md) 후속 절과 _out/demo11-43/merge-*에 기록한다.
