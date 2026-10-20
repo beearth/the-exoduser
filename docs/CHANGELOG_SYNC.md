@@ -1,3 +1,12 @@
+## 2026-10-21 DEMO11-31 — 앵글러 family·실제 탄·PC final→지역 gate
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준·연결 | main45be76e4+37/05f41cc7 정상 merge8992ef35. Main 설치/Marker API·실제 World phase/동일G·35 registry field birth/에너지 sweep·PC readback→P3→37. source 좌표 복제0·원본 PNG byte재사용. |
+| 보호·원문 | Main+6/0·registry field접점31+/4−, State/World/Player/PC 피해·패링·저장·맵0. 180/180 재충전 burst 구간·혈안 drop 면제·에너지 출생후18/96·r26 그대로. |
+| 검증 | 신규1402/0+PC집중11/0+기존200/0=기능1613/0. 벤치1회263/0 cleanPASS, 4actor/256energy·240틱 mean1.133850/max4.649ms<8.333ms. 초기2실행 예외/기대값 실패·자기PID종료 원문보존/실패만수정, PC후속은집중11만. |
+| 문서·제출 | [계약·범위·실패/성능](engine/orders/reports/demo11-31_REPORT.md), FIELD cadence/visibility·fieldboss 추적 현행 보충. 자기branch 일반push/원격일치/DONE 후 WT제거·R불변, _out/demo11-31 원로그. |
+
 
 ## 2026-10-21 DEMO11-18 일반 데모 합체·흡수·성급·되돌리기 원장
 

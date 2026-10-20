@@ -1,3 +1,5 @@
+> **2026-10-21 DEMO11-31 native 앵글러:** Main의 같은 State G/World owner·warning phase, Marker provider4개, 기존35 registry를 통해 1000거리 기상/54출현·180충전·실제 에너지탄·60f 혈안 전조/사망취소·PC 최종 readback→P3→37 gate를 연결했다. 원본 시트를 byte 그대로 재사용하며 맵 좌표/지형·Player 피해/패링·저장 변경0. **실제 Marker 설치·PC 타깃 피해/접촉/최종 producer·전용 연출/사운드는 후행**이며 자연 전투 인수를 뜻하지 않는다. 기본180/180 재충전의 burst 굶는 구간과, 별도 상태에서 혈안이 drop 면제인 원문을 그대로 보존한다. [인터페이스·검증/성능](../engine/orders/reports/demo11-31_REPORT.md).
+
 # 필드 부보스 화면 밖 탄막 차단 (2026-09-12)
 
 화면 밖에서 부보스 탄막이 날아오는 문제를 막기 위해 일반/시험용 게임 HTML에 동일한 발사 조건을 적용한다.
