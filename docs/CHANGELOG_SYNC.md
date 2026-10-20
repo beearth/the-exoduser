@@ -1,3 +1,9 @@
+## 2026-10-21 DEMO11-39 부활·리스폰 PC 집행 인터페이스 BLOCKED
+
+- main0138c5bb9 정적 대조: HP0 `player_died` 수신 가능, 실제 actor는 이미 dead. 저장 restore/단회 초기화 API는 fallen·부활 무적·retry 집행 계약이 아니므로 우회하지 않음.
+- 원본 G43721–43751/43847–43894/63474–63530/63673–63682와 DEMO11-37 05f41cc7 clear guard 위치·OLD/NEW PC 계약을 [보고서](engine/orders/reports/demo11-39_REPORT.md)에 기록. 기준 main에37 미포함, 읽기 대조만.
+- 제품/Main/State/PC 보호 경로/번역 master 각0줄. docs/2_5에 native 미구현 상태 명시. Godot0·런타임 테스트/캡처 미실행, PASS 주장0. 자기branch 정상훅·push/remote/DONE 후 WT 제거.
+
 
 ## 2026-10-21 DEMO11-18 일반 데모 합체·흡수·성급·되돌리기 원장
 
