@@ -281,19 +281,19 @@ func _test_actual_main() -> void:
 	var view := View.new()
 	_check(view.configure(services), "read view binds real Services without replacing owner")
 	var packet: Dictionary = view.read_current_options_view()
-	_check(packet.get("status") == "NOT_READY" and packet.get("reason") == "source_settings_fields_missing",
-		"actual native owner gap is visible, not manufactured READY")
-	_check(packet.get("current_count") == 35 and packet.get("expected_count") == 38 \
-		and packet.get("missing_keys") == ["textScale", "panelFit", "diffV2"], "actual native35 reports exact source38 gap")
-	_check(is_same(packet.get("observed_options"), current) and not packet.has("options"), "actual diagnostic ref identity / no usable fallback")
+	_check(packet.get("status") == "READY",
+		"actual owner initializes all source fields")
+	_check(packet.get("current_count") == 38 and packet.get("expected_count") == 38 \
+		and packet.get("missing_keys") == [], "actual source38 complete")
+	_check(is_same(packet.get("options"), current) and not packet.has("observed_options"), "actual usable ref identity / no fallback")
 	_check(is_same(current, services.read_current_options()) and current == before, "view leaves actual options ref and all values unchanged")
 	_check(current.get("diff") == 5 and current.get("parts") == 80 \
 		and current.get("sfxVol") == 60 and current.get("fpsCap") == 0, "actual baseline source values5/80/60/0")
 	_check(phase_before.get("phase") == "current_pre_restore" \
 		and state.get_last_status().get("phase") == phase_before.get("phase"), "reader cannot promote lifecycle to restored/live")
-	_check(cap_before == 240 and Engine.max_fps == cap_before \
+	_check(cap_before == 0 and Engine.max_fps == cap_before \
 		and hz_before == 60 and Engine.physics_ticks_per_second == hz_before \
-		and _input_snapshot() == input_before, "actual Engine240 / physics60 / InputMap unchanged")
+		and _input_snapshot() == input_before, "actual configured Engine0 / physics60 / InputMap unchanged")
 	_observations[_group] = {"status": packet.get("status"), "current_count": packet.get("current_count"),
 		"missing_keys": packet.get("missing_keys"), "phase": phase_before.get("phase"),
-		"actual_identity": is_same(packet.get("observed_options"), current), "cap": cap_before, "physics_hz": hz_before}
+		"actual_identity": is_same(packet.get("options"), current), "cap": cap_before, "physics_hz": hz_before}

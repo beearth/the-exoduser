@@ -151,6 +151,38 @@
 | 검증·인계 | 신규383/0·원문24사례·실제PC거부복구2, 초기숫자비교하니스25실패보존·실패suite만재실행. 기존6suite2827/0 각1회·합3210/0(skip0/ERROR0). 관련회귀결과·줄범위·plan 2→1pass 근거는 [보고서](engine/orders/reports/demo11-19r_REPORT.md). 기존HUD최소표시/새full UI·세이브IO0 |
 | 제출 | META·번역목록·자기WORK_BOARD 갱신, 정상훅·정확경로staging·자기branch push/remote/DONE 뒤WT제거, R불변 |
 
+## 2026-10-21 DEMO11-50 — 사운드 탭 개발 상태 문구 제거
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 화면·번역 | music_note KO/EN 및 Label 제거, 기존 슬라이더·토글 테마 유지. 번역1행만 byte 삭제, CRLF4225개 보존/전체 개행 변환0 |
+| 범위 | 최신main0138c5bb9 merge 확인(이미 조상). BGM 연결은 사용자 인수한 DEMO11-41 담당, 재생/공용/전투/저장 변경0. [보고서](engine/orders/reports/demo11-50_REPORT.md), [설정 계약](3.3%20키바인딩+설정/DEMO11_50_NATIVE_SETTINGS_20261021.md). 관련1회 검사·사운드 캡처·최종SHA는 보고서/DONE |
+
+## 2026-10-21 DEMO11-50 RETOUCH — 설정 슬라이더·토글
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| UI | 보고서 최종 변경줄75·112·127·150–173 반영. PASS 패널/탭/폰트 유지, 흑철 트랙·금빛 채움/손잡이·88×40 가독 토글. native 입력/설정 writer 유지, 새 문구0 |
+| 병합·검증 | main0138c5bb 정상 merge, 로비 bridge 보존·자체 설정 저장 모듈 이름 분리. 실제 GPU 관련 suite 각1회53/0, 캡처2장+1x크롭, 눈 재검수 대기. [보고서](engine/orders/reports/demo11-50_REPORT.md), [설정 계약](3.3%20키바인딩+설정/DEMO11_50_NATIVE_SETTINGS_20261021.md) |
+
+## 2026-10-21 DEMO11-50 — 설정 차단 해소·허용 OPT 저장/복원·UI
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준 | origin/main45be76e49 + DEMO11-09dc9f34ea 정상 merge319ca387. Main/State/전투 핵심 자체 변경0 |
+| S01/S10 | 기존 OPT owner에 원본 초기textScale100/panelFittrue/diffV2=1 추가(38필드), 허용7필드 writer. 기존 demo11-05 IO에 원본settings/lang/screen 키 추가, 실제 user 폴더 거절·전용demo namespace. 보호 저장필드 보존/키복원0/저장 실패prefix 명시 |
+| UI/문서 | pause 설정→4탭, 볼륨/ko-en/120포함render cap/전체화면/접근성. Q 패링·E 방패(불꽃칼날) 안내 수정. 기존crest·Hell Gothic·폰트, 번역대상 등록. [현행계약](3.3%20키바인딩+설정/DEMO11_50_NATIVE_SETTINGS_20261021.md), [수치·공용줄·캡처 보고서](engine/orders/reports/demo11-50_REPORT.md) |
+| 경계 | 키변경/BINDS·inputMode 이관/난이도·QE/Player save0, BGM 재생 owner HOLD 명시. tick 목록생성API0. 관련회귀각1회/격리GPU·캡처 및 최종 SHA는 보고서와 _out/demo11-50/DONE.txt |
+
+## 2026-10-21 DEMO11-09 pause·입력 안내 / 설정 반영 BLOCKED
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준·범위 | mainac3764bfe, Main+10/-0만 공용추가. 기존 pause/clear입력/review guard 유지, 메뉴→settings back 계층·기존 프로필 읽기. State/전투/저장/맵0 |
+| 설정 권위 | S01 재사용·missing3 NOT_READY 유지. S10 구현/S08 writer 부재로 설정 반영·언어/inputMode 복원 BLOCKED. 임의 기본값 채움·키변경·별도OPT writer0 |
+| 화면·검증 | Hell Gothic/기존폰트·crest/이모지0, 번역·3.1UI 갱신. 신규29/0+S01unit112/0+actual12/0=153/0·각1회·재실행0. [보고서](engine/orders/reports/demo11-09_REPORT.md)에 결과·공용줄·인계 제안, captures 시각 검수 대기 |
+| 제출 | 원로그 _out/demo11-09/, Godot gate/격리/override0. 정상훅·자기branch push/remote/DONE 뒤 WT제거, R 불변 |
+
 
 ## 2026-10-21 DEMO11-18 일반 데모 합체·흡수·성급·되돌리기 원장
 

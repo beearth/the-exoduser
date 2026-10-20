@@ -7,13 +7,14 @@ const TEXT := {
  "resume":["플레이 재개","Resume Play"], "back":["뒤로","Back"],
  "profile":["현재 조작 안내","Current Controls"],
  "move":["이동","Move"], "attack":["기본 공격","Primary Attack"],
- "combat":["Q / E 기존 전투 입력","Q / E Existing Combat Controls"],
+ "combat":["Q 패링 · E 방패(불꽃칼날)","Q Parry · E Shield (Flame Blade)"],
  "fixed":["키 변경은 이 메뉴에서 제공하지 않습니다.","Key remapping is not available in this menu."],
  "pending":["설정 기능을 준비하고 있습니다.","Settings are being prepared."],
  "kept":["현재 설정과 조작은 그대로 유지됩니다.","Your current settings and controls are unchanged."],
  "footer":["ESC · 뒤로 / 플레이 재개","ESC · BACK / RESUME"]}
 var _main: WeakRef
 var _settings: RefCounted
+var settings_bridge: RefCounted
 var _root: Control
 var _center: CenterContainer
 var _page := "pause"
@@ -23,6 +24,8 @@ func configure(main: Node) -> bool:
  _main=weakref(main)
  _settings=SETTINGS.new()
  if not _settings.configure(main.source_initialization_services): return false
+ settings_bridge=preload("res://scripts/native_settings_preferences.gd").new()
+ if not settings_bridge.configure(main):return false
  name="NativeDemoPauseMenu"
  layer=80
  process_mode=Node.PROCESS_MODE_ALWAYS
@@ -42,12 +45,8 @@ func read_settings() -> Dictionary:
 func read_input_profile() -> Dictionary:
  var main: Node=_main.get_ref()
  return main.read_native_input_bindings().duplicate(true) if is_instance_valid(main) else {"ready":false}
-func request_settings(_changes: Dictionary) -> Dictionary:
- # S01 missing data is never promoted to live defaults/usable observed_options.
- var current:=read_settings()
- if current.status!="READY":return {"applied":false,"reason":current.reason,"missing_keys":current.get("missing_keys",[]).duplicate()}
- # S10 bridge and authorized setting consumer writer are not present on base main.
- return {"applied":false,"reason":"SETTINGS_S10_and_option_writer_not_available"}
+func request_settings(changes: Dictionary) -> Dictionary:
+ return settings_bridge.request(changes)
 func sync_pause(paused: bool) -> void:
  var main: Node=_main.get_ref()
  _root.visible=paused and is_instance_valid(main) and not main.get_meta("native_review_requires_character",false)
@@ -63,11 +62,18 @@ func consume_pause_back() -> bool:
   return true
  return false
 func _show(page: String) -> void:
+ _language=str(read_settings().get("options",{}).get("lang","ko"))
  _page=page
  if is_instance_valid(_center):
   _root.remove_child(_center)
   _center.queue_free()
  buttons.clear()
+ if page=="settings":
+  var view=preload("res://scripts/native_settings_panel.gd").new()
+  _center=view
+  _root.add_child(view)
+  view.setup(self)
+  return
  _center=CenterContainer.new()
  _center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
  _root.add_child(_center)
@@ -152,4 +158,4 @@ func _button(box: Node,action: String,value: String) -> void:
  buttons[action]=button
 func get_snapshot() -> Dictionary:
  return {"visible":_root.visible,"page":_page,"settings":read_settings().duplicate(true),"input":read_input_profile(),
-  "settings_apply_status":"BLOCKED","input_mode_restore_status":"BLOCKED:S10_missing","key_remapping":false,"save_io":false}
+  "settings_apply_status":"READY","input_mode_restore_status":"HOLD_no_binding_restore","key_remapping":false,"save_io":true,"bridge":settings_bridge.snapshot()}

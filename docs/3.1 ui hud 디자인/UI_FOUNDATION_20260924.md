@@ -1,3 +1,7 @@
+## 2026-10-21 DEMO11-50 native 설정 현행
+
+DEMO11-09의 설정 반영 BLOCKED는 이번 허용 OPT/IO 범위에서 해소했다. pause→4탭·현재 입력 안내 Q 패링/E 방패(불꽃칼날), 기존 crest와 Hell Gothic/게임폰트 토큰 재사용. [설정 계약](../3.3%20키바인딩+설정/DEMO11_50_NATIVE_SETTINGS_20261021.md)의 native 부분 범위이며 웹판/전체언어/BGM 재생 완료와 구분한다.
+
 # 전체 UI 통일 — Hell Gothic
 
 > 2026-09-29 현행: **미선택 기본 화면은 선대 소환체 · 묘왕 바르칸**, 캐릭터 카드 선택 후에는 해당 CHAR_VISUALS의 원화/아이들 영상과 이름·직업을 표시한다. 데모도 자동 선택 없이 시작하며 카드 클릭 후 입장을 활성화한다. 선택 해제 시 전대 화면으로 복귀한다. 아래 2026-09-28 제작·검수는 당시 이력이며, 현재 선택 표시 규칙은 [기본 전대 / 선택 캐릭터 전환 SSOT](<../3.1 ui hud 디자인/LOBBY_ANCESTOR_ART_20260928.md>)를 우선한다.
@@ -292,6 +296,11 @@ CSS 캐시 ui-refinement.css?v=20260927-3. 신규 이미지/아이템 데이터 
 - 인트로 시작 대사+키 안내 4컷(`#introKeys`)을 원본 CSS 607~640 값으로 이식 — 웹 Chromium 1920×1080 실측과 패널 높이·요소 위치 ±0.1px. 상세·근거 표: [docs/engine/FDG_P2_007A_UI_POLISH_20261020.md](../engine/FDG_P2_007A_UI_POLISH_20261020.md).
 
 
+## 2026-10-21 DEMO11-09 네이티브 일시정지 메뉴 (설정 반영 BLOCKED)
+
+기존 Main._toggle_pause/HUD pause 연결과 clear_native_input_states·review 캐릭터 선택 guard를 유지하며 메뉴 표시만 추가한다. Settings 하위 화면에서 Esc/뒤로는 pause로 복귀, pause의 Esc/재개는 기존 경로를 사용한다. 일반 메뉴에서만 개발 캐릭터 선택판을 가리고 review 모드 우선권은 그대로다. 흑철 패널·기존 날개 문장·금빛 헤어라인·뼈색 글자, native_ui_fonts의 hell/hell_title/cinzel_hell, 이모지·새 이미지0.
+
+S01 current NOT_READY(missing textScale/panelFit/diffV2)를 보존하며 observed_options/default reference를 가짜 live 설정으로 사용하지 않는다. S10 native_settings_lobby_bridge는 main에 없어 언어/inputMode 복원·설정 적용은 BLOCKED. 숫자/키 변경 UI나 별도 OPT/BINDS writer를 만들지 않는다. [보고서](../engine/orders/reports/demo11-09_REPORT.md), 캡처 `_out/demo11-09/captures/`; 시각 판정 대기.
 ## 2026-10-21 DEMO11-04 Godot 로컬 5슬롯 요청 UI
 
 - 독립 진입 씬 `res://scenes/demo_lobby.tscn`은 1920×1080 설계 좌표의 로컬 데모 목록·이름 입력·선택·삭제 확인을 제공한다. Main 게임 부팅/실제 Player 복원은 이 단위 범위 밖이다. 이어하기는 실제 파일에서 재읽은 선택 슬롯 payload를 `continue_requested(slot,data)`로 전달하며 복원 성공·입장 성공으로 표시하지 않는다. metadata-only는 `new_game_requested` 경계다.
