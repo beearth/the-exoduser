@@ -1,3 +1,10 @@
+
+# 2026-10-20 P2-006a PC 드랍·줍기 부분 이식
+
+- `native_world_drops.gd` 신규 어댑터와 main 시작 hook 6줄, state 런타임 드랍 식별·가방 반입 연결. 스킨·고유 누끼·ADD 빔·R 프레스/9틱 홀드·가득 참·원본 SFX를 이식했다. 게임 설계 수치·Q/E·레슨·세이브 형식은 변경하지 않았다.
+- 원본 에셋 189개 SHA-256 동일. 17+18+39=74 assertions/0 failures, 실제 창의 자연 처치 후 일반 드랍 viewport 1920×1080 보존. 수동 R 입력/OS 창 캡처 권한은 거부돼 미확인이다.
+- 유골 도감/첫 유골함·full applyStats·인벤 창/정렬/영구저장은 미이식. 유물·소켓석은 원본 즉시 지급 그대로이며 이전 인수 보고서의 ‘바닥 연결 필요’ 추정은 정정한다. 상세: `docs/engine/orders/reports/P2-006a_REPORT.md`.
+
 ## 2026-10-20 BC2-07 shieldBash2 독립 wind/dash/contact 계산
 
 ## 2026-10-20 EC4-02 4장 catalog·23필드 초기 literal projection
