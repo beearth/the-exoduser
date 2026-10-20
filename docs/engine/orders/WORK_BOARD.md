@@ -36,7 +36,7 @@
 | STARTER-REGIONS | starter_state G 필드 수 기대값을 원본 지역 초기화 기준으로 정정(또는 제품 결함 보고) | Mac VS Code Codex 01a1586f-2389 | codex/starter-regions-fix-20261020 | test_native_main_source_starter_state.gd | 배정 |
 | TRACE-INVENTORY | 2_7 인벤토리·장비 원본 전수 추적·이식 설계(문서만) | Mac VS Code Codex 01a1586f-09bf(18:32 착수) | codex/trace-inventory-20261020 | docs/engine/FDG_SOURCE_TRACE_<시스템>_20261020.md 1개 | 진행 중 |
 | TRACE-QUICKSLOT | 2_8 퀵슬롯·물약 원본 추적·이식 설계(문서만) | Mac VS Code Codex 01a158a5-5597(18:32 착수) | codex/trace-quickslot-20261020 | docs/engine/FDG_SOURCE_TRACE_<시스템>_20261020.md 1개 | 진행 중 |
-| TRACE-SAVE | 15 세이브·데이터 원본 추적·이식 설계(세이브 형식은 보호 범위 표시만) | Mac VS Code Codex 01a158a5-5a79(18:32 착수) | codex/trace-save-20261020 | docs/engine/FDG_SOURCE_TRACE_<시스템>_20261020.md 1개 | 진행 중 |
+| TRACE-SAVE | 15 세이브·데이터 원본 추적·이식 설계(세이브 형식은 보호 범위 표시만) | Mac VS Code Codex 01a158a5-5a79(18:32 착수) | codex/trace-save-20261020 | docs/engine/FDG_SOURCE_TRACE_<시스템>_20261020.md 1개 | **main 병합(Claude 총괄 2026-10-20)** — 문서만, SV-CONTRACT부터 이식 |
 | TRACE-SETTINGS | 3.3 키바인딩·설정 원본 추적·이식 설계(문서만) | Mac VS Code Codex 01a158a5-6274(18:32 착수) | codex/trace-settings-20261020 | docs/engine/FDG_SOURCE_TRACE_<시스템>_20261020.md 1개 | **main 병합(Claude 총괄 2026-10-20)** — 문서만, S01~S10 이식 순서안 |
 | TRACE-REVIVE-SHIELD | 2_5 부활·에너지쉴드 원본 추적·이식 설계(문서만) | Mac VS Code Codex 01a158a5-6b36(18:32 착수) | codex/trace-revive-shield-20261020 | docs/engine/FDG_SOURCE_TRACE_<시스템>_20261020.md 1개 | 진행 중 |
 | QA-001 | 기존 실패 테스트 7종 원인 진단 | PC Codex(codex exec) | codex/qa-001-pc-20261020 | 지정 테스트 7종 | **검수 완료·main 병합(Claude 총괄 2026-10-20)** — 실패 18건+스크립트 오류 1건 해소, 제품 코드 0줄, 총괄 독립 재실행 7종 0실패 |
