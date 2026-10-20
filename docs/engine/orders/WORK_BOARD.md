@@ -30,6 +30,7 @@
 ## 진행 중 (2026-10-20 갱신: Claude 총괄)
 | 작업ID | 내용 | 담당·환경 | 브랜치 | 소유 파일(다른 담당 수정 금지) | 상태 |
 |---|---|---|---|---|---|
+| DEMO11-19ui | 성장 별자리·투자/환불 계획·예약 UI | Mac Codex | codex/demo11-19ui-20261021 | native_growth_panel·추출 data/SVG/tool·신규 test·Main 설치6줄·자기 docs | **검수 대기** — 19r0c136318 merge·기능/관련709/0·최종 렌더12/0·전체2장/1x4장, 사용자 눈 검수 대기. 보고서 demo11-19ui_REPORT.md |
 | DEMO11-21fix | pending draw의 Main/State 해제 수명 보호 | Mac Codex | codex/demo11-21-20261021 | native_world_drops·신규 수명 테스트·자기 docs | **검수 대기** — mainac3764bfe 정상merge, 수명9/0·starter148/0·관련드랍60/0. ERROR/ObjectDB/resource0, Main/State/전투0줄. [보고서](reports/demo11-21fix_REPORT.md) |
 | DEMO11-21 | P2-006a/b 기존 제품 journal→실제 INV 자연 연결 | Mac Codex | codex/demo11-21-20261021 | Main252–257·State432/565–566/584–659 기존 추가분, 새 통합 테스트 | **검수 대기** — P2 수락 원격48f0d8e7/e69fe444 정상 merge·표시 byte 재사용, 신규24/0·관련회귀36/0. 보호 전투·맵·저장0. [보고서](reports/demo11-21_REPORT.md) |
 | DEMO11-19r | 실제 성장 투자/리셋/예약→PC refresh·XP 순서 | Mac Codex | codex/demo11-19r-20261021 | State 성장/XP 접점·Main event API·native_demo_growth_owner·신규test/oracle·자기docs | **기술 검수 대기** — 신규383/0(원문24)+기존6suite2827/0=3210/0. 실제PC거부복구2·XP순서, main에PC a28117c1 포함. HUD최소표시/full UI·저장IO未, 최종SHA는 _out/demo11-19r/DONE |
