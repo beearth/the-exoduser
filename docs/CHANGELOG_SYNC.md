@@ -1,3 +1,8 @@
+## 2026-10-21 DEMO11-etype-b — 8~12 Marker·factory 인수 경계
+
+- main0138c5bb9 + DEMO11-43 9b763da9 정상 merge. B 전용 직접호출 preflight·기존 하니스 상속, 공통 helper 재작성/A 파일 변경0. **5종 모두 NOT_READY**, 실제 자연 스폰·특수 상태·전투 구현 완료 아님.
+- 신규27/0·기존43 40/0 각1회. 기존 회귀 내 adapter 벽시계만 측정, 5종 실제 스폰 벤치 미실행. Main/State/PC 전투·피해/저장/맵/tick/목록 생성API0. [보고서](engine/orders/reports/demo11-etype-b_REPORT.md)·docs/8.0 종별 근거·묶음 A 통합 후보·_out/demo11-etype-b/ 원로그.
+
 ## 2026-10-21 DEMO11-43 최신 main 충돌 해소 후속
 
 - 같은 브랜치 c5551464에 main0138c5bb 정상 merge. Main의 PC runtime-stat refresh와 기존 adapter 공개 진입점을 모두 보존, 추가 제품 변경0. 번역 목록은 main byte 동일·CRLF 유지. 관련 재검증 및 원격 일치는 [보고서](engine/orders/reports/demo11-43_REPORT.md) 후속 절과 _out/demo11-43/merge-*에 기록한다.
