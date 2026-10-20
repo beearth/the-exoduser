@@ -1,0 +1,19 @@
+{
+  "provider": "MagicLight Toolbox",
+  "model": "GPT Image 2.5 sunburst",
+  "aspect": "9:16",
+  "displayedCost": 200,
+  "balanceBefore": 41990,
+  "task": "7518360815765843968",
+  "status": "submitted",
+  "prompt": "Edit image1: same woman, face, ponytail, armor, colors. REVOLVER RIFLE: keep image2 huge fluted cylinder, exposed hammer, revolver receiver and bayonet; add image3 long rifle barrel, fore-end and red-wrapped shoulder stock. A revolver-looking RIFLE, not a handgun or flat wheel receiver. Stock at right shoulder, right hand trigger, left under fore-end. Keep full body, boots and entire long gun in frame with 6% margin. White background, matte dark fantasy, no dots or text.",
+  "references": [
+    "output/steam_store_remaster_20261020/hellgunner_sniper_revolver_remaster.png",
+    "output/charselect_remaster_20261019/hell_revolver_v1.png",
+    "output/charselect_remaster_20261019/hell_rifle_v1.png"
+  ],
+  "instruction": "리볼버같이 생긴 라이플",
+  "balanceAfterObserved": 41790,
+  "resultState": "task created and 200pt decrease observed; new card absent from Toolbox history, no result retrieved yet",
+  "checkedAt": "2026-10-20T17:27:18.466Z"
+}
