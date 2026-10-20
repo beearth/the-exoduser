@@ -1,3 +1,14 @@
+## 2026-10-20 P2-008a-FIX 빙결전사 포이즈 필드 소유권
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 제품 수정 | crawler의 정확 type0 소유 검사를 virtual predicate로 재사용하고 빙결전사 exact order4/10/12만 id·etype20·elite/el·mods[]·ib=false·전용 script로 허용. 제품2파일 +15/−3, 공용6파일·P2-008b·기존 테스트 변경0 |
+| 원본 근거 | 최신 main284d7faf의 game.html19973–20001·42490 비보스 포이즈 경로. ETYPE_POISE[20]=15(30888) 대신 mkEn31164의 실제 poise=maxPoise=_hp=875 사용. 붕괴0/리젠0/stun180/기존 더 큰 max 보존, 원본 숫자·halt·소유 guard 약화0 |
+| 집중 검수 | 신규 test_p2008a_fix_poise actual Main/World80/0·exit0·ERROR0.3개 exact profile·변조 거부·no-entry/nonbreak/break/max 및 기존 hurtE 후속 owner 검증. 원본 JS 발췌5경계도 별도 보존 |
+| 인수 제한 | 기존 p1002g220검사 유지: 수정 전1실패/halt6 → 제품 수정 후6실패/halt0. 비추적 etype20의 정상 처치를 tracked6개체 전용 전역 보상 집계가 누락. 타 담당 테스트 집계 수정은 미승인·별도 제안 패치로 보존. 사본에 집계만+4/−2줄 적용하면 원220검사 유지·0실패/halt0이나 정식 제출본 성공으로 집계하지 않음 |
+| PC 재현만 | 첫 f48c94eb order11은 동일42490 halt·order9 미지원. 재조회 최신 b406e4bc는 order11/9 모두 owner_core로 완료·동일 halt 미재현. PC 원본 SHA1284파일 변경0 |
+| 과부하·증거 | Godot4.7.2 매 실행 전 pgrep 수 확인·2이상30초 대기. 새 작업 격리명/기존 각 상수 격리명·override 매회0byte. [FIX 보고서](engine/orders/reports/p2-008a-fix_REPORT.md)·원로그 ~/exoduser-wt/_out/p2-008a-fix/ |
+
 ## 2026-10-20 QA-002 테스트 결정성·종료·조명 하니스
 
 | 항목 | 변경·검수 근거 |

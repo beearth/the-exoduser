@@ -118,7 +118,7 @@ func configure(value: Dictionary, owner_world: Node2D) -> void:
 	_maxStunned = native["_maxStunned"] if _source_max_stunned_present else null
 	_knockback = Vector2(float(native["kb"]["x"]), float(native["kb"]["y"]))
 	_rng.seed = int(data["factory_random_seed"])
-	_source_normal_fields_configured = data.get("id") == "ch1_initial_015" and source_order == 14 and etype == 0 and el == 0 and data.get("element") == "physical" and get_script().resource_path == "res://scripts/enemy_melee_flesh_crawler.gd"
+	_source_normal_fields_configured = _source_normal_fields_domain_current()
 
 func _ready() -> void:
 	name = str(data["id"])
@@ -389,7 +389,7 @@ func _draw() -> void:
 func read_native_source_damage_fields(caller: Node) -> Dictionary:
 	var error := _source_normal_fields_error(caller)
 	if not error.is_empty(): return {"ready": false, "reason": error}
-	var report: Dictionary = {"ready": true, "scope": "CURRENT_TYPE0_FIELDS_PARTIAL", "full_hurtE_ready": false,
+	var report: Dictionary = {"ready": true, "scope": "CURRENT_TYPE%d_FIELDS_PARTIAL" % etype, "full_hurtE_ready": false,
 		"source_clock_ready": false, "view": {"alive": alive, "hp": hp, "mhp": mhp,
 			"etype": etype, "elite": elite, "el": el, "s": state, "st2": st2,
 			"x": global_position.x, "y": global_position.y, "r": radius,
@@ -405,12 +405,16 @@ func read_native_source_damage_fields(caller: Node) -> Dictionary:
 		report["view"]["_maxStunned"] = _maxStunned
 	return report
 
+func _source_normal_fields_domain_current() -> bool:
+	# game.html:31164 poise=maxPoise=_hp; 19973-20001 non-boss branch, exact type0 factory actor only.
+	return data.get("id") == "ch1_initial_015" and source_order == 14 and etype == 0 and elite == 0 and el == 0 and element == "physical" and data.get("element") == "physical" and mods.is_empty() and get_script().resource_path == "res://scripts/enemy_melee_flesh_crawler.gd"
+
 func _source_normal_fields_error(caller: Node) -> String:
 	if not _source_normal_fields_configured: return "exact_normal_factory_actor_not_owned"
 	if not is_instance_valid(world) or caller != world or is_queued_for_deletion() or not is_inside_tree(): return "actual_actor_world_lost"
 	if world.is_queued_for_deletion() or not world.is_inside_tree() or get_parent() != world or get_tree() != world.get_tree(): return "actual_actor_world_lost"
 	if not world.has_method("get_native_world_identity") or not world.get_native_world_identity().has(self): return "actual_actor_registry_lost"
-	if etype != 0 or elite != 0 or el != 0 or element != "physical" or not mods.is_empty(): return "current_normal_actor_domain_changed"
+	if not _source_normal_fields_domain_current(): return "current_normal_actor_domain_changed"
 	return ""
 
 # Not an HP setter: only the active, same-World source-prefix owner can apply a

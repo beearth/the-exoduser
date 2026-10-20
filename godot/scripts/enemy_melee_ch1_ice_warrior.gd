@@ -2,6 +2,14 @@ extends "res://scripts/enemy_melee_flesh_crawler.gd"
 
 const PROFILE := "native_ch1_etype20_ice_warrior_v1"
 
+func _source_normal_fields_domain_current() -> bool:
+	# game.html:30888 ETYPE_POISE[20]=15 is superseded by 31164 poise=maxPoise=_hp=875.
+	# 19973-20001/42490 use the same non-boss core; exact source order4=(elite1,el0),10=(0,0),12=(0,4).
+	var profiles := {4: ["ch1_initial_005", 1, 0, "physical"], 10: ["ch1_initial_011", 0, 0, "physical"], 12: ["ch1_initial_013", 0, 4, "lightning"]}
+	if etype != 20 or not profiles.has(source_order) or not mods.is_empty() or data.get("native_final", {}).get("ib") != false or get_script().resource_path != "res://scripts/enemy_melee_ch1_ice_warrior.gd": return false
+	var profile: Array = profiles[source_order]
+	return data.get("id") == profile[0] and elite == profile[1] and el == profile[2] and element == profile[3] and data.get("element") == profile[3]
+
 static func build_runtime(record: Dictionary) -> Dictionary:
 	var runtime: Dictionary = record.duplicate(true)
 	var native: Dictionary = record["native_final"]
