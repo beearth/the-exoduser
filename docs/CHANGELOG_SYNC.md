@@ -1,3 +1,15 @@
+## 2026-10-20 SND-02 원본 샘플·보이스 치환·선언 라우팅 카탈로그
+
+| id / 항목 | 현재 계약 |
+|---|---|
+| 범위 | 신규 sound_source/catalog.gd, data/sound_source_samples.json, test_sound_source_catalog.gd. 기존 제품 owner·공용6파일·기존 테스트·원본 에셋 자체 변경0. 원본 음원 생성·복사·변환0 |
+| 기준 / 선행 | fetch main284d7faf(QA-002 포함), game.html SHA256 4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4. SND-01 재확인1533f602까지 기존 WT를 fast-forward해 WIP 이어감 |
+| 원본 / 데이터 | game10076–10331 samples233,12327–12336 voice_map42,10359–10378 routes18(procedural11/file7). 별도 이름공간·등록 순서·query·alias·대소문자 그대로. ATTACK_SAMPLE_PATHS 읽기만 |
+| API | status/snapshot/lookup_sample/lookup_voice_mapping/lookup_route. READY와 count, MISSING과 namespace/key, NOT_READY와 reason/path 구분. 반환 Dictionary·중첩 route는 깊은 복사. IO는 JSON 읽기뿐이며 RNG/clock/재생·변환·보이스 선택·게임 연결 없음 |
+| 실측 | 새 테스트687단정/0실패, 기존 정책1194/0, 모두exit0·stderr비어있음·격리true·Main미부팅. 원본JS↔JSON↔Godot293 key/value 불일치0. 웹5파일10pass/0fail. 기존tracked 에셋974개 동일byte |
+| 격리 / 과부하 | 새 EXODUSER-snd-02-Isolated-20261020, 정책은 원 USERDIR. override 매번 사용 후0byte. pgrep count2 이상30초 대기 준수, 실행직전 각각count1. catalog 대기5회 |
+| 제출 / 한계 | 정상 훅·경로 지정stage·자기브랜치만 비강제push. 실청취·전체샘플 이식·실게임·PC 인수는 미확인. [보고서·실패 이력·원로그](engine/orders/reports/snd-02_REPORT.md), ~/exoduser-wt/_out/snd-02/DONE.txt에 최종SHA·수치 |
+
 ## 2026-10-20 SND-01 최신 main merge·선재 결함 재확인
 
 | id / 항목 | 현재 계약 |
