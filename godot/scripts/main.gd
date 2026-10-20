@@ -4,6 +4,10 @@ extends Node2D
 const DemoPauseMenu = preload("res://scripts/native_demo_pause_menu.gd")
 var native_demo_pause_menu: CanvasLayer
 
+signal native_demo_boss_defeated(stage_index: int) # DEMO11-37 -> DEMO11-38, final death only
+const NativeDemoEndFlow = preload("res://scripts/native_demo_end_flow.gd")
+var native_demo_end_flow: CanvasLayer
+
 const Demo11Authority = preload("res://scripts/native_demo11_authority.gd")
 const NativePerspectiveViewScript = preload("res://scripts/native_perspective_view.gd")
 const WorldScript = preload("res://scripts/world.gd")
@@ -120,6 +124,7 @@ var _native_source_object_registration: Dictionary = {}
 var _native_demo11_policy: Dictionary = {}
 var native_demo_boss_actor: Node2D
 var native_demo_boss_projectiles: Node
+var native_demo_encounter: Node
 
 # DEMO11-06b: opt-in native save route; protected PC handoffs remain pending.
 var _demo11_session: RefCounted
@@ -403,6 +408,14 @@ func _ready() -> void:
 	_install_native_music_lifecycle()
 	_bind_native_intro_curtain_view()
 	_bind_native_startup_services()
+	native_demo_end_flow=NativeDemoEndFlow.new()
+	add_child(native_demo_end_flow)
+	native_demo_end_flow.configure(self)
+	native_demo_end_flow.wishlist_requested.connect(_open_native_demo_wishlist)
+	native_demo_end_flow.lobby_requested.connect(_return_native_demo_lobby)
+	native_demo_encounter=preload("res://scripts/native_demo11_encounter.gd").new()
+	add_child(native_demo_encounter)
+	native_demo_encounter.configure(self,regions)
 	if demo11_loaded: set_meta("native_intro_boot","dormant") # No new-character intro/reset on resume.
 	if get_meta("native_lobby_entry_pending",false):
 		pass # DEMO11-07: wait for committed active-slot admission, no early intro.
@@ -3298,3 +3311,24 @@ func restore_native_equipment_caches(caller: RefCounted, token: Dictionary) -> b
 	bundle.reference.restore_eq_stat_cache_token(token.reference)
 	_source_l_eq_cache = token.legendary
 	return true
+
+# DEMO11-38: end-of-demo navigation only. No stage initialization/advance here.
+func _open_native_demo_wishlist(url: String) -> void:
+	if url==NativeDemoEndFlow.WISHLIST_URL:
+		native_demo_end_flow.report_link_result(OS.shell_open(url))
+
+func _return_native_demo_lobby() -> void:
+	var snapshot: Dictionary=native_demo_end_flow.get_snapshot()
+	if snapshot.phase!="leaving": return
+	get_tree().set_meta("native_demo_return_language",snapshot.language)
+	get_tree().call_deferred("change_scene_to_file","res://scenes/demo11_lobby.tscn")
+
+# DEMO11-37: map provider/contact and PC final-death integration boundaries.
+func bind_native_demo_arena_provider(provider: Node2D) -> bool:
+	return is_instance_valid(native_demo_encounter) and native_demo_encounter.bind_provider(provider)
+func bind_native_demo_final_death_source(owner: Node, event: StringName) -> bool:
+	return is_instance_valid(native_demo_encounter) and native_demo_encounter.bind_final_death_source(owner,event)
+func enter_native_demo_arena(provider: Node, spawn_options: Dictionary) -> Dictionary:
+	return native_demo_encounter.enter(provider,spawn_options) if is_instance_valid(native_demo_encounter) else {"status":"NOT_READY"}
+func leave_native_demo_arena(provider: Node) -> bool:
+	return is_instance_valid(native_demo_encounter) and native_demo_encounter.leave(provider)

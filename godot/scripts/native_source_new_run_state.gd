@@ -748,7 +748,7 @@ func append_native_drop_records(owner: Node, records: Array) -> Dictionary:
 			var min_rarity := INF
 			for i in range(_native_drop_records.size()):
 				var item: Variant = (_native_drop_records[i] as Dictionary).get("item")
-				var rarity: float = float((item as Dictionary).get("rarity", 0)) if item is Dictionary else -1.0
+				var rarity: float = INF if (_native_drop_records[i].get("type")=="chest" and not _native_drop_records[i].get("picked",false) and not _native_drop_records[i].get("opened",false)) else (float((item as Dictionary).get("rarity", 0)) if item is Dictionary else -1.0) # G16721 unopened chest protection
 				if rarity < min_rarity:
 					min_rarity = rarity
 					min_index = i
@@ -1732,3 +1732,50 @@ func apply_native_equipment_transaction(owner: Node, operation: String, item: Di
 	var result: Dictionary = owner.source_equipment.execute(operation,item,slot,_inventory,_g,_native_crystal_bag)
 	_equipment_committing = false
 	return result
+
+# DEMO11-38 narrow progression writer; never touches stage, map or combat values.
+var _native_demo_clear_phase := 0
+func commit_native_demo_clear(owner: Node, stage_index: int, end: bool) -> bool:
+	# End UI owns the paused run; permit only this writer after its clear receipt.
+	if not _current_error().is_empty() or not is_instance_valid(owner) \
+			or owner!=_player.get_parent() or owner.get("source_state")!=self or owner.get("world")!=_world: return false
+	if not end and get_tree().paused: return false
+	var policy: Dictionary=owner.read_native_demo_policy()
+	if policy.get("status")!="READY" or policy.get("demo")!=true or stage_index!=policy.get("last_stage") or _g.get("stage")!=stage_index: return false
+	if _native_demo_clear_phase!=(1 if end else 0): return false
+	_native_demo_clear_phase=2 if end else 1
+	_g["stageCleared"]=not end
+	_g["on"]=false
+	return true
+
+# DEMO11-37 progression-only writer.	Existing reward records remain the owner.
+var _native_demo_encounter_phase := 0
+func commit_native_demo_encounter(owner: Node, clear: bool, chest_position: Vector2) -> Dictionary:
+	var main: Node=_player.get_parent()
+	if not _feel_owner_current(main) or not is_instance_valid(owner) or owner!=main.get("native_demo_encounter") or owner.get_parent()!=main or _g.get("stage")!=0 or not _g.get("_bossArena",false):return {"applied":false}
+	if _native_demo_encounter_phase!=(1 if clear else 0):return {"applied":false}
+	if not clear:
+		var enemy: Dictionary=main.read_native_demo_boss().get("enemy",{})
+		if enemy.is_empty() or not chest_position.is_finite():return {"applied":false}
+		var chest: Dictionary={"x":chest_position.x,"y":chest_position.y,"type":"chest","picked":false,"opened":false}
+		if not append_native_drop_records(main,[chest]).get("applied",false):return {"applied":false}
+		_native_demo_encounter_phase=1
+		_g["bossAlive"]=false
+		_g["_bfxT"]=0;_g["_bfxBolt"]=null
+		_g["_bossClearT"]=int(float(_g.get("stageTime",0))/60.0)
+		if not _g.get("_killedBosses") is Array:_g["_killedBosses"]=[]
+		if not _g._killedBosses.has(enemy.etype):_g._killedBosses.append(enemy.etype)
+		return {"applied":true,"chest":chest.duplicate(true)}
+	var result: Dictionary=preload("res://scripts/native_demo11_clear_result.gd").calculate(_g,preload("res://scripts/native_regions.gd").cleared_count(_g))
+	_native_demo_encounter_phase=2
+	_p["sp"]=float(_p.get("sp",0))+10 # G41922 progression SP; not combat ST.
+	var total: float=float(_g.get("_totalSpawned",0))
+	var kills: float=float(_g.get("_stageKills",0))
+	if kills/(total if total!=0 else 1.0)>=0.9:
+		if not _g.get("_taRecords") is Dictionary:_g["_taRecords"]={}
+		var sec: int=int(float(_g.get("stageTime",0))/60.0)
+		var prev: Variant=_g._taRecords.get("0",_g._taRecords.get(0))
+		if prev==null or float(prev)==0 or sec<float(prev):_g._taRecords["0"]=sec
+	if not _g.get("_clearRecords") is Dictionary:_g["_clearRecords"]={}
+	_g._clearRecords["0"]=result.record.duplicate(true)
+	return {"applied":true,"result":result}
