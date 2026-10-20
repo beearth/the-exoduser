@@ -1,3 +1,14 @@
+## 2026-10-20 SK-S02 스킬 관리 읽기 전용 카탈로그
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 범위·의존 | 신규 skill_management_source/catalog.gd 및 신규 test_trace_skills_s02_catalog.gd·보고서. SK-S01 4b9341fb 기반 기존 WT 재개, 최신 main 284d7faf 원본 HTML과 byte 동일 |
+| 원본 데이터 | game44082~44118/44161~44317/44324~44357/44453~44486/44507~44554. category9·추천15·hier4·icon84·skill55·slot8·gem32·pairs32·계수37 |
+| 소유 | readonly 깊은 복사 조회·unknown 명시null·미지원carrier NOT_READY. 기존 fusion_star_source 멤버32/명시star13 재사용. 실제 P/G·배정/학습/합체/시전/저장 연결0 |
+| 검증 | 신규803/0·전체 원본leaf 1552 및 key순서 불일치0. SK-S01·contracts·p2005a~d·기존fusion consumer 회귀 실행. 기존b/c 종료잔류 ERROR는 별도 기록·main QA하니스 추가대조. P2-005 5파일 91/0, 각 파일 상수격리·실행 전2이상이면30초대기 |
+| 보호 | PC 소유 native_skill_slots.gd·공용6파일·기존 fusion/기존테스트/project.godot·R 변경0. override는 원래부재 복원. Q/E·docs/2_3·blackBean·세이브형식 불변 |
+| 인계 | sk-s02_REPORT.md 및 `_out/sk-s02/resume/` 원로그·DONE. 과거 parse 실패·보조oracle 기대개수 수정 이력 보존, UI/실플레이 PASS 주장0 |
+
 ## 2026-10-20 SK-S01 스킬 SP 비용·누적 투자액 순수 모듈
 
 | id / 적용 위치 | 현재 정확 계약 |
