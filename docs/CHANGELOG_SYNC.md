@@ -1,3 +1,17 @@
+## 2026-10-20 CH2-05 si7 / 2-4 원본·독립 소비자
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 기준 / 의존 | fetch main2c3c211f, CH2-04 미포함으로 d4298e89dd4f1432a5fca94defd391f8ec075b2d 끝 분기. codex/ch2-05-20261020, 추적§4.5 si7만. si6/다음단위 미착수 |
+| 공유 / 보호 | source/resource 도구에7만 추가(각7추가/7삭제), 기존 미지원 검사2행의7을11로 교체. 이전 source0/1/4/5·resource4/5 전체차이0. 기존runtime/snapshot/공용6/P2-006a/P3/제품map/PNG0줄 |
+| source / 계약 | si7.json111872byte/SHA048815d1…·stage7_contract 순수API. 원200²/T40·counts38986/36/3/0/975·tileSHA5b40eb67…·START4020/7420·EXIT4020/300. compose/hand/path부재4mask 유지 |
+| 원 분모 / RNG | 벌레굴4구역·거대알주머니·hellFloor3/monLv200/isHellBoss=false. 최종14굴/1100·NW250/NE300/SW350/SE200. 원timer draw1..14/final3323445034, init 추가Math.random2회·최종altar0 |
+| 실효 소비 | resource182350byte/SHA042def09…·272객체=271sprite+gate1·42analytic원·36tile1/4rect·기존13texture byte동일. square235/keepAR36·flip15·기존light156 overlay. Stage7 reader/world는 CH2-04 소비자 재사용, Main/실P/굴/지역/전환/full_stage_ready=false |
+| 신규 검증 | Node10/0·순수Godot365/0·GUI2465/0. isW/canMv각10038·LOS400·40000union/Physics센터 차이0, 원double입력보존. OS.execute는 --node-bin 경로/argv·출력join/UTF-8 외부oracle, actual Node VM exit0 |
+| 회귀 | sourceNode39/0·consumerNode14/0·asset/pit각6/0·map28/9선재실패이름순서동일. 기존 Godot 수치는 상세 보고서/원로그에 기록 |
+| 화면 / 경계 | 실창1920x1080 8뷰·1x crop3·BFS185/왕복370/94frame. 반복바닥/성긴배치/단순원형overlay로 RETOUCH. 깊이/부분광원은 MAPLOOK 소관, 알파괴/구더기spawn writer 미인수·구현0 |
+| 운영 / 제출 | 매Godot전pgrep>=2면30초 대기·상수격리/override finally0byte. [CH2-05 보고서](engine/orders/reports/ch2-05_REPORT.md), ~/exoduser-wt/_out/ch2-05/. 자기branch push·원격일치·DONE 후 자기sparseWT/cache제거. R불변·main/force/reset/add-A/hook우회0 |
+
 ## 2026-10-20 CH2-04 si5 독립 소비자·원 실효 배치/충돌
 
 | id / 적용 위치 | 현재 정확 계약 |

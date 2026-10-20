@@ -9,7 +9,7 @@ import {buildAreaSnapshot,captureJSON} from './export_ch1_area_source.mjs';
 import {rectangles} from './export_ch1_area_resources.mjs';
 const sha=x=>crypto.createHash('sha256').update(x).digest('hex');
 export function buildResources(root,{stage=4}={}){
- if(![4,5].includes(stage))throw Error('Unsupported CH2 resource stage');
+ if(![4,5,7].includes(stage))throw Error('Unsupported CH2 resource stage');
  root=fs.realpathSync(root);const source=fs.readFileSync(path.join(root,'game.html'),'utf8');
  if(sha(execFileSync('git',['show','origin/main:game.html'],{cwd:root,maxBuffer:16*1024*1024}))!==sha(source))throw Error('Latest main source mismatch');
  const {parseExpressionAt}=createRequire(path.join(root,'package.json'))('acorn'),symbols={};
@@ -22,7 +22,7 @@ export function buildResources(root,{stage=4}={}){
   initialObjects=captureJSON(run('Array.from(MAP_OBJS)'));
   run('var resourceRandomDraws=0;const sourceRandom=Math.random;Math.random=()=>{resourceRandomDraws++;return sourceRandom();};');
   run('const DECO_FORCE_AUTO='+expr('DECO_FORCE_AUTO')+';');
-  if(stage===5){
+  if([5,7].includes(stage)){
    run('const _SAME_TYPE_DIST='+expr('_SAME_TYPE_DIST')+';');run(fn('_nearbyTypeCount'));
    const a=source.indexOf('const sz=(_meta?_meta.sz||32:32)*(mo.scale||1);'),b=source.indexOf("if(mo._fdgUpright&&_fdgNativePerspective?.active)_fdgNativePerspective.popBillboard();",a);
    if(a<0||b<0)throw Error('Missing source sprite draw branches');record('render.sprite_branches',a,b);
@@ -53,8 +53,8 @@ export function buildResources(root,{stage=4}={}){
  const props=objects.map(o=>{
   if(!o._hand&&(stage===4||o.type==='boss_gate_col'))return {...o,view:o.type==='lore'?'native_lore_marker':'collision_only',interaction_bound:false};
   const d=raw.ch2_deco_raw.find(d=>d.id===o.type),m=metadata[o.type],a=asset(path.posix.join('assets/map/ch2',d.dir||'floor_objects',d.file));
-  if(m.filter||m.edgeErase||m.srcRect||m.anim||m.rotTree||(stage===5&&(m.rot||m.sheet||m.touchAnim||m.trackEye||m.blend)))throw Error('Unsupported texture branch '+o.type);
-  const [w,h]=a.size,s=(m.sz||32)*(o.scale||1),ar=w/h,square=m.squareDraw||(stage===5&&!m.keepAR),dw=square?s:s*(ar<1?ar:1),dh=square?s:s*(ar>1?1/ar:1);
+  if(m.filter||m.edgeErase||m.srcRect||m.anim||m.rotTree||([5,7].includes(stage)&&(m.rot||m.sheet||m.touchAnim||m.trackEye||m.blend)))throw Error('Unsupported texture branch '+o.type);
+  const [w,h]=a.size,s=(m.sz||32)*(o.scale||1),ar=w/h,square=m.squareDraw||([5,7].includes(stage)&&!m.keepAR),dw=square?s:s*(ar<1?ar:1),dh=square?s:s*(ar>1?1/ar:1);
   return {...o,metadata:m,texture:a.texture,draw_size:[dw,dh],pivot:[m.pivotX??.5,m.pivotY??.5],rotation:o.rot||0,flip_h:!!m.flip,
    alpha:m.alpha??1,image_keying:d.hardAlpha?'hard_alpha':d.mega?'magenta':'none'};
  });
@@ -74,12 +74,12 @@ export function buildResources(root,{stage=4}={}){
  for(const p of [[-40,0],[-.1,20],[0,0],[8000,8000],[4020,7420],[(raw.exit_center_tile[0]+.5)*40,(raw.exit_center_tile[1]+.5)*40]])query(...p);
  const los=[];for(let i=0;i<400;i++){const points=[rand()*8000,rand()*8000,rand()*8000,rand()*8000];run('globalThis.q='+JSON.stringify(points)+';');los.push({points,f64:f64(points),clear:run('hasLOS(...q)')});}
  const bundle={schema:'exoduser.ch2-area-resources.v1',stage,source:{main_sha:raw.source.main_sha,game_sha256:raw.source.game_sha256,source_snapshot_tile_sha256:raw.runtime_tile_sha256,symbols,initial_objects:initialObjects,init_random_draws:run('resourceRandomDraws')},
-  assets,floor:{...floor,path_spec:raw.source_path.spec,mode:stage===4?'Godot organic preview; native gameplay tiles unchanged':'Godot continuous si5 preview; native gameplay tiles unchanged'},props,colliders,wall_rects:rectangles(raw.tiles,v=>v===1),hand_adjustments:adjustments,
+  assets,floor:{...floor,path_spec:raw.source_path.spec,mode:stage===4?'Godot organic preview; native gameplay tiles unchanged':'Godot continuous si'+stage+' preview; native gameplay tiles unchanged'},props,colliders,wall_rects:rectangles(raw.tiles,v=>v===1),hand_adjustments:adjustments,
   scope:{standalone:true,main_bound:false,real_player_bound:false,spawn_holes_bound:false,region_progress_bound:false,transition_bound:false,source_assets_edited:0,metadata_undefined_paths:metadataUndefined,stage0_hill:false,stage0_baked_chunks:0,analytic_collision:true,physical_prop_shapes:false,visual_source_pixel_identity:false}};
  return {bundle,queries,los,raw};
 }
 export function writeResources(root,evidence,{stage=4}={}){
- if(![4,5].includes(stage))throw Error('Unsupported CH2 resource stage');
+ if(![4,5,7].includes(stage))throw Error('Unsupported CH2 resource stage');
  root=fs.realpathSync(root);evidence=path.resolve(evidence);if(!path.relative(root,evidence).startsWith('..'+path.sep))throw Error('Evidence must be outside worktree');
  const dest=path.join(root,`godot/data/ch2_map_source/si${stage}_resources.json`);
  for(const file of [dest,evidence]){
@@ -95,5 +95,5 @@ export function writeResources(root,evidence,{stage=4}={}){
  fs.writeFileSync(evidence,JSON.stringify({schema:'exoduser.ch2-area-oracle.v1',stage,queries:result.queries,los:result.los})+'\n');return result;
 }
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){
- try{if(process.argv.length!==4&&!(process.argv.length===6&&process.argv[4]==='--stage'&&['4','5'].includes(process.argv[5])))throw Error('Usage: export_ch2_area_resources.mjs <root> <external-oracle-json> [--stage 4|5]');const r=writeResources(process.argv[2],process.argv[3],{stage:process.argv.length===6?Number(process.argv[5]):4});console.log(JSON.stringify({objects:r.bundle.props.length,hands:r.bundle.props.filter(p=>p._hand).length,colliders:r.bundle.colliders.length,assets:r.bundle.assets.length,rectangles:r.bundle.wall_rects.length,near_floor_moved:r.bundle.hand_adjustments.filter(a=>a.moved).length,queries:r.queries.length,los:r.los.length}));}catch(e){console.error(e.stack);process.exitCode=1;}
+ try{if(process.argv.length!==4&&!(process.argv.length===6&&process.argv[4]==='--stage'&&['4','5','7'].includes(process.argv[5])))throw Error('Usage: export_ch2_area_resources.mjs <root> <external-oracle-json> [--stage 4|5|7]');const r=writeResources(process.argv[2],process.argv[3],{stage:process.argv.length===6?Number(process.argv[5]):4});console.log(JSON.stringify({objects:r.bundle.props.length,hands:r.bundle.props.filter(p=>p._hand).length,colliders:r.bundle.colliders.length,assets:r.bundle.assets.length,rectangles:r.bundle.wall_rects.length,near_floor_moved:r.bundle.hand_adjustments.filter(a=>a.moved).length,queries:r.queries.length,los:r.los.length}));}catch(e){console.error(e.stack);process.exitCode=1;}
 }

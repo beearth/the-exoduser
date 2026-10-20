@@ -29,7 +29,7 @@ export function captureJSON(value, undefinedPaths = [], at = '', active = new Se
 }
 
 export function buildAreaSnapshot(sourceRoot, {stage = 0, seed = 20261020, observeNative} = {}) {
-  if (![0,1,4,5].includes(stage)) throw new Error('UNSUPPORTED_STAGE: only stages 0, 1, 4 and 5 are supported');
+  if (![0,1,4,5,7].includes(stage)) throw new Error('UNSUPPORTED_STAGE: only stages 0, 1, 4, 5 and 7 are supported');
   if (!Number.isInteger(seed) || seed < 0 || seed > 0xffffffff) throw new Error('Invalid uint32 seed');
   if (observeNative !== undefined && typeof observeNative !== 'function') throw new Error('Invalid native observer');
   const root = fs.realpathSync(sourceRoot);
@@ -89,7 +89,7 @@ export function buildAreaSnapshot(sourceRoot, {stage = 0, seed = 20261020, obser
   evaluate('var G={stage:'+stage+',_zones:null},MAP_OBJS=[],P={},_exitCX=0,_exitCY=0;');
   if (stage === 1) evaluate('const _CH1S1='+expression('_CH1S1')+';');
   if (stage === 4) evaluate('const _CH2S4='+expression('_CH2S4')+';');
-  const compose = expression('_MAP_COMPOSE',stage,stage === 5);
+  const compose = expression('_MAP_COMPOSE',stage,[5,7].includes(stage));
   evaluate('const _MAP_COMPOSE={'+(compose === null ? '' : stage+':'+compose)+'};');
   const chapter = stage >= 4 ? 1 : 0;
   evaluate('const _OBJ_META='+expression('_OBJ_META')+';const _CH_DECO={'+chapter+':'+expression('_CH_DECO',chapter)+'};');
@@ -134,11 +134,11 @@ export function buildAreaSnapshot(sourceRoot, {stage = 0, seed = 20261020, obser
   if (stage >= 4) {
     ch2.source_path = captureJSON(evaluate(`({spec:_MAP_COMPOSE[${stage}]?.path,empty:_MAP_COMPOSE[${stage}]?.empty,editor_tile_rle:template.tileRLE})`),undefinedPaths,'/source_path');
     ch2.source_path.editor_tile_rle_sha256 = sha(JSON.stringify(ch2.source_path.editor_tile_rle));
-    if (stage === 5) {
-      ch2.compose_raw = captureJSON(evaluate('_MAP_COMPOSE[5]'),undefinedPaths,'/compose_raw');
+    if ([5,7].includes(stage)) {
+      ch2.compose_raw = captureJSON(evaluate('_MAP_COMPOSE['+stage+']'),undefinedPaths,'/compose_raw');
       for (const name of ['EL','HELL_THEMES','HELL_BOSSES']) evaluate('const '+name+'='+expression(name)+';');
       evaluate(block('STG.construction','const STG=[];','\nlet G='));
-      ch2.stage_descriptor = captureJSON(evaluate('STG[5]'));
+      ch2.stage_descriptor = captureJSON(evaluate('STG['+stage+']'));
     }
     // Preserve image references/bytes only; do not initialize images or objects.
     ch2.asset_refs = data.ch2_deco_raw.map(d => {
@@ -181,8 +181,8 @@ export function buildStage0Snapshot(sourceRoot, options = {}) {
 }
 
 export function main(args) {
-  if (args.length !== 6 || args[2] !== '--stage' || args[4] !== '--seed' || !['0','1','4','5'].includes(args[3])) {
-    throw new Error('Usage: export_ch1_area_source.mjs <source-root> <output-json> --stage <0|1|4|5> --seed <uint32>; UNSUPPORTED_STAGE otherwise');
+  if (args.length !== 6 || args[2] !== '--stage' || args[4] !== '--seed' || !['0','1','4','5','7'].includes(args[3])) {
+    throw new Error('Usage: export_ch1_area_source.mjs <source-root> <output-json> --stage <0|1|4|5|7> --seed <uint32>; UNSUPPORTED_STAGE otherwise');
   }
   const root=fs.realpathSync(args[0]), output=path.resolve(args[1]);
   const relative=path.relative(root,output);
