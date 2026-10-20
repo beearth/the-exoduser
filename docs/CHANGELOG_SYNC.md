@@ -1,3 +1,10 @@
+## 2026-10-21 DEMO11-25 성능 규칙 후속 — 최신 main 정상 merge
+
+| 항목 | 근거 |
+|---|---|
+| 통합·점검 | codex/demo11-25b에 main8dbbf2b0(aa1eaea5a 캐시 수정 포함) merge, rebase0. 물약 신규 phase/runtime 및 직접 helper/State/authority의 목록 생성 API0건; 제품 추가 수정0 |
+| 범위 | upstream PC 수정은 그대로 인수. CHANGELOG 충돌은 양쪽 절 보존. 신규2560/0·QS318/0·regen10/0·lessonclock21/0·contracts5그룹/0 각1회, ERROR0/기존 Camera WARNING3. 별도 성능 벤치 미실행·성능 수치 주장0. 새SHA는 demo11-25 보고서와 _out/demo11-25b/DONE.txt에 기록 |
+
 ## 2026-10-21 DEMO11-25 재개 — 자동 HP·악의·CD writer 및 자연 60Hz 호출
 
 | 항목 | 구현·검수 근거 |
@@ -6,6 +13,14 @@
 | 공용·보호 | Main17/84/1007 추가3줄, State1227–1260 추가34줄, authority672–685 추가14줄. 기존 줄 수정/삭제0, 피해·PC 전투 핵심·저장·맵·웹 원본·R0. 관련 2_8 docs 갱신 |
 | 검증 | 원본 JS UTF8 oracle420사례·신규2560/0. 직접 회귀 각1회 QS318/0·regen10/0·lessonclock21/0·contracts5그룹/0. 최종 ERROR/종료누수0, 기존 Camera2D WARNING 기록. 최초 하니스5실패/MP3 누수 진단·수정 이력 보존 |
 | 잔여·제출 | SFX 미연결·native 시스템 튜토리얼·전설벨트 피해 consumer HOLD를 명시, 활성벨트 timer 생성/피해 수정0. [DEMO11-25 보고서](engine/orders/reports/demo11-25_REPORT.md). codex/demo11-25b-20261021 자기branch push/원격일치/DONE 후 자기WT제거 |
+
+## 2026-10-21 DEMO11-01 Main 부팅의 1-1 데모 권위
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 범위·공용 | main0105159934 기준. Main +26/-0로 demo=true/stage0/last0 manifest 선택·실제 World/State stage 대조. State/전투/저장/지형0. 개발 route 거부, manifest deep copy. |
+| 재사용·검증 | 기존 META-06 cap100/entry/loop 그대로 위임. 신규22/0·META06 1034/0·인트로18/0·원문JS995/0, 각1회. 잘못된 stage 거부 의도 ERROR1 외 예상 밖 오류0. 실제 XP writer는 DEMO11-20 후속. |
+| 인계 | [공개 API·공용 변경 줄·보고서](engine/orders/reports/demo11-01_REPORT.md), 원로그 ~/exoduser-wt/_out/demo11-01/. 자기 branch push/remote SHA/DONE 뒤 자기 WT 제거; R 불변. |
 
 ## 2026-10-20 BC2-07 shieldBash2 독립 wind/dash/contact 계산
 
@@ -47,7 +62,6 @@
 | 검증 | 신규22,364/0. EC2선택7,483/0·constructor159,902/0·EC3선택10,234/0·factory3그룹/0·contracts5그룹/0. 최종ERROR/WARNING0. 변이5종에서347/2499/112/6/154실패검출후byte복원 |
 | 보호 / 제출 | 기존1,607파일byte동일. Godot13launch 매회count1·2이상30초대기, 지정/기존상수격리·override복원. [EC4-01 보고서](engine/orders/reports/ec4-01_REPORT.md), 원로그 ~/exoduser-wt/_out/ec4-01/. 자기branch push·원격SHA/DONE뒤자기worktree제거 |
 
-<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 
@@ -245,7 +259,7 @@
 | 검산 / 의존 | 고정 Git 원문 AST/발췌 VM과 전체 재현94항목 차이0. CH4 등록7·pool31·원화byte·굴94 전수 부록. CH2-02는 main 존재, CH3-01 stage10은 원격 fcd7fcaa. 단일 exporter 0/1/4+observer 및 인수된10 보존 지시 |
 | 표현 / 후속 | 웹 맵1:1 복제가 아닌 PoE2·No Rest 목표의 깊이/생동감/부분 조명 확장 별도 절. 게임플레이/충돌·출구·스폰·지역은 불변. CH4-01 상세 지시서와18단위·공용 접점·docs 차이 표. 실제 배치/종주/시각/성능은 미확인 |
 | 자료 / 제출 | [4장 추적·지시서](engine/FDG_SOURCE_TRACE_MAPS_CH4_20261020.md). 원로그 ~/exoduser-wt/_out/trace-maps-ch4/. 정상 훅·경로 지정 stage·자기 branch push/원격SHA→DONE→자기 WT 제거, main push/강제 push/reset0 |
-=======
+
 ## 2026-10-20 p2001i-diag — 종료 오디오 수명 진단·기준 main 비재현
 
 | id / 적용 위치 | 실제 관측·계약 |
@@ -256,7 +270,6 @@
 | 음성 대조 / 판정 | 저장소 밖 동일18단정 진단본에서만 종료12프레임+200ms 제거 → ERROR1·ObjectDB2객체·MP3리소스1·Orphan StringName1. Stream/Playback ID 각각9223372280157967279/9223372280225076142 정확일치. 비동기 오디오 정리 전 quit 문제; 원문 main 오류 재현으로 포장0·레슨 제품 결함 주장0 |
 | 이미 반영 / 소유 | QA-004 680a2758이 기준조상, I 원문 SHA88840f7a…는 QA-004 최종본과byte동일. 기존 보관 적 해제/하니스 대기 유지, 다른 담당 P2-007a 제품 패치0. 별도 총괄 원로그와의 동일건 여부 미확정 |
 | 실패·제출 | 첫 외부 probe 들여쓰기 Parse Error는 로그/초안 보존·통과 제외. [보고서](engine/orders/reports/p2001i-diag_REPORT.md)에 원문·전후/OLD·NEW·소유·제한. ~/exoduser-wt/_out/p2001i-diag/. 자기branch 정상훅/push·원격일치·DONE 뒤 자기WT 제거, R 보존 |
->>>>>>> 5bd08967
 =======
 ## 2026-10-20 EC3-02 3장 catalog·초기38필드 projection
 
