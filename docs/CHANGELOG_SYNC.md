@@ -1,3 +1,13 @@
+## 2026-10-20 BC2-01 2장 보스 읽기 전용 catalog
+
+| 항목 | 현재 정확 계약 |
+|---|---|
+| 기준·소유 | origin/main `0119f3048a459a458ba142d98f68126b8e281be1`(ce141573e 이후). 신규 catalog·격리테스트·UID2·보고서·이 절만 변경. 공용·타 담당·기존 테스트·원본·설계·세이브형식0줄, R 불변 |
+| 등록·재사용 | si4~9/6이름/물리속성/최종Set27~32·union32. main의BC01에서22기술·5phase·25combo 읽기,신규10기술·13combo만 추가. 유효combo38,ordinal순서/Set순서·모든원본필드·깊은복사·의존실패닫힘 보존 |
+| 실제 검증 | 신규7,169/0·BC01~07 회귀합106,867/0·contracts5그룹/0. 합114,036단정/0,skip0/exit0/ERROR0/stderr빈값. bc02/bc03 source-game 절대경로 인수. 각상수격리명·전호출pgrep/2이상30초대기·Godot동시1·override종료0byte |
+| 경계·HOLD | 실제전투/Main·State·World·부활·저장연결0. 다음B2C02의BC02~07 chapter데이터/guard/ack 통합결정은HOLD,공용모듈수정·stage위장·후속구현0. 시각·실전·성능·PC 미검수 |
+| 인계 | [BC2-01 보고서](engine/orders/reports/bc2-01_REPORT.md). 원로그 `~/exoduser-wt/_out/bc2-01/`,정상hook·자기branch push·원격SHA대조·DONE후자기worktree제거 |
+
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
