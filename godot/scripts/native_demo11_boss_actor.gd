@@ -76,6 +76,12 @@ func spawn(request: Dictionary) -> Dictionary:
 	_last_clock_reason = "source_clock_not_published"
 	return {"status":"READY","enemy":_enemy.duplicate(true),"rng_ledger":result.rng_ledger}
 
+func is_source_frame_completed() -> bool:
+	return _stage=="idle" and _pending.is_empty() and _error.is_empty()
+
+func read_source_frame() -> Dictionary:
+	return _frame.duplicate(true)
+
 func snapshot() -> Dictionary:
 	return {"status":"NOT_READY" if not _error.is_empty() else ("WAITING_OWNER" if not _pending.is_empty() else ("DORMANT" if _enemy.is_empty() else "READY")),
 		"reason":_error,"enemy":_enemy.duplicate(true),"pending":_pending.duplicate(true),"stage":_stage,
