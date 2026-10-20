@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
 ## 2026-10-20 TRACE-ENEMIES-CH4 4장 적 원본 추적·작은 이식 단위
 
 | 항목 | 추적·검토 근거 |
@@ -15,6 +10,29 @@
 | 제출 | [CH4 적 추적](engine/FDG_SOURCE_TRACE_ENEMIES_CH4_20261020.md), 원로그 ~/exoduser-wt/_out/trace-enemies-ch4/. 독립독자검토·정적행/표/링크대조, 정상훅·자기branch push·원격SHA/DONE후자기worktree제거 |
 
 >>>>>>> bc2bafff
+=======
+## 2026-10-20 EC3-03 etype40 위상 순수 상태·명령
+
+| id / 적용 위치 | 정확 계약·실제 검수 |
+|---|---|
+| 기준·의존 | main249c26fad + 승인EC3-02 fb8e80d0 정상merge 기준0aa7690e. rebase/reset/force0. WORK_BOARD P2-008b etype47/factory와 경로 중복0 |
+| 원본 | G39289–39316·42154. idle 외곽/2회T감소/진입60+30U후같은tick감소/Cd대입·d30/50/1200 엄격경계/해제후추가일반이동. cached d와 현재좌표재조준·canMv순서·FX/shot raw요청 보존 |
+| 순수 범위 | 신규phase leaf/test·UID2·보고서만. EC2-02 Draws 직접재사용·EC3-02 init 연속stream 검사. HP/CH2식복제0·실actor/피격/이동/projectile writer0·Main/State/공용/다른담당/저장0줄, 실제소비HOLD |
+| 검수·실패 | 최종33177/0·원문2688tick+hurt16조합, 회귀8종190519단정/0·12그룹/0, 전부exit0/ERROR0. 초기수치비교61→2실패 원문보존, 입력scale·재조준조건수로forward error 정정·기존33029단정유지+148추가. trig최대차3.41e−13, timer/분기/순서/소비exact. 종료Camera2/ObjectDB8누수1 WARNING보존 |
+| 격리·인계 | 신규EXODUSER-ec3-03-Isolated-20261020/기존각상수·매Godot pgrep2이상30초대기·override0byte. 명시node인자/출력join/UTF8임시JSON/binary64·원본pin. [보고서](engine/orders/reports/ec3-03_REPORT.md), 원로그 ~/exoduser-wt/_out/ec3-03/. 자기branch push/remote일치/DONE후자기WT제거 |
+
+## 2026-10-20 EC3-02 3장 catalog·초기38필드 projection
+
+| id / 적용 위치 | 정확 계약·실제 검수 |
+|---|---|
+| 신규 범위 | native_ch3_enemy_catalog_policy.gd·test_ch3_enemy_catalog_policy.gd·자기UID2개. catalog10행/31263–31298의38필드만. 기존EC2-02 Draws/API형식재사용·CH2필드/HP식복제0,complete_actor=false |
+| 원본 | 40..49각matching draw2/4/3/2/2/2/4/3/4/6,offtimer9999/phase−1/bleed0/상수flag·coords0draw,orbit31260뒤/erratic31300앞. raw46speed0분기·44R10(기획8과불일치),catalogshield%와실HP방어구분 |
+| 검수 | 최종신규12,602/0·원문1,000·38키값/순서/소비binary64/잘못된샘플위치검사. 회귀6종최종실패0/ERROR0/SKIP0. 최초importSIGSEGV−11/이후캐시누락ERROR50·실패단정10 원문보존,동일명령재import0/0및해당회귀4종재실행통과. 원인미확인·숨김0 |
+| 경계·기반 | main6d987cb8a에EC2-02 a10924eb포함하여main분기,EC3-01은미병합/미소비. 전체HP/coreprovider통합은HOLD·공용Main/State/저장/다른담당0줄. Node필수인자/출력join·UTF8임시JSON,새EXODUSER-ec3-02-Isolated-20261020·기존각상수/Godot전pgrep2이상30초대기/override0byte. [보고서](engine/orders/reports/ec3-02_REPORT.md)·원로그 ~/exoduser-wt/_out/ec3-02/ |
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 ## 2026-10-20 TRACE-BOSS-CH3 3장 보스 원본 추적·작은 이식 단위
 
 | 항목 | 추적·검토 근거 |
