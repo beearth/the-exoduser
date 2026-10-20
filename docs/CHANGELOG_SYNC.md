@@ -1,3 +1,15 @@
+## 2026-10-20 SV-TRANSPORT-READ fixture 슬롯 읽기 2번 단위
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 기준·의존 | 최신 origin/main284d7faf에 SV-COLLECT가 없어 승인된 b8b8a8fa 끝에서 codex/sv-transport-read-20261020 분기. full checkout 디스크부족 실패 후 필요한 파일만 sparse. 공용6·기존테스트·원본4파일·project.godot·R 파일 수정0 |
+| 신규 파일 | source_slot_reader.gd·test_native_slot_reader.gd·sv_transport_read_oracle.cjs. dev_server/nw_native target을 caller가 명시하고 메모리 fixture만 읽음. 실제 endpoint·namespace·계정·파일 IO·저장·복원·마이그레이션·세이브 형식 변경0 |
+| 원본 근거 | server198–213/node118–126의 목록6필드·JSON손상제외·순서·첫.json제거·development유무. index3522–3550의5칸 fallback·엄격development/test/build gate·stale 무적용, game63968의j.ok&&j.data admission. ??0과\|\|0 차이 유지 |
+| 결과·HOLD | 404/500/transport/parse/rejected/metadata/player candidate 구분. full_save_verified=false·쓰기/restore권한없음. unknown target/context/status·비배열slots·lone UTF16 surrogate/depth128초과는HOLD(빈슬롯/손상으로제조하지않음). _demoSyncActiveSave writer 미연결 |
+| 실제 검수 | 신규5952검사/실패0·기존SV-CONTRACT3023/실패0, 전2실행exit0·ERROR/SCRIPT ERROR/경고0. 원본서버12·JSON37·로비156·load32상황 대조. 첫5950/12실패는 StringName development key를 문자열로 변환해 수정·원로그보존 |
+| 기존 회귀 BLOCKED | developerCharacterSlots 전체30건/22통과/8실패. origin/main 원본만 별도평가해같은30/22/8·실패이름동일. _demoSyncActiveSave 미정의 등 기존하니스/UI범위. 해당파일수정0·전체PASS승격0 |
+| 실행·제출 | 매Godot실행전전역count확인·2이상30초대기·작업내순차1개. 신규EXODUSER-sv-transport-read-Isolated-20261020, 기존회귀각상수·종료override0byte. 정상훅·자기branch push만. [보고서](engine/orders/reports/sv-transport-read_REPORT.md), ~/exoduser-wt/_out/sv-transport-read/DONE.txt에SHA/수치 |
+
 ## 2026-10-20 SV-COLLECT 원본 저장 수집 읽기 전용 collector
 
 | id / 적용 위치 | 현재 정확 계약 |
