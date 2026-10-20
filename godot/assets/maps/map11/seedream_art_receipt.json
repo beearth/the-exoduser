@@ -1,0 +1,40 @@
+{
+  "flesh_tree_v1.png": {
+    "sha256": "e21afce9e16fcd44a209a6121f95d6209d7a5c6c0e1a05f60b7445a016dcf903"
+  },
+  "floor_fissure_v2.png": {
+    "sha256": "509ffc3131a96b33d62b1a99f2b1a901154ad77d35df1fd52fc77c5dea63f1c0"
+  },
+  "tree": {
+    "key_chromaticity": [
+      0.37422606348991394,
+      0.858879566192627,
+      0.3496866524219513
+    ],
+    "distance_transition": [
+      0.16,
+      0.4
+    ],
+    "crop": [
+      345,
+      73,
+      1569,
+      1845
+    ],
+    "output": [
+      1024,
+      1482
+    ],
+    "alpha": "straight RGBA; distance smoothstep, green unmix and cap"
+  },
+  "floor": {
+    "output": [
+      1024,
+      1024
+    ],
+    "offset_blend_shoulder_px": 192,
+    "half_period_px": 960,
+    "post_resize_blur_px": 0.45,
+    "equal_opposite_edges": true
+  }
+}

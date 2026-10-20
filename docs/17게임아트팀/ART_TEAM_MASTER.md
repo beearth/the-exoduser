@@ -93,6 +93,16 @@
 
 ## 4. 에셋 현황표
 
+### MAP11-16 — 2026-10-21 Godot CH1-1 승인 아트 2장
+
+| 입력 / 출처 | 런타임 파생 (`godot/assets/maps/map11/`) | 상태·사용 위치 |
+|---|---|---|
+| `floor_fissure_v2.png`, 1920² / MagicLight Seedream 5.0 Pro | `floor_fissure_seedream_tile.png`, 1024² RGB, mipmap | 제품 필드 타일 베이스, seamless offset blend·D02 국소 혈색 강화. v1은 잔점 탈락 참고만 |
+| `flesh_tree_v1.png`, 1920² / MagicLight Seedream 5.0 Pro | `flesh_tree_seedream_rgba.png`, 1024×1482 RGBA, mipmap | 녹색 거리 alpha·스필 제거·bbox 크롭, 기존 외곽3계층에 교대 혼합·어두운 modulate·변형 |
+
+사용자 제공·사용 승인 원본 재사용, 이번 신규 생성/비용0. 처리·배치·검수·남은 범위는 [MAP11-16 적용 기록](../4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md) 참조.
+
+
 ### 4.1 신규 인트로 컷신 `assets/cutscene/images/` (캐시 `20261004-intro-lock8`)
 
 | 컷 | 인물/내용 | 상태 | 비고 |

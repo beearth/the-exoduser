@@ -2,12 +2,15 @@ extends "res://scripts/maps/map11/field_seam_preview.gd"
 ## MAP11-14 product assembly; no preview actor, UI, collision or gameplay writer.
 var gate_leaves: Array[Node2D]=[]
 var gate_open: float=0.0
+var _flesh_tree: Texture2D
+var flesh_tree_instances: int=0
 func _ready() -> void:
  recipe=load("res://scripts/maps/map11/field_recipe.tres")
  _build_ground()
- # Static five-tap soil filter baked once; world-space three-scale blend is unchanged.
+ # MAP11-16 approved fissure tile, mipmapped; world-space three-scale blend retained.
  _surface.material.shader=preload("res://scripts/maps/map11/product_surface.gdshader")
- _surface.material.set_shader_parameter("ground",load("res://assets/maps/map11/field_ground_filtered.png"))
+ _surface.material.set_shader_parameter("ground",load("res://assets/maps/map11/floor_fissure_seedream_tile.png"))
+ _flesh_tree=load("res://assets/maps/map11/flesh_tree_seedream_rgba.png")
  _build_mass()
  _shadow=MapLook._make_radial_texture(128,[0.0,.35,.7,1.0],[.7,.5,.15,0.0])
  for variant in VARIANTS: _textures.append(load(PROP_DIR+"rotforest_tree_%02d.png"%variant))
@@ -64,3 +67,16 @@ func update_product(point: Vector2,delta: float) -> void:
  for i in range(gate_leaves.size()):
   gate_leaves[i].modulate.a=1.0-gate_open
   gate_leaves[i].position.x=float(gate_leaves[i].get_meta("closed_x"))+(-1 if i==0 else 1)*gate_open*380
+
+# Setup only: replace alternate outer-ring sprites without changing feet/collision/culling.
+func _add_tree(layer: String,side: String,foot: Vector2,height_: float,tone: Color,idx: int,mirror: bool) -> void:
+ var use_flesh: bool=_flesh_tree!=null and forest_instances%2==0
+ var original: Texture2D=_textures[idx]
+ if use_flesh:_textures[idx]=_flesh_tree
+ super._add_tree(layer,side,foot,height_,tone,idx,mirror)
+ _textures[idx]=original
+ if use_flesh:
+  var sprite: Sprite2D=_forest_rows.back().node.get_child(0)
+  sprite.modulate*=Color(.84,.82,.82,1.0)
+  sprite.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
+  flesh_tree_instances+=1

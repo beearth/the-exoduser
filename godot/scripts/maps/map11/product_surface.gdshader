@@ -1,5 +1,5 @@
 shader_type canvas_item;
-uniform sampler2D ground: repeat_enable, filter_linear;
+uniform sampler2D ground: repeat_enable, filter_linear_mipmap;
 uniform vec2 surface_origin=vec2(0.0);
 varying vec2 world_uv;
 vec2 turn(vec2 p,float a){return mat2(vec2(cos(a),sin(a)),vec2(-sin(a),cos(a)))*p;}
@@ -18,7 +18,7 @@ void fragment(){
  // Muted skin/soil, no noise or emissive warning-colored lines.
  vec3 skin=vec3(.23,.175,.15)+vec3(relief*.75);
  float blood=clamp(sample_.r-sample_.g*1.15,0.0,.12);
- skin-=vec3(0.0,blood*.42,blood*.37);
+ skin+=vec3(blood*.65,-blood*.55,-blood*.48); // D02 local crimson tissue, no emission.
  float damp=smoothstep(700.0,3200.0,p.x)*(1.0-smoothstep(-1600.0,2400.0,p.y));
  skin=mix(skin,skin*vec3(.82,.90,.88),damp*.35);
  COLOR=vec4(skin,1.0);
