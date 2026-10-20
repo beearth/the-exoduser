@@ -1,6 +1,7 @@
 extends Node2D
 ## Native Godot scene. No WebView, HTTP API or browser save access.
 
+const Demo11Authority = preload("res://scripts/native_demo11_authority.gd")
 const NativePerspectiveViewScript = preload("res://scripts/native_perspective_view.gd")
 const WorldScript = preload("res://scripts/world.gd")
 const PlayerScript = preload("res://scripts/player.gd")
@@ -103,7 +104,19 @@ var _native_post_stage_configuration: Dictionary = {}
 var _native_source_extra_registration: Dictionary = {}
 var _native_source_object_registration: Dictionary = {}
 
+# Policy is selected only by the production boot, never URL/test metadata.
+var _native_demo11_policy: Dictionary = {}
+
+func read_native_demo_policy() -> Dictionary:
+	return _native_demo11_policy.duplicate(true) if not _native_demo11_policy.is_empty() else {"status": "NOT_READY", "reason": "boot_not_started"}
+
+func evaluate_native_demo_exp_gate(state: Dictionary, today: String, in_loop: bool = false) -> Dictionary:
+	if _native_demo11_policy.get("status") != "READY":
+		return {"allowed": false, "reason": "boot_not_started", "state": state.duplicate(true)}
+	return Demo11Authority.exp_gate(state, today, in_loop)
+
 func _ready() -> void:
+	_native_demo11_policy = Demo11Authority.boot_manifest("demo")
 	_publish_native_source_lesson_file_init()
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	Engine.max_fps = 240
@@ -115,6 +128,15 @@ func _ready() -> void:
 	add_child(world)
 	if not world.ready_for_player:
 		push_error("Native World startup rejected: " + world.get_native_startup_error() + "; player startup stopped.")
+		return
+	# Consume the selected demo stage before constructing any Player. This is a
+	# compatibility gate on the existing world, not terrain/placement work.
+	if world.map_data.get("stage") != _native_demo11_policy["stage"]:
+		push_error("Native demo boot rejected: stage outside demo policy")
+		world.free()
+		world = null
+		set_physics_process(false)
+		set_process_unhandled_input(false)
 		return
 	player = PlayerScript.new()
 	player.name = "Player"
@@ -157,6 +179,10 @@ func _ready() -> void:
 	world.add_child(source_state)
 	add_child(player)
 	world.set_player(player)
+	var demo_g: Variant = source_state.read_current_g()
+	if not demo_g is Dictionary or demo_g.get("stage") != _native_demo11_policy["stage"]:
+		_stop_source_player_startup("demo_state_stage_outside_policy")
+		return
 	if not player.bind_native_armor_inventory(Callable(source_state, "read_current_inventory")):
 		_stop_source_player_startup("native_armor_inventory_binding_rejected")
 		return
