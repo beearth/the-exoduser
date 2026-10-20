@@ -44,9 +44,11 @@ func run() -> void:
 	p.ultSlot="blackStar";p.skills["blackStar"]=1
 	main.dispatch_native_skill_slot("Z")
 	check(view.snapshot().selected_skill=="blackStar" and view.snapshot().failure_reason=="executor_interface_required","ULT_HOLD_visible_without_fake_execute")
-	check(view.snapshot().selection_text.ends_with("연결 대기"),"unsupported_ULT_not_ready")
+	check(view.snapshot().selection_text.ends_with("사용 불가"),"unsupported_ULT_not_ready")
 	var spawned: Dictionary=main.spawn_native_demo_boss({"si":0,"room":0,"x":4020.0,"y":7200.0,"difficulty_index":5,"stage_diff_offset":0})
 	check(spawned.status=="READY","real_DEMO34_spawn")
+	# Resource fixture commits before pause through the unchanged production gate.
+	check(state.commit_native_skill_dispatch_cost(main,17,23,0).accepted,"resource_fixture_uses_existing_cost_owner")
 	get_tree_pause(true)
 	var actor: Node=main.native_demo_boss_actor
 	# Fixture-only HP readback states, never a hurtE/damage path claim.
@@ -63,6 +65,20 @@ func run() -> void:
 	check(state.read_current_p()==before_p and state.read_current_g()==before_g,"HUD_resources_readonly")
 	check(actor.snapshot()==before_actor and adapter.read_native_slot_cooldowns()==before_cd,"HUD_never_advances_boss_or_cooldown")
 	check(got.resources.st==before_p.st and got.resources.mp==before_p.mp and got.resources.sp==before_p.sp and got.resources.mats==before_g.mats,"resource_single_owner_values")
+	# RETOUCH: real cost owner produces independent partial MP/ST; HUD remains a reader.
+	hud._refresh();view.refresh_native_owners()
+	var resources: Dictionary=state.read_current_p()
+	check(hud._stamina_text.text=="ST\n%d\n/ %d" % [int(resources.st),int(resources.mst)],"ST_label_exact_owner")
+	check(hud._mp_text.visible and hud._mp_text.text=="MP\n%d\n/ %d" % [int(resources.mp),int(resources.mmp)],"actual_MP_values_no_development_placeholder")
+	check(is_equal_approx(hud._stamina_fill.get_shader_parameter("mp_ratio"),float(resources.mp)/float(resources.mmp)),"left_blue_MP_independent_fill")
+	check(is_equal_approx(hud._stamina_fill.get_shader_parameter("fill_ratio"),float(resources.st)/float(resources.mst)),"right_green_ST_independent_fill")
+	var bound_state: Node=hud._source_state
+	hud._source_state=null;hud._refresh()
+	check(not hud._mp_text.visible and hud._mp_text.text=="" and hud._stamina_fill.get_shader_parameter("mp_ratio")==0.0,"unbound_MP_is_hidden_not_invented")
+	hud._source_state=bound_state;hud._refresh()
+	check(hud._mp_text.visible,"MP_restores_from_same_owner")
+	view._selection_seconds=0;view.refresh_native_owners()
+	check(not view._strip.visible,"idle_has_no_permanent_debug_strip")
 	var saved: float=enemy.hp
 	enemy.hp=NAN;view.refresh_native_owners();check(not view.snapshot().boss_visible,"invalid_HP_hides_stale_bar")
 	enemy.hp=0;view.refresh_native_owners();check(not view.snapshot().boss_visible,"dead_HP_hides_bar")
@@ -74,6 +90,7 @@ func run() -> void:
 	hud._refresh()
 	view.refresh_native_owners()
 	if not capture_dir.is_empty():
+		check(DirAccess.make_dir_recursive_absolute(capture_dir)==OK,"capture_directory_ready")
 		await create_timer(1.1,true).timeout # existing real-time curtain owner finishes; no forced hide
 		check(not main.get_native_intro_curtain_view().visible,"source_curtain_finished_before_capture")
 		await capture("01-owner-ready")
@@ -82,6 +99,8 @@ func run() -> void:
 		view._observe("Z",{"accepted":false,"reason":"executor_interface_required"})
 		await capture("03-ultimate-hold")
 		check(FileAccess.file_exists(capture_dir.path_join("01-owner-ready.png")),"GPU_capture_written")
+		for label: Label in [hud._mp_text,hud._stamina_text,view._selection,view._failure]:
+			check(not label.text.contains("미이식") and not label.text.contains("미구현") and not label.text.contains("연결 대기"),"player_facing_text_has_no_development_words")
 	var parent: Node=actor.get_parent();parent.remove_child(actor)
 	view.refresh_native_owners();check(not view.snapshot().boss_visible,"detached_actor_not_displayed")
 	parent.add_child(actor)
@@ -99,6 +118,7 @@ func capture(label: String) -> void:
 	check(image.save_png(capture_dir.path_join(label+".png"))==OK,"capture_"+label)
 	image.get_region(Rect2i(670,10,580,110)).save_png(capture_dir.path_join(label+"-boss-1x.png"))
 	image.get_region(Rect2i(580,815,760,265)).save_png(capture_dir.path_join(label+"-skills-1x.png"))
+	image.get_region(Rect2i(1260,815,300,265)).save_png(capture_dir.path_join(label+"-resources-1x.png"))
 func finish() -> void:
 	print("DEMO11_42_RESULT ",JSON.stringify({"assertions":checks,"failures":failures,"skip":0,"damage_or_shield_writes":0}))
 	quit(0 if failures==0 else 1)

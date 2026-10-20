@@ -1,3 +1,11 @@
+## 2026-10-21 DEMO11-42 눈 검수 RETOUCH — MP/ST·선택 툴팁
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 수정 | 같은749d0c6e branch. 개발 MP미이식 문구 제거, 실제 MP 파랑/ST 초록 독립 반구·ST 명칭, 상시 중복 자원 띠 삭제→원본705–708 skBarTip 축소. 보스 PASS 생성/갱신 byte 동일 |
+| 범위 | HUD+20/-6, owner view+29/-16. Main/State/전투/저장0. 게임폰트·기존 자산 byte 재사용, 번역2문구 등록 |
+| 검증 | 실제Main GPU46/0·기존HUD36/0 각 관련scope, 하니스 준비 오류5실패 수정 후 해당suite만 재실행. 3뷰1920×1080+1x9개, 총12PNG. [현재 보고서](engine/orders/reports/demo11-42_REPORT.md)·[현재 UI 계약](3.1%20ui%20hud%20디자인/DEMO11_42_NATIVE_OWNER_HUD_20261021.md), Mac 재눈검수 대기 |
+
 ## 2026-10-21 DEMO11-42 — HUD 새 owner 연결
 
 | 항목 | 구현·검수 근거 |

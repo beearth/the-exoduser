@@ -12,11 +12,11 @@ var _boss_name: Label
 var _boss_value: Label
 var _strip: Panel
 var _selection: Label
-var _resources: Label
 var _failure: Label
 var _selected := "1"
 var _last_failure := ""
 var _failure_seconds := 0.0
+var _selection_seconds := 0.0
 var _elapsed := 0.0
 var _snapshot: Dictionary = {"ready":false}
 
@@ -66,13 +66,13 @@ func _ready() -> void:
 	_boss_value=_label(_boss,"",Vector2(-250,58),Vector2(500,22),14,"cinzel_hell",INK)
 	_strip=Panel.new();add_child(_strip)
 	_strip.mouse_filter=Control.MOUSE_FILTER_IGNORE
-	_strip.size=Vector2(640,62)
+	_strip.size=Vector2(320,40)
 	var plate:=StyleBoxFlat.new()
-	plate.bg_color=Color(0.035,0.028,0.027,.8)
-	plate.border_color=Color(GOLD,.5);plate.border_width_top=1
+	plate.bg_color=Color(12.0/255,6.0/255,4.0/255,.94)
+	plate.border_color=Color("6d4330");plate.set_border_width_all(1);plate.set_corner_radius_all(6)
+	plate.shadow_color=Color(0,0,0,.7);plate.shadow_size=12
 	_strip.add_theme_stylebox_override("panel",plate)
-	_selection=_label(self,"",Vector2.ZERO,Vector2(620,24),15,"hell",INK)
-	_resources=_label(self,"",Vector2.ZERO,Vector2(620,22),14,"cinzel_hell",INK)
+	_selection=_label(self,"",Vector2.ZERO,Vector2(320,30),15,"hell",Color("ffd080"))
 	_failure=_label(self,"",Vector2.ZERO,Vector2(660,26),16,"hell",Color("ff9d78"))
 
 func _label(parent: Control, text: String, pos: Vector2, extent: Vector2, px: int, stack: String, color: Color) -> Label:
@@ -89,6 +89,7 @@ func _label(parent: Control, text: String, pos: Vector2, extent: Vector2, px: in
 
 func _process(delta: float) -> void:
 	_failure_seconds=maxf(0,_failure_seconds-delta)
+	_selection_seconds=maxf(0,_selection_seconds-delta)
 	_elapsed+=delta
 	if _elapsed>=.1:
 		_elapsed=0
@@ -96,6 +97,7 @@ func _process(delta: float) -> void:
 
 func _observe(key: String, result: Dictionary) -> void:
 	if DISPATCH.HUD_SLOTS.has(key): _selected=key
+	_selection_seconds=2.5
 	_last_failure="" if result.get("accepted")==true else str(result.get("reason","owner_unready"))
 	_failure_seconds=0 if _last_failure.is_empty() else 3
 	refresh_native_owners()
@@ -104,16 +106,27 @@ func refresh_native_owners() -> void:
 	if not is_node_ready(): return
 	var extent:=get_viewport_rect().size
 	_boss.position=Vector2(extent.x*.5,18)
-	_strip.position=Vector2(extent.x*.5-320,extent.y-228)
-	_selection.position=Vector2(extent.x*.5-310,extent.y-221)
-	_resources.position=Vector2(extent.x*.5-310,extent.y-197)
-	_failure.position=Vector2(extent.x*.5-330,extent.y-252)
+	var hovered:=false
+	var hud: Node=_main.get("hud") if is_instance_valid(_main) else null
+	if is_instance_valid(hud):
+		for key in DISPATCH.HUD_SLOTS:
+			var icon: Control=hud._slot_icons.get(DISPATCH.HUD_SLOTS[key])
+			if is_instance_valid(icon) and icon.get_global_rect().has_point(get_global_mouse_position()):
+				_selected=key;hovered=true;break
+	var center:=extent.x*.5
+	var top:=extent.y-164
+	if is_instance_valid(hud):
+		var icon: Control=hud._slot_icons.get(DISPATCH.HUD_SLOTS.get(_selected,""))
+		if is_instance_valid(icon):center=icon.get_global_rect().get_center().x;top=icon.get_global_rect().position.y-52
+	_strip.position=Vector2(clampf(center-160,8,extent.x-328),top)
+	_selection.position=_strip.position+Vector2(0,4)
+	_failure.position=Vector2(clampf(center-330,8,extent.x-668),top-32)
 	var state: Node=_main.get("source_state") if is_instance_valid(_main) else null
 	var p: Variant=state.read_current_p() if is_instance_valid(state) else null
 	var g: Variant=state.read_current_g() if is_instance_valid(state) else null
 	var live:=is_instance_valid(_main) and _main.is_inside_tree() and is_instance_valid(_adapter) and _adapter.is_inside_tree() and p is Dictionary and g is Dictionary
-	_strip.visible=live
-	_selection.visible=live;_resources.visible=live;_failure.visible=live and _failure_seconds>0
+	_strip.visible=live and (hovered or _selection_seconds>0)
+	_selection.visible=_strip.visible;_failure.visible=live and _failure_seconds>0
 	_boss.visible=false
 	_snapshot={"ready":live,"boss_visible":false,"selected_key":_selected,"failure_reason":_last_failure if _failure_seconds>0 else ""}
 	if not live: return
@@ -126,11 +139,11 @@ func refresh_native_owners() -> void:
 	var cds: Dictionary=_adapter.read_native_slot_cooldowns()
 	var cd: Dictionary=cds.get(DISPATCH.HUD_SLOTS.get(_selected,""),{})
 	var supported: bool=DISPATCH.EXECUTORS.has(sid)
-	var readiness: String=str(cd.get("text","")) if not cd.is_empty() else ("준비" if supported and learned else "연결 대기")
+	var readiness: String=str(cd.get("text","")) if not cd.is_empty() else ("준비" if supported and learned else "사용 불가")
 	_selection.text="%s · %s · %s" % [_selected,title,readiness]
-	_resources.text="ST %d / %d    MP %d / %d    SP %d    악의 %d" % [p.st,p.mst,p.mp,p.mmp,p.sp,g.mats]
+	var resource_text: String="ST %d / %d    MP %d / %d    SP %d    악의 %d" % [p.st,p.mst,p.mp,p.mmp,p.sp,g.mats]
 	_failure.text=_failure_text(_last_failure)
-	_snapshot.merge({"selected_skill":sid if learned else "","selection_text":_selection.text,"cooldown":cd.duplicate(true),"resource_text":_resources.text,"failure_text":_failure.text if _failure.visible else "","resources":{"st":p.st,"mst":p.mst,"mp":p.mp,"mmp":p.mmp,"sp":p.sp,"mats":g.mats}})
+	_snapshot.merge({"selected_skill":sid if learned else "","selection_text":_selection.text,"cooldown":cd.duplicate(true),"resource_text":resource_text,"tooltip_visible":_strip.visible,"failure_text":_failure.text if _failure.visible else "","resources":{"st":p.st,"mst":p.mst,"mp":p.mp,"mmp":p.mmp,"sp":p.sp,"mats":g.mats}})
 	var actor: Node=_main.get("native_demo_boss_actor")
 	if not is_instance_valid(actor) or not actor.is_inside_tree() or actor.get_parent()!=_main.get("world"): return
 	var boss: Dictionary=_main.read_native_demo_boss()
@@ -150,7 +163,7 @@ static func _failure_text(reason: String) -> String:
 	match reason:
 		"": return ""
 		"unassigned_or_unlearned": return "사용 불가 · 스킬 미배정"
-		"executor_interface_required","protected_poise_escape_interface_required": return "사용 불가 · 스킬 연결 대기"
+		"executor_interface_required","protected_poise_escape_interface_required": return "지금 사용할 수 없습니다."
 		"source_global_or_actor_gate","dispatcher_not_configured_or_paused": return "사용 불가 · 현재 행동 상태"
 		"slot_rule_or_absorbed": return "사용 불가 · 슬롯 또는 합체 상태"
 		"ice_orb_active","ghost_walk_active": return "사용 불가 · 다른 스킬 사용 중"

@@ -1,3 +1,23 @@
+# 2026-10-21 DEMO11-42 눈 검수 RETOUCH 수정 재제출
+
+기준/동일 branch: `749d0c6e12447cedf539688fea0262b9e6378a8d`, `codex/demo11-42-20261021`. Mac 총괄의 이전 판정 RETOUCH를 기준으로 세 지적을 수정했다. 아래 최초 제출의 자체 PASS/수치/구현 상태는 이전 이력이며 현재 판정으로 대신하지 않는다. DEMO11-50은 별도 branch5ac5dcfc로 먼저 제출했고 이 branch에 섞지 않았다.
+
+- 오른쪽 구슬: 개발 문구 `미이식` 제거. 실제 State MP/mmp를 왼쪽 파랑 반구/MP 라벨/수치에 연결, owner 부재·비유효이면 숨기고 fill0. 오른쪽은 ST/st/mst 초록 반구로 명확화. 현재 웹의 레거시 SP 표기는 성장 SP와 혼동되므로 이번 사용자 지시 및 HUD 리디자인의 ST 명칭을 우선했다. 원본 game.html2640–2665/60300–60305의 MP-left/ST-right·#0c2244→#3388cc/#0c3322→#2a8844·#88bbff/#88dd88 규칙. 자원 writer 변경0.
+- 상시 정보 띠: 중복 ST/MP/SP/악의 UI 행을 제거했다. 같은 값은 readback snapshot에만 남는다. 기존 원본 #skBarTip(705–708)처럼 rgba(12,6,4,.94)/1px#6d4330/radius6/그림자12·황금색 명조의320×40 슬롯 툴팁으로 축소. 유휴 시 숨기고 슬롯 hover 또는 요청 뒤2.5초만 표시, 게임 입력을 소비하지 않는다. 미연결 실행기의 플레이어 문구도 `사용 불가`/`지금 사용할 수 없습니다.`로 바꿔 개발 연결 사정을 노출하지 않는다.
+- 보스 HP: 사용자가 PASS한 생성·갱신 블록은 byte 동일(audit.json). Main/State/player/world/NativeSkillSlots/보스 actor/game.html 및 전투·저장 변경0. 보스바와 기존 슬롯/프레임 배치를 바꾸지 않았다.
+
+이번 공용 diff는 hud.gd +20/-6(21,258,260–265,333,336–341,414,425–428), native_demo11_hud_owner.gd +29/-16(14삭제,19,69,71–75,92,100,109–123,128–129,142,144,146,166). 새 tick 목록 생성 API0. 추가 MP getter는 기존 owner를 읽을 뿐 비용/타이머/피해를 집행하지 않는다. 폰트는 기존 cinzel_hell/hell 토큰, 원본 이미지/폰트 byte 재사용이며 새 에셋 생성/변환0.
+
+검증: 최종 실제 Main GPU **46/0**, skip0·ERROR0. 기존 P2-002a HUD 회귀 **36/0**, skip0·ERROR0·1회. 독립 MP/ST 수치·fill, 미연결 MP 숨김/재연결, 유휴 툴팁 비표시, 개발 문구 부재, 기존 owner readonly 및 보스 계약을 검사했다. 자원 차감17ST/23MP는 하니스가 pause 전 기존 실제 cost owner로 준비한 fixture이며 HUD가 자원을 쓰지 않는다. 기존 combat/dispatch/actor suite는 바뀌지 않아 반복하지 않았다.
+
+첫 GPU는45중5실패/ERROR14를 원문 보존했다. 리소스 fixture를 pause 뒤 요청해 기존 정상 pause gate가 거절했고, 신규 캡처 하위 폴더가 없어 PNG 저장이 실패했다. 하니스에서 fixture를 pause 앞으로 옮기고 출력 폴더를 생성한 뒤 실패한 신규 suite만 재실행46/0. 제품 gate 완화/실패 삭제0. Camera2D 선재 WARNING는 그대로 보존, WARNING0 주장0.
+
+최종 캡처는 동일3뷰(ready/failure/ULT refusal)1920×1080 + 기존 보스580×110/스킬760×265 1x 크롭 + 오른쪽 구슬300×265 1x 크롭 각3개, 총12 PNG. 01 전체·03 스킬/자원1x를 직접 열어 MP/ST 분리·개발 문구 부재·상시 띠 제거·플레이어 거절 문구·보스 유지 확인. 자체 VISUAL VERDICT: PASS(이3뷰 범위), **Mac 총괄 재눈검수 대기**. 기존 스킬 아이콘 부분집합 등 다른 이식 경계를 완료로 확대하지 않는다.
+
+최신 파일은 `_out/demo11-42/captures/`, 이전749 PNG는 그 아래 pre-retouch-749d0c6e에 보존했다. 상세 raw/result/manifest/수정 전 보고서는 `_out/demo11-42/retouch-20261021/`. 실제 사용자 저장 폴더 접근0. Godot 전 pgrep>=2이면30초 대기, 모든 실행 override 종료0byte. 정상 훅·동일 branch 일반 push·원격 SHA 일치·DONE 기록 뒤 자기 WT/생성 project만 제거하며 R 보존. 새 SHA는 최종 DONE에 기록한다.
+
+---
+
 # DEMO11-42 — HUD 실제 owner 연결 보고서
 
 기준/의존: fetch 후 origin/main `ac3764bfe5476b56e2f2388b1f2d9baeff731885`에서 분기. DEMO11-34 actor가 이미 main에 포함되어 별도 merge 의존 없음. 브랜치 `codex/demo11-42-20261021`. 실제 작업/검수 source는 sparse worktree 및 동일 byte의 `_out/demo11-42/project`; R은 checkout/index/work를 변경하지 않는다. PC 실행·동기화는 미확인.
