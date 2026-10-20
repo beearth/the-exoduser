@@ -1,3 +1,11 @@
+## 2026-10-21 DEMO11-19 런타임 성장 재계산 권위 선행 BLOCKED
+
+| 항목 | 근거·검수 |
+|---|---|
+| 기준·의존 | main8dbbf2b0e + DEMO11-20 3ea7b63d 정상merge. CHANGELOG 상단 양쪽 절 보존 |
+| 판정 | 기존 applyStats는 pre-Tree 1회, State/resource sink도 runtime 거부. 보호 이동·방패 권위가 필요해 제품0줄·부분 포인트 차감0 |
+| 검증·인계 | Godot0·새 PASS 주장0. 원본 순서/거부가드/제품diff 정적 확인. [보고서·OLD/NEW](engine/orders/reports/demo11-19_REPORT.md), META/자기WORK_BOARD 갱신. 자기branch push·remote/DONE 뒤 WT제거 |
+
 ## 2026-10-21 DEMO11-20 후속 — 성능 수정 main merge·틱 목록 API 점검
 
 | 항목 | 근거·검수 |
