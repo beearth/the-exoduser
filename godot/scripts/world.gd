@@ -3203,10 +3203,24 @@ func is_world_blocked(pos: Vector2) -> bool:
 	var tile = pos / _tile_size
 	if _hill_ramp_at(tile) < 0:
 		var q = (tile - Vector2(float(h["cx"]), float(h["cy"]))) / Vector2(float(h["rx"]), float(h["ry"]))
-		if q.length() >= float(h["inner"]) and q.length() <= float(h["outer"]):
+		var hill_distance = q.length()
+		if hill_distance >= float(h["inner"]) and hill_distance <= float(h["outer"]):
 			return true
 	for prop in map_data["prop_colliders"]:
-		var q = (pos - Vector2(float(prop["position"][0]), float(prop["position"][1]))) / Vector2(float(prop["radii"][0]), float(prop["radii"][1]))
+		# Conservative 2x outer box only rejects points certainly outside the
+		# ellipse. Keep the original Vector2 narrow predicate/iteration order and
+		# live data reads; no immutable cache or float64 replacement at its edge.
+		var center: Array = prop["position"]
+		var radii: Array = prop["radii"]
+		var cx = float(center[0])
+		var rx = float(radii[0])
+		if absf(pos.x - cx) > absf(rx) * 2.0:
+			continue
+		var cy = float(center[1])
+		var ry = float(radii[1])
+		if absf(pos.y - cy) > absf(ry) * 2.0:
+			continue
+		var q = (pos - Vector2(cx, cy)) / Vector2(rx, ry)
 		if q.length_squared() < 1.0:
 			return true
 	return false
@@ -3220,10 +3234,11 @@ func has_line_of_sight(from: Vector2, to: Vector2) -> bool:
 
 func can_move(pos: Vector2, radius: float) -> bool:
 	# Same four point samples as native canMv; hill and prop ellipses remain analytic.
-	for corner in [Vector2(-radius, -radius), Vector2(radius, -radius), Vector2(-radius, radius), Vector2(radius, radius)]:
-		if is_world_blocked(pos + corner):
-			return false
-	return true
+	# Same short-circuit order, without allocating an Array on each AI query.
+	return not is_world_blocked(pos + Vector2(-radius, -radius)) \
+		and not is_world_blocked(pos + Vector2(radius, -radius)) \
+		and not is_world_blocked(pos + Vector2(-radius, radius)) \
+		and not is_world_blocked(pos + Vector2(radius, radius))
 
 func native_safe_point(x: float, y: float, radius: float) -> Variant:
 	# Source safePt: current point, then T..T*5 in T/2 increments, with

@@ -1,3 +1,10 @@
+## 2026-10-21 DEMO11-perf-enemy — 다수 적 진단·동치 최적화
+
+- 요청4커밋99e6fe7b/d931ebe2/c6d19973/9fd31a64를 순차 merge, EOF 등록/API 모두 보존. Mac World 기하 질의·Flesh 분리 계산만 최적화, PC 보호/State/자원 권위 byte 동일.
+- 원본 함수 동치6473/0+관련2352/0. 30/60 native CPU 평균9.58%/10.31% 감소. 전체30개체 최대 headless18.975ms·실창20.652ms로8.333ms 목표 FAIL, 기존 사용자 Godot 동시 조건·단독 미인증 명시.
+- 느린 profiler frame에서 PC 펫 show_bubble 약14.9ms 추적, portrait cold load15.735/15.305ms→보유 재로드4µs 재현(별도probe3/0). PC 파일 무수정·초기화 강한참조 cache 제안.
+- 전후8행/상위10 profiler·공용 줄 범위·PC OLD/NEW·P3 ObjectDB8 경고는 [보고서](engine/orders/reports/demo11-perf-enemy_REPORT.md), [성능 문서](12퍼포먼스·최적화/DEMO11_ENEMY_FIXED_TICK_PROFILE_20261021.md). normal hook·경로 stage·자기branch push/remote/DONE 후 자기WT 제거.
+
 ## 2026-10-21 DEMO11-enemy-base — 자연 소환 단일 기반
 
 | 항목 | 구현·검수 근거 |

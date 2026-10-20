@@ -246,12 +246,14 @@ func _apply_separation(ticks: float) -> void:
 		_separation_ticks -= ticks
 		return
 	var push = Vector2.ZERO
+	var origin = global_position
+	var cutoff_squared = pow(radius * 4.4, 2.0)
 	for other in world.get_enemies():
 		if other == self or not is_instance_valid(other) or not bool(other.get("alive")):
 			continue
-		var difference = global_position - other.global_position
+		var difference = origin - other.global_position
 		var distance_squared = difference.length_squared()
-		if distance_squared > pow(radius * 4.4, 2.0):
+		if distance_squared > cutoff_squared:
 			continue
 		var minimum = radius + float(other.get("radius")) + 4.0
 		if distance_squared > 0.01 and distance_squared < minimum * minimum:

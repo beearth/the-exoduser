@@ -30,6 +30,7 @@
 ## 진행 중 (2026-10-20 갱신: Claude 총괄)
 | 작업ID | 내용 | 담당·환경 | 브랜치 | 소유 파일(다른 담당 수정 금지) | 상태 |
 |---|---|---|---|---|---|
+| DEMO11-perf-enemy | 30/60 적 fixed-tick·상위10 profile·Mac 최적화 | Mac Codex | codex/demo11-perf-enemy-20261021 | World3206–3241 기하 질의·Flesh249–256 분리·신규test/tools/docs | 진단 제출: 동치+관련8825/0, native CPU 평균9.58%/10.31% 감소. 전체30개체 최대18.975/20.652ms로8.333ms 목표 미달, PC권위 OLD/NEW·동시Godot 한계 기록. [보고서](reports/demo11-perf-enemy_REPORT.md) |
 | DEMO11-etype-a | 51/52/54/55/56 자연 etype0·1·4·5·6 | Mac Codex | codex/demo11-etype-a-20261021 | factory680–688 append9·기존Main3069–3076·자기consumer/test/docs | 승인 재개: 실제5종 등록/phase/탄/PC접촉/사망1952/0·경계48/0. source scheduler/PC type6 보호owner 미완, 120Hz240틱 벽시계5.312초(지속120fps 미달). [보고서](reports/demo11-etype-a_REPORT.md) |
 
 | DEMO11-etype-d | 자연 D18/19/23/24/25 실제 등록·전투 경계 | Mac Codex | codex/demo11-etype-d-20261021 | factory EOF18·Main EOF7·registry D추가30·native_demo11_etype_d_*·신규tests·자기docs | **재개 검수 대기** — 기존9627cf75 위5종실등록,신규158/0·관련83/0+factory3그룹/0·최종벤치14/0 max4.252ms.25death/PC이동탄contact·자동29종selector후행,보호0·A/B/C통합후보. [보고](reports/demo11-etype-d_REPORT.md) |
