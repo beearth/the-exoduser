@@ -1,3 +1,13 @@
+## 2026-10-20 META-02 강화 견적 순수 규칙
+
+| 항목 | 변경·검수 |
+|---|---|
+| 신규 API | native_meta_enhancement_policy.gd 및 자기 UID·test_meta_enhancement_policy.gd. 확률/할인/강화 raw·등급 견적/flat/이전비용8개 static 순수 API만 |
+| 원본 | 최신 main284d7faf game.html28077–28104·28185–28186, SHA4d911cdd. ceil순서·할인0.5·확률하한0.5%·등급배율0.5/0.7/1/1.3/1.8·unique경제4·flat0.25 보존. +100raw555000/+1000raw5280000 |
+| 검수 | 새70단정/0실패·JS실제원본17214대조/0불일치. contracts5case/0·p2001c45/0·META-01 20/0, SKIP0·exit0. stderr와 경고는 [meta-02 보고서](engine/orders/reports/meta-02_REPORT.md) 및 원로그로 분리 |
+| 의존·보호 | META-01 미통합이므로 사용자 지정c428ef20 parent 유지. 공용6·State/INV/RNG/악의차감/UI/저장/QE·기존테스트0줄. numeric coercion 지원범위·미연결한계 명시, 전체경제/실플레이 인수 아님 |
+| 실행·제출 | Godot4.7.2 매회pgrep2이상30초대기·새 작업/기존상수 격리명·override매회0byte. 원로그 ~/exoduser-wt/_out/meta-02/resume-20261020/·STATUS=REVIEW_PENDING·자기브랜치만push |
+
 ## 2026-10-20 META-01 순수 XP 곡선·제품 State 미연결
 
 | 항목 | 변경·검수 |
