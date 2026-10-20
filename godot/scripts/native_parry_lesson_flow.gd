@@ -21,6 +21,28 @@ const RIGHT_GOAL := 5                 # 672~676 rightKills 5
 const LESSON_LABELS: Array[String] = ["Q · 마법탄 패링", "E · 물리탄 패링", "Q 홀딩 · 다수 마법탄 패링",
 	"E 홀딩 · 다수 물리탄 패링", "Shift · 사슬 이동", "방향키 + Space · 전격이동",
 	"패링 · 분노 축적", "Space · 분노 발동"] # get labels() (파일 5행)
+const STEP_TITLES: Array[String] = ["마법을 되돌려라", "물리탄을 쳐내라", "보호막을 펼쳐라",
+	"힘을 모아 쳐내라", "사슬로 이동하라", "방향을 정해 이동하라", "패링으로 분노를 채워라",
+	"분노를 폭발시켜라"] # 141 title
+const STEP_KEYS: Array[String] = ["Q", "E", "Q", "E", "SHIFT", "↔ + SPACE", "Q", "SPACE"] # 118 key() 기본 바인딩
+const STEP_TIPS: Array[String] = [
+	"보라색 탄이 가까워지는 순간 [Q]를 누르세요. 너무 일찍 눌렀다면 떼고 다시 시도하세요.",
+	"탄을 바라보고 [E]를 짧게 눌렀다 떼세요. 길게 누르면 차징이 됩니다.",
+	"[Q]를 2초 동안 누르세요. 화염·물·암흑·번개·무지개탄을 보고 키를 떼어 한 번에 3발 이상 패링하세요. 홀딩 중 보호막은 피해를 일부 흡수하고 그로기를 막습니다. 피해를 완전히 막는 무적은 아닙니다.",
+	"[E]를 누른 채 탄 쪽을 바라보세요. 이빨입탄·혈안탄·관통탄·물리 검기파·물리 환영검이 함께 날아옵니다. 3단계 충전 후 키를 떼어 5종 중 3발 이상 한 번에 쳐내세요. 풀차지 자동 발동도 인정합니다.",
+	"이동할 곳에 마우스를 향하고 Shift를 눌렀다 떼세요. 사슬이 실제 발사되면 성공입니다.",
+	"WASD 또는 방향키를 누른 채 Space를 누르세요. 전격이동을 5번 발동하면 성공입니다.",
+	"Q를 2초 동안 누른 뒤, 함께 날아오는 마법탄 10발이 가까워지면 떼세요. 한 번에 여러 발을 패링해 분노 100%를 채워보세요.",
+	"몬스터들이 주변을 둘러쌌습니다. 방향키에서 손을 떼고 Space만 눌러 분노 폭발로 한 번에 쓸어버리세요."] # 159 tips
+## 단계별 정지 사유(해당 행동/탄 미이식 — 가짜 진행 금지). step 0은 이식(빈 문자열).
+const STEP_HALTS: Dictionary = {
+	1: "physical_projectile_reflect_unported", # E 반사 캐리어는 암흑(gbBean) 한정(enemy_projectile.gd 134)
+	2: "volley_mixed_magic_projectiles_unported", # 화염/물/번개/무지개(blackBean) 반사탄 미이식
+	3: "volley_physical_projectiles_unported",    # 이빨입탄/혈안탄/관통탄/검기파/환영검 미이식
+	4: "chain_movement_unported",                  # Shift 사슬 이동(charge/harp)
+	5: "lightning_dash_unported",                  # 전격이동(blade dash)
+	6: "rage_gauge_unported",                      # 분노 게이지
+	7: "rage_burst_unported"}                      # 분노 발동
 const BASIC_LABELS: Array[String] = ["WASD / 방향키 · 이동", "좌클릭 · 10마리 처치 + 3단 차징",
 	"우클릭 · 적 5마리 처치", "1 · 가시덫 설치 후 도망 · 10마리 처치"] # 77 basicLabelText
 # ── 웹 실측 팔레트/치수 (lesson_styles.json + UI_FOUNDATION parryLesson 절) ──
@@ -61,6 +83,13 @@ var left_click_done := false
 var right_click_done := false
 var practice_halted := ""        # step 8 도달 시 "spike_trap_unported"
 var attack_enemies: Array = []
+var checks: Array = [false, false, false, false, false, false, false, false] # 393 checks(8)
+var parryEnemy: Node2D = null # camelCase 고정 — parry_homing_target 19173이 'parryEnemy' 필드명으로 읽음
+var parry_shot: Node2D = null
+var parry_charge := 0.0      # e._projChargeT (60틱)
+var parry_cooldown := 45.0   # cooldown 45/60
+var shot_reflected := false
+var _ring: Node2D
 var _move_last := Vector2.ZERO
 var _saved_enemies: Array = []
 var _saved_bonfire: Dictionary = {}
@@ -85,8 +114,41 @@ func configure(owner_world: Node2D, owner_player: Node2D, state_node: Node, owne
 	sequence = owner_sequence
 	process_mode = Node.PROCESS_MODE_PAUSABLE
 	_font = load(FONT_PATH) if ResourceLoader.exists(FONT_PATH) else null
+	# step0: Q 반사 관측(구독만 — 판정은 main 1223 q_projectile_reflected 소유)
+	if owner_player.has_signal("telemetry_event"):
+		owner_player.telemetry_event.connect(_on_player_event)
+	_ring = _RingDrawer.new()
+	_ring.flow = self
+	_ring.z_as_relative = false
+	_ring.z_index = 4004
+	add_child(_ring)
 	_configured = true
 	return true
+
+## 차징 링(원본: 적 투사체 차징 경고 링 — 가이드 문구 "몬스터 주위의 링", 색=탄 종류).
+class _RingDrawer extends Node2D:
+	var flow: Node
+	func _process(_delta: float) -> void:
+		queue_redraw()
+	func _draw() -> void:
+		if flow == null or not is_instance_valid(flow.parryEnemy) or flow.parry_charge <= 0.0:
+			return
+		var enemy: Node2D = flow.parryEnemy
+		if enemy.get("alive") != true:
+			return
+		var at: Vector2 = to_local(enemy.global_position)
+		# 24110 _drawShootCharge: R=r+10, 바탕 원 #080808 α.28 w5, 진행 아크 col α(.8+prog*.2) w3.5
+		var radius: float = float(enemy.get("radius")) + 10.0
+		var progress: float = clampf(1.0 - flow.parry_charge / 60.0, 0.0, 1.0)
+		draw_arc(at, radius, 0.0, TAU, 48, Color(0x08 / 255.0, 0x08 / 255.0, 0x08 / 255.0, 0.28), 5.0, true)
+		if progress > 0.0:
+			var color := Color(0xb2 / 255.0, 0x6d / 255.0, 0xff / 255.0, 0.8 + progress * 0.2) # '#b26dff'(228/20102)
+			draw_arc(at, radius, -PI * 0.5, -PI * 0.5 + TAU * progress, 48, color, 3.5, true)
+
+func _on_player_event(kind: String, _data: Dictionary) -> void:
+	if kind == "q_projectile_reflected" and active and phase == "practice" and step == 0:
+		shot_reflected = true # 425 onParry→parriedShot 상응(현재 샷이 유일한 적탄)
+		_render() # 425 updateParryPractice
 
 static func _truthy(value: Variant) -> bool:
 	if value == null: return false
@@ -139,9 +201,12 @@ func native_lesson_tick() -> bool:
 		if step == -2 or step == -1:
 			_spawn_attack_enemies()
 		if step == 8:
-			practice_halted = "spike_trap_unported" # 가시덫(시작 스킬 트랙)·0~7 패링 미이식
-		if step >= 0 and step <= 7:
-			practice_halted = "parry_steps_unported"
+			practice_halted = "spike_trap_unported" # 가시덫 — 시작 스킬 트랙 작업 후
+		elif step >= 0 and step <= 7:
+			practice_halted = str(STEP_HALTS.get(step, ""))
+			if step == 0:
+				parryEnemy = null
+				parry_cooldown = 45.0
 		_render()
 	if phase != "practice":
 		return false
@@ -162,7 +227,88 @@ func native_lesson_tick() -> bool:
 			_spawn_attack_enemies()
 		_render()
 		return false
+	if step == 0: # 204~229 tickParryEnemy + 547 (step0 Q 마법탄 패링)
+		_tick_parry_practice()
+		return false
 	return false
+
+## step0 — 원본 tickParryEnemy(204~229): 적 유지→차징 60틱→암흑탄 발사→패링 관측.
+## 처치 판정: Q 반사(관측) 후 반사 블루빈(parryBlueBean — 유일 가해자, 적 atk0)이
+## 패링 적을 죽이면 완료(653 reflected 게이트 상응). 샷 소실 시 cooldown 60 재시도(211~213).
+func _tick_parry_practice() -> void:
+	if not is_instance_valid(parryEnemy) or parryEnemy.get("alive") != true:
+		if shot_reflected and parryEnemy != null:
+			# 반사 처치 완료(653/664~) — parryEnemy가 반사 블루빈으로 사망
+			attack_enemies.erase(parryEnemy)
+			parryEnemy = null
+			parry_shot = null
+			_complete_step()
+			_render()
+			return
+		_clear_shot()
+		_spawn_parry_enemy()
+		if parryEnemy == null:
+			parry_cooldown = 60.0
+		return
+	if is_instance_valid(parry_shot):
+		return # 샷 비행 중(소실은 enemy_projectile_end 구독이 처리)
+	if parry_charge > 0.0:
+		parry_charge = maxf(0.0, parry_charge - 1.0) # _dtSp=1/렌더프레임
+		if parry_charge > 0.0:
+			return
+		_fire_parry_shot() # 221~226
+		return
+	parry_cooldown -= 1.0
+	if parry_cooldown <= 0.0:
+		parry_charge = 60.0 # 228 e._projChargeT=60
+
+## 182~196 spawnParryEnemy: 반경 280, 각 -π/2+i·π/4, d>450/<160 거부, hp1·atk0·spd0.
+func _spawn_parry_enemy() -> void:
+	shot_reflected = false
+	for i in range(8):
+		var a: float = -PI * 0.5 + float(i) * PI * 0.25
+		var x: float = player.global_position.x + cos(a) * 280.0
+		var y: float = player.global_position.y + sin(a) * 280.0
+		var enemy: Node2D = _spawn_lesson_enemy(x, y)
+		if enemy == null:
+			continue
+		var distance: float = enemy.global_position.distance_to(player.global_position)
+		if distance > 450.0 or distance < 160.0:
+			enemy.apply_native_normal_enemy_death_write()
+			continue
+		parryEnemy = enemy
+		attack_enemies.append(enemy) # 레슨 적 레지스트리(정리/위임 가드 공용)
+		parry_charge = 0.0
+		parry_cooldown = 45.0
+		return
+
+func _fire_parry_shot() -> void:
+	# 221~226: 암흑탄(EL.D·#b26dff·dmg0) 발사 — 포트 암흑 캐리어(enemy_projectile.gd,
+	# gbBean parryClass magic — Q 반사 지원). 원본 vx/vy=3px/틱=180px/s, dmg 0.
+	# (잔여: 원본 life 360틱 vs 캐리어 고정 120틱 — 280px 비행엔 충분)
+	shot_reflected = false # 653 per-shot 크레딧(샷 단위 _lessonParryShot 상응)
+	var shot: Node2D = (load("res://scripts/enemy_projectile.gd") as GDScript).new()
+	var aim: Vector2 = (player.global_position - parryEnemy.global_position).normalized()
+	shot.configure(parryEnemy.global_position, aim, 0, player, world, 180.0)
+	var raw: Variant = shot.get("_raw")
+	if raw is Dictionary:
+		raw["_lessonShot"] = true # 226 spawnProj _lessonShot:true — 반사 블루 opts._lessonParryShot·지형차단 스킵(397) 계승
+	shot.telemetry_event.connect(_on_shot_event)
+	world.add_child(shot)
+	parry_shot = shot
+
+func _on_shot_event(kind: String, _data: Dictionary) -> void:
+	if kind == "enemy_projectile_end":
+		# 211~213: 샷 종료(미패링 소실 포함) → cooldown 60 재시도. 반사된 경우 블루빈이
+		# 이어서 비행하므로 완료 판정은 적 사망 관측이 맡는다.
+		parry_shot = null
+		if not shot_reflected:
+			parry_cooldown = 60.0
+
+func _clear_shot() -> void:
+	if is_instance_valid(parry_shot):
+		parry_shot.queue_free()
+	parry_shot = null
 
 func _practice_refill() -> void:
 	# 508~509: P.hp=saved.hp; P.mp=P.mmp; P.st=P.mst; P.shield=saved; P.iframes=0; kb 0.
@@ -190,7 +336,11 @@ func _complete_step() -> void:
 		else: return
 		pending = "success"
 		return
-	# step 0~7 checks(432) — 미이식 경로(도달 불가)
+	if pending != "" or (step >= 0 and step <= 7 and checks[step]):
+		return
+	if step >= 0 and step <= 7: # 431~432
+		checks[step] = true
+		pending = "success" if step < 7 else "done"
 
 func begin_practice() -> void:
 	# 177 beginPractice: intro에서만, phase='practice'
@@ -359,6 +509,7 @@ func _spawn_lesson_enemy(x: float, y: float) -> Node2D:
 
 # ═══ allows/allowKey (32·36~39) — 포트는 API 제공; 입력 강제 배선은 잔여(시작 스킬 트랙 충돌 회피) ═══
 func allows(action: String) -> bool:
+	# 32 allows: !active || (intro 아닌 방향키) || (practice·focus 없음·단계 허용 행동)
 	if not active:
 		return true
 	var is_direction: bool = action in ["up", "down", "left", "right"]
@@ -367,6 +518,13 @@ func allows(action: String) -> bool:
 	if phase == "practice":
 		return action in _actions()
 	return false
+
+## 포트 입력 액션명 → 원본 행동명(14290 BINDS 체계) 매핑 후 allows.
+func allows_native_action(port_action: String) -> bool:
+	var mapped: Variant = {"move_left": "left", "move_right": "right", "move_up": "up",
+		"move_down": "down", "weapon": "weapon", "parry": "parry", "shield_bash": "shield",
+		"native_magic": "beam", "rage_slot": "bow"}.get(port_action, port_action)
+	return allows(str(mapped))
 
 func _actions() -> Array:
 	# 30 actions()
@@ -445,6 +603,8 @@ func _finish() -> void:
 	active = false
 	phase = "idle"
 	pending = ""
+	_clear_shot()
+	parryEnemy = null
 	if is_instance_valid(_panel):
 		_panel.queue_free()
 		_panel = null
@@ -727,11 +887,12 @@ func _render() -> void:
 	(_ui["keycap_style"] as StyleBoxFlat).border_color = kind_color if phase == "practice" else COL_STATUS
 	(_ui["keycap"] as Label).add_theme_font_size_override("font_size", 26 if phase == "practice" else 28)
 	var basic_checks := [movement_done, left_click_done, right_click_done, false]
+	var all_checks: Array = basic_checks + checks
 	var current_row: int = (step + 3) if step < 0 else (3 if step == 8 else 4 + step)
 	var rows: Array = _ui["rows"]
 	for i in range(rows.size()):
 		var entry: Dictionary = rows[i]
-		var done: bool = basic_checks[i] if i < 4 else false
+		var done: bool = bool(all_checks[i]) if i < all_checks.size() else false
 		var is_current: bool = i == current_row
 		(entry["label"] as Label).add_theme_color_override("font_color",
 			COL_ROW_DONE if done else (COL_ROW_CURRENT if is_current else COL_ROW))
@@ -757,7 +918,7 @@ func _render() -> void:
 			mini(current_row + 1, (_ui["checklist"] as VBoxContainer).get_child_count() - 1))
 	var total := float(BASIC_LABELS.size() + LESSON_LABELS.size())
 	var done_count := 0
-	for flag in basic_checks:
+	for flag in all_checks:
 		if flag: done_count += 1
 	(_ui["progress_fill"] as ColorRect).anchor_right = done_count / total
 	_ui["button"].visible = phase == "intro" # 146
@@ -787,9 +948,19 @@ func _render() -> void:
 		_ui["keycap"].text = "1"
 		_ui["title"].text = "1 · 가시덫 설치 후 도망 · 10마리 처치"
 		_ui["hint"].text = "패링 실패 시 폭발 피해를 받습니다. 재시도하면 체력이 회복됩니다."
+	elif step >= 0 and step <= 7: # 139~143 title/tips/key()
+		_ui["keycap"].text = STEP_KEYS[step]
+		_ui["title"].text = STEP_TITLES[step]
+		_ui["hint"].text = STEP_TIPS[step]
+		if step == 0: # 181~186 updateParryPractice(step0=마법) — title·hint 덮어쓰기
+			_ui["title"].text = "마법탄을 패링해 몬스터를 처치하세요"
+			_ui["hint"].text = "몬스터 주위의 링이 완성되면 탄이 발사됩니다. 링 색으로 탄 종류를 미리 예측하세요. 흰색 링은 물리탄(E), 속성색 링은 마법탄(Q)입니다. " 				+ "이번 보라색 링은 암흑 마법탄입니다. 탄이 가까워지면 [Q]로 패링하세요." 				+ "
+" + ("패링 성공! 반사탄으로 발사한 몬스터를 처치하면 완료됩니다." if shot_reflected else "패링으로 탄을 되돌려 발사한 몬스터까지 처치하세요.")
 
-func _unhandled_input(event: InputEvent) -> void:
-	# 37 allowKey: intro에서 W/A/S/D → beginPractice
+func _input(event: InputEvent) -> void:
+	# 37 allowKey: intro에서 W/A/S/D → beginPractice.
+	# _input 사용 — allows 게이트(player)가 같은 키를 lock 처리(set_input_as_handled)해도
+	# beginPractice는 원본 allowKey처럼 항상 먼저 듣는다(P2-001l).
 	if not active or phase != "intro" or not event is InputEventKey or not event.pressed or event.is_echo():
 		return
 	if event.keycode in [KEY_W, KEY_A, KEY_S, KEY_D]:
