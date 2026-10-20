@@ -238,31 +238,182 @@
 | N17 | QA 저장 | `godot/scripts/performance_capture.gd:4,270`; hurte `:758–760`의10킬 dbSaveNow 미이식 | QA `user://qa/latest-session.json` | **QA 기록만**. 플레이어 INV 저장과 혼동 금지·실제 세이브 보호. |
 | N18 | world frame·RNG | `godot/scripts/world.gd:2743,2750,2966,2976,3052` | 실제 자원 bind/RNG·owner/birth/render phase 정의 | **기존 권위 있음**. 바닥 아이템·pickup frame 연결은 확인되지 않음. 새 타이머·독립 RNG로 대체하지 않는다. |
 
-## 5. 작은 이식 단위 순서안 — 구현·배정 아님
+## 5. 작은 이식 단위 순서안 — 다음 구현용 지시서
 
-`TI-*`는 이 문서의 제안 표식이며 공식 작업표 ID를 새로 배정한 것이 아니다. 아래 예정 파일은 **미생성**이다. 경로를 생략한 `native_inventory_*.gd`는 `godot/scripts/`, `test_native_inventory_*.gd`는 `godot/tests/`를 뜻한다. 각 단위 착수 전에 P4-001 exactscope·담당·허용 consumer·완료 조건을 총괄이 확정해야 한다. 보호된 세이브 형식·Q/E·2_3은 어느 단위에서도 변경 대상으로 삼지 않는다.
+### 5.1 보강 기준과 공통 실행 조건
 
-| 순서/제안 표식 | 플레이어 기능·작은 범위 | 원본 행 근거 | 소유 예정 파일(안) | 검증 아이디어(미작성·미실행) | 선행 조건·인수 경계 |
-|---|---|---|---|---|---|
-| TI-00 | actual INV 읽기 계약·원본 고정 fixture | G:15176,16174–16188; Godot N01–N02 | 신규 `godot/scripts/native_inventory_contract.gd`, 해당 `godot/tests/test_native_inventory_contract.gd` | 17slot 순서·null/빈 bag·같은 item identity·bone 분류·지원 안 되는 item 필드 보존. 현재 getter와 참조가 같은지 검사 | P4 exactscope. 기존 owner를 사용하며 별도 INV authority를 만들지 않음. **저장 필드 보호**. |
-| TI-01 | 격자/자리 검사만 | G:16183–16210,16247–16256 | 신규 `native_inventory_layout.gd`, `test_native_inventory_layout.gd` | 1×1/2×2·10열 끝·초기120행 끝·skip·같은 카테고리 충돌·서로 다른 카테고리 같은 좌표·공간 없음 | TI-00. 처음에는 격리 fixture만, 실제 bag 쓰기는 owner 승인 후. |
-| TI-02 | 정렬·필터·원 bag index | G:16213–16246,50129–50149,50212–50233,50278–50296 | 신규 `native_inventory_query.gd`, `test_native_inventory_query.gd` | fav/junk 우선순위·동점 안정성·rarity0/el0·귀걸이 합동 필터·숨김 item 불변·표시 index와 bag identity 불일치 방지 | TI-01. OPT 드랍 필터와 분리. 유니크 필터 버튼을 임의 추가하지 않음. |
-| TI-03 | 읽기 전용 탭·격자·아이템 상세 | G:2927–3014,44049–44079,49522–49862; `ui-panels.js:165–218` | 신규 `godot/scenes/inventory_panel.tscn`, `native_inventory_panel.gd`, `test_native_inventory_panel.gd` | 부팅 전 미생성 P 접근0, 탭 전환1회 갱신·원래 노드/포커스 보존·hover/선택/휠·작은 창·한/영 긴 이름·이미지 폴백 | TI-00~02. main/hud 소유자와 pause·닫기·입력 우선순위 합의. Q/E·레슨 입력 함수 **보호**. |
-| TI-04 | 런타임 장비 통계 refresh 접점 | G:16287–16292,16425–16432,27902–27971 | 신규 `native_inventory_refresh.gd`, `test_native_inventory_refresh.gd`; 기존 owner와 연동 지점은 §6에서 승인 | 현재 hp/mp/st/shield 보존, 최대치 감소 clamp·증가 시 무료 충전0, 캐시 무효화 순서, 실제 reader의 새 장비 소비 | N07~N10의 재사용 가능한 실제 API 확정. pre-Tree 단회 초기화를 다시 호출하지 않음. Q/E/2_3 공식 **보호**, 미지원 소비자는 미확인으로 남김. |
-| TI-05 | 장착/해제·귀걸이 대상·강화/유물 전승 | G:16272–16380,28101–28104 | 신규 `native_inventory_equipment.gd`, `test_native_inventory_equipment.gd`; INV mutation 권위는 기존 state owner | reqLv 거절·귀걸이 빈칸/명시 대상·비용 부족 전체 차단·old enh/환수 순서·소켓 부족/9999 주머니·가방 자리 부족 해제 거절·같은 item 중복0 | TI-01/04, mats·crystal bag의 실제 owner 계약. 저장 caller는 **보호 경계**로만 기록하고 형식/복원 변경안 없음. |
-| TI-06 | 비교 계산·CP 후보·상세2카드 | G:49467–49509,49865–49954 | 신규 `native_inventory_compare.gd`, `test_native_inventory_compare.gd`; TI-03 panel에 표시 연결 | ST비용/무게 역방향 good 판정·pct `%p`·-0·차이 임계값·cost 부족·임플리싯/소켓 전승·귀걸이 대상 차이. 성공/오류 후 P/INV/cache 참조 복구와 중첩 값·자원·mats·bag 영향을 원본 oracle와 비교 | TI-04/05. 실제 statDex·applyStats·CP 권위가 준비돼야 수치 비교 인수. 미지원은 0/정상값으로 대체하지 않고 미확인/NOT_READY 표시. |
-| TI-07 | 단건 분해 경제식·잠금·1초 gate | G:16381–16397,28185–28200 | 신규 `native_inventory_salvage.gd`, `test_native_inventory_salvage.gd` | rarity5 경제 cap4·비정수/음수 rarity·tier2항·레거시 환수·_enhRefund max·fav 거절·연속 입력·선택 index 보정 | actual bag/mats writer 인수. 기존 G.mats 소비자와 충돌 없음 확인. 실제 세이브 사용0·**저장 보호**. |
-| TI-08 | 선택/쓰레기 확인 분해 UI | G:50359–50406 | TI-07 owner + TI-03 panel, 신규 `test_native_inventory_bulk_salvage.gd` | 취소·중복 참조·확인 중 정렬/장착/삭제/fav 전환·필터 변경·현재 유효 item만 보상·장착 객체 제외 | TI-02/03/07. 선택 Set과 filtered junk snapshot의 서로 다른 범위 보존. 대장간 분해(C15)는 별도 caller로 추후 범위 확정. |
-| TI-09 | 공유 보관함 탭·메모리 입출금 | G:48537–48609; `ui-panels.js:171–181` | 신규 `native_inventory_storage_view.gd`, `test_native_inventory_storage_view.gd` | 200개 가득 참·bag count 거절·원 객체 이동·좌표 null 후 render·선택 해제·양쪽 RMB·tab 재진입 닫기 | TI-03/05. **공유 저장·세이브 형식 보호**, 실제 persistence writer의 구현/마이그레이션은 이 순서안에서 제안하지 않음. |
-| TI-10a | 유물 가방·품질·홈 장착/해제 화면 | G:15276–15330,15386–15396,15409–15794 | 신규 `native_inventory_relics.gd`, `test_native_inventory_relics.gd` | id/star/enh/q 분리그룹·브론즈1/실버41/골드81·slot 제한·빈홈·9999 반환 거절·focus 복귀·공명 q1 예외 | crystal effect/주머니 실제 owner를 먼저 인수. 유물 전투 효과 전체 구현으로 확대하지 않음. |
-| TI-10b | 선택 소켓석 개방/승급만 | G:15796–15827 | TI-10a와 별도 신규 `native_inventory_socket_stones.gd`, 해당 테스트 | 정확 q1개 소비·최대5홈·낮거나 같은 q 거절·crystals/socketQ 길이·보석 유지·마지막 q 선택 해제 | TI-10a·STONE_BAG owner. 기존 아이템 필드를 그대로 사용, **세이브 형식 보호**. |
-| TI-11 | 유골 도감 등록/해제·유골함 표시 | G:45788–45888,49991–50128 | 신규 `native_inventory_ossuary.gd`, `test_native_inventory_ossuary.gd` | r+t 상향만·4부위·가방 공간 확보 전 delete0·등록 실패 bag행·유골함1개 지급·초상 fallback | TI-01/03/05. 전대 소환 전투 자체는 별도 담당·선행 미확인. 도감 저장 필드 **보호**. |
-| TI-12 | 바닥 획득→INV 연결 인수 | G:16411–16424,32932–32967 | **P2-006a 담당 파일·이름은 인계 전 미확인**, 이 작업에서 새 pickup owner를 중복 제안하지 않음 | 보이는 원본 우선순위·hold9tick·자리 실패시 바닥 유지·성공 정확1회·동일 drop 중복수거0 | **P2-006a WIP 인수 필수**. N03 생성/N05레코드만으로 완료할 수 없음. 차단된 펫 legacy를 복원하지 않음. |
-| TI-13 | 인벤→원래 플레이 복귀 흐름 | G:44049–44079,13213,13250–13260,14150–14260; I:4340–4349 | 위 승인된 UI/owner의 통합 검사·실창 인수 계획, 신규 제품 writer 없음 | TAB/ESC/모달취소·원본 입력별 item identity·재배치 hover 무효화·닫은 뒤 입력 잔류0·보호값 불변·작은 창/언어/컨트롤러 접근 | 개별 단위의 격리 인수 및 실창 접근 권한. 실제 창·저장·패키지는 별도 허용 범위에서 인수, 이번 문서 작업은 실행0. |
+**다음 차례에 구현할 “1번 단위”는 순서 1 / TI-00이다.** 사용자 보충 지시에 따라 신규 읽기 계약 모듈과 신규 테스트부터 착수한다. 이번 커밋은 이 절만 보강하며 코드·테스트는 만들지 않는다. 최초 추적의 “구현·배정 아님”과 구분하여 다음 TI-00의 실행 범위를 아래에 정한다. TI-*는 문서 내부 순서 표식이며 공식 작업표 ID를 새로 배정한 것이 아니다.
 
-**순서 보존:** 실패 시 원본이 아직 손대지 않은 필드와 이미 적용한 필드를 구분한다. 새 rollback·refund·재시도·전역 dedup 규칙을 임의로 덧붙이지 않는다. 인벤의 확인 후 identity 재검증과 대장간의 index splice 차이는 X/H 표와 별개로 C13~C15의 원본 계약 차이이다. 공용 통합이 필요하면 먼저 아래 지점을 담당자와 인수하고 신규 단위를 연결한다.
+보강 때 fetch한 `origin/main`은 **`43aa97ffe203d1b273922ba522fa335c7af5cde6`**이다. 최초 기준 `788ba758f9f5c92564abacb2f2fce88a42af2c1a`와 `game.html`·`index.html`은 동일하여 G/I 원본 행과 수치는 유효하다. 이 절 밖의 추적은 최초 SHA에 고정되어 있다. 진전된 공용 Godot 코드는 아래 함수 접점을 기준으로 최신 행·소유권·INDEX/WORK를 착수 때 다시 확인한다. 이번 브랜치에 main을 병합하지 않는다. 마감 확인 때 공통 origin/main ref가 `9528ea35b429498fcf42fe3723008219ed0ed7e1`로 진전된 것도 관측했다. 두 SHA 사이의 Git diff에서 웹 원본·TI-00의 State/ResourceAuthority/슬롯 producer와 여섯 공용 파일에는 변경이 없고, 제안한 신규 inventory 경로도 아직 없다. 아래 작업판 기록의 시점은 43aa 기준으로 유지한다.
 
-분해 경제 fixture의 기준식은 G:28185–28200 그대로 `econ=integer rarity>=0 ? min(rarity,4) : 0`, `rMul=[.5,.7,1,1.3,1.8][econ]`, `refund=~~(sum(i=0..enh-1,ceil(max(1,ceil((1+i*.15)*1.5))*rMul))*.5)` 및 양수 `_enhRefund`와 max, 최종 `base[econ]+refund+(tier||0)*2`이다. 강화 이전비는 G:28101–28104의 `_malCost(ceil(enh*1000))`, `_malCost`는 양수 입력에 `max(1,ceil(v*.5))`, 그 외0(G:28080–28085)이다. 이는 테스트 아이디어의 원본 기준이며 실제 코드를 추가한 것이 아니다.
+| 최신 main 확인 사항 | 구현에 적용할 제한 |
+|---|---|
+| `WORK_BOARD.md:26`은 P2-006a 기능 완료·main 병합/화면 RETOUCH를 기록하나 위 SHA의 Git tree에 대응 pickup/world-drops 신규 모듈·테스트가 확인되지 않으며 `native_normal_enemy_hurte.gd:734`도 `floor_item_render_pickup` 미이식을 기록 | **작업판/코드 불일치, 연결 API 미확인**. 다른 WT로 보완 추정하지 않는다. TI-12는 실제 통합 SHA·소유 파일·API 인계 전 BLOCKED. TI-00 독립 읽기 계약은 진행 가능 |
+| P2-006b는 `native_world_drops.gd` 표시부, P2-007a는 글꼴·인트로 패널 소유 | TI-03/12/13에서 해당 파일/구역 수정 금지 |
+| TRACE-META/ITEMS/WEAPONS, SV-CONTRACT/QS-01/SETTINGS-S01 진행 | 경제·아이템·무기 상수/저장/옵션 owner 중복 생성 금지. 필요한 실제 writer가 없으면 선행 미확인 |
+| 레슨 P2-001l 병합 기록과 공용 입력 처리 | main/player의 기존 allows·입력 소모 순서·Q/E 변경 금지. TI-13 배선은 공용 담당 조정 |
+| P4-001의 넓은 데이터/UI/저장 범위 | 다음 사용자 지시의 TI-00을 일반 장착·UI·저장 연결 승인으로 확대하지 않음 |
+
+공통 규칙은 다음과 같다.
+
+- 아래 `native_inventory_*.gd`는 `godot/scripts/`, `test_native_inventory_*.gd`는 `godot/tests/`의 **예정 파일**이다. 별도 표기한 기존 파일만 수정 후보이다. 해당 단위 결과는 이 문서에 반영하며 기존 설계 docs·계획·WORK_BOARD는 직접 수정하지 않는다.
+- **공용 0행**은 `main.gd/hud.gd/world.gd/player.gd/native_normal_enemy_hurte.gd/native_source_new_run_state.gd` 모두 0행이다. 초기 단위는 격리 fixture/인수된 owner로 검증하고 실제 패널 배선은 TI-13에 모은다. 이를 actual Main·실플레이 완료로 보고하지 않는다.
+- 원본의 처리/실패 순서를 보존한다. 별도 INV/G/P 권위·임의 RNG/clock·cache epoch·rollback·자동 재시도 규칙을 발명하지 않는다. **docs/2_3·Q/E·세이브 형식은 보호**다. 원본 dbSaveNow/dbSaveForce는 경계 사실만 기록하고 저장 포맷·직렬화·마이그레이션 변경안을 제안하지 않는다.
+- 미래 테스트는 원앱 `/Users/fordeargamers/.codex/tools/godot-4.7.2/Godot.app/Contents/MacOS/Godot`의 버전을 확인하고 자기 WT의 `godot/override.cfg`에 `[application]`의 `config/use_custom_user_dir=true`와 아래 정확한 `config/custom_user_dir_name`을 설정한다. 첫 검사 `OS.get_user_data_dir().get_file() == ISOLATED_DIRECTORY` 실패 시 `quit(2)`·fixture 생성0. 실제 `EXODUSER-Godot-Native-First` 폴더·열린 게임 창 접근 금지. 기존 override가 있으면 소유/내용을 확인하며 덮어쓰지 않는다.
+- 실행 형식은 해당 WT에서 `"<위 Godot 절대경로>" --headless --path godot --script res://tests/<아래 테스트 파일명>`. stdout/stderr·exit code·실제 userdir·코드 SHA는 `~/exoduser-wt/_out/<실제 배정 작업ID>/`에 보존한다. child 종료 후 자기 override만 복구하고 override/import cache는 커밋하지 않는다. 실제 Main은 resource import 선행 여부를 확인하며 사용자 전역 Godot 설정을 보존한다. 권한 실패는 우회하지 않는다. 이번 보강에서는 Godot/import/테스트 실행0이다.
+- TI-00은 Main/Player scene·이미지·오디오 preload 없이 구성한다. 이 구성의 실제 실행 가능 여부는 아직 미확인이다. 신규 테스트의 ignore 여부도 확인하고 자기 코드·테스트·관련 문서의 정확한 경로만 staging한다. `git add -A`·force push·reset은 금지한다.
+
+### 5.2 순서 1 / TI-00 — actual INV 읽기 계약·원본 fixture
+
+**다음 구현의 산출물은 신규 두 파일과 이 문서의 결과 갱신이다. 공용 코드 0행·기존 테스트 0행·입력/저장/장착 writer 0개.**
+
+| 파일/참조 | 구체 지시·원본 근거 |
+|---|---|
+| 신규 `godot/scripts/native_inventory_contract.gd` | `extends RefCounted`. 실제 State의 WeakRef만 보관하는 읽기 bridge. INV 복제/생성·Node 추가/재초기화 없음 |
+| 신규 `godot/tests/test_native_inventory_contract.gd` | `extends SceneTree`. 아래 실제 State holder + 테스트 Player/World fixture와 실패 case 검증. actual Main으로 보고하지 않음 |
+| 읽기 전용 `native_source_new_run_state.gd:115–159,184–185`; 보강 SHA `:922–979` | 제품 모듈은 기존 `read_current_inventory()`만 호출. `initialize_new_run`은 테스트 fixture 준비 때만1회. 유효한 pre-Tree holder도 읽을 수 있음 |
+| 읽기 전용 `equipment_affix_reader/producer.gd:25–28`의 `SLOT_NAMES` | G:15176 canonical17 순서 재사용. 제품에 같은 배열을 다시 손으로 정의하지 않음 |
+| 읽기 전용 `native_new_run_bootstrap_source/producer.gd:59–62`의 `EQUIPPED_SLOTS` | fresh slot 집합 재사용. canonical과 삽입 순서가 다르므로 key 집합 대조 |
+| 읽기 전용 `native_source_resource_authority.gd:58–81,448–475`와 `player_resource_parameters_source/producer.gd::source_boot_parameters()` | 실제 자원 authority와 기존 boot packet으로 최소 fixture 준비. 기본 자원값을 발명하지 않음 |
+| G:15176,16174–16179 | 17slot과 bag/equipped/selected/ossCollect. BAG_MAX300·10열·크기/분류/행 계산(G:16180–16188)은 **TI-01**로 남김 |
+
+위 producer의 전체 경로는 `godot/port_modules/<모듈명>/producer.gd`이다. 다음 API 이름·반환 계약으로 구현한다.
+
+| 예정 API | 정확한 계약 |
+|---|---|
+| `bind_source_state(owner: Node) -> bool` | 먼저 이전 binding을 비운다. live·삭제예약 아님·정확한 State script·기존 getter 존재 검사 후 WeakRef만 보관/true, 그 외 false/unbound. 구조적 binding이므로 초기화 안 된 정확한 State도 bind=true/read=null일 수 있다. parent/metadata/State 필드 쓰기0 |
+| `read_current_inventory() -> Variant` | 매번 WeakRef·수명·script·getter 재검사 후 기존 getter 호출. 아래 gate를 만족하면 **동일 Dictionary 참조**를 반환. unbound/freed/queued/원 getter null/잘못된 구조는 null. 이전 성공값·snapshot·새 빈 INV로 대체 금지 |
+| native admission | bag:Array, equipped:Dictionary, selected 키 존재, ossCollect:Dictionary와 canonical17 equipped 키 존재만 검사. 추가 top-level/slot/item/중첩 필드 허용. 빈 bag·전슬롯null·selected=null을 live 조건으로 쓰지 않음. 이는 native 접점 조건이며 원본 JS의 validator라고 주장하지 않음 |
+| `source_slot_names() -> Array` | 기존 canonical 상수의 사본 반환. caller의 배열 수정이 canonical에 영향0. live equipped.keys를 정렬해 순서를 만들지 않음 |
+
+setter·`make_read_only()`·필드 보충·schema 정규화·item whitelist·read cache·stats/좌표/선택/정렬 기능을 추가하지 않는다. owner Dictionary의 `make_read_only()`는 정상 writer도 막으므로 금지한다. Tree 전체 readiness인 `is_native_new_run_state_ready()`를 pre-Tree 읽기의 추가 gate로 넣지 않는다.
+
+**fixture 구성:** 테스트 내부 `WorldFixture extends Node`에 player, `PlayerFixture extends Node2D`에 state:String, hp/max_hp, stamina/max_stamina, radius, iframes, facing:Vector2, get_combat_world()를 둔다. 양쪽 참조를 맞춘 뒤 실제 ResourceAuthority에 기존 source_boot_parameters()를 전달해 초기화, 이어 실제 State를 같은 Player/World/resources로 Tree 진입 전에 초기화한다. starter 생성/RNG/clock/Main을 호출하지 않는다. hp/max_hp/radius/iframes 초기값은 기존 `State.source_boot_p()["values"]`의 hp/mhp/r/iframes에서 가져오고(`native_source_new_run_state.gd:91–113`), state="idle"·facing=Vector2.RIGHT는 실제 `player.gd:68–69`와 맞춘다. ST/MST는 기존 ResourceAuthority가 boot에서 설치한다(`:74–75`). world/player 상호참조만 테스트 소유이다. 최신 constructor가 다른 조건을 요구하면 최소 fixture를 해당 코드와 대조·기록한다. 이는 실제 holder+테스트 actor 검수이고 Main 통합이 아니다.
+
+격리 이름은 **`EXODUSER-TI00-InventoryContract-Isolated-20261020`**이다.
+
+| ID | 필수 단정·기대값·근거 |
+|---|---|
+| TI00-T01 | 슬롯은 정확히 `["weapon","shield","boots","armor","helmet","bow","gloves","pants","belt","necklace","ring1","ring2","cape","bracelet","headband","ossuary","headband2"]`, 길이17·중복0. 반환 배열 수정 후 재조회 canonical 불변(G:15176) |
+| TI00-T02 | 원본 fresh literal fixture는 bag0·17slot null·selected=null·ossCollect={} (G:16174–16179). 실제 초기 holder key 집합과 대조하되 삽입 순서 비교0. 이 fresh 상태를 live 필수조건으로 삼지 않음. 기존 actual Main starter는 별도15장비/10bag(N02) |
+| TI00-T03 | 실제 holder를 bind한 뒤 `is_same(contract.read_current_inventory(),state.read_current_inventory())`. INV/bag/equipped/ossCollect/item 참조 동일, pre-Tree getter가 유효하면 adapter도 유효 |
+| TI00-T04 | 테스트 소유 INV에 nonempty bag·item을 명시 주입. `{"_future":{"list":[1,null,"x"]},"futureScalar":123}`와 추가 top-level 키의 값/키/중첩 참조 보존. _gx/_gy/fav/junk/selected에 삽입·수정·삭제0. 주입 fixture임을 기록 |
+| TI00-T05 | fixture owner가 현재 item 값을 수정/bag append한 뒤 adapter 재조회에서 바로 관측. 복제본/옛 성공 cache0 |
+| TI00-T06 | unbound read=null, 일반 Node/foreign script bind=false·이전 binding 제거. uninitialized 실제 State는 구조적 bind=true 후 read=null. 빈 INV 성공 대체0 |
+| TI00-T07 | owner queue_free/free부터 read=null, authority free로 원 getter가 null이면 adapter도 null. 다른 유효 holder로 재bind하면 새 holder 객체만 반환·옛 fallback0 |
+| TI00-T08 | fixture의 필수 키/타입을 하나씩 잘못 만들면 null·자동 수선0. fixture만 복구해 다음 case 수행. 추가 필드 자체는 거절 사유 아님 |
+| TI00-T09 | 정상/실패 read 전후 INV·Player 자원·metadata/claim 불변, initializer 재호출0. 초기 fixture 설치 write와 읽기 단계 write를 구분. 제품 읽기 경로의 RNG/time/save/input 호출0은 정적 호출 검토와 측정 가능한 fixture 관측을 따로 기록하며 상태 동일성만으로 모두 입증했다고 하지 않음 |
+| TI00-T10 | 자기 Node/RefCounted만 정리, userdir·fixture/actual holder 구분·실패/exit code 기록. 기존 창/실제 데이터 접근0 |
+
+**완료 조건:** 위 단정·프로세스 종료를 실제 확인할 때만 “격리 holder 읽기 계약 통과”로 보고한다. 실행 불가면 미실행/막힌 명령/원로그와 BLOCKED. actual Main/UI/장착/pickup/저장/P4 전체 인수는 주장하지 않는다. 현재 신규 두 경로의 타 담당 소유 충돌은 확인되지 않았다. 착수 직전 최신 main/작업판에 동명 파일이나 새 담당이 생겼으면 중복 구현하지 않고 보고한다.
+
+### 5.3 순서 2 / TI-01 — 크기·분류·격자·자리 검사
+
+- **파일/공용:** 신규 `native_inventory_layout.gd`, `test_native_inventory_layout.gd`. TI-00 무수정·공용 0행. 예정 API `source_item_size(item)`, `source_item_category(item)`, `source_inventory_rows(bag_max)`, `build_grid(bag,skip,item)`, `find_space(bag,w,h,skip,item,bag_max)`, `can_place(...)`. 입력을 조회하고 위치만 반환하며 실제 좌표를 쓰지 않는다.
+- **원본/상수:** G:15829–15834,16180–16210,16247–16256. BAG_MAX 초기300은 INV 외부 입력, 열10, 행 `max(10,ceil(bag_max*4/10))`. 17장비 슬롯·근접 sword/dagger/hammer/mace/club/axe/spear·석궁 crossbow/repeater/arcane은2×2, bonePart는1×1. 조회는 weapon+wtype→bow+btype→slot→(1,1). ossuary/bonePart만 ossuary 분류, 나머지는 equipment.
+- **검증:** `EXODUSER-TI01-InventoryLayout-Isolated-20261020`. rows 입력300/24/26/30/301→120/10/11/12/121. unknown subtype의 weapon/bow는 slot fallback2×2, future-slot+wtype sword는1×1, 빈 Dictionary는1×1/equipment; null은 원본의 정상 item fallback이 아니므로 조용히 정상 수용하지 않는다. 같은 분류2×2 (0,0) 다음은(2,0), 장비만 있는 bag에 bone은(0,0). 10×120에서2×2 (8,118) 허용/x9 또는 y119 거절. skip·카테고리 독립·공간 없음·입력 참조/값 불변 검사.
+- **선행/충돌:** TI-00. 재사용할 기존 layout authority는 보강 SHA에서 미확인. 실제 bag writer 미연결. 일반 pickup/unequip 공간 검사와 보관함/도감의 전체 bag 개수 검사를 보편 hard cap300으로 합치지 않는다.
+
+### 5.4 순서 3 / TI-02 — 정렬·필터·원 bag index
+
+- **파일/공용:** 신규 `native_inventory_query.gd`, `test_native_inventory_query.gd`. 공용 0행. `sorted_indices(bag)`·`filtered_indices(bag,category,filter)`는 원 bag index 배열만 반환한다. 실제 bag 정렬/재배치는 승인 writer가 원본 호출 시점에 적용한다.
+- **원본/상수:** G:16213–16246,16434–16448,50129–50149,50212–50233,50278–50296. fav 먼저→junk 뒤→rarity↓→itemPower↓→itemLv↓→enh↓→기존 순서. slot/rarity/el은 AND·null만 해제, 귀걸이는 headband/headband2 합동 필터. itemPower 식 전체를 그대로 사용하고 전투 CP로 대체하지 않는다.
+- **검증:** `EXODUSER-TI02-InventoryQuery-Isolated-20261020`. fav rarity0은 unfav rarity5보다 앞, nonjunk rarity0은 junk rarity5보다 앞, 동점은 원순서. `{slot:"armor",def:2}` itemPower=10(def×5). rarity0/el0 필터 유효, 표시 index→원 bag index→동일 item 확인. 숨긴 항목·unknown 필드·원 bag 불변. 자동배치 결과 fixture는 G:16229–16246의 분류별 packing과 대조하되 실제 INV 쓰기0.
+- **선행/충돌:** TI-01. OPT 드랍 필터와 화면 필터 구분·SETTINGS-S01의 source_options_state.gd 무수정. 유니크 전용 필터 버튼 임의 추가 금지.
+
+### 5.5 순서 4 / TI-03 — 읽기 전용 탭·격자·상세 패널
+
+- **파일/공용:** 신규 `godot/scenes/inventory_panel.tscn`, `native_inventory_panel.gd`, `test_native_inventory_panel.gd`. panel에 `bind_inventory(contract)`·`refresh_view()`·open/close·원 index 선택 모델을 둔다. 기존 main/hud/input **0행**·TI-13에서 연결. 기존 UI scene/글꼴 무수정.
+- **원본/상수:** G:2927–3014,44049–44079,49522–49862,50141–50296; `ui-panels.js:165–218`. cell48, 열10·2분류. 17slot 중 ossuary 전용 패널/페이퍼돌16슬롯, 귀걸이2 index16(G:15835–15859), 페이퍼돌654×560·소켓96(`inventory-paperdoll.js:7–14`). bag 원 index와 eq:/st: 선택 표시를 구분한다.
+- **검증:** `EXODUSER-TI03-InventoryPanel-Isolated-20261020`. unbound/null owner는 NOT_READY·미생성 P 접근0. 슬롯/탭 수·원 identity·필터 뒤 원 index, 탭1회 전환당 갱신1회, 상세 재표시 때 노드/포커스/스크롤 보존·hover/휠·이미지 fallback 검사. 작은 창/한영 긴 이름/선택 강조는 새 격리 창 증거로 별도 시각 판정, headless 통과를 시각 PASS로 쓰지 않는다.
+- **선행/충돌:** TI-00~02. 장착/분해/drag writer 미연결. P2-007a 글꼴·인트로, HUD 소유 영역 무수정. TAB pause/ESC/컨트롤러 실입력은 TI-13에서 인수한다.
+
+### 5.6 순서 5 / TI-04 — 자원 보존·장비 refresh 순서
+
+- **파일/공용:** 신규 `native_inventory_refresh.gd`, `test_native_inventory_refresh.gd`. 원본 순서의 controller를 인수된 owner Callable들로 검증. 공용 0행. **실제 runtime applyStats/자원 commit API 미확인**이며 fixture callback으로 actual runtime 완료를 주장하지 않는다.
+- **원본/공식:** G:16287–16292는 hp/mp/st/shield 보관→_eqAffixCache/_eqStatCache/_lEqCache=null→applyStats1회→각 현재값 `min(new_max,old_current)`. recalc 근거 G:16425–16432,27902–27971. 기존 `native_source_player_initialization_services.gd::_write_context_ready/_invalidate_sink`는 pre-Tree/active initializer gate, `native_source_player_initialization.gd::initialize_new_run`은 단회. 이를 런타임에 다시 호출하지 않는다.
+- **검증:** `EXODUSER-TI04-InventoryRefresh-Isolated-20261020`. old hp80/max100→new max120이면80, new max60이면60, mp/st/shield도 동일·무료 충전0. trace는 capture4→invalidate3→applyStats1→clamp4. 타 owner cache/자원 불변. 실제 새 장비의 reader 소비 검사는 actual runtime sink 인수 후 별도로 추가하고 fixture 결과와 분리한다.
+- **선행/충돌:** N07~N10 producer는 재사용 후보지만 runtime sink/actual 자원 동기화는 별도 인수 필요. 없으면 실제 연결 BLOCKED. State/Player/자원 authority에 범용 writer를 임의 신설하지 않는다. 필요한 API와 공용 최소 줄/위치는 담당이 runtime 계약을 정한 뒤 기록하며 현재는 **미확인**이다. Q/E·2_3 계산/소비 보호.
+
+### 5.7 순서 6 / TI-05 — 장착·해제·귀걸이·강화/유물 이전
+
+- **파일/공용:** 신규 `native_inventory_equipment.gd`, `test_native_inventory_equipment.gd`. 예정 `equip(item,explicit_earring_target=null)`·`unequip(slot)`에 기존 actual INV/인수된 mats·crystal owner/TI-04만 주입. 공용 0행, TI-00 setter 추가0.
+- **원본/공식:** G:16272–16380,28080–28085,28101–28104. 귀걸이는 빈 headband→빈 headband2→item.slot, 명시 target은 try/finally 동안만 우선. reqLv 거절은 교체 전 종료. 이전비 `_malCost(ceil(old.enh*1000))`, 양수 _malCost=`max(1,ceil(v*.5))`. 강화→legacy 환수 기록→유물 빈홈/주머니→old 좌표/가방→장착/새 item bag 제거→old 자리→TI-04 순서. 원본 bag filter는 배열 참조를 교체하므로 옛 bag cache 금지.
+- **검증:** `EXODUSER-TI05-InventoryEquipment-Isolated-20261020`. old enh1 비용500, mats499 전체 차단, mats500→0/new enh1/old enh0. reqLv2/P.lv1 거절. 귀걸이 빈칸/둘 다 참/명시 target/실패 후 임시 target 해제·동일 item 중복0. 유물은 새 빈홈 우선→주머니, cap9999면 그 gem은 old에 남기고 다음 처리. 같은 크기는 old가 새 좌표를 받고 다른 크기는 null 후 탐색. unequip 실패 push/pop·장착 유지, 성공만 slot=null.
+- **선행/충돌:** TI-01/04·actual mats/CRYSTAL_BAG owner 인수, 없으면 실제 writer BLOCKED. 레슨/SFX는 기존 담당 callback만 사용. dbSaveForce는 **저장 보호·미연결**로 기록. TRACE-META/ITEMS 경제·생성자 소유 파일 무수정.
+
+### 5.8 순서 7 / TI-06 — 비교·CP 후보·상세 두 카드
+
+- **파일/공용:** 신규 `native_inventory_compare.gd`, `test_native_inventory_compare.gd`; 자기 `native_inventory_panel.gd`의 비교 표시 함수만 수정. 공용 0행. `compare(candidate,target)`는 현재/후보/차이 또는 NOT_READY를 반환하며 실제 소비/장착0.
+- **원본/공식:** G:49467–49509,49865–49954. 후보 shallow copy, reqLv/이전비 부족이면 현재 CP. P/equipped/cache 참조 snapshot→가상 계산→finally 복구. cmp39key(G:49876), stat 차이 임계값0.0001/소수3자리. wStCost/shieldWt/potCd 감소가 good, affix pct 차이×100=%p·-0 정규화. DPS는 `atk*type.atkMul*60/(33/(type.spdMul*statDex))`, 표시 차이 임계값0.05(G:49881–49902).
+- **검증:** `EXODUSER-TI06-InventoryCompare-Isolated-20261020`. def10→12는+2/good, wStCost10→8은-2/good, pct 차이0.01→+1%p, stat 차이0.00001 미표시. mats499/이전비500이면 현재 CP·mats 불변. 정상/오류 finally 후 원 P/equipped/cache 참조 복귀, 중첩 값/자원/bag 영향은 원본 oracle와 대조. shallow copy를 임의 deep-copy 무변이 계약으로 바꾸지 않음.
+- **선행/충돌:** TI-03~05·actual statDex/applyStats/CP owner 인수. 없으면 NOT_READY, 0/중립값 대체 금지. 상세 curEq의 _equipSlot(G:49557–49559)과 CP의 raw item.slot(G:49905) 차이는 귀걸이별 oracle로 검사·임의 통일0. HUD 현재 CP 무수정.
+
+### 5.9 순서 8 / TI-07 — 단건 분해 경제·보호·1초 gate
+
+- **파일/공용:** 신규 `native_inventory_salvage.gd`, `test_native_inventory_salvage.gd`. `salvage_value(item)` 순수 계산과 승인 owner caller `drop_item(raw_index,now_ms)` 분리. now_ms는 기존 caller 시각을 주입, 독립 clock0. 공용 0행.
+- **원본/공식:** G:16381–16397,28185–28200. `econ=integer rarity>=0 ? min(rarity,4) : 0`, base=[1000,2000,10000,20000,50000], rMul=[.5,.7,1,1.3,1.8]. total=`sum(i=0..enh-1,ceil(max(1,ceil((1+i*.15)*1.5))*rMul[econ]))`, refund=`~~(total*.5)`와 양수 _enhRefund 중 max, value=`base[econ]+refund+(tier||0)*2`. 현행 enhCostRaw 지출의 절반으로 대체 금지.
+- **검증:** `EXODUSER-TI07-InventorySalvage-Isolated-20261020`. rarity5/tier2/enh0→50004, rarity4.5/tier2/enh0→1004, rarity5/tier2/enh1→50006, 여기에 _enhRefund10→50014. now2000 성공 뒤2999 거절/3000 가능. **gate 갱신은 item/fav/value 검사보다 먼저**이므로 fav/invalid 거절도 다음1초에 영향. 성공만 mats1회·원 index splice·빈 bag selected=null/아니면min(index,last). 새 rollback/즉시재시도 규칙 추가0.
+- **선행/충돌:** TI-00·actual bag/mats writer, UI는 TI-03 뒤 연결. TRACE-META G.mats owner 충돌 확인. 저장 callback 보호·미연결, 실제 save 쓰기0.
+
+### 5.10 순서 9 / TI-08 — 선택·쓰레기 확인 분해
+
+- **파일/공용:** 신규 `native_inventory_bulk_salvage.gd`, `test_native_inventory_bulk_salvage.gd`; 자기 panel 선택/확인 모달만 수정. TI-07 경제식 호출·재정의0. 공용 0행.
+- **원본/범위:** G:50359–50406. 선택 원 index→identity snapshot·dedup·fav/장착/invalid 제외→확인→실행 전 identity 재검증. junk는 현재 filtered list의 snapshot이며 **선택과 달리 dedup하지 않는다**(G:50398–50404). 선택 Set에는 숨겨진 item이 남을 수 있다. 대장간 C15 index splice caller는 개편하지 않는다.
+- **검증:** `EXODUSER-TI08-InventoryBulkSalvage-Isolated-20261020`. **선택분해**는 동일 객체가 bag 두 칸에 있어도 dedup하여50004 한 번, **쓰레기분해**는 같은 두 참조를 reduce하여100008이다. 서로 다른 각50004인2개는100008, 하나 fav 전환하면50004. 취소0회·확인 중 sort/equip/delete/fav 변경 뒤 현재 유효 identity만 처리. filtered junk와 숨긴 일반 선택을 별도 검사. 원본에 없는 bulk1초 gate 추가0.
+- **선행/충돌:** TI-02/03/07·모달 focus/선택 수명 인수. forge/경제 담당 파일 무수정. persistence 보호·미연결.
+
+### 5.11 순서 10 / TI-09 — 공유 보관함 메모리 입출금
+
+- **파일/공용:** 신규 `native_inventory_storage_view.gd`, `test_native_inventory_storage_view.gd`; 자기 panel 보관함 탭/목록/RMB만 수정. 기존 owner의 STORAGE[0] 배열 사용, 공용 0행.
+- **원본/상수:** G:16257–16260,48537–48609; `ui-panels.js:171–181`. 단일 보관함 cap200. 입금은 원 객체/좌표를 유지해 이동·선택 해제. 출금은 전체 bag.length>=BAG_MAX 거절→store item 확인→그 item 좌표 null→bag push/store splice→render이며 **빈자리 사전검사 없음**(G:48605–48608). 새 계정 저장/tab/필드 제안0.
+- **검증:** `EXODUSER-TI09-InventoryStorage-Isolated-20261020`. storage199→200 허용/200에서 거절. bag300/BAG_MAX300 출금 거절,299이면 count gate 통과하여300으로 이동하고 자리 보정은 render 단계이다. 동일 item 참조·원 배열1회 제거·입금 좌표 유지/출금 좌표 null 후 render, 실패 원본 단계 상태, 양쪽 RMB·탭 재진입 닫힘 검사. 파일 IO0.
+- **선행/충돌:** TI-01/03/05·actual STORAGE owner 인수, 없으면 fixture만 가능·실제 연결 BLOCKED. **공유 저장/세이브 형식 보호**, SV-CONTRACT key set/복원 경로 무수정.
+
+### 5.12 순서 11 / TI-10a — 유물 주머니·품질·홈 장착/해제
+
+- **파일/공용:** 신규 `native_inventory_relics.gd`, `test_native_inventory_relics.gd`; 자기 panel 유물 목록/홈 선택만 수정. 순수 품질/공명 계산과 owner attach/detach 분리, 공용 0행.
+- **원본/상수:** G:15184–15208,15276–15330,15386–15396,15409–15794. 주머니 cap9999·id/star/enh/q 그룹 구분. q1~100, `_qGemMul(q)=.75+.5*clamp(q,1,100)/100`, 등급 시작1/41/81. socketMul/socketResonant는 원식 그대로. 효과18종/전투 consumer 전체 구현으로 확대0.
+- **검증:** `EXODUSER-TI10a-InventoryRelics-Isolated-20261020`. q1/50/100 배율 .755/1/1.25, q40동/41은/80은/81금. 유물없음 mul1/공명false; 홈1+유물1→1/false, 홈100+유물1→2/false, 홈100+유물81→3/true. 피의 맹세 ATK1·star0/enh0·홈100/유물100→1×1.25×3=3.75. 주머니9999면 반환 거절/기존홈 유지·빈홈/slot 제한/동일 gem/focus 검사.
+- **선행/충돌:** TI-03/04/05·actual CRYSTAL_BAG/effect owner 인수. **설계 차이 보강:** D1:945의 같은10단계 티어 공명/D1:966의5단계 tint와 달리 현재 G:15308–15330은 동/은/금3등급. 홈100/유물81은 서로 다른10단계 티어여도 공명true. 기존 설계 docs는 고치지 않고 이 oracle로 검사. 전투 효과 담당 writer 무수정·저장 보호.
+
+### 5.13 순서 12 / TI-10b — 소켓석 개방·승급
+
+- **파일/공용:** 신규 `native_inventory_socket_stones.gd`, `test_native_inventory_socket_stones.gd`; 자기 panel 소켓석 선택/개방/승급 caller만 수정. TI-10a 품질 식 재사용·공용 0행.
+- **원본/상수:** G:15796–15827. stone_unseal은 정확q 돌1개 소비→crystals null/socketQ q append→socketCount 갱신·최대5홈. stone_upgrade는 현재q<선택q일 때 정확q돌1개 소비/socketQ만 변경·보석 유지. 원본 함수에는 **5홈일 때만 승급** guard가 없다.
+- **검증:** `EXODUSER-TI10b-InventorySocketStones-Isolated-20261020`. 0홈+q41돌1개→[null]/[41]/count1, 돌0·같은q 없으면 선택null. 이미5홈 false/미소모. 홈40→선택41 성공, 홈41/42→선택41 거절/미소모. 보석 identity·배열길이·잘못된 index/없는 정확q·원본 배열 보충 시점 검사.
+- **선행/충돌:** TI-10a/04·actual STONE_BAG owner 인수. UI의5홈 안내를 API 추가 gate로 바꾸지 않는다. 기존 필드 사용만 다루며 세이브 형식/복원 보호.
+
+### 5.14 순서 13 / TI-11 — 유골 도감·반환·유골함
+
+- **파일/공용:** 신규 `native_inventory_ossuary.gd`, `test_native_inventory_ossuary.gd`; 자기 panel 도감/유골함 상세만 수정. register_bone_part/withdraw_part/ensure_ossuary 예정, 공용 0행.
+- **원본/공식:** G:45788–45888,49991–50128,16155–16164. 등록은 rarity+tier 엄격 상향, 미수집 점수-1. 네 부위 완성과 실제 소환 분리. 반환은 bag 개수/1×1공간 확보 후 도감 key 삭제·r/t 유지/itemLv0. 장착/가방 유골함 모두 없을 때 고정1개 지급·recalc/applyStats.
+- **검증:** `EXODUSER-TI11-InventoryOssuary-Isolated-20261020`. 기존{r3,t2}=5에 새{rarity4,tier1}=5 false/유지, 새{rarity2,tier4}=6 true. 미수집0+0 등록가능·네 부위0+0 complete=true. bag300/공간없음 key유지, 반환성공1회/r·t유지/itemLv0. bag/장착 유골함 있으면 지급0, 둘다없으면1. 초상 fallback/상세는 별도 시각검사.
+- **선행/충돌:** TI-01/03/04/05·actual ossCollect owner. 전대 소환 전투 담당/API 미확인, 소환/AI 범위 확대0. ossCollect 저장 필드 보호·실제 저장0.
+
+### 5.15 순서 14 / TI-12 — 바닥 획득과 actual INV 연결 인수
+
+- **파일/공용:** 신규 `test_native_inventory_pickup_bridge.gd`만 우선 소유. **제품 pickup 파일명/API는 P2-006a 인계 전 미확인**. P2-006b `native_world_drops.gd` 표시부 무수정. 현재 공용 0행·새 pickup owner 중복 생성0.
+- **원본/상수:** G:16411–16424,32932–32967. 빈 장착칸이 있어도 일반 장비는 bag행, 공간 실패는 push/pop 후 false. 성공만 좌표/_pickT/닫힘 자동정렬/효과/picked 처리. 화면 half viewport+40, rarity 높은 순→같으면 가까운 순, hold9tick마다 장비1개. 재료/물약 일괄최대20은 별도 기존 담당 경계.
+- **검증:** `EXODUSER-TI12-InventoryPickupBridge-Isolated-20261020`. rarity 높은 먼 item 우선·동급 가까운 item, hold8은0회/9는1회. 공간 실패면 floor picked=false/장착·bag 원상, 성공만 동일 item bag1개/picked=true·자동장착0. 재수거0·deathDrop 동일 item 해제·원 index/identity 검사. 새 RNG/주기 clock0.
+- **선행/충돌:** actual P2-006a SHA/소유 파일/API 인수, TI-01/02/05. 5.1의 문서/코드 불일치 해소 전 **BLOCKED**. 이후 world frame 연결은 기존 담당이 `world.gd` item update phase의 최소 호출을 정하며 현재 줄수/API는 미확인. 피해 집행자/P2-006b 표시부/차단된 펫 legacy 무수정.
+
+### 5.16 순서 15 / TI-13 — 패널부터 원래 플레이 복귀까지
+
+- **파일:** 신규 `native_inventory_flow.gd`, `test_native_inventory_flow.gd`, `test_native_inventory_main_flow.gd`; 자기 panel scene/script 연결 수정. 신규 flow에 owner binding·모달/선택 수명·TAB/ESC 소비·close 복귀 본문을 모은다.
+- **원본:** G:44049–44079,13213,13250–13260,14150–14260; I:4340–4349. TAB/ESC/확인취소·bag 원 index RMB/keyboard Y·플레이 입력 복귀를 행별로 대응한다.
+- **공용 최소 연결안:** 아래는 미적용 호출 배선안이다. 실제 diff가 늘면 위치·이유·담당을 먼저 기록한다. 위치는 함수 기준이며 6절의 옛 행을 최신 행으로 간주하지 않는다.
+
+| 수정 후보 | 위치/최소 코드행 계획 | 조건·금지 |
+|---|---|---|
+| `godot/scripts/main.gd` | preload1행+flow field1행, `_ready`의 source_state/providers/HUD bind 완료 뒤 flow 생성/configure/부착 최소3행, `_unhandled_input` consume 분기 최소2행. **최소7행 배선안** | 정확한 입력 분기 앞/뒤는 레슨 담당 인수 전 미확인. 기존 allows/Q/E를 이동·개편하지 않는다. configure 실패는 미연결로 보고 |
+| `godot/scripts/hud.gd` | pause/menu overlay 관리 지점(최초 snapshot `set_pause_menu` 주변)의 panel overlay 등록 호출 **최소1행 후보** | 신규 flow가 기존 overlay API만으로 붙으면 **0행 우선**. 정확 API 인수 전 실행가능1행이라고 단정하지 않음. CP/미니맵/글꼴/노드 재생성 금지 |
+| `world.gd/player.gd/native_normal_enemy_hurte.gd/native_source_new_run_state.gd` | **0행** | TI-04 runtime sink·TI-12 pickup 인계 선행. 이 단계에서 누락을 범용 공용 writer로 보충하지 않음 |
+
+- **검증:** 두 테스트는 `EXODUSER-TI13-InventoryFlow-Isolated-20261020`를 사용하며 동시에 실행하지 않는다. flow fixture와 actual Main 결과를 분리한다. TAB1회 열림/닫힘, ESC 최상단 모달1개 닫기, 분해 확인 취소 보상0, 닫은 다음 frame 입력 잔류0. 필터/정렬 뒤 다른 identity를 조작하지 않음, 장착/실패/분해/반환 후 동일 owner·보호값 불변. actual Main의 기존 시작15장비/10bag와 열린 panel의 참조를 대조한다.
+- **선행/충돌·실창 인수:** 개별 격리 결과·TI-04 실제 runtime API·TI-12 pickup 인계·Main/HUD 담당의 정확한 배선 범위가 선행. 기존 창은 건드리지 않고 새 격리 창에서 작은 창/한영/컨트롤러/닫은 뒤 실제 플레이를 관측한다. 권한/resource 실패는 명령·원로그와 BLOCKED, headless 통과와 화면 PASS/RETOUCH를 분리한다. 실제 저장·패키지·배포는 범위 밖이다.
+
+**결과 기록 양식:** 파일/commit·원본 근거·실행 명령·정확한 userdir·핵심 단정·원로그·실패/미실행·actual Main 여부·미연결 owner를 적는다. TI-00 통과를 UI/장착 완료로 확대하지 않는다. 타 담당 파일이 필요하면 그 연결만 BLOCKED로 보고하고 우회 구현하지 않는다.
 
 ## 6. 공용 파일 접점 — 모두 이번 작업에서 미수정
 
