@@ -30,6 +30,7 @@
 ## 진행 중 (2026-10-20 갱신: Claude 총괄)
 | 작업ID | 내용 | 담당·환경 | 브랜치 | 소유 파일(다른 담당 수정 금지) | 상태 |
 |---|---|---|---|---|---|
+| DEMO11-37 | P3 지역/앵글러 gate→Marker arena→PC 최종 사망→보상/기록/종료 인계 | Mac Codex | codex/demo11-37-20261021 | native_demo11_encounter/clear_result·Main 설치/API·State progression/reward·새 tests·자기 docs | **검수 대기** — mainac3764bf+35/38 정상merge=e7d855b6. 기능410/0+bench1회260/0 cleanPASS(max1.512ms), Main+14/State新32+既1줄수정. PC 사망/전투·맵0줄, provider접촉/PC最終producer 후행. 최종SHA는 _out/demo11-37/DONE.txt |
 | DEMO11-20 | 실제 State addExp META-06 cap100·회복/표시/저장 인계 | Mac Codex | codex/demo11-20-20261021 | native_source_new_run_state.gd의 addExp 구역·신규 테스트/oracle·자기 docs | **검수 대기** — State cap100 실제연결·회복/표시/저장 인계, 신규214/0+관련1099/0=1313/0 각1회. State+62/−8·피해/Main/맵0줄, 저장IO未·collectorHOLD. 후속 aa1eaea5a merge·목록API0·자기코드추가수정0·관련4suite 각1회1313/0. 최종SHA는 원로그 DONE.txt |
 | DEMO11-38 | stageClear 다음→demoEnd·위시리스트/데모 로비 | Mac Codex | codex/demo11-38-20261021 | Main/State 종료 접점·native_demo_end_*·native_demo_lobby·새 scene/test·자기 docs | **화면 비교 자료 준비·검수 대기** — 183/0, 예상 거부ERROR1 외0. stage1 생성0/중복 clear 거부·실제 Tree pause/구 Main 해제. 1920×1080+1x crop, DEMO11-37 신호 직접 주입(사망 연동未). Main+20/State+15, 최종SHA는 _out/demo11-38/DONE.txt |
 | p2001i-diag | p2001i 종료 ERROR·ObjectDB/리소스 수명 진단 | Mac Codex | codex/p2001i-diag-20261020 | 자기 보고서·CHANGELOG·작업판 자기 행만(제품/기존 테스트0) | **검수 대기** — main6d987cb8 원문6종377/0·종료 ERROR/누수0, I 원문3회18/0. 외부 대기제거 대조에서 음성 MP3/Playback2객체·리소스1 ID일치 재현, 하니스 조기quit 판정. 보고서·최종SHA는 원로그 DONE.txt |

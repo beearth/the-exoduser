@@ -1,3 +1,12 @@
+## 2026-10-21 DEMO11-37 — 지역 gate·arena·최종 사망 이후 진행 인계
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준·연결 | mainac3764bf +35/727f6a02 +38/ae49b21c 정상 merge=e7d855b6. P3-003 실제 귀속/gate 재사용, MAP11-01 Marker 계약만 읽기. PC36/49 최종 사망 신호 수신·기존 State chest 저장·SP/TA/랭크 기록→38 clear/demoEnd. |
+| 공용·보호 | Main 설치/API 추가14/삭제0, State progression 신규32줄+기존상자축출1줄수정(diff+33/−1). 전투 핵심/HP·poise·부활·Q/E·저장IO/형식·맵지형·원본0. 자연 map/PC producer 후행, 가짜 사망/보상ACK0. |
+| 검증·벤치 | 신규148/0+관련기존262/0=기능410/0. 기존bench 정확히1회260/0·ERROR/WARNING0 cleanPASS, mean.763442/p95.920/max1.512ms<8.333ms. 초기import2실패·신규148/120 JSON숫자경계 실패 원문 보존/실패만정정. 전체게임fps未. |
+| 문서·제출 | [계약·공용 줄·최종 판정](engine/orders/reports/demo11-37_REPORT.md), BOSS_BATTLE_SETTINGS·P3 지역 후속 상태 갱신. _out/demo11-37 원로그, 자기branch push/remoteSHA/DONE 뒤 자기WT제거·R불변. |
+
 ## 2026-10-21 DEMO11-05 — main 성능 수정 병합·tick 경로 점검
 
 | 항목 | 구현·검수 근거 |

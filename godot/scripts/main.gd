@@ -116,6 +116,7 @@ var _native_source_object_registration: Dictionary = {}
 var _native_demo11_policy: Dictionary = {}
 var native_demo_boss_actor: Node2D
 var native_demo_boss_projectiles: Node
+var native_demo_encounter: Node
 
 func read_native_demo_policy() -> Dictionary:
 	return _native_demo11_policy.duplicate(true) if not _native_demo11_policy.is_empty() else {"status": "NOT_READY", "reason": "boot_not_started"}
@@ -334,6 +335,9 @@ func _ready() -> void:
 	native_demo_end_flow.configure(self)
 	native_demo_end_flow.wishlist_requested.connect(_open_native_demo_wishlist)
 	native_demo_end_flow.lobby_requested.connect(_return_native_demo_lobby)
+	native_demo_encounter=preload("res://scripts/native_demo11_encounter.gd").new()
+	add_child(native_demo_encounter)
+	native_demo_encounter.configure(self,regions)
 	source_intro_sequence = IntroCurtainSequenceScript.install_native_boot(self) # P2-001i
 	native_demo_boss_actor = preload("res://scripts/native_demo11_boss_actor.gd").install_native_boot(self) # DEMO11-34
 	native_demo_boss_projectiles = preload("res://scripts/native_demo11_boss_projectiles.gd").install_native_boot(self) # DEMO11-35
@@ -2988,3 +2992,13 @@ func _return_native_demo_lobby() -> void:
 	if snapshot.phase!="leaving": return
 	get_tree().set_meta("native_demo_return_language",snapshot.language)
 	get_tree().call_deferred("change_scene_to_file","res://scenes/demo11_lobby.tscn")
+
+# DEMO11-37: map provider/contact and PC final-death integration boundaries.
+func bind_native_demo_arena_provider(provider: Node2D) -> bool:
+	return is_instance_valid(native_demo_encounter) and native_demo_encounter.bind_provider(provider)
+func bind_native_demo_final_death_source(owner: Node, event: StringName) -> bool:
+	return is_instance_valid(native_demo_encounter) and native_demo_encounter.bind_final_death_source(owner,event)
+func enter_native_demo_arena(provider: Node, spawn_options: Dictionary) -> Dictionary:
+	return native_demo_encounter.enter(provider,spawn_options) if is_instance_valid(native_demo_encounter) else {"status":"NOT_READY"}
+func leave_native_demo_arena(provider: Node) -> bool:
+	return is_instance_valid(native_demo_encounter) and native_demo_encounter.leave(provider)
