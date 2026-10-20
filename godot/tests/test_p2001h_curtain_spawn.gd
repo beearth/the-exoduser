@@ -2,7 +2,7 @@ extends SceneTree
 ## P2-001h — 인트로 커튼 오픈 시퀀스 회귀 (실제 Main 부팅).
 ## 검증: begin(커튼 닫힘·iframes 9999·bonfire 0) → finish(_openIntroCurtain 63411~63441):
 ## 5마리 오각 링(반경 580·각 2πi/5−π/2·etype0·flesh crawler 스크립트), mkEn RNG 소비
-## 순서(rollElite→[rollMods]→spd→r→st2→facing→projT→bossPatT)와 필드 유도 일치,
+## 순서(rollElite→[rollMods]→spd→r→st2→facing→projT→bossPatT→_bossOrbitAng→_erraticAng)와 필드 유도 일치,
 ## 매직 엘리트 경로(hp×2·atk×1.3·scale×1.08·projCd 192), bonfire t300/r280 감쇠·push-out,
 ## 커튼 OPENING→DONE(+900ms 정리), 스폰된 적이 P1-002 hurtE owner 경로로 피격되는지.
 const SequenceScript = preload("res://scripts/native_intro_curtain_sequence.gd")
@@ -133,7 +133,7 @@ func _test_begin_and_finish_spawn() -> void:
 		if elite > 0:
 			expected_purposes.append("rollMods_attack")
 			magic += 1
-		expected_purposes.append_array(["spd", "r", "st2", "facing", "projT", "bossPatT"])
+		expected_purposes.append_array(["spd", "r", "st2", "facing", "projT", "bossPatT", "_bossOrbitAng", "_erraticAng"])
 		var purposes: Array = []
 		for d in draws:
 			purposes.append(d["purpose"])
@@ -158,8 +158,8 @@ func _test_begin_and_finish_spawn() -> void:
 		if elite == 1:
 			_check(entry["mods"].size() == 1 and str(entry["mods"][0]) in ["M29", "M30"],
 				"magic mods from hell0 attacks (31072) #%d" % i)
-	_check(int(snap["metrics"]["rng_calls"]) == 5 * 7 + magic,
-		"rng calls = 5x7 + magic (rollElite+spd+r+st2+facing+projT+bossPatT, 31120~)")
+	_check(int(snap["metrics"]["rng_calls"]) == 5 * 9 + magic,
+		"rng calls = 5x9 + magic (rollElite+spd+r+st2+facing+projT+bossPatT+_bossOrbitAng+_erraticAng, 31120~; P3-002 정정)")
 	observations["magic_elites"] = magic
 	observations["rng_calls"] = snap["metrics"]["rng_calls"]
 	# 등록된 실제 적 노드 필드 == journal

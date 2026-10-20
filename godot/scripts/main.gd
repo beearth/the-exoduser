@@ -260,6 +260,9 @@ func _ready() -> void:
 		if not _bind_native_source_regeneration_boot():
 			return
 	hud.bind_native_source_state(source_state) # P2-002a 원본 HUD 값 = state owner getter
+	# P3-002 initStage 소환굴 배치 — 원본 31655 `_regionInit(si)`가 "소환굴 확정 후" 지역 total을
+	# 계산하므로 지역 owner(P3-003) 구성보다 먼저 둔다(인트로 이전 순서도 유지).
+	preload("res://scripts/native_spawn_hole_system.gd").install_native_boot(self)
 	# P3-003: region-only owner, separate from input/regeneration/spawn writers.
 	var regions: Node=preload("res://scripts/native_regions.gd").new()
 	regions.name="NativeRegions"
