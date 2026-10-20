@@ -5,6 +5,9 @@ signal native_demo_boss_defeated(stage_index: int) # DEMO11-37 -> DEMO11-38, fin
 const NativeDemoEndFlow = preload("res://scripts/native_demo_end_flow.gd")
 var native_demo_end_flow: CanvasLayer
 
+const DemoPauseMenu = preload("res://scripts/native_demo_pause_menu.gd")
+var native_demo_pause_menu: CanvasLayer
+
 const Demo11Authority = preload("res://scripts/native_demo11_authority.gd")
 const NativePerspectiveViewScript = preload("res://scripts/native_perspective_view.gd")
 const WorldScript = preload("res://scripts/world.gd")
@@ -337,6 +340,9 @@ func _ready() -> void:
 	hud.pause_requested.connect(_toggle_pause)
 	hud.restart_requested.connect(_restart)
 	_build_native_character_selection_ui()
+	native_demo_pause_menu=DemoPauseMenu.new()
+	add_child(native_demo_pause_menu)
+	if not native_demo_pause_menu.configure(self):push_error("Native pause menu settings reader rejected")
 	_install_native_q_control()
 	_install_native_attack_audio()
 	_install_native_music_lifecycle()
@@ -1678,6 +1684,7 @@ func _on_native_character_selected(item_index: int) -> void:
 	_record_event("native_character_selected",{"selection":read_native_character_selection(),"profile":applied})
 
 func _toggle_pause() -> void:
+	if is_instance_valid(native_demo_pause_menu) and native_demo_pause_menu.consume_pause_back():return
 	if get_tree().paused and get_meta("native_review_requires_character",false) and player.get_native_character_profile_snapshot().get("ready")!=true:
 		hud.set_status("캐릭터를 먼저 선택한 뒤 플레이를 재개하세요")
 		return
@@ -1688,6 +1695,9 @@ func _toggle_pause() -> void:
 	if is_instance_valid(_character_panel):
 		_character_panel.visible=get_tree().paused
 		_character_picker.disabled=not get_tree().paused
+	if is_instance_valid(native_demo_pause_menu):
+		native_demo_pause_menu.sync_pause(get_tree().paused)
+		if native_demo_pause_menu.is_menu_visible() and is_instance_valid(_character_panel):_character_panel.visible=false
 	if capture.has_method("set_pause_state"):
 		capture.set_pause_state(get_tree().paused)
 	_record_event("pause_changed", {"paused": get_tree().paused, "state": _play_state()})

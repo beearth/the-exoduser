@@ -315,3 +315,9 @@ CSS 캐시 ui-refinement.css?v=20260927-3. 신규 이미지/아이템 데이터 
 마지막 데모 stageClear의 다음 버튼은 난이도 창·stage 증가 없이 demoEnd로 간다. 복귀는 전투 Main을 해제하는 별도 demo11_lobby.tscn(최소 네이티브 데모 로비)이며 웹 캐릭터 슬롯/계정/저장 로비 완성 주장0. DEMO11-37은 최종 보스 사망/부활 해결 뒤 Main.native_demo_boss_defeated(stage_index:int)를 emit해야 한다. 현재 테스트는 직접 emit하며 실제 보스 사망 검증은 아님. [검수 보고서](../engine/orders/reports/demo11-38_REPORT.md), 캡처 원본 `_out/demo11-38/captures/`; 시각 최종 판정은 맥북총괄 대기.
 
 종료 시 Main DISABLED만으로 명시 PAUSABLE World/Player는 멈추지 않으므로 Tree pause를 함께 사용한다. 종료 UI는 ALWAYS, 전투 scene 제거 후 새 로비 ready에서 unpause한다. 최종 검사에서 World frame 7→7→7·can_process=false·구 Main 해제를 확인했다.
+
+## 2026-10-21 DEMO11-09 네이티브 일시정지 메뉴 (설정 반영 BLOCKED)
+
+기존 Main._toggle_pause/HUD pause 연결과 clear_native_input_states·review 캐릭터 선택 guard를 유지하며 메뉴 표시만 추가한다. Settings 하위 화면에서 Esc/뒤로는 pause로 복귀, pause의 Esc/재개는 기존 경로를 사용한다. 일반 메뉴에서만 개발 캐릭터 선택판을 가리고 review 모드 우선권은 그대로다. 흑철 패널·기존 날개 문장·금빛 헤어라인·뼈색 글자, native_ui_fonts의 hell/hell_title/cinzel_hell, 이모지·새 이미지0.
+
+S01 current NOT_READY(missing textScale/panelFit/diffV2)를 보존하며 observed_options/default reference를 가짜 live 설정으로 사용하지 않는다. S10 native_settings_lobby_bridge는 main에 없어 언어/inputMode 복원·설정 적용은 BLOCKED. 숫자/키 변경 UI나 별도 OPT/BINDS writer를 만들지 않는다. [보고서](../engine/orders/reports/demo11-09_REPORT.md), 캡처 `_out/demo11-09/captures/`; 시각 판정 대기.

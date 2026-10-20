@@ -109,6 +109,15 @@
 - 독립 demo_lobby 씬·SV-LOBBY-VIEW/S10 후보 구현, Main/State/전투/맵/저장 adapter·project0줄. 원본 에셋3개 byte동일·Hell Gothic·NativeUIFont·이모지0, 번역23쌍/3.1UI 현황 갱신.
 - 신규 최종48/0, 관련 기존 저장79/0·reader5952/0 각1회, 최신 ERROR/ObjectDB/resource0. 초기 import/parse·46/11·시각 RETOUCH/중단 로그 보존. 목록/삭제확인1920×1080·각1x크롭은 _out/demo11-04/captures/, 눈검수 대기. [보고서](engine/orders/reports/demo11-04_REPORT.md).
 
+## 2026-10-21 DEMO11-09 pause·입력 안내 / 설정 반영 BLOCKED
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준·범위 | mainac3764bfe, Main+10/-0만 공용추가. 기존 pause/clear입력/review guard 유지, 메뉴→settings back 계층·기존 프로필 읽기. State/전투/저장/맵0 |
+| 설정 권위 | S01 재사용·missing3 NOT_READY 유지. S10 구현/S08 writer 부재로 설정 반영·언어/inputMode 복원 BLOCKED. 임의 기본값 채움·키변경·별도OPT writer0 |
+| 화면·검증 | Hell Gothic/기존폰트·crest/이모지0, 번역·3.1UI 갱신. 신규29/0+S01unit112/0+actual12/0=153/0·각1회·재실행0. [보고서](engine/orders/reports/demo11-09_REPORT.md)에 결과·공용줄·인계 제안, captures 시각 검수 대기 |
+| 제출 | 원로그 _out/demo11-09/, Godot gate/격리/override0. 정상훅·자기branch push/remote/DONE 뒤 WT제거, R 불변 |
+
 ## 2026-10-21 DEMO11-05 — main 성능 수정 병합·tick 경로 점검
 
 | 항목 | 구현·검수 근거 |

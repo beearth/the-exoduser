@@ -35,6 +35,8 @@
 
 | DEMO11-38 | stageClear 다음→demoEnd·위시리스트/데모 로비 | Mac Codex | codex/demo11-38-20261021 | Main/State 종료 접점·native_demo_end_*·native_demo_lobby·새 scene/test·자기 docs | **시각 PASS·반송 merge 검수 대기** — 최초183/0·반송38/17/PC refresh439/0, 예상 거부ERROR1 외0. stage1 생성0/중복 clear 거부·실제 Tree pause/구 Main 해제. 1920×1080+1x crop, DEMO11-37 신호 직접 주입(사망 연동未). Main+20/State+15, 최종SHA는 _out/demo11-38/DONE.txt |
 
+
+| DEMO11-09 | 데모 일시정지·입력 프로필·설정 인계 | Mac Codex | codex/demo11-09-20261021 | Main pause 접점·native_demo_pause_menu·신규 test·자기 docs | **일부 화면 자료 준비 / 설정 BLOCKED** — pause·back·resume/기존 BINDS 안내153/0 각1회. S01 missing3/S10 부재·설정writer미인수, Main+10/-0·State/전투0. 전체완료아님, 캡처 _out/demo11-09/captures/, 최종SHA는DONE |
 | DEMO11-20 | 실제 State addExp META-06 cap100·회복/표시/저장 인계 | Mac Codex | codex/demo11-20-20261021 | native_source_new_run_state.gd의 addExp 구역·신규 테스트/oracle·자기 docs | **검수 대기** — State cap100 실제연결·회복/표시/저장 인계, 신규214/0+관련1099/0=1313/0 각1회. State+62/−8·피해/Main/맵0줄, 저장IO未·collectorHOLD. 후속 aa1eaea5a merge·목록API0·자기코드추가수정0·관련4suite 각1회1313/0. 최종SHA는 원로그 DONE.txt |
 | p2001i-diag | p2001i 종료 ERROR·ObjectDB/리소스 수명 진단 | Mac Codex | codex/p2001i-diag-20261020 | 자기 보고서·CHANGELOG·작업판 자기 행만(제품/기존 테스트0) | **검수 대기** — main6d987cb8 원문6종377/0·종료 ERROR/누수0, I 원문3회18/0. 외부 대기제거 대조에서 음성 MP3/Playback2객체·리소스1 ID일치 재현, 하니스 조기quit 판정. 보고서·최종SHA는 원로그 DONE.txt |
 | DOC-SYNC | 오늘 통합분 원본 수치·설계 docs 동기화 감사 | PC Codex | codex/doc-sync-pc-20261020 | DOC-SYNC_REPORT.md 및 설계 문서10개 정정 구역(2_3 제외) | **검수 완료·main 병합(Claude 총괄)** — 설계 문서 10종 원본 기준 정정, 코드 무변경. 2_4는 P2-004b와 충돌 → 상세 문장 유지+정정 주석 |
