@@ -1,4 +1,13 @@
 
+## 2026-10-21 DEMO11-23 — BLOCKED / 실제 공유창고 owner 필요
+
+| 항목 | 진단·검수 근거 |
+|---|---|
+| 기준 | main0138c5bb + 승인22r d276e02e 정상FF merge |
+| BLOCKED | SV-SHARED 계산 전용·실제 STORAGE/입출고/공유 setter 부재. 새 owner 금지 준수. 제품·Main/State·테스트·전투·저장0줄 |
+| 검증 | 기존 shared-read1회149486/0·ERROR/누수/잔류0, 실제 IO0. UI/3캡처 미생성·텍스트0·번역 CRLF 보존. [인수 요청](engine/orders/reports/demo11-23_REPORT.md) |
+
+
 ## 2026-10-21 DEMO11-22r — 일반17슬롯 장착·PC runtime refresh 연결
 
 | 항목 | 구현·검수 근거 |
