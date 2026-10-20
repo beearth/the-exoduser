@@ -34,3 +34,7 @@ content_valid는 컴파일 내용, runtime_ready는 tree 수명·동일 transfor
 ## MAP PRODUCTION REPORT (§23)
 
 작업 범위: MAP11-11 기술 provider. MASTER PLAN/OUTER MASS/MEDIUM CONNECTION/GROUND/PLAYABLE/LANDMARK/DETAIL/CAMERA QA는 인수된 MAP11-07 형상을 재사용하고 이번에 시각 수정하지 않았다. 승인 형상: 남쪽 기상→두 순환 고리→북중부 시체나무+심장제단→보스문, 9050×8250 field와 R1700 arena. 신규 아트/이미지 생성/캡처 없음. TECH QA는 위 실제 테스트/질의 벤치, VISUAL VERDICT: **RETOUCH (MAP11-07 G1 눈 검수 대기 상속)**. 기술 PASS를 눈 검수 PASS로 대체하지 않는다. 보스룸01c 방향 임시 승인/바닥 proof·외곽 occlusion 마감 대기는 기록만 하며 수정하지 않음. 다음 인수: DEMO11-37/43 owner가 이 독립 provider를 실제 World 아래 설치하고 기존 writer와 수명 계약을 통합 검수한다.
+
+## 2026-10-21 MAP11-PROD 소비 연결
+
+공급자/Marker/region 계약과 위 첫 표의 제공 값은 그대로다. Main 제품 경로에 기본 MAP11을 연결한 후속 소비 단위는 [제품 바인딩 계약](MAP11_PRODUCTION_BINDING_20261021.md). 실제 root 참조·gate 운송·legacy 플래그·미병합43/PC 완료 경계·검증은 해당 보고서에 분리하며 이 provider의 원 검증 수치를 다시 인용해 제품 통합 PASS로 바꾸지 않는다.

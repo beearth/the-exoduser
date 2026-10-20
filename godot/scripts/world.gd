@@ -902,6 +902,11 @@ class NativeBootMapBuildHandle extends RefCounted:
 	func get_result() -> Dictionary:
 		return _result.duplicate()
 
+# MAP11-PROD owns only map composition. Exact World identity/PC services stay.
+var map11_provider: Node2D
+var _native_map11_scene: Node2D
+var _native_map11_selected := false
+
 func _ready() -> void:
 	var encounters: Variant = JSON.parse_string(FileAccess.get_file_as_string(ENCOUNTERS_FILE))
 	# Validate before creating world children. An invalid encounter source cannot
@@ -909,6 +914,19 @@ func _ready() -> void:
 	if not _encounter_factory.validate_source(encounters)["valid"]:
 		_native_startup_error = "invalid_canonical_encounter_source"
 		return
+	_native_map11_selected = get_meta("native_map11_product", false) == true
+	if _native_map11_selected:
+		var main: Node = get_parent()
+		if not main.has_method("_native_map11_enabled") or not main._native_map11_enabled():
+			_native_startup_error = "map11_demo_authority"
+			return
+		_native_map11_scene = preload("res://scripts/maps/map11/product_scene.gd").new()
+		_native_map11_scene.name = "Map11ProductScene"
+		add_child(_native_map11_scene)
+		if not _native_map11_scene.current():
+			_native_startup_error = "map11_provider_not_ready"
+			return
+		map11_provider = _native_map11_scene.provider
 	# Clock publication precedes every priority0 actor. The late node is added
 	# before enemy/projectile children and consumes the same paused scene clock.
 	process_physics_priority = -1
@@ -961,11 +979,17 @@ func _ready() -> void:
 		_native_ground_surface.free()
 		_native_ground_surface = null
 		return
+	if _native_map11_selected:
+		_native_ground_surface.hide()
 	_build_collision()
 	_build_props()
 	_chunk_specs = map_data["chunks"]
 	_update_visible_chunks(get_start_position(), true)
-	install_native_encounters(encounters)
+	if _native_map11_selected:
+		_encounter_report = {"valid":true,"installed":false,"source_count":0,"supported_count":0,"unsupported_count":0,"errors":[],"authority":"MAP11_waiting_marker_consumer"}
+		_native_initial_report = _encounter_report.duplicate(true)
+	else:
+		install_native_encounters(encounters)
 	ready_for_player = true
 	_native_startup_error = ""
 	telemetry_event.emit("world_ready", {"stage": 0, "tiles": 40000, "collision_shapes": collision_count, "source_tile_sha": map_data["source"]["native_tile_sha256"]})
@@ -974,10 +998,14 @@ func get_native_startup_error() -> String:
 	return _native_startup_error
 
 func get_start_position() -> Vector2:
+	if _native_map11_selected:
+		return _native_map11_scene.start_marker.global_position if is_instance_valid(_native_map11_scene) and _native_map11_scene.current() else Vector2.ZERO
 	var p: Array = map_data.get("start_position", [4020, 7420])
 	return Vector2(float(p[0]), float(p[1]))
 
 func get_exit_position() -> Vector2:
+	if _native_map11_selected:
+		return _native_map11_scene.sites.field_gate.global_position if is_instance_valid(_native_map11_scene) and _native_map11_scene.current() else Vector2.ZERO
 	var p: Array = map_data.get("exit_position", [4020, 300])
 	return Vector2(float(p[0]), float(p[1]))
 
@@ -1032,6 +1060,8 @@ func get_native_map_surface_context() -> Dictionary:
 ## Native-view input only. The existing collision rectangle export is the
 ## geometry authority; these new deterministic view IDs are not authored props.
 func get_native_floor_view_source() -> Dictionary:
+	if _native_map11_selected:
+		return {"ready":false,"reason":"MAP11_provider_owns_geometry","scope":"MAP11 product view, no canonical floor overlay"}
 	var reason: String = _native_floor_view_source_error()
 	return {"schema":"fdg.native-floor-view-source.v1", "ready":reason.is_empty(),
 		"status":"NATIVE_VIEW_SOURCE_AVAILABLE" if reason.is_empty() else "NOT_READY", "reason":reason,
@@ -3034,6 +3064,8 @@ func advance_native_birth_phase() -> void:
 	_native_birth_ticks = 0.0
 
 func install_native_encounters(source: Variant) -> Dictionary:
+	if _native_map11_selected:
+		return {"valid":false,"installed":false,"errors":["MAP11_requires_actual_marker_consumer"]}
 	var validation: Dictionary = _encounter_factory.validate_source(source)
 	if not validation["valid"]:
 		return validation
@@ -3084,6 +3116,7 @@ func _process(delta: float) -> void:
 		_build_flow()
 
 func _update_visible_chunks(center: Vector2, synchronous: bool) -> void:
+	if _native_map11_selected: return
 	# Full native world data is retained. Only the original nearby 1000px plates are admitted.
 	var half_view = get_viewport_rect().size * 0.5 + Vector2(1050, 1050)
 	var cam := get_viewport().get_camera_2d()
@@ -3125,6 +3158,7 @@ func _update_visible_chunks(center: Vector2, synchronous: bool) -> void:
 		_chunks[key] = sprite
 
 func _build_collision() -> void:
+	if _native_map11_selected: return
 	var body = StaticBody2D.new()
 	body.name = "NativeMapCollision"
 	body.collision_layer = 1
@@ -3192,6 +3226,7 @@ func _hill_ramp_at(tile: Vector2) -> float:
 	return t if absf(tile.y - float(h["rampY"])) <= half_width else -1.0
 
 func is_world_blocked(pos: Vector2) -> bool:
+	if _native_map11_selected: return not can_move(pos,0)
 	if pos.x < 0 or pos.y < 0 or pos.x >= 8000 or pos.y >= 8000:
 		return true
 	var cell = Vector2i(floori(pos.x / _tile_size), floori(pos.y / _tile_size))
@@ -3210,6 +3245,8 @@ func is_world_blocked(pos: Vector2) -> bool:
 	return false
 
 func has_line_of_sight(from: Vector2, to: Vector2) -> bool:
+	if _native_map11_selected:
+		return is_instance_valid(_native_map11_scene) and _native_map11_scene.line_of_sight(from,to)
 	var steps = maxi(1, int(from.distance_to(to) / 16.0))
 	for i in range(1, steps):
 		if is_world_blocked(from.lerp(to, float(i) / steps)):
@@ -3217,6 +3254,8 @@ func has_line_of_sight(from: Vector2, to: Vector2) -> bool:
 	return true
 
 func can_move(pos: Vector2, radius: float) -> bool:
+	if _native_map11_selected:
+		return is_instance_valid(_native_map11_scene) and _native_map11_scene.can_move(pos,radius)
 	# Same four point samples as native canMv; hill and prop ellipses remain analytic.
 	for corner in [Vector2(-radius, -radius), Vector2(radius, -radius), Vector2(-radius, radius), Vector2(radius, radius)]:
 		if is_world_blocked(pos + corner):
@@ -3240,6 +3279,7 @@ func native_safe_point(x: float, y: float, radius: float) -> Variant:
 	return null
 
 func _build_props() -> void:
+	if _native_map11_selected: return
 	for data in map_data["props"]:
 		var entry = _request_native_prop_texture(data)
 		if entry._phase != "LOADED":
@@ -3267,6 +3307,7 @@ func _build_props() -> void:
 	_native_resource_prop_build_complete = true
 
 func _build_flow() -> void:
+	if _native_map11_selected: return
 	if not is_instance_valid(player):
 		return
 	var target = Vector2i(floori(player.global_position.x / 40.0), floori(player.global_position.y / 40.0))
@@ -3304,6 +3345,8 @@ func _build_flow() -> void:
 			tail += 1
 
 func get_path_direction(pos: Vector2) -> Vector2:
+	if _native_map11_selected:
+		return (player.global_position-pos).normalized() if is_instance_valid(player) and has_line_of_sight(pos,player.global_position) else Vector2.ZERO
 	if not is_instance_valid(player):
 		return Vector2.ZERO
 	if _flow.is_empty():
@@ -3494,3 +3537,7 @@ func read_native_source_random_unit(main: Variant, services: Variant,
 	return {"status":"READY","provider":"rand","source":source,"reason":"","value":value,
 		"non_finite":false,"sample_invoked":true,"sample_completed":true,"consumption":"COMPLETED",
 		"completion_receipt":completion_receipt,"raw_result":sample,"raw_call_return":scalar_return}
+
+# Transport/view switch only. Damage/clock/registry/RNG code above is unchanged.
+func activate_map11_space(space: String) -> bool:
+	return _native_map11_selected and is_instance_valid(_native_map11_scene) and _native_map11_scene.activate_space(space)

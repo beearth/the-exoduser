@@ -1586,3 +1586,28 @@ func apply_native_forge_potion_upgrade(owner: Node) -> Dictionary:
 	_forge_committing = false
 	return {"status":"READY","paid":true,"level":_auto_potion_level,"cost":cost,"remaining":_g.mats,
 		"unported":["dbSaveNow, source flash/particle feedback"]}
+
+# MAP11-PROD: transport writes only; no combat state/resource/revive authority.
+func commit_native_map11_transport(main: Node, provider: Node, marker: Marker2D, space: String) -> Dictionary:
+	if _current_error()!="" or get_tree().paused or main!=_player.get_parent() or main.get("source_state")!=self or main.read_native_map11_provider()!=provider or not provider.runtime_ready():return {"applied":false,"reason":"map11_owner"}
+	if space not in ["field","arena"]:return {"applied":false,"reason":"map11_space"}
+	var sites: Dictionary=provider.transition_sites()
+	if marker!=(sites.arena_entry if space=="arena" else sites.field_return):return {"applied":false,"reason":"map11_marker"}
+	_player.global_position=marker.global_position
+	_p.x=_player.global_position.x;_p.y=_player.global_position.y
+	_g._bossArena=space=="arena"
+	# Source combat extent is not the circle's render diameter (MAP11 contract).
+	_g.mw=128 if space=="arena" else 200;_g.mh=108 if space=="arena" else 200
+	return {"applied":true,"space":space}
+
+# DEMO11-45: same journal / mats / addPotion owners; no new save fields.
+func commit_native_map11_chest(main: Node,chest: Node,reward: Dictionary) -> Dictionary:
+	if not _feel_owner_current(main) or main.get("native_map11_chest")!=chest or not is_instance_valid(chest) or not chest.owns_pending_open(main):return {"applied":false,"reason":"chest_owner"}
+	if reward.get("status")!="READY" or not reward.get("records") is Array or reward.records.size()<3 or reward.records.size()>5 or reward.get("mats_bonus")!=5 or reward.get("hp_extract")!=2:return {"applied":false,"reason":"chest_reward"}
+	for row in reward.records:
+		if not row is Dictionary or row.get("type")!="item" or not row.get("item") is Dictionary:return {"applied":false,"reason":"chest_record"}
+	var appended: Dictionary=append_native_drop_records(main,reward.records)
+	if not appended.get("applied",false):return appended
+	_g.mats=int(_feel_num(_g.get("mats")))+5
+	var hp_extract: Dictionary=apply_native_add_potion(main,"hp",2)
+	return {"applied":true,"records":reward.records.size(),"mats":_g.mats,"hp_extract":hp_extract,"save_requested":true,"save_committed":false,"persistent_opened":false}

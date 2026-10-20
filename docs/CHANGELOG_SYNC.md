@@ -1,3 +1,13 @@
+## 2026-10-21 MAP11-PROD 제품 Main 맵 연결 / DEMO11-45 상자 재개
+
+| 항목 | 구현·근거 |
+|---|---|
+| 기준·선택 | main0138c5bb9 + MAP11 263498f6(6bcc483d 포함) 정상 merge. demo stage0 기본 새 MAP11, --map11=off 기존 경로 보존 |
+| 실제 경로 | 실제 World script identity 보존·map-only 위임→Start Marker/field→gate→arena. PC 완료 전 exit/상자 NOT_READY. 실제 provider/Marker 참조 공개, canonical 좌표/미니맵·스폰 혼합0. art 새 제작0 |
+| 상자 | 원본 stage0 장비3~5·악의+7, 기존 mkItem/journal/INV writer 재사용·새 save key0. 실제 PC 완료 부재를 가짜 신호로 대체0 |
+| 검증 | 최종 Main37/0·상자26/0·관련170/0 + contract map1case/0. 고정 physics600틱씩 평균5.433415/5.401905ms(headless/무전투, GPU120fps 주장0). 캡처/공용 줄 범위·proto 교정 원문은 [보고서](engine/orders/reports/map11-prod_REPORT.md) |
+| docs·제출 | docs/4.1 바인딩 계약·provider 후속·NPC_WORLD·45보고서·작업판 동기화. 신규 게임 텍스트/번역 수정0(CRLF 유지). 정상 훅·정확 경로 staging·자기 branch 일반push/remote/DONE 후 자기 WT 제거 |
+
 ## 2026-10-21 MAP11-11 — 필드·아레나 collider/LOS/flow provider
 
 - main0138c5bb + 인수된6bcc483d·3f9c87a4 정상merge. 승인 geometry 동일. 독립 runtime의 static collider/4지역/22anchor/field↔arena gate callback과 DEMO11-37·43 이름 계약은 [보고서 첫 표](4.1맵디자인+설정/MAP11_FIELD_PROVIDER_20261021.md).

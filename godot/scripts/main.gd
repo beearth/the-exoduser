@@ -65,6 +65,8 @@ var _native_source_elements: Variant = {"P": 0, "F": 1, "I": 2, "D": 3, "L": 4, 
 var _native_source_elements_owner_script: WeakRef = weakref(get_script())
 var _native_source_play_time_owner_script: WeakRef = weakref(get_script())
 
+var native_map11: Node
+var native_map11_chest: Node2D
 var world: Node2D
 var player: CharacterBody2D
 var hud: CanvasLayer
@@ -146,6 +148,7 @@ func _ready() -> void:
 	_register_inputs()
 	combat = JSON.parse_string(FileAccess.get_file_as_string("res://data/combat.json"))
 	world = WorldScript.new()
+	world.set_meta("native_map11_product", _native_map11_enabled())
 	world.name = "CH1CanonicalWorld"
 	world.process_mode = Node.PROCESS_MODE_PAUSABLE
 	add_child(world)
@@ -260,10 +263,10 @@ func _ready() -> void:
 	camera.position_smoothing_enabled = true
 	camera.position_smoothing_speed = 7.0
 	camera.process_callback = Camera2D.CAMERA2D_PROCESS_PHYSICS
-	camera.limit_left = 0
-	camera.limit_top = 0
-	camera.limit_right = 8000
-	camera.limit_bottom = 8000
+	camera.limit_left = -20000 if _native_map11_enabled() else 0
+	camera.limit_top = -20000 if _native_map11_enabled() else 0
+	camera.limit_right = 20000 if _native_map11_enabled() else 8000
+	camera.limit_bottom = 20000 if _native_map11_enabled() else 8000
 	add_child(camera)
 	camera.make_current()
 	camera.reset_smoothing()
@@ -277,6 +280,9 @@ func _ready() -> void:
 	hud.name = "HUD"
 	add_child(hud)
 	hud.bind(player, world)
+	if _native_map11_enabled():
+		var legacy_minimap: Node = hud.find_child("NativeMinimap",true,false)
+		if is_instance_valid(legacy_minimap): legacy_minimap.hide()
 	# P2-003a — 원본 조명·안개·비네트·색보정 오버레이 (월드 위·HUD 아래, 표시 전용)
 	var screen_lighting: CanvasLayer = preload("res://scripts/native_screen_lighting.gd").new()
 	screen_lighting.name = "NativeScreenLighting"
@@ -322,13 +328,14 @@ func _ready() -> void:
 	hud.bind_native_source_state(source_state) # P2-002a 원본 HUD 값 = state owner getter
 	# P3-002 initStage 소환굴 배치 — 원본 31655 `_regionInit(si)`가 "소환굴 확정 후" 지역 total을
 	# 계산하므로 지역 owner(P3-003) 구성보다 먼저 둔다(인트로 이전 순서도 유지).
-	preload("res://scripts/native_spawn_hole_system.gd").install_native_boot(self)
-	# P3-003: region-only owner, separate from input/regeneration/spawn writers.
-	var regions: Node=preload("res://scripts/native_regions.gd").new()
-	regions.name="NativeRegions"
-	add_child(regions)
-	if not regions.configure(self):
-		push_warning("Native regions not initialized; see P3-003 dependency report.")
+	if not _native_map11_enabled():
+		preload("res://scripts/native_spawn_hole_system.gd").install_native_boot(self)
+		# P3-003: region-only owner, separate from input/regeneration/spawn writers.
+		var regions: Node=preload("res://scripts/native_regions.gd").new()
+		regions.name="NativeRegions"
+		add_child(regions)
+		if not regions.configure(self):
+			push_warning("Native regions not initialized; see P3-003 dependency report.")
 	hud.pause_requested.connect(_toggle_pause)
 	hud.restart_requested.connect(_restart)
 	_build_native_character_selection_ui()
@@ -350,6 +357,20 @@ func _ready() -> void:
 		if perspective_result.get("ready") != true:
 			push_error("Native perspective mount rejected: " + str(perspective_result.get("reason")))
 	_record_event("native_factory_created", {"source": "canonical migration mkP / CH1-1", "simulation_hz": 60, "render_target_fps": 240, "initial_state": _play_state(), "version_manifest": get_native_content_version_manifest()})
+	if _native_map11_enabled():
+		native_map11 = preload("res://scripts/native_map11_product.gd").new()
+		native_map11.name = "Map11Product"
+		add_child(native_map11)
+		if not native_map11.configure(self):
+			push_error("MAP11 product provider binding rejected")
+			return
+	if is_instance_valid(native_map11):
+		native_map11_chest=preload("res://scripts/native_map11_chest.gd").new()
+		native_map11_chest.name="Map11Chest"
+		world.add_child(native_map11_chest)
+		if not native_map11_chest.configure(self):
+			push_error("MAP11 chest anchor binding rejected")
+			return
 	print("GODOT_FIRST_PLAYABLE_READY ", JSON.stringify({"runtime": Engine.get_version_info()["string"], "scene": "res://scenes/main.tscn", "viewport": get_viewport_rect().size, "player_spawn": player.position}))
 
 func mount_native_perspective_view(settings: Dictionary = {}) -> Dictionary:
@@ -460,6 +481,7 @@ func get_native_content_version_manifest() -> Dictionary:
 		"source_pin_does_not_prove_latest_content"]
 	if g_map_null != false:
 		gaps.append("source_G_map_null_or_unbound")
+	manifest["runtime_map"] = native_map11.provider().describe() if is_instance_valid(native_map11) and native_map11.current() else {"mode":"legacy"}
 	manifest["gaps"] = gaps
 	return manifest
 
@@ -3054,3 +3076,19 @@ func invalidate_native_runtime_refresh_legendary_cache(refresh: Object) -> bool:
 		return false
 	_source_l_eq_cache = null
 	return true
+
+# One map selection flag. Default is newly authored MAP11; legacy remains intact.
+func _native_map11_enabled() -> bool:
+	if _native_demo11_policy.get("demo")!=true or _native_demo11_policy.get("stage")!=0:return false
+	var enabled: bool=str(get_meta("native_map11","on"))!="off"
+	for arg in OS.get_cmdline_user_args():
+		if arg=="--map11=off":enabled=false
+		elif arg=="--map11=on":enabled=true
+	return enabled
+func read_native_map11_provider() -> Node:
+	return native_map11.provider() if is_instance_valid(native_map11) else null
+func request_native_map11_transition(route: String) -> Dictionary:
+	return native_map11.request_transition(route) if is_instance_valid(native_map11) else {"status":"NOT_READY"}
+
+func bind_native_map11_gate_owner(owner: Node) -> bool:
+	return is_instance_valid(native_map11) and native_map11.bind_gate_owner(owner)

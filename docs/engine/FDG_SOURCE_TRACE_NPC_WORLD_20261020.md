@@ -302,3 +302,7 @@ oracle은 각 구현 작업의 고정 원본에서 **재생성**한다. Mac의 `
 | `getNpcInteraction` | 0 | 0 |
 
 분모·문서 숫자는 Node/Godot 테스트 횟수와 합산하지 않는다. 검증 세부 결과와 최종 branch/SHA/정리 증거는 원로그의 DONE.txt·submission.json에서 확인한다.
+
+## 2026-10-21 MAP11-PROD / DEMO11-45 소비 연결
+
+Main의 새 MAP11 기본 선택과 실제 provider 참조로 45의 provider 대기는 해소했다. 보물상자는 실제 map11.arena.boss에 바인딩하고 기존 item factory·DEMO11-21 journal·State 악의/INV writer를 재사용한다. 부활 대기를 포함한 PC 최종 완료 admission은 NOT_READY/hidden이며 테스트 component fixture를 자연 플레이 PASS로 세지 않는다. 새 영속 개봉 flag·상인·지도 배치0. [45 재개 보고서](orders/reports/demo11-45_REPORT.md), [제품 맵 바인딩](../4.1맵디자인+설정/MAP11_PRODUCTION_BINDING_20261021.md).
