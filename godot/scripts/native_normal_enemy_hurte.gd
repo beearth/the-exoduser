@@ -62,8 +62,12 @@ static func resolve_basic_attack_element(main: Node) -> Dictionary:
 #   weapon(37617): {kbMult:1, poiseMult:1.5, noPoise:false, poiseHit:false, poiseSkill:false, _lessonAttack:'weapon'}
 #   kiSlash(19837): {poiseHit:true, kbMult:0.5, noImpact:true, _lessonAttack:'kiSlash', _lessonFullCharge:…, _kiFull:…}
 # hurtE 본문이 읽는 키만 효과를 갖고, 목록 밖 키는 가짜 구성 방지를 위해 정지한다.
+#   spikeTrap(37468)·DOT류: {dot:true, shieldHit:true, _lessonAttack:'spikeTrap'} —
+#   P2-005c 확장. isDot 분기(42121 revive 통과·42191 피격음 스킵·42332/42334 스턴/빙결
+#   ×1.5 스킵·42345 쉴드 (!dot‖shieldHit)·블루 텍스트 !dot·42387 피크 _quiet2·42472 kb
+#   스킵·42486 poise !dot)를 원본 행 그대로 반영.
 const SUPPORTED_OPT_KEYS: Array[String] = ["kbMult", "poiseMult", "noPoise", "poiseHit",
-	"poiseSkill", "noImpact", "_lessonAttack", "_lessonFullCharge", "_kiFull"]
+	"poiseSkill", "noImpact", "_lessonAttack", "_lessonFullCharge", "_kiFull", "dot", "shieldHit"]
 
 func execute(main: Node, world: Node2D, enemy: Node, base_damage: int, ang: float, atk_el: int, opts: Dictionary = {}) -> Dictionary:
 	_main = main
@@ -73,6 +77,8 @@ func execute(main: Node, world: Node2D, enemy: Node, base_damage: int, ang: floa
 			return _halt(42110, "hurte_opts_unsupported:" + str(opt_key))
 	# 42265~42266: kbM/psM — undefined면 1.0 (원문 기본값).
 	var kb_mult: float = float(opts["kbMult"]) if opts.has("kbMult") else 1.0
+	var is_dot: bool = opts.get("dot", false) == true          # 42118 isDot
+	var shield_hit_opt: bool = opts.get("shieldHit", false) == true
 	var poise_mult: float = float(opts["poiseMult"]) if opts.has("poiseMult") else 1.0
 	var poise_hit: bool = opts.get("poiseHit") == true
 	var ki_full: bool = opts.get("_kiFull") == true
@@ -130,7 +136,7 @@ func execute(main: Node, world: Node2D, enemy: Node, base_damage: int, ang: floa
 	if revive_iframes > 90.0:
 		if not _bookkeeping({"reviveIframes": 90.0}): return _result_now()
 		revive_iframes = 90.0
-	if revive_iframes > 0.0:
+	if revive_iframes > 0.0 and not is_dot: # 42121 — !isDot일 때만 감소·return(DOT 통과)
 		if not _bookkeeping({"reviveIframes": maxf(0.0, revive_iframes - 1.0)}): return _result_now()
 		_log(42121, "revive_iframes_return", {"left": maxf(0.0, revive_iframes - 1.0)})
 		return _finish(true, {"applied": false, "returned_at": 42121})
@@ -167,10 +173,11 @@ func execute(main: Node, world: Node2D, enemy: Node, base_damage: int, ang: floa
 				break
 	# ── 42191~42195: 몬스터 피격음 — 기존 이식 소비자(main._on_native_attack_enemy_audio)
 	#    가 enemy_damage(raw>0, source weapon) 수신으로 동일 분류/8틱 쿨다운/랜덤 폴백 수행.
-	enemy.report_native_normal_enemy_hurte_event("enemy_damage", {"id": enemy.data["id"],
-		"raw_amount": dmg, "amount": 0, "absorbed": 0.0, "eShield": fields["eShield"],
-		"hp": fields["hp"], "source": source_label, "phase": "hurtE_42191_hit_sfx"})
-	_log(42191, "hit_sfx_requested", {"raw_amount": dmg})
+	if not is_dot: # 42191 if(!isDot&&_hitSfxCd<=0)
+		enemy.report_native_normal_enemy_hurte_event("enemy_damage", {"id": enemy.data["id"],
+			"raw_amount": dmg, "amount": 0, "absorbed": 0.0, "eShield": fields["eShield"],
+			"hp": fields["hp"], "source": source_label, "phase": "hurtE_42191_hit_sfx"})
+		_log(42191, "hit_sfx_requested", {"raw_amount": dmg})
 	# ── 42197~42205: 감전 스택/감전 부여/저주 ──
 	if float(fields.get("_shockStk", 0.0)) > 0.0:
 		dmg = FORMULA.js_to_int32(float(dmg) * (1.0 + float(fields["_shockStk"]) * 0.05))
@@ -342,20 +349,20 @@ func execute(main: Node, world: Node2D, enemy: Node, base_damage: int, ang: floa
 		if float(ring) > 0.0:
 			return _halt(42328, "unported_branch_active:legendary_ring_elem") # G.playTime 필요
 	# ── 42336~42338: 스턴/빙결 보너스 ──
-	if float(fields.get("stunned", 0.0)) > 0.0:
+	if float(fields.get("stunned", 0.0)) > 0.0 and not is_dot: # 42332 &&!isDot
 		dmg = FORMULA.js_to_int32(float(dmg) * 1.5)
 		_log(42336, "stunned_bonus", {"dmg": dmg})
-	if _js_num(fields.get("_frozen")) > 0.0:
+	if _js_num(fields.get("_frozen")) > 0.0 and not is_dot: # 42334 &&!isDot
 		dmg = FORMULA.js_to_int32(float(dmg) * 1.5)
 	# ── 42345~42352: 에너지쉴드 흡수 ──
 	var shield: float = float(fields["eShield"])
 	var shield_max: float = float(fields["eShieldMax"])
 	var absorbed: float = 0.0
-	if shield_max > 0.0 and shield > 0.0:
+	if (not is_dot or shield_hit_opt) and shield_max > 0.0 and shield > 0.0: # 42345 (!isDot||shieldHit)
 		absorbed = minf(shield, float(dmg))
 		if not _apply_enemy_field(42347, "eShield", maxf(0.0, shield - float(dmg))): return _result_now()
 		dmg = maxi(0, dmg - int(absorbed))
-		if absorbed > 0.0:
+		if absorbed > 0.0 and not is_dot: # 42349 블루 텍스트는 !isDot만
 			_emit_text(enemy.global_position.x, enemy.global_position.y - 70.0,
 				str(int(absorbed)), "#66ddff", 45, 48, str(int(absorbed)))
 		if dmg == 0:
@@ -390,8 +397,9 @@ func execute(main: Node, world: Node2D, enemy: Node, base_damage: int, ang: floa
 				return _halt(42371, "unported_branch_active:" + on_hit)
 		# 42380 적 인식.
 		if not _apply_enemy_field(42380, "alerted", true): return _result_now()
-		# 42382 즉시반격 — enemy.gd st2 대응 필드는 _contact_ticks (기존 매핑 유지).
-		if not _apply_enemy_field(42382, "contact_clamp", 5.0): return _result_now()
+		# 42382 즉시반격 — !isDot&&!e.ib. enemy.gd st2 대응 필드는 _contact_ticks.
+		if not is_dot:
+			if not _apply_enemy_field(42382, "contact_clamp", 5.0): return _result_now()
 		# 42383 HP 쓰기 — 기존 owner.
 		var hp_write: Dictionary = enemy.apply_native_normal_enemy_hp_write({"field": "hp", "value": float(fields["hp"]) - float(dmg)})
 		if hp_write.get("applied") != true:
@@ -400,7 +408,7 @@ func execute(main: Node, world: Node2D, enemy: Node, base_damage: int, ang: floa
 		# 42384 _dpsDmg: HUD DPS 미이식.
 		# 42386~42390 G._dmgPeakShow.
 		var show: Variant = g.get("_dmgPeakShow")
-		if not show is Dictionary or float(dmg) > _js_num(show.get("dmg")):
+		if not is_dot and (not show is Dictionary or float(dmg) > _js_num(show.get("dmg"))): # 42387 _quiet2(dot 포함) 스킵
 			if not _g_writes(42388, [{"field": "_dmgPeakShow", "value": {"x": enemy.global_position.x, "y": enemy.global_position.y, "dmg": dmg, "crit": is_crit}}]):
 				return _result_now()
 		# 42399~42411 피/스플래시, 42415 화면 플래시, 42417~19 임팩트: P2-001b 이식 —
@@ -453,13 +461,14 @@ func execute(main: Node, world: Node2D, enemy: Node, base_damage: int, ang: floa
 	if float(club) > 0.0:
 		return _halt(42472, "unported_branch_active:_lClubKB")
 	# 근접 교전=시야 내 고정: e.kb += cos/sin×amt (뷰포트-밖 좌표이동 분기는 미도달·미이식).
-	enemy.add_native_knockback(Vector2(cos(ang), sin(ang)) * kb_amount)
-	_log(42476, "knockback", {"amount": kb_amount})
+	if not is_dot: # 42472 조건 &&!isDot
+		enemy.add_native_knockback(Vector2(cos(ang), sin(ang)) * kb_amount)
+		_log(42476, "knockback", {"amount": kb_amount})
 	# ── 42486~42498: 포이즈 — poiseHit 전용(kiSlash). amt는 쉴드 흡수 후 잔여 dmg ──
 	# (쉴드 전량 흡수 타는 amt=0 → 원문 _poiseHit amt<=0 가드로 포이즈 무변경.)
 	# isDot=false 고정, ib는 42124에서 정지 → 보스 _pImmune/저항 분기 비활성.
 	var staggered := false
-	if poise_hit:
+	if poise_hit and not is_dot: # 42486 !isDot && opts.poiseHit
 		var poise_amount: int = FORMULA.js_to_int32(float(dmg) * poise_mult)
 		var stagger_bns: Variant = _affix("staggerBns", 42489)
 		if stagger_bns == null: return _result_now()
