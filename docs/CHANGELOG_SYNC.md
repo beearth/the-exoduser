@@ -1,3 +1,12 @@
+## 2026-10-20 BC3-01 main 읽기 의존 부재 — BLOCKED
+
+| 항목 | 정적 확인·중단 근거 |
+|---|---|
+| 기준 / 지시 | fetch 최신main6d987cb8, main worktree에서시작. 최신사용자②에따라미병합CH2/BC2-02는읽기참조만,merge·복사·선행끝분기0 |
+| 필수 의존 | main Git object에native_ch2_boss_catalog.gd/bridge.gd없음. a3b5391c에만존재. CH1 getter24개에는필수공유9기술없고si4~9 combo조회도미지원 |
+| 판정 / 실행 | BC3-01 BLOCKED·미구현. 신규제품/테스트0,Godot/import/실저장/OS.execute0,실행단정0·가짜PASS/skip0. 공용·기존·원본·저장·R변경0 |
+| 해제 / 제출 | 통합총괄의필수읽기provider main인수후재배정필요. [BC3-01 보고서](engine/orders/reports/bc3-01_REPORT.md), 원로그 ~/exoduser-wt/_out/bc3-01/. 정상훅·자기branch push/remoteSHA/DONE후자기worktree제거 |
+
 ## 2026-10-20 QA-007 테스트 Windows 이식성
 
 | 항목 | 구현·검수 근거 |
