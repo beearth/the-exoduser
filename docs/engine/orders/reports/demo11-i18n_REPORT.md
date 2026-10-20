@@ -2,7 +2,9 @@
 
 **PARTIAL — main 범위 수정·검증, 미병합 화면은 목록만.** 기준은 fetch/ls-remote가 일치한 origin/main `0138c5bb9188d27cee10cb1a901d075092ddb88f`다. 미병합 화면/코드 merge0. 특히 설정50 `07c2dad4`, 인벤토리23b `0fd59ed6`, 종료38 `5ff66f32`가 main에 없으므로 설정 UI 클릭과 인벤토리·종료 캡처를 완료로 주장하지 않는다. 다른 화면 branch의 본문도 반입/실행하지 않았다. 브랜치 `codex/demo11-i18n-20261021`.
 
-전수 키·모든 발생 위치/행·영어·수정 전 번역 경로·영어 누락·등록/번호 상태는 **[문자열 표(CSV)](demo11-i18n_STRINGS.csv)** 521행에 기록했다. `scope=main`/동적 표시 경계 209행과 미병합 후보312행을 구분한다. ① `hardcoded_before=True`, ② `en_missing_before=True`, ③ `registry_before=missing/unnumbered`로 필터하면 요구한 세 목록을 볼 수 있다. 미병합의 `UNVERIFIED`/`candidate`는 실행으로 판정하지 않은 후보이며 실제 결함이라고 단정하지 않는다. 각 branch SHA·파일·후보 수는 [manifest](demo11-i18n_MANIFEST.json)에 고정했다.
+전수 KO 키·모든 발생 위치/행·영어·수정 전 번역 경로·영어 누락·등록/번호 상태는 **[문자열 표(CSV)](demo11-i18n_STRINGS.csv)** 521행에 기록했다. `scope=main`/동적 표시 경계 209행과 미병합 후보312행을 구분한다. ① `hardcoded_before=True`, ② `en_missing_before=True`, ③ `registry_before=missing/unnumbered`로 필터하면 요구한 세 목록을 볼 수 있다. 미병합의 `UNVERIFIED`/`candidate`는 실행으로 판정하지 않은 후보이며 실제 결함이라고 단정하지 않는다. 각 branch SHA·파일·후보 수는 [manifest](demo11-i18n_MANIFEST.json)에 고정했다.
+
+집계는 KO 표시 키와 그 EN 쌍을 기준으로 한다. `EXODUSER`/`IRON COVENANT` 고유명, HP/MP/SP/Lv.·키 코드·숫자/시간/기호는 언어 중립 표기로 보존한다. 사용자 이름·producer가 넘긴 동적 값, 내부 reason/소스 경로/snapshot 진단 문자열은 고정 UI 키와 구분하며 임의 번역/생성을 하지 않는다. 영어 전용 기술 표기를 새 한국어 문장으로 바꾸는 작업은 하지 않았다.
 
 | 화면 | main 판정·처리 / 미병합 참조 |
 |---|---|
