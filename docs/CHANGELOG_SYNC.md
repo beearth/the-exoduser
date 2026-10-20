@@ -1,3 +1,15 @@
+## 2026-10-20 LOOK-001 룩 4안 비교 자료 준비
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 기준·보존 | 재부팅 WIP 백업 후 origin/main284d7faf까지 fast-forward. 공용6파일·기존 테스트·project.godot·main.tscn·game.html·원본 자산·R 파일 변경0. 기본 A, 별도 opt-in 실행기만 추가 |
+| 후보·토글 | run-look-001.command --mode A/B/C/D(기본A). B는 결정적 파생normal·2D light/occluder·fog/grade; C는 Metal Forward+ shadow/volume/SSAO/glow; D는 같은3D에서 Compatibility 지원분. 상세 상수·파일·토글은 [LOOK-001 보고서](engine/orders/reports/look-001_REPORT.md) |
+| 파생·바이너리 | alpha 가중luma/Gaussian sigma2/Sobel strength2/OpenGL normal, NumPy1.26.4/Pillow10.4.0. 파생19개 원본/출력/도구 hash확인·결정성10검사 통과. 파생PNG는godot/assets/derived/만, AI0·바이너리commit0 |
+| 실제 캡처·FPS | 내부viewport1920×1080 각4장·1x crop12·2×2 sheet3840×2288, seed20261020·shader TIME2초·simulation0. 공통120FPS cap·30초; 평균/최저1초: A120.041/119.872, B119.964/117.558, C120.019/119.728, D120.005/119.398. 정지장면이며 전투 성능 아님 |
+| 회귀·BLOCKED | contracts5군/실패0, HUD36/0·조명12/0·starter148/0·sprite29/0·clock30/0. p1002g220중1실패(halt6), LOOK 경로 없는 기준main도같은220/1·halt6·그룹동일. 신규회귀증가0 관측이나 기존실패를PASS로승격하지 않음. 공용수정0·회귀0조건BLOCKED |
+| 경고·한계 | ERROR0, Camera2D경고 유지; HUD ObjectDB2·p1002g ObjectDB4 잔존경고. 3D는 기존스프라이트투영/평탄지형·펫/custom draw 일부누락·그림자중첩 가능. 이전A와146pixel차이는별도보존·pixel동일PASS아님 |
+| 실행·산출 | LOOK 동시Godot1, 매실행전전역count확인·2이상30초대기. 신규격리EXODUSER-look-001-Isolated-20261020·회귀각상수·종료override0byte. 원로그~/exoduser-wt/_out/look-001/, DONE.txt에branch/SHA/수치. 상태=비교 자료 준비, 채택미결정 |
+
 ## 2026-10-20 QA-002 테스트 결정성·종료·조명 하니스
 
 | 항목 | 변경·검수 근거 |
