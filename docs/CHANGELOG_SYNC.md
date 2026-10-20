@@ -1,5 +1,40 @@
 ## 2026-10-20 SND-08 독립 원문 믹스·합성·레시피 모델
 
+## 2026-10-20 NW-03 MAP_OBJS action의 독립 명령 계획
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준 / 의존 | 최신main8524bbbb, NW-02 미병합으로2cc27d09 끝에서 분기. 신규 producer/test/oracle·자기UID2·보고서만. 공용6·다른 담당·기존 제품/테스트·저장·원본·R 변경0 |
+| 계약 / 원본 | NW01 첫 대상 query 재사용. G32829–32853 lore/breakable/altar/bonfire의 쓰기/FX 순서, mat U1·선택 buff .15/.20/.15·리필4필드. 실제 난수/HP/State/입력 연결0 |
+| 의존 경계 | sample/mats/addPotion bool 반환은 명시 주입. 원문 HP addPotion은 악의+1/true 별도 관측, 본문 복제0. 의존 부족은 부분 명령 없는 NR, actual writer/epoch/owner 연결 BLOCKED |
+| 검수 | 원문VM141상황+native 계약98상황, 신규3060/0. NW01 2304/0·NW02 1851/0·contracts5그룹/0·물약계산318/0. 결함주입5종에서27/204/36/24/2실패 검출 |
+| 선재 종료 문제 / 실패 기록 | p2001c 45/0이나 MP3/PlaybackMP3 각1 누수(ObjectDB1). 신규 파일 제외 부모 기준도 동일, 종료 깨끗함 PASS 아님. 초기 Node 발췌/하니스 비교 오류 로그 보존, 검사 약화0 |
+| 격리 / 제출 | Godot15회 매launch count1, count2시30초 대기2회·파일상수 userdir·override finally0byte. AppSupport68파일 보존. [NW-03 보고서](engine/orders/reports/nw-03_REPORT.md), 원로그 `~/exoduser-wt/_out/nw-03/`. push·원격SHA·DONE 후 자기worktree 제거 |
+
+## 2026-10-20 NW-02 개인 포탈 순수 상태전이 proposal
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준 / 의존 | 최신main e556b617, 선행 NW-01 미병합으로 d9865e4c 끝에서 분기. 신규 producer/test/oracle·자기UID2·보고서만. 공용6·다른 담당·기존 제품/테스트·저장·원본·R 파일 변경0 |
+| 계약 | G18309–18322 설치/사용,30160–30161·31534–31535 reset prefix. strict200/88·첫 배열순·set/append·좌표/속도/cam/FX 순서. 명령만 반환, Main·State·실제 이동/입력 연결0 |
+| 원본 / 신규 검수 | 최신main game 전체/발췌hash 고정, 실제 원문VM68상황+native 계약107상황. 최종1851/0(exit0). 경계2종/역순/vx/zone guard 결함주입에서 각각12/9/15/48/11실패 검출 |
+| 회귀 / 실패 기록 | NW01 2304/0·contracts5그룹/0·regions43/0. 최종 ERROR/ObjectDB/resource0, region 기존 Camera2D WARNING1. 최초 `_set` 상속 충돌 컴파일 실패 원문 보존 후 함수명 수정, 가짜 PASS/검사 약화0 |
+| 격리 / 제한 | Godot12회 매run pgrep count1, 지정/기존상수 userdir·override finally0byte. AppSupport 기존68파일 백업·변경0. 실제 제품 포탈/GUI/PC 동등성 미검증, NW03 미착수 |
+| 상세 / 제출 | [NW-02 보고서](engine/orders/reports/nw-02_REPORT.md), 원로그 `~/exoduser-wt/_out/nw-02/`. 정상 훅·자기branch push/원격SHA/DONE 뒤 자기worktree 제거 |
+
+## 2026-10-20 NW-01 MAP_OBJS 첫 상호작용 대상 읽기 질의
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준 / 의존 | 최신main e556b617, 추적 지시서 미병합으로 선행5e8cbd23 끝에서 분기. 새 producer/test/oracle·자기UID2와 보고서만. 공용6·기존 제품/테스트·다른 담당·저장·원본·R 파일 변경0 |
+| 계약 | G32829–32853의 첫 배열순: bonfire/lore/altar strict60, breakable strict50. caller bool gate·검증/NR 순서·6키/정수index·fresh provenance/connected=false. 입력/상태/RNG/씬/IO 쓰기0 |
+| 원본 검수 | 재현용 `tools/nw01_world_interaction_oracle.cjs` 포함. G 전체/발췌hash·고유마커·distance/gate 검증, 실제 원문VM104상황+native 계약94상황. 최종2304/0(exit0), strict포함 경계/역순 오류는 각각16/72실패 검출 |
+| 회귀 / 초기 실패 | contracts5그룹/실패0·regions43/0, ERROR/ObjectDB/resource0. region Camera2D WARNING1 보존. 첫2200/138은 JSON float index 비교 하니스이며 정수·범위104단정 추가 후 수정, 원문 로그 보존 |
+| 격리 / 범위 | Godot 매run 전 pgrep 2이상이면30초 대기, 신규 지정 userdir/기존 파일상수·override finally0byte. 실제 NPC/포탈/상점/State 연결 없음, 다음 단위 미착수 |
+| 상세 / 제출 | [NW-01 보고서](engine/orders/reports/nw-01_REPORT.md), 원로그 `~/exoduser-wt/_out/nw-01/`. 정상 훅·자기branch push/원격SHA/DONE 뒤 자기worktree 제거 |
+
+## 2026-10-20 TRACE-NPC-WORLD NPC·상점·월드 상호작용 원본 추적
+
 ## 2026-10-20 SV-SAVE-PRIMITIVE 격리 메모리 primitive 판단·7번 단위
 
 ## 2026-10-20 CH2-02 si4 독립 World·실효 자원·충돌 소비
