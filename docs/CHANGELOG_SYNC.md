@@ -54434,3 +54434,9 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 - 실행별 증거는 분리한다: V1 17case77check true; V2 weak-expiry 준비조건 실패; 별도 current Script 제거 2case34check true + draw SCRIPT ERROR2회; draw 격리 후속 2case34check true·양로그 오류/경고/누수진단0. 이를 합산 PASS나 전체 V2·실게임 draw·자연GC 증명으로 표시하지 않는다.
 - V1→V2 직전 fresh currentWORK savedPRE 누락을 보존하며 새 사본을 소급 PRE로 삼지 않는다. 최초 커밋은 2026-10-17 15:50:14.573049~796774 UTC에 문서 동기화 훅으로 exit1이었다. 이 필수 변경로그 추가는 그 실패의 수리이며 과거 성공으로 소급하지 않는다.
 - [HP owner 계약·실행별 근거](engine/FDG_NATIVE_NORMAL_ENEMY_FIELD_OWNER_20261017.md) · [단계별 현황](engine/FDG_GODOT_PORT_STATUS.md). 별도 WIP 보존이며 main/R/실행판 갱신·P1-002 완료가 아니다.
+
+# 2026-10-20 P2-006a PC 드랍·줍기 부분 이식
+
+- `native_world_drops.gd` 신규 어댑터와 main 시작 hook 6줄, state 런타임 드랍 식별·가방 반입 연결. 스킨·고유 누끼·ADD 빔·R 프레스/9틱 홀드·가득 참·원본 SFX를 이식했다. 게임 설계 수치·Q/E·레슨·세이브 형식은 변경하지 않았다.
+- 원본 에셋 189개 SHA-256 동일. 17+18+39=74 assertions/0 failures, 실제 창의 자연 처치 후 일반 드랍 viewport 1920×1080 보존. 수동 R 입력/OS 창 캡처 권한은 거부돼 미확인이다.
+- 유골 도감/첫 유골함·full applyStats·인벤 창/정렬/영구저장은 미이식. 유물·소켓석은 원본 즉시 지급 그대로이며 이전 인수 보고서의 ‘바닥 연결 필요’ 추정은 정정한다. 상세: `docs/engine/orders/reports/P2-006a_REPORT.md`.
