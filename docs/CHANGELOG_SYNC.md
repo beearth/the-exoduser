@@ -1,3 +1,7 @@
+## 2026-10-21 DEMO11-etype-e 자연 kernel 등록 전제 BLOCKED
+
+- main0138c5bb에43/9b763da9·EL/654845e4·37/05f41cc7 정상 merge, 양쪽 기능 보존. type3 PC hurtE owner·type7 실제 M29·29 attack/death/gate 경계 미준비를 etype별 보고. PC factory 중첩 건너뜀, own 제품0줄·자연 등록0. 거절 계약 검증과 3종 벤치 미실행 근거는 [보고서](engine/orders/reports/demo11-etype-e_REPORT.md). 8.0/8.2 갱신, 가짜 READY/성능 PASS0.
+
 ## 2026-10-21 DEMO11-43 최신 main 충돌 해소 후속
 
 - 같은 브랜치 c5551464에 main0138c5bb 정상 merge. Main의 PC runtime-stat refresh와 기존 adapter 공개 진입점을 모두 보존, 추가 제품 변경0. 번역 목록은 main byte 동일·CRLF 유지. 관련 재검증 및 원격 일치는 [보고서](engine/orders/reports/demo11-43_REPORT.md) 후속 절과 _out/demo11-43/merge-*에 기록한다.
