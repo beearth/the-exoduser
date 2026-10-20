@@ -1,3 +1,9 @@
+## 2026-10-21 DEMO11-21 성능 수정 main 후속 통합
+
+- 같은 브랜치에 main8dbbf2b0(aa1eaea5a 포함)을 정상 merge11a617f5. rebase·force0.
+- 드랍·State·production source·신규 테스트 목록 생성 API0, PC 캐시3곳 확인. 자체 제품 변경0행, 로컬 성능 실측 주장0.
+- 신규24/0·관련 기존36/0 각각1회, import 포함5회 ERROR/ObjectDB/resource0. [후속 보고](engine/orders/reports/demo11-21_REPORT.md), followup-* 로그·기존 DONE에 새 SHA 추가.
+
 ## 2026-10-21 DEMO11-21 기존 드랍 제품 자연 INV 연결
 
 | 항목 | 구현·검수 근거 |

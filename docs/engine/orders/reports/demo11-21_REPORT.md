@@ -41,3 +41,11 @@
 Godot 4.7.2 headless --verbose 총 7회(종료 실패2+정상5). 새 테스트는 EXODUSER-demo11-21-Isolated-20261021, 기존 world/pickup은 EXODUSER-P2006A-Isolated-20261020, render는 EXODUSER-P2006B-Render-Isolated-20261020을 그대로 사용했다. 지정 pgrep으로 실행 직전 count<2를 확인했고 2 이상일 때 30초씩 9회 대기했다. override는 매 run 설정 후 finally에서 0byte로 비웠다. 출력은 외부 파일에 리다이렉트하고 RESULT/FAIL/ERROR만 좁혀 확인했다. 관련 테스트 외의 전투·전체 회귀를 추가하지 않았다.
 
 원로그·제품 회수/merge·공용 행 범위·보호 파일/에셋 byte·R/실제 user dir 검증은 ~/exoduser-wt/_out/demo11-21/에 보관한다. 정상 훅·정확한 경로 staging·자기 브랜치 push·원격 SHA 일치·DONE 후 자기 worktree를 제거한다. 이 브랜치가 실제 원격 main에 반영됐다고 주장하지 않는다. 최종 SHA·원격·정리는 submission.json/DONE.txt/cleanup-verification.json에 기록한다.
+
+## 2026-10-21 성능 수정 후속 통합
+
+기존 제출 2ef59364 뒤 origin/main **8dbbf2b0e699c36a93ca5cf41a2f3408be6da2c4**(aa1eaea5a 포함)을 같은 브랜치로 정상 merge했다. merge SHA는 **11a617f5c22981b3ccd95ba67289c2409a86a72c**다. CHANGELOG 충돌은 양쪽 추가 절을 보존했다. rebase·force0, 자체 제품 코드 변경0행이다. PC Main/회복/QE 변경은 main 이력으로 반입했다.
+
+GODOT_METHOD_LIST_TICK_COST_20261021.md를 읽고 드랍 _physics_process→감지/줍기, State journal/INV·현재 소유권 검증, production drop source와 신규 테스트를 점검했다. 네 파일에 get_method_list/get_property_list/get_signal_list 호출은 **0개**다. 이 단위의 Main 설치는 _ready에만 있다. PC의 QE/회복 3곳은 has_method 검증을 유지하며 script/class+method별 정적 _METHOD_ARITY_CACHE miss 때만 목록을 생성한다. 추가 캐시 수정은 필요하지 않았다. 정적 검토와 기능 회귀만 수행했으며 로컬 FPS/성능 개선 실측은 미확인이다. 성능 검증이 필요할 때는 물리 N틱 고정 벽시계 벤치를 사용한다.
+
+관련 스위트 각각 **1회**: followup-new **24/0**, world **18/0**, pickup **17/0**, render **1/0**(기존 합계36/0). 검사·기대값·격리 이름 무변경. import 포함5회 모두 --verbose exit0·ERROR0·ObjectDB 누수0·resource 잔류0, override 종료0byte다. import 전 Godot2개로 30초씩2회 대기했으며 매 실행 gate를 통과했다. Performance 지표 사용0. 외부 followup-* 로그와 followup-results.json에 보존하고 기존 실패 로그는 유지했다. 최종 새 SHA는 기존 DONE.txt에 추가한다.
