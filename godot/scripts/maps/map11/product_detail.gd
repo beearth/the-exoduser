@@ -15,8 +15,8 @@ func configure(scene: Node2D,main: Node) -> void:
  _world.child_entered_tree.connect(_actor_entered)
  # Authored islands beside travel/combat voids, never uniform field scatter.
  var patches=[
-  [0,Vector2(-1320,-2350),350.0,-.28,.88],
-  [1,Vector2(700,-2750),320.0,.42,.82],
+  [0,Vector2(-1420,-2600),350.0,-.28,1.05],
+  [1,Vector2(-1250,-2450),320.0,.42,1.0],
   [2,Vector2(-2730,-900),375.0,-.45,.90],
   [0,Vector2(-3410,-1400),335.0,.68,.84],
   [1,Vector2(1300,2100),310.0,-.62,.80],
@@ -35,7 +35,7 @@ func configure(scene: Node2D,main: Node) -> void:
   sprite.texture=large_textures[row[0]];sprite.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
   sprite.position=row[1];sprite.rotation=row[3];sprite.flip_h=i%2==1
   sprite.scale=Vector2.ONE*row[2]/sprite.texture.get_width()
-  sprite.modulate=Color(row[4],row[4]*.94,row[4]*.92,.72)
+  sprite.modulate=Color(row[4],row[4]*.98,row[4]*.96,.96)
   sprite.z_index=-2986;scene.field_view.add_child(sprite)
   clusters.append(row[1])
  var rng:=RandomNumberGenerator.new();rng.seed=11182026
@@ -53,6 +53,7 @@ func configure(scene: Node2D,main: Node) -> void:
    if at.y< -3250 and absf(at.x)<540:continue
    var width: float=rng.randf_range(380,650) if kind==0 else (rng.randf_range(150,340) if kind==1 else rng.randf_range(24,85))
    _stamp(scene.field_view, textures[kind],at,width,rng,kind)
+ _hell_props(scene)
  # Arena R1700 remains untouched; all new stamps belong to field.
  set_process(false);set_physics_process(false)
 func _actor_entered(actor: Node) -> void:
@@ -74,3 +75,41 @@ func _stamp(parent: Node2D,texture_: Texture2D,at: Vector2,width: float,rng: Ran
  sprite.modulate=Color(tone,tone*.88,tone*.82,.48 if kind==0 else (.27 if kind==1 else .65))
  if kind==0:sprite.material=root_material
  sprite.z_index=-2985;parent.add_child(sprite);decorated+=1
+
+
+# Static feet use the same y/4 depth contract as Main/player and enemies.
+# No polling, actor writers, physics/LOS changes or texture loads after setup.
+var hell_props: Array[Node2D]=[]
+const HELL_TEXTURES=[preload("res://assets/map/map11/props/hell_skull_pyramid.png"),preload("res://assets/map/map11/props/hell_impaled_corpse.png"),preload("res://assets/map/map11/props/hell_spike_pit.png")]
+const HELL_ROWS=[
+ [0,Vector2(-680,-2570),185.0,false],
+ [0,Vector2(-3010,-1030),166.0,true],
+ [0,Vector2(1570,-1750),175.0,false],
+ [1,Vector2(-3540,-1250),182.0,false],
+ [1,Vector2(-3350,-1390),158.0,true],
+ [1,Vector2(2420,80),172.0,true],
+ [1,Vector2(2520,-60),164.0,false],
+ [2,Vector2(-480,-3770),184.0,true]]
+func _hell_props(scene: Node2D) -> void:
+ var contact: Texture2D=scene.lighting_look._contact_texture
+ for i in range(HELL_ROWS.size()):
+  var row: Array=HELL_ROWS[i]
+  var foot: Vector2=row[1]
+  var texture_: Texture2D=HELL_TEXTURES[row[0]]
+  var height_: float=row[2]
+  var size_: Vector2=texture_.get_size()
+  var prop:=Node2D.new();prop.name="HellProp%02d"%i;prop.position=foot
+  # Absolute depth avoids inherited field/background layer offsets.
+  prop.z_as_relative=false;prop.z_index=clampi(int(foot.y/4.0),-2000,4000)
+  scene.field_view.add_child(prop)
+  var sprite:=Sprite2D.new();sprite.name="Silhouette";sprite.texture=texture_
+  sprite.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
+  sprite.centered=false;sprite.offset=Vector2(-size_.x*.5,-size_.y*.94)
+  sprite.scale=Vector2.ONE*height_/size_.y;sprite.flip_h=row[3]
+  prop.add_child(sprite)
+  # Ground-plane AO cannot paint over another actor when it crosses the foot.
+  var shadow:=Sprite2D.new();shadow.name="HellFootAO%02d"%i;shadow.texture=contact
+  shadow.position=foot+Vector2(0,3);shadow.scale=Vector2(height_*.64,height_*.13)/128.0
+  shadow.modulate=Color(0,0,0,.64);shadow.z_index=-2987
+  shadow.material=scene.lighting_look._unlit;scene.field_view.add_child(shadow)
+  hell_props.append(prop)

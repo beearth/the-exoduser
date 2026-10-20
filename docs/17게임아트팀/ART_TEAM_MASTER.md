@@ -261,7 +261,7 @@
 MagicLight 마지막 조회 59,540 (2026-10-01, emg1 2차 후). 이번 마감 구간 ART 사용: cin_remember 200 + emg1 200×2 = 600. 다른 세션 사용분이 섞일 수 있음.
 
 
-## MAP11-19 현황표 — 2026-10-21
+## MAP11-19 현황표 — 2026-10-21 (MAP11-20 이전 가공 이력)
 
 | 에셋 | 출처 / 생성일 | 원화 검수 | 런타임 인수 |
 |---|---|---|---|
@@ -272,3 +272,17 @@ MagicLight 마지막 조회 59,540 (2026-10-01, emg1 2차 후). 이번 마감 �
 사용 경로 `godot/assets/map/map11/patches/`; 배치/수치/런타임 판정은 MAP11_NEW_MAP_LOGIC_PLAN_20261021.md §16. `patch_flesh_mound_REJECT.png` 미사용. 원본 R은 변경하지 않았고 원화 PASS와 전체 게임화면 PASS는 구분한다.
 
 MAP11-19 런타임 최종 판정 **RETOUCH**: 원화의 큰 형태는 읽히나 암부 재질·일부 반복 인접/혈흔 실루엣 추가 보정 필요. 단독 p95 field7.004/arena6.780ms, 전체 시각 PASS 아님.
+
+
+## MAP11-20 현황표 — 2026-10-21
+
+| 에셋 | 출처 / 생성일 | 원화 검수 | 현행 런타임 가공·배치 |
+|---|---|---|---|
+| hell_skull_pyramid.png | MagicLight Seedream 5.0 Pro / 2026-10-21 | 맥북총괄 PASS / 1920² 녹색배경 | 색거리key·spill제거·main island·bbox·꼭대기구멍투명, RGBA1024×1003+mip / 3개 높이166~185 |
+| hell_impaled_corpse.png | MagicLight Seedream 5.0 Pro / 2026-10-21 | 맥북총괄 PASS / 1920² 녹색배경 | 작은분리피방울/점제거·key·spill·bbox·중간톤, RGBA549×1024+mip / 4개 높이158~182·양측2개씩 |
+| hell_spike_pit.png | MagicLight Seedream 5.0 Pro / 2026-10-21 | 맥북총괄 PASS / 1920² 녹색배경 | key·spill·bbox·중간톤, RGBA1024×891+mip / 접근로왼쪽1개 높이184 |
+| patch_bone_pile.png (보정) | 위MAP11-19 승인원본 재사용 | 원화PASS / 기존런타임암부실패 | RGB×.72폐기→gamma.48×1.42上限.94·뼈색(1,.90,.68). alpha.96·index1이동, 4개·원해상도유지 |
+| patch_bloodpool_roots.png (보정) | 위MAP11-19 승인원본 재사용 | 원화PASS | gamma.57×1.5上限.94·(1,.76,.62) 찬색억제, alpha.96·index0이동, 4개 |
+| patch_cracked_flesh_slab.png (보정) | 위MAP11-19 승인원본 재사용 | 원화PASS | gamma.64×1.4上限.94·(1,.84,.72), alpha.96, 4개 |
+
+소품 `godot/assets/map/map11/props/`, 바닥 `godot/assets/map/map11/patches/`. SHA/bbox/재현도구·크기·전체좌표·Y/4정렬·발치AO는 설계 **§17**. 신규생성0/REJECT0/PC전투코어0. 원화PASS와 런타임인수는 구분한다. 최종 **VISUAL VERDICT: RETOUCH**, 필드p95 **10.598ms FAIL** / 아레나7.168ms PASS(단독1회). 3뷰1600×900 전후/1x 및가림2뷰는 `_out/MAP11-20/captures/`. 전체품질완료·인수PASS 아님.

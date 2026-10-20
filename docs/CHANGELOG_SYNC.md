@@ -55542,3 +55542,10 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 - 기준2e735e1d / MAP11-17 채택 조명 유지. 사용자 제공 MagicLight Seedream 5.0 Pro 3장을 keyed RGBA+mipmap으로 가공. REJECT/16/16b/17b 미사용.
 - field12개 폭310~375, 기존 소형 군락 축소·재배치, arena/충돌/전투 변경0. 설계 §16·아트 현황표 동기화.
 - 동일3뷰/1x·단독1회 성능 결과와 visual 판정은 설계 §16 및 _out/MAP11-19/DONE.txt. main push/배포0.
+
+
+## 2026-10-21 MAP11-20 지옥 세로소품·바닥패치 가시성
+
+- 기준319d1686. MagicLight Seedream 5.0 Pro 승인3장 key/despill/main island/bbox/mipmap, skull3·corpse4·spikepit1 setup배치·배우Y/4깊이·ground AO. 폐기/REJECT반입0.
+- 기존patch12 중간톤·뼈색/혈흔대비복원, alpha.96·중심2개이동/소형66유지. 아레나R1700·전투/저장/geometry불변. 설계 §17·아트현황에전체수치/원본SHA/재현도구기록.
+- 동일3뷰1600×900 before/after+1x·가림2뷰. 최종68checks/1FAIL: fieldp95 **10.598ms>8.33 FAIL**, arena7.168ms PASS. 단독벤치1회·다른Godot0·추가재측정0. **VISUAL VERDICT RETOUCH**, 인수완료아님. 증거/SHA `_out/MAP11-20/DONE.txt`. 정상hook/자기branch push만, main배포0.

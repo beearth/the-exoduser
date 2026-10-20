@@ -1,0 +1,99 @@
+{
+  "provider": "MagicLight",
+  "model": "Seedream 5.0 Pro",
+  "source_date": "2026-10-21",
+  "source_dimensions": [
+    1920,
+    1920
+  ],
+  "source_review": "user-supplied / Mac director PASS",
+  "sources": {
+    "hell_skull_pyramid": {
+      "source_sha256": "4102a4f95a12265464a18fda9596ddf5de5861aefa9be053c10fcfdfdb52c48c",
+      "bbox": [
+        162,
+        201,
+        1751,
+        1758
+      ],
+      "size": [
+        1024,
+        1003
+      ],
+      "source_components": 104,
+      "retained_components": 1
+    },
+    "hell_impaled_corpse": {
+      "source_sha256": "098d7ec7c8e56327ea519d533d290592fe7657d626f371bbaedb71f7ca14a08f",
+      "bbox": [
+        548,
+        132,
+        1417,
+        1753
+      ],
+      "size": [
+        549,
+        1024
+      ],
+      "source_components": 427,
+      "retained_components": 1
+    },
+    "hell_spike_pit": {
+      "source_sha256": "c886733d0084a69c08ffe698178092bc5acf44280a5284bfc2a1233421a4f6f2",
+      "bbox": [
+        189,
+        279,
+        1710,
+        1603
+      ],
+      "size": [
+        1024,
+        891
+      ],
+      "source_components": 19,
+      "retained_components": 1
+    },
+    "patch_bloodpool_roots": {
+      "bbox": [
+        159,
+        151,
+        1766,
+        1803
+      ],
+      "size": [
+        996,
+        1024
+      ],
+      "source_sha256": "fe6c47ada456d77e05d53b645cf60f7e1840a6b3d3ca6c1294e5da4fee27f057"
+    },
+    "patch_bone_pile": {
+      "bbox": [
+        188,
+        250,
+        1733,
+        1693
+      ],
+      "size": [
+        1024,
+        956
+      ],
+      "source_sha256": "104cef5eb113f7ee9bf453b49e929134e83487f7e25e7dfc2bf5721e0810af13"
+    },
+    "patch_cracked_flesh_slab": {
+      "bbox": [
+        245,
+        233,
+        1699,
+        1706
+      ],
+      "size": [
+        1011,
+        1024
+      ],
+      "source_sha256": "871081c21ddc763ef7fdd1467d2bae8679d928228385239119544c128ed13d1c"
+    }
+  },
+  "pipeline": "godot/tools/map11_20_key_assets.py",
+  "visual_verdict": "RETOUCH",
+  "performance_gate": "FAIL: field p95 10.598ms; arena 7.168ms; single isolated run"
+}

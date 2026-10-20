@@ -367,7 +367,7 @@ Tissue 2등은 setup에서 FRONT row의 가장 가까운 foot를 선택(목표 W
 | NEXT PASS | 사용자 눈 인수 후 남은 암부/낮은 소품의 접합·밀집전투 가독성. 후광·새생성·반려 텍스처로 대체0 |
 
 
-## 16. MAP11-19 — 큰 바닥 패치 (2026-10-21)
+## 16. MAP11-19 — 큰 바닥 패치 (2026-10-21, MAP11-20 이전 이력)
 
 이번 명시 지시가 과거 같은 번호 배정보다 우선한다. 기준 `2e735e1d34e9dfe9f70dedc6671cb38eb911b22b` (MAP11-18, 채택 MAP11-17 ff59c3c7 조명). MAP11-16/16b/17b·REJECT 반입 없음. §15의 130개/9군락/발치 표는 이전 이력이며 아래 계약으로 대체한다. actor rim/숲/조명/geometry/전투 코어는 유지한다.
 
@@ -420,3 +420,83 @@ setup-only Sprite2D 12개, z−2986(기존 소형−2985·캐릭터/적 아래),
 | NEXT PASS | 사용자 검토 대상으로 제출. 암부 중간톤/관문측 유사형 인접을 더 풀 필요. 이번단위 뒤 새 작업 자동착수0 |
 
 증거: `~/exoduser-wt/_out/MAP11-19/captures/`, 최종 verification.json·final-verification.log. 성능 개선율/전플랫폼120fps를 주장하지 않는다.
+
+
+## 17. MAP11-20 — 지옥 세로 소품·바닥 중간톤 복원 (2026-10-21)
+
+기준 `319d16862de3454c6e88830b084a22ec2b779472` / `codex/map11-19-20261021`, 그 아래 MAP11-18 `2e735e1d`와 MAP11-17 `ff59c3c7` 조명만 계승한다. MAP11-16/16b/17b 및 `*_REJECT.png` 반입0. 사용자 방향은 **화면에서 형태가 바로 읽히는 뼈무더기 등 지옥 소품**이다. 비교 작품 자산 복제0. §15/16은 이전 수치 이력이며 아래 변경분이 우선한다. **VISUAL VERDICT: RETOUCH / 성능 gate FAIL — 인수 완료 아님.**
+
+### 17.1 출처·키잉·명도 계약
+
+입력은 사용자 제공 `R/outputs/map11-art-proof-20261021/`의 승인6장(기존 패치3+신규소품3). MagicLight **Seedream 5.0 Pro / 2026-10-21 / 1920² / 순녹색 배경 / 맥북총괄 원화 PASS**. 이번 추가 생성·결제0. 원본은 읽기만 한다. 재현 도구 `godot/tools/map11_20_key_assets.py`(Pillow/NumPy/SciPy)는 저장소 루트에서 source 디렉터리와 `--report` 경로를 받아 실행한다. 가공/원본SHA256·bbox는 `godot/assets/map/map11/props/source_manifest.json`.
+
+| id | 현행 처리 / 적용 |
+|---|---|
+| KEY | 정규화RGB, c=G−max(R,B), d=distance(RGB,(0,1,0)), alpha=clamp((.095−c)/.065,0,1)×clamp((d−.35)/.25,0,1). alpha>.5 최대 연결 island만 보존(소품 dilation2px / 패치3px). 원화 그림자·녹색 잔여를 광범위 불투명 rectangle로 남기지 않음 |
+| SPILL / BBOX | G=min(G,max(R,B)×.98), alpha<.002의RGBA=0; 유효alpha bbox+4px, 최대변1024 Lanczos. RGBA·fix_alpha_border=true·mipmap=true, linear mipmap 필터. 리사이즈 후 알파 수렴픽셀은 정상 경계이며 독립 피 방울 island는 제거 |
+| PROP_RGB | 공통 C=clamp(RGB^.64×1.22,0,.94). 피라미드 C×(1,.95,.85). 꼬챙이는 공통C를 clamp(C^.74×1.18,0,.96)로 한 번 더 복원. 피구덩이는 공통C. 소품 sprite white/alpha1로 실제 map11-17 광원·ambient를 받음; 새 unshaded 본체/새 광원 없음 |
+| SKULL_HOLE | 피라미드 1024×1003 출력의 x[505,582), y[23,94) 안 maxRGB<125인 꼭대기 구멍/균열 픽셀의 RGBA=0. 녹색 부분뿐 아니라 어두운 구멍 내부까지 투명. 눈·코/다른 두개골 암부는 보존 |
+| PATCH_BONE | 기존RGB×.72 폐기. clamp(RGB^.48×1.42,0,.94)×(1,.90,.68): 탁한 뼈색 중간톤, 암부 틈 보존 |
+| PATCH_BLOOD | clamp(RGB^.57×1.5,0,.94)×(1,.76,.62). 푸른 가장자리 억제·혈흔의 검붉은 큰 면 복원 |
+| PATCH_FLESH | clamp(RGB^.64×1.4,0,.94)×(1,.84,.72). 회청색 테두리 억제 |
+| PATCH_MASK | 기존 §16의 distance/70 smoothstep feather·bbox·해상도 그대로. 전역alpha .72→.96; instance RGB=(tone,tone×.98,tone×.96). tone은 아래2개 외 §16 유지. 패치12개/소형66개, z−2986/−2985, 새 충돌0 |
+| PATCH_MOVE | index0 혈흔 (−1420,−2600),tone1.05; index1 뼈 (−1250,−2450),tone1.0. 두 패치를 서로 비켜 놓고 뼈가 HUD 뒤로 숨지 않게 북쪽 이동. 폭350/320·회전−.28/.42는 유지. 다른10개 중심/폭/회전/tone은 §16 |
+
+| 소품 id | bbox 원본[x0,y0,x1,y1] | 런타임 RGBA | 수량 / 용도 |
+|---|---|---|---|
+| hell_skull_pyramid | [162,201,1751,1758] | 1024×1003 | 3 / 갈림길·서측 고리·동측 길목 표식 |
+| hell_impaled_corpse | [548,132,1417,1753] | 549×1024 | 4 / 서·동 외곽 경계2개씩. 작은 분리 피 방울·잔점 제거 |
+| hell_spike_pit | [189,279,1710,1603] | 1024×891 | 1 / 북쪽 보스문 접근로 왼쪽, 중앙 통과공간 비움 |
+
+### 17.2 세로 배치·접지·정렬
+
+새 본체8개 모두 field의 static Node2D 자식. 캐릭터 body48×scale1.3=62.4worldpx 기준 높이158~185(약2.53~2.96배). 전체 텍스처 종횡비 유지, 수평반전만 변형, 눕히는 random 회전0. `centered=false`, offset=(−width×.5,−height×.94), scale=저작높이/texture.height. 발치의 고정 `z_as_relative=false`, **z=clamp(int(foot.y/4),−2000,4000)** 로 Main/player·enemy의 Y/4 계약과 일치한다. 기존 나무 .35 정렬식을 새 소품에 복사하지 않는다. 불필요한 충돌 원은 추가하지 않음(경계/길목 옆 시각 전용), provider/geometry/LOS/스폰·동선0변경. 아레나 R1700 내부0, 주 전투면 중앙0.
+
+| index / 소품 | foot world x,y | 높이 | body48 대비 | flip_h |
+|---|---|---:|---:|---|
+| 0 피라미드 | −680,−2570 | 185 | 2.96 | false |
+| 1 피라미드 | −3010,−1030 | 166 | 2.66 | true |
+| 2 피라미드 | 1570,−1750 | 175 | 2.80 | false |
+| 3 꼬챙이 | −3540,−1250 | 182 | 2.92 | false |
+| 4 꼬챙이 | −3350,−1390 | 158 | 2.53 | true |
+| 5 꼬챙이 | 2420,80 | 172 | 2.76 | true |
+| 6 꼬챙이 | 2520,−60 | 164 | 2.63 | false |
+| 7 창울타리 피구덩이 | −480,−3770 | 184 | 2.95 | true |
+
+접지 AO8개는 기존128² radial texture 공유, foot+(0,3), size=(높이×.64,높이×.13), black alpha.64, z−2987, 기존 unlit material만 공유한다. 그림자는 ground plane에 남아 배우 위로 올라오지 않는다. 피라미드0은 Heart(−250,−2440)/R680 범위, 피구덩이는 GateLeft(−150,−4050)/R410 가장자리에 닿는다. 새 광원0·활성 최대5 그대로. 명시 HELL_ROWS/texture preload를 setup 한 번만 소비하며 새 tick 처리/목록API/ResourceLoader 호출0.
+
+### 17.3 비교·기술·성능 증거
+
+동일3뷰 before는 **MAP11-19 319d1686의 저장된 after 원본** byte복사. `_out/MAP11-20/capture-manifest.json`에 원본/복사SHA256 대조(3개 동일). after는 같은 Main·zoom.70·camera offset(0,−180), 카메라 (−850,−2400)/(−3150,−1050)/(0,−3500). 캡처1600×900·before_after3200×900, 원배율 crop640×600→1280×600 및 소품에 맞춘 추가 detail crop도 저장. 색보정·리사이즈0. UI HP/SP·실시간 조명/애니메이션 위상 차이는 비교 한계이며 배경 기하 변경 아님.
+
+최종 실행 `godot/tests/capture_map11_hell_props.gd`: **68checks 중67PASS/1FAIL**. 소품8개/깊이/크기/mip·패치12·공유rim·광원 제한·실제 관문 진입·field/arena 각각 실제 Player4방향150틱×4=600틱 이동 PASS. 피라미드 앞/뒤 추가2뷰에서 캐릭터 가림과 발치 접지 눈검수, depth assertions PASS. Godot SCRIPT/Parse/ERROR0. 최초 시각 preview63/0 이후 혈흔의 찬색·꼬챙이 명도·뼈 위치를 보정했고 **최종 관련 하니스/벤치는1회**. 전체 suite 반복0.
+
+| 성능 | MAP11-19 기준 | MAP11-20 단독1회 | 8.33ms gate |
+|---|---:|---:|---|
+| field p95 | 7.004ms | **10.598ms** | **FAIL** |
+| arena p95 | 6.780ms | **7.168ms** | PASS |
+| field p99 / 평균FPS / draw / objects | — | 11.903ms / 159.025 / 148 / 263 | 평균FPS로p95 실패 대체0 |
+| arena p99 / 평균FPS / draw / objects | — | 8.252ms / 177.493 / 129 / 247 | — |
+
+Apple M5 Pro/Godot4.7.2 GL/1920×1080/240cap/60Hz/5적 fixture. 직전 `pgrep -x Godot`0, 전체실행중0.5초간격69관측·다른Godot0(자기1개). 필드 프레임 예산 미충족 원인 미확정. 요청한 벤치1회 제한을 유지하며 재측정/통과값 선별0. **실패한 제품 후보를 성능 PASS나 인수완료로 보고하지 않는다.** Windows/밀집전투/GPU timestamp 미검수.
+
+### 17.4 MAP PRODUCTION REPORT (§23)
+
+| 필드 | 실제 결과 |
+|---|---|
+| STAGE / MASTER | Godot CH1-1 MAP11-20. 319d1686 silhouette/regions/main route/side spaces 유지. 공통가이드·맵디테일 선행. GATE4 ground→6 landmark→7 story→8 camera/tech |
+| OUTER MASS | LEFT/RIGHT/TOP/SOUTH·major holes·4층 숲 형상 보존. 외곽경계에2쌍의 꼬챙이 시체 연결. 원래 직선 관문뒤 cutoff 잔여 |
+| LARGE | 승인된 새source3장/8정적소품. 피라미드3 높이/반전 변형. 기존 외곽composites/overlap 불변. 복제작품자산/반려이미지0 |
+| MEDIUM | 기존 connections/remaining holes 불변. 소품의 낮은 발치뼈/혈흔과 AO로 접합 |
+| GROUND | 기존패치12의 중간톤/색 복원·2중심이동/소형66유지. 접지shadow8·contamination유지. 피라미드와 뼈 형태는 읽힘; 일부 혈흔의 둥근 실루엣/부드러운 경계 잔여 |
+| PLAYABLE | main arenas/travel/breathing/threat 공간 보호, 새 solid0/통과동선 유지. Player600틱×2공간/관문 PASS. 새전경로종주·밀집전투 projectile/Q/E/loot 가독성 미검수 |
+| LANDMARK | primary 심장제단/secondary 관문 유지. tertiary skull3·corpse4·pit1. 북접근 중앙과 보스룸R1700 신규0 |
+| CAMERA QA | LANDMARK/field, SIDE L/outer, EXIT 3뷰 전후1600×900+1x 직접눈검수. 앞뒤가림2뷰 추가. START/EARLY/SIDE R/LATE/arena 최종시각은 이번범위 미검수. 관문·숲 기존암부/접합 완성PASS로 확대0 |
+| TECH QA | 68중67PASS/1FAIL(field p95). route/collision본체 불변·실제이동/진입 PASS. pageerror/404 N/A. seam기존cutoff잔여; loading에러0·원alpha/mip사용. 성능 field10.598/arena7.168ms |
+| FILES | stage-owned product_detail/새RGBA3+import3/보정patch3/재현pipeline+manifest/전용하니스+uid/관련docs. concurrent touched0/unrelated touched0 |
+| GIT | codex/map11-20-20261021만 경로지정stage·정상hook commit/push. hook dependency tools는 기준동일byte로 sparse에 포함. R source/INDEX/WORK읽기만, main push/force/reset/rebase/반려branch merge/배포0. SHA/원격readback/자기worktree제거 결과는 DONE.txt |
+| USER DATA | 실행/import는 EXODUSER-map11-20-Isolated-20261021만 사용. 실제저장폴더 실행0. project.godot 원byte복원·diff0 |
+| VISUAL VERDICT | **RETOUCH**. 1x에서 두개골·창울타리·꼬챙이 형태와 바닥뼈 가독성 개선은 확인. 혈흔의 둥근 모양·외곽암부·기존cutoff가 남으며 필드성능gate도 실패. 전체품질 완료/PASS 주장0 |
+| NEXT PASS | 필드p95 초과의 별도원인분리·예산복구, 혈흔 가장자리/꼬챙이와숲 접합 눈검수. 이번1회제한 안에서 추가벤치/새작업 자동착수0 |
+
+증거: `~/exoduser-wt/_out/MAP11-20/captures/`, `captures/verification.json`, `final-verification.log`, `godot-process-monitor.json`, `DONE.txt`.
