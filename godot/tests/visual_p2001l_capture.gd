@@ -1,5 +1,5 @@
 extends SceneTree
-## P2-001l 시각 검수 — 연습 step 0(패링 적·차징 링·암흑탄·반사) + step 1 정지 실창 캡처.
+## P2-001l 시각 검수 — step 8 가시덫(실시전) + step 0(패링 적·차징 링·암흑탄·반사) + step 1 정지.
 ## 웹 같은 단계 샷(_out/p2-001l/web/w_step0_*.png)과 1x 크롭 대조용.
 const USERDIR = "EXODUSER-P2001L-Isolated-20261020"
 const OUT = "G:/exoduser-wt/_out/p2-001l/godot"
@@ -54,9 +54,29 @@ func _run() -> void:
 		deadline = Time.get_ticks_msec() + 6000
 		while Time.get_ticks_msec() < deadline and int(flow.get("step")) == target_step:
 			await process_frame
-	flow.set("pending", "success") # step 8 보류 — 하니스 한정 전진(501 실코드 경유)
+	# step 8 가시덫 — 실제 키1 시전·탈출·DOT 처치 (261~296)
 	deadline = Time.get_ticks_msec() + 8000
-	while Time.get_ticks_msec() < deadline and int(flow.get("step")) != 0:
+	while Time.get_ticks_msec() < deadline and (flow.get("trap_enemies") as Array).size() < 10:
+		await process_frame
+	_send_action("skill_slot_1", true)
+	_send_action("skill_slot_1", false)
+	deadline = Time.get_ticks_msec() + 5000
+	while Time.get_ticks_msec() < deadline and flow.get("trap_zone") == null:
+		await process_frame
+	await _wall(500)
+	await _shot("g_step8_trap")
+	_send_action("move_left", true)
+	for i in range(120):
+		player.global_position += Vector2(-2.0, 0)
+		await process_frame
+		if flow.get("trap_escaped") == true:
+			break
+	_send_action("move_left", false)
+	deadline = Time.get_ticks_msec() + 60000
+	while Time.get_ticks_msec() < deadline and int(flow.get("step")) == 8:
+		if flow.get("trap_zone") == null:
+			_send_action("skill_slot_1", true)
+			_send_action("skill_slot_1", false)
 		await process_frame
 	# step 0: 차징 링 중간 지점 캡처
 	deadline = Time.get_ticks_msec() + 10000
@@ -89,15 +109,19 @@ func _run() -> void:
 	await _wall(300)
 	await _shot("g_step1_halt")
 	print("VISUAL_STATE ", JSON.stringify({"step": flow.get("step"), "halted": flow.get("practice_halted"),
-		"checks": flow.get("checks"), "reflected_seen": flow.get("shot_reflected")}))
+		"checks": flow.get("checks"), "trap_kills": flow.get("trap_kills"),
+		"spike_trap_done": flow.get("spike_trap_done"), "reflected_seen": flow.get("shot_reflected")}))
 	print("VISUAL_DONE fps=", Engine.get_frames_per_second())
 	main.get_parent().remove_child(main)
 	main.free()
 	quit(0)
 
 func _send_parry(pressed: bool) -> void:
+	_send_action("parry", pressed)
+
+func _send_action(action: String, pressed: bool) -> void:
 	var event := InputEventAction.new()
-	event.action = "parry"
+	event.action = action
 	event.pressed = pressed
 	Input.parse_input_event(event)
 

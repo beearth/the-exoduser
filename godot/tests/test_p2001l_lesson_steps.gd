@@ -4,7 +4,7 @@ extends SceneTree
 ## 판정은 기존 Q 패링 시스템 실이벤트 구독만(q_projectile_reflected, 반사 블루빈 실처치).
 ## 1~7: 해당 탄/행동 미이식 → STEP_HALTS 사유로 정직 정지(가짜 진행 금지).
 ## allows(32): player.handle_native_input_event 입력 퍼널에 단계 허용 외 차단.
-## step 8(가시덫)은 시작 스킬 트랙 보류 — 테스트는 pending 주입으로 8→0 전진(501 실코드 경유).
+## step 8(가시덫): main 0779085bd 병합으로 실구현 — 실제 키1 시전·DOT 처치·탈출로 전진.
 const USERDIR = "EXODUSER-P2001L-Isolated-20261020"
 const GROUPS = ["allows_input_gate", "step0_parry_kill", "halted_steps_and_restore"]
 
@@ -134,7 +134,16 @@ func _test_allows_input_gate() -> void:
 	_check(str(player.handle_native_input_event(_action_event("native_magic", true)).get("reason")) == "parry_lesson_input_locked",
 		"step 0 blocks native_magic (web beam)")
 	flow.set("step", -3)
-	observations["gate_checked_actions"] = ["weapon", "parry", "shield_bash", "native_magic", "move_left", "move_right"]
+	# allowKey(40): 스킬 캐스트 키는 step 8 외 차단 — 실제 시전이 안 일어나는지 관측
+	var slots: Node = active_main.get("world").get_node_or_null("NativeSkillSlots")
+	var cast_log_before: int = (slots.get("_cast_log") as Array).size() if is_instance_valid(slots) else -1
+	Input.parse_input_event(_action_event("skill_slot_1", true))
+	Input.parse_input_event(_action_event("skill_slot_1", false))
+	for i in range(3):
+		await process_frame
+	var cast_log_after: int = (slots.get("_cast_log") as Array).size() if is_instance_valid(slots) else -1
+	_check(cast_log_before == cast_log_after, "skill_slot_1 blocked outside step 8 (allowKey 40)")
+	observations["gate_checked_actions"] = ["weapon", "parry", "shield_bash", "native_magic", "move_left", "move_right", "skill_slot_1"]
 
 func _test_step0_parry_kill() -> void:
 	if not is_instance_valid(flow) or flow.get("active") != true:
@@ -169,12 +178,51 @@ func _test_step0_parry_kill() -> void:
 		while Time.get_ticks_msec() < deadline and int(flow.get("step")) == target_step:
 			await process_frame
 	_check(int(flow.get("step")) == 8, "basics done, at step 8 (501 order -1 -> 8)")
-	_check(str(flow.get("practice_halted")) == "spike_trap_unported", "step 8 halted (보류 유지)")
-	# step 8은 보류(시작 스킬 트랙) — 하니스 한정 pending 주입으로 501 실전진 코드만 경유
-	flow.set("pending", "success")
-	deadline = Time.get_ticks_msec() + 6000
-	while Time.get_ticks_msec() < deadline and int(flow.get("step")) == 8:
+	_check(str(flow.get("practice_halted")) == "", "step 8 trap practice starts (261~266)")
+	var ui8: Dictionary = flow.get("_ui")
+	_check((ui8["keycap"] as Label).text == "1 + W A S D", "step 8 keycap (298)")
+	# 267~280 스폰: 10마리·hp>1·eShield=hp·반경 300 이내·추격
+	deadline = Time.get_ticks_msec() + 8000
+	while Time.get_ticks_msec() < deadline and (flow.get("trap_enemies") as Array).size() < 10:
 		await process_frame
+	var trap_list: Array = flow.get("trap_enemies")
+	_check(trap_list.size() == 10, "10 trap enemies spawned (269)")
+	var spawn_ok := true
+	for trap_enemy in trap_list:
+		if not is_instance_valid(trap_enemy):
+			spawn_ok = false
+			continue
+		if float(trap_enemy.get("hp")) <= 1.0 or float(trap_enemy.get("eShield")) <= 0.0:
+			spawn_ok = false
+		if trap_enemy.global_position.distance_to(player_node.global_position) > 320.0:
+			spawn_ok = false
+	_check(spawn_ok, "trap enemies hp staggered + eShield + within 300 (273~276)")
+	# 실제 키1 시전(스킬 소유자 native_skill_slots, 구독만) → 존 생성
+	Input.parse_input_event(_action_event("skill_slot_1", true))
+	Input.parse_input_event(_action_event("skill_slot_1", false))
+	deadline = Time.get_ticks_msec() + 5000
+	while Time.get_ticks_msec() < deadline and flow.get("trap_zone") == null:
+		await process_frame
+	_check(flow.get("trap_zone") != null, "spike trap zone cast + observed (286)")
+	# 287 탈출: 방향키 hold + 실제 120px 이탈
+	Input.parse_input_event(_action_event("move_left", true))
+	for i in range(120):
+		player_node.global_position += Vector2(-2.0, 0)
+		await process_frame
+		if flow.get("trap_escaped") == true:
+			break
+	Input.parse_input_event(_action_event("move_left", false))
+	_check(flow.get("trap_escaped") == true, "escape detected (287 held+120px)")
+	# DOT 실처치(42111 위임 trap 분기) → 10킬 + 탈출 → completeStep → 0
+	deadline = Time.get_ticks_msec() + 60000
+	while Time.get_ticks_msec() < deadline and int(flow.get("step")) == 8:
+		if flow.get("trap_zone") == null or (flow.get("trap_zone") is Dictionary 				and float((flow.get("trap_zone") as Dictionary).get("t", 0)) >= float((flow.get("trap_zone") as Dictionary).get("maxT", 1))):
+			Input.parse_input_event(_action_event("skill_slot_1", true)) # 재시전(288 쿨 0 유지)
+			Input.parse_input_event(_action_event("skill_slot_1", false))
+		await process_frame
+	_check(int(flow.get("trap_kills")) >= 10, "10 trap kills via real DOT (683)")
+	_check(flow.get("spike_trap_done") == true, "spikeTrapDone set (428)")
+	observations["trap_kills"] = flow.get("trap_kills")
 	_check(int(flow.get("step")) == 0 and flow.get("phase") == "practice",
 		"advance 8 -> 0 via real 501 advance")
 	_check(str(flow.get("practice_halted")) == "", "step 0 not halted (실구현)")
@@ -246,7 +294,7 @@ func _test_halted_steps_and_restore() -> void:
 		await process_frame
 	_check(int(flow.get("step")) == step_before and flow.get("parryEnemy") == null,
 		"no fake progression / no spawn while halted")
-	# 2~7 정지 사유·패널 콘텐츠 표(하니스 주입 전진 — 501 실코드 경유)
+	# 2~7 정지 사유·패널 콘텐츠 표(미이식 단계 — 하니스 주입 전진, 501 실코드 경유)
 	var expected_halts := {2: "volley_mixed_magic_projectiles_unported", 3: "volley_physical_projectiles_unported",
 		4: "chain_movement_unported", 5: "lightning_dash_unported", 6: "rage_gauge_unported", 7: "rage_burst_unported"}
 	var expected_keys := {2: "Q", 3: "E", 4: "SHIFT", 5: "↔ + SPACE", 6: "Q", 7: "SPACE"}
