@@ -24,7 +24,7 @@
 | P2-001l | 패링 연습 단계 0~7·입력 제한(allows) | PC heavy 담당 | claude/p2-001l-lesson-steps-20261020 | native_parry_lesson_flow.gd 등 레슨 파일, player.gd·main.gd 입력 처리 함수 | 진행 중 |
 | P2-006a | 드랍 바닥 표시·줍기·인벤 반입 | PC heavy 담당 — **Claude 사용 한도로 중단**(작업 폴더 G:\exoduser-wt\p2-002a-hud에 진행분 보존) | claude/p2-006a-drop-pickup-20261020 | 드랍 렌더·줍기 신규 스크립트 | 중단·인계 대기 |
 | P3-002 | 소환굴 시스템·후속 스폰·지역 처치 분모 | 클라우드 세션 cloud-spawnholes | claude/p3-002-spawn-holes | 소환굴 신규 스크립트, world 동적 등록 호출부 | 시작 요청됨 |
-| P2-007a | UI 마감: 원본 글꼴(나눔명조·Cinzel)·검기 색·인트로 가이드 패널 | 클라우드 세션 cloud-ui-polish | claude/p2-007a-ui-polish | assets/fonts, crescent.gd 색, 인트로 가이드 패널 | 검수 대기 — 보고서 reports/P2-007a_REPORT.md (신규 115/0, 회귀 7종 기준선 동일). 레슨 파일 폰트 참조 5곳 변경 포함 |
+| P2-007a | UI 마감: 원본 글꼴(나눔명조·Cinzel)·검기 색·인트로 가이드 패널 | 클라우드 세션 cloud-ui-polish | claude/p2-007a-ui-polish | assets/fonts, crescent.gd 색, 인트로 가이드 패널 | 검수 대기 — 구현 SHA `5d3ba3578`, 보고서 reports/P2-007a_REPORT.md (신규 115/0, 회귀 7종 기준선 동일). 레슨 파일 폰트 참조 5곳 변경 포함 |
 | MAC-VERIFY | 최근 통합분 Mac 테스트·Mac 실창 첫 전투 녹화 | Mac Codex ttys001(맥북총괄 관측) | codex/mac-verify-20261020 | 없음(관측 전용) | 진행 중 |
 | QA-001 | 기존 실패 테스트 7종 원인 진단 | **PC Codex**(codex exec) | codex/qa-001-pc-20261020 | 해당 테스트 파일 | 진행 중 |
 | P3-001 | 맵 pit_poison 타원 충돌 계약 | **PC Codex**(codex exec) | codex/p3-001-pc-20261020 | engine/fdg/map-source-adapter.js, 맵 계약 테스트 | 진행 중 |

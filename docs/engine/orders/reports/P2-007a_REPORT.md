@@ -2,7 +2,7 @@
 
 - 브랜치: `claude/p2-007a-ui-polish` (main `af9a59f` 위, main push·병합 없음)
 - 상세 문서: [../../FDG_P2_007A_UI_POLISH_20261020.md](../../FDG_P2_007A_UI_POLISH_20261020.md)
-- 상태: 검수 대기
+- 상태: 검수 대기 — 구현 커밋 `5d3ba3578d180586e6883d2ef6728f1971dd5450`
 
 ## 변경 파일
 | 구분 | 경로 |
