@@ -1,3 +1,14 @@
+## 2026-10-20 SV-RESTORE-PLAYER 읽기·복원 계산 3번 단위
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 기준·의존 | origin/main e556b617 조회 후 선행 SV-COLLECT b8b8a8fa / SV-TRANSPORT-READ 판정955f3573에서 분기·main 정상 병합 f25dd675. --no-checkout+no-cone sparse 시작, 원로그 외부 보존·최종 remote SHA/DONE 뒤 자기 worktree 제거 |
+| 신규 파일 | source_player_restore.gd·test_native_player_restore.gd·sv_restore_player_oracle.cjs. calculate(serialized,current)는 실제 현재 cap/할당 snapshot을 받아 detached plan만 반환. 제품 writer·저장·서버·constructor·형식/마이그레이션 정책 변경0 |
+| 원본 근거 | game3597–3602/3611–3623/3685–3715/43128–43133 최신main byte동일. EXP finite Number/수치문자 구분·SP/AP 보너스 원값·queue 배열 원값·현재 자원 후 cap 대입·legacy pShield→pDef→skills→rawgrit 순서와 JS + 유지 |
+| 보호·한계 | 공용6·타 담당·기존 테스트·원본4파일·project.godot·R 직접수정0. charIdx/rage/mask/atlas/Q/E writer 미연결. READY는 계산만·full_restore_verified=false. actor HP/ST·authority MP 실제 적용/readback은 연결 HOLD. raw_grit_restore writer 호출0 |
+| 검수 | 신규78620/실패0(201fixture·원본603평가)·SV-CONTRACT3023/실패0·선행 슬롯읽기5952/실패0, 최종3실행 exit0·ERROR/경고0. 576실패 StringName 키 수정과 큰수 oracle 전달6/3실패 원로그 보존. 로비 전체 회귀 8실패(main에서도 동일, QA-005 진단 중)는 원문만 기록 |
+| 실행·제출 | Godot 전역2이상30초대기·자기작업 순차1개. 신규 EXODUSER-sv-restore-player-Isolated-20261020·기존각USERDIR상수, 종료override0byte. 정상훅·자기경로 stage·자기branch만push. [보고서](engine/orders/reports/sv-restore-player_REPORT.md), ~/exoduser-wt/_out/sv-restore-player/DONE.txt |
+
 ## 2026-10-20 SV-TRANSPORT-READ fixture 슬롯 읽기 2번 단위
 
 | id / 적용 위치 | 현재 정확 계약 |
