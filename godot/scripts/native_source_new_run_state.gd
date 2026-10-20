@@ -6,6 +6,9 @@ extends Node
 const BOOTSTRAP = preload("res://port_modules/native_new_run_bootstrap_source/producer.gd")
 const STARTER_FACTORY = preload("res://port_modules/starter_item_factory_source/producer.gd")
 const SOURCE_RESOURCES = preload("res://scripts/native_source_resource_authority.gd")
+const EXP_GATE = preload("res://scripts/native_meta_exp_gate_policy.gd")
+const EXP_CURVE = preload("res://scripts/native_source_meta_exp_curve.gd")
+signal native_level_up_handoff(packet: Dictionary)
 const CLAIM_META = "native_source_new_run_state_owner"
 const INITIALIZED_META = "native_source_new_run_state_initialized"
 const RESOURCE_FIELDS = ["st", "mst", "stR", "mp", "mmp", "mpR"]
@@ -476,6 +479,112 @@ func apply_native_stage_entry_refill(owner: Node) -> Dictionary:
 # "skillSlots"/"ultSlot" (원본 전역 — 소유 위치 기록). 스킬 발동 로직은 범위 밖:
 # 지급·표시 전용이며 미구현 스킬 키는 기존대로 무반응(player space_rage_slot_not_connected).
 # P2-005b — 스킬 시전 악의 소비 (46454: G.mats -= _malCost(20)=10). 게이트는 호출측.
+# DEMO11-16: one live cost entry. Material validation precedes resource writes.
+func commit_native_skill_dispatch_cost(owner: Node, st_cost: float, mp_cost: float, mats_cost: int) -> Dictionary:
+	if not _feel_owner_current(owner) or mats_cost < 0 or int(_feel_num(_g.get("mats"))) < mats_cost:
+		return {"accepted":false,"reason":"skill_dispatch_material_or_owner_gate"}
+	var spent: Dictionary = _resources.commit_native_skill_dispatch_spend(owner,st_cost,mp_cost)
+	if spent.get("accepted") != true: return spent
+	_g["mats"] = int(_feel_num(_g.get("mats"))) - mats_cost
+	return {"accepted":true,"st_spent":st_cost,"mp_spent":mp_cost,"mats_spent":mats_cost}
+
+
+# DEMO11-17: event-driven skill ledger; no caller-supplied applicable patch.
+var _skill_management_busy := false
+var _skill_management_serial := 0
+var _skill_management_committed: Dictionary = {}
+
+func read_native_skill_management_snapshot() -> Dictionary:
+	var actual: Variant=read_current_p()
+	if not actual is Dictionary: return {}
+	const S=preload("res://port_modules/skill_management_source/core_support.gd")
+	var p: Dictionary={}
+	for key in ["lv","sp","skills","_fused","exp","maxExp"]+S.ACTIVE_FIELDS:
+		if actual.has(key): p[key]=actual[key]
+	return {"p":p.duplicate(true),"g":{"mats":_g.get("mats")},
+		"slots":actual.get("skillSlots",[]).duplicate(true),"ultimate":actual.get("ultSlot")}
+
+# DEMO11-18: readonly fusion model is rooted in this actual State and demo boot.
+func read_native_skill_fusion(owner: Node, key: String) -> Dictionary:
+	if not _current_error().is_empty() or not is_instance_valid(owner) or owner!=_player.get_parent() \
+		or owner.get("source_state")!=self or owner.get("world")!=_world:
+		return {"status":"NOT_READY","reason":"actual_fusion_owner_unavailable"}
+	var boot: Dictionary=owner.read_native_demo_policy()
+	if boot.get("status")!="READY" or boot.get("demo")!=true or boot.get("build_target")!="demo":
+		return {"status":"NOT_READY","reason":"actual_demo_fusion_policy_required"}
+	return preload("res://scripts/native_skill_fusion.gd").inspect(key,read_native_skill_management_snapshot())
+
+
+func commit_native_skill_management(owner: Node, command: Dictionary) -> Dictionary:
+	var rejected: Dictionary={"accepted":false,"committed":false,"prefix":[]}
+	# Source K/L handlers have no G.paused guard. UI data transactions may run
+	# while the SceneTree is paused; combat/resource spend APIs keep their guards.
+	if _skill_management_busy or not _current_error().is_empty() or not is_instance_valid(owner) \
+		or owner != _player.get_parent() or owner.get("source_state") != self or owner.get("world") != _world:
+		rejected["reason"]="actual_skill_management_owner_or_reentry_gate";return rejected
+	for key in command:
+		if key not in ["request_id","action","skill_id","confirmed"]:
+			rejected["reason"]="unsupported_command_field";return rejected
+	var id: Variant=command.get("request_id")
+	if not id is String or id.is_empty() or id.length()>96 or not command.get("action") is String \
+		or not command.get("skill_id") is String or not command.get("confirmed",false) is bool:
+		rejected["reason"]="invalid_skill_command";return rejected
+	if _skill_management_committed.has(id):
+		var old: Dictionary=_skill_management_committed[id]
+		if old.command!=command: rejected["reason"]="request_id_conflict";return rejected
+		var replay: Dictionary=old.result.duplicate(true);replay["replayed"]=true;return replay
+	const LEARN=preload("res://port_modules/skill_management_source/learn.gd")
+	const UP=preload("res://port_modules/skill_management_source/upgrade.gd")
+	const REFUND=preload("res://port_modules/skill_management_source/refund.gd")
+	const S=preload("res://port_modules/skill_management_source/core_support.gd")
+	_skill_management_busy=true
+	var before: Dictionary=read_native_skill_management_snapshot()
+	var prepared: Dictionary=S.prepare(before)
+	if prepared.status!="READY":
+		_skill_management_busy=false;rejected["reason"]=prepared.reason;return rejected
+	var plan: Dictionary
+	match command.action:
+		"learn_up":
+			plan=UP.preview(command.skill_id,before,"ui") if S.lv(before.get("p",{}),command.skill_id)>=1 else LEARN.preview(command.skill_id,before,"ui")
+		"fuse":
+			var live: Dictionary=read_native_skill_fusion(owner,command.skill_id)
+			plan=preload("res://scripts/native_skill_fusion.gd").preview(command.skill_id,before) if live.status=="READY" else live
+		"minus": plan=REFUND.minus_preview(command.skill_id,before)
+		"reset": plan=REFUND.reset_preview(command.skill_id,before,command.get("confirmed",false))
+		_:
+			_skill_management_busy=false;rejected["reason"]="unsupported_skill_action";return rejected
+	if plan.get("status")!="READY" or not plan.value.applied:
+		_skill_management_busy=false
+		rejected["reason"]=plan.get("reason",plan.get("value",{}).get("branch","policy_not_ready"))
+		rejected["policy"]=plan.duplicate(true);return rejected
+	var value: Dictionary=plan.value
+	# Only approved policy projections can reach the live writer. XP/lv/AP/HP and
+	# combat bodies are never replaced by the copied fixture.
+	for field in value.protected_active_proposals:
+		if not S.ACTIVE_FIELDS.has(field) or not S.supported_id(value.protected_active_proposals[field]):
+			_skill_management_busy=false;rejected["reason"]="unsupported_active_projection";return rejected
+	(_p["skills"] as Dictionary).assign(value.fixture.p.skills)
+	_p["sp"]=value.fixture.p.sp
+	_g["mats"]=value.fixture.g.mats
+	(_p["_fused"] as Dictionary).assign(value.fixture.p._fused)
+	for field in value.protected_active_proposals: _p[field]=value.protected_active_proposals[field]
+	(_p["skillSlots"] as Array).assign(value.fixture.slots)
+	_p["ultSlot"]=value.fixture.ultimate
+	_skill_management_serial+=1
+	var result: Dictionary={"accepted":true,"committed":true,"status":"COMMITTED","request_id":id,
+		"serial":_skill_management_serial,"branch":value.branch,"before":before,
+		"after":read_native_skill_management_snapshot(),"active_proposals":value.protected_active_proposals.duplicate(true),
+		"prefix":["ledger","active_selection","slots"],"runtime_writer":"actual_current_State","saved":false}
+	if command.action=="fuse" or value.branch in ["fusion_reset","fusion_minus","fusion_upgraded"]:
+		result["fusion_combat_handoff"]={"status":"HOLD","damage_execution":false,"shield_execution":false,
+			"requested":command.skill_id,"fusion_key":command.skill_id if command.action=="fuse" else value.details.get("key",value.details.get("fusion_key")),
+			"source":"_execFuse / _skResetSkill ledger boundary; combat owner not called"}
+	_skill_management_committed[id]={"command":command.duplicate(true),"result":result.duplicate(true)}
+	if _skill_management_committed.size()>32: _skill_management_committed.erase(_skill_management_committed.keys()[0])
+	_skill_management_busy=false
+	return result
+
+
 func apply_native_skill_cast_cost(owner: Node, mats_cost: int) -> Dictionary:
 	if not _feel_owner_current(owner) or mats_cost < 0:
 		return {"applied": false, "reason": "actual_skill_cost_owner_not_current"}
@@ -519,23 +628,62 @@ func apply_native_add_potion(owner: Node, type: String, count: int) -> Dictionar
 # addExp(v) — 43134~43176. v는 호출측(실행자)이 43140~43144(1/3·expBonus)까지 적용한
 # 최종값. 레벨업: sp+3/2렙당 ap+1(43153~43155), 20% 회복(43160 — 자원 authority 경유),
 # 300/700 스킬 해금(43169~43171). 미이식: SFX.levelup·showPH·_levelUpVfx(연출),
-# dbSaveForce(세이브 금지 지시), 패시브 예약 큐(포트에 큐 시스템 부재 → 0 투자).
+# DEMO11-20: demo defaults true like G16646. DEMO11-01 supplies the actual
+# build mode through configure_native_demo_exp_mode once its owner is current.
+# Save/UI effects are explicit handoffs; no serializer, IO or passive investment.
+var _native_demo_exp_mode := true
+var _native_add_exp_active := false
+var _native_level_up_serial := 0
+var _native_level_up_last: Dictionary = {}
+
+func configure_native_demo_exp_mode(owner: Node, demo_mode: bool) -> bool:
+	if not _feel_owner_current(owner) or _native_add_exp_active:
+		return false
+	_native_demo_exp_mode = demo_mode
+	return true
+
+func read_native_level_up_handoff() -> Dictionary:
+	return _native_level_up_last.duplicate(true) if _current_error().is_empty() else {}
+
+func _native_exp_result(levels: int, ap_gain: int, texts: Array, gate_reason: String) -> Dictionary:
+	return {"applied": true, "exp": _p.get("exp"), "lv": _p.get("lv"), "max_exp": _p.get("maxExp"),
+		"levels": levels, "ap_gain": ap_gain, "sp": _p.get("sp"), "ap": _p.get("ap"), "texts": texts,
+		"demo_mode": _native_demo_exp_mode, "gate_reason": gate_reason,
+		"handoff": _native_level_up_last.duplicate(true) if levels > 0 else {},
+		"unported": ["SFX.levelup", "showPH_LEVEL_UP", "_levelUpVfx", "dbSaveForce_IO:DEMO11-06_owner_pending", "passive_queue:DEMO11-19_owner_pending"]}
+
 func apply_native_add_exp(owner: Node, final_value: int) -> Dictionary:
-	if not _feel_owner_current(owner) or final_value < 0:
+	if not _feel_owner_current(owner) or final_value < 0 or _native_add_exp_active:
 		return {"applied": false, "reason": "actual_reward_owner_not_current"}
+	_native_add_exp_active = true
+	# Only demo cap adoption: the pre-existing non-demo transcendence HOLD below
+	# remains unchanged. No new daily clock or date/count writes in this unit.
+	if _native_demo_exp_mode:
+		var entry: Dictionary = EXP_GATE.entry_gate(_p, true, "")
+		_p["exp"] = entry["state"]["exp"]
+		if not entry["allowed"]:
+			_native_add_exp_active = false
+			return _native_exp_result(0, 0, [], str(entry["reason"]))
 	_p["exp"] = int(_feel_num(_p.get("exp"))) + final_value
 	var levels := 0
 	var ap_gain := 0
+	var gate_reason := ""
 	while int(_feel_num(_p.get("exp"))) >= int(_feel_num(_p.get("maxExp"))):
+		if _native_demo_exp_mode:
+			var loop: Dictionary = EXP_GATE.loop_gate(_p, true, "")
+			_p["exp"] = loop["state"]["exp"]
+			if not loop["allowed"]:
+				gate_reason = str(loop["reason"])
+				break
 		# 1000렙 초월 게이트(43138/43148): lv<1000 구간 — 미도달. 도달 시 미이식 정지.
 		if int(_feel_num(_p.get("lv"))) >= 1000:
+			_native_add_exp_active = false
 			return {"applied": false, "reason": "unported_branch_active:transcend_level_gate"}
 		_p["lv"] = int(_feel_num(_p.get("lv"))) + 1
 		levels += 1
 		_p["exp"] = int(_feel_num(_p.get("exp"))) - int(_feel_num(_p.get("maxExp")))
-		# _calcMaxExp(43128): lv<1000 → ~~((15+lv*2.5+lv*lv*.05)*1.001^lv)
 		var lv: float = _feel_num(_p.get("lv"))
-		_p["maxExp"] = int((15.0 + lv * 2.5 + lv * lv * 0.05) * pow(1.001, lv))
+		_p["maxExp"] = EXP_CURVE.required_exp(int(lv))
 		_p["sp"] = int(_feel_num(_p.get("sp"))) + 3
 		if int(lv) % 2 == 0:
 			_p["ap"] = int(_feel_num(_p.get("ap"))) + 1
@@ -544,17 +692,29 @@ func apply_native_add_exp(owner: Node, final_value: int) -> Dictionary:
 	if levels > 0:
 		var heal: Dictionary = _resources.commit_native_level_up_heal(owner) if _resources.has_method("commit_native_level_up_heal") else {"accepted": false}
 		if heal.get("accepted") != true:
+			_native_add_exp_active = false
 			return {"applied": false, "reason": "level_heal_authority_refused"}
+		var demonic := _feel_num(_passives.get("pDemon")) > _feel_num(_passives.get("pHuman"))
+		var level_color := "#d38aff" if demonic else "#ffdd00"
 		var lv_text: String = "SP +%d" % (levels * 3)
 		if ap_gain > 0:
 			lv_text += " AP +%d" % ap_gain
-		texts.append({"dx": 0.0, "dy": -40.0, "text": lv_text, "color": "#ffdd00", "life": 60}) # 43166 (비악마화 #ffdd00)
+		texts.append({"dx": 0.0, "dy": -40.0, "text": lv_text, "color": level_color, "life": 60}) # G43161–43165
 		for unlock in [[300, "blueShot"], [700, "burstLoop"], [700, "voidScarecrow"]]: # 43169~43171
 			if int(_feel_num(_p.get("lv"))) >= int(unlock[0]) and not (_p.get("skills") as Dictionary).has(unlock[1]):
 				(_p["skills"] as Dictionary)[unlock[1]] = 1
-	return {"applied": true, "exp": _p.get("exp"), "lv": _p.get("lv"), "max_exp": _p.get("maxExp"),
-		"levels": levels, "ap_gain": ap_gain, "sp": _p.get("sp"), "ap": _p.get("ap"), "texts": texts,
-		"unported": ["SFX.levelup", "showPH_LEVEL_UP", "_levelUpVfx", "dbSaveForce(세이브_금지)", "passive_queue(큐_시스템_부재)"]}
+		_native_level_up_serial += 1
+		_native_level_up_last = {"serial": _native_level_up_serial, "lv": _p["lv"],
+			"exp": _p["exp"], "maxExp": _p["maxExp"], "sp": _p["sp"], "ap": _p["ap"],
+			"levels": levels, "heal": heal.duplicate(true),
+			"presentation": {"title": "TRANSCEND!" if int(_p["lv"]) > 1000 else "LEVEL UP!",
+				"color": level_color, "duration_ms": 2500, "demonic": demonic, "source_line": 43162},
+			"save": {"requested": true, "committed": false, "method": "dbSaveForce", "source_line": 43171}}
+		# Once after recovery/unlocks, even for multi-level XP. Signal observers
+		# receive detached data and cannot reenter addExp or change mode mid-grant.
+		native_level_up_handoff.emit(_native_level_up_last.duplicate(true))
+	_native_add_exp_active = false
+	return _native_exp_result(levels, ap_gain, texts, gate_reason)
 
 # rollDrop 레코드 owner — 원본 worldItems(_wiPush 16721: 20개 초과 시 최저 rarity 축출).
 func append_native_drop_records(owner: Node, records: Array) -> Dictionary:
@@ -763,6 +923,53 @@ func _source_initialization_write_error(packet: Dictionary, write_index: int) ->
 	if not _live(owner):
 		return "source_initializer_owner_lost_during_validation"
 	return _source_initialization_lifecycle_error()
+
+# PC-RUNTIME-STATS — runtime applyStats batch sink for the P-dict fields that
+# have no actor/resource owner. Constructor seam above is unchanged. Only the
+# actual Main-owned refresh module, inside its synchronous commit window.
+const RUNTIME_STAT_REFRESH_PATH = "res://scripts/native_source_player_runtime_stat_refresh.gd"
+const RUNTIME_STAT_REFRESH_P_FIELDS = ["_effStats", "baseAtk", "hpR", "_oocSpeed", "_crystalStats", "mshield", "shield"]
+var _runtime_stat_commits := 0
+
+func validate_native_runtime_stat_refresh(owner: Node, refresh: Object, fields: Dictionary) -> String:
+	var error := _current_error()
+	if not error.is_empty():
+		return error
+	if _initializing or _source_initializer_committing or not is_instance_valid(owner) \
+			or owner != _player.get_parent() or owner.get("source_state") != self or owner.get("world") != _world:
+		return "state_runtime_refresh_owner_mismatch"
+	if not _live(refresh) or refresh.get_script() == null \
+			or refresh.get_script().resource_path != RUNTIME_STAT_REFRESH_PATH \
+			or owner.get("source_runtime_stat_refresh") != refresh:
+		return "state_runtime_refresh_module_mismatch"
+	var window: Variant = refresh.is_native_runtime_stat_refresh_committing(owner)
+	if not window is bool or not window:
+		return "state_runtime_refresh_not_in_commit_window"
+	for field in fields:
+		if field not in RUNTIME_STAT_REFRESH_P_FIELDS:
+			return "state_runtime_refresh_field_denied:" + str(field)
+		var value: Variant = fields[field]
+		if field == "_effStats":
+			if not _initialization_numeric_object(value, ["str", "dex", "int", "vit", "lck"]):
+				return "state_runtime_refresh_effective_stats_invalid"
+		elif field == "_crystalStats":
+			if not _initialization_numeric_object(value, SOURCE_RESOURCES.PARAMETERS.CR_INIT_KEYS):
+				return "state_runtime_refresh_crystal_stats_invalid"
+		elif not _number(value):
+			return "state_runtime_refresh_value_invalid:" + str(field)
+	if fields.has("shield") and float(fields["shield"]) > float(fields.get("mshield", _p.get("mshield", 0))):
+		return "state_runtime_refresh_shield_above_mshield"
+	return ""
+
+func commit_native_runtime_stat_refresh(owner: Node, refresh: Object, fields: Dictionary) -> Dictionary:
+	var error := validate_native_runtime_stat_refresh(owner, refresh, fields)
+	if not error.is_empty():
+		return {"accepted": false, "reason": error}
+	for field in fields:
+		var value: Variant = fields[field]
+		_p[field] = value.duplicate(true) if value is Dictionary else value
+	_runtime_stat_commits += 1
+	return {"accepted": true, "fields": fields.keys(), "commits": _runtime_stat_commits}
 
 static func _initialization_tag(packet: Dictionary, write: Dictionary) -> Dictionary:
 	return {"field": write["field"], "source": write["source"], "kind": packet["kind"],
@@ -1239,3 +1446,79 @@ func commit_native_demo_clear(owner: Node, stage_index: int, end: bool) -> bool:
 	_g["stageCleared"]=not end
 	_g["on"]=false
 	return true
+
+# DEMO11-25 — potion-only State entry. G27684/28071, fresh G63950/63952.
+# Separate runtime values, not P/INV/save schema extensions.
+var _auto_potion_cd: float = 0.0
+var _auto_potion_level: int = 0
+
+func read_native_potion_runtime() -> Dictionary:
+	return {"cd":_auto_potion_cd,"level":_auto_potion_level}
+
+func is_native_potion_owner_current(owner: Node) -> bool:
+	return _feel_owner_current(owner) and not owner.is_queued_for_deletion() \
+		and owner.get_script() != null and owner.get_script().resource_path == "res://scripts/main.gd" \
+		and is_instance_valid(owner.get("source_potion")) and _resources.is_native_source_resources_ready()
+
+func commit_native_auto_potion(owner: Node, field: String, value: Variant) -> Dictionary:
+	if not is_native_potion_owner_current(owner): return {"accepted":false,"reason":"potion_owner_not_current"}
+	if field == "stats": # G35910: conditional statistics only, no invented domains.
+		if _g.get("_pStats") is Dictionary:
+			_g._pStats["_hC"] = float(_g._pStats.get("_hC", NAN)) + 1.0
+		if _g.get("_sStats") is Dictionary:
+			_g._sStats["potions"] = float(_g._sStats.get("potions", NAN)) + 1.0
+		return {"accepted":true}
+	if not (value is int or value is float) or not is_finite(float(value)): return {"accepted":false,"reason":"unsupported_potion_number"}
+	match field:
+		"cd": _auto_potion_cd = float(value) # G35893/35902; negative CD allowed
+		"mats":
+			if not (_g.get("mats") is int or _g.get("mats") is float) or float(value) != float(_g.mats)-1.0 or float(_g.mats)<=0.0: return {"accepted":false}
+			_g.mats = value # G35897, no _malCost transform
+		"hp":
+			var receipt: Dictionary = _resources.commit_native_auto_potion_hp(owner,self,float(value))
+			if receipt.get("accepted") != true: return receipt
+			_p.hp = receipt.hp # actual HP readback, not a second HP owner
+		_: return {"accepted":false}
+	return {"accepted":true}
+
+# DEMO11-27: forge-only authority. Shop transactions are permitted while its UI pauses gameplay.
+const FORGE_TRANSACTION = preload("res://scripts/native_meta_enhancement_transaction.gd")
+var _forge_committing = false
+
+func _forge_owner_current(owner: Node) -> bool:
+	return _current_error().is_empty() and is_instance_valid(owner) and not owner.is_queued_for_deletion() \
+		and owner == _player.get_parent() and owner.get("source_state") == self and owner.get("world") == _world \
+		and owner.get_script() != null and owner.get_script().resource_path == "res://scripts/main.gd" \
+		and is_instance_valid(owner.get("source_forge")) and owner.source_forge.is_bound_to(owner,self)
+
+func apply_native_forge_enhance(owner: Node, item: Dictionary) -> Dictionary:
+	if _forge_committing or not _forge_owner_current(owner) or not owner.source_forge.owns_selection(item):
+		return {"status":"NOT_READY","reason":"forge_owner_or_selection_not_current"}
+	_forge_committing = true
+	var result: Dictionary = FORGE_TRANSACTION.attempt(item,_g,Callable(_world,"sample_native_random_unit"))
+	_forge_committing = false
+	return result
+
+func apply_native_forge_transfer_prefix(owner: Node, old: Dictionary, item: Dictionary) -> Dictionary:
+	# This entry is for the actual equip owner, not an independent forge transfer button.
+	if _forge_committing or not _forge_owner_current(owner) or not owner.source_forge.owns_transfer_handoff(old,item):
+		return {"status":"NOT_READY","reason":"actual_equip_continuation_not_bound"}
+	_forge_committing = true
+	var result: Dictionary = FORGE_TRANSACTION.transfer_prefix(old,item,_g)
+	_forge_committing = false
+	return result
+
+func apply_native_forge_potion_upgrade(owner: Node) -> Dictionary:
+	if _forge_committing or not _forge_owner_current(owner): return {"status":"NOT_READY","reason":"forge_owner_not_current"}
+	# G50694-50705: single selection only; modifier-key stale batch callbacks are not introduced.
+	var lv: int = _auto_potion_level
+	var cost: int = FORGE_TRANSACTION.Policy.malice_cost(float((lv+1)*5))
+	if lv>=10 or float(_p.get("lv",1))<float((lv+1)*100):
+		return {"status":"READY","paid":false,"reason":"potion_level_gate"}
+	if float(_g.mats)<float(cost): return {"status":"READY","paid":false,"reason":"insufficient_malice","cost":cost}
+	_forge_committing = true
+	_auto_potion_level += 1 # G50705 level write precedes the malice debit
+	_g.mats -= cost
+	_forge_committing = false
+	return {"status":"READY","paid":true,"level":_auto_potion_level,"cost":cost,"remaining":_g.mats,
+		"unported":["dbSaveNow, source flash/particle feedback"]}

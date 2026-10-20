@@ -1,5 +1,7 @@
 # FDG P2-005d — A) 자연 회복 단계 부팅 배선 · B) 얼음보주(Ctrl) 발동 (2026-10-20)
 
+> 2026-10-21 DEMO11-16 현재 연결 갱신: 현재 Ctrl은 activeCtSk 선택을 읽고 기존 iceOrb/파쇄 실행자를 재사용한다. MP quote는 같은 현재 pMagicCost 공급자, 소비는 단일 commit이다. 실제 idle 진입 가능성을 소비 전에 검사한다. 자동 파쇄/회복/칼날/피해/쿨 tick은 변경하지 않았다. 아래는 당시 인수 이력이다. [현재 계약](DEMO11_SKILL_DISPATCH_20261021.md).
+
 작업 폴더 `G:\exoduser-wt\p2-002a-hud`, 브랜치 `claude/p2-005d-regen-iceorb-20261020`(main 0779085bd). 원본 근거는 `G:\exoduser\game.html`(읽기 전용) 현재 행 번호.
 
 ## A. 자연 회복 단계 부팅 배선 (커밋 6f34bb5be)

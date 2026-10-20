@@ -1,3 +1,9 @@
+> **2026-10-21 DEMO11-35 — stage0 일반 보스 탄 native 코드 연결 상태**
+>
+> DEMO11-34 actor의 BC09 요청을 기존 ordinary motion kernel과 실제 carrier registry에 연결했다. 독립 씬 thorn-on fan12발의 실제 생성·1회 birth tick·벽/수명/camera 회수·pool 재사용을 검증했다(신규53/0). 실제 피해·패링·HP/poise·부활·전역Q/E admission은 PC36/49 인계이며, 자연 arena/source clock/prefix와 특수 장판·구체 owner는 미연결 상태다. mock birth ack을 성공으로 세지 않는다.
+>
+> 256탄/물리240틱 벽시계1회: 서비스 평균0.723392ms·최대1.049ms(<8.333333ms). 이 실행은 빈 색 draw오류256건 때문에 전체 clean PASS가 아니며, 별도 색fallback 수정 후 실제draw6/0 확인·벤치재실행0이다. 전체게임/실창120fps·최종clean벤치는 미확인. [DEMO11-35 인터페이스·공용 줄·실패 원문 보고서](../engine/orders/reports/demo11-35_REPORT.md).
+
 > **2026-10-14 실제 Main 커튼 서비스:** 기존 HUD에 ART 원view를 hidden bind하고 실제900ms callback을 소비했다. 첫15 중14valid/1FAIL→실패only1clean(906ms callback1), 제품수리0·성공재연0. sourcecontroller/G.on/600frames/GPU/fullMain 미연결, shadow80px/z45 gap 유지. 함께Root G-only publicplanner9/292와 Startup 원producer14/791를 동결기술scope로 정상 보존하며 실제Gwriter/18fields 일괄ACK0. [Main 커튼 정본](../engine/FDG_GODOT_NATIVE_MAIN_INTRO_CURTAIN_FIRST_20261014.md).
 
 # 보스 배틀 세팅 바이블
