@@ -27,3 +27,6 @@ Godot 4.7.2 실제 렌더러 Compatibility/Apple M5 Pro. 최종 실행 모두 ex
 `~/exoduser-wt/_out/demo11-08/captures/`에 Godot 내부 viewport 1920×1080 원본6장(세계관·전사·INTRO·기상 인계·오류·EN), 각 자막/skip 1x crop12장을 저장했다. 프레임·자막·버튼을 직접 눈으로 확인했고 기상 화면은 기존 fade-in 후 캡처했다. 맥북총괄 눈 검수 대기. PNG는 git에 넣지 않았다.
 
 제약: 영화 mux 음성·원본 카메라/vfx/sfx는 미이식이며 영화 동등성은 미확인. 전체 clone에서 원본 외부 이미지/BGM을 읽고 sparse 하니스에서는 명시 root를 사용한다. 독립 export 패키징은 HOLD. 실제 저장/형식/마이그레이션·전투 판정 연결을 새로 만들지 않았다. 상세 계약은 [INTRO 문서](../../DEMO11_INTRO_LIFECYCLE_20261021.md), sound 문서·번역 목록에 동기화했다. 최종 SHA·원격 일치·R 보존 확인·worktree 제거는 원로그 DONE.txt에 기록한다.
+
+
+2026-10-21 맥북총괄 눈 검수 PASS: 레터박스·명조 자막·건너뛰기 톤 일치. PC 반송의 최신 main/번역 CRLF 충돌은 같은 브랜치에서 정상 merge로 해소했다. [후속 병합 보고서](demo11-08m_REPORT.md), 원로그 `_out/demo11-08m/DONE.txt`에 새 SHA·수치를 기록한다.
