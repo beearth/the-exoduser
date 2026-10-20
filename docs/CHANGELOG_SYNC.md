@@ -1,3 +1,11 @@
+## 2026-10-21 DEMO11-06 — 복원 보호 접점 BLOCKED
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준·의존 | main8dbbf2b0에 05최종f2889355 정상merge=6949a2b1. source_restore_flow 보호3단계와 실제 resource restore writer 부재를 확인 |
+| 범위 | Main/State/전투/런타임/테스트0줄. fixture 관측을 제품으로 대체하지 않음. XP20·INV21·skills16/17은 미인수 저장 필드 계약만 표시 |
+| 문서·검증 | [차단·인터페이스 요청](engine/orders/reports/demo11-06_REPORT.md), docs/15 현행 보충. 원본 제한 행·정적 소유/호출점 점검, Godot/테스트0·PASS 주장0. _out/demo11-06/ 증거·DONE 후 자기WT 제거 |
+
 ## 2026-10-21 DEMO11-05 — main 성능 수정 병합·tick 경로 점검
 
 | 항목 | 구현·검수 근거 |
