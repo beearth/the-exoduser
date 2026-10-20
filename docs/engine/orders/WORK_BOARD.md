@@ -99,6 +99,9 @@
 | BC2-03 | Mac Codex 구현 단위 | Mac Codex | codex/bc2-03-20261020 | 보고서 참조 | **main 병합(PC Claude 2026-10-20 4차)** — PC Windows: SV 4종·junction·Ch1Stage1Source·이식성 Node 11/0·전송 2종 통과로 전환, BC2-01~04 0실패, 기본 회귀 0실패. 잔여 2건(fdgCh1Stage1World "12 hands" 객체 불일치·ch2_02 resource_manifest_pin)은 Mac에서도 보존된 선재 결함 → CH-MAP-PIN으로 분리 |
 | BC2-04 | Mac Codex 구현 단위 | Mac Codex | codex/bc2-04-20261020 | 보고서 참조 | **main 병합(PC Claude 2026-10-20 4차)** — PC Windows: SV 4종·junction·Ch1Stage1Source·이식성 Node 11/0·전송 2종 통과로 전환, BC2-01~04 0실패, 기본 회귀 0실패. 잔여 2건(fdgCh1Stage1World "12 hands" 객체 불일치·ch2_02 resource_manifest_pin)은 Mac에서도 보존된 선재 결함 → CH-MAP-PIN으로 분리 |
 | CH-MAP-PIN | 선재 결함 2건: fdgCh1Stage1World "latest main original full initMapObjects … 12 hands"(Node) · test_ch2_02 standalone_scene_ready resource_manifest_pin(Godot). Mac·PC 공통 재현. CH1-06이 보고한 "기존 맵 실패 9건"과 같은 뿌리인지 확인 후 수정 | Mac Codex(배정 요청) | codex/ch-map-pin-20261020 | 맵 소스 도구·테스트 | 배정 요청 — PC 원로그 G:/exoduser-wt/_out/merge-batch4/ |
+| BC3-01r | Mac Codex 단위 | Mac Codex | codex/bc3-01r-20261020 | 보고서 참조 | **main 병합(PC Claude 2026-10-20 6차)** — 통합본 3장 보스 catalog·3장 적 3종·4장 적·2장 보스 5종·기본 회귀 4종 0실패, 경고 0 |
+| EC3-03 | Mac Codex 단위 | Mac Codex | codex/ec3-03-20261020 | 보고서 참조 | **main 병합(PC Claude 2026-10-20 6차)** — 통합본 3장 보스 catalog·3장 적 3종·4장 적·2장 보스 5종·기본 회귀 4종 0실패, 경고 0 |
+| EC4-01 | Mac Codex 단위 | Mac Codex | codex/ec4-01-20261020 | 보고서 참조 | **main 병합(PC Claude 2026-10-20 6차)** — 통합본 3장 보스 catalog·3장 적 3종·4장 적·2장 보스 5종·기본 회귀 4종 0실패, 경고 0 |
 | EC3-02 | Mac Codex 단위 | Mac Codex | codex/ec3-02-20261020 | 보고서 참조 | **main 병합(PC Claude 2026-10-20 5차)** — 통합본 3장 적 2종·2장 보스 BC2-01~05·기본 회귀 4종 0실패 |
 | BC2-05 | Mac Codex 단위 | Mac Codex | codex/bc2-05-20261020 | 보고서 참조 | **main 병합(PC Claude 2026-10-20 5차)** — 통합본 3장 적 2종·2장 보스 BC2-01~05·기본 회귀 4종 0실패 |
 | TRACE-BOSS-CH4 | Mac Codex 단위 | Mac Codex | codex/trace-boss-ch4-20261020 | 보고서 참조 | **main 병합(PC Claude 2026-10-20 5차)** — 통합본 3장 적 2종·2장 보스 BC2-01~05·기본 회귀 4종 0실패 |
