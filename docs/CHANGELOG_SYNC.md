@@ -1,3 +1,10 @@
+## 2026-10-21 DEMO11-46 — Mac export·기동 로그 / 화면 검수 BLOCKED
+
+- main0138c5bb 기준 Mac Universal2 QA preset·export/launch 도구 추가. 공식4.7.2 template SHA512 검증→Mac zip만 유지, 임시 project 설정/ASTC·S3TC·namespace 적용 후 원본 bytes 복원. Windows/Web preset prefix·제품 코드/저장 코드 변경0. PCK 오프라인 userdir/scene/bundle 검증·ad-hoc 서명 검증.
+- 기본/독립 로비 variant export 성공, 기본 실제 Main READY1·ERROR/WARN0. CUA가 `Computer Use was not approved to use Godot`로 자기 export 앱 화면 접근을 거절해 실제 설정/슬롯 왕복/정상 종료 저장/재시작/캡처4장+크롭은 BLOCKED. 미병합06c/07/09/38/39를 실패로 세지 않음. 자기 PID만 SIGTERM 정리, 정상 종료 저장 주장0.
+- 초기 editor2회 override 무시로 First 경로 ensure 가능성은 별도 기록하며 접근0을 주장하지 않음. 제품 저장 함수 미실행, 기존 사용자 저장 파일 추가 조회0. 수정 이후 패키지 격리명은 실제 PCK로 확인. 초기 export3실패·scene override 거절 로그 보존.
+- [단계·로그 보고서](engine/orders/reports/demo11-46_REPORT.md), [docs13 실행법](13출시·마케팅/DEMO11_MAC_LOCAL_EXPORT_20261021.md), 원로그/앱 `_out/demo11-46/`. 기존 창·서버 보존, 정상 hook·자기 branch push/remote/DONE 후 자기 worktree 제거.
+
 
 ## 2026-10-21 DEMO11-18 일반 데모 합체·흡수·성급·되돌리기 원장
 
