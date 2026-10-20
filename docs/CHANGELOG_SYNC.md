@@ -1,3 +1,14 @@
+## 2026-10-20 CH1-02 정적 환경 동기화 공유 map 수정 BLOCKED
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 기준 / 의존 | codex/ch1-02-20261020, fetch main284d7faf. CH1-01이 main에 없어 지정677b86fa 끝에서 새 worktree 분기. 제품 구현 완료가 아닌 BLOCKED 조사 보고 |
+| 차단 | map.json:1의 props4..7 texture/metadata.file8필드 및 범위 출처 수정이 필수지만 최신 사용자 지시가 공유 파일 수정을 금지. 원본 game.html17551–17554의 나무05/11/06/07,18138의 배치 근거를 보고서에 기록. 공유·공용·타 담당 제품0줄 |
+| 읽기 검수 | 원exporter byte동일 L복사→격리 재추출92PNG. source/격리 byte동일92, 기존제품과46동일/42청크차이/새나무4누락. tile40000·wall292·collider19·props36·chunks64 및 배치/충돌 동일. 전체export의 source.root/game_sha 교체·P3 collider_updates 누락을 채택하지 않음 |
+| 최종 회귀 | CH1-01 Node9/0·Godot62/0, contracts5그룹/0·p3002 298/0·p3003 43/0·encounter3그룹/0. 맵Node28통과/9실패로 기준선 동일. 첫import -11 및 미완성캐시 회귀 실패 보존 후 import복구·영향4suite 재실행. ObjectDB8누수 경고 잔존 |
+| 격리 / 상태 | Godot 전 프로세스 확인·2이상이면30초 대기, suite별 기존상수/작업 격리명 존중·override finally0byte. 신규 CH1-02 테스트·PNG제품반영·8카메라 미실행. VISUAL FAIL=인수 증거 없음 |
+| 상세 | [CH1-02 BLOCKED 보고서](engine/orders/reports/ch1-02_REPORT.md), 원로그 ~/exoduser-wt/_out/ch1-02/. R·원본bytes·세이브·Q/E 보존, 자기branch docs만 push·main/force/배포0 |
+
 ## 2026-10-20 CH1-01 si0 읽기 전용 원본 snapshot·검증 모듈
 
 | id / 적용 위치 | 현재 정확 계약 |
