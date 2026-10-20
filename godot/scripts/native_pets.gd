@@ -17,7 +17,8 @@ extends Node2D
 ## - 이리스 광원: _collectLights 4686~4690 → screen_lighting.set_native_iris_light.
 ## - 대사: [S03e] 9289~9620 — _petSay 9389/_petSayCD 9471/_petBidCD/_petSayUrgent/
 ##   _updatePetBubble 9482(pair·pow(r,.6)×.6 페이드)/_petTierOf/_PET_TIER_COOL 9414.
-##   P2-004B: 카탈로그171 ID(기존11+잔여160), 선언연결60/데이터전용111.
+##   P2-004B 당시 카탈로그171 ID(기존11+잔여160), 선언연결60/데이터전용111.
+##   DEMO11-44: 기존9 ID 실제 owner 연결 추가, 현재69/102(원문·수치 불변).
 ##   트리거·쿨다운·우선순위는 원본9514~9814; Godot 실제 적용/검수는 보고서 참조.
 ##   카운터 _petOnAtk=hurtE 진입(42117 — hurtE 1회=1), _petOnHit=hurtP(43425),
 ##   _petOnKill=42702(처치). 자막 패널: #petSubtitle DOM(2587+CSS 2026-09-29 계약 —
@@ -55,6 +56,74 @@ var _configured := false
 var pets: Dictionary = {} # 어댑터 소유 런타임 상태 — 원본 G.pets(30798) 상당.
 							# 포트 G 40키 부트 계약 보존을 위해 state G에 넣지 않음(기록).
 var _tick := 0.0
+# DEMO11-44: observation only. PC owns damage/death; State owns recovery.
+var _demo_main: Node
+var _demo_encounter: Node
+var _demo_family: Node
+var _demo_events: Dictionary = {}
+var _demo_phase_seen := [false, false, false]
+var _demo_intro_seen := false
+var _demo_iris_key := ""
+
+func bind_demo_owners(main: Node) -> bool:
+	if not _configured or is_instance_valid(_demo_main) or not is_instance_valid(main) or main.get("world") != _world or main.get("player") != _player or main.get("source_state") != _state or get_parent() != _world or _world.get_parent() != main:
+		return false
+	var encounter: Node = main.get("native_demo_encounter")
+	var family: Node = main.get("native_demo_anglers")
+	if not is_instance_valid(encounter) or not is_instance_valid(family): return false
+	_demo_main = main
+	_demo_encounter = encounter
+	_demo_family = family
+	encounter.gate_ready.connect(_demo_gate)
+	encounter.reward_ready.connect(_demo_reward)
+	encounter.clear_recorded.connect(_demo_clear)
+	family.family_defeated.connect(_demo_field_done)
+	return true
+
+func _demo_live() -> bool:
+	return _configured and is_instance_valid(_world) and is_instance_valid(_player) and is_instance_valid(_state) and is_instance_valid(_demo_main) and not _demo_main.is_queued_for_deletion() and is_instance_valid(_demo_encounter) and is_instance_valid(_demo_family) and _demo_main.get("native_demo_encounter") == _demo_encounter and _demo_main.get("native_demo_anglers") == _demo_family and _world.get_parent() == _demo_main and get_parent() == _world and _demo_main.get("source_state") == _state and _demo_main.get("world") == _world
+
+func _demo_gate() -> void:
+	if not _demo_live() or _demo_events.has("gate") or _demo_main.native_demo_encounter.snapshot().phase != "gate": return
+	_demo_events.gate = true
+	_offer_dialogue("boss_gate_open") # G41878: urgent, also above Lv500.
+
+func _demo_field_done() -> void:
+	if not _demo_live(): return
+	var g: Variant = _state.read_current_g()
+	if g is Dictionary and g.get("_fbDone") == true: _demo_events.field_done = true
+	# No invented miniboss speech: G9779 defines a callback, no field call site.
+
+func _demo_reward(_record: Dictionary) -> void:
+	if not _demo_live() or _demo_events.has("boss_kill") or _demo_main.native_demo_encounter.snapshot().phase != "exit": return
+	_demo_events.boss_kill = true
+	var p: Variant = _state.read_current_p()
+	if not p is Dictionary or int(p.get("lv",1)) > 500: return
+	# G9680: final-owner transition cancels both lines before unconditional speech.
+	_pet_bubble.t = 0.0; _pet_bubble.pair = null; _pet_bubble.erase("uid")
+	_pet_dlg_cd.erase("boss_kill")
+	_offer_dialogue("boss_kill")
+	_demo_phase_seen = [false,false,false]
+
+func _demo_clear(_result: Dictionary) -> void:
+	if _demo_live() and _demo_main.native_demo_encounter.snapshot().phase == "clear":
+		_demo_events.clear = true
+	# G9795/9810 have no live call sites. Do not invent chapter-clear/speed speech.
+
+func _demo_boss() -> Dictionary:
+	if not _demo_live() or _demo_events.has("boss_kill") or _demo_events.has("clear") or _demo_main.native_demo_encounter.snapshot().phase != "arena": return {}
+	var actor: Node = _demo_main.get("native_demo_boss_actor")
+	if not is_instance_valid(actor) or not actor.is_source_frame_completed(): return {}
+	var snapshot: Dictionary = actor.snapshot()
+	return snapshot.get("enemy",{}) if snapshot.get("status") == "READY" else {}
+
+func _demo_targets() -> Array:
+	var result: Array = []
+	if not _demo_live() or _demo_events.has("clear"): return result
+	var boss: Dictionary = _demo_boss()
+	if boss.get("alive") == true: result.append({"key":"boss","x":boss.x,"y":boss.y,"r":boss.r})
+	return result
+
 
 # 대사 상태 (9287~9292)
 var _pet_bubble := {"who": null, "source": "", "txt": "", "t": 0.0, "mt": 0.0, "pair": null, "pair_fired": false}
@@ -233,7 +302,11 @@ func _update_ghost_iris() -> void:
 	pet["tgt_t"] = int(pet["tgt_t"]) + 1
 	var target: Variant = pet["tgt"]
 	var has_live_target: bool = target is Object and is_instance_valid(target) and target.get("alive") == true
-	var need: bool = (not has_live_target) or int(pet["tgt_t"]) % 10 == 0
+	var candidates: Array = _demo_targets()
+	var demo_target_live: bool = false
+	for candidate in candidates:
+		if candidate.key == _demo_iris_key: demo_target_live = true
+	var need: bool = (not has_live_target and not demo_target_live) or (not _demo_iris_key.is_empty() and not demo_target_live) or int(pet["tgt_t"]) % 10 == 0
 	if need:
 		var best_d := 800.0 # 탐색 반경 800 (41525)
 		var best: Node2D = null
@@ -246,6 +319,23 @@ func _update_ghost_iris() -> void:
 						best = enemy
 		pet["tgt"] = best
 		target = best
+	if need:
+		_demo_iris_key = ""
+		var nearest: float = p.distance_to(target.global_position) if target is Node2D and is_instance_valid(target) and target.get("alive") == true else 800.0
+		for candidate in candidates:
+			var distance: float = p.distance_to(Vector2(candidate.x,candidate.y))
+			if distance < nearest:
+				nearest = distance; _demo_iris_key = candidate.key
+	if not _demo_iris_key.is_empty():
+		pet.tgt = null; target = null
+	for candidate in candidates:
+		if candidate.key == _demo_iris_key:
+			var a: float = pet.t * 0.03
+			if float(candidate.x)>10.0 or float(candidate.y)>10.0:
+				pet.x += (float(candidate.x)+cos(a)*20.0-float(pet.x))*0.12
+				pet.y += (float(candidate.y)-float(candidate.r)-15.0+sin(a)*8.0-float(pet.y))*0.12
+			return
+	_demo_iris_key = ""
 	if target is Object and is_instance_valid(target) and target.get("alive") == true:
 		var ang: float = pet["t"] * 0.03
 		var tx: float = (target as Node2D).global_position.x + cos(ang) * 20.0
@@ -291,6 +381,8 @@ func _offer_dialogue(id: String) -> bool:
 			return _pet_say_cd(id, who, txt, dur, float(entry["cd"]), pw, pt, pd)
 		"bid":
 			return _pet_bid_cd(id, who, txt, dur, float(entry["cd"]), pw, pt, pd)
+		"say":
+			return _pet_say(id, who, txt, dur, pw, pt, pd)
 		"urgent":
 			return _pet_say_urgent(id, who, txt, dur, float(entry["cd"]), pw, pt, pd)
 	return false
@@ -470,6 +562,16 @@ func _check_pet_dialogue() -> void:
 		if sample_attack and distance_sq < 250000.0: # 원본9524: 엄격 반경 500
 			attack_total += float(enemy.get("attack")) # enemy.gd83 = 원본 e.atk
 			attack_count += 1
+	# G9524/9682: arena boss belongs to source ens, although its native owner is separate.
+	var arena_boss: Dictionary = _demo_boss()
+	if arena_boss.get("alive") == true:
+		alive_count += 1
+		var boss_distance_sq: float = _player.global_position.distance_squared_to(Vector2(arena_boss.x,arena_boss.y))
+		if boss_distance_sq < 90000.0:
+			near_count += 1
+			if float(arena_boss.get("_frozen",0)) > 0.0: near_frozen = true
+		if sample_attack and boss_distance_sq < 250000.0:
+			attack_total += float(arena_boss.get("atk",0)); attack_count += 1
 	if sample_attack:
 		_pet_enemy_avg_atk = attack_total / attack_count if attack_count > 0 else 0.0
 	_dialogue_halt = ""
@@ -502,9 +604,20 @@ func _check_urgent_dialogue(p: Dictionary) -> void:
 		_offer_dialogue("burn_warn")
 	if hp > 0.0 and _pet_enemy_avg_atk > 0.0 and hp < _pet_enemy_avg_atk * 1.2:
 		_offer_dialogue("hp_oneshot")
-	# stun/보스 urgent는 미연결. 원본 데이터 10 ID를 보존하며 가짜 상태를 만들지 않는다.
+	for id in demo_boss_survival_ids(_demo_boss(),p): _offer_dialogue(id)
 	if float(p["st"]) < float(p["mst"]) * 0.5 and int(p["lv"]) <= 100:
 		_offer_dialogue("low_st") # 원본9537: T3를 urgent 중간 fire에서 처리한다.
+
+
+# G9539–9553. Pure selection; _execCd has no admitted owner in this unit.
+static func demo_boss_survival_ids(boss: Dictionary, p: Dictionary) -> Array:
+	var ids: Array = []
+	if boss.get("alive") == true and float(boss.get("stunned",0)) > 0.0:
+		if int(p.get("skills",{}).get("execution",0)) < 1: ids.append("boss_groggy")
+	var boss_state: String = str(boss.get("s",""))
+	if boss_state == "bossGrabWind": ids.append("boss_grab_warn")
+	elif boss_state in ["bossBurstWind","bossShockWind","bossMeteorWind","bossVortexWind"]: ids.append("boss_aoe_warn")
+	return ids
 
 
 func _check_pet_tutorial(p: Dictionary, g: Dictionary) -> bool:
@@ -603,6 +716,16 @@ func _check_competitive_dialogue(p: Dictionary, g: Dictionary, near_count: int,
 	if alive_count > 0:
 		_pet_stage_cleared = false
 	_pet_last_enemy_count = alive_count
+	var boss: Dictionary = _demo_boss()
+	if boss.get("alive") == true:
+		var ratio: float = float(boss.hp)/float(boss.mhp)
+		for i in range(3):
+			if not _demo_phase_seen[i] and ratio < [0.7,0.4,0.15][i]:
+				_demo_phase_seen[i] = true
+				_offer_dialogue(["boss_p2","boss_p3","boss_p4"][i])
+		if not _demo_intro_seen:
+			_demo_intro_seen = true
+			_offer_dialogue("boss_intro_ch0")
 
 
 func _pet_bag_next(bag: Array, length: int) -> int:
@@ -795,7 +918,7 @@ func get_native_pets_snapshot() -> Dictionary:
 	for id in DIALOGUE_CATALOG.ENTRIES:
 		if DIALOGUE_CATALOG.ENTRIES[id]["connected"] != true:
 			data_only.append(id)
-	return {"configured": _configured,
+	return {"configured": _configured, "demo_owner_events": _demo_events.duplicate(), "demo_owner_bound": _demo_live(), "demo_iris_key": _demo_iris_key,
 		"pets": {"crow": [pets["crow"]["x"], pets["crow"]["y"]], "cat": [pets["cat"]["x"], pets["cat"]["y"]],
 			"xbow": [pets["xbow"]["x"], pets["xbow"]["y"]], "iris": [pets["iris"]["x"], pets["iris"]["y"]]} if _configured else {},
 		"iris_target_alive": pets.get("iris", {}).get("tgt") is Object and is_instance_valid(pets["iris"]["tgt"]) if _configured else false,
@@ -807,7 +930,7 @@ func get_native_pets_snapshot() -> Dictionary:
 		"dialogue_cooldowns": _pet_dlg_cd.duplicate(), "tier_cooldowns": _pet_tier_cd.duplicate(),
 		"dialogue_halt": _dialogue_halt,
 		"unported": ["펫 공격 없음(원본 41496~41541 — P2-001d '이리스 피해' 추정 오귀속 정정)",
-			"대사171 ID 중 미연결111 ID는 dialogue_catalog.data_only_ids 참조; 설계전용 카테고리14/24~26/28~29 및 death_dual 별도 화면은 범위 밖",
+			"대사171 ID 중 미연결102 ID는 dialogue_catalog.data_only_ids 참조; 설계전용 카테고리14/24~26/28~29 및 death_dual 별도 화면은 범위 밖",
 			"펫 음성(_petSfx)·패드 키 치환(_padifyHint)·언어 전환(_refreshPetBubbleLanguage — ko 원문 고정)",
 			"R 수거 연계·G.pets G-소유 이관(어댑터 보유 — G 40키 부트 계약 보존)",
 			"crow _fly 애니(원본 미등록 dead)·cat t 및 대사 셔플은 월드와 분리한 로컬 RNG",

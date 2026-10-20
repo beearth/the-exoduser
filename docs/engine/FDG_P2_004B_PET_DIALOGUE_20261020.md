@@ -1,5 +1,7 @@
 # P2-004B — 펫 원문 171 ID 적용·격리검수 (2026-10-20)
 
+> 2026-10-21 최신: DEMO11-44 추가9 ID로 선언69/데이터전용102. 아래60/111 표와 수치는 P2-004B 당시 이력이다. [최신 근거/검증](orders/reports/demo11-44_REPORT.md).
+
 현재 상태는 **Godot 실제 적용·격리검수 완료, 총괄 검수 대기**다. 기존 EPERM 정지 후보는 보존하고 코드3파일을 apply_patch로 적용했다. 선언 연결60/데이터전용111은 유지하며 원문171/0·신규9그룹822/0·실제 Main 연결 하니스10/0을 확인했다. 기존 회귀의 G.on=false 준비 조건은 원본9508/63412 근거로 정정했다(17검사/5실패 보존 → 실패그룹14/0, 기통과6/0 재실행 없음). 브랜치 codex/p2-004b-pc-20261020, 시작 HEAD f1df29a86dc3966bab87a7f4910ae6819e167294. 커밋·원격 영수증은 보고서 최신 절을 따른다. 모든60개 자연 발화·화면·사람 플레이는 미인수다.
 
 원본 근거: 이 worktree game.html. 신규 대사·원본 에셋 변경0. 상세 명령·원로그는 [보고서](orders/reports/P2-004B_REPORT.md). [원인수 후보 패치](orders/reports/P2-004B_CANDIDATE.patch)는 이력 보존본이며 재적용하지 않는다. 실제 적용 후 전용 적 _frozen 직접속성 읽기를 기존 read_native_normal_enemy_hurte_fields owner 읽기로 보완했다. owner 미지원·NOT_READY이면 대사 체크를 정직 정지하고 snapshot.dialogue_halt에 사유를 남긴다(원본9592~9593 빙결 관측).

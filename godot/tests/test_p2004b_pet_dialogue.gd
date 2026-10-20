@@ -106,9 +106,11 @@ func _test_catalog_dispatch_boundary() -> void:
 			"미연결 대사 입찰 없음 " + id)
 		_check((pets.get("_say_log") as Array).is_empty(), "미연결 대사 표시 없음 " + id)
 		_check((pets.get("_pet_dlg_cd") as Dictionary).is_empty(), "미연결 대사 CD 없음 " + id)
-	_check(disconnected == 111, "미연결 111 ID 경계")
+	_check(disconnected == 102, "미연결 102 ID 경계")
+	for id in ["boss_groggy","boss_grab_warn","boss_aoe_warn","boss_p2","boss_p3","boss_p4","boss_intro_ch0","boss_kill","boss_gate_open"]:
+		_check(bool(CATALOG.get_entry(id).get("connected",false)), "DEMO11-44 실제 owner 소비 연결 " + id)
 	for id in ["multi_kill", "bl_first_red", "bl_first_rainbow", "cd_first_hit",
-		"first_death", "stun_warn", "boss_exec", "boss_intro_ch0", "elite_first",
+		"first_death", "stun_warn", "boss_exec", "elite_first",
 		"chapter_clear_0", "first_legend", "build_str", "diff_3"]:
 		_check(not bool(CATALOG.get_entry(id).get("connected", true)), "미이식 이벤트를 연결로 속이지 않음 " + id)
 	_fresh()

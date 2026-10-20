@@ -125,6 +125,7 @@ var _native_demo11_policy: Dictionary = {}
 var native_demo_boss_actor: Node2D
 var native_demo_boss_projectiles: Node
 var native_demo_encounter: Node
+var native_demo_anglers: Node2D
 
 # DEMO11-06b: opt-in native save route; protected PC handoffs remain pending.
 var _demo11_session: RefCounted
@@ -429,6 +430,9 @@ func _ready() -> void:
 	native_demo_boss_projectiles = preload("res://scripts/native_demo11_boss_projectiles.gd").install_native_boot(self) # DEMO11-35
 
 	preload("res://scripts/native_demo11_hud_owner.gd").install_native_boot(self) # DEMO11-42 display only
+
+	native_demo_anglers=preload("res://scripts/native_demo11_anglers.gd").install_native_boot(self)
+	if not native_pets.bind_demo_owners(self): push_warning("DEMO11-44 pet owner binding not ready.")
 	var metrics_timer := Timer.new()
 	metrics_timer.wait_time = 0.1
 	metrics_timer.process_mode = Node.PROCESS_MODE_ALWAYS
@@ -3340,3 +3344,8 @@ var source_inventory_ui: Control
 func request_native_inventory_ui(action: String, item: Dictionary={}, data: Dictionary={}) -> Dictionary:
 	if not _native_main_service_live() or not is_instance_valid(source_inventory_ui): return {"applied":false,"reason":"inventory_not_ready"}
 	return source_state.apply_native_inventory_ui(self,action,item,data)
+
+
+# DEMO11-31: MAP11 provides four distinct child Marker2Ds in source slot order.
+func bind_native_demo_anglers(provider: Node2D, markers: Array) -> bool:
+	return is_instance_valid(native_demo_anglers) and native_demo_anglers.bind_provider(provider,markers)

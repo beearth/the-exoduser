@@ -6,6 +6,7 @@ const CONNECTIONS = new Set(('tut_start tut_atk3 tut_charge tut_1sthit tut_hit2 
   + 'warn_hp50 crisis_hp30 hp_critical burn_warn hp_oneshot low_st enemy_ice '
   + 'melee_trap_yes melee_trap_no melee_slam_yes melee_slam_no '
   + 'resource_half_dome resource_parry resource_low_yes resource_low_no idle_noE chapter_0 env_ch0 '
+  + 'boss_groggy boss_grab_warn boss_aoe_warn boss_p2 boss_p3 boss_p4 boss_intro_ch0 boss_kill boss_gate_open '
   + 'stage_clear combo_50 combo_100 low_hp_kill').split(' '));
 for (const [prefix, size] of [['idle_nag', 6], ['idle_tip', 18], ['petTalk_', 5]])
   for (let i = 0; i < size; i++) CONNECTIONS.add(prefix + i);

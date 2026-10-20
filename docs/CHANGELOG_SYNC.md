@@ -216,6 +216,20 @@
 | 검증 | 실제 Main29/0·경계6/0·입력6/0·기존 policy68/0·INV142/0 각1회, 합계251/0/ERROR0·기존Camera WARN2. 최종 GUI/crop16/0·WARN1 별도. 초기 시각 RETOUCH 보존 |
 | 인계 | [보고서](engine/orders/reports/demo11-28_REPORT.md), _out/demo11-28/captures/ 전체3+1x9. 눈 검수·자연 줍기/저장 소비자 대기. R/First 불변·정상 훅·자기branch push/remote/DONE 후 자기WT 제거 |
 
+## 2026-10-21 DEMO11-44 기존 펫 owner 연결
+
+- main0138c5bb +37/05f41cc7 +31/76bcae8d 정상 merge, 양쪽 기능 보존. Main 설치1줄·NativePets 읽기/신호 소비, 기존9 ID 추가69/102. 펫 피해/회복0, State writer 재사용 검증. 신규75/0·Node10/0, 관련 회귀·공용 범위는 [보고서](engine/orders/reports/demo11-44_REPORT.md). 번역4문장 추가·main bytes/CRLF 보존.
+
+## 2026-10-21 DEMO11-31 — 앵글러 family·실제 탄·PC final→지역 gate
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준·연결 | main45be76e4+37/05f41cc7 정상 merge8992ef35. Main 설치/Marker API·실제 World phase/동일G·35 registry field birth/에너지 sweep·PC readback→P3→37. source 좌표 복제0·원본 PNG byte재사용. |
+| 보호·원문 | Main+6/0·registry field접점31+/4−, State/World/Player/PC 피해·패링·저장·맵0. 180/180 재충전 burst 구간·혈안 drop 면제·에너지 출생후18/96·r26 그대로. |
+| 검증 | 신규1402/0+PC집중11/0+기존200/0=기능1613/0. 벤치1회263/0 cleanPASS, 4actor/256energy·240틱 mean1.133850/max4.649ms<8.333ms. 초기2실행 예외/기대값 실패·자기PID종료 원문보존/실패만수정, PC후속은집중11만. |
+| 문서·제출 | [계약·범위·실패/성능](engine/orders/reports/demo11-31_REPORT.md), FIELD cadence/visibility·fieldboss 추적 현행 보충. 자기branch 일반push/원격일치/DONE 후 WT제거·R불변, _out/demo11-31 원로그. |
+
+
 ## 2026-10-21 DEMO11-18 일반 데모 합체·흡수·성급·되돌리기 원장
 
 | 항목 | 구현·검수 근거 |
@@ -376,6 +390,9 @@
 | 공용·보호 | Main17/84/1007 추가3줄, State1227–1260 추가34줄, authority672–685 추가14줄. 기존 줄 수정/삭제0, 피해·PC 전투 핵심·저장·맵·웹 원본·R0. 관련 2_8 docs 갱신 |
 | 검증 | 원본 JS UTF8 oracle420사례·신규2560/0. 직접 회귀 각1회 QS318/0·regen10/0·lessonclock21/0·contracts5그룹/0. 최종 ERROR/종료누수0, 기존 Camera2D WARNING 기록. 최초 하니스5실패/MP3 누수 진단·수정 이력 보존 |
 | 잔여·제출 | SFX 미연결·native 시스템 튜토리얼·전설벨트 피해 consumer HOLD를 명시, 활성벨트 timer 생성/피해 수정0. [DEMO11-25 보고서](engine/orders/reports/demo11-25_REPORT.md). codex/demo11-25b-20261021 자기branch push/원격일치/DONE 후 자기WT제거 |
+
+
+
 ## 2026-10-21 DEMO11-35 실제 보스 일반 탄 registry·출생·수명
 
 | 항목 | 구현·검수 근거 |
