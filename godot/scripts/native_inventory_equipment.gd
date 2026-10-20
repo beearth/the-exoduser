@@ -132,6 +132,7 @@ func execute(operation: String, item: Dictionary, target: String, inv: Dictionar
 		"transfer":transfer,"before_attack":attack_before,"before_defense":defense_before,"attack_readback":main.read_native_attack_parameters(),
 		"defense_readback":main.player.read_native_source_initialization_fields().baseDef,
 		"unported":["inventory UI wiring","equip SFX/lesson callbacks","dbSaveForce"]}
+	_last["effects"]=preload("res://scripts/native_equipment_effect_consumption.gd").observe(main,inv,receipt)
 	return _last.duplicate(true)
 func _transfer_crystals(old: Dictionary, item: Dictionary, gems: Array) -> void:
 	if not old.get("crystals") is Array or old.crystals.is_empty(): return
