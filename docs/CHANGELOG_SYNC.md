@@ -55437,5 +55437,5 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 |---|---|
 | 공식 영문명 | Steam 상점명과 동일한 `EXODUSER: HELL LORD` |
 | 런타임 | `index.html` 문서 제목과 영어 로비 `지옥의 길` 번역, `godot/data/demo11_ui_i18n.json` 로비 번역, `build-nwjs.mjs` 빌드 표기를 `HELL: EXODUSER`에서 정정. 다른 언어의 고유 UI 번역·게임플레이 문자열은 변경하지 않음 |
-| 번역 목록 | `docs/16번역·로컬라이제이션/번역대상_전체목록.md` No.1621/1931을 같은 제목으로 동기화하며 CRLF 유지 |
+| 번역·출시 문서 | `docs/16번역·로컬라이제이션/번역대상_전체목록.md` No.1621/1931과 번역 가이드·출시 확장 전략의 현재 영문명 표기를 같은 제목으로 동기화하며 대상 목록의 CRLF 유지 |
 
