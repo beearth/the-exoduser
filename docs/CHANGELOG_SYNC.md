@@ -1,3 +1,13 @@
+## 2026-10-20 BC3-03 3장 신규 7기술 시작 command/ack 계획
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준 / 의존 | main 56c939fb에서 ec9f1449를 정상 merge한 db726b51 기준. BC06은 main에 존재. CHANGELOG는 main byte 전체와 선재 표식 12행 보존 후 의존 절 추가. rebase 없음 |
+| 원본 / 소유 | G37720–37749/37846–37859/37992–38002/38161–38177/38192–38211. 새 7개만 구현. BC06 command/ack/RNG/helper 재사용, 기존 공유 21개·CH2 고유 9개 본문 복제 없음. 실집행/full_tick=false |
+| 검증 | 원문 VM 307사례/2719event/241RNG, 신규 6824/0. 기존 회귀 114131/0·contracts 5그룹/0. 전체/9구간 hash·정수/binary64 수송·UTF-8 파일·join/명시 node-bin. 기존 정밀도 계약 유지·정수 정확 비교 |
+| 격리 / HOLD | Godot 6회 --verbose, ERROR/ObjectDB/resource 0. gate 30초 대기 24회·override 0byte. 새 격리명·기존 상수 준수. Main/State/hurtE/저장·spawn 색/BC08·기존 제품/테스트 변경 0줄. [보고서](engine/orders/reports/bc3-03_REPORT.md), 원로그 ~/exoduser-wt/_out/bc3-03/ |
+| 제출 | 경로 지정 add·정상 훅·자기 브랜치 push·remote SHA/DONE 후 자기 worktree 제거. 실제 전투·피격·패링·시각·성능 검수는 후속 |
+
 ## 2026-10-20 BC3-01r 3장 보스 읽기 전용 catalog
 
 | 항목 | 구현·검수 근거 |
