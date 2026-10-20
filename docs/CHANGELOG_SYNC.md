@@ -19,6 +19,37 @@
 | Mac 전후 | 대상 Godot8종 각369030/0·stdout/stderr byte 동일. Node5종 각40통과/1선재 실패 유지. 신규 분할63/0·Node4/0·contracts5그룹/0. Windows 실제 실행 미확인 |
 | 원인 / 한계 | slot JSON.x 코드페이지 오독 모사1건, PC 직접 원인 미확인. CH2 manifest 재추출 main_sha 차이로 동일 pin 거부 실제 재현·원본 복원, 제품 수정0. [QA-007 보고서](engine/orders/reports/qa-007_REPORT.md), 원로그 ~/exoduser-wt/_out/qa-007/ |
 
+## 2026-10-20 BC2-02 승인 반영: 장 catalog 일반화·2장 재사용
+
+| 항목 | 현재 정확 계약 |
+|---|---|
+| 승인·기준 | 맥북총괄이 Mac 소유 BC02~07 수정 명시 승인. 기존 HOLD d7116024 재개, main26c050a99 정상 merge bb7d7ec3·BC2-01 의존 유지 |
+| 일반화 | 마지막 선택 catalog 인자·기본 null=기존 CH1, 명시 provider/source/token 문맥 검증. BC01 전역manifest+BC2-01 CH2조회 재사용, 공통 표/수식 복제0 |
+| 2장 계산 | 실제si4~9 생성·score·선택·phase/clock·공통22시작·근접6state 재사용. dropTier 원본 hell+1 cap4, 내부 phase 전달. 신규10start는 owner_required |
+| 전후 회귀 | 기존 BC01~BC08 파일·검사 무수정, 전후 각각131,655검사/0실패. BC2-01 전후7,169/0. 신규최종44,891/0·원본fixture3,725개, skip0·exit0·ERROR0 |
+| 실패·경계 | 초기1,674·36실패 원문/수정 보존. Node인자·출력join/UTF-8·IEEE754 RNG전송. 공용6·타담당·원본·저장·기존테스트·바이너리0. 실제전투/Main 연결HOLD, 후속 미착수 |
+| 제출 | [BC2-02 보고서](engine/orders/reports/bc2-02_REPORT.md), 원로그~/exoduser-wt/_out/bc2-02/approved/. 매Godot pgrep/30초대기·상수격리명·override종료0byte. 자기branch push/원격일치/DONE후자기WT제거 |
+
+## 2026-10-20 BC2-02 chapter 데이터 수용 접점 HOLD
+
+| 항목 | 현재 정확 계약 |
+|---|---|
+| 기준·선행 | fetch main26c050a99a711e793a6c2413395acda09b0c1614. BC2-01 main미포함으로사용자예외에따라인수끝6e6f2f58633bb7a54fa0cf1a9cd3df3dc1535aba에서분기. 최신main의BC01~03·game/index와동일byte재대조 |
+| 차단·필요위치 | BC02~06의CH1 catalog고정/진입guard,BC07의si0~3직접guard로CH2계산수용불가. BC04의59전역manifest요구·BC06의새10start미소유도구분. 기존owner의데이터인수·guard·token/ack계약결정필요 |
+| 보호·판정 | 공용·타담당0줄조건상기존모듈수정불가. 공통식복제·stage위장·continuation우회·부분helper를전체구현으로보고0. **BC2-02 HOLD/기능미구현**,후속단위/실전/Main진행0 |
+| 검토·실행 | 정적파일/행/caller/인수분석만. Godot/게임/Node원본하니스/신규·회귀테스트0,실행PASS0. R HEAD/branch/tracked INDEX/WORK·원본·제품·기존테스트·저장형식·바이너리변경0 |
+| 산출 | [BC2-02 보고서](engine/orders/reports/bc2-02_REPORT.md)+이절만commit. QA-007 출력전체join/UTF-8·node인자규칙을후속검증조건에기록. 원로그~/exoduser-wt/_out/bc2-02/,push·원격일치·DONE후자기worktree제거 |
+
+## 2026-10-20 BC2-01 2장 보스 읽기 전용 catalog
+
+| 항목 | 현재 정확 계약 |
+|---|---|
+| 기준·소유 | origin/main `0119f3048a459a458ba142d98f68126b8e281be1`(ce141573e 이후). 신규 catalog·격리테스트·UID2·보고서·이 절만 변경. 공용·타 담당·기존 테스트·원본·설계·세이브형식0줄, R 불변 |
+| 등록·재사용 | si4~9/6이름/물리속성/최종Set27~32·union32. main의BC01에서22기술·5phase·25combo 읽기,신규10기술·13combo만 추가. 유효combo38,ordinal순서/Set순서·모든원본필드·깊은복사·의존실패닫힘 보존 |
+| 실제 검증 | 신규7,169/0·BC01~07 회귀합106,867/0·contracts5그룹/0. 합114,036단정/0,skip0/exit0/ERROR0/stderr빈값. bc02/bc03 source-game 절대경로 인수. 각상수격리명·전호출pgrep/2이상30초대기·Godot동시1·override종료0byte |
+| 경계·HOLD | 실제전투/Main·State·World·부활·저장연결0. 다음B2C02의BC02~07 chapter데이터/guard/ack 통합결정은HOLD,공용모듈수정·stage위장·후속구현0. 시각·실전·성능·PC 미검수 |
+| 인계 | [BC2-01 보고서](engine/orders/reports/bc2-01_REPORT.md). 원로그 `~/exoduser-wt/_out/bc2-01/`,정상hook·자기branch push·원격SHA대조·DONE후자기worktree제거 |
+
 ## 2026-10-20 SND-08 독립 원문 믹스·합성·레시피 모델
 
 ## 2026-10-20 NW-03 MAP_OBJS action의 독립 명령 계획
