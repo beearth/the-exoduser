@@ -40,7 +40,8 @@ func request_transition(route: String) -> Dictionary:
  if _gate_owner!=null:
   if not is_instance_valid(_gate_owner.get_ref()):return {"status":"NOT_READY","reason":"gate_owner_retired"}
   if route=="enter":
-   var options: Dictionary=main.source_initialization_services.read_current_options()
+   var options: Variant=main.source_initialization_services.read_current_options()
+   if not options is Dictionary:return {"status":"NOT_READY","reason":"actual_options_required"}
    var g: Dictionary=main.source_state.read_current_g()
    if not options.get("diff") is int:return {"status":"NOT_READY","reason":"actual_difficulty_required"}
    var receipt: Dictionary=provider().request_gate_enter(main.player.global_position,{"difficulty_index":options.diff,"stage_diff_offset":g.get("_stageDiffOff",0),"room":0})

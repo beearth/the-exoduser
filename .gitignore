@@ -182,3 +182,6 @@ assets/vfx/boss/gen/
 !godot/tests/test_demo11_47l_mac.gd
 !godot/tests/test_demo11_47l_mac.gd.uid
 !godot/tests/test_demo11_47l_contract.py
+
+# DEMO11-47m: retain callback boundary/retirement regression.
+!godot/tests/test_demo11_47m_profile.gd

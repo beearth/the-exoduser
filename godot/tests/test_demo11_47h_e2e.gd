@@ -14,6 +14,44 @@ var store: RefCounted
 var item: Dictionary={}
 var event_rows: Array=[]
 var checkpoint:=false
+var callback_costs: Dictionary={}
+var profile_stage: String=""
+func profile_node(node: Node) -> void:
+ if not is_instance_valid(node) or node is Stamp or node.get_parent()==null or node.has_meta("demo47m_profiled"):return
+ if node.is_physics_processing():
+  node.set_meta("demo47m_profiled",true)
+  var script: Script=node.get_script()
+  var key: String=str(node.get_path())+" | "+(script.resource_path if script!=null else "native")
+  var row: Dictionary={"start":0,"frame":-1,"end":0,"last_us":0,"max_us":0,"total_us":0,"calls":0,"over_budget":0,"stage":"","by_stage":{}}
+  if callback_costs.has(key):row=callback_costs[key]
+  else:callback_costs[key]=row
+  var before:=Stamp.new();var after:=Stamp.new()
+  before.process_physics_priority=node.process_physics_priority;after.process_physics_priority=node.process_physics_priority
+  var reference: WeakRef=weakref(node)
+  before.physics=func():
+   var target: Node=reference.get_ref()
+   row.frame=Engine.get_physics_frames()
+   row.start=Time.get_ticks_usec() if is_instance_valid(target) and target.is_physics_processing() and target.can_process() else 0
+  after.physics=func():
+   if row.start==0 or row.frame!=Engine.get_physics_frames():return
+   var us: int=Time.get_ticks_usec()-row.start
+   row.end=Time.get_ticks_usec()
+   row.last_us=us
+   row.calls+=1;row.total_us+=us
+   if not row.by_stage.has(profile_stage):row.by_stage[profile_stage]={"calls":0,"max_us":0,"total_us":0,"over_budget":0}
+   var phase: Dictionary=row.by_stage[profile_stage]
+   phase.calls+=1;phase.total_us+=us;phase.max_us=maxi(phase.max_us,us)
+   if us>8333:phase.over_budget+=1
+   if us>8333:row.over_budget+=1
+   if us>row.max_us:row.max_us=us;row.stage=profile_stage
+  var parent: Node=node.get_parent()
+  parent.add_child(before);parent.move_child(before,node.get_index());node.add_child(after);node.move_child(after,0)
+  node.tree_exiting.connect(before.queue_free,CONNECT_ONE_SHOT)
+ for child in node.get_children():
+  if not child is Stamp:profile_node(child)
+func profile_added(node: Node) -> void:
+ if not node is Stamp:profile_node.call_deferred(node)
+var worst_tick: Dictionary={}
 var physics_start:=0
 var process_last:=0
 var serial:=0
@@ -58,9 +96,18 @@ func done(status: String,reason: String="",evidence: Dictionary={}) -> void:
   elif active.id in ["boss_defeat_signal","clear","demo_end","lobby_return"]:blocked=["bossroom_gate","PC_fieldboss_HP_final_readback","boss_source_updateE_prefix","PCI-11"]
  var row: Dictionary={"blocked_by":blocked,"id":active.id,"status":status,"reason":reason,"checkpoint":active.checkpoint,"command_span_ms":active.action_us/1000.0,"wall_ms":(Time.get_ticks_usec()-active.start_us)/1000.0,"physics_callback":stats(active.physics_samples),"process_frame_interval":stats(active.frame_samples),"evidence":active.evidence}
  rows.append(row);active={};print("E2E_STAGE ",JSON.stringify(row))
-func before_physics() -> void:physics_start=Time.get_ticks_usec()
+func before_physics() -> void:
+ profile_stage=str(active.get("id","loading"))
+ physics_start=Time.get_ticks_usec()
 func after_physics() -> void:
- if not active.is_empty() and physics_start>0:active.physics_samples.append(Time.get_ticks_usec()-physics_start)
+ if not active.is_empty() and physics_start>0:
+  var us: int=Time.get_ticks_usec()-physics_start
+  active.physics_samples.append(us)
+  if us>int(worst_tick.get("us",0)):
+   worst_tick={"us":us,"stage":profile_stage,"frame":Engine.get_physics_frames(),"callbacks":{}}
+   for key in callback_costs:
+    var row: Dictionary=callback_costs[key]
+    if row.frame==Engine.get_physics_frames() and row.start>0:worst_tick.callbacks[key]={"us":row.last_us,"start":row.start-physics_start,"end":row.end-physics_start}
 func process_sample() -> void:
  if active.is_empty():return
  var now:=Time.get_ticks_usec()
@@ -101,6 +148,7 @@ func fail_remaining(reason: String) -> void:
   begin(id);await done("NOT_READY",reason)
 func run() -> void:
  Engine.physics_ticks_per_second=120;Engine.max_fps=240
+ node_added.connect(profile_added)
  root.show() # Logical document visibility for headless input; no display window is rendered.
  var first:=Stamp.new();first.process_mode=Node.PROCESS_MODE_ALWAYS;first.process_physics_priority=-1000000;first.physics=before_physics;root.add_child(first);sample_nodes.append(first)
  var last:=Stamp.new();last.process_mode=Node.PROCESS_MODE_ALWAYS;last.process_physics_priority=1000000;last.physics=after_physics;last.process=process_sample;root.add_child(last);sample_nodes.append(last)
@@ -312,7 +360,7 @@ func finish() -> void:
  var counts: Dictionary={"PASS":0,"NOT_READY":0,"FAIL":0}
  for row in rows:counts[row.status]+=1
  var overall: String="FAIL" if counts.FAIL>0 else ("NOT_READY" if counts.NOT_READY>0 or checkpoint else "PASS")
- var result: Dictionary={"overall":overall,"counts":counts,"failures":counts.FAIL,"stages":rows,"stage_order_complete":rows.size()==ORDER.size(),"continuous_E2E":overall=="PASS" and not checkpoint,"headless":DisplayServer.get_name()=="headless","userdir":OS.get_user_data_dir(),"scheduler_max_us":main.native_natural_enemies.scheduler_max_us if is_instance_valid(main) else 0,"angler_profile":main.native_demo_anglers.snapshot() if is_instance_valid(main) else {},"profile_calls":root.get_meta("demo47i_perf",{}),"physics_hz":Engine.physics_ticks_per_second,"budget_ms":1000.0/120,"performance_scope":"headless callback CPU span and process_frame wall intervals; GPU excluded; command_span_ms includes asynchronous waits; not a CPU timer","visual_audio_QA":false}
+ var result: Dictionary={"overall":overall,"counts":counts,"failures":counts.FAIL,"stages":rows,"stage_order_complete":rows.size()==ORDER.size(),"continuous_E2E":overall=="PASS" and not checkpoint,"headless":DisplayServer.get_name()=="headless","userdir":OS.get_user_data_dir(),"scheduler_max_us":main.native_natural_enemies.scheduler_max_us if is_instance_valid(main) else 0,"angler_profile":main.native_demo_anglers.snapshot() if is_instance_valid(main) else {},"worst_tick":worst_tick,"callback_costs":callback_costs,"profile_calls":root.get_meta("demo47i_perf",{}),"physics_hz":Engine.physics_ticks_per_second,"budget_ms":1000.0/120,"performance_scope":"headless callback CPU span and process_frame wall intervals; GPU excluded; command_span_ms includes asynchronous waits; not a CPU timer","visual_audio_QA":false}
  if not arg("--results-path").is_empty():
   var file:=FileAccess.open(arg("--results-path"),FileAccess.WRITE)
   if file!=null:file.store_string(JSON.stringify(result,"\t"));file.close()

@@ -121,6 +121,10 @@ func _advance_phase(sp: float,_native_frame: float,_enemies: Array) -> void:
   if not fb is Dictionary or fb.hp<=0:continue
   if str(_blocked.get(i,"")).ends_with("readback_required"):continue
   if _g._fieldBoss==null:_g._fieldBoss=fb
+  # MODEL.tick returns without state/RNG writes for sleeping actors beyond 1000.
+  # Preserve selection/serial/PC guards, but avoid an empty result/events allocation
+  # and unchanged visual redraw for that exact dormant case.
+  if fb.asleep and Vector2(fb.x,fb.y).distance_squared_to(_main.player.global_position)>1000000.0:continue
   var can_shoot: bool=absf(fb.x-center.x)<=maxf(0,viewport.x/2-64) and absf(fb.y-center.y)<=maxf(0,viewport.y/2-64)
   p.x=_main.player.global_position.x;p.y=_main.player.global_position.y;p.iframes=_main.player.iframes;p.s=_main.player.state
   var result: Dictionary=MODEL.tick(fb,p,can_shoot,_rng,_interaction if _pc_interaction.is_valid() else Callable())

@@ -56065,3 +56065,10 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 MAP11 fieldboss Marker 4개/실제 family bind, 실제 transport spawn_options와 arena geometry 선전환·실패복귀, E2E 제품 게이트 호출 관측 추가. PC HP/final/prefix owner 대기와 미검증 자연 입장 범위를 engine 상태표·47k 보고서에 기록. 보호 전투/비주얼/번역 변경 없음.
 
 47k 집중 검증 스크립트는 tests ignore 규칙의 정확한 파일 예외로 명시 add하여 결과 재현 경로를 함께 보존한다.
+
+
+## 2026-10-21 DEMO11-47m
+
+- 별도 sparse worktree에서 단독 계측/콜백별 상위10·18단계 기록. physics 22.007→30.845ms로 목표 미달 유지.
+- Mac asleep>1000 tick 빈 할당/redraw 생략, map11 options Nil→NOT_READY guard. PC 코어·맵 룩·번역 무수정.
+- engine STATUS 및47L 회귀 문서의 원인·검수·미해결 증거 동기화.

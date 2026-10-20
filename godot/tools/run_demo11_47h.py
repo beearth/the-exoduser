@@ -13,12 +13,12 @@ user='EXODUSER-demo11-47h-Isolated-20261021';override=w/'godot/override.cfg'
 if override.exists() and override.stat().st_size:raise SystemExit('Refusing to overwrite nonempty override.cfg')
 def gate(tag):
  while True:
-  pattern='Godot.app/Contents/MacOS/Godot';pg=subprocess.Popen(['pgrep','-f',pattern],stdout=subprocess.PIPE);wc=subprocess.run(['wc','-l'],stdin=pg.stdout,capture_output=True,text=True);pg.stdout.close();pg.wait();n=int(wc.stdout.strip())
-  raw=subprocess.run(['pgrep','-fl',pattern],capture_output=True,text=True).stdout;lines=[]
+  pattern='Godot|godot|godot4';pg=subprocess.Popen(['pgrep','-x',pattern],stdout=subprocess.PIPE);wc=subprocess.run(['wc','-l'],stdin=pg.stdout,capture_output=True,text=True);pg.stdout.close();pg.wait();n=int(wc.stdout.strip())
+  raw=subprocess.run(['pgrep','-xl',pattern],capture_output=True,text=True).stdout;lines=[]
   for line in raw.splitlines():
    fields=line.split(maxsplit=2);lines.append(line if len(fields)>1 and fields[1].endswith('/Godot') else fields[0]+' non-Godot argv match (redacted)')
   with (out/'godot-gate.jsonl').open('a') as f:f.write(json.dumps({'run':prefix,'tag':tag,'time':time.time(),'count':n,'processes':lines})+'\n')
-  if n<2:return lines
+  if n==0:return lines
   print('WAIT Godot count',n,flush=True);time.sleep(30)
 def launch(tag,extra):
  processes=gate(tag);override.write_text('[application]\nconfig/use_custom_user_dir=true\nconfig/custom_user_dir_name='+json.dumps(user)+'\n',encoding='utf-8')
