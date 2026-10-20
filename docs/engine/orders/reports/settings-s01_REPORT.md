@@ -102,3 +102,7 @@ S01 신규 Main/unit 테스트에는 `godot/override.cfg`로 `config/use_custom_
 최신 main 병합 전 자기 staged3파일은 경로 한정 stash `83dd83e3bc5449b695ffed7e521b0c88889b25d7`로 보존하고 ff merge 후 `stash apply --index`로 복원했다. stash는 삭제하지 않았다. `main-9528ea35/start.json`·`verification.json`에 최종 main SHA, 공용6파일/OPT owner/두 HTML의 병합 직후·검증 후 동일 hash, override0byte, 원로그 hash를 기록한다. main에서 인수한 공용 파일 변경과 S01 자체 변경0을 구분한다. 최초 base 기준 hash와 최종 main 파일이 동일하다고 주장하지 않는다.
 
 제출은 신규 제품·테스트·보고서와 필수 변경로그 **4경로**다. `git add --` 경로 지정 및 테스트만 `git add -f --`를 사용한다. 자기 branch만 정상 push하고 원격 SHA를 대조한다. main push·타 WT 수정·force·rebase·reset 없음. 기준 R의 HEAD/branch·tracked INDEX/WORK 불변을 재확인한다. 원로그·복구 자료·최종 SHA·핵심 수치는 `/Users/fordeargamers/exoduser-wt/_out/settings-s01/`와 `DONE.txt`에 보존한다.
+
+## 구현 체크포인트 SHA
+
+구현·테스트·위 검증 결과·필수 변경로그를 포함한 정상 커밋은 **`517825ebf017f105484fb81b01fe98f31fb8f21f`**다. 부모는 최종 기준 main `9528ea35b429498fcf42fe3723008219ed0ed7e1`이며 정상 커밋 훅을 통과했다. 이 절은 해당 구현 SHA를 기록하는 문서 후속 커밋이다. 최종 제출 ref/SHA와 원격 일치 확인은 `_out/settings-s01/DONE.txt`에 기록한다.
