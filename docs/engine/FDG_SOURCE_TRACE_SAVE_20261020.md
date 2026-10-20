@@ -180,23 +180,178 @@
 | 실패 grit 1건 | gritSystem7 함수 문자열 regex | 현재 game27897은 `(+_grit\|\|0)+…`, 기대식 `_grit+…`와 달라 실패. 수치계산 회귀 여부 전체는 미확인. raw 저장검사(test32)는 통과 |
 | 실행 기록 | `~/exoduser-wt/_out/trace-save/web-tests.log`, `godot-lifecycle-check.log`, `godot-raw-grit-check.log` | Git 밖 원로그. 서버/API·사용자 저장 쓰기·씬 실행·import·전역설정 수정 명령 없음. 전체Godot/전체게임PASS·PC동기화완료·실플레이품질 선언 없음 |
 
-## 4. 작은 이식 단위 순서안 (후속 배정 후보 / 이번 구현 없음)
+## 4. 작은 이식 단위별 구현 지시서 (2026-10-20 보충)
 
-모든 단위는 **기존 JSON 형식과 값·순서 보존**, 코드 착수 전 소유권/허용 범위 확정이 선행한다. 보호 세이브 형식/2_3/Q·E의 변경을 포함하지 않는다. ‘파일’은 예정 후보이며 실제 생성하지 않았다.
+**다음 차례에는 같은 채팅 창에서 1번 `SV-COLLECT`를 바로 구현한다.** 0번은 착수 점검이며 별도 승인·대기 작업이 아니다. 이번 보충 커밋은 이 절만 변경한다. 아래 파일과 API는 구현할 계약이며, 이미 만들어진 기능으로 보고하지 않는다.
 
-| 순서/후보ID | 원본 행·최소 단위 | 소유 예정 파일(후보) | 검증 아이디어 | 선행·중단 경계 |
-|---|---|---|---|---|
-| 0/SV-CONTRACT | 부록C 5생산자/3597–3908, index3488–3519; server198–230 | 문서의 고정범위 인수(이번파일), 테스트명 후보 `godot/tests/test_native_save_contract.gd` | 5경로 key set/타입/의도된예외·신규메타 구분, JSON 캐리어의 null/Number/배열·가변 item own field 보존 관측 | P4-001 총괄이 exactscope 확정. 형식 신규설계/수정은 보호·제외 |
-| 1/SV-COLLECT | 3543–3575,63905–63931·64062–64088·62131–62159·61996–62017 | `godot/port_modules/save_adapter/source_save_collector.gd` | 동일 live P/G/INV·STATS/PASSIVES·소유 rawgrit·reward bags에서 1번 수집, 호출부의 경로별 필드와 default 그대로 비교. serialize로 상태 변경하지 않는지, owner loss시 미확인값을 0/빈객체로 제조하지 않는지 | 현재 bagMax/queue/mastery/hellCleared 등 owner 부재 해결 또는 범위HOLD. 일부분 collector로 full save를 쓰지 않음. Q/E 필드의 새로운 writer는 보호 |
-| 2/SV-TRANSPORT-READ | server198–213·225–230, node118–126·142–146; index3522–3550 | `godot/port_modules/save_adapter/source_slot_reader.gd` | 격리 fixture 응답으로 목록 fields/default·손상JSON제외·development marker,404/500/parse failure/new metadata/완전저장 구분. 실제 user save/API 사용0 | target이 dev server인지 native namespace인지 먼저 확정. 경로권위 임의결정·외부계정 우회 없음 |
-| 3/SV-RESTORE-PLAYER | 3597–3626,3685–3715 | `godot/port_modules/save_adapter/source_player_restore.gd`; 기존 raw_grit_restore.gd 재사용 검토 | EXP overflow·SP/AP 저장값·수치문자/0·queue배열/아님·legacy환급 순서/두번로드 비교. actor HP/ST·authority MP 실제 readback 검사 | restore writer 계약을 State/Resource/Player 담당과 인수. constructor 재호출로 대체 금지. Q/E/rage 관련 보호 지점은 변경 제안 없이 총괄 별도 보호검토 대기 |
-| 4/SV-RESTORE-ITEMS | 3628–3683,3735–3769 | `godot/port_modules/save_adapter/source_inventory_restore.gd` | 17키/구키누락·affix/bracelet/weapon 표시/속도 마커·uniqueArt 보존·crystal/socketQ/stoneBag 순서. 원 아이템 객체의 동적 필드/중복·identity 비교 | P2-006a 드랍/줍기/INV 인수와 의존성 조정. shared 창고 정본 필요. 세이브 형식/기존migration은 보호 |
-| 5/SV-SHARED-READ | 3721–3752,48521–48553 | `godot/port_modules/save_adapter/source_shared_store.gd` | 공유/슬롯 악의 max 비가산·반복restore·비어있는창고만1회이관·200캡·MAX_SAFE_INTEGER·로컬IO 실패. serializer의 storage{} 유지 확인 | platform namespace 및 사용자 격리 정책 인수. 실사용자 데이터 병합·삭제·재저장 제외 |
-| 6/SV-RESTORE-FLOW | 3771–3908,62479–62517/63959–64025/64108–64146/62164–62201 | `godot/port_modules/save_adapter/source_restore_flow.gd` | 스킬→fused→숙련도→active→slots→sanitize 순서·부분실패·신규메타와 완전저장·잘못된저장 구분, applyStats/initStage 후 최종표시 확인 | 스킬/합체/성장 owner와 원본 known key tables 확보. Q/E/2_3 보호 블록은 변경범위로 배정하지 않음. 미확정/미인수면 연결HOLD |
-| 7/SV-SAVE-PRIMITIVE | 3533–3585,63932–63940,64089–64092; server95–116·216–222 | `godot/port_modules/save_adapter/source_save_primitive.gd` | 격리 self-owned 저장소에 성공/쓰기실패·ACK불일치·같은slot 경쟁·다른캐릭터 늦은응답·원본catch범위 차이 관측. 성공일때만 lastSave 갱신 | read/collector/restore 인수 및 제품쓰기 허용 필요. dev atomic/NW 직접write 차이 보존. 실제 사용자 쓰기/자동서버재시작은 제외 |
-| 8/SV-LIFECYCLE | 3935–3977/부트4지점/63673–63692 | 기존 source_save_lifecycle_owner.gd + 후보 `source_save_request_owner.gd` | 가상 wall-clock으로 30s/10s/3s 및500ms/5s·pending drain·current P/function/slot 바뀜·저장중 강제요청을 정확1회. beforeunload는 ‘시도’와‘ACK’ 구분 | primitive+6개 actual Callable 준비. event pump 일부 있음과 dbSaveNow/Force 전체구현을 혼동하지 않음. 제품 clock/frame 작업과 담당협의 |
-| 9/SV-LOBBY-VIEW | index3026–3060/3126–3189/3488–3656/4340–4349 | `godot/scripts/native_save_slot_menu.gd` 및 별도씬 후보 | 메타만신규→저장후카드→선택/입장→복귀·5슬롯/개발Infinity·늦은응답 역전·삭제확인취소/실패. demo active-게임key 교환 원계약 대조 | 온라인인증/스토리와 별도 UI 담당조정, delete는 허용된 격리fixture에서만. 현재 HUD 구현과 로비 메뉴를 구분 |
-| 10/SV-E2E | 원본클리어42005/10킬43116/레벨43171/로비63679 | 후보 `godot/tests/test_native_save_reload.gd`, 검증로그만 | 별도 userdir 정상입력으로 시작→보상→저장→프로세스종료→같은프로필 로드. 필드/장비/기록 보존과 부트회복을 분리·Mac/PC 각각검증 | 모든 앞 단계 인수·사용자영역 격리·기존 QA와 실측일정 조정. 보호범위 변경 없음을 확인. 현재는 모두 **미실행/미확인** |
+이번 보충에서 fetch 후 확인한 main은 `d5421a0b804e94e96051014f44eb5751bf5c37d9`다. 최신 작업판에서 P2-001l·P2-006a의 main 통합과 P2-006b의 `native_world_drops.gd` 표시부 소유를 확인했다. TRACE-INVENTORY/QUICKSLOT/SETTINGS/META/REVIVE-SHIELD는 각자 문서를 소유한다. 1번의 신규 코드·테스트·도구 3경로는 이 main에 없다. §0–3의 최초 조사 기록은 그대로 보존한다.
+
+### 4.0 공통 실행 기준과 0번 SV-CONTRACT
+
+| 항목 | 지시 |
+|---|---|
+| 다음 작업 위치 | 다음 작업 시작 때 fetch와 최신 작업판을 확인하고, 그때의 origin/main에서 `~/exoduser-wt/save-collect` / `codex/save-collect-20261020`을 만든다. 같은 채팅 창을 계속 사용한다. R과 추적 WT는 보존한다. 경로·브랜치가 다른 담당의 것이면 덮어쓰지 말고 BLOCKED로 보고한다. 이번에는 새 WT를 만들지 않는다 |
+| 원본 재확인 | 아래 행 번호는 최초 pin788ba758f 기준이다. 다음 main에서 함수·marker로 다시 찾고, 행만 이동했으면 새 위치를 기록한다. 다섯 저장 리터럴·예약 helper의 표현식이 달라졌으면 혼합 이식하지 말고 차이표와 BLOCKED 사유를 보고한다 |
+| 0번 파일·수정 | 별도 파일 생성0, 기존 코드·테스트 수정0, 공용6파일 각각0행. 부록 C와 원본5리터럴을 읽어 1번 oracle의 분모로 사용한다. 별도 `test_native_save_contract.gd` 선행 작업을 만들지 않고 1번 새 테스트에서 계약을 확인한다 |
+| 0번 확인값 | game3543–3575/63905–63931/64062–64088/62131–62159/61996–62017 및51219–51221. 펼친 경로수 cloud67/local67/web67/demo67/demo50049, union68. mats0/G.mats, storage{}, gritCostModeV2=1, cloud-only marker, ts 유무, 슬롯 배열 복사 차이를 원본 그대로 확인한다 |
+| 허용 범위 | 사용자가 후속 1번 구현을 명시했으므로, 독립 수집기를 P4 일반 배선의 미배정 때문에 다시 대기시키지 않는다. 실제 Main 배선·사용자 저장 IO·보호 계약 변경은 1번에 포함하지 않는다 |
+| 보호 | **저장 형식·기존 필드명·기존 마이그레이션·docs/2_3·Q/E는 보호**. 새 save schemaVersion·진행 필드를 제안하지 않는다. saved activeQSk/activeRMBSk는 원문 그대로 읽어 복사하며 전투 writer를 만들지 않는다. 진단 envelope는 payload 밖에 둔다 |
+| docs·제출 | 후속 코드 단위는 관련 키워드로 docs 전체 검색→자기 코드와 관련 docs 정합→경로별 stage/commit/push→원격 SHA 대조를 수행한다. 다른 담당 문서나 docs/2_3를 수정하지 않는다. 이번 보충은 이 추적 문서 §4만 변경한다 |
+| 공용 줄 수 의미 | 1–9번의 ‘0행’은 해당 독립 모듈 납품에서 공용 파일을 수정하지 않는다는 뜻이다. 10번의 숫자는 원본 pin에서 확인한 **최소 호출부 예산**이다. 실제 writer·부트 흐름 수정 행수는 아직 미확인이며, 그 부분이 확정되기 전 제품 배선은 BLOCKED다 |
+
+### 4.1 1번 SV-COLLECT — 다음 차례에 바로 구현
+
+완료물은 **명시적 입력에서 원본의 다섯 저장 payload를 만드는 RAM 모듈**이다. 실제 Main에 없는 owner를 가짜 기본값으로 만들지 않는다. 실제 owner 결손은 제품 연결의 선행 조건이며, 독립 모듈과 합성 입력 대조의 착수를 막지 않는다.
+
+#### 파일·API·입력 계약
+
+| 구분 | 구현할 내용 |
+|---|---|
+| 신규 제품 파일 | `godot/port_modules/save_adapter/source_save_collector.gd`, `extends RefCounted`. 공개 API는 `collect(profile: String, context: Dictionary) -> Dictionary`. profile은 `cloud/local/web/demo/demo500`만 허용한다. 다른 제품 모듈·Main·에셋 preload 의존0 |
+| 신규 테스트 파일 | `godot/tests/test_native_save_collector.gd`, `extends SceneTree`. 새 수집기만 preload한다. 원본 oracle 대조, 복사·참조, 실패 경계를 검증한다. 실제 Main·World·actor·기존 초기화 테스트는 실행하지 않는다 |
+| 신규 oracle 도구 | `tools/godot/save_collector_source_oracle.mjs`. Node 내장 fs/vm/crypto만 사용한다. `--source <game.html> --output <자기 _out/…/oracle.json>`을 받는다. 원본의5개 object 리터럴과 `_passiveQueueItems`를 그대로 추출해 격리 vm에서 실행한다. 전체 HTML·저장 IO·부팅·sanitize 실행0. 제품 수집기를 재사용하거나 원본 공식을 다시 쓴 expected generator로 대체하지 않는다 |
+| 기존 파일·공용 수정 | **없음**. main.gd/hud.gd/world.gd/player.gd/native_normal_enemy_hurte.gd/native_source_new_run_state.gd 각각0행. 기존 lifecycle/raw_grit/providers 모듈도 수정0. 신규 reader/writer·부팅 호출·metadata를 공용 파일에 넣지 않는다 |
+| 성공 반환 | `{ready:true,status:"READY",profile:<입력>,payload:<원본 키만인 Dictionary>,scope:"EXPLICIT_CONTEXT_ONLY",Main_connected:false,persisted:false}`. scope 등은 저장 형식에 추가되는 키가 아니라 호출자 진단이다 |
+| 실패 반환 | `{ready:false,status:"NOT_READY",reason:<구체 필드/이유>,missing:[…],Main_connected:false,persisted:false}`. **payload 키 자체가 없어야 한다**. 부분 데이터를 READY로 반환하지 않는다 |
+| 필수 context 키 | 모든 profile: `p,g,inv,stats,passives,qslots,bag_max,upgrades,pot_lv,skill_slots,ult_slot,char_idx`. demo500 외: `grit,crystal_bag,crystal_dust,stone_bag`. cloud 외: `now_ms`. 이 이름은 모듈 입력 API이며 저장 키는 부록 C 그대로다. demo500에 없는 필드의 owner는 요구하지 않는다 |
+| 존재·타입 | p/g/inv 및 spread map은 Dictionary다. bag/equipped와 각 배열은 정상 JSON 문맥을 받는다. 직접 읽는 P.lv/INV.bag/G.stage 등의 키가 없으면 NR이다. `\|\|`가 있는 선택 필드만 원본 fallback을 적용한다. `Dictionary.has()`로 missing과 명시null/0/false를 구분한다 |
+| 지원 도메인 | JSON bool/string/null·유한 Number·배열·문자열 키 Dictionary이며 순환이 없어야 한다. JS safe integer 밖의 int, NaN/Infinity, Object/Resource/Callable, 순환·비문자열 키는 NR이며 payload가 없다. 원본의 undefined 생략·NaN→null 등을 지원한 것으로 보고하지 않는다. 이는 이식 지원 경계이며 원 저장 형식의 변경이 아니다 |
+
+#### 원본에서 옮길 식·상수·복사 의미
+
+| 항목 | 정확한 근거와 구현 규칙 |
+|---|---|
+| 원본 범위 | Cloud3543–3575, Local63905–63931, Web64062–64088, Demo62131–62159, Demo50061996–62017, 예약 helper51219–51221. 부록 C의 전 필드와 원문 순서를 따른다 |
+| player | lv/exp/maxExp/sp/baseAtk/baseDef/mpR/stR/hp/mhp/mp/mmp/st/mst/speed/shield/mshield/maskOn은 원 표현식 그대로다. ap는 `P.ap\|\|0`. 선택 날짜·count·기록의 fallback도 그대로다. `_lvStatMigrated:P._lvStatMigrated\|\|false`는 cloud3546에만 있고 다른 profile에 추가하지 않는다 |
+| JS truthiness | JSON 범위의 falsy는 null/false/0/−0/빈문자열이다. 빈 Array·Dictionary는 truthy다. 필드별 `\|\|`를 `get(key,default)`로만 대체하지 않는다. 숫자화·정수화·clamp·스탯 재계산을 추가하지 않는다 |
+| 예약 큐 | `_passiveQueueItems()` 원문대로 배열이 아니면[], 문자열이면서 PASSIVES의 own key인 항목만 남기고 순서·중복을 유지해 앞260개를 반환한다. 출력은 새 배열이며 P._passiveQueue·AP·패시브 레벨을 쓰지 않는다 |
+| wrapper와 spread | 매 호출마다 root/player/inv/game는 새 Dictionary다. stats/passives/upgrades/potLv/skills는 원본 spread처럼 **얕게 복사**한다. inv.bag/equipped/qslots, fused/mastery 등의 직접 참조는 보존한다. 아이템의 알 수 없는 own 필드를 whitelist로 없애거나 deep clone으로 바꾸지 않는다 |
+| skillSlots | Cloud/Local/Web은 SKILL_SLOTS와 같은 Array, Demo/Demo500은 `[...SKILL_SLOTS]`인 새 얕은 Array다. active 기본문자열은 부록 C를 따른다. Q/E 필드는 보호·읽기 복사만 하며 슬롯 수리·미소유 검사·발동을 호출하지 않는다 |
+| 고정값 | Cloud/Local/Web game.mats=0, Demo/Demo500은 G.mats다. storage는 항상 새 빈{}. demo500 외 gritCostModeV2=1, grit은 raw 입력 그대로이며 gritTotal을 계산하지 않는다. BAG_MAX는 입력 그대로 복사한다. 300/200/9999는 각각 다른 시스템의 값이며 collector에 새 상한으로 붙이지 않는다 |
+| game | stage/kills는 전 profile 공통이다. demo500만 cutsceneDone=true이며 나머지는 irisSz\|\|20/기록\|\|{}/comboMax\|\|0/playTime\|\|0/cutsceneDone\|\|false를 따른다. stageTime·맵·적·탄·drop records는 payload에 추가하지 않는다 |
+| 시각 | cloud에는 ts가 없다. 나머지는 context.now_ms를 원본 Date.now() 위치에 사용한다. 수집기가 OS clock/RNG를 직접 호출하지 않는다. 테스트 시각1700000000123은 QA 입력값이며 게임 상수가 아니다 |
+| 제외 책임 | admission·sanitize·공유 flush·dbReady/charId/saving/레슨 상태·복원·IO·성공 시각 갱신·자동 타이머는 이 모듈 밖이다. 특히 cloud의 sanitize를 공통 collector로 옮겨 override 경로를 바꾸지 않는다 |
+
+#### 새 테스트의 필수 단정
+
+| ID | 단정과 원본 expected |
+|---|---|
+| C01 5경로 | 같은 정상 문맥의5개 profile을 원본 vm의 JSON.stringify→parse expected와 수집기 payload→JSON→parse actual로 재귀 비교한다. key집합·배열순서/중복·값·null/bool/string/Number가 같아야 한다. 펼친 경로수는67/67/67/67/49, union68이다 |
+| C02 예외 필드 | cloud에는 ts가 없고 player._lvStatMigrated=false가 있다. local/web/demo는 ts=1700000000123이며 그 marker는 없다. demo500에는 grit/gritCostModeV2/crystalBag/crystalDust/stoneBag/activeTechSk/fuseProfSec/cardProf/catProf가 없다. 근거3546·61997–62016·63906–63930·64063–64087·62132–62158 |
+| C03 mats·창고 | G.mats=4321이면 Cloud/Local/Web은0, Demo/Demo500은4321이다. 전 profile storage={}이며 원 G.mats는4321 그대로다. 입력에 별도 창고 배열을 붙여도 payload.storage에 복사하지 않는다(3555/3558·62142/62145·62005/62006) |
+| C04 fallback | p.ap=0→0, p._transLvCount=0→0, g._irisSz=0→20, p._transLvDate=""→null, cutsceneDone=false→false다. 빈 fused/mastery/기록 Dictionary는 truthy 직접 참조다. missing/false/0/빈문자열을 각각 원본 oracle과 비교한다(3545–3571) |
+| C05 예약 | PASSIVES에 pAtk가 있고 입력이 [pAtk×300,"unknown",1,null]이면 결과는 pAtk260개다. 원 배열303개는 그대로다. 알려진 두 키의 순서·중복도 유지한다. 비배열 큐는[]다(51219–51221) |
+| C06 참조 | root/player/inv/game는 새 객체, spread map은 얕은 새 객체, bag/equipped/qslots는 same-ref다. skillSlots는 Cloud/Local/Web same-ref, Demo/Demo500은 다른 배열이며 요소는 같다. 입력 before/after JSON은 같아야 한다(3551–3573·62158·62016) |
+| C07 item | QA item `{id:7,custom:{flag:false},socketQ:[1,100],crystals:[{id:"atk",q:50}],_gx:0,_gy:2}`의 중첩값·알 수 없는 custom·좌표를 그대로 보존한다. inv wrapper에 붙인 custom키는 원본처럼 저장하지 않는다(3551·15954–16164) |
+| C08 추가 변환 없음 | qslots5개→5개, bag_max="432"→같은 문자열, grit=3→raw3이다. 4칸 절단·숫자변환·근성총합 계산이 없어야 한다(3553–3556·63913–63916). 이 정상 JSON 케이스를 NR로 바꾸어 검사를 생략하지 않는다 |
+| C09 실패 | unknown profile, p/INV.bag 누락, normal profile의 grit 누락, noncloud의 now_ms 누락, unsafe int/NaN/Infinity/Resource/순환은 NR·payload없음·입력변경0이다. cloud의 now_ms 누락과 demo500의 grit 누락은 정상 수집이다. 직접읽기 누락과 선택필드 fallback을 구분한다 |
+| C10 반복·부수효과 | 같은 입력 두 번은 별도 payload와 같은 parsed값을 만든다. caller가 두 호출 사이 kills를41→42로 바꾸면 두 번째는42다. 수집 중 입력 write·OS clock/RNG·FileAccess·HTTPRequest·SceneTree 호출은0이다. 실제 Main 연결은 이 검사로 인증하지 않는다 |
+
+#### 격리 실행·착수 순서·완료 조건
+
+| 항목 | 지시 |
+|---|---|
+| 격리 이름 | **`EXODUSER-SaveCollect-Isolated-20261020`**. 새 GDScript 테스트의 `_initialize()`에서 실제 OS.get_user_data_dir()를 검사한다. 다르면 exit2이며 검사0을 PASS로 세지 않는다 |
+| mini-project | `~/exoduser-wt/_out/save-collect/qa-project/`에만 임시 project.godot를 만든다. config_version=5와 application/config/use_custom_user_dir=true, application/config/custom_user_dir_name="EXODUSER-SaveCollect-Isolated-20261020"을 설정한다. 새 모듈·테스트를 같은 상대경로와 동일 byte로 복사하고 SHA256을 대조한다. oracle.json은 tests/fixtures에 복사한다. 게임 project.godot/override.cfg·전역설정·HOME 수정0, 에셋 import0 |
+| oracle 실행 | `node tools/godot/save_collector_source_oracle.mjs --source game.html --output /Users/fordeargamers/exoduser-wt/_out/save-collect/oracle.json`. 추출 원본의 행·부분해시와 fixture/expected를 기록한다. 이 도구는 다음 구현에서 만들며 이번에는 실행하지 않았다 |
+| Godot 실행 | `~/.codex/tools/godot-4.7.2/Godot.app/Contents/MacOS/Godot --headless --path /Users/fordeargamers/exoduser-wt/_out/save-collect/qa-project --script res://tests/test_native_save_collector.gd`. stdout/stderr를 자기 _out에 따로 보존한다 |
+| 착수 순서 | 최신 소유 확인→원본 oracle 추출→수집기와 C01–C10 구현→격리 실행→실패 수정·필요 케이스 재검증→docs 정합→구현 브랜치만 commit/push/원격 SHA 확인. 소유 경로 충돌·보호식 변경 필요·권한 거부는 우회하지 않고 BLOCKED로 보고한다 |
+| 완료 | exit0·실패0·C01–C10 모두 실행·격리명 일치·SCRIPT ERROR/ERROR0·복사해시 일치를 확인한다. skip/검사0/구문 검사만으로 완료하지 않는다. 기존 웹60건/12실패는 이 단위에서 수정·재실행하지 않는다 |
+| 충돌·한계 | 기존 공용·다른 담당 코드 수정0이므로 레슨·드랍·맵·설정 구현과 충돌하지 않는다. 실제 bagMax/숙련도/예약/shared owner가 없다는 사실은 제품 배선에 남긴다. 모듈행동·원본식 대조까지만 완료이며 실제 저장/재시작/실화면/PC는 미확인이다 |
+
+### 4.2 2번 SV-TRANSPORT-READ — 슬롯 목록과 로드 응답 해석
+
+| 항목 | 구현 지시 |
+|---|---|
+| 파일·공용 | 신규 `godot/port_modules/save_adapter/source_slot_reader.gd`, `godot/tests/test_native_save_slot_reader.gd`. 기존 코드·테스트와 공용6파일 각각0행. API `parse_slots(status_code,body)` / `parse_load(status_code,body)`의 순수 응답 해석부터 구현한다. HTTP 발사는7번에서 target 확정 후 연결한다 |
+| 원본·값 | server198–213/225–230, node-main118–126/142–146, index3531–3545. 목록필드 name/ts/lv/stage/kills/charIdx, development는 엄격true다. 로드 파일 없음404, parse/500/ok:false는 실패다. 서버의 default lv1/stage0/kills0/ts0/charIdx0을 깨진 응답의 자동 복구값으로 쓰지 않는다 |
+| 테스트·격리 | `test_native_save_slot_reader.gd`, `EXODUSER-SaveSlotRead-Isolated-20261020`. 200+빈slots→빈목록 성공, development:true와"true" 구분,404/500/손상JSON→실패. data{charIdx:0}은 존재하는 신규 메타, data.player.lv7은 진행 저장으로 분류한다. 합성 응답만 사용한다 |
+| 선행·충돌 | 1번과 독립 진행 가능. dev/NW/Supabase를 하나로 추정하지 않는다. target·인증 미확정이면 실제 네트워크 연결은 BLOCKED다. 로비UI·TRACE-SETTINGS/INVENTORY 파일 수정0 |
+
+### 4.3 3번 SV-RESTORE-PLAYER — 복원 순서와 실제 자원 owner
+
+| 항목 | 구현 지시 |
+|---|---|
+| 파일·공용 | 신규 `godot/port_modules/save_adapter/source_player_restore.gd`, `godot/tests/test_native_save_player_restore.gd`. 먼저 `plan(saved,prior)`의 순서있는 write와 명시 sink를 검증한다. 기존 raw_grit_restore는 지원범위를 확인해 재사용하며 수정0. **공용6파일0행**에서 계획 검증까지만 인수한다. 실제 State/actor/Resource 복원 writer는10번 전 별도 확정한다 |
+| 원본·공식 | 3597–3626/3685–3715,43128–43132. maxExp=pd.maxExp\|\|15, lv1000 이상에서 유효한 양수maxExp가 아니면 floor(5,000,000+(lv−999)^2×10,000). SP/AP는 저장값 그대로다. known passives는 unary+\|\|0, pShield/pDef 비용[1,1,1,2,2,2,3,3,3,5]/초과5 환급. grit 구 비용=g×3+(g−1)g/2, 환급=max(0,구 비용−g). 보호 마이그레이션 변경0 |
+| 테스트·격리 | `test_native_save_player_restore.gd`, `EXODUSER-SavePlayerRestore-Isolated-20261020`. lv1000/손상maxExp→5,010,000, lv1001→5,040,000, 정상12345 보존. grit3/v2없음→SP+9, v2=1→환급0. pDef2→AP+2, queue비배열→[]. prior.mhp350/pd.hp0/pd.mhp500이면 원본3619 순서상 hp350 후 mhp500이다. 부트 충전과 별도로 검사한다 |
+| 선행·충돌 | 2번 parse 성공과 원본 known-key 표가 필요하다. State가 actor 값을 다시 읽어 덮는 경계를 해결하기 전 제품 write는 금지한다. TRACE-META/REVIVE-SHIELD와 소유 조정하며 Q/E·rage·부활 규칙의 새로운 writer를 제안하지 않는다 |
+
+### 4.4 4번 SV-RESTORE-ITEMS — 인벤·장비·유물
+
+| 항목 | 구현 지시 |
+|---|---|
+| 파일·공용 | 신규 `godot/port_modules/save_adapter/source_inventory_restore.gd`, `godot/tests/test_native_save_inventory_restore.gd`. saved INV와 명시 공유창고의 복원 계획·sink를 구현한다. 공용6파일 각각0행, 생성기·줍기·드랍 표시 기존 코드 수정0. 실제 INV 적용 권위는10번 전에 확정한다 |
+| 원본·값 | 3628–3683/3735–3769. 누락슬롯null, brType=demon, legacy affix/이름/bow 복구. spd=+(0.45×RARITY_MUL[rarity]).toFixed(2), _spdMig3/_nameMig1. bagMax NaN→300/기타 원값\|\|300. crystal q 범위밖50, socketQ 부족/범위밖1·crystals길이 동기화, stone q는number1–100만. 형식·기존 migration은 보호다 |
+| 테스트·격리 | `test_native_save_inventory_restore.gd`, `EXODUSER-SaveInvRestore-Isolated-20261020`. 구15키에 누락 headband2/ossuary를null로 보충하고 기존item 보존. uniqueArt 무기명 보존, _spdMig3 재적용0. q0→50, crystals2/socketQ[101]→[1,1], stone[{q:0},{q:100}]→후자1개. bagMax"bad"→300/"432"는문자열 그대로. 각 기대를 원본식과 대조한다 |
+| 선행·충돌 | TRACE-INVENTORY 계약과 P2-006a 통합 INV 경로를 먼저 인수한다. **P2-006b의 native_world_drops 표시부 수정금지**. 공유창고 정본은5번까지 제품 적용을 보류한다. shield 키·Q/E 구조는 보호다 |
+
+### 4.5 5번 SV-SHARED-READ — 공유 악의와 창고 이관
+
+| 항목 | 구현 지시 |
+|---|---|
+| 파일·공용 | 신규 `godot/port_modules/save_adapter/source_shared_store.gd`, `godot/tests/test_native_save_shared_store.gd`. `plan_restore(legacy,shared)`와 명시 저장 port를 받는다. namespace 자동 선택0, 기존 코드와 공용6파일 각각0행 |
+| 원본·공식 | 3724–3752/48521–48553. legacyMats=max(0,floor(+v\|\|0)), 공유값과max 동기화·합산0. saved>0이고 shared와 다를 때만 d.game.mats=0 효과. shared가 빈 배열일 때만 legacy창고 앞200개 이관. 악의 load parseInt10/save floor·0..9,007,199,254,740,991. dirty flush·unchanged 생략은 쓰기 port의 원본 순서를 따른다 |
+| 테스트·격리 | `test_native_save_shared_store.gd`, `EXODUSER-SaveShared-Isolated-20261020`. shared100/legacy80→100·legacy0 write, 재로드100불변. shared100/legacy100이면 legacy0 write없음. shared빈/legacy201개→200, shared1개면 legacy무시. 3,000,000,000 양수 유지·음수0·MAX_SAFE 경계를 대조한다. IO 실패는 자기 userdir/대역만 사용한다 |
+| 선행·충돌 | 원본 origin 공유와 native namespace의 대상이 확정되기 전 영속화는 BLOCKED다. TRACE-META 통화 owner와 조정한다. 사용자 악의 병합·창고 삭제0, collector.storage={} 유지 |
+
+### 4.6 6번 SV-RESTORE-FLOW — 스킬·합체·슬롯과 부트 분기
+
+| 항목 | 구현 지시 |
+|---|---|
+| 파일·공용 | 신규 `godot/port_modules/save_adapter/source_restore_flow.gd`, `godot/tests/test_native_save_restore_flow.gd`. `restore(profile,saved,bindings)`가3/4/5번과 명시 스킬 owner를 순서대로 호출한다. 명시 sink 검사까지는 공용6파일 각각0행이다. 보호 블록의 새 writer는 만들지 않는다 |
+| 원본·값 | 3771–3908/44246–44273,62164–62201/62479–62517/63959–64025/64108–64146. known skills→chargeBoost→fused→숙련도cap→Lv300 blueShot/Lv700 burstLoop→active/6슬롯→sanitize 순서다. 일반0–3/Space4/F5를 유지한다. _ensureBaseWingStrike·Q/E는 보호 표시만 하며 새 구현에서 제외한다 |
+| 테스트·격리 | `test_native_save_restore_flow.gd`, `EXODUSER-SaveFlow-Isolated-20261020`. M01→M13 호출 trace, 메타only는 신규/조회실패는 중단. F ancestorSummon+일반빈칸→일반칸/Fnull, F holyDome 보존, chainStun 숙련도키 전환, Lv299/300·699/700 경계를 검사한다. demo500은62028–62048 선택복원만 하며 일반 dbRestore 전체를 호출하지 않는다 |
+| 선행·충돌 | 3/4/5 인수와 스킬/합체/숙련도/부트 후처리 owner가 필요하다. 보호·미이식 부분이 있으면 전체 restore READY를 만들지 않는다. TRACE-QUICKSLOT/TRACE-META와 같은 값의 writer를 중복 생성하지 않는다 |
+
+### 4.7 7번 SV-SAVE-PRIMITIVE — 대상별 저장과 성공 ACK
+
+| 항목 | 구현 지시 |
+|---|---|
+| 파일·공용 | 신규 `godot/port_modules/save_adapter/source_save_primitive.gd`, `godot/tests/test_native_save_primitive.gd`. `save(slot,context)`→collector→명시 target port를 연결한다. HTTP/FileAccess 포트는 확정된 target 하나씩 구현한다. 공용6파일·server.cjs/node-main.js 수정0 |
+| 원본·값 | 3533–3585/63932–63940/64089–64092, server95–116/216–222, node129–139. admission과 정확한1행id/j.ok/로컬write 성공을 확인한 때만 lastSave 갱신. shared flush 순서, 개발서버의wx/write/close/rename과 NW 직접write 차이를 유지한다. §2 X10의 catch 경계는 별도 관측하며 임의 수리하지 않는다 |
+| 테스트·격리 | `test_native_save_primitive.gd`, `EXODUSER-SavePrimitive-Isolated-20261020`. now1700000000123/last0에서 실패ACK→last0, 정확id1행→now. 0행/다른id/HTTP500/write실패는 성공표시0. 개발 rename실패는 자기 기존파일 byte보존·자기temp만 정리한다. 실제계정/API/사용자 저장은 사용하지 않는다 |
+| 선행·충돌 | 1/2/5와 target(dev/NW/web/cloud) 범위 인수가 필요하다. 3/4/6 미인수이면 제품저장을 활성화하지 않는다. namespace·패키징P5 소유 변경0. 레슨/Q/E admission은 기존 owner를 관측한다 |
+
+### 4.8 8번 SV-LIFECYCLE — 타이머·디바운스·강제 요청
+
+| 항목 | 구현 지시 |
+|---|---|
+| 파일·공용 | 신규 `godot/port_modules/save_adapter/source_save_request_owner.gd`, `godot/tests/test_native_save_lifecycle.gd`. 기존 source_save_lifecycle_owner는 poll/settle로 재사용한다. 같은 파일의 결손은 새 실패 테스트로 입증한 메서드만 수정한다. 공용6파일 각각0행이며 Main clock 배선은10번이다 |
+| 원본·값 | 3935–3977/62092/62213/64042/64158/63673–63692. auto30,000ms/성공gap10,000ms/boot3,000ms/debounce500ms/force최소5,000ms. 요청은 charId/charIdx/P/dbSave함수 identity를 캡처·재확인한다. wall-clock을 sp 게임틱으로 바꾸지 않는다 |
+| 테스트·격리 | `test_native_save_lifecycle.gd`, `EXODUSER-SaveLifecycle-Isolated-20261020`. auto예약29999ms→0/30000→조건맞으면1. 별도 doAutoSave admission은 last10000/now19999 skip·20000허용. boot2999→0/3000→1, debounce499대기/500정확1, force gap4999예약/5000가능. 저장중pending은 완료뒤1회, 캐릭터/함수교체뒤0회다.6개Callable누락은NR, 종료 요청과settled를 구분한다 |
+| 선행·충돌 | 7번 primitive와 실제 context/slot/session owner가 필요하다. 1번 통과만으로6bindings를 READY로 주입하지 않는다. P2-001l·updateclock·QA-002의 코드/기존 테스트 수정0 |
+
+### 4.9 9번 SV-LOBBY-VIEW — 독립 슬롯 화면
+
+| 항목 | 구현 지시 |
+|---|---|
+| 파일·공용 | 신규 `godot/scripts/native_save_slot_menu.gd`, `godot/scenes/native_save_slot_menu.tscn`, `godot/tests/test_native_save_slot_menu.gd`. 명시 reader/controller를 받는 독립씬이다. 공용6파일 각각0행, P/G/INV 직접write0. 제품 화면전환은10번이다 |
+| 원본·값 | index3026–3060/3126–3189/3488–3656/4340–4349. VIEW2, 일반/demo5·개발Infinity, development===true+testMode+!demo. activekey/5slot 교환·로비메타 우선, requestseq의stale 취소, 입장1,200ms, 이름2–8·중복·삭제확인을 유지한다 |
+| 테스트·격리 | `test_native_save_slot_menu.gd`, `EXODUSER-SaveSlotMenu-Isolated-20261020`. 일반5개생성차단/개발6번째허용, 메타only입장은 active설정·신규진입, 기존Lv7슬롯 복귀Lv12 뒤 다른Lv7 보존. 늦은응답은 카드교체0, 삭제취소/실패는 기존카드보존,1199ms이동0/1200은동일request만1. fake backend/자기userdir만 쓰고 실화면1x는 별도 검수한다 |
+| 선행·충돌 | 2/6/8과 인증·스토리·다국어 담당 호출계약을 인수한다. TRACE-SETTINGS의 언어를 새 키로 복제하지 않는다. cloud UI polish·hud 기존노드·실제계정 삭제0 |
+
+### 4.10 10번 SV-INTEGRATE/E2E — 공용 연결과 실제 재시작
+
+이 단계만 실제 Main과 상태 owner에 연결한다. **현재 restore writer·로드 이후 부트 API의 추가 행수는 미확인**이다. 아래 최소 호출부 예산과 실제 writer 범위를 총괄이 확정하기 전 해당 제품 연결은 BLOCKED다. 이것은 독립1번의 착수 조건이 아니다.
+
+| 파일 | 만들거나 수정할 위치·최소 호출부 |
+|---|---|
+| 신규 파일 | `godot/scripts/native_save_session.gd`, `godot/tests/test_native_save_reload.gd`. session이 slot/target/readiness를 소유하며 새 저장형식을 만들지 않는다. 기존 테스트 수정0 |
+| main.gd | 최초 pin106 `_ready` 초입의 선언1행+로드 분기 호출1행,144 starter factory 직전 loaded 분기1행, 부팅완료 lifecycle시작1행,935 `_process` pump1행: **최소 호출부5행**. 실제 bootstrap 본문 diff는 미확인이다. 원62459–62481/63959–63981의 load선행·실패중단·신규만defaultItems·불필요RNG소비0을 보존해야 한다 |
+| native_source_new_run_state.gd | 115–160 constructor·175–185/549–574 reader가 접점이다. collector 읽기는 기존API를 사용하므로0행. saved G/P/INV를 실제 권위에 적용할 writer의 최소 추가행수는 **미확인·현재API부재**다. identity/constructor 가드를 해제하지 않고, writer 확정 전 배선은 BLOCKED다 |
+| player.gd / resource authority | 실제HP/ST와 MP/rates의 분할소유 때문에 dict 대입만으로 복원할 수 없다. 기존 인수 writer만 호출하면 player0행이다. writer가 없으면 위치·최소행수는 **미확인→BLOCKED**다. ResourceAuthority58–81의new-run constructor를 restore로 재호출하지 않는다. Q/E·입력·행동/부활은 보호다 |
+| native_normal_enemy_hurte.gd | 최초 pin758–760의unported_skip과 원game43116의10킬 조건에 **통지1행 최소**. State의apply_native_add_exp 종료 직전에도 원43171의 **통지1행 최소**가 후보이다. session참조 공급선은 미확인이므로 함께 소유 범위를 확정한다. 기존조건·처치순서·피해·RNG는 변경0 |
+| hud.gd / world.gd | HUD97–102의state bind와804–870 읽기를 재사용하면0행이다. World2486의boot map binding에서 복원stage를 기존경로가 소비하면0행이다. stage교체API가 없으면 World추가행수는 **미확인→맵/P3-002 인수 전 BLOCKED**다. geometry/collision/camera/스폰수치 변경0 |
+| 종료·로비 | 원63655–63692에 대응하는 신호 구독은 신규session에서 하여 공용수정0행을 우선한다. 기존 화면전환·종료API를 먼저 확정한다. 종료 시 비동기요청 시도만 하고 ACK를 못 받은 상태를 성공으로 보고하지 않는다 |
+
+| 검증 항목 | 새 테스트·원본 expected·격리·선행 조건 |
+|---|---|
+| 테스트와 폴더 | `godot/tests/test_native_save_reload.gd`, **`EXODUSER-SaveReload-Isolated-20261020`**, 테스트slot=`trace_save_e2e`. 실제 Main 리소스 import는 자기WT에서 별도 검수한다. 다른 게임/QA 실측과 동시에 실행하지 않는다 |
+| 두 프로세스 | 첫 프로세스는 정상부트→허용 입력/진행→저장ACK→종료, 둘째는 같은 버전·격리userdir에서 load한다. 직접fixture 계약검사와 자연플레이 검사를 분리한다. 첫 수집의 Lv/EXP/SP/AP·장비id/동적필드·기록을 재시작 뒤와 비교하며 고정 강무기·드랍을 제품에 주입하지 않는다 |
+| 원본값 검사 | game31567/62196–62201/62511–62517의부트회복과 raw 저장값을 분리한다. grit3/v2=1 보존, mats0 profile의 공유풀 별도보존, storage{}유지, 반복로드의악의/창고중복0을 검사한다. API/IO실패·손상파일은 자동신규/덮어쓰기0이어야 한다 |
+| 완료·충돌 | 앞 단위와 실제writer·공용범위를 인수한 뒤만 연결한다. 원격SHA·실행source경로·실창1x 카드/복원HUD/오류를 확인한다. 테스트0실패만으로 전체품질PASS를 선언하지 않는다. PC는 지정실행 전 미확인이다. TRACE-META/INVENTORY/QUICKSLOT/SETTINGS/REVIVE와 P2-006b/P3-002 최신 소유를 확인한다 |
+
 
 ## 5. 공용 파일에서 접점 협의가 필요한 곳 (이번 수정 0)
 
