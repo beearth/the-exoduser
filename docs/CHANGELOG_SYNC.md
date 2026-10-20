@@ -1,3 +1,12 @@
+## 2026-10-21 DEMO11-18 일반 데모 합체·흡수·성급·되돌리기 원장
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준 | main33755331 + DEMO11-17 c698aa86 정상merge85e4485d. CHANGELOG main byte 보존·의존17절 추가. 새 합체키/정책식 변경0 |
+| 연결·HOLD | 기존 fusion_rules/fuse_commit guarded+demo true→실제State. 원 허용22/금지10키·shieldFuse 별도HOLD, 성급override·SP선지급/멤버환불·흡수·host/최대그룹undo. Main+12/State+18 추가만. 피해/방패 실행·PC UI 배치·맵·저장0 |
+| 검증 | 실제Main378/0+집중7/0, 관련4회귀 각1회36,804/0. 실제 원장26건·기존S05 9,358건 원문JS 불일치0. StringName fixture/ScriptError 로그보존·강화인계key 누락1건→집중만7/0. 최종ERROR/SKIP0 |
+| 제출 | [보고서](engine/orders/reports/demo11-18_REPORT.md)·docs/2_1 성급/15체크리스트 적용·원로그 _out/demo11-18/. tick/목록생성API0·격리/gate/override0byte·정상훅·경로지정stage·자기branch push/remoteSHA/DONE 후 자기WT제거 |
+
 ## 2026-10-21 DEMO11-17 K/L 학습·강화·환불 State 원장 연결
 
 | 항목 | 구현·검수 근거 |
