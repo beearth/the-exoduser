@@ -1586,3 +1586,9 @@ func apply_native_forge_potion_upgrade(owner: Node) -> Dictionary:
 	_forge_committing = false
 	return {"status":"READY","paid":true,"level":_auto_potion_level,"cost":cost,"remaining":_g.mats,
 		"unported":["dbSaveNow, source flash/particle feedback"]}
+
+# DEMO11-32 — FD collection only; no generic enemy/reward/region ownership.
+func claim_native_fire_devil_records(owner: Node, records: Array) -> bool:
+	if not _current_error().is_empty() or not is_instance_valid(owner) or owner!=_player.get_parent().get("native_demo_fire_devils") or owner.get_parent()!=_world or _g.get("stage")!=0 or _g.get("_bossArena",false) or _g.get("_fdSpawned",false) or records.size()!=4:return false
+	_g["_fdStage"]=0;_g["_fdSpawned"]=true;_g["_fireDevils"]=records
+	return true

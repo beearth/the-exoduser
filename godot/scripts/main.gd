@@ -339,6 +339,7 @@ func _ready() -> void:
 	source_intro_sequence = IntroCurtainSequenceScript.install_native_boot(self) # P2-001i
 	native_demo_boss_actor = preload("res://scripts/native_demo11_boss_actor.gd").install_native_boot(self) # DEMO11-34
 	native_demo_boss_projectiles = preload("res://scripts/native_demo11_boss_projectiles.gd").install_native_boot(self) # DEMO11-35
+	native_demo_fire_devils = preload("res://scripts/native_demo11_fire_devils.gd").install_native_boot(self) # DEMO11-32
 	var metrics_timer := Timer.new()
 	metrics_timer.wait_time = 0.1
 	metrics_timer.process_mode = Node.PROCESS_MODE_ALWAYS
@@ -3054,3 +3055,10 @@ func invalidate_native_runtime_refresh_legendary_cache(refresh: Object) -> bool:
 		return false
 	_source_l_eq_cache = null
 	return true
+
+# DEMO11-32 — MAP11 supplies Marker2D placement, PC supplies contact/hit ingress.
+var native_demo_fire_devils: Node2D
+func bind_native_fire_devil_map(provider: Node2D) -> bool:
+	return is_instance_valid(native_demo_fire_devils) and native_demo_fire_devils.bind_map_provider(provider)
+func read_native_fire_devils() -> Dictionary:
+	return native_demo_fire_devils.snapshot() if is_instance_valid(native_demo_fire_devils) else {"status":"NOT_READY"}

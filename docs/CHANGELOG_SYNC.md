@@ -1,3 +1,9 @@
+## 2026-10-21 DEMO11-32 화마귀 family 소비자·실제35 registry 인계
+
+- 최신main0138c5bb9 기준 FD 전용 source tick/4슬롯·MAP11 Marker 소비자 구현. Main+8/State+6 추가만, 31 공통코드·PC 보호 피해/QE·35 registry·맵0줄.
+- 원본 G61460/61632–61725·18628–18711 기반. 원본 JS 스트리밍 oracle·실제 Main/State/35 carrier 신규906/0·예산2/0(평균0.030/최대0.155ms)·직접회귀51/0. 고정N 벽시계 kernel 예산1회(PC/registry/render 제외). 결과·공용 줄 범위·실패 로그는 [보고서](engine/orders/reports/demo11-32_REPORT.md).
+- 부분 구현·통합 BLOCKED: 실제 source clock/Marker·PC contact/hit ingress·35 specialized elemBall terminal 미인수. 큰탄을 일반탄으로 우회하지 않음. "31과 통합 후보" 기록. Godot gate/격리·정상훅·자기branch push/remote/DONE 후 자기WT 제거.
+
 
 ## 2026-10-21 DEMO11-18 일반 데모 합체·흡수·성급·되돌리기 원장
 

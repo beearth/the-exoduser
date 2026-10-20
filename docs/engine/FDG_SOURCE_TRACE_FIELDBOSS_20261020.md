@@ -1,5 +1,12 @@
 # 필드보스 원본 추적·작은 이식 단위 설계 — 2026-10-20
 
+## 2026-10-21 Native DEMO11-32 인계 상태 (기존 동결 원본 추적은 아래 보존)
+
+main0138c5bb9 기준 화마귀 전용 `native_demo11_fire_devil_tick.gd`와 `native_demo11_fire_devils.gd`를 추가했다. source `_fdTickOne`의 tick 단위/직접 RNG4회·HP/ATK/8방향·충전/TP 순서를 유지하고 Main에는 설치/Marker provider/read API만, State에는 FD 4슬롯 claim만 추가했다. 배치는 MAP11 `Markers/FireDevil1..4`만이며 원본 사이트 좌표를 복제하지 않는다. 사망은 FD 슬롯 null, kills/지역/보상/fbDone 변경 없음.
+
+35 registry/class/drop/실제 carrier를 재사용하지만 현재 specialized elemBall 거절은 유지한다. PC contact/landing KB·incoming hitSet/query와 실제 source clock·registry phase·MAP11 Marker 인수 전 **부분 구현·통합 BLOCKED**다. 피해/QE/Player·World·35/지형 수정0. standalone source oracle·실제 작은 탄 검증과 전체 실플레이/시각 완료는 구분한다. **31과 통합 후보**(provider 수명·명령 continuation·hit ingress·registry clock/aggro)는 [보고서](orders/reports/demo11-32_REPORT.md)에 정리했다. 아래 과거 ‘미이식’ 표는 동결 SHA 당시이며 현재 전체 이식 완료로 읽지 않는다.
+
+
 ## 0. 기준·범위
 
 | 항목 | 확인 내용 |
