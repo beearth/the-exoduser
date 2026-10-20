@@ -2,6 +2,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 ## 2026-10-20 LOOK-001 룩 4안 비교 자료 준비
 
 | id / 적용 위치 | 현재 정확 계약 |
@@ -188,6 +189,17 @@
 | 검산 / 한계 | source VM6맵 재실행·길이/합계·배치 tuple·등록 blob 총176검산/0차이. Godot·브라우저·실플레이0. CH1 공통 알고리즘/전투·저장 권위 재구현0. 최신 전략§8에 따라 표현 제작과 게임플레이 원본 보존을 분리 |
 | 제출 | [2장 추적 문서](engine/FDG_SOURCE_TRACE_MAPS_CH2_20261020.md), 원로그 ~/exoduser-wt/_out/trace-maps-ch2/. 자기 branch push·원격 SHA 대조·DONE 후 자기 sparse worktree 제거, R 불변 |
 >>>>>>> 18070adf
+=======
+## 2026-10-20 TRACE-ENEMIES-CH2 2장 적 원본 추적·이식 설계
+
+| 항목 | 조사·제출 범위 |
+|---|---|
+| 산출물 | FDG_SOURCE_TRACE_ENEMIES_CH2_20261020.md 1개. 6에리어 si4..9·31유형 가중치/원소·전용30..39 timer/AI/탄/독/소환·정예12접사/2오라·조건부네임드/보스·곰치 의존을 추적. 직접etype/전용field 전체행 색인 포함 |
+| 원본·차이 | main e556b617 game.html SHA4d911cdd. 풀31/합178·선택R9/합38·12회재추첨후2, 소환굴undefined 원소·33그룹caller구분·47→40생성후미등록·ATK매update reset·catalog33 r5문서/원본10 차이를 보존. 기존설계·원본수정0 |
+| 중복 경계 | CH1/PC P2-008a/b·ELITES원격48681a12·마감에확인한MAPS_CH2원격18070adf 참조. 맵 geometry/좌표/에리어별분모 복제0. 맵제출본의RLE·조건부문지기판정과적선택분기 구분 |
+| 이식안 | CH2E-01~11 제안, 1번은신규선택정책+테스트2파일/공용0줄 목표의구현지시서. 실제actor/World/State/저장연결은각owner 인수후. 지금코드·테스트작성0 |
+| 검수·제출 | Godot/게임실행0, 원본선택함수54입력 정적검산을게임PASS로표시하지않음. sparse --no-checkout·문서2개만 정상commit/push·원격SHA/DONE 후자기worktree제거. R/공용/QE/세이브/보호docs2_3 불변. 원로그 ~/exoduser-wt/_out/trace-enemies-ch2/ |
+>>>>>>> cf57f721
 
 ## 2026-10-20 QA-002 테스트 결정성·종료·조명 하니스
 
