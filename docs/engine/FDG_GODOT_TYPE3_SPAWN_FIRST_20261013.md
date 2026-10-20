@@ -103,3 +103,7 @@
 | 2 / 정상 연결 | Main._ready의 world.set_player 뒤에 Player.bind_native_armor_inventory(Callable(source_state, read_current_inventory))를 연결한다. 실패하면 기존 _stop_source_player_startup 경로로 중단한다. source State/INV를 새로 만들거나 복원하지 않는다. |
 | 3 / 원 상수 | EL P=0/F=1/I=2/D=3/L=4/H=5/E=6. F→I, I→F, D→L, L→D, D→H, H→D, E→L, L→E는2. 동일 속성은 P0 제외0.5, 나머지는1. 기존 원 elMul/producer 분기·수치 변경0. |
 | 4 / 현재 완료 범위 | 실제 제품 entry의 SourceState→Player→기존 projectile 배율 consumer 연결까지. full inventory/equip UI·affix·저장/장비복원·보상·전체 bootstrap·모든 탄/보스·시각/청감·240FPS·최신 전체게임 완료는 아니다. 기존 HOLD/2_3·MAP/ART/STORY/rig/native3387/NativeHUD 등 보호 불변. |
+
+## 2026-10-21 EL-01 실행 의존 보충
+
+type3 recipe는 이제 hell0 선택 prefix를 `godot/port_modules/elite_spawn_rules_source/producer.gd`에서 재사용한다. 최소 격리 프로젝트에 복사할 때 이 파일과 class-name import도 포함한다. 기본 `native-type3-oracle.json`은 Git에 없지만, 새 `godot/tools/export_el01_hell0_oracle.mjs`가 최신 원본 mkEn/선택 함수의 좁은 projection을 UTF-8 파일로 생성한다. 제품 출력에서 기대값을 생성하지 않는다. 기존 검사는 `test_type3_spawn_recipe.gd -- --oracle=<생성한 constructor 파일>`로 실행한다. Node 전체 경로를 명시하며 Acorn은 package-lock 기준으로 설치하거나 `--acorn-root=<이미 npm ci한 repo>`를 지정한다. 상세 절차·수치·source fixture 경계는 [EL-01 보고서](orders/reports/el-01_REPORT.md) 참조. 기존 oracle 이력·자동 type7 미등록 경계는 유지한다.

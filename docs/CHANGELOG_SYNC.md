@@ -1,3 +1,12 @@
+## 2026-10-21 EL-01 — hell0 선택기·단일 lock·forced constructor 후처리
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준·의존 | main45be76e4(969c194e6 이후)에 DEMO11-30 94d26012 정상 merge(b46dd5f2), CHANGELOG 양쪽 절 보존. PC parry 원격 ref 없음/merge0, 실제 M29 binding NOT_READY 유지 |
+| 구현 | stage0..3 선택기·원본 constructor RNG prefix를 type3/인트로/굴에서 재사용. M29→M30 owner lock1회·M30 standalone 호환·forced raw 후처리 API. 후속장 mod/실제 guard 등록/PC Q/E·피해·Main/State·저장·맵 변경0 |
+| 검증 | 신규3327/0(원본466사례), M29 143/0·recipe1982/0·binder4그룹/0·curtain124/0·굴298/0 각1회. M30 4그룹/0·의도된 누락자원 ERROR1 보존. type7 낡은 count 기대2실패는 기준 main 실패그룹에서도 동일 재현; 테스트 약화/수정0. Camera/굴 ObjectDB8 경고 보존. 틱 목록 API 추가0 |
+| 근거·제출 | [EL-01 보고서](engine/orders/reports/el-01_REPORT.md), 8.0/8.2·ELITES/CH1 trace·type3 실행 의존 보충. Node --node-bin·UTF8 oracle·Acorn readonly 의존, pgrep/30초 gate·격리명·원로그 _out/el-01/. 자기branch push/원격일치/DONE 후 WT제거, R 불변 |
+
 ## 2026-10-21 DEMO11-30 — hell0 정예 자연 연결 선행 접점 BLOCKED
 
 | 항목 | 근거 |

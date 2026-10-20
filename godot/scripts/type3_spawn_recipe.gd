@@ -5,6 +5,7 @@ extends RefCounted
 ## actors, global RNG, clock, admission, textures, save data or physics dispatch.
 ## The caller supplies the shared native RNG and collision services. Never seed
 ## a per-child Godot RNG: eSummon and its interleaved FX use the same stream.
+const EliteSelector = preload("res://port_modules/elite_spawn_rules_source/producer.gd")
 const SCHEMA = "exoduser.godot.type3-spawn-recipe.v1"
 const DIFFICULTY_MULTIPLIERS = [0.45, 0.55, 0.65, 0.76, 0.88, 1.0, 1.12, 1.25, 1.40, 1.58, 1.78]
 const DIFFICULTY_LEVEL_OFFSETS = [-500, -400, -300, -200, -100, 0, 100, 200, 300, 400, 500]
@@ -54,12 +55,10 @@ func build_child(x: float, y: float, context: Dictionary, element_id: int) -> Di
 
 	var difficulty: int = int(context["difficulty"])
 	var level: int = maxi(1, int(context["player_level"]) + DIFFICULTY_LEVEL_OFFSETS[difficulty] + int(context["stage_difficulty_offset"]))
-	# Stage0 rollElite has no rare/champion chance. Its strict < .03 includes
-	# .03 in the normal branch. rollMods picks one of [M29,M30] if magic.
-	var elite = 1 if _unit() < 0.03 else 0
-	var mods: Array = []
-	if elite == 1:
-		mods.append(["M29", "M30"][int(_unit() * 2.0)])
+	var selection: Dictionary = EliteSelector.constructor_prefix(0,false,func(_purpose):return _unit())
+	if selection.status != "READY":return _failure("elite_selector_NOT_READY")
+	var elite: int = int(selection.elite)
+	var mods: Array = selection.mods
 	var hp_multiplier = 2.0 if elite == 1 else 1.0
 	var attack_multiplier = 1.3 if elite == 1 else 1.0
 	var scale_multiplier = 1.08 if elite == 1 else 1.0
