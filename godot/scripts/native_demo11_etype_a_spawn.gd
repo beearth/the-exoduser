@@ -47,6 +47,9 @@ func spawn_selected(owner: Node, group_id: String, source: Dictionary) -> Dictio
 	if hole.is_empty() or source.spawn_n>HOLES.spawn_hole_count(hole.size,0):return {"ready":false,"reason":"group_or_spawn_index_invalid"}
 	var token:=group_id+"/"+str(source.spawn_n)
 	if _used.has(token):return {"ready":false,"reason":"source_spawn_already_consumed"}
+	if not is_instance_valid(main.native_natural_enemies):
+		var bound: Dictionary=main.bind_native_natural_enemy_base(read_projectile_context,false)
+		if not bound.get("ready",false):return bound
 	# Use the append-only factory registry and existing actor kernels.
 	# Only its required radius is read before MAP11 geometry arbitration.
 	var radius: float=BUILD.radius(etype,source.radius_u)
@@ -63,18 +66,19 @@ func spawn_selected(owner: Node, group_id: String, source: Dictionary) -> Dictio
 	var runtime: Dictionary=BUILD.build(_templates[etype],_templates[0].projectile,etype,site.position,p.lv,float(g.get("_stageDiffOff",0)),source,"demo11-a-"+token,_next_order,int(opt.diff))
 	_next_order+=1
 	_used[token]=true
-	var actor: CharacterBody2D=item.actor.new()
-	actor.configure(runtime,main.world)
-	var registered: Dictionary=main.world.register_summoned_enemy(actor)
-	if not registered.get("valid",false):
-		actor.free();_busy=false;return {"ready":false,"reason":"actual_registry_rejected","errors":registered.get("errors"),"source_prefix_consumed":true}
+	var admitted: Dictionary=main.native_natural_enemies.admit_source_record(self,group_id,runtime,site,source)
+	if not admitted.get("registered",false):_busy=false;return admitted
+	var actor: Node=admitted.actor
 	if etype==5:
 		if not is_instance_valid(_warning_phase):
 			_warning_phase=preload("res://scripts/native_demo11_etype_a_warning_phase.gd").new();_warning_phase.world=main.world;main.world.add_child(_warning_phase)
 		_warning_phase.actors.append(weakref(actor))
-	var origin: Dictionary=adapter.register_actor_origin(actor,group_id)
+	var origin: Dictionary=admitted.origin
 	_busy=false
 	if not origin.get("ready",false):return {"ready":false,"reason":"origin_rejected_after_actual_registration","registered":true,"actor":actor,"source_prefix_consumed":true}
 	return {"ready":true,"registered":true,"actor":actor,"site":site,"source_prefix_consumed":true,"scheduler":"existing_World_native_owner_phase","full_combat_ready":false}
 func _number(v: Variant) -> bool:return (v is int or v is float) and is_finite(float(v))
 func _unit(v: Variant) -> bool:return _number(v) and v>=0 and v<1
+
+func read_projectile_context() -> Dictionary:
+	return {"lesson_active":false,"qa_storage_active":false,"aggro_active":false}

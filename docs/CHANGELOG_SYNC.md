@@ -1,3 +1,10 @@
+## 2026-10-21 DEMO11-enemy-base2 — A·B·D 공통 기반 이관
+
+| 항목 | 범위·검증 |
+|---|---|
+| 의존·공통화 | 26406969 위 A d931ebe2·B c6d19973 정상 merge. 단일 factory 표15종, common prepared World/43 admission·A physical/D raw carrier 동일35 registry clock. B 탄 owner 미구현/HOLD 유지 |
+| 검증·보호 | 신규89/0+관련2336/0=2425/0·factory3그룹/실패0, 15종spawn/tick·13처치/2사망HOLD. 30actor600tick mean2.820/p994.009/max8.188ms(관측만, 최적화0). 공용 줄 범위는 [보고서](engine/orders/reports/demo11-enemy-base2_REPORT.md). PC 보호/World/State0, 성능 최적화0. [8.0](8.0몬스터디자인/DEMO11_NATURAL_ENEMY_BASE_20261021.md)·[9AI clock](9적ai패턴디자인/DEMO11_NATURAL_ENEMY_CLOCK_20261021.md) 동기화 |
+
 ## 2026-10-21 DEMO11-enemy-base 후속 — D9fd31a64 공통 이관
 
 | 항목 | 동작 보존·범위 |

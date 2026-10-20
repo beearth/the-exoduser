@@ -85,7 +85,7 @@ func run() -> void:
 		a.receive_damage(int(a.hp+a.eShield)*3,Vector2.RIGHT,"group_a_isolated_combat")
 		check(not a.alive and a.hp<=0,"actual_actor_damage_death:"+str(a.etype),a.etype)
 		var receipt: Dictionary=main.native_stage_spawn_adapter.record_actor_kill(a)
-		check(receipt.get("applied",false),"origin_kill:"+str(a.etype),a.etype)
+		check(not receipt.get("applied",false) and main.native_natural_enemies.counts.origin_kills>0,"common_owner_already_recorded_origin_kill:"+str(a.etype),a.etype)
 		check(not main.native_stage_spawn_adapter.record_actor_kill(a).get("applied",false),"kill_once:"+str(a.etype),a.etype)
 	check(g._totalSpawned==total,"planned_denominator_unchanged")
 	f.close();await process_frame;await process_frame

@@ -1,3 +1,5 @@
+> 2026-10-21 DEMO11-enemy-base2: B c6d19973의 등록·World/origin 경계는 DEMO11-enemy-base2에서 단일 NATURAL_REGISTRATIONS/common.admit_source_record로 이관했다. 원문 constructor/actor byte 보존, 탄·deadPool·소환 owner 부재와 B8 protected death는 NOT_READY 유지. 결과·공용 변경 범위는 demo11-enemy-base2 보고서를 따른다.
+
 # DEMO11-58~62 — 묶음 B 실제 등록 재개
 
 2026-10-21 맥북총괄의 append-only factory 등록 승인 후 같은 브랜치에서 재개했다. **8~12 실제 actor 5개·ens/World phase·DEMO11-43 origin 등록 확인. 전체 자연 전투 완료는 아님.** Main source-selected entry는 실제 P3 scheduler 인스턴스만 수락하고 Marker 후보만 쓴다. 기존 factory 본문 byte 보존, B 등록17줄만 EOF 추가. 기존 main actor의 atlas/콜라이더/피격/포이즈·이동 kernel을 재사용하며 source draw 재추첨/물리 원소 위장0.

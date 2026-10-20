@@ -83,13 +83,13 @@ func emit_projectile(actor: Node,props: Dictionary) -> Dictionary:
 func owns_actor(actor: Node) -> bool:
 	return is_instance_valid(actor) and _live.has(actor.get_instance_id()) and _live[actor.get_instance_id()].get_ref()==actor and actor.get_parent()==main.world and main.world.get_enemies().has(actor)
 func authorizes_prepared(actor: Node) -> bool:
-	return is_instance_valid(actor) and _prepared.get(actor.get_instance_id())==actor and actor.get_script()==Factory.NATURAL_REGISTRATIONS[actor.etype].actor
+	return is_instance_valid(actor) and _prepared.get(actor.get_instance_id())==actor and actor.get_script() in [Factory.NATURAL_REGISTRATIONS[actor.etype].actor,Factory.NATURAL_REGISTRATIONS[actor.etype].get("selected_actor")]
 func spawn_selected(source_owner: Node,group: String,source: Dictionary) -> Dictionary:
 	if _busy or source_owner!=holes or not adapter.is_current() or not frame_ready(main.world.get_native_frame()):return _no("natural_source_owner_not_ready")
 	if not source.get("etype") is int:return _no("invalid_etype")
 	var entry:=factory.natural_registration(source.etype)
 	if entry.is_empty():return _no("natural_etype_not_registered:"+str(source.etype))
-	if entry.get("prepared_record_only",false):return _no("natural_profile_scheduler_HOLD:"+str(source.etype))
+	if source.etype!=0:return _no("natural_profile_scheduler_HOLD:"+str(source.etype))
 	if (not source.get("elite") is int or source.elite!=0) or source.get("mods")!=[]:return _no("elite_modifier_owner_not_ready")
 	for key in ["el","element","element_id"]:
 		if source.has(key):return _no("undefined_source_element_required")
@@ -190,3 +190,16 @@ func spawn_profile_record(component: Node,group: String,record: Dictionary,site:
 func projectile_component(actor: Node) -> Node:
 	var reference: Variant=_components.get(actor.get_instance_id())
 	return reference.get_ref() if reference is WeakRef else null
+
+func admit_source_record(component: RefCounted,group: String,record: Dictionary,site: Dictionary,source: Dictionary) -> Dictionary:
+	if _busy or component not in [main._native_etype_a_spawn,main._native_etype_b_spawn] or not adapter.is_current() or get_tree().paused:return _no("actual_source_profile_required")
+	if not site.get("ready",false) or site.get("spawn_group_id")!=group:return _no("source_profile_site_receipt_required")
+	var token:=group+"/"+str(source.spawn_n)
+	if _used.has(token):return _no("source_prefix_already_consumed")
+	_busy=true;_used[token]=true
+	var built:=factory.prepare_natural_profile(record,main.world,component)
+	if not built.get("ready",false):_busy=false;return built
+	return _admit_prepared(built.actor,group,site)
+func emit_profile_projectile(actor: Node,origin: Vector2,profile: Dictionary) -> Node2D:
+	if not owns_actor(actor) or not actor.alive or not frame_ready(main.world.get_native_frame()):return null
+	return projectiles.admit_profile_projectile(self,actor,origin,profile,_packet)
