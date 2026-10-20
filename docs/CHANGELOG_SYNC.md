@@ -1,3 +1,10 @@
+## 2026-10-21 DEMO11-etype-c — factory append-only 권한 분류 정정
+
+| 항목 | 확인·남은 인수 |
+|---|---|
+| 허용 범위 | 사용자 판정대로 C13~17 factory 등록은 Mac 허용, 기존 생성/등록 분기 변경0·PC P2-008b 동일줄 충돌시 해당타입만 제외 |
+| 현 상태 | 최신 main0138c5bb9 재확인. factory 권한은 차단 사유 아님. Player web/trap·swoop 근접패링·hurtE 분열prefix 접점으로 BLOCKED 유지. 제품/factory/등록/실제스폰0, Godot·관련회귀·5종벤치 미실행/PASS 없음. [보고서](engine/orders/reports/demo11-etype-c_REPORT.md), [8.0 인수 경계](8.0몬스터디자인/DEMO11_ETYPE_C_NATIVE_ADMISSION_20261021.md) |
+
 ## 2026-10-21 DEMO11-etype-c — etype13~17 인수 BLOCKED
 
 | 항목 | 원문·인수 근거 |

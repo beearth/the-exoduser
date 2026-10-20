@@ -1,5 +1,15 @@
 # DEMO11-etype-c — DEMO11-63~67 자연 소환 인수 BLOCKED
 
+## 2026-10-21 factory 권한 판정 반영 — PC 접점 BLOCKED 유지
+
+사용자 후속 판정으로 **C 묶음 etype13~17의 factory 등록 append-only는 Mac 허용 범위**다. 기존 등록/생성 분기 수정은 금지하고, PC P2-008b와 같은 줄을 수정해야 하는 타입은 그 타입만 NOT_READY를 유지한다. factory/적 생성 자체를 권한 밖으로 판단하지 않는다. 앞선 보고의 emitter/World 등록 부분도 게임 시스템의 Mac 통합 후속이며 PC 전투 인터페이스 차단과 구분한다.
+
+최신 origin/main은 여전히0138c5bb9188d27cee10cb1a901d075092ddb88f이며 같은 브랜치 a62520db에서 정상 merge를 확인(Already up to date)했다. 읽기 비교한 P2-008b 원격 tip은b406e4bc4c104ff42144c3222f7356858959873e; 해당 제품을 임의 merge하지 않았다. main factory26의 KNOWN_ETYPES에는 이미13~17이 있고, 이번 문제는 숫자 whitelist만 추가하는 것으로 해결되지 않는다. PC factory diff는 기존151 unsupported_reason/568 consume_atomic 주변에 전용 actor 연결을 추가하므로 후속 C 등록에서는 이 분기를 바꾸지 않는 append-only 접점을 선택해야 한다. 현재는 수정0으로 PC와 같은 줄 충돌0, 충돌을 이유로 C 전체를 건너뛰었다고 주장하지 않는다.
+
+**이전 C 제출은 factory 거절만의 BLOCKED가 아니므로, 이번 허용으로 실제5종이 준비됐다고 전환할 수 없다.** 아래 타입별 표의 PC 접점은 최신 main에도 미존재다:13=web90/이동상태,14=eSwoop actor 근접 패링·poise·반동,15=hurtE42792 분열 중간 prefix/Marker 자식 요청,16=trapSlow 저항·밟기/Q 순서,17=13 의존 및 동적 Marker 예산 receipt. Player/QE/hurtE를 직접 고치거나 projectile 반사로 근접 패링을 대신하는 보호 경로 변경은 수행하지 않았다. 기존 일반 actor만 빈 껍데기로 등록해 특수 행동을 삭제하지 않는다. factory에 실행 불가능한 등록 descriptor만 붙여 제작 진행으로 세지도 않는다.
+
+이번 후속 변경은 권한/차단 분류를 명확히 한3문서뿐이다. 제품·factory·Main/State/World·PC 전투/저장/에셋/테스트 변경은 각0줄, append-only 등록 추가0, 실제 C actor 생성·등록·스폰·전투 확인0. Godot·관련 회귀·5종120fps 벤치 미실행, PASS 수 없음. 실제5종이 인수 가능해지면 등록→자연 전투→고정N 벽시계 벤치1회를 해야 한다. 재확인 로그·PC factory diff·파일 해시는 `_out/demo11-etype-c/factory-authorization-20261021/`. 현 판정은 **BLOCKED_PC_INTERFACE / factory 권한 문제 아님**, 완료 아님이다.
+
 **완료 아님: etype13~17 모두 현 기준에서 NOT_READY, 등록/생성0.** 전투 핵심은 PC 인터페이스 호출만 허용한다는 범위 때문에 Player 상태·급강하 근접 패링·hurtE 사망 중간 순서를 Mac에서 새 writer로 만들지 않았다. 타입별 이유는 서로 다르며 하나의 거부로 다른 타입을 일괄 차단하는 제품 코드는 추가하지 않았다. 미완 적을 단순 generic actor/다른 원소로 대신 등록하지 않는다.
 
 기준 fetch origin/main `0138c5bb9188d27cee10cb1a901d075092ddb88f`; DEMO11-43 `9b763da9900c3c225fa60caa556f5b8c9ea227a3`는 이 main을 포함한다. `git merge --no-edit 9b763da9`의 정상 fast-forward 결과를 작업 기준으로 삼았다(새 merge commit 없음). 브랜치 `codex/demo11-etype-c-20261021`. 갭 문서는 main에 없어 지정 기준 `61ab71be`의 §4.1 DEMO11-63~67 행을 읽기 참조했으며 문서/제품을 임의 merge하지 않았다. sparse WT만 사용, R tracked 상태 보존. 원본 game.html SHA256 `4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4`.

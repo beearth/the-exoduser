@@ -1,5 +1,7 @@
 # DEMO11-etype-c — 13~17 자연 소환 인수 경계
 
+2026-10-21 후속 권한 판정: factory의 C13~17 등록 항목 append-only는 Mac 범위다. 기존 생성/등록 로직과 PC P2-008b의 같은 줄 변경은 금지한다. factory 권한을 BLOCKED 사유로 두지 않는다. 최신 main0138c5bb9 재확인에도 web/trap Player 상태·swoop 근접 패링·hurtE 분열 중간 prefix 접점이 없어 현재 판정은 BLOCKED_PC_INTERFACE다. 숫자 whitelist에는 이미13~17이 있다. 작동 불가 descriptor/빈 actor만 추가하지 않았고, 이번 후속 제품·등록·스폰0이다. PC 접점별 상세와 원격 비교 tip은 보고서 맨 위 후속 절 참조.
+
 2026-10-21, main0138c5bb9 + DEMO11-43 9b763da9. DEMO11-63~67은 **BLOCKED/등록0**, 웹 원본 구현/독립 정책 존재와 새 MAP11 자연 전투 인수를 구분한다. 다섯 etype를 다른 actor로 치환하지 않았다. 제품·공용·테스트·에셋 코드 변경0.
 
 - 13 거미사도: game31206·38991–38998·35083–35084. web탄은 피해가 아닌 Player90틱 둔화(33005·33022 이동×.5), Q forbidden(16917). PC 상태 접점 필요.
