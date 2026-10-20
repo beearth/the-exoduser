@@ -39,6 +39,8 @@
 |---|---|---|---|
 | FEATURE-INVENTORY | PC Codex · codex/feature-inventory-pc-20261020 | docs/engine/FDG_FEATURE_INVENTORY_20261020.md, docs/engine/orders/reports/FEATURE-INVENTORY_REPORT.md; 관련 계획 문서에 snapshot 링크만 추가 | 검수 대기 · 1,061행, 원본/근거3389참조·등록집합 대조. 정적 첫22통과/1서식실패 후 해당1검사만 수정·통과. 게임 실행/실플레이 인수 아님. P3-003은 Mac ENGINE 소유로 무수정. 커밋 SHA는 보고서 마감 단락/원격 ref에서 확인 |
 
+FEATURE-INVENTORY 문서 체크포인트: `32492e498a3e5f53471c85eb6a6f752755b53000` / 브랜치 `codex/feature-inventory-pc-20261020`. 최종 판정 없음387·일부665·격리완료6·실플레이0·미확인3. 의미 검토의 보수화25행/집계 영향만 별도2검사군 통과(`classification-03.json`). 원본 HEAD 고정 snapshot이며 최신 main 전체 진행률로 사용하지 않는다.
+
 `godot/scripts/main.gd`, `hud.gd`, `world.gd`, `player.gd`, `native_normal_enemy_hurte.gd`(공용 피해 집행자), `native_source_new_run_state.gd`(G/P 소유자)
 
 ## 검수·병합 완료 기록 (최근)
