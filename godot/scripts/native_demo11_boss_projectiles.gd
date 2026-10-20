@@ -2,10 +2,14 @@ extends Node
 const BIRTH = preload("res://scripts/native_ch1_boss_projectile_patterns.gd")
 const CLASS_AUTHORITY = preload("res://port_modules/parry_blue_projectile/producer.gd")
 const CARRIER = preload("res://scripts/native_demo11_boss_projectile.gd")
+const FIELD_ENERGY = preload("res://scripts/native_demo11_field_energy.gd")
 const SOURCE_PATH := "res://data/demo11_projectile_source.json"
 const SPECIAL := ["mine","trap","web","poisonZone","iceZone","blizzard","dimRift","elemBall","_coralSpike","swordWave","beam"]
 signal protected_contact_request(request: Dictionary)
 signal projectile_retired(id: int, reason: String)
+var _field_owner: Node
+var _field_reader: Callable
+var _clock_owner: Node
 var _actor: Node
 var _world: Node2D
 var _player: Node2D
@@ -47,6 +51,21 @@ func configure(actor: Node,world: Node2D,player: Node2D) -> bool:
 	process_physics_priority = 2
 	if not actor.bind_owner("spawnProj_owner",_birth_request) or not actor.bind_owner("_spawnBossProjectile",_birth_request): return false
 	return true
+# DEMO11-31: same registry/pool/class/birth/drop/PC boundary, one active clock.
+func bind_field_source(owner: Node, reader: Callable) -> bool:
+	if is_instance_valid(_field_owner) or not is_instance_valid(owner) or owner.get_parent()!=_world or not reader.is_valid() or reader.get_object()!=owner:return false
+	_field_owner=owner;_field_reader=reader
+	return true
+func birth_field_projectile(owner: Node, props: Dictionary, frame: Dictionary) -> Variant:
+	if owner!=_field_owner or not is_instance_valid(owner) or owner.get_parent()!=_world:return null
+	return _birth_request({"command":"spawnProj_owner","args":[props],"frame":frame,"field_source":true})
+func retire_field_projectiles(owner: Node) -> int:
+	if owner!=_field_owner or not is_instance_valid(owner):return 0
+	var count:=0
+	for id in _entries.keys():
+		var entry: Dictionary=_entries[id]
+		if entry.get("field_owner")==owner and is_instance_valid(entry.node):entry.node._end("field_arena_handoff");count+=1
+	return count
 func bind_protected_contact(owner: Callable) -> bool:
 	if _pc_contact.is_valid() or not owner.is_valid(): return false
 	_pc_contact = owner
@@ -70,7 +89,7 @@ func _birth_request(request: Dictionary) -> Variant:
 		if wrapped.get("status")!="READY": _error=wrapped.get("reason",""); return null
 		props = wrapped.props
 	for flag in SPECIAL:
-		if props.get(flag,false): _error="specialized_tick_owner_required:"+flag; return null
+		if props.get(flag,false) and not (flag=="elemBall" and request.get("field_source",false) and props.get("fbEnergy",false) and props.get("el")==2): _error="specialized_tick_owner_required:"+flag; return null
 	if props.get("friendly",false): _error="hostile_carrier_required"; return null
 	_in_birth = true
 	var pool: Dictionary = _free.pop_back() if not _free.is_empty() else {}
@@ -102,7 +121,7 @@ func _birth_request(request: Dictionary) -> Variant:
 	pool.clear()
 	pool.merge(result.projectile,true)
 	_next_id += 1
-	var shot: Node2D = CARRIER.new()
+	var shot: Node2D = FIELD_ENERGY.new() if props.get("fbEnergy",false) and request.get("field_source",false) else CARRIER.new()
 	shot.configure_source(_next_id,pool,_profile(pool),_player,_world)
 	shot.native_expiry_policy = _retain_expired
 	shot.retired.connect(_retire)
@@ -111,7 +130,7 @@ func _birth_request(request: Dictionary) -> Variant:
 		_error="actual_carrier_creation_rejected"
 		_in_birth=false
 		return null
-	_entries[_next_id] = {"node":shot,"raw":pool,"born_serial":frame.serial,"birth_ticks":0,"calls":0}
+	_entries[_next_id] = {"node":shot,"raw":pool,"born_serial":frame.serial,"birth_ticks":0,"calls":0,"field_owner":_field_owner if request.get("field_source",false) else null}
 	if _advancing: _tick_queue.append(_next_id)
 	_born += 1
 	_error=""
@@ -136,7 +155,15 @@ func _camera() -> Vector2:
 func _retain_expired(shot: Node) -> bool:
 	return shot.life_ticks > -900 and not shot.raw.get("redBean",false) and shot.global_position.distance_squared_to(_camera())<=6250000.0
 func _physics_process(_delta: float) -> void:
-	if not _live() or _entries.is_empty() or not _actor.is_source_frame_completed(): return
+	if not _live() or _entries.is_empty():return
+	if is_instance_valid(_field_owner) and _field_reader.is_valid():
+		var field_frame: Dictionary=_field_reader.call()
+		if field_frame.get("ready")==true:
+			if _clock_owner!=_field_owner:_serial=-1;_clock_owner=_field_owner
+			advance_source_frame(field_frame)
+			return
+	if not _actor.is_source_frame_completed():return
+	if _clock_owner!=_actor:_serial=-1;_clock_owner=_actor
 	advance_source_frame(_actor.read_source_frame())
 func advance_source_frame(frame: Dictionary) -> bool:
 	if not _live() or frame.get("ready")!=true or not frame.get("serial") is int or frame.serial<=_serial or not _number(frame.get("sp")) or frame.sp<0: return false
