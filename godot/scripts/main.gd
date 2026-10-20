@@ -15,6 +15,7 @@ const SourceProvidersScript = preload("res://scripts/native_source_player_provid
 const SourceInitializationScript = preload("res://scripts/native_source_player_initialization.gd")
 const SourceInitializationServicesScript = preload("res://scripts/native_source_player_initialization_services.gd")
 const SourceLessonScript = preload("res://port_modules/parry_lesson_source/producer.gd")
+const AutoPotionScript = preload("res://scripts/native_potion_recovery.gd") # DEMO11-25
 const RegenerationPhaseScript = preload("res://scripts/native_source_player_regeneration_phase.gd") # P2-005d
 const NativeSpriteInspector = preload("res://port_modules/native_sprite_resource_readiness/producer.gd")
 const NativePlayerSpriteExpectation = preload("res://scripts/native_player_sprite_expectation.gd")
@@ -83,6 +84,7 @@ var _source_l_eq_cache: Variant = null
 var _source_l_eq_write_context: Dictionary = {}
 var source_initialization_result: Dictionary = {}
 var source_lesson: RefCounted
+var source_potion: RefCounted = AutoPotionScript.new() # DEMO11-25, Main lifetime
 var source_regeneration: RefCounted # P2-005d — 원본 자연 회복 단계(배선 후 Player 레거시 0.28 비활성)
 var _source_lesson_file_init_attempted: bool = false
 var _source_lesson_file_init_publish_calls: int = 0
@@ -1030,6 +1032,7 @@ func _update_native_screen_flash() -> void:
 		_native_flash_rect.color = Color(1, 1, 1, 0)
 
 func _physics_process(_delta: float) -> void:
+	source_potion.advance_native.call_deferred(self, _delta * 60.0, Engine.get_physics_frames()) # DEMO11-25: late 60Hz phase, after child regen
 	if not get_tree().paused and is_instance_valid(player) and is_instance_valid(camera):
 		player.z_index = clampi(int(player.position.y / 4.0), -4096, 4095)
 		camera.position = player.position

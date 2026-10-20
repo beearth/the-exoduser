@@ -15,6 +15,22 @@
 | 검증 | 신규79/0·별도 프로세스 재읽기5/0·경로 IO 실패 집중8/2→수리 후8/0. 기존 primitive10,388/0·reader5,952/0 각1회, 정상 ERROR/WARNING0. 최초 신규75/0과 집중 실패 로그 보존/중복 합산0 |
 | 보호·제출 | Main/State/전투/맵/기존 SV/사용자 First 저장소 변경0. demo 전용 namespace만 IO, 새 adapter/test/UID·SAVE 추적 보충·[DEMO11-05 보고서](engine/orders/reports/demo11-05_REPORT.md). 원로그 ~/exoduser-wt/_out/demo11-05/, pgrep/30초 gate·각 격리명·override 종료0byte. 정상 훅·자기 branch push/원격 일치/DONE 뒤 자기 worktree 제거 |
 
+## 2026-10-21 DEMO11-25 성능 규칙 후속 — 최신 main 정상 merge
+
+| 항목 | 근거 |
+|---|---|
+| 통합·점검 | codex/demo11-25b에 main8dbbf2b0(aa1eaea5a 캐시 수정 포함) merge, rebase0. 물약 신규 phase/runtime 및 직접 helper/State/authority의 목록 생성 API0건; 제품 추가 수정0 |
+| 범위 | upstream PC 수정은 그대로 인수. CHANGELOG 충돌은 양쪽 절 보존. 신규2560/0·QS318/0·regen10/0·lessonclock21/0·contracts5그룹/0 각1회, ERROR0/기존 Camera WARNING3. 별도 성능 벤치 미실행·성능 수치 주장0. 새SHA는 demo11-25 보고서와 _out/demo11-25b/DONE.txt에 기록 |
+
+## 2026-10-21 DEMO11-25 재개 — 자동 HP·악의·CD writer 및 자연 60Hz 호출
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준·구현 | main01051599, 사용자 정정으로 QS-02/03 신규 구현 허용. QS-01 재사용 auto_phase/runtime, State→HP-only authority, Main physics deferred 한 줄. 원본 G35893–35910 read/write 순서·임계/음수CD·재조회 보존 |
+| 공용·보호 | Main17/84/1007 추가3줄, State1227–1260 추가34줄, authority672–685 추가14줄. 기존 줄 수정/삭제0, 피해·PC 전투 핵심·저장·맵·웹 원본·R0. 관련 2_8 docs 갱신 |
+| 검증 | 원본 JS UTF8 oracle420사례·신규2560/0. 직접 회귀 각1회 QS318/0·regen10/0·lessonclock21/0·contracts5그룹/0. 최종 ERROR/종료누수0, 기존 Camera2D WARNING 기록. 최초 하니스5실패/MP3 누수 진단·수정 이력 보존 |
+| 잔여·제출 | SFX 미연결·native 시스템 튜토리얼·전설벨트 피해 consumer HOLD를 명시, 활성벨트 timer 생성/피해 수정0. [DEMO11-25 보고서](engine/orders/reports/demo11-25_REPORT.md). codex/demo11-25b-20261021 자기branch push/원격일치/DONE 후 자기WT제거 |
+
 ## 2026-10-21 DEMO11-01 Main 부팅의 1-1 데모 권위
 
 | 항목 | 구현·검수 근거 |
