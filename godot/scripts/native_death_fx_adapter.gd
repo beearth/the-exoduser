@@ -52,6 +52,7 @@ var _gore_textures: Dictionary = {}
 var _di_textures: Dictionary = {}
 var _blood_sheet: Texture2D
 var _impact_sheet: Texture2D
+var _impact_el0_sheet: Texture2D
 var _floor: Node2D
 var _air: Node2D
 var _air_add: Node2D
@@ -88,6 +89,10 @@ func configure(owner_world: Node2D) -> bool:
 			_di_textures[key] = load(path)
 	_blood_sheet = load("res://assets/vfx/Blood_FBF_4x4.png") if ResourceLoader.exists("res://assets/vfx/Blood_FBF_4x4.png", "Texture2D") else null
 	_impact_sheet = load("res://assets/vfx/impact_basic_sheet.png") if ResourceLoader.exists("res://assets/vfx/impact_basic_sheet.png", "Texture2D") else null
+	# 18866/18871 _impactSpriteFor: 비보스 el0 'slash' 임팩트의 실시트는 impact_el0_sheet
+	# (회백 성광, 765×85 9f). impact_basic(황금)은 "로드 실패만" 폴백(18870 주석) —
+	# 황금 시트를 본시트로 쓰면 처치 중심이 주황/노랑 코어가 됨(P2-001g 결함 A 원인 1).
+	_impact_el0_sheet = load("res://assets/vfx/impact_el0_sheet.png") if ResourceLoader.exists("res://assets/vfx/impact_el0_sheet.png", "Texture2D") else null
 	process_mode = Node.PROCESS_MODE_PAUSABLE
 	z_as_relative = false
 	for i in range(STAIN_MAX): _stains.append({"active": false})
@@ -547,11 +552,33 @@ func _draw_air(canvas: Node2D) -> void:
 		var alpha: float = 1.0 if float(impact_item["life"]) < 0.3 else 1.0 - (float(impact_item["life"]) - 0.3) / 0.7
 		var at2: Vector2 = canvas.to_local(Vector2(impact_item["x"], impact_item["y"]))
 		canvas.draw_texture_rect(impact_item["texture"], Rect2(at2 - Vector2.ONE * size * 0.5, Vector2.ONE * size), false, Color(1, 1, 1, maxf(0.0, alpha)))
+	# 19178~19194 홀리 버스트(impact_basic 황금 시트, scale .4, alpha .45, 회전) — 코드의
+	# 'lighter'(19184)는 GPU/GL 프록시 X에서 no-op이고 호출 시점(54772, 마지막
+	# _setBlend(false) 이후)의 실블렌드는 **normal**. additive로 그리면 처치 중심이
+	# 과노출 황금 코어가 됨(P2-001g 결함 A 원인 2) → 이 normal 캔버스가 맞다.
+	if _impact_sheet != null:
+		var hb_frame_size: float = _impact_sheet.get_width() / 9.0
+		for vfx in _hit_vfx:
+			if not vfx["active"]:
+				continue
+			var fr2: int = mini(8, int(vfx["frame"]))
+			var dsz: float = hb_frame_size * float(vfx["scale"])
+			canvas.draw_set_transform(canvas.to_local(Vector2(vfx["x"], vfx["y"])), float(vfx["ang"]), Vector2.ONE)
+			canvas.draw_texture_rect_region(_impact_sheet,
+				Rect2(-Vector2.ONE * dsz * 0.5, Vector2.ONE * dsz),
+				Rect2(fr2 * hb_frame_size, 0, hb_frame_size, _impact_sheet.get_height()),
+				Color(1, 1, 1, 0.45))
+		canvas.draw_set_transform_matrix(Transform2D())
 
 func _draw_air_add(canvas: Node2D) -> void:
-	if _impact_sheet != null: # 54720~ 히트 임팩트 (impact_basic 9프레임, 비보스 .8+p*.6 / inv*.45)
+	# 54720~ 히트 임팩트 — 시트는 _impactSpriteFor(18871): 비보스 el0=impact_el0_sheet
+	# (로드 실패 시만 impact_basic 폴백). 블렌드는 웹도 additive(_queueVfxGL 54757 → 5211
+	# _flushVfxGL SRC_ALPHA,ONE)라 이 additive 캔버스가 맞다. drawSz=fsz*sz*(.8+p*.6),
+	# alpha=(1-p)*.45, 회전 없음(54757 ang=0).
+	var impact_tex: Texture2D = _impact_el0_sheet if _impact_el0_sheet != null else _impact_sheet
+	if impact_tex != null:
 		var drawn := 0
-		var frame_size: float = _impact_sheet.get_width() / 9.0
+		var frame_size: float = impact_tex.get_width() / 9.0
 		for impact in _impacts:
 			if drawn >= IMPACT_DRAW_MAX:
 				break
@@ -562,21 +589,10 @@ func _draw_air_add(canvas: Node2D) -> void:
 			var fr: int = mini(8, int(p * 9.0))
 			var draw_size: float = frame_size * float(impact["sz"]) * (0.8 + p * 0.6)
 			var at2: Vector2 = canvas.to_local(Vector2(impact["x"], impact["y"]))
-			canvas.draw_texture_rect_region(_impact_sheet,
+			canvas.draw_texture_rect_region(impact_tex,
 				Rect2(at2 - Vector2.ONE * draw_size * 0.5, Vector2.ONE * draw_size),
-				Rect2(fr * frame_size, 0, frame_size, _impact_sheet.get_height()),
+				Rect2(fr * frame_size, 0, frame_size, impact_tex.get_height()),
 				Color(1, 1, 1, (1.0 - p) * 0.45))
-		for vfx in _hit_vfx: # 19178 홀리 버스트 (같은 시트, scale .4, alpha .45, 회전)
-			if not vfx["active"]:
-				continue
-			var fr2: int = mini(8, int(vfx["frame"]))
-			var dsz: float = frame_size * float(vfx["scale"])
-			canvas.draw_set_transform(canvas.to_local(Vector2(vfx["x"], vfx["y"])), float(vfx["ang"]), Vector2.ONE)
-			canvas.draw_texture_rect_region(_impact_sheet,
-				Rect2(-Vector2.ONE * dsz * 0.5, Vector2.ONE * dsz),
-				Rect2(fr2 * frame_size, 0, frame_size, _impact_sheet.get_height()),
-				Color(1, 1, 1, 0.45))
-		canvas.draw_set_transform_matrix(Transform2D())
 	if _blood_sheet != null: # 54571~ death_blood 애님 (128px 4x4, alpha=base×(1-frame/16×0.3))
 		for anim in _blood_anims:
 			var frame: int = int(anim["frame"])
@@ -610,6 +626,7 @@ func get_snapshot() -> Dictionary:
 	return {"configured": _configured, "counts": counts, "metrics": _metrics.duplicate(true),
 		"gore_textures": _gore_textures.size(), "di_textures": _di_textures.size(),
 		"blood_sheet": _blood_sheet != null, "impact_sheet": _impact_sheet != null,
+		"impact_el0_sheet": _impact_el0_sheet != null,
 		"pool_limits": {"stains": STAIN_MAX, "corpses": CORPSE_MAX, "gore": GORE_MAX,
 			"di": DI_MAX, "impacts": IMPACT_MAX},
 		"unported": ["death_sounds_sfx_death_assets_missing", "burn_corpse", "split_gib_pieces",
