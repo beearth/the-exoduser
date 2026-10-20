@@ -267,6 +267,7 @@ func _ready() -> void:
 	_install_native_attack_audio()
 	_bind_native_intro_curtain_view()
 	_bind_native_startup_services()
+	preload("res://scripts/native_spawn_hole_system.gd").install_native_boot(self) # P3-002 initStage 소환굴 배치(인트로 이전)
 	source_intro_sequence = IntroCurtainSequenceScript.install_native_boot(self) # P2-001i
 	var metrics_timer := Timer.new()
 	metrics_timer.wait_time = 0.1

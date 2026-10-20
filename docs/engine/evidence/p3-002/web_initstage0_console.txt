@@ -1,0 +1,6 @@
+[MAP] field-face si=0 200x200
+[MAP] tileRLE: boss room re-carved+isolated at 100 18
+[HOLE] tileRLE: spawnHoles=14 (tmpl.spawnHoles=9 objs=0 roomSpawns=3)
+[HOLE] final=14 (min=6) totalSpawned=168
+[MAP] si=0 tileRLE=Y manualHoles=9 autoHoles=14 rooms=6 bossRm=Y exits=3 gateTiles=3 portals=0
+errors: []
