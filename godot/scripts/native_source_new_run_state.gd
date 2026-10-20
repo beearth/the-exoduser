@@ -3,6 +3,9 @@ extends Node
 ## SOURCE_BOOT inputs stay unchanged. No bootstrap run, external ack, formula,
 ## actor writes, grit reset, stage publication, save IO or automatic clock.
 
+const DEMO_GROWTH = preload("res://scripts/native_demo_growth_owner.gd")
+var _native_growth: RefCounted
+
 const BOOTSTRAP = preload("res://port_modules/native_new_run_bootstrap_source/producer.gd")
 const STARTER_FACTORY = preload("res://port_modules/starter_item_factory_source/producer.gd")
 const SOURCE_RESOURCES = preload("res://scripts/native_source_resource_authority.gd")
@@ -651,11 +654,13 @@ func _native_exp_result(levels: int, ap_gain: int, texts: Array, gate_reason: St
 		"levels": levels, "ap_gain": ap_gain, "sp": _p.get("sp"), "ap": _p.get("ap"), "texts": texts,
 		"demo_mode": _native_demo_exp_mode, "gate_reason": gate_reason,
 		"handoff": _native_level_up_last.duplicate(true) if levels > 0 else {},
-		"unported": ["SFX.levelup", "showPH_LEVEL_UP", "_levelUpVfx", "dbSaveForce_IO:DEMO11-06_owner_pending", "passive_queue:DEMO11-19_owner_pending"]}
+		"unported": ["SFX.levelup", "showPH_LEVEL_UP", "_levelUpVfx", "dbSaveForce_IO:DEMO11-06_owner_pending"]}
 
 func apply_native_add_exp(owner: Node, final_value: int) -> Dictionary:
-	if not _feel_owner_current(owner) or final_value < 0 or _native_add_exp_active:
+	if not _feel_owner_current(owner) or final_value < 0 or _native_add_exp_active or (_native_growth!=null and _native_growth.is_busy()):
 		return {"applied": false, "reason": "actual_reward_owner_not_current"}
+	var growth_xp_before: Dictionary={}
+	for field in ["lv","exp","maxExp","sp","ap"]:growth_xp_before[field]=_p[field]
 	_native_add_exp_active = true
 	# Only demo cap adoption: the pre-existing non-demo transcendence HOLD below
 	# remains unchanged. No new daily clock or date/count writes in this unit.
@@ -691,6 +696,11 @@ func apply_native_add_exp(owner: Node, final_value: int) -> Dictionary:
 			ap_gain += 1
 	var texts: Array = []
 	if levels > 0:
+		var growth: Dictionary=_native_growth_owner(owner).execute({"action":"process_queue"})
+		if growth.get("applied")!=true:
+			for field in growth_xp_before:_p[field]=growth_xp_before[field]
+			_native_add_exp_active=false
+			return {"applied":false,"reason":"passive_queue_refresh_failed","growth":growth}
 		var heal: Dictionary = _resources.commit_native_level_up_heal(owner) if _resources.has_method("commit_native_level_up_heal") else {"accepted": false}
 		if heal.get("accepted") != true:
 			_native_add_exp_active = false
@@ -1586,3 +1596,22 @@ func apply_native_forge_potion_upgrade(owner: Node) -> Dictionary:
 	_forge_committing = false
 	return {"status":"READY","paid":true,"level":_auto_potion_level,"cost":cost,"remaining":_g.mats,
 		"unported":["dbSaveNow, source flash/particle feedback"]}
+
+# DEMO11-19r allocation owner. Paused UI is allowed; no tick caller is installed.
+func _native_growth_owner(owner: Node) -> RefCounted:
+	if _native_growth==null:
+		_native_growth=DEMO_GROWTH.new()
+		_native_growth.configure(owner,self)
+	return _native_growth
+
+func _native_growth_owner_current(owner: Node) -> bool:
+	return _current_error().is_empty() and is_instance_valid(owner) and owner==_player.get_parent() \
+		and owner.get("source_state")==self and owner.get("world")==_world and not owner.is_queued_for_deletion()
+
+func read_native_growth(owner: Node) -> Dictionary:
+	return _native_growth_owner(owner).snapshot() if _native_growth_owner_current(owner) else {}
+
+func apply_native_growth(owner: Node,command: Dictionary) -> Dictionary:
+	if not _native_growth_owner_current(owner) or _native_add_exp_active:
+		return {"applied":false,"status":"REJECTED","reason":"growth_owner_or_xp_active","unchanged":true}
+	return _native_growth_owner(owner).execute(command.duplicate(true))
