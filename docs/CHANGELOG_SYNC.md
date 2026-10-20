@@ -1,3 +1,14 @@
+## 2026-10-20 BC01 — 1장 보스 정적 등록 catalog
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 채택 | 신규 native_ch1_boss_catalog.gd와 독립 테스트만. actor/AI/HP 계산/전투/Main/저장 연결 없음. 공용 6파일·기존 테스트 수정0 |
+| 원본 | main c3cf8ce6b0cc1a5c381240260e03dff71c68af8d의 game.html:9820–9967/10009–10010/16688–16695; SHA256 4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4 |
+| 등록 | 전체59 move manifest/68 combo 중 CH1 union24 move·27 combo·5 phase. 최종 Set [23,21,10,23], sparse idx30/59 없음·max60. 원순서·필드·문구·수치 보존 |
+| API | source_receipt/boss_for_stage/moves_for_stage/move_by_id/phase_by_index/combos_for_stage. 중첩 복사 반환, 범위 밖 명시 거절/빈값, 전역 전체기술 fallback 없음 |
+| 검수 | 신규 첫 parse 실패(exit0/ERROR2/RESULT없음) 보존 → 명시 bool 수정 후 681단정/0실패/ERROR0. 회귀 contracts5/5·regions43/0·spawn_holes298/0·factory3/3, p1002g220/1(지정 선재). 원로그·격리는 [bc01 보고서](engine/orders/reports/bc01_REPORT.md) 참조 |
+| 보호·한계 | 2_3/Q·E/세이브 형식 보호. 실제 보스전·공용 배선·Godot 화면·성능·PC 인수 아님 |
+
 > 2026-10-17 ENGINE 현행: callback **12/25·미13**. play_time은 el_mul 바로 다음에 동일 Services self의 arity0 Callable로 등록했다. owner 첫 격리 공개 API 검수는 인수됐으며 자연 clock·실게임 인수는 미확인이다. D9는 직전 공통 소스 인수이며, 이번 main/I/R 소스 정렬은 아래 통합 정본과 단위 receipt의 실제 HEAD·tree를 기준으로 확인한다. V12 후보는 소스 인수·첫 FAIL·별도 보완 한정성공으로 구분하며 제품 copy·World hook은 수행하지 않았다. 아래 이전 단계 숫자·원검수 결과는 당시 이력으로 보존한다. 실제 local/remote commit 상태는 단위 receipt를 따른다.
 
 > 2026-10-17 ENGINE WIP 현행: 실제 callback **9/25·미16**. 신규 격리 행동41/41과 신규 map 경계 static9/9만 인수 범위다. 원 첫 parse 실패는 보존한다. 이 WIP를 main/R/served·전체 게임 최신화 완료로 해석하지 않는다.
