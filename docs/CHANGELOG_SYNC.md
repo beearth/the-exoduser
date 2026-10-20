@@ -1,3 +1,15 @@
+## 2026-10-20 QA-002 테스트 결정성·종료·조명 하니스
+
+| 항목 | 변경·검수 근거 |
+| --- | --- |
+| 기준 / 범위 | origin/main `c7b21c63b25f7a8e25b9e0ec29e4fc7f21e8d91d`, `codex/qa-002-20261020`. 테스트 10개와 관련 docs만 변경. 제품 RNG·제품 스크립트 변경 0 |
+| 테스트 입력 | p1002e/f/g, p2001b/c/e, p2005b/c/d의 `_initialize()`에서 seed 20261020을 프로세스당 1회만 고정. Main 재부팅 재시드 없음; 기존 단정·임계값·group·skip 유지 |
+| 종료 / 조명 | p2005b/c 마지막 cleanup 뒤 process_frame 12회 대기. p2003a는 headless·텍스처 null 확인 뒤 get_image, GUI 이미지 누락은 실패로 기록. 기존 픽셀 3검사 유지 |
+| 실측 | 시드 9종 31회 모두 그룹별·총 검사 수 일치. 조명 headless 10/0·GUI 12/0을 포함한 fixed 33회 모두 exit 0·검사 실패 0·stderr ERROR 0 |
+| 종료 진단 | B/C 각 3회 ERROR·ObjectDB 경고 0. 각 테스트 verbose 1회씩에서 개별 잔존 객체·리소스 0. 다른 E/F/G ObjectDB 경고 7/33은 미해결로 보존 |
+| 보존 / 한계 | Godot 4.7.2 원본·격리 override 사용 후 삭제, import 전 App Support 68파일 백업. R 불변. 전체 RNG 결정성·PC 같은 seed 재검증·제품 오디오 전면 해결은 주장하지 않음 |
+| 상세 | [QA-002 보고서](engine/orders/reports/QA-002_REPORT.md), 원로그 `/Users/fordeargamers/exoduser-wt/_out/qa-002/` |
+
 > 2026-10-17 ENGINE 현행: callback **12/25·미13**. play_time은 el_mul 바로 다음에 동일 Services self의 arity0 Callable로 등록했다. owner 첫 격리 공개 API 검수는 인수됐으며 자연 clock·실게임 인수는 미확인이다. D9는 직전 공통 소스 인수이며, 이번 main/I/R 소스 정렬은 아래 통합 정본과 단위 receipt의 실제 HEAD·tree를 기준으로 확인한다. V12 후보는 소스 인수·첫 FAIL·별도 보완 한정성공으로 구분하며 제품 copy·World hook은 수행하지 않았다. 아래 이전 단계 숫자·원검수 결과는 당시 이력으로 보존한다. 실제 local/remote commit 상태는 단위 receipt를 따른다.
 
 > 2026-10-17 ENGINE WIP 현행: 실제 callback **9/25·미16**. 신규 격리 행동41/41과 신규 map 경계 static9/9만 인수 범위다. 원 첫 parse 실패는 보존한다. 이 WIP를 main/R/served·전체 게임 최신화 완료로 해석하지 않는다.

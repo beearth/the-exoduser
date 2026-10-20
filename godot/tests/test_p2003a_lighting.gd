@@ -103,8 +103,7 @@ func _test_overlay_darkens_screen() -> void:
 		_check(false, "boot")
 		return
 	var overlay: CanvasLayer = active_main.get_node("NativeScreenLighting")
-	var bright_on: Variant = await _corner_brightness()
-	if bright_on == null:
+	if DisplayServer.get_name() == "headless":
 		# 헤드리스: 픽셀 검증 불가 — 가시성 토글 구조만 확인하고 밝기 증거는
 		# 프로브 스크린샷(cmp_lighting_web_vs_godot.png·수치 표)이 담당.
 		overlay.visible = false
@@ -112,11 +111,18 @@ func _test_overlay_darkens_screen() -> void:
 		overlay.visible = true
 		observations["brightness"] = "headless_dummy_renderer_probe_covers"
 		return
+	var bright_on: Variant = await _corner_brightness()
+	if bright_on == null:
+		_check(false, "비헤드리스 화면 텍스처·이미지 필요(조명 ON)")
+		return
 	overlay.visible = false
 	for i in range(8):
 		await process_frame
 	var bright_off: Variant = await _corner_brightness()
 	overlay.visible = true
+	if bright_off == null:
+		_check(false, "비헤드리스 화면 텍스처·이미지 필요(조명 OFF)")
+		return
 	# 가장자리(광 구멍 밖): 어둠 적용으로 유의미하게 어두워야 함. 중앙(광 구멍):
 	# 구멍 때문에 가장자리보다 덜 어두움(원본 구조 — 밝기 비율 역전 확인).
 	_check(bright_on[0] < bright_off[0] * 0.8, "가장자리 어둠 적용 on=%.1f off=%.1f" % [bright_on[0], bright_off[0]])
@@ -129,9 +135,14 @@ func _test_overlay_darkens_screen() -> void:
 
 func _corner_brightness() -> Variant:
 	await process_frame
-	var image: Image = root.get_texture().get_image()
+	if DisplayServer.get_name() == "headless":
+		return null
+	var texture: ViewportTexture = root.get_texture()
+	if texture == null:
+		return null
+	var image: Image = texture.get_image()
 	if image == null or image.is_empty():
-		return null # 헤드리스 더미 렌더러 — 픽셀 증거는 비헤드리스 프로브 캡처가 담당
+		return null
 	var edge := 0.0
 	var center := 0.0
 	var n := 0

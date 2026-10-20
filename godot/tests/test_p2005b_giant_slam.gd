@@ -5,6 +5,8 @@ extends SceneTree
 ## _gSlamHit 46527~(×pAtkMul·elMul·hurtE opts {kbMult:0,noPoise,noImpact}·kb8·
 ## 일반몹 stunned max(,60)·poise≤0 풀스턴), HUD sweep 44136(conic+초 텍스트).
 const USERDIR = "EXODUSER-P2005B-Isolated-20261020"
+# QA-002: 테스트 소유 입력. 제품 RNG 호출 순서는 변경하지 않는다.
+const QA002_TEST_SEED = 20261020
 const GROUPS = ["cast_costs_and_damage", "cooldown_gate_and_hud_sweep"]
 const FORMULA = preload("res://port_modules/combat_stat_formula/producer.gd")
 
@@ -19,6 +21,8 @@ var forced_actor_fields = 0
 var hurte_outcomes: Array = []
 
 func _initialize() -> void:
+	seed(QA002_TEST_SEED) # 프로세스당 1회; Main 재부팅은 같은 스트림을 이어간다.
+	observations["qa002_test_seed"] = QA002_TEST_SEED
 	call_deferred("_run")
 
 func _run() -> void:
@@ -37,6 +41,9 @@ func _run() -> void:
 		rows.append(row)
 		print("P2005B_GROUP ", JSON.stringify(row))
 	_cleanup()
+	# QA-002: AudioServer mix/main-thread 청소 기회만 제공한다(제품 오디오 조작 없음).
+	for _frame in range(12):
+		await process_frame
 	print("P2005B_RESULT ", JSON.stringify({"groups": rows, "assertions": assertions,
 		"failures": failures, "skipped": skipped, "observations": observations,
 		"forced_actor_fields": forced_actor_fields, "fallback_paths_used": false}))
