@@ -17,6 +17,27 @@ extends Node2D
 ## (7)projT(31152) (8)bossPatT(31156). aura는 elite>=2 전용(hell0 ELITE_PROB=[.03,0,0] →
 ## 매직까지만), etype 게이트 타이머들은 etype0에서 미소비(원본도 조건부 평가로 무소비).
 
+## P2-001i — 실제 부팅 자동 연결. 원본 부팅 분기: 64483 bosstest→즉시 on / 64484
+## G.stage===0→인트로 경로(컷신→가이드→커튼; 로비/컷신 영상은 이 첫 이식본 범위 밖이라
+## '컷신 완료 후' 분기로 바로 진입) / 64486~ 비0 스테이지→즉시 on. 커스텀 SceneTree
+## 스크립트(테스트 하니스) 부팅은 원본 테스트 우회 분기(63278 _wantPlateTest·64483
+## _bossTestReq)에 상응해 시퀀스를 휴면으로 설치(기존 테스트 기준선 불변). 하니스가
+## 인트로를 원하면 add_child 전에 main.set_meta("native_intro_boot","intro").
+static func install_native_boot(main: Node) -> Node2D:
+	var seq: Node2D = ExoduserNativeIntroCurtainSequence.new()
+	seq.name = "NativeIntroCurtainSequence"
+	var owner_world: Variant = main.get("world")
+	if not seq.configure(owner_world, main.get("player"),
+			main.call("get_native_intro_curtain_view"), main.get("source_state"), main.get("hud")):
+		seq.free()
+		return null
+	owner_world.add_child(seq)
+	var harness_boot: bool = main.get_tree() != null and main.get_tree().get_script() != null
+	var mode: String = str(main.get_meta("native_intro_boot", "auto"))
+	if mode == "intro" or (mode == "auto" and not harness_boot):
+		seq.begin_native_intro()
+	return seq
+
 const RING_RADIUS := 580.0            # 63425 _iR
 const RING_COUNT := 5                 # 63426
 const PURGE_RADIUS := 500.0           # 63422
@@ -42,6 +63,7 @@ var world: Node2D
 var player: Node2D
 var curtain_view: Control
 var state: Node
+var hud: Node
 var phase := "idle" # idle -> guide -> opening -> done
 var guide_step := 0
 var _guide_ready_at_ms := 0
@@ -73,13 +95,15 @@ class _BarrierDrawer extends Node2D:
 		draw_texture_rect(seq._barrier_texture, Rect2(at - Vector2.ONE * size * 0.5, Vector2.ONE * size),
 			false, Color(1, 1, 1, alpha))
 
-func configure(owner_world: Node2D, owner_player: Node2D, view: Control, state_node: Node) -> bool:
+func configure(owner_world: Node2D, owner_player: Node2D, view: Control, state_node: Node,
+		hud_node: Node = null) -> bool:
 	if _configured or not is_instance_valid(owner_world) or not is_instance_valid(owner_player):
 		return false
 	world = owner_world
 	player = owner_player
 	curtain_view = view
 	state = state_node
+	hud = hud_node
 	var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(FLESH_CONFIG_FILE))
 	if not parsed is Dictionary or not parsed.get("runtime") is Dictionary:
 		return false
@@ -117,6 +141,10 @@ func _unit(purpose: String, draws: Array) -> float:
 func begin_native_intro() -> Dictionary:
 	if not _configured or phase != "idle":
 		return {"applied": false, "reason": "sequence_not_idle"}
+	# 63279 ens.length=0 — 설치/동적 적 전부 제거(월드 owner API). stage0 신규 게임의
+	# 초기 적 구성은 이 제거 후 커튼 오픈의 5링만으로 시작하는 것이 원본.
+	if world.has_method("clear_native_enemies_for_intro"):
+		_metrics["intro_enemies_cleared"] = int(world.clear_native_enemies_for_intro().get("cleared", 0))
 	bonfire["t"] = 0.0 # 63282 if(G._bonfire)G._bonfire.t=0
 	bonfire["active"] = false
 	_intro_flag = true  # 63283 G._intro=true
@@ -125,6 +153,8 @@ func begin_native_intro() -> Dictionary:
 	player.set("iframes", 9999.0) # 63283 P.iframes=9999
 	if is_instance_valid(curtain_view):
 		curtain_view.show_closed() # 63289~63291 커튼 보이기+닫힌 상태
+	if is_instance_valid(hud) and hud.has_method("set_native_intro_hud_visible"):
+		hud.set_native_intro_hud_visible(false) # 63287 부트로딩 숨김 + HUD 미표시(63414 .on 전)
 	phase = "guide"
 	guide_step = 0
 	_guide_ready_at_ms = Time.get_ticks_msec() + GUIDE_READY_MS
@@ -145,6 +175,8 @@ func finish_native_guide() -> Dictionary:
 	if phase != "guide":
 		return {"applied": false, "reason": "guide_not_active"}
 	phase = "opening"
+	if is_instance_valid(hud) and hud.has_method("set_native_intro_hud_visible"):
+		hud.set_native_intro_hud_visible(true) # 63414 hud/hudTop/... .on 표시
 	_on_flag = true               # 63413 G.on=true
 	_apply_state_g("open")        # state G.on 점등 — update clock g_on(32580)·stageTime 개방
 	player.set("iframes", 600.0)  # 63413 P.iframes=600

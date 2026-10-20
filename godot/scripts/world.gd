@@ -2854,6 +2854,27 @@ func register_summoned_enemy(enemy: CharacterBody2D) -> Dictionary:
 	return {"valid": true, "errors": [], "registered": true,
 		"registry_index": _enemies.size() - 1, "native_frame": _native_frame}
 
+func clear_native_enemies_for_intro() -> Dictionary:
+	# P2-001i — _startIntro(63279) `ens.length=0`: 설치/동적 적 전부 제거. 원본도
+	# 레코드가 아니라 live 배열을 비우므로 encounters 리포트(동결 기록)는 유지한다.
+	# (stage0 신규 게임: 초기 설치 적은 전부 제거되고 커튼 오픈의 5링만 남는 것이 원본.)
+	var removed_ids := {}
+	var cleared := 0
+	for enemy in _enemies:
+		if is_instance_valid(enemy):
+			removed_ids[enemy.get_instance_id()] = true
+			_native_initial_order_by_instance.erase(enemy.get_instance_id())
+			enemy.queue_free()
+			cleared += 1
+	_enemies = []
+	var kept: Array[Dictionary] = []
+	for entry in _native_phase_entries:
+		var actor: Variant = entry["actor"].get_ref()
+		if is_instance_valid(actor) and not removed_ids.has(actor.get_instance_id()):
+			kept.append(entry)
+	_native_phase_entries = kept
+	return {"cleared": cleared}
+
 func register_native_curtain_ring_enemy(enemy: CharacterBody2D, source_order: int) -> Dictionary:
 	# P2-001h — _openIntroCurtain(63425~63432) 커튼 오픈 런타임 스폰 등록.
 	# install_native_encounters(2967~2974)와 같은 초기형 경로(자체 _physics_process AI,

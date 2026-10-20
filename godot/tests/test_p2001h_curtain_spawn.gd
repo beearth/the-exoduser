@@ -86,9 +86,11 @@ func _test_begin_and_finish_spawn() -> void:
 	_check(sequence.configure(world, player, view, active_main.get("source_state")), "sequence configure")
 	world.add_child(sequence)
 	var enemies_before: int = world.get_enemies().size()
+	_check(enemies_before >= 1, "installed encounter actors present before intro")
 	# begin (63277~63293 커튼 소유 구간)
 	var begun: Dictionary = sequence.begin_native_intro()
 	_check(begun.get("applied") == true, "begin applied")
+	_check(world.get_enemies().is_empty(), "63279 ens.length=0 — installed actors cleared at intro begin")
 	_check(sequence.get("phase") == "guide", "phase guide after begin")
 	_check(float(player.get("iframes")) == 9999.0, "P.iframes=9999 (63283)")
 	_check(view.phase == view.Phase.CLOSED, "curtain CLOSED shown (63289~63291)")
@@ -110,7 +112,7 @@ func _test_begin_and_finish_spawn() -> void:
 	var g1: Variant = active_main.get("source_state").read_current_g()
 	_check(g1 is Dictionary and g1.get("on") == true,
 		"state G.on=true at curtain open (63413) — update clock g_on(32580)/stageTime 개방")
-	_check(world.get_enemies().size() == enemies_before + 5, "world registry +5")
+	_check(world.get_enemies().size() == 5, "world registry exactly 5 (ring only — 원본 stage0 초기 구성)")
 	var snap: Dictionary = sequence.get_snapshot()
 	var journal: Array = snap["spawn_journal"]
 	_check(journal.size() == 5, "spawn journal 5 entries")
