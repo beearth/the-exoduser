@@ -1,7 +1,7 @@
 extends SceneTree
 ## GUI-only GPU capture + ONE fixed-physics-N wall-clock benchmark.
 ## O(1) current-tick position; no API builds/returns tick-path lists.
-const USERDIR = "EXODUSER-map11-01-Isolated-20261021"
+const USERDIR = "EXODUSER-map11-01b-Isolated-20261021"
 const WARMUP_TICKS = 120
 const BENCH_TICKS = 600
 var arena: Node2D
@@ -56,7 +56,7 @@ func _run() -> void:
 			return
 		# Literal pixel crop, no resize/color modification; records exact rect.
 		var crop := Rect2i(640,250,640,480)
-		if board == "entry": crop = Rect2i(730,10,640,480)
+		if board == "entry": crop = Rect2i(700,480,640,540)
 		elif board == "close": crop = Rect2i(650,70,640,960)
 		elif board == "wall": crop = Rect2i(1080,180,640,640)
 		elif board == "clear": crop = Rect2i(640,90,640,720)
@@ -91,7 +91,7 @@ func _physics_process(_delta: float) -> bool:
 	_n += 1
 	# Scalar analytic movement of the preview body (not a product combat replay).
 	var angle: float = TAU*float(_n)/BENCH_TICKS
-	arena.player.position = Vector2(cos(angle)*1600,sin(angle)*1200)
+	arena.player.position = Vector2(cos(angle)*1250,sin(angle)*1100)
 	arena.camera.position = arena.player.position*.72
 	var cost: int = Time.get_ticks_usec()-start
 	_cpu_us += cost

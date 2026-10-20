@@ -1,5 +1,5 @@
 extends SceneTree
-const USERDIR = "EXODUSER-map11-01-Isolated-20261021"
+const USERDIR = "EXODUSER-map11-01b-Isolated-20261021"
 var checks: int = 0
 var failures: int = 0
 func _initialize() -> void: call_deferred("_run")
@@ -18,17 +18,17 @@ func _run() -> void:
 	await physics_frame
 	check(FileAccess.get_sha256("res://assets/maps/map11/boss_dark_druid_8dir_v3.png") == "ceb3843fc1d612601b63dcb33035298da9b92d4ae39e88d986805ec4216e1549","existing source boss RGBA byte-identical")
 	var r: Dictionary = arena.get_design_receipt()
-	check(r.radius == 2200 and r.interior_pillars == 0,"R2200 no interior pillars")
+	check(r.radius == 1700 and r.interior_pillars == 0,"R1700 no interior pillars")
 	for key in ["Entry","Boss","Exit","Return"]:
 		var marker: Node = arena.get_node("Markers/"+key)
 		check(marker is Marker2D,"persistent named Marker "+key)
 		check(arena.is_inside_arena(marker.position,44),"anchor has source boss clearance "+key)
-	check(arena.is_inside_arena(Vector2(0,0),2200),"exact boundary admitted by analytical envelope")
-	check(not arena.is_inside_arena(Vector2(1,0),2200),"one unit outside blocked")
-	check(r.center_slam_margin == 880,"original phase4 slam margin 880")
-	check(r.center_tide_margin == 450,"original tide margin 450")
+	check(arena.is_inside_arena(Vector2(0,0),1700),"exact boundary admitted by analytical envelope")
+	check(not arena.is_inside_arena(Vector2(1,0),1700),"one unit outside blocked")
+	check(r.center_slam_margin == 380,"original phase4 slam margin 380")
+	check(r.center_tide_margin == -50,"original tide margin -50")
 	check(r.fissure_length == 2304 and is_equal_approx(r.fissure_blast,691.2),"fissure source metric never scaled to room")
-	check(r.fissure_length_outside == 104 and is_equal_approx(r.fissure_full_envelope_outside,795.2),"original outside envelope explicitly flagged")
+	check(r.fissure_length_outside == 604 and is_equal_approx(r.fissure_full_envelope_outside,1295.2),"original outside envelope explicitly flagged")
 	check(not arena.is_inside_arena(Vector2(2304,0),691.2),"do not pretend full fissure fits")
 	var ids: Array = []
 	for move in r.allowed_moves: ids.append(move.id)
@@ -43,9 +43,9 @@ func _run() -> void:
 	shape.radius = 15
 	query.shape = shape
 	query.exclude = [arena.player.get_rid()]
-	query.transform = Transform2D(0,Vector2(2195,0))
+	query.transform = Transform2D(0,Vector2(1695,0))
 	check(not arena.get_world_2d().direct_space_state.intersect_shape(query).is_empty(),"physical rim catches actual player-sized circle")
-	query.transform = Transform2D(0,Vector2(2000,0))
+	query.transform = Transform2D(0,Vector2(1300,0))
 	check(arena.get_world_2d().direct_space_state.intersect_shape(query).is_empty(),"evade annulus physically unobstructed")
 	query.transform = Transform2D(0,Vector2.ZERO)
 	check(arena.get_world_2d().direct_space_state.intersect_shape(query).is_empty(),"center physically pillar-free")
@@ -54,5 +54,5 @@ func _run() -> void:
 		check(arena.is_inside_arena(arena.player.position,15),"board player fits "+id)
 	check(ProjectSettings.get_setting("application/run/main_scene") == "res://scenes/main.tscn","product main path unchanged")
 	arena.free()
-	print("MAP11_RESULT ",JSON.stringify({"checks":checks,"failures":failures,"live_combat":false,"d05":"pending"}))
+	print("MAP11_RESULT ",JSON.stringify({"checks":checks,"failures":failures,"live_combat":false,"d05":"circular smaller"}))
 	quit(0 if failures == 0 else 1)
