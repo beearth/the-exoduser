@@ -1,3 +1,13 @@
+## 2026-10-20 BC-INTEG-01 생성 원소색·BC08 장 catalog 통합
+
+| 항목 | 변경·검수 근거 |
+|---|---|
+| 기준 / 소유 | fetch main249c26fa(b25a018ac 조상). BC02와 사용자 인수1b901f12 BC08만 수정, 기존 CatalogContext/CH2 모듈 재사용. BC08이 실제 main tree에 없는 점·인수본 대비 diff를 자기 보고서에 구분 |
+| 원문 색 | G14333/14338/31163/16679–16712: 고정#bbbbbb→ELC[boss.element_id]. CH1/2 물리#bbbbbb 유지, CH3 얼음#3388ff 정정, CH4 화염#ff5522·CH5~7 암흑#9933cc 원문 규칙. 잘못된 원소는 reads/RNG 전에 NOT_READY |
+| BC08 / 보존 | 마지막 optional chapter_catalog 인자·begin/next 문맥 검증·phase reader 변경. null의 CH1 packet/continuation은 인수본과 var_to_bytes 동일 검사. 실제 si·드루이드0/3·원본 RNG/충돌/owner readback 조건 유지 |
+| 검증 | 신규 73394/0·BC01~10 354093/0·CH2 4종 119182/0·contracts5그룹/0·cold import exit0/ERROR0. 기존 회귀14파일 byte 무수정, 색35stage·이동3617사례·CH1 byte/장 경계 검사 |
+| 보호 / 제출 | Main/State/저장·Q/E·2_3·웹 원본·설계/LOCK0줄. 자기 WORK_BOARD 행·보고서·이 절만 docs 변경. 신규 지정 격리dir/기존 상수·Godot gate30초·UTF8 파일/node 인자. [보고서](engine/orders/reports/bc-integ-01_REPORT.md), 원로그 ~/exoduser-wt/_out/bc-integ-01/. 정상 훅·자기 push/remote SHA/DONE 후 자기 worktree 제거 |
+
 ## 2026-10-20 TRACE-BOSS-CH3 3장 보스 원본 추적·작은 이식 단위
 
 | 항목 | 추적·검토 근거 |
