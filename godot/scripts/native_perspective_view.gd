@@ -12,6 +12,7 @@ var _player_shadow_status: Dictionary = {"ready":false,"reason":"not_synchronize
 var _owned_floor: Node2D
 var _sphere_views: Dictionary = {}
 var _radiant_shader: Shader
+var _ink_shader: Shader # P2-007a 기검참 잉크 층(일반 합성) 지면 미러
 var _max_mass_height := 0.0
 var _mass_rows: Dictionary = {}
 var _mass_meshes: Dictionary = {}
@@ -265,7 +266,8 @@ func _sync_sprite(source: Node2D, live: Dictionary) -> void:
 	view.modulate = source.modulate
 	view.scale = Vector3(source.global_scale.x, source.global_scale.y, 1)
 	var radiant: bool = source.material is ShaderMaterial and source.material.shader != null and source.material.shader.resource_path == "res://assets/vfx/radiant.gdshader"
-	var ground: bool = source.z_index <= -2500 or radiant
+	var ink: bool = source.material is ShaderMaterial and source.material.shader != null and source.material.shader.resource_path == "res://assets/vfx/ki_slash_ink.gdshader"
+	var ground: bool = source.z_index <= -2500 or radiant or ink
 	var frame_size: Vector2 = texture.get_size()
 	if source is Sprite2D:
 		frame_size = (source.region_rect.size if source.region_enabled else frame_size) / Vector2(source.hframes, source.vframes)
@@ -282,7 +284,7 @@ func _sync_sprite(source: Node2D, live: Dictionary) -> void:
 		view.offset.y = frame_size.y * 0.5 if source.centered else 0.0
 	else:
 		view.offset.y = -source.offset.y - (0.0 if source.centered else frame_size.y)
-	view.position = Vector3(source.global_position.x, 0.6 if radiant else (0.0 if not ground else 0.2), source.global_position.y + (0.0 if ground else foot_y))
+	view.position = Vector3(source.global_position.x, 0.6 if radiant or ink else (0.0 if not ground else 0.2), source.global_position.y + (0.0 if ground else foot_y))
 	if not projection.is_empty():
 		var anchor: Vector2 = projection.display_anchor
 		view.offset = Vector2((frame_size.x*0.5 if source.centered else 0.0)-anchor.x,anchor.y-frame_size.y*(0.5 if source.centered else 1.0))
@@ -315,6 +317,26 @@ func _sync_sprite(source: Node2D, live: Dictionary) -> void:
 		material.set_shader_parameter("source_tex",texture.atlas if texture is AtlasTexture else texture)
 		material.set_shader_parameter("native_tint",source.modulate)
 		material.set_shader_parameter("hue_degrees",source.material.get_shader_parameter("hue_degrees"))
+	elif ink:
+		# 원본 19211~19215: 칼날(가산) 아래 일반 합성 — render_priority로 같은 높이의 칼날보다 먼저 그린다.
+		if _ink_shader == null:
+			_ink_shader = Shader.new()
+			var ink_code: String = source.material.shader.code
+			ink_code = ink_code.replace("shader_type canvas_item;", "shader_type spatial;\nuniform sampler2D source_tex : filter_linear;\nuniform vec4 native_tint : source_color = vec4(1.0);")
+			ink_code = ink_code.replace("render_mode unshaded, blend_mix;", "render_mode unshaded, blend_mix, cull_disabled, depth_draw_never;")
+			ink_code = ink_code.replace("varying vec4 vertex_tint;", "").replace("void vertex() { vertex_tint = COLOR; }", "")
+			ink_code = ink_code.replace("TEXTURE", "source_tex")
+			ink_code = ink_code.replace("COLOR = vec4(vec3(5.0, 4.0, 6.0) / 255.0, min(1.0, ink_l * 2.4)) * vertex_tint;", "ALBEDO = vec3(5.0, 4.0, 6.0) / 255.0 * native_tint.rgb; ALPHA = min(1.0, ink_l * 2.4) * native_tint.a;")
+			_ink_shader.code = ink_code
+		var ink_material: ShaderMaterial = view.material_override as ShaderMaterial
+		if ink_material == null:
+			ink_material = ShaderMaterial.new()
+			ink_material.shader = _ink_shader
+			ink_material.render_priority = -1
+			view.material_override = ink_material
+		ink_material.set_shader_parameter("source_tex",texture.atlas if texture is AtlasTexture else texture)
+		ink_material.set_shader_parameter("native_tint",source.modulate)
+		ink_material.set_shader_parameter("blur_px",source.material.get_shader_parameter("blur_px"))
 	elif _main.has_method("is_native_q_control_visual") and _main.is_native_q_control_visual(source):
 		var material: ShaderMaterial = view.material_override as ShaderMaterial
 		if material==null:

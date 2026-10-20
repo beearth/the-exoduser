@@ -41,7 +41,7 @@ const NORMAL_HURTE_OWNER_METHODS: Array[String] = ["read_native_normal_enemy_hur
 	"apply_native_normal_enemy_field_write", "apply_native_normal_enemy_bookkeeping",
 	"apply_native_normal_enemy_hp_write", "apply_native_normal_enemy_death_write",
 	"report_native_normal_enemy_hurte_event", "add_native_knockback"]
-const SLASH_SHEET = preload("res://assets/vfx/ki_slash_radiant_sheet.png")
+const SLASH_SHEET = preload("res://assets/vfx/ki_slash_silver_sheet.png") # P2-007a 16753 실버 시트(차지 19246 surfaces[2]=동일 참조)
 const ADDITIVE = preload("res://assets/vfx/radiant.gdshader")
 const DIRECTIONS: Array[String] = ["south", "south-east", "east", "north-east", "north", "north-west", "west", "south-west"]
 const NATIVE_BURN_MAX_STACKS = 10
@@ -1272,7 +1272,7 @@ func _build_charge_display() -> void:
 		sprite.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 		var material := ShaderMaterial.new()
 		material.shader = ADDITIVE
-		material.set_shader_parameter("hue_degrees", 150.0)
+		material.set_shader_parameter("hue_degrees", 0.0) # P2-007a 16744 색 변환 폐지
 		sprite.material = material
 		sprite.z_index = 10
 		add_child(sprite)

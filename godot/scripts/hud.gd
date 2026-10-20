@@ -520,9 +520,11 @@ func _button(message: String) -> Button:
 # 갱신 60310~60336 / 슬롯 geometry CSS 712~725(.qs 37×45 top70) + .qs 스킨 974~980 /
 # 아이콘 _skIcon 44134 (img/skillskin_upscaled/{id}.png·SKILL_ICONS 44118) /
 # 슬롯별 스킬 매핑 updateSkSlot~updateTSlot 44879~44931, LMB 44902, Q 44908.
-# 폰트: 원본 --font-hell 스택('Nanum Myeongjo','Noto Serif KR',…) 중 로컬 보유분
-# Noto Serif KR을 사용(2순위 폴백 — Nanum Myeongjo·Cinzel 미보유 기록).
-const SERIF_FONT_PATH := "res://assets/fonts/NotoSerifKR-VF.ttf"
+# 폰트(P2-007a): 원본 CSS 스택 순서 그대로 — NATIVE_UI_FONTS(scripts/native_ui_fonts.gd).
+# #mmLvl 372 var(--font-hell)=Nanum Myeongjo→Noto Serif KR / #stageClock 364·#hudCorner 327
+# 'Cinzel',var(--font-hell) / 쿨다운 초(_skCdSweep 44147) 상속 body var(--font)=Noto Sans KR 900.
+const SERIF_FONT_PATH := "res://assets/fonts/NotoSerifKR-VF.ttf" # --font-hell 2순위(스택 내 폴백)
+const NATIVE_UI_FONTS := preload("res://scripts/native_ui_fonts.gd")
 const SKILL_ICON_DIR := "res://assets/ui/skill_icons/"
 # SKILL_ICONS(44118) 부분집합 — 첫 전투 노출 가능분. 값=파일명(원본 alias 그대로).
 const NATIVE_SKILL_ICON_FILES := {"kiSlash": "kiSlash", "maliceSwipe": "maliceSwipe",
@@ -539,32 +541,13 @@ const NATIVE_SLOT_SCALE := 0.9      # #skBar transform scale(.9) — meters 노�
 const NATIVE_SLOT_TOP := 70.0       # .qs top:70px
 const NATIVE_SLOT_SIZE := Vector2(37, 45)
 
-var _serif_regular: FontVariation
-var _serif_bold: FontVariation
-
-
-func _native_serif(weight: float) -> FontVariation:
-	var cached: FontVariation = _serif_bold if weight >= 600.0 else _serif_regular
-	if cached != null:
-		return cached
-	var variation := FontVariation.new()
-	if ResourceLoader.exists(SERIF_FONT_PATH):
-		variation.base_font = load(SERIF_FONT_PATH)
-	variation.variation_opentype = {"wght": weight}
-	if weight >= 600.0:
-		_serif_bold = variation
-	else:
-		_serif_regular = variation
-	return variation
-
-
 func _native_hud_label(parent: Control, text: String, pos: Vector2, size_px: int,
-		color: Color, weight: float = 400.0) -> Label:
+		color: Color, weight: float = 400.0, font_stack: String = "hell") -> Label:
 	var label := Label.new()
 	parent.add_child(label)
 	label.text = text
 	label.position = pos
-	label.add_theme_font_override("font", _native_serif(weight))
+	label.add_theme_font_override("font", NATIVE_UI_FONTS.stack(font_stack, int(weight)))
 	label.add_theme_font_size_override("font_size", size_px)
 	label.add_theme_color_override("font_color", color)
 	# text-shadow 0 1px 3px rgba(0,0,0,.95) — Label 그림자(블러 미지원은 근사 기록)
@@ -668,7 +651,7 @@ func _build_native_first_fight_hud() -> void:
 	malice_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	_objective_values = {"lv": lv_label, "exp": exp_label, "kill": kill_label, "malice": malice_label}
 	# ── #stageClock (상단 중앙 타이머) — CSS 364: top7, width170, 'Cinzel' 폴백
-	#    (Cinzel 미보유 → --font-hell 로컬 보유분 Noto Serif KR), opacity .57 ──
+	#    'Cinzel',var(--font-hell) 400(로드분 700 face), opacity .57 ──
 	_stage_clock = Control.new()
 	_stage_clock.name = "NativeStageClock"
 	_root.add_child(_stage_clock)
@@ -680,7 +663,7 @@ func _build_native_first_fight_hud() -> void:
 	_stage_clock.modulate = Color(1, 1, 1, 0.57)
 	_stage_clock.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_stage_timer_label = _native_hud_label(_stage_clock, "00:00", Vector2(0, 0), 11,
-		Color(215.0 / 255, 207.0 / 255, 189.0 / 255, 0.78), 700.0)
+		Color(215.0 / 255, 207.0 / 255, 189.0 / 255, 0.78), 400.0, "cinzel_hell") # 366: weight 미지정=400
 	_stage_timer_label.size.x = 170
 	_stage_timer_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	var progress_bg := ColorRect.new()
@@ -738,7 +721,7 @@ func _build_native_first_fight_hud() -> void:
 			if points.size() >= 3:
 				sweep.draw_colored_polygon(points, Color(0, 0, 0, 0.55)))
 		sweep.clip_contents = true
-		var sweep_label := _native_hud_label(cell, "", Vector2(0, cell.size.y / 2.0 - 8.0), 12, Color("ffee66"), 700.0)
+		var sweep_label := _native_hud_label(cell, "", Vector2(0, cell.size.y / 2.0 - 8.0), 12, Color("ffee66"), 900.0, "font") # 44147 weight 900·body --font
 		sweep_label.size.x = cell.size.x
 		sweep_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		_slot_sweeps[slot_id] = sweep
@@ -905,7 +888,7 @@ func get_native_first_fight_hud_snapshot() -> Dictionary:
 		"serif_font_loaded": ResourceLoader.exists(SERIF_FONT_PATH),
 		"unported": ["미니맵(mmWrap)", "hudCorner 화폐(✦ SP/◇ CP)", "지역(_regCur) 분모·진행바 4지역",
 			"G._totalSpawned 기록(스포너=world 소유 — wt-p2g 경합)", "쿨다운 sweep(쿨다운 소유자 미이식)",
-			"Cinzel·Nanum Myeongjo 폰트(Noto Serif KR 폴백)", "숫자/F/Z 슬롯 스킬(시작 스킬 지급 EXTERNAL 미이식)",
+			"숫자/F/Z 슬롯 스킬(시작 스킬 지급 EXTERNAL 미이식)",
 			"타이머 전진(G.on 점등 미이식 — 초기화·커튼 계약이 pre-stage on=false 유지 명시: 타이머 UI는 G.stageTime 소비만)"]}
 
 # ═══════════════════ P2-002b 미니맵 + hudCorner 화폐 (표시 전용 소비자) ═══════════════════
@@ -1064,13 +1047,13 @@ func _build_native_hud_corner() -> void:
 	left_line.size = Vector2(2, corner.size.y)
 	left_line.color = Color(184.0 / 255, 141.0 / 255, 81.0 / 255, 0.64)
 	var ink := Color(238.0 / 255, 222.0 / 255, 194.0 / 255, 0.93) # 1321
-	_sp_label = _native_hud_label(corner, "✦ 0", Vector2(12, 8), 11, ink)   # 실측 x28-16=12, y196-188=8
+	_sp_label = _native_hud_label(corner, "✦ 0", Vector2(12, 8), 11, ink, 400.0, "cinzel_hell")   # 실측 x28-16=12, y196-188=8
 	var row_divider := ColorRect.new()
 	corner.add_child(row_divider)
 	row_divider.position = Vector2(12, 28)
 	row_divider.size = Vector2(86, 1) # .hud-resource+.hud-resource border-top (1322)
 	row_divider.color = Color(164.0 / 255, 127.0 / 255, 82.0 / 255, 0.2)
-	_cp_label = _native_hud_label(corner, "◇ 0", Vector2(12, 33), 11, ink)  # pad-top 4 + 행
+	_cp_label = _native_hud_label(corner, "◇ 0", Vector2(12, 33), 11, ink, 400.0, "cinzel_hell")  # pad-top 4 + 행
 
 
 ## calcCP(49487~49509) 전문 — 표시 전용 계산(소유자 getter 입력만).
@@ -1171,7 +1154,7 @@ func get_native_minimap_corner_snapshot() -> Dictionary:
 			"소환굴 점 데이터(G.spawnHoles — 웹 14건 실측·포트 스포너가 G에 미기록: world 소유)",
 			"출구 ▲(!bossAlive 조건 — 신규 true)", "분산 빌드(_mmTickBuild — 고정 맵 1회 빌드 근사)",
 			"맵 오브젝트 마커(bonfire/trap/altar — 1장 데이터에 없음)", "frame drop-shadow·brightness 필터(953)",
-			"hudCorner box-shadow·inset 하이라이트 근사 생략", "Cinzel 폰트(Noto Serif KR 폴백)",
-			"spCnt 클릭(J 능력치 패널 미이식)", "나눔명조 1순위(웹폰트 — 사용자 승인 대기 목록)",
+			"hudCorner box-shadow·inset 하이라이트 근사 생략",
+			"spCnt 클릭(J 능력치 패널 미이식)",
 			"적 점 색 데이터 차(규칙 ELC[e.el] 동일 — 웹 el0 회백 vs 포트 encounter element_id 3 보라: 데이터 소유 wt-p2g)"]}
 
