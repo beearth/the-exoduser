@@ -13,6 +13,7 @@ const SPOTS := {
 	"corpse_tree": Vector2(4100, 3900),
 	"hole": Vector2(3780, 6420),
 	"cocoon": Vector2(1800, 2200),
+	"attack": Vector2(4020, 7420),
 }
 var main: Node
 var out := ""
@@ -72,6 +73,13 @@ func _run() -> void:
 		# 캡처 중 적이 다가와 장면이 바뀌지 않게 적만 멈춘다(표시 검수용).
 		for enemy in get_nodes_in_group("enemies"): enemy.process_mode = Node.PROCESS_MODE_DISABLED
 		for i in range(45): await process_frame
+		if spot == "attack":
+			# 어두운 환경광에서 전투 효과 가독성 확인: 기검참 휘두르는 중간 프레임.
+			main.player.set_physics_process(true)
+			main.player.request_attack()
+			for i in range(9): await physics_frame
+			if main.player.get("state") == "windup": main.player.release_attack()
+			for i in range(7): await physics_frame
 		var times: Array = []
 		var last := Time.get_ticks_usec()
 		for i in range(90):

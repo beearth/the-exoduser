@@ -45,6 +45,12 @@ var _sync_left := 0.0
 var _hole_sync_left := 0.0
 var _time := 0.0
 var _reason := "not_configured"
+var _region_ambient: Array = []   # 지역 idx 0~3 → Color
+var _ambient_target := Color()
+var _flash_left := 0.0
+var _flash_next := 0.0
+var _flash_rng := RandomNumberGenerator.new()
+var _shafts: Array = []          # {node, base_alpha, phase}
 
 
 static func install_native_boot(owner_main: Node, screen_lighting: Node) -> Node2D:
@@ -109,6 +115,11 @@ func configure(owner_main: Node, screen_lighting: Node) -> bool:
 	_mount_foreground()
 	# 5) 생동감 입자.
 	_mount_particles()
+	_mount_light_shafts()
+	for c in _data.get("region_ambient", []): _region_ambient.append(_color(c))
+	_ambient_target = _ambient.color
+	_flash_rng.seed = 20261020
+	_flash_next = _flash_rng.randf_range(6.0, 14.0)
 	active = true
 	_reason = ""
 	process_priority = 50
@@ -453,6 +464,106 @@ func _fade_ramp() -> Gradient:
 	return ramp
 
 
+# ── 생동감·지역: 빛줄기, 지역별 환경광, 번개 지역 섬광 ─────────────────────────
+func _mount_light_shafts() -> void:
+	var spec: Dictionary = _data.get("light_shafts", {})
+	var along := _make_shaft_texture()
+	var material := CanvasItemMaterial.new()
+	material.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
+	material.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
+	var tint := _color(spec.get("color", [0.85, 0.80, 0.70, 0.10]))
+	var angle: float = deg_to_rad(float(spec.get("angle_deg", -32.0)))
+	for index in range(spec.get("shafts", []).size()):
+		var row: Array = spec["shafts"][index]
+		var shaft := Sprite2D.new()
+		shaft.name = "light_shaft_%d" % index
+		shaft.texture = along
+		shaft.material = material
+		shaft.global_position = Vector2(float(row[0]), float(row[1]))
+		shaft.rotation = angle
+		# 폭은 텍스처 가로 64px → row[2], 길이 256px → row[3]
+		shaft.scale = Vector2(float(row[2]) / 64.0, float(row[3]) / 256.0)
+		shaft.modulate = tint
+		shaft.z_as_relative = false
+		shaft.z_index = 3985
+		add_child(shaft)
+		_shafts.append({"node": shaft, "base_alpha": tint.a, "phase": float(index) * 1.7})
+		# 빛줄기가 바닥에 닿는 끝(텍스처 아래쪽 80%)에 옅은 광원 — 바닥을 실제로 비춤.
+		var foot: Vector2 = shaft.global_position + Vector2(0.0, float(row[3]) * 0.4).rotated(angle)
+		var pool := _make_light("shaft_pool_%d" % index, {"color": spec.get("pool_color", [0.80, 0.82, 0.86]),
+			"radius": float(row[2]) * 1.1, "energy": float(spec.get("pool_energy", 0.45)), "height_ratio": 0.8})
+		pool.global_position = foot
+		_lights.append(_light_row(pool, {"pulse": [0.12, 0.25]}))
+		# 빛줄기 안의 먼지
+		var dust := CPUParticles2D.new()
+		dust.name = "shaft_dust_%d" % index
+		dust.texture = _dot_texture
+		dust.material = _particle_material()
+		dust.amount = int(spec.get("dust", 14))
+		dust.lifetime = 7.0
+		dust.preprocess = 7.0
+		dust.local_coords = false
+		dust.global_position = shaft.global_position
+		dust.emission_shape = CPUParticles2D.EMISSION_SHAPE_RECTANGLE
+		dust.emission_rect_extents = Vector2(float(row[2]) * 0.35, float(row[3]) * 0.35)
+		dust.rotation = angle
+		dust.gravity = Vector2(2.0, 3.0)
+		dust.initial_velocity_min = 2.0
+		dust.initial_velocity_max = 8.0
+		dust.spread = 180.0
+		dust.scale_amount_min = 0.25
+		dust.scale_amount_max = 0.5
+		dust.color = Color(1.0, 0.95, 0.85, 0.35)
+		dust.color_ramp = _fade_ramp()
+		dust.z_as_relative = false
+		dust.z_index = 3986
+		add_child(dust)
+
+
+## 빛줄기 텍스처: 길이 방향(위 → 아래) 서서히 생겨 바닥 끝에서 살짝 고였다 사라지고,
+## 폭 방향은 가장자리로 부드럽게 사라진다(딱딱한 띠 방지). 절차 생성, 파일 없음.
+static func _make_shaft_texture() -> Texture2D:
+	var w := 64
+	var h := 256
+	var image := Image.create(w, h, false, Image.FORMAT_RGBA8)
+	for y in range(h):
+		var v := float(y) / float(h - 1)
+		var along := smoothstep(0.0, 0.25, v) * (0.55 + 0.45 * smoothstep(0.55, 0.9, v)) * (1.0 - smoothstep(0.9, 1.0, v))
+		for x in range(w):
+			var u := absf(float(x) / float(w - 1) * 2.0 - 1.0)
+			var across := pow(1.0 - smoothstep(0.0, 1.0, u), 1.6)
+			image.set_pixel(x, y, Color(1, 1, 1, clampf(along * across, 0.0, 1.0)))
+	return ImageTexture.create_from_image(image)
+
+
+func _update_region_ambient(delta: float) -> void:
+	if _region_ambient.size() != 4 or not is_instance_valid(_state):
+		return
+	var g: Variant = _state.read_current_g()
+	if not g is Dictionary or not g.get("_regions") is Array:
+		return
+	var tile: float = float(_world.get("map_data").get("tile_size", 40))
+	var p: Vector2 = _player.global_position / tile
+	var idx: int = (0 if p.y < float(g.get("_regMidY", 0)) else 2) + (0 if p.x < float(g.get("_regMidX", 0)) else 1)
+	_ambient_target = _region_ambient[idx]
+	var base: Color = _ambient.color.lerp(_ambient_target, clampf(delta * 0.6, 0.0, 1.0)) if _flash_left <= 0.0 else _ambient.color
+	# 번개 지역(북동=1): 먼 번개 섬광 — 짧게 두 번 번쩍.
+	var spec: Dictionary = _data.get("lightning", {})
+	if idx == int(spec.get("region", 1)):
+		_flash_next -= delta
+		if _flash_next <= 0.0:
+			_flash_left = float(spec.get("duration", 0.42))
+			_flash_next = _flash_rng.randf_range(float(spec.get("every", [7.0, 16.0])[0]), float(spec.get("every", [7.0, 16.0])[1]))
+	if _flash_left > 0.0:
+		_flash_left -= delta
+		var t: float = 1.0 - _flash_left / float(spec.get("duration", 0.42))
+		var k: float = maxf(0.0, sin(t * PI * 2.0)) * (1.0 if t < 0.5 else 0.6)
+		var flash := _color(spec.get("color", [0.55, 0.62, 0.85]))
+		_ambient.color = _ambient_target.lerp(flash, k * float(spec.get("strength", 0.55)))
+	else:
+		_ambient.color = base
+
+
 # ── 매 프레임 ─────────────────────────────────────────────────────────
 func _process(delta: float) -> void:
 	if not active or not is_instance_valid(_player):
@@ -476,6 +587,10 @@ func _process(delta: float) -> void:
 		if pulse.size() == 2:
 			k += float(pulse[0]) * sin(_time * float(pulse[1]) * TAU * 0.5 + row["phase"])
 		light.energy = maxf(0.0, row["base_energy"] * k)
+	_update_region_ambient(delta)
+	for shaft_row in _shafts:
+		var shaft: Sprite2D = shaft_row["node"]
+		shaft.modulate.a = shaft_row["base_alpha"] * (0.75 + 0.25 * sin(_time * 0.37 + shaft_row["phase"]))
 	_sync_left -= delta
 	if _sync_left <= 0.0:
 		_sync_left = SYNC_INTERVAL
@@ -513,6 +628,6 @@ func get_native_map_look_snapshot() -> Dictionary:
 		"spawn_hole_lights": _hole_lights.size(), "occluders": _occluders.size(),
 		"styled_props": _styled_props, "prop_shadows": _prop_shadows, "foreground": _foreground.size(), "styled_chunks": _styled_chunks.size(),
 		"ambient": [_ambient.color.r, _ambient.color.g, _ambient.color.b] if is_instance_valid(_ambient) else [],
-		"spores": is_instance_valid(_spores), "embers": is_instance_valid(_embers),
+		"light_shafts": _shafts.size(), "region_ambient": _region_ambient.size(), "spores": is_instance_valid(_spores), "embers": is_instance_valid(_embers),
 		"lightmap_overlay_enabled": _screen_lighting.call("is_native_lightmap_enabled") \
 			if is_instance_valid(_screen_lighting) and _screen_lighting.has_method("is_native_lightmap_enabled") else null}
