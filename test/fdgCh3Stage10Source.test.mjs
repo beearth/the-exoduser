@@ -34,6 +34,20 @@ const protectedPaths=['game.html','maps_data.js','godot/data/map.json','godot/da
  'godot/scripts/main.gd','godot/scripts/world.gd','godot/scripts/player.gd','godot/scripts/hud.gd','godot/scripts/native_source_new_run_state.gd','godot/scripts/native_spawn_hole_system.gd','godot/scripts/native_regions.gd',...artifact.asset_refs.map(a=>a.file),artifact.ground_asset.file];
 const hashes=()=>Object.fromEntries(protectedPaths.map(p=>[p,sha(read(p))]));
 const before=hashes();let actual;
+// A recorded commit ID is extraction provenance, not gameplay content. Prove
+// both recorded commits contain the exact pinned source BEFORE normalizing it.
+function withRecordedProvenance(value,reference){
+ assert.equal(value.source.game_sha256,reference.source.game_sha256);
+ for(const ref of new Set([value.source.main_sha,reference.source.main_sha])){
+  const bytes=execFileSync('git',['show',ref+':game.html'],{cwd:root,maxBuffer:16*1024*1024,stdio:['ignore','pipe','pipe']});
+  assert.equal(sha(bytes),reference.source.game_sha256,'recorded main source bytes');
+ }
+ const normalized=structuredClone(value);
+ normalized.source.main_sha=reference.source.main_sha;
+ normalized.source.extraction_head=reference.source.extraction_head;
+ return normalized;
+}
+
 test('si10 extracts latest-main source, never claims actual World or visual readiness',()=>{
  actual=buildAreaSnapshot(root,{stage:10});assert.equal(actual.schema,'exoduser.ch3-area-source.v1');assert.equal(actual.stage,10);
  assert.equal(actual.source.game_sha256,sha(source));assert.equal(sha(execFileSync('git',['show','origin/main:game.html'],{cwd:root,maxBuffer:16*1024*1024})),sha(source));
@@ -98,8 +112,13 @@ test('existing stage0/1/4 extraction stays deeply identical to the admitted CH2-
  try{const file=path.join(tmp,'before.mjs');fs.writeFileSync(file,execFileSync('git',['show','4013102a82c9ddc3bd7d0f75ba0159438f86d93f:godot/tools/export_ch1_area_source.mjs'],{cwd:root}));const old=await import(pathToFileURL(file));for(const stage of [0,1,4])assert.deepEqual(buildAreaSnapshot(root,{stage}),old.buildAreaSnapshot(root,{stage}));assert.throws(()=>buildStage0Snapshot(root,{stage:10}),/UNSUPPORTED_STAGE/);}finally{fs.rmSync(tmp,{recursive:true,force:true});}
 });
 test('replay and committed snapshot agree; absent undefined/null/zero remain separate and protected bytes unchanged',()=>{
- assert.deepEqual(buildAreaSnapshot(root,{stage:10}),actual);const normalized=structuredClone(actual);normalized.source.extraction_head=artifact.source.extraction_head;assert.deepEqual(normalized,artifact);assert.deepEqual(hashes(),before);
+ assert.deepEqual(buildAreaSnapshot(root,{stage:10}),actual);assert.deepEqual(withRecordedProvenance(actual,artifact),artifact);assert.deepEqual(hashes(),before);
  const mask=[];assert.deepEqual(captureJSON({u:undefined,n:null,z:0,a:[]},mask),{u:null,n:null,z:0,a:[]});assert.deepEqual(mask,['/u']);
+});
+test('provenance normalization rejects a false source hash and preserves all gameplay content differences',()=>{
+ const wrong=structuredClone(actual);wrong.source.game_sha256='0'.repeat(64);assert.throws(()=>withRecordedProvenance(wrong,artifact));
+ const falsePin=structuredClone(actual),falseReference=structuredClone(artifact);falsePin.source.game_sha256='0'.repeat(64);falseReference.source.game_sha256='0'.repeat(64);assert.throws(()=>withRecordedProvenance(falsePin,falseReference));
+ const changed=structuredClone(actual);changed.tiles[0]=changed.tiles[0]===0?1:0;assert.notDeepEqual(withRecordedProvenance(changed,artifact),artifact);assert.deepEqual(hashes(),before);
 });
 test('CLI guards every unsupported stage/seed, foreign snapshot, protected output and symlink before writes',()=>{
  const tmp=fs.mkdtempSync(path.join(fs.realpathSync(os.tmpdir()),'EXODUSER-ch3-01-Isolated-20261020-cli-'));const tool=path.join(root,'godot/tools/export_ch1_area_source.mjs');

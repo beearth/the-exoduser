@@ -1,3 +1,12 @@
+## 2026-10-20 CH3-04 선행 수정 — CH3 provenance 비교
+
+| 항목 | 실제 변경·검수 |
+|---|---|
+| 판정 | main6d에는 CH3-01 test/snapshot 부재. main 동일 선재 실패가 아닌 CH3 체인의 provenance 검사 결함으로 분류 |
+| 수정 | 기록 main 두 커밋의 실제 game bytes·선언 SHA 동일성을 먼저 검증한 뒤 출처 필드만 정규화. gameplay 비교·artifact·공용 코드 무수정 |
+| 검사 | 기존11개 전부 통과+거짓 source SHA/내용 차이 음성검사 추가, 최종12/0. si12 구현 전에 별도 정상 커밋 |
+| 상세 | [CH3-04 보고서 첫 절](engine/orders/reports/ch3-04_REPORT.md), ~/exoduser-wt/_out/ch3-04/provenance-*.log |
+
 ## 2026-10-20 CH3-03 — si11 원본 snapshot·순수 계약
 
 | id / 적용 위치 | 현재 계약·검수 |
