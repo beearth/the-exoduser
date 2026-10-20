@@ -30,3 +30,10 @@
 최종 1920×1080 이미지와 880×760 무배율 crop을 직접 열어 KO 글꼴·CTA·패널 잘림을 확인했다. 폰트 토큰/이모지 금지 준수, 디자인 최종 판정은 맥북총괄 대기이며 “제작 완료” 판정으로 바꾸지 않는다. 캡처는 실제 macOS display server의 Main viewport이며 합성 목업이 아니다. Browser 경계는 테스트에서만 인터셉트했다.
 
 최종 관련 검증은 **183/0**(46+22+115), skip0·exit0이다. DEMO11-01의 잘못된 stage 부팅 거부 ERROR **1개는 원래 테스트의 의도된 오류**이며 실제 로그 수1개를 확인했다. 예상 밖 ERROR0. 각 suite Camera2D interpolation WARNING는 원문 보존하고, 누수 경고 유무는 validation-summary.json의 원문 필터를 따른다. headless editor import3회(앞2회 parse 실패), 신규 실창4회(앞 parse1+실패2), 기존 관련2회로 Godot 총9회이며 실제 pgrep gate 기록을 보존했다. 통과 후 제품/테스트 코드 변경·추가 실행은 하지 않았다. Git/source 원본/공용 보호 파일 불변과 override0byte를 정적으로 확인했다. 최종 push SHA·원격 일치·DONE·WT제거는 L/final-receipt.json과 DONE.txt에 기록한다.
+
+
+## PC 반송 후 정상 merge (2026-10-21)
+
+최신 main 45be76e49d0090316b91a6b7b383d81835e29192을 같은 branch에 merge했다. Main/State의 파일 끝 추가 구간 충돌은 양쪽 함수를 모두 보존했다. DEMO11-17·물약·PC runtime stats·기존 스킬 오디오 등 main 함수 누락/중복0을 정적 확인했다. CHANGELOG/WORK_BOARD 역시 양쪽 절/행을 보존했다. PC a28117c1은 이미 main 조상이다. 관련 DEMO11-38·DEMO11-17·PC refresh를 각1회 실행하며 수치는 이 절 마감과 추가DONE에 기록한다. 기존 화면 자료와 최초 SHA는 보존한다.
+
+반송 병합 검증: DEMO11-38 **46/0**, DEMO11-17 **100/0**, PC runtime stats **293/0**, 합 **439/0**, 관련각1회·ERROR0. 반환 UI 캡처는 L/return-captures/ 별도 보존. 기존 PC 테스트의 refresh 시간은 성능 기준으로 주장하지 않으며 새 벤치0이다.

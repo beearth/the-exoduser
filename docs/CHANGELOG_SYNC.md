@@ -156,6 +156,22 @@
 | 검증 | 신규442/0·원문42사례168필드 exact 비교 불일치0·ERROR/누수/잔류0. 최종 직접 회귀6종 각1회2614/0(PC286/TI238/forge1918/starter148/drop24), 모두 ERROR/누수/잔류0. JSON 소수 ID 하니스 실패는 허용오차 없이 Node exact Number 비교로 수정·실패 suite만 재실행 |
 | 범위·인계 | Main+29/State+20-1·다른 공용0. 실장착 강화이전 continuation 검증, forge panel 정적 HOLD 안내·inventory UI/SFX/lesson/save는 owner 인계. tick/목록생성API0·격리 gate·override0byte. [보고서](engine/orders/reports/demo11-22r_REPORT.md) |
 
+## 2026-10-21 DEMO11-38 PC 반송 merge 충돌 해소
+
+| 항목 | 근거 |
+|---|---|
+| 병합 | 최신main45be76e49(969c194e6 이후) 정상merge. Main/State EOF 충돌 양쪽함수 보존·중복/누락0, main17/PC refresh/물약/오디오 유지 |
+| 검증·인계 | 관련38 46/0·17 100/0·PC runtime293/0=439/0·각1회·ERROR0. 상세는 [보고서](engine/orders/reports/demo11-38_REPORT.md)와 추가DONE. 자기branch 일반push·remote일치 후WT제거 |
+
+## 2026-10-21 DEMO11-38 마지막 데모 clear→종료·위시리스트/로비
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 범위·계약 | main8dbbf2b0e. DEMO11-37 호출 계약 Main.native_demo_boss_defeated(stage_index:int), 최종 사망 뒤 emit 필요. 이번에는 신호 직접 주입, 보스 사망 구현0 |
+| 전환·권한 | Main 추가20/State 추가15·기존줄수정0. clear/end/복귀 중복 거부·stage 증가0·난이도 창0. Main 비활성화+Tree pause로 실제 World/Player 정지, 새 최소 데모 로비에서 해제/새 stage0 재시작. 보호 전투/맵/저장0 |
+| UI·검증 | Hell Gothic·기존 crest/폰트 토큰·이모지0. 번역목록/3.1 UI 갱신. 신규46/0·기존22/0+115/0=183/0, 예상 거부ERROR1 외0, 기존각1회·실패신규만재실행. 결과와 캡처는 [보고서](engine/orders/reports/demo11-38_REPORT.md), 맥북총괄 시각 판정 대기 |
+| 제출 | 자기branch 일반push·remote SHA/DONE 뒤 자기worktree제거, R 불변. 원로그 ~/exoduser-wt/_out/demo11-38/, Godot2이상30초gate·격리·override0 |
+
 
 ## 2026-10-21 DEMO11-18 일반 데모 합체·흡수·성급·되돌리기 원장
 
@@ -346,6 +362,7 @@
 | 전환·권한 | Main 추가20/State 추가15·기존줄수정0. clear/end/복귀 중복 거부·stage 증가0·난이도 창0. Main 비활성화+Tree pause로 실제 World/Player 정지, 새 최소 데모 로비에서 해제/새 stage0 재시작. 보호 전투/맵/저장0 |
 | UI·검증 | Hell Gothic·기존 crest/폰트 토큰·이모지0. 번역목록/3.1 UI 갱신. 신규46/0·기존22/0+115/0=183/0, 예상 거부ERROR1 외0, 기존각1회·실패신규만재실행. 결과와 캡처는 [보고서](engine/orders/reports/demo11-38_REPORT.md), 맥북총괄 시각 판정 대기 |
 | 제출 | 자기branch 일반push·remote SHA/DONE 뒤 자기worktree제거, R 불변. 원로그 ~/exoduser-wt/_out/demo11-38/, Godot2이상30초gate·격리·override0 |
+
 
 ## 2026-10-21 DEMO11-01 Main 부팅의 1-1 데모 권위
 
