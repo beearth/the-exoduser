@@ -153,3 +153,27 @@ test('skill forge orbs: no horizontal tray, one rAF loop that stops when the pan
   assert.match(css,/canvas\.sf-bolts\{[^}]*position:absolute!important/,'game-wide fixed canvas rule overridden');
   assert.match(gameSrc,/skill-forge\.css\?v=20261021-orbs\d+/);
 });
+
+test('skill forge orbs (2nd pass): slot spacing leaves room for the floating drift — orbs never touch even at full amplitude',()=>{
+  const {api}=load();
+  for(const [o,compact] of [[57,false],[42,false],[31,true]]){
+    const g={cx:560,cy:400,discR:200,W:1120,H:650},s=api._orbSlots(o,g,[],1,compact),pts=[...s.L,...s.R,...s.M];
+    const A=Math.min(1,Math.max(.5,o/52)),drift=Math.hypot(7*A,9*A+1.2*A)*1.02; // 타원 가로 4~7·세로 5~9 + 숨 1.2 (×크기 숨 1.8%)
+    let min=1e9;for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++)min=Math.min(min,Math.hypot(pts[i].x-pts[j].x,pts[i].y-pts[j].y));
+    assert.ok(min>=o*1.02+2*drift,'o='+o+' min gap '+min.toFixed(1));
+    assert.ok(s.lg>=Math.round(10.2*A),'label sits below the lowest drift ('+s.lg+'px)');
+  }
+});
+
+test('skill forge orbs (2nd pass): relation currents re-roll their bolt path every 0.07~0.15s, host tag is fixed text, unlearned has no repeated label',()=>{
+  const m=forgeSrc.match(/const STY=\{([\s\S]*?)\};/);assert.ok(m,'STY table');
+  for(const k of ['strong','mid','faint']){const r=new RegExp(k+':\\{[^}]*re:\\[([\\d.]+),([\\d.]+)\\]').exec(m[1]);assert.ok(r,k);assert.ok(+r[1]>=.07&&+r[2]<=.15,k+' regen '+r[1]+'~'+r[2])}
+  assert.match(m[1],/mid:\{[^}]*br:\.4[^}]*pulse:2/,'resting relation current: branches + two flowing pulses');
+  assert.match(forgeSrc,/ember:\['150,38,18','214,120,60','255,216,168'\]/,'ember palette (no neon/cyan)');
+  assert.ok(!/\d{1,3},\s*2[0-5]\d,\s*2[0-5]\d'/.test(m[1]),'no cyan triplets in styles');
+  assert.match(forgeSrc,/mk\('span','sf-orb-host',sr,L\('모체','Host'\)\)/,'모체 = label line (does not float)');
+  {const rf=forgeSrc.slice(forgeSrc.indexOf('function renderField('),forgeSrc.indexOf('function routeEdges('));assert.ok(rf.length>500&&!/sf-crown/.test(rf),'no floating crown on orbs (wheel sockets keep theirs)')}
+  assert.match(forgeSrc,/const sub=it\.sealed\?'':it\.badge\|\|\(l\?\('Lv '\+l\):''\);/,'「미습득」 not repeated under every orb (tooltip only)');
+  assert.match(forgeSrc,/function routeEdges\(g\)/,'relation curves are routed around name tags');
+  assert.match(forgeSrc,/n\.title=L\('제단에 넣기','Place on altar'\)/,'empty socket explains itself with an existing string');
+});

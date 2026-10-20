@@ -179,7 +179,7 @@
     const n=mk('div','sf-node sf-'+kind,parent);n.dataset.skId=id||'';n.dataset.kind=kind;
     n.style.left=x+'px';n.style.top=y+'px';n.style.width=n.style.height=size+'px';
     if(id){icon(n,id,'sf-node-ico');const t=mk('span','sf-node-name',n,skName(id));if(kind==='host')mk('span','sf-crown',n,L('모체','Host'));}
-    else mk('span','sf-plus',n,'+');
+    else{mk('span','sf-plus',n,'+');n.title=L('제단에 넣기','Place on altar')} // 빈 소켓 = 다음 재료를 넣는 자리
     return n;
   }
   function renderAltar(m){
@@ -273,20 +273,23 @@
   }
   // 원 둘레 빈 공간의 자리(엇갈린 격자, 좌우 대칭). o=구슬 지름. 원판·명패·안내 띠와 겹치는 자리는 뺀다
   // compact = 이름 한 줄(레벨은 구슬 위 작은 숫자) — 낮은 화면에서 구슬이 많을 때만
+  // 부유 진폭 배율(구슬 52px 이상 1, 작으면 비례·최소 0.5) — 타원 드리프트 가로 4~7·세로 5~9px(+숨 1.2px)
+  const ampK=o=>Math.min(1,Math.max(.5,o/52));
   function orbSlots(o,g,reserved,k,compact){
-    k=k||1;const LB=compact?18:32,dx=Math.max(o*1.62,o+40)*k,dy=(o+(compact?30:46))*k,Lw=Math.min(2*dx-o-10,2*dx-44,136);
+    k=k||1;const A=ampK(o),up=10.2*A,lg=Math.round(up+3),TOP=up+3,LB=lg+(compact?15:29),
+      dx=Math.max(o*1.62,o+40)*k,dy=(o+LB+up+3)*k,Lw=Math.min(2*dx-o-10-14*A,2*dx-44,136);
     const wx=g.cx,wy=g.cy,ex=g.discR+o/2+12,out={L:[],R:[],M:[],dx,dy,Lw};
     const hit=(x0,y0,x1,y1)=>reserved.some(r=>x0<r.r&&x1>r.l&&y0<r.b&&y1>r.t);
     for(let j=-40;j<=40;j++){const x=wx+j*dx;if(x-Lw/2<2||x+Lw/2>g.W-2)continue;const off=(Math.abs(j)%2)?dy/2:0;
-      for(let i=-40;i<=40;i++){const y=wy+i*dy+off;if(y-o/2-14<2||y+o/2+LB>g.H-2)continue;
-        if(Math.hypot(x-wx,y-wy)<ex)continue;
+      for(let i=-40;i<=40;i++){const y=wy+i*dy+off;if(y-o/2-TOP<2||y+o/2+LB>g.H-2)continue;
+        if(Math.hypot(x-wx,y-wy)<ex+up)continue;
         const lt=y+o/2+2,lb=y+o/2+LB,ddx=Math.max(x-Lw/2-wx,0,wx-x-Lw/2),ddy=Math.max(lt-wy,0,wy-lb);
         if(Math.hypot(ddx,ddy)<g.discR+6)continue;
-        if(hit(x-Lw/2,y-o/2-14,x+Lw/2,y+o/2+LB))continue;
+        if(hit(x-Lw/2,y-o/2-TOP,x+Lw/2,y+o/2+LB))continue;
         const d=Math.hypot(x-wx,y-wy),ang=Math.atan2(y-wy,Math.abs(x-wx)||1);
         (j<0?out.L:j>0?out.R:out.M).push({x,y,score:d+Math.abs(ang+.35)*dy*.55});}}
     for(const q of [out.L,out.R,out.M])q.sort((p,q2)=>p.score-q2.score);
-    return out;
+    out.lg=lg;return out;
   }
   function relRect(e,base){if(!e||!e.isConnected||!e.textContent&&!e.childElementCount)return null;const r=e.getBoundingClientRect();if(!r.width||!r.height)return null;return{l:r.left-base.left-6,t:r.top-base.top-6,r:r.right-base.left+6,b:r.bottom-base.top+6}}
   function renderField(m,force,probe){
@@ -318,37 +321,65 @@
     const gl=[...groups.values()].map(gr=>gr.sort((x,y)=>x.pri-y.pri||(lv(y.id)-lv(x.id))));
     gl.sort((x,y)=>x[0].pri-y[0].pri||y.length-x.length);
     let lastP=null;
-    const take=side=>{const other=side==='L'?'R':'L';const p=slots[side].shift()||slots.M.shift()||slots[other].shift();
+    // 묶음의 둘째 구슬부터는 이미 놓인 같은 묶음 구슬에 가장 가까운 자리 — 관계 전류가 짧은 이웃끼리 흐르게
+    const pickNear=(q,near)=>{if(!q.length)return null;if(!near||!near.length)return q.shift();let bi=0,bs=1e9;
+      q.forEach((p,i)=>{let d=1e9;for(const n of near)d=Math.min(d,Math.hypot(p.x-n.x,p.y-n.y));const s=d+p.score*.12;if(s<bs){bs=s;bi=i}});return q.splice(bi,1)[0]};
+    const take=(side,near)=>{const other=side==='L'?'R':'L';const p=pickNear(slots[side],near)||pickNear(slots.M,near)||pickNear(slots[other],near);
       if(p){lastP=p;return p}
       if(!lastP)lastP={x:g.cx-g.discR-40,y:40};lastP={x:lastP.x,y:lastP.y+14};return lastP}; // force: 겹치더라도 표시
     let nL=0,nR=0;const place=[];
     for(const gr of gl){let side=nL<=nR?'L':'R';const other=side==='L'?'R':'L';
       if(slots[side].length+slots.M.length<gr.length&&slots[other].length>=gr.length)side=other;
-      for(const it of gr){const p=take(side);place.push([it,p]);if(p.x<g.cx)nL++;else nR++}}
+      const near=[];for(const it of gr){const p=take(side,near);near.push(p);place.push([it,p]);if(p.x<g.cx)nL++;else nR++}}
     const Lw=slots.Lw;
     for(const [it,p] of place){
       const n=mk('div','sf-orb',parts.orbs);for(const c of it.cls)n.classList.add(c);if(compact)n.classList.add('compact');
       n.dataset.skId=it.id;n.dataset.role=it.role;n.tabIndex=0;
-      n.style.left=p.x+'px';n.style.top=p.y+'px';n.style.setProperty('--o',o.toFixed(1)+'px');n.style.setProperty('--lw',Lw.toFixed(0)+'px');
+      n.style.left=p.x+'px';n.style.top=p.y+'px';n.style.setProperty('--o',o.toFixed(1)+'px');n.style.setProperty('--lw',Lw.toFixed(0)+'px');n.style.setProperty('--lg',slots.lg+'px');
       if(st.sel===it.id)n.classList.add('sel');
       const fl=mk('span','sf-orb-float',n),ball=mk('span','sf-orb-ball',fl);
       if(it.sealed)mk('span','sf-orb-seal',ball,'?');else icon(ball,it.id,'sf-ico sf-orb-ico');
       const nm=it.sealed?'???':displayName(it.id),l=lv(it.id);
-      const sub=it.sealed?'':it.badge||(l?('Lv '+l):(sk(it.id)?L('미습득','Not learned'):''));
-      const lab=mk('span','sf-orb-label',n);mk('span','sf-orb-name',lab,nm);if(sub)mk('span','sf-orb-sub'+(it.badge?' badge':l?' lv':''),lab,sub);
-      if(it.host&&!it.sealed)mk('span','sf-crown',n,L('모체','Host'));
+      if(l&&!it.sealed)n.classList.add('learned');if(it.host&&!it.sealed)n.classList.add('host');
+      // 둘째 줄: [모체] + 재료 배지 또는 Lv. 미습득은 글자 없이 흐린 구슬로(22번 반복되던 「미습득」 제거) — 툴팁에만 남김
+      const sub=it.sealed?'':it.badge||(l?('Lv '+l):'');
+      const lab=mk('span','sf-orb-label',n);mk('span','sf-orb-name',lab,nm);
+      if(sub||it.host&&!it.sealed){const sr=mk('span','sf-orb-sub'+(it.badge?' badge':l?' lv':''),lab);if(it.host&&!it.sealed)mk('span','sf-orb-host',sr,L('모체','Host'));if(sub)mk('span','sf-orb-subt',sr,sub)}
       if(compact&&l&&!it.sealed)mk('span','sf-orb-pip',fl,String(l));
-      n.title=nm+(sub?' — '+sub:'');
+      n.title=nm+(it.host&&!it.sealed?' · '+L('모체','Host'):'')+' — '+(sub||(it.sealed?'???':L('미습득','Not learned')));
       n.onclick=()=>{st.sel=it.id;parts.orbs.querySelectorAll('.sf-orb.sel').forEach(x=>x.classList.remove('sel'));n.classList.add('sel');renderInfo();fxDraw()};
       let h=2166136261;for(let i=0;i<it.id.length;i++)h=Math.imul(h^it.id.charCodeAt(i),16777619);
       const rnd=k=>((h>>>(k*5))&1023)/1023;
-      fx.orbs.push({id:it.id,el:n,fl,x:p.x,y:p.y,r:o/2,ph1:rnd(0)*6.283,ph2:rnd(1)*6.283,f1:.19+rnd(2)*.08,f2:.11+rnd(3)*.06,ay:o*.06,ax:o*.026,bx:0,by:0});
+      const A=ampK(o);
+      fx.orbs.push({id:it.id,el:n,fl,x:p.x,y:p.y,r:o/2,ph1:rnd(0)*6.283,ph2:rnd(1)*6.283,w:6.283*(.13+rnd(2)*.07)*(rnd(5)<.5?-1:1),fb:.45+rnd(3)*.15,
+        ax:(4+3*rnd(4))*A,ay:(5+4*rnd(6))*A,ab:1.2*A,bx:0,by:0,s:1});
     }
     const byId=new Map(fx.orbs.map(x=>[x.id,x]));
     for(const e of edges){const A=byId.get(e.a),B=e.core?'core':byId.get(e.b);if(!A||!B)continue;
-      fx.edges.push({A,B,core:e.core,str:e.str,ph:A.ph1+(e.core?0:B.ph2),next:0,off:null,br:null});}
+      fx.edges.push({A,B,core:e.core,str:e.str,ph:A.ph1+(e.core?0:B.ph2),next:0,off:null,br:null,cp:0});}
+    routeEdges(g);
     fxResize();fxStart();
     return{o,oMax,compact};
+  }
+  // 선 경로: 2차 곡선의 조절점을 현(chord) 수직으로 밀어 이름표·다른 구슬·원판을 피하는 값을 고른다(배치 때 1회, 16점 표본)
+  function routeEdges(g){
+    const base=parts.altar.getBoundingClientRect();
+    const obs=fx.orbs.map(o=>{let l=1e9,t=1e9,r=-1e9,b=-1e9;for(const s of o.el.querySelectorAll('.sf-orb-name,.sf-orb-sub')){const q=s.getBoundingClientRect();if(!q.width)continue;l=Math.min(l,q.left);t=Math.min(t,q.top);r=Math.max(r,q.right);b=Math.max(b,q.bottom)}
+      return{o,lab:{l:l-base.left-4,t:t-base.top-3,r:r-base.left+4,b:b-base.top+3}}});
+    for(const e of fx.edges){
+      const A=e.A,core=e.B==='core',ex=core?g.cx:e.B.x,ey=core?g.cy:e.B.y,er=core?g.coreR:e.B.r;
+      const vx=ex-A.x,vy=ey-A.y,len=Math.hypot(vx,vy)||1,nx=-vy/len,ny=vx/len,mx=(A.x+ex)/2,my=(A.y+ey)/2;
+      const out=((mx-g.cx)*nx+(my-g.cy)*ny)>=0?1:-1; // 원판 반대쪽
+      const b0=core?0:out*Math.min(60,len*.16);let best=null;
+      for(const c of [b0,b0+out*40,b0-out*40,b0+out*80,b0-out*80,b0+out*120,b0-out*120,b0+out*170,b0-out*170,b0+out*230,b0-out*230]){
+        const Cx=mx+nx*c,Cy=my+ny*c;let hits=0;
+        for(let i=1;i<16;i++){const k=i/16,px=(1-k)*(1-k)*A.x+2*k*(1-k)*Cx+k*k*ex,py=(1-k)*(1-k)*A.y+2*k*(1-k)*Cy+k*k*ey;
+          if(Math.hypot(px-A.x,py-A.y)<A.r+2||Math.hypot(px-ex,py-ey)<er+2)continue;
+          for(const ob of obs){const L=ob.lab;if(px>L.l&&px<L.r&&py>L.t&&py<L.b){hits+=2;break}if(ob.o!==A&&ob.o!==e.B&&Math.hypot(px-ob.o.x,py-ob.o.y)<ob.o.r+8){hits+=2;break}}
+          if(!core&&Math.hypot(px-g.cx,py-g.cy)<g.discR)hits+=.25;} // 원판 위를 지나는 건 이름표보다 덜 나쁘다
+        const sc=hits*1000+Math.abs(c-b0);if(!best||sc<best.sc)best={sc,c,hits};if(!hits)break;}
+      e.cp=best.c;e.hits=Math.floor(best.hits);
+    }
   }
   // ── 구슬 부유 + 전류 (캔버스 한 장, rAF 하나 — 패널이 닫히면 멈춘다) ──
   const fx={raf:0,orbs:[],edges:[],hover:null,ctx:null,dpr:1,W:0,H:0,reduce:false,t:0};
@@ -367,16 +398,23 @@
   function fxTick(now){
     fx.raf=0;if(!el||!el.isConnected||!isOpen())return;
     fx.t=now/1000;
-    for(const o of fx.orbs){o.bx=o.ax*Math.sin(fx.t*6.283*o.f2+o.ph2);o.by=o.ay*Math.sin(fx.t*6.283*o.f1+o.ph1);
-      o.fl.style.transform='translate3d('+o.bx.toFixed(2)+'px,'+o.by.toFixed(2)+'px,0)';}
+    // 느린 타원 드리프트(구슬마다 주기 5~7.7초·방향·위상 다름) + 빠른 미세 숨(위아래 1.2px·크기 ±1.8%)
+    for(const o of fx.orbs){const a=fx.t*o.w+o.ph1;o.bx=o.ax*Math.cos(a);o.by=o.ay*Math.sin(a)+o.ab*Math.sin(fx.t*6.283*o.fb+o.ph2);o.s=1+.018*Math.sin(fx.t*2.51+o.ph2);
+      o.fl.style.transform='translate3d('+o.bx.toFixed(2)+'px,'+o.by.toFixed(2)+'px,0) scale('+o.s.toFixed(4)+')';}
     fxDraw();
     fx.raf=requestAnimationFrame(fxTick);
   }
   function fxHover(id){if(fx.hover===id)return;fx.hover=id;if(fx.reduce)fxDraw()}
   // 중간점 변위로 만든 번개 굴곡(양 끝 0). 짧은 주기마다 새로 뽑아 깜박이게
   function zig(n,amp){const a=new Float32Array(n+1);let step=n,sc=amp;while(step>1){const h=step>>1;for(let i=h;i<n;i+=step)a[i]=(a[i-h]+a[Math.min(n,i+h)])/2+(Math.random()*2-1)*sc;step=h;sc*=.56}return a}
-  // 지옥불(재료→제단 코어, 강조) / 금빛(그 밖의 합성 관계, 은은하게)
-  const PAL={fire:['255,70,26','255,140,76','255,236,214'],gold:['176,128,64','226,192,130','255,238,210']};
+  // 지옥불(재료→제단 코어·강조) / 적갈·금빛 잔불(평소 합성 관계) / 금빛(먼 단계 재료). 네온·청록 없음
+  const PAL={fire:['255,70,26','255,140,76','255,236,214'],ember:['150,38,18','214,120,60','255,216,168'],gold:['176,128,64','226,192,130','255,238,210']};
+  // 선 모양 3단: strong=다음 합성 재료·호버/선택 강조(지옥불) / mid=평소 합성 관계 전류(적갈·금빛 잔잔한 번개) / faint=먼 단계 재료
+  // 굴곡은 re 초 간격으로 다시 뽑아(같은 모양 반복 없음) 깜박이고, br 확률로 곁가지가 튄다. 흐르는 마디 pulse개가 sp 속도로 흐른다
+  const STY={
+    strong:{w:[9,3.2,1.3],a:[.09,.34,.85],jit:.11,re:[.07,.12],br:.75,pulse:2,sp:.6,spark:9},
+    mid:{w:[7,2.6,1.15],a:[.11,.4,.85],jit:.095,re:[.08,.15],br:.4,pulse:2,sp:.42,spark:6},
+    faint:{w:[4,1.4,.8],a:[.08,.3,.7],jit:.07,re:[.1,.15],br:.15,pulse:1,sp:.3,spark:0}};
   function fxDraw(){
     const ctx=fx.ctx,g=st.geo;if(!ctx||!g)return;
     ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,parts.bolts.width,parts.bolts.height);
@@ -386,32 +424,41 @@
     for(const e of fx.edges){
       const A=e.A,core=e.B==='core';
       const ax=A.x+A.bx,ay=A.y+A.by,bx=core?g.cx:e.B.x+e.B.bx,by=core?g.cy:e.B.y+e.B.by;
-      const vx=bx-ax,vy=by-ay,len=Math.hypot(vx,vy)||1,ux=vx/len,uy=vy/len;
-      const r0=A.r+3,r1=core?g.coreR+4:e.B.r+3;if(len<=r0+r1+6)continue;
-      const x0=ax+ux*r0,y0=ay+uy*r0,L2=len-r0-r1;
+      const vx=bx-ax,vy=by-ay,len=Math.hypot(vx,vy)||1,ux=vx/len,uy=vy/len,nx=-uy,ny=ux;
+      // 구슬 테두리에서 시작해 테두리(코어는 핵 테)에서 끝난다 — 끝점은 떠다니는 구슬을 매 프레임 따라감.
+      // 경로 = 조절점(routeEdges가 고른 수직 오프셋)을 지나는 2차 곡선: 이름표·다른 구슬을 돌아간다
+      const r0=A.r*A.s+1.5,r1=core?g.coreR+4:e.B.r*e.B.s+1.5;if(len<=r0+r1+6)continue;
+      const Cx=(ax+bx)/2+nx*e.cp,Cy=(ay+by)/2+ny*e.cp;
+      const d0=Math.hypot(Cx-ax,Cy-ay)||1,d1=Math.hypot(Cx-bx,Cy-by)||1;
+      const x0=ax+(Cx-ax)/d0*r0,y0=ay+(Cy-ay)/d0*r0,x1=bx+(Cx-bx)/d1*r1,y1=by+(Cy-by)/d1*r1,L2=Math.hypot(x1-x0,y1-y0);
       const lit=!!focus&&(A.id===focus||(!core&&e.B.id===focus));
-      let I=e.str;if(focus)I=lit?Math.max(.95,I):I*.4;
-      const strong=I>.5;
-      if(!fx.reduce){I*=.8+.2*Math.sin(t*21+e.ph)*Math.sin(t*6.7+e.ph*1.7);if(strong&&((t*.41+e.ph)%1+1)%1<.05)I*=1.5}
+      let kind,I,pal;
+      if(lit){kind='strong';I=Math.max(.95,e.str);pal=PAL.fire}
+      else if(core&&e.str>=.9){kind='strong';I=e.str;pal=PAL.fire}
+      else if(core&&e.str>=.3){kind='mid';I=.68;pal=PAL.fire}
+      else if(!core){kind='mid';I=.74;pal=PAL.ember}
+      else{kind='faint';I=.45;pal=PAL.gold}
+      if(focus&&!lit)I*=.4;
+      const S=STY[kind];
+      if(!fx.reduce){I*=.78+.22*Math.sin(t*21+e.ph)*Math.sin(t*6.7+e.ph*1.7);if(((t*.37+e.ph)%1+1)%1<(kind==='strong'?.06:.04))I*=1.45}
       if(I<.02)continue;
       const N=L2>220?32:L2>90?16:8;
-      if(!e.off||e.off.length!==N+1||t>=e.next||fx.reduce){e.off=zig(N,strong?.11:.05);e.next=t+(strong?.06:.16)*(.6+Math.random()*.8);
-        e.br=strong&&L2>80?{i:(N*(.3+Math.random()*.4))|0,a:(Math.random()<.5?-1:1)*(.45+Math.random()*.5),l:.12+Math.random()*.14,z:zig(8,.12)}:null}
-      // 관계선은 원판을 피해 바깥으로 살짝 휜다 — 코어로 들어가는 전류는 곧게
-      const mx=x0+ux*L2/2-g.cx,my=y0+uy*L2/2-g.cy,nx=-uy,ny=ux,sgn=core?0:(mx*nx+my*ny>=0?1:-1),bow=core?0:Math.min(60,L2*.16);
-      const pts=[];for(let i=0;i<=N;i++){const k=i/N,b2=Math.sin(Math.PI*k)*bow*sgn+e.off[i]*L2;pts.push(x0+ux*L2*k+nx*b2,y0+uy*L2*k+ny*b2)}
-      const pal=lit||core&&e.str>.3?PAL.fire:PAL.gold;
+      if(!e.off||e.off.length!==N+1||t>=e.next||fx.reduce||e.kind!==kind){e.kind=kind;e.off=zig(N,S.jit);e.next=t+S.re[0]+Math.random()*(S.re[1]-S.re[0]);
+        e.br=L2>60&&Math.random()<S.br?{i:(N*(.25+Math.random()*.5))|0,a:(Math.random()<.5?-1:1)*(.45+Math.random()*.55),l:.1+Math.random()*.16,z:zig(8,.14)}:null}
+      const pts=[];for(let i=0;i<=N;i++){const k=i/N,k1=1-k,j2=e.off[i]*L2;pts.push(k1*k1*x0+2*k*k1*Cx+k*k*x1+nx*j2,k1*k1*y0+2*k*k1*Cy+k*k*y1+ny*j2)}
       const stroke=(w,al,c)=>{ctx.strokeStyle='rgba('+c+','+Math.min(1,al).toFixed(3)+')';ctx.lineWidth=w;ctx.beginPath();ctx.moveTo(pts[0],pts[1]);for(let i=2;i<pts.length;i+=2)ctx.lineTo(pts[i],pts[i+1]);ctx.stroke()};
-      stroke(strong?9:5,.09*I,pal[0]);stroke(strong?3.2:1.8,.34*I,pal[1]);stroke(strong?1.3:.9,.85*I,pal[2]);
+      for(let q=0;q<3;q++)stroke(S.w[q],S.a[q]*I,pal[q]);
       if(e.br){const i=Math.min(N-1,e.br.i),px=pts[i*2],py=pts[i*2+1],c=Math.cos(e.br.a),sn=Math.sin(e.br.a),dx2=ux*c-uy*sn,dy2=ux*sn+uy*c,bl=L2*e.br.l;
-        ctx.strokeStyle='rgba('+pal[1]+','+(.5*I).toFixed(3)+')';ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(px,py);
-        for(let q=1;q<=8;q++){const k=q/8,o2=e.br.z[q]*bl;ctx.lineTo(px+dx2*bl*k-dy2*o2,py+dy2*bl*k+dx2*o2)}ctx.stroke()}
-      // 흐르는 전류: 선을 따라 밝은 마디가 흘러간다(재료→코어 방향). 강한 선은 두 마디
-      if(!fx.reduce&&(lit||e.str>.25)){const seg=Math.max(2,Math.round(N*.14)),sp=core?.6:.34;
-        for(let q=0;q<(strong?2:1);q++){const u=((t*sp+e.ph*.159+q*.5)%1+1)%1,i0=Math.floor(u*(N-1));
-          for(const [w,al,c] of [[strong?6:4,.28,pal[1]],[strong?2.2:1.5,.95,pal[2]]]){ctx.strokeStyle='rgba('+c+','+Math.min(1,al*(I+.25)).toFixed(3)+')';ctx.lineWidth=w;ctx.beginPath();ctx.moveTo(pts[i0*2],pts[i0*2+1]);
+        for(const [w,al,c2] of [[S.w[1]+1,.22,pal[1]],[Math.max(.8,S.w[2]),.6,pal[2]]]){ctx.strokeStyle='rgba('+c2+','+Math.min(1,al*I).toFixed(3)+')';ctx.lineWidth=w;ctx.beginPath();ctx.moveTo(px,py);
+          for(let q=1;q<=8;q++){const k=q/8,o2=e.br.z[q]*bl;ctx.lineTo(px+dx2*bl*k-dy2*o2,py+dy2*bl*k+dx2*o2)}ctx.stroke()}}
+      // 흐르는 전류: 선을 따라 밝은 마디가 흘러간다(재료→코어, 모체→재료 방향)
+      if(!fx.reduce){const seg=Math.max(2,Math.round(N*.14));
+        for(let q=0;q<S.pulse;q++){const u=((t*S.sp+e.ph*.159+q/S.pulse)%1+1)%1,i0=Math.floor(u*(N-1));
+          for(const [w,al,c] of [[S.w[1]*1.9,.28,pal[1]],[S.w[2]*1.7,.95,pal[2]]]){ctx.strokeStyle='rgba('+c+','+Math.min(1,al*(I+.25)).toFixed(3)+')';ctx.lineWidth=w;ctx.beginPath();ctx.moveTo(pts[i0*2],pts[i0*2+1]);
             for(let k=1;k<=seg&&i0+k<=N;k++)ctx.lineTo(pts[(i0+k)*2],pts[(i0+k)*2+1]);ctx.stroke()}}}
-      if(strong){const gr=ctx.createRadialGradient(x0,y0,0,x0,y0,9);gr.addColorStop(0,'rgba('+pal[2]+','+(.55*I).toFixed(3)+')');gr.addColorStop(1,'rgba('+pal[0]+',0)');ctx.fillStyle=gr;ctx.beginPath();ctx.arc(x0,y0,9,0,6.283);ctx.fill()}
+      // 양 끝 불꽃: 전류가 구슬 테에 닿는 자리
+      if(S.spark){const ends=core?[[x0,y0]]:[[x0,y0],[pts[N*2],pts[N*2+1]]];
+        for(const [ex,ey] of ends){const gr=ctx.createRadialGradient(ex,ey,0,ex,ey,S.spark);gr.addColorStop(0,'rgba('+pal[2]+','+(.55*I).toFixed(3)+')');gr.addColorStop(1,'rgba('+pal[0]+',0)');ctx.fillStyle=gr;ctx.beginPath();ctx.arc(ex,ey,S.spark,0,6.283);ctx.fill()}}
     }
     ctx.globalCompositeOperation='source-over';
   }
@@ -586,5 +633,5 @@
     const r=parts.altar.getBoundingClientRect();if(!st.geo||Math.abs(r.width-st.geo.W)>1||Math.abs(r.height-st.geo.H)>1)layoutAltar(forgeModel());
   }
   root.SkillForge=Object.freeze({active,render,_model:forgeModel,_layout:socketLayout,_slots:SLOTS,_state:st,
-    _close(){if(three)three.pause();fxStop()},_fx:fx,_fxDraw:()=>fxDraw(),_orbItems:m=>orbItems(m),_orbEdges:(m,items)=>orbEdges(m,items),_orbSlots:orbSlots,_open(){if(three)three.resume()}});
+    _close(){if(three)three.pause();fxStop()},_fx:fx,_fxDraw:()=>fxDraw(),_orbItems:m=>orbItems(m),_orbEdges:(m,items)=>orbEdges(m,items),_orbSlots:orbSlots,_route:()=>fx.edges.map(e=>({a:e.A.id,b:e.B==='core'?'core':e.B.id,cp:e.cp,hits:e.hits})),_open(){if(three)three.resume()}});
 })(globalThis);
