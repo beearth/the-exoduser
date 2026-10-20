@@ -131,7 +131,7 @@ test('unsupported stages/seeds fail before writes; shared source/map/asset desti
   const cli=(args)=>spawnSync(process.execPath,[tool,...args],{encoding:'utf8'});
   try{
     fs.writeFileSync(destination,'preserve');
-    for(const stage of ['1','2','3']){
+    for(const stage of ['2','3']){
       const r=cli([root,destination,'--stage',stage,'--seed','20261020']);
       assert.equal(r.status,1);assert.match(r.stderr,/UNSUPPORTED_STAGE/);assert.equal(fs.readFileSync(destination,'utf8'),'preserve');
     }

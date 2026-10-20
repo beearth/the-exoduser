@@ -1,3 +1,14 @@
+## 2026-10-20 CH1-03 si1 원본 데이터·순수 계약
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 기준 / 디스크 | main e556b617의 game SHA4d911cdd… 동일 확인. CH1-02 d0f7eaf4가 main에 없어 그 끝에서 codex/ch1-03-20261020 분기. --no-checkout+sparse107패턴, 웹 대형assets 전체 대신 회귀원본PNG92개만 선택. push·SHA·DONE 확인 뒤 자기WT 삭제·branch/log 유지 |
+| 원본 추출 | export_ch1_area_source에 stage1 추가, buildAreaSnapshot0/1·기존stage0 wrapper0전용 유지. geometry JS와 _CH1S1(game17972–17987)/compose18172–18177·selector/generator 원문 실행. si1.json+순수 stage1_contract·신규 Node/Godot 테스트/UID2 |
+| 정확 값 | si1/T40/200²/최종tile40000 SHA c7994170…;0/1/2/3/4=13588/25590/3/0/819, START4020/7420·gate metadata31/exits33. rawhand12=LANDMARK5/GAMEPLAY7·region이름7. holes13/1000·분면250/300/250/200. rawmask40000/RLE930과최종tile별도·timer14회소비후최종13 |
+| 검사 | 신규 Node9/0·Godot75/0. CH1-01 9/0·63/0, CH1-02 6/0·189/0, P3-001 Node6/0, contracts5그룹/0·P3002 298/0·P3003 43/0·encounter3그룹/0. 맵Node28/9기준동일·새실패0. 첫Node8/1 ENOBUFS·Godot66/1 타입비교오류 보존후수정 |
+| 경계 / 보호 | source_snapshot_only·runtime_bound/full_stage_ready/visual=false. Main/World 소비·save·에셋생성·새기하0. 보호1243파일 SHA동일·map/si0/공용6/P3owner/adapter/export_world0줄. 로비8실패는 사용자제공 선재원문만 기록·미수정. P3002 ObjectDB8누수/Camera2D 경고 잔존 |
+| 상세 | [CH1-03 보고서](engine/orders/reports/ch1-03_REPORT.md), ~/exoduser-wt/_out/ch1-03/. 매Godot전프로세스2이상이면30초대기·suite고정격리명·override finally0byte. 시각미실행/인수FAIL을데이터단위와구분. R·Q/E·세이브·원본byte보존, main/force/전체add/배포0 |
+
 ## 2026-10-20 CH1-02 map8필드 승인 후 정적 환경 동기화
 
 | id / 적용 위치 | 현재 정확 계약 |
