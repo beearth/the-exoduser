@@ -92,7 +92,7 @@ P2-008a 보고서의 필수 factory/p1002f/deathFX/contracts·기존 전용4종�
 
 ## ④ 커밋 / 원격
 
-FIX 구현·재현 테스트·집계 보정·관련 docs만 별도 커밋한다. 실제 구현 SHA는 후속 기록 체크포인트에 기재한다. 자기 브랜치 `git push origin HEAD` 후 원격 ref와 대조하며 main push/merge 없음. 기존 `tools/guard.baseline.json`은 스테이징/커밋하지 않는다.
+FIX 구현·재현 테스트·집계 보정·관련 docs만 별도 커밋: **`cc4f1921e3dfb85226d3b5b361f2acab5d11c36e`**, parent `2a05d13f706fbd53d26e178fc489ed632c68c6de`(12파일, 제품1줄). 자기 브랜치 `git push origin HEAD` 후 `git ls-remote origin refs/heads/codex/p2-008b-ch1-enemies-pc-20261020`에서 동일 SHA 대조 완료. 이 SHA 기록 문서 커밋은 구현과 별도다. main push/merge/브랜치 전환 없음. 기존 `tools/guard.baseline.json`은 스테이징/커밋하지 않고 tracked WORK에 그대로 보존한다.
 
 ## ⑤ 남은 것
 
