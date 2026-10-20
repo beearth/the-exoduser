@@ -56,6 +56,7 @@ static func install_native_boot(main: Node) -> Node2D:
 		seq.begin_native_intro()
 	return seq
 
+const EliteSelector = preload("res://port_modules/elite_spawn_rules_source/producer.gd")
 const RING_RADIUS := 580.0            # 63425 _iR
 const RING_COUNT := 5                 # 63426
 const PURGE_RADIUS := 500.0           # 63422
@@ -270,21 +271,12 @@ func _spawn_ring_enemy(index: int, x: float, y: float) -> bool:
 		if p is Dictionary and (p.get("lv") is int or p.get("lv") is float):
 			mon_lv = maxi(1, int(p["lv"]))
 	# (1) rollElite(31063): roll<champ → 3, <champ+rare → 2, <champ+rare+magic → 1.
-	var elite_roll := _unit("rollElite", draws)
-	var elite := 0
-	if elite_roll < ELITE_PROB_HELL0[2]:
-		elite = 3
-	elif elite_roll < ELITE_PROB_HELL0[2] + ELITE_PROB_HELL0[1]:
-		elite = 2
-	elif elite_roll < ELITE_PROB_HELL0[2] + ELITE_PROB_HELL0[1] + ELITE_PROB_HELL0[0]:
-		elite = 1
-	# (2) rollMods(31072, elite>0만): cnt=mods(매직 1) → attacks[⌊u×2⌋] 1회로 종료.
-	var mods: Array = []
-	if elite > 0:
-		var pick := _unit("rollMods_attack", draws)
-		mods.append(HELL0_ATTACK_MODS[clampi(int(pick * HELL0_ATTACK_MODS.size()), 0, HELL0_ATTACK_MODS.size() - 1)])
-		_metrics.magic_elites += 1
-	# (3)~(8)
+	var selection: Dictionary = EliteSelector.constructor_prefix(0,false,func(purpose):return _unit(purpose,draws))
+	if selection.status != "READY":return false
+	var elite: int = int(selection.elite)
+	var mods: Array = selection.mods
+	if elite>0:_metrics.magic_elites += 1
+	# Source speed/radius and literal draws remain after the prefix.
 	var spd := (ETYPE0_SPD + _unit("spd", draws) * 0.08) * 1.5
 	var radius: float = (ETYPE0_R + _unit("r", draws) * 2.0) * 2.0 * float(ELITE_SCALE_MUL[elite])
 	var st2 := 30.0 + _unit("st2", draws) * 50.0

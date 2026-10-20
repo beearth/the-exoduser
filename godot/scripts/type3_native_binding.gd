@@ -4,6 +4,7 @@ extends "res://scripts/type3_summoned_actor.gd"
 ## Actual adapter around the original type3 actor. Its local AI clock is never
 ## assigned by the world/observer. The world owns the three-argument phase.
 ## No type7 admission, RNG reroll, element alias or fake parry availability.
+const EliteOrder = preload("res://port_modules/elite_owner_attack_order/producer.gd")
 const M29Script = preload("res://scripts/enemy_mod_m29.gd")
 const M30Script = preload("res://scripts/native_m30_modifier.gd")
 const M30_DESCRIPTOR = "res://data/m30_burst.json"
@@ -116,6 +117,7 @@ func _binding_preflight(recipe: Dictionary, target: Node2D, world: Node2D, inter
 		for method in ["receive_damage", "apply_native_posthurt_knockback"]:
 			if not target.has_method(method):
 				return "missing_actual_player_" + method
+		# EL-01: missing PC non-projectile parry stays NOT_READY; no dummy service.
 		for key in ["player_context", "element_multiplier", "is_tile_wall", "handle_m29_parry", "emit_m29_event", "m29_readiness"]:
 			if not _callable(interfaces.get(key)):
 				return "missing_actual_M29_" + key
@@ -212,14 +214,15 @@ func _player_context(target: Node2D) -> Dictionary:
 
 func _modifier_pre_ai(_actor: Node2D, ticks: float, distance: float, context: Dictionary) -> void:
 	var raw = get_native_modifier_state()
+	var result: Dictionary = EliteOrder.advance(raw, ticks, distance, context, _m29, _m30)
+	if result.status != "READY":
+		_runtime_binding_error = "elite_owner_NOT_READY:" + str(result.get("reason"))
+		return
 	if mods.has("M29"):
 		_m29_lock_calls += 1
-		M29Script.tick_attack_lock(raw["modT"], ticks)
 		_m29_trigger_calls += 1
-		_m29.trigger(raw, ticks, distance, context)
-	elif mods.has("M30") and is_instance_valid(_m30):
+	if mods.has("M30"):
 		_m30_native_calls += 1
-		_m30.advance_native(ticks, distance)
 
 func _modifier_state_step(_actor: Node2D, ticks: float, context: Dictionary) -> void:
 	if mods.has("M29"):

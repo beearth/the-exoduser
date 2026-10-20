@@ -4,8 +4,11 @@ extends ExoduserFleshCrawler
 # Reuse only the physical hurt/shield/poise, collider and original col6 body
 # consumers. Neither the type0 AI nor its autonomous physics is invoked.
 # World supplies the actual source global AI phase and warning phase.
+const EliteOrder = preload("res://port_modules/elite_owner_attack_order/producer.gd")
+
 var native_state: Dictionary = {}
 var modifier_state: Dictionary = {}
+var _elite_owner_context: Dictionary = {}
 var _teleport_helper: Node
 var _m30_helper: Node
 var _summon_completion: Callable
@@ -50,6 +53,7 @@ func configure(value: Dictionary, owner_world: Node2D) -> void:
 		native_state[key] = source[key]
 	modifier_state = source["modT"].duplicate(true)
 	native_state["modT"] = modifier_state
+	_elite_owner_context = {"mods":mods,"modT":modifier_state}
 	native_state["_frozen"] = float(source.get("_frozen", 0.0))
 	for key in ["_maxStunned", "_stunImmune", "_pImmune", "_frozenImmune", "_freezeGauge", "_webSlow", "_iceResDown", "_iceShardRes", "_weakT", "_shockDRT", "_projChargeT"]:
 		native_state[key] = float(source.get(key, 0.0))
@@ -83,7 +87,7 @@ func _process(_delta: float) -> void:
 func bind_native_dependencies(teleport_helper: Node, m30_helper: Node, summon_completion: Callable, common_shot_emitter: Callable) -> bool:
 	if not _configured or not is_instance_valid(teleport_helper) or not is_instance_valid(m30_helper):
 		return false
-	if not teleport_helper.has_method("advance_idle") or not teleport_helper.has_method("advance_shot_warnings") or not m30_helper.has_method("advance_native") or not m30_helper.has_method("render_native"):
+	if not teleport_helper.has_method("advance_idle") or not teleport_helper.has_method("advance_shot_warnings") or not m30_helper.has_method("advance_native") or not m30_helper.has_method("render_native") or not m30_helper.has_method("advance_owner_managed") or not m30_helper.has_method("is_owner_ready") or not m30_helper.has_method("owns_modifier_state"):
 		return false
 	for helper in [teleport_helper, m30_helper]:
 		if not helper.has_method("get_snapshot"):
@@ -166,8 +170,12 @@ func advance_native(ticks: float, global_frame: float, world_token: Variant) -> 
 			if not world.is_world_blocked(retreat):
 				global_position = retreat
 		distance = global_position.distance_to(player.global_position)
-	# Exact M30 is the only owner lock driver. Do not also tick M29's lock.
-	_m30_helper.advance_native(ticks, distance)
+	# EL-01: same admitted owner lock path as type3, M30 helper never ticks twice.
+	_elite_owner_context["mods"] = mods
+	var elite_phase: Dictionary = EliteOrder.advance(_elite_owner_context,ticks,distance,{},null,_m30_helper)
+	if elite_phase.status != "READY":
+		_native_dependency_fault = "elite_owner_NOT_READY:" + str(elite_phase.get("reason"))
+		return _finish_native_phase(before, ticks, "elite_dependency_fault")
 	_tick_common_charge(ticks)
 	if not _native_dependency_fault.is_empty():
 		return _finish_native_phase(before, ticks, "common_packet_dependency_fault")
