@@ -1,5 +1,7 @@
 # 메타·진행 원본 추적 및 Godot 이식 단위 — 2026-10-20
 
+> 2026-10-21 소비 갱신: DEMO11-20이 실제 State addExp의 demo entry/loop cap100에 META-06을 연결하고 필요 XP는 META-01을 호출한다. 기본 demo=true는 임시 State 입력이며 DEMO11-01의 configure_native_demo_exp_mode 연결을 기다린다. 기존 회복 authority·HUD 읽기를 유지하고 native_level_up_handoff로 표시/강제저장 요청을 인계한다(실제 저장 IO·popup/VFX·예약큐 소비는 미연결). non-demo 초월의 기존 HOLD와 저장 형식은 변경하지 않는다. [정확 범위·회귀·접점](orders/reports/demo11-20_REPORT.md). 아래 초기 정책/소비 이력은 작성 당시 기준이다.
+
 ## 0. 결론·기준·조사 경계
 
 **1번 구현 단위는 `_calcMaxExp` 순수 정책 분리와 기존 State의 Lv999→1000 필요 경험치 경계 정정이다.** 저레벨 경험치·SP/AP 획득·CP 표시는 이미 일부 이식돼 있으므로 새 기능으로 중복 계산하지 않는다. §8은 다음 구현자가 사용할 정확한 파일·계산·테스트 지시서다. 이번 변경은 이 추적 문서 1개뿐이며 코드·테스트·기존 설계 문서는 변경하지 않았다.

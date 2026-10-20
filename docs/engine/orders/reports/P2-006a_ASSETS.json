@@ -1,0 +1,1136 @@
+[
+  {
+    "source": "img/ui/unique-items/ui-01_cut.png",
+    "target": "godot/assets/unique_items/ui-01_cut.png",
+    "sha256": "6208e9bed92ddf8f268739639ba2c9001f83922f61068d5ceb4891b074cdcd00",
+    "bytes": 51775
+  },
+  {
+    "source": "img/ui/unique-items/ui-02_cut.png",
+    "target": "godot/assets/unique_items/ui-02_cut.png",
+    "sha256": "4253758f4b1da402611dc23d5c48271d1031bc8138437f87afad24f22c7b29a9",
+    "bytes": 57002
+  },
+  {
+    "source": "img/ui/unique-items/ui-03_cut.png",
+    "target": "godot/assets/unique_items/ui-03_cut.png",
+    "sha256": "2162cb6fdc25f0b73b2bcb38cab2ffaf9fdfc3a77566a9220692e91f5ea5b692",
+    "bytes": 30998
+  },
+  {
+    "source": "img/ui/unique-items/ui-04_cut.png",
+    "target": "godot/assets/unique_items/ui-04_cut.png",
+    "sha256": "45ef8b59279e7a82d36a7ee49d5a7101c0849bdb2f5e8afacbc170c098483e44",
+    "bytes": 54125
+  },
+  {
+    "source": "img/ui/unique-items/ui-05_cut.png",
+    "target": "godot/assets/unique_items/ui-05_cut.png",
+    "sha256": "1714013db145d300f48d917d13a9cf97168a5dd22b52734c32a21cd657b358a1",
+    "bytes": 32968
+  },
+  {
+    "source": "img/ui/unique-items/ui-06_cut.png",
+    "target": "godot/assets/unique_items/ui-06_cut.png",
+    "sha256": "e34fe5d97e18ed123b45d70ec26979df5aaf617c7d6a63d99c9ad96f5a1a4737",
+    "bytes": 35036
+  },
+  {
+    "source": "img/ui/unique-items/ui-07_cut.png",
+    "target": "godot/assets/unique_items/ui-07_cut.png",
+    "sha256": "6adb03f423e6ba7b52088681f72f4acb805d1106148d49b577775d14613cf1f8",
+    "bytes": 52113
+  },
+  {
+    "source": "img/ui/unique-items/ui-08_cut.png",
+    "target": "godot/assets/unique_items/ui-08_cut.png",
+    "sha256": "bd89d594386913607cf52f599e56108582dbba751fed0bc47a5d5f6a9b676f4c",
+    "bytes": 21441
+  },
+  {
+    "source": "img/ui/unique-items/ui-09_cut.png",
+    "target": "godot/assets/unique_items/ui-09_cut.png",
+    "sha256": "cba1175d5cedd4c3a766e41a149769004acd5aa18c9c2727561a8e1fe970ac2d",
+    "bytes": 53402
+  },
+  {
+    "source": "img/ui/unique-items/ui-10_cut.png",
+    "target": "godot/assets/unique_items/ui-10_cut.png",
+    "sha256": "924bafe296bc3b3395415e7625d6b1e651131ccbad3290ff24dc75b4c1f811cb",
+    "bytes": 80808
+  },
+  {
+    "source": "img/ui/unique-items/ui-11_cut.png",
+    "target": "godot/assets/unique_items/ui-11_cut.png",
+    "sha256": "8d5d48bbd6ff8e4d19f79fa075e5ec4976f67faf31945e1e06e2870736eb1b7e",
+    "bytes": 22575
+  },
+  {
+    "source": "img/ui/unique-items/ui-12_cut.png",
+    "target": "godot/assets/unique_items/ui-12_cut.png",
+    "sha256": "64dce77ffb2118976696e6505608c6f72a083ccfc98c595a88b899a06a38a5b7",
+    "bytes": 53519
+  },
+  {
+    "source": "img/ui/unique-items/ui-13_cut.png",
+    "target": "godot/assets/unique_items/ui-13_cut.png",
+    "sha256": "ca4194da339a3be24c6bcb4d90304b9fe1ad90230cf4f50109e979d60fb1ea0f",
+    "bytes": 60047
+  },
+  {
+    "source": "img/ui/unique-items/ui-14_cut.png",
+    "target": "godot/assets/unique_items/ui-14_cut.png",
+    "sha256": "28529b65ba493bcc70f6608bb8d2ee937343503aa4816256d8c0670420a63caa",
+    "bytes": 39482
+  },
+  {
+    "source": "img/ui/unique-items/ui-15_cut.png",
+    "target": "godot/assets/unique_items/ui-15_cut.png",
+    "sha256": "6520b48aa249b70fa1c727403b3df85a2ee5335a3077c623c430f4aee474f97f",
+    "bytes": 44040
+  },
+  {
+    "source": "img/ui/unique-items/ui-16_cut.png",
+    "target": "godot/assets/unique_items/ui-16_cut.png",
+    "sha256": "99604d0030cf9beef88c2449d79849e01ee164aa6faaf39e0e12095d36f64bdd",
+    "bytes": 58221
+  },
+  {
+    "source": "img/ui/unique-items/ui-17_cut.png",
+    "target": "godot/assets/unique_items/ui-17_cut.png",
+    "sha256": "c174c6d2d584a2141d9a464625f515b6fa4eab61ed9f971acaf554e63062d913",
+    "bytes": 52872
+  },
+  {
+    "source": "img/ui/unique-items/ui-18_cut.png",
+    "target": "godot/assets/unique_items/ui-18_cut.png",
+    "sha256": "3dd8d0353fc76e1e0587c4945584a27bcdeeec1296b775643d7a583e968b1be4",
+    "bytes": 42326
+  },
+  {
+    "source": "img/ui/unique-items/ui-19_cut.png",
+    "target": "godot/assets/unique_items/ui-19_cut.png",
+    "sha256": "031eed595bc464a164c73f538ecf421c18aeb37e4dfd68a751149184da25c1c6",
+    "bytes": 70762
+  },
+  {
+    "source": "img/ui/unique-items/ui-20_cut.png",
+    "target": "godot/assets/unique_items/ui-20_cut.png",
+    "sha256": "de37bd8c6683eee48ed596f5d75152741165fe6574d62226f53dc9c31c8a758d",
+    "bytes": 61557
+  },
+  {
+    "source": "img/ui/unique-items/ui-21_cut.png",
+    "target": "godot/assets/unique_items/ui-21_cut.png",
+    "sha256": "9ae988b9f7cad02c038243b641b2bec8a30db43ead331487ca012f595ea7052a",
+    "bytes": 83126
+  },
+  {
+    "source": "img/ui/unique-items/ui-22_cut.png",
+    "target": "godot/assets/unique_items/ui-22_cut.png",
+    "sha256": "4d17aa9143ca4f1d018cbbf94f62cdc2f30f56613ff18a945afac7a5b4e3030b",
+    "bytes": 32923
+  },
+  {
+    "source": "img/ui/unique-items/ui-23_cut.png",
+    "target": "godot/assets/unique_items/ui-23_cut.png",
+    "sha256": "271f80b0fe0f31316add6587a6ae89646f27a7ae086ff32ccdc8b96ccbbead92",
+    "bytes": 47766
+  },
+  {
+    "source": "img/ui/unique-items/ui-24_cut.png",
+    "target": "godot/assets/unique_items/ui-24_cut.png",
+    "sha256": "bb423859f5f9f3fc92fd31105e64d5d7ae7046371cbbb7e45addadad72409985",
+    "bytes": 39537
+  },
+  {
+    "source": "img/ui/unique-items/ui-25_cut.png",
+    "target": "godot/assets/unique_items/ui-25_cut.png",
+    "sha256": "b187ad44e3ecc25ab37cfcddef6e6b7f133daf54541d64a1feb604fd8f777eca",
+    "bytes": 35015
+  },
+  {
+    "source": "img/ui/unique-items/ui-26_cut.png",
+    "target": "godot/assets/unique_items/ui-26_cut.png",
+    "sha256": "66dccf85cd35bb2838721d5c25efe9c3f5548f54cde371ee1b3e57ae17788aef",
+    "bytes": 31831
+  },
+  {
+    "source": "img/ui/unique-items/ui-27_cut.png",
+    "target": "godot/assets/unique_items/ui-27_cut.png",
+    "sha256": "27cef4936d3f6226d026955a3d1915f7682e06c89e97aaf6a70d27abf633fa56",
+    "bytes": 17877
+  },
+  {
+    "source": "img/fx/world_item_drop_beams_v3_01.png",
+    "target": "godot/assets/fx/world_item_drop_beams_v3_01.png",
+    "sha256": "4f7185f2457f0cbc8dc7c2e46918fdc80262abfcb159f7088725fc6d8877e5b9",
+    "bytes": 823688
+  },
+  {
+    "source": "img/fx/world_item_drop_beams_v3_02.png",
+    "target": "godot/assets/fx/world_item_drop_beams_v3_02.png",
+    "sha256": "8b6c9b1a79960b14b56f9d0fb45ad730b2e422b3b41ee6c0a4a9b5a5d7a7f087",
+    "bytes": 632391
+  },
+  {
+    "source": "img/ui/item-cutouts/armor_phys_cutout.png",
+    "target": "godot/assets/item_cutouts/armor_phys_cutout.png",
+    "sha256": "2054750ecd716abb3128af683d2816a03f1d021fe2c05d332aa10ffad7a806dd",
+    "bytes": 1528989
+  },
+  {
+    "source": "img/ui/item-cutouts/axe_phys_cutout.png",
+    "target": "godot/assets/item_cutouts/axe_phys_cutout.png",
+    "sha256": "195447c1f178c3013c49f804d45d488f0f7d413c382512f9a2e674e47690a5ae",
+    "bytes": 649389
+  },
+  {
+    "source": "img/ui/item-cutouts/belt_phys_cutout.png",
+    "target": "godot/assets/item_cutouts/belt_phys_cutout.png",
+    "sha256": "9190da7b320aa1b619369ff36f80263b26e2a2ac484222b7c113edd13ae03555",
+    "bytes": 860302
+  },
+  {
+    "source": "img/ui/item-cutouts/boots_phys_cutout.png",
+    "target": "godot/assets/item_cutouts/boots_phys_cutout.png",
+    "sha256": "2b6b61cca12c7f9d3c434bd5718a087021a74b53a3d4aba43c2b9ca774cb23d2",
+    "bytes": 1833558
+  },
+  {
+    "source": "img/ui/item-cutouts/bracelet_phys_cutout.png",
+    "target": "godot/assets/item_cutouts/bracelet_phys_cutout.png",
+    "sha256": "546f68c50655cb3c408cc2bbe4d94c3f1513101b3247bb99e45be79b44de7258",
+    "bytes": 1153618
+  },
+  {
+    "source": "img/ui/item-cutouts/cape_phys_cutout.png",
+    "target": "godot/assets/item_cutouts/cape_phys_cutout.png",
+    "sha256": "31c33a4bf4dfd10714a3736c9e2ccdf8b2188696241e4f2278ba7e3e1d58dd49",
+    "bytes": 1053441
+  },
+  {
+    "source": "img/ui/item-cutouts/crossbow_phys_cutout.png",
+    "target": "godot/assets/item_cutouts/crossbow_phys_cutout.png",
+    "sha256": "3e6ad5f652795ff7631845d330585db716b5effe0c28fa0c361350a24629521b",
+    "bytes": 634756
+  },
+  {
+    "source": "img/ui/item-cutouts/earring_phys_cutout.png",
+    "target": "godot/assets/item_cutouts/earring_phys_cutout.png",
+    "sha256": "c20aaf6023e0456fbb8c84da0e8ffe7b106598942ad69bffc85ed2bb3dce2254",
+    "bytes": 886170
+  },
+  {
+    "source": "img/ui/item-cutouts/gloves_phys_cutout.png",
+    "target": "godot/assets/item_cutouts/gloves_phys_cutout.png",
+    "sha256": "f405545bc6e1fb98fa2a6dcdcaa27122a73e9cc1966035094cd31866b8ff7e71",
+    "bytes": 1632469
+  },
+  {
+    "source": "img/ui/item-cutouts/helmet_phys_cutout.png",
+    "target": "godot/assets/item_cutouts/helmet_phys_cutout.png",
+    "sha256": "822c558fe4690f085969da3b01eaea635ab28373270568f6ef1e7fc6dbc5f5cd",
+    "bytes": 1579909
+  },
+  {
+    "source": "img/ui/item-cutouts/necklace_phys_cutout.png",
+    "target": "godot/assets/item_cutouts/necklace_phys_cutout.png",
+    "sha256": "89eff5552c2f4c16d5b3d977d5ebda5138ab255a2d29b76b0444678d3068a052",
+    "bytes": 1354924
+  },
+  {
+    "source": "img/ui/item-cutouts/pants_phys_cutout.png",
+    "target": "godot/assets/item_cutouts/pants_phys_cutout.png",
+    "sha256": "747e44c08f0a73b5e827dc24d962d65068599bfff19b7cf404e6b49a3dbd9e40",
+    "bytes": 1317880
+  },
+  {
+    "source": "img/ui/item-cutouts/shield_phys_cutout.png",
+    "target": "godot/assets/item_cutouts/shield_phys_cutout.png",
+    "sha256": "3476338c20f76fe21279836443afe3bcdd091e71a0616f3caa438bf3c59588f8",
+    "bytes": 1356176
+  },
+  {
+    "source": "img/ui/item-cutouts/sword_phys_cutout.png",
+    "target": "godot/assets/item_cutouts/sword_phys_cutout.png",
+    "sha256": "e475be3fd33629a955dfef8ca67cf9e2fc6c23e09c3f70d4b01ec7d8ce66a4f6",
+    "bytes": 229808
+  },
+  {
+    "source": "output/imagegen/item-skins/arcane_dark.png",
+    "target": "godot/assets/item_skins/arcane_dark.png",
+    "sha256": "497dbb7fa4a0e642e14108255ea2ed53c7c85e6db1563d79c9e332483fd05841",
+    "bytes": 65022
+  },
+  {
+    "source": "output/imagegen/item-skins/arcane_earth.png",
+    "target": "godot/assets/item_skins/arcane_earth.png",
+    "sha256": "ea39ad93252b55244b85f50690f448eea91c1c5e5ab0431eb72a60920f7d30d4",
+    "bytes": 67354
+  },
+  {
+    "source": "output/imagegen/item-skins/arcane_holy.png",
+    "target": "godot/assets/item_skins/arcane_holy.png",
+    "sha256": "9c760e25175d1a5324f8d2b14d52f05a80777062be5ef22fe43b7b963c8bcc06",
+    "bytes": 75739
+  },
+  {
+    "source": "output/imagegen/item-skins/arcane_ice.png",
+    "target": "godot/assets/item_skins/arcane_ice.png",
+    "sha256": "234b9ce4f166b474c3c3b6e4642fcf1de4031bcf4d817d61d2549fa4bca3df28",
+    "bytes": 71657
+  },
+  {
+    "source": "output/imagegen/item-skins/arcane_light.png",
+    "target": "godot/assets/item_skins/arcane_light.png",
+    "sha256": "3902bc919e47538ecfc729af66768d19812be4888da634ae009255d489c28f61",
+    "bytes": 76140
+  },
+  {
+    "source": "output/imagegen/item-skins/arcane_phys.png",
+    "target": "godot/assets/item_skins/arcane_phys.png",
+    "sha256": "d8265190e7e490fe68f6af6c76a5eb4a1b49817d3ea17c4bbbb66bf5ad3b6413",
+    "bytes": 58413
+  },
+  {
+    "source": "output/imagegen/item-skins/armor_dark.png",
+    "target": "godot/assets/item_skins/armor_dark.png",
+    "sha256": "8c3dbc257bd31a700548d3c25670b709e8cc0fb9b74e51e9468b09e2c63fcd5d",
+    "bytes": 73695
+  },
+  {
+    "source": "output/imagegen/item-skins/armor_earth.png",
+    "target": "godot/assets/item_skins/armor_earth.png",
+    "sha256": "e7947aa5d83644b94385fc8cf22d32c6893c04c9c338b63caac0d9d037e085b9",
+    "bytes": 80197
+  },
+  {
+    "source": "output/imagegen/item-skins/armor_holy.png",
+    "target": "godot/assets/item_skins/armor_holy.png",
+    "sha256": "b1234f9e4ccfd58ddd3b882cfd82cc3f0cf1a99034c5c8dd4a83f1f26d337521",
+    "bytes": 82908
+  },
+  {
+    "source": "output/imagegen/item-skins/armor_ice.png",
+    "target": "godot/assets/item_skins/armor_ice.png",
+    "sha256": "fa2f2daf2506a7d584873d526c1624ebbcc1d5f1eae453f0b7973520da1d8c2a",
+    "bytes": 77089
+  },
+  {
+    "source": "output/imagegen/item-skins/armor_light.png",
+    "target": "godot/assets/item_skins/armor_light.png",
+    "sha256": "090a13fc690c953c743d6f3850cfa286a9d40479bc8e6b9c44e9aa87e2b81bab",
+    "bytes": 80808
+  },
+  {
+    "source": "output/imagegen/item-skins/armor_phys.png",
+    "target": "godot/assets/item_skins/armor_phys.png",
+    "sha256": "ff377dd4f410def7a2a73ae5d457495405718cbbbc43a0332d48aac3f1660167",
+    "bytes": 70055
+  },
+  {
+    "source": "output/imagegen/item-skins/axe_dark.png",
+    "target": "godot/assets/item_skins/axe_dark.png",
+    "sha256": "0b4b62e0cbec886db75418713dcfbf1597a8d4c62bc0adf4417b1e9c259d7fed",
+    "bytes": 61254
+  },
+  {
+    "source": "output/imagegen/item-skins/axe_earth.png",
+    "target": "godot/assets/item_skins/axe_earth.png",
+    "sha256": "93d7002232b4bf1685e54a4099e91d3eceb6135483fb9a1230adcb8187161e50",
+    "bytes": 47055
+  },
+  {
+    "source": "output/imagegen/item-skins/axe_holy.png",
+    "target": "godot/assets/item_skins/axe_holy.png",
+    "sha256": "280a05eeaaa227b855e0a43b9f7a24c8fe92df381ce49f0b893604340a356320",
+    "bytes": 43365
+  },
+  {
+    "source": "output/imagegen/item-skins/axe_ice.png",
+    "target": "godot/assets/item_skins/axe_ice.png",
+    "sha256": "05490233ab6351d5b00758d0f648e9b9abcde0869e3b6d3637caa36674bf6cb7",
+    "bytes": 71014
+  },
+  {
+    "source": "output/imagegen/item-skins/axe_light.png",
+    "target": "godot/assets/item_skins/axe_light.png",
+    "sha256": "8972c62653d635801ad6565079c2f62c3d4bff0316446d2aacd89efb50f583de",
+    "bytes": 77302
+  },
+  {
+    "source": "output/imagegen/item-skins/axe_phys.png",
+    "target": "godot/assets/item_skins/axe_phys.png",
+    "sha256": "8fe9be18a2898bee8148b8068f4c3426aae696df83e600d36f2c7e1be6cb31f3",
+    "bytes": 41200
+  },
+  {
+    "source": "output/imagegen/item-skins/belt_dark.png",
+    "target": "godot/assets/item_skins/belt_dark.png",
+    "sha256": "855c12925ffd3727eabb4db867f1d117b10da7d4f637c9a493ca795b00cb2d1c",
+    "bytes": 70586
+  },
+  {
+    "source": "output/imagegen/item-skins/belt_earth.png",
+    "target": "godot/assets/item_skins/belt_earth.png",
+    "sha256": "0d1001ff130276d5d21b78bf2d22cb82f1e419a65edbe13dca5d61ab928d31b6",
+    "bytes": 78764
+  },
+  {
+    "source": "output/imagegen/item-skins/belt_holy.png",
+    "target": "godot/assets/item_skins/belt_holy.png",
+    "sha256": "9e1460cdb4ad19154ea428e829e7c5a41f857f28153808a51bab5204a221142b",
+    "bytes": 83461
+  },
+  {
+    "source": "output/imagegen/item-skins/belt_ice.png",
+    "target": "godot/assets/item_skins/belt_ice.png",
+    "sha256": "7fc14183c97644f4ad20b5278526b92b185147e7981ab468ada5902d088c8b8c",
+    "bytes": 77532
+  },
+  {
+    "source": "output/imagegen/item-skins/belt_light.png",
+    "target": "godot/assets/item_skins/belt_light.png",
+    "sha256": "c83fc966c8f5eefdb17509b82d114b06f6ac11f33d3f6f9eeb21df48aa711503",
+    "bytes": 85305
+  },
+  {
+    "source": "output/imagegen/item-skins/belt_phys.png",
+    "target": "godot/assets/item_skins/belt_phys.png",
+    "sha256": "fc81c4c1a6e088d815b81ab8458ebe76c78e3d92f1450baf79e9fd48c5149479",
+    "bytes": 43499
+  },
+  {
+    "source": "output/imagegen/item-skins/bone_arms.png",
+    "target": "godot/assets/item_skins/bone_arms.png",
+    "sha256": "894d3829357ca7f6f8535db6f84a07e705099b547b2b346b7f60458465b61659",
+    "bytes": 20848
+  },
+  {
+    "source": "output/imagegen/item-skins/bone_legs.png",
+    "target": "godot/assets/item_skins/bone_legs.png",
+    "sha256": "7e7e81ca87326a0f03884af0698946ade00ea2e9cbeae04676e4597bc7c7f621",
+    "bytes": 14665
+  },
+  {
+    "source": "output/imagegen/item-skins/bone_skull.png",
+    "target": "godot/assets/item_skins/bone_skull.png",
+    "sha256": "0580e1dc758e84540d54552ffd8c75a7a7ae236f794eedbb63a266e7b52331a1",
+    "bytes": 23967
+  },
+  {
+    "source": "output/imagegen/item-skins/bone_torso.png",
+    "target": "godot/assets/item_skins/bone_torso.png",
+    "sha256": "849cd91e17b844efb42bd463dd79fca8a56b8711d8fa310e40edc068cc632510",
+    "bytes": 26152
+  },
+  {
+    "source": "output/imagegen/item-skins/boots_dark.png",
+    "target": "godot/assets/item_skins/boots_dark.png",
+    "sha256": "b3b237ef4f1c2c2501f006daf3b44617b3aff8bb06ce133bac7b1cb72ddd68ec",
+    "bytes": 78639
+  },
+  {
+    "source": "output/imagegen/item-skins/boots_earth.png",
+    "target": "godot/assets/item_skins/boots_earth.png",
+    "sha256": "01c08d33c236287d96cfc161108b27430eb635e9131ad9dc22e861aa9b116f0a",
+    "bytes": 82331
+  },
+  {
+    "source": "output/imagegen/item-skins/boots_holy.png",
+    "target": "godot/assets/item_skins/boots_holy.png",
+    "sha256": "ced42b843d0cdf2d37a252e4b9a1e3e866b0a0eef68bed75c29e10e0926d6f8b",
+    "bytes": 84560
+  },
+  {
+    "source": "output/imagegen/item-skins/boots_ice.png",
+    "target": "godot/assets/item_skins/boots_ice.png",
+    "sha256": "04f2a31390603553ddb33736a8a6a832a58389c73cdcfd342a6e49c089c239c2",
+    "bytes": 80417
+  },
+  {
+    "source": "output/imagegen/item-skins/boots_light.png",
+    "target": "godot/assets/item_skins/boots_light.png",
+    "sha256": "b3c62fbcb7f9dcb86db82a1e5366c2d4c17090c7f55e6ddcad295b1e26bf0cdd",
+    "bytes": 89515
+  },
+  {
+    "source": "output/imagegen/item-skins/boots_phys.png",
+    "target": "godot/assets/item_skins/boots_phys.png",
+    "sha256": "ad89f685c3696a362965689bb30e3f222eb0537611147034da3a8fd5dc151399",
+    "bytes": 79092
+  },
+  {
+    "source": "output/imagegen/item-skins/bracelet_dark.png",
+    "target": "godot/assets/item_skins/bracelet_dark.png",
+    "sha256": "6fc0af8da46a5f57fdcd75957f0caf9f445f09a4d60ac80c1794e0faa2eb8dd4",
+    "bytes": 73514
+  },
+  {
+    "source": "output/imagegen/item-skins/bracelet_earth.png",
+    "target": "godot/assets/item_skins/bracelet_earth.png",
+    "sha256": "54122c40929a0e2d834fe9e28319491bcf8fe78ce31617329eb8d7d631c34758",
+    "bytes": 76568
+  },
+  {
+    "source": "output/imagegen/item-skins/bracelet_holy.png",
+    "target": "godot/assets/item_skins/bracelet_holy.png",
+    "sha256": "4678e756dc12f4f0a174a5a1c2ffb8222b50c22fe2c0babe1c142cbda12c4a07",
+    "bytes": 73406
+  },
+  {
+    "source": "output/imagegen/item-skins/bracelet_ice.png",
+    "target": "godot/assets/item_skins/bracelet_ice.png",
+    "sha256": "24e7e7e5202bfb0c7b94c87743e73a325dacd036ba901035f4a39b59f0b04913",
+    "bytes": 74153
+  },
+  {
+    "source": "output/imagegen/item-skins/bracelet_light.png",
+    "target": "godot/assets/item_skins/bracelet_light.png",
+    "sha256": "bc993a920ce3de3c4f1ce36909c4f60f95d0e0de55e05554af56c5c7e6bfc3e0",
+    "bytes": 80037
+  },
+  {
+    "source": "output/imagegen/item-skins/bracelet_phys.png",
+    "target": "godot/assets/item_skins/bracelet_phys.png",
+    "sha256": "6c0aca9bb4ec55371808a37c2c0ef5a983c09c35c98e35db46c19439429c6b16",
+    "bytes": 65634
+  },
+  {
+    "source": "output/imagegen/item-skins/cape_dark.png",
+    "target": "godot/assets/item_skins/cape_dark.png",
+    "sha256": "a77010915c33c2eb3c15d18a585a706bedf411c3ff66e2925387cf896a53f1ee",
+    "bytes": 69626
+  },
+  {
+    "source": "output/imagegen/item-skins/cape_earth.png",
+    "target": "godot/assets/item_skins/cape_earth.png",
+    "sha256": "a84ceeb75af5ca37d80ca62043daf61b0f949039e2d73ee7189bdd748e8bcbe6",
+    "bytes": 70311
+  },
+  {
+    "source": "output/imagegen/item-skins/cape_holy.png",
+    "target": "godot/assets/item_skins/cape_holy.png",
+    "sha256": "e3866bf8f9ebe1485ddf43ea867252493678ddad146d2942a009c45043fd15ce",
+    "bytes": 86397
+  },
+  {
+    "source": "output/imagegen/item-skins/cape_ice.png",
+    "target": "godot/assets/item_skins/cape_ice.png",
+    "sha256": "c62bb41bffd410e0381a5aaf2a393ec4185d3330e6b630475af5da981e922d9c",
+    "bytes": 67575
+  },
+  {
+    "source": "output/imagegen/item-skins/cape_light.png",
+    "target": "godot/assets/item_skins/cape_light.png",
+    "sha256": "9c5da7f5fefcb9e5166fb1cb71c63994cfc8fa915c6ba3c704ba9ef6aaa7e9a3",
+    "bytes": 77794
+  },
+  {
+    "source": "output/imagegen/item-skins/cape_phys.png",
+    "target": "godot/assets/item_skins/cape_phys.png",
+    "sha256": "1169afcbe36b2409a6336d16efa488575d635d675ad0455acef6f6aad3b13c79",
+    "bytes": 48072
+  },
+  {
+    "source": "output/imagegen/item-skins/club_dark.png",
+    "target": "godot/assets/item_skins/club_dark.png",
+    "sha256": "c44c9d0f939de3c890c8722c5e34feece5a8ce580defb1831feebad6ac58ecf4",
+    "bytes": 54619
+  },
+  {
+    "source": "output/imagegen/item-skins/club_earth.png",
+    "target": "godot/assets/item_skins/club_earth.png",
+    "sha256": "8bab230bebee5f401bea298944865a59463b4f2edc3f1b77885c5662a778f79b",
+    "bytes": 50330
+  },
+  {
+    "source": "output/imagegen/item-skins/club_holy.png",
+    "target": "godot/assets/item_skins/club_holy.png",
+    "sha256": "e80022c0a27a35ebc6212abfaca551f7c7a8632b6bcb3d6beb9dcd9ec298f277",
+    "bytes": 51925
+  },
+  {
+    "source": "output/imagegen/item-skins/club_ice.png",
+    "target": "godot/assets/item_skins/club_ice.png",
+    "sha256": "5772a74d24019bb75a64ab7a0c7ae4045db0b22110e120fe442da2fde0f64211",
+    "bytes": 68840
+  },
+  {
+    "source": "output/imagegen/item-skins/club_light.png",
+    "target": "godot/assets/item_skins/club_light.png",
+    "sha256": "8c204b49349a21fd0f2a7645b354c97a3a369b6eaedf7b3a8bbca37362a6a900",
+    "bytes": 62867
+  },
+  {
+    "source": "output/imagegen/item-skins/club_phys.png",
+    "target": "godot/assets/item_skins/club_phys.png",
+    "sha256": "3e7bc5140f2e3e1145c4c0404cedae5dc7a223458eaa37f061159c9f70891813",
+    "bytes": 53123
+  },
+  {
+    "source": "output/imagegen/item-skins/crossbow_dark.png",
+    "target": "godot/assets/item_skins/crossbow_dark.png",
+    "sha256": "2fee1705cb2ea5ec6d1762b28288099809605cb9edd61dc9d61107c40753f1c1",
+    "bytes": 71400
+  },
+  {
+    "source": "output/imagegen/item-skins/crossbow_earth.png",
+    "target": "godot/assets/item_skins/crossbow_earth.png",
+    "sha256": "0a5087343f08441f3dd5c04076c5d2cf91ddb0b5a8ce076006b94dd8aa158d74",
+    "bytes": 50050
+  },
+  {
+    "source": "output/imagegen/item-skins/crossbow_holy.png",
+    "target": "godot/assets/item_skins/crossbow_holy.png",
+    "sha256": "fa49929ca9a0f8a439e08d1af2f1a17dddafe16d89cfb12190400ea553b7b6e1",
+    "bytes": 58315
+  },
+  {
+    "source": "output/imagegen/item-skins/crossbow_ice.png",
+    "target": "godot/assets/item_skins/crossbow_ice.png",
+    "sha256": "593e43e4f2d3974c857266d4755271f1613915ea6bc4e0c392285e0c54715489",
+    "bytes": 58546
+  },
+  {
+    "source": "output/imagegen/item-skins/crossbow_light.png",
+    "target": "godot/assets/item_skins/crossbow_light.png",
+    "sha256": "facae3c0aa8a6b84665b40aca6323c0463d14bc7f27f0406313aea872aa07f0f",
+    "bytes": 60855
+  },
+  {
+    "source": "output/imagegen/item-skins/crossbow_phys.png",
+    "target": "godot/assets/item_skins/crossbow_phys.png",
+    "sha256": "b50ab71d08c50a9636899cd7f658ca0e5798690005e38b3d8f6073f70ee1d1a1",
+    "bytes": 47815
+  },
+  {
+    "source": "output/imagegen/item-skins/dagger_dark.png",
+    "target": "godot/assets/item_skins/dagger_dark.png",
+    "sha256": "a768b8ba2355384c9e425fd2f010f92c120a499d9de8a1cb0c0444adcf85f57f",
+    "bytes": 55222
+  },
+  {
+    "source": "output/imagegen/item-skins/dagger_earth.png",
+    "target": "godot/assets/item_skins/dagger_earth.png",
+    "sha256": "40807f033db9e729f4b63588a2a9989e34b8ef4a5372e5783faa9ec613084006",
+    "bytes": 50841
+  },
+  {
+    "source": "output/imagegen/item-skins/dagger_holy.png",
+    "target": "godot/assets/item_skins/dagger_holy.png",
+    "sha256": "4ba30b82f0160c2bee3995e0a8832393013531fd8b3508bbf59e086b1dd7a128",
+    "bytes": 34420
+  },
+  {
+    "source": "output/imagegen/item-skins/dagger_ice.png",
+    "target": "godot/assets/item_skins/dagger_ice.png",
+    "sha256": "cdd03bc0cb4fc11cc2e9925775ce283e9ea9b33405c180c374afd7bcd0eaa47b",
+    "bytes": 60130
+  },
+  {
+    "source": "output/imagegen/item-skins/dagger_light.png",
+    "target": "godot/assets/item_skins/dagger_light.png",
+    "sha256": "1ee4aed18f8f258a1f8e15972251b3b50e8637feaccb04e9371da478ab2533cc",
+    "bytes": 43849
+  },
+  {
+    "source": "output/imagegen/item-skins/dagger_phys.png",
+    "target": "godot/assets/item_skins/dagger_phys.png",
+    "sha256": "2114d954cadbce7cb13f84f99d56ac8d4271a42b0a395103e087b5cfb9687d83",
+    "bytes": 42254
+  },
+  {
+    "source": "output/imagegen/item-skins/earring_dark.png",
+    "target": "godot/assets/item_skins/earring_dark.png",
+    "sha256": "9741955302f25d22fb727e86c2ad545f3d4656d5910e1e721714aeb67403328f",
+    "bytes": 63784
+  },
+  {
+    "source": "output/imagegen/item-skins/earring_earth.png",
+    "target": "godot/assets/item_skins/earring_earth.png",
+    "sha256": "22d0b2dd3353e1c2f07e8fc0bbc86f3f89d5bd9129892e47464edb889336f091",
+    "bytes": 64759
+  },
+  {
+    "source": "output/imagegen/item-skins/earring_holy.png",
+    "target": "godot/assets/item_skins/earring_holy.png",
+    "sha256": "393181adb5fe24590b776cd44ea69c25b8a95be9d723777407faa071c1ec5b53",
+    "bytes": 73701
+  },
+  {
+    "source": "output/imagegen/item-skins/earring_ice.png",
+    "target": "godot/assets/item_skins/earring_ice.png",
+    "sha256": "e2c44fadd9c696bd6b7f8ac084e5ecae0ca244be20817cebd4cb526ccac8ef4b",
+    "bytes": 72925
+  },
+  {
+    "source": "output/imagegen/item-skins/earring_light.png",
+    "target": "godot/assets/item_skins/earring_light.png",
+    "sha256": "7cf19abfb846bbe84b9ad05a02028c1a47ca4b459ad9a559d8c0bd232328236e",
+    "bytes": 69584
+  },
+  {
+    "source": "output/imagegen/item-skins/earring_phys.png",
+    "target": "godot/assets/item_skins/earring_phys.png",
+    "sha256": "d170898ca4db795c461bc7ef4f44446a56360dd2cd4db2ffcfef7676d72837b4",
+    "bytes": 52668
+  },
+  {
+    "source": "output/imagegen/item-skins/gloves_dark.png",
+    "target": "godot/assets/item_skins/gloves_dark.png",
+    "sha256": "c94f8670c5bc9ba38941885bcf2b37949f8787b4c70daf91bcefafe07fc50df8",
+    "bytes": 74838
+  },
+  {
+    "source": "output/imagegen/item-skins/gloves_earth.png",
+    "target": "godot/assets/item_skins/gloves_earth.png",
+    "sha256": "e58b16a34d358047724c6c538603bde7b060ae0f2f74a5df922990cc659a307e",
+    "bytes": 77350
+  },
+  {
+    "source": "output/imagegen/item-skins/gloves_holy.png",
+    "target": "godot/assets/item_skins/gloves_holy.png",
+    "sha256": "7ce2d61ca01f90e0822731900449d46395ae98bb2817ccd6e139b7a508f99e25",
+    "bytes": 86892
+  },
+  {
+    "source": "output/imagegen/item-skins/gloves_ice.png",
+    "target": "godot/assets/item_skins/gloves_ice.png",
+    "sha256": "6a556cc250a610df7b2d69ccc40631026d7be80c8cc1ad4619898052d9057fac",
+    "bytes": 87402
+  },
+  {
+    "source": "output/imagegen/item-skins/gloves_light.png",
+    "target": "godot/assets/item_skins/gloves_light.png",
+    "sha256": "2f612242a41c5973e1e21e3f78b95d074a5ad7b2fc507ba613aee2c2328b66da",
+    "bytes": 93511
+  },
+  {
+    "source": "output/imagegen/item-skins/gloves_phys.png",
+    "target": "godot/assets/item_skins/gloves_phys.png",
+    "sha256": "be33f90e9ab11d215fea0573efae7c0e848d2344e3a10ceebe56fb849cee404f",
+    "bytes": 69157
+  },
+  {
+    "source": "output/imagegen/item-skins/hammer_dark.png",
+    "target": "godot/assets/item_skins/hammer_dark.png",
+    "sha256": "cb625ec25787888c199ed9164f5896213a81276253a0f9e26f4c961d03ac8bbb",
+    "bytes": 88707
+  },
+  {
+    "source": "output/imagegen/item-skins/hammer_earth.png",
+    "target": "godot/assets/item_skins/hammer_earth.png",
+    "sha256": "a21eee0f938b2e0f0cc8c1f6f3ce421c47c2e575ff24fb0b25eb1176ea9fbb76",
+    "bytes": 53419
+  },
+  {
+    "source": "output/imagegen/item-skins/hammer_holy.png",
+    "target": "godot/assets/item_skins/hammer_holy.png",
+    "sha256": "2cca22583c61382c77d8fbfb6d501b730224cf4578cff313f92916cd1185959d",
+    "bytes": 47352
+  },
+  {
+    "source": "output/imagegen/item-skins/hammer_ice.png",
+    "target": "godot/assets/item_skins/hammer_ice.png",
+    "sha256": "ab38eca9cc56b0b7b71ef1c4287a3c9a514bba34afe82a91abfb33321e085403",
+    "bytes": 74529
+  },
+  {
+    "source": "output/imagegen/item-skins/hammer_light.png",
+    "target": "godot/assets/item_skins/hammer_light.png",
+    "sha256": "e93a0a69146ea55abc2a4fe67469110becfce0be5a5d0b61afba0eafa8f39567",
+    "bytes": 53250
+  },
+  {
+    "source": "output/imagegen/item-skins/hammer_phys.png",
+    "target": "godot/assets/item_skins/hammer_phys.png",
+    "sha256": "0c22468a027473c1fffe41aece2cafbed97c9dd5495c70facc1202e6d72f7a10",
+    "bytes": 56964
+  },
+  {
+    "source": "output/imagegen/item-skins/helmet_dark.png",
+    "target": "godot/assets/item_skins/helmet_dark.png",
+    "sha256": "b96d18fce09cdc9eb488503374c9c611ea4cc1120542960e39bfb9dd69c5d955",
+    "bytes": 73428
+  },
+  {
+    "source": "output/imagegen/item-skins/helmet_earth.png",
+    "target": "godot/assets/item_skins/helmet_earth.png",
+    "sha256": "2fb64a0eecaca76ae5d98bce4180a50494fe4f32e2c6b8e58c9d93e7cef68975",
+    "bytes": 77225
+  },
+  {
+    "source": "output/imagegen/item-skins/helmet_holy.png",
+    "target": "godot/assets/item_skins/helmet_holy.png",
+    "sha256": "ea3fbd956e71b174b4ae523ad9619662d4a7e1a0f9fc1d0f32ab33ea9171034e",
+    "bytes": 83629
+  },
+  {
+    "source": "output/imagegen/item-skins/helmet_ice.png",
+    "target": "godot/assets/item_skins/helmet_ice.png",
+    "sha256": "278753194e08ebfc227601e8e05647d7c70f950d9673ed1aa7bb0098df5dd7eb",
+    "bytes": 77200
+  },
+  {
+    "source": "output/imagegen/item-skins/helmet_light.png",
+    "target": "godot/assets/item_skins/helmet_light.png",
+    "sha256": "debc8c10cb4da64d8208d5d67d530dc0bf170f906d7bd63b272bcf4c042d24cc",
+    "bytes": 78108
+  },
+  {
+    "source": "output/imagegen/item-skins/helmet_phys.png",
+    "target": "godot/assets/item_skins/helmet_phys.png",
+    "sha256": "40659ba53d28d91767735be01dc0db4b91a48ffb65aa27dd8f4ea569f97aee90",
+    "bytes": 77044
+  },
+  {
+    "source": "output/imagegen/item-skins/mace_dark.png",
+    "target": "godot/assets/item_skins/mace_dark.png",
+    "sha256": "6b2494eeec9ac2396d6c5facb4b9375db575727e86d61e52f76ec435c9761cf6",
+    "bytes": 60006
+  },
+  {
+    "source": "output/imagegen/item-skins/mace_earth.png",
+    "target": "godot/assets/item_skins/mace_earth.png",
+    "sha256": "730a5eccd86361ff93d3c6109ebcf9201ce543028c96333213bdeecb4dc225c5",
+    "bytes": 59737
+  },
+  {
+    "source": "output/imagegen/item-skins/mace_holy.png",
+    "target": "godot/assets/item_skins/mace_holy.png",
+    "sha256": "de0efe856e6fa463c23608336146f214f096bdb4eb21d1183d70d9af4e121b7d",
+    "bytes": 46165
+  },
+  {
+    "source": "output/imagegen/item-skins/mace_ice.png",
+    "target": "godot/assets/item_skins/mace_ice.png",
+    "sha256": "2b869c6a76adc94debd4fad27330bdeadca24c04ba784e2bb5623184d580a1da",
+    "bytes": 94994
+  },
+  {
+    "source": "output/imagegen/item-skins/mace_light.png",
+    "target": "godot/assets/item_skins/mace_light.png",
+    "sha256": "71b68bf4d2173e6e09d50917c4f6603313cbdd162083db20758c65278dc6adda",
+    "bytes": 65139
+  },
+  {
+    "source": "output/imagegen/item-skins/mace_phys.png",
+    "target": "godot/assets/item_skins/mace_phys.png",
+    "sha256": "d4b0a0ea5dd7f6d8263e3f1a7dea4b629ec7c868a8ad7d085ff2312be0e3e611",
+    "bytes": 58452
+  },
+  {
+    "source": "output/imagegen/item-skins/necklace_dark.png",
+    "target": "godot/assets/item_skins/necklace_dark.png",
+    "sha256": "836d4db4047fb01a2eab5d592e0747f4f663f4ea60e47763e52a7bd10914c19b",
+    "bytes": 78297
+  },
+  {
+    "source": "output/imagegen/item-skins/necklace_earth.png",
+    "target": "godot/assets/item_skins/necklace_earth.png",
+    "sha256": "60e7df270d9a3ad04979a37f1ac688beb46a8308bccc3ee40717f9f9ca7d4cf4",
+    "bytes": 71859
+  },
+  {
+    "source": "output/imagegen/item-skins/necklace_holy.png",
+    "target": "godot/assets/item_skins/necklace_holy.png",
+    "sha256": "0f537e6d836ffc1b9090fd010b16c1eb025ec98bd7842835a94ba58ac435c35b",
+    "bytes": 74671
+  },
+  {
+    "source": "output/imagegen/item-skins/necklace_ice.png",
+    "target": "godot/assets/item_skins/necklace_ice.png",
+    "sha256": "5527103a3f8065a6efb2874bfb9846066391b183aa99e3f2d35d1797110e43af",
+    "bytes": 73732
+  },
+  {
+    "source": "output/imagegen/item-skins/necklace_light.png",
+    "target": "godot/assets/item_skins/necklace_light.png",
+    "sha256": "bbef3dc98bea84996661fd6291b93ede530023bf33c43c684170f1c1426aa155",
+    "bytes": 73934
+  },
+  {
+    "source": "output/imagegen/item-skins/necklace_phys.png",
+    "target": "godot/assets/item_skins/necklace_phys.png",
+    "sha256": "5ec6ac65e1172f796a34a6377284e220680ceec1d2964d4530c37fe3ac8b7c00",
+    "bytes": 69440
+  },
+  {
+    "source": "output/imagegen/item-skins/ossuary_phys.png",
+    "target": "godot/assets/item_skins/ossuary_phys.png",
+    "sha256": "0e126a175de5a56f5f229299b45a72a6434fe669769768914999d8aaa9fc3669",
+    "bytes": 16836
+  },
+  {
+    "source": "output/imagegen/item-skins/pants_dark.png",
+    "target": "godot/assets/item_skins/pants_dark.png",
+    "sha256": "bbbcd2ea132ca0046fca1f6422f426f6cd1ac0527fcfc7e926e7ba2a0e5eb3c7",
+    "bytes": 63126
+  },
+  {
+    "source": "output/imagegen/item-skins/pants_earth.png",
+    "target": "godot/assets/item_skins/pants_earth.png",
+    "sha256": "685fa9b9d28e9df409cf4fe5a9cf272daa6cdd6f50e08257c6bf7dd026cd0492",
+    "bytes": 65102
+  },
+  {
+    "source": "output/imagegen/item-skins/pants_holy.png",
+    "target": "godot/assets/item_skins/pants_holy.png",
+    "sha256": "07e9a86031d0192fb5b9a9e36bf9d4fae89a3d187558b338dd9063f652764712",
+    "bytes": 80942
+  },
+  {
+    "source": "output/imagegen/item-skins/pants_ice.png",
+    "target": "godot/assets/item_skins/pants_ice.png",
+    "sha256": "9f6e4bf425f6705ee2c40223cba90fdf531917f964442281e23b9baabb2c2adb",
+    "bytes": 75432
+  },
+  {
+    "source": "output/imagegen/item-skins/pants_light.png",
+    "target": "godot/assets/item_skins/pants_light.png",
+    "sha256": "6cf6fcb0b37d26d586a8c9d7b8252cd46ed48717596810dceeae27628963fe99",
+    "bytes": 77544
+  },
+  {
+    "source": "output/imagegen/item-skins/pants_phys.png",
+    "target": "godot/assets/item_skins/pants_phys.png",
+    "sha256": "7c61aa8d557d4e75af5a912f69f21355ad6f3968c419e6e04bb97d793d27e172",
+    "bytes": 71646
+  },
+  {
+    "source": "output/imagegen/item-skins/repeater_dark.png",
+    "target": "godot/assets/item_skins/repeater_dark.png",
+    "sha256": "7163bb0c094bfc50064386f0cdc0cbb91ffe3e239decb0e993e6b860fa63b0f5",
+    "bytes": 76078
+  },
+  {
+    "source": "output/imagegen/item-skins/repeater_earth.png",
+    "target": "godot/assets/item_skins/repeater_earth.png",
+    "sha256": "65c33e13fe8c79193fc871f38110ec865c83c48117eab9430c27f3acaf59a1dc",
+    "bytes": 65592
+  },
+  {
+    "source": "output/imagegen/item-skins/repeater_holy.png",
+    "target": "godot/assets/item_skins/repeater_holy.png",
+    "sha256": "9974bcf4be9a15e56899cc953ec2e8648b6b3421bbdf854a834ed33832407dee",
+    "bytes": 76997
+  },
+  {
+    "source": "output/imagegen/item-skins/repeater_ice.png",
+    "target": "godot/assets/item_skins/repeater_ice.png",
+    "sha256": "a02a30686edfe489cb18ba7d37b0485a47734df688ad5551ad64457cfc8ff4ad",
+    "bytes": 83217
+  },
+  {
+    "source": "output/imagegen/item-skins/repeater_light.png",
+    "target": "godot/assets/item_skins/repeater_light.png",
+    "sha256": "517d0d08e37ec05eda1ac067e858d997e7b4ba2585d91d02456646c246621cbd",
+    "bytes": 71092
+  },
+  {
+    "source": "output/imagegen/item-skins/repeater_phys.png",
+    "target": "godot/assets/item_skins/repeater_phys.png",
+    "sha256": "45c6abe36a59181da937e7b8b9e98e9b5bfc508c383f8adf67adf94afa96bdc6",
+    "bytes": 55467
+  },
+  {
+    "source": "output/imagegen/item-skins/ring_dark.png",
+    "target": "godot/assets/item_skins/ring_dark.png",
+    "sha256": "592293ae5b75c5be92d5aeb83925ec7afc546955ba8a9564a6a616f787d8c41a",
+    "bytes": 67857
+  },
+  {
+    "source": "output/imagegen/item-skins/ring_earth.png",
+    "target": "godot/assets/item_skins/ring_earth.png",
+    "sha256": "7051ce3fb571c4659504f325c99e1953f56f5bf4d96b7ea48864a6e4583182aa",
+    "bytes": 74713
+  },
+  {
+    "source": "output/imagegen/item-skins/ring_holy.png",
+    "target": "godot/assets/item_skins/ring_holy.png",
+    "sha256": "957cc1b656201761f60429c379c3f669b4aa9a843c77a36396adbbca1d4e35f6",
+    "bytes": 76231
+  },
+  {
+    "source": "output/imagegen/item-skins/ring_ice.png",
+    "target": "godot/assets/item_skins/ring_ice.png",
+    "sha256": "a8c890fc5944b87488aeabcf4a369c9965ece8c75851f0d66176497d88b57dc2",
+    "bytes": 71245
+  },
+  {
+    "source": "output/imagegen/item-skins/ring_light.png",
+    "target": "godot/assets/item_skins/ring_light.png",
+    "sha256": "5f8a903f3b09f1b483a6ea15cb9b2b62d03d310d52e8a03b0adf37295842b779",
+    "bytes": 73613
+  },
+  {
+    "source": "output/imagegen/item-skins/ring_phys.png",
+    "target": "godot/assets/item_skins/ring_phys.png",
+    "sha256": "2f3a05692db24dbd36562681921ac72613fd97e44c3210083a4324805355137e",
+    "bytes": 52346
+  },
+  {
+    "source": "output/imagegen/item-skins/shield_dark.png",
+    "target": "godot/assets/item_skins/shield_dark.png",
+    "sha256": "7b21a292005dc818d7eb713300a6d0424c476da7a87d784cbcff2ee83ea55888",
+    "bytes": 72293
+  },
+  {
+    "source": "output/imagegen/item-skins/shield_earth.png",
+    "target": "godot/assets/item_skins/shield_earth.png",
+    "sha256": "ee2163e90959e6a2871561091b3aac54ccd5868b9bdcd102e8f2a5df330a2b43",
+    "bytes": 77245
+  },
+  {
+    "source": "output/imagegen/item-skins/shield_holy.png",
+    "target": "godot/assets/item_skins/shield_holy.png",
+    "sha256": "ef77d7c237ddc12733f47086092a0cd30686221d697787db06c26ccded5c73da",
+    "bytes": 84609
+  },
+  {
+    "source": "output/imagegen/item-skins/shield_ice.png",
+    "target": "godot/assets/item_skins/shield_ice.png",
+    "sha256": "bbb8096cfd1bbe7d01f8454f5302ed4be76104b685e36d660818f2d9f64b00b3",
+    "bytes": 76435
+  },
+  {
+    "source": "output/imagegen/item-skins/shield_light.png",
+    "target": "godot/assets/item_skins/shield_light.png",
+    "sha256": "bdd01f60dbe02a3f95e2383d0a850e2cc17d7ff5c29e415407deae068b053223",
+    "bytes": 76846
+  },
+  {
+    "source": "output/imagegen/item-skins/shield_phys.png",
+    "target": "godot/assets/item_skins/shield_phys.png",
+    "sha256": "098aa45f00caecee3c405aa84698121269422920062171b33e6719fe82ce493f",
+    "bytes": 62490
+  },
+  {
+    "source": "output/imagegen/item-skins/spear_dark.png",
+    "target": "godot/assets/item_skins/spear_dark.png",
+    "sha256": "8df1a63cba47682666a65528a1d2cecb4493619a7a3f13e10cfc1245b10da80c",
+    "bytes": 48008
+  },
+  {
+    "source": "output/imagegen/item-skins/spear_earth.png",
+    "target": "godot/assets/item_skins/spear_earth.png",
+    "sha256": "d5e2a12f42c19181446e759d5a741c18d2a009e83c6583d9e3d2efac9b6d016a",
+    "bytes": 34524
+  },
+  {
+    "source": "output/imagegen/item-skins/spear_holy.png",
+    "target": "godot/assets/item_skins/spear_holy.png",
+    "sha256": "a94e1ec0a25ed2e04c92a3d3a5eb8c934e9025f887ec50cde251624e8c007152",
+    "bytes": 42006
+  },
+  {
+    "source": "output/imagegen/item-skins/spear_ice.png",
+    "target": "godot/assets/item_skins/spear_ice.png",
+    "sha256": "7723487bb65e2d6c0cdf7a9a2dac8ad58b75f1b1ffc076b5f14ffaa09112bcdf",
+    "bytes": 33575
+  },
+  {
+    "source": "output/imagegen/item-skins/spear_light.png",
+    "target": "godot/assets/item_skins/spear_light.png",
+    "sha256": "aef17e19a84c070382b8e3170611e6fb4de3fe4be9b66b1ff39dbc4dd9558d3d",
+    "bytes": 41710
+  },
+  {
+    "source": "output/imagegen/item-skins/spear_phys.png",
+    "target": "godot/assets/item_skins/spear_phys.png",
+    "sha256": "d17db298c8e6977a708e5d0a543a6548210c2ec557c11fbcc58c64ac1ee7c9b6",
+    "bytes": 40231
+  },
+  {
+    "source": "output/imagegen/item-skins/sword_dark.png",
+    "target": "godot/assets/item_skins/sword_dark.png",
+    "sha256": "28795b6c28353fc2f4519d00568b6d38abde0b2378e10d6e232538708a2ff6b3",
+    "bytes": 53722
+  },
+  {
+    "source": "output/imagegen/item-skins/sword_earth.png",
+    "target": "godot/assets/item_skins/sword_earth.png",
+    "sha256": "4790778124873b04813acf42c2491ee889f8ebce793fa13c057f8ab9589a2791",
+    "bytes": 43709
+  },
+  {
+    "source": "output/imagegen/item-skins/sword_holy.png",
+    "target": "godot/assets/item_skins/sword_holy.png",
+    "sha256": "39e805b3dec242736b915c132ab446b4ef034f4f678a8d1d4faa2965bc3330c8",
+    "bytes": 49782
+  },
+  {
+    "source": "output/imagegen/item-skins/sword_ice.png",
+    "target": "godot/assets/item_skins/sword_ice.png",
+    "sha256": "12339bc7f2a0f368e0dae9e57a3101c9ee6e2f80bafe9b1a65ef08c7c3298a9f",
+    "bytes": 47926
+  },
+  {
+    "source": "output/imagegen/item-skins/sword_light.png",
+    "target": "godot/assets/item_skins/sword_light.png",
+    "sha256": "e8bbcffd794656b718c0090c1ce04512554c07063f1a17db0fa564c133c1b9f1",
+    "bytes": 49593
+  },
+  {
+    "source": "output/imagegen/item-skins/sword_phys.png",
+    "target": "godot/assets/item_skins/sword_phys.png",
+    "sha256": "72f1b7a18ce9c7c51172e8ec8558480deda99b11dab2087e805c030f4a592faf",
+    "bytes": 419305
+  },
+  {
+    "source": "sfx/drop/drop_common.mp3",
+    "target": "godot/assets/sfx/drop/drop_common.mp3",
+    "sha256": "c95e4b1fb539f19da9a313455e4b0eb88b6878979218f351d83d82b6d34217e2",
+    "bytes": 8821
+  },
+  {
+    "source": "sfx/drop/drop_legend.mp3",
+    "target": "godot/assets/sfx/drop/drop_legend.mp3",
+    "sha256": "db5b2141d7a9f5b01df22a13f0437feb15505b36629aaf0788eda67d399b089a",
+    "bytes": 17180
+  },
+  {
+    "source": "sfx/drop/drop_rare.mp3",
+    "target": "godot/assets/sfx/drop/drop_rare.mp3",
+    "sha256": "01951ac38e5e9670a471cc15598b1116255ce15a21888b9b85a45486498fc8c3",
+    "bytes": 8821
+  },
+  {
+    "source": "sfx/pickup/pickup_item.mp3",
+    "target": "godot/assets/sfx/pickup/pickup_item.mp3",
+    "sha256": "b56353efaeacff2a27c88f704525efb52013762ae891f62fdf5ffcec23953fb4",
+    "bytes": 20175
+  },
+  {
+    "source": "sfx/pickup/pickup_rummage1.mp3",
+    "target": "godot/assets/sfx/pickup/pickup_rummage1.mp3",
+    "sha256": "63f6db1a8f44c4b7754ec6b1a8813fef6ccc938f467eb8fe91eb775a1d9f30f4",
+    "bytes": 7566
+  },
+  {
+    "source": "sfx/pickup/pickup_rummage2.mp3",
+    "target": "godot/assets/sfx/pickup/pickup_rummage2.mp3",
+    "sha256": "481e66633a87e7829c5d90e00371b19be893bf5a93aaa939a8d822222dd05328",
+    "bytes": 7566
+  },
+  {
+    "source": "sfx/pickup/pickup_rummage3.mp3",
+    "target": "godot/assets/sfx/pickup/pickup_rummage3.mp3",
+    "sha256": "cf9c863839788ecb9d9778e7e3e5c8a0d183cda8998b2106ded99cdec6cc3833",
+    "bytes": 7566
+  },
+  {
+    "source": "sfx/pickup/pickup_rummage4.mp3",
+    "target": "godot/assets/sfx/pickup/pickup_rummage4.mp3",
+    "sha256": "ed51c91358bcf00e34bc7ff8579c68fe1394876123e17cac3311965443f40caa",
+    "bytes": 7566
+  },
+  {
+    "source": "sfx/pickup/pickup_rummage5.mp3",
+    "target": "godot/assets/sfx/pickup/pickup_rummage5.mp3",
+    "sha256": "e1e4c27188acfa3c844e69239e3db9b01e586ff9c39a43f7c8565f081a8fff91",
+    "bytes": 7566
+  }
+]
