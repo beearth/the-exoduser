@@ -1,3 +1,13 @@
+## 2026-10-20 TRACE-BOSS-CH4 원본 추적·BC4 구현 지시서
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준 / 범위 | fetch한 origin/main6d987cb8 기반 sparse worktree. CH4 추적 문서1개와 이 절만. 코드·테스트·공용 Main/State/hurtE·저장·원본·R 변경0 |
+| 원본 | game G9982–9990/10009–10010/16692. 7Set39..45·union45=공유39+신규6,콤보54=공유46+신규8. wallPush+gravityWell ordinal56은 기존 기술의 최초 장내 조합 |
+| 정적 확인 | 원문 선언59move/68combo/5phase·HP42표본·35phase후보수·35meteor개수·45start/state·55식별자/7이름·docs대조12행. burstCounter idx60의59CD배열 밖 동작은 원문대로 기록 |
+| 의존 / HOLD | main에 CH2 catalog·bridge 없음, BC3-01은56353bdb BLOCKED·미구현. BC4-01은 CH2/CH3 provider 정식 인수 전 BLOCKED. BC02 색상·BC08 guard·실counter/HP0/Main 배선은 통합 요청만 |
+| 실행 / 제출 | Godot·import·게임·실창·테스트 실행0,정적 조사를 전투 PASS로 합산0. [CH4 추적·지시서](engine/FDG_SOURCE_TRACE_BOSS_CH4_20261020.md). 원로그 ~/exoduser-wt/_out/trace-boss-ch4/. 자기 branch push·원격SHA·DONE 후 자기 worktree 제거 |
+
 ## 2026-10-20 QA-007 테스트 Windows 이식성
 
 | 항목 | 구현·검수 근거 |
