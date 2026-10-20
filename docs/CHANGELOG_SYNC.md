@@ -1,3 +1,13 @@
+## 2026-10-20 TRACE-BOSS-CH2 원본 추적·이식 설계
+
+| 항목 | 현재 정확 계약 |
+|---|---|
+| 기준·범위 | origin/main `299e48ac4dfbb7cedd313e791173c0d8ff20cb0a`. 새 추적문서 1개+이 절만 변경. game.html·Godot·테스트·공용/타 담당 파일·저장 형식·바이너리0줄, R 불변 |
+| 전수 추적 | 2장 si4~9/6이름, 최종Set27~32·union32(1장공통22/추가10), 전체11필드·유효combo38(공통25/추가13)·6×5후보수. HP/phase/상태·지연큐·2D/3D·HUD/음향·즉시/180f부활·최종출구의 원본행 추적 |
+| 공통·결정 | BC01~07 원격모듈/API·보고서 확인, 기준main에는 미포함. BC07은 마감 재조회에서 확보(근접6state/공통3기술 후보). BC01 읽기 재사용 catalog를 1번 구현지시서로 제안, BC02~07 chapter데이터 수용·State/Main/World/hurtE 실연결은 통합결정 HOLD. 공통식 복제·guard우회 금지 |
+| 검토·한계 | 정적 선언/행·문서 링크·수치·변경범위만 대조. Godot·게임·서버·신규/회귀테스트 실행0, 화면·성능·현재2장도달·PC동기화 미확인. 테스트PASS·이식완료 주장 없음 |
+| 산출물 | [2장 보스 추적](engine/FDG_SOURCE_TRACE_BOSS_CH2_20261020.md). 원로그 `~/exoduser-wt/_out/trace-boss-ch2/`, push·remoteSHA 일치·외부DONE 후 자기 worktree 제거 |
+
 ## 2026-10-20 LOOK-001 룩 4안 비교 자료 준비
 
 | id / 적용 위치 | 현재 정확 계약 |
