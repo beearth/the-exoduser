@@ -44,6 +44,9 @@ func _run() -> void:
 	# QA-003: AudioServer mix/main-thread 정리가 끝날 기회를 준 뒤 종료한다(QA-002와 동일).
 	for _frame in range(12):
 		await process_frame
+	var _qa004_exit_after_ms: int = Time.get_ticks_msec() + 200
+	while Time.get_ticks_msec() < _qa004_exit_after_ms:
+		await process_frame
 	print("P2001I_RESULT ", JSON.stringify({"groups": rows, "assertions": assertions,
 		"failures": failures, "skipped": skipped, "observations": observations,
 		"fallback_paths_used": false}))

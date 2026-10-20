@@ -1,3 +1,17 @@
+## 2026-10-20 QA-004 레슨 보관 적·자식 종료 해제
+
+| 항목 | 변경·검수 근거 |
+| --- | --- |
+| 기준 / 의존 | fetch main `284d7faf49295b2f5061937a47ce96038032ed3c`, 사용자 허용 QA-003 `41279ac0fbe625164c33e51f709a9b98bf6bee4d`에서 codex/qa-004-20261020 분기. QA-003 하니스 선행 의존 |
+| 제품 수정 | 소유 인계된 native_parry_lesson_flow.gd에 lifecycle15줄만 추가. EXIT_TREE/PREDELETE 때 보관 배열부터 비우고 유효·부모없는 적만free→자식 자동해제. 중복/기해제 안전·다른 부모에 복원된 적 보존. 원래 진행/finish/allows/input/QE bytes 그대로·공용6파일0줄 |
+| 원인 분리 | QA-003 actual UI의 적5+자식15/17리소스 미해제 해결. 제품만 수정한 UI115/0에서18리소스→음성1·66객체→음성2로 감소. 음성은 하니스 종결 대기로 별도 처리 |
+| 수명 회귀 | 새 actual lesson script+Node fixture5그룹98검사: 수정전86실패/exit1→수정후98/0·ERROR0·ObjectDB0·개별leak0·리소스0. Tree exit/free/pre-Tree/queue_free/중복·복원소유 검사 |
+| 지정·기본 회귀 | UI115/0·H124/0·J21/0·K32/0·L66/0·QE155/0·contracts5군/실패0·factory3군/실패0·source_lesson30/0, 추가I3회18/0. 최종13실행 모두exit0·ERROR0·ObjectDB0·leak0·리소스0. Camera 보간 WARNING은 보존 |
+| 검사 보존 | J/K/L/QE 총수·그룹별 수 baseline 동일, UI115 동일. H125→124는 magic1→0으로 기존 조건부 mods단정1 차이(원본 조건/RNG/seed 불변), 분모 일치로 보고하지 않음 |
+| 종료 하니스 | H/J/K/UI에12프레임+monotonic200ms 대기6줄, inherited I에는200ms3줄만 추가. 첫 I는12프레임 뒤 음성 ERROR1이 남아 실패 보존. assertion/임계값/group/skip 약화0·제품 오디오 조작0 |
+| 환경·보호 | full checkout 디스크부족 exit128 후 Git 자동정리, 동일 branch/path sparse checkout으로 복구(다른WT/사용자데이터 삭제0). Godot 전pgrep·2이상이면30초대기·파일상수 격리·실행후override0byte·R보존 |
+| 상세 | [QA-004 보고서](engine/orders/reports/qa-004_REPORT.md), 원로그·count/hash 비교·실패/중간 관측·DONE.txt `~/exoduser-wt/_out/qa-004/`. 실제 종료 수명/지정회귀 범위이며 레슨 단계·입력 정책 확장0 |
+
 ## 2026-10-20 QA-003 종료 리소스 소유자 진단·인트로 하니스 정리
 
 | 항목 | 변경·검수 근거 |
