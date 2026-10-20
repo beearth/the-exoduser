@@ -54444,3 +54444,9 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 | 환경·미완 | 원앱4.7.2 import1회 asset[DONE] 후 전역 editor_settings 저장 차단ERROR/TERM−15 보존. 추가import·전역권한변경0. 실제 사용자 save/app_userdata 읽기·복사0. C처치 hook/소환굴확정 후 분모init·FB전투/후속SFX·펫/실창1x·전체게임 인수 미완. |
 | 정상 보존 | 첫commit은 필수변경로그 누락으로docs-sync-check가거부, 우회없이본append와함께정상체크포인트. 타인stage/R제품/main병합0. |
 | 상세 | [현행 원본행·수치·원로그](engine/FDG_P3_003_REGIONS_20261020.md) · [검수대기 보고서](engine/orders/reports/P3-003_REPORT.md). 기존 P2 미이식 기록은당시이력으로보존. |
+
+# 2026-10-20 P2-006a PC 드랍·줍기 부분 이식
+
+- `native_world_drops.gd` 신규 어댑터와 main 시작 hook 6줄, state 런타임 드랍 식별·가방 반입 연결. 스킨·고유 누끼·ADD 빔·R 프레스/9틱 홀드·가득 참·원본 SFX를 이식했다. 게임 설계 수치·Q/E·레슨·세이브 형식은 변경하지 않았다.
+- 원본 에셋 189개 SHA-256 동일. 17+18+39=74 assertions/0 failures, 실제 창의 자연 처치 후 일반 드랍 viewport 1920×1080 보존. 수동 R 입력/OS 창 캡처 권한은 거부돼 미확인이다.
+- 유골 도감/첫 유골함·full applyStats·인벤 창/정렬/영구저장은 미이식. 유물·소켓석은 원본 즉시 지급 그대로이며 이전 인수 보고서의 ‘바닥 연결 필요’ 추정은 정정한다. 상세: `docs/engine/orders/reports/P2-006a_REPORT.md`.
