@@ -1,5 +1,7 @@
 # FDG P2-005c — 가시덫(1)·회복의 영역(F) 발동 + hurtE DOT 확장 (2026-10-20)
 
+> 2026-10-21 DEMO11-16 현재 연결 갱신: 현재 spikeTrap은 _cdRed가 반영된 쿨과 단일 비용 commit을 쓴다. holyDome 쿨1800/비용0은 유지하며 HUD는 실제 배정 슬롯에서 같은 쿨 owner를 읽는다. 존/리젠/피해 경로 변경은 없다. 아래는 당시 인수 이력이다. [현재 계약](DEMO11_SKILL_DISPATCH_20261021.md).
+
 작업 폴더 `G:\exoduser-wt\p2-002a-hud`, 브랜치 `claude/p2-005c-skills-20261020`. 원본 근거는 전부 `G:\exoduser\game.html`(읽기 전용) 행 번호.
 
 ## 1. P2-005b 지적 2건 반영

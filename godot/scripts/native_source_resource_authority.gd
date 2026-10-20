@@ -182,6 +182,22 @@ func commit_native_level_up_heal(owner: Node) -> Dictionary:
 # P2-001e — initStage 진입 자원 풀충전(game.html:31567): P.hp=P.mhp; P.st=P.mst;
 # P.mp=P.mmp. hp/st=플레이어 노드, mp=이 authority 소유(_owned) — level_up_heal(155)과
 # 동일 소유 경로. 쉴드(P.shield=P.mshield)는 state의 P dict 소유라 state 쪽에서 처리.
+# DEMO11-16: validate both resources before either write; no events/callbacks inside.
+func commit_native_skill_dispatch_spend(owner: Node, st_cost: float, mp_cost: float) -> Dictionary:
+	if not is_native_source_resources_ready() or _committing or get_tree().paused \
+		or not is_instance_valid(owner) or owner != _player.get_parent() \
+		or owner.get("source_resources") != self or owner.get("world") != _world \
+		or not is_finite(st_cost) or not is_finite(mp_cost) or st_cost < 0 or mp_cost < 0 \
+		or _player.stamina < st_cost or float(_owned["mp"]) < mp_cost:
+		return {"accepted":false,"reason":"skill_dispatch_resource_gate"}
+	_committing = true
+	_player.stamina -= st_cost
+	_owned["mp"] = float(_owned["mp"]) - mp_cost
+	_last_source_write = {"phase":"native_skill_dispatch_cost","st_spent":st_cost,"mp_spent":mp_cost}
+	_committing = false
+	return {"accepted":true,"st_spent":st_cost,"mp_spent":mp_cost}
+
+
 # P2-005b — 스킬 시전 ST 소비 (useStPct 31991: P.st -= stCost). 호출측이 게이트
 # (P.st ≥ cost) 선검사 — 부족 시 이 API에 오지 않음(원본 _skOk 흐름 동일).
 func commit_native_skill_stamina_spend(owner: Node, amount: float) -> Dictionary:

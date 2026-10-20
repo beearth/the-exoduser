@@ -476,6 +476,16 @@ func apply_native_stage_entry_refill(owner: Node) -> Dictionary:
 # "skillSlots"/"ultSlot" (원본 전역 — 소유 위치 기록). 스킬 발동 로직은 범위 밖:
 # 지급·표시 전용이며 미구현 스킬 키는 기존대로 무반응(player space_rage_slot_not_connected).
 # P2-005b — 스킬 시전 악의 소비 (46454: G.mats -= _malCost(20)=10). 게이트는 호출측.
+# DEMO11-16: one live cost entry. Material validation precedes resource writes.
+func commit_native_skill_dispatch_cost(owner: Node, st_cost: float, mp_cost: float, mats_cost: int) -> Dictionary:
+	if not _feel_owner_current(owner) or mats_cost < 0 or int(_feel_num(_g.get("mats"))) < mats_cost:
+		return {"accepted":false,"reason":"skill_dispatch_material_or_owner_gate"}
+	var spent: Dictionary = _resources.commit_native_skill_dispatch_spend(owner,st_cost,mp_cost)
+	if spent.get("accepted") != true: return spent
+	_g["mats"] = int(_feel_num(_g.get("mats"))) - mats_cost
+	return {"accepted":true,"st_spent":st_cost,"mp_spent":mp_cost,"mats_spent":mats_cost}
+
+
 func apply_native_skill_cast_cost(owner: Node, mats_cost: int) -> Dictionary:
 	if not _feel_owner_current(owner) or mats_cost < 0:
 		return {"applied": false, "reason": "actual_skill_cost_owner_not_current"}
