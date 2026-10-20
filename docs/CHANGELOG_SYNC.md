@@ -1,4 +1,24 @@
-<<<<<<< HEAD
+## 2026-10-20 BC2-07 shieldBash2 독립 wind/dash/contact 계산
+
+| 항목 | 현재 정확 계약 |
+|---|---|
+| 기준·의존 | 최신main3886513f5+인수BC2-06 ef665f40 정상mergebaa75b16. chapter/context·BC07 packet/contact recipe 재사용, 기존제품/테스트0줄 |
+| 원본 | G41337–41351,wind facing추적→active18·locked9sp/단일XY·post-move strict접촉. isPWin먼저·charge도contact30·timeout25·poise25/KB10·stun45/min.5/max기존 보존 |
+| 검증 | 원문1,494상황/5,695event. 신규30,191/0·기존BC01~08 131,655/0·BC2-01~06포함332,010/0. 기존수·조건·기대값무수정, exit0/ERROR0/skip0 |
+| 검출·보호 | 격리8결함검출·인자누락2종거절은통과합계제외. 공용6·타담당·원본·저장·형식·바이너리0. 실제투사체/hurtP/패링/Main/State/KB/스턴연결HOLD,화면/전투/PC미확인 |
+| 제출 | [BC2-07 보고서](engine/orders/reports/bc2-07_REPORT.md), 원로그~/exoduser-wt/_out/bc2-07/. node-bin/source-game·UTF8자기fixture·매Godot pgrep/30초gate·각격리명/override종료0byte. 자기branch push/원격일치/DONE후자기WT제거 |
+
+## 2026-10-20 BC2-06 fanWave 독립 상태 계산
+
+| 항목 | 현재 정확 계약 |
+|---|---|
+| 기준·의존 | 최신main249c26fad+인수BC2-05 5957ced3 정상merge7073a6af, rebase/reset0. chapter/context·BC07 command/RNG/parry recipe 재사용, 기존제품/테스트0줄 |
+| 원본 | G40571–40605,고정lock·strict90도/pd<R·이중ToInt32·contact전체readback·ordered shQuery alias KB12·fx20·25입자·bossRec40. 실제피해/패링/적KB/Main/렌더연결HOLD |
+| 검증 | 원문647상황/46,822event/32,079RNG. 신규46,009/0·기존BC01~08 131,655/0·BC2-01~05포함286,001/0. 기존수·조건·기대값무수정, 최종exit0/ERROR0/skip0 |
+| 실패·보호 | 신규하니스배열타입338실패보존후동일검사수0. 격리7결함검출·인자누락2종거절은통과합계제외. 공용6·타담당·원본·저장·형식·바이너리0. 실제화면/전투/PC미확인 |
+| 제출 | [BC2-06 보고서](engine/orders/reports/bc2-06_REPORT.md), 원로그~/exoduser-wt/_out/bc2-06/. node-bin/source-game·UTF-8자기fixture·매Godot pgrep/30초gate·격리override종료0byte. 자기branch push/원격일치/DONE후자기WT제거 |
+
+
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -173,7 +193,7 @@
 | 정적 확인 | 원문 선언59move/68combo/5phase·HP42표본·35phase후보수·35meteor개수·45start/state·55식별자/7이름·docs대조12행. burstCounter idx60의59CD배열 밖 동작은 원문대로 기록 |
 | 의존 / HOLD | main에 CH2 catalog·bridge 없음, BC3-01은56353bdb BLOCKED·미구현. BC4-01은 CH2/CH3 provider 정식 인수 전 BLOCKED. BC02 색상·BC08 guard·실counter/HP0/Main 배선은 통합 요청만 |
 | 실행 / 제출 | Godot·import·게임·실창·테스트 실행0,정적 조사를 전투 PASS로 합산0. [CH4 추적·지시서](engine/FDG_SOURCE_TRACE_BOSS_CH4_20261020.md). 원로그 ~/exoduser-wt/_out/trace-boss-ch4/. 자기 branch push·원격SHA·DONE 후 자기 worktree 제거 |
-=======
+
 ## 2026-10-20 TRACE-MAPS-CH4 4장 7에리어 원본 추적·구현 지시서
 
 | 항목 | 추적·검수 근거 |
@@ -183,7 +203,6 @@
 | 검산 / 의존 | 고정 Git 원문 AST/발췌 VM과 전체 재현94항목 차이0. CH4 등록7·pool31·원화byte·굴94 전수 부록. CH2-02는 main 존재, CH3-01 stage10은 원격 fcd7fcaa. 단일 exporter 0/1/4+observer 및 인수된10 보존 지시 |
 | 표현 / 후속 | 웹 맵1:1 복제가 아닌 PoE2·No Rest 목표의 깊이/생동감/부분 조명 확장 별도 절. 게임플레이/충돌·출구·스폰·지역은 불변. CH4-01 상세 지시서와18단위·공용 접점·docs 차이 표. 실제 배치/종주/시각/성능은 미확인 |
 | 자료 / 제출 | [4장 추적·지시서](engine/FDG_SOURCE_TRACE_MAPS_CH4_20261020.md). 원로그 ~/exoduser-wt/_out/trace-maps-ch4/. 정상 훅·경로 지정 stage·자기 branch push/원격SHA→DONE→자기 WT 제거, main push/강제 push/reset0 |
->>>>>>> d4c783bc
 =======
 ## 2026-10-20 p2001i-diag — 종료 오디오 수명 진단·기준 main 비재현
 
