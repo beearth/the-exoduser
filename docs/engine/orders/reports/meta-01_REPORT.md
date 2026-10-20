@@ -95,3 +95,13 @@ P1002G_RESULT는 `assertions:220`, `failures:1`, `halt_count:6`, `skipped:[]`, e
 공용 State 연결·Main 실제999→1000/다중carry/부분거부 fixture·자연플레이는 미구현/미검증이다. 원본 초기15, XP 전처리, SP/AP, 자원 회복, 초월 gate, UI, 저장 형식은 그대로 보존한다. 일반/데모의 game.mats 저장 차이를 합치거나 새 serializer를 만들지 않았다. WORK_BOARD는 공용0줄 지시에 따라 변경하지 않고 이 보고서로 총괄에 인수 요청한다.
 
 최종 커밋·원격 ref·R 보존 대조 결과는 마감 기록에서 확정하고 `~/exoduser-wt/_out/meta-01/DONE.txt`에 전체 SHA와 실제 수치를 기록한다. 자기 `codex/meta-01-20261020`만 push하며 main push·force·reset·병합은 하지 않는다.
+
+## 커밋 인수 기록
+
+| 항목 | 확인 |
+|---|---|
+| 구현·검수 체크포인트 SHA | `510404cb6373b92ce887c480d51e41fbca9d802b` — 새 모듈·UID·테스트·보고서·CHANGELOG의5경로만 포함 |
+| pre-commit | `core.hooksPath=.githooks`, 정상 훅 실행·docs-sync 통과. `ALLOW_MISSING_DOCS`를 제거한 환경에서 커밋했으며 우회0. 원근거 `_out/meta-01/commit-implementation.trace.log` |
+| 독립 결과표 검토 | 별도 읽기 전용 독자가16행 모두 `regression-results.json`과 숫자·exit·known 실패·skip을 대조해 차이0 확인. 재실행·검사 수에 더하지 않음 |
+| R 검수 종료 시점 | 시작과 동일 branch `codex/mac-live-play-time-main-20261017`, HEAD `dd49171c5b88e211575a41f185395d6c0a14b184`, tracked INDEX/WORK 변경0 |
+| 최종 제출 식별 | 이 SHA 기록을 추가하는 문서 후속 커밋을 포함한 최종 HEAD는 `DONE.txt`에 전체 SHA로 기록하고 자기 원격 ref와 대조한다. 구현 체크포인트와 최종 문서 HEAD를 구분 |
