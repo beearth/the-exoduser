@@ -1,3 +1,9 @@
+## 2026-10-21 DEMO11-47h — 격리 headless 자동 종주 진단
+
+- 미병합 데모 단위를 정상 merge한 통합 브랜치에 18단계 자동 입력 하니스·재실행 runner·결과 계약 검증을 추가. 제품 독립 수정 0, 통합 후 제품 해시 동일.
+- 실제 UI/Store/장착/성장/clear 소비자 검증과 미지원 MAP11·PC 전투/부활·headless clock 경계를 PASS/NOT_READY/FAIL로 구분. checkpoint 경유는 전체 E2E PASS 금지, fake PASS/격리/장착 readback 등 결함 주입 5/0.
+- 단계별 120Hz callback 및 frame interval p95/최대 기록, 동시 Godot 조건·명시적 저장과 자동 저장 차이·최소 로비 복귀 한계를 [보고서](engine/orders/reports/demo11-47h_REPORT.md)에 기록. 첫 줄 1회 실행 명령, 원로그는 _out/demo11-47h/.
+
 ## 2026-10-21 DEMO11-perf-enemy — 다수 적 진단·동치 최적화
 
 - 요청4커밋99e6fe7b/d931ebe2/c6d19973/9fd31a64를 순차 merge, EOF 등록/API 모두 보존. Mac World 기하 질의·Flesh 분리 계산만 최적화, PC 보호/State/자원 권위 byte 동일.
