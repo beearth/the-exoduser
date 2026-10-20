@@ -6,12 +6,23 @@ const TYPES=[0,1,4,5,6]
 const FACTORY=preload("res://scripts/enemy_factory.gd")
 const BUILD=preload("res://scripts/native_demo11_etype_a_constructor.gd")
 var _templates: Dictionary={}
+var _resident_textures: Dictionary={}
 var _warning_phase: Node
 var _next_order:=7000
 var _main: WeakRef
 var _busy:=false
 var _used: Dictionary={}
-func configure(main: Node) -> void:_main=weakref(main)
+func configure(main: Node) -> void:
+	_main=weakref(main)
+	# Constructor data and packaged actor art are resident before the scheduler.
+	for etype in TYPES:
+		var path: String=FACTORY.DEMO11_ETYPE_A_REGISTRATIONS[etype].template
+		_templates[etype]=JSON.parse_string(FileAccess.get_file_as_string(path)).runtime
+		var animation: Dictionary=_templates[etype].animation
+		for group in ["base_textures","walk_textures"]:
+			for texture_path in animation.get(group,{}).values():
+				if not _resident_textures.has(texture_path):_resident_textures[texture_path]=load(texture_path)
+
 func support(etype: int) -> Dictionary:
 	if etype not in TYPES:return {"ready":false,"reason":"outside_group_a"}
 	return {"ready":FACTORY.DEMO11_ETYPE_A_REGISTRATIONS.has(etype),"scope":"source_stage0_normal_undefined_element","full_hurtE_ready":false}
@@ -60,9 +71,7 @@ func spawn_selected(owner: Node, group_id: String, source: Dictionary) -> Dictio
 	if not p is Dictionary or not _number(p.get("lv")):_busy=false;return {"ready":false,"reason":"current_level_unavailable"}
 	var opt: Variant=main.source_initialization_services.read_current_options()
 	if not opt is Dictionary or not _number(opt.get("diff")) or float(opt.diff)!=float(int(opt.diff)) or opt.diff<0 or opt.diff>10:_busy=false;return {"ready":false,"reason":"current_difficulty_unavailable"}
-	var item: Dictionary=FACTORY.DEMO11_ETYPE_A_REGISTRATIONS[etype]
-	if not _templates.has(etype):_templates[etype]=JSON.parse_string(FileAccess.get_file_as_string(item.template)).runtime
-	if not _templates.has(0):_templates[0]=JSON.parse_string(FileAccess.get_file_as_string(FACTORY.DEMO11_ETYPE_A_REGISTRATIONS[0].template)).runtime
+	if not _templates.has(etype) or not _templates.has(0):_busy=false;return {"ready":false,"reason":"constructor_resources_not_prepared"}
 	var runtime: Dictionary=BUILD.build(_templates[etype],_templates[0].projectile,etype,site.position,p.lv,float(g.get("_stageDiffOff",0)),source,"demo11-a-"+token,_next_order,int(opt.diff))
 	_next_order+=1
 	_used[token]=true

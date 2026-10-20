@@ -11,6 +11,11 @@ def validate_result(result):
  expected='FAIL' if counts['FAIL'] else ('NOT_READY' if counts['NOT_READY'] or checkpoints else 'PASS')
  if result.get('overall')!=expected:errors.append('overall_claim')
  if result.get('continuous_E2E')!=(expected=='PASS' and not checkpoints):errors.append('continuous_claim')
+ by_id={r.get("id"):r for r in rows}
+ for name in ["boss_defeat_signal","clear","demo_end","lobby_return"]:
+  row=by_id.get(name,{})
+  if by_id.get("bossroom_gate",{}).get("status")=="NOT_READY":
+   if row.get("status")!="NOT_READY" or "bossroom_gate" not in row.get("blocked_by",[]):errors.append(name+":gate_dependency")
  for row in rows:
   if row.get('status')!='PASS':continue
   e=row.get('evidence',{});name=row.get('id')

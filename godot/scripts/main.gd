@@ -3535,6 +3535,9 @@ func _install_native_map11_combat_owners() -> void:
 	if not bind_native_demo_anglers(world.map11_provider,world.map11_provider.fieldboss_markers()):return
 	native_demo_encounter.configure(self,regions)
 	if not native_map11.bind_gate_owner(native_demo_encounter):return
+	# Prepare group-A constructor resources before the first live scheduler tick.
+	_native_etype_a_spawn=preload("res://scripts/native_demo11_etype_a_spawn.gd").new()
+	_native_etype_a_spawn.configure(self)
 	bind_native_natural_enemy_base(_read_native_map11_natural_context,true)
 
 func _read_native_map11_natural_context() -> Dictionary:

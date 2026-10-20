@@ -1,3 +1,9 @@
+## 2026-10-21 DEMO11-47l — E2E 기능 회귀·정직한 PC 의존 구분
+
+- 47k 위 별도 branch. actual natural target ID/복수hole 방문, 실제 CD/iframe 이후 hurtP로 enemy_kill·auto_potion 복구. gate 뒤 blocked_by; 47j의 직접 defeat contract 입력은 복구하지 않음.
+- physical carrier 동일 텍스처 선로딩, MAP11 A 생성자자료 부팅 준비, family scratch/원clock 및 opt-in 계측, drop음향 IO/bus deferred. PC 전투/readonly모듈/맵 룩·조명/번역 무수정.
+- E2E1회12 PASS/6 NOT_READY/0 FAIL·ERROR0. physics14.035→21.343ms로8.333ms 목표 미달; 최종 재실행0. 추가 기존 검사 실패/오류도 [상세 보고](engine/DEMO11_47L_REGRESSION_20261021.md)에 보존. 전체 완료 주장0.
+
 ## 2026-10-21 DEMO11-INTEG 보충: 최신 적 기반·24b·MAP11-10
 
 - bb3ced49→049cc1aa→e8888106 정상merge, 기존기능 보존·F공통화/문지기29 경계/장비cache/맵seam 인수. 번역CRLF 보존.

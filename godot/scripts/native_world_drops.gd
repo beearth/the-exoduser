@@ -267,6 +267,11 @@ func _sound_profile(pos: Vector2, spatial: bool) -> Dictionary:
 
 
 func _play_at(path: String, pos: Vector2, pitch: float, volume_db: float, spatial := true) -> void:
+	# Resource IO and AudioServer bus mutation must not block a physics callback.
+	_play_deferred.call_deferred(path,pos,pitch,volume_db,spatial)
+
+func _play_deferred(path: String, pos: Vector2, pitch: float, volume_db: float, spatial: bool) -> void:
+	if not _owners_live():return
 	if not ResourceLoader.exists(path):
 		return
 	var settings: Dictionary = _main.read_native_attack_audio_settings()

@@ -51,7 +51,12 @@ func done(status: String,reason: String="",evidence: Dictionary={}) -> void:
  if not active.has("action_us"):action_end()
  active.evidence.merge(evidence,true)
  await settle()
- var row: Dictionary={"id":active.id,"status":status,"reason":reason,"checkpoint":active.checkpoint,"command_span_ms":active.action_us/1000.0,"wall_ms":(Time.get_ticks_usec()-active.start_us)/1000.0,"physics_callback":stats(active.physics_samples),"process_frame_interval":stats(active.frame_samples),"evidence":active.evidence}
+ var blocked: Array=[]
+ if status=="NOT_READY":
+  if active.id=="revival_interface":blocked=["PCI-01"]
+  elif active.id=="bossroom_gate":blocked=["PC_fieldboss_HP_final_readback"]
+  elif active.id in ["boss_defeat_signal","clear","demo_end","lobby_return"]:blocked=["bossroom_gate","PC_fieldboss_HP_final_readback","boss_source_updateE_prefix","PCI-11"]
+ var row: Dictionary={"blocked_by":blocked,"id":active.id,"status":status,"reason":reason,"checkpoint":active.checkpoint,"command_span_ms":active.action_us/1000.0,"wall_ms":(Time.get_ticks_usec()-active.start_us)/1000.0,"physics_callback":stats(active.physics_samples),"process_frame_interval":stats(active.frame_samples),"evidence":active.evidence}
  rows.append(row);active={};print("E2E_STAGE ",JSON.stringify(row))
 func before_physics() -> void:physics_start=Time.get_ticks_usec()
 func after_physics() -> void:
@@ -68,7 +73,7 @@ func wait_wall(ms: int) -> void:
  while Time.get_ticks_msec()<until:await process_frame
 func on_event(kind: String,packet: Dictionary) -> void:
  if kind in ["native_hurte","native_hurte_halt","player_died","enemy_killed","attack_parameters_rejected","active_lmb_rejected"] and event_rows.size()<256:
-  event_rows.append({"kind":kind,"reason":packet.get("reason",""),"ok":packet.get("ok"),"id":packet.get("id")})
+  event_rows.append({"kind":kind,"reason":packet.get("reason",""),"ok":packet.get("ok"),"id":packet.get("enemy_id",packet.get("id"))})
 func refresh_readback(receipt: Dictionary) -> bool:
  if receipt.get("status")!="READY" or receipt.get("committed")!=true:return false
  var fields: Variant=receipt.get("committed_fields")
@@ -121,6 +126,8 @@ func run() -> void:
   await done("FAIL","character metadata did not hand off to Main");await fail_remaining("Main_missing");finish();return
  root.mode=Window.MODE_WINDOWED;root.show() # Main video setup can minimize the logical headless root.
  main.player.telemetry_event.connect(on_event)
+ main.native_demo_anglers.profile_enabled=true
+ main.native_natural_enemies.profile_enabled=true
  main.native_demo_boss_defeated.connect(func(stage_index: int):
   if stage_index==0:boss_signal_count+=1)
  var created: Dictionary=store.read_json("hellsave_demo_0")
@@ -167,15 +174,20 @@ func run() -> void:
  await done("PASS" if field_ready else "NOT_READY","" if field_ready else "MAP11_provider_absent",{"stage":g.get("stage"),"World_ready":main.world.ready_for_player,"actual_provider":field_ready,"spawn_adapter_bound":adapter!=null,"fixture_provider_created":false})
  begin("enemy_kill")
  var target: Node
- var spawn_deadline:=Time.get_ticks_msec()+25000
+ var spawn_started:=Time.get_ticks_msec()
+ var spawn_deadline:=spawn_started+35000
+ var hole_anchors: Array=[]
  # Placement at a provider hole only; scheduler owns RNG/timers/etype/admission.
  if adapter!=null and adapter.is_current():
-  var hole_anchors: Array=product.provider().anchors("hole")
+  hole_anchors=product.provider().anchors("hole")
   if not hole_anchors.is_empty():main.player.global_position=hole_anchors[0].marker.global_position
  while Time.get_ticks_msec()<spawn_deadline:
   for e in main.world.get_enemies():
    if is_instance_valid(e) and e.get("alive")==true and e.get("etype") in [1,4] and e.has_method("receive_damage") and is_instance_valid(main.native_natural_enemies) and main.native_natural_enemies.owns_actor(e):target=e;break
   if is_instance_valid(target):break
+  if not hole_anchors.is_empty():
+   var visit: int=int((Time.get_ticks_msec()-spawn_started)/7000)%hole_anchors.size()
+   main.player.global_position=hole_anchors[visit].marker.global_position
   await physics_frame
  var regions: Node=main.get_node_or_null("NativeRegions")
  var region_before: int=regions.snapshot().kill_calls if is_instance_valid(regions) else 0
@@ -191,7 +203,7 @@ func run() -> void:
    if main.player.request_attack():accepted+=1
    main.player.release_attack()
    await settle(36)
-   if event_rows.slice(event_start).any(func(e):return e.kind=="native_hurte_halt" or (e.kind=="native_hurte" and e.ok==false)):break
+   if event_rows.slice(event_start).any(func(e):return e.id==target.get_instance_id() and (e.kind=="native_hurte_halt" or (e.kind=="native_hurte" and e.ok==false))):break
   main.player.release_attack();main.player.global_position=home
  var region_after: int=regions.snapshot().kill_calls if is_instance_valid(regions) else 0
  var killed: bool=is_instance_valid(target) and not target.alive and region_after>region_before
@@ -219,16 +231,25 @@ func run() -> void:
  var equipped: bool=equip.get("applied",false) and inv.equipped.values().any(func(v):return v is Dictionary and is_same(v,item)) and refresh_readback(equip.get("refresh",{}))
  await done(verdict(equip.get("applied",false),equipped),"" if equipped else str(equip.get("reason","equipment_refresh_not_ready")),{"applied":equip.get("applied",false),"same_item_equipped":equipped,"refresh_readback":refresh_readback(equip.get("refresh",{})),"refresh":equip.get("refresh",{})})
  begin("auto_potion")
- var potion: RefCounted=main.get("source_potion");var used_before: int=potion.get_snapshot().uses if is_instance_valid(potion) else 0;var mats_before: float=float(g.get("mats",0));var requests:=0
+ # A previous natural-combat heal may still own the real cooldown. Wait before
+ # applying further hurtP, rather than killing Player during a cooldown fixture.
+ main.player.global_position=home
+ var potion: RefCounted=main.get("source_potion")
+ var cooldown_deadline:=Time.get_ticks_msec()+20000
+ while (main.player.iframes>0 or main.source_state.read_native_potion_runtime().cd>0) and Time.get_ticks_msec()<cooldown_deadline:
+  await physics_frame
+ if g.get("mats",0)<=0:main.source_state.apply_native_add_potion(main,"hp",1)
+ var used_before: int=potion.get_snapshot().uses if is_instance_valid(potion) else 0
+ var mats_before: float=float(g.get("mats",0));var requests:=0
  if is_instance_valid(potion):
-  var until:=Time.get_ticks_msec()+7500
+  var until:=Time.get_ticks_msec()+15000
   while Time.get_ticks_msec()<until and potion.get_snapshot().uses==used_before and main.player.hp>1:
-   if main.player.iframes<=0:
-    main.player.receive_damage(maxi(1,int(minf(main.player.max_hp*.6,main.player.hp*.4))),"phys");requests+=1
+   if main.player.iframes<=0 and main.source_state.read_native_potion_runtime().cd<=0:
+    main.player.receive_damage(maxi(1,int(main.player.hp*.25)),"phys");requests+=1
    await settle(8)
  var used: bool=is_instance_valid(potion) and potion.get_snapshot().uses>used_before
  var pot_ok: bool=used and float(g.get("mats",0))<mats_before and main.source_state.read_native_potion_runtime().cd>0
- await done(verdict(used,pot_ok),"" if pot_ok else "real hurtP/iframe/threshold/clock did not produce auto-potion",{"uses_before":used_before,"uses_after":potion.get_snapshot().uses if is_instance_valid(potion) else 0,"update_clock":main.get_native_source_clock_input_snapshot().get("update_clock_result",{}),"HP_before_or_after":main.player.hp,"damage_requests_through_PC":requests,"HP_written_directly":false,"mats_before":mats_before,"mats_after":g.get("mats"),"document_hidden":main.read_native_document_hidden(),"player_iframes":main.player.iframes,"potion_reason":potion.get_snapshot().get("last",{}).get("reason","") if is_instance_valid(potion) else "absent","last_use":potion.get_snapshot().last_use if is_instance_valid(potion) else {}})
+ await done(verdict(used,pot_ok),"" if pot_ok else "real hurtP/iframe/threshold/clock did not produce auto-potion",{"uses_before":used_before,"uses_after":potion.get_snapshot().uses if is_instance_valid(potion) else 0,"damage_requests_through_PC":requests,"HP_written_directly":false,"mats_before":mats_before,"mats_after":g.get("mats"),"runtime":main.source_state.read_native_potion_runtime()})
  begin("level_up")
  var p: Dictionary=main.source_state.read_current_p();var lv_before: int=int(p.lv)
  mark_checkpoint("XP reward input through actual State.addExp; no level/point setters or new formula")
@@ -291,7 +312,7 @@ func finish() -> void:
  var counts: Dictionary={"PASS":0,"NOT_READY":0,"FAIL":0}
  for row in rows:counts[row.status]+=1
  var overall: String="FAIL" if counts.FAIL>0 else ("NOT_READY" if counts.NOT_READY>0 or checkpoint else "PASS")
- var result: Dictionary={"overall":overall,"counts":counts,"failures":counts.FAIL,"stages":rows,"stage_order_complete":rows.size()==ORDER.size(),"continuous_E2E":overall=="PASS" and not checkpoint,"headless":DisplayServer.get_name()=="headless","userdir":OS.get_user_data_dir(),"profile_calls":root.get_meta("demo47i_perf",{}),"physics_hz":Engine.physics_ticks_per_second,"budget_ms":1000.0/120,"performance_scope":"headless callback CPU span and process_frame wall intervals; GPU excluded; command_span_ms includes asynchronous waits; not a CPU timer","visual_audio_QA":false}
+ var result: Dictionary={"overall":overall,"counts":counts,"failures":counts.FAIL,"stages":rows,"stage_order_complete":rows.size()==ORDER.size(),"continuous_E2E":overall=="PASS" and not checkpoint,"headless":DisplayServer.get_name()=="headless","userdir":OS.get_user_data_dir(),"scheduler_max_us":main.native_natural_enemies.scheduler_max_us if is_instance_valid(main) else 0,"angler_profile":main.native_demo_anglers.snapshot() if is_instance_valid(main) else {},"profile_calls":root.get_meta("demo47i_perf",{}),"physics_hz":Engine.physics_ticks_per_second,"budget_ms":1000.0/120,"performance_scope":"headless callback CPU span and process_frame wall intervals; GPU excluded; command_span_ms includes asynchronous waits; not a CPU timer","visual_audio_QA":false}
  if not arg("--results-path").is_empty():
   var file:=FileAccess.open(arg("--results-path"),FileAccess.WRITE)
   if file!=null:file.store_string(JSON.stringify(result,"\t"));file.close()

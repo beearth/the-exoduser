@@ -18,10 +18,16 @@ var _pc_owner: Node
 var _pc_interaction: Callable
 var _last_pc: Dictionary={}
 var _blocked: Dictionary={}
-var _frame: Dictionary={"ready":false}
+var _player_frame: Dictionary={"x":0.0,"y":0.0,"r":0.0,"iframes":0.0,"s":"idle"}
+var _context: Dictionary={"lesson_active":false,"qa_storage_active":false,"aggro_active":false}
+var _frame: Dictionary={"ready":false,"serial":-1,"sp":0.0}
 var _serial: int=-1
 var _births:=0
 var _cancelled:=0
+var profile_enabled:=false
+var profile_calls:=0
+var profile_max_us:=0
+var profile_total_us:=0
 var _reason: String="provider_required"
 static func install_native_boot(main: Node) -> Node2D:
  var family:=new()
@@ -73,16 +79,21 @@ func _rng() -> float:return _world.sample_native_random_unit()
 func _clear() -> void:
  _main.native_demo_boss_projectiles.retire_field_projectiles(self)
  _g._fieldBoss=null;_g._fieldBosses=null
- COMMON.free_views(_views);_warnings.clear();_frame={"ready":false}
-func advance_phase(sp: float,_native_frame: float,_enemies: Array) -> void:
- _frame={"ready":false}
+ COMMON.free_views(_views);_warnings.clear();_frame.ready=false
+func advance_phase(sp: float,native_frame: float,enemies: Array) -> void:
+ if not profile_enabled:_advance_phase(sp,native_frame,enemies);return
+ var started:=Time.get_ticks_usec()
+ _advance_phase(sp,native_frame,enemies)
+ var elapsed:=Time.get_ticks_usec()-started
+ profile_calls+=1;profile_total_us+=elapsed;profile_max_us=maxi(profile_max_us,elapsed)
+func _advance_phase(sp: float,_native_frame: float,_enemies: Array) -> void:
+ _frame.ready=false
  if not _live() or not _provider_live():return
  if _g.get("stage")!=0 or _g.get("_bossArena",false):_clear();return
  if not _g.get("on",false) or get_tree().paused:return
  var lesson: Dictionary=_main.read_native_normal_enemy_lesson_status()
  if lesson.get("ready")!=true or lesson.get("active")!=false:_reason="lesson_guard";return
- var clock: Dictionary=_world.get_native_projectile_fx_context()
- var serial: int=int(clock.frame_reset_epoch)
+ var serial: int=int(_world._native_clock_updates)
  if not COMMON.fresh_serial(serial,_serial):return
  _serial=serial
  if _g.get("_fbStage")!=0:
@@ -95,11 +106,11 @@ func advance_phase(sp: float,_native_frame: float,_enemies: Array) -> void:
    _g._fieldBosses.append(fb)
    var view: Node2D=VIEW.new();view.name="Angler%d"%i;view.record=fb;view.set_meta("field_index",i);add_child(view);view.global_position=Vector2(fb.x,fb.y);_views.append(view)
   _g._fbSpawned=true
- var p: Dictionary=COMMON.player_snapshot(_main)
- var context: Dictionary={"lesson_active":false,"qa_storage_active":false,"aggro_active":false}
+ var p: Dictionary=_player_frame
+ p.x=_main.player.global_position.x;p.y=_main.player.global_position.y;p.r=_main.player.radius;p.iframes=_main.player.iframes;p.s=_main.player.state
  for key in ["_voidScarecrow","_explodeScarecrow"]:
   if _g.get(key) is Dictionary and _g[key].get("aggroOn",false):_reason="actual_aggro_reader_required";return
- _frame={"ready":true,"serial":serial,"sp":sp,"context":context,"player":p}
+ _frame.ready=true;_frame.serial=serial;_frame.sp=sp;_frame.context=_context;_frame.player=p
  if not _g.get("_fieldBosses") is Array:return
  _g._fieldBoss=null
  var camera: Camera2D=get_viewport().get_camera_2d()
@@ -152,4 +163,4 @@ func read_projectile_frame() -> Dictionary:
 func read_targets() -> Array:
  return COMMON.current_targets(_views)
 func snapshot() -> Dictionary:
- return {"provider_bound":is_instance_valid(_provider),"serial":_serial,"births":_births,"warnings":_warnings.size(),"cancelled":_cancelled,"blocked":_blocked.duplicate(true),"reason":_reason,"pc_bound":is_instance_valid(_pc_owner),"damage_parry_verified":false}
+ return {"profile_calls":profile_calls,"profile_max_us":profile_max_us,"profile_total_us":profile_total_us,"provider_bound":is_instance_valid(_provider),"serial":_serial,"births":_births,"warnings":_warnings.size(),"cancelled":_cancelled,"blocked":_blocked.duplicate(true),"reason":_reason,"pc_bound":is_instance_valid(_pc_owner),"damage_parry_verified":false}

@@ -15,6 +15,8 @@ var _used: Dictionary={}
 var _legacy_death: Dictionary={}
 var _components: Dictionary={}
 var scheduler_enabled:=true
+var profile_enabled:=false
+var scheduler_max_us:=0
 var _busy:=false
 var _cached_frame:=-1.0
 var _packet: Dictionary={}
@@ -64,7 +66,10 @@ func frame_ready(frame: float) -> bool:
 	_packet={"ready":true,"serial":_serial,"sp":main.world._native_last_ticks,"context":c.duplicate()}
 	return true
 func _physics_process(_delta: float) -> void:
+	if not profile_enabled:advance_scheduler(main.world.get_native_frame());return
+	var started:=Time.get_ticks_usec()
 	advance_scheduler(main.world.get_native_frame())
+	scheduler_max_us=maxi(scheduler_max_us,Time.get_ticks_usec()-started)
 func advance_scheduler(frame: float) -> bool:
 	if not scheduler_enabled or not frame_ready(frame) or frame<=_late_frame:return false
 	_late_frame=frame;counts.late_ticks+=1
