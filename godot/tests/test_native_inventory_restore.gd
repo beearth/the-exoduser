@@ -78,11 +78,11 @@ func _run() -> void:
 	if ProjectSettings.get_setting("application/config/use_custom_user_dir", false) != true or ProjectSettings.get_setting("application/config/custom_user_dir_name", "") != USERDIR or not OS.get_user_data_dir().contains(USERDIR):
 		printerr("SV_RESTORE_ITEMS_INVALID_ISOLATION"); quit(2); return
 	if artifacts.is_empty(): printerr("SV_RESTORE_ITEMS_NEEDS_ARTIFACT_DIRECTORY"); quit(2); return
-	var output: Array = []
-	var status := OS.execute(node_bin, [ProjectSettings.globalize_path("res://../tools/sv_restore_items_oracle.cjs"), ProjectSettings.globalize_path("res://..")], output, true)
-	check(status == 0 and not output.is_empty(), "exact source oracle ran")
-	var probe: Variant = TRANSPORT.decode_output(output)
-	if not probe is Dictionary or status != 0: printerr(output); quit(2); return
+	var oracle_receipt := TRANSPORT.execute_file(node_bin, ProjectSettings.globalize_path("res://../tools/sv_restore_items_oracle.cjs"), ProjectSettings.globalize_path("res://.."))
+	var status: int = oracle_receipt.code
+	check(status == 0, "exact source oracle ran")
+	var probe: Variant = oracle_receipt.data
+	if not probe is Dictionary or status != 0: printerr(oracle_receipt.diagnostics); quit(2); return
 	check(probe.source_unchanged and probe.actual_storage_reads == 0 and probe.actual_save_writes == 0 and probe.actual_server_calls == 0 and probe.live_restore_calls == 0, "no actual save/storage/server/live actor")
 	var tables: Variant = JSON.parse_string(FileAccess.get_file_as_string("res://data/item_generation_tables.json"))
 	check(tables is Dictionary, "existing readonly source tables loaded")

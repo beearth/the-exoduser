@@ -42,4 +42,4 @@ for(const fixture of fixtures){
 // QA handoff tags only; these never enter a game save or production calculator.
 function wire(v){if(typeof v==='number'&&!Number.isFinite(v))return {'@number':String(v)};if(typeof v==='number'&&Math.abs(v)>=1e12){const b=Buffer.alloc(8);b.writeDoubleLE(v);return {'@f64':b.toString('hex')};}if(Array.isArray(v))return v.map(wire);if(v&&typeof v==='object')return Object.fromEntries(Object.entries(v).map(([k,x])=>[k,wire(x)]));return v;}
 if(sha(fs.readFileSync(file,'utf8'))!==sha(source))throw Error('source changed during oracle');
-console.log(JSON.stringify(wire({rows,provenance,source_hash:sha(source),source_unchanged:true,actual_save_writes:0,actual_server_calls:0,live_restore_calls:0})));
+require('./oracle_json_output.cjs')(wire({rows,provenance,source_hash:sha(source),source_unchanged:true,actual_save_writes:0,actual_server_calls:0,live_restore_calls:0}));

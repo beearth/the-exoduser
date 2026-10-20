@@ -28,6 +28,16 @@
 | 검수 | 신규10,234/0·원문1,632·36golden·모든유효경계nextDown/동일/nextUp·소비double비트열/늦은실패진단. 회귀5종실패0/ERROR0/SKIP0, 종료경고원문보존. 실등록/4필드지원PASS아님 |
 | 기반·하니스 | main6d987cb8a에서분기(필요EC2-01은main포함), 지시서원격20b2139a §4.1. Node필수인자/UTF8임시JSON·원본/함수hash핀·binary64·허용오차0. 새EXODUSER-ec3-01-Isolated-20261020·기존각상수/Godot전pgrep2이상30초대기/override0byte.  [보고서](engine/orders/reports/ec3-01_REPORT.md)·원로그 ~/exoduser-wt/_out/ec3-01/ |
 
+## 2026-10-20 QA-007b Windows UTF-8 파일 수송·junction·CLI 경로
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준 / 범위 | origin/main6d987cb8a(QA-007 포함). 테스트·오라클/추출 도구·실행 안내만, 제품·원본·manifest/pin·기존 기대값·R 최종 변경0행 |
+| SV 수송 | inventory/player/shared/slot4종을 UTF-8 고유 임시 파일 경유로 변경. 콘솔은 진단용, 누락/잘림/Node 실패 거부·자기 파일 삭제. 원문/값/타입 비교와 기존 단정 수 불변 |
+| 경로 / 링크 | Windows junction은 외부 사본을 대상으로 동일 Symlink 거부 유지. 도구 CLI 별칭 realpath 판정·다른 드라이브 outside 판정·OS별 exact snapshot 허용. 잘못된 stage/seed/제품 출력은 exit1·무기록 |
+| Mac 전후 | 기존 Godot9종 각369093/0, 기존 Node6종 각44통과/1선재 실패 유지. 신규 Godot50/0·Node7/0, contracts5그룹/0. 실제 Windows 실행 미확인 |
+| 판정 / 상세 | JSON.x는 ???/코드페이지 손상 모사1건. CH1 기존1실패·CH2 재생성 pin 차이는 source.main_sha 출처 차이 확인, 기존 검사·제품 pin 수정0. [QA-007b 보고서](engine/orders/reports/qa-007b_REPORT.md), 원로그 ~/exoduser-wt/_out/qa-007b/ |
+
 ## 2026-10-20 QA-007 테스트 Windows 이식성
 
 | 항목 | 구현·검수 근거 |

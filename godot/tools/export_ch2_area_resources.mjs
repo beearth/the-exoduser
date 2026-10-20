@@ -1,3 +1,4 @@
+import {isInsideRoot, isDirectExecution} from './cli_paths.mjs';
 // CH2-02: continue the shared native generator context, no Main or asset writes.
 import fs from 'node:fs';
 import path from 'node:path';
@@ -71,7 +72,7 @@ export function buildResources(root){
  return {bundle,queries,los,raw};
 }
 export function writeResources(root,evidence){
- root=fs.realpathSync(root);evidence=path.resolve(evidence);if(!path.relative(root,evidence).startsWith('..'+path.sep))throw Error('Evidence must be outside worktree');
+ root=fs.realpathSync(root);evidence=path.resolve(evidence);if(isInsideRoot(root,evidence))throw Error('Evidence must be outside worktree');
  const dest=path.join(root,'godot/data/ch2_map_source/si4_resources.json');
  for(const file of [dest,evidence]){
   if(path.extname(file)!=='.json')throw Error('JSON output required');
@@ -85,6 +86,6 @@ export function writeResources(root,evidence){
  fs.mkdirSync(path.dirname(dest),{recursive:true});fs.writeFileSync(dest,JSON.stringify(result.bundle)+'\n');
  fs.writeFileSync(evidence,JSON.stringify({schema:'exoduser.ch2-area-oracle.v1',stage:4,queries:result.queries,los:result.los})+'\n');return result;
 }
-if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){
+if(isDirectExecution(import.meta.url)){
  try{if(process.argv.length!==4)throw Error('Usage: export_ch2_area_resources.mjs <root> <external-oracle-json>');const r=writeResources(process.argv[2],process.argv[3]);console.log(JSON.stringify({objects:r.bundle.props.length,hands:r.bundle.props.filter(p=>p._hand).length,colliders:r.bundle.colliders.length,assets:r.bundle.assets.length,rectangles:r.bundle.wall_rects.length,near_floor_moved:r.bundle.hand_adjustments.filter(a=>a.moved).length,queries:r.queries.length,los:r.los.length}));}catch(e){console.error(e.stack);process.exitCode=1;}
 }

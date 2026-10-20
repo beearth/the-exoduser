@@ -1,5 +1,5 @@
 extends RefCounted
-## Test-only transport; see docs/engine/orders/reports/qa-007_REPORT.md for setup.
+## Test-only transport; see QA-007/QA-007b reports and the adjacent README for setup.
 
 static func node_binary() -> String:
 	var binary := OS.get_environment("EXODUSER_NODE_BIN")
@@ -21,7 +21,11 @@ static func execute_file(binary: String, oracle: String, source: String) -> Dict
 	if code == 0:
 		if FileAccess.file_exists(file):
 			# Node writes explicit UTF-8 bytes; no Windows console codepage decoding.
-			data = JSON.parse_string(FileAccess.get_file_as_string(file))
+			var parser := JSON.new()
+			if parser.parse(FileAccess.get_file_as_string(file)) == OK:
+				data = parser.data
+			else:
+				code = ERR_PARSE_ERROR
 		else:
 			code = ERR_FILE_NOT_FOUND
 	if FileAccess.file_exists(file):
