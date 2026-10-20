@@ -238,6 +238,13 @@ func _ready() -> void:
 	world.add_child(native_pets)
 	if not native_pets.configure(world, player, source_state, screen_lighting):
 		push_error("Native pets configuration rejected (display-only; startup continues).")
+	# P2-005b — 시작 스킬 발동 어댑터 (1차: giantSlam/Space)
+	var native_skill_slots: Node2D = preload("res://scripts/native_skill_slots.gd").new()
+	native_skill_slots.name = "NativeSkillSlots"
+	world.add_child(native_skill_slots)
+	if not native_skill_slots.configure(self, world, player, source_state):
+		push_error("Native skill slots configuration rejected (startup continues).")
+	hud.bind_native_skill_cooldowns(Callable(native_skill_slots, "read_native_slot_cooldowns"))
 	hud.bind_native_source_state(source_state) # P2-002a 원본 HUD 값 = state owner getter
 	hud.pause_requested.connect(_toggle_pause)
 	hud.restart_requested.connect(_restart)

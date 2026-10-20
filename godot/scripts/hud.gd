@@ -48,6 +48,9 @@ var _stage_timer_label: Label
 var _stage_progress_fill: Control
 var _slot_icons: Dictionary = {}
 var _slot_icon_files: Dictionary = {}
+var _slot_sweeps: Dictionary = {}
+var _slot_sweep_labels: Dictionary = {}
+var _skill_cooldowns: Callable = Callable()
 var _debug_overlay_nodes: Array = []
 var _debug_overlay_visible := false
 var _pulse_values: Dictionary = {}
@@ -716,6 +719,30 @@ func _build_native_first_fight_hud() -> void:
 		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		_slot_icons[slot_id] = icon
 		_slot_icon_files[slot_id] = ""
+		# P2-005b 쿨다운 sweep(_skCdSweep 44136): conic rgba(0,0,0,.55) + 중앙 노랑 초
+		var sweep := Control.new()
+		sweep.name = "Sweep"
+		cell.add_child(sweep)
+		sweep.size = cell.size
+		sweep.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		sweep.set_meta("pct", 0.0)
+		sweep.draw.connect(func() -> void:
+			var pct: float = float(sweep.get_meta("pct", 0.0))
+			if pct <= 0.0:
+				return
+			var deg: int = int(pct * 360.0) # ~~(pct*360)
+			var points := PackedVector2Array([sweep.size / 2.0])
+			for step in range(deg + 1):
+				var rad: float = deg_to_rad(float(step) - 90.0)
+				points.append(sweep.size / 2.0 + Vector2(cos(rad), sin(rad)) * sweep.size.length())
+			if points.size() >= 3:
+				sweep.draw_colored_polygon(points, Color(0, 0, 0, 0.55)))
+		sweep.clip_contents = true
+		var sweep_label := _native_hud_label(cell, "", Vector2(0, cell.size.y / 2.0 - 8.0), 12, Color("ffee66"), 700.0)
+		sweep_label.size.x = cell.size.x
+		sweep_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		_slot_sweeps[slot_id] = sweep
+		_slot_sweep_labels[slot_id] = sweep_label
 
 
 func _native_slot_skill_id(slot_id: String, p: Dictionary) -> String:
@@ -819,6 +846,18 @@ func _refresh_native_first_fight_hud() -> void:
 			continue
 		var icon_path := SKILL_ICON_DIR + file + ".png"
 		icon.texture = load(icon_path) if ResourceLoader.exists(icon_path) else null
+	# P2-005b — 쿨다운 sweep 갱신 (소유자: 스킬 슬롯 어댑터)
+	if _skill_cooldowns.is_valid():
+		var cds: Variant = _skill_cooldowns.call()
+		if cds is Dictionary:
+			for slot_id in _slot_sweeps:
+				var entry: Variant = (cds as Dictionary).get(slot_id)
+				var sweep: Control = _slot_sweeps[slot_id]
+				var pct: float = float((entry as Dictionary).get("pct", 0.0)) if entry is Dictionary else 0.0
+				if float(sweep.get_meta("pct", 0.0)) != pct:
+					sweep.set_meta("pct", pct)
+					sweep.queue_redraw()
+				(_slot_sweep_labels[slot_id] as Label).text = str((entry as Dictionary).get("text", "")) if entry is Dictionary else ""
 
 
 static func _hud_num(value: Variant) -> float:
@@ -826,6 +865,14 @@ static func _hud_num(value: Variant) -> float:
 
 
 # ── 개발 오버레이: 원본 화면에 없음 — 기본 숨김, F3/공개 API 토글 (노드·시그널 유지) ──
+func bind_native_skill_cooldowns(provider: Callable) -> bool:
+	# P2-005b — 슬롯 쿨다운 공급자(44136 _skCdSweep 소유자) 바인딩.
+	if not provider.is_valid():
+		return false
+	_skill_cooldowns = provider
+	return true
+
+
 func set_native_debug_overlay_visible(visible_now: bool) -> void:
 	_debug_overlay_visible = visible_now
 	for node in _debug_overlay_nodes:

@@ -168,6 +168,21 @@ func commit_native_level_up_heal(owner: Node) -> Dictionary:
 # P2-001e — initStage 진입 자원 풀충전(game.html:31567): P.hp=P.mhp; P.st=P.mst;
 # P.mp=P.mmp. hp/st=플레이어 노드, mp=이 authority 소유(_owned) — level_up_heal(155)과
 # 동일 소유 경로. 쉴드(P.shield=P.mshield)는 state의 P dict 소유라 state 쪽에서 처리.
+# P2-005b — 스킬 시전 ST 소비 (useStPct 31991: P.st -= stCost). 호출측이 게이트
+# (P.st ≥ cost) 선검사 — 부족 시 이 API에 오지 않음(원본 _skOk 흐름 동일).
+func commit_native_skill_stamina_spend(owner: Node, amount: float) -> Dictionary:
+	if not is_native_source_resources_ready() or _committing or get_tree().paused \
+			or not is_instance_valid(owner) or owner != _player.get_parent() \
+			or owner.get("source_resources") != self or owner.get("world") != _world \
+			or not is_finite(amount) or amount < 0.0 or _player.stamina < amount:
+		return {"accepted": false, "reason": "actual_skill_stamina_owner_not_ready"}
+	_committing = true
+	_player.stamina -= amount
+	_last_source_write = {"field": "st", "phase": "native_skill_stamina_spend_31991", "amount": amount}
+	_committing = false
+	return {"accepted": true, "st": _player.stamina, "spent": amount}
+
+
 func commit_native_stage_entry_refill(owner: Node) -> Dictionary:
 	if not is_native_source_resources_ready() or _committing or get_tree().paused 			or not is_instance_valid(owner) or owner != _player.get_parent() 			or owner.get("source_resources") != self or owner.get("world") != _world:
 		return {"accepted": false, "reason": "actual_stage_entry_refill_owner_not_ready"}
