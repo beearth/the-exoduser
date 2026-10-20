@@ -173,7 +173,7 @@ func is_wall_xy(px: float, py: float) -> bool:
   return true
  if int(raw.tiles[ty*200+tx]) == 1:
   return true
- for c in _analytic_colliders:
+ for c in (_analytic_colliders if area_stage in [2,3] else bundle.colliders):
   var dx: float = px-float(c.x)
   var dy: float = py-float(c.y)-float(c.oy)
   var rx: float = c.rx

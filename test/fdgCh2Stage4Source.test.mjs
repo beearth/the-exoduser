@@ -146,6 +146,35 @@ test('repeated extraction and committed artifact agree while zero protected sour
  const mask=[];assert.deepEqual(captureJSON({absentCarrier:undefined,nullValue:null,zero:0,empty:[]},mask),{absentCarrier:null,nullValue:null,zero:0,empty:[]});
  assert.deepEqual(mask,['/absentCarrier']);
 });
+test('approved CH1 stage2/3 support matches native compose lines, grid and P3 budgets, with chapter-safe CLI outputs',()=>{
+ const tmp=fs.mkdtempSync(path.join(fs.realpathSync(os.tmpdir()),'EXODUSER-ch1-06-Isolated-20261020-approval-'));
+ const tool=path.join(root,'godot/tools/export_ch1_area_source.mjs');
+ const cli=(output,stage)=>spawnSync(process.execPath,[tool,root,output,'--stage',String(stage),'--seed','20261020'],{encoding:'utf8'});
+ try {
+  assert.equal(sha(execFileSync('git',['show','origin/main:game.html'],{cwd:root,maxBuffer:16*1024*1024})),sha(source));
+  for(const [stage,lines,landmarks,mega,total,regions,holes] of [
+   [2,[18178,18186],['m_penta_circle','m_eye_tree','m_flesh_ball'],1,1000,[250,300,250,200],13],
+   [3,[18187,18195],['m_throne','m_bone_arch','m_flesh_maw'],0,1100,[250,400,250,200],14]]) {
+   const native=expression('_MAP_COMPOSE',stage),compose=plain(vm.runInNewContext('('+native.text+')'));
+   const admitted=buildAreaSnapshot(root,{stage}),pin=admitted.source.symbols['_MAP_COMPOSE.'+stage];
+   assert.deepEqual([pin.line,pin.end],lines);assert.equal(pin.sha256,sha(native.text));
+   assert.equal(pin.line,source.slice(0,native.node.start).split('\n').length);
+   assert.equal(pin.end,source.slice(0,native.node.end).split('\n').length);
+   assert.deepEqual(admitted.composition_raw,compose);assert.deepEqual(compose.lm.map(v=>v.id),landmarks);assert.equal(compose.mega.length,mega);
+   assert.equal(admitted.schema,'exoduser.ch1-area-source.v1');assert.equal(admitted.stage,stage);assert.equal(admitted.source.game_sha256,sha(source));
+   assert.deepEqual(admitted.grid,{width:200,height:200,tile_size:40});assert.equal(admitted.tiles.length,40000);
+   assert.equal(sha(Buffer.from(admitted.tiles)),'5b40eb67c1aa3fd6ad407f9af06db91f549456bcd9c7d91ed31265c5a3a3b87e');
+   assert.deepEqual([0,1,2,3,4].map(v=>admitted.tiles.filter(t=>t===v).length),[38986,36,3,0,975]);
+   assert.deepEqual(admitted.start_world,[4020,7420]);assert.equal(admitted.total_spawned,total);assert.deepEqual(admitted.region_totals,regions);assert.equal(admitted.spawn_holes_final.length,holes);
+   const output=path.join(tmp,'si'+stage+'.json'),written=cli(output,stage);assert.equal(written.status,0,written.stderr);assert.deepEqual(JSON.parse(fs.readFileSync(output,'utf8')),admitted);
+   // Still reject writing a CH1 result over the real CH2 snapshot carrier.
+   const foreign=path.join(tmp,'foreign'+stage+'.json'),saved=read('godot/data/ch2_map_source/si4.json');fs.writeFileSync(foreign,saved);
+   const rejected=cli(foreign,stage);assert.equal(rejected.status,1);assert.match(rejected.stderr,/Existing non-snapshot output rejected/);assert.deepEqual(fs.readFileSync(foreign),saved);
+   assert.throws(()=>buildStage0Snapshot(root,{stage}),/UNSUPPORTED_STAGE/);
+  }
+  assert.deepEqual(hashes(),before);
+ }finally{fs.rmSync(tmp,{recursive:true,force:true});}
+});
 test('CLI stage4 output cannot replace source, another stage, a foreign schema, a wrong-stage snapshot or a symlink',()=>{
  const tmp=fs.mkdtempSync(path.join(fs.realpathSync(os.tmpdir()),'EXODUSER-ch2-01-Isolated-20261020-cli-'));
  const tool=path.join(root,'godot/tools/export_ch1_area_source.mjs');
@@ -153,9 +182,9 @@ test('CLI stage4 output cannot replace source, another stage, a foreign schema, 
  try {
   const output=path.join(tmp,'si4.json');assert.equal(cli(output).status,0);assert.deepEqual(JSON.parse(fs.readFileSync(output)),actual);
   const saved=fs.readFileSync(output);
-  for(const stage of ['-1','2','3','5','6','7','8','9','04','4x']){const p=cli(output,stage);assert.equal(p.status,1);assert.match(p.stderr,/UNSUPPORTED_STAGE/);assert.deepEqual(fs.readFileSync(output),saved);}
+  for(const stage of ['-1','5','6','7','8','9','10','35','04','4x']){const p=cli(output,stage);assert.equal(p.status,1);assert.match(p.stderr,/UNSUPPORTED_STAGE/);assert.deepEqual(fs.readFileSync(output),saved);}
   for(const seed of ['-1','NaN','Infinity','1.5','4294967296'])assert.equal(cli(output,'4',seed).status,1);
-  for(const stage of [-1,2,3,5,6,7,8,9,'4',4.1])assert.throws(()=>buildAreaSnapshot(root,{stage}),/UNSUPPORTED_STAGE/);
+  for(const stage of [-1,5,6,7,8,9,10,35,'4',4.1])assert.throws(()=>buildAreaSnapshot(root,{stage}),/UNSUPPORTED_STAGE/);
   for(const target of ['godot/data/map.json','godot/data/ch1_map_source/si0.json','godot/data/ch1_map_source/si1.json','godot/data/ch2_map_source/si5.json','game.html'])assert.equal(cli(path.join(root,target)).status,1);
   const bad=path.join(tmp,'bad.json');fs.writeFileSync(bad,JSON.stringify({...actual,stage:5}));const badBefore=fs.readFileSync(bad);assert.equal(cli(bad).status,1);assert.deepEqual(fs.readFileSync(bad),badBefore);
   fs.writeFileSync(bad,'{"schema":"exoduser.ch1-area-source.v1","stage":1}');assert.equal(cli(bad).status,1);

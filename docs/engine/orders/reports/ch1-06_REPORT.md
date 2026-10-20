@@ -1,6 +1,6 @@
 # CH1-06 REPORT — si3 공통필드·둥지 compose
 
-상태: **독립 구현·검수 확보 / BLOCKED — CH2 소유 테스트 계약 갱신 승인 대기**. 시각 판정은 별도로 **FAIL**이다. 전체 회귀 PASS·Main 제품 연결·1장 완성으로 보고하지 않는다.
+상태: **CH1-06 독립 구현·승인 후속 검증 확보 — 기술 BLOCKED 해소**. CH1·CH2 이식 전용 전체 회귀 실패0. 시각 판정 **FAIL**, Main 제품·실제 전투 미연결 범위는 유지한다.
 
 ## 기준·의존·소유권
 
@@ -9,7 +9,8 @@
 | 작업/브랜치 | ch1-06 / codex/ch1-06-20261020 |
 | fetch 기준 | origin/main **26c050a99a711e793a6c2413395acda09b0c1614**, 요구된26c050a99 이상 |
 | CH1-05 의존 | 승인 c13802c080b2aaef2f9885438ae88e214a84de27가 main에 없었다. 최신 main에서 --no-checkout·sparse worktree 생성 후 CH1-05를 정상 병합한 체크포인트 **908a79d5** 위에서 구현. 두 부모의 코드·기록을 보존하며 main에 push/merge하지 않음 |
-| 병합 조정 | 공통 추출기의 기존 CH2_SCHEMA·stage4·observeNative·장별 출력 검사 유지, CH1 stage2 확장 합침. CHANGELOG는 최신 main 원문 뒤를 유지하고 선행 의존/CH1-05 새 절만 앞에 추가. CH2 제품 파일·테스트 변경0 |
+| 최초 병합 조정 | 공통 추출기의 기존 CH2_SCHEMA·stage4·observeNative·장별 출력 검사 유지, CH1 stage2 확장 합침. 최초 a68294a5까지 CH2 제품 파일·테스트 변경0. 이번 후속 수정은 아래 명시 승인된 CH2 소유 테스트 1파일, 자기 독립 CH1 소비자의 상속 호환 1줄, 보고서·CHANGELOG |
+| 승인 후속 기준 | git fetch 후 origin/main **6d987cb8a31d0aadd2b6a8cf1e9a781d1fb76d4d** 조회. 사용자 지시대로 같은 codex/ch1-06-20261020의 a68294a5에서 재개; main 추가 병합 없이 최신 game.html과 checkout 원문 SHA 동일 검증 |
 | 지시서 | FDG_SOURCE_TRACE_MAPS_CH1_20261020.md:583–590. 다음 CH1-07은 Main/World/HUD 연결이므로 이 단위에 반입하지 않음 |
 | 원본 | 최신 main game.html SHA256 **4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4**, 원본 함수 본문 수정/값 치환0 |
 | 보호 | main/hud/world/player/native_normal_enemy_hurte/native_source_new_run_state 6개, map-source-adapter/export_world/map.json, game.html 등 기준 main과 동일. 공유 맵 재추출/변경0. Q/E·세이브/progress·적/보스/로비 owner 수정0 |
@@ -34,7 +35,7 @@
 
 새 stage3 extractor/자원 도구·si3 JSON 2개·stage3_composition·전용 preview scene·Node/Godot 테스트를 추가했다. 기존 독립 Resources/World는 명시 stage3 분기만 확장하며 기본 si1과 기존 si2 실행은 유지한다. 앞 CH1 소유 테스트의 미지원 인덱스는 지원 범위 바깥5로 옮기되 거부 검사를 삭제/skip하지 않았다.
 
-## 검증 영수증
+## 최초 제출 검증 영수증 (a68294a5, 승인 전 이력)
 
 | 실행 | 결과와 한계 |
 |---|---|
@@ -53,16 +54,62 @@
 
 원본 asset 90개 등록 후보 + 회귀가 실제 읽는 소수 원본 경로만 sparse로 받았다. Godot .godot cache/override·node_modules 원본 설치본 읽기용 symlink는 커밋하지 않는다. 원본 PNG/HTML/JS 바이트 수정0이다.
 
-## BLOCKED — CH2 담당 계약 두 줄
+## 사용자 승인·전후 단정·거부 검사 보존
 
-Main/공용 runtime 연결은 필요하지 않았으나 공유 추출기 지원 목록과 다른 담당 테스트의 고정 거부 목록이 충돌한다. 이전 공통 지시의 **“공용 파일·다른 담당 소유 파일은 0줄”**을 따라 해당 파일은 바꾸지 않았다. 두 줄 갱신 여부만 사용자에게 확인 요청했고 승인 전에는 적용/전체 PASS 판정을 하지 않는다.
+2026-10-20 맥북총괄의 **“CH2 회귀의 stage2/3 거부 단정 두 줄 갱신을 승인합니다”** 판정에 따라 같은 브랜치 a68294a5에서 이어서 적용했다. 사용자가 CH2 테스트를 Mac Codex 소유로 확인했으며, 새로 실제 지원한 1장 stage2/3의 낡은 기대값 정정 범위다. Main·공용6·CH2 제품·맵·자산 변경을 추가하지 않았다. 전체 회귀 중 발견한 자기 CH1 독립 소비자 상속 호환 회귀는 아래 별도 1줄로 복구했다.
 
-| 파일·줄 | 현행 / 필요한 변경 | 원본 근거·보존 |
+| 단정 / 파일 | 승인 전(a68294a5) | 승인 후 / 보존 증거 |
 |---|---|---|
-| test/fdgCh2Stage4Source.test.mjs:156 | CLI unsupported 목록의 '2','3'을 제외. -1/5..9/04/4x 거부는 유지 | CH1 추적 문서§4.5/4.6이 stage2/3 새 CLI를 배정. 최신 game18178–18195 compose를 각각 실제 실행 |
-| 같은 파일:158 | buildAreaSnapshot unsupported 목록의2,3만 제외. 나머지 타입/인덱스 거부 유지 | CH2 stage4 schema·자산·selector·observeNative·장별 출력 보호는 그대로. 신규 CH1 테스트에서 CH2 si4 파일로의 stage2/3 덮어쓰기 거부를 별도 확인 |
+| test/fdgCh2Stage4Source.test.mjs CLI 미지원 stage | `['-1','2','3','5','6','7','8','9','04','4x']` 10건 | `['-1','5','6','7','8','9','10','35','04','4x']` 10건. 새 지원2/3만 허용으로 옮기고 미지원10/35 추가. 기존 나머지 값 거부·출력 byte 보존 동일 |
+| 같은 파일 API 미지원 stage | `[-1,2,3,5,6,7,8,9,'4',4.1]` 10건 | `[-1,5,6,7,8,9,10,35,'4',4.1]` 10건. 음수·미지원5..9·문자열'4'·소수4.1 그대로 거부 |
+| 새 허용 양성 계약 | stage2/3을 실제 지원해도 위 두 루프가 거부 기대 | stage2/3 API 및 CLI 출력 성공·동일 JSON, 독립 AST로 추출한 최신 원문 compose 전체·행·SHA256 일치, 타일/START/P3 값 검증 |
+| 원본 stage2 근거 | 최신 main game.html **18178–18186** | penta_circle/eye_tree/flesh_ball·mega1, 200²/T40·최종 타일 SHA5b40eb67…·START4020/7420, holes13·총1000·분면250/300/250/200 |
+| 원본 stage3 근거 | 최신 main game.html **18187–18195** | throne/bone_arch/flesh_maw·mega0, 동일 실제 타일 SHA·START, holes14·총1100·분면250/400/250/200. 최신 origin/main:game.html SHA4d911cdd…와 checkout 일치 단정 포함 |
+| 추가 음성 계약 | 기존 CH2 출력 보호 유지 | stage2/3 각각 실제 CH2 si4 JSON 복사본 덮어쓰기 거부2건·byte 유지, stage0 전용 API가2/3 거부2건 추가 |
+| 거부 검사 수 | 주요 stage 루프 CLI10+API10=**20건** | 주요 루프 **20건 유지** + 위 추가 음성4건 = 이 범위 **24건**. 기존 잘못된 seed5·보호 경로5·wrong-stage·외부schema·symlink 거부 모두 동일; skip/선별/우회0 |
+| 차이 검증 | 156/158 두 줄이 최초 BLOCKED 원인 | 기존 CLI 테스트 본문은 두 목록 치환 외 byte 동일함을 자동 확인. 테스트 1케이스 추가, 최종 diff +31/-2. `approval-followup/rejection-audit.json`, `approved-test.diff` |
 
-제안 diff만 원로그 `proposed-CH2-contract-update.patch`에 보존했다. 실제 CH2 파일 바이트는 main과 동일하다. 임시 호환 layer·테스트 선별을 전체 PASS로 포장하거나 지원을 숨기는 우회는 하지 않았다. 승인 없는 CH1-07 Main/World/HUD 연결도 진행하지 않는다.
+최초 BLOCKED 제출의 Node CH2 **17/1**·제안 patch·a68294a5 영수증은 이력으로 보존했다. 이 후속 승인이 해소하는 것은 소유 테스트 계약 충돌이며, 시각 FAIL·Main/World/HUD 제품 연결·CH1-07 미실행 범위는 바뀌지 않는다. 실행별 최신 수치는 아래 후속 검증 표에 기록한다.
+
+## 전체 회귀에서 발견한 자기 CH1 소비자 상속 호환 복구
+
+첫 후속 Godot 전체 실행에서 CH2-02는 **894단정/3실패**, isW/canMv/LOS 차이 **1976/3744/5**였다. 원본 oracle 생성기·stage4 JSON·CH2 소비자는 정상이며, CH1-05에서 자기 `native_ch1_area_world.gd`가 도입한 `_analytic_colliders` 캐시를 부모 `_ready()`에서만 초기화한 것이 원인이었다. CH2 독립 소비자는 이 클래스를 상속하되 `_ready()`를 자체 구현하므로 캐시가 빈 상태였다. 최초 실패를 `approval-followup/first-full-godot/ch2-02.*`에 보존했다.
+
+| 자기 파일·위치 | 수정 전 → 후 / 근거 |
+|---|---|
+| godot/scripts/native_ch1_area_world.gd:is_wall_xy | `for c in _analytic_colliders:` → `for c in (_analytic_colliders if area_stage in [2,3] else bundle.colliders):` **1줄**. si2/3만 원본 double 복원 캐시 사용, si1·기존 상속 소비자는 CH1-04의 원래 bundle 직접 조회 계약 유지 |
+| 원본 game.html31711 | isW는 타일뿐 아니라 실제 `_colObjs`의 circle/ellipse/rect를 검사한다. CH2의 원본52원 충돌을 생략해서는 안 됨. 기존894단정과10998/10998/400 질의 그대로 검증하며 음성 단정·허용 오차 수정0 |
+| 경계 | 자기 독립 CH1 소비자만 수정. Main·공용6파일·CH2-02 소비자/테스트·공유 맵·원본 수정0. CH2 기대값 추가 조정0·비어 있는 캐시를 fixture에서 주입하는 우회0 |
+
+기존 CH2-02 회귀가 실제 누락을 검출했고, 같은 검사를 통과시켜 복구를 검증한다. `collider-cache-diagnosis.json`·`standalone-compatibility-fix.diff`에 원인과 정확 diff를 남겼다.
+
+## 승인 후속 전체 검증
+
+후속 원로그: `/Users/fordeargamers/exoduser-wt/_out/ch1-06/approval-followup/`. `verification-summary.json`에 실행 argv·격리 디렉터리·종료값·단정 수·차이 수를 연결했고, stdout/stderr/engine 로그를 UTF-8로 보존했다. 아래 전체는 CH1·CH2 **이식 전용 회귀** 범위이며 웹 맵의 기존9실패·로비 QA-005 기존8실패와 구분한다.
+
+| 후속 실행 | 실제 결과 |
+|---|---|
+| Node 전체 | **64/0**, skip0, CH1 6파일45케이스 + CH2 2파일19케이스. 승인 전 CH2 17/1 → 새 양성 케이스 포함19/0 |
+| Godot CH1-01 | **63/0**, 격리 상수 디렉터리·skip0·실창 OpenGL Compatibility/Apple M5 Pro |
+| Godot CH1-02 | **189/0**, 격리 상수 디렉터리·skip0·실창 OpenGL Compatibility/Apple M5 Pro |
+| Godot CH1-03 | **75/0**, 격리 상수 디렉터리·skip0·실창 OpenGL Compatibility/Apple M5 Pro |
+| Godot CH1-04 | **410/0**, 격리 상수 디렉터리·skip0·실창 OpenGL Compatibility/Apple M5 Pro |
+| Godot CH1-05 | **1243/0**, 격리 상수 디렉터리·skip0·실창 OpenGL Compatibility/Apple M5 Pro |
+| Godot CH1-06 | **1622/0**, 격리 상수 디렉터리·skip0·실창 OpenGL Compatibility/Apple M5 Pro |
+| Godot CH2-01 | **362/0**, 격리 상수 디렉터리·skip0·실창 OpenGL Compatibility/Apple M5 Pro |
+| Godot CH2-02 | **894/0**, 격리 상수 디렉터리·skip0·실창 OpenGL Compatibility/Apple M5 Pro |
+| Godot EC2-01 CH2 소환 정책 | **7483/0**, 격리 상수 디렉터리·skip0·실창 OpenGL Compatibility/Apple M5 Pro |
+| Godot EC2-02 CH2 생성자 정책 | **159902/0**, 격리 상수 디렉터리·skip0·실창 OpenGL Compatibility/Apple M5 Pro |
+| Godot CH1·CH2 합계 | **172243/0** 단정, CH1 3602 + CH2/EC2 168641, 전10파일·종료0·ERROR0. 선택 실행0 |
+| contracts / encounter | **5그룹/0**, **3그룹/0**, only[]·실패 단정0. contracts의 기본240FPS 설정 유지 |
+| P3002 / P3003 | **298/0**, **43/0**, 기존 분모·거부 단정·skip0 유지 |
+| 맵 Node 기존 기준 | **37개 / 28통과·9실패**, exit1 원문 유지. 이전 a68294a5 회귀와 실패 제목 동일, 새 실패0 (`map-baseline-comparison.json`) |
+| 원본 질의·물리 | si1/2/3/4 원본 VM oracle 새 생성(6966/8262/8502/10998 질의와 각 LOS400), Godot isW/canMv/LOS·40000셀 physics/union 차이 모두0 |
+| 실창 화면 유지 | si1·si3 각각1920×1080 8장, `approval-followup/si1-visual/`·`si3-visual/`. 최초 제출 동명16장과 SHA256 byte 동일. 시각 FAIL 유지·이번 승인으로 미술 변경0 |
+| 보호·실행 | a68294a5 대비 Main·공용6·CH2 제품·공유 맵·원본 추가 변경0. CH2 테스트·자기 독립 CH1 소비자1줄·보고서·CHANGELOG 4파일만 수정. 매 Godot 실행 전 pgrep 기록, 2이상30초 대기; 매 override finally0byte, 노드 경로 명시 인자/UTF-8 파일 수집 |
+| 진단 이력 | 최초 headless shader ERROR2는 미수정 이력으로 보존; 이번 전체는 실창 ERROR0. 기존 Camera2D interpolation·P3002 ObjectDB8 경고 보존. 로비 전체8실패는 사용자 고지 선재 결함·이번 미실행 |
+
+`rejection-audit.json`으로 기존 CLI 테스트의 두 목록 외 본문 동일을 증명했다. `protected-followup.json`과 최종 diff는 CH2 테스트·자기 CH1 독립 소비자·문서의 네 파일만 변경됐음을 확인한다. 최초 BLOCKED 로그/영수증은 덮어 버리지 않고 `previous-*`로 보존했다.
 
 ## MAP PRODUCTION REPORT (§23)
 
@@ -75,10 +122,10 @@ Main/공용 runtime 연결은 필요하지 않았으나 공유 추출기 지원 
 | GROUND | 원본 soil+_soilEdgeA world mesh. chunk seam 생성0; 원화의 보라색 가장자리·규칙적인 지면 반복이 보임 |
 | PLAYABLE | 원본 충돌·START→EXIT fixture 종주만 확보. arenas/travel/breathing/threat 배치 원본값 보존. 실제 적·보스·전투 가독성 미검수 |
 | LANDMARK | primary throne(4020,2420), side bone_arch(1780,2580), flesh_maw(6260,2580) 실제 렌더. 원본 source nearFloor 결과이며 새 저작 배치 아님 |
-| CAMERA QA | START/EARLY/ARENA/SIDE_L/SIDE_R/LANDMARK/LATE/EXIT 실창1920×1080·zoom1 PNG 각1장, visual/ 아래. 작업자 전체8장 직접 검토 |
+| CAMERA QA | START/EARLY/ARENA/SIDE_L/SIDE_R/LANDMARK/LATE/EXIT 실창1920×1080·zoom1 PNG 각1장, visual/ 아래. 최초 작업자 전체8장 직접 검토; 후속 si1/si3 16장 byte 동일 확인 |
 | TECH QA | route189·query/physics 차이0; 웹 pageerror/404 미실행. 실창 resource_errors[]/ERROR0, floor 단일mesh. fixture sweep96frames/1.569s는60FPS 제한 정지 검수이며 전투 FPS 아님 |
-| FILES | 자기 stage3 tool/data/module/scene/test/53 byte 자산 + 기존 자기 standaloneconsumer/CH1 source 테스트만. CH1-05 선행 병합과 CH1-06 신규 diff를 구분. 공용6개·맵공유·CH2 owner0줄 |
-| GIT | 정확 경로 stage·정상 pre-commit·자기 브랜치 push/remote SHA 확인 후 DONE.txt·자기 worktree 제거. 원로그와 제안 patch 보존, main push/force/git add -A0 |
+| FILES | 자기 stage3 tool/data/module/scene/test/53 byte 자산 + 기존 자기 standaloneconsumer/CH1 source 테스트만. CH1-05 선행 병합과 CH1-06 신규 diff를 구분. 공용6개·맵공유·CH2 제품0줄. 승인 후속에서 CH2 테스트 1파일만 +31/-2 |
+| GIT | 정확 경로 stage·정상 pre-commit·자기 브랜치 push/remote SHA 확인 후 DONE.txt·자기 worktree 제거. 원로그·최초 제안 patch·후속 실제 diff 보존, main push/force/git add -A0 |
 | VISUAL VERDICT | **FAIL** — 반복 패치·보라색 rim·넓고 빈 지면/바깥 검정, 조명/접지 그림자/전투 생동감 미연결. 원본 byte 참조 포트와 새 맵 룩 완성을 구분 |
 
-최종 SHA·원격 일치·상태 BLOCKED·수치·worktree 제거 영수증은 원로그 DONE.txt/final-receipt.json이 기준이다.
+최종 SHA·원격 일치·후속 검증 수치·worktree 제거 영수증은 원로그 DONE.txt/final-receipt.json이 기준이다. 최초 BLOCKED 영수증은 approval-followup/previous-DONE.txt·previous-final-receipt.json에 보존한다.

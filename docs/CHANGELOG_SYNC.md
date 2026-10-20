@@ -1,3 +1,15 @@
+## 2026-10-20 CH1-06 승인 후속 — CH2 stage2/3 기대값 정정·기술 BLOCKED 해소
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 사용자 승인 / 범위 | a68294a5 판정에서 Mac Codex 소유 CH2 테스트의 stage2/3 낡은 거부 기대 갱신 명시 승인. 같은 codex/ch1-06-20261020 재개. 후속 fetch main6d987cb8·최신 game SHA4d911cdd… 동일; Main·공용6·CH2 제품·공유 맵·원본 추가0줄 |
+| test/fdgCh2Stage4Source.test.mjs | CLI/API 기존2·3 거부를 원본 근거 양성 API·CLI 계약으로 전환. 각각 미지원10·35 추가해 stage 거부10+10=20 유지, 교차장 덮어쓰기2·stage0전용 거부2 추가. 기존 잘못된 seed/경로/schema/symlink 단정 동일, +31/-2·검사 약화0 |
+| 원문 단정 | game18178–18186(si2 penta_circle/eye_tree/flesh_ball·mega1·holes13/1000·250/300/250/200),18187–18195(si3 throne/bone_arch/flesh_maw·mega0·holes14/1100·250/400/250/200). 독립 AST 값/행/SHA·최종타일SHA5b40eb67…·START4020/7420·출력byte 검증 |
+| 자기 소비자 회귀 복구 | CH1-05 캐시 도입 후 CH2 상속소비자가 부모 _ready를 건너뛰어 충돌캐시가 비는 회귀 발견. native_ch1_area_world.gd 1줄에서 decoded캐시는si2/3에 한정하고 나머지는 원래 bundle.colliders 직접 조회 유지. CH2 제품 수정0·회귀 단정 약화0, 실패원문 보존 |
+| 전체 검증 | CH1·CH2 이식 Node **64/0**, Godot 전10파일 **172243/0**(CH1 3602·CH2/EC2 168641)·skip0·ERROR0. contracts5/0·encounter3/0·P3002298/0·P300343/0; 맵28/9 동일제목·새실패0 |
+| 시각 / 보존 | 시각 **FAIL 유지**·Main/적/보스/P3진행/전환 미연결. si1/si3 실창16PNG 이전과byte동일. 최초 headless shader ERROR2·BLOCKED 이력 별도보존. 매Godot전2이상30초대기·격리 override0byte |
+| 보고 / 제출 | [보고서](engine/orders/reports/ch1-06_REPORT.md)에 승인·전후 단정·근거·후속전체수치. ~/exoduser-wt/_out/ch1-06/approval-followup/ 원로그, 자기branch 정상훅·push/원격일치·DONE 뒤 자기WT제거. main push/force/git add -A0 |
+
 ## 2026-10-20 CH1-06 si3 독립 구현·검수 / CH2 계약 BLOCKED
 
 | id / 적용 위치 | 현재 정확 계약 |
