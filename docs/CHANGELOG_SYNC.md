@@ -1,3 +1,20 @@
+## 2026-10-21 DEMO11-05 — main 성능 수정 병합·tick 경로 점검
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 병합·범위 | 기존 fc8ceaa0에 origin/main8dbbf2b0(aa1eaea5a 포함) 정상 merge. CHANGELOG 양쪽 절 보존, adapter 추가 코드 변경0 |
+| 검증 | save_adapter 목록 생성 API0건, advance/poll 경로 확인. 관련79/0·5/0·8/0·10,388/0·5,952/0 각1회, 합계16,432/0. 별도 성능 벤치 없음 |
+| 제출 | [후속 근거](engine/orders/reports/demo11-05_REPORT.md), 원로그 _out/demo11-05/merge-*. 같은 branch 일반 push·원격 일치·DONE 추가 후 자기 worktree 제거 |
+
+## 2026-10-21 DEMO11-05 — demo native local 저장소 IO adapter
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준·원본 | 최신main01051599·gap61ab71be DEMO11-05. G62111/62128–62173·I3486–3520·G3935–3944/62212, 평문 JSON/게임 단일 키·active·5슬롯·auto/boot 경계 |
+| 구현 | 새 demo_local_storage.gd, 고정7키·UTF-8 bytes 보존·실제 native 파일 IO·독점 writer/temp/readback/rename·중복/충돌/재진입/실패 settlement. 기존 SV reader/primitive ACK/lifecycle 실제 재사용, 기존 모듈 HOLD는 불변 |
+| 검증 | 신규79/0·별도 프로세스 재읽기5/0·경로 IO 실패 집중8/2→수리 후8/0. 기존 primitive10,388/0·reader5,952/0 각1회, 정상 ERROR/WARNING0. 최초 신규75/0과 집중 실패 로그 보존/중복 합산0 |
+| 보호·제출 | Main/State/전투/맵/기존 SV/사용자 First 저장소 변경0. demo 전용 namespace만 IO, 새 adapter/test/UID·SAVE 추적 보충·[DEMO11-05 보고서](engine/orders/reports/demo11-05_REPORT.md). 원로그 ~/exoduser-wt/_out/demo11-05/, pgrep/30초 gate·각 격리명·override 종료0byte. 정상 훅·자기 branch push/원격 일치/DONE 뒤 자기 worktree 제거 |
+
 ## 2026-10-21 DEMO11-01 Main 부팅의 1-1 데모 권위
 
 | 항목 | 구현·검수 근거 |
@@ -46,7 +63,6 @@
 | 검증 | 신규22,364/0. EC2선택7,483/0·constructor159,902/0·EC3선택10,234/0·factory3그룹/0·contracts5그룹/0. 최종ERROR/WARNING0. 변이5종에서347/2499/112/6/154실패검출후byte복원 |
 | 보호 / 제출 | 기존1,607파일byte동일. Godot13launch 매회count1·2이상30초대기, 지정/기존상수격리·override복원. [EC4-01 보고서](engine/orders/reports/ec4-01_REPORT.md), 원로그 ~/exoduser-wt/_out/ec4-01/. 자기branch push·원격SHA/DONE뒤자기worktree제거 |
 
-<<<<<<< HEAD
 <<<<<<< HEAD
 
 ## 2026-10-20 TRACE-ENEMIES-CH4 4장 적 원본 추적·작은 이식 단위
@@ -254,7 +270,7 @@
 | 음성 대조 / 판정 | 저장소 밖 동일18단정 진단본에서만 종료12프레임+200ms 제거 → ERROR1·ObjectDB2객체·MP3리소스1·Orphan StringName1. Stream/Playback ID 각각9223372280157967279/9223372280225076142 정확일치. 비동기 오디오 정리 전 quit 문제; 원문 main 오류 재현으로 포장0·레슨 제품 결함 주장0 |
 | 이미 반영 / 소유 | QA-004 680a2758이 기준조상, I 원문 SHA88840f7a…는 QA-004 최종본과byte동일. 기존 보관 적 해제/하니스 대기 유지, 다른 담당 P2-007a 제품 패치0. 별도 총괄 원로그와의 동일건 여부 미확정 |
 | 실패·제출 | 첫 외부 probe 들여쓰기 Parse Error는 로그/초안 보존·통과 제외. [보고서](engine/orders/reports/p2001i-diag_REPORT.md)에 원문·전후/OLD·NEW·소유·제한. ~/exoduser-wt/_out/p2001i-diag/. 자기branch 정상훅/push·원격일치·DONE 뒤 자기WT 제거, R 보존 |
-=======
+
 ## 2026-10-20 EC3-02 3장 catalog·초기38필드 projection
 
 | id / 적용 위치 | 정확 계약·실제 검수 |
@@ -263,7 +279,6 @@
 | 원본 | 40..49각matching draw2/4/3/2/2/2/4/3/4/6,offtimer9999/phase−1/bleed0/상수flag·coords0draw,orbit31260뒤/erratic31300앞. raw46speed0분기·44R10(기획8과불일치),catalogshield%와실HP방어구분 |
 | 검수 | 최종신규12,602/0·원문1,000·38키값/순서/소비binary64/잘못된샘플위치검사. 회귀6종최종실패0/ERROR0/SKIP0. 최초importSIGSEGV−11/이후캐시누락ERROR50·실패단정10 원문보존,동일명령재import0/0및해당회귀4종재실행통과. 원인미확인·숨김0 |
 | 경계·기반 | main6d987cb8a에EC2-02 a10924eb포함하여main분기,EC3-01은미병합/미소비. 전체HP/coreprovider통합은HOLD·공용Main/State/저장/다른담당0줄. Node필수인자/출력join·UTF8임시JSON,새EXODUSER-ec3-02-Isolated-20261020·기존각상수/Godot전pgrep2이상30초대기/override0byte. [보고서](engine/orders/reports/ec3-02_REPORT.md)·원로그 ~/exoduser-wt/_out/ec3-02/ |
->>>>>>> fb8e80d0
 =======
 >>>>>>> 01d036d4
 
