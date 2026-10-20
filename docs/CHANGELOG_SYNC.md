@@ -1,3 +1,14 @@
+## 2026-10-20 TRACE-ENEMIES-CH3 원본 추적·이식 설계
+
+| 항목 | 원본·정적 검수 근거 |
+|---|---|
+| 기준 / 범위 | 최신main26c050a99·game/index 고정byte. 문서1개+이절만, 제품/테스트/설계 수정0·Godot/import0 |
+| 분모 / 의존 | si10~13 일반30종/가중치136·R11/28. 공통0..19+47은기존CH1/CH2·PC의존, 별도유형9개. EC2-01/02 main포함·03/04와MAPS_CH3는고정원격미병합참조 |
+| 전수 추적 | 유형별catalog·속성·timer·AI·탄/소환/정예·지역접점, 전용38필드/직접비교56행·mkEn40행색인. 같은etype/full공용본문중복이식0 |
+| 주의 계약 | 굴undefined/49자식40실등록·P0도D/47clone미등록 분리. 40/41 timer2회·46callback덮음·49독립if와후대입정예를원문대로기록 |
+| 순서 / 검수 | 첫EC3-01은신규순수선택정책/공용0줄지시서. 문서값·행색인·링크·표구조대조/독자질문5개검토. 원문선택36건·AI블록10개는fixture관측이며게임/Godot PASS아님 |
+| 제출 / 보호 | [ENEMIES_CH3 추적](engine/FDG_SOURCE_TRACE_ENEMIES_CH3_20261020.md), 원로그 ~/exoduser-wt/_out/trace-enemies-ch3/. R branch/HEAD/index/work보존, 정상훅·자기branch push/원격일치·DONE후자기WT제거 |
+
 ## 2026-10-20 SND-08 독립 원문 믹스·합성·레시피 모델
 
 ## 2026-10-20 NW-03 MAP_OBJS action의 독립 명령 계획
