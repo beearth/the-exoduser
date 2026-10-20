@@ -62,3 +62,17 @@
 각 테스트 상수 namespace 또는 `EXODUSER-demo11-integ-Isolated-20261021`만 사용했고 실제 사용자 `EXODUSER-Godot-Native-First` 사용0. 매 Godot 실행 전 exact pgrep count≥2이면30초 대기, `*.gate.jsonl` 보존. override는 실행마다 격리 설정 후0byte. 기존 사용자 Godot를 종료하지 않았다.
 
 원로그·순서/전체 SHA·실행 argv·namespace·실패 줄: `~/exoduser-wt/_out/demo11-integ/{manifest.json,audit.json,author_actions.json,*.json,*.out,*.err,conflicts/}`. R branch/HEAD/status 시작·종료 대조, 자기 브랜치 정상 push·원격 SHA 일치·DONE 작성 후 자기 worktree만 제거한다. PC는 이 브랜치를 별도 worktree에서 준비/import하고 Node·source 경로를 자기 환경 인자로 넘겨 검증해야 하며, main에 자동 반영하지 않는다.
+
+
+## 2026-10-21 보충 — 최신 공통 기반 1f0a71fb 추가 merge
+
+사용자 보충 지시에 따라 제출본2500b677 위에 `1f0a71fb183e949dbdabfdc74586263e0f51eb01`를 정상 merge했다. 코드 merge SHA `f79fc969e27fe66a5e6cb60bbd4601b7eb7d9554`. A d931ebe2·B c6d19973는 해당 의존의 ancestor이며 중복 merge하지 않았다. 기존33단계 검사 이력과 미검증 판정은 위 원문 그대로 유지한다.
+
+| 경계 | 해소·검증 |
+|---|---|
+| 충돌4파일 | CHANGELOG_SYNC/WORK_BOARD 독립 기록 병존. Main 기존 장비·성장·필드보스·F·workshop 함수 보존, 새 의존의 A 직접 공통 ingress 제거 수용. factory A/B는 최신 단일 등록표·prepared capability로 교체하고 F 기존 생성 경로 유지 |
+| 공용·보호 | 이전 제출 대비 Main3369 인근 A ingress1줄 삭제, State/World/Player 및 보호 피해 코드 추가 변경0. fieldboss clock·F 이관은 임의 변경0. 번역 CRLF 4975줄/loneLF0 |
+| 대표 검사1회 | test_demo11_enemy_base2 원문 그대로89/0·ERROR0·exit0. 실제15spawn/tick·13death, B8/D25 PC death HOLD 유지. editor import는 준비 실행이며 검사 합산0. 기존 실패 suite 재실행0·새 성능 벤치0 |
+| 미완료 유지 | 이전41 BGM8실패, EL/19ui/37 하니스 미검증 및 전체 E2E 인계 유지. F는 legacy 경로 유지, A/B/D와의 전체 동시 자동 자연 전투 완료 주장0 |
+
+원로그 `~/exoduser-wt/_out/demo11-integ/supplement-1f0a71fb/`. 테스트 상수 격리명 사용, override 종료0byte, 실제 사용자 저장0. 충돌 원문·gate·argv·결과·R대조 보존.

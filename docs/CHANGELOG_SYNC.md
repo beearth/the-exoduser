@@ -1,3 +1,8 @@
+## 2026-10-21 DEMO11-INTEG 보충 — 최신 A/B/D 공통 기반
+
+- 사용자 지정1f0a71fb를 기존2500b677 위에 정상 merge, A/B 중복 merge0. Main 기존 기능/F 경로·보호 코드 보존.
+- 대표 base2 원문89/0·ERROR0·15spawn/13death, PC death2종 HOLD와 이전 실패/하니스 인계 유지. [보충 보고](engine/orders/reports/demo11-integ_REPORT.md).
+
 ## 2026-10-21 DEMO11-INTEG — Mac 33후보 통합 검증용 브랜치
 
 - 최신origin/main0138c5bb9에서 지정33개SHA 순차 merge,31은44 의존 포함/no-op. 코드 통합c6932a85·모든 target ancestor. main push/rebase/force0, 기능 추가보다 기존 각 owner/PC 코드·수명/분기 보존. 표에 충돌 파일/해소 근거/단계SHA/대표 검사 기록.
