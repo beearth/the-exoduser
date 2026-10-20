@@ -595,7 +595,8 @@ func _build_panel() -> void:
 	keycap_style.content_margin_top = 14.0
 	keycap_style.content_margin_bottom = 14.0
 	keycap.add_theme_stylebox_override("panel", keycap_style)
-	keycap.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	_ui["keycap_style"] = keycap_style
+	keycap.size_flags_horizontal = Control.SIZE_SHRINK_END # 실측: 키캡 우측 정렬(right=콘텐츠 우변 1826)
 	_ui["keycap"] = _label(28, COL_KEYCAP, "W A S D", 700) # 실측 400(Cinzel) — 대체 글꼴 시각 등가 보정(근사 기록)
 	_ui["keycap"].autowrap_mode = TextServer.AUTOWRAP_OFF
 	keycap.add_child(_ui["keycap"])
@@ -616,8 +617,9 @@ func _build_panel() -> void:
 	_ui["hold"] = _label(12, COL_KIND_PHYSICAL)
 	_ui["hold"].visible = false
 	details.add_child(_ui["hold"])
-	var hold_meter_bg := ColorRect.new() # 실측 holdMeter h8, accent=kind색
-	hold_meter_bg.color = Color(0, 0, 0, 0.45)
+	var hold_meter_bg := ColorRect.new() # 69행 CSS: h8·margin-top7·accent=kind색. 트랙은
+	# <progress> 기본 렌더(짙은 회갈) — 의사요소 실측 불가로 패널 진행바 바닥색(#39312a) 채택(근사 기록)
+	hold_meter_bg.color = Color(0x39 / 255.0, 0x31 / 255.0, 0x2a / 255.0)
 	hold_meter_bg.custom_minimum_size = Vector2(0, 8)
 	hold_meter_bg.visible = false
 	var hold_meter_fill := ColorRect.new()
@@ -721,6 +723,9 @@ func _render() -> void:
 	_ui["status"].add_theme_color_override("font_color", kind_color)
 	_ui["hold"].add_theme_color_override("font_color", kind_color)
 	(_ui["hold_meter_fill"] as ColorRect).color = kind_color
+	# 실측: 연습 중 키캡 테두리=kind 색(#c5a4f2 등)·글자 26px (intro 28px·#e0c18b)
+	(_ui["keycap_style"] as StyleBoxFlat).border_color = kind_color if phase == "practice" else COL_STATUS
+	(_ui["keycap"] as Label).add_theme_font_size_override("font_size", 26 if phase == "practice" else 28)
 	var basic_checks := [movement_done, left_click_done, right_click_done, false]
 	var current_row: int = (step + 3) if step < 0 else (3 if step == 8 else 4 + step)
 	var rows: Array = _ui["rows"]
