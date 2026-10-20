@@ -1573,7 +1573,7 @@ NEXT PASS: LEAF_SITE상단직선형재질경계의소스레이어확인. 작은�
 | 충돌 | 원 반지름 80(`colSz=sz×.4`) | 타원 `colW:80,colH:58,colOy:7` (`_OBJ_META.pit_poison`, 모든 pit_poison 공통) | 그림 흙 테두리 = 타원 반경 약 83×62·중심 +7(256셀 contour(106,80,9) × 200/256). 원은 북쪽으로 25px 맨땅까지 막았음 |
 
 실측(headless 1600×900): isW 경계 N52·S66·E/W80·NE60·SW74px. 북쪽에서 걸어오면 중심 −67px(구덩이 북쪽 턱)에서, 남쪽에서 오면 +80px(남쪽 턱)에서 정지. 1x·2x 확대로 구덩이 윤곽 확인, 점·노이즈 없음.
-Godot 이식 연동: `engine/fdg/map-source-adapter.js` v7 delta는 `pit_poison` circle radius80만 허용 → 다음 소스 재추출 시 ellipse(80,58,+7)로 계약 갱신 필요(이식 총괄 세션에 통보, 엔진 코드는 이 작업에서 미수정).
+Godot 이식 연동(P3-001, 2026-10-20 PC): `engine/fdg/map-source-adapter.js` v7 delta 계약을 ellipse/radii[80,58]/colOy7로 갱신했다. `effectiveWorld:[6500,5580]`에 Y offset을 한 번 적용해 canonical center[6500,5587]/yaw0, 수동 subset14=원11+타원3이다. 최신 웹 원본을 별도 재추출하고 `godot/data/map.json`의 pit collider1·pit metadata만 인수했다(Godot 전체 prop collider19=원15+타원4). 다른 나무 텍스처4개/메타4필드와 에셋46개 차이는 범위 밖으로 보류했으며 geometry·배치·다른 충돌·기존 PNG 변경0이다. 신규 Godot195검사/실패0·기존 map1/1, 실창 시각·전체 물리 동등성은 미검증. 원 v7 producer JSON 재발행/실설치는 미검증이며 [P3-001 보고서](../engine/orders/reports/P3-001_REPORT.md)의 Git·검수 상태를 따른다.
 
 ### MAP-005 — 서 있는 소품 투사 그림자 + 나무 그림자 농도 통일 (2026-10-20)
 
