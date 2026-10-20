@@ -1,3 +1,13 @@
+## 2026-10-20 BC2-03 2장 신규 10기술 시작 계산
+
+| 항목 | 현재 정확 계약 |
+|---|---|
+| 기준·의존 | main6d987cb8a 이상, BC2-02 main미포함으로인수a3b5391c 끝분기+최신main 정상merge. 기존 장catalog/BC06 command·ack·RNG·수치helper 재사용, 기존모듈0줄 |
+| 소유 | 신규10의4state시작/6queue요청만 자체 계산. tele/actorphase 구분, fanWave90, 물리spiral60/240/nextShot60, fire x→y→r→append·delay6, raw피해/참조/순서 유지 |
+| 검증 | Node인자·source-game·자기UTF-8 fixture 파일. 신규845상황/14,225event/5,640RNG, 25,749검사/0실패. 기존BC01~08 무수정131,655/0, BC2-01 7,169/0·BC2-02 44,891/0 |
+| 검출·경계 | 격리5결함주입 모두실패검출(상세보고서). 실제집행0/explicitack/full_tick=false. 공용6·타담당·기존테스트·원본·저장·바이너리0, 실제Main/State/전투dispatch HOLD |
+| 산출·정리 | [BC2-03 보고서](engine/orders/reports/bc2-03_REPORT.md), 원로그~/exoduser-wt/_out/bc2-03/. 매Godot gate/30초대기·각격리명·override종료0byte. 자기branch push/원격일치/DONE후자기WT제거 |
+
 ## 2026-10-20 BC2-02 승인 반영: 장 catalog 일반화·2장 재사용
 
 | 항목 | 현재 정확 계약 |
