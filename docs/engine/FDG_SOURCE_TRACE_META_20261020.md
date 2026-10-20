@@ -462,3 +462,5 @@ State API는 `apply_native_add_exp(owner, final_value: int)`이다. **이미 /3�
 실제 구현 준비는 META-01이 가장 작고 독립적이다. 새 곡선 파일+기존 maxExp caller+새 경계 테스트로 끝나며, 저장·소유·보상 순서의 나머지를 보존한다. 다른 소비자는 §7의 선행 조건에 맞춰 별도 인수한다.
 
 제출은 이 문서1개를 경로 지정 staging·자기 브랜치 commit/push하고 원격 ref SHA를 대조한다. 최종 제출 SHA·브랜치·한 줄 요약은 로컬 `~/exoduser-wt/_out/trace-meta/DONE.txt`에 기록한다. main push·병합·force·reset은 하지 않는다.
+
+DEMO11-01(2026-10-21)은 Main 부팅 데모 권위와 readonly cap 정책 진입점을 연결한다. META-06 수식·기존 테스트는 그대로 재사용한다. 실제 State.addExp의 entry/loop 교체는 DEMO11-20으로 유지한다. 인터페이스와 공용 변경 범위는 [DEMO11-01 보고서](orders/reports/demo11-01_REPORT.md)를 따른다.
