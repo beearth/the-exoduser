@@ -1,7 +1,7 @@
 ## 2026-10-21 MAP11-11 — 필드·아레나 collider/LOS/flow provider
 
 - main0138c5bb + 인수된6bcc483d·3f9c87a4 정상merge. 승인 geometry 동일. 독립 runtime의 static collider/4지역/22anchor/field↔arena gate callback과 DEMO11-37·43 이름 계약은 [보고서 첫 표](4.1맵디자인+설정/MAP11_FIELD_PROVIDER_20261021.md).
-- 기존 compiler와 source spawn_hole_count API 재사용(4 S굴 예정32), boss mw128/mh108/T40 유지. flow는 setup에서 준비, 질의는 캐시·scalar sweep; 틱 목록 생성0. Main/State/World/카메라/아트/전투/저장 및 기존 preview 변경0. 제품 설치/kill writer는 기존 owner 범위.
+- 기존 compiler와 source spawn_hole_count API 재사용(4 S굴 예정32), boss mw128/mh108/T40 유지. flow는 setup에서 준비, 질의는 캐시·scalar sweep; 틱 목록 생성0. Main/State/World/카메라/아트/전투/저장 및 기존 preview 변경0. 제품 설치/kill writer는 기존 owner 범위. 아트·기존 preview 변경0은 의존 merge 이후 기준이며, 승인된 의존 에셋 반입과 구분한다.
 - 신규49/0·직접회귀4종147/0 각1회, 최종ERROR0/WARNING0. 초기 class cache ERROR6 원문보존 후 import·실패 스위트 재실행. 벤치1회2000묶음165.167ms(82.5835µs/묶음), 준비1184node152.132ms는 tick 밖. headless 격리실경로/매실행pgrep·30초/override0byte. G1 시각검수대기 RETOUCH 상속.
 
 ## 2026-10-21 MAP11-07 — 1-1 필드 G1 회색 mass·4지역·두고리

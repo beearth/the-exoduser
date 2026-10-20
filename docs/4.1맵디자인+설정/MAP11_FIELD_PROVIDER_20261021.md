@@ -27,7 +27,7 @@ content_valid는 컴파일 내용, runtime_ready는 tree 수명·동일 transfor
 | 직접 회귀 | field41/0 · actual walk49/0(12,003 motion call/4지역) · arena54/0 · malformed schema3/0, 각각1회. 합147/0, ERROR0/WARNING0 |
 | 120fps 질의/flow 벤치 1회 | 2,000회/165.167ms, flow+LOS+sweep 묶음82.5835µs. 1,184node 준비152.132ms(틱 밖/loading). M5Pro headless CPU 벽시계1회, 120fps frame8.333ms의0.99%; map CPU1.25ms 기준15묶음(1.239ms). 더 많은 entity/복잡한 질의는 추가 예산 필요. 제품 render FPS 보장 아님 |
 | 초기 실패 | class cache 미생성으로 native_spawn_hole_system 전역 클래스 compile ERROR6, exit−15(자기 실패 프로세스 종료). 원문 보존 후 editor import ERROR0/WARNING0. 통과로 집계하지 않음 |
-| 변경 경계 | 아트·Main·State·World·카메라·전투·저장 0줄(main 기준), 기존 field recipe/preview·arena preview 0줄(인수 의존 기준). 새 독립 runtime/flow/scene/test 및 관련 문서. 실제 제품 소비자 설치는 각각 기존 owner 통합 작업 |
+| 변경 경계 | Main·State·World·카메라·전투·저장 0줄(main 기준). 아트·기존 field recipe/preview·arena preview는 MAP11-02/07 인수 의존 merge 기준 변경0줄; 의존 merge가 추가한 기존 아레나 에셋은 신규 제작으로 집계하지 않음. 새 독립 runtime/flow/scene/test 및 관련 문서. 실제 제품 소비자 설치는 각각 기존 owner 통합 작업 |
 
 원로그·pgrep/30초 대기·실패 원문·벤치: `~/exoduser-wt/_out/map11-11/`. 실행마다 override.cfg 격리 설정 후 0byte로 비운다. 기존 회귀는 각 파일 USERDIR 상수 사용. 가짜 PASS/실제 사용자 저장 접근 없음. Node/OS.execute 하니스 사용 없음. 기존 compiler 회귀의 duplicate/outside/route sweep/도달 불가 거부 검사 유지.
 
