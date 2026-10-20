@@ -1,3 +1,11 @@
+## 2026-10-21 DEMO11-28 — 분해 policy→단일 State writer·INV/cache/UI
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준·범위 | main ac3764bfe. 기존 native_meta_salvage_policy 0줄, Main +23/State +41만 접점 추가. 잠금/장착/identity 재검증·단일 입금/제거/picked, G키 Hell Gothic UI·번역3338–3366 |
+| 검증 | 실제 Main29/0·경계6/0·입력6/0·기존 policy68/0·INV142/0 각1회, 합계251/0/ERROR0·기존Camera WARN2. 최종 GUI/crop16/0·WARN1 별도. 초기 시각 RETOUCH 보존 |
+| 인계 | [보고서](engine/orders/reports/demo11-28_REPORT.md), _out/demo11-28/captures/ 전체3+1x9. 눈 검수·자연 줍기/저장 소비자 대기. R/First 불변·정상 훅·자기branch push/remote/DONE 후 자기WT 제거 |
+
 ## 2026-10-21 DEMO11-05 — main 성능 수정 병합·tick 경로 점검
 
 | 항목 | 구현·검수 근거 |

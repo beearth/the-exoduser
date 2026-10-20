@@ -1322,3 +1322,44 @@ func commit_native_auto_potion(owner: Node, field: String, value: Variant) -> Di
 			_p.hp = receipt.hp # actual HP readback, not a second HP owner
 		_: return {"accepted":false}
 	return {"accepted":true}
+
+# DEMO11-28: the sole salvage wallet/INV/drop writer; UI never owns inventory.
+const NATIVE_SALVAGE = preload("res://scripts/native_salvage_transaction.gd")
+var _native_salvage_revision := 0
+var _native_salvage_committing := false
+func read_native_salvage_revision() -> int: return _native_salvage_revision
+func commit_native_salvage(main: Node, refs: Array, junk_only: bool = false, drop: Dictionary = {}, pickup_failed: bool = false) -> Dictionary:
+	if _native_salvage_committing or not is_native_new_run_state_ready() or not is_native_main_legendary_owner_current(main): return {"applied":false,"reason":"owner_not_current"}
+	if not (_g.get("mats") is int or _g.get("mats") is float) or not is_finite(float(_g.mats)): return {"applied":false,"reason":"wallet_not_numeric"}
+	var inv: Dictionary=_inventory
+	if not inv.get("bag") is Array or not inv.get("equipped") is Dictionary: return {"applied":false,"reason":"inventory_shape"}
+	var result: Dictionary
+	if drop.is_empty():
+		result=NATIVE_SALVAGE.manual(inv,refs,junk_only)
+	else:
+		if not NATIVE_SALVAGE.contains_ref(_native_drop_records,drop) or NATIVE_SALVAGE.JS._truthy(drop.get("picked")) or drop.get("type")!="item" or not drop.get("item") is Dictionary: return {"applied":false,"reason":"drop_not_current"}
+		if NATIVE_SALVAGE.contains_ref(inv.bag,drop.item) or NATIVE_SALVAGE.contains_ref(inv.equipped.values(),drop.item): return {"applied":false,"reason":"drop_already_owned"}
+		var filters: Dictionary=main.read_native_feel_opt_drop_filters()
+		if not filters.get("ready",false): return {"applied":false,"reason":"pick_filter_not_ready"}
+		result=NATIVE_SALVAGE.auto_value(drop.item,filters,pickup_failed)
+		if result.get("ready",false): result.total=result.value; result.items=[drop.item]
+	if not result.get("ready",false): return {"applied":false,"reason":result.get("reason","ineligible")}
+	var after: float=float(_g.mats)+float(result.total)
+	if not is_finite(after) or absf(after)>NATIVE_SALVAGE.MAX_SAFE: return {"applied":false,"reason":"wallet_precision_unproven"}
+	# All checks/prices precede the synchronous commit; no callbacks in it.
+	_native_salvage_committing=true
+	if drop.is_empty():
+		for i in range(inv.bag.size()-1,-1,-1):
+			if inv.bag[i] is Dictionary and NATIVE_SALVAGE.contains_ref(result.items,inv.bag[i]): inv.bag.remove_at(i)
+		inv.selected=null
+	else: drop.picked=true
+	_g.mats=after
+	_native_salvage_revision+=1
+	_native_salvage_committing=false
+	return {"applied":true,"gain":result.total,"count":result.items.size(),"mats":after,"revision":_native_salvage_revision,"automatic":not drop.is_empty()}
+
+func mark_native_salvage_junk(main: Node, item: Dictionary, enabled: bool) -> bool:
+	if not is_native_new_run_state_ready() or not is_native_main_legendary_owner_current(main) or not NATIVE_SALVAGE.eligible(_inventory,item): return false
+	item.junk=enabled
+	_native_salvage_revision+=1
+	return true

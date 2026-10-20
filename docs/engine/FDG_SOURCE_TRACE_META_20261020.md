@@ -466,3 +466,8 @@ State API는 `apply_native_add_exp(owner, final_value: int)`이다. **이미 /3�
 제출은 이 문서1개를 경로 지정 staging·자기 브랜치 commit/push하고 원격 ref SHA를 대조한다. 최종 제출 SHA·브랜치·한 줄 요약은 로컬 `~/exoduser-wt/_out/trace-meta/DONE.txt`에 기록한다. main push·병합·force·reset은 하지 않는다.
 
 DEMO11-01(2026-10-21)은 Main 부팅 데모 권위와 readonly cap 정책 진입점을 연결한다. META-06 수식·기존 테스트는 그대로 재사용한다. 실제 State.addExp의 entry/loop 교체는 DEMO11-20으로 유지한다. 인터페이스와 공용 변경 범위는 [DEMO11-01 보고서](orders/reports/demo11-01_REPORT.md)를 따른다.
+
+
+## 2026-10-21 DEMO11-28 — META-03 실제 소비자
+
+가격 순수 policy는 무수정이다. 새 native_salvage_transaction은 admission/identity만, State.commit_native_salvage가 유일한 분해 입금·INV/picked writer, Main은 기존 cache 무효화/UI 갱신/선택 저장 위임을 맡는다. G50367–50407 최신 잠금/장착 재검증을 G507xx 구 forge index 제거보다 우선해 적용했다. 자동은 G41448–41460의 max1·필터/가방 부족 조건 그대로이며 실제 journal을 받는 Main 접점까지 검수, 자연 줍기 소비자는 기준 main 미인수다. G키 분해 UI·격리 실제 Main·245/0/캡처와 잔여 연결은 [DEMO11-28 보고서](orders/reports/demo11-28_REPORT.md).
