@@ -1,3 +1,13 @@
+
+## 2026-10-21 DEMO11-23b — 실제 가방·공유창고 UI
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 의존 | main0138+승인22r d276/진단2e0d. 명시06c 완료93f118fb가 main 미포함이므로 중복 owner 방지용 정상merge fb76706. State 끝 양측 함수 보존 |
+| 연결 | 기존 State INV/STORAGE·06c IO/복원 단일owner. UI 선택/drag/필터/정렬·두 카드/상세·22r 장착. Main+12/State+14 추가만, 전투0·저장형식0. native JSON 소수ID exact decoder·원문 계산 유지 |
+| 검증 | 신규/집중1305/0(기능1286·저장10·guide5·null4), 직접회귀4종 각1회150073/0. 원문16가방160아이템·510 JS Number bit 일치. 최종ERROR/누수/잔류0 |
+| 화면·번역 | 실창1920×1080 3장+1x크롭3개, source factory/실제 입출고 fixture. 87 KO/EN·번역 CRLF prefix 보존. 화면 비교 자료 준비·총괄 검수 대기. [보고서](engine/orders/reports/demo11-23b_REPORT.md) |
+
 ## 2026-10-21 DEMO11-06c — PC 복원 handoff·단일 자원 writer·loaded 시작
 
 - main0138c5bb(PC a28117c1 포함) + 06b 재통합cadd5311 기반. PC 보호3종 관측을 기존 `_handoff`에 연결, State 임시 직접 HP/ST/MP·cap/rate writer를 PC raw restore writer로 대체했다. 지급 없는 실제 초기화 dispatcher 완료 후 restore→PC applyStats→기존 stage-entry refill→전체 Main boot→loaded 시작·저장 gate 해제. 신규 지급/슬롯/fresh intro 혼합0.

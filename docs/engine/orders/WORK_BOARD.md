@@ -20,6 +20,10 @@
 
 - main0138c5bb+22r d276e02e. SV-SHARED는 계산 전용이며 actual STORAGE owner/입출고 부재. 제품0줄·계산회귀149486/0·실제 UI/IO 미검수. [필요 인수](reports/demo11-23_REPORT.md).
 
+## DEMO11-23b · 실제 공유창고/가방 UI 검수 대기
+
+- 기존06c State/IO·22r 장착을 단일 owner로 재사용. main0138+완료06c93f 정상merge fb76706(미병합 의존 명시). 신규1286/0·집중10/0·직접회귀150073/0·3캡처 준비, 전투0/번역CRLF 보존. [보고서](reports/demo11-23b_REPORT.md).
+
 ## 역할 (2026-10-20 사용자 지시 기준)
 | 역할 | 누구 | 하는 일 |
 |---|---|---|

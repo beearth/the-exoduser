@@ -81,6 +81,7 @@ func plan_shared(d: Dictionary, current_mats: Variant) -> Dictionary:
 	var reads := _read_shared()
 	if reads.status!="READY": return reads
 	var policy := Shared.new()
+	policy.native_number_decoder=preload("res://port_modules/save_adapter/native_json_number.gd").decode
 	var mats := policy.read_mats("browser_origin",{"state":"value","value":reads.mats_raw})
 	var storage := policy.read_storage("browser_origin",{"state":"value","value":reads.storage_raw})
 	if mats.status!="READY" or storage.status!="READY": return {"status":"HOLD","reason":"shared_policy_error"}
@@ -94,7 +95,7 @@ func plan_shared(d: Dictionary, current_mats: Variant) -> Dictionary:
 	elif d.get("storage") is Array and not d.storage.is_empty(): legacy=d.storage[0]
 	var predicted_store: Array=storage.value.duplicate(true)
 	if legacy is Array and not legacy.is_empty() and predicted_store.is_empty(): predicted_store=legacy.slice(0,Shared.STORAGE_MAX)
-	var observations := {"mode":"browser_origin","mats_reads":[{"state":"value","value":reads.mats_raw},{"state":"value","value":str(int(predicted_mats))}],"storage_reads":[{"state":"value","value":reads.storage_raw},{"state":"value","value":JSON.stringify(predicted_store)}]}
+	var observations := {"mode":"browser_origin","mats_reads":[{"state":"value","value":reads.mats_raw},{"state":"value","value":str(int(predicted_mats))}],"storage_reads":[{"state":"value","value":reads.storage_raw},{"state":"value","value":JSON.stringify(predicted_store,"",false,true)}]}
 	# No legacy branch consumes its first observation: supply the post-rebind
 	# read there. A truthy nonempty legacy array consumes both.
 	if not (legacy is Array and not legacy.is_empty()): observations.storage_reads.pop_front()
@@ -110,6 +111,7 @@ func _persist_shared(plan: Dictionary) -> Dictionary:
 	var readback := _read_shared()
 	if readback.status!="READY": return _fail("shared_readback_failed")
 	var policy := Shared.new()
+	policy.native_number_decoder=preload("res://port_modules/save_adapter/native_json_number.gd").decode
 	var actual := policy.read_mats("browser_origin",{"state":"value","value":readback.mats_raw})
 	var items := policy.read_storage("browser_origin",{"state":"value","value":readback.storage_raw})
 	if actual.status!="READY" or items.status!="READY" or actual.value!=plan.plan.mats or items.value!=plan.plan.storage["0"]: return _fail("shared_readback_mismatch")

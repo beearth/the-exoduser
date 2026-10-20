@@ -414,6 +414,12 @@ func _ready() -> void:
 			player.process_mode=Node.PROCESS_MODE_PAUSABLE
 			world.process_mode=Node.PROCESS_MODE_PAUSABLE
 		_demo11_session.start_lifecycle(self)
+		source_inventory_ui=preload("res://scripts/native_inventory_panel.gd").new()
+		var inventory_layer:=CanvasLayer.new()
+		inventory_layer.layer=40
+		add_child(inventory_layer)
+		inventory_layer.add_child(source_inventory_ui)
+		source_inventory_ui.configure(self,source_state)
 	print("GODOT_FIRST_PLAYABLE_READY ", JSON.stringify({"runtime": Engine.get_version_info()["string"], "scene": "res://scenes/main.tscn", "viewport": get_viewport_rect().size, "player_spawn": player.position}))
 
 func mount_native_perspective_view(settings: Dictionary = {}) -> Dictionary:
@@ -3148,3 +3154,9 @@ func restore_native_equipment_caches(caller: RefCounted, token: Dictionary) -> b
 	bundle.reference.restore_eq_stat_cache_token(token.reference)
 	_source_l_eq_cache = token.legendary
 	return true
+
+# DEMO11-23b. UI-only request owner, opt-in save route above.
+var source_inventory_ui: Control
+func request_native_inventory_ui(action: String, item: Dictionary={}, data: Dictionary={}) -> Dictionary:
+	if not _native_main_service_live() or not is_instance_valid(source_inventory_ui): return {"applied":false,"reason":"inventory_not_ready"}
+	return source_state.apply_native_inventory_ui(self,action,item,data)
