@@ -284,3 +284,9 @@ CSS 캐시 ui-refinement.css?v=20260927-3. 신규 이미지/아이템 데이터 
  #lobby .lobby-content>.lobby-divider{height:24px!important;}
 }
 ```
+
+## 2026-10-20 Godot 이식 — 원본 글꼴 스택·인트로 키 안내 4컷 (P2-007a)
+
+- Godot 포트 UI는 웹과 같은 글꼴 토큰을 쓴다: `--font-hell`(Nanum Myeongjo→Noto Serif KR), `--font-hell-title`(Cinzel Decorative→Nanum Myeongjo→Noto Serif KR), `'Cinzel',var(--font-hell)`(타이머·화폐·키 표기), `'Cinzel',serif`(진행 표시·레슨 키캡), body `--font`(Noto Sans KR — 쿨다운 초·안내 노트·버튼), 펫 자막 `'Malgun Gothic',sans-serif`(시스템에 없으면 Noto Sans KR). 단일 공급자 `godot/scripts/native_ui_fonts.gd`, 글꼴 파일 `godot/assets/fonts/ofl/`(OFL 동봉).
+- 굵기는 game.html @import 로드 굵기 기준 브라우저 매칭 그대로(Cinzel은 700/900만 로드 → 일반 굵기 요청도 700으로 보임).
+- 인트로 시작 대사+키 안내 4컷(`#introKeys`)을 원본 CSS 607~640 값으로 이식 — 웹 Chromium 1920×1080 실측과 패널 높이·요소 위치 ±0.1px. 상세·근거 표: [docs/engine/FDG_P2_007A_UI_POLISH_20261020.md](../engine/FDG_P2_007A_UI_POLISH_20261020.md).

@@ -1,0 +1,130 @@
+[
+  {
+    "source": "img/atlas_ch1_8dir_south.png",
+    "resource": "res://assets/enemy/atlas_ch1_8dir_south.png",
+    "target": "godot/assets/enemy/atlas_ch1_8dir_south.png",
+    "bytes": 798229,
+    "sha256": "156e76481bc26682afe7d85c01c94477e66e1718bbe88f9d67baddbcc561da23",
+    "action": "reused-existing-byte-identical-copy"
+  },
+  {
+    "source": "img/atlas_ch1_8dir_south_east.png",
+    "resource": "res://assets/enemy/atlas_ch1_8dir_south_east.png",
+    "target": "godot/assets/enemy/atlas_ch1_8dir_south_east.png",
+    "bytes": 808193,
+    "sha256": "ed7693ea4052cf27c4318864f6e54edc846e941a8c8e12afecf3e03c904075ba",
+    "action": "reused-existing-byte-identical-copy"
+  },
+  {
+    "source": "img/atlas_ch1_8dir_east.png",
+    "resource": "res://assets/enemy/atlas_ch1_8dir_east.png",
+    "target": "godot/assets/enemy/atlas_ch1_8dir_east.png",
+    "bytes": 693012,
+    "sha256": "2b4cbc2cb2f8b33f1ce10cdce6e17b4e6b7c75fff13e0fd60787ddb3e803a81a",
+    "action": "reused-existing-byte-identical-copy"
+  },
+  {
+    "source": "img/atlas_ch1_8dir_north_east.png",
+    "resource": "res://assets/enemy/atlas_ch1_8dir_north_east.png",
+    "target": "godot/assets/enemy/atlas_ch1_8dir_north_east.png",
+    "bytes": 729568,
+    "sha256": "b63ed215d947a6eb6b4709dc03fe169bb9482fe34814ef2a78f1a7efd3b2fff3",
+    "action": "reused-existing-byte-identical-copy"
+  },
+  {
+    "source": "img/atlas_ch1_8dir_north.png",
+    "resource": "res://assets/enemy/atlas_ch1_8dir_north.png",
+    "target": "godot/assets/enemy/atlas_ch1_8dir_north.png",
+    "bytes": 761588,
+    "sha256": "7c4e569e3c7e35c50e72e0b9ecb7c8fffe3ee73e3b98be976ced6d7a34a8d252",
+    "action": "reused-existing-byte-identical-copy"
+  },
+  {
+    "source": "img/atlas_ch1_8dir_north_west.png",
+    "resource": "res://assets/enemy/atlas_ch1_8dir_north_west.png",
+    "target": "godot/assets/enemy/atlas_ch1_8dir_north_west.png",
+    "bytes": 722767,
+    "sha256": "e48798ba3d89e7a80ee8942be10439126d57b876bcb5228888df9a289b586d69",
+    "action": "reused-existing-byte-identical-copy"
+  },
+  {
+    "source": "img/atlas_ch1_8dir_west.png",
+    "resource": "res://assets/enemy/atlas_ch1_8dir_west.png",
+    "target": "godot/assets/enemy/atlas_ch1_8dir_west.png",
+    "bytes": 655038,
+    "sha256": "d14e94607e70a14c068402a6d1047e78ab0cd710d07c61c42ec090f592acc27f",
+    "action": "reused-existing-byte-identical-copy"
+  },
+  {
+    "source": "img/atlas_ch1_8dir_south_west.png",
+    "resource": "res://assets/enemy/atlas_ch1_8dir_south_west.png",
+    "target": "godot/assets/enemy/atlas_ch1_8dir_south_west.png",
+    "bytes": 804413,
+    "sha256": "4801bd016a0804fedbfaa5d7b97eda7924cb093565d2a7864402570df6add64e",
+    "action": "reused-existing-byte-identical-copy"
+  },
+  {
+    "source": "img/atlas_ch1_8dir_walk_south.png",
+    "resource": "res://assets/enemy/atlas_ch1_8dir_walk_south.png",
+    "target": "godot/assets/enemy/atlas_ch1_8dir_walk_south.png",
+    "bytes": 2232971,
+    "sha256": "5de3eb47f666d60c72da13b9cee90a1544b1f325db62e9ce2624551205f58429",
+    "action": "reused-existing-byte-identical-copy"
+  },
+  {
+    "source": "img/atlas_ch1_8dir_walk_south_east.png",
+    "resource": "res://assets/enemy/atlas_ch1_8dir_walk_south_east.png",
+    "target": "godot/assets/enemy/atlas_ch1_8dir_walk_south_east.png",
+    "bytes": 2174353,
+    "sha256": "b5c16fd3b82d402e33d42cb087bdaf85aa1459b423aab9f8f654f74ea0142070",
+    "action": "reused-existing-byte-identical-copy"
+  },
+  {
+    "source": "img/atlas_ch1_8dir_walk_east.png",
+    "resource": "res://assets/enemy/atlas_ch1_8dir_walk_east.png",
+    "target": "godot/assets/enemy/atlas_ch1_8dir_walk_east.png",
+    "bytes": 1972388,
+    "sha256": "95acdda361d2d74add386083fc51dd44c8ea20d7883b299d1a00be618343c854",
+    "action": "reused-existing-byte-identical-copy"
+  },
+  {
+    "source": "img/atlas_ch1_8dir_walk_north_east.png",
+    "resource": "res://assets/enemy/atlas_ch1_8dir_walk_north_east.png",
+    "target": "godot/assets/enemy/atlas_ch1_8dir_walk_north_east.png",
+    "bytes": 2060929,
+    "sha256": "ebc2ba5f5f995e0c104c81829d97162d39b888ed92ffca35f016715a9396e41f",
+    "action": "reused-existing-byte-identical-copy"
+  },
+  {
+    "source": "img/atlas_ch1_8dir_walk_north.png",
+    "resource": "res://assets/enemy/atlas_ch1_8dir_walk_north.png",
+    "target": "godot/assets/enemy/atlas_ch1_8dir_walk_north.png",
+    "bytes": 2119638,
+    "sha256": "04471ea9d4b695cc79dd8285ce78316c4bb01749d24c4319936befa066d96538",
+    "action": "reused-existing-byte-identical-copy"
+  },
+  {
+    "source": "img/atlas_ch1_8dir_walk_north_west.png",
+    "resource": "res://assets/enemy/atlas_ch1_8dir_walk_north_west.png",
+    "target": "godot/assets/enemy/atlas_ch1_8dir_walk_north_west.png",
+    "bytes": 2102807,
+    "sha256": "6a89356bb56928a991f5e7f8dd0f0234ff0597d064af271fbe6673f3f4000e6c",
+    "action": "reused-existing-byte-identical-copy"
+  },
+  {
+    "source": "img/atlas_ch1_8dir_walk_west.png",
+    "resource": "res://assets/enemy/atlas_ch1_8dir_walk_west.png",
+    "target": "godot/assets/enemy/atlas_ch1_8dir_walk_west.png",
+    "bytes": 2008571,
+    "sha256": "564b5f56042aaeb73e585ff1b68ab44faaac08f2f07abc3b1431710c2f30ac58",
+    "action": "reused-existing-byte-identical-copy"
+  },
+  {
+    "source": "img/atlas_ch1_8dir_walk_south_west.png",
+    "resource": "res://assets/enemy/atlas_ch1_8dir_walk_south_west.png",
+    "target": "godot/assets/enemy/atlas_ch1_8dir_walk_south_west.png",
+    "bytes": 2090379,
+    "sha256": "2bcf554056a6cc4fa8bd250b69644d251d85366b645fb726399ec3b1b7fa50e3",
+    "action": "reused-existing-byte-identical-copy"
+  }
+]

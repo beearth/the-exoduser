@@ -2,6 +2,20 @@
 
 # THE EXODUSER — HUD 리디자인 마스터 플랜
 
+## 2026-10-20 DOC-SYNC — 첫 전투 이식 현행 구분
+
+아래 기존 리디자인 제안·CSS 예시는 역사/설계 자료다. Godot 첫 전투 이식에는 실제 원본과 최신 통합 문서를 우선한다.
+
+| id | 원본 game.html | 이식 범위·감사 조치 |
+|---|---|---|
+| 슬롯 | 27681 SKILL_SLOTS 6칸, 27682 ULT_SLOT=null; 63993~64014 신규 지급 | P2-005a 이후 1=spikeTrap·Space=giantSlam·F=holyDome·Ctrl=iceOrb. P2-002a 초기 보고의 Ctrl=ghostWalk/빈 슬롯은 당시 지급 전 이력 |
+| 쿨 sweep | 44147 `_skCdSweep`, 28316/28500 슬롯 쿨 맵 | P2-005b~d 이후 giantSlam/spikeTrap/holyDome/iceOrb 공급자 연결. P2-002a의 '소유자 부재'를 현재 상태로 재사용하지 않음 |
+| 타이머 | 60336 G.stageTime/60 → mm:ss | P2-001j의 레슨 종료 후 stageTime 진행 기록이 P2-002a/i 당시 차단 기록을 대체. 본 감사에서는 실행하지 않음 |
+| 미니맵 | 2585 130×130 캔버스/166×166 프레임; 60177~60233 타일·적·굴 마커 | P2-002b 구현 범위. 지역/필드보스 사이트·소환굴 생산자 후속은 별도 작업판 담당 |
+| 글꼴·최종 CSS | 117의 Nanum Myeongjo/Noto Serif KR 스택, 364 Cinzel; hudCorner는 외부 ui-refinement.css 재정의 존재 | game.html 기본값만으로 최종 화면 판정 금지. P2-002b 보강의 opacity .94는 외부 CSS·당시 실측 근거이며 game.html 기본 .48과 구분. 현재 브랜치의 Noto 대체와 P2-007a 후속을 구분 |
+
+새 화면 검수·Godot 테스트 PASS를 주장하지 않는다. 상세 대조표는 `docs/engine/orders/reports/DOC-SYNC_REPORT.md`.
+
 > 2026-09-27 인벤토리 최신 창 규격은 [장비 시스템 최신 절](../2_7%20인벤토리+장비시스템/2_7%20인벤토리+장비시스템.md)의 `100dvh−24px`(620px 이하 `−8px`) 및 장비/가방/정보 가변폭 1.28fr/clamp(400px,30vw,600px)/1fr이다. 아래 기존 270px 장비 행과 680px 창 높이는 당시 제작 기록이다.
 
 > 2026-09-12 튜토리얼 예외: 사용자 GPT 디자인 요청에 따라 1-1 패링 연습 패널에 생성 배경 1개를 사용한다. 기존 전투 HUD의 아래 제약은 유지한다. [튜토리얼 UI 사양](../2게임디자인레벨디자인/PARRY_TUTORIAL_20260912.md)

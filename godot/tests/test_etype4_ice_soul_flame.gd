@@ -240,7 +240,7 @@ func _test_admission() -> void:
 	get_root().add_child(world)
 	var report = world.get_encounter_report()
 	# game.html:31120-31162 and 31608-31648 define the unchanged source records/order.
-	_expect(world.ready_for_player and report["installed"] and report["source_count"] == 16 and report["supported_count"] == 6 and report["unsupported_count"] == 10, "actual World consumes16 with six exact profiles and ten explicit unsupported")
+	_expect(world.ready_for_player and report["installed"] and report["source_count"] == 16 and report["supported_count"] == 9 and report["unsupported_count"] == 7, "actual World consumes16 with nine exact profiles and seven explicit unsupported")
 	var orders: Array = []
 	var ice: Node = null
 	var hive: Node = null
@@ -248,7 +248,7 @@ func _test_admission() -> void:
 		orders.append(actor.source_order)
 		if actor.source_order == 8: ice = actor
 		if actor.source_order == 15: hive = actor
-	_expect(orders == [0,1,8,13,14,15] and ice is IceScript, "actual registry preserves source order and dedicated ice class")
+	_expect(orders == [0,1,4,8,10,12,13,14,15] and ice is IceScript, "actual registry preserves source order and dedicated ice class")
 	_expect(hive is HiveScript and str(hive.name) == "ch1_initial_016" and report["records"][15]["status"] == "supported" and report["records"][15]["consumer_profile"] == "native_ch1_etype1_lightning_hive_bloater_v1", "added lightning hive has exact dedicated class/identity/profile")
 	_expect(report["records"][2]["status"] == "unsupported", "guardian remains explicitly unported")
 	_expect(report["records"][8]["record"] == record and report["records"][8]["consumer_profile"] == PROFILE, "readonly factory retains complete original record beside new capability")

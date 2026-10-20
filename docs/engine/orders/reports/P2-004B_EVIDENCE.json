@@ -1,0 +1,355 @@
+{
+  "task": "P2-004B",
+  "status": "STOPPED_PERMISSION_DENIED_CANDIDATE_ONLY",
+  "branch": "codex/p2-004b-pc-20261020",
+  "start_head": "f1df29a86dc3966bab87a7f4910ae6819e167294",
+  "source_sha256": "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4",
+  "original_id_count": 171,
+  "existing_id_count": 11,
+  "remaining_id_count": 160,
+  "candidate_connected": 60,
+  "candidate_data_only": 111,
+  "candidate_applied": false,
+  "godot_executions": 0,
+  "godot_compile_verified": false,
+  "main_boots": 0,
+  "web_server_actions": 0,
+  "asset_changes": 0,
+  "shared_gd_line_changes": 0,
+  "git_commit": null,
+  "git_push_verified": false,
+  "live_origin_expected_sha": null,
+  "source_parity": {
+    "passed": 171,
+    "failed": 0,
+    "tier_checks": 342,
+    "mutation_checks": 3,
+    "mode": "source-parity (not Godot/runtime)",
+    "catalog": "file:///G:/exoduser-wt/codex-p2-004b/tmp/P2-004B-pc/candidate/native_pet_dialogue_catalog.gd"
+  },
+  "shuffle_boundary": {
+    "scope": "candidate GDScript expression evaluated as JavaScript arithmetic; not Godot runtime",
+    "rootCause": "Godot randf upper endpoint1.0 unlike Math.random upper-exclusive",
+    "green_boundary_checks": 78,
+    "failed": 0,
+    "before": "floori(_dialogue_rng.randf() * (i + 1))",
+    "after": "mini(i, floori(_dialogue_rng.randf() * (i + 1)))",
+    "red_outside_shuffle_index_range": 26,
+    "red_array_out_of_bounds_cases": 3
+  },
+  "failures": [
+    {
+      "kind": "TERMINAL_START",
+      "message": "CreateProcessW WindowsApps/pwsh.exe: 액세스가 거부되었습니다. (os error 5)",
+      "process_started": false,
+      "retried": false
+    },
+    {
+      "kind": "CATALOG_TARGET_WRITE",
+      "raw": "2026-10-20 P2-004B catalogue write failure\nOperation: node fs.writeFile(new URL(\"godot/scripts/native_pet_dialogue_catalog.gd\", root), render(entries), \"utf8\")\nRaw error: EPERM: operation not permitted, open 'G:\\exoduser-wt\\codex-p2-004b\\godot\\scripts\\native_pet_dialogue_catalog.gd'\nObserved target lstat after failure: ENOENT\nNo retry at denied path. Candidate preserved separately by explicit parent direction.\n",
+      "target_exists": false,
+      "retried": false
+    },
+    {
+      "kind": "TEST_TARGET_WRITE",
+      "message": "EPERM: operation not permitted, open godot/tests/test_p2004b_pet_dialogue.gd",
+      "target_exists": false,
+      "retried": false
+    }
+  ],
+  "artifacts": {
+    "P2-004B_CANDIDATE.patch": {
+      "bytes": 140569,
+      "sha256": "30d80622957ecf9c6fc2a4ea98007d3069ffcbed1a06b71b4ddd3bddaeca7834"
+    },
+    "candidate/native_pets.gd": {
+      "bytes": 34977,
+      "sha256": "bfff1d653484a7657fea2821a0d41b9070c9ddf6cef5f1219d8c4e12eb652ac9"
+    },
+    "candidate/native_pet_dialogue_catalog.gd": {
+      "bytes": 57607,
+      "sha256": "0fc60f01b03ff6e692f35091ca552986c92139dbe71dc6066929ff7f07979a4b"
+    },
+    "candidate/test_p2004b_pet_dialogue.gd": {
+      "bytes": 16297,
+      "sha256": "ba26c876ba263ff04c00e75e1e8f7c6ded140ebcb8875cc929edc043e7c33008"
+    }
+  },
+  "categories": [
+    {
+      "id": 0,
+      "name": "외부 콜백(아이템·분노·부활)",
+      "total": 5,
+      "connected": 0,
+      "lines": "16420,16421,38540,38541,43862"
+    },
+    {
+      "id": 1,
+      "name": "튜토리얼",
+      "total": 18,
+      "connected": 9,
+      "lines": "9556,9557,9558,9559,9560,9561,9562,9563,9564,9565,9566,9567,9570,9571,9572,32877,32895,34545"
+    },
+    {
+      "id": 2,
+      "name": "키 안내",
+      "total": 9,
+      "connected": 0,
+      "lines": "9577,9578,9580,9582,9583,9584,9586,9587,9588"
+    },
+    {
+      "id": 3,
+      "name": "긴급",
+      "total": 10,
+      "connected": 5,
+      "lines": "9516,9518,9520,9522,9525,9532,9541,9542,9547,9548"
+    },
+    {
+      "id": 4,
+      "name": "보스 패턴·전투",
+      "total": 9,
+      "connected": 5,
+      "lines": "9592,9593,9594,9595,9598,9599,9603"
+    },
+    {
+      "id": 5,
+      "name": "자원·힌트",
+      "total": 13,
+      "connected": 5,
+      "lines": "9535,9537,9607,9608,9611,9612,9614,9615,9616,9617,9618,9619,9621"
+    },
+    {
+      "id": 6,
+      "name": "패링 교육·대기",
+      "total": 3,
+      "connected": 1,
+      "lines": "9624,9625,9627"
+    },
+    {
+      "id": 7,
+      "name": "Idle 재촉·팁",
+      "total": 24,
+      "connected": 24,
+      "lines": "9634,9637"
+    },
+    {
+      "id": 8,
+      "name": "챕터 진입",
+      "total": 7,
+      "connected": 1,
+      "lines": "9651"
+    },
+    {
+      "id": 9,
+      "name": "챕터 환경",
+      "total": 7,
+      "connected": 1,
+      "lines": "9665"
+    },
+    {
+      "id": 10,
+      "name": "BL 패링 발견",
+      "total": 5,
+      "connected": 0,
+      "lines": "9745,9759,9761,9763,9765"
+    },
+    {
+      "id": 11,
+      "name": "사슬기동",
+      "total": 3,
+      "connected": 0,
+      "lines": "9767,9769,9771"
+    },
+    {
+      "id": 12,
+      "name": "엘리트·미니보스",
+      "total": 4,
+      "connected": 0,
+      "lines": "9773,9775,9777,9779"
+    },
+    {
+      "id": 13,
+      "name": "챕터 클리어",
+      "total": 7,
+      "connected": 0,
+      "lines": "9797"
+    },
+    {
+      "id": 15,
+      "name": "빌드",
+      "total": 5,
+      "connected": 0,
+      "lines": "9709,9710,9711,9712,9716"
+    },
+    {
+      "id": 16,
+      "name": "보스·스테이지·문·지역 진행",
+      "total": 8,
+      "connected": 1,
+      "lines": "9675,9676,9677,9680,9684,41878,41910,60775"
+    },
+    {
+      "id": 17,
+      "name": "처치·콤보",
+      "total": 4,
+      "connected": 3,
+      "lines": "9750,9751,9753,9781"
+    },
+    {
+      "id": 18,
+      "name": "강화·전설",
+      "total": 3,
+      "connected": 0,
+      "lines": "9783,9785,9788"
+    },
+    {
+      "id": 19,
+      "name": "사망·보스 재도전",
+      "total": 3,
+      "connected": 0,
+      "lines": "9691,9791,9792"
+    },
+    {
+      "id": 20,
+      "name": "트로피",
+      "total": 4,
+      "connected": 0,
+      "lines": "9755,9800,9804,9806"
+    },
+    {
+      "id": 21,
+      "name": "스피드런",
+      "total": 3,
+      "connected": 0,
+      "lines": "9812,9813,9814"
+    },
+    {
+      "id": 22,
+      "name": "펫 간 토크",
+      "total": 5,
+      "connected": 5,
+      "lines": "9645"
+    },
+    {
+      "id": 23,
+      "name": "보스 인트로",
+      "total": 7,
+      "connected": 0,
+      "lines": "9695"
+    },
+    {
+      "id": 27,
+      "name": "난이도 변경",
+      "total": 5,
+      "connected": 0,
+      "lines": "9727,9728,9729,9730,9731"
+    }
+  ],
+  "preservation": {
+    "head_ref": "ref: refs/heads/codex/p2-004b-pc-20261020",
+    "head_sha": "f1df29a86dc3966bab87a7f4910ae6819e167294",
+    "shared_index_unchanged": true,
+    "source_unchanged": true,
+    "native_pets_unchanged": true,
+    "actual_targets": [
+      {
+        "path": "godot/scripts/native_pet_dialogue_catalog.gd",
+        "exists": false
+      },
+      {
+        "path": "godot/tests/test_p2004b_pet_dialogue.gd",
+        "exists": false
+      }
+    ],
+    "patch_content_checks": [
+      {
+        "path": "godot/scripts/native_pets.gd",
+        "removedLines": 580,
+        "addedLines": 806
+      },
+      {
+        "path": "godot/scripts/native_pet_dialogue_catalog.gd",
+        "removedLines": 0,
+        "addedLines": 2513
+      },
+      {
+        "path": "godot/tests/test_p2004b_pet_dialogue.gd",
+        "removedLines": 0,
+        "addedLines": 372
+      }
+    ],
+    "git_apply_check_executed": false,
+    "files": [
+      {
+        "path": "tools/pet-dialogue-source.mjs",
+        "index": null,
+        "work": "3b079e9da34e47a7c290510662376b7cfa6cbb32",
+        "bytes": 10602,
+        "status": "NEW_UNSTAGED"
+      },
+      {
+        "path": "test/test_p2004b_pet_source.mjs",
+        "index": null,
+        "work": "21679f3bc03be4f3d53269829bccf118008d7c47",
+        "bytes": 7469,
+        "status": "NEW_UNSTAGED"
+      },
+      {
+        "path": "docs/2_4 펫시스템/2_4 펫시스템.md",
+        "index": "5b09269dac1035eec440c88efe624c41f74771f5",
+        "work": "01d8d6a1dedb1d44f9e5d62fea8e4a03c0f8a0ef",
+        "bytes": 27377,
+        "status": "WORK_MODIFIED"
+      },
+      {
+        "path": "docs/2_4 펫시스템/대사_스크립트.md",
+        "index": "e8860214894d6c371a5c0ffc88290ff28bac039b",
+        "work": "c3d2ed7e849ff32f066ba83dc4af877ddc8d5d6c",
+        "bytes": 51757,
+        "status": "WORK_MODIFIED"
+      },
+      {
+        "path": "docs/2_4 펫시스템/대사_개편_v7_설계.md",
+        "index": "142fb1a9ab235fed16dd3f0b02571272056e8de2",
+        "work": "d24b3a8675b3ef137fcb916979741ff93af1ae77",
+        "bytes": 14532,
+        "status": "WORK_MODIFIED"
+      },
+      {
+        "path": "docs/engine/FDG_P2_004A_PETS_20261020.md",
+        "index": "b6339767de7e3527e39dc74b1707ed2fe3833af8",
+        "work": "41648211260b071da9ccd030cd95777f0c20563f",
+        "bytes": 4767,
+        "status": "WORK_MODIFIED"
+      },
+      {
+        "path": "docs/engine/FDG_P2_004B_PET_DIALOGUE_20261020.md",
+        "index": null,
+        "work": "73f85d23d476c460a5858a10e4d1e70ef6b05ea2",
+        "bytes": 35145,
+        "status": "NEW_UNSTAGED"
+      },
+      {
+        "path": "docs/engine/orders/WORK_BOARD.md",
+        "index": "d829a5c03c772a2e31bee222c38af3d666d9c09b",
+        "work": "15b6eecb511151c15ace2a958e45148867e3f67d",
+        "bytes": 4540,
+        "status": "WORK_MODIFIED"
+      },
+      {
+        "path": "docs/engine/orders/reports/P2-004B_REPORT.md",
+        "index": null,
+        "work": "57bbd50537388525334fa6667ec47edc8290c8c4",
+        "bytes": 12042,
+        "status": "NEW_UNSTAGED"
+      },
+      {
+        "path": "docs/engine/orders/reports/P2-004B_CANDIDATE.patch",
+        "index": null,
+        "work": "516ac4267b4dbdb7ea65cda13acde3243b76b6a6",
+        "bytes": 140569,
+        "status": "NEW_UNSTAGED"
+      }
+    ]
+  }
+}

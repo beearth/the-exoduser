@@ -21,6 +21,28 @@ const RIGHT_GOAL := 5                 # 672~676 rightKills 5
 const LESSON_LABELS: Array[String] = ["Q · 마법탄 패링", "E · 물리탄 패링", "Q 홀딩 · 다수 마법탄 패링",
 	"E 홀딩 · 다수 물리탄 패링", "Shift · 사슬 이동", "방향키 + Space · 전격이동",
 	"패링 · 분노 축적", "Space · 분노 발동"] # get labels() (파일 5행)
+const STEP_TITLES: Array[String] = ["마법을 되돌려라", "물리탄을 쳐내라", "보호막을 펼쳐라",
+	"힘을 모아 쳐내라", "사슬로 이동하라", "방향을 정해 이동하라", "패링으로 분노를 채워라",
+	"분노를 폭발시켜라"] # 141 title
+const STEP_KEYS: Array[String] = ["Q", "E", "Q", "E", "SHIFT", "↔ + SPACE", "Q", "SPACE"] # 118 key() 기본 바인딩
+const STEP_TIPS: Array[String] = [
+	"보라색 탄이 가까워지는 순간 [Q]를 누르세요. 너무 일찍 눌렀다면 떼고 다시 시도하세요.",
+	"탄을 바라보고 [E]를 짧게 눌렀다 떼세요. 길게 누르면 차징이 됩니다.",
+	"[Q]를 2초 동안 누르세요. 화염·물·암흑·번개·무지개탄을 보고 키를 떼어 한 번에 3발 이상 패링하세요. 홀딩 중 보호막은 피해를 일부 흡수하고 그로기를 막습니다. 피해를 완전히 막는 무적은 아닙니다.",
+	"[E]를 누른 채 탄 쪽을 바라보세요. 이빨입탄·혈안탄·관통탄·물리 검기파·물리 환영검이 함께 날아옵니다. 3단계 충전 후 키를 떼어 5종 중 3발 이상 한 번에 쳐내세요. 풀차지 자동 발동도 인정합니다.",
+	"이동할 곳에 마우스를 향하고 Shift를 눌렀다 떼세요. 사슬이 실제 발사되면 성공입니다.",
+	"WASD 또는 방향키를 누른 채 Space를 누르세요. 전격이동을 5번 발동하면 성공입니다.",
+	"Q를 2초 동안 누른 뒤, 함께 날아오는 마법탄 10발이 가까워지면 떼세요. 한 번에 여러 발을 패링해 분노 100%를 채워보세요.",
+	"몬스터들이 주변을 둘러쌌습니다. 방향키에서 손을 떼고 Space만 눌러 분노 폭발로 한 번에 쓸어버리세요."] # 159 tips
+## 단계별 정지 사유(해당 행동/탄 미이식 — 가짜 진행 금지). step 0·8은 이식(미등재).
+const STEP_HALTS: Dictionary = {
+	1: "physical_projectile_reflect_unported", # E 반사 캐리어는 암흑(gbBean) 한정(enemy_projectile.gd 134)
+	2: "volley_mixed_magic_projectiles_unported", # 화염/물/번개/무지개(blackBean) 반사탄 미이식
+	3: "volley_physical_projectiles_unported",    # 이빨입탄/혈안탄/관통탄/검기파/환영검 미이식
+	4: "chain_movement_unported",                  # Shift 사슬 이동(charge/harp)
+	5: "lightning_dash_unported",                  # 전격이동(blade dash)
+	6: "rage_gauge_unported",                      # 분노 게이지
+	7: "rage_burst_unported"}                      # 분노 발동
 const BASIC_LABELS: Array[String] = ["WASD / 방향키 · 이동", "좌클릭 · 10마리 처치 + 3단 차징",
 	"우클릭 · 적 5마리 처치", "1 · 가시덫 설치 후 도망 · 10마리 처치"] # 77 basicLabelText
 # ── 웹 실측 팔레트/치수 (lesson_styles.json + UI_FOUNDATION parryLesson 절) ──
@@ -37,7 +59,7 @@ const COL_ROW_DONE := Color(0xb2 / 255.0, 0xd6 / 255.0, 0xac / 255.0)
 const COL_SKIP_TEXT := Color(0xdc / 255.0, 0xcb / 255.0, 0xb6 / 255.0)
 const COL_KIND_MAGIC := Color(197.0 / 255.0, 164.0 / 255.0, 242.0 / 255.0) # 실측 step-2 status/hold (data-kind magic)
 const COL_KIND_PHYSICAL := Color(0xe0 / 255.0, 0xc1 / 255.0, 0x8b / 255.0) # 실측 intro status (data-kind physical)
-const FONT_PATH := "res://assets/fonts/NotoSerifKR-VF.ttf" # 원본 'Nanum Myeongjo' 계열 — 포트 보유 명조(잔여: 나눔명조/Cinzel 에셋)
+const FONT_PATH := "res://assets/fonts/ofl/nanummyeongjo/NanumMyeongjo-Regular.ttf" # P2-007a 원본 --font-hell 1순위 'Nanum Myeongjo'(parry-lesson.css 12)
 const FRAME_PATH := "res://assets/ui/hell_gothic/frame.png" # 원본 img/ui/hell_gothic/frame.png 그대로
 const CREST_PATH := "res://assets/ui/hell_gothic/crest.png"
 
@@ -61,6 +83,20 @@ var left_click_done := false
 var right_click_done := false
 var practice_halted := ""        # step 8 도달 시 "spike_trap_unported"
 var attack_enemies: Array = []
+var checks: Array = [false, false, false, false, false, false, false, false] # 393 checks(8)
+var parryEnemy: Node2D = null # camelCase 고정 — parry_homing_target 19173이 'parryEnemy' 필드명으로 읽음
+var parry_shot: Node2D = null
+var parry_charge := 0.0      # e._projChargeT (60틱)
+var parry_cooldown := 45.0   # cooldown 45/60
+var shot_reflected := false
+# step 8 가시덫(261~311) — main 0779085bd 병합 후 실구현
+var trap_enemies: Array = []
+var trap_kills := 0
+var trap_zone: Variant = null
+var trap_escaped := false
+var trap_snapshot: Dictionary = {}
+var spike_trap_done := false # 428 spikeTrapDone (기본 체크 4번째 행)
+var _ring: Node2D
 var _move_last := Vector2.ZERO
 var _saved_enemies: Array = []
 var _saved_bonfire: Dictionary = {}
@@ -85,8 +121,41 @@ func configure(owner_world: Node2D, owner_player: Node2D, state_node: Node, owne
 	sequence = owner_sequence
 	process_mode = Node.PROCESS_MODE_PAUSABLE
 	_font = load(FONT_PATH) if ResourceLoader.exists(FONT_PATH) else null
+	# step0: Q 반사 관측(구독만 — 판정은 main 1223 q_projectile_reflected 소유)
+	if owner_player.has_signal("telemetry_event"):
+		owner_player.telemetry_event.connect(_on_player_event)
+	_ring = _RingDrawer.new()
+	_ring.flow = self
+	_ring.z_as_relative = false
+	_ring.z_index = 4004
+	add_child(_ring)
 	_configured = true
 	return true
+
+## 차징 링(원본: 적 투사체 차징 경고 링 — 가이드 문구 "몬스터 주위의 링", 색=탄 종류).
+class _RingDrawer extends Node2D:
+	var flow: Node
+	func _process(_delta: float) -> void:
+		queue_redraw()
+	func _draw() -> void:
+		if flow == null or not is_instance_valid(flow.parryEnemy) or flow.parry_charge <= 0.0:
+			return
+		var enemy: Node2D = flow.parryEnemy
+		if enemy.get("alive") != true:
+			return
+		var at: Vector2 = to_local(enemy.global_position)
+		# 24110 _drawShootCharge: R=r+10, 바탕 원 #080808 α.28 w5, 진행 아크 col α(.8+prog*.2) w3.5
+		var radius: float = float(enemy.get("radius")) + 10.0
+		var progress: float = clampf(1.0 - flow.parry_charge / 60.0, 0.0, 1.0)
+		draw_arc(at, radius, 0.0, TAU, 48, Color(0x08 / 255.0, 0x08 / 255.0, 0x08 / 255.0, 0.28), 5.0, true)
+		if progress > 0.0:
+			var color := Color(0xb2 / 255.0, 0x6d / 255.0, 0xff / 255.0, 0.8 + progress * 0.2) # '#b26dff'(228/20102)
+			draw_arc(at, radius, -PI * 0.5, -PI * 0.5 + TAU * progress, 48, color, 3.5, true)
+
+func _on_player_event(kind: String, _data: Dictionary) -> void:
+	if kind == "q_projectile_reflected" and active and phase == "practice" and step == 0:
+		shot_reflected = true # 425 onParry→parriedShot 상응(현재 샷이 유일한 적탄)
+		_render() # 425 updateParryPractice
 
 static func _truthy(value: Variant) -> bool:
 	if value == null: return false
@@ -133,15 +202,20 @@ func native_lesson_tick() -> bool:
 			# 챕터2 자원 연습(496) 미이식 — 바로 finish(497).
 			_finish()
 			return false
-		# 501: step 전진 -3→-2→-1→8→0..7
+		# 501: step 전진 -3→-2→-1→8→0..7 (500 이탈 시 trap 복원)
+		if step == 8:
+			_restore_trap_practice()
 		step = 8 if step == -1 else (0 if step == 8 else step + 1)
 		phase = "practice"
 		if step == -2 or step == -1:
 			_spawn_attack_enemies()
-		if step == 8:
-			practice_halted = "spike_trap_unported" # 가시덫(시작 스킬 트랙)·0~7 패링 미이식
-		if step >= 0 and step <= 7:
-			practice_halted = "parry_steps_unported"
+		if step == 8: # 503 startTrapPractice
+			practice_halted = _start_trap_practice()
+		elif step >= 0 and step <= 7:
+			practice_halted = str(STEP_HALTS.get(step, ""))
+			if step == 0:
+				parryEnemy = null
+				parry_cooldown = 45.0
 		_render()
 	if phase != "practice":
 		return false
@@ -149,6 +223,9 @@ func native_lesson_tick() -> bool:
 	_practice_refill()
 	if practice_halted != "":
 		return false # 미이식 스텝: 진행 없음(스킵만) — 가짜 성공 금지
+	if step == 8: # 510 tickTrapPractice
+		_tick_trap_practice()
+		return false
 	if step == -3: # 512~515
 		var vel: Variant = player.get("velocity")
 		if vel is Vector2 and (vel as Vector2).length() > 0.01: # directionHeld 상응(포트: 이동속도 증인)
@@ -162,7 +239,88 @@ func native_lesson_tick() -> bool:
 			_spawn_attack_enemies()
 		_render()
 		return false
+	if step == 0: # 204~229 tickParryEnemy + 547 (step0 Q 마법탄 패링)
+		_tick_parry_practice()
+		return false
 	return false
+
+## step0 — 원본 tickParryEnemy(204~229): 적 유지→차징 60틱→암흑탄 발사→패링 관측.
+## 처치 판정: Q 반사(관측) 후 반사 블루빈(parryBlueBean — 유일 가해자, 적 atk0)이
+## 패링 적을 죽이면 완료(653 reflected 게이트 상응). 샷 소실 시 cooldown 60 재시도(211~213).
+func _tick_parry_practice() -> void:
+	if not is_instance_valid(parryEnemy) or parryEnemy.get("alive") != true:
+		if shot_reflected and parryEnemy != null:
+			# 반사 처치 완료(653/664~) — parryEnemy가 반사 블루빈으로 사망
+			attack_enemies.erase(parryEnemy)
+			parryEnemy = null
+			parry_shot = null
+			_complete_step()
+			_render()
+			return
+		_clear_shot()
+		_spawn_parry_enemy()
+		if parryEnemy == null:
+			parry_cooldown = 60.0
+		return
+	if is_instance_valid(parry_shot):
+		return # 샷 비행 중(소실은 enemy_projectile_end 구독이 처리)
+	if parry_charge > 0.0:
+		parry_charge = maxf(0.0, parry_charge - 1.0) # _dtSp=1/렌더프레임
+		if parry_charge > 0.0:
+			return
+		_fire_parry_shot() # 221~226
+		return
+	parry_cooldown -= 1.0
+	if parry_cooldown <= 0.0:
+		parry_charge = 60.0 # 228 e._projChargeT=60
+
+## 182~196 spawnParryEnemy: 반경 280, 각 -π/2+i·π/4, d>450/<160 거부, hp1·atk0·spd0.
+func _spawn_parry_enemy() -> void:
+	shot_reflected = false
+	for i in range(8):
+		var a: float = -PI * 0.5 + float(i) * PI * 0.25
+		var x: float = player.global_position.x + cos(a) * 280.0
+		var y: float = player.global_position.y + sin(a) * 280.0
+		var enemy: Node2D = _spawn_lesson_enemy(x, y)
+		if enemy == null:
+			continue
+		var distance: float = enemy.global_position.distance_to(player.global_position)
+		if distance > 450.0 or distance < 160.0:
+			enemy.apply_native_normal_enemy_death_write()
+			continue
+		parryEnemy = enemy
+		attack_enemies.append(enemy) # 레슨 적 레지스트리(정리/위임 가드 공용)
+		parry_charge = 0.0
+		parry_cooldown = 45.0
+		return
+
+func _fire_parry_shot() -> void:
+	# 221~226: 암흑탄(EL.D·#b26dff·dmg0) 발사 — 포트 암흑 캐리어(enemy_projectile.gd,
+	# gbBean parryClass magic — Q 반사 지원). 원본 vx/vy=3px/틱=180px/s, dmg 0.
+	# (잔여: 원본 life 360틱 vs 캐리어 고정 120틱 — 280px 비행엔 충분)
+	shot_reflected = false # 653 per-shot 크레딧(샷 단위 _lessonParryShot 상응)
+	var shot: Node2D = (load("res://scripts/enemy_projectile.gd") as GDScript).new()
+	var aim: Vector2 = (player.global_position - parryEnemy.global_position).normalized()
+	shot.configure(parryEnemy.global_position, aim, 0, player, world, 180.0)
+	var raw: Variant = shot.get("_raw")
+	if raw is Dictionary:
+		raw["_lessonShot"] = true # 226 spawnProj _lessonShot:true — 반사 블루 opts._lessonParryShot·지형차단 스킵(397) 계승
+	shot.telemetry_event.connect(_on_shot_event)
+	world.add_child(shot)
+	parry_shot = shot
+
+func _on_shot_event(kind: String, _data: Dictionary) -> void:
+	if kind == "enemy_projectile_end":
+		# 211~213: 샷 종료(미패링 소실 포함) → cooldown 60 재시도. 반사된 경우 블루빈이
+		# 이어서 비행하므로 완료 판정은 적 사망 관측이 맡는다.
+		parry_shot = null
+		if not shot_reflected:
+			parry_cooldown = 60.0
+
+func _clear_shot() -> void:
+	if is_instance_valid(parry_shot):
+		parry_shot.queue_free()
+	parry_shot = null
 
 func _practice_refill() -> void:
 	# 508~509: P.hp=saved.hp; P.mp=P.mmp; P.st=P.mst; P.shield=saved; P.iframes=0; kb 0.
@@ -180,8 +338,11 @@ func _practice_refill() -> void:
 
 func _complete_step() -> void:
 	# 427~434 completeStep (step<0/8 플래그, pending success/done)
-	if step == 8:
-		return # 가시덫 미이식 — 호출 경로 없음(가드)
+	if step == 8: # 428: spikeTrapDone 플래그 + success
+		if not spike_trap_done:
+			spike_trap_done = true
+			pending = "success"
+		return
 	if step < 0:
 		var key: String = ["movement", "left", "right"][step + 3]
 		if key == "movement" and not movement_done: movement_done = true
@@ -190,7 +351,11 @@ func _complete_step() -> void:
 		else: return
 		pending = "success"
 		return
-	# step 0~7 checks(432) — 미이식 경로(도달 불가)
+	if pending != "" or (step >= 0 and step <= 7 and checks[step]):
+		return
+	if step >= 0 and step <= 7: # 431~432
+		checks[step] = true
+		pending = "success" if step < 7 else "done"
 
 func begin_practice() -> void:
 	# 177 beginPractice: intro에서만, phase='practice'
@@ -217,8 +382,24 @@ func native_lesson_hurt_enemy(enemy: Node2D, dmg: int, ang: float, opts: Diction
 	var left: bool = attack and step == -2 and str(opts.get("_lessonAttack", "")) in ["kiSlash", "weapon"] # 651 (wSwing 가드는 weapon 라벨에 포함)
 	var right: bool = attack and step == -1 and opts.get("magic") == true and opts.get("fireball") == true \
 		and opts.get("_fromTurret") != true and opts.get("dot") != true # 652
-	if not left and not right:
-		return {"handled": false, "reason": "no_credit_branch_656"} # rage/reflected/trap 미이식
+	var trap: bool = chapter == 1 and step == 8 and phase == "practice" and pending == "" \
+		and trap_enemies.has(enemy) and opts.get("dot") == true \
+		and str(opts.get("_lessonAttack", "")) == "spikeTrap" # 655
+	if not left and not right and not trap:
+		return {"handled": false, "reason": "no_credit_branch_656"} # rage/reflected 미이식
+	if trap: # 657~663: eShield 흡수 후 잔여만 HP — 생존 시 return
+		var trap_dmg: float = float(dmg)
+		var shield_now: float = float(enemy.get("eShield"))
+		if float(enemy.get("eShieldMax")) > 0.0 and shield_now > 0.0:
+			var absorbed: float = minf(shield_now, trap_dmg)
+			enemy.set("eShield", maxf(0.0, shield_now - absorbed))
+			trap_dmg -= absorbed
+		var hp_now: float = maxf(0.0, float(enemy.get("hp")) - trap_dmg)
+		enemy.set("hp", hp_now)
+		enemy.set("_hit_flash", 6.0) # e.flashT=6
+		if hp_now > 0.0:
+			_render()
+			return {"handled": true, "trap": true, "hp": hp_now, "killed": false}
 	# 664~668: e.hp=0; alive=false; deathFX+시체+flesh 고어+데드임팩트
 	var radius: float = float(enemy.get("radius"))
 	var mhp: float = float(enemy.get("mhp"))
@@ -236,15 +417,17 @@ func native_lesson_hurt_enemy(enemy: Node2D, dmg: int, ang: float, opts: Diction
 			_complete_step()
 		else:
 			_spawn_attack_enemies()
-	else: # 672
+	elif right: # 672
 		right_kills += 1
 		if right_kills >= RIGHT_GOAL:
 			_complete_step()
 		else:
 			_spawn_attack_enemies()
+	elif trap: # 683: trapKills++ (완료 판정은 tick 296 — kills>=10 && escaped)
+		trap_kills += 1
 	_render()
-	return {"handled": true, "left": left, "right": right,
-		"left_kills": left_kills, "right_kills": right_kills}
+	return {"handled": true, "left": left, "right": right, "trap": trap,
+		"left_kills": left_kills, "right_kills": right_kills, "trap_kills": trap_kills}
 
 func _alive_attack_enemies() -> int:
 	var count := 0
@@ -288,9 +471,155 @@ func _too_close(candidate: Node2D) -> bool:
 			return true
 	return false
 
+# ═══ step 8 가시덫 연습 (261~311) — 포트 spikeTrap(native_skill_slots, 수정 금지·구독만) ═══
+
+## 261~266 startTrapPractice: 스킬 강제 lv1·쿨 0·스냅샷. 성공 시 ""(정지 없음) 반환,
+## 선행 조건 불가 시 정직 정지 사유 반환. SKILL_SLOTS[0] 교체는 포트가 키1→spikeTrap
+## 고정 배선이라 해당 없음(기록).
+func _start_trap_practice() -> String:
+	var p: Variant = state.read_current_p() if is_instance_valid(state) else null
+	var g: Variant = state.read_current_g() if is_instance_valid(state) else null
+	var slots: Variant = _skill_slots_node()
+	if not p is Dictionary or not g is Dictionary or not is_instance_valid(slots):
+		return "trap_owners_not_ready"
+	if _spike_trap_damage() <= 0:
+		return "trap_dmg_providers_not_ready" # 275 hp 산식에 _spikeTrapDmg 필요
+	var skills: Dictionary = (p as Dictionary).get("skills", {})
+	trap_snapshot = {"mats": int((g as Dictionary).get("mats", 0)),
+		"had_skill": skills.has("spikeTrap"), "skill_lv": int(skills.get("spikeTrap", 0)),
+		"gc_cd": float(slots.get("gc_cd"))}
+	skills["spikeTrap"] = maxi(1, int(skills.get("spikeTrap", 0))) # 263
+	(p as Dictionary)["skills"] = skills
+	slots.set("gc_cd", 0.0) # 263 P._gcCd=0 (런타임 상태 — 파일 수정 아님)
+	trap_enemies = []
+	trap_kills = 0
+	trap_zone = null
+	trap_escaped = false
+	_spawn_trap_enemies()
+	return ""
+
+## 45507 _spikeTrapDmg 동식 — cast_spike_trap(수정 금지)과 같은 provider·상수로 산출.
+func _spike_trap_damage() -> int:
+	var main: Variant = player.get_parent() if is_instance_valid(player) else null # main(플레이어 부모)
+	if not is_instance_valid(main) or main.get("source_providers") == null:
+		return 0
+	var bundle: Dictionary = main.get("source_providers").get_provider_bundle()
+	var magic_ref: Dictionary = bundle.reference.magic_ref()
+	var magic_mul: Dictionary = bundle.formula.p_magic_mul()
+	if magic_ref.get("status") != "READY" or magic_mul.get("status") != "READY":
+		return 0
+	var slots_script: GDScript = load("res://scripts/native_skill_slots.gd")
+	var lv: int = 1 # 263 강제 lv1 기준
+	var sk_mul: float = float(slots_script.SPIKE_SK_B) + float(lv - 1) * float(slots_script.SPIKE_SK_G) * 0.5
+	return int(float(magic_ref.value) * 1.0 * float(magic_mul.value) * sk_mul * 0.75)
+
+func _skill_slots_node() -> Node:
+	return world.get_node_or_null("NativeSkillSlots") if is_instance_valid(world) else null
+
+## 267~280 spawnTrapEnemies: a=-π/2+(i%10-4.5)·.16+⌊i/10⌋·π/3, 반경 180+(i%3)·40,
+## d>300 또는 서로 24 미만 거부, hp=max(1,dmg)·(5+n)·.5, eShield=hp, atk0·speed1.6·chase.
+func _spawn_trap_enemies() -> void:
+	var base_dmg: float = float(maxi(1, _spike_trap_damage()))
+	for i in range(60):
+		if trap_enemies.size() >= 10:
+			break
+		var a: float = -PI * 0.5 + (float(i % 10) - 4.5) * 0.16 + float(i / 10) * PI / 3.0
+		var radius: float = 180.0 + float(i % 3) * 40.0
+		var hp: float = base_dmg * (5.0 + float(trap_enemies.size())) * 0.5 # 275
+		var enemy: Node2D = _spawn_lesson_enemy(player.global_position.x + cos(a) * radius,
+			player.global_position.y + sin(a) * radius,
+			{"hp": hp, "shield": hp, "speed": 1.6, "chase": true}) # 275~277
+		if enemy == null:
+			continue
+		var distance: float = enemy.global_position.distance_to(player.global_position)
+		var too_close := false
+		for other in trap_enemies:
+			if is_instance_valid(other) and other.get("alive") == true \
+					and other.global_position.distance_to(enemy.global_position) < 24.0:
+				too_close = true
+				break
+		if distance > 300.0 or too_close: # 273
+			enemy.apply_native_normal_enemy_death_write()
+			continue
+		trap_enemies.append(enemy)
+		attack_enemies.append(enemy) # 레슨 적 레지스트리(647 _lessonEnemy·정리 공용)
+
+## 282~296 tickTrapPractice: 보충·악의 유지·존/탈출 관측·완료. 추격 이동은 포트
+## 크롤러 자체 AI(alerted) 사용 — 웹 _ffMoveE 강제 수행은 미수행(기록).
+func _tick_trap_practice() -> void:
+	if practice_halted != "":
+		return
+	if trap_enemies.size() < 10:
+		_spawn_trap_enemies()
+	var g: Variant = state.read_current_g() if is_instance_valid(state) else null
+	var slots: Variant = _skill_slots_node()
+	if g is Dictionary:
+		var cost: int = int((load("res://scripts/native_skill_slots.gd") as GDScript).SPIKE_MAL_COST)
+		(g as Dictionary)["mats"] = maxi(int((g as Dictionary).get("mats", 0)), cost) # 284 _malCost(10)=5
+	var zone: Variant = null
+	if g is Dictionary:
+		for candidate in (g as Dictionary).get("_fireZones", []):
+			if candidate is Dictionary and candidate.get("type") == "spikeTrap" \
+					and float(candidate.get("t", 0)) < float(candidate.get("maxT", 0)):
+				zone = candidate
+				break
+	if zone != null and not is_same(zone, trap_zone): # 286 zone!==this.trapZone (참조 동일성)
+		trap_zone = zone
+		trap_escaped = false
+	if trap_zone is Dictionary and _direction_held() \
+			and player.global_position.distance_to(Vector2(float(trap_zone["x"]), float(trap_zone["y"]))) >= 120.0:
+		trap_escaped = true # 287
+	if zone == null and is_instance_valid(slots):
+		slots.set("gc_cd", 0.0) # 288 if(!zone)P._gcCd=0
+	_render() # 295 updateTrapPractice
+	if trap_kills >= 10 and trap_escaped: # 296
+		_complete_step()
+
+## 34 directionHeld — 포트 held 상태(player._native_input_held)의 방향키.
+func _direction_held() -> bool:
+	var held: Variant = player.get("_native_input_held")
+	if not held is Dictionary:
+		return false
+	for action in ["move_left", "move_right", "move_up", "move_down"]:
+		if (held as Dictionary).get(action, false):
+			return true
+	return false
+
+## 305~311 restoreTrapPractice: 스냅샷 복원·spikeTrap 존 제거·레지스트리 정리.
+func _restore_trap_practice() -> void:
+	if trap_snapshot.is_empty():
+		return
+	var p: Variant = state.read_current_p() if is_instance_valid(state) else null
+	var g: Variant = state.read_current_g() if is_instance_valid(state) else null
+	var slots: Variant = _skill_slots_node()
+	if p is Dictionary:
+		var skills: Dictionary = (p as Dictionary).get("skills", {})
+		if trap_snapshot["had_skill"]:
+			skills["spikeTrap"] = trap_snapshot["skill_lv"]
+		else:
+			skills.erase("spikeTrap")
+		(p as Dictionary)["skills"] = skills
+	if g is Dictionary:
+		(g as Dictionary)["mats"] = trap_snapshot["mats"]
+		var zones: Variant = (g as Dictionary).get("_fireZones")
+		if zones is Array: # 309 G._fireZones=filter(type!=='spikeTrap')
+			var kept: Array = []
+			for zone in zones:
+				if not (zone is Dictionary and zone.get("type") == "spikeTrap"):
+					kept.append(zone)
+			(zones as Array).assign(kept)
+	if is_instance_valid(slots):
+		slots.set("gc_cd", float(trap_snapshot["gc_cd"]))
+	for enemy in trap_enemies: # 잔존 정리(웹은 완료 시 전멸이 전제 — 포트 안전망)
+		if is_instance_valid(enemy) and enemy.get("alive") == true:
+			enemy.apply_native_normal_enemy_death_write()
+	trap_snapshot = {}
+	trap_zone = null
+	trap_enemies = []
+
 ## mkEn(31120~) etype0 미러(커튼 5링과 동일 draw 순서) + 240 레슨 오버라이드
 ## (hp=1·mhp=1·atk=0·elite=0·mods=[]·spd=0 — 롤은 원본대로 소비 후 덮어씀).
-func _spawn_lesson_enemy(x: float, y: float) -> Node2D:
+func _spawn_lesson_enemy(x: float, y: float, overrides: Dictionary = {}) -> Node2D:
 	var template: Variant = JSON.parse_string(FileAccess.get_file_as_string("res://data/etype0_physical_flesh_crawler.json"))
 	if not template is Dictionary:
 		return null
@@ -318,10 +647,15 @@ func _spawn_lesson_enemy(x: float, y: float) -> Node2D:
 	_next_order += 1
 	data["spawn_position"] = [pos.x, pos.y]
 	data["requested_spawn_position"] = [x, y]
-	data["hp"] = 1
+	var hp_override: float = float(overrides.get("hp", 1.0)) # 240/275
+	var shield_override: float = float(overrides.get("shield", 0.0)) # 276 트랩 한정
+	var speed_override: float = float(overrides.get("speed", 0.0)) # 277 트랩 speed 1.6
+	data["hp"] = hp_override
 	data["attack"] = 0
 	data["radius"] = r
-	data["speed_pixels_per_tick"] = 0.0
+	data["speed_pixels_per_tick"] = speed_override
+	data["eShield"] = shield_override
+	data["eShieldMax"] = shield_override
 	data["elite"] = 0
 	data["mods"] = []
 	data["poise"] = 1
@@ -338,11 +672,11 @@ func _spawn_lesson_enemy(x: float, y: float) -> Node2D:
 	native["x"] = pos.x
 	native["y"] = pos.y
 	native["r"] = r
-	native["speed"] = 0.0
+	native["speed"] = speed_override
 	native["st2"] = st2
 	native["facing"] = facing
-	native["hp"] = 1
-	native["mhp"] = 1
+	native["hp"] = hp_override
+	native["mhp"] = hp_override
 	native["atk"] = 0
 	native["poise"] = 1
 	native["maxPoise"] = 1
@@ -354,11 +688,14 @@ func _spawn_lesson_enemy(x: float, y: float) -> Node2D:
 		if is_instance_valid(enemy) and enemy.get_parent() == null:
 			enemy.free()
 		return null
+	if overrides.get("chase") == true:
+		enemy.set("alerted", true) # 277 e.s='chase' — 포트 크롤러 추격은 alerted AI
 	spawn_journal.append({"id": enemy_id, "step": step, "draws": draws, "position": [pos.x, pos.y]})
 	return enemy
 
 # ═══ allows/allowKey (32·36~39) — 포트는 API 제공; 입력 강제 배선은 잔여(시작 스킬 트랙 충돌 회피) ═══
 func allows(action: String) -> bool:
+	# 32 allows: !active || (intro 아닌 방향키) || (practice·focus 없음·단계 허용 행동)
 	if not active:
 		return true
 	var is_direction: bool = action in ["up", "down", "left", "right"]
@@ -367,6 +704,13 @@ func allows(action: String) -> bool:
 	if phase == "practice":
 		return action in _actions()
 	return false
+
+## 포트 입력 액션명 → 원본 행동명(14290 BINDS 체계) 매핑 후 allows.
+func allows_native_action(port_action: String) -> bool:
+	var mapped: Variant = {"move_left": "left", "move_right": "right", "move_up": "up",
+		"move_down": "down", "weapon": "weapon", "parry": "parry", "shield_bash": "shield",
+		"native_magic": "beam", "rage_slot": "bow"}.get(port_action, port_action)
+	return allows(str(mapped))
 
 func _actions() -> Array:
 	# 30 actions()
@@ -445,6 +789,9 @@ func _finish() -> void:
 	active = false
 	phase = "idle"
 	pending = ""
+	_restore_trap_practice() # 695 finish→restoreTrapPractice
+	_clear_shot()
+	parryEnemy = null
 	if is_instance_valid(_panel):
 		_panel.queue_free()
 		_panel = null
@@ -454,18 +801,10 @@ func _finish() -> void:
 var _font_bold: FontVariation
 
 func _weighted_font(weight: int) -> Font:
-	# NotoSerifKR-VF는 가변 글꼴 — 실측 font-weight를 variation_opentype wght로 그대로.
+	# P2-007a — var(--font-hell) 스택(Nanum Myeongjo 400/700/800 → Noto Serif KR wght) 공용 공급자.
 	if _font == null:
 		return null
-	if weight == 400:
-		return _font
-	if _font_bold == null or int(_font_bold.get_meta("wght", 0)) != weight:
-		var variation := FontVariation.new()
-		variation.base_font = _font
-		variation.variation_opentype = {TextServerManager.get_primary_interface().name_to_tag("wght"): weight}
-		variation.set_meta("wght", weight)
-		_font_bold = variation
-	return _font_bold
+	return preload("res://scripts/native_ui_fonts.gd").stack("hell", weight)
 
 func _label(size: int, color: Color, text: String = "", weight: int = 400) -> Label:
 	var node := Label.new()
@@ -597,7 +936,8 @@ func _build_panel() -> void:
 	keycap.add_theme_stylebox_override("panel", keycap_style)
 	_ui["keycap_style"] = keycap_style
 	keycap.size_flags_horizontal = Control.SIZE_SHRINK_END # 실측: 키캡 우측 정렬(right=콘텐츠 우변 1826)
-	_ui["keycap"] = _label(28, COL_KEYCAP, "W A S D", 700) # 실측 400(Cinzel) — 대체 글꼴 시각 등가 보정(근사 기록)
+	_ui["keycap"] = _label(28, COL_KEYCAP, "W A S D", 400) # 실측 400
+	_ui["keycap"].add_theme_font_override("font", preload("res://scripts/native_ui_fonts.gd").stack("cinzel_serif", 400)) # P2-007a .lesson-key 'Cinzel',serif(로드분 700 face)
 	_ui["keycap"].autowrap_mode = TextServer.AUTOWRAP_OFF
 	keycap.add_child(_ui["keycap"])
 	column.add_child(keycap)
@@ -681,7 +1021,7 @@ func _build_panel() -> void:
 	skip_button.text = "연습 건너뛰기"
 	skip_button.custom_minimum_size = Vector2(0, 36)
 	if _font != null:
-		skip_button.add_theme_font_override("font", _font)
+		skip_button.add_theme_font_override("font", _weighted_font(400)) # P2-007a --font-hell 스택
 	skip_button.add_theme_font_size_override("font_size", 12)
 	skip_button.add_theme_color_override("font_color", COL_SKIP_TEXT)
 	var skip_style := StyleBoxFlat.new()
@@ -726,12 +1066,13 @@ func _render() -> void:
 	# 실측: 연습 중 키캡 테두리=kind 색(#c5a4f2 등)·글자 26px (intro 28px·#e0c18b)
 	(_ui["keycap_style"] as StyleBoxFlat).border_color = kind_color if phase == "practice" else COL_STATUS
 	(_ui["keycap"] as Label).add_theme_font_size_override("font_size", 26 if phase == "practice" else 28)
-	var basic_checks := [movement_done, left_click_done, right_click_done, false]
+	var basic_checks := [movement_done, left_click_done, right_click_done, spike_trap_done]
+	var all_checks: Array = basic_checks + checks
 	var current_row: int = (step + 3) if step < 0 else (3 if step == 8 else 4 + step)
 	var rows: Array = _ui["rows"]
 	for i in range(rows.size()):
 		var entry: Dictionary = rows[i]
-		var done: bool = basic_checks[i] if i < 4 else false
+		var done: bool = bool(all_checks[i]) if i < all_checks.size() else false
 		var is_current: bool = i == current_row
 		(entry["label"] as Label).add_theme_color_override("font_color",
 			COL_ROW_DONE if done else (COL_ROW_CURRENT if is_current else COL_ROW))
@@ -757,7 +1098,7 @@ func _render() -> void:
 			mini(current_row + 1, (_ui["checklist"] as VBoxContainer).get_child_count() - 1))
 	var total := float(BASIC_LABELS.size() + LESSON_LABELS.size())
 	var done_count := 0
-	for flag in basic_checks:
+	for flag in all_checks:
 		if flag: done_count += 1
 	(_ui["progress_fill"] as ColorRect).anchor_right = done_count / total
 	_ui["button"].visible = phase == "intro" # 146
@@ -783,13 +1124,43 @@ func _render() -> void:
 		_ui["keycap"].text = "우클릭"
 		_ui["title"].text = "마법으로 적 5마리를 처치하세요"
 		_ui["hint"].text = "적을 마우스로 조준하고 우클릭으로 마법탄을 발사하세요.\n처치 %d/5 · 실제로 처치해야 완료됩니다." % right_kills
-	elif step == 8: # 가시덫 — 연습 본문(시작 스킬 트랙) 미이식: 원본 체크리스트 문구 표시·스킵만
-		_ui["keycap"].text = "1"
-		_ui["title"].text = "1 · 가시덫 설치 후 도망 · 10마리 처치"
-		_ui["hint"].text = "패링 실패 시 폭발 피해를 받습니다. 재시도하면 체력이 회복됩니다."
+	elif step == 8: # 298~304 updateTrapPractice
+		_ui["keycap"].text = "1 + W A S D"
+		_ui["title"].text = "붙으면 가시덫을 깔고 도망치세요"
+		_ui["hint"].text = "몬스터 10마리가 쫓아옵니다. 가까이 붙으면 1번으로 발밑에 가시덫을 깔고, WASD / 방향키로 도망치세요. 덫 안의 적은 느려지고 지속 피해로 쓰러집니다.\n" \
+			+ "%s 가시덫 설치 · %s 설치 후 이동 · 처치 %d/10" % [
+				"✓" if trap_zone != null else "□", "✓" if trap_escaped else "□", trap_kills]
+		if practice_halted != "":
+			_ui["hint"].text += "\n(정지: %s)" % practice_halted
+	elif step >= 0 and step <= 7: # 139~143 title/tips/key()
+		_ui["keycap"].text = STEP_KEYS[step]
+		_ui["title"].text = STEP_TITLES[step]
+		_ui["hint"].text = STEP_TIPS[step]
+		if step == 0: # 181~186 updateParryPractice(step0=마법) — title·hint 덮어쓰기
+			_ui["title"].text = "마법탄을 패링해 몬스터를 처치하세요"
+			_ui["hint"].text = "몬스터 주위의 링이 완성되면 탄이 발사됩니다. 링 색으로 탄 종류를 미리 예측하세요. 흰색 링은 물리탄(E), 속성색 링은 마법탄(Q)입니다. " 				+ "이번 보라색 링은 암흑 마법탄입니다. 탄이 가까워지면 [Q]로 패링하세요." 				+ "
+" + ("패링 성공! 반사탄으로 발사한 몬스터를 처치하면 완료됩니다." if shot_reflected else "패링으로 탄을 되돌려 발사한 몬스터까지 처치하세요.")
 
-func _unhandled_input(event: InputEvent) -> void:
-	# 37 allowKey: intro에서 W/A/S/D → beginPractice
+func _input(event: InputEvent) -> void:
+	# 40 allowKey: 스킬 캐스트 키는 player 퍼널 밖(native_skill_slots._unhandled_input,
+	# 수정 금지)에서 소비되므로, 레슨 활성 중 여기(_input이 _unhandled_input보다 선행)서
+	# 차단한다. step 8만 skill_slot_1 허용, area_slot_f는 레슨 중 항상 차단,
+	# rage_slot은 allows(bow) 매핑.
+	if active and (event is InputEventKey or event is InputEventAction):
+		for cast_action in ["skill_slot_1", "area_slot_f", "rage_slot"]:
+			if not InputMap.has_action(cast_action) or not event.is_action(cast_action):
+				continue
+			var cast_allowed: bool = false
+			match cast_action:
+				"skill_slot_1": cast_allowed = chapter == 1 and step == 8 and phase == "practice"
+				"area_slot_f": cast_allowed = false
+				"rage_slot": cast_allowed = allows_native_action("rage_slot")
+			if not cast_allowed:
+				get_viewport().set_input_as_handled()
+				return
+	# 37 allowKey: intro에서 W/A/S/D → beginPractice.
+	# _input 사용 — allows 게이트(player)가 같은 키를 lock 처리(set_input_as_handled)해도
+	# beginPractice는 원본 allowKey처럼 항상 먼저 듣는다(P2-001l).
 	if not active or phase != "intro" or not event is InputEventKey or not event.pressed or event.is_echo():
 		return
 	if event.keycode in [KEY_W, KEY_A, KEY_S, KEY_D]:
@@ -808,4 +1179,4 @@ func get_snapshot() -> Dictionary:
 			"allows()/allowKey() 입력 강제 배선(시작 스킬 트랙과 입력 경로 충돌 회피 — API만 제공)",
 			"start/finish의 projs/pProjs/worldItems/spawnHoles/rifts/_fireZones/스킬·슬롯·BINDS2 저장·복원(포트 미보유 상태)",
 			"clearShot/resetPose·focusTicks·레슨 성공/사망 연출 보조(rage 분기 등)",
-			"폰트: Nanum Myeongjo/Cinzel 에셋 미보유 — NotoSerifKR 대체(실측 수치는 반영)"]}
+			"폰트(P2-007a): Nanum Myeongjo·Cinzel 원본 스택 적용 — Gowun Batang(3순위) 미보유"]}

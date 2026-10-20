@@ -41,7 +41,7 @@ const NORMAL_HURTE_OWNER_METHODS: Array[String] = ["read_native_normal_enemy_hur
 	"apply_native_normal_enemy_field_write", "apply_native_normal_enemy_bookkeeping",
 	"apply_native_normal_enemy_hp_write", "apply_native_normal_enemy_death_write",
 	"report_native_normal_enemy_hurte_event", "add_native_knockback"]
-const SLASH_SHEET = preload("res://assets/vfx/ki_slash_radiant_sheet.png")
+const SLASH_SHEET = preload("res://assets/vfx/ki_slash_silver_sheet.png") # P2-007a 16753 실버 시트(차지 19246 surfaces[2]=동일 참조)
 const ADDITIVE = preload("res://assets/vfx/radiant.gdshader")
 const DIRECTIONS: Array[String] = ["south", "south-east", "east", "north-east", "north", "north-west", "west", "south-west"]
 const NATIVE_BURN_MAX_STACKS = 10
@@ -392,10 +392,25 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("weapon"):
 		_weapon_held = true
-		request_attack()
+		if not _native_lesson_blocks_action("weapon"): # P2-001l
+			request_attack()
 	elif event.is_action_released("weapon"):
 		if not _accessibility_hold:
 			release_attack()
+
+## P2-001l — 레슨 allows 입력 게이트(원본 14290 isAct/isJust 래핑 상응): 레슨 활성 중
+## 단계 허용 외 입력만 차단. 전투 판정 로직은 불변 — 입력 게이트 1곳.
+func _native_lesson_blocks_action(action: String) -> bool:
+	var main: Node = get_parent()
+	if main == null:
+		return false
+	var sequence: Variant = main.get("source_intro_sequence")
+	if not is_instance_valid(sequence):
+		return false
+	var flow: Variant = sequence.get("lesson_flow")
+	if not is_instance_valid(flow) or flow.get("active") != true or not flow.has_method("allows_native_action"):
+		return false
+	return not flow.allows_native_action(action)
 
 func handle_native_input_event(event: InputEvent) -> Dictionary:
 	var result := {"handled":false,"accepted":false,"reason":"unmapped_event"}
@@ -409,6 +424,10 @@ func handle_native_input_event(event: InputEvent) -> Dictionary:
 		if not event.is_action(action): continue
 		result.handled=true
 		result.action=action
+		if _native_lesson_blocks_action(action): # P2-001l 레슨 입력 제한(32 allows)
+			_native_input_held[action]=false
+			result.reason="parry_lesson_input_locked"
+			return result
 		if event is InputEventKey and event.echo:
 			result.reason="key_repeat_ignored"
 			return result
@@ -1272,7 +1291,7 @@ func _build_charge_display() -> void:
 		sprite.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 		var material := ShaderMaterial.new()
 		material.shader = ADDITIVE
-		material.set_shader_parameter("hue_degrees", 150.0)
+		material.set_shader_parameter("hue_degrees", 0.0) # P2-007a 16744 색 변환 폐지
 		sprite.material = material
 		sprite.z_index = 10
 		add_child(sprite)

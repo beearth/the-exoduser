@@ -8,6 +8,8 @@ const FLESH_SCRIPT = preload("res://scripts/enemy_melee_flesh_crawler.gd")
 const SPINE_SCRIPT = preload("res://scripts/enemy_tank_physical_spine_beast.gd")
 const ICE_SOUL_SCRIPT = preload("res://scripts/enemy_tank_ice_soul_flame.gd")
 const HIVE_LIGHTNING_SCRIPT = preload("res://scripts/enemy_archer_lightning_hive_bloater.gd")
+const ICE_WARRIOR_SCRIPT = preload("res://scripts/enemy_melee_ch1_ice_warrior.gd")
+const ICE_WARRIOR_CONFIG_FILE = "res://data/etype20_ch1_ice_warrior.json"
 const HIVE_LIGHTNING_CONFIG_FILE = "res://data/etype1_lightning_hive_bloater.json"
 const HIVE_LIGHTNING_PROFILE = "native_ch1_etype1_lightning_hive_bloater_v1"
 const HIVE_LIGHTNING_CONFIG_SCHEMA = "exoduser.godot.etype1-lightning-hive-bloater.v1"
@@ -32,6 +34,8 @@ var _flesh_config: Variant = JSON.parse_string(FileAccess.get_file_as_string(FLE
 var _spine_config: Variant = JSON.parse_string(FileAccess.get_file_as_string(SPINE_CONFIG_FILE))
 var _ice_soul_config: Variant = JSON.parse_string(FileAccess.get_file_as_string(ICE_SOUL_CONFIG_FILE))
 var _hive_lightning_config: Variant = JSON.parse_string(FileAccess.get_file_as_string(HIVE_LIGHTNING_CONFIG_FILE))
+var _ice_warrior_config: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(ICE_WARRIOR_CONFIG_FILE))
+var _ice_warrior_source: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/encounters.json"))
 
 func validate_source(source: Variant) -> Dictionary:
 	var errors: Array = []
@@ -114,7 +118,14 @@ func _validate_record(value: Variant, index: int, ids: Dictionary, errors: Array
 		errors.append("%s.support: invalid support declaration" % label)
 	var reason = unsupported_reason(record)
 	if reason.is_empty():
-		if _is_flesh_target(record):
+		if _is_ice_warrior_target(record):
+			if record["runtime"] != null or record["support"]["runtime_supported"] != false:
+				errors.append(label + ": ice warrior source snapshot must remain unsupported/runtime=null")
+			for group in ["base_textures", "walk_textures"]:
+				for path in record["animation"][group].values():
+					if not ResourceLoader.exists(path):
+						errors.append(label + ": required original ice warrior texture missing: " + path)
+		elif _is_flesh_target(record):
 			# The old export declares this unported. Preserve that snapshot;
 			# admission belongs to this separate, source-derived consumer config.
 			if record["runtime"] != null or record["support"]["runtime_supported"] != false:
@@ -138,7 +149,7 @@ func _validate_record(value: Variant, index: int, ids: Dictionary, errors: Array
 		errors.append("%s: unported profile must have runtime=null and runtime_supported=false" % label)
 
 func unsupported_reason(record: Dictionary) -> String:
-	if _is_flesh_target(record) or _is_spine_target(record) or _is_ice_soul_target(record) or _is_hive_lightning_target(record):
+	if _is_ice_warrior_target(record) or _is_flesh_target(record) or _is_spine_target(record) or _is_ice_soul_target(record) or _is_hive_lightning_target(record):
 		return ""
 	if record.get("etype") != 4:
 		return "native_type_ai_not_ported"
@@ -153,6 +164,16 @@ func unsupported_reason(record: Dictionary) -> String:
 	if record["support"].get("ai_profile") != MEDIUM_PROFILE:
 		return "native_ai_profile_not_ported"
 	return ""
+
+func _is_ice_warrior_target(record: Dictionary) -> bool:
+	if _ice_warrior_config.get("schema") != "exoduser.godot.etype20-ch1-ice-warrior.v1" or not _json_equal(_ice_warrior_config.get("orders"), [4, 10, 12]):
+		return false
+	if _ice_warrior_config.get("source_sha256") != "91fd1a88b394152cd8b0de653f1bde5139b7829f331787581616f7ef3c0724fa" or FileAccess.get_sha256("res://data/encounters.json") != _ice_warrior_config["source_sha256"]:
+		return false
+	var order: Variant = record.get("order")
+	if not _integer(order) or not [4, 10, 12].has(int(order)):
+		return false
+	return _json_equal(record, _ice_warrior_source["records"][int(order)])
 
 func _is_flesh_target(record: Dictionary) -> bool:
 	var animation: Variant = record.get("animation")
@@ -558,9 +579,13 @@ func consume_atomic(source: Variant, owner_world: Node2D) -> Dictionary:
 			var spine = _is_spine_target(record)
 			var ice_soul = _is_ice_soul_target(record)
 			var hive_lightning = _is_hive_lightning_target(record)
+			var ice_warrior = _is_ice_warrior_target(record)
 			var enemy: CharacterBody2D
 			var runtime: Dictionary
-			if hive_lightning:
+			if ice_warrior:
+				enemy = ICE_WARRIOR_SCRIPT.new()
+				runtime = ICE_WARRIOR_SCRIPT.build_runtime(record)
+			elif hive_lightning:
 				enemy = HIVE_LIGHTNING_SCRIPT.new()
 				runtime = _hive_lightning_config["runtime"]
 			elif ice_soul:
@@ -576,7 +601,11 @@ func consume_atomic(source: Variant, owner_world: Node2D) -> Dictionary:
 				enemy = ENEMY_SCRIPT.new()
 				runtime = record["runtime"]
 			enemy.configure(runtime.duplicate(true), owner_world)
-			if flesh or spine or ice_soul or hive_lightning:
+			if ice_warrior:
+				report["records"][-1]["consumer_profile"] = ICE_WARRIOR_SCRIPT.PROFILE
+				report["records"][-1]["source_support"] = record["support"].duplicate(true)
+				report["records"][-1]["consumer_config"] = ICE_WARRIOR_CONFIG_FILE
+			elif flesh or spine or ice_soul or hive_lightning:
 				report["records"][-1]["consumer_profile"] = HIVE_LIGHTNING_PROFILE if hive_lightning else (ICE_SOUL_PROFILE if ice_soul else (SPINE_PROFILE if spine else FLESH_PROFILE))
 				report["records"][-1]["source_support"] = record["support"].duplicate(true)
 				report["records"][-1]["consumer_config"] = HIVE_LIGHTNING_CONFIG_FILE if hive_lightning else (ICE_SOUL_CONFIG_FILE if ice_soul else (SPINE_CONFIG_FILE if spine else FLESH_CONFIG_FILE))

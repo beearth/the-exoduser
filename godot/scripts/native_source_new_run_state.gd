@@ -272,6 +272,38 @@ func apply_native_intro_curtain_g_writes(owner: Node, step: String) -> Dictionar
 			return {"applied": false, "reason": "intro_curtain_g_step_unsupported:" + step}
 	return {"applied": true, "on": _g.get("on"), "intro": _g.get("_intro")}
 
+# ═══ P3-002: 소환굴 G owner — genFromTemplate 30681 G.spawnHoles=spawnHoles · 30625
+# G._totalSpawned=Σ_spawnHoleCount · 35690 완료 shake(5+~~(size*9))(19924 G.shake=max(G.shake,
+# n*OPT.shake/100)). spawnHoles는 원본처럼 한 배열(소환 시스템이 원소 갱신·splice)이다.
+func apply_native_spawn_hole_g_writes(owner: Node, writes: Dictionary) -> Dictionary:
+	if not _current_error().is_empty() or not is_instance_valid(owner) \
+			or not owner.is_inside_tree() or get_tree().paused \
+			or owner.get("world") != _world or owner.get("player") != _player:
+		return {"applied": false, "reason": "spawn_hole_g_owner_not_current"}
+	var script: Script = owner.get_script() as Script
+	if script == null or script.resource_path != "res://scripts/native_spawn_hole_system.gd":
+		return {"applied": false, "reason": "spawn_hole_g_owner_script_mismatch"}
+	for field in writes:
+		var value: Variant = writes[field]
+		match field:
+			"spawnHoles":
+				if not value is Array:
+					return {"applied": false, "reason": "spawn_hole_g_value_unsupported:spawnHoles"}
+			"_totalSpawned":
+				if not value is int or value < 0:
+					return {"applied": false, "reason": "spawn_hole_g_value_unsupported:_totalSpawned"}
+			"shake":
+				if not (value is int or value is float) or not is_finite(float(value)) or float(value) < 0.0:
+					return {"applied": false, "reason": "spawn_hole_g_value_unsupported:shake"}
+			_:
+				return {"applied": false, "reason": "spawn_hole_g_field_unsupported:" + str(field)}
+	for field in writes:
+		if field == "shake":
+			_g["shake"] = maxf(_feel_num(_g.get("shake")), float(writes[field]))
+		else:
+			_g[field] = writes[field]
+	return {"applied": true, "count": writes.size()}
+
 # ═══ P2-001a: 타격 피드백 G owner — 피해 숫자 펌프·히트스톱(원본 비활성)·셰이크 ═══
 # 프레임 예산 카운터(원본 전역 _txtPerFrame/_impPerFrame, 61848 리셋·42397 증가·25415 증가).
 # 임팩트 시스템 미이식 → _imp_per_frame는 리셋만 되고 0 유지(원문 min(4,12-0)=4).
