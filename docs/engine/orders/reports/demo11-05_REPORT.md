@@ -1,5 +1,7 @@
 # DEMO11-05 — demo native local 저장소 adapter
 
+2026-10-21 성능 후속: 기존 제출 `fc8ceaa0`에 최신 origin/main `8dbbf2b0e699c36a93ca5cf41a2f3408be6da2c4`를 정상 merge했다(`aa1eaea5a` 포함). CHANGELOG 충돌은 양쪽 절을 보존했다. Main·전투 파일 변경은 main에서 가져온 변경이며 이번 adapter의 추가 런타임 수정은 0줄이다. save_adapter 전체의 `get_method_list/get_property_list/get_signal_list` 호출은 0건이고, `advance`·`poll` 및 lifecycle 경로에도 없다. 캐시 추가와 별도 성능 벤치는 필요하지 않아 실행하지 않았으며 PC 측 성능 수치를 자체 측정으로 주장하지 않는다. 관련 신규79/0·재읽기5/0·집중8/0·primitive10,388/0·reader5,952/0을 병합 후 각각 1회 검사했다(합계16,432/0, ERROR/WARNING0). 원로그는 `merge-*.{out,err,engine}.log`와 meta.json이며 override는 종료 후0byte다.
+
 작업 `demo11-05` · 브랜치 `codex/demo11-05-20261021`. **격리 실제 IO 인수·제품 소비자 연결 대기**. 원본 JSON 저장 경계를 구현했으며 실제 사용자 저장소·전투·맵은 수정하지 않았다.
 
 | 항목 | 구현·근거·소유 경계 |
