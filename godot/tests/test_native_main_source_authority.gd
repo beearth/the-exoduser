@@ -81,20 +81,28 @@ func _test_startup_lineage() -> Dictionary:
 	check(snapshot["source_boot_input"] == original, "Main consumes exact original SOURCE_BOOT input")
 	check(original["status"] == "SOURCE_BOOT" and original["current"] == false and original["derived"] == false, "original source packet remains noncurrent and nonderived")
 	check(current["status"] == "READY" and current["current"] == true and current["derived"] == false, "actual constructed current projection has distinct provenance")
-	var same_numeric_values = current["values"].size() == original["values"].size()
-	for field in original["values"]:
+	# QA-001: game.html:27929-27947 applyStats / 16425-16431 recalcSt precede
+	# stage-entry refill (31567); SOURCE_BOOT remains immutable input history.
+	var expected: Dictionary = original["values"].duplicate(true)
+	var source_writes: Array = authority.get_snapshot()["source_initializer_writes"]
+	for write in source_writes:
+		if expected.has(write["field"]): expected[write["field"]] = write["value"]
+	expected["st"] = expected["mst"]
+	expected["mp"] = expected["mmp"]
+	var same_numeric_values = not source_writes.is_empty() and current["values"].size() == expected.size()
+	for field in expected:
 		var value: Variant = current["values"].get(field)
 		same_numeric_values = same_numeric_values and (value is int or value is float) \
-			and is_finite(float(value)) and float(value) == float(original["values"][field])
-	check(same_numeric_values, "actual Main current six numeric leaves equal consumed boot")
-	check(current["values"]["mp"] == 160 and current["values"]["mmp"] == 160 and current["values"]["stR"] == 0.28 and current["values"]["mpR"] == 0, "real holder MP160/MMP160/base .28/0")
-	check(current["phase"] == "constructed_before_apply_stats" and current["derived_ready"] == false and current["main_full_ready"] == false, "constructor current is not derived or full Main authority")
+			and is_finite(float(value)) and float(value) == float(expected[field])
+	check(same_numeric_values, "actual Main current six numeric leaves equal ordered source writes and stage refill")
+	check(current["values"]["mp"] == main.source_state.read_current_p()["mp"] and current["values"]["mmp"] == main.source_state.read_current_p()["mmp"] and current["values"]["stR"] == expected["stR"] and current["values"]["mpR"] == expected["mpR"], "real holder MP/MMP and source rates equal current owner and original writes")
+	check(current["phase"] == "source_initialization_partial" and current["derived_ready"] == false and current["main_full_ready"] == false, "initialized current remains partial, not full derived Main authority")
 	check(current["lineage"]["kind"] == "new_run" and current["lineage"]["input_current"] == false and current["lineage"]["input_derived"] == false, "current lineage retains original boot flags")
 	check(snapshot["bound"] == true and snapshot["automatic_physics"] == false and snapshot["restore_fallback"] == false and snapshot["missing_upstream_manufactured"] == false, "public bound scope has no fallback or manufactured globals")
 	var copied: Dictionary = main.player.get_native_source_resources_snapshot()
 	copied["source_boot_input"]["values"]["mp"] = -999
 	copied["current_parameters"]["values"]["mp"] = -999
-	check(authority.read_current_resource_parameters()["values"]["mp"] == 160 and authority.get_snapshot()["source_boot_input"] == original, "public deep copies cannot overwrite actual current or source input")
+	check(authority.read_current_resource_parameters()["values"]["mp"] == current["values"]["mp"] and authority.get_snapshot()["source_boot_input"] == original, "public deep copies cannot overwrite actual current or source input")
 	var report: Dictionary = main.world.get_encounter_report()
 	check(report["supported_count"] == 6 and report["unsupported_count"] == 10, "Main encounter support6 / unsupported10 unchanged")
 	var out = {"current": current, "source_boot": original,
@@ -105,13 +113,14 @@ func _test_startup_lineage() -> Dictionary:
 func _test_public_attack_atomic() -> Dictionary:
 	var main = make_main()
 	var authority: Node = main.source_resources
+	var before_attack: Dictionary = authority.read_native_regen_state()
 	check(main.player.request_attack(), "actual Main public attack succeeds")
 	main.player.release_attack()
 	var state: Dictionary = authority.read_native_regen_state()
-	check(state["st"] == main.player.stamina and state["s"] == main.player.state and state["st"] < 200, "authority reads same actual attacked actor fields")
-	check(state["mp"] == 160, "public physical attack does not invent MP cost")
-	# This is a synthetic source-shaped sink contract packet. Source mpR0 is
-	# not claimed to produce a natural MP change, nor is regen installed.
+	check(state["st"] == main.player.stamina and state["s"] == main.player.state and state["st"] < before_attack["st"], "authority reads same actual attacked actor fields")
+	check(state["mp"] == before_attack["mp"], "public physical attack does not invent MP cost")
+	# Synthetic sink packet: MP159 is a requested value, not natural recovery.
+	# Boot mpR0 is historical input; make_main explicitly opts out of automatic regen.
 	var packet = resource_packet(authority, minf(state["st"] + 1.0, state["mst"]), 159.0)
 	check(authority.commit_native_regen_resources(packet), "public synthetic paired packet commits actual ST and owned MP")
 	var after: Dictionary = authority.read_native_regen_state()

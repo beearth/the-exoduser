@@ -36,12 +36,12 @@ function makeDelta() {
     baseRef:{v6:'/UNIT/not-fetched-v6.json'},partialStatus:'UNIT PARTIAL source only',unknownDelta:{keep:true},
     resolution:{corpse:{finalMeta:{sz:40},source:'UNIT source corpse',col:0,collision:false,noCol:false,
       physics:'EXCLUDED',placements:2,placementTiles:[[124,179],[78,37]],unknownCorpse:'keep'},
-    pit_poison:{finalMeta:{sz:200,collision:true},source:'UNIT source pit',col:0,collision:true,noCol:false,
-      colParts:false,colW:null,colH:null,colSz:null,physics:'INCLUDED',shape:'circle',
-      colliderDim:{colSz:80,formula:'UNIT explicit radius80',unit:'px radius'},placements:1,
+    pit_poison:{finalMeta:{sz:200,collision:true,colW:80,colH:58,colOy:7},source:'UNIT source pit',col:0,collision:true,noCol:false,
+      colParts:false,colW:80,colH:58,colOy:7,colSz:null,physics:'INCLUDED',shape:'ellipse',
+      colliderDim:{colW:80,colH:58,colOy:7,formula:'UNIT explicit radii80x58 and offset7',unit:'px radii; colOy px offset'},placements:1,
       rawTile:[162,139],onFloor:true,effectiveWorld:[6500,5580]}},
-    oldNew:{addedCollider:{type:'pit_poison',shape:'circle',colSz:80,rawTile:[162,139],onFloor:true,effectiveWorld:[6500,5580]}},
-    finalHandSubset:{objectColliderCount:14,breakdown:{circle:12,ellipse:2,rotatedParts:0},scope:'UNIT PARTIAL hand subset'}};
+    oldNew:{addedCollider:{type:'pit_poison',shape:'ellipse',colW:80,colH:58,colOy:7,rawTile:[162,139],onFloor:true,effectiveWorld:[6500,5580]}},
+    finalHandSubset:{objectColliderCount:14,breakdown:{circle:11,ellipse:3,rotatedParts:0},scope:'UNIT PARTIAL hand subset'}};
 }
 
 test('v7 appends only the explicit pit and preserves scene, base raw delta and authored scope through JSON reopen',()=>{
@@ -53,8 +53,11 @@ test('v7 appends only the explicit pit and preserves scene, base raw delta and a
   const oldCollision=oldScene.collisionPreview,newCollision=newScene.collisionPreview;
   assert.deepEqual(newCollision.colliders.slice(0,13),oldCollision.colliders);
   const added=newCollision.colliders[13];
-  assert.deepEqual({id:added.id,kind:added.kind,center:added.center,radius:added.radius},
-    {id:'native-hand-13-pit_poison',kind:'circle',center:[6500,5580],radius:80});
+  assert.deepEqual({id:added.id,kind:added.kind,center:added.center,radii:added.radii,yaw:added.yaw},
+    {id:'native-hand-13-pit_poison',kind:'ellipse',center:[6500,5587],radii:[80,58],yaw:0});
+  assert.equal(Object.hasOwn(added,'radius'),false);
+  assert.equal(out.inspection.circleCount,11); assert.equal(out.inspection.ellipseCount,3);
+  assert.deepEqual(out.inspection.addedCollider,{id:added.id,type:'pit_poison',center:[6500,5587],radii:[80,58],yaw:0,units:'world-px'});
   assert.equal(Object.hasOwn(added,'nativeScale'),false); assert.equal(newCollision.colliders.some(c=>c.nativeType==='corpse'),false);
   for(const key of ['map','characters','skills','vfx','preview','unknownProject'])assert.deepEqual(next[key],project[key]);
   for(const key of Object.keys(oldScene).filter(k=>!['collisionPreview','provenance'].includes(k)))assert.deepEqual(newScene[key],oldScene[key]);
@@ -70,18 +73,34 @@ test('v7 appends only the explicit pit and preserves scene, base raw delta and a
   assert.equal(validateProject(reopened).ok,true); assert.deepEqual(reopened.sourcePreview,newScene);
 });
 
-test('new radius80 is consumed by existing full-foot sweep while explicit corpse placements remain noncollision',()=>{
+test('MAP-021 ellipse consumes full-foot sweeps at all four rims and opens the old northern circle strip',()=>{
   const out=applyMapSourceHandColliderDelta(makeProject(),{delta:makeDelta(),scope:scope()});
   assert.equal(out.ok,true,out.errors.join('\n')); const scene=out.sourcePreview;
   assert.equal(canMoveSourcePreview(scene,{x:6594,y:5580},{x:6594,y:5580},12,{validated:true}).ok,true);
   const blocked=canMoveSourcePreview(scene,{x:6594,y:5580},{x:6584,y:5580},12,{validated:true});
   assert.equal(blocked.ok,false); assert.equal(blocked.reason,'collider:native-hand-13-pit_poison');
+  // Old circle blocked this strip; current ellipse starts at y=5529 (5580+7-58).
+  assert.equal(canMoveSourcePreview(scene,{x:6500,y:5501},{x:6500,y:5514},12,{validated:true}).ok,true);
+  for(const [from,to] of [
+    [{x:6500,y:5514},{x:6500,y:5520}],
+    [{x:6500,y:5660},{x:6500,y:5650}],
+    [{x:6405,y:5587},{x:6415,y:5587}],
+    [{x:6595,y:5587},{x:6585,y:5587}],
+  ]) {
+    const rim=canMoveSourcePreview(scene,from,to,12,{validated:true});
+    assert.equal(rim.ok,false); assert.equal(rim.reason,'collider:native-hand-13-pit_poison');
+  }
   for(const [x,y] of [[4980,7180],[3140,1500]])assert.equal(canMoveSourcePreview(scene,{x,y},{x,y},12,{validated:true}).ok,true);
 });
 
 test('inconsistent dimensions, centers, corpse flags, subset count and full coverage fail without changing inputs',()=>{
-  const mutations=[d=>d.oldNew.addedCollider.colSz=160,d=>d.oldNew.addedCollider.effectiveWorld[1]=5540,
-    d=>d.resolution.corpse.collision=true,d=>d.finalHandSubset.objectColliderCount=15];
+  const mutations=[d=>d.oldNew.addedCollider.colW=160,d=>d.oldNew.addedCollider.colH=80,d=>d.oldNew.addedCollider.colOy=0,
+    d=>d.oldNew.addedCollider.shape='circle',d=>d.oldNew.addedCollider.effectiveWorld[1]=5587,
+    d=>d.resolution.pit_poison.finalMeta.colH=80,d=>d.resolution.pit_poison.colOy=0,
+    d=>d.resolution.pit_poison.colliderDim.colW=160,d=>d.resolution.pit_poison.colliderDim.colOy=0,
+    d=>d.resolution.pit_poison.shape='circle',d=>d.resolution.pit_poison.colW=null,
+    d=>d.resolution.corpse.collision=true,d=>d.finalHandSubset.objectColliderCount=15,
+    d=>d.finalHandSubset.breakdown={circle:12,ellipse:2,rotatedParts:0}];
   for(const mutate of mutations){const project=makeProject(),delta=makeDelta();mutate(delta);const before=copy({project,delta});
     const out=applyMapSourceHandColliderDelta(project,{delta,scope:scope()});assert.equal(out.ok,false);assert.equal(out.candidateProject,null);
     assert.deepEqual({project,delta},before);}

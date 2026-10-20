@@ -168,12 +168,19 @@ func movement_damage_preserves_source_speed() -> void:
 	var writes: int = player.get_native_source_initialization_snapshot()["committed_source_writes"]
 	var frame: float = main.world.get_native_frame()
 	var origin: Vector2 = player.global_position
-	Input.action_press("move_right")
+	# QA-001: source keydown/keyup (game.html:13215,13330) reach the current input owner.
+	var move := InputEventAction.new()
+	move.action = "move_right"
+	move.pressed = true
+	Input.parse_input_event(move)
 	var waits = 0
 	while main.world.get_native_frame() < frame + 10.0 and waits < 120:
 		await physics_frame
 		waits += 1
-	Input.action_release("move_right")
+	var release_move := InputEventAction.new()
+	release_move.action = "move_right"
+	release_move.pressed = false
+	Input.parse_input_event(release_move)
 	_check(main.world.get_native_frame() >= frame + 10.0, "actual World clock advanced naturally for movement")
 	_check(player.global_position.distance_to(origin) > 0.1, "public movement input moves actual actor")
 	_check(is_equal_approx(player.velocity.length(), source_speed * 60.0), "actual idle movement consumes preserved source speed in px/sec")
