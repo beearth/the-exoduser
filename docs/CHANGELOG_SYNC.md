@@ -1,3 +1,9 @@
+## 2026-10-21 DEMO11-29 — 데모 소켓·유물·장비 제작 실제 거래
+
+- main0138c5bb + 장착22r d276e02e 정상merge 기준. 원본 _DEMO_MODE/forge 확인 후 유골함 제작 제외·데모 금지 affix7종 opt-in, actual State 재료/악의/가루/INV 단일 lock 및 실패 참조·캐시 rollback 연결.
+- 소켓·유물 거래/이미 장착한 종류 제작 READY. 재련·빈 슬롯 자동장착은 원본 recalcSt→applyStats의 PC 단독 recalcSt writer 부재로 HOLD(차감/RNG0). 직접 apply_stats와 장착용 clamp를 혼동하지 않음. PC 자원/피해/저장IO0행.
+- Hell Gothic 작업대·본문/숫자 hell 폰트·이모지/개발 상태 문구0, 번역 CRLF 보존. 관련 실행 수치·2장/1x 캡처·공용 변경 줄·HOLD 인터페이스는 [보고서](engine/orders/reports/demo11-29_REPORT.md), 원로그 _out/demo11-29/.
+
 
 ## 2026-10-21 DEMO11-22r — 일반17슬롯 장착·PC runtime refresh 연결
 

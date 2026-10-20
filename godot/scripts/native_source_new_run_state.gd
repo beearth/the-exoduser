@@ -762,7 +762,7 @@ func commit_native_world_item_picked(owner: Node, serial: int) -> Dictionary:
 # 아이템만 점유. 성공 시 _gx/_gy/_pickT 기록. _invAutoSortIfClosed(재정렬·재배치)는 인벤 UI
 # 소유 — 미이식 기록(제거 없는 픽업만으로는 행우선 채움이라 용량 동일).
 func apply_native_pickup_item(owner: Node, item: Dictionary) -> Dictionary:
-	if not _feel_owner_current(owner):
+	if not _feel_owner_current(owner) and not (_workshop_committing and is_same(item,_workshop_pickup_item) and _equipment_owner_current(owner)):
 		return {"applied": false, "reason": "actual_reward_owner_not_current"}
 	if str(item.get("slot", "")) == "bonePart":
 		return {"applied": false, "reason": "unported_branch_active:bone_register_codex"}
@@ -1550,7 +1550,7 @@ const FORGE_TRANSACTION = preload("res://scripts/native_meta_enhancement_transac
 var _forge_committing = false
 
 func _forge_owner_current(owner: Node) -> bool:
-	return _current_error().is_empty() and is_instance_valid(owner) and not owner.is_queued_for_deletion() \
+	return not _workshop_committing and _current_error().is_empty() and is_instance_valid(owner) and not owner.is_queued_for_deletion() \
 		and owner == _player.get_parent() and owner.get("source_state") == self and owner.get("world") == _world \
 		and owner.get_script() != null and owner.get_script().resource_path == "res://scripts/main.gd" \
 		and is_instance_valid(owner.get("source_forge")) and owner.source_forge.is_bound_to(owner,self)
@@ -1604,4 +1604,25 @@ func apply_native_equipment_transaction(owner: Node, operation: String, item: Di
 	_equipment_committing = true
 	var result: Dictionary = owner.source_equipment.execute(operation,item,slot,_inventory,_g,_native_crystal_bag)
 	_equipment_committing = false
+	return result
+
+# DEMO11-29: same INV/bag/wallet owner and existing equipment cache authority.
+var _workshop_committing := false
+var _workshop_pickup_item: Variant
+var _workshop_operation := ""
+var _native_crystal_dust := 0
+func read_native_workshop_dust() -> int:return _native_crystal_dust
+func apply_native_workshop(owner: Node, operation: String, args: Dictionary) -> Dictionary:
+	if _workshop_committing or _equipment_committing or _forge_committing or not _equipment_owner_current(owner) or not is_instance_valid(owner.get("source_workshop")) or not owner.source_workshop.is_bound_to(owner,self):return {"applied":false,"reason":"workshop_owner_or_reentry"}
+	_workshop_committing=true;_equipment_committing=true;_workshop_operation=operation
+	var result: Dictionary=owner.source_workshop.execute(operation,args,_inventory,_g,_native_crystal_bag,_native_stone_bag,_native_crystal_dust)
+	if result.get("applied")==true:_native_crystal_dust=int(result.dust)
+	_equipment_committing=false;_workshop_committing=false;_workshop_operation=""
+	return result
+
+func apply_native_workshop_pickup(owner: Node,caller: RefCounted,item: Dictionary) -> Dictionary:
+	if not _workshop_committing or _workshop_operation!="equipment_craft" or _workshop_pickup_item!=null or owner.get("source_workshop")!=caller or not _equipment_owner_current(owner):return {"applied":false,"reason":"workshop_pickup_window_closed"}
+	_workshop_pickup_item=item
+	var result: Dictionary=apply_native_pickup_item(owner,item)
+	_workshop_pickup_item=null
 	return result

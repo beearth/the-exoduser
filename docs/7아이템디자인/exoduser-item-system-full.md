@@ -1,3 +1,13 @@
+## 2026-10-21 DEMO11-29 — 데모 작업대 실제 거래 연결(부분 인수)
+
+원본 game.html G16646–16650과 G50549 이후를 확인했다. 보석·소켓·제작·재련은 데모 전용 금지 분기가 없고, G51085 장비 제작 목록에는 유골함이 없다. 소켓 최대5/품질1–100은 [v0.7.0](../13출시·마케팅/patch_notes/v0.7.0.md) 기준이다. 기존 ITEMS/NPC_WORLD 순서안을 대체하지 않는다.
+
+실제 State INV·결정/석 bag·악의와 신규 가루 원장에 개방/승급/부착/분리, 유물 강화/합성/분해/두 제작, 이미 장착한 종류의 장비 제작→기존 pickup을 연결했다. G15777–15829/G50952–51079처럼 필요한 거래만 PC apply_stats를 직접 호출한다. 장착용 equipment_refresh의 자원 사후 clamp를 섞지 않는다. 장비 제작은 full mkItem 기존 생성기를 재사용하고 이 caller에만 원본 데모 금지 affix7종을 opt-in한다.
+
+**재련 및 빈 슬롯 제작 자동장착은 HOLD**다. 원본 G50836/G51176의 recalcSt→applyStats 앞단을 수행할 PC 단독 recalcSt writer가 아직 공개되지 않았다. 현재는 결제/RNG 전에 거부하며, 해당 버튼은 비활성이고 화면에 개발 상태 문구는 없다. 이를 원본 데모 금지 기능으로 기록하지 않는다. 재련 비용은 G50458의 _malCost(200)=100, 제작은 _malCost(200000)=100000이다. 저장IO/schema·피해 경로·PC 자원 writer 변경0; 가루/저장 인계와 SFX/lesson callback은 후속이다. 상세 원본 근거·범위·실제 검증·공용 줄 범위는 [보고서](../engine/orders/reports/demo11-29_REPORT.md)를 따른다.
+
+---
+
 > 2026-10-17 ENGINE 현행: callback **12/25·미13**. play_time은 el_mul 바로 다음에 동일 Services self의 arity0 Callable로 등록했다. owner 첫 격리 공개 API 검수는 인수됐으며 자연 clock·실게임 인수는 미확인이다. D9는 직전 공통 소스 인수이며, 이번 main/I/R 소스 정렬은 아래 통합 정본과 단위 receipt의 실제 HEAD·tree를 기준으로 확인한다. V12 후보는 소스 인수·첫 FAIL·별도 보완 한정성공으로 구분하며 제품 copy·World hook은 수행하지 않았다. 아래 이전 단계 숫자·원검수 결과는 당시 이력으로 보존한다. 실제 local/remote commit 상태는 단위 receipt를 따른다.
 
 > 2026-10-17 ENGINE WIP 현행: 실제 callback **9/25·미16**. 신규 격리 행동41/41과 신규 map 경계 static9/9만 인수 범위다. 원 첫 parse 실패는 보존한다. 이 WIP를 main/R/served·전체 게임 최신화 완료로 해석하지 않는다.
