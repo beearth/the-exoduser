@@ -168,6 +168,11 @@ func _ready() -> void:
 	if not world.bind_native_player_projectile_consumer(self):
 		_stop_source_player_startup("native_player_projectile_consumer_binding_rejected")
 		return
+	# P2-001e — 새 게임은 initStage(0) 진입으로 시작(64025): 31567 자원 풀충전을 원본대로.
+	var stage_entry_refill: Dictionary = source_state.apply_native_stage_entry_refill(self)
+	if stage_entry_refill.get("applied") != true:
+		_stop_source_player_startup("source_stage_entry_refill_rejected:" + str(stage_entry_refill.get("reason")))
+		return
 	# Read the existing ready Player child. Main is still inside its own _ready;
 	# native resource inspection does not acknowledge source startup or quality.
 	_native_player_sprite_startup_readonly_calls += 1
