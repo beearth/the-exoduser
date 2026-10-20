@@ -585,3 +585,10 @@ P는 mkP 반환 직후 값이며 최종저장값/장비적용후값이 아니다
 SV primitive의 `web_ack` 성공 시각 계산과 기존 `source_save_lifecycle_owner.gd`를 실제 재사용했다. `configure_lifecycle`의 기존 clock/state/collector/slot/rift Callable과 **현재 시점 `context.raw_json`**을 소비한다. `start_auto_save`/`schedule_boot_save`/`poll`은 원래30초·10초 성공 간격·3초 boot 계약을 유지한다(G3935–3944/62212). 실제 commit 뒤에만 성공 시각을 갱신하며, IO 이전 admission 실패도 알려진 실패 settlement로 전달해 boot ticket을 남기지 않는다. 기존 fixture primitive의 HOLD/readiness 및 다른 SV 모듈은 변경하지 않았다.
 
 이 좁은 native IO와 격리 재시작 읽기만 인수했다. Main/State 수정0, 실제 신규/이어하기·Player/INV restore·collector 직렬화·공유창고·로비 슬롯 활성 교환은 DEMO11-04/06 소비자 범위다. 현재 일반 Main의 기존 userdir에서는 안전하게 NOT_READY이며 별도 demo namespace 선택/실제 lifecycle pump 설치는 부팅/복원 담당이 인수해야 한다. flush/rename 검증은 전원 장애의 fsync 내구성, Windows 교체 rename, 적대적 동시 파일시스템 교체, crash 뒤 잠금 자동 복구의 증명이 아니다. 상세 수치/실패 원문/접점은 [DEMO11-05 보고서](orders/reports/demo11-05_REPORT.md)를 따른다.
+
+
+## 2026-10-21 DEMO11-06b 분할 구현 — PC 보호 복원 대기
+
+사용자 승인 범위에서 실제 Main/State의 load-only writer와 collector/native 공유 IO/비보호 복원을 연결했다. 기존 Player/INV/Shared/collector와 restore-flow 비보호 stage는 재사용한다. State의 actual Player HP/ST·MP authority 현재 Dictionary 설치는 시작 전 한 번만 허용하며 기존 전투 writer는 변경하지 않았다. loaded는 신규 starter/시작 스킬을 지급하지 않고, 보호3단계 관측 없으면 실제 설치된 actor/world/Main을 정지하고 저장을 차단한다. 기존 SV 계산 모듈의 fixture-only/full_restore=false 표시는 그대로이며 새 연결이 보호 완료를 의미하지 않는다.
+
+05 adapter는 기본 키/형식을 유지하는 extension point만 추가했고 공유 subclass가 별도 hellcave_sharedStorage/hellcave_sharedMats 키·폴더로 잠금/temp/readback/rename을 재사용한다. game.storage{} 유지, max/empty-only legacy200 정책 재사용, 손상·실패를 fresh로 전환하지 않는다. State globals를 실제 생성해 수집하고 기존 lifecycle boot3초/auto30초/성공 간격10초를 Main에 연결했다. 아직 main 미인수인 XP20/INV21/skills16·17 후속 writer는 필드 계약으로 구분했다. 활성 조건/PC callsite/수치/실패 로그/공용 줄 범위는 [DEMO11-06b 보고서](orders/reports/demo11-06b_REPORT.md)를 따른다.

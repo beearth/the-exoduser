@@ -107,6 +107,19 @@ var _native_source_object_registration: Dictionary = {}
 # Policy is selected only by the production boot, never URL/test metadata.
 var _native_demo11_policy: Dictionary = {}
 
+# DEMO11-06b: opt-in native save route; protected PC handoffs remain pending.
+var _demo11_session: RefCounted
+var _demo11_load_result: Dictionary={"status":"OFF"}
+func read_native_demo11_load_result() -> Dictionary: return _demo11_load_result.duplicate(true)
+func save_native_demo11_current() -> Dictionary:
+	return _demo11_session.save_current(self) if _demo11_session!=null else {"status":"OFF","ready":false}
+func _demo11_stop_boot(result: Dictionary) -> void:
+	_demo11_load_result=result.duplicate(true)
+	if _demo11_session!=null: _demo11_session.block_start()
+	set_process(false); set_physics_process(false); set_process_unhandled_input(false)
+	if is_instance_valid(player): player.process_mode=Node.PROCESS_MODE_DISABLED
+	if is_instance_valid(world): world.process_mode=Node.PROCESS_MODE_DISABLED
+
 func read_native_demo_policy() -> Dictionary:
 	return _native_demo11_policy.duplicate(true) if not _native_demo11_policy.is_empty() else {"status": "NOT_READY", "reason": "boot_not_started"}
 
@@ -122,9 +135,20 @@ func _ready() -> void:
 	Engine.max_fps = 240
 	_register_inputs()
 	combat = JSON.parse_string(FileAccess.get_file_as_string("res://data/combat.json"))
+	var demo11_enabled: bool=OS.get_cmdline_user_args().has("--demo11-storage=on") or get_meta("demo11_storage",false)==true
+	var demo11_loaded := false
+	if demo11_enabled:
+		_demo11_session=preload("res://port_modules/save_adapter/demo_load_session.gd").new()
+		_demo11_load_result=_demo11_session.open_boot()
+		if _demo11_load_result.status not in ["FRESH","LOADED"]:
+			_demo11_stop_boot(_demo11_load_result)
+			return
+		demo11_loaded=_demo11_load_result.status=="LOADED"
+		set_meta("demo11_load_gate",demo11_loaded)
+
 	world = WorldScript.new()
 	world.name = "CH1CanonicalWorld"
-	world.process_mode = Node.PROCESS_MODE_PAUSABLE
+	world.process_mode = Node.PROCESS_MODE_DISABLED if demo11_loaded else Node.PROCESS_MODE_PAUSABLE
 	add_child(world)
 	if not world.ready_for_player:
 		push_error("Native World startup rejected: " + world.get_native_startup_error() + "; player startup stopped.")
@@ -140,7 +164,7 @@ func _ready() -> void:
 		return
 	player = PlayerScript.new()
 	player.name = "Player"
-	player.process_mode = Node.PROCESS_MODE_PAUSABLE
+	player.process_mode = Node.PROCESS_MODE_DISABLED if demo11_loaded else Node.PROCESS_MODE_PAUSABLE
 	player.z_as_relative = false
 	player.position = world.get_start_position()
 	player.set_combat(combat)
@@ -161,24 +185,35 @@ func _ready() -> void:
 	if not source_state.initialize_new_run(player, world, source_resources):
 		_stop_source_player_startup("source_state_constructor_rejected")
 		return
+	if demo11_enabled: source_state.initialize_native_demo11_globals()
 	# The source factory samples the actual shared native RNG and system clock.
 	# Install all 15 default items, then create/append the 10 bag items once.
-	source_starter_items = source_state.run_native_initial_starter_items(
-		Callable(world, "sample_native_random_unit"), Callable(self, "_source_now_ms"))
-	if source_starter_items.get("status") != "READY":
-		_stop_source_player_startup("source_starter_items_rejected:" + str(source_starter_items.get("reason")))
-		return
+	if not demo11_loaded:
+		source_starter_items = source_state.run_native_initial_starter_items(
+			Callable(world, "sample_native_random_unit"), Callable(self, "_source_now_ms"))
+		if source_starter_items.get("status") != "READY":
+			_stop_source_player_startup("source_starter_items_rejected:" + str(source_starter_items.get("reason")))
+			return
+
 	source_providers = SourceProvidersScript.new()
 	if not source_providers.configure(player, world, source_state, source_resources):
 		_stop_source_player_startup("source_provider_configuration_rejected:" + str(source_providers.get_snapshot().get("error")))
 		return
-	if not _initialize_source_player_parameters():
-		_stop_source_player_startup("source_parameter_initialization_rejected:" + str(source_initialization_result.get("reason")))
-		return
+	if not demo11_loaded:
+		if not _initialize_source_player_parameters():
+			_stop_source_player_startup("source_parameter_initialization_rejected:" + str(source_initialization_result.get("reason")))
+			return
+
 	world.add_child(source_resources)
 	world.add_child(source_state)
 	add_child(player)
 	world.set_player(player)
+	if demo11_loaded:
+		_demo11_load_result=_demo11_session.restore_stopped(self)
+		# PC_INTERFACE_WAIT is a stopped actual loaded actor, never fresh start.
+		_demo11_stop_boot(_demo11_load_result)
+		return
+
 	var demo_g: Variant = source_state.read_current_g()
 	if not demo_g is Dictionary or demo_g.get("stage") != _native_demo11_policy["stage"]:
 		_stop_source_player_startup("demo_state_stage_outside_policy")
@@ -208,6 +243,14 @@ func _ready() -> void:
 	if starting_skills.get("applied") != true:
 		_stop_source_player_startup("source_starting_skills_rejected:" + str(starting_skills.get("reason")))
 		return
+	if demo11_enabled:
+		var fresh_shared: Dictionary=_demo11_session.initialize_fresh_shared(self)
+		if fresh_shared.status!="READY":
+			_demo11_stop_boot(fresh_shared)
+			return
+		source_state.seal_native_demo11_load(self)
+		_demo11_load_result={"status":"FRESH","start_authorized":true}
+
 	# Read the existing ready Player child. Main is still inside its own _ready;
 	# native resource inspection does not acknowledge source startup or quality.
 	_native_player_sprite_startup_readonly_calls += 1
@@ -316,6 +359,7 @@ func _ready() -> void:
 		if perspective_result.get("ready") != true:
 			push_error("Native perspective mount rejected: " + str(perspective_result.get("reason")))
 	_record_event("native_factory_created", {"source": "canonical migration mkP / CH1-1", "simulation_hz": 60, "render_target_fps": 240, "initial_state": _play_state(), "version_manifest": get_native_content_version_manifest()})
+	if demo11_enabled: _demo11_session.start_lifecycle(self)
 	print("GODOT_FIRST_PLAYABLE_READY ", JSON.stringify({"runtime": Engine.get_version_info()["string"], "scene": "res://scenes/main.tscn", "viewport": get_viewport_rect().size, "player_spawn": player.position}))
 
 func mount_native_perspective_view(settings: Dictionary = {}) -> Dictionary:
@@ -964,6 +1008,7 @@ func get_native_source_clock_input_snapshot() -> Dictionary:
 	return source_initialization_services.read_source_clock_input_snapshot(self)
 
 func _process(_delta: float) -> void:
+	if _demo11_session!=null: _demo11_session.poll()
 	_capture_native_source_frame_input()
 	_advance_native_source_clock_input()
 	_advance_native_attack_audio()

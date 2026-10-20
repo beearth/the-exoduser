@@ -1,3 +1,12 @@
+## 2026-10-21 DEMO11-06b — load-only State writer·실제 저장/비보호 복원
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준·재사용 | main8dbbf2b0 + 05f2889355/06계약0924b94a 정상merge ffb92ed2. 기존 SV collector/Player/INV/Shared/flow 비보호 stage 및 원문 catalog 재사용 |
+| 연결 | opt-in Main→실제 native IO/새 Main actual Player·State·INV·resource. State 1회 load writer만 추가, 전투 경로0. 공유 별도 allowlist/폴더, max/legacy200·실패 보존. 05 lifecycle 실제 collector/IO 연결 |
+| 검증 | 신규34/0·집중32/0·별도 프로세스6/0, 기존79/0·36,204/0·78,620/0·126,863/0·819,262/0·149,486/0 각1회. 최신 합계1,210,586/0·ERROR0·기존 Camera WARN2, 초기 실패 로그 보존 |
+| 보호·현황 | PC handoff3종은 인터페이스 대기, loaded 시작/저장 차단. fresh 지급과 혼합0. [보고서](engine/orders/reports/demo11-06b_REPORT.md)·docs/15·SAVE 추적 보충. _out/demo11-06b/ 원로그·격리/gate·자기 branch push/remote/DONE 후 자기 WT 제거 |
+
 ## 2026-10-21 DEMO11-06 — 복원 보호 접점 BLOCKED
 
 | 항목 | 구현·검수 근거 |
