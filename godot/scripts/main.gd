@@ -98,6 +98,7 @@ var _native_player_sprite_startup_report: Dictionary = {}
 var _native_player_sprite_startup_readonly_calls: int = 0
 var source_intro_curtain: Control
 var source_intro_curtain_finish: Node2D
+var native_lobby_entry: RefCounted # DEMO11-07 admission authority
 var native_story_intro: CanvasLayer # DEMO11-08 presentation only
 var source_intro_sequence: Node2D # P2-001i 부팅 자동 연결(원본 64484 stage0 인트로 경로)
 var _source_intro_curtain_binding_error: String = "not_bound"
@@ -333,11 +334,10 @@ func _ready() -> void:
 	_install_native_music_lifecycle()
 	_bind_native_intro_curtain_view()
 	_bind_native_startup_services()
-	if preload("res://scripts/native_story_intro.gd").should_run(self):
-		native_story_intro=preload("res://scripts/native_story_intro.gd").new()
-		add_child(native_story_intro)
-		native_story_intro.handed_off.connect(_native_story_handoff)
-		native_story_intro.begin(self)
+	if get_meta("native_lobby_entry_pending",false):
+		pass # DEMO11-07: wait for committed active-slot admission, no early intro.
+	elif preload("res://scripts/native_story_intro.gd").should_run(self):
+		_install_native_story_intro_once()
 	else:
 		_install_native_waking_intro_once()
 	native_demo_boss_actor = preload("res://scripts/native_demo11_boss_actor.gd").install_native_boot(self) # DEMO11-34
@@ -355,7 +355,45 @@ func _ready() -> void:
 	_record_event("native_factory_created", {"source": "canonical migration mkP / CH1-1", "simulation_hz": 60, "render_target_fps": 240, "initial_state": _play_state(), "version_manifest": get_native_content_version_manifest()})
 	print("GODOT_FIRST_PLAYABLE_READY ", JSON.stringify({"runtime": Engine.get_version_info()["string"], "scene": "res://scenes/main.tscn", "viewport": get_viewport_rect().size, "player_spawn": player.position}))
 
+func _install_native_story_intro_once() -> void:
+	if is_instance_valid(native_story_intro):return
+	native_story_intro=preload("res://scripts/native_story_intro.gd").new()
+	add_child(native_story_intro)
+	native_story_intro.handed_off.connect(_native_story_handoff)
+	native_story_intro.begin(self)
+
+func request_native_lobby_entry(entry: RefCounted) -> Dictionary:
+	if native_lobby_entry!=null or not get_meta("native_lobby_entry_pending",false):return {"ready":false,"reason":"entry_not_pending"}
+	if entry==null or entry.get_script()!=preload("res://scripts/native_demo_lobby_entry.gd"):return {"ready":false,"reason":"entry_owner_required"}
+	var admission: Dictionary=entry.read_packet(self)
+	if not admission.get("ready",false) or admission.packet.charIdx!=0:return {"ready":false,"reason":"entry_packet_required"}
+	var was_paused: bool=get_tree().paused
+	get_tree().paused=true
+	_character_picker.select(1) # existing reader/UI authority; item1 is original char0.
+	_on_native_character_selected(1) # PC-owned atlas interface, no combat implementation changes.
+	get_tree().paused=was_paused
+	var profile: Dictionary=player.get_native_character_profile_snapshot()
+	if profile.get("ready")!=true or profile.get("index")!=0:return {"ready":false,"reason":"char0_interface_failed"}
+	native_lobby_entry=entry
+	if not source_state.commit_native_intro_cutscene_boundary(self):native_lobby_entry=null;return {"ready":false,"reason":"intro_boundary_rejected"}
+	set_meta("native_lobby_entry_pending",false)
+	if admission.packet.cutscene_done:
+		_native_story_handoff("already_seen")
+	else:
+		_install_native_story_intro_once()
+	return {"ready":true,"cutscene_skipped":admission.packet.cutscene_done,"full_restore":false}
+
+func read_native_intro_boundary_commit() -> Dictionary:
+	if is_instance_valid(native_story_intro) and native_story_intro.phase=="done" and native_story_intro.handoff_count==1:
+		return {"ready":true,"done":true}
+	if native_lobby_entry!=null:
+		var admission: Dictionary=native_lobby_entry.read_packet(self)
+		if admission.get("ready",false):return {"ready":true,"done":admission.packet.cutscene_done}
+	return {"ready":false}
+
 func _native_story_handoff(_reason: String) -> void:
+	if is_instance_valid(native_story_intro) and native_story_intro.phase!="done":return
+	if not source_state.commit_native_intro_cutscene_boundary(self):return
 	set_meta("native_intro_boot","intro")
 	_install_native_waking_intro_once()
 

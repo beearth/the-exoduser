@@ -1,3 +1,11 @@
+## 2026-10-21 DEMO11-07 — 로비 char0 생성·active·INTRO 경계
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 구현 | 기존 DEMO11-04 생성 성공/actual active readback → 기존 char0 인터페이스 → DEMO11-08. 이름2–8·4잠금·중복/늦은 rollback 차단·S10 언어·기존 cutsceneDone 전용 State 접점 |
+| 보호 | PC 전투·Player/HUD/world·저장 형식·맵0. 저장 Player 복원/이전 game save 동기화는 DEMO11-06 접점. 신규 바이너리0 |
+| 검수·문서 | [보고서](engine/orders/reports/demo11-07_REPORT.md)·[계약](engine/DEMO11_LOBBY_ENTRY_20261021.md)·LOBBY/INTRO·번역16문구 동기화. 내부 viewport1920×1080 2장+1x crop2장. 기존 관련 회귀 각1회, 수치는 보고서 참조 |
+
 
 ## 2026-10-21 DEMO11-18 일반 데모 합체·흡수·성급·되돌리기 원장
 

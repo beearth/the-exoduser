@@ -11,3 +11,6 @@
 Main 자동 부팅만 이야기를 시작한다. 기존 custom SceneTree 하니스는 이전 부팅을 그대로 유지하며 테스트용 `native_story_boot=true`로만 명시 진입한다. 언어는 현 OPT.lang의 KO/EN, 그 외 영어 폴백이다. 번역 목록에 신규 표시 문자열을 추가했다. 본문 hell/제목 cinzel_hell 폰트, 흑철·뼈색 #dfd6c2·금빛 선·붉은 hover를 적용했다.
 
 재생 동안 tree를 pause하되 DEMO11-41의 intro BGM은 pause하지 않는다(창 hidden은 기존대로 suspend). 종료에서 guide stop → 기존 기상 음성 → opening field BGM 순서를 그대로 유지한다. 목록 생성 reflection API는 새 owner 및 변경 tick 경로에 없다. 보고서와 캡처는 `orders/reports/demo11-08_REPORT.md`, `_out/demo11-08/captures/`를 참조한다.
+
+
+2026-10-21 DEMO11-07 후속: 로비의 생성 성공/active readback 뒤 이 owner를 호출하고 S10의 실제 선택 언어를 전달한다. 완료/skip 때 기존 State `_cutsceneDone`을 기록하는 좁은 접점은 Main/State에 추가했으며 이 문서의 기존 “쓰기0” 설명은 DEMO11-08 단독 범위다. 이미 본 metadata의 영화는 생략하고 기존 기상 owner에 인계한다. Player 저장 복원은 별도 DEMO11-06 책임이다. [DEMO11-07 계약](DEMO11_LOBBY_ENTRY_20261021.md).
