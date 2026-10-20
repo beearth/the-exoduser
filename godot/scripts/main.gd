@@ -2323,6 +2323,18 @@ func read_native_skill_management() -> Dictionary:
 	return source_state.read_native_skill_management_snapshot() if is_instance_valid(source_state) else {}
 
 
+# DEMO11-18: callable seams only; K/L layout stays with PC.
+func read_native_skill_fusion(key: String) -> Dictionary:
+	return source_state.read_native_skill_fusion(self,key) if is_instance_valid(source_state) else {"status":"NOT_READY","reason":"state_unavailable"}
+
+func request_native_skill_fusion(request_id: String, key: String) -> Dictionary:
+	return request_native_skill_management({"request_id":request_id,"action":"fuse","skill_id":key})
+
+func request_native_skill_fusion_undo(request_id: String, host_skill: String, confirmed: bool=false) -> Dictionary:
+	# Original reset selects the largest active group containing this skill.
+	return request_native_skill_management({"request_id":request_id,"action":"reset","skill_id":host_skill,"confirmed":confirmed})
+
+
 func dispatch_native_skill_slot(slot_key: String) -> Dictionary:
 	var adapter: Node = world.get_node_or_null("NativeSkillSlots") if is_instance_valid(world) else null
 	if not is_instance_valid(adapter): return {"accepted":false,"reason":"skill_dispatcher_unavailable"}

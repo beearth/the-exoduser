@@ -504,6 +504,17 @@ func read_native_skill_management_snapshot() -> Dictionary:
 	return {"p":p.duplicate(true),"g":{"mats":_g.get("mats")},
 		"slots":actual.get("skillSlots",[]).duplicate(true),"ultimate":actual.get("ultSlot")}
 
+# DEMO11-18: readonly fusion model is rooted in this actual State and demo boot.
+func read_native_skill_fusion(owner: Node, key: String) -> Dictionary:
+	if not _current_error().is_empty() or not is_instance_valid(owner) or owner!=_player.get_parent() \
+		or owner.get("source_state")!=self or owner.get("world")!=_world:
+		return {"status":"NOT_READY","reason":"actual_fusion_owner_unavailable"}
+	var boot: Dictionary=owner.read_native_demo_policy()
+	if boot.get("status")!="READY" or boot.get("demo")!=true or boot.get("build_target")!="demo":
+		return {"status":"NOT_READY","reason":"actual_demo_fusion_policy_required"}
+	return preload("res://scripts/native_skill_fusion.gd").inspect(key,read_native_skill_management_snapshot())
+
+
 func commit_native_skill_management(owner: Node, command: Dictionary) -> Dictionary:
 	var rejected: Dictionary={"accepted":false,"committed":false,"prefix":[]}
 	# Source K/L handlers have no G.paused guard. UI data transactions may run
@@ -535,6 +546,9 @@ func commit_native_skill_management(owner: Node, command: Dictionary) -> Diction
 	match command.action:
 		"learn_up":
 			plan=UP.preview(command.skill_id,before,"ui") if S.lv(before.get("p",{}),command.skill_id)>=1 else LEARN.preview(command.skill_id,before,"ui")
+		"fuse":
+			var live: Dictionary=read_native_skill_fusion(owner,command.skill_id)
+			plan=preload("res://scripts/native_skill_fusion.gd").preview(command.skill_id,before) if live.status=="READY" else live
 		"minus": plan=REFUND.minus_preview(command.skill_id,before)
 		"reset": plan=REFUND.reset_preview(command.skill_id,before,command.get("confirmed",false))
 		_:
@@ -561,6 +575,10 @@ func commit_native_skill_management(owner: Node, command: Dictionary) -> Diction
 		"serial":_skill_management_serial,"branch":value.branch,"before":before,
 		"after":read_native_skill_management_snapshot(),"active_proposals":value.protected_active_proposals.duplicate(true),
 		"prefix":["ledger","active_selection","slots"],"runtime_writer":"actual_current_State","saved":false}
+	if command.action=="fuse" or value.branch in ["fusion_reset","fusion_minus","fusion_upgraded"]:
+		result["fusion_combat_handoff"]={"status":"HOLD","damage_execution":false,"shield_execution":false,
+			"requested":command.skill_id,"fusion_key":command.skill_id if command.action=="fuse" else value.details.get("key",value.details.get("fusion_key")),
+			"source":"_execFuse / _skResetSkill ledger boundary; combat owner not called"}
 	_skill_management_committed[id]={"command":command.duplicate(true),"result":result.duplicate(true)}
 	if _skill_management_committed.size()>32: _skill_management_committed.erase(_skill_management_committed.keys()[0])
 	_skill_management_busy=false

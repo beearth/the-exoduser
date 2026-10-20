@@ -1,3 +1,22 @@
+
+## 2026-10-21 DEMO11-18 일반 데모 합체·흡수·성급·되돌리기 원장
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준 | main33755331 + DEMO11-17 c698aa86 정상merge85e4485d. CHANGELOG main byte 보존·의존17절 추가. 새 합체키/정책식 변경0 |
+| 연결·HOLD | 기존 fusion_rules/fuse_commit guarded+demo true→실제State. 원 허용22/금지10키·shieldFuse 별도HOLD, 성급override·SP선지급/멤버환불·흡수·host/최대그룹undo. Main+12/State+18 추가만. 피해/방패 실행·PC UI 배치·맵·저장0 |
+| 검증 | 실제Main378/0+집중7/0, 관련4회귀 각1회36,804/0. 실제 원장26건·기존S05 9,358건 원문JS 불일치0. StringName fixture/ScriptError 로그보존·강화인계key 누락1건→집중만7/0. 최종ERROR/SKIP0 |
+| 제출 | [보고서](engine/orders/reports/demo11-18_REPORT.md)·docs/2_1 성급/15체크리스트 적용·원로그 _out/demo11-18/. tick/목록생성API0·격리/gate/override0byte·정상훅·경로지정stage·자기branch push/remoteSHA/DONE 후 자기WT제거 |
+
+## 2026-10-21 DEMO11-17 K/L 학습·강화·환불 State 원장 연결
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준·의존 | main8dbbf2b0 + DEMO11-16 3be8055f 정상merge d4e71d79. CHANGELOG main bytes 보존. XP726cf925는 readonly/검증용3way모델만, 제품 반입0 |
+| 연결 | SK-S01~05 식 그대로 learn_up/minus/reset·실제SP/악의·skills/선택/slots commit. Main+23/State+78 추가만. 최종 handoff 실패prefix 보존·최근32요청 재생·paused UI 허용/시전 가드유지. PC UI 배치/전투핵심/피해/저장/맵 변경0 |
+| 검증 | 신규100/0·관련4회귀 각1회24,110/0·원문JS 기존9,358+실제8건 불일치0. XPsignal SP12→학습SP2 모델16/0. paused경계2실패 재현→해당 신규만100/0. 최종ERROR/SKIP0·목록생성API/tick추가0 |
+| 제출·경계 | [보고서](engine/orders/reports/demo11-17_REPORT.md), docs/2_1 Native절 갱신·원로그 _out/demo11-17/. shieldFuse 전용reset HOLD·UI/save pending 유지. 정상훅·경로지정stage·자기branch push/remoteSHA/DONE 후 자기WT제거 |
+
 ## 2026-10-21 DEMO11-05 — main 성능 수정 병합·tick 경로 점검
 
 | 항목 | 구현·검수 근거 |
@@ -82,6 +101,7 @@
 | 연결 | SK-S01~05 식 그대로 learn_up/minus/reset·실제SP/악의·skills/선택/slots commit. Main+23/State+78 추가만. 최종 handoff 실패prefix 보존·최근32요청 재생·paused UI 허용/시전 가드유지. PC UI 배치/전투핵심/피해/저장/맵 변경0 |
 | 검증 | 신규100/0·관련4회귀 각1회24,110/0·원문JS 기존9,358+실제8건 불일치0. XPsignal SP12→학습SP2 모델16/0. paused경계2실패 재현→해당 신규만100/0. 최종ERROR/SKIP0·목록생성API/tick추가0 |
 | 제출·경계 | [보고서](engine/orders/reports/demo11-17_REPORT.md), docs/2_1 Native절 갱신·원로그 _out/demo11-17/. shieldFuse 전용reset HOLD·UI/save pending 유지. 정상훅·경로지정stage·자기branch push/remoteSHA/DONE 후 자기WT제거 |
+
 
 ## 2026-10-21 DEMO11-16 성능 규칙 후속·동일 브랜치 재검증
 
@@ -235,6 +255,7 @@
 | 범위·공용 | main0105159934 기준. Main +26/-0로 demo=true/stage0/last0 manifest 선택·실제 World/State stage 대조. State/전투/저장/지형0. 개발 route 거부, manifest deep copy. |
 | 재사용·검증 | 기존 META-06 cap100/entry/loop 그대로 위임. 신규22/0·META06 1034/0·인트로18/0·원문JS995/0, 각1회. 잘못된 stage 거부 의도 ERROR1 외 예상 밖 오류0. 실제 XP writer는 DEMO11-20 후속. |
 | 인계 | [공개 API·공용 변경 줄·보고서](engine/orders/reports/demo11-01_REPORT.md), 원로그 ~/exoduser-wt/_out/demo11-01/. 자기 branch push/remote SHA/DONE 뒤 자기 WT 제거; R 불변. |
+
 
 ## 2026-10-20 BC2-07 shieldBash2 독립 wind/dash/contact 계산
 
