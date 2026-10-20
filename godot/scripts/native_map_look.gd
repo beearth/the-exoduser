@@ -55,6 +55,9 @@ var _flash_next := 0.0
 var _flash_rng := RandomNumberGenerator.new()
 var _shafts: Array = []          # {node, base_alpha, phase}
 var _modules: Dictionary = {}    # 경로 → 설치된 노드
+var _fx_lit: Dictionary = {}     # instance_id → true (광원 붙인 효과)
+var _fx_scan_left := 0.0
+var _fx_light_count := 0
 
 
 static func install_native_boot(owner_main: Node, screen_lighting: Node) -> Node2D:
@@ -553,6 +556,59 @@ func _install_modules() -> void:
 			_modules[path.get_file().get_basename()] = node
 
 
+# ── 생동감(전투): 날아가는 투사체·검기·피격 섬광이 주변을 비춘다(PoE2식 동적 광원) ──
+static func _script_paths(node: Node) -> PackedStringArray:
+	var out := PackedStringArray()
+	var script: Script = node.get_script()
+	while script != null:
+		if not script.resource_path.is_empty():
+			out.append(script.resource_path.get_file())
+		script = script.get_base_script()
+	return out
+
+
+func _scan_fx_lights() -> void:
+	var table: Dictionary = _data.get("fx_lights", {})
+	if table.is_empty():
+		return
+	var limit: int = int(_data.get("fx_light_limit", 18))
+	var alive := 0
+	var fresh: Dictionary = {}
+	for parent in [_main, _world]:
+		if not is_instance_valid(parent):
+			continue
+		for node in parent.get_children():
+			if not node is Node2D or node.is_queued_for_deletion():
+				continue
+			var id: int = node.get_instance_id()
+			if _fx_lit.has(id):
+				fresh[id] = true
+				alive += 1
+				continue
+			var spec: Dictionary = {}
+			for file in _script_paths(node):
+				if table.has(file):
+					spec = table[file]
+					break
+			if spec.is_empty() or alive >= limit:
+				continue
+			var light := PointLight2D.new()
+			light.name = "MapLookFxLight"
+			light.texture = _light_texture
+			light.color = _color(spec.get("color", [1, 1, 1]))
+			light.energy = float(spec.get("energy", 0.8))
+			var radius: float = float(spec.get("radius", 200.0))
+			light.texture_scale = radius * 2.0 / 256.0
+			light.height = radius * 0.5
+			light.range_z_min = RenderingServer.CANVAS_ITEM_Z_MIN
+			light.range_z_max = RenderingServer.CANVAS_ITEM_Z_MAX
+			node.add_child(light)
+			fresh[id] = true
+			alive += 1
+	_fx_lit = fresh
+	_fx_light_count = alive
+
+
 func _update_region_ambient(delta: float) -> void:
 	if _region_ambient.size() != 4 or not is_instance_valid(_state):
 		return
@@ -608,6 +664,10 @@ func _process(delta: float) -> void:
 	for shaft_row in _shafts:
 		var shaft: Sprite2D = shaft_row["node"]
 		shaft.modulate.a = shaft_row["base_alpha"] * (0.75 + 0.25 * sin(_time * 0.37 + shaft_row["phase"]))
+	_fx_scan_left -= delta
+	if _fx_scan_left <= 0.0:
+		_fx_scan_left = 0.1
+		_scan_fx_lights()
 	_sync_left -= delta
 	if _sync_left <= 0.0:
 		_sync_left = SYNC_INTERVAL
@@ -645,6 +705,6 @@ func get_native_map_look_snapshot() -> Dictionary:
 		"spawn_hole_lights": _hole_lights.size(), "occluders": _occluders.size(),
 		"styled_props": _styled_props, "prop_shadows": _prop_shadows, "foreground": _foreground.size(), "styled_chunks": _styled_chunks.size(),
 		"ambient": [_ambient.color.r, _ambient.color.g, _ambient.color.b] if is_instance_valid(_ambient) else [],
-		"light_shafts": _shafts.size(), "modules": _modules.keys(), "region_ambient": _region_ambient.size(), "spores": is_instance_valid(_spores), "embers": is_instance_valid(_embers),
+		"light_shafts": _shafts.size(), "modules": _modules.keys(), "fx_lights": _fx_light_count, "region_ambient": _region_ambient.size(), "spores": is_instance_valid(_spores), "embers": is_instance_valid(_embers),
 		"lightmap_overlay_enabled": _screen_lighting.call("is_native_lightmap_enabled") \
 			if is_instance_valid(_screen_lighting) and _screen_lighting.has_method("is_native_lightmap_enabled") else null}

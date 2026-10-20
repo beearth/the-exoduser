@@ -30,6 +30,22 @@
 전투 가독성: 시작 지점 기검참 ON/OFF 1x 비교(`_out/maplook-atk/attack_off_left_on_right_1x.png`) — 플레이어 빛 안이라 OFF와 같은 선명도. 광원 밖 적 탄막 가독성은 미검수.
 전후 비교 시트: [maplook_pass1_before_after.jpg](maplook_pass1_before_after.jpg) (캠프·제단·시체 나무·고치, 왼쪽 전/오른쪽 후).
 
+## 1-3. 3차 추가 — 전투 동적 광원 (같은 날)
+
+투사체·검기·피격 섬광이 주변을 비춘다(PoE2식). main·world 직속 자식을 0.1초마다 훑어 스크립트(기반 스크립트 포함) 이름으로 판별, 효과 노드 자식으로 PointLight2D를 붙인다(효과가 사라지면 함께 사라짐). 동시 최대 18개.
+
+| 스크립트 | 색 | 반경 | 세기 |
+|---|---|---|---|
+| enemy_projectile_fire | 1.0/.48/.18 | 230 | .95 |
+| enemy_projectile_lightning | .62/.76/1.0 | 230 | .95 |
+| enemy_projectile_ice | .52/.86/1.0 | 200 | .8 |
+| enemy_projectile_holy | 1.0/.92/.62 | 220 | .85 |
+| enemy_projectile_dark | .58/.26/.80 | 190 | .7 |
+| crescent(기검참) | .86/.88/1.0 | 260 | .7 |
+| hit_effect(피격 섬광) | 1.0/.90/.76 | 170 | .85 |
+
+검수: 시작 지점 기검참 전/후 1x(`_out/maplook-v10/attack_before_after_fxlight.png`) — 검기 주변 바닥이 은빛으로 밝아짐. 적 투사체 광원은 실전 캡처 미검수.
+
 ## 2. 광원 표 (data/map_look_ch1.json)
 
 | id | 위치(소품) | 색 RGB | 반경 | 세기 | 움직임 |
