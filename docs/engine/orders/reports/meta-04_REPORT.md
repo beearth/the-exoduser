@@ -77,3 +77,7 @@ node ~/exoduser-wt/_out/meta-04/compare-source.cjs meta04-final
 신규 정책/자기UID·새 테스트/자기UID·본 보고서·CHANGELOG_SYNC 맨 위 절만 커밋한다. docs 관련 검색은 `docs-keyword-audit.log`, 기존 수치 표는 동일해 타 담당 문서 수정0. 공용 main.gd·hud.gd·world.gd·player.gd·native_normal_enemy_hurte.gd·native_source_new_run_state.gd, raw_grit_restore, 기존 META 정책/테스트, game/stat-panel 원본·저장 형식·Q/E·보호docs2_3 모두0줄이다.
 
 R=`/Users/fordeargamers/Projects/exoduser-migration-20261001` 불변. 자기 `codex/meta-04-20261020`만 정상 훅 commit/push·원격SHA 대조하며 main push·force·git add -A·훅 우회0. 최종SHA·수치·보호해시·override0은 `_out/meta-04/DONE.txt`에 기록한다. 메모리 계산 검증을 실제 투자 UI·State 적용·장비/자원 효과·세이브·자연플레이 완료로 확대하지 않는다.
+
+## 마감 소스 재확인
+
+구현·검수 커밋 `8931d4af` 이후 main 갱신을 관측해 명시 fetch했다. 마감 main `e556b617190c325ca39f5add04357f5dea5ca87e`의 game.html·stat-panel-ui.js·메타 추적 문서는 착수284d7faf와 모두 **동일 바이트**다(`main-refresh-check.json`). 따라서 기존969개 원본 대조의 행·값은 마감 최신 main에도 그대로 유효하다. 작업 브랜치에 main을 병합하거나 제품/테스트를 변경하지 않았다.
