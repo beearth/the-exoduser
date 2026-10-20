@@ -166,7 +166,7 @@
 | 검수 | 신규 Node9/0·Godot62/0. contracts 전체5그룹/0, p3002 298/0·SKIP0, p3003 43/0, encounter 전체3그룹/0. 맵 Node37중28통과/9실패로 기존 실패9개 그대로. p3002 ObjectDB8누수 경고 및 Camera2D 경고는 미해결 기록 |
 | 격리 / 보호 | 매 Godot 실행 전 프로세스 수 확인, 최초2개→30초 대기 후1개에서 실행. 신규 격리명 EXODUSER-ch1-01-Isolated-20261020, 기존 suite 상수 존중. override 매회 finally0byte. 보호240파일 해시 동일, R·공용6·맵공유·원본PNG·Q/E·세이브·타 담당 제품0줄 |
 | 상세 / 한계 | [CH1-01 보고서](engine/orders/reports/ch1-01_REPORT.md), 원로그 `~/exoduser-wt/_out/ch1-01/`. runtime owner 설치·시각/전체 전투 인수 없음. VISUAL FAIL은 검수 증거 부재 판정. main push·force·배포0 |
-=======
+
 ## 2026-10-20 TRACE-NPC-WORLD NPC·상점·월드 상호작용 원본 추적
 
 | 항목 | 추적·설계 근거 |
@@ -177,7 +177,6 @@
 | 순서안 | 작은 후보10단위. 1번 NW-01은 신규 readonly MAP_OBJS 대상 질의/테스트, API·검증/NR 순서·출력6키·strict반경·불변·oracle 재생성·격리/회귀 기준까지 구현 지시. 공용0줄 목표, 실제 연결은 별도 승인/접점 없으면BLOCKED |
 | 검증 / 한계 | Node로 inline13개 문법·원본 MAP루프22입력 관측22/22, native 구현/회귀 PASS 아님. 독립 독자 검토 반영. Godot·GUI·사용자 저장·서버 실행0. 원로그 `~/exoduser-wt/_out/trace-npc-world/` |
 | 상세 / 정리 | [NPC·월드 추적·1번 지시서](FDG_SOURCE_TRACE_NPC_WORLD_20261020.md). 자기 브랜치 push·원격SHA 확인·DONE 후 자기 sparse worktree만 제거, 브랜치·원로그 보존 |
->>>>>>> 5e8cbd23
 =======
 ## 2026-10-20 TRACE-MAPS-CH2 2장 6에리어 원본 추적·이식 설계
 
@@ -214,6 +213,17 @@
 | 검증 / 한계 | game.html·index.html 기준 blob/byte/SHA 일치, 순수 JS 생성자7레벨×3계열·피격 gate5표본만 평가. Godot/import/게임/기존·신규 테스트 실행0. 전투·화면·PC 인수 미확인 |
 | 상세 | [필드보스 추적](engine/FDG_SOURCE_TRACE_FIELDBOSS_20261020.md). 원로그 `~/exoduser-wt/_out/trace-fieldboss/`. R 불변, 자기 branch push/원격 확인/DONE 후 자기 worktree 제거 |
 >>>>>>> 200d8e93
+=======
+## 2026-10-20 QA-006 추천 순서 선재 기대값 수정·얼음보주 비교
+
+| 항목 | 변경·검수 근거 |
+| --- | --- |
+| 기준 / 범위 | origin/main `e556b617190c325ca39f5add04357f5dea5ca87e`, `codex/qa-006-20261020`. 추천 테스트1개와 보고서, 이 절만 변경. 제품·공용·native_skill_slots.gd·설계 docs 0줄 |
+| 추천 판정 | main에서 15≠14 실패 재현. game.html44094–44110 및 추천빌드 설계15–29/50–51에 맞춰 15단계 전체 순서·skills·fuse·pick과 KO/EN 연속 번호 검증. 수정 후1/1 통과, 대표 변조5/5 검출 |
+| 얼음보주 | 동일 하니스 main3회·SK-S05 ee419a6c3회 각각22단정/실패0·exit0·ERROR0. 최초 ObjectDB/resource 종료 실패는 보존, 원인·선재/회귀 판정 미확인. 하니스/제품 수정0, 해결 완료로 보지 않음 |
+| 보존 / 중지 | 335보호경로 SHA 동일. 기존 격리 상수·Godot 실행 gate 준수. SK-S06 State/main writer 연결은 통합 결정 목록에 기록하고 중지 |
+| 상세 | [QA-006 보고서](engine/orders/reports/qa-006_REPORT.md), 원로그 `~/exoduser-wt/_out/qa-006/`. 전체 QA 해결 완료 아님 |
+>>>>>>> a9cea07a
 
 ## 2026-10-20 QA-002 테스트 결정성·종료·조명 하니스
 
