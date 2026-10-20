@@ -54454,3 +54454,8 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 | 새 검수 | 최신 origin/main c7c910fd 동일 worktree에서 전체5그룹 148/1→148/0, 수정 후 exit0·ERROR0; 외부 exact-key 양성2·음성8=10/0. import1회17.890초·ERROR0, Godot 설정68파일 사전 백업·테스트 격리·override 종료0바이트. |
 | 보존·제출 | 첫 커밋 시 docs-sync-check가 진행로그 누락을 거부해 이 최소 append를 추가했다. 우회0·main push0·R 수정0. 과거145/148·G40 검수 이력 보존. PC의 oracle/Windows-export 전제 판정만 기존 sweep 보고서에 별도 추가, visual9 실행0. |
 | 상세 | [STARTER-REGIONS 보고서](engine/orders/reports/STARTER-REGIONS_REPORT.md), 원로그 ~/exoduser-wt/_out/starter-regions-fix/. 자기 codex 브랜치 검수 대기. |
+
+## 2026-10-20 P2-008a PC — etype20 세 exact 적 소비자 후보
+- 원본 초기 미지원10개체의 수치·AI·투사체·스킨을 정리하고, 시작점 거리상 최초인 type20 및 동일 원분기 order4/10/12를 전용 consumer로 등록했다. 이 브랜치 source16은 지원9/미지원7이며 main/배포 갱신 주장이 아니다.
+- 원본 _meleeET에서20 제외·_noProjEtypes[20]=1을 보존하여 가짜 근접 피해/탄막/빙결을 만들지 않았다. 쉴드·포이즈·hurtE owner·원본 atlas16개의 byte 동일 복사본을 재사용했다. 공용 main/player/world/피해 집행자·Q/E·레슨·세이브·맵 수정0.
+- 필수 회귀4종 379 assertions+8케이스/0fail, 신규72check는 최초45성공+이동3개 한정 재검+별도 bridge8/경계16 ledger다. 실제 화면/public 플레이 미검수. 정본 `docs/engine/FDG_P2_008A_CH1_ENEMIES_20261020.md`, 제출 `docs/engine/orders/reports/P2-008a_REPORT.md`.

@@ -1,5 +1,9 @@
 > 2026-10-16 통합 범위: 웹 본편 수치·현행은 최신 main 기준, 별도 Native/FDG 항목은 source pin9a4534b4의 부분 이식·명시 opt-in 계약이다. 전체 최신 본편 이식 완료가 아니다. 상세: docs/engine/FDG_PC_MAC_GIT_SYNC_20261016.md.
 
+## P2-008a PC 후보 — etype20 전용 소비자 / 2026-10-20
+
+원본 38681–38705의 LOS<800·d>30 flow1배 뒤 40483의 idle1.6배, 분리 cd3을 별도 etype20 스크립트가 소비한다. body/쉴드/포이즈/hurtE owner만 재사용하며 type0 AI를 호출하지 않는다. 원본 39057–39060은 빈 전용 분기, 40499의 근접 목록에20이 없고 31154의 탄막 제외 목록에20이 있으므로 자연 피해·투사체를 추가하지 않는다. 정확한 세 프로필(order4/10/12)만 추가하여 이 브랜치 source16 지원9/미지원7. 기존 본문6/10·pending type7·배송 기록은 당시 범위이며 main 전체 갱신 증거가 아니다. 상세 원본 수치·남은7개체·검수 한계: [P2-008a 정본](../engine/FDG_P2_008A_CH1_ENEMIES_20261020.md).
+
 <!-- fdg-godot-native-owner-element-integration-20261013:begin -->
 ## Godot 소환·6원소 실행 연결 / 현재 이식 경계 · 2026-10-13
 
