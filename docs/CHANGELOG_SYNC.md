@@ -59,6 +59,15 @@
 | 검증 | 원본 JS UTF8 oracle420사례·신규2560/0. 직접 회귀 각1회 QS318/0·regen10/0·lessonclock21/0·contracts5그룹/0. 최종 ERROR/종료누수0, 기존 Camera2D WARNING 기록. 최초 하니스5실패/MP3 누수 진단·수정 이력 보존 |
 | 잔여·제출 | SFX 미연결·native 시스템 튜토리얼·전설벨트 피해 consumer HOLD를 명시, 활성벨트 timer 생성/피해 수정0. [DEMO11-25 보고서](engine/orders/reports/demo11-25_REPORT.md). codex/demo11-25b-20261021 자기branch push/원격일치/DONE 후 자기WT제거 |
 
+## 2026-10-21 DEMO11-35 실제 보스 일반 탄 registry·출생·수명
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준·연결 | main8dbbf2b0 + demo11-34 e1f51f67 정상merge(FF). BC09·기존FULL class·ordinary motion 재사용, 실제Node append뒤만ack. Main+2/actor+6, 일반kernel motion추출+34/-21·기존피해블록byte보존. State/PC피해·패링·HP·저장·맵0. |
+| 검증 | 신규53/0·BC09 56664/0·일반탄4그룹/0·actor162/phase28/권위22/intro18 모두0실패. 실패기능29/4(thorn원문12)·격리28/1·VM JSON경계는 해당실패만 정정. pool84/rate7/SHA3그룹 불일치0. |
+| 벤치1회·한계 | 256탄·실제물리240틱 벽시계: mean.723392/p95.830/max1.049ms(<8.333ms). 빈색drawERROR256으로 전체cleanPASS집계제외; 색fallback수정 후 실제draw6/0, 재벤치0. 자연clock/arena·특수owner·PCcontact/정식렌더 후행. |
+| 문서·제출 | [공개API·공용줄·보고서](engine/orders/reports/demo11-35_REPORT.md), 8.1보스디자인바이블 코드상태 갱신. _out/demo11-35/ 원문 보존, 자기push/remoteSHA/DONE 후 자기WT제거·R불변. |
+
 ## 2026-10-21 DEMO11-34 최신 main 성능 캐시 수정 정상 merge
 
 | 항목 | 검수·근거 |
