@@ -622,18 +622,12 @@ func _try_voice() -> void:
 	if settings.get("ready") != true:
 		voice_status = "pending:" + str(settings.get("reason", "audio_not_ready"))
 		return
-	var player := AudioStreamPlayer.new()
-	player.name = "VoiceWakeup"
-	player.process_mode = Node.PROCESS_MODE_ALWAYS
-	player.stream = load(VOICE_PATH)
-	# 12253~ _playSampleNow: gain=min(1, vol·sfxVol) → mbus(=sfxVol) — 포트 원본 샘플 버스와 동일 경로.
-	player.bus = _main.get("_attack_audio_bus")
-	player.volume_linear = minf(1.0, 1.0 * float(settings.get("sfx_gain", 0.0)))
-	player.pitch_scale = 1.0 * (0.92 + randf() * 0.16) # 12366 rate×(0.92+rand·.16)
-	add_child(player)
-	player.finished.connect(player.queue_free)
-	player.play()
-	voice_status = "played"
+	# DEMO11-41: lifecycle owns stop/resume and routes voice to SND08.
+	if not _main.has_method("request_native_lifecycle_voice"):
+		voice_status="pending:lifecycle_owner_unbound"
+		return
+	var reply: Dictionary=_main.request_native_lifecycle_voice(self,VOICE_PATH,1.0*(0.92+randf()*0.16))
+	voice_status=("played" if reply.get("playing")==true else "queued") if reply.get("accepted")==true else "pending:lifecycle_not_ready"
 
 
 func get_snapshot() -> Dictionary:
