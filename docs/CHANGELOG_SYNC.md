@@ -1,3 +1,13 @@
+## 2026-10-20 EC2-06 수인·사행·포식 전용 계산 정책
+
+| id / 적용 위치 | 정확 계약·실제 검수 |
+|---|---|
+| 신규 범위 | native_ch2_beast_predator_policy.gd·test_ch2_beast_predator_policy.gd·자기UID2개. 35/36/37 사본/요청만,공용·다른담당·기존테스트·저장0줄. 실제actor/World/scheduler/시체writer연결HOLD/product_connected=false |
+| 원본35 | game.html39175–39195: combo40미만·0/250/500ms예약만/wind15, 콜백때dead/hp/stunned·현재거리60미만·현재atk(.7/.85/1)~~; hurt뒤freshP/색. 독립포효800/아군200미만·현재atk/속도×1.3,baseAtk/TTL0 |
+| 원본36/37 | 39199–39235: raw_now사인변위+canMv, poison/tail별도U(.1sp/.05sp)·hurt후fresh위치,37뒤30px·이동실패도wind12/decloak·최초atk~~×1.5,rate>0때U<.01sp・첫dead<60 시체만xy−9999/HP상한.공통clock/피해/geometry중복0 |
+| 검수 | 신규12,158/0·일반878/콜백240원본VM사례,회귀12종실패0/SKIP0. 현재거리scalar는외부입력・콜백수동실행/연출RNGfixture이며실타이머/실피해/실시체증거아님. M30의도된ERROR1원문/기대거부1기록·다른12suite ERROR0 |
+| 기반·하니스 | fetch main6d987cb8a,EC2-05미병합으로699f2a56의존・최신main 원본byte동일. Node필수인자/임시UTF8JSON,새EXODUSER-ec2-06-Isolated-20261020·기존각상수/Godot전pgrep2이상30초대기/override0byte. [보고서](engine/orders/reports/ec2-06_REPORT.md)·원로그 ~/exoduser-wt/_out/ec2-06/ |
+
 ## 2026-10-20 EC2-05 산란 사도 batch 전용 정책
 
 | id / 적용 위치 | 정확 계약·실제 검수 |
