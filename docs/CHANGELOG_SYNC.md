@@ -1,3 +1,13 @@
+## 2026-10-20 SND-09 실제 BGM 연결 경계 — BLOCKED
+
+| id / 항목 | 현재 계약 |
+|---|---|
+| 판정 | 순서안197행의 Main/postStage·실제 stage/boss/forge owner 연결 필수로 사용자 중단 조건 해당. **구현 미착수/BLOCKED**, SND-08 native DSP adapter HOLD 유지 |
+| 기준 / 의존 | fetch main ad497089c7955d3e344e1488e5286e9b0ddd9092에서 원문·현위치 확인. main미포함 SND-08 fad57669af865505ebb60975e5cc2fbda8910677 끝 분기(main과분기됨·merge0). game.html SHA256 4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4 동일 |
+| 필요한 접점 | 최신main Main owner1953–1975/설치278–280/configure1977부근/exit492–493/postStage474–481. owner1·configure약4–8·exit약1·BGM callback2항목 후보이며 확정패치 아님. 자연요청 담당/위치·native DSP 동등성 미확정 |
+| 변경 / 검증 | 보고서+본절 2문서만. 제품·공용·타인0줄/테스트0/Godot0/PASS주장0/에셋생성·변환·복사0. source/docs 읽기·diff/byte 보존·정상 docs 훅 검증만. PCM/청감/자연경로/PC 미검증 |
+| 제출 / 정리 | 자기branch 비강제push·원격SHA일치→BLOCKED DONE→자기sparseWT제거, 원로그보존. [필요위치·원본행·중단보고서](engine/orders/reports/snd-09_REPORT.md). 보고 제출을 SND-09 구현완료로 간주하지 않음 |
+
 ## 2026-10-20 SND-08 독립 원문 믹스·합성·레시피 모델
 
 | id / 항목 | 현재 계약 |
