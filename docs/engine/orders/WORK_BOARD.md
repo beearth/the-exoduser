@@ -29,7 +29,7 @@
 | QA-001 | 기존 실패 테스트 7종 원인 진단 | **PC Codex**(codex exec) | codex/qa-001-pc-20261020 | 해당 테스트 파일 | 진행 중 |
 | P3-001 | 맵 pit_poison 타원 충돌 계약 | **PC Codex**(codex exec) | codex/p3-001-pc-20261020 | engine/fdg/map-source-adapter.js, 맵 계약 테스트 | 진행 중 |
 | P2-004b | 펫 대사 카테고리 160여 종 | **PC Codex**(codex exec) | codex/p2-004b-pc-20261020 | native_pets.gd 대사 테이블 | 진행 중 |
-| P3-003 | 지역 시스템(G._regions·필드보스 사이트·지역 처치·미니맵 마커) | Mac Codex ENGINE (`01a1235a-f2b8-73d1-bf58-c51c7dfb7638`, ROOT 관측) | codex/p3-003-20261020 | `godot/scripts/native_regions.gd`, `godot/tests/test_p3003_regions.gd`, `docs/engine/FDG_P3_003_REGIONS_20261020.md`, `docs/engine/orders/reports/P3-003_REPORT.md` | 배정됨 · 새 worktree 준비 전(코드 착수 전) |
+| P3-003 | 지역 시스템(G._regions·필드보스 사이트·지역 처치·미니맵 마커) | Mac Codex ENGINE (`01a1235a-f2b8-73d1-bf58-c51c7dfb7638`, ROOT 관측) | codex/p3-003-20261020 | `godot/scripts/native_regions.gd`, `godot/tests/test_p3003_regions.gd`, `docs/engine/FDG_P3_003_REGIONS_20261020.md`, `docs/engine/orders/reports/P3-003_REPORT.md` | 진행 중 · 작업판/원본·환경 확인(제품 코드 수정은 아직 미확인) |
 
 ## 공용(누구도 단독 소유 아님 — 수정 시 최소 줄·보고 필수)
 `godot/scripts/main.gd`, `hud.gd`, `world.gd`, `player.gd`, `native_normal_enemy_hurte.gd`(공용 피해 집행자), `native_source_new_run_state.gd`(G/P 소유자)
