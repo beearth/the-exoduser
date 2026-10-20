@@ -1,4 +1,5 @@
 extends SceneTree
+const TRANSPORT = preload("res://tests/qa007/oracle_transport.gd")
 const USERDIR := "EXODUSER-nw-03-Isolated-20261020"
 const PRODUCER = preload("res://port_modules/map_object_action_proposal/producer.gd")
 var _producer = PRODUCER.new()
@@ -99,10 +100,11 @@ func _run() -> void:
 	var oracle := ProjectSettings.globalize_path("res://../tools/nw03_map_action_oracle.cjs")
 	_check(FileAccess.get_sha256(source) == PRODUCER.SOURCE_SHA256, "pinned latest-main game SHA")
 	_check(FileAccess.file_exists(oracle), "tracked oracle available")
-	var output: Array = []
-	var code := OS.execute("node", PackedStringArray([oracle, source]), output, true)
+	var receipt := TRANSPORT.execute_file(TRANSPORT.node_binary(), oracle, source)
+	var code: int = receipt.code
+	var output: String = receipt.diagnostics
 	_check(code == 0, "source oracle exit0 " + str(output).left(200))
-	var data: Variant = JSON.parse_string("".join(output)) if code == 0 else null
+	var data: Variant = receipt.data if code == 0 else null
 	_check(data is Dictionary and data.get("cases") is Array, "oracle required; no skip")
 	if not data is Dictionary or not data.get("cases") is Array:
 		_finish()

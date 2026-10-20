@@ -1,3 +1,12 @@
+## 2026-10-20 CH2-05m main·CH2-04m 연쇄 merge
+
+| 항목 | 계약·검증 |
+|---|---|
+| 계보 | 61eba4b8에 main249c26fad 정상merge, 이어 CH2-04m2654588c 정상merge로 의존보존. rebase/reset/force0 |
+| 해결 | source/resource stage4/5/7와 QA 경로/별칭 helper결합. 자기Node링크2곳 junction helper사용, QA UTF-8/join/--node-bin/외부사본보호 byte그대로. 원문값/pin·Main/State/저장제품 변경0 |
+| 실제검증 | 신규si7 Node10/0·CH2-04 7/0·QA4/0·7/0=28/0. 최종Godot은 의존merge 뒤 실행해 보고서/원로그에 기록 |
+| 상세 | [CH2-05m 보고서](engine/orders/reports/ch2-05m_REPORT.md), ~/exoduser-wt/_out/ch2-04m/ch2-05/. RETOUCH유지·R불변·정상push/원격일치/DONE후자기WT제거 |
+
 ## 2026-10-20 CH2-05 si7 / 2-4 원본·독립 소비자
 
 | id / 적용 위치 | 현재 정확 계약 |
@@ -38,6 +47,116 @@
 | 신규 / 회귀 |Node10/0·Godot344/0. sourceNode29/0·CH2WorldNode7/0·asset6/0·pit6/0. Godot CH2-01 362/0·CH1 63/0·75/0·189/0·CH2World894/0·contracts5그룹/0·굴298/0·지역43/0. 맵Node28/9선재이름순서동일 |
 | 이력 / 보호 |최초Node8/2→9/1→10/0:부재extraction_head·후보간격 검사 가정 수정, 원문값은그대로. Godot ERROR0/Camera2D·ObjectDB8경고보존. 기존3147파일SHA동일, 공용6/P2-006a/P3/제품map/원본PNG0줄 |
 | 상세 / 제출 |[CH2-03 보고서](engine/orders/reports/ch2-03_REPORT.md), ~/exoduser-wt/_out/ch2-03/. source-only/si5화면미검수. Node경로인자·UTF-8/join출력·매Godot전2이상30초대기·상수격리/override finally0byte. 자기branch원격일치/DONE뒤 자기WT/cache제거, R불변 |
+
+## 2026-10-20 TRACE-BOSS-CH3 3장 보스 원본 추적·작은 이식 단위
+
+| 항목 | 추적·검토 근거 |
+|---|---|
+| 기준 / 범위 | fetch 최신main6d987cb8. 새 CH3 문서1개+이 절만, 코드·테스트·타 담당·공용·원본·저장·R 변경0. sparse worktree, Godot/import/게임/실저장 실행0 |
+| 선행 구분 | main의CH1, 원격CH2 ddf05495, 요청한일반화BC2-02 a3b5391c를먼저읽음. CH2문서·일반화모듈은main미병합,참조만하고복사/merge0 |
+| 전수 / 정적 수치 | si10~13·EL.I, 최종Set32/34/36/37·union37=공통30+신규7, 콤보44=공통36+신규8. 37 start/state/queue·새7의11필드·9state범위28필드·61식별자+4이름전체행색인·원문HP24산술표본 |
+| 차이 / 공용 요청 | docs차이11행. CH3나선탄0/180/0,laser잠금·HP1%·안전/파도/중력큐·부활points259/265/271/276. a3b spawn색상110행#bbbbbb고정과BC08 CH1guard를통합요청으로기록,수정0 |
+| 순서안 / 증거 | 첫BC3-01은공유30move/36combo/phase를읽기재사용하는독립catalog. 총14단위·actual Main/State/피해연결BLOCKED. 원문수치·행/표구조/링크정적대조만이며Godot/실전PASS아님 |
+| 제출 | [CH3 추적](engine/FDG_SOURCE_TRACE_BOSS_CH3_20261020.md), 원로그 ~/exoduser-wt/_out/trace-boss-ch3/. 정상훅·자기branch push·remoteSHA/DONE후자기worktree제거 |
+
+## 2026-10-20 BC10 1장 보스 잡기·잠행 상태 packet
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준 / 범위 | 최신 main6d987cb8a 직접 분기, 신규 control module/test·자기 UID2·보고서만. 공용6·다른 담당·기존 테스트·원본·설계/LOCK·Q/E·2_3·R 변경0 |
+| 원문 / 계약 | G40837–40867·41047–41072. grab60/%10/tick .4/throw1.8/KB대입18·iframe30, Under45→Erupt40·8f후1회/r+120/.06sp. 실제 player·hurtP/boss_hurtE·패링·Main 집행0, 완전 owner readback 미수신은 NOT_READY |
+| 검증 | 최종 원문1,083사례·신규165774/0, BC01~09 회귀188319/0·contracts5그룹/0·cold import exit0/ERROR0. BC04~07 일반화 a3b5391c는 외부 읽기 전용 회귀에만 사용, 작업 기준/제품 의존으로 병합0 |
+| 실패 / 보호 | 최초 내장 Control 별칭 파싱 실패 보존·정정. 중복 자기 비교 제거 전207956/0과 최종 수치를 구분. 잠행 e.iframes를 실제 무적 성공으로 세지 않음. player 강제위치·KB대입/상태 owner·boss_hurtE 연결은 미확인 |
+| 격리 / 제출 | 신규 지정 userdir·기존 파일 상수·Godot pgrep gate/30초 대기 준수, UTF-8 임시 oracle 파일·node 인자·bc02/03 source-game. [BC10 보고서](engine/orders/reports/bc10_REPORT.md), 원로그 ~/exoduser-wt/_out/bc10/. 정상 훅·자기 branch push/원격 일치/DONE 후 자기 worktree 제거 |
+
+## 2026-10-20 EC3-01 3장 유형·원소 선택 순수 정책
+
+| id / 적용 위치 | 정확 계약·실제 검수 |
+|---|---|
+| 신규 범위 | native_ch3_enemy_spawn_policy.gd·test_ch3_enemy_spawn_policy.gd·자기UID2개. EC2-01 API/진단/원문검사형식재사용,기존EC2/공용/다른담당/저장0줄. 실actor/World/factory연결0 |
+| 원본 | game.html30974–31022/16633–16666. stage10..13·pool30/136·R11/28·비R108,순서있는weight/total CDF·최대12기각→2/13draw,themeI .45·나머지6원소(보조I포함)/E0 |
+| 검수 | 신규10,234/0·원문1,632·36golden·모든유효경계nextDown/동일/nextUp·소비double비트열/늦은실패진단. 회귀5종실패0/ERROR0/SKIP0, 종료경고원문보존. 실등록/4필드지원PASS아님 |
+| 기반·하니스 | main6d987cb8a에서분기(필요EC2-01은main포함), 지시서원격20b2139a §4.1. Node필수인자/UTF8임시JSON·원본/함수hash핀·binary64·허용오차0. 새EXODUSER-ec3-01-Isolated-20261020·기존각상수/Godot전pgrep2이상30초대기/override0byte.  [보고서](engine/orders/reports/ec3-01_REPORT.md)·원로그 ~/exoduser-wt/_out/ec3-01/ |
+
+## 2026-10-20 QA-007b Windows UTF-8 파일 수송·junction·CLI 경로
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준 / 범위 | origin/main6d987cb8a(QA-007 포함). 테스트·오라클/추출 도구·실행 안내만, 제품·원본·manifest/pin·기존 기대값·R 최종 변경0행 |
+| SV 수송 | inventory/player/shared/slot4종을 UTF-8 고유 임시 파일 경유로 변경. 콘솔은 진단용, 누락/잘림/Node 실패 거부·자기 파일 삭제. 원문/값/타입 비교와 기존 단정 수 불변 |
+| 경로 / 링크 | Windows junction은 외부 사본을 대상으로 동일 Symlink 거부 유지. 도구 CLI 별칭 realpath 판정·다른 드라이브 outside 판정·OS별 exact snapshot 허용. 잘못된 stage/seed/제품 출력은 exit1·무기록 |
+| Mac 전후 | 기존 Godot9종 각369093/0, 기존 Node6종 각44통과/1선재 실패 유지. 신규 Godot50/0·Node7/0, contracts5그룹/0. 실제 Windows 실행 미확인 |
+| 판정 / 상세 | JSON.x는 ???/코드페이지 손상 모사1건. CH1 기존1실패·CH2 재생성 pin 차이는 source.main_sha 출처 차이 확인, 기존 검사·제품 pin 수정0. [QA-007b 보고서](engine/orders/reports/qa-007b_REPORT.md), 원로그 ~/exoduser-wt/_out/qa-007b/ |
+
+## 2026-10-20 QA-007 테스트 Windows 이식성
+
+## 2026-10-20 BC2-04 vortex wind/active 순수 상태 계산
+
+| 항목 | 현재 정확 계약 |
+|---|---|
+| 기준 / 범위 | origin/main26c050a99 기반. 저장 복원/읽기4·NW3 테스트와 Node 링크 검사3·테스트 보조/안내만. 제품·공용·원본·기존 pin/기대값·R 최종 변경0행 |
+| 수송 / 실행 | OS.execute 모든 출력 조각 결합, NW01/02/03 UTF-8 새 임시 파일 경유. --node-bin > EXODUSER_NODE_BIN > node. 원문/발췌 hash·정확 비교 불변 |
+| 링크 / 의존 | Windows junction 아래 출력으로 동일 isSymbolicLink 조상 거부. skip0. 새 worktree의 acorn 설치/연결·격리 절차를 테스트 README에 명시 |
+| Mac 전후 | 대상 Godot8종 각369030/0·stdout/stderr byte 동일. Node5종 각40통과/1선재 실패 유지. 신규 분할63/0·Node4/0·contracts5그룹/0. Windows 실제 실행 미확인 |
+| 원인 / 한계 | slot JSON.x 코드페이지 오독 모사1건, PC 직접 원인 미확인. CH2 manifest 재추출 main_sha 차이로 동일 pin 거부 실제 재현·원본 복원, 제품 수정0. [QA-007 보고서](engine/orders/reports/qa-007_REPORT.md), 원로그 ~/exoduser-wt/_out/qa-007/ |
+
+| 기준·선행 | main6d987cb8a 이상. BC2-03 main미포함으로인수bbaed502 끝분기, 그끝에최신main포함. 장catalog/context·BC07 packet/helper·BC05 clock계약 재사용, 기존파일0줄 |
+| 원본계산 | G40905~40940 wind/active. XY→X→Y, 15<pd<R, magic30f tick/옵션생략폭발·owner전체readback, 입력시각/난수/KB순서·recover65 유지. 실제집행0·full_tick=false |
+| 최종검증 | 원본1,304상황/15,877event/4,488RNG/1,724충돌/654피해요청. 신규41,373/0, 기존BC01~08 무수정131,655/0·BC2-01~03포함209,464/0, 최종exit0/skip0/ERROR0/stderr0byte |
+| 검출·보호 | 격리5결함 모두실패검출(원문보존). Node인자·UTF-8파일·source-game. 공용6·타담당·기존제품/테스트·원본·저장·바이너리0. 실제hurtP/P.kb/Main/State연결HOLD, 후속미착수 |
+| 제출 | [BC2-04 보고서](engine/orders/reports/bc2-04_REPORT.md). 원로그~/exoduser-wt/_out/bc2-04/. 매Godot gate/30초대기·각격리명·override종료0byte. 자기branch push/remote일치/DONE후자기WT제거 |
+
+## 2026-10-20 BC2-03 2장 신규 10기술 시작 계산
+
+| 항목 | 현재 정확 계약 |
+|---|---|
+| 기준·의존 | main6d987cb8a 이상, BC2-02 main미포함으로인수a3b5391c 끝분기+최신main 정상merge. 기존 장catalog/BC06 command·ack·RNG·수치helper 재사용, 기존모듈0줄 |
+| 소유 | 신규10의4state시작/6queue요청만 자체 계산. tele/actorphase 구분, fanWave90, 물리spiral60/240/nextShot60, fire x→y→r→append·delay6, raw피해/참조/순서 유지 |
+| 검증 | Node인자·source-game·자기UTF-8 fixture 파일. 신규845상황/14,225event/5,640RNG, 25,749검사/0실패. 기존BC01~08 무수정131,655/0, BC2-01 7,169/0·BC2-02 44,891/0 |
+| 검출·경계 | 격리5결함주입 모두실패검출(상세보고서). 실제집행0/explicitack/full_tick=false. 공용6·타담당·기존테스트·원본·저장·바이너리0, 실제Main/State/전투dispatch HOLD |
+| 산출·정리 | [BC2-03 보고서](engine/orders/reports/bc2-03_REPORT.md), 원로그~/exoduser-wt/_out/bc2-03/. 매Godot gate/30초대기·각격리명·override종료0byte. 자기branch push/원격일치/DONE후자기WT제거 |
+
+## 2026-10-20 BC2-02 승인 반영: 장 catalog 일반화·2장 재사용
+
+| 항목 | 현재 정확 계약 |
+|---|---|
+| 승인·기준 | 맥북총괄이 Mac 소유 BC02~07 수정 명시 승인. 기존 HOLD d7116024 재개, main26c050a99 정상 merge bb7d7ec3·BC2-01 의존 유지 |
+| 일반화 | 마지막 선택 catalog 인자·기본 null=기존 CH1, 명시 provider/source/token 문맥 검증. BC01 전역manifest+BC2-01 CH2조회 재사용, 공통 표/수식 복제0 |
+| 2장 계산 | 실제si4~9 생성·score·선택·phase/clock·공통22시작·근접6state 재사용. dropTier 원본 hell+1 cap4, 내부 phase 전달. 신규10start는 owner_required |
+| 전후 회귀 | 기존 BC01~BC08 파일·검사 무수정, 전후 각각131,655검사/0실패. BC2-01 전후7,169/0. 신규최종44,891/0·원본fixture3,725개, skip0·exit0·ERROR0 |
+| 실패·경계 | 초기1,674·36실패 원문/수정 보존. Node인자·출력join/UTF-8·IEEE754 RNG전송. 공용6·타담당·원본·저장·기존테스트·바이너리0. 실제전투/Main 연결HOLD, 후속 미착수 |
+| 제출 | [BC2-02 보고서](engine/orders/reports/bc2-02_REPORT.md), 원로그~/exoduser-wt/_out/bc2-02/approved/. 매Godot pgrep/30초대기·상수격리명·override종료0byte. 자기branch push/원격일치/DONE후자기WT제거 |
+
+## 2026-10-20 BC2-02 chapter 데이터 수용 접점 HOLD
+
+| 항목 | 현재 정확 계약 |
+|---|---|
+| 기준·선행 | fetch main26c050a99a711e793a6c2413395acda09b0c1614. BC2-01 main미포함으로사용자예외에따라인수끝6e6f2f58633bb7a54fa0cf1a9cd3df3dc1535aba에서분기. 최신main의BC01~03·game/index와동일byte재대조 |
+| 차단·필요위치 | BC02~06의CH1 catalog고정/진입guard,BC07의si0~3직접guard로CH2계산수용불가. BC04의59전역manifest요구·BC06의새10start미소유도구분. 기존owner의데이터인수·guard·token/ack계약결정필요 |
+| 보호·판정 | 공용·타담당0줄조건상기존모듈수정불가. 공통식복제·stage위장·continuation우회·부분helper를전체구현으로보고0. **BC2-02 HOLD/기능미구현**,후속단위/실전/Main진행0 |
+| 검토·실행 | 정적파일/행/caller/인수분석만. Godot/게임/Node원본하니스/신규·회귀테스트0,실행PASS0. R HEAD/branch/tracked INDEX/WORK·원본·제품·기존테스트·저장형식·바이너리변경0 |
+| 산출 | [BC2-02 보고서](engine/orders/reports/bc2-02_REPORT.md)+이절만commit. QA-007 출력전체join/UTF-8·node인자규칙을후속검증조건에기록. 원로그~/exoduser-wt/_out/bc2-02/,push·원격일치·DONE후자기worktree제거 |
+
+## 2026-10-20 BC2-01 2장 보스 읽기 전용 catalog
+
+| 항목 | 현재 정확 계약 |
+|---|---|
+| 기준·소유 | origin/main `0119f3048a459a458ba142d98f68126b8e281be1`(ce141573e 이후). 신규 catalog·격리테스트·UID2·보고서·이 절만 변경. 공용·타 담당·기존 테스트·원본·설계·세이브형식0줄, R 불변 |
+| 등록·재사용 | si4~9/6이름/물리속성/최종Set27~32·union32. main의BC01에서22기술·5phase·25combo 읽기,신규10기술·13combo만 추가. 유효combo38,ordinal순서/Set순서·모든원본필드·깊은복사·의존실패닫힘 보존 |
+| 실제 검증 | 신규7,169/0·BC01~07 회귀합106,867/0·contracts5그룹/0. 합114,036단정/0,skip0/exit0/ERROR0/stderr빈값. bc02/bc03 source-game 절대경로 인수. 각상수격리명·전호출pgrep/2이상30초대기·Godot동시1·override종료0byte |
+| 경계·HOLD | 실제전투/Main·State·World·부활·저장연결0. 다음B2C02의BC02~07 chapter데이터/guard/ack 통합결정은HOLD,공용모듈수정·stage위장·후속구현0. 시각·실전·성능·PC 미검수 |
+| 인계 | [BC2-01 보고서](engine/orders/reports/bc2-01_REPORT.md). 원로그 `~/exoduser-wt/_out/bc2-01/`,정상hook·자기branch push·원격SHA대조·DONE후자기worktree제거 |
+
+
+## 2026-10-20 QA-007 테스트 Windows 이식성
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준 / 범위 | origin/main26c050a99 기반. 저장 복원/읽기4·NW3 테스트와 Node 링크 검사3·테스트 보조/안내만. 제품·공용·원본·기존 pin/기대값·R 최종 변경0행 |
+| 수송 / 실행 | OS.execute 모든 출력 조각 결합, NW01/02/03 UTF-8 새 임시 파일 경유. --node-bin > EXODUSER_NODE_BIN > node. 원문/발췌 hash·정확 비교 불변 |
+| 링크 / 의존 | Windows junction 아래 출력으로 동일 isSymbolicLink 조상 거부. skip0. 새 worktree의 acorn 설치/연결·격리 절차를 테스트 README에 명시 |
+| Mac 전후 | 대상 Godot8종 각369030/0·stdout/stderr byte 동일. Node5종 각40통과/1선재 실패 유지. 신규 분할63/0·Node4/0·contracts5그룹/0. Windows 실제 실행 미확인 |
+| 원인 / 한계 | slot JSON.x 코드페이지 오독 모사1건, PC 직접 원인 미확인. CH2 manifest 재추출 main_sha 차이로 동일 pin 거부 실제 재현·원본 복원, 제품 수정0. [QA-007 보고서](engine/orders/reports/qa-007_REPORT.md), 원로그 ~/exoduser-wt/_out/qa-007/ |
 
 ## 2026-10-20 SND-08 독립 원문 믹스·합성·레시피 모델
 

@@ -65,4 +65,4 @@ addRestore('normal-existing-corrupted-post-read','browser_origin',{player:{},sto
 // QA transport tags preserve numbers exactly; no tags enter a game save.
 function wire(v){if(typeof v==='number'&&!Number.isFinite(v))return {'@number':String(v)};if(typeof v==='number'&&(!Number.isInteger(v)||Math.abs(v)>=1e12||Object.is(v,-0))){const b=Buffer.alloc(8);b.writeDoubleLE(v);return {'@f64':b.toString('hex')};}if(Array.isArray(v))return v.map(wire);if(v&&typeof v==='object')return Object.fromEntries(Object.entries(v).map(([k,x])=>[k,wire(x)]));return v;}
 if(sha(fs.readFileSync(file,'utf8'))!==sha(source))throw Error('source changed');
-console.log(JSON.stringify(wire({reads,stores,restores,provenance,source_hash:sha(source),source_unchanged:true,actual_storage_reads:0,actual_storage_writes:0,actual_server_calls:0,source_writer_helpers_executed:0})));
+require('./oracle_json_output.cjs')(wire({reads,stores,restores,provenance,source_hash:sha(source),source_unchanged:true,actual_storage_reads:0,actual_storage_writes:0,actual_server_calls:0,source_writer_helpers_executed:0}));

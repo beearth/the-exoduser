@@ -1,3 +1,4 @@
+import {outputSymlink} from './helpers/outputSymlink.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';import path from 'node:path';import os from 'node:os';
@@ -87,7 +88,7 @@ test('writer only emits new resource JSON/external oracle, rejects inside/symlin
   const output=path.join(tmp,'oracle.json');const old=read('godot/data/ch2_map_source/si4_resources.json');writeResources(root,output);
   assert.deepEqual(contentAtRecordedMain(JSON.parse(read('godot/data/ch2_map_source/si4_resources.json')),JSON.parse(old)),JSON.parse(old));assert.equal(JSON.parse(fs.readFileSync(output)).schema,'exoduser.ch2-area-oracle.v1');
   assert.throws(()=>writeResources(root,path.join(root,'new-oracle.json')),/outside/);
-  const link=path.join(tmp,'link.json');fs.symlinkSync(output,link);assert.throws(()=>writeResources(root,link),/Symlink/);
+  const link=outputSymlink(tmp,output);assert.throws(()=>writeResources(root,link),/Symlink/);
   const foreign=path.join(tmp,'foreign.json');fs.writeFileSync(foreign,'{"schema":"other"}');assert.throws(()=>writeResources(root,foreign),/foreign/);assert.equal(fs.readFileSync(foreign,'utf8'),'{"schema":"other"}');
   for(const [p,hash] of Object.entries(before))assert.equal(sha(read(p)),hash,p);
  }finally{fs.writeFileSync(resourceFile,resourceBefore);fs.rmSync(tmp,{recursive:true,force:true});}
