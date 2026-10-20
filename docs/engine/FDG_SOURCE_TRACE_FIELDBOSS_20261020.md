@@ -1,3 +1,5 @@
+> **2026-10-21 DEMO11-33 현행 보충:** 곰치4슬롯을 실제 Main/World tick·동일 G/RNG·Marker provider·기존31/35 registry에 연결했다. 원문108/54 잠복·2발 즉시 혈안탄·물리/E·HP/CD8/사망null·PC 물기/실제 aggro readback 경계 보존. Player 피해/패링·맵·32파일 변경0, 실제 MAP Marker/PC producer·자연전투/연출은 후행. [API·검증·31/32/33 통합 후보](orders/reports/demo11-33_REPORT.md). 아래 원본 추적 이력은 보존한다.
+
 > **2026-10-21 DEMO11-31 현행 보충:** 앵글러1 family4개체를 Main/실제 World phase·같은 G에 설치했고,35 registry의 field birth/에너지 전용 sweep·PC HP/최종 사망 readback→P3→37를 연결했다. 배치는 provider Marker4개만, source 사이트 좌표 복제0. PC 피해/패링·world/player·저장·지형 변경0. 실제 맵/PC producer/렌더 마감·전역 원본 update 순서 동치는 미인수다. [API·원문 대조·최종 수치](orders/reports/demo11-31_REPORT.md). 아래 원본 추적 이력/수치는 보존한다.
 
 # 필드보스 원본 추적·작은 이식 단위 설계 — 2026-10-20

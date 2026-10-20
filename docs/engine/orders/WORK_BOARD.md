@@ -30,6 +30,7 @@
 ## 진행 중 (2026-10-20 갱신: Claude 총괄)
 | 작업ID | 내용 | 담당·환경 | 브랜치 | 소유 파일(다른 담당 수정 금지) | 상태 |
 |---|---|---|---|---|---|
+| DEMO11-33 | 곰치4개체·Marker/실tick/물기/HP사망·aggro 인계 | Mac Codex | codex/demo11-33-20261021 | native_demo11_worm*·Main 설치/API·31 registry 보조field접점·새 tests/원본시트·자기 docs | **구현·검증 완료/통합 인수 대기** — main0138c5bb9+31/76bcae8d merge50f31d37. 기능9,339/0·벤치265/0 max2.460ms. MAP Marker/PC producer·자연전투 후행,32/보호경로0·helper 통합 제안만. [보고](reports/demo11-33_REPORT.md) |
 | DEMO11-21fix | pending draw의 Main/State 해제 수명 보호 | Mac Codex | codex/demo11-21-20261021 | native_world_drops·신규 수명 테스트·자기 docs | **검수 대기** — mainac3764bfe 정상merge, 수명9/0·starter148/0·관련드랍60/0. ERROR/ObjectDB/resource0, Main/State/전투0줄. [보고서](reports/demo11-21fix_REPORT.md) |
 | DEMO11-21 | P2-006a/b 기존 제품 journal→실제 INV 자연 연결 | Mac Codex | codex/demo11-21-20261021 | Main252–257·State432/565–566/584–659 기존 추가분, 새 통합 테스트 | **검수 대기** — P2 수락 원격48f0d8e7/e69fe444 정상 merge·표시 byte 재사용, 신규24/0·관련회귀36/0. 보호 전투·맵·저장0. [보고서](reports/demo11-21_REPORT.md) |
 | DEMO11-31 | 1-1 앵글러 family·Marker/기상/실탄/PC처치→지역 gate | Mac Codex | codex/demo11-31-20261021 | native_demo11_angler*·field energy carrier·35 registry field 접점·Main 설치/API·새 tests/원문asset·자기 docs | **검수 대기** — main45be76e4+37/05f41cc7 merge8992ef35. 기능1613/0+bench263/0 cleanPASS(max4.649ms), Main+6·registry+31/−4, State/World/PC 피해/패링·지형0. 실제Marker/PC producer·전용연출 후행. 최종SHA는 _out/demo11-31/DONE.txt |

@@ -120,6 +120,7 @@ var native_demo_boss_actor: Node2D
 var native_demo_boss_projectiles: Node
 var native_demo_encounter: Node
 var native_demo_anglers: Node2D
+var native_demo_worms: Node2D
 
 func read_native_demo_policy() -> Dictionary:
 	return _native_demo11_policy.duplicate(true) if not _native_demo11_policy.is_empty() else {"status": "NOT_READY", "reason": "boot_not_started"}
@@ -354,6 +355,7 @@ func _ready() -> void:
 	native_demo_boss_actor = preload("res://scripts/native_demo11_boss_actor.gd").install_native_boot(self) # DEMO11-34
 	native_demo_boss_projectiles = preload("res://scripts/native_demo11_boss_projectiles.gd").install_native_boot(self) # DEMO11-35
 	native_demo_anglers=preload("res://scripts/native_demo11_anglers.gd").install_native_boot(self)
+	native_demo_worms=preload("res://scripts/native_demo11_worms.gd").install_native_boot(self)
 	var metrics_timer := Timer.new()
 	metrics_timer.wait_time = 0.1
 	metrics_timer.process_mode = Node.PROCESS_MODE_ALWAYS
@@ -3093,3 +3095,7 @@ func leave_native_demo_arena(provider: Node) -> bool:
 # DEMO11-31: MAP11 provides four distinct child Marker2Ds in source slot order.
 func bind_native_demo_anglers(provider: Node2D, markers: Array) -> bool:
 	return is_instance_valid(native_demo_anglers) and native_demo_anglers.bind_provider(provider,markers)
+
+# DEMO11-33: MAP11 supplies four WM Marker2Ds, never source coordinates.
+func bind_native_demo_worms(provider: Node2D,markers: Array) -> bool:
+	return is_instance_valid(native_demo_worms) and native_demo_worms.bind_provider(provider,markers)
