@@ -1,3 +1,13 @@
+## 2026-10-20 META-06 demo·초월 제한 순수 정책
+
+| 항목 | 변경·검수 |
+|---|---|
+| 신규 API | native_meta_exp_gate_policy.gd·test_meta_exp_gate_policy.gd와 자기UID2개. date_key/transcendence_gate/entry_gate/loop_gate/after_level_up의5개 snapshot API |
+| 원본 | 최신 main e556b617 game.html16644–16648·43122–43155. demo100 선검사·로컬civil날짜 주입·일1회·entry min/while 직접 maxExp−1·도달lv>1000만 count+1. 매 검사 fresh day, 지급도중자정변경 보존 |
+| 검수 | 신규1034/0·실제 JS본문995결과(API987+조합8)/0불일치. META-05 1102/0·META-01 20/0·META-04 1076/0·META-03 68/0·META-02 70/0·contracts5case/0·p2001c46/0. 모두exit0/ERROR0/SKIP0; p2001c WARNING2 원문 보존 |
+| 의존·보호 | META-05 미통합으로2ec75a6f parent. 공용6·기존정책/테스트·원본153개 해시동일. State/실clock/저장/QE/UI/writer0줄. 제품gate 미연결, 향후 소비 위치를 보고서에 기록 |
+| 실행·제출 | sparse --no-checkout·매회pgrep1 확인/2이상30초대기·새작업/기존상수 격리명·override매회0byte. [META-06 보고서](engine/orders/reports/meta-06_REPORT.md)·~/exoduser-wt/_out/meta-06/·REVIEW_PENDING. push/원격일치/DONE 후 자기worktree 제거·다음단위 착수0 |
+
 ## 2026-10-20 META-05 예약 패시브 큐 순수 정책
 
 | 항목 | 변경·검수 |
