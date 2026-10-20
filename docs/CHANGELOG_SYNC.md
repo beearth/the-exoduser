@@ -1,3 +1,14 @@
+## 2026-10-20 SK-S04 슬롯 읽기 모델·복사 미리보기
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 범위·의존 | 신규 skill_management_source/slot_rules.gd·test_trace_skills_s04_slots.gd·각uid·보고서. main e556b617 원본, SK-S03 db880a18 기반(S01/S02 간접의존) |
+| 원본·순서 | game44230~44274/44965~45007/46969~47083·44322, Forge17~24/57~84. 숫자0~3·rage4·tech5·ULT별도, Forge13개 키순서와 기존8고정정의 재사용 |
+| 계약 | auto는 null만빈칸/중복−1, repair copy는F→Space→일반→displaced·유효일반중복 유지. num equip copy는중복전칸해제. eligible/isAbsorbed와L/getAllAbsorbed·fixed canEquip 차이/원본호스트 누락 보존 |
+| 검증 | 신규12151/0·원본10716행/13descriptor 불일치0·웹기존16/16. S01/S02/S03/contracts·p2005a~d91/0·starter/regen 회귀11파일, 모두exit0·stderr ERROR0. 기존main QA테스트 byte사본은원격리상수 사용 |
+| 보호·환경 | 공용코드/native_skill_slots.gd·기존모듈/테스트·P/G/입력/저장·R0줄. 고정slot writer는NR. no-checkout/non-cone sparse WT·949원자원 검증/cache재사용·import ERROR0 |
+| 인계 | sk-s04_REPORT.md·_out/sk-s04/ 원로그/DONE. 초기parse/원본대조5불일치 수정이력 보존. 알려진로비8실패는지시원문만기록·PASS제외. push/ref/DONE 뒤자기WT만제거·branch보존 |
+
 ## 2026-10-20 SK-S03 합체·흡수 읽기 전용 판정
 
 | id / 적용 위치 | 현재 정확 계약 |
