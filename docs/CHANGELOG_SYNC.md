@@ -2,6 +2,19 @@
 
 > 2026-10-17 ENGINE WIP 현행: 실제 callback **9/25·미16**. 신규 격리 행동41/41과 신규 map 경계 static9/9만 인수 범위다. 원 첫 parse 실패는 보존한다. 이 WIP를 main/R/served·전체 게임 최신화 완료로 해석하지 않는다.
 
+## 2026-10-20 TI-00 actual INV 읽기 계약
+
+| 항목 | 계약/결과 |
+|---|---|
+| 범위 | 신규 godot/scripts/native_inventory_contract.gd(51행)·godot/tests/test_native_inventory_contract.gd(351행). 실제 State의 WeakRef 읽기 bridge만, 공용6파일·기존 테스트·P2-006a 제품 파일 수정0 |
+| 원본 | main f84e26ee0의 game.html:15176 canonical17slot,16174–16179/63948 fresh INV4key. 기존 SLOT_NAMES·State getter 재사용, 새 INV 권위/저장 필드/상수 중복 생성0 |
+| API | bind_source_state는 exact State/liveness 검사 후 WeakRef. 매 조회 current getter의 동일 Dictionary 반환, 소실/구조부족 null. canonical 슬롯 사본·추가/중첩 필드 보존, cache/normalization/freeze/writer0 |
+| 신규 검수 | Godot4.7.2·EXODUSER-ti-00-Isolated-20261020·실제 holder/자원 authority+명시적 actor fixture. 최종10그룹142단정/실패0·exit0·stderr0, actual Main=false |
+| 지정 회귀 | 15종 실행·SKIP0,14종 단정실패0. p1002g168/1은 사용자 지정 선재 결함으로 원문 보존. p2001i18/0·exit0이나 종료 리소스 ERROR1 별기록. 전체 clean PASS 주장 없음 |
+| 격리/보존 | 자기 WT source를 읽는 OUT projection. Main 부팅 회귀에만 개별 상수 이름 override 후 비움, WT override 생성0. 기존 창/실제 세이브 접근0·기존 source11개와 Godot 설정2파일 해시 동일 |
+| 보호/미검증 | Q/E·2_3·세이브 형식 불변. 새 bridge의 actual Main 연결·인벤 UI/장착/획득/분해·저장·실창/시각/성능/패키지 인수 아님 |
+| 근거 | docs/engine/orders/reports/ti-00_REPORT.md 및 ~/exoduser-wt/_out/ti-00 원로그·regression-verification.json·DONE.txt |
+
 ## 2026-10-16 기존 R playTone 시작·종료 예약 예외 정리
 
 | id / 적용 위치 | 현재 정확 계약 |
