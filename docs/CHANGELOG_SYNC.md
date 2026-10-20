@@ -1,3 +1,14 @@
+## 2026-10-20 CH1-01 si0 읽기 전용 원본 snapshot·검증 모듈
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 범위 / 기준 | `codex/ch1-01-20261020`, main `284d7faf49295b2f5061937a47ce96038032ed3c`. 기존 worktree 미커밋 신규 파일을 보존해 재개. 새 exporter/data/순수 producer/Node·Godot 테스트와 해당 UID만 구현 |
+| 원본 / 데이터 | game SHA `4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4`. 원 AST·selector·genFromTemplate·start·region을 독립 VM에서 발췌 실행. schema exoduser.ch1-area-source.v1, si0/T40/200²/40000타일, START4020/7420, hand36/meta77/deco110, holes14/168, 지역23/60/53/32 |
+| API / 경계 | read_area·validate_area·compare_stage0_map 순수 API. READY는 source_snapshot_only, NOT_READY는 reason/raw 동일 참조·value 없음. present undefined는 별도 mask. 기존 map과 tile/저작 배치 동일, 나무 file4차이 보존; collider/실효 좌표/최종 MAP_OBJS 미관측 |
+| 검수 | 신규 Node9/0·Godot62/0. contracts 전체5그룹/0, p3002 298/0·SKIP0, p3003 43/0, encounter 전체3그룹/0. 맵 Node37중28통과/9실패로 기존 실패9개 그대로. p3002 ObjectDB8누수 경고 및 Camera2D 경고는 미해결 기록 |
+| 격리 / 보호 | 매 Godot 실행 전 프로세스 수 확인, 최초2개→30초 대기 후1개에서 실행. 신규 격리명 EXODUSER-ch1-01-Isolated-20261020, 기존 suite 상수 존중. override 매회 finally0byte. 보호240파일 해시 동일, R·공용6·맵공유·원본PNG·Q/E·세이브·타 담당 제품0줄 |
+| 상세 / 한계 | [CH1-01 보고서](engine/orders/reports/ch1-01_REPORT.md), 원로그 `~/exoduser-wt/_out/ch1-01/`. runtime owner 설치·시각/전체 전투 인수 없음. VISUAL FAIL은 검수 증거 부재 판정. main push·force·배포0 |
+
 ## 2026-10-20 QA-002 테스트 결정성·종료·조명 하니스
 
 | 항목 | 변경·검수 근거 |
