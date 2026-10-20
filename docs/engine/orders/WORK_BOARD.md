@@ -3,6 +3,11 @@
 > 이 문서가 **지금 누가 무엇을 하는지의 유일한 기준**이다. 새 작업을 시작하거나 끝낼 때 양쪽 총괄 모두 이 표를 먼저 읽고 갱신한다(경로 지정 커밋, 문서만 main 직접 push 허용).
 > 상위 계획: [FDG_GAME_DEVELOPMENT_PLAN.md](../FDG_GAME_DEVELOPMENT_PLAN.md) · 사용자용 현황: [FDG_GODOT_PORT_STATUS.md](../FDG_GODOT_PORT_STATUS.md) · Mac 지시서: [MAC_ORDERS_20261020.md](MAC_ORDERS_20261020.md)
 
+> **2026-10-20 저녁 사용자 지시로 역할 전환**: "자동작업은 이제 맥북만 24시간 켜둘꺼니까 거기서 하는거야", "너는 가끔 PC에서 잘 구동돼나 테스트정도만 하면됄듯".
+> - 작업 배정·검수·**main 병합 = 맥북총괄(Mac Claude)**. 아래 공통 규칙 1의 "Claude 총괄"은 이제 맥북총괄을 뜻한다. 병합 전 검수 기준은 그대로다(원본 행 대조, 병합본 위 독립 재실행, 회귀 목록, 정확한 경로 스테이징, force 금지).
+> - PC Claude = **PC(Windows) 구동 테스트 담당**. 가끔 main을 PC Godot 4.7.2로 돌려 회귀와 실창 동작을 확인하고, 결함은 이 표에 행으로 올린다. PC에서는 새 자동 작업을 배정하지 않는다.
+> - PC VS Code Codex에서 이미 돌고 있던 P2-006b·P2-008b(+P2-008a-FIX 우선)·P2-009a는 PC가 켜져 있는 동안 계속 진행한다. 결과 브랜치는 맥북총괄이 검수한다. PC가 꺼져 멈추면 Mac이 인수한다.
+
 ## 역할 (2026-10-20 사용자 지시 기준)
 | 역할 | 누구 | 하는 일 |
 |---|---|---|
@@ -24,12 +29,12 @@
 | DOC-SYNC | 오늘 통합분 원본 수치·설계 docs 동기화 감사 | PC Codex | codex/doc-sync-pc-20261020 | DOC-SYNC_REPORT.md 및 설계 문서10개 정정 구역(2_3 제외) | **검수 완료·main 병합(Claude 총괄)** — 설계 문서 10종 원본 기준 정정, 코드 무변경. 2_4는 P2-004b와 충돌 → 상세 문장 유지+정정 주석 |
 | P2-001l | 패링 연습 단계 0~7·입력 제한(allows) | PC heavy 담당 | claude/p2-001l-lesson-steps-20261020 | native_parry_lesson_flow.gd 등 레슨 파일, player.gd·main.gd 입력 처리 함수 | **검수 완료·main 병합(Claude 총괄 2026-10-20)** — 병합본 독립 재실행 9종 0실패(L·K·H·J·QE·5c·HUD·지역·시작스킬), 화면 RETOUCH·step1~7·챕터2 미이식 |
 | P2-006a | 드랍 바닥 표시·줍기·인벤 반입 | PC heavy 담당 — **Claude 사용 한도로 중단**(작업 폴더 G:\exoduser-wt\p2-002a-hud에 진행분 보존) | claude/p2-006a-drop-pickup-20261020 | 드랍 렌더·줍기 신규 스크립트 | **기능 완료·main 병합 / 디자인 미검수(RETOUCH)** — 총괄 독립: world_drops 18/0·pickup_contract 17/0·HUD 36/0·시작 스킬 27/0. 원본 에셋 189개 해시 일치(Codex). 처치 직후 캡처에서 드랍이 피 효과에 가려 판독 불가 → P2-006b 화면 마감 | |
-| TRACE-META | 3.2 메타·진행·14 밸런스 원본 추적·이식 설계(문서만) | Mac VS Code Codex 01a1586f-15cb(MAC-LIVE에서 전환) | codex/trace-meta-20261020 | FDG_SOURCE_TRACE_META_20261020.md | 진행 중 |
-| P2-006b | 드랍 화면 마감(피 효과 후 판독 캡처·라벨/빔 1x)·캡처의 LMB 슬롯 빈 칸 원인 확인 | PC VS Code Codex 4(P2-001l 후) | codex/p2-006b-pc-20261020 | native_world_drops.gd 표시부 | 배정 |
+| TRACE-META | 3.2 메타·진행·14 밸런스 원본 추적·이식 설계(문서만) | Mac VS Code Codex 01a1586f-15cb(MAC-LIVE에서 전환) | codex/trace-meta-20261020 | FDG_SOURCE_TRACE_META_20261020.md | 검수 대기 — 30191be0d (맥북총괄 검수) |
+| P2-006b | 드랍 화면 마감(피 효과 후 판독 캡처·라벨/빔 1x)·캡처의 LMB 슬롯 빈 칸 원인 확인 | PC VS Code Codex 4(P2-001l 후) | codex/p2-006b-pc-20261020 | native_world_drops.gd 표시부 | 진행 중 |
 | P3-002 | 소환굴 시스템·후속 스폰·지역 처치 분모 | 클라우드 세션 cloud-spawnholes | claude/p3-002-spawn-holes | 소환굴 신규 스크립트, world 동적 등록 호출부 | **검수 완료·main 병합(Claude 총괄 2026-10-20)** — 지역 초기화 순서 원본 31655 정정, 298/0·회귀 10종 0실패 |
 | P2-007a | UI 마감: 원본 글꼴(나눔명조·Cinzel)·검기 색·인트로 가이드 패널 | 클라우드 세션 cloud-ui-polish | claude/p2-007a-ui-polish | assets/fonts, crescent.gd 색, 인트로 가이드 패널 | **검수 완료·main 병합(Claude 총괄 2026-10-20)** — PC(Windows) 병합본 p2007a 115/0(Malgun Gothic 실존 시 원본 CSS 3순위 체인으로 테스트 기대값 정정, 제품 무변경)·회귀 13종 0실패. p1002g 실패 1건은 main 선재(P2-008a 빙결전사 포이즈 경로)로 별도. 종료 resources 17 잔류 경고 |
 | MAC-VERIFY | 최근 통합분 Mac 헤드리스 테스트 | Mac VS Code Codex 01a1586e-c1b7 | codex/mac-verify-20261020 (394c01388) | 없음 | **검수 완료·보고서 main 반영(Claude 총괄)** — 17종 실패 0, p1002e 검사 수 변동은 시작 장비 RNG(기지), stderr ERROR 3종은 QA-002 |
-| QA-002 | 테스트 결정성(시작 장비 시드, 테스트 한정)·p2005b/c 종료 누수·p2003a dummy 텍스처 ERROR | Mac VS Code Codex 01a1586e-c1b7(맥북총괄 배정) | codex/qa-002-20261020 | 해당 테스트·(제품 결함 시 수정안만) | 배정 |
+| QA-002 | 테스트 결정성(시작 장비 시드, 테스트 한정)·p2005b/c 종료 누수·p2003a dummy 텍스처 ERROR | Mac VS Code Codex 01a1586e-c1b7(맥북총괄 배정) | codex/qa-002-20261020 | 해당 테스트·(제품 결함 시 수정안만) | 검수 대기 — 3edabeb5e (맥북총괄 검수) |
 | P5-001a | Mac 실행판·macOS export 점검 | Mac VS Code Codex 01a1586f-09bf | codex/p5-001a-mac-20261020 (67d625aaa) | 없음 | **검수 완료·보고서 main 반영** — Mac 네이티브 실행 CONFIRMED, 화면 관찰은 Godot 앱 제어 권한 미승인으로 BLOCKED, macOS 프리셋·4.7.2 export 템플릿 없음 |
 | MAC-LIVE | Mac 실창 첫 전투 녹화 | Mac Codex(trace-meta로 전환) | codex/mac-live-20261020 (8b727b15b) | 없음 | BLOCKED — Godot 앱 제어 미승인으로 게임 창 녹화 불가. 부팅 렌더(Movie Maker 30초) 정상, 엔진 FPS 평균 138·최저 45(36표본) |
 | MAC-TESTSWEEP | MAC-VERIFY 외 godot/tests 32종 Mac 헤드리스 | Mac VS Code Codex 01a1586f-2389 | codex/mac-testsweep-20261020 (cd6055eed) | 없음 | **검수 완료·보고서 main 반영** — 29 통과·3 미통과: starter_state 148/1(P3-003 병합 회귀, PC 재현 — STARTER-REGIONS 수정 배정), type3_spawn_recipe(외부 oracle 누락), windows_native_package(Windows export 전제) |
@@ -45,15 +50,23 @@
 | P3-003 | 지역 시스템 | Mac Codex ENGINE(채택) + PC 총괄 통합 | codex/p3-003-20261020 → main | native_regions.gd 등 | **검수 완료·main 병합(Claude 총괄 2026-10-20)** — 42702 _regKill 연결 포함 |
 | FEATURE-INVENTORY | 전체 기능 분모 표·이식 상태 판정 | **PC VS Code Codex 1**(P3-003 중복 배정을 중단하고 전환 — P3-003은 Mac ENGINE 단독) | codex/feature-inventory-pc-20261020 | docs/engine/FDG_FEATURE_INVENTORY_20261020.md | **main 병합(Claude 총괄 2026-10-20)** — 1,061행 분모, 완료(격리) 6·실플레이 0 |
 | SV-CONTRACT | 세이브 5경로 key set 계약 테스트(제품 무변경) | Mac Codex 창6 01a158a5-5a79 | codex/sv-contract-20261020 | tests/test_native_save_contract.gd(신규) | 진행 중 |
-| QS-01 | 퀵슬롯 1번 단위: 신규 계산 모듈+테스트(공용 0줄) | Mac Codex 창5 01a158a5-5597 | codex/qs-01-20261020 | 신규 모듈·테스트만 | 진행 중 |
-| SETTINGS-S01 | 설정 원본 default 읽기 전용 view(source_options_state.gd 무수정) | Mac Codex 창7 01a158a5-6274 | codex/settings-s01-20261020 | native_settings_read_view.gd·test(신규) | 진행 중 |
+| QS-01 | 퀵슬롯 1번 단위: 신규 계산 모듈+테스트(공용 0줄) | Mac Codex 창5 01a158a5-5597 | codex/qs-01-20261020 | 신규 모듈·테스트만 | 검수 대기 — e38c083cd (맥북총괄 검수) |
+| SETTINGS-S01 | 설정 원본 default 읽기 전용 view(source_options_state.gd 무수정) | Mac Codex 창7 01a158a5-6274 | codex/settings-s01-20261020 | native_settings_read_view.gd·test(신규) | 검수 대기 — 883426bb2 (맥북총괄 검수) |
 | TRACE-WEAPONS | 2_2 무기·활·속성 원본 추적(문서만) | Mac Codex 창4 01a1586f-2389 | codex/trace-weapons-20261020 | FDG_SOURCE_TRACE_WEAPONS 문서 | 진행 중 |
 | TRACE-BOSS-CH1 | 8.1 1장 보스 무브셋·HP·패턴 추적(문서만) | Mac Codex 창8 01a158a5-6b36 | codex/trace-boss-ch1-20261020 | FDG_SOURCE_TRACE_BOSS_CH1 문서 | 진행 중 |
-| TRACE-SKILLS | 2_1 스킬·합체 원본 추적(문서만) | Mac Codex 01a1589e-e914 | codex/trace-skills-20261020 | 추적 문서 1개 | 진행 중 |
-| TRACE-ITEMS | 7 아이템·어픽스 원본 추적(문서만) | Mac Codex 01a1589e-f8d5 | codex/trace-items-20261020 | 추적 문서 1개 | 진행 중 |
+| TRACE-SKILLS | 2_1 스킬·합체 원본 추적(문서만) | Mac Codex 01a1589e-e914 | codex/trace-skills-20261020 | 추적 문서 1개 | 검수 대기 — 17255c3e9 (맥북총괄 검수) |
+| TRACE-ITEMS | 7 아이템·어픽스 원본 추적(문서만) | Mac Codex 01a1589e-f8d5 | codex/trace-items-20261020 | 추적 문서 1개 | 검수 대기 — 33486451a (맥북총괄 검수) |
 | P2-008a | 1-1 초기 미지원 적: etype20 빙결전사 exact 3개체(order4/10/12) | PC VS Code Codex | codex/p2-008a-ch1-enemies-pc-20261020 → main | enemy_melee_ch1_ice_warrior.gd·etype20 json·factory 등록 | **검수 완료·main 병합(Claude 총괄 2026-10-20)** — 원본 39057~39060 빈 근접 분기·40499 _meleeET 제외·31154 _noProjEtypes[20] 확인(무공격 = 원본 동작), 병합본 14종 0실패, 지원 9/미지원 7, 화면·실플레이 미 |
 | TRACE-CH1-ENEMIES | 1장 미이식 적 원본 추적(문서만) — PC P2-008a 구현과 겹치지 않게 P2-008a 범위는 참고만 | Mac Codex 01a1589f-0218 | codex/trace-ch1-enemies-20261020 | 추적 문서 1개 | 진행 중 |
-| TRACE-SOUND | 6 사운드 원본 추적(문서만) | Mac Codex 01a1589f-0bf8 | codex/trace-sound-20261020 | 추적 문서 1개 | 진행 중 |
+| P2-008a-FIX | P2-008a 빙결전사 포이즈 경로 정지 결함 수정(crawler 413 etype≠0 거부 → hurtE 42490 halt, p1002g 1실패) | PC VS Code Codex(P2-008a 작성자, P2-008b 스레드에 최우선 큐) | codex/p2-008b-ch1-enemies-pc-20261020 | enemy_melee_ch1_ice_warrior.gd 등 | 진행 대기 — main b8a6b0192에서 p1002g 1실패 재현(19a713578 통과). PC 정지 시 Mac 인수 |
+| P2-008b | 1-1 미지원 적 다음 개체(order11 etype47 우선) | PC VS Code Codex | codex/p2-008b-ch1-enemies-pc-20261020 | enemy_factory.gd·신규 적 스크립트 | 진행 중(P2-008a-FIX 뒤) |
+| P2-009a | 피드백 UI | PC VS Code Codex | codex/p2-009a-feedback-ui 계열 | native_skill_slots.gd 등 | 진행 중 |
+| SK-S01 | 스킬 1번 단위 구현 | Mac Codex | codex/sk-s01-20261020 | 신규 파일·테스트 | 진행 중 |
+| SND-01 | 사운드 1번 단위 구현 | Mac Codex | codex/snd-01-20261020 | 신규 파일 2·테스트 | 진행 중 |
+| IT-01 | 아이템 1번 단위 구현 | Mac Codex | codex/it-01-20261020 | 신규 파일·테스트 | 진행 중 |
+| TRACE-MAPS-CH1 | 1장 맵 원본 추적 | Mac Codex | codex/trace-maps-ch1-20261020 | 추적 문서 | 진행 중 |
+| TRACE-LOBBY | 로비·캐릭터 선택 원본 추적 | Mac Codex | codex/trace-lobby-20261020 | 추적 문서 | 진행 중 |
+| TRACE-SOUND | 6 사운드 원본 추적(문서만) | Mac Codex 01a1589f-0bf8 | codex/trace-sound-20261020 | 추적 문서 1개 | 검수 대기 — 16a198403 (맥북총괄 검수) |
 
 ## 공용(누구도 단독 소유 아님 — 수정 시 최소 줄·보고 필수)
 
