@@ -6,6 +6,7 @@ import crypto from 'node:crypto';
 import {createRequire} from 'node:module';
 import {execFileSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
+import {isDeepStrictEqual} from 'node:util';
 import {buildAreaSnapshot,captureJSON} from './export_ch1_area_source.mjs';
 import {rectangles} from './export_ch1_area_resources.mjs';
 const sha=x=>crypto.createHash('sha256').update(x).digest('hex');
@@ -83,7 +84,34 @@ export function writeResources(root,evidence){
   }
  }
  const result=buildResources(root);
- fs.mkdirSync(path.dirname(dest),{recursive:true});fs.writeFileSync(dest,JSON.stringify(result.bundle)+'\n');
+ const sameContent=previous=>{
+  const content=structuredClone(result.bundle);content.source.main_sha=previous.source?.main_sha;
+  return isDeepStrictEqual(content,previous);
+ };
+ const verified=new Set();
+ function verifySource(previous){
+   for(const ref of new Set([result.bundle.source.main_sha,previous.source.main_sha])){
+    if(typeof ref!=='string'||!/^[a-f0-9]{40}$/.test(ref))throw Error('Invalid recorded source commit');
+    if(verified.has(ref))continue;
+    let bytes;
+    try{bytes=execFileSync('git',['show',ref+':game.html'],{cwd:root,maxBuffer:16*1024*1024,stdio:['ignore','pipe','pipe']});}
+    catch{throw Error('Recorded source commit unavailable: '+ref);}
+    if(sha(bytes)!==result.bundle.source.game_sha256)throw Error('Recorded source commit bytes mismatch: '+ref);
+    verified.add(ref);
+   }
+ }
+ const current=fs.existsSync(dest)?fs.readFileSync(dest):null;
+ let reference=current?JSON.parse(current):null,referenceBytes=current;
+ if(reference&&sameContent(reference))verifySource(reference);
+ // Prefer the versioned admitted bytes, so a previous CLI's provenance-only
+ // rewrite is repaired too. Changed native content can never take this path.
+ let committed;
+ try{committed=execFileSync('git',['show','HEAD:godot/data/ch2_map_source/si4_resources.json'],{cwd:root,maxBuffer:16*1024*1024,stdio:['ignore','pipe','pipe']});}catch{}
+ if(committed){const saved=JSON.parse(committed);if(sameContent(saved)){verifySource(saved);reference=saved;referenceBytes=committed;}}
+ const retained=reference&&sameContent(reference);
+ if(retained){verifySource(reference);result.bundle=reference;}
+ const output=retained?referenceBytes:Buffer.from(JSON.stringify(result.bundle)+'\n');
+ if(!current||!current.equals(output)){fs.mkdirSync(path.dirname(dest),{recursive:true});fs.writeFileSync(dest,output);}
  fs.writeFileSync(evidence,JSON.stringify({schema:'exoduser.ch2-area-oracle.v1',stage:4,queries:result.queries,los:result.los})+'\n');return result;
 }
 if(isDirectExecution(import.meta.url)){
