@@ -414,7 +414,7 @@ WARNING: 8 ObjectDB instances were leaked at exit (run with `--verbose` for deta
 
 ### 커밋·원격 영수증
 
-브랜치: `codex/qa-002-20261020`. **보고서 포함 체크포인트 SHA: 첫 커밋 후 기록 예정.** 보고서가 포함된 커밋은 자신의 SHA를 본문에 포함할 수 없으므로 임의 미래 SHA를 쓰지 않는다. 최종 tip·원격 ref 대조·한 줄 요약은 `/Users/fordeargamers/exoduser-wt/_out/qa-002/DONE.txt`에 기록한다.
+브랜치: `codex/qa-002-20261020`. **테스트·보고서 체크포인트 SHA: `edad09b072be7b20eca144723cdc6ffebdce7ab3`.** 뒤따르는 문서 영수증 커밋은 이 체크포인트를 기록한다. 최종 tip·원격 ref 대조·한 줄 요약은 `/Users/fordeargamers/exoduser-wt/_out/qa-002/DONE.txt`에 보존한다.
 
 ## 부록. 마지막 RESULT 원문
 
