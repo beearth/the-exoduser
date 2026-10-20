@@ -5,7 +5,10 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 
 const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
-const localCode = html.slice(html.indexOf('async function loadLocalCharacters(){'), html.indexOf('function _selectSlot(s){'));
+// Execute the real demo helpers against an in-memory Web Storage fixture.
+const demoCode = html.slice(html.indexOf("const _DEMO_SLOT_PREFIX="), html.indexOf('async function loadLocalCharacters(){'));
+const localCode = html.slice(html.indexOf('async function loadLocalCharacters(){'), html.indexOf('function _updateCharDisplay(s){'));
+const stageCode = readFileSync(new URL('../lobby-stage-info.js', import.meta.url), 'utf8');
 function element() {
   return { children: [], style: {}, hidden: true, events: {}, className: '', classList: {add(){},remove(){},toggle(){}},
     set innerHTML(value) { this.markup = value; this.children = []; },
@@ -16,21 +19,27 @@ function element() {
     querySelector() { return element(); },
   };
 }
-function lobby({ build = 'full', count = 5, development = false, demoSave = null } = {}) {
+function lobby({ build = 'full', count = 5, development = false, demoSave = null, demoSlots = [] } = {}) {
   const els = Object.fromEntries(['charList', 'developerSaveNotice'].map(id => [id, element()]));
   let opened = 0, displayed = null;
+  const storage = new Map(demoSave === null ? [] : [['hellsave_demo', demoSave]]);
+  demoSlots.forEach((slot, i) => storage.set('hellsave_demo_' + i, JSON.stringify(slot)));
+  const requests = [];
   const slots = Array.from({ length: count }, (_, i) => ({ name: `character-${i}`, lv: 10, stage: 0, charIdx: 0 }));
   const ctx = vm.createContext({
     _LOBBY_BUILD: build, _testMode: true, _developerSlots: false, _localSlots: [],
     _characterLoadSeq: 0, _selectedSlot: null, _selectedSlotName: null, _selectedCharDisplay: null, _lobbyLang: () => 'ko', _TL: s => s, escHtml: s => s,
-    _formatLobbyStageProgress: () => '1층', CHAR_VISUALS: [{ name: '전사', bust: 'assets/charselect/portrait_warrior.png?v=1' }],
-    _updateCharDisplay(slot) { displayed=slot||null; }, _selectSlot() {}, _addLobbyCardControl() {}, _bindLobbyListNavigation() {}, openVisualSelect() { opened++; },
-    $: id => els[id], document: { createElement: element }, localStorage: { getItem: key => key === 'hellsave_demo' ? demoSave : null },
-    fetch: async () => ({ ok: true, json: async () => ({ ok: true, slots, development }) }),
+    CHAR_VISUALS: [{ name: '전사', bust: 'assets/charselect/portrait_warrior.png?v=1' }],
+    _updateCharDisplay(slot) { displayed=slot||null; }, _addLobbyCardControl() {}, _bindLobbyListNavigation() {}, openVisualSelect() { opened++; },
+    $: id => els[id], document: { createElement: element }, localStorage: { getItem: key => storage.get(key) ?? null, setItem: (key, value) => storage.set(key, String(value)), removeItem: key => storage.delete(key) },
+    fetch: async url => { requests.push(url); return { ok: true, json: async () => ({ ok: true, slots, development }) }; },
   });
   const ancestorCode=['_lobbyAncestorName','_lobbyAncestorCaption','_lobbyAncestorDetail','_lobbyDemoCharacterName'].map(name=>html.match(new RegExp('function '+name+'[^\\n]+'))[0]).join('\n');
-  vm.runInContext(ancestorCode+'\n'+localCode, ctx);
-  return { ctx, els, opened: () => opened, displayed: () => displayed };
+  vm.runInContext(stageCode+'\n'+ancestorCode+'\n'+demoCode+'\n'+localCode, ctx);
+  return { ctx, els, storage, requests, opened: () => opened, displayed: () => displayed };
+}
+function cards(els) {
+  return els.charList.children.find(e => e.className === 'char-scroll-vp').children[0].children;
 }
 
 test('development server permits new characters beyond five without removing existing slots', async () => {
@@ -52,21 +61,45 @@ test('public offline mode keeps its five-slot limit without a development marker
   assert.equal(els.developerSaveNotice.hidden, true);
 });
 
-test('demo remains a single fixed character even on a development server', async () => {
-  const { ctx, els } = lobby({ build: 'demo', development: true, count: 100 });
+test('demo uses its five browser slots without development privileges even with a working server', async () => {
+  const demoSlots = Array.from({ length: 5 }, (_, i) => ({ name: 'demo-' + i, charIdx: 0 }));
+  const { ctx, els, requests } = lobby({ build: 'demo', development: true, count: 100, demoSlots });
   await ctx.loadLocalCharacters();
-  assert.equal(els.charList.children.length, 1);
-  assert.match(els.charList.children[0].innerHTML, /대검전사/);
+  assert.deepEqual(Array.from(ctx._localSlots, s => s.name), demoSlots.map(s => s.name));
+  assert.equal(cards(els).length, 2);
+  assert.match(cards(els)[0].innerHTML, /demo-0/);
+  assert.equal(els.charList.children.find(e => e.className === 'char-item-new').events.click, undefined);
+  assert.equal(ctx._developerSlots, false);
   assert.equal(els.developerSaveNotice.hidden, true);
+  assert.equal(requests.length, 0);
 });
 
-test('demo lobby shows the level and progress from its autosave', async () => {
-  const demoSave = JSON.stringify({ ts: 1790522600000, player: { lv: 46 }, game: { stage: 0, kills: 1795 } });
-  const { ctx, els } = lobby({ build: 'demo', demoSave });
+test('demo lobby migrates its legacy autosave and shows the saved level and stage', async () => {
+  const demoSave = JSON.stringify({ ts: 1790522600000, player: { lv: 46 }, game: { stage: 12, kills: 1795 } });
+  const { ctx, els, storage, requests } = lobby({ build: 'demo', demoSave });
   await ctx.loadLocalCharacters();
-  assert.equal(els.charList.children.length, 1);
-  assert.match(els.charList.children[0].innerHTML, /Lv\.46/);
-  assert.match(els.charList.children[0].innerHTML, /1,795/);
+  assert.equal(ctx._localSlots.length, 1);
+  assert.match(cards(els)[0].innerHTML, /대검전사/);
+  assert.match(cards(els)[0].innerHTML, /Lv\.46/);
+  assert.match(cards(els)[0].innerHTML, /3장 지옥의 겨울 3층/);
+  assert.equal(ctx._localSlots[0].stage, 12);
+  assert.deepEqual(JSON.parse(storage.get('hellsave_demo_0')), { ...JSON.parse(demoSave), name: '대검전사', charIdx: 0 });
+  assert.equal(storage.has('hellsave_demo'), false);
+  assert.equal(requests.length, 0);
+});
+
+for (const count of [0, 1, 4]) test('demo permits creation with ' + count + ' browser slots', async () => {
+  const demoSlots = Array.from({ length: count }, (_, i) => ({ name: 'demo-' + i }));
+  const { ctx, els, requests, opened } = lobby({ build: 'demo', development: true, demoSlots });
+  await ctx.loadLocalCharacters();
+  assert.equal(ctx._localSlots.length, count);
+  const create = els.charList.children.find(e => e.className === 'char-item-new');
+  assert.equal(typeof create.events.click, 'function');
+  create.events.click();
+  assert.equal(opened(), 1);
+  assert.equal(ctx._developerSlots, false);
+  assert.equal(els.developerSaveNotice.hidden, true);
+  assert.equal(requests.length, 0);
 });
 
 test('a failed list request clears development privileges and the notice', async () => {
@@ -95,10 +128,11 @@ for (const [file, expected] of [['server.cjs', true], ['node-main.js', undefined
   });
 }
 
-for(const fallback of [false,true])test('demo shows the default scene until its card is selected after '+(fallback?'storage fallback':'server list')+' completes',async()=>{
- const {ctx,els,displayed}=lobby({build:'demo'});if(fallback)ctx.fetch=async()=>{throw new Error('offline')};
- await ctx.loadLocalCharacters();assert.equal(ctx._selectedSlot,null);assert.equal(ctx._selectedSlotName,null);assert.equal(displayed(),null);assert.equal(els.charList.children[0].className,'char-item');
- els.charList.children[0].events.click();assert.equal(ctx._selectedSlot,'demo');assert.equal(ctx._selectedSlotName,'demo');assert.equal(displayed()?.name,'DEMO CHARACTER');assert.equal(displayed()?.charIdx,0);
+for(const offline of [false,true])test('demo stays unselected until its browser card is clicked with '+(offline?'an offline':'an available')+' server',async()=>{
+ const {ctx,els,displayed,requests}=lobby({build:'demo',demoSlots:[{name:'saved-demo',charIdx:0}]});if(offline)ctx.fetch=async url=>{requests.push(url);throw new Error('offline')};
+ await ctx.loadLocalCharacters();assert.equal(ctx._selectedSlot,null);assert.equal(ctx._selectedSlotName,null);assert.equal(displayed(),null);assert.equal(cards(els)[0].className,'char-item');
+ cards(els)[0].events.click({target:{classList:{contains:()=>false}}});assert.equal(ctx._selectedSlot,'saved-demo');assert.equal(ctx._selectedSlotName,'saved-demo');assert.equal(displayed()?.name,'saved-demo');assert.equal(displayed()?.charIdx,0);
+ assert.equal(cards(els)[0].className,'char-item active');assert.equal(requests.length,0);
 });
 test('full offline list leaves entry unselected after loading',async()=>{
  const {ctx,displayed}=lobby({build:'full'});ctx._selectedSlot='stale';ctx._selectedSlotName='stale';ctx._updateCharDisplay({name:'stale'});
@@ -154,13 +188,14 @@ for(const direction of ['local to online','online to local'])for(const outcome o
 });
 
 for(const screen of ['_goLogin','_goCinematic'])for(const mode of ['local','online'])for(const outcome of ['success','failure'])test(screen+' discards a pending '+mode+' '+outcome,async()=>{
- const {ctx,els,displayed}=lobby({build:mode==='local'?'demo':'full'});
+ // Only full local mode starts a pending API request; demo uses browser slots synchronously.
+ const {ctx,els,displayed}=lobby({build:'full'});
  ctx.$=id=>id==='_langPop'?null:(els[id]||(els[id]=element()));ctx.document.querySelector=()=>element();ctx.window={};ctx._cinPreview=false;ctx._emberIv=null;ctx.currentUser={id:'owner'};
  for(const name of ['clearInterval','stopWorldIntro','stopCinBgm','stopMediaVideo','startBGM','hideLoading','_clearVidTimers','stopLobbyBgm','playCinematic','_swapLobbyBg'])ctx[name]=()=>{};
  ctx._renderOnlineSlots=()=>els.charList.replaceChildren(element());
  vm.runInContext(html.slice(html.indexOf('function _goLogin('),html.indexOf('async function _goLobby('))+html.slice(html.indexOf('async function loadCharacters(){'),html.indexOf('function _addLobbyCardControl(')),ctx);
  let finish;ctx.fetch=()=>new Promise((resolve,reject)=>finish={resolve,reject});ctx.sb={from:()=>({select:()=>({eq:()=>({order:()=>new Promise(resolve=>finish=resolve)})})})};
- const pending=mode==='local'?ctx.loadLocalCharacters():ctx.loadCharacters();ctx[screen]();const before=els.charList.children;
+ const pending=mode==='local'?ctx.loadLocalCharacters():ctx.loadCharacters();assert.ok(finish,'the request must exist before screen exit');ctx[screen]();const before=els.charList.children;
  if(mode==='local'){if(outcome==='success')finish.resolve({ok:true,json:async()=>({ok:true,slots:[]})});else finish.reject(Error('old failure'))}
  else finish(outcome==='success'?{data:[{id:'old',name:'old',data:{}}]}:{error:{message:'old failure'}});await pending;
  assert.equal(els.charList.children,before);assert.equal(displayed(),null);assert.equal(ctx._selectedSlot,null);assert.equal(els.lobby.style.display,'none');
