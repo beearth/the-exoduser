@@ -12,6 +12,10 @@
 
 > **2026-10-20 사용자 지시 "대기 중인 검수 건은 PC에서 병합해. 병합본 테스트 재실행 후 main에 넣어."** → PC Claude가 11+1건 병합(3f73456fa~2826b6738). 최종 main 기본 회귀 18종 중 17 PASS, p1002g 1실패(P2-008a-FIX 대기).
 
+## DEMO11-24b · 2026-10-21 Mac 후속
+
+- 동일 브랜치 인수5a3af410에서 이어감. 306id 분류=게임14/PC50/드랍0인id0/소비 미확인242. 기존 게임 시스템 owner13id를 값 캐시로 연결, 신규131/0·원문13사례 일치·직접 회귀6종 각1회4167/0·최종ERROR/누수/잔류0. 실제 intro 뒤 회복 identity 인계는1회·owner/clock guard 유지. Main+23/-3/State0/보호·저장0. 수동 퀵슬롯 potionCdRed1id 및 원본 소비 미확인242개는 미완료로 남기고 PC50+기존72/혼합 부분은 pc-iface-pack 인계. [후속 보고서](reports/demo11-24b_REPORT.md) 및 `_out/demo11-24b/`.
+
 ## DEMO11-24 · 2026-10-21 Mac 단위
 
 - 담당: 이 Mac Codex 창. main0138c5bb + 22r d276e02e 정상merge 기준. 데모 affix 후보398레코드/396id 전수·원본 롤 빈도 표 작성, 기존 PC 재계산 소비18id 실제 Main 검증639/0·원문18사례360필드 불일치0. hurtE72id·기타306id 및 native 데모금지필터 차이는 미완료 인계. Main/State/보호/저장0줄, 장착 receipt 관찰 +1줄. 직접 회귀2종 각1회735/0·ERROR/누수/잔류0. 제출은 [보고서](reports/demo11-24_REPORT.md) 및 `_out/demo11-24/`에 기록한다.

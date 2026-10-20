@@ -252,6 +252,15 @@
 | 검증 | 기존 shared-read1회149486/0·ERROR/누수/잔류0, 실제 IO0. UI/3캡처 미생성·텍스트0·번역 CRLF 보존. [인수 요청](engine/orders/reports/demo11-23_REPORT.md) |
 
 
+## 2026-10-21 DEMO11-24b — 306id 분류·게임 시스템13 소비
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준·분류 | 동일 branch의 인수5a3af410 + fetch main0138c5bb(ancestor) 정상merge 확인. 306id=게임14/PC50/드랍0인id0/소비처미확인242. hurtE 동적 원소8id 포함. 드랍되는 미사용 id를 드랍0으로 위장하지 않음 |
+| 연결·경계 | 기존 owner가 있는13id를 빈도순 연결: 장착/PC 성공 refresh 시 값 cache, 틱 원본 affix 사전조회0. 기존 보상·스킬 quote/자원/쿨·자동물약·자연/영역 HP 식 재사용. potionCdRed는 폐지된 수동 퀵슬롯 식만 있어 자동 물약에 임의 적용0. PC/혼합 소비는 pc-iface-pack.json으로 인계 |
+| 실제 회복·공용 | intro/lesson ens 교체 뒤 기존 phase가 부팅 identity를 고정해 회복 진입0인 문제를 검출. 실제 완료·같은 Main/World/Player/State·원본 script/binding·1회 사용을 검사하는 명시 identity 인계. 기존 advance clock/sink guard 유지. Main+23/-3·State0·World/lesson/Player/hurtE/저장0, 순수 수식/테이블 변경0 |
+| 검증·제출 | 신규131/0·13id 원문13사례 exact JS 불일치0. 직접 회귀6종 각1회4,167/0(639+442+2560+88+45+393), 기존6파일 동일. 최종ERROR/누수/잔류0·격리/pgrep gate/override0byte. [보고서](engine/orders/reports/demo11-24b_REPORT.md)·[306행 분류표](7아이템디자인/DEMO11_24B_SYSTEM_CONSUMERS_20261021.md)·원로그 _out/demo11-24b/ |
+
 ## 2026-10-21 DEMO11-24 — 데모 affix 소비·빈도·보호 경로 인계
 
 | 항목 | 구현·검수 근거 |

@@ -59,7 +59,7 @@ func _read(key: String) -> Dictionary:
 		"heal":
 			# G35894/35903: level then affix, invoked twice only on actual use.
 			var level: Variant = state.read_native_potion_runtime().level
-			var affix: Dictionary = main.source_providers.get_provider("affix").eq_affix("potionPower")
+			var affix: Dictionary = main.read_native_system_equipment_affix("potionPower")
 			if affix.get("status") != "READY": return affix
 			return _math.enhanced_heal(level, affix.value)
 		"lesson":
