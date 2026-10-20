@@ -1,3 +1,15 @@
+## 2026-10-20 CH3-04 — si12 원본·독립 소비자
+
+| 항목 / 적용 위치 | 현재 계약·실측 |
+|---|---|
+| 선행 판정 / 수정 | main6d에는 CH3-01 test/snapshot 부재. provenance1은 CH3 체인 검사 결함으로 판정, si12 전9af85131 수정·12/0·기존포함 source72/0. game bytes 증명 뒤 출처만 정규화 |
+| 기준 / 범위 | 지정 CH3-03 8366ba8d 끝 분기. main fetch b25a018a·gameSHA4d911cdd… 동일. 공용 source/resource/World/Main/State/P3/제품map0줄 |
+| 원문 / 자원 | si12 200²/T40·tile38986/36/3/0/975·raw21/굴14·1100/지역250·300·350·200. 실제hand21+gate1·원7/타원1·texture11 byte동일·tile1 36=4rect. source RNG14/init RNG2·최종제단0 |
+| 구현 | 전용source adapter가 기존native VM/원함수 재사용, target reset 후 si12 capture. fresh direct si12 VM과 전수동일. 신규 resource/순수계약/reader/독립preview/검사16경로·UID5, 공용수정0 |
+| 검수 | 새Node7/0·순수Godot393/0·GPU815/0, isW/canMv6774각·LOS400/물리40000 차이0·반경fixture179/왕복358. 기존source72/0·contracts5그룹/0·굴298/0·지역43/0. map37중28/9는main6d 동일 |
+| 화면 / 한계 | GPU8뷰+OFF1·원 pixel1x크롭3. VISUAL RETOUCH: 반복지면·성긴군집/접지·보라테두리·북경계. 제품 Player/전투/굴/지역/전환 미연결·full_stage_ready=false |
+| 보호 / 제출 | 시작tracked2599 중 허용CH3테스트/CHANGELOG외2597byte동일. 정상훅·--node-bin/UTF8·pgrep2이상30초대기·격리/override비움·자기branch만push/SHA/DONE후WT제거·R불변. [보고서 첫 절·상세](engine/orders/reports/ch3-04_REPORT.md), ~/exoduser-wt/_out/ch3-04/ |
+
 ## 2026-10-20 CH3-04 선행 수정 — CH3 provenance 비교
 
 | 항목 | 실제 변경·검수 |
