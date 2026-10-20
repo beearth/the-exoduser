@@ -1,3 +1,13 @@
+## 2026-10-20 EC2-02 2장 constructor 수치·초기 RNG 정책
+
+| id / 적용 위치 | 정확 계약·실제 검수 |
+|---|---|
+| 신규 범위 | native_ch2_enemy_constructor_policy.gd·test_ch2_enemy_constructor_policy.gd·자기UID2개. stage4..9/etype30..39 비보스 수치 projection52필드/catalog9값. 공용·다른 담당·기존 테스트·저장0줄, 실제 actor/State/World 생성0 |
+| 원본 | game.html9272/9276·30823–30920·31119–31364. catalog HP/ATK/POISE/SHIELD와 생성값 분리, HP두번floor·poise/shield=생성HP·M02처리순서·전용timer24개의base/span 및 무조건orbit/erratic draw보존 |
+| 공통 권한 | elite→조건부mods→speed/r→st2/facing→조건부aura→projT/bossPatT→전용timer→orbit/erratic. 세 supplier Callable과 RNG를 호출자주입, common 추첨알고리즘 복제0. 미연결/잘못된입력은NOT_READY·실제소비보존 |
+| 실제 검증 | 최종 신규159,902/0·원본oracle2,708사례(명시 champion fixture60 포함). EC2-01 7,483/0·contracts5군/0·factory3군/0·p1002f357/0·소환굴298/0. 전6suite exit0/ERROR0/SKIP0. 경고 원문은 보고서/err.log에 별도 보존 |
+| 기준·격리 | 최신main299e48ac 원본byte 일치, EC2-01 미병합으로 c7e02549에 의존 분기. 새 EXODUSER-ec2-02-Isolated-20261020·기존은각상수. Godot전 pgrep2이상30초대기, override최종0byte. [보고서](engine/orders/reports/ec2-02_REPORT.md)·원로그 ~/exoduser-wt/_out/ec2-02/ |
+
 ## 2026-10-20 EC2-01 2장 유형·원소 선택 독립 정책
 
 | id / 적용 위치 | 정확 계약·실제 검수 |
