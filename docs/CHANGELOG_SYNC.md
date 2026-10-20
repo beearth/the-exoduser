@@ -1,3 +1,13 @@
+## 2026-10-20 BC2-06 fanWave 독립 상태 계산
+
+| 항목 | 현재 정확 계약 |
+|---|---|
+| 기준·의존 | 최신main249c26fad+인수BC2-05 5957ced3 정상merge7073a6af, rebase/reset0. chapter/context·BC07 command/RNG/parry recipe 재사용, 기존제품/테스트0줄 |
+| 원본 | G40571–40605,고정lock·strict90도/pd<R·이중ToInt32·contact전체readback·ordered shQuery alias KB12·fx20·25입자·bossRec40. 실제피해/패링/적KB/Main/렌더연결HOLD |
+| 검증 | 원문647상황/46,822event/32,079RNG. 신규46,009/0·기존BC01~08 131,655/0·BC2-01~05포함286,001/0. 기존수·조건·기대값무수정, 최종exit0/ERROR0/skip0 |
+| 실패·보호 | 신규하니스배열타입338실패보존후동일검사수0. 격리7결함검출·인자누락2종거절은통과합계제외. 공용6·타담당·원본·저장·형식·바이너리0. 실제화면/전투/PC미확인 |
+| 제출 | [BC2-06 보고서](engine/orders/reports/bc2-06_REPORT.md), 원로그~/exoduser-wt/_out/bc2-06/. node-bin/source-game·UTF-8자기fixture·매Godot pgrep/30초gate·격리override종료0byte. 자기branch push/원격일치/DONE후자기WT제거 |
+
 ## 2026-10-20 BC2-05 beanRain wind/active 순수 상태 계산
 
 | 항목 | 현재 정확 계약 |
