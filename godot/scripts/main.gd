@@ -225,6 +225,12 @@ func _ready() -> void:
 	add_child(screen_lighting)
 	if not screen_lighting.configure(world, player):
 		push_error("Native screen lighting configuration rejected (display-only; startup continues).")
+	# P2-004a — 펫 4종 + 대사 자막 (표시 전용 어댑터, world 자식)
+	var native_pets: Node2D = preload("res://scripts/native_pets.gd").new()
+	native_pets.name = "NativePets"
+	world.add_child(native_pets)
+	if not native_pets.configure(world, player, source_state, screen_lighting):
+		push_error("Native pets configuration rejected (display-only; startup continues).")
 	hud.bind_native_source_state(source_state) # P2-002a 원본 HUD 값 = state owner getter
 	hud.pause_requested.connect(_toggle_pause)
 	hud.restart_requested.connect(_restart)
