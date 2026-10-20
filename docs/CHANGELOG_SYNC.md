@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 ## 2026-10-20 LOOK-001 룩 4안 비교 자료 준비
 
 | id / 적용 위치 | 현재 정확 계약 |
@@ -112,6 +113,17 @@
 | 검증 | 재개 Godot 실행/import/테스트0. 최신 blob·카탈로그·전체 식별자 행색인·24설계문서·12선행추적 정적 대조. 과거 c3cf8ce6 회귀6통과/1실패와 JS 기록은 과거 증거로만 보존·최신 PASS 주장0 |
 | 보호·인계 | docs/2_3·Q/E·blackBean·세이브형식 불변. 자기 branch만 정상 commit/push, 지정 `_out/trace-elites/DONE.txt`에 SHA·요약 인계 |
 >>>>>>> 48681a12
+=======
+## 2026-10-20 TRACE-LOBBY 재개 — 로비·내러티브 원본 추적 마감
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 산출물 | `docs/engine/FDG_SOURCE_TRACE_LOBBY_20261020.md` 1개. 재부팅 전 커밋 aac16bd1의 진행분을 보존하여 최신 origin/main 284d7faf 기준으로 재대조 |
+| 원본 근거 | index.html 4,742행·game.html 65,692행의 최신 main blob/SHA-256 확인. 화면·외형·full/ea/demo·로비→게임·컷신/대사/자막·전체 cue·함수/UI/에셋 행 색인 |
+| 불일치·이식안 | 설계 차이는 표로만 기록. 기존 Godot 의존/공백·공용 접점·10단위 순서안, 1번 LB-01은 신규 카탈로그/테스트만·공용 0줄 목표 |
+| 소유·보호 | SETTINGS S10·SAVE SV-LOBBY-VIEW는 참조, P2-001i·P2-007a는 의존. 코드·테스트·설계 docs·DESIGN LOCK·WORK_BOARD·R 불변. 이 절 외 기존 문서 수정 없음 |
+| 검증·한계 | 57개 기존 receipt 파일 및 최신 main 동일성·행/표/링크 정적 확인. Godot 미실행. 보존된 Node 원로그 77통과/3파일 acorn 부재로 본문 미실행은 전체 PASS가 아니며 재실행하지 않음. 자기 브랜치만 정상 push·원격 SHA 확인, main push·force·훅 우회 없음 |
+>>>>>>> 1adb3a21
 
 > 2026-10-17 ENGINE 현행: callback **12/25·미13**. play_time은 el_mul 바로 다음에 동일 Services self의 arity0 Callable로 등록했다. owner 첫 격리 공개 API 검수는 인수됐으며 자연 clock·실게임 인수는 미확인이다. D9는 직전 공통 소스 인수이며, 이번 main/I/R 소스 정렬은 아래 통합 정본과 단위 receipt의 실제 HEAD·tree를 기준으로 확인한다. V12 후보는 소스 인수·첫 FAIL·별도 보완 한정성공으로 구분하며 제품 copy·World hook은 수행하지 않았다. 아래 이전 단계 숫자·원검수 결과는 당시 이력으로 보존한다. 실제 local/remote commit 상태는 단위 receipt를 따른다.
 
