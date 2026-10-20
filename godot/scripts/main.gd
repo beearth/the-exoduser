@@ -424,7 +424,9 @@ func _ready() -> void:
 	native_demo_end_flow.lobby_requested.connect(_return_native_demo_lobby)
 	native_demo_encounter=preload("res://scripts/native_demo11_encounter.gd").new()
 	add_child(native_demo_encounter)
-	native_demo_encounter.configure(self,regions)
+	var encounter_regions: Node=get_node_or_null("NativeRegions")
+	if is_instance_valid(encounter_regions):
+		native_demo_encounter.configure(self,encounter_regions) # MAP11 has no legacy region owner; integration HOLD.
 	if demo11_loaded:
 		set_meta("native_intro_boot","dormant") # 06c: restored run never starts new-character intro.
 		_install_native_waking_intro_once()

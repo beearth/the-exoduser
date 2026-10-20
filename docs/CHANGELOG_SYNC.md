@@ -1,3 +1,8 @@
+## 2026-10-21 DEMO11-INTEG 보충: MAP11-PROD
+
+- a5ad5e4e 마지막 merge, 공용 기존 기능 보존. MAP11의 legacy region 부재 시37 연결 HOLD, Main 부팅 scope 교정.
+- 대표37/0 ERROR0, 기존 테스트 무수정1회. [보고서](engine/orders/reports/demo11-integ_REPORT.md)에 충돌/공용 hunk/기존 미검증 인계 기록.
+
 ## 2026-10-21 DEMO11-INTEG 보충 — 최신 A/B/D 공통 기반
 
 - 사용자 지정1f0a71fb를 기존2500b677 위에 정상 merge, A/B 중복 merge0. Main 기존 기능/F 경로·보호 코드 보존.

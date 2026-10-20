@@ -76,3 +76,17 @@
 | 미완료 유지 | 이전41 BGM8실패, EL/19ui/37 하니스 미검증 및 전체 E2E 인계 유지. F는 legacy 경로 유지, A/B/D와의 전체 동시 자동 자연 전투 완료 주장0 |
 
 원로그 `~/exoduser-wt/_out/demo11-integ/supplement-1f0a71fb/`. 테스트 상수 격리명 사용, override 종료0byte, 실제 사용자 저장0. 충돌 원문·gate·argv·결과·R대조 보존.
+
+
+## 2026-10-21 보충: MAP11-PROD 마지막 통합
+
+기존3b01908d 위에 a5ad5e4e를 정상 merge했다. MAP11-02/11과 최신 A/B/D 기반 뒤에 추가했으며, main push/rebase/force는 없다.
+
+| 항목 | 결과 |
+|---|---|
+| 충돌5파일 | CHANGELOG_SYNC/WORK_BOARD 독립 기록 병존. Main 기존 세션/장비/필드보스/F와 MAP11 API 병존, State 기존 transaction과 MAP11 transport/chest 병존, World 자연 admission과 MAP11 공간 API 병존 |
+| 부팅 경계 | 최초 editor 준비에서 regions scope parse error 검출. MAP11은 legacy NativeRegions가 없으므로 Main에서 get_node_or_null 후 valid일 때만 기존37 configure. legacy 동작 보존, MAP11+37 progression 연결 HOLD. 교정 후 import ERROR0 |
+| 대표1회 | test_map11_product 무수정 37/0, ERROR0, exit0. 실제 Main Start Marker→gate→arena, 완료 전 exit 거부. 테스트 상수 EXODUSER-map11-prod-Isolated-20261021, override 종료0byte. 재실행0/새 벤치0 |
+| 인계 | 기본 MAP11/--map11=off 분기 수용. off 런타임 별도 검사는 미실행. 이전 BGM8실패/EL·19ui·37 하니스 미검증 유지. MAP11+37 지역 진행·모든 Marker 소비자 자동 연결·최종 처치/부활·전체 E2E 미확인 |
+
+공용 변경 줄 범위는 원로그 supplement-map11-prod/shared-file-hunks.diff의 3b01908d 대비 hunk에 기록했다. 보호 전투 핵심 임의 변경0, 번역 CRLF 보존. 최초 준비 실패는 PASS에 합산하지 않는다. 원로그: ~/exoduser-wt/_out/demo11-integ/supplement-map11-prod/.
