@@ -175,6 +175,11 @@ func _ready() -> void:
 	if stage_entry_refill.get("applied") != true:
 		_stop_source_player_startup("source_stage_entry_refill_rejected:" + str(stage_entry_refill.get("reason")))
 		return
+	# P2-005a — 새 게임 시작 스킬·슬롯(63993~64014) 지급 (표시·지급만, 발동 로직 범위 밖)
+	var starting_skills: Dictionary = source_state.apply_native_new_game_starting_skills(self)
+	if starting_skills.get("applied") != true:
+		_stop_source_player_startup("source_starting_skills_rejected:" + str(starting_skills.get("reason")))
+		return
 	# Read the existing ready Player child. Main is still inside its own _ready;
 	# native resource inspection does not acknowledge source startup or quality.
 	_native_player_sprite_startup_readonly_calls += 1
@@ -227,6 +232,12 @@ func _ready() -> void:
 	add_child(screen_lighting)
 	if not screen_lighting.configure(world, player):
 		push_error("Native screen lighting configuration rejected (display-only; startup continues).")
+	# P2-004a — 펫 4종 + 대사 자막 (표시 전용 어댑터, world 자식)
+	var native_pets: Node2D = preload("res://scripts/native_pets.gd").new()
+	native_pets.name = "NativePets"
+	world.add_child(native_pets)
+	if not native_pets.configure(world, player, source_state, screen_lighting):
+		push_error("Native pets configuration rejected (display-only; startup continues).")
 	hud.bind_native_source_state(source_state) # P2-002a 원본 HUD 값 = state owner getter
 	hud.pause_requested.connect(_toggle_pause)
 	hud.restart_requested.connect(_restart)

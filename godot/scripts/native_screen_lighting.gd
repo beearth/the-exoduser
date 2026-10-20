@@ -48,6 +48,9 @@ uniform vec4 ambient : source_color = vec4(0.0235, 0.0627, 0.0353, 0.38);
 uniform vec2 light_px = vec2(960.0, 540.0);
 uniform float light_r = 470.0;
 uniform float light_a = 0.86;
+uniform vec2 light2_px = vec2(-4000.0, -4000.0); // 이리스 펫 광원 (P2-004a, 4686~4690)
+uniform float light2_r = 250.0;
+uniform float light2_a = 0.0;
 uniform vec2 screen_px = vec2(1920.0, 1080.0);
 // _initLightStamps(4562) 방사 스탬프: [0,1][.25,.92][.5,.50][.75,.15][1,0] 선형 보간
 float stamp(float t) {
@@ -60,8 +63,9 @@ float stamp(float t) {
 void fragment() {
 	vec2 px = UV * screen_px;
 	float hole = clamp(light_a * stamp(distance(px, light_px) / light_r), 0.0, 1.0);
-	// destination-out: 어둠 알파 *= (1 - 광원 알파)
-	COLOR = vec4(ambient.rgb, ambient.a * (1.0 - hole));
+	float hole2 = clamp(light2_a * stamp(distance(px, light2_px) / light2_r), 0.0, 1.0);
+	// destination-out 누적: 어둠 알파 *= Π(1 - 광원 알파)
+	COLOR = vec4(ambient.rgb, ambient.a * (1.0 - hole) * (1.0 - hole2));
 }
 "
 
@@ -209,6 +213,18 @@ func _process(_delta: float) -> void:
 	(_vignette.material as ShaderMaterial).set_shader_parameter("screen_px", viewport_size)
 	(_fog_gl.material as ShaderMaterial).set_shader_parameter("u_res", viewport_size)
 	_stage_draws += 1
+
+
+## P2-004a — 이리스 펫 광원(_collectLights 4686~4690): r=OPT.irisGlow‖250,
+## a=(.45+sin(f·.1)·.08+sin(f·.17)·.05)×.6, 색(255,200,90)은 색층(ci0) 소관 — 어둠
+## 구멍만 본 레이어. 펫 어댑터가 매 틱 호출.
+func set_native_iris_light(screen_pos: Vector2, radius: float, alpha: float) -> void:
+	if not _configured:
+		return
+	var mat: ShaderMaterial = _lightmap.material
+	mat.set_shader_parameter("light2_px", screen_pos)
+	mat.set_shader_parameter("light2_r", radius)
+	mat.set_shader_parameter("light2_a", clampf(alpha, 0.0, 1.0))
 
 
 func get_native_screen_lighting_snapshot() -> Dictionary:

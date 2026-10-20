@@ -410,6 +410,36 @@ func apply_native_stage_entry_refill(owner: Node) -> Dictionary:
 		"shield": _p["shield"], "mshield": _p.get("mshield", 0),
 		"unported": ["initStage_31567_나머지(상태리셋)·스테이지전환_재호출"]}
 
+# P2-005a — 새 게임 시작 스킬·슬롯 (로컬 새 게임 경로 63993~64014):
+# ① 난이도 시작 스킬 63994~63998 — _diffSigned()=OPT.diff(5)−5=0 → <1/<2/<3 전부 참:
+#    giantSlam(+SKILL_SLOTS[4])·holyDome(+[5])·spikeTrap
+# ② 기본 강제 64002~64007 — _ensureBaseWingStrike(3483: maliceSwipe/shieldThrow≥1·
+#    _fused.shieldFuse=true·activeRMBSk='maliceSwipe') + kiSlash/spikeTrap/holyDome/
+#    giantSlam/iceOrb ≥1
+# ③ 새 게임 슬롯 64010~64014 — activeCtSk='iceOrb', SKILL_SLOTS에서 holyDome/giantSlam
+#    제거 후 _fs(0,'spikeTrap')/_fs(4,'giantSlam')/_fs(5,'holyDome')
+# SKILL_SLOTS(27681 전역 6칸)·ULT_SLOT(27682 null)의 포트 보관처 = 이 P dict의
+# "skillSlots"/"ultSlot" (원본 전역 — 소유 위치 기록). 스킬 발동 로직은 범위 밖:
+# 지급·표시 전용이며 미구현 스킬 키는 기존대로 무반응(player space_rage_slot_not_connected).
+func apply_native_new_game_starting_skills(owner: Node) -> Dictionary:
+	if not _feel_owner_current(owner):
+		return {"applied": false, "reason": "actual_starting_skills_owner_not_current"}
+	var skills: Dictionary = _p["skills"]
+	skills["maliceSwipe"] = maxi(1, int(_feel_num(skills.get("maliceSwipe"))))
+	skills["shieldThrow"] = maxi(1, int(_feel_num(skills.get("shieldThrow"))))
+	(_p["_fused"] as Dictionary)["shieldFuse"] = true
+	_p["activeRMBSk"] = "maliceSwipe"
+	for skill_id in ["kiSlash", "spikeTrap", "holyDome", "giantSlam", "iceOrb"]:
+		if int(_feel_num(skills.get(skill_id))) < 1:
+			skills[skill_id] = 1
+	_p["activeCtSk"] = "iceOrb"
+	_p["skillSlots"] = ["spikeTrap", null, null, null, "giantSlam", "holyDome"]
+	_p["ultSlot"] = null # 27682 — 신규 필살기 미배정
+	return {"applied": true, "skills": skills.keys(), "skill_slots": _p["skillSlots"],
+		"active_ct": _p["activeCtSk"],
+		"unported": ["스킬 발동 로직(spikeTrap/giantSlam/holyDome/iceOrb 실행자 — 지급·표시만)",
+			"난이도 ≠0 분기(63994~63998 — 부호 난이도 0 고정 경로)"]}
+
 func apply_native_add_potion(owner: Node, type: String, count: int) -> Dictionary:
 	if not _feel_owner_current(owner) or count < 1:
 		return {"applied": false, "reason": "actual_reward_owner_not_current"}
