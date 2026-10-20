@@ -1,4 +1,5 @@
 extends Node2D
+const COMMON=preload("res://scripts/native_fieldboss_common.gd")
 ## 1-1 WM collection. No Player damage/movement/parry implementation.
 signal presentation_requested(index: int,event: Dictionary)
 signal final_death(index: int)
@@ -33,27 +34,20 @@ static func install_native_boot(main: Node) -> Node2D:
  service._g=g
  return service
 func _live() -> bool:
- return is_instance_valid(_main) and _main.get("native_demo_worms")==self and get_parent()==_world and _main.world==_world and is_same(_main.source_state.read_current_g(),_g)
+ return COMMON.collection_live(_main,self,_world,_g,"native_demo_worms")
 func _provider_live() -> bool:
- if not is_instance_valid(_provider) or not _world.is_ancestor_of(_provider):return false
- for marker in _markers:
-  if not is_instance_valid(marker) or not _provider.is_ancestor_of(marker):return false
- return true
+ return COMMON.provider_current(_world,_provider,_markers)
 func bind_provider(provider: Node2D, markers: Array) -> bool:
- if not _live() or is_instance_valid(_provider) or not is_instance_valid(provider) or not _world.is_ancestor_of(provider) or markers.size()!=4:return false
- var seen: Dictionary={}
- for marker in markers:
-  if not marker is Marker2D or not provider.is_ancestor_of(marker) or not marker.global_position.is_finite() or seen.has(marker.get_instance_id()):return false
-  seen[marker.get_instance_id()]=true
+ if not _live() or is_instance_valid(_provider) or not COMMON.markers_valid(_world,provider,markers,4):return false
  _provider=provider;_markers=markers.duplicate();_reason="awaiting_tick";return true
 func bind_hit_owner(owner: Node) -> bool:
  if not _live() or is_instance_valid(_hit_owner) or not is_instance_valid(owner) or not _main.is_ancestor_of(owner):return false
  _hit_owner=owner;return true
 func bind_protected_contact(owner: Node,handler: Callable) -> bool:
- if not _live() or _pc_contact.is_valid() or not is_instance_valid(owner) or not _main.is_ancestor_of(owner) or not handler.is_valid() or handler.get_object()!=owner:return false
+ if not _live() or _pc_contact.is_valid() or not COMMON.handler_owned(_main,owner,handler):return false
  _pc_contact=handler;return true
 func bind_aggro_reader(owner: Node,handler: Callable) -> bool:
- if not _live() or _aggro.is_valid() or not is_instance_valid(owner) or not _main.is_ancestor_of(owner) or not handler.is_valid() or handler.get_object()!=owner:return false
+ if not _live() or _aggro.is_valid() or not COMMON.handler_owned(_main,owner,handler):return false
  _aggro=handler;_aggro_bound=true;return true
 func read_aggro(at: Vector2) -> Dictionary:
  if not _live():return {"ready":false}
@@ -67,9 +61,7 @@ func read_aggro(at: Vector2) -> Dictionary:
   if _g.get(key) is Dictionary and _g[key].get("aggroOn",false):return {"ready":false,"reason":"actual_aggro_owner_required"}
  return {"ready":true,"active":false}
 func _player() -> Dictionary:
- var p: Dictionary=_main.source_state.read_current_p().duplicate(true)
- p.x=_main.player.global_position.x;p.y=_main.player.global_position.y;p.r=_main.player.radius;p.iframes=_main.player.iframes;p.s=_main.player.state
- return p
+ return COMMON.player_snapshot(_main)
 func _rng() -> float:return _world.sample_native_random_unit()
 func _wall(at: Vector2) -> bool:return _world.is_world_blocked(at)
 func advance_phase(sp: float,_native_frame: float,_enemies: Array) -> void:
@@ -81,7 +73,7 @@ func advance_phase(sp: float,_native_frame: float,_enemies: Array) -> void:
  var lesson: Dictionary=_main.read_native_normal_enemy_lesson_status()
  if lesson.get("ready")!=true or lesson.get("active")!=false:return
  var serial: int=int(_world.get_native_projectile_fx_context().frame_reset_epoch)
- if serial<=_serial:return
+ if not COMMON.fresh_serial(serial,_serial):return
  _serial=serial
  if _g.get("_wmStage")!=0:_g._wmStage=0;_g._worms=null
  if _g.get("_worms")==null:
@@ -126,12 +118,10 @@ func _contact(request: Dictionary) -> Variant:
  if not r is Dictionary or r.get("ack")!=true or not r.get("committed") is bool:return null
  var p: Variant=r.get("player_after")
  var actual: Dictionary=_player()
- if not p is Dictionary:return null
- for key in ["x","y","r","iframes","s","hp"]:
-  if p.get(key)!=actual.get(key):return null
+ if not COMMON.readback_matches(p,actual,["x","y","r","iframes","s","hp"]):return null
  return r
 func _admit_hit(owner: Node) -> bool:
- return _live() and _provider_live() and not _busy and owner==_hit_owner and is_instance_valid(owner) and _main.is_ancestor_of(owner) and _g.get("on",false) and _g.get("stage")==0 and not _g.get("_bossArena",false) and not get_tree().paused
+ return _live() and COMMON.hit_owner_admitted(_main,owner,_hit_owner,_busy,_provider_live(),_g)
 func apply_hit(owner: Node,index: int,damage: float) -> Dictionary:
  if not _admit_hit(owner) or index<0 or index>=_records.size() or not is_finite(damage) or _records[index]==null:return {"accepted":false}
  var w: Dictionary=_records[index]
@@ -156,10 +146,8 @@ func hurt_at(owner: Node,at: Vector2,radius: float,damage: float,hit_set: Dictio
 func clear_family() -> void:
  _main.native_demo_boss_projectiles.retire_field_projectiles(self)
  _records.clear();_g._worms=_records
- for view in _views:
-  if is_instance_valid(view):view.queue_free()
- _views.clear();_blocked.clear();_quarantine.clear();_frame={"ready":false}
+ COMMON.free_views(_views);_blocked.clear();_quarantine.clear();_frame={"ready":false}
 func read_projectile_frame() -> Dictionary:
  return _frame if _live() and not _g.get("_bossArena",false) and _g.get("on",false) else {"ready":false}
-func read_targets() -> Array:return _views.filter(func(v):return is_instance_valid(v) and not v.is_queued_for_deletion())
+func read_targets() -> Array:return COMMON.current_targets(_views)
 func snapshot() -> Dictionary:return {"provider_bound":is_instance_valid(_provider),"serial":_serial,"born":_born,"blocked":_blocked.duplicate(),"quarantined":_quarantine.size(),"reason":_reason,"full_combat_ready":false}

@@ -1,4 +1,5 @@
 extends Node
+const COMMON=preload("res://scripts/native_fieldboss_common.gd")
 const BIRTH = preload("res://scripts/native_ch1_boss_projectile_patterns.gd")
 const CLASS_AUTHORITY = preload("res://port_modules/parry_blue_projectile/producer.gd")
 const CARRIER = preload("res://scripts/native_demo11_boss_projectile.gd")
@@ -54,42 +55,17 @@ func configure(actor: Node,world: Node2D,player: Node2D) -> bool:
 	return true
 # DEMO11-31: same registry/pool/class/birth/drop/PC boundary, one active clock.
 func bind_field_source(owner: Node, reader: Callable) -> bool:
-	if is_instance_valid(_field_owner) or not is_instance_valid(owner) or owner.get_parent()!=_world or not reader.is_valid() or reader.get_object()!=owner:return false
-	_field_owner=owner;_field_reader=reader
-	return true
-# DEMO11-33 auxiliary source: same global registry/drop/RNG, real owner identity.
+	return COMMON.bind_field_source(self ,owner,reader)
 func bind_field_auxiliary(owner: Node, reader: Callable, aggro: Callable=Callable()) -> bool:
-	if not is_instance_valid(owner) or owner.get_parent()!=_world or not reader.is_valid() or reader.get_object()!=owner or owner==_field_owner or _field_aux.has(owner):return false
-	if aggro.is_valid() and aggro.get_object()!=owner:return false
-	_field_aux[owner]={"reader":reader,"aggro":aggro}
-	return true
+	return COMMON.bind_field_auxiliary(self ,owner,reader,aggro)
 func _field_registered(owner: Node) -> bool:
-	return is_instance_valid(owner) and owner.get_parent()==_world and (owner==_field_owner or _field_aux.has(owner))
+	return COMMON._field_registered(self ,owner)
 func _field_context(owner: Node, at: Vector2, base: Dictionary) -> Variant:
-	if not _field_aux.has(owner) or not _field_aux[owner].aggro.is_valid():return base
-	var context: Dictionary=base.duplicate(true)
-	if _field_aux.has(owner) and _field_aux[owner].aggro.is_valid():
-		var response: Variant=_field_aux[owner].aggro.call(at)
-		if not response is Dictionary or response.get("ready")!=true or not response.get("active") is bool:return null
-		context.aggro_active=response.active
-		if response.active:
-			var target: Variant=response.get("target")
-			if not target is Node2D or not is_instance_valid(target) or not target.is_inside_tree():return null
-			context.aggro_target_node=target;context.aggro_target={"x":target.global_position.x,"y":target.global_position.y}
-	return context
+	return COMMON._field_context(self ,owner,at,base)
 func birth_field_projectile(owner: Node, props: Dictionary, frame: Dictionary) -> Variant:
-	if not _field_registered(owner):return null
-	var context: Variant=_field_context(owner,Vector2(props.get("x",0),props.get("y",0)),frame.get("context",{}))
-	if not context is Dictionary:return null
-	var input: Dictionary=frame.duplicate(true);input.context=context
-	return _birth_request({"command":"spawnProj_owner","args":[props],"frame":input,"field_source":true,"field_owner":owner})
+	return COMMON.birth_field_projectile(self ,owner,props,frame)
 func retire_field_projectiles(owner: Node) -> int:
-	if not _field_registered(owner):return 0
-	var count:=0
-	for id in _entries.keys():
-		var entry: Dictionary=_entries[id]
-		if entry.get("field_owner")==owner and is_instance_valid(entry.node):entry.node._end("field_arena_handoff");count+=1
-	return count
+	return COMMON.retire_field_projectiles(self ,owner)
 func bind_protected_contact(owner: Callable) -> bool:
 	if _pc_contact.is_valid() or not owner.is_valid(): return false
 	_pc_contact = owner
@@ -180,17 +156,7 @@ func _retain_expired(shot: Node) -> bool:
 	return shot.life_ticks > -900 and not shot.raw.get("redBean",false) and shot.global_position.distance_squared_to(_camera())<=6250000.0
 func _physics_process(_delta: float) -> void:
 	if not _live() or _entries.is_empty():return
-	var field_frame: Dictionary=_field_reader.call() if is_instance_valid(_field_owner) and _field_reader.is_valid() else {"ready":false}
-	for owner in _field_aux.keys():
-		if not _field_registered(owner):_field_aux.erase(owner);continue
-		var candidate: Dictionary=_field_aux[owner].reader.call()
-		if candidate.get("ready")!=true:continue
-		if field_frame.get("ready")==true and (candidate.get("serial")!=field_frame.get("serial") or candidate.get("sp")!=field_frame.get("sp")):_error="field_native_clock_mismatch";return
-		field_frame=candidate
-	if field_frame.get("ready")==true:
-		if _clock_owner!=_field_owner:_serial=-1;_clock_owner=_field_owner
-		advance_source_frame(field_frame)
-		return
+	if COMMON.advance_field_clock(self):return
 	if not _actor.is_source_frame_completed():return
 	if _clock_owner!=_actor:_serial=-1;_clock_owner=_actor
 	advance_source_frame(_actor.read_source_frame())
