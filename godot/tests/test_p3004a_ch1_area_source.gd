@@ -113,10 +113,17 @@ func run() -> void:
 	reject(null_carrier,"null_or_undefined_is_not_native_number")
 
 	var comparison: Dictionary = Producer.compare_stage0_map(raw,existing)
-	check(comparison.status == "READY" and comparison.differences.size() == 4, "existing_tree_file_differences_only")
-	check(comparison.differences.map(func(e):return e.id) == ["m_ctree17","m_ctree18","m_ctree19","m_ctree20"], "four_changed_tree_ids")
-	check(comparison.differences.all(func(e):return e.field == "ch1_deco_raw.file"), "tiles_hands_not_changed")
-	check(not comparison.full_map_equal and not comparison.matches_observed_fields, "partial_comparison_never_full_parity")
+	check(comparison.status == "READY" and comparison.differences.is_empty(), "current_map_matches_raw_tree_files_after_CH1_02")
+	check(not comparison.full_map_equal and comparison.matches_observed_fields, "observed_parity_is_not_full_map_parity")
+	# Keep CH1-01's four-difference detector against the historical map filenames.
+	var legacy := existing.duplicate(true)
+	var legacy_files := ["rotforest_tree_03.png","rotforest_tree_04.png","rotforest_tree_02.png","rotforest_tree_01.png"]
+	for i in 4:
+		legacy.props[i+4].metadata.file = legacy_files[i]
+	var legacy_comparison: Dictionary = Producer.compare_stage0_map(raw,legacy)
+	check(legacy_comparison.differences.size() == 4, "legacy_tree_file_differences_only")
+	check(legacy_comparison.differences.map(func(e):return e.id) == ["m_ctree17","m_ctree18","m_ctree19","m_ctree20"], "four_legacy_changed_tree_ids")
+	check(legacy_comparison.differences.all(func(e):return e.field == "ch1_deco_raw.file"), "tiles_hands_not_changed")
 	check(comparison.unobserved_fields.has("prop_colliders") and comparison.unobserved_fields.has("effective_prop_positions"), "unobserved_comparison_fields")
 	var altered := existing.duplicate(true)
 	altered.tiles[0] = 0

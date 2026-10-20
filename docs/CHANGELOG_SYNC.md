@@ -1,3 +1,15 @@
+## 2026-10-20 CH1-02 map8필드 승인 후 정적 환경 동기화
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 승인 / 상태 | 맥북총괄이 map.json tree texture/file8필드와 범위출처 수정을 명시 허용. c8d5b8a4의 차단 중 승인된 정적 범위 구현 완료. World 원본 Image 등록표4건은 공용0줄 규칙으로 추가 BLOCKED |
+| 파이프라인 | 새 sync_ch1_stage0_assets.mjs가 byte동일 기존export_world를 L에서 실행, 최신 원본계약/전체깊은비교 뒤8필드+source.asset_updates만 생성 반영. 기존 adapter/export_world0줄, source.root/game_sha/P3-001 collider_updates 보존. 재추출 후보의 지형/배치/충돌 차이 거부 |
+| 실제 diff | map.json props4..7 texture/file8개: 원본 game17551–17554의05/11/06/07. 다른 제품 JSON 필드0변경. 원본92PNG와 byte/hash 일치, 차이42청크+새나무4만 반영·해당 import4/새테스트UID1 포함. tile40000/wall292/collider19/props36/chunks64·pit80/58/+7 보존 |
+| 검수 | 신규 Node6/0·Godot189/0, 실GPU8카메라 전후16PNG·445/0. CH1-01 Node9/0·Godot63/0(현재차이0+옛fixture차이4검출유지), P3-001 Node6/0, contracts5그룹/0·P3002실창298/0·P3003 43/0·encounter3그룹/0. 맵Node28/9 동일·새실패0 |
+| 실패 / 한계 | 첫신규Godot158/1은 Main전용API 검사 가정 수정 후189/0. P3002 headless298/0이어도 dummy ERROR1 보존, 실제GPU영향suite 재검증298/0·ERROR0. 기존 ObjectDB8누수/Camera2D경고 잔존. VISUAL RETOUCH; 동적living/전체게임·source mapping 완성 주장0 |
+| 추가 BLOCKED | world.gd471–474 canonical src 및703–706 native path가옛값이라 source-image4개 NOT_READY. 실제 Sprite는최신texture소비. 이공용8행접점은무수정,후속소유변경필요. full_source_mapping_ready=false 유지 |
+| 보호 / 상세 | 공용6+adapter/export_world0줄, baseline239해시동일(map만승인변경), R·원본에셋·Q/E·세이브 보존. [CH1-02 보고서](engine/orders/reports/ch1-02_REPORT.md), ~/exoduser-wt/_out/ch1-02/. 매Godot전2이상30초대기·suite상수격리·override finally0byte. 자기branch만push·main/force/전체add/배포0 |
+
 ## 2026-10-20 CH1-02 정적 환경 동기화 공유 map 수정 BLOCKED
 
 | id / 적용 위치 | 현재 정확 계약 |
