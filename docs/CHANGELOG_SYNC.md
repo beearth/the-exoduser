@@ -1,3 +1,13 @@
+## 2026-10-21 TRACE-ENEMIES-CH5 — 5장 적 원본 추적·구현 지시서
+
+| 항목 | 정적 근거·범위 |
+|---|---|
+| 기준 | fetch origin/main 0105159934d0c2a8b167bd51518dca1e0fafe50a. CH4 추적과 같은 형식·깊이, CH1~4 공통은 참조. main/미병합 EC2~4·PC factory 의존을 ancestry/원격 SHA로 재판정 |
+| 원본 | si21~25 5에리어, 일반31종/가중합151·선택R8종/23, 전용60..69의 catalog10·초기30필드·HP식·AI10블록·death4블록·caller/Player/탄/지역/저장 경계. 원본65,692행 SHA256 4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4 |
+| 설계·지시 | 몬스터/AI docs 불일치 표, 직접 etype/필드 전수 색인, EC5-01~14 순서안과 첫 단위 구현 지시서. 64 방 group과69 소환 구분, 63 두 피해 요청/65 무검사 잠복이동/67 해제 불능 조건/68·69 후속 덮기 보존 |
+| 관측 | 원함수 선택45·catalog10·초기literal10·HP24 산술표본·전용AI/death19 fixture. 최초 helper 개행 오류 원문 로그 보존 후 수정, 최종 exit0. 제품 테스트 PASS가 아니며 게임/서버/Godot/import0 |
+| 보호·제출 | 문서2개만, 코드·테스트·공용·저장0줄, 기존 CHANGELOG 전체 byte는 suffix 보존. [CH5 추적 문서](engine/FDG_SOURCE_TRACE_ENEMIES_CH5_20261020.md). 원로그 ~/exoduser-wt/_out/trace-enemies-ch5/, 정상 훅·자기 branch push/원격 일치/DONE 뒤 자기 sparse worktree 제거 |
+
 ## 2026-10-20 BC2-07 shieldBash2 독립 wind/dash/contact 계산
 
 ## 2026-10-20 EC4-02 4장 catalog·23필드 초기 literal projection
