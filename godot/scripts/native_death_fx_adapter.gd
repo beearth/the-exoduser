@@ -217,6 +217,50 @@ func spawn_native_death_front(enemy: Node2D, ang: float, dmg: int, radius: float
 		if radius >= 40.0:
 			_spawn_gore_piece(x, y, "flesh", true)
 
+## P2-001k — 레슨 처치 연출(parry-lesson.js 664~668): deathFX 코어 + _addCorpse +
+## _addGorePiece('flesh') + _addDeathImpact. 대형 사망 버스트(25396)와 provider 고어 롤은
+## 원본 레슨 경로에 없음 — 호출하지 않는다.
+func spawn_native_lesson_kill_fx(enemy: Node2D, ang: float, dmg: int, radius: float, mhp: float) -> void:
+	if not _configured:
+		return
+	var fx: Variant = world.get("_native_hit_fx")
+	var x: float = enemy.global_position.x
+	var y: float = enemy.global_position.y
+	if is_instance_valid(fx) and fx.has_method("emit_source_particle"): # deathFX 코어(24833~24839)
+		fx.emit_source_particle({"x": x, "y": y, "vx": 0.0, "vy": 0.0, "color": "#ffffff",
+			"size": radius if radius > 0.0 else 8.0, "life": 8.0, "kind": 3, "render_owner": "death_fx_ring"})
+		fx.emit_source_particle({"x": x + (_unit() - 0.5) * 4.0, "y": y + (_unit() - 0.5) * 4.0,
+			"vx": (_unit() - 0.5) * 0.3, "vy": (_unit() - 0.5) * 0.3, "color": "#ffffff",
+			"size": 4.0, "life": 4.0, "kind": 1, "render_owner": "death_fx_flash"})
+	if _blood_sheet != null: # 24851~24864 death_blood
+		if _blood_anims.size() >= VFX_ANIM_MAX:
+			_blood_anims.pop_front()
+		_blood_anims.append({"x": x, "y": y, "frame": 0, "t": 0.0, "frame_time": 4.0,
+			"scale": maxf(0.8, minf(4.8, 0.35 + maxf(1.0, radius) * 0.075)),
+			"ang": _unit() * TAU, "base_alpha": 1.5})
+	_add_corpse(enemy, ang, minf(8.0, float(dmg) / maxf(1.0, mhp) * 20.0), radius) # 665
+	_add_stain(x, y, maxf(14.0, minf(36.0, radius * 1.4)))
+	_spawn_gore_piece(x, y, "flesh", false) # 666 _addGorePiece('flesh')
+	_spawn_death_impact(x, y, radius)       # 666 _addDeathImpact
+
+func _spawn_death_impact(x: float, y: float, radius: float) -> void:
+	var key: String = DI_NAMES[clampi(int(_unit() * DI_NAMES.size()), 0, DI_NAMES.size() - 1)]
+	if not _di_textures.has(key):
+		return
+	var oldest := 0
+	var min_l := INF
+	for i in range(DI_MAX):
+		if not _di[i]["active"]:
+			oldest = i
+			break
+		if float(_di[i]["life"]) < min_l:
+			min_l = float(_di[i]["life"])
+			oldest = i
+	_di[oldest] = {"active": true, "x": x, "y": y,
+		"max_sz": maxf(24.0, minf(240.0, maxf(1.0, radius) * 3.0)),
+		"life": 1.0, "texture": _di_textures[key]}
+	_metrics.death_impacts += 1
+
 func _add_corpse(enemy: Node2D, kill_ang: float, power: float, radius: float) -> void:
 	var capture: Dictionary = _capture_enemy_sprite(enemy)
 	if capture.is_empty():
@@ -279,21 +323,7 @@ func spawn_native_gore_and_death_impact(x: float, y: float, radius: float,
 	if (roll_large is int or roll_large is float) and radius >= 18.0:
 		_spawn_gore_piece(x, y, "intestine" if float(roll_large) < 0.5 else "organ", false)
 	# 42732 _addDeathImpact: blood_impact 2/3/4 중 랜덤, maxSz=_deathImpactSize(r)=max(24,min(240,r*3)) (25186)
-	var key: String = DI_NAMES[clampi(int(_unit() * DI_NAMES.size()), 0, DI_NAMES.size() - 1)]
-	if _di_textures.has(key):
-		var oldest := 0
-		var min_l := INF
-		for i in range(DI_MAX):
-			if not _di[i]["active"]:
-				oldest = i
-				break
-			if float(_di[i]["life"]) < min_l:
-				min_l = float(_di[i]["life"])
-				oldest = i
-		_di[oldest] = {"active": true, "x": x, "y": y,
-			"max_sz": maxf(24.0, minf(240.0, maxf(1.0, radius) * 3.0)),
-			"life": 1.0, "texture": _di_textures[key]}
-		_metrics.death_impacts += 1
+	_spawn_death_impact(x, y, radius)
 
 # 25236 _addGorePiece — ground=바닥 잔류(핏자국 살점), 비행은 30% 카메라 플링 포함.
 func _spawn_gore_piece(x: float, y: float, category: String, ground: bool) -> void:

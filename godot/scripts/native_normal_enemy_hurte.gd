@@ -113,7 +113,16 @@ func execute(main: Node, world: Node2D, enemy: Node, base_damage: int, ang: floa
 	if str(lesson.get("status")) != "READY":
 		return _halt(42111, "parry_lesson_active_not_ready:" + str(lesson.get("reason")))
 	if lesson.get("active") == true:
-		# 원본은 _parryLesson.hurtEnemy로 위임 — 본 단계 미이식: 정지(폴백 금지).
+		# 42111 원문: `_parryLesson.hurtEnemy(e,dmg,ang,opts); return;` — 레슨 owner 위임
+		# (P2-001k). 레슨 흐름 owner가 lesson_reference로 제공될 때만 실제 위임하고,
+		# 없으면 종전대로 정지(폴백 금지). hurtE 본문 판정은 이 분기에서 실행되지 않는다
+		# (원본 동일 — 레슨 전용 처리로 조기 return).
+		var lesson_ref: Variant = lesson.get("lesson_reference")
+		if is_instance_valid(lesson_ref) and lesson_ref.has_method("native_lesson_hurt_enemy"):
+			var delegated: Dictionary = lesson_ref.native_lesson_hurt_enemy(_enemy, dmg, ang, opts)
+			_log(42111, "parry_lesson_delegated", delegated)
+			return _finish(true, {"applied": false, "returned_at": 42111, "lesson_delegated": true,
+				"lesson_result": delegated})
 		return _halt(42111, "unported_branch_active:parry_lesson_hurt_enemy")
 	# ── 42112~42113: 생존/HP 가드 ──
 	if not fields["alive"] or float(fields["hp"]) <= 0.0:

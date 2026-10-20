@@ -66,9 +66,9 @@ hitStop=0·slowMo=0 그대로)로 이미 소유 — 변경 없음.
   같은 구간 — 웹 레슨 개입·스킵 후 타이머 00:03 = Godot 동일 흐름).
 
 ## 5. 잔여 (목록)
-1. 레슨 연습 본문(practice 8스텝·챕터2 자원 연습·dismissed 저장 연동·allows 입력 제한)
-   — intro→스킵 경로만 이식.
-2. 레슨 패널 CSS(parry-lesson.css) 마감 — 간이 스타일(디자인 미검수).
+1. ~~레슨 연습 본문·패널 마감~~ — **P2-001k에서 기본 3스텝(-3/-2/-1)+42111 위임+패널
+   디자인 마감**(`FDG_P2_001K_LESSON_PANEL_PRACTICE_20261020.md`). step 8·0~7·챕터2·
+   dismissed 저장·allows 강제 배선은 그 문서 잔여.
 3. system lesson(시스템 안내 체크리스트 UI, system-lesson.js) — 관측만 absent로 소유.
 4. gap 미이식분(위 판정표 우측 열 — 패널·포탈·필드몹/지역 틱·pStats 등).
 5. 웹 레슨은 스킵 전까지 G._bonfire 저장/복원으로 결계 시간도 멈춤 — 포트 동일.

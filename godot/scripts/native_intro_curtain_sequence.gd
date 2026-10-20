@@ -43,6 +43,12 @@ static func install_native_boot(main: Node) -> Node2D:
 		if flow.configure(owner_world, main.get("player"), main.get("source_state"), seq):
 			seq.add_child(flow)
 			seq.lesson_flow = flow
+			# P2-001k — window._parryLesson 현재값을 레슨 owner로 교체(publish_current):
+			# holder의 active/guard 독해와 hurtE 42111 위임(lesson_reference)이 이 객체를 본다.
+			var holder: Variant = main.get("source_lesson")
+			if holder is RefCounted and is_instance_valid(holder) and holder.has_method("publish_current"):
+				holder.publish_current(flow, "native_main_binding",
+					{"source": "P2-001k parry-lesson.js 현재값 -> 레슨 owner 객체", "caller": "install_native_boot"}, flow)
 		else:
 			flow.free()
 		seq.begin_native_intro()
