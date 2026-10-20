@@ -219,6 +219,12 @@ func _ready() -> void:
 	hud.name = "HUD"
 	add_child(hud)
 	hud.bind(player, world)
+	# P2-003a — 원본 조명·안개·비네트·색보정 오버레이 (월드 위·HUD 아래, 표시 전용)
+	var screen_lighting: CanvasLayer = preload("res://scripts/native_screen_lighting.gd").new()
+	screen_lighting.name = "NativeScreenLighting"
+	add_child(screen_lighting)
+	if not screen_lighting.configure(world, player):
+		push_error("Native screen lighting configuration rejected (display-only; startup continues).")
 	hud.bind_native_source_state(source_state) # P2-002a 원본 HUD 값 = state owner getter
 	hud.pause_requested.connect(_toggle_pause)
 	hud.restart_requested.connect(_restart)
