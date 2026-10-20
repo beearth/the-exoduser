@@ -1,3 +1,12 @@
+## 2026-10-21 MAP11-01c — 생체 바닥·배우 접지·국소광 RETOUCH
+
+| 항목 | 구현·검수 경계 |
+|---|---|
+| 기준·범위 | 같은 codex/map11-01-20261021에 main45be76e49·인수1b b12bf9a1 정상merge e71b6567. R1700/zoom.65/Marker·충돌·공격범위 유지. Main/State/전투·저장·카메라·원본RGBA byte변경0 |
+| 표현 | 기존root/tissue RGBA4patch·가변폭 곡선동맥/좁은심장색·배우접지2·ambient/vignette·8→4광원(적색2+작은온광+냉광). 캐시rect 기반foregroundfade. 4시점+body/탄막1920×1080 6장·literal1x8장, 01b 비교보드 |
+| 검증 | 신규35/0·직접회귀16/0 각1회, ERROR0·회귀 기존Camera WARNING1(main261). GPU캡처ERROR/WARNING0, 고정600tick 벽시계벤치1회10.000049s/평균513.10fps/p95≤2.24ms·p99≤2.36ms(M5Pro/preview한정) |
+| 인계 | [3차 보고서·전후2표·D03 미실행prompt2안](4.1맵디자인+설정/MAP11_ARENA_PREVIEW_PASS3_20261021.md). 서비스로그인/잔액미확인·생성0, 시각 RETOUCH/인수대기·실제Q/E 동시전투미검수. pgrep/30초 gate·override0byte, 자기branch push/remoteSHA/DONE후자기WT제거·R불변 |
+
 ## 2026-10-21 MAP11-01b — D05 원형 축소·바닥 조명 proof
 
 | 항목 | 구현·검수 경계 |
