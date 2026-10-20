@@ -1,3 +1,9 @@
+## 2026-10-21 DEMO11-22 일반 장착 runtime 연결 BLOCKED
+
+- 최신main8dbbf2b0 + DEMO11-21 최종a976680b 정상 merge ca5be9f1. TI-00/01 재사용 계약과 G16272–16380·16287–16292 원본 추적.
+- pre-Tree 전용 dispatcher/State/자원/Player sink를 runtime에 재호출하지 않음. 실제 장착 제품 미구현, Main/State·피해·공용 코드0줄. 필요한 runtime stats/자원 보존 인터페이스 요청을 [보고서](engine/orders/reports/demo11-22_REPORT.md)에 기록.
+- 관련 기존 회귀 각1회 TI-00 142/0·TI-01 96/0, import 포함3회 ERROR/ObjectDB/resource0. 이 수치를 새 equip/공격·방어 readback 완료로 세지 않음. 2_7 현황·자기 작업판 행 갱신, 원로그 _out/demo11-22/.
+
 ## 2026-10-21 DEMO11-21 성능 수정 main 후속 통합
 
 - 같은 브랜치에 main8dbbf2b0(aa1eaea5a 포함)을 정상 merge11a617f5. rebase·force0.
