@@ -16,6 +16,9 @@ const SILHOUETTE_SHADER := preload("res://assets/vfx/map_look_silhouette.gdshade
 const PROP_DIR := "res://assets/map/props/"
 const CHUNK_DIR := "res://assets/map/production_finish/"
 const SYNC_INTERVAL := 0.2
+# PC Codex 독립 모듈(있으면 설치): install(world, map_data, player) 계약.
+const MODULES := ["res://scripts/maplook/spawn_hole_fx.gd", "res://scripts/maplook/toxic_surface.gd",
+	"res://scripts/maplook/actor_contact_shadows.gd", "res://scripts/maplook/ground_mist.gd"]
 const HOLE_SYNC_INTERVAL := 0.5
 
 var active := false
@@ -51,6 +54,7 @@ var _flash_left := 0.0
 var _flash_next := 0.0
 var _flash_rng := RandomNumberGenerator.new()
 var _shafts: Array = []          # {node, base_alpha, phase}
+var _modules: Dictionary = {}    # 경로 → 설치된 노드
 
 
 static func install_native_boot(owner_main: Node, screen_lighting: Node) -> Node2D:
@@ -116,6 +120,7 @@ func configure(owner_main: Node, screen_lighting: Node) -> bool:
 	# 5) 생동감 입자.
 	_mount_particles()
 	_mount_light_shafts()
+	_install_modules()
 	for c in _data.get("region_ambient", []): _region_ambient.append(_color(c))
 	_ambient_target = _ambient.color
 	_flash_rng.seed = 20261020
@@ -536,6 +541,18 @@ static func _make_shaft_texture() -> Texture2D:
 	return ImageTexture.create_from_image(image)
 
 
+func _install_modules() -> void:
+	for path in MODULES:
+		if not ResourceLoader.exists(path):
+			continue
+		var script: Script = load(path)
+		if script == null or not script.get_script_method_list().any(func(m): return m.name == "install"):
+			continue
+		var node: Variant = script.call("install", _world, _world.get("map_data"), _player)
+		if node is Node:
+			_modules[path.get_file().get_basename()] = node
+
+
 func _update_region_ambient(delta: float) -> void:
 	if _region_ambient.size() != 4 or not is_instance_valid(_state):
 		return
@@ -628,6 +645,6 @@ func get_native_map_look_snapshot() -> Dictionary:
 		"spawn_hole_lights": _hole_lights.size(), "occluders": _occluders.size(),
 		"styled_props": _styled_props, "prop_shadows": _prop_shadows, "foreground": _foreground.size(), "styled_chunks": _styled_chunks.size(),
 		"ambient": [_ambient.color.r, _ambient.color.g, _ambient.color.b] if is_instance_valid(_ambient) else [],
-		"light_shafts": _shafts.size(), "region_ambient": _region_ambient.size(), "spores": is_instance_valid(_spores), "embers": is_instance_valid(_embers),
+		"light_shafts": _shafts.size(), "modules": _modules.keys(), "region_ambient": _region_ambient.size(), "spores": is_instance_valid(_spores), "embers": is_instance_valid(_embers),
 		"lightmap_overlay_enabled": _screen_lighting.call("is_native_lightmap_enabled") \
 			if is_instance_valid(_screen_lighting) and _screen_lighting.has_method("is_native_lightmap_enabled") else null}

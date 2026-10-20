@@ -52,6 +52,7 @@ func _run() -> void:
 	_disable_input(main)
 	main.hud.set_native_debug_overlay_visible(false)
 	# 부팅 직후 자원 로딩·지역 초기화가 끝날 때까지 충분히 기다린 뒤 잰다(앞 지점만 느리게 재는 착시 방지).
+	for enemy in get_nodes_in_group("enemies"): enemy.process_mode = Node.PROCESS_MODE_DISABLED
 	for spot_warm in SPOTS.values():
 		main.player.global_position = spot_warm
 		main.camera.global_position = spot_warm
