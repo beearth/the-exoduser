@@ -144,8 +144,12 @@ func _test_minimap_cache_and_corner_initial() -> void:
 	_check(wrap.get_node("MinimapFrame").get("texture") != null, "mm_frame.png 프레임(2585)")
 	# hudCorner
 	var corner: Control = hud.get_node("PublicHUD/NativeHudCorner")
-	_check(corner.position == Vector2(16, 178) and absf(corner.modulate.a - 0.48) < 0.001,
-		"hudCorner top178/left16·opacity .48 (327~328)")
+	# 실제 화면 결정 규칙 = ui-refinement.css 1319~1322 재정의 — 웹 getComputedStyle 실측
+	# (web_hud_measure.json): rect(16,188)·opacity .94·글자 rgba(238,222,194,.93) 11.2px.
+	_check(corner.position == Vector2(16, 188) and absf(corner.modulate.a - 0.94) < 0.001,
+		"hudCorner 실측 (16,188)·opacity .94 (ui-refinement 1319~1320 실측)")
+	_check(corner.get_child(0) is TextureRect and corner.size == Vector2(108, 58),
+		"hudCorner 흑철 패널 108×58 (실측 rect)")
 	_check(snap.get("sp_text") == "✦ 0", "spCnt '✦ 0' (신규 sp0·ap0 — 60325)")
 	var expected_cp := _expected_cp()
 	_check(snap.get("cp_text") == "◇ " + _comma(expected_cp),

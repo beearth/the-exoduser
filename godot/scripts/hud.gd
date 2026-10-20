@@ -980,15 +980,40 @@ func _draw_native_minimap() -> void:
 
 
 func _build_native_hud_corner() -> void:
+	# 실제 화면은 ui-refinement.css 1319~1322 재정의가 결정 — 웹 런타임 getComputedStyle
+	# 실측(web_hud_measure.json): rect(16,188) 108×58.3, bg 115deg rgba(21,19,18,.9)→
+	# rgba(13,15,17,.84), border-top 1px rgba(178,140,86,.4)·border-left 2px
+	# rgba(184,141,81,.64), padding 7 10 8, opacity .94, 글자 rgba(238,222,194,.93)
+	# 11.2px·min-width 86, 행 구분선 border-top 1px rgba(164,127,82,.2)+pad-top 4.
+	# box-shadow(0 5px 20px)·inset 하이라이트는 근사 생략 기록.
 	var corner := Control.new()
 	corner.name = "NativeHudCorner"
 	_root.add_child(corner)
-	corner.position = Vector2(16, 178)   # CSS 327
-	corner.modulate = Color(1, 1, 1, 0.48) # #hudCorner.on opacity .48 (328)
+	corner.position = Vector2(16, 188)   # 실측 rect.top 188 (CSS 327 top178 + inset)
+	corner.size = Vector2(108, 58)
+	corner.modulate = Color(1, 1, 1, 0.94) # ui-refinement 1320 #hudCorner.on
 	corner.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var color := Color(196.0 / 255, 187.0 / 255, 168.0 / 255, 0.72) # 329
-	_sp_label = _native_hud_label(corner, "✦ 0", Vector2(0, 0), 10, color)      # spCnt 2667
-	_cp_label = _native_hud_label(corner, "◇ 0", Vector2(0, 17), 10, color)     # cpHud 2668 (gap1+행높이)
+	_native_gradient_rect(corner, Vector2.ZERO, corner.size,
+		Color(21.0 / 255, 19.0 / 255, 18.0 / 255, 0.9), Color(13.0 / 255, 15.0 / 255, 17.0 / 255, 0.84))
+	var corner_bg: TextureRect = corner.get_child(0)
+	(corner_bg.texture as GradientTexture2D).fill_from = Vector2(0.0, 0.0)
+	(corner_bg.texture as GradientTexture2D).fill_to = Vector2(0.91, 0.42) # 115deg
+	var top_line := ColorRect.new()
+	corner.add_child(top_line)
+	top_line.size = Vector2(corner.size.x, 1)
+	top_line.color = Color(178.0 / 255, 140.0 / 255, 86.0 / 255, 0.4)
+	var left_line := ColorRect.new()
+	corner.add_child(left_line)
+	left_line.size = Vector2(2, corner.size.y)
+	left_line.color = Color(184.0 / 255, 141.0 / 255, 81.0 / 255, 0.64)
+	var ink := Color(238.0 / 255, 222.0 / 255, 194.0 / 255, 0.93) # 1321
+	_sp_label = _native_hud_label(corner, "✦ 0", Vector2(12, 8), 11, ink)   # 실측 x28-16=12, y196-188=8
+	var row_divider := ColorRect.new()
+	corner.add_child(row_divider)
+	row_divider.position = Vector2(12, 28)
+	row_divider.size = Vector2(86, 1) # .hud-resource+.hud-resource border-top (1322)
+	row_divider.color = Color(164.0 / 255, 127.0 / 255, 82.0 / 255, 0.2)
+	_cp_label = _native_hud_label(corner, "◇ 0", Vector2(12, 33), 11, ink)  # pad-top 4 + 행
 
 
 ## calcCP(49487~49509) 전문 — 표시 전용 계산(소유자 getter 입력만).
@@ -1085,8 +1110,11 @@ func get_native_minimap_corner_snapshot() -> Dictionary:
 		"minimap_portrait_loaded": _minimap_portrait != null,
 		"sp_text": _sp_label.text if is_instance_valid(_sp_label) else "",
 		"cp_text": _cp_label.text if is_instance_valid(_cp_label) else "",
-		"unported": ["지역 오버레이·앵글러·자물쇠(G._regions 미이식)", "출구 ▲(!bossAlive 조건 — 신규 true)",
-			"분산 빌드(_mmTickBuild — 고정 맵 1회 빌드 근사)", "맵 오브젝트 마커(bonfire/trap/altar — 1장 데이터에 없음)",
-			"frame drop-shadow·brightness 필터(953)", "Cinzel 폰트(hudCorner — Noto Serif KR 폴백)",
-			"spCnt 클릭(J 능력치 패널 미이식)", "나눔명조 1순위(웹폰트 — 사용자 승인 대기 목록)"]}
+		"unported": ["지역 오버레이·앵글러·자물쇠·필드보스 색점 4(G._regions/_FB_SITES 미이식 — 웹 실측 분류)",
+			"소환굴 점 데이터(G.spawnHoles — 웹 14건 실측·포트 스포너가 G에 미기록: world 소유)",
+			"출구 ▲(!bossAlive 조건 — 신규 true)", "분산 빌드(_mmTickBuild — 고정 맵 1회 빌드 근사)",
+			"맵 오브젝트 마커(bonfire/trap/altar — 1장 데이터에 없음)", "frame drop-shadow·brightness 필터(953)",
+			"hudCorner box-shadow·inset 하이라이트 근사 생략", "Cinzel 폰트(Noto Serif KR 폴백)",
+			"spCnt 클릭(J 능력치 패널 미이식)", "나눔명조 1순위(웹폰트 — 사용자 승인 대기 목록)",
+			"적 점 색 데이터 차(규칙 ELC[e.el] 동일 — 웹 el0 회백 vs 포트 encounter element_id 3 보라: 데이터 소유 wt-p2g)"]}
 

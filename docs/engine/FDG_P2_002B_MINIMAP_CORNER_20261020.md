@@ -26,3 +26,21 @@ Noto Serif KR 유지. 교체는 사용자 승인 필요 — 목록만) / ui-scal
   재생 88/0·레슨 30/0.
 - 화면: cmp_topleft_1x.png(좌 웹·우 Godot 1x) — 프레임 에셋·맵 실루엣(동일 1장 맵 나비형)·
   플레이어 원형 마커 일치, zoom_corner.png — ✦/◇ 글리프 정상. cmp_full_web_vs_godot.png 전체 구도.
+
+## 보강 (총괄 검수 지적 — 웹 런타임 실측 반영)
+- **hudCorner 판정 정정**: CSS 327~329는 기본값일 뿐, 실제 화면은 **ui-refinement.css
+  1319~1322 재정의**가 결정 — 웹 getComputedStyle 실측(web_hud_measure.json):
+  rect(16,188) 108×58.3 / bg 115deg rgba(21,19,18,.9)→rgba(13,15,17,.84) /
+  border-top 1px rgba(178,140,86,.4)·border-left 2px rgba(184,141,81,.64) /
+  padding 7 10 8 / **opacity .94**(기존 .48은 game.html 328의 구값) /
+  글자 rgba(238,222,194,.93)·11.2px·min-width 86 / 행 구분선 1px rgba(164,127,82,.2)+pad-top4.
+  → 흑철 패널+금빛 상단/좌측선+구분선+뼈색 글자로 재구현, 1x 가독 확보(cmp_topleft_1x_v2.png).
+  box-shadow·inset 하이라이트는 근사 생략 기록.
+- **미니맵 색점 분류(웹 실측)**: ① 소환굴 14개(G.spawnHoles, #aa4444 r1.95~3.6 — 화면 점 다수)
+  ② 필드보스 사이트 4개(_FB_SITES, ELC색 r3: 파랑/주황/보라/노랑 — G._regions 시스템)
+  ③ 적 5개(2×2, ELC[e.el] — 이 실행 웹 e.el=0 회백) ④ 플레이어.
+  Godot: 적 점은 동일 규칙으로 **그려짐**(1x 확대 zoom_godot_mm.png — 포트 적 element_id=3이라
+  보라: 색 규칙 동일·encounter 데이터 차, 소유=wt-p2g). 소환굴은 마커 구현됐으나 포트
+  스포너가 G.spawnHoles를 기록하지 않아 비노출(world 소유 — 경계). FB 4점=지역 시스템 미이식(경계).
+- 테스트 16/0으로 갱신(패널 geometry 단정 추가), p2002a·contracts 재PASS.
+
