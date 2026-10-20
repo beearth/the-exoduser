@@ -219,6 +219,7 @@ func _ready() -> void:
 	hud.name = "HUD"
 	add_child(hud)
 	hud.bind(player, world)
+	hud.bind_native_source_state(source_state) # P2-002a 원본 HUD 값 = state owner getter
 	hud.pause_requested.connect(_toggle_pause)
 	hud.restart_requested.connect(_restart)
 	_build_native_character_selection_ui()

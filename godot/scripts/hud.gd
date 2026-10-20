@@ -37,6 +37,21 @@ var _boot_loading_node_ids: Dictionary = {}
 var _boot_loading_set_calls: int = 0
 var _boot_loading_hide_calls: int = 0
 
+# ── P2-002a 원본 첫 전투 HUD: #mmLvl(2575~2584)·#stageClock(2691)·스킬 슬롯 아이콘
+# (updateSkSlot 44879~44931, _skIcon 44134) + 개발 오버레이 기본 숨김/토글 ──
+var _source_state: Node
+var _objective_values: Dictionary = {}
+var _exp_fill: Control
+var _exp_fill_full_width := 0.0
+var _stage_clock: Control
+var _stage_timer_label: Label
+var _stage_progress_fill: Control
+var _slot_icons: Dictionary = {}
+var _slot_icon_files: Dictionary = {}
+var _debug_overlay_nodes: Array = []
+var _debug_overlay_visible := false
+var _pulse_values: Dictionary = {}
+
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -52,6 +67,16 @@ func bind(player: Node, world: Node) -> void:
 		player.connect("stats_changed", _refresh)
 	if is_node_ready():
 		_refresh()
+
+
+func bind_native_source_state(state: Node) -> bool:
+	# HUD는 표시 전용 소비자 — 값은 state owner getter(read_current_p/read_current_g)로만 읽는다.
+	if not is_instance_valid(state) or not state.has_method("read_current_p") 			or not state.has_method("read_current_g"):
+		return false
+	_source_state = state
+	if is_node_ready():
+		_refresh_native_first_fight_hud()
+	return true
 
 
 func set_pause_state(paused: bool) -> void:
@@ -233,6 +258,7 @@ func _refresh() -> void:
 			if is_instance_valid(enemy) and not enemy.is_queued_for_deletion() and float(enemy.get("hp")) > 0.0:
 				alive += 1
 	_objective_text.text = "남쪽 입구 → 북쪽 출구  ·  남은 적 %d" % alive
+	_refresh_native_first_fight_hud()
 
 
 func _build_ui() -> void:
@@ -247,6 +273,7 @@ func _build_ui() -> void:
 	theme.default_font_size = 18
 	_root.theme = theme
 	var title_panel := _panel(Vector2(24, 20), Vector2(710, 84))
+	_debug_overlay_nodes.append(title_panel)
 	_label(title_panel, "지옥의 길", Vector2(16, 9), 26, INK)
 	_label(title_panel, "GODOT  ·  NATIVE FIRST PLAY", Vector2(176, 17), 15, DIM_INK)
 	_objective_text = _label(title_panel, "남쪽 입구 → 북쪽 출구", Vector2(16, 47), 17, DIM_INK)
@@ -264,6 +291,7 @@ func _build_ui() -> void:
 	restart.name = "RestartGodotScene"
 	restart.pressed.connect(func() -> void: restart_requested.emit())
 	action_box.add_child(restart)
+	_debug_overlay_nodes.append(action_box)
 	var hp_orb := _resource_orb(false)
 	_hp_text = _label(hp_orb, "생명력\n350\n/ 350", Vector2(0, 43), 20, Color.WHITE)
 	_hp_text.size.x = ORB_SIZE
@@ -286,16 +314,27 @@ func _build_ui() -> void:
 	_charge_text = _label(meters, "3타 홀드 · 40F / 80F / 120F", Vector2(190, 85), 16, INK)
 	_charge_bar = _bar(meters, Vector2(190, 117), Vector2(358, 8), Color("b5985b"), 120)
 	var telemetry := _panel(Vector2(-560, 86), Vector2(536, 92), false, true)
+	_debug_overlay_nodes.append(telemetry)
 	_status_text = _label(telemetry, "정상 플레이 · 실제 입력", Vector2(14, 8), 16, INK)
 	_telemetry_text = _label(telemetry, "1080p · 목표 240FPS  |  정상 플레이 표본 대기\nGPU 완료시간 미측정", Vector2(14, 34), 14, DIM_INK)
 	var controls := _label(_root, "WASD 이동  ·  마우스 조준  ·  좌클릭 홀드/해제: 공격·3타 충전  ·  E 탭/홀드: 처내기/차징  ·  Esc 정지", Vector2(24, 116), 15, DIM_INK)
 	controls.name = "PublicInputHelp"
+	_debug_overlay_nodes.append(controls)
 	var status := _label(_root, "Q 보호막·E 처내기·Space 분노 슬롯: 연결 대기  ·  원본 저장 키 설정 복원 미지원", Vector2(24, 143), 14, DIM_INK)
 	status.name="NativeInputStatus"
+	_debug_overlay_nodes.append(status)
 	_q_control_text=_label(_root,"Q 실제 소유자 연결 대기",Vector2(24,166),14,DIM_INK)
 	_q_control_text.name="QControlManaStatus"
 	_e_control_text=_label(_root,"E 실제 소유자 대기",Vector2(24,189),14,DIM_INK)
 	_e_control_text.name="EControlStatus"
+	_debug_overlay_nodes.append(_q_control_text)
+	_debug_overlay_nodes.append(_e_control_text)
+	# 스킬바 위 포트 개발 표기(연속 공격/3타 홀드/충전 바)도 원본 화면엔 없음 — 오버레이로.
+	_debug_overlay_nodes.append(_combo_text)
+	_debug_overlay_nodes.append(_charge_text)
+	_debug_overlay_nodes.append(_charge_bar)
+	_build_native_first_fight_hud()
+	set_native_debug_overlay_visible(false)
 	_build_native_boot_loading_ui()
 
 
@@ -447,3 +486,353 @@ func _button(message: String) -> Button:
 	button.add_theme_stylebox_override("pressed", hover)
 	button.add_theme_color_override("font_color", INK)
 	return button
+
+# ═══════════════════ P2-002a 원본 첫 전투 HUD (표시 전용 소비자) ═══════════════════
+# 원본 근거: #mmLvl 2575~2584 + CSS 372~381 / #stageClock 2691 + CSS 364~368 /
+# 갱신 60310~60336 / 슬롯 geometry CSS 712~725(.qs 37×45 top70) + .qs 스킨 974~980 /
+# 아이콘 _skIcon 44134 (img/skillskin_upscaled/{id}.png·SKILL_ICONS 44118) /
+# 슬롯별 스킬 매핑 updateSkSlot~updateTSlot 44879~44931, LMB 44902, Q 44908.
+# 폰트: 원본 --font-hell 스택('Nanum Myeongjo','Noto Serif KR',…) 중 로컬 보유분
+# Noto Serif KR을 사용(2순위 폴백 — Nanum Myeongjo·Cinzel 미보유 기록).
+const SERIF_FONT_PATH := "res://assets/fonts/NotoSerifKR-VF.ttf"
+const SKILL_ICON_DIR := "res://assets/ui/skill_icons/"
+# SKILL_ICONS(44118) 부분집합 — 첫 전투 노출 가능분. 값=파일명(원본 alias 그대로).
+const NATIVE_SKILL_ICON_FILES := {"kiSlash": "kiSlash", "maliceSwipe": "maliceSwipe",
+	"whirlwind": "whirlwind", "charge": "chargeBoost", "chargeBoost": "chargeBoost",
+	"fireball": "fireball", "parry": "peaceShield", "peaceShield": "peaceShield",
+	"ghostWalk": "ghostWalk", "iceOrb": "iceOrb", "spikeTrap": "spikeTrap",
+	"giantSlam": "giantSlam", "holyDome": "holyDome", "shieldFuse": "shieldThrow",
+	"shieldThrow": "shieldThrow"}
+# CSS 712~725: skBar(820×182) 기준 슬롯 left px — meters 노드는 0.9 스케일(738×164).
+const NATIVE_SLOT_LEFTS := {"qs0": 128, "qs1": 173, "qs2": 217, "qs3": 261,
+	"qs5": 303, "ultSlot": 347, "skSlotLMB": 392, "qsE": 436, "skSlot0": 479,
+	"skSlotRMB": 522, "qsQ": 566, "skSlotCT": 610, "skSlot1": 654}
+const NATIVE_SLOT_SCALE := 0.9      # #skBar transform scale(.9) — meters 노드와 동일
+const NATIVE_SLOT_TOP := 70.0       # .qs top:70px
+const NATIVE_SLOT_SIZE := Vector2(37, 45)
+
+var _serif_regular: FontVariation
+var _serif_bold: FontVariation
+
+
+func _native_serif(weight: float) -> FontVariation:
+	var cached: FontVariation = _serif_bold if weight >= 600.0 else _serif_regular
+	if cached != null:
+		return cached
+	var variation := FontVariation.new()
+	if ResourceLoader.exists(SERIF_FONT_PATH):
+		variation.base_font = load(SERIF_FONT_PATH)
+	variation.variation_opentype = {"wght": weight}
+	if weight >= 600.0:
+		_serif_bold = variation
+	else:
+		_serif_regular = variation
+	return variation
+
+
+func _native_hud_label(parent: Control, text: String, pos: Vector2, size_px: int,
+		color: Color, weight: float = 400.0) -> Label:
+	var label := Label.new()
+	parent.add_child(label)
+	label.text = text
+	label.position = pos
+	label.add_theme_font_override("font", _native_serif(weight))
+	label.add_theme_font_size_override("font_size", size_px)
+	label.add_theme_color_override("font_color", color)
+	# text-shadow 0 1px 3px rgba(0,0,0,.95) — Label 그림자(블러 미지원은 근사 기록)
+	label.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.95))
+	label.add_theme_constant_override("shadow_offset_x", 0)
+	label.add_theme_constant_override("shadow_offset_y", 1)
+	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	return label
+
+
+static func _native_gradient_rect(parent: Control, pos: Vector2, size: Vector2,
+		top: Color, bottom: Color) -> TextureRect:
+	var rect := TextureRect.new()
+	parent.add_child(rect)
+	rect.position = pos
+	rect.size = size
+	var gradient := Gradient.new()
+	gradient.colors = PackedColorArray([top, bottom])
+	gradient.offsets = PackedFloat32Array([0.0, 1.0])
+	var texture := GradientTexture2D.new()
+	texture.gradient = gradient
+	texture.fill_from = Vector2(0, 0)
+	texture.fill_to = Vector2(0, 1)
+	rect.texture = texture
+	rect.stretch_mode = TextureRect.STRETCH_SCALE
+	rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	return rect
+
+
+static func _native_comma(value: int) -> String:
+	# _hudReadableNumber(60239) — Intl 그룹 구분(1,000 단위 콤마), 음수 하한 0.
+	var n := maxi(0, value)
+	var raw := str(n)
+	var out := ""
+	var count := 0
+	for index in range(raw.length() - 1, -1, -1):
+		out = raw[index] + out
+		count += 1
+		if count % 3 == 0 and index > 0:
+			out = "," + out
+	return out
+
+
+func _build_native_first_fight_hud() -> void:
+	# ── #mmLvl (우상 목표 패널) — CSS 372: top6/right10, min-width200, pad 10 12,
+	#    border rgba(145,119,76,.45), bg 180deg rgba(12,13,15,.88)→rgba(9,10,12,.76) ──
+	var panel := Control.new()
+	panel.name = "NativeObjectivePanel"
+	_root.add_child(panel)
+	var panel_size := Vector2(224, 118)
+	panel.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
+	panel.offset_left = -panel_size.x - 10
+	panel.offset_right = -10
+	panel.offset_top = 6
+	panel.offset_bottom = 6 + panel_size.y
+	panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_native_gradient_rect(panel, Vector2.ZERO, panel_size,
+		Color(12.0 / 255, 13.0 / 255, 15.0 / 255, 0.88), Color(9.0 / 255, 10.0 / 255, 12.0 / 255, 0.76))
+	var border := Panel.new()
+	panel.add_child(border)
+	border.size = panel_size
+	border.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var border_style := StyleBoxFlat.new()
+	border_style.draw_center = false
+	border_style.border_color = Color(145.0 / 255, 119.0 / 255, 76.0 / 255, 0.45)
+	border_style.set_border_width_all(1)
+	border.add_theme_stylebox_override("panel", border_style)
+	var label_color := Color("cbbd9f")
+	var row_value_color := Color("eee4d4")
+	_native_hud_label(panel, "레벨", Vector2(12, 11), 12, label_color)               # hudLevelLabel
+	var lv_label := _native_hud_label(panel, "1", Vector2(12, 8), 15, Color("f2e6cb"), 700.0)
+	lv_label.size.x = panel_size.x - 24
+	lv_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	_native_hud_label(panel, "경험치", Vector2(12, 32), 12, label_color)             # hudExpLabel
+	var exp_label := _native_hud_label(panel, "0 / 0", Vector2(12, 32), 12, Color("dfcfaa"))
+	exp_label.size.x = panel_size.x - 24
+	exp_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	# .objective-frame: border-top rgba(145,119,76,.3) + exp바(2px, bg rgba(0,0,0,.5))
+	var divider := ColorRect.new()
+	panel.add_child(divider)
+	divider.position = Vector2(12, 55)
+	divider.size = Vector2(panel_size.x - 24, 1)
+	divider.color = Color(145.0 / 255, 119.0 / 255, 76.0 / 255, 0.3)
+	var exp_bg := ColorRect.new()
+	panel.add_child(exp_bg)
+	exp_bg.position = Vector2(12, 62)
+	exp_bg.size = Vector2(panel_size.x - 24, 2)
+	exp_bg.color = Color(0, 0, 0, 0.5)
+	_exp_fill_full_width = panel_size.x - 24
+	_exp_fill = _native_gradient_rect(exp_bg, Vector2.ZERO, Vector2(0, 2),
+		Color(122.0 / 255, 101.0 / 255, 72.0 / 255, 0.55), Color(196.0 / 255, 171.0 / 255, 124.0 / 255, 0.85))
+	(_exp_fill as TextureRect).texture.fill_to = Vector2(1, 0)  # 90deg 가로 그라디언트
+	_native_hud_label(panel, "지역 처치", Vector2(12, 70), 12, label_color)          # hudKillLabel
+	var kill_label := _native_hud_label(panel, "0 / 0", Vector2(12, 70), 12, row_value_color)
+	kill_label.size.x = panel_size.x - 24
+	kill_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	_native_hud_label(panel, "악의", Vector2(12, 91), 12, label_color)               # hudMaliceLabel
+	var malice_label := _native_hud_label(panel, "0", Vector2(12, 91), 12, row_value_color)
+	malice_label.size.x = panel_size.x - 24
+	malice_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	_objective_values = {"lv": lv_label, "exp": exp_label, "kill": kill_label, "malice": malice_label}
+	# ── #stageClock (상단 중앙 타이머) — CSS 364: top7, width170, 'Cinzel' 폴백
+	#    (Cinzel 미보유 → --font-hell 로컬 보유분 Noto Serif KR), opacity .57 ──
+	_stage_clock = Control.new()
+	_stage_clock.name = "NativeStageClock"
+	_root.add_child(_stage_clock)
+	_stage_clock.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
+	_stage_clock.offset_left = -85
+	_stage_clock.offset_right = 85
+	_stage_clock.offset_top = 7
+	_stage_clock.offset_bottom = 7 + 26
+	_stage_clock.modulate = Color(1, 1, 1, 0.57)
+	_stage_clock.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_stage_timer_label = _native_hud_label(_stage_clock, "00:00", Vector2(0, 0), 11,
+		Color(215.0 / 255, 207.0 / 255, 189.0 / 255, 0.78), 700.0)
+	_stage_timer_label.size.x = 170
+	_stage_timer_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	var progress_bg := ColorRect.new()
+	_stage_clock.add_child(progress_bg)
+	progress_bg.position = Vector2(0, 21)
+	progress_bg.size = Vector2(170, 2)
+	progress_bg.color = Color(0, 0, 0, 0.45)
+	_stage_progress_fill = _native_gradient_rect(progress_bg, Vector2.ZERO, Vector2(0, 2),
+		Color(183.0 / 255, 166.0 / 255, 129.0 / 255, 0.8), Color(183.0 / 255, 166.0 / 255, 129.0 / 255, 0.8))
+	# ── 스킬 슬롯 아이콘 — meters(NativeSkillBar, 0.9 스케일) 위 .qs 셀 + qs-icon ──
+	var meters: Control = _root.get_node("NativeSkillBar")
+	for slot_id in NATIVE_SLOT_LEFTS:
+		var cell := Panel.new()
+		cell.name = "NativeSlot_" + slot_id
+		meters.add_child(cell)
+		cell.position = Vector2(float(NATIVE_SLOT_LEFTS[slot_id]) * NATIVE_SLOT_SCALE,
+			NATIVE_SLOT_TOP * NATIVE_SLOT_SCALE)
+		cell.size = NATIVE_SLOT_SIZE * NATIVE_SLOT_SCALE
+		cell.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		var cell_style := StyleBoxFlat.new()
+		# .qs(974): border rgba(145,64,46,.88)/radius11, bg 180deg rgba(28,12,13,.84)→
+		# rgba(10,6,7,.94) — StyleBoxFlat은 단색이라 중간색 평면 근사(기록).
+		cell_style.bg_color = Color(19.0 / 255, 9.0 / 255, 10.0 / 255, 0.89)
+		cell_style.border_color = Color(145.0 / 255, 64.0 / 255, 46.0 / 255, 0.88)
+		cell_style.set_border_width_all(1)
+		cell_style.set_corner_radius_all(int(11 * NATIVE_SLOT_SCALE))
+		cell.add_theme_stylebox_override("panel", cell_style)
+		var icon := TextureRect.new()
+		icon.name = "Icon"
+		cell.add_child(icon)
+		# .qs-icon(740): inset 3px, object-fit contain
+		icon.position = Vector2(3, 3) * NATIVE_SLOT_SCALE
+		icon.size = cell.size - Vector2(6, 6) * NATIVE_SLOT_SCALE
+		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_slot_icons[slot_id] = icon
+		_slot_icon_files[slot_id] = ""
+
+
+func _native_slot_skill_id(slot_id: String, p: Dictionary) -> String:
+	var skills: Dictionary = p.get("skills") if p.get("skills") is Dictionary else {}
+	var fused: Dictionary = p.get("_fused") if p.get("_fused") is Dictionary else {}
+	var slots: Array = p.get("skillSlots") if p.get("skillSlots") is Array else []
+	match slot_id:
+		"qs0", "qs1", "qs2", "qs3", "qs5":
+			# updateQS: SKILL_SLOTS[i] 습득 시 아이콘 — 포트는 숫자 슬롯 배정 미이식(빈 칸).
+			var index := int(slot_id.trim_prefix("qs"))
+			var sid: String = str(slots[index]) if index < slots.size() and slots[index] != null else ""
+			return sid if not sid.is_empty() and int(skills.get(sid, 0)) >= 1 else ""
+		"ultSlot":
+			return str(p.get("ultSlot", "")) if p.get("ultSlot") != null else ""  # 신규 null(27682)
+		"skSlotLMB":
+			# 44902: 합체(slamStorm/whirlDet)·회전참 습득 시 whirlwind, 아니면 activeLMBSk
+			if fused.get("slamStorm") == true or fused.get("whirlDet") == true or int(skills.get("whirlwind", 0)) >= 1:
+				return "whirlwind"
+			return str(p.get("activeLMBSk", "kiSlash"))
+		"skSlotRMB":
+			# 44915: 고정 maliceSwipe + _skFuseIcon: shieldFuse 합체 시 shieldFuse 아이콘
+			return "shieldFuse" if fused.get("shieldFuse") == true else "maliceSwipe"
+		"skSlot0":
+			return str(p.get("activeChargeSk", "charge"))
+		"qsE":
+			return str(p.get("activeMagicSk", "fireball"))
+		"qsQ":
+			# 44908: peaceShield만 holyDome 아이콘, 그 외 자기 id(parry→alias peaceShield)
+			var q := str(p.get("activeQSk", "parry"))
+			return "holyDome" if q == "peaceShield" else q
+		"skSlotCT":
+			return str(p.get("activeCtSk", "ghostWalk"))
+		"skSlot1":
+			var sid4: String = str(slots[4]) if slots.size() > 4 and slots[4] != null else ""
+			return sid4 if not sid4.is_empty() and int(skills.get(sid4, 0)) >= 1 else ""
+	return ""
+
+
+func _native_pulse(key: String, value: Variant, label: Label) -> void:
+	# _hudPulse(60240) + hudCountPulse(381): translateY 1→-1→0, opacity .5→1,
+	# 45% 지점 색 #d8c49d — .34s ease-out.
+	if _pulse_values.get(key) == value:
+		return
+	var had_previous := _pulse_values.has(key)
+	_pulse_values[key] = value
+	if not had_previous:
+		return
+	var base_y := label.position.y
+	label.position.y = base_y + 1
+	label.modulate = Color(1, 1, 1, 0.5)
+	var tween := create_tween()
+	tween.tween_property(label, "position:y", base_y - 1, 0.34 * 0.45)
+	tween.parallel().tween_property(label, "modulate", Color("d8c49d"), 0.34 * 0.45)
+	tween.tween_property(label, "position:y", base_y, 0.34 * 0.55)
+	tween.parallel().tween_property(label, "modulate", Color(1, 1, 1, 1), 0.34 * 0.55)
+
+
+func _refresh_native_first_fight_hud() -> void:
+	if not is_instance_valid(_source_state) or _objective_values.is_empty():
+		return
+	var p: Variant = _source_state.read_current_p()
+	var g: Variant = _source_state.read_current_g()
+	if not p is Dictionary or not g is Dictionary:
+		return
+	# 60325 lvLbl / 60310~60312 expF·expTxt / 60322 killCnt / 60323 matCnt
+	var lv := int(_hud_num(p.get("lv")))
+	_native_pulse("lv", lv, _objective_values["lv"])
+	_objective_values["lv"].text = _native_comma(lv)
+	var exp_value := int(_hud_num(p.get("exp")))
+	var max_exp := int(_hud_num(p.get("maxExp")))
+	_objective_values["exp"].text = _native_comma(exp_value) + " / " + _native_comma(max_exp)
+	if is_instance_valid(_exp_fill):
+		_exp_fill.size.x = _exp_fill_full_width * clampf(
+			(float(exp_value) / float(max_exp)) if max_exp > 0 else 0.0, 0.0, 1.0)
+	# 60322: _regCur(지역 시스템 미이식) 폴백 = G._stageKills / (G._totalSpawned||0)
+	var stage_kills := int(_hud_num(g.get("_stageKills")))
+	var kill_total := int(_hud_num(g.get("_totalSpawned")))
+	_native_pulse("kill", stage_kills, _objective_values["kill"])
+	var kill_shown := mini(stage_kills, kill_total) if kill_total > 0 else stage_kills
+	_objective_values["kill"].text = _native_comma(kill_shown) + " / " + _native_comma(kill_total)
+	var mats := int(_hud_num(g.get("mats")))
+	_native_pulse("malice", mats, _objective_values["malice"])
+	_objective_values["malice"].text = _native_comma(mats)
+	# 60336: stageTimerHud = ~~(G.stageTime/60) → mm:ss / 진행바 = 처치/총 스폰(지역 미이식)
+	if is_instance_valid(_stage_timer_label):
+		var seconds := int(_hud_num(g.get("stageTime")) / 60.0)
+		_stage_timer_label.text = "%02d:%02d" % [seconds / 60, seconds % 60]
+		if is_instance_valid(_stage_progress_fill):
+			var ratio := clampf(float(stage_kills) / float(kill_total), 0.0, 1.0) if kill_total > 0 else 0.0
+			_stage_progress_fill.size.x = 170.0 * ratio
+	# 슬롯 아이콘 — 변경분만 텍스처 로드
+	for slot_id in _slot_icons:
+		var skill_id := _native_slot_skill_id(slot_id, p)
+		var file := str(NATIVE_SKILL_ICON_FILES.get(skill_id, "")) if not skill_id.is_empty() else ""
+		if _slot_icon_files[slot_id] == file:
+			continue
+		_slot_icon_files[slot_id] = file
+		var icon: TextureRect = _slot_icons[slot_id]
+		if file.is_empty():
+			icon.texture = null
+			continue
+		var icon_path := SKILL_ICON_DIR + file + ".png"
+		icon.texture = load(icon_path) if ResourceLoader.exists(icon_path) else null
+
+
+static func _hud_num(value: Variant) -> float:
+	return float(value) if (value is int or value is float) and is_finite(float(value)) else 0.0
+
+
+# ── 개발 오버레이: 원본 화면에 없음 — 기본 숨김, F3/공개 API 토글 (노드·시그널 유지) ──
+func set_native_debug_overlay_visible(visible_now: bool) -> void:
+	_debug_overlay_visible = visible_now
+	for node in _debug_overlay_nodes:
+		if is_instance_valid(node):
+			node.visible = visible_now
+
+
+func is_native_debug_overlay_visible() -> bool:
+	return _debug_overlay_visible
+
+
+func _unhandled_key_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo and (event as InputEventKey).keycode == KEY_F3:
+		set_native_debug_overlay_visible(not _debug_overlay_visible)
+
+
+func get_native_first_fight_hud_snapshot() -> Dictionary:
+	var icon_files := {}
+	for slot_id in _slot_icon_files:
+		icon_files[slot_id] = _slot_icon_files[slot_id]
+	return {"ready": is_instance_valid(_source_state) and not _objective_values.is_empty(),
+		"lv_text": _objective_values["lv"].text if _objective_values.has("lv") else "",
+		"exp_text": _objective_values["exp"].text if _objective_values.has("exp") else "",
+		"kill_text": _objective_values["kill"].text if _objective_values.has("kill") else "",
+		"malice_text": _objective_values["malice"].text if _objective_values.has("malice") else "",
+		"timer_text": _stage_timer_label.text if is_instance_valid(_stage_timer_label) else "",
+		"exp_fill_px": _exp_fill.size.x if is_instance_valid(_exp_fill) else -1.0,
+		"slot_icon_files": icon_files,
+		"debug_overlay_visible": _debug_overlay_visible,
+		"serif_font_loaded": ResourceLoader.exists(SERIF_FONT_PATH),
+		"unported": ["미니맵(mmWrap)", "hudCorner 화폐(✦ SP/◇ CP)", "지역(_regCur) 분모·진행바 4지역",
+			"G._totalSpawned 기록(스포너=world 소유 — wt-p2g 경합)", "쿨다운 sweep(쿨다운 소유자 미이식)",
+			"Cinzel·Nanum Myeongjo 폰트(Noto Serif KR 폴백)", "숫자/F/Z 슬롯 스킬(시작 스킬 지급 EXTERNAL 미이식)",
+			"타이머 전진(G.on 점등 미이식 — 초기화·커튼 계약이 pre-stage on=false 유지 명시: 타이머 UI는 G.stageTime 소비만)"]}
+
