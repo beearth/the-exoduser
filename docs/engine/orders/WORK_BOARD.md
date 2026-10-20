@@ -29,10 +29,14 @@
 | QA-001 | 기존 실패 테스트 7종 원인 진단 | Mac Codex ttys002 | codex/qa-001-20261020 | 해당 테스트 파일 | 대기→착수 |
 | P3-001 | 맵 pit_poison 타원 충돌 계약 | Mac Codex ttys003 | codex/p3-001-20261020 | engine/fdg/map-source-adapter.js, 맵 계약 테스트 | 대기→착수 |
 | P2-004b | 펫 대사 카테고리 160여 종 | Mac Codex ttys004 | codex/p2-004b-20261020 | native_pets.gd 대사 테이블 | 대기→착수 |
-| P3-003 | 지역 시스템(G._regions·필드보스 사이트·지역 처치·미니맵 마커) | **Codex 총괄 배정 대기**(Mac, 다음 빈 Codex) | codex/p3-003-20261020 | 지역 신규 스크립트 | 대기 |
+| P3-003 | 지역 시스템(G._regions·필드보스 사이트·지역 처치·미니맵 마커) | Mac Codex ENGINE (`01a1235a-f2b8-73d1-bf58-c51c7dfb7638`, ROOT 관측) | codex/p3-003-20261020 | `godot/scripts/native_regions.gd`, `godot/tests/test_p3003_regions.gd`, `docs/engine/FDG_P3_003_REGIONS_20261020.md`, `docs/engine/orders/reports/P3-003_REPORT.md` | 배정됨 · 새 worktree 준비 전(코드 착수 전) |
 
 ## 공용(누구도 단독 소유 아님 — 수정 시 최소 줄·보고 필수)
 `godot/scripts/main.gd`, `hud.gd`, `world.gd`, `player.gd`, `native_normal_enemy_hurte.gd`(공용 피해 집행자), `native_source_new_run_state.gd`(G/P 소유자)
 
 ## 검수·병합 완료 기록 (최근)
 P1-002.C~H, P2-001a~k, P2-002a/b, P2-003a, P2-004a, P2-005a~d — main ad7f15777까지. 상세는 계획 문서 작업표.
+
+## 보존된 미완 작업 (현재 배정과 별도)
+
+- Mac Codex ENGINE의 이전 `GODOT-INTEGRATE-DEATH-CORPSE-ONE-ENEMY-20261020`은 구 worktree(`codex/p1-002-audio-live-queue-20261018`, HEAD `3c5023a4`)에서 보존 마감했습니다. `world.gd`·`enemy_melee_flesh_crawler.gd`·신규 `native_normal_enemy_corpses.gd` WIP만 해당 구 worktree에 남아 있으며, 최신 main 파일의 소유권을 주장하지 않습니다. 담당 보고는 compile 통과, 실제 경로는 imported ctex 누락 실패이며 화면·양성 사망 인수 및 관련 docs 동기화는 미완료입니다. 신규 SHA·main 반영 없음. 원로그/변경 보존: Mac ENGINE의 `death-runtime-resume-20261020/PRESERVED-HANDOFF-20261020.json`. P3-003에는 섞지 않습니다.
