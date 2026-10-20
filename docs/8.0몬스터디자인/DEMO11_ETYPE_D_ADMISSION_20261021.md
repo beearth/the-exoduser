@@ -1,11 +1,11 @@
-# 1-1 자연 소환 D — etype18/19/23/24/25 인수 대기
+# 1-1 자연 소환 D — etype18/19/23/24/25 실제 등록·남은 경계
 
-2026-10-21 기준 main0138c5bb9 + DEMO11-43 9b763da9에서 다섯 타입은 **NOT_READY**, 실제 생성/등록0이다. [타입별 원문 행·현재 API·검증·A/B/C 통합 후보](../engine/orders/reports/demo11-etype-d_REPORT.md). 이 기록은 기존 아트/설계 LOCK을 변경하거나 actor 제작 완료를 뜻하지 않는다.
+2026-10-21 사용자 factory 추가 허용 판정으로 같은 branch에서 재개했다. 기존 enemy.gd actor owner/CH1 atlas·World RNG/phase·BC09/35 carrier를 재사용해 **5종 실제 생성/World 등록/43 origin 귀속**을 연결했다. factory는 D 등록 EOF18줄 추가만, 기존 등록·생성/P2-008b0줄. [타입별 원문·공용줄·검증/벤치·A/B/C 통합 후보](../engine/orders/reports/demo11-etype-d_REPORT.md).
 
-- 18: `drainHeal=.3`은 원문31218 선언만. 새 흡혈 회복을 만들지 않는다.
-- 19: 강타 원문40550–40558의 Player 피해→KB10·타적KB6→recover50 순서를 유지할 PC 인계가 필요하다.
-- 23: 공통 원거리 후방유지/차징탄이다. 명칭을 근거로 원소를 강제하지 않는다.
-- 24: 접촉은 원문39074–39076의 max90 둔화이며 일반 melee HP 공격은 없다. 기존 Player.apply_native_freeze_slow API를 재사용할 수 있다.
-- 25: 생존 D3/480 장판은 둔화0, 사망 I2/360 장판3개만 max60 둔화. hurtE 중간 생산 접점과 실제 iceZone consumer 인수 전 활성화하지 않는다.
+- 18: drainHeal 선언만 있고 소비0. 기존 PC hurtE 실드/최종 사망·실제 Player 근접 피해 확인, 새 흡혈 회복0.
+- 19: 원문 wind40/recover50 강타·기존 PC Player 피해/KB 인자만 호출. 실제 hurtE 최종 사망/지역 인계 확인, Player KB 전 구간 동치는 후행.
+- 23: 공통 원거리/후방유지·차징탄 actual carrier·hurtE 최종 사망. 명칭으로 원소 강제0.
+- 24: 기존 Player 공개 max90 freeze API·hurtE 최종 사망. 원문 noProj9999·melee목록 제외라 새 HP 접촉/탄0.
+- 25: 생존 D3/480 정지장판 actual collection·비치명 hurtE 확인. 사망 I2/360 장판3개는 PC hurtE 원래 중간 접점이 없어 **해당 타입만 NOT_READY**, 사망 성공으로 세지 않음.
 
-자연 소환굴의 원문35675–35678은 el=undefined이며 맵 위치는 새 MAP11 provider Marker만 사용한다. 기존 초기16 exact profile·6원소 kernel을 새 자연 타입으로 위장하지 않는다. 공통 ctor/owner/차징/adapter 등록은 **A/B/C와 통합 후보**, 새 공통 helper/공용·전투 핵심/저장/맵 수정0. 5종 실제 스폰 벤치는 actor 부재로 미실행이며 성능 PASS가 아니다.
+원문 자연굴 el=undefined는 native -1 sentinel로 유지, 좌표는 새 MAP11 provider Marker receipt만. 일반 이동탄의 Player 충돌/공개 패링은 기존35 protected_contact PC owner 인계 후행이며 Main API의 명시 source-selected 진입을29종 자동 scheduler 완료로 세지 않는다. 새 공통 helper0·A/B/C와 ctor/clock/탄 통합 후보만 기록. registry D clock/arena해제 인계를 보완한 최종 실제5종/240물리틱 벤치14/0 max4.252ms<8.333ms(기존Camera WARNING1), 렌더FPS·실맵·25사망 인수 아님. 기존 아트/설계 LOCK 변경0.

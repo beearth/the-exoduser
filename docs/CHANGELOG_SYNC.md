@@ -1,3 +1,12 @@
+## 2026-10-21 DEMO11-etype-d 재개 — factory append-only·실제 D5종 등록
+
+| 항목 | 결과·경계 |
+|---|---|
+| 사용자 판정 반영 | 이전9627cf75에서 같은branch 재개. factory EOF D등록+18/−0·Main+7/−0, 기존등록/생성/P2-008b/registry+30/−0(D clock 인계)·State/World/PC 보호/저장/맵0줄 |
+| 실제 경로 | 기존 enemy.gd HP/poise owner·World phase/RNG·BC09/35 carrier·43 origin 재사용. 5종실스폰·tick/비치명hurtE,4종최종사망→지역kill,18 Player HP감소·24둔화·25생존zone.25사망prefix/이동탄PCcontact·29종autoscheduler 후행 |
+| 검증 | 신규158/0(런타임29·ctor8+원문90·사망18·clock13), 기존factory3그룹/0·관련83/0 각1회. clock 인계 수정 후 최종 벤치14/0·5actor각270tick max4.252ms<8.333ms, 기존Camera WARNING1/ERROR0·렌더FPS미검증. 실패 하니스 로그보존·실패만수정 |
+| 문서·제출 | [타입별 결과/공용줄/A·B·C 통합안](engine/orders/reports/demo11-etype-d_REPORT.md),8.0·자기WORK_BOARD 갱신. 새공통helper0·보호경로0, 자기push/remoteSHA/DONE 후 WT정리·R불변, _out/demo11-etype-d/resume-* 원로그 |
+
 ## 2026-10-21 DEMO11-etype-d — 자연 D 5종 NOT_READY·원문/admission 검증
 
 | 항목 | 결과·한계 |

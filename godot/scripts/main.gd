@@ -3066,3 +3066,10 @@ func invalidate_native_runtime_refresh_legendary_cache(refresh: Object) -> bool:
 		return false
 	_source_l_eq_cache = null
 	return true
+
+# DEMO11-etype-d: explicit natural selected-type entry; no scheduler reroll.
+func spawn_native_demo11_d(group_id: String,etype: int,element: int=-1) -> Dictionary:
+	var owner: Node=world.get_node_or_null("Demo11EtypeD")
+	if owner==null:
+		owner=preload("res://scripts/native_demo11_etype_d_spawn.gd").install(self)
+	return owner.spawn_selected(group_id,etype,element)
