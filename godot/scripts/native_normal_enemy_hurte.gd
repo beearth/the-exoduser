@@ -586,7 +586,11 @@ func _kill_pipeline(fields: Dictionary, view: Dictionary, passives: Dictionary, 
 	var stage_kills: int = int(_js_num(g.get("_stageKills"))) + 1
 	if not _g_writes(42702, [{"field": "kills", "value": kills}, {"field": "_stageKills", "value": stage_kills}]):
 		return false
-	_log(42702, "kill_core", {"kills": kills, "stage_kills": stage_kills, "unported": ["atkTicketRelease", "_regKill", "_petOnKill"]})
+	# 42702 `_regKill(e)` — P3-003 지역 처치(NativeRegions). 거부돼도 이미 적용된
+	# HP/사망/kills prefix는 보존하고 결과만 기록한다(원본도 _regKill 실패로 처치를 되돌리지 않음).
+	var regions: Node = _main.get_node_or_null("NativeRegions")
+	var reg_kill: Dictionary = regions.record_actor_kill(_enemy) if is_instance_valid(regions) and regions.has_method("record_actor_kill") else {"applied": false, "reason": "native_regions_absent"}
+	_log(42702, "kill_core", {"kills": kills, "stage_kills": stage_kills, "reg_kill": reg_kill, "unported": ["atkTicketRelease", "_petOnKill"]})
 	# 42704~42711 deathFX + 42720 대형 버스트 + 42722 시체 + 핏자국: P2-001b 이식
 	# (사망 사운드는 sfx/death 에셋 미복사 — 어댑터가 목록/카운터 기록). 42712 처치
 	# 히트스톱: 소비자 32585 비활성(원본).

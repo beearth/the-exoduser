@@ -171,8 +171,15 @@ func _test_hud_updates_on_kill_and_levelup() -> void:
 	var snap: Dictionary = _snapshot()
 	var g: Dictionary = state.read_current_g()
 	var p: Dictionary = state.read_current_p()
-	_check(str(snap.get("kill_text")).begins_with(str(int(g.get("_stageKills", -9)))),
-		"지역 처치 분자 = G._stageKills (" + str(snap.get("kill_text")) + ")")
+	# 원본 60321~60322: 지역(G._regions)이 있으면 분자=min(현재 지역 kills, total),
+	# 분모=현재 지역 total, 없으면 G._stageKills / G._totalSpawned 폴백(P3-003 이후).
+	var expected_numerator: int = int(g.get("_stageKills", -9))
+	var regions: Variant = g.get("_regions")
+	var reg_idx: int = int(g.get("_regCurIdx", -1)) if regions is Array else -1
+	if regions is Array and reg_idx >= 0 and reg_idx < regions.size():
+		expected_numerator = mini(int(regions[reg_idx].kills), int(regions[reg_idx].total))
+	_check(str(snap.get("kill_text")).begins_with(str(expected_numerator) + " "),
+		"지역 처치 분자 = 원본 60322 규칙 (" + str(snap.get("kill_text")) + ", 기대 " + str(expected_numerator) + ")")
 	_check(snap.get("malice_text") == _format_comma(int(g.get("mats", 0))) \
 		and snap.get("malice_text") != mats_before_text,
 		"악의 = G.mats 증가 반영 (" + str(snap.get("malice_text")) + ")")
