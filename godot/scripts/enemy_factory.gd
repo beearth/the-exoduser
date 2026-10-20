@@ -681,6 +681,11 @@ func _finite_json(value: Variant) -> bool:
 # Append-only natural registry. Initial source16 validation/dispatch above is unchanged.
 # Each added type must supply its actual kernel, source constructor and geometry.
 const NATURAL_REGISTRATIONS = {
+	18: {"actor":preload("res://scripts/native_demo11_etype_d_actor.gd"),"factory_method":"create_demo11_d","prepared_record_only":true},
+	19: {"actor":preload("res://scripts/native_demo11_etype_d_actor.gd"),"factory_method":"create_demo11_d","prepared_record_only":true},
+	23: {"actor":preload("res://scripts/native_demo11_etype_d_actor.gd"),"factory_method":"create_demo11_d","prepared_record_only":true},
+	24: {"actor":preload("res://scripts/native_demo11_etype_d_actor.gd"),"factory_method":"create_demo11_d","prepared_record_only":true},
+	25: {"actor":preload("res://scripts/native_demo11_etype_d_actor.gd"),"factory_method":"create_demo11_d","prepared_record_only":true},
 	0: {"actor":preload("res://scripts/native_natural_enemy_actor.gd"),
 		"constructor":"build_natural_etype0_runtime","profile":FLESH_PROFILE,"radius_base":10.0,"source_color":"#dd4455"}
 }
@@ -713,3 +718,9 @@ func create_demo11_d(native_record: Dictionary, owner_world: Node2D, owner: Node
 	actor.slam_t=native_record.native_final.slamT;actor.slam_cd=native_record.native_final.slamCd
 	actor.slime_t=native_record.native_final._iceSlimeT;actor.slime_cd=native_record.native_final._iceSlimeCd
 	return {"ready":true,"actor":actor}
+
+# Profile constructors stay at their original source-owned implementation.
+func prepare_natural_profile(record: Dictionary,world: Node2D,component: Node) -> Dictionary:
+	var entry:=natural_registration(int(record.get("etype",-1)))
+	if not entry.get("prepared_record_only",false):return {"ready":false,"reason":"natural_profile_constructor_not_registered"}
+	return call(entry.factory_method,record,world,component)

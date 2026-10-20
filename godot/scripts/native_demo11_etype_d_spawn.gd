@@ -1,5 +1,5 @@
 extends Node2D
-## D-scoped owner. A/B/C integration candidate; no replacement common helper.
+## D profile constructor/unique actions; common natural owner admits actors/shots.
 const FACTORY=preload("res://scripts/enemy_factory.gd")
 const SHARED=preload("res://scripts/type3_spawn_recipe.gd")
 var main: Node
@@ -30,6 +30,9 @@ func current() -> bool:
 func spawn_selected(group: String,etype: int,element: int=-1) -> Dictionary:
  if not current() or etype not in FACTORY.DEMO11_D_ETYPES or element not in [-1,0,1,2,3,4,5]:return {"ready":false,"reason":"D_context_or_type_invalid"}
  if not_ready_types.has(etype):return {"ready":false,"etype":etype,"reason":not_ready_types[etype]}
+ if not is_instance_valid(main.native_natural_enemies):
+  var bound: Dictionary=main.bind_native_natural_enemy_base(read_projectile_context,false)
+  if not bound.get("ready",false):return bound
  var adapter: Variant=main.native_stage_spawn_adapter
  if adapter==null or not adapter.is_current():return {"ready":false,"reason":"actual_MAP11_adapter_required"}
  var world: Node2D=main.world
@@ -64,13 +67,12 @@ func spawn_selected(group: String,etype: int,element: int=-1) -> Dictionary:
  var record: Dictionary={"id":"demo11-D-%d"%_next,"order":-1,"etype":etype,"stage":0,"level":level,"element_id":element,"element":"undefined" if element==-1 else SHARED.ELEMENTS[element],"elite":0,"mods":[],"aura":null,"spawn_position":[at.x,at.y],"hp":health,"attack":atk,"radius":radius_value,"poise":health,"max_poise":health,"speed_pixels_per_tick":speed_value,"initial_idle_ticks":idle,"initial_projectile_ticks":pt,"facing":face,"factory_random_seed":0,"initial_timers":{},"native_final":native}
  record["constructor_draws"]=_constructor_draws.duplicate()
  record["source_context"]={"player_level":main.source_state.read_current_p().lv,"stage_offset":main.source_state.read_current_g().get("_stageDiffOff",0),"diff":diff}
- var result: Dictionary=FACTORY.new().create_demo11_d(record,world,self)
- if not result.get("ready",false):return result
+ var result: Dictionary=main.native_natural_enemies.spawn_profile_record(self,group,record,site)
+ if not result.get("ready",false):
+  if result.get("actor") is Node:result.actor.not_ready="origin_rejected"
+  return result
  var actor: CharacterBody2D=result.actor
- var registered: Dictionary=world.register_summoned_enemy(actor)
- if not registered.get("valid",false):actor.free();return {"ready":false,"reason":"actual_World_registration_rejected","detail":registered}
- var origin: Dictionary=adapter.register_actor_origin(actor,group)
- if not origin.get("ready",false):actor.not_ready="origin_rejected";return {"ready":false,"reason":"origin_rejected_after_registration","actor":actor}
+ var origin: Dictionary=result.origin
  actors.append(actor)
  return {"ready":true,"actor":actor,"etype":etype,"origin":origin,"full_source_update":false,"death_ready":etype!=25}
 func advance_native_phase(sp: float,_native_frame: float,_enemies: Array) -> void:
@@ -87,8 +89,8 @@ func fire(actor: Node2D) -> bool:
  if el==1:props.fireMagic=true
  if el==2:props.waterBean=true
  if el==3:props.gbBean=true
- var r: Variant=main.native_demo_boss_projectiles.birth_demo11_d(self,props,_frame)
- return r is Dictionary and r.get("ack")==true and r.get("projectile_result") is Dictionary
+ var r: Dictionary=main.native_natural_enemies.emit_projectile(actor,props)
+ return r.get("ready",false) and r.get("receipt") is Dictionary and r.receipt.get("projectile_result") is Dictionary
 func zone(actor: Node2D) -> bool:
  if not actors.has(actor) or actor.etype!=25:return false
  zones.append({"position":actor.global_position,"life":480.0,"el":3,"sz":2.0});queue_redraw();return true
@@ -117,3 +119,11 @@ func _draw() -> void:
 func read_projectile_frame() -> Dictionary:
  if is_instance_valid(main) and get_tree().paused:return {"ready":false,"retain_owner":true}
  return _frame if current() else {"ready":false}
+
+func read_projectile_context() -> Dictionary:
+ # Original D's explicit baseline: QA/aggro scenes are outside this profile.
+ if not current():return {}
+ return {"lesson_active":false,"qa_storage_active":false,"aggro_active":false}
+
+func allows_projectile(actor: Node) -> bool:
+ return current() and actors.has(actor) and actor.not_ready=="" and _frame.get("ready",false)

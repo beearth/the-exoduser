@@ -3077,11 +3077,11 @@ func request_native_etype_a_spawn(owner: Node, group_id: String, source: Diction
 	return _native_etype_a_spawn.spawn_selected(owner,group_id,source)
 
 var native_natural_enemies: Node
-func bind_native_natural_enemy_base(projectile_context: Callable) -> Dictionary:
+func bind_native_natural_enemy_base(projectile_context: Callable,enable_scheduler: bool=true) -> Dictionary:
 	if is_instance_valid(native_natural_enemies):return {"ready":false,"reason":"natural_base_already_bound"}
 	var base:=preload("res://scripts/native_natural_enemy_base.gd").new()
 	world.add_child(base)
-	var receipt: Dictionary=base.configure(self,projectile_context)
+	var receipt: Dictionary=base.configure(self,projectile_context,enable_scheduler)
 	if not receipt.get("ready",false):base.free();return receipt
 	native_natural_enemies=base
 	return receipt

@@ -1,5 +1,7 @@
 # DEMO11-enemy-base — 단일 source clock과 원본 순서
 
+2026-10-21 D 후속: D 원본 actor의 World epoch와 common serial을 `_native_clock_updates`로 통일했다. D selected-only 모드에서는 source scheduler를 자동 실행하지 않으며 기존 D current/arena 범위를 보존한다. D frame의 Player snapshot·pause retain·D tag 탄만 회수·arena 해제 후 boss serial 양보는 기존 D clock regression으로 확인한다. 같은 frame을 별도 D driver와 common driver에서 두 번 실행하지 않는다. D 고유 AI/zone clock body는 변경하지 않고 profile로 유지한다. common raw entry에서도 타입별 suspend를 적용한다. [후속 보고](../engine/orders/reports/demo11-enemy-base_REPORT.md).
+
 World 기존 priority−1의 min(delta×60,3)/native frame을 사용한다. 자연 actor는 자동 _physics_process를 끄고 기존 World owner phase에서 정확히1회 기존 flesh kernel을 호출한다. 별도 delta clock/HP/패링 식0. actor마다 마지막 frame을 확인하며 reviveIframes(34456)를 AI 앞에서 감소한다. P3의 legacy _spawned_actors 목록에 다시 넣지 않아 중복 감소하지 않는다. 타이머 RNG는 World.sample_native_random_unit에 연결해 기존 actor private seeded RNG를 자연 경로에서 사용하지 않는다. 기존 source field/poise exact 초기 도메인을 true로 override하지 않는다.
 
 순서: World clock → 기존 owner/자연 적 AI → 기존 particle pool/탄 → birth2의 동일35 자연 registry 틱/실제 출생탄 포함 → HitFX3 → 자연 소환굴 scheduler4. 원문 적 루프344xx/탄34660/굴35636 순서에 따라 scheduler에서 새로 태어난 actor는 다음 frame부터 움직인다. 기존 World 큐/탄/초기 적 순서는 유지한다. 35의 native frame serial과 World frame을 공통 owner에서1회 연결하고 같은 frame 호출을 거절한다. Game/SceneTree pause·G.on/G.paused·lesson·stale provider는 중단한다. tick 경로 목록 생성 API0; context packet은 frame마다1회 만들며 static contract 반사는 바인딩에만 한다.

@@ -1,3 +1,10 @@
+## 2026-10-21 DEMO11-enemy-base 후속 — D9fd31a64 공통 이관
+
+| 항목 | 동작 보존·범위 |
+|---|---|
+| 병합·공통화 | 정상merge9157697c(9fd31a64). D5종 factory prepared entry→common World/origin admission·동일35 탄/World epoch. 기존 Main D facade·D actor/ctor RNG/탄 수치 body·PC 보호 경로 byte 보존 |
+| 후행·검증 | D selected-only/자동schedulerHOLD·25 death/이동탄 PC contact 후행 유지. 이관집중21/0+기존D158/0+공통0 31/0+35 43/0=253/0·ERROR0, 관련suite 각1회. 30actor600틱 mean2.824/p993.980/max8.380ms(최대예산초과). 결과는 [보고서](engine/orders/reports/demo11-enemy-base_REPORT.md). [8.0 계약](8.0몬스터디자인/DEMO11_NATURAL_ENEMY_BASE_20261021.md), [9AI clock](9적ai패턴디자인/DEMO11_NATURAL_ENEMY_CLOCK_20261021.md) |
+
 ## 2026-10-21 DEMO11-enemy-base — 자연 소환 단일 기반
 
 | 항목 | 구현·검수 근거 |

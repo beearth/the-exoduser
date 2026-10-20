@@ -139,7 +139,7 @@ func _camera() -> Vector2:
 func _retain_expired(shot: Node) -> bool:
 	return shot.life_ticks > -900 and not shot.raw.get("redBean",false) and shot.global_position.distance_squared_to(_camera())<=6250000.0
 func _physics_process(_delta: float) -> void:
-	if _natural_source!=null and is_instance_valid(_natural_source.get_ref()):return
+	if _natural_source!=null and is_instance_valid(_natural_source.get_ref()) and _natural_source.get_ref().frame_ready(_world.get_native_frame()):return
 	if _live() and is_instance_valid(_d_owner) and _d_reader.is_valid():
 		var frame: Dictionary=_d_reader.call()
 		if frame.get("ready")==true:
@@ -224,17 +224,28 @@ func bind_natural_source(owner: Node) -> bool:
 	return true
 func admit_natural_projectile(owner: Node,actor: Node,props: Dictionary,frame: Dictionary) -> Dictionary:
 	if _natural_source==null or _natural_source.get_ref()!=owner or not owner.owns_actor(actor):return {"ready":false,"reason":"natural_projectile_identity_required"}
-	if props.get("el")!=actor.el:return {"ready":false,"reason":"natural_projectile_element_mismatch"}
+	if props.get("el")!=actor.data.get("element_id"):return {"ready":false,"reason":"natural_projectile_element_mismatch"}
 	var result: Variant=_birth_request({"command":"spawnProj_owner","args":[props],"frame":frame})
+	var component: Node=owner.projectile_component(actor)
+	if component!=null and component==_d_owner and result is Dictionary and result.get("projectile_result") is Dictionary and _entries.has(_next_id):_entries[_next_id]["D_owner"]=component
 	return {"ready":result is Dictionary and result.get("ack",false),"reason":_error,"receipt":result}
 func advance_natural_frame(owner: Node,frame: Dictionary) -> bool:
 	if _natural_source==null or _natural_source.get_ref()!=owner:return false
+	if is_instance_valid(_d_owner) and _d_reader.is_valid():
+		var d_frame: Dictionary=_d_reader.call()
+		if d_frame.get("ready",false):
+			if d_frame.get("player") is Dictionary:
+				frame=frame.duplicate();frame["player"]=d_frame.player
+			if not _d_active:_serial=-1;_d_active=true
+		elif _d_active and not d_frame.get("retain_owner",false):
+			retire_demo11_d(_d_owner);_serial=-1;_d_active=false
 	return advance_source_frame(frame)
 # D-only registered source; existing birth/kernel/contact algorithms unchanged.
 func bind_demo11_d(owner: Node,reader: Callable) -> bool:
 	if is_instance_valid(_d_owner) or not _live() or not is_instance_valid(owner) or owner.get_parent()!=_world or not reader.is_valid() or reader.get_object()!=owner:return false
 	_d_owner=owner;_d_reader=reader;return true
 func birth_demo11_d(owner: Node,props: Dictionary,frame: Dictionary) -> Variant:
+	if _natural_source!=null and is_instance_valid(_natural_source.get_ref()):return null # Actor identity is mandatory in common mode.
 	if owner!=_d_owner or not is_instance_valid(owner) or not _d_reader.is_valid():return null
 	var current: Dictionary=_d_reader.call()
 	if current.get("ready")!=true or frame.get("serial")!=current.get("serial") or frame.get("sp")!=current.get("sp"):return null
