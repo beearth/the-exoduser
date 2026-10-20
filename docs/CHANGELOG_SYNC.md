@@ -1,3 +1,14 @@
+## 2026-10-20 SV-SHARED-READ 공유 읽기·이관 계산 5번 단위
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 기준·의존 | origin/main e556b617에 앞 단위 없어 승인 SV-RESTORE-ITEMS9b5fdf46에서 분기. --no-checkout+no-cone sparse 약20MiB. SV-COLLECT/TRANSPORT/RESTORE-PLAYER/ITEMS 의존, 기존 파일·공용6 직접수정0 |
+| 신규 파일 | source_shared_store.gd·test_native_shared_store_read.gd·sv_shared_read_oracle.cjs. mode/읽기 관측/현재 snapshot만 받아 shared getter·max 비가산·빈 shared legacy slice200·층별 concat/캡을 detached 계산. 후속 readback 없으면HOLD |
+| 원본 근거 | game3726–3729/3741–3752/48521–48548, STORAGE_MAX16259. 일반 parseInt/QA Number·일반 Array 검증/QA JSON 타입·예외 차이, MAX_SAFE9007199254740991·재조회 순서 보존. 상한은 정확한 int64→double, 저장 형식/마이그레이션 정책 변경0 |
+| 보호·HOLD | 모든 candidate execute_authorized=false, IO/서버/실제연결0. namespace/live G/STORAGE/세터·캐시·dirty/timer·ACK 미연결HOLD. 실제 성공을 가정하지 않고 관측값으로 계산, 비지원 정밀도/형태는 정상 빈 값으로 제조하지 않음 |
+| 검수 | 신규149486/실패0(읽기100/store17/복원131×2), SV-CONTRACT3023/0·선행ITEMS126863/0. 최종3실행 exit0·ERROR/SCRIPT ERROR/경고0. 초기59실패·확장188실패 상한/음의0/문자열 변환 오류 수정·원로그 보존 |
+| 제출 | Godot 전역2이상30초대기·자기순차1개. 신규 EXODUSER-sv-shared-read-Isolated-20261020·회귀각상수·종료override0byte. 정상훅·자기branch push/원격일치/DONE 뒤 자기worktree제거. [보고서](engine/orders/reports/sv-shared-read_REPORT.md), ~/exoduser-wt/_out/sv-shared-read/ |
+
 ## 2026-10-20 SV-RESTORE-ITEMS 아이템 복원 계산 4번 단위
 
 | id / 적용 위치 | 현재 정확 계약 |
