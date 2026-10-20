@@ -1,3 +1,12 @@
+## 2026-10-21 DEMO11-25 재개 — 자동 HP·악의·CD writer 및 자연 60Hz 호출
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준·구현 | main01051599, 사용자 정정으로 QS-02/03 신규 구현 허용. QS-01 재사용 auto_phase/runtime, State→HP-only authority, Main physics deferred 한 줄. 원본 G35893–35910 read/write 순서·임계/음수CD·재조회 보존 |
+| 공용·보호 | Main17/84/1007 추가3줄, State1227–1260 추가34줄, authority672–685 추가14줄. 기존 줄 수정/삭제0, 피해·PC 전투 핵심·저장·맵·웹 원본·R0. 관련 2_8 docs 갱신 |
+| 검증 | 원본 JS UTF8 oracle420사례·신규2560/0. 직접 회귀 각1회 QS318/0·regen10/0·lessonclock21/0·contracts5그룹/0. 최종 ERROR/종료누수0, 기존 Camera2D WARNING 기록. 최초 하니스5실패/MP3 누수 진단·수정 이력 보존 |
+| 잔여·제출 | SFX 미연결·native 시스템 튜토리얼·전설벨트 피해 consumer HOLD를 명시, 활성벨트 timer 생성/피해 수정0. [DEMO11-25 보고서](engine/orders/reports/demo11-25_REPORT.md). codex/demo11-25b-20261021 자기branch push/원격일치/DONE 후 자기WT제거 |
+
 ## 2026-10-20 BC2-07 shieldBash2 독립 wind/dash/contact 계산
 
 ## 2026-10-20 EC4-02 4장 catalog·23필드 초기 literal projection

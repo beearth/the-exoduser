@@ -669,3 +669,17 @@ func _native_fireball_proficiency_plan(owner: Node, p: Dictionary) -> Dictionary
 	var old_prof: Variant=categories.get("magic",0) if categories is Dictionary else 0
 	if not _number(old_prof) or not is_finite(float(old_prof)):return {"ready":false,"reason":"fireball_category_proficiency_not_numeric"}
 	return {"ready":true,"skip":false,"categories":categories,"skills":skills,"old_prof":old_prof}
+
+# DEMO11-25 — G35904 HP-only sink, reachable through actual State writer.
+func commit_native_auto_potion_hp(owner: Node, state_owner: Node, amount: float) -> Dictionary:
+	if not is_native_source_resources_ready() or _committing or get_tree().paused \
+			or not is_instance_valid(owner) or owner != _player.get_parent() \
+			or owner.get("source_resources") != self or owner.get("world") != _world \
+			or not is_instance_valid(state_owner) or owner.get("source_state") != state_owner \
+			or not state_owner.is_native_potion_owner_current(owner) or not is_finite(amount):
+		return {"accepted":false,"reason":"actual_potion_hp_owner_not_ready"}
+	_committing = true
+	_player.hp = minf(_player.max_hp, _player.hp + amount)
+	_last_source_write = {"field":"hp","phase":"native_auto_potion_35904","amount":amount}
+	_committing = false
+	return {"accepted":true,"hp":_player.hp}

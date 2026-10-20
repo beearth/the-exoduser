@@ -1224,3 +1224,37 @@ func apply_native_source_update_clock_writes(main: Node, services: RefCounted,
 	receipt["reason"] = ""
 	receipt["writes"] = planned.size()
 	return receipt
+
+# DEMO11-25 — potion-only State entry. G27684/28071, fresh G63950/63952.
+# Separate runtime values, not P/INV/save schema extensions.
+var _auto_potion_cd: float = 0.0
+var _auto_potion_level: int = 0
+
+func read_native_potion_runtime() -> Dictionary:
+	return {"cd":_auto_potion_cd,"level":_auto_potion_level}
+
+func is_native_potion_owner_current(owner: Node) -> bool:
+	return _feel_owner_current(owner) and not owner.is_queued_for_deletion() \
+		and owner.get_script() != null and owner.get_script().resource_path == "res://scripts/main.gd" \
+		and is_instance_valid(owner.get("source_potion")) and _resources.is_native_source_resources_ready()
+
+func commit_native_auto_potion(owner: Node, field: String, value: Variant) -> Dictionary:
+	if not is_native_potion_owner_current(owner): return {"accepted":false,"reason":"potion_owner_not_current"}
+	if field == "stats": # G35910: conditional statistics only, no invented domains.
+		if _g.get("_pStats") is Dictionary:
+			_g._pStats["_hC"] = float(_g._pStats.get("_hC", NAN)) + 1.0
+		if _g.get("_sStats") is Dictionary:
+			_g._sStats["potions"] = float(_g._sStats.get("potions", NAN)) + 1.0
+		return {"accepted":true}
+	if not (value is int or value is float) or not is_finite(float(value)): return {"accepted":false,"reason":"unsupported_potion_number"}
+	match field:
+		"cd": _auto_potion_cd = float(value) # G35893/35902; negative CD allowed
+		"mats":
+			if not (_g.get("mats") is int or _g.get("mats") is float) or float(value) != float(_g.mats)-1.0 or float(_g.mats)<=0.0: return {"accepted":false}
+			_g.mats = value # G35897, no _malCost transform
+		"hp":
+			var receipt: Dictionary = _resources.commit_native_auto_potion_hp(owner,self,float(value))
+			if receipt.get("accepted") != true: return receipt
+			_p.hp = receipt.hp # actual HP readback, not a second HP owner
+		_: return {"accepted":false}
+	return {"accepted":true}
