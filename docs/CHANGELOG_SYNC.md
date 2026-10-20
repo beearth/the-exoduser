@@ -1,3 +1,15 @@
+## 2026-10-20 SND-05 BGM 카탈로그·순수 선곡
+
+| id / 항목 | 현재 계약 |
+|---|---|
+| 기준 / 의존 | 최신main e556b617, game.html3982–4037/4054–4090/4208–4211/10381–10390/16633–16666. SND-04 576b152f 분기+main정상merge ca3f045c. 자기sparseWT, 대용량웹/BGM에셋checkout0 |
+| 신규 범위 | bgm_catalog.gd/bgm_selection.gd·data JSON·새test·원본JS generator/fixture 신규6파일. 공용6파일·기존제품·기존test·원본HTML/에셋0줄. 경로참조만이며 생성·변환·실곡재생0 |
+| 카탈로그 | tracks19풀/gameplay50/allRandom57entry, 중복가중치·순서보존. canonical SI35의장map readonly·invalid UNSUPPORTED. legacy BGM_MAP8키는별도이며active pool로섞지않음. 반환깊은복사·NOT_READY명시 |
+| 선곡 | random/all/actFirst/mixed, bad필터·last재추첨·played Set·해당장reset만. random의1entry는RNG0, 나머지3함수는1entry도RNG1. helper는last를쓰지않음. duplicate entry/Set고유수/소진actDone보존. 재추첨cap/dedup/대체곡0 |
+| 실측 | 신규1308/0·46시나리오225단계·1327leaf 불일치0. 19풀/50/57·35SI·재입장·all bad null·RNG258회재추첨포함. contracts5그룹/0·기존사운드1194/0/687/0/606/0/2435/0·웹2파일4pass/0fail, 모든실행exit0·stderr비어있음 |
+| 환경·보존 | 기존tracked game.html/godot1322파일byte불변. 엔진cache1006파일byte복사만·Godot import0. count2이상30초대기·지정격리·기존USERDIR·override매회후0byte. 정상훅·자기branch만push |
+| 한계·정리 | 로비 전체 회귀 8실패(main에서도 동일, QA-005 진단 중)는전달원문만보존. 실곡/청감/실게임/PC미확인. push·원격SHA확인→DONE→자기WT remove --force(사용자지정), branch/원로그/보고서사본보존. [보고서](engine/orders/reports/snd-05_REPORT.md) |
+
 ## 2026-10-20 SND-04 원본 보이스 선택·10초 stamp 상태
 
 | id / 항목 | 현재 계약 |
