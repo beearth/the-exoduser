@@ -912,3 +912,8 @@ I 전체 src/href/data-src/poster 및 assets/img/video/bgm/sfx/sprites 상대 �
 | 22 | 92.9 |
 
 원본 불일치는 §2 표에만 보고하며 코드·설계 문서는 수정하지 않았다. 위 함수/시각은 정적 추적이며 영상 디코딩·실제 입력·E2E 인수는 **미확인**이다.
+
+
+## 2026-10-21 DEMO11-07 현재 연결 범위
+
+DEMO11-04 로비의 char0 metadata 생성 성공 → active 슬롯 readback → 기존 character 선택 인터페이스 → DEMO11-08 INTRO를 연결했다. 이름/4캐릭터 잠금과 기존 cutsceneDone runtime flag 경계만 포함한다. 저장된 Player 복원·미동기화 game save의 슬롯 복귀는 DEMO11-06 접점이며 LB-09 전체 완료를 뜻하지 않는다. [수명·보호 계약](DEMO11_LOBBY_ENTRY_20261021.md) 및 [검증 보고서](orders/reports/demo11-07_REPORT.md)를 참조한다.
