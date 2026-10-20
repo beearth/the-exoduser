@@ -3390,3 +3390,11 @@ func spawn_native_demo11_d(group_id: String,etype: int,element: int=-1) -> Dicti
 	if owner==null:
 		owner=preload("res://scripts/native_demo11_etype_d_spawn.gd").install(self)
 	return owner.spawn_selected(group_id,etype,element)
+
+# DEMO11-etype-b: source scheduler handoff only; no replacement spawn clock.
+var _native_etype_b_spawn: RefCounted
+func request_native_etype_b_spawn(owner: Node, group_id: String, source: Dictionary) -> Dictionary:
+	if _native_etype_b_spawn==null:
+		_native_etype_b_spawn=preload("res://scripts/native_demo11_etype_b_spawn.gd").new()
+		_native_etype_b_spawn.configure(self)
+	return _native_etype_b_spawn.spawn_selected(owner,group_id,source)
