@@ -54,6 +54,14 @@
 | 기준·범위 | main01051599 + DEMO11-01 65f55e76 + BC08 체인adc90ec7 정상merge=4fd1323c. Main +17/-0로 actor 설치·spawn·조회·owner API. BC01~10/State/피해·패링·HP/poise·저장·맵0줄. |
 | 검증 | 신규167/0 + phase PC readback28/0, 기존BC01~10 354093/0·데모권위22/0·인트로18/0. 실패165/4 및28/1 원문 보존·해당 실패 검사만 수정 재실행. 통과 기존 각1회·검사 약화0. |
 | 인계·한계 | [공개 계약·공용 줄·보고서](engine/orders/reports/demo11-34_REPORT.md). 자연 arena·source clock/prefix·탄/VFX/SFX 및 PC36/49 보호 owner는 미연결 대기, 가짜 ack 없음. 원로그 ~/exoduser-wt/_out/demo11-34/, 자기push/remoteSHA/DONE뒤WT제거·R불변. |
+## 2026-10-21 DEMO11-38 마지막 데모 clear→종료·위시리스트/로비
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 범위·계약 | main8dbbf2b0e. DEMO11-37 호출 계약 Main.native_demo_boss_defeated(stage_index:int), 최종 사망 뒤 emit 필요. 이번에는 신호 직접 주입, 보스 사망 구현0 |
+| 전환·권한 | Main 추가20/State 추가15·기존줄수정0. clear/end/복귀 중복 거부·stage 증가0·난이도 창0. Main 비활성화+Tree pause로 실제 World/Player 정지, 새 최소 데모 로비에서 해제/새 stage0 재시작. 보호 전투/맵/저장0 |
+| UI·검증 | Hell Gothic·기존 crest/폰트 토큰·이모지0. 번역목록/3.1 UI 갱신. 신규46/0·기존22/0+115/0=183/0, 예상 거부ERROR1 외0, 기존각1회·실패신규만재실행. 결과와 캡처는 [보고서](engine/orders/reports/demo11-38_REPORT.md), 맥북총괄 시각 판정 대기 |
+| 제출 | 자기branch 일반push·remote SHA/DONE 뒤 자기worktree제거, R 불변. 원로그 ~/exoduser-wt/_out/demo11-38/, Godot2이상30초gate·격리·override0 |
 
 ## 2026-10-21 DEMO11-01 Main 부팅의 1-1 데모 권위
 
