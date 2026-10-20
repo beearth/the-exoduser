@@ -198,7 +198,7 @@
 | 중복 경계 | CH1/PC P2-008a/b·ELITES원격48681a12·마감에확인한MAPS_CH2원격18070adf 참조. 맵 geometry/좌표/에리어별분모 복제0. 맵제출본의RLE·조건부문지기판정과적선택분기 구분 |
 | 이식안 | CH2E-01~11 제안, 1번은신규선택정책+테스트2파일/공용0줄 목표의구현지시서. 실제actor/World/State/저장연결은각owner 인수후. 지금코드·테스트작성0 |
 | 검수·제출 | Godot/게임실행0, 원본선택함수54입력 정적검산을게임PASS로표시하지않음. sparse --no-checkout·문서2개만 정상commit/push·원격SHA/DONE 후자기worktree제거. R/공용/QE/세이브/보호docs2_3 불변. 원로그 ~/exoduser-wt/_out/trace-enemies-ch2/ |
-=======
+
 ## 2026-10-20 TRACE-FIELDBOSS 필드보스 원본 추적·이식 설계
 
 | 항목 | 변경·검수 근거 |
@@ -210,7 +210,6 @@
 | 설계 / 불일치 | 불일치·누락8건 표로만 기록. FB-S01 순수 catalog를 구현 지시서 수준으로 명세, 공용0줄 목표. FB-S10 State/main/World/피해·탄 연결은 통합 결정 HOLD |
 | 검증 / 한계 | game.html·index.html 기준 blob/byte/SHA 일치, 순수 JS 생성자7레벨×3계열·피격 gate5표본만 평가. Godot/import/게임/기존·신규 테스트 실행0. 전투·화면·PC 인수 미확인 |
 | 상세 | [필드보스 추적](engine/FDG_SOURCE_TRACE_FIELDBOSS_20261020.md). 원로그 `~/exoduser-wt/_out/trace-fieldboss/`. R 불변, 자기 branch push/원격 확인/DONE 후 자기 worktree 제거 |
->>>>>>> 200d8e93
 =======
 ## 2026-10-20 QA-006 추천 순서 선재 기대값 수정·얼음보주 비교
 
@@ -386,6 +385,18 @@
 | 순수 검수 | 새 Godot20/0·skip0, 실제 JS 원본1..1500 대조1500일치/불일치0, 기존 웹 oracle4/0. 자연플레이·영구저장 검수 아님 |
 | 제품 한계·보호 | 사용자 공용0줄 지시 우선: State preload/caller 수정0, 제품999→1000 일반식 불일치 잔존. XP 지급·SP/AP·회복·초월gate·HUD·Q/E·세이브0줄, 일반/데모 game.mats 차이 보호 |
 | 회귀·근거 | 지정15종 중14통과·p1002g 알려진1실패, 추가p2001c45/0·전부skip0. 최종 실측은 [meta-01 보고서](engine/orders/reports/meta-01_REPORT.md)에 기록. exit code·실행그룹·skip·stderr와 알려진p1002g 선재실패를 분리. 원로그 `~/exoduser-wt/_out/meta-01/` |
+=======
+## 2026-10-20 IT-05 — 특수효과 툴팁 읽기 전용 모델
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 범위·의존 | 신규 item_special_text_source/producer.gd·test_native_item_special_text_source.gd. 기존19/39 정의·IT-02 문자열/Math.round·locale callback 재사용. IT-04 b950095b에서 분기(기준 main 미포함). 공용6파일·타 담당·기존 producer/테스트/JSON 수정0 |
+| 원본 | origin/main e556b617190c325ca39f5add04357f5dea5ca87e game.html:16625~16626,49822~49847. stat 역색인은 마지막 정의 우선. 전설은 현행 ko 또는 저장 ko fallback, 유니크는 저장 ko 번역 후 치환 |
+| 롤·초 | disp 정의 시0/null/false/빈문자열도 우선. 누락 때 scale truthy면 Math.round(val/scale), 그 외 val. secs는 저장 String 그대로/누락은빈문자열. {s}→{p}→{n} 각 첫1회 및 JS 달러 replacement 의미 보존 |
+| 라벨 | roll hi>lo일 때 위치 >=2/3 상옵/#d8b878, >=1/3 중옵/#dfd6c2, 그 외 하옵/#9a8f80. 하/중/상 _T를 모두 원순서 호출 후 선택. 고정/동일·역전 범위 라벨없음. 미지원 shape/callback은 NOT_READY·정상 text 미공급 |
+| 검수 | 신규459/0·원본 직접대조1,284/0(154view·19/39 전체 정의·callback 순서), IT-02 2,205/0·contracts5그룹/0. import/최종 실행 stderr0·ERROR0. 첫 oracle wrapper escape SyntaxError는 별도 보존. [IT-05 보고서](engine/orders/reports/it-05_REPORT.md) |
+| 경계·회수 | 새 EXODUSER-it-05-Isolated-20261020, 기존 회귀 각 상수. Godot2이상30초 대기, 실행별 override 후0byte. 실제 UI/전투/장착/저장·PC 인수 아님. push·원격 SHA·DONE 확인 뒤 이번 sparse worktree만 제거, branch·OUT 원로그/review snapshot 보존. 로비 선재8실패는 총괄 전달 원문 기록만 유지 |
+>>>>>>> 31eb4e12
 
 ## 2026-10-20 IT-04 — 장착 결정의 홈 배율 합산
 
