@@ -1,3 +1,11 @@
+## 2026-10-21 PC-RUNTIME-STATS — 런타임 applyStats 재계산·DEMO11-06 보호 handoff/자원 restore writer
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 범위 | DEMO11-19/22/06 BLOCKED 인터페이스 해제. 초기화 단회 guard 수정0. 새 `native_source_player_runtime_stat_refresh.gd`(원본 producer 6종 pass별 신규·overlay 단계 적용·3 sink 사전검증→동기 일괄 commit→readback, 모드 apply_stats/equipment_refresh=G16287–16292), `native_source_protected_restore_handoff.gd`(protected_qe/active_sync/wing). 공용 순수 추가: Main+39·Player+56·State+47·authority+106 |
+| 검증 | 신규 300/0(원본 JS oracle 200필드 일치·무료충전0·clamp·재진입/외부 owner/실패 무변이)·4830/0(321 fixture 직접 대조+flow e2e 321/321). 회귀 11종+restore flow 각1회 0실패. refresh 1회 약15ms(이벤트 전용), 틱 경로 코드0→300틱 벤치 생략 |
+| 인계 | [계약](engine/PC_RUNTIME_STAT_REFRESH_CONTRACT_20261021.md)·[보고서](engine/orders/reports/pc-runtime-stats_REPORT.md). Mac 호출자 연결·결정 장착 oracle·HUD 화면 확인은 미실행 |
+
 ## 2026-10-21 DEMO11-05 — main 성능 수정 병합·tick 경로 점검
 
 | 항목 | 구현·검수 근거 |

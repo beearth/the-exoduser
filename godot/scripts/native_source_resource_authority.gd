@@ -362,6 +362,112 @@ func _source_initialization_write_error(packet: Dictionary, write_index: int) ->
 		return "source_initializer_owner_lost_during_validation"
 	return _source_initialization_lifecycle_error()
 
+# PC-RUNTIME-STATS — runtime applyStats/recalcSt batch sink for the six source
+# fields. Not the constructor seam (pre-Tree guard unchanged), not regen/cost/
+# refill. Values come from the original producer packets staged by the actual
+# Main-owned refresh module; no Math.min, cap repair or refill here.
+const RUNTIME_STAT_REFRESH_PATH = "res://scripts/native_source_player_runtime_stat_refresh.gd"
+var _runtime_stat_commits := 0
+
+func validate_native_runtime_stat_refresh(owner: Node, refresh: Object, fields: Dictionary) -> String:
+	if _initializing or _committing or _source_initializer_committing or not is_native_source_resources_ready():
+		return "resource_runtime_refresh_not_ready_or_reentrant"
+	if not is_instance_valid(owner) or owner != _player.get_parent() \
+			or owner.get("source_resources") != self or owner.get("world") != _world:
+		return "resource_runtime_refresh_owner_mismatch"
+	if not is_instance_valid(refresh) or refresh.get_script() == null \
+			or refresh.get_script().resource_path != RUNTIME_STAT_REFRESH_PATH \
+			or owner.get("source_runtime_stat_refresh") != refresh:
+		return "resource_runtime_refresh_module_mismatch"
+	var window: Variant = refresh.is_native_runtime_stat_refresh_committing(owner)
+	if not window is bool or not window:
+		return "resource_runtime_refresh_not_in_commit_window"
+	for field in fields:
+		if field not in SOURCE_FIELDS or not _number(fields[field]):
+			return "resource_runtime_refresh_field_or_value_denied:" + str(field)
+	if fields.has("st") and float(fields["st"]) > float(fields.get("mst", _player.max_stamina)):
+		return "resource_runtime_refresh_st_above_mst"
+	if fields.has("mp") and float(fields["mp"]) > float(fields.get("mmp", _owned["mmp"])):
+		return "resource_runtime_refresh_mp_above_mmp"
+	return ""
+
+func commit_native_runtime_stat_refresh(owner: Node, refresh: Object, fields: Dictionary) -> Dictionary:
+	var error := validate_native_runtime_stat_refresh(owner, refresh, fields)
+	if not error.is_empty():
+		return {"accepted": false, "reason": error}
+	_committing = true
+	for field in fields:
+		if field == "st":
+			_player.stamina = float(fields[field])
+		elif field == "mst":
+			_player.max_stamina = float(fields[field])
+		else:
+			_owned[field] = fields[field]
+	_runtime_stat_commits += 1
+	_last_source_write = {"phase": "native_runtime_stat_refresh", "fields": fields.keys()}
+	_committing = false
+	_last_error = ""
+	return {"accepted": true, "fields": fields.keys(), "commits": _runtime_stat_commits}
+
+# PC-RUNTIME-STATS B — DEMO11-06 restore commit for the eight saved resource
+# fields (original dbRestore G3618-3621 values already computed detached by
+# save_adapter/source_player_restore.gd). Validate all → one synchronous batch
+# → readback; any failure keeps every previous value. Not fresh init/refill/
+# regen/cost; no Math.min (the original restore assigns raw values and the
+# following applyStats clamps). Only the actual Main owner.
+const RESTORE_FIELDS = ["hp", "mhp", "st", "mst", "mp", "mmp", "stR", "mpR"]
+var _restore_busy := false
+var _restore_commits := 0
+
+func commit_native_restore_resources(owner: Node, values: Dictionary) -> Dictionary:
+	var before: Dictionary = _read_restore_fields()
+	if _restore_busy or _committing or _initializing or _source_initializer_committing:
+		return {"accepted": false, "reason": "restore_resources_reentrant", "before": before, "after": before}
+	if not is_native_source_resources_ready() or not is_instance_valid(owner) or owner != _player.get_parent() \
+			or owner.get("source_resources") != self or owner.get("world") != _world or owner.get("player") != _player:
+		return {"accepted": false, "reason": "restore_resources_owner_mismatch", "before": before, "after": before}
+	if values.size() != RESTORE_FIELDS.size():
+		return {"accepted": false, "reason": "restore_resources_field_set_mismatch", "before": before, "after": before}
+	for field in RESTORE_FIELDS:
+		if not values.has(field) or not _number(values[field]):
+			return {"accepted": false, "reason": "restore_resources_value_invalid:" + field, "before": before, "after": before}
+	_restore_busy = true
+	_committing = true
+	# No signal, callback or provider between these writes.
+	_player.hp = float(values["hp"])
+	_player.max_hp = float(values["mhp"])
+	_player.stamina = float(values["st"])
+	_player.max_stamina = float(values["mst"])
+	_owned["mp"] = values["mp"]
+	_owned["mmp"] = values["mmp"]
+	_owned["stR"] = values["stR"]
+	_owned["mpR"] = values["mpR"]
+	_committing = false
+	var after: Dictionary = _read_restore_fields()
+	var ok := true
+	for field in RESTORE_FIELDS:
+		if float(after[field]) != float(values[field]):
+			ok = false
+	if not ok:
+		_committing = true
+		_player.hp = before["hp"]; _player.max_hp = before["mhp"]
+		_player.stamina = before["st"]; _player.max_stamina = before["mst"]
+		for field in ["mp", "mmp", "stR", "mpR"]: _owned[field] = before[field]
+		_committing = false
+		_restore_busy = false
+		return {"accepted": false, "reason": "restore_resources_readback_mismatch", "before": before, "after": _read_restore_fields()}
+	_restore_commits += 1
+	_last_source_write = {"phase": "native_restore_resources_dbRestore_3618_3621", "fields": RESTORE_FIELDS.duplicate()}
+	_restore_busy = false
+	_last_error = ""
+	return {"accepted": true, "reason": "", "before": before, "after": after, "commits": _restore_commits}
+
+func _read_restore_fields() -> Dictionary:
+	if not _live(_player):
+		return {}
+	return {"hp": _player.hp, "mhp": _player.max_hp, "st": _player.stamina, "mst": _player.max_stamina,
+		"mp": _owned.get("mp"), "mmp": _owned.get("mmp"), "stR": _owned.get("stR"), "mpR": _owned.get("mpR")}
+
 static func _source_initialization_tag(packet: Dictionary, write: Dictionary) -> Dictionary:
 	return {"field": write["field"], "source": write["source"], "kind": packet["kind"], "pass_id": 1}
 
