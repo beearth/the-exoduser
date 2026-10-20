@@ -3097,3 +3097,11 @@ func request_native_etype_b_spawn(owner: Node, group_id: String, source: Diction
 		_native_etype_b_spawn=preload("res://scripts/native_demo11_etype_b_spawn.gd").new()
 		_native_etype_b_spawn.configure(self)
 	return _native_etype_b_spawn.spawn_selected(owner,group_id,source)
+
+# DEMO11-etype-f — B-shaped handoff; migrate to demo11-enemy-base later.
+var _native_etype_f_spawn: RefCounted
+func request_native_etype_f_spawn(owner: Node, group_id: String, source: Dictionary) -> Dictionary:
+	if _native_etype_f_spawn==null:
+		_native_etype_f_spawn=preload("res://scripts/native_demo11_etype_f_spawn.gd").new()
+		_native_etype_f_spawn.configure(self)
+	return _native_etype_f_spawn.spawn_selected(owner,group_id,source)

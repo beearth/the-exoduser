@@ -753,3 +753,17 @@ func create_demo11_a(runtime: Dictionary, world: Node2D, component: Object) -> D
 	actor.configure(runtime,world)
 	if not actor.is_native_registry_ready():actor.free();return {"ready":false,"reason":"A_profile_rejected"}
 	return {"ready":true,"actor":actor}
+# DEMO11-etype-f registration only; existing entries/consumer byte-preserved.
+const DEMO11_ETYPE_F_REGISTRATIONS = {
+	26:preload("res://scripts/native_demo11_etype_f_actor.gd"),
+	27:preload("res://scripts/native_demo11_etype_f_actor.gd"),
+	28:preload("res://scripts/native_demo11_etype_f_actor.gd")}
+func create_demo11_etype_f(runtime: Dictionary, world: Node2D) -> Dictionary:
+	if not DEMO11_ETYPE_F_REGISTRATIONS.has(runtime.get("etype")) or runtime.get("ai_profile")!="demo11_group_f_v1":
+		return {"ready":false,"reason":"outside_F_registration"}
+	var actor: CharacterBody2D=DEMO11_ETYPE_F_REGISTRATIONS[runtime.etype].new()
+	actor.configure(runtime,world)
+	if not actor.is_native_registry_ready(): actor.free();return {"ready":false,"reason":"F_profile_rejected"}
+	var result: Dictionary=world.register_summoned_enemy(actor)
+	if not result.get("valid",false): actor.free();return {"ready":false,"reason":"F_world_registration_rejected","errors":result.get("errors")}
+	return {"ready":true,"registered":true,"actor":actor,"full_combat_ready":false}
