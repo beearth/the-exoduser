@@ -35,6 +35,8 @@ const COL_ROW := Color(0xbf / 255.0, 0xb4 / 255.0, 0xa8 / 255.0)
 const COL_ROW_CURRENT := Color(0xff / 255.0, 0xf0 / 255.0, 0xdf / 255.0)
 const COL_ROW_DONE := Color(0xb2 / 255.0, 0xd6 / 255.0, 0xac / 255.0)
 const COL_SKIP_TEXT := Color(0xdc / 255.0, 0xcb / 255.0, 0xb6 / 255.0)
+const COL_KIND_MAGIC := Color(197.0 / 255.0, 164.0 / 255.0, 242.0 / 255.0) # 실측 step-2 status/hold (data-kind magic)
+const COL_KIND_PHYSICAL := Color(0xe0 / 255.0, 0xc1 / 255.0, 0x8b / 255.0) # 실측 intro status (data-kind physical)
 const FONT_PATH := "res://assets/fonts/NotoSerifKR-VF.ttf" # 원본 'Nanum Myeongjo' 계열 — 포트 보유 명조(잔여: 나눔명조/Cinzel 에셋)
 const FRAME_PATH := "res://assets/ui/hell_gothic/frame.png" # 원본 img/ui/hell_gothic/frame.png 그대로
 const CREST_PATH := "res://assets/ui/hell_gothic/crest.png"
@@ -449,18 +451,33 @@ func _finish() -> void:
 	_ui = {}
 
 # ═══ 패널 — UI_FOUNDATION parryLesson 계약 + lesson_styles.json 실측 ═══
-func _label(size: int, color: Color, text: String = "", bold: bool = false) -> Label:
+var _font_bold: FontVariation
+
+func _weighted_font(weight: int) -> Font:
+	# NotoSerifKR-VF는 가변 글꼴 — 실측 font-weight를 variation_opentype wght로 그대로.
+	if _font == null:
+		return null
+	if weight == 400:
+		return _font
+	if _font_bold == null or int(_font_bold.get_meta("wght", 0)) != weight:
+		var variation := FontVariation.new()
+		variation.base_font = _font
+		variation.variation_opentype = {TextServerManager.get_primary_interface().name_to_tag("wght"): weight}
+		variation.set_meta("wght", weight)
+		_font_bold = variation
+	return _font_bold
+
+func _label(size: int, color: Color, text: String = "", weight: int = 400) -> Label:
 	var node := Label.new()
 	node.text = text
-	if _font != null:
-		node.add_theme_font_override("font", _font)
+	var face: Font = _weighted_font(weight)
+	if face != null:
+		node.add_theme_font_override("font", face)
 	node.add_theme_font_size_override("font_size", size)
 	node.add_theme_color_override("font_color", color)
 	# 실측 text-shadow: 0 1px 3px #000 + 0 0 6px #000 → Godot 섀도 1종 근사
 	node.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.9))
 	node.add_theme_constant_override("shadow_offset_y", 1)
-	if bold:
-		node.add_theme_constant_override("font_weight", 700)
 	node.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	return node
 
@@ -555,8 +572,11 @@ func _build_panel() -> void:
 	scroll.add_child(column)
 	var header := HBoxContainer.new()
 	_ui["eyebrow"] = _label(10, COL_EYEBROW, "01 · 직접 실습")
+	_ui["eyebrow"].autowrap_mode = TextServer.AUTOWRAP_OFF
 	_ui["eyebrow"].size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_ui["status"] = _label(10, COL_STATUS, "일시정지")
+	_ui["status"].autowrap_mode = TextServer.AUTOWRAP_OFF
+	_ui["status"].size_flags_horizontal = Control.SIZE_SHRINK_END
 	header.add_child(_ui["eyebrow"])
 	header.add_child(_ui["status"])
 	column.add_child(header)
@@ -576,25 +596,38 @@ func _build_panel() -> void:
 	keycap_style.content_margin_bottom = 14.0
 	keycap.add_theme_stylebox_override("panel", keycap_style)
 	keycap.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
-	_ui["keycap"] = _label(28, COL_KEYCAP, "W A S D")
+	_ui["keycap"] = _label(28, COL_KEYCAP, "W A S D", 700) # 실측 400(Cinzel) — 대체 글꼴 시각 등가 보정(근사 기록)
 	_ui["keycap"].autowrap_mode = TextServer.AUTOWRAP_OFF
 	keycap.add_child(_ui["keycap"])
 	column.add_child(keycap)
-	_ui["title"] = _label(29, COL_TITLE, "", true)
+	_ui["title"] = _label(29, COL_TITLE, "", 700) # 실측 font-weight 700
 	column.add_child(_ui["title"])
 	_ui["subtitle"] = _label(12, COL_SUBTITLE)
 	column.add_child(_ui["subtitle"])
-	# placeDetails(170~174) 상응: 현재 목표 행 → 상세(hint/hold) → 나머지 체크리스트
-	_ui["current_slot"] = VBoxContainer.new()
-	column.add_child(_ui["current_slot"])
-	_ui["hint"] = _label(14, COL_HINT)
-	column.add_child(_ui["hint"])
-	_ui["hold"] = _label(12, COL_STATUS)
-	_ui["hold"].visible = false
-	column.add_child(_ui["hold"])
+	# 110~111/170~174: checklist는 전 행 순서 유지, details(hint+hold)가 현재 행 뒤로 이동
 	var checklist := VBoxContainer.new()
 	checklist.add_theme_constant_override("separation", 2)
 	_ui["checklist"] = checklist
+	var details := VBoxContainer.new()
+	details.add_theme_constant_override("separation", 6)
+	_ui["details"] = details
+	_ui["hint"] = _label(14, COL_HINT)
+	details.add_child(_ui["hint"])
+	_ui["hold"] = _label(12, COL_KIND_PHYSICAL)
+	_ui["hold"].visible = false
+	details.add_child(_ui["hold"])
+	var hold_meter_bg := ColorRect.new() # 실측 holdMeter h8, accent=kind색
+	hold_meter_bg.color = Color(0, 0, 0, 0.45)
+	hold_meter_bg.custom_minimum_size = Vector2(0, 8)
+	hold_meter_bg.visible = false
+	var hold_meter_fill := ColorRect.new()
+	hold_meter_fill.color = COL_KIND_PHYSICAL
+	hold_meter_fill.custom_minimum_size = Vector2(0, 8)
+	hold_meter_fill.anchor_right = 0.0
+	hold_meter_bg.add_child(hold_meter_fill)
+	details.add_child(hold_meter_bg)
+	_ui["hold_meter_bg"] = hold_meter_bg
+	_ui["hold_meter_fill"] = hold_meter_fill
 	_ui["rows"] = []
 	for text in BASIC_LABELS + Array(LESSON_LABELS):
 		var row := PanelContainer.new()
@@ -615,6 +648,7 @@ func _build_panel() -> void:
 		row.add_child(line)
 		checklist.add_child(row)
 		(_ui["rows"] as Array).append({"panel": row, "label": row_label, "box": box, "box_style": box_style})
+	checklist.add_child(details)
 	column.add_child(checklist)
 	_ui["safety"] = _label(11, COL_SUBTITLE, "패링 실패 시 폭발 피해를 받습니다. 재시도하면 체력이 회복됩니다.")
 	column.add_child(_ui["safety"])
@@ -622,8 +656,8 @@ func _build_panel() -> void:
 	var practice_button := Button.new()
 	practice_button.text = "W / A / S / D 또는 클릭하여 시작"
 	practice_button.custom_minimum_size = Vector2(0, 44)
-	if _font != null:
-		practice_button.add_theme_font_override("font", _font)
+	if _weighted_font(700) != null:
+		practice_button.add_theme_font_override("font", _weighted_font(700)) # 실측 700
 	practice_button.add_theme_font_size_override("font_size", 15)
 	practice_button.add_theme_color_override("font_color", COL_KEYCAP)
 	var start_style := StyleBoxFlat.new()
@@ -682,6 +716,11 @@ func _render() -> void:
 	elif phase == "success": status_text = "성공"
 	elif phase == "done": status_text = "COMPLETE"
 	_ui["status"].text = status_text
+	# 127 data-kind = (step%2===0 ? magic : physical) — 상태/홀드/미터가 kind 색을 따른다(실측)
+	var kind_color: Color = COL_KIND_MAGIC if step % 2 == 0 else COL_KIND_PHYSICAL
+	_ui["status"].add_theme_color_override("font_color", kind_color)
+	_ui["hold"].add_theme_color_override("font_color", kind_color)
+	(_ui["hold_meter_fill"] as ColorRect).color = kind_color
 	var basic_checks := [movement_done, left_click_done, right_click_done, false]
 	var current_row: int = (step + 3) if step < 0 else (3 if step == 8 else 4 + step)
 	var rows: Array = _ui["rows"]
@@ -707,21 +746,10 @@ func _render() -> void:
 		else:
 			style.bg_color = Color(0, 0, 0, 0)
 		(entry["panel"] as PanelContainer).add_theme_stylebox_override("panel", style)
-		# placeDetails(170~174): 현재 행은 부제 아래 슬롯으로, 나머지는 체크리스트 순서 유지
-		var target_parent: Node = _ui["current_slot"] if is_current else _ui["checklist"]
-		var row_node: Node = entry["panel"]
-		if row_node.get_parent() != target_parent:
-			if row_node.get_parent() != null:
-				row_node.get_parent().remove_child(row_node)
-			target_parent.add_child(row_node)
-	var ordered := 0
-	for i in range(rows.size()):
-		if i == current_row:
-			continue
-		var node: Node = (rows[i] as Dictionary)["panel"]
-		if node.get_parent() == _ui["checklist"]:
-			(_ui["checklist"] as VBoxContainer).move_child(node, ordered)
-			ordered += 1
+	var details_node: Node = _ui["details"]
+	if details_node.get_parent() == _ui["checklist"]:
+		(_ui["checklist"] as VBoxContainer).move_child(details_node,
+			mini(current_row + 1, (_ui["checklist"] as VBoxContainer).get_child_count() - 1))
 	var total := float(BASIC_LABELS.size() + LESSON_LABELS.size())
 	var done_count := 0
 	for flag in basic_checks:
@@ -729,6 +757,7 @@ func _render() -> void:
 	(_ui["progress_fill"] as ColorRect).anchor_right = done_count / total
 	_ui["button"].visible = phase == "intro" # 146
 	_ui["hold"].visible = false
+	(_ui["hold_meter_bg"] as ColorRect).visible = false
 	var ordinal: int = 4 if step == 8 else (step + 4 if step < 0 else step + 5)
 	var subtitle_name: String = "1 · 가시덫" if step == 8 else (BASIC_LABELS[step + 3] if step < 0 else LESSON_LABELS[step])
 	_ui["subtitle"].text = "%d / 12 · %s" % [ordinal, subtitle_name]
@@ -741,7 +770,9 @@ func _render() -> void:
 		_ui["title"].text = "기검참으로 적 10마리를 처치하세요"
 		_ui["hint"].text = "1·2타 뒤 3타에서 좌클릭을 2초 누르고 떼어 검기로 적을 처치하세요.\n처치 %d/10 · 3단 차징 검기 처치 %d/1" % [mini(10, left_kills), 1 if left_full_charge_kill else 0]
 		_ui["hold"].visible = true
+		(_ui["hold_meter_bg"] as ColorRect).visible = true
 		var charge: float = float(player.get("charge_frames")) if player.get("charge_frames") != null else 0.0
+		(_ui["hold_meter_fill"] as ColorRect).anchor_right = clampf(charge / 120.0, 0.0, 1.0) # 253 holdMeter.value
 		_ui["hold"].text = "3단 차징 검기 처치 완료" if left_full_charge_kill else ("3타 차징 %d/3단 · 2초까지 유지" % mini(3, int(charge / 40.0)) if charge > 0.0 else "1·2타 뒤 3타를 2초 누르세요")
 	elif step == -1: # 255~258
 		_ui["keycap"].text = "우클릭"

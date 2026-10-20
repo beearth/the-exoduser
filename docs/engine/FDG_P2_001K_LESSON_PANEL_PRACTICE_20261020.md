@@ -66,3 +66,25 @@
 4. 폰트 에셋(Nanum Myeongjo·Cinzel)·버튼/키캡 그라디언트·현재행 왼쪽 강조색(#ec7958)
    — 근사 기록.
 5. start/finish의 projs/worldItems/스킬·슬롯·BINDS2 저장·복원(포트 미보유 상태).
+
+## 6. 총괄 검수 반영 (2026-10-20 2차) — 요소별 차이표
+지적 3건 수정: ①굵기 — NotoSerifKR-VF에 FontVariation(wght)으로 실측 font-weight 적용
+(제목 700·버튼 700·본문/행/부제 400) ②우상단 상태 라벨 — autowrap 해제·원본 텍스트
+(일시정지/연습 중/성공/COMPLETE)·kind 색(127 data-kind: step%2==0 매직=보라 #c5a4f2
+실측 step-2 / 피지컬=노랑 #e0c18b) ③행 순서 — 원본 DOM(110~111: checklist 전 행 유지 +
+details(hint·hold·meter)가 placeDetails(174)로 현재 행 뒤 삽입) 그대로 재구현 → 완료
+행이 현재 행 위에 유지. 추가: 보라 홀드 문구+8px 미터(실측 h8·accent=kind색,
+charge/120 채움=253 holdMeter.value).
+
+| 요소 | 차이 | 비고 |
+|---|---|---|
+| 패널 지오메트리/패딩/배경/프레임/크레스트/배경막 | 없음 | 실측 일치 |
+| 제목/부제/본문/행/버튼/진행바 색·크기·굵기 | 없음 | FontVariation wght 적용 |
+| 상태 라벨(우상단) 텍스트·kind 색 | 없음 | 실측 #c5a4f2/#e0c18b |
+| 행 순서(완료→현재→상세→잔여)·체크박스 | 없음 | placeDetails 재현 |
+| 홀드 문구·미터(보라/8px/채움) | 없음 | 실측 반영 |
+| 키캡 굵기 | 남음(근사) | 실측 400이나 원본 Cinzel의 시각 무게 — 대체 글꼴(NotoSerifKR)에서 wght700으로 시각 등가 보정 |
+| 글꼴 패밀리 | 남음(에셋) | Nanum Myeongjo·Cinzel 에셋 미보유 — NotoSerifKR-VF 대체 |
+| 버튼/키캡 그라디언트 | 남음(근사) | linear-gradient를 중간값 단색으로(StyleBoxFlat) |
+| 현재 행 왼쪽 강조색 | 남음(근사) | #ec7958 왼쪽 2px — StyleBoxFlat 단색 제약으로 #a34d3f 통일 |
+| 행 간격 | 남음(소폭) | 웹 행높이 38px 대비 수 px 차 — 폰트 메트릭 차이 |
