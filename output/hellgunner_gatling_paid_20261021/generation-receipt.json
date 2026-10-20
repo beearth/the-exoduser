@@ -1,0 +1,30 @@
+{
+  "created_at": "2026-10-20T23:05:02.956Z",
+  "provider": "MagicLight Toolbox",
+  "model": "GPT Image 2.5 sunburst",
+  "task_id": "7518447066934194176",
+  "status": "completed",
+  "count": 1,
+  "aspect_ratio": "4:3",
+  "displayed_cost_points": 200,
+  "observed_balance_before": 40690,
+  "balance_scope": "Fresh task tab; earlier existing tab showed stale 41490; concurrent other tasks exist, total balance changes cannot all be attributed to this task.",
+  "reference": "assets/charselect/silvertail_cut.png",
+  "reference_role": "Painting quality only, not identity/costume/pose",
+  "user_direction": "Paid generation; new conceptual unique character; Gatling-like revolver and stronger gunner silhouette",
+  "prompt": "EXODUSER 성인 여성 헬거너의 완전히 새로운 콘셉트. 참조는 반실사 얼굴·재질·깊은 명암 품질만, 인물·의상·포즈는 복제하지 말 것. 처형용 탄환을 운구하는 강인한 여성 집행자. 비대칭 적갈 단발, 창백한 성숙한 여성 얼굴, 냉정한 눈. 관처럼 묵직한 한쪽 흑철 견갑과 암적색 반망토, 짙은 가죽·닫힌 중장화, 낮게 버티는 넓은 자세. 양손에 거대한 게틀링처럼 생긴 리볼버 한 자루. 총구는 원형으로 묶인 여섯 회전총열, 뒤에는 거대 6연발 리볼버 실린더·노출 해머·권총 손잡이·짧은 어깨받침. 무기는 상체만큼 굵고 육중하며 좌전방을 향함. 총검 하나. 권총과 라이플을 따로 만들지 말 것. 탄띠급탄식 현대 기관총·별도 무기 없음. 넓은 반달형 무기 실루엣과 비대칭 어깨가 기억에 남게. 거칠고 닳은 흑철·가죽·암적색 천, 작은 황동 반사, 네온·입자·문자 없음. 전신·발·무기 전체와 여백, 짙은 청회색 단순 배경.",
+  "completed_observed_at": "2026-10-20T23:08:47.814Z",
+  "result_url": "https://skillsrc.octask.ai/gpt-image-2/7518447066934194176/7e26848a-81fc-30ba-013a-e1b7cb7a7cdf_0.png",
+  "completed_evidence": "Exact task card changed from Generating image to result; Preview image task opened Generated image preview",
+  "reference_sha256": "a96ed5cf1c771b6e7f9fc8f94ab0be8024ff181b675425aa559663030909a5cd",
+  "file": "hellgunner_gatling_concept.png",
+  "sha256": "10b2b00a257a52806d270e42f85a66cad727c9cd841c59accb74e43e27498bbc",
+  "size": [
+    3312,
+    2480
+  ],
+  "format": "PNG",
+  "observed_balance_after_refresh": 40490,
+  "observed_points_delta": 200,
+  "visual_verdict": "Concept review candidate: coherent Gatling-like revolver mass and stronger silhouette; not user-adopted or connected to runtime."
+}
