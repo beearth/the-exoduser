@@ -62,7 +62,7 @@ window._supabaseReady=new Promise(resolve=>{
 <script src="maps_data.js"></script>
 <script src="assets/map/ch1/geometry/ch1_si1_geometry.js"></script>
 <script src="assets/map/ch1/production_finish/layout.js?v=20260916-finish-1"></script>
-<script src="ch1-living-detail.js?v=20261006-start-ready"></script>
+<script src="ch1-living-detail.js?v=20261020-map021"></script>
 <script src="ch1-forest-sway.js?v=20261006-start-ready"></script>
 <script src="ch1-face-life.js?v=20261008-98"></script>
 <script src="ch1-rot-trees.js?v=20261019-retire13"></script>
@@ -18404,7 +18404,7 @@ const _OBJ_META={
   'centipede':{sz:40},'larva':{sz:32},'minibug':{sz:24},'chitin_debris':{sz:32},
   
   
-  'pit_lava':{sz:200,collision:true},'pit_poison':{sz:200,collision:true},
+  'pit_lava':{sz:200,collision:true},'pit_poison':{sz:200,collision:true,colW:80,colH:58,colOy:7}, // MAP-021: 원 r80은 흙 테두리(타원 83×62, 중심 +7)보다 북쪽 25px 넘쳐 맨땅에서 막힘 → 테두리 안쪽 타원
   'pit_ice':{sz:200,collision:true},'pit_corpse':{sz:200,collision:true},'pit_bugs':{sz:200,collision:true},
   // 'pit_blood_a':{sz:150,collision:false,dot:true,dotPct:0.02,dotInterval:30,anim:{frames:9,cols:3,rows:3,interval:300}}, // 피웅덩이 제거
   // 'pit_blood_b':{sz:100,collision:false,anim:{frames:9,cols:3,rows:3,interval:300}}, // 피웅덩이 제거

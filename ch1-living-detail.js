@@ -343,6 +343,7 @@
       const wet=o.type==='m_c1pool'||o.type==='pit_poison';
       const secretion=o.type==='m_c1cocoon'||o.type==='m_c1spod';
       if(surfaceOnly&&!wet&&!secretion)continue;
+      if(surfaceOnly&&o.type==='pit_poison'&&o.x===6500&&o.y===5580)continue; // MAP-021: 전용 pit() 구덩이 위에 젖은 막을 덮으면 늪 수프로 묻혀 보이지 않는 벽이 됨
       const s=k*Math.min(1.6,o.scale||1),pad=160*s;
       const y=o.y+((surfaceOnly&&wet)?0:(feet[o.type]||0)*(o.scale||1));
       if(Math.abs(o.x-g.cam.x)>hw+pad||Math.abs(y-g.cam.y)>hh+pad)continue;
@@ -747,7 +748,7 @@
           const iw=material.naturalWidth||material.width,ih=material.naturalHeight||material.height;
           x.drawImage(material,iw*.67,ih*.16,iw*.24,ih*.36,-110,-75,220,160);
           const depth=x.createLinearGradient(0,-65,0,78);
-          depth.addColorStop(0,'rgba(8,9,8,.76)');depth.addColorStop(.55,'rgba(14,14,11,.48)');depth.addColorStop(1,'rgba(24,23,18,.22)');
+          depth.addColorStop(0,'rgba(6,7,6,.92)');depth.addColorStop(.55,'rgba(10,10,8,.74)');depth.addColorStop(1,'rgba(20,19,15,.46)'); // MAP-021: 늪과 같은 재질이라도 꺼진 벽은 확실히 어둡게
           x.fillStyle=depth;x.fillRect(-128,-128,256,256);
         }
         for(let j=0;!material&&j<280;j++){
@@ -766,7 +767,7 @@
         if(material){
           const iw=material.naturalWidth||material.width,ih=material.naturalHeight||material.height;
           x.drawImage(material,iw*.16,ih*.15,iw*.34,ih*.4,-92,-31,184,108);
-          x.fillStyle='rgba(9,15,8,.3)';x.fillRect(-128,-128,256,256);
+          x.fillStyle='rgba(6,10,6,.5)';x.fillRect(-128,-128,256,256);
         }
         for(let j=0;!material&&j<32;j++){
           const px=Math.sin(j*12.989)*81,py=23+Math.cos(j*7.31)*43;
@@ -797,9 +798,10 @@
           if(j)x.lineTo(px,py);else x.moveTo(px,py);
         }
         // Broken contact follows the torn wall instead of drawing a second smooth oval.
-        x.save();if(material)x.setLineDash([13,7,5,11]);
-        x.strokeStyle=material?'rgba(36,28,26,.42)':'rgba(36,28,26,.9)';x.lineWidth=material?2:4;x.stroke();
-        x.translate(0,-2);x.strokeStyle=material?'rgba(143,125,91,.12)':'rgba(143,125,91,.3)';x.lineWidth=material?1:1.6;x.stroke();x.restore();
+        // MAP-021: 늪 재질 위에서도 '꺼진 구멍'으로 읽히도록 앞턱 윤곽·젖은 하이라이트를 실선으로 강화
+        x.save();if(material)x.setLineDash([22,4,9,5]);
+        x.strokeStyle=material?'rgba(18,14,12,.82)':'rgba(36,28,26,.9)';x.lineWidth=material?3.5:4;x.stroke();
+        x.translate(0,-2.5);x.strokeStyle=material?'rgba(160,142,104,.3)':'rgba(143,125,91,.3)';x.lineWidth=material?1.4:1.6;x.stroke();x.restore();
         x.restore();
       }
       pitAtlas=a;pitAtlasSource=material;
