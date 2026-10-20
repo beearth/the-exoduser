@@ -1,3 +1,12 @@
+## 2026-10-20 TRACE-BOSS-CH5 5장 보스 원본 추적·짧은 구현 지시서
+
+| 항목 | 근거·검수 |
+|---|---|
+| 기준 / 범위 | main010515993, 문서 전용·핵심표2개. 원본은 제한 구간·정적 선언/HP 산술만 관측. 제품·공용 Main/State/저장·원본·기존설계0줄, Godot/import/제품회귀/실창0 |
+| 분모 / 원본 | si21..25 보스5, Set48..52/union52=공유45+신규7, combo61=공유54+신규7·공통phase5. HP이중floor/실효L·원본idx/ordinal·CD59/idx60 예외 유지 |
+| 차이 / 순서 | Bible대조8행·신규7개 start/5queue/2state/피격 접점. rewind 텔포·clone 기술복제는 실행원문에 없음. BC5-01~12·첫catalog 지시서, CH4 catalog main부재로 구현착수 BLOCKED·문서작업 정상 제출 |
+| 검수 / 제출 | 관련 정적 문서 검수1회29/0·수치 및 원본 행 대조, 제품PASS 합산0. [CH5 보스 추적](engine/FDG_SOURCE_TRACE_BOSS_CH5_20261020.md), 원로그 ~/exoduser-wt/_out/trace-boss-ch5/. 정상훅·자기branch push·원격SHA/DONE뒤자기worktree제거 |
+
 ## 2026-10-20 BC2-07 shieldBash2 독립 wind/dash/contact 계산
 
 ## 2026-10-20 EC4-02 4장 catalog·23필드 초기 literal projection
