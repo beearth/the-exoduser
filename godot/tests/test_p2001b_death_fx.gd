@@ -6,6 +6,8 @@ extends SceneTree
 ## 처치 RNG 소비 수 불변(8/9 — el3 eye_mass).
 const FORMULA = preload("res://port_modules/combat_stat_formula/producer.gd")
 const USERDIR = "EXODUSER-P2001B-Isolated-20261020"
+# QA-002: 테스트 소유 입력. 제품 RNG 호출 순서는 변경하지 않는다.
+const QA002_TEST_SEED = 20261020
 const GROUPS = ["assets_and_adapter", "weapon_hit_and_kill_fx", "lifetimes_and_kislash_noimpact"]
 
 var active_main: Node
@@ -19,6 +21,8 @@ var forced_actor_fields = 0
 var hurte_outcomes: Array = []
 
 func _initialize() -> void:
+	seed(QA002_TEST_SEED) # 프로세스당 1회; Main 재부팅은 같은 스트림을 이어간다.
+	observations["qa002_test_seed"] = QA002_TEST_SEED
 	call_deferred("_run")
 
 func _run() -> void:
