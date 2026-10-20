@@ -1,6 +1,6 @@
 # QS-01 — 물약 정의·회복량·자동 CD 순수 계산 이식
 
-2026-10-20 KST · QS-01 순수 모듈 검수 완료·제출 준비. 기존 G/지역/HUD 3suite 미실행 한계는 아래에 명시한다. **순수 계산만 구현**했으며, 자동 물약 발동·HP/악의 변경·Main 연결은 하지 않았다.
+2026-10-20 KST · QS-01 순수 모듈 검수 완료·정상 체크포인트 / 검수 대기. 기존 G/지역/HUD 3suite 미실행 한계는 아래에 명시한다. **순수 계산만 구현**했으며, 자동 물약 발동·HP/악의 변경·Main 연결은 하지 않았다.
 
 ## 기준·소유·변경 경로
 
@@ -147,3 +147,16 @@ PROJECT=/Users/fordeargamers/exoduser-wt/qs-01/godot
 | docs 검색 | 최종 코드 작성 후 docs 전체 keyword 검색 로그 보존. 원본 수치 변경0; 새 구현 상태를 보고서/변경로그로 동기화 | `docs-keyword-final-scan.log` |
 
 기존 starter/지역/HUD 3suite는 여전히 미실행이다. 19a 기준 별도 Main 관측값·probe 실패를 9528 기준 기존 suite 통과로 승격하지 않는다. 이 보고서는 QS-01 독립 계산 모듈의 검수/제출 기록이다.
+
+
+## 정상 구현 체크포인트 영수증
+
+| 항목 | 확정 결과 |
+|---|---|
+| 구현 SHA | `2da719dc603c3a2c57032357ef82dae474af6a3b` |
+| parent / 최종 기준 main | `9528ea35b429498fcf42fe3723008219ed0ed7e1` |
+| 정상 훅 | 변경로그 추가 전 직접 검사 exit1 요구 원문 보존 → 승인된 prepend 후 직접 검사 exit0 → 일반 `git commit` exit0. 다른 문서 추가 요구 없음. 우회0 |
+| 실제 범위 | 신규 모듈·신규 테스트·자기UID2개·본 보고서와 CHANGELOG_SYNC의 신규11줄. 기존 변경로그 삭제0·기존 제품/공용6/기존 테스트 변경0 |
+| 최종 검수 수치 | QS-01 318/0, contracts5그룹/0, 자원회복173/0. 전부 원앱4.7.2·격리실행. Camera2D WARNING1 보존 |
+| 원격 확인 | 이 SHA 기록용 후속 doc-only commit까지 정상 push한 최종 branch SHA/ref 대조는 Git 밖 `DONE.txt`에 기록. report의 구현 SHA와 최종 문서 커밋 SHA는 구분 |
+| 남은 검증 | G/지역/HUD 기존3suite 격리명 충돌로 미실행. 이전 별도probe 실패·진단 보존. 자동 사용/runtime·실플레이 인수 미완 |
