@@ -1,4 +1,5 @@
 extends SceneTree
+const TRANSPORT = preload("res://tests/qa007/oracle_transport.gd")
 ## Exact source branch oracles with exclusively caller-owned in-memory fixtures.
 const READER = preload("res://port_modules/save_adapter/source_slot_reader.gd")
 const USERDIR := "EXODUSER-sv-transport-read-Isolated-20261020"
@@ -8,7 +9,7 @@ var group := "setup"
 var groups: Array = []
 var completed: Dictionary = {}
 var probe: Dictionary = {}
-var node_bin := "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node"
+var node_bin := TRANSPORT.node_binary()
 var artifacts := ""
 
 func _initialize() -> void:
@@ -52,8 +53,8 @@ func _run() -> void:
 		return
 	var output: Array = []
 	var status := OS.execute(node_bin, [ProjectSettings.globalize_path("res://../tools/sv_transport_read_oracle.cjs"), ProjectSettings.globalize_path("res://..")], output, true)
-	check(status == 0 and output.size() == 1, "source-only Node oracle executed")
-	var decoded: Variant = JSON.parse_string(str(output[0])) if not output.is_empty() else null
+	check(status == 0 and not output.is_empty(), "source-only Node oracle executed")
+	var decoded: Variant = TRANSPORT.decode_output(output)
 	check(decoded is Dictionary, "source oracle JSON")
 	if not decoded is Dictionary or status != 0: quit(2); return
 	probe = decoded
