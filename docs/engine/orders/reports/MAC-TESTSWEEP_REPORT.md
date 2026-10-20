@@ -211,6 +211,6 @@ PC 접근·PC 새 실행은 하지 않았다. 문서에 검사 수가 없는 PAS
 
 게임·테스트·에셋·공용 스크립트 변경 0. `godot/override.cfg`는 종료 후 0바이트·미스테이징이며 커밋하지 않는다. 경로 지정 add만 사용하고 `git add -A`, main push·병합, force push, reset·checkout, 서버 재시작, 기존 게임 종료를 하지 않는다.
 
-결과 커밋 SHA: **제출 메타데이터 기록 시 기입**. 이 본문 자체를 포함하는 최종 제출 HEAD와 원격 ref 대조 결과는 `~/exoduser-wt/_out/mac-testsweep/DONE.txt` 및 `submission.json`에 기록한다. 로컬 커밋만으로 원격 제출 완료를 선언하지 않는다.
+실행 결과 최초 커밋 SHA: **`bd5bc5d185f8148696d9504044d143d430dc38a7`** (parent=`7c4a2442bfc46f5d25c1bd9bf287a9324d8d5e5a`, 코드·테스트 변경 0). 후속 메타데이터 커밋은 이 SHA와 작업판 제출 행만 기록한다. 이 본문 자체를 포함하는 최종 제출 HEAD와 원격 ref 대조 결과는 `~/exoduser-wt/_out/mac-testsweep/DONE.txt` 및 `submission.json`에 기록한다. 로컬 커밋만으로 원격 제출 완료를 선언하지 않는다.
 
 남은 검수: 누락 oracle을 정식 전제로 제공한 type3 생성자 검사, Windows export ICU 패키지 검사, 렌더러를 사용하는 실창·시각 검수. 이번 보고서는 Mac 헤드리스 결과이며 PC/Mac 전체 동기화·전체 Godot 이식 완료·시각 품질 PASS를 주장하지 않는다.
