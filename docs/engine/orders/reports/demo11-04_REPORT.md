@@ -2,6 +2,8 @@
 
 로컬 저장 adapter의 실제 IO 결과를 읽어 5슬롯 목록·새 전사 metadata 생성·선택 데이터 전달·삭제 확인 UI를 구현했다. **화면 비교 자료 준비 / 맥북총괄 눈 검수 대기**다. 상태 문구는 실제 기록 생성/확인과 이어하기 준비 중을 표시한다. 이어하기는 선택 슬롯 payload를 넘기는 호출까지만이며 Player 복원·게임 진입 성공을 표시하지 않는다.
 
+최신 RETOUCH: **52/0**, hell 본문·Cinzel 제목·#dfd6c2·제목/아트 분리. 아래 RETOUCH 절과 최신 캡처 경로를 참조한다.
+
 | 기준·범위 | 구현·원본 근거 |
 |---|---|
 | 기준·의존 | origin/main **8dbbf2b0e699c36a93ca5cf41a2f3408be6da2c4** + DEMO11-05 **f2889355e42828780d902ac1546211f5da56f627** 정상 merge **61d4d92e10f371724ee5e33d4eea21ccf764b3a9**. rebase/force0, 다른 미병합 코드 반입0 |
@@ -41,3 +43,14 @@
 캡처는 격리 디렉터리에 adapter로 기록한 명시 fixture(재의 맹세 Lv3·stage0 및 metadata-only 먼지의 순례자)를 실제 UI가 다시 읽은 화면이다. 이름·레벨은 QA fixture이며 자연 저장·복원 증거가 아니다. 원본 에셋 byte 검증은 assets.json, 번역 키는 translation-texts.json, 보호 hash는 protected-inputs.json, 각 실행 JSON과 stdout/stderr는 `~/exoduser-wt/_out/demo11-04/`에 있다.
 
 DEMO11-06이 실제 payload를 소비하는 restore/activate coordinator·new-game 부팅을 인수해야 한다. 이번 UI 신호를 실제 플레이 시작·복원 완료로 표시하지 않는다. 기존 active save 복귀 동기화/legacy 단일키 migration·온라인/Steam 인증·캐릭터 선택/서사·공유창고는 미연결이며 별도 owner 범위다. 저장 adapter의 단일키 rename 원자성/내구성·플랫폼 제한도 그대로 상속한다. 최종 SHA·remote 일치·수치는 DONE.txt, 자기 worktree 제거와 R불변은 cleanup-verification.json에 기록한다.
+
+
+## 2026-10-21 맥북총괄 RETOUCH 재제출
+
+기존 branch codex/demo11-04-20261021의026a2e00 위에 fetch 최신 main **969c194e6e912128f29b3058982c113c5feecccf**을 정상 merge한 **e20fbaf6b89dd89a6f71d30ac24e8b1c28704943** 기준이다. ‘같은 브랜치’ 지시를 공통 새 branch명보다 우선했고 worktree는 요청한 demo11-21fix 경로를 재사용했다. 먼저 drop branch **72e602d1** push·remote 일치를 확인한 다음 수행했다. 이 UI branch에 미병합 drop branch를 추가 반입하지 않았다.
+
+본문·슬롯/동작 버튼·이름 입력을 hell400 명조, 제목을 hell_title700 Cinzel 계열로 바꾸고 기본 글자를 #dfd6c2로 맞췄다. 왼쪽 아트를 y290 아래 600×560으로 배치해 EXODUSER/지옥의 길 제목 모두 아트 바깥 위에 둔다. native_demo_lobby_screen.gd25/64/72/95/121의5행만 치환, Main/State/Player/전투/IO owner0줄·이미지 byte0변경·신규 텍스트0·목록 생성 API0.
+
+기존48단정 유지+폰트/영역4단정으로 **52/0**, 관련 UI 스위트 **1회** 실행했다. 슬롯/이름입력 hell font chain, 제목 Cinzel chain과 실제 제목 rect의 art y290 이전 종료를 검사한다. UI import·스위트·실창 capture **3회 모두 exit0/ERROR0/ObjectDB0/resource0**이다. 이번 RETOUCH gate30초 대기10회, 각 override 종료0byte. 앞의 Godot12회 표는 이전026a2e00 제출의 이력이며 이번3회를 중복 합산하지 않는다. 기존 저장 adapter/slot-reader는 무변경으로 재실행하지 않았다. 기존48개 검사를 줄이지 않았다.
+
+자료: `~/exoduser-wt/_out/demo11-21fix/captures/01-list-1920x1080.png`, `02-delete-confirm-1920x1080.png`; `01-list-crop-1x.png`, `02-delete-crop-1x.png`, **03-title-art-crop-1x.png**. 이전 화면은 _out/demo11-04/captures/에 그대로 보존했다. 실제 렌더링 viewport를 재캡처하며 새 자연 save/복원·OS 수동 플레이 검수와 구분한다. **화면 비교 자료 준비 / 맥북총괄 재검수 대기**다.

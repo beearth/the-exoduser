@@ -20,6 +20,7 @@ func _run() -> void:
 	var image := root.get_texture().get_image()
 	if image.get_size()!=Vector2i(1920,1080): quit(4); return
 	if image.save_png(output.path_join("01-list-1920x1080.png"))!=OK: quit(5); return
+	image.get_region(Rect2i(175,120,660,470)).save_png(output.path_join("03-title-art-crop-1x.png"))
 	image.get_region(Rect2i(990,225,800,230)).save_png(output.path_join("01-list-crop-1x.png"))
 	screen.erase.grab_focus(); screen.erase.pressed.emit()
 	await process_frame

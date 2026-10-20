@@ -1,3 +1,9 @@
+## 2026-10-21 DEMO11-04 로비 명조·Cinzel / 아트 겹침 RETOUCH
+
+- 같은04 branch026a2e00에 최신main969c194e 정상 merge e20fbaf6. drop72e602d1 push·remote 확인 후 별도 진행, 공통 새 branch명보다 명시 같은 branch 지시 우선.
+- 자기 view5행만 치환: 본문/버튼/입력 hell명조·제목hell_title(Cinzel)·#dfd6c2, 아트 y290 아래로 분리. Main/State/전투/저장owner0줄·이미지/문구 변경0. 기존48+폰트/경계4=52/0, 관련스위트1회.
+- 목록/삭제1920×1080+1x3곳은 _out/demo11-21fix/captures/. [기존 보고서 후속](engine/orders/reports/demo11-04_REPORT.md), UI_FOUNDATION 최신 로비 한정 토큰 갱신. **화면 비교 자료 준비·맥북총괄 재검수 대기**, 시각 승인 주장0.
+
 ## 2026-10-21 DEMO11-04 실제 로컬5슬롯 요청 UI·화면 비교 자료 준비
 
 - main8dbbf2b0 + DEMO11-05 f2889355 정상merge61d4d92e. 기존 actual storage/slot reader 재사용, 새로하기 metadata/이어하기 payload 요청·확인 삭제. IO 성공+readback만 목록 반영, stale/lock/읽기 실패 보호. 복원/입장 성공 주장0.

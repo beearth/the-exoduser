@@ -22,7 +22,7 @@ var confirm: Button
 var _previous_focus: Control
 var _form_slot := -1
 var _form: Control
-const BONE = Color("e8d9c6")
+const BONE = Color("dfd6c2")
 const GOLD = Color("96714e")
 
 func _ready() -> void:
@@ -61,7 +61,7 @@ func _box(rect: Rect2, fill: Color, edge: Color, parent: Node = self) -> Panel:
 func _label(text: String, at: Vector2, width: float, px: int, parent: Node = self, title := false) -> Label:
 	var l := Label.new()
 	l.text=text; l.position=at; l.size=Vector2(width,60)
-	l.add_theme_font_override("font",Fonts.stack("hell" if title else "font",700 if title else 400))
+	l.add_theme_font_override("font",Fonts.stack("hell_title" if title else "hell",700 if title else 400))
 	l.add_theme_font_size_override("font_size",px); l.add_theme_color_override("font_color",BONE)
 	l.mouse_filter=Control.MOUSE_FILTER_IGNORE
 	parent.add_child(l)
@@ -69,7 +69,7 @@ func _label(text: String, at: Vector2, width: float, px: int, parent: Node = sel
 func _button(text: String, rect: Rect2, callback: Callable, parent: Node = self, danger := false) -> Button:
 	var b := Button.new()
 	b.text=text; b.clip_text=true; b.position=rect.position; b.size=rect.size
-	b.add_theme_font_override("font",Fonts.stack("font",500)); b.add_theme_font_size_override("font_size",22)
+	b.add_theme_font_override("font",Fonts.stack("hell",400)); b.add_theme_font_size_override("font_size",22)
 	for state in ["normal","hover","pressed","focus","disabled"]:
 		var s := StyleBoxFlat.new()
 		s.bg_color=Color("321719") if danger else Color("151315")
@@ -92,7 +92,7 @@ func _image(path: String, rect: Rect2, parent: Node = self) -> TextureRect:
 func _build() -> void:
 	_image("res://assets/ui/demo_lobby/abyss.png",Rect2(0,0,1920,1080))
 	var shade := ColorRect.new(); shade.color=Color(0.02,0.015,0.025,0.64); shade.size=Vector2(1920,1080); shade.mouse_filter=Control.MOUSE_FILTER_IGNORE; add_child(shade)
-	_image("res://assets/ui/demo_lobby/ancestor.webp",Rect2(80,120,790,800))
+	_image("res://assets/ui/demo_lobby/ancestor.webp",Rect2(175,290,600,560))
 	_image("res://assets/ui/demo_lobby/crest.png",Rect2(285,28,360,120)).stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	_label("EXODUSER",Vector2(230,132),600,66,self,true)
 	_label(tr_text("지옥의 길","THE ROAD THROUGH HELL"),Vector2(350,215),520,28,self,true)
@@ -118,7 +118,7 @@ func _build() -> void:
 	_form.hide()
 	_label(tr_text("새 전사의 이름","New warrior name"),Vector2(22,10),650,25,_form,true)
 	name_input=LineEdit.new(); name_input.max_length=8; name_input.position=Vector2(24,72); name_input.size=Vector2(470,56)
-	name_input.add_theme_font_override("font",Fonts.stack("font",400)); name_input.add_theme_font_size_override("font_size",22); _form.add_child(name_input)
+	name_input.add_theme_font_override("font",Fonts.stack("hell",400)); name_input.add_theme_font_size_override("font_size",22); _form.add_child(name_input)
 	_button(tr_text("새로하기","New game"),Rect2(516,72,236,56),_create,_form,true)
 	_button(tr_text("취소","Cancel"),Rect2(516,146,236,48),func(): _form.hide(); cards[maxi(0,_form_slot)].grab_focus(),_form)
 	modal=Control.new(); modal.size=Vector2(1920,1080); add_child(modal)

@@ -96,6 +96,16 @@ func _run() -> void:
 	check(screen.menu.rows.size()==5 and screen.start.disabled,"actual screen starts unselected")
 	check(screen.get_node("crest").size==Vector2(360,120),"ornament respects declared rect rather than texture minimum")
 	check(screen._number_label(3.0)=="3","source integral JSON level label has no .0 suffix")
+	var fonts=load("res://scripts/native_ui_fonts.gd")
+	check(fonts.chain_families(screen.cards[0].get_theme_font("font"))[0]=="Nanum Myeongjo","slot buttons use hell body serif token")
+	check(fonts.chain_families(screen.name_input.get_theme_font("font"))[0]=="Nanum Myeongjo","name entry uses hell serif token")
+	var brand: Label
+	var subtitle: Label
+	for child in screen.get_children():
+		if child is Label and child.text=="EXODUSER": brand=child
+		if child is Label and child.text=="지옥의 길": subtitle=child
+	check(brand!=null and fonts.chain_families(brand.get_theme_font("font"))[0]=="Cinzel Decorative","brand title uses Cinzel token")
+	check(brand!=null and subtitle!=null and brand.get_rect().end.y<=screen.get_node("ancestor").position.y and subtitle.get_rect().end.y<=screen.get_node("ancestor").position.y,"both brand lines outside the art rectangle")
 	screen.cards[0].pressed.emit()
 	check(screen.menu.selected==0 and not screen.start.disabled,"actual card control selects saved slot")
 	var received: Array=[]
