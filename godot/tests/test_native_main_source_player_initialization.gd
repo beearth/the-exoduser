@@ -103,7 +103,7 @@ func source_anchor_order_same_owner() -> void:
 	_check(main.source_initialization.get_native_source_initialization_player() == main.player and main.source_initialization.get_native_source_initialization_world() == main.world, "completed dispatcher has actual same actor/world")
 	_check(dispatcher["completion"]["owner_identity_valid"] == true and dispatcher["completion"]["source_anchor_order_complete"] == true, "completion/current ownership separate from full Main readiness")
 	_check(dispatcher["active"] == false and main.player.get_native_source_initialization_snapshot()["constructor_write_ready"] == false, "Tree installation closes constructor write window")
-	_check(snapshot["main_full_ready"] == false and snapshot["automatic_regeneration_bound"] == false and dispatcher["full_source_query_order_proven"] == false, "full bootstrap, regeneration and complete source query order remain unclaimed")
+	_check(snapshot["main_full_ready"] == false and snapshot["automatic_regeneration_bound"] == true and dispatcher["full_source_query_order_proven"] == false, "full bootstrap/query order remain unclaimed; source regeneration is bound (P2-005d — 원본 32705~32721 상시 단계)")
 	observations[current_group] = {"main_id": main.get_instance_id(), "player_id": main.player.get_instance_id(), "world_id": main.world.get_instance_id(), "trace": trace, "committed_writes": writes.size(), "completion": dispatcher["completion"]}
 
 func shared_crystal_current_values() -> void:
@@ -141,8 +141,8 @@ func shared_crystal_current_values() -> void:
 	var authority_st_writes: Array = main.source_resources.get_snapshot()["source_initializer_writes"].filter(func(write): return write["field"] == "st")
 	_check(not authority_st_writes.is_empty() and authority_st_writes.back()["value"] == last["st"], "constructor State and actual Authority accepted the same source final ST")
 	_check(p["st"] == main.player.stamina and p["st"] >= last["st"] and p["st"] <= p["mst"], "observed no-attack startup: current ST is actual actor within cap; legacy regen is distinct from constructor writes")
-	_check(main.player.get_native_resource_regeneration_snapshot()["bound"] == false and snapshot["automatic_regeneration_bound"] == false, "automatic source regeneration remains unbound; old native ST recovery is a separate current phase")
-	observations[current_group] = {"constructor_st": last["st"], "tree_current_st": p["st"], "owned_mst": p["mst"], "legacy_st_regeneration_possible": true, "source_automatic_regeneration_bound": false}
+	_check(main.player.get_native_resource_regeneration_snapshot()["bound"] == true and snapshot["automatic_regeneration_bound"] == true, "automatic source regeneration is bound; legacy native ST recovery branch is inert (P2-005d — player.gd 731 분기, 원본 32705~32721)")
+	observations[current_group] = {"constructor_st": last["st"], "tree_current_st": p["st"], "owned_mst": p["mst"], "legacy_st_regeneration_possible": false, "source_automatic_regeneration_bound": true}
 	var actor: Dictionary = main.player.read_native_source_initialization_fields()
 	for field in actor:
 		_check(p.has(field) and p[field] == actor[field], "P synchronizes actual scalar actor field " + field)

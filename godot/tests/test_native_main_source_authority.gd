@@ -53,6 +53,7 @@ func check(ok: bool, label: String) -> bool:
 
 func make_main() -> Node2D:
 	var main = MAIN.instantiate()
+	main.set_meta("native_source_regeneration_boot", "external") # P2-005d: synthetic natural_regen 패킷 검증은 자동 리젠 없는 정지 상태 전제 — 하니스 옵트아웃
 	root.add_child(main) # the actual production Main _ready owns construction
 	check(is_instance_valid(main.player) and is_instance_valid(main.world), "actual Main creates its Player and World")
 	check(is_instance_valid(main.source_resources), "actual Main creates source authority")

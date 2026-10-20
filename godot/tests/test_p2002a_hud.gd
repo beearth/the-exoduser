@@ -184,7 +184,7 @@ func _test_hud_updates_on_kill_and_levelup() -> void:
 	var exp_result: Dictionary = state.apply_native_add_exp(active_main, 20)
 	_check(exp_result.get("applied") == true and int(exp_result.get("lv", 0)) >= 2,
 		"owner addExp 20 → 레벨업")
-	for i in range(6):
+	for i in range(12): # 30Hz _refresh 1주기 이상 보장 (P2-005d: 리젠 단계 틱 추가로 여유 확장)
 		await physics_frame
 	snap = _snapshot()
 	_check(snap.get("lv_text") == _format_comma(int(state.read_current_p().get("lv"))),

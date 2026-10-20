@@ -14,6 +14,7 @@ const SourceProvidersScript = preload("res://scripts/native_source_player_provid
 const SourceInitializationScript = preload("res://scripts/native_source_player_initialization.gd")
 const SourceInitializationServicesScript = preload("res://scripts/native_source_player_initialization_services.gd")
 const SourceLessonScript = preload("res://port_modules/parry_lesson_source/producer.gd")
+const RegenerationPhaseScript = preload("res://scripts/native_source_player_regeneration_phase.gd") # P2-005d
 const NativeSpriteInspector = preload("res://port_modules/native_sprite_resource_readiness/producer.gd")
 const NativePlayerSpriteExpectation = preload("res://scripts/native_player_sprite_expectation.gd")
 const IntroCurtainViewScript = preload("res://port_modules/character_clip/intro_curtain_view.gd")
@@ -79,6 +80,7 @@ var _source_l_eq_cache: Variant = null
 var _source_l_eq_write_context: Dictionary = {}
 var source_initialization_result: Dictionary = {}
 var source_lesson: RefCounted
+var source_regeneration: RefCounted # P2-005d — 원본 자연 회복 단계(배선 후 Player 레거시 0.28 비활성)
 var _source_lesson_file_init_attempted: bool = false
 var _source_lesson_file_init_publish_calls: int = 0
 var _source_lesson_boot_packet: Dictionary = {}
@@ -245,6 +247,18 @@ func _ready() -> void:
 	if not native_skill_slots.configure(self, world, player, source_state):
 		push_error("Native skill slots configuration rejected (startup continues).")
 	hud.bind_native_skill_cooldowns(Callable(native_skill_slots, "read_native_slot_cooldowns"))
+	# P2-005d — 원본 자연 회복 단계 부팅 배선 (32705~32721: 돔 판정→플랫(10+2lv)/60→
+	# 자연률(_mpr/_str 32711~32712 ×_hdMul)→HP(32715)→ST/MP 대입(32717~32720, 레슨 ch2 게이트)).
+	# 소유권 이전: Player는 바인딩되면 같은 틱에 레거시 ST 0.28 경로를 비활성(player.gd 731
+	# `if _native_resource_regeneration_bound:` 분기) — 이중 회복 없음. 공급자는 전부 기존
+	# 단일 소유(providers rates/affix/passives·state current_g/p·authority 싱크·lesson guard).
+	if str(get_meta("native_source_regeneration_boot", "")) == "external":
+		# 하니스 전용(native_intro_boot 메타 선례): fixture 공급 단계 검증은 단일 소유
+		# 계약(bind 1회)상 프로덕션 바인딩과 공존 불가 — 외부(테스트) 바인딩에 양보.
+		push_warning("native_source_regeneration_boot=external — production regeneration binding skipped (harness only)")
+	else:
+		if not _bind_native_source_regeneration_boot():
+			return
 	hud.bind_native_source_state(source_state) # P2-002a 원본 HUD 값 = state owner getter
 	hud.pause_requested.connect(_toggle_pause)
 	hud.restart_requested.connect(_restart)
@@ -737,6 +751,40 @@ func _read_native_source_lesson_guard() -> Variant:
 	var reader: Callable = source_lesson.get_dispatcher_lesson_callable()
 	return reader.call() if reader.is_valid() else null
 
+# P2-005d — 원본 자연 회복 단계 부팅 배선(본문은 _ready에서 호출; 실패=startup 정지).
+func _bind_native_source_regeneration_boot() -> bool:
+	source_regeneration = RegenerationPhaseScript.new()
+	var regeneration_services: Dictionary = {
+		"schema": RegenerationPhaseScript.SERVICES_SCHEMA,
+		"rates": source_providers.get_provider("rates"),
+		"affix": source_providers.get_provider("affix"),
+		"passives": source_providers.get_provider("passives"),
+		"current_g": Callable(source_state, "read_current_g"),
+		"current_p": Callable(source_state, "read_current_p"),
+		"fuse_star": Callable(source_providers.get_provider("fusion"), "fuse_star"),
+		"hp_sink": Callable(source_resources, "commit_native_source_hp"),
+		"flat_resource_sink": Callable(source_resources, "commit_native_holy_flat_resources"),
+		"lesson": source_lesson.get_dispatcher_lesson_callable(),
+		"main_init_ready": Callable(self, "read_native_source_regeneration_init_ready")}
+	if not source_regeneration.configure(player, world, source_resources, regeneration_services):
+		_stop_source_player_startup("source_regeneration_phase_configuration_rejected:" + str(source_regeneration.get_snapshot().get("error")))
+		return false
+	if not source_resources.bind_native_source_regeneration_phase(source_regeneration):
+		_stop_source_player_startup("source_regeneration_authority_binding_rejected")
+		return false
+	if not world.bind_native_player_resource_regeneration(source_regeneration):
+		_stop_source_player_startup("source_regeneration_player_binding_rejected")
+		return false
+	return true
+
+
+# P2-005d — 리젠 단계 configure 전제 검증: 원본 new_run 초기화 완료 + 현재 액터 생존.
+func read_native_source_regeneration_init_ready() -> bool:
+	return source_initialization_result.get("status") == "READY" \
+		and source_initialization_result.get("completed") == true \
+		and is_instance_valid(player) and is_instance_valid(world)
+
+
 func _native_source_lesson_holder_live() -> bool:
 	var script: Script = get_script()
 	return not is_queued_for_deletion() and script != null and script.resource_path == "res://scripts/main.gd" \
@@ -811,7 +859,9 @@ func get_native_source_player_initialization_snapshot() -> Dictionary:
 	return {"result": source_initialization_result.duplicate(true),
 		"dispatcher": source_initialization.get_snapshot() if is_instance_valid(source_initialization) else {},
 		"services": source_initialization_services.get_snapshot() if is_instance_valid(source_initialization_services) else {},
-		"main_full_ready": false, "automatic_regeneration_bound": false}
+		"main_full_ready": false,
+		"automatic_regeneration_bound": is_instance_valid(player) \
+			and player.get_native_resource_regeneration_snapshot().get("bound") == true}
 
 func get_native_source_starter_items() -> Dictionary:
 	if not is_instance_valid(source_state) or not source_state.is_native_new_run_state_ready():

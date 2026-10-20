@@ -103,6 +103,7 @@ func check(ok: bool, label: String) -> bool:
 
 func make_actual_main() -> Node2D:
 	var main = MAIN.instantiate()
+	main.set_meta("native_source_regeneration_boot", "external") # P2-005d 하니스 옵트아웃
 	root.add_child(main)
 	check(is_instance_valid(main.player) and is_instance_valid(main.world), "actual Main owns actor and World")
 	check(main.player.get_native_source_resource_authority() == main.source_resources, "same actual source-resource actor")
@@ -138,7 +139,7 @@ class ClockProbe extends Node:
 		done = true
 
 func make_bound_scene(options: Dictionary = {}) -> Dictionary:
-	var main = make_actual_main()
+	var main = make_actual_main() # P2-005d: 프로덕션 리젠 바인딩은 make_actual_main의 메타로 비활성(단일 소유 계약 — fixture 단계 검증용)
 	var fixture = FixtureServices.new(main, options)
 	main.add_child(fixture)
 	var probe = ClockProbe.new()
