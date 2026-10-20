@@ -1,3 +1,7 @@
+## 2026-10-21 type7-fix — 낡은 지원 집계 기대값
+
+- 원본16행/supportfalse/runtimeNULL 불변. 현재 factory 얼음전사3행 지원 근거로 기본9/7·type7 명시 설치10/6 정확 기대값을 교정하고 order집합 검사를 추가했다. 제품0줄·검사 완화0. [보고서](engine/orders/reports/type7-fix_REPORT.md).
+
 
 ## 2026-10-21 DEMO11-18 일반 데모 합체·흡수·성급·되돌리기 원장
 
