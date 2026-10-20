@@ -1,3 +1,15 @@
+## 2026-10-20 SND-04 원본 보이스 선택·10초 stamp 상태
+
+| id / 항목 | 현재 계약 |
+|---|---|
+| 기준 / 범위 | main284d7faf의 game.html12327–12341/10065–10073. SND-03 4203b78b 의존에서 새sparseWT. voice_selector.gd·새test·원본JS generator/fixture 신규4파일. 기존 공용6파일·제품·기존 테스트·원본 에셋0줄 |
+| 선택 | char≠1/미매핑 원key 그대로·clock/RNG0. SND-02 map42개 읽기. mapped1회clock, 반복10000ms(9999차단/10000허용, stamp0보존). grunt/parry3종, demon_revive/second_wind/execution/clear/fuse2종, eligible만오름차순→floor(r×수), 소진시무음·RNG0 |
+| 상태·순서 | selector마다독립last_at, 반환snapshot/status복사. sample/direct동일instance가stamp공유, 선택시now기록이후GX/30ms/buffer gate로drop되어도stamp유지. 이미silvertail_*·voice_wakeup 미매핑에새제한없음. 직접재생/master우회는정책표만이며backend0 |
+| API | constructor(catalog), select_key(key,char,clock_ms,rng), status, snapshot_last_at. READY/key·SILENT/reason·NOT_READY 구분. 자체Node/오디오/IO/실clock/RNG/캐릭터owner0 |
+| 실측 | 신규2435/0·exit0·stderr비어있음. 원본JS71시나리오387단계/1459leaf 불일치0(수치≤1e−12). 첫2435/1은정수Dict↔JSON실수Dict 비교문제·테스트만정정·원로그보존. contracts5그룹/0·정책1194/0·catalog687/0·queue606/0·웹10pass/0fail |
+| 보존·환경 | 기존tracked game.html/godot1318파일byte불변. 전체WT디스크부족실패후자기브랜치sparse재구성·staged삭제0·타WIP삭제0. 기존엔진cache1006파일동일byte복사·Godot import0·원본에셋생성변환0 |
+| 제출·한계 | Godot전count2이상30초대기, 새지정격리·기존USERDIR·override매회후0byte. 정상훅·자기branch만push. [보고서·실패 이력·정확 정책·원로그](engine/orders/reports/snd-04_REPORT.md). 실청취·실게임·PC 인수미확인 |
+
 ## 2026-10-20 SND-03 원본 frame queue 순수 phase
 
 | id / 항목 | 현재 계약 |
