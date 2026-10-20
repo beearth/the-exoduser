@@ -2,6 +2,7 @@
 // - socket layout: 2 = top/bottom, 3 = three ways, 4 = four ways … up to 10, evenly from the top
 // - fusion staging uses the real _FUSE_PAIRS recipes (drop → exact set match → _execFuse)
 // - game.html wiring (hand-off, hoisted card handlers), packaging, vendored three r186, 27-language strings
+// - 2026-10-21 floating skill orbs (no horizontal tray): every skill once, fusion-relation currents, symmetric slots around the lowered wheel
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -95,4 +96,60 @@ test('skill forge: every new UI string is translated in all 27 language tables',
   const langs=fs.readdirSync(ROOT).filter(f=>/^lang_[a-z]+\.js$/.test(f));
   assert.equal(langs.length,27);
   for(const f of langs){const s=read(f);for(const k of new Set(keys))assert.ok(s.includes("'"+k.replace(/'/g,"\\'")+"'")||s.includes('"'+k+'"'),f+': '+k)}
+});
+
+test('skill forge orbs: every skill for the slot appears once — materials + equip candidates merged, host equipped = "on"',()=>{
+  const {api}=load({skills:learn(['whirlwind','kiSlash','detonate','giantSlam','fanShot','omniBeam','elemMissile','burstLoop']),_fused:{whirlDet:true}});
+  api._state.slot=6; // LMB (host 회전참, 회전기폭 완성)
+  const m=api._model(),items=api._orbItems(m),ids=[...items.keys()];
+  assert.equal(new Set(ids).size,ids.length,'no duplicate orbs');
+  for(const id of ['kiSlash','whirlwind','giantSlam','fanShot','omniBeam','elemMissile','burstLoop'])assert.ok(items.has(id),id+' shown');
+  assert.ok(!items.has('detonate'),'already bound in the altar set (회전기폭) — not a loose orb');
+  assert.ok(items.get('whirlwind').cls.includes('on'),'equipped host is marked');
+  assert.ok(items.get('giantSlam').cls.includes('glow')&&items.get('giantSlam').role==='mat','지옥강타 1 = next material (glows, drag to altar)');
+  assert.equal(items.get('kiSlash').role,'equip');
+});
+
+test('skill forge orbs: currents — materials flow into the core, other fusion pairs link orbs, never the wheel host twice',()=>{
+  const {api}=load({skills:learn(['whirlwind','kiSlash','detonate','giantSlam','fanShot','omniBeam','elemMissile','burstLoop']),_fused:{whirlDet:true}});
+  api._state.slot=6;
+  const m=api._model(),items=api._orbItems(m),edges=J(api._orbEdges(m,items));
+  const core=edges.filter(e=>e.core).map(e=>e.a).sort(),mats=[...items.values()].filter(i=>i.mat).map(i=>i.id).sort();
+  assert.deepEqual(core,mats,'one core current per material');
+  assert.ok(edges.filter(e=>e.core).find(e=>e.a==='giantSlam').str>.5,'next material = strong current');
+  const pairs=edges.filter(e=>!e.core).map(e=>[e.a,e.b].sort().join('+'));
+  assert.ok(pairs.includes('fanShot+omniBeam'),'추적암전 pair (만화방창+멸살광선)');
+  assert.ok(pairs.includes('elemMissile+omniBeam'),'원소추적탄 joins via 멸살광선 (elemFuse host override)');
+  assert.ok(edges.every(e=>e.core||(e.a!=='whirlwind'&&e.b!=='whirlwind')),'wheel host only through the core');
+  assert.equal(new Set(pairs).size,pairs.length,'no duplicate pair lines');
+});
+
+test('skill forge orbs: slots around the lowered wheel are mirror-symmetric and never touch the disc or the edges',()=>{
+  const {api}=load();
+  const g={cx:560,cy:400,discR:200,W:1120,H:650},o=52;
+  const s=api._orbSlots(o,g,[]);
+  assert.ok(s.L.length>=10&&s.L.length===s.R.length,'left/right capacity equal');
+  const key=p=>Math.round(p.x)+','+Math.round(p.y),mirror=new Set(s.R.map(p=>Math.round(2*g.cx-p.x)+','+Math.round(p.y)));
+  for(const p of s.L)assert.ok(mirror.has(key(p)),'mirror of '+key(p));
+  for(const p of [...s.L,...s.R,...s.M]){
+    assert.ok(Math.hypot(p.x-g.cx,p.y-g.cy)>=g.discR+o/2+12-1e-6,'clear of the disc');
+    assert.ok(p.x-s.Lw/2>=2&&p.x+s.Lw/2<=g.W-2&&p.y-o/2-14>=2&&p.y+o/2+32<=g.H-2,'inside the altar incl. label');
+  }
+  // reserved plates (모체 명패 / 넣을 수 있는 스킬 명패 / 안내 띠) are avoided
+  const plate={l:0,t:0,r:300,b:90};const s2=api._orbSlots(o,g,[plate]);
+  assert.ok(s2.L.every(p=>!(p.x-s2.Lw/2<plate.r&&p.x+s2.Lw/2>plate.l&&p.y-o/2-14<plate.b&&p.y+o/2+32>plate.t)));
+  // compact labels (one line) pack more rows
+  const c=api._orbSlots(o,g,[],1,true);assert.ok(c.L.length>s.L.length);
+  // a wider spread factor gives fewer, roomier slots
+  assert.ok(api._orbSlots(o,g,[],1.4).L.length<s.L.length);
+});
+
+test('skill forge orbs: no horizontal tray, one rAF loop that stops when the panel closes, reduced motion respected',()=>{
+  const css=read('skill-forge.css');
+  assert.ok(!/sf-tray|sf-chip/.test(forgeSrc+css),'tray/chip markup and styles removed');
+  assert.match(forgeSrc,/fx\.raf=0;if\(!el\|\|!el\.isConnected\|\|!isOpen\(\)\)return;/);
+  assert.match(forgeSrc,/prefers-reduced-motion: reduce/);
+  assert.match(forgeSrc,/_close\(\)\{if\(three\)three\.pause\(\);fxStop\(\)\}/);
+  assert.match(css,/canvas\.sf-bolts\{[^}]*position:absolute!important/,'game-wide fixed canvas rule overridden');
+  assert.match(gameSrc,/skill-forge\.css\?v=20261021-orbs\d+/);
 });

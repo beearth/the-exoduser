@@ -5,6 +5,8 @@
    합성 규칙은 기존 합체 레시피(_FUSE_PAIRS) 그대로 — 넣은 세트가 레시피와 같아지면 확인 후 _execFuse.
    로직은 전부 기존 함수(_skLearnUp/_skLevelDown/_skResetSkill/_execFuse/_canFuse/_canAssignSkillSlot) 호출만.
    3D 연출은 skill-forge-3d.js(ES 모듈, three r186, 패널이 열려 게임이 멈춘 동안만 렌더). 3D가 없으면 같은 DOM이 2D로 동작.
+   2026-10-21 개편: 아래 가로 스크롤 트레이를 없애고 제단 원을 아래로 내려 줄였다. 넣을 수 있는 스킬은 원 둘레(양옆·위·아래 모서리)에
+   떠다니는 구슬로 한 번에 전부 펼치고, 합성 관계(모체-재료)끼리는 전류가 흐른다(2D 캔버스 한 장, 패널이 열린 동안만 rAF 하나).
    끄기: ?skillForge=0 (구 카드형 창). */
 (function(root){
   'use strict';
@@ -128,18 +130,24 @@
     parts.info=mk('aside','sf-info',parts.mid);
     parts.altar=mk('div','sf-altar',parts.mid);
     parts.road=mk('aside','sf-road',parts.mid);
+    // 떠다니는 스킬 구슬 층: 전류 캔버스(아래) + 구슬(위). 제단 원 둘레 빈 공간에 전부 펼친다 — 가로 스크롤 없음
+    parts.field=mk('div','sf-field',parts.altar);
+    parts.bolts=mk('canvas','sf-bolts',parts.field);parts.bolts.setAttribute('aria-hidden','true');
+    parts.orbs=mk('div','sf-orbs',parts.field);
+    parts.fieldHead=mk('div','sf-field-head',parts.altar);
     parts.core=mk('div','sf-core',parts.altar);
     parts.coreName=mk('div','sf-core-name',parts.altar);
     parts.coreStar=mk('div','sf-core-star',parts.altar);
     parts.nodes=mk('div','sf-nodes',parts.altar);
     parts.altarHint=mk('div','sf-altar-hint',parts.altar);
     parts.altarBtns=mk('div','sf-altar-btns',parts.altar);
-    parts.tray=mk('div','sf-tray',el);
-    parts.trayHead=mk('div','sf-tray-head',parts.tray);
-    parts.trayEquip=mk('div','sf-tray-row',parts.tray);
-    parts.trayFuse=mk('div','sf-tray-row',parts.tray);
     parts.ghost=mk('div','sf-drag-ghost',document.body);parts.ghost.hidden=true;
     el.addEventListener('pointerdown',onDown);
+    // 구슬 위에 올리면 그 구슬의 합성 관계 전류가 밝아진다
+    el.addEventListener('pointerover',e=>{const o=e.target&&e.target.closest?e.target.closest('.sf-orb'):null;fxHover(o?o.dataset.skId:null)});
+    el.addEventListener('pointerleave',()=>fxHover(null));
+    el.addEventListener('focusin',e=>{const o=e.target&&e.target.closest?e.target.closest('.sf-orb'):null;if(o)fxHover(o.dataset.skId)});
+    if(typeof ResizeObserver==='function'){const ro=new ResizeObserver(()=>{if(isOpen())requestAnimationFrame(()=>{renderAltarGeoOnly();layout3d()})});ro.observe(parts.altar)}
     // 캡처 단계: 게임 전역 마우스 처리가 전파를 끊어도 드래그가 끝까지 온다
     document.addEventListener('pointermove',onMove,{capture:true,passive:true});
     document.addEventListener('pointerup',onUp,{capture:true});
@@ -177,18 +185,19 @@
   function renderAltar(m){
     const a=parts.altar,r=a.getBoundingClientRect();
     const W=r.width||600,H=r.height||400;
-    // 아래 안내·버튼 띠(76px)와 위 여백을 빼고 남는 공간 안에 원이 들어가도록
-    const TOP=10,BOT=78,usable=Math.max(160,H-TOP-BOT),cx=W/2,cy=TOP+usable/2;
+    // 2026-10-21: 원을 아래로 내리고 줄인다 — 원판 아래 끝이 안내·버튼 띠(78px) 바로 위. 위·양옆은 스킬 구슬 자리
+    const TOP=10,BOT=78,usable=Math.max(160,H-TOP-BOT),cx=W/2;
     const cnt=Math.max(1,m.set.length+1);
-    let R=Math.max(70,Math.min(W*.3,usable*.4));
-    let nodeSize=Math.max(34,Math.min(92,R*.56,2*Math.PI*R/cnt*.72));
-    R=Math.max(64,Math.min(R,usable/2-nodeSize/2-16));
-    nodeSize=Math.max(34,Math.min(nodeSize,2*Math.PI*R/cnt*.72));
+    let R=Math.max(56,Math.min(W*.19,usable*.27)*(st.wheelK||1));
+    let nodeSize=Math.max(30,Math.min(84,R*.56,2*Math.PI*R/cnt*.72));
+    // 3D 원판 반지름(skill-forge-3d.js discCss와 같은 식) — 구슬 배치·드롭 판정의 원 경계
+    const discR=Math.max(R*1.32,R+nodeSize/2*1.3);
+    const cy=Math.max(TOP+discR,TOP+usable-discR-4);
     // 코어는 소켓 안쪽 가장자리와 간격을 둔다(소켓이 많아 커지면 코어 테에 닿던 문제)
     const coreSize=Math.max(48,Math.min(150,R*1.02,(R-nodeSize/2)*1.3));
-    parts.core.style.top=cy+'px';parts.core.style.width=coreSize+'px';
+    parts.core.style.top=cy+'px';parts.core.style.left=cx+'px';parts.core.style.width=coreSize+'px';
     parts.nodes.replaceChildren();parts.altarBtns.replaceChildren();
-    st.geo={cx,cy,R,nodeSize,W,H,nodes:[]};
+    st.geo={cx,cy,R,nodeSize,W,H,nodes:[],discR,coreR:coreSize/2};
     const k=m.ready||groupKey(m.host||'');
     if(!m.host){
       parts.core.className='sf-core empty';parts.coreName.textContent=L('슬롯이 비어 있습니다','Empty slot');parts.coreStar.textContent='';
@@ -228,41 +237,183 @@
     if(k&&!m.ready){const b=mk('button','sf-btn sf-btn-ghost',parts.altarBtns,L('분해','Unfuse'));b.type='button';
       b.onclick=async()=>{const x=sk(hostOf(k));if(x&&typeof _skResetSkill==='function'){await _skResetSkill(x);st.staged=[];render()}}}
   }
-  function chip(parent,id,opt){
-    const c=mk('div','sf-chip',parent);c.dataset.skId=id;c.dataset.role=opt.role;c.tabIndex=0;
-    if(opt.cls)for(const x of opt.cls)c.classList.add(x);
-    icon(c,id,'sf-chip-ico');
-    const t=mk('span','sf-chip-text',c);mk('span','sf-chip-name',t,displayName(id));
-    const l=lv(id);mk('span','sf-chip-lv',t,l?('Lv '+l):(sk(id)?L('미습득','Not learned'):''));
-    if(opt.host)mk('span','sf-crown',c,L('모체','Host'));
-    if(opt.badge)mk('span','sf-chip-badge',c,opt.badge);
-    c.onclick=()=>{st.sel=id;renderInfo()};
-    return c;
-  }
-  function renderTray(m){
-    const s=SLOTS[st.slot];
-    parts.trayHead.replaceChildren();
-    mk('span','sf-tray-title',parts.trayHead,L('넣을 수 있는 스킬','Skills for this slot')+'  ['+s.k+']');
-    mk('span','sf-tray-sub',parts.trayHead,L('끌어서 위 슬롯에 장착 · 빛나는 재료는 제단으로','Drag to a slot to equip · glowing materials go to the altar'));
-    parts.trayEquip.replaceChildren();parts.trayFuse.replaceChildren();
-    mk('span','sf-row-label',parts.trayEquip,L('장착','Equip'));
-    const cur=slotValue(s);
+  // ── 떠다니는 스킬 구슬 (2026-10-21: 가로 스크롤 트레이 대체) ──
+  // 넣을 수 있는 스킬 = 이 슬롯 장착 후보 + 모체 합성 재료(중복은 한 구슬). 재료는 원에 가까운 자리부터, 장착 후보는 합성 묶음별로 같은 쪽에.
+  function orbItems(m){
+    const s=SLOTS[st.slot],cur=slotValue(s),items=new Map();
+    if(m.host)for(const c of m.cands){
+      if(items.has(c.id))continue;
+      const it={id:c.id,mat:true,cls:['mat'],role:'none',badge:'',pri:0,str:0};
+      if(c.hidden&&!c.learned){it.cls.push('sealed');it.sealed=true;it.pri=5;it.str=.12}
+      else if(c.demo){it.cls.push('dim');it.badge=L('정식판','Full game');it.pri=4;it.str=.14}
+      else if(!c.learned){it.cls.push('dim');it.badge=L('습득 필요','Learn');it.pri=3;it.str=.14}
+      else if(c.ok&&c.next){it.cls.push('glow');it.pri=0;it.str=1}
+      else if(c.ok&&!c.later){it.badge=L('추가 재료','More');it.pri=1;it.str=.45}
+      else{it.cls.push('dim');it.badge=L('다음 단계','Later');it.pri=2;it.str=.14}
+      it.role=c.ok&&c.learned&&!c.demo?'mat':'none';
+      items.set(c.id,it);
+    }
     for(const id of slotEligible(s)){
-      const cls=[];if(id===cur)cls.push('on');if(!canEquip(s,id))cls.push('dim');
-      chip(parts.trayEquip,id,{role:'equip',cls,host:isHost(id)});
+      let it=items.get(id);
+      if(!it){it={id,mat:false,cls:[],role:'equip',badge:'',pri:id===cur?10:lv(id)?11:12,str:0};if(!canEquip(s,id))it.cls.push('dim');items.set(id,it)}
+      else if(it.role==='none'&&canEquip(s,id)){it.role='equip';it.cls=it.cls.filter(c=>c!=='dim')}
+      if(id===cur)it.cls.push('on');
     }
-    mk('span','sf-row-label',parts.trayFuse,L('합성 재료','Materials'));
-    if(!m.host||!m.cands.length){mk('span','sf-empty',parts.trayFuse,m.host?L('이 모체로 합성할 재료가 없습니다','No materials for this host'):L('모체 스킬을 먼저 장착하세요','Equip a host skill first'));return}
-    for(const c of m.cands){
-      if(c.hidden&&!c.learned){chip(parts.trayFuse,c.id,{role:'none',cls:['sealed'],badge:'???'});continue}
-      const cls=[];let badge='';
-      if(c.demo){cls.push('dim');badge=L('정식판','Full game')}
-      else if(!c.learned){cls.push('dim');badge=L('습득 필요','Learn')}
-      else if(c.ok&&c.next)cls.push('glow');
-      else if(c.ok&&!c.later)badge=L('추가 재료','More');
-      else{cls.push('dim');badge=L('다음 단계','Later')}
-      chip(parts.trayFuse,c.id,{role:c.ok&&c.learned&&!c.demo?'mat':'none',cls,badge,host:isHost(c.id)});
+    for(const it of items.values())it.host=isHost(it.id);
+    return items;
+  }
+  // 합성 관계 선: 모체-재료(레시피 첫 원소 ↔ 나머지). 지금 제단 모체와의 관계는 원 중심(코어)으로 흐른다
+  function orbEdges(m,items){
+    const out=[],seen=new Set();
+    for(const it of items.values())if(it.mat)out.push({a:it.id,b:'core',core:true,str:it.str});
+    for(const k of fuseKeys()){const h=hostOf(k);if(h===m.host)continue;
+      for(const id of members(k)){if(id===h||id===m.host)continue;const key=h<id?h+'|'+id:id+'|'+h;if(seen.has(key))continue;seen.add(key);
+        if(items.has(h)&&items.has(id))out.push({a:h,b:id,core:false,str:.3});}}
+    return out;
+  }
+  // 원 둘레 빈 공간의 자리(엇갈린 격자, 좌우 대칭). o=구슬 지름. 원판·명패·안내 띠와 겹치는 자리는 뺀다
+  // compact = 이름 한 줄(레벨은 구슬 위 작은 숫자) — 낮은 화면에서 구슬이 많을 때만
+  function orbSlots(o,g,reserved,k,compact){
+    k=k||1;const LB=compact?18:32,dx=Math.max(o*1.62,o+40)*k,dy=(o+(compact?30:46))*k,Lw=Math.min(2*dx-o-10,2*dx-44,136);
+    const wx=g.cx,wy=g.cy,ex=g.discR+o/2+12,out={L:[],R:[],M:[],dx,dy,Lw};
+    const hit=(x0,y0,x1,y1)=>reserved.some(r=>x0<r.r&&x1>r.l&&y0<r.b&&y1>r.t);
+    for(let j=-40;j<=40;j++){const x=wx+j*dx;if(x-Lw/2<2||x+Lw/2>g.W-2)continue;const off=(Math.abs(j)%2)?dy/2:0;
+      for(let i=-40;i<=40;i++){const y=wy+i*dy+off;if(y-o/2-14<2||y+o/2+LB>g.H-2)continue;
+        if(Math.hypot(x-wx,y-wy)<ex)continue;
+        const lt=y+o/2+2,lb=y+o/2+LB,ddx=Math.max(x-Lw/2-wx,0,wx-x-Lw/2),ddy=Math.max(lt-wy,0,wy-lb);
+        if(Math.hypot(ddx,ddy)<g.discR+6)continue;
+        if(hit(x-Lw/2,y-o/2-14,x+Lw/2,y+o/2+LB))continue;
+        const d=Math.hypot(x-wx,y-wy),ang=Math.atan2(y-wy,Math.abs(x-wx)||1);
+        (j<0?out.L:j>0?out.R:out.M).push({x,y,score:d+Math.abs(ang+.35)*dy*.55});}}
+    for(const q of [out.L,out.R,out.M])q.sort((p,q2)=>p.score-q2.score);
+    return out;
+  }
+  function relRect(e,base){if(!e||!e.isConnected||!e.textContent&&!e.childElementCount)return null;const r=e.getBoundingClientRect();if(!r.width||!r.height)return null;return{l:r.left-base.left-6,t:r.top-base.top-6,r:r.right-base.left+6,b:r.bottom-base.top+6}}
+  function renderField(m,force,probe){
+    const s=SLOTS[st.slot],g=st.geo;
+    // 제단 오른쪽 위 명패: 넣을 수 있는 스킬 [키] — 왼쪽 위 모체 명패와 대칭
+    parts.fieldHead.replaceChildren();
+    mk('span','sf-field-title',parts.fieldHead,L('넣을 수 있는 스킬','Skills for this slot')+'  ['+s.k+']');
+    mk('span','sf-field-sub',parts.fieldHead,L('끌어서 위 슬롯에 장착 · 빛나는 재료는 제단으로','Drag to a slot to equip · glowing materials go to the altar'));
+    parts.orbs.replaceChildren();fx.orbs=[];fx.edges=[];
+    const items=orbItems(m),list=[...items.values()];
+    const edges=orbEdges(m,items);
+    if(!g||!list.length){fxResize();fxStart();return{o:99,oMax:99,compact:false}}
+    const base=parts.altar.getBoundingClientRect();
+    const reserved=[parts.coreName,parts.coreStar,parts.fieldHead,parts.altarHint,parts.altarBtns].map(e=>relRect(e,base)).filter(Boolean);
+    // 구슬 지름: 넓은 화면 58px에서 시작해 전부 들어갈 때까지 줄인다(최소 34px). 그래도 안 되면 이름 한 줄(compact, 최소 28px)
+    const oMax=Math.max(34,Math.min(58,g.H*.088,g.W*.052)),cap=x=>x.L.length+x.R.length+x.M.length;
+    let o=oMax,slots=null,compact=false;
+    fit:for(const cp of [false,true]){o=oMax;const oMin=cp?28:34;
+      for(let pass=0;pass<24;pass++){slots=orbSlots(o,g,reserved,1,cp);if(cap(slots)>=list.length){compact=cp;break fit}if(o<=oMin)break;o=Math.max(oMin,o*.95)}}
+    // 자리가 남으면 간격을 넓혀 양옆 빈 공간 전체에 고르게 펼친다(원에만 몰리지 않게)
+    if(cap(slots)>=list.length)for(const k of [1.6,1.5,1.42,1.34,1.26,1.18,1.1]){const s2=orbSlots(o,g,reserved,k,compact);if(cap(s2)>=list.length){slots=s2;break}}
+    const total=cap(slots);
+    if(total<list.length&&!force)return 0;
+    if(probe)return{o,oMax,compact}; // 크기만 재 본다(구슬 DOM 미생성)
+    // 묶음(합성 관계로 이어진 구슬들)을 같은 쪽에 — 관계선이 원판을 가로지르지 않게
+    const par=new Map(list.map(it=>[it.id,it.id]));const find=x=>{while(par.get(x)!==x)x=par.get(x);return x};
+    for(const e of edges)if(!e.core){const ra=find(e.a),rb=find(e.b);if(ra!==rb)par.set(ra,rb)}
+    const groups=new Map();for(const it of list){const r=find(it.id);if(!groups.has(r))groups.set(r,[]);groups.get(r).push(it)}
+    const gl=[...groups.values()].map(gr=>gr.sort((x,y)=>x.pri-y.pri||(lv(y.id)-lv(x.id))));
+    gl.sort((x,y)=>x[0].pri-y[0].pri||y.length-x.length);
+    let lastP=null;
+    const take=side=>{const other=side==='L'?'R':'L';const p=slots[side].shift()||slots.M.shift()||slots[other].shift();
+      if(p){lastP=p;return p}
+      if(!lastP)lastP={x:g.cx-g.discR-40,y:40};lastP={x:lastP.x,y:lastP.y+14};return lastP}; // force: 겹치더라도 표시
+    let nL=0,nR=0;const place=[];
+    for(const gr of gl){let side=nL<=nR?'L':'R';const other=side==='L'?'R':'L';
+      if(slots[side].length+slots.M.length<gr.length&&slots[other].length>=gr.length)side=other;
+      for(const it of gr){const p=take(side);place.push([it,p]);if(p.x<g.cx)nL++;else nR++}}
+    const Lw=slots.Lw;
+    for(const [it,p] of place){
+      const n=mk('div','sf-orb',parts.orbs);for(const c of it.cls)n.classList.add(c);if(compact)n.classList.add('compact');
+      n.dataset.skId=it.id;n.dataset.role=it.role;n.tabIndex=0;
+      n.style.left=p.x+'px';n.style.top=p.y+'px';n.style.setProperty('--o',o.toFixed(1)+'px');n.style.setProperty('--lw',Lw.toFixed(0)+'px');
+      if(st.sel===it.id)n.classList.add('sel');
+      const fl=mk('span','sf-orb-float',n),ball=mk('span','sf-orb-ball',fl);
+      if(it.sealed)mk('span','sf-orb-seal',ball,'?');else icon(ball,it.id,'sf-ico sf-orb-ico');
+      const nm=it.sealed?'???':displayName(it.id),l=lv(it.id);
+      const sub=it.sealed?'':it.badge||(l?('Lv '+l):(sk(it.id)?L('미습득','Not learned'):''));
+      const lab=mk('span','sf-orb-label',n);mk('span','sf-orb-name',lab,nm);if(sub)mk('span','sf-orb-sub'+(it.badge?' badge':l?' lv':''),lab,sub);
+      if(it.host&&!it.sealed)mk('span','sf-crown',n,L('모체','Host'));
+      if(compact&&l&&!it.sealed)mk('span','sf-orb-pip',fl,String(l));
+      n.title=nm+(sub?' — '+sub:'');
+      n.onclick=()=>{st.sel=it.id;parts.orbs.querySelectorAll('.sf-orb.sel').forEach(x=>x.classList.remove('sel'));n.classList.add('sel');renderInfo();fxDraw()};
+      let h=2166136261;for(let i=0;i<it.id.length;i++)h=Math.imul(h^it.id.charCodeAt(i),16777619);
+      const rnd=k=>((h>>>(k*5))&1023)/1023;
+      fx.orbs.push({id:it.id,el:n,fl,x:p.x,y:p.y,r:o/2,ph1:rnd(0)*6.283,ph2:rnd(1)*6.283,f1:.19+rnd(2)*.08,f2:.11+rnd(3)*.06,ay:o*.06,ax:o*.026,bx:0,by:0});
     }
+    const byId=new Map(fx.orbs.map(x=>[x.id,x]));
+    for(const e of edges){const A=byId.get(e.a),B=e.core?'core':byId.get(e.b);if(!A||!B)continue;
+      fx.edges.push({A,B,core:e.core,str:e.str,ph:A.ph1+(e.core?0:B.ph2),next:0,off:null,br:null});}
+    fxResize();fxStart();
+    return{o,oMax,compact};
+  }
+  // ── 구슬 부유 + 전류 (캔버스 한 장, rAF 하나 — 패널이 닫히면 멈춘다) ──
+  const fx={raf:0,orbs:[],edges:[],hover:null,ctx:null,dpr:1,W:0,H:0,reduce:false,t:0};
+  function fxResize(){
+    const c=parts.bolts,g=st.geo;if(!c||!g)return;
+    const dpr=Math.min(2,root.devicePixelRatio||1);const w=Math.max(1,Math.round(g.W*dpr)),h=Math.max(1,Math.round(g.H*dpr));
+    if(c.width!==w||c.height!==h){c.width=w;c.height=h}
+    fx.dpr=dpr;fx.W=g.W;fx.H=g.H;fx.ctx=c.getContext('2d');
+  }
+  function fxStart(){
+    fx.reduce=!!(root.matchMedia&&root.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    if(fx.reduce){fxDraw();return}
+    if(!fx.raf)fx.raf=requestAnimationFrame(fxTick);
+  }
+  function fxStop(){if(fx.raf)cancelAnimationFrame(fx.raf);fx.raf=0}
+  function fxTick(now){
+    fx.raf=0;if(!el||!el.isConnected||!isOpen())return;
+    fx.t=now/1000;
+    for(const o of fx.orbs){o.bx=o.ax*Math.sin(fx.t*6.283*o.f2+o.ph2);o.by=o.ay*Math.sin(fx.t*6.283*o.f1+o.ph1);
+      o.fl.style.transform='translate3d('+o.bx.toFixed(2)+'px,'+o.by.toFixed(2)+'px,0)';}
+    fxDraw();
+    fx.raf=requestAnimationFrame(fxTick);
+  }
+  function fxHover(id){if(fx.hover===id)return;fx.hover=id;if(fx.reduce)fxDraw()}
+  // 중간점 변위로 만든 번개 굴곡(양 끝 0). 짧은 주기마다 새로 뽑아 깜박이게
+  function zig(n,amp){const a=new Float32Array(n+1);let step=n,sc=amp;while(step>1){const h=step>>1;for(let i=h;i<n;i+=step)a[i]=(a[i-h]+a[Math.min(n,i+h)])/2+(Math.random()*2-1)*sc;step=h;sc*=.56}return a}
+  // 지옥불(재료→제단 코어, 강조) / 금빛(그 밖의 합성 관계, 은은하게)
+  const PAL={fire:['255,70,26','255,140,76','255,236,214'],gold:['176,128,64','226,192,130','255,238,210']};
+  function fxDraw(){
+    const ctx=fx.ctx,g=st.geo;if(!ctx||!g)return;
+    ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,parts.bolts.width,parts.bolts.height);
+    if(!fx.edges.length)return;
+    ctx.setTransform(fx.dpr,0,0,fx.dpr,0,0);ctx.globalCompositeOperation='lighter';ctx.lineJoin='round';ctx.lineCap='round';
+    const t=fx.reduce?0:fx.t,focus=fx.hover||st.sel;
+    for(const e of fx.edges){
+      const A=e.A,core=e.B==='core';
+      const ax=A.x+A.bx,ay=A.y+A.by,bx=core?g.cx:e.B.x+e.B.bx,by=core?g.cy:e.B.y+e.B.by;
+      const vx=bx-ax,vy=by-ay,len=Math.hypot(vx,vy)||1,ux=vx/len,uy=vy/len;
+      const r0=A.r+3,r1=core?g.coreR+4:e.B.r+3;if(len<=r0+r1+6)continue;
+      const x0=ax+ux*r0,y0=ay+uy*r0,L2=len-r0-r1;
+      const lit=!!focus&&(A.id===focus||(!core&&e.B.id===focus));
+      let I=e.str;if(focus)I=lit?Math.max(.95,I):I*.4;
+      const strong=I>.5;
+      if(!fx.reduce){I*=.8+.2*Math.sin(t*21+e.ph)*Math.sin(t*6.7+e.ph*1.7);if(strong&&((t*.41+e.ph)%1+1)%1<.05)I*=1.5}
+      if(I<.02)continue;
+      const N=L2>220?32:L2>90?16:8;
+      if(!e.off||e.off.length!==N+1||t>=e.next||fx.reduce){e.off=zig(N,strong?.11:.05);e.next=t+(strong?.06:.16)*(.6+Math.random()*.8);
+        e.br=strong&&L2>80?{i:(N*(.3+Math.random()*.4))|0,a:(Math.random()<.5?-1:1)*(.45+Math.random()*.5),l:.12+Math.random()*.14,z:zig(8,.12)}:null}
+      // 관계선은 원판을 피해 바깥으로 살짝 휜다 — 코어로 들어가는 전류는 곧게
+      const mx=x0+ux*L2/2-g.cx,my=y0+uy*L2/2-g.cy,nx=-uy,ny=ux,sgn=core?0:(mx*nx+my*ny>=0?1:-1),bow=core?0:Math.min(60,L2*.16);
+      const pts=[];for(let i=0;i<=N;i++){const k=i/N,b2=Math.sin(Math.PI*k)*bow*sgn+e.off[i]*L2;pts.push(x0+ux*L2*k+nx*b2,y0+uy*L2*k+ny*b2)}
+      const pal=lit||core&&e.str>.3?PAL.fire:PAL.gold;
+      const stroke=(w,al,c)=>{ctx.strokeStyle='rgba('+c+','+Math.min(1,al).toFixed(3)+')';ctx.lineWidth=w;ctx.beginPath();ctx.moveTo(pts[0],pts[1]);for(let i=2;i<pts.length;i+=2)ctx.lineTo(pts[i],pts[i+1]);ctx.stroke()};
+      stroke(strong?9:5,.09*I,pal[0]);stroke(strong?3.2:1.8,.34*I,pal[1]);stroke(strong?1.3:.9,.85*I,pal[2]);
+      if(e.br){const i=Math.min(N-1,e.br.i),px=pts[i*2],py=pts[i*2+1],c=Math.cos(e.br.a),sn=Math.sin(e.br.a),dx2=ux*c-uy*sn,dy2=ux*sn+uy*c,bl=L2*e.br.l;
+        ctx.strokeStyle='rgba('+pal[1]+','+(.5*I).toFixed(3)+')';ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(px,py);
+        for(let q=1;q<=8;q++){const k=q/8,o2=e.br.z[q]*bl;ctx.lineTo(px+dx2*bl*k-dy2*o2,py+dy2*bl*k+dx2*o2)}ctx.stroke()}
+      // 흐르는 전류: 선을 따라 밝은 마디가 흘러간다(재료→코어 방향). 강한 선은 두 마디
+      if(!fx.reduce&&(lit||e.str>.25)){const seg=Math.max(2,Math.round(N*.14)),sp=core?.6:.34;
+        for(let q=0;q<(strong?2:1);q++){const u=((t*sp+e.ph*.159+q*.5)%1+1)%1,i0=Math.floor(u*(N-1));
+          for(const [w,al,c] of [[strong?6:4,.28,pal[1]],[strong?2.2:1.5,.95,pal[2]]]){ctx.strokeStyle='rgba('+c+','+Math.min(1,al*(I+.25)).toFixed(3)+')';ctx.lineWidth=w;ctx.beginPath();ctx.moveTo(pts[i0*2],pts[i0*2+1]);
+            for(let k=1;k<=seg&&i0+k<=N;k++)ctx.lineTo(pts[(i0+k)*2],pts[(i0+k)*2+1]);ctx.stroke()}}}
+      if(strong){const gr=ctx.createRadialGradient(x0,y0,0,x0,y0,9);gr.addColorStop(0,'rgba('+pal[2]+','+(.55*I).toFixed(3)+')');gr.addColorStop(1,'rgba('+pal[0]+',0)');ctx.fillStyle=gr;ctx.beginPath();ctx.arc(x0,y0,9,0,6.283);ctx.fill()}
+    }
+    ctx.globalCompositeOperation='source-over';
   }
   function renderInfo(){
     const box=parts.info;box.replaceChildren();
@@ -333,7 +484,7 @@
   // ── 드래그 (포인터 이벤트, HTML5 DnD 없음) ──
   function onDown(e){
     if(e.button!==0)return;
-    const c=e.target.closest('.sf-chip,.sf-node.sf-staged');if(!c||!el.contains(c))return;
+    const c=e.target.closest('.sf-orb,.sf-node.sf-staged');if(!c||!el.contains(c))return;
     const id=c.dataset.skId;if(!id)return;
     const role=c.classList.contains('sf-node')?'unstage':c.dataset.role;
     drag={id,role,x0:e.clientX,y0:e.clientY,on:false,src:c};
@@ -341,7 +492,7 @@
   function onMove(e){
     if(!drag)return;
     if(!drag.on){if(Math.hypot(e.clientX-drag.x0,e.clientY-drag.y0)<6)return;drag.on=true;
-      parts.ghost.replaceChildren();icon(parts.ghost,drag.id,'sf-chip-ico');parts.ghost.hidden=false;el.classList.add('dragging');}
+      parts.ghost.replaceChildren();icon(parts.ghost,drag.id,'sf-ghost-ico');parts.ghost.hidden=false;el.classList.add('dragging');}
     parts.ghost.style.transform='translate('+(e.clientX-28)+'px,'+(e.clientY-28)+'px)';
     const t=dropTarget(e.clientX,e.clientY,drag);
     el.querySelectorAll('.drop-ok,.drop-no').forEach(n=>n.classList.remove('drop-ok','drop-no'));
@@ -354,8 +505,12 @@
     const slotB=hit.closest('.sf-slot');
     if(slotB&&el.contains(slotB)){const s=SLOTS[+slotB.dataset.slot];return{kind:'slot',el:slotB,s,ok:drag.role==='equip'||drag.role==='mat'?canEquip(s,drag.id):false}}
     const alt=hit.closest('.sf-altar');
-    if(alt&&el.contains(alt)){const m=forgeModel();const c=m.cands.find(c=>c.id===drag.id);return{kind:'altar',el:alt,ok:drag.role==='mat'&&!!(c&&c.ok&&c.learned&&!c.demo)}}
-    const tray=hit.closest('.sf-tray');if(tray&&el.contains(tray))return{kind:'tray',el:tray,ok:drag.role==='unstage'};
+    if(alt&&el.contains(alt)){
+      // 제단 = 원판 위만. 원 밖(구슬 들판)에 놓으면 대기 재료를 빼는 자리
+      const g=st.geo,ar=alt.getBoundingClientRect();
+      if(!g||Math.hypot(x-ar.left-g.cx,y-ar.top-g.cy)<=g.discR+10){const m=forgeModel();const c=m.cands.find(c=>c.id===drag.id);return{kind:'altar',el:alt,ok:drag.role==='mat'&&!!(c&&c.ok&&c.learned&&!c.demo)}}
+      return{kind:'field',el:null,ok:drag.role==='unstage'};
+    }
     return null;
   }
   function onUp(e){
@@ -412,13 +567,24 @@
     const m=forgeModel();
     // 대기 재료 정합성: 이미 흡수/세트에 들어간 것 제거
     st.staged=st.staged.filter(id=>!m.base.includes(id));
-    renderSlots();renderAltar(m);renderTray(m);renderInfo();renderRoad(m);
+    renderSlots();layoutAltar(m);renderInfo();renderRoad(m);
     load3d();
     requestAnimationFrame(()=>{renderAltarGeoOnly();layout3d()});
   }
-  function renderAltarGeoOnly(){ // 첫 렌더 직후 실제 크기로 소켓 위치를 다시 잡는다
-    const r=parts.altar.getBoundingClientRect();if(!st.geo||Math.abs(r.width-st.geo.W)>1||Math.abs(r.height-st.geo.H)>1)renderAltar(forgeModel());
+  // 제단 원 + 구슬. 구슬이 최소 크기로도 다 안 들어가면 원을 단계적으로 줄인다(가로 스크롤·숨김 없음)
+  function layoutAltar(m){
+    // 구슬 지름 44px(작은 화면은 그 화면 최대치) 이상·두 줄 이름을 지킬 수 있는 가장 큰 원을 고른다.
+    // 끝까지 안 되면 두 줄 > 큰 구슬 > 큰 원 순으로 가장 나은 단계
+    const KS=[1,.9,.8,.7,.6,.52];let best=null,bs=-1;
+    for(const k of KS){st.wheelK=k;renderAltar(m);const r=renderField(m,false,true);if(!r)continue;
+      if(!r.compact&&r.o>=Math.min(44,r.oMax-.5)){best=k;break}
+      const sc=(r.compact?0:1000)+r.o*10+k;if(sc>bs){bs=sc;best=k}}
+    st.wheelK=best==null?KS[KS.length-1]:best;renderAltar(m);
+    if(!renderField(m))renderField(m,true); // 극단적으로 작은 창: 남은 구슬은 겹치더라도 전부 보이게
+  }
+  function renderAltarGeoOnly(){ // 첫 렌더 직후·창 크기 변경 시 실제 크기로 소켓·구슬 위치를 다시 잡는다
+    const r=parts.altar.getBoundingClientRect();if(!st.geo||Math.abs(r.width-st.geo.W)>1||Math.abs(r.height-st.geo.H)>1)layoutAltar(forgeModel());
   }
   root.SkillForge=Object.freeze({active,render,_model:forgeModel,_layout:socketLayout,_slots:SLOTS,_state:st,
-    _close(){if(three)three.pause()},_open(){if(three)three.resume()}});
+    _close(){if(three)three.pause();fxStop()},_fx:fx,_fxDraw:()=>fxDraw(),_orbItems:m=>orbItems(m),_orbEdges:(m,items)=>orbEdges(m,items),_orbSlots:orbSlots,_open(){if(three)three.resume()}});
 })(globalThis);
