@@ -1,3 +1,17 @@
+## 2026-10-20 SND-01 순수 사운드 분류·플랫폼 한도 정책
+
+| id / 항목 | 현재 계약 |
+|---|---|
+| 범위 | 신규 `godot/port_modules/sound_source/policy.gd`와 `godot/tests/test_sound_source_policy.gd`만. 기존 오디오 owner·공용 6파일·에셋·원본 HTML·Q/E·세이브 변경 없음 |
+| 원본 | 시작 fetch 기준 `9528ea35b429498fcf42fe3723008219ed0ed7e1`의 game.html:12220–12245 / 12342–12356. HTML SHA-256 `4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4` |
+| API | String 입력의 is_footstep / is_skill / priority / category, bool 입력의 limits, 독립 Array를 반환하는 skill_keys. PRI 8개·스킬 literal 29개. clock/RNG/Node/IO/재생기·큐·autoload 생성 없음 |
+| 플랫폼 한도 | desktop/mobile: active_nodes 48/16, category_per_frame 2/1, samples_per_frame 6/3, proj_nodes 5/2, hit_nodes 3/2, step_nodes 2/2. 매 호출 독립 Dictionary |
+| 분기 경계 | m_*·monster_crawl/1은 PROJ1. death_ghoul*은 앞 death_* 분기에 따라 g_death. monster_die2는 priority2/category g_death. raw player_dead1은 VOICE9/category 자기 key. 분기 순서·대소문자·미등록 key fallback 보존 |
+| 구현 검수 | 새 테스트 1,194단정/0실패, 원본 샘플233개×4필드=932개 Node oracle/Godot 출력 일치. 추가 경계60개·복사 격리·typed 시그니처·Main 미부팅 확인. 첫 테스트 parse 오류(정적 클래스 대상 Script 메서드 호출)는 테스트만 정정했고 원로그 보존 |
+| 격리 | 새 테스트 `EXODUSER-snd-01-Isolated-20261020`, 프로세스 내 ProjectSettings로 effective OS userdir 확인. Main 부팅0이므로 override.cfg 사용0. 회귀 격리·수치·원로그는 [snd-01 보고서](engine/orders/reports/snd-01_REPORT.md) 참조 |
+| 기존 회귀 | Godot 8종 실행: contracts5그룹/0실패, 7개 테스트 합계619단정/1실패. 검기220/1(halt6), 지옥강타12/0이나 종료 리소스 ERROR1. **회귀 인수 BLOCKED**, 기존 파일 수정·skip·단정 완화 없음 |
+| 인수 한계 | 순수 정책 모듈까지이며 기존 전투음에 연결하지 않음. 경로·볼륨 공식·원본 음원은 변경하지 않음. 실청취·실게임 사운드·PC 실행은 미확인 |
+
 > 2026-10-17 ENGINE 현행: callback **12/25·미13**. play_time은 el_mul 바로 다음에 동일 Services self의 arity0 Callable로 등록했다. owner 첫 격리 공개 API 검수는 인수됐으며 자연 clock·실게임 인수는 미확인이다. D9는 직전 공통 소스 인수이며, 이번 main/I/R 소스 정렬은 아래 통합 정본과 단위 receipt의 실제 HEAD·tree를 기준으로 확인한다. V12 후보는 소스 인수·첫 FAIL·별도 보완 한정성공으로 구분하며 제품 copy·World hook은 수행하지 않았다. 아래 이전 단계 숫자·원검수 결과는 당시 이력으로 보존한다. 실제 local/remote commit 상태는 단위 receipt를 따른다.
 
 > 2026-10-17 ENGINE WIP 현행: 실제 callback **9/25·미16**. 신규 격리 행동41/41과 신규 map 경계 static9/9만 인수 범위다. 원 첫 parse 실패는 보존한다. 이 WIP를 main/R/served·전체 게임 최신화 완료로 해석하지 않는다.
