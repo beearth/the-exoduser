@@ -1,3 +1,14 @@
+## 2026-10-20 EC2-03 type34/38 독장판 순수 명령·상태 정책
+
+| id / 적용 위치 | 정확 계약·실제 검수 |
+|---|---|
+| 신규 범위 | native_ch2_poison_zone_policy.gd·test_ch2_poison_zone_policy.gd·자기UID2개. actor/zone 사본·원본 명령만 계산, 공용/다른 담당·기존 테스트·저장0줄, 실제 Worldbirth/Player피해/등록0 |
+| 원본 값 | game.html39166–39173/39237–39252: 34 rawatk×.4/D/life300/size8/tick30/d<300,38 ×.5/D/400/12/25/d<1200. 반경40/60·정지배율원값·forbidden. 34725–34734:cd감소→hurt→독2→연출→최종life제거 순서 |
+| 동기 경계 | outeridle1회·clock/emit 분리, 38 brood뒤 최신 snapshot. contact hurt명령 뒤 posthurt Player/zone을 새로 받아 poison·expiry 계산. ToInt32는 기존 combat_stat_formula static 재사용, elMul/RNG/sink 새권위0 |
+| 실제 검수 | 신규18,512/0·oracle3085(방출615/접촉2470). EC2-02 159,902/0·EC2-01 7,483/0·contracts5군/0·factory3군/0·원소탄4군/0·p1002f357/0·소환굴298/0. 전8suite exit0/ERROR0/SKIP0. 종료경고 원문 별도 기록 |
+| 실패 보존·문서차이 | unit첫18,506/1048은 연속기대값 객체공유 fixture오류→입력복사/엄격비교 유지 후0실패. 기존 탄막총정리710/737의 중간점·34거리1200·일괄30틱은 원본과 다름을 보고서에 표기, 담당 파일 수정0 |
+| 기준·격리 | 최신main a00893ad 원본byte 일치·EC2-02 미병합으로 a10924eb 의존. 신규 EXODUSER-ec2-03-Isolated-20261020·기존 각 상수. Godot전 pgrep2이상30초대기, override최종0byte. [보고서](engine/orders/reports/ec2-03_REPORT.md)·원로그 ~/exoduser-wt/_out/ec2-03/ |
+
 ## 2026-10-20 EC2-02 2장 constructor 수치·초기 RNG 정책
 
 | id / 적용 위치 | 정확 계약·실제 검수 |
