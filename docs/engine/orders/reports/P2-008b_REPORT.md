@@ -70,7 +70,7 @@ C:\Progra~1\Git\bin\bash.exe C:/Users/심도진/AppData/Local/Temp/claude/G--exo
 
 ## ④ 커밋 / 원격
 
-- 현재 구현 체크포인트의 실제 SHA는 다음 보고서 기록 커밋에서 기입한다(자기 커밋 SHA 순환 참조 방지).
+- order11 구현 SHA `934783ad53a5f4100ec16ddf5ef230cd4087b760`, 자기 브랜치 push 완료. 보고서 기록 커밋과 구현 SHA는 구분한다.
 - 자기 브랜치만 경로 지정 스테이징·테스트 force add·`git push origin HEAD`, 원격 ref SHA 읽기 대조. main 병합/푸시 없음.
 
 ## ⑤ 남은 것
