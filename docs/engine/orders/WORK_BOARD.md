@@ -10,6 +10,8 @@
 
 > **2026-10-20 사용자 운영 원칙(확정)**: "PC는 수동작업 전용이고 맥은 자동전용", "총괄은 클로드 코딩작업은 코덱스". → 자동으로 도는 구현·추적은 Mac Codex, 배정·검수는 Claude(Mac 맥북총괄 = 자동 트랙, PC Claude = 사용자가 직접 시키는 수동 작업). PC Codex 신규 자동 배정 없음.
 
+> **2026-10-20 사용자 지시 "대기 중인 검수 건은 PC에서 병합해. 병합본 테스트 재실행 후 main에 넣어."** → PC Claude가 11+1건 병합(3f73456fa~2826b6738). 최종 main 기본 회귀 18종 중 17 PASS, p1002g 1실패(P2-008a-FIX 대기).
+
 ## 역할 (2026-10-20 사용자 지시 기준)
 | 역할 | 누구 | 하는 일 |
 |---|---|---|
@@ -61,8 +63,12 @@
 | P2-008a | 1-1 초기 미지원 적: etype20 빙결전사 exact 3개체(order4/10/12) | PC VS Code Codex | codex/p2-008a-ch1-enemies-pc-20261020 → main | enemy_melee_ch1_ice_warrior.gd·etype20 json·factory 등록 | **검수 완료·main 병합(Claude 총괄 2026-10-20)** — 원본 39057~39060 빈 근접 분기·40499 _meleeET 제외·31154 _noProjEtypes[20] 확인(무공격 = 원본 동작), 병합본 14종 0실패, 지원 9/미지원 7, 화면·실플레이 미 |
 | TRACE-CH1-ENEMIES | 1장 미이식 적 원본 추적(문서만) — PC P2-008a 구현과 겹치지 않게 P2-008a 범위는 참고만 | Mac Codex 01a1589f-0218 | codex/trace-ch1-enemies-20261020 | 추적 문서 1개 | 진행 중 |
 | LOOK-001 | Godot 룩 테스트 4안(현행·2D 강화·3D Forward+·3D Compatibility) 비교 자료 — [전략 문서](../FDG_GODOT_CUSTOM_STRATEGY_20261020.md) §5 | Mac Codex(맥북총괄 배정) | codex/look-001-20261020 | 신규 토글·셰이더·godot/assets/derived/ — 원본 모드·회귀 변화 0 | 배정 요청(2026-10-20 PC 총괄) |
-| P2-008a-FIX | P2-008a 빙결전사 포이즈 경로 정지 결함 수정(crawler 413 etype≠0 거부 → hurtE 42490 halt, p1002g 1실패) | PC VS Code Codex(P2-008a 작성자, P2-008b 스레드에 최우선 큐) | codex/p2-008b-ch1-enemies-pc-20261020 | enemy_melee_ch1_ice_warrior.gd 등 | 진행 대기 — main b8a6b0192에서 p1002g 1실패 재현(19a713578 통과). PC 정지 시 Mac 인수 |
-| P2-008b | 1-1 미지원 적 다음 개체(order11 etype47 우선) | PC VS Code Codex | codex/p2-008b-ch1-enemies-pc-20261020 | enemy_factory.gd·신규 적 스크립트 | 진행 중(P2-008a-FIX 뒤) |
+| BC01 | 1장 보스 1번 단위 구현(공용 0줄) | Mac Codex ttys009 | codex/bc01-20261020 | 신규 파일·테스트 | 진행 중 |
+| SV-COLLECT | 세이브 수집 어댑터(port_modules/save_adapter) | Mac Codex ttys007 | codex/sv-collect-20261020 | 신규 모듈·테스트 | 진행 중 |
+| TRACE-ELITES | 정예 modifier·오라 원본 추적(문서만) | Mac Codex ttys004 | codex/trace-elites-20261020 | 추적 문서 | 진행 중 |
+| W01 | 무기 1번 단위 구현(공용 0줄) | Mac Codex(무기 스레드) | codex/w01-20261020 | 신규 파일·테스트 | 진행 중 |
+| P2-008a-FIX | P2-008a 빙결전사 포이즈 경로 정지 결함 수정(crawler 413 etype≠0 거부 → hurtE 42490 halt, p1002g 1실패) | PC VS Code Codex(P2-008a 작성자, P2-008b 스레드에 최우선 큐) | codex/p2-008b-ch1-enemies-pc-20261020 | enemy_melee_ch1_ice_warrior.gd 등 | 미착수 — PC Codex가 큐 메시지보다 P2-008b를 먼저 진행(2a05d13f7까지 수정 커밋 없음). 최종 main 2826b6738에서 p1002g 1실패 계속. **Mac 인수 권장**(PC는 수동 전용) |
+| P2-008b | 1-1 미지원 적 다음 개체(order11 etype47 우선) | PC VS Code Codex | codex/p2-008b-ch1-enemies-pc-20261020 | enemy_factory.gd·신규 적 스크립트 | 진행 중 — 2a05d13f7: order11 etype47·order9 등록(지원 9→11 추정). 미검수·미병합. 빙결전사와 같은 crawler 상속이면 포이즈 halt 확장 여부 확인 필요 |
 | P2-009a | 피드백 UI | PC VS Code Codex | codex/p2-009a-feedback-ui 계열 | native_skill_slots.gd 등 | 진행 중 |
 | SK-S01 | 스킬 1번 단위 구현 | Mac Codex | codex/sk-s01-20261020 | 신규 파일·테스트 | 진행 중 |
 | SND-01 | 사운드 1번 단위 구현 | Mac Codex | codex/snd-01-20261020 | 신규 파일 2·테스트 | 진행 중 |
