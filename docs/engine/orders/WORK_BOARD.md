@@ -30,6 +30,7 @@
 ## 진행 중 (2026-10-20 갱신: Claude 총괄)
 | 작업ID | 내용 | 담당·환경 | 브랜치 | 소유 파일(다른 담당 수정 금지) | 상태 |
 |---|---|---|---|---|---|
+| DEMO11-STATUS | 1-1 진행 현황·갭 QS/폐지단위 정정(문서 전용) | Mac Codex | codex/demo11-status-20261021 | DEMO11_STATUS·COMPLETION_GAP·CHANGELOG·작업판 자기 행 | **검수 대기** —79행/활성78+삭제1:main9·대기10·부분35·PC19·미착수5. 갭 QS/폐지26 정정·코드/Godot0. [현황판](../DEMO11_STATUS_20261021.md), SHA는 _out/demo11-status/DONE.txt |
 | DEMO11-21fix | pending draw의 Main/State 해제 수명 보호 | Mac Codex | codex/demo11-21-20261021 | native_world_drops·신규 수명 테스트·자기 docs | **검수 대기** — mainac3764bfe 정상merge, 수명9/0·starter148/0·관련드랍60/0. ERROR/ObjectDB/resource0, Main/State/전투0줄. [보고서](reports/demo11-21fix_REPORT.md) |
 | DEMO11-21 | P2-006a/b 기존 제품 journal→실제 INV 자연 연결 | Mac Codex | codex/demo11-21-20261021 | Main252–257·State432/565–566/584–659 기존 추가분, 새 통합 테스트 | **검수 대기** — P2 수락 원격48f0d8e7/e69fe444 정상 merge·표시 byte 재사용, 신규24/0·관련회귀36/0. 보호 전투·맵·저장0. [보고서](reports/demo11-21_REPORT.md) |
 | DEMO11-20 | 실제 State addExp META-06 cap100·회복/표시/저장 인계 | Mac Codex | codex/demo11-20-20261021 | native_source_new_run_state.gd의 addExp 구역·신규 테스트/oracle·자기 docs | **검수 대기** — State cap100 실제연결·회복/표시/저장 인계, 신규214/0+관련1099/0=1313/0 각1회. State+62/−8·피해/Main/맵0줄, 저장IO未·collectorHOLD. 후속 aa1eaea5a merge·목록API0·자기코드추가수정0·관련4suite 각1회1313/0. 최종SHA는 원로그 DONE.txt |
