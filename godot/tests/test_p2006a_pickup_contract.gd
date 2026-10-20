@@ -11,6 +11,8 @@ func _run() -> void:
 	else:
 		await _contracts()
 	_cleanup()
+	# Stop/free is asynchronous to the audio mix thread; keep cleanup observable.
+	await create_timer(0.25,true,false,true).timeout
 	await process_frame
 	await process_frame
 	print("P2006A_CONTRACT_RESULT ", JSON.stringify({"assertions": assertions, "failures": failures}))

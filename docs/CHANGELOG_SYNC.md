@@ -1,3 +1,12 @@
+## 2026-10-21 DEMO11-21 기존 드랍 제품 자연 INV 연결
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준 / 제품 | main01051599에서 원격 P2-006a48f0d8e7/P2-006be69fe444 정상 merge. main tree 미반영을 확인하고 기존 제품 회수, 표시 byte 재사용·재구현0 |
+| 공용 / 원본 | Main252–257 +6행, State432/565–566/584–659 +79행, 삭제0. G32002–32034/16721/32935–32941/16411–16424 journal→R→동일 실제 INV. 보호 전투·맵·저장0 |
+| 검증 | 신규24/0·직접 관련 P2 회귀3종 36/0, 각1회. 실제 Main·Input 이벤트·production rollDrop RNG fixture, 동일 객체/좌표/비자동장착/중복차단. 자연 처치·시각 PASS 주장0 |
+| 제출 | [보고서](engine/orders/reports/demo11-21_REPORT.md), 원로그 ~/exoduser-wt/_out/demo11-21/. Godot7회(최초 종료실패2 보존), 최종/관련 종료 ERROR/ObjectDB/resource0, gate30초 대기9회·override0byte. 자기 push/remote SHA/DONE 후 worktree 제거 |
+
 ## 2026-10-20 P2-006b — 효과 종료 후 드랍·LMB 관측
 
 - 지정 b933b2da5에 A 구현이 빠져 있어 승인된 A 제출 3커밋을 작업 브랜치에만 cherry-pick했다. 충돌한 설계/변경로그는 기존 DOC-SYNC·P3 기록과 A 기록을 모두 보존했다. main 변경·병합 없음.
