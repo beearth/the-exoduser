@@ -1,3 +1,12 @@
+## 2026-10-21 BC4-02 CH4 독립 재사용 진입점
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준 / 의존 | main01051599 + dcd32b49 + ca14a09f 정상 merge, 기준70b4d5b1. 문서 추가만 충돌 해결, main 기존 byte 보존. BC3-02 2bd9b68a는 읽기 참조 |
+| 범위 / 원본 | BC02~07 마지막 인자로 CH4 catalog 전달, 실제 si14..20/EL.F1·#ff5522·dropTier4. G31119–31185/14333/14338/16683/16707, 22공유 start·23별도 owner 경계. packet 덮어쓰기·공통식 복제 없음 |
+| 검증 | 신규 748/0·직접 관련 BC2-02 44891/0, 각1회. 원문15fixture·위임 exact 비교·token/ack 핵심5종 결함 fixture. Godot3회 --verbose ERROR/ObjectDB/resource0·stderr0, gate30초 대기0회·override0byte |
+| 보호 / 산출물 | 자기 신규7파일, 공유 Main/State/hurtE·저장·BC08·기존 테스트0줄. BC08은ttys009 소유. [보고서](engine/orders/reports/bc4-02_REPORT.md), 원로그 ~/exoduser-wt/_out/bc4-02/. 자기 push·remote SHA/DONE 후 worktree 제거 |
+
 ## 2026-10-20 BC4-01 4장 보스 읽기 전용 catalog
 
 | 항목 | 구현·검수 근거 |
