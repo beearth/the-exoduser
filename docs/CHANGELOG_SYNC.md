@@ -188,7 +188,7 @@
 | 전수 추적 | raw배치105·소환굴73·CH2등록47 전수표, docs 차이표, Godot 의존/결손, 에리어별 순서안·CH2-01 구현 지시서, 공용 접점. CH2 원화29개는 source/Godot 대응 Git blob 전부 동일. 실제 배치/collider·시각 완료와 구분 |
 | 검산 / 한계 | source VM6맵 재실행·길이/합계·배치 tuple·등록 blob 총176검산/0차이. Godot·브라우저·실플레이0. CH1 공통 알고리즘/전투·저장 권위 재구현0. 최신 전략§8에 따라 표현 제작과 게임플레이 원본 보존을 분리 |
 | 제출 | [2장 추적 문서](engine/FDG_SOURCE_TRACE_MAPS_CH2_20261020.md), 원로그 ~/exoduser-wt/_out/trace-maps-ch2/. 자기 branch push·원격 SHA 대조·DONE 후 자기 sparse worktree 제거, R 불변 |
-=======
+
 ## 2026-10-20 TRACE-ENEMIES-CH2 2장 적 원본 추적·이식 설계
 
 | 항목 | 조사·제출 범위 |
@@ -198,7 +198,6 @@
 | 중복 경계 | CH1/PC P2-008a/b·ELITES원격48681a12·마감에확인한MAPS_CH2원격18070adf 참조. 맵 geometry/좌표/에리어별분모 복제0. 맵제출본의RLE·조건부문지기판정과적선택분기 구분 |
 | 이식안 | CH2E-01~11 제안, 1번은신규선택정책+테스트2파일/공용0줄 목표의구현지시서. 실제actor/World/State/저장연결은각owner 인수후. 지금코드·테스트작성0 |
 | 검수·제출 | Godot/게임실행0, 원본선택함수54입력 정적검산을게임PASS로표시하지않음. sparse --no-checkout·문서2개만 정상commit/push·원격SHA/DONE 후자기worktree제거. R/공용/QE/세이브/보호docs2_3 불변. 원로그 ~/exoduser-wt/_out/trace-enemies-ch2/ |
->>>>>>> cf57f721
 =======
 ## 2026-10-20 TRACE-FIELDBOSS 필드보스 원본 추적·이식 설계
 
@@ -326,6 +325,37 @@
 | 불일치·이식안 | 설계 차이는 표로만 기록. 기존 Godot 의존/공백·공용 접점·10단위 순서안, 1번 LB-01은 신규 카탈로그/테스트만·공용 0줄 목표 |
 | 소유·보호 | SETTINGS S10·SAVE SV-LOBBY-VIEW는 참조, P2-001i·P2-007a는 의존. 코드·테스트·설계 docs·DESIGN LOCK·WORK_BOARD·R 불변. 이 절 외 기존 문서 수정 없음 |
 | 검증·한계 | 57개 기존 receipt 파일 및 최신 main 동일성·행/표/링크 정적 확인. Godot 미실행. 보존된 Node 원로그 77통과/3파일 acorn 부재로 본문 미실행은 전체 PASS가 아니며 재실행하지 않음. 자기 브랜치만 정상 push·원격 SHA 확인, main push·force·훅 우회 없음 |
+=======
+## 2026-10-20 META-06 demo·초월 제한 순수 정책
+
+| 항목 | 변경·검수 |
+|---|---|
+| 신규 API | native_meta_exp_gate_policy.gd·test_meta_exp_gate_policy.gd와 자기UID2개. date_key/transcendence_gate/entry_gate/loop_gate/after_level_up의5개 snapshot API |
+| 원본 | 최신 main e556b617 game.html16644–16648·43122–43155. demo100 선검사·로컬civil날짜 주입·일1회·entry min/while 직접 maxExp−1·도달lv>1000만 count+1. 매 검사 fresh day, 지급도중자정변경 보존 |
+| 검수 | 신규1034/0·실제 JS본문995결과(API987+조합8)/0불일치. META-05 1102/0·META-01 20/0·META-04 1076/0·META-03 68/0·META-02 70/0·contracts5case/0·p2001c46/0. 모두exit0/ERROR0/SKIP0; p2001c WARNING2 원문 보존 |
+| 의존·보호 | META-05 미통합으로2ec75a6f parent. 공용6·기존정책/테스트·원본153개 해시동일. State/실clock/저장/QE/UI/writer0줄. 제품gate 미연결, 향후 소비 위치를 보고서에 기록 |
+| 실행·제출 | sparse --no-checkout·매회pgrep1 확인/2이상30초대기·새작업/기존상수 격리명·override매회0byte. [META-06 보고서](engine/orders/reports/meta-06_REPORT.md)·~/exoduser-wt/_out/meta-06/·REVIEW_PENDING. push/원격일치/DONE 후 자기worktree 제거·다음단위 착수0 |
+
+## 2026-10-20 META-05 예약 패시브 큐 순수 정책
+
+| 항목 | 변경·검수 |
+|---|---|
+| 신규 API | native_meta_passive_queue.gd·test_meta_passive_queue.gd와 자기UID2개. items/process/enqueue/cancel 순수 snapshot API, META-04 AP비용/safe count 읽기 전용 재사용 |
+| 원본 | 최신 main e556b617 game.html27699–27728·51219–51233·51251–51260·43157, stat-panel-ui.js4–5. 유효own키26/읽기260·max10·FIFO·max/정의없음 선두제거·부족선두중단·AP차감→rank+1→shift·투자시만 재계산요청. append 후 임의 추가cap0 |
+| 검수 | 신규1102/0·실제 JS본문1015결과 exact대조/0불일치. META-04 1076/0·META-03 68/0·META-02 70/0·META-01 20/0·contracts5case/0·p2001c45/0. 모두exit0/ERROR0/SKIP0; p2001c Camera2D/ObjectDB WARNING2 원문 보고서 보존 |
+| 의존·보호 | META-04 미통합으로51c6e51f parent. 공용6·기존정책/테스트·원본151개 해시동일, 저장/QE/State/UI/기존applyStats직접호출0. 제품 자동투자 인수 아님 |
+| 실행·제출 | sparse --no-checkout·pgrep2이상30초대기·새작업/기존상수 격리명·override매회0byte. [META-05 보고서](engine/orders/reports/meta-05_REPORT.md)·~/exoduser-wt/_out/meta-05/·REVIEW_PENDING. push/원격SHA/DONE 후 자기worktree 제거 |
+
+## 2026-10-20 META-04 SP/AP 투자·환불 순수 계산
+
+| 항목 | 변경·검수 |
+|---|---|
+| 신규 API | native_meta_point_policy.gd·test_meta_point_policy.gd 및 자기 UID2개. rank/stat/passive/refund/grit/createPlan/evaluatePlan의8개 순수 API만 |
+| 원본 | 착수main284d7faf·마감e556b617 원본동일 확인, stat-panel-ui.js4–23·256–274 및 game.html27690–27728·27894–27896·51204–51274. 4스탯500/legacyVIT전체환불·근성1SP·AP[1,1,1,2,2,2,3,3,3,5] 합23. stale/key/safe잔액/max(cap,current)·감소환급·no-op 결과 보존 |
+| 검수 | 신규1076/0·원본 JS 969API exact대조/0불일치. META-03 68/0·META-02 70/0·META-01 20/0·contracts5case/0·p2001c45/0, SKIP0·exit0·ERROR0. 첫 하니스 TypeError/Parse Error·부동소수 MAX리터럴의 실제 경계거부를 실패로 보존. 상수를 정확한 int로 수정 후 신규+회귀 전체 재검 |
+| 의존·보호 | META-03 미통합으로5b672e7c parent. 공용6·raw_grit_restore·기존META/테스트·원본·저장·Q/E0줄. raw holder 재사용 가능 경계만 보고서에 설명, State/큐/UI/writer연결0. 전체환불/구저장migration 혼합0 |
+| 증거 | Godot pgrep2이상30초대기·각 격리상수/작업명·override매회0byte. [META-04 보고서](engine/orders/reports/meta-04_REPORT.md)·~/exoduser-wt/_out/meta-04/·STATUS=REVIEW_PENDING |
+>>>>>>> f422eb13
 
 ## 2026-10-20 META-03 레거시 분해 가치 순수 규칙
 
