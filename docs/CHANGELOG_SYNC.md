@@ -1,3 +1,12 @@
+## 2026-10-21 DEMO11-16 실제 슬롯·4cast 비용/쿨 단일화 (보호 active HOLD)
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준 | 최신 main aa1eaea5 정상merge(FF), gap61ab71be는 지시서 readonly. 제한 fetch 발견 후 명시 main 갱신·검증 의존2파일 차이/최종Main 검증 기록 |
+| 연결 | 실제 skillSlots/activeCtSk/ultSlot→SK-S04→기존4cast. 비용 quote/State·ResourceAuthority 단일 commit·배정별 HUD 같은 쿨. 피해/보호전투/맵/UI 배치/저장/에셋 변경0 |
+| 검증 | 최신main 신규393/0·원문72조합. 01051599 기준 직접 기존5스위트 각1회 합계12,232/0. 최초 하니스 실패·교정·캐시병합 후 신규만 확인. 최종ERROR/SKIP0·고정4키·atomic 실패prefix 검사 |
+| 경계·제출 | 보호 active 인계·pStun·Space 분노 우선순위 인터페이스 HOLD, 조건부 ULT96/97 실제효과 미완료. [현재 계약](engine/DEMO11_SKILL_DISPATCH_20261021.md)·[보고서](engine/orders/reports/demo11-16_REPORT.md)에 공용 diff 구역. 자기branch push/remoteSHA/DONE 후 자기WT 제거 |
+
 ## 2026-10-20 BC2-07 shieldBash2 독립 wind/dash/contact 계산
 
 ## 2026-10-20 EC4-02 4장 catalog·23필드 초기 literal projection
